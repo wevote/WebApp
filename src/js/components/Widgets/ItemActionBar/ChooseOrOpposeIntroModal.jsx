@@ -53,7 +53,7 @@ class ChooseOrOpposeIntroModal extends Component {
         (
           <>
             <SubTitle>We Vote helps you get ready to vote, BUT does not officially cast your vote.</SubTitle>
-            <PlainText>Make sure to return your official ballot to your polling location!</PlainText>
+            <PlainText>Make sure to return your official ballot to your local election registrar.</PlainText>
             <Options buttons="2">
               {!voterIsSignedIn && (
                 <Button

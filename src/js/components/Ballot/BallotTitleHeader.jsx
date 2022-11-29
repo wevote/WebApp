@@ -2,7 +2,7 @@ import { Edit } from '@mui/icons-material';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import BallotTitleHeaderNationalPlaceholder from './BallotTitleHeaderNationalPlaceholder';
 import { formatDateToMonthDayYear } from '../../common/utils/dateFormat';
@@ -10,7 +10,6 @@ import daysUntil from '../../common/utils/daysUntil';
 import initializeMoment from '../../common/utils/initializeMoment';
 import { renderLog } from '../../common/utils/logging';
 import stringContains from '../../common/utils/stringContains';
-import ShareButtonDesktopTablet from '../Share/ShareButtonDesktopTablet';
 import AppObservableStore from '../../stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
 import VoterStore from '../../stores/VoterStore';
@@ -32,6 +31,7 @@ import {
   VoteByRightWrapper,
 } from '../Style/BallotTitleHeaderStyles';
 
+const ShareButtonDesktopTablet = React.lazy(() => import(/* webpackChunkName: 'ShareButtonDesktopTablet' */ '../Share/ShareButtonDesktopTablet'));
 
 class BallotTitleHeader extends Component {
   constructor (props) {
@@ -124,7 +124,7 @@ class BallotTitleHeader extends Component {
 
   render () {
     renderLog('BallotTitleHeader');  // Set LOG_RENDER_EVENTS to log all renders
-    const { allowTextWrap, centerText, electionDateBelow, linksOff, showBallotCaveat, showShareButton, turnOffVoteByBelow } = this.props;
+    const { allowTextWrap, centerText, electionDateBelow, linksOff, shareButtonText, showBallotCaveat, showShareButton, turnOffVoteByBelow } = this.props;
     const {
       ballotCaveat, daysUntilElection, electionDayTextObject,
       electionName, nextNationalElectionDateMDY, originalTextAddress, originalTextState,
@@ -299,7 +299,9 @@ class BallotTitleHeader extends Component {
             )}
             {showShareButton && (
               <BallotShareWrapper className="u-show-desktop-tablet">
-                <ShareButtonDesktopTablet />
+                <Suspense fallback={<></>}>
+                  <ShareButtonDesktopTablet shareButtonText={shareButtonText || undefined} />
+                </Suspense>
               </BallotShareWrapper>
             )}
           </ContentWrapper>
@@ -334,6 +336,7 @@ BallotTitleHeader.propTypes = {
   centerText: PropTypes.bool,
   electionDateBelow: PropTypes.bool,
   linksOff: PropTypes.bool,
+  shareButtonText: PropTypes.string,
   showBallotCaveat: PropTypes.bool,
   showShareButton: PropTypes.bool,
   // toggleSelectBallotModal: PropTypes.func,

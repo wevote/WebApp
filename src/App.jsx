@@ -276,6 +276,7 @@ class App extends Component {
                       }}
                     </Route>
                     <Route path="/-/:custom_link_string" exact component={SharedItemLanding} />
+                    <Route path="/-:shared_item_code/modal/share" exact component={SharedItemLanding} />
                     <Route path="/-:shared_item_code" exact component={SharedItemLanding} />
                     <Route path="/about" exact><About /></Route>
                     <Route path="/add-candidate-for-extension" component={AddCandidateForExtension} />

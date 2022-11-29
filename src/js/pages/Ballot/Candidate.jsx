@@ -19,7 +19,6 @@ import { displayNoneIfSmallerThanDesktop } from '../../common/utils/isMobileScre
 import { renderLog } from '../../common/utils/logging';
 import toTitleCase from '../../common/utils/toTitleCase';
 import CandidateStickyHeader from '../../components/Ballot/CandidateStickyHeader';
-import ShareButtonDesktopTablet from '../../components/Share/ShareButtonDesktopTablet';
 import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import EndorsementCard from '../../components/Widgets/EndorsementCard';
 import SearchOnGoogle from '../../components/Widgets/SearchOnGoogle';
@@ -39,6 +38,7 @@ const CandidateItem = React.lazy(() => import(/* webpackChunkName: 'CandidateIte
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 const PositionList = React.lazy(() => import(/* webpackChunkName: 'PositionList' */ '../../components/Ballot/PositionList'));
+const ShareButtonDesktopTablet = React.lazy(() => import(/* webpackChunkName: 'ShareButtonDesktopTablet' */ '../../components/Share/ShareButtonDesktopTablet'));
 const ViewUpcomingBallotButton = React.lazy(() => import(/* webpackChunkName: 'ViewUpcomingBallotButton' */ '../../components/Ready/ViewUpcomingBallotButton'));
 
 const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
@@ -347,7 +347,9 @@ class Candidate extends Component {
             <RightColumnWrapper className="u-show-desktop-tablet">
               {nextReleaseFeaturesEnabled && (
                 <CandidateShareWrapper>
-                  <ShareButtonDesktopTablet candidateShare />
+                  <Suspense fallback={<></>}>
+                    <ShareButtonDesktopTablet candidateShare />
+                  </Suspense>
                 </CandidateShareWrapper>
               )}
               {candidate.ballotpedia_candidate_url && (

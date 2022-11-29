@@ -2,6 +2,52 @@ import styled from 'styled-components';
 import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 
+const BallotSharedCandidateNameH4 = styled('h4')`
+  color: #4371cc;
+  font-weight: 400;
+  font-size: 24px;
+  margin-bottom: 0 !important;
+  min-width: 124px;
+  white-space: nowrap;
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
+const BallotSharedCandidateParty = styled('div')`
+  opacity: 0.8;
+  white-space: nowrap;
+`;
+
+const BallotSharedCandidatesOuterWrapper = styled('div')`
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  // height: 100%;
+  width: 100%;
+`;
+
+const BallotSharedOfficeNameH2 = styled('div')(({ theme }) => (`
+  // For some reason if styled('h2') it breaks down
+  font-size: 20px;
+  margin-bottom: 6px;
+  white-space: nowrap;
+  width: fit-content;
+  ${theme.breakpoints.down('sm')} {
+    font-size: 28px;
+  }
+`));
+
+const BallotSharedOfficeItemWrapper = styled('div')`
+  align-items: center;
+  display: flex;
+  border: 1px solid #fff;
+  flex-direction: column;
+  margin-bottom: 60px;
+  padding: 0 !important;
+  position: relative;
+`;
+
 const Candidate = styled('div')`
   display: flex;
   flex-grow: 8;
@@ -64,6 +110,13 @@ const CandidateParty = styled('div')`
   white-space: normal;
 `;
 
+const CandidatesContainer = styled('div')`
+  height: 100%;
+  // margin: 0 0 0 -10px;
+  min-width: 0;
+  width: 100%;
+`;
+
 const CandidateTopRow = styled('div')`
   cursor: pointer;
   display: flex;
@@ -117,9 +170,30 @@ const OfficeItemCompressedWrapper = styled('div')`
   position: relative;
 `;
 
+const VoteAgainstCandidate = styled('span')`
+  color: red;
+  font-size: 16px;
+`;
+
+const VoteAgainstMeasure = styled('span')`
+`;
+
+const VoteForCandidate = styled('span')`
+  font-size: 16px;
+`;
+
+const VoteForMeasure = styled('span')`
+`;
+
 export {
+  BallotSharedCandidateNameH4,
+  BallotSharedCandidateParty, BallotSharedCandidatesOuterWrapper,
+  BallotSharedOfficeNameH2, BallotSharedOfficeItemWrapper,
   Candidate, CandidateBottomRow,
   CandidateContainer, CandidateInfo, CandidateNameH1, CandidateNameH4, CandidateParty,
+  CandidatesContainer,
   CandidateWrapper, CandidateTopRow, HorizontallyScrollingContainer,
   OfficeNameH2, OfficeItemCompressedWrapper, constrainedTextMobileStyles,
+  VoteAgainstCandidate, VoteForCandidate,
+  VoteAgainstMeasure, VoteForMeasure,
 };

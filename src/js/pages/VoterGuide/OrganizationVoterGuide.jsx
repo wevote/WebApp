@@ -13,7 +13,6 @@ import historyPush from '../../common/utils/historyPush';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import FriendToggle from '../../components/Friends/FriendToggle';
-import ShareButtonDesktopTablet from '../../components/Share/ShareButtonDesktopTablet';
 import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import OrganizationCard from '../../components/VoterGuide/OrganizationCard';
 import OrganizationVoterGuideCard from '../../components/VoterGuide/OrganizationVoterGuideCard';
@@ -26,6 +25,7 @@ import { isSpeakerTypePrivateCitizen } from '../../utils/organization-functions'
 
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
 const FollowToggle = React.lazy(() => import(/* webpackChunkName: 'FollowToggle' */ '../../components/Widgets/FollowToggle'));
+const ShareButtonDesktopTablet = React.lazy(() => import(/* webpackChunkName: 'ShareButtonDesktopTablet' */ '../../components/Share/ShareButtonDesktopTablet'));
 
 const AUTO_FOLLOW = 'af';
 
@@ -335,10 +335,12 @@ export default class OrganizationVoterGuide extends Component {
             <BannerOverlayDesktopInnerWrapper>
               <BannerOverlayDesktopShareButtonWrapper>
                 <BannerOverlayDesktopShareButtonInnerWrapper>
-                  <ShareButtonDesktopTablet
-                    organizationShare
-                    organizationWeVoteId={organizationWeVoteId}
-                  />
+                  <Suspense fallback={<></>}>
+                    <ShareButtonDesktopTablet
+                      organizationShare
+                      organizationWeVoteId={organizationWeVoteId}
+                    />
+                  </Suspense>
                 </BannerOverlayDesktopShareButtonInnerWrapper>
               </BannerOverlayDesktopShareButtonWrapper>
               <BannerContainerDesktop>
