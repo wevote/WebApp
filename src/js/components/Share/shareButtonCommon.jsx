@@ -6,9 +6,9 @@ import { FacebookIcon, FacebookShareButton, TwitterIcon, TwitterShareButton } fr
 import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import OpenExternalWebSite from '../../common/components/Widgets/OpenExternalWebSite';
-import { cordovaOpenSafariView, hasDynamicIsland, hasIPhoneNotch, isAndroid } from '../../common/utils/cordovaUtils';
+import { cordovaOpenSafariView, hasDynamicIsland, hasIPhoneNotch, isAndroid, isIPhone6p5in } from '../../common/utils/cordovaUtils';
 import { normalizedHref } from '../../common/utils/hrefUtils';
-import { isCordova } from '../../common/utils/isCordovaOrWebApp';
+import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import VoterStore from '../../stores/VoterStore';
 import { openSnackbar } from '../Widgets/SnackNotifier';
 import ShareModalOption from './ShareModalOption';
@@ -275,9 +275,15 @@ export function cordovaSocialSharingByEmail (subject, linkToBeShared, handleClos
     null,               // CC: must be null or an array
     null,               // BCC: must be null or an array
     null,               // FILES: can be null, a string, or an array
-    onEmailSendSuccess, // called when sharing worked, but also when the user cancelled sharing via email. On iOS, the callbacks' boolean result parameter is true when sharing worked, false if cancelled. On Android, this parameter is always true, so it can't be used. See section "Notes about the successCallback" below.
+    onEmailSendSuccess, // called when sharing worked, but also when the user cancelled sharing via email. On iOS, the callbacks' boolean result parameter is true when sharing worked, false if cancelled. On Android, this parameter is always true so it can't be used). See section "Notes about the successCallback" below.
     onEmailSendError,   // called when sh*t hits the fan
   );
+}
+
+export function containerSharePadding (shareOptionsMode, isShareWithFriendsNow) {
+  if (isWebApp()) return shareOptionsMode ? '16px 16px 32px' : '24px 16px 32px';
+  if (isAndroid() || (isIPhone6p5in() && !hasDynamicIsland()) || isShareWithFriendsNow) return '40px 16px 32px';
+  return '0 16px 32px';
 }
 
 const TextH3 = styled('h3')`

@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { formatDateMMMDoYYYY } from '../../common/utils/dateFormat';
 import initializeMoment from '../../common/utils/initializeMoment';
+import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import Cookies from '../../common/utils/js-cookie/Cookies';
 import { renderLog } from '../../common/utils/logging';
 import BallotStore from '../../stores/BallotStore';
@@ -220,7 +221,7 @@ class BallotStatusMessage extends Component {
       }
     } else {
       let messageInPastString;
-      if (electionDayText) {
+      if (electionDayText && isWebApp()) {   // Message is confusing in Cordova
         messageInPastString = `Election day: ${dateText}.`;
       } else {
         messageInPastString = ''; // Was "This election has passed." but it showed up inaccurately.
@@ -264,6 +265,7 @@ class BallotStatusMessage extends Component {
             'aria-describedby': 'message-id',
           }}
           message={<span id="message-id">{messageString}</span>}
+          style={isCordova() ?  { bottom: '112px' } : {}}
         />
       );
     } else {

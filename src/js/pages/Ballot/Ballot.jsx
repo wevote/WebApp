@@ -1120,7 +1120,7 @@ class Ballot extends Component {
       }
     } else if (isCordova()) {
       // Calculated approach Nov 2022
-      const offset = `${headroomWrapperOffset()}px`;
+      const offset = `${headroomWrapperOffset(true)}px`;
       cordovaOffsetLog(`BallotTitleHeaderContainer HeadroomWrapper offset: ${offset}, page: ${getPageKey()}`);
       return offset;
       // end calculated approach

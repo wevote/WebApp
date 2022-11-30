@@ -5,14 +5,13 @@ import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
-import { generateShareLinks } from './ShareModalText';
-import ShareModalTitleArea from './ShareModalTitleArea';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import FriendActions from '../../actions/FriendActions';
 import VoterActions from '../../actions/VoterActions';
 import ShareActions from '../../common/actions/ShareActions';
 import ShareStore from '../../common/stores/ShareStore';
 import apiCalming from '../../common/utils/apiCalming';
+import { isIPad } from '../../common/utils/cordovaUtils';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp'; // isCordova
 import { renderLog } from '../../common/utils/logging';
 import stringContains from '../../common/utils/stringContains';
@@ -22,16 +21,9 @@ import VoterStore from '../../stores/VoterStore';
 import createMessageToFriendDefaults from '../../utils/createMessageToFriendDefaults';
 import sortFriendListByMutualFriends from '../../utils/friendFunctions';
 import MessageCard from '../Widgets/MessageCard';
-import {
-  CopyLink,
-  getKindOfShareFromURL,
-  saveActionShareAnalytics,
-  ShareFacebook,
-  SharePreviewFriends,
-  shareStyles,
-  ShareTwitter,
-  ShareWeVoteFriends,
-} from './shareButtonCommon'; // cordovaSocialSharingByEmail
+import { CopyLink, getKindOfShareFromURL, saveActionShareAnalytics, ShareFacebook, SharePreviewFriends, shareStyles, ShareTwitter, ShareWeVoteFriends } from './shareButtonCommon'; // cordovaSocialSharingByEmail
+import { generateShareLinks } from './ShareModalText';
+import ShareModalTitleArea from './ShareModalTitleArea';
 
 const ShareWithFriendsModalBodyWithController = React.lazy(() => import(/* webpackChunkName: 'ShareWithFriendsModalBodyWithController' */ '../Friends/ShareWithFriendsModalBodyWithController'));
 const ShareWithFriendsModalTitleWithController = React.lazy(() => import(/* webpackChunkName: 'ShareWithFriendsModalTitleWithController' */ '../Friends/ShareWithFriendsModalTitleWithController'));
@@ -226,6 +218,7 @@ class ShareModal extends Component {
           classes={{ paper: classes.dialogPaper }}
           open={this.props.show}
           onClose={() => { this.props.closeShareModal(pathname); }}
+          sx={isIPad() ? { top: 24 } : {}}
         >
           <ModalTitleAreaMini>
             <div>

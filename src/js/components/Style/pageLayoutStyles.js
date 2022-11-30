@@ -1,6 +1,6 @@
 import { AppBar } from '@mui/material';
 import styled from 'styled-components';
-import { hasDynamicIsland, hasIPhoneNotch, isAndroid, isAndroidSizeMD, isAndroidSizeWide, isAndroidSizeXL, isIOSAppOnMac, isIPad, isIPad11in, isIPhone4p7in, isIPhone5p5inEarly, isIPhone5p5inMini, isIPhone6p1in, isIPhone6p5in } from '../../common/utils/cordovaUtils';
+import { hasDynamicIsland, hasIPhoneNotch, isAndroid, isAndroidSizeMD, isAndroidSizeWide, isAndroidSizeXL, isIOS, isIOSAppOnMac, isIPad, isIPad11in, isIPhone14Pro, isIPhone4p7in, isIPhone5p5inEarly, isIPhone5p5inMini, isIPhone6p1in, isIPhone6p5in } from '../../common/utils/cordovaUtils';
 import { normalizedHrefPage } from '../../common/utils/hrefUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize, { isTablet } from '../../common/utils/isMobileScreenSize';
@@ -132,12 +132,10 @@ export const DualHeaderContainer = styled('div', {
   left: 0;
 `));
 
+/* eslint-disable no-nested-ternary */
 export const HeadroomWrapper = styled('div')`
   position: fixed;
-  top: ${() => {
-    if (hasDynamicIsland())  return '22px';
-    return                          '0px';
-  }};
+  top: ${() => (hasDynamicIsland() ? (isIPhone14Pro() ? '22px' : '12px') : '0px')};
   left: 0;
   width: 100%;
   background: white;
@@ -235,10 +233,11 @@ function getBackToPaddingTop () {
   // Calculated approach Nov 2022
   const { $ } = window;
   const headerBack = $('#headerBackToBallotAppBar');
-  if (headerBack.length) {
+  if (isIOS() && headerBack.length) {
     const iOSNotchedSpacer = $('div[class*=\'IOSNotchedSpacer\']');
-    const height = iOSNotchedSpacer.outerHeight();
-    cordovaOffsetLog(`getBackToPaddingTop #headerBackToBallotAppBar iOSNotchedSpacer.outerHeight(): ${height}, page: ${pageEnumeration()}`);
+    const iOSNoNotchSpacer = $('div[class*=\'IOSNoNotchSpacer\']');
+    const height = iOSNotchedSpacer.length ? iOSNotchedSpacer.outerHeight() : iOSNoNotchSpacer.outerHeight();
+    cordovaOffsetLog(`getBackToPaddingTop #headerBackToBallotAppBar iOS[No]NotchedSpacer.outerHeight(): ${height}, page: ${pageEnumeration()}`);
     return `${height}px`;
   }
   // end calculated approach

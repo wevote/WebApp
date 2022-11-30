@@ -14,8 +14,6 @@ import VoterStore from '../../stores/VoterStore';
 import { TermsAndPrivacyText } from '../Style/pageLayoutStyles';
 
 
-const webAppConfig = require('../../config');
-
 class DeviceDialog extends Component {
   static clearAllCookies () {
     // 11/6/21  need to reimplement for new Cookies... if it is even needed
@@ -146,7 +144,7 @@ class DeviceDialog extends Component {
             </TableBody>
           </Table>
           {/* Show the developer options if on the simulator in iOS, or the SHOW_TEST_OPTIONS is on, or Cordova offset logging is turned on -- should not show in release builds */}
-          {(window.location.href.startsWith('file:///Users') || webAppConfig.SHOW_TEST_OPTIONS || webAppConfig.LOG_CORDOVA_OFFSETS) &&
+          { isSimulator() &&
             (
               <div style={{ marginTop: 20 }}>
                 <div style={{ marginTop: 5 }}>

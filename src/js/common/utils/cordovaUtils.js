@@ -320,7 +320,7 @@ export function isIPhone6p1in () {
 export function isIPhone6p5in () {
   if (isIOS()) {
     if (getIOSSizeString() === 'isIPhone6p5in') {
-      logMatch('isIPhone6p5in: iPhone XsMax or 11/12 Pro Max (6.7"),', true);
+      logMatch('isIPhone6p5in: iPhone XsMax or 11/12/13/14 Pro Max (6.7"),', true);
       return true;
     }
   }
@@ -374,7 +374,16 @@ export function isIPad11in () {
 export function hasDynamicIsland () {
   if (isIOS() && !isIOSAppOnMac() &&
     ['iPhone15,2', 'iPhone15,3'].includes(window.device.model)) {
-    logMatch('iPhone 14 Pro Dynamic Island Sized Header', true);
+    logMatch('iPhone 14 Pro or 14 Pro Max, Dynamic Island Sized Header', true);
+    return true;
+  }
+  return false;
+}
+
+export function isIPhone14Pro ()  {
+  if (isIOS() && !isIOSAppOnMac() &&
+    ['iPhone15,2'].includes(window.device.model)) {
+    logMatch('iPhone 14 Pro (not Max) Dynamic Island Sized Header', true);
     return true;
   }
   return false;
@@ -569,12 +578,12 @@ export function isWebAppHeight737to896 () {
 }
 
 export function isAndroidSimulator () {
-  const { device } = window;
-  if (device) {
-    return device.isVirtual; // return window.location.href.startsWith('file:///android');
-  } else {
-    return false;
+  if (isAndroid()) {
+    const { device } = window;
+    if (device) return device.isVirtual;
+    return window.location.href.startsWith('file:///android');
   }
+  return false;
 }
 
 export function isCordovaButNotATablet () {
@@ -582,14 +591,12 @@ export function isCordovaButNotATablet () {
 }
 
 export function isIOsSimulator () {
-  // const { device: { isVirtual } } = window;
-  // return isVirtual; // window.location.href.startsWith('file:///Users') || window.location.href.startsWith('app://localhost');
-  const { device } = window;
-  if (device) {
-    return device.isVirtual; // return window.location.href.startsWith('file:///android');
-  } else {
-    return false;
+  if (isIOS()) {
+    const { device } = window;
+    if (device) return device.isVirtual;
+    return window.location.href.startsWith('file:///Users') || window.location.href.startsWith('app://localhost');
   }
+  return false;
 }
 
 export function isSimulator () {

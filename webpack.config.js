@@ -123,12 +123,16 @@ module.exports = (env, argv) => ({
       patterns: [
         { from: `${source}/robots.txt`,  to: '.' },
         { from: `${source}/app-ads.txt`,  to: '.' },
-        { from: `${source}/css/`,        to: 'css/' },
+        {
+          from: `${source}/css/`,
+          to: 'css/',
+          globOptions: { ignore: ['**/mainPreBeautified.css', '**/mainSubtract.css']},
+        },
         { from: `${source}/extension.html`, to: '.' },
         {
           from: `${source}/img`,
           to: 'img/',
-          globOptions: { ignore: ['DO-NOT-BUNDLE/**/*']},
+          globOptions: { ignore: ['**/DO-NOT-BUNDLE/**']},
         },
       ],
     }),

@@ -4,9 +4,6 @@ import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
-import ShareModalOption from './ShareModalOption';
-import { generateShareLinks } from './ShareModalText';
-import ShareModalTitleArea from './ShareModalTitleArea';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import FriendActions from '../../actions/FriendActions';
 import VoterActions from '../../actions/VoterActions';
@@ -26,17 +23,10 @@ import createMessageToFriendDefaults from '../../utils/createMessageToFriendDefa
 import sortFriendListByMutualFriends from '../../utils/friendFunctions';
 import isMobile from '../../utils/isMobile';
 import { openSnackbar } from '../Widgets/SnackNotifier';
-import {
-  CopyLink,
-  getKindOfShareFromURL,
-  getWhatAndHowMuchToShareDefault,
-  saveActionShareAnalytics,
-  ShareFacebook,
-  SharePreviewFriends,
-  shareStyles,
-  ShareTwitter,
-  ShareWeVoteFriends,
-} from './shareButtonCommon'; // cordovaSocialSharingByEmail // cordovaSocialSharingByEmail
+import { CopyLink, getKindOfShareFromURL, getWhatAndHowMuchToShareDefault, saveActionShareAnalytics, ShareFacebook, SharePreviewFriends, shareStyles, ShareTwitter, ShareWeVoteFriends } from './shareButtonCommon'; // cordovaSocialSharingByEmail // cordovaSocialSharingByEmail
+import ShareModalOption from './ShareModalOption';
+import { generateShareLinks } from './ShareModalText';
+import ShareModalTitleArea from './ShareModalTitleArea';
 
 
 // const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../../common/components/Widgets/ReadMore'));
@@ -167,25 +157,6 @@ class ShareButtonFooter extends Component {
       showSignInModal,
     });
   }
-
-  // This has been replaced with cordovaLinkToBeSharedFixes in /src/js/common/utils/cordovaUtils.js
-  //  but needs to be tested in Cordova
-  // getCurrentFullUrl () {
-  //   const { location: { href } } = window;
-  //   let currentFullUrl = href || ''; // We intentionally don't use normalizedHref() here
-  //   // Handles localhost and Cordova, always builds url to wevote.us
-  //   if (currentFullUrl.startsWith('https://localhost')) {
-  //     currentFullUrl = currentFullUrl.replace(/https:\/\/localhost.*?\//, 'https://wevote.us/');
-  //     // console.log(`currentFullUrl adjusted for localhost: ${currentFullUrl}`);
-  //   } else if (currentFullUrl.startsWith('file:///')) {
-  //     currentFullUrl = currentFullUrl.replace(/file:.*?android_asset\/www\/index.html#\//, 'https://wevote.us/');
-  //     // console.log(`currentFullUrl adjusted for Cordova android: ${currentFullUrl}`);
-  //   } else if (currentFullUrl.startsWith('file://')) {
-  //     currentFullUrl = currentFullUrl.replace(/file:\/\/.*?Vote.app\/www\/index.html#\//, 'https://wevote.us/');
-  //     // console.log(`currentFullUrl adjusted for Cordova ios: ${currentFullUrl}`);
-  //   }
-  //   return currentFullUrl;
-  // }
 
   handleShareButtonClick = () => {
     const {
@@ -348,6 +319,7 @@ class ShareButtonFooter extends Component {
                 onClick={this.handleCloseShareButtonDrawer}
                 id="closeShareModal"
                 size="large"
+                style={isCordova() ? { display: 'none' } : {}}
               >
                 <Close />
               </IconButton>
@@ -361,7 +333,7 @@ class ShareButtonFooter extends Component {
               </Suspense>
             </ModalTitleAreaFixedInnerWrapper>
           </ModalTitleAreaFixed>
-          <Container
+          <ContainerShareFooter
             shareOptionsMode={(
               (whatAndHowMuchToShare === 'friends')
             )}
@@ -373,7 +345,7 @@ class ShareButtonFooter extends Component {
                 </Suspense>
               </AskFriendsModalBodyArea>
             </>
-          </Container>
+          </ContainerShareFooter>
         </Drawer>
       );
     } else if ((whatAndHowMuchToShare === 'ballotShareOptions') ||
@@ -398,7 +370,7 @@ class ShareButtonFooter extends Component {
           onClose={this.handleCloseShareButtonDrawer}
           open={openShareButtonDrawer}
         >
-          <Container>
+          <ContainerShareFooter>
             <ShareModalTitleArea
               firstSlide={false}
               handleCloseShareButtonDrawer={this.handleCloseShareButtonDrawer}
@@ -438,7 +410,7 @@ class ShareButtonFooter extends Component {
                 )}
               </>
             )}
-          </Container>
+          </ContainerShareFooter>
         </Drawer>
       );
     } else {
@@ -456,12 +428,12 @@ class ShareButtonFooter extends Component {
             {shareMenuItemsDescription && (
               <MenuDescription>
                 <Info classes={{ root: classes.informationIcon }} />
-                <Suspense fallback={<></>}>
+                <Sus(Cordova build script can't handle the sus pense function in commented out code)pense fallback={<></>}>
                   <ReadMore
                     textToDisplay={shareMenuItemsDescription}
                     numberOfLines={2}
                   />
-                </Suspense>
+                </Sus(Cordova build script can't handle the sus pense function in commented out code)pense>
               </MenuDescription>
             )}
             <MenuItemsWrapper>
@@ -539,12 +511,12 @@ const AskFriendsModalBodyArea = styled('div')`
 `;
 
 /* eslint-disable no-nested-ternary */
-const Container = styled('div', {
+const ContainerShareFooter = styled('div', {
   shouldForwardProp: (prop) => !['shareOptionsMode'].includes(prop),
 })(({ shareOptionsMode }) => (`
   margin: 0 auto;
   max-width: 576px;
-  padding: ${isWebApp() ? (shareOptionsMode ? '16px 16px 32px' : '24px 16px 32px') : '40px 16px 32px'};
+  padding: ${isWebApp() ? (shareOptionsMode ? '16px 16px 32px' : '24px 16px 32px') : '8px 16px 32px'};
   width: 100%;
 `));
 
@@ -560,58 +532,6 @@ const Flex = styled('div')`
 const Icon = styled('span')`
   margin-right: 4px;
 `;
-
-// const MenuDescription = styled('div')`
-//   font-size: 18px;
-// `;
-//
-// const MenuFlex = styled('div')`
-//   display: flex;
-//   align-items: center;
-//   justify-content: flex-start;
-//   width: 100%;
-//   height: 100%;
-//   padding: 14px 12px;
-// `;
-//
-// const MenuIcon = styled('div')`
-//   width: 20px !important;
-//   height: 20px !important;
-//   top: -2px;
-//   position: relative;
-//   & * {
-//     width: 20px !important;
-//     height: 20px !important;
-//     min-width: 20px !important;
-//     min-height: 20px !important;
-//   }
-//   & svg {
-//     position: relative;
-//     left: -2px;
-//   }
-// `;
-//
-// const MenuItemsWrapper = styled('div')`
-//   padding: 16px 0;
-// `;
-//
-// const MenuText = styled('div')`
-//   margin-left: 12px;
-// `;
-//
-// const MenuSeparator = styled('div')`
-//   height: 2px;
-//   background: #efefef;
-//   width: 80%;
-//   margin: 0 auto;
-//   position: absolute;
-//   left: 10%;
-//   z-index: 0 !important;
-//   @media (min-width: 568px) {
-//     width: 448px !important;
-//     margin: 0 auto;
-//   }
-// `;
 
 const ModalTitleAreaFixed = styled('div', {
   shouldForwardProp: (prop) => !['notchOrIsland'].includes(prop),
