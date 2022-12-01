@@ -47,7 +47,6 @@ class VoterPhotoUpload extends Component {
   handleDrop (files) {
     const { voterProfileUploadedImageUrlLarge } = this.state;
     if (files && files[0]) {
-      console.log("files and files[0]")
       const fileFromDropzone = files[0];
       if (!fileFromDropzone) return;
       const fileReader = new FileReader();
@@ -63,7 +62,6 @@ class VoterPhotoUpload extends Component {
         showDropzoneIcon: false,
       });
     } else {
-      console.log("else")
       let dropzoneText = isMobileScreenSize() ? 'Upload profile photo' : 'Drag your profile photo here (or click to find file)';
       let showDropzoneIcon = true;
       if (voterProfileUploadedImageUrlLarge) {
