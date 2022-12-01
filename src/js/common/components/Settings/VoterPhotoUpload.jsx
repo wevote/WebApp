@@ -1,6 +1,6 @@
 import { AccountCircle } from '@mui/icons-material';
 import withStyles from '@mui/styles/withStyles';
-import { DropzoneArea } from 'mui-file-dropzone';
+import { DropzoneArea } from 'material-ui-dropzone';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
@@ -47,6 +47,7 @@ class VoterPhotoUpload extends Component {
   handleDrop (files) {
     const { voterProfileUploadedImageUrlLarge } = this.state;
     if (files && files[0]) {
+      console.log("files and files[0]")
       const fileFromDropzone = files[0];
       if (!fileFromDropzone) return;
       const fileReader = new FileReader();
@@ -62,6 +63,7 @@ class VoterPhotoUpload extends Component {
         showDropzoneIcon: false,
       });
     } else {
+      console.log("else")
       let dropzoneText = isMobileScreenSize() ? 'Upload profile photo' : 'Drag your profile photo here (or click to find file)';
       let showDropzoneIcon = true;
       if (voterProfileUploadedImageUrlLarge) {

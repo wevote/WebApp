@@ -73,6 +73,8 @@ class SettingsProfilePicture extends Component {
     const { classes } = this.props;
     const onlyOneOption = !(voterFacebookImageUrlLarge || voterTwitterImageUrlLarge);
 
+    console.log("disabled:", !voterPhotoQueuedToSaveSet && !profileImageTypeCurrentlyActiveSet);
+    console.log(voterPhotoQueuedToSaveSet, profileImageTypeCurrentlyActiveSet);
     return (
       <Wrapper>
         <RadioWrapper value={profileImageTypeCurrentlyActive} onChange={this.changeProfileImageTypeCurrentlyActive} name="profile-option">
@@ -146,6 +148,7 @@ const styles = () => ({
   button: {
     marginTop: 12,
     marginBottom: 8,
+    
   },
   buttonSave: {
     boxShadow: 'none !important',
