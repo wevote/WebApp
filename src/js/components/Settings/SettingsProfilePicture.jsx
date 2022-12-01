@@ -75,6 +75,7 @@ class SettingsProfilePicture extends Component {
 
     console.log("disabled:", !voterPhotoQueuedToSaveSet && !profileImageTypeCurrentlyActiveSet);
     console.log(voterPhotoQueuedToSaveSet, profileImageTypeCurrentlyActiveSet);
+    
     return (
       <Wrapper>
         <RadioWrapper value={profileImageTypeCurrentlyActive} onChange={this.changeProfileImageTypeCurrentlyActive} name="profile-option">
