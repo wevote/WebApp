@@ -3,7 +3,7 @@ import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import VoterActions from '../../actions/VoterActions';
 import apiCalming from '../../common/utils/apiCalming';
-import { isAndroidSizeWide, isCordovaWide, isIOSAppOnMac, isIPad } from '../../common/utils/cordovaUtils';
+import { getAndroidSize, getIOSSizeString, isAndroidSizeWide, isCordovaWide, isIOS, isIOSAppOnMac, isIPad } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
 import { normalizedHref } from '../../common/utils/hrefUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
@@ -203,7 +203,8 @@ export default class Header extends Component {
     }
 
     if (isCordova()) {
-      console.log('Header, cordova device model', window.device.model);
+      const size = isIOS() ?  getIOSSizeString() : getAndroidSize();
+      console.log('Cordova:  device model', window.device.model, '  size: ', size);
       // console.log('Header, hasDynamicIsland', hasDynamicIsland());
     }
 

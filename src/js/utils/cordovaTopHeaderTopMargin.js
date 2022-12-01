@@ -85,8 +85,8 @@ export default function cordovaTopHeaderTopMargin () {
       if (isIPhone5p5inEarly() || isIPhone4p7in()) {
         cordovaOffsetLog('---------------- isIPhone5p5inEarly');
         switch (page) {
-          // case CordovaPageConstants.ballotLgHdrWild:       style.marginTop = '19px'; break;
-          // case CordovaPageConstants.ballotSmHdrWild:       style.marginTop = '19px'; break;
+          case CordovaPageConstants.ballotLgHdrWild:       style.marginTop = '19px'; break;
+          case CordovaPageConstants.ballotSmHdrWild:       style.marginTop = '19px'; break;
           case CordovaPageConstants.ballotVote:            style.marginTop = '19px'; break;
           case CordovaPageConstants.friends:               style.marginTop = '20px'; break;
           case CordovaPageConstants.friendsCurrent:        style.marginTop = '20px'; break;
@@ -103,8 +103,8 @@ export default function cordovaTopHeaderTopMargin () {
       } else if (isIPhone5p5inMini()) {
         cordovaOffsetLog('---------------- isIPhone5p5inMini');
         switch (page) {
-          // case CordovaPageConstants.ballotLgHdrWild:       style.marginTop = '16px'; break;
-          // case CordovaPageConstants.ballotSmHdrWild:       style.marginTop = '39px'; break;
+          case CordovaPageConstants.ballotLgHdrWild:       style.marginTop = '16px'; break;
+          case CordovaPageConstants.ballotSmHdrWild:       style.marginTop = '39px'; break;
           case CordovaPageConstants.ballotVote:            style.marginTop = '16px'; break;
           case CordovaPageConstants.candidate:             style.marginTop = '35px'; break;
           case CordovaPageConstants.candidateWild:         style.marginTop = '0px'; break;
@@ -120,7 +120,7 @@ export default function cordovaTopHeaderTopMargin () {
           case CordovaPageConstants.officeWild:            style.marginTop = '0px'; break;
           case CordovaPageConstants.opinions:              style.marginTop = '38px'; break;
           case CordovaPageConstants.opinionsFiltered:      style.marginTop = '39px'; break;
-          // case CordovaPageConstants.ready:                 style.marginTop = '39px'; break;
+          case CordovaPageConstants.ready:                 style.marginTop = '39px'; break;
           case CordovaPageConstants.settingsAccount:       style.marginTop = '31px'; break;
           case CordovaPageConstants.settingsHamburger:     style.marginTop = '39px'; break;
           case CordovaPageConstants.settingsNotifications: style.marginTop = '29px'; break;
@@ -139,8 +139,8 @@ export default function cordovaTopHeaderTopMargin () {
         }
       } else if (hasIPhoneNotch()) {
         switch (page) {
-          // case CordovaPageConstants.ballotLgHdrWild:       style.marginTop = '16px'; break;
-          // case CordovaPageConstants.ballotSmHdrWild:       style.marginTop = '34px'; break;
+          case CordovaPageConstants.ballotLgHdrWild:       style.marginTop = '16px'; break;
+          case CordovaPageConstants.ballotSmHdrWild:       style.marginTop = '34px'; break;
           case CordovaPageConstants.ballotVote:            style.marginTop = '16px'; break;
           case CordovaPageConstants.candidate:             style.marginTop = '35px'; break;
           case CordovaPageConstants.candidateWild:         style.marginTop = '40px'; break;
@@ -156,7 +156,7 @@ export default function cordovaTopHeaderTopMargin () {
           case CordovaPageConstants.officeWild:            style.marginTop = '36px'; break;
           case CordovaPageConstants.opinions:              style.marginTop = '34px'; break;
           case CordovaPageConstants.opinionsFiltered:      style.marginTop = '34px'; break;
-          // case CordovaPageConstants.ready:                 style.marginTop = '34px'; break;
+          case CordovaPageConstants.ready:                 style.marginTop = '34px'; break;
           case CordovaPageConstants.settingsAccount:       style.marginTop = '31px'; break;
           case CordovaPageConstants.settingsHamburger:     style.marginTop = '34px'; break;
           case CordovaPageConstants.settingsNotifications: style.marginTop = '29px'; break;

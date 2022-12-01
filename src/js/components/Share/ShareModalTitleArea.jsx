@@ -5,8 +5,8 @@ import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import { returnShareModalText } from './ShareModalText';
-import { isAndroidSizeMD } from '../../common/utils/cordovaUtils';
-import { isCordova } from '../../common/utils/isCordovaOrWebApp';
+import { isAndroidSizeMD, isIPad } from '../../common/utils/cordovaUtils';
+import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import stringContains from '../../common/utils/stringContains';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
@@ -143,10 +143,12 @@ class ShareModalTitleArea extends Component {
           <ShareDescription>
             {shareModalDescription}
           </ShareDescription>
-          <FormControl classes={{ root: classes.formControl }}>
+          <FormControl
+            classes={{ root: classes.formControl }}
+            style={isCordova() ? { display: 'none' } : {}}
+          >
             <RadioGroup
               onChange={this.handleShareAllOpinionsToggle}
-              style={isCordova() ? { display: 'none' } : {}}
             >
               <RadioItem>
                 <FormControlLabel
@@ -207,6 +209,7 @@ class ShareModalTitleArea extends Component {
           onClick={handleCloseShareButtonDrawer}
           id="closeShareModal"
           size="large"
+          style={isIPad() ? { top: 2 } : ''}
         >
           <Close />
         </IconButton>
@@ -306,7 +309,7 @@ const ModalTitleArea = styled('div', {
   width: 100%;
   // padding: 0;
 
-  padding: ${firstSlide ? '24px 24px 12px 24px' : (onSignInSlide ? '20px 14px 10px' : '10px 14px')};
+  padding: ${isWebApp() ? (firstSlide ? '24px 24px 12px 24px' : (onSignInSlide ? '20px 14px 10px' : '10px 14px')) : '10px 14px 0 14px'};
   z-index: 999;
   @media (min-width: 769px) {
     border-bottom: 2px solid #f7f7f7;
@@ -366,7 +369,7 @@ const ShareButtonFooterTitle = styled('h3')(({ theme }) => (`
 
 const ShareDescription = styled('div')`
   color: #808080;
-  margin-bottom: 12px;
+  margin-bottom: ${isWebApp() ? '12px' : ''};
 `;
 
 export default withStyles(styles)(ShareModalTitleArea);

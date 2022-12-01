@@ -6,7 +6,7 @@ import React, { Component, Suspense } from 'react';
 import TextTruncate from 'react-text-truncate'; // Replace with: import TruncateMarkup from 'react-truncate-markup';
 import styled from 'styled-components';
 import abbreviateNumber from '../../common/utils/abbreviateNumber';
-import { isAndroidSizeMD } from '../../common/utils/cordovaUtils';
+import { isAndroidSizeMD, isIPad } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { displayNoneIfSmallerThanDesktop } from '../../common/utils/isMobileScreenSize';
@@ -656,7 +656,7 @@ class CandidateItem extends Component {
             {this.candidateIssuesAndCommentBlock(candidateText, 'desktopIssuesComment')}
           </Suspense>
         </DesktopWrapper>
-        <MobileTabletWrapper className="u-show-mobile-tablet card-main candidate-card u-no-scroll">
+        <MobileTabletWrapper className={`${!isIPad() && 'u-show-mobile-tablet '} card-main candidate-card u-no-scroll`}>
           <Suspense fallback={<></>}>
             <div className="card-main__no-underline">
               {this.candidateRenderBlock(candidateWeVoteId, linkToBallotItemPage, !forDesktop, openSupportOpposeCountDisplayModalAtMobileAndTabletScreenSize)}
