@@ -1,17 +1,16 @@
-import { Twitter } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 import { renderLog } from '../../common/utils/logging';
-import numberWithCommas from '../../common/utils/numberWithCommas';
 import OrganizationStore from '../../stores/OrganizationStore';
 import { removeTwitterNameFromDescription } from '../../utils/textFormat';
 import PositionInformationOnlySnippet from '../Widgets/PositionInformationOnlySnippet';
 import PositionRatingSnippet from '../Widgets/PositionRatingSnippet';
 import PositionSupportOpposeSnippet from '../Widgets/PositionSupportOpposeSnippet';
+import TwitterAccountStats from '../Widgets/TwitterAccountStats';
 
-const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
-const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../../common/components/Widgets/ReadMore'));
+const FollowToggle = React.lazy(() => import(/* webpackChunkName: 'FollowToggle' */ '../Widgets/FollowToggle'));
 
 // OrganizationDisplayForList is used to display Organizations (as opposed to Voter Guides)
 export default class OrganizationDisplayForList extends Component {
@@ -33,11 +32,14 @@ export default class OrganizationDisplayForList extends Component {
   }
 
   // eslint-disable-next-line camelcase,react/sort-comp
-  UNSAFE_componentWillReceiveProps (nextProps) {
-    this.setState({
-      organization: OrganizationStore.getOrganizationByWeVoteId(nextProps.organizationWeVoteId),
-      organizationWeVoteId: nextProps.organizationWeVoteId,
-    });
+  componentDidUpdate (prevProps) {
+    const { organizationWeVoteId: newOrganizationWeVoteId } = this.props;
+    if (newOrganizationWeVoteId !== prevProps.organizationWeVoteId) {
+      this.setState({
+        organization: OrganizationStore.getOrganizationByWeVoteId(newOrganizationWeVoteId),
+        organizationWeVoteId: newOrganizationWeVoteId,
+      });
+    }
   }
 
   componentWillUnmount () {
@@ -55,9 +57,8 @@ export default class OrganizationDisplayForList extends Component {
       // console.log("OrganizationDisplayForList organizationWeVoteId === undefined");
       return null;
     }
-    const {
-      position,
-    } = this.props;
+    const { position } = this.props;
+    const { organization } = this.state;
     const {
       organization_name: organizationName,
       organization_photo_url_medium: organizationPhotoUrlMedium,
@@ -65,8 +66,7 @@ export default class OrganizationDisplayForList extends Component {
       organization_we_vote_id: organizationWeVoteId,
       twitter_description: twitterDescription,
       twitter_followers_count: twitterFollowersCount,
-    } = this.state.organization;
-    const numberOfLines = 2;
+    } = organization;
     // If the organizationName is in the twitter_description, remove it
     const twitterDescriptionMinusName = removeTwitterNameFromDescription(organizationName, twitterDescription);
 
@@ -119,51 +119,119 @@ export default class OrganizationDisplayForList extends Component {
       }
     }
 
+    let organizationLogo = <></>;
+    if (organization.organization_photo_url_medium) {
+      organizationLogo = (
+        <OrganizationImage
+          alt=""
+          key={`OrganizationImage-${organization.organization_we_vote_id}`}
+          src={organizationPhotoUrlMedium}
+          title={organizationName}
+        />
+      );
+    }
     return (
-      <div className="card-child card-child--not-followed">
-        <div className="card-child__media-object-anchor">
-          <Link to={voterGuideLink} className="u-no-underline">
-            <Suspense fallback={<></>}>
-              <ImageHandler className="card-child__avatar" sizeClassName="image-lg " imageUrl={organizationPhotoUrlMedium} />
-            </Suspense>
-          </Link>
-        </div>
-        <div className="card-child__media-object-content">
-          <div className="card-child__content">
-            <Link to={voterGuideLink}>
-              <h4 className="card-child__display-name">{organizationName}</h4>
+      <OrganizationDisplayForListWrapper>
+        <OrganizationDetailsWrapper>
+          <OrganizationLogoWrapper>
+            <Link to={voterGuideLink} className="u-no-underline">
+              {organizationLogo}
             </Link>
-            { twitterDescriptionMinusName ? (
-              <Suspense fallback={<></>}>
-                <ReadMore
-                  className="card-child__organization-description"
-                  textToDisplay={twitterDescriptionMinusName}
-                  numberOfLines={numberOfLines}
+          </OrganizationLogoWrapper>
+          <div>
+            <NameAndTwitter>
+              <Link to={voterGuideLink}>
+                <OrganizationName>{organizationName}</OrganizationName>
+              </Link>
+              <TwitterOuterWrapper>
+                <TwitterAccountStats
+                  twitterFollowersCount={twitterFollowersCount}
+                  twitterHandle={organizationTwitterHandle}
                 />
-              </Suspense>
+              </TwitterOuterWrapper>
+            </NameAndTwitter>
+
+            { twitterDescriptionMinusName ? (
+              <OrganizationDescriptionText>
+                {twitterDescriptionMinusName}
+              </OrganizationDescriptionText>
             ) : null}
             { positionDescription }
           </div>
-          <div className="card-child__additional">
-            <div className="card-child__follow-buttons">
-              {this.props.children}
-              { twitterFollowersCount ?
-                (
-                  <span className="twitter-followers__badge">
-                    <Twitter />
-                    {numberWithCommas(twitterFollowersCount)}
-                  </span>
-                ) :
-                null }
-            </div>
-          </div>
-        </div>
-      </div>
+        </OrganizationDetailsWrapper>
+        <OrganizationFollowWrapper>
+          <Suspense fallback={<></>}>
+            <FollowToggle
+              anchorLeft
+              hideDropdownButtonUntilFollowing
+              lightModeOn
+              organizationWeVoteId={organization.organization_we_vote_id}
+              platformType="desktop"
+            />
+          </Suspense>
+        </OrganizationFollowWrapper>
+      </OrganizationDisplayForListWrapper>
     );
   }
 }
 OrganizationDisplayForList.propTypes = {
-  children: PropTypes.array, // Typically the FollowToggle
   organizationWeVoteId: PropTypes.string,
   position: PropTypes.object,
 };
+
+const NameAndTwitter = styled('div')(({ theme }) => (`
+  display: flex;
+  flex-flow: row;
+  justify-content: flex-start;
+  ${theme.breakpoints.down('md')} {
+    flex-flow: column;
+  }
+`));
+
+const OrganizationDescriptionText = styled('div')`
+  color: #808080;
+`;
+
+const OrganizationDetailsWrapper = styled('div')`
+  align-items: flex-start;
+  display: flex;
+  flex-flow: row;
+  justify-content: flex-start;
+`;
+
+const OrganizationDisplayForListWrapper = styled('div')`
+  display: flex;
+  flex-flow: row;
+  justify-content: space-between;
+  margin-bottom: 24px;
+`;
+
+const OrganizationImage = styled('img')`
+  border: 1px solid #ccc;
+  border-radius: 48px;
+  height: 48px;
+  max-width: 48px;
+  width: 48px;
+`;
+
+const OrganizationFollowWrapper = styled('div')`
+  margin-left: 8px;
+  margin-right: 6px;
+`;
+
+const OrganizationName = styled('h4')`
+  font-size: 16px;
+  margin-bottom: 2px;
+`;
+
+const OrganizationLogoWrapper = styled('div')`
+  margin-right: 8px;
+`;
+
+const TwitterOuterWrapper = styled('div')(({ theme }) => (`
+  margin-left: 8px;
+  margin-top: -7px;
+  ${theme.breakpoints.down('md')} {
+    margin-left: 0;
+  }
+`));

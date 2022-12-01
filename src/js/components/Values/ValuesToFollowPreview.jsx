@@ -4,7 +4,7 @@ import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import BallotActions from '../../actions/BallotActions';
-import IssueActions from '../../actions/IssueActions';
+// import IssueActions from '../../actions/IssueActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import apiCalming from '../../common/utils/apiCalming';
 import historyPush from '../../common/utils/historyPush';
@@ -37,8 +37,8 @@ class ValuesToFollowPreview extends Component {
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.onIssueStoreChange();
     this.onVoterGuideStoreChange();
-    IssueActions.issueDescriptionsRetrieve(VoterStore.getVoterWeVoteId());
-    IssueActions.issuesFollowedRetrieve(VoterStore.getVoterWeVoteId());
+    // IssueActions.issueDescriptionsRetrieve(VoterStore.getVoterWeVoteId());
+    // IssueActions.issuesFollowedRetrieve(VoterStore.getVoterWeVoteId());
     const voterGuidesFromFriendsUpcomingRetrieve = VoterGuideStore.getOrganizationWeVoteIdsByIssueWeVoteIdDict();
     // $.isEmptyObject equivalent before jQuery is guaranteed to be loaded:
     const hasNoFriends = voterGuidesFromFriendsUpcomingRetrieve && Object.keys(voterGuidesFromFriendsUpcomingRetrieve).length === 0 && voterGuidesFromFriendsUpcomingRetrieve.constructor === Object;

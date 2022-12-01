@@ -1,4 +1,4 @@
-import { Launch, Twitter } from '@mui/icons-material';
+import { Launch } from '@mui/icons-material';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
@@ -6,7 +6,6 @@ import { Link } from 'react-router-dom';
 import OrganizationActions from '../../actions/OrganizationActions';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import { renderLog } from '../../common/utils/logging';
-import numberWithCommas from '../../common/utils/numberWithCommas';
 import stringContains from '../../common/utils/stringContains';
 import OrganizationStore from '../../stores/OrganizationStore';
 import { removeTwitterNameFromDescription } from '../../utils/textFormat';
@@ -16,6 +15,7 @@ import PositionInformationOnlySnippet from '../Widgets/PositionInformationOnlySn
 import PositionRatingSnippet from '../Widgets/PositionRatingSnippet';
 import PositionSupportOpposeSnippet from '../Widgets/PositionSupportOpposeSnippet';
 import RatingPopover from '../Widgets/RatingPopover';
+import TwitterAccountStats from '../Widgets/TwitterAccountStats';
 
 const FollowToggle = React.lazy(() => import(/* webpackChunkName: 'FollowToggle' */ '../Widgets/FollowToggle'));
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
@@ -248,58 +248,46 @@ export default class OrganizationCard extends Component {
           ) :
             <p className="card-main__description" />}
           { !turnOffDescription ? (
-            <Suspense fallback={<></>}>
+            <div>
               { organizationTwitterHandle && !turnOffTwitterHandle && (
-                <OpenExternalWebSite
-                  linkIdAttribute="organizationTwitterHandle"
-                  url={`https://twitter.com/${organizationTwitterHandle}`}
-                  target="_blank"
-                  body={(
-                    <span>
-                      <TwitterHandleWrapper>
-                        @
-                        {organizationTwitterHandle}
-                      </TwitterHandleWrapper>
-                      {(twitterFollowersCount && String(twitterFollowersCount) !== '0' && numberWithCommas(twitterFollowersCount) !== '0') && (
-                        <span className="twitter-followers__badge">
-                          {/* <TwitterFollowersIcon className="fab fa-twitter" /> */}
-                          <Twitter />
-                          {numberWithCommas(twitterFollowersCount)}
-                        </span>
-                      )}
-                    </span>
-                  )}
-                />
+                <TwitterOuterWrapper>
+                  <TwitterAccountStats
+                    includeLinkToTwitter
+                    twitterFollowersCount={twitterFollowersCount}
+                    twitterHandle={organizationTwitterHandle}
+                  />
+                </TwitterOuterWrapper>
               )}
               { organizationWebsite && (
                 <WebsiteWrapper>
-                  <OpenExternalWebSite
-                    linkIdAttribute="organizationWebsite"
-                    url={organizationWebsite}
-                    target="_blank"
-                    body={(
-                      <span className="u-no-break">
-                        Website
-                        {' '}
-                        <Launch
-                          style={{
-                            height: 14,
-                            marginLeft: 2,
-                            marginTop: '-3px',
-                            width: 14,
-                          }}
-                        />
-                      </span>
-                    )}
-                  />
+                  <Suspense>
+                    <OpenExternalWebSite
+                      linkIdAttribute="organizationWebsite"
+                      url={organizationWebsite}
+                      target="_blank"
+                      body={(
+                        <span className="u-no-break">
+                          Website
+                          {' '}
+                          <Launch
+                            style={{
+                              height: 14,
+                              marginLeft: 2,
+                              marginTop: '-3px',
+                              width: 14,
+                            }}
+                          />
+                        </span>
+                      )}
+                    />
+                  </Suspense>
                 </WebsiteWrapper>
               )}
               <IssuesByOrganizationDisplayList
                 organizationWeVoteId={organizationWeVoteId}
                 placement="bottom"
               />
-              {/* 5 of your friends follow Organization Name<br /> */}
-            </Suspense>
+            </div>
           ) : null}
           { organizationPosition.vote_smart_rating ? (
             <RatingPopover
@@ -328,17 +316,11 @@ OrganizationCard.propTypes = {
 const OrganizationCardWrapper = styled('div')`
 `;
 
-// const TwitterFollowersIcon = styled('span')`
-//   font-size: 1.25rem;
-//   color: #ccc;
-//   margin-right: 2px;
-//   vertical-align: bottom;
-// `;
-
-const TwitterHandleWrapper = styled('span')`
-  margin-right: 10px;
+const TwitterOuterWrapper = styled('div')`
+  margin-left: -3px;
+  margin-bottom: 6px;
 `;
 
 const WebsiteWrapper = styled('div')`
-  margin-left: 4px;
+  margin-left: 0;
 `;

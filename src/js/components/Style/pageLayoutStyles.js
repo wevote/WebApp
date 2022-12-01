@@ -232,6 +232,10 @@ export const TopRowTwoRightContainer = styled('div')`
 function getBackToPaddingTop () {
   // Calculated approach Nov 2022
   const { $ } = window;
+  if (!$) {
+    // To trap "$ is not a function" crash
+    return '0px';
+  }
   const headerBack = $('#headerBackToBallotAppBar');
   if (isIOS() && headerBack.length) {
     const iOSNotchedSpacer = $('div[class*=\'IOSNotchedSpacer\']');

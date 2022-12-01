@@ -476,6 +476,11 @@ class IssueStore extends ReduceStore {
         issueList = action.res.issue_list;
         revisedState = state;
 
+        // Dictionary with key: issueWeVoteId, list: organizationWeVoteId that is linked to this issue
+        organizationWeVoteIdsLinkedToIssueDict = state.organizationWeVoteIdsLinkedToIssueDict || {};
+        // Dictionary with key: organizationWeVoteId, list: issueWeVoteId that the organization is linked to
+        issueWeVoteIdsLinkedToByOrganizationDict = state.issueWeVoteIdsLinkedToByOrganizationDict || {};
+
         // console.log('action.res.voter_issues_only:', action.res.voter_issues_only);
         issueList.forEach((issue) => {
           allCachedIssues[issue.issue_we_vote_id] = issue;
@@ -484,16 +489,66 @@ class IssueStore extends ReduceStore {
           if (!issueWeVoteIdsVoterIsFollowing.includes(issue.issue_we_vote_id) && !issueWeVoteIdsVoterCanFollow.includes(issue.issue_we_vote_id)) {
             issueWeVoteIdsVoterCanFollow.push(issue.issue_we_vote_id);
           }
+          if (issue.linked_organization_preview_list) {
+            issue.linked_organization_preview_list.forEach((linkedOrganizationPreview) => {
+              linkedIssueListForOneOrganization = issueWeVoteIdsLinkedToByOrganizationDict[linkedOrganizationPreview.organization_we_vote_id] || [];
+              // console.log('IssueStore, case issueDescriptionsRetrieve, issueWeVoteIdsLinked:', issueWeVoteIdsLinked);
+              organizationWeVoteIdsForIssue = organizationWeVoteIdsLinkedToIssueDict[issue.issue_we_vote_id] || [];
+              organizationWeVoteIdsForIssue.push(linkedOrganizationPreview.organization_we_vote_id);
+              organizationWeVoteIdsLinkedToIssueDict[issue.issue_we_vote_id] = organizationWeVoteIdsForIssue;
+              if (!linkedIssueListForOneOrganization.includes(issue.issue_we_vote_id)) {
+                linkedIssueListForOneOrganization.push(issue.issue_we_vote_id);
+              }
+              // Add the 'issues linked to orgs' to the master dict, with the organizationWeVoteId as the key
+              issueWeVoteIdsLinkedToByOrganizationDict[linkedOrganizationPreview.organization_we_vote_id] = linkedIssueListForOneOrganization;
+            });
+          }
         });
+        // console.log('organizationWeVoteIdsLinkedToIssueDict:', organizationWeVoteIdsLinkedToIssueDict);
         revisedState = { ...revisedState,
           allCachedIssues,
+          issueWeVoteIdsLinkedToByOrganizationDict,
           issueWeVoteIdsVoterCanFollow,
-          issueWeVoteIdsBySlug };
+          issueWeVoteIdsBySlug,
+          organizationWeVoteIdsLinkedToIssueDict,
+        };
         return revisedState;
 
       case 'issueDescriptionsRetrieveCalled':
         // Make note that issueDescriptionsRetrieveCalled has been called - do not call again
         return { ...state, issueDescriptionsRetrieveCalled: action.payload };
+
+      case 'issueOrganizationsRetrieve':
+        issueList = action.res.issue_list;
+        revisedState = state;
+
+        // Dictionary with key: issueWeVoteId, list: organizationWeVoteId that is linked to this issue
+        organizationWeVoteIdsLinkedToIssueDict = state.organizationWeVoteIdsLinkedToIssueDict || {};
+        // Dictionary with key: organizationWeVoteId, list: issueWeVoteId that the organization is linked to
+        issueWeVoteIdsLinkedToByOrganizationDict = state.issueWeVoteIdsLinkedToByOrganizationDict || {};
+
+        // console.log('action.res.voter_issues_only:', action.res.voter_issues_only);
+        issueList.forEach((issue) => {
+          if (issue.linked_organization_we_vote_id_list) {
+            organizationWeVoteIdsForIssue = issue.linked_organization_we_vote_id_list || [];
+            organizationWeVoteIdsLinkedToIssueDict[issue.issue_we_vote_id] = organizationWeVoteIdsForIssue;
+            organizationWeVoteIdsForIssue.forEach((linkedOrganizationWeVoteId) => {
+              linkedIssueListForOneOrganization = issueWeVoteIdsLinkedToByOrganizationDict[linkedOrganizationWeVoteId] || [];
+              // console.log('IssueStore, case issueDescriptionsRetrieve, issueWeVoteIdsLinked:', issueWeVoteIdsLinked);
+              if (!linkedIssueListForOneOrganization.includes(issue.issue_we_vote_id)) {
+                linkedIssueListForOneOrganization.push(issue.issue_we_vote_id);
+              }
+              // Add the 'issues linked to orgs' to the master dict, with the organizationWeVoteId as the key
+              issueWeVoteIdsLinkedToByOrganizationDict[linkedOrganizationWeVoteId] = linkedIssueListForOneOrganization;
+            });
+          }
+        });
+        // console.log('issueOrganizationsRetrieve organizationWeVoteIdsLinkedToIssueDict:', organizationWeVoteIdsLinkedToIssueDict);
+        revisedState = { ...revisedState,
+          issueWeVoteIdsLinkedToByOrganizationDict,
+          organizationWeVoteIdsLinkedToIssueDict,
+        };
+        return revisedState;
 
       case 'issuesFollowedRetrieve':
         issueList = action.res.issues_followed_list;
@@ -700,7 +755,7 @@ class IssueStore extends ReduceStore {
         };
 
       case 'voterGuidesToFollowRetrieve':
-        // Collect all of the issues an organization is tagged with
+        // Collect all the issues an organization is tagged with
         // console.log('IssueStore, case voterGuidesToFollowRetrieve');
         voterGuides = action.res.voter_guides;
         if (!voterGuides || voterGuides.length === 0) {

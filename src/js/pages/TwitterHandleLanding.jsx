@@ -53,7 +53,7 @@ export default class TwitterHandleLanding extends Component {
 
   // eslint-disable-next-line camelcase,react/sort-comp
   UNSAFE_componentWillReceiveProps (nextProps) {
-    console.log('TwitterHandleLanding componentWillReceiveProps');
+    // console.log('TwitterHandleLanding componentWillReceiveProps');
     let activeRoute = '';
     let nextTwitterHandle;
     if (nextProps.match && nextProps.match.location) {

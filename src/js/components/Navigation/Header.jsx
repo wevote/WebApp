@@ -422,7 +422,7 @@ export default class Header extends Component {
     } else if (valuesMode) {
       let backToValuesLink = '/values';
       if (stringContains('/value/', pathname)) {
-        backToValuesLink = '/values/list';
+        backToValuesLink = '/ready';
       } else if (stringContains('/values/list', pathname)) {
         backToValuesLink = '/values';
       }

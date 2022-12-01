@@ -62,6 +62,7 @@ function innerAjax (options) {
     options.endpoint === 'defaultPricing' ||
     options.endpoint === 'electionsRetrieve' ||
     options.endpoint === 'issueDescriptionsRetrieve' ||
+    options.endpoint === 'issueOrganizationsRetrieve' ||
     options.endpoint === 'issuesUnderBallotItemsRetrieve' ||
     options.endpoint === 'measureRetrieve' ||
     options.endpoint === 'officeRetrieve' ||

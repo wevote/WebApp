@@ -240,8 +240,12 @@ class Ballot extends Component {
 
     // console.log('Ballot, googleCivicElectionId: ', googleCivicElectionId, ', ballotLocationShortcut: ', ballotLocationShortcut, 'ballotReturnedWeVoteId: ', ballotReturnedWeVoteId);
     // console.log('VoterStore.election_id: ', VoterStore.electionId());
-    IssueActions.issueDescriptionsRetrieve(VoterStore.getVoterWeVoteId());
-    IssueActions.issuesFollowedRetrieve(VoterStore.getVoterWeVoteId());
+    if (apiCalming('issueDescriptionsRetrieve', 3600000)) { // Only once per 60 minutes
+      IssueActions.issueDescriptionsRetrieve();
+    }
+    if (apiCalming('issuesFollowedRetrieve', 60000)) { // Only once per minute
+      IssueActions.issuesFollowedRetrieve();
+    }
 
     if (googleCivicElectionId || ballotLocationShortcut || ballotReturnedWeVoteId) {
       // console.log('CALLING IssueActions.issuesUnderBallotItemsRetrieve');

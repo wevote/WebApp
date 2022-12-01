@@ -1,12 +1,10 @@
-import { Launch, Twitter } from '@mui/icons-material';
+import { Launch } from '@mui/icons-material';
 import { Button } from '@mui/material';
 import styled from 'styled-components';
-import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
-import abbreviateNumber from '../../common/utils/abbreviateNumber';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
 import { isSpeakerTypePrivateCitizen } from '../../utils/organization-functions';
@@ -14,6 +12,7 @@ import { removeTwitterNameFromDescription } from '../../utils/textFormat';
 import FriendToggle from '../Friends/FriendToggle';
 import ParsedTwitterDescription from '../Twitter/ParsedTwitterDescription';
 import IssuesByOrganizationDisplayList from '../Values/IssuesByOrganizationDisplayList';
+import TwitterAccountStats from '../Widgets/TwitterAccountStats';
 
 const FollowToggle = React.lazy(() => import(/* webpackChunkName: 'FollowToggle' */ '../Widgets/FollowToggle'));
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
@@ -38,7 +37,7 @@ class OrganizationVoterGuideCard extends Component {
       return <div>{LoadingWheel}</div>;
     }
     // console.log('this.props.organization:', this.props.organization);
-    const { classes, isVoterOwner } = this.props;
+    const { isVoterOwner } = this.props;
     const {
       organization_name: organizationName,
       organization_photo_url_large: organizationPhotoUrlLarge,
@@ -73,27 +72,13 @@ class OrganizationVoterGuideCard extends Component {
           <h3 className="card-main__display-name">{displayName}</h3>
         </Link>
         { organizationTwitterHandle && (
-          <Suspense fallback={<></>}>
-            <OpenExternalWebSite
-              linkIdAttribute="organizationTwitterHandle"
-              url={`https://twitter.com/${organizationTwitterHandle}`}
-              target="_blank"
-              body={(
-                <TwitterName>
-                  <Twitter classes={{ root: classes.twitterLogo }} />
-                  <TwitterHandleWrapper>
-                    @
-                    {organizationTwitterHandle}
-                  </TwitterHandleWrapper>
-                  { !!(twitterFollowersCount && String(twitterFollowersCount) !== '0') && (
-                    <TwitterFollowersWrapper>
-                      {abbreviateNumber(twitterFollowersCount)}
-                    </TwitterFollowersWrapper>
-                  )}
-                </TwitterName>
-              )}
+          <TwitterOuterWrapper>
+            <TwitterAccountStats
+              includeLinkToTwitter
+              twitterFollowersCount={twitterFollowersCount}
+              twitterHandle={organizationTwitterHandle}
             />
-          </Suspense>
+          </TwitterOuterWrapper>
         )}
         { organizationWebsite && (
           <OrganizationWebsiteWrapper>
@@ -178,20 +163,10 @@ class OrganizationVoterGuideCard extends Component {
   }
 }
 OrganizationVoterGuideCard.propTypes = {
-  classes: PropTypes.object,
   isVoterOwner: PropTypes.bool,
   organization: PropTypes.object.isRequired,
   turnOffDescription: PropTypes.bool,
 };
-
-const styles = () => ({
-  twitterLogo: {
-    color: '#1d9bf0',
-    height: 18,
-    marginRight: '-2px',
-    marginTop: '-4px',
-  },
-});
 
 const CardMain = styled('div')`
   border: 1px solid #fff;
@@ -239,16 +214,8 @@ const TwitterDescription = styled('div')`
   margin-top: 10px;
 `;
 
-const TwitterFollowersWrapper = styled('span')`
-  color: #000;
+const TwitterOuterWrapper = styled('div')`
+  margin-bottom: 12px;
 `;
 
-const TwitterHandleWrapper = styled('span')`
-  color: #000;
-  margin-right: 5px;
-`;
-
-const TwitterName = styled('div')`
-`;
-
-export default withStyles(styles)(OrganizationVoterGuideCard);
+export default OrganizationVoterGuideCard;

@@ -160,6 +160,9 @@ class BallotShared extends Component {
   }
 
   filterBallotItemList = (incomingBallotItemList) => {
+    if (!incomingBallotItemList) {
+      return [];
+    }
     // Remove primary ballot items when we are showing general election, and vice-versa
     const { electionId: electionIdFromVoter } = this.state;
     let electionId = electionIdFromVoter;
@@ -237,7 +240,7 @@ class BallotShared extends Component {
     }
     let numberOfBallotItemsDisplayed = 0;
     const ballotTitleHeaderOn = false;
-    const saveToBallotOn = false;
+    const saveToBallotOn = true;
     const shareButtonOn = false;
     return (
       <>

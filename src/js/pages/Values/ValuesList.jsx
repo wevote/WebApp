@@ -4,12 +4,12 @@ import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import IssueActions from '../../actions/IssueActions';
+import apiCalming from '../../common/utils/apiCalming';
 import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import SearchBar from '../../components/Search/SearchBar';
 import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import IssueStore from '../../stores/IssueStore';
-import VoterStore from '../../stores/VoterStore';
 
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../../common/components/Widgets/ReadMore'));
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
@@ -31,8 +31,12 @@ export default class ValuesList extends Component {
 
   componentDidMount () {
     this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
-    IssueActions.issueDescriptionsRetrieve(VoterStore.getVoterWeVoteId());
-    IssueActions.issuesFollowedRetrieve(VoterStore.getVoterWeVoteId());
+    if (apiCalming('issueDescriptionsRetrieve', 3600000)) { // Only once per 60 minutes
+      IssueActions.issueDescriptionsRetrieve();
+    }
+    if (apiCalming('issuesFollowedRetrieve', 60000)) { // Only once per minute
+      IssueActions.issuesFollowedRetrieve();
+    }
     const { currentIssue, includedOnAnotherPage } = this.props;
     if (!includedOnAnotherPage) {
       window.scrollTo(0, 0);
@@ -75,7 +79,7 @@ export default class ValuesList extends Component {
 
   render () {
     renderLog('ValuesList');  // Set LOG_RENDER_EVENTS to log all renders
-    const { displayOnlyIssuesNotFollowedByVoter, includedOnAnotherPage } = this.props;
+    const { displayOnlyIssuesNotFollowedByVoter, hideAdvocatesCount, includedOnAnotherPage } = this.props;
     const { allIssues, searchQuery, currentIssue } = this.state;
     let issuesList = [];
     // let issuesNotFollowedByVoterList = [];
@@ -110,6 +114,7 @@ export default class ValuesList extends Component {
           <Suspense fallback={<></>}>
             <IssueCard
               followToggleOn
+              hideAdvocatesCount={hideAdvocatesCount}
               includeLinkToIssue
               issue={issue}
               issueImageSize="SMALL"
@@ -146,7 +151,7 @@ export default class ValuesList extends Component {
             <section className="card">
               <div className="card-main" style={{ paddingTop: `${isCordova() ? '0px' : '16px'}` }}>
                 <h1 className="h1">
-                  Values
+                  All Topics
                   {(allIssues && allIssues.length > 0) && (
                     <>
                       {' '}
@@ -207,6 +212,7 @@ export default class ValuesList extends Component {
 ValuesList.propTypes = {
   currentIssue: PropTypes.object,
   displayOnlyIssuesNotFollowedByVoter: PropTypes.bool,
+  hideAdvocatesCount: PropTypes.bool,
   includedOnAnotherPage: PropTypes.bool,
 };
 

@@ -27,7 +27,7 @@ class IssueCard extends Component {
     super(props);
     this.state = {
       ballotItemWeVoteId: '',
-      countOfOrganizationsUnderThisIssue: 0,
+      countOfVoterGuidesUnderThisIssue: 0,
       issue: {},
       issueImageSize: 'SMALL', // We support SMALL, MEDIUM, LARGE
       issueWeVoteId: '',
@@ -50,7 +50,7 @@ class IssueCard extends Component {
       }
       this.setState({
         ballotItemWeVoteId: this.props.ballotItemWeVoteId,
-        countOfOrganizationsUnderThisIssue: VoterGuideStore.getVoterGuidesForValue(issueWeVoteId).length,
+        countOfVoterGuidesUnderThisIssue: VoterGuideStore.getVoterGuidesForValue(issueWeVoteId).length,
         issue,
         issueImageSize,
         issueWeVoteId,
@@ -70,7 +70,7 @@ class IssueCard extends Component {
       }
       this.setState({
         ballotItemWeVoteId: nextProps.ballotItemWeVoteId,
-        countOfOrganizationsUnderThisIssue: VoterGuideStore.getVoterGuidesForValue(issueWeVoteId).length,
+        countOfVoterGuidesUnderThisIssue: VoterGuideStore.getVoterGuidesForValue(issueWeVoteId).length,
         issue: nextProps.issue,
         issueImageSize,
         issueWeVoteId,
@@ -103,7 +103,7 @@ class IssueCard extends Component {
   onVoterGuideStoreChange () {
     const { issueWeVoteId } = this.state;
     this.setState({
-      countOfOrganizationsUnderThisIssue: VoterGuideStore.getVoterGuidesForValue(issueWeVoteId).length,
+      countOfVoterGuidesUnderThisIssue: VoterGuideStore.getVoterGuidesForValue(issueWeVoteId).length,
     });
   }
 
@@ -135,12 +135,13 @@ class IssueCard extends Component {
   render () {
     renderLog('IssueCard');  // Set LOG_RENDER_EVENTS to log all renders
     const {
+      advocatesCount: incomingAdvocatesCount,
       currentBallotIdInUrl, followToggleOn, followToggleOnItsOwnLine,
       hideAdvocatesCount, includeLinkToIssue, turnOffDescription,
       turnOffIssueImage, urlWithoutHash,
     } = this.props;
     const {
-      ballotItemWeVoteId, countOfOrganizationsUnderThisIssue,
+      ballotItemWeVoteId, countOfVoterGuidesUnderThisIssue,
       issue, issueFollowersCount, issueImageSize, issueWeVoteId,
       linkedOrganizationCount, linkedOrganizationPreviewList,
       showSignInModal,
@@ -155,6 +156,7 @@ class IssueCard extends Component {
     issueDisplayName = issueDisplayName || '';
     issueDescription = issueDescription || '';
 
+    const advocatesCount = incomingAdvocatesCount || countOfVoterGuidesUnderThisIssue;
     let issueImage;
     const numberOfLines = 5;
     if (issueImageSize === 'SMALL') {
@@ -254,9 +256,54 @@ class IssueCard extends Component {
         </div>
       </Tooltip>
     );
-
+    const issueNameAndCount = (
+      <IssueName>
+        {`${issueDisplayName} `}
+        {!hideAdvocatesCount && (
+          <IssueAdvocatesCount>
+            {`(${advocatesCount}${advocatesCount === 1 ? ' Advocate' : ''}${advocatesCount > 1 ? ' Advocates' : ''})`}
+          </IssueAdvocatesCount>
+        )}
+      </IssueName>
+    );
     let isFirst = true;
     let organizationImageCount = 0;
+    const issueAdvocates = (
+      <IssueAdvocatesWrapper>
+        {!!(linkedOrganizationPreviewList) && (
+          <IssueAdvocatesImages>
+            {linkedOrganizationPreviewList.slice(0, NUMBER_OF_LINKED_ORGANIZATION_IMAGES_TO_SHOW).map((organization) => {
+              isFirst = organizationImageCount === 0;
+              organizationImageCount += 1;
+              // console.log('organization:', organization);
+              if (organization.we_vote_hosted_profile_image_url_tiny) {
+                return (
+                  <OrganizationImage
+                    alt={organization.organization_name}
+                    isFirst={isFirst}
+                    key={`OrganizationImage-${organization.organization_we_vote_id}`}
+                    organizationImageCount={organizationImageCount}
+                    src={organization.we_vote_hosted_profile_image_url_tiny}
+                    title={organization.organization_name}
+                  />
+                );
+              } else {
+                return null;
+              }
+            })}
+          </IssueAdvocatesImages>
+        )}
+        {!!(linkedOrganizationCount) && (
+          <LinkedOrganizationCountWrapper>
+            {abbreviateNumber(linkedOrganizationCount)}
+            <CheckWrapper>
+              <Check />
+            </CheckWrapper>
+          </LinkedOrganizationCountWrapper>
+        )}
+      </IssueAdvocatesWrapper>
+    );
+
     return (
       <Wrapper
         key={`issue-card-${issueWeVoteId}`}
@@ -275,7 +322,7 @@ class IssueCard extends Component {
           </Suspense>
         )}
         <Flex condensed={!!this.props.condensed} followToggleOnItsOwnLine={!!followToggleOnItsOwnLine}>
-          <OverlayTrigger overlay={issueTooltip} placement="top">
+          <OverlayTrigger overlay={issueTooltip} placement={includeLinkToIssue ? 'top' : 'bottom'}>
             <FlexNameAndIcon condensed={!!this.props.condensed}>
               <IssueImage>
                 {!turnOffIssueImage && (
@@ -300,24 +347,12 @@ class IssueCard extends Component {
                         to={this.getIssueLink}
                         className="u-no-underline"
                   >
-                    <IssueName>
-                      {`${issueDisplayName} `}
-                      {!hideAdvocatesCount && (
-                        <IssueAdvocatesCount>
-                          {`(${countOfOrganizationsUnderThisIssue}${countOfOrganizationsUnderThisIssue === 1 ? ' Advocate' : ''}${countOfOrganizationsUnderThisIssue > 1 ? ' Advocates' : ''})`}
-                        </IssueAdvocatesCount>
-                      )}
-                    </IssueName>
+                    {issueNameAndCount}
                   </Link>
                 ) : (
-                  <IssueName>
-                    {`${issueDisplayName} `}
-                    {!hideAdvocatesCount && (
-                      <IssueAdvocatesCount>
-                        {`(${countOfOrganizationsUnderThisIssue}${countOfOrganizationsUnderThisIssue === 1 ? ' Advocate' : ''}${countOfOrganizationsUnderThisIssue > 1 ? ' Advocates' : ''})`}
-                      </IssueAdvocatesCount>
-                    )}
-                  </IssueName>
+                  <>
+                    {issueNameAndCount}
+                  </>
                 )}
               </>
             </FlexNameAndIcon>
@@ -349,43 +384,21 @@ class IssueCard extends Component {
         )}
         <IssueAdvocatesAndFollowersWrapper>
           <OverlayTrigger overlay={linkedOrganizationsTooltip} placement="top">
-            <IssueAdvocatesWrapper>
-              {linkedOrganizationPreviewList && (
-                <IssueAdvocatesImages>
-                  {linkedOrganizationPreviewList.slice(0, NUMBER_OF_LINKED_ORGANIZATION_IMAGES_TO_SHOW).map((organization) => {
-                    isFirst = organizationImageCount === 0;
-                    organizationImageCount += 1;
-                    // console.log('organization:', organization);
-                    if (organization.we_vote_hosted_profile_image_url_tiny) {
-                      return (
-                        <OrganizationImage
-                          alt={organization.organization_name}
-                          isFirst={isFirst}
-                          key={`OrganizationImage-${organization.organization_we_vote_id}`}
-                          organizationImageCount={organizationImageCount}
-                          src={organization.we_vote_hosted_profile_image_url_tiny}
-                          title={organization.organization_name}
-                        />
-                      );
-                    } else {
-                      return null;
-                    }
-                  })}
-                </IssueAdvocatesImages>
-              )}
-              {linkedOrganizationCount && (
-                <LinkedOrganizationCountWrapper>
-                  {abbreviateNumber(linkedOrganizationCount)}
-                  <CheckWrapper>
-                    <Check />
-                  </CheckWrapper>
-                </LinkedOrganizationCountWrapper>
-              )}
-            </IssueAdvocatesWrapper>
+            {includeLinkToIssue ? (
+              <Link id="issueAdvocatesLink"
+                    to={this.getIssueLink}
+              >
+                {issueAdvocates}
+              </Link>
+            ) : (
+              <>
+                {issueAdvocates}
+              </>
+            )}
           </OverlayTrigger>
           <OverlayTrigger overlay={followersTooltip} placement="top">
             <FollowersWrapper>
-              {issueFollowersCount && (
+              {!!(issueFollowersCount) && (
                 <>
                   {abbreviateNumber(issueFollowersCount)}
                   {' '}
@@ -400,6 +413,7 @@ class IssueCard extends Component {
   }
 }
 IssueCard.propTypes = {
+  advocatesCount: PropTypes.number,
   ballotItemWeVoteId: PropTypes.string,
   currentBallotIdInUrl: PropTypes.string,
   followToggleOn: PropTypes.bool,
