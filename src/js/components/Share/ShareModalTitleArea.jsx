@@ -209,7 +209,7 @@ class ShareModalTitleArea extends Component {
           onClick={handleCloseShareButtonDrawer}
           id="closeShareModal"
           size="large"
-          style={isIPad() ? { top: 2 } : ''}
+          style={isIPad() ? { top: 2 } : {}}
         >
           <Close />
         </IconButton>
