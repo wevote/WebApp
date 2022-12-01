@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import IssueActions from '../actions/IssueActions';
 import LoadingWheelComp from '../common/components/Widgets/LoadingWheelComp';
+import apiCalming from '../common/utils/apiCalming';
 import { displayNoneIfSmallerThanDesktop } from '../common/utils/isMobileScreenSize';
 import { renderLog } from '../common/utils/logging';
 import normalizedImagePath from '../common/utils/normalizedImagePath';
@@ -53,8 +54,12 @@ export default class Values extends Component {
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     this.onIssueStoreChange();
     this.onVoterStoreChange();
-    IssueActions.issueDescriptionsRetrieve(VoterStore.getVoterWeVoteId());
-    IssueActions.issuesFollowedRetrieve(VoterStore.getVoterWeVoteId());
+    if (apiCalming('issueDescriptionsRetrieve', 3600000)) { // Only once per 60 minutes
+      IssueActions.issueDescriptionsRetrieve();
+    }
+    if (apiCalming('issuesFollowedRetrieve', 60000)) { // Only once per minute
+      IssueActions.issuesFollowedRetrieve();
+    }
     AnalyticsActions.saveActionNetwork(VoterStore.electionId());
     this.preloadTimer = setTimeout(() => lazyPreloadPages(), 2000);
   }
@@ -113,7 +118,7 @@ export default class Values extends Component {
     }
     const { issuesFollowedCount, issuesToFollowShouldBeDisplayed, voterIsSignedIn } = this.state;
 
-    let publicFiguresBlockToDisplay = null;
+    let publicFiguresBlockToDisplay;
     const publicFiguresFollowedCount = 0;
     if (publicFiguresFollowedCount > 0) {
       // console.log('PublicFiguresFollowedPreview');
@@ -123,7 +128,7 @@ export default class Values extends Component {
       publicFiguresBlockToDisplay = <PublicFiguresToFollowPreview />;
     }
 
-    let organizationsBlockToDisplay = null;
+    let organizationsBlockToDisplay;
     const organizationsFollowedCount = 0;
     if (organizationsFollowedCount > 0) {
       organizationsBlockToDisplay = <NetworkOpinionsFollowed />;

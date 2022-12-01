@@ -16040,14 +16040,14 @@ a {
 }
 
 .issues-follow-btn--blue {
-  background: #2e3c5d !important;
+  background: #0834CD !important;
   color: #fff !important;
 }
 
 .issues-follow-btn--white {
-  color: #0d546f !important;
+  color: #0834CD !important;
   background: white !important;
-  font-weight: 600 !important;
+  /* font-weight: 600 !important; */
   border: 1px solid #ccc !important;
 }
 

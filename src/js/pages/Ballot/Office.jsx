@@ -95,8 +95,12 @@ class Office extends Component {
       });
     }
 
-    IssueActions.issueDescriptionsRetrieve(VoterStore.getVoterWeVoteId());
-    IssueActions.issuesFollowedRetrieve(VoterStore.getVoterWeVoteId());
+    if (apiCalming('issueDescriptionsRetrieve', 3600000)) { // Only once per 60 minutes
+      IssueActions.issueDescriptionsRetrieve();
+    }
+    if (apiCalming('issuesFollowedRetrieve', 60000)) { // Only once per minute
+      IssueActions.issuesFollowedRetrieve();
+    }
     if (VoterStore.electionId() && !IssueStore.issuesUnderBallotItemsRetrieveCalled(VoterStore.electionId())) {
       IssueActions.issuesUnderBallotItemsRetrieve(VoterStore.electionId());
     }

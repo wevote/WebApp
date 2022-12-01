@@ -132,8 +132,8 @@ class PositionDrawer extends Component {
     //   });
     // }
 
-    IssueActions.issueDescriptionsRetrieve(VoterStore.getVoterWeVoteId());
-    IssueActions.issuesFollowedRetrieve(VoterStore.getVoterWeVoteId());
+    // IssueActions.issueDescriptionsRetrieve(VoterStore.getVoterWeVoteId());
+    // IssueActions.issuesFollowedRetrieve(VoterStore.getVoterWeVoteId());
     if (VoterStore.electionId() && !IssueStore.issuesUnderBallotItemsRetrieveCalled(VoterStore.electionId())) {
       IssueActions.issuesUnderBallotItemsRetrieve(VoterStore.electionId());
     }

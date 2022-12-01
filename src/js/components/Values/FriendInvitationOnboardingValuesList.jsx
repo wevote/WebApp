@@ -2,10 +2,10 @@ import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import IssueActions from '../../actions/IssueActions';
+import apiCalming from '../../common/utils/apiCalming';
 import { renderLog } from '../../common/utils/logging';
 import IssueStore from '../../stores/IssueStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
-import VoterStore from '../../stores/VoterStore';
 
 const IssueCard = React.lazy(() => import(/* webpackChunkName: 'IssueCard' */ './IssueCard'));
 
@@ -23,8 +23,12 @@ export default class FriendInvitationOnboardingValuesList extends Component {
   componentDidMount () {
     this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onIssueStoreChange.bind(this));
-    IssueActions.issueDescriptionsRetrieve(VoterStore.getVoterWeVoteId());
-    IssueActions.issuesFollowedRetrieve(VoterStore.getVoterWeVoteId());
+    if (apiCalming('issueDescriptionsRetrieve', 3600000)) { // Only once per 60 minutes
+      IssueActions.issueDescriptionsRetrieve();
+    }
+    if (apiCalming('issuesFollowedRetrieve', 60000)) { // Only once per minute
+      IssueActions.issuesFollowedRetrieve();
+    }
     this.onIssueStoreChange();
   }
 

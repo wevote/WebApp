@@ -1,17 +1,15 @@
-import { Info, Launch, Twitter } from '@mui/icons-material';
+import { Info, Launch } from '@mui/icons-material';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import TextTruncate from 'react-text-truncate'; // Replace with: import TruncateMarkup from 'react-truncate-markup';
 import styled from 'styled-components';
-import abbreviateNumber from '../../common/utils/abbreviateNumber';
 import { isAndroidSizeMD, isIPad } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { displayNoneIfSmallerThanDesktop } from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
-import numberWithCommas from '../../common/utils/numberWithCommas';
 import AppObservableStore from '../../stores/AppObservableStore';
 import CandidateStore from '../../stores/CandidateStore';
 import IssueStore from '../../stores/IssueStore';
@@ -19,6 +17,7 @@ import SupportStore from '../../stores/SupportStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import isMobileAndTabletScreenSize from '../../utils/isMobileAndTabletScreenSize';
 import { stripHtmlFromString } from '../../utils/textFormat';
+import TwitterAccountStats from '../Widgets/TwitterAccountStats';
 
 const BallotItemSupportOpposeComment = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeComment' */ '../Widgets/BallotItemSupportOpposeComment'));
 const BallotItemSupportOpposeScoreDisplay = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeScoreDisplay' */ '../Widgets/ScoreDisplay/BallotItemSupportOpposeScoreDisplay'));
@@ -307,7 +306,7 @@ class CandidateItem extends Component {
   candidateRenderBlock = (candidateWeVoteId, useLinkToCandidatePage = false, forDesktop = false, openSupportOpposeCountDisplayModal = false) => {
     const {
       blockOnClickShowOrganizationModalWithPositions,
-      classes, controlAdviserMaterialUIPopoverFromProp, closeSupportOpposeCountDisplayModal,
+      controlAdviserMaterialUIPopoverFromProp, closeSupportOpposeCountDisplayModal,
       hideCandidateUrl, linkToBallotItemPage, linkToOfficePage,
       openAdviserMaterialUIPopover,
       supportOpposeCountDisplayModalTutorialOn, supportOpposeCountDisplayModalTutorialText,
@@ -369,25 +368,11 @@ class CandidateItem extends Component {
               <CandidateLinksWrapper>
                 {!!(twitterHandle && twitterFollowersCount) && (
                   <div>
-                    <TwitterWrapper className="u-cursor--pointer">
-                      <Suspense fallback={<></>}>
-                        <OpenExternalWebSite
-                          linkIdAttribute="candidateTwitterDesktop"
-                          url={`https://twitter.com/${twitterHandle}`}
-                          target="_blank"
-                          body={(
-                            <TwitterInnerWrapper>
-                              <Twitter classes={{ root: classes.twitterLogo }} />
-                              <TwitterHandleWrapper>
-                                @
-                                {twitterHandle}
-                              </TwitterHandleWrapper>
-                              <TwitterFollowersWrapper title={numberWithCommas(twitterFollowersCount)}>{abbreviateNumber(twitterFollowersCount)}</TwitterFollowersWrapper>
-                            </TwitterInnerWrapper>
-                          )}
-                        />
-                      </Suspense>
-                    </TwitterWrapper>
+                    <TwitterAccountStats
+                      includeLinkToTwitter
+                      twitterFollowersCount={twitterFollowersCount}
+                      twitterHandle={twitterHandle}
+                    />
                   </div>
                 )}
                 {(!hideCandidateUrl && candidateUrl && forDesktop) && (
@@ -713,12 +698,6 @@ const styles = () => ({
     marginTop: '-3px',
     marginRight: 4,
   },
-  twitterLogo: {
-    color: '#1d9bf0',
-    height: 18,
-    marginRight: '-2px',
-    marginTop: '-4px',
-  },
 });
 
 const BallotItemSupportOpposeCountDisplayWrapper = styled('div', {
@@ -788,26 +767,6 @@ const ForMoreInformationInfoText = styled('div')`
 `;
 
 const MobileTabletWrapper = styled('div')`
-`;
-
-const TwitterFollowersWrapper = styled('span')`
-  color: #000;
-`;
-
-const TwitterHandleWrapper = styled('span')`
-  color: #000;
-  margin-right: 5px;
-`;
-
-const TwitterInnerWrapper = styled('span')`
-  margin: 0;
-`;
-
-const TwitterWrapper = styled('div')`
-  font-size: 13px;
-  margin: 0;
-  margin-top: 4px;
-  white-space: nowrap;
 `;
 
 export default withTheme(withStyles(styles)(CandidateItem));

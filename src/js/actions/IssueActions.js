@@ -1,11 +1,11 @@
 import Dispatcher from '../common/dispatcher/Dispatcher';
-import Cookies from '../common/utils/js-cookie/Cookies';
+// import Cookies from '../common/utils/js-cookie/Cookies';
 
-let uniqueKeyIssuesDescriptionRetrieve = '';
-let uniqueKeyIssuesFollowedRetrieve = '';
+// let uniqueKeyIssuesDescriptionRetrieve = '';
+// let uniqueKeyIssuesFollowedRetrieve = '';
 
 export default {
-  issueDescriptionsRetrieve (voterWeVoteId) {
+  issueDescriptionsRetrieve () {
     /*
     April 2021: We were firing off issueDescriptionsRetrieve four times upon loading the Ready page.
     As of today we are calling this API in 19 places in the code, including two from within stores.
@@ -14,23 +14,35 @@ export default {
     Rather than untangle the reason for all those API calls, we now save the current voterWeVoteID, and
     ignore the call if that ID has not changed.  If we really want to call this more than once for the same
     login, just pass in a unique string, like a timestamp, and the api will fire.
+    Nov 2022: Updated all calls to this CDN-based API to be limited with apiCalming, to be called no more than once every 60 minutes
     */
-    const uniqueKey = voterWeVoteId && voterWeVoteId.length ? voterWeVoteId : Cookies.get('voter_device_id');
-    if (uniqueKey !== uniqueKeyIssuesDescriptionRetrieve) {
-      uniqueKeyIssuesDescriptionRetrieve = uniqueKey;
-      Dispatcher.loadEndpoint('issueDescriptionsRetrieve', {});
-    }
+    // const uniqueKey = voterWeVoteId && voterWeVoteId.length ? voterWeVoteId : Cookies.get('voter_device_id');
+    // if (uniqueKey !== uniqueKeyIssuesDescriptionRetrieve) {
+    //   uniqueKeyIssuesDescriptionRetrieve = uniqueKey;
+    //   Dispatcher.loadEndpoint('issueDescriptionsRetrieve', {});
+    // }
+    Dispatcher.loadEndpoint('issueDescriptionsRetrieve', {});
   },
 
   issueDescriptionsRetrieveCalled () {
     Dispatcher.dispatch({ type: 'issueDescriptionsRetrieveCalled', payload: true });
   },
 
+  issueOrganizationsRetrieve (issueWeVoteId = '') {
+    if (issueWeVoteId) {
+      Dispatcher.loadEndpoint('issueOrganizationsRetrieve', {
+        issue_we_vote_id: issueWeVoteId,
+      });
+    } else {
+      Dispatcher.loadEndpoint('issueOrganizationsRetrieve', {});
+    }
+  },
+
   issuesUnderBallotItemsRetrieveCalled (googleCivicElectionId) {
     Dispatcher.dispatch({ type: 'issuesUnderBallotItemsRetrieveCalled', payload: googleCivicElectionId });
   },
 
-  issuesFollowedRetrieve (voterWeVoteId) {
+  issuesFollowedRetrieve () {
     /*
     April 2021: We were firing off issuesFollowedRetrieve five times upon loading the Ready page.
     Part of the problem was that we had copied similar classes without thinking through exactly
@@ -42,12 +54,17 @@ export default {
     Rather than untangle the reason for all those API calls, we now save the current voterWeVoteID, and
     ignore the call if that ID has not changed.  If we really want to call this more than once for the same
     login, just pass in a unique string, like a timestamp, and the api will fire.
+    Nov 2022: Updated most calls to this voter-specific API to be limited with apiCalming.
+      Where we don't limit, it is because we need the latest data.
+      We are keeping track of issues followed on one device and within one session,
+      but we should synchronize with API server every 1 minute.
     */
-    const uniqueKey = voterWeVoteId.length ? voterWeVoteId : Cookies.get('voter_device_id');
-    if (uniqueKey !== uniqueKeyIssuesFollowedRetrieve) {
-      uniqueKeyIssuesFollowedRetrieve = uniqueKey;
-      Dispatcher.loadEndpoint('issuesFollowedRetrieve', {});
-    }
+    // const uniqueKey = voterWeVoteId.length ? voterWeVoteId : Cookies.get('voter_device_id');
+    // if (uniqueKey !== uniqueKeyIssuesFollowedRetrieve) {
+    //   uniqueKeyIssuesFollowedRetrieve = uniqueKey;
+    //   Dispatcher.loadEndpoint('issuesFollowedRetrieve', {});
+    // }
+    Dispatcher.loadEndpoint('issuesFollowedRetrieve', {});
   },
 
   issuesUnderBallotItemsRetrieve (googleCivicElectionId, ballot_location_shortcut = '', ballot_returned_we_vote_id = '') {

@@ -8,7 +8,6 @@ import ActivityActions from '../actions/ActivityActions';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import BallotActions from '../actions/BallotActions';
 import FriendActions from '../actions/FriendActions';
-import IssueActions from '../actions/IssueActions';
 import ReadyActions from '../actions/ReadyActions';
 import apiCalming from '../common/utils/apiCalming';
 import { isAndroid } from '../common/utils/cordovaUtils';
@@ -51,7 +50,6 @@ class Ready extends Component {
     this.state = {
       chosenReadyIntroductionText: '',
       chosenReadyIntroductionTitle: '',
-      issuesQueriesMade: false,
       voterIsSignedIn: false,
     };
   }
@@ -144,18 +142,8 @@ class Ready extends Component {
 
   onVoterStoreChange () {
     // console.log('Ready, onVoterStoreChange voter: ', VoterStore.getVoter());
-    const { issuesQueriesMade } = this.state;
-    if (!issuesQueriesMade) {
-      // this.delayIssuesTimer = setTimeout(() => {
-      // April 18, 2021: TODO: These API calls are always executed in pairs, they probably should be a single API
-      // They take 1.15 seconds to complete! (in parallel)
-      IssueActions.issueDescriptionsRetrieve(VoterStore.getVoterWeVoteId());
-      IssueActions.issuesFollowedRetrieve(VoterStore.getVoterWeVoteId());
-      // }, 400);
-    }
     this.setState({
       voterIsSignedIn: VoterStore.getVoterIsSignedIn(),
-      issuesQueriesMade: true,
     });
   }
 

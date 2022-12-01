@@ -12,7 +12,6 @@ import { renderLog } from '../../common/utils/logging';
 import { ContinueButtonType1Wrapper, ExplanationTextType1, ExplanationTextLighterType1, ModalTitleType1, ModalTitleAreaType1 } from '../Style/ModalType1Styles';
 import VoterConstants from '../../constants/VoterConstants';
 import IssueStore from '../../stores/IssueStore';
-import VoterStore from '../../stores/VoterStore';
 
 const FriendInvitationOnboardingValuesList = React.lazy(() => import(/* webpackChunkName: 'FriendInvitationOnboardingValuesList' */ '../Values/FriendInvitationOnboardingValuesList'));
 
@@ -26,7 +25,7 @@ class ValuesIntroModal extends Component {
 
   componentDidMount () {
     this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
-    IssueActions.issuesFollowedRetrieve(VoterStore.getVoterWeVoteId());
+    IssueActions.issuesFollowedRetrieve();
 
     this.setState({
     });

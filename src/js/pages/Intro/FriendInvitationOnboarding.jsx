@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
 import IssueActions from '../../actions/IssueActions';
 import VoterActions from '../../actions/VoterActions';
+import apiCalming from '../../common/utils/apiCalming';
 import { getAndroidSize, isAndroid } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
@@ -62,8 +63,12 @@ class FriendInvitationOnboarding extends Component {
       });
     }
     // Pre-load this so it is ready for slide 2
-    IssueActions.issueDescriptionsRetrieve(VoterStore.getVoterWeVoteId());
-    IssueActions.issuesFollowedRetrieve(VoterStore.getVoterWeVoteId());
+    if (apiCalming('issueDescriptionsRetrieve', 3600000)) { // Only once per 60 minutes
+      IssueActions.issueDescriptionsRetrieve();
+    }
+    if (apiCalming('issuesFollowedRetrieve', 60000)) { // Only once per minute
+      IssueActions.issuesFollowedRetrieve();
+    }
     this.onVoterStoreChange();
     const personalizedScoreIntroCompleted = VoterStore.getInterfaceFlagState(VoterConstants.PERSONALIZED_SCORE_INTRO_COMPLETED);
     this.setState({

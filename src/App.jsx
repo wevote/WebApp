@@ -97,7 +97,7 @@ const VoterGuideListDashboard = React.lazy(() => import(/* webpackChunkName: 'Vo
 const VoterGuideSettingsDashboard = React.lazy(() => import(/* webpackChunkName: 'VoterGuideSettingsDashboard' */ './js/pages/Settings/VoterGuideSettingsDashboard'));
 const VoterGuideSettingsMenuMobile = React.lazy(() => import(/* webpackChunkName: 'VoterGuideSettingsMenuMobile' */ './js/pages/Settings/VoterGuideSettingsMenuMobile'));
 const VoterGuidesMenuMobile = React.lazy(() => import(/* webpackChunkName: 'VoterGuidesMenuMobile' */ './js/pages/Settings/VoterGuidesMenuMobile'));
-const VoterGuidesUnderOneValue = React.lazy(() => import(/* webpackChunkName: 'VoterGuidesUnderOneValue' */ './js/pages/Values/VoterGuidesUnderOneValue'));
+const OneValue = React.lazy(() => import(/* webpackChunkName: 'OneValue' */ './js/pages/Values/OneValue'));
 const WeVoteBallotEmbed = React.lazy(() => import(/* webpackChunkName: 'WeVoteBallotEmbed' */ './js/pages/More/WeVoteBallotEmbed'));
 const WelcomeForCampaigns = React.lazy(() => import(/* webpackChunkName: 'WelcomeForCampaigns' */ './js/pages/WelcomeForCampaigns'));
 const WelcomeForOrganizations = React.lazy(() => import(/* webpackChunkName: 'WelcomeForOrganizations' */ './js/pages/WelcomeForOrganizations'));
@@ -399,7 +399,7 @@ class App extends Component {
                     <Route path="/unsubscribe/:subscription_secret_key" exact component={UnsubscribeRoot} />
                     <Route path="/values/list" component={ValuesList} />
                     <Route path="/values" exact component={Values} />
-                    <Route path="/value/:value_slug" component={VoterGuidesUnderOneValue} />
+                    <Route path="/value/:value_slug" component={OneValue} />
                     <Route path="/verify_email/:email_secret_key" component={VerifyEmailProcess} />
                     <Route path="/verifythisisme/:twitter_handle" component={VerifyThisIsMe} />
                     <Route path="/vg/:voter_guide_we_vote_id/settings/menu" component={VoterGuideSettingsMenuMobile} />
