@@ -12,7 +12,7 @@ import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import { isAndroid, restoreStylesAfterCordovaKeyboard } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
 import { normalizedHref } from '../../common/utils/hrefUtils';
-import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
+import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import Cookies from '../../common/utils/js-cookie/Cookies';
 import { oAuthLog, renderLog } from '../../common/utils/logging';
 import stringContains from '../../common/utils/stringContains';
@@ -90,8 +90,7 @@ export default class SignInOptionsPanel extends Component {
       Cookies.remove('sign_in_start_full_url', { path: '/', domain: 'wevote.us' });
     }
     let pathname = '';
-    const { hostname } = window.location;
-    const isOnFacebookSupportedDomainUrl = hostname.replace('www.', '') === 'wevote.us' || hostname === 'quality.wevote.us' || hostname === 'localhost' || isCordova() || window.location.href.includes('ngrok');
+    const isOnFacebookSupportedDomainUrl = AppObservableStore.isOnFacebookJsSdkHostDomainList(); // hostname.replace('www.', '') === 'wevote.us' || hostname === 'quality.wevote.us' || hostname === 'localhost' || hostname === 'wevotedeveloper.com' || isCordova() || window.location.href.includes('ngrok');
 
     const getStartedMode = AppObservableStore.getStartedMode();
     AnalyticsActions.saveActionAccountPage(VoterStore.electionId());

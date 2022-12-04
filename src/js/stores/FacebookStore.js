@@ -211,7 +211,7 @@ class FacebookStore extends ReduceStore {
         if (action.res.minimum_data_saved) {
           // Only reach out for the Facebook Sign In information if the save_profile_data call has completed
           // TODO: We need a check here to prevent an infinite loop if the local voter_device_id isn't recognized by server
-          // console.log("FacebookStore voterFacebookSignInSave, voter exists");
+          // console.log('FacebookStore voterFacebookSignInSave, voter exists');
           FacebookActions.voterFacebookSignInRetrieve();
         }
 

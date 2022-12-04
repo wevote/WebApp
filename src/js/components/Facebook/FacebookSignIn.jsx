@@ -122,7 +122,10 @@ class FacebookSignIn extends Component {
       facebook_sign_in_found: facebookSignInFound, facebook_sign_in_verified: facebookSignInVerified,
       facebook_secret_key: facebookSecretKey } = this.state.facebookAuthResponse;
 
+    // console.log(`FacebookSignIn facebookIsLoggedIn ${facebookIsLoggedIn} facebookSignInFailed: ${facebookSignInFailed} facebookSignInFound: ${facebookSignInFound} facebookSignInVerified: ${facebookSignInVerified}`);
+
     if (facebookIsLoggedIn && !facebookSignInFailed && facebookSignInFound && facebookSignInVerified) {
+      // console.log('FacebookSignIn setting redirectInProcess: false');
       this.setState({ redirectInProcess: false });
       oAuthLog('FacebookSignIn calling voterMergeTwoAccountsByFacebookKey, since the voter is authenticated with facebook');
       VoterActions.voterMergeTwoAccountsByFacebookKey(facebookSecretKey);
@@ -219,9 +222,14 @@ class FacebookSignIn extends Component {
     renderLog('FacebookSignIn');  // Set LOG_RENDER_EVENTS to log all renders
     const { buttonText } = this.props;
     const { buttonSubmittedText, facebookAuthResponse, facebookConnectionInitialized, facebookSignInSequenceStarted, mergingTwoAccounts, redirectInProgress, waitingForMergeTwoAccounts } = this.state;
+    // As of late 2022, Facebook will only allow sign ins from secure (https) connections.  This is possible to setup on your local server.
+    // See the doc file https://github.com/wevote/WebApp/blob/develop/docs/working/SECURE_CERTIFICATE.md
+    // Preventing a behind the scenes automatic re-login by facebook is difficult...
+    // See the doc file https://github.com/wevote/WebApp/blob/develop/docs/working/SECURE_CERTIFICATE.md#really-really-signing-out-of-facebook
     if (isWebApp() && !facebookConnectionInitialized) {
-      console.log('FacebookSignIn: Do not offer Facebook button if we aren\'t getting status back');
-      return null;
+      // Steve 12/2/22: This "return null" was breaking signing in with facebook in webapp (and Cordova) if you had "never" been signed in before in the browser
+      // console.log('FacebookSignIn: (disabled) Do not offer Facebook button if we aren\'t getting status back');
+      // return null;  12/2/22, see note above
     }
     if (redirectInProgress) {
       return null;
