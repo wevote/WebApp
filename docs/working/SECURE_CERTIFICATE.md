@@ -95,9 +95,9 @@ You will need to take the following steps to completely sign out, with no tendri
        4) clear Cookies
        5) remove anything in the URL bar except "https://www.facebook.com/"
 2) In WebApp, sign out
-   1) using devtools/applications on the WebApp tab..
+   1) Using devtools/applications on the WebApp tab..
        1) clear "Local Storage"
-       2) 2clear "Session Storage"
+       2) clear "Session Storage"
        3) clear Cookies
    2) Hard refresh WebApp Ctrl+Shift+R
    
