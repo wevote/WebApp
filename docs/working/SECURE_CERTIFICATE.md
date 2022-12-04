@@ -83,7 +83,8 @@ Then Facebook signin should work on your dev machine
 
 Facebook takes many simultaneous approaches to prevent an end user from fully signing out of Facebook in a browser.
 
-You will need to take the following steps to completely sign out, with no tendrils of Facebook's signin remaining, to prove that Facebook sign in from a brand new machine or browser will work.
+You will need to take the following steps to completely sign out, with no tendrils of Facebook's signin remaining, to prove that Facebook sign in from a brand new machine or browser will work.  
+(In a Cordova simulator, simply go to Device/Erase All Content and Settings  -- and you will be fully signed out.)
 
 1) Open Facebook in a tab
    1) Log out of facebook
