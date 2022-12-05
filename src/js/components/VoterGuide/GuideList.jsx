@@ -224,7 +224,6 @@ class GuideList extends Component {
                 numberOfItemsDisplayed += 1;
               }
               // console.log('GuideList render', numberOfItemsDisplayed, numberOfItemsToDisplay);
-              console.log('organization:', organization);
               return (
                 <OrganizationDisplayForList
                   key={organization.organization_we_vote_id}
