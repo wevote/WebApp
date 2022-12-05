@@ -48,7 +48,6 @@ class OrganizationList extends Component {
     if (organizationListToDisplay) {
       organizationListToDisplayCount = organizationListToDisplay.length;
     }
-    // console.log('onOrganizationListChange organizationListToDisplay:', organizationListToDisplay);
     this.setState({
       organizationListToDisplay,
       organizationListToDisplayCount,
@@ -112,8 +111,8 @@ class OrganizationList extends Component {
     const {
       loadingMoreItems, numberOfItemsToDisplay, organizationListToDisplay, organizationListToDisplayCount,
     } = this.state;
+    // console.log('OrganizationList organizationListToDisplay:', organizationListToDisplay);
     if (organizationListToDisplay === undefined) {
-      // console.log('OrganizationList this.state.organizations_to_follow === undefined');
       return null;
     }
 
@@ -148,15 +147,16 @@ class OrganizationList extends Component {
                 }
                 numberOfItemsDisplayed += 1;
               }
-              // console.log('OrganizationList render', numberOfItemsDisplayed, numberOfItemsToDisplay);
+              // console.log('OrganizationList render organization:', organization);
               return (
                 <OrganizationDisplayForList
                   key={organization.organization_we_vote_id}
+                  organizationName={organization.organization_name}
+                  organizationPhotoUrlMedium={organization.organization_photo_url_medium}
                   organizationWeVoteId={organization.organization_we_vote_id}
                   twitterDescription={organization.twitter_description}
-                  twitterHandle={organization.twitter_handle}
-                  voterGuideDisplayName={organization.voter_guide_display_name}
-                  voterGuideImageUrlLarge={organization.voter_guide_image_url_large}
+                  twitterFollowersCount={organization.twitter_followers_count}
+                  twitterHandle={organization.organization_twitter_handle}
                 />
               );
             })}

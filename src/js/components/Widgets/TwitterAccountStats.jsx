@@ -33,10 +33,10 @@ function TwitterAccountStats (props) {
         <TwitterAccountStatsInnerWrapper className="u-cursor--pointer">
           <Suspense fallback={<></>}>
             <OpenExternalWebSite
+              body={<div style={{ marginTop: '-24px' }}>{twitterHtml}</div>} // -24px is to fix a "ghost in the CSS machine"
               linkIdAttribute="candidateTwitterDesktop"
               url={`https://twitter.com/${twitterHandle}`}
               target="_blank"
-              body={twitterHtml}
             />
           </Suspense>
         </TwitterAccountStatsInnerWrapper>
@@ -65,12 +65,14 @@ const styles = () => ({
 });
 
 const TwitterAccountStatsInnerWrapper = styled('div')`
+  height: 24px;
   margin: 0;
   margin-top: 4px;
   white-space: nowrap;
 `;
 
 const TwitterAccountStatsOuterWrapper = styled('div')`
+  height: 24px;
   margin-left: -4px;
 `;
 
@@ -92,6 +94,7 @@ const TwitterHandleWrapper = styled('div')`
 const TwitterHtmlWrapper = styled('div')`
   align-items: center;
   display: flex;
+  height: 24px;
   justify-content: flex-start;
   margin: 0 !important;
   padding: 0 !important;

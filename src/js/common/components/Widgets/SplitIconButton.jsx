@@ -116,6 +116,7 @@ const styles = () => ({
   },
   splitButton: {
     boxShadow: 'none !important',
+    minWidth: 270,
     padding: '0 !important',
     width: '100%',
     whiteSpace: 'nowrap',

@@ -367,13 +367,11 @@ class CandidateItem extends Component {
               )}
               <CandidateLinksWrapper>
                 {!!(twitterHandle && twitterFollowersCount) && (
-                  <div>
-                    <TwitterAccountStats
-                      includeLinkToTwitter
-                      twitterFollowersCount={twitterFollowersCount}
-                      twitterHandle={twitterHandle}
-                    />
-                  </div>
+                  <TwitterAccountStats
+                    includeLinkToTwitter
+                    twitterFollowersCount={twitterFollowersCount}
+                    twitterHandle={twitterHandle}
+                  />
                 )}
                 {(!hideCandidateUrl && candidateUrl && forDesktop) && (
                   <ExternalWebSiteWrapper>
@@ -436,7 +434,8 @@ class CandidateItem extends Component {
     >
       {/* If there aren't any comments about the candidate, show the text description of the candidate */}
       { (candidateText && candidateText.length) ? (
-        <div className={`u-stack--xs ${this.props.linkToBallotItemPage ? ' card-main__description-container--truncated' : ' card-main__description-container'}`}>
+        <div>
+          {/* className={`u-stack--xs ${this.props.linkToBallotItemPage ? ' card-main__description-container--truncated' : ' card-main__description-container'}`} */}
           <div className="card-main__description">
             <TextTruncate
               line={2}
@@ -537,16 +536,15 @@ class CandidateItem extends Component {
           ) : (
             <>
               {(!hideCandidateText && candidateText && candidateText.length) && (
-                <CandidateTextWrapper
-                  className={`${linkToBallotItemPage ? 'card-main__description-container--truncated' : 'card-main__description-container'}`}
-                >
+                <CandidateItemTextWrapper>
+                  {/* className={`${linkToBallotItemPage ? 'card-main__description-container--truncated' : 'card-main__description-container'}`} */}
                   <Suspense fallback={<></>}>
                     <ReadMore
                       textToDisplay={candidateText}
                       numberOfLines={3}
                     />
                   </Suspense>
-                </CandidateTextWrapper>
+                </CandidateItemTextWrapper>
               )}
             </>
           )}
@@ -741,11 +739,12 @@ const CandidateWrapper = styled('div')(({ theme }) => (`
   ${() => (isAndroidSizeMD() ? { width: '92% !important' } : {})}
 `));
 
-const CandidateTextWrapper = styled('div')`
+const CandidateItemTextWrapper = styled('div')`
   margin: 12px 0;
 `;
 
 const CandidateLinksWrapper = styled('div')`
+  align-items: flex-start;
   display: flex;
   justify-content: flex-start;
 `;

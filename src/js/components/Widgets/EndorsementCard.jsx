@@ -30,7 +30,7 @@ class EndorsementCard extends PureComponent {
   }
 
   render () {
-    const { classes, organizationWeVoteId, whiteTextOnDarkButton } = this.props;
+    const { classes, narrowColumnDisplay, organizationWeVoteId, whiteTextOnDarkButton } = this.props;
     const { voter } = this.state;
     if (!voter) {
       return null;
@@ -51,43 +51,41 @@ class EndorsementCard extends PureComponent {
       recommendIcon = <Recommend classes={{ root: classes.recommendWhiteTextOnDarkBackground }} />;
     }
     return (
-      <div>
-        <div className="card">
-          <Container>
-            <div className="endorsement-card">
-              <Suspense fallback={<></>}>
-                <OpenExternalWebSite
-                  linkIdAttribute="endorsementCard"
-                  url="https://api.wevoteusa.org/vg/create/"
-                  target="_blank"
-                  title={this.props.title}
-                  className="u-no-underline"
-                  body={(
-                    <SplitIconButton
-                      backgroundColor={backgroundColor}
-                      buttonText={this.props.buttonText}
-                      externalUniqueId="endorsementCardAddEndorsementsToWeVote"
-                      fontColor={fontColor}
-                      icon={recommendIcon}
-                      id="endorsementCardAddEndorsementsToWeVote"
-                      title="Add endorsements to We Vote"
-                    />
-                  )}
+      <EndorsementCardOuterWrapper>
+        <EndorsementCardFlexWrapper narrowColumnDisplay={narrowColumnDisplay}>
+          <Suspense fallback={<></>}>
+            <OpenExternalWebSite
+              linkIdAttribute="endorsementCard"
+              url="https://api.wevoteusa.org/vg/create/"
+              target="_blank"
+              title={this.props.title}
+              className="u-no-underline"
+              body={(
+                <SplitIconButton
+                  backgroundColor={backgroundColor}
+                  buttonText={this.props.buttonText}
+                  externalUniqueId="endorsementCardAddEndorsementsToWeVote"
+                  fontColor={fontColor}
+                  icon={recommendIcon}
+                  id="endorsementCardAddEndorsementsToWeVote"
+                  title="Add endorsements to We Vote"
                 />
-              </Suspense>
-              <div className="endorsement-card__text">
-                {this.props.text}
-              </div>
-            </div>
-          </Container>
-        </div>
-      </div>
+              )}
+            />
+          </Suspense>
+          <div>
+            {/* className="endorsement-card__text" */}
+            {this.props.text}
+          </div>
+        </EndorsementCardFlexWrapper>
+      </EndorsementCardOuterWrapper>
     );
   }
 }
 EndorsementCard.propTypes = {
   buttonText: PropTypes.string,
   classes: PropTypes.object,
+  narrowColumnDisplay: PropTypes.bool,
   organizationWeVoteId: PropTypes.string,
   title: PropTypes.string,
   text: PropTypes.string,
@@ -103,8 +101,20 @@ const styles = () => ({
   },
 });
 
-const Container = styled('div')`
+const EndorsementCardOuterWrapper = styled('div')`
   padding: 16px;
 `;
+
+const EndorsementCardFlexWrapper = styled('div', {
+  shouldForwardProp: (prop) => !['narrowColumnDisplay'].includes(prop),
+})(({ narrowColumnDisplay }) => (`
+  bottom: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  ${narrowColumnDisplay ? 'flex-direction: column;' : ''}
+  ${narrowColumnDisplay ? '' : 'align-items: center;'}
+  ${narrowColumnDisplay ? '' : 'justify-content: space-between;'}
+`));
 
 export default withStyles(styles)(EndorsementCard);

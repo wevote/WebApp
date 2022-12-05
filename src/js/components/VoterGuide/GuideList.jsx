@@ -6,10 +6,8 @@ import stringContains from '../../common/utils/stringContains';
 import CandidateStore from '../../stores/CandidateStore';
 import MeasureStore from '../../stores/MeasureStore';
 import EndorsementCard from '../Widgets/EndorsementCard';
-import { openSnackbar } from '../Widgets/SnackNotifier';
-import VoterGuideDisplayForList from './VoterGuideDisplayForList';
+import OrganizationDisplayForList from '../Organization/OrganizationDisplayForList';
 
-const FollowToggle = React.lazy(() => import(/* webpackChunkName: 'FollowToggle' */ '../Widgets/FollowToggle'));
 const ShowMoreItems = React.lazy(() => import(/* webpackChunkName: 'ShowMoreItems' */ '../Widgets/ShowMoreItems'));
 
 
@@ -98,43 +96,29 @@ class GuideList extends Component {
     window.removeEventListener('scroll', this.onScroll);
   }
 
-  handleIgnore (organizationWeVoteId) {
-    const { voterGuideList } = this.state;
-    // OrganizationActions.organizationFollowIgnore(organizationWeVoteId); // This is run within FollowToggle
-    const newVoterGuideList = voterGuideList.filter(
-      (org) => org.organization_we_vote_id !== organizationWeVoteId,
-    );
-    let voterGuideListCount = 0;
-    if (newVoterGuideList) {
-      voterGuideListCount = newVoterGuideList.length;
-    }
-    this.setState({
-      voterGuideList: newVoterGuideList,
-      voterGuideListCount,
-    });
-    openSnackbar({ message: 'Added to ignore list.' });
-  }
-
   onScroll () {
-    const showMoreItemsElement =  document.querySelector('#showMoreItemsId');
-    // console.log('showMoreItemsElement: ', showMoreItemsElement);
-    // console.log('loadingMoreItems: ', this.state.loadingMoreItems);
-    if (showMoreItemsElement) {
-      const {
-        numberOfItemsToDisplay, filteredOrganizationsWithPositionsCount,
-      } = this.state;
+    const { increaseNumberOfItemsOnScroll } = this.props;
+    if (increaseNumberOfItemsOnScroll) {
+      const showMoreItemsElement = document.querySelector('#showMoreItemsId');
+      // console.log('showMoreItemsElement: ', showMoreItemsElement);
+      // console.log('loadingMoreItems: ', this.state.loadingMoreItems);
+      if (showMoreItemsElement) {
+        const {
+          numberOfItemsToDisplay, filteredOrganizationsWithPositionsCount,
+        } = this.state;
 
-      // console.log('window.height: ', window.innerHeight);
-      // console.log('Bottom: ', showMoreItemsElement.getBoundingClientRect().bottom);
-      // console.log('numberOfItemsToDisplay: ', numberOfItemsToDisplay);
-      // console.log('totalNumberOfBallotItems: ', filteredOrganizationsWithPositionsCount);
-      if (numberOfItemsToDisplay < filteredOrganizationsWithPositionsCount) {
-        if (showMoreItemsElement.getBoundingClientRect().bottom <= window.innerHeight) {
-          this.setState({ loadingMoreItems: true });
-          this.increaseNumberOfItemsToDisplay();
+        // console.log('window.height: ', window.innerHeight);
+        // console.log('Bottom: ', showMoreItemsElement.getBoundingClientRect().bottom);
+        // console.log('numberOfItemsToDisplay: ', numberOfItemsToDisplay);
+        // console.log('totalNumberOfBallotItems: ', filteredOrganizationsWithPositionsCount);
+        if (numberOfItemsToDisplay < filteredOrganizationsWithPositionsCount) {
+          if (showMoreItemsElement.getBoundingClientRect().bottom <= window.innerHeight) {
+            this.setState({ loadingMoreItems: true });
+            this.increaseNumberOfItemsToDisplay();
+          }
+        } else {
+          this.setState({ loadingMoreItems: false });
         }
-      } else {
-        this.setState({ loadingMoreItems: false });
       }
     }
   }
@@ -240,25 +224,16 @@ class GuideList extends Component {
                 numberOfItemsDisplayed += 1;
               }
               // console.log('GuideList render', numberOfItemsDisplayed, numberOfItemsToDisplay);
-              const handleIgnoreFunc = () => {
-                this.handleIgnore(organization.organization_we_vote_id);
-              };
               return (
-                <VoterGuideDisplayForList
+                <OrganizationDisplayForList
                   key={organization.organization_we_vote_id}
+                  organizationName={organization.voter_guide_display_name}
+                  organizationPhotoUrlMedium={organization.voter_guide_image_url_medium}
                   organizationWeVoteId={organization.organization_we_vote_id}
                   twitterDescription={organization.twitter_description}
+                  twitterFollowersCount={organization.twitter_followers_count}
                   twitterHandle={organization.twitter_handle}
-                  voterGuideDisplayName={organization.voter_guide_display_name}
-                  voterGuideImageUrlLarge={organization.voter_guide_image_url_large}
-                >
-                  <Suspense fallback={<></>}>
-                    <FollowToggle
-                      organizationWeVoteId={organization.organization_we_vote_id}
-                      handleIgnore={handleIgnoreFunc}
-                    />
-                  </Suspense>
-                </VoterGuideDisplayForList>
+                />
               );
             })}
             {!hideShowMoreItems && (
@@ -282,6 +257,7 @@ GuideList.propTypes = {
   ballotItemWeVoteId: PropTypes.string,
   hideShowMoreItems: PropTypes.bool,
   incomingVoterGuideList: PropTypes.array,
+  increaseNumberOfItemsOnScroll: PropTypes.bool,
 };
 
 const ShowMoreItemsWrapper = styled('div')`

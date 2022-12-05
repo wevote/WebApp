@@ -12451,25 +12451,25 @@ h1, h2, h3, h4, h5, h6 {
   color: #549bb6;
 }
 
-.card-main__description-container--truncated {
-  font-size: 16px;
-  overflow: hidden;
-  position: relative;
-  height: 50px;
-}
+/*.card-main__description-container--truncated {*/
+/*  font-size: 16px;*/
+/*  overflow: hidden;*/
+/*  position: relative;*/
+/*  height: 50px;*/
+/*}*/
 
-.card-main__description-container--truncated::before {
-  content: '';
-  float: left;
-  width: 4px;
-  height: 50px;
-}
+/*.card-main__description-container--truncated::before {*/
+/*  content: '';*/
+/*  float: left;*/
+/*  width: 4px;*/
+/*  height: 50px;*/
+/*}*/
 
-.card-main__description-container--truncated > *:first-child {
-  float: right;
-  width: 100%;
-  margin-left: -4px;
-}
+/*.card-main__description-container--truncated > *:first-child {*/
+/*  float: right;*/
+/*  width: 100%;*/
+/*  margin-left: -4px;*/
+/*}*/
 
 /*.card-main__description-container--truncated::after {*/
 /*  box-sizing: content-box;*/
@@ -16856,18 +16856,18 @@ a {
   }
 }
 
-.endorsement-card__text {
-  padding: 16px 0;
-  font-size: 17px;
-  color: #555;
-}
+/*.endorsement-card__text {*/
+/*  padding: 16px 0;*/
+/*  font-size: 17px;*/
+/*  color: #555;*/
+/*}*/
 
-@media all and (min-width: 768px) {
-  .endorsement-card__text {
-    padding: 0 16px;
-    justify-self: flex-end;
-  }
-}
+/*@media all and (min-width: 768px) {*/
+/*  .endorsement-card__text {*/
+/*    padding: 0 16px;*/
+/*    justify-self: flex-end;*/
+/*  }*/
+/*}*/
 
 /*.btn-social .fa.fa-twitter {*/
 /*  width: 46px !important;*/

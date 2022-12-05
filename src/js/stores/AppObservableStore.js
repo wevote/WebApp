@@ -475,6 +475,15 @@ export default {
     return nonFluxState.sharedItemCode;
   },
 
+  getWeVoteRootURL () {
+    const { location: { hostname, origin } } = window;
+    if (hostname === 'localhost') {
+      return origin; // ex/ https://localhost:3000
+    } else {
+      return 'https://wevote.us';
+    }
+  },
+
   getWhatAndHowMuchToShare () {
     // console.log('getWhatAndHowMuchToShare:', nonFluxState.whatAndHowMuchToShare);
     return nonFluxState.whatAndHowMuchToShare;

@@ -35,7 +35,7 @@ class ThisIsMeAction extends Component {
       // We do not want to show the "This is me" link if there isn't a twitter_handle associated with this organization
       return <span />;
     }
-    const { classes, kindOfOwner, nameBeingViewed, whiteOnBlue } = this.props;
+    const { classes, kindOfOwner, nameBeingViewed, narrowColumnDisplay, whiteOnBlue } = this.props;
     // Manage the control over this organization voter guide
     const { voter } = this.state;
     const signedInTwitter = voter === undefined ? false : voter.signed_in_twitter;
@@ -68,32 +68,34 @@ class ThisIsMeAction extends Component {
       icon = <Twitter classes={{ root: classes.twitterLogoWhite }} />;
     }
 
+    const pigsCanFly = false;
     return (
-      <div>
+      <>
         {signedInWithThisTwitterAccount ?
           <span /> : (
-            <div className="card">
-              <Container>
-                <div className="endorsement-card">
-                  <Link to={`/verifythisisme/${twitterHandleBeingViewed}`} className="u-no-underline">
-                    <SplitIconButton
-                      backgroundColor={backgroundColor}
-                      buttonText={`Claim @${this.props.twitterHandleBeingViewed}`}
-                      externalUniqueId="candidateVerifyThisIsMeAction"
-                      fontColor={fontColor}
-                      icon={icon}
-                      id="candidateVerifyThisIsMeAction"
-                      title={`Claim @${this.props.twitterHandleBeingViewed}`}
-                    />
-                  </Link>
-                  <div className="endorsement-card__text">
+            <ThisIsMeOuterWrapper>
+              <EndorsementCardFlexWrapper narrowColumnDisplay={narrowColumnDisplay}>
+                <Link to={`/verifythisisme/${twitterHandleBeingViewed}`} className="u-no-underline">
+                  <SplitIconButton
+                    backgroundColor={backgroundColor}
+                    buttonText={`Claim @${this.props.twitterHandleBeingViewed}`}
+                    externalUniqueId="candidateVerifyThisIsMeAction"
+                    fontColor={fontColor}
+                    icon={icon}
+                    id="candidateVerifyThisIsMeAction"
+                    title={`Claim @${this.props.twitterHandleBeingViewed}`}
+                  />
+                </Link>
+                {(thisIsMeActionText && pigsCanFly) && (
+                  <div>
+                    {/* className="endorsement-card__text" */}
                     {thisIsMeActionText}
                   </div>
-                </div>
-              </Container>
-            </div>
+                )}
+              </EndorsementCardFlexWrapper>
+            </ThisIsMeOuterWrapper>
           )}
-      </div>
+      </>
     );
   }
 }
@@ -101,6 +103,7 @@ ThisIsMeAction.propTypes = {
   classes: PropTypes.object,
   kindOfOwner: PropTypes.string,
   nameBeingViewed: PropTypes.string,
+  narrowColumnDisplay: PropTypes.bool,
   twitterHandleBeingViewed: PropTypes.string,
   whiteOnBlue: PropTypes.bool,
 };
@@ -114,8 +117,20 @@ const styles = () => ({
   },
 });
 
-const Container = styled('div')`
+const ThisIsMeOuterWrapper = styled('div')`
   padding: 16px;
 `;
+
+const EndorsementCardFlexWrapper = styled('div', {
+  shouldForwardProp: (prop) => !['narrowColumnDisplay'].includes(prop),
+})(({ narrowColumnDisplay }) => (`
+  bottom: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  ${narrowColumnDisplay ? 'flex-direction: column;' : ''}
+  ${narrowColumnDisplay ? '' : 'align-items: center;'}
+  ${narrowColumnDisplay ? '' : 'justify-content: space-between;'}
+`));
 
 export default withStyles(styles)(ThisIsMeAction);

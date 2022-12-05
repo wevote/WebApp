@@ -1,9 +1,7 @@
 import PropTypes from 'prop-types';
-import React, { Component, Suspense } from 'react';
+import React, { Component } from 'react';
 import { renderLog } from '../../common/utils/logging';
-import VoterGuideDisplayForList from '../VoterGuide/VoterGuideDisplayForList';
-
-const FollowToggle = React.lazy(() => import(/* webpackChunkName: 'FollowToggle' */ '../Widgets/FollowToggle'));
+import OrganizationDisplayForList from './OrganizationDisplayForList';
 
 // NOTE FROM DALE: When OpinionsIgnoredList is refactored, this should be refactored to display Organizations instead of Voter Guides
 export default class OpinionsIgnoredList extends Component {
@@ -38,19 +36,16 @@ export default class OpinionsIgnoredList extends Component {
 
     return (
       <div className="guidelist card-child__list-group">
-        {this.state.organizationsIgnored.map((oneOrganization) => (
-          <VoterGuideDisplayForList
-            key={oneOrganization.organization_we_vote_id}
-            organizationWeVoteId={oneOrganization.organization_we_vote_id}
-            twitterDescription={oneOrganization.twitter_description}
-            twitterHandle={oneOrganization.twitter_handle}
-            voterGuideImageUrlLarge={oneOrganization.voter_guide_image_url_large}
-            voterGuideDisplayName={oneOrganization.voter_guide_display_name}
-          >
-            <Suspense fallback={<></>}>
-              <FollowToggle organizationWeVoteId={oneOrganization.organization_we_vote_id} />
-            </Suspense>
-          </VoterGuideDisplayForList>
+        {this.state.organizationsIgnored.map((organization) => (
+          <OrganizationDisplayForList
+            key={organization.organization_we_vote_id}
+            organizationName={organization.voter_guide_display_name}
+            organizationPhotoUrlMedium={organization.voter_guide_image_url_medium}
+            organizationWeVoteId={organization.organization_we_vote_id}
+            twitterDescription={organization.twitter_description}
+            twitterFollowersCount={organization.twitter_followers_count}
+            twitterHandle={organization.twitter_handle}
+          />
         ))}
       </div>
     );

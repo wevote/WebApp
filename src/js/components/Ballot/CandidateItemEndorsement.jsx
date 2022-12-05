@@ -368,7 +368,7 @@ class CandidateItemEndorsement extends Component {
       parseInt(voterGuidePossibilityPositionId, 10) > 0;
 
     return (
-      <CandidateItemWrapper className="card-main u-overflow-hidden candidate-card card-main__no-underline">
+      <CandidateItemEndorsementWrapper className="card-main u-overflow-hidden candidate-card card-main__no-underline">
         <CandidateWrapper className="card-main__media-object">
           <CandidateInfo>
             <div className="card-main__media-object-anchor">
@@ -526,7 +526,7 @@ class CandidateItemEndorsement extends Component {
             Submit for Review
           </Button>
         </FourButtons>
-      </CandidateItemWrapper>
+      </CandidateItemEndorsementWrapper>
     );
   }
 }
@@ -592,7 +592,7 @@ const CandidateInfo = styled('div', {
 const Candidate = styled('div')`
 `;
 
-const CandidateItemWrapper = styled('div')`
+const CandidateItemEndorsementWrapper = styled('div')`
   padding: 10px 16px 8px;
 `;
 
