@@ -1,5 +1,6 @@
 import { Chip } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
+import { filter } from 'lodash-es';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
@@ -7,6 +8,7 @@ import styled from 'styled-components';
 import IssueActions from '../../actions/IssueActions';
 import apiCalming from '../../common/utils/apiCalming';
 import { renderLog } from '../../common/utils/logging';
+import SearchBar from '../../components/Search/SearchBar';
 import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import GuideList from '../../components/VoterGuide/GuideList';
 import IssueStore from '../../stores/IssueStore';
@@ -29,6 +31,7 @@ class OneValue extends Component {
       organizationsForValue: [],
       organizationsForValueLength: 0,
       organizationListIdentifier: '',
+      searchText: '',
       voterGuidesForValue: [],
       voterGuidesForValueLength: 0,
     };
@@ -94,6 +97,11 @@ class OneValue extends Component {
     if (issue && issue.issue_we_vote_id) {
       const voterGuidesForValue = VoterGuideStore.getVoterGuidesForValue(issue.issue_we_vote_id);
       const voterGuidesForValueLength = voterGuidesForValue.length || 0;
+      if (voterGuidesForValueLength > 0) {
+        this.setState({
+          listModeShown: 'voterGuidesForThisElection',
+        });
+      }
       this.setState({
         voterGuidesForValueLength,
         voterGuidesForValue,
@@ -124,6 +132,11 @@ class OneValue extends Component {
     const { issueWeVoteId } = this.state;
     const voterGuidesForValue = VoterGuideStore.getVoterGuidesForValue(issueWeVoteId);
     const voterGuidesForValueLength = voterGuidesForValue.length || 0;
+    if (voterGuidesForValueLength > 0) {
+      this.setState({
+        listModeShown: 'voterGuidesForThisElection',
+      });
+    }
     // console.log('onVoterGuideStoreChange, voterGuidesForValue: ', voterGuidesForValue);
     this.setState({
       voterGuidesForValue,
@@ -137,15 +150,23 @@ class OneValue extends Component {
     });
   }
 
+  searchFunction = (searchText) => {
+    this.setState({ searchText });
+  }
+
+  clearFunction = () => {
+    this.searchFunction('');
+  }
+
   render () {
     renderLog('OneValue');  // Set LOG_RENDER_EVENTS to log all renders
     const {
       issue, listModeShown,
-      organizationsForValue, organizationsForValueLength, organizationListIdentifier,
-      voterGuidesForValue, voterGuidesForValueLength,
+      searchText, voterGuidesForValueLength,
     } = this.state;
-
+    let { organizationListIdentifier, organizationsForValue, organizationsForValueLength, voterGuidesForValue } = this.state;
     const { classes } = this.props;
+    const { match: { params: { value_slug: valueSlug } } } = this.props;
 
     let issueNameFound = false;
     let pageTitle = 'Value';
@@ -161,6 +182,43 @@ class OneValue extends Component {
     const showAllEndorsers = (listModeShown === 'allEndorsers') || (voterGuidesForValueLength === 0);
     const showEndorsersForThisElection = (listModeShown === 'voterGuidesForThisElection') && (voterGuidesForValueLength > 0);
     const advocatesCount = Math.max(organizationsForValueLength, voterGuidesForValueLength);
+
+    // console.log('organizationsForValue:', organizationsForValue);
+    // console.log('voterGuidesForValue:', voterGuidesForValue);
+    if (searchText.length > 0) {
+      let modifiedOrganization;
+      const searchTextLowercase = searchText.toLowerCase();
+      if (showAllEndorsers) {
+        const organizationsForValueModified = [];
+        organizationsForValue.forEach((oneOrganization) => {
+          if (!oneOrganization.twitter_description) {
+            modifiedOrganization = {
+              ...oneOrganization,
+              twitter_description: '',
+            };
+            organizationsForValueModified.push(modifiedOrganization);
+          } else {
+            organizationsForValueModified.push(oneOrganization);
+          }
+        });
+        organizationsForValue = filter(organizationsForValueModified,
+          (organization) => (
+            organization.organization_name.toLowerCase().includes(searchTextLowercase) ||
+            organization.twitter_description.toLowerCase().includes(searchTextLowercase) ||
+            organization.organization_twitter_handle.toLowerCase().includes(searchTextLowercase)
+          ));
+        organizationsForValueLength = organizationsForValue.length;
+        organizationListIdentifier = `${valueSlug}${organizationsForValueLength}`;
+      }
+      if (showEndorsersForThisElection) {
+        voterGuidesForValue = filter(voterGuidesForValue,
+          (guide) => guide.voter_guide_display_name.toLowerCase().includes(searchTextLowercase) ||
+              guide.twitter_description.toLowerCase().includes(searchTextLowercase) ||
+              guide.twitter_handle.toLowerCase().includes(searchTextLowercase));
+      }
+    }
+
+    const ifPigsFly = false;
     return (
       <PageContentContainer>
         <OneValueWrapper>
@@ -178,57 +236,62 @@ class OneValue extends Component {
               />
             </Suspense>
           </IssueCardWrapper>
-          {voterGuidesForValueLength > 0 && (
-            <FilterChoices>
-              <Chip
-                key="allOrganizationsKey"
-                label="All Endorsers"
-                className={classes.notSelectedChip}
-                component="div"
-                onClick={() => this.changeListModeShown('allEndorsers')}
-                variant={showAllEndorsers ? undefined : 'outlined'}
-              />
-              <Chip
-                key="forThisElectionKey"
-                label="For this Election"
-                className={classes.notSelectedChip}
-                component="div"
-                onClick={() => this.changeListModeShown('voterGuidesForThisElection')}
-                variant={showEndorsersForThisElection ? undefined : 'outlined'}
-              />
-            </FilterChoices>
-          )}
-          {/* This is not currently working and probably doesn't make sense to allow search on a single value page.
-          <SearchGuidesToFollowBox /> */}
           <Title id="advocatesTitle">
             Advocates for
             {' '}
             {issue.issue_name}
           </Title>
+          {voterGuidesForValueLength > 0 && (
+            <FilterChoices>
+              <Chip
+                key="forThisElectionKey"
+                label={<span style={showEndorsersForThisElection ? { fontWeight: 600 } : {}}>For This Election</span>}
+                className={classes.notSelectedChip}
+                component="div"
+                onClick={() => this.changeListModeShown('voterGuidesForThisElection')}
+                variant={showEndorsersForThisElection ? undefined : 'outlined'}
+              />
+              <Chip
+                key="allOrganizationsKey"
+                label={<span style={showAllEndorsers ? { fontWeight: 600 } : {}}>All Endorsers</span>}
+                className={classes.notSelectedChip}
+                component="div"
+                onClick={() => this.changeListModeShown('allEndorsers')}
+                variant={showAllEndorsers ? undefined : 'outlined'}
+              />
+            </FilterChoices>
+          )}
+          <SearchBarWrapper>
+            <SearchBar
+              clearButton
+              searchButton
+              placeholder="Search by name, Twitter handle or description"
+              searchFunction={this.searchFunction}
+              clearFunction={this.clearFunction}
+              searchUpdateDelayTime={0}
+            />
+          </SearchBarWrapper>
           {showAllEndorsers && (
             <Suspense fallback={<></>}>
               <OrganizationList
                 incomingOrganizationList={organizationsForValue}
+                increaseNumberOfItemsOnScroll
                 organizationListIdentifier={organizationListIdentifier}
               />
             </Suspense>
           )}
           {showEndorsersForThisElection && (
-            <>
-              <div className="card">
-                <Suspense fallback={<></>}>
-                  <GuideList incomingVoterGuideList={voterGuidesForValue} />
-                </Suspense>
-              </div>
-            </>
+            <Suspense fallback={<></>}>
+              <GuideList incomingVoterGuideList={voterGuidesForValue} increaseNumberOfItemsOnScroll />
+            </Suspense>
           )}
-          <Suspense fallback={<></>}>
-            <DelayedLoad waitBeforeShow={2000}>
-              <>
+          {ifPigsFly && (
+            <Suspense fallback={<></>}>
+              <DelayedLoad waitBeforeShow={2000}>
                 <ValuesList currentIssue={issue} hideAdvocatesCount includedOnAnotherPage />
-              </>
-            </DelayedLoad>
-          </Suspense>
+              </DelayedLoad>
+            </Suspense>
+          )}
           <br />
         </OneValueWrapper>
       </PageContentContainer>
@@ -236,8 +299,8 @@ class OneValue extends Component {
   }
 }
 OneValue.propTypes = {
-  match: PropTypes.object.isRequired,
   classes: PropTypes.object,
+  match: PropTypes.object.isRequired,
 };
 
 const styles = (theme) => ({
@@ -264,7 +327,7 @@ const styles = (theme) => ({
 });
 
 const FilterChoices = styled('div')`
-  margin-bottom: 24px;
+  margin-bottom: 8px;
 `;
 
 const IssueCardWrapper = styled('div')`
@@ -273,6 +336,10 @@ const IssueCardWrapper = styled('div')`
 
 const OneValueWrapper = styled('div')`
   margin: 0 15px;
+`;
+
+const SearchBarWrapper = styled('div')`
+  margin-bottom: 16px;
 `;
 
 const Title = styled('h3')`

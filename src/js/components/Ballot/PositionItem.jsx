@@ -165,7 +165,9 @@ class PositionItem extends Component {
     //     }
     //   }
     // }
-    const speakerLinkExternal = `https://wevote.us${speakerLink}`;
+    const hostnameAndPort = AppObservableStore.getWeVoteRootURL();
+    // console.log('hostnameAndPort:', hostnameAndPort);
+    const speakerLinkExternal = `${hostnameAndPort}${speakerLink}`;
 
     let positionSpeakerDisplayName = position.speaker_display_name;
     // console.log('position:', position, ', VoterStore.getLinkedOrganizationWeVoteId():', VoterStore.getLinkedOrganizationWeVoteId());

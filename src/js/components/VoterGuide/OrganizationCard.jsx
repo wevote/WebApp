@@ -234,7 +234,7 @@ export default class OrganizationCard extends Component {
                     <Suspense fallback={<></>}>
                       <ReadMore
                         textToDisplay={twitterDescriptionMinusName}
-                        numberOfLines={3}
+                        numberOfLines={6}
                       />
                     </Suspense>
                   ) : (

@@ -1,47 +1,81 @@
 // import { Comment } from '@mui/icons-material';
-// import { Info, ThumbDown, ThumbUp } from '@mui/icons-material';
-import { Chip, CircularProgress } from '@mui/material';
+import { Info, ThumbDown, ThumbUp } from '@mui/icons-material';
+import { CircularProgress } from '@mui/material';
 import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import FriendActions from '../../actions/FriendActions';
 import OrganizationActions from '../../actions/OrganizationActions';
-// import { getStateCodesFoundInObjectList } from '../../common/utils/addressFunctions';
+import { getStateCodesFoundInObjectList } from '../../common/utils/addressFunctions';
 import apiCalming from '../../common/utils/apiCalming';
 import { renderLog } from '../../common/utils/logging';
 import FriendStore from '../../stores/FriendStore';
 import OrganizationStore from '../../stores/OrganizationStore';
+import FilterBase from '../Filter/FilterBase';
+import VoterGuidePositionFilter from '../Filter/VoterGuidePositionFilter';
 import NumberOfItemsFound from '../Widgets/NumberOfItemsFound';
 
 const ShowMoreItems = React.lazy(() => import(/* webpackChunkName: 'ShowMoreItems' */ '../Widgets/ShowMoreItems'));
 const VoterGuidePositionItem = React.lazy(() => import(/* webpackChunkName: 'VoterGuidePositionItem' */ './VoterGuidePositionItem'));
 
 
+// Thumbs up/down needs to be fixed
+const groupedFilters = [
+  {
+    filterDisplayName: 'pro',
+    filterName: 'showSupportFilter',
+    icon: <ThumbUp />,
+    filterId: 'thumbUpFilter',
+  },
+  {
+    filterDisplayName: 'con',
+    filterName: 'showOpposeFilter',
+    icon: <ThumbDown />,
+    filterId: 'thumbDownFilter',
+  },
+  {
+    filterDisplayName: 'info',
+    filterName: 'showInformationOnlyFilter',
+    icon: <Info />,
+    filterId: 'infoFilter',
+  },
+];
+
+// We are planning to add a sort where the comments are at the top, so a show comment button isn't needed
+const islandFilters = [
+  // {
+  //   filterName: 'showCommentFilter',
+  //   icon: <Comment />,
+  //   filterDisplayName: 'Has Comment',
+  //   filterId: 'islandFilterCommented',
+  // },
+];
+
 const STARTING_NUMBER_OF_POSITIONS_TO_DISPLAY = 6;
 
-class VoterGuidePositionList extends Component {
+class VoterGuidePositionListComplexFilter extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      // atLeastOneFriendAdded: false,
+      atLeastOneFriendAdded: false,
       filteredPositionList: [],
       filteredPositionListLength: 0,
       isSearching: false,
       loadingMoreItems: false,
-      // numberOfPositionItemsDisplayed: 0,
+      numberOfPositionItemsDisplayed: 0,
       numberOfPositionItemsToDisplay: STARTING_NUMBER_OF_POSITIONS_TO_DISPLAY,
       positionList: [],
       positionSearchResults: [],
       searchText: '',
-      // stateCodesToDisplay: [],
+      stateCodesToDisplay: [],
       totalNumberOfPositionSearchResults: 0,
     };
     this.onScroll = this.onScroll.bind(this);
   }
 
   componentDidMount () {
-    // console.log('VoterGuidePositionList componentDidMount');
+    // console.log('VoterGuidePositionListComplexFilter componentDidMount');
     const { incomingPositionList } = this.props;
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
@@ -53,7 +87,7 @@ class VoterGuidePositionList extends Component {
     const organizationsVoterIsFollowing = OrganizationStore.getOrganizationsVoterIsFollowing();
     // eslint-disable-next-line arrow-body-style
     const positionListModified1 = incomingPositionList.map((position) => {
-      // console.log('VoterGuidePositionList componentDidMount positionListModified1, position: ', position);
+      // console.log('VoterGuidePositionListComplexFilter componentDidMount positionListModified1, position: ', position);
       if (!position.position_we_vote_id) {
         // console.log('MISSING position.position_we_vote_id');
         return null;
@@ -76,10 +110,10 @@ class VoterGuidePositionList extends Component {
 
     // Replicate onFriendStoreChange
     const organizationsVoterIsFriendsWith = FriendStore.currentFriendsOrganizationWeVoteIDList();
-    // console.log('VoterGuidePositionList onFriendStoreChange, organizationsVoterIsFriendsWith:', organizationsVoterIsFriendsWith);
+    // console.log('VoterGuidePositionListComplexFilter onFriendStoreChange, organizationsVoterIsFriendsWith:', organizationsVoterIsFriendsWith);
     // eslint-disable-next-line arrow-body-style
     const positionListModified2 = positionListModified1Filtered.map((position) => {
-      // console.log('VoterGuidePositionList componentDidMount positionListModified2, position: ', position);
+      // console.log('VoterGuidePositionListComplexFilter componentDidMount positionListModified2, position: ', position);
       return ({
         ...position,
         currentFriend: organizationsVoterIsFriendsWith.filter((organizationWeVoteId) => (position && organizationWeVoteId === position.speaker_we_vote_id)).length > 0,
@@ -96,7 +130,7 @@ class VoterGuidePositionList extends Component {
       }
     }
 
-    // const stateCodesToDisplay = getStateCodesFoundInObjectList(incomingPositionList);
+    const stateCodesToDisplay = getStateCodesFoundInObjectList(incomingPositionList);
     // console.log('stateCodesToDisplay:', stateCodesToDisplay);
 
     window.addEventListener('scroll', this.onScroll);
@@ -104,9 +138,89 @@ class VoterGuidePositionList extends Component {
       positionList: positionListModified2Filtered,
       filteredPositionList: positionListModified2Filtered,
       filteredPositionListLength: positionListModified2Filtered.length,
-      // stateCodesToDisplay,
+      stateCodesToDisplay,
       numberOfPositionItemsToDisplay: this.props.startingNumberOfPositionsToDisplay || STARTING_NUMBER_OF_POSITIONS_TO_DISPLAY,
     });
+  }
+
+  // UNSAFE_componentWillReceiveProps (nextProps) {
+  //   let { incomingPositionList } = nextProps;
+  //   console.log('VoterGuidePositionListComplexFilter componentWillReceiveProps, incomingPositionList:', incomingPositionList);
+  //   const candidateAlreadySeenThisYear = {};
+  //
+  //   // Replicate onOrganizationStoreChange
+  //   const organizationsVoterIsFollowing = OrganizationStore.getOrganizationsVoterIsFollowing();
+  //   // eslint-disable-next-line arrow-body-style
+  //   incomingPositionList = incomingPositionList.map((position) => {
+  //     // console.log('VoterGuidePositionListComplexFilter onOrganizationStoreChange, position: ', position);
+  //     if (!position) {
+  //       return null;
+  //     }
+  //     if (candidateAlreadySeenThisYear[position.ballot_item_we_vote_id] && candidateAlreadySeenThisYear[position.ballot_item_we_vote_id].includes(position.position_year)) {
+  //       // console.log('componentWillReceiveProps already seen');
+  //       return null;
+  //     } else if (candidateAlreadySeenThisYear[position.ballot_item_we_vote_id]) {
+  //       candidateAlreadySeenThisYear[position.ballot_item_we_vote_id].push(position.position_year);
+  //     } else {
+  //       candidateAlreadySeenThisYear[position.ballot_item_we_vote_id] = [];
+  //       candidateAlreadySeenThisYear[position.ballot_item_we_vote_id].push(position.position_year);
+  //     }
+  //     return ({
+  //       ...position,
+  //       followed: organizationsVoterIsFollowing.filter(org => (org && position && org.organization_we_vote_id === position.speaker_we_vote_id)).length > 0,
+  //     });
+  //   });
+  //
+  //   const stateCodesToDisplay = getStateCodesFoundInObjectList(incomingPositionList);
+  //   this.setState({
+  //     positionList: incomingPositionList,
+  //     // filteredPositionList: incomingPositionList, // Do not update
+  //     stateCodesToDisplay,
+  //   });
+  //   // }
+  // }
+
+  shouldComponentUpdate (nextProps, nextState) {
+    // This lifecycle method tells the component to NOT render if not needed
+    if (this.state.atLeastOneFriendAdded !== nextState.atLeastOneFriendAdded) {
+      return true;
+    }
+    if (this.state.filteredPositionListLength !== nextState.filteredPositionListLength) {
+      return true;
+    }
+    if (this.state.isSearching !== nextState.isSearching) {
+      return true;
+    }
+    if (this.state.loadingMoreItems !== nextState.loadingMoreItems) {
+      return true;
+    }
+    if (this.state.numberOfPositionItemsDisplayed !== nextState.numberOfPositionItemsDisplayed) {
+      return true;
+    }
+    if (this.state.numberOfPositionItemsToDisplay !== nextState.numberOfPositionItemsToDisplay) {
+      return true;
+    }
+    if (this.state.searchText !== nextState.searchText) {
+      return true;
+    }
+    if (this.state.totalNumberOfPositionSearchResults !== nextState.totalNumberOfPositionSearchResults) {
+      return true;
+    }
+
+    const { incomingPositionList } = nextProps;
+    const { incomingPositionList: priorPositionList } = this.props;
+    const incomingPositionListLength = incomingPositionList ? incomingPositionList.length : 0;
+    const priorPositionListLength = priorPositionList ? priorPositionList.length : 0;
+    if (incomingPositionListLength !== priorPositionListLength) {
+      return true;
+    }
+    if (JSON.stringify(this.state.filteredPositionList) !== JSON.stringify(nextState.filteredPositionList)) {
+      return true;
+    }
+    if (JSON.stringify(this.state.stateCodesToDisplay) !== JSON.stringify(nextState.stateCodesToDisplay)) {
+      return true;
+    }
+    return false;
   }
 
   componentWillUnmount () {
@@ -120,12 +234,12 @@ class VoterGuidePositionList extends Component {
     // console.log('onFriendStoreChange');
     const { positionList } = this.state; // filteredPositionList,
     const organizationsVoterIsFriendsWith = FriendStore.currentFriendsOrganizationWeVoteIDList();
-    // console.log('VoterGuidePositionList onFriendStoreChange, organizationsVoterIsFriendsWith:', organizationsVoterIsFriendsWith);
+    // console.log('VoterGuidePositionListComplexFilter onFriendStoreChange, organizationsVoterIsFriendsWith:', organizationsVoterIsFriendsWith);
     // eslint-disable-next-line arrow-body-style
     let currentFriend;
     let atLeastOneFriendAdded = false;
     const positionListWithFriendData = positionList.map((position) => {
-      // console.log('VoterGuidePositionList onFriendStoreChange, position: ', position);
+      // console.log('VoterGuidePositionListComplexFilter onFriendStoreChange, position: ', position);
       currentFriend = organizationsVoterIsFriendsWith.filter((organizationWeVoteId) => (position && organizationWeVoteId === position.speaker_we_vote_id)).length > 0;
       if (currentFriend) {
         atLeastOneFriendAdded = true;
@@ -144,12 +258,12 @@ class VoterGuidePositionList extends Component {
   }
 
   onOrganizationStoreChange () {
-    // console.log('VoterGuidePositionList onOrganizationStoreChange');
+    // console.log('VoterGuidePositionListComplexFilter onOrganizationStoreChange');
     const { filteredPositionList, positionList } = this.state;
     const organizationsVoterIsFollowing = OrganizationStore.getOrganizationsVoterIsFollowing();
     // eslint-disable-next-line arrow-body-style
     const positionListWithFollowedData = positionList.map((position) => {
-      // console.log('VoterGuidePositionList onOrganizationStoreChange, position: ', position);
+      // console.log('VoterGuidePositionListComplexFilter onOrganizationStoreChange, position: ', position);
       return ({
         ...position,
         followed: organizationsVoterIsFollowing.filter((org) => (org && position && org.organization_we_vote_id === position.speaker_we_vote_id)).length > 0,
@@ -157,7 +271,7 @@ class VoterGuidePositionList extends Component {
     });
     // eslint-disable-next-line arrow-body-style
     const filteredPositionListWithFollowedData = filteredPositionList.map((position) => {
-      // console.log('VoterGuidePositionList onOrganizationStoreChange, position: ', position);
+      // console.log('VoterGuidePositionListComplexFilter onOrganizationStoreChange, position: ', position);
       return ({
         ...position,
         followed: organizationsVoterIsFollowing.filter((org) => (org && position && org.organization_we_vote_id === position.speaker_we_vote_id)).length > 0,
@@ -215,16 +329,16 @@ class VoterGuidePositionList extends Component {
     return null;
   }
 
-  // onPositionSearch = (searchText, filteredItems) => {
-  //   // console.log('onPositionSearch');
-  //   // window.scrollTo(0, 0); // This causes unpleasant jump in mobile
-  //   const totalNumberOfPositionSearchResults = filteredItems.length || 0;
-  //   this.setState({
-  //     positionSearchResults: filteredItems,
-  //     searchText,
-  //     totalNumberOfPositionSearchResults,
-  //   });
-  // };
+  onPositionSearch = (searchText, filteredItems) => {
+    // console.log('onPositionSearch');
+    // window.scrollTo(0, 0); // This causes unpleasant jump in mobile
+    const totalNumberOfPositionSearchResults = filteredItems.length || 0;
+    this.setState({
+      positionSearchResults: filteredItems,
+      searchText,
+      totalNumberOfPositionSearchResults,
+    });
+  };
 
   handleToggleSearchBallot = (isSearching) => {
     // console.log('VoterGuideSettingsAddPositions handleToggleSearchBallot isSearching:', isSearching);
@@ -251,28 +365,20 @@ class VoterGuidePositionList extends Component {
     }, 500);
   }
 
-  searchFunction (searchText) {
-    this.setState({ searchText });
-  }
-
-  clearFunction () {
-    this.searchFunction('');
-  }
-
   render () {
-    const { positionList, positionListExistsTitle } = this.state; // stateCodesToDisplay
-    renderLog('VoterGuidePositionList');  // Set LOG_RENDER_EVENTS to log all renders
+    const { positionList, stateCodesToDisplay } = this.state;
+    renderLog('VoterGuidePositionListComplexFilter');  // Set LOG_RENDER_EVENTS to log all renders
     if (!positionList) {
-      // console.log('VoterGuidePositionList Loading...');
+      // console.log('VoterGuidePositionListComplexFilter Loading...');
       return <div>Loading...</div>;
     }
-    const { classes, organizationWeVoteId } = this.props;
+    const { organizationWeVoteId } = this.props;
     const {
       filteredPositionList, filteredPositionListLength, isSearching, loadingMoreItems,
       numberOfPositionItemsToDisplay, positionSearchResults, searchText,
       totalNumberOfPositionSearchResults,
     } = this.state;
-    // console.log('VoterGuidePositionList render');
+    // console.log('VoterGuidePositionListComplexFilter render');
     // console.log('this.state.positionList render: ', this.state.positionList);
     // console.log('this.state.filteredPositionList render: ', this.state.filteredPositionList);
     let showTitle = false;
@@ -280,48 +386,36 @@ class VoterGuidePositionList extends Component {
     for (count = 0; count < positionList.length; count++) {
       showTitle = true;
     }
-    // const selectedFiltersDefault = ['sortByAlphabetical', 'upcomingOnly', 'federalRaces', 'stateRaces', 'measureRaces', 'localRaces'];
-    const activeFiltersDict = [
-      {
-        filterDisplayName: 'This Election',
-        filterId: 'showUpcomingEndorsements',
-        filterName: 'showUpcomingEndorsements',
-        filterSelected: true,
-      },
-      {
-        filterDisplayName: '2022',
-        filterId: 'show2022',
-        filterName: 'show2022',
-        filterSelected: false,
-      },
-      {
-        filterDisplayName: 'All',
-        filterId: 'showAllEndorsements',
-        filterName: 'showAllEndorsements',
-        filterSelected: false,
-      },
-    ];
+    const selectedFiltersDefault = ['sortByAlphabetical', 'upcomingOnly', 'federalRaces', 'stateRaces', 'measureRaces', 'localRaces'];
     let numberOfPositionItemsDisplayed = 0;
     let searchTextString = '';
-    const showingPartialResults = false;
     return (
       <div>
-        <VoterGuideFilterWrapper>
+        <FilterWrapper>
           { showTitle ?
-            <span>{positionListExistsTitle}</span> :
+            <span>{this.props.positionListExistsTitle}</span> :
             null}
-          <VoterGuideFilterChoices>
-            {activeFiltersDict.map((oneFilter) => (
-              <Chip
-                key={oneFilter.filterId}
-                label={<span style={oneFilter.filterSelected ? { fontWeight: 600 } : {}}>{oneFilter.filterDisplayName}</span>}
-                className={classes.notSelectedChip}
-                component="div"
-                onClick={() => this.changeListModeShown(oneFilter.filterName)}
-                variant={oneFilter.filterSelected ? undefined : 'outlined'}
+          <FilterBase
+            allItems={positionList}
+            filteredPositionListLength={filteredPositionListLength}
+            groupedFilters={filteredPositionListLength > 10 ? groupedFilters : []}
+            islandFilters={islandFilters}
+            numberOfItemsFoundNode={(
+              <NumberOfItemsFound
+                numberOfItemsTotal={isSearching ? totalNumberOfPositionSearchResults : filteredPositionListLength}
               />
-            ))}
-          </VoterGuideFilterChoices>
+            )}
+            onFilteredItemsChange={this.onFilteredItemsChange}
+            onSearch={this.onPositionSearch}
+            onToggleSearch={this.handleToggleSearchBallot}
+            voterGuidePositionSearchMode
+            selectedFiltersDefault={selectedFiltersDefault}
+            sortFilters={['sortByAlphabetical']}
+            stateCodesToDisplay={filteredPositionListLength > 20 ? stateCodesToDisplay : []}
+          >
+            {/* props get added to this component in FilterBase */}
+            <VoterGuidePositionFilter />
+          </FilterBase>
           {(isSearching && searchText) && (
             <SearchTitle>
               Searching for &quot;
@@ -329,12 +423,7 @@ class VoterGuidePositionList extends Component {
               &quot;
             </SearchTitle>
           )}
-          {showingPartialResults && (
-            <NumberOfItemsFound
-              numberOfItemsTotal={isSearching ? totalNumberOfPositionSearchResults : filteredPositionListLength}
-            />
-          )}
-        </VoterGuideFilterWrapper>
+        </FilterWrapper>
         <ul className="card-child__list-group">
           {isSearching ? (
             <>
@@ -434,11 +523,10 @@ class VoterGuidePositionList extends Component {
     );
   }
 }
-VoterGuidePositionList.propTypes = {
-  classes: PropTypes.object,
+VoterGuidePositionListComplexFilter.propTypes = {
   incomingPositionList: PropTypes.array.isRequired,
   organizationWeVoteId: PropTypes.string.isRequired,
-  // positionListExistsTitle: PropTypes.object,
+  positionListExistsTitle: PropTypes.object,
   startingNumberOfPositionsToDisplay: PropTypes.string,
   turnOffOnScroll: PropTypes.bool,
 };
@@ -447,22 +535,10 @@ const styles = () => ({
   iconButton: {
     padding: 8,
   },
-  notSelectedChip: {
-    margin: 2,
-  },
-  selectedChip: {
-    margin: 2,
-  },
 });
 
-const VoterGuideFilterChoices = styled('div')`
-  display: none;
-  margin-top: 8px;
-`;
-
-const VoterGuideFilterWrapper = styled('div')`
+const FilterWrapper = styled('div')`
   margin: 0 15px;
-  margin-bottom: 8px;
 `;
 
 const LoadingItemsWheel = styled('div')`
@@ -503,4 +579,4 @@ const ShowMoreItemsWrapper = styled('div')(({ theme }) => (`
   }
 `));
 
-export default withStyles(styles)(VoterGuidePositionList);
+export default withStyles(styles)(VoterGuidePositionListComplexFilter);

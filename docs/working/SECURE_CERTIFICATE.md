@@ -31,12 +31,12 @@ that describes how to install a locally signed secure certificate on the Mac (it
     WE_VOTE_SERVER_API_CDN_ROOT_URL: "https://cdn.wevoteusa.org/apis/v1/",
   ```
 
-- Then run `npm start` again.
+- Then use `npm run start` again.
 
 # Turn on https for WebApp
-In WebApp/src/js/config.js, set SECURE_CERTIFICATE_INSTALLED to true, and then run `npm start-https`.
+In WebApp/src/js/config.js, set SECURE_CERTIFICATE_INSTALLED to true, and then use `npm run start-https`.
 
-WebApp will startup at http://localhost.3000 
+WebApp will startup at http://localhost:3000 
 
 ## Signing in with Facebook on your dev machine
 ### Make a small necessary change to your /etc/hosts

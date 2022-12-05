@@ -22,6 +22,8 @@ import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import { isSpeakerTypePrivateCitizen } from '../../utils/organization-functions';
+import EndorsementCard from '../../components/Widgets/EndorsementCard';
+import ThisIsMeAction from '../../components/Widgets/ThisIsMeAction';
 
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
 const FollowToggle = React.lazy(() => import(/* webpackChunkName: 'FollowToggle' */ '../../components/Widgets/FollowToggle'));
@@ -287,15 +289,15 @@ export default class OrganizationVoterGuide extends Component {
 
   render () {
     renderLog('OrganizationVoterGuide');  // Set LOG_RENDER_EVENTS to log all renders
-    const { activeRoute, organizationLinkedVoterWeVoteId, organizationBannerUrl, organizationId, organizationType, organizationWeVoteId } = this.state;
-    if (!this.state.organization || !this.state.voter || this.state.autoFollowRedirectHappening) {
+    const { activeRoute, organization, organizationLinkedVoterWeVoteId, organizationBannerUrl, organizationId, organizationType, organizationWeVoteId } = this.state;
+    if (!organization || !this.state.voter || this.state.autoFollowRedirectHappening) {
       return <div>{LoadingWheel}</div>;
     }
     const { match: { params } } = this.props;
     const { location } = window;
 
-    const isVoterOwner = this.state.organization.organization_we_vote_id !== undefined &&
-      this.state.organization.organization_we_vote_id === this.state.voter.linked_organization_we_vote_id;
+    const isVoterOwner = organization.organization_we_vote_id !== undefined &&
+      organization.organization_we_vote_id === this.state.voter.linked_organization_we_vote_id;
 
     let voterGuideFollowersList = this.state.voterGuideFollowersList || [];
     const friendsList = []; // Dummy placeholder till the actual logic is in place
@@ -367,7 +369,7 @@ export default class OrganizationVoterGuide extends Component {
               <div className="card">
                 <div className="card-main">
                   <OrganizationCard
-                    organization={this.state.organization}
+                    organization={organization}
                     useReadMoreForTwitterDescription
                   />
                   { isVoterOwner && (
@@ -448,11 +450,28 @@ export default class OrganizationVoterGuide extends Component {
                 <CardContainer bannerUrl={organizationBannerUrl}>
                   <div className="card">
                     <div className="card-main">
-                      <OrganizationVoterGuideCard organization={this.state.organization} isVoterOwner={isVoterOwner} />
+                      <OrganizationVoterGuideCard organization={organization} isVoterOwner={isVoterOwner} />
                     </div>
                     <br />
                   </div>
                 </CardContainer>
+                <ExtraActionsWrapper>
+                  <EndorsementCard
+                    buttonText="Endorsements missing?"
+                    narrowColumnDisplay
+                    organizationWeVoteId={organizationWeVoteId}
+                    // text={`Are there endorsements from ${organization.organization_name} that you expected to see?`}
+                    title="Endorsements Missing?"
+                  />
+                  {organization.organization_twitter_handle && (
+                    <ThisIsMeAction
+                      kindOfOwner="ORGANIZATION"
+                      nameBeingViewed={organization.organization_name}
+                      narrowColumnDisplay
+                      twitterHandleBeingViewed={organization.organization_twitter_handle}
+                    />
+                  )}
+                </ExtraActionsWrapper>
               </DesktopLeftColumn>
 
               <div className="col-12 col-sm-8">
@@ -547,6 +566,11 @@ const DesktopLeftColumn = styled('div')`
 
 const EditYourEndorsementsWrapper = styled('div')`
   margin-top: 4px;
+`;
+
+const ExtraActionsWrapper = styled('div')`
+  margin-top: 48px;
+  margin-bottom: 20px;
 `;
 
 const FollowToggleMobileWrapper = styled('div')`

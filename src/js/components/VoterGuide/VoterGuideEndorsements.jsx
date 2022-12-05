@@ -1,5 +1,4 @@
-import { Ballot, Info } from '@mui/icons-material';
-import { Card } from '@mui/material';
+import { Ballot } from '@mui/icons-material';
 import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
@@ -299,33 +298,31 @@ class VoterGuideEndorsements extends Component {
                       incomingPositionList={allOrganizationPositions}
                       organizationWeVoteId={organizationWeVoteId}
                       params={params}
-                      positionListExistsTitle={(
-                        <PositionListIntroductionText>
-                          <Info classes={{ root: classes.informationIcon }} />
-                          {organizationName}
-                          &apos;s opinions are below. Use these filters to sort:
-                        </PositionListIntroductionText>
-                      )}
+                      // positionListExistsTitle={(
+                      //   <PositionListIntroductionText>
+                      //     <Info classes={{ root: classes.informationIcon }} />
+                      //     {organizationName}
+                      //     &apos;s opinions are below. Use these filters to sort:
+                      //   </PositionListIntroductionText>
+                      // )}
                     />
                   </DelayedLoad>
                 </Suspense>
               </section>
             ) : (
-              <Card>
-                <Suspense fallback={<></>}>
-                  <DelayedLoad showLoadingText waitBeforeShow={2000}>
-                    <EmptyBallotMessageContainer>
-                      <Ballot classes={{ root: classes.ballotIconRoot }} location={window.location} />
-                      <EmptyBallotText>
-                        No endorsements have been found for
-                        {' '}
-                        {organization.organization_name}
-                        .
-                      </EmptyBallotText>
-                    </EmptyBallotMessageContainer>
-                  </DelayedLoad>
-                </Suspense>
-              </Card>
+              <Suspense fallback={<></>}>
+                <DelayedLoad showLoadingText waitBeforeShow={2000}>
+                  <EmptyBallotMessageContainer>
+                    <Ballot classes={{ root: classes.ballotIconRoot }} location={window.location} />
+                    <EmptyBallotText>
+                      No endorsements have been found for
+                      {' '}
+                      {organization.organization_name}
+                      .
+                    </EmptyBallotText>
+                  </EmptyBallotMessageContainer>
+                </DelayedLoad>
+              </Suspense>
             )}
           </VoterGuideEndorsementsWrapper>
           {searchIsUnderway ? (
@@ -336,17 +333,19 @@ class VoterGuideEndorsements extends Component {
               />
             </span>
           ) : null}
-          <ExtraActionsWrapper>
+          <ExtraActionsWrapper className="u-show-mobile">
             <EndorsementCard
               buttonText="Endorsements missing?"
+              narrowColumnDisplay
               organizationWeVoteId={organizationWeVoteId}
-              text={`Are there endorsements from ${organizationName} that you expected to see?`}
+              // text={`Are there endorsements from ${organizationName} that you expected to see?`}
               title="Endorsements Missing?"
             />
             {organization.organization_twitter_handle && (
               <ThisIsMeAction
                 kindOfOwner="ORGANIZATION"
                 nameBeingViewed={organization.organization_name}
+                narrowColumnDisplay
                 twitterHandleBeingViewed={organization.organization_twitter_handle}
               />
             )}
@@ -416,15 +415,16 @@ const EmptyBallotText = styled('p')(({ theme }) => (`
 `));
 
 const ExtraActionsWrapper = styled('div')`
+  margin-top: 128px;
   margin-bottom: 20px;
-  margin-left: -15px;
-  margin-right: -15px;
+  // margin-left: -15px;
+  // margin-right: -15px;
 `;
 
-const PositionListIntroductionText = styled('div')`
-  color: #999;
-  margin-top: 10px;
-`;
+// const PositionListIntroductionText = styled('div')`
+//   color: #999;
+//   margin-top: 10px;
+// `;
 
 const VoterGuideEndorsementsWrapper = styled('div')`
   margin-bottom: 10px;
