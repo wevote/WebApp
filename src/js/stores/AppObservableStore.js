@@ -518,12 +518,27 @@ export default {
   },
 
   isOnWeVoteRootUrl () {
-    const weVoteURL = nonFluxState.onWeVoteRootUrl || false;
     // console.log('AppObservableStore nonFluxState.onWeVoteRootUrl: ', nonFluxState.onWeVoteRootUrl,
     //   ', isOnWeVoteRootUrl weVoteURL: ', weVoteURL,
     //   ', isCordovaLocal(): ', isCordovaLocal(),
     //   ', is localhost: ', stringContains('localhost:', window.location.href));
-    return weVoteURL || isCordovaLocal() || stringContains('localhost:', window.location.href) || stringContains('ngrok.io', window.location.href);
+
+    const { location: { href: localhost } } = window;
+
+    return (nonFluxState.onWeVoteRootUrl || false) ||
+      isCordovaLocal() ||
+      stringContains('wevote.us:', localhost) ||
+      stringContains('wevote.org:', localhost) ||   // includes quality.wevote.us
+      stringContains('localhost:', localhost) ||
+      stringContains('wevotedeveloper.com:', localhost) ||
+      stringContains('ngrok.io', localhost);
+  },
+
+  isOnFacebookJsSdkHostDomainList () {
+    const { hostname } = window.location;
+    const host = hostname.replace('www.', '');
+    // console.log('----------------------', hostname);
+    return host === 'wevote.us' || host === 'quality.wevote.us' || host === 'localhost' || host === 'wevotedeveloper.com' || isCordovaLocal() || window.location.href.includes('ngrok');
   },
 
   isOnWeVoteSubdomainUrl () {
@@ -677,24 +692,13 @@ export default {
           }
 
           // console.log('AppObservableStore siteConfigurationRetrieve hostname, newHostname:', hostname, newHostname);
-          if (newHostname === 'localhost' ||
-              newHostname === 'quality.wevote.us' ||
-              newHostname === 'wevote.org' ||
-              newHostname === 'wevote.us') {
-            onWeVoteRootUrl = true;
-          } else if (stringContains('wevote.us', newHostname)) {
+          onWeVoteRootUrl = this.isOnWeVoteRootUrl();
+          if (stringContains('wevote.us', newHostname)) {
             onWeVoteSubdomainUrl = true;
           } else {
             onChosenFullDomainUrl = true;
           }
-          // May 2021: This code doesn't need an API call to generate an answer, abandoning querying the store to get the answer
-          if (newHostname === 'localhost' ||
-              newHostname === 'quality.wevote.us' ||
-              newHostname === 'wevote.org' ||
-              newHostname === 'wevote.us' ||
-              isCordovaLocal()) {
-            onFacebookSupportedDomainUrl = true;
-          }
+          onFacebookSupportedDomainUrl = this.isOnFacebookJsSdkHostDomainList();
           // console.log('AppObservableStore siteConfigurationRetrieve onFacebookSupportedDomainUrl:', onFacebookSupportedDomainUrl);
           // console.log('AppObservableStore externalVoterId:', externalVoterId, ', siteOwnerOrganizationWeVoteId:', siteOwnerOrganizationWeVoteId);
           const { voterExternalIdHasBeenSavedOnce } = nonFluxState;
