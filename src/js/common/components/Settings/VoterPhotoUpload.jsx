@@ -1,6 +1,6 @@
 import { AccountCircle } from '@mui/icons-material';
 import withStyles from '@mui/styles/withStyles';
-import { DropzoneArea } from 'mui-file-dropzone';
+import { DropzoneArea } from 'material-ui-dropzone';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
