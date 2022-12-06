@@ -1,44 +1,53 @@
+const browserStackConfig = require('./browserstack.conf');
+const baseConfig = require('./base.conf');
+
+const date = new Date();
+
+const dateForDisplay = date.toDateString();
+
+const buildName = `${browserStackConfig.BUILD}: ${dateForDisplay}`;
+
 const parallelConfig = {
-  user: 'dalemcgrew1',
-  key: '8J93xi57VBQbEBpqdMJR',
-  hostname: 'hub.browserstack.com',
   capabilities: [
     {
       browserName: 'Chrome',
-      browserVersion: '103.0',
+      browserVersion: 'latest',
       'bstack:options': {
         os: 'Windows',
-        osVersion: '11'
-      }
-    },
-    {
-      browserName: 'Firefox',
-      browserVersion: '102.0',
-      'bstack:options': {
-        os: 'Windows',
-        osVersion: '10'
-      }
+        osVersion: '10',
+      },
     },
     {
       browserName: 'Safari',
-      browserVersion: '14.1',
+      browserVersion: '13.1',
       'bstack:options': {
         os: 'OS X',
-        osVersion: 'Big Sur'
-      }
-    }
+        osVersion: 'Catalina',
+      },
+    },
   ],
   commonCapabilities: {
     'bstack:options': {
-      buildName: 'browserstack-build-1'
-    }
+      buildName,
+    },
   },
-  maxInstances: 10
+  maxInstances: 10,
 };
-const { config: baseConfig } = require('./base.conf.js');
-exports.config = { ...baseConfig, ...parallelConfig };
-// Code to support common capabilities
-exports.config.capabilities.forEach(function(caps) {
-  for (var i in exports.config.commonCapabilities)
-    caps[i] = { ...caps[i], ...exports.config.commonCapabilities[i] };
+
+module.exports.config = {
+  ...baseConfig,
+  ...parallelConfig,
+};
+
+module.exports.config.capabilities.forEach((capability) => {
+  const keys = Object.keys(capability);
+  keys.forEach((key) => {
+    if (key in module.exports.config.commonCapabilities) {
+      const device = capability;
+      device[key] = {
+        ...device[key],
+        ...module.exports.config.commonCapabilities[key],
+      };
+    }
+  });
 });

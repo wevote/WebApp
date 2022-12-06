@@ -1,11 +1,16 @@
-exports.config = {
-  user: process.env.BROWSERSTACK_USERNAME || 'BROWSERSTACK_USERNAME',
-  key: process.env.BROWSERSTACK_ACCESS_KEY || 'BROWSERSTACK_ACCESS_KEY',
+const chai = require('chai');
+const browserStackConfig = require('./browserstack.conf');
+
+module.exports = {
+  user: browserStackConfig.BROWSERSTACK_USER,
+  key: browserStackConfig.BROWSERSTACK_KEY,
 
   updateJob: false,
 
   // specs is a list of paths to your test file(s)
-  specs: ['./tests/browserstack_automation/specs/wdioSampleTest.js'],
+  specs: [
+    './tests/browserstack_automation/specs/wdioSampleTest.js',
+  ],
   exclude: [],
 
   logLevel: 'warn',
@@ -18,8 +23,7 @@ exports.config = {
   hostname: 'hub.browserstack.com',
   services: [['browserstack']],
 
-  before: function () {
-    var chai = require('chai');
+  before () {
     global.assert = chai.assert;
     global.expect = chai.expect;
     chai.Should();
