@@ -1,5 +1,6 @@
 // dateFormat.js
 import initializeMoment from './initializeMoment';
+import { convertToInteger } from '../../utils/textFormat';
 
 // eslint-disable-next-line consistent-return
 export function formatDateToMonthDayYear (dateString) {
@@ -36,6 +37,29 @@ export function timeFromDate (dateString) {
     return '';
   }
   return window.moment.utc(dateString).fromNow();
+}
+
+export function getTodayAsInteger (daysInPast = 0) {
+  const today = new Date();
+  const thisYearInteger = today.getFullYear();
+  let month = today.getMonth() + 1; // getMonth comes back starting with 0
+  let monthDay = today.getDate();
+  // console.log('thisYearInteger:', thisYearInteger, ', month: ', month, ', monthDay:', monthDay);
+  // We want to adjust date returned by adjustDayByThisInteger so for thinks like seeing endorsements for an election 5 days past election date
+  if (daysInPast > 0) {
+    if (monthDay < (daysInPast + 1)) {
+      monthDay = 30 - daysInPast;
+      if (month > 1) {
+        month -= 1;
+      }
+    } else {
+      monthDay -= daysInPast;
+    }
+  }
+  const monthAsString = month < 10 ? `0${month}` : `${month}`; // `${month}` for string result
+  const monthDayAsString = monthDay < 10 ? `0${monthDay}` : `${monthDay}`; // `${monthDay}` for string result
+  const dateAsString = `${thisYearInteger}${monthAsString}${monthDayAsString}`;
+  return convertToInteger(dateAsString);
 }
 
 export function electionDateTomorrowFormatted (dayText) {

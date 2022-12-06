@@ -6,15 +6,18 @@ import MenuItem from '@mui/material/MenuItem';
 import styled from 'styled-components';
 import { styled as muiStyled } from '@mui/styles';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import OrganizationActions from '../../actions/OrganizationActions';
 import historyPush from '../../common/utils/historyPush';
+import Cookies from '../../common/utils/js-cookie/Cookies';
 import { renderLog } from '../../common/utils/logging';
 import FriendStore from '../../stores/FriendStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import { openSnackbar } from './SnackNotifier';
+
+const SignInModal = React.lazy(() => import(/* webpackChunkName: 'SignInModal' */ '../SignIn/SignInModal'));
 
 
 function AlreadyFollowingOrIgnoringButton (params) {
@@ -202,10 +205,10 @@ export default class FollowToggle extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      // componentDidMountFinished: false,
       isFollowing: false,
       isIgnoring: false,
       otherVoterWeVoteId: '',
+      showSignInModal: false,
     };
 
     this.followInstantly = this.followInstantly.bind(this);
@@ -231,7 +234,6 @@ export default class FollowToggle extends Component {
         } = organization);
       }
       this.setState({
-        // componentDidMountFinished: true,
         isFollowing: OrganizationStore.isVoterFollowingThisOrganization(organizationWeVoteId),
         isIgnoring: OrganizationStore.isVoterIgnoringThisOrganization(organizationWeVoteId),
         organizationName,
@@ -338,6 +340,13 @@ export default class FollowToggle extends Component {
     }
   }
 
+  toggleShowSignInModal = () => {
+    const { showSignInModal } = this.state;
+    this.setState({
+      showSignInModal: !showSignInModal,
+    });
+  }
+
   startFollowingLocalState () {
     this.setState({
       isFollowing: true,
@@ -415,6 +424,14 @@ export default class FollowToggle extends Component {
       toastMessage = `Now following ${organizationName}'s opinions!`;
     }
 
+    // We are reusing the cookie sign_in_opened_from_issue_follow instead of having an organization-specific cookie
+    //  so we don't annoy the voter with too many requests to sign in.
+    const signInOpenedFromPreviousIssueFollow = Cookies.get('sign_in_opened_from_issue_follow') || 0;
+    if (!signInOpenedFromPreviousIssueFollow) {
+      Cookies.set('sign_in_opened_from_issue_follow', '1', { expires: 1, path: '/' });
+      this.toggleShowSignInModal();
+    }
+
     followFunction();
     openSnackbar({ message: toastMessage });
     this.startFollowingLocalState();
@@ -447,6 +464,7 @@ export default class FollowToggle extends Component {
       hideStopFollowingButton, hideStopIgnoringButton, lightModeOn, organizationWeVoteId,
       showFollowingText, urlWithoutHash, platformType,
     } = this.props;
+    const { showSignInModal } = this.state;
     if (!organizationWeVoteId) { return <div />; }
 
     const { isFollowing, isFriend, isIgnoring, voterLinkedOrganizationWeVoteId, organizationName } = this.state;
@@ -524,6 +542,16 @@ export default class FollowToggle extends Component {
             followInstantly={this.followInstantly}
             params={lineParams}
           />
+        )}
+        {(showSignInModal && !VoterStore.getVoterIsSignedIn()) && (
+          <Suspense fallback={<></>}>
+            <SignInModal
+              signInTitle="Sign in to save who you follow."
+              signInSubTitle=""
+              toggleOnClose={this.toggleShowSignInModal}
+              uponSuccessfulSignIn={this.toggleShowSignInModal}
+            />
+          </Suspense>
         )}
       </div>
     );

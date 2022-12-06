@@ -6,6 +6,7 @@ import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import IssueActions from '../../actions/IssueActions';
+import OrganizationActions from '../../actions/OrganizationActions';
 import apiCalming from '../../common/utils/apiCalming';
 import { renderLog } from '../../common/utils/logging';
 import SearchBar from '../../components/Search/SearchBar';
@@ -53,6 +54,7 @@ class OneValue extends Component {
     if (apiCalming('issuesFollowedRetrieve', 60000)) { // Only once per minute
       IssueActions.issuesFollowedRetrieve();
     }
+    OrganizationActions.organizationsFollowedRetrieve();
     window.scrollTo(0, 0);
     if (issueWeVoteId) {
       if (apiCalming(`issueOrganizationsRetrieve${issueWeVoteId}`, 3600000)) { // Only once per 60 minutes
@@ -93,11 +95,12 @@ class OneValue extends Component {
     // console.log('oneIssueStoreChange');
     const { match: { params: { value_slug: valueSlug } } } = this.props;
     const issue = IssueStore.getIssueBySlug(valueSlug);
+    const { organizationsForValueLength } = this.state;
     // console.log('onIssueStoreChange, valueSlug', valueSlug, ', issue:', issue);
     if (issue && issue.issue_we_vote_id) {
       const voterGuidesForValue = VoterGuideStore.getVoterGuidesForValue(issue.issue_we_vote_id);
       const voterGuidesForValueLength = voterGuidesForValue.length || 0;
-      if (voterGuidesForValueLength > 0) {
+      if ((voterGuidesForValueLength > 0) && (organizationsForValueLength === 0)) {
         this.setState({
           listModeShown: 'voterGuidesForThisElection',
         });
@@ -129,10 +132,10 @@ class OneValue extends Component {
   }
 
   onVoterGuideStoreChange () {
-    const { issueWeVoteId } = this.state;
+    const { issueWeVoteId, organizationsForValueLength } = this.state;
     const voterGuidesForValue = VoterGuideStore.getVoterGuidesForValue(issueWeVoteId);
     const voterGuidesForValueLength = voterGuidesForValue.length || 0;
-    if (voterGuidesForValueLength > 0) {
+    if ((voterGuidesForValueLength > 0) && (organizationsForValueLength === 0)) {
       this.setState({
         listModeShown: 'voterGuidesForThisElection',
       });
@@ -179,8 +182,8 @@ class OneValue extends Component {
       return null;
     }
 
-    const showAllEndorsers = (listModeShown === 'allEndorsers') || (voterGuidesForValueLength === 0);
-    const showEndorsersForThisElection = (listModeShown === 'voterGuidesForThisElection') && (voterGuidesForValueLength > 0);
+    const showAllEndorsers = (listModeShown === 'allEndorsers');
+    const showEndorsersForThisElection = (listModeShown === 'voterGuidesForThisElection');
     const advocatesCount = Math.max(organizationsForValueLength, voterGuidesForValueLength);
 
     // console.log('organizationsForValue:', organizationsForValue);
@@ -246,7 +249,7 @@ class OneValue extends Component {
               <Chip
                 key="forThisElectionKey"
                 label={<span style={showEndorsersForThisElection ? { fontWeight: 600 } : {}}>For This Election</span>}
-                className={classes.notSelectedChip}
+                className={showEndorsersForThisElection ? classes.selectedChip : classes.notSelectedChip}
                 component="div"
                 onClick={() => this.changeListModeShown('voterGuidesForThisElection')}
                 variant={showEndorsersForThisElection ? undefined : 'outlined'}
@@ -254,7 +257,7 @@ class OneValue extends Component {
               <Chip
                 key="allOrganizationsKey"
                 label={<span style={showAllEndorsers ? { fontWeight: 600 } : {}}>All Endorsers</span>}
-                className={classes.notSelectedChip}
+                className={showAllEndorsers ? classes.selectedChip : classes.notSelectedChip}
                 component="div"
                 onClick={() => this.changeListModeShown('allEndorsers')}
                 variant={showAllEndorsers ? undefined : 'outlined'}
@@ -271,20 +274,16 @@ class OneValue extends Component {
               searchUpdateDelayTime={0}
             />
           </SearchBarWrapper>
-          {showAllEndorsers && (
-            <Suspense fallback={<></>}>
-              <OrganizationList
-                incomingOrganizationList={organizationsForValue}
-                increaseNumberOfItemsOnScroll
-                organizationListIdentifier={organizationListIdentifier}
-              />
-            </Suspense>
-          )}
-          {showEndorsersForThisElection && (
-            <Suspense fallback={<></>}>
-              <GuideList incomingVoterGuideList={voterGuidesForValue} increaseNumberOfItemsOnScroll />
-            </Suspense>
-          )}
+          <Suspense fallback={<></>}>
+            <OrganizationList
+              incomingOrganizationList={showAllEndorsers ? organizationsForValue : []}
+              increaseNumberOfItemsOnScroll
+              organizationListIdentifier={showAllEndorsers ? organizationListIdentifier : 'noOrganizations'}
+            />
+          </Suspense>
+          <Suspense fallback={<></>}>
+            <GuideList incomingVoterGuideList={showEndorsersForThisElection ? voterGuidesForValue : []} increaseNumberOfItemsOnScroll />
+          </Suspense>
           {ifPigsFly && (
             <Suspense fallback={<></>}>
               <DelayedLoad waitBeforeShow={2000}>
@@ -320,8 +319,11 @@ const styles = (theme) => ({
   },
   notSelectedChip: {
     margin: 2,
+    paddingLeft: 1,
+    paddingRight: 1,
   },
   selectedChip: {
+    border: '1px solid #bdbdbd',
     margin: 2,
   },
 });
