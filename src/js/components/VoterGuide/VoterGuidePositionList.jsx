@@ -1,15 +1,17 @@
-// import { Comment } from '@mui/icons-material';
-// import { Info, ThumbDown, ThumbUp } from '@mui/icons-material';
 import { Chip, CircularProgress } from '@mui/material';
 import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
+import { filter } from 'lodash-es';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import FriendActions from '../../actions/FriendActions';
 import OrganizationActions from '../../actions/OrganizationActions';
-// import { getStateCodesFoundInObjectList } from '../../common/utils/addressFunctions';
+import { convertStateCodeToStateText } from '../../common/utils/addressFunctions';
 import apiCalming from '../../common/utils/apiCalming';
+import arrayContains from '../../common/utils/arrayContains';
+import { getTodayAsInteger } from '../../common/utils/dateFormat';
 import { renderLog } from '../../common/utils/logging';
+import SearchBar from '../Search/SearchBar';
 import FriendStore from '../../stores/FriendStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import NumberOfItemsFound from '../Widgets/NumberOfItemsFound';
@@ -24,17 +26,17 @@ class VoterGuidePositionList extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      // atLeastOneFriendAdded: false,
+      listModeFiltersAvailable: [],
       filteredPositionList: [],
       filteredPositionListLength: 0,
       isSearching: false,
+      listModeShown: 'showUpcomingEndorsements',
       loadingMoreItems: false,
-      // numberOfPositionItemsDisplayed: 0,
       numberOfPositionItemsToDisplay: STARTING_NUMBER_OF_POSITIONS_TO_DISPLAY,
       positionList: [],
       positionSearchResults: [],
+      listOfYearsWhenPositionExists: [],
       searchText: '',
-      // stateCodesToDisplay: [],
       totalNumberOfPositionSearchResults: 0,
     };
     this.onScroll = this.onScroll.bind(this);
@@ -42,17 +44,54 @@ class VoterGuidePositionList extends Component {
 
   componentDidMount () {
     // console.log('VoterGuidePositionList componentDidMount');
-    const { incomingPositionList } = this.props;
+    // const { incomingPositionList } = this.props;
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
 
-    // console.log('START componentDidMount incomingPositionList:', incomingPositionList);
-    const candidateAlreadySeenThisYear = {};
+    // Replicate onFriendStoreChange
+    const organizationsVoterIsFriendsWith = FriendStore.currentFriendsOrganizationWeVoteIDList();
+    // if (apiCalming('organizationsFollowedRetrieve', 60000)) {
+    // We do not want apiCalming here because the filters on the OneValue page
+    // will cause this component to be mounted and unmounted within one session, and we want to get a fresh retrieve each time
+    OrganizationActions.organizationsFollowedRetrieve();
+    if (!organizationsVoterIsFriendsWith.length > 0) {
+      if (apiCalming('friendListsAll', 3000)) {
+        FriendActions.friendListsAll();
+      }
+    }
 
-    // Replicate onOrganizationStoreChange
-    const organizationsVoterIsFollowing = OrganizationStore.getOrganizationsVoterIsFollowing();
-    // eslint-disable-next-line arrow-body-style
-    const positionListModified1 = incomingPositionList.map((position) => {
+    // const stateCodesToDisplay = getStateCodesFoundInObjectList(incomingPositionList);
+    // console.log('stateCodesToDisplay:', stateCodesToDisplay);
+
+    window.addEventListener('scroll', this.onScroll);
+    // this.setState({
+    //   // listOfYearsWhenPositionExists: this.getListOfYearsWhenPositionExists(positionListModified2Filtered),
+    // }, () => this.onIncomingPositionListChange(true));
+    this.onIncomingPositionListChange(true);
+  }
+
+  componentWillUnmount () {
+    this.friendStoreListener.remove();
+    this.organizationStoreListener.remove();
+    window.removeEventListener('scroll', this.onScroll);
+    if (this.positionItemTimer) clearTimeout(this.positionItemTimer);
+  }
+
+  onFriendStoreChange () {
+    // console.log('onFriendStoreChange');
+    this.onIncomingPositionListChange();
+  }
+
+  onOrganizationStoreChange () {
+    this.onIncomingPositionListChange();
+  }
+
+  onIncomingPositionListChange (setDefaultListMode = false) {
+    // console.log('VoterGuidePositionList onIncomingPositionListChange');
+    const { incomingPositionList: positionList } = this.props;
+    // Remove any positions which have duplicates (we always want to clean up on the API server, but some times miss duplicates)
+    const candidateAlreadySeenThisYear = {};
+    const positionListDeduplicated = positionList.map((position) => {
       // console.log('VoterGuidePositionList componentDidMount positionListModified1, position: ', position);
       if (!position.position_we_vote_id) {
         // console.log('MISSING position.position_we_vote_id');
@@ -67,68 +106,31 @@ class VoterGuidePositionList extends Component {
         candidateAlreadySeenThisYear[position.ballot_item_we_vote_id] = [];
         candidateAlreadySeenThisYear[position.ballot_item_we_vote_id].push(position.position_year);
       }
+      return position;
+    });
+
+    const positionListNullsRemoved = positionListDeduplicated.filter((position) => position != null);
+
+    const organizationsVoterIsFollowing = OrganizationStore.getOrganizationsVoterIsFollowing();
+    // eslint-disable-next-line arrow-body-style
+    const positionListWithFollowedData = positionListNullsRemoved.map((position) => {
+      // console.log('onIncomingPositionListChange, position: ', position);
       return ({
         ...position,
-        followed: organizationsVoterIsFollowing.filter((org) => (position && org.organization_we_vote_id === position.speaker_we_vote_id)).length > 0,
+        followed: organizationsVoterIsFollowing.filter((org) => (org && position && org.organization_we_vote_id === position.speaker_we_vote_id)).length > 0,
       });
     });
-    const positionListModified1Filtered = positionListModified1.filter((position) => position != null);
-
-    // Replicate onFriendStoreChange
-    const organizationsVoterIsFriendsWith = FriendStore.currentFriendsOrganizationWeVoteIDList();
-    // console.log('VoterGuidePositionList onFriendStoreChange, organizationsVoterIsFriendsWith:', organizationsVoterIsFriendsWith);
-    // eslint-disable-next-line arrow-body-style
-    const positionListModified2 = positionListModified1Filtered.map((position) => {
-      // console.log('VoterGuidePositionList componentDidMount positionListModified2, position: ', position);
-      return ({
-        ...position,
-        currentFriend: organizationsVoterIsFriendsWith.filter((organizationWeVoteId) => (position && organizationWeVoteId === position.speaker_we_vote_id)).length > 0,
-      });
-    });
-    const positionListModified2Filtered = positionListModified2.filter((position) => position != null);
-
-    if (apiCalming('organizationsFollowedRetrieve', 60000)) {
-      OrganizationActions.organizationsFollowedRetrieve();
-    }
-    if (!organizationsVoterIsFriendsWith.length > 0) {
-      if (apiCalming('friendListsAll', 3000)) {
-        FriendActions.friendListsAll();
-      }
-    }
-
-    // const stateCodesToDisplay = getStateCodesFoundInObjectList(incomingPositionList);
-    // console.log('stateCodesToDisplay:', stateCodesToDisplay);
-
-    window.addEventListener('scroll', this.onScroll);
-    this.setState({
-      positionList: positionListModified2Filtered,
-      filteredPositionList: positionListModified2Filtered,
-      filteredPositionListLength: positionListModified2Filtered.length,
-      // stateCodesToDisplay,
-      numberOfPositionItemsToDisplay: this.props.startingNumberOfPositionsToDisplay || STARTING_NUMBER_OF_POSITIONS_TO_DISPLAY,
-    });
-  }
-
-  componentWillUnmount () {
-    this.friendStoreListener.remove();
-    this.organizationStoreListener.remove();
-    window.removeEventListener('scroll', this.onScroll);
-    if (this.positionItemTimer) clearTimeout(this.positionItemTimer);
-  }
-
-  onFriendStoreChange () {
-    // console.log('onFriendStoreChange');
-    const { positionList } = this.state; // filteredPositionList,
-    const organizationsVoterIsFriendsWith = FriendStore.currentFriendsOrganizationWeVoteIDList();
-    // console.log('VoterGuidePositionList onFriendStoreChange, organizationsVoterIsFriendsWith:', organizationsVoterIsFriendsWith);
-    // eslint-disable-next-line arrow-body-style
     let currentFriend;
     let atLeastOneFriendAdded = false;
-    const positionListWithFriendData = positionList.map((position) => {
+    const organizationsVoterIsFriendsWith = FriendStore.currentFriendsOrganizationWeVoteIDList();
+    const positionListWithFriendData = positionListWithFollowedData.map((position) => {
       // console.log('VoterGuidePositionList onFriendStoreChange, position: ', position);
       currentFriend = organizationsVoterIsFriendsWith.filter((organizationWeVoteId) => (position && organizationWeVoteId === position.speaker_we_vote_id)).length > 0;
       if (currentFriend) {
         atLeastOneFriendAdded = true;
+      } else {
+        // Shouldn't this be set here?
+        // atLeastOneFriendAdded = false;
       }
       return ({
         ...position,
@@ -136,47 +138,98 @@ class VoterGuidePositionList extends Component {
         currentFriend,
       });
     });
-    if (atLeastOneFriendAdded) {
-      this.setState({
-        positionList: positionListWithFriendData,
-      });
-    }
-  }
-
-  onOrganizationStoreChange () {
-    // console.log('VoterGuidePositionList onOrganizationStoreChange');
-    const { filteredPositionList, positionList } = this.state;
-    const organizationsVoterIsFollowing = OrganizationStore.getOrganizationsVoterIsFollowing();
-    // eslint-disable-next-line arrow-body-style
-    const positionListWithFollowedData = positionList.map((position) => {
-      // console.log('VoterGuidePositionList onOrganizationStoreChange, position: ', position);
-      return ({
-        ...position,
-        followed: organizationsVoterIsFollowing.filter((org) => (org && position && org.organization_we_vote_id === position.speaker_we_vote_id)).length > 0,
-      });
-    });
-    // eslint-disable-next-line arrow-body-style
-    const filteredPositionListWithFollowedData = filteredPositionList.map((position) => {
-      // console.log('VoterGuidePositionList onOrganizationStoreChange, position: ', position);
-      return ({
-        ...position,
-        followed: organizationsVoterIsFollowing.filter((org) => (org && position && org.organization_we_vote_id === position.speaker_we_vote_id)).length > 0,
-      });
-    });
     this.setState({
-      positionList: positionListWithFollowedData,
-      filteredPositionList: filteredPositionListWithFollowedData,
-      filteredPositionListLength: filteredPositionListWithFollowedData.length,
-    });
+      positionList: positionListWithFriendData,
+      listOfYearsWhenPositionExists: this.getListOfYearsWhenPositionExists(positionList),
+      numberOfPositionItemsToDisplay: this.props.startingNumberOfPositionsToDisplay || STARTING_NUMBER_OF_POSITIONS_TO_DISPLAY,
+    }, () => this.updateActiveFilters(setDefaultListMode));
   }
 
-  onFilteredItemsChange = (filteredPositions) => {
-    // console.log('onFilteredItemsChange, filteredPositions:', filteredPositions);
+  onFilterOrListChange = (setDefaultListMode = false) => {
+    // console.log('onFilterOrListChange');
+    // Start over with full positionList, and apply all active filters
+    const { listModeFiltersAvailable, positionList, searchText } = this.state;
+    let filteredPositions = positionList;
+    const todayAsInteger = getTodayAsInteger();
+    listModeFiltersAvailable.forEach((oneFilter) => {
+      // console.log('oneFilter:', oneFilter);
+      if ((oneFilter.filterType === 'showUpcomingEndorsements') && (oneFilter.filterSelected === true)) {
+        filteredPositions = filteredPositions.filter((onePosition) => onePosition.position_ultimate_election_date >= todayAsInteger);
+      }
+      if ((oneFilter.filterType === 'showYear') && (oneFilter.filterSelected === true)) {
+        filteredPositions = filteredPositions.filter((onePosition) => onePosition.position_year === oneFilter.filterYear);
+      }
+    });
+    let positionSearchResults = [];
+    if (searchText.length > 0) {
+      let modifiedOrganization;
+      const searchTextLowercase = searchText.toLowerCase();
+      const filteredPositionsModified = [];
+      filteredPositions.forEach((onePosition) => {
+        modifiedOrganization = { ...onePosition };
+        modifiedOrganization = {
+          ...modifiedOrganization,
+          ballot_item_state_code: onePosition.ballot_item_state_code || '',
+          ballot_item_state_name: convertStateCodeToStateText(onePosition.ballot_item_state_code),
+        };
+        if (!onePosition.ballot_item_twitter_handle) {
+          modifiedOrganization = {
+            ...modifiedOrganization,
+            ballot_item_twitter_handle: '',
+          };
+        }
+        if (!onePosition.contest_office_name) {
+          modifiedOrganization = {
+            ...modifiedOrganization,
+            contest_office_name: '',
+          };
+        }
+        filteredPositionsModified.push(modifiedOrganization);
+      });
+      // console.log('searchTextLowercase:', searchTextLowercase);
+      const searchWordArray = searchTextLowercase.match(/\b(\w+)\b/g);
+      // console.log('searchWordArray:', searchWordArray);
+      let foundInThisPosition;
+      let isFirstWord;
+      let thisWordFound;
+      positionSearchResults = filter(filteredPositionsModified,
+        (onePosition) => {
+          foundInThisPosition = false;
+          isFirstWord = true;
+          searchWordArray.forEach((oneSearchWordLowerCase) => {
+            thisWordFound = (
+              onePosition.ballot_item_display_name.toLowerCase().includes(oneSearchWordLowerCase) ||
+              onePosition.ballot_item_state_code.toLowerCase().includes(oneSearchWordLowerCase) ||
+              onePosition.ballot_item_state_name.toLowerCase().includes(oneSearchWordLowerCase) ||
+              onePosition.ballot_item_twitter_handle.toLowerCase().includes(oneSearchWordLowerCase) ||
+              onePosition.contest_office_name.toLowerCase().includes(oneSearchWordLowerCase)
+            );
+            if (isFirstWord) {
+              foundInThisPosition = thisWordFound;
+              isFirstWord = false;
+            } else {
+              foundInThisPosition = foundInThisPosition && thisWordFound;
+            }
+          });
+          return foundInThisPosition;
+        });
+      positionSearchResults = positionSearchResults.sort(this.orderPositionsByAlphabetical);
+    }
+    filteredPositions = filteredPositions.sort(this.orderPositionsByAlphabetical);
+    // We need to add support for ballot_item_twitter_followers_count
+    // filteredPositions = filteredPositions.sort(this.orderPositionsByBallotItemTwitterFollowers);
+    // console.log('onFilterOrListChange, filteredPositions:', filteredPositions);
     this.setState({
       filteredPositionList: filteredPositions,
       filteredPositionListLength: filteredPositions.length,
-      isSearching: false,
+      positionSearchResults,
+      totalNumberOfPositionSearchResults: positionSearchResults.length,
     });
+    if (setDefaultListMode) {
+      this.setState({
+        listModeShown: this.getDefaultListModeShown(),
+      });
+    }
   }
 
   onScroll () {
@@ -215,17 +268,6 @@ class VoterGuidePositionList extends Component {
     return null;
   }
 
-  // onPositionSearch = (searchText, filteredItems) => {
-  //   // console.log('onPositionSearch');
-  //   // window.scrollTo(0, 0); // This causes unpleasant jump in mobile
-  //   const totalNumberOfPositionSearchResults = filteredItems.length || 0;
-  //   this.setState({
-  //     positionSearchResults: filteredItems,
-  //     searchText,
-  //     totalNumberOfPositionSearchResults,
-  //   });
-  // };
-
   handleToggleSearchBallot = (isSearching) => {
     // console.log('VoterGuideSettingsAddPositions handleToggleSearchBallot isSearching:', isSearching);
     // When we toggle, reset numberOfPositionItemsToDisplay
@@ -251,88 +293,194 @@ class VoterGuidePositionList extends Component {
     }, 500);
   }
 
-  searchFunction (searchText) {
-    this.setState({ searchText });
+  orderPositionsByAlphabetical = (firstEntry, secondEntry) => {
+    let firstEntryName;
+    let secondEntryName = 'x';
+    if (firstEntry && firstEntry.ballot_item_display_name) {
+      firstEntryName = firstEntry.ballot_item_display_name;
+    }
+    if (secondEntry && secondEntry.ballot_item_display_name) {
+      secondEntryName = secondEntry.ballot_item_display_name;
+    }
+    if (firstEntryName < secondEntryName) { return -1; }
+    if (firstEntryName > secondEntryName) { return 1; }
+    return 0;
+  };
+
+  orderByFilterOrder = (firstFilter, secondFilter) => firstFilter.filterOrder - secondFilter.filterOrder;
+
+  orderPositionsByBallotItemTwitterFollowers = (firstEntry, secondEntry) => secondEntry.ballot_item_twitter_followers_count - firstEntry.ballot_item_twitter_followers_count;
+
+  updateActiveFilters = (setDefaultListMode = false) => {
+    const { listOfYearsWhenPositionExists, positionList } = this.state;
+    let { listModeShown } = this.state;
+    let filterCount = 0;
+    let upcomingEndorsementsAvailable = false;
+    const todayAsInteger = getTodayAsInteger();
+    positionList.forEach((onePosition) => {
+      if (onePosition.position_ultimate_election_date >= todayAsInteger) {
+        upcomingEndorsementsAvailable = true;
+      }
+    });
+    if (setDefaultListMode) {
+      listModeShown = this.getDefaultListModeShown(upcomingEndorsementsAvailable);
+    }
+    // console.log('updateActiveFilters listModeShown:', listModeShown);
+    let listModeFiltersAvailable = [
+    ];
+    listOfYearsWhenPositionExists.forEach((oneYear) => {
+      filterCount += 1;
+      listModeFiltersAvailable.push({
+        filterDisplayName: `${oneYear}`,
+        filterName: `show${oneYear}`,
+        filterOrder: 3000 - oneYear,
+        filterSelected: listModeShown === `show${oneYear}`,
+        filterType: 'showYear',
+        filterYear: oneYear,
+      });
+    });
+    if (upcomingEndorsementsAvailable) {
+      filterCount += 1;
+      listModeFiltersAvailable.push({
+        filterDisplayName: 'This Election',
+        filterName: 'showUpcomingEndorsements',
+        filterOrder: 1,
+        filterSelected: listModeShown === 'showUpcomingEndorsements',
+        filterType: 'showUpcomingEndorsements',
+      });
+    }
+    if (filterCount > 1) {
+      listModeFiltersAvailable.push({
+        filterDisplayName: 'All',
+        filterName: 'showAllEndorsements',
+        filterOrder: 5000,
+        filterSelected: listModeShown === 'showAllEndorsements',
+        filterType: 'showAllEndorsements',
+      });
+    }
+    listModeFiltersAvailable = listModeFiltersAvailable.sort(this.orderByFilterOrder);
+    this.setState({
+      listModeFiltersAvailable,
+      upcomingEndorsementsAvailable,
+    }, () => this.onFilterOrListChange(setDefaultListMode));
   }
 
-  clearFunction () {
+  changeListModeShown = (newListModeShown) => {
+    this.setState({
+      listModeShown: newListModeShown,
+    }, () => this.updateActiveFilters());
+  }
+
+  getDefaultListModeShown = (incomingUpcomingEndorsementsAvailable = false) => {
+    const { listOfYearsWhenPositionExists, upcomingEndorsementsAvailable } = this.state;
+    // console.log('getDefaultListModeShown listOfYearsWhenPositionExists:', listOfYearsWhenPositionExists);
+    if (upcomingEndorsementsAvailable || incomingUpcomingEndorsementsAvailable) {
+      return 'showUpcomingEndorsements';
+    } else if (listOfYearsWhenPositionExists && listOfYearsWhenPositionExists.length > 0) {
+      const mostRecentYear = Math.max.apply(null, listOfYearsWhenPositionExists);
+      // console.log('mostRecentYear:', mostRecentYear);
+      return `show${mostRecentYear}`;
+    }
+    return 'showAllEndorsements';
+  }
+
+  getListOfYearsWhenPositionExists = (positionList) => {
+    const listOfYearsWhenPositionExists = [];
+    positionList.forEach((onePosition) => {
+      if (onePosition.position_year > 0 && !arrayContains(onePosition.position_year, listOfYearsWhenPositionExists)) {
+        listOfYearsWhenPositionExists.push(onePosition.position_year);
+      }
+    });
+    return listOfYearsWhenPositionExists;
+  }
+
+  searchFunction = (searchText) => {
+    const { listModeShown, searchText: previousSearchText } = this.state;
+    let searchingJustStarted = false;
+    if (previousSearchText.length === 0 && searchText.length === 1) {
+      searchingJustStarted = true;
+    }
+    const isSearching = (searchText && searchText.length > 0);
+    this.setState({
+      isSearching,
+      listModeShown: searchingJustStarted ? '' : listModeShown,
+      searchText,
+    }, () => this.updateActiveFilters());
+  }
+
+  clearFunction = () => {
     this.searchFunction('');
   }
 
   render () {
-    const { positionList, positionListExistsTitle } = this.state; // stateCodesToDisplay
     renderLog('VoterGuidePositionList');  // Set LOG_RENDER_EVENTS to log all renders
+    const { classes, organizationWeVoteId, positionListExistsTitle } = this.props;
+    const {
+      filteredPositionList, filteredPositionListLength, isSearching,
+      listModeFiltersAvailable, loadingMoreItems,
+      numberOfPositionItemsToDisplay, positionList, positionSearchResults,
+      searchText, totalNumberOfPositionSearchResults,
+    } = this.state;
+    // console.log('VoterGuidePositionList render');
+    // console.log('this.state.positionList render: ', this.state.positionList);
+    // console.log('filteredPositionList render: ', filteredPositionList);
     if (!positionList) {
       // console.log('VoterGuidePositionList Loading...');
       return <div>Loading...</div>;
     }
-    const { classes, organizationWeVoteId } = this.props;
-    const {
-      filteredPositionList, filteredPositionListLength, isSearching, loadingMoreItems,
-      numberOfPositionItemsToDisplay, positionSearchResults, searchText,
-      totalNumberOfPositionSearchResults,
-    } = this.state;
-    // console.log('VoterGuidePositionList render');
-    // console.log('this.state.positionList render: ', this.state.positionList);
-    // console.log('this.state.filteredPositionList render: ', this.state.filteredPositionList);
     let showTitle = false;
     let count;
     for (count = 0; count < positionList.length; count++) {
       showTitle = true;
     }
-    // const selectedFiltersDefault = ['sortByAlphabetical', 'upcomingOnly', 'federalRaces', 'stateRaces', 'measureRaces', 'localRaces'];
-    const activeFiltersDict = [
-      {
-        filterDisplayName: 'This Election',
-        filterId: 'showUpcomingEndorsements',
-        filterName: 'showUpcomingEndorsements',
-        filterSelected: true,
-      },
-      {
-        filterDisplayName: '2022',
-        filterId: 'show2022',
-        filterName: 'show2022',
-        filterSelected: false,
-      },
-      {
-        filterDisplayName: 'All',
-        filterId: 'showAllEndorsements',
-        filterName: 'showAllEndorsements',
-        filterSelected: false,
-      },
-    ];
     let numberOfPositionItemsDisplayed = 0;
     let searchTextString = '';
-    const showingPartialResults = false;
+    const showingPartialResults = isSearching ? totalNumberOfPositionSearchResults < 781 : filteredPositionListLength < 781;
     return (
       <div>
         <VoterGuideFilterWrapper>
           { showTitle ?
             <span>{positionListExistsTitle}</span> :
             null}
-          <VoterGuideFilterChoices>
-            {activeFiltersDict.map((oneFilter) => (
-              <Chip
-                key={oneFilter.filterId}
-                label={<span style={oneFilter.filterSelected ? { fontWeight: 600 } : {}}>{oneFilter.filterDisplayName}</span>}
-                className={classes.notSelectedChip}
-                component="div"
-                onClick={() => this.changeListModeShown(oneFilter.filterName)}
-                variant={oneFilter.filterSelected ? undefined : 'outlined'}
+          {(listModeFiltersAvailable || showingPartialResults) && (
+            <VoterGuideFilterChoices>
+              {listModeFiltersAvailable.map((oneFilter) => (
+                <Chip
+                  key={oneFilter.filterName}
+                  label={<span style={oneFilter.filterSelected ? { fontWeight: 600 } : {}}>{oneFilter.filterDisplayName}</span>}
+                  className={oneFilter.filterSelected ? classes.selectedChip : classes.notSelectedChip}
+                  component="div"
+                  onClick={() => this.changeListModeShown(oneFilter.filterName)}
+                  variant={oneFilter.filterSelected ? undefined : 'outlined'}
+                />
+              ))}
+              {showingPartialResults && (
+                <NumbersFoundWrapper>
+                  <NumberOfItemsFound
+                    numberOfItemsTotal={isSearching ? totalNumberOfPositionSearchResults : filteredPositionListLength}
+                  />
+                </NumbersFoundWrapper>
+              )}
+            </VoterGuideFilterChoices>
+          )}
+          {((positionList && (positionList.length > 10)) || isSearching) && (
+            <SearchBarWrapper>
+              <SearchBar
+                clearButton
+                searchButton
+                placeholder="Search by name, office or state"
+                searchFunction={this.searchFunction}
+                clearFunction={this.clearFunction}
+                searchUpdateDelayTime={0}
               />
-            ))}
-          </VoterGuideFilterChoices>
+            </SearchBarWrapper>
+          )}
           {(isSearching && searchText) && (
             <SearchTitle>
               Searching for &quot;
               {searchText}
               &quot;
             </SearchTitle>
-          )}
-          {showingPartialResults && (
-            <NumberOfItemsFound
-              numberOfItemsTotal={isSearching ? totalNumberOfPositionSearchResults : filteredPositionListLength}
-            />
           )}
         </VoterGuideFilterWrapper>
         <ul className="card-child__list-group">
@@ -344,7 +492,8 @@ class VoterGuidePositionList extends Component {
                     <>
                       We couldn&apos;t find any endorsements containing the search term &quot;
                       {searchText}
-                      &quot;.
+                      &quot;
+                      .
                     </>
                   ) : (
                     <>
@@ -409,7 +558,7 @@ class VoterGuidePositionList extends Component {
               <div key={`${onePosition.position_we_vote_id}-${onePosition.voter_guide_we_vote_id}-${onePosition.speaker_display_name}`}>
                 <VoterGuidePositionItem
                   ballotItemWeVoteId={onePosition.ballot_item_we_vote_id}
-                  // ballotItemDisplayName={onePosition.ballot_item_display_name}
+                  ballotItemDisplayName={onePosition.ballot_item_display_name}
                   organizationWeVoteId={organizationWeVoteId}
                   positionWeVoteId={onePosition.position_we_vote_id}
                   searchResultsNode={searchResultsNode}
@@ -438,7 +587,7 @@ VoterGuidePositionList.propTypes = {
   classes: PropTypes.object,
   incomingPositionList: PropTypes.array.isRequired,
   organizationWeVoteId: PropTypes.string.isRequired,
-  // positionListExistsTitle: PropTypes.object,
+  positionListExistsTitle: PropTypes.object,
   startingNumberOfPositionsToDisplay: PropTypes.string,
   turnOffOnScroll: PropTypes.bool,
 };
@@ -451,12 +600,17 @@ const styles = () => ({
     margin: 2,
   },
   selectedChip: {
+    border: '1px solid #bdbdbd',
     margin: 2,
   },
 });
 
+const NumbersFoundWrapper = styled('span')`
+  margin-left: 6px;
+  white-space: nowrap;
+`;
+
 const VoterGuideFilterChoices = styled('div')`
-  display: none;
   margin-top: 8px;
 `;
 
@@ -474,6 +628,11 @@ const LoadingItemsWheel = styled('div')`
 
 const NoResultsText = styled('div')`
   margin: 15px;
+`;
+
+const SearchBarWrapper = styled('div')`
+  margin-top: 4px;
+  margin-bottom: 8px;
 `;
 
 const SearchResultsFoundInExplanation = styled('div')`

@@ -343,6 +343,7 @@ class OrganizationStore extends ReduceStore {
     let hostname;
     let isPublicPosition;
     let issueList;
+    let mergedPosition = {};
     let modifiedPosition;
     let modifiedPositionChangeFound = false;
     let newPositionList;
@@ -657,7 +658,12 @@ class OrganizationStore extends ReduceStore {
         newPositionList = action.res.position_list;
         if (newPositionList) {
           newPositionList.forEach((onePosition) => {
-            allCachedPositionsByPositionWeVoteId[onePosition.position_we_vote_id] = onePosition;
+            mergedPosition = {
+              ...allCachedPositionsByPositionWeVoteId[onePosition.position_we_vote_id],
+              ...onePosition,
+            };
+            allCachedPositionsByPositionWeVoteId[onePosition.position_we_vote_id] = mergedPosition;
+            // console.log('positionListForBallotItem, ', action.type, ' onePosition:', onePosition);
           });
         }
 
@@ -679,7 +685,12 @@ class OrganizationStore extends ReduceStore {
             const friendsPositionListForOneElection = action.res.position_list;
             if (friendsPositionListForOneElection) {
               friendsPositionListForOneElection.forEach((onePosition) => {
-                allCachedPositionsByPositionWeVoteId[onePosition.position_we_vote_id] = onePosition;
+                mergedPosition = {
+                  ...allCachedPositionsByPositionWeVoteId[onePosition.position_we_vote_id],
+                  ...onePosition,
+                };
+                allCachedPositionsByPositionWeVoteId[onePosition.position_we_vote_id] = mergedPosition;
+                // console.log(action.type, ' FRIENDS_ONLY filter_for_voter: True onePosition:', onePosition);
               });
             }
             organization = allCachedOrganizationsDict[organizationWeVoteId] || {};
@@ -703,7 +714,12 @@ class OrganizationStore extends ReduceStore {
             const friendsPositionListForAllExceptOneElection = action.res.position_list;
             if (friendsPositionListForAllExceptOneElection) {
               friendsPositionListForAllExceptOneElection.forEach((onePosition) => {
-                allCachedPositionsByPositionWeVoteId[onePosition.position_we_vote_id] = onePosition;
+                mergedPosition = {
+                  ...allCachedPositionsByPositionWeVoteId[onePosition.position_we_vote_id],
+                  ...onePosition,
+                };
+                allCachedPositionsByPositionWeVoteId[onePosition.position_we_vote_id] = mergedPosition;
+                // console.log(action.type, ' FRIENDS_ONLY filter_out_voter: True onePosition:', onePosition);
               });
             }
             organization = allCachedOrganizationsDict[organizationWeVoteId] || {};
@@ -726,7 +742,12 @@ class OrganizationStore extends ReduceStore {
             const friendsPositionList = action.res.position_list;
             if (friendsPositionList) {
               friendsPositionList.forEach((onePosition) => {
-                allCachedPositionsByPositionWeVoteId[onePosition.position_we_vote_id] = onePosition;
+                mergedPosition = {
+                  ...allCachedPositionsByPositionWeVoteId[onePosition.position_we_vote_id],
+                  ...onePosition,
+                };
+                allCachedPositionsByPositionWeVoteId[onePosition.position_we_vote_id] = mergedPosition;
+                // console.log(action.type, ' FRIENDS_ONLY neither filter_for_voter nor filter_out_voter onePosition:', onePosition);
               });
             }
             organization = allCachedOrganizationsDict[organizationWeVoteId] || {};
@@ -752,7 +773,12 @@ class OrganizationStore extends ReduceStore {
           const positionListForOneElection = action.res.position_list;
           if (positionListForOneElection) {
             positionListForOneElection.forEach((onePosition) => {
-              allCachedPositionsByPositionWeVoteId[onePosition.position_we_vote_id] = onePosition;
+              mergedPosition = {
+                ...allCachedPositionsByPositionWeVoteId[onePosition.position_we_vote_id],
+                ...onePosition,
+              };
+              allCachedPositionsByPositionWeVoteId[onePosition.position_we_vote_id] = mergedPosition;
+              // console.log(action.type, ' filter_for_voter: True onePosition:', onePosition);
             });
           }
           organization = allCachedOrganizationsDict[organizationWeVoteId] || {};
@@ -801,7 +827,12 @@ class OrganizationStore extends ReduceStore {
           const positionListForAllExceptOneElection = action.res.position_list;
           if (positionListForAllExceptOneElection) {
             positionListForAllExceptOneElection.forEach((onePosition) => {
-              allCachedPositionsByPositionWeVoteId[onePosition.position_we_vote_id] = onePosition;
+              mergedPosition = {
+                ...allCachedPositionsByPositionWeVoteId[onePosition.position_we_vote_id],
+                ...onePosition,
+              };
+              allCachedPositionsByPositionWeVoteId[onePosition.position_we_vote_id] = mergedPosition;
+              // console.log(action.type, ' filter_out_voter: True onePosition:', onePosition);
             });
           }
           organization = allCachedOrganizationsDict[organizationWeVoteId] || {};
@@ -860,7 +891,12 @@ class OrganizationStore extends ReduceStore {
           const positionList = action.res.position_list;
           if (positionList) {
             positionList.forEach((onePosition) => {
-              allCachedPositionsByPositionWeVoteId[onePosition.position_we_vote_id] = onePosition;
+              mergedPosition = {
+                ...allCachedPositionsByPositionWeVoteId[onePosition.position_we_vote_id],
+                ...onePosition,
+              };
+              allCachedPositionsByPositionWeVoteId[onePosition.position_we_vote_id] = mergedPosition;
+              // console.log(action.type, ' final else True onePosition:', onePosition);
             });
           }
           organization = allCachedOrganizationsDict[organizationWeVoteId] || {};

@@ -24,7 +24,9 @@ class NumberOfItemsFound extends Component {
           Found
         </span>
         <span className="u-show-desktop-tablet">
-          Items Found
+          {numberOfItemsTotal === 1 ? 'Item' : 'Items'}
+          {' '}
+          Found
         </span>
       </Wrapper>
     );
@@ -34,7 +36,7 @@ NumberOfItemsFound.propTypes = {
   numberOfItemsTotal: PropTypes.number,
 };
 
-const Wrapper = styled('div')(({ theme }) => (`
+const Wrapper = styled('span')(({ theme }) => (`
   font-size: 14px;
   text-align: right;
   user-select: none;

@@ -7,6 +7,7 @@ import { ReactSVG } from 'react-svg';
 import CandidateActions from '../../actions/CandidateActions';
 import MeasureActions from '../../actions/MeasureActions';
 import { renderLog } from '../../common/utils/logging';
+import { convertStateCodeToStateText } from '../../common/utils/addressFunctions';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import numberWithCommas from '../../common/utils/numberWithCommas';
 import stringContains from '../../common/utils/stringContains';
@@ -29,6 +30,7 @@ class VoterGuidePositionItem extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      ballotItemStateName: '',
       hidePositionStatement: false,
       positionListFromFriendsHasBeenRetrievedOnce: {},
       positionListHasBeenRetrievedOnce: {},
@@ -160,6 +162,7 @@ class VoterGuidePositionItem extends Component {
     const {
       ballot_item_display_name: ballotItemDisplayName,
       ballot_item_image_url_https_medium: ballotItemImageUrlHttpsMedium,
+      ballot_item_state_code: ballotItemStateCode,
       contest_office_name: contestOfficeName,
       is_oppose: organizationOpposesBallotItem,
       is_support: organizationSupportsBallotItem,
@@ -181,6 +184,13 @@ class VoterGuidePositionItem extends Component {
       positionYear,
       twitterFollowersCount,
     });
+    if (ballotItemStateCode) {
+      const ballotItemStateName = convertStateCodeToStateText(ballotItemStateCode);
+      this.setState({
+        // ballotItemStateCode,
+        ballotItemStateName,
+      });
+    }
   }
 
   onClickShowOrganizationModal () {
@@ -215,6 +225,7 @@ class VoterGuidePositionItem extends Component {
     const { ballotItemWeVoteId, positionWeVoteId, searchResultsNode } = this.props;
     const {
       ballotItemImageUrlHttpsMedium,
+      ballotItemStateName,
       contestOfficeName,
       kindOfBallotItem,
       organizationOpposesBallotItem,
@@ -251,6 +262,31 @@ class VoterGuidePositionItem extends Component {
       <ReactSVG
         src={normalizedImagePath('/img/global/svg-icons/avatar-generic.svg')}
       />
+    );
+
+    const positionYearHtml = (
+      <>
+        {(positionYear || ballotItemStateName) && (
+          <PositionYearText>
+            {' '}
+            (
+            {(positionYear) && (
+              <span>{positionYear}</span>
+            )}
+            {(positionYear && ballotItemStateName) && (
+              <span>
+                {' '}
+                -
+                {' '}
+              </span>
+            )}
+            {(ballotItemStateName) && (
+              <span>{ballotItemStateName}</span>
+            )}
+            )
+          </PositionYearText>
+        )}
+      </>
     );
 
     return (
@@ -306,14 +342,7 @@ class VoterGuidePositionItem extends Component {
                         />
                       </Suspense>
                     )}
-                    {(positionYear) && (
-                      <PositionYearText>
-                        {' '}
-                        (
-                        {positionYear}
-                        )
-                      </PositionYearText>
-                    )}
+                    {positionYearHtml}
                   </DesktopItemOffice>
                 </DesktopItemNameAndOfficeContainer>
                 <BallotItemSupportOpposeCountDisplayWrapper>
@@ -413,14 +442,7 @@ class VoterGuidePositionItem extends Component {
                           />
                         </Suspense>
                       )}
-                      {(positionYear) && (
-                        <PositionYearText>
-                          {' '}
-                          (
-                          {positionYear}
-                          )
-                        </PositionYearText>
-                      )}
+                      {positionYearHtml}
                     </MobileItemOffice>
                   </MobileItemNameAndOfficeContainerLarger>
                   {/* Visible on iPhone 5/se */}
@@ -461,14 +483,7 @@ class VoterGuidePositionItem extends Component {
                     />
                   </Suspense>
                 )}
-                {(positionYear) && (
-                  <PositionYearText>
-                    {' '}
-                    (
-                    {positionYear}
-                    )
-                  </PositionYearText>
-                )}
+                {positionYearHtml}
               </MobileItemOfficeSmallerPhones>
             </div>
             <MobileItemBody>
@@ -761,7 +776,7 @@ const PositionItemMobile = styled('li', {
 const PositionYearText = styled('span')`
   color: #999;
   font-weight: 200;
-  // margin-left: 4px;
+  white-space: nowrap;
 `;
 
 const SearchResultsNodeWrapper = styled('div')`
