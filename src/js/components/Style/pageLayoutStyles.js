@@ -5,6 +5,7 @@ import { normalizedHrefPage } from '../../common/utils/hrefUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize, { isTablet } from '../../common/utils/isMobileScreenSize';
 import { cordovaOffsetLog } from '../../common/utils/logging';
+import standardBoxShadow from '../../common/components/Style/standardBoxShadow';
 import CordovaPageConstants from '../../constants/CordovaPageConstants';
 import AppObservableStore from '../../stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
@@ -105,18 +106,6 @@ export const HeaderContentOuterContainer = styled('div')`
   justify-content: center;
   width: 100%;
 `;
-
-export function standardBoxShadow (weight) {
-  switch (weight) {
-    case 'wide':
-      return '0 3px 1px -2px rgba(0,0,0,0.2), 0 2px 2px 0 rgb(0,0,0,0.14),  0 1px 5px 0 rgb(0,0,0,0.12)';
-    case 'medium':
-      return '0 2px 4px -1px rgba(0,0,0,0.2), 0 4px 5px 0 rgba(0,0,0,0.14), 0 1px 10px 0 rgba(0,0,0,0.12)';
-    case 'narrow':
-    default:
-      return '0 1px 3px 0 rgba(0,0,0,0.2),    0 1px 1px 0 rgba(0,0,0,0.14), 0 2px 1px -1px rgba(0,0,0,0.12)';
-  }
-}
 
 export const DualHeaderContainer = styled('div', {
   shouldForwardProp: (prop) => !['scrolledDown'].includes(prop),

@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
-import { standardBoxShadow } from '../Style/pageLayoutStyles';
+import standardBoxShadow from '../../common/components/Style/standardBoxShadow';
 import CandidateItemForOpinions from './CandidateItemForOpinions';
 
 class CandidateSearchItemForOpinions extends Component {

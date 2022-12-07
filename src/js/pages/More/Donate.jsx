@@ -14,7 +14,8 @@ import InjectedCheckoutForm from '../../common/components/Donation/InjectedCheck
 import OpenExternalWebSite from '../../common/components/Widgets/OpenExternalWebSite';
 import DonateStore from '../../common/stores/DonateStore';
 import { renderLog } from '../../common/utils/logging';
-import { PageContentContainer, standardBoxShadow } from '../../components/Style/pageLayoutStyles';
+import standardBoxShadow from '../../common/components/Style/standardBoxShadow';
+import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import { Section } from '../../components/Welcome/sectionStyles';
 import webAppConfig from '../../config';
 import VoterStore from '../../stores/VoterStore';

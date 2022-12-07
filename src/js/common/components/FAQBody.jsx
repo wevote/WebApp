@@ -192,19 +192,20 @@ export default class FAQBody extends Component {
         <br />
         <br />
 
+        <strong>What does We Vote cost?</strong>
+        <br />
+        It&apos;s free!
         {isWebApp() && (
           <>
-            <strong>What does We Vote cost?</strong>
-            <br />
-            It&apos;s free! If you like We Vote,
+            If you like We Vote,
             {' '}
             <Link to="/more/donate" className="u-cursor--pointer u-link-color">please donate</Link>
             {' '}
             so we can do more to help voters.
-            <br />
-            <br />
           </>
         )}
+        <br />
+        <br />
 
         <strong>How do you make money?</strong>
         <br />

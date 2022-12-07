@@ -16,6 +16,7 @@ import { formatDateToMonthDayYear } from '../../common/utils/dateFormat';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
+import standardBoxShadow from '../../common/components/Style/standardBoxShadow';
 import VoterConstants from '../../constants/VoterConstants';
 import BallotStore from '../../stores/BallotStore';
 import OrganizationStore from '../../stores/OrganizationStore';
@@ -25,7 +26,6 @@ import { isSpeakerTypeOrganization, isSpeakerTypePublicFigure } from '../../util
 import { convertToInteger } from '../../utils/textFormat';
 import PersonalizedScoreIntroBody from '../CompleteYourProfile/PersonalizedScoreIntroBody';
 import FriendToggle from '../Friends/FriendToggle';
-import { standardBoxShadow } from '../Style/pageLayoutStyles';
 import StepsChips from '../Widgets/StepsChips';
 import SharedItemIntroduction from './SharedItemIntroduction';
 import apiCalming from '../../common/utils/apiCalming';

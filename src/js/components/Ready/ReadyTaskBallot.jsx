@@ -8,12 +8,12 @@ import BallotActions from '../../actions/BallotActions';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
+import standardBoxShadow from '../../common/components/Style/standardBoxShadow';
 import VoterConstants from '../../constants/VoterConstants';
 import AppObservableStore from '../../stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
 import SupportStore from '../../stores/SupportStore';
 import VoterStore from '../../stores/VoterStore';
-import { standardBoxShadow } from '../Style/pageLayoutStyles';
 import {
   BallotToDoTitle, ButtonLeft, ButtonText, Icon,
   PercentComplete, ReadyCard, StyledButton, StyledCheckbox,

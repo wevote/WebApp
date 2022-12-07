@@ -5,9 +5,9 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
+import standardBoxShadow from '../../common/components/Style/standardBoxShadow';
 import toTitleCase from '../../common/utils/toTitleCase';
 import CandidateStore from '../../stores/CandidateStore';
-import { standardBoxShadow } from '../Style/pageLayoutStyles';
 import CandidateItemForOpinions from './CandidateItemForOpinions';
 
 class OfficeItemForOpinions extends Component {
