@@ -4,7 +4,7 @@ import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import { renderLog } from '../../common/utils/logging';
-import { standardBoxShadow } from '../../components/Style/pageLayoutStyles';
+import standardBoxShadow from '../../common/components/Style/standardBoxShadow';
 import VoterStore from '../../stores/VoterStore';
 
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));

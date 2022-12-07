@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import { renderLog } from '../../common/utils/logging';
+import standardBoxShadow from '../../common/components/Style/standardBoxShadow';
 import getHeaderObjects from '../../utils/getHeaderObjects';
-import { standardBoxShadow } from '../Style/pageLayoutStyles';
 
 function SmallCloud (params) {
   const styleObj = {

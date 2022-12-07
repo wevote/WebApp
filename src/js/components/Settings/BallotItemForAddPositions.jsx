@@ -4,7 +4,7 @@ import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { renderLog } from '../../common/utils/logging';
-import { standardBoxShadow } from '../Style/pageLayoutStyles';
+import standardBoxShadow from '../../common/components/Style/standardBoxShadow';
 import MeasureItemForAddPositions from './MeasureItemForAddPositions';
 import OfficeItemForAddPositions from './OfficeItemForAddPositions';
 

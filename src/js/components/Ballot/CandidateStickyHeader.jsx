@@ -5,9 +5,9 @@ import styled from 'styled-components';
 import { isIOSAppOnMac, isIPad } from '../../common/utils/cordovaUtils';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
+import standardBoxShadow from '../../common/components/Style/standardBoxShadow';
 import { cordovaStickyHeaderPaddingTop } from '../../utils/cordovaOffsets';
 import { CandidateNameH1 } from '../Style/BallotStyles';
-import { standardBoxShadow } from '../Style/pageLayoutStyles';
 
 const BallotItemSupportOpposeComment = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeComment' */ '../Widgets/BallotItemSupportOpposeComment'));
 const BallotItemSupportOpposeScoreDisplay = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeScoreDisplay' */ '../Widgets/ScoreDisplay/BallotItemSupportOpposeScoreDisplay'));

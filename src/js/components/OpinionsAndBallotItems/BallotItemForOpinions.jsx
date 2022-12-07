@@ -4,7 +4,7 @@ import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { renderLog } from '../../common/utils/logging';
-import { standardBoxShadow } from '../Style/pageLayoutStyles';
+import standardBoxShadow from '../../common/components/Style/standardBoxShadow';
 import MeasureItemForOpinions from './MeasureItemForOpinions';
 import OfficeItemForOpinions from './OfficeItemForOpinions';
 
