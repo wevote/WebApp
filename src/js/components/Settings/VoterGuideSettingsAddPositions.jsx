@@ -14,7 +14,7 @@ import BallotStore from '../../stores/BallotStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
-import { isProperlyFormattedVoterGuideWeVoteId } from '../../utils/textFormat';
+import { isProperlyFormattedVoterGuideWeVoteId } from '../../common/utils/textFormat';
 import FilterBase from '../Filter/FilterBase';
 import SettingsAddBallotItemsFilter from '../Filter/SettingsAddBallotItemsFilter';
 import SettingsSeePositionsFilter from '../Filter/SettingsSeePositionsFilter';

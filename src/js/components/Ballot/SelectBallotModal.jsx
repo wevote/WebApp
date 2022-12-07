@@ -11,7 +11,7 @@ import { displayNoneIfSmallerThanDesktop } from '../../common/utils/isMobileScre
 import { renderLog } from '../../common/utils/logging';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
-import { calculateBallotBaseUrl } from '../../utils/textFormat';
+import { calculateBallotBaseUrl } from '../../common/utils/textFormat';
 import BallotTitleHeader from './BallotTitleHeader';
 import EditAddressInPlace from '../Widgets/EditAddressInPlace';
 

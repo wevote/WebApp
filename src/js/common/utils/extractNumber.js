@@ -1,4 +1,4 @@
-import { isNumber, isString } from '../../utils/textFormat';
+import { isNumber, isString } from './textFormat';
 
 export default function extractNumber (string) {
   if (!string) return '';

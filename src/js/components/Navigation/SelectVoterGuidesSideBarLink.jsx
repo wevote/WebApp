@@ -6,7 +6,7 @@ import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
 import toTitleCase from '../../common/utils/toTitleCase';
 import VoterStore from '../../stores/VoterStore';
-import { sentenceCaseString } from '../../utils/textFormat';
+import { sentenceCaseString } from '../../common/utils/textFormat';
 
 
 export default class SelectVoterGuidesSideBarLink extends Component {

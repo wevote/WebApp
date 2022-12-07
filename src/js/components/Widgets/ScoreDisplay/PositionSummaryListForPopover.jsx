@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { ReactSVG } from 'react-svg';
 import normalizedImagePath from '../../../common/utils/normalizedImagePath';
-import { cleanArray } from '../../../utils/textFormat';
+import { cleanArray } from '../../../common/utils/textFormat';
 import FriendsIcon from '../FriendsIcon';
 import PositionItemScorePopoverTextOnly from './PositionItemScorePopoverTextOnly';
 

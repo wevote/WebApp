@@ -5,7 +5,7 @@ import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { renderLog } from '../../common/utils/logging';
-import { calculateBallotBaseUrlForVoterGuide } from '../../utils/textFormat';
+import { calculateBallotBaseUrlForVoterGuide } from '../../common/utils/textFormat';
 
 const BallotElectionListWithFilters = React.lazy(() => import(/* webpackChunkName: 'BallotElectionListWithFilters' */ '../Ballot/BallotElectionListWithFilters'));
 

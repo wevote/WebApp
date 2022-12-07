@@ -23,7 +23,7 @@ import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import { avatarGeneric } from '../../utils/applicationUtils';
 import isMobile from '../../utils/isMobile';
-import { isProperlyFormattedVoterGuideWeVoteId } from '../../utils/textFormat';
+import { isProperlyFormattedVoterGuideWeVoteId } from '../../common/utils/textFormat';
 import VoterGuideChooseElectionModal from '../VoterGuide/VoterGuideChooseElectionModal';
 import SignInButton from '../Widgets/SignInButton';
 import EndorsementModeTabs from './EndorsementModeTabs';

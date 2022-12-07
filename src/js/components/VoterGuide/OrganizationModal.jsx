@@ -24,7 +24,7 @@ import MeasureStore from '../../stores/MeasureStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import { cordovaDrawerTopMargin } from '../../utils/cordovaOffsets';
-import { convertToInteger } from '../../utils/textFormat';
+import { convertToInteger } from '../../common/utils/textFormat';
 
 const CandidateItem = React.lazy(() => import(/* webpackChunkName: 'CandidateItem' */ '../Ballot/CandidateItem'));
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));

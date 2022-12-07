@@ -10,7 +10,7 @@ import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
-import { isProperlyFormattedVoterGuideWeVoteId } from '../../utils/textFormat';
+import { isProperlyFormattedVoterGuideWeVoteId } from '../../common/utils/textFormat';
 
 // Take in params.organization_we_vote_id and params.google_civic_election_id and
 // redirect to the correct voter guide edit page

@@ -6,9 +6,9 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
 import { renderLog } from '../../common/utils/logging';
+import removeTwitterNameFromDescription from '../../common/utils/removeTwitterNameFromDescription';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
-import { removeTwitterNameFromDescription } from '../../utils/textFormat';
 import Avatar from '../Style/avatarStyles';
 import {
   CancelButtonWrapper, FriendButtonsWrapper, FriendColumnWithoutButtons,

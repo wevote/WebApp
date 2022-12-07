@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import { renderLog } from '../../common/utils/logging';
-import { convertNameToSlug } from '../../utils/textFormat';
+import { convertNameToSlug } from '../../common/utils/textFormat';
 import IssueFollowToggleButton from './IssueFollowToggleButton';
 import IssueImageDisplay from './IssueImageDisplay';
 

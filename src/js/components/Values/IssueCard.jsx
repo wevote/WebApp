@@ -12,7 +12,7 @@ import { renderLog } from '../../common/utils/logging';
 import IssueStore from '../../stores/IssueStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
-import { convertNameToSlug } from '../../utils/textFormat';
+import { convertNameToSlug } from '../../common/utils/textFormat';
 import IssueFollowToggleButton from './IssueFollowToggleButton';
 import IssueImageDisplay from './IssueImageDisplay';
 

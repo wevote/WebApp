@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { renderLog } from '../../common/utils/logging';
 import shortenText from '../../common/utils/shortenText';
 import VoterStore from '../../stores/VoterStore';
-import { calculateBallotBaseUrl } from '../../utils/textFormat';
+import { calculateBallotBaseUrl } from '../../common/utils/textFormat';
 import AddressBox from '../AddressBox';
 
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../../common/components/Widgets/ReadMore'));

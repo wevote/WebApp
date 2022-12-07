@@ -13,7 +13,7 @@ import BallotStore from '../../stores/BallotStore';
 import MeasureStore from '../../stores/MeasureStore';
 import SupportStore from '../../stores/SupportStore';
 import { VoteAgainstMeasure, VoteForMeasure } from '../Style/BallotStyles';
-import { stripHtmlFromString } from '../../utils/textFormat';
+import { stripHtmlFromString } from '../../common/utils/textFormat';
 
 class BallotSharedMeasureItem extends Component {
   constructor (props) {

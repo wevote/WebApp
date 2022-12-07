@@ -8,7 +8,7 @@ import { convertStateCodeFilterToStateCode } from '../../common/utils/addressFun
 import { renderLog } from '../../common/utils/logging';
 import IssueStore from '../../stores/IssueStore';
 import OrganizationStore from '../../stores/OrganizationStore';
-import { convertToInteger } from '../../utils/textFormat';
+import { convertToInteger } from '../../common/utils/textFormat';
 import getGroupedFilterSecondClass from './utils/grouped-filter-second-class';
 
 

@@ -1,6 +1,6 @@
 import { ReduceStore } from 'flux/utils';
 import Dispatcher from '../common/dispatcher/Dispatcher';
-import { arrayReplaceObjectMatchingPropertyValue } from '../utils/textFormat';
+import { arrayReplaceObjectMatchingPropertyValue } from '../common/utils/textFormat';
 
 class ActivityStore extends ReduceStore {
   getInitialState () {

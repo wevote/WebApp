@@ -3,7 +3,7 @@ import Button from 'react-bootstrap/Button';
 import VoterStore from '../../stores/VoterStore';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
-import { extractTwitterHandleFromTextString } from '../../utils/textFormat';
+import { extractTwitterHandleFromTextString } from '../../common/utils/textFormat';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 
 
