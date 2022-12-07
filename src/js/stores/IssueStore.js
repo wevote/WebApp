@@ -4,7 +4,7 @@ import VoterActions from '../actions/VoterActions'; // eslint-disable-line impor
 import VoterConstants from '../constants/VoterConstants';
 import Dispatcher from '../common/dispatcher/Dispatcher';
 import removeValueFromArray from '../common/utils/removeValueFromArray';
-import { convertNameToSlug } from '../utils/textFormat';
+import { convertNameToSlug } from '../common/utils/textFormat';
 import BallotStore from './BallotStore'; // eslint-disable-line import/no-cycle
 import OrganizationStore from './OrganizationStore'; // eslint-disable-line import/no-cycle
 import VoterGuideStore from './VoterGuideStore'; // eslint-disable-line import/no-cycle

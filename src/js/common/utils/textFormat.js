@@ -1,5 +1,5 @@
 // textFormat.js
-import stringContains from '../common/utils/stringContains';
+import stringContains from './stringContains';
 
 // We assume that arrayHaystack contains objects with one property with the name in needleProperty
 // When we find the first object in the arrayHaystack, replace it with the newObject
@@ -129,30 +129,6 @@ export function mergeTwoObjectLists (obj1, obj2) {
   });
 
   return obj3;
-}
-
-// If Display name is repeated in beginning of the description, remove the name from the description (along with trailing 'is') and capitalize next word to begin description.
-export function removeTwitterNameFromDescription (displayName, twitterDescription) {
-  const displayNameNotNull = displayName || '';
-  const twitterDescriptionNotNull = twitterDescription || '';
-  let twitterDescriptionMinusName;
-
-  if (twitterDescriptionNotNull.startsWith(displayNameNotNull)) {
-    twitterDescriptionMinusName = twitterDescriptionNotNull.substr(displayNameNotNull.length);
-  } else if (twitterDescriptionNotNull.startsWith(`The ${displayNameNotNull}`)) {
-    twitterDescriptionMinusName = twitterDescriptionNotNull.substr(displayNameNotNull.length + 4);
-  } else if (twitterDescriptionNotNull.length) {
-    twitterDescriptionMinusName = twitterDescriptionNotNull;
-  } else {
-    twitterDescriptionMinusName = '';
-  }
-  if (twitterDescriptionMinusName.startsWith(', ')) {
-    twitterDescriptionMinusName = twitterDescriptionMinusName.substr(2);
-  }
-  if (twitterDescriptionMinusName.startsWith(': ')) {
-    twitterDescriptionMinusName = twitterDescriptionMinusName.substr(2);
-  }
-  return twitterDescriptionMinusName;
 }
 
 export function sentenceCaseString (incomingString) {

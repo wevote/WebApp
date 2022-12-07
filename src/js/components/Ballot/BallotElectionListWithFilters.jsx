@@ -17,7 +17,7 @@ import { renderLog } from '../../common/utils/logging';
 import BallotStore from '../../stores/BallotStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
-import { cleanArray } from '../../utils/textFormat';
+import { cleanArray } from '../../common/utils/textFormat';
 
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
 

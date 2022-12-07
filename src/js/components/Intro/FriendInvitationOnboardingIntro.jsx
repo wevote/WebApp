@@ -9,7 +9,7 @@ import { formatDateToMonthDayYear } from '../../common/utils/dateFormat';
 import { renderLog } from '../../common/utils/logging';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import BallotStore from '../../stores/BallotStore';
-import { convertToInteger } from '../../utils/textFormat';
+import { convertToInteger } from '../../common/utils/textFormat';
 import HeaderLogoImage from '../Navigation/HeaderLogoImage';
 
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));

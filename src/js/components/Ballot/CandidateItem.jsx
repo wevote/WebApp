@@ -16,7 +16,7 @@ import IssueStore from '../../stores/IssueStore';
 import SupportStore from '../../stores/SupportStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import isMobileAndTabletScreenSize from '../../utils/isMobileAndTabletScreenSize';
-import { stripHtmlFromString } from '../../utils/textFormat';
+import { stripHtmlFromString } from '../../common/utils/textFormat';
 import TwitterAccountStats from '../Widgets/TwitterAccountStats';
 
 const BallotItemSupportOpposeComment = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeComment' */ '../Widgets/BallotItemSupportOpposeComment'));

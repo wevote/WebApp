@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { renderLog } from '../../common/utils/logging';
 import toTitleCase from '../../common/utils/toTitleCase';
-import { sentenceCaseString } from '../../utils/textFormat';
+import { sentenceCaseString } from '../../common/utils/textFormat';
 
 class BallotSideBarLink extends Component {
   constructor (props) {

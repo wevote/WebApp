@@ -15,7 +15,7 @@ import BallotStore from '../../stores/BallotStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import SupportStore from '../../stores/SupportStore';
 import VoterStore from '../../stores/VoterStore';
-import { calculateBallotBaseUrl } from '../../utils/textFormat';
+import { calculateBallotBaseUrl } from '../../common/utils/textFormat';
 import BallotSearchResults from '../Ballot/BallotSearchResults';
 import FooterDoneBar from '../Navigation/FooterDoneBar';
 import EndorsementCard from '../Widgets/EndorsementCard';

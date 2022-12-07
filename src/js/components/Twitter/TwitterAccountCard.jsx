@@ -4,7 +4,7 @@ import React, { Component, Suspense } from 'react';
 import abbreviateNumber from '../../common/utils/abbreviateNumber';
 import { renderLog } from '../../common/utils/logging';
 import numberWithCommas from '../../common/utils/numberWithCommas';
-import { removeTwitterNameFromDescription } from '../../utils/textFormat';
+import removeTwitterNameFromDescription from '../../common/utils/removeTwitterNameFromDescription';
 import ParsedTwitterDescription from './ParsedTwitterDescription';
 
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));

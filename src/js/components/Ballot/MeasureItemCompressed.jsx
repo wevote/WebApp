@@ -14,7 +14,7 @@ import toTitleCase from '../../common/utils/toTitleCase';
 import AppObservableStore from '../../stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
 import MeasureStore from '../../stores/MeasureStore';
-import { stripHtmlFromString } from '../../utils/textFormat';
+import { stripHtmlFromString } from '../../common/utils/textFormat';
 import { constrainedTextMobileStyles } from '../Style/BallotStyles';
 import { PositionRowListEmptyWrapper, PositionRowListInnerWrapper, PositionRowListOneWrapper, PositionRowListOuterWrapper, PositionRowListScoreColumn, PositionRowListScoreHeader, PositionRowListScoreSpacer } from '../Style/PositionRowListStyles';
 import InfoCircleIcon from '../Widgets/InfoCircleIcon';

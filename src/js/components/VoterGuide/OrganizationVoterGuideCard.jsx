@@ -8,7 +8,7 @@ import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
 import { isSpeakerTypePrivateCitizen } from '../../utils/organization-functions';
-import { removeTwitterNameFromDescription } from '../../utils/textFormat';
+import removeTwitterNameFromDescription from '../../common/utils/removeTwitterNameFromDescription';
 import FriendToggle from '../Friends/FriendToggle';
 import ParsedTwitterDescription from '../Twitter/ParsedTwitterDescription';
 import IssuesByOrganizationDisplayList from '../Values/IssuesByOrganizationDisplayList';

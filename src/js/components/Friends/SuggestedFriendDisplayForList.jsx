@@ -8,10 +8,10 @@ import FriendActions from '../../actions/FriendActions';
 import VoterActions from '../../actions/VoterActions';
 import ShareActions from '../../common/actions/ShareActions';
 import { renderLog } from '../../common/utils/logging';
+import removeTwitterNameFromDescription from '../../common/utils/removeTwitterNameFromDescription';
 import AppObservableStore from '../../stores/AppObservableStore';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
-import { removeTwitterNameFromDescription } from '../../utils/textFormat';
 import Avatar from '../Style/avatarStyles';
 import {
   CancelButtonWrapper, FriendButtonWithStatsWrapper, FriendButtonsWrapper, FriendColumnWithoutButtons,

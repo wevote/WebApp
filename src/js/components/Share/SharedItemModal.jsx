@@ -23,7 +23,7 @@ import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';
 import { cordovaFooterHeight, cordovaNetworkNextButtonTop } from '../../utils/cordovaOffsets';
 import { isSpeakerTypeOrganization, isSpeakerTypePublicFigure } from '../../utils/organization-functions';
-import { convertToInteger } from '../../utils/textFormat';
+import { convertToInteger } from '../../common/utils/textFormat';
 import PersonalizedScoreIntroBody from '../CompleteYourProfile/PersonalizedScoreIntroBody';
 import FriendToggle from '../Friends/FriendToggle';
 import StepsChips from '../Widgets/StepsChips';

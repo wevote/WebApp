@@ -5,7 +5,7 @@ import VoterGuideActions from '../actions/VoterGuideActions';
 import Dispatcher from '../common/dispatcher/Dispatcher';
 import apiCalming from '../common/utils/apiCalming';
 import { isSpeakerTypeOrganization, isSpeakerTypePublicFigure } from '../utils/organization-functions';
-import { convertToInteger } from '../utils/textFormat';
+import { convertToInteger } from '../common/utils/textFormat';
 import convertVoterGuideToElection from '../utils/voterGuideFunctions';
 import OrganizationStore from './OrganizationStore'; // eslint-disable-line import/no-cycle
 import VoterStore from './VoterStore'; // eslint-disable-line import/no-cycle
