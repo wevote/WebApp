@@ -1,6 +1,7 @@
 import { Launch, Twitter } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
+import styled from 'styled-components';
 import abbreviateNumber from '../../common/utils/abbreviateNumber';
 import { renderLog } from '../../common/utils/logging';
 import numberWithCommas from '../../common/utils/numberWithCommas';
@@ -31,12 +32,12 @@ export default class TwitterAccountCard extends Component {
       <div className="card">
         <div className="card-main">
           <div className="card-main__media-object">
-            <div className="card-main__media-object-anchor">
+            <MediaObjectAnchor>
               <Suspense fallback={<></>}>
                 <ImageHandler imageUrl={twitterPhotoUrl} className="card-main__avatar" sizeClassName="icon-lg " />
               </Suspense>
-            </div>
-            <div className="card-main__media-object-content">
+            </MediaObjectAnchor>
+            <DescriptionColumnWrapper>
               <div className="card-main__display-name">{nameDisplay}</div>
               { twitterDescriptionMinusName ? (
                 <ParsedTwitterDescription
@@ -84,7 +85,7 @@ export default class TwitterAccountCard extends Component {
                   <br />
                 </span>
               ) : null}
-            </div>
+            </DescriptionColumnWrapper>
           </div>
         </div>
       </div>
@@ -99,3 +100,21 @@ TwitterAccountCard.propTypes = {
   twitterPhotoUrl: PropTypes.string,
   twitterUserWebsite: PropTypes.string,
 };
+
+const DescriptionColumnWrapper = styled('div')`
+`;
+// flex: 1;
+// @media all and (min-width: 480px) {
+//   .card-main__media-object-content {
+//     padding: 4px 32px;
+//     margin-bottom: 32px;
+//     font-size: 16px;
+//   }
+// }
+
+// Replacing className="card-main__media-object-anchor"
+const MediaObjectAnchor = styled('div')`
+  display: flex;
+  flex-direction: column;
+  margin-right: 10px;
+`;

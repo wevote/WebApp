@@ -35,7 +35,7 @@ function AlreadyFollowingOrIgnoringButton (params) {
           { (isFollowing || isFriend) && (
             <span>
               <CheckCircleStyled className="following-icon" />
-              <span>Following</span>
+              <span style={{ paddingLeft: '4px' }}>Following</span>
             </span>
           )}
           { isIgnoring && (
@@ -600,6 +600,7 @@ const CheckCircleStyled = muiStyled(CheckCircle)({
 const ButtonStyled = muiStyled(Button)({
   border: '1px solid rgb(204, 204, 204)',
   // height: 32,
+  width: '100%',
 });
 
 const NotInterestedStyled = muiStyled(NotInterested)({

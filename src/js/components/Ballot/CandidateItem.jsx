@@ -330,8 +330,7 @@ class CandidateItem extends Component {
           <CandidateInfo
             isClickable={useLinkToCandidatePage === true ? () => this.goToCandidateLink() : null}
           >
-            <div
-              className="card-main__media-object-anchor"
+            <MediaObjectAnchor
               onClick={useLinkToCandidatePage === true ? () => this.goToCandidateLink() : null}
             >
               <Suspense fallback={<></>}>
@@ -343,7 +342,7 @@ class CandidateItem extends Component {
                   kind_of_ballot_item="CANDIDATE"
                 />
               </Suspense>
-            </div>
+            </MediaObjectAnchor>
             <Candidate>
               <CandidateNameRow
                 onClick={useLinkToCandidatePage === true ? () => this.goToCandidateLink() : null}
@@ -763,6 +762,13 @@ const ExternalWebSiteWrapper = styled('div')`
 const ForMoreInformationInfoText = styled('div')`
   color: #999;
   margin-bottom: 4px;
+`;
+
+// Replacing className="card-main__media-object-anchor"
+const MediaObjectAnchor = styled('div')`
+  display: flex;
+  flex-direction: column;
+  margin-right: 10px;
 `;
 
 const MobileTabletWrapper = styled('div')`

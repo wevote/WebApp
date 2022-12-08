@@ -119,7 +119,7 @@ class IssueCardCompressed extends Component {
           key={`issue-card-${this.state.issueWeVoteId}`}
         >
           <Flex>
-            <div className="card-main__media-object-anchor">
+            <MediaObjectAnchor>
               {this.props.turnOffIssueImage ?
                 null :
                 (
@@ -129,7 +129,7 @@ class IssueCardCompressed extends Component {
                     {issueImage}
                   </Link>
                 )}
-            </div>
+            </MediaObjectAnchor>
             <IssueName>
               <Link to={this.getIssueLink}
                 id="valueLink"
@@ -232,5 +232,12 @@ const Description = styled('div')(({ theme }) => (`
     display: none;
   }
 `));
+
+// Replacing className="card-main__media-object-anchor"
+const MediaObjectAnchor = styled('div')`
+  display: flex;
+  flex-direction: column;
+  margin-right: 10px;
+`;
 
 export default withTheme((IssueCardCompressed));
