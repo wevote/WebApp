@@ -406,7 +406,7 @@ export default class OrganizationVoterGuide extends Component {
                     </Suspense>
                   )}
                   <FriendsFollowingFollowersMobileWrapper className="d-print-none">
-                    <ul className="nav">
+                    <FriendsFollowingFollowersMobileUl>
                       {developmentFeatureTurnedOn && (
                         <li>
                           {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
@@ -438,7 +438,7 @@ export default class OrganizationVoterGuide extends Component {
                           <TabText>{' Followers'}</TabText>
                         </a>
                       </li>
-                    </ul>
+                    </FriendsFollowingFollowersMobileUl>
                   </FriendsFollowingFollowersMobileWrapper>
                 </div>
               </div>
@@ -579,9 +579,17 @@ const FollowToggleMobileWrapper = styled('div')`
 
 const FriendsFollowingFollowersMobileWrapper = styled('div')`
   margin-top: 6px;
-  overflow-x: scroll;
+  overflow-x: auto;
   overflow-y: hidden;
   white-space: nowrap;
+`;
+
+const FriendsFollowingFollowersMobileUl = styled('ul')`
+  display: flex;
+  flex-wrap: wrap;
+  padding-left: 0;
+  margin-bottom: 0;
+  list-style: none;
 `;
 
 const FriendToggleMobileWrapper = styled('div')`

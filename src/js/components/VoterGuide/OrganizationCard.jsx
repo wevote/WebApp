@@ -186,117 +186,119 @@ export default class OrganizationCard extends Component {
     }
 
     return (
-      <OrganizationCardWrapper className="card-main__media-object">
-        <div className="card-main__media-object-anchor">
-          {turnOffLogo ?
-            null : (
-              <Link to={voterGuideLink} className="u-no-underline">
-                <Suspense fallback={<></>}>
-                  <ImageHandler
-                    alt=""
-                    imageUrl={organizationPhotoUrlLarge}
-                    className="card-main__org-avatar"
-                    hidePlaceholder
-                    sizeClassName="icon-lg "
-                  />
-                </Suspense>
-              </Link>
-            )}
-          {followToggleOn ? (
-            <div className="u-margin-top--md">
-              <Suspense fallback={<></>}>
-                <FollowToggle
-                  currentBallotIdInUrl={currentBallotIdInUrl}
-                  ballotItemWeVoteId={this.props.weVoteId}
-                  urlWithoutHash={urlWithoutHash}
-                  organizationWeVoteId={organizationWeVoteId}
-                />
-              </Suspense>
-            </div>
-          ) : null}
-        </div>
-        <div className="card-main__media-object-content">
-          <Link to={voterGuideLink}>
-            <h3 className="card-main__display-name">{displayName}</h3>
-          </Link>
-          {/* Organization supports ballot item */}
-          {positionDescription}
-
-          { twitterDescriptionMinusName && !turnOffDescription ? (
-            <>
-              {stringContains('https://t.co/', twitterDescriptionMinusName) ? (
-                <ParsedTwitterDescription
-                  twitterDescription={twitterDescriptionMinusName}
-                />
-              ) : (
-                <>
-                  {useReadMoreForTwitterDescription ? (
-                    <Suspense fallback={<></>}>
-                      <ReadMore
-                        textToDisplay={twitterDescriptionMinusName}
-                        numberOfLines={6}
-                      />
-                    </Suspense>
-                  ) : (
-                    <>
-                      {twitterDescriptionMinusName}
-                    </>
-                  )}
-                </>
-              )}
-            </>
-          ) :
-            <p className="card-main__description" />}
-          { !turnOffDescription ? (
-            <div>
-              { organizationTwitterHandle && !turnOffTwitterHandle && (
-                <TwitterOuterWrapper>
-                  <TwitterAccountStats
-                    includeLinkToTwitter
-                    twitterFollowersCount={twitterFollowersCount}
-                    twitterHandle={organizationTwitterHandle}
-                  />
-                </TwitterOuterWrapper>
-              )}
-              { organizationWebsite && (
-                <WebsiteWrapper>
-                  <Suspense>
-                    <OpenExternalWebSite
-                      linkIdAttribute="organizationWebsite"
-                      url={organizationWebsite}
-                      target="_blank"
-                      body={(
-                        <span className="u-no-break">
-                          Website
-                          {' '}
-                          <Launch
-                            style={{
-                              height: 14,
-                              marginLeft: 2,
-                              marginTop: '-3px',
-                              width: 14,
-                            }}
-                          />
-                        </span>
-                      )}
+      <div>
+        <OrganizationCardWrapper>
+          <ImageColumnWrapper>
+            {turnOffLogo ?
+              null : (
+                <Link to={voterGuideLink} className="u-no-underline">
+                  <Suspense fallback={<></>}>
+                    <ImageHandler
+                      alt=""
+                      imageUrl={organizationPhotoUrlLarge}
+                      className="card-main__org-avatar"
+                      hidePlaceholder
+                      sizeClassName="icon-lg "
                     />
                   </Suspense>
-                </WebsiteWrapper>
+                </Link>
               )}
-              <IssuesByOrganizationDisplayList
-                organizationWeVoteId={organizationWeVoteId}
-                placement="bottom"
+            {followToggleOn ? (
+              <div className="u-margin-top--md">
+                <Suspense fallback={<></>}>
+                  <FollowToggle
+                    currentBallotIdInUrl={currentBallotIdInUrl}
+                    ballotItemWeVoteId={this.props.weVoteId}
+                    urlWithoutHash={urlWithoutHash}
+                    organizationWeVoteId={organizationWeVoteId}
+                  />
+                </Suspense>
+              </div>
+            ) : null}
+          </ImageColumnWrapper>
+          <DescriptionColumnWrapper>
+            <Link to={voterGuideLink}>
+              <h3 className="card-main__display-name">{displayName}</h3>
+            </Link>
+            {/* Organization supports ballot item */}
+            {positionDescription}
+
+            { twitterDescriptionMinusName && !turnOffDescription ? (
+              <div>
+                {stringContains('https://t.co/', twitterDescriptionMinusName) ? (
+                  <ParsedTwitterDescription
+                    twitterDescription={twitterDescriptionMinusName}
+                  />
+                ) : (
+                  <>
+                    {useReadMoreForTwitterDescription ? (
+                      <Suspense fallback={<></>}>
+                        <ReadMore
+                          textToDisplay={twitterDescriptionMinusName}
+                          numberOfLines={6}
+                        />
+                      </Suspense>
+                    ) : (
+                      <>
+                        {twitterDescriptionMinusName}
+                      </>
+                    )}
+                  </>
+                )}
+              </div>
+            ) :
+              <p className="card-main__description" />}
+            { !turnOffDescription ? (
+              <OrganizationLinksWrapper>
+                { organizationTwitterHandle && !turnOffTwitterHandle && (
+                  <TwitterOuterWrapper>
+                    <TwitterAccountStats
+                      includeLinkToTwitter
+                      twitterFollowersCount={twitterFollowersCount}
+                      twitterHandle={organizationTwitterHandle}
+                    />
+                  </TwitterOuterWrapper>
+                )}
+                { organizationWebsite && (
+                  <WebsiteWrapper>
+                    <Suspense fallback={<></>}>
+                      <OpenExternalWebSite
+                        linkIdAttribute="organizationWebsite"
+                        url={organizationWebsite}
+                        target="_blank"
+                        body={(
+                          <span className="u-no-break">
+                            Website
+                            {' '}
+                            <Launch
+                              style={{
+                                height: 14,
+                                marginLeft: 2,
+                                marginTop: '-3px',
+                                width: 14,
+                              }}
+                            />
+                          </span>
+                        )}
+                      />
+                    </Suspense>
+                  </WebsiteWrapper>
+                )}
+              </OrganizationLinksWrapper>
+            ) : null}
+            { organizationPosition.vote_smart_rating ? (
+              <RatingPopover
+                showDescription={showRatingDescription}
+                toggleDescription={this.toggleRatingDescription}
               />
-            </div>
-          ) : null}
-          { organizationPosition.vote_smart_rating ? (
-            <RatingPopover
-              showDescription={showRatingDescription}
-              toggleDescription={this.toggleRatingDescription}
-            />
-          ) : null}
-        </div>
-      </OrganizationCardWrapper>
+            ) : null}
+          </DescriptionColumnWrapper>
+        </OrganizationCardWrapper>
+        <IssuesByOrganizationDisplayList
+          organizationWeVoteId={organizationWeVoteId}
+          placement="bottom"
+        />
+      </div>
     );
   }
 }
@@ -313,14 +315,42 @@ OrganizationCard.propTypes = {
   weVoteId: PropTypes.string,
 };
 
+const DescriptionColumnWrapper = styled('div')`
+`;
+// flex: 1;
+// @media all and (min-width: 480px) {
+//   .card-main__media-object-content {
+//     padding: 4px 32px;
+//     margin-bottom: 32px;
+//     font-size: 16px;
+//   }
+// }
+
+const ImageColumnWrapper = styled('div')`
+  display: flex;
+  flex-direction: column;
+  margin-right: 10px;
+`;
+
 const OrganizationCardWrapper = styled('div')`
+  display: flex;
+  align-items: flex-start;
+  position: relative;
+`;
+
+const OrganizationLinksWrapper = styled('div')`
+  align-items: center;
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 6px;
 `;
 
 const TwitterOuterWrapper = styled('div')`
   margin-left: -3px;
-  margin-bottom: 6px;
+  margin-right: 12px;
 `;
 
 const WebsiteWrapper = styled('div')`
+  height: 24px;
   margin-left: 0;
 `;

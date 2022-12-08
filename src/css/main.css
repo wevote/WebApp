@@ -12170,13 +12170,13 @@ h1, h2, h3, h4, h5, h6 {
   position: relative;
 }
 
-.card-main__media-object-anchor {
-  margin-right: 10px;
-}
+/*.card-main__media-object-anchor {*/
+/*  margin-right: 10px;*/
+/*}*/
 
-.card-main__media-object-content {
-  flex: 1;
-}
+/*.card-main__media-object-content {*/
+/*  flex: 1;*/
+/*}*/
 
 .card {
   background-color: #fff;
@@ -12261,18 +12261,18 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
-.card-main__media-object-anchor {
-  display: flex;
-  flex-direction: column;
-}
+/*.card-main__media-object-anchor {*/
+/*  display: flex;*/
+/*  flex-direction: column;*/
+/*}*/
 
-@media all and (min-width: 480px) {
-  .card-main__media-object-content {
-    padding: 4px 32px;
-    margin-bottom: 32px;
-    font-size: 16px;
-  }
-}
+/*@media all and (min-width: 480px) {*/
+/*  .card-main__media-object-content {*/
+/*    padding: 4px 32px;*/
+/*    margin-bottom: 32px;*/
+/*    font-size: 16px;*/
+/*  }*/
+/*}*/
 
 .card-main__avatar {
   border-radius: 2px;
@@ -13126,23 +13126,23 @@ h1, h2, h3, h4, h5, h6 {
 /*  border-left: 4px solid #999;*/
 /*}*/
 
-.tabs__tabs-container-wrap {
-  border-bottom: 1px solid #aaa;
-  border-radius: 2px;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
-  background-color: #fff;
-  box-sizing: content-box;
-  padding: 8px 16px 0 16px;
-  overflow: hidden;
-  height: 30px;
-}
+/*.tabs__tabs-container-wrap {*/
+/*  border-bottom: 1px solid #aaa;*/
+/*  border-radius: 2px;*/
+/*  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);*/
+/*  background-color: #fff;*/
+/*  box-sizing: content-box;*/
+/*  padding: 8px 16px 0 16px;*/
+/*  overflow: hidden;*/
+/*  height: 30px;*/
+/*}*/
 
-@media all and (min-width: 320px) and (max-width: 479px) {
-  .tabs__tabs-container-wrap {
-    margin-right: -16px;
-    margin-left: -16px;
-  }
-}
+/*@media all and (min-width: 320px) and (max-width: 479px) {*/
+/*  .tabs__tabs-container-wrap {*/
+/*    margin-right: -16px;*/
+/*    margin-left: -16px;*/
+/*  }*/
+/*}*/
 
 .tabs__tabs-container {
   white-space: nowrap;

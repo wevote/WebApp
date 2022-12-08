@@ -371,7 +371,7 @@ class CandidateItemEndorsement extends Component {
       <CandidateItemEndorsementWrapper className="card-main u-overflow-hidden candidate-card card-main__no-underline">
         <CandidateWrapper className="card-main__media-object">
           <CandidateInfo>
-            <div className="card-main__media-object-anchor">
+            <MediaObjectAnchor>
               <Suspense fallback={<></>}>
                 <ImageHandler
                   className="card-main__avatar"
@@ -381,7 +381,7 @@ class CandidateItemEndorsement extends Component {
                   kind_of_ballot_item="CANDIDATE"
                 />
               </Suspense>
-            </div>
+            </MediaObjectAnchor>
             <Candidate>
               <h2 className="card-main__display-name">
                 {ballotItemDisplayName}
@@ -610,6 +610,13 @@ const ExternalWebSiteWrapper = styled('span')`
   padding-left: 15px;
   white-space: nowrap;
   ${() => displayNoneIfSmallerThanDesktop()};
+`;
+
+// Replacing className="card-main__media-object-anchor"
+const MediaObjectAnchor = styled('div')`
+  display: flex;
+  flex-direction: column;
+  margin-right: 10px;
 `;
 
 const TextArea = styled(TextField)`

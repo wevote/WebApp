@@ -2,6 +2,7 @@ import { Twitter } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 import abbreviateNumber from '../../common/utils/abbreviateNumber';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
@@ -131,7 +132,7 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
     return (
       <div className="card-main candidate-card">
         <div className="card-main__media-object">
-          <div className="card-main__media-object-anchor">
+          <MediaObjectAnchor>
             {linkToBallotItemPage ?
               <Link to={this.getCandidateLink} className="u-no-underline">{candidatePhotoUrlHtml}</Link> :
               candidatePhotoUrlHtml}
@@ -146,9 +147,9 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
                 <span title={numberWithCommas(twitterFollowersCount)}>{abbreviateNumber(twitterFollowersCount)}</span>
               </span>
             ) : null}
-          </div>
+          </MediaObjectAnchor>
 
-          <div className="card-main__media-object-content">
+          <DescriptionColumnWrapper>
             <h2 className="card-main__display-name">
               { linkToBallotItemPage ?
                 <Link to={this.getCandidateLink}>{ballotItemDisplayName}</Link> :
@@ -187,9 +188,8 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
                   null}
               </div>
             ) : null}
-          </div>
+          </DescriptionColumnWrapper>
           {' '}
-          {/* END .card-main__media-object-content */}
         </div>
         {' '}
         {/* END .card-main__media-object */}
@@ -224,3 +224,21 @@ OrganizationVoterGuideCandidateItem.propTypes = {
   twitterFollowersCount: PropTypes.number,
   weVoteId: PropTypes.string.isRequired, // This is the candidateWeVoteId
 };
+
+const DescriptionColumnWrapper = styled('div')`
+`;
+// flex: 1;
+// @media all and (min-width: 480px) {
+//   .card-main__media-object-content {
+//     padding: 4px 32px;
+//     margin-bottom: 32px;
+//     font-size: 16px;
+//   }
+// }
+
+// Replacing className="card-main__media-object-anchor"
+const MediaObjectAnchor = styled('div')`
+  display: flex;
+  flex-direction: column;
+  margin-right: 10px;
+`;

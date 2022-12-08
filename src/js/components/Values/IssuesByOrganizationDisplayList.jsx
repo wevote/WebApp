@@ -180,7 +180,7 @@ class IssuesByOrganizationDisplayList extends Component {
       >
         <Chip
           avatar={<SvgImage imageName={svg} stylesTextIncoming={`fill: ${svgFill} !important; margin-left: 4px; width: 24px;`} />}
-          classes={{ root: classes.chipStyle }}
+          classes={{ root: classes.chipStyle, label: classes.chipLabelStyle }}
           label={oneIssue.issue_name}
           ref={this.valueSpan}
         />
@@ -241,18 +241,18 @@ class IssuesByOrganizationDisplayList extends Component {
     );
 
     return (
-      <Wrapper
+      <IssuesByOrganizationDisplayListOuterWrapper
         onBlur={this.handleLeaveHoverLocalArea}
         onFocus={this.handleEnterHoverLocalArea}
         onMouseOut={this.handleLeaveHoverLocalArea}
         onMouseOver={this.handleEnterHoverLocalArea}
       >
-        <IssuesByOrganization fullWidth={!!this.props.fullWidth}>
+        <IssuesByOrganizationDisplayListInnerWrapper fullWidth={!!this.props.fullWidth}>
           <IssueByOrganizationList>
             {issuesUnderThisOrganizationHtml}
           </IssueByOrganizationList>
-        </IssuesByOrganization>
-      </Wrapper>
+        </IssuesByOrganizationDisplayListInnerWrapper>
+      </IssuesByOrganizationDisplayListOuterWrapper>
     );
   }
 }
@@ -266,6 +266,10 @@ IssuesByOrganizationDisplayList.propTypes = {
 };
 
 const styles = () => ({
+  chipLabelStyle: {
+    paddingLeft: 5,
+    paddingRight: 8,
+  },
   chipStyle: {
     backgroundColor: '#dbdbdb',
     border: '1px solid #ccc',
@@ -279,13 +283,6 @@ const styles = () => ({
   },
 });
 
-const Wrapper = styled('div')`
-  overflow: visible;
-  display: flex;
-  flex-flow: row;
-  justify-content: space-between;
-`;
-
 const FollowIfYouCare = styled('div')`
   color: #999;
   font-size: .75rem;
@@ -296,7 +293,7 @@ const FollowIssueToggleContainer = styled('div')`
   margin-top: 20px;
 `;
 
-const IssuesByOrganization = styled('div', {
+const IssuesByOrganizationDisplayListInnerWrapper = styled('div', {
   shouldForwardProp: (prop) => !['fullWidth'].includes(prop),
 })(({ fullWidth, theme }) => (`
   width: ${fullWidth ? '100%' : '85%'};
@@ -305,6 +302,13 @@ const IssuesByOrganization = styled('div', {
     width: ${fullWidth ? '100%' : '90%'};
   }
 `));
+
+const IssuesByOrganizationDisplayListOuterWrapper = styled('div')`
+  overflow: visible;
+  display: flex;
+  flex-flow: row;
+  justify-content: space-between;
+`;
 
 const IssueByOrganizationList = styled('ul')`
   display: flex;

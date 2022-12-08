@@ -16,8 +16,9 @@ export default class UnknownTwitterAccount extends Component {
 
     return (
       <div>
-        <TwitterAccountCard twitterHandle={twitterHandle}
-                            twitterName={twitterName}
+        <TwitterAccountCard
+          twitterHandle={twitterHandle}
+          twitterName={twitterName}
         />
         <br />
         <ThisIsMeAction

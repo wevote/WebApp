@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
+import styled from 'styled-components';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
@@ -314,7 +315,7 @@ export default class OrganizationVoterGuideTabs extends Component {
 
     return (
       <div className="">
-        <div className="tabs__tabs-container-wrap u-show-desktop-tablet d-print-none">
+        <TabsContainerWrapper className="u-show-desktop-tablet d-print-none">
           <div className="tabs__tabs-container">
             <ul className="nav tabs__tabs">
               {/* <li className="tab-item"> */}
@@ -363,7 +364,7 @@ export default class OrganizationVoterGuideTabs extends Component {
               </li>
             </ul>
           </div>
-        </div>
+        </TabsContainerWrapper>
         {voterGuideComponentToDisplay}
         {showElectionsWithOrganizationVoterGuidesModal && (
           <VoterGuideChooseElectionWithPositionsModal
@@ -385,3 +386,21 @@ OrganizationVoterGuideTabs.propTypes = {
   match: PropTypes.object,
   params: PropTypes.object,
 };
+
+const TabsContainerWrapper = styled('div')`
+  // border-bottom: 1px solid #aaa;
+  // border-radius: 2px;
+  // box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+  background-color: #fff;
+  box-sizing: content-box;
+  padding: 8px 16px 0 16px;
+  overflow: hidden;
+  height: 30px;
+`;
+// Not implemented
+// @media all and (min-width: 320px) and (max-width: 479px) {
+//   .tabs__tabs-container-wrap {
+//     margin-right: -16px;
+//     margin-left: -16px;
+//   }
+// }

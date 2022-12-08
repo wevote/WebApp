@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 import IssueActions from '../../actions/IssueActions';
 import IssueStore from '../../stores/IssueStore';
 import VoterStore from '../../stores/VoterStore';
@@ -206,7 +207,7 @@ export default class SettingsIssueLinks extends Component {
             <h1 className="h2 d-none d-sm-block">Organizational Values</h1>
             <h1 className="h4 d-block d-sm-none">Organizational Values</h1>
             <p>Help voters find your voter guide. Specify the values and issues on which you take positions.</p>
-            <div className="tabs__tabs-container-wrap">
+            <TabsContainerWrapper>
               <div className="tabs__tabs-container d-print-none">
                 <ul className="nav tabs__tabs">
                   <li className="tab-item">
@@ -221,7 +222,7 @@ export default class SettingsIssueLinks extends Component {
                   </li>
                 </ul>
               </div>
-            </div>
+            </TabsContainerWrapper>
             <br />
             {issuesToDisplay.length > 0 ? issuesToDisplay : null}
           </div>
@@ -234,3 +235,21 @@ SettingsIssueLinks.propTypes = {
   organizationWeVoteId: PropTypes.string,
   params: PropTypes.object,
 };
+
+const TabsContainerWrapper = styled('div')`
+  // border-bottom: 1px solid #aaa;
+  // border-radius: 2px;
+  // box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+  background-color: #fff;
+  box-sizing: content-box;
+  padding: 8px 16px 0 16px;
+  overflow: hidden;
+  height: 30px;
+`;
+// Not implemented
+// @media all and (min-width: 320px) and (max-width: 479px) {
+//   .tabs__tabs-container-wrap {
+//     margin-right: -16px;
+//     margin-left: -16px;
+//   }
+// }
