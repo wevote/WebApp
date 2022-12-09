@@ -32,7 +32,7 @@ import {
 } from '../components/Style/ReadyPageCommonStyles';
 import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
 import webAppConfig from '../config';
-import AppObservableStore, { messageService } from '../stores/AppObservableStore';
+import AppObservableStore, { messageService } from '../common/stores/AppObservableStore';
 import VoterStore from '../stores/VoterStore';
 import { cordovaSimplePageContainerTopOffset } from '../utils/cordovaCalculatedOffsets';
 import lazyPreloadPages from '../utils/lazyPreloadPages';
@@ -58,20 +58,25 @@ class ReadyLight extends Component {
   }
 
   componentDidMount () {
-    window.scrollTo(0, 0);
     this.appStateSubscription = messageService.getMessage().subscribe((msg) => this.onAppObservableStoreChange(msg));
     this.onAppObservableStoreChange();
-    ReadyActions.voterPlansForVoterRetrieve();
-    if (apiCalming('activityNoticeListRetrieve', 10000)) {
-      ActivityActions.activityNoticeListRetrieve();
-    }
     AppObservableStore.setEvaluateHeaderDisplay();
+
+    this.preloadTimer = setTimeout(() => {
+      if (apiCalming('activityNoticeListRetrieve', 10000)) {
+        ActivityActions.activityNoticeListRetrieve();
+      }
+      lazyPreloadPages();
+    }, 5000);
+
+    this.voterPlansTimer = setTimeout(() => {
+      ReadyActions.voterPlansForVoterRetrieve();
+    }, 6000);
 
     this.analyticsTimer = setTimeout(() => {
       AnalyticsActions.saveActionReadyVisit(VoterStore.electionId());
     }, 8000);
-
-    this.preloadTimer = setTimeout(() => lazyPreloadPages(), 3000);
+    window.scrollTo(0, 0);
   }
 
   componentDidCatch (error, info) {
@@ -82,6 +87,7 @@ class ReadyLight extends Component {
     this.appStateSubscription.unsubscribe();
     clearTimeout(this.analyticsTimer);
     clearTimeout(this.preloadTimer);
+    clearTimeout(this.voterPlansTimer);
 
     const { showReadyHeavy } = this.props;
     showReadyHeavy();

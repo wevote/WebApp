@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { normalizedHref } from '../../common/utils/hrefUtils';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { handleResize } from '../../common/utils/isMobileScreenSize';
-import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
+import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
 import { getApplicationViewBooleans } from '../../utils/applicationUtils';
 // importRemoveCordovaListenersToken2  -- Do not remove this line!
 

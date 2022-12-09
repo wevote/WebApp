@@ -6,7 +6,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { renderLog } from '../../common/utils/logging';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
-import AppObservableStore from '../../stores/AppObservableStore';
+import AppObservableStore from '../../common/stores/AppObservableStore';
 import ReadyStore from '../../stores/ReadyStore';
 import VoterStore from '../../stores/VoterStore';
 import { ButtonLeft, ButtonText, Icon, PercentComplete, ReadyCard, StyledButton, StyledCheckbox, SubTitle, TitleRowWrapper } from './ReadyTaskStyles';

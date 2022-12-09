@@ -4,7 +4,7 @@ import withTheme from '@mui/styles/withTheme';
 import React, { Component, Suspense } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import AppObservableStore from '../../stores/AppObservableStore';
+import AppObservableStore from '../../common/stores/AppObservableStore';
 import FriendStore from '../../stores/FriendStore';
 import IssueStore from '../../stores/IssueStore';
 import OrganizationStore from '../../stores/OrganizationStore';

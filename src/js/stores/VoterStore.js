@@ -1,18 +1,18 @@
 import { ReduceStore } from 'flux/utils';
-import BallotActions from '../actions/BallotActions';
+import BallotActions from '../actions/BallotActions'; // eslint-disable-line import/no-cycle
 import FacebookActions from '../actions/FacebookActions'; // eslint-disable-line import/no-cycle
 import FriendActions from '../actions/FriendActions'; // eslint-disable-line import/no-cycle
 import OrganizationActions from '../actions/OrganizationActions';
 import VoterActions from '../actions/VoterActions'; // eslint-disable-line import/no-cycle
 import VoterGuideActions from '../actions/VoterGuideActions';
 import Dispatcher from '../common/dispatcher/Dispatcher';
+import AppObservableStore from '../common/stores/AppObservableStore'; // eslint-disable-line import/no-cycle
 import apiCalming from '../common/utils/apiCalming';
 import Cookies from '../common/utils/js-cookie/Cookies';
 import stringContains from '../common/utils/stringContains';
 import signInModalGlobalState from '../components/Widgets/signInModalGlobalState';
 import VoterConstants from '../constants/VoterConstants';
 import { dumpObjProps } from '../utils/appleSiliconUtils';
-import AppObservableStore from './AppObservableStore';
 
 class VoterStore extends ReduceStore {
   getInitialState () {
@@ -56,6 +56,7 @@ class VoterStore extends ReduceStore {
       voterEmailQueuedToSaveSet: false,
       voterFirstNameQueuedToSave: '',
       voterFirstNameQueuedToSaveSet: false,
+      voterFirstRetrieveCompleted: false, // Has the first retrieve of the voter completed?
       voterFound: false,
       voterExternalIdHasBeenSavedOnce: {}, // Dict with externalVoterId and membershipOrganizationWeVoteId as keys, and true/false as value
       voterLastNameQueuedToSave: '',
@@ -493,6 +494,10 @@ class VoterStore extends ReduceStore {
     return this.getState().voterFound;
   }
 
+  voterFirstRetrieveCompleted () {
+    return this.getState().voterFirstRetrieveCompleted;
+  }
+
   voterExternalIdHasBeenSavedOnce (externalVoterId, membershipOrganizationWeVoteId) {
     if (!externalVoterId || !membershipOrganizationWeVoteId) {
       return false;
@@ -528,6 +533,7 @@ class VoterStore extends ReduceStore {
     let voterDeviceId;
     let voterContactEmailAugmentWithWeVoteDataComplete;
     let voterExternalIdHasBeenSavedOnce;
+    let voterFirstRetrieveCompleted;
     let voterMustRequestNewCode;
     let voterSecretCodeRequestsLocked;
 
@@ -1066,7 +1072,10 @@ class VoterStore extends ReduceStore {
 
         // Preserve address within voter
         incomingVoter = action.res;
-        ({ facebookPhotoRetrieveLoopCount } = state);
+        ({ facebookPhotoRetrieveLoopCount, voterFirstRetrieveCompleted } = state);
+        if (!voterFirstRetrieveCompleted) {
+          voterFirstRetrieveCompleted = Boolean(action.res.success);
+        }
 
         currentVoterDeviceId = Cookies.get('voter_device_id');
         // console.log('VoterStore, voterRetrieve stored Cookie value for voter_device_id value on entry: ', currentVoterDeviceId);
@@ -1171,6 +1180,7 @@ class VoterStore extends ReduceStore {
           ...revisedState,
           facebookPhotoRetrieveLoopCount: facebookPhotoRetrieveLoopCount + 1,
           voter: incomingVoter,
+          voterFirstRetrieveCompleted,
           voterFound: action.res.voter_found,
         };
         if (incomingVoter.address) {

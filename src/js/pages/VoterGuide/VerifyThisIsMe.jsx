@@ -14,7 +14,7 @@ import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import TwitterAccountCard from '../../components/Twitter/TwitterAccountCard';
 import TwitterSignIn from '../../components/Twitter/TwitterSignIn';
 import OrganizationCard from '../../components/VoterGuide/OrganizationCard';
-import AppObservableStore from '../../stores/AppObservableStore';
+import AppObservableStore from '../../common/stores/AppObservableStore';
 import CandidateStore from '../../stores/CandidateStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import TwitterStore from '../../stores/TwitterStore';

@@ -3,7 +3,7 @@ import { normalizedHrefPage } from '../common/utils/hrefUtils';
 import { isCordova, isWebApp } from '../common/utils/isCordovaOrWebApp';
 import { cordovaOffsetLog } from '../common/utils/logging';
 import CordovaPageConstants from '../constants/CordovaPageConstants';
-import AppObservableStore from '../stores/AppObservableStore';
+import AppObservableStore from '../common/stores/AppObservableStore';
 import { getPageKey } from './cordovaPageUtils';
 import { decorativeSpacing } from './cordovaTopHeaderTopMargin';
 import { pageEnumeration } from './cordovaUtilsPageEnumeration';

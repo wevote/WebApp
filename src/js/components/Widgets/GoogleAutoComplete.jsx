@@ -6,7 +6,7 @@ import React from 'react';
 import AutoComplete from 'react-google-autocomplete';
 import { renderLog } from '../../common/utils/logging';
 import webAppConfig from '../../config';
-import initializejQuery from '../../utils/initializejQuery';
+import initializejQuery from '../../common/utils/initializejQuery';
 
 function GoogleAutoComplete (props) {
   renderLog('GoogleAutoComplete  functional component');

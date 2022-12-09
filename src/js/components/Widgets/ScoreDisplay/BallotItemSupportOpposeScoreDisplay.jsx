@@ -18,7 +18,7 @@ import {
   YourOpinion,
   YourPersonalNetworkIntroText,
 } from '../../Style/ScoreDisplayStyles';
-import AppObservableStore from '../../../stores/AppObservableStore';
+import AppObservableStore from '../../../common/stores/AppObservableStore';
 import CandidateStore from '../../../stores/CandidateStore';
 import FriendStore from '../../../stores/FriendStore';
 import IssueStore from '../../../stores/IssueStore';

@@ -7,7 +7,7 @@ import Helmet from 'react-helmet';
 import OrganizationActions from '../../actions/OrganizationActions';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import { renderLog } from '../../common/utils/logging';
-import AppObservableStore from '../../stores/AppObservableStore';
+import AppObservableStore from '../../common/stores/AppObservableStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';
 import { voterFeaturePackageExceedsOrEqualsRequired } from '../../utils/pricingFunctions';

@@ -1,5 +1,5 @@
 import Dispatcher from '../common/dispatcher/Dispatcher';
-import AppObservableStore from '../stores/AppObservableStore';
+import AppObservableStore from '../common/stores/AppObservableStore';
 
 // Dec 2018: Keep this comment as a cheat-sheet for the enumerated values sent by the API
 // ACTION_VOTER_GUIDE_VISIT = 1;

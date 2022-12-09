@@ -10,7 +10,7 @@ import historyPush from '../../common/utils/historyPush';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import stringContains from '../../common/utils/stringContains';
-import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
+import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
 
 class ShareButtonDesktopTablet extends Component {

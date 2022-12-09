@@ -17,7 +17,7 @@ import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import OrganizationCard from '../../components/VoterGuide/OrganizationCard';
 import OrganizationVoterGuideCard from '../../components/VoterGuide/OrganizationVoterGuideCard';
 import OrganizationVoterGuideTabs from '../../components/VoterGuide/OrganizationVoterGuideTabs';
-import AppObservableStore from '../../stores/AppObservableStore';
+import AppObservableStore from '../../common/stores/AppObservableStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';

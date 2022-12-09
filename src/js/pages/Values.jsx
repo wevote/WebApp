@@ -23,7 +23,7 @@ import AddEndorsements from '../components/Widgets/AddEndorsements';
 import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
 import SnackNotifier, { openSnackbar } from '../components/Widgets/SnackNotifier';
 import Testimonial from '../components/Widgets/Testimonial';
-import AppObservableStore from '../stores/AppObservableStore';
+import AppObservableStore from '../common/stores/AppObservableStore';
 import IssueStore from '../stores/IssueStore';
 import VoterStore from '../stores/VoterStore';
 // Lint is not smart enough to know that lazyPreloadPages will not attempt to preload/reload this page

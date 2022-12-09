@@ -10,7 +10,7 @@ import SvgImage from '../../common/components/Widgets/SvgImage';
 import abbreviateNumber from '../../common/utils/abbreviateNumber';
 import { renderLog } from '../../common/utils/logging';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
-import AppObservableStore from '../../stores/AppObservableStore';
+import AppObservableStore from '../../common/stores/AppObservableStore';
 import FriendStore from '../../stores/FriendStore';
 import IssueStore from '../../stores/IssueStore';
 import OrganizationStore from '../../stores/OrganizationStore';

@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import OpenExternalWebSite from '../../common/components/Widgets/OpenExternalWebSite';
-import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
+import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
 
 
 class FooterMainPrivateLabeled extends Component {

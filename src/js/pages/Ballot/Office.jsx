@@ -11,7 +11,7 @@ import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import toTitleCase from '../../common/utils/toTitleCase';
 import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import Testimonial from '../../components/Widgets/Testimonial';
-import AppObservableStore from '../../stores/AppObservableStore';
+import AppObservableStore from '../../common/stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
 import CandidateStore from '../../stores/CandidateStore';
 import IssueStore from '../../stores/IssueStore';

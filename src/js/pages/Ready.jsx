@@ -24,7 +24,7 @@ import { ElectionCountdownInnerWrapper, ElectionCountdownOuterWrapper, PrepareFo
 import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
 import SnackNotifier, { openSnackbar } from '../components/Widgets/SnackNotifier';
 import webAppConfig from '../config';
-import AppObservableStore, { messageService } from '../stores/AppObservableStore';
+import AppObservableStore, { messageService } from '../common/stores/AppObservableStore';
 import BallotStore from '../stores/BallotStore';
 import VoterStore from '../stores/VoterStore';
 import { cordovaSimplePageContainerTopOffset } from '../utils/cordovaCalculatedOffsets';
@@ -55,8 +55,6 @@ class Ready extends Component {
   }
 
   componentDidMount () {
-    // console.log('Ready componentDidMount');
-    window.scrollTo(0, 0);
     this.appStateSubscription = messageService.getMessage().subscribe((msg) => this.onAppObservableStoreChange(msg));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     this.onAppObservableStoreChange();
@@ -71,13 +69,6 @@ class Ready extends Component {
       }
     }, 5000);  // April 19, 2021: Tuned to keep performance above 83.  LCP at 597ms
 
-    ReadyActions.voterPlansForVoterRetrieve();
-    if (apiCalming('activityNoticeListRetrieve', 10000)) {
-      ActivityActions.activityNoticeListRetrieve();
-    }
-    if (apiCalming('friendListsAll', 30000)) {
-      FriendActions.friendListsAll();
-    }
     let modalToShow = '';
     let sharedItemCode = '';
     if (this.props.match) {
@@ -103,11 +94,23 @@ class Ready extends Component {
       AppObservableStore.setEvaluateHeaderDisplay();
     }
 
+    this.preloadTimer = setTimeout(() => {
+      if (apiCalming('activityNoticeListRetrieve', 10000)) {
+        ActivityActions.activityNoticeListRetrieve();
+      }
+      if (apiCalming('friendListsAll', 30000)) {
+        FriendActions.friendListsAll();
+      }
+      lazyPreloadPages();
+    }, 5000);
+
+    this.voterPlansTimer = setTimeout(() => {
+      ReadyActions.voterPlansForVoterRetrieve();
+    }, 6000);
+
     this.analyticsTimer = setTimeout(() => {
       AnalyticsActions.saveActionReadyVisit(VoterStore.electionId());
     }, 8000);
-
-    this.preloadTimer = setTimeout(() => lazyPreloadPages(), 2000);
     window.scrollTo(0, 0);
   }
 
@@ -126,6 +129,7 @@ class Ready extends Component {
     clearTimeout(this.modalOpenTimer);
     clearTimeout(this.positionItemTimer);
     clearTimeout(this.preloadTimer);
+    clearTimeout(this.voterPlansTimer);
   }
 
   static getDerivedStateFromError (error) {       // eslint-disable-line no-unused-vars

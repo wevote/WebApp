@@ -2,7 +2,7 @@ import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
+import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
 import FooterMainPrivateLabeled from './FooterMainPrivateLabeled';
 import FooterMainWeVote from './FooterMainWeVote';
 

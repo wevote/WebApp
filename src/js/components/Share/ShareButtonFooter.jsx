@@ -14,7 +14,7 @@ import { hasDynamicIsland, hasIPhoneNotch, isAndroid } from '../../common/utils/
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import stringContains from '../../common/utils/stringContains';
-import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
+import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
 import { getApplicationViewBooleans } from '../../utils/applicationUtils';
@@ -148,7 +148,9 @@ class ShareButtonFooter extends Component {
       urlWithSharedItemCodeAllOpinions,
     } = generateShareLinks();
     if (!urlWithSharedItemCode || !urlWithSharedItemCodeAllOpinions) {
-      ShareActions.sharedItemRetrieveByFullUrl(currentFullUrlToShare);
+      if (apiCalming(`sharedItemRetrieve${currentFullUrlToShare}`, 10000)) {
+        ShareActions.sharedItemRetrieveByFullUrl(currentFullUrlToShare);
+      }
     }
     const showSignInModal = AppObservableStore.showSignInModal();
     this.setState({

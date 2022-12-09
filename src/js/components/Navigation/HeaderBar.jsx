@@ -17,7 +17,7 @@ import { renderLog } from '../../common/utils/logging';
 import standardBoxShadow from '../../common/components/Style/standardBoxShadow';
 import voterPhoto from '../../common/utils/voterPhoto';
 import AnalyticsStore from '../../stores/AnalyticsStore';
-import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
+import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
 import FacebookStore from '../../stores/FacebookStore';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';

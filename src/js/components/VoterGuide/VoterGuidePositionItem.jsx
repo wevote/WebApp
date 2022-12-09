@@ -12,7 +12,7 @@ import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import numberWithCommas from '../../common/utils/numberWithCommas';
 import stringContains from '../../common/utils/stringContains';
 import toTitleCase from '../../common/utils/toTitleCase';
-import AppObservableStore from '../../stores/AppObservableStore';
+import AppObservableStore from '../../common/stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
 import CandidateStore from '../../stores/CandidateStore';
 import MeasureStore from '../../stores/MeasureStore';

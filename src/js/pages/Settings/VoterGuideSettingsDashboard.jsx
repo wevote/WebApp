@@ -9,7 +9,7 @@ import apiCalming from '../../common/utils/apiCalming';
 import { renderLog } from '../../common/utils/logging';
 import VoterGuideSettingsAddPositions from '../../components/Settings/VoterGuideSettingsAddPositions';
 import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
-import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
+import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';

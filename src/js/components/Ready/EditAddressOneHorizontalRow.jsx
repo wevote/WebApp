@@ -10,7 +10,7 @@ import historyPush from '../../common/utils/historyPush';
 import { displayNoneIfSmallerThanDesktop } from '../../common/utils/isMobileScreenSize';
 import Cookies from '../../common/utils/js-cookie/Cookies';
 import { renderLog } from '../../common/utils/logging';
-import AppObservableStore from '../../stores/AppObservableStore';
+import AppObservableStore from '../../common/stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
 import VoterStore from '../../stores/VoterStore';
 import isMobile from '../../utils/isMobile';

@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
 import { renderLog } from '../../common/utils/logging';
-import AppObservableStore from '../../stores/AppObservableStore';
+import AppObservableStore from '../../common/stores/AppObservableStore';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
 import { smallButtonIfNeeded } from '../Style/friendStyles';

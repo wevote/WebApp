@@ -8,7 +8,7 @@ import FriendActions from '../../actions/FriendActions';
 import apiCalming from '../../common/utils/apiCalming';
 import { blurTextFieldAndroid, focusTextFieldAndroid } from '../../common/utils/cordovaUtils';
 import { renderLog } from '../../common/utils/logging';
-import AppObservableStore from '../../stores/AppObservableStore';
+import AppObservableStore from '../../common/stores/AppObservableStore';
 import FriendStore from '../../stores/FriendStore';
 import ShareStore from '../../common/stores/ShareStore';
 import VoterStore from '../../stores/VoterStore';

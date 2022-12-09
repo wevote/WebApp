@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import BallotActions from '../../actions/BallotActions';
+import apiCalming from '../../common/utils/apiCalming';
 import BallotStore from '../../stores/BallotStore';
 import ElectionActions from '../../actions/ElectionActions';
 import AddressBox from '../../components/AddressBox';
@@ -27,7 +28,9 @@ export default class Location extends Component {
   componentDidMount () {
     this.ballotStoreListener = BallotStore.addListener(this.onElectionStoreChange.bind(this));
     this.electionListListener = ElectionStore.addListener(this.onElectionStoreChange.bind(this));
-    BallotActions.voterBallotListRetrieve();
+    if (apiCalming('voterBallotListRetrieve', 10000)) {
+      BallotActions.voterBallotListRetrieve();
+    }
     ElectionActions.electionsRetrieve();
     AnalyticsActions.saveActionElections(VoterStore.electionId());
     window.scrollTo(0, 0);

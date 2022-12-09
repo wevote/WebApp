@@ -1,6 +1,6 @@
 import { ReduceStore } from 'flux/utils';
 import assign from 'object-assign';
-import AppObservableStore from './AppObservableStore'; // eslint-disable-line import/no-cycle
+import AppObservableStore from '../common/stores/AppObservableStore'; // eslint-disable-line import/no-cycle
 import BallotActions from '../actions/BallotActions';
 import CandidateActions from '../actions/CandidateActions';
 import MeasureActions from '../actions/MeasureActions'; // eslint-disable-line import/no-cycle

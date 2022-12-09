@@ -13,7 +13,7 @@ import historyPush from '../../common/utils/historyPush';
 import initializeMoment from '../../common/utils/initializeMoment';
 import { renderLog } from '../../common/utils/logging';
 import BallotStore from '../../stores/BallotStore';
-import AppObservableStore from '../../stores/AppObservableStore';
+import AppObservableStore from '../../common/stores/AppObservableStore';
 
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
 

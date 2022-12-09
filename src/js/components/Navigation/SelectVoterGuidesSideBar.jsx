@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import React, { Component } from 'react';
 import { renderLog } from '../../common/utils/logging';
 import webAppConfig from '../../config';
-import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
+import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
 import ElectionStore from '../../stores/ElectionStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';

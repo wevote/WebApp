@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import OpenExternalWebSite from '../../common/components/Widgets/OpenExternalWebSite';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
-import AppObservableStore from '../../stores/AppObservableStore';
+import AppObservableStore from '../../common/stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
 
 const BallotElectionListWithFilters = React.lazy(() => import(/* webpackChunkName: 'BallotElectionListWithFilters' */ '../Ballot/BallotElectionListWithFilters'));

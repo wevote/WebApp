@@ -12,7 +12,7 @@ import AnnotatedSlideshow from '../components/Widgets/AnnotatedSlideshow';
 import HeaderSwitch from '../components/Widgets/HeaderSwitch';
 import StepsChips from '../components/Widgets/StepsChips';
 import VoterConstants from '../constants/VoterConstants';
-import AppObservableStore from '../stores/AppObservableStore';
+import AppObservableStore from '../common/stores/AppObservableStore';
 import VoterStore from '../stores/VoterStore';
 import cordovaScrollablePaneTopPadding from '../utils/cordovaScrollablePaneTopPadding';
 

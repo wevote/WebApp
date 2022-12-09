@@ -27,7 +27,7 @@ import {
   WeVoteLogo,
   WeVoteLogoWrapper,
 } from '../../components/Style/SimpleProcessStyles';
-import AppObservableStore from '../../stores/AppObservableStore';
+import AppObservableStore from '../../common/stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
 
 const UnsubscribeSimpleTextForModifier = React.lazy(() => import(/* webpackChunkName: 'UnsubscribeSimpleTextForModifier' */ '../../components/Settings/UnsubscribeSimpleTextForModifier'));

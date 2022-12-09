@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
+import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import historyPush from '../../common/utils/historyPush';

@@ -9,7 +9,7 @@ import AnalyticsActions from '../../actions/AnalyticsActions';
 import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
 import { displayNoneIfSmallerThanDesktop } from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
-import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
+import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
 import { calculateBallotBaseUrl } from '../../common/utils/textFormat';
 import BallotTitleHeader from './BallotTitleHeader';

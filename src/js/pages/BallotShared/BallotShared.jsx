@@ -18,7 +18,7 @@ import { DesktopNextButtonsInnerWrapper, DesktopStaticNextButtonsOuterWrapper } 
 import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import BrowserPushMessage from '../../components/Widgets/BrowserPushMessage';
 import SnackNotifier, { openSnackbar } from '../../components/Widgets/SnackNotifier';
-import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
+import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
 import ShareStore from '../../common/stores/ShareStore';
 import VoterStore from '../../stores/VoterStore';

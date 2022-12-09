@@ -1,7 +1,7 @@
 import ReactGA from 'react-ga';
 import { BrowserRouter } from 'react-router-dom';
 import webAppConfig from '../../../config';
-import AppObservableStore from '../../../stores/AppObservableStore';
+import AppObservableStore from '../../stores/AppObservableStore';
 import { normalizedHrefPage } from '../../utils/hrefUtils';
 
 // https://stackoverflow.com/questions/34093913/how-to-debug-react-router

@@ -3,7 +3,7 @@ import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { renderLog } from '../../common/utils/logging';
-import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
+import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
 
 
 class EndorsementModeTabs extends Component {

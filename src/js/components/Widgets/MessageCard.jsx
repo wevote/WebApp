@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
-import AppObservableStore from '../../stores/AppObservableStore';
+import AppObservableStore from '../../common/stores/AppObservableStore';
 
 export default class MessageCard extends Component {
   constructor (props) {

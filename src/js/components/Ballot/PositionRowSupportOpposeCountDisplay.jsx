@@ -17,7 +17,7 @@ import {
   getPositionSummaryListForBallotItem,
 } from '../../utils/positionFunctions';
 import { openSnackbar } from '../Widgets/SnackNotifier';
-import AppObservableStore from '../../stores/AppObservableStore';
+import AppObservableStore from '../../common/stores/AppObservableStore';
 
 
 class PositionRowSupportOpposeCountDisplay extends Component {

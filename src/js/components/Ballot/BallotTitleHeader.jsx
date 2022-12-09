@@ -10,7 +10,7 @@ import daysUntil from '../../common/utils/daysUntil';
 import initializeMoment from '../../common/utils/initializeMoment';
 import { renderLog } from '../../common/utils/logging';
 import stringContains from '../../common/utils/stringContains';
-import AppObservableStore from '../../stores/AppObservableStore';
+import AppObservableStore from '../../common/stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
 import VoterStore from '../../stores/VoterStore';
 import {

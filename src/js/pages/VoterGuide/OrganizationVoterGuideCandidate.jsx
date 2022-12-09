@@ -20,7 +20,7 @@ import EndorsementCard from '../../components/Widgets/EndorsementCard';
 import SnackNotifier from '../../components/Widgets/SnackNotifier';
 import ThisIsMeAction from '../../components/Widgets/ThisIsMeAction';
 import webAppConfig from '../../config';
-import AppObservableStore from '../../stores/AppObservableStore';
+import AppObservableStore from '../../common/stores/AppObservableStore';
 import CandidateStore from '../../stores/CandidateStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';

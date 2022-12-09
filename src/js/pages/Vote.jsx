@@ -21,7 +21,7 @@ import BallotItemReadyToVote from '../components/Vote/BallotItemReadyToVote';
 import FindPollingLocation from '../components/Vote/FindPollingLocation';
 import ReturnOfficialBallot from '../components/Vote/ReturnOfficialBallot';
 import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
-import AppObservableStore, { messageService } from '../stores/AppObservableStore';
+import AppObservableStore, { messageService } from '../common/stores/AppObservableStore';
 import BallotStore from '../stores/BallotStore';
 import IssueStore from '../stores/IssueStore';
 import SupportStore from '../stores/SupportStore';
@@ -145,7 +145,9 @@ class Vote extends Component {
     // so we get duplicate calls when you come straight to the Ballot page. There is no easy way around this currently.
     SupportActions.voterAllPositionsRetrieve();
 
-    BallotActions.voterBallotListRetrieve(); // Retrieve a list of ballots for the voter from other elections
+    if (apiCalming('voterBallotListRetrieve', 10000)) {
+      BallotActions.voterBallotListRetrieve(); // Retrieve a list of ballots for the voter from other elections
+    }
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.supportStoreListener = SupportStore.addListener(this.onBallotStoreChange.bind(this));
     this.onVoterStoreChange();

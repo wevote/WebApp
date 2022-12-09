@@ -13,7 +13,7 @@ import normalizedImagePath from '../../../common/utils/normalizedImagePath';
 import stringContains from '../../../common/utils/stringContains';
 import webAppConfig from '../../../config';
 import VoterConstants from '../../../constants/VoterConstants';
-import AppObservableStore from '../../../stores/AppObservableStore';
+import AppObservableStore from '../../../common/stores/AppObservableStore';
 import SupportStore from '../../../stores/SupportStore';
 import VoterStore from '../../../stores/VoterStore';
 import PositionPublicToggle from '../PositionPublicToggle';

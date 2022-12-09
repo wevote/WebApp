@@ -9,7 +9,7 @@ import ActivityActions from '../../actions/ActivityActions';
 import { prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../common/utils/cordovaUtils';
 import { renderLog } from '../../common/utils/logging';
 import ActivityStore from '../../stores/ActivityStore';
-import AppObservableStore from '../../stores/AppObservableStore';
+import AppObservableStore from '../../common/stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
 
 

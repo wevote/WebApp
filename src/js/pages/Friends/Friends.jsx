@@ -31,7 +31,7 @@ import BrowserPushMessage from '../../components/Widgets/BrowserPushMessage';
 import MessageCard from '../../components/Widgets/MessageCard';
 import SnackNotifier, { openSnackbar } from '../../components/Widgets/SnackNotifier';
 import TooltipIcon from '../../components/Widgets/TooltipIcon';
-import AppObservableStore from '../../stores/AppObservableStore';
+import AppObservableStore from '../../common/stores/AppObservableStore';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
 import { SetUpAccountTitle } from '../../components/Style/SetUpAccountStyles';

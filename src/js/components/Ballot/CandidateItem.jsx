@@ -10,7 +10,7 @@ import historyPush from '../../common/utils/historyPush';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { displayNoneIfSmallerThanDesktop } from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
-import AppObservableStore from '../../stores/AppObservableStore';
+import AppObservableStore from '../../common/stores/AppObservableStore';
 import CandidateStore from '../../stores/CandidateStore';
 import IssueStore from '../../stores/IssueStore';
 import SupportStore from '../../stores/SupportStore';
