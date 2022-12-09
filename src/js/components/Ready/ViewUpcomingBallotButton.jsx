@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import daysUntil from '../../common/utils/daysUntil';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
-import AppObservableStore from '../../stores/AppObservableStore';
+import AppObservableStore from '../../common/stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
 import VoterStore from '../../stores/VoterStore';
 import VoterActions from '../../actions/VoterActions';
@@ -20,18 +20,22 @@ class ViewUpcomingBallotButton extends React.Component {
   }
 
   componentDidMount () {
+    console.log('ViewUpcomingBallotButton componentDidMount');
     this.onBallotStoreChange();
     this.onVoterStoreChange();
     this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-    if (apiCalming('voterContactListRetrieve', 3000)) {
-      VoterActions.voterContactListRetrieve();
-    }
+    this.voterContactListRetrieveTimer = setTimeout(() => {
+      if (apiCalming('voterContactListRetrieve', 3000)) {
+        VoterActions.voterContactListRetrieve();
+      }
+    }, 3000);
   }
 
   componentWillUnmount () {
     this.ballotStoreListener.remove();
     this.voterStoreListener.remove();
+    clearTimeout(this.voterContactListRetrieveTimer);
   }
 
   onBallotStoreChange () {

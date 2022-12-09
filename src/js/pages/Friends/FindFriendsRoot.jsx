@@ -31,7 +31,7 @@ import {
   WeVoteLogo,
   WeVoteLogoWrapper,
 } from '../../components/Style/SimpleProcessStyles';
-import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
+import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
 import Reassurance from '../../components/SetUpAccount/Reassurance';

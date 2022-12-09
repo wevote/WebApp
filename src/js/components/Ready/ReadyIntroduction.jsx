@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import historyPush from '../../common/utils/historyPush';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
-import AppObservableStore from '../../stores/AppObservableStore';
+import AppObservableStore from '../../common/stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
 import {
   Dot,

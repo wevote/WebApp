@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { renderLog } from '../../common/utils/logging';
 import ActivityStore from '../../stores/ActivityStore';
-import AppObservableStore from '../../stores/AppObservableStore';
+import AppObservableStore from '../../common/stores/AppObservableStore';
 import ReactionStore from '../../stores/ReactionStore';
 import StickyPopover from '../Ballot/StickyPopover';
 

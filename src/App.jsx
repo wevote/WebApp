@@ -15,9 +15,9 @@ import { renderLog } from './js/common/utils/logging';
 import Header from './js/components/Navigation/Header';
 import HeaderBarSuspense from './js/components/Navigation/HeaderBarSuspense';
 import webAppConfig from './js/config';
-import AppObservableStore, { messageService } from './js/stores/AppObservableStore';
+import AppObservableStore, { messageService } from './js/common/stores/AppObservableStore';
 import initializeFacebookSDK from './js/utils/initializeFacebookSDK';
-import initializejQuery from './js/utils/initializejQuery';
+import initializejQuery from './js/common/utils/initializejQuery';
 import RouterV5SendMatch from './js/utils/RouterV5SendMatch';
 // importRemoveCordovaListenersToken1  -- Do not remove this line!
 
@@ -29,6 +29,7 @@ const AddCandidateForExtension = React.lazy(() => import(/* webpackChunkName: 'A
 const AppleSignInProcess = React.lazy(() => import(/* webpackChunkName: 'AppleSignInProcess' */ './js/pages/Process/AppleSignInProcess'));
 const Attributions = React.lazy(() => import(/* webpackChunkName: 'Attributions' */ './js/pages/More/Attributions'));
 const Ballot = React.lazy(() => import(/* webpackChunkName: 'Ballot' */ './js/pages/Ballot/Ballot'));
+const CampaignsHome = React.lazy(() => import(/* webpackChunkName: 'CampaignsHome' */ './js/pages/Campaigns/CampaignsHome'));
 const Candidate = React.lazy(() => import(/* webpackChunkName: 'Candidate' */ './js/pages/Ballot/Candidate'));
 const CandidateForExtension = React.lazy(() => import(/* webpackChunkName: 'EditCandidateForExtension' */ './js/pages/Ballot/EditCandidateForExtension/EditCandidateForExtension'));
 const ClaimYourPage = React.lazy(() => import(/* webpackChunkName: 'ClaimYourPage' */ './js/pages/Settings/ClaimYourPage'));
@@ -295,6 +296,7 @@ class App extends Component {
                     <Route path="/ballot/:ballot_location_shortcut/modal/:modal_to_show/:shared_item_code" component={Ballot} />
                     <Route path="/ballot/:ballot_location_shortcut/modal/:modal_to_show" exact component={Ballot} />
                     <Route path="/ballot/:ballot_location_shortcut" exact component={Ballot} />
+                    <Route path="/c/" exact component={CampaignsHome} />
                     <Route path="/candidate-for-extension" component={CandidateForExtension} />
                     <Route path="/candidate/:candidate_we_vote_id/b/:back_to_variable/modal/:modal_to_show" exact component={Candidate} />
                     <Route path="/candidate/:candidate_we_vote_id/b/:back_to_variable/modal/:modal_to_show/:shared_item_code" exact component={Candidate} />

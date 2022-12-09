@@ -11,7 +11,7 @@ import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { displayNoneIfSmallerThanDesktop } from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
-import AppObservableStore from '../../stores/AppObservableStore';
+import AppObservableStore from '../../common/stores/AppObservableStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';
 import { voterFeaturePackageExceedsOrEqualsRequired } from '../../utils/pricingFunctions';

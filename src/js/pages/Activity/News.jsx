@@ -31,7 +31,7 @@ import TwitterSignInCard from '../../components/Twitter/TwitterSignInCard';
 import BrowserPushMessage from '../../components/Widgets/BrowserPushMessage';
 import Testimonial from '../../components/Widgets/Testimonial';
 import ActivityStore from '../../stores/ActivityStore';
-import AppObservableStore from '../../stores/AppObservableStore';
+import AppObservableStore from '../../common/stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';

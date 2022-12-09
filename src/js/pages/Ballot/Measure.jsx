@@ -21,7 +21,7 @@ import SearchOnGoogle from '../../components/Widgets/SearchOnGoogle';
 import SnackNotifier from '../../components/Widgets/SnackNotifier';
 import ViewOnBallotpedia from '../../components/Widgets/ViewOnBallotpedia';
 import webAppConfig from '../../config';
-import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
+import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
 import MeasureStore from '../../stores/MeasureStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';

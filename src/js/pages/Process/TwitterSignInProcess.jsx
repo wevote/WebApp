@@ -14,7 +14,7 @@ import stringContains from '../../common/utils/stringContains';
 import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import IPhoneSpacer from '../../components/Widgets/IPhoneSpacer';
 import SnackNotifier from '../../components/Widgets/SnackNotifier';
-import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
+import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
 import TwitterStore from '../../stores/TwitterStore';
 import VoterStore from '../../stores/VoterStore';
 

@@ -8,8 +8,9 @@ import OrganizationActions from '../../actions/OrganizationActions';
 import VoterActions from '../../actions/VoterActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
-import arrayContains from '../../common/utils/arrayContains';
 import { convertStateCodeToStateText } from '../../common/utils/addressFunctions';
+import arrayContains from '../../common/utils/arrayContains';
+import apiCalming from '../../common/utils/apiCalming';
 import { electionDateTomorrowFormatted, formatDateMMMDoYYYY } from '../../common/utils/dateFormat';
 import historyPush from '../../common/utils/historyPush';
 import initializeMoment from '../../common/utils/initializeMoment';
@@ -71,10 +72,12 @@ export default class BallotElectionListWithFilters extends Component {
       ballotElectionList = BallotStore.ballotElectionList();
       ballotElectionListCount = ballotElectionList.length;
       if (ballotElectionListCount === 0 && !voterBallotListHasBeenRetrievedOnce) {
-        BallotActions.voterBallotListRetrieve();
-        this.setState({
-          voterBallotListHasBeenRetrievedOnce: true,
-        });
+        if (apiCalming('voterBallotListRetrieve', 10000)) {
+          BallotActions.voterBallotListRetrieve();
+          this.setState({
+            voterBallotListHasBeenRetrievedOnce: true,
+          });
+        }
       }
     }
     // console.log('componentDidMount displayElectionsForOrganizationVoterGuidesMode:', displayElectionsForOrganizationVoterGuidesMode, ', organizationWeVoteId:', organizationWeVoteId);
@@ -164,10 +167,12 @@ export default class BallotElectionListWithFilters extends Component {
       ballotElectionList = BallotStore.ballotElectionList();
       ballotElectionListCount = ballotElectionList.length;
       if (ballotElectionListCount === 0 && !voterBallotListHasBeenRetrievedOnce) {
-        BallotActions.voterBallotListRetrieve();
-        this.setState({
-          voterBallotListHasBeenRetrievedOnce: true,
-        });
+        if (apiCalming('voterBallotListRetrieve', 10000)) {
+          BallotActions.voterBallotListRetrieve();
+          this.setState({
+            voterBallotListHasBeenRetrievedOnce: true,
+          });
+        }
       }
     }
     this.setState({

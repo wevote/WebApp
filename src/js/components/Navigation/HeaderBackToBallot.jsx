@@ -17,7 +17,7 @@ import { renderLog } from '../../common/utils/logging';
 import stringContains from '../../common/utils/stringContains';
 import voterPhoto from '../../common/utils/voterPhoto';
 import webAppConfig from '../../config';
-import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
+import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
 import CandidateStore from '../../stores/CandidateStore';
 import MeasureStore from '../../stores/MeasureStore';
 import OfficeStore from '../../stores/OfficeStore';

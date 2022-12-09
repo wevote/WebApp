@@ -26,7 +26,7 @@ import SnackNotifier from '../../components/Widgets/SnackNotifier';
 import ThisIsMeAction from '../../components/Widgets/ThisIsMeAction';
 import ViewOnBallotpedia from '../../components/Widgets/ViewOnBallotpedia';
 import webAppConfig from '../../config';
-import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
+import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
 import CandidateStore from '../../stores/CandidateStore';
 import IssueStore from '../../stores/IssueStore';

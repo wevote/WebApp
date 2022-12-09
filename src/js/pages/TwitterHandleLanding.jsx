@@ -9,7 +9,7 @@ import LoadingWheelComp from '../common/components/Widgets/LoadingWheelComp';
 import { normalizedHrefPage } from '../common/utils/hrefUtils';
 import { isCordova } from '../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../common/utils/logging';
-import AppObservableStore from '../stores/AppObservableStore';
+import AppObservableStore from '../common/stores/AppObservableStore';
 import TwitterStore from '../stores/TwitterStore';
 import VoterStore from '../stores/VoterStore';
 import Candidate from './Ballot/Candidate';

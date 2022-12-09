@@ -7,7 +7,7 @@ import isMobileScreenSize, { isTablet } from '../../common/utils/isMobileScreenS
 import { cordovaOffsetLog } from '../../common/utils/logging';
 import standardBoxShadow from '../../common/components/Style/standardBoxShadow';
 import CordovaPageConstants from '../../constants/CordovaPageConstants';
-import AppObservableStore from '../../stores/AppObservableStore';
+import AppObservableStore from '../../common/stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
 import { cordovaComplexHeaderPageContainerTopOffset, cordovaSimplePageContainerTopOffset } from '../../utils/cordovaCalculatedOffsets';
 import { cordovaBallotFilterTopMargin } from '../../utils/cordovaOffsets';

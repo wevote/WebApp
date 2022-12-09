@@ -1,5 +1,5 @@
 import CordovaPageConstants from '../constants/CordovaPageConstants';
-import AppObservableStore from '../stores/AppObservableStore';
+import AppObservableStore from '../common/stores/AppObservableStore';
 import showBallotDecisionsTabs from '../utilsApi/showBallotDecisionsTabs';
 import { normalizedHref } from '../common/utils/hrefUtils';
 import stringContains from '../common/utils/stringContains';

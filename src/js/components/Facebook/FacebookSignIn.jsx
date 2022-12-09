@@ -9,7 +9,7 @@ import SplitIconButton from '../../common/components/Widgets/SplitIconButton';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { oAuthLog, renderLog } from '../../common/utils/logging';
 import webAppConfig from '../../config';
-import { messageService } from '../../stores/AppObservableStore';
+import { messageService } from '../../common/stores/AppObservableStore';
 import FacebookStore from '../../stores/FacebookStore';
 import VoterStore from '../../stores/VoterStore';
 import initializeFacebookSDK from '../../utils/initializeFacebookSDK';

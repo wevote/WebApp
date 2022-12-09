@@ -9,7 +9,7 @@ import ReactionActions from '../../actions/ReactionActions';
 import { timeFromDate } from '../../common/utils/dateFormat';
 import { renderLog } from '../../common/utils/logging';
 import ActivityStore from '../../stores/ActivityStore';
-import AppObservableStore from '../../stores/AppObservableStore';
+import AppObservableStore from '../../common/stores/AppObservableStore';
 import ReactionStore from '../../stores/ReactionStore';
 import VoterStore from '../../stores/VoterStore';
 import ActivityCommentAdd from './ActivityCommentAdd';

@@ -2,6 +2,7 @@ import { Dialog } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
+import apiCalming from '../../common/utils/apiCalming';
 import { historyPush } from '../../common/utils/cordovaUtils';
 import { normalizedHref, normalizedHrefPage } from '../../common/utils/hrefUtils';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
@@ -9,7 +10,7 @@ import { renderLog } from '../../common/utils/logging';
 import stringContains from '../../common/utils/stringContains';
 import BallotActions from '../../actions/BallotActions';
 import VoterActions from '../../actions/VoterActions';
-import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
+import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
 
 const AdviserIntroModal = React.lazy(() => import(/* webpackChunkName: 'AdviserIntroModal' */ '../CompleteYourProfile/AdviserIntroModal'));
 const AskFriendsModal = React.lazy(() => import(/* webpackChunkName: 'AskFriendsModal' */ '../Friends/AskFriendsModal'));
@@ -131,7 +132,9 @@ class HeaderBarModals extends Component {
   closeSelectBallotModal () {
     const { showSelectBallotModal } = this.state;
     if (!showSelectBallotModal) {
-      BallotActions.voterBallotListRetrieve(); // Retrieve a list of ballots for the voter from other elections
+      if (apiCalming('voterBallotListRetrieve', 10000)) {
+        BallotActions.voterBallotListRetrieve(); // Retrieve a list of ballots for the voter from other elections
+      }
     }
     AppObservableStore.setShowSelectBallotModal(false);
 

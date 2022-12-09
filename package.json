@@ -129,6 +129,7 @@
     "react-slick": "^0.28.1",
     "react-svg": "^14.1.9",
     "react-text-truncate": "^0.17.0",
+    "react-truncate-markup": "~5.1.0",
     "react-toastify": "^7.0.4",
     "rxjs": "^6.6.7",
     "selenium-webdriver": "^4.5.0",

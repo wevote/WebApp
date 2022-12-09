@@ -8,7 +8,7 @@ import React, { Component, Suspense } from 'react';
 import { renderLog } from '../../common/utils/logging';
 // import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import VoterConstants from '../../constants/VoterConstants';
-import AppObservableStore from '../../stores/AppObservableStore';
+import AppObservableStore from '../../common/stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
 import SupportStore from '../../stores/SupportStore';
 import VoterStore from '../../stores/VoterStore';

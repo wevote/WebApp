@@ -11,7 +11,7 @@ import normalizedImagePath from '../common/utils/normalizedImagePath';
 import { BlueTitle, PlayerContainer, SubTitle, Title, Video } from '../components/Welcome/headerWelcomeStyles';
 import { Bold, Description, DescriptionContainer, DescriptionImageColumn, DescriptionLeftColumn, Image, NetworkContainer, NetworkImage, Section, SectionTitle, SectionTitleBold } from '../components/Welcome/sectionStyles';
 import Testimonial from '../components/Widgets/Testimonial';
-import AppObservableStore from '../stores/AppObservableStore';
+import AppObservableStore from '../common/stores/AppObservableStore';
 import VoterStore from '../stores/VoterStore';
 import cordovaScrollablePaneTopPadding from '../utils/cordovaScrollablePaneTopPadding';
 

@@ -3,7 +3,7 @@ import OrganizationActions from '../actions/OrganizationActions';
 import VoterGuideActions from '../actions/VoterGuideActions';
 import Dispatcher from '../common/dispatcher/Dispatcher';
 import VoterConstants from '../constants/VoterConstants';
-import AppObservableStore from './AppObservableStore';
+import AppObservableStore from '../common/stores/AppObservableStore';
 import VoterStore from './VoterStore';
 
 /* eslint no-param-reassign: 0 */

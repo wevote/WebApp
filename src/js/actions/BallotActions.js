@@ -1,4 +1,4 @@
-import AppObservableStore from '../stores/AppObservableStore';
+import AppObservableStore from '../common/stores/AppObservableStore'; // eslint-disable-line import/no-cycle
 import Dispatcher from '../common/dispatcher/Dispatcher';
 
 // let voterBallotItemRetrievedWithZeroCivicId = false;

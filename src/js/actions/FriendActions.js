@@ -1,5 +1,5 @@
 import Dispatcher from '../common/dispatcher/Dispatcher';
-import AppObservableStore from '../stores/AppObservableStore'; // eslint-disable-line import/no-cycle
+import AppObservableStore from '../common/stores/AppObservableStore'; // eslint-disable-line import/no-cycle
 
 export default {
   acceptFriendInvite (otherVoterWeVoteId) {

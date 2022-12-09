@@ -15,7 +15,7 @@ import { isIPad } from '../../common/utils/cordovaUtils';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp'; // isCordova
 import { renderLog } from '../../common/utils/logging';
 import stringContains from '../../common/utils/stringContains';
-import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
+import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
 import createMessageToFriendDefaults from '../../utils/createMessageToFriendDefaults';
@@ -136,7 +136,9 @@ class ShareModal extends Component {
       urlWithSharedItemCodeAllOpinions,
     } = generateShareLinks();
     if (!urlWithSharedItemCode || !urlWithSharedItemCodeAllOpinions) {
-      ShareActions.sharedItemRetrieveByFullUrl(currentFullUrlToShare);
+      if (apiCalming(`sharedItemRetrieve${currentFullUrlToShare}`, 10000)) {
+        ShareActions.sharedItemRetrieveByFullUrl(currentFullUrlToShare);
+      }
     }
     this.setState({
       linkToBeShared,

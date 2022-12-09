@@ -21,7 +21,7 @@ import { reassuranceText } from '../../components/SetUpAccount/reassuranceText';
 import SetUpAccountNextButton from '../../components/SetUpAccount/SetUpAccountNextButton';
 import { DesktopNextButtonsInnerWrapper, DesktopNextButtonsOuterWrapperUShowDesktopTablet, DesktopStaticNextButtonsOuterWrapper, MobileStaticNextButtonsInnerWrapper, MobileStaticNextButtonsOuterWrapperUShowMobile } from '../../components/Style/NextButtonStyles';
 import { AccountSetUpRootWrapper, BackToButtonSpacer, BackWrapper, PageContentContainerAccountSetUp, StepHtmlWrapper, WeVoteLogo, WeVoteLogoWrapper } from '../../components/Style/SimpleProcessStyles';
-import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
+import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';

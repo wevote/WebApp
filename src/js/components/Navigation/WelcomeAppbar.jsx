@@ -13,7 +13,7 @@ import historyPush from '../../common/utils/historyPush';
 import Cookies from '../../common/utils/js-cookie/Cookies';
 import { renderLog } from '../../common/utils/logging';
 import voterPhoto from '../../common/utils/voterPhoto';
-import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
+import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
 import { avatarGeneric } from '../../utils/applicationUtils';
 import { cordovaWelcomeAppToolbarTop, welcomeAppBarPaddingTop } from '../../utils/cordovaOffsets';

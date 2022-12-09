@@ -13,7 +13,7 @@ import { BlueTitle, SubTitle, Title } from '../components/Welcome/headerWelcomeS
 import { Description, DescriptionContainer, DescriptionImageColumn, DescriptionLeftColumn, Image, NetworkContainer, NetworkImage, Section, SectionTitle, SectionTitleBold } from '../components/Welcome/sectionStyles';
 import Testimonial from '../components/Widgets/Testimonial';
 import VoterConstants from '../constants/VoterConstants';
-import AppObservableStore from '../stores/AppObservableStore';
+import AppObservableStore from '../common/stores/AppObservableStore';
 import VoterStore from '../stores/VoterStore';
 import cordovaScrollablePaneTopPadding from '../utils/cordovaScrollablePaneTopPadding';
 import { validateEmail } from '../utils/regex-checks';

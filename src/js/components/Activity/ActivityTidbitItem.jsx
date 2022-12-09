@@ -8,7 +8,7 @@ import Alert from 'react-bootstrap/Alert';
 import { Link } from 'react-router-dom';
 import { renderLog } from '../../common/utils/logging';
 import ActivityStore from '../../stores/ActivityStore';
-import AppObservableStore from '../../stores/AppObservableStore';
+import AppObservableStore from '../../common/stores/AppObservableStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';
 import ActivityPositionList from './ActivityPositionList';

@@ -18,7 +18,7 @@ import WhyVoteQuote from './WhyVoteQuote';
 import Reassurance from '../SetUpAccount/Reassurance';
 import { reassuranceTextRemindContacts } from './reassuranceTextRemindContacts';
 import NextStepButtons from '../FriendIntro/NextStepButtons';
-import AppObservableStore from '../../stores/AppObservableStore';
+import AppObservableStore from '../../common/stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
 import {
   DesktopNextButtonsInnerWrapper, DesktopNextButtonsOuterWrapperUShowDesktopTablet,

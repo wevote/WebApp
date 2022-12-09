@@ -1,5 +1,5 @@
 import { getWhatAndHowMuchToShareDefault } from './shareButtonCommon';
-import AppObservableStore from '../../stores/AppObservableStore';
+import AppObservableStore from '../../common/stores/AppObservableStore';
 import ShareStore from '../../common/stores/ShareStore';
 import { cordovaLinkToBeSharedFixes } from '../../common/utils/cordovaUtils';
 import stringContains from '../../common/utils/stringContains';

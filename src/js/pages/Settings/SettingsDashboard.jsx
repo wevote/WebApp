@@ -28,7 +28,7 @@ import SettingsYourData from '../../components/Settings/SettingsYourData';
 import ToolsToShareOnOtherWebsites from '../../components/Settings/ToolsToShareOnOtherWebsites';
 import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import SnackNotifier, { openSnackbar } from '../../components/Widgets/SnackNotifier';
-import AppObservableStore from '../../stores/AppObservableStore';
+import AppObservableStore from '../../common/stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';

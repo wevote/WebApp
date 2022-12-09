@@ -9,7 +9,7 @@ import { renderLog } from '../../common/utils/logging';
 import PricingCard from '../../components/More/PricingCard';
 import { Section } from '../../components/Welcome/sectionStyles';
 import PricingSwitch from '../../components/Widgets/PricingSwitch';
-import AppObservableStore from '../../stores/AppObservableStore';
+import AppObservableStore from '../../common/stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
 import cordovaScrollablePaneTopPadding from '../../utils/cordovaScrollablePaneTopPadding';
 

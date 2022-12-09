@@ -17,7 +17,7 @@ import { Bold, Description, DescriptionContainer, DescriptionImageColumn, Descri
 import TextBox from '../components/Welcome/TextBox';
 import Testimonial from '../components/Widgets/Testimonial';
 import VoterConstants from '../constants/VoterConstants';
-import AppObservableStore from '../stores/AppObservableStore';
+import AppObservableStore from '../common/stores/AppObservableStore';
 import VoterStore from '../stores/VoterStore';
 import cordovaScrollablePaneTopPadding from '../utils/cordovaScrollablePaneTopPadding';
 import { validateEmail } from '../utils/regex-checks';

@@ -32,7 +32,7 @@ import BallotShowAllItemsFooter from '../../components/Navigation/BallotShowAllI
 import { DualHeaderContainer, HeaderContentContainer, HeaderContentOuterContainer, PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import SnackNotifier, { openSnackbar } from '../../components/Widgets/SnackNotifier';
 import webAppConfig from '../../config';
-import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
+import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
 import ElectionStore from '../../stores/ElectionStore';
 import IssueStore from '../../stores/IssueStore';
@@ -271,7 +271,9 @@ class Ballot extends Component {
     // so we get duplicate calls when you come straight to the Ballot page. There is no easy way around this currently.
     SupportActions.voterAllPositionsRetrieve();
 
-    BallotActions.voterBallotListRetrieve(); // Retrieve a list of ballots for the voter from other elections
+    if (apiCalming('voterBallotListRetrieve', 10000)) {
+      BallotActions.voterBallotListRetrieve(); // Retrieve a list of ballots for the voter from other elections
+    }
     this.onVoterStoreChange();
 
     // Once a voter hits the ballot, they have gone through orientation
@@ -1037,8 +1039,7 @@ class Ballot extends Component {
     if (showSelectBallotModal && destinationUrlForHistoryPush && destinationUrlForHistoryPush !== '') {
       // console.log('toggleSelectBallotModal destinationUrlForHistoryPush:', destinationUrlForHistoryPush);
       historyPush(destinationUrlForHistoryPush);
-    } else {
-      // console.log('Ballot toggleSelectBallotModal, BallotActions.voterBallotListRetrieve()');
+    } else if (apiCalming('voterBallotListRetrieve', 10000)) {
       BallotActions.voterBallotListRetrieve(); // Retrieve a list of ballots for the voter from other elections
     }
   }
