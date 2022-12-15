@@ -976,15 +976,15 @@ class VoterStore extends ReduceStore {
 
       case 'voterMergeTwoAccounts':
         // console.log('VoterStore, voterMergeTwoAccounts');
-        // On the server we just switched linked this voterDeviceId to a new voter record, so we want to
-        //  refresh a lot of data
+        // On the server we just switched (linked) this voterDeviceId to a new voter record, so we want to the voter.
+        //  refresh a lot of data -- December 2022, but as little as absolutely required, and no more
         VoterActions.voterRetrieve();
         // // And set a timer for 3 seconds from now to refresh again
         // this.timer = setTimeout(() => {
         //   VoterActions.voterRetrieve();
         // }, delayBeforeApiCall);
-        VoterActions.voterEmailAddressRetrieve();
-        VoterActions.voterSMSPhoneNumberRetrieve();
+        VoterActions.voterEmailAddressRetrieve();    // TODO: December 2022, Is this necessary?
+        VoterActions.voterSMSPhoneNumberRetrieve();  // TODO: December 2022, Is this necessary?
         if (!signInModalGlobalState.get('textOrEmailSignInInProcess')) {
           // Cascading actions like this causes serious problems when you have a dialog with components that change stores.
           FriendActions.friendListsAll();

@@ -8,12 +8,11 @@ import VoterActions from '../../actions/VoterActions';
 import SplitIconButton from '../../common/components/Widgets/SplitIconButton';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { oAuthLog, renderLog } from '../../common/utils/logging';
-import webAppConfig from '../../config';
 import { messageService } from '../../common/stores/AppObservableStore';
 import FacebookStore from '../../stores/FacebookStore';
 import VoterStore from '../../stores/VoterStore';
-import initializeFacebookSDK from '../../utils/initializeFacebookSDK';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
+import FacebookSignedInData from './FacebookSignedInData';
 
 
 class FacebookSignIn extends Component {
@@ -21,7 +20,7 @@ class FacebookSignIn extends Component {
     super(props);
     this.state = {
       buttonSubmittedText: '',
-      deferredFacebookSignInRetrieve: false,
+      // deferredFacebookSignInRetrieve: false,
       facebookAuthResponse: {},
       facebookConnectionInitialized: false,
       facebookSignInSequenceStarted: false,
@@ -39,48 +38,50 @@ class FacebookSignIn extends Component {
     this.facebookStoreListener = FacebookStore.addListener(this.onFacebookStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
-    // console.log('FacebookSignIn, componentDidMount');
+    // console.log('FacebookSignin componentDidMount voter: ', VoterStore.getVoter());
+    // console.log('FacebookSignin componentDidMount FacebookSignedInData: ', FacebookSignedInData.getFacebookSignedInData());
     this.setState({
       buttonSubmittedText: this.props.buttonSubmittedText || 'Signing in...',
     });
 
-    if (!signInModalGlobalState.getBool('waitingForFacebookApiCompletion')) {
-      signInModalGlobalState.set('waitingForFacebookApiCompletion', true);
-      this.voterFacebookSignInRetrieve();
-    }
 
-    if (this.failedSignInTimer) clearTimeout(this.failedSignInTimer);
-    if (!webAppConfig.ENABLE_FACEBOOK) {
-      const { FB } = window;
-      if (FB) {
-        // NOTE 2022-11-08 Dale: I Haven't seen proof this is working
-        if (FB.Event) {
-          FB.Event.subscribe('auth.statusChange', this.onFacebookStatusChange);
-        }
-        try {
-          FB.getLoginStatus((response) => {
-            const { authResponse, status } = response;
-            console.log(`FacebookSignIn FB.getLoginStatus response: ${authResponse}, status: ${status}`);
-            if (response.status === 'connected') {
-              this.setState({
-                facebookConnectionInitialized: true,
-              });
-            }
-          });
-        } catch (error) {
-          console.log('FacebookSignIn FB.getLoginStatus error:', error);
-        }
-      }
-    }
+    // if (!signInModalGlobalState.getBool('waitingForFacebookApiCompletion')) {
+    //   signInModalGlobalState.set('waitingForFacebookApiCompletion', true);
+    //   this.voterFacebookSignInRetrieve();
+    // }
+    //
+    // if (this.failedSignInTimer) clearTimeout(this.failedSignInTimer);
+    // if (webAppConfig.ENABLE_FACEBOOK) {
+    //   if (facebookApi()) {
+    //     console.log('FacebookSignIn inside the if facebookApi() test');
+    //     // NOTE 2022-11-08 Dale: I Haven't seen proof this is working
+    //     if (facebookApi().Event) {
+    //       console.log('FacebookSignIn inside the if (facebookApi().Event) test');
+    //       facebookApi().Event.subscribe('auth.statusChange', this.onFacebookStatusChange);
+    //     }
+    //     try {
+    //       facebookApi().getLoginStatus((response) => {
+    //         const { authResponse, status } = response;
+    //         console.log('FacebookSignIn facebookApi().getLoginStatus response:', authResponse, status);
+    //         if (response.status === 'connected') {
+    //           this.setState({
+    //             facebookConnectionInitialized: true,
+    //           });
+    //         }
+    //       });
+    //     } catch (error) {
+    //       console.log('FacebookSignIn facebookApi().getLoginStatus error:', error);
+    //     }
+    //   }
+    // }
   }
 
   componentWillUnmount () {
-    const { FB } = window;
-    if (FB && webAppConfig.ENABLE_FACEBOOK) {
-      if (FB.Event) {
-        FB.Event.unsubscribe('auth.statusChange', this.onFacebookStatusChange);
-      }
-    }
+    // if (this.facebookApi && webAppConfig.ENABLE_FACEBOOK) {
+    //   if (facebookApi().Event) {
+    //     facebookApi().Event.unsubscribe('auth.statusChange', this.onFacebookStatusChange);
+    //   }
+    // }
     this.facebookStoreListener.remove();
     this.voterStoreListener.remove();
     this.appStateSubscription.unsubscribe();
@@ -89,48 +90,48 @@ class FacebookSignIn extends Component {
   }
 
   onAppObservableStoreChange () {
-    if (this.state.deferredFacebookSignInRetrieve) {
-      this.setState({
-        deferredFacebookSignInRetrieve: false,
-      });
-      this.voterFacebookSignInRetrieve();
-    }
+    // if (this.state.deferredFacebookSignInRetrieve) {
+    //   this.setState({
+    //     deferredFacebookSignInRetrieve: false,
+    //   });
+    //   this.voterFacebookSignInRetrieve();
+    // }
   }
 
-  onFacebookStatusChange = (response) => {
-    // NOTE 2022-11-08 Dale: I Haven't seen proof this is working
-    console.log('onFacebookStatusChange, response:', response);
-    if (response.status === 'connected') {
-      this.setState({
-        facebookConnectionInitialized: true,
-      });
-    }
-  }
+  // onFacebookStatusChange = (response) => {
+  //   // NOTE 2022-11-08 Dale: I Haven't seen proof this is working
+  //   console.log('onFacebookStatusChange, response:', response);
+  //   if (response.status === 'connected') {
+  //     this.setState({
+  //       facebookConnectionInitialized: true,
+  //     });
+  //   }
+  // }
 
   onFacebookStoreChange () {
-    // console.log('FacebookSignIn onFacebookStoreChange');
+    console.log('FacebookSignIn onFacebookStoreChange');
 
-    this.setState({
-      facebookAuthResponse: FacebookStore.getFacebookAuthResponse(),
-      retrievingSignIn: false,
-      saving: false,
-    });
-
-    // NOTE: November 2021,  facebookSignInFailed is confusingly named, it is ONLY false if a query has been made to facebook, and it returns unsuccessfully.
-    // If we pull facebook credentials from our db without attempting a new authentication with Facebook it will return true.
-    const { facebookIsLoggedIn, facebook_sign_in_failed: facebookSignInFailed,
-      facebook_sign_in_found: facebookSignInFound, facebook_sign_in_verified: facebookSignInVerified,
-      facebook_secret_key: facebookSecretKey } = this.state.facebookAuthResponse;
-
-    // console.log(`FacebookSignIn facebookIsLoggedIn ${facebookIsLoggedIn} facebookSignInFailed: ${facebookSignInFailed} facebookSignInFound: ${facebookSignInFound} facebookSignInVerified: ${facebookSignInVerified}`);
-
-    if (facebookIsLoggedIn && !facebookSignInFailed && facebookSignInFound && facebookSignInVerified) {
-      // console.log('FacebookSignIn setting redirectInProcess: false');
-      this.setState({ redirectInProcess: false });
-      oAuthLog('FacebookSignIn calling voterMergeTwoAccountsByFacebookKey, since the voter is authenticated with facebook');
-      VoterActions.voterMergeTwoAccountsByFacebookKey(facebookSecretKey);
-      this.setState({ waitingForMergeTwoAccounts: true });
-    }
+    // this.setState({
+    //   facebookAuthResponse: FacebookStore.getFacebookAuthResponse(),
+    //   retrievingSignIn: false,
+    //   saving: false,
+    // });
+    //
+    // // NOTE: November 2021,  facebookSignInFailed is confusingly named, it is ONLY false if a query has been made to facebook, and it returns unsuccessfully.
+    // // If we pull facebook credentials from our db without attempting a new authentication with Facebook it will return true.
+    // const { facebookIsLoggedIn, facebook_sign_in_failed: facebookSignInFailed,
+    //   facebook_sign_in_found: facebookSignInFound, facebook_sign_in_verified: facebookSignInVerified,
+    //   facebook_secret_key: facebookSecretKey } = this.state.facebookAuthResponse;
+    //
+    // // console.log(`FacebookSignIn facebookIsLoggedIn ${facebookIsLoggedIn} facebookSignInFailed: ${facebookSignInFailed} facebookSignInFound: ${facebookSignInFound} facebookSignInVerified: ${facebookSignInVerified}`);
+    //
+    // if (facebookIsLoggedIn && !facebookSignInFailed && facebookSignInFound && facebookSignInVerified) {
+    //   // console.log('FacebookSignIn setting redirectInProcess: false');
+    //   this.setState({ redirectInProcess: false });
+    //   oAuthLog('FacebookSignIn calling voterMergeTwoAccountsByFacebookKey, since the voter is authenticated with facebook');
+    //   VoterActions.voterMergeTwoAccountsByFacebookKey(facebookSecretKey);
+    //   this.setState({ waitingForMergeTwoAccounts: true });
+    // }
   }
 
   onVoterStoreChange () {
@@ -160,37 +161,52 @@ class FacebookSignIn extends Component {
     if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
       this.didClickFacebookSignInButton();
     }
+    // console.log('------ voter in FacebookSignin onKeyDown ----------', VoterStore.getVoter());
   };
 
   didClickFacebookSignInButton = () => {
+    const { facebookSaysSignedIn } = FacebookSignedInData.getFacebookSignedInData();
+    if (facebookSaysSignedIn) {
+      // easy path, voter was already signed in
+      oAuthLog('FacebookSignIn calling setConnectedStatus (without a redirect signin to facebook), since the voter is authenticated with facebook');
+      signInModalGlobalState.set('waitingForFacebookApiCompletion', true);
+      const saveAuthToServer = false;
+      const doMergeOnServer  = true;
+      const hasFacebookAuth  = true;
+      FacebookSignedInData.setConnectedStatus(saveAuthToServer, doMergeOnServer, hasFacebookAuth, FacebookActions.voterFacebookSignInSave);
+      FacebookActions.voterFacebookSignInSave(FacebookSignedInData.getFacebookSignedInData(), true);
+    } else {
+      oAuthLog('FacebookSignIn calling facebookApiLogin2022, since the voter is not authenticated with facebook in this browser');
+      FacebookSignedInData.facebookApiLogin2022().then((ret) => this.afterSignInFunction(ret));
+    }
     this.setState({
       facebookSignInSequenceStarted: true,
     });
-    signInModalGlobalState.set('startFacebookSignInSequence', true);
-    let { FB, facebookConnectPlugin } = window;
-    if (FB) {
-      console.log('FB FacebookActions.login, first try');
-      FacebookActions.login();
-    } else if (facebookConnectPlugin) {
-      console.log('facebookConnectPlugin FacebookActions.login, first try');
-      FacebookActions.login();
-    } else {
-      // Initialize Facebook SDK again, and then start login
-      console.log('window.FB missing. Trying to initializeFacebookSDK again - 1500 millisecond pause');
-      initializeFacebookSDK();
-      this.timer = setTimeout(() => {
-        ({ FB, facebookConnectPlugin } = window);
-        if (FB) {
-          console.log('FB FacebookActions.login, second try');
-          FacebookActions.login();
-        } else if (facebookConnectPlugin) {
-          console.log('facebookConnectPlugin FacebookActions.login, second try');
-          FacebookActions.login();
-        } else {
-          console.log('Could not initializeFacebookSDK in 1500 milliseconds');
-        }
-      }, 1500);
-    }
+  //   signInModalGlobalState.set('startFacebookSignInSequence', true);
+  //   let { FB, facebookConnectPlugin } = window;
+  //   if (FB) {
+  //     console.log('FB FacebookActions.login, first try');
+  //     FacebookActions.login();
+  //   } else if (facebookConnectPlugin) {
+  //     console.log('facebookConnectPlugin FacebookActions.login, first try');
+  //     FacebookActions.login();
+  //   } else {
+  //     // Initialize Facebook SDK again, and then start login
+  //     console.log('window.FB missing. Trying to initializeFacebookSDK again - 1500 millisecond pause');
+  //     initializeFacebookSDK();
+  //     this.timer = setTimeout(() => {
+  //       ({ FB, facebookConnectPlugin } = window);
+  //       if (FB) {
+  //         console.log('FB FacebookActions.login, second try');
+  //         FacebookActions.login();
+  //       } else if (facebookConnectPlugin) {
+  //         console.log('facebookConnectPlugin FacebookActions.login, second try');
+  //         FacebookActions.login();
+  //       } else {
+  //         console.log('Could not initializeFacebookSDK in 1500 milliseconds');
+  //       }
+  //     }, 1500);
+  //   }
   };
 
   closeSignInModalLocal = () => {
@@ -201,6 +217,18 @@ class FacebookSignIn extends Component {
       signInModalGlobalState.set('waitingForFacebookApiCompletion', false);
     }
   };
+
+  afterSignInFunction (ret) {
+    oAuthLog('FacebookSignIn after FB.login(), afterSignInFunction received:', ret);
+    const saveAuthToServer = true;
+    const doMergeOnServer  = true;
+    const hasFacebookAuth  = true;
+    // This saves the FaceBook auth data to the server.  The callback voterFacebookSignInSave, eventually triggers a voterRetrieve that updates the avatar
+    FacebookSignedInData.setConnectedStatus(saveAuthToServer, doMergeOnServer, hasFacebookAuth, FacebookActions.voterFacebookSignInSave);
+    // console.log('VoterActions.voterRetrieve() in FacebookSignin at l 238');
+    // VoterActions.voterRetrieve();     // The voterDeviceId should now be pointing the newly merged voter object, the old one has been abandoned
+    this.closeSignInModalLocal();
+  }
 
   voterFacebookSaveToCurrentAccount () {
     // console.log('In voterFacebookSaveToCurrentAccount');
@@ -228,7 +256,7 @@ class FacebookSignIn extends Component {
     // See the doc file https://github.com/wevote/WebApp/blob/develop/docs/working/SECURE_CERTIFICATE.md#really-really-signing-out-of-facebook
     if (isWebApp() && !facebookConnectionInitialized) {
       // Steve 12/2/22: This "return null" was breaking signing in with facebook in webapp (and Cordova) if you had "never" been signed in before in the browser
-      // console.log('FacebookSignIn: (disabled) Do not offer Facebook button if we aren\'t getting status back');
+      // console.log('FacebookSignIn: (disabled) Do not offer Facebook button if we are not getting status back');
       // return null;  12/2/22, see note above
     }
     if (redirectInProgress) {
@@ -248,7 +276,7 @@ class FacebookSignIn extends Component {
       //   '!facebookAuthResponse', !facebookAuthResponse, 'signInModalGlobalState.getBool(waitingForFacebookApiCompletion)', signInModalGlobalState.getBool('waitingForFacebookApiCompletion'));
       statusMessage = 'Waiting for a response from Facebook...';
     } else if (facebookAuthResponse.facebook_sign_in_failed) {
-      oAuthLog('facebookAuthResponse.facebook_sign_in_failed , setting "Facebook sign in process starting..." message.');
+      oAuthLog('facebookAuthResponse.facebook_sign_in_failed , setting message: "Facebook sign in process starting..."');
       statusMessage = 'Facebook sign in process starting...';
     } else if (waitingForMergeTwoAccounts) {
       statusMessage = 'Loading your account information...';
@@ -271,6 +299,7 @@ class FacebookSignIn extends Component {
       this.voterFacebookSaveToCurrentAccount();
       statusMessage = 'Saving your account...';
     }
+    // console.log('----- FacebookSignin render, ', statusMessage);
 
     return (
       <div>
