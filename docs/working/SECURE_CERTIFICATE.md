@@ -41,26 +41,23 @@ WebApp will startup at http://localhost:3000
 ## Signing in with Facebook on your dev machine
 ### Make a small necessary change to your /etc/hosts
 
-Facebook will no longer redirect to localhost, so make a second alias for 127.0.0.1 with this specific made up domain: `wevotedeveloper.com`
+Facebook will no longer redirect to localhost, so we make a second alias for 127.0.0.1 with this specific made up 
+domain: `wevotedeveloper.com` by running the following command in a terminal:
 
-So we have to make a small change to /etc/hosts.  This is the before:
+`sudo node updateHosts.js`
+
+The run will look like this
 ```
-    (venv2) stevepodell@StevesM1Dec2021 WeVoteServer % cat /etc/hosts
-    ##
-    # Host Database
-    #
-    # localhost is used to configure the loopback interface
-    # when the system is booting.  Do not change this entry.
-    ##
-    127.0.0.1       localhost
-    255.255.255.255 broadcasthost
-    ::1             localhost
-    (venv2) stevepodell@StevesM1Dec2021 WeVoteServer % 
+    stevepodell@Steves-MBP-M1-Dec2021 WebApp % sudo node updateHosts.js
+    Processing /etc/hosts
+    adding::: wevotedeveloper.com ::: to /etc/hosts
+    etc hosts updated 1 lines in /etc/hosts
+    stevepodell@Steves-MBP-M1-Dec2021 WebApp % 
 ```
-We have added a fake local domain `wevotedeveloper.com` for the [Facebook Valid OAuth Redirect URIs](https://developers.facebook.com/apps/1097389196952441/fb-login/settings/),
-you need to add that domain to your 127.0.0.1 line in /etc/hosts.  After the change:
+After the change your /etc/hosts file will look like this:
+
 ```
-    (venv2) stevepodell@StevesM1Dec2021 WeVoteServer % cat /etc/hosts
+    stevepodell@StevesM1Dec2021 WeVoteServer % cat /etc/hosts
     ##
     # Host Database
     #
@@ -70,10 +67,10 @@ you need to add that domain to your 127.0.0.1 line in /etc/hosts.  After the cha
     127.0.0.1       localhost wevotedeveloper.com
     255.255.255.255 broadcasthost
     ::1             localhost
-    (venv2) stevepodell@StevesM1Dec2021 WeVoteServer % 
+    stevepodell@StevesM1Dec2021 WeVoteServer % 
 ```
 
-You will need to elevate your privileges with sudo to make this edit to this linux system file ... ` % sudo vi /etc/hosts` or with some other editor.
+(This change matches our configuration in [Facebook Valid OAuth Redirect URIs](https://developers.facebook.com/apps/1097389196952441/fb-login/settings/).)
 
 Start WebApp with the 'start-https' command, and open WebApp at https://wevotedeveloper.com:3000
 
