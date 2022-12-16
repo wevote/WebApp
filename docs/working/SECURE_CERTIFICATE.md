@@ -44,7 +44,7 @@ WebApp will startup at http://localhost:3000
 Facebook will no longer redirect to localhost, so we make a second alias for 127.0.0.1 with this specific made up 
 domain: `wevotedeveloper.com` by running the following command in a terminal:
 
-`sudo node updateHosts.js`
+`sudo node node/updateHosts.js`
 
 The run will look like this
 ```
