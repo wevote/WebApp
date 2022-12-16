@@ -87,8 +87,7 @@ function innerAjax (options) {
     options.url = new URL(options.endpoint, defaults.baseUrl); // `${URL.resolve(defaults.baseUrl, options.endpoint)}/`;
   }
 
-  httpLog(`AJAX URL: ${options.url}`);
-  httpLog('----------- AJAX voter_device_id: ', Cookies.get('voter_device_id'));
+  httpLog(`AJAX URL: ${options.url} -- voter_device_id: ${Cookies.get('voter_device_id')}`);
   if (options.method === 'POST') {
     httpLog(JSON.stringify(options.data));
   }

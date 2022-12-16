@@ -2,9 +2,10 @@ import { ReduceStore } from 'flux/utils';
 import FacebookActions from '../actions/FacebookActions';
 import FriendActions from '../actions/FriendActions';
 import VoterActions from '../actions/VoterActions';
+import Dispatcher from '../common/dispatcher/Dispatcher';
+import { isCordova } from '../common/utils/isCordovaOrWebApp';
 import signInModalGlobalState from '../components/Widgets/signInModalGlobalState';
 import FacebookConstants from '../constants/FacebookConstants';
-import Dispatcher from '../common/dispatcher/Dispatcher';
 
 class FacebookStore extends ReduceStore {
   getInitialState () {
@@ -83,9 +84,9 @@ class FacebookStore extends ReduceStore {
     return this.facebookAuthData.authResponse.accessToken;
   }
 
-  facebookFriendsUsingWeVoteList () {
-    return this.getState().facebook_friends_using_we_vote_list || [];
-  }
+  // facebookFriendsUsingWeVoteList () {
+  //   return this.getState().facebook_friends_using_we_vote_list || [];
+  // }
 
   facebookInvitableFriends () {
     const {
@@ -114,7 +115,23 @@ class FacebookStore extends ReduceStore {
       case FacebookConstants.FACEBOOK_LOGGED_IN:
         signInModalGlobalState.set('waitingForFacebookApiCompletion', false);
 
-        // console.log("FACEBOOK_LOGGED_IN action.data:", action.data);
+        // console.log('FACEBOOK_LOGGED_IN action.data:', action.data);
+        try {
+          if (isCordova()) { // TEST CODE
+            const ape = window.facebookConnectPlugin; // facebookApi();
+            console.log('PRINT APE', ape);
+            ape.api(
+              // `/${action.data.authResponse.userID}/`,
+              '/107500939978960/',
+              (resp) => {
+                console.log('FB user info response:', resp);
+              },
+            );
+          }
+        } catch (error) {
+          console.log('case FacebookConstants.FACEBOOK_LOGGED_IN try/catch error: ', error);
+        }
+
         FacebookActions.saveFacebookSignInAuth(action.data.authResponse);
         FacebookActions.getFacebookData();     // Includes a save
         return {
@@ -125,7 +142,7 @@ class FacebookStore extends ReduceStore {
       case FacebookConstants.FACEBOOK_RECEIVED_DATA:
 
         // Cache the data in the API server
-        // console.log("FACEBOOK_RECEIVED_DATA action.data:", action.data);
+        // console.log('FACEBOOK_RECEIVED_DATA action.data:', action.data);
         FacebookActions.voterFacebookSignInData(action.data);  // Steve this calls a save to the server
         FacebookActions.getFacebookProfilePicture();
         return {
@@ -134,8 +151,7 @@ class FacebookStore extends ReduceStore {
         };
 
       case FacebookConstants.FACEBOOK_RECEIVED_INVITABLE_FRIENDS:
-
-        // console.log("FacebookStore, FacebookConstants.FACEBOOK_RECEIVED_INVITABLE_FRIENDS");
+        // console.log('FacebookStore, FacebookConstants.FACEBOOK_RECEIVED_INVITABLE_FRIENDS');
         // Cache the data in the API server
         // FacebookActions.getFacebookInvitableFriendsList(action.data.id);
         if (action.data.invitable_friends) {
@@ -143,7 +159,7 @@ class FacebookStore extends ReduceStore {
         } else {
           facebookFriendsNotExist = true;
         }
-        // console.log("FACEBOOK_RECEIVED_INVITABLE_FRIENDS: ", facebook_invitable_friends_list);
+        // console.log('FACEBOOK_RECEIVED_INVITABLE_FRIENDS: ', facebookInvitableFriendsList);
         return {
           ...state,
           facebookInvitableFriendsList,
@@ -153,7 +169,7 @@ class FacebookStore extends ReduceStore {
 
       case FacebookConstants.FACEBOOK_READ_APP_REQUESTS:
 
-        // console.log("FacebookStore appreqests:", action.data.apprequests);
+        // console.log('FacebookStore appreqests:', action.data.apprequests);
         if (action.data.apprequests) {
           const apprequestsData = action.data.apprequests.data[0];
           const recipientFacebookUserId = apprequestsData.to.id;
@@ -176,7 +192,7 @@ class FacebookStore extends ReduceStore {
         };
 
       case 'voterFacebookSignInRetrieve':
-        // console.log("FacebookStore voterFacebookSignInRetrieve, facebook_sign_in_verified: ", action.res.facebook_sign_in_verified);
+        // console.log('FacebookStore voterFacebookSignInRetrieve, facebook_sign_in_verified: ', action.res.facebook_sign_in_verified);
         signInModalGlobalState.set('waitingForFacebookApiCompletion', false);
         if (action.res.facebook_sign_in_verified) {
           VoterActions.voterRetrieve();
@@ -206,8 +222,8 @@ class FacebookStore extends ReduceStore {
         };
 
       case 'voterFacebookSignInSave':
-
-        // console.log("FacebookStore voterFacebookSignInSave, minimum_data_saved: ", action.res.minimum_data_saved);
+        // console.log('FacebookStore voterFacebookSignInSave, minimum_data_saved: ', action.res.minimum_data_saved);
+        // console.log('FacebookStore voterFacebookSignInSave, action.res: ', action.res);
         if (action.res.minimum_data_saved) {
           // Only reach out for the Facebook Sign In information if the save_profile_data call has completed
           // TODO: We need a check here to prevent an infinite loop if the local voter_device_id isn't recognized by server
@@ -218,8 +234,7 @@ class FacebookStore extends ReduceStore {
         return state;
 
       case 'voterSignOut':
-
-        // console.log("resetting FacebookStore");
+        // console.log('resetting FacebookStore');
         return {
           authData: {},
           pictureData: {},

@@ -1,10 +1,11 @@
 import Dispatcher from '../common/dispatcher/Dispatcher';
 import { isWebApp } from '../common/utils/isCordovaOrWebApp'; // eslint-disable-line import/no-cycle
 import { oAuthLog } from '../common/utils/logging';
+import FacebookSignedInData from '../components/Facebook/FacebookSignedInData';
 import signInModalGlobalState from '../components/Widgets/signInModalGlobalState';
 import webAppConfig from '../config';
 import FacebookConstants from '../constants/FacebookConstants';
-import { dumpObjProps } from '../utils/appleSiliconUtils';
+import facebookApi from '../utils/facebookApi';
 import FriendActions from './FriendActions'; // eslint-disable-line import/no-cycle
 import VoterActions from './VoterActions'; // eslint-disable-line import/no-cycle
 import VoterSessionActions from './VoterSessionActions'; // eslint-disable-line import/no-cycle
@@ -13,22 +14,15 @@ import VoterSessionActions from './VoterSessionActions'; // eslint-disable-line 
 
 /*
 For the WebApp, see initFacebook() in Application.jsx
-For Cordova we rely on the FacebookConnectPlugin4
-   from https://www.npmjs.com/package/cordova-plugin-facebook4
-this is the "Jeduan" fork from https://github.com/jeduan/cordova-plugin-facebook4
-The "Jeduan" fork is forked from the VERY OUT OF DATE https://github.com/Wizcorp/phonegap-facebook-plugin
-As of May 2018, the "Wizcorp" fork has not been maintained for 3 years, even though it
-displays the (WRONG) note "This is the official plugin for Facebook in Apache Cordova/PhoneGap!"
- */
+For Cordova in 2022 we switched to a new plugin cordova-plugin-fbsdk
+   from https://github.com/MaximBelov/cordova-plugin-fbsdk
+*/
 
 export default {
-  facebookApi () {
-    return isWebApp() ? window.FB : window.facebookConnectPlugin; // eslint-disable-line no-undef
-  },
-
   appLogout () {
     signInModalGlobalState.set('waitingForFacebookApiCompletion', false);
     VoterSessionActions.voterSignOut(); // This deletes the device_id cookie
+    // console.log('VoterActions.voterRetrieve() in FacebookActions at l 29');
     VoterActions.voterRetrieve();
     VoterActions.voterEmailAddressRetrieve();
     VoterActions.voterSMSPhoneNumberRetrieve();
@@ -36,15 +30,17 @@ export default {
 
   disconnectFromFacebook () {
     // Removing connection between We Vote and Facebook
+    FacebookSignedInData.clearFacebookSignedInData();
     Dispatcher.dispatch({
       type: FacebookConstants.FACEBOOK_SIGN_IN_DISCONNECT,
       data: true,
     });
   },
 
-  facebookDisconnect () {
-    Dispatcher.loadEndpoint('facebookDisconnect');
-  },
+  // December 2022: not called from anywhere
+  // facebookDisconnect () {
+  //   Dispatcher.loadEndpoint('facebookDisconnect');
+  // },
 
   // Sept 2017, We now use the Facebook "games" api "invitable_friends" data on the fly from the webapp for the "Choose Friends" feature.
   // We use the more limited "friends" api call from the server to find Facebook profiles of friends already using We Vote.
@@ -60,10 +56,10 @@ export default {
       return;
     }
     // console.log('FacebookActions.getFacebookData invocation');
-    if (this.facebookApi()) {
-      this.facebookApi().api(
+    if (facebookApi()) {
+      facebookApi().api(
         '/me?fields=id,email,first_name,middle_name,last_name,cover', (response) => {
-          // console.log('FacebookActions.getFacebookData response ', response);
+          // console logging in this callback at this line does not work, but putting a native log line in FacebookConnectPlugin.m at about line 705 after the "// If we have permissions to request" comment will get you the data
           oAuthLog('getFacebookData response', response);
           Dispatcher.dispatch({
             type: FacebookConstants.FACEBOOK_RECEIVED_DATA,
@@ -72,7 +68,7 @@ export default {
         },
       );
     } else {
-      console.log('FacebookActions.getFacebookProfilePicture was not invoked, this.facebookApi() undefined');
+      console.log('FacebookActions.getFacebookProfilePicture was not invoked, facebookApi() undefined');
     }
   },
 
@@ -111,8 +107,39 @@ export default {
     });
   },
 
+  // Save incoming data from Facebook 2022 version
+  // For offsets, see https://developers.facebook.com/docs/graph-api/reference/cover-photo/
+  voterFacebookSignInSave (fbData, doMerge) {
+    oAuthLog('FacebookActions voterFacebookSignInSave, fbData:', fbData, doMerge);
+    let background = false;
+    let offsetX = false;
+    let offsetY = false;
+    if (fbData.cover && fbData.cover.source) {
+      background = fbData.cover.source;
+      offsetX = fbData.cover.offset_x;  // zero is a valid value so can't use the short-circuit operation " || false"
+      offsetY = fbData.cover.offset_y;  // zero is a valid value so can't use the short-circuit operation " || false"
+    }
+
+    Dispatcher.loadEndpoint('voterFacebookSignInSave', {
+      facebook_user_id: fbData.id || false,
+      facebook_email: fbData.email || false,
+      facebook_first_name: fbData.firstName || false,
+      facebook_middle_name: fbData.middleName || false,
+      facebook_last_name: fbData.lastName || false,
+      facebook_profile_image_url_https: fbData.url || false,
+      facebook_background_image_url_https: background,
+      facebook_background_image_offset_x: offsetX,
+      facebook_background_image_offset_y: offsetY,
+      save_auth_data: false,
+      save_profile_data: true,
+      save_photo_data: true,
+      duration: fbData.duration,
+      merge_two_accounts: fbData.mergeTwoAccounts || false,
+    });
+  },
+
   getPicture () {
-    this.facebookApi().api(
+    facebookApi().api(
       '/me?fields=picture.type(large)&redirect=false', ['public_profile', 'email'],
       (response) => {
         oAuthLog('getFacebookProfilePicture response', response);
@@ -137,10 +164,10 @@ export default {
     // having using facebook auth in the past.  That is ok for our authentication methodology, but if you assume you are really
     // logged into facebook in Cordova, and your're not, you get a distracting login dialog that comes from the facebook native
     // package everytime we refresh the avatar in the header in this function -- so first check if the voter is really logged in.
-    if (this.facebookApi()) {
+    if (facebookApi()) {
       this.getPicture();
     } else {
-      console.log('FacebookActions.getFacebookProfilePicture was not invoked, this.facebookApi() undefined');
+      console.log('FacebookActions.getFacebookProfilePicture was not invoked, facebookApi() undefined');
     }
   },
 
@@ -152,9 +179,9 @@ export default {
       return;
     }
 
-    if (this.facebookApi()) {
+    if (facebookApi()) {
       const fbApiForInvitableFriends = `/me?fields=invitable_friends.limit(1000){name,id,picture.width(${pictureWidthVerified}).height(${pictureHeightVerified})`;
-      this.facebookApi().api(
+      facebookApi().api(
         fbApiForInvitableFriends,
         (response) => {
           oAuthLog('getFacebookInvitableFriendsList', response);
@@ -165,7 +192,7 @@ export default {
         },
       );
     } else {
-      console.log('FacebookActions.getFacebookInvitableFriendsList was not invoked, this.facebookApi() undefined');
+      console.log('FacebookActions.getFacebookInvitableFriendsList was not invoked, facebookApi() undefined');
     }
   },
 
@@ -175,9 +202,9 @@ export default {
       return;
     }
 
-    if (this.facebookApi()) {
+    if (facebookApi()) {
       const fbApiForReadingAppRequests = 'me?fields=apprequests.limit(10){from,to,created_time,id}';
-      this.facebookApi().api(
+      facebookApi().api(
         fbApiForReadingAppRequests,
         (response) => {
           oAuthLog('readFacebookAppRequests', response);
@@ -188,7 +215,7 @@ export default {
         },
       );
     } else {
-      console.log('FacebookActions.readFacebookAppRequests was not invoked, this.facebookApi() undefined');
+      console.log('FacebookActions.readFacebookAppRequests was not invoked, facebookApi() undefined');
     }
   },
 
@@ -198,9 +225,9 @@ export default {
       return;
     }
 
-    if (this.facebookApi()) {
+    if (facebookApi()) {
       console.log('deleteFacebookAppRequest requestId: ', requestId);
-      this.facebookApi().api(
+      facebookApi().api(
         requestId,
         'delete',
         (response) => {
@@ -212,7 +239,7 @@ export default {
         },
       );
     } else {
-      console.log('FacebookActions.deleteFacebookAppRequest was not invoked, this.facebookApi() undefined');
+      console.log('FacebookActions.deleteFacebookAppRequest was not invoked, facebookApi() undefined');
     }
   },
 
@@ -222,8 +249,8 @@ export default {
       return;
     }
 
-    if (this.facebookApi()) {
-      this.facebookApi().logout(
+    if (facebookApi()) {
+      facebookApi().logout(
         (response) => {
           oAuthLog('FacebookActions logout response: ', response);
           Dispatcher.dispatch({
@@ -233,7 +260,7 @@ export default {
         },
       );
     } else {
-      console.log('FacebookActions.logout was not invoked, this.facebookApi() undefined');
+      console.log('FacebookActions.logout was not invoked, facebookApi() undefined');
     }
   },
 
@@ -241,6 +268,8 @@ export default {
     signInModalGlobalState.set('waitingForFacebookApiCompletion', false);
     if (successResponse.authResponse) {
       oAuthLog('FacebookActions loginSuccess userData: ', successResponse);
+      // const { authResponse: { accessToken } } = successResponse;
+      // console.log('FacebookActions loginSuccess accessToken: ', accessToken);
       Dispatcher.dispatch({
         type: FacebookConstants.FACEBOOK_LOGGED_IN,
         data: successResponse,
@@ -277,16 +306,17 @@ export default {
     }
 
     // FB.getLoginStatus does an ajax call and when you call FB.login on it's response, the popup that would open
-    // as a result of this call is blocked. A solution to this problem would be to to specify status: true in the
+    // as a result of this call is blocked. A solution to this problem would be to specify status: true in the
     // options object of FB.init and you need to be confident that login status has already loaded.
-    oAuthLog('FacebookActions this.facebookApi().login');
-    if (this.facebookApi()) {
+    oAuthLog('FacebookActions facebookApi().login');
+    if (facebookApi()) {
       const innerThis = this;
       try {
-        this.facebookApi().getLoginStatus(
+        // console.log('FacebookActions facebookApi().getLoginStatus()');
+        facebookApi().getLoginStatus(
           (response) => {
-            oAuthLog('FacebookActions this.facebookApi().getLoginStatus() response: ', response);
-            dumpObjProps('FacebookActions facebookApi().getLoginStatus() response:', response);
+            oAuthLog('FacebookActions facebookApi().getLoginStatus() response: ', response);
+            // dumpObjProps('FacebookActions facebookApi().getLoginStatus() response:', response);
             if (response.status === 'connected') {
               Dispatcher.dispatch({
                 type: FacebookConstants.FACEBOOK_LOGGED_IN,
@@ -307,17 +337,13 @@ export default {
         console.log('FacebookActions.login() try/catch error: ', error);
       }
     } else {
-      console.log('FacebookActions.login was not invoked, this.facebookApi() undefined');
+      console.log('FacebookActions.login was not invoked, facebookApi() undefined');
     }
-  },
-
-  // July 2017: Not called from anywhere
-  savePhoto (url) {
-    Dispatcher.loadEndpoint('voterPhotoSave', { facebook_profile_image_url_https: url });
   },
 
   // Save incoming auth data from Facebook
   saveFacebookSignInAuth (data) {
+    // console.log('saveFacebookSignInAuth voterFacebookSignInSave, data:', data);
     // console.log('saveFacebookSignInAuth (result of incoming data from the FB API) kicking off an api server voterFacebookSignInSave');
     Dispatcher.loadEndpoint('voterFacebookSignInSave', {
       facebook_access_token: data.accessToken || false,
