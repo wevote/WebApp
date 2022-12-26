@@ -63,7 +63,7 @@ class OrganizationModal extends Component {
       isMeasure,
     });
     if (isCandidate) {
-      const candidate = CandidateStore.getCandidate(ballotItemWeVoteId);
+      const candidate = CandidateStore.getCandidateByWeVoteId(ballotItemWeVoteId);
       const { ballot_item_display_name: ballotItemDisplayName, contest_office_we_vote_id: officeWeVoteId } = candidate;
       // console.log('candidate:', candidate);
       CandidateActions.candidateRetrieve(ballotItemWeVoteId);
@@ -170,7 +170,7 @@ class OrganizationModal extends Component {
     if (isCandidate) {
       const allCachedPositionsForThisBallotItem = CandidateStore.getAllCachedPositionsByCandidateWeVoteId(ballotItemWeVoteId);
       // console.log('allCachedPositionsForThisBallotItem:', allCachedPositionsForThisBallotItem);
-      const candidate = CandidateStore.getCandidate(ballotItemWeVoteId);
+      const candidate = CandidateStore.getCandidateByWeVoteId(ballotItemWeVoteId);
       const { ballot_item_display_name: ballotItemDisplayName, google_civic_election_id: googleCivicElectionId } = candidate;
       if (googleCivicElectionId &&
         !VoterGuideStore.voterGuidesUpcomingFromFriendsStopped(googleCivicElectionId) &&

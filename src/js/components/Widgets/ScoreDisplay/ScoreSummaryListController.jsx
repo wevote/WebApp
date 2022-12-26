@@ -69,7 +69,7 @@ class ScoreSummaryListController extends Component {
     const isMeasure = stringContains('meas', ballotItemWeVoteId);
     // console.log('isCandidate:', isCandidate, 'isMeasure:', isMeasure);
     if (isCandidate) {
-      const candidate = CandidateStore.getCandidate(ballotItemWeVoteId);
+      const candidate = CandidateStore.getCandidateByWeVoteId(ballotItemWeVoteId);
       ballotItemDisplayName = candidate.ballot_item_display_name || this.props.ballotItemDisplayName;
       const countResults = CandidateStore.getNumberOfPositionsByCandidateWeVoteId(ballotItemWeVoteId);
       const { numberOfAllSupportPositions, numberOfAllOpposePositions, numberOfAllInfoOnlyPositions } = countResults;

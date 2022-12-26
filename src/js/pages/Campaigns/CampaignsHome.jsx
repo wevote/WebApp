@@ -1,96 +1,58 @@
+import { Chip } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import ActivityActions from '../../actions/ActivityActions';
-import AnalyticsActions from '../../actions/AnalyticsActions';
-import CandidateActions from '../../actions/CandidateActions';
 import IssueActions from '../../actions/IssueActions';
-import OfficeActions from '../../actions/OfficeActions';
+import { SearchTitleTop } from '../../common/components/Style/FilterStyles';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
-import toTitleCase from '../../common/utils/toTitleCase';
+import SearchBar from '../../components/Search/SearchBar';
 import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
-import AppObservableStore from '../../common/stores/AppObservableStore';
-import BallotStore from '../../stores/BallotStore';
+import CampaignStore from '../../common/stores/CampaignStore';
 import CandidateStore from '../../stores/CandidateStore';
 import IssueStore from '../../stores/IssueStore';
-import OfficeStore from '../../stores/OfficeStore';
 import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../common/utils/logging';
 import apiCalming from '../../common/utils/apiCalming';
 import { cordovaSimplePageContainerTopOffset } from '../../utils/cordovaCalculatedOffsets';
-import { sortCandidateList } from '../../utils/positionFunctions';
+// import { sortCandidateList } from '../../utils/positionFunctions';
+import { getTodayAsInteger, getYearFromUltimateElectionDate } from '../../common/utils/dateFormat';
+import arrayContains from '../../common/utils/arrayContains';
 
-const CampaignList = React.lazy(() => import(/* webpackChunkName: 'CampaignList' */ '../../common/components/Campaign/CampaignList'));
+const CandidateListRoot = React.lazy(() => import(/* webpackChunkName: 'CandidateListRoot' */ '../../components/CandidateListRoot/CandidateListRoot'));
+const CampaignListRoot = React.lazy(() => import(/* webpackChunkName: 'CampaignListRoot' */ '../../common/components/Campaign/CampaignListRoot'));
 
 class CampaignsHome extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      campaignList: [],
       candidateList: [],
-      office: {},
-      officeWeVoteId: '',
-      positionListFromFriendsHasBeenRetrievedOnce: {},
-      positionListHasBeenRetrievedOnce: {},
+      isSearching: false,
+      listModeShown: 'showUpcomingEndorsements',
+      listModeFiltersAvailable: [],
+      listModeFiltersTimeStampOfChange: 0,
+      listOfYearsWhenCampaignExists: [],
+      listOfYearsWhenCandidateExists: [],
+      searchText: '',
     };
   }
 
   componentDidMount () {
     window.scrollTo(0, 0);
-    const { match: { params } } = this.props;
+    // const { match: { params } } = this.props;
+    this.campaignStoreListener = CampaignStore.addListener(this.onCampaignStoreChange.bind(this));
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
-    this.officeStoreListener = OfficeStore.addListener(this.onOfficeStoreChange.bind(this));
-    const officeWeVoteId = params.office_we_vote_id;
-    const office = OfficeStore.getOffice(officeWeVoteId);
-    // console.log('officeWeVoteId:', officeWeVoteId, ', office:', office);
-    if (office && office.ballot_item_display_name && office.candidate_list) {
-      let { candidate_list: candidateList } = office;
-      // console.log('componentDidMount office:', office);
-      if (candidateList && candidateList.length && officeWeVoteId) {
-        candidateList = sortCandidateList(candidateList);
-        if (officeWeVoteId &&
-          !this.localPositionListHasBeenRetrievedOnce(officeWeVoteId) &&
-          !BallotStore.positionListHasBeenRetrievedOnce(officeWeVoteId)
-        ) {
-          OfficeActions.positionListForBallotItemPublic(officeWeVoteId);
-          const { positionListHasBeenRetrievedOnce } = this.state;
-          positionListHasBeenRetrievedOnce[officeWeVoteId] = true;
-          this.setState({
-            positionListHasBeenRetrievedOnce,
-          });
-        }
-        if (officeWeVoteId &&
-          !this.localPositionListFromFriendsHasBeenRetrievedOnce(officeWeVoteId) &&
-          !BallotStore.positionListFromFriendsHasBeenRetrievedOnce(officeWeVoteId)
-        ) {
-          OfficeActions.positionListForBallotItemFromFriends(officeWeVoteId);
-          const { positionListFromFriendsHasBeenRetrievedOnce } = this.state;
-          positionListFromFriendsHasBeenRetrievedOnce[officeWeVoteId] = true;
-          this.setState({
-            positionListFromFriendsHasBeenRetrievedOnce,
-          });
-        }
-      } else {
-        // console.log('Calling candidatesRetrieve, officeWeVoteId:', officeWeVoteId);
-        CandidateActions.candidatesRetrieve(officeWeVoteId);
-      }
-      this.setState({
-        candidateList,
-        office,
-      });
-    } else if (officeWeVoteId) {
-      OfficeActions.officeRetrieve(officeWeVoteId);
-      CandidateActions.candidatesRetrieve(officeWeVoteId);
-      // console.log('componentDidMount officeRetrieve, officeWeVoteId:', officeWeVoteId);
-    } else {
-      // console.log('componentDidMount Missing officeWeVoteId');
-    }
-
-    if (officeWeVoteId) {
-      this.setState({
-        officeWeVoteId,
-      });
-    }
+    const campaignList = CampaignStore.getPromotedCampaignXDicts();
+    this.setState({
+      campaignList,
+    }, () => this.onIncomingCampaignListChange(true));
+    const candidateList = CandidateStore.getCandidateList();
+    this.setState({
+      candidateList,
+    }, () => this.onIncomingCandidateListChange(true));
 
     if (apiCalming('issueDescriptionsRetrieve', 3600000)) { // Only once per 60 minutes
       IssueActions.issueDescriptionsRetrieve();
@@ -101,164 +63,190 @@ class CampaignsHome extends Component {
     if (VoterStore.electionId() && !IssueStore.issuesUnderBallotItemsRetrieveCalled(VoterStore.electionId())) {
       IssueActions.issuesUnderBallotItemsRetrieve(VoterStore.electionId());
     }
-    const modalToOpen = params.modal_to_show || '';
-    if (modalToOpen === 'share') {
-      this.modalOpenTimer = setTimeout(() => {
-        AppObservableStore.setShowShareModal(true);
-      }, 1000);
-    } else if (modalToOpen === 'sic') { // sic = Shared Item Code
-      const sharedItemCode = params.shared_item_code || '';
-      if (sharedItemCode) {
-        this.modalOpenTimer = setTimeout(() => {
-          AppObservableStore.setShowSharedItemModal(sharedItemCode);
-        }, 1000);
-      }
-    }
     if (apiCalming('activityNoticeListRetrieve', 10000)) {
       ActivityActions.activityNoticeListRetrieve();
     }
-    AnalyticsActions.saveActionOffice(VoterStore.electionId(), params.office_we_vote_id);
+    // AnalyticsActions.saveActionOffice(VoterStore.electionId(), params.office_we_vote_id);
   }
 
   componentWillUnmount () {
     this.candidateStoreListener.remove();
-    this.officeStoreListener.remove();
     if (this.modalOpenTimer) clearTimeout(this.modalOpenTimer);
   }
 
+  onCampaignStoreChange () {
+    const campaignList = CampaignStore.getPromotedCampaignXDicts();
+    this.setState({
+      campaignList,
+    }, () => this.onIncomingCampaignListChange());
+  }
+
   onCandidateStoreChange () {
-    const { match: { params } } = this.props;
-    let { candidateList } = this.state;
-    let { officeWeVoteId } = this.state;
-    if (!officeWeVoteId) {
-      officeWeVoteId = params.office_we_vote_id;
+    const candidateList = CandidateStore.getCandidateList();
+    this.setState({
+      candidateList,
+    }, () => this.onIncomingCandidateListChange());
+  }
+
+  onIncomingCampaignListChange (setDefaultListMode = false) {
+    const campaignList = CampaignStore.getPromotedCampaignXDicts();
+    console.log('CampaignsHome onIncomingCampaignListChange, campaignList:', campaignList);
+    this.setState({
+      listOfYearsWhenCampaignExists: this.getListOfYearsWhenCampaignExists(campaignList),
+    }, () => this.updateActiveFilters(setDefaultListMode));
+  }
+
+  onIncomingCandidateListChange (setDefaultListMode = false) {
+    const candidateList = CandidateStore.getCandidateList();
+    console.log('CampaignsHome onIncomingCandidateListChange, candidateList:', candidateList);
+    this.setState({
+      listOfYearsWhenCandidateExists: this.getListOfYearsWhenCandidateExists(candidateList),
+    }, () => this.updateActiveFilters(setDefaultListMode));
+  }
+
+  orderByFilterOrder = (firstFilter, secondFilter) => firstFilter.filterOrder - secondFilter.filterOrder;
+
+  orderPositionsByBallotItemTwitterFollowers = (firstEntry, secondEntry) => secondEntry.ballot_item_twitter_followers_count - firstEntry.ballot_item_twitter_followers_count;
+
+  updateActiveFilters = (setDefaultListMode = false) => {
+    const { campaignList, candidateList, listOfYearsWhenCampaignExists, listOfYearsWhenCandidateExists } = this.state;
+    let { listModeShown } = this.state;
+    const listOfYears = [...new Set([...listOfYearsWhenCampaignExists, ...listOfYearsWhenCandidateExists])];
+    console.log('listOfYears:', listOfYears, ', setDefaultListMode:', setDefaultListMode);
+    let filterCount = 0;
+    let upcomingEndorsementsAvailable = false;
+    const todayAsInteger = getTodayAsInteger();
+    campaignList.forEach((oneCampaign) => {
+      if (oneCampaign.final_election_date_as_integer >= todayAsInteger) {
+        upcomingEndorsementsAvailable = true;
+      }
+    });
+    candidateList.forEach((oneCandidate) => {
+      if (oneCandidate.candidate_ultimate_election_date >= todayAsInteger) {
+        upcomingEndorsementsAvailable = true;
+      }
+    });
+    if (setDefaultListMode) {
+      listModeShown = this.getDefaultListModeShown(upcomingEndorsementsAvailable);
     }
-    // console.log('onCandidateStoreChange officeWeVoteId:', officeWeVoteId, ', candidateList:', candidateList);
-    let newCandidate;
-    let newCandidateList = [];
-    if (candidateList && candidateList.length > 0 && officeWeVoteId) {
-      // console.log('In candidateList loop');
-      candidateList.forEach((candidate) => {
-        if (candidate && candidate.we_vote_id) {
-          newCandidate = CandidateStore.getCandidate(candidate.we_vote_id);
-          if (newCandidate && newCandidate.we_vote_id) {
-            newCandidateList.push(newCandidate);
-          } else {
-            newCandidateList.push(candidate);
-          }
-        }
+    // console.log('updateActiveFilters listModeShown:', listModeShown);
+    let listModeFiltersAvailable = [
+    ];
+    listOfYears.forEach((oneYear) => {
+      filterCount += 1;
+      listModeFiltersAvailable.push({
+        filterDisplayName: `${oneYear}`,
+        filterName: `show${oneYear}`,
+        filterOrder: oneYear,
+        filterSelected: listModeShown === `show${oneYear}`,
+        filterType: 'showYear',
+        filterYear: oneYear,
       });
-      candidateList = sortCandidateList(newCandidateList);
-      // console.log('onCandidateStoreChange from state, candidateList:', candidateList);
+    });
+    if (upcomingEndorsementsAvailable) {
+      filterCount += 1;
+      listModeFiltersAvailable.push({
+        filterDisplayName: 'This Election',
+        filterName: 'showUpcomingEndorsements',
+        filterOrder: 1,
+        filterSelected: listModeShown === 'showUpcomingEndorsements',
+        filterType: 'showUpcomingEndorsements',
+      });
+    }
+    if (filterCount > 1) {
+      listModeFiltersAvailable.push({
+        filterDisplayName: 'All',
+        filterName: 'showAllEndorsements',
+        filterOrder: 5000,
+        filterSelected: listModeShown === 'showAllEndorsements',
+        filterType: 'showAllEndorsements',
+      });
+    }
+    listModeFiltersAvailable = listModeFiltersAvailable.sort(this.orderByFilterOrder);
+    // console.log('listModeFiltersAvailable:', listModeFiltersAvailable);
+    const listModeFiltersTimeStampOfChange = Date.now();
+    if (setDefaultListMode) {
       this.setState({
-        candidateList,
+        listModeFiltersAvailable,
+        listModeFiltersTimeStampOfChange,
+        upcomingEndorsementsAvailable,
+        listModeShown: this.getDefaultListModeShown(),
       });
-      if (officeWeVoteId &&
-        !this.localPositionListHasBeenRetrievedOnce(officeWeVoteId) &&
-        !BallotStore.positionListHasBeenRetrievedOnce(officeWeVoteId)
-      ) {
-        OfficeActions.positionListForBallotItemPublic(officeWeVoteId);
-        const { positionListHasBeenRetrievedOnce } = this.state;
-        positionListHasBeenRetrievedOnce[officeWeVoteId] = true;
-        this.setState({
-          positionListHasBeenRetrievedOnce,
-        });
-      }
-      if (officeWeVoteId &&
-        !this.localPositionListFromFriendsHasBeenRetrievedOnce(officeWeVoteId) &&
-        !BallotStore.positionListFromFriendsHasBeenRetrievedOnce(officeWeVoteId)
-      ) {
-        OfficeActions.positionListForBallotItemFromFriends(officeWeVoteId);
-        const { positionListFromFriendsHasBeenRetrievedOnce } = this.state;
-        positionListFromFriendsHasBeenRetrievedOnce[officeWeVoteId] = true;
-        this.setState({
-          positionListFromFriendsHasBeenRetrievedOnce,
-        });
-      }
     } else {
-      // console.log('getCandidateListByOfficeWeVoteId, officeWeVoteId:', officeWeVoteId);
-      const rawCandidateList = CandidateStore.getCandidateListByOfficeWeVoteId(officeWeVoteId);
-      // console.log('getCandidateListByOfficeWeVoteId, rawCandidateList:', rawCandidateList);
-      newCandidateList = sortCandidateList(rawCandidateList);
       this.setState({
-        candidateList: newCandidateList,
+        listModeFiltersAvailable,
+        listModeFiltersTimeStampOfChange,
+        upcomingEndorsementsAvailable,
       });
     }
   }
 
-  onOfficeStoreChange () {
-    const { match: { params } } = this.props;
-    let { officeWeVoteId } = this.state;
-    if (!officeWeVoteId) {
-      officeWeVoteId = params.office_we_vote_id;
-    }
-    const office = OfficeStore.getOffice(officeWeVoteId);
-    // console.log('CampaignsHome.jsx onOfficeStoreChange:', officeWeVoteId, ', office:', office);
-    let newCandidate;
-    const newCandidateList = [];
-    if (office && office.ballot_item_display_name) {
-      let { candidate_list: candidateList } = office;
-      if (candidateList && candidateList.length > 0 && officeWeVoteId) {
-        // console.log('In CampaignsHome candidateList loop');
-        candidateList.forEach((candidate) => {
-          if (candidate && candidate.we_vote_id) {
-            newCandidate = CandidateStore.getCandidate(candidate.we_vote_id);
-            if (newCandidate && newCandidate.we_vote_id) {
-              newCandidateList.push(newCandidate);
-            } else {
-              newCandidateList.push(candidate);
-            }
-          }
-        });
-        candidateList = sortCandidateList(newCandidateList);
-        this.setState({
-          candidateList,
-        });
+  changeListModeShown = (newListModeShown) => {
+    this.setState({
+      listModeShown: newListModeShown,
+    }, () => this.updateActiveFilters());
+  }
 
-        if (officeWeVoteId &&
-          !this.localPositionListHasBeenRetrievedOnce(officeWeVoteId) &&
-          !BallotStore.positionListHasBeenRetrievedOnce(officeWeVoteId)
-        ) {
-          OfficeActions.positionListForBallotItemPublic(officeWeVoteId);
-          const { positionListHasBeenRetrievedOnce } = this.state;
-          positionListHasBeenRetrievedOnce[officeWeVoteId] = true;
-          this.setState({
-            positionListHasBeenRetrievedOnce,
-          });
+  getDefaultListModeShown = (incomingUpcomingEndorsementsAvailable = false) => {
+    const { listOfYearsWhenCampaignExists, listOfYearsWhenCandidateExists, upcomingEndorsementsAvailable } = this.state;
+    const listOfYears = [...new Set([...listOfYearsWhenCampaignExists, ...listOfYearsWhenCandidateExists])];
+    // console.log('getDefaultListModeShown listOfYearsWhenCandidateExists:', listOfYearsWhenCandidateExists);
+    if (upcomingEndorsementsAvailable || incomingUpcomingEndorsementsAvailable) {
+      return 'showUpcomingEndorsements';
+    } else if (listOfYears && listOfYears.length > 0) {
+      const mostRecentYear = Math.max.apply(null, listOfYears);
+      // console.log('mostRecentYear:', mostRecentYear);
+      return `show${mostRecentYear}`;
+    }
+    return 'showAllEndorsements';
+  }
+
+  getListOfYearsWhenCampaignExists = (campaignList) => {
+    const listOfYearsWhenCampaignExists = [];
+    let tempYearInteger;
+    campaignList.forEach((oneCampaign) => {
+      if (oneCampaign.final_election_date_as_integer && oneCampaign.final_election_date_as_integer > 0) {
+        tempYearInteger = getYearFromUltimateElectionDate(oneCampaign.final_election_date_as_integer);
+        console.log('getListOfYearsWhenCampaignExists:', tempYearInteger, ', oneCampaign:', oneCampaign);
+        if (!arrayContains(tempYearInteger, listOfYearsWhenCampaignExists)) {
+          listOfYearsWhenCampaignExists.push(tempYearInteger);
         }
       }
-      if (officeWeVoteId &&
-        !this.localPositionListFromFriendsHasBeenRetrievedOnce(officeWeVoteId) &&
-        !BallotStore.positionListFromFriendsHasBeenRetrievedOnce(officeWeVoteId)
-      ) {
-        OfficeActions.positionListForBallotItemFromFriends(officeWeVoteId);
-        const { positionListFromFriendsHasBeenRetrievedOnce } = this.state;
-        positionListFromFriendsHasBeenRetrievedOnce[officeWeVoteId] = true;
-        this.setState({
-          positionListFromFriendsHasBeenRetrievedOnce,
-        });
+    });
+    return listOfYearsWhenCampaignExists;
+  }
+
+  getListOfYearsWhenCandidateExists = (candidateList) => {
+    const listOfYearsWhenCandidateExists = [];
+    let tempYearInteger;
+    candidateList.forEach((oneCandidate) => {
+      if (oneCandidate.candidate_ultimate_election_date && oneCandidate.candidate_ultimate_election_date > 0) {
+        tempYearInteger = getYearFromUltimateElectionDate(oneCandidate.candidate_ultimate_election_date);
+        console.log('getListOfYearsWhenCampaignExists:', tempYearInteger, ', oneCandidate:', oneCandidate);
+        if (!arrayContains(tempYearInteger, listOfYearsWhenCandidateExists)) {
+          listOfYearsWhenCandidateExists.push(tempYearInteger);
+        }
       }
-      this.setState({
-        office,
-        officeWeVoteId,
-      });
-    }
+    });
+    return listOfYearsWhenCandidateExists;
   }
 
-  localPositionListHasBeenRetrievedOnce (officeWeVoteId) {
-    if (officeWeVoteId) {
-      const { positionListHasBeenRetrievedOnce } = this.state;
-      return positionListHasBeenRetrievedOnce[officeWeVoteId];
+  searchFunction = (searchText) => {
+    const { listModeShown, searchText: previousSearchText } = this.state;
+    let searchingJustStarted = false;
+    if (previousSearchText.length === 0 && searchText.length === 1) {
+      searchingJustStarted = true;
     }
-    return false;
+    const isSearching = (searchText && searchText.length > 0);
+    this.setState({
+      isSearching,
+      listModeShown: searchingJustStarted ? '' : listModeShown,
+      searchText,
+    }, () => this.updateActiveFilters());
   }
 
-  localPositionListFromFriendsHasBeenRetrievedOnce (officeWeVoteId) {
-    if (officeWeVoteId) {
-      const { positionListFromFriendsHasBeenRetrievedOnce } = this.state;
-      return positionListFromFriendsHasBeenRetrievedOnce[officeWeVoteId];
-    }
-    return false;
+  clearFunction = () => {
+    this.searchFunction('');
   }
 
   getTopPadding = () => {
@@ -271,13 +259,12 @@ class CampaignsHome extends Component {
 
   render () {
     renderLog('CampaignsHome');  // Set LOG_RENDER_EVENTS to log all renders
-    const { office } = this.state;
+    const { classes } = this.props;
+    const { isSearching, listModeFiltersAvailable, listModeFiltersTimeStampOfChange, searchText } = this.state;
     // console.log('CampaignsHome.jsx office:', office, ', candidateList:', candidateList);
 
-    const officeName = toTitleCase(office.ballot_item_display_name);
-    const titleText = `${officeName} - We Vote`;
-    const descriptionText = `Choose who you support for ${officeName} in this election`;
-
+    const titleText = 'Candidates - We Vote';
+    const descriptionText = 'Choose which candidates you support.';
 
     return (
       <PageContentContainer>
@@ -286,9 +273,57 @@ class CampaignsHome extends Component {
             title={titleText}
             meta={[{ name: 'description', content: descriptionText }]}
           />
+          <CampaignsHomeFilterWrapper>
+            {(isSearching && searchText) && (
+              <SearchTitleTop>
+                Searching for &quot;
+                {searchText}
+                &quot;
+              </SearchTitleTop>
+            )}
+            {!!(listModeFiltersAvailable) && (
+              <CampaignsHomeFilterChoices>
+                {listModeFiltersAvailable.map((oneFilter) => (
+                  <Chip
+                    key={oneFilter.filterName}
+                    label={<span style={oneFilter.filterSelected ? { fontWeight: 600 } : {}}>{oneFilter.filterDisplayName}</span>}
+                    className={oneFilter.filterSelected ? classes.selectedChip : classes.notSelectedChip}
+                    component="div"
+                    onClick={() => this.changeListModeShown(oneFilter.filterName)}
+                    variant={oneFilter.filterSelected ? undefined : 'outlined'}
+                  />
+                ))}
+              </CampaignsHomeFilterChoices>
+            )}
+            <SearchBarWrapper>
+              <SearchBar
+                clearButton
+                searchButton
+                placeholder="Search by name, office or state"
+                searchFunction={this.searchFunction}
+                clearFunction={this.clearFunction}
+                searchUpdateDelayTime={0}
+              />
+            </SearchBarWrapper>
+          </CampaignsHomeFilterWrapper>
           <WhatIsHappeningSection>
             <Suspense fallback={<span>&nbsp;</span>}>
-              <CampaignList titleTextIfCampaigns="Sponsored Campaigns" />
+              <CampaignListRoot
+                listModeFilters={listModeFiltersAvailable}
+                listModeFiltersTimeStampOfChange={listModeFiltersTimeStampOfChange}
+                searchText={searchText}
+                titleTextIfCampaigns="Sponsored Campaigns"
+              />
+            </Suspense>
+          </WhatIsHappeningSection>
+          <WhatIsHappeningSection>
+            <Suspense fallback={<span>&nbsp;</span>}>
+              <CandidateListRoot
+                listModeFilters={listModeFiltersAvailable}
+                listModeFiltersTimeStampOfChange={listModeFiltersTimeStampOfChange}
+                searchText={searchText}
+                titleTextIfCampaigns="On Your Ballot"
+              />
             </Suspense>
           </WhatIsHappeningSection>
         </CampaignsHomeContainer>
@@ -297,15 +332,43 @@ class CampaignsHome extends Component {
   }
 }
 CampaignsHome.propTypes = {
-  match: PropTypes.object.isRequired,
+  classes: PropTypes.object,
+  // match: PropTypes.object.isRequired,
 };
 
+const styles = () => ({
+  iconButton: {
+    padding: 8,
+  },
+  notSelectedChip: {
+    margin: 2,
+  },
+  selectedChip: {
+    border: '1px solid #bdbdbd',
+    margin: 2,
+  },
+});
+
 const CampaignsHomeContainer = styled('div')`
+`;
+
+const CampaignsHomeFilterChoices = styled('div')`
+  margin-top: 8px;
+`;
+
+const CampaignsHomeFilterWrapper = styled('div')`
+  margin-top: 48px;
+  margin-bottom: 24px;
+`;
+
+const SearchBarWrapper = styled('div')`
+  margin-top: 4px;
+  margin-bottom: 8px;
 `;
 
 const WhatIsHappeningSection = styled('div')`
   margin: 0 0 25px 0;
 `;
 
-export default CampaignsHome;
+export default withStyles(styles)(CampaignsHome);
 

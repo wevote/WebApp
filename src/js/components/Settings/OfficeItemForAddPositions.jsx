@@ -112,7 +112,7 @@ class OfficeItemForAddPositions extends Component {
       candidateList.forEach((candidate) => {
         if (candidate && candidate.we_vote_id) {
           candidateModified = candidate;
-          newCandidate = CandidateStore.getCandidate(candidate.we_vote_id);
+          newCandidate = CandidateStore.getCandidateByWeVoteId(candidate.we_vote_id);
           if (newCandidate.ballot_item_display_name && candidate.ballot_item_display_name !== newCandidate.ballot_item_display_name) {
             candidateModified.ballot_item_display_name = newCandidate.ballot_item_display_name;
             changeFound = true;

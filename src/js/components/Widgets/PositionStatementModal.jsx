@@ -53,7 +53,7 @@ class PositionStatementModal extends Component {
     let isCandidate = false;
     let isMeasure = false;
     if (stringContains('cand', this.props.ballotItemWeVoteId)) {
-      const candidate = CandidateStore.getCandidate(this.props.ballotItemWeVoteId);
+      const candidate = CandidateStore.getCandidateByWeVoteId(this.props.ballotItemWeVoteId);
       ballotItemDisplayName = candidate.ballot_item_display_name || '';
       ballotItemType = 'CANDIDATE';
       isCandidate = true;
@@ -99,7 +99,7 @@ class PositionStatementModal extends Component {
   onCandidateStoreChange () {
     if (this.state.isCandidate) {
       const { ballotItemWeVoteId } = this.props;
-      const candidate = CandidateStore.getCandidate(ballotItemWeVoteId);
+      const candidate = CandidateStore.getCandidateByWeVoteId(ballotItemWeVoteId);
       const ballotItemDisplayName = candidate.ballot_item_display_name || '';
       this.setState({
         ballotItemDisplayName,

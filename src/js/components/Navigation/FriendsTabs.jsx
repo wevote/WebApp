@@ -170,7 +170,9 @@ class FriendsTabs extends Component {
                       max={9}
                     >
                       Requests
-                      {isWebApp() && '&nbsp;&nbsp;'}
+                      {isWebApp() && (
+                        <>&nbsp;&nbsp;&nbsp;</>
+                      )}
                     </Badge>
                   ) : (
                     <>Requests</>
@@ -250,7 +252,7 @@ const styles = () => ({
     // backgroundColor: 'rgba(250, 62, 62)',
     fontSize: 10,
     right: 0,
-    top: 11,
+    top: 9,
   },
 });
 

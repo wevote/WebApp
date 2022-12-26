@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import FriendActions from '../../actions/FriendActions';
 import OrganizationActions from '../../actions/OrganizationActions';
+import { NumbersFoundWrapper, SearchTitle } from '../../common/components/Style/FilterStyles';
 import { convertStateCodeToStateText } from '../../common/utils/addressFunctions';
 import apiCalming from '../../common/utils/apiCalming';
 import arrayContains from '../../common/utils/arrayContains';
@@ -89,7 +90,7 @@ class VoterGuidePositionList extends Component {
   onIncomingPositionListChange (setDefaultListMode = false) {
     // console.log('VoterGuidePositionList onIncomingPositionListChange');
     const { incomingPositionList: positionList } = this.props;
-    // Remove any positions which have duplicates (we always want to clean up on the API server, but some times miss duplicates)
+    // Remove any positions which have duplicates (we always want to clean up on the API server, but sometimes miss duplicates)
     const candidateAlreadySeenThisYear = {};
     const positionListDeduplicated = positionList.map((position) => {
       // console.log('VoterGuidePositionList componentDidMount positionListModified1, position: ', position);
@@ -605,11 +606,6 @@ const styles = () => ({
   },
 });
 
-const NumbersFoundWrapper = styled('span')`
-  margin-left: 6px;
-  white-space: nowrap;
-`;
-
 const VoterGuideFilterChoices = styled('div')`
   margin-top: 8px;
 `;
@@ -642,12 +638,6 @@ const SearchResultsFoundInExplanation = styled('div')`
   margin-left: 0 !important;
   margin-right: 0 !important;
   padding: 8px !important;
-`;
-
-const SearchTitle = styled('div')`
-  font-size: 24px;
-  margin-top: 12px;
-  margin-bottom: 12px;
 `;
 
 const ShowMoreItemsWrapper = styled('div')(({ theme }) => (`

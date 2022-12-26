@@ -34,6 +34,7 @@ import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import { convertToInteger } from '../../common/utils/textFormat';
 
+const CampaignSupportThermometer = React.lazy(() => import(/* webpackChunkName: 'CampaignSupportThermometer' */ '../../common/components/CampaignSupport/CampaignSupportThermometer'));
 const CandidateItem = React.lazy(() => import(/* webpackChunkName: 'CandidateItem' */ '../../components/Ballot/CandidateItem'));
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
@@ -74,7 +75,7 @@ class Candidate extends Component {
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     // console.log('candidateWeVoteId:', candidateWeVoteId);
     if (candidateWeVoteId) {
-      const candidate = CandidateStore.getCandidate(candidateWeVoteId);
+      const candidate = CandidateStore.getCandidateByWeVoteId(candidateWeVoteId);
       const { ballot_item_display_name: ballotItemDisplayName, contest_office_we_vote_id: officeWeVoteId } = candidate;
       // console.log('candidate:', candidate);
       this.setState({
@@ -231,7 +232,7 @@ class Candidate extends Component {
     if (allCachedPositionsForThisCandidate) {
       allCachedPositionsForThisCandidateLength = allCachedPositionsForThisCandidate.length;
     }
-    const candidate = CandidateStore.getCandidate(candidateWeVoteId);
+    const candidate = CandidateStore.getCandidateByWeVoteId(candidateWeVoteId);
     const { ballot_item_display_name: ballotItemDisplayName, google_civic_election_id: googleCivicElectionId } = candidate;
     if (googleCivicElectionId &&
       !VoterGuideStore.voterGuidesUpcomingFromFriendsStopped(googleCivicElectionId) &&
@@ -331,9 +332,10 @@ class Candidate extends Component {
           )
         }
         {/* The following style adjustment prevents horizontal scrolling from the .card style */}
-        <div className="card" style={isWebApp() ? {} : { marginRight: 0, marginLeft: 0 }}>
+        {/* <div className="card" style={isWebApp() ? {} : { marginRight: 0, marginLeft: 0 }}> */}
+        <PageWrapper className="container-fluid">
           <TwoColumns>
-            <LeftColumnWrapper>
+            <ColumnTwoThirds>
               <Suspense fallback={<></>}>
                 <CandidateItem
                   blockOnClickShowOrganizationModalWithPositions
@@ -347,8 +349,27 @@ class Candidate extends Component {
                   showPositionStatementActionBar
                 />
               </Suspense>
-            </LeftColumnWrapper>
-            <RightColumnWrapper className="u-show-desktop-tablet">
+              { !!(allCachedPositionsForThisCandidate.length) && (
+                <section className="card">
+                  <Suspense fallback={<></>}>
+                    <DelayedLoad showLoadingText waitBeforeShow={500}>
+                      <PositionList
+                        incomingPositionList={allCachedPositionsForThisCandidate}
+                        ballotItemDisplayName={candidate.ballot_item_display_name}
+                        params={params}
+                        positionListExistsTitle={(
+                          <PositionListIntroductionText>
+                            <Info classes={{ root: classes.informationIcon }} />
+                            Opinions about this candidate are below. Use these filters to sort:
+                          </PositionListIntroductionText>
+                        )}
+                      />
+                    </DelayedLoad>
+                  </Suspense>
+                </section>
+              )}
+            </ColumnTwoThirds>
+            <ColumnOneThird className="u-show-desktop-tablet">
               {nextReleaseFeaturesEnabled && (
                 <CandidateShareWrapper>
                   <Suspense fallback={<></>}>
@@ -356,79 +377,65 @@ class Candidate extends Component {
                   </Suspense>
                 </CandidateShareWrapper>
               )}
+              <Suspense fallback={<span>&nbsp;</span>}>
+                <CampaignSupportThermometer campaignXWeVoteId="" />
+              </Suspense>
               {candidate.ballotpedia_candidate_url && (
                 <ViewOnBallotpedia externalLinkUrl={candidate.ballotpedia_candidate_url} />
               )}
               {candidate.contest_office_name && (
                 <SearchOnGoogle googleQuery={`${candidateName} ${candidate.contest_office_name}`} />
               )}
-            </RightColumnWrapper>
+            </ColumnOneThird>
           </TwoColumns>
-        </div>
-        { !!(allCachedPositionsForThisCandidate.length) && (
-          <section className="card">
-            <Suspense fallback={<></>}>
-              <DelayedLoad showLoadingText waitBeforeShow={500}>
-                <PositionList
-                  incomingPositionList={allCachedPositionsForThisCandidate}
-                  ballotItemDisplayName={candidate.ballot_item_display_name}
-                  params={params}
-                  positionListExistsTitle={(
-                    <PositionListIntroductionText>
-                      <Info classes={{ root: classes.informationIcon }} />
-                      Opinions about this candidate are below. Use these filters to sort:
-                    </PositionListIntroductionText>
+          {(allCachedPositionsForThisCandidate.length < 3) && (
+            <PromoteFurtherAction>
+              <Suspense fallback={<></>}>
+                <ViewUpcomingBallotButton onClickFunction={this.goToBallot} />
+              </Suspense>
+              <HowItWorksLink onClick={this.openHowItWorksModal}>
+                How It Works
+              </HowItWorksLink>
+            </PromoteFurtherAction>
+          )}
+          {/*
+          <EndorsementCardWrapper>
+            <EndorsementCard
+              bsPrefix="u-margin-top--sm u-stack--xs"
+              variant="primary"
+              buttonText="Endorsements missing?"
+              text={`Are there endorsements for ${candidateName} that you expected to see?`}
+            />
+            <ThisIsMeAction
+              kindOfOwner="POLITICIAN"
+              nameBeingViewed={candidate.ballot_item_display_name}
+              twitterHandleBeingViewed={candidate.twitter_handle}
+            />
+          </EndorsementCardWrapper>
+          */}
+          <br />
+          {/* Show links to this candidate in the admin tools */}
+          { (voter.is_admin || voter.is_verified_volunteer) && (
+            <span className="u-wrap-links d-print-none">
+              Admin only:
+              <Suspense fallback={<></>}>
+                <OpenExternalWebSite
+                  linkIdAttribute="candidateAdminEdit"
+                  url={candidateAdminEditUrl}
+                  target="_blank"
+                  className="open-web-site open-web-site__no-right-padding"
+                  body={(
+                    <span>
+                      edit
+                      {' '}
+                      {candidateName}
+                    </span>
                   )}
                 />
-              </DelayedLoad>
-            </Suspense>
-          </section>
-        )}
-        {(allCachedPositionsForThisCandidate.length < 3) && (
-          <PromoteFurtherAction>
-            <Suspense fallback={<></>}>
-              <ViewUpcomingBallotButton onClickFunction={this.goToBallot} />
-            </Suspense>
-            <HowItWorksLink onClick={this.openHowItWorksModal}>
-              How It Works
-            </HowItWorksLink>
-          </PromoteFurtherAction>
-        )}
-        <EndorsementCardWrapper>
-          <EndorsementCard
-            bsPrefix="u-margin-top--sm u-stack--xs"
-            variant="primary"
-            buttonText="Endorsements missing?"
-            text={`Are there endorsements for ${candidateName} that you expected to see?`}
-          />
-          <ThisIsMeAction
-            kindOfOwner="POLITICIAN"
-            nameBeingViewed={candidate.ballot_item_display_name}
-            twitterHandleBeingViewed={candidate.twitter_handle}
-          />
-        </EndorsementCardWrapper>
-        <br />
-        {/* Show links to this candidate in the admin tools */}
-        { (voter.is_admin || voter.is_verified_volunteer) && (
-          <span className="u-wrap-links d-print-none">
-            Admin only:
-            <Suspense fallback={<></>}>
-              <OpenExternalWebSite
-                linkIdAttribute="candidateAdminEdit"
-                url={candidateAdminEditUrl}
-                target="_blank"
-                className="open-web-site open-web-site__no-right-padding"
-                body={(
-                  <span>
-                    edit
-                    {' '}
-                    {candidateName}
-                  </span>
-                )}
-              />
-            </Suspense>
-          </span>
-        )}
+              </Suspense>
+            </span>
+          )}
+        </PageWrapper>
       </PageContentContainer>
     );
   }
@@ -453,8 +460,18 @@ const CandidateShareWrapper = styled('div')`
   padding-left: 2px;
 `;
 
-const LeftColumnWrapper = styled('div')`
-  flex: 1 1 0;
+const ColumnOneThird = styled('div')`
+  flex: 1;
+  flex-direction: column;
+  flex-basis: 40%;
+  margin: 0 0 0 25px;
+  width: fit-content;
+`;
+
+const ColumnTwoThirds = styled('div')`
+  flex: 2;
+  flex-direction: column;
+  flex-basis: 60%;
 `;
 
 const HowItWorksLink = styled('div')`
@@ -465,7 +482,13 @@ const HowItWorksLink = styled('div')`
     color: #4371cc;
   }
 `;
-
+const PageWrapper = styled('div')`
+  // margin: 0 auto;
+  // @media (max-width: 1005px) {
+  //   // Switch to 15px left/right margin when auto is too small
+  //   margin: 0 15px;
+  // }
+`;
 const PositionListIntroductionText = styled('div')`
   color: #999;
 `;
@@ -478,19 +501,13 @@ const PromoteFurtherAction = styled('div')`
   margin-top: 48px;
 `;
 
-const RightColumnWrapper = styled('div')`
-  padding: 16px 16px 16px 0;
-  width: fit-content;
-`;
-
 const TwoColumns = styled('div')`
   display: flex;
-  margin: ${isAndroidSizeWide() ?  0  :  '0 -8px 0 -8px'};
+  // margin: ${isAndroidSizeWide() ?  0  :  '0 -8px 0 -8px'};
 `;
 
-
-const EndorsementCardWrapper = styled('div')`
-  ${() => displayNoneIfSmallerThanDesktop()};
-`;
+// const EndorsementCardWrapper = styled('div')`
+//   ${() => displayNoneIfSmallerThanDesktop()};
+// `;
 
 export default withStyles(styles)(Candidate);

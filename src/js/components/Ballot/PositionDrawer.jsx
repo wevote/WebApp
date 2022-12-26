@@ -59,7 +59,7 @@ class PositionDrawer extends Component {
       isMeasure,
     });
     if (isCandidate) {
-      const candidate = CandidateStore.getCandidate(ballotItemWeVoteId);
+      const candidate = CandidateStore.getCandidateByWeVoteId(ballotItemWeVoteId);
       const { contest_office_we_vote_id: officeWeVoteId } = candidate;
       // console.log('candidate:', candidate);
       CandidateActions.candidateRetrieve(ballotItemWeVoteId);
@@ -153,7 +153,7 @@ class PositionDrawer extends Component {
     const { isCandidate } = this.state;
     // console.log('Candidate onCandidateStoreChange, ballotItemWeVoteId:', ballotItemWeVoteId);
     if (isCandidate) {
-      const candidate = CandidateStore.getCandidate(ballotItemWeVoteId);
+      const candidate = CandidateStore.getCandidateByWeVoteId(ballotItemWeVoteId);
       const { google_civic_election_id: googleCivicElectionId } = candidate;
       if (googleCivicElectionId &&
         !VoterGuideStore.voterGuidesUpcomingFromFriendsStopped(googleCivicElectionId) &&

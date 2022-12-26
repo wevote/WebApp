@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const BlockedIndicator = styled('span')`
+export const BlockedIndicator = styled('span')`
   background-color: #efc2c2;
   border-radius: 4px;
   color: #2e3c5d;
@@ -14,7 +14,7 @@ const BlockedIndicator = styled('span')`
   }
 `;
 
-const BlockedReason = styled('div')(({ theme }) => (`
+export const BlockedReason = styled('div')(({ theme }) => (`
   background-color: #efc2c2;
   border-radius: 4px;
   color: #2e3c5d;
@@ -26,7 +26,7 @@ const BlockedReason = styled('div')(({ theme }) => (`
   padding: 5px 12px;
 `));
 
-const DraftModeIndicator = styled('span')`
+export const DraftModeIndicator = styled('span')`
   background-color: #ccc;
   border-radius: 4px;
   color: #2e3c5d;
@@ -38,7 +38,7 @@ const DraftModeIndicator = styled('span')`
   }
 `;
 
-const EditIndicator = styled('span')`
+export const EditIndicator = styled('span')`
   background-color: #fff;
   border: 1px solid rgba(46, 60, 93, 0.5);
   border-radius: 4px;
@@ -57,7 +57,7 @@ const EditIndicator = styled('span')`
   }
 `;
 
-const ElectionInPast = styled('span')`
+export const ElectionInPast = styled('span')`
   background-color: #00cc66;
   border-radius: 4px;
   color: #2e3c5d;
@@ -71,32 +71,21 @@ const ElectionInPast = styled('span')`
   // }
 `;
 
-const IndicatorButtonWrapper = styled('div')`
+export const IndicatorButtonWrapper = styled('div')`
   margin-bottom: 4px;
   margin-right: 8px;
 `;
 
-const IndicatorDefaultButtonWrapper = styled('div')`
+export const IndicatorDefaultButtonWrapper = styled('div')`
   cursor: pointer;
   margin-bottom: 4px;
   margin-right: 8px;
   margin-top: 2px;
 `;
 
-const IndicatorRow = styled('div')`
+export const IndicatorRow = styled('div')`
   display: flex;
   flex-wrap: wrap;
   justify-content: start;
   margin-top: 12px;
 `;
-
-export {
-  BlockedIndicator,
-  BlockedReason,
-  DraftModeIndicator,
-  EditIndicator,
-  ElectionInPast,
-  IndicatorButtonWrapper,
-  IndicatorDefaultButtonWrapper,
-  IndicatorRow,
-};

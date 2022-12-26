@@ -10,6 +10,7 @@ import { normalizedHref } from '../../common/utils/hrefUtils';
 import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import stringContains from '../../common/utils/stringContains';
 import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
 import FriendStore from '../../stores/FriendStore';
@@ -17,6 +18,9 @@ import VoterStore from '../../stores/VoterStore';
 import { cordovaFooterHeight } from '../../utils/cordovaOffsets';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 
+// It's not ideal to have two images, but this is a complex svg, and I couldn't figure out how to change the fill color with a variable
+const capitalBuilding = '/img/global/svg-icons/capital-building.svg';
+const capitalBuildingSelected = '/img/global/svg-icons/capital-building-selected.svg';
 
 class FooterBar extends React.Component {
   constructor (props) {
@@ -114,12 +118,14 @@ class FooterBar extends React.Component {
       case 1:
         return historyPush('/ballot');
       case 2:
-        return historyPush('/friends');
+        return historyPush('/c');
       case 3:
-        return historyPush('/news');
+        return historyPush('/friends');
       case 4:
-        return historyPush('/more/donate');
+        return historyPush('/news');
       case 5:
+        return historyPush('/more/donate');
+      case 6:
         return this.openHowItWorksModal();
       default:
         return null;
@@ -131,9 +137,10 @@ class FooterBar extends React.Component {
     if (pathname === '/') return 0;  // readyLight has no path
     if (stringContains('/ready', pathname.toLowerCase())) return 0;
     if (stringContains('/ballot', pathname.toLowerCase())) return 1;
-    if (stringContains('/friends', pathname.toLowerCase())) return 2;
-    if (stringContains('/news', pathname.toLowerCase())) return 3;
-    if (stringContains('/more/donate', pathname.toLowerCase())) return 4;
+    if (stringContains('/c', pathname.toLowerCase())) return 2;
+    if (stringContains('/friends', pathname.toLowerCase())) return 3;
+    if (stringContains('/news', pathname.toLowerCase())) return 4;
+    if (stringContains('/more/donate', pathname.toLowerCase())) return 5;
     return -1;
   };
 
@@ -183,11 +190,11 @@ class FooterBar extends React.Component {
     } else if (voterIsSignedIn) {
       // If signed in, turn Discuss on, and How It Works off
       discussVisible = true;
-      donateVisible = true;
+      donateVisible = false; // 2022-12 Donate not used for now
       // howItWorksVisible = false;
     } else {
       discussVisible = false;
-      donateVisible = true;
+      donateVisible = false; // 2022-12 Donate not used for now
       // howItWorksVisible = true;
     }
     return (
@@ -204,6 +211,26 @@ class FooterBar extends React.Component {
           >
             <BottomNavigationAction className="no-outline" id="readyTabFooterBar" label="Home" showLabel icon={<Home />} sx={bigIcons} />
             <BottomNavigationAction className="no-outline" id="ballotTabFooterBar" label="Ballot" showLabel icon={<HowToVote />} sx={bigIcons} />
+            <BottomNavigationAction
+              className="no-outline"
+              id="candidatesTabFooterBar"
+              label="Candidates"
+              showLabel
+              icon={(this.getSelectedTab() === 2) ? (
+                <img src={normalizedImagePath(capitalBuildingSelected)}
+                     width={36}
+                     height={36}
+                     alt=""
+                />
+              ) : (
+                <img src={normalizedImagePath(capitalBuilding)}
+                     width={36}
+                     height={36}
+                     alt=""
+                />
+              )}
+              sx={bigIcons}
+            />
             <BottomNavigationAction
               className="no-outline"
               id="friendsTabFooterBar"

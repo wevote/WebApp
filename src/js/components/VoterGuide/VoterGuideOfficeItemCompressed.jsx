@@ -76,7 +76,7 @@ export default class VoterGuideOfficeItemCompressed extends Component {
       const newCandidateList = [];
       this.props.candidate_list.forEach((candidate) => {
         if (candidate && candidate.we_vote_id) {
-          newCandidateList.push(CandidateStore.getCandidate(candidate.we_vote_id));
+          newCandidateList.push(CandidateStore.getCandidateByWeVoteId(candidate.we_vote_id));
         }
       });
       this.setState({

@@ -71,7 +71,7 @@ class CandidateItem extends Component {
     const { candidateWeVoteId, showLargeImage } = this.props;
     if (candidateWeVoteId) {
       // If here we want to get the candidate so we can get the officeWeVoteId
-      const candidate = CandidateStore.getCandidate(candidateWeVoteId);
+      const candidate = CandidateStore.getCandidateByWeVoteId(candidateWeVoteId);
       // console.log('CandidateItem, componentDidMount, candidate:', candidate);
 
       let candidatePhotoUrl;
@@ -193,7 +193,7 @@ class CandidateItem extends Component {
     const { candidateWeVoteId, showLargeImage } = this.props;
     // console.log('CandidateItem onCandidateStoreChange, candidateWeVoteId:', candidateWeVoteId);
     if (candidateWeVoteId) {
-      const candidate = CandidateStore.getCandidate(candidateWeVoteId);
+      const candidate = CandidateStore.getCandidateByWeVoteId(candidateWeVoteId);
       // console.log('CandidateItem onCandidateStoreChange, candidate:', candidate);
       let candidatePhotoUrl;
       if (showLargeImage && candidate.candidate_photo_url_large) {
@@ -327,10 +327,9 @@ class CandidateItem extends Component {
     return (
       <div>
         <CandidateWrapper className="card-main__media-object">
-          <CandidateInfo
-            isClickable={useLinkToCandidatePage === true ? () => this.goToCandidateLink() : null}
-          >
+          <CandidateInfo>
             <MediaObjectAnchor
+              isClickable={useLinkToCandidatePage === true}
               onClick={useLinkToCandidatePage === true ? () => this.goToCandidateLink() : null}
             >
               <Suspense fallback={<></>}>
@@ -345,6 +344,7 @@ class CandidateItem extends Component {
             </MediaObjectAnchor>
             <Candidate>
               <CandidateNameRow
+                isClickable={useLinkToCandidatePage === true}
                 onClick={useLinkToCandidatePage === true ? () => this.goToCandidateLink() : null}
               >
                 <div className={`card-main__display-name ${linkToBallotItemPage && largeAreaHoverColorOnNow && showHover ? 'card__blue' : ''}`}>
@@ -565,11 +565,16 @@ class CandidateItem extends Component {
   };
 
   goToCandidateLink () {
+    // Dec 2022: Opening the candidate page from the slide-out drawer on the ballot
+    //  is problematic from a UX point of view. Needs a design review.
+    // In the meantime when are on branded ballot-review sites, we want to bring
+    //  voters back to the main WeVote.US site if they are leaving the ballot-review process.
     const { linksOpenNewPage } = this.props;
     if (linksOpenNewPage && isWebApp()) {
       // August 2022: In Cordova this opens a new completely separate session in a web browser (very bad),
       // in WebApp it is a hard link to ONLY WeVote.us (bad for branded versions)
-      window.open(`https://WeVote.US${this.getCandidateLink()}`, '_blank');
+      const weVoteRootUrl = AppObservableStore.getWeVoteRootURL();
+      window.open(`${weVoteRootUrl}${this.getCandidateLink()}`, '_blank');
     } else {
       // In case we were in the OrganizationModal (which was reused in 2022 for the Candidate drawer), close it
       AppObservableStore.setShowOrganizationModal(false);
@@ -578,14 +583,17 @@ class CandidateItem extends Component {
   }
 
   goToOfficeLink () {
-    const { linksOpenNewPage } = this.props;
-    if (linksOpenNewPage && isWebApp()) {
-      window.open(`https://WeVote.US${this.getOfficeLink()}`, '_blank');
-    } else {
-      // In case we were in the OrganizationModal, close it
-      AppObservableStore.setShowOrganizationModal(false);
-      historyPush(this.getOfficeLink());
-    }
+    // Dec 2022: We are temporarily turning off the link to the office page
+    //  until we can do a design review on the office page.
+    // const { linksOpenNewPage } = this.props;
+    // if (linksOpenNewPage && isWebApp()) {
+    //   const weVoteRootUrl = AppObservableStore.getWeVoteRootURL();
+    //   window.open(`${weVoteRootUrl}${this.getOfficeLink()}`, '_blank');
+    // } else {
+    //   // In case we were in the OrganizationModal, close it
+    //   AppObservableStore.setShowOrganizationModal(false);
+    //   historyPush(this.getOfficeLink());
+    // }
   }
 
   render () {
@@ -638,7 +646,7 @@ class CandidateItem extends Component {
             {this.candidateIssuesAndCommentBlock(candidateText, 'desktopIssuesComment')}
           </Suspense>
         </DesktopWrapper>
-        <MobileTabletWrapper className={`${!isIPad() && 'u-show-mobile-tablet '} card-main candidate-card u-no-scroll`}>
+        <MobileTabletWrapper className={`${isIPad() ? '' : 'u-show-mobile-tablet '} card-main candidate-card u-no-scroll`}>
           <Suspense fallback={<></>}>
             <div className="card-main__no-underline">
               {this.candidateRenderBlock(candidateWeVoteId, linkToBallotItemPage, !forDesktop, openSupportOpposeCountDisplayModalAtMobileAndTabletScreenSize)}
@@ -722,10 +730,11 @@ const CandidateQuote = styled('div')`
 const CandidateItemWrapper = styled('div')`
 `;
 
-const CandidateNameRow = styled('div')`
-  //display: flex;
-  //justify-content: flex-start;
-`;
+const CandidateNameRow = styled('div', {
+  shouldForwardProp: (prop) => !['isClickable'].includes(prop),
+})(({ isClickable }) => (`
+  ${isClickable ? 'cursor: pointer;' : ''}
+`));
 
 const CandidateWrapper = styled('div')(({ theme }) => (`
   display: flex;
@@ -765,11 +774,14 @@ const ForMoreInformationInfoText = styled('div')`
 `;
 
 // Replacing className="card-main__media-object-anchor"
-const MediaObjectAnchor = styled('div')`
+const MediaObjectAnchor = styled('div', {
+  shouldForwardProp: (prop) => !['isClickable'].includes(prop),
+})(({ isClickable }) => (`
+  ${isClickable ? 'cursor: pointer;' : ''}
   display: flex;
   flex-direction: column;
   margin-right: 10px;
-`;
+`));
 
 const MobileTabletWrapper = styled('div')`
 `;

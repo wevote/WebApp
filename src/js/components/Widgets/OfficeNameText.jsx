@@ -19,7 +19,8 @@ export default class OfficeNameText extends Component {
   render () {
     renderLog('OfficeNameText');  // Set LOG_RENDER_EVENTS to log all renders
     let nameText = '';
-    const { contestOfficeName, officeLink, politicalParty, showOfficeName } = this.props;
+    const { contestOfficeName, politicalParty, showOfficeName } = this.props; // officeLink, // Dec 2022: Turning off officeLink until we can do design review
+    const officeLink = null;
     if (politicalParty === undefined) {
       if (showOfficeName) {
         nameText = (
@@ -63,7 +64,7 @@ export default class OfficeNameText extends Component {
 }
 OfficeNameText.propTypes = {
   contestOfficeName: PropTypes.string,
-  officeLink: PropTypes.string,
+  // officeLink: PropTypes.string,
   politicalParty: PropTypes.string,
   showOfficeName: PropTypes.bool,
 };

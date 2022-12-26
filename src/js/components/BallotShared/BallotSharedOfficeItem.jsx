@@ -139,7 +139,7 @@ class BallotSharedOfficeItem extends Component {
           candidateList.forEach((candidate) => {
             if (candidate && candidate.we_vote_id) {
               // console.log('original candidate:', candidate);
-              newCandidate = CandidateStore.getCandidate(candidate.we_vote_id);
+              newCandidate = CandidateStore.getCandidateByWeVoteId(candidate.we_vote_id);
               // console.log('candidate from retrieve:', newCandidate);
               if (newCandidate && newCandidate.we_vote_id) {
                 // Preserve data from sharedItemBallotRetrieve

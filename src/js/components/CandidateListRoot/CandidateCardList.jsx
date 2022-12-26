@@ -2,29 +2,29 @@ import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import { CampaignsNotAvailableToShow, ListWrapper, LoadMoreItemsManuallyWrapper } from '../Style/CampaignCardStyles';
-import isMobileScreenSize from '../../utils/isMobileScreenSize';
-import { renderLog } from '../../utils/logging';
-import CampaignCardForList from './CampaignCardForList';
-import LoadMoreItemsManually from '../Widgets/LoadMoreItemsManually';
+import { CampaignsNotAvailableToShow, ListWrapper, LoadMoreItemsManuallyWrapper } from '../../common/components/Style/CampaignCardStyles';
+import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
+import { renderLog } from '../../common/utils/logging';
+import CandidateCardForList from './CandidateCardForList';
+import LoadMoreItemsManually from '../../common/components/Widgets/LoadMoreItemsManually';
 
-const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../Widgets/DelayedLoad'));
+const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
 
 const STARTING_NUMBER_TO_DISPLAY = 7;
 const STARTING_NUMBER_TO_DISPLAY_MOBILE = 5;
 const NUMBER_TO_ADD_WHEN_MORE_CLICKED = 10;
 
-class CampaignCardList extends Component {
+class CandidateCardList extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      campaignList: [],
+      candidateList: [],
       numberToDisplay: STARTING_NUMBER_TO_DISPLAY,
     };
   }
 
   componentDidMount () {
-    // console.log('CampaignCardList componentDidMount');
+    // console.log('CandidateCardList componentDidMount');
     const { startingNumberToDisplay } = this.props;
     if (startingNumberToDisplay && startingNumberToDisplay > 0) {
       this.setState({
@@ -36,25 +36,25 @@ class CampaignCardList extends Component {
         numberToDisplay: STARTING_NUMBER_TO_DISPLAY_MOBILE,
       });
     }
-    this.onCampaignListChange();
+    this.onCandidateListChange();
   }
 
   componentDidUpdate (prevProps) { // prevProps, prevState, snapshot
     const { timeStampOfChange } = this.props;
     if (timeStampOfChange && timeStampOfChange !== prevProps.timeStampOfChange) {
-      this.onCampaignListChange();
+      this.onCandidateListChange();
     }
   }
 
-  onCampaignListChange () {
-    const { incomingCampaignList } = this.props;
-    if (incomingCampaignList) {
+  onCandidateListChange () {
+    const { incomingCandidateList } = this.props;
+    if (incomingCandidateList) {
       this.setState({
-        campaignList: incomingCampaignList,
+        candidateList: incomingCandidateList,
       });
     } else {
       this.setState({
-        campaignList: [],
+        candidateList: [],
       });
     }
   }
@@ -68,40 +68,40 @@ class CampaignCardList extends Component {
   }
 
   render () {
-    renderLog('CampaignCardList');  // Set LOG_RENDER_EVENTS to log all renders
-    // console.log('CampaignCardList render');
+    renderLog('CandidateCardList');  // Set LOG_RENDER_EVENTS to log all renders
+    // console.log('CandidateCardList render');
     const { verticalListOn } = this.props;
-    const { campaignList, numberToDisplay } = this.state;
+    const { candidateList, numberToDisplay } = this.state;
 
-    if (!campaignList) {
+    if (!candidateList) {
       return null;
     }
     let numberDisplayed = 0;
     return (
       <Wrapper>
         <ListWrapper verticalListOn={verticalListOn}>
-          {campaignList.map((oneCampaign) => {
+          {candidateList.map((oneCandidate) => {
             if (numberDisplayed >= numberToDisplay) {
               return null;
             }
             numberDisplayed += 1;
             return (
-              <div key={`oneCampaignItem-${oneCampaign.campaignx_we_vote_id}`}>
-                <CampaignCardForList
-                  campaignXWeVoteId={oneCampaign.campaignx_we_vote_id}
+              <div key={`oneCandidateItem-${oneCandidate.we_vote_id}`}>
+                <CandidateCardForList
+                  candidateWeVoteId={oneCandidate.we_vote_id}
                   limitCardWidth={verticalListOn}
                 />
               </div>
             );
           })}
           <LoadMoreItemsManuallyWrapper>
-            {!!(campaignList &&
-                campaignList.length > 1 &&
-                numberToDisplay < campaignList.length) &&
+            {!!(candidateList &&
+                candidateList.length > 1 &&
+                numberToDisplay < candidateList.length) &&
             (
               <LoadMoreItemsManually
                 loadMoreFunction={this.increaseNumberToDisplay}
-                uniqueExternalId="CampaignCardList"
+                uniqueExternalId="CandidateCardList"
               />
             )}
           </LoadMoreItemsManuallyWrapper>
@@ -110,7 +110,7 @@ class CampaignCardList extends Component {
           <Suspense fallback={<></>}>
             <DelayedLoad waitBeforeShow={250}>
               <CampaignsNotAvailableToShow>
-                No campaigns match.
+                No candidates match.
               </CampaignsNotAvailableToShow>
             </DelayedLoad>
           </Suspense>
@@ -119,8 +119,8 @@ class CampaignCardList extends Component {
     );
   }
 }
-CampaignCardList.propTypes = {
-  incomingCampaignList: PropTypes.array,
+CandidateCardList.propTypes = {
+  incomingCandidateList: PropTypes.array,
   startingNumberToDisplay: PropTypes.number,
   timeStampOfChange: PropTypes.number,
   verticalListOn: PropTypes.bool,
@@ -136,4 +136,4 @@ const Wrapper = styled('div')`
   min-height: 30px;
 `;
 
-export default withStyles(styles)(CampaignCardList);
+export default withStyles(styles)(CandidateCardList);

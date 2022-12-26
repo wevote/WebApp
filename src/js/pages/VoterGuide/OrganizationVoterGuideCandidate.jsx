@@ -107,7 +107,7 @@ class OrganizationVoterGuideCandidate extends Component {
     const { candidateWeVoteId } = this.state;
     this.setState({
       allCachedPositionsForThisCandidate: CandidateStore.getAllCachedPositionsByCandidateWeVoteId(candidateWeVoteId),
-      candidate: CandidateStore.getCandidate(candidateWeVoteId),
+      candidate: CandidateStore.getCandidateByWeVoteId(candidateWeVoteId),
     });
   }
 

@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import BallotActions from '../../actions/BallotActions';
 import OrganizationActions from '../../actions/OrganizationActions';
+import { SearchTitle } from '../../common/components/Style/FilterStyles';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
@@ -872,12 +873,6 @@ const SearchResultsFoundInExplanation = styled('div')`
   background-color: #C2DCE8;
   color: #0E759F;
   padding: 12px !important;
-`;
-
-const SearchTitle = styled('div')`
-  font-size: 24px;
-  margin-top: 12px;
-  margin-bottom: 12px;
 `;
 
 const ShowMoreItemsWrapper = styled('div')`

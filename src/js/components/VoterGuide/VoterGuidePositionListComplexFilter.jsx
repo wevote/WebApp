@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import FriendActions from '../../actions/FriendActions';
 import OrganizationActions from '../../actions/OrganizationActions';
+import { SearchTitle } from '../../common/components/Style/FilterStyles';
 import { getStateCodesFoundInObjectList } from '../../common/utils/addressFunctions';
 import apiCalming from '../../common/utils/apiCalming';
 import { renderLog } from '../../common/utils/logging';
@@ -559,12 +560,6 @@ const SearchResultsFoundInExplanation = styled('div')`
   margin-left: 0 !important;
   margin-right: 0 !important;
   padding: 8px !important;
-`;
-
-const SearchTitle = styled('div')`
-  font-size: 24px;
-  margin-top: 12px;
-  margin-bottom: 12px;
 `;
 
 const ShowMoreItemsWrapper = styled('div')(({ theme }) => (`

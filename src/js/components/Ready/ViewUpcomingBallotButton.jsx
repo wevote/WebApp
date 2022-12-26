@@ -20,7 +20,7 @@ class ViewUpcomingBallotButton extends React.Component {
   }
 
   componentDidMount () {
-    console.log('ViewUpcomingBallotButton componentDidMount');
+    // console.log('ViewUpcomingBallotButton componentDidMount');
     this.onBallotStoreChange();
     this.onVoterStoreChange();
     this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));

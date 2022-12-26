@@ -62,6 +62,12 @@ export function getTodayAsInteger (daysInPast = 0) {
   return convertToInteger(dateAsString);
 }
 
+export function getYearFromUltimateElectionDate (ultimateElectionDate) {
+  const tempYear = String(ultimateElectionDate).slice(0, 4);
+  return Number(tempYear);
+}
+
+
 export function electionDateTomorrowFormatted (dayText) {
   if (typeof window.moment === 'undefined') {
     return initializeMoment(() => window.moment(dayText, 'YYYY-MM-DD').add(1, 'days').format('YYYY-MM-DD'));

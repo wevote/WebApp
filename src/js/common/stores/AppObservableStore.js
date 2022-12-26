@@ -94,6 +94,10 @@ export default {
     return nonFluxState.campaignListFirstRetrieveInitiated;
   },
 
+  candidateListFirstRetrieveInitiated () {
+    return nonFluxState.candidateListFirstRetrieveInitiated;
+  },
+
   getActivityTidbitWeVoteIdForDrawer () {
     return nonFluxState.activityTidbitWeVoteIdForDrawer;
   },
@@ -345,6 +349,11 @@ export default {
   setCampaignListFirstRetrieveInitiated (value) {
     nonFluxState.campaignListFirstRetrieveInitiated = value;
     messageService.sendMessage('state updated campaignListFirstRetrieveInitiated');
+  },
+
+  setCandidateListFirstRetrieveInitiated (value) {
+    nonFluxState.candidateListFirstRetrieveInitiated = value;
+    messageService.sendMessage('state updated candidateListFirstRetrieveInitiated');
   },
 
   setCurrentPathname (currentPathname) {
