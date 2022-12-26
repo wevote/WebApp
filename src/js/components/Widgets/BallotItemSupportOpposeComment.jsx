@@ -39,7 +39,7 @@ class BallotItemSupportOpposeComment extends PureComponent {
     let isCandidate = false;
     let isMeasure = false;
     if (stringContains('cand', this.props.ballotItemWeVoteId)) {
-      const candidate = CandidateStore.getCandidate(this.props.ballotItemWeVoteId);
+      const candidate = CandidateStore.getCandidateByWeVoteId(this.props.ballotItemWeVoteId);
       ballotItemDisplayName = candidate.ballot_item_display_name || '';
       ballotItemType = 'CANDIDATE';
       isCandidate = true;
@@ -67,7 +67,7 @@ class BallotItemSupportOpposeComment extends PureComponent {
     let isCandidate = false;
     let isMeasure = false;
     if (stringContains('cand', nextProps.ballotItemWeVoteId)) {
-      const candidate = CandidateStore.getCandidate(nextProps.ballotItemWeVoteId);
+      const candidate = CandidateStore.getCandidateByWeVoteId(nextProps.ballotItemWeVoteId);
       ballotItemDisplayName = candidate.ballot_item_display_name || '';
       ballotItemType = 'CANDIDATE';
       isCandidate = true;
@@ -105,7 +105,7 @@ class BallotItemSupportOpposeComment extends PureComponent {
   onCandidateStoreChange () {
     if (this.state.isCandidate) {
       const { ballotItemWeVoteId } = this.state;
-      const candidate = CandidateStore.getCandidate(ballotItemWeVoteId);
+      const candidate = CandidateStore.getCandidateByWeVoteId(ballotItemWeVoteId);
       const ballotItemDisplayName = candidate.ballot_item_display_name || '';
       this.setState({
         ballotItemDisplayName,

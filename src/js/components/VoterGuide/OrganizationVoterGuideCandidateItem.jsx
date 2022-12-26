@@ -39,7 +39,7 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
     // console.log("OrganizationVoterGuideCandidateItem, this.props:", this.props);
     if (weVoteId) {
       // If here we want to get the candidate so we can get the officeWeVoteId
-      const candidate = CandidateStore.getCandidate(weVoteId);
+      const candidate = CandidateStore.getCandidateByWeVoteId(weVoteId);
       this.setState({
         candidateWeVoteId: weVoteId,
         officeWeVoteId: candidate.contest_office_we_vote_id,

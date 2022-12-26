@@ -104,6 +104,9 @@ class HeaderBar extends Component {
         if (document.getElementById('ballotTabHeaderBar')) {
           headerObjects.ballot = document.getElementById('ballotTabHeaderBar').innerHTML;
         }
+        if (document.getElementById('candidatesTabHeaderBar')) {
+          headerObjects.candidates = document.getElementById('candidatesTabHeaderBar').innerHTML;
+        }
         if (document.getElementById('friendsTabHeaderBar')) {
           headerObjects.opinions = document.getElementById('friendsTabHeaderBar').innerHTML;
         }
@@ -358,10 +361,12 @@ class HeaderBar extends Component {
     if (window.$) {
       // console.log('customHighlightSelector called for page: ', normalizedHrefPage());
       const ballot = $('#ballotTabHeaderBar');
+      const candidates = $('#candidatesTabHeaderBar');
       const friends = $('#friendsTabHeaderBar');
       const news = $('#discussTabHeaderBar');
       const donate = $('#donateTabHeaderBar');
       ballot.css(normal);
+      candidates.css(normal);
       friends.css(normal);      // Friends
       news.css(normal);         // Discuss
       donate.css(normal);       // Donate
@@ -369,6 +374,9 @@ class HeaderBar extends Component {
       switch (normalizedHrefPage()) {
         case 'ballot':
           ballot.css(highlight);
+          break;
+        case 'c':
+          candidates.css(highlight);
           break;
         case 'friends':
           friends.css(highlight);
@@ -452,26 +460,26 @@ class HeaderBar extends Component {
     // let howItWorksVisible;
     const howItWorksVisible = false;
     if (isCordova() || inPrivateLabelMode) {
-      discussValue = 3;
+      discussValue = 4;
       discussVisible = true;
       donateValue = 99; // Donate not used in Cordova
       donateVisible = false;
-      howItWorksValue = 4;
+      howItWorksValue = 5;
       // howItWorksVisible = true;
     } else if (voterIsSignedIn) {
       // If not Cordova and signed in, turn Donate & Discuss on, and How It Works off
-      discussValue = 3;
+      discussValue = 4;
       discussVisible = true;
       donateValue = 4;
-      donateVisible = true;
+      donateVisible = false; // 2022-12 Donate not used for now
       howItWorksValue = 99;
       // howItWorksVisible = false;
     } else {
-      // If not Cordova, and NOT signed in, turn Discuss off, Donate on & How It Works on
+      // If not Cordova, and NOT signed in, turn Discuss off & How It Works on
       discussValue = 99; // Not offered prior to sign in
       discussVisible = false;
       donateValue = 3;
-      donateVisible = true;
+      donateVisible = false; // 2022-12 Donate not used for now
       howItWorksValue = 4;
       // howItWorksVisible = true;
     }
@@ -516,8 +524,16 @@ class HeaderBar extends Component {
                     to="/ballot"
                   />
                   <TabWithPushHistory
-                    classes={isWebApp() ? { root: classes.tabRootFriendsDesktop } : { root: classes.tabRootFriends }}
+                    classes={isWebApp() ? { root: classes.tabRootBallotDesktop } : { root: classes.tabRootBallot }}
                     value={2}
+                    change={this.handleTabChange}
+                    id="candidatesTabHeaderBar"
+                    label="Candidates"
+                    to="/c"
+                  />
+                  <TabWithPushHistory
+                    classes={isWebApp() ? { root: classes.tabRootFriendsDesktop } : { root: classes.tabRootFriends }}
+                    value={3}
                     change={this.handleTabChange}
                     id="friendsTabHeaderBar"
                     label="Friends"

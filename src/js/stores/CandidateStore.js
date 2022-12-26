@@ -83,6 +83,10 @@ class CandidateStore extends ReduceStore {
     return Object.values(allCachedPositionsForThisCandidateDict);
   }
 
+  getCandidateByWeVoteId (candidateWeVoteId) {
+    return this.getState().allCachedCandidates[candidateWeVoteId] || {};
+  }
+
   getCandidateListByOfficeWeVoteId (officeWeVoteId) {
     // console.log('officeWeVoteId:', officeWeVoteId, ', this.getState().candidateListsByOfficeWeVoteId:', this.getState().candidateListsByOfficeWeVoteId);
     const candidateListsDict = this.getState().candidateListsByOfficeWeVoteId;
@@ -93,8 +97,9 @@ class CandidateStore extends ReduceStore {
     }
   }
 
-  getCandidate (candidateWeVoteId) {
-    return this.getState().allCachedCandidates[candidateWeVoteId] || {};
+  getCandidateList () {
+    const candidateList = Object.values(this.getState().allCachedCandidates);
+    return candidateList || [];
   }
 
   getCandidateName (candidateWeVoteId) {
@@ -148,6 +153,11 @@ class CandidateStore extends ReduceStore {
     return positionsAboutCandidate[orgWeVoteId] || [];
   }
 
+  getVoterCanEditThisCandidate (candidateWeVoteId = '') {
+    console.log('candidateWeVoteId:', candidateWeVoteId);
+    return false;
+  }
+
   isCandidateInStore (candidateId) {
     const candidate = this.getState().allCachedCandidates[candidateId] || {};
     if (candidate.we_vote_id) {
@@ -158,7 +168,7 @@ class CandidateStore extends ReduceStore {
   }
 
   createCandidatePosition (oneCandidateWeVoteId, oneVoterGuide) {
-    const candidateObject = this.getCandidate(oneCandidateWeVoteId);
+    const candidateObject = this.getCandidateByWeVoteId(oneCandidateWeVoteId);
     // console.log('candidateObject: ', candidateObject);
     // console.log('createCandidatePosition oneVoterGuide: ', oneVoterGuide);
     const onePosition = {

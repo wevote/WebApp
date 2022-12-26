@@ -14,6 +14,7 @@ import IssueActions from '../../actions/IssueActions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import SupportActions from '../../actions/SupportActions';
 import VoterActions from '../../actions/VoterActions';
+import { SearchTitle } from '../../common/components/Style/FilterStyles';
 import LoadingWheelComp from '../../common/components/Widgets/LoadingWheelComp';
 import apiCalming from '../../common/utils/apiCalming';
 import { chipLabelText, isAndroidSizeWide, isIOSAppOnMac, isIPadGiantSize, isIPhone6p1in } from '../../common/utils/cordovaUtils';
@@ -1857,12 +1858,6 @@ const ShowMoreItemsWrapper = styled('div')`
 
 const SearchResultsEmpty = styled('div')`
   font-size: 20px;
-`;
-
-const SearchTitle = styled('div')`
-  font-size: 24px;
-  margin-top: 12px;
-  margin-bottom: 12px;
 `;
 
 const BallotWrapper = styled('div', {

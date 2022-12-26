@@ -71,8 +71,11 @@ class SettingsSectionFooter extends Component {
     return (
       <Wrapper>
         <OneRow centered={centered}>
-          <span className="u-cursor--pointer u-link-color-on-hover" onClick={this.openHowItWorksModal}><TermsAndPrivacyText>How It Works</TermsAndPrivacyText></span>
+          <span className="u-cursor--pointer u-link-color-on-hover" onClick={this.openHowItWorksModal}><TermsAndPrivacyText>How&nbsp;It&nbsp;Works</TermsAndPrivacyText></span>
           <span style={{ paddingLeft: 15 }} />
+          <Link to="/more/faq"><TermsAndPrivacyText>About&nbsp;&amp;&nbsp;FAQ</TermsAndPrivacyText></Link>
+        </OneRow>
+        <OneRow centered={centered}>
           <OpenExternalWebSite
             linkIdAttribute="footerLinkWeVoteHelp"
             url="https://help.wevote.us/hc/en-us"
@@ -89,15 +92,6 @@ class SettingsSectionFooter extends Component {
         <OneRow centered={centered}>
           {(isWebApp() && !inPrivateLabelMode) && (
             <>
-              <OpenExternalWebSite
-                linkIdAttribute="footerLinkAbout"
-                url="https://wevote.us/more/about"
-                target="_blank"
-                body={(
-                  <TermsAndPrivacyText>About</TermsAndPrivacyText>
-                 )}
-              />
-              <span style={{ paddingLeft: 15 }} />
               <OpenExternalWebSite
                 linkIdAttribute="footerLinkTeam"
                 url="https://wevote.us/more/about"

@@ -67,7 +67,7 @@ class BallotTitleHeaderNationalPlaceholder extends Component {
 
   showSelectBallotModalChooseElection = () => {
     const { linksOff } = this.props;
-    // console.log('BallotTitleHeader showSelectBallotModalChooseElection linksOff:', linksOff);
+    // console.log('BallotTitleHeaderNationalPlaceholder showSelectBallotModalChooseElection linksOff:', linksOff);
     if (!linksOff) {
       const showEditAddress = false;
       const showSelectBallotModal = true;
@@ -78,7 +78,7 @@ class BallotTitleHeaderNationalPlaceholder extends Component {
 
   showSelectBallotModalEditAddress = () => {
     const { linksOff } = this.props;
-    // console.log('BallotTitleHeader showSelectBallotModalEditAddress linksOff:', linksOff);
+    // console.log('BallotTitleHeaderNationalPlaceholder showSelectBallotModalEditAddress linksOff:', linksOff);
     if (!linksOff) {
       const showEditAddress = true;
       const showSelectBallotModal = true;

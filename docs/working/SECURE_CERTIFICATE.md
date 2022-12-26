@@ -85,9 +85,14 @@ You will need to take the following steps to completely sign out, with no tendri
 
 1) Open Facebook in a tab
    1) Log out of facebook
-   2) Using devtools/applications on that Facebook tab...
+   2) Using devtools > 'Application tab' on that Facebook browser page...
        1) turn off service workers
-       2) clear "Local Storage"
+          - Click on 'Application' > 'Service Workers' in the left bar. It will list all the registered service workers if there are any.
+          - Click on unregister to disable that particular service worker.
+       2) unfurl "Local Storage" by clicking the triangle
+          - Click on 'Storage' > 'Local Storage' > (left triangle)
+          - You will see 'https://www.facebook.com...'
+          - Right click on that link and choose 'Clear'
        3) clear "Session Storage"
        4) clear Cookies
        5) remove anything in the URL bar except "https://www.facebook.com/"

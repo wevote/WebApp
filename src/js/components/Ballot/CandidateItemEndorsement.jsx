@@ -80,7 +80,7 @@ class CandidateItemEndorsement extends Component {
     const { candidateWeVoteId, showLargeImage } = this.props;
     // console.log('CandidateItemEndorsement onCandidateStoreChange, candidateWeVoteId:', candidateWeVoteId);
     if (candidateWeVoteId) {
-      const candidate = CandidateStore.getCandidate(candidateWeVoteId);
+      const candidate = CandidateStore.getCandidateByWeVoteId(candidateWeVoteId);
       // console.log('CandidateItemEndorsement onCandidateStoreChange, candidate:', candidate);
       let candidatePhotoUrl;
       if (showLargeImage && candidate.candidate_photo_url_large) {

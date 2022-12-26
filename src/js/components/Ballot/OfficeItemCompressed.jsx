@@ -176,7 +176,7 @@ class OfficeItemCompressed extends Component {
         if (candidateList) {
           candidateList.forEach((candidate) => {
             if (candidate && candidate.we_vote_id) {
-              newCandidate = CandidateStore.getCandidate(candidate.we_vote_id);
+              newCandidate = CandidateStore.getCandidateByWeVoteId(candidate.we_vote_id);
               if (newCandidate && newCandidate.we_vote_id) {
                 candidateListForDisplay.push(newCandidate);
               } else {

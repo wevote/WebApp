@@ -32,7 +32,7 @@ export default class CandidateItemCompressed extends Component {
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
 
     if (this.props.candidateWeVoteId) {
-      const candidate = CandidateStore.getCandidate(this.props.candidateWeVoteId);
+      const candidate = CandidateStore.getCandidateByWeVoteId(this.props.candidateWeVoteId);
       this.setState({
         oneCandidate: candidate,
       });
@@ -48,7 +48,7 @@ export default class CandidateItemCompressed extends Component {
   UNSAFE_componentWillReceiveProps (nextProps) {
     // console.log("officeItem nextProps", nextProps);
     if (nextProps.candidateWeVoteId) {
-      const candidate = CandidateStore.getCandidate(nextProps.candidateWeVoteId);
+      const candidate = CandidateStore.getCandidateByWeVoteId(nextProps.candidateWeVoteId);
       this.setState({
         oneCandidate: candidate,
       });

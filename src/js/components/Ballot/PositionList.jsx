@@ -6,6 +6,7 @@ import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
 import OrganizationActions from '../../actions/OrganizationActions';
+import { SearchTitle } from '../../common/components/Style/FilterStyles';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import apiCalming from '../../common/utils/apiCalming';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
@@ -453,12 +454,6 @@ const SearchResultsFoundInExplanation = styled('div')(({ theme }) => (`
     margin-right: 12px !important;
   }
 `));
-
-const SearchTitle = styled('div')`
-  font-size: 24px;
-  margin-top: 12px;
-  margin-bottom: 12px;
-`;
 
 const ShowMoreItemsWrapper = styled('div')(({ theme }) => (`
   margin-bottom: 16px;

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import BallotActions from '../../actions/BallotActions';
 import OrganizationActions from '../../actions/OrganizationActions';
+import { SearchTitle } from '../../common/components/Style/FilterStyles';
 import { renderLog } from '../../common/utils/logging';
 import BallotStore from '../../stores/BallotStore';
 import voterGuideSearchPriority from '../../utils/voterGuideSearchPriority';
@@ -310,12 +311,6 @@ VoterGuideListSearchResults.propTypes = {
 
 const CardChildListGroup = styled('ul')`
   padding: 0;
-`;
-
-const SearchTitle = styled('div')`
-  font-size: 20px;
-  margin-top: 12px;
-  margin-bottom: 12px;
 `;
 
 const SearchResultsFoundInExplanation = styled('div')`

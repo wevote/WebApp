@@ -87,7 +87,7 @@ class HeaderBackToBallot extends Component {
       measureWeVoteId = params.measure_we_vote_id || '';
       officeWeVoteId = params.office_we_vote_id || '';
       if (candidateWeVoteId && candidateWeVoteId !== '') {
-        const candidate = CandidateStore.getCandidate(candidateWeVoteId);
+        const candidate = CandidateStore.getCandidateByWeVoteId(candidateWeVoteId);
         // console.log('HeaderBackToBallot, candidateWeVoteId:', candidateWeVoteId, ', candidate:', candidate);
         if (candidate) {
           const mostLikelyOfficeDict = CandidateStore.getMostLikelyOfficeDictFromCandidateWeVoteId(candidateWeVoteId);
@@ -209,7 +209,7 @@ class HeaderBackToBallot extends Component {
       measureWeVoteId = params.measure_we_vote_id || '';
       officeWeVoteId = nextParams.office_we_vote_id || '';
       if (candidateWeVoteId && candidateWeVoteId !== '') {
-        const candidate = CandidateStore.getCandidate(candidateWeVoteId);
+        const candidate = CandidateStore.getCandidateByWeVoteId(candidateWeVoteId);
         // console.log('HeaderBackToBallot, candidateWeVoteId:', candidateWeVoteId, ', candidate:', candidate);
         if (candidate) {
           const mostLikelyOfficeDict = CandidateStore.getMostLikelyOfficeDictFromCandidateWeVoteId(candidateWeVoteId);
@@ -406,7 +406,7 @@ class HeaderBackToBallot extends Component {
     // console.log('Candidate onCandidateStoreChange');
     let officeName;
     if (candidateWeVoteId && candidateWeVoteId !== '') {
-      const candidate = CandidateStore.getCandidate(candidateWeVoteId);
+      const candidate = CandidateStore.getCandidateByWeVoteId(candidateWeVoteId);
       // console.log('HeaderBackToBallot -- onCandidateStoreChange, candidateWeVoteId:', this.state.candidateWeVoteId, ', candidate:', candidate);
       if (candidate) {
         const mostLikelyOfficeDict = CandidateStore.getMostLikelyOfficeDictFromCandidateWeVoteId(candidateWeVoteId);
@@ -509,7 +509,7 @@ class HeaderBackToBallot extends Component {
     let googleCivicElectionId;
     if (candidateWeVoteId || '') {
       if (candidateWeVoteId && candidateWeVoteId !== '') {
-        const candidate = CandidateStore.getCandidate(candidateWeVoteId);
+        const candidate = CandidateStore.getCandidateByWeVoteId(candidateWeVoteId);
         // console.log('HeaderBackToBallot, candidateWeVoteId:', candidateWeVoteId, ', candidate:', candidate);
         if (candidate) {
           const mostLikelyOfficeDict = CandidateStore.getMostLikelyOfficeDictFromCandidateWeVoteId(candidateWeVoteId);

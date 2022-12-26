@@ -64,23 +64,25 @@ export default class CandidateList extends Component {
               showLoadingText = false;
             }
             return (
-              <Suspense fallback={<></>}>
-                <DelayedLoad key={child.we_vote_id} showLoadingText={showLoadingText} waitBeforeShow={1000}>
-                  <div className="card">
-                    <Suspense fallback={<></>}>
-                      <CandidateItem
-                        candidateWeVoteId={child.we_vote_id}
-                        goToBallotItem={this.goToCandidateLink}
-                        hideBallotItemSupportOpposeComment
-                        key={child.we_vote_id}
-                        linkToBallotItemPage
-                        showHover
-                        showTopCommentByBallotItem
-                      />
-                    </Suspense>
-                  </div>
-                </DelayedLoad>
-              </Suspense>
+              <div key={child.we_vote_id}>
+                <Suspense fallback={<></>}>
+                  <DelayedLoad showLoadingText={showLoadingText} waitBeforeShow={1000}>
+                    <div className="card">
+                      <Suspense fallback={<></>}>
+                        <CandidateItem
+                          candidateWeVoteId={child.we_vote_id}
+                          goToBallotItem={this.goToCandidateLink}
+                          hideBallotItemSupportOpposeComment
+                          key={child.we_vote_id}
+                          linkToBallotItemPage
+                          showHover
+                          showTopCommentByBallotItem
+                        />
+                      </Suspense>
+                    </div>
+                  </DelayedLoad>
+                </Suspense>
+              </div>
             );
           }
         })}

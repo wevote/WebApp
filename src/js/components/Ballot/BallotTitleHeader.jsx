@@ -311,7 +311,6 @@ class BallotTitleHeader extends Component {
       return (
         <span
           className="u-push--sm"
-          onClick={this.showSelectBallotModalChooseElection}
           id="ballotTitleHeaderSelectBallotModalLoadingElection"
         >
           {linksOff ? (

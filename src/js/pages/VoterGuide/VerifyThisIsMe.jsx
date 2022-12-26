@@ -81,7 +81,7 @@ class VerifyThisIsMe extends Component {
   onCandidateStoreChange () {
     const { owner_we_vote_id: ownerWeVoteId } = TwitterStore.get();
     this.setState({
-      candidate: CandidateStore.getCandidate(ownerWeVoteId),
+      candidate: CandidateStore.getCandidateByWeVoteId(ownerWeVoteId),
     });
   }
 

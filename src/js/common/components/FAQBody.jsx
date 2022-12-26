@@ -32,7 +32,17 @@ export default class FAQBody extends Component {
         <br />
         <strong>What is We Vote?</strong>
         <br />
-        We Vote is a nonprofit technology startup, creating a digital voter guide informed by issues you care about, and people you trust. Through our nonpartisan, open source platform, we&apos;ll help you become a better voter, up and down the ballot.
+        We Vote is a nonprofit technology startup, creating a digital voter guide informed by
+        {' '}
+        <Suspense fallback={<></>}>
+          <OpenExternalWebSite
+            linkIdAttribute="helpSiteValues"
+            url="https://help.wevote.us/hc/en-us/articles/360034261733-How-were-the-Values-within-We-Vote-chosen-"
+            target="_blank"
+            body="issues you care about"
+          />
+        </Suspense>
+        , and people you trust. Through our nonpartisan, open source platform, we&apos;ll help you become a better voter, up and down the ballot.
         <br />
         <br />
 
@@ -40,7 +50,17 @@ export default class FAQBody extends Component {
         <br />
         We Vote is where you view your ballot, see endorsements from your network for all
         candidates and measures, and collaborate with
-        folks who share your values.
+        folks who share your
+        {' '}
+        <Suspense fallback={<></>}>
+          <OpenExternalWebSite
+            linkIdAttribute="helpSiteValues"
+            url="https://help.wevote.us/hc/en-us/articles/360034261733-How-were-the-Values-within-We-Vote-chosen-"
+            target="_blank"
+            body="values"
+          />
+        </Suspense>
+        .
         <br />
         <br />
 
@@ -151,7 +171,8 @@ export default class FAQBody extends Component {
           />
         </Suspense>
         apps.
-        We are free and open source:&nbsp;
+        We are free and open source:
+        {' '}
         <Suspense fallback={<></>}>
           <OpenExternalWebSite
             linkIdAttribute="wevoteGithub"
@@ -195,6 +216,7 @@ export default class FAQBody extends Component {
         <strong>What does We Vote cost?</strong>
         <br />
         It&apos;s free!
+        {' '}
         {isWebApp() && (
           <>
             If you like We Vote,
@@ -227,7 +249,17 @@ export default class FAQBody extends Component {
         <br />
         Unless your name is J.R.R. Tolkien, we know how much you hate trolls. That&apos;s why on We Vote you only hear from
         people and organizations that you Friend or Follow. We Vote eliminates noise from people with radically
-        different values.
+        different
+        {' '}
+        <Suspense fallback={<></>}>
+          <OpenExternalWebSite
+            linkIdAttribute="helpSiteValues"
+            url="https://help.wevote.us/hc/en-us/articles/360034261733-How-were-the-Values-within-We-Vote-chosen-"
+            target="_blank"
+            body="values"
+          />
+        </Suspense>
+        .
         <br />
         <br />
 

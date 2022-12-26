@@ -162,7 +162,7 @@ class Office extends Component {
       // console.log('In candidateList loop');
       candidateList.forEach((candidate) => {
         if (candidate && candidate.we_vote_id) {
-          newCandidate = CandidateStore.getCandidate(candidate.we_vote_id);
+          newCandidate = CandidateStore.getCandidateByWeVoteId(candidate.we_vote_id);
           if (newCandidate && newCandidate.we_vote_id) {
             newCandidateList.push(newCandidate);
           } else {
@@ -224,7 +224,7 @@ class Office extends Component {
         // console.log('In Office candidateList loop');
         candidateList.forEach((candidate) => {
           if (candidate && candidate.we_vote_id) {
-            newCandidate = CandidateStore.getCandidate(candidate.we_vote_id);
+            newCandidate = CandidateStore.getCandidateByWeVoteId(candidate.we_vote_id);
             if (newCandidate && newCandidate.we_vote_id) {
               newCandidateList.push(newCandidate);
             } else {

@@ -2,8 +2,13 @@ import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import TruncateMarkup from 'react-truncate-markup';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import CampaignSupporterActions from '../../actions/CampaignSupporterActions';
+import {
+  CampaignImageMobile, CampaignImagePlaceholderText, CampaignImageMobilePlaceholder, CampaignImageDesktopPlaceholder, CampaignImageDesktop, ClickableDiv,
+  OneCampaignPhotoWrapperMobile, OneCampaignPhotoDesktopColumn, OneCampaignTitle, OneCampaignOuterWrapper, OneCampaignTextColumn, OneCampaignInnerWrapper, OneCampaignDescription,
+  SupportersWrapper, SupportersCount, SupportersActionLink,
+} from '../Style/CampaignCardStyles';
 import historyPush from '../../utils/historyPush';
 import { renderLog } from '../../utils/logging';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
@@ -495,131 +500,13 @@ const CampaignCardForListWrapper = styled('div', {
   ${limitCardWidth ? 'width: 300px;' : ''}
 `));
 
-const CampaignImageDesktopSharedStyles = css`
-  cursor: pointer;
-  margin: 0;
-  height: 117px;
-  width: 224px;
-`;
-
-const CampaignImageDesktopPlaceholder = styled('div')`
-  background-color: #eee;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  ${CampaignImageDesktopSharedStyles}
-`;
-
-const CampaignImageDesktop = styled('img')`
-  border-radius: 5px;
-  ${CampaignImageDesktopSharedStyles}
-`;
-
-const CampaignImageMobileSharedStyles = css`
-  cursor: pointer;
-  margin: 0;
-  width: 100%;
-`;
-
-const CampaignImageMobilePlaceholder = styled('div')`
-  background-color: #eee;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 150px;
-  ${CampaignImageMobileSharedStyles}
-`;
-
-const CampaignImagePlaceholderText = styled('div')`
-  color: #ccc;
-`;
-
-const CampaignImageMobile = styled('img')`
-  border-radius: 5px;
-  ${CampaignImageMobileSharedStyles}
-`;
-
 const CampaignOwnersWrapper = styled('div')`
-`;
-
-const ClickableDiv = styled('div')`
-  cursor: pointer;
-  width: 100%;
 `;
 
 const IndicatorSupportButtonWrapper = styled('div')`
   margin-bottom: 4px;
   margin-right: 8px;
   margin-top: -1px;
-`;
-
-const OneCampaignDescription = styled('div')`
-  font-size: 14px;
-  margin: 4px 0;
-`;
-
-const OneCampaignInnerWrapper = styled('div', {
-  shouldForwardProp: (prop) => !['limitCardWidth'].includes(prop),
-})(({ limitCardWidth }) => (`
-  display: flex;
-  ${limitCardWidth ? 'flex-direction: column-reverse;' : 'flex-direction: row;'}
-  ${limitCardWidth ? 'justify-content: flex-start;' : 'justify-content: space-between;'}
-  ${limitCardWidth ? 'margin-right: 15px;' : 'margin-bottom: 15px;'}
-`));
-
-const OneCampaignOuterWrapper = styled('div')(({ theme }) => (`
-  // border-top: 1px solid #ddd;
-  // margin-top: 15px;
-  ${theme.breakpoints.up('sm')} {
-    // border: 1px solid #ddd;
-    // border-radius: 5px;
-  }
-`));
-
-const OneCampaignPhotoDesktopColumn = styled('div')`
-  margin-bottom: 0;
-  margin-left: 15px;
-  margin-top: 0;
-  height: 117px;
-  width: 224px;
-`;
-
-const OneCampaignPhotoWrapperMobile = styled('div')(({ theme }) => (`
-  cursor: pointer;
-  margin-bottom: 8px;
-  margin-top: 8px;
-  min-height: 150px;
-  ${theme.breakpoints.down('xs')} {
-    margin-top: 0;
-    min-height: auto;
-    width: 100%;
-  }
-`));
-
-const OneCampaignTextColumn = styled('div')`
-  width: 100%;
-`;
-
-const OneCampaignTitle = styled('h1')(({ theme }) => (`
-  font-size: 18px;
-  margin: 0;
-   ${theme.breakpoints.down('sm')} {
-    margin-bottom: 4px;
-  }
-`));
-
-const SupportersActionLink = styled('span')`
-  font-size: 14px;
-`;
-
-const SupportersCount = styled('span')`
-  color: #808080;
-  font-weight: 600 !important;
-  font-size: 14px;
-`;
-
-const SupportersWrapper = styled('div')`
-  margin-bottom: 6px;
 `;
 
 export default withStyles(styles)(CampaignCardForList);

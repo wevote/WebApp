@@ -6,6 +6,6 @@ export default function numberWithCommas (rawNumber) {
     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     return parts.join('.');
   } else {
-    return '';
+    return '0';
   }
 }
