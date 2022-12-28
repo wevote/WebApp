@@ -1,0 +1,26 @@
+[
+  {
+    "browserName": "Chrome",
+    "bstack:options": {
+      "os": "Windows",
+      "osVersion": "11",
+      "browserVersion": "latest"
+    }
+  },
+  {
+    "browserName": "Chrome",
+    "bstack:options": {
+      "os": "Windows",
+      "osVersion": "10",
+      "browserVersion": "latest"
+    }
+  },
+  {
+    "browserName": "Safari",
+    "bstack:options": {
+      "os": "OS X",
+      "osVersion": "Catalina",
+      "browserVersion": "13.1"
+    }
+  }
+]
