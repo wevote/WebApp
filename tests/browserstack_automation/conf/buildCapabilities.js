@@ -1,5 +1,5 @@
 const axios = require('axios');
-const fs = require('fs');
+const { writeFileSync } = require('fs');
 const browserStackConfig = require('./browserstack.conf');
 
 // Visit https://www.browserstack.com/docs/app-automate/api-reference/appium/devices#get-device-list for details
@@ -76,8 +76,9 @@ async function buildCapabilities () {
     }
   }
   const capabilities = [...browserCapabilities, ...mobileCapabilities];
+  const data = JSON.stringify(capabilities, null, 2);
   try {
-    fs.writeFileSync('./tests/browserstack_automation/conf/capabilities.json', JSON.stringify(capabilities, null, 2));
+    writeFileSync('./tests/browserstack_automation/conf/capabilities.json', data);
   } catch (error) {
     console.error(error);
   }
