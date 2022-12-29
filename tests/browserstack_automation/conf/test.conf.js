@@ -1,6 +1,14 @@
+const { readFileSync } = require('fs');
 const browserStackConfig = require('./browserstack.conf');
 const baseConfig = require('./base.conf');
-const capabilities = require('./capabilities.json');
+let capabilities = require('./defaultCapabilities.json');
+
+try {
+  const data = readFileSync('./tests/browserstack_automation/conf/capabilities.json', { encoding: 'utf8' });
+  capabilities = JSON.parse(data);
+} catch (error) {
+  // Run buildCapabilities.js
+}
 
 const date = new Date();
 
