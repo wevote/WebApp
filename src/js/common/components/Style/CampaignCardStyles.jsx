@@ -3,7 +3,8 @@ import styled, { css } from 'styled-components';
 export const CandidateCardForListWrapper = styled('div', {
   shouldForwardProp: (prop) => !['limitCardWidth'].includes(prop),
 })(({ limitCardWidth }) => (`
-  ${limitCardWidth ? 'width: 300px;' : ''}
+  ${limitCardWidth ? 'width: 315px;' : ''}
+  white-space: normal;
 `));
 
 export const CampaignsNotAvailableToShow = styled('div')(({ theme }) => (`
@@ -18,26 +19,35 @@ export const CampaignsNotAvailableToShow = styled('div')(({ theme }) => (`
 `));
 
 export const CampaignImageDesktopSharedStyles = css`
+  border-radius: 5px;
   cursor: pointer;
   margin: 0;
-  height: 117px;
-  // width: 224px;
 `;
 
-export const CampaignImageDesktopPlaceholder = styled('div')`
+export const CampaignImageDesktopPlaceholder = styled('div', {
+  shouldForwardProp: (prop) => !['limitCardWidth'].includes(prop),
+})(({ limitCardWidth }) => (`
+  ${limitCardWidth ? 'height: 157px;' : 'height: 117px;'}
+  align-items: center;
   background-color: #eee;
   display: flex;
   justify-content: center;
-  align-items: center;
+  ${limitCardWidth ? 'width: 300px;' : 'width: 224px;'}
   ${CampaignImageDesktopSharedStyles}
-`;
+`));
 
-export const CampaignImageDesktop = styled('img')`
-  border-radius: 5px;
+
+export const CampaignImageDesktop = styled('img', {
+  shouldForwardProp: (prop) => !['limitCardWidth'].includes(prop),
+})(({ limitCardWidth }) => (`
+  // We don't want to set height/width here because this component is also used for very large versions of this image
+  // ${limitCardWidth ? 'height: 157px;' : 'height: 117px;'}
+  // ${limitCardWidth ? 'width: 300px;' : 'width: 224px;'}
   ${CampaignImageDesktopSharedStyles}
-`;
+`));
 
 export const CampaignImageMobileSharedStyles = css`
+  border-radius: 5px;
   cursor: pointer;
   margin: 0;
   max-width: 100%;
@@ -48,8 +58,8 @@ export const CampaignImageMobilePlaceholder = styled('div')`
   display: flex;
   justify-content: center;
   align-items: center;
-  max-height: 150px;
-  // max-height: 110px;
+  max-height: 157px;
+  min-height: 150px;
   ${CampaignImageMobileSharedStyles}
 `;
 
@@ -58,15 +68,8 @@ export const CampaignImagePlaceholderText = styled('div')`
 `;
 
 export const CampaignImageMobile = styled('img')`
-  border-radius: 5px;
-  max-height: 150px;
-  // max-height: 110px;
+  max-height: 157px;
   ${CampaignImageMobileSharedStyles}
-`;
-
-export const ClickableDiv = styled('div')`
-  cursor: pointer;
-  width: 100%;
 `;
 
 export const ListWrapper = styled('div', {
@@ -78,6 +81,7 @@ export const ListWrapper = styled('div', {
 
 export const LoadMoreItemsManuallyWrapper = styled('div')`
   margin-bottom: 0;
+  min-width: 300px;
   @media print{
     display: none;
   }
@@ -94,10 +98,12 @@ export const OneCampaignInnerWrapper = styled('div', {
   display: flex;
   ${limitCardWidth ? 'flex-direction: column-reverse;' : 'flex-direction: row;'}
   ${limitCardWidth ? 'justify-content: flex-start;' : 'justify-content: space-between;'}
-  ${limitCardWidth ? 'margin-right: 15px;' : 'margin-bottom: 15px;'}
 `));
 
-export const OneCampaignOuterWrapper = styled('div')(({ theme }) => (`
+export const OneCampaignOuterWrapper = styled('div', {
+  shouldForwardProp: (prop) => !['limitCardWidth'].includes(prop),
+})(({ limitCardWidth, theme }) => (`
+  ${limitCardWidth ? 'margin-right: 15px;' : 'margin-bottom: 15px;'}
   // border-top: 1px solid #ddd;
   // margin-top: 15px;
   ${theme.breakpoints.up('sm')} {
@@ -106,20 +112,22 @@ export const OneCampaignOuterWrapper = styled('div')(({ theme }) => (`
   }
 `));
 
-export const OneCampaignPhotoDesktopColumn = styled('div')`
+export const OneCampaignPhotoDesktopColumn = styled('div', {
+  shouldForwardProp: (prop) => !['limitCardWidth'].includes(prop),
+})(({ limitCardWidth }) => (`
+  ${limitCardWidth ? 'height: 157px;' : 'height: 117px;'}
   margin-bottom: 0;
-  margin-left: 15px;
+  ${limitCardWidth ? '' : 'margin-left: 15px;'}
   margin-top: 0;
-  height: 117px;
-  // width: 224px;
-`;
+  ${limitCardWidth ? 'width: 300px;' : 'width: 224px;'}
+`));
 
 export const OneCampaignPhotoWrapperMobile = styled('div')(({ theme }) => (`
   cursor: pointer;
   margin-bottom: 8px;
   margin-top: 8px;
   min-height: 150px;
-  // min-height: 110px;
+  max-height: 157px;
   ${theme.breakpoints.down('xs')} {
     margin-top: 0;
     min-height: auto;

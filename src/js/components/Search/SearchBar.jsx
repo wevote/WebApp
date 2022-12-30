@@ -1,11 +1,10 @@
-import { Search } from '@mui/icons-material';
+import { CancelOutlined, Search } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { blurTextFieldAndroid, focusTextFieldAndroid } from '../../common/utils/cordovaUtils';
-import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import { renderLog } from '../../common/utils/logging';
 // Dec 2019 TODO: This is the last icon from the svg-icons package used in the Web App, all the other have been removed from git
-const removeCircleIcon = '../../../img/global/svg-icons/glyphicons-pro-halflings/glyphicons-halflings-88-remove-circle.svg';
+// const removeCircleIcon = '../../../img/global/svg-icons/glyphicons-pro-halflings/glyphicons-halflings-88-remove-circle.svg';
 
 export default class SearchBar extends Component {
   constructor (props) {
@@ -23,21 +22,31 @@ export default class SearchBar extends Component {
   componentDidMount () {
     // console.log("SearchBar, this.props.clearSearchTextNow:", this.props.clearSearchTextNow);
     if (this.props.clearSearchTextNow) {
-      this.props.clearFunction();
-      this.setState({
-        searchString: '',
-      });
+      if (this.props.clearFunction) {
+        this.props.clearFunction();
+      }
+      const { searchString } = this.state;
+      if (searchString) {
+        this.setState({
+          searchString: '',
+        });
+      }
     }
   }
 
-  // eslint-disable-next-line camelcase,react/sort-comp
-  UNSAFE_componentWillReceiveProps (nextProps) {
-    // console.log("SearchBar, nextProps.clearSearchTextNow:", nextProps.clearSearchTextNow);
-    if (nextProps.clearSearchTextNow) {
-      this.props.clearFunction();
-      this.setState({
-        searchString: '',
-      });
+  componentDidUpdate (prevProps) {
+    if (this.props.clearSearchTextNow !== prevProps.clearSearchTextNow) {
+      if (this.props.clearSearchTextNow) {
+        if (this.props.clearFunction) {
+          this.props.clearFunction();
+        }
+        const { searchString } = this.state;
+        if (searchString) {
+          this.setState({
+            searchString: '',
+          });
+        }
+      }
     }
   }
 
@@ -92,7 +101,7 @@ export default class SearchBar extends Component {
               type="button"
               id="search-clear"
             >
-              <img src={normalizedImagePath(removeCircleIcon)} width="26" height="26" color="#ccc" alt="clear query" />
+              <CancelOutlined />
             </button>
           )}
           {(searchButton) && (

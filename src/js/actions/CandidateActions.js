@@ -8,6 +8,17 @@ export default {
       });
   },
 
+  candidatesQuery (electionDay = '', raceOfficeLevelList = '', stateCode = '', searchText = '') {
+    Dispatcher.loadEndpoint('candidatesQuery',
+      {
+        electionDay,
+        raceOfficeLevelList,
+        searchText,
+        state: stateCode,
+        useWeVoteFormat: 1,
+      });
+  },
+
   candidatesRetrieve (officeWeVoteId) {
     Dispatcher.loadEndpoint('candidatesRetrieve',
       {

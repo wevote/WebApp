@@ -175,7 +175,7 @@ export default class ValuesList extends Component {
                   placeholder="Search by name or Description"
                   searchFunction={this.searchFunction}
                   clearFunction={this.clearFunction}
-                  searchUpdateDelayTime={0}
+                  searchUpdateDelayTime={250}
                 />
                 <br />
                 <>

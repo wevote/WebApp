@@ -118,7 +118,7 @@ class FooterBar extends React.Component {
       case 1:
         return historyPush('/ballot');
       case 2:
-        return historyPush('/c');
+        return historyPush('/cs/');
       case 3:
         return historyPush('/friends');
       case 4:
@@ -137,7 +137,7 @@ class FooterBar extends React.Component {
     if (pathname === '/') return 0;  // readyLight has no path
     if (stringContains('/ready', pathname.toLowerCase())) return 0;
     if (stringContains('/ballot', pathname.toLowerCase())) return 1;
-    if (stringContains('/c', pathname.toLowerCase())) return 2;
+    if (pathname.toLowerCase().endsWith('/cs/')) return 2;
     if (stringContains('/friends', pathname.toLowerCase())) return 3;
     if (stringContains('/news', pathname.toLowerCase())) return 4;
     if (stringContains('/more/donate', pathname.toLowerCase())) return 5;

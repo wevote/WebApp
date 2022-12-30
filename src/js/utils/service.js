@@ -58,6 +58,7 @@ function innerAjax (options) {
   // Switch between master API server and CDN
   if (options.endpoint === 'allBallotItemsRetrieve' ||
     options.endpoint === 'candidateRetrieve' ||
+    options.endpoint === 'candidatesQuery' ||
     options.endpoint === 'candidatesRetrieve' ||
     options.endpoint === 'defaultPricing' ||
     options.endpoint === 'electionsRetrieve' ||

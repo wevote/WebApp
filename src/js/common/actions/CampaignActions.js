@@ -1,12 +1,14 @@
 import Dispatcher from '../dispatcher/Dispatcher';
 
 export default {
-  campaignListRetrieve () {
+  campaignListRetrieve (searchText = '', stateCode = '') {
     let { hostname } = window.location;
     hostname = hostname || '';
     Dispatcher.loadEndpoint('campaignListRetrieve',
       {
         hostname,
+        search_text: searchText,
+        state_code: stateCode,
       });
   },
 

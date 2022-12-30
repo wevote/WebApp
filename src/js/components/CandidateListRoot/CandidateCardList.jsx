@@ -78,7 +78,7 @@ class CandidateCardList extends Component {
     }
     let numberDisplayed = 0;
     return (
-      <Wrapper>
+      <CandidateCardListWrapper>
         <ListWrapper verticalListOn={verticalListOn}>
           {candidateList.map((oneCandidate) => {
             if (numberDisplayed >= numberToDisplay) {
@@ -108,14 +108,14 @@ class CandidateCardList extends Component {
         </ListWrapper>
         {!numberDisplayed && (
           <Suspense fallback={<></>}>
-            <DelayedLoad waitBeforeShow={250}>
+            <DelayedLoad showLoadingText waitBeforeShow={3000}>
               <CampaignsNotAvailableToShow>
                 No candidates match.
               </CampaignsNotAvailableToShow>
             </DelayedLoad>
           </Suspense>
         )}
-      </Wrapper>
+      </CandidateCardListWrapper>
     );
   }
 }
@@ -132,7 +132,7 @@ const styles = () => ({
   },
 });
 
-const Wrapper = styled('div')`
+const CandidateCardListWrapper = styled('div')`
   min-height: 30px;
 `;
 

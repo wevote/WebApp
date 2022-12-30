@@ -46,10 +46,11 @@ LoadMoreItemsManually.propTypes = {
 const styles = (theme) => ({
   buttonRoot: {
     fontSize: 18,
+    margin: '0 15px',
     textTransform: 'none',
     width: '100%',
-    [theme.breakpoints.up('md')]: {
-      width: 400,
+    [theme.breakpoints.up('sm')]: {
+      width: 200,
     },
   },
 });

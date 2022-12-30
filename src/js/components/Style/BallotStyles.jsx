@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 
-const BallotSharedCandidateNameH4 = styled('h4')`
+export const BallotSharedCandidateNameH4 = styled('h4')`
   color: #4371cc;
   font-weight: 400;
   font-size: 24px;
@@ -14,12 +14,12 @@ const BallotSharedCandidateNameH4 = styled('h4')`
   }
 `;
 
-const BallotSharedCandidateParty = styled('div')`
+export const BallotSharedCandidateParty = styled('div')`
   opacity: 0.8;
   white-space: nowrap;
 `;
 
-const BallotSharedCandidatesOuterWrapper = styled('div')`
+export const BallotSharedCandidatesOuterWrapper = styled('div')`
   align-items: center;
   display: flex;
   flex-direction: column;
@@ -27,7 +27,7 @@ const BallotSharedCandidatesOuterWrapper = styled('div')`
   width: 100%;
 `;
 
-const BallotSharedOfficeNameH2 = styled('div')(({ theme }) => (`
+export const BallotSharedOfficeNameH2 = styled('div')(({ theme }) => (`
   // For some reason if styled('h2') it breaks down
   font-size: 20px;
   margin-bottom: 6px;
@@ -38,7 +38,7 @@ const BallotSharedOfficeNameH2 = styled('div')(({ theme }) => (`
   }
 `));
 
-const BallotSharedOfficeItemWrapper = styled('div')`
+export const BallotSharedOfficeItemWrapper = styled('div')`
   align-items: center;
   display: flex;
   border: 1px solid #fff;
@@ -48,22 +48,22 @@ const BallotSharedOfficeItemWrapper = styled('div')`
   position: relative;
 `;
 
-const Candidate = styled('div')`
+export const Candidate = styled('div')`
   display: flex;
   flex-grow: 8;
 `;
 
-const CandidateBottomRow = styled('div')`
+export const CandidateBottomRow = styled('div')`
   margin-top: 4px;
 `;
 
-const CandidateContainer = styled('div')`
+export const CandidateContainer = styled('div')`
   display: flex;
   justify-content: flex-start;
   // padding: 10px 5px;
 `;
 
-const CandidateInfo = styled('div')(({ theme }) => (`
+export const CandidateInfo = styled('div')(({ theme }) => (`
   border: 1px solid #fff;
   display: block;
   height: 100%;
@@ -75,13 +75,13 @@ const CandidateInfo = styled('div')(({ theme }) => (`
   }
 `));
 
-const constrainedTextMobileStyles = isMobileScreenSize() || isCordova() ? `
+export const constrainedTextMobileStyles = isMobileScreenSize() || isCordova() ? `
   height: auto;
   white-space: initial;
 ` : '';
 
 // Defaults to style in mobile
-const CandidateNameH1 = styled('h1')(({ theme }) => (`
+export const CandidateNameH1 = styled('h1')(({ theme }) => (`
   font-size: 14px;
   margin-bottom: 2px;
   margin-top: 8px;
@@ -92,7 +92,7 @@ const CandidateNameH1 = styled('h1')(({ theme }) => (`
   }
 `));
 
-const CandidateNameH4 = styled('h4')`
+export const CandidateNameH4 = styled('h4')`
   color: #4371cc;
   font-weight: 400;
   font-size: 20px;
@@ -105,26 +105,19 @@ const CandidateNameH4 = styled('h4')`
   ${constrainedTextMobileStyles}
 `;
 
-const CandidateParty = styled('div')`
+export const CandidateParty = styled('div')`
   opacity: 0.8;
   white-space: normal;
 `;
 
-const CandidatesContainer = styled('div')`
-  height: 100%;
-  // margin: 0 0 0 -10px;
-  min-width: 0;
-  width: 100%;
-`;
-
-const CandidateTopRow = styled('div')`
+export const CandidateTopRow = styled('div')`
   cursor: pointer;
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-between;
 `;
 
-const CandidateWrapper = styled('div')(({ theme }) => (`
+export const CandidateWrapper = styled('div')(({ theme }) => (`
   width: 320px;
   ${theme.breakpoints.down('sm')} {
     width: 100%;
@@ -135,23 +128,7 @@ const CandidateWrapper = styled('div')(({ theme }) => (`
   }
 `));
 
-const HorizontallyScrollingContainer = styled('div')`
-  /* Fade out, right side */
-  -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 98%, rgba(0, 0, 0, 0));
-  mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 98%, rgba(0, 0, 0, 0));
-
-  overflow-x: auto;
-  white-space: nowrap;
-
-  /* Make the scrollbar not be visible */
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
-  ::-webkit-scrollbar {  /* Chrome, Safari and Opera */
-    display: none;
-  }
-`;
-
-const OfficeNameH2 = styled('div')(({ theme }) => (`
+export const OfficeNameH2 = styled('div')(({ theme }) => (`
   // For some reason if styled('h2') it breaks down
   font-size: 32px;
   margin-bottom: 6px;
@@ -161,7 +138,7 @@ const OfficeNameH2 = styled('div')(({ theme }) => (`
   }
 `));
 
-const OfficeItemCompressedWrapper = styled('div')`
+export const OfficeItemCompressedWrapper = styled('div')`
   display: flex;
   border: 1px solid #fff;
   flex-direction: column;
@@ -170,30 +147,17 @@ const OfficeItemCompressedWrapper = styled('div')`
   position: relative;
 `;
 
-const VoteAgainstCandidate = styled('span')`
+export const VoteAgainstCandidate = styled('span')`
   color: red;
   font-size: 16px;
 `;
 
-const VoteAgainstMeasure = styled('span')`
+export const VoteAgainstMeasure = styled('span')`
 `;
 
-const VoteForCandidate = styled('span')`
+export const VoteForCandidate = styled('span')`
   font-size: 16px;
 `;
 
-const VoteForMeasure = styled('span')`
+export const VoteForMeasure = styled('span')`
 `;
-
-export {
-  BallotSharedCandidateNameH4,
-  BallotSharedCandidateParty, BallotSharedCandidatesOuterWrapper,
-  BallotSharedOfficeNameH2, BallotSharedOfficeItemWrapper,
-  Candidate, CandidateBottomRow,
-  CandidateContainer, CandidateInfo, CandidateNameH1, CandidateNameH4, CandidateParty,
-  CandidatesContainer,
-  CandidateWrapper, CandidateTopRow, HorizontallyScrollingContainer,
-  OfficeNameH2, OfficeItemCompressedWrapper, constrainedTextMobileStyles,
-  VoteAgainstCandidate, VoteForCandidate,
-  VoteAgainstMeasure, VoteForMeasure,
-};

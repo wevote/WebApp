@@ -13,6 +13,7 @@ import numberWithCommas from '../../common/utils/numberWithCommas';
 import stringContains from '../../common/utils/stringContains';
 import toTitleCase from '../../common/utils/toTitleCase';
 import AppObservableStore from '../../common/stores/AppObservableStore';
+import YearState from '../../common/components/Widgets/YearState';
 import BallotStore from '../../stores/BallotStore';
 import CandidateStore from '../../stores/CandidateStore';
 import MeasureStore from '../../stores/MeasureStore';
@@ -264,31 +265,6 @@ class VoterGuidePositionItem extends Component {
       />
     );
 
-    const positionYearHtml = (
-      <>
-        {(positionYear || ballotItemStateName) && (
-          <PositionYearText>
-            {' '}
-            (
-            {(positionYear) && (
-              <span>{positionYear}</span>
-            )}
-            {(positionYear && ballotItemStateName) && (
-              <span>
-                {' '}
-                -
-                {' '}
-              </span>
-            )}
-            {(ballotItemStateName) && (
-              <span>{ballotItemStateName}</span>
-            )}
-            )
-          </PositionYearText>
-        )}
-      </>
-    );
-
     return (
       <>
         {!!(searchResultsNode) && (
@@ -342,7 +318,7 @@ class VoterGuidePositionItem extends Component {
                         />
                       </Suspense>
                     )}
-                    {positionYearHtml}
+                    <YearState year={`${positionYear}`} stateName={ballotItemStateName} />
                   </DesktopItemOffice>
                 </DesktopItemNameAndOfficeContainer>
                 <BallotItemSupportOpposeCountDisplayWrapper>
@@ -442,7 +418,7 @@ class VoterGuidePositionItem extends Component {
                           />
                         </Suspense>
                       )}
-                      {positionYearHtml}
+                      <YearState year={`${positionYear}`} stateName={ballotItemStateName} />
                     </MobileItemOffice>
                   </MobileItemNameAndOfficeContainerLarger>
                   {/* Visible on iPhone 5/se */}
@@ -483,7 +459,7 @@ class VoterGuidePositionItem extends Component {
                     />
                   </Suspense>
                 )}
-                {positionYearHtml}
+                <YearState year={`${positionYear}`} stateName={ballotItemStateName} />
               </MobileItemOfficeSmallerPhones>
             </div>
             <MobileItemBody>
@@ -772,12 +748,6 @@ const PositionItemMobile = styled('li', {
   margin-bottom: 12px;
   max-width: 100% !important;
 `));
-
-const PositionYearText = styled('span')`
-  color: #999;
-  font-weight: 200;
-  white-space: nowrap;
-`;
 
 const SearchResultsNodeWrapper = styled('div')`
   margin-bottom: 2px !important;

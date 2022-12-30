@@ -232,7 +232,7 @@ class AskFriendsModal extends Component {
                   placeholder="Search by name"
                   searchFunction={this.searchFriends}
                   clearFunction={this.clearSearch}
-                  searchUpdateDelayTime={0}
+                  searchUpdateDelayTime={250}
                 />
                 <br />
               </>

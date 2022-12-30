@@ -14,6 +14,7 @@ export function getApplicationViewBooleans (pathname) {
   // We don't want to do all the work to create the footer, fire off api queries, etc., only to then set "display: none" based on a breakpoint!
   const isSmallScreen = isSmallerThanTablet(); // was ... window.screen.width < 992;
   let inTheaterMode = false;
+  let candidatesMode = false;
   let contentFullWidthMode = false;
   let extensionPageMode = false;
   let friendsMode = false;
@@ -69,6 +70,9 @@ export function getApplicationViewBooleans (pathname) {
     voteMode = true;
   } else if (pathnameLowerCase.startsWith('/ballot')) {
     contentFullWidthMode = false;
+  } else if (pathnameLowerCase.endsWith('/cs/')) {
+    contentFullWidthMode = true;
+    candidatesMode = true;
   } else if (pathnameLowerCase.startsWith('/news')) {
     contentFullWidthMode = false;
   } else if (stringContains('/settings/positions', pathnameLowerCase)) {
@@ -213,6 +217,7 @@ export function getApplicationViewBooleans (pathname) {
     showFooterBar = false;
     // ///////// SHOW: The following are URLS where we want the footer to show
   } else if (pathnameLowerCase.startsWith('/ballot') ||
+      pathnameLowerCase.endsWith('/cs/') || // Show Footer if back to not specified above
       pathnameLowerCase.startsWith('/candidate') || // Show Footer if back to not specified above
       pathnameLowerCase.startsWith('/friends') ||
       pathnameLowerCase.startsWith('/measure') || // Show Footer if back to not specified above
@@ -247,10 +252,12 @@ export function getApplicationViewBooleans (pathname) {
   let showFooterMain = false;
   if (VoterStore.getVoterIsSignedIn()) {
     // We currently don't show footer once voter is signed in
-  } else if (pathnameLowerCase.startsWith('/more/donate') ||
-      pathnameLowerCase.startsWith('/ready') ||
-      (pathnameLowerCase === '/welcome') ||
-      (pathnameLowerCase === '/')) {
+  } else if (
+    pathnameLowerCase.endsWith('/cs/') ||
+    pathnameLowerCase.startsWith('/more/donate') ||
+    pathnameLowerCase.startsWith('/ready') ||
+    (pathnameLowerCase === '/welcome') ||
+    (pathnameLowerCase === '/')) {
     showFooterMain = true;
   }
 
@@ -270,6 +277,7 @@ export function getApplicationViewBooleans (pathname) {
   return {
     headerNotVisible,
     inTheaterMode,
+    candidatesMode,
     contentFullWidthMode,
     extensionPageMode,
     friendsMode,
@@ -315,7 +323,7 @@ export function weVoteBrandingOff () {
 }
 
 export function displayTopMenuShadow () {  //
-  return !['ballot'].includes(normalizedHrefPage());
+  return !['ballot', 'candidate'].includes(normalizedHrefPage());
 }
 
 export function avatarGeneric () {

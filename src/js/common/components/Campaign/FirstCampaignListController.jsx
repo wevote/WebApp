@@ -1,6 +1,7 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import CampaignActions from '../../actions/CampaignActions';
+import apiCalming from '../../utils/apiCalming';
 import initializejQuery from '../../utils/initializejQuery';
 import { renderLog } from '../../utils/logging';
 import VoterStore from '../../../stores/VoterStore';
@@ -15,18 +16,28 @@ class FirstCampaignListController extends Component {
 
   componentDidMount () {
     // console.log('FirstCampaignListController componentDidMount');
-    this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     this.campaignListFirstRetrieve();
+    this.CampaignsForStateRetrieve();
+  }
+
+  componentDidUpdate (prevProps) {
+    if (this.props.searchText !== prevProps.searchText) {
+      if (this.searchTimer) clearTimeout(this.searchTimer);
+      this.searchTimer = setTimeout(() => {
+        this.CampaignSearchRetrieve();
+      }, 500);
+    }
+    if (this.props.stateCode !== prevProps.stateCode) {
+      if (this.props.stateCode !== 'all') {
+        this.CampaignsForStateRetrieve();
+      }
+    }
   }
 
   componentWillUnmount () {
-    this.appStateSubscription.unsubscribe();
     this.voterStoreListener.remove();
-  }
-
-  onAppObservableStoreChange () {
-    this.campaignListFirstRetrieve();
+    if (this.searchTimer) clearTimeout(this.searchTimer);
   }
 
   onVoterStoreChange () {
@@ -35,12 +46,32 @@ class FirstCampaignListController extends Component {
 
   campaignListFirstRetrieve = () => {
     initializejQuery(() => {
-      const campaignListFirstRetrieveInitiated = AppObservableStore.campaignListFirstRetrieveInitiated();
       const voterFirstRetrieveCompleted = VoterStore.voterFirstRetrieveCompleted();
       // console.log('FirstCampaignListController campaignListFirstRetrieveInitiated: ', campaignListFirstRetrieveInitiated, ', voterFirstRetrieveCompleted: ', voterFirstRetrieveCompleted);
-      if (voterFirstRetrieveCompleted && !campaignListFirstRetrieveInitiated) {
-        AppObservableStore.setCampaignListFirstRetrieveInitiated(true);
-        CampaignActions.campaignListRetrieve();
+      if (voterFirstRetrieveCompleted) {
+        if (apiCalming('campaignListFirstRetrieve', 60000)) {
+          CampaignActions.campaignListRetrieve();
+        }
+      }
+    });
+  }
+
+  CampaignSearchRetrieve = () => {
+    const { searchText } = this.props;
+    initializejQuery(() => {
+      // console.log(`campaignListRetrieve-${searchText}`);
+      if (apiCalming(`campaignListRetrieve-${searchText}`, 180000)) {
+        CampaignActions.campaignListRetrieve(searchText);
+      }
+    });
+  }
+
+  CampaignsForStateRetrieve = () => {
+    const { stateCode } = this.props;
+    initializejQuery(() => {
+      // console.log(`campaignListRetrieve-${stateCode}`);
+      if (apiCalming(`campaignListRetrieve-${stateCode}`, 180000)) {
+        CampaignActions.campaignListRetrieve('', stateCode);
       }
     });
   }
@@ -53,5 +84,9 @@ class FirstCampaignListController extends Component {
     );
   }
 }
+FirstCampaignListController.propTypes = {
+  searchText: PropTypes.string,
+  stateCode: PropTypes.string,
+};
 
 export default FirstCampaignListController;

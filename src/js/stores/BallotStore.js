@@ -766,6 +766,38 @@ class BallotStore extends ReduceStore {
           });
           revisedState = { ...revisedState, ballotItemListCandidatesDict };
         }
+        if (tempBallotItemList) {
+          tempBallotItemList.forEach((topBallotItem) => {
+            // If office data is received without a race_office_level, default to 'Federal'
+            if (topBallotItem.kind_of_ballot_item === 'OFFICE' && !topBallotItem.race_office_level) {
+              topBallotItem.race_office_level = 'Federal';
+            }
+            if (topBallotItem.kind_of_ballot_item === 'MEASURE' && !topBallotItem.race_office_level) {
+              topBallotItem.race_office_level = 'Measure';
+            }
+            allBallotItemsByOfficeOrMeasureDict[topBallotItem.we_vote_id] = topBallotItem;
+            allBallotItemsFlattenedDict[topBallotItem.we_vote_id] = topBallotItem;
+            if (topBallotItem.candidate_list) {
+              topBallotItem.candidate_list.forEach((oneCandidate) => {
+                // Add the following for filtering
+                // If candidate data is received without a race_office_level, default to 'Federal'
+                if (!oneCandidate.race_office_level) {
+                  oneCandidate.race_office_level = topBallotItem.race_office_level;
+                }
+                oneCandidate.kind_of_ballot_item = 'CANDIDATE';
+                oneCandidate.office_we_vote_id = topBallotItem.we_vote_id;
+                oneCandidate.google_civic_election_id = topBallotItem.google_civic_election_id;
+                allBallotItemsFlattenedDict[oneCandidate.we_vote_id] = oneCandidate;
+              });
+            }
+          });
+          revisedState = {
+            ...revisedState,
+            allBallotItemsByOfficeOrMeasureDict,
+            allBallotItemsFlattened: Object.values(allBallotItemsFlattenedDict),
+            allBallotItemsFlattenedDict,
+          };
+        }
         return revisedState;
 
       case 'voterBallotListRetrieve':

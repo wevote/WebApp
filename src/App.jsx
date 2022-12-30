@@ -296,7 +296,8 @@ class App extends Component {
                     <Route path="/ballot/:ballot_location_shortcut/modal/:modal_to_show/:shared_item_code" component={Ballot} />
                     <Route path="/ballot/:ballot_location_shortcut/modal/:modal_to_show" exact component={Ballot} />
                     <Route path="/ballot/:ballot_location_shortcut" exact component={Ballot} />
-                    <Route path="/c/" exact component={CampaignsHome} />
+                    <Route path="/:state_candidates_phrase/cs/" exact component={CampaignsHome} />
+                    <Route path="/cs/" exact component={CampaignsHome} />
                     <Route path="/candidate-for-extension" component={CandidateForExtension} />
                     <Route path="/candidate/:candidate_we_vote_id/b/:back_to_variable/modal/:modal_to_show" exact component={Candidate} />
                     <Route path="/candidate/:candidate_we_vote_id/b/:back_to_variable/modal/:modal_to_show/:shared_item_code" exact component={Candidate} />

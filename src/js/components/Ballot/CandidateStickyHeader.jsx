@@ -32,7 +32,7 @@ class CandidateStickyHeader extends Component {
     // console.log('CandidateStickyHeader, displayName/candidateWeVoteId:', displayName, candidateWeVoteId);
 
     return (
-      <CandidateStickyHeaderWrapper ipad={isIPad() || isIOSAppOnMac()} isWebApp={isWebApp()}>
+      <CandidateStickyHeaderWrapper ipad={isIPad() || isIOSAppOnMac()}>
         <Container>
           <Flex>
             <ColumnOne>
@@ -87,24 +87,24 @@ const slideDown = keyframes`
 const CandidateStickyHeaderWrapper = styled('div', {
   shouldForwardProp: (prop) => !['ipad'].includes(prop),
 })(({ ipad, theme }) => (`
+  animation: ${slideDown} 150ms ease-in;
+  background: white;
+  box-shadow: ${standardBoxShadow('wide')};
+  left: 0;
+  ${isWebApp() ? 'margin-top: 8px;' : ''}
   max-width: 100%;
   position: fixed;
   padding-right: 16px;
   padding-bottom: 0;
   padding-left: 16px;
   top: ${cordovaStickyHeaderPaddingTop()};
-  left: 0;
-  background: white;
-  z-index: 2;
   width: 100vw;
-  box-shadow: ${standardBoxShadow('wide')};
-  animation: ${slideDown} 150ms ease-in;
-  ${() => (isWebApp() ? 'margin-top: -16px;' : '')};
+  z-index: 2;
   ${theme.breakpoints.up('sm')} {
     padding-top: ${ipad ? '' : '0'};
   }
   ${theme.breakpoints.down('sm')} {
-    ${() => (isWebApp() ? 'margin-top: -14px;' : '')};
+    ${isWebApp() ? 'margin-top: 7px;' : ''}
   }
 `));
 

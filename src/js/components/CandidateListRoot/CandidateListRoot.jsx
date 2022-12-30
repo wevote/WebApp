@@ -1,15 +1,15 @@
 import withStyles from '@mui/styles/withStyles';
 import { filter } from 'lodash-es';
 import PropTypes from 'prop-types';
-import React, { Component, Suspense } from 'react';
+import React, { Component } from 'react';
 import styled from 'styled-components';
+import { HorizontallyScrollingContainer, ScrollingInnerWrapper, ScrollingOuterWrapper } from '../../common/components/Style/ScrollingStyles';
 import { convertStateCodeToStateText } from '../../common/utils/addressFunctions';
 import { getTodayAsInteger, getYearFromUltimateElectionDate } from '../../common/utils/dateFormat';
 import { renderLog } from '../../common/utils/logging';
 import CandidateStore from '../../stores/CandidateStore';
 
 const CandidateCardList = React.lazy(() => import(/* webpackChunkName: 'CandidateCardList' */ './CandidateCardList'));
-const FirstCandidateListController = React.lazy(() => import(/* webpackChunkName: 'FirstCandidateListController' */ './FirstCandidateListController'));
 
 class CandidateListRoot extends Component {
   constructor (props) {
@@ -29,14 +29,23 @@ class CandidateListRoot extends Component {
   }
 
   componentDidUpdate (prevProps) {
-    let changeNeeded = false;
+    let filterChangeNeeded = false;
+    let incomingListChangeNeeded = false;
     if (this.props.listModeFiltersTimeStampOfChange !== prevProps.listModeFiltersTimeStampOfChange) {
-      changeNeeded = true;
+      filterChangeNeeded = true;
     }
     if (this.props.searchText !== prevProps.searchText) {
-      changeNeeded = true;
+      filterChangeNeeded = true;
     }
-    if (changeNeeded) {
+    if (this.props.stateCode !== prevProps.stateCode) {
+      filterChangeNeeded = true;
+    }
+    if (this.props.incomingListTimeStampOfChange !== prevProps.incomingListTimeStampOfChange) {
+      incomingListChangeNeeded = true;
+    }
+    if (incomingListChangeNeeded) {
+      this.onIncomingListChange();
+    } else if (filterChangeNeeded) {
       this.onFilterOrListChange();
     }
   }
@@ -50,17 +59,19 @@ class CandidateListRoot extends Component {
   }
 
   onIncomingListChange () {
-    const candidateList = CandidateStore.getCandidateList();
-    const filteredCandidateList = [];
-    candidateList.forEach((oneCandidate) => {
-      if (oneCandidate.id && oneCandidate.id > 0) {
-        filteredCandidateList.push(oneCandidate);
-      }
-    });
-    // console.log('candidateList:', candidateList);
-    this.setState({
-      candidateList: filteredCandidateList,
-    }, () => this.onFilterOrListChange());
+    const { incomingList } = this.props;
+    if (incomingList) {
+      const filteredCandidateList = [];
+      incomingList.forEach((oneCandidate) => {
+        if (oneCandidate.id && oneCandidate.id > 0) {
+          filteredCandidateList.push(oneCandidate);
+        }
+      });
+      // console.log('candidateList:', candidateList);
+      this.setState({
+        candidateList: filteredCandidateList,
+      }, () => this.onFilterOrListChange());
+    }
   }
 
   orderByAlphabetical = (firstEntry, secondEntry) => {
@@ -79,33 +90,33 @@ class CandidateListRoot extends Component {
 
   orderByTwitterFollowers = (firstCandidate, secondCandidate) => secondCandidate.twitter_followers_count - firstCandidate.twitter_followers_count;
 
+  orderCandidatesByUltimateDate = (firstEntry, secondEntry) => secondEntry.candidate_ultimate_election_date - firstEntry.candidate_ultimate_election_date;
+
   onFilterOrListChange = () => {
     // console.log('onFilterOrListChange');
-    // Start over with full candidateList, and apply all active filters
-    const { listModeFilters, searchText } = this.props;
+    // Start over with full list, and apply all active filters
+    const { listModeFilters, searchText, stateCode } = this.props;
     const { candidateList } = this.state;
     // console.log('candidateList:', candidateList);
+    let candidateAlreadyFoundThisYear = false;
+    const candidateDisplayedThisYear = {};
     let filteredCandidateList = candidateList;
-    if (listModeFilters && listModeFilters.length > 0) {
-      const todayAsInteger = getTodayAsInteger();
-      listModeFilters.forEach((oneFilter) => {
-        // console.log('oneFilter:', oneFilter);
-        if ((oneFilter.filterType === 'showUpcomingEndorsements') && (oneFilter.filterSelected === true)) {
-          filteredCandidateList = filteredCandidateList.filter((oneCandidate) => oneCandidate.candidate_ultimate_election_date >= todayAsInteger);
-        }
-        if ((oneFilter.filterType === 'showYear') && (oneFilter.filterSelected === true)) {
-          filteredCandidateList = filteredCandidateList.filter((oneCandidate) => getYearFromUltimateElectionDate(oneCandidate.candidate_ultimate_election_date) === oneFilter.filterYear);
-        }
-      });
-    }
+    // //////////////////////////////////////////
+    // Make sure we have all required variables
     const filteredCandidateListModified = [];
     let modifiedCandidate;
     filteredCandidateList.forEach((oneCandidate) => {
       modifiedCandidate = { ...oneCandidate };
+      if (!oneCandidate.state_code) {
+        modifiedCandidate = {
+          ...modifiedCandidate,
+          state_code: '',
+        };
+      }
       modifiedCandidate = {
         ...modifiedCandidate,
         candidate_state_name: convertStateCodeToStateText(oneCandidate.state_code),
-        state_code: oneCandidate.state_code || '',
+        candidate_ultimate_election_year: getYearFromUltimateElectionDate(modifiedCandidate.candidate_ultimate_election_date),
       };
       if (!oneCandidate.twitter_description) {
         modifiedCandidate = {
@@ -125,13 +136,54 @@ class CandidateListRoot extends Component {
           contest_office_name: '',
         };
       }
-      filteredCandidateListModified.push(modifiedCandidate);
+      // Remove duplicate candidates in the same year (based on politician_we_vote_id or twitter_handle)
+      candidateAlreadyFoundThisYear = false;
+      if (modifiedCandidate.candidate_ultimate_election_year) {
+        if (!(modifiedCandidate.candidate_ultimate_election_year in candidateDisplayedThisYear)) {
+          candidateDisplayedThisYear[modifiedCandidate.candidate_ultimate_election_year] = {};
+        }
+        if (modifiedCandidate.politician_we_vote_id) {
+          if (modifiedCandidate.politician_we_vote_id in candidateDisplayedThisYear[modifiedCandidate.candidate_ultimate_election_year]) {
+            candidateAlreadyFoundThisYear = true;
+          } else {
+            candidateDisplayedThisYear[modifiedCandidate.candidate_ultimate_election_year][modifiedCandidate.politician_we_vote_id] = true;
+          }
+        }
+        if (modifiedCandidate.twitter_handle) {
+          if (modifiedCandidate.twitter_handle in candidateDisplayedThisYear[modifiedCandidate.candidate_ultimate_election_year]) {
+            candidateAlreadyFoundThisYear = true;
+          } else {
+            candidateDisplayedThisYear[modifiedCandidate.candidate_ultimate_election_year][modifiedCandidate.twitter_handle] = true;
+          }
+        }
+      }
+      if (!candidateAlreadyFoundThisYear) {
+        filteredCandidateListModified.push(modifiedCandidate);
+      }
     });
     filteredCandidateList = filteredCandidateListModified;
-    // We need to add support for ballot_item_twitter_followers_count
-    // filteredCandidateList = filteredCandidateList.sort(this.orderPositionsByBallotItemTwitterFollowers);
+    // //////////////////////
+    // Now filter candidates
+    if (listModeFilters && listModeFilters.length > 0) {
+      const todayAsInteger = getTodayAsInteger();
+      listModeFilters.forEach((oneFilter) => {
+        // console.log('oneFilter:', oneFilter);
+        if ((oneFilter.filterType === 'showUpcomingEndorsements') && (oneFilter.filterSelected === true)) {
+          filteredCandidateList = filteredCandidateList.filter((oneCandidate) => oneCandidate.candidate_ultimate_election_date >= todayAsInteger);
+        }
+        if ((oneFilter.filterType === 'showYear') && (oneFilter.filterSelected === true)) {
+          filteredCandidateList = filteredCandidateList.filter((oneCandidate) => getYearFromUltimateElectionDate(oneCandidate.candidate_ultimate_election_date) === oneFilter.filterYear);
+        }
+      });
+    }
+    if (stateCode && stateCode.toLowerCase() !== 'all') {
+      filteredCandidateList = filteredCandidateList.filter((oneCandidate) => oneCandidate.state_code.toLowerCase() === stateCode.toLowerCase());
+    }
+    // //////////
+    // Now sort
     filteredCandidateList = filteredCandidateList.sort(this.orderByAlphabetical);
     filteredCandidateList = filteredCandidateList.sort(this.orderByTwitterFollowers);
+    filteredCandidateList = filteredCandidateList.sort(this.orderCandidatesByUltimateDate);
     let candidateSearchResults = [];
     if (searchText && searchText.length > 0) {
       const searchTextLowercase = searchText.toLowerCase();
@@ -193,24 +245,29 @@ class CandidateListRoot extends Component {
             {titleTextIfCampaigns}
           </WhatIsHappeningTitle>
         )}
-        <CandidateCardList
-          incomingCandidateList={(isSearching ? candidateSearchResults : filteredCandidateList)}
-          timeStampOfChange={timeStampOfChange}
-          verticalListOn
-        />
-
-        <Suspense fallback={<span>&nbsp;</span>}>
-          <FirstCandidateListController />
-        </Suspense>
+        <ScrollingOuterWrapper>
+          <ScrollingInnerWrapper>
+            <HorizontallyScrollingContainer>
+              <CandidateCardList
+                incomingCandidateList={(isSearching ? candidateSearchResults : filteredCandidateList)}
+                timeStampOfChange={timeStampOfChange}
+                verticalListOn
+              />
+            </HorizontallyScrollingContainer>
+          </ScrollingInnerWrapper>
+        </ScrollingOuterWrapper>
       </CandidateListWrapper>
     );
   }
 }
 CandidateListRoot.propTypes = {
   hideTitle: PropTypes.bool,
+  incomingList: PropTypes.array,
+  incomingListTimeStampOfChange: PropTypes.number,
   listModeFilters: PropTypes.array,
   listModeFiltersTimeStampOfChange: PropTypes.number,
   searchText: PropTypes.string,
+  stateCode: PropTypes.string,
   titleTextIfCampaigns: PropTypes.string,
 };
 

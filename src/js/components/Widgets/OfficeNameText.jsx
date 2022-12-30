@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import YearState from '../../common/components/Widgets/YearState';
 import { renderLog } from '../../common/utils/logging';
 
 export default class OfficeNameText extends Component {
@@ -19,7 +20,7 @@ export default class OfficeNameText extends Component {
   render () {
     renderLog('OfficeNameText');  // Set LOG_RENDER_EVENTS to log all renders
     let nameText = '';
-    const { contestOfficeName, politicalParty, showOfficeName } = this.props; // officeLink, // Dec 2022: Turning off officeLink until we can do design review
+    const { contestOfficeName, politicalParty, showOfficeName, stateName, year } = this.props; // officeLink, // Dec 2022: Turning off officeLink until we can do design review
     const officeLink = null;
     if (politicalParty === undefined) {
       if (showOfficeName) {
@@ -32,6 +33,7 @@ export default class OfficeNameText extends Component {
               </Link>
             ) :
               <span className="candidate-card-main__office u-bold u-gray-darker">{ contestOfficeName }</span>}
+            <YearState year={year} stateName={stateName} />
           </span>
         );
       }
@@ -49,13 +51,17 @@ export default class OfficeNameText extends Component {
             </Link>
           ) :
             <span className="candidate-card-main__office u-bold u-gray-darker">{ contestOfficeName }</span>}
+          <YearState year={year} stateName={stateName} />
         </PartyAndOfficeWrapper>
       );
     } else {
       nameText = (
-        <span className="card-main__political-party u-gray-darker">
-          {politicalParty}
-        </span>
+        <>
+          <span className="card-main__political-party u-gray-darker">
+            {politicalParty}
+          </span>
+          <YearState year={year} stateName={stateName} />
+        </>
       );
     }
 
@@ -67,6 +73,8 @@ OfficeNameText.propTypes = {
   // officeLink: PropTypes.string,
   politicalParty: PropTypes.string,
   showOfficeName: PropTypes.bool,
+  stateName: PropTypes.string,
+  year: PropTypes.string,
 };
 
 const PartyAndOfficeWrapper = styled('div')`

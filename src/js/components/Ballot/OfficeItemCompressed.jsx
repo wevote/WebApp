@@ -6,6 +6,7 @@ import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 import styled from 'styled-components';
 import OfficeActions from '../../actions/OfficeActions';
+import { HorizontallyScrollingContainer, ScrollingInnerWrapper, ScrollingOuterWrapper } from '../../common/components/Style/ScrollingStyles';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
@@ -17,8 +18,8 @@ import SupportStore from '../../stores/SupportStore';
 import { sortCandidateList } from '../../utils/positionFunctions';
 import {
   Candidate, CandidateBottomRow, CandidateContainer, CandidateInfo, CandidateNameH4,
-  CandidatesContainer, CandidateParty, CandidateTopRow, CandidateWrapper,
-  HorizontallyScrollingContainer, OfficeItemCompressedWrapper, OfficeNameH2,
+  CandidateParty, CandidateTopRow, CandidateWrapper,
+  OfficeItemCompressedWrapper, OfficeNameH2,
 } from '../Style/BallotStyles';
 import { PositionRowListEmptyWrapper, PositionRowListInnerWrapper, PositionRowListOneWrapper, PositionRowListOuterWrapper, PositionRowListScoreColumn, PositionRowListScoreHeader, PositionRowListScoreSpacer } from '../Style/PositionRowListStyles';
 import InfoCircleIcon from '../Widgets/InfoCircleIcon';
@@ -290,7 +291,7 @@ class OfficeItemCompressed extends Component {
     const dedupedCandidates = [];
 
     return (
-      <CandidatesContainer>
+      <ScrollingOuterWrapper>
         { candidatesToRender.slice(0, limitNumberOfCandidatesShownToThisNumber)
           .map((oneCandidate) => {
             if (!oneCandidate || !oneCandidate.we_vote_id || dedupedCandidates.includes(oneCandidate.we_vote_id)) return null;
@@ -300,7 +301,7 @@ class OfficeItemCompressed extends Component {
             const avatarCompressed = 'card-main__avatar-compressed';
             const avatarBackgroundImage = normalizedImagePath('../img/global/svg-icons/avatar-generic.svg');
             const uniqueKey = `candidate_preview-${oneCandidate.we_vote_id}-${window.performance.now()}`;
-            // console.log('ScrollingOuterContainer: ', uniqueKey);
+            // console.log('ScrollingInnerWrapper: ', uniqueKey);
             const scoreExplanationTooltip = (
               <Tooltip className="u-z-index-9020" id={`scoreDescription-${oneCandidate.we_vote_id}`}>
                 Your personalized score
@@ -317,7 +318,7 @@ class OfficeItemCompressed extends Component {
               </Tooltip>
             );
             return (
-              <ScrollingOuterContainer key={uniqueKey}>
+              <ScrollingInnerWrapper key={uniqueKey}>
                 <HorizontallyScrollingContainer>
                   <CandidateContainer>
                     <CandidateWrapper>
@@ -352,7 +353,6 @@ class OfficeItemCompressed extends Component {
                         <CandidateBottomRow>
                           {!hideCandidateDetails && (
                             <Suspense fallback={<></>}>
-                              {/* If there if (pages.includes(page)) {is a quote about the candidate, show that. If not, show issues related to candidate */}
                               <DelayedLoad waitBeforeShow={500}>
                                 <IssuesByBallotItemDisplayList
                                   ballotItemDisplayName={oneCandidate.ballot_item_display_name}
@@ -442,10 +442,10 @@ class OfficeItemCompressed extends Component {
                     <HrSeparator />
                   </div>
                 )}
-              </ScrollingOuterContainer>
+              </ScrollingInnerWrapper>
             );
           })}
-      </CandidatesContainer>
+      </ScrollingOuterWrapper>
     );
   }
 
@@ -604,11 +604,6 @@ const ItemActionBarOutsideWrapper = styled('div')`
 
 const ScoreWrapper = styled('div')`
   display: flex;
-`;
-
-const ScrollingOuterContainer = styled('div')`
-  overflow-x: hidden;
-  overflow-y: hidden;
 `;
 
 export default withTheme(withStyles(styles)(OfficeItemCompressed));

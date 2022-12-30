@@ -96,7 +96,7 @@ export default class OpinionsFollowed extends Component {
               placeholder="Search by name or Twitter handle"
               searchFunction={this.searchFunction}
               clearFunction={this.clearFunction}
-              searchUpdateDelayTime={0}
+              searchUpdateDelayTime={250}
             />
             <br />
             <div className="voter-guide-list card">

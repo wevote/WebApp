@@ -107,7 +107,7 @@ export default class FriendInvitationsSentByMe extends Component {
                 placeholder="Search by name"
                 searchFunction={this.searchFriends}
                 clearFunction={this.clearSearch}
-                searchUpdateDelayTime={0}
+                searchUpdateDelayTime={250}
               />
               <br />
               { this.state.searchFilterOn && friendInvitationsSentByMe.length === 0 ? (

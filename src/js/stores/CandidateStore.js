@@ -264,6 +264,7 @@ class CandidateStore extends ReduceStore {
           allCachedCandidates,
         };
 
+      case 'candidatesQuery':
       case 'candidatesRetrieve':
         // Make sure we have information for the office the candidate is running for
         if (action.res.contest_office_we_vote_id) {
@@ -275,7 +276,11 @@ class CandidateStore extends ReduceStore {
         }
 
         incomingCandidateCount = 0;
-        candidateList = action.res.candidate_list;
+        if (action.type === 'candidatesQuery') {
+          candidateList = action.res.candidates;
+        } else {
+          candidateList = action.res.candidate_list;
+        }
         // console.log('CandidateStore candidatesRetrieve contestOfficeWeVoteId:', contestOfficeWeVoteId, ', candidateList:', candidateList);
         if (!candidateListsByOfficeWeVoteId) {
           candidateListsByOfficeWeVoteId = {};
@@ -287,7 +292,9 @@ class CandidateStore extends ReduceStore {
           localCandidateList.push(one);
         });
         // console.log('localCandidateList:', localCandidateList);
-        candidateListsByOfficeWeVoteId[contestOfficeWeVoteId] = localCandidateList;
+        if (contestOfficeWeVoteId) {
+          candidateListsByOfficeWeVoteId[contestOfficeWeVoteId] = localCandidateList;
+        }
         // console.log('candidateListsByOfficeWeVoteId:', candidateListsByOfficeWeVoteId);
         // console.log('candidateListsByOfficeWeVoteId[contestOfficeWeVoteId]:', candidateListsByOfficeWeVoteId[contestOfficeWeVoteId]);
         // candidateListsByOfficeWeVoteId[contestOfficeWeVoteId].forEach((two) => {

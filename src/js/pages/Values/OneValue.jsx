@@ -271,7 +271,7 @@ class OneValue extends Component {
               placeholder="Search by name, Twitter handle or description"
               searchFunction={this.searchFunction}
               clearFunction={this.clearFunction}
-              searchUpdateDelayTime={0}
+              searchUpdateDelayTime={250}
             />
           </SearchBarWrapper>
           <Suspense fallback={<></>}>

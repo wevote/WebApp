@@ -755,7 +755,7 @@ const ModalContent = styled('div', {
   display: flex;
   flex-direction: column;
   align-items: ${condensed ? 'flex-start' : 'space-evenly'};
-  height: ${() => (isWebApp() ?  '100%' : 'unset')};
+  height: ${isWebApp() ?  '100%' : 'unset'};
   width: 80%;
   max-width: 400px;
   margin: 0 auto;

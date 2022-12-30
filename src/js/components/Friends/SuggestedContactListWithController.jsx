@@ -275,7 +275,7 @@ class SuggestedContactListWithController extends React.Component {
                   placeholder="Search by name, email, city or state code"
                   searchFunction={this.searchFriends}
                   clearFunction={this.clearSearch}
-                  searchUpdateDelayTime={0}
+                  searchUpdateDelayTime={250}
                 />
               </>
             )}
