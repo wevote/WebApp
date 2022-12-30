@@ -366,7 +366,7 @@ class HeaderBar extends Component {
       const news = $('#discussTabHeaderBar');
       const donate = $('#donateTabHeaderBar');
       ballot.css(normal);
-      candidates.css(normal);
+      candidates.css(normal);   // Candidates (not individual candidate page)
       friends.css(normal);      // Friends
       news.css(normal);         // Discuss
       donate.css(normal);       // Donate
@@ -375,7 +375,7 @@ class HeaderBar extends Component {
         case 'ballot':
           ballot.css(highlight);
           break;
-        case 'c':
+        case 'candidatelist':
           candidates.css(highlight);
           break;
         case 'friends':
@@ -524,12 +524,12 @@ class HeaderBar extends Component {
                     to="/ballot"
                   />
                   <TabWithPushHistory
-                    classes={isWebApp() ? { root: classes.tabRootBallotDesktop } : { root: classes.tabRootBallot }}
+                    classes={isWebApp() ? { root: classes.tabRootCandidatesDesktop } : { root: classes.tabRootCandidates }}
                     value={2}
                     change={this.handleTabChange}
                     id="candidatesTabHeaderBar"
                     label="Candidates"
-                    to="/c"
+                    to="/cs/"
                   />
                   <TabWithPushHistory
                     classes={isWebApp() ? { root: classes.tabRootFriendsDesktop } : { root: classes.tabRootFriends }}
@@ -742,6 +742,26 @@ const styles = (theme) => ({
     },
   },
   tabRootBallotDesktop: {
+    fontSize: 18,
+    minWidth: 90,
+    paddingTop: 17,
+  },
+  tabRootCandidates: {
+    minWidth: 90,
+    [theme.breakpoints.between('tabMin', 'tabMdMin')]: { // Small Tablets
+      minWidth: 0,
+      fontSize: 20,
+      padding: '16px 8px 10px 8px',
+    },
+    [theme.breakpoints.between('tabMdMin', 'tabLgMin')]: { // Medium Tablets
+      fontSize: 20,
+      padding: '16px 16px 10px 16px',
+    },
+    [theme.breakpoints.up('tabLgMin')]: { // Larger Tablets, and desktops
+      fontSize: 24,
+    },
+  },
+  tabRootCandidatesDesktop: {
     fontSize: 18,
     minWidth: 90,
     paddingTop: 17,

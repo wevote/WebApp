@@ -63,8 +63,12 @@ export function getTodayAsInteger (daysInPast = 0) {
 }
 
 export function getYearFromUltimateElectionDate (ultimateElectionDate) {
-  const tempYear = String(ultimateElectionDate).slice(0, 4);
-  return Number(tempYear);
+  if (ultimateElectionDate) {
+    const tempYear = String(ultimateElectionDate).slice(0, 4);
+    return Number(tempYear);
+  } else {
+    return 0;
+  }
 }
 
 

@@ -472,7 +472,7 @@ class VoterGuidePositionList extends Component {
                 placeholder="Search by name, office or state"
                 searchFunction={this.searchFunction}
                 clearFunction={this.clearFunction}
-                searchUpdateDelayTime={0}
+                searchUpdateDelayTime={250}
               />
             </SearchBarWrapper>
           )}

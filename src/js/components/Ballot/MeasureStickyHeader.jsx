@@ -2,6 +2,7 @@ import { keyframes } from '@emotion/react';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
+import { isIOSAppOnMac, isIPad } from '../../common/utils/cordovaUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import standardBoxShadow from '../../common/components/Style/standardBoxShadow';
@@ -43,7 +44,7 @@ class MeasureStickyHeader extends Component {
     const { ballotItemDisplayName } = this.state;
     const ballotItemDisplay = ballotItemDisplayName ? ballotItemDisplayName.split(':') : [];
     return (
-      <MeasureStickyHeaderWrapper>
+      <MeasureStickyHeaderWrapper ipad={isIPad() || isIOSAppOnMac()}>
         <Container>
           <Flex>
             <ColumnOne>
@@ -96,21 +97,29 @@ const slideDown = keyframes`
     transform: translateY(0);
   }
 `;
-
-const MeasureStickyHeaderWrapper = styled('div')`
+const MeasureStickyHeaderWrapper = styled('div', {
+  shouldForwardProp: (prop) => !['ipad'].includes(prop),
+})(({ ipad, theme }) => (`
+  animation: ${slideDown} 150ms ease-in;
+  background: white;
+  box-shadow: ${standardBoxShadow('wide')};
+  left: 0;
+  ${isWebApp() ? 'margin-top: 47px;' : ''}
   max-width: 100%;
   position: fixed;
   padding-right: 16px;
   padding-bottom: 8px;
   padding-left: 16px;
   top: ${() => cordovaStickyHeaderPaddingTop()};
-  left: 0;
-  background: white;
-  z-index: 2;
   width: 100vw;
-  box-shadow: ${standardBoxShadow('wide')};
-  //animation: ${slideDown} 150ms ease-in;
-  `;
+  z-index: 2;
+  ${theme.breakpoints.up('sm')} {
+    padding-top: ${ipad ? '' : '0'};
+  }
+  ${theme.breakpoints.down('sm')} {
+    ${isWebApp() ? 'margin-top: 46px;' : ''}
+  }
+`));
 
 const Container = styled('div')`
   max-width: calc(960px - 18px);
@@ -133,13 +142,13 @@ const ColumnTwo = styled('div')(({ theme }) => (`
 `));
 
 const Title = styled('h1')(({ theme }) => (`
-  font-size: ${() => (isCordova() ? '16px' : '18px')};
+  font-size: ${isCordova() ? '16px' : '18px'};
   margin-bottom: 2px;
   margin-top: 8px;
-  font-weight: ${() => (isCordova() ? '500' : 'bold')};
+  font-weight: ${isCordova() ? '500' : 'bold'};
   ${theme.breakpoints.up('md')} {
     margin-top: 0;
-    font-size: ${() => (isCordova() ? '16px' : '22px')};
+    font-size: ${isCordova() ? '16px' : '22px'};
   }
 `));
 
@@ -174,9 +183,9 @@ const Flex = styled('div')`
 
 const MeasureCommentContainer = styled('div')(({ theme }) => (`
   width: fit-content;
-  margin-top: ${() => (isWebApp() ? '8px' : '')};;
+  margin-top: ${isWebApp() ? '8px' : ''};
   ${theme.breakpoints.down('sm')} {
-    padding-top: ${() => (isWebApp() ? '8px' : '')};
+    padding-top: ${isWebApp() ? '8px' : ''};
   }
   > * {
     padding: 0;

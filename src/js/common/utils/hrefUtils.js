@@ -11,6 +11,8 @@ export function normalizedHrefPage () {
   const [, page, second] = normalizedHref().split('/');
   if (second && page === 'more') {
     return `${page}/${second}`;
+  } else if (second && second === 'cs') { // Does the pathname end with '/cs/', i.e., candidates for state?
+    return 'candidatelist';
   }
   return page;
 }

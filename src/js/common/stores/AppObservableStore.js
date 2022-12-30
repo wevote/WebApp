@@ -22,7 +22,6 @@ export const messageService = {
 const nonFluxState = {
   activityTidbitWeVoteIdForDrawer: '',
   blockCampaignXRedirectOnSignIn: false, // When signing in from the header, don't mark a campaign as supported
-  campaignListFirstRetrieveInitiated: false,
   chosenGoogleAnalyticsTrackingID: false,
   chosenPreventSharingOpinions: false,
   chosenReadyIntroductionText: '',
@@ -88,14 +87,6 @@ const nonFluxState = {
 export default {
   blockCampaignXRedirectOnSignIn () {
     return nonFluxState.blockCampaignXRedirectOnSignIn;
-  },
-
-  campaignListFirstRetrieveInitiated () {
-    return nonFluxState.campaignListFirstRetrieveInitiated;
-  },
-
-  candidateListFirstRetrieveInitiated () {
-    return nonFluxState.candidateListFirstRetrieveInitiated;
   },
 
   getActivityTidbitWeVoteIdForDrawer () {
@@ -344,16 +335,6 @@ export default {
   setBlockCampaignXRedirectOnSignIn (value) {
     nonFluxState.blockCampaignXRedirectOnSignIn = value;
     messageService.sendMessage('state updated blockCampaignXRedirectOnSignIn');
-  },
-
-  setCampaignListFirstRetrieveInitiated (value) {
-    nonFluxState.campaignListFirstRetrieveInitiated = value;
-    messageService.sendMessage('state updated campaignListFirstRetrieveInitiated');
-  },
-
-  setCandidateListFirstRetrieveInitiated (value) {
-    nonFluxState.candidateListFirstRetrieveInitiated = value;
-    messageService.sendMessage('state updated candidateListFirstRetrieveInitiated');
   },
 
   setCurrentPathname (currentPathname) {

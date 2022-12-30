@@ -1,16 +1,18 @@
 import withStyles from '@mui/styles/withStyles';
 import { filter } from 'lodash-es';
 import PropTypes from 'prop-types';
-import React, { Component, Suspense } from 'react';
+import React, { Component } from 'react';
 import styled from 'styled-components';
+import { HorizontallyScrollingContainer, ScrollingInnerWrapper, ScrollingOuterWrapper } from '../Style/ScrollingStyles';
 import { convertStateCodeToStateText } from '../../utils/addressFunctions';
+import arrayContains from '../../utils/arrayContains';
 import { getTodayAsInteger, getYearFromUltimateElectionDate } from '../../utils/dateFormat';
+import extractAttributeValueListFromObjectList from '../../utils/extractAttributeValueListFromObjectList';
 import { renderLog } from '../../utils/logging';
 import CampaignStore from '../../stores/CampaignStore';
 import CampaignSupporterStore from '../../stores/CampaignSupporterStore';
 
 const CampaignCardList = React.lazy(() => import(/* webpackChunkName: 'CampaignCardList' */ './CampaignCardList'));
-const FirstCampaignListController = React.lazy(() => import(/* webpackChunkName: 'FirstCampaignListController' */ './FirstCampaignListController'));
 
 class CampaignListRoot extends Component {
   constructor (props) {
@@ -31,14 +33,23 @@ class CampaignListRoot extends Component {
   }
 
   componentDidUpdate (prevProps) {
-    let changeNeeded = false;
+    let filterChangeNeeded = false;
+    let incomingListChangeNeeded = false;
     if (this.props.listModeFiltersTimeStampOfChange !== prevProps.listModeFiltersTimeStampOfChange) {
-      changeNeeded = true;
+      filterChangeNeeded = true;
     }
     if (this.props.searchText !== prevProps.searchText) {
-      changeNeeded = true;
+      filterChangeNeeded = true;
     }
-    if (changeNeeded) {
+    if (this.props.stateCode !== prevProps.stateCode) {
+      filterChangeNeeded = true;
+    }
+    if (this.props.incomingListTimeStampOfChange !== prevProps.incomingListTimeStampOfChange) {
+      incomingListChangeNeeded = true;
+    }
+    if (incomingListChangeNeeded) {
+      this.onIncomingListChange();
+    } else if (filterChangeNeeded) {
       this.onFilterOrListChange();
     }
   }
@@ -57,11 +68,12 @@ class CampaignListRoot extends Component {
   }
 
   onIncomingListChange () {
-    const campaignList = CampaignStore.getPromotedCampaignXDicts();
-    // console.log('campaignList:', campaignList);
-    this.setState({
-      campaignList,
-    }, () => this.onFilterOrListChange());
+    const { incomingList } = this.props;
+    if (incomingList) {
+      this.setState({
+        campaignList: incomingList,
+      }, () => this.onFilterOrListChange());
+    }
   }
 
   orderByAlphabetical = (firstEntry, secondEntry) => {
@@ -83,34 +95,26 @@ class CampaignListRoot extends Component {
 
   orderBySupportersCount = (firstCampaign, secondCampaign) => secondCampaign.supporters_count - firstCampaign.supporters_count;
 
+  orderCandidatesByUltimateDate = (firstEntry, secondEntry) => secondEntry.candidate_ultimate_election_date - firstEntry.candidate_ultimate_election_date;
+
   onFilterOrListChange = () => {
     // console.log('onFilterOrListChange');
-    // Start over with full campaignList, and apply all active filters
-    const { listModeFilters, searchText } = this.props;
+    // Start over with full list, and apply all active filters
+    const { listModeFilters, searchText, stateCode } = this.props;
     const { campaignList } = this.state;
     // console.log('campaignList:', campaignList);
     let filteredCampaignList = campaignList;
-    if (listModeFilters && listModeFilters.length > 0) {
-      const todayAsInteger = getTodayAsInteger();
-      listModeFilters.forEach((oneFilter) => {
-        // console.log('oneFilter:', oneFilter);
-        if ((oneFilter.filterType === 'showUpcomingEndorsements') && (oneFilter.filterSelected === true)) {
-          filteredCampaignList = filteredCampaignList.filter((oneCampaign) => oneCampaign.final_election_date_as_integer >= todayAsInteger);
-        }
-        if ((oneFilter.filterType === 'showYear') && (oneFilter.filterSelected === true)) {
-          filteredCampaignList = filteredCampaignList.filter((oneCampaign) => getYearFromUltimateElectionDate(oneCampaign.final_election_date_as_integer) === oneFilter.filterYear);
-        }
-      });
-    }
+    // //////////////////////////////////////////
+    // Make sure we have all required variables
     const filteredCampaignListModified = [];
     let modifiedCampaign;
     filteredCampaignList.forEach((oneCampaign) => {
       modifiedCampaign = { ...oneCampaign };
-      modifiedCampaign = {
-        ...modifiedCampaign,
-        campaign_state_name: convertStateCodeToStateText(oneCampaign.state_code),
-        state_code: oneCampaign.state_code || '',
-      };
+      // modifiedCampaign = {
+      //   ...modifiedCampaign,
+      //   campaign_state_name: convertStateCodeToStateText(oneCampaign.state_code),
+      //   state_code: oneCampaign.state_code || '',
+      // };
       if (!oneCampaign.campaign_description) {
         modifiedCampaign = {
           ...modifiedCampaign,
@@ -132,6 +136,28 @@ class CampaignListRoot extends Component {
       filteredCampaignListModified.push(modifiedCampaign);
     });
     filteredCampaignList = filteredCampaignListModified;
+    // //////////////////////
+    // Now filter candidates
+    if (listModeFilters && listModeFilters.length > 0) {
+      const todayAsInteger = getTodayAsInteger();
+      listModeFilters.forEach((oneFilter) => {
+        // console.log('oneFilter:', oneFilter);
+        if ((oneFilter.filterType === 'showUpcomingEndorsements') && (oneFilter.filterSelected === true)) {
+          filteredCampaignList = filteredCampaignList.filter((oneCampaign) => oneCampaign.final_election_date_as_integer >= todayAsInteger);
+        }
+        if ((oneFilter.filterType === 'showYear') && (oneFilter.filterSelected === true)) {
+          filteredCampaignList = filteredCampaignList.filter((oneCampaign) => getYearFromUltimateElectionDate(oneCampaign.final_election_date_as_integer) === oneFilter.filterYear);
+        }
+      });
+    }
+    if (stateCode && stateCode.toLowerCase() !== 'all') {
+      filteredCampaignList = filteredCampaignList.filter((oneCampaign) => {
+        const politicianStateCodeList = extractAttributeValueListFromObjectList('state_code', oneCampaign.campaignx_politician_list, true);
+        return arrayContains(stateCode.toLowerCase(), politicianStateCodeList);
+      });
+    }
+    // //////////
+    // Now sort
     // We need to add support for ballot_item_twitter_followers_count
     // filteredCampaignList = filteredCampaignList.sort(this.orderPositionsByBallotItemTwitterFollowers);
     filteredCampaignList = filteredCampaignList.sort(this.orderByAlphabetical);
@@ -202,8 +228,8 @@ class CampaignListRoot extends Component {
     const { hideTitle, searchText, titleTextIfCampaigns } = this.props;
     const isSearching = searchText && searchText.length > 0;
     const { campaignList, campaignSearchResults, filteredCampaignList, timeStampOfChange } = this.state;
-
-    if (!campaignList) {
+    const filteredCampaignListLength = (filteredCampaignList) ? filteredCampaignList.length : 0;
+    if (filteredCampaignListLength === 0) {
       return null;
     }
     return (
@@ -217,24 +243,29 @@ class CampaignListRoot extends Component {
             {titleTextIfCampaigns}
           </WhatIsHappeningTitle>
         )}
-        <CampaignCardList
-          incomingCampaignList={(isSearching ? campaignSearchResults : filteredCampaignList)}
-          timeStampOfChange={timeStampOfChange}
-          verticalListOn
-        />
-
-        <Suspense fallback={<span>&nbsp;</span>}>
-          <FirstCampaignListController />
-        </Suspense>
+        <ScrollingOuterWrapper>
+          <ScrollingInnerWrapper>
+            <HorizontallyScrollingContainer>
+              <CampaignCardList
+                incomingCampaignList={(isSearching ? campaignSearchResults : filteredCampaignList)}
+                timeStampOfChange={timeStampOfChange}
+                verticalListOn
+              />
+            </HorizontallyScrollingContainer>
+          </ScrollingInnerWrapper>
+        </ScrollingOuterWrapper>
       </CampaignListWrapper>
     );
   }
 }
 CampaignListRoot.propTypes = {
   hideTitle: PropTypes.bool,
+  incomingList: PropTypes.array,
+  incomingListTimeStampOfChange: PropTypes.number,
   listModeFilters: PropTypes.array,
   listModeFiltersTimeStampOfChange: PropTypes.number,
   searchText: PropTypes.string,
+  stateCode: PropTypes.string,
   titleTextIfCampaigns: PropTypes.string,
 };
 

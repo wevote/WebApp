@@ -4,7 +4,7 @@ export const stateCodeMap = {
   AK: 'Alaska',
   AL: 'Alabama',
   AR: 'Arkansas',
-  AS: 'American Samoa',
+  // AS: 'American Samoa',
   AZ: 'Arizona',
   CA: 'California',
   CO: 'Colorado',
@@ -28,7 +28,7 @@ export const stateCodeMap = {
   MI: 'Michigan',
   MN: 'Minnesota',
   MO: 'Missouri',
-  MP: 'Northern Mariana Islands',
+  // MP: 'Northern Mariana Islands',
   MS: 'Mississippi',
   MT: 'Montana',
   NA: 'National',
@@ -44,7 +44,7 @@ export const stateCodeMap = {
   OK: 'Oklahoma',
   OR: 'Oregon',
   PA: 'Pennsylvania',
-  PR: 'Puerto Rico',
+  // PR: 'Puerto Rico',
   RI: 'Rhode Island',
   SC: 'South Carolina',
   SD: 'South Dakota',
@@ -52,7 +52,7 @@ export const stateCodeMap = {
   TX: 'Texas',
   UT: 'Utah',
   VA: 'Virginia',
-  VI: 'Virgin Islands',
+  // VI: 'Virgin Islands',
   VT: 'Vermont',
   WA: 'Washington',
   WI: 'Wisconsin',
@@ -74,7 +74,7 @@ export function convertStateCodeToStateText (stateCode) {
 
 export function convertStateTextToStateCode (stateText) {
   if (stateText) {
-    const stateTextInArray = Object.keys(stateCodeMap).filter((stateCode) => stateCodeMap[stateCode] === stateText);
+    const stateTextInArray = Object.keys(stateCodeMap).filter((stateCode) => stateCodeMap[stateCode].toLowerCase() === stateText.toLowerCase());
     return stateTextInArray[0];
   }
   return '';

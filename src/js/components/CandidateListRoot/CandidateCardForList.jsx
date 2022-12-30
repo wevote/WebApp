@@ -1,14 +1,17 @@
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
+import { Link } from 'react-router-dom';
 import TruncateMarkup from 'react-truncate-markup';
 import styled from 'styled-components';
+import { convertStateCodeToStateText } from '../../common/utils/addressFunctions';
 import {
   CampaignImageMobile, CampaignImagePlaceholderText, CampaignImageMobilePlaceholder, CampaignImageDesktopPlaceholder, CampaignImageDesktop,
-  CandidateCardForListWrapper, ClickableDiv,
+  CandidateCardForListWrapper,
   OneCampaignPhotoWrapperMobile, OneCampaignPhotoDesktopColumn, OneCampaignTitle, OneCampaignOuterWrapper, OneCampaignTextColumn, OneCampaignInnerWrapper, OneCampaignDescription,
   SupportersWrapper, SupportersCount, SupportersActionLink,
 } from '../../common/components/Style/CampaignCardStyles';
+import { getTodayAsInteger, getYearFromUltimateElectionDate } from '../../common/utils/dateFormat';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
 import CandidateStore from '../../stores/CandidateStore';
@@ -16,9 +19,10 @@ import CandidateStore from '../../stores/CandidateStore';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 // import keepHelpingDestination from '../../common/utils/keepHelpingDestination';
 import numberWithCommas from '../../common/utils/numberWithCommas';
-import { ElectionInPast, IndicatorButtonWrapper, IndicatorRow } from '../../common/components/Style/CampaignIndicatorStyles';
+// import { ElectionInPast, IndicatorButtonWrapper, IndicatorRow } from '../../common/components/Style/CampaignIndicatorStyles';
 
 const ItemActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemActionBar' */ '../Widgets/ItemActionBar/ItemActionBar'));
+const OfficeNameText = React.lazy(() => import(/* webpackChunkName: 'OfficeNameText' */ '../Widgets/OfficeNameText'));
 // const SupportButtonBeforeCompletionScreen = React.lazy(() => import(/* webpackChunkName: 'SupportButtonBeforeCompletionScreen' */ '../../common/components/CampaignSupport/SupportButtonBeforeCompletionScreen'));
 
 class CandidateCardForList extends Component {
@@ -32,6 +36,7 @@ class CandidateCardForList extends Component {
     this.getCandidateBasePath = this.getCandidateBasePath.bind(this);
     this.goToNextPage = this.goToNextPage.bind(this);
     this.onCandidateClick = this.onCandidateClick.bind(this);
+    this.onCandidateClickLink = this.onCandidateClickLink.bind(this);
     this.onCampaignEditClick = this.onCampaignEditClick.bind(this);
     this.onCampaignGetMinimumSupportersClick = this.onCampaignGetMinimumSupportersClick.bind(this);
     this.onCampaignShareClick = this.onCampaignShareClick.bind(this);
@@ -47,7 +52,6 @@ class CandidateCardForList extends Component {
   }
 
   componentDidUpdate (prevProps) {
-    // console.log('CandidateCardForList componentDidUpdate');
     const {
       candidateWeVoteId: candidateWeVoteIdPrevious,
     } = prevProps;
@@ -88,7 +92,7 @@ class CandidateCardForList extends Component {
     });
   }
 
-  onCandidateClick () {
+  onCandidateClickLink () {
     const { candidate } = this.state;
     // console.log('candidate:', candidate);
     if (!candidate) {
@@ -99,11 +103,14 @@ class CandidateCardForList extends Component {
       we_vote_id: candidateWeVoteId,
     } = candidate;
     if (campaignSEOFriendlyPath) {
-      historyPush(`/c/${campaignSEOFriendlyPath}`);
+      return `/c/${campaignSEOFriendlyPath}`;
     } else {
-      historyPush(`/candidate/${candidateWeVoteId}`);
+      return `/candidate/${candidateWeVoteId}`;
     }
-    return null;
+  }
+
+  onCandidateClick () {
+    historyPush(this.onCandidateClickLink());
   }
 
   onCampaignEditClick () {
@@ -220,6 +227,7 @@ class CandidateCardForList extends Component {
     this.timer = setTimeout(() => {
       historyPush(pathToUseWhenProfileComplete);
     }, 500);
+    return null;
   }
 
   // functionToUseToKeepHelping () {
@@ -256,54 +264,95 @@ class CandidateCardForList extends Component {
       return null;
     }
     const {
-      twitter_description: twitterDescription,
       ballot_item_display_name: ballotItemDisplayName,
-      we_vote_id: candidateWeVoteId,
-      final_election_date_in_past: finalElectionDateInPast,
+      candidate_photo_url_large: candidatePhotoLargeUrl,
+      candidate_ultimate_election_date: candidateUltimateElectionDate,
+      contest_office_name: contestOfficeName,
       // in_draft_mode: inDraftMode,
       // is_blocked_by_we_vote: isBlockedByWeVote,
       // is_in_team_review_mode: isInTeamReviewMode,
       // is_supporters_count_minimum_exceeded: isSupportersCountMinimumExceeded,
+      party: politicalParty,
       // seo_friendly_path: campaignSEOFriendlyPath,
+      state_code: stateCode,
       supporters_count: supportersCount,
       supporters_count_next_goal: supportersCountNextGoal,
+      twitter_description: twitterDescription,
       // visible_on_this_site: visibleOnThisSite,
-      candidate_photo_url_large: CandidatePhotoLargeUrl,
+      we_vote_id: candidateWeVoteId,
     } = candidate;
+    // console.log('candidate:', candidate);
     if (!candidateWeVoteId) {
       return null;
     }
+    const stateName = convertStateCodeToStateText(stateCode);
+    const year = getYearFromUltimateElectionDate(candidateUltimateElectionDate);
+    const todayAsInteger = getTodayAsInteger();
+    const finalElectionDateInPast = candidateUltimateElectionDate && (candidateUltimateElectionDate <= todayAsInteger);
     return (
       <CandidateCardForListWrapper limitCardWidth={limitCardWidth}>
-        <OneCampaignOuterWrapper>
+        <OneCampaignOuterWrapper limitCardWidth={limitCardWidth}>
           <OneCampaignInnerWrapper limitCardWidth={limitCardWidth || isMobileScreenSize()}>
             <OneCampaignTextColumn>
-              <ClickableDiv onClick={this.onCandidateClick}>
+              <div>
                 <OneCampaignTitle>
-                  {ballotItemDisplayName}
+                  <Link to={this.onCandidateClickLink()}>
+                    {ballotItemDisplayName}
+                  </Link>
                 </OneCampaignTitle>
-                <SupportersWrapper>
-                  <SupportersCount>
-                    {numberWithCommas(supportersCount)}
-                    {' '}
-                    {supportersCount === 1 ? 'supporter.' : 'supporters.'}
-                  </SupportersCount>
-                  {' '}
-                  {campaignSupported ? (
-                    <SupportersActionLink>
-                      Thank you for supporting!
-                    </SupportersActionLink>
-                  ) : (
-                    <SupportersActionLink className="u-link-color u-link-underline">
-                      Let&apos;s get to
+                {(contestOfficeName || politicalParty) && (
+                  <div className="u-cursor--pointer" onClick={this.onCandidateClick}>
+                    <Suspense fallback={<></>}>
+                      <OfficeNameText
+                        contestOfficeName={contestOfficeName}
+                        politicalParty={politicalParty}
+                        showOfficeName
+                        stateName={stateName}
+                        year={`${year}`}
+                      />
+                    </Suspense>
+                  </div>
+                )}
+                {finalElectionDateInPast ? (
+                  <SupportersWrapper>
+                    {supportersCount > 0 && (
+                      <SupportersCount>
+                        {numberWithCommas(supportersCount)}
+                        {' '}
+                        {supportersCount === 1 ? 'supporter.' : 'supporters.'}
+                        {' '}
+                      </SupportersCount>
+                    )}
+                    {campaignSupported && (
+                      <SupportersActionLink>
+                        Thank you for supporting!
+                      </SupportersActionLink>
+                    )}
+                  </SupportersWrapper>
+                ) : (
+                  <SupportersWrapper>
+                    <SupportersCount>
+                      {numberWithCommas(supportersCount)}
                       {' '}
-                      {numberWithCommas(supportersCountNextGoal)}
-                      !
-                    </SupportersActionLink>
-                  )}
-                </SupportersWrapper>
+                      {supportersCount === 1 ? 'supporter.' : 'supporters.'}
+                    </SupportersCount>
+                    {' '}
+                    {campaignSupported ? (
+                      <SupportersActionLink>
+                        Thank you for supporting!
+                      </SupportersActionLink>
+                    ) : (
+                      <SupportersActionLink className="u-link-color u-link-underline">
+                        Let&apos;s get to
+                        {' '}
+                        {numberWithCommas(supportersCountNextGoal)}
+                        !
+                      </SupportersActionLink>
+                    )}
+                  </SupportersWrapper>
+                )}
                 {twitterDescription && (
-                  <OneCampaignDescription>
+                  <OneCampaignDescription className="u-cursor--pointer" onClick={this.onCandidateClick}>
                     <TruncateMarkup
                       ellipsis={(
                         <span>
@@ -325,7 +374,8 @@ class CandidateCardForList extends Component {
                   <CampaignOwnersList campaignXWeVoteId={campaignXWeVoteId} compressedMode />
                 </CampaignOwnersWrapper>
                 */}
-              </ClickableDiv>
+              </div>
+              {/*
               <IndicatorRow>
                 {finalElectionDateInPast && (
                   <IndicatorButtonWrapper>
@@ -335,23 +385,28 @@ class CandidateCardForList extends Component {
                   </IndicatorButtonWrapper>
                 )}
               </IndicatorRow>
-              <ItemActionBarOutsideWrapper>
-                <Suspense fallback={<></>}>
-                  <ItemActionBar
-                    ballotItemWeVoteId={candidateWeVoteId}
-                    ballotItemDisplayName={ballotItemDisplayName}
-                    commentButtonHide
-                    // externalUniqueId={`CandidateCardForList-ItemActionBar-${oneCandidate.we_vote_id}-${externalUniqueId}`}
-                    hidePositionPublicToggle
-                    positionPublicToggleWrapAllowed
-                    shareButtonHide
-                  />
-                </Suspense>
-              </ItemActionBarOutsideWrapper>
+              */}
+              {!finalElectionDateInPast && (
+                <ItemActionBarOutsideWrapper>
+                  <Suspense fallback={<></>}>
+                    <ItemActionBar
+                      ballotItemWeVoteId={candidateWeVoteId}
+                      ballotItemDisplayName={ballotItemDisplayName}
+                      commentButtonHide
+                      // externalUniqueId={`CandidateCardForList-ItemActionBar-${oneCandidate.we_vote_id}-${externalUniqueId}`}
+                      hidePositionPublicToggle
+                      positionPublicToggleWrapAllowed
+                      shareButtonHide
+                    />
+                  </Suspense>
+                </ItemActionBarOutsideWrapper>
+              )}
             </OneCampaignTextColumn>
-            <OneCampaignPhotoWrapperMobile className="u-show-mobile">
-              {CandidatePhotoLargeUrl ? (
-                <CampaignImageMobile src={CandidatePhotoLargeUrl} alt="" />
+            <OneCampaignPhotoWrapperMobile className="u-cursor--pointer u-show-mobile" onClick={this.onCandidateClick}>
+              {candidatePhotoLargeUrl ? (
+                <CampaignImageMobilePlaceholder>
+                  <CampaignImageMobile src={candidatePhotoLargeUrl} alt="" />
+                </CampaignImageMobilePlaceholder>
               ) : (
                 <CampaignImageMobilePlaceholder>
                   <CampaignImagePlaceholderText>
@@ -360,11 +415,19 @@ class CandidateCardForList extends Component {
                 </CampaignImageMobilePlaceholder>
               )}
             </OneCampaignPhotoWrapperMobile>
-            <OneCampaignPhotoDesktopColumn className="u-show-desktop-tablet" onClick={this.onCandidateClick}>
-              {CandidatePhotoLargeUrl ? (
-                <CampaignImageDesktop src={CandidatePhotoLargeUrl} alt="Campaign" width="117px" height="117px" />
+            <OneCampaignPhotoDesktopColumn className="u-cursor--pointer u-show-desktop-tablet" limitCardWidth={limitCardWidth} onClick={this.onCandidateClick}>
+              {candidatePhotoLargeUrl ? (
+                <>
+                  {limitCardWidth ? (
+                    <CampaignImageDesktopPlaceholder limitCardWidth={limitCardWidth}>
+                      <CampaignImageDesktop src={candidatePhotoLargeUrl} alt="" width="157px" height="157px" />
+                    </CampaignImageDesktopPlaceholder>
+                  ) : (
+                    <CampaignImageDesktop src={candidatePhotoLargeUrl} alt="" width="117px" height="117px" />
+                  )}
+                </>
               ) : (
-                <CampaignImageDesktopPlaceholder>
+                <CampaignImageDesktopPlaceholder limitCardWidth={limitCardWidth}>
                   <CampaignImagePlaceholderText>
                     No image provided
                   </CampaignImagePlaceholderText>

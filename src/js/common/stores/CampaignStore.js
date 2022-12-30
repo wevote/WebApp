@@ -156,6 +156,11 @@ class CampaignStore extends ReduceStore {
     };
   }
 
+  getAllCachedCampaignXList () {
+    const { allCachedCampaignXDicts } = this.getState();
+    return Object.values(allCachedCampaignXDicts);
+  }
+
   getCampaignXBySEOFriendlyPath (campaignSEOFriendlyPath) {
     const campaignXWeVoteId = this.getState().allCachedCampaignXWeVoteIdsBySEOFriendlyPath[campaignSEOFriendlyPath] || '';
     const campaignX = this.getState().allCachedCampaignXDicts[campaignXWeVoteId];

@@ -55,7 +55,7 @@ export function pageEnumeration () {
 
   // then wildcarded second level paths
   } else if (path.startsWith('/candidate/') || path.startsWith('/verifythisisme/')) {
-    return CordovaPageConstants.candidateWild;
+    return CordovaPageConstants.candidateWild;  // /candidate/ == one candidate vs. /cs/ == candidates by state
   } else if (path.startsWith('/office/')) {
     return CordovaPageConstants.officeWild;
   } else if (path.startsWith('/settings/') || path.includes('facebook_sign_in')) {
@@ -83,8 +83,11 @@ export function pageEnumeration () {
     return CordovaPageConstants.opinionsFiltered;
 
   // then specific first level paths
-  } if (path.startsWith('/candidate')) {
+  } if (path.startsWith('/candidate')) {  // /candidate/ == one candidate vs. /cs/ == candidates by state
+    // Note: For '/candidate', this overrides return CordovaPageConstants.candidateWild; above
     return CordovaPageConstants.candidate;
+  } if (path.endsWith('/cs/')) {  // /candidate/ == one candidate vs. /cs/ == candidates by state
+    return CordovaPageConstants.values; // Use /value setting
   } else if (path.startsWith('/friends/current') || path.startsWith('/friends/all')) {
     return CordovaPageConstants.friendsCurrent;
   } else if (path.startsWith('/friends/sent-requests') || path.startsWith('/friends/requests')) {

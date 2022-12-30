@@ -10,6 +10,7 @@ import VoterStore from '../../stores/VoterStore';
 
 const BallotElectionListWithFilters = React.lazy(() => import(/* webpackChunkName: 'BallotElectionListWithFilters' */ '../Ballot/BallotElectionListWithFilters'));
 const DeleteAllContactsButton = React.lazy(() => import(/* webpackChunkName: 'DeleteAllContactsButton' */ '../SetUpAccount/DeleteAllContactsButton'));
+const FooterCandidateList = React.lazy(() => import(/* webpackChunkName: 'FooterCandidateList' */ './FooterCandidateList'));
 
 class FooterMainWeVote extends Component {
   constructor (props) {
@@ -59,16 +60,9 @@ class FooterMainWeVote extends Component {
                   />
                 </Suspense>
               </SearchEngineOptimizationColumn>
-              <SearchEngineOptimizationColumn className="u-show-desktop-tablet">
+              <SearchEngineOptimizationColumn>
                 <Suspense fallback={<></>}>
-                  <BallotElectionListWithFilters
-                    ballotBaseUrl="/ballot"
-                    candidatesMode
-                    hideUpcomingElectionTitle
-                    showSimpleDisplay
-                    showSimpleModeTitle
-                    stateToShow="all"
-                  />
+                  <FooterCandidateList />
                 </Suspense>
               </SearchEngineOptimizationColumn>
               <SearchEngineOptimizationColumn className="u-show-desktop-tablet">

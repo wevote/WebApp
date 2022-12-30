@@ -1,14 +1,18 @@
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
+import { Link } from 'react-router-dom';
 import TruncateMarkup from 'react-truncate-markup';
 import styled from 'styled-components';
+// import { convertStateCodeToStateText } from '../../utils/addressFunctions';
 import CampaignSupporterActions from '../../actions/CampaignSupporterActions';
 import {
-  CampaignImageMobile, CampaignImagePlaceholderText, CampaignImageMobilePlaceholder, CampaignImageDesktopPlaceholder, CampaignImageDesktop, ClickableDiv,
+  CampaignImageMobile, CampaignImagePlaceholderText, CampaignImageMobilePlaceholder, CampaignImageDesktopPlaceholder, CampaignImageDesktop,
+  CandidateCardForListWrapper,
   OneCampaignPhotoWrapperMobile, OneCampaignPhotoDesktopColumn, OneCampaignTitle, OneCampaignOuterWrapper, OneCampaignTextColumn, OneCampaignInnerWrapper, OneCampaignDescription,
   SupportersWrapper, SupportersCount, SupportersActionLink,
 } from '../Style/CampaignCardStyles';
+// import { getTodayAsInteger, getYearFromUltimateElectionDate } from '../../utils/dateFormat';
 import historyPush from '../../utils/historyPush';
 import { renderLog } from '../../utils/logging';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
@@ -27,6 +31,7 @@ class CampaignCardForList extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      campaignSupported: false,
       campaignX: {},
       inPrivateLabelMode: false,
       payToPromoteStepCompleted: false,
@@ -39,6 +44,7 @@ class CampaignCardForList extends Component {
     this.getCampaignBasePath = this.getCampaignBasePath.bind(this);
     this.goToNextPage = this.goToNextPage.bind(this);
     this.onCampaignClick = this.onCampaignClick.bind(this);
+    this.onCampaignClickLink = this.onCampaignClickLink.bind(this);
     this.onCampaignEditClick = this.onCampaignEditClick.bind(this);
     this.onCampaignGetMinimumSupportersClick = this.onCampaignGetMinimumSupportersClick.bind(this);
     this.onCampaignShareClick = this.onCampaignShareClick.bind(this);
@@ -56,7 +62,6 @@ class CampaignCardForList extends Component {
   }
 
   componentDidUpdate (prevProps) {
-    // console.log('CampaignCardForList componentDidUpdate');
     const {
       campaignXWeVoteId: campaignXWeVoteIdPrevious,
     } = prevProps;
@@ -81,15 +86,19 @@ class CampaignCardForList extends Component {
   }
 
   onAppObservableStoreChange () {
+    const { inPrivateLabelMode: inPrivateLabelModePrevious, payToPromoteStepTurnedOn: payToPromoteStepTurnedOnPrevious } = this.state;
     const inPrivateLabelMode = AppObservableStore.inPrivateLabelMode();
-    // const siteConfigurationHasBeenRetrieved = AppObservableStore.siteConfigurationHasBeenRetrieved();
-    // For now, we assume that paid sites with chosenSiteLogoUrl will turn off "Chip in"
     const payToPromoteStepTurnedOn = !inPrivateLabelMode;
-    this.setState({
-      inPrivateLabelMode,
-      payToPromoteStepTurnedOn,
-      // siteConfigurationHasBeenRetrieved,
-    });
+    if (inPrivateLabelModePrevious !== inPrivateLabelMode) {
+      this.setState({
+        inPrivateLabelMode,
+      });
+    }
+    if (payToPromoteStepTurnedOnPrevious !== payToPromoteStepTurnedOn) {
+      this.setState({
+        payToPromoteStepTurnedOn,
+      });
+    }
   }
 
   onCampaignStoreChange () {
@@ -122,9 +131,8 @@ class CampaignCardForList extends Component {
     }
   }
 
-  onCampaignClick () {
+  onCampaignClickLink () {
     const { campaignX } = this.state;
-    // console.log('campaignX:', campaignX);
     if (!campaignX) {
       return null;
     }
@@ -133,15 +141,18 @@ class CampaignCardForList extends Component {
       seo_friendly_path: campaignSEOFriendlyPath,
       campaignx_we_vote_id: campaignXWeVoteId,
     } = campaignX;
-    AppObservableStore.setBlockCampaignXRedirectOnSignIn(true);
     if (inDraftMode) {
-      historyPush('/start-a-campaign-preview');
+      return '/start-a-campaign-preview';
     } else if (campaignSEOFriendlyPath) {
-      historyPush(`/c/${campaignSEOFriendlyPath}`);
+      return `/c/${campaignSEOFriendlyPath}`;
     } else {
-      historyPush(`/id/${campaignXWeVoteId}`);
+      return `/id/${campaignXWeVoteId}`;
     }
-    return null;
+  }
+
+  onCampaignClick () {
+    AppObservableStore.setBlockCampaignXRedirectOnSignIn(true);
+    historyPush(this.onCampaignClickLink());
   }
 
   onCampaignEditClick () {
@@ -222,7 +233,6 @@ class CampaignCardForList extends Component {
   }
 
   pullCampaignXSupporterVoterEntry (campaignXWeVoteId) {
-    // console.log('pullCampaignXSupporterVoterEntry campaignXWeVoteId:', campaignXWeVoteId);
     if (campaignXWeVoteId) {
       const campaignXSupporterVoterEntry = CampaignSupporterStore.getCampaignXSupporterVoterEntry(campaignXWeVoteId);
       // console.log('onCampaignSupporterStoreChange campaignXSupporterVoterEntry:', campaignXSupporterVoterEntry);
@@ -246,10 +256,6 @@ class CampaignCardForList extends Component {
           campaignSupported: false,
         });
       }
-    } else {
-      this.setState({
-        campaignSupported: false,
-      });
     }
   }
 
@@ -258,6 +264,7 @@ class CampaignCardForList extends Component {
     this.timer = setTimeout(() => {
       historyPush(pathToUseWhenProfileComplete);
     }, 500);
+    return null;
   }
 
   functionToUseToKeepHelping () {
@@ -297,6 +304,7 @@ class CampaignCardForList extends Component {
       campaign_description: campaignDescription,
       campaign_title: campaignTitle,
       campaignx_we_vote_id: campaignXWeVoteId,
+      // final_election_date_as_integer: finalElectionDateAsInteger,
       final_election_date_in_past: finalElectionDateInPast,
       in_draft_mode: inDraftMode,
       is_blocked_by_we_vote: isBlockedByWeVote,
@@ -309,14 +317,18 @@ class CampaignCardForList extends Component {
       we_vote_hosted_campaign_photo_large_url: CampaignPhotoLargeUrl,
       we_vote_hosted_campaign_photo_medium_url: CampaignPhotoMediumUrl,
     } = campaignX;
+    // const stateName = convertStateCodeToStateText(stateCode);
+    // const year = getYearFromUltimateElectionDate(finalElectionDateAsInteger);
     return (
-      <CampaignCardForListWrapper limitCardWidth={limitCardWidth}>
-        <OneCampaignOuterWrapper>
+      <CandidateCardForListWrapper limitCardWidth={limitCardWidth}>
+        <OneCampaignOuterWrapper limitCardWidth={limitCardWidth}>
           <OneCampaignInnerWrapper limitCardWidth={limitCardWidth || isMobileScreenSize()}>
             <OneCampaignTextColumn>
-              <ClickableDiv onClick={this.onCampaignClick}>
+              <div>
                 <OneCampaignTitle>
-                  {campaignTitle}
+                  <Link to={this.onCampaignClickLink()}>
+                    {campaignTitle}
+                  </Link>
                 </OneCampaignTitle>
                 <SupportersWrapper>
                   <SupportersCount>
@@ -338,7 +350,7 @@ class CampaignCardForList extends Component {
                     </SupportersActionLink>
                   )}
                 </SupportersWrapper>
-                <OneCampaignDescription>
+                <OneCampaignDescription className="u-cursor--pointer" onClick={this.onCampaignClick}>
                   <TruncateMarkup
                     ellipsis={(
                       <span>
@@ -357,7 +369,7 @@ class CampaignCardForList extends Component {
                 <CampaignOwnersWrapper>
                   <CampaignOwnersList campaignXWeVoteId={campaignXWeVoteId} compressedMode />
                 </CampaignOwnersWrapper>
-              </ClickableDiv>
+              </div>
               <IndicatorRow>
                 {finalElectionDateInPast && (
                   <IndicatorButtonWrapper>
@@ -452,7 +464,7 @@ class CampaignCardForList extends Component {
                 )}
               </IndicatorRow>
             </OneCampaignTextColumn>
-            <OneCampaignPhotoWrapperMobile className="u-show-mobile">
+            <OneCampaignPhotoWrapperMobile className="u-cursor--pointer u-show-mobile" onClick={this.onCampaignClick}>
               {CampaignPhotoLargeUrl ? (
                 <CampaignImageMobile src={CampaignPhotoLargeUrl} alt="Campaign" />
               ) : (
@@ -463,11 +475,17 @@ class CampaignCardForList extends Component {
                 </CampaignImageMobilePlaceholder>
               )}
             </OneCampaignPhotoWrapperMobile>
-            <OneCampaignPhotoDesktopColumn className="u-show-desktop-tablet" onClick={this.onCampaignClick}>
+            <OneCampaignPhotoDesktopColumn className="u-cursor--pointer u-show-desktop-tablet" limitCardWidth={limitCardWidth} onClick={this.onCampaignClick}>
               {CampaignPhotoMediumUrl ? (
-                <CampaignImageDesktop src={CampaignPhotoMediumUrl} alt="Campaign" width="224px" height="117px" />
+                <>
+                  {limitCardWidth ? (
+                    <CampaignImageDesktop src={CampaignPhotoMediumUrl} alt="" width="300px" height="157px" />
+                  ) : (
+                    <CampaignImageDesktop src={CampaignPhotoMediumUrl} alt="" width="224px" height="117px" />
+                  )}
+                </>
               ) : (
-                <CampaignImageDesktopPlaceholder>
+                <CampaignImageDesktopPlaceholder limitCardWidth={limitCardWidth}>
                   <CampaignImagePlaceholderText>
                     No image provided
                   </CampaignImagePlaceholderText>
@@ -476,7 +494,7 @@ class CampaignCardForList extends Component {
             </OneCampaignPhotoDesktopColumn>
           </OneCampaignInnerWrapper>
         </OneCampaignOuterWrapper>
-      </CampaignCardForListWrapper>
+      </CandidateCardForListWrapper>
     );
   }
 }
@@ -493,12 +511,6 @@ const styles = (theme) => ({
     },
   },
 });
-
-const CampaignCardForListWrapper = styled('div', {
-  shouldForwardProp: (prop) => !['limitCardWidth'].includes(prop),
-})(({ limitCardWidth }) => (`
-  ${limitCardWidth ? 'width: 300px;' : ''}
-`));
 
 const CampaignOwnersWrapper = styled('div')`
 `;
