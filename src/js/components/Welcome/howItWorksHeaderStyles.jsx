@@ -12,8 +12,9 @@ const Header = styled('div')`
   padding-top: 84px;
   justify-content: center;
 `;
+export default Header;
 
-const Container = styled('div')(({ theme }) => (`
+export const Container = styled('div')(({ theme }) => (`
   display: flex;
   flex-flow: row;
   justify-content: space-between;
@@ -25,7 +26,7 @@ const Container = styled('div')(({ theme }) => (`
   }
 `));
 
-const Title = styled('h3')(({ theme }) => (`
+export const Title = styled('h3')(({ theme }) => (`
   font-size: 24px;
   font-weight: bold;
   ${theme.breakpoints.down('lg')} {
@@ -33,8 +34,3 @@ const Title = styled('h3')(({ theme }) => (`
     margin: auto 0;
   }
 `));
-
-export { Title, Container };
-
-export default Header;
-

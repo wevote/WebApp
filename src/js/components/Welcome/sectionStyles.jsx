@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const Section = styled('div', {
+export const Section = styled('div', {
   shouldForwardProp: (prop) => !['noTopMargin', 'noSideMargins', 'variant', 'rounded'].includes(prop),
 })(({ noTopMargin, noSideMargins, variant, rounded, theme }) => (`
   display: flex;
@@ -22,7 +22,7 @@ const Section = styled('div', {
   }
 `));
 
-const SectionTitle = styled('h1')(({ theme }) => (`
+export const SectionTitle = styled('h1')(({ theme }) => (`
   font-size: 36px;
   font-weight: 300;
   margin-bottom: 10px;
@@ -32,12 +32,12 @@ const SectionTitle = styled('h1')(({ theme }) => (`
   }
 `));
 
-const SectionTitleBold = styled('span')(({ theme }) => (`
+export const SectionTitleBold = styled('span')(({ theme }) => (`
   color: ${theme.colors.brandBlue};
   font-weight: bold;
 `));
 
-const Step = styled('div')(({ theme }) => (`
+export const Step = styled('div')(({ theme }) => (`
   display: flex;
   flex-flow: row nowrap;
   font-size: 18px;
@@ -52,7 +52,7 @@ const Step = styled('div')(({ theme }) => (`
   }
 `));
 
-const StepNumber = styled('div')(({ theme }) => (`
+export const StepNumber = styled('div')(({ theme }) => (`
   width: 24px;
   height: 24px;
   background: ${theme.colors.brandBlue};
@@ -66,7 +66,7 @@ const StepNumber = styled('div')(({ theme }) => (`
   }
 `));
 
-const StepLabel = styled('p')(({ theme }) => (`
+export const StepLabel = styled('p')(({ theme }) => (`
   font-weight: bold;
   color: #333;
   margin: 0 .7rem;
@@ -77,7 +77,7 @@ const StepLabel = styled('p')(({ theme }) => (`
   }
 `));
 
-const GetStarted2019 = styled('div')(({ theme }) => (`
+export const GetStarted2019 = styled('div')(({ theme }) => (`
   align-items: center;
   display: flex;
   flex-flow: column;
@@ -98,16 +98,16 @@ const GetStarted2019 = styled('div')(({ theme }) => (`
   }
 `));
 
-const ButtonContainer = styled('div')`
+export const ButtonContainer = styled('div')`
   margin-left: -132px;
 `;
 
-const ButtonContainerHorizontal = styled('div')`
+export const ButtonContainerHorizontal = styled('div')`
   width: fit-content;
   margin-left: 8px;
 `;
 
-const DescriptionContainer = styled('div')`
+export const DescriptionContainer = styled('div')`
   display: flex;
   margin: 1em 3em;
   flex-flow: row wrap;
@@ -116,14 +116,14 @@ const DescriptionContainer = styled('div')`
   text-align: left;
 `;
 
-const MemberListContainer = styled('div')`
+export const MemberListContainer = styled('div')`
   margin: 0 auto;
   width: 960px;
   max-width: 90vw;
   text-align: center;
 `;
 
-const DescriptionLeftColumn = styled('div')(({ theme }) => (`
+export const DescriptionLeftColumn = styled('div')(({ theme }) => (`
   display: flex;
   flex-flow: column;
   width: 70%;
@@ -134,7 +134,7 @@ const DescriptionLeftColumn = styled('div')(({ theme }) => (`
   }
 `));
 
-const DescriptionImageColumn = styled('div')(({ theme }) => (`
+export const DescriptionImageColumn = styled('div')(({ theme }) => (`
   width: 30%;
   ${theme.breakpoints.down('md')} {
     width: 100%;
@@ -142,22 +142,22 @@ const DescriptionImageColumn = styled('div')(({ theme }) => (`
   }
 `));
 
-const Description = styled('span')`
+export const Description = styled('span')`
   color: #333;
   font-size: 18px;
   padding-bottom: 16px;
 `;
 
-const Image = styled('img')`
+export const Image = styled('img')`
   width: 100%;
   max-width: 60vw;
 `;
 
-const Bold = styled('span')`
+export const Bold = styled('span')`
   font-weight: bold;
 `;
 
-const NetworkContainer = styled('div')`
+export const NetworkContainer = styled('div')`
   width: 960px;
   max-width: 90vw;
   display: flex;
@@ -168,7 +168,7 @@ const NetworkContainer = styled('div')`
   padding-bottom: 3em;
 `;
 
-const NetworkImage = styled('img')(({ theme }) => (`
+export const NetworkImage = styled('img')(({ theme }) => (`
   filter: grayscale(100%);
   flex: 25%;
   max-width: 25%;
@@ -180,13 +180,13 @@ const NetworkImage = styled('img')(({ theme }) => (`
   }
 `));
 
-const SignUpContainer = styled('div')`
+export const SignUpContainer = styled('div')`
   width: 350px;
   padding-bottom: 2em;
   max-width: 90vw;
 `;
 
-const SignUpMessage = styled('div')(({ theme }) => (`
+export const SignUpMessage = styled('div')(({ theme }) => (`
   border-radius: 4px;
   color: ${theme.colors.brandBlue};
   padding: 8px 16px;
@@ -197,27 +197,3 @@ const SignUpMessage = styled('div')(({ theme }) => (`
     font-size: 12px;
   }
 `));
-
-export {
-  Bold,
-  ButtonContainer,
-  ButtonContainerHorizontal,
-  Description,
-  DescriptionContainer,
-  DescriptionImageColumn,
-  DescriptionLeftColumn,
-  GetStarted2019,
-  Image,
-  MemberListContainer,
-  NetworkContainer,
-  NetworkImage,
-  Section,
-  SectionTitle,
-  SectionTitleBold,
-  SignUpContainer,
-  SignUpMessage,
-  Step,
-  StepLabel,
-  StepNumber,
-};
-

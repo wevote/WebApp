@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const ContinueButtonType1Wrapper = styled('div')`
+export const ContinueButtonType1Wrapper = styled('div')`
   width: 100%;
   padding-top: 12px;
   display: flex;
@@ -8,7 +8,7 @@ const ContinueButtonType1Wrapper = styled('div')`
   justify-content: space-between;
 `;
 
-const ExplanationTextType1 = styled('div')`
+export const ExplanationTextType1 = styled('div')`
   color: #2e3c5d;
   font-size: 18px;
   font-weight: 600;
@@ -19,7 +19,7 @@ const ExplanationTextType1 = styled('div')`
   }
 `;
 
-const ExplanationTextLighterType1 = styled('div')`
+export const ExplanationTextLighterType1 = styled('div')`
   font-size: 14px;
   font-weight: 400;
   margin: 24px 0 0 0;
@@ -28,7 +28,7 @@ const ExplanationTextLighterType1 = styled('div')`
   }
 `;
 
-const ModalContentHeaderType1 = styled('div')`
+export const ModalContentHeaderType1 = styled('div')`
   color: #2e3c5d;
   font-size: 18px;
   font-weight: 600;
@@ -39,12 +39,12 @@ const ModalContentHeaderType1 = styled('div')`
   }
 `;
 
-const ModalTitleType1 = styled('h3')`
+export const ModalTitleType1 = styled('h3')`
   font-size: 28px;
   color: black;
 `;
 
-const ModalTitleAreaType1 = styled('div')`
+export const ModalTitleAreaType1 = styled('div')`
   justify-content: flex-start;
   align-items: flex-start;
   width: 100%;
@@ -55,12 +55,3 @@ const ModalTitleAreaType1 = styled('div')`
   }
   display: flex;
 `;
-
-export {
-  ContinueButtonType1Wrapper,
-  ExplanationTextType1,
-  ExplanationTextLighterType1,
-  ModalContentHeaderType1,
-  ModalTitleType1,
-  ModalTitleAreaType1,
-};

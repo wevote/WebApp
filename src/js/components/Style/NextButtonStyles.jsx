@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const DesktopNextButtonsInnerWrapper = styled('div')`
+export const DesktopNextButtonsInnerWrapper = styled('div')`
   align-items: center;
   background-color: #fff;
   display: flex;
@@ -9,7 +9,7 @@ const DesktopNextButtonsInnerWrapper = styled('div')`
   padding: 10px 0;
 `;
 
-const DesktopNextButtonsOuterWrapperUShowDesktopTablet = styled('div', {
+export const DesktopNextButtonsOuterWrapperUShowDesktopTablet = styled('div', {
   shouldForwardProp: (prop) => !['breakValue'].includes(prop),
 })(({ breakValue, theme }) => ({
   display: 'flex',
@@ -22,7 +22,7 @@ const DesktopNextButtonsOuterWrapperUShowDesktopTablet = styled('div', {
   },
 }));
 
-const DesktopStaticNextButtonsOuterWrapper = styled('div', {
+export const DesktopStaticNextButtonsOuterWrapper = styled('div', {
   shouldForwardProp: (prop) => !['breakValue'].includes(prop),
 })(({ breakValue, theme }) => ({
   borderTop: '1px solid #ddd',
@@ -36,7 +36,7 @@ const DesktopStaticNextButtonsOuterWrapper = styled('div', {
   },
 }));
 
-const MobileStaticNextButtonsInnerWrapper = styled('div')`
+export const MobileStaticNextButtonsInnerWrapper = styled('div')`
   align-items: center;
   background-color: #fff;
   border-top: 1px solid #ddd;
@@ -46,7 +46,7 @@ const MobileStaticNextButtonsInnerWrapper = styled('div')`
   padding: 10px 20px;
 `;
 
-const MobileStaticNextButtonsOuterWrapperUShowMobile = styled('div', {
+export const MobileStaticNextButtonsOuterWrapperUShowMobile = styled('div', {
   shouldForwardProp: (prop) => !['breakValue'].includes(prop),
 })(({ breakValue, theme }) => ({
   bottom: 0,
@@ -58,11 +58,3 @@ const MobileStaticNextButtonsOuterWrapperUShowMobile = styled('div', {
     display: 'none !important',
   },
 }));
-
-export {
-  DesktopNextButtonsInnerWrapper,
-  DesktopNextButtonsOuterWrapperUShowDesktopTablet,
-  DesktopStaticNextButtonsOuterWrapper,
-  MobileStaticNextButtonsInnerWrapper,
-  MobileStaticNextButtonsOuterWrapperUShowMobile,
-};

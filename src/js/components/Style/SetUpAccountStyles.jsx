@@ -1,21 +1,21 @@
 import styled from 'styled-components';
 
-const InputFieldsWrapper = styled('div')`
+export const InputFieldsWrapper = styled('div')`
   margin-top: 42px;
   max-width: 300px;
   width: 100%;
 `;
 
-const OneInputFieldWrapper = styled('div')`
+export const OneInputFieldWrapper = styled('div')`
   margin-bottom: 16px;
 `;
 
-const SetUpAccountContactsTextWrapper = styled('div')`
+export const SetUpAccountContactsTextWrapper = styled('div')`
   display: flex;
   justify-content: center;
 `;
 
-const SetUpAccountContactsText = styled('div')`
+export const SetUpAccountContactsText = styled('div')`
   color: #6c757d;
   font-size: 16px;
   padding: 0 20px;
@@ -23,7 +23,7 @@ const SetUpAccountContactsText = styled('div')`
   width: 360px;
 `;
 
-const SetUpAccountIntroText = styled('div')`
+export const SetUpAccountIntroText = styled('div')`
   color: #6c757d;
   font-size: 16px;
   padding: 0 20px;
@@ -31,7 +31,7 @@ const SetUpAccountIntroText = styled('div')`
   width: 235px;
 `;
 
-const SetUpAccountTitle = styled('div')`
+export const SetUpAccountTitle = styled('div')`
   color: #2E3C5D;
   font-size: 28px;
   font-weight: 600;
@@ -42,32 +42,20 @@ const SetUpAccountTitle = styled('div')`
   width: 100%;
 `;
 
-const SetUpAccountTop = styled('div')`
+export const SetUpAccountTop = styled('div')`
   display: flex;
   flex-direction: column;
   align-items: center;
 `;
 
-const StepCenteredWrapper = styled('div')`
+export const StepCenteredWrapper = styled('div')`
   align-items: center;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
 `;
 
-const VoterNameWrapper = styled('div')`
+export const VoterNameWrapper = styled('div')`
   font-size: 20px;
   margin-top: 16px;
 `;
-
-export {
-  InputFieldsWrapper,
-  OneInputFieldWrapper,
-  SetUpAccountContactsText,
-  SetUpAccountContactsTextWrapper,
-  SetUpAccountIntroText,
-  SetUpAccountTitle,
-  SetUpAccountTop,
-  StepCenteredWrapper,
-  VoterNameWrapper,
-};

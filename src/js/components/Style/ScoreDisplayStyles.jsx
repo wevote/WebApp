@@ -1,11 +1,10 @@
 import styled from 'styled-components';
 
-
-const DecidedIconWrapper = styled('span')`
+export const DecidedIconWrapper = styled('span')`
   margin-right: 6px;
 `;
 
-const NetworkScore = styled('div', {
+export const NetworkScore = styled('div', {
   shouldForwardProp: (prop) => !['hideNumbersOfAllPositions', 'voterOpposesBallotItem', 'voterPersonalNetworkScoreIsNegative', 'voterPersonalNetworkScoreIsPositive', 'voterSupportsBallotItem'].includes(prop),
 })(({ hideNumbersOfAllPositions, voterOpposesBallotItem, voterPersonalNetworkScoreIsNegative, voterPersonalNetworkScoreIsPositive, voterSupportsBallotItem }) => (`
   background: ${(voterSupportsBallotItem && 'rgb(31, 192, 111)') || (voterOpposesBallotItem && 'rgb(255, 73, 34)') || (voterPersonalNetworkScoreIsPositive && 'rgb(31, 192, 111)') || (voterPersonalNetworkScoreIsNegative && 'rgb(255, 73, 34)') || (hideNumbersOfAllPositions && 'rgb(211, 211, 211)') || '#888'};
@@ -28,7 +27,7 @@ const NetworkScore = styled('div', {
   }
 `));
 
-const NetworkScoreSmall = styled('div', {
+export const NetworkScoreSmall = styled('div', {
   shouldForwardProp: (prop) => !['hideNumbersOfAllPositions', 'voterOpposesBallotItem', 'voterPersonalNetworkScoreIsNegative', 'voterPersonalNetworkScoreIsPositive', 'voterSupportsBallotItem'].includes(prop),
 })(({ hideNumbersOfAllPositions, voterOpposesBallotItem, voterPersonalNetworkScoreIsNegative, voterPersonalNetworkScoreIsPositive, voterSupportsBallotItem }) => (`
   background: ${(voterSupportsBallotItem && 'rgb(31, 192, 111)') || (voterOpposesBallotItem && 'rgb(255, 73, 34)') || (voterPersonalNetworkScoreIsPositive && 'rgb(31, 192, 111)') || (voterPersonalNetworkScoreIsNegative && 'rgb(255, 73, 34)') || (hideNumbersOfAllPositions && 'rgb(211, 211, 211)') || '#888'};
@@ -50,37 +49,21 @@ const NetworkScoreSmall = styled('div', {
   }
 `));
 
-const PopoverBodyText = styled('div')`
+export const PopoverBodyText = styled('div')`
   margin-bottom: 8px;
 `;
 
-const RenderedOrganizationsWrapper = styled('div')`
+export const RenderedOrganizationsWrapper = styled('div')`
   margin-top: 6px;
 `;
 
-const ShowCandidateFooterWrapper = styled('div')`
-  margin-top: 10px;
+export const TutorialTextBlue = styled('div')`
 `;
 
-const TutorialTextBlue = styled('div')`
-`;
-
-const YourOpinion = styled('div')`
+export const YourOpinion = styled('div')`
   margin-bottom: 8px;
 `;
 
-const YourPersonalNetworkIntroText = styled('div')`
+export const YourPersonalNetworkIntroText = styled('div')`
   margin-top: 6px;
 `;
-
-export {
-  DecidedIconWrapper,
-  NetworkScore,
-  NetworkScoreSmall,
-  PopoverBodyText,
-  RenderedOrganizationsWrapper,
-  ShowCandidateFooterWrapper,
-  TutorialTextBlue,
-  YourOpinion,
-  YourPersonalNetworkIntroText,
-};

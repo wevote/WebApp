@@ -1,26 +1,26 @@
 import styled from 'styled-components';
 
-const CandidateEndorsementsContainer = styled('div')`
+export const CandidateEndorsementsContainer = styled('div')`
   border-left: 1px dotted #dcdcdc;
   display: flex;
   justify-content: flex-start;
 `;
 
-const EmptyPhotoOuterWrapper = styled('div')`
+export const EmptyPhotoOuterWrapper = styled('div')`
   display: flex;
   justify-content: start;
   padding: 8px 3px 6px 4px;
   width: 128px;
 `;
 
-const EmptyText = styled('div')`
+export const EmptyText = styled('div')`
   font-size: 14px;
   font-weight: normal;
   margin-top: 0;
   white-space: normal;
 `;
 
-const EmptyTextWrapper = styled('div')`
+export const EmptyTextWrapper = styled('div')`
   align-items: center;
   display: flex;
   flex-flow: column;
@@ -30,11 +30,11 @@ const EmptyTextWrapper = styled('div')`
   width: 124px;
 `;
 
-const HorizontalSpacer = styled('div')`
+export const HorizontalSpacer = styled('div')`
   border-bottom: 1px dotted #dcdcdc;
 `;
 
-const OrganizationPhotoInnerWrapper = styled('div')`
+export const OrganizationPhotoInnerWrapper = styled('div')`
   align-items: flex-start;
   display: flex;
   height: 50px;
@@ -51,64 +51,46 @@ const OrganizationPhotoInnerWrapper = styled('div')`
   }
 `;
 
-const OverflowContainer = styled('div')`
+export const OverflowContainer = styled('div')`
 `;
 
-const PositionRowItemEmptyWrapper = styled('div')`
+export const PositionRowItemEmptyWrapper = styled('div')`
   align-items: start;
   display: flex;
   flex-direction: column;
   justify-content: center;
 `;
 
-const PositionRowListInnerWrapper = styled('div')`
+export const PositionRowListInnerWrapper = styled('div')`
   align-items: flex-start;
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
 `;
 
-const PositionRowListEmptyWrapper = styled('div')`
+export const PositionRowListEmptyWrapper = styled('div')`
 `;
 
-const PositionRowListOneWrapper = styled('div')`
+export const PositionRowListOneWrapper = styled('div')`
 `;
 
-const PositionRowListOuterWrapper = styled('div')`
+export const PositionRowListOuterWrapper = styled('div')`
   margin-top: 10px;
 `;
 
-const PositionRowListScoreColumn = styled('div')`
+export const PositionRowListScoreColumn = styled('div')`
   padding-right: 0;
 `;
 
-const PositionRowListScoreHeader = styled('div')`
+export const PositionRowListScoreHeader = styled('div')`
   border-bottom: 1px solid #dcdcdc;
   color: #999;
   line-height: 20px;
   margin-top: 0;
 `;
 
-const PositionRowListScoreSpacer = styled('div')`
+export const PositionRowListScoreSpacer = styled('div')`
   cursor: pointer;
   margin-top: 85px;
   margin-right: 7px;
 `;
-
-export {
-  CandidateEndorsementsContainer,
-  EmptyPhotoOuterWrapper,
-  EmptyText,
-  EmptyTextWrapper,
-  HorizontalSpacer,
-  OrganizationPhotoInnerWrapper,
-  OverflowContainer,
-  PositionRowItemEmptyWrapper,
-  PositionRowListEmptyWrapper,
-  PositionRowListInnerWrapper,
-  PositionRowListOneWrapper,
-  PositionRowListOuterWrapper,
-  PositionRowListScoreColumn,
-  PositionRowListScoreHeader,
-  PositionRowListScoreSpacer,
-};
