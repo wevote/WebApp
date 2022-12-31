@@ -57,12 +57,13 @@ async function buildCapabilities () {
   const mobileCapabilities = [];
   for (let i = 0; i < mobileDevices.length; i++) {
     const capability = mobileDevices[i];
-    if (browserStackConfig.BROWSERSTACK_IPA_URL || browserStackConfig.BROWSERSTACK_APK_URL) {
-      if (capability.os === 'ios') {
-        capability['appium:app'] = browserStackConfig.BROWSERSTACK_IPA_URL;
-      } else {
-        capability['appium:app'] = browserStackConfig.BROWSERSTACK_APK_URL;
-      }
+    if (capability.os === 'ios' && browserStackConfig.BROWSERSTACK_IPA_URL) {
+      capability['appium:app'] = browserStackConfig.BROWSERSTACK_IPA_URL;
+    }
+    if (capability.os === 'android' && browserStackConfig.BROWSERSTACK_APK_URL) {
+      capability['appium:app'] = browserStackConfig.BROWSERSTACK_APK_URL;
+    }
+    if (capability['appium:app']) {
       capability.platformName = capability.os;
       capability['appium:platformVersion'] = capability.os_version;
       capability['appium:deviceName'] = capability.device;
