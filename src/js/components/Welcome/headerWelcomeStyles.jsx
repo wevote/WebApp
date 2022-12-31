@@ -1,8 +1,7 @@
 import { keyframes } from '@emotion/react';
 import styled from 'styled-components';
 
-
-const Title = styled('h1')(({ theme }) => (`
+export const Title = styled('h1')(({ theme }) => (`
   font-weight: bold;
   font-size: 36px;
   text-align: center;
@@ -16,7 +15,7 @@ const Title = styled('h1')(({ theme }) => (`
   }
 `));
 
-const BlueTitle = styled('span')`
+export const BlueTitle = styled('span')`
   color: rgb(167, 231, 255);
   margin-bottom: 1em;
 `;
@@ -41,7 +40,7 @@ const fadeOut = keyframes`
   }
 `;
 
-const SubTitle = styled('h3', {
+export const SubTitle = styled('h3', {
   shouldForwardProp: (prop) => !['out'].includes(prop),
 })(({ out, theme }) => (`
   font-weight: 300;
@@ -55,7 +54,7 @@ const SubTitle = styled('h3', {
   }
 `));
 
-const Video = styled('iframe')`
+export const Video = styled('iframe')`
   position: absolute;
   top: 0;
   left: 0;
@@ -63,7 +62,7 @@ const Video = styled('iframe')`
   height: 100%;
 `;
 
-const PlayerContainer = styled('div')(({ theme }) => (`
+export const PlayerContainer = styled('div')(({ theme }) => (`
   width: 640px;
   height: 360px;
   max-width: 90%;
@@ -83,5 +82,3 @@ const PlayerContainer = styled('div')(({ theme }) => (`
     max-height: calc(80vw * 0.5625);
   }
 `));
-
-export { Title, BlueTitle, SubTitle, Video, PlayerContainer };

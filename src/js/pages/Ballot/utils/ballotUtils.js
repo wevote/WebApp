@@ -1,4 +1,4 @@
-function formatVoterBallotList (electionsList) {
+export function formatVoterBallotList (electionsList) {
   return electionsList.map((election) => {
     let ballotReturnedWeVoteId = '';
     let ballotLocationShortcut = '';
@@ -19,7 +19,7 @@ function formatVoterBallotList (electionsList) {
   });
 }
 
-function checkShouldUpdate (state, nextState) {
+export function checkShouldUpdate (state, nextState) {
   if (state.componentDidMountFinished === false) {
     // console.log("shouldComponentUpdate: componentDidMountFinished === false");
     return true;
@@ -121,5 +121,3 @@ function checkShouldUpdate (state, nextState) {
 
   return false;
 }
-
-export { formatVoterBallotList, checkShouldUpdate };

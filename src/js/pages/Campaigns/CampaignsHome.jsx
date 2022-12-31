@@ -25,8 +25,8 @@ import { getTodayAsInteger, getYearFromUltimateElectionDate } from '../../common
 import arrayContains from '../../common/utils/arrayContains';
 
 const CandidateListRoot = React.lazy(() => import(/* webpackChunkName: 'CandidateListRoot' */ '../../components/CandidateListRoot/CandidateListRoot'));
-const CampaignListRoot = React.lazy(() => import(/* webpackChunkName: 'CampaignListRoot' */ '../../common/components/Campaign/CampaignListRoot'));
-const FirstCampaignListController = React.lazy(() => import(/* webpackChunkName: 'FirstCampaignListController' */ '../../common/components/Campaign/FirstCampaignListController'));
+// const CampaignListRoot = React.lazy(() => import(/* webpackChunkName: 'CampaignListRoot' */ '../../common/components/Campaign/CampaignListRoot'));
+// const FirstCampaignListController = React.lazy(() => import(/* webpackChunkName: 'FirstCampaignListController' */ '../../common/components/Campaign/FirstCampaignListController'));
 const FirstCandidateListController = React.lazy(() => import(/* webpackChunkName: 'FirstCandidateListController' */ '../../components/CandidateListRoot/FirstCandidateListController'));
 
 class CampaignsHome extends Component {
@@ -34,7 +34,7 @@ class CampaignsHome extends Component {
     super(props);
     this.state = {
       campaignList: [],
-      campaignListTimeStampOfChange: 0,
+      // campaignListTimeStampOfChange: 0,
       candidateList: [],
       candidateListTimeStampOfChange: 0,
       isSearching: false,
@@ -60,7 +60,7 @@ class CampaignsHome extends Component {
     const campaignList = CampaignStore.getAllCachedCampaignXList();
     this.setState({
       campaignList,
-      campaignListTimeStampOfChange: Date.now(),
+      // campaignListTimeStampOfChange: Date.now(),
     }, () => this.onIncomingCampaignListChange(true));
     const candidateList = CandidateStore.getCandidateList();
     // Note: sorting is being done in CandidateListRoot
@@ -148,7 +148,7 @@ class CampaignsHome extends Component {
     const campaignList = CampaignStore.getAllCachedCampaignXList();
     this.setState({
       campaignList,
-      campaignListTimeStampOfChange: Date.now(),
+      // campaignListTimeStampOfChange: Date.now(),
     }, () => this.onIncomingCampaignListChange());
   }
 
@@ -390,7 +390,8 @@ class CampaignsHome extends Component {
     renderLog('CampaignsHome');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
     const {
-      campaignList, campaignListTimeStampOfChange, campaignsShowing,
+      // campaignList, campaignListTimeStampOfChange,
+      campaignsShowing,
       candidateListOther, candidateListTimeStampOfChange,
       candidateListOnYourBallot,
       isSearching, listModeFiltersAvailable, listModeFiltersTimeStampOfChange, searchText, stateCode,
@@ -471,6 +472,7 @@ class CampaignsHome extends Component {
               />
             </SearchBarWrapper>
           </CampaignsHomeFilterWrapper>
+          {/*
           <WhatIsHappeningSection>
             <Suspense fallback={<span>&nbsp;</span>}>
               <CampaignListRoot
@@ -484,6 +486,7 @@ class CampaignsHome extends Component {
               />
             </Suspense>
           </WhatIsHappeningSection>
+          */}
           {(candidateListOnYourBallot && candidateListOnYourBallot.length > 0) && (
             <WhatIsHappeningSection>
               <Suspense fallback={<span>&nbsp;</span>}>
@@ -514,9 +517,11 @@ class CampaignsHome extends Component {
           </WhatIsHappeningSection>
         </CampaignsHomeContainer>
 
+        {/*
         <Suspense fallback={<></>}>
           <FirstCampaignListController searchText={searchText} stateCode={stateCode} />
         </Suspense>
+        */}
         <Suspense fallback={<></>}>
           <FirstCandidateListController searchText={searchText} stateCode={stateCode} />
         </Suspense>

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 
-const BallotAddress = styled('div', {
+export const BallotAddress = styled('div', {
   shouldForwardProp: (prop) => !['centerText', 'allowTextWrap'].includes(prop),
 })(({ allowTextWrap, centerText }) => (`
   margin-left: 2px;
@@ -11,13 +11,13 @@ const BallotAddress = styled('div', {
   ${centerText ? 'text-align: center;' : ''}
 `));
 
-const ClickBlockWrapper = styled('div')`
+export const ClickBlockWrapper = styled('div')`
 `;
 
-const ComponentWrapper = styled('div')`
+export const ComponentWrapper = styled('div')`
 `;
 
-const ContentWrapper = styled('div', {
+export const ContentWrapper = styled('div', {
   shouldForwardProp: (prop) => !['spaceBetween'].includes(prop),
 })(({ spaceBetween }) => (`
   display: flex;
@@ -26,14 +26,14 @@ const ContentWrapper = styled('div', {
   ${spaceBetween ? 'justify-content: space-between;' : 'justify-content: center;'}
 `));
 
-const ElectionDateBelow = styled('div')`
+export const ElectionDateBelow = styled('div')`
 `;
 
-const ElectionDateRight = styled('div')`
+export const ElectionDateRight = styled('div')`
     font-size: 18px;
 `;
 
-const ElectionNameBlock = styled('div', {
+export const ElectionNameBlock = styled('div', {
   shouldForwardProp: (prop) => !['allowTextWrap'].includes(prop),
 })(({ allowTextWrap }) => (`
   ${allowTextWrap ? '' : 'overflow: hidden;'}
@@ -41,7 +41,7 @@ const ElectionNameBlock = styled('div', {
   ${allowTextWrap ? '' : 'white-space: nowrap;'}
 `));
 
-const ElectionNameH1 = styled('h1', {
+export const ElectionNameH1 = styled('h1', {
   shouldForwardProp: (prop) => !['centerText'].includes(prop),
 })(({ centerText, theme }) => (`
   font-size: 32px;
@@ -55,10 +55,10 @@ const ElectionNameH1 = styled('h1', {
   white-space: normal;
 `));
 
-const ElectionNameScrollContent = styled('div')`
+export const ElectionNameScrollContent = styled('div')`
 `;
 
-const ElectionStateLabel = styled('div', {
+export const ElectionStateLabel = styled('div', {
   shouldForwardProp: (prop) => !['centerText'].includes(prop),
 })(({ centerText }) => (`
   color: #888;
@@ -70,7 +70,7 @@ const ElectionStateLabel = styled('div', {
 `));
 
 /* eslint-disable no-nested-ternary */
-const OverflowContent = styled('div', {
+export const OverflowContent = styled('div', {
   shouldForwardProp: (prop) => !['turnOffVoteByBelow'].includes(prop),
 })(({ theme, turnOffVoteByBelow }) => (`
   display: block;
@@ -81,7 +81,7 @@ const OverflowContent = styled('div', {
   }
 `));
 
-const OverflowContainer = styled('div', {
+export const OverflowContainer = styled('div', {
   shouldForwardProp: (prop) => !['allowTextWrap'].includes(prop),
 })(({ allowTextWrap }) => (`
   ${allowTextWrap ? '' : 'max-width: fit-content;'}
@@ -90,11 +90,11 @@ const OverflowContainer = styled('div', {
   ${allowTextWrap ? '' : 'white-space: nowrap;'}
 `));
 
-const VoteByBelowLabel = styled('div')`
+export const VoteByBelowLabel = styled('div')`
   margin-right: 4px;
 `;
 
-const VoteByBelowWrapper = styled('div', {
+export const VoteByBelowWrapper = styled('div', {
   shouldForwardProp: (prop) => !['centerText', 'electionDateBelow'].includes(prop),
 })(({ centerText, electionDateBelow, theme }) => (`
   display: flex;
@@ -105,14 +105,14 @@ const VoteByBelowWrapper = styled('div', {
   }
 `));
 
-const VoteByRightLabel = styled('div')`
+export const VoteByRightLabel = styled('div')`
   color: #888;
   font-size: 12px;
   letter-spacing: .1em;
   text-transform: uppercase;
 `;
 
-const VoteByRightWrapper = styled('div', {
+export const VoteByRightWrapper = styled('div', {
   shouldForwardProp: (prop) => !['electionDateBelow'].includes(prop),
 })(({ electionDateBelow, theme }) => (`
   ${electionDateBelow ? 'display: none;' : 'display: block;'}
@@ -122,22 +122,3 @@ const VoteByRightWrapper = styled('div', {
     display: none;
   }
 `));
-
-export {
-  BallotAddress,
-  ClickBlockWrapper,
-  ComponentWrapper,
-  ContentWrapper,
-  ElectionDateBelow,
-  ElectionDateRight,
-  ElectionNameBlock,
-  ElectionNameH1,
-  ElectionNameScrollContent,
-  ElectionStateLabel,
-  OverflowContainer,
-  OverflowContent,
-  VoteByBelowLabel,
-  VoteByBelowWrapper,
-  VoteByRightLabel,
-  VoteByRightWrapper,
-};

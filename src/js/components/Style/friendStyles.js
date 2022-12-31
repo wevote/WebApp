@@ -2,13 +2,13 @@ import styled from 'styled-components';
 import { isAndroidSizeMD, isAndroidSizeSM } from '../../common/utils/cordovaUtils';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 
-const CancelButtonWrapper = styled('div')`
+export const CancelButtonWrapper = styled('div')`
   width: fit-content;
   margin-bottom: 0;
   margin-left: 8px;
 `;
 
-const FriendButtonsWrapper = styled('div')(({ theme }) => (`
+export const FriendButtonsWrapper = styled('div')(({ theme }) => (`
   align-items: center;
   display: flex;
   justify-content: flex-end;
@@ -18,7 +18,7 @@ const FriendButtonsWrapper = styled('div')(({ theme }) => (`
   width: fit-content;
 `));
 
-const FriendButtonWithStatsWrapper = styled('div')`
+export const FriendButtonWithStatsWrapper = styled('div')`
   align-items: flex-start;
   display: flex;
   flex-direction: column;
@@ -26,14 +26,14 @@ const FriendButtonWithStatsWrapper = styled('div')`
   width: 100%;
 `;
 
-const FriendColumnWithoutButtons = styled('div')`
+export const FriendColumnWithoutButtons = styled('div')`
   align-items: flex-start;
   display: flex;
   justify-content: flex-start;
   width: 100%;
 `;
 
-const FriendDetailsLine = styled('div')`
+export const FriendDetailsLine = styled('div')`
   // margin-top: -3px;
   width: 100%;
   @media (min-width: 400px){
@@ -42,7 +42,7 @@ const FriendDetailsLine = styled('div')`
   }
 `;
 
-const FriendDetailsWrapperNotInColumn = `
+export const FriendDetailsWrapperNotInColumn = `
   @media(min-width: 400px) {
     width: fit-content;
     margin: 0;
@@ -56,7 +56,7 @@ const FriendDetailsWrapperNotInColumn = `
   }
 `;
 
-const FriendDetailsWrapper = isWebApp() ? styled('div', {
+export const FriendDetailsWrapper = isWebApp() ? styled('div', {
   shouldForwardProp: (prop) => !['inSideColumn'].includes(prop),
 })(({ inSideColumn }) => (`
   margin: 0 auto;
@@ -67,14 +67,14 @@ const FriendDetailsWrapper = isWebApp() ? styled('div', {
   width: 100%;
 `;
 
-const FriendDisplayDesktopButtonsWrapper = styled('div')`
+export const FriendDisplayDesktopButtonsWrapper = styled('div')`
   margin-left: 24px;
 `;
 
 // When wider than sm, show Buttons to the right
 // Otherwise, show Buttons under FriendColumnWithoutButtons
 // If inSideColumn is true, force buttons under FriendColumnWithoutButtons regardless of screen width
-const FriendDisplayOuterWrapper = styled('div', {
+export const FriendDisplayOuterWrapper = styled('div', {
   shouldForwardProp: (prop) => !['inSideColumn'].includes(prop),
 })(({ inSideColumn, theme }) => (`
   // In this default, fill up the full width with both Friend info & buttons
@@ -98,17 +98,17 @@ const FriendDisplayOuterWrapper = styled('div', {
   `)}
 `));
 
-const FriendNameInSideColumn = `
+export const FriendNameInSideColumn = `
   font-size: 14px;
   max-width: 16ch;
   text-align: left;
 `;
 
-const FriendNameNotInSideColumn = `
+export const FriendNameNotInSideColumn = `
   font-size: 18px;
 `;
 
-const FriendName = styled('h3', {
+export const FriendName = styled('h3', {
   shouldForwardProp: (prop) => !['inSideColumn'].includes(prop),
 })(({ inSideColumn }) => (`
   color: black !important;
@@ -122,7 +122,7 @@ const FriendName = styled('h3', {
   ${inSideColumn ? FriendNameInSideColumn : FriendNameNotInSideColumn}
 `));
 
-const InviteToWeVoteLine = styled('div')`
+export const InviteToWeVoteLine = styled('div')`
   margin-top: 4px;
   width: 100%;
   @media (min-width: 400px){
@@ -131,18 +131,18 @@ const InviteToWeVoteLine = styled('div')`
   }
 `;
 
-const SectionDescription = styled('div')`
+export const SectionDescription = styled('div')`
   margin-bottom: 16px;
   width: fit-content;
 `;
 
-const SectionTitle = styled('h2')`
+export const SectionTitle = styled('h2')`
   font-size: 18px;
   font-weight: bold;
   width: fit-content;
 `;
 
-const ToRightOfPhotoContentBlock = styled('div')`
+export const ToRightOfPhotoContentBlock = styled('div')`
   align-items: flex-start;
   display: flex;
   flex-direction: column;
@@ -150,14 +150,14 @@ const ToRightOfPhotoContentBlock = styled('div')`
   width: 100%;
 `;
 
-const ToRightOfPhotoTopRow = styled('div')`
+export const ToRightOfPhotoTopRow = styled('div')`
   align-items: flex-start;
   display: flex;
   justify-content: space-between;
   width: 100%;
 `;
 
-const ToRightOfPhotoWrapper = styled('div')`
+export const ToRightOfPhotoWrapper = styled('div')`
   align-items: flex-start;
   display: flex;
   flex-direction: column;
@@ -165,25 +165,6 @@ const ToRightOfPhotoWrapper = styled('div')`
   width: 100%;
 `;
 
-function smallButtonIfNeeded () {
+export function smallButtonIfNeeded () {
   return isAndroidSizeSM() || isAndroidSizeMD() ? { fontSize: '13px' } : {};
 }
-
-export {
-  CancelButtonWrapper,
-  FriendButtonWithStatsWrapper,
-  FriendButtonsWrapper,
-  FriendColumnWithoutButtons,
-  FriendDetailsLine,
-  FriendDetailsWrapper,
-  FriendDisplayDesktopButtonsWrapper,
-  FriendDisplayOuterWrapper,
-  FriendName,
-  InviteToWeVoteLine,
-  SectionDescription,
-  SectionTitle,
-  ToRightOfPhotoContentBlock,
-  ToRightOfPhotoTopRow,
-  ToRightOfPhotoWrapper,
-  smallButtonIfNeeded,
-};

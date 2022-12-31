@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 
-const Dot = styled('div')`
+export const Dot = styled('div')`
   padding-top: 1px;
   text-align: center;
   vertical-align: top;
 `;
 
-const OuterWrapper = styled('div')(({ theme }) => (`
+export const OuterWrapper = styled('div')(({ theme }) => (`
   display: flex;
   justify-content: center;
   padding: 0 !important;
@@ -19,11 +19,11 @@ const OuterWrapper = styled('div')(({ theme }) => (`
   }
 `));
 
-const InnerWrapper = styled('div')`
+export const InnerWrapper = styled('div')`
   width: 100%;
 `;
 
-const IntroHeader = styled('div', {
+export const IntroHeader = styled('div', {
   shouldForwardProp: (prop) => !['titleCentered', 'titleLarge'].includes(prop),
 })(({ titleCentered, titleLarge, theme }) => (`
   color: #2e3c5d;
@@ -38,12 +38,12 @@ const IntroHeader = styled('div', {
   }
 `));
 
-const ListMaxWidth = styled('div')`
+export const ListMaxWidth = styled('div')`
   max-width: 450px;
   width: 100%;
 `;
 
-const ListTitleRow = styled('div')`
+export const ListTitleRow = styled('div')`
   cursor: pointer;
   display: flex;
   flex-flow: row nowrap;
@@ -51,22 +51,22 @@ const ListTitleRow = styled('div')`
   padding-top: 8px;
 `;
 
-const ListRow = styled('div')`
+export const ListRow = styled('div')`
   display: flex;
   flex-flow: row nowrap;
   justify-content: flex-start;
 `;
 
-const ListWrapper = styled('div')`
+export const ListWrapper = styled('div')`
   display: flex;
   justify-content: center;
 `;
 
-const ShowMoreWrapper = styled('div')`
+export const ShowMoreWrapper = styled('div')`
   margin-left: 20px;
 `;
 
-const StepNumber = styled('div')(({ theme }) => (`
+export const StepNumber = styled('div')(({ theme }) => (`
   background: ${theme.colors.brandBlue};
   border-radius: 4px;
   color: white;
@@ -76,7 +76,7 @@ const StepNumber = styled('div')(({ theme }) => (`
   padding-top: 0;
 `));
 
-const StepTitle = styled('div')`
+export const StepTitle = styled('div')`
   font-size: 16px;
   font-weight: 600;
   padding: 0 8px;
@@ -84,7 +84,7 @@ const StepTitle = styled('div')`
   vertical-align: top;
 `;
 
-const StepText = styled('div')`
+export const StepText = styled('div')`
   color: #555;
   font-size: 15px;
   font-weight: 200;
@@ -93,23 +93,7 @@ const StepText = styled('div')`
   vertical-align: top;
 `;
 
-const StepNumberPlaceholder = styled('div')`
+export const StepNumberPlaceholder = styled('div')`
   width: 20px;
   height: 20px;
 `;
-
-export {
-  Dot,
-  InnerWrapper,
-  IntroHeader,
-  ListMaxWidth,
-  ListRow,
-  ListTitleRow,
-  ListWrapper,
-  OuterWrapper,
-  ShowMoreWrapper,
-  StepNumber,
-  StepNumberPlaceholder,
-  StepText,
-  StepTitle,
-};

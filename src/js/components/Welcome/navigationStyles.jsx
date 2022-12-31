@@ -1,26 +1,26 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
-const Divider = styled('div')`
+export const Divider = styled('div')`
   width: 2px;
   background: rgba(255, 255, 255, 0.2);
   margin: 0 .3em;
   padding: 12px 0;
 `;
 
-const LogoContainer = styled('div')(({ theme }) => (`
+export const LogoContainer = styled('div')(({ theme }) => (`
   ${theme.breakpoints.down('md')} {
     width: 100px;
   }
 `));
 
-const MobileNavDivider = styled('div')`
+export const MobileNavDivider = styled('div')`
   width: 100%;
   border-bottom: 1px solid rgba(255, 255, 255, 0.3);
   margin: .6em 0;
 `;
 
-const MobileNavigationMenu = styled('div')`
+export const MobileNavigationMenu = styled('div')`
   position: absolute;
   left: -32px;
   top: 0;
@@ -33,13 +33,13 @@ const MobileNavigationMenu = styled('div')`
   transition: all 150ms ease-in;
 `;
 
-const Navigation = styled('div')`
+export const Navigation = styled('div')`
   display: flex;
   flex-flow: row;
   color: white;
 `;
 
-const NavLink = styled(Link)(({ theme }) => (`
+export const NavLink = styled(Link)(({ theme }) => (`
   text-transform: uppercase;
   font-size: 14px;
   color: white !important;
@@ -51,7 +51,7 @@ const NavLink = styled(Link)(({ theme }) => (`
   }
 `));
 
-const NavNonLink = styled('div')(({ theme }) => (`
+export const NavNonLink = styled('div')(({ theme }) => (`
   color: white !important;
   cursor: pointer;
   text-transform: uppercase;
@@ -67,11 +67,8 @@ const NavNonLink = styled('div')(({ theme }) => (`
   }
 `));
 
-const NavRow = styled('div')`
+export const NavRow = styled('div')`
   display: flex;
   height: 32px;
   justify-content: space-between;
 `;
-
-export { Divider, LogoContainer, MobileNavDivider, MobileNavigationMenu, Navigation, NavLink, NavNonLink, NavRow };
-

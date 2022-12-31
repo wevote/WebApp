@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 
 
-const BallotToDoTitle = styled('h3')(({ theme }) => (`
+export const BallotToDoTitle = styled('h3')(({ theme }) => (`
   margin: 0;
   font-size: 30px;
   font-weight: 600;
@@ -19,13 +19,13 @@ const BallotToDoTitle = styled('h3')(({ theme }) => (`
   }
 `));
 
-const ButtonLeft = styled('div')`
+export const ButtonLeft = styled('div')`
   display: flex !important;
   align-items: center !important;
   justify-content: flex-start !important;
 `;
 
-const ButtonText = styled('div', {
+export const ButtonText = styled('div', {
   shouldForwardProp: (prop) => !['fontColor'].includes(prop),
 })(({ fontColor, theme }) => (`
   ${fontColor ? `color: ${fontColor};` : ''}
@@ -35,7 +35,7 @@ const ButtonText = styled('div', {
   }
 `));
 
-const ReadyCard = styled('div', {
+export const ReadyCard = styled('div', {
   shouldForwardProp: (prop) => !['showProgressColor'].includes(prop),
 })(({ showProgressColor, theme }) => (`
   padding: 16px;
@@ -65,7 +65,7 @@ const ReadyCard = styled('div', {
   }
 `));
 
-const Icon = styled('div')(({ theme }) => (`
+export const Icon = styled('div')(({ theme }) => (`
   align-items: center;
   border-radius: 50px;
   display: flex;
@@ -82,7 +82,7 @@ const Icon = styled('div')(({ theme }) => (`
   }
 `));
 
-const PercentComplete = styled('div', {
+export const PercentComplete = styled('div', {
   shouldForwardProp: (prop) => !['showProgressColor'].includes(prop),
 })(({ showProgressColor, theme }) => (`
   color: ${showProgressColor ? 'green' : 'black'};
@@ -96,13 +96,13 @@ const PercentComplete = styled('div', {
   }
 `));
 
-const TitleRowWrapper = styled('div')`
+export const TitleRowWrapper = styled('div')`
   display: flex !important;
   align-items: center !important;
   justify-content: space-between !important;
 `;
 
-const Title = styled('h3')(({ theme }) => (`
+export const Title = styled('h3')(({ theme }) => (`
   margin: 0;
   font-size: 30px;
   font-weight: 600;
@@ -118,13 +118,13 @@ const Title = styled('h3')(({ theme }) => (`
   }
 `));
 
-const SubTitle = styled('small')`
+export const SubTitle = styled('small')`
   margin: 0;
   font-size: 16px;
   color: #555;
 `;
 
-const StyledButton = styled(Button, {
+export const StyledButton = styled(Button, {
   shouldForwardProp: (prop) => !['completed', 'darkButton', 'withoutsteps'].includes(prop),
 })(({ completed, darkButton, withoutsteps, theme }) => (`
   ${darkButton ? '' : `border: 1.5px solid ${completed ? 'rgb(31,192,111)' : '#ddd'} !important;`}
@@ -149,7 +149,7 @@ const StyledButton = styled(Button, {
   }
 `));
 
-const StyledCheckbox = styled('div')(({ theme }) => (`
+export const StyledCheckbox = styled('div')(({ theme }) => (`
   width: 20px;
   height: 20px;
   background: transparent;
@@ -162,7 +162,7 @@ const StyledCheckbox = styled('div')(({ theme }) => (`
   }
 `));
 
-const StyledCheckboxCompleted = styled('div')(({ theme }) => (`
+export const StyledCheckboxCompleted = styled('div')(({ theme }) => (`
   width: 25px;
   height: 25px;
   border-radius: 50px;
@@ -173,10 +173,3 @@ const StyledCheckboxCompleted = styled('div')(({ theme }) => (`
     margin-right: 8px;
   }
 `));
-
-export {
-  BallotToDoTitle, ButtonLeft, ButtonText, Icon,
-  PercentComplete, ReadyCard, StyledButton, StyledCheckbox, StyledCheckboxCompleted,
-  SubTitle, Title, TitleRowWrapper,
-};
-
