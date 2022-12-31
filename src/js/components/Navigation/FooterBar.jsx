@@ -167,7 +167,8 @@ class FooterBar extends React.Component {
         fontSize: 37,
       },
       '& .MuiBottomNavigationAction-label.Mui-selected': {
-        fontSize: 18,
+        fontSize: 16,
+        fontWeight: 600,
       },
       '& .MuiBottomNavigationAction-root, svg': {
         fontSize: 35,
@@ -199,8 +200,9 @@ class FooterBar extends React.Component {
     }
     return (
       <FooterBarWrapper>
-        <div
-          className={`footer-container u-show-mobile-tablet ${hideFooterBehindModal ? ' u-z-index-1000' : ' u-z-index-9000'}`}
+        <FooterContainer
+          className={`u-show-mobile-tablet ${hideFooterBehindModal ? ' u-z-index-1000' : ' u-z-index-9000'}`}
+          id="footer-container"
           style={cordovaFooterHeight()}
         >
           <BottomNavigation
@@ -209,34 +211,58 @@ class FooterBar extends React.Component {
             showLabels
             style={{ width: `${isIOS() ? '95%' : ''}`, height: `${isAndroid() ? '70px' : ''}`  }}
           >
-            <BottomNavigationAction className="no-outline" id="readyTabFooterBar" label="Home" showLabel icon={<Home />} sx={bigIcons} />
-            <BottomNavigationAction className="no-outline" id="ballotTabFooterBar" label="Ballot" showLabel icon={<HowToVote />} sx={bigIcons} />
             <BottomNavigationAction
               className="no-outline"
-              id="candidatesTabFooterBar"
-              label="Candidates"
+              icon={<Home />}
+              id="readyTabFooterBar"
+              label="Home"
               showLabel
-              icon={(this.getSelectedTab() === 2) ? (
-                <img src={normalizedImagePath(capitalBuildingSelected)}
-                     width={36}
-                     height={36}
-                     alt=""
-                />
-              ) : (
-                <img src={normalizedImagePath(capitalBuilding)}
-                     width={36}
-                     height={36}
-                     alt=""
-                />
-              )}
               sx={bigIcons}
             />
             <BottomNavigationAction
               className="no-outline"
-              id="friendsTabFooterBar"
-              label="Friends"
+              icon={<HowToVote />}
+              id="ballotTabFooterBar"
+              label="Ballot"
               showLabel
               sx={bigIcons}
+              style={{
+                paddingLeft: '0px',
+              }}
+            />
+            <BottomNavigationAction
+              className="no-outline"
+              id="candidatesTabFooterBar"
+              icon={(this.getSelectedTab() === 2) ? (
+                <img
+                  alt=""
+                  src={normalizedImagePath(capitalBuildingSelected)}
+                  style={{
+                    marginTop: '-2px',
+                  }}
+                  width={36}
+                  height={36}
+                />
+              ) : (
+                <img
+                  alt=""
+                  src={normalizedImagePath(capitalBuilding)}
+                  style={{
+                    marginTop: '-2px',
+                  }}
+                  width={36}
+                  height={36}
+                />
+              )}
+              label="Candidates"
+              style={{
+                marginLeft: '-3px',
+              }}
+              showLabel
+              sx={bigIcons}
+            />
+            <BottomNavigationAction
+              className="no-outline"
               icon={friendInvitationsSentToMeCount > 0 ? (
                 <Badge
                   badgeContent={<BadgeCountWrapper>{friendInvitationsSentToMeCount}</BadgeCountWrapper>}
@@ -256,9 +282,23 @@ class FooterBar extends React.Component {
               ) : (
                 <People />
               )}
+              id="friendsTabFooterBar"
+              label="Friends"
+              showLabel
+              sx={bigIcons}
             />
             {discussVisible && (
-              <BottomNavigationAction className="no-outline" id="newsTabFooterBar" label="Discuss" showLabel icon={<QuestionAnswer />} sx={bigIcons} />
+              <BottomNavigationAction
+                className="no-outline"
+                icon={<QuestionAnswer />}
+                id="newsTabFooterBar"
+                label="Discuss"
+                showLabel
+                style={{
+                  paddingLeft: '0px',
+                }}
+                sx={bigIcons}
+              />
             )}
             {donateVisible && (
               <BottomNavigationAction className="no-outline" id="donateTabFooterBar" label="Donate" showLabel icon={<VerifiedUser />} sx={bigIcons} />
@@ -274,7 +314,7 @@ class FooterBar extends React.Component {
               />
             )}
           </BottomNavigation>
-        </div>
+        </FooterContainer>
       </FooterBarWrapper>
     );
   }
@@ -309,6 +349,17 @@ const FooterBarWrapper = styled('div')`
   @media print{
     display: none;
   }
+`;
+
+const FooterContainer = styled('div')`
+  background: #fff;
+  border-top: 1px solid #eee;
+  bottom: 0;
+  box-shadow: 0 -4px 4px -1px rgba(0, 0, 0, 0.2), 0 -4px 5px 0 rgba(0, 0, 0, 0.14), 0 -1px 10px 0 rgba(0, 0, 0, 0.12);
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-left: 0;
+  position: fixed;
+  width: 100%;
 `;
 
 export default withStyles(styles)(FooterBar);
