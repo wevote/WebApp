@@ -359,7 +359,7 @@ export function cordovaSignInModalTopPosition (collapsed) {
 function measureFooterContainer () {
   try {
     const { $ } = window;
-    const footerContainer = $('div[class*=\'footer-container\']');
+    const footerContainer = $('div[id*=\'footer-container\']');
     const rect = footerContainer[0].getBoundingClientRect();
     // console.log('rect = ', rect, rect.height);
     return rect.height;
