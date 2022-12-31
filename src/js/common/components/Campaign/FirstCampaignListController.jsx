@@ -29,7 +29,11 @@ class FirstCampaignListController extends Component {
       }, 500);
     }
     if (this.props.stateCode !== prevProps.stateCode) {
-      if (this.props.stateCode !== 'all') {
+      let stateCodeLowerCase = '';
+      if (this.props.stateCode) {
+        stateCodeLowerCase = this.props.stateCode.toLowerCase();
+      }
+      if (stateCodeLowerCase !== 'all' && stateCodeLowerCase !== 'na') {
         this.CampaignsForStateRetrieve();
       }
     }
@@ -68,10 +72,15 @@ class FirstCampaignListController extends Component {
 
   CampaignsForStateRetrieve = () => {
     const { stateCode } = this.props;
+    let filteredStateCode = '';
+    if (stateCode) {
+      filteredStateCode = stateCode.toLowerCase().replace('all', '');
+      filteredStateCode = filteredStateCode.toLowerCase().replace('na', '');
+    }
     initializejQuery(() => {
       // console.log(`campaignListRetrieve-${stateCode}`);
       if (apiCalming(`campaignListRetrieve-${stateCode}`, 180000)) {
-        CampaignActions.campaignListRetrieve('', stateCode);
+        CampaignActions.campaignListRetrieve('', filteredStateCode);
       }
     });
   }

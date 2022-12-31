@@ -76,13 +76,18 @@ class FirstCandidateListController extends Component {
       const thisYearInteger = today.getFullYear();
       let electionDay = thisYearInteger;
       // console.log(`candidatesQuery-${stateCode}-${electionDay}`);
+      let filteredStateCode = '';
+      if (stateCode) {
+        filteredStateCode = stateCode.toLowerCase().replace('all', '');
+        filteredStateCode = filteredStateCode.toLowerCase().replace('na', '');
+      }
       if (apiCalming(`candidatesQuery-${stateCode}-${electionDay}`, 180000)) {
-        CandidateActions.candidatesQuery(electionDay, [], stateCode);
+        CandidateActions.candidatesQuery(electionDay, [], filteredStateCode);
       }
       electionDay = thisYearInteger - 1;
       // console.log(`candidatesQuery-${stateCode}-${electionDay}`);
       if (apiCalming(`candidatesQuery-${stateCode}-${electionDay}`, 180000)) {
-        CandidateActions.candidatesQuery(electionDay, [], stateCode);
+        CandidateActions.candidatesQuery(electionDay, [], filteredStateCode);
       }
     });
   }

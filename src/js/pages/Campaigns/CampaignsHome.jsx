@@ -77,8 +77,13 @@ class CampaignsHome extends Component {
     if (stateCandidatesPhrase) {
       let stateName = stateCandidatesPhrase.replace('-candidates', '');
       stateName = stateName.replace('-', ' ');
+      let newStateCode = convertStateTextToStateCode(stateName);
+      if (newStateCode.toLowerCase() === 'na') {
+        newStateCode = 'all';
+      }
+      // console.log('componentDidMount newStateCode:', newStateCode);
       this.setState({
-        stateCode: convertStateTextToStateCode(stateName),
+        stateCode: newStateCode,
       });
     } else if (VoterStore.getStateCodeFromIPAddress()) {
       const newPathname = this.getStateNamePathnameFromStateCode(VoterStore.getStateCodeFromIPAddress());
@@ -112,7 +117,11 @@ class CampaignsHome extends Component {
       if (stateName) {
         stateName = stateName.replace('-', ' ');
         const { stateCode } = this.state;
-        const newStateCode = convertStateTextToStateCode(stateName);
+        let newStateCode = convertStateTextToStateCode(stateName);
+        // console.log('stateCode:', stateCode, ', newStateCode:', newStateCode);
+        if (newStateCode.toLowerCase() === 'na') {
+          newStateCode = 'all';
+        }
         if (newStateCode !== stateCode) {
           this.setState({
             stateCode: newStateCode,
@@ -452,10 +461,14 @@ class CampaignsHome extends Component {
                   >
                     <option aria-label="-- any state --" value="all">-- any state --</option>
                     {stateNameList.map((stateName) => {
-                      stateCodeTemp = convertStateTextToStateCode(stateName);
-                      return (
-                        <option key={`${stateCodeTemp}-option`} value={stateCodeTemp}>{stateName}</option>
-                      );
+                      if (stateName === 'National') {
+                        return null;
+                      } else {
+                        stateCodeTemp = convertStateTextToStateCode(stateName);
+                        return (
+                          <option key={`${stateCodeTemp}-option`} value={stateCodeTemp}>{stateName}</option>
+                        );
+                      }
                     })}
                   </Select>
                 </FormControl>

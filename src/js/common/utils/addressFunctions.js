@@ -13,7 +13,7 @@ export const stateCodeMap = {
   DE: 'Delaware',
   FL: 'Florida',
   GA: 'Georgia',
-  GU: 'Guam',
+  // GU: 'Guam',
   HI: 'Hawaii',
   IA: 'Iowa',
   ID: 'Idaho',
