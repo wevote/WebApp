@@ -20,6 +20,7 @@ const parallelConfig = {
   capabilities,
   commonCapabilities: {
     'bstack:options': {
+      appiumVersion: '2.0.0',
       buildName,
     },
   },
