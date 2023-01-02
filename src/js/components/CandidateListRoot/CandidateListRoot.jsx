@@ -75,22 +75,36 @@ class CandidateListRoot extends Component {
   }
 
   orderByAlphabetical = (firstEntry, secondEntry) => {
-    let firstEntryName;
-    let secondEntryName = 'x';
+    let firstEntryValue;
+    let secondEntryValue = 'z';
     if (firstEntry && firstEntry.ballot_item_display_name) {
-      firstEntryName = firstEntry.ballot_item_display_name;
+      firstEntryValue = firstEntry.ballot_item_display_name;
     }
     if (secondEntry && secondEntry.ballot_item_display_name) {
-      secondEntryName = secondEntry.ballot_item_display_name;
+      secondEntryValue = secondEntry.ballot_item_display_name;
     }
-    if (firstEntryName < secondEntryName) { return -1; }
-    if (firstEntryName > secondEntryName) { return 1; }
+    if (firstEntryValue < secondEntryValue) { return -1; }
+    if (firstEntryValue > secondEntryValue) { return 1; }
     return 0;
   };
 
-  orderByTwitterFollowers = (firstCandidate, secondCandidate) => secondCandidate.twitter_followers_count - firstCandidate.twitter_followers_count;
+  orderByIsBattlegroundRace = (firstEntry, secondEntry) => {
+    let firstEntryValue = false;
+    let secondEntryValue = false;
+    if (firstEntry && 'is_battleground_race' in firstEntry) {
+      firstEntryValue = firstEntry.is_battleground_race;
+    }
+    if (secondEntry && 'is_battleground_race' in secondEntry) {
+      secondEntryValue = secondEntry.is_battleground_race;
+    }
+    if (firstEntryValue === true && secondEntryValue === false) { return -1; }
+    if (firstEntryValue === false && secondEntryValue === true) { return 1; }
+    return 0;
+  };
 
-  orderCandidatesByUltimateDate = (firstEntry, secondEntry) => secondEntry.candidate_ultimate_election_date - firstEntry.candidate_ultimate_election_date;
+  orderByTwitterFollowers = (firstEntry, secondEntry) => secondEntry.twitter_followers_count - firstEntry.twitter_followers_count;
+
+  orderByUltimateElectionDate = (firstEntry, secondEntry) => secondEntry.candidate_ultimate_election_date - firstEntry.candidate_ultimate_election_date;
 
   onFilterOrListChange = () => {
     // console.log('onFilterOrListChange');
@@ -183,7 +197,8 @@ class CandidateListRoot extends Component {
     // Now sort
     filteredCandidateList = filteredCandidateList.sort(this.orderByAlphabetical);
     filteredCandidateList = filteredCandidateList.sort(this.orderByTwitterFollowers);
-    filteredCandidateList = filteredCandidateList.sort(this.orderCandidatesByUltimateDate);
+    filteredCandidateList = filteredCandidateList.sort(this.orderByIsBattlegroundRace);
+    filteredCandidateList = filteredCandidateList.sort(this.orderByUltimateElectionDate);
     let candidateSearchResults = [];
     if (searchText && searchText.length > 0) {
       const searchTextLowercase = searchText.toLowerCase();

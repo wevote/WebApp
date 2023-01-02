@@ -20,6 +20,7 @@ import IssueStore from '../../stores/IssueStore';
 import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../common/utils/logging';
 import apiCalming from '../../common/utils/apiCalming';
+import { convertToInteger } from '../../common/utils/textFormat';
 import { cordovaSimplePageContainerTopOffset } from '../../utils/cordovaCalculatedOffsets';
 import { getTodayAsInteger, getYearFromUltimateElectionDate } from '../../common/utils/dateFormat';
 import arrayContains from '../../common/utils/arrayContains';
@@ -34,9 +35,11 @@ class CampaignsHome extends Component {
     super(props);
     this.state = {
       campaignList: [],
-      // campaignListTimeStampOfChange: 0,
       candidateList: [],
+      candidateListIsBattleground: [],
+      candidateListOnYourBallot: [],
       candidateListTimeStampOfChange: 0,
+      filterYear: 0,
       isSearching: false,
       listModeShown: 'showUpcomingEndorsements',
       listModeFiltersAvailable: [],
@@ -64,12 +67,11 @@ class CampaignsHome extends Component {
     }, () => this.onIncomingCampaignListChange(true));
     const candidateList = CandidateStore.getCandidateList();
     // Note: sorting is being done in CandidateListRoot
-    const candidateListOnYourBallot = BallotStore.getAllBallotItemsFlattened();
-    const weVoteIdsOnYourBallot = extractAttributeValueListFromObjectList('we_vote_id', candidateListOnYourBallot);
-    const candidateListOther = candidateList.filter((oneCandidate) => !arrayContains(oneCandidate.we_vote_id, weVoteIdsOnYourBallot));
+    const { candidateListOnYourBallot, candidateListIsBattleground, candidateListOther } = this.splitUpCandidateList(candidateList);
 
     this.setState({
       candidateList,
+      candidateListIsBattleground,
       candidateListOnYourBallot,
       candidateListOther,
       candidateListTimeStampOfChange: Date.now(),
@@ -142,10 +144,9 @@ class CampaignsHome extends Component {
 
   onBallotStoreChange () {
     const { candidateList } = this.state;
-    const candidateListOnYourBallot = BallotStore.getAllBallotItemsFlattened();
-    const weVoteIdsOnYourBallot = extractAttributeValueListFromObjectList('we_vote_id', candidateListOnYourBallot);
-    const candidateListOther = candidateList.filter((oneCandidate) => !arrayContains(oneCandidate.we_vote_id, weVoteIdsOnYourBallot));
+    const { candidateListOnYourBallot, candidateListIsBattleground, candidateListOther } = this.splitUpCandidateList(candidateList);
     this.setState({
+      candidateListIsBattleground,
       candidateListOnYourBallot,
       candidateListOther,
       candidateListTimeStampOfChange: Date.now(),
@@ -164,11 +165,10 @@ class CampaignsHome extends Component {
   onCandidateStoreChange () {
     const candidateList = CandidateStore.getCandidateList();
     // Note: sorting is being done in CandidateListRoot
-    const candidateListOnYourBallot = BallotStore.getAllBallotItemsFlattened();
-    const weVoteIdsOnYourBallot = extractAttributeValueListFromObjectList('we_vote_id', candidateListOnYourBallot);
-    const candidateListOther = candidateList.filter((oneCandidate) => !arrayContains(oneCandidate.we_vote_id, weVoteIdsOnYourBallot));
+    const { candidateListOnYourBallot, candidateListIsBattleground, candidateListOther } = this.splitUpCandidateList(candidateList);
     this.setState({
       candidateList,
+      candidateListIsBattleground,
       candidateListOnYourBallot,
       candidateListOther,
       candidateListTimeStampOfChange: Date.now(),
@@ -214,6 +214,20 @@ class CampaignsHome extends Component {
   }
 
   orderByFilterOrder = (firstFilter, secondFilter) => firstFilter.filterOrder - secondFilter.filterOrder;
+
+  splitUpCandidateList = (candidateList) => {
+    const candidateListOnYourBallot = BallotStore.getAllBallotItemsFlattened();
+    const weVoteIdsOnYourBallot = extractAttributeValueListFromObjectList('we_vote_id', candidateListOnYourBallot);
+    const candidateListRemaining = candidateList.filter((oneCandidate) => !arrayContains(oneCandidate.we_vote_id, weVoteIdsOnYourBallot));
+    const candidateListIsBattleground = candidateListRemaining.filter((oneCandidate) => oneCandidate.is_battleground_race);
+    const weVoteIdsIsBattlegroundRace = extractAttributeValueListFromObjectList('we_vote_id', candidateListIsBattleground);
+    const candidateListOther = candidateListRemaining.filter((oneCandidate) => !arrayContains(oneCandidate.we_vote_id, weVoteIdsIsBattlegroundRace));
+    return {
+      candidateListOnYourBallot,
+      candidateListIsBattleground,
+      candidateListOther,
+    };
+  }
 
   updateActiveFilters = (setDefaultListMode = false) => {
     const { campaignList, candidateList, listOfYearsWhenCampaignExists, listOfYearsWhenCandidateExists } = this.state;
@@ -295,9 +309,11 @@ class CampaignsHome extends Component {
     }
   }
 
-  changeListModeShown = (newListModeShown) => {
+  changeListModeShown = (newListModeShown, newFilterYear = '') => {
+    const filterYearInteger = convertToInteger(newFilterYear);
     this.setState({
       listModeShown: newListModeShown,
+      filterYear: filterYearInteger,
     }, () => this.updateActiveFilters());
   }
 
@@ -402,7 +418,7 @@ class CampaignsHome extends Component {
       // campaignList, campaignListTimeStampOfChange,
       campaignsShowing,
       candidateListOther, candidateListTimeStampOfChange,
-      candidateListOnYourBallot,
+      candidateListIsBattleground, candidateListOnYourBallot, filterYear,
       isSearching, listModeFiltersAvailable, listModeFiltersTimeStampOfChange, searchText, stateCode,
     } = this.state;
     // console.log('CampaignsHome.jsx campaignList:', campaignList);
@@ -411,7 +427,7 @@ class CampaignsHome extends Component {
     const descriptionText = 'Choose which candidates you support.';
     let stateCodeTemp;
     const stateNameList = Object.values(stateCodeMap);
-
+    const otherTitlesShown = campaignsShowing || (candidateListOnYourBallot && candidateListOnYourBallot.length > 0) || (candidateListIsBattleground && candidateListIsBattleground.length > 0);
     return (
       <PageContentContainer>
         <CampaignsHomeContainer className="container-fluid" style={this.getTopPadding()}>
@@ -440,7 +456,7 @@ class CampaignsHome extends Component {
                         label={<span style={oneFilter.filterSelected ? { fontWeight: 600 } : {}}>{oneFilter.filterDisplayName}</span>}
                         className={oneFilter.filterSelected ? classes.selectedChip : classes.notSelectedChip}
                         component="div"
-                        onClick={() => this.changeListModeShown(oneFilter.filterName)}
+                        onClick={() => this.changeListModeShown(oneFilter.filterName, oneFilter.filterYear)}
                         variant={oneFilter.filterSelected ? undefined : 'outlined'}
                       />
                     )}
@@ -515,6 +531,21 @@ class CampaignsHome extends Component {
               </Suspense>
             </WhatIsHappeningSection>
           )}
+          {(candidateListIsBattleground && candidateListIsBattleground.length > 0) && (
+            <WhatIsHappeningSection>
+              <Suspense fallback={<span>&nbsp;</span>}>
+                <CandidateListRoot
+                  incomingList={candidateListIsBattleground}
+                  incomingListTimeStampOfChange={candidateListTimeStampOfChange}
+                  listModeFilters={listModeFiltersAvailable}
+                  listModeFiltersTimeStampOfChange={listModeFiltersTimeStampOfChange}
+                  searchText={searchText}
+                  stateCode={stateCode}
+                  titleTextIfCampaigns="Close Races"
+                />
+              </Suspense>
+            </WhatIsHappeningSection>
+          )}
           <WhatIsHappeningSection>
             <Suspense fallback={<span>&nbsp;</span>}>
               <CandidateListRoot
@@ -524,7 +555,7 @@ class CampaignsHome extends Component {
                 listModeFiltersTimeStampOfChange={listModeFiltersTimeStampOfChange}
                 searchText={searchText}
                 stateCode={stateCode}
-                titleTextIfCampaigns={(campaignsShowing || (candidateListOnYourBallot && candidateListOnYourBallot.length > 0)) ? 'Other Candidates' : ''}
+                titleTextIfCampaigns={otherTitlesShown ? 'Other Candidates' : ''}
               />
             </Suspense>
           </WhatIsHappeningSection>
@@ -536,7 +567,7 @@ class CampaignsHome extends Component {
         </Suspense>
         */}
         <Suspense fallback={<></>}>
-          <FirstCandidateListController searchText={searchText} stateCode={stateCode} />
+          <FirstCandidateListController searchText={searchText} stateCode={stateCode} year={filterYear} />
         </Suspense>
       </PageContentContainer>
     );
