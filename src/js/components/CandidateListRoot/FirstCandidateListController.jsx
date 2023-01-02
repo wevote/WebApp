@@ -24,15 +24,13 @@ class FirstCandidateListController extends Component {
 
   componentDidUpdate (prevProps) {
     if (this.props.searchText !== prevProps.searchText) {
-      if (this.searchTimer) clearTimeout(this.searchTimer);
-      this.searchTimer = setTimeout(() => {
-        this.CandidateSearchRetrieve();
-      }, 500);
+      this.CandidateSearchRetrieve();
     }
     if (this.props.stateCode !== prevProps.stateCode) {
-      if (this.props.stateCode !== 'all') {
-        this.CandidatesForStateRetrieve();
-      }
+      this.CandidatesForStateRetrieve();
+    }
+    if (this.props.year !== prevProps.year) {
+      this.CandidatesForYearRetrieve();
     }
   }
 
@@ -69,8 +67,9 @@ class FirstCandidateListController extends Component {
   }
 
   CandidatesForStateRetrieve = () => {
-    const { stateCode } = this.props;
+    const { stateCode, year } = this.props;
     initializejQuery(() => {
+      const yearsRetrieved = [];
       // Retrieve all candidates for this state for last two years
       const today = new Date();
       const thisYearInteger = today.getFullYear();
@@ -84,10 +83,31 @@ class FirstCandidateListController extends Component {
       if (apiCalming(`candidatesQuery-${stateCode}-${electionDay}`, 180000)) {
         CandidateActions.candidatesQuery(electionDay, [], filteredStateCode);
       }
+      yearsRetrieved.push(electionDay);
       electionDay = thisYearInteger - 1;
       // console.log(`candidatesQuery-${stateCode}-${electionDay}`);
       if (apiCalming(`candidatesQuery-${stateCode}-${electionDay}`, 180000)) {
         CandidateActions.candidatesQuery(electionDay, [], filteredStateCode);
+      }
+      yearsRetrieved.push(electionDay);
+      if (!(year in yearsRetrieved)) {
+        if (apiCalming(`candidatesQuery-${stateCode}-${year}`, 180000)) {
+          CandidateActions.candidatesQuery(year, [], filteredStateCode);
+        }
+      }
+    });
+  }
+
+  CandidatesForYearRetrieve = () => {
+    const { stateCode, year: thisYearInteger } = this.props;
+    initializejQuery(() => {
+      let filteredStateCode = '';
+      if (stateCode) {
+        filteredStateCode = stateCode.toLowerCase().replace('all', '');
+        filteredStateCode = filteredStateCode.toLowerCase().replace('na', '');
+      }
+      if (apiCalming(`candidatesQuery-${stateCode}-${thisYearInteger}`, 180000)) {
+        CandidateActions.candidatesQuery(`${thisYearInteger}`, [], filteredStateCode);
       }
     });
   }
@@ -103,6 +123,7 @@ class FirstCandidateListController extends Component {
 FirstCandidateListController.propTypes = {
   searchText: PropTypes.string,
   stateCode: PropTypes.string,
+  year: PropTypes.number,
 };
 
 export default FirstCandidateListController;
