@@ -254,7 +254,6 @@ export function getApplicationViewBooleans (pathname) {
     // We currently don't show footer once voter is signed in
   } else if (
     pathnameLowerCase.endsWith('/cs/') ||
-    pathnameLowerCase.startsWith('/more/donate') ||
     pathnameLowerCase.startsWith('/ready') ||
     (pathnameLowerCase === '/welcome') ||
     (pathnameLowerCase === '/')) {
