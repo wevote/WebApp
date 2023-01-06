@@ -123,6 +123,7 @@
     "react-ga": "^3.3.0",
     "react-google-autocomplete": "^2.6.1",
     "react-google-button": "^0.7.2",
+    "react-google-recaptcha-v3": "^1.10.1",
     "react-helmet": "~6.1.0",
     "react-phone-number-input": "^3.1.11",
     "react-player": "^2.9.0",
