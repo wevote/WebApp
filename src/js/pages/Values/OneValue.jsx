@@ -71,16 +71,16 @@ class OneValue extends Component {
     const { match: { params: prevParams } } = prevProps;
     const { match: { params: nextParams } } = this.props;
     // console.log('prevParams:', prevParams, 'nextParams:', nextParams);
+    const issue = IssueStore.getIssueBySlug(nextParams.value_slug);
+    const issueWeVoteId = issue.issue_we_vote_id;
+    if (issueWeVoteId) {
+      if (apiCalming(`issueOrganizationsRetrieve${issueWeVoteId}`, 3600000)) { // Only once per 60 minutes
+        IssueActions.issueOrganizationsRetrieve(issueWeVoteId);
+      }
+    }
     if (prevParams.value_slug !== nextParams.value_slug) {
       this.onIssueStoreChange();
       // this.onOrganizationStoreChange();
-      const issue = IssueStore.getIssueBySlug(nextParams.value_slug);
-      const issueWeVoteId = issue.issue_we_vote_id;
-      if (issueWeVoteId) {
-        if (apiCalming(`issueOrganizationsRetrieve${issueWeVoteId}`, 3600000)) { // Only once per 60 minutes
-          IssueActions.issueOrganizationsRetrieve(issueWeVoteId);
-        }
-      }
       window.scrollTo(0, 0);
     }
   }
