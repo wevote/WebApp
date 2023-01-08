@@ -99,8 +99,8 @@ export const StepNumberBordered = styled('div')(({ theme }) => (`
   color: ${theme.colors.brandBlue};
   font-size: 16px;
   font-weight: 600;
-  width: 22px;
-  height: 22px;
+  width: 26px;
+  height: 26px;
   padding-top: 1px;
   @media (max-width: ${theme.breakpoints.sm}) {
     font-size: 14px;

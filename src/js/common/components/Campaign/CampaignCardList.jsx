@@ -2,7 +2,8 @@ import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import { CampaignsNotAvailableToShow, ListWrapper, LoadMoreItemsManuallyWrapper } from '../Style/CampaignCardStyles';
+import { Link } from 'react-router-dom';
+import { CampaignsNotAvailableToShow, ListWrapper, LoadMoreItemsManuallyWrapper, StartACampaignWrapper } from '../Style/CampaignCardStyles';
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import { renderLog } from '../../utils/logging';
 import CampaignCardForList from './CampaignCardForList';
@@ -20,6 +21,9 @@ class CampaignCardList extends Component {
     this.state = {
       campaignList: [],
       numberToDisplay: STARTING_NUMBER_TO_DISPLAY,
+      showAllEndorsements: false,
+      showThisYear: false,
+      showUpcomingEndorsements: false,
     };
   }
 
@@ -37,10 +41,14 @@ class CampaignCardList extends Component {
       });
     }
     this.onCampaignListChange();
+    this.onFilterChange();
   }
 
   componentDidUpdate (prevProps) { // prevProps, prevState, snapshot
-    const { timeStampOfChange } = this.props;
+    const { listModeFiltersTimeStampOfChange, timeStampOfChange } = this.props;
+    if (listModeFiltersTimeStampOfChange && listModeFiltersTimeStampOfChange !== prevProps.listModeFiltersTimeStampOfChange) {
+      this.onFilterChange();
+    }
     if (timeStampOfChange && timeStampOfChange !== prevProps.timeStampOfChange) {
       this.onCampaignListChange();
     }
@@ -59,6 +67,35 @@ class CampaignCardList extends Component {
     }
   }
 
+  onFilterChange = () => {
+    // console.log('onFilterOrListChange');
+    const { listModeFilters } = this.props;
+    const today = new Date();
+    const thisYearInteger = today.getFullYear();
+    let showAllEndorsements = false;
+    let showThisYear = false;
+    let showUpcomingEndorsements = false;
+    if (listModeFilters && listModeFilters.length > 0) {
+      listModeFilters.forEach((oneFilter) => {
+        // console.log('oneFilter:', oneFilter);
+        if ((oneFilter.filterType === 'showAllEndorsements') && (oneFilter.filterSelected === true)) {
+          showAllEndorsements = true;
+        }
+        if ((oneFilter.filterYear === thisYearInteger) && (oneFilter.filterSelected === true)) {
+          showThisYear = true;
+        }
+        if ((oneFilter.filterType === 'showUpcomingEndorsements') && (oneFilter.filterSelected === true)) {
+          showUpcomingEndorsements = true;
+        }
+      });
+    }
+    this.setState({
+      showAllEndorsements,
+      showThisYear,
+      showUpcomingEndorsements,
+    });
+  }
+
   increaseNumberToDisplay = () => {
     let { numberToDisplay } = this.state;
     numberToDisplay += NUMBER_TO_ADD_WHEN_MORE_CLICKED;
@@ -70,8 +107,8 @@ class CampaignCardList extends Component {
   render () {
     renderLog('CampaignCardList');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('CampaignCardList render');
-    const { verticalListOn } = this.props;
-    const { campaignList, numberToDisplay } = this.state;
+    const { searchText, verticalListOn } = this.props;
+    const { campaignList, numberToDisplay, showAllEndorsements, showThisYear, showUpcomingEndorsements } = this.state;
 
     if (!campaignList) {
       return null;
@@ -94,33 +131,74 @@ class CampaignCardList extends Component {
               </div>
             );
           })}
-          <LoadMoreItemsManuallyWrapper>
-            {!!(campaignList &&
-                campaignList.length > 1 &&
-                numberToDisplay < campaignList.length) &&
-            (
+          {!!(numberDisplayed && (searchText || showAllEndorsements || showThisYear || showUpcomingEndorsements)) && (
+            <StartACampaignWrapper>
+              <Link className="u-link-color" to="/start-a-campaign">
+                Start a campaign
+                {(searchText && searchText.length > 0) && (
+                  <>
+                    {' '}
+                    related to
+                    {' '}
+                    &quot;
+                    {searchText}
+                    &quot;
+                  </>
+                )}
+              </Link>
+            </StartACampaignWrapper>
+          )}
+          {!!(campaignList &&
+              campaignList.length > 1 &&
+              numberToDisplay < campaignList.length) &&
+          (
+            <LoadMoreItemsManuallyWrapper>
               <LoadMoreItemsManually
                 loadMoreFunction={this.increaseNumberToDisplay}
                 uniqueExternalId="CampaignCardList"
               />
-            )}
-          </LoadMoreItemsManuallyWrapper>
+            </LoadMoreItemsManuallyWrapper>
+          )}
         </ListWrapper>
-        {!numberDisplayed && (
-          <Suspense fallback={<></>}>
-            <DelayedLoad showLoadingText waitBeforeShow={3000}>
-              <CampaignsNotAvailableToShow>
-                No campaigns match.
-              </CampaignsNotAvailableToShow>
-            </DelayedLoad>
-          </Suspense>
-        )}
+        <Suspense fallback={<></>}>
+          <DelayedLoad loadingTextLeftAlign showLoadingText waitBeforeShow={2000}>
+            <div>
+              {!(numberDisplayed) && (
+                <CampaignsNotAvailableToShow>
+                  No campaigns match.
+                  {!!(searchText || showAllEndorsements || showThisYear || showUpcomingEndorsements) && (
+                    <>
+                      {' '}
+                      <Link className="u-link-color" to="/start-a-campaign">
+                        Start a campaign
+                        {(searchText && searchText.length > 0) && (
+                          <>
+                            {' '}
+                            related to
+                            {' '}
+                            &quot;
+                            {searchText}
+                            &quot;
+                          </>
+                        )}
+                      </Link>
+                      .
+                    </>
+                  )}
+                </CampaignsNotAvailableToShow>
+              )}
+            </div>
+          </DelayedLoad>
+        </Suspense>
       </Wrapper>
     );
   }
 }
 CampaignCardList.propTypes = {
   incomingCampaignList: PropTypes.array,
+  listModeFilters: PropTypes.array,
+  listModeFiltersTimeStampOfChange: PropTypes.number,
+  searchText: PropTypes.string,
   startingNumberToDisplay: PropTypes.number,
   timeStampOfChange: PropTypes.number,
   verticalListOn: PropTypes.bool,

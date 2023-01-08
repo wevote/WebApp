@@ -108,7 +108,7 @@ class CandidateCardList extends Component {
         </ListWrapper>
         {!numberDisplayed && (
           <Suspense fallback={<></>}>
-            <DelayedLoad showLoadingText waitBeforeShow={3000}>
+            <DelayedLoad loadingTextLeftAlign showLoadingText waitBeforeShow={2000}>
               <CampaignsNotAvailableToShow>
                 No candidates match.
               </CampaignsNotAvailableToShow>

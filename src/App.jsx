@@ -30,6 +30,7 @@ const AppleSignInProcess = React.lazy(() => import(/* webpackChunkName: 'AppleSi
 const Attributions = React.lazy(() => import(/* webpackChunkName: 'Attributions' */ './js/pages/More/Attributions'));
 const Ballot = React.lazy(() => import(/* webpackChunkName: 'Ballot' */ './js/pages/Ballot/Ballot'));
 const CampaignsHome = React.lazy(() => import(/* webpackChunkName: 'CampaignsHome' */ './js/pages/Campaigns/CampaignsHome'));
+const CampaignStartIntro = React.lazy(() => import(/* webpackChunkName: 'CampaignStartIntro' */ './js/common/pages/CampaignStart/CampaignStartIntro'));
 const Candidate = React.lazy(() => import(/* webpackChunkName: 'Candidate' */ './js/pages/Ballot/Candidate'));
 const CandidateForExtension = React.lazy(() => import(/* webpackChunkName: 'EditCandidateForExtension' */ './js/pages/Ballot/EditCandidateForExtension/EditCandidateForExtension'));
 const ClaimYourPage = React.lazy(() => import(/* webpackChunkName: 'ClaimYourPage' */ './js/pages/Settings/ClaimYourPage'));
@@ -394,6 +395,7 @@ class App extends Component {
                     <Route path="/sign_in_email/:email_secret_key" component={SignInEmailProcess} />
                     <Route path="/setupaccount/:set_up_page" exact component={SetUpAccountRoot} />
                     <Route path="/setupaccount" exact><SetUpAccountRoot /></Route>
+                    <Route exact path="/start-a-campaign"><CampaignStartIntro /></Route>
                     <Route path="/terms" component={TermsOfService} />
                     <Route path="/twitter_sign_in" exact><TwitterSignInProcess /></Route>
                     <Route path="/twittersigninprocess/:sign_in_step" component={TwitterSignInProcess} />

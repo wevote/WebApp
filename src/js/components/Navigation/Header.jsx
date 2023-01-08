@@ -185,7 +185,7 @@ export default class Header extends Component {
       path.startsWith('/more/credits') ||
       path.startsWith('/remind') ||
       path.startsWith('/setupaccount') ||
-      path.startsWith('/start') ||
+      (path.startsWith('/start') && !path.startsWith('/start-a-campaign')) ||
       path.startsWith('/twitter_sign_in') ||
       path.startsWith('/unsubscribe') ||
       path.startsWith('/wevoteintro') ||
