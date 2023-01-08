@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const AdviceBox = styled('div')`
-  max-width: 300px;
+  max-width: 450px;
   text-align: center;
 `;
 

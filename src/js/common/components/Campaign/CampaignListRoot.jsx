@@ -225,7 +225,7 @@ class CampaignListRoot extends Component {
 
   render () {
     renderLog('CampaignListRoot');  // Set LOG_RENDER_EVENTS to log all renders
-    const { hideTitle, searchText, titleTextIfCampaigns } = this.props;
+    const { hideTitle, listModeFilters, searchText, titleTextIfCampaigns } = this.props;
     const isSearching = searchText && searchText.length > 0;
     const { campaignList, campaignSearchResults, filteredCampaignList, timeStampOfChange } = this.state;
     const filteredCampaignListLength = (filteredCampaignList) ? filteredCampaignList.length : 0;
@@ -248,6 +248,9 @@ class CampaignListRoot extends Component {
             <HorizontallyScrollingContainer>
               <CampaignCardList
                 incomingCampaignList={(isSearching ? campaignSearchResults : filteredCampaignList)}
+                listModeFilters={listModeFilters}
+                listModeFiltersTimeStampOfChange={timeStampOfChange}
+                searchText={searchText}
                 timeStampOfChange={timeStampOfChange}
                 verticalListOn
               />
