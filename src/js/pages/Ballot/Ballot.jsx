@@ -31,7 +31,7 @@ import BallotTitleHeader from '../../components/Ballot/BallotTitleHeader';
 import BallotDecisionsTabs from '../../components/Navigation/BallotDecisionsTabs';
 import BallotShowAllItemsFooter from '../../components/Navigation/BallotShowAllItemsFooter';
 import { DualHeaderContainer, HeaderContentContainer, HeaderContentOuterContainer, PageContentContainer } from '../../components/Style/pageLayoutStyles';
-import SnackNotifier, { openSnackbar } from '../../components/Widgets/SnackNotifier';
+import SnackNotifier, { openSnackbar } from '../../common/components/Widgets/SnackNotifier';
 import webAppConfig from '../../config';
 import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';

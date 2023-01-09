@@ -9,7 +9,7 @@ import { renderLog } from '../../common/utils/logging';
 import shortenText from '../../common/utils/shortenText';
 import IssueStore from '../../stores/IssueStore';
 import VoterStore from '../../stores/VoterStore';
-import { openSnackbar } from '../Widgets/SnackNotifier';
+import { openSnackbar } from '../../common/components/Widgets/SnackNotifier';
 
 
 class IssueFollowToggleButton extends Component {

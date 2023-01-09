@@ -27,7 +27,7 @@ import SettingsSubscriptionPlan from '../../components/Settings/SettingsSubscrip
 import SettingsYourData from '../../components/Settings/SettingsYourData';
 import ToolsToShareOnOtherWebsites from '../../components/Settings/ToolsToShareOnOtherWebsites';
 import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
-import SnackNotifier, { openSnackbar } from '../../components/Widgets/SnackNotifier';
+import SnackNotifier, { openSnackbar } from '../../common/components/Widgets/SnackNotifier';
 import AppObservableStore from '../../common/stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
 import OrganizationStore from '../../stores/OrganizationStore';
@@ -35,7 +35,7 @@ import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import { isProperlyFormattedVoterGuideWeVoteId } from '../../common/utils/textFormat';
 
-const SignInOptionsPanel = React.lazy(() => import(/* webpackChunkName: 'SignInOptionsPanel' */ '../../components/SignIn/SignInOptionsPanel'));
+const SignInOptionsPanel = React.lazy(() => import(/* webpackChunkName: 'SignInOptionsPanel' */ '../../common/components/SignIn/SignInOptionsPanel'));
 
 
 export default class SettingsDashboard extends Component {

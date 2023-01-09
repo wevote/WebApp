@@ -20,7 +20,7 @@ import {
   PositionRowItemEmptyWrapper,
 } from '../Style/PositionRowListStyles';
 
-const SignInModal = React.lazy(() => import(/* webpackChunkName: 'SignInModal' */ '../SignIn/SignInModal'));
+const SignInModal = React.lazy(() => import(/* webpackChunkName: 'SignInModal' */ '../../common/components/SignIn/SignInModal'));
 
 const NUMBER_OF_POSITIONS_REQUIRED_TO_TURN_OFF = 5;
 

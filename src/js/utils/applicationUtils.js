@@ -14,6 +14,7 @@ export function getApplicationViewBooleans (pathname) {
   // We don't want to do all the work to create the footer, fire off api queries, etc., only to then set "display: none" based on a breakpoint!
   const isSmallScreen = isSmallerThanTablet(); // was ... window.screen.width < 992;
   let inTheaterMode = false;
+  let campaignsMode = false;
   let candidatesMode = false;
   let contentFullWidthMode = false;
   let extensionPageMode = false;
@@ -70,6 +71,9 @@ export function getApplicationViewBooleans (pathname) {
     voteMode = true;
   } else if (pathnameLowerCase.startsWith('/ballot')) {
     contentFullWidthMode = false;
+  } else if (pathnameLowerCase.startsWith('/c/') || pathnameLowerCase.startsWith('/id/')) {
+    contentFullWidthMode = true;
+    campaignsMode = true;
   } else if (pathnameLowerCase.endsWith('/cs/') ||
       (pathnameLowerCase === '/start-a-campaign')) {
     contentFullWidthMode = true;
@@ -279,6 +283,7 @@ export function getApplicationViewBooleans (pathname) {
   return {
     headerNotVisible,
     inTheaterMode,
+    campaignsMode,
     candidatesMode,
     contentFullWidthMode,
     extensionPageMode,

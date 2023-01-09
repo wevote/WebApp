@@ -13,7 +13,7 @@ import stringContains from '../../common/utils/stringContains';
 import { ModalTitleType1 } from '../Style/ModalType1Styles';
 import BallotStore from '../../stores/BallotStore';
 import FriendStore from '../../stores/FriendStore';
-import { openSnackbar } from '../Widgets/SnackNotifier';
+import { openSnackbar } from '../../common/components/Widgets/SnackNotifier';
 
 const MessageToFriendInputField = React.lazy(() => import(/* webpackChunkName: 'MessageToFriendInputField' */ './MessageToFriendInputField'));
 

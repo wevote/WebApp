@@ -18,7 +18,7 @@ import initializeFacebookSDK from '../../utils/initializeFacebookSDK';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 import DeviceURLField from './DeviceURLField';
 
-const SignInOptionsPanel = React.lazy(() => import(/* webpackChunkName: 'SignInOptionsPanel' */ './SignInOptionsPanel'));
+const SignInOptionsPanel = React.lazy(() => import(/* webpackChunkName: 'SignInOptionsPanel' */ '../../common/components/SignIn/SignInOptionsPanel'));
 
 
 /* global $ */

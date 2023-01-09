@@ -17,7 +17,7 @@ import IssueFollowToggleButton from './IssueFollowToggleButton';
 import IssueImageDisplay from './IssueImageDisplay';
 
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../../common/components/Widgets/ReadMore'));
-const SignInModal = React.lazy(() => import(/* webpackChunkName: 'SignInModal' */ '../SignIn/SignInModal'));
+const SignInModal = React.lazy(() => import(/* webpackChunkName: 'SignInModal' */ '../../common/components/SignIn/SignInModal'));
 
 const NUMBER_OF_LINKED_ORGANIZATION_IMAGES_TO_SHOW = 3; // Maximum available coming from issueDescriptionsRetrieve is currently 5
 const NUMBER_OF_LINKED_ORGANIZATION_NAMES_TO_SHOW = 10;

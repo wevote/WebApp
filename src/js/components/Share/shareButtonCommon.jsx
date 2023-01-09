@@ -10,7 +10,7 @@ import { cordovaOpenSafariView, hasDynamicIsland, hasIPhoneNotch, isAndroid, isI
 import { normalizedHref } from '../../common/utils/hrefUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import VoterStore from '../../stores/VoterStore';
-import { openSnackbar } from '../Widgets/SnackNotifier';
+import { openSnackbar } from '../../common/components/Widgets/SnackNotifier';
 import ShareModalOption from './ShareModalOption';
 
 export const shareStyles = () => ({

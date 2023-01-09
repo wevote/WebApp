@@ -18,7 +18,7 @@ import MeasureStickyHeader from '../../components/Ballot/MeasureStickyHeader';
 import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import EndorsementCard from '../../components/Widgets/EndorsementCard';
 import SearchOnGoogle from '../../components/Widgets/SearchOnGoogle';
-import SnackNotifier from '../../components/Widgets/SnackNotifier';
+import SnackNotifier from '../../common/components/Widgets/SnackNotifier';
 import ViewOnBallotpedia from '../../components/Widgets/ViewOnBallotpedia';
 import webAppConfig from '../../config';
 import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';

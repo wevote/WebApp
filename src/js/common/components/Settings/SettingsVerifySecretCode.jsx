@@ -6,11 +6,11 @@ import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import VoterActions from '../../actions/VoterActions';
-import { hasIPhoneNotch, isIOS, isIPhone4in } from '../../common/utils/cordovaUtils';
-import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
-import { renderLog } from '../../common/utils/logging';
-import VoterStore from '../../stores/VoterStore';
+import VoterActions from '../../../actions/VoterActions';
+import { hasIPhoneNotch, isIOS, isIPhone4in } from '../../utils/cordovaUtils';
+import { isCordova, isWebApp } from '../../utils/isCordovaOrWebApp';
+import { renderLog } from '../../utils/logging';
+import VoterStore from '../../../stores/VoterStore';
 
 /* global $ */
 
@@ -64,7 +64,6 @@ class SettingsVerifySecretCode extends Component {
     });
     const delayBeforeClearingVerificationStatus = 200;
     this.clearSecretCodeVerificationStatusTimer = setTimeout(() => {
-      // console.log('SettingsVerifySecretCode -- VoterActions.clearSecretCodeVerificationStatus()');
       VoterActions.clearSecretCodeVerificationStatus();
     }, delayBeforeClearingVerificationStatus);
 

@@ -21,7 +21,7 @@ import { Divider, LogoContainer, MobileNavDivider, MobileNavigationMenu, Navigat
 import HeaderBarLogo from './HeaderBarLogo';
 
 const HeaderBarProfilePopUp = React.lazy(() => import(/* webpackChunkName: 'HeaderBarProfilePopUp' */ './HeaderBarProfilePopUp'));
-const SignInModal = React.lazy(() => import(/* webpackChunkName: 'SignInModal' */ '../SignIn/SignInModal'));
+const SignInModal = React.lazy(() => import(/* webpackChunkName: 'SignInModal' */ '../../common/components/SignIn/SignInModal'));
 
 // TODO: Backport "@stripe/react-stripe-js" use from Campaigns
 // const PaidAccountUpgradeModal = React.lazy(() => import('../Settings/PaidAccountUpgradeModal'));
