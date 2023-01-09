@@ -22,7 +22,7 @@ import { ReadyCard } from '../components/Ready/ReadyTaskStyles';
 import { PageContentContainer } from '../components/Style/pageLayoutStyles';
 import { ElectionCountdownInnerWrapper, ElectionCountdownOuterWrapper, PrepareForElectionOuterWrapper, ReadyIntroductionDesktopWrapper, ReadyIntroductionMobileWrapper, ReadyPageContainer, ReadyParagraph, ReadyTitle, ViewBallotButtonWrapper } from '../components/Style/ReadyPageCommonStyles';
 import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
-import SnackNotifier, { openSnackbar } from '../components/Widgets/SnackNotifier';
+import SnackNotifier, { openSnackbar } from '../common/components/Widgets/SnackNotifier';
 import webAppConfig from '../config';
 import AppObservableStore, { messageService } from '../common/stores/AppObservableStore';
 import BallotStore from '../stores/BallotStore';

@@ -3,9 +3,9 @@ import Alert from '@mui/material/Alert';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { snackOffset } from '../../common/utils/cordovaUtils';
-import { renderLog } from '../../common/utils/logging';
-import AppObservableStore from '../../common/stores/AppObservableStore';
+import { snackOffset } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
+import AppObservableStore from '../../stores/AppObservableStore';
 
 // Alert is in Mui Version 5, and won't have to be included from the "Lab"
 

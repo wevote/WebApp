@@ -27,7 +27,7 @@ import OrganizationStore from '../../../stores/OrganizationStore';
 import SupportStore from '../../../stores/SupportStore';
 import { getPositionListSummaryIncomingDataStats, getPositionSummaryListForBallotItem } from '../../../utils/positionFunctions';
 import StickyPopover from '../../Ballot/StickyPopover';
-import { openSnackbar } from '../SnackNotifier';
+import { openSnackbar } from '../../../common/components/Widgets/SnackNotifier';
 
 const PositionSummaryListForPopover = React.lazy(() => import(/* webpackChunkName: 'PositionSummaryListForPopover' */ './PositionSummaryListForPopover'));
 

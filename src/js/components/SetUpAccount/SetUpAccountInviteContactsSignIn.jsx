@@ -16,7 +16,7 @@ import {
 } from '../Style/SetUpAccountStyles';
 
 const ContactsImportedPreview = React.lazy(() => import(/* webpackChunkName: 'ContactsImportedPreview' */ '../Friends/ContactsImportedPreview'));
-const SignInOptionsPanel = React.lazy(() => import(/* webpackChunkName: 'SignInOptionsPanel' */ '../SignIn/SignInOptionsPanel'));
+const SignInOptionsPanel = React.lazy(() => import(/* webpackChunkName: 'SignInOptionsPanel' */ '../../common/components/SignIn/SignInOptionsPanel'));
 
 
 class SetUpAccountInviteContactsSignIn extends React.Component {

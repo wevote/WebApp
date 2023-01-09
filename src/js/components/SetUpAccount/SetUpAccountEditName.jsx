@@ -12,10 +12,10 @@ import {
   StepCenteredWrapper,
 } from '../Style/SetUpAccountStyles';
 
-const SettingsVerifySecretCode = React.lazy(() => import(/* webpackChunkName: 'SettingsVerifySecretCode' */ '../Settings/SettingsVerifySecretCode'));
-const VoterEmailInputField = React.lazy(() => import(/* webpackChunkName: 'VoterEmailInputField' */ '../Settings/VoterEmailInputField'));
-const VoterFirstNameInputField = React.lazy(() => import(/* webpackChunkName: 'VoterFirstNameInputField' */ '../Settings/VoterFirstNameInputField'));
-const VoterLastNameInputField = React.lazy(() => import(/* webpackChunkName: 'VoterLastNameInputField' */ '../Settings/VoterLastNameInputField'));
+const SettingsVerifySecretCode = React.lazy(() => import(/* webpackChunkName: 'SettingsVerifySecretCode' */ '../../common/components/Settings/SettingsVerifySecretCode'));
+const VoterEmailInputField = React.lazy(() => import(/* webpackChunkName: 'VoterEmailInputField' */ '../../common/components/Settings/VoterEmailInputField'));
+const VoterFirstNameInputField = React.lazy(() => import(/* webpackChunkName: 'VoterFirstNameInputField' */ '../../common/components/Settings/VoterFirstNameInputField'));
+const VoterLastNameInputField = React.lazy(() => import(/* webpackChunkName: 'VoterLastNameInputField' */ '../../common/components/Settings/VoterLastNameInputField'));
 
 class SetUpAccountEditName extends React.Component {
   constructor (props) {

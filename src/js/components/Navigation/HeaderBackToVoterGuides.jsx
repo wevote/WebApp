@@ -29,7 +29,7 @@ import SignInButton from '../Widgets/SignInButton';
 import EndorsementModeTabs from './EndorsementModeTabs';
 import HeaderBackToButton from './HeaderBackToButton';
 
-const SignInModal = React.lazy(() => import(/* webpackChunkName: 'SignInModal' */ '../SignIn/SignInModal'));
+const SignInModal = React.lazy(() => import(/* webpackChunkName: 'SignInModal' */ '../../common/components/SignIn/SignInModal'));
 
 
 class HeaderBackToVoterGuides extends Component {

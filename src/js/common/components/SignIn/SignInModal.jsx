@@ -4,12 +4,12 @@ import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
-import { isAndroid, isAndroidSizeMD, isAndroidSizeWide } from '../../common/utils/cordovaUtils';
-import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
-import { renderLog } from '../../common/utils/logging';
-import VoterStore from '../../stores/VoterStore';
-import initializeAppleSDK from '../../utils/initializeAppleSDK';
-import initializeFacebookSDK from '../../utils/initializeFacebookSDK';
+import { isAndroid, isAndroidSizeMD, isAndroidSizeWide } from '../../utils/cordovaUtils';
+import { isCordova, isWebApp } from '../../utils/isCordovaOrWebApp';
+import { renderLog } from '../../utils/logging';
+import VoterStore from '../../../stores/VoterStore';
+import initializeAppleSDK from '../../../utils/initializeAppleSDK';
+import initializeFacebookSDK from '../../../utils/initializeFacebookSDK';
 
 const SignInOptionsPanel = React.lazy(() => import(/* webpackChunkName: 'SignInOptionsPanel' */ './SignInOptionsPanel'));
 

@@ -21,7 +21,7 @@ import toTitleCase from '../../common/utils/toTitleCase';
 import CandidateStickyHeader from '../../components/Ballot/CandidateStickyHeader';
 import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import SearchOnGoogle from '../../components/Widgets/SearchOnGoogle';
-import SnackNotifier from '../../components/Widgets/SnackNotifier';
+import SnackNotifier from '../../common/components/Widgets/SnackNotifier';
 import ViewOnBallotpedia from '../../components/Widgets/ViewOnBallotpedia';
 import webAppConfig from '../../config';
 import BallotStore from '../../stores/BallotStore';

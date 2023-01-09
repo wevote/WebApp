@@ -10,7 +10,7 @@ import VoterActions from '../actions/VoterActions';
 import historyPush from '../common/utils/historyPush';
 import { renderLog } from '../common/utils/logging';
 import normalizedImagePath from '../common/utils/normalizedImagePath';
-import SettingsVerifySecretCode from '../components/Settings/SettingsVerifySecretCode';
+import SettingsVerifySecretCode from '../common/components/Settings/SettingsVerifySecretCode';
 import AddressBoxWelcome from '../components/Welcome/AddressBoxWelcome';
 import { BlueTitle, PlayerContainer, SubTitle, Title, Video } from '../components/Welcome/headerWelcomeStyles';
 import { Bold, Description, DescriptionContainer, DescriptionImageColumn, DescriptionLeftColumn, GetStarted2019, Image, NetworkContainer, NetworkImage, Section, SectionTitle, SectionTitleBold, SignUpContainer, SignUpMessage, Step, StepLabel, StepNumber } from '../components/Welcome/sectionStyles';

@@ -15,7 +15,7 @@ import VoterStore from '../../stores/VoterStore';
 // import { Ballot } from '@mui/icons-material';
 // import { ThumbUp } from '@mui/icons-material';
 
-const SignInModal = React.lazy(() => import(/* webpackChunkName: 'SignInModal' */ '../SignIn/SignInModal'));
+const SignInModal = React.lazy(() => import(/* webpackChunkName: 'SignInModal' */ '../../common/components/SignIn/SignInModal'));
 
 // const findAdvisorsId = 4;
 class CompleteYourProfile extends Component {
