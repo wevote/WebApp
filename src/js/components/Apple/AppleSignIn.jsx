@@ -7,7 +7,7 @@ import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import Cookies from '../../common/utils/js-cookie/Cookies';
 import { oAuthLog, renderLog } from '../../common/utils/logging';
 import webAppConfig from '../../config';
-import { openSnackbar } from '../Widgets/SnackNotifier';
+import { openSnackbar } from '../../common/components/Widgets/SnackNotifier';
 
 class AppleSignIn extends Component {
   constructor (props) {

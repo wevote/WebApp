@@ -9,9 +9,9 @@ import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import SupportStore from '../../stores/SupportStore';
 import VoterStore from '../../stores/VoterStore';
-import { openSnackbar } from './SnackNotifier';
+import { openSnackbar } from '../../common/components/Widgets/SnackNotifier';
 
-const SignInModal = React.lazy(() => import(/* webpackChunkName: 'SignInModal' */ '../SignIn/SignInModal'));
+const SignInModal = React.lazy(() => import(/* webpackChunkName: 'SignInModal' */ '../../common/components/SignIn/SignInModal'));
 
 class PositionPublicToggle extends Component {
   constructor (props) {

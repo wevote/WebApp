@@ -19,7 +19,7 @@ import IssueStore from '../../stores/IssueStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
-import { openSnackbar } from './SnackNotifier';
+import { openSnackbar } from '../../common/components/Widgets/SnackNotifier';
 import { createSharedIssuesText } from '../../utils/issueUtils';
 
 

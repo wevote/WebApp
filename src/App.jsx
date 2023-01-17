@@ -29,7 +29,11 @@ const AddCandidateForExtension = React.lazy(() => import(/* webpackChunkName: 'A
 const AppleSignInProcess = React.lazy(() => import(/* webpackChunkName: 'AppleSignInProcess' */ './js/pages/Process/AppleSignInProcess'));
 const Attributions = React.lazy(() => import(/* webpackChunkName: 'Attributions' */ './js/pages/More/Attributions'));
 const Ballot = React.lazy(() => import(/* webpackChunkName: 'Ballot' */ './js/pages/Ballot/Ballot'));
+const CampaignCommentsPage = React.lazy(() => import(/* webpackChunkName: 'CampaignCommentsPage' */ './js/common/pages/Campaign/CampaignCommentsPage'));
+const CampaignDetailsPage = React.lazy(() => import(/* webpackChunkName: 'CampaignDetailsPage' */ './js/common/pages/Campaign/CampaignDetailsPage'));
+const CampaignNewsItemDetailsPage = React.lazy(() => import(/* webpackChunkName: 'CampaignNewsItemDetailsPage' */ './js/common/pages/Campaign/CampaignNewsItemDetailsPage'));
 const CampaignsHome = React.lazy(() => import(/* webpackChunkName: 'CampaignsHome' */ './js/pages/Campaigns/CampaignsHome'));
+const CampaignStartIntro = React.lazy(() => import(/* webpackChunkName: 'CampaignStartIntro' */ './js/common/pages/CampaignStart/CampaignStartIntro'));
 const Candidate = React.lazy(() => import(/* webpackChunkName: 'Candidate' */ './js/pages/Ballot/Candidate'));
 const CandidateForExtension = React.lazy(() => import(/* webpackChunkName: 'EditCandidateForExtension' */ './js/pages/Ballot/EditCandidateForExtension/EditCandidateForExtension'));
 const ClaimYourPage = React.lazy(() => import(/* webpackChunkName: 'ClaimYourPage' */ './js/pages/Settings/ClaimYourPage'));
@@ -296,6 +300,10 @@ class App extends Component {
                     <Route path="/ballot/:ballot_location_shortcut/modal/:modal_to_show/:shared_item_code" component={Ballot} />
                     <Route path="/ballot/:ballot_location_shortcut/modal/:modal_to_show" exact component={Ballot} />
                     <Route path="/ballot/:ballot_location_shortcut" exact component={Ballot} />
+                    <Route exact path="/c/:campaignSEOFriendlyPath" render={(props) => <CampaignDetailsPage match={props.match} />} />
+                    <Route exact path="/c/:campaignSEOFriendlyPath/comments" render={(props) => <CampaignCommentsPage match={props.match} />} />
+                    <Route exact path="/c/:campaignSEOFriendlyPath/u/:campaignXNewsItemWeVoteId" render={(props) => <CampaignNewsItemDetailsPage match={props.match} setShowHeaderFooter={this.setShowHeaderFooter} />} />
+                    <Route exact path="/c/:campaignSEOFriendlyPath/u-preview/:campaignXNewsItemWeVoteId" render={(props) => <CampaignNewsItemDetailsPage inPreviewMode match={props.match} setShowHeaderFooter={this.setShowHeaderFooter} />} />
                     <Route path="/:state_candidates_phrase/cs/" exact component={CampaignsHome} />
                     <Route path="/cs/" exact component={CampaignsHome} />
                     <Route path="/candidate-for-extension" component={CandidateForExtension} />
@@ -317,6 +325,10 @@ class App extends Component {
                     <Route path="/for-organizations" component={isNotWeVoteMarketingSite ? ReadyRedirect : (props) => <WelcomeForOrganizations {...props} pathname="/for-organizations" />} />
                     <Route path="/how/:category_string" component={isNotWeVoteMarketingSite ? ReadyRedirect : HowItWorks} />
                     <Route path="/how" exact component={isNotWeVoteMarketingSite ? ReadyRedirect : HowItWorks} />
+                    <Route exact path="/id/:campaignXWeVoteId" render={(props) => <CampaignDetailsPage match={props.match} />} />
+                    <Route exact path="/id/:campaignXWeVoteId/comments" render={(props) => <CampaignCommentsPage match={props.match} />} />
+                    <Route exact path="/id/:campaignXWeVoteId/u/:campaignXNewsItemWeVoteId" render={(props) => <CampaignNewsItemDetailsPage match={props.match} setShowHeaderFooter={this.setShowHeaderFooter} />} />
+                    <Route exact path="/id/:campaignXWeVoteId/u-preview/:campaignXNewsItemWeVoteId" render={(props) => <CampaignNewsItemDetailsPage inPreviewMode match={props.match} setShowHeaderFooter={this.setShowHeaderFooter} />} />
                     <Route path="/intro" exact component={Intro} />
                     <Route path="/intro/get_started" component={GetStarted2019} />
                     <Route path="/intro/sample_ballot" component={SampleBallot} />
@@ -394,6 +406,7 @@ class App extends Component {
                     <Route path="/sign_in_email/:email_secret_key" component={SignInEmailProcess} />
                     <Route path="/setupaccount/:set_up_page" exact component={SetUpAccountRoot} />
                     <Route path="/setupaccount" exact><SetUpAccountRoot /></Route>
+                    <Route exact path="/start-a-campaign"><CampaignStartIntro /></Route>
                     <Route path="/terms" component={TermsOfService} />
                     <Route path="/twitter_sign_in" exact><TwitterSignInProcess /></Route>
                     <Route path="/twittersigninprocess/:sign_in_step" component={TwitterSignInProcess} />

@@ -17,7 +17,7 @@ import toTitleCase from '../../common/utils/toTitleCase';
 import OrganizationVoterGuideCandidateItem from '../../components/VoterGuide/OrganizationVoterGuideCandidateItem';
 import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import EndorsementCard from '../../components/Widgets/EndorsementCard';
-import SnackNotifier from '../../components/Widgets/SnackNotifier';
+import SnackNotifier from '../../common/components/Widgets/SnackNotifier';
 import ThisIsMeAction from '../../components/Widgets/ThisIsMeAction';
 import webAppConfig from '../../config';
 import AppObservableStore from '../../common/stores/AppObservableStore';

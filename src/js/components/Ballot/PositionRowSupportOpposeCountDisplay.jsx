@@ -16,7 +16,7 @@ import {
   getPositionListSummaryIncomingDataStats,
   getPositionSummaryListForBallotItem,
 } from '../../utils/positionFunctions';
-import { openSnackbar } from '../Widgets/SnackNotifier';
+import { openSnackbar } from '../../common/components/Widgets/SnackNotifier';
 import AppObservableStore from '../../common/stores/AppObservableStore';
 
 

@@ -24,11 +24,14 @@ import { convertToInteger } from '../../common/utils/textFormat';
 import { cordovaSimplePageContainerTopOffset } from '../../utils/cordovaCalculatedOffsets';
 import { getTodayAsInteger, getYearFromUltimateElectionDate } from '../../common/utils/dateFormat';
 import arrayContains from '../../common/utils/arrayContains';
+import webAppConfig from '../../config';
 
 const CandidateListRoot = React.lazy(() => import(/* webpackChunkName: 'CandidateListRoot' */ '../../components/CandidateListRoot/CandidateListRoot'));
-// const CampaignListRoot = React.lazy(() => import(/* webpackChunkName: 'CampaignListRoot' */ '../../common/components/Campaign/CampaignListRoot'));
-// const FirstCampaignListController = React.lazy(() => import(/* webpackChunkName: 'FirstCampaignListController' */ '../../common/components/Campaign/FirstCampaignListController'));
+const CampaignListRoot = React.lazy(() => import(/* webpackChunkName: 'CampaignListRoot' */ '../../common/components/Campaign/CampaignListRoot'));
+const FirstCampaignListController = React.lazy(() => import(/* webpackChunkName: 'FirstCampaignListController' */ '../../common/components/Campaign/FirstCampaignListController'));
 const FirstCandidateListController = React.lazy(() => import(/* webpackChunkName: 'FirstCandidateListController' */ '../../components/CandidateListRoot/FirstCandidateListController'));
+
+const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
 class CampaignsHome extends Component {
   constructor (props) {
@@ -269,17 +272,18 @@ class CampaignsHome extends Component {
         filterYear: oneYear,
       });
     });
-    if (upcomingEndorsementsAvailable) {
-      filterCount += 1;
-      listModeFiltersAvailable.push({
-        displayAsChip: true,
-        filterDisplayName: 'Upcoming',
-        filterName: 'showUpcomingEndorsements',
-        filterOrder: 1,
-        filterSelected: listModeShown === 'showUpcomingEndorsements',
-        filterType: 'showUpcomingEndorsements',
-      });
-    }
+    // if (upcomingEndorsementsAvailable) {
+    // We still want to show this filter option
+    filterCount += 1;
+    listModeFiltersAvailable.push({
+      displayAsChip: true,
+      filterDisplayName: 'Upcoming',
+      filterName: 'showUpcomingEndorsements',
+      filterOrder: 1,
+      filterSelected: listModeShown === 'showUpcomingEndorsements',
+      filterType: 'showUpcomingEndorsements',
+    });
+    // }
     if (filterCount > 1) {
       listModeFiltersAvailable.push({
         displayAsChip,
@@ -415,7 +419,7 @@ class CampaignsHome extends Component {
     renderLog('CampaignsHome');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
     const {
-      // campaignList, campaignListTimeStampOfChange,
+      campaignList, campaignListTimeStampOfChange,
       campaignsShowing,
       candidateListOther, candidateListTimeStampOfChange,
       candidateListIsBattleground, candidateListOnYourBallot, filterYear,
@@ -501,21 +505,21 @@ class CampaignsHome extends Component {
               />
             </SearchBarWrapper>
           </CampaignsHomeFilterWrapper>
-          {/*
-          <WhatIsHappeningSection>
-            <Suspense fallback={<span>&nbsp;</span>}>
-              <CampaignListRoot
-                incomingList={campaignList}
-                incomingListTimeStampOfChange={campaignListTimeStampOfChange}
-                listModeFilters={listModeFiltersAvailable}
-                listModeFiltersTimeStampOfChange={listModeFiltersTimeStampOfChange}
-                searchText={searchText}
-                stateCode={stateCode}
-                titleTextIfCampaigns="Campaigns"
-              />
-            </Suspense>
-          </WhatIsHappeningSection>
-          */}
+          {nextReleaseFeaturesEnabled && (
+            <WhatIsHappeningSection>
+              <Suspense fallback={<span>&nbsp;</span>}>
+                <CampaignListRoot
+                  incomingList={campaignList}
+                  incomingListTimeStampOfChange={campaignListTimeStampOfChange}
+                  listModeFilters={listModeFiltersAvailable}
+                  listModeFiltersTimeStampOfChange={listModeFiltersTimeStampOfChange}
+                  searchText={searchText}
+                  stateCode={stateCode}
+                  titleTextIfCampaigns="Campaigns"
+                />
+              </Suspense>
+            </WhatIsHappeningSection>
+          )}
           {(candidateListOnYourBallot && candidateListOnYourBallot.length > 0) && (
             <WhatIsHappeningSection>
               <Suspense fallback={<span>&nbsp;</span>}>
@@ -561,11 +565,11 @@ class CampaignsHome extends Component {
           </WhatIsHappeningSection>
         </CampaignsHomeContainer>
 
-        {/*
+        {/* */}
         <Suspense fallback={<></>}>
           <FirstCampaignListController searchText={searchText} stateCode={stateCode} />
         </Suspense>
-        */}
+        {/* */}
         <Suspense fallback={<></>}>
           <FirstCandidateListController searchText={searchText} stateCode={stateCode} year={filterYear} />
         </Suspense>

@@ -14,7 +14,7 @@ import VoterConstants from '../../constants/VoterConstants';
 import VoterStore from '../../stores/VoterStore';
 // import { PhoneAndroid } from '@mui/icons-material';
 import BrowserPushMessage from '../Widgets/BrowserPushMessage';
-import { openSnackbar } from '../Widgets/SnackNotifier';
+import { openSnackbar } from '../../common/components/Widgets/SnackNotifier';
 import VoterEmailAddressEntry from './VoterEmailAddressEntry';
 
 const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;

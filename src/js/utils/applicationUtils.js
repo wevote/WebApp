@@ -14,6 +14,7 @@ export function getApplicationViewBooleans (pathname) {
   // We don't want to do all the work to create the footer, fire off api queries, etc., only to then set "display: none" based on a breakpoint!
   const isSmallScreen = isSmallerThanTablet(); // was ... window.screen.width < 992;
   let inTheaterMode = false;
+  let campaignsMode = false;
   let candidatesMode = false;
   let contentFullWidthMode = false;
   let extensionPageMode = false;
@@ -70,7 +71,11 @@ export function getApplicationViewBooleans (pathname) {
     voteMode = true;
   } else if (pathnameLowerCase.startsWith('/ballot')) {
     contentFullWidthMode = false;
-  } else if (pathnameLowerCase.endsWith('/cs/')) {
+  } else if (pathnameLowerCase.startsWith('/c/') || pathnameLowerCase.startsWith('/id/')) {
+    contentFullWidthMode = true;
+    campaignsMode = true;
+  } else if (pathnameLowerCase.endsWith('/cs/') ||
+      (pathnameLowerCase === '/start-a-campaign')) {
     contentFullWidthMode = true;
     candidatesMode = true;
   } else if (pathnameLowerCase.startsWith('/news')) {
@@ -195,7 +200,7 @@ export function getApplicationViewBooleans (pathname) {
       (pathnameLowerCase === '/more/about') ||
       (pathnameLowerCase === '/more/credits') ||
       (pathnameLowerCase === '/more/myballot') ||
-      (pathnameLowerCase === '/start') ||
+      ((pathnameLowerCase === '/start') && !(pathnameLowerCase === '/start-a-campaign')) ||
       (pathnameLowerCase === '/values/list') ||
       (pathnameLowerCase === '/welcomehome') ||
       pathnameLowerCase.startsWith('/findfriends') ||
@@ -237,7 +242,8 @@ export function getApplicationViewBooleans (pathname) {
       pathnameLowerCase.startsWith('/settings/text') ||
       pathnameLowerCase.startsWith('/settings/tools') ||
       pathnameLowerCase.startsWith('/settings/yourdata') ||
-      pathnameLowerCase.startsWith('/settings')) {
+      pathnameLowerCase.startsWith('/settings') ||
+      (pathnameLowerCase === '/start-a-campaign')) {
     // We want to SHOW the footer bar on the above path patterns
     showFooterBar = isMobileScreenSize();
   } else {
@@ -255,6 +261,7 @@ export function getApplicationViewBooleans (pathname) {
   } else if (
     pathnameLowerCase.endsWith('/cs/') ||
     pathnameLowerCase.startsWith('/ready') ||
+    (pathnameLowerCase === '/start-a-campaign') ||
     (pathnameLowerCase === '/welcome') ||
     (pathnameLowerCase === '/')) {
     showFooterMain = true;
@@ -276,6 +283,7 @@ export function getApplicationViewBooleans (pathname) {
   return {
     headerNotVisible,
     inTheaterMode,
+    campaignsMode,
     candidatesMode,
     contentFullWidthMode,
     extensionPageMode,

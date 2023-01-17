@@ -83,10 +83,13 @@ export function pageEnumeration () {
     return CordovaPageConstants.opinionsFiltered;
 
   // then specific first level paths
-  } if (path.startsWith('/candidate')) {  // /candidate/ == one candidate vs. /cs/ == candidates by state
+  } else if (path.startsWith('/c/') || path.startsWith('/id/')) {  // /candidate/ == one candidate vs. /cs/ == candidates by state
+    // Campaign pages
+    return CordovaPageConstants.values;
+  } else if (path.startsWith('/candidate')) {  // /candidate/ == one candidate vs. /cs/ == candidates by state
     // Note: For '/candidate', this overrides return CordovaPageConstants.candidateWild; above
     return CordovaPageConstants.candidate;
-  } if (path.endsWith('/cs/')) {  // /candidate/ == one candidate vs. /cs/ == candidates by state
+  } else if (path.endsWith('/cs/') || path.includes('/start-a-campaign')) {  // /candidate/ == one candidate vs. /cs/ == candidates by state
     return CordovaPageConstants.values; // Use /value setting
   } else if (path.startsWith('/friends/current') || path.startsWith('/friends/all')) {
     return CordovaPageConstants.friendsCurrent;
@@ -94,7 +97,7 @@ export function pageEnumeration () {
     return CordovaPageConstants.friendsSentRequest;
   } else if (path.startsWith('/findfriends') ||
              path.startsWith('/remind') ||
-             path.startsWith('/start') ||
+             (path.startsWith('/start') && !path.startsWith('/start-a-campaign')) ||
              path.startsWith('/setupaccount') ||
              path.startsWith('/unsubscribe')) {
     return CordovaPageConstants.start;

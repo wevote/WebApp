@@ -22,6 +22,7 @@ export const messageService = {
 const nonFluxState = {
   activityTidbitWeVoteIdForDrawer: '',
   blockCampaignXRedirectOnSignIn: false, // When signing in from the header, don't mark a campaign as supported
+  chosenDomainTypeIsCampaign: false,
   chosenGoogleAnalyticsTrackingID: false,
   chosenPreventSharingOpinions: false,
   chosenReadyIntroductionText: '',
@@ -95,6 +96,10 @@ export default {
 
   getChosenAboutOrganizationExternalUrl () {
     return nonFluxState.chosenAboutOrganizationExternalUrl;
+  },
+
+  getChosenDomainTypeIsCampaign () {
+    return nonFluxState.chosenDomainTypeIsCampaign;
   },
 
   getChosenGoogleAnalyticsTrackingID () {
@@ -739,6 +744,7 @@ export default {
           hostname: hostFromApi,
           organization_we_vote_id: siteOwnerOrganizationWeVoteId,
           chosen_about_organization_external_url: chosenAboutOrganizationExternalUrl,
+          chosen_domain_type_is_campaign: chosenDomainTypeIsCampaign,
           chosen_google_analytics_tracking_id: chosenGoogleAnalyticsTrackingID,
           chosen_hide_we_vote_logo: hideWeVoteLogo,
           chosen_logo_url_https: chosenSiteLogoUrl,
@@ -785,6 +791,7 @@ export default {
           nonFluxState.apiStatus = apiStatus;
           nonFluxState.apiSuccess = apiSuccess;
           nonFluxState.chosenAboutOrganizationExternalUrl = chosenAboutOrganizationExternalUrl;
+          nonFluxState.chosenDomainTypeIsCampaign = chosenDomainTypeIsCampaign;
           nonFluxState.chosen_google_analytics_tracking_id = chosenGoogleAnalyticsTrackingID;
           nonFluxState.chosenPreventSharingOpinions = chosenPreventSharingOpinions;
           nonFluxState.chosenReadyIntroductionText = chosenReadyIntroductionText;

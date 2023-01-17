@@ -29,7 +29,7 @@ import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import TwitterSignInCard from '../../components/Twitter/TwitterSignInCard';
 import BrowserPushMessage from '../../components/Widgets/BrowserPushMessage';
 import MessageCard from '../../components/Widgets/MessageCard';
-import SnackNotifier, { openSnackbar } from '../../components/Widgets/SnackNotifier';
+import SnackNotifier, { openSnackbar } from '../../common/components/Widgets/SnackNotifier';
 import TooltipIcon from '../../components/Widgets/TooltipIcon';
 import AppObservableStore from '../../common/stores/AppObservableStore';
 import FriendStore from '../../stores/FriendStore';

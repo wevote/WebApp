@@ -13,7 +13,7 @@ import AppObservableStore, { messageService } from '../../common/stores/AppObser
 import VoterStore from '../../stores/VoterStore';
 
 // import { getApplicationViewBooleans } from '../../utils/applicationUtils';
-const SignInModal = React.lazy(() => import(/* webpackChunkName: 'SignInModal' */ '../SignIn/SignInModal'));
+const SignInModal = React.lazy(() => import(/* webpackChunkName: 'SignInModal' */ '../../common/components/SignIn/SignInModal'));
 
 class ShareModalTitleArea extends Component {
   constructor (props) {

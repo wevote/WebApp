@@ -6,7 +6,7 @@ import CopyToClipboard from 'react-copy-to-clipboard';
 import styled from 'styled-components';
 import { renderLog } from '../../common/utils/logging';
 import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
-import { openSnackbar } from '../Widgets/SnackNotifier';
+import { openSnackbar } from '../../common/components/Widgets/SnackNotifier';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 

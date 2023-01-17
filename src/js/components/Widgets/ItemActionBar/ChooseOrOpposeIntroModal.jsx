@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import VoterStore from '../../../stores/VoterStore';
 import PositionPublicToggle from '../PositionPublicToggle';
 
-const SignInOptionsPanel = React.lazy(() => import(/* webpackChunkName: 'SignInOptionsPanel' */ '../../SignIn/SignInOptionsPanel'));
+const SignInOptionsPanel = React.lazy(() => import(/* webpackChunkName: 'SignInOptionsPanel' */ '../../../common/components/SignIn/SignInOptionsPanel'));
 
 
 class ChooseOrOpposeIntroModal extends Component {

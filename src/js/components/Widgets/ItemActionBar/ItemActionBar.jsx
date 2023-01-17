@@ -18,7 +18,7 @@ import SupportStore from '../../../stores/SupportStore';
 import VoterStore from '../../../stores/VoterStore';
 import PositionPublicToggle from '../PositionPublicToggle';
 import ShareButtonDropDown from '../ShareButtonDropdown';
-import { openSnackbar } from '../SnackNotifier';
+import { openSnackbar } from '../../../common/components/Widgets/SnackNotifier';
 
 const shareIconSvg = '../../../../img/global/svg-icons/share-icon.svg';
 

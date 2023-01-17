@@ -22,7 +22,7 @@ import CandidateSearchItemForOpinions from '../components/OpinionsAndBallotItems
 import VoterGuideDisplayForListForOpinions from '../components/OpinionsAndBallotItems/VoterGuideDisplayForListForOpinions';
 import { PageContentContainer } from '../components/Style/pageLayoutStyles';
 import NumberOfItemsFound from '../components/Widgets/NumberOfItemsFound';
-import SnackNotifier from '../components/Widgets/SnackNotifier';
+import SnackNotifier from '../common/components/Widgets/SnackNotifier';
 import BallotStore from '../stores/BallotStore';
 import OrganizationStore from '../stores/OrganizationStore';
 import VoterGuideStore from '../stores/VoterGuideStore';

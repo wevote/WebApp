@@ -22,7 +22,7 @@ import { shareBottomOffset } from '../../utils/cordovaOffsets';
 import createMessageToFriendDefaults from '../../utils/createMessageToFriendDefaults';
 import sortFriendListByMutualFriends from '../../utils/friendFunctions';
 import isMobile from '../../utils/isMobile';
-import { openSnackbar } from '../Widgets/SnackNotifier';
+import { openSnackbar } from '../../common/components/Widgets/SnackNotifier';
 import { CopyLink, getKindOfShareFromURL, getWhatAndHowMuchToShareDefault, saveActionShareAnalytics, ShareFacebook, SharePreviewFriends, shareStyles, ShareTwitter, ShareWeVoteFriends } from './shareButtonCommon'; // cordovaSocialSharingByEmail // cordovaSocialSharingByEmail
 import ShareModalOption from './ShareModalOption';
 import { generateShareLinks } from './ShareModalText';

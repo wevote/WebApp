@@ -15,7 +15,7 @@ import { renderLog } from '../../common/utils/logging';
 import VoterStore from '../../stores/VoterStore';
 import { FirstRowPhoneOrEmail, SecondRowPhoneOrEmail, TrashCan } from '../Style/pageLayoutStyles';
 import { ButtonContainerHorizontal } from '../Welcome/sectionStyles';
-import SettingsVerifySecretCode from './SettingsVerifySecretCode';
+import SettingsVerifySecretCode from '../../common/components/Settings/SettingsVerifySecretCode';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 

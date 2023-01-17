@@ -3,9 +3,9 @@ import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import VoterActions from '../../actions/VoterActions';
-import { renderLog } from '../../common/utils/logging';
-import VoterStore from '../../stores/VoterStore';
+import VoterActions from '../../../actions/VoterActions';
+import { renderLog } from '../../utils/logging';
+import VoterStore from '../../../stores/VoterStore';
 
 class VoterEmailInputField extends Component {
   constructor (props) {

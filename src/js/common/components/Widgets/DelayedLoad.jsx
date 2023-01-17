@@ -20,13 +20,13 @@ class DelayedLoad extends Component {
   }
 
   render () {
-    const { showLoadingText } = this.props;
+    const { loadingTextLeftAlign, showLoadingText } = this.props;
     const { hidden } = this.state;
     return hidden ? (
       <DelayedLoadingWrapper>
         {!!(showLoadingText) && (
           <>
-            <LoadingText>
+            <LoadingText leftAlign={loadingTextLeftAlign}>
               Loading...
             </LoadingText>
           </>
@@ -37,19 +37,21 @@ class DelayedLoad extends Component {
 }
 DelayedLoad.propTypes = {
   children: PropTypes.object,
+  loadingTextLeftAlign: PropTypes.bool,
   showLoadingText: PropTypes.bool,
   waitBeforeShow: PropTypes.number.isRequired,
 };
 
 const DelayedLoadingWrapper = styled('div')`
-  padding: 5px;
   margin-top: ${() => (isCordova() ? '100px' : null)};
   padding-bottom: ${() => (isCordova() ? '800px' : null)};
 `;
 
-const LoadingText = styled('div')`
-  padding: 5px;
-  text-align: center;
-`;
+export const LoadingText = styled('div', {
+  shouldForwardProp: (prop) => !['leftAlign'].includes(prop),
+})(({ leftAlign }) => (`
+  ${leftAlign ? '' : 'padding: 10px;'}
+  ${leftAlign ? 'text-align: left;' : 'text-align: center;'}
+`));
 
 export default DelayedLoad;

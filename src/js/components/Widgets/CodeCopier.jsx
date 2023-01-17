@@ -4,7 +4,7 @@ import React, { Component, Suspense } from 'react';
 import OrganizationActions from '../../actions/OrganizationActions';
 import { renderLog } from '../../common/utils/logging';
 import OrganizationStore from '../../stores/OrganizationStore';
-import { openSnackbar } from './SnackNotifier';
+import { openSnackbar } from '../../common/components/Widgets/SnackNotifier';
 
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
 

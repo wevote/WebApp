@@ -119,7 +119,7 @@ class Donate extends Component {
       data: { token },
       success: (res) => {
         console.log(`reCAPTCHA passed this user: ${res.success}, with score: ${res.captcha_score}`);
-        this.setState({ reCaptchaPassed: false }); // res.success });
+        this.setState({ reCaptchaPassed: res.success });
         if (!res.success) {
           $ajax({
             endpoint: 'logToCloudWatch',

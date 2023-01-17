@@ -80,6 +80,10 @@ export const ListWrapper = styled('div', {
 `));
 
 export const LoadMoreItemsManuallyWrapper = styled('div')`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: center;
   margin-bottom: 0;
   min-width: 300px;
   @media print{
@@ -146,6 +150,18 @@ export const OneCampaignTitle = styled('h1')(({ theme }) => (`
     margin-bottom: 4px;
   }
 `));
+
+export const StartACampaignWrapper = styled('div')`
+  display: flex;
+  flex-direction: column;
+  min-height: 300px;
+  justify-content: center;
+  margin-bottom: 0;
+  min-width: 300px;
+  @media print{
+    display: none;
+  }
+`;
 
 export const SupportersActionLink = styled('span')`
   font-size: 14px;

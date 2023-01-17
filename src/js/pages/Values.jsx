@@ -21,7 +21,7 @@ import ValuesFollowedPreview from '../components/Values/ValuesFollowedPreview';
 import ValuesToFollowPreview from '../components/Values/ValuesToFollowPreview';
 import AddEndorsements from '../components/Widgets/AddEndorsements';
 import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
-import SnackNotifier, { openSnackbar } from '../components/Widgets/SnackNotifier';
+import SnackNotifier, { openSnackbar } from '../common/components/Widgets/SnackNotifier';
 import Testimonial from '../components/Widgets/Testimonial';
 import AppObservableStore from '../common/stores/AppObservableStore';
 import IssueStore from '../stores/IssueStore';
