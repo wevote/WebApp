@@ -118,7 +118,7 @@ class Donate extends Component {
       endpoint: 'googleRecaptchaVerifyView',
       data: { token },
       success: (res) => {
-        console.log('reCAPTCHA passed this user: ', res.success);
+        console.log(`reCAPTCHA passed this user: ${res.success}, with score: ${res.captcha_score}`);
         this.setState({ reCaptchaPassed: res.success });
         if (!res.success) {
           $ajax({
@@ -296,7 +296,7 @@ class Donate extends Component {
                     </>
                   ) : (
                     <ReCaptchaFailed>
-                      &#129302; Robots are not allowed to donate. &#129302;
+                      &#129302;&nbsp;&nbsp; Robots are not allowed to donate &nbsp;&nbsp;&#129302;
                     </ReCaptchaFailed>
                   )}
                   <GoogleReCaptcha onVerify={this.onVerifyCaptcha} style={{ margin: '0 auto', width: '40%' }} />
