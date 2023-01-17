@@ -5,20 +5,23 @@ import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { GoogleReCaptcha, GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import DonateActions from '../../common/actions/DonateActions';
 import DonationListForm from '../../common/components/Donation/DonationListForm';
 import InjectedCheckoutForm from '../../common/components/Donation/InjectedCheckoutForm';
+import standardBoxShadow from '../../common/components/Style/standardBoxShadow';
 import OpenExternalWebSite from '../../common/components/Widgets/OpenExternalWebSite';
 import DonateStore from '../../common/stores/DonateStore';
+import initializejQuery from '../../common/utils/initializejQuery';
 import { renderLog } from '../../common/utils/logging';
-import standardBoxShadow from '../../common/components/Style/standardBoxShadow';
 import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import { Section } from '../../components/Welcome/sectionStyles';
 import webAppConfig from '../../config';
 import VoterStore from '../../stores/VoterStore';
+import $ajax from '../../utils/service';
 
 const stripePromise = loadStripe(webAppConfig.STRIPE_API_KEY);
 
@@ -35,6 +38,7 @@ class Donate extends Component {
       isMonthly: true,
       joining: true,
       preDonation: true,
+      reCaptchaPassed: true,
       showWaiting: false,
       value: '7.00',
     };
@@ -44,6 +48,7 @@ class Donate extends Component {
     this.onAmountFieldChange = this.onAmountFieldChange.bind(this);
     this.onDonateStoreChange = this.onDonateStoreChange.bind(this);
     this.onSuccessfulDonation = this.onSuccessfulDonation.bind(this);
+    this.onVerifyCaptcha = this.onVerifyCaptcha.bind(this);
   }
 
   componentDidMount () {
@@ -52,6 +57,14 @@ class Donate extends Component {
     AnalyticsActions.saveActionDonateVisit(VoterStore.electionId());
     DonateActions.donationRefreshDonationList();
     window.scrollTo(0, 0);
+  }
+
+  componentDidUpdate () {
+    initializejQuery(() => {
+      const { $ } = window;
+      const spot = $('#CaptchaSpot');
+      spot.css({ margin: '0 auto', width: '31%', 'padding-top': '16px' });
+    });
   }
 
   componentWillUnmount () {
@@ -96,6 +109,25 @@ class Donate extends Component {
     console.log(event.target.value);
     this.setState({
       value: event.target.value,
+    });
+  }
+
+  onVerifyCaptcha (token) {
+    // console.log('------------ onVerifyCaptcha: ', token);
+    $ajax({
+      endpoint: 'googleRecaptchaVerifyView',
+      data: { token },
+      success: (res) => {
+        console.log(`reCAPTCHA passed this user: ${res.success}, with score: ${res.captcha_score}`);
+        this.setState({ reCaptchaPassed: false }); // res.success });
+        if (!res.success) {
+          $ajax({
+            endpoint: 'logToCloudWatch',
+            data: { message: 'reCAPTCHA FAILED verification' },
+            success: () => {},
+          });
+        }
+      },
     });
   }
 
@@ -150,7 +182,7 @@ class Donate extends Component {
   render () {
     renderLog('Donate');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
-    const { joining, showWaiting, value, isMonthly, preDonation } = this.state;
+    const { joining, showWaiting, value, isMonthly, preDonation, reCaptchaPassed } = this.state;
 
     return (
       <PageContentContainer>
@@ -163,98 +195,112 @@ class Donate extends Component {
             {preDonation ? this.preDonateDescription() : this.postDonationDescription()}
             {preDonation ? (
               <>
-                <ContributeGridWrapper>
-                  <ContributeMonthlyText>
-                    <FormControl component="fieldset"
-                                 className={classes.formControl}
-                    >
-                      <RadioGroup row>
-                        <FormControlLabel
-                          control={<Radio checked={isMonthly} onChange={this.handleChange} name="isMonthly" style={{ color: 'black' }} />}
-                          label="Donate monthly"
-                        />
-                        <FormControlLabel
-                          control={<Radio checked={!isMonthly} onChange={this.handleChange} name="oneTime" style={{ color: 'black' }} />}
-                          label="One time donation"
-                        />
-                      </RadioGroup>
-                    </FormControl>
-                  </ContributeMonthlyText>
-                  <ContributeGridSection>
-                    {['7', '12', '36', '150'].map((price) => (
-                      <ContributeGridItem key={`gridItem-${price}`}>
-                        <Button
-                          classes={{ root: classes.buttonRoot }}
-                          variant="contained"
-                          sx={{
-                            ':hover': {
-                              color: 'white',
-                            },
-                          }}
-                          onClick={() => this.changeValue(`${price}.00`)}
-                        >
-                          {`$${price}`}
-                        </Button>
-                      </ContributeGridItem>
-                    ))}
-                    <ContributeGridItemJoin joining={joining}>
-                      {!joining ? (
-                        <Button
-                          classes={{ root: classes.buttonRoot }}
-                          color="primary"
-                          variant="contained"
-                          style={{
-                            width: '100%',
-                            backgroundColor: 'darkblue',
-                            color: 'white',
-                          }}
-                          onClick={() => this.changeValue('5.00')}
-                        >
-                          Join
-                        </Button>
-                      ) : (
-                        <TextField
-                          id="currency-input"
-                          label="Amount"
-                          variant="outlined"
-                          value={value}
-                          onChange={this.onAmountFieldChange}
-                          InputLabelProps={{
-                            classes: {
-                              root: classes.textFieldInputRoot,
-                              focused: classes.textFieldInputRoot,
-                            },
-                            shrink: true,
-                          }}
-                          InputProps={{
-                            classes: {
-                              root: classes.textFieldInputRoot,
-                              focused: classes.textFieldInputRoot,
-                            },
-                            startAdornment: <InputAdornment position="start">$</InputAdornment>,
-                          }}
-                          style={{
-                            marginTop: 6,
-                            textAlign: 'center',
-                            width: 150,
-                          }}
-                        />
-                      )}
-                    </ContributeGridItemJoin>
-                  </ContributeGridSection>
-                </ContributeGridWrapper>
-                <PaymentWrapper joining={joining}>
-                  <PaymentCenteredWrapper>
-                    <Elements stripe={stripePromise}>
-                      <InjectedCheckoutForm
-                        value={value}
-                        classes={{}}
-                        isMonthly={isMonthly}
-                        showWaiting={showWaiting}
-                      />
-                    </Elements>
-                  </PaymentCenteredWrapper>
-                </PaymentWrapper>
+                <GoogleReCaptchaProvider
+                  reCaptchaKey="6LffBdUjAAAAAE-1uErPejSxS0ZgiRgh7Z77H4p-"
+                  container={{ element: 'CaptchaSpot' }}
+                >
+                  {reCaptchaPassed ? (
+                    <>
+                      <ContributeGridWrapper>
+                        <ContributeMonthlyText>
+                          <FormControl component="fieldset"
+                                       className={classes.formControl}
+                          >
+                            <RadioGroup row>
+                              <FormControlLabel
+                                control={<Radio checked={isMonthly} onChange={this.handleChange} name="isMonthly" style={{ color: 'black' }} />}
+                                label="Donate monthly"
+                              />
+                              <FormControlLabel
+                                control={<Radio checked={!isMonthly} onChange={this.handleChange} name="oneTime" style={{ color: 'black' }} />}
+                                label="One time donation"
+                              />
+                            </RadioGroup>
+                          </FormControl>
+                        </ContributeMonthlyText>
+                        <ContributeGridSection>
+                          {['7', '12', '36', '150'].map((price) => (
+                            <ContributeGridItem key={`gridItem-${price}`}>
+                              <Button
+                                classes={{ root: classes.buttonRoot }}
+                                variant="contained"
+                                sx={{
+                                  ':hover': {
+                                    color: 'white',
+                                  },
+                                }}
+                                onClick={() => this.changeValue(`${price}.00`)}
+                              >
+                                {`$${price}`}
+                              </Button>
+                            </ContributeGridItem>
+                          ))}
+                          <ContributeGridItemJoin joining={joining}>
+                            {!joining ? (
+                              <Button
+                                classes={{ root: classes.buttonRoot }}
+                                color="primary"
+                                variant="contained"
+                                style={{
+                                  width: '100%',
+                                  backgroundColor: 'darkblue',
+                                  color: 'white',
+                                }}
+                                onClick={() => this.changeValue('5.00')}
+                              >
+                                Join
+                              </Button>
+                            ) : (
+                              <TextField
+                                id="currency-input"
+                                label="Amount"
+                                variant="outlined"
+                                value={value}
+                                onChange={this.onAmountFieldChange}
+                                InputLabelProps={{
+                                  classes: {
+                                    root: classes.textFieldInputRoot,
+                                    focused: classes.textFieldInputRoot,
+                                  },
+                                  shrink: true,
+                                }}
+                                InputProps={{
+                                  classes: {
+                                    root: classes.textFieldInputRoot,
+                                    focused: classes.textFieldInputRoot,
+                                  },
+                                  startAdornment: <InputAdornment position="start">$</InputAdornment>,
+                                }}
+                                style={{
+                                  marginTop: 6,
+                                  textAlign: 'center',
+                                  width: 150,
+                                }}
+                              />
+                            )}
+                          </ContributeGridItemJoin>
+                        </ContributeGridSection>
+                      </ContributeGridWrapper>
+                      <PaymentWrapper joining={joining}>
+                        <PaymentCenteredWrapper>
+                          <Elements stripe={stripePromise}>
+                            <InjectedCheckoutForm
+                              value={value}
+                              classes={{}}
+                              isMonthly={isMonthly}
+                              showWaiting={showWaiting}
+                            />
+                          </Elements>
+                        </PaymentCenteredWrapper>
+                      </PaymentWrapper>
+                    </>
+                  ) : (
+                    <ReCaptchaFailed>
+                      &#129302;&nbsp;&nbsp; Robots are not allowed to donate &nbsp;&nbsp;&#129302;
+                    </ReCaptchaFailed>
+                  )}
+                  <GoogleReCaptcha onVerify={this.onVerifyCaptcha} style={{ margin: '0 auto', width: '40%' }} />
+                </GoogleReCaptchaProvider>
               </>
             ) : null}
             <DonationListForm
@@ -395,6 +441,13 @@ const PaymentWrapper  = styled('div', {
   display: ${joining ? '' : 'none'};
   text-align: center;
 `));
+
+const ReCaptchaFailed  = styled('div')`
+  text-align: center;
+  font-weight: 600;
+  font-size: 24px;
+  padding: 32px;
+`;
 
 const DonateCaveat = styled('p')`
   font-size: 17px;
