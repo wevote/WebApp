@@ -115,11 +115,15 @@ class Donate extends Component {
   onVerifyCaptcha (token) {
     // console.log('------------ onVerifyCaptcha: ', token);
     $ajax({
-      endpoint: 'googleRecaptchaVerifyView',
+      endpoint: 'googleRecaptchaVerify',
       data: { token },
       success: (res) => {
-        console.log(`reCAPTCHA passed this user: ${res.success}, with score: ${res.captcha_score}`);
-        this.setState({ reCaptchaPassed: res.success });
+        console.log(`reCAPTCHA passed this user: ${res.success}, with score: ${res.captcha_score}, for country: {%s}`);
+        this.setState({
+          reCaptchaPassed: res.success,
+          country: res.country_code,
+          score: res.captcha_score,
+        });
         if (!res.success) {
           $ajax({
             endpoint: 'logToCloudWatch',
@@ -182,7 +186,7 @@ class Donate extends Component {
   render () {
     renderLog('Donate');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
-    const { joining, showWaiting, value, isMonthly, preDonation, reCaptchaPassed } = this.state;
+    const { joining, showWaiting, value, isMonthly, preDonation, reCaptchaPassed, score, country } = this.state;
 
     return (
       <PageContentContainer>
@@ -296,7 +300,14 @@ class Donate extends Component {
                     </>
                   ) : (
                     <ReCaptchaFailed>
-                      &#129302;&nbsp;&nbsp; Robots are not allowed to donate &nbsp;&nbsp;&#129302;
+                      { score > 0 ? (
+                        <>&#129302;&nbsp;&nbsp; Robots are not allowed to donate &nbsp;&nbsp;&#129302;</>
+                      ) : (
+                        <>
+                          Donations are disabled at this time --&nbsp;
+                          {country}
+                        </>
+                      )}
                     </ReCaptchaFailed>
                   )}
                   <GoogleReCaptcha onVerify={this.onVerifyCaptcha} style={{ margin: '0 auto', width: '40%' }} />
