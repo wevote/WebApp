@@ -272,11 +272,7 @@ class CompleteYourProfile extends Component {
     }
     return (
       <Wrapper>
-        {/*
-        <Suspense fallback={<span>&nbsp;</span>}>
-          <SignInModalController />
-        </Suspense>
-        */}
+        {/* <Suspense fallback={<span>&nbsp;</span>}><SignInModalController /></Suspense> */}
         <section>
           {!!(introductionText) && (
             <IntroductionText>

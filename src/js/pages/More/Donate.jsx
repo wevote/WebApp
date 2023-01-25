@@ -118,7 +118,7 @@ class Donate extends Component {
       endpoint: 'googleRecaptchaVerify',
       data: { token },
       success: (res) => {
-        console.log(`reCAPTCHA passed this user: ${res.success}, with score: ${res.captcha_score}, for country: {%s}`);
+        console.log(`reCAPTCHA passed this user: ${res.success}, with score: ${res.captcha_score}, for country: ${res.country_code}`);
         this.setState({
           reCaptchaPassed: res.success,
           country: res.country_code,
@@ -214,10 +214,12 @@ class Donate extends Component {
                               <FormControlLabel
                                 control={<Radio checked={isMonthly} onChange={this.handleChange} name="isMonthly" style={{ color: 'black' }} />}
                                 label="Donate monthly"
+                                id="donateMonthlyRadio"
                               />
                               <FormControlLabel
                                 control={<Radio checked={!isMonthly} onChange={this.handleChange} name="oneTime" style={{ color: 'black' }} />}
                                 label="One time donation"
+                                id="oneTimeDonationRadio"
                               />
                             </RadioGroup>
                           </FormControl>
