@@ -1,4 +1,5 @@
 // eslint-disable-next-line import/no-cycle
+import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { oAuthLog } from '../../common/utils/logging';
 import facebookApi from '../../utils/facebookApi';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
@@ -50,11 +51,24 @@ export default {
     let response;
     fbData.t0 = performance.now();
     try {
-      facebookApi().getLoginStatus((responseInner) => {
-        response = responseInner;
-        oAuthLog('setConnectedStatus facebookApi().getLoginStatus response:', response);
-        this.setFacebookAuthStatus(response, saveAuthToServer, doMergeOnServer, hasFacebookAuth, signInFunc);
-      });
+      if (isWebApp()) {
+        facebookApi().getLoginStatus((responseInner) => {
+          response = responseInner;
+          oAuthLog('setConnectedStatus facebookApi().getLoginStatus response:', response);
+          this.setFacebookAuthStatus(response, saveAuthToServer, doMergeOnServer, hasFacebookAuth, signInFunc);
+        });
+      } else {
+        facebookApi().getLoginStatus(true,
+          (responseInner) => {
+            response = responseInner;
+            oAuthLog('setConnectedStatus facebookApi().getLoginStatus response:', response);
+            this.setFacebookAuthStatus(response, saveAuthToServer, doMergeOnServer, hasFacebookAuth, signInFunc);
+          },
+          (responseInner) => {
+            response = responseInner;
+            oAuthLog('setConnectedStatus facebookApi().getLoginStatus FAILURE response:', response);
+          });
+      }
     } catch (error) {
       console.log('initializeFacebookSDK facebookApi().getLoginStatus error:', error);
     }
@@ -75,12 +89,24 @@ export default {
 
       if (!hasFacebookAuth || saveAuthToServer) {
         oAuthLog('setConnectedStatus authResponse has connect data and voter is NOT signed in on WeVote -- fbData', fbData);
-        facebookApi().api(
-          '/me?fields=id,email,first_name,middle_name,last_name,cover', (responseName) => {
-            // console logging in this callback at this line does not work, but putting a native log line in FacebookConnectPlugin.m at about line 705 after the "// If we have permissions to request" comment will get you the data
-            this.setFacebookUserData(responseName, saveAuthToServer, doMergeOnServer, signInFunc);
-          },
-        );
+        if (isWebApp()) {
+          facebookApi().api(
+            '/me?fields=id,email,first_name,middle_name,last_name,cover', (responseName) => {
+              // console logging in this callback at this line does not work, but putting a native log line in FacebookConnectPlugin.m at about line 705 after the "// If we have permissions to request" comment will get you the data
+              this.setFacebookUserData(responseName, saveAuthToServer, doMergeOnServer, signInFunc);
+            },
+          );
+        } else {
+          facebookApi().api(
+            '/me?fields=id,email,first_name,middle_name,last_name,cover', ['public_profile', 'email'], (responseName) => {
+              // console logging in this callback at this line does not work, but putting a native log line in FacebookConnectPlugin.m at about line 705 after the "// If we have permissions to request" comment will get you the data
+              this.setFacebookUserData(responseName, saveAuthToServer, doMergeOnServer, signInFunc);
+            },
+            (responseName) => {
+              oAuthLog('setFacebookAuthStatus facebookApi().getLoginStatus FAILURE response:', responseName);
+            },
+          );
+        }
       } else {
         oAuthLog('setConnectedStatus authResponse has connect data and voter is ALREADY signed in -- fbData', fbData);
       }
@@ -99,13 +125,26 @@ export default {
       fbData.cover = cover;
       fbData.facebookSaysSignedIn = true;
 
-      facebookApi().api(
-        '/me?fields=picture.type(large)&redirect=false', ['public_profile', 'email'],
-        (responsePhoto) => {
-          oAuthLog('setConnectedStatus -> setFacebookUserData -> setFacebookPhotoData response', responsePhoto);
-          this.setFacebookPhotoData(responsePhoto, saveAuthToServer, doMergeOnServer, signInFunc);
-        },
-      );
+      if (isWebApp()) {
+        facebookApi().api(
+          '/me?fields=picture.type(large)&redirect=false',
+          (responsePhoto) => {
+            oAuthLog('setConnectedStatus -> setFacebookUserData -> setFacebookPhotoData response', responsePhoto);
+            this.setFacebookPhotoData(responsePhoto, saveAuthToServer, doMergeOnServer, signInFunc);
+          },
+        );
+      } else {
+        facebookApi().api(
+          '/me?fields=picture.type(large)&redirect=false', ['public_profile', 'email'],
+          (responsePhoto) => {
+            oAuthLog('setConnectedStatus -> setFacebookUserData -> setFacebookPhotoData response', responsePhoto);
+            this.setFacebookPhotoData(responsePhoto, saveAuthToServer, doMergeOnServer, signInFunc);
+          },
+          (responsePhoto) => {
+            oAuthLog('setConnectedStatus -> setFacebookUserData -> setFacebookPhotoData FAILURE response', responsePhoto);
+          },
+        );
+      }
     }
   },
 
@@ -133,25 +172,36 @@ export default {
     return fbData;
   },
 
+  login2022Response (resolve, response) {
+    oAuthLog('then for .login() facebookApiLogin2022');
+    const { status: fbstatus } = response;
+    if (fbstatus === 'connected') {
+      oAuthLog('facebookApiLogin2022 login success response: ', response);
+      signInModalGlobalState.set('waitingForFacebookApiCompletion', false);
+      resolve(true);
+    } else {
+      // "The person is not logged into your webpage or we are unable to tell."
+      oAuthLog('facebookApiLogin2022 login failure response: ', response);
+      signInModalGlobalState.set('waitingForFacebookApiCompletion', false);
+      resolve(false);
+    }
+  },
+
   facebookApiLogin2022 () {
     oAuthLog('entry to facebookApiLogin2022');
     return new Promise((resolve) => {
-      facebookApi().login((response) => {
-        const { status: fbstatus } = response;
-        if (fbstatus === 'connected') {
-          oAuthLog('facebookApiLogin2022 login success response: ', response);
-          signInModalGlobalState.set('waitingForFacebookApiCompletion', false);
-          resolve(true);
-        } else {
-          // "The person is not logged into your webpage or we are unable to tell."
-          oAuthLog('facebookApiLogin2022 login failure response: ', response);
-          signInModalGlobalState.set('waitingForFacebookApiCompletion', false);
-          resolve(false);
-        }
-      });
-    // }
-    // oAuthLog('facebookApiLogin2022 login failure NO fbData');
-    // resolve(false);
+      if (isWebApp()) {
+        facebookApi().login((response) => {
+          this.login2022Response(resolve, response);
+        });
+      } else {
+        facebookApi().login(['public_profile', 'email'], (response) => {
+          this.login2022Response(resolve, response);
+        },
+        (responseFail) => {
+          console.log('Failure to sign in to Facebook', responseFail);
+        });
+      }
     });
   },
 };
