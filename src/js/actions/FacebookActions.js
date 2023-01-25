@@ -49,6 +49,16 @@ export default {
     FriendActions.friendListSuggested();
   },
 
+  getFBDataResponse (response, failure) {
+    const failureStr = failure ? 'FAILURE' : '';
+    // console logging in this callback at this line does not work, but putting a native log line in FacebookConnectPlugin.m at about line 705 after the "// If we have permissions to request" comment will get you the data
+    oAuthLog(`getFacebookData ${failureStr} response`, response);
+    Dispatcher.dispatch({
+      type: FacebookConstants.FACEBOOK_RECEIVED_DATA,
+      data: response,
+    });
+  },
+
   // https://developers.facebook.com/docs/graph-api/reference/v2.6/user
   getFacebookData () {
     if (!webAppConfig.ENABLE_FACEBOOK) {
@@ -57,16 +67,14 @@ export default {
     }
     // console.log('FacebookActions.getFacebookData invocation');
     if (facebookApi()) {
-      facebookApi().api(
-        '/me?fields=id,email,first_name,middle_name,last_name,cover', (response) => {
-          // console logging in this callback at this line does not work, but putting a native log line in FacebookConnectPlugin.m at about line 705 after the "// If we have permissions to request" comment will get you the data
-          oAuthLog('getFacebookData response', response);
-          Dispatcher.dispatch({
-            type: FacebookConstants.FACEBOOK_RECEIVED_DATA,
-            data: response,
-          });
-        },
-      );
+      if (isWebApp()) {
+        facebookApi().api('/me?fields=id,email,first_name,middle_name,last_name,cover',
+          (response) => this.getFBDataResponse(response, false));
+      } else {
+        facebookApi().api('/me?fields=id,email,first_name,middle_name,last_name,cover', ['public_profile', 'email'],
+          (response) => this.getFBDataResponse(response, false),
+          (response) => this.getFBDataResponse(response, true));
+      }
     } else {
       console.log('FacebookActions.getFacebookProfilePicture was not invoked, facebookApi() undefined');
     }
@@ -138,17 +146,24 @@ export default {
     });
   },
 
+  getPictureResponse (response, failure) {
+    const failureStr = failure ? 'FAILURE' : '';
+    oAuthLog(`getFacebookProfilePicture ${failureStr} response`, response);
+    Dispatcher.dispatch({
+      type: FacebookConstants.FACEBOOK_RECEIVED_PICTURE,
+      data: response,
+    });
+  },
+
   getPicture () {
-    facebookApi().api(
-      '/me?fields=picture.type(large)&redirect=false', ['public_profile', 'email'],
-      (response) => {
-        oAuthLog('getFacebookProfilePicture response', response);
-        Dispatcher.dispatch({
-          type: FacebookConstants.FACEBOOK_RECEIVED_PICTURE,
-          data: response,
-        });
-      },
-    );
+    if (isWebApp()) {
+      facebookApi().api('/me?fields=picture.type(large)&redirect=false',
+        (response) => this.getPictureResponse(response, false));
+    } else {
+      facebookApi().api('/me?fields=picture.type(large)&redirect=false', ['public_profile', 'email'],
+        (response) => this.getPictureResponse(response, false),
+        (response) => this.getPictureResponse(response, true));
+    }
   },
 
   getFacebookProfilePicture () {
@@ -171,6 +186,16 @@ export default {
     }
   },
 
+  getInvitableFriendsListResponse (response, failure) {
+    const failureStr = failure ? 'FAILURE' : '';
+    oAuthLog('getFacebookInvitableFriendsList ', failureStr, response);
+    Dispatcher.dispatch({
+      type: FacebookConstants.FACEBOOK_RECEIVED_INVITABLE_FRIENDS,
+      data: response,
+    });
+  },
+
+
   getFacebookInvitableFriendsList (pictureWidth, pictureHeight) {
     const pictureWidthVerified = pictureWidth || 50;
     const pictureHeightVerified = pictureHeight || 50;
@@ -181,19 +206,26 @@ export default {
 
     if (facebookApi()) {
       const fbApiForInvitableFriends = `/me?fields=invitable_friends.limit(1000){name,id,picture.width(${pictureWidthVerified}).height(${pictureHeightVerified})`;
-      facebookApi().api(
-        fbApiForInvitableFriends,
-        (response) => {
-          oAuthLog('getFacebookInvitableFriendsList', response);
-          Dispatcher.dispatch({
-            type: FacebookConstants.FACEBOOK_RECEIVED_INVITABLE_FRIENDS,
-            data: response,
-          });
-        },
-      );
+      if (isWebApp()) {
+        facebookApi().api(fbApiForInvitableFriends,
+          (response) => this.getInvitableFriendsListResponse(response, false));
+      } else {
+        facebookApi().api(fbApiForInvitableFriends, ['public_profile', 'email'],
+          (response) => this.getInvitableFriendsListResponse(response, false),
+          (response) => this.getInvitableFriendsListResponse(response, true));
+      }
     } else {
       console.log('FacebookActions.getFacebookInvitableFriendsList was not invoked, facebookApi() undefined');
     }
+  },
+
+  readFBAppRequestsResponse (response, failure) {
+    const failureStr = failure ? 'FAILURE' : '';
+    oAuthLog('readFacebookAppRequests ', failureStr, response);
+    Dispatcher.dispatch({
+      type: FacebookConstants.FACEBOOK_READ_APP_REQUESTS,
+      data: response,
+    });
   },
 
   readFacebookAppRequests () {
@@ -204,19 +236,30 @@ export default {
 
     if (facebookApi()) {
       const fbApiForReadingAppRequests = 'me?fields=apprequests.limit(10){from,to,created_time,id}';
-      facebookApi().api(
-        fbApiForReadingAppRequests,
-        (response) => {
-          oAuthLog('readFacebookAppRequests', response);
-          Dispatcher.dispatch({
-            type: FacebookConstants.FACEBOOK_READ_APP_REQUESTS,
-            data: response,
-          });
-        },
-      );
+      if (isWebApp()) {
+        facebookApi().api(
+          fbApiForReadingAppRequests,
+          (response) => this.readFBAppRequestsResponse(response, false),
+        );
+      } else {
+        facebookApi().api(
+          fbApiForReadingAppRequests, ['public_profile', 'email'],
+          (response) => this.readFBAppRequestsResponse(response, false),
+          (response) => this.readFBAppRequestsResponse(response, true),
+        );
+      }
     } else {
       console.log('FacebookActions.readFacebookAppRequests was not invoked, facebookApi() undefined');
     }
+  },
+
+  deleteFBAppRequestsResponse (response, failure) {
+    const failureStr = failure ? 'FAILURE' : '';
+    oAuthLog('deleteFacebookAppRequest response', failureStr, response);
+    Dispatcher.dispatch({
+      type: FacebookConstants.FACEBOOK_DELETE_APP_REQUEST,
+      data: response,
+    });
   },
 
   deleteFacebookAppRequest (requestId) {
@@ -227,17 +270,14 @@ export default {
 
     if (facebookApi()) {
       console.log('deleteFacebookAppRequest requestId: ', requestId);
-      facebookApi().api(
-        requestId,
-        'delete',
-        (response) => {
-          oAuthLog('deleteFacebookAppRequest response', response);
-          Dispatcher.dispatch({
-            type: FacebookConstants.FACEBOOK_DELETE_APP_REQUEST,
-            data: response,
-          });
-        },
-      );
+      if (isWebApp()) {
+        facebookApi().api(requestId, 'delete',
+          (response) => this.deleteFBAppRequestsResponse(response, false));
+      } else {
+        facebookApi().api(requestId, ['public_profile', 'email'], 'delete',
+          (response) => this.deleteFBAppRequestsResponse(response, false),
+          (response) => this.deleteFBAppRequestsResponse(response, true));
+      }
     } else {
       console.log('FacebookActions.deleteFacebookAppRequest was not invoked, facebookApi() undefined');
     }
@@ -295,6 +335,26 @@ export default {
     }
   },
 
+  loginResponse (response, innerThis, failure) {
+    const failureStr = failure ? 'FAILURE' : '';
+    oAuthLog('FacebookActions facebookApi().getLoginStatus() response: ', failureStr, response);
+    // dumpObjProps('FacebookActions facebookApi().getLoginStatus() response:', response);
+    if (response.status === 'connected') {
+      Dispatcher.dispatch({
+        type: FacebookConstants.FACEBOOK_LOGGED_IN,
+        data: response,
+      });
+    } else {
+      if (isWebApp()) { // eslint-disable-line no-lonely-if
+        console.log('Trying again with innerThis values, window.FB.login()');
+        window.FB.login(innerThis.loginSuccess, innerThis.loginFailure, innerThis.getPermissions());
+      } else {
+        console.log('Trying again with innerThis values, window.facebookConnectPlugin.login()');
+        window.facebookConnectPlugin.login(innerThis.getPermissions(), innerThis.loginSuccess, innerThis.loginFailure);
+      }
+    }
+  },
+
   login () {
     if (!webAppConfig.FACEBOOK_APP_ID) {
       console.log('ERROR: Missing FACEBOOK_APP_ID from src/js/config.js'); // DO NOT REMOVE THIS!
@@ -313,26 +373,15 @@ export default {
       const innerThis = this;
       try {
         // console.log('FacebookActions facebookApi().getLoginStatus()');
-        facebookApi().getLoginStatus(
-          (response) => {
-            oAuthLog('FacebookActions facebookApi().getLoginStatus() response: ', response);
-            // dumpObjProps('FacebookActions facebookApi().getLoginStatus() response:', response);
-            if (response.status === 'connected') {
-              Dispatcher.dispatch({
-                type: FacebookConstants.FACEBOOK_LOGGED_IN,
-                data: response,
-              });
-            } else {
-              if (isWebApp()) { // eslint-disable-line no-lonely-if
-                console.log('Trying again with innerThis values, window.FB.login()');
-                window.FB.login(innerThis.loginSuccess, innerThis.loginFailure, innerThis.getPermissions());
-              } else {
-                console.log('Trying again with innerThis values, window.facebookConnectPlugin.login()');
-                window.facebookConnectPlugin.login(innerThis.getPermissions(), innerThis.loginSuccess, innerThis.loginFailure);
-              }
-            }
-          },
-        );
+        if (isWebApp()) {
+          facebookApi().getLoginStatus(
+            (response) => this.loginResponse(response, innerThis, false),
+          );
+        } else {
+          facebookApi().getLoginStatus(true,
+            (response) => this.loginResponse(response, innerThis, false),
+            (response) => this.loginResponse(response, innerThis, true));
+        }
       } catch (error) {
         console.log('FacebookActions.login() try/catch error: ', error);
       }

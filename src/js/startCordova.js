@@ -130,6 +130,10 @@ export function initializationForCordova (startReact) {
           //   dumpScreenAndDeviceFields();
           // }
 
+          // Prevent the app from rotating to Landscape -- mostly to simplify layout permutations
+          const { screen } = window;
+          screen.orientation.lock('portrait');
+
           // Special keyboard handling for iOS
           if (isIOS() && !isIOSAppOnMac) {
             // Unfortunately this event only works on iOS, but fortunately it is most needed on iOS
