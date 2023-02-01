@@ -3,8 +3,12 @@
 
 export function validateEmail (email) {
   const trimmedEmail = email ? email.trim() : '';
-  const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  return re.test(trimmedEmail);
+  if (trimmedEmail.length < 6 || trimmedEmail.length > 254) {
+    return false;
+  } else {
+    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(trimmedEmail);
+  }
 }
 
 export function validatePhoneOrEmail (contactInfo) {
