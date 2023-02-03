@@ -43,8 +43,8 @@ module.exports = {
   GOOGLE_MAPS_API_KEY: '',
   GOOGLE_PEOPLE_API_KEY: '',
   GOOGLE_PEOPLE_API_CLIENT_ID: '',
+  GOOGLE_RECAPTCHA_KEY: '',
   OPEN_REPLAY_PROJECT_KEY: '',
   OPEN_REPLAY_INGEST_POINT: 'https://openreplay.wevote.us/ingest',
-
   STRIPE_API_KEY: 'pk_test_bWuWGC3jrMIFH3wvRvHR6Z5H',  // This is the publishable key (not secret)
 };

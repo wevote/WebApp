@@ -18,6 +18,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const port = process.env.PORT || 3000;
 const isHTTPS = process.env.PROTOCOL && process.env.PROTOCOL === 'HTTPS';
 const isWebApp = !process.env.npm_lifecycle_script.includes('CORDOVA=1');
+const useRealCerts = process.env.npm_lifecycle_script.includes('USE_REAL_CERTS=1');
 const source = isWebApp ? 'src' : 'srcCordova';
 const bundleAnalysis = process.env.ANALYSIS || false;  // enable the interactive bundle analyser and the Unused component analyzer
 const minimized = process.env.MINIMIZED === '1' || process.env.MINIMIZED === 1 || false;  // enable the Terser plugin that strips comments and shrinks long variable names
@@ -184,8 +185,14 @@ module.exports = (env, argv) => ({
       server: {
         type: 'https',
         options: {
-          key: fs.readFileSync(`./${source}/cert/server.key`),
-          cert: fs.readFileSync(`./${source}/cert/server.crt`),
+          ...(useRealCerts ? {
+            // For testing with Cordova and real authoritative certs
+            key: fs.readFileSync(`./${source}/cert/wevotedeveloper.com_key.txt`),
+            cert: fs.readFileSync(`./${source}/cert/wevotedeveloper.com.crt`),
+          } : {
+            key: fs.readFileSync(`./${source}/cert/server.key`),
+            cert: fs.readFileSync(`./${source}/cert/server.crt`),
+          }),
         },
       },
     } : {}),
