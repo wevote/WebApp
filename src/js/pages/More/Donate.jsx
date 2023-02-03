@@ -38,7 +38,7 @@ class Donate extends Component {
       isMonthly: true,
       joining: true,
       preDonation: true,
-      reCaptchaPassed: true,
+      okToDonateWithoutAuth: true,
       showWaiting: false,
       value: '7.00',
     };
@@ -118,19 +118,25 @@ class Donate extends Component {
       endpoint: 'googleRecaptchaVerify',
       data: { token },
       success: (res) => {
-        console.log(`reCAPTCHA passed this user: ${res.success}, with score: ${res.captcha_score}, for country: ${res.country_code}`);
-        this.setState({
-          reCaptchaPassed: res.success,
-          country: res.country_code,
-          score: res.captcha_score,
-        });
-        if (!res.success) {
-          $ajax({
-            endpoint: 'logToCloudWatch',
-            data: { message: 'reCAPTCHA FAILED verification' },
-            success: () => {},
+        const { allowedToDonate, captchaScore, blockedByCaptcha, blockedByOther } = res;
+        const weVoteId = VoterStore.getVoterWeVoteId();
+        const time = weVoteId !== '' ? 0 : 1000;  // Only during testing, if you start the session on this page, the captcha results can beat the voter_retrieve
+        setTimeout(() => {
+          const isSignedin = VoterStore.getVoterIsSignedIn();
+          const pass = allowedToDonate || isSignedin ? 'passed' : 'failed';
+          const signed = isSignedin ? '(signed in)' : '(not signed in)';
+          console.log(`reCAPTCHA ${pass} this user ${signed} with score: ${captchaScore}, blockedByCaptcha: ${blockedByCaptcha}, blockedByOther: ${blockedByOther}`);
+          this.setState({
+            okToDonateWithoutAuth: allowedToDonate,
+            isSignedin,
           });
-        }
+          if (!allowedToDonate) {
+            $ajax({
+              endpoint: 'logToCloudWatch',
+              data: { message: `reCAPTCHA FAILED verification signedIn ${isSignedin}, results ${JSON.stringify(res)}` },
+            });
+          }
+        }, time);
       },
     });
   }
@@ -186,7 +192,7 @@ class Donate extends Component {
   render () {
     renderLog('Donate');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
-    const { joining, showWaiting, value, isMonthly, preDonation, reCaptchaPassed, score, country } = this.state;
+    const { isSignedin, joining, showWaiting, value, isMonthly, preDonation, okToDonateWithoutAuth } = this.state;
 
     return (
       <PageContentContainer>
@@ -200,10 +206,10 @@ class Donate extends Component {
             {preDonation ? (
               <>
                 <GoogleReCaptchaProvider
-                  reCaptchaKey="6LffBdUjAAAAAE-1uErPejSxS0ZgiRgh7Z77H4p-"
+                  reCaptchaKey={webAppConfig.GOOGLE_RECAPTCHA_KEY}
                   container={{ element: 'CaptchaSpot' }}
                 >
-                  {reCaptchaPassed ? (
+                  {okToDonateWithoutAuth || isSignedin ? (
                     <>
                       <ContributeGridWrapper>
                         <ContributeMonthlyText>
@@ -302,14 +308,7 @@ class Donate extends Component {
                     </>
                   ) : (
                     <ReCaptchaFailed>
-                      { score > 0 ? (
-                        <>&#129302;&nbsp;&nbsp; Robots are not allowed to donate &nbsp;&nbsp;&#129302;</>
-                      ) : (
-                        <>
-                          Donations are disabled at this time --&nbsp;
-                          {country}
-                        </>
-                      )}
+                      Please sign in to donate
                     </ReCaptchaFailed>
                   )}
                   <GoogleReCaptcha onVerify={this.onVerifyCaptcha} style={{ margin: '0 auto', width: '40%' }} />
