@@ -8,12 +8,7 @@ import { renderLog } from '../../utils/logging';
 import stringContains from '../../utils/stringContains';
 import TabPanel from '../Widgets/TabPanel';
 import DonationList from './DonationList';
-// import { donationTheme } from '../Style/donationTheme';
-// import { ThemeProvider } from '@mui/material/styles';
 
-/*
-July 2021 TODO: Same named file in the WebApp and Campaigns -- PLEASE KEEP THEM IDENTICAL -- make symmetrical changes and test on both sides
-*/
 
 class DonationListForm extends Component {
   constructor (props) {
@@ -81,7 +76,7 @@ class DonationListForm extends Component {
               onChange={this.handleChange}
               aria-label="payments or subscription choice bar"
             >
-              <Tab label={firstTabLabel}
+              <Tab label={<span style={{ paddingLeft: 0 }}>{firstTabLabel}</span>}
                    id={`scrollable-auto-tab-${0}`}
                    aria-controls={`scrollable-auto-tabpanel-${0}`}
               />

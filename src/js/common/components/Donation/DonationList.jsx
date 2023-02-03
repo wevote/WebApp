@@ -204,7 +204,7 @@ class DonationList extends Component {
           <Table stickyHeader aria-label="Donation table">
             <TableHead>
               <TableRow>
-                <StyledTableHeaderCellAll align="left">Date Paid</StyledTableHeaderCellAll>
+                <StyledTableHeaderCellAll align="left"><span style={{ paddingLeft: 8 }}>Date Paid</span></StyledTableHeaderCellAll>
                 <StyledTableHeaderCellDesktop align="center">Donation Type</StyledTableHeaderCellDesktop>
                 <StyledTableHeaderCellAll align="right">Amount</StyledTableHeaderCellAll>
                 <StyledTableHeaderCellAll align="center">{isCampaign ? 'Campaign' : 'Payment'}</StyledTableHeaderCellAll>
@@ -219,7 +219,7 @@ class DonationList extends Component {
             <TableBody>
               {paymentRows.map((row) => (
                 <TableRow key={row.id}>
-                  <StyledTableCellAll align="left">{row.date}</StyledTableCellAll>
+                  <StyledTableCellAll align="left"><span style={{ paddingLeft: 8 }}>{row.date}</span></StyledTableCellAll>
                   {/* eslint-disable-next-line no-nested-ternary */}
                   <StyledTableCellDesktop align="center">{!isCampaign ? row.type : (row.isChipIn ? 'Chip In' : 'Membership Payment')}</StyledTableCellDesktop>
                   <StyledTableCellAll align="right">{`$${row.amount}`}</StyledTableCellAll>
