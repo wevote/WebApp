@@ -1,12 +1,12 @@
-import PropTypes from 'prop-types';
-import React, { useEffect, useState, useRef } from 'react';
-import styled from 'styled-components';
 import { TextField } from '@mui/material';
-import AddCandidateLoadingButton from './AddCandidateLoadingButton';
-import { renderLog } from '../../../common/utils/logging';
+import PropTypes from 'prop-types';
+import React, { useEffect, useRef, useState } from 'react';
+import styled from 'styled-components';
 import VoterGuidePossibilityActions from '../../../actions/VoterGuidePossibilityActions';
-import voterGuidePossibilityStore from '../../../stores/VoterGuidePossibilityStore';
+import { renderLog } from '../../../common/utils/logging';
 import voterGuidePossibilityPositionStore from '../../../stores/VoterGuidePossibilityPositionStore';
+import voterGuidePossibilityStore from '../../../stores/VoterGuidePossibilityStore';
+import AddCandidateLoadingButton from './AddCandidateLoadingButton';
 
 
 let possibilityListener;
@@ -108,11 +108,18 @@ export default function AddCandidateExtensionForm (props) {
     VoterGuidePossibilityActions.voterGuidePossibilityRetrieve(candidate.endorsementPageUrl);
     setLoading(true);
     possibilityPositionListener = voterGuidePossibilityPositionStore.addListener(handlePossibilityPositionIDChange);
-    return () => possibilityPositionListener.remove;
+    return () => possibilityPositionListener.remove();
   };
 
+  if (finished) {
+    // After finish, and then a delay, message our Chrome extension to close the modal dialog that contains this page in an iFrame
+    setTimeout(() => {
+      // console.log('sending closeIFrameDialog message ---------------------');
+      window.parent.postMessage('closeIFrameDialog', '*');
+    }, 2000);
+  }
+
   renderLog('AddCandidateExtensionForm');  // Set LOG_RENDER_EVENTS to log all renders
-  // console.log('AddCandidateExtensionForm render');
 
   return (
     <form onSubmit={handleSubmit}>
