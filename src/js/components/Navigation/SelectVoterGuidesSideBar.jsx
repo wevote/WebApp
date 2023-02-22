@@ -71,6 +71,10 @@ export default class SelectVoterGuidesSideBar extends Component {
 
     // 2022-08-11 Dale: The section this component takes you to has some broken pages,
     //  and is turned off until we can fix the bugs.
+    const pigsCanFly = false;
+    if (!pigsCanFly) {
+      return null;
+    }
     if (!nextReleaseFeaturesEnabled) {
       return null;
     }

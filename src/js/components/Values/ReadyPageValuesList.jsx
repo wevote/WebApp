@@ -50,6 +50,9 @@ export default class ReadyPageValuesList extends Component {
     });
   }
 
+  // Order by 1, 2, 3. Push 0's to the bottom in the same order.
+  orderByForcedSortOrder = (firstIssue, secondIssue) => (firstIssue.forced_sort_order || Number.MAX_VALUE) - (secondIssue.forced_sort_order || Number.MAX_VALUE);
+
   orderByIssueFollowersCount = (firstIssue, secondIssue) => secondIssue.issue_followers_count - firstIssue.issue_followers_count;
 
   orderByLinkedOrganizationCount = (firstIssue, secondIssue) => secondIssue.linked_organization_count - firstIssue.linked_organization_count;
@@ -66,7 +69,7 @@ export default class ReadyPageValuesList extends Component {
 
   render () {
     renderLog('ReadyPageValuesList');  // Set LOG_RENDER_EVENTS to log all renders
-    const { sortByNumberOfAdvocates } = this.props;
+    const { sortByNumberOfAdvocates, sortByForcedSortOrder } = this.props;
     const { allIssues } = this.state;
     const { limitNumberOfIssuesShownToThisNumber } = this.state;
     let issuesList = [];
@@ -78,6 +81,9 @@ export default class ReadyPageValuesList extends Component {
         issuesList = issuesList.sort(this.orderByNotLeftOrRight);
       } else {
         issuesList = allIssues;
+      }
+      if (sortByForcedSortOrder) {
+        issuesList = issuesList.sort(this.orderByForcedSortOrder);
       }
     }
 
@@ -139,6 +145,7 @@ export default class ReadyPageValuesList extends Component {
   }
 }
 ReadyPageValuesList.propTypes = {
+  sortByForcedSortOrder: PropTypes.bool,
   sortByNumberOfAdvocates: PropTypes.bool,
 };
 

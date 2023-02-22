@@ -1,5 +1,14 @@
-describe('example', () => {
-  it('findYourFriendsButton', async () => {
+describe('Discuss Page', () => {
+  // Discuss_001 - Discuss_003
+  it('verifySpacingAndSpelling', async () => {
+    if (driver.isCordova) {
+      // Open up App store app
+    } else {
+      await driver.url("https://quality.wevote.us/");
+    }
+    // Functions needed examples. See: WebApp/tests/browserstack/utils.js
+    // switchToPath('/ready', isCordova);
+    // retrieveElementById('idName');
     if (!driver.isMobile) {
       await driver.url('/ready');
       const findYourFriendsButton = await $('button=Find your friends');

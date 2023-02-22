@@ -88,7 +88,7 @@ class VoterStore extends ReduceStore {
   }
 
   getBallotLocationForVoter () {
-    // console.log("getBallotLocationForVoter this.getState().address:", this.getState().address);
+    // console.log('getBallotLocationForVoter this.getState().address:', this.getState().address);
     if (this.getState().address) {
       return {
         text_for_map_search: this.getTextForMapSearch(),
@@ -401,19 +401,19 @@ class VoterStore extends ReduceStore {
   // Airbnb doesnt like bitwise operators in JavaScript
   getInterfaceFlagState (flag) {
     // Look in js/Constants/VoterConstants.js for list of flag constant definitions
-    // console.log("VoterStore getInterfaceFlagState flag: ", flag);
+    // console.log('VoterStore getInterfaceFlagState flag: ', flag);
     if (!this.getState().voter) {
       return false;
     }
 
     const interfaceStatusFlags = this.getState().voter.interface_status_flags || 0;
-    // console.log("VoterStore getInterfaceFlagState interfaceStatusFlags: ", interfaceStatusFlags);
+    // console.log('VoterStore getInterfaceFlagState interfaceStatusFlags: ', interfaceStatusFlags);
     // return True if bit specified by the flag is also set in interfaceStatusFlags (voter.interface_status_flags)
     // Eg: if interfaceStatusFlags = 5, then we can confirm that bits representing 1 and 4 are set (i.e., 0101)
     // so for value of flag = 1 and 4, we return a positive integer,
     // but, the bit representing 2 and 8 are not set, so for flag = 2 and 8, we return zero
     // const flagIsSet = interfaceStatusFlags & flag;  // eslint-disable-line no-bitwise
-    // console.log("VoterStore getInterfaceFlagState flagIsSet: ", flagIsSet);
+    // console.log('VoterStore getInterfaceFlagState flagIsSet: ', flagIsSet);
     return interfaceStatusFlags & flag;  // eslint-disable-line no-bitwise
   }
 
@@ -527,6 +527,8 @@ class VoterStore extends ReduceStore {
     let incomingVoter;
     let incorrectSecretCodeEntered;
     let membershipOrganizationWeVoteId;
+    let mergeFromVoterWeVoteId;
+    let mergeToVoterWeVoteId;
     let numberOfTriesRemaining;
     let revisedState;
     let secretCodeVerified;
@@ -639,11 +641,11 @@ class VoterStore extends ReduceStore {
         // console.log('VoterStore organizationSuggestionTasks');
         if (action.res.success) {
           if (action.res.kind_of_follow_task === 'FOLLOW_SUGGESTIONS_FROM_TWITTER_IDS_I_FOLLOW') {
-            // console.log("organizationSuggestionTasks FOLLOW_SUGGESTIONS_FROM_TWITTER_IDS_I_FOLLOW");
+            // console.log('organizationSuggestionTasks FOLLOW_SUGGESTIONS_FROM_TWITTER_IDS_I_FOLLOW');
             // VoterGuideActions.voterGuidesToFollowRetrieve(this.electionId());
             VoterGuideActions.voterGuidesFollowedRetrieve(this.electionId());
           } else if (action.res.kind_of_suggestion_task === 'UPDATE_SUGGESTIONS_FROM_TWITTER_IDS_I_FOLLOW') {
-            // console.log("organizationSuggestionTasks UPDATE_SUGGESTIONS_FROM_TWITTER_IDS_I_FOLLOW");
+            // console.log('organizationSuggestionTasks UPDATE_SUGGESTIONS_FROM_TWITTER_IDS_I_FOLLOW');
             // VoterGuideActions.voterGuidesToFollowRetrieve(this.electionId());
             VoterGuideActions.voterGuidesFollowedRetrieve(this.electionId());
           }
@@ -781,7 +783,7 @@ class VoterStore extends ReduceStore {
         };
 
       case 'voterBallotItemsRetrieve':
-        // console.log("VoterStore voterBallotItemsRetrieve latestGoogleCivicElectionId: ", action.res.google_civic_election_id);
+        // console.log('VoterStore voterBallotItemsRetrieve latestGoogleCivicElectionId: ', action.res.google_civic_election_id);
         googleCivicElectionId = action.res.google_civic_election_id || 0;
         if (googleCivicElectionId !== 0) {
           return {
@@ -854,14 +856,14 @@ class VoterStore extends ReduceStore {
         }
 
       case 'voterEmailAddressRetrieve':
-        // console.log("VoterStore  voterEmailAddressRetrieve: ", action.res.email_address_list);
+        // console.log('VoterStore  voterEmailAddressRetrieve: ', action.res.email_address_list);
         return {
           ...state,
           emailAddressList: action.res.email_address_list,
         };
 
       case 'voterEmailAddressSave':
-        // console.log('VoterStore, voterEmailAddressSave');
+        console.log('VoterStore, voterEmailAddressSave');
         VoterActions.voterRetrieve();
         return {
           ...state,
@@ -873,10 +875,12 @@ class VoterStore extends ReduceStore {
             email_address_created: action.res.email_address_created,
             email_address_deleted: action.res.email_address_deleted,
             email_address_not_valid: action.res.email_address_not_valid,
+            from_voter_we_vote_id: action.res.from_voter_we_vote_id,
             link_to_sign_in_email_sent: action.res.link_to_sign_in_email_sent,
             make_primary_email: action.res.make_primary_email,
             sign_in_code_email_sent: action.res.sign_in_code_email_sent,
             secret_code_system_locked_for_this_voter_device_id: action.res.secret_code_system_locked_for_this_voter_device_id,
+            to_voter_we_vote_id: action.res.to_voter_we_vote_id,
             verification_email_sent: action.res.verification_email_sent,
           },
         };
@@ -990,6 +994,12 @@ class VoterStore extends ReduceStore {
           FriendActions.friendListsAll();
           BallotActions.voterBallotItemsRetrieve();
         }
+        if (action.res.merge_from_voter_we_vote_id && action.res.merge_to_voter_we_vote_id) {
+          if (apiCalming('voterRetrieveMergeTwo', 3000)) {
+            // This completes the time-consuming process 'voter_merge_two_accounts_action' and then returns voter data
+            VoterActions.voterRetrieve(action.res.merge_from_voter_we_vote_id, action.res.merge_to_voter_we_vote_id);
+          }
+        }
         return {
           ...state,
           emailSignInStatus: {
@@ -1067,8 +1077,8 @@ class VoterStore extends ReduceStore {
         };
 
       case 'voterRetrieve':
-        // console.log("VoterStore, voterRetrieve state on entry: ",  state);
-        // console.log("VoterStore, voterRetrieve state on entry: ",  state.voter);
+        // console.log('VoterStore, voterRetrieve state on entry: ',  state);
+        // console.log('VoterStore, voterRetrieve state on entry: ',  state.voter);
 
         // Preserve address within voter
         incomingVoter = action.res;
@@ -1092,7 +1102,7 @@ class VoterStore extends ReduceStore {
             console.log('voter_device_id gone -- calling voterRetrieve');
             VoterActions.voterRetrieve();
           } else {
-            // console.log("voter_device_id still exists -- did not call voterRetrieve");
+            // console.log('voter_device_id still exists -- did not call voterRetrieve');
           }
         } else {
           voterDeviceId = action.res.voter_device_id;
@@ -1107,13 +1117,13 @@ class VoterStore extends ReduceStore {
             // which in turn resolves to voterFacebookSignInSave which finally attempts to call
             // voterRetrieve again
             const url = action.res.facebook_profile_image_url_https;
-            // console.log("VoterStore, voterRetrieve, action.res: ", action.res);
+            // console.log('VoterStore, voterRetrieve, action.res: ', action.res);
 
             if (action.res.signed_in_facebook && (url === null || url === '') && facebookPhotoRetrieveLoopCount < 10) {
               FacebookActions.getFacebookProfilePicture();
             }
           } else {
-            // console.log("voter_device_id not returned by voterRetrieve");
+            // console.log('voter_device_id not returned by voterRetrieve');
           }
         }
         // April 29, 2021 TODO: We should make a combined Voter and Organization retrieve
@@ -1190,7 +1200,7 @@ class VoterStore extends ReduceStore {
         return revisedState;
 
       case 'voterSignOut':
-        // console.log("VoterStore resetting voterStore via voterSignOut");
+        // console.log('VoterStore resetting voterStore via voterSignOut');
         VoterActions.voterRetrieve();
         VoterActions.voterEmailAddressRetrieve();
         VoterActions.voterSMSPhoneNumberRetrieve();
@@ -1299,13 +1309,24 @@ class VoterStore extends ReduceStore {
         }
 
       case 'voterVerifySecretCode':
-        // console.log("VoterStore, voterVerifySecretCode, action.res:", action.res);
+        console.log('VoterStore, voterVerifySecretCode, action.res:', action.res);
         incorrectSecretCodeEntered = (action.res.incorrect_secret_code_entered && action.res.incorrect_secret_code_entered === true);
+        mergeFromVoterWeVoteId = action.res.merge_from_voter_we_vote_id;
+        mergeToVoterWeVoteId = action.res.merge_to_voter_we_vote_id;
         numberOfTriesRemaining = action.res.number_of_tries_remaining_for_this_code;
         secretCodeVerified = (action.res.secret_code_verified && action.res.secret_code_verified === true);
         voterMustRequestNewCode = (action.res.voter_must_request_new_code && action.res.voter_must_request_new_code === true);
         voterSecretCodeRequestsLocked = (action.res.secret_code_system_locked_for_this_voter_device_id && action.res.secret_code_system_locked_for_this_voter_device_id === true);
         // console.log('onVoterStoreChange voterStore secretCodeVerified', secretCodeVerified);
+        // It is appropriate to keep this call within the Store because the components which trigger the voterVerifySecretCode
+        //  get closed as soon as secretCodeVerified is true
+        if (mergeFromVoterWeVoteId && mergeToVoterWeVoteId) {
+          // console.log('VoterStore, voterVerifySecretCode: voterRetrieveMergeTwo mergeFromVoterWeVoteId:', mergeFromVoterWeVoteId, ', mergeToVoterWeVoteId:', mergeToVoterWeVoteId);
+          if (apiCalming('voterRetrieveMergeTwo', 3000)) {
+            // This completes the time-consuming process 'voter_merge_two_accounts_action' and then returns voter data
+            VoterActions.voterRetrieve(mergeFromVoterWeVoteId, mergeToVoterWeVoteId);
+          }
+        }
         return {
           ...state,
           secretCodeVerificationStatus: {

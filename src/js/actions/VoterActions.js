@@ -396,9 +396,16 @@ export default {
     Dispatcher.dispatch({ type: 'voterPhotoTooBigReset', payload: true });
   },
 
-  voterRetrieve () {
-    // console.log('VoterActions, voterRetrieve');
-    Dispatcher.loadEndpoint('voterRetrieve');
+  voterRetrieve (mergeFromVoterWeVoteId = '', mergeToVoterWeVoteId = '') {
+    // console.log('VoterActions, voterRetrieve mergeFromVoterWeVoteId:', mergeFromVoterWeVoteId, ', mergeToVoterWeVoteId:', mergeToVoterWeVoteId);
+    if (mergeFromVoterWeVoteId && mergeToVoterWeVoteId) {
+      Dispatcher.loadEndpoint('voterRetrieve', {
+        merge_from_voter_we_vote_id: mergeFromVoterWeVoteId,
+        merge_to_voter_we_vote_id: mergeToVoterWeVoteId,
+      });
+    } else {
+      Dispatcher.loadEndpoint('voterRetrieve');
+    }
   },
 
   voterSignOut (signOutAllDevices = false) {
