@@ -220,7 +220,7 @@ class Ready extends Component {
               <PrepareForElectionOuterWrapper>
                 <Suspense fallback={<></>}>
                   <DelayedLoad waitBeforeShow={10}>
-                    <ReadyPageValuesList sortByNumberOfAdvocates />
+                    <ReadyPageValuesList sortByForcedSortOrder sortByNumberOfAdvocates />
                   </DelayedLoad>
                 </Suspense>
               </PrepareForElectionOuterWrapper>

@@ -3,6 +3,7 @@ import FacebookActions from '../actions/FacebookActions';
 import FriendActions from '../actions/FriendActions';
 import VoterActions from '../actions/VoterActions';
 import Dispatcher from '../common/dispatcher/Dispatcher';
+import apiCalming from '../common/utils/apiCalming';
 import { isCordova } from '../common/utils/isCordovaOrWebApp';
 import signInModalGlobalState from '../components/Widgets/signInModalGlobalState';
 import FacebookConstants from '../constants/FacebookConstants';
@@ -229,6 +230,13 @@ class FacebookStore extends ReduceStore {
           // TODO: We need a check here to prevent an infinite loop if the local voter_device_id isn't recognized by server
           // console.log('FacebookStore voterFacebookSignInSave, voter exists');
           FacebookActions.voterFacebookSignInRetrieve();
+        }
+        if (action.res.merge_from_voter_we_vote_id && action.res.merge_to_voter_we_vote_id) {
+          // console.log('FacebookStore, voterFacebookSignInSave: voterRetrieveMergeTwo');
+          if (apiCalming('voterRetrieveMergeTwo', 3000)) {
+            // This completes the time-consuming process 'voter_merge_two_accounts_action' and then returns voter data
+            VoterActions.voterRetrieve(action.res.merge_from_voter_we_vote_id, action.res.merge_to_voter_we_vote_id);
+          }
         }
 
         return state;

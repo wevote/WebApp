@@ -90,11 +90,11 @@ class VoterEmailAddressEntry extends Component {
     const { secret_code_system_locked_for_this_voter_device_id: secretCodeSystemLocked } = emailAddressStatus;
     const secretCodeVerificationStatus = VoterStore.getSecretCodeVerificationStatus();
     const { secretCodeVerified } = secretCodeVerificationStatus;
-    // console.log('onVoterStoreChange emailAddressStatus:', emailAddressStatus);
+    // console.log('onVoterStoreChange secretCodeVerificationStatus:', secretCodeVerificationStatus);
     const voter = VoterStore.getVoter();
     const { is_signed_in: isSignedIn } = voter;
     if (secretCodeVerified && !isSignedIn) {
-      console.log('VoterEmailAddressEntry onVoterStoreChange secretCodeVerified && !isSignedIn, VoterActions.voterRetrieve()');
+      // console.log('VoterEmailAddressEntry onVoterStoreChange secretCodeVerified && !isSignedIn, VoterActions.voterRetrieve()');
       if (apiCalming('voterRetrieve', 500)) {
         VoterActions.voterRetrieve();
       }
