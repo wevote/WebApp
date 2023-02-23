@@ -95,9 +95,10 @@ class VoterEmailAddressEntry extends Component {
     const { is_signed_in: isSignedIn } = voter;
     if (secretCodeVerified && !isSignedIn) {
       // console.log('VoterEmailAddressEntry onVoterStoreChange secretCodeVerified && !isSignedIn, VoterActions.voterRetrieve()');
-      if (apiCalming('voterRetrieve', 500)) {
-        VoterActions.voterRetrieve();
-      }
+      // Turn apiCalming back on after more testing
+      // if (apiCalming('voterRetrieve', 500)) {
+      VoterActions.voterRetrieve();
+      // }
       this.closeSignInModalLocal();
     }
 

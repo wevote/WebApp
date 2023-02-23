@@ -52,7 +52,7 @@ export default class TwitterSignInProcess extends Component {
     const { twitter_image_load_info: twitterImageLoadInfo, twitter_secret_key: twitterSecretKey } = twitterAuthResponse;
     this.setState({ twitterAuthResponse, twitterImageLoadInfo });
     const { mergingTwoAccounts, savingAccount } = this.state;
-    // console.log('TwitterSignInProcess onTwitterStoreChange, twitterImageLoadInfo:', twitterImageLoadInfo);
+    console.log('TwitterSignInProcess onTwitterStoreChange, twitterAuthResponse:', twitterAuthResponse);
 
     if (twitterAuthResponse.twitter_sign_in_failed) {
       oAuthLog('Twitter sign in failed - push to /settings/account');
@@ -93,7 +93,7 @@ export default class TwitterSignInProcess extends Component {
     // console.log('TwitterSignInProcess onVoterStoreChange, twitterImageLoadInfo:', twitterImageLoadInfo);
     if (!redirectInProcess) {
       const twitterSignInStatus = VoterStore.getTwitterSignInStatus();
-      // console.log('twitterSignInStatus:', twitterSignInStatus);
+      console.log('twitterSignInStatus:', twitterSignInStatus);
       const voter = VoterStore.getVoter();
       const { signed_in_twitter: voterIsSignedInTwitter } = voter;
       if (voterIsSignedInTwitter || (twitterSignInStatus && twitterSignInStatus.voter_merge_two_accounts_attempted)) {
