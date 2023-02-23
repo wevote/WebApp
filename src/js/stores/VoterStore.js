@@ -863,7 +863,7 @@ class VoterStore extends ReduceStore {
         };
 
       case 'voterEmailAddressSave':
-        console.log('VoterStore, voterEmailAddressSave');
+        // console.log('VoterStore, voterEmailAddressSave');
         VoterActions.voterRetrieve();
         return {
           ...state,
@@ -997,6 +997,7 @@ class VoterStore extends ReduceStore {
         if (action.res.merge_from_voter_we_vote_id && action.res.merge_to_voter_we_vote_id) {
           if (apiCalming('voterRetrieveMergeTwo', 3000)) {
             // This completes the time-consuming process 'voter_merge_two_accounts_action' and then returns voter data
+            console.log('VoterStore: voterMergeTwoAccounts: Completing voterRetrieveMergeTwo process');
             VoterActions.voterRetrieve(action.res.merge_from_voter_we_vote_id, action.res.merge_to_voter_we_vote_id);
           }
         }
