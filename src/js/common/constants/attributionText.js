@@ -132,8 +132,8 @@ module.exports = [
   // https://github.com/cereallarceny/react-fullstory/blob/master/LICENSE
   'cereallarceny/react-fullstory is licensed under the MIT License (MIT)\n' +
   'Copyright (c) 2019 Moonshot\n',
-  // https://github.com/react-ga/react-ga/blob/master/LICENSE
-  'react-ga/react-ga is licensed under the Apache License, Version 2.0\n' +
+  // https://github.com/codler/react-ga4#license
+  'codler/react-ga4 is licensed under the MIT License (MIT)\n' +
   'No copyright cited\n',
   // https://github.com/ErrorPro/react-google-autocomplete/blob/master/LICENSE.md
   'ErrorPro/react-google-autocomplete is licensed under the MIT License (MIT)\n' +

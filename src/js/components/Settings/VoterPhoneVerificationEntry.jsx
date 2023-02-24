@@ -101,10 +101,9 @@ class VoterPhoneVerificationEntry extends Component {
     const { is_signed_in: isSignedIn, signed_in_with_sms_phone_number: signedInWithSmsPhoneNumber } = voter;
     if (secretCodeVerified && !isSignedIn) {
       // console.log('VoterPhoneVerificationEntry onVoterStoreChange secretCodeVerified && !isSignedIn, VoterActions.voterRetrieve()');
-      // Turn apiCalming back on after more testing
-      // if (apiCalming('voterRetrieve', 500)) {
-      VoterActions.voterRetrieve();
-      // }
+      if (apiCalming('voterRetrieve', 500)) {
+        VoterActions.voterRetrieve();
+      }
       this.closeSignInModalLocal();
     }
 

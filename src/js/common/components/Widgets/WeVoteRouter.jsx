@@ -1,4 +1,4 @@
-import ReactGA from 'react-ga';
+import ReactGA from 'react-ga4';
 import { BrowserRouter } from 'react-router-dom';
 import webAppConfig from '../../../config';
 import AppObservableStore from '../../stores/AppObservableStore';
@@ -37,14 +37,15 @@ export default class WeVoteRouter extends BrowserRouter {
       console.log('Router:  initial history is: ', JSON.stringify(this.history, null, 2));
     }
     this.history.listen((location, action) => {
+      // TODO: Why is this passed twice?
       if (AppObservableStore.getGoogleAnalyticsEnabled()) {
-        ReactGA.pageview(normalizedHrefPage() ? `/${normalizedHrefPage()}` : '/readyLight');
+        ReactGA.send({ hitType: 'pageview', page: normalizedHrefPage() ? `/${normalizedHrefPage()}` : '/readyLight' });
       }
       AppObservableStore.incrementObservableUpdateCounter();   // Encourage an update of Header.jsx on each push
       const currentPathname = location.pathname || '';
       AppObservableStore.setCurrentPathname(currentPathname);
       if (AppObservableStore.getGoogleAnalyticsEnabled()) {
-        ReactGA.pageview(normalizedHrefPage() ? `/${normalizedHrefPage()}` : '/readyLight');
+        ReactGA.send({ hitType: 'pageview', page: normalizedHrefPage() ? `/${normalizedHrefPage()}` : '/readyLight' });
       }
       if (webAppConfig.LOG_ROUTING) {
         console.log(` Router: The current URL is ${location.pathname}${location.search}${location.hash}`);
