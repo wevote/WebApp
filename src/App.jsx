@@ -2,7 +2,8 @@ import { StyledEngineProvider, ThemeProvider } from '@mui/material/styles';
 import Tracker from '@openreplay/tracker';
 import React, { Component, Suspense } from 'react';
 import FullStory from 'react-fullstory';
-import ReactGA from 'react-ga';
+import ReactGA from 'react-ga4';
+// import TagManager from 'react-gtm-module';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import styled from 'styled-components';
 import muiTheme from './js/common/components/Style/muiTheme';
@@ -177,17 +178,43 @@ class App extends Component {
     if (!AppObservableStore.getGoogleAnalyticsEnabled() && !AppObservableStore.getGoogleAnalyticsPending()) {
       AppObservableStore.setGoogleAnalyticsPending(true);
       setTimeout(() => {
-        const storedTrackingID = AppObservableStore.getChosenGoogleAnalyticsTrackingID();
-        const configuredTrackingID = webAppConfig.GOOGLE_ANALYTICS_TRACKING_ID;
-        const trackingID = storedTrackingID || configuredTrackingID;
-        if (trackingID) {
+        const chosenTrackingId = AppObservableStore.getChosenGoogleAnalyticsTrackingID();
+        const weVoteTrackingId = webAppConfig.GOOGLE_ANALYTICS_TRACKING_ID === undefined ? '' : webAppConfig.GOOGLE_ANALYTICS_TRACKING_ID;
+        if (chosenTrackingId && weVoteTrackingId) {
+          console.log('Google Analytics (2) ENABLED');
+          ReactGA.initialize([
+            {
+              trackingId: chosenTrackingId,
+            },
+            {
+              trackingId: weVoteTrackingId,
+            },
+          ]);
+        } else if (chosenTrackingId) {
+          console.log('Google Analytics Chosen ENABLED');
+          ReactGA.initialize(chosenTrackingId);
+          AppObservableStore.setGoogleAnalyticsEnabled(true);
+          AppObservableStore.setGoogleAnalyticsPending(false);
+        } else if (weVoteTrackingId) {
           console.log('Google Analytics ENABLED');
-          ReactGA.initialize(trackingID);
+          ReactGA.initialize(weVoteTrackingId);
           AppObservableStore.setGoogleAnalyticsEnabled(true);
           AppObservableStore.setGoogleAnalyticsPending(false);
         } else {
           console.log('Google Analytics did not receive a trackingID, NOT ENABLED');
         }
+        // TODO Send we_vote_id, with code like this:
+        // ReactGA.gtag("set", "user_properties", {
+        //    name: "John",
+        // });
+        // Google Tag Manager. See: https://www.npmjs.com/package/react-gtm-module
+        // const weVoteGTMId = webAppConfig.GOOGLE_ADS_TRACKING_ID === undefined ? '' : webAppConfig.GOOGLE_ADS_TRACKING_ID;
+        // if (weVoteGTMId) {
+        //   const tagManagerArgs = {
+        //     gtmId: weVoteGTMId,
+        //   };
+        //   TagManager.initialize(tagManagerArgs);
+        // }
       }, 3000);
     }
     if (!AppObservableStore.getOpenReplayEnabled() && !AppObservableStore.getOpenReplayPending()) {
