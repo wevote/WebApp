@@ -473,7 +473,7 @@ class Friends extends Component {
               <div className="row">
                 <div className="col-sm-12 col-md-8">
                   <>
-                    {(!friendActivityExists && contactsWithAccountCount) && (
+                    {(!friendActivityExists && contactsWithAccountCount) ? (
                       <ContactsImportedPreviewOuterWrapper>
                         <SetUpAccountTitle>
                           {contactsWithAccountCount}
@@ -495,7 +495,7 @@ class Friends extends Component {
                           buttonURL="/friends/suggested"
                         />
                       </ContactsImportedPreviewOuterWrapper>
-                    )}
+                    ) : null}
                     {voterIsSignedIn && (
                       <Suspense fallback={<></>}>
                         <FirstAndLastNameRequiredAlert />
@@ -552,7 +552,7 @@ class Friends extends Component {
           );
           mobileContentToDisplay = (
             <>
-              {(!friendActivityExists && contactsWithAccountCount) && (
+              {(!friendActivityExists && contactsWithAccountCount) ? (
                 <ContactsImportedPreviewOuterWrapper>
                   <SetUpAccountTitle>
                     {contactsWithAccountCount}
@@ -574,7 +574,7 @@ class Friends extends Component {
                     buttonURL="/friends/suggested"
                   />
                 </ContactsImportedPreviewOuterWrapper>
-              )}
+              ) : null}
               <>
                 {voterIsSignedIn && (
                   <Suspense fallback={<></>}>
