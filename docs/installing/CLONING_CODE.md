@@ -42,11 +42,11 @@ Finally, set the core.eol to LF
 
 ### Create and set up SSH keys. (For Windows machines, refer to [these instructions instead](https://help.github.com/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent/#platform-windows)).
 
-  1. Create SSH key: 
+  1. Create SSH key by entering this into your terminal window: 
   
      `ssh-keygen -t rsa -C "youremail@somedomain.com"`
    
-  2. Add SSH private keys into the SSH authentication agent:
+  2. Add SSH private keys into the SSH authentication agent, by entering this into your terminal window:
   
      `ssh-add ~/.ssh/id_rsa`
 
@@ -54,11 +54,11 @@ Finally, set the core.eol to LF
   
      `pbcopy < ~/.ssh/id_rsa.pub`
 
-  4. Go to your "Settings" page in GitHub (click on your avatar on the top right). In the left navigation, choose "SSH and GPG keys".
+  4. Go to your Github account's "Settings" page (click on your avatar on the top right to see "Settings" in the drop-down menu). In the left navigation of the "Settings" page, choose "SSH and GPG keys".
   
   5. Click the "New SSH key" button on the top right.
   
-  6. Paste the contents of the "~/.ssh/id_rsa.pub" key file (which you just copied in step 3) into the "Key" text area, and give it any Title you would like.
+  6. Paste the contents of the "~/.ssh/id_rsa.pub" key file (which you just copied in step 3) into the "Key" text area, and give it any Title you would like. In the Title field, enter text to remind you the purpose of this key (ex/ My Macintosh). Set the drop-down option to "Authentication Key".
 
 ---
 
