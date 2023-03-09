@@ -55,10 +55,10 @@ export default class ReadyPageValuesList extends Component {
 
   orderByIssueFollowersCount = (firstIssue, secondIssue) => secondIssue.issue_followers_count - firstIssue.issue_followers_count;
 
-  orderByLinkedOrganizationCount = (firstIssue, secondIssue) => secondIssue.linked_organization_count - firstIssue.linked_organization_count;
+  // orderByLinkedOrganizationCount = (firstIssue, secondIssue) => secondIssue.linked_organization_count - firstIssue.linked_organization_count;
 
   // If secondIssue isn't considered left or right, move it up vs. firstIssue
-  orderByNotLeftOrRight = (firstIssue, secondIssue) => ((!secondIssue.considered_left && !secondIssue.considered_right) ? 1 : 0) - ((!firstIssue.considered_left && !firstIssue.considered_right) ? 1 : 0);
+  // orderByNotLeftOrRight = (firstIssue, secondIssue) => ((!secondIssue.considered_left && !secondIssue.considered_right) ? 1 : 0) - ((!firstIssue.considered_left && !firstIssue.considered_right) ? 1 : 0);
 
   showMoreIssues = () => {
     const { allIssuesCount } = this.state;
@@ -77,8 +77,8 @@ export default class ReadyPageValuesList extends Component {
       if (sortByNumberOfAdvocates) {
         issuesList = allIssues;
         issuesList = issuesList.sort(this.orderByIssueFollowersCount);
-        issuesList = issuesList.sort(this.orderByLinkedOrganizationCount);
-        issuesList = issuesList.sort(this.orderByNotLeftOrRight);
+        // issuesList = issuesList.sort(this.orderByLinkedOrganizationCount);
+        // issuesList = issuesList.sort(this.orderByNotLeftOrRight);
       } else {
         issuesList = allIssues;
       }
