@@ -1,0 +1,136 @@
+import { ReduceStore } from 'flux/utils';
+// import OfficeActions from '../actions/OfficeActions';
+import Dispatcher from '../common/dispatcher/Dispatcher';
+
+// import normalizedImagePath from '../common/utils/normalizedImagePath'; // eslint-disable-line import/no-cycle
+// import stringContains from '../common/utils/stringContains';
+// import OfficeStore from './OfficeStore';
+
+class RepresentativeStore extends ReduceStore {
+  getInitialState () {
+    return {
+      allCachedRepresentatives: {},
+      representativeListsByOfficeHeldWeVoteId: {}, // Dictionary with office_we_vote_id as key and list of representatives in the office as value
+      numberOfRepresentativesRetrievedByOfficeHeld: {}, // Dictionary with office_we_vote_id as key and number of representatives as value
+    };
+  }
+
+  getRepresentativeByWeVoteId (representativeWeVoteId) {
+    return this.getState().allCachedRepresentatives[representativeWeVoteId] || {};
+  }
+
+  getRepresentativeListByOfficeHeldWeVoteId (officeWeVoteId) {
+    // console.log('officeWeVoteId:', officeWeVoteId, ', this.getState().representativeListsByOfficeHeldWeVoteId:', this.getState().representativeListsByOfficeHeldWeVoteId);
+    const representativeListsDict = this.getState().representativeListsByOfficeHeldWeVoteId;
+    if (representativeListsDict) {
+      return representativeListsDict[officeWeVoteId] || [];
+    } else {
+      return [];
+    }
+  }
+
+  getRepresentativeList () {
+    const representativeList = Object.values(this.getState().allCachedRepresentatives);
+    return representativeList || [];
+  }
+
+  getRepresentativeName (representativeWeVoteId) {
+    const representative = this.getState().allCachedRepresentatives[representativeWeVoteId] || {};
+    if (representative && representative.ballot_item_display_name) {
+      return representative.ballot_item_display_name;
+    }
+    return '';
+  }
+
+  getMostLikelyOfficeDictFromRepresentativeWeVoteId (representativeWeVoteId) {
+    const representative = this.getState().allCachedRepresentatives[representativeWeVoteId] || {};
+    // console.log('getMostLikelyOfficeDictFromRepresentativeWeVoteId representative:', representative)
+    if (representative && representative.contest_office_list && representative.contest_office_list[0]) {
+      // return mostLikelyOfficeDictFromList(representative.contest_office_list);
+    }
+    // Not ideal
+    // console.log('getMostLikelyOfficeDictFromRepresentativeWeVoteId falling back on representative.contest_office_we_vote_id');
+    return {
+      contest_office_name: representative.contest_office_name,
+      contest_office_we_vote_id: representative.contest_office_we_vote_id,
+      election_day_text: representative.election_day_text,
+      google_civic_election_id: representative.google_civic_election_id,
+      state_code: representative.state_code,
+    };
+  }
+
+  getNumberOfRepresentativesRetrievedByOffice (officeWeVoteId) {
+    return this.getState().numberOfRepresentativesRetrievedByOfficeHeld[officeWeVoteId] || 0;
+  }
+
+  getVoterCanEditThisRepresentative (representativeWeVoteId = '') {
+    console.log('representativeWeVoteId:', representativeWeVoteId);
+    return false;
+  }
+
+  isRepresentativeInStore (representativeId) {
+    const representative = this.getState().allCachedRepresentatives[representativeId] || {};
+    return !!(representative.we_vote_id);
+  }
+
+  reduce (state, action) {
+    const {
+      allCachedRepresentatives, numberOfRepresentativesRetrievedByOfficeHeld,
+    } = state;
+    let {
+      representativeListsByOfficeHeldWeVoteId,
+    } = state;
+    // Exit if we don't have a successful response (since we expect certain variables in a successful response below)
+    if (!action.res || !action.res.success) return state;
+
+    let representative;
+    let representativeList;
+
+    switch (action.type) {
+      case 'representativeRetrieve':
+        representative = action.res;
+        allCachedRepresentatives[representative.we_vote_id] = representative;
+        return {
+          ...state,
+          allCachedRepresentatives,
+        };
+
+      case 'representativesQuery':
+      case 'representativesRetrieve':
+        // Make sure we have information for the office the representative is running for
+        console.log(action);
+        if (action.type === 'representativesQuery') {
+          representativeList = action.res.representatives || [];
+        } else {
+          representativeList = action.res.representative_list || [];
+        }
+        console.log('RepresentativeStore representativesQuery representativeList:', representativeList);
+        if (!representativeListsByOfficeHeldWeVoteId) {
+          representativeListsByOfficeHeldWeVoteId = {};
+        }
+        representativeList.forEach((one) => {
+          // console.log('representative:', one);
+          allCachedRepresentatives[one.we_vote_id] = one;
+          if (one.office_held_we_vote_id) {
+            if (!(one.office_held_we_vote_id in representativeListsByOfficeHeldWeVoteId)) {
+              representativeListsByOfficeHeldWeVoteId[one.office_held_we_vote_id] = [];
+            }
+            representativeListsByOfficeHeldWeVoteId[one.office_held_we_vote_id].push(one);
+            numberOfRepresentativesRetrievedByOfficeHeld[one.office_held_we_vote_id] = representativeListsByOfficeHeldWeVoteId[one.office_held_we_vote_id].length;
+          }
+        });
+
+        return {
+          ...state,
+          allCachedRepresentatives,
+          representativeListsByOfficeHeldWeVoteId,
+          numberOfRepresentativesRetrievedByOfficeHeld,
+        };
+
+      default:
+        return state;
+    }
+  }
+}
+
+export default new RepresentativeStore(Dispatcher);
