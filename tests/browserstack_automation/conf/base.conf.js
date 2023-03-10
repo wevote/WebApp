@@ -3,10 +3,10 @@ const browserStackConfig = require('./browserstack.conf');
 module.exports = {
   user: browserStackConfig.BROWSERSTACK_USER,
   key: browserStackConfig.BROWSERSTACK_KEY,
+  injectGlobals: false,
   updateJob: false,
-  // specs is a list of paths to your test file(s)
   specs: [
-    '../specs/example.js',
+    '../specs/ReadyPage.js',
   ],
   exclude: [],
   logLevel: 'warn',
