@@ -132,6 +132,23 @@ class FooterMainWeVote extends Component {
                 </>
               )}
             </OneRow>
+            {isWebApp() && (
+              <OneRow>
+                <OpenExternalWebSite
+                  linkIdAttribute="footerLinkVolunteer"
+                  url="https://wevote.applytojob.com/apply"
+                  target="_blank"
+                  body={(
+                    <span>Volunteering Opportunities</span>
+                  )}
+                  className={classes.link}
+                />
+                {/*
+                <RowSpacer />
+                <Link to="/more/donate" className={classes.link}>Donate</Link>
+                */}
+              </OneRow>
+            )}
           </TopSectionInnerWrapper>
         </TopSectionOuterWrapper>
         <BottomSection>

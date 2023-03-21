@@ -72,6 +72,7 @@ const OrganizationVoterGuideMeasure = React.lazy(() => import(/* webpackChunkNam
 const OrganizationVoterGuideMobileDetails = React.lazy(() => import(/* webpackChunkName: 'OrganizationVoterGuideMobileDetails' */ './js/pages/VoterGuide/OrganizationVoterGuideMobileDetails'));
 const OrganizationVoterGuideOffice = React.lazy(() => import(/* webpackChunkName: 'OrganizationVoterGuideOffice' */ './js/pages/VoterGuide/OrganizationVoterGuideOffice'));
 const PageNotFound = React.lazy(() => import(/* webpackChunkName: 'PageNotFound' */ './js/pages/PageNotFound'));
+const PoliticianDetailsPage = React.lazy(() => import(/* webpackChunkName: 'PoliticianDetailsPage' */ './js/common/pages/Politician/PoliticianDetailsPage'));
 const Pricing = React.lazy(() => import(/* webpackChunkName: 'Pricing' */ './js/pages/More/Pricing'));
 const Privacy = React.lazy(() => import(/* webpackChunkName: 'Privacy' */ './js/pages/More/Privacy'));
 const ProcessingDonation = React.lazy(() => import(/* webpackChunkName: 'ProcessingDonation' */ './js/pages/More/ProcessingDonation'));
@@ -310,6 +311,8 @@ class App extends Component {
                     <Route path="/-/:custom_link_string" exact component={SharedItemLanding} />
                     <Route path="/-:shared_item_code/modal/share" exact component={SharedItemLanding} />
                     <Route path="/-:shared_item_code" exact component={SharedItemLanding} />
+                    <Route exact path="/:politicianWeVoteId/p/" render={(props) => <PoliticianDetailsPage match={props.match} />} />
+                    <Route exact path="/:politicianSEOFriendlyPath/-/" render={(props) => <PoliticianDetailsPage match={props.match} />} />
                     <Route path="/about" exact><About /></Route>
                     <Route path="/add-candidate-for-extension" component={AddCandidateForExtension} />
                     <Route path="/applesigninprocess" component={AppleSignInProcess} />

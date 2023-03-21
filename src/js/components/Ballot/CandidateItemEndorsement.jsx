@@ -424,7 +424,7 @@ class CandidateItemEndorsement extends Component {
                 <div>
                   <Suspense fallback={<></>}>
                     <OfficeNameText
-                      contestOfficeName={contestOfficeName}
+                      officeName={contestOfficeName}
                       politicalParty={politicalParty}
                       showOfficeName={showOfficeName}
                     />

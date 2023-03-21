@@ -82,10 +82,10 @@ class WelcomeFooter extends Component {
               <Suspense fallback={<></>}>
                 <OpenExternalWebSite
                   linkIdAttribute="footerLinkCareers"
-                  url="https://www.idealist.org/en/nonprofit/f917ce3db61a46cb8ad2b0d4e335f0af-we-vote-oakland#volops"
+                  url="https://wevote.applytojob.com/apply"
                   target="_blank"
                   body={(
-                    <span>Careers</span>
+                    <span>Volunteer</span>
                   )}
                   className={classes.link}
                 />

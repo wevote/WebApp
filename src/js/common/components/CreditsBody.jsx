@@ -83,13 +83,13 @@ class Credits extends Component {
           <Suspense fallback={<></>}>
             <OpenExternalWebSite
               linkIdAttribute="wevoteJoinUs"
-              url="https://www.idealist.org/en/nonprofit/f917ce3db61a46cb8ad2b0d4e335f0af-we-vote-oakland#volops"
+              url="https://wevote.applytojob.com/apply"
               target="_blank"
               className="open-web-site open-web-site__no-right-padding"
               body={(
                 <span>
                   {' '}
-                  finding a role that excites you on our page at Idealist.org&nbsp;
+                  finding a volunteer role that excites you
                   <Launch
                     style={{
                       height: 14,
@@ -104,9 +104,9 @@ class Credits extends Component {
           </Suspense>
           {isWebApp() && (
             <span>
-              , or
+              , or by
               {' '}
-              <Link to="/more/donate">
+              <Link class="u-link-color" to="/more/donate">
                 donating now
               </Link>
             </span>

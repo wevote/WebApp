@@ -312,7 +312,7 @@ class VoterGuidePositionItem extends Component {
                     {(contestOfficeName) && (
                       <Suspense fallback={<></>}>
                         <OfficeNameText
-                          contestOfficeName={contestOfficeName}
+                          officeName={contestOfficeName}
                           // politicalParty={politicalParty}
                           showOfficeName
                         />
@@ -412,7 +412,7 @@ class VoterGuidePositionItem extends Component {
                       {(contestOfficeName) && (
                         <Suspense fallback={<></>}>
                           <OfficeNameText
-                            contestOfficeName={contestOfficeName}
+                            officeName={contestOfficeName}
                             // politicalParty={politicalParty}
                             showOfficeName
                           />
@@ -453,7 +453,7 @@ class VoterGuidePositionItem extends Component {
                 {(contestOfficeName) && (
                   <Suspense fallback={<></>}>
                     <OfficeNameText
-                      contestOfficeName={contestOfficeName}
+                      officeName={contestOfficeName}
                       // politicalParty={politicalParty}
                       showOfficeName
                     />

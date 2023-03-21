@@ -15,6 +15,7 @@ class RepresentativeListRoot extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      hideDisplayBecauseNoSearchResults: false,
       representativeList: [],
       representativeSearchResults: [],
       filteredRepresentativeList: [],
@@ -199,6 +200,7 @@ class RepresentativeListRoot extends Component {
     filteredRepresentativeList = filteredRepresentativeList.sort(this.orderByTwitterFollowers);
     filteredRepresentativeList = filteredRepresentativeList.sort(this.orderByIsBattlegroundRace);
     // filteredRepresentativeList = filteredRepresentativeList.sort(this.orderByUltimateElectionDate);
+    let hideDisplayBecauseNoSearchResults = false;
     let representativeSearchResults = [];
     if (searchText && searchText.length > 0) {
       const searchTextLowercase = searchText.toLowerCase();
@@ -230,52 +232,73 @@ class RepresentativeListRoot extends Component {
           });
           return foundInThisRepresentative;
         });
+      if (representativeSearchResults.length === 0) {
+        hideDisplayBecauseNoSearchResults = true;
+      }
     }
     // console.log('onFilterOrListChange, representativeSearchResults:', representativeSearchResults);
     // console.log('onFilterOrListChange, filteredRepresentativeList:', filteredRepresentativeList);
     this.setState({
-      representativeSearchResults,
       filteredRepresentativeList,
+      hideDisplayBecauseNoSearchResults,
+      representativeSearchResults,
       timeStampOfChange: Date.now(),
     });
   }
 
   render () {
     renderLog('RepresentativeListRoot');  // Set LOG_RENDER_EVENTS to log all renders
-    const { hideTitle, searchText, titleTextIfCampaigns } = this.props;
+    const { hideIfNoResults, hideTitle, searchText, titleTextForList } = this.props;
     const isSearching = searchText && searchText.length > 0;
-    const { representativeList, representativeSearchResults, filteredRepresentativeList, timeStampOfChange } = this.state;
+    const { filteredRepresentativeList, hideDisplayBecauseNoSearchResults, representativeList, representativeSearchResults, timeStampOfChange } = this.state;
 
     if (!representativeList) {
       return null;
     }
+    let hideDisplayBecauseNoResults = false;
+    if (hideIfNoResults) {
+      if (isSearching) {
+        if (representativeSearchResults && representativeSearchResults.length === 0) {
+          hideDisplayBecauseNoResults = true;
+        }
+      } else if (filteredRepresentativeList && filteredRepresentativeList.length === 0) {
+        hideDisplayBecauseNoResults = true;
+      }
+      if (hideDisplayBecauseNoResults) {
+        return null;
+      }
+    }
     return (
       <RepresentativeListWrapper>
         {!!(!hideTitle &&
-            titleTextIfCampaigns &&
-            titleTextIfCampaigns.length &&
+            !hideDisplayBecauseNoSearchResults &&
+            titleTextForList &&
+            titleTextForList.length &&
             representativeList) &&
         (
           <WhatIsHappeningTitle>
-            {titleTextIfCampaigns}
+            {titleTextForList}
           </WhatIsHappeningTitle>
         )}
-        <ScrollingOuterWrapper>
-          <ScrollingInnerWrapper>
-            <HorizontallyScrollingContainer>
-              <RepresentativeCardList
-                incomingRepresentativeList={(isSearching ? representativeSearchResults : filteredRepresentativeList)}
-                timeStampOfChange={timeStampOfChange}
-                verticalListOn
-              />
-            </HorizontallyScrollingContainer>
-          </ScrollingInnerWrapper>
-        </ScrollingOuterWrapper>
+        {(!hideDisplayBecauseNoSearchResults) && (
+          <ScrollingOuterWrapper>
+            <ScrollingInnerWrapper>
+              <HorizontallyScrollingContainer>
+                <RepresentativeCardList
+                  incomingRepresentativeList={(isSearching ? representativeSearchResults : filteredRepresentativeList)}
+                  timeStampOfChange={timeStampOfChange}
+                  verticalListOn
+                />
+              </HorizontallyScrollingContainer>
+            </ScrollingInnerWrapper>
+          </ScrollingOuterWrapper>
+        )}
       </RepresentativeListWrapper>
     );
   }
 }
 RepresentativeListRoot.propTypes = {
+  hideIfNoResults: PropTypes.bool,
   hideTitle: PropTypes.bool,
   incomingList: PropTypes.array,
   incomingListTimeStampOfChange: PropTypes.number,
@@ -283,7 +306,7 @@ RepresentativeListRoot.propTypes = {
   listModeFiltersTimeStampOfChange: PropTypes.number,
   searchText: PropTypes.string,
   stateCode: PropTypes.string,
-  titleTextIfCampaigns: PropTypes.string,
+  titleTextForList: PropTypes.string,
 };
 
 const styles = () => ({

@@ -9,9 +9,10 @@ import Dispatcher from '../common/dispatcher/Dispatcher';
 class RepresentativeStore extends ReduceStore {
   getInitialState () {
     return {
-      allCachedRepresentatives: {},
-      representativeListsByOfficeHeldWeVoteId: {}, // Dictionary with office_we_vote_id as key and list of representatives in the office as value
+      allCachedRepresentatives: {}, // Dictionary with representative_we_vote_id as key and representative as value
+      allCachedRepresentativeWeVoteIdsByPolitician: {}, // Dictionary with politician_we_vote_id as key and list of representatives as value
       numberOfRepresentativesRetrievedByOfficeHeld: {}, // Dictionary with office_we_vote_id as key and number of representatives as value
+      representativeListsByOfficeHeldWeVoteId: {}, // Dictionary with office_we_vote_id as key and list of representatives in the office as value
     };
   }
 
@@ -42,23 +43,6 @@ class RepresentativeStore extends ReduceStore {
     return '';
   }
 
-  getMostLikelyOfficeDictFromRepresentativeWeVoteId (representativeWeVoteId) {
-    const representative = this.getState().allCachedRepresentatives[representativeWeVoteId] || {};
-    // console.log('getMostLikelyOfficeDictFromRepresentativeWeVoteId representative:', representative)
-    if (representative && representative.contest_office_list && representative.contest_office_list[0]) {
-      // return mostLikelyOfficeDictFromList(representative.contest_office_list);
-    }
-    // Not ideal
-    // console.log('getMostLikelyOfficeDictFromRepresentativeWeVoteId falling back on representative.contest_office_we_vote_id');
-    return {
-      contest_office_name: representative.contest_office_name,
-      contest_office_we_vote_id: representative.contest_office_we_vote_id,
-      election_day_text: representative.election_day_text,
-      google_civic_election_id: representative.google_civic_election_id,
-      state_code: representative.state_code,
-    };
-  }
-
   getNumberOfRepresentativesRetrievedByOffice (officeWeVoteId) {
     return this.getState().numberOfRepresentativesRetrievedByOfficeHeld[officeWeVoteId] || 0;
   }
@@ -75,7 +59,8 @@ class RepresentativeStore extends ReduceStore {
 
   reduce (state, action) {
     const {
-      allCachedRepresentatives, numberOfRepresentativesRetrievedByOfficeHeld,
+      allCachedRepresentatives, allCachedRepresentativeWeVoteIdsByPolitician,
+      numberOfRepresentativesRetrievedByOfficeHeld,
     } = state;
     let {
       representativeListsByOfficeHeldWeVoteId,
@@ -83,10 +68,34 @@ class RepresentativeStore extends ReduceStore {
     // Exit if we don't have a successful response (since we expect certain variables in a successful response below)
     if (!action.res || !action.res.success) return state;
 
+    let politician;
+    let revisedState;
     let representative;
     let representativeList;
+    let representativeWeVoteIds;
 
     switch (action.type) {
+      case 'politicianRetrieve':
+      case 'politicianRetrieveAsOwner':
+        if (!action.res || !action.res.success) return state;
+        revisedState = state;
+        politician = action.res;
+        // console.log('PoliticianStore politicianRetrieve, politician:', politician);
+        if ('representative_list' in politician) {
+          representativeWeVoteIds = [];
+          for (let i = 0; i < politician.representative_list.length; ++i) {
+            representative = politician.representative_list[i];
+            allCachedRepresentatives[representative.we_vote_id] = representative;
+            representativeWeVoteIds.push(representative.we_vote_id);
+          }
+          if (representativeWeVoteIds.length > 0) {
+            allCachedRepresentativeWeVoteIdsByPolitician[politician.politician_we_vote_id] = representativeWeVoteIds;
+          }
+        }
+        revisedState = { ...revisedState, allCachedRepresentatives };
+        revisedState = { ...revisedState, allCachedRepresentativeWeVoteIdsByPolitician };
+        return revisedState;
+
       case 'representativeRetrieve':
         representative = action.res;
         allCachedRepresentatives[representative.we_vote_id] = representative;
@@ -104,7 +113,7 @@ class RepresentativeStore extends ReduceStore {
         } else {
           representativeList = action.res.representative_list || [];
         }
-        console.log('RepresentativeStore representativesQuery representativeList:', representativeList);
+        // console.log('RepresentativeStore representativesQuery representativeList:', representativeList);
         if (!representativeListsByOfficeHeldWeVoteId) {
           representativeListsByOfficeHeldWeVoteId = {};
         }

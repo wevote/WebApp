@@ -188,6 +188,7 @@ class BallotTitleHeader extends Component {
                       <ElectionNameH1
                         centerText={centerText}
                         className={linksOff ? '' : 'u-cursor--pointer'}
+                        id="ballotTitleHeaderElectionName"
                         onClick={this.showSelectBallotModalChooseElection}
                       >
                         {electionName}
