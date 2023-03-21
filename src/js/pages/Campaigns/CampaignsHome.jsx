@@ -34,6 +34,7 @@ const FirstCandidateListController = React.lazy(() => import(/* webpackChunkName
 const FirstRepresentativeListController = React.lazy(() => import(/* webpackChunkName: 'FirstRepresentativeListController' */ '../../components/RepresentativeListRoot/FirstRepresentativeListController'));
 const RepresentativeListRoot = React.lazy(() => import(/* webpackChunkName: 'RepresentativeListRoot' */ '../../components/RepresentativeListRoot/RepresentativeListRoot'));
 
+const representativeDataExistsYears = [2023];
 const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
 class CampaignsHome extends Component {
@@ -493,7 +494,7 @@ class CampaignsHome extends Component {
       candidateListOther, candidateListTimeStampOfChange,
       candidateListIsBattleground, candidateListOnYourBallot, filterYear,
       isSearching, listModeFiltersAvailable, listModeFiltersTimeStampOfChange,
-      representativeListOther, representativeListTimeStampOfChange,
+      representativeListOnYourBallot, representativeListOther, representativeListTimeStampOfChange,
       searchText, stateCode,
     } = this.state;
     // console.log('CampaignsHome.jsx campaignList:', campaignList);
@@ -502,7 +503,8 @@ class CampaignsHome extends Component {
     const descriptionText = 'Choose which candidates you support.';
     let stateCodeTemp;
     const stateNameList = Object.values(stateCodeMap);
-    const otherTitlesShown = campaignsShowing || (candidateListOnYourBallot && candidateListOnYourBallot.length > 0) || (candidateListIsBattleground && candidateListIsBattleground.length > 0);
+    const representativesShowing = nextReleaseFeaturesEnabled && ((representativeListOnYourBallot && representativeListOnYourBallot.length > 0) || (representativeListOther && representativeListOther.length > 0));
+    const otherTitlesShown = campaignsShowing || (candidateListOnYourBallot && candidateListOnYourBallot.length > 0) || (candidateListIsBattleground && candidateListIsBattleground.length > 0) || representativesShowing;
     return (
       <PageContentContainer>
         <CampaignsHomeContainer className="container-fluid" style={this.getTopPadding()}>
@@ -586,7 +588,7 @@ class CampaignsHome extends Component {
                   listModeFiltersTimeStampOfChange={listModeFiltersTimeStampOfChange}
                   searchText={searchText}
                   stateCode={stateCode}
-                  titleTextIfCampaigns="Campaigns"
+                  titleTextForList="Campaigns"
                 />
               </Suspense>
             </WhatIsHappeningSection>
@@ -601,7 +603,7 @@ class CampaignsHome extends Component {
                   listModeFiltersTimeStampOfChange={listModeFiltersTimeStampOfChange}
                   searchText={searchText}
                   stateCode={stateCode}
-                  titleTextIfCampaigns="On Your Ballot"
+                  titleTextForList="On Your Ballot"
                 />
               </Suspense>
             </WhatIsHappeningSection>
@@ -610,13 +612,14 @@ class CampaignsHome extends Component {
             <WhatIsHappeningSection>
               <Suspense fallback={<span>&nbsp;</span>}>
                 <CandidateListRoot
+                  hideIfNoResults
                   incomingList={candidateListIsBattleground}
                   incomingListTimeStampOfChange={candidateListTimeStampOfChange}
                   listModeFilters={listModeFiltersAvailable}
                   listModeFiltersTimeStampOfChange={listModeFiltersTimeStampOfChange}
                   searchText={searchText}
                   stateCode={stateCode}
-                  titleTextIfCampaigns="Close Races"
+                  titleTextForList="Close Races"
                 />
               </Suspense>
             </WhatIsHappeningSection>
@@ -625,13 +628,14 @@ class CampaignsHome extends Component {
             <WhatIsHappeningSection>
               <Suspense fallback={<span>&nbsp;</span>}>
                 <RepresentativeListRoot
+                  hideIfNoResults
                   incomingList={representativeListOther}
                   incomingListTimeStampOfChange={representativeListTimeStampOfChange}
                   listModeFilters={listModeFiltersAvailable}
                   listModeFiltersTimeStampOfChange={listModeFiltersTimeStampOfChange}
                   searchText={searchText}
                   stateCode={stateCode}
-                  titleTextIfCampaigns={otherTitlesShown ? 'Current Representatives' : ''}
+                  titleTextForList="Current Representatives"
                 />
               </Suspense>
             </WhatIsHappeningSection>
@@ -645,7 +649,7 @@ class CampaignsHome extends Component {
                 listModeFiltersTimeStampOfChange={listModeFiltersTimeStampOfChange}
                 searchText={searchText}
                 stateCode={stateCode}
-                titleTextIfCampaigns={otherTitlesShown ? 'Other Candidates' : ''}
+                titleTextForList={otherTitlesShown ? 'More Politicians' : 'Candidates'}
               />
             </Suspense>
           </WhatIsHappeningSection>

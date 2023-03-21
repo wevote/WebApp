@@ -399,8 +399,8 @@ export default class OrganizationPositionItem extends Component {
             { kindOfBallotItem === 'CANDIDATE' && contestOfficeName !== undefined ? (
               <Suspense fallback={<></>}>
                 <OfficeNameText
+                  officeName={contestOfficeName}
                   politicalParty={politicalParty}
-                  contestOfficeName={contestOfficeName}
                 />
               </Suspense>
             ) : null}

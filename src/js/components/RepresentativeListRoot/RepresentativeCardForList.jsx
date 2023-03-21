@@ -304,7 +304,7 @@ class RepresentativeCardForList extends Component {
                   <div className="u-cursor--pointer" onClick={this.onRepresentativeClick}>
                     <Suspense fallback={<></>}>
                       <OfficeNameText
-                        contestOfficeName={contestOfficeName}
+                        officeName={contestOfficeName}
                         politicalParty={politicalParty}
                         showOfficeName
                         stateName={stateName}

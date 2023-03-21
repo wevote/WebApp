@@ -99,12 +99,16 @@ class CandidateCardForList extends Component {
       return null;
     }
     const {
-      seo_friendly_path: campaignSEOFriendlyPath,
+      seo_friendly_path: politicianSEOFriendlyPath,
       we_vote_id: candidateWeVoteId,
+      politician_we_vote_id: politicianWeVoteId,
     } = candidate;
-    if (campaignSEOFriendlyPath) {
-      return `/c/${campaignSEOFriendlyPath}`;
+    if (politicianSEOFriendlyPath) {
+      return `/${politicianSEOFriendlyPath}/-/`;
+    } else if (politicianWeVoteId) {
+      return `/${politicianWeVoteId}/p/`;
     } else {
+      // return `/candidate/${candidateWeVoteId}`;
       return `/candidate/${candidateWeVoteId}`;
     }
   }
@@ -304,7 +308,7 @@ class CandidateCardForList extends Component {
                   <div className="u-cursor--pointer" onClick={this.onCandidateClick}>
                     <Suspense fallback={<></>}>
                       <OfficeNameText
-                        contestOfficeName={contestOfficeName}
+                        officeName={contestOfficeName}
                         politicalParty={politicalParty}
                         showOfficeName
                         stateName={stateName}

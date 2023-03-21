@@ -101,6 +101,7 @@ class ViewUpcomingBallotButton extends React.Component {
       <ViewUpcomingBallotButtonWrapper>
         <Button
           color="primary"
+          id={electionDataExistsForUpcomingElection ? 'viewUpcomingBallotButton' : 'findFriendsReadyButton'}
           onClick={electionDataExistsForUpcomingElection ? this.onClickFunctionLocal : this.goToFindFriends}
           style={{
             boxShadow: 'none !important',

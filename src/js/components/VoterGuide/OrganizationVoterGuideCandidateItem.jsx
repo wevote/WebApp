@@ -164,9 +164,9 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
                 { contestOfficeName ? (
                   <Suspense fallback={<></>}>
                     <OfficeNameText
-                      politicalParty={party}
-                      contestOfficeName={contestOfficeName}
                       officeLink={linkToOfficePage ? this.getOfficeLink() : ''}
+                      officeName={contestOfficeName}
+                      politicalParty={party}
                     />
                   </Suspense>
                 ) : null}

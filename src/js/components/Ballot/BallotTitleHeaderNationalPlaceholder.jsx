@@ -153,6 +153,7 @@ class BallotTitleHeaderNationalPlaceholder extends Component {
                       <ElectionNameH1
                         centerText={centerText}
                         className={linksOff ? '' : 'u-cursor--pointer'}
+                        id="ballotTitleHeaderNationalElectionName"
                         onClick={this.showSelectBallotModalChooseElection}
                       >
                         {electionName}

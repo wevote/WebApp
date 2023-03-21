@@ -101,7 +101,16 @@ export default class FAQBody extends Component {
 
         <strong>No really, who are you?</strong>
         <br />
-        We Vote is a volunteer-driven movement. We
+        We Vote is a volunteer-driven movement.
+        <Suspense fallback={<></>}>
+          <OpenExternalWebSite
+            linkIdAttribute="wevoteVolunteerNow"
+            url="https://wevote.applytojob.com/apply"
+            target="_blank"
+            body="(See volunteer openings here.)"
+          />
+        </Suspense>
+        We
         rely on volunteers across the country who use
         their engineering, design, and other skills to build
         We Vote. We are over 100 people who have donated 12,000+ volunteer hours, including
@@ -277,10 +286,10 @@ export default class FAQBody extends Component {
         <Suspense fallback={<></>}>
           <OpenExternalWebSite
             linkIdAttribute="idealistOpenPositions"
-            url="https://www.idealist.org/en/nonprofit/f917ce3db61a46cb8ad2b0d4e335f0af-we-vote-oakland"
+            url="https://wevote.applytojob.com/apply"
             target="_blank"
             className="open-web-site open-web-site__no-right-padding"
-            body="sign up to volunteer on Idealist."
+            body="sign up to volunteer with We Vote."
           />
         </Suspense>
         <br />
