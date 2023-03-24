@@ -34,7 +34,7 @@ const FirstCandidateListController = React.lazy(() => import(/* webpackChunkName
 const FirstRepresentativeListController = React.lazy(() => import(/* webpackChunkName: 'FirstRepresentativeListController' */ '../../components/RepresentativeListRoot/FirstRepresentativeListController'));
 const RepresentativeListRoot = React.lazy(() => import(/* webpackChunkName: 'RepresentativeListRoot' */ '../../components/RepresentativeListRoot/RepresentativeListRoot'));
 
-const representativeDataExistsYears = [2023];
+// const representativeDataExistsYears = [2023];
 const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
 class CampaignsHome extends Component {
@@ -54,7 +54,7 @@ class CampaignsHome extends Component {
       listOfYearsWhenCampaignExists: [],
       listOfYearsWhenCandidateExists: [],
       listOfYearsWhenRepresentativeExists: [],
-      representativeListIsBattleground: [],
+      // representativeListIsBattleground: [],
       representativeListOnYourBallot: [],
       representativeListOther: [],
       representativeListTimeStampOfChange: 0,
@@ -90,10 +90,10 @@ class CampaignsHome extends Component {
     }, () => this.onIncomingCandidateListChange(true));
     // Note: sorting is being done in RepresentativeListRoot
     const representativeList = RepresentativeStore.getRepresentativeList();
-    const { representativeListOnYourBallot, representativeListIsBattleground, representativeListOther } = this.splitUpRepresentativeList(representativeList);
+    const { representativeListOnYourBallot, representativeListOther } = this.splitUpRepresentativeList(representativeList); // representativeListIsBattleground
     this.setState({
       representativeList,
-      representativeListIsBattleground,
+      // representativeListIsBattleground,
       representativeListOnYourBallot,
       representativeListOther,
       representativeListTimeStampOfChange: Date.now(),
@@ -202,10 +202,10 @@ class CampaignsHome extends Component {
   onRepresentativeStoreChange () {
     const representativeList = RepresentativeStore.getRepresentativeList();
     // Note: sorting is being done in RepresentativeListRoot
-    const { representativeListOnYourBallot, representativeListIsBattleground, representativeListOther } = this.splitUpRepresentativeList(representativeList);
+    const { representativeListOnYourBallot, representativeListOther } = this.splitUpRepresentativeList(representativeList);  // representativeListIsBattleground
     this.setState({
       representativeList,
-      representativeListIsBattleground,
+      // representativeListIsBattleground,
       representativeListOnYourBallot,
       representativeListOther,
       representativeListTimeStampOfChange: Date.now(),
@@ -421,16 +421,16 @@ class CampaignsHome extends Component {
 
   getListOfYearsWhenRepresentativeExists = (representativeList) => {
     const listOfYearsWhenRepresentativeExists = [];
-    // let tempYearInteger;
-    // representativeList.forEach((oneRepresentative) => {
-    //   if (oneRepresentative.candidate_ultimate_election_date && oneRepresentative.candidate_ultimate_election_date > 0) {
-    //     tempYearInteger = getYearFromUltimateElectionDate(oneRepresentative.candidate_ultimate_election_date);
-    //     if (!arrayContains(tempYearInteger, listOfYearsWhenRepresentativeExists)) {
-    const tempYearInteger = 2023;
-    listOfYearsWhenRepresentativeExists.push(tempYearInteger);
-    //     }
-    //   }
-    // });
+    let tempYearInteger;
+    representativeList.forEach((oneRepresentative) => {
+      if (oneRepresentative.candidate_ultimate_election_date && oneRepresentative.candidate_ultimate_election_date > 0) {
+        // tempYearInteger = getYearFromUltimateElectionDate(oneRepresentative.candidate_ultimate_election_date);
+        tempYearInteger = 2023;  // TEMP
+        if (!arrayContains(tempYearInteger, listOfYearsWhenRepresentativeExists)) {
+          listOfYearsWhenRepresentativeExists.push(tempYearInteger);
+        }
+      }
+    });
     return listOfYearsWhenRepresentativeExists;
   }
 

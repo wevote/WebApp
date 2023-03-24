@@ -2,19 +2,28 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import YearState from '../../common/components/Widgets/YearState';
-import { renderLog } from '../../common/utils/logging';
+import YearState from './YearState';
+import { renderLog } from '../../utils/logging';
+import toTitleCase from '../../utils/toTitleCase';
+
+function isAllUpperCase (str) {
+  return str === str.toUpperCase();
+}
 
 // React functional component example
 export default function OfficeNameText (props) {
   renderLog('OfficeNameText');  // Set LOG_RENDER_EVENTS to log all renders
-  let nameText = '';
-  const { officeName, politicalParty, showOfficeName, stateName, year } = props; // officeLink, // Dec 2022: Turning off officeLink until we can do design review
+  let nameText;
+  const { politicalParty, showOfficeName, stateName, year } = props; // officeLink, // Dec 2022: Turning off officeLink until we can do design review
+  let { officeName } = props;
   const officeLink = null;
+  if (isAllUpperCase(officeName)) {
+    officeName = toTitleCase(officeName);
+  }
   if (showOfficeName) {
-    if (politicalParty === undefined) {
+    if (politicalParty === undefined || politicalParty === '') {
       nameText = (
-        <NoPoliticalPartySpan>
+        <NoPoliticalPartyWrapper>
           <span>Candidate for </span>
           {officeLink ? (
             <Link to={officeLink}>
@@ -22,7 +31,7 @@ export default function OfficeNameText (props) {
             </Link>
           ) : <OfficeNameSpan>{officeName}</OfficeNameSpan>}
           <YearState year={year} stateName={stateName} />
-        </NoPoliticalPartySpan>
+        </NoPoliticalPartyWrapper>
       );
     } else {
       nameText = (
@@ -63,7 +72,8 @@ OfficeNameText.propTypes = {
   year: PropTypes.string,
 };
 
-const NoPoliticalPartySpan = styled('span')`
+const NoPoliticalPartyWrapper = styled('div')`
+  line-height: 1.2;
 `;
 
 const OfficeNameSpan = styled('span')`
@@ -72,8 +82,9 @@ const OfficeNameSpan = styled('span')`
 `;
 
 const PartyAndYearWrapper = styled('div')`
+  line-height: 1.2;
 `;
 
 const PartyAndOfficeWrapper = styled('div')`
-  line-height: 17px;
+  line-height: 1.2;
 `;

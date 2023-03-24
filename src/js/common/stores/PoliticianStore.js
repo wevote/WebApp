@@ -136,7 +136,7 @@ class PoliticianStore extends ReduceStore {
   }
 
   getVoterCanEditThisPolitician (politicianWeVoteId = '') {
-    console.log('getVoterCanEditThisPolitician politicianWeVoteId:', politicianWeVoteId);
+    console.log('getVoterCanEditThisPolitician:', politicianWeVoteId);
     return false;
   }
 

@@ -3,12 +3,16 @@ import PoliticianStore from '../stores/PoliticianStore';
 import VoterStore from '../../stores/VoterStore';
 import initializejQuery from './initializejQuery';
 
+function orderCandidatesByUltimateDate (firstEntry, secondEntry) {
+  return secondEntry.candidate_ultimate_election_date - firstEntry.candidate_ultimate_election_date;
+}
+
 export function getPoliticianValuesFromIdentifiers (politicianSEOFriendlyPath, politicianWeVoteId) {
   // console.log('getPoliticianValuesFromIdentifiers politicianSEOFriendlyPath: ', politicianSEOFriendlyPath, ', politicianWeVoteId: ', politicianWeVoteId);
+  let candidateCampaignList = [];
   let finalElectionDateInPast = false;
   // let isSupportersCountMinimumExceeded = false;
   let politician = {};
-  let politicianCandidateList = [];
   let politicianDescription = '';
   let politicianImageUrlLarge = '';
   let politicianImageUrlMedium = '';
@@ -29,6 +33,7 @@ export function getPoliticianValuesFromIdentifiers (politicianSEOFriendlyPath, p
   }
   if (politician.constructor === Object && politician.politician_we_vote_id) {
     ({
+      candidate_list: candidateCampaignList,
       final_election_date_in_past: finalElectionDateInPast,
       // is_supporters_count_minimum_exceeded: isSupportersCountMinimumExceeded,
       politician_description: politicianDescription,
@@ -43,10 +48,23 @@ export function getPoliticianValuesFromIdentifiers (politicianSEOFriendlyPath, p
       we_vote_hosted_profile_image_url_medium: politicianImageUrlMedium,
       we_vote_hosted_profile_image_url_tiny: politicianImageUrlTiny,
     } = politician);
-    // TODO: politicianCandidateList = PoliticianStore.getPoliticianCandidateList(politicianWeVoteIdFromObject);
-    politicianCandidateList = [];
+  }
+  if ((candidateCampaignList && candidateCampaignList.length > 0) && (!politicianImageUrlLarge || politicianImageUrlLarge === '' || !politicianImageUrlMedium || politicianImageUrlMedium === '' || !politicianImageUrlTiny || politicianImageUrlTiny === '')) {
+    candidateCampaignList = candidateCampaignList.sort(orderCandidatesByUltimateDate);
+    for (let i = 0; i < candidateCampaignList.length; i++) {
+      if ((!politicianImageUrlLarge || politicianImageUrlLarge === '') && candidateCampaignList[i].candidate_photo_url_large) {
+        politicianImageUrlLarge = candidateCampaignList[i].candidate_photo_url_large;
+      }
+      if ((!politicianImageUrlMedium || politicianImageUrlMedium === '') && candidateCampaignList[i].candidate_photo_url_medium) {
+        politicianImageUrlMedium = candidateCampaignList[i].candidate_photo_url_medium;
+      }
+      if ((!politicianImageUrlTiny || politicianImageUrlTiny === '') && candidateCampaignList[i].candidate_photo_url_tiny) {
+        politicianImageUrlTiny = candidateCampaignList[i].candidate_photo_url_tiny;
+      }
+    }
   }
   return {
+    candidateCampaignList,
     finalElectionDateInPast,
     // isSupportersCountMinimumExceeded,
     politicianDescription,
@@ -55,7 +73,6 @@ export function getPoliticianValuesFromIdentifiers (politicianSEOFriendlyPath, p
     politicianImageUrlTiny,
     politicianSEOFriendlyPath: politicianSEOFriendlyPathFromObject,
     politicianName,
-    politicianCandidateList,
     politicianUrl,
     politicianWeVoteId: politicianWeVoteIdFromObject,
     twitterFollowersCount,
