@@ -1,13 +1,15 @@
 import styled from 'styled-components';
 
 export const CampaignDescription = styled('div')`
-  font-size: 18px;
+  font-size: 16px;
+  line-height: 1.1;
   text-align: left;
   white-space: pre-wrap;
 `;
 
 export const CampaignDescriptionDesktop = styled('div')`
-  font-size: 18px;
+  font-size: 16px;
+  line-height: 1.1;
   margin-top: 32px;
   text-align: left;
   white-space: pre-wrap;

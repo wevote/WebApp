@@ -22,7 +22,7 @@ import numberWithCommas from '../../common/utils/numberWithCommas';
 // import { ElectionInPast, IndicatorButtonWrapper, IndicatorRow } from '../../common/components/Style/CampaignIndicatorStyles';
 
 const ItemActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemActionBar' */ '../Widgets/ItemActionBar/ItemActionBar'));
-const OfficeNameText = React.lazy(() => import(/* webpackChunkName: 'OfficeNameText' */ '../Widgets/OfficeNameText'));
+const OfficeNameText = React.lazy(() => import(/* webpackChunkName: 'OfficeNameText' */ '../../common/components/Widgets/OfficeNameText'));
 // const SupportButtonBeforeCompletionScreen = React.lazy(() => import(/* webpackChunkName: 'SupportButtonBeforeCompletionScreen' */ '../../common/components/CampaignSupport/SupportButtonBeforeCompletionScreen'));
 
 class RepresentativeCardForList extends Component {
@@ -36,7 +36,6 @@ class RepresentativeCardForList extends Component {
     this.getRepresentativeBasePath = this.getRepresentativeBasePath.bind(this);
     this.goToNextPage = this.goToNextPage.bind(this);
     this.onRepresentativeClick = this.onRepresentativeClick.bind(this);
-    this.onRepresentativeClickLink = this.onRepresentativeClickLink.bind(this);
     this.onCampaignEditClick = this.onCampaignEditClick.bind(this);
     this.onCampaignGetMinimumSupportersClick = this.onCampaignGetMinimumSupportersClick.bind(this);
     this.onCampaignShareClick = this.onCampaignShareClick.bind(this);
@@ -78,11 +77,11 @@ class RepresentativeCardForList extends Component {
     const { representativeWeVoteId } = this.props;
     const representative = RepresentativeStore.getRepresentativeByWeVoteId(representativeWeVoteId);
     const {
-      seo_friendly_path: campaignSEOFriendlyPath,
+      seo_friendly_path: politicianSEOFriendlyPath,
     } = representative;
     let pathToUseWhenProfileComplete;
-    if (campaignSEOFriendlyPath) {
-      pathToUseWhenProfileComplete = `/c/${campaignSEOFriendlyPath}/why-do-you-support`;
+    if (politicianSEOFriendlyPath) {
+      pathToUseWhenProfileComplete = `/c/${politicianSEOFriendlyPath}/why-do-you-support`;
     } else if (representativeWeVoteId) {
       pathToUseWhenProfileComplete = `/id/${representativeWeVoteId}/why-do-you-support`;
     }
@@ -92,25 +91,28 @@ class RepresentativeCardForList extends Component {
     });
   }
 
-  onRepresentativeClickLink () {
+  getRepresentativeBasePath () {
     const { representative } = this.state;
     // console.log('representative:', representative);
     if (!representative) {
       return null;
     }
     const {
-      seo_friendly_path: campaignSEOFriendlyPath,
+      seo_friendly_path: politicianSEOFriendlyPath,
+      politician_we_vote_id: politicianWeVoteId,
       we_vote_id: representativeWeVoteId,
     } = representative;
-    if (campaignSEOFriendlyPath) {
-      return `/c/${campaignSEOFriendlyPath}`;
+    if (politicianSEOFriendlyPath) {
+      return `/${politicianSEOFriendlyPath}/-/`;
+    } else if (politicianWeVoteId) {
+      return `/${politicianWeVoteId}/p/`;
     } else {
       return `/representative/${representativeWeVoteId}`;
     }
   }
 
   onRepresentativeClick () {
-    historyPush(this.onRepresentativeClickLink());
+    historyPush(this.getRepresentativeBasePath());
   }
 
   onCampaignEditClick () {
@@ -121,13 +123,13 @@ class RepresentativeCardForList extends Component {
     }
     const {
       in_draft_mode: inDraftMode,
-      seo_friendly_path: campaignSEOFriendlyPath,
+      seo_friendly_path: politicianSEOFriendlyPath,
       we_vote_id: representativeWeVoteId,
     } = representative;
     if (inDraftMode) {
       historyPush('/start-a-campaign-preview');
-    } else if (campaignSEOFriendlyPath) {
-      historyPush(`/c/${campaignSEOFriendlyPath}/edit`);
+    } else if (politicianSEOFriendlyPath) {
+      historyPush(`/c/${politicianSEOFriendlyPath}/edit`);
     } else {
       historyPush(`/id/${representativeWeVoteId}/edit`);
     }
@@ -141,11 +143,11 @@ class RepresentativeCardForList extends Component {
       return null;
     }
     const {
-      seo_friendly_path: campaignSEOFriendlyPath,
+      seo_friendly_path: politicianSEOFriendlyPath,
       we_vote_id: representativeWeVoteId,
     } = representative;
-    if (campaignSEOFriendlyPath) {
-      historyPush(`/c/${campaignSEOFriendlyPath}/share-campaign`);
+    if (politicianSEOFriendlyPath) {
+      historyPush(`/c/${politicianSEOFriendlyPath}/share-campaign`);
     } else {
       historyPush(`/id/${representativeWeVoteId}/share-campaign`);
     }
@@ -159,35 +161,15 @@ class RepresentativeCardForList extends Component {
       return null;
     }
     const {
-      seo_friendly_path: campaignSEOFriendlyPath,
+      seo_friendly_path: politicianSEOFriendlyPath,
       we_vote_id: representativeWeVoteId,
     } = representative;
-    if (campaignSEOFriendlyPath) {
-      historyPush(`/c/${campaignSEOFriendlyPath}/share-campaign`);
+    if (politicianSEOFriendlyPath) {
+      historyPush(`/c/${politicianSEOFriendlyPath}/share-campaign`);
     } else {
       historyPush(`/id/${representativeWeVoteId}/share-campaign`);
     }
     return null;
-  }
-
-  getRepresentativeBasePath () {
-    const { representative } = this.state;
-    // console.log('representative:', representative);
-    if (!representative) {
-      return null;
-    }
-    const {
-      seo_friendly_path: campaignSEOFriendlyPath,
-      we_vote_id: representativeWeVoteId,
-    } = representative;
-    let campaignBasePath;
-    if (campaignSEOFriendlyPath) {
-      campaignBasePath = `/c/${campaignSEOFriendlyPath}`;
-    } else {
-      campaignBasePath = `/representative/${representativeWeVoteId}`;
-    }
-
-    return campaignBasePath;
   }
 
   // pullCampaignXSupporterVoterEntry (representativeWeVoteId) {
@@ -273,7 +255,7 @@ class RepresentativeCardForList extends Component {
       // is_in_team_review_mode: isInTeamReviewMode,
       // is_supporters_count_minimum_exceeded: isSupportersCountMinimumExceeded,
       party: politicalParty,
-      // seo_friendly_path: campaignSEOFriendlyPath,
+      // seo_friendly_path: politicianSEOFriendlyPath,
       state_code: stateCode,
       supporters_count: supportersCount,
       supporters_count_next_goal: supportersCountNextGoal,
@@ -296,7 +278,7 @@ class RepresentativeCardForList extends Component {
             <OneCampaignTextColumn>
               <div>
                 <OneCampaignTitle>
-                  <Link to={this.onRepresentativeClickLink()}>
+                  <Link to={this.getRepresentativeBasePath()}>
                     {ballotItemDisplayName}
                   </Link>
                 </OneCampaignTitle>

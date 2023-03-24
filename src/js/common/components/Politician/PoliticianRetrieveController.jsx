@@ -53,7 +53,7 @@ class PoliticianRetrieveController extends Component {
       const { politicianRetrieveInitiated } = this.state;
       initializejQuery(() => {
         const voterFirstRetrieveCompleted = VoterStore.voterFirstRetrieveCompleted();
-        console.log('PoliticianRetrieveController politicianRetrieveInitiated: ', politicianRetrieveInitiated, ', voterFirstRetrieveCompleted: ', voterFirstRetrieveCompleted);
+        // console.log('PoliticianRetrieveController politicianRetrieveInitiated: ', politicianRetrieveInitiated, ', voterFirstRetrieveCompleted: ', voterFirstRetrieveCompleted);
         if (voterFirstRetrieveCompleted && !politicianRetrieveInitiated) {
           // We use retrievePoliticianFromIdentifiers instead of
           // retrievePoliticianFromIdentifiersIfNotAlreadyRetrieved because there are some details
@@ -61,7 +61,7 @@ class PoliticianRetrieveController extends Component {
           // that come in with politicianRetrieve which don't come in politicianListRetrieve,
           // details which are only useful when you look at the full politician
           const updatedPoliticianRetrieveInitiated = retrievePoliticianFromIdentifiers(politicianSEOFriendlyPath, politicianWeVoteId);
-          console.log('politicianRetrieveInitiated:', politicianRetrieveInitiated, 'updatedPoliticianRetrieveInitiated:', updatedPoliticianRetrieveInitiated);
+          // console.log('politicianRetrieveInitiated:', politicianRetrieveInitiated, 'updatedPoliticianRetrieveInitiated:', updatedPoliticianRetrieveInitiated);
           this.setState({
             politicianRetrieveInitiated: updatedPoliticianRetrieveInitiated,
           });

@@ -107,7 +107,6 @@ class RepresentativeStore extends ReduceStore {
       case 'representativesQuery':
       case 'representativesRetrieve':
         // Make sure we have information for the office the representative is running for
-        console.log(action);
         if (action.type === 'representativesQuery') {
           representativeList = action.res.representatives || [];
         } else {

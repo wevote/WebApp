@@ -10,15 +10,17 @@ import {
   CampaignDescriptionDesktopWrapper, CampaignImagePlaceholder, CampaignImagePlaceholderText,
   CampaignImageDesktopWrapper, CampaignImageMobileWrapper,
   CampaignOwnersDesktopWrapper, CampaignOwnersWrapper, CampaignSubSectionTitle,
-  CampaignTitleAndScoreBar, CampaignTitleMobile,
-  CommentsListWrapper, DetailsSectionDesktopTablet, DetailsSectionMobile,
+  CampaignTitleAndScoreBar,
+  // CommentsListWrapper,
+  DetailsSectionDesktopTablet, DetailsSectionMobile,
   SupportButtonFooterWrapper, SupportButtonPanel,
 } from '../../components/Style/CampaignDetailsStyles';
 import {
+  CandidateCampaignListDesktop, CandidateCampaignListMobile, CandidateCampaignWrapper,
   OfficeHeldNameDesktop, OfficeHeldNameMobile,
   PoliticianImageDesktop, PoliticianImageDesktopPlaceholder,
-  PoliticianImageMobile, PoliticianImageMobilePlaceholder, PoliticianTitleDesktop,
-  PoliticianTitleOuterWrapperDesktop,
+  PoliticianImageMobile, PoliticianImageMobilePlaceholder,
+  PoliticianNameMobile, PoliticianNameDesktop, PoliticianNameOuterWrapperDesktop,
 } from '../../components/Style/PoliticianDetailsStyles';
 import { PageWrapper } from '../../components/Style/stepDisplayStyles';
 import DelayedLoad from '../../components/Widgets/DelayedLoad';
@@ -36,16 +38,19 @@ import CampaignSupporterStore from '../../stores/CampaignSupporterStore';
 import OfficeHeldStore from '../../../stores/OfficeHeldStore';
 import PoliticianStore from '../../stores/PoliticianStore';
 import RepresentativeStore from '../../../stores/RepresentativeStore';
+import { convertStateCodeToStateText } from '../../utils/addressFunctions';
+import { getYearFromUltimateElectionDate } from '../../utils/dateFormat';
 import { getPoliticianValuesFromIdentifiers, retrievePoliticianFromIdentifiersIfNeeded } from '../../utils/politicianUtils';
 import initializejQuery from '../../utils/initializejQuery';
 import { displayNoneIfSmallerThanDesktop } from '../../utils/isMobileScreenSize';
 import keepHelpingDestination from '../../utils/keepHelpingDestination';
 import TwitterAccountStats from '../../../components/Widgets/TwitterAccountStats';
 
-const CampaignCommentsList = React.lazy(() => import(/* webpackChunkName: 'CampaignCommentsList' */ '../../components/Campaign/CampaignCommentsList'));
-const CampaignDetailsActionSideBox = React.lazy(() => import(/* webpackChunkName: 'CampaignDetailsActionSideBox' */ '../../components/CampaignSupport/CampaignDetailsActionSideBox'));
-const CampaignNewsItemList = React.lazy(() => import(/* webpackChunkName: 'CampaignNewsItemList' */ '../../components/Campaign/CampaignNewsItemList'));
-const CampaignSupportThermometer = React.lazy(() => import(/* webpackChunkName: 'CampaignSupportThermometer' */ '../../components/CampaignSupport/CampaignSupportThermometer'));
+// const CampaignCommentsList = React.lazy(() => import(/* webpackChunkName: 'CampaignCommentsList' */ '../../components/Campaign/CampaignCommentsList'));
+// const CampaignDetailsActionSideBox = React.lazy(() => import(/* webpackChunkName: 'CampaignDetailsActionSideBox' */ '../../components/CampaignSupport/CampaignDetailsActionSideBox'));
+// const CampaignNewsItemList = React.lazy(() => import(/* webpackChunkName: 'CampaignNewsItemList' */ '../../components/Campaign/CampaignNewsItemList'));
+// const CampaignSupportThermometer = React.lazy(() => import(/* webpackChunkName: 'CampaignSupportThermometer' */ '../../components/CampaignSupport/CampaignSupportThermometer'));
+const OfficeNameText = React.lazy(() => import(/* webpackChunkName: 'OfficeNameText' */ '../../components/Widgets/OfficeNameText'));
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../components/Widgets/OpenExternalWebSite'));
 const PoliticianRetrieveController = React.lazy(() => import(/* webpackChunkName: 'PoliticianRetrieveController' */ '../../components/Politician/PoliticianRetrieveController'));
 const SupportButtonBeforeCompletionScreen = React.lazy(() => import(/* webpackChunkName: 'SupportButtonBeforeCompletionScreen' */ '../../components/CampaignSupport/SupportButtonBeforeCompletionScreen'));
@@ -147,8 +152,18 @@ class PoliticianDetailsPage extends Component {
   onOfficeHeldStoreChange () {
     const { politicianWeVoteId } = this.state;
     const officeHeldList = OfficeHeldStore.getOfficeHeldListByPoliticianWeVoteId(politicianWeVoteId);
+    const officeHeldListFiltered = [];
+    const districtNameAlreadySeenList = [];
+    const officeHeldNamesNotAllowedList = ['legislatorLowerBody'];
+    for (let i = 0; i < officeHeldList.length; i += 1) {
+      const officeHeld = officeHeldList[i];
+      if (!(districtNameAlreadySeenList.includes(officeHeld.district_name) && !officeHeldNamesNotAllowedList.includes(officeHeld.office_held_name))) {
+        districtNameAlreadySeenList.push(officeHeld.district_name);
+        officeHeldListFiltered.push(officeHeld);
+      }
+    }
     this.setState({
-      officeHeldList,
+      officeHeldList: officeHeldListFiltered,
     });
   }
 
@@ -157,6 +172,7 @@ class PoliticianDetailsPage extends Component {
     const { politicianSEOFriendlyPath: politicianSEOFriendlyPathFromParams, politicianWeVoteId: politicianWeVoteIdFromParams } = params;
     // console.log('onPoliticianStoreChange politicianSEOFriendlyPathFromParams: ', politicianSEOFriendlyPathFromParams, ', politicianWeVoteIdFromParams: ', politicianWeVoteIdFromParams);
     const {
+      candidateCampaignList,
       finalElectionDateInPast,
       // isSupportersCountMinimumExceeded,
       politicianDescription,
@@ -188,7 +204,9 @@ class PoliticianDetailsPage extends Component {
       });
     }
     const politicianDescriptionLimited = returnFirstXWords(politicianDescription, 200);
+    const filteredCandidateCampaignList = candidateCampaignList.sort(this.orderCandidatesByUltimateDate);
     this.setState({
+      candidateCampaignList: filteredCandidateCampaignList,
       finalElectionDateInPast,
       // isSupportersCountMinimumExceeded,
       politicianDescription,
@@ -203,6 +221,12 @@ class PoliticianDetailsPage extends Component {
     });
   }
 
+  onRepresentativeStoreChange () {
+    //
+  }
+
+  orderCandidatesByUltimateDate = (firstEntry, secondEntry) => secondEntry.candidate_ultimate_election_date - firstEntry.candidate_ultimate_election_date;
+
   getPoliticianBasePath = () => {
     const { politicianSEOFriendlyPath, politicianWeVoteId } = this.state;
     let politicianBasePath;
@@ -215,15 +239,12 @@ class PoliticianDetailsPage extends Component {
     return politicianBasePath;
   }
 
-  onRepresentativeStoreChange () {
-    //
-  }
-
   goToNextPage = () => {
     const { pathToUseWhenProfileComplete } = this.state;
     this.timer = setTimeout(() => {
       historyPush(pathToUseWhenProfileComplete);
     }, 500);
+    return null;
   }
 
   functionToUseToKeepHelping = () => {
@@ -278,7 +299,7 @@ class PoliticianDetailsPage extends Component {
     renderLog('PoliticianDetailsPage');  // Set LOG_RENDER_EVENTS to log all renders
 
     const {
-      chosenWebsiteName,
+      candidateCampaignList, chosenWebsiteName,
       finalElectionDateInPast,
       officeHeldList,
       politicianDescription, politicianDescriptionLimited, politicianImageUrlLarge,
@@ -288,7 +309,100 @@ class PoliticianDetailsPage extends Component {
     } = this.state;
     // console.log('render isSupportersCountMinimumExceeded: ', isSupportersCountMinimumExceeded);
     const htmlTitle = `${politicianName} - ${chosenWebsiteName}`;
-
+    const politicianLinks = (
+      <PoliticianLinksWrapper>
+        {!!(twitterHandle && twitterFollowersCount) && (
+          <TwitterWrapper>
+            <TwitterAccountStats
+              includeLinkToTwitter
+              twitterFollowersCount={twitterFollowersCount}
+              twitterHandle={twitterHandle}
+            />
+          </TwitterWrapper>
+        )}
+        {!!(twitterHandle2) && (
+          <TwitterWrapper>
+            <TwitterAccountStats
+              includeLinkToTwitter
+              // twitterFollowersCount={twitterFollowersCount}
+              twitterHandle={twitterHandle2}
+            />
+          </TwitterWrapper>
+        )}
+        {(politicianUrl) && (
+          <ExternalWebSiteWrapper>
+            <Suspense fallback={<></>}>
+              <OpenExternalWebSite
+                linkIdAttribute="candidateDesktop"
+                url={politicianUrl}
+                target="_blank"
+                className="u-gray-mid"
+                body={(
+                  <div>
+                    website
+                    <Launch
+                      style={{
+                        height: 14,
+                        marginLeft: 2,
+                        marginTop: '-3px',
+                        width: 14,
+                      }}
+                    />
+                  </div>
+                )}
+              />
+            </Suspense>
+          </ExternalWebSiteWrapper>
+        )}
+      </PoliticianLinksWrapper>
+    );
+    let priorCandidateCampaignsHtml = '';
+    if (candidateCampaignList && candidateCampaignList.length > 0) {
+      let contestOfficeName;
+      let year;
+      const yearsAndNamesAlreadySeen = [];
+      const candidateCampaignListFiltered = candidateCampaignList.filter((candidateCampaign) => {
+        contestOfficeName = candidateCampaign.contest_office_name;
+        if (!contestOfficeName) {
+          if (candidateCampaign.contest_office_list) {
+            contestOfficeName = candidateCampaign.contest_office_list[0].contest_office_name;
+          }
+        }
+        year = getYearFromUltimateElectionDate(candidateCampaign.candidate_ultimate_election_date);
+        const candidateCampaignYearAndName = `${year}-${contestOfficeName}`;
+        // console.log('candidateCampaignYearAndName: ', candidateCampaignYearAndName);
+        if (yearsAndNamesAlreadySeen.indexOf(candidateCampaignYearAndName) === -1) {
+          yearsAndNamesAlreadySeen.push(candidateCampaignYearAndName);
+          return candidateCampaign;
+        } else {
+          return null;
+        }
+      });
+      // console.log('candidateCampaignListFiltered: ', candidateCampaignListFiltered);
+      priorCandidateCampaignsHtml = candidateCampaignListFiltered.map((candidateCampaign) => {
+        const key = `candidateCampaign-${candidateCampaign.we_vote_id}`;
+        contestOfficeName = candidateCampaign.contest_office_name;
+        if (!contestOfficeName) {
+          if (candidateCampaign.contest_office_list) {
+            contestOfficeName = candidateCampaign.contest_office_list[0].contest_office_name;
+          }
+        }
+        const showOfficeName = !!(contestOfficeName);
+        const stateName = convertStateCodeToStateText(candidateCampaign.state_code);
+        year = getYearFromUltimateElectionDate(candidateCampaign.candidate_ultimate_election_date);
+        return (
+          <CandidateCampaignWrapper key={key}>
+            <OfficeNameText
+              officeName={contestOfficeName}
+              politicalParty={candidateCampaign.party}
+              showOfficeName={showOfficeName}
+              stateName={stateName}
+              year={`${year}`}
+            />
+          </CandidateCampaignWrapper>
+        );
+      });
+    }
     return (
       <PageContentContainer>
         <Suspense fallback={<span>&nbsp;</span>}>
@@ -319,7 +433,7 @@ class PoliticianDetailsPage extends Component {
               )}
             </CampaignImageMobileWrapper>
             <CampaignTitleAndScoreBar>
-              <CampaignTitleMobile>{politicianName}</CampaignTitleMobile>
+              <PoliticianNameMobile>{politicianName}</PoliticianNameMobile>
               {officeHeldList.length > 0 && (
                 <OfficeHeldNameMobile>
                   { officeHeldList.map((officeHeld) => (
@@ -331,9 +445,11 @@ class PoliticianDetailsPage extends Component {
                   ))}
                 </OfficeHeldNameMobile>
               )}
+              {/*
               <Suspense fallback={<span>&nbsp;</span>}>
                 <CampaignSupportThermometer politicianWeVoteId={politicianWeVoteId} />
               </Suspense>
+              */}
               <CampaignOwnersWrapper>
                 <CampaignOwnersList politicianWeVoteId={politicianWeVoteId} />
               </CampaignOwnersWrapper>
@@ -342,32 +458,36 @@ class PoliticianDetailsPage extends Component {
               <CampaignDescription>
                 {politicianDescription}
               </CampaignDescription>
-              <IndicatorRow>
-                {finalElectionDateInPast && (
+              {politicianLinks}
+              {finalElectionDateInPast && (
+                <IndicatorRow>
                   <IndicatorButtonWrapper>
                     <ElectionInPast>
                       Election in Past
                     </ElectionInPast>
                   </IndicatorButtonWrapper>
-                )}
-              </IndicatorRow>
-              <IndicatorRow>
-                {voterCanEditThisPolitician && (
-                  <IndicatorButtonWrapper>
-                    <EditIndicator onClick={this.onPoliticianEditClick}>
-                      Edit Politician
-                    </EditIndicator>
-                  </IndicatorButtonWrapper>
-                )}
-                {voterSupportsThisPolitician && (
-                  <IndicatorButtonWrapper>
-                    <EditIndicator onClick={this.onPoliticianShareClick}>
-                      Share Politician
-                    </EditIndicator>
-                  </IndicatorButtonWrapper>
-                )}
-              </IndicatorRow>
+                </IndicatorRow>
+              )}
+              {!!(voterCanEditThisPolitician || voterSupportsThisPolitician) && (
+                <IndicatorRow>
+                  {voterCanEditThisPolitician && (
+                    <IndicatorButtonWrapper>
+                      <EditIndicator onClick={this.onPoliticianEditClick}>
+                        Edit Politician
+                      </EditIndicator>
+                    </IndicatorButtonWrapper>
+                  )}
+                  {voterSupportsThisPolitician && (
+                    <IndicatorButtonWrapper>
+                      <EditIndicator onClick={this.onPoliticianShareClick}>
+                        Share Politician
+                      </EditIndicator>
+                    </IndicatorButtonWrapper>
+                  )}
+                </IndicatorRow>
+              )}
             </CampaignDescriptionWrapper>
+            {/*
             <CommentsListWrapper>
               <DelayedLoad waitBeforeShow={1000}>
                 <Suspense fallback={<span>&nbsp;</span>}>
@@ -383,6 +503,8 @@ class PoliticianDetailsPage extends Component {
                 </Suspense>
               </DelayedLoad>
             </CommentsListWrapper>
+            */}
+            {/*
             <CommentsListWrapper>
               <DelayedLoad waitBeforeShow={1000}>
                 <Suspense fallback={<span>&nbsp;</span>}>
@@ -393,10 +515,19 @@ class PoliticianDetailsPage extends Component {
                 </Suspense>
               </DelayedLoad>
             </CommentsListWrapper>
+            */}
+            {candidateCampaignList && candidateCampaignList.length > 0 && (
+              <CandidateCampaignListMobile>
+                <CampaignSubSectionTitle>
+                  Previous Elections
+                </CampaignSubSectionTitle>
+                {priorCandidateCampaignsHtml}
+              </CandidateCampaignListMobile>
+            )}
           </DetailsSectionMobile>
           <DetailsSectionDesktopTablet className="u-show-desktop-tablet">
-            <PoliticianTitleOuterWrapperDesktop>
-              <PoliticianTitleDesktop>{politicianName}</PoliticianTitleDesktop>
+            <PoliticianNameOuterWrapperDesktop>
+              <PoliticianNameDesktop>{politicianName}</PoliticianNameDesktop>
               {officeHeldList.length > 0 && (
                 <OfficeHeldNameDesktop>
                   { officeHeldList.map((officeHeld) => (
@@ -408,7 +539,7 @@ class PoliticianDetailsPage extends Component {
                   ))}
                 </OfficeHeldNameDesktop>
               )}
-            </PoliticianTitleOuterWrapperDesktop>
+            </PoliticianNameOuterWrapperDesktop>
             <ColumnsWrapper>
               <ColumnTwoThirds>
                 <CampaignImageDesktopWrapper>
@@ -433,60 +564,16 @@ class PoliticianDetailsPage extends Component {
                   <CampaignDescriptionDesktop>
                     {politicianDescription}
                   </CampaignDescriptionDesktop>
-                  <PoliticianLinksWrapper>
-                    {!!(twitterHandle && twitterFollowersCount) && (
-                      <TwitterWrapper>
-                        <TwitterAccountStats
-                          includeLinkToTwitter
-                          twitterFollowersCount={twitterFollowersCount}
-                          twitterHandle={twitterHandle}
-                        />
-                      </TwitterWrapper>
-                    )}
-                    {!!(twitterHandle2) && (
-                      <TwitterWrapper>
-                        <TwitterAccountStats
-                          includeLinkToTwitter
-                          // twitterFollowersCount={twitterFollowersCount}
-                          twitterHandle={twitterHandle2}
-                        />
-                      </TwitterWrapper>
-                    )}
-                    {(politicianUrl) && (
-                      <ExternalWebSiteWrapper>
-                        <Suspense fallback={<></>}>
-                          <OpenExternalWebSite
-                            linkIdAttribute="candidateDesktop"
-                            url={politicianUrl}
-                            target="_blank"
-                            className="u-gray-mid"
-                            body={(
-                              <div>
-                                website
-                                <Launch
-                                  style={{
-                                    height: 14,
-                                    marginLeft: 2,
-                                    marginTop: '-3px',
-                                    width: 14,
-                                  }}
-                                />
-                              </div>
-                            )}
-                          />
-                        </Suspense>
-                      </ExternalWebSiteWrapper>
-                    )}
-                  </PoliticianLinksWrapper>
-                  <IndicatorRow>
-                    {finalElectionDateInPast && (
+                  {politicianLinks}
+                  {finalElectionDateInPast && (
+                    <IndicatorRow>
                       <IndicatorButtonWrapper>
                         <ElectionInPast>
                           Election in Past
                         </ElectionInPast>
                       </IndicatorButtonWrapper>
-                    )}
-                  </IndicatorRow>
+                    </IndicatorRow>
+                  )}
                   {voterCanEditThisPolitician && (
                     <IndicatorRow>
                       <IndicatorButtonWrapper>
@@ -497,6 +584,7 @@ class PoliticianDetailsPage extends Component {
                     </IndicatorRow>
                   )}
                 </CampaignDescriptionDesktopWrapper>
+                {/*
                 <CommentsListWrapper>
                   <DelayedLoad waitBeforeShow={500}>
                     <Suspense fallback={<span>&nbsp;</span>}>
@@ -512,6 +600,8 @@ class PoliticianDetailsPage extends Component {
                     </Suspense>
                   </DelayedLoad>
                 </CommentsListWrapper>
+                */}
+                {/*
                 <CommentsListWrapper>
                   <DelayedLoad waitBeforeShow={500}>
                     <Suspense fallback={<span>&nbsp;</span>}>
@@ -522,8 +612,10 @@ class PoliticianDetailsPage extends Component {
                     </Suspense>
                   </DelayedLoad>
                 </CommentsListWrapper>
+                */}
               </ColumnTwoThirds>
               <ColumnOneThird>
+                {/*
                 <Suspense fallback={<span>&nbsp;</span>}>
                   <CampaignSupportThermometer politicianWeVoteId={politicianWeVoteId} finalElectionDateInPast={finalElectionDateInPast} />
                 </Suspense>
@@ -536,6 +628,15 @@ class PoliticianDetailsPage extends Component {
                     functionToUseWhenProfileComplete={this.functionToUseWhenProfileComplete}
                   />
                 </Suspense>
+                */}
+                {candidateCampaignList && candidateCampaignList.length > 0 && (
+                  <CandidateCampaignListDesktop>
+                    <CampaignSubSectionTitle>
+                      Previous Elections
+                    </CampaignSubSectionTitle>
+                    {priorCandidateCampaignsHtml}
+                  </CandidateCampaignListDesktop>
+                )}
               </ColumnOneThird>
             </ColumnsWrapper>
           </DetailsSectionDesktopTablet>

@@ -8,11 +8,19 @@ import { renderLog } from '../../utils/logging';
 export default function OfficeHeldNameText (props) {
   renderLog('OfficeHeldNameText');  // Set LOG_RENDER_EVENTS to log all renders
   let nameText = '';
-  let { districtName } = props; // officeLink, // Dec 2022: Turning off officeLink until we can do design review
-  const { officeHeldName } = props; // officeLink, // Dec 2022: Turning off officeLink until we can do design review
+  let { districtName, officeHeldName } = props; // Mar 2023: Turning off officeLink until we can do design review
   if (officeHeldName && officeHeldName.includes(districtName)) {
     // This removes districtName in cases like 'Governor of California for California'
     districtName = '';
+  } else if (districtName && districtName.includes(officeHeldName)) {
+    // This removes officeHeldName: 'Alcorn County Supervisor' with districtName: 'Alcorn County Supervisor District 2'
+    officeHeldName = '';
+  } else if (districtName && districtName.endsWith(' city')) {
+    const districtNameWithoutCity = districtName.slice(0, districtName.length - 5);
+    if (officeHeldName && officeHeldName.includes(districtNameWithoutCity)) {
+      // This removes districtName in cases like officeHeldName: 'Mayor of Los Angeles' with districtName: 'Los Angeles city'
+      districtName = '';
+    }
   }
   const officeLink = null;
   if (districtName) {

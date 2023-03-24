@@ -22,7 +22,7 @@ import numberWithCommas from '../../common/utils/numberWithCommas';
 // import { ElectionInPast, IndicatorButtonWrapper, IndicatorRow } from '../../common/components/Style/CampaignIndicatorStyles';
 
 const ItemActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemActionBar' */ '../Widgets/ItemActionBar/ItemActionBar'));
-const OfficeNameText = React.lazy(() => import(/* webpackChunkName: 'OfficeNameText' */ '../Widgets/OfficeNameText'));
+const OfficeNameText = React.lazy(() => import(/* webpackChunkName: 'OfficeNameText' */ '../../common/components/Widgets/OfficeNameText'));
 // const SupportButtonBeforeCompletionScreen = React.lazy(() => import(/* webpackChunkName: 'SupportButtonBeforeCompletionScreen' */ '../../common/components/CampaignSupport/SupportButtonBeforeCompletionScreen'));
 
 class CandidateCardForList extends Component {
@@ -36,7 +36,6 @@ class CandidateCardForList extends Component {
     this.getCandidateBasePath = this.getCandidateBasePath.bind(this);
     this.goToNextPage = this.goToNextPage.bind(this);
     this.onCandidateClick = this.onCandidateClick.bind(this);
-    this.onCandidateClickLink = this.onCandidateClickLink.bind(this);
     this.onCampaignEditClick = this.onCampaignEditClick.bind(this);
     this.onCampaignGetMinimumSupportersClick = this.onCampaignGetMinimumSupportersClick.bind(this);
     this.onCampaignShareClick = this.onCampaignShareClick.bind(this);
@@ -78,11 +77,11 @@ class CandidateCardForList extends Component {
     const { candidateWeVoteId } = this.props;
     const candidate = CandidateStore.getCandidateByWeVoteId(candidateWeVoteId);
     const {
-      seo_friendly_path: campaignSEOFriendlyPath,
+      seo_friendly_path: politicianSEOFriendlyPath,
     } = candidate;
     let pathToUseWhenProfileComplete;
-    if (campaignSEOFriendlyPath) {
-      pathToUseWhenProfileComplete = `/c/${campaignSEOFriendlyPath}/why-do-you-support`;
+    if (politicianSEOFriendlyPath) {
+      pathToUseWhenProfileComplete = `/c/${politicianSEOFriendlyPath}/why-do-you-support`;
     } else if (candidateWeVoteId) {
       pathToUseWhenProfileComplete = `/id/${candidateWeVoteId}/why-do-you-support`;
     }
@@ -92,29 +91,8 @@ class CandidateCardForList extends Component {
     });
   }
 
-  onCandidateClickLink () {
-    const { candidate } = this.state;
-    // console.log('candidate:', candidate);
-    if (!candidate) {
-      return null;
-    }
-    const {
-      seo_friendly_path: politicianSEOFriendlyPath,
-      we_vote_id: candidateWeVoteId,
-      politician_we_vote_id: politicianWeVoteId,
-    } = candidate;
-    if (politicianSEOFriendlyPath) {
-      return `/${politicianSEOFriendlyPath}/-/`;
-    } else if (politicianWeVoteId) {
-      return `/${politicianWeVoteId}/p/`;
-    } else {
-      // return `/candidate/${candidateWeVoteId}`;
-      return `/candidate/${candidateWeVoteId}`;
-    }
-  }
-
   onCandidateClick () {
-    historyPush(this.onCandidateClickLink());
+    historyPush(this.getCandidateBasePath());
   }
 
   onCampaignEditClick () {
@@ -125,13 +103,13 @@ class CandidateCardForList extends Component {
     }
     const {
       in_draft_mode: inDraftMode,
-      seo_friendly_path: campaignSEOFriendlyPath,
+      seo_friendly_path: politicianSEOFriendlyPath,
       we_vote_id: candidateWeVoteId,
     } = candidate;
     if (inDraftMode) {
       historyPush('/start-a-campaign-preview');
-    } else if (campaignSEOFriendlyPath) {
-      historyPush(`/c/${campaignSEOFriendlyPath}/edit`);
+    } else if (politicianSEOFriendlyPath) {
+      historyPush(`/c/${politicianSEOFriendlyPath}/edit`);
     } else {
       historyPush(`/id/${candidateWeVoteId}/edit`);
     }
@@ -145,11 +123,11 @@ class CandidateCardForList extends Component {
       return null;
     }
     const {
-      seo_friendly_path: campaignSEOFriendlyPath,
+      seo_friendly_path: politicianSEOFriendlyPath,
       we_vote_id: candidateWeVoteId,
     } = candidate;
-    if (campaignSEOFriendlyPath) {
-      historyPush(`/c/${campaignSEOFriendlyPath}/share-campaign`);
+    if (politicianSEOFriendlyPath) {
+      historyPush(`/c/${politicianSEOFriendlyPath}/share-campaign`);
     } else {
       historyPush(`/id/${candidateWeVoteId}/share-campaign`);
     }
@@ -163,11 +141,11 @@ class CandidateCardForList extends Component {
       return null;
     }
     const {
-      seo_friendly_path: campaignSEOFriendlyPath,
+      seo_friendly_path: politicianSEOFriendlyPath,
       we_vote_id: candidateWeVoteId,
     } = candidate;
-    if (campaignSEOFriendlyPath) {
-      historyPush(`/c/${campaignSEOFriendlyPath}/share-campaign`);
+    if (politicianSEOFriendlyPath) {
+      historyPush(`/c/${politicianSEOFriendlyPath}/share-campaign`);
     } else {
       historyPush(`/id/${candidateWeVoteId}/share-campaign`);
     }
@@ -181,17 +159,20 @@ class CandidateCardForList extends Component {
       return null;
     }
     const {
-      seo_friendly_path: campaignSEOFriendlyPath,
+      seo_friendly_path: politicianSEOFriendlyPath,
+      politician_we_vote_id: politicianWeVoteId,
       we_vote_id: candidateWeVoteId,
     } = candidate;
-    let campaignBasePath;
-    if (campaignSEOFriendlyPath) {
-      campaignBasePath = `/c/${campaignSEOFriendlyPath}`;
+    let candidateBasePath;
+    if (politicianSEOFriendlyPath) {
+      candidateBasePath = `/${politicianSEOFriendlyPath}/-/`;
+    } else if (politicianWeVoteId) {
+      candidateBasePath = `/${politicianWeVoteId}/p/`;
     } else {
-      campaignBasePath = `/candidate/${candidateWeVoteId}`;
+      candidateBasePath = `/candidate/${candidateWeVoteId}`;
     }
 
-    return campaignBasePath;
+    return candidateBasePath;
   }
 
   // pullCampaignXSupporterVoterEntry (candidateWeVoteId) {
@@ -277,7 +258,7 @@ class CandidateCardForList extends Component {
       // is_in_team_review_mode: isInTeamReviewMode,
       // is_supporters_count_minimum_exceeded: isSupportersCountMinimumExceeded,
       party: politicalParty,
-      // seo_friendly_path: campaignSEOFriendlyPath,
+      seo_friendly_path: politicianSEOFriendlyPath,
       state_code: stateCode,
       supporters_count: supportersCount,
       supporters_count_next_goal: supportersCountNextGoal,
@@ -300,7 +281,7 @@ class CandidateCardForList extends Component {
             <OneCampaignTextColumn>
               <div>
                 <OneCampaignTitle>
-                  <Link to={this.onCandidateClickLink()}>
+                  <Link to={this.getCandidateBasePath()}>
                     {ballotItemDisplayName}
                   </Link>
                 </OneCampaignTitle>
@@ -419,7 +400,11 @@ class CandidateCardForList extends Component {
                 </CampaignImageMobilePlaceholder>
               )}
             </OneCampaignPhotoWrapperMobile>
-            <OneCampaignPhotoDesktopColumn className="u-cursor--pointer u-show-desktop-tablet" limitCardWidth={limitCardWidth} onClick={this.onCandidateClick}>
+            <OneCampaignPhotoDesktopColumn
+              className="u-cursor--pointer u-show-desktop-tablet"
+              limitCardWidth={limitCardWidth}
+              onClick={this.onCandidateClick}
+            >
               {candidatePhotoLargeUrl ? (
                 <>
                   {limitCardWidth ? (

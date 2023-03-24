@@ -1,6 +1,22 @@
 import styled, { css } from 'styled-components';
 
-export const PoliticianTitleDesktop = styled('h1')(({ theme }) => (`
+export const CandidateCampaignListDesktop = styled('div')`
+  font-size: 18px;
+  margin-bottom: 20x;
+  min-height: 34px;
+`;
+
+export const CandidateCampaignListMobile = styled('div')`
+  font-size: 16px;
+  // margin-bottom: 20x;
+  // min-height: 34px;
+`;
+
+export const CandidateCampaignWrapper = styled('div')`
+  margin-bottom: 20px;
+`;
+
+export const PoliticianNameDesktop = styled('h1')(({ theme }) => (`
   font-size: 28px;
   text-align: center;
   margin: 30px 20px 0 20px;
@@ -11,7 +27,14 @@ export const PoliticianTitleDesktop = styled('h1')(({ theme }) => (`
   }
 `));
 
-export const PoliticianTitleOuterWrapperDesktop = styled('div')`
+export const PoliticianNameMobile = styled('h1')`
+  font-size: 24px;
+  margin: 0 0 10px 0;
+  min-height: 27px;
+  text-align: left;
+`;
+
+export const PoliticianNameOuterWrapperDesktop = styled('div')`
   margin-bottom: 30px
 `;
 
