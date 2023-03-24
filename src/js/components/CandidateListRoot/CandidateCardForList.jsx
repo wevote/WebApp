@@ -258,7 +258,6 @@ class CandidateCardForList extends Component {
       // is_in_team_review_mode: isInTeamReviewMode,
       // is_supporters_count_minimum_exceeded: isSupportersCountMinimumExceeded,
       party: politicalParty,
-      seo_friendly_path: politicianSEOFriendlyPath,
       state_code: stateCode,
       supporters_count: supportersCount,
       supporters_count_next_goal: supportersCountNextGoal,

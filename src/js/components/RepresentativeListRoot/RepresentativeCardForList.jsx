@@ -91,26 +91,6 @@ class RepresentativeCardForList extends Component {
     });
   }
 
-  getRepresentativeBasePath () {
-    const { representative } = this.state;
-    // console.log('representative:', representative);
-    if (!representative) {
-      return null;
-    }
-    const {
-      seo_friendly_path: politicianSEOFriendlyPath,
-      politician_we_vote_id: politicianWeVoteId,
-      we_vote_id: representativeWeVoteId,
-    } = representative;
-    if (politicianSEOFriendlyPath) {
-      return `/${politicianSEOFriendlyPath}/-/`;
-    } else if (politicianWeVoteId) {
-      return `/${politicianWeVoteId}/p/`;
-    } else {
-      return `/representative/${representativeWeVoteId}`;
-    }
-  }
-
   onRepresentativeClick () {
     historyPush(this.getRepresentativeBasePath());
   }
@@ -170,6 +150,26 @@ class RepresentativeCardForList extends Component {
       historyPush(`/id/${representativeWeVoteId}/share-campaign`);
     }
     return null;
+  }
+
+  getRepresentativeBasePath () {
+    const { representative } = this.state;
+    // console.log('representative:', representative);
+    if (!representative) {
+      return null;
+    }
+    const {
+      seo_friendly_path: politicianSEOFriendlyPath,
+      politician_we_vote_id: politicianWeVoteId,
+      we_vote_id: representativeWeVoteId,
+    } = representative;
+    if (politicianSEOFriendlyPath) {
+      return `/${politicianSEOFriendlyPath}/-/`;
+    } else if (politicianWeVoteId) {
+      return `/${politicianWeVoteId}/p/`;
+    } else {
+      return `/representative/${representativeWeVoteId}`;
+    }
   }
 
   // pullCampaignXSupporterVoterEntry (representativeWeVoteId) {

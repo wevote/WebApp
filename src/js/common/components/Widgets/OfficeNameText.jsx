@@ -6,14 +6,14 @@ import YearState from './YearState';
 import { renderLog } from '../../utils/logging';
 import toTitleCase from '../../utils/toTitleCase';
 
-function isAllUpperCase(str) {
+function isAllUpperCase (str) {
   return str === str.toUpperCase();
 }
 
 // React functional component example
 export default function OfficeNameText (props) {
   renderLog('OfficeNameText');  // Set LOG_RENDER_EVENTS to log all renders
-  let nameText = '';
+  let nameText;
   const { politicalParty, showOfficeName, stateName, year } = props; // officeLink, // Dec 2022: Turning off officeLink until we can do design review
   let { officeName } = props;
   const officeLink = null;
