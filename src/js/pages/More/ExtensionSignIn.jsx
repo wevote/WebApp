@@ -80,7 +80,7 @@ class ExtensionSignIn extends Component {
               <br />
               <br />
               {/* This button is a placeholder, feel free to improve */}
-              <Button onClick={() => window.close()} color="primary" autoFocus style={{
+              <Button id="youAreNowSignedIn" onClick={() => window.close()} color="primary" autoFocus style={{
                 transition: 'none',
                 color: '#fff',
                 backgroundColor: '#1976d2',
