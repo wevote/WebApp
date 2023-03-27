@@ -9,6 +9,7 @@ import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import apiCalming from '../../common/utils/apiCalming';
 import { renderLog } from '../../common/utils/logging';
 import AppObservableStore from '../../common/stores/AppObservableStore';
+import { limitToShowInfoOnly, limitToShowOppose, limitToShowSupport, orderByTwitterFollowers, orderByWrittenComment } from '../../common/utils/orderByPositionFunctions';
 import BallotStore from '../../stores/BallotStore';
 import CandidateStore from '../../stores/CandidateStore';
 import FriendStore from '../../stores/FriendStore';
@@ -173,21 +174,21 @@ class PositionRowList extends Component {
 
     if (showOpposeDisplayNameIfNoSupport) {
       let supportPositionList = JSON.parse(JSON.stringify(filteredPositionList));
-      supportPositionList = this.limitToShowSupport(supportPositionList);
+      supportPositionList = limitToShowSupport(supportPositionList);
       this.setState({
         supportPositionListLength: supportPositionList.length,
       });
     }
 
     if (showInfoOnly) {
-      filteredPositionList = this.limitToShowInfoOnly(filteredPositionList);
+      filteredPositionList = limitToShowInfoOnly(filteredPositionList);
     } else if (showOppose) {
-      filteredPositionList = this.limitToShowOppose(filteredPositionList);
+      filteredPositionList = limitToShowOppose(filteredPositionList);
     } else if (showSupport) {
-      filteredPositionList = this.limitToShowSupport(filteredPositionList);
+      filteredPositionList = limitToShowSupport(filteredPositionList);
     }
-    filteredPositionList = filteredPositionList.sort(this.orderByTwitterFollowers);
-    filteredPositionList = filteredPositionList.sort(this.orderByWrittenComment);
+    filteredPositionList = filteredPositionList.sort(orderByTwitterFollowers);
+    filteredPositionList = filteredPositionList.sort(orderByWrittenComment);
     filteredPositionList = filteredPositionList.sort(this.orderByIssuesFollowedFirst);
     filteredPositionList = filteredPositionList.sort(this.orderByFollowedOrgsFirst);
     filteredPositionList = filteredPositionList.sort(this.orderByCurrentFriendsFirst);
@@ -215,12 +216,6 @@ class PositionRowList extends Component {
   //   }, 500);
   // }
 
-  limitToShowInfoOnly = (filteredPositionList) => filteredPositionList.filter((item) => (item && item.is_information_only));
-
-  limitToShowOppose = (filteredPositionList) => filteredPositionList.filter((item) => (item && item.is_oppose_or_negative_rating));
-
-  limitToShowSupport = (filteredPositionList) => filteredPositionList.filter((item) => (item && item.is_support_or_positive_rating));
-
   orderByCurrentFriendsFirst = (firstGuide, secondGuide) => {
     const secondGuideIsFromFriend = secondGuide && secondGuide.currentFriend === true ? 1 : 0;
     const firstGuideIsFromFriend = firstGuide && firstGuide.currentFriend === true ? 1 : 0;
@@ -240,14 +235,6 @@ class PositionRowList extends Component {
     const secondGuideIsLinkedToIssueVoterIsFollowing = secondGuide && secondGuide.linkedToIssueVoterIsFollowing === true ? 1 : 0;
     const firstGuideIsLinkedToIssueVoterIsFollowing = firstGuide && firstGuide.linkedToIssueVoterIsFollowing === true ? 1 : 0;
     return secondGuideIsLinkedToIssueVoterIsFollowing - firstGuideIsLinkedToIssueVoterIsFollowing;
-  };
-
-  orderByTwitterFollowers = (firstGuide, secondGuide) => secondGuide.twitter_followers_count - firstGuide.twitter_followers_count;
-
-  orderByWrittenComment = (firstGuide, secondGuide) => {
-    const secondGuideHasStatement = secondGuide && secondGuide.statement_text && secondGuide.statement_text.length ? 1 : 0;
-    const firstGuideHasStatement = firstGuide && firstGuide.statement_text && firstGuide.statement_text.length ? 1 : 0;
-    return secondGuideHasStatement - firstGuideHasStatement;
   };
 
   render () {

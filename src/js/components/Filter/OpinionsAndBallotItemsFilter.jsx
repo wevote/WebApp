@@ -193,14 +193,6 @@ class OpinionsAndBallotItemsFilter extends Component {
     return 0;
   };
 
-  // orderByTwitterFollowers = (firstGuide, secondGuide) => secondGuide.twitter_followers_count - firstGuide.twitter_followers_count;
-  //
-  // orderByWrittenComment = (firstGuide, secondGuide) => {
-  //   const secondGuideHasStatement = secondGuide && secondGuide.statement_text && secondGuide.statement_text.length ? 1 : 0;
-  //   const firstGuideHasStatement = firstGuide && firstGuide.statement_text && firstGuide.statement_text.length ? 1 : 0;
-  //   return secondGuideHasStatement - firstGuideHasStatement;
-  // };
-
   getNewFilteredItems = () => {
     const { allItems } = this.props;
     const { selectedFilters } = this.props;

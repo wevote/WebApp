@@ -71,6 +71,14 @@ export function getYearFromUltimateElectionDate (ultimateElectionDate) {
   }
 }
 
+export function getDateFromUltimateElectionDate (ultimateElectionDate) {
+  const ultimateElectionDateAsString = String(ultimateElectionDate);
+  if (typeof window.moment === 'undefined') {
+    return initializeMoment(() => window.moment(ultimateElectionDateAsString, 'YYYYMMDD').add(1, 'days').format('YYYY-MM-DD'));
+  } else {
+    return window.moment(ultimateElectionDateAsString, 'YYYYMMDD').add(1, 'days').format('YYYY-MM-DD');
+  }
+}
 
 export function electionDateTomorrowFormatted (dayText) {
   if (typeof window.moment === 'undefined') {

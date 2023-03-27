@@ -6,19 +6,13 @@ import normalizedImagePath from '../../common/utils/normalizedImagePath';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 
-const googleIcon = '../../../img/global/logos/google-icon.svg';
+const wikipediaIcon = '../../../img/global/logos/wikipedia-icon.svg';
 
 
-class SearchOnGoogle extends Component {
+class ViewOnWikipedia extends Component {
   constructor (props) {
     super(props);
     this.state = {};
-    this.generateURL = this.generateURL.bind(this);
-  }
-
-  generateURL (item) {
-    const temp = item.replace(/ /g, '+');
-    return `https://www.google.com/search?q=${temp}&oq=${temp}`;
   }
 
   render () {
@@ -26,19 +20,20 @@ class SearchOnGoogle extends Component {
       <Wrapper>
         <Suspense fallback={<></>}>
           <OpenExternalWebSite
-            linkIdAttribute="googleQuery"
-            url={this.generateURL(this.props.googleQuery)}
+            linkIdAttribute="wikipedia"
+            url={this.props.externalLinkUrl}
             target="_blank"
-            title="Search on Google"
+            title="WIKIPEDIA"
             body={(
               <SplitIconButton
-                buttonText="Search"
+                adjustedIconWidth={50}
+                buttonText="Wikipedia"
                 backgroundColor="#fff"
                 compressedSize
-                externalUniqueId="searchOnGoogle"
+                externalUniqueId="viewOnWikipedia"
                 fontColor="#000"
-                icon={<img src={normalizedImagePath(googleIcon)} alt="" height="22" width="22" />}
-                title="Search on Google"
+                icon={<img src={normalizedImagePath(wikipediaIcon)} alt="" height="22px" width="22px" />}
+                title="View on Wikipedia"
               />
             )}
           />
@@ -47,11 +42,12 @@ class SearchOnGoogle extends Component {
     );
   }
 }
-SearchOnGoogle.propTypes = {
-  googleQuery: PropTypes.string,
+ViewOnWikipedia.propTypes = {
+  externalLinkUrl: PropTypes.string,
 };
 
 const Wrapper = styled('div')`
+  margin-bottom: 12px;
 `;
 
-export default SearchOnGoogle;
+export default ViewOnWikipedia;

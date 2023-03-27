@@ -10,8 +10,7 @@ import {
   CampaignDescriptionDesktopWrapper, CampaignImagePlaceholder, CampaignImagePlaceholderText,
   CampaignImageDesktopWrapper, CampaignImageMobileWrapper,
   CampaignOwnersDesktopWrapper, CampaignOwnersWrapper, CampaignSubSectionTitle,
-  CampaignTitleAndScoreBar,
-  // CommentsListWrapper,
+  CampaignTitleAndScoreBar, CommentsListWrapper,
   DetailsSectionDesktopTablet, DetailsSectionMobile,
   SupportButtonFooterWrapper, SupportButtonPanel,
 } from '../../components/Style/CampaignDetailsStyles';
@@ -35,6 +34,7 @@ import { EditIndicator, ElectionInPast, IndicatorButtonWrapper, IndicatorRow } f
 import { PageContentContainer } from '../../../components/Style/pageLayoutStyles';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import CampaignSupporterStore from '../../stores/CampaignSupporterStore';
+import CandidateStore from '../../../stores/CandidateStore';
 import OfficeHeldStore from '../../../stores/OfficeHeldStore';
 import PoliticianStore from '../../stores/PoliticianStore';
 import RepresentativeStore from '../../../stores/RepresentativeStore';
@@ -45,6 +45,9 @@ import initializejQuery from '../../utils/initializejQuery';
 import { displayNoneIfSmallerThanDesktop } from '../../utils/isMobileScreenSize';
 import keepHelpingDestination from '../../utils/keepHelpingDestination';
 import TwitterAccountStats from '../../../components/Widgets/TwitterAccountStats';
+import SearchOnGoogle from '../../../components/Widgets/SearchOnGoogle';
+import ViewOnBallotpedia from '../../../components/Widgets/ViewOnBallotpedia';
+import ViewOnWikipedia from '../../../components/Widgets/ViewOnWikipedia';
 
 // const CampaignCommentsList = React.lazy(() => import(/* webpackChunkName: 'CampaignCommentsList' */ '../../components/Campaign/CampaignCommentsList'));
 // const CampaignDetailsActionSideBox = React.lazy(() => import(/* webpackChunkName: 'CampaignDetailsActionSideBox' */ '../../components/CampaignSupport/CampaignDetailsActionSideBox'));
@@ -52,7 +55,9 @@ import TwitterAccountStats from '../../../components/Widgets/TwitterAccountStats
 // const CampaignSupportThermometer = React.lazy(() => import(/* webpackChunkName: 'CampaignSupportThermometer' */ '../../components/CampaignSupport/CampaignSupportThermometer'));
 const OfficeNameText = React.lazy(() => import(/* webpackChunkName: 'OfficeNameText' */ '../../components/Widgets/OfficeNameText'));
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../components/Widgets/OpenExternalWebSite'));
+const PoliticianEndorsementsList = React.lazy(() => import(/* webpackChunkName: 'PoliticianEndorsementsList' */ '../../components/Politician/PoliticianEndorsementsList'));
 const PoliticianRetrieveController = React.lazy(() => import(/* webpackChunkName: 'PoliticianRetrieveController' */ '../../components/Politician/PoliticianRetrieveController'));
+const PoliticianPositionRetrieveController = React.lazy(() => import(/* webpackChunkName: 'PoliticianPositionRetrieveController' */ '../../components/Position/PoliticianPositionRetrieveController'));
 const SupportButtonBeforeCompletionScreen = React.lazy(() => import(/* webpackChunkName: 'SupportButtonBeforeCompletionScreen' */ '../../components/CampaignSupport/SupportButtonBeforeCompletionScreen'));
 
 
@@ -60,6 +65,7 @@ class PoliticianDetailsPage extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      ballotpediaPoliticianUrl: '',
       politicianImageUrlLarge: '',
       politicianSEOFriendlyPath: '',
       politicianName: '',
@@ -72,8 +78,11 @@ class PoliticianDetailsPage extends Component {
       payToPromoteStepCompleted: false,
       payToPromoteStepTurnedOn: false,
       sharingStepCompleted: false,
+      stateText: '',
       step2Completed: false,
       voterCanEditThisPolitician: false,
+      wikipediaUrl: '',
+      youtubeUrl: '',
     };
   }
 
@@ -84,14 +93,16 @@ class PoliticianDetailsPage extends Component {
     // console.log('componentDidMount politicianSEOFriendlyPath: ', politicianSEOFriendlyPath, ', politicianWeVoteId: ', politicianWeVoteId);
     this.onAppObservableStoreChange();
     this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
-    this.onOfficeHeldStoreChange();
-    this.OfficeHeldStoreListener = OfficeHeldStore.addListener(this.onOfficeHeldStoreChange.bind(this));
-    this.onPoliticianStoreChange();
-    this.PoliticianStoreListener = PoliticianStore.addListener(this.onPoliticianStoreChange.bind(this));
     this.onCampaignSupporterStoreChange();
-    this.politicianSupporterStoreListener = CampaignSupporterStore.addListener(this.onCampaignSupporterStoreChange.bind(this));
+    this.campaignSupporterStoreListener = CampaignSupporterStore.addListener(this.onCampaignSupporterStoreChange.bind(this));
+    this.onCandidateStoreChange();
+    this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
+    this.onOfficeHeldStoreChange();
+    this.officeHeldStoreListener = OfficeHeldStore.addListener(this.onOfficeHeldStoreChange.bind(this));
+    this.onPoliticianStoreChange();
+    this.politicianStoreListener = PoliticianStore.addListener(this.onPoliticianStoreChange.bind(this));
     this.onRepresentativeStoreChange();
-    this.RepresentativeStoreListener = RepresentativeStore.addListener(this.onRepresentativeStoreChange.bind(this));
+    this.representativeStoreListener = RepresentativeStore.addListener(this.onRepresentativeStoreChange.bind(this));
     let pathToUseWhenProfileComplete;
     if (politicianSEOFriendlyPath) {
       this.setState({
@@ -118,10 +129,11 @@ class PoliticianDetailsPage extends Component {
       this.timer = null;
     }
     this.appStateSubscription.unsubscribe();
-    this.OfficeHeldStoreListener.remove();
-    this.PoliticianStoreListener.remove();
-    this.RepresentativeStoreListener.remove();
-    this.politicianSupporterStoreListener.remove();
+    this.campaignSupporterStoreListener.remove();
+    this.candidateStoreListener.remove();
+    this.officeHeldStoreListener.remove();
+    this.politicianStoreListener.remove();
+    this.representativeStoreListener.remove();
   }
 
   onAppObservableStoreChange () {
@@ -149,21 +161,45 @@ class PoliticianDetailsPage extends Component {
     });
   }
 
+  onCandidateStoreChange () {
+    const { politicianWeVoteId } = this.state;
+    if (politicianWeVoteId) {
+      const allCachedPositionsForThisPolitician = CandidateStore.getAllCachedPositionsByPoliticianWeVoteId(politicianWeVoteId);
+      this.setState({
+        allCachedPositionsForThisPolitician,
+      });
+    }
+  }
+
   onOfficeHeldStoreChange () {
     const { politicianWeVoteId } = this.state;
     const officeHeldList = OfficeHeldStore.getOfficeHeldListByPoliticianWeVoteId(politicianWeVoteId);
     const officeHeldListFiltered = [];
     const districtNameAlreadySeenList = [];
     const officeHeldNamesNotAllowedList = ['legislatorLowerBody'];
+    let districtNameAlreadySeen = false;
+    let officeHeldNameAllowed;
+    let officeHeldNameForSearch = '';
     for (let i = 0; i < officeHeldList.length; i += 1) {
       const officeHeld = officeHeldList[i];
-      if (!(districtNameAlreadySeenList.includes(officeHeld.district_name) && !officeHeldNamesNotAllowedList.includes(officeHeld.office_held_name))) {
-        districtNameAlreadySeenList.push(officeHeld.district_name);
-        officeHeldListFiltered.push(officeHeld);
+      officeHeldNameAllowed = true;
+      if (officeHeld) {
+        if (officeHeld.district_name && districtNameAlreadySeenList.includes(officeHeld.district_name)) {
+          districtNameAlreadySeen = true;
+        }
+        if (officeHeld.office_held_name && officeHeldNamesNotAllowedList.includes(officeHeld.office_held_name)) {
+          officeHeldNameAllowed = false;
+        }
+        if (!districtNameAlreadySeen && officeHeldNameAllowed) {
+          districtNameAlreadySeenList.push(officeHeld.district_name);
+          officeHeldListFiltered.push(officeHeld);
+          if (!officeHeldNameForSearch) officeHeldNameForSearch = officeHeld.office_held_name;
+        }
       }
     }
     this.setState({
       officeHeldList: officeHeldListFiltered,
+      officeHeldNameForSearch,
     });
   }
 
@@ -172,6 +208,7 @@ class PoliticianDetailsPage extends Component {
     const { politicianSEOFriendlyPath: politicianSEOFriendlyPathFromParams, politicianWeVoteId: politicianWeVoteIdFromParams } = params;
     // console.log('onPoliticianStoreChange politicianSEOFriendlyPathFromParams: ', politicianSEOFriendlyPathFromParams, ', politicianWeVoteIdFromParams: ', politicianWeVoteIdFromParams);
     const {
+      ballotpediaPoliticianUrl,
       candidateCampaignList,
       finalElectionDateInPast,
       // isSupportersCountMinimumExceeded,
@@ -181,9 +218,12 @@ class PoliticianDetailsPage extends Component {
       politicianName,
       politicianUrl,
       politicianWeVoteId,
+      stateCode,
       twitterFollowersCount,
       twitterHandle,
       twitterHandle2,
+      wikipediaUrl,
+      youtubeUrl,
     } = getPoliticianValuesFromIdentifiers(politicianSEOFriendlyPathFromParams, politicianWeVoteIdFromParams);
     let pathToUseWhenProfileComplete;
     if (politicianSEOFriendlyPath) {
@@ -201,11 +241,16 @@ class PoliticianDetailsPage extends Component {
         politicianWeVoteId,
         voterCanEditThisPolitician,
         voterSupportsThisPolitician,
-      });
+      }, () => this.onCandidateStoreChange());
     }
     const politicianDescriptionLimited = returnFirstXWords(politicianDescription, 200);
     const filteredCandidateCampaignList = candidateCampaignList.sort(this.orderCandidatesByUltimateDate);
+    let stateText = '';
+    if (stateCode) {
+      stateText = convertStateCodeToStateText(stateCode);
+    }
     this.setState({
+      ballotpediaPoliticianUrl,
       candidateCampaignList: filteredCandidateCampaignList,
       finalElectionDateInPast,
       // isSupportersCountMinimumExceeded,
@@ -215,9 +260,12 @@ class PoliticianDetailsPage extends Component {
       politicianName,
       politicianUrl,
       pathToUseWhenProfileComplete,
+      stateText,
       twitterFollowersCount,
       twitterHandle,
       twitterHandle2,
+      wikipediaUrl,
+      youtubeUrl,
     });
   }
 
@@ -299,16 +347,20 @@ class PoliticianDetailsPage extends Component {
     renderLog('PoliticianDetailsPage');  // Set LOG_RENDER_EVENTS to log all renders
 
     const {
-      candidateCampaignList, chosenWebsiteName,
+      allCachedPositionsForThisPolitician, ballotpediaPoliticianUrl, candidateCampaignList, chosenWebsiteName,
       finalElectionDateInPast,
-      officeHeldList,
+      officeHeldList, officeHeldNameForSearch,
       politicianDescription, politicianDescriptionLimited, politicianImageUrlLarge,
       politicianSEOFriendlyPath, politicianName, politicianUrl, politicianWeVoteId,
-      twitterHandle, twitterHandle2, twitterFollowersCount,
+      stateText, twitterHandle, twitterHandle2, twitterFollowersCount,
       voterCanEditThisPolitician, voterSupportsThisPolitician,
+      wikipediaUrl, // youtubeUrl,
     } = this.state;
     // console.log('render isSupportersCountMinimumExceeded: ', isSupportersCountMinimumExceeded);
-    const htmlTitle = `${politicianName} - ${chosenWebsiteName}`;
+    let htmlTitle = `${chosenWebsiteName}`;
+    if (politicianName) {
+      htmlTitle = `${politicianName} - ${chosenWebsiteName}`;
+    }
     const politicianLinks = (
       <PoliticianLinksWrapper>
         {!!(twitterHandle && twitterFollowersCount) && (
@@ -353,6 +405,19 @@ class PoliticianDetailsPage extends Component {
               />
             </Suspense>
           </ExternalWebSiteWrapper>
+        )}
+      </PoliticianLinksWrapper>
+    );
+    const politicianButtons = (
+      <PoliticianLinksWrapper>
+        {ballotpediaPoliticianUrl && (
+          <ViewOnBallotpedia externalLinkUrl={ballotpediaPoliticianUrl} />
+        )}
+        {wikipediaUrl && (
+          <ViewOnWikipedia externalLinkUrl={wikipediaUrl} />
+        )}
+        {politicianName && (
+          <SearchOnGoogle googleQuery={`${politicianName} ${stateText} ${officeHeldNameForSearch}`} />
         )}
       </PoliticianLinksWrapper>
     );
@@ -403,11 +468,39 @@ class PoliticianDetailsPage extends Component {
         );
       });
     }
+    let positionListTeaserHtml = <></>;
+    if (allCachedPositionsForThisPolitician && allCachedPositionsForThisPolitician.length > 0) {
+      positionListTeaserHtml = (
+        <CommentsListWrapper>
+          <DelayedLoad waitBeforeShow={1000}>
+            <Suspense fallback={<span>&nbsp;</span>}>
+              <CampaignSubSectionTitle>
+                Endorsements
+                {!!(politicianName) && (
+                  <>
+                    {' '}
+                    for
+                    {' '}
+                    {politicianName}
+                  </>
+                )}
+              </CampaignSubSectionTitle>
+              <PoliticianEndorsementsList politicianWeVoteId={politicianWeVoteId} startingNumberOfPositionsToDisplay={2} />
+            </Suspense>
+          </DelayedLoad>
+        </CommentsListWrapper>
+      );
+    }
     return (
       <PageContentContainer>
         <Suspense fallback={<span>&nbsp;</span>}>
           <PoliticianRetrieveController politicianSEOFriendlyPath={politicianSEOFriendlyPath} politicianWeVoteId={politicianWeVoteId} />
         </Suspense>
+        {!!(politicianWeVoteId) && (
+          <Suspense fallback={<span>&nbsp;</span>}>
+            <PoliticianPositionRetrieveController politicianWeVoteId={politicianWeVoteId} />
+          </Suspense>
+        )}
         <Helmet>
           <title>{htmlTitle}</title>
           <meta
@@ -459,6 +552,7 @@ class PoliticianDetailsPage extends Component {
                 {politicianDescription}
               </CampaignDescription>
               {politicianLinks}
+              {politicianButtons}
               {finalElectionDateInPast && (
                 <IndicatorRow>
                   <IndicatorButtonWrapper>
@@ -487,6 +581,19 @@ class PoliticianDetailsPage extends Component {
                 </IndicatorRow>
               )}
             </CampaignDescriptionWrapper>
+            {positionListTeaserHtml}
+            {/*
+            <CommentsListWrapper>
+              <DelayedLoad waitBeforeShow={1000}>
+                <Suspense fallback={<span>&nbsp;</span>}>
+                  <CampaignSubSectionTitle>
+                    Reasons for supporting
+                  </CampaignSubSectionTitle>
+                  <CampaignCommentsList politicianWeVoteId={politicianWeVoteId} startingNumberOfCommentsToDisplay={2} />
+                </Suspense>
+              </DelayedLoad>
+            </CommentsListWrapper>
+            */}
             {/*
             <CommentsListWrapper>
               <DelayedLoad waitBeforeShow={1000}>
@@ -500,18 +607,6 @@ class PoliticianDetailsPage extends Component {
                     showAddNewsItemIfNeeded
                     startingNumberOfCommentsToDisplay={1}
                   />
-                </Suspense>
-              </DelayedLoad>
-            </CommentsListWrapper>
-            */}
-            {/*
-            <CommentsListWrapper>
-              <DelayedLoad waitBeforeShow={1000}>
-                <Suspense fallback={<span>&nbsp;</span>}>
-                  <CampaignSubSectionTitle>
-                    Reasons for supporting
-                  </CampaignSubSectionTitle>
-                  <CampaignCommentsList politicianWeVoteId={politicianWeVoteId} startingNumberOfCommentsToDisplay={2} />
                 </Suspense>
               </DelayedLoad>
             </CommentsListWrapper>
@@ -565,6 +660,7 @@ class PoliticianDetailsPage extends Component {
                     {politicianDescription}
                   </CampaignDescriptionDesktop>
                   {politicianLinks}
+                  {politicianButtons}
                   {finalElectionDateInPast && (
                     <IndicatorRow>
                       <IndicatorButtonWrapper>
@@ -584,23 +680,7 @@ class PoliticianDetailsPage extends Component {
                     </IndicatorRow>
                   )}
                 </CampaignDescriptionDesktopWrapper>
-                {/*
-                <CommentsListWrapper>
-                  <DelayedLoad waitBeforeShow={500}>
-                    <Suspense fallback={<span>&nbsp;</span>}>
-                      <CampaignSubSectionTitle>
-                        Updates
-                      </CampaignSubSectionTitle>
-                      <CampaignNewsItemList
-                        politicianWeVoteId={politicianWeVoteId}
-                        politicianSEOFriendlyPath={politicianSEOFriendlyPath}
-                        showAddNewsItemIfNeeded
-                        startingNumberOfCommentsToDisplay={1}
-                      />
-                    </Suspense>
-                  </DelayedLoad>
-                </CommentsListWrapper>
-                */}
+                {positionListTeaserHtml}
                 {/*
                 <CommentsListWrapper>
                   <DelayedLoad waitBeforeShow={500}>
@@ -628,6 +708,23 @@ class PoliticianDetailsPage extends Component {
                     functionToUseWhenProfileComplete={this.functionToUseWhenProfileComplete}
                   />
                 </Suspense>
+                */}
+                {/*
+                <CommentsListWrapper>
+                  <DelayedLoad waitBeforeShow={500}>
+                    <Suspense fallback={<span>&nbsp;</span>}>
+                      <CampaignSubSectionTitle>
+                        Updates
+                      </CampaignSubSectionTitle>
+                      <CampaignNewsItemList
+                        politicianWeVoteId={politicianWeVoteId}
+                        politicianSEOFriendlyPath={politicianSEOFriendlyPath}
+                        showAddNewsItemIfNeeded
+                        startingNumberOfCommentsToDisplay={1}
+                      />
+                    </Suspense>
+                  </DelayedLoad>
+                </CommentsListWrapper>
                 */}
                 {candidateCampaignList && candidateCampaignList.length > 0 && (
                   <CandidateCampaignListDesktop>

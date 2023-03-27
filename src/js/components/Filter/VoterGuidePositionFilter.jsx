@@ -8,7 +8,7 @@ import { convertStateCodeFilterToStateCode } from '../../common/utils/addressFun
 import { renderLog } from '../../common/utils/logging';
 import IssueStore from '../../stores/IssueStore';
 import OrganizationStore from '../../stores/OrganizationStore';
-import { convertToInteger } from '../../common/utils/textFormat';
+import { getTodayAsInteger } from '../../common/utils/dateFormat';
 import getGroupedFilterSecondClass from './utils/grouped-filter-second-class';
 
 
@@ -30,24 +30,9 @@ class VoterGuidePositionFilter extends Component {
     if (allItems) {
       allItemsLength = allItems.length || 0;
     }
+    const positionUltimateElectionDateCutOffInteger = getTodayAsInteger(6);
     const today = new Date();
     const thisYearInteger = today.getFullYear();
-    let month = today.getMonth() + 1;
-    let monthDay = today.getDate();
-    // We want to roll back positionUltimateElectionDateCutOffInteger by 5 so we can still see endorsements for an election in last 5 days
-    if (monthDay < 6) {
-      monthDay = 1;
-      if (month > 1) {
-        month -= 1;
-      }
-    } else {
-      monthDay -= 5;
-    }
-    const monthAsString = month < 10 ? `0${month}` : `${month}`; // `${month}` for string result
-    const monthDayAsString = monthDay < 10 ? `0${monthDay}` : `${monthDay}`; // `${monthDay}` for string result
-    const electionDateAsString = `${thisYearInteger}${monthAsString}${monthDayAsString}`;
-    const positionUltimateElectionDateCutOffInteger = convertToInteger(electionDateAsString);
-    // console.log('positionUltimateElectionDateCutOffInteger:', positionUltimateElectionDateCutOffInteger);
     this.setState({
       allItemsLength,
       positionUltimateElectionDateCutOffInteger,
@@ -96,15 +81,16 @@ class VoterGuidePositionFilter extends Component {
     return secondGuideIsFromFriend - firstGuideIsFromFriend;
   };
 
-  orderByFollowedOrgsFirst = (firstGuide, secondGuide) => secondGuide.followed - firstGuide.followed;
-
-  orderByTwitterFollowers = (firstGuide, secondGuide) => secondGuide.twitter_followers_count - firstGuide.twitter_followers_count;
-
-  orderByWrittenComment = (firstGuide, secondGuide) => {
-    const secondGuideHasStatement = secondGuide && secondGuide.statement_text && secondGuide.statement_text.length ? 1 : 0;
-    const firstGuideHasStatement = firstGuide && firstGuide.statement_text && firstGuide.statement_text.length ? 1 : 0;
-    return secondGuideHasStatement - firstGuideHasStatement;
-  };
+  // import { orderByTwitterFollowers, orderByWrittenComment } from '../../utils/orderByPositionFunctions';
+  // orderByFollowedOrgsFirst = (firstGuide, secondGuide) => secondGuide.followed - firstGuide.followed;
+  //
+  // orderByTwitterFollowers = (firstGuide, secondGuide) => secondGuide.twitter_followers_count - firstGuide.twitter_followers_count;
+  //
+  // orderByWrittenComment = (firstGuide, secondGuide) => {
+  //   const secondGuideHasStatement = secondGuide && secondGuide.statement_text && secondGuide.statement_text.length ? 1 : 0;
+  //   const firstGuideHasStatement = firstGuide && firstGuide.statement_text && firstGuide.statement_text.length ? 1 : 0;
+  //   return secondGuideHasStatement - firstGuideHasStatement;
+  // };
 
   getNewFilteredItems = () => {
     const { allItems, selectedFilters } = this.props;
