@@ -311,7 +311,7 @@ class ScoreSummaryListController extends Component {
     renderLog('ScoreSummaryListController');  // Set LOG_RENDER_EVENTS to log all renders
     const {
       ballotItemWeVoteId, classes, controlAdviserMaterialUIPopoverFromProp,
-      openAdviserMaterialUIPopover,
+      openAdviserMaterialUIPopover, showListWhenNoPersonalNetworkScore,
     } = this.props;
     // console.log('ScoreSummaryListController, controlAdviserMaterialUIPopoverFromProp: ', controlAdviserMaterialUIPopoverFromProp,  ', openAdviserMaterialUIPopover:', openAdviserMaterialUIPopover);
     const {
@@ -335,6 +335,10 @@ class ScoreSummaryListController extends Component {
     const positionsInNetworkSummaryListExists = positionsInNetworkSummaryListLength && positionsInNetworkSummaryListLength > 0;
     const youHaveTheOnlyOpinion = !!(!numberOfAllPositions && voterDecidedItem);
     const noOpinionsExist = !voterDecidedItem && !numberOfAllPositions;
+    let numberOfPositionsOutOfNetwork = 0;
+    if (positionsOutOfNetworkSummaryList) {
+      numberOfPositionsOutOfNetwork = positionsOutOfNetworkSummaryList.length;
+    }
 
     let scoreSummaryHtml;
     if (youHaveTheOnlyOpinion) {
@@ -426,7 +430,7 @@ class ScoreSummaryListController extends Component {
           <ScoreSummaryIntroductionText>
             <PositionScoreIntroForBallotItem
               ballotItemDisplayName={ballotItemDisplayName}
-              organizationsToFollowExist={Boolean(numberOfAllPositions)}
+              // organizationsToFollowExist={Boolean(numberOfPositionsOutOfNetwork)}
             />
           </ScoreSummaryIntroductionText>
         );
@@ -520,13 +524,13 @@ class ScoreSummaryListController extends Component {
           )}
         </ScoreSummaryHtmlWrapper>
       );
-    } else {
+    } else if (showListWhenNoPersonalNetworkScore) {
       scoreSummaryHtml = (
         <ScoreSummaryHtmlWrapper>
           <ScoreSummaryIntroductionText>
             <PositionScoreIntroForBallotItem
               ballotItemDisplayName={ballotItemDisplayName}
-              organizationsToFollowExist={Boolean(numberOfAllPositions)}
+              organizationsToFollowExist={Boolean(numberOfPositionsOutOfNetwork)}
             />
           </ScoreSummaryIntroductionText>
           <div>
@@ -550,6 +554,8 @@ class ScoreSummaryListController extends Component {
           </div>
         </ScoreSummaryHtmlWrapper>
       );
+    } else {
+      scoreSummaryHtml = <></>;
     }
     return (
       <ScoreSummaryListControllerWrapper>
@@ -566,6 +572,7 @@ ScoreSummaryListController.propTypes = {
   controlAdviserMaterialUIPopoverFromProp: PropTypes.bool,
   onClickFunction: PropTypes.func, // We don't require this because sometimes we don't want the link to do anything
   openAdviserMaterialUIPopover: PropTypes.bool,
+  showListWhenNoPersonalNetworkScore: PropTypes.bool,
 };
 
 const styles = (theme) => ({

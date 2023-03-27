@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import ShareStore from '../../common/stores/ShareStore';
 import { renderLog } from '../../common/utils/logging';
+import { orderByTwitterFollowers, orderByWrittenComment } from '../../common/utils/orderByPositionFunctions';
 import FriendStore from '../../stores/FriendStore';
 import IssueStore from '../../stores/IssueStore';
 import VoterStore from '../../stores/VoterStore';
@@ -98,14 +99,6 @@ class VoterGuideOrganizationFilter extends Component {
   };
 
   orderByFollowedOrgsFirst = (firstGuide, secondGuide) => secondGuide.followed - firstGuide.followed;
-
-  orderByTwitterFollowers = (firstGuide, secondGuide) => secondGuide.twitter_followers_count - firstGuide.twitter_followers_count;
-
-  orderByWrittenComment = (firstGuide, secondGuide) => {
-    const secondGuideHasStatement = secondGuide && secondGuide.statement_text && secondGuide.statement_text.length ? 1 : 0;
-    const firstGuideHasStatement = firstGuide && firstGuide.statement_text && firstGuide.statement_text.length ? 1 : 0;
-    return secondGuideHasStatement - firstGuideHasStatement;
-  };
 
   getNewFilteredItems = () => {
     const { allItems, selectedFilters } = this.props;
@@ -203,8 +196,8 @@ class VoterGuideOrganizationFilter extends Component {
         case 'sortByMagic':
           // Put written comments on top, and then within those two separations, move Twitter followers to the top
           // console.log('sortByMagic');
-          filteredItems = filteredItems.sort(this.orderByTwitterFollowers);
-          filteredItems = filteredItems.sort(this.orderByWrittenComment);
+          filteredItems = filteredItems.sort(orderByTwitterFollowers);
+          filteredItems = filteredItems.sort(orderByWrittenComment);
           filteredItems = filteredItems.sort(this.orderByFollowedOrgsFirst);
           filteredItems = filteredItems.sort(this.orderByCurrentFriendsFirst);
           filteredItems = filteredItems.sort(this.orderByCurrentVoterFirst); // Always put current voter at top
@@ -215,9 +208,9 @@ class VoterGuideOrganizationFilter extends Component {
         case 'sortByReach':
           // Put written comments on top, and then within those two separations, move Twitter followers to the top
           // console.log('sortByReach');
-          // filteredItems = filteredItems.sort(this.orderByWrittenComment);
+          // filteredItems = filteredItems.sort(orderByWrittenComment);
           // filteredItems = filteredItems.sort(this.orderByCurrentFriendsFirst);
-          filteredItems = filteredItems.sort(this.orderByTwitterFollowers);
+          filteredItems = filteredItems.sort(orderByTwitterFollowers);
           filteredItems = filteredItems.sort(this.orderByCurrentVoterFirst); // Always put current voter at top
           this.setState({
             sortedBy: 'sortByReach',
@@ -225,8 +218,8 @@ class VoterGuideOrganizationFilter extends Component {
           break;
         case 'sortByNetwork':
           // console.log('sortByNetwork');
-          // filteredItems = filteredItems.sort(this.orderByTwitterFollowers);
-          // filteredItems = filteredItems.sort(this.orderByWrittenComment);
+          // filteredItems = filteredItems.sort(orderByTwitterFollowers);
+          // filteredItems = filteredItems.sort(orderByWrittenComment);
           filteredItems = filteredItems.sort(this.orderByFollowedOrgsFirst);
           filteredItems = filteredItems.sort(this.orderByCurrentFriendsFirst);
           filteredItems = filteredItems.sort(this.orderByCurrentVoterFirst); // Always put current voter at top

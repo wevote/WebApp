@@ -9,9 +9,11 @@ function orderCandidatesByUltimateDate (firstEntry, secondEntry) {
 
 export function getPoliticianValuesFromIdentifiers (politicianSEOFriendlyPath, politicianWeVoteId) {
   // console.log('getPoliticianValuesFromIdentifiers politicianSEOFriendlyPath: ', politicianSEOFriendlyPath, ', politicianWeVoteId: ', politicianWeVoteId);
+  let ballotpediaPoliticianUrl = '';
   let candidateCampaignList = [];
   let finalElectionDateInPast = false;
   // let isSupportersCountMinimumExceeded = false;
+  let politicalParty = '';
   let politician = {};
   let politicianDescription = '';
   let politicianImageUrlLarge = '';
@@ -21,10 +23,13 @@ export function getPoliticianValuesFromIdentifiers (politicianSEOFriendlyPath, p
   let politicianSEOFriendlyPathFromObject = '';
   let politicianUrl = '';
   let politicianWeVoteIdFromObject = '';
+  let stateCode = '';
   let twitterFollowersCount = 0;
   let twitterHandle = '';
   let twitterHandle2 = '';
   let voterIsPoliticianOwner = false;
+  let wikipediaUrl = '';
+  let youtubeUrl = '';
   if (politicianSEOFriendlyPath) {
     politician = PoliticianStore.getPoliticianBySEOFriendlyPath(politicianSEOFriendlyPath);
   } else if (politicianWeVoteId) {
@@ -33,20 +38,29 @@ export function getPoliticianValuesFromIdentifiers (politicianSEOFriendlyPath, p
   }
   if (politician.constructor === Object && politician.politician_we_vote_id) {
     ({
+      ballotpedia_politician_url: ballotpediaPoliticianUrl,
       candidate_list: candidateCampaignList,
       final_election_date_in_past: finalElectionDateInPast,
       // is_supporters_count_minimum_exceeded: isSupportersCountMinimumExceeded,
       politician_description: politicianDescription,
       politician_name: politicianName,
       twitter_followers_count: twitterFollowersCount,
+      political_party: politicalParty,
       politician_twitter_handle: twitterHandle,
       politician_twitter_handle2: twitterHandle2,
       politician_url: politicianUrl,
       politician_we_vote_id: politicianWeVoteIdFromObject,
+      state_code: stateCode,
       voter_is_politician_owner: voterIsPoliticianOwner,
       we_vote_hosted_profile_image_url_large: politicianImageUrlLarge,
       we_vote_hosted_profile_image_url_medium: politicianImageUrlMedium,
       we_vote_hosted_profile_image_url_tiny: politicianImageUrlTiny,
+      voter_is_politician_owner: voterIsPoliticianOwner,
+      we_vote_hosted_profile_image_url_large: politicianImageUrlLarge,
+      we_vote_hosted_profile_image_url_medium: politicianImageUrlMedium,
+      we_vote_hosted_profile_image_url_tiny: politicianImageUrlTiny,
+      wikipedia_url: wikipediaUrl,
+      youtube_url: youtubeUrl,
     } = politician);
   }
   if ((candidateCampaignList && candidateCampaignList.length > 0) && (!politicianImageUrlLarge || politicianImageUrlLarge === '' || !politicianImageUrlMedium || politicianImageUrlMedium === '' || !politicianImageUrlTiny || politicianImageUrlTiny === '')) {
@@ -64,9 +78,11 @@ export function getPoliticianValuesFromIdentifiers (politicianSEOFriendlyPath, p
     }
   }
   return {
+    ballotpediaPoliticianUrl,
     candidateCampaignList,
     finalElectionDateInPast,
     // isSupportersCountMinimumExceeded,
+    politicalParty,
     politicianDescription,
     politicianImageUrlLarge,
     politicianImageUrlMedium,
@@ -75,10 +91,13 @@ export function getPoliticianValuesFromIdentifiers (politicianSEOFriendlyPath, p
     politicianName,
     politicianUrl,
     politicianWeVoteId: politicianWeVoteIdFromObject,
+    stateCode,
     twitterFollowersCount,
     twitterHandle,
     twitterHandle2,
     voterIsPoliticianOwner,
+    wikipediaUrl,
+    youtubeUrl,
   };
 }
 
