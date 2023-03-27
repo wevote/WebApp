@@ -444,6 +444,12 @@ class CampaignStore extends ReduceStore {
           }
         });
         // console.log('allCachedCampaignXWeVoteIdsBySEOFriendlyPath:', allCachedCampaignXWeVoteIdsBySEOFriendlyPath);
+        /* TODO: Next time we are testing this area... this should work, is a better sample, and should run a bit faster
+        revisedState = { ...revisedState, allCachedCampaignXDicts, allCachedCampaignXOwnerPhotos, allCachedCampaignXOwners,
+          allCachedCampaignXPoliticianLists, allCachedCampaignXWeVoteIdsBySEOFriendlyPath, allCachedPoliticianWeVoteIdsByCampaignX,
+          allCachedRecommendedCampaignXWeVoteIdLists, voterCanSendUpdatesCampaignXWeVoteIds, voterOwnedCampaignXWeVoteIds,
+        };
+        */
         revisedState = { ...revisedState, allCachedCampaignXDicts };
         revisedState = { ...revisedState, allCachedCampaignXOwnerPhotos };
         revisedState = { ...revisedState, allCachedCampaignXOwners };
