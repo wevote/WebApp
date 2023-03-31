@@ -145,8 +145,8 @@ class SelectBallotModal extends Component {
               {!editingAddress && (
                 <ElectionChoiceWrapper>
                   <ToggleGroup>
-                    <PriorButton onClick={() => this.setState({ prior: true, upcoming: false })} variant={this.state.prior ? 'contained' : 'outlined'} color="primary">Prior</PriorButton>
-                    <UpcomingButton onClick={() => this.setState({ prior: false, upcoming: true })} variant={this.state.upcoming ? 'contained' : 'outlined'} color="primary">Upcoming</UpcomingButton>
+                    <PriorButton id="electionChoicePriorButton" onClick={() => this.setState({ prior: true, upcoming: false })} variant={this.state.prior ? 'contained' : 'outlined'} color="primary">Prior</PriorButton>
+                    <UpcomingButton id="electionChoiceUpcomingButton" onClick={() => this.setState({ prior: false, upcoming: true })} variant={this.state.upcoming ? 'contained' : 'outlined'} color="primary">Upcoming</UpcomingButton>
                   </ToggleGroup>
                   <FormControl variant="outlined" className={classes.formControl}>
                     <InputLabel htmlFor="outlined-age-native-simple" />
