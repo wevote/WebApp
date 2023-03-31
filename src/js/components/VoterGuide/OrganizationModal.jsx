@@ -1,4 +1,4 @@
-import { Close, Info } from '@mui/icons-material';
+import { Close } from '@mui/icons-material'; // Info
 import { Drawer, IconButton } from '@mui/material';
 import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
@@ -39,6 +39,7 @@ class OrganizationModal extends Component {
     this.state = {
       allCachedPositionsForThisBallotItem: [],
       modalOpen: this.props.modalOpen,
+      politicianWeVoteId: '',
       positionListFromFriendsHasBeenRetrievedOnce: {},
       positionListHasBeenRetrievedOnce: {},
       unFurlPositions: false,
@@ -171,7 +172,12 @@ class OrganizationModal extends Component {
       const allCachedPositionsForThisBallotItem = CandidateStore.getAllCachedPositionsByCandidateWeVoteId(ballotItemWeVoteId);
       // console.log('allCachedPositionsForThisBallotItem:', allCachedPositionsForThisBallotItem);
       const candidate = CandidateStore.getCandidateByWeVoteId(ballotItemWeVoteId);
-      const { ballot_item_display_name: ballotItemDisplayName, google_civic_election_id: googleCivicElectionId } = candidate;
+      const {
+        ballot_item_display_name: ballotItemDisplayName,
+        google_civic_election_id: googleCivicElectionId,
+        politician_we_vote_id: politicianWeVoteId,
+        seo_friendly_path: seoFriendlyPath,
+      } = candidate;
       if (googleCivicElectionId &&
         !VoterGuideStore.voterGuidesUpcomingFromFriendsStopped(googleCivicElectionId) &&
         !this.localVoterGuidesFromFriendsUpcomingHasBeenRetrievedOnce(googleCivicElectionId)
@@ -185,8 +191,10 @@ class OrganizationModal extends Component {
         });
       }
       this.setState({
-        ballotItemDisplayName,
         allCachedPositionsForThisBallotItem,
+        ballotItemDisplayName,
+        politicianWeVoteId,
+        seoFriendlyPath,
       });
     }
   }
@@ -249,7 +257,7 @@ class OrganizationModal extends Component {
     // console.log(this.props.candidate_we_vote_id);
     renderLog('OrganizationModal');  // Set LOG_RENDER_EVENTS to log all renders
     const { ballotItemWeVoteId, classes, hideBallotItemInfo, hidePositions, organizationWeVoteId, params } = this.props;
-    const { allCachedPositionsForThisBallotItem, ballotItemDisplayName, isCandidate, isMeasure, modalOpen, unFurlPositions } = this.state;
+    const { allCachedPositionsForThisBallotItem, ballotItemDisplayName, isCandidate, isMeasure, modalOpen, politicianWeVoteId, seoFriendlyPath, unFurlPositions } = this.state;
 
     return (
       <Drawer
@@ -284,6 +292,8 @@ class OrganizationModal extends Component {
                 linksOpenNewPage
                 linkToBallotItemPage
                 organizationWeVoteId={organizationWeVoteId}
+                politicianWeVoteId={politicianWeVoteId}
+                seoFriendlyPath={seoFriendlyPath}
                 showLargeImage
                 showOfficeName
                 showPositionStatementActionBar
@@ -323,12 +333,12 @@ class OrganizationModal extends Component {
                         incomingPositionList={allCachedPositionsForThisBallotItem}
                         linksOpenExternalWebsite
                         params={params}
-                        positionListExistsTitle={hideBallotItemInfo ? <></> : (
-                          <PositionListIntroductionText>
-                            <Info classes={{ root: classes.informationIcon }} />
-                            Endorsements are below. Use these filters to sort:
-                          </PositionListIntroductionText>
-                        )}
+                        // positionListExistsTitle={hideBallotItemInfo ? <></> : (
+                        //   <PositionListIntroductionText>
+                        //     <Info classes={{ root: classes.informationIcon }} />
+                        //     Endorsements are below. Use these filters to sort:
+                        //   </PositionListIntroductionText>
+                        // )}
                       />
                     </Suspense>
                     <br />
@@ -449,9 +459,9 @@ const BallotItemBottomSpacer = styled('div')`
   margin-bottom: 32px;
 `;
 
-const PositionListIntroductionText = styled('div')`
-  color: #999;
-`;
+// const PositionListIntroductionText = styled('div')`
+//   color: #999;
+// `;
 
 const ScoreSummaryListControllerBottomSpacer = styled('div')`
   margin-bottom: 42px;

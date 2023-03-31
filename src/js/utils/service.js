@@ -68,7 +68,9 @@ function innerAjax (options) {
     options.endpoint === 'measureRetrieve' ||
     options.endpoint === 'officeRetrieve' ||
     // options.endpoint === 'organizationRetrieve' || // Includes data a client can update, and needs to be fresh
+    options.endpoint === 'politicianRetrieve' ||
     options.endpoint === 'positionListForBallotItem' ||
+    options.endpoint === 'representativesQuery' ||
     options.endpoint === 'twitterIdentityRetrieve' ||
     options.endpoint === 'voterGuidesUpcomingRetrieve' ||
     options.endpoint === 'voterGuidesRetrieve'

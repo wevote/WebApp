@@ -70,6 +70,7 @@ class CandidateStore extends ReduceStore {
       allCachedCandidates: explanationCandidates, // Dictionary with candidate_we_vote_id as key and the candidate as value
       allCachedPositionsAboutCandidates: explanationPositions, // Dictionary with candidate_we_vote_id as one key, organization_we_vote_id as the second key, and the position as value
       candidateListsByOfficeWeVoteId: {}, // Dictionary with office_we_vote_id as key and list of candidates in the office as value
+      candidateListsByPoliticianWeVoteId: {}, // Dictionary with politician_we_vote_id as key and list of candidates linked to the politician as value
       numberOfCandidatesRetrievedByOffice: {}, // Dictionary with office_we_vote_id as key and number of candidates as value
     };
   }
@@ -83,8 +84,34 @@ class CandidateStore extends ReduceStore {
     return Object.values(allCachedPositionsForThisCandidateDict);
   }
 
+  // This function/data is in CandidateStore instead of PoliticianStore, since we are using
+  //  the substantial support for positions related to Candidates, instead of building Politician-specific
+  //  support.
+  getAllCachedPositionsByPoliticianWeVoteId (politicianWeVoteId) {
+    const candidateList = this.getState().candidateListsByPoliticianWeVoteId[politicianWeVoteId] || [];
+    let allCachedPositionsList = [];
+    let allCachedPositionsListForThisCandidate;
+    let allCachedPositionsForThisCandidateDict;
+    let candidateWeVoteId;
+    candidateList.forEach((item) => {
+      candidateWeVoteId = item.we_vote_id;
+      allCachedPositionsForThisCandidateDict = this.getState().allCachedPositionsAboutCandidates[candidateWeVoteId] || {};
+      // console.log('111) allCachedPositionsForThisCandidateDict', allCachedPositionsForThisCandidateDict);
+      allCachedPositionsListForThisCandidate = Object.values(allCachedPositionsForThisCandidateDict);
+      // console.log('222) allCachedPositionsListForThisCandidate', allCachedPositionsListForThisCandidate);
+      allCachedPositionsList = allCachedPositionsList.concat(allCachedPositionsListForThisCandidate);
+    });
+    // console.log('getAllCachedPositionsByPoliticianWeVoteId candidateList', candidateList, ', allCachedPositionsList:', allCachedPositionsList);
+    return allCachedPositionsList;
+  }
+
   getCandidateByWeVoteId (candidateWeVoteId) {
     return this.getState().allCachedCandidates[candidateWeVoteId] || {};
+  }
+
+  getCandidateList () {
+    const candidateList = Object.values(this.getState().allCachedCandidates);
+    return candidateList || [];
   }
 
   getCandidateListByOfficeWeVoteId (officeWeVoteId) {
@@ -97,9 +124,14 @@ class CandidateStore extends ReduceStore {
     }
   }
 
-  getCandidateList () {
-    const candidateList = Object.values(this.getState().allCachedCandidates);
-    return candidateList || [];
+  getCandidateListByPoliticianWeVoteId (politicianWeVoteId) { // TODO Replace with getAllCachedPositionsByPoliticianWeVoteId
+    // console.log('politicianWeVoteId:', politicianWeVoteId, ', this.getState().candidateListsByOfficeWeVoteId:', this.getState().candidateListsByOfficeWeVoteId);
+    const candidateListsDict = this.getState().candidateListsByPoliticianWeVoteId;
+    if (candidateListsDict) {
+      return candidateListsDict[politicianWeVoteId] || [];
+    } else {
+      return [];
+    }
   }
 
   getCandidateName (candidateWeVoteId) {
@@ -223,7 +255,7 @@ class CandidateStore extends ReduceStore {
       allCachedCandidates, allCachedPositionsAboutCandidates, numberOfCandidatesRetrievedByOffice,
     } = state;
     let {
-      candidateListsByOfficeWeVoteId,
+      candidateListsByOfficeWeVoteId, candidateListsByPoliticianWeVoteId,
     } = state;
     // Exit if we don't have a successful response (since we expect certain variables in a successful response below)
     if (!action.res || !action.res.success) return state;
@@ -240,6 +272,7 @@ class CandidateStore extends ReduceStore {
     let voterGuides;
     let contestOfficeWeVoteId = '';
     let organizationWeVoteId = '';
+    let politicianWeVoteId = '';
     const positionList = action.res.position_list;
     const isEmpty = voterGuides && voterGuides.length === 0;
     const searchTermExists = action.res.search_string !== '';
@@ -309,6 +342,33 @@ class CandidateStore extends ReduceStore {
           allCachedCandidates,
           candidateListsByOfficeWeVoteId,
           numberOfCandidatesRetrievedByOffice,
+        };
+
+      case 'politicianRetrieve':
+        incomingCandidateCount = 0;
+        candidateList = action.res.candidate_list;
+        politicianWeVoteId = action.res.politician_we_vote_id;
+        // console.log('CandidateStore candidatesRetrieve contestOfficeWeVoteId:', contestOfficeWeVoteId, ', candidateList:', candidateList);
+        if (!candidateListsByPoliticianWeVoteId) {
+          candidateListsByPoliticianWeVoteId = {};
+        }
+        localCandidateList = [];
+        candidateList.forEach((one) => {
+          allCachedCandidates[one.we_vote_id] = one;
+          incomingCandidateCount += 1;
+          localCandidateList.push(one);
+        });
+        // console.log('localCandidateList:', localCandidateList);
+        if (politicianWeVoteId) {
+          candidateListsByPoliticianWeVoteId[politicianWeVoteId] = localCandidateList;
+        }
+        // console.log('candidateListsByOfficeWeVoteId:', candidateListsByOfficeWeVoteId);
+        // console.log('candidateListsByOfficeWeVoteId[contestOfficeWeVoteId]:', candidateListsByOfficeWeVoteId[contestOfficeWeVoteId]);
+
+        return {
+          ...state,
+          allCachedCandidates,
+          candidateListsByPoliticianWeVoteId,
         };
 
       case 'voterAddressSave':

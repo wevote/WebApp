@@ -24,7 +24,7 @@ const BallotItemSupportOpposeScoreDisplay = React.lazy(() => import(/* webpackCh
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
 const IssuesByBallotItemDisplayList = React.lazy(() => import(/* webpackChunkName: 'IssuesByBallotItemDisplayList' */ '../Values/IssuesByBallotItemDisplayList'));
 const ItemActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemActionBar' */ '../Widgets/ItemActionBar/ItemActionBar'));
-const OfficeNameText = React.lazy(() => import(/* webpackChunkName: 'OfficeNameText' */ '../Widgets/OfficeNameText'));
+const OfficeNameText = React.lazy(() => import(/* webpackChunkName: 'OfficeNameText' */ '../../common/components/Widgets/OfficeNameText'));
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../../common/components/Widgets/ReadMore'));
 const ShowMoreFooter = React.lazy(() => import(/* webpackChunkName: 'ShowMoreFooter' */ '../Navigation/ShowMoreFooter'));
@@ -289,6 +289,17 @@ class CandidateItem extends Component {
     } else return '';
   }
 
+  getPoliticianLink () {
+    const { politicianWeVoteId, seoFriendlyPath } = this.props;
+    if (seoFriendlyPath) {
+      return `/${seoFriendlyPath}/-/`; // back-to-office
+    } else if (politicianWeVoteId) {
+      return `/${politicianWeVoteId}/p/`; // back-to-default-office
+    } else {
+      return this.getCandidateLink();
+    }
+  }
+
   handleEnter = () => {
     // console.log('Handle largeAreaHoverColorOnNow', e.target);
     if (this.props.showHover) {
@@ -324,6 +335,16 @@ class CandidateItem extends Component {
     } = this.state;
     // console.log('CandidateItem candidateRenderBlock, candidateWeVoteId:', candidateWeVoteId, ', useLinkToCandidatePage:', useLinkToCandidatePage, ', forDesktop:', forDesktop, ', linkToBallotItemPage:', linkToBallotItemPage);
     // console.log('candidateRenderBlock candidatePhotoUrl: ', candidatePhotoUrl);
+    const candidateNameRow = (
+      <CandidateNameRow
+        isClickable={useLinkToCandidatePage === true}
+        onClick={useLinkToCandidatePage === true ? () => this.goToCandidateLink() : null}
+      >
+        <div className={`card-main__display-name ${linkToBallotItemPage && largeAreaHoverColorOnNow && showHover ? 'card__blue' : ''}`}>
+          {ballotItemDisplayName}
+        </div>
+      </CandidateNameRow>
+    );
     return (
       <div>
         <CandidateWrapper className="card-main__media-object">
@@ -343,22 +364,18 @@ class CandidateItem extends Component {
               </Suspense>
             </MediaObjectAnchor>
             <Candidate>
-              <CandidateNameRow
-                isClickable={useLinkToCandidatePage === true}
-                onClick={useLinkToCandidatePage === true ? () => this.goToCandidateLink() : null}
-              >
-                <div className={`card-main__display-name ${linkToBallotItemPage && largeAreaHoverColorOnNow && showHover ? 'card__blue' : ''}`}>
-                  {ballotItemDisplayName}
-                </div>
-              </CandidateNameRow>
+              {/* Convert this to use <Link /> */}
+              <>
+                {candidateNameRow}
+              </>
               { contestOfficeName && (
                 <div
                   className={linkToBallotItemPage && largeAreaHoverColorOnNow && showHover ? 'card__blue' : ''}
                   onClick={useLinkToCandidatePage === true ? () => this.goToOfficeLink() : null}
                 >
                   <OfficeNameText
-                    contestOfficeName={contestOfficeName}
                     officeLink={linkToOfficePage ? this.getOfficeLink() : ''}
+                    officeName={contestOfficeName}
                     politicalParty={politicalParty}
                     showOfficeName={showOfficeName}
                   />
@@ -454,9 +471,9 @@ class CandidateItem extends Component {
 
   candidateIssuesAndCommentBlock = (candidateText, localUniqueId) => {
     const {
-      candidateWeVoteId, expandIssuesByDefault, hideBallotItemSupportOpposeComment, hideCandidateText, hideIssuesRelatedToCandidate, hideShowMoreFooter,
+      candidateWeVoteId, hideBallotItemSupportOpposeComment, hideCandidateText, hideIssuesRelatedToCandidate, hideShowMoreFooter,
       linkToBallotItemPage, showHover, showPositionStatementActionBar, showTopCommentByBallotItem, hidePositionPublicToggle, showPositionPublicToggle, inModal,
-    } = this.props;
+    } = this.props; // expandIssuesByDefault
     const {
       ballotItemDisplayName, largeAreaHoverColorOnNow,
       largeAreaHoverLinkOnNow, voterOpposesBallotItem, voterSupportsBallotItem, voterTextStatement,
@@ -552,7 +569,7 @@ class CandidateItem extends Component {
             <IssuesByBallotItemDisplayList
               ballotItemDisplayName={ballotItemDisplayName}
               ballotItemWeVoteId={candidateWeVoteId}
-              expandIssuesByDefault={expandIssuesByDefault}
+              // expandIssuesByDefault={expandIssuesByDefault}
               externalUniqueId={`candidateItem-${candidateWeVoteId}`}
             />
           )}
@@ -574,11 +591,11 @@ class CandidateItem extends Component {
       // August 2022: In Cordova this opens a new completely separate session in a web browser (very bad),
       // in WebApp it is a hard link to ONLY WeVote.us (bad for branded versions)
       const weVoteRootUrl = AppObservableStore.getWeVoteRootURL();
-      window.open(`${weVoteRootUrl}${this.getCandidateLink()}`, '_blank');
+      window.open(`${weVoteRootUrl}${this.getPoliticianLink()}`, '_blank');
     } else {
       // In case we were in the OrganizationModal (which was reused in 2022 for the Candidate drawer), close it
       AppObservableStore.setShowOrganizationModal(false);
-      historyPush(this.getCandidateLink());
+      historyPush(this.getPoliticianLink());
     }
   }
 
@@ -667,7 +684,7 @@ CandidateItem.propTypes = {
   closeSupportOpposeCountDisplayModal: PropTypes.bool,
   controlAdviserMaterialUIPopoverFromProp: PropTypes.bool,
   goToBallotItem: PropTypes.func, // We don't require this because sometimes we don't want the link to do anything
-  expandIssuesByDefault: PropTypes.bool,
+  // expandIssuesByDefault: PropTypes.bool,
   forMoreInformationTextOff: PropTypes.bool,
   hideBallotItemSupportOpposeComment: PropTypes.bool,
   hideCandidateText: PropTypes.bool,
@@ -681,6 +698,8 @@ CandidateItem.propTypes = {
   openAdviserMaterialUIPopover: PropTypes.bool,
   openSupportOpposeCountDisplayModal: PropTypes.bool,
   organizationWeVoteId: PropTypes.string,
+  politicianWeVoteId: PropTypes.string,
+  seoFriendlyPath: PropTypes.string,
   supportOpposeCountDisplayModalTutorialOn: PropTypes.bool,
   supportOpposeCountDisplayModalTutorialText: PropTypes.object,
   showDownArrow: PropTypes.bool,

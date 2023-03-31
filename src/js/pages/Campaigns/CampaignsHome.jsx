@@ -17,6 +17,7 @@ import BallotStore from '../../stores/BallotStore';
 import CampaignStore from '../../common/stores/CampaignStore';
 import CandidateStore from '../../stores/CandidateStore';
 import IssueStore from '../../stores/IssueStore';
+import RepresentativeStore from '../../stores/RepresentativeStore';
 import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../common/utils/logging';
 import apiCalming from '../../common/utils/apiCalming';
@@ -30,7 +31,10 @@ const CandidateListRoot = React.lazy(() => import(/* webpackChunkName: 'Candidat
 const CampaignListRoot = React.lazy(() => import(/* webpackChunkName: 'CampaignListRoot' */ '../../common/components/Campaign/CampaignListRoot'));
 const FirstCampaignListController = React.lazy(() => import(/* webpackChunkName: 'FirstCampaignListController' */ '../../common/components/Campaign/FirstCampaignListController'));
 const FirstCandidateListController = React.lazy(() => import(/* webpackChunkName: 'FirstCandidateListController' */ '../../components/CandidateListRoot/FirstCandidateListController'));
+const FirstRepresentativeListController = React.lazy(() => import(/* webpackChunkName: 'FirstRepresentativeListController' */ '../../components/RepresentativeListRoot/FirstRepresentativeListController'));
+const RepresentativeListRoot = React.lazy(() => import(/* webpackChunkName: 'RepresentativeListRoot' */ '../../components/RepresentativeListRoot/RepresentativeListRoot'));
 
+// const representativeDataExistsYears = [2023];
 const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
 class CampaignsHome extends Component {
@@ -49,6 +53,11 @@ class CampaignsHome extends Component {
       listModeFiltersTimeStampOfChange: 0,
       listOfYearsWhenCampaignExists: [],
       listOfYearsWhenCandidateExists: [],
+      listOfYearsWhenRepresentativeExists: [],
+      // representativeListIsBattleground: [],
+      representativeListOnYourBallot: [],
+      representativeListOther: [],
+      representativeListTimeStampOfChange: 0,
       searchText: '',
     };
   }
@@ -61,6 +70,7 @@ class CampaignsHome extends Component {
     this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
     this.campaignStoreListener = CampaignStore.addListener(this.onCampaignStoreChange.bind(this));
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
+    this.representativeStoreListener = RepresentativeStore.addListener(this.onRepresentativeStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     // const campaignList = CampaignStore.getPromotedCampaignXDicts();
     const campaignList = CampaignStore.getAllCachedCampaignXList();
@@ -68,10 +78,9 @@ class CampaignsHome extends Component {
       campaignList,
       // campaignListTimeStampOfChange: Date.now(),
     }, () => this.onIncomingCampaignListChange(true));
-    const candidateList = CandidateStore.getCandidateList();
     // Note: sorting is being done in CandidateListRoot
+    const candidateList = CandidateStore.getCandidateList();
     const { candidateListOnYourBallot, candidateListIsBattleground, candidateListOther } = this.splitUpCandidateList(candidateList);
-
     this.setState({
       candidateList,
       candidateListIsBattleground,
@@ -79,6 +88,17 @@ class CampaignsHome extends Component {
       candidateListOther,
       candidateListTimeStampOfChange: Date.now(),
     }, () => this.onIncomingCandidateListChange(true));
+    // Note: sorting is being done in RepresentativeListRoot
+    const representativeList = RepresentativeStore.getRepresentativeList();
+    const { representativeListOnYourBallot, representativeListOther } = this.splitUpRepresentativeList(representativeList); // representativeListIsBattleground
+    this.setState({
+      representativeList,
+      // representativeListIsBattleground,
+      representativeListOnYourBallot,
+      representativeListOther,
+      representativeListTimeStampOfChange: Date.now(),
+    }, () => this.onIncomingRepresentativeListChange(true));
+
     if (stateCandidatesPhrase) {
       let stateName = stateCandidatesPhrase.replace('-candidates', '');
       stateName = stateName.replace('-', ' ');
@@ -141,6 +161,7 @@ class CampaignsHome extends Component {
     this.ballotStoreListener.remove();
     this.campaignStoreListener.remove();
     this.candidateStoreListener.remove();
+    this.representativeStoreListener.remove();
     this.voterStoreListener.remove();
     if (this.modalOpenTimer) clearTimeout(this.modalOpenTimer);
   }
@@ -176,6 +197,19 @@ class CampaignsHome extends Component {
       candidateListOther,
       candidateListTimeStampOfChange: Date.now(),
     }, () => this.onIncomingCandidateListChange());
+  }
+
+  onRepresentativeStoreChange () {
+    const representativeList = RepresentativeStore.getRepresentativeList();
+    // Note: sorting is being done in RepresentativeListRoot
+    const { representativeListOnYourBallot, representativeListOther } = this.splitUpRepresentativeList(representativeList);  // representativeListIsBattleground
+    this.setState({
+      representativeList,
+      // representativeListIsBattleground,
+      representativeListOnYourBallot,
+      representativeListOther,
+      representativeListTimeStampOfChange: Date.now(),
+    }, () => this.onIncomingRepresentativeListChange());
   }
 
   onVoterStoreChange () {
@@ -216,6 +250,14 @@ class CampaignsHome extends Component {
     }, () => this.updateActiveFilters(setDefaultListMode));
   }
 
+  onIncomingRepresentativeListChange (setDefaultListMode = false) {
+    const { representativeList } = this.state;
+    // console.log('CampaignsHome onIncomingRepresentativeListChange, representativeList:', representativeList);
+    this.setState({
+      listOfYearsWhenRepresentativeExists: this.getListOfYearsWhenRepresentativeExists(representativeList),
+    }, () => this.updateActiveFilters(setDefaultListMode));
+  }
+
   orderByFilterOrder = (firstFilter, secondFilter) => firstFilter.filterOrder - secondFilter.filterOrder;
 
   splitUpCandidateList = (candidateList) => {
@@ -232,10 +274,23 @@ class CampaignsHome extends Component {
     };
   }
 
+  splitUpRepresentativeList = (representativeList) => {
+    const candidateListOnYourBallot = BallotStore.getAllBallotItemsFlattened();
+    const politicianWeVoteIdsOnYourBallot = extractAttributeValueListFromObjectList('politician_we_vote_id', candidateListOnYourBallot);
+    const representativeListRemaining = representativeList.filter((oneRepresentative) => !arrayContains(oneRepresentative.politician_we_vote_id, politicianWeVoteIdsOnYourBallot));
+    const representativeListIsBattleground = representativeListRemaining.filter((oneRepresentative) => oneRepresentative.is_battleground_race);
+    const weVoteIdsIsBattlegroundRace = extractAttributeValueListFromObjectList('we_vote_id', representativeListIsBattleground);
+    const representativeListOther = representativeListRemaining.filter((oneRepresentative) => !arrayContains(oneRepresentative.we_vote_id, weVoteIdsIsBattlegroundRace));
+    return {
+      representativeListIsBattleground,
+      representativeListOther,
+    };
+  }
+
   updateActiveFilters = (setDefaultListMode = false) => {
-    const { campaignList, candidateList, listOfYearsWhenCampaignExists, listOfYearsWhenCandidateExists } = this.state;
+    const { campaignList, candidateList, listOfYearsWhenCampaignExists, listOfYearsWhenCandidateExists, listOfYearsWhenRepresentativeExists } = this.state;
     let { listModeShown } = this.state;
-    const listOfYears = [...new Set([...listOfYearsWhenCampaignExists, ...listOfYearsWhenCandidateExists])];
+    const listOfYears = [...new Set([...listOfYearsWhenCampaignExists, ...listOfYearsWhenCandidateExists, ...listOfYearsWhenRepresentativeExists])];
     // console.log('listOfYears:', listOfYears, ', setDefaultListMode:', setDefaultListMode);
     let filterCount = 0;
     let upcomingEndorsementsAvailable = false;
@@ -364,6 +419,21 @@ class CampaignsHome extends Component {
     return listOfYearsWhenCandidateExists;
   }
 
+  getListOfYearsWhenRepresentativeExists = (representativeList) => {
+    const listOfYearsWhenRepresentativeExists = [];
+    let tempYearInteger;
+    representativeList.forEach((oneRepresentative) => {
+      if (oneRepresentative.candidate_ultimate_election_date && oneRepresentative.candidate_ultimate_election_date > 0) {
+        // tempYearInteger = getYearFromUltimateElectionDate(oneRepresentative.candidate_ultimate_election_date);
+        tempYearInteger = 2023;  // TEMP
+        if (!arrayContains(tempYearInteger, listOfYearsWhenRepresentativeExists)) {
+          listOfYearsWhenRepresentativeExists.push(tempYearInteger);
+        }
+      }
+    });
+    return listOfYearsWhenRepresentativeExists;
+  }
+
   getStateNamePathnameFromStateCode = (stateCode) => {
     const stateName = convertStateCodeToStateText(stateCode);
     const stateNamePhrase = `${stateName}-candidates`;
@@ -423,7 +493,9 @@ class CampaignsHome extends Component {
       campaignsShowing,
       candidateListOther, candidateListTimeStampOfChange,
       candidateListIsBattleground, candidateListOnYourBallot, filterYear,
-      isSearching, listModeFiltersAvailable, listModeFiltersTimeStampOfChange, searchText, stateCode,
+      isSearching, listModeFiltersAvailable, listModeFiltersTimeStampOfChange,
+      representativeListOnYourBallot, representativeListOther, representativeListTimeStampOfChange,
+      searchText, stateCode,
     } = this.state;
     // console.log('CampaignsHome.jsx campaignList:', campaignList);
 
@@ -431,7 +503,8 @@ class CampaignsHome extends Component {
     const descriptionText = 'Choose which candidates you support.';
     let stateCodeTemp;
     const stateNameList = Object.values(stateCodeMap);
-    const otherTitlesShown = campaignsShowing || (candidateListOnYourBallot && candidateListOnYourBallot.length > 0) || (candidateListIsBattleground && candidateListIsBattleground.length > 0);
+    const representativesShowing = nextReleaseFeaturesEnabled && ((representativeListOnYourBallot && representativeListOnYourBallot.length > 0) || (representativeListOther && representativeListOther.length > 0));
+    const otherTitlesShown = campaignsShowing || (candidateListOnYourBallot && candidateListOnYourBallot.length > 0) || (candidateListIsBattleground && candidateListIsBattleground.length > 0) || representativesShowing;
     return (
       <PageContentContainer>
         <CampaignsHomeContainer className="container-fluid" style={this.getTopPadding()}>
@@ -515,7 +588,7 @@ class CampaignsHome extends Component {
                   listModeFiltersTimeStampOfChange={listModeFiltersTimeStampOfChange}
                   searchText={searchText}
                   stateCode={stateCode}
-                  titleTextIfCampaigns="Campaigns"
+                  titleTextForList="Campaigns"
                 />
               </Suspense>
             </WhatIsHappeningSection>
@@ -530,7 +603,7 @@ class CampaignsHome extends Component {
                   listModeFiltersTimeStampOfChange={listModeFiltersTimeStampOfChange}
                   searchText={searchText}
                   stateCode={stateCode}
-                  titleTextIfCampaigns="On Your Ballot"
+                  titleTextForList="On Your Ballot"
                 />
               </Suspense>
             </WhatIsHappeningSection>
@@ -539,13 +612,30 @@ class CampaignsHome extends Component {
             <WhatIsHappeningSection>
               <Suspense fallback={<span>&nbsp;</span>}>
                 <CandidateListRoot
+                  hideIfNoResults
                   incomingList={candidateListIsBattleground}
                   incomingListTimeStampOfChange={candidateListTimeStampOfChange}
                   listModeFilters={listModeFiltersAvailable}
                   listModeFiltersTimeStampOfChange={listModeFiltersTimeStampOfChange}
                   searchText={searchText}
                   stateCode={stateCode}
-                  titleTextIfCampaigns="Close Races"
+                  titleTextForList="Close Races"
+                />
+              </Suspense>
+            </WhatIsHappeningSection>
+          )}
+          {nextReleaseFeaturesEnabled && (
+            <WhatIsHappeningSection>
+              <Suspense fallback={<span>&nbsp;</span>}>
+                <RepresentativeListRoot
+                  hideIfNoResults
+                  incomingList={representativeListOther}
+                  incomingListTimeStampOfChange={representativeListTimeStampOfChange}
+                  listModeFilters={listModeFiltersAvailable}
+                  listModeFiltersTimeStampOfChange={listModeFiltersTimeStampOfChange}
+                  searchText={searchText}
+                  stateCode={stateCode}
+                  titleTextForList="Current Representatives"
                 />
               </Suspense>
             </WhatIsHappeningSection>
@@ -559,7 +649,7 @@ class CampaignsHome extends Component {
                 listModeFiltersTimeStampOfChange={listModeFiltersTimeStampOfChange}
                 searchText={searchText}
                 stateCode={stateCode}
-                titleTextIfCampaigns={otherTitlesShown ? 'Other Candidates' : ''}
+                titleTextForList={otherTitlesShown ? 'More Politicians' : 'Candidates'}
               />
             </Suspense>
           </WhatIsHappeningSection>
@@ -572,6 +662,10 @@ class CampaignsHome extends Component {
         {/* */}
         <Suspense fallback={<></>}>
           <FirstCandidateListController searchText={searchText} stateCode={stateCode} year={filterYear} />
+        </Suspense>
+        {/* */}
+        <Suspense fallback={<></>}>
+          <FirstRepresentativeListController searchText={searchText} stateCode={stateCode} year={filterYear} />
         </Suspense>
       </PageContentContainer>
     );

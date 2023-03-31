@@ -18,6 +18,7 @@ class CandidateListRoot extends Component {
       candidateList: [],
       candidateSearchResults: [],
       filteredCandidateList: [],
+      hideDisplayBecauseNoSearchResults: false,
       timeStampOfChange: 0,
     };
   }
@@ -200,6 +201,7 @@ class CandidateListRoot extends Component {
     filteredCandidateList = filteredCandidateList.sort(this.orderByIsBattlegroundRace);
     filteredCandidateList = filteredCandidateList.sort(this.orderByUltimateElectionDate);
     let candidateSearchResults = [];
+    let hideDisplayBecauseNoSearchResults = false;
     if (searchText && searchText.length > 0) {
       const searchTextLowercase = searchText.toLowerCase();
       // console.log('searchTextLowercase:', searchTextLowercase);
@@ -230,52 +232,73 @@ class CandidateListRoot extends Component {
           });
           return foundInThisCandidate;
         });
+      if (candidateSearchResults.length === 0) {
+        hideDisplayBecauseNoSearchResults = true;
+      }
     }
     // console.log('onFilterOrListChange, candidateSearchResults:', candidateSearchResults);
     // console.log('onFilterOrListChange, filteredCandidateList:', filteredCandidateList);
     this.setState({
       candidateSearchResults,
       filteredCandidateList,
+      hideDisplayBecauseNoSearchResults,
       timeStampOfChange: Date.now(),
     });
   }
 
   render () {
     renderLog('CandidateListRoot');  // Set LOG_RENDER_EVENTS to log all renders
-    const { hideTitle, searchText, titleTextIfCampaigns } = this.props;
+    const { hideIfNoResults, hideTitle, searchText, titleTextForList } = this.props;
     const isSearching = searchText && searchText.length > 0;
-    const { candidateList, candidateSearchResults, filteredCandidateList, timeStampOfChange } = this.state;
+    const { candidateList, candidateSearchResults, filteredCandidateList, hideDisplayBecauseNoSearchResults, timeStampOfChange } = this.state;
 
     if (!candidateList) {
       return null;
     }
+    let hideDisplayBecauseNoResults = false;
+    if (hideIfNoResults) {
+      if (isSearching) {
+        if (candidateSearchResults && candidateSearchResults.length === 0) {
+          hideDisplayBecauseNoResults = true;
+        }
+      } else if (filteredCandidateList && filteredCandidateList.length === 0) {
+        hideDisplayBecauseNoResults = true;
+      }
+      if (hideDisplayBecauseNoResults) {
+        return null;
+      }
+    }
     return (
       <CandidateListWrapper>
         {!!(!hideTitle &&
-            titleTextIfCampaigns &&
-            titleTextIfCampaigns.length &&
+            !(isSearching && hideDisplayBecauseNoSearchResults) &&
+            titleTextForList &&
+            titleTextForList.length &&
             candidateList) &&
         (
           <WhatIsHappeningTitle>
-            {titleTextIfCampaigns}
+            {titleTextForList}
           </WhatIsHappeningTitle>
         )}
-        <ScrollingOuterWrapper>
-          <ScrollingInnerWrapper>
-            <HorizontallyScrollingContainer>
-              <CandidateCardList
-                incomingCandidateList={(isSearching ? candidateSearchResults : filteredCandidateList)}
-                timeStampOfChange={timeStampOfChange}
-                verticalListOn
-              />
-            </HorizontallyScrollingContainer>
-          </ScrollingInnerWrapper>
-        </ScrollingOuterWrapper>
+        {(!(isSearching && hideDisplayBecauseNoSearchResults)) && (
+          <ScrollingOuterWrapper>
+            <ScrollingInnerWrapper>
+              <HorizontallyScrollingContainer>
+                <CandidateCardList
+                  incomingCandidateList={(isSearching ? candidateSearchResults : filteredCandidateList)}
+                  timeStampOfChange={timeStampOfChange}
+                  verticalListOn
+                />
+              </HorizontallyScrollingContainer>
+            </ScrollingInnerWrapper>
+          </ScrollingOuterWrapper>
+        )}
       </CandidateListWrapper>
     );
   }
 }
 CandidateListRoot.propTypes = {
+  hideIfNoResults: PropTypes.bool,
   hideTitle: PropTypes.bool,
   incomingList: PropTypes.array,
   incomingListTimeStampOfChange: PropTypes.number,
@@ -283,7 +306,7 @@ CandidateListRoot.propTypes = {
   listModeFiltersTimeStampOfChange: PropTypes.number,
   searchText: PropTypes.string,
   stateCode: PropTypes.string,
-  titleTextIfCampaigns: PropTypes.string,
+  titleTextForList: PropTypes.string,
 };
 
 const styles = () => ({

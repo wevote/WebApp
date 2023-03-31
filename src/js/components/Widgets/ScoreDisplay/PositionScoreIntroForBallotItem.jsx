@@ -48,6 +48,7 @@ export default function PositionScoreIntroForBallotItem (props) {
         </>
       ) : (
         <>
+          {/*
           {' '}
           There aren&apos;t any people who support
           {' '}
@@ -71,6 +72,7 @@ export default function PositionScoreIntroForBallotItem (props) {
             </span>
           )}
           !
+          */}
         </>
       )}
     </PositionScoreIntroForBallotItemWrapper>

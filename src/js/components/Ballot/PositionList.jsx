@@ -272,11 +272,11 @@ class PositionList extends Component {
     });
   };
 
-  increaseNumberOfPositionItemsToDisplay = () => {
+  increaseNumberOfPositionItemsToDisplay = (showThisManyMore = 5) => {
     let { numberOfPositionItemsToDisplay } = this.state;
     // console.log('Number of position items before increment: ', numberOfPositionItemsToDisplay);
 
-    numberOfPositionItemsToDisplay += 5;
+    numberOfPositionItemsToDisplay += showThisManyMore;
     // console.log('Number of position items after increment: ', numberOfPositionItemsToDisplay);
 
     if (this.positionItemTimer) clearTimeout(this.positionItemTimer);
@@ -312,38 +312,41 @@ class PositionList extends Component {
     let numberOfPositionItemsDisplayed = 0;
     let searchTextString = '';
     const incomingPositionListLength = (incomingPositionList) ? incomingPositionList.length : 0;
+    const complexFiltersTurnedOn = false;
     return (
       <div>
-        <FilterWrapper>
-          { showTitle && (
-            <span>{positionListExistsTitle}</span>
-          )}
-          <FilterBase
-            allItems={positionList}
-            groupedFilters={incomingPositionListLength > TURN_ON_FILTERS_WHEN_MORE_THAN_THIS_NUMBER_OF_ITEMS ? groupedFilters : []}
-            islandFilters={incomingPositionListLength > TURN_ON_FILTERS_WHEN_MORE_THAN_THIS_NUMBER_OF_ITEMS ? islandFilters : []}
-            numberOfItemsFoundNode={(
-              <NumberOfItemsFound
-                numberOfItemsTotal={isSearching ? totalNumberOfPositionSearchResults : filteredPositionListLength}
-              />
+        {complexFiltersTurnedOn && (
+          <FilterWrapper>
+            { showTitle && (
+              <span>{positionListExistsTitle}</span>
             )}
-            onFilteredItemsChange={this.onFilteredItemsChange}
-            onSearch={this.onPositionSearch}
-            onToggleSearch={this.handleToggleSearchBallot}
-            positionSearchMode
-            selectedFiltersDefault={selectedFiltersDefault}
-          >
-            {/* props get added to this component in FilterBase */}
-            <VoterGuideOrganizationFilter />
-          </FilterBase>
-          {(isSearching && searchText) && (
-            <SearchTitle>
-              Searching for &quot;
-              {searchText}
-              &quot;
-            </SearchTitle>
-          )}
-        </FilterWrapper>
+            <FilterBase
+              allItems={positionList}
+              groupedFilters={incomingPositionListLength > TURN_ON_FILTERS_WHEN_MORE_THAN_THIS_NUMBER_OF_ITEMS ? groupedFilters : []}
+              islandFilters={incomingPositionListLength > TURN_ON_FILTERS_WHEN_MORE_THAN_THIS_NUMBER_OF_ITEMS ? islandFilters : []}
+              numberOfItemsFoundNode={(
+                <NumberOfItemsFound
+                  numberOfItemsTotal={isSearching ? totalNumberOfPositionSearchResults : filteredPositionListLength}
+                />
+              )}
+              onFilteredItemsChange={this.onFilteredItemsChange}
+              onSearch={this.onPositionSearch}
+              onToggleSearch={this.handleToggleSearchBallot}
+              positionSearchMode
+              selectedFiltersDefault={selectedFiltersDefault}
+            >
+              {/* props get added to this component in FilterBase */}
+              <VoterGuideOrganizationFilter />
+            </FilterBase>
+            {(isSearching && searchText) && (
+              <SearchTitle>
+                Searching for &quot;
+                {searchText}
+                &quot;
+              </SearchTitle>
+            )}
+          </FilterWrapper>
+        )}
         <UnorderedListWrapper className="card-child__list-group">
           {(isSearching ? positionSearchResults : filteredPositionList).map((onePosition) => {
             // console.log('numberOfPositionItemsDisplayed:', numberOfPositionItemsDisplayed);
@@ -402,7 +405,7 @@ class PositionList extends Component {
             );
           })}
         </UnorderedListWrapper>
-        <ShowMoreItemsWrapper id="showMoreItemsId" onClick={this.increaseNumberOfPositionItemsToDisplay}>
+        <ShowMoreItemsWrapper id="showMoreItemsId" onClick={() => this.increaseNumberOfPositionItemsToDisplay(20)}>
           <Suspense fallback={<></>}>
             <ShowMoreItems
               loadingMoreItemsNow={loadingMoreItems}

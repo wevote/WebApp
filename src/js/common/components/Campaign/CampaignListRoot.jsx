@@ -225,7 +225,7 @@ class CampaignListRoot extends Component {
 
   render () {
     renderLog('CampaignListRoot');  // Set LOG_RENDER_EVENTS to log all renders
-    const { hideTitle, listModeFilters, searchText, titleTextIfCampaigns } = this.props;
+    const { hideTitle, listModeFilters, searchText, titleTextForList } = this.props;
     const isSearching = searchText && searchText.length > 0;
     const { campaignList, campaignSearchResults, filteredCampaignList, timeStampOfChange } = this.state;
     const filteredCampaignListLength = (filteredCampaignList) ? filteredCampaignList.length : 0;
@@ -235,12 +235,12 @@ class CampaignListRoot extends Component {
     return (
       <CampaignListWrapper>
         {!!(!hideTitle &&
-            titleTextIfCampaigns &&
-            titleTextIfCampaigns.length &&
+            titleTextForList &&
+            titleTextForList.length &&
             campaignList) &&
         (
           <WhatIsHappeningTitle>
-            {titleTextIfCampaigns}
+            {titleTextForList}
           </WhatIsHappeningTitle>
         )}
         <ScrollingOuterWrapper>
@@ -269,7 +269,7 @@ CampaignListRoot.propTypes = {
   listModeFiltersTimeStampOfChange: PropTypes.number,
   searchText: PropTypes.string,
   stateCode: PropTypes.string,
-  titleTextIfCampaigns: PropTypes.string,
+  titleTextForList: PropTypes.string,
 };
 
 const styles = () => ({

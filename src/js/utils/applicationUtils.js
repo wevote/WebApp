@@ -5,7 +5,6 @@ import isMobileScreenSize, { isSmallerThanTablet } from '../common/utils/isMobil
 import Cookies from '../common/utils/js-cookie/Cookies';
 import normalizedImagePath from '../common/utils/normalizedImagePath';
 import stringContains from '../common/utils/stringContains';
-import VoterStore from '../stores/VoterStore';
 
 // We have to do all this, because we allow urls where the path starts with a twitter username (handle)
 // as a result every path has to be evaluated for an exact routable match, and what is left is a twitter handle path.
@@ -256,15 +255,17 @@ export function getApplicationViewBooleans (pathname) {
   // on the "Ready" landing page, and if not signed in or not isCordova()
   // Once the voter is signed in, we weave the footer links into the profile page
   let showFooterMain = false;
-  if (VoterStore.getVoterIsSignedIn()) {
-    // We currently don't show footer once voter is signed in
-  } else if (
+  // if (VoterStore.getVoterIsSignedIn()) {
+  //   // Before March 2023 we didn't show footer once voter is signed in
+  // } else
+  if (
     pathnameLowerCase.endsWith('/cs/') ||
     pathnameLowerCase.startsWith('/ready') ||
     (pathnameLowerCase === '/start-a-campaign') ||
     (pathnameLowerCase === '/welcome') ||
     (pathnameLowerCase === '/')) {
     showFooterMain = true;
+    // Note: This gets overridden (and the footer is not shown) in a variety of Cordova configurations
   }
 
   let showShareButtonFooter = false;
