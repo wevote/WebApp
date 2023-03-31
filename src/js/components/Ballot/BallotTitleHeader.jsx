@@ -211,6 +211,7 @@ class BallotTitleHeader extends Component {
                               allowTextWrap={allowTextWrap}
                               centerText={centerText}
                               className={linksOff ? '' : 'u-cursor--pointer'}
+                              id="ballotTitleBallotAddressSubstituted"
                               onClick={this.showSelectBallotModalEditAddress}
                             >
                               Ballot for
@@ -227,6 +228,7 @@ class BallotTitleHeader extends Component {
                                   allowTextWrap={allowTextWrap}
                                   centerText={centerText}
                                   className={linksOff ? '' : 'u-cursor--pointer'}
+                                  id="ballotTitleBallotAddress"
                                   onClick={this.showSelectBallotModalEditAddress}
                                 >
                                   Ballot for
