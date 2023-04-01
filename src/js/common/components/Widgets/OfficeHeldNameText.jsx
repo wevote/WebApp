@@ -7,7 +7,11 @@ import { renderLog } from '../../utils/logging';
 import toTitleCase from '../../utils/toTitleCase';
 
 function isAllUpperCase (str) {
-  return str === str.toUpperCase();
+  if (str) {
+    return str === str.toUpperCase();
+  } else {
+    return false;
+  }
 }
 
 // React functional component example
