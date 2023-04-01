@@ -12,6 +12,7 @@ export default {
     Dispatcher.loadEndpoint('representativesQuery',
       {
         index_start: indexStart,
+        number_requested: 50,
         race_office_level_list: raceOfficeLevelList,
         search_text: searchText,
         state: stateCode,

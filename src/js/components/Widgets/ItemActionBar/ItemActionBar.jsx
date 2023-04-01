@@ -8,6 +8,8 @@ import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 import SupportActions from '../../../actions/SupportActions';
 import VoterActions from '../../../actions/VoterActions';
+import Cookies from '../../../common/utils/js-cookie/Cookies';
+import { convertToInteger } from '../../../common/utils/textFormat';
 import { renderLog } from '../../../common/utils/logging';
 import normalizedImagePath from '../../../common/utils/normalizedImagePath';
 import stringContains from '../../../common/utils/stringContains';
@@ -20,6 +22,7 @@ import PositionPublicToggle from '../PositionPublicToggle';
 import ShareButtonDropDown from '../ShareButtonDropdown';
 import { openSnackbar } from '../../../common/components/Widgets/SnackNotifier';
 
+const NUMBER_OF_BALLOT_CHOICES_ALLOWED_BEFORE_SHOW_MODAL = 3;
 const shareIconSvg = '../../../../img/global/svg-icons/share-icon.svg';
 
 
@@ -51,36 +54,52 @@ class ItemActionBar extends PureComponent {
   componentDidMount () {
     // console.log('itemActionBar, NEW componentDidMount');
     const { ballotItemWeVoteId } = this.props;
-    const isMeasure = stringContains('meas', ballotItemWeVoteId); // isCandidate = the default
-    let ballotItemType = 'CANDIDATE';
-    if (isMeasure) {
-      ballotItemType = 'MEASURE';
-    }
-    let isOpposeAPIState = false;
-    let voterPositionIsPublic = false;
-    let isSupportAPIState = false;
-    let numberOfSupportPositionsForScore = 0;
-    let numberOfOpposePositionsForScore = 0;
-    let voterTextStatement = '';
-    const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(ballotItemWeVoteId);
-    if (ballotItemStatSheet) {
-      const { voterOpposesBallotItem, voterSupportsBallotItem } = ballotItemStatSheet;
-      ({ numberOfOpposePositionsForScore, numberOfSupportPositionsForScore, voterPositionIsPublic, voterTextStatement } = ballotItemStatSheet);
-      isOpposeAPIState = voterOpposesBallotItem || false;
-      isSupportAPIState = voterSupportsBallotItem || false;
-    }
+    if (ballotItemWeVoteId) {
+      const isCandidate = stringContains('cand', ballotItemWeVoteId); // isCandidate = the default
+      const isMeasure = stringContains('meas', ballotItemWeVoteId); // isCandidate = the default
+      const isPolitician = stringContains('pol', ballotItemWeVoteId);
+      let ballotItemType;
+      if (isCandidate) {
+        ballotItemType = 'CANDIDATE';
+      } else if (isMeasure) {
+        ballotItemType = 'MEASURE';
+      } else if (isPolitician) {
+        ballotItemType = 'POLITICIAN';
+      }
+      let isOpposeAPIState = false;
+      let voterPositionIsPublic = false;
+      let isSupportAPIState = false;
+      let numberOfSupportPositionsForScore = 0;
+      let numberOfOpposePositionsForScore = 0;
+      let voterTextStatement = '';
+      const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(ballotItemWeVoteId);
+      if (ballotItemStatSheet) {
+        const {
+          voterOpposesBallotItem,
+          voterSupportsBallotItem,
+        } = ballotItemStatSheet;
+        ({
+          numberOfOpposePositionsForScore,
+          numberOfSupportPositionsForScore,
+          voterPositionIsPublic,
+          voterTextStatement,
+        } = ballotItemStatSheet);
+        isOpposeAPIState = voterOpposesBallotItem || false;
+        isSupportAPIState = voterSupportsBallotItem || false;
+      }
 
-    this.setState({
-      ballotItemType,
-      ballotItemWeVoteId,
-      isOpposeAPIState,
-      voterPositionIsPublic,
-      isSupportAPIState,
-      numberOfOpposePositionsForScore,
-      numberOfSupportPositionsForScore,
-      voterTextStatement,
-    }, this.onNewBallotItemWeVoteId);
-    // window.addEventListener('scroll', this.onScroll);
+      this.setState({
+        ballotItemType,
+        ballotItemWeVoteId,
+        isOpposeAPIState,
+        voterPositionIsPublic,
+        isSupportAPIState,
+        numberOfOpposePositionsForScore,
+        numberOfSupportPositionsForScore,
+        voterTextStatement,
+      }, this.onNewBallotItemWeVoteId);
+      // window.addEventListener('scroll', this.onScroll);
+    }
     this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
   }
 
@@ -89,10 +108,16 @@ class ItemActionBar extends PureComponent {
     // console.log('itemActionBar, RELOAD componentWillReceiveProps');
     if (nextProps.ballotItemWeVoteId !== undefined && nextProps.ballotItemWeVoteId && nextProps.ballotItemWeVoteId !== this.state.ballotItemWeVoteId) {
       // console.log('itemActionBar, ballotItemWeVoteId setState');
+      const isCandidate = stringContains('cand', nextProps.ballotItemWeVoteId); // isCandidate = the default
       const isMeasure = stringContains('meas', nextProps.ballotItemWeVoteId); // isCandidate = the default
-      let ballotItemType = 'CANDIDATE';
-      if (isMeasure) {
+      const isPolitician = stringContains('pol', nextProps.ballotItemWeVoteId);
+      let ballotItemType;
+      if (isCandidate) {
+        ballotItemType = 'CANDIDATE';
+      } else if (isMeasure) {
         ballotItemType = 'MEASURE';
+      } else if (isPolitician) {
+        ballotItemType = 'POLITICIAN';
       }
       this.setState({
         ballotItemType,
@@ -125,80 +150,89 @@ class ItemActionBar extends PureComponent {
 
   onSupportStoreChange () {
     const { ballotItemWeVoteId, isOpposeAPIState, isSupportAPIState, isOpposeLocalState, isSupportLocalState } = this.state;
-    const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(ballotItemWeVoteId);
-    if (ballotItemStatSheet) {
-      const { numberOfOpposePositionsForScore, numberOfSupportPositionsForScore, voterOpposesBallotItem, voterPositionIsPublic, voterSupportsBallotItem, voterTextStatement } = ballotItemStatSheet;
-
-      if (numberOfOpposePositionsForScore !== undefined && numberOfOpposePositionsForScore !== this.state.numberOfSupportPositionsForScore) {
-        // console.log('itemActionBar, support_count setState');
-        this.setState({
-          numberOfSupportPositionsForScore,
-        });
-      }
-      if (numberOfOpposePositionsForScore !== undefined && numberOfOpposePositionsForScore !== this.state.numberOfOpposePositionsForScore) {
-        // console.log('itemActionBar, oppose_count setState');
-        this.setState({
+    if (ballotItemWeVoteId) {
+      const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(ballotItemWeVoteId);
+      if (ballotItemStatSheet) {
+        const {
           numberOfOpposePositionsForScore,
-        });
-      }
-      // We only want to update the state when the API is_support and is_oppose 'catches up' with the local state
+          numberOfSupportPositionsForScore,
+          voterOpposesBallotItem,
+          voterPositionIsPublic,
+          voterSupportsBallotItem,
+          voterTextStatement,
+        } = ballotItemStatSheet;
 
-      // Are we 'locking' the isSupport or isOppose state currently?
-      let localOpposeStateLocked = false;
-      let localSupportStateLocked = false;
-      if (isOpposeLocalState !== undefined) {
-        localOpposeStateLocked = true;
-      }
-      if (isSupportLocalState !== undefined) {
-        localSupportStateLocked = true;
-      }
-      // console.log('localOpposeStateLocked: ', localOpposeStateLocked, ', localSupportStateLocked: ', localSupportStateLocked);
-      if (localOpposeStateLocked) {
-        // Don't make a change until the API state matches the local state
-        if (voterOpposesBallotItem !== undefined && voterOpposesBallotItem === isOpposeLocalState) {
-          // console.log('itemActionBar, isOpposeAPIState CATCHUP setState');
+        if (numberOfOpposePositionsForScore !== undefined && numberOfOpposePositionsForScore !== this.state.numberOfSupportPositionsForScore) {
+          // console.log('itemActionBar, support_count setState');
+          this.setState({
+            numberOfSupportPositionsForScore,
+          });
+        }
+        if (numberOfOpposePositionsForScore !== undefined && numberOfOpposePositionsForScore !== this.state.numberOfOpposePositionsForScore) {
+          // console.log('itemActionBar, oppose_count setState');
+          this.setState({
+            numberOfOpposePositionsForScore,
+          });
+        }
+        // We only want to update the state when the API is_support and is_oppose 'catches up' with the local state
+
+        // Are we 'locking' the isSupport or isOppose state currently?
+        let localOpposeStateLocked = false;
+        let localSupportStateLocked = false;
+        if (isOpposeLocalState !== undefined) {
+          localOpposeStateLocked = true;
+        }
+        if (isSupportLocalState !== undefined) {
+          localSupportStateLocked = true;
+        }
+        // console.log('localOpposeStateLocked: ', localOpposeStateLocked, ', localSupportStateLocked: ', localSupportStateLocked);
+        if (localOpposeStateLocked) {
+          // Don't make a change until the API state matches the local state
+          if (voterOpposesBallotItem !== undefined && voterOpposesBallotItem === isOpposeLocalState) {
+            // console.log('itemActionBar, isOpposeAPIState CATCHUP setState');
+            this.setState({
+              isOpposeAPIState: voterOpposesBallotItem,
+              isOpposeLocalState: undefined,
+              transitioning: false,
+            });
+          }
+        } else if (voterOpposesBallotItem !== undefined && voterOpposesBallotItem !== isOpposeAPIState) {
+          // Don't make a change if the value from the API server already matches isOpposeAPIState
+          // console.log('itemActionBar, isOpposeAPIState FRESH setState');
           this.setState({
             isOpposeAPIState: voterOpposesBallotItem,
             isOpposeLocalState: undefined,
             transitioning: false,
           });
         }
-      } else if (voterOpposesBallotItem !== undefined && voterOpposesBallotItem !== isOpposeAPIState) {
-        // Don't make a change if the value from the API server already matches isOpposeAPIState
-        // console.log('itemActionBar, isOpposeAPIState FRESH setState');
-        this.setState({
-          isOpposeAPIState: voterOpposesBallotItem,
-          isOpposeLocalState: undefined,
-          transitioning: false,
-        });
-      }
-      if (localSupportStateLocked) {
-        // Don't make a change until the API state matches the local state
-        if (voterSupportsBallotItem !== undefined && voterSupportsBallotItem === isSupportLocalState) {
-          // console.log('itemActionBar, isSupportLocalState CATCHUP setState');
+        if (localSupportStateLocked) {
+          // Don't make a change until the API state matches the local state
+          if (voterSupportsBallotItem !== undefined && voterSupportsBallotItem === isSupportLocalState) {
+            // console.log('itemActionBar, isSupportLocalState CATCHUP setState');
+            this.setState({
+              isSupportAPIState: voterSupportsBallotItem,
+              isSupportLocalState: undefined,
+              transitioning: false,
+            });
+          }
+        } else if (voterSupportsBallotItem !== undefined && voterSupportsBallotItem !== isSupportAPIState) {
+          // Don't make a change if the value from the API server already matches isSupportAPIState
+          // console.log('itemActionBar, isSupportAPIState FRESH setState');
           this.setState({
             isSupportAPIState: voterSupportsBallotItem,
             isSupportLocalState: undefined,
             transitioning: false,
           });
         }
-      } else if (voterSupportsBallotItem !== undefined && voterSupportsBallotItem !== isSupportAPIState) {
-        // Don't make a change if the value from the API server already matches isSupportAPIState
-        // console.log('itemActionBar, isSupportAPIState FRESH setState');
+        if (voterTextStatement) {
+          this.setState({
+            voterTextStatement,
+          });
+        }
         this.setState({
-          isSupportAPIState: voterSupportsBallotItem,
-          isSupportLocalState: undefined,
-          transitioning: false,
+          voterPositionIsPublic,
         });
       }
-      if (voterTextStatement) {
-        this.setState({
-          voterTextStatement,
-        });
-      }
-      this.setState({
-        voterPositionIsPublic,
-      });
     }
   }
 
@@ -260,7 +294,7 @@ class ItemActionBar extends PureComponent {
   };
 
   supportButton = (localUniqueId) => {
-    const { classes, externalUniqueId, shareButtonHide } = this.props;
+    const { classes, externalUniqueId, shareButtonHide, useSupportWording } = this.props;
     return (
       <Button
        id={`itemActionBarSupportButton-${externalUniqueId}-${localUniqueId}`}
@@ -275,14 +309,30 @@ class ItemActionBar extends PureComponent {
              className={shareButtonHide ? 'item-actionbar--inline__position-choose-btn-label--at-state' :
                'item-actionbar__position-choose-btn-label--at-state'}
           >
-            Chosen
+            {useSupportWording ? (
+              <>
+                Supporting
+              </>
+            ) : (
+              <>
+                Chosen
+              </>
+            )}
           </span>
         ) : (
           <span
              className={shareButtonHide ? 'item-actionbar--inline__position-choose-btn-label' :
                'item-actionbar__position-choose-btn-label'}
           >
-            Choose
+            {useSupportWording ? (
+              <>
+                Support
+              </>
+            ) : (
+              <>
+                Choose
+              </>
+            )}
           </span>
         )}
       </Button>
@@ -481,7 +531,10 @@ class ItemActionBar extends PureComponent {
 
     const supportOpposeModalHasBeenShown = VoterStore.getInterfaceFlagState(VoterConstants.SUPPORT_OPPOSE_MODAL_SHOWN);
     // const supportOpposeModalHasBeenShown = false; // For testing
-    if (!supportOpposeModalHasBeenShown) {
+    let numberOfBallotChoicesMade = convertToInteger(Cookies.get('number_of_ballot_choices_made')) || 0;
+    numberOfBallotChoicesMade += 1;
+    Cookies.set('number_of_ballot_choices_made', numberOfBallotChoicesMade, { expires: 1, path: '/' });
+    if (!supportOpposeModalHasBeenShown && numberOfBallotChoicesMade >= NUMBER_OF_BALLOT_CHOICES_ALLOWED_BEFORE_SHOW_MODAL) {
       AppObservableStore.setShowChooseOrOpposeIntroModal(true, this.state.ballotItemType);
       VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.SUPPORT_OPPOSE_MODAL_SHOWN);
     }
@@ -536,7 +589,10 @@ class ItemActionBar extends PureComponent {
 
     const supportOpposeModalHasBeenShown = VoterStore.getInterfaceFlagState(VoterConstants.SUPPORT_OPPOSE_MODAL_SHOWN);
     // const supportOpposeModalHasBeenShown = false; // For testing
-    if (!supportOpposeModalHasBeenShown) {
+    let numberOfBallotChoicesMade = convertToInteger(Cookies.get('number_of_ballot_choices_made')) || 0;
+    numberOfBallotChoicesMade += 1;
+    Cookies.set('number_of_ballot_choices_made', numberOfBallotChoicesMade, { expires: 1, path: '/' });
+    if (!supportOpposeModalHasBeenShown && numberOfBallotChoicesMade >= NUMBER_OF_BALLOT_CHOICES_ALLOWED_BEFORE_SHOW_MODAL) {
       AppObservableStore.setShowChooseOrOpposeIntroModal(true, this.state.ballotItemType);
       VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.SUPPORT_OPPOSE_MODAL_SHOWN);
     }
@@ -568,14 +624,20 @@ class ItemActionBar extends PureComponent {
   render () {
     renderLog('ItemActionBar ItemActionBar.jsx');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('ItemActionBar render');
-    const { buttonsOnly, commentButtonHide, commentButtonHideInMobile, hideSupportYes, hideOpposeNo } = this.props;
+    const { buttonsOnly, commentButtonHide, commentButtonHideInMobile, hideSupportYes, hideOpposeNo, useSupportWording } = this.props;
     const {
       ballotItemType, ballotItemWeVoteId, isOpposeAPIState, isSupportAPIState,
       numberOfOpposePositionsForScore, numberOfSupportPositionsForScore,
       voterPositionIsPublic,
     } = this.state;
 
-    if (numberOfSupportPositionsForScore === undefined ||
+    if (
+      ballotItemWeVoteId === undefined ||
+      ballotItemWeVoteId === '') {
+      // Do not render if a ballotItemWeVoteId is not set
+      return null;
+    } else if (
+      numberOfSupportPositionsForScore === undefined ||
       numberOfOpposePositionsForScore === undefined ||
       isOpposeAPIState === undefined ||
       voterPositionIsPublic === undefined ||
@@ -605,6 +667,8 @@ class ItemActionBar extends PureComponent {
     let urlBeingShared;
     if (ballotItemType === 'CANDIDATE') {
       urlBeingShared = `${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}/candidate/${ballotItemWeVoteId}`;
+    } else if (ballotItemType === 'POLITICIAN') {
+      urlBeingShared = `${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}/${ballotItemWeVoteId}/p/`;
     } else {
       urlBeingShared = `${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}/measure/${ballotItemWeVoteId}`;
     }
@@ -622,6 +686,9 @@ class ItemActionBar extends PureComponent {
 
     const ballotItemDisplayName = this.props.ballotItemDisplayName || '';
     let supportButtonSelectedPopOverText = 'Click to choose';
+    if (useSupportWording) {
+      supportButtonSelectedPopOverText = 'Click to support';
+    }
     if (ballotItemDisplayName.length > 0) {
       supportButtonSelectedPopOverText += ` ${ballotItemDisplayName}.`;
     } else {
@@ -629,12 +696,19 @@ class ItemActionBar extends PureComponent {
     }
 
     if (voterPositionIsPublic) {
-      supportButtonSelectedPopOverText += ' Your choice will be visible to the public.';
+      if (useSupportWording) {
+        supportButtonSelectedPopOverText += ' Your support will be visible to the public.';
+      } else {
+        supportButtonSelectedPopOverText += ' Your choice will be visible to the public.';
+      }
     } else {
       supportButtonSelectedPopOverText += ' Only your We Vote friends will see your choice.';
     }
 
     let supportButtonUnselectedPopOverText = 'Click to remove your choice';
+    if (useSupportWording) {
+      supportButtonUnselectedPopOverText = 'Click to remove your support';
+    }
     if (ballotItemDisplayName.length > 0) {
       supportButtonUnselectedPopOverText += ` for ${ballotItemDisplayName}.`;
     } else {
@@ -696,7 +770,8 @@ class ItemActionBar extends PureComponent {
                 {/* Visible on desktop screens */}
                 {buttonsOnly ? (
                   <StackedButton className="d-none d-lg-block" onlyTwoButtons={commentButtonHide}>
-                    {ballotItemType === 'CANDIDATE' ? this.supportButtonNoText(`desktopVersion-${ballotItemWeVoteId}`) : this.measureYesButtonNoText(`desktopVersion-${ballotItemWeVoteId}`)}
+                    {(ballotItemType === 'CANDIDATE' || ballotItemType === 'POLITICIAN') && this.supportButtonNoText(`desktopVersion-${ballotItemWeVoteId}`)}
+                    {(ballotItemType === 'MEASURE') && this.measureYesButtonNoText(`desktopVersion-${ballotItemWeVoteId}`)}
                   </StackedButton>
                 ) : (
                   <ButtonWrapper className="u-push--xs d-none d-lg-block">
@@ -705,18 +780,23 @@ class ItemActionBar extends PureComponent {
                       placement="top"
                       rootClose
                     >
-                      {ballotItemType === 'CANDIDATE' ? this.supportButton(`desktopVersion-${ballotItemWeVoteId}`) : this.measureYesButton(`desktopVersion-${ballotItemWeVoteId}`)}
+                      <div>
+                        {(ballotItemType === 'CANDIDATE' || ballotItemType === 'POLITICIAN') && this.supportButton(`desktopVersion-${ballotItemWeVoteId}`)}
+                        {(ballotItemType === 'MEASURE') && this.measureYesButton(`desktopVersion-${ballotItemWeVoteId}`)}
+                      </div>
                     </OverlayTrigger>
                   </ButtonWrapper>
                 )}
                 {/* Visible on mobile devices and tablets */}
                 {buttonsOnly ? (
                   <StackedButton className="d-lg-none d-xl-none" onlyTwoButtons={commentButtonHideInMobile}>
-                    {ballotItemType === 'CANDIDATE' ? this.supportButtonNoText(`mobileVersion-${ballotItemWeVoteId}`) : this.measureYesButtonNoText(`mobileVersion-${ballotItemWeVoteId}`)}
+                    {(ballotItemType === 'CANDIDATE' || ballotItemType === 'POLITICIAN') && this.supportButtonNoText(`mobileVersion-${ballotItemWeVoteId}`)}
+                    {ballotItemType === 'MEASURE' && this.measureYesButtonNoText(`mobileVersion-${ballotItemWeVoteId}`)}
                   </StackedButton>
                 ) : (
                   <ButtonWrapper className="u-push--xs u-push--xs d-lg-none">
-                    {ballotItemType === 'CANDIDATE' ? this.supportButton(`mobileVersion-${ballotItemWeVoteId}`) : this.measureYesButton(`mobileVersion-${ballotItemWeVoteId}`)}
+                    {(ballotItemType === 'CANDIDATE' || ballotItemType === 'POLITICIAN') && this.supportButton(`mobileVersion-${ballotItemWeVoteId}`)}
+                    {ballotItemType === 'MEASURE' && this.measureYesButton(`mobileVersion-${ballotItemWeVoteId}`)}
                   </ButtonWrapper>
                 )}
               </>
@@ -728,7 +808,8 @@ class ItemActionBar extends PureComponent {
                 {/* Visible on desktop screens */}
                 {buttonsOnly ? (
                   <StackedButton className="d-none d-lg-block" onlyTwoButtons={commentButtonHide}>
-                    {ballotItemType === 'CANDIDATE' ? this.opposeButtonNoText(`desktopVersion-${ballotItemWeVoteId}`) : this.measureNoButtonNoText(`desktopVersion-${ballotItemWeVoteId}`)}
+                    {(ballotItemType === 'CANDIDATE' || ballotItemType === 'POLITICIAN') && this.opposeButtonNoText(`desktopVersion-${ballotItemWeVoteId}`)}
+                    {ballotItemType === 'MEASURE' && this.measureNoButtonNoText(`desktopVersion-${ballotItemWeVoteId}`)}
                   </StackedButton>
                 ) : (
                   <ButtonWrapperRight className="d-none d-lg-block">
@@ -737,18 +818,23 @@ class ItemActionBar extends PureComponent {
                       placement="top"
                       rootClose
                     >
-                      {ballotItemType === 'CANDIDATE' ? this.opposeButton(`desktopVersion-${ballotItemWeVoteId}`) : this.measureNoButton(`desktopVersion-${ballotItemWeVoteId}`)}
+                      <div>
+                        {(ballotItemType === 'CANDIDATE' || ballotItemType === 'POLITICIAN') && this.opposeButton(`desktopVersion-${ballotItemWeVoteId}`)}
+                        {ballotItemType === 'MEASURE' && this.measureNoButton(`desktopVersion-${ballotItemWeVoteId}`)}
+                      </div>
                     </OverlayTrigger>
                   </ButtonWrapperRight>
                 )}
                 {/* Visible on mobile devices and tablets */}
                 {buttonsOnly ? (
                   <StackedButton className="d-lg-none d-xl-none" onlyTwoButtons={commentButtonHideInMobile}>
-                    {ballotItemType === 'CANDIDATE' ? this.opposeButtonNoText(`mobileVersion-${ballotItemWeVoteId}`) : this.measureNoButtonNoText(`mobileVersion-${ballotItemWeVoteId}`)}
+                    {(ballotItemType === 'CANDIDATE' || ballotItemType === 'POLITICIAN') && this.opposeButtonNoText(`mobileVersion-${ballotItemWeVoteId}`)}
+                    {ballotItemType === 'MEASURE' && this.measureNoButtonNoText(`mobileVersion-${ballotItemWeVoteId}`)}
                   </StackedButton>
                 ) : (
                   <ButtonWrapperRight className="d-lg-none">
-                    {ballotItemType === 'CANDIDATE' ? this.opposeButton(`mobileVersion-${ballotItemWeVoteId}`) : this.measureNoButton(`mobileVersion-${ballotItemWeVoteId}`)}
+                    {(ballotItemType === 'CANDIDATE' || ballotItemType === 'POLITICIAN') && this.opposeButton(`mobileVersion-${ballotItemWeVoteId}`)}
+                    {ballotItemType === 'MEASURE' && this.measureNoButton(`mobileVersion-${ballotItemWeVoteId}`)}
                   </ButtonWrapperRight>
                 )}
               </>
@@ -799,12 +885,13 @@ ItemActionBar.propTypes = {
   hidePositionPublicToggle: PropTypes.bool,
   hideOpposeNo: PropTypes.bool,
   hideSupportYes: PropTypes.bool,
+  inModal: PropTypes.bool,
   opposeHideInMobile: PropTypes.bool,
   positionPublicToggleWrapAllowed: PropTypes.bool,
   shareButtonHide: PropTypes.bool,
   supportOrOpposeHasBeenClicked: PropTypes.func,
   togglePositionStatementFunction: PropTypes.func,
-  inModal: PropTypes.bool,
+  useSupportWording: PropTypes.bool,
   // urlWithoutHash: PropTypes.string,
 };
 

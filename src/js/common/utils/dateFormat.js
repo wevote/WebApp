@@ -62,6 +62,21 @@ export function getTodayAsInteger (daysInPast = 0) {
   return convertToInteger(dateAsString);
 }
 
+export function isThisYearInOfficeSetTrue (year, representative) {
+  const yearInOfficeKey = `year_in_office_${year}`;
+  // console.log('yearInOfficeKey: ', yearInOfficeKey);
+  return ((yearInOfficeKey in representative) && representative[yearInOfficeKey]);
+}
+
+export function isAnyYearInOfficeSetTrue (yearList, representative) {
+  for (let i = 0; i < yearList.length; i += 1) {
+    if (isThisYearInOfficeSetTrue(yearList[i], representative)) {
+      return true;
+    }
+  }
+  return false;
+}
+
 export function getYearFromUltimateElectionDate (ultimateElectionDate) {
   if (ultimateElectionDate) {
     const tempYear = String(ultimateElectionDate).slice(0, 4);

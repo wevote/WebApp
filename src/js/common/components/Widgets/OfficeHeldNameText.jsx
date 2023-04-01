@@ -2,30 +2,37 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Link } from 'react-router-dom';
+import adjustDistrictNameAndOfficeName from '../../utils/adjustDistrictNameAndOfficeName';
 import { renderLog } from '../../utils/logging';
+import toTitleCase from '../../utils/toTitleCase';
+
+function isAllUpperCase (str) {
+  return str === str.toUpperCase();
+}
 
 // React functional component example
 export default function OfficeHeldNameText (props) {
   renderLog('OfficeHeldNameText');  // Set LOG_RENDER_EVENTS to log all renders
-  let nameText = '';
-  let { districtName, officeHeldName } = props; // Mar 2023: Turning off officeLink until we can do design review
-  if (officeHeldName && officeHeldName.includes(districtName)) {
-    // This removes districtName in cases like 'Governor of California for California'
-    districtName = '';
-  } else if (districtName && districtName.includes(officeHeldName)) {
-    // This removes officeHeldName: 'Alcorn County Supervisor' with districtName: 'Alcorn County Supervisor District 2'
-    officeHeldName = '';
-  } else if (districtName && districtName.endsWith(' city')) {
-    const districtNameWithoutCity = districtName.slice(0, districtName.length - 5);
-    if (officeHeldName && officeHeldName.includes(districtNameWithoutCity)) {
-      // This removes districtName in cases like officeHeldName: 'Mayor of Los Angeles' with districtName: 'Los Angeles city'
-      districtName = '';
-    }
+  let districtNameFiltered;
+  let nameHtml;
+  let officeNameFiltered;
+  const { districtName: incomingDistrictName, officeName: incomingOfficeHeldName } = props; // Mar 2023: Turning off officeLink until we can do design review
+  if (isAllUpperCase(incomingDistrictName)) {
+    districtNameFiltered = toTitleCase(incomingDistrictName);
+  } else {
+    districtNameFiltered = incomingDistrictName;
   }
+  if (isAllUpperCase(incomingOfficeHeldName)) {
+    officeNameFiltered = toTitleCase(incomingOfficeHeldName);
+  } else {
+    officeNameFiltered = incomingOfficeHeldName;
+  }
+  const { districtName, officeName } = adjustDistrictNameAndOfficeName(districtNameFiltered, officeNameFiltered);
+  // console.log('districtName: ', districtName, 'officeName: ', officeName);
   const officeLink = null;
   if (districtName) {
-    if (officeHeldName === undefined) {
-      nameText = (
+    if (officeName === undefined) {
+      nameHtml = (
         <NoPoliticalPartySpan>
           <span>Representative for </span>
           {officeLink ? (
@@ -36,10 +43,10 @@ export default function OfficeHeldNameText (props) {
         </NoPoliticalPartySpan>
       );
     } else {
-      nameText = (
+      nameHtml = (
         <PartyAndOfficeWrapper>
           <span className="u-gray-darker">
-            {officeHeldName}
+            {officeName}
             {' '}
           </span>
           <span>for </span>
@@ -52,28 +59,28 @@ export default function OfficeHeldNameText (props) {
       );
     }
   } else {
-    nameText = (
+    nameHtml = (
       <PartyAndYearWrapper>
         <span className="u-gray-darker">
-          {officeHeldName}
+          {officeName}
         </span>
       </PartyAndYearWrapper>
     );
   }
 
-  return nameText;
+  return nameHtml;
 }
 OfficeHeldNameText.propTypes = {
-  officeHeldName: PropTypes.string,
-  // officeLink: PropTypes.string,
   districtName: PropTypes.string,
+  officeName: PropTypes.string,
+  // officeLink: PropTypes.string,
 };
-
-const NoPoliticalPartySpan = styled('span')`
-`;
 
 const DistrictNameSpan = styled('span')`
   color: #333;
+`;
+
+const NoPoliticalPartySpan = styled('span')`
 `;
 
 const PartyAndYearWrapper = styled('div')`
