@@ -424,6 +424,7 @@ class PoliticianDetailsPage extends Component {
     let priorCandidateCampaignsHtml = '';
     if (candidateCampaignList && candidateCampaignList.length > 0) {
       let contestOfficeName;
+      let districtName;
       let year;
       const yearsAndNamesAlreadySeen = [];
       const candidateCampaignListFiltered = candidateCampaignList.filter((candidateCampaign) => {
@@ -452,12 +453,16 @@ class PoliticianDetailsPage extends Component {
             contestOfficeName = candidateCampaign.contest_office_list[0].contest_office_name;
           }
         }
+        if (candidateCampaign.contest_office_list) {
+          districtName = candidateCampaign.contest_office_list[0].district_name;
+        }
         const showOfficeName = !!(contestOfficeName);
         const stateName = convertStateCodeToStateText(candidateCampaign.state_code);
         year = getYearFromUltimateElectionDate(candidateCampaign.candidate_ultimate_election_date);
         return (
           <CandidateCampaignWrapper key={key}>
             <OfficeNameText
+              districtName={districtName}
               officeName={contestOfficeName}
               politicalParty={candidateCampaign.party}
               showOfficeName={showOfficeName}
@@ -533,7 +538,7 @@ class PoliticianDetailsPage extends Component {
                     <OfficeHeldNameText
                       districtName={officeHeld.district_name}
                       key={officeHeld.office_held_we_vote_id}
-                      officeHeldName={officeHeld.office_held_name}
+                      officeName={officeHeld.office_held_name}
                     />
                   ))}
                 </OfficeHeldNameMobile>
@@ -629,7 +634,7 @@ class PoliticianDetailsPage extends Component {
                     <OfficeHeldNameText
                       districtName={officeHeld.district_name}
                       key={officeHeld.office_held_we_vote_id}
-                      officeHeldName={officeHeld.office_held_name}
+                      officeName={officeHeld.office_held_name}
                     />
                   ))}
                 </OfficeHeldNameDesktop>

@@ -4,14 +4,14 @@ import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import TruncateMarkup from 'react-truncate-markup';
 import styled from 'styled-components';
-import { convertStateCodeToStateText } from '../../common/utils/addressFunctions';
+// import { convertStateCodeToStateText } from '../../common/utils/addressFunctions';
 import {
   CampaignImageMobile, CampaignImagePlaceholderText, CampaignImageMobilePlaceholder, CampaignImageDesktopPlaceholder, CampaignImageDesktop,
   CandidateCardForListWrapper,
   OneCampaignPhotoWrapperMobile, OneCampaignPhotoDesktopColumn, OneCampaignTitle, OneCampaignOuterWrapper, OneCampaignTextColumn, OneCampaignInnerWrapper, OneCampaignDescription,
   SupportersWrapper, SupportersCount, SupportersActionLink,
 } from '../../common/components/Style/CampaignCardStyles';
-import { getTodayAsInteger, getYearFromUltimateElectionDate } from '../../common/utils/dateFormat';
+import { getTodayAsInteger } from '../../common/utils/dateFormat';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
 import RepresentativeStore from '../../stores/RepresentativeStore';
@@ -22,7 +22,7 @@ import numberWithCommas from '../../common/utils/numberWithCommas';
 // import { ElectionInPast, IndicatorButtonWrapper, IndicatorRow } from '../../common/components/Style/CampaignIndicatorStyles';
 
 const ItemActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemActionBar' */ '../Widgets/ItemActionBar/ItemActionBar'));
-const OfficeNameText = React.lazy(() => import(/* webpackChunkName: 'OfficeNameText' */ '../../common/components/Widgets/OfficeNameText'));
+const OfficeHeldNameText = React.lazy(() => import(/* webpackChunkName: 'OfficeHeldNameText' */ '../../common/components/Widgets/OfficeHeldNameText'));
 // const SupportButtonBeforeCompletionScreen = React.lazy(() => import(/* webpackChunkName: 'SupportButtonBeforeCompletionScreen' */ '../../common/components/CampaignSupport/SupportButtonBeforeCompletionScreen'));
 
 class RepresentativeCardForList extends Component {
@@ -249,14 +249,16 @@ class RepresentativeCardForList extends Component {
       ballot_item_display_name: ballotItemDisplayName,
       representative_photo_url_large: representativePhotoLargeUrl,
       representative_ultimate_election_date: representativeUltimateElectionDate,
-      contest_office_name: contestOfficeName,
+      office_held_name: officeHeldName,
+      office_held_district_name: districtName,
       // in_draft_mode: inDraftMode,
       // is_blocked_by_we_vote: isBlockedByWeVote,
       // is_in_team_review_mode: isInTeamReviewMode,
       // is_supporters_count_minimum_exceeded: isSupportersCountMinimumExceeded,
-      party: politicalParty,
+      political_party: politicalParty,
+      politician_we_vote_id: politicianWeVoteId,
       // seo_friendly_path: politicianSEOFriendlyPath,
-      state_code: stateCode,
+      // state_code: stateCode,
       supporters_count: supportersCount,
       supporters_count_next_goal: supportersCountNextGoal,
       twitter_description: twitterDescription,
@@ -267,8 +269,8 @@ class RepresentativeCardForList extends Component {
     if (!representativeWeVoteId) {
       return null;
     }
-    const stateName = convertStateCodeToStateText(stateCode);
-    const year = getYearFromUltimateElectionDate(representativeUltimateElectionDate);
+    // const stateName = convertStateCodeToStateText(stateCode);
+    // const year = getYearFromUltimateElectionDate(representativeUltimateElectionDate);
     const todayAsInteger = getTodayAsInteger();
     const finalElectionDateInPast = representativeUltimateElectionDate && (representativeUltimateElectionDate <= todayAsInteger);
     return (
@@ -276,21 +278,18 @@ class RepresentativeCardForList extends Component {
         <OneCampaignOuterWrapper limitCardWidth={limitCardWidth}>
           <OneCampaignInnerWrapper limitCardWidth={limitCardWidth || isMobileScreenSize()}>
             <OneCampaignTextColumn>
-              <div>
+              <TitleAndTextWrapper>
                 <OneCampaignTitle>
                   <Link to={this.getRepresentativeBasePath()}>
                     {ballotItemDisplayName}
                   </Link>
                 </OneCampaignTitle>
-                {(contestOfficeName || politicalParty) && (
+                {(officeHeldName || politicalParty) && (
                   <div className="u-cursor--pointer" onClick={this.onRepresentativeClick}>
                     <Suspense fallback={<></>}>
-                      <OfficeNameText
-                        officeName={contestOfficeName}
-                        politicalParty={politicalParty}
-                        showOfficeName
-                        stateName={stateName}
-                        year={`${year}`}
+                      <OfficeHeldNameText
+                        districtName={districtName}
+                        officeName={officeHeldName}
                       />
                     </Suspense>
                   </div>
@@ -356,33 +355,21 @@ class RepresentativeCardForList extends Component {
                   <CampaignOwnersList campaignXWeVoteId={campaignXWeVoteId} compressedMode />
                 </CampaignOwnersWrapper>
                 */}
-              </div>
-              {/*
-              <IndicatorRow>
-                {finalElectionDateInPast && (
-                  <IndicatorButtonWrapper>
-                    <ElectionInPast>
-                      Election in Past
-                    </ElectionInPast>
-                  </IndicatorButtonWrapper>
-                )}
-              </IndicatorRow>
-              */}
-              {!finalElectionDateInPast && (
-                <ItemActionBarOutsideWrapper>
-                  <Suspense fallback={<></>}>
-                    <ItemActionBar
-                      ballotItemWeVoteId={representativeWeVoteId}
-                      ballotItemDisplayName={ballotItemDisplayName}
-                      commentButtonHide
-                      // externalUniqueId={`RepresentativeCardForList-ItemActionBar-${oneRepresentative.we_vote_id}-${externalUniqueId}`}
-                      hidePositionPublicToggle
-                      positionPublicToggleWrapAllowed
-                      shareButtonHide
-                    />
-                  </Suspense>
-                </ItemActionBarOutsideWrapper>
-              )}
+              </TitleAndTextWrapper>
+              <ItemActionBarOutsideWrapper>
+                <Suspense fallback={<></>}>
+                  <ItemActionBar
+                    ballotItemWeVoteId={politicianWeVoteId}
+                    ballotItemDisplayName={ballotItemDisplayName}
+                    commentButtonHide
+                    // externalUniqueId={`RepresentativeCardForList-ItemActionBar-${oneRepresentative.we_vote_id}-${externalUniqueId}`}
+                    hidePositionPublicToggle
+                    positionPublicToggleWrapAllowed
+                    shareButtonHide
+                    useSupportWording
+                  />
+                </Suspense>
+              </ItemActionBarOutsideWrapper>
             </OneCampaignTextColumn>
             <OneCampaignPhotoWrapperMobile className="u-cursor--pointer u-show-mobile" onClick={this.onRepresentativeClick}>
               {representativePhotoLargeUrl ? (
@@ -437,12 +424,17 @@ const styles = (theme) => ({
 });
 
 const ItemActionBarOutsideWrapper = styled('div')`
-  display: flex;
+  align-items: flex-end;
   cursor: pointer;
+  display: flex;
   flex-direction: row;
-  justify-content: flex-start;
-  margin-top: 12px;
+  height: 166px;
+  justify-content: center;
   width: 100%;
+`;
+
+const TitleAndTextWrapper = styled('div')`
+  height: 60px;
 `;
 
 export default withStyles(styles)(RepresentativeCardForList);

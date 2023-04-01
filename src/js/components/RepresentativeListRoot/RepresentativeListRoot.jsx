@@ -5,11 +5,13 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { HorizontallyScrollingContainer, ScrollingInnerWrapper, ScrollingOuterWrapper } from '../../common/components/Style/ScrollingStyles';
 import { convertStateCodeToStateText } from '../../common/utils/addressFunctions';
-import { getTodayAsInteger, getYearFromUltimateElectionDate } from '../../common/utils/dateFormat';
+import { getYearFromUltimateElectionDate, isAnyYearInOfficeSetTrue, isThisYearInOfficeSetTrue } from '../../common/utils/dateFormat';
 import { renderLog } from '../../common/utils/logging';
 import RepresentativeStore from '../../stores/RepresentativeStore';
 
 const RepresentativeCardList = React.lazy(() => import(/* webpackChunkName: 'RepresentativeCardList' */ './RepresentativeCardList'));
+// import OfficeHeldConstants from '../../constants/OfficeHeldConstants';  // I couldn't get this to work
+const OFFICE_HELD_YEARS_AVAILABLE = [2023, 2024, 2025, 2026];
 
 class RepresentativeListRoot extends Component {
   constructor (props) {
@@ -26,7 +28,20 @@ class RepresentativeListRoot extends Component {
   componentDidMount () {
     // console.log('RepresentativeListRoot componentDidMount');
     this.representativeStoreListener = RepresentativeStore.addListener(this.onRepresentativeStoreChange.bind(this));
-    this.onIncomingListChange();
+    const { incomingList } = this.props;
+    // console.log('RepresentativeListRoot componentDidMount incomingList:', incomingList);
+    if (incomingList) {
+      const filteredRepresentativeList = [];
+      incomingList.forEach((oneRepresentative) => {
+        if (oneRepresentative.id && oneRepresentative.id > 0) {
+          filteredRepresentativeList.push(oneRepresentative);
+        }
+      });
+      // console.log('RepresentativeListRoot candidateList with id > 0:', filteredRepresentativeList);
+      this.setState({
+        representativeList: filteredRepresentativeList,
+      }, () => this.onFilterOrListChange());
+    }
   }
 
   componentDidUpdate (prevProps) {
@@ -112,7 +127,7 @@ class RepresentativeListRoot extends Component {
     // Start over with full list, and apply all active filters
     const { listModeFilters, searchText, stateCode } = this.props;
     const { representativeList } = this.state;
-    // console.log('representativeList:', representativeList);
+    // console.log('onFilterOrListChange representativeList at start:', representativeList);
     let representativeAlreadyFoundThisYear = false;
     const representativeDisplayedThisYear = {};
     let filteredRepresentativeList = representativeList;
@@ -177,17 +192,31 @@ class RepresentativeListRoot extends Component {
       }
     });
     filteredRepresentativeList = filteredRepresentativeListModified;
+    // console.log('onFilterOrListChange filteredRepresentativeListModified:', filteredRepresentativeListModified);
     // //////////////////////
     // Now filter representatives
     if (listModeFilters && listModeFilters.length > 0) {
-      const todayAsInteger = getTodayAsInteger();
+      // const todayAsInteger = getTodayAsInteger();
+      const yearsInOfficeUpcoming = [];
+      const today = new Date();
+      const thisYearInteger = today.getFullYear();
+      // console.log('thisYearInteger:', thisYearInteger, 'OFFICE_HELD_YEARS_AVAILABLE:', OFFICE_HELD_YEARS_AVAILABLE);
+      for (let i = 0; i < OFFICE_HELD_YEARS_AVAILABLE.length; i++) {
+        // console.log('OFFICE_HELD_YEARS_AVAILABLE[i]:', OFFICE_HELD_YEARS_AVAILABLE[i]);
+        if (OFFICE_HELD_YEARS_AVAILABLE[i] < thisYearInteger) {
+          // Skip over prior years
+        } else if (!(OFFICE_HELD_YEARS_AVAILABLE[i] in yearsInOfficeUpcoming)) {
+          yearsInOfficeUpcoming.push(OFFICE_HELD_YEARS_AVAILABLE[i]);
+        }
+      }
+      // console.log('yearsInOfficeUpcoming:', yearsInOfficeUpcoming);
       listModeFilters.forEach((oneFilter) => {
         // console.log('oneFilter:', oneFilter);
         if ((oneFilter.filterType === 'showUpcomingEndorsements') && (oneFilter.filterSelected === true)) {
-          filteredRepresentativeList = filteredRepresentativeList.filter((oneRepresentative) => oneRepresentative.representative_ultimate_election_date >= todayAsInteger);
+          filteredRepresentativeList = filteredRepresentativeList.filter((oneRepresentative) => isAnyYearInOfficeSetTrue(yearsInOfficeUpcoming, oneRepresentative));
         }
         if ((oneFilter.filterType === 'showYear') && (oneFilter.filterSelected === true)) {
-          filteredRepresentativeList = filteredRepresentativeList.filter((oneRepresentative) => getYearFromUltimateElectionDate(oneRepresentative.representative_ultimate_election_date) === oneFilter.filterYear);
+          filteredRepresentativeList = filteredRepresentativeList.filter((oneRepresentative) => isThisYearInOfficeSetTrue(oneFilter.filterYear, oneRepresentative));
         }
       });
     }
@@ -198,10 +227,10 @@ class RepresentativeListRoot extends Component {
     // Now sort
     filteredRepresentativeList = filteredRepresentativeList.sort(this.orderByAlphabetical);
     filteredRepresentativeList = filteredRepresentativeList.sort(this.orderByTwitterFollowers);
-    filteredRepresentativeList = filteredRepresentativeList.sort(this.orderByIsBattlegroundRace);
+    // filteredRepresentativeList = filteredRepresentativeList.sort(this.orderByIsBattlegroundRace); // Update to work with "is_battleground_race_2023"
     // filteredRepresentativeList = filteredRepresentativeList.sort(this.orderByUltimateElectionDate);
-    let hideDisplayBecauseNoSearchResults = false;
     let representativeSearchResults = [];
+    let hideDisplayBecauseNoSearchResults = false;
     if (searchText && searchText.length > 0) {
       const searchTextLowercase = searchText.toLowerCase();
       // console.log('searchTextLowercase:', searchTextLowercase);

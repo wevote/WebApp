@@ -12,7 +12,7 @@ import { renderLog } from '../../common/utils/logging';
 import IssueStore from '../../stores/IssueStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
-import { convertNameToSlug } from '../../common/utils/textFormat';
+import { convertNameToSlug, convertToInteger } from '../../common/utils/textFormat';
 import IssueFollowToggleButton from './IssueFollowToggleButton';
 import IssueImageDisplay from './IssueImageDisplay';
 
@@ -21,6 +21,7 @@ const SignInModal = React.lazy(() => import(/* webpackChunkName: 'SignInModal' *
 
 const NUMBER_OF_LINKED_ORGANIZATION_IMAGES_TO_SHOW = 3; // Maximum available coming from issueDescriptionsRetrieve is currently 5
 const NUMBER_OF_LINKED_ORGANIZATION_NAMES_TO_SHOW = 10;
+const NUMBER_OF_TOPIC_CHOICES_ALLOWED_BEFORE_SHOW_MODAL = 3;
 
 class IssueCard extends Component {
   constructor (props) {
@@ -119,7 +120,12 @@ class IssueCard extends Component {
 
   onIssueFollowClick = () => {
     const signInOpenedFromPreviousIssueFollow = Cookies.get('sign_in_opened_from_issue_follow') || 0;
-    if (!signInOpenedFromPreviousIssueFollow) {
+    // const signInOpenedFromPreviousIssueFollow = false; // For testing
+    let numberOfTopicChoicesMade = convertToInteger(Cookies.get('number_of_topic_choices_made')) || 0;
+    numberOfTopicChoicesMade += 1;
+    // console.log('numberOfTopicChoicesMade', numberOfTopicChoicesMade);
+    Cookies.set('number_of_topic_choices_made', numberOfTopicChoicesMade, { expires: 1, path: '/' });
+    if (!signInOpenedFromPreviousIssueFollow && numberOfTopicChoicesMade >= NUMBER_OF_TOPIC_CHOICES_ALLOWED_BEFORE_SHOW_MODAL) {
       Cookies.set('sign_in_opened_from_issue_follow', '1', { expires: 1, path: '/' });
       this.toggleShowSignInModal();
     }

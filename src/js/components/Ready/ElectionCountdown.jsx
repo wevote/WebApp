@@ -164,7 +164,9 @@ class ElectionCountdown extends React.Component {
       <CardCountdownInternalWrapper>
         <div>
           <CardTitleUpcoming
-          className="u-cursor--pointer" onClick={() => this.onClickFunctionLocal()}>
+            className="u-cursor--pointer"
+            onClick={() => this.onClickFunctionLocal()}
+          >
             {daysUntilNextElection ? (
               <>
                 {daysUntilNextElection}
@@ -282,7 +284,7 @@ class ElectionCountdown extends React.Component {
       </CardCountdownInternalWrapper>
     );
 
-    let htmlToShow = <></>;
+    let htmlToShow;
     if (electionIsToday) {
       htmlToShow = electionIsTodayHtml;
     } else if (electionInPast || !daysUntilNextElection || daysUntilNextElection < 0) {

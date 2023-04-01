@@ -108,6 +108,7 @@ export const OneCampaignOuterWrapper = styled('div', {
   shouldForwardProp: (prop) => !['limitCardWidth'].includes(prop),
 })(({ limitCardWidth, theme }) => (`
   ${limitCardWidth ? 'margin-right: 15px;' : 'margin-bottom: 15px;'}
+  ${limitCardWidth ? 'height: 400px;' : ''}
   // border-top: 1px solid #ddd;
   // margin-top: 15px;
   ${theme.breakpoints.up('sm')} {

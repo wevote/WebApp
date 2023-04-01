@@ -17,8 +17,17 @@ export default {
     Cookies.remove('location_guess_closed');
     Cookies.remove('location_guess_closed', { path: '/' });
     Cookies.remove('location_guess_closed', { path: '/', domain: 'wevote.us' });
+    Cookies.remove('number_of_ballot_choices_made');
+    Cookies.remove('number_of_ballot_choices_made', { path: '/' });
+    Cookies.remove('number_of_ballot_choices_made', { path: '/', domain: 'wevote.us' });
+    Cookies.remove('number_of_topic_choices_made');
+    Cookies.remove('number_of_topic_choices_made', { path: '/' });
+    Cookies.remove('number_of_topic_choices_made', { path: '/', domain: 'wevote.us' });
     Cookies.remove('show_full_navigation');
     Cookies.remove('show_full_navigation', { path: '/' });
+    Cookies.remove('sign_in_opened_from_issue_follow');
+    Cookies.remove('sign_in_opened_from_issue_follow', { path: '/' });
+    Cookies.remove('sign_in_opened_from_issue_follow', { path: '/', domain: 'wevote.us' });
     Cookies.remove('sign_in_start_full_url', { path: '/' });
     Cookies.remove('sign_in_start_full_url', { path: '/', domain: 'wevote.us' });
   },

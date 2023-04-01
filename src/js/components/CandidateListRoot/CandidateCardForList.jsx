@@ -253,11 +253,13 @@ class CandidateCardForList extends Component {
       candidate_photo_url_large: candidatePhotoLargeUrl,
       candidate_ultimate_election_date: candidateUltimateElectionDate,
       contest_office_name: contestOfficeName,
+      contest_office_list: contestOfficeList,
       // in_draft_mode: inDraftMode,
       // is_blocked_by_we_vote: isBlockedByWeVote,
       // is_in_team_review_mode: isInTeamReviewMode,
       // is_supporters_count_minimum_exceeded: isSupportersCountMinimumExceeded,
       party: politicalParty,
+      politician_we_vote_id: politicianWeVoteId,
       state_code: stateCode,
       supporters_count: supportersCount,
       supporters_count_next_goal: supportersCountNextGoal,
@@ -269,6 +271,10 @@ class CandidateCardForList extends Component {
     if (!candidateWeVoteId) {
       return null;
     }
+    let districtName;
+    if (contestOfficeList) {
+      districtName = contestOfficeList[0].district_name;
+    }
     const stateName = convertStateCodeToStateText(stateCode);
     const year = getYearFromUltimateElectionDate(candidateUltimateElectionDate);
     const todayAsInteger = getTodayAsInteger();
@@ -278,7 +284,7 @@ class CandidateCardForList extends Component {
         <OneCampaignOuterWrapper limitCardWidth={limitCardWidth}>
           <OneCampaignInnerWrapper limitCardWidth={limitCardWidth || isMobileScreenSize()}>
             <OneCampaignTextColumn>
-              <div>
+              <TitleAndTextWrapper>
                 <OneCampaignTitle>
                   <Link to={this.getCandidateBasePath()}>
                     {ballotItemDisplayName}
@@ -288,6 +294,7 @@ class CandidateCardForList extends Component {
                   <div className="u-cursor--pointer" onClick={this.onCandidateClick}>
                     <Suspense fallback={<></>}>
                       <OfficeNameText
+                        districtName={districtName}
                         officeName={contestOfficeName}
                         politicalParty={politicalParty}
                         showOfficeName
@@ -358,21 +365,21 @@ class CandidateCardForList extends Component {
                   <CampaignOwnersList campaignXWeVoteId={campaignXWeVoteId} compressedMode />
                 </CampaignOwnersWrapper>
                 */}
-              </div>
-              {/*
-              <IndicatorRow>
-                {finalElectionDateInPast && (
-                  <IndicatorButtonWrapper>
-                    <ElectionInPast>
-                      Election in Past
-                    </ElectionInPast>
-                  </IndicatorButtonWrapper>
-                )}
-              </IndicatorRow>
-              */}
-              {!finalElectionDateInPast && (
-                <ItemActionBarOutsideWrapper>
-                  <Suspense fallback={<></>}>
+              </TitleAndTextWrapper>
+              <ItemActionBarOutsideWrapper>
+                <Suspense fallback={<></>}>
+                  {finalElectionDateInPast ? (
+                    <ItemActionBar
+                      ballotItemWeVoteId={politicianWeVoteId}
+                      ballotItemDisplayName={ballotItemDisplayName}
+                      commentButtonHide
+                      // externalUniqueId={`CandidateCardForList-ItemActionBar-${oneCandidate.we_vote_id}-${externalUniqueId}`}
+                      hidePositionPublicToggle
+                      positionPublicToggleWrapAllowed
+                      shareButtonHide
+                      useSupportWording
+                    />
+                  ) : (
                     <ItemActionBar
                       ballotItemWeVoteId={candidateWeVoteId}
                       ballotItemDisplayName={ballotItemDisplayName}
@@ -382,9 +389,9 @@ class CandidateCardForList extends Component {
                       positionPublicToggleWrapAllowed
                       shareButtonHide
                     />
-                  </Suspense>
-                </ItemActionBarOutsideWrapper>
-              )}
+                  )}
+                </Suspense>
+              </ItemActionBarOutsideWrapper>
             </OneCampaignTextColumn>
             <OneCampaignPhotoWrapperMobile className="u-cursor--pointer u-show-mobile" onClick={this.onCandidateClick}>
               {candidatePhotoLargeUrl ? (
@@ -443,12 +450,17 @@ const styles = (theme) => ({
 });
 
 const ItemActionBarOutsideWrapper = styled('div')`
-  display: flex;
+  align-items: flex-end;
   cursor: pointer;
+  display: flex;
   flex-direction: row;
-  justify-content: flex-start;
-  margin-top: 12px;
+  height: 166px;
+  justify-content: center;
   width: 100%;
+`;
+
+const TitleAndTextWrapper = styled('div')`
+  height: 60px;
 `;
 
 export default withStyles(styles)(CandidateCardForList);

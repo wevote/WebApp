@@ -6,6 +6,7 @@ import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import ActivityActions from '../../actions/ActivityActions';
 import IssueActions from '../../actions/IssueActions';
+import SupportActions from '../../actions/SupportActions';
 import { SearchTitleTop } from '../../common/components/Style/FilterStyles';
 import { convertStateCodeToStateText, convertStateTextToStateCode, stateCodeMap } from '../../common/utils/addressFunctions';
 import extractAttributeValueListFromObjectList from '../../common/utils/extractAttributeValueListFromObjectList';
@@ -18,6 +19,7 @@ import CampaignStore from '../../common/stores/CampaignStore';
 import CandidateStore from '../../stores/CandidateStore';
 import IssueStore from '../../stores/IssueStore';
 import RepresentativeStore from '../../stores/RepresentativeStore';
+// import SupportStore from '../../stores/SupportStore';
 import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../common/utils/logging';
 import apiCalming from '../../common/utils/apiCalming';
@@ -36,6 +38,9 @@ const RepresentativeListRoot = React.lazy(() => import(/* webpackChunkName: 'Rep
 
 // const representativeDataExistsYears = [2023];
 const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
+
+// import OfficeHeldConstants from '../../constants/OfficeHeldConstants';  // I couldn't get this to work
+const OFFICE_HELD_YEARS_AVAILABLE = [2023, 2024, 2025, 2026];
 
 class CampaignsHome extends Component {
   constructor (props) {
@@ -72,12 +77,18 @@ class CampaignsHome extends Component {
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
     this.representativeStoreListener = RepresentativeStore.addListener(this.onRepresentativeStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+
+    // /////////////////////////
+    // Pulled from onCampaignStoreChange
     // const campaignList = CampaignStore.getPromotedCampaignXDicts();
     const campaignList = CampaignStore.getAllCachedCampaignXList();
     this.setState({
       campaignList,
       // campaignListTimeStampOfChange: Date.now(),
     }, () => this.onIncomingCampaignListChange(true));
+
+    // /////////////////////////
+    // Pulled from onCandidateStoreChange and onBallotStoreChange
     // Note: sorting is being done in CandidateListRoot
     const candidateList = CandidateStore.getCandidateList();
     const { candidateListOnYourBallot, candidateListIsBattleground, candidateListOther } = this.splitUpCandidateList(candidateList);
@@ -88,8 +99,11 @@ class CampaignsHome extends Component {
       candidateListOther,
       candidateListTimeStampOfChange: Date.now(),
     }, () => this.onIncomingCandidateListChange(true));
-    // Note: sorting is being done in RepresentativeListRoot
+
+    // /////////////////////////
+    // Pulled from onRepresentativeStoreChange
     const representativeList = RepresentativeStore.getRepresentativeList();
+    // Note: sorting is being done in RepresentativeListRoot
     const { representativeListOnYourBallot, representativeListOther } = this.splitUpRepresentativeList(representativeList); // representativeListIsBattleground
     this.setState({
       representativeList,
@@ -110,13 +124,14 @@ class CampaignsHome extends Component {
       this.setState({
         stateCode: newStateCode,
       });
-    } else if (VoterStore.getStateCodeFromIPAddress()) {
-      const newPathname = this.getStateNamePathnameFromStateCode(VoterStore.getStateCodeFromIPAddress());
+    } else if (VoterStore.getStateCode() || VoterStore.getStateCodeFromIPAddress()) {
+      const voterStateCode =  VoterStore.getStateCode() || VoterStore.getStateCodeFromIPAddress();
+      const newPathname = this.getStateNamePathnameFromStateCode(voterStateCode);
       const { location: { pathname } } = window;
       if (pathname !== newPathname) {
         historyPush(newPathname);
       } else {
-        this.setState({ stateCode: VoterStore.getStateCodeFromIPAddress() });
+        this.setState({ stateCode: voterStateCode });
       }
     }
     if (apiCalming('issueDescriptionsRetrieve', 3600000)) { // Only once per 60 minutes
@@ -128,6 +143,7 @@ class CampaignsHome extends Component {
     if (VoterStore.electionId() && !IssueStore.issuesUnderBallotItemsRetrieveCalled(VoterStore.electionId())) {
       IssueActions.issuesUnderBallotItemsRetrieve(VoterStore.electionId());
     }
+    SupportActions.voterAllPositionsRetrieve();
     if (apiCalming('activityNoticeListRetrieve', 10000)) {
       ActivityActions.activityNoticeListRetrieve();
     }
@@ -288,13 +304,17 @@ class CampaignsHome extends Component {
   }
 
   updateActiveFilters = (setDefaultListMode = false) => {
-    const { campaignList, candidateList, listOfYearsWhenCampaignExists, listOfYearsWhenCandidateExists, listOfYearsWhenRepresentativeExists } = this.state;
+    const {
+      campaignList, candidateList,
+      listOfYearsWhenCampaignExists, listOfYearsWhenCandidateExists, listOfYearsWhenRepresentativeExists,
+    } = this.state;
     let { listModeShown } = this.state;
     const listOfYears = [...new Set([...listOfYearsWhenCampaignExists, ...listOfYearsWhenCandidateExists, ...listOfYearsWhenRepresentativeExists])];
     // console.log('listOfYears:', listOfYears, ', setDefaultListMode:', setDefaultListMode);
     let filterCount = 0;
     let upcomingEndorsementsAvailable = false;
     const todayAsInteger = getTodayAsInteger();
+    // console.log('thisYearInteger:', thisYearInteger);
     campaignList.forEach((oneCampaign) => {
       if (oneCampaign.final_election_date_as_integer >= todayAsInteger) {
         upcomingEndorsementsAvailable = true;
@@ -305,6 +325,15 @@ class CampaignsHome extends Component {
         upcomingEndorsementsAvailable = true;
       }
     });
+    const today = new Date();
+    const thisYearInteger = today.getFullYear();
+    for (let i = 0; i < OFFICE_HELD_YEARS_AVAILABLE.length; i++) {
+      if (OFFICE_HELD_YEARS_AVAILABLE[i] < thisYearInteger) {
+        // Skip over prior years
+      } else if (OFFICE_HELD_YEARS_AVAILABLE[i] in listOfYearsWhenRepresentativeExists) {
+        upcomingEndorsementsAvailable = true;
+      }
+    }
     if (setDefaultListMode) {
       listModeShown = this.getDefaultListModeShown(upcomingEndorsementsAvailable);
     }
@@ -314,7 +343,7 @@ class CampaignsHome extends Component {
     // const numberOfYears = listOfYears.length;
     // const useDropdownWithThisNumberOfYears = 4;
     // const displayAsChip = numberOfYears < useDropdownWithThisNumberOfYears;
-    const displayAsChip = true; // Explore converting this to a drop down
+    const displayAsChip = true; // Explore converting this to a dropdown
     listOfYears.forEach((oneYear) => {
       filterCount += 1;
       listModeFiltersAvailable.push({
@@ -377,8 +406,8 @@ class CampaignsHome extends Component {
   }
 
   getDefaultListModeShown = (incomingUpcomingEndorsementsAvailable = false) => {
-    const { listOfYearsWhenCampaignExists, listOfYearsWhenCandidateExists, upcomingEndorsementsAvailable } = this.state;
-    const listOfYears = [...new Set([...listOfYearsWhenCampaignExists, ...listOfYearsWhenCandidateExists])];
+    const { listOfYearsWhenCampaignExists, listOfYearsWhenCandidateExists, listOfYearsWhenRepresentativeExists, upcomingEndorsementsAvailable } = this.state;
+    const listOfYears = [...new Set([...listOfYearsWhenCampaignExists, ...listOfYearsWhenCandidateExists, ...listOfYearsWhenRepresentativeExists])];
     // console.log('getDefaultListModeShown listOfYearsWhenCandidateExists:', listOfYearsWhenCandidateExists);
     if (upcomingEndorsementsAvailable || incomingUpcomingEndorsementsAvailable) {
       return 'showUpcomingEndorsements';
@@ -421,16 +450,21 @@ class CampaignsHome extends Component {
 
   getListOfYearsWhenRepresentativeExists = (representativeList) => {
     const listOfYearsWhenRepresentativeExists = [];
-    let tempYearInteger;
+    let yearInOfficeKey;
     representativeList.forEach((oneRepresentative) => {
-      if (oneRepresentative.candidate_ultimate_election_date && oneRepresentative.candidate_ultimate_election_date > 0) {
-        // tempYearInteger = getYearFromUltimateElectionDate(oneRepresentative.candidate_ultimate_election_date);
-        tempYearInteger = 2023;  // TEMP
-        if (!arrayContains(tempYearInteger, listOfYearsWhenRepresentativeExists)) {
-          listOfYearsWhenRepresentativeExists.push(tempYearInteger);
+      for (let i = 0; i < OFFICE_HELD_YEARS_AVAILABLE.length; i++) {
+        // console.log('One year from OFFICE_HELD_YEARS_AVAILABLE: ', OFFICE_HELD_YEARS_AVAILABLE[i]);
+        yearInOfficeKey = `year_in_office_${OFFICE_HELD_YEARS_AVAILABLE[i]}`;
+        // console.log('yearInOfficeKey: ', yearInOfficeKey);
+        if ((yearInOfficeKey in oneRepresentative) && oneRepresentative[yearInOfficeKey]) {
+          // console.log('oneRepresentative[yearInOfficeKey]: ', oneRepresentative[yearInOfficeKey]);
+          if (!arrayContains(OFFICE_HELD_YEARS_AVAILABLE[i], listOfYearsWhenRepresentativeExists)) {
+            listOfYearsWhenRepresentativeExists.push(OFFICE_HELD_YEARS_AVAILABLE[i]);
+          }
         }
       }
     });
+    // console.log('listOfYearsWhenRepresentativeExists: ', listOfYearsWhenRepresentativeExists);
     return listOfYearsWhenRepresentativeExists;
   }
 

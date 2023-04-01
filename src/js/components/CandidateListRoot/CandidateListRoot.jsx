@@ -26,7 +26,20 @@ class CandidateListRoot extends Component {
   componentDidMount () {
     // console.log('CandidateListRoot componentDidMount');
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
-    this.onIncomingListChange();
+    const { incomingList } = this.props;
+    // console.log('CandidateListRoot componentDidMount incomingList:', incomingList);
+    if (incomingList) {
+      const filteredCandidateList = [];
+      incomingList.forEach((oneCandidate) => {
+        if (oneCandidate.id && oneCandidate.id > 0) {
+          filteredCandidateList.push(oneCandidate);
+        }
+      });
+      // console.log('CandidateListRoot candidateList with id > 0:', filteredCandidateList);
+      this.setState({
+        candidateList: filteredCandidateList,
+      }, () => this.onFilterOrListChange());
+    }
   }
 
   componentDidUpdate (prevProps) {
@@ -112,7 +125,7 @@ class CandidateListRoot extends Component {
     // Start over with full list, and apply all active filters
     const { listModeFilters, searchText, stateCode } = this.props;
     const { candidateList } = this.state;
-    // console.log('candidateList:', candidateList);
+    // console.log('CandidateListRoot onFilterOrListChange candidateList:', candidateList);
     let candidateAlreadyFoundThisYear = false;
     const candidateDisplayedThisYear = {};
     let filteredCandidateList = candidateList;
@@ -176,6 +189,7 @@ class CandidateListRoot extends Component {
         filteredCandidateListModified.push(modifiedCandidate);
       }
     });
+    // console.log('CandidateListRoot onFilterOrListChange filteredCandidateListModified:', filteredCandidateListModified);
     filteredCandidateList = filteredCandidateListModified;
     // //////////////////////
     // Now filter candidates
@@ -268,6 +282,7 @@ class CandidateListRoot extends Component {
         return null;
       }
     }
+    // console.log('CandidateListRoot actually rendering hideDisplayBecauseNoSearchResults', hideDisplayBecauseNoSearchResults);
     return (
       <CandidateListWrapper>
         {!!(!hideTitle &&
