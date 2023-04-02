@@ -11,7 +11,7 @@ import historyPush from '../../utils/historyPush';
 import { renderLog } from '../../utils/logging';
 import stringContains from '../../utils/stringContains';
 import CampaignStore from '../../stores/CampaignStore';
-import { SpeakerAndPhotoOuterWrapper, SpeakerName, SpeakerVoterPhotoWrapper } from '../Style/CampaignDetailsStyles';
+import { ReadMoreSpan, SpeakerAndPhotoOuterWrapper, SpeakerName, SpeakerVoterPhotoWrapper } from '../Style/CampaignDetailsStyles';
 import { BlockedIndicator, DraftModeIndicator, EditIndicator, IndicatorButtonWrapper, IndicatorDefaultButtonWrapper, IndicatorRow } from '../Style/CampaignIndicatorStyles';
 
 class CampaignNewsItemForList extends Component {
@@ -154,11 +154,11 @@ class CampaignNewsItemForList extends Component {
                     ellipsis={(
                       <span>
                         <span className="u-text-fade-at-end">&nbsp;</span>
-                        <span
-                          className="u-cursor--pointer u-link-underline u-link-color--gray u-link-color-on-hover"
+                        <ReadMoreSpan
+                          className="u-cursor--pointer u-link-underline u-link-color-on-hover"
                         >
                           Read more
-                        </span>
+                        </ReadMoreSpan>
                       </span>
                     )}
                     lines={4}

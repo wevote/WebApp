@@ -11412,7 +11412,6 @@ h1, h2, h3, h4, h5, h6 {
 
 .u-link-color-on-hover:hover {
   color: #4371cc;
-  text-decoration: underline;
 }
 
 /*.u-link-color-light {*/
@@ -11440,6 +11439,14 @@ h1, h2, h3, h4, h5, h6 {
 /*}*/
 
 .u-underline {
+  text-decoration: underline;
+}
+
+.u-link-underline {
+  text-decoration: underline;
+}
+
+.u-link-underline-on-hover:hover {
   text-decoration: underline;
 }
 

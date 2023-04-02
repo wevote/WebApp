@@ -6,7 +6,8 @@ import TruncateMarkup from 'react-truncate-markup';
 import styled from 'styled-components';
 import { convertStateCodeToStateText } from '../../common/utils/addressFunctions';
 import {
-  CampaignImageMobile, CampaignImagePlaceholderText, CampaignImageMobilePlaceholder, CampaignImageDesktopPlaceholder, CampaignImageDesktop,
+  BottomActionButtonWrapper,
+  CampaignActionButtonsWrapper, CampaignImageMobile, CampaignImagePlaceholderText, CampaignImageMobilePlaceholder, CampaignImageDesktopPlaceholder, CampaignImageDesktop,
   CandidateCardForListWrapper,
   OneCampaignPhotoWrapperMobile, OneCampaignPhotoDesktopColumn, OneCampaignTitle, OneCampaignOuterWrapper, OneCampaignTextColumn, OneCampaignInnerWrapper, OneCampaignDescription,
   SupportersWrapper, SupportersCount, SupportersActionLink,
@@ -19,11 +20,14 @@ import CandidateStore from '../../stores/CandidateStore';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 // import keepHelpingDestination from '../../common/utils/keepHelpingDestination';
 import numberWithCommas from '../../common/utils/numberWithCommas';
+import webAppConfig from '../../config';
 // import { ElectionInPast, IndicatorButtonWrapper, IndicatorRow } from '../../common/components/Style/CampaignIndicatorStyles';
 
 const ItemActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemActionBar' */ '../Widgets/ItemActionBar/ItemActionBar'));
 const OfficeNameText = React.lazy(() => import(/* webpackChunkName: 'OfficeNameText' */ '../../common/components/Widgets/OfficeNameText'));
-// const SupportButtonBeforeCompletionScreen = React.lazy(() => import(/* webpackChunkName: 'SupportButtonBeforeCompletionScreen' */ '../../common/components/CampaignSupport/SupportButtonBeforeCompletionScreen'));
+const SupportButtonBeforeCompletionScreen = React.lazy(() => import(/* webpackChunkName: 'SupportButtonBeforeCompletionScreen' */ '../../common/components/CampaignSupport/SupportButtonBeforeCompletionScreen'));
+
+const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
 class CandidateCardForList extends Component {
   constructor (props) {
@@ -286,7 +290,7 @@ class CandidateCardForList extends Component {
             <OneCampaignTextColumn>
               <TitleAndTextWrapper>
                 <OneCampaignTitle>
-                  <Link to={this.getCandidateBasePath()}>
+                  <Link className="u-link-color u-link-underline" to={this.getCandidateBasePath()}>
                     {ballotItemDisplayName}
                   </Link>
                 </OneCampaignTitle>
@@ -366,7 +370,7 @@ class CandidateCardForList extends Component {
                 </CampaignOwnersWrapper>
                 */}
               </TitleAndTextWrapper>
-              <ItemActionBarOutsideWrapper>
+              <CampaignActionButtonsWrapper>
                 <Suspense fallback={<></>}>
                   {finalElectionDateInPast ? (
                     <ItemActionBar
@@ -391,7 +395,21 @@ class CandidateCardForList extends Component {
                     />
                   )}
                 </Suspense>
-              </ItemActionBarOutsideWrapper>
+                {nextReleaseFeaturesEnabled && (
+                  <BottomActionButtonWrapper>
+                    <Suspense fallback={<span>&nbsp;</span>}>
+                      <SupportButtonBeforeCompletionScreen
+                        campaignSEOFriendlyPath="CONVERT_TO_POLITICIAN_PATH"
+                        campaignXWeVoteId="CONVERT_TO_POLITICIAN_WE_VOTE_ID"
+                        functionToUseToKeepHelping={this.functionToUseToKeepHelping}
+                        functionToUseWhenProfileComplete={this.functionToUseWhenProfileComplete}
+                        inButtonFullWidthMode
+                        // inCompressedMode
+                      />
+                    </Suspense>
+                  </BottomActionButtonWrapper>
+                )}
+              </CampaignActionButtonsWrapper>
             </OneCampaignTextColumn>
             <OneCampaignPhotoWrapperMobile className="u-cursor--pointer u-show-mobile" onClick={this.onCandidateClick}>
               {candidatePhotoLargeUrl ? (
@@ -448,16 +466,6 @@ const styles = (theme) => ({
     },
   },
 });
-
-const ItemActionBarOutsideWrapper = styled('div')`
-  align-items: flex-end;
-  cursor: pointer;
-  display: flex;
-  flex-direction: row;
-  height: 166px;
-  justify-content: center;
-  width: 100%;
-`;
 
 const TitleAndTextWrapper = styled('div')`
   height: 60px;

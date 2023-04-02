@@ -1,9 +1,16 @@
+import { ArrowForwardIos } from '@mui/icons-material';
 import withStyles from '@mui/styles/withStyles';
 import { filter } from 'lodash-es';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { HorizontallyScrollingContainer, ScrollingInnerWrapper, ScrollingOuterWrapper } from '../../common/components/Style/ScrollingStyles';
+import {
+  HorizontallyScrollingContainer,
+  RightArrowInnerWrapper,
+  RightArrowOuterWrapper,
+  ScrollingInnerWrapper,
+  ScrollingOuterWrapper,
+} from '../../common/components/Style/ScrollingStyles';
 import { convertStateCodeToStateText } from '../../common/utils/addressFunctions';
 import { getTodayAsInteger, getYearFromUltimateElectionDate } from '../../common/utils/dateFormat';
 import { renderLog } from '../../common/utils/logging';
@@ -262,7 +269,7 @@ class CandidateListRoot extends Component {
 
   render () {
     renderLog('CandidateListRoot');  // Set LOG_RENDER_EVENTS to log all renders
-    const { hideIfNoResults, hideTitle, searchText, titleTextForList } = this.props;
+    const { classes, hideIfNoResults, hideTitle, searchText, titleTextForList } = this.props;
     const isSearching = searchText && searchText.length > 0;
     const { candidateList, candidateSearchResults, filteredCandidateList, hideDisplayBecauseNoSearchResults, timeStampOfChange } = this.state;
 
@@ -306,6 +313,11 @@ class CandidateListRoot extends Component {
                 />
               </HorizontallyScrollingContainer>
             </ScrollingInnerWrapper>
+            <RightArrowOuterWrapper>
+              <RightArrowInnerWrapper>
+                <ArrowForwardIos classes={{ root: classes.arrowRoot }} />
+              </RightArrowInnerWrapper>
+            </RightArrowOuterWrapper>
           </ScrollingOuterWrapper>
         )}
       </CandidateListWrapper>
@@ -313,6 +325,7 @@ class CandidateListRoot extends Component {
   }
 }
 CandidateListRoot.propTypes = {
+  classes: PropTypes.object,
   hideIfNoResults: PropTypes.bool,
   hideTitle: PropTypes.bool,
   incomingList: PropTypes.array,
@@ -325,6 +338,9 @@ CandidateListRoot.propTypes = {
 };
 
 const styles = () => ({
+  arrowRoot: {
+    fontSize: 24,
+  },
   iconButton: {
     padding: 8,
   },

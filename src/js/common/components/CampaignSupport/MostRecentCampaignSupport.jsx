@@ -5,6 +5,11 @@ import React from 'react';
 import styled from 'styled-components';
 import anonymous from '../../../../img/global/icons/avatar-generic.png';
 import LazyImage from '../LazyImage';
+import {
+  Comment, CommentName, CommentNameWrapper,
+  CommentTextWrapper,
+  CommentVoterPhotoWrapper, CommentWrapper,
+} from '../Style/CampaignDetailsStyles';
 import { timeFromDate } from '../../utils/dateFormat';
 import { renderLog } from '../../utils/logging';
 import returnFirstXWords from '../../utils/returnFirstXWords';
@@ -227,9 +232,6 @@ const styles = () => ({
   },
 });
 
-const Wrapper = styled('div')`
-`;
-
 const CommentsWrapper = styled('div')`
   height: 100px;
   max-height: 140px;
@@ -256,42 +258,7 @@ const CommentsWrapper = styled('div')`
   }
 `;
 
-const CommentTextWrapper = styled('div')`
-  justify-content: center;
-  display: flex;
-  flex-direction: column;
-`;
-
-const CommentVoterPhotoWrapper = styled('div')`
-  align-items: flex-start;
-  display: flex;
-  margin-right: 6px;
-  width: 24px;
-`;
-
-const CommentWrapper = styled('div')`
-  border-radius: 10px;
-  border-top-left-radius: 0;
-  display: flex;
-  justify-content: flex-start;
-  margin: 8px 0;
-  width: 100%;
-`;
-
-const Comment = styled('p')`
-  color: #999;
-  font-size: 14px;
-  margin: 0;
-`;
-
-const CommentName = styled('span')`
-  color: #808080;
-  font-weight: 500 !important;
-`;
-
-const CommentNameWrapper = styled('div')`
-  color: #999;
-  font-size: 12px;
+const Wrapper = styled('div')`
 `;
 
 export default withStyles(styles)(MostRecentCampaignSupport);

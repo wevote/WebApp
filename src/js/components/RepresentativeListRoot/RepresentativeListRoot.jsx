@@ -1,9 +1,15 @@
+import { ArrowForwardIos } from '@mui/icons-material';
 import withStyles from '@mui/styles/withStyles';
 import { filter } from 'lodash-es';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { HorizontallyScrollingContainer, ScrollingInnerWrapper, ScrollingOuterWrapper } from '../../common/components/Style/ScrollingStyles';
+import {
+  HorizontallyScrollingContainer, RightArrowInnerWrapper,
+  RightArrowOuterWrapper,
+  ScrollingInnerWrapper,
+  ScrollingOuterWrapper,
+} from '../../common/components/Style/ScrollingStyles';
 import { convertStateCodeToStateText } from '../../common/utils/addressFunctions';
 import { getYearFromUltimateElectionDate, isAnyYearInOfficeSetTrue, isThisYearInOfficeSetTrue } from '../../common/utils/dateFormat';
 import { renderLog } from '../../common/utils/logging';
@@ -277,7 +283,7 @@ class RepresentativeListRoot extends Component {
 
   render () {
     renderLog('RepresentativeListRoot');  // Set LOG_RENDER_EVENTS to log all renders
-    const { hideIfNoResults, hideTitle, searchText, titleTextForList } = this.props;
+    const { classes, hideIfNoResults, hideTitle, searchText, titleTextForList } = this.props;
     const isSearching = searchText && searchText.length > 0;
     const { filteredRepresentativeList, hideDisplayBecauseNoSearchResults, representativeList, representativeSearchResults, timeStampOfChange } = this.state;
 
@@ -320,6 +326,11 @@ class RepresentativeListRoot extends Component {
                 />
               </HorizontallyScrollingContainer>
             </ScrollingInnerWrapper>
+            <RightArrowOuterWrapper>
+              <RightArrowInnerWrapper>
+                <ArrowForwardIos classes={{ root: classes.arrowRoot }} />
+              </RightArrowInnerWrapper>
+            </RightArrowOuterWrapper>
           </ScrollingOuterWrapper>
         )}
       </RepresentativeListWrapper>
@@ -327,6 +338,7 @@ class RepresentativeListRoot extends Component {
   }
 }
 RepresentativeListRoot.propTypes = {
+  classes: PropTypes.object,
   hideIfNoResults: PropTypes.bool,
   hideTitle: PropTypes.bool,
   incomingList: PropTypes.array,
@@ -339,6 +351,9 @@ RepresentativeListRoot.propTypes = {
 };
 
 const styles = () => ({
+  arrowRoot: {
+    fontSize: 24,
+  },
   iconButton: {
     padding: 8,
   },
