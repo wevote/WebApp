@@ -114,12 +114,75 @@ export const CampaignTitleMobile = styled('h1')`
   text-align: left;
 `;
 
+export const Comment = styled('div')`
+  font-size: 18px;
+  margin: 0;
+  // From MostRecentCampaignSupport
+  // color: #999;
+  // font-size: 14px;
+  // margin: 0;
+`;
+
+export const CommentName = styled('span')`
+  color: #808080;
+  font-weight: 500 !important;
+`;
+
+export const CommentNameTwitterFollowers = styled('div')`
+  white-space: nowrap;
+`;
+
+export const CommentNameOuterWrapper = styled('div')`
+  color: #999;
+  display: flex;
+  font-size: 12px;
+  justify-content: start;
+  width: 100%;
+  flex-wrap: wrap;
+`;
+
+export const CommentNameWithTimeWrapper = styled('div')`
+  // white-space: nowrap;
+`;
+
+export const CommentNameWrapper = styled('div')`
+  color: #999;
+  font-size: 12px;
+`;
+
 export const CommentsListWrapper = styled('div')(({ theme }) => (`
   margin-bottom: 25px;
   ${theme.breakpoints.down('md')} {
     margin: 0 10px 25px 10px;
   }
 `));
+
+export const CommentTextInnerWrapper = styled('div')`
+  white-space: pre-wrap;
+`;
+
+export const CommentTextWrapper = styled('div')`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  // margin-top: 5px;
+`;
+
+export const CommentVoterPhotoWrapper = styled('div')`
+  align-items: flex-start;
+  display: flex;
+  margin-right: 6px;
+  min-width: 48px;
+`;
+
+export const CommentWrapper = styled('div')`
+  border-radius: 10px;
+  border-top-left-radius: 0;
+  display: flex;
+  justify-content: flex-start;
+  margin: 8px 0;
+  width: 100%;
+`;
 
 export const DetailsSectionDesktopTablet = styled('div')`
   display: flex;
@@ -129,6 +192,28 @@ export const DetailsSectionDesktopTablet = styled('div')`
 export const DetailsSectionMobile = styled('div')`
   display: flex;
   flex-flow: column;
+`;
+
+export const OneCampaignInnerWrapper = styled('div')(({ theme }) => (`
+  margin: 15px 0;
+  ${theme.breakpoints.up('sm')} {
+    display: flex;
+    justify-content: space-between;
+    margin: 15px;
+  }
+`));
+
+export const OneCampaignOuterWrapper = styled('div')(({ theme }) => (`
+  border-top: 1px solid #ddd;
+  margin-top: 15px;
+  ${theme.breakpoints.up('sm')} {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+`));
+
+export const ReadMoreSpan = styled('div')`
+  color: #4371cc;
 `;
 
 export const SpeakerAndPhotoOuterWrapper = styled('div')(({ theme }) => (`

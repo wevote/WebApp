@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import CampaignSupporterActions from '../../actions/CampaignSupporterActions';
 import {
   CampaignImageMobile, CampaignImagePlaceholderText, CampaignImageMobilePlaceholder, CampaignImageDesktopPlaceholder, CampaignImageDesktop,
-  CandidateCardForListWrapper,
+  CandidateCardForListWrapper, CampaignActionButtonsWrapper,
   OneCampaignPhotoWrapperMobile, OneCampaignPhotoDesktopColumn, OneCampaignTitle, OneCampaignOuterWrapper, OneCampaignTextColumn, OneCampaignInnerWrapper, OneCampaignDescription,
   SupportersWrapper, SupportersCount, SupportersActionLink,
 } from '../Style/CampaignCardStyles';
@@ -23,7 +23,6 @@ import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import keepHelpingDestination from '../../utils/keepHelpingDestination';
 import numberWithCommas from '../../utils/numberWithCommas';
 import CampaignOwnersList from '../CampaignSupport/CampaignOwnersList';
-import { BlockedIndicator, DraftModeIndicator, EditIndicator, ElectionInPast, IndicatorButtonWrapper, IndicatorDefaultButtonWrapper, IndicatorRow } from '../Style/CampaignIndicatorStyles';
 
 const SupportButtonBeforeCompletionScreen = React.lazy(() => import(/* webpackChunkName: 'SupportButtonBeforeCompletionScreen' */ '../CampaignSupport/SupportButtonBeforeCompletionScreen'));
 
@@ -104,7 +103,7 @@ class CampaignCardForList extends Component {
   onCampaignStoreChange () {
     const { campaignXWeVoteId } = this.props;
     const campaignX = CampaignStore.getCampaignXByWeVoteId(campaignXWeVoteId);
-    const voterCanEditThisCampaign = CampaignStore.getVoterCanEditThisCampaign(campaignXWeVoteId);
+    // const voterCanEditThisCampaign = CampaignStore.getVoterCanEditThisCampaign(campaignXWeVoteId);
     const {
       seo_friendly_path: campaignSEOFriendlyPath,
     } = campaignX;
@@ -117,7 +116,7 @@ class CampaignCardForList extends Component {
     this.setState({
       campaignX,
       pathToUseWhenProfileComplete,
-      voterCanEditThisCampaign,
+      // voterCanEditThisCampaign,
     });
   }
 
@@ -296,7 +295,7 @@ class CampaignCardForList extends Component {
   render () {
     renderLog('CampaignCardForList');  // Set LOG_RENDER_EVENTS to log all renders
     const { limitCardWidth } = this.props;
-    const { campaignSupported, campaignX, inPrivateLabelMode, voterCanEditThisCampaign } = this.state;
+    const { campaignSupported, campaignX } = this.state; // , inPrivateLabelMode, voterCanEditThisCampaign
     if (!campaignX) {
       return null;
     }
@@ -305,15 +304,15 @@ class CampaignCardForList extends Component {
       campaign_title: campaignTitle,
       campaignx_we_vote_id: campaignXWeVoteId,
       // final_election_date_as_integer: finalElectionDateAsInteger,
-      final_election_date_in_past: finalElectionDateInPast,
+      // final_election_date_in_past: finalElectionDateInPast,
       in_draft_mode: inDraftMode,
-      is_blocked_by_we_vote: isBlockedByWeVote,
-      is_in_team_review_mode: isInTeamReviewMode,
-      is_supporters_count_minimum_exceeded: isSupportersCountMinimumExceeded,
+      // is_blocked_by_we_vote: isBlockedByWeVote,
+      // is_in_team_review_mode: isInTeamReviewMode,
+      // is_supporters_count_minimum_exceeded: isSupportersCountMinimumExceeded,
       seo_friendly_path: campaignSEOFriendlyPath,
       supporters_count: supportersCount,
       supporters_count_next_goal: supportersCountNextGoal,
-      visible_on_this_site: visibleOnThisSite,
+      // visible_on_this_site: visibleOnThisSite,
       we_vote_hosted_campaign_photo_large_url: CampaignPhotoLargeUrl,
       we_vote_hosted_campaign_photo_medium_url: CampaignPhotoMediumUrl,
     } = campaignX;
@@ -324,7 +323,7 @@ class CampaignCardForList extends Component {
         <OneCampaignOuterWrapper limitCardWidth={limitCardWidth}>
           <OneCampaignInnerWrapper limitCardWidth={limitCardWidth || isMobileScreenSize()}>
             <OneCampaignTextColumn>
-              <div>
+              <TitleAndTextWrapper>
                 <OneCampaignTitle>
                   <Link to={this.onCampaignClickLink()}>
                     {campaignTitle}
@@ -358,7 +357,7 @@ class CampaignCardForList extends Component {
                         <span className="u-link-color u-link-underline">Read more</span>
                       </span>
                     )}
-                    lines={4}
+                    lines={3}
                     tokenize="words"
                   >
                     <div>
@@ -369,7 +368,8 @@ class CampaignCardForList extends Component {
                 <CampaignOwnersWrapper>
                   <CampaignOwnersList campaignXWeVoteId={campaignXWeVoteId} compressedMode />
                 </CampaignOwnersWrapper>
-              </div>
+              </TitleAndTextWrapper>
+              {/*
               <IndicatorRow>
                 {finalElectionDateInPast && (
                   <IndicatorButtonWrapper>
@@ -449,20 +449,22 @@ class CampaignCardForList extends Component {
                     </EditIndicator>
                   </IndicatorButtonWrapper>
                 )}
-                {!inDraftMode && (
-                  <IndicatorSupportButtonWrapper>
-                    <Suspense fallback={<span>&nbsp;</span>}>
-                      <SupportButtonBeforeCompletionScreen
-                        campaignSEOFriendlyPath={campaignSEOFriendlyPath}
-                        campaignXWeVoteId={campaignXWeVoteId}
-                        functionToUseToKeepHelping={this.functionToUseToKeepHelping}
-                        functionToUseWhenProfileComplete={this.functionToUseWhenProfileComplete}
-                        inCompressedMode
-                      />
-                    </Suspense>
-                  </IndicatorSupportButtonWrapper>
-                )}
               </IndicatorRow>
+              */}
+              <CampaignActionButtonsWrapper>
+                {!inDraftMode && (
+                  <Suspense fallback={<span>&nbsp;</span>}>
+                    <SupportButtonBeforeCompletionScreen
+                      campaignSEOFriendlyPath={campaignSEOFriendlyPath}
+                      campaignXWeVoteId={campaignXWeVoteId}
+                      functionToUseToKeepHelping={this.functionToUseToKeepHelping}
+                      functionToUseWhenProfileComplete={this.functionToUseWhenProfileComplete}
+                      inButtonFullWidthMode
+                      // inCompressedMode
+                    />
+                  </Suspense>
+                )}
+              </CampaignActionButtonsWrapper>
             </OneCampaignTextColumn>
             <OneCampaignPhotoWrapperMobile className="u-cursor--pointer u-show-mobile" onClick={this.onCampaignClick}>
               {CampaignPhotoLargeUrl ? (
@@ -515,10 +517,13 @@ const styles = (theme) => ({
 const CampaignOwnersWrapper = styled('div')`
 `;
 
-const IndicatorSupportButtonWrapper = styled('div')`
-  margin-bottom: 4px;
-  margin-right: 8px;
-  margin-top: -1px;
-`;
+// const IndicatorSupportButtonWrapper = styled('div')`
+//   margin-bottom: 4px;
+//   margin-right: 8px;
+//   margin-top: -1px;
+// `;
 
+const TitleAndTextWrapper = styled('div')`
+  height: 60px;
+`;
 export default withStyles(styles)(CampaignCardForList);

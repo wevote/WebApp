@@ -7,6 +7,12 @@ import TruncateMarkup from 'react-truncate-markup';
 import styled from 'styled-components';
 import anonymous from '../../../../img/global/icons/avatar-generic.png';
 import LazyImage from '../LazyImage';
+import {
+  Comment, CommentName, CommentNameWrapper, CommentTextInnerWrapper,
+  CommentTextWrapper,
+  CommentVoterPhotoWrapper, CommentWrapper, OneCampaignInnerWrapper,
+  OneCampaignOuterWrapper, ReadMoreSpan,
+} from '../Style/CampaignDetailsStyles';
 import { timeFromDate } from '../../utils/dateFormat';
 import { isCordova } from '../../utils/isCordovaOrWebApp';
 import { renderLog } from '../../utils/logging';
@@ -126,23 +132,23 @@ class CampaignCommentForList extends Component {
                   {showFullSupporterEndorsement ? (
                     <div>
                       <CommentTextInnerWrapper>{supporterEndorsement}</CommentTextInnerWrapper>
-                      <div
-                        className="u-cursor--pointer u-link-underline u-link-color--gray"
+                      <ReadMoreSpan
+                        className="u-cursor--pointer u-link-underline"
                         onClick={this.onHideFullSupporterEndorsement}
                       >
                         Read less
-                      </div>
+                      </ReadMoreSpan>
                     </div>
                   ) : (
                     <TruncateMarkup
                       ellipsis={(
                         <div>
-                          <span
-                            className="u-cursor--pointer u-link-underline u-link-color--gray"
+                          <ReadMoreSpan
+                            className="u-cursor--pointer u-link-underline"
                             onClick={this.onShowFullSupporterEndorsement}
                           >
                             Read more
-                          </span>
+                          </ReadMoreSpan>
                         </div>
                       )}
                       lines={4}
@@ -201,60 +207,6 @@ const styles = (theme) => ({
     },
   },
 });
-
-const Comment = styled('div')`
-  font-size: 18px;
-  margin: 0;
-`;
-
-const CommentName = styled('span')`
-  color: #808080;
-  font-weight: 500 !important;
-`;
-
-const CommentNameWrapper = styled('div')`
-  color: #999;
-  font-size: 12px;
-`;
-
-const CommentTextInnerWrapper = styled('div')`
-  white-space: pre-wrap;
-`;
-
-const CommentTextWrapper = styled('div')`
-  margin-top: 5px;
-`;
-
-const CommentVoterPhotoWrapper = styled('div')`
-  margin-right: 6px;
-`;
-
-const CommentWrapper = styled('div')`
-  border-radius: 10px;
-  border-top-left-radius: 0;
-  display: flex;
-  justify-content: flex-start;
-  margin: 8px 0;
-  width: 100%;
-`;
-
-const OneCampaignInnerWrapper = styled('div')(({ theme }) => (`
-  margin: 15px 0;
-  ${theme.breakpoints.up('sm')} {
-    display: flex;
-    justify-content: space-between;
-    margin: 15px;
-  }
-`));
-
-const OneCampaignOuterWrapper = styled('div')(({ theme }) => (`
-  border-top: 1px solid #ddd;
-  margin-top: 15px;
-  ${theme.breakpoints.up('sm')} {
-    border: 1px solid #ddd;
-    border-radius: 5px;
-  }
-`));
 
 const Wrapper = styled('div')`
 `;

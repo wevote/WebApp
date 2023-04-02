@@ -1,9 +1,15 @@
+import { ArrowForwardIos } from '@mui/icons-material';
 import withStyles from '@mui/styles/withStyles';
 import { filter } from 'lodash-es';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { HorizontallyScrollingContainer, ScrollingInnerWrapper, ScrollingOuterWrapper } from '../Style/ScrollingStyles';
+import {
+  HorizontallyScrollingContainer, RightArrowInnerWrapper,
+  RightArrowOuterWrapper,
+  ScrollingInnerWrapper,
+  ScrollingOuterWrapper,
+} from '../Style/ScrollingStyles';
 import { convertStateCodeToStateText } from '../../utils/addressFunctions';
 import arrayContains from '../../utils/arrayContains';
 import { getTodayAsInteger, getYearFromUltimateElectionDate } from '../../utils/dateFormat';
@@ -225,7 +231,7 @@ class CampaignListRoot extends Component {
 
   render () {
     renderLog('CampaignListRoot');  // Set LOG_RENDER_EVENTS to log all renders
-    const { hideTitle, listModeFilters, searchText, titleTextForList } = this.props;
+    const { classes, hideTitle, listModeFilters, searchText, titleTextForList } = this.props;
     const isSearching = searchText && searchText.length > 0;
     const { campaignList, campaignSearchResults, filteredCampaignList, timeStampOfChange } = this.state;
     const filteredCampaignListLength = (filteredCampaignList) ? filteredCampaignList.length : 0;
@@ -256,12 +262,18 @@ class CampaignListRoot extends Component {
               />
             </HorizontallyScrollingContainer>
           </ScrollingInnerWrapper>
+          <RightArrowOuterWrapper>
+            <RightArrowInnerWrapper>
+              <ArrowForwardIos classes={{ root: classes.arrowRoot }} />
+            </RightArrowInnerWrapper>
+          </RightArrowOuterWrapper>
         </ScrollingOuterWrapper>
       </CampaignListWrapper>
     );
   }
 }
 CampaignListRoot.propTypes = {
+  classes: PropTypes.object,
   hideTitle: PropTypes.bool,
   incomingList: PropTypes.array,
   incomingListTimeStampOfChange: PropTypes.number,
@@ -273,6 +285,9 @@ CampaignListRoot.propTypes = {
 };
 
 const styles = () => ({
+  arrowRoot: {
+    fontSize: 24,
+  },
   iconButton: {
     padding: 8,
   },

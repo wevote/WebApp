@@ -20,7 +20,7 @@ export default function OfficeHeldNameText (props) {
   let districtNameFiltered;
   let nameHtml;
   let officeNameFiltered;
-  const { districtName: incomingDistrictName, officeName: incomingOfficeHeldName } = props; // Mar 2023: Turning off officeLink until we can do design review
+  const { districtName: incomingDistrictName, officeName: incomingOfficeHeldName, politicalParty } = props; // Mar 2023: Turning off officeLink until we can do design review
   if (isAllUpperCase(incomingDistrictName)) {
     districtNameFiltered = toTitleCase(incomingDistrictName);
   } else {
@@ -34,6 +34,15 @@ export default function OfficeHeldNameText (props) {
   const { districtName, officeName } = adjustDistrictNameAndOfficeName(districtNameFiltered, officeNameFiltered);
   // console.log('districtName: ', districtName, 'officeName: ', officeName);
   const officeLink = null;
+  const politicalPartyHtml = (politicalParty) ? (
+    <PoliticalPartySpan>
+      {' '}
+      (
+      {politicalParty}
+      )
+    </PoliticalPartySpan>
+  ) : null;
+
   if (districtName) {
     if (officeName === undefined) {
       nameHtml = (
@@ -44,6 +53,7 @@ export default function OfficeHeldNameText (props) {
               <DistrictNameSpan>{districtName}</DistrictNameSpan>
             </Link>
           ) : <DistrictNameSpan>{districtName}</DistrictNameSpan>}
+          {politicalPartyHtml}
         </NoPoliticalPartySpan>
       );
     } else {
@@ -59,6 +69,7 @@ export default function OfficeHeldNameText (props) {
               <DistrictNameSpan>{districtName}</DistrictNameSpan>
             </Link>
           ) : <DistrictNameSpan>{districtName}</DistrictNameSpan>}
+          {politicalPartyHtml}
         </PartyAndOfficeWrapper>
       );
     }
@@ -68,6 +79,7 @@ export default function OfficeHeldNameText (props) {
         <span className="u-gray-darker">
           {officeName}
         </span>
+        {politicalPartyHtml}
       </PartyAndYearWrapper>
     );
   }
@@ -78,6 +90,7 @@ OfficeHeldNameText.propTypes = {
   districtName: PropTypes.string,
   officeName: PropTypes.string,
   // officeLink: PropTypes.string,
+  politicalParty: PropTypes.string,
 };
 
 const DistrictNameSpan = styled('span')`
@@ -92,4 +105,10 @@ const PartyAndYearWrapper = styled('div')`
 
 const PartyAndOfficeWrapper = styled('div')`
   line-height: 17px;
+`;
+
+const PoliticalPartySpan = styled('span')`
+  color: #999;
+  font-weight: 200;
+  white-space: nowrap;
 `;

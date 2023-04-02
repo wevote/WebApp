@@ -539,6 +539,7 @@ class PoliticianDetailsPage extends Component {
                       districtName={officeHeld.district_name}
                       key={officeHeld.office_held_we_vote_id}
                       officeName={officeHeld.office_held_name}
+                      politicalParty={officeHeld.political_party}
                     />
                   ))}
                 </OfficeHeldNameMobile>
@@ -635,6 +636,7 @@ class PoliticianDetailsPage extends Component {
                       districtName={officeHeld.district_name}
                       key={officeHeld.office_held_we_vote_id}
                       officeName={officeHeld.office_held_name}
+                      politicalParty={officeHeld.political_party}
                     />
                   ))}
                 </OfficeHeldNameDesktop>

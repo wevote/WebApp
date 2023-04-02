@@ -20,9 +20,9 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     backgroundColor: theme.palette.background.paper,
   },
-  // toolbarRoot: {
-  //   minHeight: 0,
-  // },
+  toolbarRoot: {
+    minHeight: 48,
+  },
 }));
 
 
@@ -100,7 +100,7 @@ export default function CampaignTopNavigation (incomingVariables) {
       >
         <StyledEngineProvider injectFirst>
           <ThemeProvider theme={theme}>
-            <Toolbar disableGutters/* className={classes.toolbarRoot} */>
+            <Toolbar disableGutters className={classes.toolbarRoot}>
               <Tabs value={value} onChange={handleChange} aria-label="Tab menu">
                 <Tab id="weTarget-0" label="Campaign details" onClick={() => history.push(detailsUrl)} />
                 <Tab id="weTarget-1" label="Comments" onClick={() => history.push(commentsUrl)} />

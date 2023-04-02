@@ -1,5 +1,20 @@
 import styled, { css } from 'styled-components';
 
+export const BottomActionButtonWrapper = styled('div')`
+  margin-top: 4px;
+`;
+
+export const CampaignActionButtonsWrapper = styled('div')`
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  height: 166px;
+  justify-content: flex-end;
+  // width: 100%;
+  width: 300px;
+`;
+
 export const CandidateCardForListWrapper = styled('div', {
   shouldForwardProp: (prop) => !['limitCardWidth'].includes(prop),
 })(({ limitCardWidth }) => (`
