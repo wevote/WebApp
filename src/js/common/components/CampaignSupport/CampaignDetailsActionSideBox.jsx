@@ -189,7 +189,7 @@ class CampaignDetailsActionSideBox extends Component {
     if (!nextReleaseFeaturesEnabled) {
       if (!campaignSEOFriendlyPath && !campaignXWeVoteId) {
         // console.log('CampaignDetailsActionSideBox render voter NOT found');
-        return <div className="undefined-campaign-state"/>;
+        return <div className="undefined-campaign-state" />;
       }
     }
 
