@@ -1,6 +1,5 @@
 import PoliticianActions from '../actions/PoliticianActions';
 import PoliticianStore from '../stores/PoliticianStore';
-import VoterStore from '../../stores/VoterStore';
 import initializejQuery from './initializejQuery';
 
 function orderCandidatesByUltimateDate (firstEntry, secondEntry) {
@@ -122,11 +121,6 @@ export function retrievePoliticianFromIdentifiersIfNeeded (politicianSEOFriendly
   // console.log('retrievePoliticianFromIdentifiersIfNeeded politicianSEOFriendlyPath: ', politicianSEOFriendlyPath, ', politicianWeVoteId: ', politicianWeVoteId);
   let politician = {};
   let mustRetrieveCampaign = false;
-  const voter = VoterStore.getVoter();
-  if (!('we_vote_id' in voter) || voter.we_vote_id.length < 0) {
-    // Calling politicianRetrieve before we have a voter, is useless
-    return false;
-  }
 
   // console.log('retrievePoliticianFromIdentifiersIfNeeded voter:', voter);
   if (politicianSEOFriendlyPath) {

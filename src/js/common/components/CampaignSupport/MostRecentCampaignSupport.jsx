@@ -214,7 +214,16 @@ class MostRecentCampaignSupport extends React.Component {
                 </CommentWrapper>
               ))}
             </div>
-          ) : null }
+          ) : (
+            <CommentWrapper className="comment" key="beTheFirst">
+              <CommentTextWrapper>
+                <Comment>No comments yet -- you can be the first!</Comment>
+                <CommentNameWrapper>
+                  Your name here
+                </CommentNameWrapper>
+              </CommentTextWrapper>
+            </CommentWrapper>
+          )}
         </CommentsWrapper>
       </Wrapper>
     );

@@ -12,7 +12,7 @@ import {
   CampaignOwnersDesktopWrapper, CampaignOwnersWrapper, CampaignSubSectionTitle,
   CampaignTitleAndScoreBar, CommentsListWrapper,
   DetailsSectionDesktopTablet, DetailsSectionMobile,
-  SupportButtonFooterWrapper, SupportButtonPanel,
+  SupportButtonFooterWrapperAboveFooterButtons, SupportButtonPanel,
 } from '../../components/Style/CampaignDetailsStyles';
 import {
   CandidateCampaignListDesktop, CandidateCampaignListMobile, CandidateCampaignWrapper,
@@ -48,11 +48,12 @@ import TwitterAccountStats from '../../../components/Widgets/TwitterAccountStats
 import SearchOnGoogle from '../../../components/Widgets/SearchOnGoogle';
 import ViewOnBallotpedia from '../../../components/Widgets/ViewOnBallotpedia';
 import ViewOnWikipedia from '../../../components/Widgets/ViewOnWikipedia';
+import webAppConfig from '../../../config';
 
-// const CampaignCommentsList = React.lazy(() => import(/* webpackChunkName: 'CampaignCommentsList' */ '../../components/Campaign/CampaignCommentsList'));
-// const CampaignDetailsActionSideBox = React.lazy(() => import(/* webpackChunkName: 'CampaignDetailsActionSideBox' */ '../../components/CampaignSupport/CampaignDetailsActionSideBox'));
-// const CampaignNewsItemList = React.lazy(() => import(/* webpackChunkName: 'CampaignNewsItemList' */ '../../components/Campaign/CampaignNewsItemList'));
-// const CampaignSupportThermometer = React.lazy(() => import(/* webpackChunkName: 'CampaignSupportThermometer' */ '../../components/CampaignSupport/CampaignSupportThermometer'));
+const CampaignCommentsList = React.lazy(() => import(/* webpackChunkName: 'CampaignCommentsList' */ '../../components/Campaign/CampaignCommentsList'));
+const CampaignDetailsActionSideBox = React.lazy(() => import(/* webpackChunkName: 'CampaignDetailsActionSideBox' */ '../../components/CampaignSupport/CampaignDetailsActionSideBox'));
+const CampaignNewsItemList = React.lazy(() => import(/* webpackChunkName: 'CampaignNewsItemList' */ '../../components/Campaign/CampaignNewsItemList'));
+const CampaignSupportThermometer = React.lazy(() => import(/* webpackChunkName: 'CampaignSupportThermometer' */ '../../components/CampaignSupport/CampaignSupportThermometer'));
 const OfficeNameText = React.lazy(() => import(/* webpackChunkName: 'OfficeNameText' */ '../../components/Widgets/OfficeNameText'));
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../components/Widgets/OpenExternalWebSite'));
 const PoliticianEndorsementsList = React.lazy(() => import(/* webpackChunkName: 'PoliticianEndorsementsList' */ '../../components/Politician/PoliticianEndorsementsList'));
@@ -60,12 +61,15 @@ const PoliticianRetrieveController = React.lazy(() => import(/* webpackChunkName
 const PoliticianPositionRetrieveController = React.lazy(() => import(/* webpackChunkName: 'PoliticianPositionRetrieveController' */ '../../components/Position/PoliticianPositionRetrieveController'));
 const SupportButtonBeforeCompletionScreen = React.lazy(() => import(/* webpackChunkName: 'SupportButtonBeforeCompletionScreen' */ '../../components/CampaignSupport/SupportButtonBeforeCompletionScreen'));
 
+const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
+
 
 class PoliticianDetailsPage extends Component {
   constructor (props) {
     super(props);
     this.state = {
       ballotpediaPoliticianUrl: '',
+      politicalParty: '',
       politicianImageUrlLarge: '',
       politicianSEOFriendlyPath: '',
       politicianName: '',
@@ -93,11 +97,8 @@ class PoliticianDetailsPage extends Component {
     // console.log('componentDidMount politicianSEOFriendlyPath: ', politicianSEOFriendlyPath, ', politicianWeVoteId: ', politicianWeVoteId);
     this.onAppObservableStoreChange();
     this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
-    this.onCampaignSupporterStoreChange();
     this.campaignSupporterStoreListener = CampaignSupporterStore.addListener(this.onCampaignSupporterStoreChange.bind(this));
-    this.onCandidateStoreChange();
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
-    this.onOfficeHeldStoreChange();
     this.officeHeldStoreListener = OfficeHeldStore.addListener(this.onOfficeHeldStoreChange.bind(this));
     this.onPoliticianStoreChange();
     this.politicianStoreListener = PoliticianStore.addListener(this.onPoliticianStoreChange.bind(this));
@@ -105,11 +106,17 @@ class PoliticianDetailsPage extends Component {
     this.representativeStoreListener = RepresentativeStore.addListener(this.onRepresentativeStoreChange.bind(this));
     let pathToUseWhenProfileComplete;
     if (politicianSEOFriendlyPath) {
+      const politician = PoliticianStore.getPoliticianBySEOFriendlyPath(politicianSEOFriendlyPath);
+      if (politician && politician.politician_we_vote_id) {
+        this.setState({
+          politicianWeVoteId: politician.politician_we_vote_id,
+        }, () => this.onfirstRetrievalOfPoliticianWeVoteId());
+      }
       this.setState({
         politicianSEOFriendlyPath,
       });
       pathToUseWhenProfileComplete = `/c/${politicianSEOFriendlyPath}/why-do-you-support`;
-    } else {
+    } else if (politicianWeVoteId) {
       this.setState({
         politicianWeVoteId,
       });
@@ -134,6 +141,12 @@ class PoliticianDetailsPage extends Component {
     this.officeHeldStoreListener.remove();
     this.politicianStoreListener.remove();
     this.representativeStoreListener.remove();
+  }
+
+  onfirstRetrievalOfPoliticianWeVoteId () {
+    this.onCampaignSupporterStoreChange();
+    this.onCandidateStoreChange();
+    this.onOfficeHeldStoreChange();
   }
 
   onAppObservableStoreChange () {
@@ -212,6 +225,7 @@ class PoliticianDetailsPage extends Component {
       candidateCampaignList,
       finalElectionDateInPast,
       // isSupportersCountMinimumExceeded,
+      politicalParty,
       politicianDescription,
       politicianImageUrlLarge,
       politicianSEOFriendlyPath,
@@ -241,7 +255,7 @@ class PoliticianDetailsPage extends Component {
         politicianWeVoteId,
         voterCanEditThisPolitician,
         voterSupportsThisPolitician,
-      }, () => this.onCandidateStoreChange());
+      }, () => this.onfirstRetrievalOfPoliticianWeVoteId());
     }
     const politicianDescriptionLimited = returnFirstXWords(politicianDescription, 200);
     const filteredCandidateCampaignList = candidateCampaignList.sort(this.orderCandidatesByUltimateDate);
@@ -254,6 +268,7 @@ class PoliticianDetailsPage extends Component {
       candidateCampaignList: filteredCandidateCampaignList,
       finalElectionDateInPast,
       // isSupportersCountMinimumExceeded,
+      politicalParty,
       politicianDescription,
       politicianDescriptionLimited,
       politicianImageUrlLarge,
@@ -349,7 +364,7 @@ class PoliticianDetailsPage extends Component {
     const {
       allCachedPositionsForThisPolitician, ballotpediaPoliticianUrl, candidateCampaignList, chosenWebsiteName,
       finalElectionDateInPast,
-      officeHeldList, officeHeldNameForSearch,
+      officeHeldList, officeHeldNameForSearch, politicalParty,
       politicianDescription, politicianDescriptionLimited, politicianImageUrlLarge,
       politicianSEOFriendlyPath, politicianName, politicianUrl, politicianWeVoteId,
       stateText, twitterHandle, twitterHandle2, twitterFollowersCount,
@@ -532,26 +547,32 @@ class PoliticianDetailsPage extends Component {
             </CampaignImageMobileWrapper>
             <CampaignTitleAndScoreBar>
               <PoliticianNameMobile>{politicianName}</PoliticianNameMobile>
-              {officeHeldList.length > 0 && (
+              {officeHeldList.length > 0 ? (
                 <OfficeHeldNameMobile>
                   { officeHeldList.map((officeHeld) => (
                     <OfficeHeldNameText
                       districtName={officeHeld.district_name}
                       key={officeHeld.office_held_we_vote_id}
                       officeName={officeHeld.office_held_name}
-                      politicalParty={officeHeld.political_party}
+                      politicalParty={politicalParty}
                     />
                   ))}
                 </OfficeHeldNameMobile>
+              ) : (
+                <PoliticalPartyDiv>
+                  {politicalParty}
+                </PoliticalPartyDiv>
+              )}
+              {nextReleaseFeaturesEnabled && (
+                <Suspense fallback={<span>&nbsp;</span>}>
+                  <CampaignSupportThermometer politicianWeVoteId={politicianWeVoteId} />
+                </Suspense>
               )}
               {/*
-              <Suspense fallback={<span>&nbsp;</span>}>
-                <CampaignSupportThermometer politicianWeVoteId={politicianWeVoteId} />
-              </Suspense>
-              */}
               <CampaignOwnersWrapper>
                 <CampaignOwnersList politicianWeVoteId={politicianWeVoteId} />
               </CampaignOwnersWrapper>
+              */}
             </CampaignTitleAndScoreBar>
             <CampaignDescriptionWrapper>
               <CampaignDescription>
@@ -588,35 +609,35 @@ class PoliticianDetailsPage extends Component {
               )}
             </CampaignDescriptionWrapper>
             {positionListTeaserHtml}
-            {/*
-            <CommentsListWrapper>
-              <DelayedLoad waitBeforeShow={1000}>
-                <Suspense fallback={<span>&nbsp;</span>}>
-                  <CampaignSubSectionTitle>
-                    Reasons for supporting
-                  </CampaignSubSectionTitle>
-                  <CampaignCommentsList politicianWeVoteId={politicianWeVoteId} startingNumberOfCommentsToDisplay={2} />
-                </Suspense>
-              </DelayedLoad>
-            </CommentsListWrapper>
-            */}
-            {/*
-            <CommentsListWrapper>
-              <DelayedLoad waitBeforeShow={1000}>
-                <Suspense fallback={<span>&nbsp;</span>}>
-                  <CampaignSubSectionTitle>
-                    Updates
-                  </CampaignSubSectionTitle>
-                  <CampaignNewsItemList
-                    politicianWeVoteId={politicianWeVoteId}
-                    politicianSEOFriendlyPath={politicianSEOFriendlyPath}
-                    showAddNewsItemIfNeeded
-                    startingNumberOfCommentsToDisplay={1}
-                  />
-                </Suspense>
-              </DelayedLoad>
-            </CommentsListWrapper>
-            */}
+            {nextReleaseFeaturesEnabled && (
+              <CommentsListWrapper>
+                <DelayedLoad waitBeforeShow={1000}>
+                  <Suspense fallback={<span>&nbsp;</span>}>
+                    <CampaignSubSectionTitle>
+                      Reasons for supporting
+                    </CampaignSubSectionTitle>
+                    <CampaignCommentsList politicianWeVoteId={politicianWeVoteId} startingNumberOfCommentsToDisplay={2} />
+                  </Suspense>
+                </DelayedLoad>
+              </CommentsListWrapper>
+            )}
+            {nextReleaseFeaturesEnabled && (
+              <CommentsListWrapper>
+                <DelayedLoad waitBeforeShow={1000}>
+                  <Suspense fallback={<span>&nbsp;</span>}>
+                    <CampaignSubSectionTitle>
+                      Updates
+                    </CampaignSubSectionTitle>
+                    <CampaignNewsItemList
+                      politicianWeVoteId={politicianWeVoteId}
+                      politicianSEOFriendlyPath={politicianSEOFriendlyPath}
+                      showAddNewsItemIfNeeded
+                      startingNumberOfCommentsToDisplay={1}
+                    />
+                  </Suspense>
+                </DelayedLoad>
+              </CommentsListWrapper>
+            )}
             {candidateCampaignList && candidateCampaignList.length > 0 && (
               <CandidateCampaignListMobile>
                 <CampaignSubSectionTitle>
@@ -629,17 +650,21 @@ class PoliticianDetailsPage extends Component {
           <DetailsSectionDesktopTablet className="u-show-desktop-tablet">
             <PoliticianNameOuterWrapperDesktop>
               <PoliticianNameDesktop>{politicianName}</PoliticianNameDesktop>
-              {officeHeldList.length > 0 && (
+              {officeHeldList.length > 0 ? (
                 <OfficeHeldNameDesktop>
                   { officeHeldList.map((officeHeld) => (
                     <OfficeHeldNameText
                       districtName={officeHeld.district_name}
                       key={officeHeld.office_held_we_vote_id}
                       officeName={officeHeld.office_held_name}
-                      politicalParty={officeHeld.political_party}
+                      politicalParty={politicalParty}
                     />
                   ))}
                 </OfficeHeldNameDesktop>
+              ) : (
+                <PoliticalPartyDiv>
+                  {politicalParty}
+                </PoliticalPartyDiv>
               )}
             </PoliticianNameOuterWrapperDesktop>
             <ColumnsWrapper>
@@ -688,51 +713,53 @@ class PoliticianDetailsPage extends Component {
                   )}
                 </CampaignDescriptionDesktopWrapper>
                 {positionListTeaserHtml}
-                {/*
-                <CommentsListWrapper>
-                  <DelayedLoad waitBeforeShow={500}>
-                    <Suspense fallback={<span>&nbsp;</span>}>
-                      <CampaignSubSectionTitle>
-                        Reasons for supporting
-                      </CampaignSubSectionTitle>
-                      <CampaignCommentsList politicianWeVoteId={politicianWeVoteId} startingNumberOfCommentsToDisplay={2} />
-                    </Suspense>
-                  </DelayedLoad>
-                </CommentsListWrapper>
-                */}
+                {nextReleaseFeaturesEnabled && (
+                  <CommentsListWrapper>
+                    <DelayedLoad waitBeforeShow={500}>
+                      <Suspense fallback={<span>&nbsp;</span>}>
+                        <CampaignSubSectionTitle>
+                          Reasons for supporting
+                        </CampaignSubSectionTitle>
+                        <CampaignCommentsList politicianWeVoteId={politicianWeVoteId} startingNumberOfCommentsToDisplay={2} />
+                      </Suspense>
+                    </DelayedLoad>
+                  </CommentsListWrapper>
+                )}
               </ColumnTwoThirds>
               <ColumnOneThird>
-                {/*
-                <Suspense fallback={<span>&nbsp;</span>}>
-                  <CampaignSupportThermometer politicianWeVoteId={politicianWeVoteId} finalElectionDateInPast={finalElectionDateInPast} />
-                </Suspense>
-                <Suspense fallback={<span>&nbsp;</span>}>
-                  <CampaignDetailsActionSideBox
-                    politicianSEOFriendlyPath={politicianSEOFriendlyPath}
-                    politicianWeVoteId={politicianWeVoteId}
-                    finalElectionDateInPast={finalElectionDateInPast}
-                    functionToUseToKeepHelping={this.functionToUseToKeepHelping}
-                    functionToUseWhenProfileComplete={this.functionToUseWhenProfileComplete}
-                  />
-                </Suspense>
-                */}
-                {/*
-                <CommentsListWrapper>
-                  <DelayedLoad waitBeforeShow={500}>
-                    <Suspense fallback={<span>&nbsp;</span>}>
-                      <CampaignSubSectionTitle>
-                        Updates
-                      </CampaignSubSectionTitle>
-                      <CampaignNewsItemList
-                        politicianWeVoteId={politicianWeVoteId}
-                        politicianSEOFriendlyPath={politicianSEOFriendlyPath}
-                        showAddNewsItemIfNeeded
-                        startingNumberOfCommentsToDisplay={1}
-                      />
-                    </Suspense>
-                  </DelayedLoad>
-                </CommentsListWrapper>
-                */}
+                {nextReleaseFeaturesEnabled && (
+                  <Suspense fallback={<span>&nbsp;</span>}>
+                    <CampaignSupportThermometer politicianWeVoteId={politicianWeVoteId} finalElectionDateInPast={finalElectionDateInPast} />
+                  </Suspense>
+                )}
+                {nextReleaseFeaturesEnabled && (
+                  <Suspense fallback={<span>&nbsp;</span>}>
+                    <CampaignDetailsActionSideBox
+                      politicianSEOFriendlyPath={politicianSEOFriendlyPath}
+                      politicianWeVoteId={politicianWeVoteId}
+                      finalElectionDateInPast={finalElectionDateInPast}
+                      functionToUseToKeepHelping={this.functionToUseToKeepHelping}
+                      functionToUseWhenProfileComplete={this.functionToUseWhenProfileComplete}
+                    />
+                  </Suspense>
+                )}
+                {nextReleaseFeaturesEnabled && (
+                  <CommentsListWrapper>
+                    <DelayedLoad waitBeforeShow={500}>
+                      <Suspense fallback={<span>&nbsp;</span>}>
+                        <CampaignSubSectionTitle>
+                          Updates
+                        </CampaignSubSectionTitle>
+                        <CampaignNewsItemList
+                          politicianWeVoteId={politicianWeVoteId}
+                          politicianSEOFriendlyPath={politicianSEOFriendlyPath}
+                          showAddNewsItemIfNeeded
+                          startingNumberOfCommentsToDisplay={1}
+                        />
+                      </Suspense>
+                    </DelayedLoad>
+                  </CommentsListWrapper>
+                )}
                 {candidateCampaignList && candidateCampaignList.length > 0 && (
                   <CandidateCampaignListDesktop>
                     <CampaignSubSectionTitle>
@@ -745,20 +772,18 @@ class PoliticianDetailsPage extends Component {
             </ColumnsWrapper>
           </DetailsSectionDesktopTablet>
         </PageWrapper>
-        <SupportButtonFooterWrapper className="u-show-mobile">
-          {!finalElectionDateInPast && (
-            <SupportButtonPanel>
-              <Suspense fallback={<span>&nbsp;</span>}>
-                <SupportButtonBeforeCompletionScreen
-                  politicianSEOFriendlyPath={politicianSEOFriendlyPath}
-                  politicianWeVoteId={politicianWeVoteId}
-                  functionToUseToKeepHelping={this.functionToUseToKeepHelping}
-                  functionToUseWhenProfileComplete={this.functionToUseWhenProfileComplete}
-                />
-              </Suspense>
-            </SupportButtonPanel>
-          )}
-        </SupportButtonFooterWrapper>
+        <SupportButtonFooterWrapperAboveFooterButtons className="u-show-mobile">
+          <SupportButtonPanel>
+            <Suspense fallback={<span>&nbsp;</span>}>
+              <SupportButtonBeforeCompletionScreen
+                politicianSEOFriendlyPath={politicianSEOFriendlyPath}
+                politicianWeVoteId={politicianWeVoteId}
+                functionToUseToKeepHelping={this.functionToUseToKeepHelping}
+                functionToUseWhenProfileComplete={this.functionToUseWhenProfileComplete}
+              />
+            </Suspense>
+          </SupportButtonPanel>
+        </SupportButtonFooterWrapperAboveFooterButtons>
         <CompleteYourProfileModalController
           politicianWeVoteId={politicianWeVoteId}
           functionToUseWhenProfileComplete={this.functionToUseWhenProfileComplete}
@@ -805,6 +830,14 @@ const ExternalWebSiteWrapper = styled('div')`
   padding-left: 15px;
   white-space: nowrap;
   // ${() => displayNoneIfSmallerThanDesktop()};
+`;
+
+const PoliticalPartyDiv = styled('div')`
+  font-size: 18px;
+  text-align: center;
+  color: #999;
+  font-weight: 200;
+  white-space: nowrap;
 `;
 
 const PoliticianLinksWrapper = styled('div')`
