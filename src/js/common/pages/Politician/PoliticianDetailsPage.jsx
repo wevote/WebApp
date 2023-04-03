@@ -9,7 +9,7 @@ import {
   CampaignDescription, CampaignDescriptionDesktop, CampaignDescriptionWrapper,
   CampaignDescriptionDesktopWrapper, CampaignImagePlaceholder, CampaignImagePlaceholderText,
   CampaignImageDesktopWrapper, CampaignImageMobileWrapper,
-  CampaignOwnersDesktopWrapper, CampaignOwnersWrapper, CampaignSubSectionTitle,
+  CampaignOwnersDesktopWrapper, CampaignSubSectionTitle,  // CampaignOwnersWrapper
   CampaignTitleAndScoreBar, CommentsListWrapper,
   DetailsSectionDesktopTablet, DetailsSectionMobile,
   SupportButtonFooterWrapperAboveFooterButtons, SupportButtonPanel,
