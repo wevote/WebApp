@@ -16,28 +16,6 @@ export const CandidateCampaignWrapper = styled('div')`
   margin-bottom: 20px;
 `;
 
-export const PoliticianNameDesktop = styled('h1')(({ theme }) => (`
-  font-size: 28px;
-  text-align: center;
-  margin: 30px 20px 0 20px;
-  min-height: 34px;
-  ${theme.breakpoints.down('md')} {
-    font-size: 24px;
-    min-height: 29px;
-  }
-`));
-
-export const PoliticianNameMobile = styled('h1')`
-  font-size: 24px;
-  margin: 0 0 10px 0;
-  min-height: 27px;
-  text-align: left;
-`;
-
-export const PoliticianNameOuterWrapperDesktop = styled('div')`
-  margin-bottom: 30px
-`;
-
 export const OfficeHeldNameDesktop = styled('h2')(({ theme }) => (`
   font-size: 22px;
   text-align: center;
@@ -53,6 +31,7 @@ export const OfficeHeldNameMobile = styled('h2')`
   font-size: 18px;
   margin: 0;
   min-height: 34px;
+  text-align: center;
 `;
 
 export const PoliticianImageMobile = styled('img')`
@@ -93,3 +72,25 @@ export const PoliticianImageMobilePlaceholder = styled('div', {
   width: 100%;
   ${PoliticianImageSharedStyles}
 `));
+
+export const PoliticianNameDesktop = styled('h1')(({ theme }) => (`
+  font-size: 28px;
+  text-align: center;
+  margin: 30px 20px 0 20px;
+  min-height: 34px;
+  ${theme.breakpoints.down('md')} {
+    font-size: 24px;
+    min-height: 29px;
+  }
+`));
+
+export const PoliticianNameMobile = styled('h1')`
+  font-size: 24px;
+  margin: 0 0 10px 0;
+  min-height: 27px;
+  text-align: center;
+`;
+
+export const PoliticianNameOuterWrapperDesktop = styled('div')`
+  margin-bottom: 30px
+`;

@@ -243,6 +243,13 @@ export const SupportButtonFooterWrapper = styled('div')`
   display: block;
 `;
 
+export const SupportButtonFooterWrapperAboveFooterButtons = styled('div')`
+  position: fixed;
+  width: 100%;
+  bottom: 55px;
+  display: block;
+`;
+
 export const SupportButtonPanel = styled('div')`
   background-color: #fff;
   border-top: 1px solid #ddd;
