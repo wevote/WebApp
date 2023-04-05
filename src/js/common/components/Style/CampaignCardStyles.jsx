@@ -12,7 +12,7 @@ export const CampaignActionButtonsWrapper = styled('div')`
   height: 166px;
   justify-content: flex-end;
   // width: 100%;
-  width: 300px;
+  // width: 300px;
 `;
 
 export const CandidateCardForListWrapper = styled('div', {
@@ -111,12 +111,20 @@ export const OneCampaignDescription = styled('div')`
   margin: 4px 0;
 `;
 
+// https://css-tricks.com/snippets/css/css-box-shadow/
 export const OneCampaignInnerWrapper = styled('div', {
   shouldForwardProp: (prop) => !['limitCardWidth'].includes(prop),
 })(({ limitCardWidth }) => (`
+  background-color: #fff;
+  // box-shadow: 0 16px 64px -16px rgba(46,55,77,.3);
+  // box-shadow: 0 0 80px -27px rgba(46,55,77,.3);
+  box-shadow: 0 0 80px -16px rgba(46,55,77,.3);
   display: flex;
   ${limitCardWidth ? 'flex-direction: column-reverse;' : 'flex-direction: row;'}
   ${limitCardWidth ? 'justify-content: flex-start;' : 'justify-content: space-between;'}
+  &:hover {
+    box-shadow: 0 20px 50px -16px rgba(46,55,77,.7);
+  }
 `));
 
 export const OneCampaignOuterWrapper = styled('div', {
@@ -156,7 +164,8 @@ export const OneCampaignPhotoWrapperMobile = styled('div')(({ theme }) => (`
 `));
 
 export const OneCampaignTextColumn = styled('div')`
-  width: 100%;
+  padding: 0 10px 10px 10px;
+  // width: 100%;
 `;
 
 export const OneCampaignTitle = styled('h1')(({ theme }) => (`

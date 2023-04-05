@@ -317,6 +317,7 @@ class CampaignCardForList extends Component {
       we_vote_hosted_campaign_photo_medium_url: CampaignPhotoMediumUrl,
     } = campaignX;
     // const stateName = convertStateCodeToStateText(stateCode);
+    const supportersCountNextGoalWithFloor = supportersCountNextGoal || CampaignStore.getCampaignXSupportersCountNextGoalDefault();
     // const year = getYearFromUltimateElectionDate(finalElectionDateAsInteger);
     return (
       <CandidateCardForListWrapper limitCardWidth={limitCardWidth}>
@@ -341,23 +342,18 @@ class CampaignCardForList extends Component {
                       Thank you for supporting!
                     </SupportersActionLink>
                   ) : (
-                    <SupportersActionLink className="u-link-color u-link-underline">
+                    <SupportersActionLink className="u-link-color u-link-underline u-cursor--pointer" onClick={this.onCampaignClick}>
                       Let&apos;s get to
                       {' '}
-                      {numberWithCommas(supportersCountNextGoal)}
+                      {numberWithCommas(supportersCountNextGoalWithFloor)}
                       !
                     </SupportersActionLink>
                   )}
                 </SupportersWrapper>
                 <OneCampaignDescription className="u-cursor--pointer" onClick={this.onCampaignClick}>
                   <TruncateMarkup
-                    ellipsis={(
-                      <span>
-                        <span className="u-text-fade-at-end">&nbsp;</span>
-                        <span className="u-link-color u-link-underline">Read more</span>
-                      </span>
-                    )}
-                    lines={3}
+                    ellipsis="..."
+                    lines={2}
                     tokenize="words"
                   >
                     <div>

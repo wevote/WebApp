@@ -374,6 +374,7 @@ class CandidateItem extends Component {
                   onClick={useLinkToCandidatePage === true ? () => this.goToOfficeLink() : null}
                 >
                   <OfficeNameText
+                    inCard
                     officeLink={linkToOfficePage ? this.getOfficeLink() : ''}
                     officeName={contestOfficeName}
                     politicalParty={politicalParty}

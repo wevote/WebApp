@@ -4,6 +4,8 @@ import anonymous from '../../../img/global/icons/avatar-generic.png';
 import arrayContains from '../utils/arrayContains';
 import VoterStore from '../../stores/VoterStore'; // eslint-disable-line import/no-cycle
 
+const SUPPORTERS_COUNT_NEXT_GOAL_DEFAULT = 10;
+
 class CampaignStore extends ReduceStore {
   getInitialState () {
     return {
@@ -230,6 +232,10 @@ class CampaignStore extends ReduceStore {
 
   getCampaignXPoliticianList (campaignXWeVoteId) {
     return this.getState().allCachedCampaignXPoliticianLists[campaignXWeVoteId] || [];
+  }
+
+  getCampaignXSupportersCountNextGoalDefault () {
+    return SUPPORTERS_COUNT_NEXT_GOAL_DEFAULT;
   }
 
   getRecommendedCampaignXList (campaignXWeVoteId) {

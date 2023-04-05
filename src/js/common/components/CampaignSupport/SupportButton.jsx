@@ -109,7 +109,7 @@ class SupportButton extends Component {
                 </span>
               ) : (
                 <span>
-                  I support this campaign
+                  Show your support
                 </span>
               )}
             </Button>

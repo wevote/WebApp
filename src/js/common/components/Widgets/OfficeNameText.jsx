@@ -23,7 +23,7 @@ export default function OfficeNameText (props) {
   let officeAndDistrictHtml;
   let officeNameFiltered;
   const { politicalParty, showOfficeName, stateName, year } = props; // officeLink, // Dec 2022: Turning off officeLink until we can do design review
-  const { districtName: incomingDistrictName, officeName: incomingOfficeName } = props; // Mar 2023: Turning off officeLink until we can do design review
+  const { districtName: incomingDistrictName, inCard, officeName: incomingOfficeName } = props; // Mar 2023: Turning off officeLink until we can do design review
   if (isAllUpperCase(incomingDistrictName)) {
     districtNameFiltered = toTitleCase(incomingDistrictName);
   } else {
@@ -76,42 +76,28 @@ export default function OfficeNameText (props) {
   }
 
   if (showOfficeName) {
-    if (politicalParty === undefined || politicalParty === '') {
-      nameHtml = (
-        <NoPoliticalPartyWrapper>
-          <span>Candidate for </span>
-          {officeLink ? (
-            <Link to={officeLink}>
-              <OfficeNameSpan>{officeAndDistrictHtml}</OfficeNameSpan>
-            </Link>
-          ) : <OfficeNameSpan>{officeAndDistrictHtml}</OfficeNameSpan>}
-          <YearState year={year} stateName={stateName} />
-        </NoPoliticalPartyWrapper>
-      );
-    } else {
-      nameHtml = (
-        <PartyAndOfficeWrapper>
-          <span className="u-bold u-gray-darker">
-            {politicalParty}
-            {' '}
-          </span>
-          <span>candidate for </span>
-          {officeLink ? (
-            <Link id="officeNameTextContestOfficeName" to={officeLink}>
-              <OfficeNameSpan>{officeAndDistrictHtml}</OfficeNameSpan>
-            </Link>
-          ) : <OfficeNameSpan>{officeAndDistrictHtml}</OfficeNameSpan>}
-          <YearState year={year} stateName={stateName} />
-        </PartyAndOfficeWrapper>
-      );
-    }
+    nameHtml = (
+      <PartyAndOfficeWrapper>
+        <span>Candidate for </span>
+        {officeLink ? (
+          <Link to={officeLink}>
+            <OfficeNameSpan>{officeAndDistrictHtml}</OfficeNameSpan>
+          </Link>
+        ) : <OfficeNameSpan>{officeAndDistrictHtml}</OfficeNameSpan>}
+        <YearStateWrapper inCard={inCard}>
+          <YearState politicalParty={politicalParty} stateName={stateName} year={year} />
+        </YearStateWrapper>
+      </PartyAndOfficeWrapper>
+    );
   } else {
     nameHtml = (
       <PartyAndYearWrapper>
         <span className="u-gray-darker">
           {politicalParty}
         </span>
-        <YearState year={year} stateName={stateName} />
+        <YearStateWrapper inCard={inCard}>
+          <YearState year={year} stateName={stateName} />
+        </YearStateWrapper>
       </PartyAndYearWrapper>
     );
   }
@@ -120,6 +106,7 @@ export default function OfficeNameText (props) {
 }
 OfficeNameText.propTypes = {
   districtName: PropTypes.string,
+  inCard: PropTypes.string,
   officeName: PropTypes.string,
   // officeLink: PropTypes.string,
   politicalParty: PropTypes.string,
@@ -130,14 +117,10 @@ OfficeNameText.propTypes = {
 
 const DistrictNameSpan = styled('span')`
   color: #333;
-  font-weight: 600;
+  // font-weight: 600;
 `;
 
 const NoPoliticalPartySpan = styled('span')`
-`;
-
-const NoPoliticalPartyWrapper = styled('div')`
-  line-height: 1.2;
 `;
 
 const OfficeAndDistrictSpan = styled('span')`
@@ -145,13 +128,19 @@ const OfficeAndDistrictSpan = styled('span')`
 
 const OfficeNameSpan = styled('span')`
   color: #333;
-  font-weight: 600;
+  // font-weight: 600;
 `;
 
-const PartyAndYearWrapper = styled('div')`
-  line-height: 1.2;
+const PartyAndYearWrapper = styled('span')`
+  // line-height: 1.2;
 `;
 
 const PartyAndOfficeWrapper = styled('div')`
   line-height: 1.2;
 `;
+
+const YearStateWrapper = styled('div', {
+  shouldForwardProp: (prop) => !['inCard'].includes(prop),
+})(({ inCard }) => (`
+  ${inCard ? '' : 'margin-top: 6px;'}
+`));

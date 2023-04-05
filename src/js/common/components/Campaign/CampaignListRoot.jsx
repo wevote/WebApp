@@ -5,10 +5,8 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import {
-  HorizontallyScrollingContainer, RightArrowInnerWrapper,
-  RightArrowOuterWrapper,
-  ScrollingInnerWrapper,
-  ScrollingOuterWrapper,
+  CampaignsHorizontallyScrollingContainer, CampaignsScrollingInnerWrapper, CampaignsScrollingOuterWrapper,
+  RightArrowInnerWrapper, RightArrowOuterWrapper,
 } from '../Style/ScrollingStyles';
 import { convertStateCodeToStateText } from '../../utils/addressFunctions';
 import arrayContains from '../../utils/arrayContains';
@@ -249,9 +247,9 @@ class CampaignListRoot extends Component {
             {titleTextForList}
           </WhatIsHappeningTitle>
         )}
-        <ScrollingOuterWrapper>
-          <ScrollingInnerWrapper>
-            <HorizontallyScrollingContainer>
+        <CampaignsScrollingOuterWrapper>
+          <CampaignsScrollingInnerWrapper>
+            <CampaignsHorizontallyScrollingContainer>
               <CampaignCardList
                 incomingCampaignList={(isSearching ? campaignSearchResults : filteredCampaignList)}
                 listModeFilters={listModeFilters}
@@ -260,14 +258,14 @@ class CampaignListRoot extends Component {
                 timeStampOfChange={timeStampOfChange}
                 verticalListOn
               />
-            </HorizontallyScrollingContainer>
-          </ScrollingInnerWrapper>
-          <RightArrowOuterWrapper>
+            </CampaignsHorizontallyScrollingContainer>
+          </CampaignsScrollingInnerWrapper>
+          <RightArrowOuterWrapper className="u-show-desktop-tablet">
             <RightArrowInnerWrapper>
               <ArrowForwardIos classes={{ root: classes.arrowRoot }} />
             </RightArrowInnerWrapper>
           </RightArrowOuterWrapper>
-        </ScrollingOuterWrapper>
+        </CampaignsScrollingOuterWrapper>
       </CampaignListWrapper>
     );
   }

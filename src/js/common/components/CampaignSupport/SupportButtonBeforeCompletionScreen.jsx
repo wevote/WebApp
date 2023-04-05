@@ -10,7 +10,9 @@ import AppObservableStore from '../../stores/AppObservableStore';
 import CampaignStore from '../../stores/CampaignStore';
 import CampaignSupporterStore from '../../stores/CampaignSupporterStore';
 import VoterStore from '../../../stores/VoterStore';
+import webAppConfig from '../../../config';
 
+const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
 class SupportButtonBeforeCompletionScreen extends Component {
   constructor (props) {
@@ -179,7 +181,7 @@ class SupportButtonBeforeCompletionScreen extends Component {
       supportButtonClasses = classes.buttonDefaultCordova;
     }
     // console.log('SupportButtonBeforeCompletionScreen render campaignXWeVoteId:', campaignXWeVoteId, ', campaignSEOFriendlyPath:', campaignSEOFriendlyPath);
-    if (!campaignSEOFriendlyPath && !campaignXWeVoteId) {
+    if (!campaignSEOFriendlyPath && !campaignXWeVoteId && !nextReleaseFeaturesEnabled) {
       // console.log('SupportButtonBeforeCompletionScreen render voter NOT found');
       return <div className="undefined-campaign-state" />;
     }
@@ -218,11 +220,13 @@ class SupportButtonBeforeCompletionScreen extends Component {
             >
               {voterCanVoteForPoliticianInCampaign ? (
                 <span>
-                  Support with my vote
+                  {/* Support with my vote */}
+                  Help them win
                 </span>
               ) : (
                 <span>
-                  I support this campaign
+                  {/* I support this campaign */}
+                  Help them win
                 </span>
               )}
             </Button>
@@ -240,6 +244,8 @@ SupportButtonBeforeCompletionScreen.propTypes = {
   functionToUseWhenProfileComplete: PropTypes.func.isRequired,
   inButtonFullWidthMode: PropTypes.bool,
   inCompressedMode: PropTypes.bool,
+  politicianWeVoteId: PropTypes.string,
+  politicianSEOFriendlyPath: PropTypes.string,
 };
 
 const styles = () => ({
@@ -263,9 +269,9 @@ const styles = () => ({
     boxShadow: 'none !important',
     fontSize: 20,
     height: '35px !important',
-    padding: '0 12px',
+    // padding: '0 12px',
     textTransform: 'none',
-    width: '300px',
+    width: '280px',
   },
 });
 

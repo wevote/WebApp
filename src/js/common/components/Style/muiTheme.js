@@ -1,17 +1,21 @@
 import { createTheme } from '@mui/material/styles';
 import muiStyleOverrides from '../../../components/Style/muiStyleOverrides';
 
-
+// secondary color options
+// 'rgba(9, 51, 206, 0.6)', Bright blue with lower opacity
+// #2D68C4 = True Blue: https://cssgradient.io/shades-of-blue/
+// #1da1f2 = Twitter Blue <- Good blue
+// #FEBE10 = Real Madrid Gold
 const muiTheme = createTheme({
   palette: {
     primary: {
       main: '#0834CD', // brandBlue #2E3C5D
     },
     secondary: {
-      main: '#ffffff',
-      dark: '#f7f7f7',
-      contrastText: '#2e3c5d',
-    }, // Feel free to change this
+      main: '#FEBE10',
+      dark: '#e9ab01',
+      contrastText: '#fff',
+    },
   },
   breakpoints: {
     values: {

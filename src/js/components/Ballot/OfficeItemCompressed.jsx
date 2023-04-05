@@ -6,7 +6,7 @@ import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 import styled from 'styled-components';
 import OfficeActions from '../../actions/OfficeActions';
-import { HorizontallyScrollingContainer, ScrollingInnerWrapper, ScrollingOuterWrapper } from '../../common/components/Style/ScrollingStyles';
+import { BallotHorizontallyScrollingContainer, BallotScrollingInnerWrapper, BallotScrollingOuterWrapper } from '../../common/components/Style/ScrollingStyles';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
@@ -291,7 +291,7 @@ class OfficeItemCompressed extends Component {
     const dedupedCandidates = [];
 
     return (
-      <ScrollingOuterWrapper>
+      <BallotScrollingOuterWrapper>
         { candidatesToRender.slice(0, limitNumberOfCandidatesShownToThisNumber)
           .map((oneCandidate) => {
             if (!oneCandidate || !oneCandidate.we_vote_id || dedupedCandidates.includes(oneCandidate.we_vote_id)) return null;
@@ -318,8 +318,8 @@ class OfficeItemCompressed extends Component {
               </Tooltip>
             );
             return (
-              <ScrollingInnerWrapper key={uniqueKey}>
-                <HorizontallyScrollingContainer>
+              <BallotScrollingInnerWrapper key={uniqueKey}>
+                <BallotHorizontallyScrollingContainer>
                   <CandidateContainer>
                     <CandidateWrapper>
                       <CandidateInfo>
@@ -436,16 +436,16 @@ class OfficeItemCompressed extends Component {
                       </PositionRowListInnerWrapper>
                     </PositionRowListOuterWrapper>
                   </CandidateContainer>
-                </HorizontallyScrollingContainer>
+                </BallotHorizontallyScrollingContainer>
                 {((candidateCount < candidatesToRenderLength) && (candidateCount < limitNumberOfCandidatesShownToThisNumber)) && (
                   <div>
                     <HrSeparator />
                   </div>
                 )}
-              </ScrollingInnerWrapper>
+              </BallotScrollingInnerWrapper>
             );
           })}
-      </ScrollingOuterWrapper>
+      </BallotScrollingOuterWrapper>
     );
   }
 

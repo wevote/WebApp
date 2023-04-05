@@ -15,6 +15,7 @@ import {
 import { getTodayAsInteger, getYearFromUltimateElectionDate } from '../../common/utils/dateFormat';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
+import CampaignStore from '../../common/stores/CampaignStore';
 import CandidateStore from '../../stores/CandidateStore';
 // import initializejQuery from '../../common/utils/initializejQuery';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
@@ -280,6 +281,7 @@ class CandidateCardForList extends Component {
       districtName = contestOfficeList[0].district_name;
     }
     const stateName = convertStateCodeToStateText(stateCode);
+    const supportersCountNextGoalWithFloor = supportersCountNextGoal || CampaignStore.getCampaignXSupportersCountNextGoalDefault();
     const year = getYearFromUltimateElectionDate(candidateUltimateElectionDate);
     const todayAsInteger = getTodayAsInteger();
     const finalElectionDateInPast = candidateUltimateElectionDate && (candidateUltimateElectionDate <= todayAsInteger);
@@ -299,6 +301,7 @@ class CandidateCardForList extends Component {
                     <Suspense fallback={<></>}>
                       <OfficeNameText
                         districtName={districtName}
+                        inCard
                         officeName={contestOfficeName}
                         politicalParty={politicalParty}
                         showOfficeName
@@ -337,10 +340,10 @@ class CandidateCardForList extends Component {
                         Thank you for supporting!
                       </SupportersActionLink>
                     ) : (
-                      <SupportersActionLink className="u-link-color u-link-underline">
+                      <SupportersActionLink className="u-link-color u-link-underline u-cursor--pointer" onClick={this.onCandidateClick}>
                         Let&apos;s get to
                         {' '}
-                        {numberWithCommas(supportersCountNextGoal)}
+                        {numberWithCommas(supportersCountNextGoalWithFloor)}
                         !
                       </SupportersActionLink>
                     )}
@@ -349,13 +352,8 @@ class CandidateCardForList extends Component {
                 {twitterDescription && (
                   <OneCampaignDescription className="u-cursor--pointer" onClick={this.onCandidateClick}>
                     <TruncateMarkup
-                      ellipsis={(
-                        <span>
-                          <span className="u-text-fade-at-end">&nbsp;</span>
-                          <span className="u-link-color u-link-underline">Read more</span>
-                        </span>
-                      )}
-                      lines={4}
+                      ellipsis="..."
+                      lines={2}
                       tokenize="words"
                     >
                       <div>
@@ -379,9 +377,10 @@ class CandidateCardForList extends Component {
                       commentButtonHide
                       // externalUniqueId={`CandidateCardForList-ItemActionBar-${oneCandidate.we_vote_id}-${externalUniqueId}`}
                       hidePositionPublicToggle
+                      inCard
                       positionPublicToggleWrapAllowed
                       shareButtonHide
-                      useSupportWording
+                      // useSupportWording
                     />
                   ) : (
                     <ItemActionBar
@@ -390,6 +389,7 @@ class CandidateCardForList extends Component {
                       commentButtonHide
                       // externalUniqueId={`CandidateCardForList-ItemActionBar-${oneCandidate.we_vote_id}-${externalUniqueId}`}
                       hidePositionPublicToggle
+                      inCard
                       positionPublicToggleWrapAllowed
                       shareButtonHide
                     />

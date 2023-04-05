@@ -176,9 +176,8 @@ class MostRecentCampaignSupport extends React.Component {
 
     return (
       <Wrapper>
-        <CommentsWrapper id="comments-wrapper">
-          {supportersOnStageNow && supportersOnStageNow.length > 0 ? (
-            <div>
+        {supportersOnStageNow && supportersOnStageNow.length > 0 && (
+          <CommentsWrapper id="comments-wrapper">
               {supportersOnStageNow.map((comment) => (
                 <CommentWrapper className="comment" key={comment.id}>
                   <CommentVoterPhotoWrapper>
@@ -213,18 +212,8 @@ class MostRecentCampaignSupport extends React.Component {
                   </CommentTextWrapper>
                 </CommentWrapper>
               ))}
-            </div>
-          ) : (
-            <CommentWrapper className="comment" key="beTheFirst">
-              <CommentTextWrapper>
-                <Comment>No comments yet -- you can be the first!</Comment>
-                <CommentNameWrapper>
-                  Your name here
-                </CommentNameWrapper>
-              </CommentTextWrapper>
-            </CommentWrapper>
-          )}
-        </CommentsWrapper>
+          </CommentsWrapper>
+        )}
       </Wrapper>
     );
   }
