@@ -247,15 +247,16 @@ class ItemActionBar extends PureComponent {
   };
 
   opposeButton = (localUniqueId) => {
-    const { classes, externalUniqueId } = this.props;
+    const { classes, externalUniqueId, inCard, opposeHideInMobile } = this.props;
+    const buttonRootClass = inCard ? classes.buttonRootForCard : classes.buttonRoot;
     return (
       <Button
+        classes={{ root: buttonRootClass, outlinedPrimary: classes.buttonOutlinedPrimary }}
+        className={`${opposeHideInMobile ? 'd-none d-sm-block ' : ''}`}
+        color={this.isOpposeCalculated() ? 'secondary' : 'primary'}
         id={`itemActionBarOpposeButton-${externalUniqueId}-${localUniqueId}`}
-        variant={this.isOpposeCalculated() ? 'contained' : 'outlined'}
-        color="primary"
-        className={`${this.props.opposeHideInMobile ? 'd-none d-sm-block ' : ''}`}
         onClick={() => this.opposeItem()}
-        classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
+        variant={this.isOpposeCalculated() ? 'contained' : 'outlined'}
       >
         <NotInterested classes={{ root: classes.buttonIconNotInterested }} />
         {this.isOpposeCalculated() ? (
@@ -281,12 +282,12 @@ class ItemActionBar extends PureComponent {
     const { classes, externalUniqueId, opposeHideInMobile } = this.props;
     return (
       <Button
-        id={`itemActionBarOpposeButtonNoText-${externalUniqueId}-${localUniqueId}`}
-        variant={this.isOpposeCalculated() ? 'contained' : 'outlined'}
-        color="primary"
         className={`${opposeHideInMobile ? 'd-none d-sm-block ' : ''}`}
-        onClick={() => this.opposeItem()}
         classes={{ root: classes.buttonNoTextRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
+        color={this.isOpposeCalculated() ? 'secondary' : 'primary'}
+        id={`itemActionBarOpposeButtonNoText-${externalUniqueId}-${localUniqueId}`}
+        onClick={() => this.opposeItem()}
+        variant={this.isOpposeCalculated() ? 'contained' : 'outlined'}
       >
         <NotInterested classes={{ root: classes.buttonIconNotInterested }} />
       </Button>
@@ -294,14 +295,15 @@ class ItemActionBar extends PureComponent {
   };
 
   supportButton = (localUniqueId) => {
-    const { classes, externalUniqueId, shareButtonHide, useSupportWording } = this.props;
+    const { classes, externalUniqueId, inCard, shareButtonHide, useSupportWording } = this.props;
+    const buttonRootClass = inCard ? classes.buttonRootForCard : classes.buttonRoot;
     return (
       <Button
-       id={`itemActionBarSupportButton-${externalUniqueId}-${localUniqueId}`}
-       variant={this.isSupportCalculated() ? 'contained' : 'outlined'}
-       color="primary"
-       onClick={() => this.supportItem()}
-       classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
+        classes={{ root: buttonRootClass, outlinedPrimary: classes.buttonOutlinedPrimary }}
+        color={this.isSupportCalculated() ? 'secondary' : 'primary'}
+        id={`itemActionBarSupportButton-${externalUniqueId}-${localUniqueId}`}
+        onClick={() => this.supportItem()}
+        variant={this.isSupportCalculated() ? 'contained' : 'outlined'}
       >
         <Done classes={{ root: classes.buttonIconDone }} />
         {this.isSupportCalculated() ? (
@@ -343,11 +345,11 @@ class ItemActionBar extends PureComponent {
     const { classes, externalUniqueId } = this.props;
     return (
       <Button
-       id={`itemActionBarSupportButtonNoText-${externalUniqueId}-${localUniqueId}`}
-       variant={this.isSupportCalculated() ? 'contained' : 'outlined'}
-       color="primary"
-       onClick={() => this.supportItem()}
        classes={{ root: classes.buttonNoTextRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
+       color={this.isSupportCalculated() ? 'secondary' : 'primary'}
+       id={`itemActionBarSupportButtonNoText-${externalUniqueId}-${localUniqueId}`}
+       onClick={() => this.supportItem()}
+       variant={this.isSupportCalculated() ? 'contained' : 'outlined'}
       >
         <Done classes={{ root: classes.buttonIconDone }} />
       </Button>
@@ -358,11 +360,11 @@ class ItemActionBar extends PureComponent {
     const { classes, externalUniqueId, shareButtonHide } = this.props;
     return (
       <Button
-        id={`itemActionBarYesButton-${externalUniqueId}-${localUniqueId}`}
-        variant={this.isSupportCalculated() ? 'contained' : 'outlined'}
-        color="primary"
-        onClick={() => this.supportItem()}
         classes={{ root: classes.buttonMeasureRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
+        color={this.isSupportCalculated() ? 'secondary' : 'primary'}
+        id={`itemActionBarYesButton-${externalUniqueId}-${localUniqueId}`}
+        onClick={() => this.supportItem()}
+        variant={this.isSupportCalculated() ? 'contained' : 'outlined'}
       >
         <Done classes={{ root: classes.buttonIconDone }} />
         { this.isSupportCalculated() ? (
@@ -388,11 +390,11 @@ class ItemActionBar extends PureComponent {
     const { classes, externalUniqueId } = this.props;
     return (
       <Button
-        id={`itemActionBarYesButtonNoText-${externalUniqueId}-${localUniqueId}`}
-        variant={this.isSupportCalculated() ? 'contained' : 'outlined'}
-        color="primary"
-        onClick={() => this.supportItem()}
         classes={{ root: classes.buttonNoTextRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
+        color={this.isSupportCalculated() ? 'secondary' : 'primary'}
+        id={`itemActionBarYesButtonNoText-${externalUniqueId}-${localUniqueId}`}
+        onClick={() => this.supportItem()}
+        variant={this.isSupportCalculated() ? 'contained' : 'outlined'}
       >
         <ThumbUp classes={{ root: classes.buttonIcon }} />
       </Button>
@@ -405,7 +407,7 @@ class ItemActionBar extends PureComponent {
       <Button
         id={`itemActionBarNoButton-${externalUniqueId}-${localUniqueId}`}
         variant={this.isOpposeCalculated() ? 'contained' : 'outlined'}
-        color="primary"
+        color={this.isOpposeCalculated() ? 'secondary' : 'primary'}
         onClick={() => this.opposeItem()}
         classes={{ root: classes.buttonMeasureRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
       >
@@ -435,7 +437,7 @@ class ItemActionBar extends PureComponent {
       <Button
         id={`itemActionBarNoButtonNoText-${externalUniqueId}-${localUniqueId}`}
         variant={this.isOpposeCalculated() ? 'contained' : 'outlined'}
-        color="primary"
+        color={this.isOpposeCalculated() ? 'secondary' : 'primary'}
         onClick={() => this.opposeItem()}
         classes={{ root: classes.buttonNoTextRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
       >
@@ -885,6 +887,7 @@ ItemActionBar.propTypes = {
   hidePositionPublicToggle: PropTypes.bool,
   hideOpposeNo: PropTypes.bool,
   hideSupportYes: PropTypes.bool,
+  inCard: PropTypes.bool,
   inModal: PropTypes.bool,
   opposeHideInMobile: PropTypes.bool,
   positionPublicToggleWrapAllowed: PropTypes.bool,
@@ -949,6 +952,11 @@ const styles = (theme) => ({
       height: 28,
       padding: '0 8px',
     },
+  },
+  buttonRootForCard: {
+    padding: 4,
+    width: 138,
+    height: 32,
   },
   buttonNoTextRoot: {
     padding: 4,

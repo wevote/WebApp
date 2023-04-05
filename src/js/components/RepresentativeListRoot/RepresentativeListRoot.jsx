@@ -5,10 +5,9 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import {
-  HorizontallyScrollingContainer, RightArrowInnerWrapper,
+  CampaignsHorizontallyScrollingContainer, RightArrowInnerWrapper,
   RightArrowOuterWrapper,
-  ScrollingInnerWrapper,
-  ScrollingOuterWrapper,
+  CampaignsScrollingInnerWrapper, CampaignsScrollingOuterWrapper,
 } from '../../common/components/Style/ScrollingStyles';
 import { convertStateCodeToStateText } from '../../common/utils/addressFunctions';
 import { getYearFromUltimateElectionDate, isAnyYearInOfficeSetTrue, isThisYearInOfficeSetTrue } from '../../common/utils/dateFormat';
@@ -316,22 +315,22 @@ class RepresentativeListRoot extends Component {
           </WhatIsHappeningTitle>
         )}
         {(!hideDisplayBecauseNoSearchResults) && (
-          <ScrollingOuterWrapper>
-            <ScrollingInnerWrapper>
-              <HorizontallyScrollingContainer>
+          <CampaignsScrollingOuterWrapper>
+            <CampaignsScrollingInnerWrapper>
+              <CampaignsHorizontallyScrollingContainer>
                 <RepresentativeCardList
                   incomingRepresentativeList={(isSearching ? representativeSearchResults : filteredRepresentativeList)}
                   timeStampOfChange={timeStampOfChange}
                   verticalListOn
                 />
-              </HorizontallyScrollingContainer>
-            </ScrollingInnerWrapper>
-            <RightArrowOuterWrapper>
+              </CampaignsHorizontallyScrollingContainer>
+            </CampaignsScrollingInnerWrapper>
+            <RightArrowOuterWrapper className="u-show-desktop-tablet">
               <RightArrowInnerWrapper>
                 <ArrowForwardIos classes={{ root: classes.arrowRoot }} />
               </RightArrowInnerWrapper>
             </RightArrowOuterWrapper>
-          </ScrollingOuterWrapper>
+          </CampaignsScrollingOuterWrapper>
         )}
       </RepresentativeListWrapper>
     );

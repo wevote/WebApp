@@ -47,6 +47,7 @@ class CampaignsHome extends Component {
     super(props);
     this.state = {
       campaignList: [],
+      campaignListTimeStampOfChange: 0,
       candidateList: [],
       candidateListIsBattleground: [],
       candidateListOnYourBallot: [],
@@ -68,6 +69,7 @@ class CampaignsHome extends Component {
   }
 
   componentDidMount () {
+    console.log('CampaignsHome componentDidMount');
     window.scrollTo(0, 0);
     const { match: { params: {
       state_candidates_phrase: stateCandidatesPhrase,
@@ -84,7 +86,7 @@ class CampaignsHome extends Component {
     const campaignList = CampaignStore.getAllCachedCampaignXList();
     this.setState({
       campaignList,
-      // campaignListTimeStampOfChange: Date.now(),
+      campaignListTimeStampOfChange: Date.now(),
     }, () => this.onIncomingCampaignListChange(true));
 
     // /////////////////////////
@@ -113,8 +115,21 @@ class CampaignsHome extends Component {
       representativeListTimeStampOfChange: Date.now(),
     }, () => this.onIncomingRepresentativeListChange(true));
 
+    let stateName;
     if (stateCandidatesPhrase) {
-      let stateName = stateCandidatesPhrase.replace('-candidates', '');
+      const campaignsHomeMode = (stateCandidatesPhrase.includes('-candidates'));
+      const detailsListMode = (stateCandidatesPhrase.includes('-politicians-list'));
+      this.setState({
+        // campaignsHomeMode,
+        detailsListMode,
+      });
+      if (campaignsHomeMode) {
+        stateName = stateCandidatesPhrase.replace('-candidates', '');
+      } else if (detailsListMode) {
+        stateName = stateCandidatesPhrase.replace('-politicians-list', '');
+      }
+    }
+    if (stateName) {
       stateName = stateName.replace('-', ' ');
       let newStateCode = convertStateTextToStateCode(stateName);
       if (newStateCode.toLowerCase() === 'na') {
@@ -154,7 +169,19 @@ class CampaignsHome extends Component {
     const { match: { params: { state_candidates_phrase: previousStateCandidatesPhrase } } } = prevProps;
     const { match: { params: { state_candidates_phrase: stateCandidatesPhrase } } } = this.props;
     if (stateCandidatesPhrase && (stateCandidatesPhrase !== previousStateCandidatesPhrase)) {
-      let stateName = stateCandidatesPhrase.replace('-candidates', '');
+      const campaignsHomeMode = (stateCandidatesPhrase.includes('-candidates'));
+      const detailsListMode = (stateCandidatesPhrase.includes('-politicians-list'));
+      this.setState({
+        // campaignsHomeMode,
+        detailsListMode,
+      });
+      let stateName;
+      if (campaignsHomeMode) {
+        stateName = stateCandidatesPhrase.replace('-candidates', '');
+      } else if (detailsListMode) {
+        stateName = stateCandidatesPhrase.replace('-politicians-list', '');
+      }
+
       if (stateName) {
         stateName = stateName.replace('-', ' ');
         const { stateCode } = this.state;
@@ -198,7 +225,7 @@ class CampaignsHome extends Component {
     const campaignList = CampaignStore.getAllCachedCampaignXList();
     this.setState({
       campaignList,
-      // campaignListTimeStampOfChange: Date.now(),
+      campaignListTimeStampOfChange: Date.now(),
     }, () => this.onIncomingCampaignListChange());
   }
 
@@ -530,15 +557,67 @@ class CampaignsHome extends Component {
       campaignList, campaignListTimeStampOfChange,
       campaignsShowing,
       candidateListOther, candidateListTimeStampOfChange,
-      candidateListIsBattleground, candidateListOnYourBallot, filterYear,
+      candidateListIsBattleground, candidateListOnYourBallot,
+      detailsListMode, filterYear,
       isSearching, listModeFiltersAvailable, listModeFiltersTimeStampOfChange,
       representativeListOnYourBallot, representativeListShownAsRepresentatives, representativeListTimeStampOfChange,
       searchText, stateCode,
     } = this.state;
     // console.log('CampaignsHome.jsx campaignList:', campaignList);
 
-    const titleText = 'Candidates - We Vote';
-    const descriptionText = 'Choose which candidates you support.';
+    let titleText;
+    let descriptionText;
+    if (detailsListMode) {
+      titleText = 'Candidates Detail - We Vote';
+      descriptionText = 'Choose which candidates you support.';
+      return (
+        <PageContentContainer>
+          <CampaignsHomeContainer className="container-fluid" style={this.getTopPadding()}>
+            <Helmet
+              title={titleText}
+              meta={[{ name: 'description', content: descriptionText }]}
+            />
+            <CampaignsHomeFilterWrapper>
+              {(isSearching && searchText) && (
+                <SearchTitleTop>
+                  Searching for &quot;
+                  {searchText}
+                  &quot;
+                </SearchTitleTop>
+              )}
+              <SearchBarWrapper>
+                <SearchBar
+                  clearButton
+                  searchButton
+                  placeholder="Search by name, office or state"
+                  searchFunction={this.searchFunction}
+                  clearFunction={this.clearSearchFunction}
+                  searchUpdateDelayTime={500}
+                />
+              </SearchBarWrapper>
+            </CampaignsHomeFilterWrapper>
+            {nextReleaseFeaturesEnabled && (
+              <WhatIsHappeningSection>
+                <Suspense fallback={<span>&nbsp;</span>}>
+                  <CampaignListRoot
+                    incomingList={campaignList}
+                    incomingListTimeStampOfChange={campaignListTimeStampOfChange}
+                    listModeFilters={listModeFiltersAvailable}
+                    listModeFiltersTimeStampOfChange={listModeFiltersTimeStampOfChange}
+                    searchText={searchText}
+                    stateCode={stateCode}
+                    titleTextForList="Upcoming Campaigns"
+                  />
+                </Suspense>
+              </WhatIsHappeningSection>
+            )}
+          </CampaignsHomeContainer>
+        </PageContentContainer>
+      );
+    }
+
+    titleText = 'Candidates - We Vote';
+    descriptionText = 'Choose which candidates you support.';
     let stateCodeTemp;
     const stateNameList = Object.values(stateCodeMap);
     const representativesShowing = (representativeListOnYourBallot && representativeListOnYourBallot.length > 0) || (representativeListShownAsRepresentatives && representativeListShownAsRepresentatives.length > 0);
@@ -616,13 +695,14 @@ class CampaignsHome extends Component {
             <WhatIsHappeningSection>
               <Suspense fallback={<span>&nbsp;</span>}>
                 <CampaignListRoot
+                  hideIfNoResults
                   incomingList={campaignList}
                   incomingListTimeStampOfChange={campaignListTimeStampOfChange}
                   listModeFilters={listModeFiltersAvailable}
                   listModeFiltersTimeStampOfChange={listModeFiltersTimeStampOfChange}
                   searchText={searchText}
                   stateCode={stateCode}
-                  titleTextForList="Campaigns"
+                  titleTextForList="Upcoming Campaigns"
                 />
               </Suspense>
             </WhatIsHappeningSection>
@@ -631,6 +711,7 @@ class CampaignsHome extends Component {
             <WhatIsHappeningSection>
               <Suspense fallback={<span>&nbsp;</span>}>
                 <CandidateListRoot
+                  hideIfNoResults
                   incomingList={candidateListOnYourBallot}
                   incomingListTimeStampOfChange={candidateListTimeStampOfChange}
                   listModeFilters={listModeFiltersAvailable}
@@ -653,7 +734,7 @@ class CampaignsHome extends Component {
                   listModeFiltersTimeStampOfChange={listModeFiltersTimeStampOfChange}
                   searchText={searchText}
                   stateCode={stateCode}
-                  titleTextForList="Close Races"
+                  titleTextForList="Candidates in Close Races"
                 />
               </Suspense>
             </WhatIsHappeningSection>
@@ -749,7 +830,11 @@ const SearchBarWrapper = styled('div')`
 `;
 
 const WhatIsHappeningSection = styled('div')`
-  margin: 0 0 25px 0;
+  // background: linear-gradient(180deg, rgba(2,0,36,1) 0%, rgba(46,55,77,0) 52%);
+  // background: linear-gradient(0deg, rgba(2,0,36,1) 0%, rgba(46,55,77,0) 52%);
+  // background-color: #f5f5f5;
+  // box-shadow: 0 0 80px 0px rgba(46,55,77,.3);
+  padding: 0 0 25px 0;
 `;
 
 export default withStyles(styles)(CampaignsHome);

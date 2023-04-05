@@ -259,14 +259,14 @@ class CompleteYourProfile extends Component {
       if (voterCanVoteForPoliticianInCampaign) {
         buttonText = 'Support with my vote';
       } else {
-        buttonText = 'I support this campaign';
+        buttonText = 'Show your support';
       }
       introductionText = <span>Leading up to election day, WeVote.US will remind you to vote for all of the candidates you support. We keep your email secure and confidential.</span>;
     } else if (supportCampaignOnCampaignHome) {
       if (voterCanVoteForPoliticianInCampaign) {
         buttonText = 'Support with my vote';
       } else {
-        buttonText = 'I support this campaign';
+        buttonText = 'Show your support';
       }
       outerMarginsOff = true;
     }

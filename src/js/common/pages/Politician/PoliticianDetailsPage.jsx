@@ -551,6 +551,7 @@ class PoliticianDetailsPage extends Component {
                 <OfficeHeldNameMobile>
                   { officeHeldList.map((officeHeld) => (
                     <OfficeHeldNameText
+                      centeredText
                       districtName={officeHeld.district_name}
                       key={officeHeld.office_held_we_vote_id}
                       officeName={officeHeld.office_held_name}
@@ -654,6 +655,7 @@ class PoliticianDetailsPage extends Component {
                 <OfficeHeldNameDesktop>
                   { officeHeldList.map((officeHeld) => (
                     <OfficeHeldNameText
+                      centeredText
                       districtName={officeHeld.district_name}
                       key={officeHeld.office_held_we_vote_id}
                       officeName={officeHeld.office_held_name}
@@ -662,9 +664,11 @@ class PoliticianDetailsPage extends Component {
                   ))}
                 </OfficeHeldNameDesktop>
               ) : (
-                <PoliticalPartyDiv>
-                  {politicalParty}
-                </PoliticalPartyDiv>
+                <OfficeHeldNameDesktop>
+                  <PoliticalPartyDiv>
+                    {politicalParty}
+                  </PoliticalPartyDiv>
+                </OfficeHeldNameDesktop>
               )}
             </PoliticianNameOuterWrapperDesktop>
             <ColumnsWrapper>
@@ -834,7 +838,7 @@ const ExternalWebSiteWrapper = styled('div')`
 
 const PoliticalPartyDiv = styled('div')`
   font-size: 18px;
-  text-align: center;
+  // text-align: center;
   color: #999;
   font-weight: 200;
   white-space: nowrap;

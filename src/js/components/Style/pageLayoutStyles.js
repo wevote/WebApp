@@ -69,16 +69,16 @@ function getPaddingBottom () {
 }
 
 export const PageContentContainer = styled('div')(({ theme }) => (`
+  margin: 0 auto;
+  max-width: 960px;
+  min-height: 190px;
   padding-top: ${getPaddingTop()};
   padding-bottom: ${getPaddingBottom()};
   position: relative;
-  max-width: 960px;
   z-index: 0;
-  min-height: 190px;
-  margin: 0 auto;
   ${theme.breakpoints.down('sm')} {
     min-height: ${isWebApp() ? '10px' : `${window.innerHeight}px`};
-    margin: 0 10px;
+    margin: ${isWebApp() ? '0 !important' : '0 10px'};  // From Dale: Let's discuss this
   }
 `));
 

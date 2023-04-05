@@ -17,10 +17,15 @@ export const CandidateCampaignWrapper = styled('div')`
 `;
 
 export const OfficeHeldNameDesktop = styled('h2')(({ theme }) => (`
+  align-items: center;
+  display: flex;
+  flex-direction: column;
   font-size: 22px;
+  justify-content: center;
   text-align: center;
-  margin: 10px 20px 0 10px;
+  margin-top: 10px;
   min-height: 34px;
+  width: 100%;
   ${theme.breakpoints.down('md')} {
     font-size: 22px;
     min-height: 29px;

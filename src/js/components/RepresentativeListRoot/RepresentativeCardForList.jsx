@@ -4,7 +4,7 @@ import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import TruncateMarkup from 'react-truncate-markup';
 import styled from 'styled-components';
-// import { convertStateCodeToStateText } from '../../common/utils/addressFunctions';
+import { convertStateCodeToStateText } from '../../common/utils/addressFunctions';
 import {
   CampaignActionButtonsWrapper,
   CampaignImageMobile,
@@ -28,6 +28,7 @@ import {
 import { getTodayAsInteger } from '../../common/utils/dateFormat';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
+import CampaignStore from '../../common/stores/CampaignStore';
 import RepresentativeStore from '../../stores/RepresentativeStore';
 // import initializejQuery from '../../common/utils/initializejQuery';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
@@ -275,7 +276,7 @@ class RepresentativeCardForList extends Component {
       political_party: politicalParty,
       politician_we_vote_id: politicianWeVoteId,
       // seo_friendly_path: politicianSEOFriendlyPath,
-      // state_code: stateCode,
+      state_code: stateCode,
       supporters_count: supportersCount,
       supporters_count_next_goal: supportersCountNextGoal,
       twitter_description: twitterDescription,
@@ -286,7 +287,8 @@ class RepresentativeCardForList extends Component {
     if (!representativeWeVoteId) {
       return null;
     }
-    // const stateName = convertStateCodeToStateText(stateCode);
+    const stateName = convertStateCodeToStateText(stateCode);
+    const supportersCountNextGoalWithFloor = supportersCountNextGoal || CampaignStore.getCampaignXSupportersCountNextGoalDefault();
     // const year = getYearFromUltimateElectionDate(representativeUltimateElectionDate);
     const todayAsInteger = getTodayAsInteger();
     const finalElectionDateInPast = representativeUltimateElectionDate && (representativeUltimateElectionDate <= todayAsInteger);
@@ -305,9 +307,11 @@ class RepresentativeCardForList extends Component {
                   <div className="u-cursor--pointer" onClick={this.onRepresentativeClick}>
                     <Suspense fallback={<></>}>
                       <OfficeHeldNameText
+                        inCard
                         districtName={districtName}
                         officeName={officeHeldName}
                         politicalParty={politicalParty}
+                        stateName={stateName}
                       />
                     </Suspense>
                   </div>
@@ -316,7 +320,12 @@ class RepresentativeCardForList extends Component {
                   <>
                     {finalElectionDateInPast ? (
                       <SupportersWrapper>
-                        {supportersCount > 0 && (
+                        {(!supportersCount || supportersCount === 0) ? (
+                          <SupportersCount>
+                            Be the first.
+                            {' '}
+                          </SupportersCount>
+                        ) : (
                           <SupportersCount>
                             {numberWithCommas(supportersCount)}
                             {' '}
@@ -332,22 +341,30 @@ class RepresentativeCardForList extends Component {
                       </SupportersWrapper>
                     ) : (
                       <SupportersWrapper>
-                        <SupportersCount>
-                          {numberWithCommas(supportersCount)}
-                          {' '}
-                          {supportersCount === 1 ? 'supporter.' : 'supporters.'}
-                        </SupportersCount>
+                        {(!supportersCount || supportersCount === 0) ? (
+                          <SupportersCount>
+                            Be the first.
+                            {' '}
+                          </SupportersCount>
+                        ) : (
+                          <SupportersCount>
+                            {numberWithCommas(supportersCount)}
+                            {' '}
+                            {supportersCount === 1 ? 'supporter.' : 'supporters.'}
+                          </SupportersCount>
+                        )}
                         {' '}
                         {campaignSupported ? (
                           <SupportersActionLink>
                             Thank you for supporting!
                           </SupportersActionLink>
                         ) : (
-                          <SupportersActionLink className="u-link-color u-link-underline">
+                          <SupportersActionLink className="u-link-color u-link-underline u-cursor--pointer" onClick={this.onRepresentativeClick}>
                             Let&apos;s get to
                             {' '}
-                            {numberWithCommas(supportersCountNextGoal)}
-                            !
+                            {numberWithCommas(supportersCountNextGoalWithFloor)}
+                            {' '}
+                            supporters!
                           </SupportersActionLink>
                         )}
                       </SupportersWrapper>
@@ -357,13 +374,8 @@ class RepresentativeCardForList extends Component {
                 {twitterDescription && (
                   <OneCampaignDescription className="u-cursor--pointer" onClick={this.onRepresentativeClick}>
                     <TruncateMarkup
-                      ellipsis={(
-                        <span>
-                          <span className="u-text-fade-at-end">&nbsp;</span>
-                          <span className="u-link-color u-link-underline">Read more</span>
-                        </span>
-                      )}
-                      lines={4}
+                      ellipsis="..."
+                      lines={2}
                       tokenize="words"
                     >
                       <div>
@@ -386,9 +398,10 @@ class RepresentativeCardForList extends Component {
                     commentButtonHide
                     // externalUniqueId={`RepresentativeCardForList-ItemActionBar-${oneRepresentative.we_vote_id}-${externalUniqueId}`}
                     hidePositionPublicToggle
+                    inCard
                     positionPublicToggleWrapAllowed
                     shareButtonHide
-                    useSupportWording
+                    // useSupportWording
                   />
                 </Suspense>
                 {nextReleaseFeaturesEnabled && (

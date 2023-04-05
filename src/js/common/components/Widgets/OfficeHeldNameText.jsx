@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Link } from 'react-router-dom';
+import YearState from './YearState';
 import adjustDistrictNameAndOfficeName from '../../utils/adjustDistrictNameAndOfficeName';
 import { renderLog } from '../../utils/logging';
 import toTitleCase from '../../utils/toTitleCase';
@@ -20,7 +21,10 @@ export default function OfficeHeldNameText (props) {
   let districtNameFiltered;
   let nameHtml;
   let officeNameFiltered;
-  const { districtName: incomingDistrictName, officeName: incomingOfficeHeldName, politicalParty } = props; // Mar 2023: Turning off officeLink until we can do design review
+  const {
+    centeredText, districtName: incomingDistrictName, inCard, officeName: incomingOfficeHeldName,
+    politicalParty, stateName,
+  } = props; // Mar 2023: Turning off officeLink until we can do design review
   if (isAllUpperCase(incomingDistrictName)) {
     districtNameFiltered = toTitleCase(incomingDistrictName);
   } else {
@@ -34,27 +38,21 @@ export default function OfficeHeldNameText (props) {
   const { districtName, officeName } = adjustDistrictNameAndOfficeName(districtNameFiltered, officeNameFiltered);
   // console.log('districtName: ', districtName, 'officeName: ', officeName);
   const officeLink = null;
-  const politicalPartyHtml = (politicalParty) ? (
-    <PoliticalPartySpan>
-      {' '}
-      (
-      {politicalParty}
-      )
-    </PoliticalPartySpan>
-  ) : null;
 
   if (districtName) {
     if (officeName === undefined) {
       nameHtml = (
-        <NoPoliticalPartySpan>
+        <DistrictAndPartySpan>
           <span>Representative for </span>
           {officeLink ? (
             <Link to={officeLink}>
               <DistrictNameSpan>{districtName}</DistrictNameSpan>
             </Link>
           ) : <DistrictNameSpan>{districtName}</DistrictNameSpan>}
-          {politicalPartyHtml}
-        </NoPoliticalPartySpan>
+          <YearStateWrapper inCard={inCard}>
+            <YearState centeredText={centeredText} politicalParty={politicalParty} stateName={stateName} />
+          </YearStateWrapper>
+        </DistrictAndPartySpan>
       );
     } else {
       nameHtml = (
@@ -69,7 +67,9 @@ export default function OfficeHeldNameText (props) {
               <DistrictNameSpan>{districtName}</DistrictNameSpan>
             </Link>
           ) : <DistrictNameSpan>{districtName}</DistrictNameSpan>}
-          {politicalPartyHtml}
+          <YearStateWrapper inCard={inCard}>
+            <YearState centeredText={centeredText} politicalParty={politicalParty} stateName={stateName} />
+          </YearStateWrapper>
         </PartyAndOfficeWrapper>
       );
     }
@@ -79,7 +79,9 @@ export default function OfficeHeldNameText (props) {
         <span className="u-gray-darker">
           {officeName}
         </span>
-        {politicalPartyHtml}
+        <YearStateWrapper inCard={inCard}>
+          <YearState centeredText={centeredText} politicalParty={politicalParty} stateName={stateName} />
+        </YearStateWrapper>
       </PartyAndYearWrapper>
     );
   }
@@ -87,7 +89,9 @@ export default function OfficeHeldNameText (props) {
   return nameHtml;
 }
 OfficeHeldNameText.propTypes = {
+  centeredText: PropTypes.bool,
   districtName: PropTypes.string,
+  inCard: PropTypes.bool,
   officeName: PropTypes.string,
   // officeLink: PropTypes.string,
   politicalParty: PropTypes.string,
@@ -97,7 +101,7 @@ const DistrictNameSpan = styled('span')`
   color: #333;
 `;
 
-const NoPoliticalPartySpan = styled('span')`
+const DistrictAndPartySpan = styled('span')`
 `;
 
 const PartyAndYearWrapper = styled('div')`
@@ -107,8 +111,8 @@ const PartyAndOfficeWrapper = styled('div')`
   line-height: 17px;
 `;
 
-const PoliticalPartySpan = styled('span')`
-  color: #999;
-  font-weight: 200;
-  white-space: nowrap;
-`;
+const YearStateWrapper = styled('div', {
+  shouldForwardProp: (prop) => !['inCard'].includes(prop),
+})(({ inCard }) => (`
+  ${inCard ? '' : 'margin-top: 6px;'}
+`));
