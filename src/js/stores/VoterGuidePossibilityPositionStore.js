@@ -9,8 +9,8 @@ class VoterGuidePossibilityPositionStore extends ReduceStore {
   getInitialState () {
     return {
       voterGuidePossibilityId: 0,
-      allCachedVoterGuidePossibilityPositions: {}, // This is a dictionary with voterGuidePossibilityPositionId as key and the position as the value
-      allCachedVoterGuidePossibilityPositionsByCandidate: {}, // This is a dictionary with candidateWeVoteId as key and the position as the value
+      allCachedVoterGuidePossibilityPositionsByPositionId: {}, // This is a dictionary with voterGuidePossibilityPositionId as key and the position as the value
+      allCachedVoterGuidePossibilityPositionsByCandidateId: {}, // This is a dictionary with candidateWeVoteId as key and the position as the value
     };
   }
 
@@ -19,9 +19,9 @@ class VoterGuidePossibilityPositionStore extends ReduceStore {
    * @param voterGuidePossibilityPositionId, an integer
    * @returns {*|{}}
    */
-  getVoterGuidePossibilityPositionById (voterGuidePossibilityPositionId) {
-    const allCachedVoterGuidePossibilityPositions = this.getState().allCachedVoterGuidePossibilityPositions || [];
-    return allCachedVoterGuidePossibilityPositions[voterGuidePossibilityPositionId] || {};
+  getVoterGuidePossibilityPositionByPositionId (voterGuidePossibilityPositionId) {
+    const allCachedVoterGuidePossibilityPositionsByPositionId = this.getState().allCachedVoterGuidePossibilityPositionsByPositionId || [];
+    return allCachedVoterGuidePossibilityPositionsByPositionId[voterGuidePossibilityPositionId] || {};
   }
 
   /**
@@ -31,11 +31,11 @@ class VoterGuidePossibilityPositionStore extends ReduceStore {
    */
   getVoterGuidePossibilityPositionByCandidateName (candidateName) {
     // const test = this.getState();
-    const allCachedVoterGuidePossibilityPositions = this.getState().allCachedVoterGuidePossibilityPositions || [];
+    const allCachedVoterGuidePossibilityPositionsByPositionId = this.getState().allCachedVoterGuidePossibilityPositionsByPositionId || [];
     // const currentVoterGuidePossibilityID = this.getState().voterGuidePossibilityId;
-    // console.log('getVoterGuidePossibilityPositionByCandidateName()', allCachedVoterGuidePossibilityPositions);
-    for (let i = 0; i < allCachedVoterGuidePossibilityPositions.length; i++) {
-      const position = allCachedVoterGuidePossibilityPositions[i];
+    // console.log('getVoterGuidePossibilityPositionByCandidateName()', allCachedVoterGuidePossibilityPositionsByPositionId);
+    for (let i = 0; i < allCachedVoterGuidePossibilityPositionsByPositionId.length; i++) {
+      const position = allCachedVoterGuidePossibilityPositionsByPositionId[i];
       // console.log('getVoterGuidePossibilityPositionByCandidateName');
       if (candidateName === position.ballot_item_name) {
         // console.log('getVoterGuidePossibilityPositionByCandidateName', position.possibility_position_id);
@@ -54,14 +54,14 @@ class VoterGuidePossibilityPositionStore extends ReduceStore {
    */
   getVoterGuidePossibilityPositionByCandidateId (candidateWeVoteId) {
     // For now, we assume that all values in the store relate to the same organization
-    const allCachedVoterGuidePossibilityPositionsByCandidate = this.getState().allCachedVoterGuidePossibilityPositionsByCandidate || {};
-    return allCachedVoterGuidePossibilityPositionsByCandidate[candidateWeVoteId] || {};
+    const allCachedVoterGuidePossibilityPositionsByCandidateId = this.getState().allCachedVoterGuidePossibilityPositionsByCandidateId || {};
+    return allCachedVoterGuidePossibilityPositionsByCandidateId[candidateWeVoteId] || {};
   }
 
   reduce (state, action) {
     const {
-      allCachedVoterGuidePossibilityPositionsByCandidate,
-      // allCachedVoterGuidePossibilityPositions,
+      allCachedVoterGuidePossibilityPositionsByCandidateId,
+      allCachedVoterGuidePossibilityPositionsByPositionId,
     } = state;
     // const {
     //   voterGuidePossibilityId,
@@ -81,15 +81,18 @@ class VoterGuidePossibilityPositionStore extends ReduceStore {
           for (let count = 0; count < possiblePositionList.length; count++) {
             possiblePosition = possiblePositionList[count];
             if (possiblePosition.candidate_we_vote_id) {
-              allCachedVoterGuidePossibilityPositionsByCandidate[possiblePosition.candidate_we_vote_id] = possiblePosition;
+              allCachedVoterGuidePossibilityPositionsByCandidateId[possiblePosition.candidate_we_vote_id] = possiblePosition;
+            }
+            if (possiblePosition.possibility_position_id) {
+              allCachedVoterGuidePossibilityPositionsByPositionId[possiblePosition.possibility_position_id] = possiblePosition;
             }
           }
         }
-        // console.log('VoterGuidePossibilityStore allCachedVoterGuidePossibilityPositions:', possiblePositionList);
+        // console.log('VoterGuidePossibilityStore allCachedVoterGuidePossibilityPositionsByPositionId:', possiblePositionList);
         return {
           ...state,
-          allCachedVoterGuidePossibilityPositions: possiblePositionList,
-          allCachedVoterGuidePossibilityPositionsByCandidate,
+          allCachedVoterGuidePossibilityPositionsByPositionId,
+          allCachedVoterGuidePossibilityPositionsByCandidateId,
           // voterGuidePossibilityId,
         };
 
@@ -100,14 +103,17 @@ class VoterGuidePossibilityPositionStore extends ReduceStore {
           for (let count = 0; count < possiblePositionList.length; count++) {
             possiblePosition = possiblePositionList[count];
             if (possiblePosition.candidate_we_vote_id) {
-              allCachedVoterGuidePossibilityPositionsByCandidate[possiblePosition.candidate_we_vote_id] = possiblePosition;
+              allCachedVoterGuidePossibilityPositionsByCandidateId[possiblePosition.candidate_we_vote_id] = possiblePosition;
+            }
+            if (possiblePosition.possibility_position_id) {
+              allCachedVoterGuidePossibilityPositionsByPositionId[possiblePosition.possibility_position_id] = possiblePosition;
             }
           }
         }
         return {
           ...state,
-          allCachedVoterGuidePossibilityPositionsByCandidate,
-          // voterGuidePossibilityId,
+          allCachedVoterGuidePossibilityPositionsByCandidateId,
+          allCachedVoterGuidePossibilityPositionsByPositionId,
         };
 
       default:

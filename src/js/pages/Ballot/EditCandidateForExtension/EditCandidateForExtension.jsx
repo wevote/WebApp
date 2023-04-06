@@ -8,7 +8,7 @@ import VoterGuidePossibilityPositionStore from '../../../stores/VoterGuidePossib
 
 
 const {
-  candidate_name: candidateName, candidate_we_vote_id: candidateWeVoteId, endorsement_page_url: endorsementPageUrl,
+  candidate_name: candidateName, candidate_we_vote_id: candidateWeVoteId, possibility_position_id: possibilityPositionId, endorsement_page_url: endorsementPageUrl,
 } = Object.fromEntries(new URLSearchParams(document.location.search));
 let { candidate_specific_endorsement_url: candidateCampaignUrl } = Object.fromEntries(new URLSearchParams(document.location.search));
 
@@ -18,23 +18,27 @@ if (!candidateCampaignUrl) {
 let possibilityListener;
 let possibilityPositionListener;
 
-// https://localhost:3000/candidate-for-extension?candidate_name=Phil%20Ting&candidate_we_vote_id=wv02cand40131&endorsement_page_url=https%3A%2F%2Fwww.sierraclub.org%2Fcalifornia%2F2020-endorsements&candidate_specific_endorsement_url=https%3A%2F%2Fwww.philting.com%2F
+// https://wevotedeveloper.com:3000/candidate-for-extension?candidate_name=Jeanne%20Casteen&candidate_we_vote_id=&possibility_position_id=458390&endorsement_page_url=https%3A%2F%2Feverydistrict.us%2Fcandidates%2F2022-candidates%2F&candidate_specific_endorsement_url=
 export default function EditCandidateForExtension ()  {
-  const [candidate, setCandidate] = useState({ candidateName, candidateWeVoteId, endorsementPageUrl, candidateCampaignUrl });
+  const [candidate, setCandidate] = useState({ candidateName, candidateWeVoteId, possibilityPositionId, endorsementPageUrl, candidateCampaignUrl });
 
   const handlePossibilityPositionRetrieve = () => {
-    const candidatePossibilityPosition = VoterGuidePossibilityPositionStore.getVoterGuidePossibilityPositionByCandidateId(candidateWeVoteId);
+    let candidatePossibilityPosition = VoterGuidePossibilityPositionStore.getVoterGuidePossibilityPositionByCandidateId(candidateWeVoteId);
+    const hasEmptyPositionObject = Object.keys(candidatePossibilityPosition).length === 0;
+    if (hasEmptyPositionObject && possibilityPositionId && possibilityPositionId.length) {
+      candidatePossibilityPosition = VoterGuidePossibilityPositionStore.getVoterGuidePossibilityPositionByPositionId(possibilityPositionId);
+    }
     const voterGuidePossibilityID = VoterGuidePossibilityStore.getVoterGuidePossibilityId();
-    console.log('candidatePossibilityPosition', candidatePossibilityPosition);
+    // console.log('candidatePossibilityPosition', candidatePossibilityPosition);
     // extracting the endorsement text that is already in the database for this candidate's possibility position
-    const { statement_text: statementText, possibility_position_id: candidatePossibilityPositionID } = candidatePossibilityPosition;
+    const { statement_text: statementText, possibility_position_id: candidatePossibilityPositionID, position_stance: stance } = candidatePossibilityPosition;
     // setting the state to include the endorsement text that is already in the database so that the form is pre-filled
-    setCandidate({ ...candidate, voterGuidePossibilityID, candidatePossibilityPositionID, statementText });
+    setCandidate({ ...candidate, voterGuidePossibilityID, candidatePossibilityPositionID, statementText, stance });
   };
 
   const handlePossibilityRetrieve = () => {
     const voterGuidePossibilityID = VoterGuidePossibilityStore.getVoterGuidePossibilityId();
-    console.log(candidate);
+    // console.log('handlePossibilityRetrieve candidate: ', candidate);
     VoterGuidePossibilityActions.voterGuidePossibilityPositionsRetrieve(voterGuidePossibilityID);
     possibilityPositionListener = VoterGuidePossibilityPositionStore.addListener(handlePossibilityPositionRetrieve);
     return () => possibilityPositionListener.remove;
