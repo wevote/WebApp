@@ -21,7 +21,7 @@ import {
   CandidateTopRow,
   VoteAgainstCandidate, VoteForCandidate,
 } from '../Style/BallotStyles';
-import signInModalGlobalState from '../Widgets/signInModalGlobalState';
+import signInModalGlobalState from '../../common/components/Widgets/signInModalGlobalState';
 
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));

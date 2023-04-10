@@ -2,7 +2,7 @@
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { oAuthLog } from '../../common/utils/logging';
 import facebookApi from '../../utils/facebookApi';
-import signInModalGlobalState from '../Widgets/signInModalGlobalState';
+import signInModalGlobalState from '../../common/components/Widgets/signInModalGlobalState';
 
 const fbData = {
   connected: false,

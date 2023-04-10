@@ -15,7 +15,7 @@ import webAppConfig from '../../config';
 import VoterStore from '../../stores/VoterStore';
 import initializeAppleSDK from '../../utils/initializeAppleSDK';
 import initializeFacebookSDK from '../../utils/initializeFacebookSDK';
-import signInModalGlobalState from '../Widgets/signInModalGlobalState';
+import signInModalGlobalState from '../../common/components/Widgets/signInModalGlobalState';
 import DeviceURLField from './DeviceURLField';
 
 const SignInOptionsPanel = React.lazy(() => import(/* webpackChunkName: 'SignInOptionsPanel' */ '../../common/components/SignIn/SignInOptionsPanel'));

@@ -35,7 +35,7 @@ import { PageContentContainer } from '../../../components/Style/pageLayoutStyles
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import CampaignSupporterStore from '../../stores/CampaignSupporterStore';
 import CandidateStore from '../../../stores/CandidateStore';
-import OfficeHeldStore from '../../../stores/OfficeHeldStore';
+import OfficeHeldStore from '../../stores/OfficeHeldStore';
 import PoliticianStore from '../../stores/PoliticianStore';
 import RepresentativeStore from '../../../stores/RepresentativeStore';
 import { convertStateCodeToStateText } from '../../utils/addressFunctions';
@@ -45,9 +45,9 @@ import initializejQuery from '../../utils/initializejQuery';
 import { displayNoneIfSmallerThanDesktop } from '../../utils/isMobileScreenSize';
 import keepHelpingDestination from '../../utils/keepHelpingDestination';
 import TwitterAccountStats from '../../../components/Widgets/TwitterAccountStats';
-import SearchOnGoogle from '../../../components/Widgets/SearchOnGoogle';
-import ViewOnBallotpedia from '../../../components/Widgets/ViewOnBallotpedia';
-import ViewOnWikipedia from '../../../components/Widgets/ViewOnWikipedia';
+import SearchOnGoogle from '../../components/Widgets/SearchOnGoogle';
+import ViewOnBallotpedia from '../../components/Widgets/ViewOnBallotpedia';
+import ViewOnWikipedia from '../../components/Widgets/ViewOnWikipedia';
 import webAppConfig from '../../../config';
 
 const CampaignCommentsList = React.lazy(() => import(/* webpackChunkName: 'CampaignCommentsList' */ '../../components/Campaign/CampaignCommentsList'));

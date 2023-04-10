@@ -123,7 +123,7 @@ export default {
   },
 
   getChosenWebsiteName () {
-    return nonFluxState.chosenWebsiteName || 'WeVote.US';
+    return nonFluxState.chosenWebsiteName || 'WeVote.US'; // Used to be campaigns.WeVote.US on campaigns site
   },
 
   getCurrentPathname () {

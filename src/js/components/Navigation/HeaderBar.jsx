@@ -25,7 +25,7 @@ import { avatarGeneric, displayTopMenuShadow, weVoteBrandingOff } from '../../ut
 import getHeaderObjects from '../../utils/getHeaderObjects';
 import { TopOfPageHeader, TopRowOneLeftContainer, TopRowOneMiddleContainer, TopRowOneRightContainer, TopRowTwoLeftContainer } from '../Style/pageLayoutStyles';
 import SignInButton from '../Widgets/SignInButton';
-import signInModalGlobalState from '../Widgets/signInModalGlobalState';
+import signInModalGlobalState from '../../common/components/Widgets/signInModalGlobalState';
 import FriendsTabs from './FriendsTabs';
 import HeaderBarLogo from './HeaderBarLogo';
 import HeaderBarModals from './HeaderBarModals';

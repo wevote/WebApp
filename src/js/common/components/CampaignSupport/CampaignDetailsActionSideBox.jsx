@@ -184,7 +184,7 @@ class CampaignDetailsActionSideBox extends Component {
 
   render () {
     renderLog('CampaignDetailsActionSideBox');  // Set LOG_RENDER_EVENTS to log all renders
-    const { campaignSEOFriendlyPath, campaignXWeVoteId, classes, inDraftMode } = this.props;
+    const { campaignSEOFriendlyPath, campaignXWeVoteId, classes, inDraftMode, politicianSEOFriendlyPath, politicianWeVoteId } = this.props;
     // console.log('CampaignDetailsActionSideBox render campaignXWeVoteId:', campaignXWeVoteId, ', campaignSEOFriendlyPath:', campaignSEOFriendlyPath);
     if (!nextReleaseFeaturesEnabled) {
       if (!campaignSEOFriendlyPath && !campaignXWeVoteId) {
@@ -283,6 +283,8 @@ class CampaignDetailsActionSideBox extends Component {
                           <CompleteYourProfile
                             campaignXWeVoteId={campaignXWeVoteId}
                             functionToUseWhenProfileComplete={this.props.functionToUseWhenProfileComplete}
+                            politicianSEOFriendlyPath={politicianSEOFriendlyPath}
+                            politicianWeVoteId={politicianWeVoteId}
                             supportCampaignOnCampaignHome
                           />
                         </Suspense>
@@ -304,6 +306,8 @@ CampaignDetailsActionSideBox.propTypes = {
   classes: PropTypes.object,
   functionToUseToKeepHelping: PropTypes.func.isRequired,
   functionToUseWhenProfileComplete: PropTypes.func.isRequired,
+  politicianSEOFriendlyPath: PropTypes.string,
+  politicianWeVoteId: PropTypes.string,
   inDraftMode: PropTypes.bool,
 };
 

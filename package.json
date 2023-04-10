@@ -84,8 +84,8 @@
     "unused-webpack-plugin": "^2.4.0",
     "webdriver": "^8.5.5",
     "webdriverio": "^8.5.5",
-    "webpack": "^5.32.0",
-    "webpack-bundle-analyzer": "^4.4.0",
+    "webpack": "^5.70.0",
+    "webpack-bundle-analyzer": "^4.5.0",
     "webpack-cli": "^5.0.1",
     "webpack-dev-server": "^4.11.1",
     "webpack-shell-plugin-next": "^2.2.2"
@@ -93,6 +93,8 @@
   "dependencies": {
     "@emotion/is-prop-valid": "^1.1.2",
     "@emotion/react": "^11.10.0",
+    "@emotion/styled": "^11.8.1",
+    "@loadable/component": "^5.14.1",
     "@mui/icons-material": "^5.8.4",
     "@mui/lab": "^5.0.0-alpha.96",
     "@mui/material": "^5.10.2",
@@ -123,7 +125,7 @@
     "react": "~17.0.2",
     "react-bootstrap": "^1.6.4",
     "react-copy-to-clipboard": "^5.0.3",
-    "react-dom": "~17.0.1",
+    "react-dom": "~17.0.2",
     "react-fullstory": "^1.4.0",
     "react-ga4": "^2.0.0",
     "react-google-autocomplete": "^2.6.1",

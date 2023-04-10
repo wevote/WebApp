@@ -27,7 +27,7 @@ import VoterEmailAddressEntry from '../../../components/Settings/VoterEmailAddre
 import VoterPhoneVerificationEntry from '../../../components/Settings/VoterPhoneVerificationEntry';
 import TwitterSignIn from '../../../components/Twitter/TwitterSignIn';
 import BrowserPushMessage from '../../../components/Widgets/BrowserPushMessage';
-import signInModalGlobalState from '../../../components/Widgets/signInModalGlobalState';
+import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 import SnackNotifier, { openSnackbar } from '../Widgets/SnackNotifier';
 
 

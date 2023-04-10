@@ -64,11 +64,12 @@ class CampaignSupportThermometer extends React.Component {
         supporters_count: supportersCount,
         supporters_count_next_goal: supportersCountNextGoal,
       } = campaignX;
+      const supportersCountNextGoalWithFloor = supportersCountNextGoal ||  CampaignStore.getCampaignXSupportersCountNextGoalDefault();
       if (campaignXWeVoteIdFromDict) {
         this.setState({
           finalElectionDateInPast,
           supportersCount,
-          supportersCountNextGoal,
+          supportersCountNextGoal: supportersCountNextGoalWithFloor,
         });
       }
     }
