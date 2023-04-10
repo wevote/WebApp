@@ -11,7 +11,7 @@ import { oAuthLog, renderLog } from '../../common/utils/logging';
 import { messageService } from '../../common/stores/AppObservableStore';
 import FacebookStore from '../../stores/FacebookStore';
 import VoterStore from '../../stores/VoterStore';
-import signInModalGlobalState from '../Widgets/signInModalGlobalState';
+import signInModalGlobalState from '../../common/components/Widgets/signInModalGlobalState';
 import FacebookSignedInData from './FacebookSignedInData';
 
 

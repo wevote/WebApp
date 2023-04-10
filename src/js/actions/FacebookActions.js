@@ -2,7 +2,7 @@ import Dispatcher from '../common/dispatcher/Dispatcher';
 import { isWebApp } from '../common/utils/isCordovaOrWebApp'; // eslint-disable-line import/no-cycle
 import { oAuthLog } from '../common/utils/logging';
 import FacebookSignedInData from '../components/Facebook/FacebookSignedInData';
-import signInModalGlobalState from '../components/Widgets/signInModalGlobalState';
+import signInModalGlobalState from '../common/components/Widgets/signInModalGlobalState';
 import webAppConfig from '../config';
 import FacebookConstants from '../constants/FacebookConstants';
 import facebookApi from '../utils/facebookApi';

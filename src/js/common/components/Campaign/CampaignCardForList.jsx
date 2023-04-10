@@ -23,6 +23,7 @@ import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import keepHelpingDestination from '../../utils/keepHelpingDestination';
 import numberWithCommas from '../../utils/numberWithCommas';
 import CampaignOwnersList from '../CampaignSupport/CampaignOwnersList';
+// import { BlockedIndicator, DraftModeIndicator, EditIndicator, ElectionInPast, IndicatorButtonWrapper, IndicatorDefaultButtonWrapper, IndicatorRow } from '../Style/CampaignIndicatorStyles';
 
 const SupportButtonBeforeCompletionScreen = React.lazy(() => import(/* webpackChunkName: 'SupportButtonBeforeCompletionScreen' */ '../CampaignSupport/SupportButtonBeforeCompletionScreen'));
 
@@ -522,4 +523,5 @@ const CampaignOwnersWrapper = styled('div')`
 const TitleAndTextWrapper = styled('div')`
   height: 60px;
 `;
+
 export default withStyles(styles)(CampaignCardForList);

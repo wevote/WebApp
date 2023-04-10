@@ -305,7 +305,7 @@ class CompleteYourProfile extends Component {
               <VisibleToPublicCheckbox campaignXWeVoteId={campaignXWeVoteId} />
             </CheckboxWrapper>
           )}
-          <ButtonWrapper outerMarginsOff={outerMarginsOff}>
+          <CompleteYourProfileButtonWrapper outerMarginsOff={outerMarginsOff}>
             <Button
               classes={{ root: classes.buttonDesktop }}
               color="primary"
@@ -315,7 +315,7 @@ class CompleteYourProfile extends Component {
             >
               {buttonText}
             </Button>
-          </ButtonWrapper>
+          </CompleteYourProfileButtonWrapper>
           <FinePrint outerMarginsOff={outerMarginsOff}>
             By continuing, you accept WeVote.US&apos;s
             {' '}
@@ -360,6 +360,8 @@ CompleteYourProfile.propTypes = {
   campaignXWeVoteId: PropTypes.string,
   classes: PropTypes.object,
   functionToUseWhenProfileComplete: PropTypes.func.isRequired,
+  politicianSEOFriendlyPath: PropTypes.string,
+  politicianWeVoteId: PropTypes.string,
   startCampaign: PropTypes.bool,
   supportCampaign: PropTypes.bool,
   supportCampaignOnCampaignHome: PropTypes.bool,
@@ -386,7 +388,7 @@ const AlreadyHaveAccount = styled('div')`
   margin-right: 2px;
 `;
 
-const ButtonWrapper = styled('div', {
+const CompleteYourProfileButtonWrapper = styled('div', {
   shouldForwardProp: (prop) => !['outerMarginsOff'].includes(prop),
 })(({ outerMarginsOff }) => (`
   background-color: #fff;

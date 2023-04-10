@@ -10,7 +10,7 @@ import AppObservableStore from '../common/stores/AppObservableStore'; // eslint-
 import apiCalming from '../common/utils/apiCalming';
 import Cookies from '../common/utils/js-cookie/Cookies';
 import stringContains from '../common/utils/stringContains';
-import signInModalGlobalState from '../components/Widgets/signInModalGlobalState';
+import signInModalGlobalState from '../common/components/Widgets/signInModalGlobalState';
 import VoterConstants from '../constants/VoterConstants';
 import { dumpObjProps } from '../utils/appleSiliconUtils';
 
@@ -1310,7 +1310,7 @@ class VoterStore extends ReduceStore {
         }
 
       case 'voterVerifySecretCode':
-        console.log('VoterStore, voterVerifySecretCode, action.res:', action.res);
+        // console.log('VoterStore, voterVerifySecretCode, action.res:', action.res);
         incorrectSecretCodeEntered = (action.res.incorrect_secret_code_entered && action.res.incorrect_secret_code_entered === true);
         mergeFromVoterWeVoteId = action.res.merge_from_voter_we_vote_id;
         mergeToVoterWeVoteId = action.res.merge_to_voter_we_vote_id;

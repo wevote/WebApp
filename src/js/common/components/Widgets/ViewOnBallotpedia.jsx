@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import SplitIconButton from '../../common/components/Widgets/SplitIconButton';
-import normalizedImagePath from '../../common/utils/normalizedImagePath';
+import SplitIconButton from './SplitIconButton';
+import normalizedImagePath from '../../utils/normalizedImagePath';
 
-const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ './OpenExternalWebSite'));
 
 const ballotpediaIcon = '../../../img/global/logos/ballotpedia-initials-57x33.png';
 

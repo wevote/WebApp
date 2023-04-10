@@ -1,4 +1,4 @@
-import Dispatcher from '../common/dispatcher/Dispatcher';
+import Dispatcher from '../dispatcher/Dispatcher';
 
 export default {
   officeHeldRetrieve (officeHeldWeVoteId) {

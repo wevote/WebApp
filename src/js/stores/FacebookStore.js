@@ -5,7 +5,7 @@ import VoterActions from '../actions/VoterActions';
 import Dispatcher from '../common/dispatcher/Dispatcher';
 import apiCalming from '../common/utils/apiCalming';
 import { isCordova } from '../common/utils/isCordovaOrWebApp';
-import signInModalGlobalState from '../components/Widgets/signInModalGlobalState';
+import signInModalGlobalState from '../common/components/Widgets/signInModalGlobalState';
 import FacebookConstants from '../constants/FacebookConstants';
 
 class FacebookStore extends ReduceStore {
