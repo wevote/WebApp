@@ -12,6 +12,7 @@ export function getPoliticianValuesFromIdentifiers (politicianSEOFriendlyPath, p
   let candidateCampaignList = [];
   let finalElectionDateInPast = false;
   // let isSupportersCountMinimumExceeded = false;
+  let linkedCampaignXWeVoteId = '';
   let politicalParty = '';
   let politician = {};
   let politicianDescription = '';
@@ -41,6 +42,7 @@ export function getPoliticianValuesFromIdentifiers (politicianSEOFriendlyPath, p
       candidate_list: candidateCampaignList,
       final_election_date_in_past: finalElectionDateInPast,
       // is_supporters_count_minimum_exceeded: isSupportersCountMinimumExceeded,
+      linked_campaignx_we_vote_id: linkedCampaignXWeVoteId,
       politician_description: politicianDescription,
       politician_name: politicianName,
       twitter_followers_count: twitterFollowersCount,
@@ -81,6 +83,7 @@ export function getPoliticianValuesFromIdentifiers (politicianSEOFriendlyPath, p
     candidateCampaignList,
     finalElectionDateInPast,
     // isSupportersCountMinimumExceeded,
+    linkedCampaignXWeVoteId,
     politicalParty,
     politicianDescription,
     politicianImageUrlLarge,

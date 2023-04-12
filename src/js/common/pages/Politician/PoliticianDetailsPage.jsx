@@ -225,6 +225,7 @@ class PoliticianDetailsPage extends Component {
       candidateCampaignList,
       finalElectionDateInPast,
       // isSupportersCountMinimumExceeded,
+      linkedCampaignXWeVoteId,
       politicalParty,
       politicianDescription,
       politicianImageUrlLarge,
@@ -240,13 +241,14 @@ class PoliticianDetailsPage extends Component {
       youtubeUrl,
     } = getPoliticianValuesFromIdentifiers(politicianSEOFriendlyPathFromParams, politicianWeVoteIdFromParams);
     let pathToUseWhenProfileComplete;
-    if (politicianSEOFriendlyPath) {
-      this.setState({
-        politicianSEOFriendlyPath,
-      });
-      pathToUseWhenProfileComplete = `/c/${politicianSEOFriendlyPath}/why-do-you-support`;
-    } else if (politicianWeVoteId) {
-      pathToUseWhenProfileComplete = `/id/${politicianWeVoteId}/why-do-you-support`;
+    // if (politicianSEOFriendlyPath) {
+    //   this.setState({
+    //     politicianSEOFriendlyPath,
+    //   });
+    //   pathToUseWhenProfileComplete = `/c/${politicianSEOFriendlyPath}/why-do-you-support`;
+    // } else
+    if (politicianWeVoteId) {
+      pathToUseWhenProfileComplete = `/id/${linkedCampaignXWeVoteId}/why-do-you-support`;
     }
     if (politicianWeVoteId) {
       const voterCanEditThisPolitician = PoliticianStore.getVoterCanEditThisPolitician(politicianWeVoteId);
@@ -268,6 +270,7 @@ class PoliticianDetailsPage extends Component {
       candidateCampaignList: filteredCandidateCampaignList,
       finalElectionDateInPast,
       // isSupportersCountMinimumExceeded,
+      linkedCampaignXWeVoteId,
       politicalParty,
       politicianDescription,
       politicianDescriptionLimited,
@@ -363,7 +366,7 @@ class PoliticianDetailsPage extends Component {
 
     const {
       allCachedPositionsForThisPolitician, ballotpediaPoliticianUrl, candidateCampaignList, chosenWebsiteName,
-      finalElectionDateInPast,
+      finalElectionDateInPast, linkedCampaignXWeVoteId,
       officeHeldList, officeHeldNameForSearch, politicalParty,
       politicianDescription, politicianDescriptionLimited, politicianImageUrlLarge,
       politicianSEOFriendlyPath, politicianName, politicianUrl, politicianWeVoteId,
@@ -739,11 +742,12 @@ class PoliticianDetailsPage extends Component {
                 {nextReleaseFeaturesEnabled && (
                   <Suspense fallback={<span>&nbsp;</span>}>
                     <CampaignDetailsActionSideBox
-                      politicianSEOFriendlyPath={politicianSEOFriendlyPath}
-                      politicianWeVoteId={politicianWeVoteId}
+                      campaignXWeVoteId={linkedCampaignXWeVoteId}
                       finalElectionDateInPast={finalElectionDateInPast}
                       functionToUseToKeepHelping={this.functionToUseToKeepHelping}
                       functionToUseWhenProfileComplete={this.functionToUseWhenProfileComplete}
+                      politicianSEOFriendlyPath={politicianSEOFriendlyPath}
+                      politicianWeVoteId={politicianWeVoteId}
                     />
                   </Suspense>
                 )}

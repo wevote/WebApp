@@ -275,6 +275,7 @@ class CampaignDetailsActionSideBox extends Component {
                         <SupportButton
                           campaignXWeVoteId={campaignXWeVoteId}
                           functionToUseWhenProfileComplete={this.props.functionToUseWhenProfileComplete}
+                          politicianWeVoteId={politicianWeVoteId}
                         />
                       </ProfileAlreadyComplete>
                     ) : (
@@ -306,9 +307,9 @@ CampaignDetailsActionSideBox.propTypes = {
   classes: PropTypes.object,
   functionToUseToKeepHelping: PropTypes.func.isRequired,
   functionToUseWhenProfileComplete: PropTypes.func.isRequired,
+  inDraftMode: PropTypes.bool,
   politicianSEOFriendlyPath: PropTypes.string,
   politicianWeVoteId: PropTypes.string,
-  inDraftMode: PropTypes.bool,
 };
 
 const styles = (theme) => ({

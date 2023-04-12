@@ -33,8 +33,14 @@ const Ballot = React.lazy(() => import(/* webpackChunkName: 'Ballot' */ './js/pa
 const CampaignCommentsPage = React.lazy(() => import(/* webpackChunkName: 'CampaignCommentsPage' */ './js/common/pages/Campaign/CampaignCommentsPage'));
 const CampaignDetailsPage = React.lazy(() => import(/* webpackChunkName: 'CampaignDetailsPage' */ './js/common/pages/Campaign/CampaignDetailsPage'));
 const CampaignNewsItemDetailsPage = React.lazy(() => import(/* webpackChunkName: 'CampaignNewsItemDetailsPage' */ './js/common/pages/Campaign/CampaignNewsItemDetailsPage'));
+const CampaignRecommendedCampaigns = React.lazy(() => import(/* webpackChunkName: 'CampaignRecommendedCampaigns' */ './js/common/pages/CampaignSupport/CampaignRecommendedCampaigns'));
 const CampaignsHome = React.lazy(() => import(/* webpackChunkName: 'CampaignsHome' */ './js/pages/Campaigns/CampaignsHome'));
 const CampaignStartIntro = React.lazy(() => import(/* webpackChunkName: 'CampaignStartIntro' */ './js/common/pages/CampaignStart/CampaignStartIntro'));
+const CampaignSupportEndorsement = React.lazy(() => import(/* webpackChunkName: 'CampaignSupportEndorsement' */ './js/common/pages/CampaignSupport/CampaignSupportEndorsement'));
+const CampaignSupportPayToPromote = React.lazy(() => import(/* webpackChunkName: 'CampaignSupportPayToPromote' */ './js/common/pages/CampaignSupport/CampaignSupportPayToPromote'));
+const CampaignSupportPayToPromoteProcess = React.lazy(() => import(/* webpackChunkName: 'CampaignSupportPayToPromoteProcess' */ './js/common/pages/CampaignSupport/CampaignSupportPayToPromoteProcess'));
+const CampaignSupportShare = React.lazy(() => import(/* webpackChunkName: 'CampaignSupportShare' */ './js/common/pages/CampaignSupport/CampaignSupportShare'));
+const CampaignUpdatesPage = React.lazy(() => import(/* webpackChunkName: 'CampaignNewsPage' */ './js/common/pages/Campaign/CampaignNewsPage'));
 const Candidate = React.lazy(() => import(/* webpackChunkName: 'Candidate' */ './js/pages/Ballot/Candidate'));
 const CandidateForExtension = React.lazy(() => import(/* webpackChunkName: 'EditCandidateForExtension' */ './js/pages/Ballot/EditCandidateForExtension/EditCandidateForExtension'));
 const ClaimYourPage = React.lazy(() => import(/* webpackChunkName: 'ClaimYourPage' */ './js/pages/Settings/ClaimYourPage'));
@@ -90,6 +96,11 @@ const SetUpAccountRoot = React.lazy(() => import(/* webpackChunkName: 'SetUpAcco
 const SharedItemLanding = React.lazy(() => import(/* webpackChunkName: 'SharedItemLanding' */ './js/pages/SharedItemLanding'));
 const SignInEmailProcess = React.lazy(() => import(/* webpackChunkName: 'SignInEmailProcess' */ './js/pages/Process/SignInEmailProcess'));
 const SignInJumpProcess = React.lazy(() => import(/* webpackChunkName: 'SignInJumpProcess' */ './js/pages/Process/SignInJumpProcess'));
+const SuperSharingAddContacts = React.lazy(() => import(/* webpackChunkName: 'SuperSharingAddContacts' */ './js/common/pages/SuperSharing/SuperSharingAddContacts'));
+const SuperSharingChooseRecipients = React.lazy(() => import(/* webpackChunkName: 'SuperSharingChooseRecipients' */ './js/common/pages/SuperSharing/SuperSharingChooseRecipients'));
+const SuperSharingComposeEmailMessage = React.lazy(() => import(/* webpackChunkName: 'SuperSharingComposeEmailMessage' */ './js/common/pages/SuperSharing/SuperSharingComposeEmailMessage'));
+const SuperSharingSendEmail = React.lazy(() => import(/* webpackChunkName: 'SuperSharingSendEmail' */ './js/common/pages/SuperSharing/SuperSharingSendEmail'));
+const SuperSharingIntro = React.lazy(() => import(/* webpackChunkName: 'SuperSharingIntro' */ './js/common/pages/SuperSharing/SuperSharingIntro'));
 const TermsOfService = React.lazy(() => import(/* webpackChunkName: 'TermsOfService' */ './js/pages/More/TermsOfService'));
 const TwitterHandleLanding = React.lazy(() => import(/* webpackChunkName: 'TwitterHandleLanding' */ './js/pages/TwitterHandleLanding'));
 const TwitterSignInProcess = React.lazy(() => import(/* webpackChunkName: 'TwitterSignInProcess' */ './js/pages/Process/TwitterSignInProcess'));
@@ -118,14 +129,14 @@ class App extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      // doShowHeader: true,
-      // doShowFooter: true,
+      hideHeader: false,
+      hideFooter: false,
       showReadyLight: true,
       enableFullStory: false,
     };
-    // this.setShowHeader = this.setShowHeader.bind(this);
-    // this.setShowFooter = this.setShowFooter.bind(this);
-    // this.setShowHeaderFooter = this.setShowHeaderFooter.bind(this);
+    this.setShowHeader = this.setShowHeader.bind(this);
+    this.setShowFooter = this.setShowFooter.bind(this);
+    this.setShowHeaderFooter = this.setShowHeaderFooter.bind(this);  // Look more closely at this
     this.setShowReadyHeavy = this.setShowReadyHeavy.bind(this);
     this.localIsCordova();
   }
@@ -252,6 +263,21 @@ class App extends Component {
     }
   }
 
+  setShowHeader (doShowHeader) {
+    this.setState({ hideHeader: !doShowHeader });
+  }
+
+  setShowFooter (doShowFooter) {
+    this.setState({ hideFooter: !doShowFooter });
+  }
+
+  setShowHeaderFooter (doShow) {
+    // console.log('setShowHeaderFooter -------------- doShow:', doShow);
+    this.setState({
+      hideHeader: !doShow,
+      hideFooter: !doShow,
+    });
+  }
 
   setShowReadyHeavy () {
     this.setState({ showReadyLight: false });
@@ -265,7 +291,7 @@ class App extends Component {
 
   render () {
     renderLog('App');
-    const { showReadyLight, enableFullStory } = this.state;
+    const { hideHeader, showReadyLight, enableFullStory } = this.state;
     // console.log('App.js:  enableFullStory: ', enableFullStory);
     let { hostname } = window.location;
     hostname = hostname || '';
@@ -295,7 +321,7 @@ class App extends Component {
               <WeVoteBody>
                 {/* DO NOT put SnackNotifier or anything else that is non-essential here (to keep it out of the main chunk). */}
                 <Suspense fallback={<HeaderBarSuspense />}>
-                  <Header params={{ }} pathname={normalizedHref()} />
+                  <Header hideHeader={hideHeader} params={{ }} pathname={normalizedHref()} />
                 </Suspense>
                 <Suspense fallback={<LoadingWheelComp />}>
                   <Switch>
@@ -332,8 +358,23 @@ class App extends Component {
                     <Route path="/ballot/:ballot_location_shortcut" exact component={Ballot} />
                     <Route exact path="/c/:campaignSEOFriendlyPath" render={(props) => <CampaignDetailsPage match={props.match} />} />
                     <Route exact path="/c/:campaignSEOFriendlyPath/comments" render={(props) => <CampaignCommentsPage match={props.match} />} />
+                    <Route exact path="/c/:campaignSEOFriendlyPath/i-will-share-campaign" render={(props) => <CampaignSupportShare match={props.match} setShowHeaderFooter={this.setShowHeaderFooter} iWillShare />} />
+                    <Route exact path="/c/:campaignSEOFriendlyPath/pay-to-promote" render={(props) => <CampaignSupportPayToPromote match={props.match} setShowHeaderFooter={this.setShowHeaderFooter} />} />
+                    <Route exact path="/c/:campaignSEOFriendlyPath/pay-to-promote-process" render={(props) => <CampaignSupportPayToPromoteProcess match={props.match} setShowHeaderFooter={this.setShowHeaderFooter} />} />
+                    <Route exact path="/c/:campaignSEOFriendlyPath/recommended-campaigns" render={(props) => <CampaignRecommendedCampaigns match={props.match} setShowHeaderFooter={this.setShowHeaderFooter} />} />
+                    <Route exact path="/c/:campaignSEOFriendlyPath/share-campaign" render={(props) => <CampaignSupportShare match={props.match} setShowHeaderFooter={this.setShowHeaderFooter} />} />
+                    <Route exact path="/c/:campaignSEOFriendlyPath/share-campaign-with-one-friend" render={(props) => <CampaignSupportShare match={props.match} setShowHeaderFooter={this.setShowHeaderFooter} showShareCampaignWithOneFriend />} />
+                    <Route exact path="/c/:campaignSEOFriendlyPath/super-sharing-add-email-contacts" render={(props) => <SuperSharingAddContacts email match={props.match} setShowHeaderFooter={this.setShowHeaderFooter} />} />
+                    <Route exact path="/c/:campaignSEOFriendlyPath/super-sharing-add-sms-contacts" render={(props) => <SuperSharingAddContacts sms match={props.match} setShowHeaderFooter={this.setShowHeaderFooter} />} />
+                    <Route exact path="/c/:campaignSEOFriendlyPath/super-sharing-campaign-email" render={(props) => <SuperSharingIntro email match={props.match} setShowHeaderFooter={this.setShowHeaderFooter} />} />
+                    <Route exact path="/c/:campaignSEOFriendlyPath/super-sharing-campaign-sms" render={(props) => <SuperSharingIntro match={props.match} setShowHeaderFooter={this.setShowHeaderFooter} sms />} />
+                    <Route exact path="/c/:campaignSEOFriendlyPath/super-sharing-choose-email-recipients" render={(props) => <SuperSharingChooseRecipients match={props.match} setShowHeaderFooter={this.setShowHeaderFooter} />} />
+                    <Route exact path="/c/:campaignSEOFriendlyPath/super-sharing-compose-email" render={(props) => <SuperSharingComposeEmailMessage match={props.match} setShowHeaderFooter={this.setShowHeaderFooter} />} />
+                    <Route exact path="/c/:campaignSEOFriendlyPath/super-sharing-send-email" render={(props) => <SuperSharingSendEmail match={props.match} setShowHeaderFooter={this.setShowHeaderFooter} />} />
                     <Route exact path="/c/:campaignSEOFriendlyPath/u/:campaignXNewsItemWeVoteId" render={(props) => <CampaignNewsItemDetailsPage match={props.match} setShowHeaderFooter={this.setShowHeaderFooter} />} />
                     <Route exact path="/c/:campaignSEOFriendlyPath/u-preview/:campaignXNewsItemWeVoteId" render={(props) => <CampaignNewsItemDetailsPage inPreviewMode match={props.match} setShowHeaderFooter={this.setShowHeaderFooter} />} />
+                    <Route exact path="/c/:campaignSEOFriendlyPath/updates" render={(props) => <CampaignUpdatesPage match={props.match} />} />
+                    <Route exact path="/c/:campaignSEOFriendlyPath/why-do-you-support" render={(props) => <CampaignSupportEndorsement match={props.match} setShowHeaderFooter={this.setShowHeaderFooter} />} />
                     <Route path="/:state_candidates_phrase/cs/" exact component={CampaignsHome} />
                     <Route path="/cs/" exact component={CampaignsHome} />
                     <Route path="/candidate-for-extension" component={CandidateForExtension} />
@@ -357,8 +398,16 @@ class App extends Component {
                     <Route path="/how" exact component={isNotWeVoteMarketingSite ? ReadyRedirect : HowItWorks} />
                     <Route exact path="/id/:campaignXWeVoteId" render={(props) => <CampaignDetailsPage match={props.match} />} />
                     <Route exact path="/id/:campaignXWeVoteId/comments" render={(props) => <CampaignCommentsPage match={props.match} />} />
+                    <Route exact path="/id/:campaignXWeVoteId/i-will-share-campaign" render={(props) => <CampaignSupportShare match={props.match} setShowHeaderFooter={this.setShowHeaderFooter} iWillShare />} />
+                    <Route exact path="/id/:campaignXWeVoteId/pay-to-promote" render={(props) => <CampaignSupportPayToPromote match={props.match} setShowHeaderFooter={this.setShowHeaderFooter} />} />
+                    <Route exact path="/id/:campaignXWeVoteId/pay-to-promote-process" render={(props) => <CampaignSupportPayToPromoteProcess match={props.match} setShowHeaderFooter={this.setShowHeaderFooter} />} />
+                    <Route exact path="/id/:campaignXWeVoteId/recommended-campaigns" render={(props) => <CampaignRecommendedCampaigns match={props.match} setShowHeaderFooter={this.setShowHeaderFooter} />} />
+                    <Route exact path="/id/:campaignXWeVoteId/share-campaign" render={(props) => <CampaignSupportShare match={props.match} setShowHeaderFooter={this.setShowHeaderFooter} />} />
+                    <Route exact path="/id/:campaignXWeVoteId/share-campaign-with-one-friend" render={(props) => <CampaignSupportShare match={props.match} setShowHeaderFooter={this.setShowHeaderFooter} showShareCampaignWithOneFriend />} />
                     <Route exact path="/id/:campaignXWeVoteId/u/:campaignXNewsItemWeVoteId" render={(props) => <CampaignNewsItemDetailsPage match={props.match} setShowHeaderFooter={this.setShowHeaderFooter} />} />
                     <Route exact path="/id/:campaignXWeVoteId/u-preview/:campaignXNewsItemWeVoteId" render={(props) => <CampaignNewsItemDetailsPage inPreviewMode match={props.match} setShowHeaderFooter={this.setShowHeaderFooter} />} />
+                    <Route exact path="/id/:campaignXWeVoteId/updates" render={(props) => <CampaignUpdatesPage match={props.match} />} />
+                    <Route exact path="/id/:campaignXWeVoteId/why-do-you-support" render={(props) => <CampaignSupportEndorsement match={props.match} setShowHeaderFooter={this.setShowHeaderFooter} />} />
                     <Route path="/intro" exact component={Intro} />
                     <Route path="/intro/get_started" component={GetStarted2019} />
                     <Route path="/intro/sample_ballot" component={SampleBallot} />

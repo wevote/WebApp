@@ -208,7 +208,7 @@ export default class Header extends Component {
       // console.log('Header, hasDynamicIsland', hasDynamicIsland());
     }
 
-    const { params } = this.props;
+    const { hideHeader, params } = this.props;
     // console.log('Header global.weVoteGlobalHistory', global.weVoteGlobalHistory);
     const pathname = normalizedHref();
     const {
@@ -500,7 +500,7 @@ export default class Header extends Component {
           <IPhoneSpacer />
           <HeadroomWrapper>
             <div className={pageHeaderClasses} style={cordovaTopHeaderTopMargin()} id="header-container">
-              {headerNotVisible ? (
+              {(headerNotVisible || hideHeader) ? (
                 <>
                   <Suspense fallback={<></>}>
                     <HeaderBarModals />
@@ -585,6 +585,7 @@ export default class Header extends Component {
   }
 }
 Header.propTypes = {
+  hideHeader: PropTypes.bool,
   params: PropTypes.object,
   // pathname: PropTypes.string,
 };
