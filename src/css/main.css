@@ -17677,3 +17677,52 @@ a {
 /*  -moz-box-shadow: 0px 0px 5px 5px #0099E0;*/
 /*  box-shadow: 0px 0px 5px 5px #0099E0;*/
 /*}*/
+
+.material_ui_dark_button {
+  align-items: center;
+  background-color: #2e3c5d;
+  border: 1px solid #2e3c5d;
+  border-radius: 4px;
+  color: #fff;
+  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+  display: flex;
+  font-size: 18px;
+  height: 45px !important;
+  justify-content: center;
+  letter-spacing: 0.02857em;
+  line-height: 1.75;
+  margin: 0;
+  min-width: 300px;
+  vertical-align: middle;
+}
+
+.material_ui_dark_button:hover {
+  background-color: #232e47;
+}
+
+.material_ui_light_button {
+  align-items: center;
+  background-color: #fff;
+  border: 1px solid #2e3c5d;
+  border-radius: 4px;
+  color: #2e3c5d;
+  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+  display: flex;
+  font-size: 18px;
+  height: 45px !important;
+  justify-content: center;
+  letter-spacing: 0.02857em;
+  line-height: 1.75;
+  margin: 0;
+  min-width: 300px;
+  vertical-align: middle;
+}
+
+.material_ui_light_button:hover {
+  background-color: #f0f0f0;
+}
+
+.material_ui_button_mobile {
+  min-width: 100% !important;
+  width: 100% !important;
+}

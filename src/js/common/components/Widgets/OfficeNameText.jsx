@@ -106,7 +106,7 @@ export default function OfficeNameText (props) {
 }
 OfficeNameText.propTypes = {
   districtName: PropTypes.string,
-  inCard: PropTypes.string,
+  inCard: PropTypes.bool,
   officeName: PropTypes.string,
   // officeLink: PropTypes.string,
   politicalParty: PropTypes.string,

@@ -600,6 +600,7 @@ class CampaignsHome extends Component {
               <WhatIsHappeningSection>
                 <Suspense fallback={<span>&nbsp;</span>}>
                   <CampaignListRoot
+                    hideIfNoResults
                     incomingList={campaignList}
                     incomingListTimeStampOfChange={campaignListTimeStampOfChange}
                     listModeFilters={listModeFiltersAvailable}
@@ -834,7 +835,7 @@ const WhatIsHappeningSection = styled('div')`
   // background: linear-gradient(0deg, rgba(2,0,36,1) 0%, rgba(46,55,77,0) 52%);
   // background-color: #f5f5f5;
   // box-shadow: 0 0 80px 0px rgba(46,55,77,.3);
-  padding: 0 0 25px 0;
+  // padding: 0 0 25px 0;
 `;
 
 export default withStyles(styles)(CampaignsHome);

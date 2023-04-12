@@ -347,6 +347,7 @@ const styles = () => ({
 });
 
 const CandidateListWrapper = styled('div')`
+  margin-bottom: 25px;
 `;
 
 const WhatIsHappeningTitle = styled('h2')`

@@ -229,12 +229,22 @@ class CampaignListRoot extends Component {
 
   render () {
     renderLog('CampaignListRoot');  // Set LOG_RENDER_EVENTS to log all renders
-    const { classes, hideTitle, listModeFilters, searchText, titleTextForList } = this.props;
+    const { classes, hideIfNoResults, hideTitle, listModeFilters, searchText, titleTextForList } = this.props;
     const isSearching = searchText && searchText.length > 0;
     const { campaignList, campaignSearchResults, filteredCampaignList, timeStampOfChange } = this.state;
     const filteredCampaignListLength = (filteredCampaignList) ? filteredCampaignList.length : 0;
-    if (filteredCampaignListLength === 0) {
-      return null;
+    let hideDisplayBecauseNoResults = false;
+    if (hideIfNoResults) {
+      if (isSearching) {
+        if (campaignSearchResults && campaignSearchResults.length === 0) {
+          hideDisplayBecauseNoResults = true;
+        }
+      } else if (filteredCampaignListLength && filteredCampaignListLength.length === 0) {
+        hideDisplayBecauseNoResults = true;
+      }
+      if (hideDisplayBecauseNoResults) {
+        return null;
+      }
     }
     return (
       <CampaignListWrapper>
@@ -272,6 +282,7 @@ class CampaignListRoot extends Component {
 }
 CampaignListRoot.propTypes = {
   classes: PropTypes.object,
+  hideIfNoResults: PropTypes.bool,
   hideTitle: PropTypes.bool,
   incomingList: PropTypes.array,
   incomingListTimeStampOfChange: PropTypes.number,
@@ -292,6 +303,7 @@ const styles = () => ({
 });
 
 const CampaignListWrapper = styled('div')`
+  margin-bottom: 25px;
 `;
 
 const WhatIsHappeningTitle = styled('h2')`

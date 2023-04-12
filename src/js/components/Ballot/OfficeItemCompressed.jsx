@@ -317,6 +317,35 @@ class OfficeItemCompressed extends Component {
                 is the number of people who support this candidate, from among the people you trust. Trust by clicking the plus sign.
               </Tooltip>
             );
+            const positionRowListScoreColumn = (
+              <PositionRowListScoreColumn>
+                <PositionRowListScoreHeader>
+                  <OverlayTrigger
+                    placement="bottom"
+                    overlay={scoreExplanationTooltip}
+                  >
+                    <ScoreWrapper>
+                      <div>
+                        Score
+                      </div>
+                      <InfoCircleIconWrapper>
+                        <InfoCircleIcon />
+                      </InfoCircleIconWrapper>
+                    </ScoreWrapper>
+                  </OverlayTrigger>
+                </PositionRowListScoreHeader>
+                <PositionRowListScoreSpacer>
+                  <Suspense fallback={<></>}>
+                    <BallotItemSupportOpposeScoreDisplay
+                      ballotItemWeVoteId={oneCandidate.we_vote_id}
+                      onClickFunction={this.onClickShowOrganizationModalWithPositions}
+                      hideEndorsementsOverview
+                      hideNumbersOfAllPositions
+                    />
+                  </Suspense>
+                </PositionRowListScoreSpacer>
+              </PositionRowListScoreColumn>
+            )
             return (
               <BallotScrollingInnerWrapper key={uniqueKey}>
                 <BallotHorizontallyScrollingContainer>
@@ -382,6 +411,10 @@ class OfficeItemCompressed extends Component {
                     </CandidateWrapper>
                     <PositionRowListOuterWrapper>
                       <PositionRowListInnerWrapper>
+                        <div>
+                          {/* className="u-show-mobile" */}
+                          {positionRowListScoreColumn}
+                        </div>
                         <PositionRowListOneWrapper>
                           <PositionRowList
                             ballotItemWeVoteId={oneCandidate.we_vote_id}
@@ -406,33 +439,11 @@ class OfficeItemCompressed extends Component {
                             ballotItemWeVoteId={oneCandidate.we_vote_id}
                           />
                         </PositionRowListEmptyWrapper>
-                        <PositionRowListScoreColumn>
-                          <PositionRowListScoreHeader>
-                            <OverlayTrigger
-                              placement="bottom"
-                              overlay={scoreExplanationTooltip}
-                            >
-                              <ScoreWrapper>
-                                <div>
-                                  Score
-                                </div>
-                                <InfoCircleIconWrapper>
-                                  <InfoCircleIcon />
-                                </InfoCircleIconWrapper>
-                              </ScoreWrapper>
-                            </OverlayTrigger>
-                          </PositionRowListScoreHeader>
-                          <PositionRowListScoreSpacer>
-                            <Suspense fallback={<></>}>
-                              <BallotItemSupportOpposeScoreDisplay
-                                ballotItemWeVoteId={oneCandidate.we_vote_id}
-                                onClickFunction={this.onClickShowOrganizationModalWithPositions}
-                                hideEndorsementsOverview
-                                hideNumbersOfAllPositions
-                              />
-                            </Suspense>
-                          </PositionRowListScoreSpacer>
-                        </PositionRowListScoreColumn>
+                        {/*
+                        <div className="u-show-desktop-tablet">
+                          {positionRowListScoreColumn}
+                        </div>
+                        */}
                       </PositionRowListInnerWrapper>
                     </PositionRowListOuterWrapper>
                   </CandidateContainer>

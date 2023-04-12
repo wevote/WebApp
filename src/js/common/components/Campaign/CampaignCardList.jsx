@@ -160,6 +160,7 @@ class CampaignCardList extends Component {
             </LoadMoreItemsManuallyWrapper>
           )}
         </ListWrapper>
+        {/*
         <Suspense fallback={<></>}>
           <DelayedLoad loadingTextLeftAlign showLoadingText waitBeforeShow={2000}>
             <div>
@@ -190,6 +191,7 @@ class CampaignCardList extends Component {
             </div>
           </DelayedLoad>
         </Suspense>
+        */}
       </Wrapper>
     );
   }

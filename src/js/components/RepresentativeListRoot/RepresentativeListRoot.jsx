@@ -359,6 +359,7 @@ const styles = () => ({
 });
 
 const RepresentativeListWrapper = styled('div')`
+  margin-bottom: 25px;
 `;
 
 const WhatIsHappeningTitle = styled('h2')`
