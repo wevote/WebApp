@@ -7,7 +7,7 @@ try {
   const data = readFileSync('./tests/browserstack_automation/conf/capabilities.json', { encoding: 'utf8' });
   capabilities = JSON.parse(data);
 } catch (error) {
-  // Run buildCapabilities.js
+  // Run `npm run wdio:setup`
 }
 
 const date = new Date();
@@ -20,7 +20,6 @@ const parallelConfig = {
   capabilities,
   commonCapabilities: {
     'bstack:options': {
-      appiumVersion: '2.0.0',
       buildName,
     },
   },
