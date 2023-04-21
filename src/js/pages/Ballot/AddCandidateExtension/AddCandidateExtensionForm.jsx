@@ -43,7 +43,7 @@ export default function AddCandidateExtensionForm (props) {
 
   const handlePossibilityPositionIDChange = (() => {
     const voterGuidePossibilityIdValue = voterGuidePossibilityStore.getVoterGuidePossibilityId();
-    const { candidateName, candidateSpecificEndorsementUrl, endorsementText } = stateRef.current;
+    const { candidateName, candidateSpecificEndorsementUrl, endorsementText, stance } = stateRef.current;
     if (voterGuidePossibilityIdValue !== 0) {
       // if the organization does exist, check if the candidate does
       console.log(candidate);
@@ -55,6 +55,7 @@ export default function AddCandidateExtensionForm (props) {
           ballot_item_name: candidateName,
           more_info_url: candidateSpecificEndorsementUrl,
           statement_text: endorsementText,
+          position_stance: stance,
         };
         VoterGuidePossibilityActions.voterGuidePossibilityPositionSave(voterGuidePossibilityIdValue, voterGuidePossibilityPositionId, possibilityPositionDictionary);
         console.log('saved!');
@@ -79,6 +80,13 @@ export default function AddCandidateExtensionForm (props) {
     console.log(`VGPI is ${voterGuidePossibilityIdValue}`);
     VoterGuidePossibilityActions.voterGuidePossibilityPositionsRetrieve(voterGuidePossibilityIdValue);
   });
+
+  const onStanceChange = (event) => {
+    setCandidate((prevInformation) => ({
+      ...prevInformation,
+      stance: event.target.value,
+    }));
+  };
 
   // when the voter guide possibility store is updated, handle the change
   useEffect(() => {
@@ -162,6 +170,41 @@ export default function AddCandidateExtensionForm (props) {
           InputProps={{ style: { fontFamily: 'Nunito Sans' } }}
           onBlur={handleBlur}
         />
+        <CheckBoxArea>
+          <CheckBoxContainer>
+            <CheckBoxInput
+              type="radio"
+              name="stanceGroup"
+              value="SUPPORT"
+              id="support"
+              checked={candidate.stance === 'SUPPORT'}
+              onChange={onStanceChange}
+            />
+            <CheckBoxLabel htmlFor="support">Support</CheckBoxLabel>
+          </CheckBoxContainer>
+          <CheckBoxContainer>
+            <CheckBoxInput
+              type="radio"
+              name="stanceGroup"
+              value="OPPOSE"
+              id="oppose"
+              checked={candidate.stance === 'OPPOSE'}
+              onChange={onStanceChange}
+            />
+            <CheckBoxLabel htmlFor="oppose">Oppose</CheckBoxLabel>
+          </CheckBoxContainer>
+          <CheckBoxContainer>
+            <CheckBoxInput
+              type="radio"
+              name="stanceGroup"
+              value="INFO_ONLY"
+              id="infoOnly"
+              checked={candidate.stance === 'INFO_ONLY'}
+              onChange={onStanceChange}
+            />
+            <CheckBoxLabel htmlFor="infoOnly">Info Only</CheckBoxLabel>
+          </CheckBoxContainer>
+        </CheckBoxArea>
         <CandidateTextField
           variant="outlined"
           fullWidth
@@ -205,4 +248,20 @@ const CandidateTextField = styled(TextField)`
 const ButtonWrapper = styled('div')`
   display: grid;
   margin: auto auto;
+`;
+
+const CheckBoxArea  = styled('div')`
+  margin: 15px 0 20px 30px;
+`;
+
+const CheckBoxContainer =  styled('span')`
+  margin-right: 10px;
+`;
+
+const CheckBoxLabel =  styled('label')`
+  margin: 0 12px 0 4px;
+`;
+
+const CheckBoxInput = styled('input')`
+  transform: translateY(1px);
 `;
