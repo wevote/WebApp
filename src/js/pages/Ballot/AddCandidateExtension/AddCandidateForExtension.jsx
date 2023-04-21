@@ -28,13 +28,15 @@ if (!endorsementPageUrl) {
 if (!endorsementText) {
   endorsementText = '';
 }
+const stance = 'SUPPORT';
+
 
 /**
  * Page containing a form that collects a new candidate endorsement
  * @returns {JSX.Element}
  */
 export default function AddCandidateForExtension () {
-  const [candidate, setCandidate] = useState({ candidateName, endorsementPageUrl, candidateSpecificEndorsementUrl, endorsementText });
+  const [candidate, setCandidate] = useState({ candidateName, endorsementPageUrl, candidateSpecificEndorsementUrl, endorsementText, stance });
 
   renderLog('AddCandidateForExtension');  // Set LOG_RENDER_EVENTS to log all renders
 

@@ -21,7 +21,8 @@ class VoterGuidePossibilityPositionStore extends ReduceStore {
    */
   getVoterGuidePossibilityPositionByPositionId (voterGuidePossibilityPositionId) {
     const allCachedVoterGuidePossibilityPositionsByPositionId = this.getState().allCachedVoterGuidePossibilityPositionsByPositionId || [];
-    return allCachedVoterGuidePossibilityPositionsByPositionId[voterGuidePossibilityPositionId] || {};
+    const position = allCachedVoterGuidePossibilityPositionsByPositionId[voterGuidePossibilityPositionId];
+    return position || {};
   }
 
   /**

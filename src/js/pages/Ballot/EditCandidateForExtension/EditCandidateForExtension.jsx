@@ -33,7 +33,8 @@ export default function EditCandidateForExtension ()  {
     // extracting the endorsement text that is already in the database for this candidate's possibility position
     const { statement_text: statementText, possibility_position_id: candidatePossibilityPositionID, position_stance: stance } = candidatePossibilityPosition;
     // setting the state to include the endorsement text that is already in the database so that the form is pre-filled
-    setCandidate({ ...candidate, voterGuidePossibilityID, candidatePossibilityPositionID, statementText, stance });
+    const stanceWithDefault = stance || "SUPPORT";
+    setCandidate({ ...candidate, voterGuidePossibilityID, candidatePossibilityPositionID, statementText, stance: stanceWithDefault });
   };
 
   const handlePossibilityRetrieve = () => {
