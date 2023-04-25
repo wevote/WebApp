@@ -7,7 +7,7 @@ class ReadyPage extends Page {
   }
 
   get findYourFriendsButton () {
-    return $('button=Find your friends');
+    return $('#viewUpcomingBallotFindYourFriends');
   }
 
   async open () {

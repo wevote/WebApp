@@ -58,16 +58,20 @@ async function buildCapabilities () {
   for (let i = 0; i < mobileDevices.length; i++) {
     const capability = mobileDevices[i];
     if (capability.os === 'ios' && browserStackConfig.BROWSERSTACK_IPA_URL) {
-      capability['appium:app'] = browserStackConfig.BROWSERSTACK_IPA_URL;
+      capability['appium:options'] = {};
+      capability['appium:options'].app = browserStackConfig.BROWSERSTACK_IPA_URL;
     }
     if (capability.os === 'android' && browserStackConfig.BROWSERSTACK_APK_URL) {
-      capability['appium:app'] = browserStackConfig.BROWSERSTACK_APK_URL;
+      capability['appium:options'] = {};
+      capability['appium:options'].app = browserStackConfig.BROWSERSTACK_APK_URL;
     }
-    if (capability['appium:app']) {
-      capability.platformName = capability.os;
-      capability['appium:platformVersion'] = capability.os_version;
-      capability['appium:deviceName'] = capability.device;
+    if (capability['appium:options']) {
+      capability['appium:options'].platformVersion = capability.os_version;
+      capability['appium:options'].deviceName = capability.device;
       capability['bstack:options'] = {};
+      capability['bstack:options'].appiumVersion = '2.0.0';
+      capability['bstack:options'].automationVersion = 'latest';
+      capability.platformName = capability.os;
       // Delete extra keys
       delete capability.os;
       delete capability.os_version;
