@@ -68,6 +68,7 @@ async function buildCapabilities () {
     if (capability['appium:options']) {
       capability['appium:options'].platformVersion = capability.os_version;
       capability['appium:options'].deviceName = capability.device;
+      capability['appium:options'].autoWebview = true;
       capability['bstack:options'] = {};
       capability['bstack:options'].appiumVersion = '2.0.0';
       capability['bstack:options'].automationVersion = 'latest';

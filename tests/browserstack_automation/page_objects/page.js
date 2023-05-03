@@ -1,4 +1,4 @@
-import { driver, $ } from '@wdio/globals';
+import { driver } from '@wdio/globals';
 
 export default class Page {
   constructor () {
@@ -18,29 +18,6 @@ export default class Page {
   }
 
   async open (path) {
-    if (this.isCordova) {
-      // Navigate to the component associated with the path.
-    } else {
-      await driver.url(path);
-    }
-  }
-
-  async saveScreenshot () {
-    const date = new Date();
-    const dateForDisplay = date.toDateString();
-    await driver.saveScreenshot(`./tests/browserstack_automation/screenshots/${dateForDisplay}.png`);
-  }
-
-  async retrieveElementById (id) {
-    let element = null;
-    if (this.isCordova) {
-      if (this.isAndroid) {
-        element = await $(`android=new UiSelector().resourceId(${id})`);
-        return element;
-      }
-      return element;
-    }
-    element = await $(`#${id}`);
-    return element;
+    await driver.url(path);
   }
 }

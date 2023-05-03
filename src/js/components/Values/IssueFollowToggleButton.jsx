@@ -26,6 +26,7 @@ class IssueFollowToggleButton extends Component {
     this.handleClose = this.handleClose.bind(this);
     this.onIssueFollow = this.onIssueFollow.bind(this);
     this.onIssueStopFollowing = this.onIssueStopFollowing.bind(this);
+    this.slugifyIssueName = this.slugifyIssueName.bind(this);
   }
 
   componentDidMount () {
@@ -143,6 +144,11 @@ class IssueFollowToggleButton extends Component {
     });
   }
 
+  slugifyIssueName () {
+    const { issueName } = this.props;
+    const result = issueName.toLowerCase().split(' ').join('-');
+    return result;
+  }
 
   render () {
     renderLog('IssueFollowToggleButton');  // Set LOG_RENDER_EVENTS to log all renders
@@ -205,7 +211,7 @@ class IssueFollowToggleButton extends Component {
             >
               <MenuItem
                 className={classes.menuItem}
-                id={`issueUnfollowButton-${issueWeVoteId}`}
+                id={`issueUnfollowButton-${issueWeVoteId}-${this.slugifyIssueName()}`}
                 // data-toggle="dropdown"
                 onClick={this.onIssueStopFollowing}
               >
@@ -216,7 +222,7 @@ class IssueFollowToggleButton extends Component {
         ) : (
           <Button
             type="button"
-            id={`issueFollowButton-${issueWeVoteId}`}
+            id={`issueFollowButton-${issueWeVoteId}-${this.slugifyIssueName()}`}
             className={`issues-follow-btn issues-follow-btn__main issues-follow-btn__main--radius${lightModeOn ? '' : ' issues-follow-btn--blue'}`}
             onClick={this.onIssueFollow}
           >
