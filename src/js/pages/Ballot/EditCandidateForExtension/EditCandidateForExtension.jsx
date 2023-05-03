@@ -7,10 +7,14 @@ import VoterGuidePossibilityStore from '../../../stores/VoterGuidePossibilitySto
 import VoterGuidePossibilityPositionStore from '../../../stores/VoterGuidePossibilityPositionStore';
 
 
+const params = Object.fromEntries(new URLSearchParams(document.location.search));
 const {
-  candidate_name: candidateName, candidate_we_vote_id: candidateWeVoteId, possibility_position_id: possibilityPositionId, endorsement_page_url: endorsementPageUrl,
-} = Object.fromEntries(new URLSearchParams(document.location.search));
-let { candidate_specific_endorsement_url: candidateCampaignUrl } = Object.fromEntries(new URLSearchParams(document.location.search));
+  candidate_name: candidateName, candidate_we_vote_id: candidateWeVoteId, possibility_position_id: possibilityPositionId,
+  endorsement_page_url: endorsementPageUrl, statement_text: statementText, position_stance: stance, voter_guide_possibility_id: voterGuidePossibilityId,
+} = params;
+// console.log(params);
+
+let { more_info_url: candidateCampaignUrl } = Object.fromEntries(new URLSearchParams(document.location.search));
 
 if (!candidateCampaignUrl) {
   candidateCampaignUrl = '';
@@ -18,38 +22,56 @@ if (!candidateCampaignUrl) {
 let possibilityListener;
 let possibilityPositionListener;
 
-// https://wevotedeveloper.com:3000/candidate-for-extension?candidate_name=Jeanne%20Casteen&candidate_we_vote_id=&possibility_position_id=458390&endorsement_page_url=https%3A%2F%2Feverydistrict.us%2Fcandidates%2F2022-candidates%2F&candidate_specific_endorsement_url=
+// https://wevotedeveloper.com:3000/candidate-for-extension?candidate_name=Jeanne%20Casteen&candidate_we_vote_id=&possibility_position_id=458390&endorsement_page_url=https%3A%2F%2Feverydistrict.us%2Fcandidates%2F2022-candidates%2F&candidate_specific_endorsement_url=&statement_text=332pm
 export default function EditCandidateForExtension ()  {
-  const [candidate, setCandidate] = useState({ candidateName, candidateWeVoteId, possibilityPositionId, endorsementPageUrl, candidateCampaignUrl });
+  const [candidate, setCandidate] = useState({ candidateName, candidateWeVoteId, possibilityPositionId, endorsementPageUrl, candidateCampaignUrl, statementText, stance, voterGuidePossibilityId });
 
   const handlePossibilityPositionRetrieve = () => {
     let candidatePossibilityPosition = VoterGuidePossibilityPositionStore.getVoterGuidePossibilityPositionByCandidateId(candidateWeVoteId);
     const hasEmptyPositionObject = Object.keys(candidatePossibilityPosition).length === 0;
-    if (hasEmptyPositionObject && possibilityPositionId && possibilityPositionId.length) {
-      candidatePossibilityPosition = VoterGuidePossibilityPositionStore.getVoterGuidePossibilityPositionByPositionId(possibilityPositionId);
+    if (hasEmptyPositionObject) {
+      // 5/2/23, this is messed up (but works!) -- the possibilityPositionId, comes in as candidateWeVoteId
+      candidatePossibilityPosition = VoterGuidePossibilityPositionStore.getVoterGuidePossibilityPositionByPositionId(candidateWeVoteId);
     }
-    const voterGuidePossibilityID = VoterGuidePossibilityStore.getVoterGuidePossibilityId();
     // console.log('candidatePossibilityPosition', candidatePossibilityPosition);
-    // extracting the endorsement text that is already in the database for this candidate's possibility position
-    const { statement_text: statementText, possibility_position_id: candidatePossibilityPositionID, position_stance: stance } = candidatePossibilityPosition;
-    // setting the state to include the endorsement text that is already in the database so that the form is pre-filled
-    const stanceWithDefault = stance || "SUPPORT";
-    setCandidate({ ...candidate, voterGuidePossibilityID, candidatePossibilityPositionID, statementText, stance: stanceWithDefault });
+    const {
+      ballot_item_name: candidateNameFromStore,
+      more_info_url: candidateCampaignUrlFromStore,
+      organization_we_vote_id: candidateWeVoteIdFromStore,
+      statement_text: statementTextFromStore,
+      position_stance: stanceFromStore,
+      possibility_position_id: candidatePossibilityPositionIdFromStore } = candidatePossibilityPosition;
+    setCandidate({ ...candidate,
+      candidateName: candidateNameFromStore,
+      candidateWeVoteId: candidateWeVoteIdFromStore,
+      possibilityPositionId: candidatePossibilityPositionIdFromStore,
+      endorsementPageUrl,   // from request url param
+      candidateCampaignUrl: candidateCampaignUrlFromStore,
+      statementText: statementTextFromStore,
+      stance: stanceFromStore });
   };
 
   const handlePossibilityRetrieve = () => {
-    const voterGuidePossibilityID = VoterGuidePossibilityStore.getVoterGuidePossibilityId();
-    // console.log('handlePossibilityRetrieve candidate: ', candidate);
-    VoterGuidePossibilityActions.voterGuidePossibilityPositionsRetrieve(voterGuidePossibilityID);
+    const bestVoterGuidePossibilityID = voterGuidePossibilityId || VoterGuidePossibilityStore.getVoterGuidePossibilityId();
+    console.log('handlePossibilityRetrieve candidate: ', candidate);
+    VoterGuidePossibilityActions.voterGuidePossibilityPositionsRetrieve(bestVoterGuidePossibilityID);
     possibilityPositionListener = VoterGuidePossibilityPositionStore.addListener(handlePossibilityPositionRetrieve);
     return () => possibilityPositionListener.remove;
   };
 
   useEffect(() => {
-    VoterGuidePossibilityActions.voterGuidePossibilityRetrieve(endorsementPageUrl);
+    VoterGuidePossibilityActions.voterGuidePossibilityRetrieve(endorsementPageUrl, voterGuidePossibilityId);
     possibilityListener = VoterGuidePossibilityStore.addListener(handlePossibilityRetrieve);
     return () => possibilityListener.remove;
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // With empty array, this will only run once ... similar to componentDidMount
+  useEffect(() => {
+    console.log('I will run only once');
+    if (voterGuidePossibilityId) {
+      VoterGuidePossibilityActions.voterGuidePossibilityPositionsRetrieve(voterGuidePossibilityId);
+    }
   }, []);
 
   return (

@@ -39,9 +39,15 @@ export default function EditCandidateForExtensionForm (props) {
       statement_text: candidate.statementText,
       position_stance: candidate.stance,
     };
-    VoterGuidePossibilityActions.voterGuidePossibilityPositionSave(candidate.voterGuidePossibilityID, candidate.candidatePossibilityPositionID, possibilityPositionDictionary);
+    VoterGuidePossibilityActions.voterGuidePossibilityPositionSave(candidate.voterGuidePossibilityId, candidate.possibilityPositionId, possibilityPositionDictionary);
     setFinished(true);
   };
+
+  // This a hack, not a good example of making a child functional component update based on a parameter change.  Not sure why it is needed here.
+  const campaignUrlField = document.getElementsByName('candidateCampaignUrl');
+  if (campaignUrlField.length) campaignUrlField[0].value = candidate.candidateCampaignUrl;
+  const statementTextField = document.getElementsByName('statementText');
+  if (statementTextField.length) statementTextField[0].value = candidate.statementText;
 
   return (
     <form onSubmit={handleSubmit}>
