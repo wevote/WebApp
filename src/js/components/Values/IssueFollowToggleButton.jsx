@@ -205,7 +205,7 @@ class IssueFollowToggleButton extends Component {
             >
               <MenuItem
                 className={classes.menuItem}
-                id="unfollowValue"
+                id={`issueUnfollowButton-${issueWeVoteId}`}
                 // data-toggle="dropdown"
                 onClick={this.onIssueStopFollowing}
               >
