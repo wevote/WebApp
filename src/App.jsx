@@ -3,7 +3,7 @@ import Tracker from '@openreplay/tracker';
 import React, { Component, Suspense } from 'react';
 import FullStory from 'react-fullstory';
 import ReactGA from 'react-ga4';
-// import TagManager from 'react-gtm-module';
+import TagManager from 'react-gtm-module';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import styled from 'styled-components';
 import muiTheme from './js/common/components/Style/muiTheme';
@@ -215,18 +215,17 @@ class App extends Component {
         } else {
           console.log('Google Analytics did not receive a trackingID, NOT ENABLED');
         }
-        // TODO Send we_vote_id, with code like this:
-        // ReactGA.gtag("set", "user_properties", {
-        //    name: "John",
+        // const userId = '';
+        // ReactGA.gtag('set', 'user', {
+        //   id: userId,
         // });
-        // Google Tag Manager. See: https://www.npmjs.com/package/react-gtm-module
-        // const weVoteGTMId = webAppConfig.GOOGLE_ADS_TRACKING_ID === undefined ? '' : webAppConfig.GOOGLE_ADS_TRACKING_ID;
-        // if (weVoteGTMId) {
-        //   const tagManagerArgs = {
-        //     gtmId: weVoteGTMId,
-        //   };
-        //   TagManager.initialize(tagManagerArgs);
-        // }
+        const weVoteGTMId = webAppConfig.GOOGLE_ADS_TRACKING_ID === undefined ? '' : webAppConfig.GOOGLE_ADS_TRACKING_ID;
+        if (weVoteGTMId) {
+          const tagManagerArgs = {
+            gtmId: weVoteGTMId,
+          };
+          TagManager.initialize(tagManagerArgs);
+        }
       }, 3000);
     }
     if (!AppObservableStore.getOpenReplayEnabled() && !AppObservableStore.getOpenReplayPending()) {
