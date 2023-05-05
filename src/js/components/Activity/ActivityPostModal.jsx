@@ -198,6 +198,7 @@ class ActivityPostModal extends Component {
                   color="primary"
                   classes={{ root: classes.saveButtonRoot }}
                   type="submit"
+                  disabled={!statementText}
                 >
                   {activityTidbitWeVoteId === '' ? 'Post' : 'Save Changes'}
                 </Button>
