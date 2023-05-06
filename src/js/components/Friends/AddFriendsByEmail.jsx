@@ -390,22 +390,13 @@ class AddFriendsByEmail extends Component {
                         <Button
                           color="primary"
                           classes={{ root: classes.sendButton }}
-                          disabled={friendContactInfoArray.length === 0}
+                          disabled={emailsOrPhonesBrokenString || friendContactInfoArray.length === 0}
                           id={uniqueExternalId ? `friendsNextButton-${uniqueExternalId}` : 'friendsNextButton'}
                           onClick={this.addFriendsByEmailSubmit}
                           onKeyDown={this.onKeyDown}
                           variant="contained"
                         >
-                          Send
-                          {' '}
-                          {(friendContactInfoArray.length > 0) && (
-                            <>
-                              {friendContactInfoArray.length}
-                              {' '}
-                            </>
-                          )}
-                          Invitation
-                          {friendContactInfoArray.length === 1 ? '' : 's'}
+                          Invite
                         </Button>
                       </ButtonContainer>
                     </form>
