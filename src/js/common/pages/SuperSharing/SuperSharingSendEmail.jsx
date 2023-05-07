@@ -197,7 +197,7 @@ class SuperSharingSendEmail extends Component {
     });
   }
 
-  getCampaignBasePath = () => {
+  getCampaignXBasePath = () => {
     const { campaignSEOFriendlyPath, campaignXWeVoteId } = this.state;
     let campaignBasePath;
     if (campaignSEOFriendlyPath) {
@@ -212,7 +212,7 @@ class SuperSharingSendEmail extends Component {
   onStep1Click = () => {
     const { campaignXNewsItemWeVoteId } = this.state;
     const sms = false;
-    const step1ClickPath = onStep1ClickPath(this.getCampaignBasePath(), campaignXNewsItemWeVoteId, sms);
+    const step1ClickPath = onStep1ClickPath(this.getCampaignXBasePath(), campaignXNewsItemWeVoteId, sms);
     if (step1ClickPath) {
       historyPush(step1ClickPath);
     }
@@ -221,7 +221,7 @@ class SuperSharingSendEmail extends Component {
   onStep2Click = () => {
     const { campaignXNewsItemWeVoteId } = this.state;
     const sms = false;
-    const step2ClickPath = onStep2ClickPath(this.getCampaignBasePath(), campaignXNewsItemWeVoteId, sms);
+    const step2ClickPath = onStep2ClickPath(this.getCampaignXBasePath(), campaignXNewsItemWeVoteId, sms);
     if (step2ClickPath) {
       historyPush(step2ClickPath);
     }
@@ -230,14 +230,14 @@ class SuperSharingSendEmail extends Component {
   onStep3Click = () => {
     const { campaignXNewsItemWeVoteId } = this.state;
     const sms = false;
-    const step3ClickPath = onStep3ClickPath(this.getCampaignBasePath(), campaignXNewsItemWeVoteId, sms);
+    const step3ClickPath = onStep3ClickPath(this.getCampaignXBasePath(), campaignXNewsItemWeVoteId, sms);
     if (step3ClickPath) {
       historyPush(step3ClickPath);
     }
   }
 
   returnToOtherSharingOptions = () => {
-    historyPush(`${this.getCampaignBasePath()}/share-campaign`);
+    historyPush(`${this.getCampaignXBasePath()}/share-campaign`);
   }
 
   submitSendEmail = () => {
@@ -248,7 +248,7 @@ class SuperSharingSendEmail extends Component {
         initializejQuery(() => {
           ShareActions.superSharingSendEmail(superShareItemId);
         });
-        historyPush(`${this.getCampaignBasePath()}/recommended-campaigns`);
+        historyPush(`${this.getCampaignXBasePath()}/recommended-campaigns`);
       }
     }
   }
@@ -278,7 +278,7 @@ class SuperSharingSendEmail extends Component {
             <ContentInnerWrapperDefault>
               <SuperSharingSteps
                 atStepNumber4
-                campaignBasePath={this.getCampaignBasePath()}
+                campaignBasePath={this.getCampaignXBasePath()}
                 campaignXNewsItemWeVoteId={campaignXNewsItemWeVoteId}
                 campaignXWeVoteId={campaignXWeVoteId}
               />

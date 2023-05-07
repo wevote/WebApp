@@ -11,6 +11,7 @@ import {
 } from '../../common/components/Style/ScrollingStyles';
 import { convertStateCodeToStateText } from '../../common/utils/addressFunctions';
 import { getYearFromUltimateElectionDate, isAnyYearInOfficeSetTrue, isThisYearInOfficeSetTrue } from '../../common/utils/dateFormat';
+import filterListToRemoveEntriesWithDuplicateValue from '../../common/utils/filterListToRemoveEntriesWithDuplicateValue';
 import { renderLog } from '../../common/utils/logging';
 import RepresentativeStore from '../../stores/RepresentativeStore';
 
@@ -25,7 +26,7 @@ class RepresentativeListRoot extends Component {
       hideDisplayBecauseNoSearchResults: false,
       representativeList: [],
       representativeSearchResults: [],
-      filteredRepresentativeList: [],
+      filteredList: [],
       timeStampOfChange: 0,
     };
   }
@@ -36,15 +37,15 @@ class RepresentativeListRoot extends Component {
     const { incomingList } = this.props;
     // console.log('RepresentativeListRoot componentDidMount incomingList:', incomingList);
     if (incomingList) {
-      const filteredRepresentativeList = [];
-      incomingList.forEach((oneRepresentative) => {
-        if (oneRepresentative.id && oneRepresentative.id > 0) {
-          filteredRepresentativeList.push(oneRepresentative);
+      const filteredList = [];
+      incomingList.forEach((oneEntry) => {
+        if (oneEntry.id && oneEntry.id > 0) {
+          filteredList.push(oneEntry);
         }
       });
-      // console.log('RepresentativeListRoot candidateList with id > 0:', filteredRepresentativeList);
+      // console.log('filteredList with id > 0:', filteredList);
       this.setState({
-        representativeList: filteredRepresentativeList,
+        representativeList: filteredList,
       }, () => this.onFilterOrListChange());
     }
   }
@@ -82,15 +83,15 @@ class RepresentativeListRoot extends Component {
   onIncomingListChange () {
     const { incomingList } = this.props;
     if (incomingList) {
-      const filteredRepresentativeList = [];
-      incomingList.forEach((oneRepresentative) => {
-        if (oneRepresentative.id && oneRepresentative.id > 0) {
-          filteredRepresentativeList.push(oneRepresentative);
+      const filteredList = [];
+      incomingList.forEach((oneEntry) => {
+        if (oneEntry.id && oneEntry.id > 0) {
+          filteredList.push(oneEntry);
         }
       });
       // console.log('representativeList:', representativeList);
       this.setState({
-        representativeList: filteredRepresentativeList,
+        representativeList: filteredList,
       }, () => this.onFilterOrListChange());
     }
   }
@@ -132,72 +133,75 @@ class RepresentativeListRoot extends Component {
     // Start over with full list, and apply all active filters
     const { listModeFilters, searchText, stateCode } = this.props;
     const { representativeList } = this.state;
-    // console.log('onFilterOrListChange representativeList at start:', representativeList);
-    let representativeAlreadyFoundThisYear = false;
-    const representativeDisplayedThisYear = {};
-    let filteredRepresentativeList = representativeList;
+    // console.log('RepresentativeListRoot onFilterOrListChange representativeList at start:', representativeList);
+    let alreadyFoundThisYear = false;
+    const displayedThisYear = {};
+    let filteredList = representativeList;
+    // //////////////////////////////////////////
+    // For now require all candidates to have a politician_we_vote_id in order to be displayed
+    filteredList = filteredList.filter((oneEntry) => (oneEntry.politician_we_vote_id));
     // //////////////////////////////////////////
     // Make sure we have all required variables
-    const filteredRepresentativeListModified = [];
-    let modifiedRepresentative;
-    filteredRepresentativeList.forEach((oneRepresentative) => {
-      modifiedRepresentative = { ...oneRepresentative };
-      if (!oneRepresentative.state_code) {
-        modifiedRepresentative = {
-          ...modifiedRepresentative,
+    const filteredListModified = [];
+    let modifiedEntry;
+    filteredList.forEach((oneEntry) => {
+      modifiedEntry = { ...oneEntry };
+      if (!oneEntry.state_code) {
+        modifiedEntry = {
+          ...modifiedEntry,
           state_code: '',
         };
       }
-      modifiedRepresentative = {
-        ...modifiedRepresentative,
-        representative_state_name: convertStateCodeToStateText(oneRepresentative.state_code),
-        representative_ultimate_election_year: getYearFromUltimateElectionDate(modifiedRepresentative.representative_ultimate_election_date),
+      modifiedEntry = {
+        ...modifiedEntry,
+        representative_state_name: convertStateCodeToStateText(oneEntry.state_code),
+        representative_ultimate_election_year: getYearFromUltimateElectionDate(modifiedEntry.representative_ultimate_election_date),
       };
-      if (!oneRepresentative.twitter_description) {
-        modifiedRepresentative = {
-          ...modifiedRepresentative,
+      if (!oneEntry.twitter_description) {
+        modifiedEntry = {
+          ...modifiedEntry,
           twitter_description: '',
         };
       }
-      if (!oneRepresentative.twitter_handle) {
-        modifiedRepresentative = {
-          ...modifiedRepresentative,
+      if (!oneEntry.twitter_handle) {
+        modifiedEntry = {
+          ...modifiedEntry,
           twitter_handle: '',
         };
       }
-      if (!oneRepresentative.contest_office_name) {
-        modifiedRepresentative = {
-          ...modifiedRepresentative,
+      if (!oneEntry.contest_office_name) {
+        modifiedEntry = {
+          ...modifiedEntry,
           contest_office_name: '',
         };
       }
-      // Remove duplicate representatives in the same year (based on politician_we_vote_id or twitter_handle)
-      representativeAlreadyFoundThisYear = false;
-      if (modifiedRepresentative.representative_ultimate_election_year) {
-        if (!(modifiedRepresentative.representative_ultimate_election_year in representativeDisplayedThisYear)) {
-          representativeDisplayedThisYear[modifiedRepresentative.representative_ultimate_election_year] = {};
+      // Remove duplicates in the same year (based on politician_we_vote_id or twitter_handle)
+      alreadyFoundThisYear = false;
+      if (modifiedEntry.representative_ultimate_election_year) {
+        if (!(modifiedEntry.representative_ultimate_election_year in displayedThisYear)) {
+          displayedThisYear[modifiedEntry.representative_ultimate_election_year] = {};
         }
-        if (modifiedRepresentative.politician_we_vote_id) {
-          if (modifiedRepresentative.politician_we_vote_id in representativeDisplayedThisYear[modifiedRepresentative.representative_ultimate_election_year]) {
-            representativeAlreadyFoundThisYear = true;
+        if (modifiedEntry.politician_we_vote_id) {
+          if (modifiedEntry.politician_we_vote_id in displayedThisYear[modifiedEntry.representative_ultimate_election_year]) {
+            alreadyFoundThisYear = true;
           } else {
-            representativeDisplayedThisYear[modifiedRepresentative.representative_ultimate_election_year][modifiedRepresentative.politician_we_vote_id] = true;
+            displayedThisYear[modifiedEntry.representative_ultimate_election_year][modifiedEntry.politician_we_vote_id] = true;
           }
         }
-        if (modifiedRepresentative.twitter_handle) {
-          if (modifiedRepresentative.twitter_handle in representativeDisplayedThisYear[modifiedRepresentative.representative_ultimate_election_year]) {
-            representativeAlreadyFoundThisYear = true;
+        if (modifiedEntry.twitter_handle) {
+          if (modifiedEntry.twitter_handle in displayedThisYear[modifiedEntry.representative_ultimate_election_year]) {
+            alreadyFoundThisYear = true;
           } else {
-            representativeDisplayedThisYear[modifiedRepresentative.representative_ultimate_election_year][modifiedRepresentative.twitter_handle] = true;
+            displayedThisYear[modifiedEntry.representative_ultimate_election_year][modifiedEntry.twitter_handle] = true;
           }
         }
       }
-      if (!representativeAlreadyFoundThisYear) {
-        filteredRepresentativeListModified.push(modifiedRepresentative);
+      if (!alreadyFoundThisYear) {
+        filteredListModified.push(modifiedEntry);
       }
     });
-    filteredRepresentativeList = filteredRepresentativeListModified;
-    // console.log('onFilterOrListChange filteredRepresentativeListModified:', filteredRepresentativeListModified);
+    filteredList = filteredListModified;
+    // console.log('onFilterOrListChange filteredListModified:', filteredListModified);
     // //////////////////////
     // Now filter representatives
     if (listModeFilters && listModeFilters.length > 0) {
@@ -218,64 +222,73 @@ class RepresentativeListRoot extends Component {
       listModeFilters.forEach((oneFilter) => {
         // console.log('oneFilter:', oneFilter);
         if ((oneFilter.filterType === 'showUpcomingEndorsements') && (oneFilter.filterSelected === true)) {
-          filteredRepresentativeList = filteredRepresentativeList.filter((oneRepresentative) => isAnyYearInOfficeSetTrue(yearsInOfficeUpcoming, oneRepresentative));
+          filteredList = filteredList.filter((oneEntry) => isAnyYearInOfficeSetTrue(yearsInOfficeUpcoming, oneEntry));
         }
         if ((oneFilter.filterType === 'showYear') && (oneFilter.filterSelected === true)) {
-          filteredRepresentativeList = filteredRepresentativeList.filter((oneRepresentative) => isThisYearInOfficeSetTrue(oneFilter.filterYear, oneRepresentative));
+          filteredList = filteredList.filter((oneEntry) => isThisYearInOfficeSetTrue(oneFilter.filterYear, oneEntry));
         }
       });
     }
     if (stateCode && stateCode.toLowerCase() !== 'all') {
-      filteredRepresentativeList = filteredRepresentativeList.filter((oneRepresentative) => oneRepresentative.state_code.toLowerCase() === stateCode.toLowerCase());
+      // Include those from this state AND labeled 'na' for National
+      filteredList = filteredList.filter((oneEntry) => ((oneEntry.state_code.toLowerCase() === stateCode.toLowerCase()) || (oneEntry.state_code.toLowerCase() === 'na')));
     }
     // //////////
     // Now sort
-    filteredRepresentativeList = filteredRepresentativeList.sort(this.orderByAlphabetical);
-    filteredRepresentativeList = filteredRepresentativeList.sort(this.orderByTwitterFollowers);
-    // filteredRepresentativeList = filteredRepresentativeList.sort(this.orderByIsBattlegroundRace); // Update to work with "is_battleground_race_2023"
-    // filteredRepresentativeList = filteredRepresentativeList.sort(this.orderByUltimateElectionDate);
-    let representativeSearchResults = [];
+    filteredList = filteredList.sort(this.orderByAlphabetical);
+    filteredList = filteredList.sort(this.orderByTwitterFollowers);
+    // filteredList = filteredList.sort(this.orderByIsBattlegroundRace); // Update to work with "is_battleground_race_2023"
+    // filteredList = filteredList.sort(this.orderByUltimateElectionDate);
+    let searchResults = [];
     let hideDisplayBecauseNoSearchResults = false;
     if (searchText && searchText.length > 0) {
       const searchTextLowercase = searchText.toLowerCase();
       // console.log('searchTextLowercase:', searchTextLowercase);
       const searchWordArray = searchTextLowercase.match(/\b(\w+)\b/g);
       // console.log('searchWordArray:', searchWordArray);
-      let foundInThisRepresentative;
+      let foundInThisEntry;
       let isFirstWord;
       let thisWordFound;
-      representativeSearchResults = filter(filteredRepresentativeList,
-        (oneRepresentative) => {
-          foundInThisRepresentative = false;
+      searchResults = filter(filteredList,
+        (oneEntry) => {
+          foundInThisEntry = false;
           isFirstWord = true;
           searchWordArray.forEach((oneSearchWordLowerCase) => {
             thisWordFound = (
-              oneRepresentative.ballot_item_display_name.toLowerCase().includes(oneSearchWordLowerCase) ||
-              oneRepresentative.state_code.toLowerCase().includes(oneSearchWordLowerCase) ||
-              oneRepresentative.representative_state_name.toLowerCase().includes(oneSearchWordLowerCase) ||
-              oneRepresentative.contest_office_name.toLowerCase().includes(oneSearchWordLowerCase) ||
-              oneRepresentative.twitter_description.toLowerCase().includes(oneSearchWordLowerCase) ||
-              oneRepresentative.twitter_handle.toLowerCase().includes(oneSearchWordLowerCase)
+              oneEntry.ballot_item_display_name.toLowerCase().includes(oneSearchWordLowerCase) ||
+              oneEntry.state_code.toLowerCase().includes(oneSearchWordLowerCase) ||
+              oneEntry.representative_state_name.toLowerCase().includes(oneSearchWordLowerCase) ||
+              oneEntry.contest_office_name.toLowerCase().includes(oneSearchWordLowerCase) ||
+              oneEntry.twitter_description.toLowerCase().includes(oneSearchWordLowerCase) ||
+              oneEntry.twitter_handle.toLowerCase().includes(oneSearchWordLowerCase)
             );
             if (isFirstWord) {
-              foundInThisRepresentative = thisWordFound;
+              foundInThisEntry = thisWordFound;
               isFirstWord = false;
             } else {
-              foundInThisRepresentative = foundInThisRepresentative && thisWordFound;
+              foundInThisEntry = foundInThisEntry && thisWordFound;
             }
           });
-          return foundInThisRepresentative;
+          return foundInThisEntry;
         });
-      if (representativeSearchResults.length === 0) {
+      if (searchResults.length === 0) {
         hideDisplayBecauseNoSearchResults = true;
       }
+      if (searchResults.length > 0) {
+        // Only allow the first politician entry to be displayed (when there are multiple candidate entries for the same politician)
+        searchResults = filterListToRemoveEntriesWithDuplicateValue(searchResults, 'politician_we_vote_id', true);
+      }
+    } else if (filteredList.length > 0) {
+      // Only allow the first politician entry to be displayed (when there are multiple candidate entries for the same politician)
+      // Revisit this if we start to all filtering by year again
+      filteredList = filterListToRemoveEntriesWithDuplicateValue(filteredList, 'politician_we_vote_id', true);
     }
-    // console.log('onFilterOrListChange, representativeSearchResults:', representativeSearchResults);
-    // console.log('onFilterOrListChange, filteredRepresentativeList:', filteredRepresentativeList);
+    // console.log('onFilterOrListChange, searchResults:', searchResults);
+    // console.log('onFilterOrListChange, filteredList:', filteredList);
     this.setState({
-      filteredRepresentativeList,
+      filteredList,
       hideDisplayBecauseNoSearchResults,
-      representativeSearchResults,
+      representativeSearchResults: searchResults,
       timeStampOfChange: Date.now(),
     });
   }
@@ -284,7 +297,7 @@ class RepresentativeListRoot extends Component {
     renderLog('RepresentativeListRoot');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes, hideIfNoResults, hideTitle, searchText, titleTextForList } = this.props;
     const isSearching = searchText && searchText.length > 0;
-    const { filteredRepresentativeList, hideDisplayBecauseNoSearchResults, representativeList, representativeSearchResults, timeStampOfChange } = this.state;
+    const { filteredList, hideDisplayBecauseNoSearchResults, representativeList, representativeSearchResults, timeStampOfChange } = this.state;
 
     if (!representativeList) {
       return null;
@@ -295,7 +308,7 @@ class RepresentativeListRoot extends Component {
         if (representativeSearchResults && representativeSearchResults.length === 0) {
           hideDisplayBecauseNoResults = true;
         }
-      } else if (filteredRepresentativeList && filteredRepresentativeList.length === 0) {
+      } else if (filteredList && filteredList.length === 0) {
         hideDisplayBecauseNoResults = true;
       }
       if (hideDisplayBecauseNoResults) {
@@ -319,7 +332,7 @@ class RepresentativeListRoot extends Component {
             <CampaignsScrollingInnerWrapper>
               <CampaignsHorizontallyScrollingContainer>
                 <RepresentativeCardList
-                  incomingRepresentativeList={(isSearching ? representativeSearchResults : filteredRepresentativeList)}
+                  incomingRepresentativeList={(isSearching ? representativeSearchResults : filteredList)}
                   timeStampOfChange={timeStampOfChange}
                   verticalListOn
                 />

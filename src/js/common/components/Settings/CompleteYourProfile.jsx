@@ -167,9 +167,10 @@ class CompleteYourProfile extends Component {
     const voterPhotoQueuedToSave = VoterStore.getVoterPhotoQueuedToSave();
     const voterPhotoQueuedToSaveSet = VoterStore.getVoterPhotoQueuedToSaveSet();
     VoterActions.voterCompleteYourProfileSave(voterFirstNameQueuedToSave, voterFirstNameQueuedToSaveSet, voterLastNameQueuedToSave, voterLastNameQueuedToSaveSet, voterPhotoQueuedToSave, voterPhotoQueuedToSaveSet);
-    VoterActions.voterFirstNameQueuedToSave(undefined);
-    VoterActions.voterLastNameQueuedToSave(undefined);
-    VoterActions.voterPhotoQueuedToSave(undefined);
+    // 2023-05-06 When these are used, the values disappear while waiting for verify code modal to load
+    // VoterActions.voterFirstNameQueuedToSave(undefined);
+    // VoterActions.voterLastNameQueuedToSave(undefined);
+    // VoterActions.voterPhotoQueuedToSave(undefined);
     const voterIsSignedInWithEmail = VoterStore.getVoterIsSignedInWithEmail();
     const voterEmailQueuedToSave = VoterStore.getVoterEmailQueuedToSave();
     // const voterEmailQueuedToSaveSet = VoterStore.getVoterEmailQueuedToSaveSet();
@@ -259,14 +260,14 @@ class CompleteYourProfile extends Component {
       if (voterCanVoteForPoliticianInCampaign) {
         buttonText = 'Support with my vote';
       } else {
-        buttonText = 'Show your support';
+        buttonText = 'Help them win by endorsing';
       }
       introductionText = <span>Leading up to election day, WeVote.US will remind you to vote for all of the candidates you support. We keep your email secure and confidential.</span>;
     } else if (supportCampaignOnCampaignHome) {
       if (voterCanVoteForPoliticianInCampaign) {
         buttonText = 'Support with my vote';
       } else {
-        buttonText = 'Show your support';
+        buttonText = 'Help them win by endorsing';
       }
       outerMarginsOff = true;
     }
@@ -360,8 +361,6 @@ CompleteYourProfile.propTypes = {
   campaignXWeVoteId: PropTypes.string,
   classes: PropTypes.object,
   functionToUseWhenProfileComplete: PropTypes.func.isRequired,
-  politicianSEOFriendlyPath: PropTypes.string,
-  politicianWeVoteId: PropTypes.string,
   startCampaign: PropTypes.bool,
   supportCampaign: PropTypes.bool,
   supportCampaignOnCampaignHome: PropTypes.bool,

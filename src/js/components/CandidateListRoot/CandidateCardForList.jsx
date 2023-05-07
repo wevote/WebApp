@@ -16,11 +16,12 @@ import { getTodayAsInteger, getYearFromUltimateElectionDate } from '../../common
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
 import CampaignStore from '../../common/stores/CampaignStore';
+import CampaignSupporterStore from '../../common/stores/CampaignSupporterStore';
 import CandidateStore from '../../stores/CandidateStore';
-// import initializejQuery from '../../common/utils/initializejQuery';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
-// import keepHelpingDestination from '../../common/utils/keepHelpingDestination';
+import keepHelpingDestination from '../../common/utils/keepHelpingDestination';
 import numberWithCommas from '../../common/utils/numberWithCommas';
+import saveCampaignSupportAndGoToNextPage from '../../common/utils/saveCampaignSupportAndGoToNextPage';
 import webAppConfig from '../../config';
 // import { ElectionInPast, IndicatorButtonWrapper, IndicatorRow } from '../../common/components/Style/CampaignIndicatorStyles';
 
@@ -35,11 +36,12 @@ class CandidateCardForList extends Component {
     super(props);
     this.state = {
       candidate: {},
+      linkedCampaignXWeVoteId: '',
     };
-    // this.functionToUseToKeepHelping = this.functionToUseToKeepHelping.bind(this);
-    // this.functionToUseWhenProfileComplete = this.functionToUseWhenProfileComplete.bind(this);
-    this.getCandidateBasePath = this.getCandidateBasePath.bind(this);
-    this.goToNextPage = this.goToNextPage.bind(this);
+    this.functionToUseToKeepHelping = this.functionToUseToKeepHelping.bind(this);
+    this.functionToUseWhenProfileComplete = this.functionToUseWhenProfileComplete.bind(this);
+    this.getCampaignXBasePath = this.getCampaignXBasePath.bind(this);
+    this.getPoliticianBasePath = this.getPoliticianBasePath.bind(this);
     this.onCandidateClick = this.onCandidateClick.bind(this);
     this.onCampaignEditClick = this.onCampaignEditClick.bind(this);
     this.onCampaignGetMinimumSupportersClick = this.onCampaignGetMinimumSupportersClick.bind(this);
@@ -51,8 +53,8 @@ class CandidateCardForList extends Component {
     // console.log('CandidateCardForList componentDidMount');
     this.onCandidateStoreChange();
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
-    // this.onCampaignSupporterStoreChange();
-    // this.campaignSupporterStoreListener = CampaignSupporterStore.addListener(this.onCampaignSupporterStoreChange.bind(this));
+    this.onCampaignSupporterStoreChange();
+    this.campaignSupporterStoreListener = CampaignSupporterStore.addListener(this.onCampaignSupporterStoreChange.bind(this));
   }
 
   componentDidUpdate (prevProps) {
@@ -65,39 +67,46 @@ class CandidateCardForList extends Component {
     if (candidateWeVoteId) {
       if (candidateWeVoteId !== candidateWeVoteIdPrevious) {
         this.onCandidateStoreChange();
-        // this.onCampaignSupporterStoreChange();
+        this.onCampaignSupporterStoreChange();
       }
     }
   }
 
   componentWillUnmount () {
+    this.campaignSupporterStoreListener.remove();
     this.candidateStoreListener.remove();
-    // this.campaignSupporterStoreListener.remove();
     if (this.timer) {
       clearTimeout(this.timer);
     }
+  }
+
+  onCampaignSupporterStoreChange () {
+    const { politicianWeVoteId } = this.state;
+    const step2Completed = CampaignSupporterStore.voterSupporterEndorsementExists(politicianWeVoteId);
+    const payToPromoteStepCompleted = CampaignSupporterStore.voterChipInExists(politicianWeVoteId);
+    const sharingStepCompleted = false;
+    // console.log('onCampaignSupporterStoreChange step2Completed: ', step2Completed, ', sharingStepCompleted: ', sharingStepCompleted, ', payToPromoteStepCompleted:', payToPromoteStepCompleted);
+    this.setState({
+      sharingStepCompleted,
+      step2Completed,
+      payToPromoteStepCompleted,
+    });
   }
 
   onCandidateStoreChange () {
     const { candidateWeVoteId } = this.props;
     const candidate = CandidateStore.getCandidateByWeVoteId(candidateWeVoteId);
     const {
-      seo_friendly_path: politicianSEOFriendlyPath,
+      linked_campaignx_we_vote_id: linkedCampaignXWeVoteId,
     } = candidate;
-    let pathToUseWhenProfileComplete;
-    if (politicianSEOFriendlyPath) {
-      pathToUseWhenProfileComplete = `/c/${politicianSEOFriendlyPath}/why-do-you-support`;
-    } else if (candidateWeVoteId) {
-      pathToUseWhenProfileComplete = `/id/${candidateWeVoteId}/why-do-you-support`;
-    }
     this.setState({
       candidate,
-      pathToUseWhenProfileComplete,
+      linkedCampaignXWeVoteId,
     });
   }
 
   onCandidateClick () {
-    historyPush(this.getCandidateBasePath());
+    historyPush(this.getPoliticianBasePath());
   }
 
   onCampaignEditClick () {
@@ -108,15 +117,11 @@ class CandidateCardForList extends Component {
     }
     const {
       in_draft_mode: inDraftMode,
-      seo_friendly_path: politicianSEOFriendlyPath,
-      we_vote_id: candidateWeVoteId,
     } = candidate;
     if (inDraftMode) {
       historyPush('/start-a-campaign-preview');
-    } else if (politicianSEOFriendlyPath) {
-      historyPush(`/c/${politicianSEOFriendlyPath}/edit`);
     } else {
-      historyPush(`/id/${candidateWeVoteId}/edit`);
+      historyPush(`${this.getCampaignXBasePath()}/edit`);
     }
     return null;
   }
@@ -127,15 +132,7 @@ class CandidateCardForList extends Component {
     if (!candidate) {
       return null;
     }
-    const {
-      seo_friendly_path: politicianSEOFriendlyPath,
-      we_vote_id: candidateWeVoteId,
-    } = candidate;
-    if (politicianSEOFriendlyPath) {
-      historyPush(`/c/${politicianSEOFriendlyPath}/share-campaign`);
-    } else {
-      historyPush(`/id/${candidateWeVoteId}/share-campaign`);
-    }
+    historyPush(`${this.getCampaignXBasePath()}/share-campaign`);
     return null;
   }
 
@@ -145,19 +142,31 @@ class CandidateCardForList extends Component {
     if (!candidate) {
       return null;
     }
-    const {
-      seo_friendly_path: politicianSEOFriendlyPath,
-      we_vote_id: candidateWeVoteId,
-    } = candidate;
-    if (politicianSEOFriendlyPath) {
-      historyPush(`/c/${politicianSEOFriendlyPath}/share-campaign`);
-    } else {
-      historyPush(`/id/${candidateWeVoteId}/share-campaign`);
-    }
+    historyPush(`${this.getCampaignXBasePath()}/share-campaign`);
     return null;
   }
 
-  getCandidateBasePath () {
+  getCampaignXBasePath () {
+    const { candidate } = this.state;
+    // console.log('candidate:', candidate);
+    if (!candidate) {
+      return null;
+    }
+    const {
+      // seo_friendly_path: politicianSEOFriendlyPath,  // Problem -- this is the politician seo friendly path, not the campaignx seo friendly path
+      linked_campaignx_we_vote_id: campaignXWeVoteId,
+    } = candidate;
+    // let campaignXBasePath;
+    // if (politicianSEOFriendlyPath) {
+    //   campaignXBasePath = `/c/${politicianSEOFriendlyPath}`;
+    // } else {
+    //   campaignXBasePath = `/id/${campaignXWeVoteId}`;
+    // }
+    // return campaignXBasePath;
+    return `/id/${campaignXWeVoteId}`;
+  }
+
+  getPoliticianBasePath () {
     const { candidate } = this.state;
     // console.log('candidate:', candidate);
     if (!candidate) {
@@ -166,18 +175,14 @@ class CandidateCardForList extends Component {
     const {
       seo_friendly_path: politicianSEOFriendlyPath,
       politician_we_vote_id: politicianWeVoteId,
-      we_vote_id: candidateWeVoteId,
     } = candidate;
-    let candidateBasePath;
+    let politicianBasePath;
     if (politicianSEOFriendlyPath) {
-      candidateBasePath = `/${politicianSEOFriendlyPath}/-/`;
-    } else if (politicianWeVoteId) {
-      candidateBasePath = `/${politicianWeVoteId}/p/`;
+      politicianBasePath = `/${politicianSEOFriendlyPath}/-`;
     } else {
-      candidateBasePath = `/candidate/${candidateWeVoteId}`;
+      politicianBasePath = `/${politicianWeVoteId}/p`;
     }
-
-    return candidateBasePath;
+    return politicianBasePath;
   }
 
   // pullCampaignXSupporterVoterEntry (candidateWeVoteId) {
@@ -212,44 +217,28 @@ class CandidateCardForList extends Component {
   //   }
   // }
 
-  goToNextPage () {
-    const { pathToUseWhenProfileComplete } = this.state;
-    this.timer = setTimeout(() => {
-      historyPush(pathToUseWhenProfileComplete);
-    }, 500);
-    return null;
+  functionToUseToKeepHelping () {
+    const { payToPromoteStepCompleted, payToPromoteStepTurnedOn, sharingStepCompleted, step2Completed } = this.state;
+    // console.log(payToPromoteStepCompleted, payToPromoteStepTurnedOn, sharingStepCompleted, step2Completed);
+    const keepHelpingDestinationString = keepHelpingDestination(step2Completed, payToPromoteStepCompleted, payToPromoteStepTurnedOn, sharingStepCompleted);
+    // console.log('functionToUseToKeepHelping keepHelpingDestinationString:', keepHelpingDestinationString);
+    historyPush(`${this.getCampaignXBasePath()}/${keepHelpingDestinationString}`);
   }
 
-  // functionToUseToKeepHelping () {
-  //   const { payToPromoteStepCompleted, payToPromoteStepTurnedOn, sharingStepCompleted, step2Completed } = this.state;
-  //   // console.log(payToPromoteStepCompleted, payToPromoteStepTurnedOn, sharingStepCompleted, step2Completed);
-  //   const keepHelpingDestinationString = keepHelpingDestination(step2Completed, payToPromoteStepCompleted, payToPromoteStepTurnedOn, sharingStepCompleted);
-  //   console.log('functionToUseToKeepHelping keepHelpingDestinationString:', keepHelpingDestinationString);
-  //   historyPush(`${this.getCandidateBasePath()}/${keepHelpingDestinationString}`);
-  // }
-
-  // functionToUseWhenProfileComplete () {
-  //   const { candidateWeVoteId } = this.props;
-  //   const campaignSupported = true;
-  //   const campaignSupportedChanged = true;
-  //   // From this page we always send value for 'visibleToPublic'
-  //   let visibleToPublic = CampaignSupporterStore.getVisibleToPublic();
-  //   const visibleToPublicChanged = CampaignSupporterStore.getVisibleToPublicQueuedToSaveSet();
-  //   if (visibleToPublicChanged) {
-  //     // If it has changed, use new value
-  //     visibleToPublic = CampaignSupporterStore.getVisibleToPublicQueuedToSave();
-  //   }
-  //   console.log('functionToUseWhenProfileComplete, visibleToPublic:', visibleToPublic, ', visibleToPublicChanged:', visibleToPublicChanged);
-  //   const saveVisibleToPublic = true;
-  //   initializejQuery(() => {
-  //     CampaignSupporterActions.supportCampaignSave(candidateWeVoteId, campaignSupported, campaignSupportedChanged, visibleToPublic, saveVisibleToPublic);
-  //   }, this.goToNextPage());
-  // }
+  functionToUseWhenProfileComplete () {
+    const { linkedCampaignXWeVoteId } = this.state;
+    if (linkedCampaignXWeVoteId) {
+      const campaignXBaseBath = this.getCampaignXBasePath();
+      saveCampaignSupportAndGoToNextPage(linkedCampaignXWeVoteId, campaignXBaseBath);
+    } else {
+      console.log('CandidateCardForList functionToUseWhenProfileComplete linkedCampaignXWeVoteId not found');
+    }
+  }
 
   render () {
     renderLog('CandidateCardForList');  // Set LOG_RENDER_EVENTS to log all renders
     const { limitCardWidth } = this.props;
-    const { campaignSupported, candidate } = this.state;
+    const { campaignSupported, candidate, linkedCampaignXWeVoteId } = this.state;
     if (!candidate) {
       return null;
     }
@@ -292,12 +281,20 @@ class CandidateCardForList extends Component {
             <OneCampaignTextColumn>
               <TitleAndTextWrapper>
                 <OneCampaignTitle>
-                  <Link className="u-link-color u-link-underline" to={this.getCandidateBasePath()}>
+                  <Link
+                    className="u-link-color u-link-underline"
+                    id="candidateCardDisplayName"
+                    to={this.getPoliticianBasePath()}
+                  >
                     {ballotItemDisplayName}
                   </Link>
                 </OneCampaignTitle>
                 {(contestOfficeName || politicalParty) && (
-                  <div className="u-cursor--pointer" onClick={this.onCandidateClick}>
+                  <div
+                    className="u-cursor--pointer"
+                    id="candidateCardOfficeName"
+                    onClick={this.onCandidateClick}
+                  >
                     <Suspense fallback={<></>}>
                       <OfficeNameText
                         districtName={districtName}
@@ -311,46 +308,70 @@ class CandidateCardForList extends Component {
                     </Suspense>
                   </div>
                 )}
-                {finalElectionDateInPast ? (
-                  <SupportersWrapper>
-                    {supportersCount > 0 && (
-                      <SupportersCount>
-                        {numberWithCommas(supportersCount)}
-                        {' '}
-                        {supportersCount === 1 ? 'supporter.' : 'supporters.'}
-                        {' '}
-                      </SupportersCount>
-                    )}
-                    {campaignSupported && (
-                      <SupportersActionLink>
-                        Thank you for supporting!
-                      </SupportersActionLink>
-                    )}
-                  </SupportersWrapper>
-                ) : (
-                  <SupportersWrapper>
-                    <SupportersCount>
-                      {numberWithCommas(supportersCount)}
-                      {' '}
-                      {supportersCount === 1 ? 'supporter.' : 'supporters.'}
-                    </SupportersCount>
-                    {' '}
-                    {campaignSupported ? (
-                      <SupportersActionLink>
-                        Thank you for supporting!
-                      </SupportersActionLink>
+                {(nextReleaseFeaturesEnabled) && (
+                  <>
+                    {finalElectionDateInPast ? (
+                      <SupportersWrapper>
+                        {(!supportersCount || supportersCount === 0) ? (
+                          <SupportersCount>
+                            0 supporters.
+                            {' '}
+                          </SupportersCount>
+                        ) : (
+                          <SupportersCount>
+                            {numberWithCommas(supportersCount)}
+                            {' '}
+                            {supportersCount === 1 ? 'supporter.' : 'supporters.'}
+                            {' '}
+                          </SupportersCount>
+                        )}
+                        {campaignSupported && (
+                          <SupportersActionLink>
+                            Thank you for supporting!
+                          </SupportersActionLink>
+                        )}
+                      </SupportersWrapper>
                     ) : (
-                      <SupportersActionLink className="u-link-color u-link-underline u-cursor--pointer" onClick={this.onCandidateClick}>
-                        Let&apos;s get to
+                      <SupportersWrapper>
+                        {(!supportersCount || supportersCount === 0) ? (
+                          <SupportersCount>
+                            Be the first.
+                            {' '}
+                          </SupportersCount>
+                        ) : (
+                          <SupportersCount>
+                            {numberWithCommas(supportersCount)}
+                            {' '}
+                            {supportersCount === 1 ? 'supporter.' : 'supporters.'}
+                          </SupportersCount>
+                        )}
                         {' '}
-                        {numberWithCommas(supportersCountNextGoalWithFloor)}
-                        !
-                      </SupportersActionLink>
+                        {campaignSupported ? (
+                          <SupportersActionLink>
+                            Thank you for supporting!
+                          </SupportersActionLink>
+                        ) : (
+                          <SupportersActionLink
+                            className="u-link-color u-link-underline u-cursor--pointer"
+                            id="candidateCardLetsGetTo"
+                            onClick={this.onCandidateClick}
+                          >
+                            Let&apos;s get to
+                            {' '}
+                            {numberWithCommas(supportersCountNextGoalWithFloor)}
+                            !
+                          </SupportersActionLink>
+                        )}
+                      </SupportersWrapper>
                     )}
-                  </SupportersWrapper>
+                  </>
                 )}
                 {twitterDescription && (
-                  <OneCampaignDescription className="u-cursor--pointer" onClick={this.onCandidateClick}>
+                  <OneCampaignDescription
+                    className="u-cursor--pointer"
+                    id="candidateCardTwitterDescription"
+                    onClick={this.onCandidateClick}
+                  >
                     <TruncateMarkup
                       ellipsis="..."
                       lines={2}
@@ -399,8 +420,7 @@ class CandidateCardForList extends Component {
                   <BottomActionButtonWrapper>
                     <Suspense fallback={<span>&nbsp;</span>}>
                       <SupportButtonBeforeCompletionScreen
-                        campaignSEOFriendlyPath="CONVERT_TO_POLITICIAN_PATH"
-                        campaignXWeVoteId="CONVERT_TO_POLITICIAN_WE_VOTE_ID"
+                        campaignXWeVoteId={linkedCampaignXWeVoteId}
                         functionToUseToKeepHelping={this.functionToUseToKeepHelping}
                         functionToUseWhenProfileComplete={this.functionToUseWhenProfileComplete}
                         inButtonFullWidthMode

@@ -39,6 +39,7 @@ class CampaignSupportEndorsement extends Component {
       campaignTitle: '',
       campaignXWeVoteId: '',
       chosenWebsiteName: '',
+      linkedPoliticianWeVoteId: '',
       payToPromoteStepTurnedOn: true,
     };
   }
@@ -60,10 +61,12 @@ class CampaignSupportEndorsement extends Component {
       campaignSEOFriendlyPath,
       campaignXPoliticianList,
       campaignXWeVoteId,
+      linkedPoliticianWeVoteId,
     } = getCampaignXValuesFromIdentifiers(campaignSEOFriendlyPathFromParams, campaignXWeVoteIdFromParams);
     this.setState({
       campaignPhotoLargeUrl,
       campaignXPoliticianList,
+      linkedPoliticianWeVoteId,
     });
     if (campaignSEOFriendlyPath) {
       this.setState({
@@ -116,11 +119,13 @@ class CampaignSupportEndorsement extends Component {
       campaignTitle,
       campaignXPoliticianList,
       campaignXWeVoteId,
+      linkedPoliticianWeVoteId,
     } = getCampaignXValuesFromIdentifiers(campaignSEOFriendlyPathFromParams, campaignXWeVoteIdFromParams);
     this.setState({
       campaignPhotoLargeUrl,
       campaignTitle,
       campaignXPoliticianList,
+      linkedPoliticianWeVoteId,
     });
     if (campaignSEOFriendlyPath) {
       this.setState({
@@ -149,7 +154,7 @@ class CampaignSupportEndorsement extends Component {
     });
   }
 
-  getCampaignBasePath = () => {
+  getCampaignXBasePath = () => {
     const { campaignSEOFriendlyPath, campaignXWeVoteId } = this.state;
     let campaignBasePath;
     if (campaignSEOFriendlyPath) {
@@ -157,16 +162,29 @@ class CampaignSupportEndorsement extends Component {
     } else {
       campaignBasePath = `/id/${campaignXWeVoteId}`;
     }
-
     return campaignBasePath;
+  }
+
+  getPoliticianBasePath = () => {
+    const { politicianSEOFriendlyPath, linkedPoliticianWeVoteId } = this.state;
+    let politicianBasePath;
+    if (politicianSEOFriendlyPath) {
+      politicianBasePath = `/${politicianSEOFriendlyPath}/-`;
+    } else if (linkedPoliticianWeVoteId) {
+      politicianBasePath = `/${linkedPoliticianWeVoteId}/p`;
+    } else {
+      // console.log('CampaignRecommendedCampaigns getPoliticianBasePath, failed to get politicianBasePath');
+      politicianBasePath = this.getCampaignXBasePath();
+    }
+    return politicianBasePath;
   }
 
   goToNextStep = () => {
     const { payToPromoteStepTurnedOn } = this.state;
     if (payToPromoteStepTurnedOn) {
-      historyPush(`${this.getCampaignBasePath()}/pay-to-promote`);
+      historyPush(`${this.getCampaignXBasePath()}/pay-to-promote`);
     } else {
-      historyPush(`${this.getCampaignBasePath()}/share-campaign`);
+      historyPush(`${this.getCampaignXBasePath()}/share-campaign`);
     }
   }
 
@@ -230,8 +248,9 @@ class CampaignSupportEndorsement extends Component {
             <ContentInnerWrapperDefault>
               <CampaignSupportSteps
                 atStepNumber2
-                campaignBasePath={this.getCampaignBasePath()}
+                campaignBasePath={this.getCampaignXBasePath()}
                 campaignXWeVoteId={campaignXWeVoteId}
+                politicianBasePath={this.getPoliticianBasePath()}
               />
               <CampaignSupportImageWrapper>
                 {campaignPhotoLargeUrl ? (

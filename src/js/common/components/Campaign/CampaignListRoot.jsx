@@ -24,7 +24,7 @@ class CampaignListRoot extends Component {
     this.state = {
       campaignList: [],
       campaignSearchResults: [],
-      filteredCampaignList: [],
+      filteredList: [],
       timeStampOfChange: 0,
     };
   }
@@ -81,65 +81,65 @@ class CampaignListRoot extends Component {
   }
 
   orderByAlphabetical = (firstEntry, secondEntry) => {
-    let firstEntryName;
-    let secondEntryName = 'x';
+    let firstEntryValue;
+    let secondEntryValue = 'x';
     if (firstEntry && firstEntry.campaign_title) {
-      firstEntryName = firstEntry.campaign_title;
+      firstEntryValue = firstEntry.campaign_title;
     }
     if (secondEntry && secondEntry.campaign_title) {
-      secondEntryName = secondEntry.campaign_title;
+      secondEntryValue = secondEntry.campaign_title;
     }
-    if (firstEntryName < secondEntryName) { return -1; }
-    if (firstEntryName > secondEntryName) { return 1; }
+    if (firstEntryValue < secondEntryValue) { return -1; }
+    if (firstEntryValue > secondEntryValue) { return 1; }
     return 0;
   };
 
   // Order by 1, 2, 3. Push 0's to the bottom in the same order.
-  orderByOrderInList = (firstCampaign, secondCampaign) => (firstCampaign.order_in_list || Number.MAX_VALUE) - (secondCampaign.order_in_list || Number.MAX_VALUE);
+  orderByOrderInList = (firstEntry, secondEntry) => (firstEntry.order_in_list || Number.MAX_VALUE) - (secondEntry.order_in_list || Number.MAX_VALUE);
 
-  orderBySupportersCount = (firstCampaign, secondCampaign) => secondCampaign.supporters_count - firstCampaign.supporters_count;
+  orderBySupportersCount = (firstEntry, secondEntry) => secondEntry.supporters_count - firstEntry.supporters_count;
 
   orderCandidatesByUltimateDate = (firstEntry, secondEntry) => secondEntry.candidate_ultimate_election_date - firstEntry.candidate_ultimate_election_date;
 
   onFilterOrListChange = () => {
     // console.log('onFilterOrListChange');
     // Start over with full list, and apply all active filters
-    const { listModeFilters, searchText, stateCode } = this.props;
+    const { hideCampaignsLinkedToPoliticians, listModeFilters, searchText, stateCode } = this.props;
     const { campaignList } = this.state;
-    // console.log('campaignList:', campaignList);
-    let filteredCampaignList = campaignList;
+    let filteredList = campaignList;
+    // console.log('filteredList:', filteredList);
     // //////////////////////////////////////////
     // Make sure we have all required variables
-    const filteredCampaignListModified = [];
-    let modifiedCampaign;
-    filteredCampaignList.forEach((oneCampaign) => {
-      modifiedCampaign = { ...oneCampaign };
-      // modifiedCampaign = {
-      //   ...modifiedCampaign,
-      //   campaign_state_name: convertStateCodeToStateText(oneCampaign.state_code),
-      //   state_code: oneCampaign.state_code || '',
+    const filteredListModified = [];
+    let modifiedEntry;
+    filteredList.forEach((oneEntry) => {
+      modifiedEntry = { ...oneEntry };
+      // modifiedEntry = {
+      //   ...modifiedEntry,
+      //   campaign_state_name: convertStateCodeToStateText(oneEntry.state_code),
+      //   state_code: oneEntry.state_code || '',
       // };
-      if (!oneCampaign.campaign_description) {
-        modifiedCampaign = {
-          ...modifiedCampaign,
+      if (!oneEntry.campaign_description) {
+        modifiedEntry = {
+          ...modifiedEntry,
           campaign_description: '',
         };
       }
-      if (!oneCampaign.campaign_title) {
-        modifiedCampaign = {
-          ...modifiedCampaign,
+      if (!oneEntry.campaign_title) {
+        modifiedEntry = {
+          ...modifiedEntry,
           campaign_title: '',
         };
       }
-      if (!oneCampaign.contest_office_name) {
-        modifiedCampaign = {
-          ...modifiedCampaign,
+      if (!oneEntry.contest_office_name) {
+        modifiedEntry = {
+          ...modifiedEntry,
           contest_office_name: '',
         };
       }
-      filteredCampaignListModified.push(modifiedCampaign);
+      filteredListModified.push(modifiedEntry);
     });
-    filteredCampaignList = filteredCampaignListModified;
+    filteredList = filteredListModified;
     // //////////////////////
     // Now filter candidates
     if (listModeFilters && listModeFilters.length > 0) {
@@ -147,54 +147,54 @@ class CampaignListRoot extends Component {
       listModeFilters.forEach((oneFilter) => {
         // console.log('oneFilter:', oneFilter);
         if ((oneFilter.filterType === 'showUpcomingEndorsements') && (oneFilter.filterSelected === true)) {
-          filteredCampaignList = filteredCampaignList.filter((oneCampaign) => oneCampaign.final_election_date_as_integer >= todayAsInteger);
+          filteredList = filteredList.filter((oneEntry) => oneEntry.final_election_date_as_integer >= todayAsInteger);
         }
         if ((oneFilter.filterType === 'showYear') && (oneFilter.filterSelected === true)) {
-          filteredCampaignList = filteredCampaignList.filter((oneCampaign) => getYearFromUltimateElectionDate(oneCampaign.final_election_date_as_integer) === oneFilter.filterYear);
+          filteredList = filteredList.filter((oneEntry) => getYearFromUltimateElectionDate(oneEntry.final_election_date_as_integer) === oneFilter.filterYear);
         }
       });
     }
     if (stateCode && stateCode.toLowerCase() !== 'all') {
-      filteredCampaignList = filteredCampaignList.filter((oneCampaign) => {
-        const politicianStateCodeList = extractAttributeValueListFromObjectList('state_code', oneCampaign.campaignx_politician_list, true);
+      filteredList = filteredList.filter((oneEntry) => {
+        const politicianStateCodeList = extractAttributeValueListFromObjectList('state_code', oneEntry.campaignx_politician_list, true);
         return arrayContains(stateCode.toLowerCase(), politicianStateCodeList);
       });
     }
     // //////////
     // Now sort
     // We need to add support for ballot_item_twitter_followers_count
-    // filteredCampaignList = filteredCampaignList.sort(this.orderPositionsByBallotItemTwitterFollowers);
-    filteredCampaignList = filteredCampaignList.sort(this.orderByAlphabetical);
-    filteredCampaignList = filteredCampaignList.sort(this.orderBySupportersCount);
-    filteredCampaignList = filteredCampaignList.sort(this.orderByOrderInList);
+    // filteredList = filteredList.sort(this.orderPositionsByBallotItemTwitterFollowers);
+    filteredList = filteredList.sort(this.orderByAlphabetical);
+    filteredList = filteredList.sort(this.orderBySupportersCount);
+    filteredList = filteredList.sort(this.orderByOrderInList);
     let campaignSearchResults = [];
     if (searchText && searchText.length > 0) {
       const searchTextLowercase = searchText.toLowerCase();
       // console.log('searchTextLowercase:', searchTextLowercase);
       const searchWordArray = searchTextLowercase.match(/\b(\w+)\b/g);
       // console.log('searchWordArray:', searchWordArray);
-      let foundInThisCampaign;
+      let foundInThisEntry;
       let foundInThisCampaignsPoliticians;
       let isFirstWord;
       let politicianStateName;
       let thisWordFound;
-      campaignSearchResults = filter(filteredCampaignList,
-        (oneCampaign) => {
-          foundInThisCampaign = false;
+      campaignSearchResults = filter(filteredList,
+        (oneEntry) => {
+          foundInThisEntry = false;
           isFirstWord = true;
           searchWordArray.forEach((oneSearchWordLowerCase) => {
             thisWordFound = (
               // We should add these fields on API server:
-              // oneCampaign.state_code.toLowerCase().includes(oneSearchWordLowerCase) ||
-              // oneCampaign.campaign_state_name.toLowerCase().includes(oneSearchWordLowerCase) ||
-              oneCampaign.campaign_description.toLowerCase().includes(oneSearchWordLowerCase) ||
-              oneCampaign.campaign_title.toLowerCase().includes(oneSearchWordLowerCase)
+              // oneEntry.state_code.toLowerCase().includes(oneSearchWordLowerCase) ||
+              // oneEntry.campaign_state_name.toLowerCase().includes(oneSearchWordLowerCase) ||
+              oneEntry.campaign_description.toLowerCase().includes(oneSearchWordLowerCase) ||
+              oneEntry.campaign_title.toLowerCase().includes(oneSearchWordLowerCase)
             );
             if (!thisWordFound) {
               foundInThisCampaignsPoliticians = false;
               // Go on to search in the campaignx_politician_list
-              if (oneCampaign.campaignx_politician_list && oneCampaign.campaignx_politician_list.length > 0) {
-                oneCampaign.campaignx_politician_list.forEach((onePolitician) => {
+              if (oneEntry.campaignx_politician_list && oneEntry.campaignx_politician_list.length > 0) {
+                oneEntry.campaignx_politician_list.forEach((onePolitician) => {
                   politicianStateName = convertStateCodeToStateText(onePolitician.state_code);
                   foundInThisCampaignsPoliticians = (
                     foundInThisCampaignsPoliticians ||
@@ -209,20 +209,25 @@ class CampaignListRoot extends Component {
               thisWordFound = foundInThisCampaignsPoliticians;
             }
             if (isFirstWord) {
-              foundInThisCampaign = thisWordFound;
+              foundInThisEntry = thisWordFound;
               isFirstWord = false;
             } else {
-              foundInThisCampaign = foundInThisCampaign && thisWordFound;
+              foundInThisEntry = foundInThisEntry && thisWordFound;
             }
           });
-          return foundInThisCampaign;
+          // console.log('oneEntry:', oneEntry);
+          if (hideCampaignsLinkedToPoliticians && oneEntry.linked_politician_we_vote_id) {
+            return false;
+          } else {
+            return foundInThisEntry;
+          }
         });
     }
     // console.log('onFilterOrListChange, campaignSearchResults:', campaignSearchResults);
-    // console.log('onFilterOrListChange, filteredCampaignList:', filteredCampaignList);
+    // console.log('onFilterOrListChange, filteredList:', filteredList);
     this.setState({
       campaignSearchResults,
-      filteredCampaignList,
+      filteredList,
       timeStampOfChange: Date.now(),
     });
   }
@@ -231,15 +236,16 @@ class CampaignListRoot extends Component {
     renderLog('CampaignListRoot');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes, hideIfNoResults, hideTitle, listModeFilters, searchText, titleTextForList } = this.props;
     const isSearching = searchText && searchText.length > 0;
-    const { campaignList, campaignSearchResults, filteredCampaignList, timeStampOfChange } = this.state;
-    const filteredCampaignListLength = (filteredCampaignList) ? filteredCampaignList.length : 0;
+    const { campaignList, campaignSearchResults, filteredList, timeStampOfChange } = this.state;
+    const filteredListLength = (filteredList) ? filteredList.length : 0;
     let hideDisplayBecauseNoResults = false;
+    // console.log('hideIfNoResults:', hideIfNoResults, 'filteredList:', filteredList, 'filteredListLength:', filteredListLength);
     if (hideIfNoResults) {
       if (isSearching) {
         if (campaignSearchResults && campaignSearchResults.length === 0) {
           hideDisplayBecauseNoResults = true;
         }
-      } else if (filteredCampaignListLength && filteredCampaignListLength.length === 0) {
+      } else if (filteredListLength === 0) {
         hideDisplayBecauseNoResults = true;
       }
       if (hideDisplayBecauseNoResults) {
@@ -261,7 +267,7 @@ class CampaignListRoot extends Component {
           <CampaignsScrollingInnerWrapper>
             <CampaignsHorizontallyScrollingContainer>
               <CampaignCardList
-                incomingCampaignList={(isSearching ? campaignSearchResults : filteredCampaignList)}
+                incomingCampaignList={(isSearching ? campaignSearchResults : filteredList)}
                 listModeFilters={listModeFilters}
                 listModeFiltersTimeStampOfChange={timeStampOfChange}
                 searchText={searchText}
@@ -282,6 +288,7 @@ class CampaignListRoot extends Component {
 }
 CampaignListRoot.propTypes = {
   classes: PropTypes.object,
+  hideCampaignsLinkedToPoliticians: PropTypes.bool,
   hideIfNoResults: PropTypes.bool,
   hideTitle: PropTypes.bool,
   incomingList: PropTypes.array,

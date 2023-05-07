@@ -38,22 +38,14 @@ class SupportButtonBeforeCompletionScreen extends Component {
   componentDidUpdate (prevProps) {
     // console.log('SupportButtonBeforeCompletionScreen componentDidUpdate');
     const {
-      campaignSEOFriendlyPath: campaignSEOFriendlyPathPrevious,
       campaignXWeVoteId: campaignXWeVoteIdPrevious,
     } = prevProps;
     const {
-      campaignSEOFriendlyPath,
       campaignXWeVoteId,
     } = this.props;
     if (campaignXWeVoteId) {
       if (campaignXWeVoteId !== campaignXWeVoteIdPrevious) {
         this.onCampaignOrCampaignSupporterChange(campaignXWeVoteId);
-      }
-    } else if (campaignSEOFriendlyPath) {
-      if (campaignSEOFriendlyPath !== campaignSEOFriendlyPathPrevious) {
-        const campaignXWeVoteIdCalculated = CampaignStore.getCampaignXWeVoteIdFromCampaignSEOFriendlyPath(campaignSEOFriendlyPath);
-        // console.log('campaignXWeVoteIdCalculated:', campaignXWeVoteIdCalculated);
-        this.onCampaignOrCampaignSupporterChange(campaignXWeVoteIdCalculated);
       }
     }
   }
@@ -83,15 +75,11 @@ class SupportButtonBeforeCompletionScreen extends Component {
 
   onCampaignSupporterStoreChange () {
     const {
-      campaignSEOFriendlyPath,
       campaignXWeVoteId,
     } = this.props;
-    // console.log('SupportButtonBeforeCompletionScreen onCampaignSupporterStoreChange campaignXWeVoteId:', campaignXWeVoteId, ', campaignSEOFriendlyPath:', campaignSEOFriendlyPath);
+    // console.log('SupportButtonBeforeCompletionScreen onCampaignSupporterStoreChange campaignXWeVoteId:', campaignXWeVoteId);
     if (campaignXWeVoteId) {
       this.onCampaignOrCampaignSupporterChange(campaignXWeVoteId);
-    } else if (campaignSEOFriendlyPath) {
-      const campaignXWeVoteIdCalculated = CampaignStore.getCampaignXWeVoteIdFromCampaignSEOFriendlyPath(campaignSEOFriendlyPath);
-      this.onCampaignOrCampaignSupporterChange(campaignXWeVoteIdCalculated);
     }
   }
 
@@ -142,11 +130,13 @@ class SupportButtonBeforeCompletionScreen extends Component {
   }
 
   submitSupportButtonMobile = () => {
-    const { campaignSEOFriendlyPath, campaignXWeVoteId } = this.props;
+    const { campaignXWeVoteId } = this.props;
     console.log('SupportButtonBeforeCompletionScreen submitSupportButtonMobile');
     const { voterFirstName, voterLastName, voterIsSignedInWithEmail } = this.state;
     if (!voterFirstName || !voterLastName || !voterIsSignedInWithEmail) {
       // Navigate to the mobile complete your profile page
+      const campaignX = CampaignStore.getCampaignXByWeVoteId(campaignXWeVoteId);
+      const { seo_friendly_path: campaignSEOFriendlyPath } = campaignX;
       if (campaignSEOFriendlyPath) {
         historyPush(`/c/${campaignSEOFriendlyPath}/complete-your-support-for-this-campaign`);
       } else {
@@ -165,7 +155,7 @@ class SupportButtonBeforeCompletionScreen extends Component {
 
   render () {
     renderLog('SupportButtonBeforeCompletionScreen');  // Set LOG_RENDER_EVENTS to log all renders
-    const { campaignSEOFriendlyPath, campaignXWeVoteId, classes, inButtonFullWidthMode, inCompressedMode } = this.props;
+    const { campaignXWeVoteId, classes, inButtonFullWidthMode, inCompressedMode } = this.props;
     const hideFooterBehindModal = false;
     let supportButtonClasses;
     const inWebApp = true; // isWebApp();
@@ -180,8 +170,8 @@ class SupportButtonBeforeCompletionScreen extends Component {
     } else {
       supportButtonClasses = classes.buttonDefaultCordova;
     }
-    // console.log('SupportButtonBeforeCompletionScreen render campaignXWeVoteId:', campaignXWeVoteId, ', campaignSEOFriendlyPath:', campaignSEOFriendlyPath);
-    if (!campaignSEOFriendlyPath && !campaignXWeVoteId && !nextReleaseFeaturesEnabled) {
+    // console.log('SupportButtonBeforeCompletionScreen render campaignXWeVoteId:', campaignXWeVoteId);
+    if (!campaignXWeVoteId && !nextReleaseFeaturesEnabled) {
       // console.log('SupportButtonBeforeCompletionScreen render voter NOT found');
       return <div className="undefined-campaign-state" />;
     }
@@ -214,7 +204,7 @@ class SupportButtonBeforeCompletionScreen extends Component {
             <Button
               classes={{ root: supportButtonClasses }}
               color="primary"
-              id="supportButtonFooter"
+              id="helpThemWinButton"
               onClick={this.submitSupportButtonMobile}
               variant={inButtonFullWidthMode || !inCompressedMode ? 'contained' : 'outline'}
             >
@@ -238,14 +228,11 @@ class SupportButtonBeforeCompletionScreen extends Component {
 }
 SupportButtonBeforeCompletionScreen.propTypes = {
   campaignXWeVoteId: PropTypes.string,
-  campaignSEOFriendlyPath: PropTypes.string,
   classes: PropTypes.object,
   functionToUseToKeepHelping: PropTypes.func.isRequired,
   functionToUseWhenProfileComplete: PropTypes.func.isRequired,
   inButtonFullWidthMode: PropTypes.bool,
   inCompressedMode: PropTypes.bool,
-  politicianWeVoteId: PropTypes.string,
-  politicianSEOFriendlyPath: PropTypes.string,
 };
 
 const styles = () => ({

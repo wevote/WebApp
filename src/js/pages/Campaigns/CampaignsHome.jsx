@@ -69,7 +69,7 @@ class CampaignsHome extends Component {
   }
 
   componentDidMount () {
-    console.log('CampaignsHome componentDidMount');
+    // console.log('CampaignsHome componentDidMount');
     window.scrollTo(0, 0);
     const { match: { params: {
       state_candidates_phrase: stateCandidatesPhrase,
@@ -93,6 +93,7 @@ class CampaignsHome extends Component {
     // Pulled from onCandidateStoreChange and onBallotStoreChange
     // Note: sorting is being done in CandidateListRoot
     const candidateList = CandidateStore.getCandidateList();
+    // console.log('ComponentDidMount candidateList', candidateList);
     const { candidateListOnYourBallot, candidateListIsBattleground, candidateListOther } = this.splitUpCandidateList(candidateList);
     this.setState({
       candidateList,
@@ -305,8 +306,9 @@ class CampaignsHome extends Component {
 
   splitUpCandidateList = (candidateList) => {
     const { politicianWeVoteIdsAlreadyShown } = this.state;
-    // console.log('splitUpCandidateList, politicianWeVoteIdsAlreadyShown:', politicianWeVoteIdsAlreadyShown)
+    // console.log('splitUpCandidateList, politicianWeVoteIdsAlreadyShown:', politicianWeVoteIdsAlreadyShown);
     const candidateListOnYourBallot = BallotStore.getAllBallotItemsFlattened();
+    // console.log('splitUpCandidateList, candidateListOnYourBallot:', candidateListOnYourBallot);
     const weVoteIdsOnYourBallot = extractAttributeValueListFromObjectList('we_vote_id', candidateListOnYourBallot);
     const candidateListRemaining = candidateList.filter((oneCandidate) => !arrayContains(oneCandidate.we_vote_id, weVoteIdsOnYourBallot));
     const candidateListIsBattleground = candidateListRemaining.filter((oneCandidate) => oneCandidate.is_battleground_race);
@@ -337,12 +339,13 @@ class CampaignsHome extends Component {
   updateActiveFilters = (setDefaultListMode = false) => {
     const {
       campaignList, candidateList,
-      listOfYearsWhenCampaignExists, listOfYearsWhenCandidateExists, listOfYearsWhenRepresentativeExists,
+      // listOfYearsWhenCampaignExists, listOfYearsWhenCandidateExists,
+      listOfYearsWhenRepresentativeExists,
     } = this.state;
     let { listModeShown } = this.state;
-    const listOfYears = [...new Set([...listOfYearsWhenCampaignExists, ...listOfYearsWhenCandidateExists, ...listOfYearsWhenRepresentativeExists])];
+    // const listOfYears = [...new Set([...listOfYearsWhenCampaignExists, ...listOfYearsWhenCandidateExists, ...listOfYearsWhenRepresentativeExists])];
     // console.log('listOfYears:', listOfYears, ', setDefaultListMode:', setDefaultListMode);
-    let filterCount = 0;
+    // let filterCount = 0;
     let upcomingEndorsementsAvailable = false;
     const todayAsInteger = getTodayAsInteger();
     // console.log('thisYearInteger:', thisYearInteger);
@@ -375,21 +378,21 @@ class CampaignsHome extends Component {
     // const useDropdownWithThisNumberOfYears = 4;
     // const displayAsChip = numberOfYears < useDropdownWithThisNumberOfYears;
     const displayAsChip = true; // Explore converting this to a dropdown
-    listOfYears.forEach((oneYear) => {
-      filterCount += 1;
-      listModeFiltersAvailable.push({
-        displayAsChip,
-        filterDisplayName: `${oneYear}`,
-        filterName: `show${oneYear}`,
-        filterOrder: 5000 - oneYear,
-        filterSelected: listModeShown === `show${oneYear}`,
-        filterType: 'showYear',
-        filterYear: oneYear,
-      });
-    });
-    // if (upcomingEndorsementsAvailable) {
-    // We still want to show this filter option
-    filterCount += 1;
+    // listOfYears.forEach((oneYear) => {
+    //   filterCount += 1;
+    //   listModeFiltersAvailable.push({
+    //     displayAsChip,
+    //     filterDisplayName: `${oneYear}`,
+    //     filterName: `show${oneYear}`,
+    //     filterOrder: 5000 - oneYear,
+    //     filterSelected: listModeShown === `show${oneYear}`,
+    //     filterType: 'showYear',
+    //     filterYear: oneYear,
+    //   });
+    // });
+    // // if (upcomingEndorsementsAvailable) {
+    // // We still want to show this filter option
+    // filterCount += 1;
     listModeFiltersAvailable.push({
       displayAsChip: true,
       filterDisplayName: 'Upcoming',
@@ -398,8 +401,9 @@ class CampaignsHome extends Component {
       filterSelected: listModeShown === 'showUpcomingEndorsements',
       filterType: 'showUpcomingEndorsements',
     });
-    // }
-    if (filterCount > 1) {
+    // // }
+    // if (filterCount > 1) {
+    if (listModeShown === 'showAllEndorsements') {
       listModeFiltersAvailable.push({
         displayAsChip,
         filterDisplayName: 'All Years',
@@ -438,16 +442,20 @@ class CampaignsHome extends Component {
 
   getDefaultListModeShown = (incomingUpcomingEndorsementsAvailable = false) => {
     const { listOfYearsWhenCampaignExists, listOfYearsWhenCandidateExists, listOfYearsWhenRepresentativeExists, upcomingEndorsementsAvailable } = this.state;
+    // const { upcomingEndorsementsAvailable } = this.state;
     const listOfYears = [...new Set([...listOfYearsWhenCampaignExists, ...listOfYearsWhenCandidateExists, ...listOfYearsWhenRepresentativeExists])];
     // console.log('getDefaultListModeShown listOfYearsWhenCandidateExists:', listOfYearsWhenCandidateExists);
     if (upcomingEndorsementsAvailable || incomingUpcomingEndorsementsAvailable) {
       return 'showUpcomingEndorsements';
-    } else if (listOfYears && listOfYears.length > 0) {
-      const mostRecentYear = Math.max.apply(null, listOfYears);
-      // console.log('mostRecentYear:', mostRecentYear);
-      return `show${mostRecentYear}`;
+      // } else if (listOfYears && listOfYears.length > 0) {
+      //   const mostRecentYear = Math.max.apply(null, listOfYears);
+      //   // console.log('mostRecentYear:', mostRecentYear);
+      //   return `show${mostRecentYear}`;
+      // }
+    } else if (listOfYears && listOfYears.length > 1) {
+      return 'showAllEndorsements';
     }
-    return 'showAllEndorsements';
+    return 'showUpcomingEndorsements';
   }
 
   getListOfYearsWhenCampaignExists = (campaignList) => {
@@ -600,6 +608,7 @@ class CampaignsHome extends Component {
               <WhatIsHappeningSection>
                 <Suspense fallback={<span>&nbsp;</span>}>
                   <CampaignListRoot
+                    hideCampaignsLinkedToPoliticians
                     hideIfNoResults
                     incomingList={campaignList}
                     incomingListTimeStampOfChange={campaignListTimeStampOfChange}
@@ -696,6 +705,7 @@ class CampaignsHome extends Component {
             <WhatIsHappeningSection>
               <Suspense fallback={<span>&nbsp;</span>}>
                 <CampaignListRoot
+                  hideCampaignsLinkedToPoliticians
                   hideIfNoResults
                   incomingList={campaignList}
                   incomingListTimeStampOfChange={campaignListTimeStampOfChange}
@@ -703,7 +713,8 @@ class CampaignsHome extends Component {
                   listModeFiltersTimeStampOfChange={listModeFiltersTimeStampOfChange}
                   searchText={searchText}
                   stateCode={stateCode}
-                  titleTextForList="Upcoming Campaigns"
+                  // titleTextForList="Upcoming Campaigns" // TODO: Needs work
+                  titleTextForList="Campaigns"
                 />
               </Suspense>
             </WhatIsHappeningSection>

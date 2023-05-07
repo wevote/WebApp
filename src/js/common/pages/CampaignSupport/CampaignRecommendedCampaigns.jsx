@@ -34,6 +34,7 @@ class CampaignRecommendedCampaigns extends Component {
       campaignTitle: '',
       campaignXWeVoteId: '',
       chosenWebsiteName: '',
+      linkedPoliticianWeVoteId: '',
       maximumNumberOfCampaignsToSupport: 5,
       numberOfCampaignsLeftToSupport: 5,
       recommendedCampaignDescription: '',
@@ -61,7 +62,11 @@ class CampaignRecommendedCampaigns extends Component {
     const {
       campaignSEOFriendlyPath,
       campaignXWeVoteId,
+      linkedPoliticianWeVoteId,
     } = getCampaignXValuesFromIdentifiers(campaignSEOFriendlyPathFromParams, campaignXWeVoteIdFromParams);
+    this.setState({
+      linkedPoliticianWeVoteId,
+    });
     if (campaignSEOFriendlyPath) {
       this.setState({
         campaignSEOFriendlyPath,
@@ -110,9 +115,11 @@ class CampaignRecommendedCampaigns extends Component {
       campaignSEOFriendlyPath,
       campaignTitle,
       campaignXWeVoteId,
+      linkedPoliticianWeVoteId,
     } = getCampaignXValuesFromIdentifiers(campaignSEOFriendlyPathFromParams, campaignXWeVoteIdFromParams);
     this.setState({
       campaignTitle,
+      linkedPoliticianWeVoteId,
     });
     if (campaignSEOFriendlyPath) {
       this.setState({
@@ -171,11 +178,16 @@ class CampaignRecommendedCampaigns extends Component {
     const voterSignedInWithEmail = VoterStore.getVoterIsSignedInWithEmail();
     if (voterFirstRetrieveCompleted && !voterSignedInWithEmail) {
       // Leave this component and go to news page if not signed in
-      historyPush(`${this.getCampaignBasePath()}/updates`);
+      const { campaignSEOFriendlyPath, campaignXWeVoteId } = this.state;
+      if (campaignSEOFriendlyPath || campaignXWeVoteId) {
+        historyPush(`${this.getCampaignXBasePath()}/updates`);
+      } else {
+        console.log('CampaignRecommendedCampaigns onVoterStoreChange cannot redirect. Missing campaignSEOFriendlyPath or campaignXWeVoteId');
+      }
     }
   }
 
-  getCampaignBasePath = () => {
+  getCampaignXBasePath = () => {
     const { campaignSEOFriendlyPath, campaignXWeVoteId } = this.state;
     let campaignBasePath;
     if (campaignSEOFriendlyPath) {
@@ -183,16 +195,29 @@ class CampaignRecommendedCampaigns extends Component {
     } else {
       campaignBasePath = `/id/${campaignXWeVoteId}`;
     }
-
     return campaignBasePath;
   }
 
+  getPoliticianBasePath = () => {
+    const { politicianSEOFriendlyPath, linkedPoliticianWeVoteId } = this.state;
+    let politicianBasePath;
+    if (politicianSEOFriendlyPath) {
+      politicianBasePath = `/${politicianSEOFriendlyPath}/-`;
+    } else if (linkedPoliticianWeVoteId) {
+      politicianBasePath = `/${linkedPoliticianWeVoteId}/p`;
+    } else {
+      // console.log('CampaignRecommendedCampaigns getPoliticianBasePath, failed to get politicianBasePath');
+      politicianBasePath = this.getCampaignXBasePath();
+    }
+    return politicianBasePath;
+  }
+
   goToDetailsPage = () => {
-    historyPush(`${this.getCampaignBasePath()}`);
+    historyPush(`${this.getPoliticianBasePath()}`);
   }
 
   goToUpdatesPage = () => {
-    historyPush(`${this.getCampaignBasePath()}/updates`);
+    historyPush(`${this.getCampaignXBasePath()}/updates`);
   }
 
   oneClickSupportActionComplete = (campaignXWeVoteId) => {
@@ -342,8 +367,9 @@ class CampaignRecommendedCampaigns extends Component {
               <ContentInnerWrapperDefault>
                 <CampaignSupportSteps
                   atSharingStep
-                  campaignBasePath={this.getCampaignBasePath()}
+                  campaignBasePath={this.getCampaignXBasePath()}
                   campaignXWeVoteId={campaignXWeVoteId}
+                  politicianBasePath={this.getPoliticianBasePath()}
                 />
                 <CampaignTitle>{campaignTitle}</CampaignTitle>
                 <RecommendedCampaignsIntroText>
@@ -402,8 +428,9 @@ class CampaignRecommendedCampaigns extends Component {
             <ContentInnerWrapperDefault>
               <CampaignSupportSteps
                 atSharingStep
-                campaignBasePath={this.getCampaignBasePath()}
+                campaignBasePath={this.getCampaignXBasePath()}
                 campaignXWeVoteId={campaignXWeVoteId}
+                politicianBasePath={this.getPoliticianBasePath()}
               />
               <RecommendedCampaignsIntroText>
                 Support

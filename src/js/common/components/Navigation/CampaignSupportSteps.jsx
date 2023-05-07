@@ -2,6 +2,7 @@ import withStyles from '@mui/styles/withStyles';
 import { Done } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import styled from 'styled-components';
 import commonMuiStyles from '../Style/commonMuiStyles';
 import { InnerWrapper, OuterWrapperPageTitle, OuterWrapperSteps, PageTitle, StepCircle, StepNumber, StepWrapper } from '../Style/stepDisplayStyles';
 import historyPush from '../../utils/historyPush';
@@ -82,14 +83,14 @@ class CampaignSupportSteps extends Component {
     renderLog('CampaignSupportSteps');  // Set LOG_RENDER_EVENTS to log all renders
     const {
       atStepNumber1, atStepNumber2, atPayToPromoteStep, atSharingStep,
-      campaignBasePath, classes,
+      campaignBasePath, classes, politicianBasePath,
     } = this.props;
     const {
       step1Completed, step2Completed, payToPromoteStepCompleted,
       payToPromoteStepTurnedOn, sharingStepCompleted, siteConfigurationHasBeenRetrieved,
     } = this.state;
     return (
-      <div>
+      <CampaignSupportStepsWrapper>
         <OuterWrapperPageTitle>
           <InnerWrapper>
             <PageTitle>
@@ -104,7 +105,7 @@ class CampaignSupportSteps extends Component {
                 {step1Completed ? (
                   <StepCircle
                     className="u-cursor--pointer"
-                    onClick={() => historyPush(`${campaignBasePath}`)}
+                    onClick={() => historyPush(`${politicianBasePath || campaignBasePath}`)}
                   >
                     <StepNumber>
                       <Done classes={{ root: classes.doneIcon }} />
@@ -190,18 +191,22 @@ class CampaignSupportSteps extends Component {
             </InnerWrapper>
           )}
         </OuterWrapperSteps>
-      </div>
+      </CampaignSupportStepsWrapper>
     );
   }
 }
 CampaignSupportSteps.propTypes = {
-  classes: PropTypes.object,
   atStepNumber1: PropTypes.bool,
   atStepNumber2: PropTypes.bool,
   atPayToPromoteStep: PropTypes.bool,
   atSharingStep: PropTypes.bool,
   campaignBasePath: PropTypes.string,
   campaignXWeVoteId: PropTypes.string,
+  classes: PropTypes.object,
+  politicianBasePath: PropTypes.string,
 };
+
+const CampaignSupportStepsWrapper = styled('div')`
+`;
 
 export default withStyles(commonMuiStyles)(CampaignSupportSteps);

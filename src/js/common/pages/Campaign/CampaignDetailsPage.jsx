@@ -3,12 +3,13 @@ import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
+import { Link } from 'react-router-dom';
 import CampaignSupporterActions from '../../actions/CampaignSupporterActions';
 import {
   CampaignDescription, CampaignDescriptionDesktop, CampaignDescriptionWrapper,
   CampaignDescriptionDesktopWrapper, CampaignImagePlaceholder, CampaignImagePlaceholderText,
   CampaignImage, CampaignImageDesktop, CampaignImageDesktopWrapper, CampaignImageMobileWrapper,
-  CampaignOwnersDesktopWrapper, CampaignOwnersWrapper, CampaignSubSectionTitle,
+  CampaignOwnersDesktopWrapper, CampaignOwnersWrapper, CampaignSubSectionSeeAll, CampaignSubSectionTitle, CampaignSubSectionTitleWrapper,
   CampaignTitleAndScoreBar, CampaignTitleDesktop, CampaignTitleMobile,
   CommentsListWrapper, DetailsSectionDesktopTablet, DetailsSectionMobile,
   SupportButtonFooterWrapper, SupportButtonPanel,
@@ -50,6 +51,9 @@ class CampaignDetailsPage extends Component {
       chosenWebsiteName: '',
       finalElectionDateInPast: false,
       inPrivateLabelMode: false,
+      isBlockedByWeVote: false,
+      isBlockedByWeVoteReason: '',
+      linkedPoliticianWeVoteId: '',
       pathToUseWhenProfileComplete: '',
       payToPromoteStepCompleted: false,
       payToPromoteStepTurnedOn: false,
@@ -126,6 +130,7 @@ class CampaignDetailsPage extends Component {
       isBlockedByWeVote,
       isBlockedByWeVoteReason,
       isSupportersCountMinimumExceeded,
+      linkedPoliticianWeVoteId,
     } = getCampaignXValuesFromIdentifiers(campaignSEOFriendlyPathFromParams, campaignXWeVoteIdFromParams);
     let pathToUseWhenProfileComplete;
     if (campaignSEOFriendlyPath) {
@@ -155,6 +160,7 @@ class CampaignDetailsPage extends Component {
       isBlockedByWeVote,
       isBlockedByWeVoteReason,
       isSupportersCountMinimumExceeded,
+      linkedPoliticianWeVoteId,
       pathToUseWhenProfileComplete,
     });
   }
@@ -172,7 +178,7 @@ class CampaignDetailsPage extends Component {
     });
   }
 
-  getCampaignBasePath = () => {
+  getCampaignXBasePath = () => {
     const { campaignSEOFriendlyPath, campaignXWeVoteId } = this.state;
     let campaignBasePath;
     if (campaignSEOFriendlyPath) {
@@ -195,7 +201,7 @@ class CampaignDetailsPage extends Component {
     const { finalElectionDateInPast, payToPromoteStepCompleted, payToPromoteStepTurnedOn, sharingStepCompleted, step2Completed } = this.state;
     // console.log('functionToUseToKeepHelping sharingStepCompleted:', sharingStepCompleted, ', payToPromoteStepCompleted:', payToPromoteStepCompleted, ', step2Completed:', step2Completed);
     const keepHelpingDestinationString = keepHelpingDestination(step2Completed, payToPromoteStepCompleted, payToPromoteStepTurnedOn, sharingStepCompleted, finalElectionDateInPast);
-    historyPush(`${this.getCampaignBasePath()}/${keepHelpingDestinationString}`);
+    historyPush(`${this.getCampaignXBasePath()}/${keepHelpingDestinationString}`);
   }
 
   functionToUseWhenProfileComplete = () => {
@@ -246,7 +252,7 @@ class CampaignDetailsPage extends Component {
       campaignDescription, campaignDescriptionLimited, campaignPhotoLargeUrl,
       campaignSEOFriendlyPath, campaignTitle, campaignXWeVoteId,
       chosenWebsiteName, inPrivateLabelMode, isBlockedByWeVote, isBlockedByWeVoteReason,
-      finalElectionDateInPast, isSupportersCountMinimumExceeded,
+      finalElectionDateInPast, isSupportersCountMinimumExceeded, linkedPoliticianWeVoteId,
       voterCanEditThisCampaign, voterSupportsThisCampaign,
     } = this.state;
     // console.log('render isSupportersCountMinimumExceeded: ', isSupportersCountMinimumExceeded);
@@ -326,7 +332,11 @@ class CampaignDetailsPage extends Component {
               )}
             </BlockedReason>
           )}
-          <CampaignTopNavigation campaignSEOFriendlyPath={campaignSEOFriendlyPath} campaignXWeVoteId={campaignXWeVoteId} />
+          <CampaignTopNavigation
+            campaignSEOFriendlyPath={campaignSEOFriendlyPath}
+            campaignXWeVoteId={campaignXWeVoteId}
+            politicianWeVoteId={linkedPoliticianWeVoteId}
+          />
           <DetailsSectionMobile className="u-show-mobile">
             <CampaignImageMobileWrapper>
               {campaignPhotoLargeUrl ? (
@@ -401,9 +411,18 @@ class CampaignDetailsPage extends Component {
             <CommentsListWrapper>
               <DelayedLoad waitBeforeShow={1000}>
                 <Suspense fallback={<span>&nbsp;</span>}>
-                  <CampaignSubSectionTitle>
-                    Updates
-                  </CampaignSubSectionTitle>
+                  <CampaignSubSectionTitleWrapper>
+                    <CampaignSubSectionTitle>
+                      Updates
+                    </CampaignSubSectionTitle>
+                    {!!(this.getCampaignXBasePath()) && (
+                      <CampaignSubSectionSeeAll>
+                        <Link to={`${this.getCampaignXBasePath()}/updates`} className="u-link-color">
+                          See all
+                        </Link>
+                      </CampaignSubSectionSeeAll>
+                    )}
+                  </CampaignSubSectionTitleWrapper>
                   <CampaignNewsItemList
                     campaignXWeVoteId={campaignXWeVoteId}
                     campaignSEOFriendlyPath={campaignSEOFriendlyPath}
@@ -416,9 +435,18 @@ class CampaignDetailsPage extends Component {
             <CommentsListWrapper>
               <DelayedLoad waitBeforeShow={1000}>
                 <Suspense fallback={<span>&nbsp;</span>}>
-                  <CampaignSubSectionTitle>
-                    Reasons for supporting
-                  </CampaignSubSectionTitle>
+                  <CampaignSubSectionTitleWrapper>
+                    <CampaignSubSectionTitle>
+                      Reasons for supporting
+                    </CampaignSubSectionTitle>
+                    {!!(this.getCampaignXBasePath()) && (
+                      <CampaignSubSectionSeeAll>
+                        <Link to={`${this.getCampaignXBasePath()}/comments`} className="u-link-color">
+                          See all
+                        </Link>
+                      </CampaignSubSectionSeeAll>
+                    )}
+                  </CampaignSubSectionTitleWrapper>
                   <CampaignCommentsList campaignXWeVoteId={campaignXWeVoteId} startingNumberOfCommentsToDisplay={2} />
                 </Suspense>
               </DelayedLoad>
@@ -488,9 +516,18 @@ class CampaignDetailsPage extends Component {
                 <CommentsListWrapper>
                   <DelayedLoad waitBeforeShow={500}>
                     <Suspense fallback={<span>&nbsp;</span>}>
-                      <CampaignSubSectionTitle>
-                        Updates
-                      </CampaignSubSectionTitle>
+                      <CampaignSubSectionTitleWrapper>
+                        <CampaignSubSectionTitle>
+                          Updates
+                        </CampaignSubSectionTitle>
+                        {!!(this.getCampaignXBasePath()) && (
+                          <CampaignSubSectionSeeAll>
+                            <Link to={`${this.getCampaignXBasePath()}/updates`} className="u-link-color">
+                              See all
+                            </Link>
+                          </CampaignSubSectionSeeAll>
+                        )}
+                      </CampaignSubSectionTitleWrapper>
                       <CampaignNewsItemList
                         campaignXWeVoteId={campaignXWeVoteId}
                         campaignSEOFriendlyPath={campaignSEOFriendlyPath}
@@ -503,9 +540,18 @@ class CampaignDetailsPage extends Component {
                 <CommentsListWrapper>
                   <DelayedLoad waitBeforeShow={500}>
                     <Suspense fallback={<span>&nbsp;</span>}>
-                      <CampaignSubSectionTitle>
-                        Reasons for supporting
-                      </CampaignSubSectionTitle>
+                      <CampaignSubSectionTitleWrapper>
+                        <CampaignSubSectionTitle>
+                          Reasons for supporting
+                        </CampaignSubSectionTitle>
+                        {!!(this.getCampaignXBasePath()) && (
+                          <CampaignSubSectionSeeAll>
+                            <Link to={`${this.getCampaignXBasePath()}/comments`} className="u-link-color">
+                              See all
+                            </Link>
+                          </CampaignSubSectionSeeAll>
+                        )}
+                      </CampaignSubSectionTitleWrapper>
                       <CampaignCommentsList campaignXWeVoteId={campaignXWeVoteId} startingNumberOfCommentsToDisplay={2} />
                     </Suspense>
                   </DelayedLoad>
@@ -533,7 +579,6 @@ class CampaignDetailsPage extends Component {
             <SupportButtonPanel>
               <Suspense fallback={<span>&nbsp;</span>}>
                 <SupportButtonBeforeCompletionScreen
-                  campaignSEOFriendlyPath={campaignSEOFriendlyPath}
                   campaignXWeVoteId={campaignXWeVoteId}
                   functionToUseToKeepHelping={this.functionToUseToKeepHelping}
                   functionToUseWhenProfileComplete={this.functionToUseWhenProfileComplete}

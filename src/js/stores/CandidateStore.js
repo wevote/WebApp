@@ -89,6 +89,7 @@ class CandidateStore extends ReduceStore {
   //  support.
   getAllCachedPositionsByPoliticianWeVoteId (politicianWeVoteId) {
     const candidateList = this.getState().candidateListsByPoliticianWeVoteId[politicianWeVoteId] || [];
+    // console.log('candidateList', candidateList);
     let allCachedPositionsList = [];
     let allCachedPositionsListForThisCandidate;
     let allCachedPositionsForThisCandidateDict;
@@ -101,7 +102,7 @@ class CandidateStore extends ReduceStore {
       // console.log('222) allCachedPositionsListForThisCandidate', allCachedPositionsListForThisCandidate);
       allCachedPositionsList = allCachedPositionsList.concat(allCachedPositionsListForThisCandidate);
     });
-    // console.log('getAllCachedPositionsByPoliticianWeVoteId candidateList', candidateList, ', allCachedPositionsList:', allCachedPositionsList);
+    // console.log('getAllCachedPositionsByPoliticianWeVoteId ', politicianWeVoteId, ', candidateList:', candidateList, ', allCachedPositionsList:', allCachedPositionsList);
     return allCachedPositionsList;
   }
 
@@ -370,6 +371,29 @@ class CandidateStore extends ReduceStore {
           allCachedCandidates,
           candidateListsByPoliticianWeVoteId,
         };
+
+      case 'representativesQuery':
+        // incomingRepresentativeCount = 0;
+        // candidateList = action.res.candidates;
+        // // console.log('CandidateStore candidatesRetrieve contestOfficeWeVoteId:', contestOfficeWeVoteId, ', candidateList:', candidateList);
+        // candidateList.forEach((one) => {
+        //   // allCachedCandidates[one.we_vote_id] = one;
+        //   incomingRepresentativeCount += 1;
+        // });
+        // // console.log('localRepresentativeList:', localRepresentativeList);
+        // // console.log('candidateListsByOfficeWeVoteId:', candidateListsByOfficeWeVoteId);
+        // // console.log('candidateListsByOfficeWeVoteId[contestOfficeWeVoteId]:', candidateListsByOfficeWeVoteId[contestOfficeWeVoteId]);
+        // // candidateListsByOfficeWeVoteId[contestOfficeWeVoteId].forEach((two) => {
+        // //   console.log('two:', two);
+        // // });
+        //
+        // return {
+        //   ...state,
+        //   allCachedCandidates,
+        //   candidateListsByOfficeWeVoteId,
+        //   numberOfCandidatesRetrievedByOffice,
+        // };
+        return state;
 
       case 'voterAddressSave':
       case 'voterBallotItemsRetrieve':

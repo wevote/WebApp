@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import TruncateMarkup from 'react-truncate-markup';
 import styled from 'styled-components';
 // import { convertStateCodeToStateText } from '../../utils/addressFunctions';
-import CampaignSupporterActions from '../../actions/CampaignSupporterActions';
+// import CampaignSupporterActions from '../../actions/CampaignSupporterActions';
 import {
   CampaignImageMobile, CampaignImagePlaceholderText, CampaignImageMobilePlaceholder, CampaignImageDesktopPlaceholder, CampaignImageDesktop,
   CandidateCardForListWrapper, CampaignActionButtonsWrapper,
@@ -17,12 +17,12 @@ import historyPush from '../../utils/historyPush';
 import { renderLog } from '../../utils/logging';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import CampaignStore from '../../stores/CampaignStore';
+import CampaignOwnersList from '../CampaignSupport/CampaignOwnersList';
 import CampaignSupporterStore from '../../stores/CampaignSupporterStore';
-import initializejQuery from '../../utils/initializejQuery';
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import keepHelpingDestination from '../../utils/keepHelpingDestination';
 import numberWithCommas from '../../utils/numberWithCommas';
-import CampaignOwnersList from '../CampaignSupport/CampaignOwnersList';
+import saveCampaignSupportAndGoToNextPage from '../../utils/saveCampaignSupportAndGoToNextPage';
 // import { BlockedIndicator, DraftModeIndicator, EditIndicator, ElectionInPast, IndicatorButtonWrapper, IndicatorDefaultButtonWrapper, IndicatorRow } from '../Style/CampaignIndicatorStyles';
 
 const SupportButtonBeforeCompletionScreen = React.lazy(() => import(/* webpackChunkName: 'SupportButtonBeforeCompletionScreen' */ '../CampaignSupport/SupportButtonBeforeCompletionScreen'));
@@ -41,8 +41,7 @@ class CampaignCardForList extends Component {
     };
     this.functionToUseToKeepHelping = this.functionToUseToKeepHelping.bind(this);
     this.functionToUseWhenProfileComplete = this.functionToUseWhenProfileComplete.bind(this);
-    this.getCampaignBasePath = this.getCampaignBasePath.bind(this);
-    this.goToNextPage = this.goToNextPage.bind(this);
+    this.getCampaignXBasePath = this.getCampaignXBasePath.bind(this);
     this.onCampaignClick = this.onCampaignClick.bind(this);
     this.onCampaignClickLink = this.onCampaignClickLink.bind(this);
     this.onCampaignEditClick = this.onCampaignEditClick.bind(this);
@@ -105,18 +104,8 @@ class CampaignCardForList extends Component {
     const { campaignXWeVoteId } = this.props;
     const campaignX = CampaignStore.getCampaignXByWeVoteId(campaignXWeVoteId);
     // const voterCanEditThisCampaign = CampaignStore.getVoterCanEditThisCampaign(campaignXWeVoteId);
-    const {
-      seo_friendly_path: campaignSEOFriendlyPath,
-    } = campaignX;
-    let pathToUseWhenProfileComplete;
-    if (campaignSEOFriendlyPath) {
-      pathToUseWhenProfileComplete = `/c/${campaignSEOFriendlyPath}/why-do-you-support`;
-    } else if (campaignXWeVoteId) {
-      pathToUseWhenProfileComplete = `/id/${campaignXWeVoteId}/why-do-you-support`;
-    }
     this.setState({
       campaignX,
-      pathToUseWhenProfileComplete,
       // voterCanEditThisCampaign,
     });
   }
@@ -138,15 +127,11 @@ class CampaignCardForList extends Component {
     }
     const {
       in_draft_mode: inDraftMode,
-      seo_friendly_path: campaignSEOFriendlyPath,
-      campaignx_we_vote_id: campaignXWeVoteId,
     } = campaignX;
     if (inDraftMode) {
       return '/start-a-campaign-preview';
-    } else if (campaignSEOFriendlyPath) {
-      return `/c/${campaignSEOFriendlyPath}`;
     } else {
-      return `/id/${campaignXWeVoteId}`;
+      return `${this.getCampaignXBasePath()}`;
     }
   }
 
@@ -163,15 +148,11 @@ class CampaignCardForList extends Component {
     }
     const {
       in_draft_mode: inDraftMode,
-      seo_friendly_path: campaignSEOFriendlyPath,
-      campaignx_we_vote_id: campaignXWeVoteId,
     } = campaignX;
     if (inDraftMode) {
       historyPush('/start-a-campaign-preview');
-    } else if (campaignSEOFriendlyPath) {
-      historyPush(`/c/${campaignSEOFriendlyPath}/edit`);
     } else {
-      historyPush(`/id/${campaignXWeVoteId}/edit`);
+      historyPush(`${this.getCampaignXBasePath()}/edit`);
     }
     return null;
   }
@@ -182,15 +163,7 @@ class CampaignCardForList extends Component {
     if (!campaignX) {
       return null;
     }
-    const {
-      seo_friendly_path: campaignSEOFriendlyPath,
-      campaignx_we_vote_id: campaignXWeVoteId,
-    } = campaignX;
-    if (campaignSEOFriendlyPath) {
-      historyPush(`/c/${campaignSEOFriendlyPath}/share-campaign`);
-    } else {
-      historyPush(`/id/${campaignXWeVoteId}/share-campaign`);
-    }
+    historyPush(`${this.getCampaignXBasePath()}/share-campaign`);
     return null;
   }
 
@@ -200,19 +173,11 @@ class CampaignCardForList extends Component {
     if (!campaignX) {
       return null;
     }
-    const {
-      seo_friendly_path: campaignSEOFriendlyPath,
-      campaignx_we_vote_id: campaignXWeVoteId,
-    } = campaignX;
-    if (campaignSEOFriendlyPath) {
-      historyPush(`/c/${campaignSEOFriendlyPath}/share-campaign`);
-    } else {
-      historyPush(`/id/${campaignXWeVoteId}/share-campaign`);
-    }
+    historyPush(`${this.getCampaignXBasePath()}/share-campaign`);
     return null;
   }
 
-  getCampaignBasePath () {
+  getCampaignXBasePath () {
     const { campaignX } = this.state;
     // console.log('campaignX:', campaignX);
     if (!campaignX) {
@@ -228,7 +193,6 @@ class CampaignCardForList extends Component {
     } else {
       campaignBasePath = `/id/${campaignXWeVoteId}`;
     }
-
     return campaignBasePath;
   }
 
@@ -259,38 +223,22 @@ class CampaignCardForList extends Component {
     }
   }
 
-  goToNextPage () {
-    const { pathToUseWhenProfileComplete } = this.state;
-    this.timer = setTimeout(() => {
-      historyPush(pathToUseWhenProfileComplete);
-    }, 500);
-    return null;
-  }
-
   functionToUseToKeepHelping () {
     const { payToPromoteStepCompleted, payToPromoteStepTurnedOn, sharingStepCompleted, step2Completed } = this.state;
     // console.log(payToPromoteStepCompleted, payToPromoteStepTurnedOn, sharingStepCompleted, step2Completed);
     const keepHelpingDestinationString = keepHelpingDestination(step2Completed, payToPromoteStepCompleted, payToPromoteStepTurnedOn, sharingStepCompleted);
-    console.log('functionToUseToKeepHelping keepHelpingDestinationString:', keepHelpingDestinationString);
-    historyPush(`${this.getCampaignBasePath()}/${keepHelpingDestinationString}`);
+    // console.log('functionToUseToKeepHelping keepHelpingDestinationString:', keepHelpingDestinationString);
+    historyPush(`${this.getCampaignXBasePath()}/${keepHelpingDestinationString}`);
   }
 
   functionToUseWhenProfileComplete () {
     const { campaignXWeVoteId } = this.props;
-    const campaignSupported = true;
-    const campaignSupportedChanged = true;
-    // From this page we always send value for 'visibleToPublic'
-    let visibleToPublic = CampaignSupporterStore.getVisibleToPublic();
-    const visibleToPublicChanged = CampaignSupporterStore.getVisibleToPublicQueuedToSaveSet();
-    if (visibleToPublicChanged) {
-      // If it has changed, use new value
-      visibleToPublic = CampaignSupporterStore.getVisibleToPublicQueuedToSave();
+    if (campaignXWeVoteId) {
+      const campaignXBaseBath = this.getCampaignXBasePath();
+      saveCampaignSupportAndGoToNextPage(campaignXWeVoteId, campaignXBaseBath);
+    } else {
+      console.log('CampaignCardForList functionToUseWhenProfileComplete campaignXWeVoteId not found');
     }
-    console.log('functionToUseWhenProfileComplete, visibleToPublic:', visibleToPublic, ', visibleToPublicChanged:', visibleToPublicChanged);
-    const saveVisibleToPublic = true;
-    initializejQuery(() => {
-      CampaignSupporterActions.supportCampaignSave(campaignXWeVoteId, campaignSupported, campaignSupportedChanged, visibleToPublic, saveVisibleToPublic);
-    }, this.goToNextPage());
   }
 
   render () {
@@ -310,7 +258,6 @@ class CampaignCardForList extends Component {
       // is_blocked_by_we_vote: isBlockedByWeVote,
       // is_in_team_review_mode: isInTeamReviewMode,
       // is_supporters_count_minimum_exceeded: isSupportersCountMinimumExceeded,
-      seo_friendly_path: campaignSEOFriendlyPath,
       supporters_count: supportersCount,
       supporters_count_next_goal: supportersCountNextGoal,
       // visible_on_this_site: visibleOnThisSite,
@@ -327,7 +274,10 @@ class CampaignCardForList extends Component {
             <OneCampaignTextColumn>
               <TitleAndTextWrapper>
                 <OneCampaignTitle>
-                  <Link to={this.onCampaignClickLink()}>
+                  <Link
+                    id="campaignCardDisplayName"
+                    to={this.onCampaignClickLink()}
+                  >
                     {campaignTitle}
                   </Link>
                 </OneCampaignTitle>
@@ -343,7 +293,11 @@ class CampaignCardForList extends Component {
                       Thank you for supporting!
                     </SupportersActionLink>
                   ) : (
-                    <SupportersActionLink className="u-link-color u-link-underline u-cursor--pointer" onClick={this.onCampaignClick}>
+                    <SupportersActionLink
+                      className="u-link-color u-link-underline u-cursor--pointer"
+                      id="campaignCardLetsGetTo"
+                      onClick={this.onCampaignClick}
+                    >
                       Let&apos;s get to
                       {' '}
                       {numberWithCommas(supportersCountNextGoalWithFloor)}
@@ -351,7 +305,11 @@ class CampaignCardForList extends Component {
                     </SupportersActionLink>
                   )}
                 </SupportersWrapper>
-                <OneCampaignDescription className="u-cursor--pointer" onClick={this.onCampaignClick}>
+                <OneCampaignDescription
+                  className="u-cursor--pointer"
+                  id="campaignCardDescription"
+                  onClick={this.onCampaignClick}
+                >
                   <TruncateMarkup
                     ellipsis="..."
                     lines={2}
@@ -452,7 +410,6 @@ class CampaignCardForList extends Component {
                 {!inDraftMode && (
                   <Suspense fallback={<span>&nbsp;</span>}>
                     <SupportButtonBeforeCompletionScreen
-                      campaignSEOFriendlyPath={campaignSEOFriendlyPath}
                       campaignXWeVoteId={campaignXWeVoteId}
                       functionToUseToKeepHelping={this.functionToUseToKeepHelping}
                       functionToUseWhenProfileComplete={this.functionToUseWhenProfileComplete}

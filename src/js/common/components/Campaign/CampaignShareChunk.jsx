@@ -23,7 +23,7 @@ class CampaignShareChunk extends Component {
     // console.log('CampaignShareChunk componentDidMount');
   }
 
-  getCampaignBasePath = () => {
+  getCampaignXBasePath = () => {
     const { campaignSEOFriendlyPath, campaignXWeVoteId } = this.props;
     let campaignBasePath;
     if (campaignSEOFriendlyPath) {
@@ -36,9 +36,9 @@ class CampaignShareChunk extends Component {
 
   superSharingIntro = (sms = false) => {
     if (sms) {
-      historyPush(`${this.getCampaignBasePath()}/super-sharing-campaign-sms`);
+      historyPush(`${this.getCampaignXBasePath()}/super-sharing-campaign-sms`);
     } else {
-      historyPush(`${this.getCampaignBasePath()}/super-sharing-campaign-email`);
+      historyPush(`${this.getCampaignXBasePath()}/super-sharing-campaign-email`);
     }
   }
 

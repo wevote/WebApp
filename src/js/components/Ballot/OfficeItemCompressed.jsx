@@ -345,7 +345,7 @@ class OfficeItemCompressed extends Component {
                   </Suspense>
                 </PositionRowListScoreSpacer>
               </PositionRowListScoreColumn>
-            )
+            );
             return (
               <BallotScrollingInnerWrapper key={uniqueKey}>
                 <BallotHorizontallyScrollingContainer>
