@@ -4,6 +4,11 @@ export const BottomActionButtonWrapper = styled('div')`
   margin-top: 4px;
 `;
 
+export const BottomActionButtonEmptyWrapper = styled('div')`
+  height: 36px;
+  margin-top: 4px;
+`;
+
 export const CampaignActionButtonsWrapper = styled('div')`
   align-items: center;
   cursor: pointer;

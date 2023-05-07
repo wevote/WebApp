@@ -34,9 +34,10 @@ export default function FooterCandidateList () {
 }
 
 const FooterCandidateListWrapper = styled('span')`
+  align-items: center;
   display: flex;
   flex-flow: column;
-  align-items: center;
+  margin-top: 10px; // To match BallotElectionListWithFilters
 `;
 
 const SimpleModeItemWrapper = styled('div')`

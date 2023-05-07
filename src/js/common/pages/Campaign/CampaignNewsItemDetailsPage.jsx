@@ -5,6 +5,7 @@ import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
+import { Link } from 'react-router-dom';
 import anonymous from '../../../../img/global/icons/avatar-generic.png';
 import CampaignSupporterActions from '../../actions/CampaignSupporterActions';
 import LazyImage from '../../components/LazyImage';
@@ -12,7 +13,7 @@ import {
   CampaignDescription, CampaignDescriptionDesktop, CampaignDescriptionWrapper,
   CampaignDescriptionDesktopWrapper, CampaignImagePlaceholder, CampaignImagePlaceholderText,
   CampaignImage, CampaignImageDesktop, CampaignImageDesktopWrapper, CampaignImageMobileWrapper,
-  CampaignSubSectionTitle,
+  CampaignSubSectionSeeAll, CampaignSubSectionTitle, CampaignSubSectionTitleWrapper,
   CampaignTitleAndScoreBar, CampaignTitleDesktop, CampaignTitleMobile,
   CommentsListWrapper, DetailsSectionDesktopTablet, DetailsSectionMobile,
   SpeakerAndPhotoOuterWrapper, SpeakerName, SpeakerVoterPhotoWrapper,
@@ -57,6 +58,8 @@ class CampaignNewsItemDetailsPage extends Component {
       finalElectionDateInPast: false,
       inDraftMode: false,
       inPrivateLabelMode: false,
+      isBlockedByWeVote: false,
+      isBlockedByWeVoteReason: '',
       pathToUseWhenProfileComplete: '',
       payToPromoteStepCompleted: false,
       payToPromoteStepTurnedOn: false,
@@ -227,7 +230,7 @@ class CampaignNewsItemDetailsPage extends Component {
     });
   }
 
-  getCampaignBasePath = () => {
+  getCampaignXBasePath = () => {
     const { campaignSEOFriendlyPath, campaignXWeVoteId } = this.state;
     let campaignBasePath;
     if (campaignSEOFriendlyPath) {
@@ -239,7 +242,7 @@ class CampaignNewsItemDetailsPage extends Component {
   }
 
   goToCampaignBasePath = () => {
-    historyPush(`${this.getCampaignBasePath()}`);
+    historyPush(`${this.getCampaignXBasePath()}`);
   }
 
   goToNextPage = () => {
@@ -253,7 +256,7 @@ class CampaignNewsItemDetailsPage extends Component {
     // console.log('functionToUseToKeepHelping');
     const { payToPromoteStepCompleted, payToPromoteStepTurnedOn, sharingStepCompleted, step2Completed } = this.state;
     const keepHelpingDestinationString = keepHelpingDestination(step2Completed, payToPromoteStepCompleted, payToPromoteStepTurnedOn, sharingStepCompleted);
-    historyPush(`${this.getCampaignBasePath()}/${keepHelpingDestinationString}`);
+    historyPush(`${this.getCampaignXBasePath()}/${keepHelpingDestinationString}`);
   }
 
   functionToUseWhenProfileComplete = () => {
@@ -279,31 +282,31 @@ class CampaignNewsItemDetailsPage extends Component {
   continueToNextStep = () => {
     const { match: { params } } = this.props;
     const { campaignXNewsItemWeVoteId } = params;
-    historyPush(`${this.getCampaignBasePath()}/send/${campaignXNewsItemWeVoteId}`);
+    historyPush(`${this.getCampaignXBasePath()}/send/${campaignXNewsItemWeVoteId}`);
     return null;
   }
 
   onCampaignEditClick = () => {
-    historyPush(`${this.getCampaignBasePath()}/edit`);
+    historyPush(`${this.getCampaignXBasePath()}/edit`);
     return null;
   }
 
   onCampaignNewsItemEditClick = () => {
     const { match: { params } } = this.props;
     const { campaignXNewsItemWeVoteId } = params;
-    historyPush(`${this.getCampaignBasePath()}/add-update/${campaignXNewsItemWeVoteId}`);
+    historyPush(`${this.getCampaignXBasePath()}/add-update/${campaignXNewsItemWeVoteId}`);
     return null;
   }
 
   onCampaignNewsItemShareClick = () => {
     const { match: { params } } = this.props;
     const { campaignXNewsItemWeVoteId } = params;
-    historyPush(`${this.getCampaignBasePath()}/share-it/${campaignXNewsItemWeVoteId}`);
+    historyPush(`${this.getCampaignXBasePath()}/share-it/${campaignXNewsItemWeVoteId}`);
     return null;
   }
 
   onCampaignGetMinimumSupportersClick = () => {
-    historyPush(`${this.getCampaignBasePath()}/share-campaign`);
+    historyPush(`${this.getCampaignXBasePath()}/share-campaign`);
     return null;
   }
 
@@ -420,7 +423,7 @@ class CampaignNewsItemDetailsPage extends Component {
           <UpdateSupportersHeader>
             <CampaignNewsItemPublishSteps
               atStepNumber2
-              campaignBasePath={this.getCampaignBasePath()}
+              campaignBasePath={this.getCampaignXBasePath()}
               campaignXNewsItemWeVoteId={campaignXNewsItemWeVoteId}
               campaignXWeVoteId={campaignXWeVoteId}
             />
@@ -579,9 +582,18 @@ class CampaignNewsItemDetailsPage extends Component {
               <CommentsListWrapper>
                 <DelayedLoad waitBeforeShow={1000}>
                   <Suspense fallback={<span>&nbsp;</span>}>
-                    <CampaignSubSectionTitle>
-                      Reasons for supporting
-                    </CampaignSubSectionTitle>
+                    <CampaignSubSectionTitleWrapper>
+                      <CampaignSubSectionTitle>
+                        Reasons for supporting
+                      </CampaignSubSectionTitle>
+                      {!!(this.getCampaignXBasePath()) && (
+                        <CampaignSubSectionSeeAll>
+                          <Link to={`${this.getCampaignXBasePath()}/comments`} className="u-link-color">
+                            See all
+                          </Link>
+                        </CampaignSubSectionSeeAll>
+                      )}
+                    </CampaignSubSectionTitleWrapper>
                     <CampaignCommentsList campaignXWeVoteId={campaignXWeVoteId} startingNumberOfCommentsToDisplay={2} />
                   </Suspense>
                 </DelayedLoad>
@@ -676,9 +688,18 @@ class CampaignNewsItemDetailsPage extends Component {
                   <CommentsListWrapper>
                     <DelayedLoad waitBeforeShow={500}>
                       <Suspense fallback={<span>&nbsp;</span>}>
-                        <CampaignSubSectionTitle>
-                          Reasons for supporting
-                        </CampaignSubSectionTitle>
+                        <CampaignSubSectionTitleWrapper>
+                          <CampaignSubSectionTitle>
+                            Reasons for supporting
+                          </CampaignSubSectionTitle>
+                          {!!(this.getCampaignXBasePath()) && (
+                            <CampaignSubSectionSeeAll>
+                              <Link to={`${this.getCampaignXBasePath()}/comments`} className="u-link-color">
+                                See all
+                              </Link>
+                            </CampaignSubSectionSeeAll>
+                          )}
+                        </CampaignSubSectionTitleWrapper>
                         <CampaignCommentsList campaignXWeVoteId={campaignXWeVoteId} startingNumberOfCommentsToDisplay={2} />
                       </Suspense>
                     </DelayedLoad>
@@ -709,7 +730,6 @@ class CampaignNewsItemDetailsPage extends Component {
               <SupportButtonPanel>
                 <Suspense fallback={<span>&nbsp;</span>}>
                   <SupportButtonBeforeCompletionScreen
-                    campaignSEOFriendlyPath={campaignSEOFriendlyPath}
                     campaignXWeVoteId={campaignXWeVoteId}
                     functionToUseToKeepHelping={this.functionToUseToKeepHelping}
                     functionToUseWhenProfileComplete={this.functionToUseWhenProfileComplete}

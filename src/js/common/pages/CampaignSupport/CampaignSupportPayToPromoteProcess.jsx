@@ -193,11 +193,11 @@ class CampaignSupportPayToPromoteProcess extends Component {
   }
 
   goToIWillShare = () => {
-    const pathForNextStep = `${this.getCampaignBasePath()}/share-campaign`;
+    const pathForNextStep = `${this.getCampaignXBasePath()}/share-campaign`;
     historyPush(pathForNextStep);
   }
 
-  getCampaignBasePath = () => {
+  getCampaignXBasePath = () => {
     const { campaignSEOFriendlyPath, campaignXWeVoteId } = this.state;
     let campaignBasePath;
     if (campaignSEOFriendlyPath) {

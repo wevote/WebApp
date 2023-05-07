@@ -210,7 +210,7 @@ class SuperSharingChooseRecipients extends Component {
     });
   }
 
-  getCampaignBasePath = () => {
+  getCampaignXBasePath = () => {
     const { campaignSEOFriendlyPath, campaignXWeVoteId } = this.state;
     let campaignBasePath;
     if (campaignSEOFriendlyPath) {
@@ -225,9 +225,9 @@ class SuperSharingChooseRecipients extends Component {
   goToNextStep = () => {
     const { campaignXNewsItemWeVoteId } = this.state;
     if (campaignXNewsItemWeVoteId) {
-      historyPush(`${this.getCampaignBasePath()}/super-sharing-compose-email/${campaignXNewsItemWeVoteId}`);
+      historyPush(`${this.getCampaignXBasePath()}/super-sharing-compose-email/${campaignXNewsItemWeVoteId}`);
     } else {
-      historyPush(`${this.getCampaignBasePath()}/super-sharing-compose-email`);
+      historyPush(`${this.getCampaignXBasePath()}/super-sharing-compose-email`);
     }
   }
 
@@ -242,9 +242,9 @@ class SuperSharingChooseRecipients extends Component {
   onClickAddContacts = () => {
     const { campaignXNewsItemWeVoteId } = this.state;
     if (campaignXNewsItemWeVoteId) {
-      historyPush(`${this.getCampaignBasePath()}/super-sharing-add-email-contacts/${campaignXNewsItemWeVoteId}`);
+      historyPush(`${this.getCampaignXBasePath()}/super-sharing-add-email-contacts/${campaignXNewsItemWeVoteId}`);
     } else {
-      historyPush(`${this.getCampaignBasePath()}/super-sharing-add-email-contacts`);
+      historyPush(`${this.getCampaignXBasePath()}/super-sharing-add-email-contacts`);
     }
   }
 
@@ -277,7 +277,7 @@ class SuperSharingChooseRecipients extends Component {
   }
 
   returnToOtherSharingOptions = () => {
-    historyPush(`${this.getCampaignBasePath()}/share-campaign`);
+    historyPush(`${this.getCampaignXBasePath()}/share-campaign`);
   }
 
   submitSkipForNow = () => {
@@ -326,7 +326,7 @@ class SuperSharingChooseRecipients extends Component {
             <ContentInnerWrapperDefault>
               <SuperSharingSteps
                 atStepNumber2
-                campaignBasePath={this.getCampaignBasePath()}
+                campaignBasePath={this.getCampaignXBasePath()}
                 campaignXNewsItemWeVoteId={campaignXNewsItemWeVoteId}
                 campaignXWeVoteId={campaignXWeVoteId}
               />

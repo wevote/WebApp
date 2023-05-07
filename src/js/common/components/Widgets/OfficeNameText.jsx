@@ -38,7 +38,7 @@ export default function OfficeNameText (props) {
   // console.log('districtName: ', districtName, 'officeName: ', officeName);
   const officeLink = null;
   if (districtName) {
-    if (officeName === undefined) {
+    if (officeName === undefined || officeName === '') {
       officeAndDistrictHtml = (
         <NoPoliticalPartySpan>
           <span>Representative for </span>
@@ -54,7 +54,7 @@ export default function OfficeNameText (props) {
         <OfficeAndDistrictSpan>
           <span className="u-gray-darker">
             {officeName}
-            ,
+            {(officeName && districtName) ? ',' : ''}
             {' '}
           </span>
           {officeLink ? (

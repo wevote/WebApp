@@ -86,7 +86,7 @@ class CampaignNewsItemForList extends Component {
     });
   }
 
-  getCampaignBasePath = () => {
+  getCampaignXBasePath = () => {
     const { campaignXWeVoteId } = this.props;
     const { campaignSEOFriendlyPath } = this.state;
     let campaignBasePath;
@@ -100,25 +100,25 @@ class CampaignNewsItemForList extends Component {
 
   onCampaignNewsItemDraftOrBlockedClick = () => {
     const { campaignXNewsItemWeVoteId } = this.props;
-    historyPush(`${this.getCampaignBasePath()}/add-update/${campaignXNewsItemWeVoteId}`);
+    historyPush(`${this.getCampaignXBasePath()}/add-update/${campaignXNewsItemWeVoteId}`);
     return null;
   }
 
   onCampaignNewsItemEditClick = () => {
     const { campaignXNewsItemWeVoteId } = this.props;
-    historyPush(`${this.getCampaignBasePath()}/add-update/${campaignXNewsItemWeVoteId}`);
+    historyPush(`${this.getCampaignXBasePath()}/add-update/${campaignXNewsItemWeVoteId}`);
     return null;
   }
 
   onCampaignNewsItemShareClick = () => {
     const { campaignXNewsItemWeVoteId } = this.props;
-    historyPush(`${this.getCampaignBasePath()}/share-it/${campaignXNewsItemWeVoteId}`);
+    historyPush(`${this.getCampaignXBasePath()}/share-it/${campaignXNewsItemWeVoteId}`);
     return null;
   }
 
   goToDedicatedPublicNewsItemPage = () => {
     const { campaignXNewsItemWeVoteId } = this.props;
-    historyPush(`${this.getCampaignBasePath()}/u/${campaignXNewsItemWeVoteId}`);
+    historyPush(`${this.getCampaignXBasePath()}/u/${campaignXNewsItemWeVoteId}`);
     return null;
   }
 

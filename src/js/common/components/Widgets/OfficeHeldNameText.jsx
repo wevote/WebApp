@@ -56,7 +56,7 @@ export default function OfficeHeldNameText (props) {
       );
     } else {
       nameHtml = (
-        <PartyAndOfficeWrapper>
+        <PartyAndOfficeHeldWrapper>
           <span className="u-gray-darker">
             {officeName}
             {' '}
@@ -70,7 +70,7 @@ export default function OfficeHeldNameText (props) {
           <YearStateWrapper inCard={inCard}>
             <YearState centeredText={centeredText} politicalParty={politicalParty} stateName={stateName} />
           </YearStateWrapper>
-        </PartyAndOfficeWrapper>
+        </PartyAndOfficeHeldWrapper>
       );
     }
   } else {
@@ -107,7 +107,7 @@ const DistrictAndPartySpan = styled('span')`
 const PartyAndYearWrapper = styled('div')`
 `;
 
-const PartyAndOfficeWrapper = styled('div')`
+const PartyAndOfficeHeldWrapper = styled('div')`
   line-height: 17px;
 `;
 

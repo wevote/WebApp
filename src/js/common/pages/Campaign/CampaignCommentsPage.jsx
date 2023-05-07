@@ -27,6 +27,9 @@ class CampaignCommentsPage extends Component {
       campaignTitle: '',
       campaignXWeVoteId: '',
       chosenWebsiteName: '',
+      isBlockedByWeVote: false,
+      isBlockedByWeVoteReason: '',
+      linkedPoliticianWeVoteId: '',
     };
   }
 
@@ -79,6 +82,7 @@ class CampaignCommentsPage extends Component {
       campaignXWeVoteId,
       isBlockedByWeVote,
       isBlockedByWeVoteReason,
+      linkedPoliticianWeVoteId,
     } = getCampaignXValuesFromIdentifiers(campaignSEOFriendlyPathFromParams, campaignXWeVoteIdFromParams);
     if (campaignSEOFriendlyPath) {
       this.setState({
@@ -96,6 +100,7 @@ class CampaignCommentsPage extends Component {
       campaignTitle,
       isBlockedByWeVote,
       isBlockedByWeVoteReason,
+      linkedPoliticianWeVoteId,
     });
   }
 
@@ -110,7 +115,7 @@ class CampaignCommentsPage extends Component {
     // const { classes } = this.props;
     const {
       campaignSEOFriendlyPath, campaignTitle, campaignXWeVoteId, chosenWebsiteName,
-      isBlockedByWeVote, isBlockedByWeVoteReason, voterCanEditThisCampaign,
+      isBlockedByWeVote, isBlockedByWeVoteReason, linkedPoliticianWeVoteId, voterCanEditThisCampaign,
     } = this.state;
     // console.log('render campaignSEOFriendlyPath: ', campaignSEOFriendlyPath, ', campaignXWeVoteId: ', campaignXWeVoteId);
     const htmlTitle = `Supporter Comments, ${campaignTitle} - ${chosenWebsiteName}`;
@@ -178,7 +183,11 @@ class CampaignCommentsPage extends Component {
               )}
             </BlockedReason>
           )}
-          <CampaignTopNavigation campaignSEOFriendlyPath={campaignSEOFriendlyPath} campaignXWeVoteId={campaignXWeVoteId} />
+          <CampaignTopNavigation
+            campaignSEOFriendlyPath={campaignSEOFriendlyPath}
+            campaignXWeVoteId={campaignXWeVoteId}
+            politicianWeVoteId={linkedPoliticianWeVoteId}
+          />
           <CommentsSectionOuterWrapper>
             <CommentsSectionInnerWrapper>
               <PageStatement>

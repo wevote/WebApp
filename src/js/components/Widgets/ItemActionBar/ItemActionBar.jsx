@@ -56,7 +56,7 @@ class ItemActionBar extends PureComponent {
     const { ballotItemWeVoteId } = this.props;
     if (ballotItemWeVoteId) {
       const isCandidate = stringContains('cand', ballotItemWeVoteId); // isCandidate = the default
-      const isMeasure = stringContains('meas', ballotItemWeVoteId); // isCandidate = the default
+      const isMeasure = stringContains('meas', ballotItemWeVoteId);
       const isPolitician = stringContains('pol', ballotItemWeVoteId);
       let ballotItemType;
       if (isCandidate) {
@@ -73,6 +73,7 @@ class ItemActionBar extends PureComponent {
       let numberOfOpposePositionsForScore = 0;
       let voterTextStatement = '';
       const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(ballotItemWeVoteId);
+      // console.log('ballotItemStatSheet', ballotItemStatSheet);
       if (ballotItemStatSheet) {
         const {
           voterOpposesBallotItem,

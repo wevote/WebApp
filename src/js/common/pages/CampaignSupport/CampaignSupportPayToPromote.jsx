@@ -31,6 +31,7 @@ class CampaignSupportPayToPromote extends Component {
       campaignTitle: '',
       campaignXWeVoteId: '',
       chosenWebsiteName: '',
+      linkedPoliticianWeVoteId: '',
       voterFirstName: '',
     };
   }
@@ -50,9 +51,11 @@ class CampaignSupportPayToPromote extends Component {
       campaignPhotoLargeUrl,
       campaignSEOFriendlyPath,
       campaignXWeVoteId,
+      linkedPoliticianWeVoteId,
     } = getCampaignXValuesFromIdentifiers(campaignSEOFriendlyPathFromParams, campaignXWeVoteIdFromParams);
     this.setState({
       campaignPhotoLargeUrl,
+      linkedPoliticianWeVoteId,
     });
     if (campaignSEOFriendlyPath) {
       this.setState({
@@ -100,10 +103,12 @@ class CampaignSupportPayToPromote extends Component {
       campaignSEOFriendlyPath,
       campaignTitle,
       campaignXWeVoteId,
+      linkedPoliticianWeVoteId,
     } = getCampaignXValuesFromIdentifiers(campaignSEOFriendlyPathFromParams, campaignXWeVoteIdFromParams);
     this.setState({
       campaignPhotoLargeUrl,
       campaignTitle,
+      linkedPoliticianWeVoteId,
     });
     if (campaignSEOFriendlyPath) {
       this.setState({
@@ -132,7 +137,7 @@ class CampaignSupportPayToPromote extends Component {
     });
   }
 
-  getCampaignBasePath = () => {
+  getCampaignXBasePath = () => {
     const { campaignSEOFriendlyPath, campaignXWeVoteId } = this.state;
     let campaignBasePath;
     if (campaignSEOFriendlyPath) {
@@ -143,18 +148,32 @@ class CampaignSupportPayToPromote extends Component {
     return campaignBasePath;
   }
 
+  getPoliticianBasePath = () => {
+    const { politicianSEOFriendlyPath, linkedPoliticianWeVoteId } = this.state;
+    let politicianBasePath;
+    if (politicianSEOFriendlyPath) {
+      politicianBasePath = `/${politicianSEOFriendlyPath}/-`;
+    } else if (linkedPoliticianWeVoteId) {
+      politicianBasePath = `/${linkedPoliticianWeVoteId}/p`;
+    } else {
+      // console.log('CampaignRecommendedCampaigns getPoliticianBasePath, failed to get politicianBasePath');
+      politicianBasePath = this.getCampaignXBasePath();
+    }
+    return politicianBasePath;
+  }
+
   goToIWillChipIn = () => {
-    const pathForNextStep = `${this.getCampaignBasePath()}/pay-to-promote-process`;
+    const pathForNextStep = `${this.getCampaignXBasePath()}/pay-to-promote-process`;
     historyPush(pathForNextStep);
   }
 
   goToIWillShare = () => {
-    const pathForNextStep = `${this.getCampaignBasePath()}/i-will-share-campaign`;
+    const pathForNextStep = `${this.getCampaignXBasePath()}/i-will-share-campaign`;
     historyPush(pathForNextStep);
   }
 
   submitSkipForNow = () => {
-    const pathForNextStep = `${this.getCampaignBasePath()}/share-campaign-with-one-friend`;
+    const pathForNextStep = `${this.getCampaignXBasePath()}/share-campaign-with-one-friend`;
     historyPush(pathForNextStep);
   }
 
@@ -201,8 +220,9 @@ class CampaignSupportPayToPromote extends Component {
             <ContentInnerWrapperDefault>
               <CampaignSupportSteps
                 atPayToPromoteStep
-                campaignBasePath={this.getCampaignBasePath()}
+                campaignBasePath={this.getCampaignXBasePath()}
                 campaignXWeVoteId={campaignXWeVoteId}
+                politicianBasePath={this.getPoliticianBasePath()}
               />
               <CampaignSupportImageWrapper>
                 {campaignPhotoLargeUrl ? (

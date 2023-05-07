@@ -195,7 +195,7 @@ class SuperSharingComposeEmailMessage extends Component {
     const { campaignXNewsItemWeVoteId } = this.state;
     const mostRecentlySavedCampaignXNewsItemWeVoteId = CampaignNewsItemStore.getMostRecentlySavedCampaignXNewsItemWeVoteId();
     if (mostRecentlySavedCampaignXNewsItemWeVoteId && mostRecentlySavedCampaignXNewsItemWeVoteId !== campaignXNewsItemWeVoteId) {
-      historyPush(`${this.getCampaignBasePath()}/u-preview/${mostRecentlySavedCampaignXNewsItemWeVoteId}`);
+      historyPush(`${this.getCampaignXBasePath()}/u-preview/${mostRecentlySavedCampaignXNewsItemWeVoteId}`);
     }
   }
 
@@ -216,7 +216,7 @@ class SuperSharingComposeEmailMessage extends Component {
     });
   }
 
-  getCampaignBasePath = () => {
+  getCampaignXBasePath = () => {
     const { campaignSEOFriendlyPath, campaignXWeVoteId } = this.state;
     let campaignBasePath;
     if (campaignSEOFriendlyPath) {
@@ -243,14 +243,14 @@ class SuperSharingComposeEmailMessage extends Component {
   goToNextStep = () => {
     const { campaignXNewsItemWeVoteId } = this.state;
     if (campaignXNewsItemWeVoteId) {
-      historyPush(`${this.getCampaignBasePath()}/super-sharing-send-email/${campaignXNewsItemWeVoteId}`);
+      historyPush(`${this.getCampaignXBasePath()}/super-sharing-send-email/${campaignXNewsItemWeVoteId}`);
     } else {
-      historyPush(`${this.getCampaignBasePath()}/super-sharing-send-email`);
+      historyPush(`${this.getCampaignXBasePath()}/super-sharing-send-email`);
     }
   }
 
   returnToOtherSharingOptions = () => {
-    historyPush(`${this.getCampaignBasePath()}/share-campaign`);
+    historyPush(`${this.getCampaignXBasePath()}/share-campaign`);
   }
 
   submitSkipForNow = () => {
@@ -283,7 +283,7 @@ class SuperSharingComposeEmailMessage extends Component {
         ShareActions.personalizedMessageQueuedToSave(undefined);
       });
     }
-    historyPush(`${this.getCampaignBasePath()}/super-sharing-send-email`);
+    historyPush(`${this.getCampaignXBasePath()}/super-sharing-send-email`);
   }
 
   render () {
@@ -309,7 +309,7 @@ class SuperSharingComposeEmailMessage extends Component {
             <ContentInnerWrapperDefault>
               <SuperSharingSteps
                 atStepNumber3
-                campaignBasePath={this.getCampaignBasePath()}
+                campaignBasePath={this.getCampaignXBasePath()}
                 campaignXNewsItemWeVoteId={campaignXNewsItemWeVoteId}
                 campaignXWeVoteId={campaignXWeVoteId}
               />

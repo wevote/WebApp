@@ -85,8 +85,18 @@ export const CampaignOwnersDesktopWrapper = styled('div')`
 export const CampaignOwnersWrapper = styled('div')`
 `;
 
+export const CampaignSubSectionSeeAll = styled('div')`
+  font-size: 16px;
+`;
+
 export const CampaignSubSectionTitle = styled('h2')`
   font-size: 22px;
+`;
+
+export const CampaignSubSectionTitleWrapper = styled('div')`
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
   margin: 50px 0 10px 0;
 `;
 
@@ -192,6 +202,7 @@ export const DetailsSectionDesktopTablet = styled('div')`
 export const DetailsSectionMobile = styled('div')`
   display: flex;
   flex-flow: column;
+  margin-bottom: 60px;
 `;
 
 export const OneCampaignInnerWrapper = styled('div')(({ theme }) => (`
@@ -211,6 +222,12 @@ export const OneCampaignOuterWrapper = styled('div')(({ theme }) => (`
     border-radius: 5px;
   }
 `));
+
+export const OtherElectionsWrapper = styled('div')`
+  border-top: 1px solid #ddd;
+  margin-top: 25px;
+  padding-top: 25px;
+`;
 
 export const ReadMoreSpan = styled('div')`
   color: #4371cc;

@@ -27,6 +27,9 @@ class CampaignNewsPage extends Component {
       campaignTitle: '',
       campaignXWeVoteId: '',
       chosenWebsiteName: '',
+      isBlockedByWeVote: false,
+      isBlockedByWeVoteReason: '',
+      linkedPoliticianWeVoteId: '',
     };
   }
 
@@ -79,6 +82,7 @@ class CampaignNewsPage extends Component {
       campaignXWeVoteId,
       isBlockedByWeVote,
       isBlockedByWeVoteReason,
+      linkedPoliticianWeVoteId,
     } = getCampaignXValuesFromIdentifiers(campaignSEOFriendlyPathFromParams, campaignXWeVoteIdFromParams);
     if (campaignSEOFriendlyPath) {
       this.setState({
@@ -98,6 +102,7 @@ class CampaignNewsPage extends Component {
       campaignTitle,
       isBlockedByWeVote,
       isBlockedByWeVoteReason,
+      linkedPoliticianWeVoteId,
     });
   }
 
@@ -112,8 +117,8 @@ class CampaignNewsPage extends Component {
     // const { classes } = this.props;
     const {
       campaignSEOFriendlyPath, campaignTitle, campaignXWeVoteId, chosenWebsiteName,
-      isBlockedByWeVote, isBlockedByWeVoteReason, voterCanEditThisCampaign,
-      voterCanSendUpdatesToThisCampaign,
+      isBlockedByWeVote, isBlockedByWeVoteReason, linkedPoliticianWeVoteId,
+      voterCanEditThisCampaign, voterCanSendUpdatesToThisCampaign,
     } = this.state;
     // console.log('render campaignSEOFriendlyPath: ', campaignSEOFriendlyPath, ', campaignXWeVoteId: ', campaignXWeVoteId);
     const htmlTitle = `Updates, ${campaignTitle} - ${chosenWebsiteName}`;
@@ -181,7 +186,11 @@ class CampaignNewsPage extends Component {
               )}
             </BlockedReason>
           )}
-          <CampaignTopNavigation campaignSEOFriendlyPath={campaignSEOFriendlyPath} campaignXWeVoteId={campaignXWeVoteId} />
+          <CampaignTopNavigation
+            campaignSEOFriendlyPath={campaignSEOFriendlyPath}
+            campaignXWeVoteId={campaignXWeVoteId}
+            politicianWeVoteId={linkedPoliticianWeVoteId}
+          />
           <CommentsSectionOuterWrapper>
             <CommentsSectionInnerWrapper>
               <PageStatementWrapper>

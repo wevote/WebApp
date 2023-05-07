@@ -62,7 +62,7 @@ class SuperSharingIntro extends Component {
     window.scrollTo(0, 0);
   }
 
-  getCampaignBasePath = () => {
+  getCampaignXBasePath = () => {
     const { match: { params } } = this.props;
     const { campaignSEOFriendlyPath, campaignXWeVoteId } = params;
     let campaignBasePath;
@@ -75,15 +75,15 @@ class SuperSharingIntro extends Component {
   }
 
   returnToOtherSharingOptions = () => {
-    historyPush(`${this.getCampaignBasePath()}/share-campaign`);
+    historyPush(`${this.getCampaignXBasePath()}/share-campaign`);
   }
 
   startSuperSharing = () => {
     const { sms } = this.props;
     if (sms) {
-      historyPush(`${this.getCampaignBasePath()}/super-sharing-add-sms-contacts`);
+      historyPush(`${this.getCampaignXBasePath()}/super-sharing-add-sms-contacts`);
     } else {
-      historyPush(`${this.getCampaignBasePath()}/super-sharing-add-email-contacts`);
+      historyPush(`${this.getCampaignXBasePath()}/super-sharing-add-email-contacts`);
     }
   }
 

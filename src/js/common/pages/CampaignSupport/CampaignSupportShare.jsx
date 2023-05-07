@@ -35,6 +35,7 @@ class CampaignSupportShare extends Component {
       campaignTitle: '',
       campaignXWeVoteId: '',
       chosenWebsiteName: '',
+      linkedPoliticianWeVoteId: '',
       shareButtonClicked: false,
     };
   }
@@ -55,9 +56,11 @@ class CampaignSupportShare extends Component {
       campaignPhotoLargeUrl,
       campaignSEOFriendlyPath,
       campaignXWeVoteId,
+      linkedPoliticianWeVoteId,
     } = getCampaignXValuesFromIdentifiers(campaignSEOFriendlyPathFromParams, campaignXWeVoteIdFromParams);
     this.setState({
       campaignPhotoLargeUrl,
+      linkedPoliticianWeVoteId,
     });
     if (campaignSEOFriendlyPath) {
       this.setState({
@@ -77,7 +80,7 @@ class CampaignSupportShare extends Component {
         campaignXWeVoteId: campaignXWeVoteIdFromParams,
       });
     }
-    // Take the "calculated" identifiers and retrieve so we have the voter's comment
+    // Take the "calculated" identifiers and retrieve, so we have the voter's comment
     retrieveCampaignXFromIdentifiers(campaignSEOFriendlyPath, campaignXWeVoteId);
     window.scrollTo(0, 0);
   }
@@ -121,10 +124,12 @@ class CampaignSupportShare extends Component {
       campaignSEOFriendlyPath,
       campaignTitle,
       campaignXWeVoteId,
+      linkedPoliticianWeVoteId,
     } = getCampaignXValuesFromIdentifiers(campaignSEOFriendlyPathFromParams, campaignXWeVoteIdFromParams);
     this.setState({
       campaignPhotoLargeUrl,
       campaignTitle,
+      linkedPoliticianWeVoteId,
     });
     if (campaignSEOFriendlyPath) {
       this.setState({
@@ -135,6 +140,7 @@ class CampaignSupportShare extends Component {
         campaignSEOFriendlyPath: campaignSEOFriendlyPathFromParams,
       });
     }
+    // console.log('onCampaignStoreChange campaignSEOFriendlyPath: ', campaignSEOFriendlyPath, ', campaignXWeVoteId: ', campaignXWeVoteId);
     if (campaignXWeVoteId) {
       recommendedCampaignXListCount = CampaignStore.getRecommendedCampaignXListCount(campaignXWeVoteId);
       recommendedCampaignXListHasBeenRetrieved = CampaignStore.getRecommendedCampaignXListHasBeenRetrieved(campaignXWeVoteId);
@@ -161,7 +167,7 @@ class CampaignSupportShare extends Component {
     });
   }
 
-  getCampaignBasePath = () => {
+  getCampaignXBasePath = () => {
     const { campaignSEOFriendlyPath, campaignXWeVoteId } = this.state;
     let campaignBasePath;
     if (campaignSEOFriendlyPath) {
@@ -169,23 +175,38 @@ class CampaignSupportShare extends Component {
     } else {
       campaignBasePath = `/id/${campaignXWeVoteId}`;
     }
-
+    // console.log('getCampaignXBasePath campaignBasePath: ', campaignBasePath);
     return campaignBasePath;
+  }
+
+  getPoliticianBasePath = () => {
+    const { politicianSEOFriendlyPath, linkedPoliticianWeVoteId } = this.state;
+    let politicianBasePath;
+    if (politicianSEOFriendlyPath) {
+      politicianBasePath = `/${politicianSEOFriendlyPath}/-`;
+    } else if (linkedPoliticianWeVoteId) {
+      politicianBasePath = `/${linkedPoliticianWeVoteId}/p`;
+    } else {
+      // console.log('CampaignRecommendedCampaigns getPoliticianBasePath, failed to get politicianBasePath');
+      politicianBasePath = this.getCampaignXBasePath();
+    }
+    return politicianBasePath;
   }
 
   goToNextStep = () => {
     const { showShareCampaignWithOneFriend } = this.props;
     const { recommendedCampaignXListCount, recommendedCampaignXListHasBeenRetrieved, shareButtonClicked } = this.state;
+    // console.log('goToNextStep getCampaignXBasePath: ', this.getCampaignXBasePath())
     if (shareButtonClicked || showShareCampaignWithOneFriend) {
       // Since showing direct message choices is the final step,
       // link should take voter back to the campaign updates page or on to the  "recommended-campaigns"
       if (recommendedCampaignXListHasBeenRetrieved && recommendedCampaignXListCount > 0) {
-        historyPush(`${this.getCampaignBasePath()}/recommended-campaigns`);
+        historyPush(`${this.getCampaignXBasePath()}/recommended-campaigns`);
       } else {
-        historyPush(`${this.getCampaignBasePath()}/updates`);
+        historyPush(`${this.getCampaignXBasePath()}/updates`);
       }
     } else {
-      historyPush(`${this.getCampaignBasePath()}/share-campaign-with-one-friend`);
+      historyPush(`${this.getCampaignXBasePath()}/share-campaign-with-one-friend`);
     }
   }
 
@@ -234,8 +255,9 @@ class CampaignSupportShare extends Component {
             <ContentInnerWrapperDefault>
               <CampaignSupportSteps
                 atSharingStep
-                campaignBasePath={this.getCampaignBasePath()}
+                campaignBasePath={this.getCampaignXBasePath()}
                 campaignXWeVoteId={campaignXWeVoteId}
+                politicianBasePath={this.getPoliticianBasePath()}
               />
               <CampaignSupportImageWrapper>
                 {campaignPhotoLargeUrl ? (

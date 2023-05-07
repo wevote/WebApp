@@ -6,6 +6,8 @@ import TruncateMarkup from 'react-truncate-markup';
 import styled from 'styled-components';
 import { convertStateCodeToStateText } from '../../common/utils/addressFunctions';
 import {
+  BottomActionButtonEmptyWrapper,
+  BottomActionButtonWrapper,
   CampaignActionButtonsWrapper,
   CampaignImageMobile,
   CampaignImagePlaceholderText,
@@ -23,16 +25,15 @@ import {
   SupportersWrapper,
   SupportersCount,
   SupportersActionLink,
-  BottomActionButtonWrapper,
 } from '../../common/components/Style/CampaignCardStyles';
 import { getTodayAsInteger } from '../../common/utils/dateFormat';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
+import saveCampaignSupportAndGoToNextPage from '../../common/utils/saveCampaignSupportAndGoToNextPage';
 import CampaignStore from '../../common/stores/CampaignStore';
 import RepresentativeStore from '../../stores/RepresentativeStore';
-// import initializejQuery from '../../common/utils/initializejQuery';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
-// import keepHelpingDestination from '../../common/utils/keepHelpingDestination';
+import keepHelpingDestination from '../../common/utils/keepHelpingDestination';
 import numberWithCommas from '../../common/utils/numberWithCommas';
 import webAppConfig from '../../config';
 // import { ElectionInPast, IndicatorButtonWrapper, IndicatorRow } from '../../common/components/Style/CampaignIndicatorStyles';
@@ -47,12 +48,13 @@ class RepresentativeCardForList extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      linkedCampaignXWeVoteId: '',
       representative: {},
     };
-    // this.functionToUseToKeepHelping = this.functionToUseToKeepHelping.bind(this);
-    // this.functionToUseWhenProfileComplete = this.functionToUseWhenProfileComplete.bind(this);
-    this.getRepresentativeBasePath = this.getRepresentativeBasePath.bind(this);
-    this.goToNextPage = this.goToNextPage.bind(this);
+    this.functionToUseToKeepHelping = this.functionToUseToKeepHelping.bind(this);
+    this.functionToUseWhenProfileComplete = this.functionToUseWhenProfileComplete.bind(this);
+    this.getCampaignXBasePath = this.getCampaignXBasePath.bind(this);
+    this.getPoliticianBasePath = this.getPoliticianBasePath.bind(this);
     this.onRepresentativeClick = this.onRepresentativeClick.bind(this);
     this.onCampaignEditClick = this.onCampaignEditClick.bind(this);
     this.onCampaignGetMinimumSupportersClick = this.onCampaignGetMinimumSupportersClick.bind(this);
@@ -84,8 +86,8 @@ class RepresentativeCardForList extends Component {
   }
 
   componentWillUnmount () {
-    this.representativeStoreListener.remove();
     // this.campaignSupporterStoreListener.remove();
+    this.representativeStoreListener.remove();
     if (this.timer) {
       clearTimeout(this.timer);
     }
@@ -95,22 +97,16 @@ class RepresentativeCardForList extends Component {
     const { representativeWeVoteId } = this.props;
     const representative = RepresentativeStore.getRepresentativeByWeVoteId(representativeWeVoteId);
     const {
-      seo_friendly_path: politicianSEOFriendlyPath,
+      linked_campaignx_we_vote_id: linkedCampaignXWeVoteId,
     } = representative;
-    let pathToUseWhenProfileComplete;
-    if (politicianSEOFriendlyPath) {
-      pathToUseWhenProfileComplete = `/c/${politicianSEOFriendlyPath}/why-do-you-support`;
-    } else if (representativeWeVoteId) {
-      pathToUseWhenProfileComplete = `/id/${representativeWeVoteId}/why-do-you-support`;
-    }
     this.setState({
+      linkedCampaignXWeVoteId,
       representative,
-      pathToUseWhenProfileComplete,
     });
   }
 
   onRepresentativeClick () {
-    historyPush(this.getRepresentativeBasePath());
+    historyPush(this.getPoliticianBasePath());
   }
 
   onCampaignEditClick () {
@@ -121,15 +117,11 @@ class RepresentativeCardForList extends Component {
     }
     const {
       in_draft_mode: inDraftMode,
-      seo_friendly_path: politicianSEOFriendlyPath,
-      we_vote_id: representativeWeVoteId,
     } = representative;
     if (inDraftMode) {
       historyPush('/start-a-campaign-preview');
-    } else if (politicianSEOFriendlyPath) {
-      historyPush(`/c/${politicianSEOFriendlyPath}/edit`);
     } else {
-      historyPush(`/id/${representativeWeVoteId}/edit`);
+      historyPush(`${this.getCampaignXBasePath()}/edit`);
     }
     return null;
   }
@@ -140,15 +132,7 @@ class RepresentativeCardForList extends Component {
     if (!representative) {
       return null;
     }
-    const {
-      seo_friendly_path: politicianSEOFriendlyPath,
-      we_vote_id: representativeWeVoteId,
-    } = representative;
-    if (politicianSEOFriendlyPath) {
-      historyPush(`/c/${politicianSEOFriendlyPath}/share-campaign`);
-    } else {
-      historyPush(`/id/${representativeWeVoteId}/share-campaign`);
-    }
+    historyPush(`${this.getCampaignXBasePath()}/share-campaign`);
     return null;
   }
 
@@ -158,19 +142,31 @@ class RepresentativeCardForList extends Component {
     if (!representative) {
       return null;
     }
-    const {
-      seo_friendly_path: politicianSEOFriendlyPath,
-      we_vote_id: representativeWeVoteId,
-    } = representative;
-    if (politicianSEOFriendlyPath) {
-      historyPush(`/c/${politicianSEOFriendlyPath}/share-campaign`);
-    } else {
-      historyPush(`/id/${representativeWeVoteId}/share-campaign`);
-    }
+    historyPush(`${this.getCampaignXBasePath()}/share-campaign`);
     return null;
   }
 
-  getRepresentativeBasePath () {
+  getCampaignXBasePath () {
+    const { representative } = this.state;
+    // console.log('representative:', representative);
+    if (!representative) {
+      return null;
+    }
+    const {
+      // seo_friendly_path: politicianSEOFriendlyPath,  // Problem -- this is the politician seo friendly path, not the campaignx seo friendly path
+      linked_campaignx_we_vote_id: campaignXWeVoteId,
+    } = representative;
+    // let campaignXBasePath;
+    // if (politicianSEOFriendlyPath) {
+    //   campaignXBasePath = `/c/${politicianSEOFriendlyPath}`;
+    // } else {
+    //   campaignXBasePath = `/id/${campaignXWeVoteId}`;
+    // }
+    // return campaignXBasePath;
+    return `/id/${campaignXWeVoteId}`;
+  }
+
+  getPoliticianBasePath () {
     const { representative } = this.state;
     // console.log('representative:', representative);
     if (!representative) {
@@ -179,15 +175,14 @@ class RepresentativeCardForList extends Component {
     const {
       seo_friendly_path: politicianSEOFriendlyPath,
       politician_we_vote_id: politicianWeVoteId,
-      we_vote_id: representativeWeVoteId,
     } = representative;
+    let politicianBasePath;
     if (politicianSEOFriendlyPath) {
-      return `/${politicianSEOFriendlyPath}/-/`;
-    } else if (politicianWeVoteId) {
-      return `/${politicianWeVoteId}/p/`;
+      politicianBasePath = `/${politicianSEOFriendlyPath}/-`;
     } else {
-      return `/representative/${representativeWeVoteId}`;
+      politicianBasePath = `/${politicianWeVoteId}/p`;
     }
+    return politicianBasePath;
   }
 
   // pullCampaignXSupporterVoterEntry (representativeWeVoteId) {
@@ -222,39 +217,23 @@ class RepresentativeCardForList extends Component {
   //   }
   // }
 
-  goToNextPage () {
-    const { pathToUseWhenProfileComplete } = this.state;
-    this.timer = setTimeout(() => {
-      historyPush(pathToUseWhenProfileComplete);
-    }, 500);
-    return null;
+  functionToUseToKeepHelping () {
+    const { payToPromoteStepCompleted, payToPromoteStepTurnedOn, sharingStepCompleted, step2Completed } = this.state;
+    // console.log(payToPromoteStepCompleted, payToPromoteStepTurnedOn, sharingStepCompleted, step2Completed);
+    const keepHelpingDestinationString = keepHelpingDestination(step2Completed, payToPromoteStepCompleted, payToPromoteStepTurnedOn, sharingStepCompleted);
+    // console.log('functionToUseToKeepHelping keepHelpingDestinationString:', keepHelpingDestinationString);
+    historyPush(`${this.getCampaignXBasePath()}/${keepHelpingDestinationString}`);
   }
 
-  // functionToUseToKeepHelping () {
-  //   const { payToPromoteStepCompleted, payToPromoteStepTurnedOn, sharingStepCompleted, step2Completed } = this.state;
-  //   // console.log(payToPromoteStepCompleted, payToPromoteStepTurnedOn, sharingStepCompleted, step2Completed);
-  //   const keepHelpingDestinationString = keepHelpingDestination(step2Completed, payToPromoteStepCompleted, payToPromoteStepTurnedOn, sharingStepCompleted);
-  //   console.log('functionToUseToKeepHelping keepHelpingDestinationString:', keepHelpingDestinationString);
-  //   historyPush(`${this.getRepresentativeBasePath()}/${keepHelpingDestinationString}`);
-  // }
-
-  // functionToUseWhenProfileComplete () {
-  //   const { representativeWeVoteId } = this.props;
-  //   const campaignSupported = true;
-  //   const campaignSupportedChanged = true;
-  //   // From this page we always send value for 'visibleToPublic'
-  //   let visibleToPublic = CampaignSupporterStore.getVisibleToPublic();
-  //   const visibleToPublicChanged = CampaignSupporterStore.getVisibleToPublicQueuedToSaveSet();
-  //   if (visibleToPublicChanged) {
-  //     // If it has changed, use new value
-  //     visibleToPublic = CampaignSupporterStore.getVisibleToPublicQueuedToSave();
-  //   }
-  //   console.log('functionToUseWhenProfileComplete, visibleToPublic:', visibleToPublic, ', visibleToPublicChanged:', visibleToPublicChanged);
-  //   const saveVisibleToPublic = true;
-  //   initializejQuery(() => {
-  //     CampaignSupporterActions.supportCampaignSave(representativeWeVoteId, campaignSupported, campaignSupportedChanged, visibleToPublic, saveVisibleToPublic);
-  //   }, this.goToNextPage());
-  // }
+  functionToUseWhenProfileComplete () {
+    const { linkedCampaignXWeVoteId } = this.state;
+    if (linkedCampaignXWeVoteId) {
+      const campaignXBaseBath = this.getCampaignXBasePath();
+      saveCampaignSupportAndGoToNextPage(linkedCampaignXWeVoteId, campaignXBaseBath);
+    } else {
+      console.log('RepresentativeCardForList functionToUseWhenProfileComplete linkedCampaignXWeVoteId not found');
+    }
+  }
 
   render () {
     renderLog('RepresentativeCardForList');  // Set LOG_RENDER_EVENTS to log all renders
@@ -265,8 +244,7 @@ class RepresentativeCardForList extends Component {
     }
     const {
       ballot_item_display_name: ballotItemDisplayName,
-      representative_photo_url_large: representativePhotoLargeUrl,
-      representative_ultimate_election_date: representativeUltimateElectionDate,
+      linked_campaignx_we_vote_id: linkedCampaignXWeVoteId,
       office_held_name: officeHeldName,
       office_held_district_name: districtName,
       // in_draft_mode: inDraftMode,
@@ -275,6 +253,8 @@ class RepresentativeCardForList extends Component {
       // is_supporters_count_minimum_exceeded: isSupportersCountMinimumExceeded,
       political_party: politicalParty,
       politician_we_vote_id: politicianWeVoteId,
+      representative_photo_url_large: representativePhotoLargeUrl,
+      representative_ultimate_election_date: representativeUltimateElectionDate,
       // seo_friendly_path: politicianSEOFriendlyPath,
       state_code: stateCode,
       supporters_count: supportersCount,
@@ -299,12 +279,20 @@ class RepresentativeCardForList extends Component {
             <OneCampaignTextColumn>
               <TitleAndTextWrapper>
                 <OneCampaignTitle>
-                  <Link className="u-link-color u-link-underline" to={this.getRepresentativeBasePath()}>
+                  <Link
+                    className="u-link-color u-link-underline"
+                    id="representativeCardDisplayName"
+                    to={this.getPoliticianBasePath()}
+                  >
                     {ballotItemDisplayName}
                   </Link>
                 </OneCampaignTitle>
                 {(officeHeldName || politicalParty) && (
-                  <div className="u-cursor--pointer" onClick={this.onRepresentativeClick}>
+                  <div
+                    className="u-cursor--pointer"
+                    id="representativeCardOfficeName"
+                    onClick={this.onRepresentativeClick}
+                  >
                     <Suspense fallback={<></>}>
                       <OfficeHeldNameText
                         inCard
@@ -322,7 +310,7 @@ class RepresentativeCardForList extends Component {
                       <SupportersWrapper>
                         {(!supportersCount || supportersCount === 0) ? (
                           <SupportersCount>
-                            Be the first.
+                            0 supporters.
                             {' '}
                           </SupportersCount>
                         ) : (
@@ -359,7 +347,11 @@ class RepresentativeCardForList extends Component {
                             Thank you for supporting!
                           </SupportersActionLink>
                         ) : (
-                          <SupportersActionLink className="u-link-color u-link-underline u-cursor--pointer" onClick={this.onRepresentativeClick}>
+                          <SupportersActionLink
+                            className="u-link-color u-link-underline u-cursor--pointer"
+                            id="representativeCardLetsGetTo"
+                            onClick={this.onRepresentativeClick}
+                          >
                             Let&apos;s get to
                             {' '}
                             {numberWithCommas(supportersCountNextGoalWithFloor)}
@@ -372,7 +364,11 @@ class RepresentativeCardForList extends Component {
                   </>
                 )}
                 {twitterDescription && (
-                  <OneCampaignDescription className="u-cursor--pointer" onClick={this.onRepresentativeClick}>
+                  <OneCampaignDescription
+                    className="u-cursor--pointer"
+                    id="representativeCardTwitterDescription"
+                    onClick={this.onRepresentativeClick}
+                  >
                     <TruncateMarkup
                       ellipsis="..."
                       lines={2}
@@ -396,7 +392,7 @@ class RepresentativeCardForList extends Component {
                     ballotItemWeVoteId={politicianWeVoteId}
                     ballotItemDisplayName={ballotItemDisplayName}
                     commentButtonHide
-                    // externalUniqueId={`RepresentativeCardForList-ItemActionBar-${oneRepresentative.we_vote_id}-${externalUniqueId}`}
+                    externalUniqueId={`FromRepresentativeCardForList-${politicianWeVoteId}`} // -${externalUniqueId}
                     hidePositionPublicToggle
                     inCard
                     positionPublicToggleWrapAllowed
@@ -405,18 +401,25 @@ class RepresentativeCardForList extends Component {
                   />
                 </Suspense>
                 {nextReleaseFeaturesEnabled && (
-                  <BottomActionButtonWrapper>
-                    <Suspense fallback={<span>&nbsp;</span>}>
-                      <SupportButtonBeforeCompletionScreen
-                        campaignSEOFriendlyPath="CONVERT_TO_POLITICIAN_PATH"
-                        campaignXWeVoteId="CONVERT_TO_POLITICIAN_WE_VOTE_ID"
-                        functionToUseToKeepHelping={this.functionToUseToKeepHelping}
-                        functionToUseWhenProfileComplete={this.functionToUseWhenProfileComplete}
-                        inButtonFullWidthMode
-                        // inCompressedMode
-                      />
-                    </Suspense>
-                  </BottomActionButtonWrapper>
+                  <>
+                    {linkedCampaignXWeVoteId ? (
+                      <BottomActionButtonWrapper>
+                        <Suspense fallback={<span>&nbsp;</span>}>
+                          <SupportButtonBeforeCompletionScreen
+                            campaignXWeVoteId={linkedCampaignXWeVoteId}
+                            functionToUseToKeepHelping={this.functionToUseToKeepHelping}
+                            functionToUseWhenProfileComplete={this.functionToUseWhenProfileComplete}
+                            inButtonFullWidthMode
+                            // inCompressedMode
+                          />
+                        </Suspense>
+                      </BottomActionButtonWrapper>
+                    ) : (
+                      <BottomActionButtonEmptyWrapper>
+                        {/* MISSING_LINKED_CAMPAIGN_WE_VOTE_ID */}
+                      </BottomActionButtonEmptyWrapper>
+                    )}
+                  </>
                 )}
               </CampaignActionButtonsWrapper>
             </OneCampaignTextColumn>
@@ -459,8 +462,8 @@ class RepresentativeCardForList extends Component {
   }
 }
 RepresentativeCardForList.propTypes = {
-  representativeWeVoteId: PropTypes.string,
   limitCardWidth: PropTypes.bool,
+  representativeWeVoteId: PropTypes.string,
 };
 
 const styles = (theme) => ({

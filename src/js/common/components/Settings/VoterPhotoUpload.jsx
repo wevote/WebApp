@@ -57,7 +57,7 @@ class VoterPhotoUpload extends Component {
         VoterActions.voterPhotoQueuedToSave(photoFromFileReader);
       });
       fileReader.readAsDataURL(fileFromDropzone);
-      const dropzoneText = isMobileScreenSize() ? 'A small preview of your photo is shown below. You can: 1) Click \'Save photo\' below to continue, or 2) click here to upload different photo.' : 'A small preview of your photo is shown below. You can: 1) click \'Save photo\' below to continue, 2) delete it (hover over photo to see trash can), or 3) drag a NEW version here (or click here to find file).';
+      const dropzoneText = isMobileScreenSize() ? 'A small preview of your photo is shown below. You can: 1) Click button below to continue, or 2) click here to upload different photo.' : 'A small preview of your photo is shown below. You can: 1) click button below to continue, 2) delete it (hover over photo to see trash can), or 3) drag a NEW version here (or click here to find file).';
       this.setState({
         dropzoneText,
         showDropzoneIcon: false,

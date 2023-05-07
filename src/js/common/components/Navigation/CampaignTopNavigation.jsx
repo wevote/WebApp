@@ -58,7 +58,7 @@ export default function CampaignTopNavigation (incomingVariables) {
     },
   });
 
-  const { campaignSEOFriendlyPath, campaignXWeVoteId } = incomingVariables;
+  const { campaignSEOFriendlyPath, campaignXWeVoteId, politicianWeVoteId } = incomingVariables;
   // console.log('CampaignTopNavigation incomingVariables:', incomingVariables);
   // console.log('CampaignTopNavigation campaignSEOFriendlyPath:', campaignSEOFriendlyPath);
   const handleChange = (event, newValue) => {
@@ -89,6 +89,14 @@ export default function CampaignTopNavigation (incomingVariables) {
     commentsUrl = `/id/${campaignXWeVoteId}/comments`;
     updatesUrl = `/id/${campaignXWeVoteId}/updates`;
   }
+  // Overwrite detailsUrl if politicianWeVoteId is set
+  if (politicianWeVoteId) {
+    detailsUrl = `/${politicianWeVoteId}/p`;
+  }
+
+  // console.log('CampaignTopNavigation, detailsUrl:', detailsUrl);
+  // console.log('CampaignTopNavigation, commentsUrl:', commentsUrl);
+  // console.log('CampaignTopNavigation, updatesUrl:', updatesUrl);
 
   renderLog('CampaignTopNavigation functional component');
   return (
