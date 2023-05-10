@@ -318,6 +318,7 @@ class PositionStatementModal extends Component {
                   color="primary"
                   classes={{ root: classes.saveButtonRoot }}
                   type="submit"
+                  disabled={!voterTextStatement}
                 >
                   {postButtonText}
                 </Button>
