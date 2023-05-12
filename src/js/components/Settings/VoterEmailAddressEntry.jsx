@@ -501,7 +501,7 @@ class VoterEmailAddressEntry extends Component {
                 <div key={`${voterEmailAddressFromList.email_we_vote_id}-internal`}>
                   <span
                     className="u-link-color u-cursor--pointer u-no-break"
-                    onClick={() => this.setAsPrimaryEmailAddress.bind(this, voterEmailAddressFromList.email_we_vote_id)}
+                    onClick={() => this.setAsPrimaryEmailAddress(voterEmailAddressFromList.email_we_vote_id)}
                   >
                     Make Primary
                     <span style={{ paddingRight: '65px' }}>&nbsp;</span>
@@ -510,7 +510,7 @@ class VoterEmailAddressEntry extends Component {
                     <TrashCan>
                       <span
                         className="u-link-color u-cursor--pointer"
-                        onClick={() => this.removeVoterEmailAddress.bind(this, voterEmailAddressFromList.email_we_vote_id)}
+                        onClick={() => this.removeVoterEmailAddress(voterEmailAddressFromList.email_we_vote_id)}
                       >
                         <Delete />
                       </span>
@@ -553,7 +553,7 @@ class VoterEmailAddressEntry extends Component {
                     {allowRemoveEmail && (
                       <TrashCan
                         className="u-link-color u-cursor--pointer"
-                        onClick={() => this.removeVoterEmailAddress.bind(this, voterEmailAddressFromList.email_we_vote_id)}
+                        onClick={() => this.removeVoterEmailAddress(voterEmailAddressFromList.email_we_vote_id)}
                       >
                         <Delete />
                       </TrashCan>
