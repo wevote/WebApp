@@ -141,7 +141,7 @@ class CampaignListRoot extends Component {
     });
     filteredList = filteredListModified;
     // //////////////////////
-    // Now filter candidates
+    // Now filter
     if (listModeFilters && listModeFilters.length > 0) {
       const todayAsInteger = getTodayAsInteger();
       listModeFilters.forEach((oneFilter) => {

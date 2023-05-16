@@ -39,6 +39,7 @@ class SuperSharingAddContacts extends Component {
       campaignXNewsItemWeVoteId: '',
       campaignXWeVoteId: '',
       chosenWebsiteName: '',
+      weVoteHostedProfileImageUrlLarge: '',
     };
   }
 
@@ -63,11 +64,13 @@ class SuperSharingAddContacts extends Component {
       campaignSEOFriendlyPath,
       campaignXPoliticianList,
       campaignXWeVoteId,
+      weVoteHostedProfileImageUrlLarge,
     } = getCampaignXValuesFromIdentifiers(campaignSEOFriendlyPathFromParams, campaignXWeVoteIdFromParams);
     this.setState({
       campaignPhotoLargeUrl,
       campaignXNewsItemWeVoteId,
       campaignXPoliticianList,
+      weVoteHostedProfileImageUrlLarge,
     });
     if (campaignSEOFriendlyPath) {
       this.setState({
@@ -140,11 +143,13 @@ class SuperSharingAddContacts extends Component {
       campaignTitle,
       campaignXPoliticianList,
       campaignXWeVoteId,
+      weVoteHostedProfileImageUrlLarge,
     } = getCampaignXValuesFromIdentifiers(campaignSEOFriendlyPathFromParams, campaignXWeVoteIdFromParams);
     this.setState({
       campaignPhotoLargeUrl,
       campaignTitle,
       campaignXPoliticianList,
+      weVoteHostedProfileImageUrlLarge,
     });
     if (campaignSEOFriendlyPath) {
       this.setState({
@@ -220,6 +225,7 @@ class SuperSharingAddContacts extends Component {
       campaignXNewsItemWeVoteId,
       campaignXPoliticianList, campaignXWeVoteId, chosenWebsiteName,
       voterContactEmailListCount, voterContactEmailGoogleCount,
+      weVoteHostedProfileImageUrlLarge,
     } = this.state;
     const htmlTitle = `Import your address book - ${chosenWebsiteName}`;
     // let numberOfPoliticians = 0;
@@ -240,8 +246,14 @@ class SuperSharingAddContacts extends Component {
                 campaignXWeVoteId={campaignXWeVoteId}
               />
               <CampaignSupportImageWrapper>
-                {campaignPhotoLargeUrl ? (
-                  <CampaignImage src={campaignPhotoLargeUrl} alt="Campaign" />
+                {(campaignPhotoLargeUrl || weVoteHostedProfileImageUrlLarge) ? (
+                  <>
+                    {campaignPhotoLargeUrl ? (
+                      <CampaignImage src={campaignPhotoLargeUrl} alt="Campaign" />
+                    ) : (
+                      <CampaignImage src={weVoteHostedProfileImageUrlLarge} alt="Campaign" />
+                    )}
+                  </>
                 ) : (
                   <CampaignSupportImageWrapperText>
                     {campaignTitle}

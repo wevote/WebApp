@@ -10,14 +10,31 @@ import anonymous from '../../../../img/global/icons/avatar-generic.png';
 import CampaignSupporterActions from '../../actions/CampaignSupporterActions';
 import LazyImage from '../../components/LazyImage';
 import {
-  CampaignDescription, CampaignDescriptionDesktop, CampaignDescriptionWrapper,
-  CampaignDescriptionDesktopWrapper, CampaignImagePlaceholder, CampaignImagePlaceholderText,
-  CampaignImage, CampaignImageDesktop, CampaignImageDesktopWrapper, CampaignImageMobileWrapper,
-  CampaignSubSectionSeeAll, CampaignSubSectionTitle, CampaignSubSectionTitleWrapper,
-  CampaignTitleAndScoreBar, CampaignTitleDesktop, CampaignTitleMobile,
-  CommentsListWrapper, DetailsSectionDesktopTablet, DetailsSectionMobile,
-  SpeakerAndPhotoOuterWrapper, SpeakerName, SpeakerVoterPhotoWrapper,
-  SupportButtonFooterWrapper, SupportButtonPanel,
+  CampaignDescription,
+  CampaignDescriptionDesktop,
+  CampaignDescriptionWrapper,
+  CampaignDescriptionDesktopWrapper,
+  CampaignImagePlaceholder,
+  CampaignImagePlaceholderText,
+  CampaignImage,
+  CampaignImageDesktop,
+  CampaignImageDesktopWrapper,
+  CampaignImageMobileWrapper,
+  CampaignSubSectionSeeAll,
+  CampaignSubSectionTitle,
+  CampaignSubSectionTitleWrapper,
+  CampaignTitleAndScoreBar,
+  CampaignTitleDesktop,
+  CampaignTitleMobile,
+  CommentsListWrapper,
+  DetailsSectionDesktopTablet,
+  DetailsSectionMobile,
+  SpeakerAndPhotoOuterWrapper,
+  SpeakerName,
+  SpeakerVoterPhotoWrapper,
+  SupportButtonFooterWrapper,
+  SupportButtonPanel,
+  CampaignPoliticianImageDesktop,
 } from '../../components/Style/CampaignDetailsStyles';
 import { PageWrapper } from '../../components/Style/stepDisplayStyles';
 import DelayedLoad from '../../components/Widgets/DelayedLoad';
@@ -66,6 +83,7 @@ class CampaignNewsItemDetailsPage extends Component {
       sharingStepCompleted: false,
       step2Completed: false,
       voterCanEditThisCampaign: false,
+      weVoteHostedProfileImageUrlLarge: '',
     };
   }
 
@@ -159,6 +177,7 @@ class CampaignNewsItemDetailsPage extends Component {
       isBlockedByWeVote,
       isBlockedByWeVoteReason,
       isSupportersCountMinimumExceeded,
+      weVoteHostedProfileImageUrlLarge,
     } = getCampaignXValuesFromIdentifiers(campaignSEOFriendlyPathFromParams, campaignXWeVoteIdFromParams);
     let pathToUseWhenProfileComplete;
     if (campaignSEOFriendlyPath) {
@@ -186,6 +205,7 @@ class CampaignNewsItemDetailsPage extends Component {
       isBlockedByWeVoteReason,
       isSupportersCountMinimumExceeded,
       pathToUseWhenProfileComplete,
+      weVoteHostedProfileImageUrlLarge,
     });
     if (campaignXNewsItemWeVoteId) {
       const campaignXNewsItem = CampaignStore.getCampaignXNewsItemByWeVoteId(campaignXNewsItemWeVoteId);
@@ -320,7 +340,7 @@ class CampaignNewsItemDetailsPage extends Component {
       chosenWebsiteName, datePosted, inDraftMode, isBlockedByWeVote, isBlockedByWeVoteReason,
       inPrivateLabelMode, finalElectionDateInPast, isSupportersCountMinimumExceeded,
       speakerName, speakerProfileImageUrlTiny,
-      voterCanEditThisCampaign,
+      voterCanEditThisCampaign, weVoteHostedProfileImageUrlLarge,
     } = this.state;
     const htmlTitle = `${campaignTitle} - ${chosenWebsiteName}`;
     if (isBlockedByWeVote && !voterCanEditThisCampaign) {
@@ -497,8 +517,14 @@ class CampaignNewsItemDetailsPage extends Component {
             </NewsItemSubjectMobile>
             {speakerHTML}
             <CampaignImageMobileWrapper>
-              {campaignPhotoLargeUrl ? (
-                <CampaignImage src={campaignPhotoLargeUrl} alt="Campaign" />
+              {(campaignPhotoLargeUrl || weVoteHostedProfileImageUrlLarge) ? (
+                <>
+                  {campaignPhotoLargeUrl ? (
+                    <CampaignImage src={campaignPhotoLargeUrl} alt="Campaign" />
+                  ) : (
+                    <CampaignImage src={weVoteHostedProfileImageUrlLarge} alt="Campaign" />
+                  )}
+                </>
               ) : (
                 <DelayedLoad waitBeforeShow={1000}>
                   <CampaignImagePlaceholder>
@@ -608,8 +634,14 @@ class CampaignNewsItemDetailsPage extends Component {
                 </NewsItemSubjectDesktop>
                 {speakerHTML}
                 <CampaignImageDesktopWrapper>
-                  {campaignPhotoLargeUrl ? (
-                    <CampaignImageDesktop src={campaignPhotoLargeUrl} alt="Campaign" />
+                  {(campaignPhotoLargeUrl || weVoteHostedProfileImageUrlLarge) ? (
+                    <>
+                      {campaignPhotoLargeUrl ? (
+                        <CampaignImageDesktop src={campaignPhotoLargeUrl} alt="Campaign" />
+                      ) : (
+                        <CampaignPoliticianImageDesktop src={weVoteHostedProfileImageUrlLarge} alt="Campaign" />
+                      )}
+                    </>
                   ) : (
                     <DelayedLoad waitBeforeShow={1000}>
                       <CampaignImagePlaceholder>

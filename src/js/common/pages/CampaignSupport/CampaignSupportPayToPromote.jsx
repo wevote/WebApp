@@ -33,6 +33,7 @@ class CampaignSupportPayToPromote extends Component {
       chosenWebsiteName: '',
       linkedPoliticianWeVoteId: '',
       voterFirstName: '',
+      weVoteHostedProfileImageUrlLarge: '',
     };
   }
 
@@ -52,10 +53,12 @@ class CampaignSupportPayToPromote extends Component {
       campaignSEOFriendlyPath,
       campaignXWeVoteId,
       linkedPoliticianWeVoteId,
+      weVoteHostedProfileImageUrlLarge,
     } = getCampaignXValuesFromIdentifiers(campaignSEOFriendlyPathFromParams, campaignXWeVoteIdFromParams);
     this.setState({
       campaignPhotoLargeUrl,
       linkedPoliticianWeVoteId,
+      weVoteHostedProfileImageUrlLarge,
     });
     if (campaignSEOFriendlyPath) {
       this.setState({
@@ -104,11 +107,13 @@ class CampaignSupportPayToPromote extends Component {
       campaignTitle,
       campaignXWeVoteId,
       linkedPoliticianWeVoteId,
+      weVoteHostedProfileImageUrlLarge,
     } = getCampaignXValuesFromIdentifiers(campaignSEOFriendlyPathFromParams, campaignXWeVoteIdFromParams);
     this.setState({
       campaignPhotoLargeUrl,
       campaignTitle,
       linkedPoliticianWeVoteId,
+      weVoteHostedProfileImageUrlLarge,
     });
     if (campaignSEOFriendlyPath) {
       this.setState({
@@ -182,7 +187,7 @@ class CampaignSupportPayToPromote extends Component {
     const { classes } = this.props;
     const {
       campaignPhotoLargeUrl, campaignSEOFriendlyPath, campaignTitle, campaignXWeVoteId,
-      chosenWebsiteName, voterFirstName,
+      chosenWebsiteName, voterFirstName, weVoteHostedProfileImageUrlLarge,
     } = this.state;
     const htmlTitle = `Chip in to support ${campaignTitle} - ${chosenWebsiteName}`;
     let chipInDescriptionText1 = '';
@@ -225,8 +230,14 @@ class CampaignSupportPayToPromote extends Component {
                 politicianBasePath={this.getPoliticianBasePath()}
               />
               <CampaignSupportImageWrapper>
-                {campaignPhotoLargeUrl ? (
-                  <CampaignImage src={campaignPhotoLargeUrl} alt="Campaign" />
+                {(campaignPhotoLargeUrl || weVoteHostedProfileImageUrlLarge) ? (
+                  <>
+                    {campaignPhotoLargeUrl ? (
+                      <CampaignImage src={campaignPhotoLargeUrl} alt="Campaign" />
+                    ) : (
+                      <CampaignImage src={weVoteHostedProfileImageUrlLarge} alt="Campaign" />
+                    )}
+                  </>
                 ) : (
                   <CampaignSupportImageWrapperText>
                     {campaignTitle}

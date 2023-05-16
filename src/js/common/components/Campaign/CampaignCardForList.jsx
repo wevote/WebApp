@@ -7,10 +7,25 @@ import styled from 'styled-components';
 // import { convertStateCodeToStateText } from '../../utils/addressFunctions';
 // import CampaignSupporterActions from '../../actions/CampaignSupporterActions';
 import {
-  CampaignImageMobile, CampaignImagePlaceholderText, CampaignImageMobilePlaceholder, CampaignImageDesktopPlaceholder, CampaignImageDesktop,
-  CandidateCardForListWrapper, CampaignActionButtonsWrapper,
-  OneCampaignPhotoWrapperMobile, OneCampaignPhotoDesktopColumn, OneCampaignTitle, OneCampaignOuterWrapper, OneCampaignTextColumn, OneCampaignInnerWrapper, OneCampaignDescription,
-  SupportersWrapper, SupportersCount, SupportersActionLink,
+  CampaignImageMobile,
+  CampaignImagePlaceholderText,
+  CampaignImageMobilePlaceholder,
+  CampaignImageDesktopPlaceholder,
+  CampaignImageDesktop,
+  CampaignPoliticianImageMobile,
+  CandidateCardForListWrapper,
+  CampaignActionButtonsWrapper,
+  OneCampaignPhotoWrapperMobile,
+  OneCampaignPhotoDesktopColumn,
+  OneCampaignTitle,
+  OneCampaignOuterWrapper,
+  OneCampaignTextColumn,
+  OneCampaignInnerWrapper,
+  OneCampaignDescription,
+  SupportersWrapper,
+  SupportersCount,
+  SupportersActionLink,
+  CampaignPoliticianImageDesktop,
 } from '../Style/CampaignCardStyles';
 // import { getTodayAsInteger, getYearFromUltimateElectionDate } from '../../utils/dateFormat';
 import historyPush from '../../utils/historyPush';
@@ -261,8 +276,9 @@ class CampaignCardForList extends Component {
       supporters_count: supportersCount,
       supporters_count_next_goal: supportersCountNextGoal,
       // visible_on_this_site: visibleOnThisSite,
-      we_vote_hosted_campaign_photo_large_url: CampaignPhotoLargeUrl,
-      we_vote_hosted_campaign_photo_medium_url: CampaignPhotoMediumUrl,
+      we_vote_hosted_campaign_photo_large_url: campaignPhotoLargeUrl,
+      we_vote_hosted_campaign_photo_medium_url: campaignPhotoMediumUrl,
+      we_vote_hosted_profile_image_url_large: weVoteHostedProfileImageUrlLarge,
     } = campaignX;
     // const stateName = convertStateCodeToStateText(stateCode);
     const supportersCountNextGoalWithFloor = supportersCountNextGoal || CampaignStore.getCampaignXSupportersCountNextGoalDefault();
@@ -421,8 +437,14 @@ class CampaignCardForList extends Component {
               </CampaignActionButtonsWrapper>
             </OneCampaignTextColumn>
             <OneCampaignPhotoWrapperMobile className="u-cursor--pointer u-show-mobile" onClick={this.onCampaignClick}>
-              {CampaignPhotoLargeUrl ? (
-                <CampaignImageMobile src={CampaignPhotoLargeUrl} alt="Campaign" />
+              {(campaignPhotoLargeUrl || weVoteHostedProfileImageUrlLarge) ? (
+                <>
+                  {campaignPhotoLargeUrl ? (
+                    <CampaignImageMobile src={campaignPhotoLargeUrl} alt="Campaign" />
+                  ) : (
+                    <CampaignPoliticianImageMobile src={weVoteHostedProfileImageUrlLarge} alt="Campaign" />
+                  )}
+                </>
               ) : (
                 <CampaignImageMobilePlaceholder>
                   <CampaignImagePlaceholderText>
@@ -432,12 +454,24 @@ class CampaignCardForList extends Component {
               )}
             </OneCampaignPhotoWrapperMobile>
             <OneCampaignPhotoDesktopColumn className="u-cursor--pointer u-show-desktop-tablet" limitCardWidth={limitCardWidth} onClick={this.onCampaignClick}>
-              {CampaignPhotoMediumUrl ? (
+              {(campaignPhotoMediumUrl || weVoteHostedProfileImageUrlLarge) ? (
                 <>
-                  {limitCardWidth ? (
-                    <CampaignImageDesktop src={CampaignPhotoMediumUrl} alt="" width="300px" height="157px" />
+                  {campaignPhotoMediumUrl ? (
+                    <>
+                      {limitCardWidth ? (
+                        <CampaignImageDesktop src={campaignPhotoMediumUrl} alt="" width="300px" height="157px" />
+                      ) : (
+                        <CampaignImageDesktop src={campaignPhotoMediumUrl} alt="" width="224px" height="117px" />
+                      )}
+                    </>
                   ) : (
-                    <CampaignImageDesktop src={CampaignPhotoMediumUrl} alt="" width="224px" height="117px" />
+                    <>
+                      {limitCardWidth ? (
+                        <CampaignPoliticianImageDesktop src={weVoteHostedProfileImageUrlLarge} alt="" width="157px" height="157px" />
+                      ) : (
+                        <CampaignPoliticianImageDesktop src={weVoteHostedProfileImageUrlLarge} alt="" width="117px" height="117px" />
+                      )}
+                    </>
                   )}
                 </>
               ) : (

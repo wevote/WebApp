@@ -305,6 +305,7 @@ class CampaignRecommendedCampaigns extends Component {
             campaignx_we_vote_id: recommendedCampaignXWeVoteId,
             // seo_friendly_path: recommendedCampaignSEOFriendlyPath,
             we_vote_hosted_campaign_photo_large_url: recommendedCampaignPhotoLargeUrl,
+            we_vote_hosted_profile_image_url_large: weVoteHostedProfileImageUrlLarge,
           } = nextCampaignX;
           this.setState({
             recommendedCampaignDescription,
@@ -312,6 +313,7 @@ class CampaignRecommendedCampaigns extends Component {
             recommendedCampaignTitle,
             recommendedCampaignXWeVoteId,
             recommendedCampaignPhotoLargeUrl,
+            weVoteHostedProfileImageUrlLarge,
           });
           keepLooking = false;
         }
@@ -351,7 +353,7 @@ class CampaignRecommendedCampaigns extends Component {
       campaignXNewsItemsExist, campaignXWeVoteId, chosenWebsiteName,
       descriptionUnfurledMode, numberOfCampaignsLeftToSupport,
       recommendedCampaignDescription, recommendedCampaignTitle, recommendedCampaignXListHasBeenRetrieved,
-      recommendedCampaignXWeVoteId, recommendedCampaignPhotoLargeUrl,
+      recommendedCampaignXWeVoteId, recommendedCampaignPhotoLargeUrl, weVoteHostedProfileImageUrlLarge,
     } = this.state;
     const htmlTitle = `${campaignTitle} - ${chosenWebsiteName}`;
     const supportButtonClasses = classes.buttonDefault; // isWebApp() ? classes.buttonDefault : classes.buttonDefaultCordova;
@@ -449,8 +451,14 @@ class CampaignRecommendedCampaigns extends Component {
               </RecommendedCampaignsIntroText>
               <RecommendedCampaignWrapper>
                 <CampaignSupportImageWrapper borderRadiusOnTop="10px">
-                  {recommendedCampaignPhotoLargeUrl ? (
-                    <CampaignImage src={recommendedCampaignPhotoLargeUrl} alt="Campaign" noBorderRadius />
+                  {(recommendedCampaignPhotoLargeUrl || weVoteHostedProfileImageUrlLarge) ? (
+                    <>
+                      {recommendedCampaignPhotoLargeUrl ? (
+                        <CampaignImage src={recommendedCampaignPhotoLargeUrl} alt="Campaign" noBorderRadius />
+                      ) : (
+                        <CampaignImage src={weVoteHostedProfileImageUrlLarge} alt="Campaign" noBorderRadius />
+                      )}
+                    </>
                   ) : (
                     <CampaignSupportImageWrapperText>
                       {recommendedCampaignTitle}
@@ -570,6 +578,7 @@ const CampaignDescription = styled('div')`
 
 const CampaignImage = styled('img')`
   border-radius: 8px 8px 0 0;
+  max-height: 324px; // Added to deal with 200x200 images
   max-width: 620px;
   min-height: 117px;
   width: 100%;
@@ -586,6 +595,7 @@ const RecommendedCampaignsIntroText = styled('div')(({ theme }) => (`
   font-size: 20px;
   font-weight: 400;
   margin: 18px 0 20px 0;
+  max-height: 324px; // Added to deal with 200x200 images
   max-width: 620px;
   text-align: center;
   ${theme.breakpoints.down('sm')} {
@@ -597,6 +607,7 @@ const RecommendedCampaignWrapper = styled('div')`
   border: 1px solid #ddd;
   border-radius: 10px;
   box-shadow: 0 20px 40px -25px #999;
+  max-height: 324px; // Added to deal with 200x200 images
   max-width: 620px;
 `;
 

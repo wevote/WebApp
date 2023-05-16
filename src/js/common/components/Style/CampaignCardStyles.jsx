@@ -47,15 +47,14 @@ export const CampaignImageDesktopSharedStyles = css`
 export const CampaignImageDesktopPlaceholder = styled('div', {
   shouldForwardProp: (prop) => !['limitCardWidth'].includes(prop),
 })(({ limitCardWidth }) => (`
-  ${limitCardWidth ? 'height: 157px;' : 'height: 117px;'}
   align-items: center;
   background-color: #eee;
   display: flex;
+  ${limitCardWidth ? 'height: 157px;' : 'height: 117px;'}
   justify-content: center;
   ${limitCardWidth ? 'width: 300px;' : 'width: 224px;'}
   ${CampaignImageDesktopSharedStyles}
 `));
-
 
 export const CampaignImageDesktop = styled('img', {
   shouldForwardProp: (prop) => !['limitCardWidth'].includes(prop),
@@ -88,6 +87,20 @@ export const CampaignImagePlaceholderText = styled('div')`
 `;
 
 export const CampaignImageMobile = styled('img')`
+  max-height: 157px;
+  ${CampaignImageMobileSharedStyles}
+`;
+
+export const CampaignPoliticianImageDesktop = styled('img', {
+  shouldForwardProp: (prop) => !['limitCardWidth'].includes(prop),
+})(({ limitCardWidth }) => (`
+  // We don't want to set height/width here because this component is also used for very large versions of this image
+  // ${limitCardWidth ? 'height: 157px;' : 'height: 117px;'}
+  // ${limitCardWidth ? 'width: 300px;' : 'width: 224px;'}
+  ${CampaignImageDesktopSharedStyles}
+`));
+
+export const CampaignPoliticianImageMobile = styled('img')`
   max-height: 157px;
   ${CampaignImageMobileSharedStyles}
 `;
@@ -148,7 +161,11 @@ export const OneCampaignOuterWrapper = styled('div', {
 export const OneCampaignPhotoDesktopColumn = styled('div', {
   shouldForwardProp: (prop) => !['limitCardWidth'].includes(prop),
 })(({ limitCardWidth }) => (`
+  align-items: center;
+  background-color: #eee;
+  display: flex;
   ${limitCardWidth ? 'height: 157px;' : 'height: 117px;'}
+  justify-content: center;
   margin-bottom: 0;
   ${limitCardWidth ? '' : 'margin-left: 15px;'}
   margin-top: 0;
