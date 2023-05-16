@@ -57,8 +57,8 @@ class CampaignsHome extends Component {
       listModeShown: 'showUpcomingEndorsements',
       listModeFiltersAvailable: [],
       listModeFiltersTimeStampOfChange: 0,
-      listOfYearsWhenCampaignExists: [],
-      listOfYearsWhenCandidateExists: [],
+      // listOfYearsWhenCampaignExists: [],
+      // listOfYearsWhenCandidateExists: [],
       listOfYearsWhenRepresentativeExists: [],
       politicianWeVoteIdsAlreadyShown: [],
       representativeListOnYourBallot: [],
@@ -282,15 +282,15 @@ class CampaignsHome extends Component {
     }
     this.setState({
       campaignsShowing,
-      listOfYearsWhenCampaignExists: this.getListOfYearsWhenCampaignExists(campaignList),
+      // listOfYearsWhenCampaignExists: this.getListOfYearsWhenCampaignExists(campaignList),
     }, () => this.updateActiveFilters(setDefaultListMode));
   }
 
   onIncomingCandidateListChange (setDefaultListMode = false) {
-    const { candidateList } = this.state;
+    // const { candidateList } = this.state;
     // console.log('CampaignsHome onIncomingCandidateListChange, candidateList:', candidateList);
     this.setState({
-      listOfYearsWhenCandidateExists: this.getListOfYearsWhenCandidateExists(candidateList),
+      // listOfYearsWhenCandidateExists: this.getListOfYearsWhenCandidateExists(candidateList),
     }, () => this.updateActiveFilters(setDefaultListMode));
   }
 
@@ -441,9 +441,9 @@ class CampaignsHome extends Component {
   }
 
   getDefaultListModeShown = (incomingUpcomingEndorsementsAvailable = false) => {
-    const { listOfYearsWhenCampaignExists, listOfYearsWhenCandidateExists, listOfYearsWhenRepresentativeExists, upcomingEndorsementsAvailable } = this.state;
-    // const { upcomingEndorsementsAvailable } = this.state;
-    const listOfYears = [...new Set([...listOfYearsWhenCampaignExists, ...listOfYearsWhenCandidateExists, ...listOfYearsWhenRepresentativeExists])];
+    // const { listOfYearsWhenCampaignExists, listOfYearsWhenCandidateExists, listOfYearsWhenRepresentativeExists, upcomingEndorsementsAvailable } = this.state;
+    const { upcomingEndorsementsAvailable } = this.state;
+    // const listOfYears = [...new Set([...listOfYearsWhenCampaignExists, ...listOfYearsWhenCandidateExists, ...listOfYearsWhenRepresentativeExists])];
     // console.log('getDefaultListModeShown listOfYearsWhenCandidateExists:', listOfYearsWhenCandidateExists);
     if (upcomingEndorsementsAvailable || incomingUpcomingEndorsementsAvailable) {
       return 'showUpcomingEndorsements';
@@ -452,9 +452,11 @@ class CampaignsHome extends Component {
       //   // console.log('mostRecentYear:', mostRecentYear);
       //   return `show${mostRecentYear}`;
       // }
-    } else if (listOfYears && listOfYears.length > 1) {
-      return 'showAllEndorsements';
     }
+    // 2023-05-15 Turned off for now
+    // else if (listOfYears && listOfYears.length > 1) {
+    //   return 'showAllEndorsements';
+    // }
     return 'showUpcomingEndorsements';
   }
 
@@ -531,6 +533,7 @@ class CampaignsHome extends Component {
   clearSearchFunction = () => {
     this.setState({
       isSearching: false,
+      listModeShown: 'showUpcomingEndorsements',
       searchText: '',
     }, () => this.updateActiveFilters());
   }

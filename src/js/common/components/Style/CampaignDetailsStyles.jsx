@@ -36,11 +36,11 @@ export const CampaignImageDesktop = styled('img')`
 `;
 
 export const CampaignImagePlaceholder = styled('div')(({ theme }) => (`
+  align-items: center;
   background-color: #eee;
   border-radius: 5px;
   display: flex;
   justify-content: center;
-  align-items: center;
   min-height: 183px;
   ${theme.breakpoints.up('sm')} {
     min-height: 174px;
@@ -58,6 +58,11 @@ export const CampaignImagePlaceholderText = styled('div')`
 `;
 
 export const CampaignImageDesktopWrapper = styled('div')(({ theme }) => (`
+  align-items: center;
+  background-color: #eee;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
   margin-bottom: 10px;
   min-height: 180px;
   ${theme.breakpoints.up('sm')} {
@@ -83,6 +88,11 @@ export const CampaignOwnersDesktopWrapper = styled('div')`
 `;
 
 export const CampaignOwnersWrapper = styled('div')`
+`;
+
+export const CampaignPoliticianImageDesktop = styled('img')`
+  border-radius: 5px;
+  height: 100%;
 `;
 
 export const CampaignSubSectionSeeAll = styled('div')`

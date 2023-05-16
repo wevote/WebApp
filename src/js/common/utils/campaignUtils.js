@@ -20,6 +20,7 @@ export function getCampaignXValuesFromIdentifiers (campaignSEOFriendlyPath, camp
   let isSupportersCountMinimumExceeded = false;
   let linkedPoliticianWeVoteId = '';
   let voterIsCampaignXOwner = false;
+  let weVoteHostedProfileImageUrlLarge = '';
   if (campaignSEOFriendlyPath) {
     campaignX = CampaignStore.getCampaignXBySEOFriendlyPath(campaignSEOFriendlyPath);
   } else if (campaignXWeVoteId) {
@@ -40,6 +41,7 @@ export function getCampaignXValuesFromIdentifiers (campaignSEOFriendlyPath, camp
       we_vote_hosted_campaign_photo_large_url: campaignPhotoLargeUrl,
       we_vote_hosted_campaign_photo_medium_url: campaignPhotoMediumUrl,
       we_vote_hosted_campaign_photo_small_url: campaignPhotoSmallUrl,
+      we_vote_hosted_profile_image_url_large: weVoteHostedProfileImageUrlLarge,
     } = campaignX);
     campaignXPoliticianList = CampaignStore.getCampaignXPoliticianList(campaignXWeVoteIdFromObject);
   }
@@ -58,6 +60,7 @@ export function getCampaignXValuesFromIdentifiers (campaignSEOFriendlyPath, camp
     isSupportersCountMinimumExceeded,
     linkedPoliticianWeVoteId,
     voterIsCampaignXOwner,
+    weVoteHostedProfileImageUrlLarge,
   };
 }
 

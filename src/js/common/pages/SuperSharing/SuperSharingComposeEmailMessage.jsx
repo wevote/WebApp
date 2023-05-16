@@ -45,6 +45,7 @@ class SuperSharingComposeEmailMessage extends Component {
       suggestedMessage: '',
       suggestedSubject: '',
       voterPhotoUrlLarge: '',
+      weVoteHostedProfileImageUrlLarge: '',
     };
   }
 
@@ -72,11 +73,13 @@ class SuperSharingComposeEmailMessage extends Component {
       campaignSEOFriendlyPath,
       campaignXPoliticianList,
       campaignXWeVoteId,
+      weVoteHostedProfileImageUrlLarge,
     } = getCampaignXValuesFromIdentifiers(campaignSEOFriendlyPathFromParams, campaignXWeVoteIdFromParams);
     this.setState({
       campaignPhotoLargeUrl,
       campaignXNewsItemWeVoteId,
       campaignXPoliticianList,
+      weVoteHostedProfileImageUrlLarge,
     });
     if (campaignSEOFriendlyPath) {
       this.setState({
@@ -160,12 +163,14 @@ class SuperSharingComposeEmailMessage extends Component {
       campaignTitle,
       campaignXPoliticianList,
       campaignXWeVoteId,
+      weVoteHostedProfileImageUrlLarge,
     } = getCampaignXValuesFromIdentifiers(campaignSEOFriendlyPathFromParams, campaignXWeVoteIdFromParams);
     this.setState({
       campaignPhotoLargeUrl,
       campaignTitle,
       campaignXNewsItemWeVoteId,
       campaignXPoliticianList,
+      weVoteHostedProfileImageUrlLarge,
     });
     if (campaignSEOFriendlyPath) {
       this.setState({
@@ -293,6 +298,7 @@ class SuperSharingComposeEmailMessage extends Component {
       campaignPhotoLargeUrl, campaignSEOFriendlyPath, campaignTitle,
       campaignXNewsItemWeVoteId, campaignXPoliticianList, campaignXWeVoteId, chosenWebsiteName,
       emailRecipientList, suggestedMessage, suggestedSubject, voterPhotoUrlLarge,
+      weVoteHostedProfileImageUrlLarge,
     } = this.state;
     const emailRecipientListCount = emailRecipientList.length;
     const htmlTitle = `Send personalized message regarding ${campaignTitle}? - ${chosenWebsiteName}`;
@@ -314,8 +320,14 @@ class SuperSharingComposeEmailMessage extends Component {
                 campaignXWeVoteId={campaignXWeVoteId}
               />
               <CampaignSupportImageWrapper>
-                {campaignPhotoLargeUrl ? (
-                  <CampaignImage src={campaignPhotoLargeUrl} alt="Campaign" />
+                {(campaignPhotoLargeUrl || weVoteHostedProfileImageUrlLarge) ? (
+                  <>
+                    {campaignPhotoLargeUrl ? (
+                      <CampaignImage src={campaignPhotoLargeUrl} alt="Campaign" />
+                    ) : (
+                      <CampaignImage src={weVoteHostedProfileImageUrlLarge} alt="Campaign" />
+                    )}
+                  </>
                 ) : (
                   <CampaignSupportImageWrapperText>
                     {campaignTitle}

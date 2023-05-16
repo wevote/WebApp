@@ -55,6 +55,7 @@ export const CampaignSupportSectionWrapper = styled('div', {
   display: flex;
   justify-content: center;
   ${marginTopOff ? '' : 'margin-top: 20px;'}
+  max-height: 324px; // Added to deal with 200x200 images
   max-width: 620px;
 `));
 
