@@ -99,7 +99,7 @@ class ReadyIntroduction extends Component {
               {contentUnfurled && (
                 <ListRow>
                   <Dot><StepNumberPlaceholder>&nbsp;</StepNumberPlaceholder></Dot>
-                  <StepText>
+                  <StepText id="readyIntroductionStepText1">
                     <span className="u-link-color u-link-color-on-hover u-cursor--pointer" onClick={this.showSelectBallotModalEditAddress}>
                       Enter your address
                     </span>
@@ -125,7 +125,7 @@ class ReadyIntroduction extends Component {
               {contentUnfurled && (
                 <ListRow>
                   <Dot><StepNumberPlaceholder>&nbsp;</StepNumberPlaceholder></Dot>
-                  <StepText>
+                  <StepText id="readyIntroductionStepText2">
                     Tell us what topics are important to you and we&apos;ll recommend people and organizations to follow as well as make ballot recommendations.
                     {' '}
                     {voterIsSignedInWithTwitter ? (
@@ -154,7 +154,7 @@ class ReadyIntroduction extends Component {
               {contentUnfurled && (
                 <ListRow>
                   <Dot><StepNumberPlaceholder>&nbsp;</StepNumberPlaceholder></Dot>
-                  <StepText>
+                  <StepText id="readyIntroductionStepText3">
                     {isWebApp() || isCordova() ? (
                       <Link to="/findfriends/importcontacts" className="u-link-color">Invite your friends</Link>
                     ) : (

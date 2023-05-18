@@ -198,6 +198,7 @@ class BallotTitleHeader extends Component {
                           allowTextWrap={allowTextWrap}
                           centerText={centerText}
                           className={linksOff ? '' : 'u-cursor--pointer'}
+                          id="ballotTitleBallotAddress"
                           onClick={this.showSelectBallotModalEditAddress}
                         >
                           {ballotCaveat && (
@@ -243,6 +244,7 @@ class BallotTitleHeader extends Component {
                                   allowTextWrap={allowTextWrap}
                                   centerText={centerText}
                                   className={linksOff ? '' : 'u-cursor--pointer'}
+                                  id="ballotTitleBallotAddress"
                                   onClick={this.showSelectBallotModalEditAddress}
                                 >
                                   <span className={linksOff ? '' : 'u-link-color'}>
