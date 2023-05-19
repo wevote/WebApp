@@ -71,8 +71,14 @@ class CampaignSupportPayToPromoteProcess extends Component {
         campaignXWeVoteId,
       } = getCampaignXValuesFromIdentifiers(campaignSEOFriendlyPathFromParams, campaignXWeVoteIdFromParams);
       if (!campaignXWeVoteId) {
-        console.log('CampaignSupportPayToPromoteProcess mount did not receive a campaignXWeVoteId');
-        CampaignActions.campaignRetrieveBySEOFriendlyPath(campaignSEOFriendlyPathFromParams);
+        // console.log('CampaignSupportPayToPromoteProcess mount could not find campaignXWeVoteId from incoming variables');
+        if (campaignSEOFriendlyPathFromParams) {
+          CampaignActions.campaignRetrieveBySEOFriendlyPath(campaignSEOFriendlyPathFromParams);
+        } else if (campaignXWeVoteIdFromParams) {
+          CampaignActions.campaignRetrieve(campaignXWeVoteIdFromParams);
+        } else {
+          console.log('Cannot retrieve campaign: missing campaignSEOFriendlyPathFromParams and campaignXWeVoteIdFromParams');
+        }
       } else {
         this.setState({
           campaignTitle,

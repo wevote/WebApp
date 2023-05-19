@@ -28,7 +28,7 @@ export default function saveCampaignSupportAndGoToNextPage (campaignXWeVoteId = 
   const campaignSupportedChanged = true;
   const saveVisibleToPublic = true;
   initializejQuery(() => {
-    CampaignSupporterActions.supportCampaignSave(campaignXWeVoteId, campaignSupported, campaignSupportedChanged, visibleToPublic, saveVisibleToPublic);
+    CampaignSupporterActions.supportCampaignSave(campaignXWeVoteId, campaignSupported, campaignSupportedChanged, visibleToPublic, saveVisibleToPublic); // campaignSupporterSave
   }, goToNextPage(campaignXBaseBath));
   return null;
 }

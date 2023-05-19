@@ -270,6 +270,7 @@ class CampaignNewsItemDetailsPage extends Component {
     this.timer = setTimeout(() => {
       historyPush(pathToUseWhenProfileComplete);
     }, 500);
+    return null;
   }
 
   functionToUseToKeepHelping = () => {
@@ -294,7 +295,7 @@ class CampaignNewsItemDetailsPage extends Component {
     const saveVisibleToPublic = true;
     if (!AppObservableStore.blockCampaignXRedirectOnSignIn()) {
       initializejQuery(() => {
-        CampaignSupporterActions.supportCampaignSave(campaignXWeVoteId, campaignSupported, campaignSupportedChanged, visibleToPublic, saveVisibleToPublic);
+        CampaignSupporterActions.supportCampaignSave(campaignXWeVoteId, campaignSupported, campaignSupportedChanged, visibleToPublic, saveVisibleToPublic); // campaignSupporterSave
       }, this.goToNextPage());
     }
   }

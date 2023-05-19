@@ -311,7 +311,7 @@ class PoliticianDetailsPage extends Component {
     const { finalElectionDateInPast, payToPromoteStepCompleted, payToPromoteStepTurnedOn, sharingStepCompleted, step2Completed } = this.state;
     // console.log('functionToUseToKeepHelping sharingStepCompleted:', sharingStepCompleted, ', payToPromoteStepCompleted:', payToPromoteStepCompleted, ', step2Completed:', step2Completed);
     const keepHelpingDestinationString = keepHelpingDestination(step2Completed, payToPromoteStepCompleted, payToPromoteStepTurnedOn, sharingStepCompleted, finalElectionDateInPast);
-    historyPush(`${this.getPoliticianBasePath()}/${keepHelpingDestinationString}`);
+    historyPush(`${this.getCampaignXBasePath()}/${keepHelpingDestinationString}`);
   }
 
   functionToUseWhenProfileComplete = () => {
@@ -563,7 +563,7 @@ class PoliticianDetailsPage extends Component {
               )}
               {nextReleaseFeaturesEnabled && (
                 <Suspense fallback={<span>&nbsp;</span>}>
-                  <CampaignSupportThermometer politicianWeVoteId={politicianWeVoteId} />
+                  <CampaignSupportThermometer campaignXWeVoteId={linkedCampaignXWeVoteId} finalElectionDateInPast={finalElectionDateInPast} />
                 </Suspense>
               )}
               {/*
@@ -761,7 +761,7 @@ class PoliticianDetailsPage extends Component {
               <ColumnOneThird>
                 {nextReleaseFeaturesEnabled && (
                   <Suspense fallback={<span>&nbsp;</span>}>
-                    <CampaignSupportThermometer politicianWeVoteId={politicianWeVoteId} finalElectionDateInPast={finalElectionDateInPast} />
+                    <CampaignSupportThermometer campaignXWeVoteId={linkedCampaignXWeVoteId} finalElectionDateInPast={finalElectionDateInPast} />
                   </Suspense>
                 )}
                 {nextReleaseFeaturesEnabled && (

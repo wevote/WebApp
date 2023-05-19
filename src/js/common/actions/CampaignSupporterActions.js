@@ -8,7 +8,7 @@ export default {
       });
   },
 
-  supportCampaignSave (campaignXWeVoteId, campaignSupported, campaignSupportedChanged, visibleToPublic, visibleToPublicChanged) {
+  supportCampaignSave (campaignXWeVoteId, campaignSupported, campaignSupportedChanged, visibleToPublic, visibleToPublicChanged) { // campaignSupporterSave
     // console.log('supportCampaignSave');
     Dispatcher.loadEndpoint('campaignSupporterSave',
       {
@@ -32,7 +32,7 @@ export default {
     Dispatcher.dispatch({ type: 'visibleToPublicQueuedToSave', payload: visibleToPublic });
   },
 
-  supporterEndorsementSave (campaignWeVoteId, supporterEndorsement, visibleToPublic, visibleToPublicChanged) {
+  supporterEndorsementSave (campaignWeVoteId, supporterEndorsement, visibleToPublic, visibleToPublicChanged) { // campaignSupporterSave
     // console.log('supporterEndorsementSave: ', supporterEndorsement);
     Dispatcher.loadEndpoint('campaignSupporterSave',
       {

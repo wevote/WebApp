@@ -10,10 +10,21 @@ class RepresentativeStore extends ReduceStore {
   getInitialState () {
     return {
       allCachedRepresentatives: {}, // Dictionary with representative_we_vote_id as key and representative as value
+      allCachedRepresentativeWeVoteIdsByCampaignXWeVoteId: {}, // key == campaignXWeVoteId, value = representativeWeVoteId
       allCachedRepresentativeWeVoteIdsByPolitician: {}, // Dictionary with politician_we_vote_id as key and list of representatives as value
       numberOfRepresentativesRetrievedByOfficeHeld: {}, // Dictionary with office_we_vote_id as key and number of representatives as value
       representativeListsByOfficeHeldWeVoteId: {}, // Dictionary with office_we_vote_id as key and list of representatives in the office as value
     };
+  }
+
+  getRepresentativeByLinkedCampaignXWeVoteId (campaignXWeVoteId) {
+    const representativeWeVoteId = this.getState().allCachedRepresentativeWeVoteIdsByCampaignXWeVoteId[campaignXWeVoteId] || '';
+    const representative = this.getState().allCachedRepresentatives[representativeWeVoteId];
+    // console.log('RepresentativeStore getRepresentativeByLinkedCampaignXWeVoteId campaignXWeVoteId:', campaignXWeVoteId, ', representative:', representative);
+    if (representative === undefined) {
+      return {};
+    }
+    return representative;
   }
 
   getRepresentativeByWeVoteId (representativeWeVoteId) {
@@ -59,7 +70,7 @@ class RepresentativeStore extends ReduceStore {
 
   reduce (state, action) {
     const {
-      allCachedRepresentatives, allCachedRepresentativeWeVoteIdsByPolitician,
+      allCachedRepresentatives, allCachedRepresentativeWeVoteIdsByCampaignXWeVoteId, allCachedRepresentativeWeVoteIdsByPolitician,
       numberOfRepresentativesRetrievedByOfficeHeld,
     } = state;
     let {
@@ -86,6 +97,9 @@ class RepresentativeStore extends ReduceStore {
           for (let i = 0; i < politician.representative_list.length; ++i) {
             representative = politician.representative_list[i];
             allCachedRepresentatives[representative.we_vote_id] = representative;
+            if (representative && representative.linked_campaignx_we_vote_id) {
+              allCachedRepresentativeWeVoteIdsByCampaignXWeVoteId[representative.linked_campaignx_we_vote_id] = representative.we_vote_id;
+            }
             representativeWeVoteIds.push(representative.we_vote_id);
           }
           if (representativeWeVoteIds.length > 0) {
@@ -93,15 +107,22 @@ class RepresentativeStore extends ReduceStore {
           }
         }
         revisedState = { ...revisedState, allCachedRepresentatives };
+        revisedState = { ...revisedState, allCachedRepresentativeWeVoteIdsByCampaignXWeVoteId };
         revisedState = { ...revisedState, allCachedRepresentativeWeVoteIdsByPolitician };
         return revisedState;
 
       case 'representativeRetrieve':
         representative = action.res;
         allCachedRepresentatives[representative.we_vote_id] = representative;
+        console.log('RepresentativeStore representativeRetrieve, representative:', representative);
+        // TODO: 2023-05-18 This causes a crash bug but doesn't seem to be needed at the time
+        // if (representative && representative.linked_campaignx_we_vote_id) {
+        //   allCachedRepresentativeWeVoteIdsByCampaignXWeVoteId[representative.linked_campaignx_we_vote_id] = representative.we_vote_id;
+        // }
         return {
           ...state,
           allCachedRepresentatives,
+          // allCachedRepresentativeWeVoteIdsByCampaignXWeVoteId,
         };
 
       case 'representativesQuery':
@@ -119,6 +140,9 @@ class RepresentativeStore extends ReduceStore {
         representativeList.forEach((one) => {
           // console.log('representative:', one);
           allCachedRepresentatives[one.we_vote_id] = one;
+          if (one && one.linked_campaignx_we_vote_id) {
+            allCachedRepresentativeWeVoteIdsByCampaignXWeVoteId[one.linked_campaignx_we_vote_id] = one.we_vote_id;
+          }
           if (one.office_held_we_vote_id) {
             if (!(one.office_held_we_vote_id in representativeListsByOfficeHeldWeVoteId)) {
               representativeListsByOfficeHeldWeVoteId[one.office_held_we_vote_id] = [];
@@ -131,6 +155,7 @@ class RepresentativeStore extends ReduceStore {
         return {
           ...state,
           allCachedRepresentatives,
+          allCachedRepresentativeWeVoteIdsByCampaignXWeVoteId,
           representativeListsByOfficeHeldWeVoteId,
           numberOfRepresentativesRetrievedByOfficeHeld,
         };

@@ -104,14 +104,15 @@ class ItemActionBar extends PureComponent {
     this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
   }
 
-  // eslint-disable-next-line camelcase,react/sort-comp
-  UNSAFE_componentWillReceiveProps (nextProps) {
+  componentDidUpdate (prevProps) {
     // console.log('itemActionBar, RELOAD componentWillReceiveProps');
-    if (nextProps.ballotItemWeVoteId !== undefined && nextProps.ballotItemWeVoteId && nextProps.ballotItemWeVoteId !== this.state.ballotItemWeVoteId) {
-      // console.log('itemActionBar, ballotItemWeVoteId setState');
-      const isCandidate = stringContains('cand', nextProps.ballotItemWeVoteId); // isCandidate = the default
-      const isMeasure = stringContains('meas', nextProps.ballotItemWeVoteId); // isCandidate = the default
-      const isPolitician = stringContains('pol', nextProps.ballotItemWeVoteId);
+    const { ballotItemWeVoteId: previousBallotItemWeVoteId } = prevProps;
+    const { ballotItemWeVoteId } = this.props;
+    if (ballotItemWeVoteId !== undefined && ballotItemWeVoteId && ballotItemWeVoteId !== previousBallotItemWeVoteId) {
+      console.log('itemActionBar, ballotItemWeVoteId setState');
+      const isCandidate = stringContains('cand', ballotItemWeVoteId); // isCandidate = the default
+      const isMeasure = stringContains('meas', ballotItemWeVoteId); // isCandidate = the default
+      const isPolitician = stringContains('pol', ballotItemWeVoteId);
       let ballotItemType;
       if (isCandidate) {
         ballotItemType = 'CANDIDATE';
@@ -122,7 +123,7 @@ class ItemActionBar extends PureComponent {
       }
       this.setState({
         ballotItemType,
-        ballotItemWeVoteId: nextProps.ballotItemWeVoteId,
+        ballotItemWeVoteId,
       }, this.onNewBallotItemWeVoteId);
     }
   }

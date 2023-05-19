@@ -59,6 +59,7 @@ class SupportButtonSingleClick extends Component {
     if (this.props.functionToUseWhenActionComplete) {
       this.props.functionToUseWhenActionComplete(campaignXWeVoteId);
     }
+    return null;
   }
 
   submitSupportButtonSingleClick = () => {
@@ -70,7 +71,7 @@ class SupportButtonSingleClick extends Component {
     // console.log('submitSupportButtonSingleClick, visibleToPublic:', visibleToPublic);
     const saveVisibleToPublic = true;
     initializejQuery(() => {
-      CampaignSupporterActions.supportCampaignSave(campaignXWeVoteId, campaignSupported, campaignSupportedChanged, visibleToPublic, saveVisibleToPublic);
+      CampaignSupporterActions.supportCampaignSave(campaignXWeVoteId, campaignSupported, campaignSupportedChanged, visibleToPublic, saveVisibleToPublic); // campaignSupporterSave
     }, this.functionToUseWhenActionCompleteLocal());
   }
 
