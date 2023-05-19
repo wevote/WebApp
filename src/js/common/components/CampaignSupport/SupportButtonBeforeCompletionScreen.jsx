@@ -6,9 +6,13 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import historyPush from '../../utils/historyPush';
 import { renderLog } from '../../utils/logging';
+import SupportActions from '../../../actions/SupportActions';
 import AppObservableStore from '../../stores/AppObservableStore';
+import CandidateStore from '../../../stores/CandidateStore';
 import CampaignStore from '../../stores/CampaignStore';
 import CampaignSupporterStore from '../../stores/CampaignSupporterStore';
+import RepresentativeStore from '../../../stores/RepresentativeStore';
+import SupportStore from '../../../stores/SupportStore';
 import VoterStore from '../../../stores/VoterStore';
 import webAppConfig from '../../../config';
 
@@ -18,10 +22,13 @@ class SupportButtonBeforeCompletionScreen extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      ballotItemType: '',
+      ballotItemWeVoteId: '',
       campaignSupported: false,
       voterFirstName: '',
       voterIsSignedInWithEmail: false,
       voterLastName: '',
+      voterOpposesBallotItem: false,
       voterWeVoteId: '',
     };
   }
@@ -32,6 +39,7 @@ class SupportButtonBeforeCompletionScreen extends Component {
     this.onVoterStoreChange();
     this.campaignStoreListener = CampaignStore.addListener(this.onCampaignStoreChange.bind(this));
     this.campaignSupporterStoreListener = CampaignSupporterStore.addListener(this.onCampaignSupporterStoreChange.bind(this));
+    this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
   }
 
@@ -59,6 +67,7 @@ class SupportButtonBeforeCompletionScreen extends Component {
     // console.log('SupportButtonBeforeCompletionScreen componentWillUnmount');
     this.campaignStoreListener.remove();
     this.campaignSupporterStoreListener.remove();
+    this.supportStoreListener.remove();
     this.voterStoreListener.remove();
   }
 
@@ -74,9 +83,15 @@ class SupportButtonBeforeCompletionScreen extends Component {
   }
 
   onCampaignSupporterStoreChange () {
-    const {
-      campaignXWeVoteId,
-    } = this.props;
+    const { campaignXWeVoteId } = this.props;
+    // console.log('SupportButtonBeforeCompletionScreen onCampaignSupporterStoreChange campaignXWeVoteId:', campaignXWeVoteId);
+    if (campaignXWeVoteId) {
+      this.onCampaignOrCampaignSupporterChange(campaignXWeVoteId);
+    }
+  }
+
+  onSupportStoreChange () {
+    const { campaignXWeVoteId } = this.props;
     // console.log('SupportButtonBeforeCompletionScreen onCampaignSupporterStoreChange campaignXWeVoteId:', campaignXWeVoteId);
     if (campaignXWeVoteId) {
       this.onCampaignOrCampaignSupporterChange(campaignXWeVoteId);
@@ -118,8 +133,31 @@ class SupportButtonBeforeCompletionScreen extends Component {
         });
       }
       const voterCanVoteForPoliticianInCampaign = CampaignStore.getVoterCanVoteForPoliticianInCampaign(campaignXWeVoteId);
+      let { ballotItemType, ballotItemWeVoteId, voterOpposesBallotItem } = this.state;
+      if (!ballotItemWeVoteId) {
+        const candidate = CandidateStore.getCandidateByLinkedCampaignXWeVoteId(campaignXWeVoteId);
+        const representative = RepresentativeStore.getRepresentativeByLinkedCampaignXWeVoteId(campaignXWeVoteId);
+        if (candidate && candidate.we_vote_id) {
+          ballotItemType = 'CANDIDATE';
+          ballotItemWeVoteId = candidate.we_vote_id;
+          // console.log('onCampaignSupporterStoreChange from candidate voterOpposesBallotItem:', voterOpposesBallotItem);
+        } else if (representative && representative.politician_we_vote_id) {
+          ballotItemType = 'POLITICIAN';
+          ballotItemWeVoteId = representative.politician_we_vote_id;
+          // console.log('onCampaignSupporterStoreChange from representative voterOpposesBallotItem:', voterOpposesBallotItem);
+        }
+      }
+      if (ballotItemWeVoteId) {
+        voterOpposesBallotItem = SupportStore.getVoterOpposesByBallotItemWeVoteId(ballotItemWeVoteId);
+        // console.log('onCampaignSupporterStoreChange from candidate voterOpposesBallotItem:', voterOpposesBallotItem);
+      }
+      // const voterSupportsBallotItem = SupportStore.getVoterSupportsByBallotItemWeVoteId(ballotItemWeVoteId);
       this.setState({
+        ballotItemType,
+        ballotItemWeVoteId,
         voterCanVoteForPoliticianInCampaign,
+        voterOpposesBallotItem,
+        // voterSupportsBallotItem,
       });
     } else {
       this.setState({
@@ -131,7 +169,9 @@ class SupportButtonBeforeCompletionScreen extends Component {
 
   submitSupportButtonMobile = () => {
     const { campaignXWeVoteId } = this.props;
+    const { ballotItemType, ballotItemWeVoteId } = this.state;
     console.log('SupportButtonBeforeCompletionScreen submitSupportButtonMobile');
+    SupportActions.voterSupportingSave(ballotItemWeVoteId, ballotItemType);
     const { voterFirstName, voterLastName, voterIsSignedInWithEmail } = this.state;
     if (!voterFirstName || !voterLastName || !voterIsSignedInWithEmail) {
       // Navigate to the mobile complete your profile page
@@ -177,7 +217,7 @@ class SupportButtonBeforeCompletionScreen extends Component {
     }
 
     const {
-      campaignSupported, voterCanVoteForPoliticianInCampaign, voterWeVoteId,
+      campaignSupported, voterCanVoteForPoliticianInCampaign, voterOpposesBallotItem, voterWeVoteId,
     } = this.state;
     // console.log('voterCanVoteForPoliticianInCampaign: ', voterCanVoteForPoliticianInCampaign);
     if (!voterWeVoteId) {
@@ -201,25 +241,46 @@ class SupportButtonBeforeCompletionScreen extends Component {
               I&apos;d like to keep helping!
             </Button>
           ) : (
-            <Button
-              classes={{ root: supportButtonClasses }}
-              color="primary"
-              id="helpThemWinButton"
-              onClick={this.submitSupportButtonMobile}
-              variant={inButtonFullWidthMode || !inCompressedMode ? 'contained' : 'outline'}
-            >
-              {voterCanVoteForPoliticianInCampaign ? (
-                <span>
-                  {/* Support with my vote */}
-                  Help them win
-                </span>
+            <>
+              {voterOpposesBallotItem ? (
+                <>
+                  {nextReleaseFeaturesEnabled && (
+                    <Button
+                      classes={{ root: supportButtonClasses }}
+                      color="primary"
+                      disabled
+                      id="helpDefeatThemButton"
+                      // onClick={this.submitSupportButtonMobile}
+                      variant={inButtonFullWidthMode || !inCompressedMode ? 'contained' : 'outline'}
+                    >
+                      <span>
+                        Help defeat them
+                      </span>
+                    </Button>
+                  )}
+                </>
               ) : (
-                <span>
-                  {/* I support this campaign */}
-                  Help them win
-                </span>
+                <Button
+                  classes={{ root: supportButtonClasses }}
+                  color="primary"
+                  id="helpThemWinButton"
+                  onClick={this.submitSupportButtonMobile}
+                  variant={inButtonFullWidthMode || !inCompressedMode ? 'contained' : 'outline'}
+                >
+                  {voterCanVoteForPoliticianInCampaign ? (
+                    <span>
+                      {/* Support with my vote */}
+                      Help them win
+                    </span>
+                  ) : (
+                    <span>
+                      {/* I support this campaign */}
+                      Help them win
+                    </span>
+                  )}
+                </Button>
               )}
-            </Button>
+            </>
           )}
         </ButtonPanel>
       </Wrapper>

@@ -595,7 +595,6 @@ const RecommendedCampaignsIntroText = styled('div')(({ theme }) => (`
   font-size: 20px;
   font-weight: 400;
   margin: 18px 0 20px 0;
-  max-height: 324px; // Added to deal with 200x200 images
   max-width: 620px;
   text-align: center;
   ${theme.breakpoints.down('sm')} {
@@ -607,7 +606,6 @@ const RecommendedCampaignWrapper = styled('div')`
   border: 1px solid #ddd;
   border-radius: 10px;
   box-shadow: 0 20px 40px -25px #999;
-  max-height: 324px; // Added to deal with 200x200 images
   max-width: 620px;
 `;
 

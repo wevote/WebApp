@@ -214,6 +214,7 @@ class CampaignDetailsPage extends Component {
     this.timer = setTimeout(() => {
       historyPush(pathToUseWhenProfileComplete);
     }, 500);
+    return null;
   }
 
   functionToUseToKeepHelping = () => {
@@ -238,7 +239,7 @@ class CampaignDetailsPage extends Component {
     const saveVisibleToPublic = true;
     if (!AppObservableStore.blockCampaignXRedirectOnSignIn()) {
       initializejQuery(() => {
-        CampaignSupporterActions.supportCampaignSave(campaignXWeVoteId, campaignSupported, campaignSupportedChanged, visibleToPublic, saveVisibleToPublic);
+        CampaignSupporterActions.supportCampaignSave(campaignXWeVoteId, campaignSupported, campaignSupportedChanged, visibleToPublic, saveVisibleToPublic); // campaignSupporterSave
       }, this.goToNextPage());
     }
   }

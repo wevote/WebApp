@@ -375,7 +375,7 @@ class HeaderBar extends Component {
         case 'ballot':
           ballot.css(highlight);
           break;
-        case 'candidatelist':
+        case 'candidatelist': // displays same page as "cs"
           candidates.css(highlight);
           break;
         case 'friends':

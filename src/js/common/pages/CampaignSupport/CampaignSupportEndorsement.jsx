@@ -215,7 +215,7 @@ class CampaignSupportEndorsement extends Component {
         // console.log('CampaignSupportEndorsement, supporterEndorsementQueuedToSave:', supporterEndorsementQueuedToSave);
         const saveVisibleToPublic = true;
         initializejQuery(() => {
-          CampaignSupporterActions.supporterEndorsementSave(campaignXWeVoteId, supporterEndorsementQueuedToSave, visibleToPublic, saveVisibleToPublic);
+          CampaignSupporterActions.supporterEndorsementSave(campaignXWeVoteId, supporterEndorsementQueuedToSave, visibleToPublic, saveVisibleToPublic); // campaignSupporterSave
           CampaignSupporterActions.supporterEndorsementQueuedToSave(undefined);
         });
       }

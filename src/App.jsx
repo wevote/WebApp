@@ -379,6 +379,7 @@ class App extends Component {
                     <Route exact path="/c/:campaignSEOFriendlyPath/why-do-you-support" render={(props) => <CampaignSupportEndorsement match={props.match} setShowHeaderFooter={this.setShowHeaderFooter} />} />
                     <Route path="/:state_candidates_phrase/cs/" exact component={CampaignsHome} />
                     <Route path="/cs/" exact component={CampaignsHome} />
+                    <Route path="/candidatelist/" exact component={CampaignsHome} />
                     <Route path="/candidate-for-extension" component={CandidateForExtension} />
                     <Route path="/candidate/:candidate_we_vote_id/b/:back_to_variable/modal/:modal_to_show" exact component={Candidate} />
                     <Route path="/candidate/:candidate_we_vote_id/b/:back_to_variable/modal/:modal_to_show/:shared_item_code" exact component={Candidate} />
