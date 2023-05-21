@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import initializejQuery from '../../utils/initializejQuery';
 import { renderLog } from '../../utils/logging';
 import { retrieveCampaignXFromIdentifiers } from '../../utils/campaignUtils';
+import PoliticianStore from '../../stores/PoliticianStore';
 import VoterStore from '../../../stores/VoterStore';
 
 
@@ -16,27 +17,31 @@ class CampaignRetrieveController extends Component {
 
   componentDidMount () {
     // console.log('CampaignRetrieveController componentDidMount');
+    this.politicianStoreListener = PoliticianStore.addListener(this.onPoliticianStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     this.campaignFirstRetrieve();
   }
 
-  componentDidUpdate (prevProps) {
-    const {
-      campaignXWeVoteId: campaignXWeVoteIdPrevious,
-    } = prevProps;
+  componentDidUpdate () {
     const {
       campaignXWeVoteId,
     } = this.props;
-    // console.log('CampaignRetrieveController componentDidUpdate, campaignXWeVoteIdPrevious:', campaignXWeVoteIdPrevious, ', campaignXWeVoteId:', campaignXWeVoteId);
-    if (campaignXWeVoteId && campaignXWeVoteIdPrevious) {
-      if (campaignXWeVoteId !== campaignXWeVoteIdPrevious) {
-        this.campaignFirstRetrieve();
-      }
+    const {
+      campaignRetrieveInitiated,
+    } = this.state;
+    // console.log('CampaignRetrieveController componentDidUpdate, campaignXWeVoteId:', campaignXWeVoteId, ', campaignRetrieveInitiated:', campaignRetrieveInitiated);
+    if (campaignXWeVoteId && !campaignRetrieveInitiated) {
+      this.campaignFirstRetrieve();
     }
   }
 
   componentWillUnmount () {
+    this.politicianStoreListener.remove();
     this.voterStoreListener.remove();
+  }
+
+  onPoliticianStoreChange () {
+    this.campaignFirstRetrieve();
   }
 
   onVoterStoreChange () {
@@ -45,7 +50,7 @@ class CampaignRetrieveController extends Component {
 
   campaignFirstRetrieve = () => {
     const { campaignSEOFriendlyPath, campaignXWeVoteId } = this.props;
-    // console.log('CampaignRetrieveController campaignSEOFriendlyPath: ', campaignSEOFriendlyPath, ', campaignXWeVoteId: ', campaignXWeVoteId);
+    // console.log('CampaignRetrieveController campaignFirstRetrieve campaignSEOFriendlyPath: ', campaignSEOFriendlyPath, ', campaignXWeVoteId: ', campaignXWeVoteId);
     if (campaignSEOFriendlyPath || campaignXWeVoteId) {
       const { campaignRetrieveInitiated } = this.state;
       initializejQuery(() => {
@@ -57,11 +62,16 @@ class CampaignRetrieveController extends Component {
           // (ex/ campaignx_news_item_list, latest_campaignx_supporter_endorsement_list, latest_campaignx_supporter_list)
           // that come in with campaignRetrieve which don't come in campaignListRetrieve,
           // details which are only useful when you look at the full campaign
-          const updatedCampaignRetrieveInitiated = retrieveCampaignXFromIdentifiers(campaignSEOFriendlyPath, campaignXWeVoteId);
-          // console.log('campaignRetrieveInitiated:', campaignRetrieveInitiated, 'updatedCampaignRetrieveInitiated:', updatedCampaignRetrieveInitiated);
           this.setState({
-            campaignRetrieveInitiated: updatedCampaignRetrieveInitiated,
-          });
+            campaignRetrieveInitiated: true,
+          }, () => retrieveCampaignXFromIdentifiers(campaignSEOFriendlyPath, campaignXWeVoteId));
+          // const updatedCampaignRetrieveInitiated = retrieveCampaignXFromIdentifiers(campaignSEOFriendlyPath, campaignXWeVoteId);
+          // console.log('campaignRetrieveInitiated:', campaignRetrieveInitiated, 'updatedCampaignRetrieveInitiated:', updatedCampaignRetrieveInitiated);
+          // if (updatedCampaignRetrieveInitiated) {
+          //   this.setState({
+          //     campaignRetrieveInitiated: updatedCampaignRetrieveInitiated,
+          //   });
+          // }
         }
       });
     }
