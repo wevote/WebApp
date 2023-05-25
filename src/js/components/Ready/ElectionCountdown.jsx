@@ -179,7 +179,7 @@ class ElectionCountdown extends React.Component {
                   <Button
                     variant="outlined"
                     color="primary"
-                    id="electionCountdownGoToBallotPage"
+                    id="electionCountDown"
                     onClick={() => historyPush('/ballot')}
                   >
                     Choose Election

@@ -162,7 +162,7 @@ class BallotTitleHeaderNationalPlaceholder extends Component {
                         <BallotAddress
                           centerText={centerText}
                           className={linksOff ? '' : 'u-cursor--pointer'}
-                          id="BallotTitleNationalBallotAddress"
+                          id="ballotTitleBallotAddress"
                           onClick={this.showSelectBallotModalEditAddress}
                         >
                           Ballot for
@@ -176,6 +176,7 @@ class BallotTitleHeaderNationalPlaceholder extends Component {
                           allowTextWrap={allowTextWrap}
                           centerText={centerText}
                           className={linksOff ? '' : 'u-cursor--pointer'}
+                          id="ballotTitleBallotAddress"
                           onClick={this.showSelectBallotModalEditAddress}
                         >
                           <span className={linksOff ? '' : 'u-link-color'}>

@@ -6,8 +6,44 @@ class ReadyPage extends Page {
     super().title = 'Ready to Vote? - We Vote';
   }
 
+  get electionCountDown () {
+    return $('#electionCountDown');
+  }
+
+  get ballotTitle () {
+    return $('//*[contains(@id, "ballotTitleHeader")]');
+  }
+
+  get ballotAddress () {
+    return $('//*[contains(@id, "ballotTitleBallotAddress")]');
+  }
+
+  get ballotAddressInput () {
+    return $('#entryBox');
+  }
+
+  get saveBallotAddressButton () {
+    return $('//*[contains(@id, "addressBoxModalSaveButton")]');
+  }
+
   get viewUpcomingBallotButton () {
     return $('//*[contains(@id, "viewUpcomingBallot")]');
+  }
+
+  get toggleIntroductionButton () {
+    return $('#showMoreReadyIntroductionCompressed');
+  }
+
+  get introductionStepText () {
+    return $$('//*[contains(@id, "readyIntroductionStepText")]');
+  }
+
+  get toggleFinePrintButton () {
+    return $('#showMoreReadyFinePrintCompressed');
+  }
+
+  get finePrintStepText () {
+    return $$('//*[contains(@id, "readyFinePrintStepText")]');
   }
 
   get followIssueButtons () {
@@ -15,15 +51,27 @@ class ReadyPage extends Page {
   }
 
   get toggleFollowMenuButtons () {
-    return $$('#toggle-button');
+    return $$('//*[contains(@id, "toggleFollowMenuButton")]');
   }
 
   get unfollowIssueButtons () {
     return $$('//*[contains(@id, "issueUnfollowButton")]');
   }
 
+  get footer () {
+    return $('#footer');
+  }
+
   async open () {
     await super.open('/ready');
+  }
+
+  async openBallotModal () {
+    await this.ballotTitle.click();
+  }
+
+  async saveBallotAddress () {
+    await this.saveBallotAddressButton.click();
   }
 
   async followFirstIssue () {
