@@ -69,8 +69,6 @@ Please read the following before you start contributing to the project. Thank yo
 
 ## Testing WebApp
 
-1. [Introduction to WebApp testing](docs/testing/README_TESTING.md)
-
-2. [Explanation of various files](docs/testing/EXPLAIN_FILES.md)
+[Configuring BrowserStack & WebdriverIO](docs/testing/README_TESTING.md)
 
 Welcome aboard!!
