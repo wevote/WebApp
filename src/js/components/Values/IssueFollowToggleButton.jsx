@@ -186,7 +186,7 @@ class IssueFollowToggleButton extends Component {
               aria-controls="follow-menu"
               aria-haspopup="true"
               onClick={this.handleClick}
-              id="toggle-button"
+              id={`toggleFollowMenuButton-${issueWeVoteId}`}
             >
               <ArrowDropDown />
               <span className="sr-only">Toggle Dropdown</span>

@@ -126,7 +126,7 @@ class Footer extends Component {
     const { /* doShowHeader, doShowFooter, */ showFooterBar, showFooterMain, showShareButtonFooter } = this.state;
     // console.log('Footer render showFooterMain:', showFooterMain);
     return (
-      <FooterWrapper>
+      <FooterWrapper id="footer">
         {(showFooterMain) && (
           <FooterMainWrapper>
             <Suspense fallback={<span>&nbsp;</span>}>

@@ -63,7 +63,7 @@ class ReadyFinePrint extends Component {
               {contentUnfurled && (
                 <ListRow>
                   <Dot><StepNumberPlaceholder>&nbsp;</StepNumberPlaceholder></Dot>
-                  <StepText>We Vote will not submit your vote. You will need to vote in person or vote-by-mail to have your vote count.</StepText>
+                  <StepText id="readyFinePrintStepTextA">We Vote will not submit your vote. You will need to vote in person or vote-by-mail to have your vote count.</StepText>
                 </ListRow>
               )}
 
@@ -74,7 +74,7 @@ class ReadyFinePrint extends Component {
               {contentUnfurled && (
                 <ListRow>
                   <Dot><StepNumberPlaceholder>&nbsp;</StepNumberPlaceholder></Dot>
-                  <StepText>
+                  <StepText id="readyFinePrintStepTextB">
                     <Suspense fallback={<></>}>
                       <ReadMore
                         textToDisplay="We Vote uses ballot data aggregated from government, nonpartisan, and partisan sources.
@@ -98,7 +98,7 @@ class ReadyFinePrint extends Component {
               {contentUnfurled && (
                 <ListRow>
                   <Dot><StepNumberPlaceholder>&nbsp;</StepNumberPlaceholder></Dot>
-                  <StepText>
+                  <StepText id="readyFinePrintStepTextC">
                     Many states require you to register weeks in advance of each election. Search the web for &quot;voter registration&quot; + your state to learn how to register in time.
                   </StepText>
                 </ListRow>
@@ -113,7 +113,7 @@ class ReadyFinePrint extends Component {
               {contentUnfurled && (
                 <ListRow>
                   <Dot><StepNumberPlaceholder>&nbsp;</StepNumberPlaceholder></Dot>
-                  <StepText>
+                  <StepText id="readyFinePrintStepTextD">
                     We Vote will never share or sell your contact information.
                     {' '}
                     <Link to="/more/privacy" className="u-link-color">See full privacy policy here</Link>
