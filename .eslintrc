@@ -29,6 +29,7 @@
     "jsx-a11y/no-noninteractive-element-interactions": 1,
     "jsx-a11y/no-static-element-interactions": 0,
     "jsx-quotes": 2,
+    "linebreak-style": 0,
     "max-len": [0, 80, 4],
     "no-console": [0],
     "no-else-return": [0],
