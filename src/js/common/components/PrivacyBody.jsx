@@ -297,13 +297,13 @@ export default class PrivacyBody extends Component {
           </span>
           <span>
             {' '}
-            and Full Story (
+            and Open Replay (
             <Suspense fallback={<></>}>
               <OpenExternalWebSite
-                linkIdAttribute="fullStoryPrivacy"
-                url="https://www.fullstory.com/legal/privacy/"
+                linkIdAttribute="openReplayPrivacy"
+                url="https://openreplay.com/privacy.html"
                 target="_blank"
-                body={<span>https://www.fullstory.com/legal/privacy/</span>}
+                body={<span>https://openreplay.com/privacy.html</span>}
               />
             </Suspense>
             ).
@@ -313,10 +313,10 @@ export default class PrivacyBody extends Component {
         <p>
           <span>
             The information generated about your use of our Site (including your IP address) is transmitted to and stored by Google and
-            Full Story on servers in the United States. Google and/or Full Story may also transfer this information to third parties where
-            Google and/or Full Story are legally required, or where such third parties process the information on Google&apos;s or Full Story&apos;s
+            Open Replay on servers in the United States. Google and/or Open Replay may also transfer this information to third parties where
+            Google and/or Open Replay are legally required, or where such third parties process the information on Google&apos;s or Open Replay&apos;s
             behalf. Google may combine your IP address with any other data held by Google. By using this Site, you consent to the processing of
-            data by Google and Full Story in the manner and for the purposes set out above.
+            data by Google and Open Replay in the manner and for the purposes set out above.
           </span>
         </p>
         <p>
