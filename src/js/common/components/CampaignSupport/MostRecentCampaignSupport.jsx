@@ -16,6 +16,8 @@ import returnFirstXWords from '../../utils/returnFirstXWords';
 import stringContains from '../../utils/stringContains';
 import CampaignStore from '../../stores/CampaignStore';
 import CampaignSupporterStore from '../../stores/CampaignSupporterStore';
+import { Link } from "react-router-dom";
+import VoterStore from "../../../stores/VoterStore";
 
 class MostRecentCampaignSupport extends React.Component {
   constructor (props) {
@@ -45,6 +47,10 @@ class MostRecentCampaignSupport extends React.Component {
         this.onFirstLoadOfSupporterData(allLatestSupporters);
       }
     }
+    const voterWeVoteId = VoterStore.getVoterWeVoteId();
+    this.setState({
+      voterWeVoteId,
+    });
 
     if (this.timeInterval) {
       clearInterval(this.timeInterval);
@@ -125,6 +131,10 @@ class MostRecentCampaignSupport extends React.Component {
         });
       }
     }
+    const voterWeVoteId = VoterStore.getVoterWeVoteId();
+    this.setState({
+      voterWeVoteId,
+    });
   }
 
   fillStageQueue (allLatestSupporters) {
@@ -172,7 +182,7 @@ class MostRecentCampaignSupport extends React.Component {
   render () {
     renderLog('MostRecentCampaignSupport');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
-    const { supportersOnStageNow } = this.state;
+    const { supportersOnStageNow, voterWeVoteId } = this.state;
 
     return (
       <Wrapper>
@@ -208,6 +218,14 @@ class MostRecentCampaignSupport extends React.Component {
                       supported
                       {' '}
                       {timeFromDate(comment.date_supported)}
+                      {comment.voter_we_vote_id === voterWeVoteId && (
+                        <>
+                          &nbsp;&nbsp;&nbsp;
+                          <Link to={`/id/${comment.campaignx_we_vote_id}/why-do-you-support`}>
+                            Edit
+                          </Link>
+                        </>
+                      )}
                     </CommentNameWrapper>
                   </CommentTextWrapper>
                 </CommentWrapper>
