@@ -384,7 +384,7 @@ export default class SignInOptionsPanel extends Component {
   signOut () {
     // console.log('SignInOptionsPanel.jsx signOut');
     VoterSessionActions.voterSignOut();
-    historyPush('/ballot');
+    historyPush('/');
   }
 
   render () {
