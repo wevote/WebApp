@@ -158,9 +158,9 @@ class PoliticianDetailsPage extends Component {
   }
 
   onCampaignSupporterStoreChange () {
-    const { politicianWeVoteId } = this.state;
-    const step2Completed = CampaignSupporterStore.voterSupporterEndorsementExists(politicianWeVoteId);
-    const payToPromoteStepCompleted = CampaignSupporterStore.voterChipInExists(politicianWeVoteId);
+    const { linkedCampaignXWeVoteId } = this.state;
+    const step2Completed = CampaignSupporterStore.voterSupporterEndorsementExists(linkedCampaignXWeVoteId);
+    const payToPromoteStepCompleted = CampaignSupporterStore.voterChipInExists(linkedCampaignXWeVoteId);
     const sharingStepCompleted = false;
     // console.log('onCampaignSupporterStoreChange step2Completed: ', step2Completed, ', sharingStepCompleted: ', sharingStepCompleted, ', payToPromoteStepCompleted:', payToPromoteStepCompleted);
     this.setState({
@@ -623,7 +623,7 @@ class PoliticianDetailsPage extends Component {
                         </CampaignSubSectionSeeAll>
                       )}
                     </CampaignSubSectionTitleWrapper>
-                    <CampaignCommentsList politicianWeVoteId={politicianWeVoteId} startingNumberOfCommentsToDisplay={2} />
+                    <CampaignCommentsList campaignXWeVoteId={linkedCampaignXWeVoteId} startingNumberOfCommentsToDisplay={2} />
                   </Suspense>
                 </DelayedLoad>
               </CommentsListWrapper>
@@ -752,7 +752,7 @@ class PoliticianDetailsPage extends Component {
                             </CampaignSubSectionSeeAll>
                           )}
                         </CampaignSubSectionTitleWrapper>
-                        <CampaignCommentsList politicianWeVoteId={politicianWeVoteId} startingNumberOfCommentsToDisplay={2} />
+                        <CampaignCommentsList campaignXWeVoteId={linkedCampaignXWeVoteId} startingNumberOfCommentsToDisplay={2} />
                       </Suspense>
                     </DelayedLoad>
                   </CommentsListWrapper>
