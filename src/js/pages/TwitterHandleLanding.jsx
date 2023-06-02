@@ -56,10 +56,12 @@ export default class TwitterHandleLanding extends Component {
     // console.log('TwitterHandleLanding componentWillReceiveProps');
     let activeRoute = '';
     let nextTwitterHandle;
-    if (nextProps.match && nextProps.match.location) {
-      const { match: { location: { pathname }, params: { twitter_handle: twitter } }  } = nextProps;
+    // eslint-disable-next-line react/prop-types
+    if (nextProps.match && nextProps.location) {
+      // eslint-disable-next-line react/prop-types,camelcase
+      const { location: { pathname }, match: {params: { twitter_handle} }  } = nextProps;
       activeRoute = pathname;
-      nextTwitterHandle = twitter;
+      nextTwitterHandle = twitter_handle;
       // eslint-disable-next-line react/prop-types
     } else if (this.props && this.props.location) {
       // eslint-disable-next-line react/prop-types
@@ -74,7 +76,7 @@ export default class TwitterHandleLanding extends Component {
     // console.log('TwitterHandleLanding componentWillReceiveProps activeRoute:', activeRoute);
     if (nextTwitterHandle && twitterHandle.toLowerCase() !== nextTwitterHandle.toLowerCase()) {
       // We need this test to prevent an infinite loop
-      console.log('TwitterHandleLanding componentWillReceiveProps, different twitterHandle: ', nextProps.params.twitter_handle);
+      console.log('TwitterHandleLanding componentWillReceiveProps, different twitterHandle: ', nextProps.match.params.twitter_handle);
       TwitterActions.resetTwitterHandleLanding();
       TwitterActions.twitterIdentityRetrieve(nextTwitterHandle);
       this.setState({
