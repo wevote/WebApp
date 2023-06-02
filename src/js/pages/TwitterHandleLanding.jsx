@@ -52,35 +52,17 @@ export default class TwitterHandleLanding extends Component {
   }
 
   // eslint-disable-next-line camelcase,react/sort-comp
-  UNSAFE_componentWillReceiveProps (nextProps) {
-    // console.log('TwitterHandleLanding componentWillReceiveProps');
-    let activeRoute = '';
-    let nextTwitterHandle;
-    // eslint-disable-next-line react/prop-types
-    if (nextProps.match && nextProps.location) {
-      // eslint-disable-next-line react/prop-types,camelcase
-      const { location: { pathname }, match: {params: { twitter_handle} }  } = nextProps;
-      activeRoute = pathname;
-      nextTwitterHandle = twitter_handle;
-      // eslint-disable-next-line react/prop-types
-    } else if (this.props && this.props.location) {
-      // eslint-disable-next-line react/prop-types
-      const { location: { pathname } } = this.props;
-      activeRoute = pathname;
-    }
-
-    const { twitterHandle } = this.state;
-    this.setState({
-      activeRoute,
-    });
-    // console.log('TwitterHandleLanding componentWillReceiveProps activeRoute:', activeRoute);
-    if (nextTwitterHandle && twitterHandle.toLowerCase() !== nextTwitterHandle.toLowerCase()) {
-      // We need this test to prevent an infinite loop
-      console.log('TwitterHandleLanding componentWillReceiveProps, different twitterHandle: ', nextProps.match.params.twitter_handle);
+  componentDidUpdate(prevProps) {
+    // if-statement prevents infinite rendering
+    if (prevProps.match.params.twitter_handle !== this.props.match.params.twitter_handle ||
+        prevProps.location.pathname !== this.props.location.pathname) {
+      const { match: { params: { twitter_handle: nextTwitterHandle } }, location: { pathname: activeRoute } } = this.props;
+      console.log('TwitterHandleLanding componentWillReceiveProps, different twitterHandle: ', nextTwitterHandle);
       TwitterActions.resetTwitterHandleLanding();
       TwitterActions.twitterIdentityRetrieve(nextTwitterHandle);
       this.setState({
         twitterHandle: nextTwitterHandle,
+        activeRoute,
       });
     }
   }
