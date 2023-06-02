@@ -53,17 +53,18 @@ export default class TwitterHandleLanding extends Component {
 
   // eslint-disable-next-line camelcase,react/sort-comp
   componentDidUpdate(prevProps) {
-    // if-statement prevents infinite rendering
-    if (prevProps.match.params.twitter_handle !== this.props.match.params.twitter_handle ||
-        prevProps.location.pathname !== this.props.location.pathname) {
-      const { match: { params: { twitter_handle: nextTwitterHandle } }, location: { pathname: activeRoute } } = this.props;
-      console.log('TwitterHandleLanding componentWillReceiveProps, different twitterHandle: ', nextTwitterHandle);
-      TwitterActions.resetTwitterHandleLanding();
-      TwitterActions.twitterIdentityRetrieve(nextTwitterHandle);
-      this.setState({
-        twitterHandle: nextTwitterHandle,
-        activeRoute,
-      });
+    const { match: { params: { twitter_handle: twitterHandle } }, location: { pathname: activeRoute } } = this.props;
+    // if-statements prevents infinite rendering
+    if (prevProps.location.pathname !== this.props.location.pathname) {
+      this.setState({activeRoute});
+    }
+    if (prevProps.match.params.twitter_handle !== this.props.match.params.twitter_handle) {
+      console.log('TwitterHandleLanding componentWillReceiveProps, different twitterHandle: ', twitterHandle);
+      if (this.state.twitterHandle !== twitterHandle) {
+        TwitterActions.resetTwitterHandleLanding();
+        TwitterActions.twitterIdentityRetrieve(twitterHandle);
+        this.setState({ twitterHandle });
+      }
     }
   }
 
