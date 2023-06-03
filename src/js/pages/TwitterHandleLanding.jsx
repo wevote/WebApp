@@ -77,8 +77,8 @@ export default class  TwitterHandleLanding extends Component {
       const {match: { params: { twitter_handle} }} = this.props;
       currentTwitterHandle = twitter_handle;
     }
-    if (prevTwitterHandle !== currentTwitterHandle) {
-      if (this.state.twitterHandle !== currentTwitterHandle) {
+    if (prevTwitterHandle.toLowerCase() !== currentTwitterHandle.toLowerCase()) {
+      if (this.state.twitterHandle.toLowerCase() !== currentTwitterHandle.toLowerCase()) {
         console.log('TwitterHandleLanding componentWillReceiveProps, different twitterHandle: ', currentTwitterHandle);
         TwitterActions.resetTwitterHandleLanding();
         TwitterActions.twitterIdentityRetrieve(currentTwitterHandle);
