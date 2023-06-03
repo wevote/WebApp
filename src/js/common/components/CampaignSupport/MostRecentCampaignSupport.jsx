@@ -2,6 +2,7 @@ import { AccountCircle } from '@mui/icons-material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import anonymous from '../../../../img/global/icons/avatar-generic.png';
 import LazyImage from '../LazyImage';
@@ -16,8 +17,7 @@ import returnFirstXWords from '../../utils/returnFirstXWords';
 import stringContains from '../../utils/stringContains';
 import CampaignStore from '../../stores/CampaignStore';
 import CampaignSupporterStore from '../../stores/CampaignSupporterStore';
-import { Link } from "react-router-dom";
-import VoterStore from "../../../stores/VoterStore";
+import VoterStore from '../../../stores/VoterStore';
 
 class MostRecentCampaignSupport extends React.Component {
   constructor (props) {
@@ -185,7 +185,7 @@ class MostRecentCampaignSupport extends React.Component {
     const { supportersOnStageNow, voterWeVoteId } = this.state;
 
     return (
-      <Wrapper>
+      <MostRecentCampaignSupportWrapper>
         {supportersOnStageNow && supportersOnStageNow.length > 0 && (
           <CommentsWrapper id="comments-wrapper">
               {supportersOnStageNow.map((comment) => (
@@ -232,7 +232,7 @@ class MostRecentCampaignSupport extends React.Component {
               ))}
           </CommentsWrapper>
         )}
-      </Wrapper>
+      </MostRecentCampaignSupportWrapper>
     );
   }
 }
@@ -274,7 +274,7 @@ const CommentsWrapper = styled('div')`
   }
 `;
 
-const Wrapper = styled('div')`
+const MostRecentCampaignSupportWrapper = styled('div')`
 `;
 
 export default withStyles(styles)(MostRecentCampaignSupport);

@@ -22,7 +22,7 @@ const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' *
 
 // The component that gets called for paths like https://localhost:3000/sierraclub
 // A Twitter handle is the username that appears at the end of your unique Twitter URL
-export default class TwitterHandleLanding extends Component {
+export default class  TwitterHandleLanding extends Component {
   constructor (props) {
     super(props);
     this.state = {
@@ -53,17 +53,36 @@ export default class TwitterHandleLanding extends Component {
 
   // eslint-disable-next-line camelcase,react/sort-comp
   componentDidUpdate(prevProps) {
-    const { match: { params: { twitter_handle: twitterHandle } }, location: { pathname: activeRoute } } = this.props;
-    // if-statements prevents infinite rendering
-    if (prevProps.location.pathname !== this.props.location.pathname) {
-      this.setState({activeRoute});
+    let prevPathname = '';
+    let currentPathname = '';
+    if (prevProps.location) {
+      const {location: { pathname} } = prevProps;
+      prevPathname = pathname;
     }
-    if (prevProps.match.params.twitter_handle !== this.props.match.params.twitter_handle) {
-      console.log('TwitterHandleLanding componentWillReceiveProps, different twitterHandle: ', twitterHandle);
-      if (this.state.twitterHandle !== twitterHandle) {
+    if (this.props.location) {
+      const {location: { pathname} } = this.props;
+      currentPathname = pathname;
+    }
+    if (prevPathname !== currentPathname) {
+      this.setState({activeRoute: currentPathname});
+    }
+
+    let prevTwitterHandle = '';
+    let currentTwitterHandle = '';
+    if (prevProps.match) {
+      const {match: { params: { twitter_handle} }} = prevProps;
+      prevTwitterHandle = twitter_handle;
+    }
+    if (this.props.match) {
+      const {match: { params: { twitter_handle} }} = this.props;
+      currentTwitterHandle = twitter_handle;
+    }
+    if (prevTwitterHandle !== currentTwitterHandle) {
+      if (this.state.twitterHandle !== currentTwitterHandle) {
+        console.log('TwitterHandleLanding componentWillReceiveProps, different twitterHandle: ', currentTwitterHandle);
         TwitterActions.resetTwitterHandleLanding();
-        TwitterActions.twitterIdentityRetrieve(twitterHandle);
-        this.setState({ twitterHandle });
+        TwitterActions.twitterIdentityRetrieve(currentTwitterHandle);
+        this.setState({ twitterHandle: currentTwitterHandle });
       }
     }
   }
