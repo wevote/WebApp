@@ -22,7 +22,7 @@ const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' *
 
 // The component that gets called for paths like https://localhost:3000/sierraclub
 // A Twitter handle is the username that appears at the end of your unique Twitter URL
-export default class TwitterHandleLanding extends Component {
+export default class  TwitterHandleLanding extends Component {
   constructor (props) {
     super(props);
     this.state = {
@@ -52,36 +52,38 @@ export default class TwitterHandleLanding extends Component {
   }
 
   // eslint-disable-next-line camelcase,react/sort-comp
-  UNSAFE_componentWillReceiveProps (nextProps) {
-    // console.log('TwitterHandleLanding componentWillReceiveProps');
-    let activeRoute = '';
-    let nextTwitterHandle;
-    // eslint-disable-next-line react/prop-types
-    if (nextProps.match && nextProps.location) {
-      // eslint-disable-next-line react/prop-types,camelcase
-      const { location: { pathname }, match: {params: { twitter_handle} }  } = nextProps;
-      activeRoute = pathname;
-      nextTwitterHandle = twitter_handle;
-      // eslint-disable-next-line react/prop-types
-    } else if (this.props && this.props.location) {
-      // eslint-disable-next-line react/prop-types
-      const { location: { pathname } } = this.props;
-      activeRoute = pathname;
+  componentDidUpdate(prevProps) {
+    let prevPathname = '';
+    let currentPathname = '';
+    if (prevProps.location) {
+      const {location: { pathname} } = prevProps;
+      prevPathname = pathname;
+    }
+    if (this.props.location) {
+      const {location: { pathname} } = this.props;
+      currentPathname = pathname;
+    }
+    if (prevPathname !== currentPathname) {
+      this.setState({activeRoute: currentPathname});
     }
 
-    const { twitterHandle } = this.state;
-    this.setState({
-      activeRoute,
-    });
-    // console.log('TwitterHandleLanding componentWillReceiveProps activeRoute:', activeRoute);
-    if (nextTwitterHandle && twitterHandle.toLowerCase() !== nextTwitterHandle.toLowerCase()) {
-      // We need this test to prevent an infinite loop
-      console.log('TwitterHandleLanding componentWillReceiveProps, different twitterHandle: ', nextProps.match.params.twitter_handle);
-      TwitterActions.resetTwitterHandleLanding();
-      TwitterActions.twitterIdentityRetrieve(nextTwitterHandle);
-      this.setState({
-        twitterHandle: nextTwitterHandle,
-      });
+    let prevTwitterHandle = '';
+    let currentTwitterHandle = '';
+    if (prevProps.match) {
+      const {match: { params: { twitter_handle} }} = prevProps;
+      prevTwitterHandle = twitter_handle;
+    }
+    if (this.props.match) {
+      const {match: { params: { twitter_handle} }} = this.props;
+      currentTwitterHandle = twitter_handle;
+    }
+    if (prevTwitterHandle.toLowerCase() !== currentTwitterHandle.toLowerCase()) {
+      if (this.state.twitterHandle.toLowerCase() !== currentTwitterHandle.toLowerCase()) {
+        console.log('TwitterHandleLanding componentWillReceiveProps, different twitterHandle: ', currentTwitterHandle);
+        TwitterActions.resetTwitterHandleLanding();
+        TwitterActions.twitterIdentityRetrieve(currentTwitterHandle);
+        this.setState({ twitterHandle: currentTwitterHandle });
+      }
     }
   }
 
