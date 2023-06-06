@@ -1,20 +1,15 @@
 # Testing WebApp - Overview of Process
 
-## Minimum Browsers
-
-[Click here to see the minimum browser versions](https://docs.google.com/spreadsheets/d/1FlUMCvg1pNIO0IzJm0jQyvUW1YC_KHh-LO4l-OVIcog/edit#gid=1774503729) 
-that we support.
-
 ## How to test Wevote WebApp with BrowserStack
 
-If you haven't updated your dependencies in a while, run `npm install` from your terminal to install WebdriverIO (this is a framework that lets us test both the browser app and Cordova mobile apps with a single script). 
+If you haven't updated your dependencies in a while, run `npm install` to install or update [WebdriverIO](https://webdriver.io/), a framework that lets us test the browser app and Cordova mobile apps with a single script.
 
 ### Manual installation only
 
-Copy `WebApp/tests/browserstack/browserstack.config-template.js` into `WebApp/tests/browserstack/browserstack.config.js`:
+Copy `WebApp/tests/browserstack_automation/config/browserstack.config.template.js` into `WebApp/tests/browserstack_automation/config/browserstack.config.js`:
 
     (WebAppEnv) $ cd WebApp
-    (WebAppEnv) $ cp tests/browserstack/browserstack.config-template.js tests/browserstack/browserstack.config.js
+    (WebAppEnv) $ cp tests/browserstack_automation/config/browserstack.config.template.js tests/browserstack_automation/config/browserstack.config.js
 
 ### Automated installation start here
 
@@ -44,45 +39,24 @@ It will typically take 30-60 seconds to upload (without any feedback), and then 
 
     {"app_url":"bs://ANOTHER-GENERATED-STRING-HERE","custom_id":"MyApp","shareable_id":"dalemcgrew1/MyApp"}
 
-Copy the path `bs://ANOTHER-GENERATED-STRING-HERE` into your `WebApp/tests/browserstack/browserstack.config.js` file,
+Copy the path `bs://ANOTHER-GENERATED-STRING-HERE` into your `browserstack.config.js` file,
 and put it into the `BROWSERSTACK_APK_URL` value field like this:
 
     BROWSERSTACK_APK_URL: 'bs://ANOTHER-GENERATED-STRING-HERE',
 
-With this `BROWSERSTACK_APK_URL` variable set now, we can run tests on the android mobile application.
+With this `BROWSERSTACK_APK_URL` variable set now, we just need to specify the capabilities or devices that we plan to run our mobile app on. To do so, run:
 
-There are three scripts for running tests: config.py, testscript, and wdio.config.js. testScript generates the template file named wdio.config.template which acts as a template for creating wdio.config.js as well as creates the script using the script name parameter if it does not already exist. config.py uses the wdio.config.template file to generate the wdio.config.js file, which is used for running the test. Note that testScript requires bash and config.py requires python3. 
+```
+(WebAppEnv) $ npm run wdio:setup
+```
 
-    (WebAppEnv) $ ./testscript -s <script name> -n <number of tests> (run without options for help)
-    (WebAppEnv) $ python config.py -s <script name> -b <type of device> -n <number of tests> (-h for help) 
+Any capabilities will be stored in [the `capabilities` directory](../../tests/browserstack_automation/capabilities/).
 
-To run the tests, run:
+To run any tests in [the `specs` directory](../../tests/browserstack_automation/specs/), run:
 
-    (WebAppEnv) $ wdio wdio.config.js
+    (WebAppEnv) $ npm run wdio
     
 When the test finishes, you should be able to see the video of browser tests on the BrowserStack Automate dashboard and video of the mobile apps on BrowserStack App Automate.
-
-[//]: <> ( ## User Interaction Automated Testing with SauceLabs and Selenium)
-
-[//]: <> ( (This is where we imitate a Voter interacting with our website. )
-[//]: <> ( (In Travis we automate this with a Travis powered test with every pull request. )
-[//]: <> ( (In Travis, we reach out to Sauce Labs, and have them run tests recorded with Selenium.)
-
-[//]: <> (Configuration in WebApp/.travis.yml and WebApp/tests/selenium/interpreter_config.json)
-
-[//]: <> (Please see /tests/selenium)
-
-[//]: <> (## Component automated testing)
-
-[//]: <> (This is where we test one component at a time. )
-[//]: <> (Currently in Travis we automate this with a Travis powered test with every pull request. )
-
-[//]: <> (Configuration in WebApp/.travis.yml and WebApp/package.json)
-
-[//]: <> (Developers can run “npm run autoTest”)
-
-[//]: <> (What are the components we want to test separately from user interaction testing?)
-[//]: <> (/src/js/components/AddressBox.jsx)
 
 ---
 
