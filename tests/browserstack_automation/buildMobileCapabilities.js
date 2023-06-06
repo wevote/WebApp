@@ -1,6 +1,6 @@
 const axios = require('axios');
 const { writeFileSync } = require('fs');
-const browserStackConfig = require('./browserstack.conf');
+const browserStackConfig = require('./config/browserstack.config');
 
 // Visit https://www.browserstack.com/docs/app-automate/api-reference/appium/devices#get-device-list for details
 
@@ -26,33 +26,7 @@ async function fetchMobileDevices () {
   }
 }
 
-async function buildCapabilities () {
-  const browserCapabilities = [
-    {
-      browserName: 'Chrome',
-      'bstack:options': {
-        os: 'Windows',
-        osVersion: '11',
-        browserVersion: 'latest',
-      },
-    },
-    {
-      browserName: 'Chrome',
-      'bstack:options': {
-        os: 'Windows',
-        osVersion: '10',
-        browserVersion: 'latest',
-      },
-    },
-    {
-      browserName: 'Safari',
-      'bstack:options': {
-        os: 'OS X',
-        osVersion: 'Catalina',
-        browserVersion: '13.1',
-      },
-    },
-  ];
+async function buildMobileCapabilities () {
   const mobileDevices = await fetchMobileDevices();
   const mobileCapabilities = [];
   for (let i = 0; i < mobileDevices.length; i++) {
@@ -81,13 +55,12 @@ async function buildCapabilities () {
       mobileCapabilities.push(capability);
     }
   }
-  const capabilities = [...browserCapabilities, ...mobileCapabilities];
-  const data = JSON.stringify(capabilities, null, 2);
+  const data = JSON.stringify(mobileCapabilities, null, 2);
   try {
-    writeFileSync('./tests/browserstack_automation/conf/capabilities.json', data);
+    writeFileSync('./tests/browserstack_automation/capabilities/mobile.json', data);
   } catch (error) {
     console.error(error);
   }
 }
 
-buildCapabilities();
+buildMobileCapabilities();

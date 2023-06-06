@@ -14,12 +14,12 @@ export default function SignInButton (props) {
     <StyledButton
       className="header-sign-in"
       color="primary"
-      id="signInHeaderBar"
       onClick={props.toggleSignInModal}
       variant="text"
     >
       <span className="u-no-break">
         <span
+          id="signIn"
           style={{
             color: 'rgb(6, 95, 212)',
             cursor: 'pointer',
@@ -39,6 +39,7 @@ export default function SignInButton (props) {
         </span>
         {' '}
         <span
+          id="signUp"
           style={{
             color: 'rgb(6, 95, 212)',
             cursor: 'pointer',

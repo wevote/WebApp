@@ -6,8 +6,8 @@ class ReadyPage extends Page {
     super().title = 'Ready to Vote? - We Vote';
   }
 
-  get electionCountDown () {
-    return $('#electionCountDown');
+  get electionCountDownTitle () {
+    return $('#electionCountDownTitle');
   }
 
   get ballotTitle () {
@@ -30,8 +30,12 @@ class ReadyPage extends Page {
     return $('//*[contains(@id, "viewUpcomingBallot")]');
   }
 
+  get unfurlIssuesButton () {
+    return $('#toggleContentButton-showMoreReadyPageValuesList');
+  }
+
   get toggleIntroductionButton () {
-    return $('#showMoreReadyIntroductionCompressed');
+    return $('#toggleContentButton-showMoreReadyIntroductionCompressed');
   }
 
   get introductionStepText () {
@@ -39,7 +43,7 @@ class ReadyPage extends Page {
   }
 
   get toggleFinePrintButton () {
-    return $('#showMoreReadyFinePrintCompressed');
+    return $('#toggleContentButton-showMoreReadyFinePrintCompressed');
   }
 
   get finePrintStepText () {
@@ -62,33 +66,61 @@ class ReadyPage extends Page {
     return $('#footer');
   }
 
-  async open () {
+  async load () {
     await super.open('/ready');
+    await super.maximizeWindow();
+    await super.rerender();
   }
 
   async openBallotModal () {
     await this.ballotTitle.click();
+    await super.rerender();
   }
 
-  async saveBallotAddress () {
+  async updateBallotAddress (ballotAddress = 'New York, NY, USA') {
+    await this.ballotAddress.click();
+    await super.rerender();
+    await this.ballotAddressInput.setValue(ballotAddress);
+    await super.rerender();
     await this.saveBallotAddressButton.click();
+    await super.rerender();
   }
 
   async followFirstIssue () {
-    const followIssueButtons = await this.followIssueButtons;
-    const firstFollowIssueButton = followIssueButtons[0];
-    await firstFollowIssueButton.click();
+    await this.followIssueButtons[0].scrollIntoView({ block: 'center', inline: 'center' });
+    await super.rerender();
+    await this.followIssueButtons[0].click();
+    await super.rerender();
   }
 
   async unfollowFirstIssue () {
     // Open the follow menu
-    const toggleFollowMenuButtons = await this.toggleFollowMenuButtons;
-    const firstToggleFollowMenuButton = toggleFollowMenuButtons[0];
-    await firstToggleFollowMenuButton.click();
+    await this.toggleFollowMenuButtons[0].click();
+    await super.rerender();
     // Unfollow the issue
-    const unfollowIssueButtons = await this.unfollowIssueButtons;
-    const firstUnfollowIssueButton = unfollowIssueButtons[0];
-    await firstUnfollowIssueButton.click();
+    await this.unfollowIssueButtons[0].click();
+    await super.rerender();
+  }
+
+  async unfurlIssues () {
+    await this.unfurlIssuesButton.scrollIntoView({ block: 'center', inline: 'center' });
+    await super.rerender();
+    await this.unfurlIssuesButton.click();
+    await super.rerender();
+  }
+
+  async toggleIntroduction () {
+    await this.toggleIntroductionButton.scrollIntoView({ block: 'center', inline: 'center' });
+    await super.rerender();
+    await this.toggleIntroductionButton.click();
+    await super.rerender();
+  }
+
+  async toggleFinePrint () {
+    await this.toggleFinePrintButton.scrollIntoView({ block: 'center', inline: 'center' });
+    await super.rerender();
+    await this.toggleFinePrintButton.click();
+    await super.rerender();
   }
 }
 
