@@ -179,6 +179,6 @@ web_app/build/*
 server.csr
 tests/browserstack/wdio.conf.js
 tests/browserstack/wdio.conf.template
-tests/browserstack*/conf/browserstack.conf.js
-tests/browserstack*/conf/capabilities.json
+tests/browserstack*/config/browserstack.config.js
+tests/browserstack*/capabilities/mobile.json
 tests/browserstack*/screenshots/

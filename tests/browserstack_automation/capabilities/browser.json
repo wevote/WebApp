@@ -8,19 +8,11 @@
     }
   },
   {
-    "browserName": "Chrome",
-    "bstack:options": {
-      "os": "Windows",
-      "osVersion": "10",
-      "browserVersion": "latest"
-    }
-  },
-  {
     "browserName": "Safari",
     "bstack:options": {
       "os": "OS X",
-      "osVersion": "Catalina",
-      "browserVersion": "13.1"
+      "osVersion": "Ventura",
+      "browserVersion": "16.3"
     }
   }
 ]

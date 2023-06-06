@@ -165,6 +165,7 @@ class ElectionCountdown extends React.Component {
         <div>
           <CardTitleUpcoming
             className="u-cursor--pointer"
+            id="electionCountDownTitle"
             onClick={() => this.onClickFunctionLocal()}
           >
             {daysUntilNextElection ? (
@@ -179,7 +180,6 @@ class ElectionCountdown extends React.Component {
                   <Button
                     variant="outlined"
                     color="primary"
-                    id="electionCountDown"
                     onClick={() => historyPush('/ballot')}
                   >
                     Choose Election
@@ -194,7 +194,7 @@ class ElectionCountdown extends React.Component {
           </CardTitleUpcoming>
         </div>
         <div>
-          <CardSubTitle center className="u-cursor--pointer" onClick={() => this.onClickFunctionLocal()}>
+          <CardSubTitle center className="u-cursor--pointer" id="electionCountDownSubTitle" onClick={() => this.onClickFunctionLocal()}>
             {(electionDateMDY) ? (
               <>
                 until your next election on
@@ -221,12 +221,12 @@ class ElectionCountdown extends React.Component {
       <CardCountdownInternalWrapper>
         <div>
           <div>
-            <CardTitleToday className="u-cursor--pointer" onClick={() => this.onClickFunctionLocal()}>
+            <CardTitleToday className="u-cursor--pointer" id="electionCountDownTitle" onClick={() => this.onClickFunctionLocal()}>
               Voting ends today!
             </CardTitleToday>
           </div>
           <div>
-            <CardSubTitle center className="u-cursor--pointer" onClick={() => this.onClickFunctionLocal()}>
+            <CardSubTitle center className="u-cursor--pointer" id="electionCountDownSubTitle" onClick={() => this.onClickFunctionLocal()}>
               {electionDateMDY || ''}
             </CardSubTitle>
           </div>
@@ -243,7 +243,7 @@ class ElectionCountdown extends React.Component {
     const nextNationalElectionHtml = (
       <CardCountdownInternalWrapper>
         <div>
-          <CardTitleUpcoming>
+          <CardTitleUpcoming id="electionCountDownTitle">
             {daysUntilNextNationalElection ? (
               <>
                 {daysUntilNextNationalElection}
@@ -260,7 +260,7 @@ class ElectionCountdown extends React.Component {
           </CardTitleUpcoming>
         </div>
         <div>
-          <CardSubTitle center>
+          <CardSubTitle center id="electionCountDownSubTitle">
             {(nextNationalElectionDateMDY) ? (
               <>
                 until national election on

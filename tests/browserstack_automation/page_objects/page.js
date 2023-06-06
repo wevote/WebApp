@@ -20,4 +20,12 @@ export default class Page {
   async open (path) {
     await driver.url(path);
   }
+
+  async maximizeWindow () {
+    await driver.maximizeWindow();
+  }
+
+  async rerender () {
+    await driver.pause(5000);
+  }
 }

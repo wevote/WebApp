@@ -21,7 +21,7 @@ class ShowMoreButtons extends React.Component {
 
     return (
       <ShowMoreButtonsStyled className="card-child" id={showMoreId} onClick={showMoreButtonsLink}>
-        <ShowMoreButtonsText>
+        <ShowMoreButtonsText id={`toggleContentButton-${showMoreId}`}>
           { showMoreText }
           {' '}
           {showMoreButtonWasClicked ? (

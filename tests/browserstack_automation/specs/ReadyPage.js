@@ -8,46 +8,55 @@ import ReadyPage from '../page_objects/ready.page';
 describe('ReadyPage', () => {
   // Ready_001
   it('verifyElectionCountDownRedirect', async () => {
-    await ReadyPage.open();
-    await ReadyPage.electionCountDown.click();
+    await ReadyPage.load();
+    await ReadyPage.electionCountDownTitle.click();
+    await ReadyPage.rerender();
     await expect(driver).not.toHaveUrlContaining('ready');
   });
   // Ready_004
-  it('changeBallotAddress', async () => {
-    await ReadyPage.open();
-    await ReadyPage.ballotAddress.click();
-    await ReadyPage.ballotAddressInput.setValue('New York, NY, USA');
-    await expect(ReadyPage.ballotAddressInput).toHaveValue('New York, NY, USA');
+  it('updateBallotAddress', async () => {
+    await ReadyPage.load();
+    await ReadyPage.updateBallotAddress();
   });
   // Ready_005
   it('verifyViewUpcomingBallotRedirect', async () => {
-    await ReadyPage.open();
+    await ReadyPage.load();
     await ReadyPage.viewUpcomingBallotButton.click();
+    await ReadyPage.rerender();
     await expect(driver).not.toHaveUrlContaining('ready');
   });
   // Ready_006
-  it('toggleTextUnfurling', async () => {
-    await ReadyPage.open();
-    // toggleIntroduction
-    await expect(ReadyPage.introductionStepText).toBeElementsArrayOfSize(0);
-    await ReadyPage.toggleIntroductionButton.click();
-    await expect(ReadyPage.introductionStepText).toBeElementsArrayOfSize(3);
-    // toggleFinePrint
-    await expect(ReadyPage.finePrintStepText).toBeElementsArrayOfSize(0);
-    await ReadyPage.toggleFinePrintButton.click();
-    await expect(ReadyPage.finePrintStepText).toBeElementsArrayOfSize(4);
+  it('unfurlIssues', async () => {
+    await ReadyPage.load();
+    await expect(ReadyPage.followIssueButtons).toBeElementsArrayOfSize(6);
+    await ReadyPage.unfurlIssues();
+    await expect(ReadyPage.followIssueButtons).toBeElementsArrayOfSize({ gte: 6 });
   });
   // Ready_007
+  it('toggleIntroduction', async () => {
+    await ReadyPage.load();
+    await expect(ReadyPage.introductionStepText).toBeElementsArrayOfSize(0);
+    await ReadyPage.toggleIntroduction();
+    await expect(ReadyPage.introductionStepText).toBeElementsArrayOfSize(3);
+  });
+  // Ready_008
+  it('toggleFinePrint', async () => {
+    await ReadyPage.load();
+    await expect(ReadyPage.finePrintStepText).toBeElementsArrayOfSize(0);
+    await ReadyPage.toggleFinePrint();
+    await expect(ReadyPage.finePrintStepText).toBeElementsArrayOfSize(4);
+  });
+  // Ready_009
   it('toggleIssueFollowing', async () => {
-    await ReadyPage.open();
+    await ReadyPage.load();
     await ReadyPage.followFirstIssue();
     await expect(ReadyPage.toggleFollowMenuButtons).toBeElementsArrayOfSize(1);
     await ReadyPage.unfollowFirstIssue();
     await expect(ReadyPage.toggleFollowMenuButtons).toBeElementsArrayOfSize(0);
   });
-  // Ready_009
+  // Ready_011
   it('verifyFooter', async () => {
-    await ReadyPage.open();
+    await ReadyPage.load();
     await expect(ReadyPage.footer).toBeDisplayed();
   });
 });
