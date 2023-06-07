@@ -41,6 +41,11 @@ export default function EditCandidateForExtensionForm (props) {
     };
     VoterGuidePossibilityActions.voterGuidePossibilityPositionSave(candidate.voterGuidePossibilityId, candidate.possibilityPositionId, possibilityPositionDictionary);
     setFinished(true);
+    // After finish, and then a delay, message our Chrome extension to close the modal dialog that contains this page in an iFrame
+    setTimeout(() => {
+      // console.log('sending closeIFrameDialog message ---------------------');
+      window.parent.postMessage('closeIFrameDialog', '*');
+    }, 2000);
   };
 
   // This a hack, not a good example of making a child functional component update based on a parameter change.  Not sure why it is needed here.
