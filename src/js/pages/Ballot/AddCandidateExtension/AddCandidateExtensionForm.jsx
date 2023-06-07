@@ -116,6 +116,7 @@ export default function AddCandidateExtensionForm (props) {
     VoterGuidePossibilityActions.voterGuidePossibilityRetrieve(candidate.endorsementPageUrl);
     setLoading(true);
     possibilityPositionListener = voterGuidePossibilityPositionStore.addListener(handlePossibilityPositionIDChange);
+    setFinished(true);
     return () => possibilityPositionListener.remove();
   };
 
