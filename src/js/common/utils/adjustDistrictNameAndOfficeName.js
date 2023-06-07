@@ -3,7 +3,11 @@
 export default function adjustDistrictNameAndOfficeName (districtNameIncoming, officeNameIncoming) {
   let districtName = districtNameIncoming;
   let officeName = officeNameIncoming;
-  if (officeName && officeName.includes(districtName)) {
+  if ((!officeNameIncoming || officeNameIncoming === '') && districtNameIncoming === 'United States') {
+    // If we don't empty out districtName when 'United States', we end up with 'Candidate for United States'
+    districtName = '';
+    officeName = '';
+  } else if (officeName && officeName.includes(districtName)) {
     // This removes districtName in cases like 'Governor of California for California'
     districtName = '';
   } else if (districtName && districtName.includes(officeName)) {

@@ -24,6 +24,7 @@ export default function OfficeNameText (props) {
   let officeNameFiltered;
   const { politicalParty, showOfficeName, stateName, year } = props; // officeLink, // Dec 2022: Turning off officeLink until we can do design review
   const { districtName: incomingDistrictName, inCard, officeName: incomingOfficeName } = props; // Mar 2023: Turning off officeLink until we can do design review
+  // console.log('incomingDistrictName: ', incomingDistrictName, 'incomingOfficeName: ', incomingOfficeName);
   if (isAllUpperCase(incomingDistrictName)) {
     districtNameFiltered = toTitleCase(incomingDistrictName);
   } else {
@@ -35,8 +36,9 @@ export default function OfficeNameText (props) {
     officeNameFiltered = incomingOfficeName;
   }
   const { districtName, officeName } = adjustDistrictNameAndOfficeName(districtNameFiltered, officeNameFiltered);
-  // console.log('districtName: ', districtName, 'officeName: ', officeName);
+  // console.log('districtName: ', districtName, 'districtNameFiltered: ', districtNameFiltered, 'officeName: ', officeName, 'officeNameFiltered: ', officeNameFiltered);
   const officeLink = null;
+
   if (districtName) {
     if (officeName === undefined || officeName === '') {
       officeAndDistrictHtml = (
@@ -65,7 +67,7 @@ export default function OfficeNameText (props) {
         </OfficeAndDistrictSpan>
       );
     }
-  } else {
+  } else if (officeName) {
     officeAndDistrictHtml = (
       <PartyAndYearWrapper>
         <span className="u-gray-darker">
@@ -78,12 +80,16 @@ export default function OfficeNameText (props) {
   if (showOfficeName) {
     nameHtml = (
       <PartyAndOfficeWrapper>
-        <span>Candidate for </span>
-        {officeLink ? (
-          <Link to={officeLink}>
-            <OfficeNameSpan>{officeAndDistrictHtml}</OfficeNameSpan>
-          </Link>
-        ) : <OfficeNameSpan>{officeAndDistrictHtml}</OfficeNameSpan>}
+        {!!(officeAndDistrictHtml) && (
+          <>
+            <span>Candidate for </span>
+            {officeLink ? (
+              <Link to={officeLink}>
+                <OfficeNameSpan>{officeAndDistrictHtml}</OfficeNameSpan>
+              </Link>
+            ) : <OfficeNameSpan>{officeAndDistrictHtml}</OfficeNameSpan>}
+          </>
+        )}
         <YearStateWrapper inCard={inCard}>
           <YearState politicalParty={politicalParty} stateName={stateName} year={year} />
         </YearStateWrapper>
