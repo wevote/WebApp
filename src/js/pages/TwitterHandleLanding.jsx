@@ -52,30 +52,30 @@ export default class  TwitterHandleLanding extends Component {
   }
 
   // eslint-disable-next-line camelcase,react/sort-comp
-  componentDidUpdate(prevProps) {
+  componentDidUpdate (prevProps) {
     let prevPathname = '';
     let currentPathname = '';
     if (prevProps.location) {
-      const {location: { pathname} } = prevProps;
+      const { location: { pathname } } = prevProps;
       prevPathname = pathname;
     }
     if (this.props.location) {
-      const {location: { pathname} } = this.props;
+      const { location: { pathname } } = this.props;
       currentPathname = pathname;
     }
     if (prevPathname !== currentPathname) {
-      this.setState({activeRoute: currentPathname});
+      this.setState({ activeRoute: currentPathname });
     }
 
     let prevTwitterHandle = '';
     let currentTwitterHandle = '';
     if (prevProps.match) {
-      const {match: { params: { twitter_handle} }} = prevProps;
-      prevTwitterHandle = twitter_handle;
+      const { match: { params: { twitter_handle: handle } } } = prevProps;
+      prevTwitterHandle = handle;
     }
     if (this.props.match) {
-      const {match: { params: { twitter_handle} }} = this.props;
-      currentTwitterHandle = twitter_handle;
+      const { match: { params: { twitter_handle: handle } } } = this.props;
+      currentTwitterHandle = handle;
     }
     if (prevTwitterHandle.toLowerCase() !== currentTwitterHandle.toLowerCase()) {
       if (this.state.twitterHandle.toLowerCase() !== currentTwitterHandle.toLowerCase()) {
@@ -272,6 +272,8 @@ export default class  TwitterHandleLanding extends Component {
 }
 TwitterHandleLanding.propTypes = {
   activeRoute: PropTypes.string,
+  location: PropTypes.object,
+  pathname: PropTypes.string,
   match: PropTypes.object,
   params: PropTypes.object,
 };
