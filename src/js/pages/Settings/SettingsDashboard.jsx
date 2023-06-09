@@ -247,7 +247,6 @@ export default class SettingsDashboard extends Component {
       case 'subscription':
         settingsComponentToDisplayDesktop = <SettingsSubscriptionPlan externalUniqueId="domainDesktop" />;
         settingsComponentToDisplayMobile = <SettingsSubscriptionPlan externalUniqueId="domainMobile" />;
-
         break;
       case 'text':
         settingsComponentToDisplayDesktop = <SettingsSiteText externalUniqueId="domainDesktop" />;

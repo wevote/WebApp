@@ -4,6 +4,8 @@ import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
+import VoterActions from '../../../actions/VoterActions';
+import apiCalming from '../../utils/apiCalming';
 import { isAndroid, isAndroidSizeMD, isAndroidSizeWide } from '../../utils/cordovaUtils';
 import { isCordova, isWebApp } from '../../utils/isCordovaOrWebApp';
 import { renderLog } from '../../utils/logging';
@@ -29,6 +31,13 @@ class SignInModal extends Component {
     this.setState({
       showSignInModalSimple: true,
     });
+    if (apiCalming('voterRetrieve', 500)) {
+      // This is important, because if a voter just deleted their account,
+      // and immediately tries to sign in again (opening the SignInModal), we need to call voterRetrieve
+      // to make sure a new voter_device_id is set.
+      // console.log('SignInModal, firing voterRetrieve --------------');
+      VoterActions.voterRetrieve();
+    }
     const { FB, AppleID } = window;
     if (!FB) {
       initializeFacebookSDK();

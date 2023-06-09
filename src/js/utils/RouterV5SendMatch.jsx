@@ -12,7 +12,7 @@ const SettingsDashboard = React.lazy(() => import(/* webpackChunkName: 'Settings
 export default function RouterV5SendMatch (props) {
   const { componentName, match } = props;
 
-  // console.log('SettingsDashboardWithParams match:', match);
+  // console.log('SettingsDashboardWithParams match:', match, ', componentName:', componentName);
   renderLog(`RouterV5SendMatch for ${componentName}`);
 
   switch (componentName) {
