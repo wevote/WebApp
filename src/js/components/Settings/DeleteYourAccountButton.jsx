@@ -7,6 +7,7 @@ import VoterActions from '../../actions/VoterActions';
 import historyPush from '../../common/utils/historyPush';
 import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
+import Cookies from '../../common/utils/js-cookie/Cookies';
 import { renderLog } from '../../common/utils/logging';
 import VoterStore from '../../stores/VoterStore';
 
@@ -30,6 +31,7 @@ class DeleteYourAccountButton extends React.Component {
   onVoterStoreChange () {
     // console.log('ReadyTaskBallot, onVoterStoreChange voter: ', VoterStore.getVoter());
     const voterDeleted = VoterStore.getVoterDeleted();
+    // console.log('DeleteYourAccountButton, onVoterStoreChange voterDeleted: ', voterDeleted);
     if (voterDeleted) {
       historyPush({
         pathname: '/ready',   // SnackNotifier that SHOULD handle this is in Friends or Values
@@ -44,6 +46,16 @@ class DeleteYourAccountButton extends React.Component {
   deleteAllData = () => {
     const deleteVoterAccount = true;
     VoterActions.voterAccountDelete(deleteVoterAccount);
+    // After triggering this action (with delay, so it doesn't interfere
+    //  with voterAccountDelete, delete the voter_device_id cookie
+    //  from the browser so the voter can start fresh
+    this.timer = setTimeout(() => {
+      Cookies.remove('voter_device_id');
+      Cookies.remove('voter_device_id', { path: '/' });
+      Cookies.remove('voter_device_id', { path: '/', domain: 'wevote.us' });
+      // console.log('DeleteYourAccountButton, deleteAllData, Cookies.remove voter_device_id called');
+      VoterActions.voterRetrieve(); // Get fresh data from server for Voter
+    }, 3000);
     this.setState({
       deletingAllDataNow: true,
     });

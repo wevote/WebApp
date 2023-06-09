@@ -668,14 +668,19 @@ class BallotStore extends ReduceStore {
         }
         // console.log('BallotStore, ', action.type, ' response received, action.res:', action.res);
         AppObservableStore.voterBallotItemsRetrieveHasBeenCalled(false);
-        if (action.res && action.res.success === false && stringContains('VALID_VOTER_DEVICE_ID_MISSING', action.res.status)) {
+        if (action.res && action.res.success === false && action.res.voter_device_id_not_valid) {
+          // We need to stop. The hope is that the voter_device_id will get sorted elsewhere, and then this
+          // retrieve can be triggered again.
+          console.log('BallotStore, voterBallotItemsRetrieve response received, but voter_device_id_not_valid');
+          voterBallotItemsRetrieveHasReturned = false;
+        } else if (action.res && action.res.success === false && stringContains('VALID_VOTER_DEVICE_ID_MISSING', action.res.status)) {
           // On the first call, we didn't have a valid voter_device_id yet. Call again.
           // console.log('BallotStore, voterBallotItemsRetrieve response received, action.res:', action.res);
-          // Add a 2 second delay
+          // Add a 5-second delay
           clearTimeout(this.timer);
           this.timer = setTimeout(() => {
             BallotActions.voterBallotItemsRetrieve(action.res.google_civic_election_id);
-          }, 2000);
+          }, 5000);
           voterBallotItemsRetrieveHasReturned = false;
         } else {
           voterBallotItemsRetrieveHasReturned = true;

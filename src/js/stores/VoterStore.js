@@ -264,7 +264,7 @@ class VoterStore extends ReduceStore {
   }
 
   getVoterDeleted () {
-    return this.getState().voterDeleted;
+    return this.getState().voterDeleted || false;
   }
 
   getVoterEmail () {
@@ -1254,17 +1254,19 @@ class VoterStore extends ReduceStore {
         };
 
       case 'voterUpdate':
-        // console.log('VoterStore  voterUpdate ');
+        // console.log('VoterStore  voterUpdate: ', action.res);
         if (action.res.success && action.res.voter_deleted) {
           revisedState = state;
           revisedState = { ...revisedState, ...this.getInitialState() };
           revisedState = { ...revisedState,
             voterDeleted: true,
+            voterNotDeleted: false,
           };
           return revisedState;
         } else if (action.res.success && action.res.voter_not_deleted) {
           revisedState = state;
           revisedState = { ...revisedState,
+            voterDeleted: false,
             voterNotDeleted: true,
           };
           return revisedState;
