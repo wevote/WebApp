@@ -267,7 +267,9 @@ class CandidateCardForList extends Component {
     }
     let districtName;
     if (contestOfficeList) {
-      districtName = contestOfficeList[0].district_name;
+      if (contestOfficeList.length > 0) {
+        districtName = contestOfficeList[0].district_name;
+      }
     }
     const stateName = convertStateCodeToStateText(stateCode);
     const supportersCountNextGoalWithFloor = supportersCountNextGoal || CampaignStore.getCampaignXSupportersCountNextGoalDefault();
