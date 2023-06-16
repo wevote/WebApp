@@ -17,6 +17,7 @@ class DeleteYourAccountButton extends React.Component {
     super(props);
     this.state = {
       deleteAllDataConfirm: false,
+      deletingAllDataNowStatusMessage: 'Deleting all of your data now...',
     };
   }
 
@@ -26,6 +27,11 @@ class DeleteYourAccountButton extends React.Component {
 
   componentWillUnmount () {
     this.voterStoreListener.remove();
+    // The component may unmount before some of the callbacks execute in the deletion call
+    // Cancel them to avoid memory leaks
+    clearTimeout(this.changeVoterDeviceId);
+    clearTimeout(this.updateMessage);
+    clearTimeout(this.remindUser);
   }
 
   onVoterStoreChange () {
@@ -49,7 +55,7 @@ class DeleteYourAccountButton extends React.Component {
     // After triggering this action (with delay, so it doesn't interfere
     //  with voterAccountDelete, delete the voter_device_id cookie
     //  from the browser so the voter can start fresh
-    this.timer = setTimeout(() => {
+    this.changeVoterDeviceId = setTimeout(() => {
       Cookies.remove('voter_device_id');
       Cookies.remove('voter_device_id', { path: '/' });
       Cookies.remove('voter_device_id', { path: '/', domain: 'wevote.us' });
@@ -59,6 +65,16 @@ class DeleteYourAccountButton extends React.Component {
     this.setState({
       deletingAllDataNow: true,
     });
+    this.updateMessage = setTimeout(() => {
+      this.setState({
+        deletingAllDataNowStatusMessage: 'Please be patient...',
+      });
+    }, 3000);
+    this.remindUser = setTimeout(() => {
+      this.setState({
+        deletingAllDataNowStatusMessage: 'Contact support to verify deletion...',
+      });
+    }, 6000);
   }
 
   deleteAllDataConfirmToggle = () => {
@@ -71,7 +87,7 @@ class DeleteYourAccountButton extends React.Component {
   render () {
     renderLog('DeleteYourAccountButton');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes, leftAlign, textSizeSmall } = this.props;
-    const { deleteAllDataConfirm, deletingAllDataNow } = this.state;
+    const { deleteAllDataConfirm, deletingAllDataNow, deletingAllDataNowStatusMessage } = this.state;
     return (
       <>
         {deleteAllDataConfirm && (
@@ -94,14 +110,10 @@ class DeleteYourAccountButton extends React.Component {
                   color="primary"
                   disabled={deletingAllDataNow}
                   onClick={this.deleteAllData}
-                  style={{
-                    backgroundColor: 'red',
-                    boxShadow: 'none !important',
-                    textTransform: 'none',
-                  }}
+                  classes={{ root: classes.deletingAllDataNow }}
                   variant="contained"
                 >
-                  {deletingAllDataNow ? 'Deleting all of your data now...' : 'Permanently delete all of your data'}
+                  {deletingAllDataNow ? deletingAllDataNowStatusMessage : 'Permanently delete all of your data'}
                 </Button>
               </DeleteYourAccountButtonInnerWrapper>
               {!deletingAllDataNow && (
@@ -166,6 +178,18 @@ const styles = () => ({
     marginTop: 0,
     padding: 0,
     textTransform: 'none',
+  },
+  deletingAllDataNow: {
+    backgroundColor: 'red',
+    boxShadow: 'none !important',
+    textTransform: 'none',
+    '&:disabled': {
+      backgroundColor: 'red',
+      color: 'white',
+    },
+    '&:hover': {
+      backgroundColor: 'red',
+    },
   },
 });
 
