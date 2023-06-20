@@ -429,7 +429,11 @@ class VoterEmailAddressEntry extends Component {
               type="email"
               name="voter_email_address"
               id="enterVoterEmailAddress"
+              onBlur={this.onBlur}
               onChange={this.onVoterEmailAddressChange}
+              onFocus={this.onFocus}
+              onKeyDown={this.onKeyDown}
+              autoFocus={false}
               placeholder="Type email here..."
               value={voterEmailAddress}
               helperText={(displayIncorrectEmailError) ? 'Enter a valid email address between 6 to 254 characters long' : ''}
