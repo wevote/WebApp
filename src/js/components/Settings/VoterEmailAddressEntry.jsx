@@ -1,5 +1,5 @@
 import { Delete, Mail } from '@mui/icons-material';
-import { Button, InputBase, Paper } from '@mui/material';
+import { Button, InputAdornment, TextField } from '@mui/material';
 import Alert from '@mui/material/Alert';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
@@ -16,6 +16,7 @@ import VoterStore from '../../stores/VoterStore';
 import { FirstRowPhoneOrEmail, SecondRowPhoneOrEmail, TrashCan } from '../Style/pageLayoutStyles';
 import { ButtonContainerHorizontal } from '../Welcome/sectionStyles';
 import SettingsVerifySecretCode from '../../common/components/Settings/SettingsVerifySecretCode';
+import { validateEmail } from '../../utils/regex-checks';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 
@@ -25,8 +26,9 @@ class VoterEmailAddressEntry extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      disableEmailVerificationButton: true,
       displayEmailVerificationButton: false,
+      displayIncorrectEmailError: false,
+      emailErrorTimeoutId: '',
       emailAddressStatus: {
         email_address_already_owned_by_other_voter: false,
         email_address_already_owned_by_this_voter: false,
@@ -208,13 +210,21 @@ class VoterEmailAddressEntry extends Component {
   };
 
   onVoterEmailAddressChange = (event) => {
+    if (this.state.emailErrorTimeoutId) {
+      clearTimeout(this.state.emailErrorTimeoutId);
+    }
+    this.setState({ displayIncorrectEmailError: false });
     const voterEmailAddress = event.target.value;
-    const voterEmailAddressIsValid = (voterEmailAddress && voterEmailAddress.length > 6);
-    const disableEmailVerificationButton = !voterEmailAddressIsValid;
+    const voterEmailAddressIsValid = validateEmail(voterEmailAddress);
     const displayEmailVerificationButton = (voterEmailAddress && voterEmailAddress.length > 0);
+    const emailErrorTimeoutId = setTimeout(() => {
+      if (voterEmailAddress && !voterEmailAddressIsValid) {
+        this.setState({ displayIncorrectEmailError: true });
+      }
+    }, 2000);
     this.setState({
-      disableEmailVerificationButton,
       displayEmailVerificationButton,
+      emailErrorTimeoutId,
       voterEmailAddress,
       voterEmailAddressIsValid,
     });
@@ -227,8 +237,8 @@ class VoterEmailAddressEntry extends Component {
   onCancel = () => {
     // console.log('VoterEmailAddressEntry onCancel');
     this.setState({
-      disableEmailVerificationButton: true,
       displayEmailVerificationButton: false,
+      displayIncorrectEmailError: false,
       signInCodeEmailSentAndWaitingForResponse: false,
       voterEmailAddress: '', // Clearing voterEmailAddress variable does not always clear email in form
     });
@@ -302,6 +312,8 @@ class VoterEmailAddressEntry extends Component {
         },
         signInCodeEmailSentAndWaitingForResponse: true,
       });
+    } else {
+      this.setState({ displayIncorrectEmailError: true });
     }
   };
 
@@ -332,7 +344,7 @@ class VoterEmailAddressEntry extends Component {
 
     const { classes, hideEverythingButSignInWithEmailForm, hideSignInWithEmailForm, lockOpenEmailVerificationButton } = this.props;
     const {
-      disableEmailVerificationButton, displayEmailVerificationButton, emailAddressStatus, hideExistingEmailAddresses,
+      displayEmailVerificationButton, displayIncorrectEmailError, emailAddressStatus, hideExistingEmailAddresses,
       secretCodeSystemLocked, showVerifyModal, signInCodeEmailSentAndWaitingForResponse,
       voter, voterEmailAddress, voterEmailAddressList, voterEmailAddressListCount,
     } = this.state;
@@ -411,9 +423,8 @@ class VoterEmailAddressEntry extends Component {
           {enterEmailTitle}
         </SignInSectionText>
         <form className="form-inline">
-          <Paper className={classes.paperRoot} elevation={1}>
-            <Mail />
-            <InputBase
+          <TextField
+              error={displayIncorrectEmailError}
               className={classes.input}
               type="email"
               name="voter_email_address"
@@ -422,11 +433,18 @@ class VoterEmailAddressEntry extends Component {
               onChange={this.onVoterEmailAddressChange}
               onFocus={this.onFocus}
               onKeyDown={this.onKeyDown}
+              autoFocus={false}
               placeholder="Type email here..."
               value={voterEmailAddress}
-              autoFocus={false}
-            />
-          </Paper>
+              helperText={(displayIncorrectEmailError) ? 'Enter a valid email address between 6 to 254 characters long' : ''}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <Mail />
+                  </InputAdornment>
+                ) }}
+              variant="outlined"
+          />
           {(displayEmailVerificationButton || lockOpenEmailVerificationButton) && (
             <ButtonWrapper>
               <CancelButtonContainer>
@@ -445,7 +463,7 @@ class VoterEmailAddressEntry extends Component {
               <ButtonContainerHorizontal>
                 <Button
                   color="primary"
-                  disabled={disableEmailVerificationButton || signInCodeEmailSentAndWaitingForResponse}
+                  disabled={signInCodeEmailSentAndWaitingForResponse}
                   id="voterEmailAddressEntrySendCode"
                   onClick={this.sendSignInCodeEmail}
                   onAnimationEnd={this.onAnimationEndSend}
@@ -640,9 +658,8 @@ const styles = {
     marginBottom: 8,
   },
   input: {
-    marginLeft: 8,
+    marginLeft: 0.1,
     flex: 1,
-    padding: 8,
   },
 };
 
