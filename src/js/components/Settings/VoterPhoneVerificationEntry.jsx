@@ -8,6 +8,7 @@ import Alert from '@mui/material/Alert';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
+import { isValidPhoneNumber } from 'react-phone-number-input';
 import styled from 'styled-components';
 import VoterActions from '../../actions/VoterActions';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
@@ -31,6 +32,7 @@ class VoterPhoneVerificationEntry extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      disablePhoneVerificationButton: true,
       displayPhoneVerificationButton: false,
       displayIncorrectPhoneNumberError: false,
       phoneNumberErrorTimeoutId: '',
@@ -241,8 +243,16 @@ class VoterPhoneVerificationEntry extends Component {
     }
     this.setState({ displayIncorrectPhoneNumberError: false });
     const incomingVoterPhoneNumber = event.target.value;
+    const voterSMSPhoneNumberWithPlus = `+${incomingVoterPhoneNumber}`;
+    const voterSMSPhoneNumberWithPlusAndOne = `+1${incomingVoterPhoneNumber}`;
 
-    const voterSMSPhoneNumberIsValid = validatePhoneOrEmail(incomingVoterPhoneNumber);
+    // const voterSMSPhoneNumberIsValidRaw = validatePhoneOrEmail(incomingVoterPhoneNumber);
+    const voterSMSPhoneNumberIsValidRaw = isValidPhoneNumber(incomingVoterPhoneNumber);
+    const voterSMSPhoneNumberIsValidWithPlus = isValidPhoneNumber(voterSMSPhoneNumberWithPlus);
+    const voterSMSPhoneNumberIsValidWithPlusAndOne = isValidPhoneNumber(voterSMSPhoneNumberWithPlusAndOne);
+    const voterSMSPhoneNumberIsValid = voterSMSPhoneNumberIsValidRaw || voterSMSPhoneNumberIsValidWithPlus || voterSMSPhoneNumberIsValidWithPlusAndOne;
+    // const voterSMSPhoneNumberIsValid = validatePhoneOrEmail(incomingVoterPhoneNumber);
+    const disablePhoneVerificationButton = !voterSMSPhoneNumberIsValid;
     const displayPhoneVerificationButton = (incomingVoterPhoneNumber && incomingVoterPhoneNumber.length > 0);
     // console.log('onPhoneNumberChange, incomingVoterPhoneNumber: ', incomingVoterPhoneNumber, ', voterSMSPhoneNumberIsValid:', voterSMSPhoneNumberIsValid);
     // console.log('voterSMSPhoneNumberWithPlus:', voterSMSPhoneNumberWithPlus);
@@ -253,6 +263,7 @@ class VoterPhoneVerificationEntry extends Component {
       }
     }, 2000);
     this.setState({
+      disablePhoneVerificationButton,
       displayPhoneVerificationButton,
       phoneNumberErrorTimeoutId,
       voterSMSPhoneNumber: incomingVoterPhoneNumber,
@@ -261,12 +272,20 @@ class VoterPhoneVerificationEntry extends Component {
   }
 
   onBlur = () => {
+    const { voterSMSPhoneNumberIsValid } = this.state;
+    if (!voterSMSPhoneNumberIsValid) {
+      // Only hide the phone verification button if the user has not "unlocked" the button used to send the message.
+      this.setState({
+        displayPhoneVerificationButton: false,
+      });
+    }
     blurTextFieldAndroid();
   };
 
   onCancel = () => {
     // console.log('VoterPhoneVerificationEntry onCancel');
     this.setState({
+      disablePhoneVerificationButton: false,
       displayIncorrectPhoneNumberError: false,
       displayPhoneVerificationButton: false,
       signInCodeSMSSentAndWaitingForResponse: false,
@@ -340,7 +359,7 @@ class VoterPhoneVerificationEntry extends Component {
 
   sendSignInCodeSMS = (event) => {
     const { displayPhoneVerificationButton, voterSMSPhoneNumber, voterSMSPhoneNumberIsValid } = this.state;
-    // console.log('sendSignInCodeSMS voterSMSPhoneNumber:', voterSMSPhoneNumber);
+    // console.log('sendSignInCodeSMS voterSMSPhoneNumber:', voterSMSPhoneNumber, 'displayPhoneVerificationButton:', displayPhoneVerificationButton, 'voterSMSPhoneNumberIsValid:', voterSMSPhoneNumberIsValid);
     if (event) {
       event.preventDefault();
     }
@@ -386,7 +405,8 @@ class VoterPhoneVerificationEntry extends Component {
 
     const { classes, hideEverythingButSignInWithPhoneForm, hideSignInWithPhoneForm, lockOpenPhoneVerificationButton } = this.props;
     const {
-      displayPhoneVerificationButton, displayIncorrectPhoneNumberError, hideExistingPhoneNumbers,
+      disablePhoneVerificationButton, displayPhoneVerificationButton,
+      displayIncorrectPhoneNumberError, hideExistingPhoneNumbers,
       secretCodeSystemLocked, showVerifyModal, signInCodeSMSSentAndWaitingForResponse,
       smsPhoneNumberStatus, smsPhoneNumberList, smsPhoneNumberListCount, voterSMSPhoneNumber,
     } = this.state;
@@ -460,30 +480,35 @@ class VoterPhoneVerificationEntry extends Component {
 
     const enterSMSPhoneNumberHtml = hideSignInWithPhoneForm ? null : (
       <div>
+        {/*
         <div className="u-stack--sm u-tl">
           {enterSMSPhoneNumberTitle}
         </div>
+        */}
         <form className="form-inline">
           <TextField
-              error={displayIncorrectPhoneNumberError}
-              className={classes.input}
-              type="tel"
-              name="voter_phone_number"
-              id="enterVoterPhone"
-              onBlur={this.onBlur}
-              onChange={this.onPhoneNumberChange}
-              onFocus={this.onFocus}
-              onKeyDown={this.onKeyDown}
-              placeholder="Type phone number here..."
-              value={voterSMSPhoneNumber}
-              helperText={(displayIncorrectPhoneNumberError) ? 'Enter a valid phone number' : ''}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <Phone />
-                  </InputAdornment>
-                ) }}
-              variant="outlined"
+            autoComplete="off"
+            autoFocus={false}
+            className={classes.input}
+            error={displayIncorrectPhoneNumberError}
+            helperText={(displayIncorrectPhoneNumberError) ? 'Enter valid phone number' : ''}
+            id="enterVoterPhone"
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Phone />
+                </InputAdornment>
+              ) }}
+            label="Mobile Phone Number"
+            name="voter_phone_number"
+            onBlur={this.onBlur}
+            onChange={this.onPhoneNumberChange}
+            onFocus={this.onFocus}
+            onKeyDown={this.onKeyDown}
+            placeholder="Type phone number here..."
+            type="tel"
+            value={voterSMSPhoneNumber}
+            variant="outlined"
           />
           {(displayPhoneVerificationButton || lockOpenPhoneVerificationButton) && (
             <ButtonWrapper>
@@ -505,7 +530,7 @@ class VoterPhoneVerificationEntry extends Component {
                 <Button
                   // className={classes.button}
                   color="primary"
-                  disabled={signInCodeSMSSentAndWaitingForResponse}
+                  disabled={disablePhoneVerificationButton || signInCodeSMSSentAndWaitingForResponse}
                   id="voterPhoneSendSMS"
                   onClick={this.sendSignInCodeSMS}
                   onAnimationEnd={() => this.onAnimationEndSend()}
