@@ -525,6 +525,7 @@ class ReadyTaskBallot extends React.Component {
               className="u-cursor--pointer"
               color="primary"
               completed={federalAllCompleted ? 'true' : undefined}
+              id="federalRacesButton"
               onClick={this.goToFederalRaces}
               variant="outlined"
             >

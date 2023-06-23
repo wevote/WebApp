@@ -26,6 +26,7 @@ class VoterEmailAddressEntry extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      disableEmailVerificationButton: true,
       displayEmailVerificationButton: false,
       displayIncorrectEmailError: false,
       emailErrorTimeoutId: '',
@@ -216,6 +217,7 @@ class VoterEmailAddressEntry extends Component {
     this.setState({ displayIncorrectEmailError: false });
     const voterEmailAddress = event.target.value;
     const voterEmailAddressIsValid = validateEmail(voterEmailAddress);
+    const disableEmailVerificationButton = !voterEmailAddressIsValid;
     const displayEmailVerificationButton = (voterEmailAddress && voterEmailAddress.length > 0);
     const emailErrorTimeoutId = setTimeout(() => {
       if (voterEmailAddress && !voterEmailAddressIsValid) {
@@ -223,6 +225,7 @@ class VoterEmailAddressEntry extends Component {
       }
     }, 2000);
     this.setState({
+      disableEmailVerificationButton,
       displayEmailVerificationButton,
       emailErrorTimeoutId,
       voterEmailAddress,
@@ -231,12 +234,20 @@ class VoterEmailAddressEntry extends Component {
   };
 
   onBlur = () => {
-    blurTextFieldAndroid();
+    const { voterEmailAddressIsValid } = this.state;
+    if (!voterEmailAddressIsValid) {
+      // Only hide the phone verification button if the user has not "unlocked" the button used to send the message.
+      this.setState({
+        displayEmailVerificationButton: false,
+      });
+      blurTextFieldAndroid();
+    }
   };
 
   onCancel = () => {
     // console.log('VoterEmailAddressEntry onCancel');
     this.setState({
+      disableEmailVerificationButton: true,
       displayEmailVerificationButton: false,
       displayIncorrectEmailError: false,
       signInCodeEmailSentAndWaitingForResponse: false,
@@ -344,7 +355,8 @@ class VoterEmailAddressEntry extends Component {
 
     const { classes, hideEverythingButSignInWithEmailForm, hideSignInWithEmailForm, lockOpenEmailVerificationButton } = this.props;
     const {
-      displayEmailVerificationButton, displayIncorrectEmailError, emailAddressStatus, hideExistingEmailAddresses,
+      disableEmailVerificationButton, displayEmailVerificationButton,
+      displayIncorrectEmailError, emailAddressStatus, hideExistingEmailAddresses,
       secretCodeSystemLocked, showVerifyModal, signInCodeEmailSentAndWaitingForResponse,
       voter, voterEmailAddress, voterEmailAddressList, voterEmailAddressListCount,
     } = this.state;
@@ -419,31 +431,35 @@ class VoterEmailAddressEntry extends Component {
 
     const enterEmailHtml = hideSignInWithEmailForm ? null : (
       <div style={{ paddingTop: 10 }}>
+        {/*
         <SignInSectionText>
           {enterEmailTitle}
         </SignInSectionText>
+        */}
         <form className="form-inline">
           <TextField
-              error={displayIncorrectEmailError}
-              className={classes.input}
-              type="email"
-              name="voter_email_address"
-              id="enterVoterEmailAddress"
-              onBlur={this.onBlur}
-              onChange={this.onVoterEmailAddressChange}
-              onFocus={this.onFocus}
-              onKeyDown={this.onKeyDown}
-              autoFocus={false}
-              placeholder="Type email here..."
-              value={voterEmailAddress}
-              helperText={(displayIncorrectEmailError) ? 'Enter a valid email address between 6 to 254 characters long' : ''}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <Mail />
-                  </InputAdornment>
-                ) }}
-              variant="outlined"
+            autoComplete="off"
+            autoFocus={false}
+            className={classes.input}
+            error={displayIncorrectEmailError}
+            helperText={(displayIncorrectEmailError) ? 'Enter valid email 6 to 254 characters long' : ''}
+            id="enterVoterEmailAddress"
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Mail />
+                </InputAdornment>
+              ) }}
+            label="Email"
+            name="voter_email_address"
+            onBlur={this.onBlur}
+            onChange={this.onVoterEmailAddressChange}
+            onFocus={this.onFocus}
+            onKeyDown={this.onKeyDown}
+            placeholder="Type email here..."
+            type="email"
+            value={voterEmailAddress}
+            variant="outlined"
           />
           {(displayEmailVerificationButton || lockOpenEmailVerificationButton) && (
             <ButtonWrapper>
@@ -463,7 +479,7 @@ class VoterEmailAddressEntry extends Component {
               <ButtonContainerHorizontal>
                 <Button
                   color="primary"
-                  disabled={signInCodeEmailSentAndWaitingForResponse}
+                  disabled={disableEmailVerificationButton || signInCodeEmailSentAndWaitingForResponse}
                   id="voterEmailAddressEntrySendCode"
                   onClick={this.sendSignInCodeEmail}
                   onAnimationEnd={this.onAnimationEndSend}
