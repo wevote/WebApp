@@ -420,14 +420,14 @@ class VoterEmailAddressEntry extends Component {
       </span>
     );
 
-    let enterEmailTitle = isWebApp() ? 'Email' : 'Email the Sign In code to';
-    // let enterEmailExplanation = isWebApp() ? "You'll receive a magic link in your email. Click that link to be signed into your We Vote account." :
-    //   "You'll receive a magic link in the email on this phone. Click that link to be signed into your We Vote account.";
-    if (voter && voter.is_signed_in) {
-      enterEmailTitle = 'Add New Email';
-      // enterEmailExplanation = isWebApp() ? "You'll receive a magic link in your email. Click that link to verify this new email." :
-      //   "You'll receive a magic link in the email on this phone. Click that link to verify this new email.";
-    }
+    // let enterEmailTitle = isWebApp() ? 'Email' : 'Email the Sign In code to';
+    // // let enterEmailExplanation = isWebApp() ? "You'll receive a magic link in your email. Click that link to be signed into your We Vote account." :
+    // //   "You'll receive a magic link in the email on this phone. Click that link to be signed into your We Vote account.";
+    // if (voter && voter.is_signed_in) {
+    //   enterEmailTitle = 'Add New Email';
+    //   // enterEmailExplanation = isWebApp() ? "You'll receive a magic link in your email. Click that link to verify this new email." :
+    //   //   "You'll receive a magic link in the email on this phone. Click that link to verify this new email.";
+    // }
 
     const enterEmailHtml = hideSignInWithEmailForm ? null : (
       <div style={{ paddingTop: 10 }}>
@@ -701,12 +701,12 @@ const EmailSection = styled('div', {
   margin-top: ${isWeb ? '0' : '0'};
 `));
 
-const SignInSectionText = styled('div')`
-  display: block;
-  text-align: left;
-  font-weight: 500;
-  margin-bottom: 6px;
-`;
+// const SignInSectionText = styled('div')`
+//   display: block;
+//   text-align: left;
+//   font-weight: 500;
+//   margin-bottom: 6px;
+// `;
 
 const Wrapper = styled('div', {
   shouldForwardProp: (prop) => !['isWeb'].includes(prop),
