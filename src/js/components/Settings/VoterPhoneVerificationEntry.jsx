@@ -21,7 +21,7 @@ import VoterStore from '../../stores/VoterStore';
 import { FirstRowPhoneOrEmail, SecondRowPhoneOrEmail, TrashCan } from '../Style/pageLayoutStyles';
 import { ButtonContainerHorizontal } from '../Welcome/sectionStyles';
 import SettingsVerifySecretCode from '../../common/components/Settings/SettingsVerifySecretCode';
-import { validatePhoneOrEmail } from '../../utils/regex-checks';
+// import { validatePhoneOrEmail } from '../../utils/regex-checks';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 
@@ -473,10 +473,10 @@ class VoterPhoneVerificationEntry extends Component {
     // console.log('VoterPhoneVerificationEntry render, smsPhoneNumberStatusHtml: ', smsPhoneNumberStatusHtml, ', smsPhoneNumberStatus:', smsPhoneNumberStatus);
 
     // "SMS" is techno jargon
-    let enterSMSPhoneNumberTitle = isWebApp() ? 'SMS Phone Number' : 'Text the sign in code to';
-    if (this.state.voter && this.state.voter.is_signed_in) {
-      enterSMSPhoneNumberTitle = 'Add New Phone Number';
-    }
+    // let enterSMSPhoneNumberTitle = isWebApp() ? 'SMS Phone Number' : 'Text the sign in code to';
+    // if (this.state.voter && this.state.voter.is_signed_in) {
+    //   enterSMSPhoneNumberTitle = 'Add New Phone Number';
+    // }
 
     const enterSMSPhoneNumberHtml = hideSignInWithPhoneForm ? null : (
       <div>
