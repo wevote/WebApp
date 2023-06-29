@@ -120,18 +120,12 @@ class MostRecentCampaignSupport extends React.Component {
       supportersOnStageNow: supportersToMoveOnStage,
     });
 
-    // autoscroll comments
+    console.log(this.commentsWrapperDiv.current);
+    // when CommentsWrapper DOM div mounts
     if (this.commentsWrapperDiv.current) {
-      // pause for 1 second before autscroll starts
-      setTimeout(
-        () => this.scrollInterval = setInterval(
-          () => {
-            this.setState({ isAutoScroll: true });
-            this.commentsWrapperDiv.current.scrollTop += 1;
-          }, 100),
-        1000);
+      console.log('HELLLOOO');
+      this.autoScroll();
     }
-
   }
 
   onCampaignSupporterStoreChange() {
@@ -195,10 +189,23 @@ class MostRecentCampaignSupport extends React.Component {
     }
   }
 
+  autoScroll() {
+    // pause for 1 second before autscroll starts
+    setTimeout(
+      () => this.scrollInterval = setInterval(
+        () => {
+          // set flag to distinguish auto from manual scroll
+          this.setState({ isAutoScroll: true });
+          this.commentsWrapperDiv.current.scrollTop += 1;
+        }, 100),
+      1000);
+  }
+
   handleScroll() {
     if (this.state.isAutoScroll) {
       this.setState({ isAutoScroll: false });
     } else {
+      // break out of auto scroll when manually scrolled
       clearInterval(this.scrollInterval);
     }
   }
