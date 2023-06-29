@@ -20,7 +20,7 @@ import CampaignSupporterStore from '../../stores/CampaignSupporterStore';
 import VoterStore from '../../../stores/VoterStore';
 
 class MostRecentCampaignSupport extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.commentsWrapperDiv = createRef();
     this.state = {
@@ -32,7 +32,7 @@ class MostRecentCampaignSupport extends React.Component {
     };
   }
 
-  componentDidMount() {
+  componentDidMount () {
     // Both use onCampaignSupporterStoreChange
     this.campaignSupporterStoreListener = CampaignSupporterStore.addListener(this.onCampaignSupporterStoreChange.bind(this));
     this.campaignStoreListener = CampaignStore.addListener(this.onCampaignSupporterStoreChange.bind(this));
@@ -62,7 +62,7 @@ class MostRecentCampaignSupport extends React.Component {
     this.timeInterval = setInterval(() => this.moveSupportersOnStage(), 3000);
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate (prevProps, prevState) {
     // console.log('MostRecentCampaignSupport componentDidUpdate');
     const {
       campaignXWeVoteId,
@@ -88,7 +88,7 @@ class MostRecentCampaignSupport extends React.Component {
     }
   }
 
-  componentWillUnmount() {
+  componentWillUnmount () {
     this.campaignSupporterStoreListener.remove();
     this.campaignStoreListener.remove();
     if (this.timeInterval) {
@@ -98,7 +98,16 @@ class MostRecentCampaignSupport extends React.Component {
     clearInterval(this.scrollInterval);
   }
 
-  onFirstLoadOfSupporterData(allLatestSupporters) {
+  handleScroll () {
+    if (this.state.isAutoScroll) {
+      this.setState({ isAutoScroll: false });
+    } else {
+      // break out of auto scroll when manually scrolled
+      clearInterval(this.scrollInterval);
+    }
+  }
+
+  onFirstLoadOfSupporterData (allLatestSupporters) {
     // The first time we aren't waiting for initial data, fill it
     const stageQueue = this.fillStageQueue(allLatestSupporters);
     let countOfStageQueueItemsMovedOnStage = 0;
@@ -120,15 +129,13 @@ class MostRecentCampaignSupport extends React.Component {
       supportersOnStageNow: supportersToMoveOnStage,
     });
 
-    console.log(this.commentsWrapperDiv.current);
     // when CommentsWrapper DOM div mounts
     if (this.commentsWrapperDiv.current) {
-      console.log('HELLLOOO');
       this.autoScroll();
     }
   }
 
-  onCampaignSupporterStoreChange() {
+  onCampaignSupporterStoreChange () {
     const { campaignXWeVoteId } = this.props;
     // console.log('onCampaignSupporterStoreChange campaignXWeVoteId:', campaignXWeVoteId);
     if (campaignXWeVoteId) {
@@ -147,7 +154,7 @@ class MostRecentCampaignSupport extends React.Component {
     });
   }
 
-  fillStageQueue(allLatestSupporters) {
+  fillStageQueue (allLatestSupporters) {
     const { stageQueue } = this.state;
     // stageQueue is oldest-to-newest
     // Find newest entry in stageQueue
@@ -176,7 +183,7 @@ class MostRecentCampaignSupport extends React.Component {
     return stageQueue;
   }
 
-  moveSupportersOnStage() {
+  moveSupportersOnStage () {
     const { countOfStageQueueItemsMovedOnStage, stageQueue, supportersOnStageNow } = this.state;
     if (stageQueue && countOfStageQueueItemsMovedOnStage < stageQueue.length) {
       // console.log('moveSupportersOnStage, countOfStageQueueItemsMovedOnStage:', countOfStageQueueItemsMovedOnStage);
@@ -189,28 +196,23 @@ class MostRecentCampaignSupport extends React.Component {
     }
   }
 
-  autoScroll() {
+  autoScroll () {
     // pause for 1 second before autscroll starts
     setTimeout(
-      () => this.scrollInterval = setInterval(
-        () => {
+      () => {
+        this.scrollInterval = setInterval(
+          () => {
           // set flag to distinguish auto from manual scroll
-          this.setState({ isAutoScroll: true });
-          this.commentsWrapperDiv.current.scrollTop += 1;
-        }, 100),
-      1000);
+            this.setState({ isAutoScroll: true });
+            this.commentsWrapperDiv.current.scrollTop += 1;
+          }, 100,
+        );
+      },
+      1000,
+    );
   }
 
-  handleScroll() {
-    if (this.state.isAutoScroll) {
-      this.setState({ isAutoScroll: false });
-    } else {
-      // break out of auto scroll when manually scrolled
-      clearInterval(this.scrollInterval);
-    }
-  }
-
-  render() {
+  render () {
     renderLog('MostRecentCampaignSupport');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
     const { supportersOnStageNow, voterWeVoteId } = this.state;
