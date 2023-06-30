@@ -1,5 +1,6 @@
 import styled from 'styled-components';
-import { Launch } from '@mui/icons-material';
+import { PersonSearch, Launch } from '@mui/icons-material';
+import { Button } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
@@ -337,6 +338,7 @@ class PoliticianDetailsPage extends Component {
   render () {
     renderLog('PoliticianDetailsPage');  // Set LOG_RENDER_EVENTS to log all renders
 
+    const { classes } = this.props;
     const {
       allCachedPositionsForThisPolitician, ballotpediaPoliticianUrl, candidateCampaignList, chosenWebsiteName,
       finalElectionDateInPast, linkedCampaignXWeVoteId,
@@ -347,6 +349,30 @@ class PoliticianDetailsPage extends Component {
       voterCanEditThisPolitician, voterSupportsThisPolitician,
       wikipediaUrl, // youtubeUrl,
     } = this.state;
+
+    const politicianDataNotFound = false;
+    if (politicianDataNotFound) {
+      return (
+        <PageContentContainer>
+          <Helmet title="Candidate Not Found - We Vote" />
+          <PageWrapper>
+            <MissingPoliticianMessageContainer>
+              <MissingPoliticianText>Candidate not found.</MissingPoliticianText>
+              <Button
+                classes={{ root: classes.buttonRoot }}
+                color="primary"
+                variant="contained"
+                onClick={() => historyPush('/cs')}
+              >
+                <PersonSearch classes={{ root: classes.buttonIconRoot }} location={window.location} />
+                See other candidates
+              </Button>
+            </MissingPoliticianMessageContainer>
+          </PageWrapper>
+        </PageContentContainer>
+      );
+    }
+
     // console.log('render isSupportersCountMinimumExceeded: ', isSupportersCountMinimumExceeded);
     let htmlTitle = `${chosenWebsiteName}`;
     if (politicianName) {
@@ -843,13 +869,19 @@ class PoliticianDetailsPage extends Component {
   }
 }
 PoliticianDetailsPage.propTypes = {
-  // classes: PropTypes.object,
+  classes: PropTypes.object,
   match: PropTypes.object,
 };
 
-const styles = () => ({
+const styles = (theme) => ({
+  buttonIconRoot: {
+    marginRight: 8,
+  },
   buttonRoot: {
     width: 250,
+    [theme.breakpoints.down('md')]: {
+      width: '100%',
+    },
   },
 });
 
@@ -873,6 +905,22 @@ const ColumnTwoThirds = styled('div')`
   flex-direction: column;
   flex-basis: 60%;
 `;
+
+const MissingPoliticianMessageContainer = styled('div')`
+  padding: 3em 2em;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+`;
+
+const MissingPoliticianText = styled('p')(({ theme }) => (`
+  font-size: 24px;
+  text-align: center;
+  margin: 1em 2em 3em;
+  ${theme.breakpoints.down('md')} {
+    margin: 1em;
+  }
+`));
 
 const ExternalWebSiteWrapper = styled('div')`
   margin-top: 3px;
