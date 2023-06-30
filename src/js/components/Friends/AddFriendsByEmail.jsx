@@ -22,7 +22,9 @@ class AddFriendsByEmail extends Component {
     this.state = {
       messageToFriend: 'I\'m getting ready to vote. Would you like to join me in deciding how to vote?',
       emailAddressesError: false,
+      displayEmailsOrPhonesBrokenError: false,
       emailsOrPhonesBrokenString: '',
+      emailsOrPhonesBrokenErrorTimeoutId: '',
       friendContactInfoArray: [],
       friendFirstName: '',
       friendLastName: '',
@@ -128,6 +130,10 @@ class AddFriendsByEmail extends Component {
   };
 
   cacheIncomingEmailsOrPhones = (event) => {
+    if (this.state.emailsOrPhonesBrokenErrorTimeoutId) {
+      clearTimeout(this.state.emailsOrPhonesBrokenErrorTimeoutId);
+    }
+    this.setState({ displayEmailsOrPhonesBrokenError: false });
     const incomingEmailsOrPhonesString = event.target.value;
     const friendContactInfoArray = [];
     let emailsOrPhonesBrokenString = '';
@@ -148,10 +154,16 @@ class AddFriendsByEmail extends Component {
         // console.log('emailsOrPhonesBrokenString:', emailsOrPhonesBrokenString);
       }
     }
+    const emailsOrPhonesBrokenErrorTimeoutId = setTimeout(() => {
+      if (emailsOrPhonesBrokenString.length > 0) {
+        this.setState({ displayEmailsOrPhonesBrokenError: true });
+      }
+    }, 2000);
     // this.setState({ [event.target.name]: event.target.value });
     this.setState({
       incomingEmailsOrPhonesString,
       emailsOrPhonesBrokenString,
+      emailsOrPhonesBrokenErrorTimeoutId,
       friendContactInfoArray,
     });
   }
@@ -221,7 +233,7 @@ class AddFriendsByEmail extends Component {
     renderLog('AddFriendsByEmail');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes, inSideColumn, uniqueExternalId } = this.props;
     const {
-      emailAddressesError, emailsOrPhonesBrokenString, errorMessage, errorMessageToShowVoter,
+      displayEmailsOrPhonesBrokenError, emailAddressesError, emailsOrPhonesBrokenString, errorMessage, errorMessageToShowVoter,
       friendContactInfoArray,
       friendFirstName, friendInvitationsWaitingForVerification, friendLastName,
       incomingEmailsOrPhonesString, invitationEmailsAlreadyScheduledStepFromApi, loading,
@@ -319,7 +331,7 @@ class AddFriendsByEmail extends Component {
                         value={incomingEmailsOrPhonesString}
                         variant="outlined"
                       />
-                      {(emailsOrPhonesBrokenString.length > 0) && (
+                      {displayEmailsOrPhonesBrokenError && (
                         <EmailsOrPhonesBrokenStringAlertWrapper>
                           <Alert severity="error">
                             Incomplete:
