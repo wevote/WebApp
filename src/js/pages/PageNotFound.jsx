@@ -74,11 +74,6 @@ const EmptyBallotText = styled('p')(({ theme }) => (`
 `));
 
 const styles = (theme) => ({
-  ballotIconRoot: {
-    width: 150,
-    height: 150,
-    color: 'rgb(171, 177, 191)',
-  },
   ballotButtonIconRoot: {
     marginRight: 8,
   },

@@ -1,5 +1,6 @@
 import PoliticianActions from '../actions/PoliticianActions';
 import PoliticianStore from '../stores/PoliticianStore';
+import apiCalming from './apiCalming';
 import initializejQuery from './initializejQuery';
 
 function orderCandidatesByUltimateDate (firstEntry, secondEntry) {
@@ -107,12 +108,16 @@ export function retrievePoliticianFromIdentifiers (politicianSEOFriendlyPath, po
   // console.log('retrievePoliticianFromIdentifiersIfNeeded politicianSEOFriendlyPath: ', politicianSEOFriendlyPath, ', politicianWeVoteId: ', politicianWeVoteId);
   if (politicianSEOFriendlyPath) {
     initializejQuery(() => {
-      PoliticianActions.politicianRetrieveBySEOFriendlyPath(politicianSEOFriendlyPath);
+      if (apiCalming(`politicianRetrieve-${politicianSEOFriendlyPath}`, 500)) {
+        PoliticianActions.politicianRetrieveBySEOFriendlyPath(politicianSEOFriendlyPath);
+      }
     });
     return true;
   } else if (politicianWeVoteId) {
     initializejQuery(() => {
-      PoliticianActions.politicianRetrieve(politicianWeVoteId);
+      if (apiCalming(`politicianRetrieve-${politicianWeVoteId}`, 500)) {
+        PoliticianActions.politicianRetrieve(politicianWeVoteId);
+      }
     });
     return true;
   } else {
@@ -139,7 +144,9 @@ export function retrievePoliticianFromIdentifiersIfNeeded (politicianSEOFriendly
     // console.log('retrievePoliticianFromIdentifiersIfNeeded mustRetrieveCampaign:', mustRetrieveCampaign, ', politicianSEOFriendlyPath:', politicianSEOFriendlyPath);
     if (mustRetrieveCampaign) {
       initializejQuery(() => {
-        PoliticianActions.politicianRetrieveBySEOFriendlyPath(politicianSEOFriendlyPath);
+        if (apiCalming(`politicianRetrieve-${politicianSEOFriendlyPath}`, 500)) {
+          PoliticianActions.politicianRetrieveBySEOFriendlyPath(politicianSEOFriendlyPath);
+        }
       });
     }
   } else if (politicianWeVoteId) {
@@ -154,7 +161,9 @@ export function retrievePoliticianFromIdentifiersIfNeeded (politicianSEOFriendly
     // console.log('retrievePoliticianFromIdentifiersIfNeeded mustRetrieveCampaign:', mustRetrieveCampaign, ', politicianWeVoteId:', politicianWeVoteId);
     if (mustRetrieveCampaign) {
       initializejQuery(() => {
-        PoliticianActions.politicianRetrieve(politicianWeVoteId);
+        if (apiCalming(`politicianRetrieve-${politicianWeVoteId}`, 500)) {
+          PoliticianActions.politicianRetrieve(politicianWeVoteId);
+        }
       });
     }
   }
