@@ -47,7 +47,7 @@ class VoterEmailAddressEntry extends Component {
       // movedInitialFocus: false,
       secretCodeSystemLocked: false,
       showVerifyModal: false,
-      voter: VoterStore.getVoter(),
+      // voter: VoterStore.getVoter(),
       voterEmailAddress: '',
       voterEmailAddressIsValid: false,
       voterEmailAddressList: [],
@@ -358,7 +358,7 @@ class VoterEmailAddressEntry extends Component {
       disableEmailVerificationButton, displayEmailVerificationButton,
       displayIncorrectEmailError, emailAddressStatus, hideExistingEmailAddresses,
       secretCodeSystemLocked, showVerifyModal, signInCodeEmailSentAndWaitingForResponse,
-      voter, voterEmailAddress, voterEmailAddressList, voterEmailAddressListCount,
+      voterEmailAddress, voterEmailAddressList, voterEmailAddressListCount,
     } = this.state;
 
     const signInLinkOrCodeSent = (emailAddressStatus.link_to_sign_in_email_sent || emailAddressStatus.sign_in_code_email_sent);

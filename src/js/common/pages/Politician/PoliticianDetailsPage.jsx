@@ -423,10 +423,10 @@ class PoliticianDetailsPage extends Component {
       let year;
       const yearsAndNamesAlreadySeen = [];
       const candidateCampaignListFiltered = candidateCampaignList.filter((candidateCampaign) => {
-        contestOfficeName = candidateCampaign.contest_office_name;
+        contestOfficeName = candidateCampaign.contest_office_name || '';
         if (!contestOfficeName) {
-          if (candidateCampaign.contest_office_list) {
-            contestOfficeName = candidateCampaign.contest_office_list[0].contest_office_name;
+          if (candidateCampaign.contest_office_list && candidateCampaign.contest_office_list[0]) {
+            contestOfficeName = candidateCampaign.contest_office_list[0].contest_office_name || '';
           }
         }
         year = getYearFromUltimateElectionDate(candidateCampaign.candidate_ultimate_election_date);
@@ -449,14 +449,14 @@ class PoliticianDetailsPage extends Component {
       // console.log('candidateCampaignListFiltered: ', candidateCampaignListFiltered);
       priorCandidateCampaignsHtml = candidateCampaignListFiltered.map((candidateCampaign) => {
         const key = `candidateCampaign-${candidateCampaign.we_vote_id}`;
-        contestOfficeName = candidateCampaign.contest_office_name;
+        contestOfficeName = candidateCampaign.contest_office_name || '';
         if (!contestOfficeName) {
-          if (candidateCampaign.contest_office_list) {
-            contestOfficeName = candidateCampaign.contest_office_list[0].contest_office_name;
+          if (candidateCampaign.contest_office_list && candidateCampaign.contest_office_list[0]) {
+            contestOfficeName = candidateCampaign.contest_office_list[0].contest_office_name || '';
           }
         }
-        if (candidateCampaign.contest_office_list) {
-          districtName = candidateCampaign.contest_office_list[0].district_name;
+        if (candidateCampaign.contest_office_list && candidateCampaign.contest_office_list[0]) {
+          districtName = candidateCampaign.contest_office_list[0].district_name || '';
         }
         const showOfficeName = !!(contestOfficeName);
         const stateName = convertStateCodeToStateText(candidateCampaign.state_code);
