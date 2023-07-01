@@ -1,6 +1,7 @@
 import { Button } from '@mui/material';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
+// import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
@@ -332,6 +333,13 @@ export default class OrganizationVoterGuide extends Component {
     return (
       <PageContentContainer>
         <WrapperFlex>
+          {/*
+          Related to https://wevoteusa.atlassian.net/browse/WV-98
+          <Helmet>
+            <title>TESTING 123</title>
+            <link rel="canonical" href={pageURL} />
+          </Helmet>
+          */}
           {/* Header Banner Spacing for Desktop */}
           <BannerOverlayDesktopOuterWrapper>
             <BannerOverlayDesktopInnerWrapper>
