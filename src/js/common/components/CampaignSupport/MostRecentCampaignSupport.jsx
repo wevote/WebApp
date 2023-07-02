@@ -1,7 +1,7 @@
 import { AccountCircle } from '@mui/icons-material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { createRef } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import anonymous from '../../../../img/global/icons/avatar-generic.png';
@@ -22,11 +22,13 @@ import VoterStore from '../../../stores/VoterStore';
 class MostRecentCampaignSupport extends React.Component {
   constructor (props) {
     super(props);
+    this.commentsWrapperDiv = createRef();
     this.state = {
       countOfStageQueueItemsMovedOnStage: 0,
       stageQueue: [],
       supportersOnStageNow: [],
       waitingForInitialData: true,
+      isAutoScroll: false,
     };
   }
 
@@ -93,6 +95,16 @@ class MostRecentCampaignSupport extends React.Component {
       clearInterval(this.timeInterval);
     }
     this.timeInterval = null;
+    clearInterval(this.scrollInterval);
+  }
+
+  handleScroll () {
+    if (this.state.isAutoScroll) {
+      this.setState({ isAutoScroll: false });
+    } else {
+      // break out of auto scroll when manually scrolled
+      clearInterval(this.scrollInterval);
+    }
   }
 
   onFirstLoadOfSupporterData (allLatestSupporters) {
@@ -116,6 +128,11 @@ class MostRecentCampaignSupport extends React.Component {
       stageQueue,
       supportersOnStageNow: supportersToMoveOnStage,
     });
+
+    // when CommentsWrapper DOM div mounts
+    if (this.commentsWrapperDiv.current) {
+      this.autoScroll();
+    }
   }
 
   onCampaignSupporterStoreChange () {
@@ -179,6 +196,22 @@ class MostRecentCampaignSupport extends React.Component {
     }
   }
 
+  autoScroll () {
+    // pause for 1 second before autscroll starts
+    setTimeout(
+      () => {
+        this.scrollInterval = setInterval(
+          () => {
+          // set flag to distinguish auto from manual scroll
+            this.setState({ isAutoScroll: true });
+            this.commentsWrapperDiv.current.scrollTop += 1;
+          }, 100,
+        );
+      },
+      1000,
+    );
+  }
+
   render () {
     renderLog('MostRecentCampaignSupport');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
@@ -187,49 +220,53 @@ class MostRecentCampaignSupport extends React.Component {
     return (
       <MostRecentCampaignSupportWrapper>
         {supportersOnStageNow && supportersOnStageNow.length > 0 && (
-          <CommentsWrapper id="comments-wrapper">
-              {supportersOnStageNow.map((comment) => (
-                <CommentWrapper className="comment" key={comment.id}>
-                  <CommentVoterPhotoWrapper>
-                    {comment.we_vote_hosted_profile_image_url_tiny ? (
-                      <LazyImage
-                        src={comment.we_vote_hosted_profile_image_url_tiny}
-                        placeholder={anonymous}
-                        className="profile-photo"
-                        height={24}
-                        width={24}
-                        alt="Your Settings"
-                      />
-                    ) : (
-                      <AccountCircle classes={{ root: classes.accountCircleRoot }} />
+          <CommentsWrapper
+            id="comments-wrapper"
+            ref={this.commentsWrapperDiv}
+            onScroll={() => this.handleScroll()}
+          >
+            {supportersOnStageNow.map((comment) => (
+              <CommentWrapper className="comment" key={comment.id}>
+                <CommentVoterPhotoWrapper>
+                  {comment.we_vote_hosted_profile_image_url_tiny ? (
+                    <LazyImage
+                      src={comment.we_vote_hosted_profile_image_url_tiny}
+                      placeholder={anonymous}
+                      className="profile-photo"
+                      height={24}
+                      width={24}
+                      alt="Your Settings"
+                    />
+                  ) : (
+                    <AccountCircle classes={{ root: classes.accountCircleRoot }} />
+                  )}
+                </CommentVoterPhotoWrapper>
+                <CommentTextWrapper>
+                  {comment.supporter_endorsement && (
+                    <Comment>{returnFirstXWords(comment.supporter_endorsement, 18, true)}</Comment>
+                  )}
+                  <CommentNameWrapper>
+                    {!stringContains('Voter-', comment.supporter_name) && (
+                      <CommentName>
+                        {comment.supporter_name}
+                        {' '}
+                      </CommentName>
                     )}
-                  </CommentVoterPhotoWrapper>
-                  <CommentTextWrapper>
-                    {comment.supporter_endorsement && (
-                      <Comment>{returnFirstXWords(comment.supporter_endorsement, 18, true)}</Comment>
+                    supported
+                    {' '}
+                    {timeFromDate(comment.date_supported)}
+                    {comment.voter_we_vote_id === voterWeVoteId && (
+                      <>
+                        &nbsp;&nbsp;&nbsp;
+                        <Link to={`/id/${comment.campaignx_we_vote_id}/why-do-you-support`}>
+                          Edit
+                        </Link>
+                      </>
                     )}
-                    <CommentNameWrapper>
-                      {!stringContains('Voter-', comment.supporter_name) && (
-                        <CommentName>
-                          {comment.supporter_name}
-                          {' '}
-                        </CommentName>
-                      )}
-                      supported
-                      {' '}
-                      {timeFromDate(comment.date_supported)}
-                      {comment.voter_we_vote_id === voterWeVoteId && (
-                        <>
-                          &nbsp;&nbsp;&nbsp;
-                          <Link to={`/id/${comment.campaignx_we_vote_id}/why-do-you-support`}>
-                            Edit
-                          </Link>
-                        </>
-                      )}
-                    </CommentNameWrapper>
-                  </CommentTextWrapper>
-                </CommentWrapper>
-              ))}
+                  </CommentNameWrapper>
+                </CommentTextWrapper>
+              </CommentWrapper>
+            ))}
           </CommentsWrapper>
         )}
       </MostRecentCampaignSupportWrapper>
