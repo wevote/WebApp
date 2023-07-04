@@ -39,7 +39,8 @@ class MostRecentCampaignSupport extends React.Component {
     const { campaignXWeVoteId } = this.props;
     // console.log('componentDidMount campaignXWeVoteId:', campaignXWeVoteId);
     if (campaignXWeVoteId) {
-      const allLatestSupporters = CampaignSupporterStore.getCampaignXSupportersList(campaignXWeVoteId);
+      // This list includes "CampaignXSupporter" entries without a text comment
+      const allLatestSupporters = CampaignSupporterStore.getLatestCampaignXSupportersList(campaignXWeVoteId);
       // console.log('componentDidMount allLatestSupporters:', allLatestSupporters);
       if (allLatestSupporters && allLatestSupporters.length) {
         this.setState({
@@ -70,9 +71,9 @@ class MostRecentCampaignSupport extends React.Component {
     const {
       waitingForInitialData: waitingForInitialDataPrevious,
     } = prevState;
-    // console.log('componentDidUpdate campaignXWeVoteId:', campaignXWeVoteId, ', waitingForInitialData:', waitingForInitialData);
+    // console.log('componentDidUpdate campaignXWeVoteId:', campaignXWeVoteId, ', waitingForInitialDataPrevious:', waitingForInitialDataPrevious);
     if (campaignXWeVoteId) {
-      const allLatestSupporters = CampaignSupporterStore.getCampaignXSupportersList(campaignXWeVoteId);
+      const allLatestSupporters = CampaignSupporterStore.getLatestCampaignXSupportersList(campaignXWeVoteId);
       // console.log('componentDidUpdate allLatestSupporters:', allLatestSupporters, ', waitingForInitialDataPrevious:', waitingForInitialDataPrevious, ', waitingForInitialData:', waitingForInitialData);
       const dataExists = allLatestSupporters && allLatestSupporters.length > 0;
       const waitingForInitialData = !dataExists;
@@ -139,7 +140,7 @@ class MostRecentCampaignSupport extends React.Component {
     const { campaignXWeVoteId } = this.props;
     // console.log('onCampaignSupporterStoreChange campaignXWeVoteId:', campaignXWeVoteId);
     if (campaignXWeVoteId) {
-      const allLatestSupporters = CampaignSupporterStore.getCampaignXSupportersList(campaignXWeVoteId);
+      const allLatestSupporters = CampaignSupporterStore.getLatestCampaignXSupportersList(campaignXWeVoteId);
       if (allLatestSupporters && allLatestSupporters.length) {
         const stageQueue = this.fillStageQueue(allLatestSupporters);
         this.setState({
@@ -198,18 +199,20 @@ class MostRecentCampaignSupport extends React.Component {
 
   autoScroll () {
     // pause for 1 second before autscroll starts
-    setTimeout(
-      () => {
-        this.scrollInterval = setInterval(
-          () => {
-          // set flag to distinguish auto from manual scroll
-            this.setState({ isAutoScroll: true });
-            this.commentsWrapperDiv.current.scrollTop += 1;
-          }, 100,
-        );
-      },
-      1000,
-    );
+    if (this.commentsWrapperDiv && this.commentsWrapperDiv.current && this.commentsWrapperDiv.current.scrollTop) {
+      setTimeout(
+        () => {
+          this.scrollInterval = setInterval(
+            () => {
+              // set flag to distinguish auto from manual scroll
+              this.setState({isAutoScroll: true});
+              this.commentsWrapperDiv.current.scrollTop += 1;
+            }, 100,
+          );
+        },
+        1000,
+      );
+    }
   }
 
   render () {
