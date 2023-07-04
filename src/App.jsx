@@ -1,5 +1,5 @@
 import { StyledEngineProvider, ThemeProvider } from '@mui/material/styles';
-import Tracker from '@openreplay/tracker';
+import OpenReplay from '@openreplay/tracker';
 import React, { Component, Suspense } from 'react';
 import FullStory from 'react-fullstory';
 import ReactGA from 'react-ga4';
@@ -17,6 +17,7 @@ import Header from './js/components/Navigation/Header';
 import HeaderBarSuspense from './js/components/Navigation/HeaderBarSuspense';
 import webAppConfig from './js/config';
 import AppObservableStore, { messageService } from './js/common/stores/AppObservableStore';
+import VoterStore from './js/stores/VoterStore';
 import initializeFacebookSDK from './js/utils/initializeFacebookSDK';
 import initializejQuery from './js/common/utils/initializejQuery';
 import RouterV5SendMatch from './js/utils/RouterV5SendMatch';
@@ -125,6 +126,7 @@ const YourPage = React.lazy(() => import(/* webpackChunkName: 'YourPage' */ './j
 
 // There are just too many "prop spreadings" in the use of Route, if someone can figure out an alternative...
 /* eslint-disable react/jsx-props-no-spreading */
+/* eslint-disable react/no-unused-state */
 
 class App extends Component {
   constructor (props) {
@@ -216,10 +218,10 @@ class App extends Component {
         } else {
           console.log('Google Analytics did not receive a trackingID, NOT ENABLED');
         }
-        // const userId = '';
-        // ReactGA.gtag('set', 'user', {
-        //   id: userId,
-        // });
+        const voterWeVoteId = VoterStore.getVoterWeVoteId();
+        ReactGA.gtag('set', 'voter', {
+          weVoteId: voterWeVoteId,
+        });
         const weVoteGTMId = webAppConfig.GOOGLE_ADS_TRACKING_ID === undefined ? '' : webAppConfig.GOOGLE_ADS_TRACKING_ID;
         if (weVoteGTMId) {
           const tagManagerArgs = {
@@ -238,22 +240,24 @@ class App extends Component {
         // const openReplayProjectKey = chosenProjectKey || weVoteOpenReplayProjectKey;
         const openReplayProjectKey = weVoteOpenReplayProjectKey || '';
         const openReplayIngestPoint = weVoteOpenReplayIngestPoint || false;
+        let tracker;
         if (openReplayProjectKey) {
           console.log('OpenReplay ENABLED');
           if (openReplayIngestPoint) {
-            const tracker1 = new Tracker({
+            tracker = new OpenReplay({
               projectKey: openReplayProjectKey,
               ingestPoint: openReplayIngestPoint,
             });
-            tracker1.start();
-            AppObservableStore.setOpenReplayTracker(tracker1);
           } else {
-            const tracker2 = new Tracker({
+            tracker = new OpenReplay({
               projectKey: openReplayProjectKey,
             });
-            tracker2.start();
-            AppObservableStore.setOpenReplayTracker(tracker2);
           }
+          const voterWeVoteId = VoterStore.getVoterWeVoteId();
+          tracker.start({
+            userID: voterWeVoteId,
+          });
+          AppObservableStore.setOpenReplayTracker(tracker);
           AppObservableStore.setOpenReplayEnabled(true);
           AppObservableStore.setOpenReplayPending(false);
         } else {
