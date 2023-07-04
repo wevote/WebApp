@@ -72,6 +72,7 @@ class PoliticianDetailsPage extends Component {
     super(props);
     this.state = {
       ballotpediaPoliticianUrl: '',
+      supporterEndorsementsWithText: [],
       politicalParty: '',
       politicianImageUrlLarge: '',
       politicianSEOFriendlyPath: '',
@@ -160,11 +161,13 @@ class PoliticianDetailsPage extends Component {
 
   onCampaignSupporterStoreChange () {
     const { linkedCampaignXWeVoteId } = this.state;
+    const supporterEndorsementsWithText = CampaignSupporterStore.getLatestCampaignXSupportersWithTextList(linkedCampaignXWeVoteId);
     const step2Completed = CampaignSupporterStore.voterSupporterEndorsementExists(linkedCampaignXWeVoteId);
     const payToPromoteStepCompleted = CampaignSupporterStore.voterChipInExists(linkedCampaignXWeVoteId);
     const sharingStepCompleted = false;
     // console.log('onCampaignSupporterStoreChange step2Completed: ', step2Completed, ', sharingStepCompleted: ', sharingStepCompleted, ', payToPromoteStepCompleted:', payToPromoteStepCompleted);
     this.setState({
+      supporterEndorsementsWithText,
       sharingStepCompleted,
       step2Completed,
       payToPromoteStepCompleted,
@@ -341,7 +344,7 @@ class PoliticianDetailsPage extends Component {
     const { classes } = this.props;
     const {
       allCachedPositionsForThisPolitician, ballotpediaPoliticianUrl, candidateCampaignList, chosenWebsiteName,
-      finalElectionDateInPast, linkedCampaignXWeVoteId,
+      supporterEndorsementsWithText, finalElectionDateInPast, linkedCampaignXWeVoteId,
       officeHeldList, officeHeldNameForSearch, politicalParty,
       politicianDescription, politicianDescriptionLimited, politicianImageUrlLarge,
       politicianSEOFriendlyPath, politicianName, politicianUrl, politicianWeVoteId,
@@ -587,11 +590,9 @@ class PoliticianDetailsPage extends Component {
                   {politicalParty}
                 </PoliticalPartyDiv>
               )}
-              {nextReleaseFeaturesEnabled && (
-                <Suspense fallback={<span>&nbsp;</span>}>
-                  <CampaignSupportThermometer campaignXWeVoteId={linkedCampaignXWeVoteId} finalElectionDateInPast={finalElectionDateInPast} />
-                </Suspense>
-              )}
+              <Suspense fallback={<span>&nbsp;</span>}>
+                <CampaignSupportThermometer campaignXWeVoteId={linkedCampaignXWeVoteId} finalElectionDateInPast={finalElectionDateInPast} />
+              </Suspense>
               {/*
               <CampaignOwnersWrapper>
                 <CampaignOwnersList politicianWeVoteId={politicianWeVoteId} />
@@ -633,7 +634,7 @@ class PoliticianDetailsPage extends Component {
               )}
             </CampaignDescriptionWrapper>
             {positionListTeaserHtml}
-            {nextReleaseFeaturesEnabled && (
+            {(supporterEndorsementsWithText && supporterEndorsementsWithText.length > 0) && (
               <CommentsListWrapper>
                 <DelayedLoad waitBeforeShow={1000}>
                   <Suspense fallback={<span>&nbsp;</span>}>
@@ -762,7 +763,7 @@ class PoliticianDetailsPage extends Component {
                   )}
                 </CampaignDescriptionDesktopWrapper>
                 {positionListTeaserHtml}
-                {nextReleaseFeaturesEnabled && (
+                {(supporterEndorsementsWithText && supporterEndorsementsWithText.length > 0) && (
                   <CommentsListWrapper>
                     <DelayedLoad waitBeforeShow={500}>
                       <Suspense fallback={<span>&nbsp;</span>}>
@@ -785,23 +786,19 @@ class PoliticianDetailsPage extends Component {
                 )}
               </ColumnTwoThirds>
               <ColumnOneThird>
-                {nextReleaseFeaturesEnabled && (
-                  <Suspense fallback={<span>&nbsp;</span>}>
-                    <CampaignSupportThermometer campaignXWeVoteId={linkedCampaignXWeVoteId} finalElectionDateInPast={finalElectionDateInPast} />
-                  </Suspense>
-                )}
-                {nextReleaseFeaturesEnabled && (
-                  <Suspense fallback={<span>&nbsp;</span>}>
-                    <CampaignDetailsActionSideBox
-                      campaignXWeVoteId={linkedCampaignXWeVoteId}
-                      finalElectionDateInPast={finalElectionDateInPast}
-                      functionToUseToKeepHelping={this.functionToUseToKeepHelping}
-                      functionToUseWhenProfileComplete={this.functionToUseWhenProfileComplete}
-                      politicianSEOFriendlyPath={politicianSEOFriendlyPath}
-                      politicianWeVoteId={politicianWeVoteId}
-                    />
-                  </Suspense>
-                )}
+                <Suspense fallback={<span>&nbsp;</span>}>
+                  <CampaignSupportThermometer campaignXWeVoteId={linkedCampaignXWeVoteId} finalElectionDateInPast={finalElectionDateInPast} />
+                </Suspense>
+                <Suspense fallback={<span>&nbsp;</span>}>
+                  <CampaignDetailsActionSideBox
+                    campaignXWeVoteId={linkedCampaignXWeVoteId}
+                    finalElectionDateInPast={finalElectionDateInPast}
+                    functionToUseToKeepHelping={this.functionToUseToKeepHelping}
+                    functionToUseWhenProfileComplete={this.functionToUseWhenProfileComplete}
+                    politicianSEOFriendlyPath={politicianSEOFriendlyPath}
+                    politicianWeVoteId={politicianWeVoteId}
+                  />
+                </Suspense>
                 {nextReleaseFeaturesEnabled && (
                   <CommentsListWrapper>
                     <DelayedLoad waitBeforeShow={500}>

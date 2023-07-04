@@ -211,7 +211,7 @@ class SupportButtonBeforeCompletionScreen extends Component {
       supportButtonClasses = classes.buttonDefaultCordova;
     }
     // console.log('SupportButtonBeforeCompletionScreen render campaignXWeVoteId:', campaignXWeVoteId);
-    if (!campaignXWeVoteId && !nextReleaseFeaturesEnabled) {
+    if (!campaignXWeVoteId) {
       // console.log('SupportButtonBeforeCompletionScreen render voter NOT found');
       return <div className="undefined-campaign-state" />;
     }
@@ -244,20 +244,22 @@ class SupportButtonBeforeCompletionScreen extends Component {
             <>
               {voterOpposesBallotItem ? (
                 <>
-                  {nextReleaseFeaturesEnabled && (
-                    <Button
-                      classes={{ root: supportButtonClasses }}
-                      color="primary"
-                      disabled
-                      id="helpDefeatThemButton"
-                      // onClick={this.submitSupportButtonMobile}
-                      variant={inButtonFullWidthMode || !inCompressedMode ? 'contained' : 'outline'}
-                    >
-                      <span>
-                        Help defeat them
-                      </span>
-                    </Button>
-                  )}
+                  <Button
+                    classes={{ root: supportButtonClasses }}
+                    color="primary"
+                    disabled
+                    id="helpDefeatThemButton"
+                    // onClick={this.submitSupportButtonMobile}
+                    variant={inButtonFullWidthMode || !inCompressedMode ? 'contained' : 'outline'}
+                  >
+                    <span>
+                      {nextReleaseFeaturesEnabled && (
+                        <span>
+                          Help defeat them
+                        </span>
+                      )}
+                    </span>
+                  </Button>
                 </>
               ) : (
                 <Button

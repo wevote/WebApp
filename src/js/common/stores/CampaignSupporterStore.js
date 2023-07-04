@@ -6,8 +6,8 @@ class CampaignSupporterStore extends ReduceStore {
     return {
       allCachedCampaignXSupporters: {}, // Dictionary with CampaignXSupporter simple id as key and the CampaignXSupporter as value
       allCachedCampaignXSupporterVoterEntries: {}, // Dictionary with campaignx_we_vote_id as key and the CampaignXSupporter for this voter as value
-      latestCampaignXSupporterEndorsements: {}, // Dict with key campaignx_we_vote_id and value of List of Dicts w/ latest campaignx_supporter entries with supporter_endorsement values
       latestCampaignXSupporters: {}, // Dict with key campaignx_we_vote_id and value of List of Dicts w/ latest campaignx_supporter entries, ordered newest to oldest
+      latestCampaignXSupportersWithText: {}, // Dict with key campaignx_we_vote_id and value of List of Dicts w/ latest campaignx_supporter entries with text endorsements
       shareButtonClicked: false,
       supporterEndorsementQueuedToSave: '',
       supporterEndorsementQueuedToSaveSet: false,
@@ -49,16 +49,17 @@ class CampaignSupporterStore extends ReduceStore {
     return this.getState().allCachedCampaignXSupporters[campaignXSupporterId] || {};
   }
 
-  getCampaignXSupporterEndorsementsList (campaignXWeVoteId) {
-    return this.getState().latestCampaignXSupporterEndorsements[campaignXWeVoteId] || [];
+  getCampaignXSupporterVoterEntry (campaignXWeVoteId) {
+    return this.getState().allCachedCampaignXSupporterVoterEntries[campaignXWeVoteId] || {};
   }
 
-  getCampaignXSupportersList (campaignXWeVoteId) {
+  // These are the most recent campaignx_supporter entries, with visible signers. May or may not have text endorsements.
+  getLatestCampaignXSupportersList (campaignXWeVoteId) {
     return this.getState().latestCampaignXSupporters[campaignXWeVoteId] || [];
   }
 
-  getCampaignXSupporterVoterEntry (campaignXWeVoteId) {
-    return this.getState().allCachedCampaignXSupporterVoterEntries[campaignXWeVoteId] || {};
+  getLatestCampaignXSupportersWithTextList (campaignXWeVoteId) {
+    return this.getState().latestCampaignXSupportersWithText[campaignXWeVoteId] || [];
   }
 
   getShareButtonClicked () {
@@ -98,7 +99,7 @@ class CampaignSupporterStore extends ReduceStore {
 
   updateCampaignXSupporterGenericList (campaignXSupporterGenericListIncoming, campaignSupporterFromAPIResponse) {
     const campaignXSupporterGenericList = campaignXSupporterGenericListIncoming;
-    // console.log('Incoming campaignXSupporterGenericList:', campaignXSupporterGenericList);
+    // console.log('campaignXSupporterGenericListIncoming:', campaignXSupporterGenericListIncoming);
     // console.log('Incoming campaignSupporterFromAPIResponse:', campaignSupporterFromAPIResponse);
     if (!(campaignSupporterFromAPIResponse.campaignx_we_vote_id in campaignXSupporterGenericList)) {
       // console.log('campaignx_we_vote_id not in campaignXSupporterGenericList, adding: ', campaignSupporterFromAPIResponse.campaignx_we_vote_id);
@@ -106,8 +107,9 @@ class CampaignSupporterStore extends ReduceStore {
     }
     const tempCampaignXSupporterGenericList = campaignXSupporterGenericList[campaignSupporterFromAPIResponse.campaignx_we_vote_id] || [];
     let alreadyExists = false;
+    // Make sure we don't already show support from this speaker (i.e. "organization", which could also be a voter)
     for (let i = 0; i < tempCampaignXSupporterGenericList.length; ++i) {
-      if (tempCampaignXSupporterGenericList[i].voter_we_vote_id === campaignSupporterFromAPIResponse.voter_we_vote_id) {
+      if (tempCampaignXSupporterGenericList[i].organization_we_vote_id === campaignSupporterFromAPIResponse.organization_we_vote_id) {
         tempCampaignXSupporterGenericList[i] = campaignSupporterFromAPIResponse;
         alreadyExists = true;
       }
@@ -124,10 +126,11 @@ class CampaignSupporterStore extends ReduceStore {
       allCachedCampaignXSupporters, allCachedCampaignXSupporterVoterEntries,
     } = state;
     let {
-      latestCampaignXSupporterEndorsements, latestCampaignXSupporters,
+      latestCampaignXSupportersWithText, latestCampaignXSupporters,
     } = state;
     let campaignXList;
     let campaignXSupporter;
+    let campaignXSupporterWithText;
 
     let revisedState;
     switch (action.type) {
@@ -142,16 +145,16 @@ class CampaignSupporterStore extends ReduceStore {
         revisedState = state;
         campaignXList = action.res.campaignx_list || [];
         // console.log('campaignListRetrieve latestCampaignXSupporters before:', latestCampaignXSupporters);
-        // console.log('campaignListRetrieve latestCampaignXSupporterEndorsements before:', latestCampaignXSupporterEndorsements);
+        // console.log('campaignListRetrieve latestCampaignXSupportersWithText before:', latestCampaignXSupportersWithText);
         campaignXList.forEach((oneCampaignX) => {
           // if (!(oneCampaignX.seo_friendly_path in allCachedCampaignXWeVoteIdsBySEOFriendlyPath)) {
           //   allCachedCampaignXWeVoteIdsBySEOFriendlyPath[oneCampaignX.seo_friendly_path] = oneCampaignX.campaignx_we_vote_id;
           // }
           if ('latest_campaignx_supporter_endorsement_list' in oneCampaignX) {
             for (let i = 0; i < oneCampaignX.latest_campaignx_supporter_endorsement_list.length; ++i) {
-              campaignXSupporter = oneCampaignX.latest_campaignx_supporter_endorsement_list[i];
-              allCachedCampaignXSupporters[campaignXSupporter.id] = campaignXSupporter;
-              latestCampaignXSupporterEndorsements = this.updateCampaignXSupporterGenericList(latestCampaignXSupporterEndorsements, campaignXSupporter);
+              campaignXSupporterWithText = oneCampaignX.latest_campaignx_supporter_endorsement_list[i];
+              allCachedCampaignXSupporters[campaignXSupporterWithText.id] = campaignXSupporterWithText;
+              latestCampaignXSupportersWithText = this.updateCampaignXSupporterGenericList(latestCampaignXSupportersWithText, campaignXSupporterWithText);
             }
           }
           if ('latest_campaignx_supporter_list' in oneCampaignX) {
@@ -169,11 +172,11 @@ class CampaignSupporterStore extends ReduceStore {
           }
         });
         // console.log('campaignListRetrieve latestCampaignXSupporters after:', latestCampaignXSupporters);
-        // console.log('campaignListRetrieve latestCampaignXSupporterEndorsements after:', latestCampaignXSupporterEndorsements);
+        // console.log('campaignListRetrieve latestCampaignXSupportersWithText after:', latestCampaignXSupportersWithText);
         revisedState = { ...revisedState, allCachedCampaignXSupporters };
         revisedState = { ...revisedState, allCachedCampaignXSupporterVoterEntries };
         revisedState = { ...revisedState, latestCampaignXSupporters };
-        revisedState = { ...revisedState, latestCampaignXSupporterEndorsements };
+        revisedState = { ...revisedState, latestCampaignXSupportersWithText };
         return revisedState;
 
       case 'campaignRetrieve':
@@ -188,9 +191,9 @@ class CampaignSupporterStore extends ReduceStore {
         if (action.res.campaignx_we_vote_id) {
           if ('latest_campaignx_supporter_endorsement_list' in action.res) {
             for (let i = 0; i < action.res.latest_campaignx_supporter_endorsement_list.length; ++i) {
-              campaignXSupporter = action.res.latest_campaignx_supporter_endorsement_list[i];
-              allCachedCampaignXSupporters[campaignXSupporter.id] = campaignXSupporter;
-              latestCampaignXSupporterEndorsements = this.updateCampaignXSupporterGenericList(latestCampaignXSupporterEndorsements, campaignXSupporter);
+              campaignXSupporterWithText = action.res.latest_campaignx_supporter_endorsement_list[i];
+              allCachedCampaignXSupporters[campaignXSupporterWithText.id] = campaignXSupporterWithText;
+              latestCampaignXSupportersWithText = this.updateCampaignXSupporterGenericList(latestCampaignXSupportersWithText, campaignXSupporterWithText);
             }
           }
           if ('latest_campaignx_supporter_list' in action.res) {
@@ -211,7 +214,7 @@ class CampaignSupporterStore extends ReduceStore {
         revisedState = { ...revisedState, allCachedCampaignXSupporters };
         revisedState = { ...revisedState, allCachedCampaignXSupporterVoterEntries };
         revisedState = { ...revisedState, latestCampaignXSupporters };
-        revisedState = { ...revisedState, latestCampaignXSupporterEndorsements };
+        revisedState = { ...revisedState, latestCampaignXSupportersWithText };
         return revisedState;
 
       case 'campaignSupporterSave':
@@ -221,15 +224,15 @@ class CampaignSupporterStore extends ReduceStore {
         }
         // console.log('campaignSupporterSave latestCampaignXSupporters before:', latestCampaignXSupporters);
         if (action.res.supporter_endorsement) {
-          latestCampaignXSupporterEndorsements = this.updateCampaignXSupporterGenericList(latestCampaignXSupporterEndorsements, action.res);
+          latestCampaignXSupportersWithText = this.updateCampaignXSupporterGenericList(latestCampaignXSupportersWithText, action.res);
         }
         latestCampaignXSupporters = this.updateCampaignXSupporterGenericList(latestCampaignXSupporters, action.res);
         // console.log('campaignSupporterSave latestCampaignXSupporters after:', latestCampaignXSupporters);
         return {
           ...state,
           allCachedCampaignXSupporterVoterEntries,
-          latestCampaignXSupporterEndorsements,
           latestCampaignXSupporters,
+          latestCampaignXSupportersWithText,
           voterSignedInWithEmail: Boolean(action.res.voter_signed_in_with_email),
         };
 
