@@ -11,13 +11,13 @@ import CampaignSupporterStore from '../../stores/CampaignSupporterStore';
 import VoterStore from '../../../stores/VoterStore';
 import CampaignShareChunk from '../Campaign/CampaignShareChunk';
 import SupportButton from './SupportButton';
-import webAppConfig from '../../../config';
+// import webAppConfig from '../../../config';
 
 const CompleteYourProfile = React.lazy(() => import(/* webpackChunkName: 'CompleteYourProfile' */ '../Settings/CompleteYourProfile'));
 const MostRecentCampaignSupport = React.lazy(() => import(/* webpackChunkName: 'MostRecentCampaignSupport' */ './MostRecentCampaignSupport'));
 const VisibleToPublicCheckbox = React.lazy(() => import(/* webpackChunkName: 'VisibleToPublicCheckbox' */ './VisibleToPublicCheckbox'));
 
-const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
+// const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
 class CampaignDetailsActionSideBox extends Component {
   constructor (props) {
@@ -186,11 +186,9 @@ class CampaignDetailsActionSideBox extends Component {
     renderLog('CampaignDetailsActionSideBox');  // Set LOG_RENDER_EVENTS to log all renders
     const { campaignSEOFriendlyPath, campaignXWeVoteId, classes, inDraftMode, politicianSEOFriendlyPath, politicianWeVoteId } = this.props;
     // console.log('CampaignDetailsActionSideBox render campaignXWeVoteId:', campaignXWeVoteId, ', campaignSEOFriendlyPath:', campaignSEOFriendlyPath);
-    if (!nextReleaseFeaturesEnabled) {
-      if (!campaignSEOFriendlyPath && !campaignXWeVoteId) {
-        // console.log('CampaignDetailsActionSideBox render voter NOT found');
-        return <div className="undefined-campaign-state" />;
-      }
+    if (!campaignSEOFriendlyPath && !campaignXWeVoteId) {
+      // console.log('CampaignDetailsActionSideBox render voter NOT found');
+      return <div className="undefined-campaign-state" />;
     }
 
     const {
