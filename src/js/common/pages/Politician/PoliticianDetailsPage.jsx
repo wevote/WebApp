@@ -64,6 +64,7 @@ const PoliticianRetrieveController = React.lazy(() => import(/* webpackChunkName
 const PoliticianPositionRetrieveController = React.lazy(() => import(/* webpackChunkName: 'PoliticianPositionRetrieveController' */ '../../components/Position/PoliticianPositionRetrieveController'));
 const SupportButtonBeforeCompletionScreen = React.lazy(() => import(/* webpackChunkName: 'SupportButtonBeforeCompletionScreen' */ '../../components/CampaignSupport/SupportButtonBeforeCompletionScreen'));
 
+const futureFeaturesDisabled = true;
 const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
 
@@ -531,7 +532,42 @@ class PoliticianDetailsPage extends Component {
                   </CampaignSubSectionSeeAll>
                 ) */}
               </CampaignSubSectionTitleWrapper>
-              <PoliticianEndorsementsList politicianWeVoteId={politicianWeVoteId} startingNumberOfPositionsToDisplay={2} />
+              <PoliticianEndorsementsList
+                politicianWeVoteId={politicianWeVoteId}
+                startingNumberOfPositionsToDisplay={2}
+              />
+            </Suspense>
+          </DelayedLoad>
+        </CommentsListWrapper>
+      );
+    }
+    let commentListTeaserHtml = <></>;
+    if (supporterEndorsementsWithText && supporterEndorsementsWithText.length > 0) {
+      commentListTeaserHtml = (
+        <CommentsListWrapper>
+          <DelayedLoad waitBeforeShow={1500}>
+            <Suspense fallback={<span>&nbsp;</span>}>
+              <CampaignSubSectionTitleWrapper>
+                <CampaignSubSectionTitle>
+                  Reasons for supporting
+                </CampaignSubSectionTitle>
+                {!!(this.getCampaignXBasePath()) && (
+                  <CampaignSubSectionSeeAll>
+                    <Link
+                      to={`${this.getCampaignXBasePath()}/comments`}
+                      className="u-link-color"
+                    >
+                      See all
+                    </Link>
+                  </CampaignSubSectionSeeAll>
+                )}
+              </CampaignSubSectionTitleWrapper>
+              <CampaignCommentsList
+                campaignXWeVoteId={linkedCampaignXWeVoteId}
+                politicianWeVoteId={politicianWeVoteId}
+                removePoliticianEndorsements
+                startingNumberOfCommentsToDisplay={2}
+              />
             </Suspense>
           </DelayedLoad>
         </CommentsListWrapper>
@@ -634,28 +670,8 @@ class PoliticianDetailsPage extends Component {
               )}
             </CampaignDescriptionWrapper>
             {positionListTeaserHtml}
-            {(supporterEndorsementsWithText && supporterEndorsementsWithText.length > 0) && (
-              <CommentsListWrapper>
-                <DelayedLoad waitBeforeShow={1000}>
-                  <Suspense fallback={<span>&nbsp;</span>}>
-                    <CampaignSubSectionTitleWrapper>
-                      <CampaignSubSectionTitle>
-                        Reasons for supporting
-                      </CampaignSubSectionTitle>
-                      {!!(this.getCampaignXBasePath()) && (
-                        <CampaignSubSectionSeeAll>
-                          <Link to={`${this.getCampaignXBasePath()}/comments`} className="u-link-color">
-                            See all
-                          </Link>
-                        </CampaignSubSectionSeeAll>
-                      )}
-                    </CampaignSubSectionTitleWrapper>
-                    <CampaignCommentsList campaignXWeVoteId={linkedCampaignXWeVoteId} startingNumberOfCommentsToDisplay={2} />
-                  </Suspense>
-                </DelayedLoad>
-              </CommentsListWrapper>
-            )}
-            {nextReleaseFeaturesEnabled && (
+            {commentListTeaserHtml}
+            {(!futureFeaturesDisabled && nextReleaseFeaturesEnabled) && (
               <CommentsListWrapper>
                 <DelayedLoad waitBeforeShow={1000}>
                   <Suspense fallback={<span>&nbsp;</span>}>
@@ -763,27 +779,7 @@ class PoliticianDetailsPage extends Component {
                   )}
                 </CampaignDescriptionDesktopWrapper>
                 {positionListTeaserHtml}
-                {(supporterEndorsementsWithText && supporterEndorsementsWithText.length > 0) && (
-                  <CommentsListWrapper>
-                    <DelayedLoad waitBeforeShow={500}>
-                      <Suspense fallback={<span>&nbsp;</span>}>
-                        <CampaignSubSectionTitleWrapper>
-                          <CampaignSubSectionTitle>
-                            Reasons for supporting
-                          </CampaignSubSectionTitle>
-                          {!!(this.getCampaignXBasePath()) && (
-                            <CampaignSubSectionSeeAll>
-                              <Link to={`${this.getCampaignXBasePath()}/comments`} className="u-link-color">
-                                See all
-                              </Link>
-                            </CampaignSubSectionSeeAll>
-                          )}
-                        </CampaignSubSectionTitleWrapper>
-                        <CampaignCommentsList campaignXWeVoteId={linkedCampaignXWeVoteId} startingNumberOfCommentsToDisplay={2} />
-                      </Suspense>
-                    </DelayedLoad>
-                  </CommentsListWrapper>
-                )}
+                {commentListTeaserHtml}
               </ColumnTwoThirds>
               <ColumnOneThird>
                 <Suspense fallback={<span>&nbsp;</span>}>
@@ -799,7 +795,7 @@ class PoliticianDetailsPage extends Component {
                     politicianWeVoteId={politicianWeVoteId}
                   />
                 </Suspense>
-                {nextReleaseFeaturesEnabled && (
+                {(!futureFeaturesDisabled && nextReleaseFeaturesEnabled) && (
                   <CommentsListWrapper>
                     <DelayedLoad waitBeforeShow={500}>
                       <Suspense fallback={<span>&nbsp;</span>}>
@@ -937,6 +933,7 @@ const PoliticalPartyDiv = styled('div')`
 const PoliticianLinksWrapper = styled('div')`
   align-items: flex-start;
   display: flex;
+  flex-wrap: wrap;
   justify-content: flex-start;
 `;
 

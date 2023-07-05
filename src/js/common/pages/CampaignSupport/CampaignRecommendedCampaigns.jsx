@@ -180,7 +180,8 @@ class CampaignRecommendedCampaigns extends Component {
       // Leave this component and go to news page if not signed in
       const { campaignSEOFriendlyPath, campaignXWeVoteId } = this.state;
       if (campaignSEOFriendlyPath || campaignXWeVoteId) {
-        historyPush(`${this.getCampaignXBasePath()}/updates`);
+        // historyPush(`${this.getCampaignXBasePath()}/updates`);
+        historyPush(`${this.getCampaignXBasePath()}`);
       } else {
         console.log('CampaignRecommendedCampaigns onVoterStoreChange cannot redirect. Missing campaignSEOFriendlyPath or campaignXWeVoteId');
       }

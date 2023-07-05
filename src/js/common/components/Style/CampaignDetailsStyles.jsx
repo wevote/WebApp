@@ -155,7 +155,7 @@ export const CommentNameTwitterFollowers = styled('div')`
 export const CommentNameOuterWrapper = styled('div')`
   color: #999;
   display: flex;
-  font-size: 12px;
+  font-size: 14px;
   justify-content: start;
   width: 100%;
   flex-wrap: wrap;

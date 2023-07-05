@@ -27,6 +27,7 @@ import { onStep1ClickPath, onStep2ClickPath, onStep3ClickPath } from '../../util
 const CampaignRetrieveController = React.lazy(() => import(/* webpackChunkName: 'CampaignRetrieveController' */ '../../components/Campaign/CampaignRetrieveController'));
 const VoterFirstRetrieveController = loadable(() => import(/* webpackChunkName: 'VoterFirstRetrieveController' */ '../../components/Settings/VoterFirstRetrieveController'));
 
+const futureFeaturesDisabled = true;
 
 class SuperSharingSendEmail extends Component {
   constructor (props) {
@@ -253,7 +254,12 @@ class SuperSharingSendEmail extends Component {
         initializejQuery(() => {
           ShareActions.superSharingSendEmail(superShareItemId);
         });
-        historyPush(`${this.getCampaignXBasePath()}/recommended-campaigns`);
+        if (!futureFeaturesDisabled) {
+          historyPush(`${this.getCampaignXBasePath()}/recommended-campaigns`);
+        } else {
+          // historyPush(`${this.getCampaignXBasePath()}/updates`);
+          historyPush(`${this.getCampaignXBasePath()}`);
+        }
       }
     }
   }

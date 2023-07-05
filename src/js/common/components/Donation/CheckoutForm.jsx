@@ -324,8 +324,8 @@ class CheckoutForm extends React.Component {
           <ButtonContainer>
             <SplitIconButton
               buttonText={buttonText}
-              backgroundColor="#2e3c5d"
-              separatorColor="#2e3c5d"
+              backgroundColor="#0834CD"
+              separatorColor="#0834CD"
               styles={iconButtonStyles}
               adjustedIconWidth={40}
               disabled={donationWithStripeSubmitted}
@@ -364,6 +364,7 @@ const TextFieldContainer = styled('div')`
   font-size: 12px;
   padding: 5px 0 10px 0;
 `;
+
 const ButtonContainer = styled('div')`
   margin-top: 10px;
 `;
