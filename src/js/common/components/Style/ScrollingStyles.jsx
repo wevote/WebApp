@@ -30,9 +30,12 @@ export const BallotScrollingOuterWrapper = styled('div')`
 export const CampaignsHorizontallyScrollingContainer = styled('div', {
   shouldForwardProp: (prop) => !['showLeftGradient'].includes(prop),
 })(({ showLeftGradient }) => (`
+  /* Fade out, both sides */
+  -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1) 6%, rgba(0, 0, 0, 1) 94%, rgba(0, 0, 0, 0));
+  mask-image: linear-gradient(to right, rgba(255, 0, 0, 0), rgba(0, 0, 0, 1) 6%, rgba(0, 0, 0, 1) 94%, rgba(0, 0, 0, 0));
   /* Fade out, right side */
-  -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 88%, rgba(0, 0, 0, 0));
-  mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 88%, rgba(0, 0, 0, 0));
+//   -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 88%, rgba(0, 0, 0, 0)););
+//   mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 88%, rgba(0, 0, 0, 0)););
   /* Fade out, left side */
   ${showLeftGradient ? '-webkit-mask-image: linear-gradient(to left, rgba(0, 0, 0, 1) 88%, rgba(0, 0, 0, 0));' : ''}
   ${showLeftGradient ? 'mask-image: linear-gradient(to left, rgba(0, 0, 0, 1) 88%, rgba(0, 0, 0, 0));' : ''}
@@ -68,6 +71,20 @@ export const RightArrowInnerWrapper = styled('div')`
 `;
 
 export const RightArrowOuterWrapper = styled('div')`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: center;
+  min-height: 330px;
+  z-index: 9000;
+`;
+
+export const LeftArrowInnerWrapper = styled('div')`
+  //opacity: 0;
+  transition: opacity 200ms ease-in 0s;
+`;
+
+export const LeftArrowOuterWrapper = styled('div')`
   display: flex;
   flex-direction: column;
   height: 100%;

@@ -1,13 +1,15 @@
-import { ArrowForwardIos } from '@mui/icons-material';
+import { ArrowForwardIos, ArrowBackIos } from '@mui/icons-material';
 import withStyles from '@mui/styles/withStyles';
 import { filter } from 'lodash-es';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, createRef } from 'react';
 import styled from 'styled-components';
 import {
   CampaignsHorizontallyScrollingContainer,
   RightArrowInnerWrapper,
   RightArrowOuterWrapper,
+  LeftArrowInnerWrapper,
+  LeftArrowOuterWrapper,
   CampaignsScrollingInnerWrapper,
   CampaignsScrollingOuterWrapper,
 } from '../../common/components/Style/ScrollingStyles';
@@ -22,13 +24,16 @@ const CandidateCardList = React.lazy(() => import(/* webpackChunkName: 'Candidat
 class CandidateListRoot extends Component {
   constructor (props) {
     super(props);
+    this.scrollElement = createRef();
     this.state = {
       candidateList: [],
       candidateSearchResults: [],
       filteredList: [],
       hideDisplayBecauseNoSearchResults: false,
       timeStampOfChange: 0,
+      hideLeftArrow: true,
     };
+
   }
 
   componentDidMount () {
@@ -280,6 +285,23 @@ class CandidateListRoot extends Component {
     });
   }
 
+  handleHorizontalScroll = (element, speed, distance, step) => {
+    let scrollAmount = 0;
+    const slideTimer = setInterval(() => {
+      element.scrollLeft += step;
+      scrollAmount += Math.abs(step);
+      if (scrollAmount >= distance) {
+        clearInterval(slideTimer);
+      }
+      if (element.scrollLeft === 0) {
+        //setArrowDisable(true);
+        this.setState({hideLeftArrow: true});
+      } else {
+        //setArrowDisable(false);
+        this.setState({hideLeftArrow: false});
+      }}, speed);
+  }
+
   render () {
     renderLog('CandidateListRoot');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes, hideIfNoResults, hideTitle, searchText, titleTextForList } = this.props;
@@ -319,8 +341,13 @@ class CandidateListRoot extends Component {
         )}
         {(!(isSearching && hideDisplayBecauseNoSearchResults)) && (
           <CampaignsScrollingOuterWrapper>
+            <LeftArrowOuterWrapper className="u-show-desktop-tablet">
+              <LeftArrowInnerWrapper onClick={() => {this.handleHorizontalScroll(this.scrollElement.current, 30, 621, -16)}}>
+                {this.state.hideLeftArrow ? null : <ArrowBackIos classes={{ root: classes.arrowRoot }} />}
+              </LeftArrowInnerWrapper>
+            </LeftArrowOuterWrapper>
             <CampaignsScrollingInnerWrapper>
-              <CampaignsHorizontallyScrollingContainer>
+              <CampaignsHorizontallyScrollingContainer ref={this.scrollElement}>
                 <CandidateCardList
                   incomingCandidateList={(isSearching ? candidateSearchResults : filteredList)}
                   timeStampOfChange={timeStampOfChange}
@@ -329,7 +356,7 @@ class CandidateListRoot extends Component {
               </CampaignsHorizontallyScrollingContainer>
             </CampaignsScrollingInnerWrapper>
             <RightArrowOuterWrapper className="u-show-desktop-tablet">
-              <RightArrowInnerWrapper>
+              <RightArrowInnerWrapper onClick={() => {this.handleHorizontalScroll(this.scrollElement.current, 30, 621, 16)}}>
                 <ArrowForwardIos classes={{ root: classes.arrowRoot }} />
               </RightArrowInnerWrapper>
             </RightArrowOuterWrapper>

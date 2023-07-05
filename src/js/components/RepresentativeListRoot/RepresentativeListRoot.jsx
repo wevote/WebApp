@@ -1,12 +1,12 @@
-import { ArrowForwardIos } from '@mui/icons-material';
+import { ArrowForwardIos, ArrowBackIos } from '@mui/icons-material';
 import withStyles from '@mui/styles/withStyles';
 import { filter } from 'lodash-es';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, createRef } from 'react';
 import styled from 'styled-components';
 import {
   CampaignsHorizontallyScrollingContainer, RightArrowInnerWrapper,
-  RightArrowOuterWrapper,
+  RightArrowOuterWrapper, LeftArrowInnerWrapper, LeftArrowOuterWrapper,
   CampaignsScrollingInnerWrapper, CampaignsScrollingOuterWrapper,
 } from '../../common/components/Style/ScrollingStyles';
 import { convertStateCodeToStateText } from '../../common/utils/addressFunctions';
@@ -22,12 +22,14 @@ const OFFICE_HELD_YEARS_AVAILABLE = [2023, 2024, 2025, 2026];
 class RepresentativeListRoot extends Component {
   constructor (props) {
     super(props);
+    this.scrollElement = createRef();
     this.state = {
       hideDisplayBecauseNoSearchResults: false,
       representativeList: [],
       representativeSearchResults: [],
       filteredList: [],
       timeStampOfChange: 0,
+      hideLeftArrow: true,
     };
   }
 
@@ -293,6 +295,23 @@ class RepresentativeListRoot extends Component {
     });
   }
 
+  handleHorizontalScroll = (element, speed, distance, step) => {
+    let scrollAmount = 0;
+    const slideTimer = setInterval(() => {
+      element.scrollLeft += step;
+      scrollAmount += Math.abs(step);
+      if (scrollAmount >= distance) {
+        clearInterval(slideTimer);
+      }
+      if (element.scrollLeft === 0) {
+        //setArrowDisable(true);
+        this.setState({hideLeftArrow: true});
+      } else {
+        //setArrowDisable(false);
+        this.setState({hideLeftArrow: false});
+    }}, speed);
+  }
+
   render () {
     renderLog('RepresentativeListRoot');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes, hideIfNoResults, hideTitle, searchText, titleTextForList } = this.props;
@@ -329,8 +348,13 @@ class RepresentativeListRoot extends Component {
         )}
         {(!hideDisplayBecauseNoSearchResults) && (
           <CampaignsScrollingOuterWrapper>
+            <LeftArrowOuterWrapper className="u-show-desktop-tablet">
+              <LeftArrowInnerWrapper onClick={() => {this.handleHorizontalScroll(this.scrollElement.current, 30, 621, -16)}}>
+                {this.state.hideLeftArrow ? null : <ArrowBackIos classes={{ root: classes.arrowRoot }} />}
+              </LeftArrowInnerWrapper>
+            </LeftArrowOuterWrapper>
             <CampaignsScrollingInnerWrapper>
-              <CampaignsHorizontallyScrollingContainer>
+              <CampaignsHorizontallyScrollingContainer ref={this.scrollElement}>
                 <RepresentativeCardList
                   incomingRepresentativeList={(isSearching ? representativeSearchResults : filteredList)}
                   timeStampOfChange={timeStampOfChange}
@@ -339,7 +363,7 @@ class RepresentativeListRoot extends Component {
               </CampaignsHorizontallyScrollingContainer>
             </CampaignsScrollingInnerWrapper>
             <RightArrowOuterWrapper className="u-show-desktop-tablet">
-              <RightArrowInnerWrapper>
+              <RightArrowInnerWrapper onClick={() => {this.handleHorizontalScroll(this.scrollElement.current, 30, 621, 16)}}>
                 <ArrowForwardIos classes={{ root: classes.arrowRoot }} />
               </RightArrowInnerWrapper>
             </RightArrowOuterWrapper>
