@@ -22,14 +22,14 @@ import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import keepHelpingDestination from '../../common/utils/keepHelpingDestination';
 import numberWithCommas from '../../common/utils/numberWithCommas';
 import saveCampaignSupportAndGoToNextPage from '../../common/utils/saveCampaignSupportAndGoToNextPage';
-import webAppConfig from '../../config';
+// import webAppConfig from '../../config';
 // import { ElectionInPast, IndicatorButtonWrapper, IndicatorRow } from '../../common/components/Style/CampaignIndicatorStyles';
 
 const ItemActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemActionBar' */ '../Widgets/ItemActionBar/ItemActionBar'));
 const OfficeNameText = React.lazy(() => import(/* webpackChunkName: 'OfficeNameText' */ '../../common/components/Widgets/OfficeNameText'));
 const SupportButtonBeforeCompletionScreen = React.lazy(() => import(/* webpackChunkName: 'SupportButtonBeforeCompletionScreen' */ '../../common/components/CampaignSupport/SupportButtonBeforeCompletionScreen'));
 
-const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
+// const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
 class CandidateCardForList extends Component {
   constructor (props) {
@@ -310,64 +310,62 @@ class CandidateCardForList extends Component {
                     </Suspense>
                   </div>
                 )}
-                {(nextReleaseFeaturesEnabled) && (
-                  <>
-                    {finalElectionDateInPast ? (
-                      <SupportersWrapper>
-                        {(!supportersCount || supportersCount === 0) ? (
-                          <SupportersCount>
-                            0 supporters.
-                            {' '}
-                          </SupportersCount>
-                        ) : (
-                          <SupportersCount>
-                            {numberWithCommas(supportersCount)}
-                            {' '}
-                            {supportersCount === 1 ? 'supporter.' : 'supporters.'}
-                            {' '}
-                          </SupportersCount>
-                        )}
-                        {campaignSupported && (
-                          <SupportersActionLink>
-                            Thank you for supporting!
-                          </SupportersActionLink>
-                        )}
-                      </SupportersWrapper>
-                    ) : (
-                      <SupportersWrapper>
-                        {(!supportersCount || supportersCount === 0) ? (
-                          <SupportersCount>
-                            Be the first.
-                            {' '}
-                          </SupportersCount>
-                        ) : (
-                          <SupportersCount>
-                            {numberWithCommas(supportersCount)}
-                            {' '}
-                            {supportersCount === 1 ? 'supporter.' : 'supporters.'}
-                          </SupportersCount>
-                        )}
-                        {' '}
-                        {campaignSupported ? (
-                          <SupportersActionLink>
-                            Thank you for supporting!
-                          </SupportersActionLink>
-                        ) : (
-                          <SupportersActionLink
-                            className="u-link-color u-link-underline u-cursor--pointer"
-                            id="candidateCardLetsGetTo"
-                            onClick={this.onCandidateClick}
-                          >
-                            Let&apos;s get to
-                            {' '}
-                            {numberWithCommas(supportersCountNextGoalWithFloor)}
-                            !
-                          </SupportersActionLink>
-                        )}
-                      </SupportersWrapper>
-                    )}
-                  </>
-                )}
+                <>
+                  {finalElectionDateInPast ? (
+                    <SupportersWrapper>
+                      {(!supportersCount || supportersCount === 0) ? (
+                        <SupportersCount>
+                          0 supporters.
+                          {' '}
+                        </SupportersCount>
+                      ) : (
+                        <SupportersCount>
+                          {numberWithCommas(supportersCount)}
+                          {' '}
+                          {supportersCount === 1 ? 'supporter.' : 'supporters.'}
+                          {' '}
+                        </SupportersCount>
+                      )}
+                      {campaignSupported && (
+                        <SupportersActionLink>
+                          Thank you for supporting!
+                        </SupportersActionLink>
+                      )}
+                    </SupportersWrapper>
+                  ) : (
+                    <SupportersWrapper>
+                      {(!supportersCount || supportersCount === 0) ? (
+                        <SupportersCount>
+                          Be the first.
+                          {' '}
+                        </SupportersCount>
+                      ) : (
+                        <SupportersCount>
+                          {numberWithCommas(supportersCount)}
+                          {' '}
+                          {supportersCount === 1 ? 'supporter.' : 'supporters.'}
+                        </SupportersCount>
+                      )}
+                      {' '}
+                      {campaignSupported ? (
+                        <SupportersActionLink>
+                          Thank you for supporting!
+                        </SupportersActionLink>
+                      ) : (
+                        <SupportersActionLink
+                          className="u-link-color u-link-underline u-cursor--pointer"
+                          id="candidateCardLetsGetTo"
+                          onClick={this.onCandidateClick}
+                        >
+                          Let&apos;s get to
+                          {' '}
+                          {numberWithCommas(supportersCountNextGoalWithFloor)}
+                          !
+                        </SupportersActionLink>
+                      )}
+                    </SupportersWrapper>
+                  )}
+                </>
                 {twitterDescription && (
                   <OneCampaignDescription
                     className="u-cursor--pointer"
@@ -418,19 +416,17 @@ class CandidateCardForList extends Component {
                     />
                   )}
                 </Suspense>
-                {nextReleaseFeaturesEnabled && (
-                  <BottomActionButtonWrapper>
-                    <Suspense fallback={<span>&nbsp;</span>}>
-                      <SupportButtonBeforeCompletionScreen
-                        campaignXWeVoteId={linkedCampaignXWeVoteId}
-                        functionToUseToKeepHelping={this.functionToUseToKeepHelping}
-                        functionToUseWhenProfileComplete={this.functionToUseWhenProfileComplete}
-                        inButtonFullWidthMode
-                        // inCompressedMode
-                      />
-                    </Suspense>
-                  </BottomActionButtonWrapper>
-                )}
+                <BottomActionButtonWrapper>
+                  <Suspense fallback={<span>&nbsp;</span>}>
+                    <SupportButtonBeforeCompletionScreen
+                      campaignXWeVoteId={linkedCampaignXWeVoteId}
+                      functionToUseToKeepHelping={this.functionToUseToKeepHelping}
+                      functionToUseWhenProfileComplete={this.functionToUseWhenProfileComplete}
+                      inButtonFullWidthMode
+                      // inCompressedMode
+                    />
+                  </Suspense>
+                </BottomActionButtonWrapper>
               </CampaignActionButtonsWrapper>
             </OneCampaignTextColumn>
             <OneCampaignPhotoWrapperMobile className="u-cursor--pointer u-show-mobile" onClick={this.onCandidateClick}>

@@ -23,13 +23,13 @@ class CampaignCommentsList extends Component {
     this.campaignSupporterStoreListener = CampaignSupporterStore.addListener(this.onCampaignSupporterStoreChange.bind(this));
     this.campaignStoreListener = CampaignStore.addListener(this.onCampaignStoreChange.bind(this));
     const { campaignXWeVoteId, startingNumberOfCommentsToDisplay } = this.props;
-    // console.log('CampaignCommentsList componentDidMount campaignXWeVoteId:', campaignXWeVoteId);
+    // console.log('CampaignCommentsList componentDidMount campaignXWeVoteId:', campaignXWeVoteId, ', startingNumberOfCommentsToDisplay:', startingNumberOfCommentsToDisplay);
     if (startingNumberOfCommentsToDisplay && startingNumberOfCommentsToDisplay > 0) {
       this.setState({
         numberOfCommentsToDisplay: startingNumberOfCommentsToDisplay,
       });
     }
-    const supporterEndorsementsList = CampaignSupporterStore.getCampaignXSupporterEndorsementsList(campaignXWeVoteId);
+    const supporterEndorsementsList = CampaignSupporterStore.getLatestCampaignXSupportersWithTextList(campaignXWeVoteId);
     this.setState({
       supporterEndorsementsList,
     });
@@ -45,7 +45,7 @@ class CampaignCommentsList extends Component {
     } = this.props;
     if (campaignXWeVoteId) {
       if (campaignXWeVoteId !== campaignXWeVoteIdPrevious) {
-        const supporterEndorsementsList = CampaignSupporterStore.getCampaignXSupporterEndorsementsList(campaignXWeVoteId);
+        const supporterEndorsementsList = CampaignSupporterStore.getLatestCampaignXSupportersWithTextList(campaignXWeVoteId);
         this.setState({
           supporterEndorsementsList,
         });
@@ -61,8 +61,10 @@ class CampaignCommentsList extends Component {
   onCampaignSupporterStoreChange () {
     const { campaignXWeVoteId } = this.props;
     // console.log('CampaignCommentsList onCampaignSupporterStoreChange campaignXWeVoteId:', campaignXWeVoteId);
-    const supporterEndorsementsListUnsorted = CampaignSupporterStore.getCampaignXSupporterEndorsementsList(campaignXWeVoteId);
+    const supporterEndorsementsListUnsorted = CampaignSupporterStore.getLatestCampaignXSupportersWithTextList(campaignXWeVoteId);
+    // console.log('CampaignCommentsList onCampaignSupporterStoreChange supporterEndorsementsListUnsorted:', supporterEndorsementsListUnsorted);
     const supporterEndorsementsList = supporterEndorsementsListUnsorted.sort(this.orderByCommentDate);
+    // console.log('supporterEndorsementsList:', supporterEndorsementsList);
     this.setState({
       supporterEndorsementsList,
     });
@@ -71,7 +73,7 @@ class CampaignCommentsList extends Component {
   onCampaignStoreChange () {
     const { campaignXWeVoteId } = this.props;
     // console.log('CampaignCommentsList onCampaignStoreChange campaignXWeVoteId:', campaignXWeVoteId);
-    const supporterEndorsementsListUnsorted = CampaignSupporterStore.getCampaignXSupporterEndorsementsList(campaignXWeVoteId);
+    const supporterEndorsementsListUnsorted = CampaignSupporterStore.getLatestCampaignXSupportersWithTextList(campaignXWeVoteId);
     const supporterEndorsementsList = supporterEndorsementsListUnsorted.sort(this.orderByCommentDate);
     this.setState({
       supporterEndorsementsList,
@@ -117,7 +119,7 @@ class CampaignCommentsList extends Component {
             }
             numberOfCampaignsDisplayed += 1;
             return (
-              <div key={`campaignXSupporterItem-${campaignXWeVoteId}-${campaignXSupporter.voter_we_vote_id}`}>
+              <div key={`campaignXSupporterItem-${campaignXWeVoteId}-${campaignXSupporter.organization_we_vote_id}`}>
                 <CampaignCommentForList
                   campaignXWeVoteId={campaignXWeVoteId}
                   campaignXSupporterId={campaignXSupporter.id}
