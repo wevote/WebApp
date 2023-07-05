@@ -16,6 +16,7 @@ import { renderLog } from './js/common/utils/logging';
 import Header from './js/components/Navigation/Header';
 import HeaderBarSuspense from './js/components/Navigation/HeaderBarSuspense';
 import webAppConfig from './js/config';
+import VoterSessionActions from './js/actions/VoterSessionActions';
 import VoterActions from './js/actions/VoterActions';
 import AppObservableStore, { messageService } from './js/common/stores/AppObservableStore';
 import VoterStore from './js/stores/VoterStore';
@@ -309,7 +310,7 @@ class App extends Component {
     const cid = query.get('cid');
     const voterDeviceId = VoterStore.voterDeviceId();
     if (cid && cid !== voterDeviceId) {
-      VoterStore.setVoterDeviceIdCookie(cid);
+      VoterSessionActions.setVoterDeviceIdCookie(cid);
       VoterActions.voterRetrieve();
     }
   }
