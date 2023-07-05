@@ -16,6 +16,7 @@ import SupportStore from '../../../stores/SupportStore';
 import VoterStore from '../../../stores/VoterStore';
 import webAppConfig from '../../../config';
 
+const futureFeaturesDisabled = true;
 const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
 class SupportButtonBeforeCompletionScreen extends Component {
@@ -247,13 +248,13 @@ class SupportButtonBeforeCompletionScreen extends Component {
                   <Button
                     classes={{ root: supportButtonClasses }}
                     color="primary"
-                    disabled
+                    disabled={futureFeaturesDisabled || !nextReleaseFeaturesEnabled}
                     id="helpDefeatThemButton"
-                    // onClick={this.submitSupportButtonMobile}
+                    onClick={(!futureFeaturesDisabled && nextReleaseFeaturesEnabled) ? this.submitSupportButtonMobile : null}
                     variant={inButtonFullWidthMode || !inCompressedMode ? 'contained' : 'outline'}
                   >
                     <span>
-                      {nextReleaseFeaturesEnabled && (
+                      {(!futureFeaturesDisabled && nextReleaseFeaturesEnabled) && (
                         <span>
                           Help defeat them
                         </span>

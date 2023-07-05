@@ -56,6 +56,7 @@ const CampaignRetrieveController = React.lazy(() => import(/* webpackChunkName: 
 const CampaignSupportThermometer = React.lazy(() => import(/* webpackChunkName: 'CampaignSupportThermometer' */ '../../components/CampaignSupport/CampaignSupportThermometer'));
 const SupportButtonBeforeCompletionScreen = React.lazy(() => import(/* webpackChunkName: 'SupportButtonBeforeCompletionScreen' */ '../../components/CampaignSupport/SupportButtonBeforeCompletionScreen'));
 
+const futureFeaturesDisabled = true;
 
 class CampaignDetailsPage extends Component {
   constructor (props) {
@@ -428,30 +429,32 @@ class CampaignDetailsPage extends Component {
                 )}
               </IndicatorRow>
             </CampaignDescriptionWrapper>
-            <CommentsListWrapper>
-              <DelayedLoad waitBeforeShow={1000}>
-                <Suspense fallback={<span>&nbsp;</span>}>
-                  <CampaignSubSectionTitleWrapper>
-                    <CampaignSubSectionTitle>
-                      Updates
-                    </CampaignSubSectionTitle>
-                    {!!(this.getCampaignXBasePath()) && (
-                      <CampaignSubSectionSeeAll>
-                        <Link to={`${this.getCampaignXBasePath()}/updates`} className="u-link-color">
-                          See all
-                        </Link>
-                      </CampaignSubSectionSeeAll>
-                    )}
-                  </CampaignSubSectionTitleWrapper>
-                  <CampaignNewsItemList
-                    campaignXWeVoteId={campaignXWeVoteId}
-                    campaignSEOFriendlyPath={campaignSEOFriendlyPath}
-                    showAddNewsItemIfNeeded
-                    startingNumberOfCommentsToDisplay={1}
-                  />
-                </Suspense>
-              </DelayedLoad>
-            </CommentsListWrapper>
+            {!futureFeaturesDisabled && (
+              <CommentsListWrapper>
+                <DelayedLoad waitBeforeShow={1000}>
+                  <Suspense fallback={<span>&nbsp;</span>}>
+                    <CampaignSubSectionTitleWrapper>
+                      <CampaignSubSectionTitle>
+                        Updates
+                      </CampaignSubSectionTitle>
+                      {!!(this.getCampaignXBasePath()) && (
+                        <CampaignSubSectionSeeAll>
+                          <Link to={`${this.getCampaignXBasePath()}/updates`} className="u-link-color">
+                            See all
+                          </Link>
+                        </CampaignSubSectionSeeAll>
+                      )}
+                    </CampaignSubSectionTitleWrapper>
+                    <CampaignNewsItemList
+                      campaignXWeVoteId={campaignXWeVoteId}
+                      campaignSEOFriendlyPath={campaignSEOFriendlyPath}
+                      showAddNewsItemIfNeeded
+                      startingNumberOfCommentsToDisplay={1}
+                    />
+                  </Suspense>
+                </DelayedLoad>
+              </CommentsListWrapper>
+            )}
             <CommentsListWrapper>
               <DelayedLoad waitBeforeShow={1000}>
                 <Suspense fallback={<span>&nbsp;</span>}>
@@ -539,30 +542,32 @@ class CampaignDetailsPage extends Component {
                     </IndicatorRow>
                   )}
                 </CampaignDescriptionDesktopWrapper>
-                <CommentsListWrapper>
-                  <DelayedLoad waitBeforeShow={500}>
-                    <Suspense fallback={<span>&nbsp;</span>}>
-                      <CampaignSubSectionTitleWrapper>
-                        <CampaignSubSectionTitle>
-                          Updates
-                        </CampaignSubSectionTitle>
-                        {!!(this.getCampaignXBasePath()) && (
-                          <CampaignSubSectionSeeAll>
-                            <Link to={`${this.getCampaignXBasePath()}/updates`} className="u-link-color">
-                              See all
-                            </Link>
-                          </CampaignSubSectionSeeAll>
-                        )}
-                      </CampaignSubSectionTitleWrapper>
-                      <CampaignNewsItemList
-                        campaignXWeVoteId={campaignXWeVoteId}
-                        campaignSEOFriendlyPath={campaignSEOFriendlyPath}
-                        showAddNewsItemIfNeeded
-                        startingNumberOfCommentsToDisplay={1}
-                      />
-                    </Suspense>
-                  </DelayedLoad>
-                </CommentsListWrapper>
+                {!futureFeaturesDisabled && (
+                  <CommentsListWrapper>
+                    <DelayedLoad waitBeforeShow={500}>
+                      <Suspense fallback={<span>&nbsp;</span>}>
+                        <CampaignSubSectionTitleWrapper>
+                          <CampaignSubSectionTitle>
+                            Updates
+                          </CampaignSubSectionTitle>
+                          {!!(this.getCampaignXBasePath()) && (
+                            <CampaignSubSectionSeeAll>
+                              <Link to={`${this.getCampaignXBasePath()}/updates`} className="u-link-color">
+                                See all
+                              </Link>
+                            </CampaignSubSectionSeeAll>
+                          )}
+                        </CampaignSubSectionTitleWrapper>
+                        <CampaignNewsItemList
+                          campaignXWeVoteId={campaignXWeVoteId}
+                          campaignSEOFriendlyPath={campaignSEOFriendlyPath}
+                          showAddNewsItemIfNeeded
+                          startingNumberOfCommentsToDisplay={1}
+                        />
+                      </Suspense>
+                    </DelayedLoad>
+                  </CommentsListWrapper>
+                )}
                 <CommentsListWrapper>
                   <DelayedLoad waitBeforeShow={500}>
                     <Suspense fallback={<span>&nbsp;</span>}>

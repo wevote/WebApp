@@ -1,12 +1,14 @@
 import loadable from '@loadable/component';
+import { LockOutlined } from '@mui/icons-material';
 import { Button, InputAdornment, TextField } from '@mui/material';
-import styled from 'styled-components';
+import { styled as muiStyled } from '@mui/styles';
 import withStyles from '@mui/styles/withStyles';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
+import styled from 'styled-components';
 import CampaignActions from '../../actions/CampaignActions';
 import DonationListForm from '../../components/Donation/DonationListForm';
 import InjectedCheckoutForm from '../../components/Donation/InjectedCheckoutForm';
@@ -23,10 +25,16 @@ import CampaignStore from '../../stores/CampaignStore';
 import VoterStore from '../../../stores/VoterStore';
 import { getCampaignXValuesFromIdentifiers, retrieveCampaignXFromIdentifiersIfNeeded } from '../../utils/campaignUtils';
 import initializejQuery from '../../utils/initializejQuery';
-
+import SplitIconButton from '../../components/Widgets/SplitIconButton';
 
 const stripePromise = loadStripe(webAppConfig.STRIPE_API_KEY);
 const VoterFirstRetrieveController = loadable(() => import(/* webpackChunkName: 'VoterFirstRetrieveController' */ '../../components/Settings/VoterFirstRetrieveController'));
+
+const futureFeaturesDisabled = true;
+const iconButtonStyles = {
+  width: window.innerWidth < 1280 ? 250 : 300,
+  margin: '16px',
+};
 
 class CampaignSupportPayToPromoteProcess extends Component {
   constructor (props) {
@@ -234,7 +242,7 @@ class CampaignSupportPayToPromoteProcess extends Component {
       campaignTitle, chipInPaymentValue, chipInPaymentOtherValue, chosenWebsiteName,
       loaded, showWaiting, voterFirstName, campaignXWeVoteId, preDonation,
     } = this.state;
-    const htmlTitle = `Payment to support ${campaignTitle} - ${chosenWebsiteName}`;
+    const htmlTitle = `Contribution to support ${campaignTitle} - ${chosenWebsiteName}`;
     if (campaignXWeVoteId === undefined || campaignXWeVoteId === '') {
       // console.error('Must have a campaignXWeVoteId defined in CampaignSupportPayToPromoteProcess to make a "chip in"');
       return (
@@ -368,31 +376,51 @@ class CampaignSupportPayToPromoteProcess extends Component {
             </InnerWrapper>
           </OuterWrapper>
           <PaymentWrapper>
-            <PaymentCenteredWrapper show={preDonation}>
-              {preDonation ? (
-                <Elements stripe={stripePromise}>
-                  <InjectedCheckoutForm
-                    value={chipInPaymentOtherValue || chipInPaymentValue}
-                    classes={{}}
-                    stopShowWaiting={this.stopShowWaiting}
-                    onDonation={this.onChipIn}
-                    showWaiting={showWaiting}
-                    isChipIn
-                    campaignXWeVoteId={campaignXWeVoteId}
+            {futureFeaturesDisabled ? (
+              <PaymentCenteredWrapper show>
+                We are still building our payment processing system.
+                Click button to cast your vote for promoting this campaign.
+                <ButtonContainer>
+                  <SplitIconButton
+                    buttonText="Submit my choice"
+                    backgroundColor="#0834CD"
+                    separatorColor="#0834CD"
+                    styles={iconButtonStyles}
+                    adjustedIconWidth={40}
+                    externalUniqueId="becomeAMember"
+                    icon={<LockStyled />}
+                    id="stripeCheckOutForm"
+                    onClick={this.goToIWillShare}
                   />
-                </Elements>
-              ) : (
-                <Button
-                  id="buttonReturn"
-                  classes={{ root: classes.buttonDefault }}
-                  color="primary"
-                  variant="contained"
-                  onClick={() => historyPush(returnPath)}
-                >
-                  {`Return to the "${campaignTitle}" Campaign`}
-                </Button>
-              )}
-            </PaymentCenteredWrapper>
+                </ButtonContainer>
+              </PaymentCenteredWrapper>
+            ) : (
+              <PaymentCenteredWrapper show={preDonation}>
+                {preDonation ? (
+                  <Elements stripe={stripePromise}>
+                    <InjectedCheckoutForm
+                      value={chipInPaymentOtherValue || chipInPaymentValue}
+                      classes={{}}
+                      stopShowWaiting={this.stopShowWaiting}
+                      onDonation={this.onChipIn}
+                      showWaiting={showWaiting}
+                      isChipIn
+                      campaignXWeVoteId={campaignXWeVoteId}
+                    />
+                  </Elements>
+                ) : (
+                  <Button
+                    id="buttonReturn"
+                    classes={{ root: classes.buttonDefault }}
+                    color="primary"
+                    variant="contained"
+                    onClick={() => historyPush(returnPath)}
+                  >
+                    {`Return to the "${campaignTitle}" Campaign`}
+                  </Button>
+                )}
+              </PaymentCenteredWrapper>
+            )}
           </PaymentWrapper>
           <DonationListForm isCampaign leftTabIsMembership={false} />
           <SkipForNowButtonWrapper>
@@ -437,6 +465,10 @@ const styles = () => ({
     width: '100%',
     color: 'black',
     backgroundColor: 'white',
+    '&:hover': {
+      backgroundColor: '#0834CD',
+      color: '#fff',
+    },
   },
   buttonRootSelected: {
     border: '1px solid #236AC7',  // as in the Material UI example
@@ -446,6 +478,10 @@ const styles = () => ({
     width: '100%',
     color: '#236AC7',
     backgroundColor: 'white',
+    '&:hover': {
+      backgroundColor: '#0834CD',
+      color: '#fff',
+    },
   },
   buttonSimpleLink: {
     boxShadow: 'none !important',
@@ -492,6 +528,10 @@ const styles = () => ({
     },
   },
 });
+
+const ButtonContainer = styled('div')`
+  margin-top: 10px;
+`;
 
 const ButtonInsideWrapper = styled('div')`
   align-items: center;
@@ -563,6 +603,8 @@ const IntroductionMessageSection = styled('div')(({ theme }) => (`
 const InnerWrapper = styled('div')`
 `;
 
+const LockStyled = muiStyled(LockOutlined)({ color: 'white' });
+
 const PaymentAmount = styled('div')`
   font-size: 1.1rem;
 `;
@@ -576,8 +618,8 @@ const PaymentCenteredWrapper = styled('div', {
   }
   display: inline-block;
   background-color: ${show ? 'rgb(246, 244,246)' : 'inherit'};
-  box-shadow: ${show ? standardBoxShadow() : 'none'};
-  border: ${show ? '2px solid darkgrey' : 'none'};
+  // box-shadow: ${show ? standardBoxShadow() : 'none'};
+  border: ${show ? '1px solid darkgrey' : 'none'};
   border-radius: 3px;
   padding: 8px;
 `));
