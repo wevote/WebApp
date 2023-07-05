@@ -134,7 +134,7 @@ export default function EditCandidateForExtensionForm (props) {
           color="primary"
           label="Endorsement Text"
           name="statementText"
-          defaultValue={candidate.statementText}
+          defaultValue={candidate.statementText === 'null' ? '' : candidate.statementText}
           InputLabelProps={{ style: { fontFamily: 'Nunito Sans' }, shrink: true }}
           InputProps={{ style: { fontFamily: 'Nunito Sans' } }}
           onBlur={handleBlur}
