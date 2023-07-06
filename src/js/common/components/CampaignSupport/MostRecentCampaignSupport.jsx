@@ -205,7 +205,7 @@ class MostRecentCampaignSupport extends React.Component {
           this.scrollInterval = setInterval(
             () => {
               // set flag to distinguish auto from manual scroll
-              this.setState({isAutoScroll: true});
+              this.setState({ isAutoScroll: true });
               this.commentsWrapperDiv.current.scrollTop += 1;
             }, 100,
           );
@@ -236,8 +236,8 @@ class MostRecentCampaignSupport extends React.Component {
                       src={comment.we_vote_hosted_profile_image_url_tiny}
                       placeholder={anonymous}
                       className="profile-photo"
-                      height={24}
-                      width={24}
+                      height={48}
+                      width={48}
                       alt="Your Settings"
                     />
                   ) : (
