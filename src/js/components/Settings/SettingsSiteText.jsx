@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import OrganizationActions from '../../actions/OrganizationActions';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import { renderLog } from '../../common/utils/logging';

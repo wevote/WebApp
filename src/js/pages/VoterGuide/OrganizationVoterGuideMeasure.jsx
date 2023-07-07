@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import MeasureActions from '../../actions/MeasureActions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';

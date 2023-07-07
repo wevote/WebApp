@@ -2,7 +2,7 @@ import { Button } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Suspense } from 'react';
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import styled from 'styled-components';
 import BallotActions from '../../actions/BallotActions';
 import FriendActions from '../../actions/FriendActions';

@@ -1,5 +1,5 @@
 import React from 'react';
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import TermsOfServiceBody from '../../common/components/TermsOfServiceBody';
 import { renderLog } from '../../common/utils/logging';
 import compileDate from '../../compileDate';

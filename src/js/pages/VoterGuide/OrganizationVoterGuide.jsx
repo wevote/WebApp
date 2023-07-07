@@ -1,7 +1,7 @@
 import { Button } from '@mui/material';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-// import Helmet from 'react-helmet';
+// import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';

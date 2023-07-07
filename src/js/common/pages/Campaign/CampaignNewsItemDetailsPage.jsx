@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import anonymous from '../../../../img/global/icons/avatar-generic.png';
 import CampaignSupporterActions from '../../actions/CampaignSupporterActions';

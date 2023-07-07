@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { HelmetProvider } from 'react-helmet-async';
 import ErrorBoundary from './js/common/components/Widgets/ErrorBoundary';
 import WeVoteRouter from './js/common/components/Widgets/WeVoteRouter';
 import App from './App';
@@ -36,9 +37,11 @@ function redirectToStandardizedWeVoteUrl () {
 function startReact () {
   ReactDOM.render(
     <ErrorBoundary>
-      <WeVoteRouter>
-        <App />
-      </WeVoteRouter>
+      <HelmetProvider>
+        <WeVoteRouter>
+          <App />
+        </WeVoteRouter>
+      </HelmetProvider>
     </ErrorBoundary>,
     document.getElementById('app'),
   );

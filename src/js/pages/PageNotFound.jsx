@@ -3,7 +3,7 @@ import { Button, Card } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import styled from 'styled-components';
 import historyPush from '../common/utils/historyPush';
 import { isCordova } from '../common/utils/isCordovaOrWebApp';

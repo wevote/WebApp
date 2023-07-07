@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import FacebookSignIn from '../../components/Facebook/FacebookSignIn';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import TwitterSignIn from '../../components/Twitter/TwitterSignIn';

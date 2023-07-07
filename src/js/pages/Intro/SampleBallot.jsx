@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import Cookies from '../../common/utils/js-cookie/Cookies';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';

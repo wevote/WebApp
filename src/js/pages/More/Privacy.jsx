@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import PrivacyBody from '../../common/components/PrivacyBody';
 import { renderLog } from '../../common/utils/logging';
 import compileDate from '../../compileDate';
