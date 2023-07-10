@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import { PageContentContainer } from '../../../components/Style/pageLayoutStyles';
 import { OuterWrapper, PageWrapper, StepNumberBordered, StepNumberPlaceholder } from '../../components/Style/stepDisplayStyles';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';

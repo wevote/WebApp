@@ -1,6 +1,6 @@
 import withStyles from '@mui/styles/withStyles';
 import React, { Component, Suspense } from 'react';
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import styled from 'styled-components';
 import CreditsBody from '../../common/components/CreditsBody';
 import { renderLog } from '../../common/utils/logging';

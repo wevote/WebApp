@@ -3,7 +3,7 @@ import withTheme from '@mui/styles/withTheme';
 import { filter } from 'lodash-es';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import styled from 'styled-components';
 import BallotActions from '../../actions/BallotActions';
 import apiCalming from '../../common/utils/apiCalming';

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import Slider from 'react-slick';
 import IntroNetworkBallotIsNext from '../../components/Intro/IntroNetworkBallotIsNext';
 import IntroNetworkDefinition from '../../components/Intro/IntroNetworkDefinition';

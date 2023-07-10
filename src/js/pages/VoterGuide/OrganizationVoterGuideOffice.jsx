@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import OfficeActions from '../../actions/OfficeActions';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
