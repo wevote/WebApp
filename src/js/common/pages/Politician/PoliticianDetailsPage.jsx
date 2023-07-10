@@ -75,6 +75,7 @@ class PoliticianDetailsPage extends Component {
       ballotpediaPoliticianUrl: '',
       supporterEndorsementsWithText: [],
       politicalParty: '',
+      politicianDataNotFound: false,
       politicianImageUrlLarge: '',
       politicianSEOFriendlyPath: '',
       politicianName: '',
@@ -256,6 +257,10 @@ class PoliticianDetailsPage extends Component {
     if (stateCode) {
       stateText = convertStateCodeToStateText(stateCode);
     }
+    let politicianDataNotFound = false;
+    if (politicianSEOFriendlyPathFromParams) {
+      politicianDataNotFound = PoliticianStore.isPoliticianDataNotFoundForSEOFriendlyPath(politicianSEOFriendlyPathFromParams);
+    }
     this.setState({
       ballotpediaPoliticianUrl,
       candidateCampaignList: filteredCandidateCampaignList,
@@ -263,6 +268,7 @@ class PoliticianDetailsPage extends Component {
       // isSupportersCountMinimumExceeded,
       linkedCampaignXWeVoteId,
       politicalParty,
+      politicianDataNotFound,
       politicianDescription,
       politicianDescriptionLimited,
       politicianImageUrlLarge,
@@ -347,6 +353,7 @@ class PoliticianDetailsPage extends Component {
       allCachedPositionsForThisPolitician, ballotpediaPoliticianUrl, candidateCampaignList, chosenWebsiteName,
       supporterEndorsementsWithText, finalElectionDateInPast, linkedCampaignXWeVoteId,
       officeHeldList, officeHeldNameForSearch, politicalParty,
+      politicianDataNotFound,
       politicianDescription, politicianDescriptionLimited, politicianImageUrlLarge,
       politicianSEOFriendlyPath, politicianName, politicianUrl, politicianWeVoteId,
       stateText, twitterHandle, twitterHandle2, twitterFollowersCount,
@@ -354,7 +361,6 @@ class PoliticianDetailsPage extends Component {
       wikipediaUrl, // youtubeUrl,
     } = this.state;
 
-    const politicianDataNotFound = false;
     if (politicianDataNotFound) {
       return (
         <PageContentContainer>
