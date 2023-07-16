@@ -10,6 +10,7 @@ import {
   CampaignsScrollingInnerWrapper, CampaignsScrollingOuterWrapper,
 } from '../../common/components/Style/ScrollingStyles';
 import { convertStateCodeToStateText } from '../../common/utils/addressFunctions';
+import { handleHorizontalScroll, leftAndRightArrowStateCalculation } from '../../common/utils/leftRightArrowCalculation';
 import { getYearFromUltimateElectionDate, isAnyYearInOfficeSetTrue, isThisYearInOfficeSetTrue } from '../../common/utils/dateFormat';
 import filterListToRemoveEntriesWithDuplicateValue from '../../common/utils/filterListToRemoveEntriesWithDuplicateValue';
 import { renderLog } from '../../common/utils/logging';
@@ -30,6 +31,7 @@ class RepresentativeListRoot extends Component {
       filteredList: [],
       timeStampOfChange: 0,
       hideLeftArrow: true,
+      hideRightArrow: false,
     };
   }
 
@@ -295,21 +297,13 @@ class RepresentativeListRoot extends Component {
     });
   }
 
-  handleHorizontalScroll = (element, speed, distance, step) => {
-    let scrollAmount = 0;
-    const slideTimer = setInterval(() => {
-      element.scrollLeft += step;
-      scrollAmount += Math.abs(step);
-      if (scrollAmount >= distance) {
-        clearInterval(slideTimer);
-      }
-      if (element.scrollLeft === 0) {
-        //setArrowDisable(true);
-        this.setState({hideLeftArrow: true});
-      } else {
-        //setArrowDisable(false);
-        this.setState({hideLeftArrow: false});
-    }}, speed);
+  checkScrollPositionLocal = (el) => {
+    // set state here
+    const leftRightStateDict = leftAndRightArrowStateCalculation(el);
+    this.setState({
+      hideLeftArrow: leftRightStateDict[0],
+      hideRightArrow: leftRightStateDict[1],
+    });
   }
 
   render () {
@@ -349,22 +343,27 @@ class RepresentativeListRoot extends Component {
         {(!hideDisplayBecauseNoSearchResults) && (
           <CampaignsScrollingOuterWrapper>
             <LeftArrowOuterWrapper className="u-show-desktop-tablet">
-              <LeftArrowInnerWrapper onClick={() => {this.handleHorizontalScroll(this.scrollElement.current, 30, 621, -16)}}>
+              <LeftArrowInnerWrapper onClick={() => { handleHorizontalScroll(this.scrollElement.current, 5, 621, -40, leftAndRightArrowStateCalculation); }}>
                 {this.state.hideLeftArrow ? null : <ArrowBackIos classes={{ root: classes.arrowRoot }} />}
               </LeftArrowInnerWrapper>
             </LeftArrowOuterWrapper>
             <CampaignsScrollingInnerWrapper>
-              <CampaignsHorizontallyScrollingContainer ref={this.scrollElement}>
+              <CampaignsHorizontallyScrollingContainer ref={this.scrollElement}
+                onScroll={() => { this.checkScrollPositionLocal(this.scrollElement.current); }}
+                showLeftGradient={!this.state.hideLeftArrow}
+                showRightGradient={!this.state.hideRightArrow}
+              >
                 <RepresentativeCardList
                   incomingRepresentativeList={(isSearching ? representativeSearchResults : filteredList)}
                   timeStampOfChange={timeStampOfChange}
                   verticalListOn
+                  loadMoreScroll={() => { handleHorizontalScroll(this.scrollElement.current, 5, 310, 40, leftAndRightArrowStateCalculation); }}
                 />
               </CampaignsHorizontallyScrollingContainer>
             </CampaignsScrollingInnerWrapper>
             <RightArrowOuterWrapper className="u-show-desktop-tablet">
-              <RightArrowInnerWrapper onClick={() => {this.handleHorizontalScroll(this.scrollElement.current, 30, 621, 16)}}>
-                <ArrowForwardIos classes={{ root: classes.arrowRoot }} />
+              <RightArrowInnerWrapper onClick={() => { handleHorizontalScroll(this.scrollElement.current, 5, 621, 40, leftAndRightArrowStateCalculation); }}>
+                { this.state.hideRightArrow ? null : <ArrowForwardIos classes={{ root: classes.arrowRoot }} /> }
               </RightArrowInnerWrapper>
             </RightArrowOuterWrapper>
           </CampaignsScrollingOuterWrapper>

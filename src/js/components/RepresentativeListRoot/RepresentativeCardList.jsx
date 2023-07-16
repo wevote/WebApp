@@ -67,6 +67,13 @@ class RepresentativeCardList extends Component {
     });
   }
 
+  loadMoreHasBeenClicked = () => {
+    this.increaseNumberToDisplay();
+    if (this.props.loadMoreScroll) {
+      this.props.loadMoreScroll();
+    }
+  }
+
   render () {
     renderLog('RepresentativeCardList');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('RepresentativeCardList render');
@@ -100,7 +107,7 @@ class RepresentativeCardList extends Component {
                 numberToDisplay < representativeList.length) &&
             (
               <LoadMoreItemsManually
-                loadMoreFunction={this.increaseNumberToDisplay}
+                loadMoreFunction={this.loadMoreHasBeenClicked}
                 uniqueExternalId="RepresentativeCardList"
               />
             )}
@@ -124,6 +131,7 @@ RepresentativeCardList.propTypes = {
   startingNumberToDisplay: PropTypes.number,
   timeStampOfChange: PropTypes.number,
   verticalListOn: PropTypes.bool,
+  loadMoreScroll: PropTypes.func,
 };
 
 const styles = () => ({
