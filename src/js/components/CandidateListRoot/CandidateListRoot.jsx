@@ -14,6 +14,7 @@ import {
   CampaignsScrollingOuterWrapper,
 } from '../../common/components/Style/ScrollingStyles';
 import { convertStateCodeToStateText } from '../../common/utils/addressFunctions';
+import { handleHorizontalScroll, leftAndRightArrowStateCalculation } from '../../common/utils/leftRightArrowCalculation';
 import { getTodayAsInteger, getYearFromUltimateElectionDate } from '../../common/utils/dateFormat';
 import filterListToRemoveEntriesWithDuplicateValue from '../../common/utils/filterListToRemoveEntriesWithDuplicateValue';
 import { renderLog } from '../../common/utils/logging';
@@ -32,8 +33,8 @@ class CandidateListRoot extends Component {
       hideDisplayBecauseNoSearchResults: false,
       timeStampOfChange: 0,
       hideLeftArrow: true,
+      hideRightArrow: false,
     };
-
   }
 
   componentDidMount () {
@@ -52,6 +53,9 @@ class CandidateListRoot extends Component {
       this.setState({
         candidateList: filteredList,
       }, () => this.onFilterOrListChange());
+      if (filteredList.length < 3) {
+        this.setState({ hideRightArrow: true });
+      }
     }
   }
 
@@ -277,6 +281,7 @@ class CandidateListRoot extends Component {
     }
     // console.log('onFilterOrListChange, searchResults:', searchResults);
     // console.log('onFilterOrListChange, filteredList:', filteredList);
+    // console.log(filteredList.length)
     this.setState({
       candidateSearchResults: searchResults,
       filteredList,
@@ -285,21 +290,13 @@ class CandidateListRoot extends Component {
     });
   }
 
-  handleHorizontalScroll = (element, speed, distance, step) => {
-    let scrollAmount = 0;
-    const slideTimer = setInterval(() => {
-      element.scrollLeft += step;
-      scrollAmount += Math.abs(step);
-      if (scrollAmount >= distance) {
-        clearInterval(slideTimer);
-      }
-      if (element.scrollLeft === 0) {
-        //setArrowDisable(true);
-        this.setState({hideLeftArrow: true});
-      } else {
-        //setArrowDisable(false);
-        this.setState({hideLeftArrow: false});
-      }}, speed);
+  checkScrollPositionLocal = (el) => {
+    // set state here
+    const leftRightStateDict = leftAndRightArrowStateCalculation(el);
+    this.setState({
+      hideLeftArrow: leftRightStateDict[0],
+      hideRightArrow: leftRightStateDict[1],
+    });
   }
 
   render () {
@@ -342,22 +339,27 @@ class CandidateListRoot extends Component {
         {(!(isSearching && hideDisplayBecauseNoSearchResults)) && (
           <CampaignsScrollingOuterWrapper>
             <LeftArrowOuterWrapper className="u-show-desktop-tablet">
-              <LeftArrowInnerWrapper onClick={() => {this.handleHorizontalScroll(this.scrollElement.current, 30, 621, -16)}}>
-                {this.state.hideLeftArrow ? null : <ArrowBackIos classes={{ root: classes.arrowRoot }} />}
+              <LeftArrowInnerWrapper onClick={() => { handleHorizontalScroll(this.scrollElement.current, 5, 621, -40, leftAndRightArrowStateCalculation); }}>
+                { this.state.hideLeftArrow ? null : <ArrowBackIos classes={{ root: classes.arrowRoot }} /> }
               </LeftArrowInnerWrapper>
             </LeftArrowOuterWrapper>
             <CampaignsScrollingInnerWrapper>
-              <CampaignsHorizontallyScrollingContainer ref={this.scrollElement}>
+              <CampaignsHorizontallyScrollingContainer ref={this.scrollElement}
+               onScroll={() => { this.checkScrollPositionLocal(this.scrollElement.current); }}
+               showLeftGradient={!this.state.hideLeftArrow}
+               showRightGradient={!this.state.hideRightArrow}
+              >
                 <CandidateCardList
                   incomingCandidateList={(isSearching ? candidateSearchResults : filteredList)}
                   timeStampOfChange={timeStampOfChange}
                   verticalListOn
+                  loadMoreScroll={() => { handleHorizontalScroll(this.scrollElement.current, 5, 310, 40, leftAndRightArrowStateCalculation); }}
                 />
               </CampaignsHorizontallyScrollingContainer>
             </CampaignsScrollingInnerWrapper>
             <RightArrowOuterWrapper className="u-show-desktop-tablet">
-              <RightArrowInnerWrapper onClick={() => {this.handleHorizontalScroll(this.scrollElement.current, 30, 621, 16)}}>
-                <ArrowForwardIos classes={{ root: classes.arrowRoot }} />
+              <RightArrowInnerWrapper onClick={() => { handleHorizontalScroll(this.scrollElement.current, 5, 621, 40, leftAndRightArrowStateCalculation); }}>
+                { this.state.hideRightArrow ? null : <ArrowForwardIos classes={{ root: classes.arrowRoot }} /> }
               </RightArrowInnerWrapper>
             </RightArrowOuterWrapper>
           </CampaignsScrollingOuterWrapper>

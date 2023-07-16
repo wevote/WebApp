@@ -67,6 +67,13 @@ class CandidateCardList extends Component {
     });
   }
 
+  loadMoreHasBeenClicked = () => {
+    this.increaseNumberToDisplay();
+    if (this.props.loadMoreScroll) {
+      this.props.loadMoreScroll();
+    }
+  }
+
   render () {
     renderLog('CandidateCardList');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('CandidateCardList render');
@@ -100,7 +107,7 @@ class CandidateCardList extends Component {
                 numberToDisplay < candidateList.length) &&
             (
               <LoadMoreItemsManually
-                loadMoreFunction={this.increaseNumberToDisplay}
+                loadMoreFunction={this.loadMoreHasBeenClicked}
                 uniqueExternalId="CandidateCardList"
               />
             )}
@@ -124,6 +131,7 @@ CandidateCardList.propTypes = {
   startingNumberToDisplay: PropTypes.number,
   timeStampOfChange: PropTypes.number,
   verticalListOn: PropTypes.bool,
+  loadMoreScroll: PropTypes.func,
 };
 
 const styles = () => ({
