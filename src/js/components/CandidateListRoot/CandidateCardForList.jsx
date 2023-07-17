@@ -243,6 +243,7 @@ class CandidateCardForList extends Component {
       return null;
     }
     const {
+      ballot_guide_official_statement: ballotGuideOfficialStatement,
       ballot_item_display_name: ballotItemDisplayName,
       candidate_photo_url_large: candidatePhotoLargeUrl,
       candidate_ultimate_election_date: candidateUltimateElectionDate,
@@ -264,6 +265,12 @@ class CandidateCardForList extends Component {
     // console.log('candidate:', candidate);
     if (!candidateWeVoteId) {
       return null;
+    }
+    let candidateDescription;
+    if (ballotGuideOfficialStatement) {
+      candidateDescription = ballotGuideOfficialStatement;
+    } else if (twitterDescription) {
+      candidateDescription = twitterDescription;
     }
     let districtName;
     if (contestOfficeList) {
@@ -366,10 +373,10 @@ class CandidateCardForList extends Component {
                     </SupportersWrapper>
                   )}
                 </>
-                {twitterDescription && (
+                {candidateDescription && (
                   <OneCampaignDescription
                     className="u-cursor--pointer"
-                    id="candidateCardTwitterDescription"
+                    id="candidateCardDescription"
                     onClick={this.onCandidateClick}
                   >
                     <TruncateMarkup
@@ -378,7 +385,7 @@ class CandidateCardForList extends Component {
                       tokenize="words"
                     >
                       <div>
-                        {twitterDescription}
+                        {candidateDescription}
                       </div>
                     </TruncateMarkup>
                   </OneCampaignDescription>

@@ -243,6 +243,7 @@ class RepresentativeCardForList extends Component {
       return null;
     }
     const {
+      // ballot_guide_official_statement: ballotGuideOfficialStatement, // Consider using this
       ballot_item_display_name: ballotItemDisplayName,
       linked_campaignx_we_vote_id: linkedCampaignXWeVoteId,
       office_held_name: officeHeldName,
