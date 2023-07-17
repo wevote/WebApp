@@ -264,6 +264,7 @@ class CampaignCardForList extends Component {
       return null;
     }
     const {
+      // ballot_guide_official_statement: ballotGuideOfficialStatement, // Consider using this
       campaign_description: campaignDescription,
       campaign_title: campaignTitle,
       campaignx_we_vote_id: campaignXWeVoteId,
