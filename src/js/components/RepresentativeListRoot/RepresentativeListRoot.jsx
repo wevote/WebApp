@@ -19,6 +19,11 @@ import RepresentativeStore from '../../stores/RepresentativeStore';
 const RepresentativeCardList = React.lazy(() => import(/* webpackChunkName: 'RepresentativeCardList' */ './RepresentativeCardList'));
 // import OfficeHeldConstants from '../../constants/OfficeHeldConstants';  // I couldn't get this to work
 const OFFICE_HELD_YEARS_AVAILABLE = [2023, 2024, 2025, 2026];
+const HORIZONTAL_SCROLL_SPEED = 5;
+const HORIZONTAL_SCROLL_DISTANCE_ON_ARROW_CLICK = 621;
+const HORIZONTAL_SCROLL_DISTANCE_ON_SHOW_MORE = 310;
+const HORIZONTAL_SCROLL_STEP_LEFT = -40;
+const HORIZONTAL_SCROLL_STEP_RIGHT = 40;
 
 class RepresentativeListRoot extends Component {
   constructor (props) {
@@ -343,7 +348,7 @@ class RepresentativeListRoot extends Component {
         {(!hideDisplayBecauseNoSearchResults) && (
           <CampaignsScrollingOuterWrapper>
             <LeftArrowOuterWrapper className="u-show-desktop-tablet">
-              <LeftArrowInnerWrapper onClick={() => { handleHorizontalScroll(this.scrollElement.current, 5, 621, -40, leftAndRightArrowStateCalculation); }}>
+              <LeftArrowInnerWrapper onClick={() => { handleHorizontalScroll(this.scrollElement.current, HORIZONTAL_SCROLL_SPEED, HORIZONTAL_SCROLL_DISTANCE_ON_ARROW_CLICK, HORIZONTAL_SCROLL_STEP_LEFT, this.checkScrollPositionLocal); }}>
                 {this.state.hideLeftArrow ? null : <ArrowBackIos classes={{ root: classes.arrowRoot }} />}
               </LeftArrowInnerWrapper>
             </LeftArrowOuterWrapper>
@@ -357,12 +362,12 @@ class RepresentativeListRoot extends Component {
                   incomingRepresentativeList={(isSearching ? representativeSearchResults : filteredList)}
                   timeStampOfChange={timeStampOfChange}
                   verticalListOn
-                  loadMoreScroll={() => { handleHorizontalScroll(this.scrollElement.current, 5, 310, 40, leftAndRightArrowStateCalculation); }}
+                  loadMoreScroll={() => { handleHorizontalScroll(this.scrollElement.current, HORIZONTAL_SCROLL_SPEED, HORIZONTAL_SCROLL_DISTANCE_ON_SHOW_MORE, HORIZONTAL_SCROLL_STEP_RIGHT, this.checkScrollPositionLocal); }}
                 />
               </CampaignsHorizontallyScrollingContainer>
             </CampaignsScrollingInnerWrapper>
             <RightArrowOuterWrapper className="u-show-desktop-tablet">
-              <RightArrowInnerWrapper onClick={() => { handleHorizontalScroll(this.scrollElement.current, 5, 621, 40, leftAndRightArrowStateCalculation); }}>
+              <RightArrowInnerWrapper onClick={() => { handleHorizontalScroll(this.scrollElement.current, HORIZONTAL_SCROLL_SPEED, HORIZONTAL_SCROLL_DISTANCE_ON_ARROW_CLICK, HORIZONTAL_SCROLL_STEP_RIGHT, this.checkScrollPositionLocal); }}>
                 { this.state.hideRightArrow ? null : <ArrowForwardIos classes={{ root: classes.arrowRoot }} /> }
               </RightArrowInnerWrapper>
             </RightArrowOuterWrapper>
