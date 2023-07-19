@@ -109,12 +109,12 @@ class ShareOnFacebookButton extends Component {
              onClick={() => isAndroid() &&
                androidFacebookClickHandler(`${linkToBeSharedUrlEncoded}&t=WeVote`, quoteForSharingEncoded)}
         >
+          { /* [WV-104] - If react-share restores the quote feature, add in this prop to FacebookShareButton: quote={quoteForSharing} */ }
           <FacebookShareButton
             className={mobileMode ? 'material_ui_button_mobile' : ''}
             hashtag={inPrivateLabelMode ? null : '#WeVote'}
             id="shareOnFacebookButton"
             onClick={this.saveActionShareButton}
-            quote={quoteForSharing}
             url={`${linkToBeSharedUrlEncoded}`}
             windowWidth={mobileMode ? 350 : 750}
             windowHeight={mobileMode ? 600 : 600}

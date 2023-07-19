@@ -280,7 +280,8 @@ export default {
       stringContains('wevote.org:', localhost) ||   // includes quality.wevote.us
       stringContains('localhost:', localhost) ||
       stringContains('wevotedeveloper.com:', localhost) ||
-      stringContains('ngrok.io', localhost);
+      stringContains('ngrok.io', localhost) ||
+      stringContains('ngrok-free.app', localhost);
   },
 
   isOnFacebookJsSdkHostDomainList () {
