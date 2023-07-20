@@ -69,11 +69,11 @@ class SupportButton extends Component {
   }
 
   submitSupportButtonDesktop = () => {
-    const { campaignXWeVoteId, politicianWeVoteId } = this.props;
+    const { campaignXWeVoteId } = this.props;
     const { voterFirstName, voterLastName, voterSignedInWithEmail } = this.state;
     // console.log('SupportButton submitSupportButtonDesktop');
-    if (!campaignXWeVoteId && politicianWeVoteId) {
-      console.log('SupportButton submitSupportButtonDesktop: campaignXWeVoteId:', campaignXWeVoteId, ', politicianWeVoteId:', politicianWeVoteId);
+    if (!campaignXWeVoteId) {
+      console.log('SupportButton submitSupportButtonDesktop: missing campaignXWeVoteId:', campaignXWeVoteId);
     } else if (!voterFirstName || !voterLastName || !voterSignedInWithEmail) {
       // Open complete your profile modal
       AppObservableStore.setShowCompleteYourProfileModal(true);
@@ -126,7 +126,6 @@ SupportButton.propTypes = {
   campaignXWeVoteId: PropTypes.string,
   classes: PropTypes.object,
   functionToUseWhenProfileComplete: PropTypes.func.isRequired,
-  politicianWeVoteId: PropTypes.string,
 };
 
 const styles = (theme) => ({

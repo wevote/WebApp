@@ -56,6 +56,7 @@ class CampaignDetailsActionSideBox extends Component {
           finalElectionDateInPast,
         });
         this.pullCampaignXSupporterVoterEntry(campaignXWeVoteId);
+        this.onCampaignStoreChange();
       }
     } else if (campaignSEOFriendlyPath) {
       if (campaignSEOFriendlyPath !== campaignSEOFriendlyPathPrevious) {
@@ -66,6 +67,7 @@ class CampaignDetailsActionSideBox extends Component {
           finalElectionDateInPast,
         });
         this.pullCampaignXSupporterVoterEntry(campaignXWeVoteIdCalculated);
+        this.onCampaignStoreChange();
       }
     }
   }
@@ -184,7 +186,7 @@ class CampaignDetailsActionSideBox extends Component {
 
   render () {
     renderLog('CampaignDetailsActionSideBox');  // Set LOG_RENDER_EVENTS to log all renders
-    const { campaignSEOFriendlyPath, campaignXWeVoteId, classes, inDraftMode, politicianSEOFriendlyPath, politicianWeVoteId } = this.props;
+    const { campaignSEOFriendlyPath, campaignXWeVoteId, classes, inDraftMode } = this.props;
     // console.log('CampaignDetailsActionSideBox render campaignXWeVoteId:', campaignXWeVoteId, ', campaignSEOFriendlyPath:', campaignSEOFriendlyPath);
     if (!campaignSEOFriendlyPath && !campaignXWeVoteId) {
       // console.log('CampaignDetailsActionSideBox render voter NOT found');
@@ -273,7 +275,6 @@ class CampaignDetailsActionSideBox extends Component {
                         <SupportButton
                           campaignXWeVoteId={campaignXWeVoteId}
                           functionToUseWhenProfileComplete={this.props.functionToUseWhenProfileComplete}
-                          politicianWeVoteId={politicianWeVoteId}
                         />
                       </ProfileAlreadyComplete>
                     ) : (
@@ -282,8 +283,6 @@ class CampaignDetailsActionSideBox extends Component {
                           <CompleteYourProfile
                             campaignXWeVoteId={campaignXWeVoteId}
                             functionToUseWhenProfileComplete={this.props.functionToUseWhenProfileComplete}
-                            politicianSEOFriendlyPath={politicianSEOFriendlyPath}
-                            politicianWeVoteId={politicianWeVoteId}
                             supportCampaignOnCampaignHome
                           />
                         </Suspense>
@@ -306,8 +305,6 @@ CampaignDetailsActionSideBox.propTypes = {
   functionToUseToKeepHelping: PropTypes.func.isRequired,
   functionToUseWhenProfileComplete: PropTypes.func.isRequired,
   inDraftMode: PropTypes.bool,
-  politicianSEOFriendlyPath: PropTypes.string,
-  politicianWeVoteId: PropTypes.string,
 };
 
 const styles = (theme) => ({

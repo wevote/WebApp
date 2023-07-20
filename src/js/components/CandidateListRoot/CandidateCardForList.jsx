@@ -257,7 +257,7 @@ class CandidateCardForList extends Component {
       politician_we_vote_id: politicianWeVoteId,
       state_code: stateCode,
       supporters_count: supportersCount,
-      supporters_count_next_goal: supportersCountNextGoal,
+      supporters_count_next_goal: supportersCountNextGoalRaw,
       twitter_description: twitterDescription,
       // visible_on_this_site: visibleOnThisSite,
       we_vote_id: candidateWeVoteId,
@@ -279,7 +279,13 @@ class CandidateCardForList extends Component {
       }
     }
     const stateName = convertStateCodeToStateText(stateCode);
-    const supportersCountNextGoalWithFloor = supportersCountNextGoal || CampaignStore.getCampaignXSupportersCountNextGoalDefault();
+    const supportersCountNextGoal = supportersCountNextGoalRaw || 0;
+    let supportersCountNextGoalWithFloor = supportersCountNextGoal || CampaignStore.getCampaignXSupportersCountNextGoalDefault();
+    // console.log('supportersCount:', supportersCount, 'supportersCountNextGoal:', supportersCountNextGoal, 'supportersCountNextGoalWithFloor:', supportersCountNextGoalWithFloor);
+    if (supportersCount && supportersCountNextGoalWithFloor < supportersCount) {
+      const nextGoal = supportersCount + 50;
+      supportersCountNextGoalWithFloor = Math.floor(nextGoal / 50) * 50;
+    }
     const year = getYearFromUltimateElectionDate(candidateUltimateElectionDate);
     const todayAsInteger = getTodayAsInteger();
     const finalElectionDateInPast = candidateUltimateElectionDate && (candidateUltimateElectionDate <= todayAsInteger);
