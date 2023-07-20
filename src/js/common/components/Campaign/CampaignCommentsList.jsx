@@ -40,14 +40,17 @@ class CampaignCommentsList extends Component {
     // console.log('CampaignCommentsList componentDidUpdate');
     const {
       campaignXWeVoteId: campaignXWeVoteIdPrevious,
+      politicianWeVoteId: politicianWeVoteIdPrevious,
     } = prevProps;
     const {
       campaignXWeVoteId,
+      politicianWeVoteId,
     } = this.props;
-    if (campaignXWeVoteId) {
-      if (campaignXWeVoteId !== campaignXWeVoteIdPrevious) {
-        this.updateLatestCampaignXSupportersWithTextList(campaignXWeVoteId);
-      }
+    if (campaignXWeVoteId && campaignXWeVoteId !== campaignXWeVoteIdPrevious) {
+      this.updateLatestCampaignXSupportersWithTextList(campaignXWeVoteId);
+    }
+    if (politicianWeVoteId && politicianWeVoteId !== politicianWeVoteIdPrevious) {
+      this.onCandidateStoreChange();
     }
   }
 

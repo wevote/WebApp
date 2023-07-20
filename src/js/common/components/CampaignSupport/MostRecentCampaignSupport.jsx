@@ -66,13 +66,19 @@ class MostRecentCampaignSupport extends React.Component {
   componentDidUpdate (prevProps, prevState) {
     // console.log('MostRecentCampaignSupport componentDidUpdate');
     const {
+      campaignXWeVoteId: previousCampaignXWeVoteId,
+    } = prevProps;
+    const {
       campaignXWeVoteId,
     } = this.props;
     const {
       waitingForInitialData: waitingForInitialDataPrevious,
     } = prevState;
     // console.log('componentDidUpdate campaignXWeVoteId:', campaignXWeVoteId, ', waitingForInitialDataPrevious:', waitingForInitialDataPrevious);
-    if (campaignXWeVoteId) {
+    if (previousCampaignXWeVoteId !== campaignXWeVoteId) {
+      const allLatestSupporters = CampaignSupporterStore.getLatestCampaignXSupportersList(campaignXWeVoteId);
+      this.onFirstLoadOfSupporterData(allLatestSupporters);
+    } else if (campaignXWeVoteId) {
       const allLatestSupporters = CampaignSupporterStore.getLatestCampaignXSupportersList(campaignXWeVoteId);
       // console.log('componentDidUpdate allLatestSupporters:', allLatestSupporters, ', waitingForInitialDataPrevious:', waitingForInitialDataPrevious, ', waitingForInitialData:', waitingForInitialData);
       const dataExists = allLatestSupporters && allLatestSupporters.length > 0;
@@ -147,6 +153,10 @@ class MostRecentCampaignSupport extends React.Component {
           stageQueue,
           waitingForInitialData: false,
         });
+      } else {
+        this.setState({
+          stageQueue: [],
+        });
       }
     }
     const voterWeVoteId = VoterStore.getVoterWeVoteId();
@@ -156,6 +166,9 @@ class MostRecentCampaignSupport extends React.Component {
   }
 
   fillStageQueue (allLatestSupporters) {
+    if (!allLatestSupporters || allLatestSupporters.length === 0) {
+      return [];
+    }
     const { stageQueue } = this.state;
     // stageQueue is oldest-to-newest
     // Find newest entry in stageQueue
