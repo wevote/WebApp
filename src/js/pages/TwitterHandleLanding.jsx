@@ -206,6 +206,7 @@ export default class  TwitterHandleLanding extends Component {
         return (
           <OrganizationVoterGuide
             activeRoute={this.props.activeRoute}
+            location={this.props.location}
             match={this.props.match}
             params={params}
           />
