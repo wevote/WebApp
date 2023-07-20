@@ -22,15 +22,19 @@ class CampaignRetrieveController extends Component {
     this.campaignFirstRetrieve();
   }
 
-  componentDidUpdate () {
+  componentDidUpdate (prevProps) {
+    const {
+      campaignXWeVoteId: prevCampaignXWeVoteId,
+    } = prevProps;
     const {
       campaignXWeVoteId,
     } = this.props;
-    const {
-      campaignRetrieveInitiated,
-    } = this.state;
-    // console.log('CampaignRetrieveController componentDidUpdate, campaignXWeVoteId:', campaignXWeVoteId, ', campaignRetrieveInitiated:', campaignRetrieveInitiated);
-    if (campaignXWeVoteId && !campaignRetrieveInitiated) {
+    if (campaignXWeVoteId !== prevCampaignXWeVoteId) {
+      // console.log('CampaignRetrieveController componentDidUpdate campaignXWeVoteId has changed');
+      const campaignRetrieveOverride = true;
+      this.campaignFirstRetrieve(campaignRetrieveOverride);
+    } else {
+      // console.log('CampaignRetrieveController componentDidUpdate, campaignXWeVoteId:', campaignXWeVoteId);
       this.campaignFirstRetrieve();
     }
   }
@@ -48,7 +52,7 @@ class CampaignRetrieveController extends Component {
     this.campaignFirstRetrieve();
   }
 
-  campaignFirstRetrieve = () => {
+  campaignFirstRetrieve = (campaignRetrieveOverride = false) => {
     const { campaignSEOFriendlyPath, campaignXWeVoteId } = this.props;
     // console.log('CampaignRetrieveController campaignFirstRetrieve campaignSEOFriendlyPath: ', campaignSEOFriendlyPath, ', campaignXWeVoteId: ', campaignXWeVoteId);
     if (campaignSEOFriendlyPath || campaignXWeVoteId) {
@@ -56,7 +60,8 @@ class CampaignRetrieveController extends Component {
       initializejQuery(() => {
         const voterFirstRetrieveCompleted = VoterStore.voterFirstRetrieveCompleted();
         // console.log('CampaignRetrieveController campaignRetrieveInitiated: ', campaignRetrieveInitiated, ', voterFirstRetrieveCompleted: ', voterFirstRetrieveCompleted);
-        if (voterFirstRetrieveCompleted && !campaignRetrieveInitiated) {
+        const triggerRetrieve = campaignRetrieveOverride || !campaignRetrieveInitiated;
+        if (voterFirstRetrieveCompleted && triggerRetrieve) {
           // We use retrieveCampaignXFromIdentifiers instead of
           // retrieveCampaignXFromIdentifiersIfNotAlreadyRetrieved because there are some details
           // (ex/ campaignx_news_item_list, latest_campaignx_supporter_endorsement_list, latest_campaignx_supporter_list)
@@ -65,13 +70,6 @@ class CampaignRetrieveController extends Component {
           this.setState({
             campaignRetrieveInitiated: true,
           }, () => retrieveCampaignXFromIdentifiers(campaignSEOFriendlyPath, campaignXWeVoteId));
-          // const updatedCampaignRetrieveInitiated = retrieveCampaignXFromIdentifiers(campaignSEOFriendlyPath, campaignXWeVoteId);
-          // console.log('campaignRetrieveInitiated:', campaignRetrieveInitiated, 'updatedCampaignRetrieveInitiated:', updatedCampaignRetrieveInitiated);
-          // if (updatedCampaignRetrieveInitiated) {
-          //   this.setState({
-          //     campaignRetrieveInitiated: updatedCampaignRetrieveInitiated,
-          //   });
-          // }
         }
       });
     }

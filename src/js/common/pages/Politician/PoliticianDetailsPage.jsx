@@ -73,22 +73,23 @@ class PoliticianDetailsPage extends Component {
     super(props);
     this.state = {
       ballotpediaPoliticianUrl: '',
-      supporterEndorsementsWithText: [],
+      chosenWebsiteName: '',
+      finalElectionDateInPast: false,
+      // inPrivateLabelMode: false,
+      officeHeldList: [],
+      opponentCandidateList: [],
+      payToPromoteStepCompleted: false,
+      payToPromoteStepTurnedOn: false,
       politicalParty: '',
       politicianDataNotFound: false,
       politicianImageUrlLarge: '',
       politicianSEOFriendlyPath: '',
       politicianName: '',
       politicianWeVoteId: '',
-      chosenWebsiteName: '',
-      finalElectionDateInPast: false,
-      officeHeldList: [],
-      // inPrivateLabelMode: false,
-      payToPromoteStepCompleted: false,
-      payToPromoteStepTurnedOn: false,
       sharingStepCompleted: false,
       stateText: '',
       step2Completed: false,
+      supporterEndorsementsWithText: [],
       voterCanEditThisPolitician: false,
       wikipediaUrl: '',
       // youtubeUrl: '',
@@ -114,20 +115,68 @@ class PoliticianDetailsPage extends Component {
       if (politician && politician.politician_we_vote_id) {
         this.setState({
           linkedCampaignXWeVoteId: politician.linked_campaignx_we_vote_id,
+          politicianSEOFriendlyPath,
           politicianWeVoteId: politician.politician_we_vote_id,
         }, () => this.onfirstRetrievalOfPoliticianWeVoteId());
+      } else {
+        this.setState({
+          politicianSEOFriendlyPath,
+        });
       }
-      this.setState({
-        politicianSEOFriendlyPath,
-      });
     } else if (politicianWeVoteId) {
       this.setState({
         politicianWeVoteId,
-      });
+      }, () => this.onfirstRetrievalOfPoliticianWeVoteId());
     }
     // Take the "calculated" identifiers and retrieve if missing
     retrievePoliticianFromIdentifiersIfNeeded(politicianSEOFriendlyPath, politicianWeVoteId);
     window.scrollTo(0, 0);
+  }
+
+  componentDidUpdate (prevProps) {
+    // console.log('PoliticianDetailsPage componentDidMount');
+    const { match: { params: prevParams } } = prevProps;
+    const { politicianSEOFriendlyPath: prevPoliticianSEOFriendlyPath, politicianWeVoteId: prevPoliticianWeVoteId } = prevParams;
+    const { match: { params } } = this.props;
+    const { politicianSEOFriendlyPath, politicianWeVoteId } = params;
+    let triggerFreshRetrieve = false;
+    // console.log('componentDidUpdate politicianSEOFriendlyPath: ', politicianSEOFriendlyPath, ', politicianWeVoteId: ', politicianWeVoteId);
+    if (politicianSEOFriendlyPath && politicianSEOFriendlyPath !== prevPoliticianSEOFriendlyPath) {
+      // console.log('componentDidUpdate prevPoliticianSEOFriendlyPath: ', prevPoliticianSEOFriendlyPath);
+      const politician = PoliticianStore.getPoliticianBySEOFriendlyPath(politicianSEOFriendlyPath);
+      if (politician && politician.politician_we_vote_id) {
+        this.setState({
+          linkedCampaignXWeVoteId: politician.linked_campaignx_we_vote_id,
+          politicianSEOFriendlyPath,
+          politicianWeVoteId: politician.politician_we_vote_id,
+        }, () => this.onfirstRetrievalOfPoliticianWeVoteId());
+      } else {
+        this.setState({
+          politicianSEOFriendlyPath,
+        }, () => this.onfirstRetrievalOfPoliticianWeVoteId());
+      }
+      triggerFreshRetrieve = true;
+    } else if (politicianWeVoteId && politicianWeVoteId !== prevPoliticianWeVoteId) {
+      // console.log('componentDidUpdate prevPoliticianWeVoteId: ', prevPoliticianWeVoteId);
+      const politician = PoliticianStore.getPoliticianByWeVoteId(politicianWeVoteId);
+      if (politician && politician.politician_we_vote_id) {
+        this.setState({
+          linkedCampaignXWeVoteId: politician.linked_campaignx_we_vote_id,
+          politicianSEOFriendlyPath: politician.seo_friendly_path,
+          politicianWeVoteId,
+        }, () => this.onfirstRetrievalOfPoliticianWeVoteId());
+      } else {
+        this.setState({
+          politicianWeVoteId,
+        }, () => this.onfirstRetrievalOfPoliticianWeVoteId());
+      }
+      triggerFreshRetrieve = true;
+    }
+    if (triggerFreshRetrieve) {
+      // Take the "calculated" identifiers and retrieve if missing
+      retrievePoliticianFromIdentifiersIfNeeded(politicianSEOFriendlyPath, politicianWeVoteId);
+      window.scrollTo(0, 0);
+    }
   }
 
   componentWillUnmount () {
@@ -228,6 +277,7 @@ class PoliticianDetailsPage extends Component {
       finalElectionDateInPast,
       // isSupportersCountMinimumExceeded,
       linkedCampaignXWeVoteId,
+      opponentCandidateList,
       politicalParty,
       politicianDescription,
       politicianImageUrlLarge,
@@ -253,6 +303,7 @@ class PoliticianDetailsPage extends Component {
     }
     const politicianDescriptionLimited = returnFirstXWords(politicianDescription, 200);
     const filteredCandidateCampaignList = candidateCampaignList.sort(this.orderCandidatesByUltimateDate);
+    const filteredOpponentCandidateList = opponentCandidateList.sort(this.orderByTwitterFollowers);
     let stateText = '';
     if (stateCode) {
       stateText = convertStateCodeToStateText(stateCode);
@@ -267,6 +318,7 @@ class PoliticianDetailsPage extends Component {
       finalElectionDateInPast,
       // isSupportersCountMinimumExceeded,
       linkedCampaignXWeVoteId,
+      opponentCandidateList: filteredOpponentCandidateList,
       politicalParty,
       politicianDataNotFound,
       politicianDescription,
@@ -291,6 +343,8 @@ class PoliticianDetailsPage extends Component {
     // thisYearElectionExists, nextYearElectionExists, priorYearElectionExists
     return 'Elections with Candidate';
   }
+
+  orderByTwitterFollowers = (firstEntry, secondEntry) => secondEntry.twitter_followers_count - firstEntry.twitter_followers_count;
 
   orderCandidatesByUltimateDate = (firstEntry, secondEntry) => secondEntry.candidate_ultimate_election_date - firstEntry.candidate_ultimate_election_date;
 
@@ -352,8 +406,8 @@ class PoliticianDetailsPage extends Component {
     const {
       allCachedPositionsForThisPolitician, ballotpediaPoliticianUrl, candidateCampaignList, chosenWebsiteName,
       supporterEndorsementsWithText, finalElectionDateInPast, linkedCampaignXWeVoteId,
-      officeHeldList, officeHeldNameForSearch, politicalParty,
-      politicianDataNotFound,
+      officeHeldList, officeHeldNameForSearch, opponentCandidateList,
+      politicalParty, politicianDataNotFound,
       politicianDescription, politicianDescriptionLimited, politicianImageUrlLarge,
       politicianSEOFriendlyPath, politicianName, politicianUrl, politicianWeVoteId,
       stateText, twitterHandle, twitterHandle2, twitterFollowersCount,
@@ -448,6 +502,8 @@ class PoliticianDetailsPage extends Component {
         )}
       </PoliticianLinksWrapper>
     );
+    let opponentCandidatesHtml = '';
+    const opponentsSubtitle = 'Candidates Running for Same Office';
     let priorCandidateCampaignsHtml = '';
     const currentYear = 2023;
     let nextYearElectionExists = false;
@@ -509,6 +565,25 @@ class PoliticianDetailsPage extends Component {
             />
           </CandidateCampaignWrapper>
         );
+      });
+    }
+    if (opponentCandidateList && opponentCandidateList.length > 0) {
+      opponentCandidatesHtml = opponentCandidateList.map((opposingCandidate) => {
+        if (opposingCandidate.seo_friendly_path) {
+          const opposingCandidateKey = `opposingCandidate-${opposingCandidate.we_vote_id}`;
+          return (
+            <CandidateCampaignWrapper key={opposingCandidateKey}>
+              <Link
+                className="u-cursor--pointer u-link-color u-link-underline-on-hover"
+                to={`/${opposingCandidate.seo_friendly_path}/-`}
+              >
+                {opposingCandidate.ballot_item_display_name}
+              </Link>
+            </CandidateCampaignWrapper>
+          );
+        } else {
+          return null;
+        }
       });
     }
     let positionListTeaserHtml = <></>;
@@ -715,6 +790,18 @@ class PoliticianDetailsPage extends Component {
                 </OtherElectionsWrapper>
               </CandidateCampaignListMobile>
             )}
+            {opponentCandidateList && opponentCandidateList.length > 0 && (
+              <CandidateCampaignListMobile>
+                <CampaignSubSectionTitleWrapper>
+                  <CampaignSubSectionTitle>
+                    {opponentsSubtitle}
+                  </CampaignSubSectionTitle>
+                </CampaignSubSectionTitleWrapper>
+                <OtherElectionsWrapper>
+                  {opponentCandidatesHtml}
+                </OtherElectionsWrapper>
+              </CandidateCampaignListMobile>
+            )}
           </DetailsSectionMobile>
           <DetailsSectionDesktopTablet className="u-show-desktop-tablet">
             <PoliticianNameOuterWrapperDesktop>
@@ -797,8 +884,6 @@ class PoliticianDetailsPage extends Component {
                     finalElectionDateInPast={finalElectionDateInPast}
                     functionToUseToKeepHelping={this.functionToUseToKeepHelping}
                     functionToUseWhenProfileComplete={this.functionToUseWhenProfileComplete}
-                    politicianSEOFriendlyPath={politicianSEOFriendlyPath}
-                    politicianWeVoteId={politicianWeVoteId}
                   />
                 </Suspense>
                 {(!futureFeaturesDisabled && nextReleaseFeaturesEnabled) && (
@@ -836,6 +921,18 @@ class PoliticianDetailsPage extends Component {
                     </CampaignSubSectionTitleWrapper>
                     <OtherElectionsWrapper>
                       {priorCandidateCampaignsHtml}
+                    </OtherElectionsWrapper>
+                  </CandidateCampaignListDesktop>
+                )}
+                {opponentCandidateList && opponentCandidateList.length > 0 && (
+                  <CandidateCampaignListDesktop>
+                    <CampaignSubSectionTitleWrapper>
+                      <CampaignSubSectionTitle>
+                        {opponentsSubtitle}
+                      </CampaignSubSectionTitle>
+                    </CampaignSubSectionTitleWrapper>
+                    <OtherElectionsWrapper>
+                      {opponentCandidatesHtml}
                     </OtherElectionsWrapper>
                   </CandidateCampaignListDesktop>
                 )}
