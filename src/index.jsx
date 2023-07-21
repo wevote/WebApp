@@ -37,11 +37,11 @@ function redirectToStandardizedWeVoteUrl () {
 function startReact () {
   ReactDOM.render(
     <ErrorBoundary>
-      <HelmetProvider>
-        <WeVoteRouter>
+      <WeVoteRouter>
+        <HelmetProvider>
           <App />
-        </WeVoteRouter>
-      </HelmetProvider>
+        </HelmetProvider>
+      </WeVoteRouter>
     </ErrorBoundary>,
     document.getElementById('app'),
   );
