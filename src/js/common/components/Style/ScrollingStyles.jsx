@@ -95,3 +95,12 @@ export const LeftArrowOuterWrapper = styled('div')`
   min-height: 330px;
   z-index: 9000;
 `;
+
+export const TitleAndMobileArrowsOuterWrapper = styled('div')`
+  display: flex;
+  justify-content: space-between;
+`;
+
+export const MobileArrowsInnerWrapper = styled('div')`
+  display: flex;
+`;

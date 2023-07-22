@@ -12,6 +12,8 @@ import {
   LeftArrowOuterWrapper,
   CampaignsScrollingInnerWrapper,
   CampaignsScrollingOuterWrapper,
+  TitleAndMobileArrowsOuterWrapper,
+  MobileArrowsInnerWrapper,
 } from '../../common/components/Style/ScrollingStyles';
 import { convertStateCodeToStateText } from '../../common/utils/addressFunctions';
 import { handleHorizontalScroll, leftAndRightArrowStateCalculation } from '../../common/utils/leftRightArrowCalculation';
@@ -23,7 +25,8 @@ import CandidateStore from '../../stores/CandidateStore';
 const CandidateCardList = React.lazy(() => import(/* webpackChunkName: 'CandidateCardList' */ './CandidateCardList'));
 const HORIZONTAL_SCROLL_SPEED = 5;
 const HORIZONTAL_SCROLL_DISTANCE_ON_ARROW_CLICK = 621;
-const HORIZONTAL_SCROLL_DISTANCE_ON_SHOW_MORE = 310;
+const HORIZONTAL_SCROLL_DISTANCE_MOBILE_ARROW_CLICK = 311;
+const HORIZONTAL_SCROLL_DISTANCE_ON_SHOW_MORE = 311;
 const HORIZONTAL_SCROLL_STEP_LEFT = -40;
 const HORIZONTAL_SCROLL_STEP_RIGHT = 40;
 
@@ -331,16 +334,26 @@ class CandidateListRoot extends Component {
     // console.log('CandidateListRoot actually rendering hideDisplayBecauseNoSearchResults', hideDisplayBecauseNoSearchResults);
     return (
       <CandidateListWrapper>
-        {!!(!hideTitle &&
-            !(isSearching && hideDisplayBecauseNoSearchResults) &&
-            titleTextForList &&
-            titleTextForList.length &&
-            candidateList) &&
-        (
-          <WhatIsHappeningTitle>
-            {titleTextForList}
-          </WhatIsHappeningTitle>
-        )}
+        <TitleAndMobileArrowsOuterWrapper>
+          {!!(!hideTitle &&
+              !(isSearching && hideDisplayBecauseNoSearchResults) &&
+              titleTextForList &&
+              titleTextForList.length &&
+              candidateList) &&
+          (
+            <WhatIsHappeningTitle>
+              {titleTextForList}
+            </WhatIsHappeningTitle>
+          )}
+          <MobileArrowsInnerWrapper className="u-show-mobile">
+            <LeftArrowInnerWrapper onClick={() => { handleHorizontalScroll(this.scrollElement.current, HORIZONTAL_SCROLL_SPEED, HORIZONTAL_SCROLL_DISTANCE_MOBILE_ARROW_CLICK, HORIZONTAL_SCROLL_STEP_LEFT, this.checkScrollPositionLocal); }}>
+              { this.state.hideLeftArrow ? null : <ArrowBackIos classes={{ root: classes.arrowRoot }} /> }
+            </LeftArrowInnerWrapper>
+            <RightArrowInnerWrapper onClick={() => { handleHorizontalScroll(this.scrollElement.current, HORIZONTAL_SCROLL_SPEED, HORIZONTAL_SCROLL_DISTANCE_MOBILE_ARROW_CLICK, HORIZONTAL_SCROLL_STEP_RIGHT, this.checkScrollPositionLocal); }}>
+              { this.state.hideRightArrow ? null : <ArrowForwardIos classes={{ root: classes.arrowRoot }} /> }
+            </RightArrowInnerWrapper>
+          </MobileArrowsInnerWrapper>
+        </TitleAndMobileArrowsOuterWrapper>
         {(!(isSearching && hideDisplayBecauseNoSearchResults)) && (
           <CampaignsScrollingOuterWrapper>
             <LeftArrowOuterWrapper className="u-show-desktop-tablet">
