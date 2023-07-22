@@ -443,7 +443,7 @@ class CandidateCardForList extends Component {
                 </BottomActionButtonWrapper>
               </CampaignActionButtonsWrapper>
             </OneCampaignTextColumn>
-            <OneCampaignPhotoWrapperMobile className="u-cursor--pointer u-show-mobile" onClick={this.onCandidateClick}>
+            <OneCampaignPhotoWrapperMobile id="candidatePhotoMobile" className="u-cursor--pointer u-show-mobile" onClick={this.onCandidateClick}>
               {candidatePhotoLargeUrl ? (
                 <CampaignImageMobilePlaceholder>
                   <CampaignImageMobile src={candidatePhotoLargeUrl} alt="" />
@@ -457,6 +457,7 @@ class CandidateCardForList extends Component {
               )}
             </OneCampaignPhotoWrapperMobile>
             <OneCampaignPhotoDesktopColumn
+              id="candidatePhotoDesktop"
               className="u-cursor--pointer u-show-desktop-tablet"
               limitCardWidth={limitCardWidth}
               onClick={this.onCandidateClick}
