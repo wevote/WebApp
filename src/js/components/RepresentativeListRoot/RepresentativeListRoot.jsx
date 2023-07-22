@@ -8,6 +8,7 @@ import {
   CampaignsHorizontallyScrollingContainer, RightArrowInnerWrapper,
   RightArrowOuterWrapper, LeftArrowInnerWrapper, LeftArrowOuterWrapper,
   CampaignsScrollingInnerWrapper, CampaignsScrollingOuterWrapper,
+  TitleAndMobileArrowsOuterWrapper, MobileArrowsInnerWrapper,
 } from '../../common/components/Style/ScrollingStyles';
 import { convertStateCodeToStateText } from '../../common/utils/addressFunctions';
 import { handleHorizontalScroll, leftAndRightArrowStateCalculation } from '../../common/utils/leftRightArrowCalculation';
@@ -21,7 +22,8 @@ const RepresentativeCardList = React.lazy(() => import(/* webpackChunkName: 'Rep
 const OFFICE_HELD_YEARS_AVAILABLE = [2023, 2024, 2025, 2026];
 const HORIZONTAL_SCROLL_SPEED = 5;
 const HORIZONTAL_SCROLL_DISTANCE_ON_ARROW_CLICK = 621;
-const HORIZONTAL_SCROLL_DISTANCE_ON_SHOW_MORE = 310;
+const HORIZONTAL_SCROLL_DISTANCE_MOBILE_ARROW_CLICK = 311;
+const HORIZONTAL_SCROLL_DISTANCE_ON_SHOW_MORE = 311;
 const HORIZONTAL_SCROLL_STEP_LEFT = -40;
 const HORIZONTAL_SCROLL_STEP_RIGHT = 40;
 
@@ -56,6 +58,9 @@ class RepresentativeListRoot extends Component {
       this.setState({
         representativeList: filteredList,
       }, () => this.onFilterOrListChange());
+      if (filteredList.length < 3) {
+        this.setState({ hideRightArrow: true });
+      }
     }
   }
 
@@ -335,16 +340,26 @@ class RepresentativeListRoot extends Component {
     }
     return (
       <RepresentativeListWrapper>
-        {!!(!hideTitle &&
-            !hideDisplayBecauseNoSearchResults &&
-            titleTextForList &&
-            titleTextForList.length &&
-            representativeList) &&
-        (
-          <WhatIsHappeningTitle>
-            {titleTextForList}
-          </WhatIsHappeningTitle>
-        )}
+        <TitleAndMobileArrowsOuterWrapper>
+          {!!(!hideTitle &&
+              !hideDisplayBecauseNoSearchResults &&
+              titleTextForList &&
+              titleTextForList.length &&
+              representativeList) &&
+          (
+            <WhatIsHappeningTitle>
+              {titleTextForList}
+            </WhatIsHappeningTitle>
+          )}
+          <MobileArrowsInnerWrapper className="u-show-mobile">
+            <LeftArrowInnerWrapper onClick={() => { handleHorizontalScroll(this.scrollElement.current, HORIZONTAL_SCROLL_SPEED, HORIZONTAL_SCROLL_DISTANCE_MOBILE_ARROW_CLICK, HORIZONTAL_SCROLL_STEP_LEFT, this.checkScrollPositionLocal); }}>
+              { this.state.hideLeftArrow ? null : <ArrowBackIos classes={{ root: classes.arrowRoot }} /> }
+            </LeftArrowInnerWrapper>
+            <RightArrowInnerWrapper onClick={() => { handleHorizontalScroll(this.scrollElement.current, HORIZONTAL_SCROLL_SPEED, HORIZONTAL_SCROLL_DISTANCE_MOBILE_ARROW_CLICK, HORIZONTAL_SCROLL_STEP_RIGHT, this.checkScrollPositionLocal); }}>
+              { this.state.hideRightArrow ? null : <ArrowForwardIos classes={{ root: classes.arrowRoot }} /> }
+            </RightArrowInnerWrapper>
+          </MobileArrowsInnerWrapper>
+        </TitleAndMobileArrowsOuterWrapper>
         {(!hideDisplayBecauseNoSearchResults) && (
           <CampaignsScrollingOuterWrapper>
             <LeftArrowOuterWrapper className="u-show-desktop-tablet">
