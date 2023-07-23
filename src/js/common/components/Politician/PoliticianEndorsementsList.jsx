@@ -38,8 +38,29 @@ class PoliticianEndorsementsList extends Component {
     }
   }
 
+  componentDidUpdate (prevProps) {
+    // console.log('MostRecentCampaignSupport componentDidUpdate');
+    const {
+      politicianWeVoteId: previousPoliticianWeVoteId,
+    } = prevProps;
+    const {
+      politicianWeVoteId,
+    } = this.props;
+    // console.log('componentDidUpdate politicianWeVoteId:', politicianWeVoteId, ', previousPoliticianWeVoteId:', previousPoliticianWeVoteId);
+    if (previousPoliticianWeVoteId !== politicianWeVoteId) {
+      this.clearPoliticianValues();
+      this.timer = setTimeout(() => {
+        this.onCandidateStoreChange();
+      }, 500);
+    }
+  }
+
   componentWillUnmount () {
     this.candidateStoreListener.remove();
+    if (this.timer) {
+      clearTimeout(this.timer);
+      this.timer = null;
+    }
   }
 
   onCandidateStoreChange () {
@@ -56,6 +77,17 @@ class PoliticianEndorsementsList extends Component {
         filteredPositionList,
       });
     }
+  }
+
+  clearPoliticianValues = () => {
+    // When we transition from one politician to another politician, there
+    // can be a delay in getting the new politician's values. We want to clear
+    // out the values currently being displayed, while waiting for new values
+    // to arrive.
+    this.setState({
+      filteredPositionList: [],
+      numberOfPositionsToDisplay: 0,
+    });
   }
 
   increaseNumberOfEndorsementsToDisplay = () => {

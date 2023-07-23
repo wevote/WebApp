@@ -396,7 +396,7 @@ class RepresentativeCardForList extends Component {
                     inCard
                     positionPublicToggleWrapAllowed
                     shareButtonHide
-                    // useSupportWording
+                    useSupportWording
                   />
                 </Suspense>
                 <>
