@@ -112,14 +112,14 @@ export function retrievePoliticianFromIdentifiers (politicianSEOFriendlyPath, po
   // console.log('retrievePoliticianFromIdentifiersIfNeeded politicianSEOFriendlyPath: ', politicianSEOFriendlyPath, ', politicianWeVoteId: ', politicianWeVoteId);
   if (politicianSEOFriendlyPath) {
     initializejQuery(() => {
-      if (apiCalming(`politicianRetrieve-${politicianSEOFriendlyPath}`, 500)) {
+      if (apiCalming(`politicianRetrieve-${politicianSEOFriendlyPath}`, 2000)) {
         PoliticianActions.politicianRetrieveBySEOFriendlyPath(politicianSEOFriendlyPath);
       }
     });
     return true;
   } else if (politicianWeVoteId) {
     initializejQuery(() => {
-      if (apiCalming(`politicianRetrieve-${politicianWeVoteId}`, 500)) {
+      if (apiCalming(`politicianRetrieve-${politicianWeVoteId}`, 2000)) {
         PoliticianActions.politicianRetrieve(politicianWeVoteId);
       }
     });
@@ -148,7 +148,7 @@ export function retrievePoliticianFromIdentifiersIfNeeded (politicianSEOFriendly
     // console.log('retrievePoliticianFromIdentifiersIfNeeded mustRetrieveCampaign:', mustRetrieveCampaign, ', politicianSEOFriendlyPath:', politicianSEOFriendlyPath);
     if (mustRetrieveCampaign) {
       initializejQuery(() => {
-        if (apiCalming(`politicianRetrieve-${politicianSEOFriendlyPath}`, 500)) {
+        if (apiCalming(`politicianRetrieve-${politicianSEOFriendlyPath}`, 2000)) {
           PoliticianActions.politicianRetrieveBySEOFriendlyPath(politicianSEOFriendlyPath);
         }
       });
@@ -165,7 +165,7 @@ export function retrievePoliticianFromIdentifiersIfNeeded (politicianSEOFriendly
     // console.log('retrievePoliticianFromIdentifiersIfNeeded mustRetrieveCampaign:', mustRetrieveCampaign, ', politicianWeVoteId:', politicianWeVoteId);
     if (mustRetrieveCampaign) {
       initializejQuery(() => {
-        if (apiCalming(`politicianRetrieve-${politicianWeVoteId}`, 500)) {
+        if (apiCalming(`politicianRetrieve-${politicianWeVoteId}`, 2000)) {
           PoliticianActions.politicianRetrieve(politicianWeVoteId);
         }
       });

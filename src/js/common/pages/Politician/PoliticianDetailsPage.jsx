@@ -84,8 +84,10 @@ class PoliticianDetailsPage extends Component {
       politicianDataNotFound: false,
       politicianImageUrlLarge: '',
       politicianSEOFriendlyPath: '',
+      politicianSEOFriendlyPathForDisplay: '', // Value for politician already received
       politicianName: '',
       politicianWeVoteId: '',
+      politicianWeVoteIdForDisplay: '', // Value for politician already received
       sharingStepCompleted: false,
       stateText: '',
       step2Completed: false,
@@ -116,16 +118,20 @@ class PoliticianDetailsPage extends Component {
         this.setState({
           linkedCampaignXWeVoteId: politician.linked_campaignx_we_vote_id,
           politicianSEOFriendlyPath,
+          politicianSEOFriendlyPathForDisplay: politicianSEOFriendlyPath,
           politicianWeVoteId: politician.politician_we_vote_id,
+          politicianWeVoteIdForDisplay: politician.politician_we_vote_id,
         }, () => this.onfirstRetrievalOfPoliticianWeVoteId());
       } else {
         this.setState({
           politicianSEOFriendlyPath,
+          politicianSEOFriendlyPathForDisplay: politicianSEOFriendlyPath,
         });
       }
     } else if (politicianWeVoteId) {
       this.setState({
         politicianWeVoteId,
+        politicianWeVoteIdForDisplay: politicianWeVoteId,
       }, () => this.onfirstRetrievalOfPoliticianWeVoteId());
     }
     // Take the "calculated" identifiers and retrieve if missing
@@ -143,31 +149,39 @@ class PoliticianDetailsPage extends Component {
     // console.log('componentDidUpdate politicianSEOFriendlyPath: ', politicianSEOFriendlyPath, ', politicianWeVoteId: ', politicianWeVoteId);
     if (politicianSEOFriendlyPath && politicianSEOFriendlyPath !== prevPoliticianSEOFriendlyPath) {
       // console.log('componentDidUpdate prevPoliticianSEOFriendlyPath: ', prevPoliticianSEOFriendlyPath);
+      this.clearPoliticianValues();
       const politician = PoliticianStore.getPoliticianBySEOFriendlyPath(politicianSEOFriendlyPath);
       if (politician && politician.politician_we_vote_id) {
         this.setState({
           linkedCampaignXWeVoteId: politician.linked_campaignx_we_vote_id,
           politicianSEOFriendlyPath,
+          politicianSEOFriendlyPathForDisplay: politicianSEOFriendlyPath,
           politicianWeVoteId: politician.politician_we_vote_id,
+          politicianWeVoteIdForDisplay: politician.politician_we_vote_id,
         }, () => this.onfirstRetrievalOfPoliticianWeVoteId());
       } else {
         this.setState({
           politicianSEOFriendlyPath,
+          politicianSEOFriendlyPathForDisplay: politicianSEOFriendlyPath,
         }, () => this.onfirstRetrievalOfPoliticianWeVoteId());
       }
       triggerFreshRetrieve = true;
     } else if (politicianWeVoteId && politicianWeVoteId !== prevPoliticianWeVoteId) {
       // console.log('componentDidUpdate prevPoliticianWeVoteId: ', prevPoliticianWeVoteId);
+      this.clearPoliticianValues();
       const politician = PoliticianStore.getPoliticianByWeVoteId(politicianWeVoteId);
       if (politician && politician.politician_we_vote_id) {
         this.setState({
           linkedCampaignXWeVoteId: politician.linked_campaignx_we_vote_id,
           politicianSEOFriendlyPath: politician.seo_friendly_path,
+          politicianSEOFriendlyPathForDisplay: politician.seo_friendly_path,
           politicianWeVoteId,
+          politicianWeVoteIdForDisplay: politicianWeVoteId,
         }, () => this.onfirstRetrievalOfPoliticianWeVoteId());
       } else {
         this.setState({
           politicianWeVoteId,
+          politicianWeVoteIdForDisplay: politicianWeVoteId,
         }, () => this.onfirstRetrievalOfPoliticianWeVoteId());
       }
       triggerFreshRetrieve = true;
@@ -297,6 +311,7 @@ class PoliticianDetailsPage extends Component {
       const voterSupportsThisPolitician = PoliticianStore.getVoterSupportsThisPolitician(politicianWeVoteId);
       this.setState({
         politicianWeVoteId,
+        politicianWeVoteIdForDisplay: politicianWeVoteId,
         voterCanEditThisPolitician,
         voterSupportsThisPolitician,
       }, () => this.onfirstRetrievalOfPoliticianWeVoteId());
@@ -337,6 +352,36 @@ class PoliticianDetailsPage extends Component {
 
   onRepresentativeStoreChange () {
     //
+  }
+
+  clearPoliticianValues = () => {
+    // When we transition from one politician to another politician, there
+    // can be a delay in getting the new politician's values. We want to clear
+    // out the values currently being displayed, while waiting for new values
+    // to arrive.
+    this.setState({
+      ballotpediaPoliticianUrl: '',
+      candidateCampaignList: [],
+      chosenWebsiteName: '',
+      finalElectionDateInPast: false,
+      linkedCampaignXWeVoteId: '',
+      opponentCandidateList: [],
+      politicalParty: '',
+      politicianDataNotFound: false,
+      politicianDescription: '',
+      politicianDescriptionLimited: '',
+      politicianImageUrlLarge: '',
+      politicianName: '',
+      politicianUrl: '',
+      politicianWeVoteIdForDisplay: '', // We don't clear politicianWeVoteId because we may need it to load next politician
+      politicianSEOFriendlyPathForDisplay: '', // We don't clear politicianSEOFriendlyPath because we may need it to load next politician
+      stateText: '',
+      twitterFollowersCount: 0,
+      twitterHandle: '',
+      twitterHandle2: '',
+      wikipediaUrl: '',
+      // youtubeUrl: '',
+    });
   }
 
   getCandidateCampaignListTitle () {
@@ -409,7 +454,9 @@ class PoliticianDetailsPage extends Component {
       officeHeldList, officeHeldNameForSearch, opponentCandidateList,
       politicalParty, politicianDataNotFound,
       politicianDescription, politicianDescriptionLimited, politicianImageUrlLarge,
-      politicianSEOFriendlyPath, politicianName, politicianUrl, politicianWeVoteId,
+      politicianSEOFriendlyPath, politicianSEOFriendlyPathForDisplay,
+      politicianName, politicianUrl,
+      politicianWeVoteId, politicianWeVoteIdForDisplay,
       stateText, twitterHandle, twitterHandle2, twitterFollowersCount,
       voterCanEditThisPolitician, voterSupportsThisPolitician,
       wikipediaUrl, // youtubeUrl,
@@ -614,7 +661,7 @@ class PoliticianDetailsPage extends Component {
                 ) */}
               </CampaignSubSectionTitleWrapper>
               <PoliticianEndorsementsList
-                politicianWeVoteId={politicianWeVoteId}
+                politicianWeVoteId={politicianWeVoteIdForDisplay}
                 startingNumberOfPositionsToDisplay={2}
               />
             </Suspense>
@@ -645,7 +692,7 @@ class PoliticianDetailsPage extends Component {
               </CampaignSubSectionTitleWrapper>
               <CampaignCommentsList
                 campaignXWeVoteId={linkedCampaignXWeVoteId}
-                politicianWeVoteId={politicianWeVoteId}
+                politicianWeVoteId={politicianWeVoteIdForDisplay}
                 removePoliticianEndorsements
                 startingNumberOfCommentsToDisplay={2}
               />
@@ -657,7 +704,10 @@ class PoliticianDetailsPage extends Component {
     return (
       <PageContentContainer>
         <Suspense fallback={<span>&nbsp;</span>}>
-          <PoliticianRetrieveController politicianSEOFriendlyPath={politicianSEOFriendlyPath} politicianWeVoteId={politicianWeVoteId} />
+          <PoliticianRetrieveController
+            politicianSEOFriendlyPath={politicianSEOFriendlyPath}
+            politicianWeVoteId={politicianWeVoteId}
+          />
         </Suspense>
         {!!(politicianWeVoteId) && (
           <Suspense fallback={<span>&nbsp;</span>}>
@@ -712,7 +762,7 @@ class PoliticianDetailsPage extends Component {
               </Suspense>
               {/*
               <CampaignOwnersWrapper>
-                <CampaignOwnersList politicianWeVoteId={politicianWeVoteId} />
+                <CampaignOwnersList politicianWeVoteId={politicianWeVoteIdForDisplay} />
               </CampaignOwnersWrapper>
               */}
             </CampaignTitleAndScoreBar>
@@ -769,8 +819,8 @@ class PoliticianDetailsPage extends Component {
                       )}
                     </CampaignSubSectionTitleWrapper>
                     <CampaignNewsItemList
-                      politicianWeVoteId={politicianWeVoteId}
-                      politicianSEOFriendlyPath={politicianSEOFriendlyPath}
+                      politicianWeVoteId={politicianWeVoteIdForDisplay}
+                      politicianSEOFriendlyPath={politicianSEOFriendlyPathForDisplay}
                       showAddNewsItemIfNeeded
                       startingNumberOfCommentsToDisplay={1}
                     />
@@ -844,7 +894,7 @@ class PoliticianDetailsPage extends Component {
                   )}
                 </CampaignImageDesktopWrapper>
                 <CampaignOwnersDesktopWrapper>
-                  <CampaignOwnersList politicianWeVoteId={politicianWeVoteId} />
+                  <CampaignOwnersList politicianWeVoteId={politicianWeVoteIdForDisplay} />
                 </CampaignOwnersDesktopWrapper>
                 <CampaignDescriptionDesktopWrapper>
                   <CampaignDescriptionDesktop>
@@ -903,8 +953,8 @@ class PoliticianDetailsPage extends Component {
                           )}
                         </CampaignSubSectionTitleWrapper>
                         <CampaignNewsItemList
-                          politicianWeVoteId={politicianWeVoteId}
-                          politicianSEOFriendlyPath={politicianSEOFriendlyPath}
+                          politicianWeVoteId={politicianWeVoteIdForDisplay}
+                          politicianSEOFriendlyPath={politicianSEOFriendlyPathForDisplay}
                           showAddNewsItemIfNeeded
                           startingNumberOfCommentsToDisplay={1}
                         />

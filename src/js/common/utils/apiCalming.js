@@ -32,6 +32,8 @@ export default function apiCalming (name, duration = 1000) {
     httpLog(`== apiCalming for ${name}, make the API call: true, duration: ${duration}, previous dict entry has expired`);
     return true;
   }
-  httpLog(`== apiCalming for ${name}, make the API call: false, duration: ${duration}, previous calming entry still in force`);
+  const apiCalmingMessageFalse = `== apiCalming for ${name}, make the API call: false, duration: ${duration}, previous calming entry still in force`;
+  // console.log(apiCalmingMessageFalse);
+  httpLog(apiCalmingMessageFalse);
   return false;
 }

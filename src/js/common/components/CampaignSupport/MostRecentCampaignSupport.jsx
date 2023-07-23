@@ -76,8 +76,12 @@ class MostRecentCampaignSupport extends React.Component {
     } = prevState;
     // console.log('componentDidUpdate campaignXWeVoteId:', campaignXWeVoteId, ', waitingForInitialDataPrevious:', waitingForInitialDataPrevious);
     if (previousCampaignXWeVoteId !== campaignXWeVoteId) {
-      const allLatestSupporters = CampaignSupporterStore.getLatestCampaignXSupportersList(campaignXWeVoteId);
-      this.onFirstLoadOfSupporterData(allLatestSupporters);
+      this.clearCampaignValues();
+      this.supportersTimer = setTimeout(() => {
+        const allLatestSupporters = CampaignSupporterStore.getLatestCampaignXSupportersList(campaignXWeVoteId);
+        // console.log('componentDidUpdate allLatestSupporters:', allLatestSupporters);
+        this.onFirstLoadOfSupporterData(allLatestSupporters);
+      }, 500);
     } else if (campaignXWeVoteId) {
       const allLatestSupporters = CampaignSupporterStore.getLatestCampaignXSupportersList(campaignXWeVoteId);
       // console.log('componentDidUpdate allLatestSupporters:', allLatestSupporters, ', waitingForInitialDataPrevious:', waitingForInitialDataPrevious, ', waitingForInitialData:', waitingForInitialData);
@@ -98,11 +102,29 @@ class MostRecentCampaignSupport extends React.Component {
   componentWillUnmount () {
     this.campaignSupporterStoreListener.remove();
     this.campaignStoreListener.remove();
+    if (this.supportersTimer) {
+      clearTimeout(this.supportersTimer);
+    }
+    this.supportersTimer = null;
     if (this.timeInterval) {
       clearInterval(this.timeInterval);
     }
     this.timeInterval = null;
     clearInterval(this.scrollInterval);
+  }
+
+  clearCampaignValues = () => {
+    // When we transition from one campaign to another campaign, there
+    // can be a delay in getting the new campaign's values. We want to clear
+    // out the values currently being displayed, while waiting for new values
+    // to arrive.
+    this.setState({
+      countOfStageQueueItemsMovedOnStage: 0,
+      isAutoScroll: false,
+      stageQueue: [],
+      supportersOnStageNow: [],
+      waitingForInitialData: true,
+    });
   }
 
   handleScroll () {
@@ -232,6 +254,7 @@ class MostRecentCampaignSupport extends React.Component {
     renderLog('MostRecentCampaignSupport');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
     const { supportersOnStageNow, voterWeVoteId } = this.state;
+    // console.log('MostRecentCampaignSupport render supportersOnStageNow:', supportersOnStageNow);
 
     return (
       <MostRecentCampaignSupportWrapper>

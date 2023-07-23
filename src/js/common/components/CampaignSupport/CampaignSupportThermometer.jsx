@@ -23,7 +23,7 @@ class CampaignSupportThermometer extends React.Component {
 
   componentDidUpdate (prevProps, prevState) {
     const {
-      campaignXWeVoteId: campaignXWeVoteIdPrevious,
+      campaignXWeVoteId: previousCampaignXWeVoteId,
     } = prevProps;
     const {
       campaignXWeVoteId,
@@ -32,7 +32,12 @@ class CampaignSupportThermometer extends React.Component {
       supportersCount: supportersCountPrevious,
     } = prevState;
     // console.log('CampaignSupportThermometer componentDidUpdate campaignXWeVoteId:', campaignXWeVoteId);
-    if (campaignXWeVoteId) {
+    if (previousCampaignXWeVoteId !== campaignXWeVoteId) {
+      this.clearCampaignValues();
+      this.campaignTimer = setTimeout(() => {
+        this.onCampaignStoreChange();
+      }, 500);
+    } else if (campaignXWeVoteId) {
       const campaignX = CampaignStore.getCampaignXByWeVoteId(campaignXWeVoteId);
       const {
         campaignx_we_vote_id: campaignXWeVoteIdFromDict,
@@ -42,7 +47,7 @@ class CampaignSupportThermometer extends React.Component {
       if (campaignXWeVoteIdFromDict) {
         supportersCountChanged = supportersCount !== supportersCountPrevious;
       }
-      if (campaignXWeVoteId !== campaignXWeVoteIdPrevious || supportersCountChanged) {
+      if (campaignXWeVoteId !== previousCampaignXWeVoteId || supportersCountChanged) {
         this.onCampaignStoreChange();
       }
     }
@@ -50,6 +55,22 @@ class CampaignSupportThermometer extends React.Component {
 
   componentWillUnmount () {
     this.campaignStoreListener.remove();
+    if (this.campaignTimer) {
+      clearTimeout(this.campaignTimer);
+    }
+    this.campaignTimer = null;
+  }
+
+  clearCampaignValues = () => {
+    // When we transition from one campaign to another campaign, there
+    // can be a delay in getting the new campaign's values. We want to clear
+    // out the values currently being displayed, while waiting for new values
+    // to arrive.
+    this.setState({
+      finalElectionDateInPast: false,
+      supportersCount: 0,
+      supportersCountNextGoal: 0,
+    });
   }
 
   onCampaignStoreChange () {

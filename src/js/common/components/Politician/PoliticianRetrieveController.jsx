@@ -22,13 +22,13 @@ class PoliticianRetrieveController extends Component {
 
   componentDidUpdate (prevProps) {
     const {
-      politicianWeVoteId: prevPoliticianWeVoteId,
+      politicianWeVoteId: previousPoliticianWeVoteId,
     } = prevProps;
     const {
       politicianWeVoteId,
     } = this.props;
-    if (politicianWeVoteId !== prevPoliticianWeVoteId) {
-      console.log('PoliticianRetrieveController componentDidUpdate politicianWeVoteId has changed');
+    if (politicianWeVoteId !== previousPoliticianWeVoteId) {
+      // console.log('PoliticianRetrieveController componentDidUpdate politicianWeVoteId has changed');
       const politicianRetrieveOverride = true;
       this.politicianFirstRetrieve(politicianRetrieveOverride);
     } else {

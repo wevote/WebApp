@@ -414,7 +414,7 @@ class CandidateCardForList extends Component {
                       inCard
                       positionPublicToggleWrapAllowed
                       shareButtonHide
-                      // useSupportWording
+                      useSupportWording
                     />
                   ) : (
                     <ItemActionBar
@@ -426,6 +426,7 @@ class CandidateCardForList extends Component {
                       inCard
                       positionPublicToggleWrapAllowed
                       shareButtonHide
+                      useSupportWording
                     />
                   )}
                 </Suspense>
