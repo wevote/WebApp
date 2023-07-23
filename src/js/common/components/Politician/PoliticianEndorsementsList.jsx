@@ -63,17 +63,6 @@ class PoliticianEndorsementsList extends Component {
     }
   }
 
-  clearPoliticianValues = () => {
-    // When we transition from one politician to another politician, there
-    // can be a delay in getting the new politician's values. We want to clear
-    // out the values currently being displayed, while waiting for new values
-    // to arrive.
-    this.setState({
-      filteredPositionList: [],
-      numberOfPositionsToDisplay: 0,
-    });
-  }
-
   onCandidateStoreChange () {
     const { politicianWeVoteId } = this.props;
     if (politicianWeVoteId) {
@@ -88,6 +77,17 @@ class PoliticianEndorsementsList extends Component {
         filteredPositionList,
       });
     }
+  }
+
+  clearPoliticianValues = () => {
+    // When we transition from one politician to another politician, there
+    // can be a delay in getting the new politician's values. We want to clear
+    // out the values currently being displayed, while waiting for new values
+    // to arrive.
+    this.setState({
+      filteredPositionList: [],
+      numberOfPositionsToDisplay: 0,
+    });
   }
 
   increaseNumberOfEndorsementsToDisplay = () => {

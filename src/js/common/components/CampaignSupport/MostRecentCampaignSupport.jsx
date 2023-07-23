@@ -113,20 +113,6 @@ class MostRecentCampaignSupport extends React.Component {
     clearInterval(this.scrollInterval);
   }
 
-  clearCampaignValues = () => {
-    // When we transition from one campaign to another campaign, there
-    // can be a delay in getting the new campaign's values. We want to clear
-    // out the values currently being displayed, while waiting for new values
-    // to arrive.
-    this.setState({
-      countOfStageQueueItemsMovedOnStage: 0,
-      isAutoScroll: false,
-      stageQueue: [],
-      supportersOnStageNow: [],
-      waitingForInitialData: true,
-    });
-  }
-
   handleScroll () {
     if (this.state.isAutoScroll) {
       this.setState({ isAutoScroll: false });
@@ -184,6 +170,20 @@ class MostRecentCampaignSupport extends React.Component {
     const voterWeVoteId = VoterStore.getVoterWeVoteId();
     this.setState({
       voterWeVoteId,
+    });
+  }
+
+  clearCampaignValues = () => {
+    // When we transition from one campaign to another campaign, there
+    // can be a delay in getting the new campaign's values. We want to clear
+    // out the values currently being displayed, while waiting for new values
+    // to arrive.
+    this.setState({
+      countOfStageQueueItemsMovedOnStage: 0,
+      isAutoScroll: false,
+      stageQueue: [],
+      supportersOnStageNow: [],
+      waitingForInitialData: true,
     });
   }
 

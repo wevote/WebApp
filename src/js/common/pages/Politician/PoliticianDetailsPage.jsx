@@ -354,6 +354,11 @@ class PoliticianDetailsPage extends Component {
     //
   }
 
+  getCandidateCampaignListTitle () {
+    // thisYearElectionExists, nextYearElectionExists, priorYearElectionExists
+    return 'Elections with Candidate';
+  }
+
   clearPoliticianValues = () => {
     // When we transition from one politician to another politician, there
     // can be a delay in getting the new politician's values. We want to clear
@@ -382,11 +387,6 @@ class PoliticianDetailsPage extends Component {
       wikipediaUrl: '',
       // youtubeUrl: '',
     });
-  }
-
-  getCandidateCampaignListTitle () {
-    // thisYearElectionExists, nextYearElectionExists, priorYearElectionExists
-    return 'Elections with Candidate';
   }
 
   orderByTwitterFollowers = (firstEntry, secondEntry) => secondEntry.twitter_followers_count - firstEntry.twitter_followers_count;

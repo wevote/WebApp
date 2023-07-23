@@ -61,18 +61,6 @@ class CampaignSupportThermometer extends React.Component {
     this.campaignTimer = null;
   }
 
-  clearCampaignValues = () => {
-    // When we transition from one campaign to another campaign, there
-    // can be a delay in getting the new campaign's values. We want to clear
-    // out the values currently being displayed, while waiting for new values
-    // to arrive.
-    this.setState({
-      finalElectionDateInPast: false,
-      supportersCount: 0,
-      supportersCountNextGoal: 0,
-    });
-  }
-
   onCampaignStoreChange () {
     const { campaignXWeVoteId } = this.props;
     // console.log('CampaignSupportThermometer onCampaignStoreChange campaignXWeVoteId:', campaignXWeVoteId);
@@ -94,6 +82,18 @@ class CampaignSupportThermometer extends React.Component {
         });
       }
     }
+  }
+
+  clearCampaignValues = () => {
+    // When we transition from one campaign to another campaign, there
+    // can be a delay in getting the new campaign's values. We want to clear
+    // out the values currently being displayed, while waiting for new values
+    // to arrive.
+    this.setState({
+      finalElectionDateInPast: false,
+      supportersCount: 0,
+      supportersCountNextGoal: 0,
+    });
   }
 
   render () {
