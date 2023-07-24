@@ -16,6 +16,7 @@ import IssueStore from '../../stores/IssueStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import ValuesList from './ValuesList';
+import { convertNameToSlug } from '../../common/utils/textFormat';
 
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
 const IssueCard = React.lazy(() => import(/* webpackChunkName: 'IssueCard' */ '../../components/Values/IssueCard'));
@@ -167,6 +168,10 @@ class OneValue extends Component {
       issue, listModeShown,
       searchText, voterGuidesForValueLength,
     } = this.state;
+    let issueSlugFromName = '';
+    if (issue && issue.issue_name) {
+      issueSlugFromName = convertNameToSlug(issue.issue_name);
+    }
     let { organizationListIdentifier, organizationsForValue, organizationsForValueLength, voterGuidesForValue } = this.state;
     const { classes } = this.props;
     const { match: { params: { value_slug: valueSlug } } } = this.props;
@@ -225,7 +230,12 @@ class OneValue extends Component {
     return (
       <PageContentContainer>
         <OneValueWrapper>
-          <Helmet title={`${pageTitle} - We Vote`} />
+          <Helmet>
+            <title>{`${pageTitle} - We Vote`}</title>
+            {issueSlugFromName && (
+              <link rel="canonical" href={`https://wevote.us/value/${issueSlugFromName}`} />
+            )}
+          </Helmet>
           <IssueCardWrapper>
             <Suspense fallback={<></>}>
               <IssueCard

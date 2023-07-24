@@ -18,7 +18,10 @@ export default class Privacy extends Component {
     renderLog('Privacy');  // Set LOG_RENDER_EVENTS to log all renders
     return (
       <PageContentContainer>
-        <Helmet title="Privacy Policy - We Vote" />
+        <Helmet>
+          <title>Privacy Policy - We Vote</title>
+          <link rel="canonical" href="https://wevote.us/privacy" />
+        </Helmet>
         <div className="container-fluid well">
           <PrivacyBody />
         </div>

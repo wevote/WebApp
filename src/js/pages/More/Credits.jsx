@@ -24,7 +24,10 @@ class Credits extends Component {
     renderLog('Credits');  // Set LOG_RENDER_EVENTS to log all renders
     return (
       <Wrapper>
-        <Helmet title="Credits - We Vote" />
+        <Helmet>
+          <title>Credits - We Vote</title>
+          <link rel="canonical" href="https://wevote.us/more/credits" />
+        </Helmet>
         <Suspense fallback={<></>}>
           <WelcomeAppbar pathname="/more/pricing" />
         </Suspense>
