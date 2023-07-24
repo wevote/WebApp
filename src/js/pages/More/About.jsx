@@ -82,7 +82,10 @@ class About extends Component {
 
     return (
       <AboutWrapper>
-        <Helmet title="About We Vote" />
+        <Helmet>
+          <title>About We Vote</title>
+          <link rel="canonical" href="https://wevote.us/about" />
+        </Helmet>
         <Suspense fallback={<></>}>
           <WelcomeAppbar pathname="/more/about" />
         </Suspense>

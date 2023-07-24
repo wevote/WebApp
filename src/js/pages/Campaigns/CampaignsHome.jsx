@@ -629,19 +629,28 @@ class CampaignsHome extends Component {
       );
     }
 
-    titleText = 'Candidates - We Vote';
-    descriptionText = 'Choose which candidates you support.';
+    const { match: { params: { state_candidates_phrase: stateCandidatesPhrase } } } = this.props;
     let stateCodeTemp;
     const stateNameList = Object.values(stateCodeMap);
+    if (stateCode && stateCode !== 'na') {
+      const stateText = convertStateCodeToStateText(stateCode);
+      titleText = `${stateText} Candidates - We Vote`;
+    } else {
+      titleText = 'Candidates - We Vote';
+    }
+    descriptionText = 'Choose which candidates you support or oppose.';
     const representativesShowing = (representativeListOnYourBallot && representativeListOnYourBallot.length > 0) || (representativeListShownAsRepresentatives && representativeListShownAsRepresentatives.length > 0);
     const otherTitlesShown = (campaignsShowing && nextReleaseFeaturesEnabled) || (candidateListOnYourBallot && candidateListOnYourBallot.length > 0) || (candidateListIsBattleground && candidateListIsBattleground.length > 0) || representativesShowing;
     return (
       <PageContentContainer>
         <CampaignsHomeContainer className="container-fluid" style={this.getTopPadding()}>
-          <Helmet
-            title={titleText}
-            meta={[{ name: 'description', content: descriptionText }]}
-          />
+          <Helmet>
+            <title>{titleText}</title>
+            {stateCandidatesPhrase && (
+              <link rel="canonical" href={`https://wevote.us/${stateCandidatesPhrase}/cs`} />
+            )}
+            <meta name="description" value={descriptionText} />
+          </Helmet>
           <CampaignsHomeFilterWrapper>
             {(isSearching && searchText) && (
               <SearchTitleTop>

@@ -19,7 +19,10 @@ export default class FAQ extends Component {
     renderLog('FAQ');  // Set LOG_RENDER_EVENTS to log all renders
     return (
       <div>
-        <Helmet title="FAQ - We Vote" />
+        <Helmet>
+          <title>FAQ - We Vote</title>
+          <link rel="canonical" href="https://wevote.us/more/faq" />
+        </Helmet>
         <PageContentContainer>
           <ContainerFluidWrapper className="container-fluid card">
             <div className="card-main" style={{ paddingTop: `${isCordova() ? '0px' : '16px'}` }}>
