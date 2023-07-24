@@ -260,10 +260,12 @@ class App extends Component {
             tracker = new OpenReplay({
               projectKey: openReplayProjectKey,
               ingestPoint: openReplayIngestPoint,
+              resourceBaseHref: 'https://wevote.us/',
             });
           } else {
             tracker = new OpenReplay({
               projectKey: openReplayProjectKey,
+              resourceBaseHref: 'https://wevote.us/',
             });
           }
           const voterWeVoteId = VoterStore.getVoterWeVoteId();
