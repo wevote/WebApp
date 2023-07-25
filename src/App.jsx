@@ -268,10 +268,7 @@ class App extends Component {
               resourceBaseHref: 'https://wevote.us/',
             });
           }
-          const voterWeVoteId = VoterStore.getVoterWeVoteId();
-          tracker.start({
-            userID: voterWeVoteId,
-          });
+          tracker.start();
           AppObservableStore.setOpenReplayTracker(tracker);
           AppObservableStore.setOpenReplayEnabled(true);
           AppObservableStore.setOpenReplayPending(false);
