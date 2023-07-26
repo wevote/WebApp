@@ -364,6 +364,7 @@ class CampaignRecommendedCampaigns extends Component {
         <div>
           <Helmet>
             <title>{htmlTitle}</title>
+            <meta name="robots" content="noindex" data-react-helmet="true" />
           </Helmet>
           <PageWrapperDefault>
             <ContentOuterWrapperDefault>
@@ -425,6 +426,7 @@ class CampaignRecommendedCampaigns extends Component {
       <div>
         <Helmet>
           <title>{htmlTitle}</title>
+          <meta name="robots" content="noindex" data-react-helmet="true" />
         </Helmet>
         <PageWrapperDefault>
           <ContentOuterWrapperDefault>

@@ -265,7 +265,10 @@ class CampaignSupportPayToPromoteProcess extends Component {
 
     return (
       <div>
-        <Helmet title={htmlTitle} />
+        <Helmet>
+          <title>{htmlTitle}</title>
+          <meta name="robots" content="noindex" data-react-helmet="true" />
+        </Helmet>
         <PageWrapper>
           <OuterWrapper>
             <InnerWrapper>

@@ -302,6 +302,7 @@ class Ballot extends Component {
       ballotReturnedWeVoteId,
       ballotLocationShortcut,
       googleCivicElectionId: parseInt(googleCivicElectionId, 10),
+      googleCivicElectionIdFromUrl,
       issuesFollowedCount: IssueStore.getIssuesVoterIsFollowingLength(),
       raceLevelFilterType: BallotStore.getRaceLevelFilterTypeSaved() || 'All',
       voterBallotItemsRetrieveHasReturned: BallotStore.voterBallotItemsRetrieveHasReturned(),
@@ -1150,8 +1151,10 @@ class Ballot extends Component {
     const { location: { pathname } } = window; // search
 
     const {
+      ballotLocationShortcut, ballotReturnedWeVoteId,
       ballotSearchResults, ballotWithAllItems, ballotWithItemsFromCompletionFilterType,
       completionLevelFilterType, doubleFilteredBallotItemsLength,
+      googleCivicElectionIdFromUrl,
       isSearching, loadingMoreItems, numberOfBallotItemsToDisplay,
       scrolledDown, searchText, showFilterTabs, showLoadingBallotMessage, totalNumberOfBallotItems,
     } = this.state;
@@ -1375,7 +1378,26 @@ class Ballot extends Component {
                 <div className="container-fluid">
                   <div className="row">
                     <div className="col-md-12">
-                      <Helmet title="Ballot - We Vote" />
+                      <Helmet>
+                        <title>Ballot - We Vote</title>
+                        {googleCivicElectionIdFromUrl ? (
+                          <link rel="canonical" href={`https://wevote.us/ballot/election/${googleCivicElectionIdFromUrl}`} />
+                        ) : (
+                          <>
+                            {ballotReturnedWeVoteId ? (
+                              <link rel="canonical" href={`https://wevote.us/ballot/id/${ballotReturnedWeVoteId}`} />
+                            ) : (
+                              <>
+                                {ballotLocationShortcut ? (
+                                  <link rel="canonical" href={`https://wevote.us/ballot/${ballotLocationShortcut}`} />
+                                ) : (
+                                  <link rel="canonical" href="https://wevote.us/ballot" />
+                                )}
+                              </>
+                            )}
+                          </>
+                        )}
+                      </Helmet>
                       <header className="ballot__header__group">
                         <BallotTitleHeaderContainer marginTopOffset={this.marginTopOffset()}>
                           <BallotTitleHeader

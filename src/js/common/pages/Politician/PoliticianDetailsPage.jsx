@@ -51,11 +51,13 @@ import SearchOnGoogle from '../../components/Widgets/SearchOnGoogle';
 import ViewOnBallotpedia from '../../components/Widgets/ViewOnBallotpedia';
 import ViewOnWikipedia from '../../components/Widgets/ViewOnWikipedia';
 import webAppConfig from '../../../config';
+import CampaignChipInLink from "../../components/Campaign/CampaignChipInLink";
 
 const CampaignCommentsList = React.lazy(() => import(/* webpackChunkName: 'CampaignCommentsList' */ '../../components/Campaign/CampaignCommentsList'));
-const CampaignRetrieveController = React.lazy(() => import(/* webpackChunkName: 'CampaignRetrieveController' */ '../../components/Campaign/CampaignRetrieveController'));
 const CampaignDetailsActionSideBox = React.lazy(() => import(/* webpackChunkName: 'CampaignDetailsActionSideBox' */ '../../components/CampaignSupport/CampaignDetailsActionSideBox'));
+const CampaignRetrieveController = React.lazy(() => import(/* webpackChunkName: 'CampaignRetrieveController' */ '../../components/Campaign/CampaignRetrieveController'));
 const CampaignNewsItemList = React.lazy(() => import(/* webpackChunkName: 'CampaignNewsItemList' */ '../../components/Campaign/CampaignNewsItemList'));
+const CampaignShareChunk = React.lazy(() => import(/* webpackChunkName: 'CampaignShareChunk' */ '../../components/Campaign/CampaignShareChunk'));
 const CampaignSupportThermometer = React.lazy(() => import(/* webpackChunkName: 'CampaignSupportThermometer' */ '../../components/CampaignSupport/CampaignSupportThermometer'));
 const OfficeNameText = React.lazy(() => import(/* webpackChunkName: 'OfficeNameText' */ '../../components/Widgets/OfficeNameText'));
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../components/Widgets/OpenExternalWebSite'));
@@ -101,8 +103,8 @@ class PoliticianDetailsPage extends Component {
   componentDidMount () {
     // console.log('PoliticianDetailsPage componentDidMount');
     const { match: { params } } = this.props;
-    const { politicianSEOFriendlyPath, politicianWeVoteId } = params;
-    // console.log('componentDidMount politicianSEOFriendlyPath: ', politicianSEOFriendlyPath, ', politicianWeVoteId: ', politicianWeVoteId);
+    const { politicianSEOFriendlyPath: politicianSEOFriendlyPathFromUrl, politicianWeVoteId } = params;
+    // console.log('componentDidMount politicianSEOFriendlyPathFromUrl: ', politicianSEOFriendlyPathFromUrl, ', politicianWeVoteId: ', politicianWeVoteId);
     this.onAppObservableStoreChange();
     this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
     this.campaignSupporterStoreListener = CampaignSupporterStore.addListener(this.onCampaignSupporterStoreChange.bind(this));
@@ -112,20 +114,20 @@ class PoliticianDetailsPage extends Component {
     this.politicianStoreListener = PoliticianStore.addListener(this.onPoliticianStoreChange.bind(this));
     this.onRepresentativeStoreChange();
     this.representativeStoreListener = RepresentativeStore.addListener(this.onRepresentativeStoreChange.bind(this));
-    if (politicianSEOFriendlyPath) {
-      const politician = PoliticianStore.getPoliticianBySEOFriendlyPath(politicianSEOFriendlyPath);
+    if (politicianSEOFriendlyPathFromUrl) {
+      const politician = PoliticianStore.getPoliticianBySEOFriendlyPath(politicianSEOFriendlyPathFromUrl);
       if (politician && politician.politician_we_vote_id) {
         this.setState({
           linkedCampaignXWeVoteId: politician.linked_campaignx_we_vote_id,
-          politicianSEOFriendlyPath,
-          politicianSEOFriendlyPathForDisplay: politicianSEOFriendlyPath,
+          politicianSEOFriendlyPath: politicianSEOFriendlyPathFromUrl,
+          politicianSEOFriendlyPathForDisplay: politicianSEOFriendlyPathFromUrl,
           politicianWeVoteId: politician.politician_we_vote_id,
           politicianWeVoteIdForDisplay: politician.politician_we_vote_id,
         }, () => this.onfirstRetrievalOfPoliticianWeVoteId());
       } else {
         this.setState({
-          politicianSEOFriendlyPath,
-          politicianSEOFriendlyPathForDisplay: politicianSEOFriendlyPath,
+          politicianSEOFriendlyPath: politicianSEOFriendlyPathFromUrl,
+          politicianSEOFriendlyPathForDisplay: politicianSEOFriendlyPathFromUrl,
         });
       }
     } else if (politicianWeVoteId) {
@@ -135,7 +137,7 @@ class PoliticianDetailsPage extends Component {
       }, () => this.onfirstRetrievalOfPoliticianWeVoteId());
     }
     // Take the "calculated" identifiers and retrieve if missing
-    retrievePoliticianFromIdentifiersIfNeeded(politicianSEOFriendlyPath, politicianWeVoteId);
+    retrievePoliticianFromIdentifiersIfNeeded(politicianSEOFriendlyPathFromUrl, politicianWeVoteId);
     window.scrollTo(0, 0);
   }
 
@@ -144,25 +146,25 @@ class PoliticianDetailsPage extends Component {
     const { match: { params: prevParams } } = prevProps;
     const { politicianSEOFriendlyPath: prevPoliticianSEOFriendlyPath, politicianWeVoteId: prevPoliticianWeVoteId } = prevParams;
     const { match: { params } } = this.props;
-    const { politicianSEOFriendlyPath, politicianWeVoteId } = params;
+    const { politicianSEOFriendlyPath: politicianSEOFriendlyPathFromUrl, politicianWeVoteId } = params;
     let triggerFreshRetrieve = false;
-    // console.log('componentDidUpdate politicianSEOFriendlyPath: ', politicianSEOFriendlyPath, ', politicianWeVoteId: ', politicianWeVoteId);
-    if (politicianSEOFriendlyPath && politicianSEOFriendlyPath !== prevPoliticianSEOFriendlyPath) {
+    // console.log('componentDidUpdate politicianSEOFriendlyPathFromUrl: ', politicianSEOFriendlyPathFromUrl, ', politicianWeVoteId: ', politicianWeVoteId);
+    if (politicianSEOFriendlyPathFromUrl && politicianSEOFriendlyPathFromUrl !== prevPoliticianSEOFriendlyPath) {
       // console.log('componentDidUpdate prevPoliticianSEOFriendlyPath: ', prevPoliticianSEOFriendlyPath);
       this.clearPoliticianValues();
-      const politician = PoliticianStore.getPoliticianBySEOFriendlyPath(politicianSEOFriendlyPath);
+      const politician = PoliticianStore.getPoliticianBySEOFriendlyPath(politicianSEOFriendlyPathFromUrl);
       if (politician && politician.politician_we_vote_id) {
         this.setState({
           linkedCampaignXWeVoteId: politician.linked_campaignx_we_vote_id,
-          politicianSEOFriendlyPath,
-          politicianSEOFriendlyPathForDisplay: politicianSEOFriendlyPath,
+          politicianSEOFriendlyPath: politicianSEOFriendlyPathFromUrl,
+          politicianSEOFriendlyPathForDisplay: politicianSEOFriendlyPathFromUrl,
           politicianWeVoteId: politician.politician_we_vote_id,
           politicianWeVoteIdForDisplay: politician.politician_we_vote_id,
         }, () => this.onfirstRetrievalOfPoliticianWeVoteId());
       } else {
         this.setState({
-          politicianSEOFriendlyPath,
-          politicianSEOFriendlyPathForDisplay: politicianSEOFriendlyPath,
+          politicianSEOFriendlyPath: politicianSEOFriendlyPathFromUrl,
+          politicianSEOFriendlyPathForDisplay: politicianSEOFriendlyPathFromUrl,
         }, () => this.onfirstRetrievalOfPoliticianWeVoteId());
       }
       triggerFreshRetrieve = true;
@@ -188,7 +190,7 @@ class PoliticianDetailsPage extends Component {
     }
     if (triggerFreshRetrieve) {
       // Take the "calculated" identifiers and retrieve if missing
-      retrievePoliticianFromIdentifiersIfNeeded(politicianSEOFriendlyPath, politicianWeVoteId);
+      retrievePoliticianFromIdentifiersIfNeeded(politicianSEOFriendlyPathFromUrl, politicianWeVoteId);
       window.scrollTo(0, 0);
     }
   }
@@ -283,8 +285,8 @@ class PoliticianDetailsPage extends Component {
 
   onPoliticianStoreChange () {
     const { match: { params } } = this.props;
-    const { politicianSEOFriendlyPath: politicianSEOFriendlyPathFromParams, politicianWeVoteId: politicianWeVoteIdFromParams } = params;
-    // console.log('onPoliticianStoreChange politicianSEOFriendlyPathFromParams: ', politicianSEOFriendlyPathFromParams, ', politicianWeVoteIdFromParams: ', politicianWeVoteIdFromParams);
+    const { politicianSEOFriendlyPath: politicianSEOFriendlyPathFromUrl, politicianWeVoteId: politicianWeVoteIdFromParams } = params;
+    // console.log('onPoliticianStoreChange politicianSEOFriendlyPathFromUrl: ', politicianSEOFriendlyPathFromUrl, ', politicianWeVoteIdFromParams: ', politicianWeVoteIdFromParams);
     const {
       ballotpediaPoliticianUrl,
       candidateCampaignList,
@@ -305,7 +307,7 @@ class PoliticianDetailsPage extends Component {
       twitterHandle2,
       wikipediaUrl,
       // youtubeUrl,
-    } = getPoliticianValuesFromIdentifiers(politicianSEOFriendlyPathFromParams, politicianWeVoteIdFromParams);
+    } = getPoliticianValuesFromIdentifiers(politicianSEOFriendlyPathFromUrl, politicianWeVoteIdFromParams);
     if (politicianWeVoteId) {
       const voterCanEditThisPolitician = PoliticianStore.getVoterCanEditThisPolitician(politicianWeVoteId);
       const voterSupportsThisPolitician = PoliticianStore.getVoterSupportsThisPolitician(politicianWeVoteId);
@@ -324,8 +326,8 @@ class PoliticianDetailsPage extends Component {
       stateText = convertStateCodeToStateText(stateCode);
     }
     let politicianDataNotFound = false;
-    if (politicianSEOFriendlyPathFromParams) {
-      politicianDataNotFound = PoliticianStore.isPoliticianDataNotFoundForSEOFriendlyPath(politicianSEOFriendlyPathFromParams);
+    if (politicianSEOFriendlyPathFromUrl) {
+      politicianDataNotFound = PoliticianStore.isPoliticianDataNotFoundForSEOFriendlyPath(politicianSEOFriendlyPathFromUrl);
     }
     this.setState({
       ballotpediaPoliticianUrl,
@@ -448,6 +450,9 @@ class PoliticianDetailsPage extends Component {
     renderLog('PoliticianDetailsPage');  // Set LOG_RENDER_EVENTS to log all renders
 
     const { classes } = this.props;
+    const { match: { params } } = this.props;
+    const { politicianSEOFriendlyPath: politicianSEOFriendlyPathFromUrl } = params;
+    // console.log('componentDidMount politicianSEOFriendlyPathFromUrl: ', politicianSEOFriendlyPathFromUrl);
     const {
       allCachedPositionsForThisPolitician, ballotpediaPoliticianUrl, candidateCampaignList, chosenWebsiteName,
       supporterEndorsementsWithText, finalElectionDateInPast, linkedCampaignXWeVoteId,
@@ -465,7 +470,10 @@ class PoliticianDetailsPage extends Component {
     if (politicianDataNotFound) {
       return (
         <PageContentContainer>
-          <Helmet title="Candidate Not Found - We Vote" />
+          <Helmet>
+            <title>Candidate Not Found - We Vote</title>
+            <meta name="robots" content="noindex" data-react-helmet="true" />
+          </Helmet>
           <PageWrapper>
             <MissingPoliticianMessageContainer>
               <MissingPoliticianText>Candidate not found.</MissingPoliticianText>
@@ -716,10 +724,16 @@ class PoliticianDetailsPage extends Component {
         )}
         <Helmet>
           <title>{htmlTitle}</title>
-          <meta
-            name="description"
-            content={politicianDescriptionLimited}
-          />
+          {politicianSEOFriendlyPathFromUrl ? (
+            <link rel="canonical" href={`https://wevote.us/${politicianSEOFriendlyPathFromUrl}/-`} />
+          ) : (
+            <>
+              {politicianSEOFriendlyPathForDisplay && (
+                <link rel="canonical" href={`https://wevote.us/${politicianSEOFriendlyPathForDisplay}/-`} />
+              )}
+            </>
+          )}
+          <meta name="description" content={politicianDescriptionLimited} />
         </Helmet>
         <PageWrapper>
           <DetailsSectionMobile className="u-show-mobile">
@@ -801,7 +815,24 @@ class PoliticianDetailsPage extends Component {
               )}
             </CampaignDescriptionWrapper>
             {positionListTeaserHtml}
+            <CampaignChipInLinkOuterWrapper>
+              <CampaignChipInLink
+                campaignSEOFriendlyPath={politicianSEOFriendlyPathForDisplay}
+                campaignXWeVoteId={linkedCampaignXWeVoteId}
+                externalUniqueId="mobile"
+              />
+            </CampaignChipInLinkOuterWrapper>
             {commentListTeaserHtml}
+            <Suspense fallback={<span>&nbsp;</span>}>
+              <CampaignShareChunkWrapper>
+                <CampaignShareChunk
+                  campaignSEOFriendlyPath={politicianSEOFriendlyPathForDisplay}
+                  campaignXWeVoteId={linkedCampaignXWeVoteId}
+                  darkButtonsOff
+                  privatePublicIntroductionsOff
+                />
+              </CampaignShareChunkWrapper>
+            </Suspense>
             {(!futureFeaturesDisabled && nextReleaseFeaturesEnabled) && (
               <CommentsListWrapper>
                 <DelayedLoad waitBeforeShow={1000}>
@@ -931,6 +962,7 @@ class PoliticianDetailsPage extends Component {
                 <Suspense fallback={<span>&nbsp;</span>}>
                   <CampaignDetailsActionSideBox
                     campaignXWeVoteId={linkedCampaignXWeVoteId}
+                    campaignSEOFriendlyPath={politicianSEOFriendlyPathForDisplay}
                     finalElectionDateInPast={finalElectionDateInPast}
                     functionToUseToKeepHelping={this.functionToUseToKeepHelping}
                     functionToUseWhenProfileComplete={this.functionToUseWhenProfileComplete}
@@ -1030,6 +1062,14 @@ const styles = (theme) => ({
     },
   },
 });
+
+const CampaignShareChunkWrapper = styled('div')`
+  margin-top: 10px;
+`;
+
+const CampaignChipInLinkOuterWrapper = styled('div')`
+  margin-top: 40px;
+`;
 
 const ColumnOneThird = styled('div')`
   flex: 1;

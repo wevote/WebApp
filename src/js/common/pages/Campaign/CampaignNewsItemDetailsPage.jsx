@@ -350,10 +350,7 @@ class CampaignNewsItemDetailsPage extends Component {
           <PageWrapper>
             <Helmet>
               <title>{htmlTitle}</title>
-              <meta
-                name="description"
-                content={campaignDescriptionLimited}
-              />
+              <meta name="description" content={campaignDescriptionLimited} />
             </Helmet>
             <CampaignTitleAndScoreBar className="u-show-mobile">
               <CampaignTitleMobile>{campaignTitle}</CampaignTitleMobile>
@@ -419,10 +416,7 @@ class CampaignNewsItemDetailsPage extends Component {
           </Suspense>
           <Helmet>
             <title>{htmlTitle}</title>
-            <meta
-              name="description"
-              content={campaignDescriptionLimited}
-            />
+            <meta name="description" content={campaignDescriptionLimited} />
           </Helmet>
         </div>
       );
@@ -435,10 +429,7 @@ class CampaignNewsItemDetailsPage extends Component {
         </Suspense>
         <Helmet>
           <title>{htmlTitle}</title>
-          <meta
-            name="description"
-            content={campaignDescriptionLimited}
-          />
+          <meta name="description" content={campaignDescriptionLimited} />
         </Helmet>
         {(inDraftMode || inPreviewMode) && (
           <UpdateSupportersHeader>
