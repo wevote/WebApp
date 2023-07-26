@@ -46,12 +46,12 @@ import { getYearFromUltimateElectionDate } from '../../utils/dateFormat';
 import { getPoliticianValuesFromIdentifiers, retrievePoliticianFromIdentifiersIfNeeded } from '../../utils/politicianUtils';
 import { displayNoneIfSmallerThanDesktop } from '../../utils/isMobileScreenSize';
 import keepHelpingDestination from '../../utils/keepHelpingDestination';
+import CampaignChipInLink from '../../components/Campaign/CampaignChipInLink';
 import TwitterAccountStats from '../../../components/Widgets/TwitterAccountStats';
 import SearchOnGoogle from '../../components/Widgets/SearchOnGoogle';
 import ViewOnBallotpedia from '../../components/Widgets/ViewOnBallotpedia';
 import ViewOnWikipedia from '../../components/Widgets/ViewOnWikipedia';
 import webAppConfig from '../../../config';
-import CampaignChipInLink from "../../components/Campaign/CampaignChipInLink";
 
 const CampaignCommentsList = React.lazy(() => import(/* webpackChunkName: 'CampaignCommentsList' */ '../../components/Campaign/CampaignCommentsList'));
 const CampaignDetailsActionSideBox = React.lazy(() => import(/* webpackChunkName: 'CampaignDetailsActionSideBox' */ '../../components/CampaignSupport/CampaignDetailsActionSideBox'));
