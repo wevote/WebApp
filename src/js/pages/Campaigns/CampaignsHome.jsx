@@ -649,7 +649,7 @@ class CampaignsHome extends Component {
             {stateCandidatesPhrase && (
               <link rel="canonical" href={`https://wevote.us/${stateCandidatesPhrase}/cs`} />
             )}
-            <meta name="description" value={descriptionText} />
+            <meta name="description" content={descriptionText} />
           </Helmet>
           <CampaignsHomeFilterWrapper>
             {(isSearching && searchText) && (

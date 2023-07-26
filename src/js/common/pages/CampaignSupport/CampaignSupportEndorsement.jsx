@@ -247,7 +247,10 @@ class CampaignSupportEndorsement extends Component {
     const politicianListSentenceString = politicianListToSentenceString(campaignXPoliticianList);
     return (
       <div>
-        <Helmet title={htmlTitle} />
+        <Helmet>
+          <title>{htmlTitle}</title>
+          <meta name="robots" content="noindex" data-react-helmet="true" />
+        </Helmet>
         <PageWrapperDefault>
           <ContentOuterWrapperDefault>
             <ContentInnerWrapperDefault>

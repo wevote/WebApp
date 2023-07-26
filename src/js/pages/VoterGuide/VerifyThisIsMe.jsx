@@ -164,7 +164,10 @@ class VerifyThisIsMe extends Component {
       params.we_vote_id = this.state.ownerWeVoteId;
       return (
         <PageContentContainer>
-          <Helmet title="Claim This Page - We Vote" />
+          <Helmet>
+            <title>Claim This Page - We Vote</title>
+            <meta name="robots" content="noindex" data-react-helmet="true" />
+          </Helmet>
           <div className="card">
             <div className="card-main">
               <div>

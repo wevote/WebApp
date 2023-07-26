@@ -9,6 +9,7 @@ import { renderLog } from '../../utils/logging';
 import CampaignStore from '../../stores/CampaignStore';
 import CampaignSupporterStore from '../../stores/CampaignSupporterStore';
 import VoterStore from '../../../stores/VoterStore';
+import CampaignChipInLink from '../Campaign/CampaignChipInLink';
 import CampaignShareChunk from '../Campaign/CampaignShareChunk';
 import SupportButton from './SupportButton';
 // import webAppConfig from '../../../config';
@@ -204,7 +205,7 @@ class CampaignDetailsActionSideBox extends Component {
     const hideFooterBehindModal = false;
     const supportButtonClasses = classes.buttonDefault; // isWebApp() ? classes.buttonDefault : classes.buttonDefaultCordova;
     return (
-      <Wrapper>
+      <CampaignDetailsActionSideBoxWrapper>
         {campaignSupported ? (
           <KeepHelpingWrapper
             className={hideFooterBehindModal ? 'u-z-index-1000' : 'u-z-index-9000'}
@@ -237,6 +238,13 @@ class CampaignDetailsActionSideBox extends Component {
                     </Button>
                   </ButtonPanel>
                 )}
+                <CampaignChipInLinkOuterWrapper>
+                  <CampaignChipInLink
+                    campaignSEOFriendlyPath={campaignSEOFriendlyPath}
+                    campaignXWeVoteId={campaignXWeVoteId}
+                    externalUniqueId="desktop"
+                  />
+                </CampaignChipInLinkOuterWrapper>
                 <CampaignShareChunkWrapper>
                   <CampaignShareChunk
                     campaignSEOFriendlyPath={campaignSEOFriendlyPath}
@@ -292,9 +300,24 @@ class CampaignDetailsActionSideBox extends Component {
                 )}
               </>
             )}
+            <CampaignChipInLinkOuterWrapper>
+              <CampaignChipInLink
+                campaignSEOFriendlyPath={campaignSEOFriendlyPath}
+                campaignXWeVoteId={campaignXWeVoteId}
+                externalUniqueId="desktop"
+              />
+            </CampaignChipInLinkOuterWrapper>
+            <CampaignShareChunkWrapper>
+              <CampaignShareChunk
+                campaignSEOFriendlyPath={campaignSEOFriendlyPath}
+                campaignXWeVoteId={campaignXWeVoteId}
+                darkButtonsOff
+                privatePublicIntroductionsOff
+              />
+            </CampaignShareChunkWrapper>
           </section>
         )}
-      </Wrapper>
+      </CampaignDetailsActionSideBoxWrapper>
     );
   }
 }
@@ -334,6 +357,10 @@ const ButtonPanel = styled('div')`
   padding: 10px 0;
 `;
 
+const CampaignChipInLinkOuterWrapper = styled('div')`
+  margin-top: 40px;
+`;
+
 const CampaignShareChunkWrapper = styled('div')`
   margin-top: 100px;
 `;
@@ -350,7 +377,7 @@ const KeepHelpingWrapper = styled('div')`
 const ProfileAlreadyComplete = styled('div')`
 `;
 
-const Wrapper = styled('div')`
+const CampaignDetailsActionSideBoxWrapper = styled('div')`
 `;
 
 export default withTheme(withStyles(styles)(CampaignDetailsActionSideBox));

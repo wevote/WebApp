@@ -250,15 +250,11 @@ class CampaignSupportShare extends Component {
         skipForNowText = 'See latest news about this campaign';
       }
     }
-    const campaignDescriptionLimited = 'This is test from CampaignSupportShare.';
     return (
       <div>
         <Helmet>
           <title>{htmlTitle}</title>
-          <meta
-            name="description"
-            content={campaignDescriptionLimited}
-          />
+          <meta name="robots" content="noindex" data-react-helmet="true" />
         </Helmet>
         <PageWrapperDefault>
           <ContentOuterWrapperDefault>

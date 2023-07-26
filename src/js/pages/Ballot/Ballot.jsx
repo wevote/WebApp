@@ -167,40 +167,36 @@ class Ballot extends Component {
 
     const { match: { params } } = this.props;
     let googleCivicElectionIdFromUrl = params.google_civic_election_id || 0;
-
     // console.log('googleCivicElectionIdFromUrl: ', googleCivicElectionIdFromUrl);
-    let ballotReturnedWeVoteId = params.ballot_returned_we_vote_id || '';
-    ballotReturnedWeVoteId = ballotReturnedWeVoteId === 'none' ? '' : ballotReturnedWeVoteId;
-
+    let ballotReturnedWeVoteIdFromUrl = params.ballot_returned_we_vote_id || '';
+    ballotReturnedWeVoteIdFromUrl = ballotReturnedWeVoteIdFromUrl === 'none' ? '' : ballotReturnedWeVoteIdFromUrl;
     // console.log('params.ballot_returned_we_vote_id: ', params.ballot_returned_we_vote_id);
-    let ballotLocationShortcut = params.ballot_location_shortcut || '';
-    ballotLocationShortcut = ballotLocationShortcut.trim();
-    ballotLocationShortcut = ballotLocationShortcut === 'none' ? '' : ballotLocationShortcut;
+    let ballotLocationShortcutFromUrl = params.ballot_location_shortcut || '';
+    ballotLocationShortcutFromUrl = ballotLocationShortcutFromUrl.trim();
+    ballotLocationShortcutFromUrl = ballotLocationShortcutFromUrl === 'none' ? '' : ballotLocationShortcutFromUrl;
     let googleCivicElectionId = 0;
 
     // console.log('componentDidMount, BallotStore.ballotProperties: ', BallotStore.ballotProperties);
     if (googleCivicElectionIdFromUrl !== 0) {
       googleCivicElectionIdFromUrl = parseInt(googleCivicElectionIdFromUrl, 10);
-
-      // googleCivicElectionId = googleCivicElectionIdFromUrl;
     } else if (BallotStore.ballotProperties && BallotStore.ballotProperties.google_civic_election_id) {
       googleCivicElectionId = BallotStore.ballotProperties.google_civic_election_id;
     }
 
-    // console.log('ballotReturnedWeVoteId: ', ballotReturnedWeVoteId, ', ballotLocationShortcut:', ballotLocationShortcut, ', googleCivicElectionIdFromUrl: ', googleCivicElectionIdFromUrl);
-    if (ballotReturnedWeVoteId || ballotLocationShortcut || googleCivicElectionIdFromUrl) {
-      if (ballotLocationShortcut !== '') {
+    // console.log('ballotReturnedWeVoteIdFromUrl: ', ballotReturnedWeVoteIdFromUrl, ', ballotLocationShortcutFromUrl:', ballotLocationShortcutFromUrl, ', googleCivicElectionIdFromUrl: ', googleCivicElectionIdFromUrl);
+    if (ballotReturnedWeVoteIdFromUrl || ballotLocationShortcutFromUrl || googleCivicElectionIdFromUrl || googleCivicElectionId) {
+      if (ballotLocationShortcutFromUrl !== '') {
         // Change the ballot on load to make sure we are getting what we expect from the url
-        BallotActions.voterBallotItemsRetrieve(0, '', ballotLocationShortcut);
+        BallotActions.voterBallotItemsRetrieve(0, '', ballotLocationShortcutFromUrl);
 
         // Change the URL to match
-        historyPush(`${ballotBaseUrl}/${ballotLocationShortcut}`);
-      } else if (ballotReturnedWeVoteId !== '') {
+        historyPush(`${ballotBaseUrl}/${ballotLocationShortcutFromUrl}`);
+      } else if (ballotReturnedWeVoteIdFromUrl !== '') {
         // Change the ballot on load to make sure we are getting what we expect from the url
-        BallotActions.voterBallotItemsRetrieve(0, ballotReturnedWeVoteId, '');
+        BallotActions.voterBallotItemsRetrieve(0, ballotReturnedWeVoteIdFromUrl, '');
 
         // Change the URL to match
-        historyPush(`${ballotBaseUrl}/id/${ballotReturnedWeVoteId}`);
+        historyPush(`${ballotBaseUrl}/id/${ballotReturnedWeVoteIdFromUrl}`);
       } else if (googleCivicElectionIdFromUrl !== 0) {
         // Change the ballot on load to make sure we are getting what we expect from the url
         if (googleCivicElectionId !== googleCivicElectionIdFromUrl) {
@@ -239,7 +235,7 @@ class Ballot extends Component {
       BallotActions.voterBallotItemsRetrieve(0, '', '');
     }
 
-    // console.log('Ballot, googleCivicElectionId: ', googleCivicElectionId, ', ballotLocationShortcut: ', ballotLocationShortcut, 'ballotReturnedWeVoteId: ', ballotReturnedWeVoteId);
+    // console.log('Ballot, googleCivicElectionId: ', googleCivicElectionId, ', ballotLocationShortcutFromUrl: ', ballotLocationShortcutFromUrl, 'ballotReturnedWeVoteIdFromUrl: ', ballotReturnedWeVoteIdFromUrl);
     // console.log('VoterStore.election_id: ', VoterStore.electionId());
     if (apiCalming('issueDescriptionsRetrieve', 3600000)) { // Only once per 60 minutes
       IssueActions.issueDescriptionsRetrieve();
@@ -248,7 +244,7 @@ class Ballot extends Component {
       IssueActions.issuesFollowedRetrieve();
     }
 
-    if (googleCivicElectionId || ballotLocationShortcut || ballotReturnedWeVoteId) {
+    if (googleCivicElectionId || ballotLocationShortcutFromUrl || ballotReturnedWeVoteIdFromUrl) {
       // console.log('CALLING IssueActions.issuesUnderBallotItemsRetrieve');
       let callIssuesUnderBallotItemRetrieve = true;
       if (googleCivicElectionId) {
@@ -258,14 +254,14 @@ class Ballot extends Component {
         }
       }
       if (callIssuesUnderBallotItemRetrieve) {
-        IssueActions.issuesUnderBallotItemsRetrieve(googleCivicElectionId, ballotLocationShortcut, ballotReturnedWeVoteId);
+        IssueActions.issuesUnderBallotItemsRetrieve(googleCivicElectionId, ballotLocationShortcutFromUrl, ballotReturnedWeVoteIdFromUrl);
         // IssueActions.issuesUnderBallotItemsRetrieveCalled(googleCivicElectionId); // TODO: Move this to AppObservableStore? Currently throws error: 'Cannot dispatch in the middle of a dispatch'
       }
 
       this.setState({
         issuesRetrievedFromGoogleCivicElectionId: googleCivicElectionId,
-        issuesRetrievedFromBallotReturnedWeVoteId: ballotReturnedWeVoteId,
-        issuesRetrievedFromBallotLocationShortcut: ballotLocationShortcut,
+        issuesRetrievedFromBallotReturnedWeVoteId: ballotReturnedWeVoteIdFromUrl,
+        issuesRetrievedFromBallotLocationShortcut: ballotLocationShortcutFromUrl,
       });
     }
     // NOTE: voterAllPositionsRetrieve is also called in SupportStore when voterAddressRetrieve is received,
@@ -298,10 +294,11 @@ class Ballot extends Component {
 
     this.setState({
       ballotElectionList: BallotStore.ballotElectionList(),
+      ballotLocationShortcut: ballotLocationShortcutFromUrl,
+      ballotReturnedWeVoteId: ballotReturnedWeVoteIdFromUrl,
       completionLevelFilterType,
-      ballotReturnedWeVoteId,
-      ballotLocationShortcut,
       googleCivicElectionId: parseInt(googleCivicElectionId, 10),
+      googleCivicElectionIdFromUrl,
       issuesFollowedCount: IssueStore.getIssuesVoterIsFollowingLength(),
       raceLevelFilterType: BallotStore.getRaceLevelFilterTypeSaved() || 'All',
       voterBallotItemsRetrieveHasReturned: BallotStore.voterBallotItemsRetrieveHasReturned(),
@@ -367,23 +364,23 @@ class Ballot extends Component {
 
     // We don't want to let the googleCivicElectionId disappear
     const googleCivicElectionId = nextParams.google_civic_election_id || this.state.googleCivicElectionId;
-    let ballotReturnedWeVoteId = nextParams.ballot_returned_we_vote_id || '';
-    ballotReturnedWeVoteId = ballotReturnedWeVoteId.trim();
-    let ballotLocationShortcut = nextParams.ballot_location_shortcut || '';
-    ballotLocationShortcut = ballotLocationShortcut.trim();
+    let ballotReturnedWeVoteIdFromUrl = nextParams.ballot_returned_we_vote_id || '';
+    ballotReturnedWeVoteIdFromUrl = ballotReturnedWeVoteIdFromUrl.trim();
+    let ballotLocationShortcutFromUrl = nextParams.ballot_location_shortcut || '';
+    ballotLocationShortcutFromUrl = ballotLocationShortcutFromUrl.trim();
     const completionLevelFilterType = BallotStore.getCompletionLevelFilterTypeSaved() || 'all';
 
     // Were there any actual changes?
-    if (ballotReturnedWeVoteId !== this.state.ballotReturnedWeVoteId ||
-        ballotLocationShortcut !== this.state.ballotLocationShortcut ||
+    if (ballotReturnedWeVoteIdFromUrl !== this.state.ballotReturnedWeVoteIdFromUrl ||
+        ballotLocationShortcutFromUrl !== this.state.ballotLocationShortcutFromUrl ||
         googleCivicElectionId !== this.state.googleCivicElectionId ||
         completionLevelFilterType !== this.state.completionLevelFilterType) {
       // console.log('Ballot componentWillReceiveProps changes found');
       this.setState({
         ballotWithAllItems: BallotStore.getBallotByCompletionLevelFilterType('all'),
         ballotWithItemsFromCompletionFilterType: BallotStore.getBallotByCompletionLevelFilterType(completionLevelFilterType),
-        ballotReturnedWeVoteId,
-        ballotLocationShortcut,
+        ballotReturnedWeVoteId: ballotReturnedWeVoteIdFromUrl,
+        ballotLocationShortcut: ballotLocationShortcutFromUrl,
         completionLevelFilterType,
         googleCivicElectionId: parseInt(googleCivicElectionId, 10),
       });
@@ -1146,8 +1143,14 @@ class Ballot extends Component {
   render () {
     renderLog('Ballot');  // Set LOG_RENDER_EVENTS to log all renders
     const ballotBaseUrl = '/ballot';
-    const { classes } = this.props;
+    const { classes, match: { params } } = this.props;
+    const googleCivicElectionIdFromUrl = params.google_civic_election_id || 0;
+    let ballotReturnedWeVoteIdFromUrl = params.ballot_returned_we_vote_id || '';
+    ballotReturnedWeVoteIdFromUrl = ballotReturnedWeVoteIdFromUrl === 'none' ? '' : ballotReturnedWeVoteIdFromUrl;
     const { location: { pathname } } = window; // search
+    let ballotLocationShortcutFromUrl = params.ballot_location_shortcut || '';
+    ballotLocationShortcutFromUrl = ballotLocationShortcutFromUrl.trim();
+    ballotLocationShortcutFromUrl = ballotLocationShortcutFromUrl === 'none' ? '' : ballotLocationShortcutFromUrl;
 
     const {
       ballotSearchResults, ballotWithAllItems, ballotWithItemsFromCompletionFilterType,
@@ -1375,7 +1378,26 @@ class Ballot extends Component {
                 <div className="container-fluid">
                   <div className="row">
                     <div className="col-md-12">
-                      <Helmet title="Ballot - We Vote" />
+                      <Helmet>
+                        <title>Ballot - We Vote</title>
+                        {googleCivicElectionIdFromUrl ? (
+                          <link rel="canonical" href={`https://wevote.us/ballot/election/${googleCivicElectionIdFromUrl}`} />
+                        ) : (
+                          <>
+                            {ballotReturnedWeVoteIdFromUrl ? (
+                              <link rel="canonical" href={`https://wevote.us/ballot/id/${ballotReturnedWeVoteIdFromUrl}`} />
+                            ) : (
+                              <>
+                                {ballotLocationShortcutFromUrl ? (
+                                  <link rel="canonical" href={`https://wevote.us/ballot/${ballotLocationShortcutFromUrl}`} />
+                                ) : (
+                                  <link rel="canonical" href="https://wevote.us/ballot" />
+                                )}
+                              </>
+                            )}
+                          </>
+                        )}
+                      </Helmet>
                       <header className="ballot__header__group">
                         <BallotTitleHeaderContainer marginTopOffset={this.marginTopOffset()}>
                           <BallotTitleHeader
