@@ -346,10 +346,10 @@ class CandidateListRoot extends Component {
             </WhatIsHappeningTitle>
           )}
           <MobileArrowsInnerWrapper className="u-show-mobile">
-            <LeftArrowInnerWrapper onClick={() => { handleHorizontalScroll(this.scrollElement.current, HORIZONTAL_SCROLL_SPEED, HORIZONTAL_SCROLL_DISTANCE_MOBILE_ARROW_CLICK, HORIZONTAL_SCROLL_STEP_LEFT, this.checkScrollPositionLocal); }}>
+            <LeftArrowInnerWrapper id="candidateLeftArrowMobile" onClick={() => { handleHorizontalScroll(this.scrollElement.current, HORIZONTAL_SCROLL_SPEED, HORIZONTAL_SCROLL_DISTANCE_MOBILE_ARROW_CLICK, HORIZONTAL_SCROLL_STEP_LEFT, this.checkScrollPositionLocal); }}>
               { this.state.hideLeftArrow ? null : <ArrowBackIos classes={{ root: classes.arrowRoot }} /> }
             </LeftArrowInnerWrapper>
-            <RightArrowInnerWrapper onClick={() => { handleHorizontalScroll(this.scrollElement.current, HORIZONTAL_SCROLL_SPEED, HORIZONTAL_SCROLL_DISTANCE_MOBILE_ARROW_CLICK, HORIZONTAL_SCROLL_STEP_RIGHT, this.checkScrollPositionLocal); }}>
+            <RightArrowInnerWrapper id="candidateRightArrowMobile" onClick={() => { handleHorizontalScroll(this.scrollElement.current, HORIZONTAL_SCROLL_SPEED, HORIZONTAL_SCROLL_DISTANCE_MOBILE_ARROW_CLICK, HORIZONTAL_SCROLL_STEP_RIGHT, this.checkScrollPositionLocal); }}>
               { this.state.hideRightArrow ? null : <ArrowForwardIos classes={{ root: classes.arrowRoot }} /> }
             </RightArrowInnerWrapper>
           </MobileArrowsInnerWrapper>
@@ -357,7 +357,7 @@ class CandidateListRoot extends Component {
         {(!(isSearching && hideDisplayBecauseNoSearchResults)) && (
           <CampaignsScrollingOuterWrapper>
             <LeftArrowOuterWrapper className="u-show-desktop-tablet">
-              <LeftArrowInnerWrapper onClick={() => { handleHorizontalScroll(this.scrollElement.current, HORIZONTAL_SCROLL_SPEED, HORIZONTAL_SCROLL_DISTANCE_ON_ARROW_CLICK, HORIZONTAL_SCROLL_STEP_LEFT, this.checkScrollPositionLocal); }}>
+              <LeftArrowInnerWrapper id="candidateLeftArrowDesktop" onClick={() => { handleHorizontalScroll(this.scrollElement.current, HORIZONTAL_SCROLL_SPEED, HORIZONTAL_SCROLL_DISTANCE_ON_ARROW_CLICK, HORIZONTAL_SCROLL_STEP_LEFT, this.checkScrollPositionLocal); }}>
                 { this.state.hideLeftArrow ? null : <ArrowBackIos classes={{ root: classes.arrowRoot }} /> }
               </LeftArrowInnerWrapper>
             </LeftArrowOuterWrapper>
@@ -376,7 +376,7 @@ class CandidateListRoot extends Component {
               </CampaignsHorizontallyScrollingContainer>
             </CampaignsScrollingInnerWrapper>
             <RightArrowOuterWrapper className="u-show-desktop-tablet">
-              <RightArrowInnerWrapper onClick={() => { handleHorizontalScroll(this.scrollElement.current, HORIZONTAL_SCROLL_SPEED, HORIZONTAL_SCROLL_DISTANCE_ON_ARROW_CLICK, HORIZONTAL_SCROLL_STEP_RIGHT, this.checkScrollPositionLocal); }}>
+              <RightArrowInnerWrapper id="candidateRightArrowDesktop" onClick={() => { handleHorizontalScroll(this.scrollElement.current, HORIZONTAL_SCROLL_SPEED, HORIZONTAL_SCROLL_DISTANCE_ON_ARROW_CLICK, HORIZONTAL_SCROLL_STEP_RIGHT, this.checkScrollPositionLocal); }}>
                 { this.state.hideRightArrow ? null : <ArrowForwardIos classes={{ root: classes.arrowRoot }} /> }
               </RightArrowInnerWrapper>
             </RightArrowOuterWrapper>
