@@ -731,22 +731,6 @@ class CampaignsHome extends Component {
               </Suspense>
             </WhatIsHappeningSection>
           )}
-          {(candidateListOnYourBallot && candidateListOnYourBallot.length > 0) && (
-            <WhatIsHappeningSection>
-              <Suspense fallback={<span>&nbsp;</span>}>
-                <CandidateListRoot
-                  hideIfNoResults
-                  incomingList={candidateListOnYourBallot}
-                  incomingListTimeStampOfChange={candidateListTimeStampOfChange}
-                  listModeFilters={listModeFiltersAvailable}
-                  listModeFiltersTimeStampOfChange={listModeFiltersTimeStampOfChange}
-                  searchText={searchText}
-                  stateCode={stateCode}
-                  titleTextForList="On Your Ballot"
-                />
-              </Suspense>
-            </WhatIsHappeningSection>
-          )}
           {(candidateListIsBattleground && candidateListIsBattleground.length > 0) && (
             <WhatIsHappeningSection>
               <Suspense fallback={<span>&nbsp;</span>}>
@@ -777,6 +761,22 @@ class CampaignsHome extends Component {
               />
             </Suspense>
           </WhatIsHappeningSection>
+          {(candidateListOnYourBallot && candidateListOnYourBallot.length > 0) && (
+            <WhatIsHappeningSection>
+              <Suspense fallback={<span>&nbsp;</span>}>
+                <CandidateListRoot
+                  hideIfNoResults
+                  incomingList={candidateListOnYourBallot}
+                  incomingListTimeStampOfChange={candidateListTimeStampOfChange}
+                  listModeFilters={listModeFiltersAvailable}
+                  listModeFiltersTimeStampOfChange={listModeFiltersTimeStampOfChange}
+                  searchText={searchText}
+                  stateCode={stateCode}
+                  titleTextForList="On Your Ballot"
+                />
+              </Suspense>
+            </WhatIsHappeningSection>
+          )}
           <WhatIsHappeningSection>
             <Suspense fallback={<span>&nbsp;</span>}>
               <CandidateListRoot

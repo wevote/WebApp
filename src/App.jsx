@@ -275,6 +275,9 @@ class App extends Component {
           AppObservableStore.setOpenReplayTracker(tracker);
           AppObservableStore.setOpenReplayEnabled(true);
           AppObservableStore.setOpenReplayPending(false);
+          if (voterWeVoteId) {
+            AppObservableStore.setOpenReplayVoterWeVoteId(voterWeVoteId);
+          }
         } else {
           console.log('OpenReplay did not receive a projectKey, NOT ENABLED');
         }
