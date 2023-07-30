@@ -236,7 +236,7 @@ class OneValue extends Component {
               <link rel="canonical" href={`https://wevote.us/value/${issueSlugFromName}`} />
             )}
           </Helmet>
-          <IssueCardWrapper>
+          <IssueCardOuterWrapper>
             <Suspense fallback={<></>}>
               <IssueCard
                 advocatesCount={advocatesCount}
@@ -248,7 +248,7 @@ class OneValue extends Component {
                 key={`issue-list-key-${issue.issue_we_vote_id}`}
               />
             </Suspense>
-          </IssueCardWrapper>
+          </IssueCardOuterWrapper>
           <Title id="advocatesTitle">
             Advocates for
             {' '}
@@ -342,7 +342,7 @@ const FilterChoices = styled('div')`
   margin-bottom: 8px;
 `;
 
-const IssueCardWrapper = styled('div')`
+const IssueCardOuterWrapper = styled('div')`
   margin-bottom: 48px;
 `;
 
