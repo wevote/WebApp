@@ -21,15 +21,15 @@ import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 const RepresentativeCardList = React.lazy(() => import(/* webpackChunkName: 'RepresentativeCardList' */ './RepresentativeCardList'));
 // import OfficeHeldConstants from '../../constants/OfficeHeldConstants';  // I couldn't get this to work
 const OFFICE_HELD_YEARS_AVAILABLE = [2023, 2024, 2025, 2026];
-const HORIZONTAL_SCROLL_SPEED = 2;
+// const HORIZONTAL_SCROLL_SPEED = 2;
 const HORIZONTAL_SCROLL_DISTANCE_ON_LEFT_ARROW_CLICK = -630;
 const HORIZONTAL_SCROLL_DISTANCE_ON_RIGHT_ARROW_CLICK = 630;
 const HORIZONTAL_SCROLL_DISTANCE_MOBILE_LEFT_ARROW_CLICK = -315;
 const HORIZONTAL_SCROLL_DISTANCE_MOBILE_RIGHT_ARROW_CLICK = 315;
 const HORIZONTAL_SCROLL_DISTANCE_ON_SHOW_MORE = 315;
 const RIGHT_MARGIN_SIZE = 24;
-const HORIZONTAL_SCROLL_STEP_LEFT = -20;
-const HORIZONTAL_SCROLL_STEP_RIGHT = 20;
+// const HORIZONTAL_SCROLL_STEP_LEFT = -20;
+// const HORIZONTAL_SCROLL_STEP_RIGHT = 20;
 
 
 class RepresentativeListRoot extends Component {

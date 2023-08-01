@@ -71,8 +71,8 @@ export const CampaignsScrollingOuterWrapper = styled('div')`
 
 export const RightArrowInnerWrapper = styled('div', {
   shouldForwardProp: (prop) => !['disableMobileRightArrow'].includes(prop),
-  })(({ disableMobileRightArrow }) => (`
-  ${ disableMobileRightArrow ? 'opacity: 0.5;' : 'opacity: 1;' }
+})(({ disableMobileRightArrow }) => (`
+  ${disableMobileRightArrow ? 'opacity: 0.5;' : 'opacity: 1;'}
 
   transition: opacity 200ms ease-in 0s;
 `));
@@ -89,8 +89,8 @@ export const RightArrowOuterWrapper = styled('div')`
 
 export const LeftArrowInnerWrapper = styled('div', {
   shouldForwardProp: (prop) => !['disableMobileLeftArrow'].includes(prop),
-  })(({ disableMobileLeftArrow }) => (`
-  ${ disableMobileLeftArrow ? 'opacity: 0.5;' : 'opacity: 1;' }
+})(({ disableMobileLeftArrow }) => (`
+  ${disableMobileLeftArrow ? 'opacity: 0.5;' : 'opacity: 1;'}
 
   transition: opacity 200ms ease-in 0s;
 `));

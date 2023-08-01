@@ -239,12 +239,12 @@ class CampaignListRoot extends Component {
     // console.log('onFilterOrListChange, campaignSearchResults:', campaignSearchResults);
     // console.log('onFilterOrListChange, filteredList:', filteredList);
     if ((isMobileScreenSize() && filteredList.length < 2) || (!isMobileScreenSize() && filteredList.length < 3)) {
-       this.setState({
-         hideRightArrow: true,
-       });
+      this.setState({
+        hideRightArrow: true,
+      });
     } else {
       this.setState({
-         hideRightArrow: false,
+        hideRightArrow: false,
       });
     }
 
@@ -317,7 +317,7 @@ class CampaignListRoot extends Component {
                onScroll={() => { this.checkScrollPositionLocal(this.scrollElement.current); }}
                showLeftGradient={!this.state.hideLeftArrow}
                showRightGradient={!this.state.hideRightArrow}
-              >
+            >
               <CampaignCardList
                 incomingCampaignList={(isSearching ? campaignSearchResults : filteredList)}
                 listModeFilters={listModeFilters}
