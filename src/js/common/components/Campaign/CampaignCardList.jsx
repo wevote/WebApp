@@ -104,6 +104,15 @@ class CampaignCardList extends Component {
     });
   }
 
+  loadMoreHasBeenClicked = () => {
+    this.increaseNumberToDisplay();
+    // console.log('load more has been clicked');
+    if (this.props.loadMoreScroll) {
+      // console.log('loadMoreScroll exists');
+      this.props.loadMoreScroll();
+    }
+  }
+
   render () {
     renderLog('CampaignCardList');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('CampaignCardList render');
@@ -154,7 +163,7 @@ class CampaignCardList extends Component {
           (
             <LoadMoreItemsManuallyWrapper>
               <LoadMoreItemsManually
-                loadMoreFunction={this.increaseNumberToDisplay}
+                loadMoreFunction={this.loadMoreHasBeenClicked}
                 uniqueExternalId="CampaignCardList"
               />
             </LoadMoreItemsManuallyWrapper>
@@ -204,6 +213,7 @@ CampaignCardList.propTypes = {
   startingNumberToDisplay: PropTypes.number,
   timeStampOfChange: PropTypes.number,
   verticalListOn: PropTypes.bool,
+  loadMoreScroll: PropTypes.func,
 };
 
 const styles = () => ({

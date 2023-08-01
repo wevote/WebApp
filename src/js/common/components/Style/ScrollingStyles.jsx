@@ -69,10 +69,13 @@ export const CampaignsScrollingOuterWrapper = styled('div')`
   width: 100%;
 `;
 
-export const RightArrowInnerWrapper = styled('div')`
-  // opacity: 0;
+export const RightArrowInnerWrapper = styled('div', {
+  shouldForwardProp: (prop) => !['disableMobileRightArrow'].includes(prop),
+})(({ disableMobileRightArrow }) => (`
+  ${disableMobileRightArrow ? 'opacity: 0.5;' : 'opacity: 1;'}
+
   transition: opacity 200ms ease-in 0s;
-`;
+`));
 
 export const RightArrowOuterWrapper = styled('div')`
   display: flex;
@@ -80,13 +83,17 @@ export const RightArrowOuterWrapper = styled('div')`
   height: 100%;
   justify-content: center;
   min-height: 330px;
+  min-width: 24px;
   z-index: 9000;
 `;
 
-export const LeftArrowInnerWrapper = styled('div')`
-  //opacity: 0;
+export const LeftArrowInnerWrapper = styled('div', {
+  shouldForwardProp: (prop) => !['disableMobileLeftArrow'].includes(prop),
+})(({ disableMobileLeftArrow }) => (`
+  ${disableMobileLeftArrow ? 'opacity: 0.5;' : 'opacity: 1;'}
+
   transition: opacity 200ms ease-in 0s;
-`;
+`));
 
 export const LeftArrowOuterWrapper = styled('div')`
   display: flex;
@@ -94,6 +101,7 @@ export const LeftArrowOuterWrapper = styled('div')`
   height: 100%;
   justify-content: center;
   min-height: 330px;
+  min-width: 24px;
   z-index: 9000;
 `;
 
@@ -104,4 +112,5 @@ export const TitleAndMobileArrowsOuterWrapper = styled('div')`
 
 export const MobileArrowsInnerWrapper = styled('div')`
   display: flex;
+  min-width: 24px;
 `;
