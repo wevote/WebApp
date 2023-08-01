@@ -81,8 +81,6 @@
     "pre-commit": "^1.2.2",
     "react-hot-loader": "^4.13.1",
     "remove-files-webpack-plugin": "^1.5.0",
-    "stylelint": "^14.3.0",
-    "stylelint-config-standard": "^20.0.0",
     "terser-webpack-plugin": "^5.1.2",
     "unused-webpack-plugin": "^2.4.0",
     "webdriver": "^8.10.7",
