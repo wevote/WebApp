@@ -69,7 +69,9 @@ class CandidateCardList extends Component {
 
   loadMoreHasBeenClicked = () => {
     this.increaseNumberToDisplay();
+    // console.log('load more has been clicked');
     if (this.props.loadMoreScroll) {
+      // console.log('loadMoreScroll exists');
       this.props.loadMoreScroll();
     }
   }

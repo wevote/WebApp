@@ -1,4 +1,4 @@
-export function handleHorizontalScroll (el, speed, distance, step, func) {
+export function handleHorizontalScrollOld (el, speed, distance, step, func) {
   let scrollAmount = 0;
   const element = el;
   const slideTimer = setInterval(() => {
@@ -9,6 +9,29 @@ export function handleHorizontalScroll (el, speed, distance, step, func) {
     }
     func(element);
   }, speed);
+}
+
+export function handleHorizontalScroll (el, distance, func, rightMarginSize) {
+  const element = el;
+  // console.log(element.scrollLeft);
+  // 24 is the size of the right margin of each card
+  // TODO: pass in size of right margin
+  const offset = (element.scrollLeft % distance);
+  let scrollDistance = distance;
+  if (element.scrollLeft === 0) {
+    scrollDistance = distance - rightMarginSize;
+  } else if (offset !== (distance - rightMarginSize)) {
+    scrollDistance = distance - offset - rightMarginSize;
+  }
+  if (distance < 0) {
+    scrollDistance -= distance;
+  }
+  element.scrollTo({
+    top: 0,
+    left: element.scrollLeft + scrollDistance,
+    behavior: 'smooth',
+  });
+  func(element);
 }
 
 export function leftAndRightArrowStateCalculation (el) {
