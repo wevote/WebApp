@@ -241,15 +241,18 @@ class CampaignListRoot extends Component {
     if (campaignSearchResults.length > 0) {
       if ((isMobileScreenSize() && campaignSearchResults.length < 2) || (!isMobileScreenSize() && campaignSearchResults.length < 3)) {
         this.setState({
+          hideLeftArrow: true,
           hideRightArrow: true,
         });
       }
     } else if ((isMobileScreenSize() && filteredList.length < 2) || (!isMobileScreenSize() && filteredList.length < 3)) {
       this.setState({
+        hideLeftArrow: true,
         hideRightArrow: true,
       });
     } else {
       this.setState({
+        hideLeftArrow: true,
         hideRightArrow: false,
       });
     }

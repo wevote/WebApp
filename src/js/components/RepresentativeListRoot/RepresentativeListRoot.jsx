@@ -315,15 +315,18 @@ class RepresentativeListRoot extends Component {
     if (searchResults.length > 0) {
       if ((isMobileScreenSize() && searchResults.length < 2) || (!isMobileScreenSize() && searchResults.length < 3)) {
         this.setState({
+          hideLeftArrow: true,
           hideRightArrow: true,
         });
       }
     } else if ((isMobileScreenSize() && filteredList.length < 2) || (!isMobileScreenSize() && filteredList.length < 3)) {
       this.setState({
-        hideRightArrow: true,
+          hideLeftArrow: true,
+          hideRightArrow: true,
       });
     } else {
       this.setState({
+        hideLeftArrow: true,
         hideRightArrow: false,
       });
     }
