@@ -238,7 +238,13 @@ class CampaignListRoot extends Component {
     }
     // console.log('onFilterOrListChange, campaignSearchResults:', campaignSearchResults);
     // console.log('onFilterOrListChange, filteredList:', filteredList);
-    if ((isMobileScreenSize() && filteredList.length < 2) || (!isMobileScreenSize() && filteredList.length < 3)) {
+    if (campaignSearchResults.length > 0) {
+      if ((isMobileScreenSize() && campaignSearchResults.length < 2) || (!isMobileScreenSize() && campaignSearchResults.length < 3)) {
+        this.setState({
+          hideRightArrow: true,
+        });
+      }
+    } else if ((isMobileScreenSize() && filteredList.length < 2) || (!isMobileScreenSize() && filteredList.length < 3)) {
       this.setState({
         hideRightArrow: true,
       });
