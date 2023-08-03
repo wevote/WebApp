@@ -49,6 +49,7 @@ class ItemActionBar extends PureComponent {
     this.supportItem = this.supportItem.bind(this);
     this.opposeButton = this.opposeButton.bind(this);
     this.supportButton = this.supportButton.bind(this);
+    this.showChooseOrOpposeIntroModalDecision = this.showChooseOrOpposeIntroModalDecision.bind(this);
   }
 
   componentDidMount () {
@@ -533,15 +534,8 @@ class ItemActionBar extends PureComponent {
       return;
     }
 
-    const supportOpposeModalHasBeenShown = VoterStore.getInterfaceFlagState(VoterConstants.SUPPORT_OPPOSE_MODAL_SHOWN);
-    // const supportOpposeModalHasBeenShown = false; // For testing
-    let numberOfBallotChoicesMade = convertToInteger(Cookies.get('number_of_ballot_choices_made')) || 0;
-    numberOfBallotChoicesMade += 1;
-    Cookies.set('number_of_ballot_choices_made', numberOfBallotChoicesMade, { expires: 1, path: '/' });
-    if (!supportOpposeModalHasBeenShown && numberOfBallotChoicesMade >= NUMBER_OF_BALLOT_CHOICES_ALLOWED_BEFORE_SHOW_MODAL) {
-      AppObservableStore.setShowChooseOrOpposeIntroModal(true, this.state.ballotItemType);
-      VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.SUPPORT_OPPOSE_MODAL_SHOWN);
-    }
+    // If the logic in this function decides to, show the "Sign in to save your choices" modal
+    this.showChooseOrOpposeIntroModalDecision();
 
     SupportActions.voterSupportingSave(this.state.ballotItemWeVoteId, this.state.ballotItemType);
     this.setState({
@@ -591,21 +585,28 @@ class ItemActionBar extends PureComponent {
       return;
     }
 
-    const supportOpposeModalHasBeenShown = VoterStore.getInterfaceFlagState(VoterConstants.SUPPORT_OPPOSE_MODAL_SHOWN);
-    // const supportOpposeModalHasBeenShown = false; // For testing
-    let numberOfBallotChoicesMade = convertToInteger(Cookies.get('number_of_ballot_choices_made')) || 0;
-    numberOfBallotChoicesMade += 1;
-    Cookies.set('number_of_ballot_choices_made', numberOfBallotChoicesMade, { expires: 1, path: '/' });
-    if (!supportOpposeModalHasBeenShown && numberOfBallotChoicesMade >= NUMBER_OF_BALLOT_CHOICES_ALLOWED_BEFORE_SHOW_MODAL) {
-      AppObservableStore.setShowChooseOrOpposeIntroModal(true, this.state.ballotItemType);
-      VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.SUPPORT_OPPOSE_MODAL_SHOWN);
-    }
+    // If the logic in this function decides to, show the "Sign in to save your choices" modal
+    this.showChooseOrOpposeIntroModalDecision();
 
     SupportActions.voterOpposingSave(this.state.ballotItemWeVoteId, this.state.ballotItemType);
     this.setState({
       transitioning: true,
     });
     openSnackbar({ message: 'Opposition added!', severity: 'error' });
+  }
+
+  showChooseOrOpposeIntroModalDecision () {
+    const { ballotItemType } = this.state;
+    const supportOpposeModalHasBeenShown = VoterStore.getInterfaceFlagState(VoterConstants.SUPPORT_OPPOSE_MODAL_SHOWN);
+    // const supportOpposeModalHasBeenShown = false; // For testing
+    let numberOfBallotChoicesMade = convertToInteger(Cookies.get('number_of_ballot_choices_made')) || 0;
+    numberOfBallotChoicesMade += 1;
+    // console.log('showChooseOrOpposeIntroModalDecision numberOfBallotChoicesMade', numberOfBallotChoicesMade);
+    Cookies.set('number_of_ballot_choices_made', numberOfBallotChoicesMade, { expires: 1, path: '/' });
+    if (!supportOpposeModalHasBeenShown && numberOfBallotChoicesMade >= NUMBER_OF_BALLOT_CHOICES_ALLOWED_BEFORE_SHOW_MODAL) {
+      AppObservableStore.setShowChooseOrOpposeIntroModal(true, ballotItemType);
+      VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.SUPPORT_OPPOSE_MODAL_SHOWN);
+    }
   }
 
   stopOpposingItem () {
