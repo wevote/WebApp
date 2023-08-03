@@ -310,12 +310,23 @@ class RepresentativeListRoot extends Component {
     }
     // console.log('onFilterOrListChange, searchResults:', searchResults);
     // console.log('onFilterOrListChange, filteredList:', filteredList);
-    if ((isMobileScreenSize() && filteredList.length < 2) || (!isMobileScreenSize() && filteredList.length < 3)) {
+
+    // Set state of hideRightArrow
+    if (searchResults.length > 0) {
+      if ((isMobileScreenSize() && searchResults.length < 2) || (!isMobileScreenSize() && searchResults.length < 3)) {
+        this.setState({
+          hideLeftArrow: true,
+          hideRightArrow: true,
+        });
+      }
+    } else if ((isMobileScreenSize() && filteredList.length < 2) || (!isMobileScreenSize() && filteredList.length < 3)) {
       this.setState({
-        hideRightArrow: true,
+          hideLeftArrow: true,
+          hideRightArrow: true,
       });
     } else {
       this.setState({
+        hideLeftArrow: true,
         hideRightArrow: false,
       });
     }
@@ -335,6 +346,11 @@ class RepresentativeListRoot extends Component {
       hideLeftArrow: leftRightStateDict[0],
       hideRightArrow: leftRightStateDict[1],
     });
+  }
+
+  loadMoreScrollLocal = (el, distance, func, margin) => {
+    handleHorizontalScroll(this.scrollElement.current, 29, this.checkScrollPositionLocal, RIGHT_MARGIN_SIZE);
+    // handleHorizontalScroll(this.scrollElement.current, distance, this.checkScrollPositionLocal, RIGHT_MARGIN_SIZE);
   }
 
   render () {
@@ -398,7 +414,7 @@ class RepresentativeListRoot extends Component {
                   incomingRepresentativeList={(isSearching ? representativeSearchResults : filteredList)}
                   timeStampOfChange={timeStampOfChange}
                   verticalListOn
-                  loadMoreScroll={() => { handleHorizontalScroll(this.scrollElement.current, HORIZONTAL_SCROLL_DISTANCE_ON_SHOW_MORE, this.checkScrollPositionLocal, RIGHT_MARGIN_SIZE); }}
+                  loadMoreScroll={() => { this.loadMoreScrollLocal(this.scrollElement.current, HORIZONTAL_SCROLL_DISTANCE_ON_RIGHT_ARROW_CLICK, this.checkScrollPositionLocal, RIGHT_MARGIN_SIZE); }}
                 />
               </CampaignsHorizontallyScrollingContainer>
             </CampaignsScrollingInnerWrapper>

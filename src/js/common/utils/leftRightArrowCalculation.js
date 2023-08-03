@@ -13,9 +13,6 @@ export function handleHorizontalScrollOld (el, speed, distance, step, func) {
 
 export function handleHorizontalScroll (el, distance, func, rightMarginSize) {
   const element = el;
-  // console.log(element.scrollLeft);
-  // 24 is the size of the right margin of each card
-  // TODO: pass in size of right margin
   const offset = (element.scrollLeft % distance);
   let scrollDistance = distance;
   if (element.scrollLeft === 0) {
