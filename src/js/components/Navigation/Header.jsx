@@ -67,8 +67,8 @@ export default class Header extends Component {
       // Not sure why we had a delay here, or if it is still needed somewhere, but it is removed for now.
       // Adding a big delay here fools lighthouse into reporting a faster speed index, performance, and LCP,
       // but when you look at that delay in "Performance", nothing is happening in the browser -- it is just dead time.
-      // I believe that the delay was fooling Lighthouse into thinking the page had loaded, and the stuff after the
-      // delay was some sort of continuously loading real time data like a stock ticker update.
+      // I believe that the delay was fooling Lighthouse into thinking the page had loaded, and that the activity
+      // after the delay was some sort of continuously updating real time data (like a stock ticker update).
       // setTimeout(() => {
       //  VoterActions.voterRetrieve();
       // }, 5000);
