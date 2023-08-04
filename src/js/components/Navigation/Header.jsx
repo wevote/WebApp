@@ -63,9 +63,16 @@ export default class Header extends Component {
       dumpCssFromId('header-container');
     }
     if (VoterStore.getVoterWeVoteId() === '' && apiCalming('voterRetrieve', 500)) {
-      setTimeout(() => {
-        VoterActions.voterRetrieve();
-      }, 1000);
+      // Aug 3, 2023: Removed the 1-second delay, and the result is visibly faster.
+      // Not sure why we had a delay here, or if it is still needed somewhere, but it is removed for now.
+      // Adding a big delay here fools lighthouse into reporting a faster speed index, performance, and LCP,
+      // but when you look at that delay in "Performance", nothing is happening in the browser -- it is just dead time.
+      // I believe that the delay was fooling Lighthouse into thinking the page had loaded, and the stuff after the
+      // delay was some sort of continuously loading real time data like a stock ticker update.
+      // setTimeout(() => {
+      //  VoterActions.voterRetrieve();
+      // }, 5000);
+      VoterActions.voterRetrieve();
     }
   }
 

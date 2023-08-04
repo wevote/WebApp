@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import initializejQuery from '../../utils/initializejQuery';
-import { renderLog } from '../../utils/logging';
+import React, { Component } from 'react';
 import CandidateActions from '../../../actions/CandidateActions';
 import BallotStore from '../../../stores/BallotStore';
 import CandidateStore from '../../../stores/CandidateStore';
 import VoterStore from '../../../stores/VoterStore';
+import initializejQuery from '../../utils/initializejQuery';
+import { renderLog } from '../../utils/logging';
 
 
 class PoliticianPositionRetrieveController extends Component {
@@ -63,6 +63,14 @@ class PoliticianPositionRetrieveController extends Component {
     this.onCandidateStoreChange();
   }
 
+  getDateNowYYYYMMDD = () => {
+    const t = new Date();
+    const y = t.getFullYear();
+    const m = (`0${  t.getMonth() + 1}`).slice(-2);
+    const d = (`0${  t.getDate()}`).slice(-2);
+    return y + m + d;
+  }
+
   positionsFirstRetrieve = () => {
     const { politicianWeVoteId } = this.props;
     // console.log('positionsFirstRetrieve politicianWeVoteId: ', politicianWeVoteId);
@@ -75,13 +83,24 @@ class PoliticianPositionRetrieveController extends Component {
           const alreadyRetrievedList = [];
           const candidateList = CandidateStore.getCandidateListByPoliticianWeVoteId(politicianWeVoteId);
           const howLongToDelayRetrieve = 2000;
+          const now = this.getDateNowYYYYMMDD();
+          let mostRecent = '00000000';
+          let mostRecentIndex = -1;
+          /// Only make API calls for future elections, but if there isn't one, make a call for the most recent one
           for (let i = 0; i < candidateList.length; i += 1) {
-            // console.log('candidateList[i].we_vote_id: ', candidateList[i].we_vote_id);
-            if (!alreadyRetrievedList.includes(candidateList[i].we_vote_id)) {
+            const ultimate = candidateList[i].candidate_ultimate_election_date;
+            if (ultimate > mostRecent) {
+              mostRecent = ultimate;
+              mostRecentIndex = i;
+            }
+            if (now < ultimate && !alreadyRetrievedList.includes(candidateList[i].we_vote_id)) {
               // Leave a gap of 300 milliseconds between each request
               setTimeout(this.retrievePositionListsForOneCandidate(candidateList[i].we_vote_id), howLongToDelayRetrieve * i);
               alreadyRetrievedList.push(candidateList[i].we_vote_id);
             }
+          }
+          if (alreadyRetrievedList.length === 0) {
+            this.retrievePositionListsForOneCandidate(candidateList[mostRecentIndex].we_vote_id);
           }
           this.setState({
             firstCandidatePositionsRetrieveInitiated: true,
