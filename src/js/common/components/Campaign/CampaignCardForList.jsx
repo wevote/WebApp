@@ -94,9 +94,6 @@ class CampaignCardForList extends Component {
     this.appStateSubscription.unsubscribe();
     this.campaignStoreListener.remove();
     this.campaignSupporterStoreListener.remove();
-    if (this.timer) {
-      clearTimeout(this.timer);
-    }
   }
 
   onAppObservableStoreChange () {

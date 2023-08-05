@@ -60,7 +60,10 @@ class MostRecentCampaignSupport extends React.Component {
     }
     this.timeInterval = null;
     // this.timeInterval = setInterval(() => this.setCommentsToDisplay(), 30000);
-    this.timeInterval = setInterval(() => this.moveSupportersOnStage(), 3000);
+    // Aug 4, 2023 There was nothing happening in "Performance" in the browser for most of these three seconds,
+    // and it made the page load look slow and the slow load was distracting
+    // this.timeInterval = setInterval(() => this.moveSupportersOnStage(), 3000);
+    this.timeInterval = setInterval(() => this.moveSupportersOnStage(), 100);
   }
 
   componentDidUpdate (prevProps, prevState) {

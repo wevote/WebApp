@@ -78,6 +78,7 @@ class PoliticianDetailsPage extends Component {
       chosenWebsiteName: '',
       finalElectionDateInPast: false,
       // inPrivateLabelMode: false,
+      loadSlow: false,
       officeHeldList: [],
       opponentCandidateList: [],
       payToPromoteStepCompleted: false,
@@ -455,7 +456,7 @@ class PoliticianDetailsPage extends Component {
     // console.log('componentDidMount politicianSEOFriendlyPathFromUrl: ', politicianSEOFriendlyPathFromUrl);
     const {
       allCachedPositionsForThisPolitician, ballotpediaPoliticianUrl, candidateCampaignList, chosenWebsiteName,
-      supporterEndorsementsWithText, finalElectionDateInPast, linkedCampaignXWeVoteId,
+      supporterEndorsementsWithText, finalElectionDateInPast, linkedCampaignXWeVoteId, loadSlow,
       officeHeldList, officeHeldNameForSearch, opponentCandidateList,
       politicalParty, politicianDataNotFound,
       politicianDescription, politicianDescriptionLimited, politicianImageUrlLarge,
@@ -645,7 +646,7 @@ class PoliticianDetailsPage extends Component {
     if (allCachedPositionsForThisPolitician && allCachedPositionsForThisPolitician.length > 0) {
       positionListTeaserHtml = (
         <CommentsListWrapper>
-          <DelayedLoad waitBeforeShow={1000}>
+          <DelayedLoad waitBeforeShow={loadSlow ? 1000 : 0}>
             <Suspense fallback={<span>&nbsp;</span>}>
               <CampaignSubSectionTitleWrapper>
                 <CampaignSubSectionTitle>
@@ -681,7 +682,7 @@ class PoliticianDetailsPage extends Component {
     if (supporterEndorsementsWithText && supporterEndorsementsWithText.length > 0) {
       commentListTeaserHtml = (
         <CommentsListWrapper>
-          <DelayedLoad waitBeforeShow={1500}>
+          <DelayedLoad waitBeforeShow={loadSlow ? 1500 : 0}>
             <Suspense fallback={<span>&nbsp;</span>}>
               <CampaignSubSectionTitleWrapper>
                 <CampaignSubSectionTitle>
@@ -743,7 +744,7 @@ class PoliticianDetailsPage extends Component {
                   <PoliticianImageMobile src={politicianImageUrlLarge} alt="Politician" />
                 </PoliticianImageMobilePlaceholder>
               ) : (
-                <DelayedLoad waitBeforeShow={1000}>
+                <DelayedLoad waitBeforeShow={loadSlow ? 1000 : 0}>
                   <CampaignImagePlaceholder>
                     <CampaignImagePlaceholderText>
                       No image provided
@@ -835,7 +836,7 @@ class PoliticianDetailsPage extends Component {
             </Suspense>
             {(!futureFeaturesDisabled && nextReleaseFeaturesEnabled) && (
               <CommentsListWrapper>
-                <DelayedLoad waitBeforeShow={1000}>
+                <DelayedLoad waitBeforeShow={loadSlow ? 1000 : 0}>
                   <Suspense fallback={<span>&nbsp;</span>}>
                     <CampaignSubSectionTitleWrapper>
                       <CampaignSubSectionTitle>
@@ -915,7 +916,7 @@ class PoliticianDetailsPage extends Component {
                       <PoliticianImageDesktop src={politicianImageUrlLarge} alt="Politician" />
                     </PoliticianImageDesktopPlaceholder>
                   ) : (
-                    <DelayedLoad waitBeforeShow={1000}>
+                    <DelayedLoad waitBeforeShow={loadSlow ? 1000 : 0}>
                       <CampaignImagePlaceholder>
                         <CampaignImagePlaceholderText>
                           No image provided
@@ -970,7 +971,7 @@ class PoliticianDetailsPage extends Component {
                 </Suspense>
                 {(!futureFeaturesDisabled && nextReleaseFeaturesEnabled) && (
                   <CommentsListWrapper>
-                    <DelayedLoad waitBeforeShow={500}>
+                    <DelayedLoad waitBeforeShow={loadSlow ? 500 : 0}>
                       <Suspense fallback={<span>&nbsp;</span>}>
                         <CampaignSubSectionTitleWrapper>
                           <CampaignSubSectionTitle>
