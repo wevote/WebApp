@@ -377,6 +377,8 @@ class App extends Component {
                   <Route path="/-:shared_item_code" exact component={SharedItemLanding} />
                   <Route exact path="/:politicianWeVoteId/p/" render={(props) => <PoliticianDetailsPage match={props.match} />} />
                   <Route exact path="/:politicianSEOFriendlyPath/-/" render={(props) => <PoliticianDetailsPage match={props.match} />} />
+                  <Route exact path="/:campaignSEOFriendlyPath/-/share-campaign" render={(props) => <CampaignSupportShare match={props.match} setShowHeaderFooter={this.setShowHeaderFooter} />} />
+                  <Route exact path="/:campaignSEOFriendlyPath/-/share-campaign-with-one-friend" render={(props) => <CampaignSupportShare match={props.match} setShowHeaderFooter={this.setShowHeaderFooter} showShareCampaignWithOneFriend />} />
                   <Route path="/about" exact><About /></Route>
                   <Route path="/add-candidate-for-extension" component={AddCandidateForExtension} />
                   <Route path="/applesigninprocess" component={AppleSignInProcess} />
