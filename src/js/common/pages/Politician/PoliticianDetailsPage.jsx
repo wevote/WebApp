@@ -352,6 +352,31 @@ class PoliticianDetailsPage extends Component {
     if (politicianName) {
       htmlTitle = `${politicianName} - ${chosenWebsiteName}`;
     }
+
+    const updateCandidateInformationLink = 'https://docs.google.com/forms/d/e/1FAIpQLSePdeW32PClaSO1pUWBJnQ75wFGPOtviNaqOABBYps7NIH3hA/viewform?usp=sf_link';
+    const updateCandidateInformation = (
+      <div>
+        {!!(politicianName) && (
+          <div>
+            Are you&nbsp;
+            {politicianName}
+            ?
+            <OpenExternalWebSite
+              linkIdAttribute="updateCandidateInformation"
+              url={updateCandidateInformationLink}
+              target="_blank"
+              className="u-link-color"
+              body={(
+                <div>
+                  Click here to update candidate information.
+                </div>
+              )}
+            />
+          </div>
+        )}
+      </div>
+    );
+
     const politicianLinks = (
       <PoliticianLinksWrapper>
         {!!(twitterHandle && twitterFollowersCount) && (
@@ -578,6 +603,7 @@ class PoliticianDetailsPage extends Component {
               </CampaignDescription>
               {politicianLinks}
               {politicianButtons}
+              {updateCandidateInformation}
               {finalElectionDateInPast && (
                 <IndicatorRow>
                   <IndicatorButtonWrapper>
@@ -716,6 +742,7 @@ class PoliticianDetailsPage extends Component {
                   </CampaignDescriptionDesktop>
                   {politicianLinks}
                   {politicianButtons}
+                  {updateCandidateInformation}
                   {finalElectionDateInPast && (
                     <IndicatorRow>
                       <IndicatorButtonWrapper>
