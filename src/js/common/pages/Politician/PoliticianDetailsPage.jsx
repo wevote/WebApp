@@ -360,18 +360,14 @@ class PoliticianDetailsPage extends Component {
           <div>
             Are you&nbsp;
             {politicianName}
-            ?
-            <OpenExternalWebSite
-              linkIdAttribute="updateCandidateInformation"
-              url={updateCandidateInformationLink}
-              target="_blank"
-              className="u-link-color"
-              body={(
-                <div>
-                  Click here to update candidate information.
-                </div>
-              )}
-            />
+            ?&nbsp;
+            <a href={updateCandidateInformationLink}
+               target="_blank"
+               rel="noreferrer"
+               className="u-link-color"
+            >
+              Click here to update candidate information.
+            </a>
           </div>
         )}
       </div>
