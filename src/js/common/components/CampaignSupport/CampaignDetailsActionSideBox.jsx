@@ -9,15 +9,16 @@ import { renderLog } from '../../utils/logging';
 import CampaignStore from '../../stores/CampaignStore';
 import CampaignSupporterStore from '../../stores/CampaignSupporterStore';
 import VoterStore from '../../../stores/VoterStore';
+import CampaignChipInLink from '../Campaign/CampaignChipInLink';
 import CampaignShareChunk from '../Campaign/CampaignShareChunk';
 import SupportButton from './SupportButton';
-import webAppConfig from '../../../config';
+// import webAppConfig from '../../../config';
 
 const CompleteYourProfile = React.lazy(() => import(/* webpackChunkName: 'CompleteYourProfile' */ '../Settings/CompleteYourProfile'));
 const MostRecentCampaignSupport = React.lazy(() => import(/* webpackChunkName: 'MostRecentCampaignSupport' */ './MostRecentCampaignSupport'));
 const VisibleToPublicCheckbox = React.lazy(() => import(/* webpackChunkName: 'VisibleToPublicCheckbox' */ './VisibleToPublicCheckbox'));
 
-const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
+// const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
 class CampaignDetailsActionSideBox extends Component {
   constructor (props) {
@@ -56,6 +57,7 @@ class CampaignDetailsActionSideBox extends Component {
           finalElectionDateInPast,
         });
         this.pullCampaignXSupporterVoterEntry(campaignXWeVoteId);
+        this.onCampaignStoreChange();
       }
     } else if (campaignSEOFriendlyPath) {
       if (campaignSEOFriendlyPath !== campaignSEOFriendlyPathPrevious) {
@@ -66,6 +68,7 @@ class CampaignDetailsActionSideBox extends Component {
           finalElectionDateInPast,
         });
         this.pullCampaignXSupporterVoterEntry(campaignXWeVoteIdCalculated);
+        this.onCampaignStoreChange();
       }
     }
   }
@@ -184,13 +187,11 @@ class CampaignDetailsActionSideBox extends Component {
 
   render () {
     renderLog('CampaignDetailsActionSideBox');  // Set LOG_RENDER_EVENTS to log all renders
-    const { campaignSEOFriendlyPath, campaignXWeVoteId, classes, inDraftMode, politicianSEOFriendlyPath, politicianWeVoteId } = this.props;
+    const { campaignSEOFriendlyPath, campaignXWeVoteId, classes, inDraftMode } = this.props;
     // console.log('CampaignDetailsActionSideBox render campaignXWeVoteId:', campaignXWeVoteId, ', campaignSEOFriendlyPath:', campaignSEOFriendlyPath);
-    if (!nextReleaseFeaturesEnabled) {
-      if (!campaignSEOFriendlyPath && !campaignXWeVoteId) {
-        // console.log('CampaignDetailsActionSideBox render voter NOT found');
-        return <div className="undefined-campaign-state" />;
-      }
+    if (!campaignSEOFriendlyPath && !campaignXWeVoteId) {
+      // console.log('CampaignDetailsActionSideBox render voter NOT found');
+      return <div className="undefined-campaign-state" />;
     }
 
     const {
@@ -204,7 +205,7 @@ class CampaignDetailsActionSideBox extends Component {
     const hideFooterBehindModal = false;
     const supportButtonClasses = classes.buttonDefault; // isWebApp() ? classes.buttonDefault : classes.buttonDefaultCordova;
     return (
-      <Wrapper>
+      <CampaignDetailsActionSideBoxWrapper>
         {campaignSupported ? (
           <KeepHelpingWrapper
             className={hideFooterBehindModal ? 'u-z-index-1000' : 'u-z-index-9000'}
@@ -237,6 +238,13 @@ class CampaignDetailsActionSideBox extends Component {
                     </Button>
                   </ButtonPanel>
                 )}
+                <CampaignChipInLinkOuterWrapper>
+                  <CampaignChipInLink
+                    campaignSEOFriendlyPath={campaignSEOFriendlyPath}
+                    campaignXWeVoteId={campaignXWeVoteId}
+                    externalUniqueId="desktop"
+                  />
+                </CampaignChipInLinkOuterWrapper>
                 <CampaignShareChunkWrapper>
                   <CampaignShareChunk
                     campaignSEOFriendlyPath={campaignSEOFriendlyPath}
@@ -275,7 +283,6 @@ class CampaignDetailsActionSideBox extends Component {
                         <SupportButton
                           campaignXWeVoteId={campaignXWeVoteId}
                           functionToUseWhenProfileComplete={this.props.functionToUseWhenProfileComplete}
-                          politicianWeVoteId={politicianWeVoteId}
                         />
                       </ProfileAlreadyComplete>
                     ) : (
@@ -284,8 +291,6 @@ class CampaignDetailsActionSideBox extends Component {
                           <CompleteYourProfile
                             campaignXWeVoteId={campaignXWeVoteId}
                             functionToUseWhenProfileComplete={this.props.functionToUseWhenProfileComplete}
-                            politicianSEOFriendlyPath={politicianSEOFriendlyPath}
-                            politicianWeVoteId={politicianWeVoteId}
                             supportCampaignOnCampaignHome
                           />
                         </Suspense>
@@ -295,9 +300,24 @@ class CampaignDetailsActionSideBox extends Component {
                 )}
               </>
             )}
+            <CampaignChipInLinkOuterWrapper>
+              <CampaignChipInLink
+                campaignSEOFriendlyPath={campaignSEOFriendlyPath}
+                campaignXWeVoteId={campaignXWeVoteId}
+                externalUniqueId="desktop"
+              />
+            </CampaignChipInLinkOuterWrapper>
+            <CampaignShareChunkWrapper>
+              <CampaignShareChunk
+                campaignSEOFriendlyPath={campaignSEOFriendlyPath}
+                campaignXWeVoteId={campaignXWeVoteId}
+                darkButtonsOff
+                privatePublicIntroductionsOff
+              />
+            </CampaignShareChunkWrapper>
           </section>
         )}
-      </Wrapper>
+      </CampaignDetailsActionSideBoxWrapper>
     );
   }
 }
@@ -308,8 +328,6 @@ CampaignDetailsActionSideBox.propTypes = {
   functionToUseToKeepHelping: PropTypes.func.isRequired,
   functionToUseWhenProfileComplete: PropTypes.func.isRequired,
   inDraftMode: PropTypes.bool,
-  politicianSEOFriendlyPath: PropTypes.string,
-  politicianWeVoteId: PropTypes.string,
 };
 
 const styles = (theme) => ({
@@ -339,6 +357,10 @@ const ButtonPanel = styled('div')`
   padding: 10px 0;
 `;
 
+const CampaignChipInLinkOuterWrapper = styled('div')`
+  margin-top: 40px;
+`;
+
 const CampaignShareChunkWrapper = styled('div')`
   margin-top: 100px;
 `;
@@ -355,7 +377,7 @@ const KeepHelpingWrapper = styled('div')`
 const ProfileAlreadyComplete = styled('div')`
 `;
 
-const Wrapper = styled('div')`
+const CampaignDetailsActionSideBoxWrapper = styled('div')`
 `;
 
 export default withTheme(withStyles(styles)(CampaignDetailsActionSideBox));

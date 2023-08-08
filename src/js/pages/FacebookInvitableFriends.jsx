@@ -1,7 +1,7 @@
 import { filter } from 'lodash-es';
 import React, { Component } from 'react';
 import Button from 'react-bootstrap/Button';
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import FacebookActions from '../actions/FacebookActions';
 import FriendActions from '../actions/FriendActions';

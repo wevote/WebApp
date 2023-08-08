@@ -16,6 +16,7 @@ import SupportStore from '../../../stores/SupportStore';
 import VoterStore from '../../../stores/VoterStore';
 import webAppConfig from '../../../config';
 
+const futureFeaturesDisabled = true;
 const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
 class SupportButtonBeforeCompletionScreen extends Component {
@@ -211,7 +212,7 @@ class SupportButtonBeforeCompletionScreen extends Component {
       supportButtonClasses = classes.buttonDefaultCordova;
     }
     // console.log('SupportButtonBeforeCompletionScreen render campaignXWeVoteId:', campaignXWeVoteId);
-    if (!campaignXWeVoteId && !nextReleaseFeaturesEnabled) {
+    if (!campaignXWeVoteId) {
       // console.log('SupportButtonBeforeCompletionScreen render voter NOT found');
       return <div className="undefined-campaign-state" />;
     }
@@ -244,20 +245,22 @@ class SupportButtonBeforeCompletionScreen extends Component {
             <>
               {voterOpposesBallotItem ? (
                 <>
-                  {nextReleaseFeaturesEnabled && (
-                    <Button
-                      classes={{ root: supportButtonClasses }}
-                      color="primary"
-                      disabled
-                      id="helpDefeatThemButton"
-                      // onClick={this.submitSupportButtonMobile}
-                      variant={inButtonFullWidthMode || !inCompressedMode ? 'contained' : 'outline'}
-                    >
-                      <span>
-                        Help defeat them
-                      </span>
-                    </Button>
-                  )}
+                  <Button
+                    classes={{ root: supportButtonClasses }}
+                    color="primary"
+                    disabled={futureFeaturesDisabled || !nextReleaseFeaturesEnabled}
+                    id="helpDefeatThemButton"
+                    onClick={(!futureFeaturesDisabled && nextReleaseFeaturesEnabled) ? this.submitSupportButtonMobile : null}
+                    variant={inButtonFullWidthMode || !inCompressedMode ? 'contained' : 'outline'}
+                  >
+                    <span>
+                      {(!futureFeaturesDisabled && nextReleaseFeaturesEnabled) && (
+                        <span>
+                          Help defeat them
+                        </span>
+                      )}
+                    </span>
+                  </Button>
                 </>
               ) : (
                 <Button

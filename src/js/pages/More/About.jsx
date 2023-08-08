@@ -1,7 +1,7 @@
 import { Launch } from '@mui/icons-material';
 import withStyles from '@mui/styles/withStyles';
 import React, { Component, Suspense } from 'react';
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
@@ -82,7 +82,10 @@ class About extends Component {
 
     return (
       <AboutWrapper>
-        <Helmet title="About We Vote" />
+        <Helmet>
+          <title>About We Vote</title>
+          <link rel="canonical" href="https://wevote.us/about" />
+        </Helmet>
         <Suspense fallback={<></>}>
           <WelcomeAppbar pathname="/more/about" />
         </Suspense>

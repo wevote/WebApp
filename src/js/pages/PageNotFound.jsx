@@ -3,7 +3,7 @@ import { Button, Card } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import styled from 'styled-components';
 import historyPush from '../common/utils/historyPush';
 import { isCordova } from '../common/utils/isCordovaOrWebApp';
@@ -74,11 +74,6 @@ const EmptyBallotText = styled('p')(({ theme }) => (`
 `));
 
 const styles = (theme) => ({
-  ballotIconRoot: {
-    width: 150,
-    height: 150,
-    color: 'rgb(171, 177, 191)',
-  },
   ballotButtonIconRoot: {
     marginRight: 8,
   },

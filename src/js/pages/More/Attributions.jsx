@@ -1,5 +1,5 @@
 import React from 'react';
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import attributions from '../../common/constants/attributionText';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';

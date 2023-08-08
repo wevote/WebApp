@@ -21,7 +21,7 @@ export default function FooterCandidateList () {
         // console.log('tempStateCode:', tempStateCode, ', stateAlreadySelected:', stateAlreadySelected);
         return (
           <SimpleModeItemWrapper key={stateCode}>
-            <Link to={`/${stateNamePhraseLowerCase}/cs/`}>
+            <Link className="u-link-color" to={`/${stateNamePhraseLowerCase}/cs/`}>
               {stateName}
               {' '}
               candidates

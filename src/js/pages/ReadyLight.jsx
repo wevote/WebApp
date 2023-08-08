@@ -2,7 +2,7 @@ import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import ActivityActions from '../actions/ActivityActions';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import ReadyActions from '../actions/ReadyActions';
@@ -126,7 +126,10 @@ class ReadyLight extends Component {
     return (
       <PageContentContainer>
         <ReadyPageContainer className="container-fluid" style={this.getTopPadding()}>
-          <Helmet title="Ready to Vote? - We Vote" />
+          <Helmet>
+            <title>Ready to Vote? - We Vote</title>
+            <link rel="canonical" href="https://wevote.us/" />
+          </Helmet>
           <BrowserPushMessage incomingProps={this.props} />
           <div className="row">
             <ElectionCountdownOuterWrapper className="col-12">

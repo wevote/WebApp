@@ -3,7 +3,7 @@ import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import Alert from 'react-bootstrap/Alert';
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import styled from 'styled-components';
 import TwitterActions from '../../actions/TwitterActions';
 import VoterSessionActions from '../../actions/VoterSessionActions';
@@ -164,7 +164,10 @@ class VerifyThisIsMe extends Component {
       params.we_vote_id = this.state.ownerWeVoteId;
       return (
         <PageContentContainer>
-          <Helmet title="Claim This Page - We Vote" />
+          <Helmet>
+            <title>Claim This Page - We Vote</title>
+            <meta name="robots" content="noindex" data-react-helmet="true" />
+          </Helmet>
           <div className="card">
             <div className="card-main">
               <div>

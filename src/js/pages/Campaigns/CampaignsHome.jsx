@@ -2,7 +2,7 @@ import { Chip, FormControl, InputLabel, Select } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import styled from 'styled-components';
 import ActivityActions from '../../actions/ActivityActions';
 import IssueActions from '../../actions/IssueActions';
@@ -629,19 +629,28 @@ class CampaignsHome extends Component {
       );
     }
 
-    titleText = 'Candidates - We Vote';
-    descriptionText = 'Choose which candidates you support.';
+    const { match: { params: { state_candidates_phrase: stateCandidatesPhrase } } } = this.props;
     let stateCodeTemp;
     const stateNameList = Object.values(stateCodeMap);
+    if (stateCode && stateCode !== 'na') {
+      const stateText = convertStateCodeToStateText(stateCode);
+      titleText = `${stateText} Candidates - We Vote`;
+    } else {
+      titleText = 'Candidates - We Vote';
+    }
+    descriptionText = 'Choose which candidates you support or oppose.';
     const representativesShowing = (representativeListOnYourBallot && representativeListOnYourBallot.length > 0) || (representativeListShownAsRepresentatives && representativeListShownAsRepresentatives.length > 0);
     const otherTitlesShown = (campaignsShowing && nextReleaseFeaturesEnabled) || (candidateListOnYourBallot && candidateListOnYourBallot.length > 0) || (candidateListIsBattleground && candidateListIsBattleground.length > 0) || representativesShowing;
     return (
       <PageContentContainer>
         <CampaignsHomeContainer className="container-fluid" style={this.getTopPadding()}>
-          <Helmet
-            title={titleText}
-            meta={[{ name: 'description', content: descriptionText }]}
-          />
+          <Helmet>
+            <title>{titleText}</title>
+            {stateCandidatesPhrase && (
+              <link rel="canonical" href={`https://wevote.us/${stateCandidatesPhrase}/cs`} />
+            )}
+            <meta name="description" content={descriptionText} />
+          </Helmet>
           <CampaignsHomeFilterWrapper>
             {(isSearching && searchText) && (
               <SearchTitleTop>
@@ -722,22 +731,6 @@ class CampaignsHome extends Component {
               </Suspense>
             </WhatIsHappeningSection>
           )}
-          {(candidateListOnYourBallot && candidateListOnYourBallot.length > 0) && (
-            <WhatIsHappeningSection>
-              <Suspense fallback={<span>&nbsp;</span>}>
-                <CandidateListRoot
-                  hideIfNoResults
-                  incomingList={candidateListOnYourBallot}
-                  incomingListTimeStampOfChange={candidateListTimeStampOfChange}
-                  listModeFilters={listModeFiltersAvailable}
-                  listModeFiltersTimeStampOfChange={listModeFiltersTimeStampOfChange}
-                  searchText={searchText}
-                  stateCode={stateCode}
-                  titleTextForList="On Your Ballot"
-                />
-              </Suspense>
-            </WhatIsHappeningSection>
-          )}
           {(candidateListIsBattleground && candidateListIsBattleground.length > 0) && (
             <WhatIsHappeningSection>
               <Suspense fallback={<span>&nbsp;</span>}>
@@ -768,6 +761,22 @@ class CampaignsHome extends Component {
               />
             </Suspense>
           </WhatIsHappeningSection>
+          {(candidateListOnYourBallot && candidateListOnYourBallot.length > 0) && (
+            <WhatIsHappeningSection>
+              <Suspense fallback={<span>&nbsp;</span>}>
+                <CandidateListRoot
+                  hideIfNoResults
+                  incomingList={candidateListOnYourBallot}
+                  incomingListTimeStampOfChange={candidateListTimeStampOfChange}
+                  listModeFilters={listModeFiltersAvailable}
+                  listModeFiltersTimeStampOfChange={listModeFiltersTimeStampOfChange}
+                  searchText={searchText}
+                  stateCode={stateCode}
+                  titleTextForList="On Your Ballot"
+                />
+              </Suspense>
+            </WhatIsHappeningSection>
+          )}
           <WhatIsHappeningSection>
             <Suspense fallback={<span>&nbsp;</span>}>
               <CandidateListRoot

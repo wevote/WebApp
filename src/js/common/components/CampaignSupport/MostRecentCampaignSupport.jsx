@@ -1,7 +1,7 @@
 import { AccountCircle } from '@mui/icons-material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { createRef } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import anonymous from '../../../../img/global/icons/avatar-generic.png';
@@ -22,11 +22,13 @@ import VoterStore from '../../../stores/VoterStore';
 class MostRecentCampaignSupport extends React.Component {
   constructor (props) {
     super(props);
+    this.commentsWrapperDiv = createRef();
     this.state = {
       countOfStageQueueItemsMovedOnStage: 0,
       stageQueue: [],
       supportersOnStageNow: [],
       waitingForInitialData: true,
+      isAutoScroll: false,
     };
   }
 
@@ -37,7 +39,8 @@ class MostRecentCampaignSupport extends React.Component {
     const { campaignXWeVoteId } = this.props;
     // console.log('componentDidMount campaignXWeVoteId:', campaignXWeVoteId);
     if (campaignXWeVoteId) {
-      const allLatestSupporters = CampaignSupporterStore.getCampaignXSupportersList(campaignXWeVoteId);
+      // This list includes "CampaignXSupporter" entries without a text comment
+      const allLatestSupporters = CampaignSupporterStore.getLatestCampaignXSupportersList(campaignXWeVoteId);
       // console.log('componentDidMount allLatestSupporters:', allLatestSupporters);
       if (allLatestSupporters && allLatestSupporters.length) {
         this.setState({
@@ -57,20 +60,33 @@ class MostRecentCampaignSupport extends React.Component {
     }
     this.timeInterval = null;
     // this.timeInterval = setInterval(() => this.setCommentsToDisplay(), 30000);
-    this.timeInterval = setInterval(() => this.moveSupportersOnStage(), 3000);
+    // Aug 4, 2023 There was nothing happening in "Performance" in the browser for most of these three seconds,
+    // and it made the page load look slow and the slow load was distracting
+    // this.timeInterval = setInterval(() => this.moveSupportersOnStage(), 3000);
+    this.timeInterval = setInterval(() => this.moveSupportersOnStage(), 100);
   }
 
   componentDidUpdate (prevProps, prevState) {
     // console.log('MostRecentCampaignSupport componentDidUpdate');
+    const {
+      campaignXWeVoteId: previousCampaignXWeVoteId,
+    } = prevProps;
     const {
       campaignXWeVoteId,
     } = this.props;
     const {
       waitingForInitialData: waitingForInitialDataPrevious,
     } = prevState;
-    // console.log('componentDidUpdate campaignXWeVoteId:', campaignXWeVoteId, ', waitingForInitialData:', waitingForInitialData);
-    if (campaignXWeVoteId) {
-      const allLatestSupporters = CampaignSupporterStore.getCampaignXSupportersList(campaignXWeVoteId);
+    // console.log('componentDidUpdate campaignXWeVoteId:', campaignXWeVoteId, ', waitingForInitialDataPrevious:', waitingForInitialDataPrevious);
+    if (previousCampaignXWeVoteId !== campaignXWeVoteId) {
+      this.clearCampaignValues();
+      this.supportersTimer = setTimeout(() => {
+        const allLatestSupporters = CampaignSupporterStore.getLatestCampaignXSupportersList(campaignXWeVoteId);
+        // console.log('componentDidUpdate allLatestSupporters:', allLatestSupporters);
+        this.onFirstLoadOfSupporterData(allLatestSupporters);
+      }, 500);
+    } else if (campaignXWeVoteId) {
+      const allLatestSupporters = CampaignSupporterStore.getLatestCampaignXSupportersList(campaignXWeVoteId);
       // console.log('componentDidUpdate allLatestSupporters:', allLatestSupporters, ', waitingForInitialDataPrevious:', waitingForInitialDataPrevious, ', waitingForInitialData:', waitingForInitialData);
       const dataExists = allLatestSupporters && allLatestSupporters.length > 0;
       const waitingForInitialData = !dataExists;
@@ -89,10 +105,24 @@ class MostRecentCampaignSupport extends React.Component {
   componentWillUnmount () {
     this.campaignSupporterStoreListener.remove();
     this.campaignStoreListener.remove();
+    if (this.supportersTimer) {
+      clearTimeout(this.supportersTimer);
+    }
+    this.supportersTimer = null;
     if (this.timeInterval) {
       clearInterval(this.timeInterval);
     }
     this.timeInterval = null;
+    clearInterval(this.scrollInterval);
+  }
+
+  handleScroll () {
+    if (this.state.isAutoScroll) {
+      this.setState({ isAutoScroll: false });
+    } else {
+      // break out of auto scroll when manually scrolled
+      clearInterval(this.scrollInterval);
+    }
   }
 
   onFirstLoadOfSupporterData (allLatestSupporters) {
@@ -116,18 +146,27 @@ class MostRecentCampaignSupport extends React.Component {
       stageQueue,
       supportersOnStageNow: supportersToMoveOnStage,
     });
+
+    // when CommentsWrapper DOM div mounts
+    if (this.commentsWrapperDiv.current) {
+      this.autoScroll();
+    }
   }
 
   onCampaignSupporterStoreChange () {
     const { campaignXWeVoteId } = this.props;
     // console.log('onCampaignSupporterStoreChange campaignXWeVoteId:', campaignXWeVoteId);
     if (campaignXWeVoteId) {
-      const allLatestSupporters = CampaignSupporterStore.getCampaignXSupportersList(campaignXWeVoteId);
+      const allLatestSupporters = CampaignSupporterStore.getLatestCampaignXSupportersList(campaignXWeVoteId);
       if (allLatestSupporters && allLatestSupporters.length) {
         const stageQueue = this.fillStageQueue(allLatestSupporters);
         this.setState({
           stageQueue,
           waitingForInitialData: false,
+        });
+      } else {
+        this.setState({
+          stageQueue: [],
         });
       }
     }
@@ -137,7 +176,24 @@ class MostRecentCampaignSupport extends React.Component {
     });
   }
 
+  clearCampaignValues = () => {
+    // When we transition from one campaign to another campaign, there
+    // can be a delay in getting the new campaign's values. We want to clear
+    // out the values currently being displayed, while waiting for new values
+    // to arrive.
+    this.setState({
+      countOfStageQueueItemsMovedOnStage: 0,
+      isAutoScroll: false,
+      stageQueue: [],
+      supportersOnStageNow: [],
+      waitingForInitialData: true,
+    });
+  }
+
   fillStageQueue (allLatestSupporters) {
+    if (!allLatestSupporters || allLatestSupporters.length === 0) {
+      return [];
+    }
     const { stageQueue } = this.state;
     // stageQueue is oldest-to-newest
     // Find newest entry in stageQueue
@@ -179,57 +235,80 @@ class MostRecentCampaignSupport extends React.Component {
     }
   }
 
+  autoScroll () {
+    // pause for 1 second before autscroll starts
+    if (this.commentsWrapperDiv && this.commentsWrapperDiv.current && this.commentsWrapperDiv.current.scrollTop) {
+      setTimeout(
+        () => {
+          this.scrollInterval = setInterval(
+            () => {
+              // set flag to distinguish auto from manual scroll
+              this.setState({ isAutoScroll: true });
+              this.commentsWrapperDiv.current.scrollTop += 1;
+            }, 100,
+          );
+        },
+        1000,
+      );
+    }
+  }
+
   render () {
     renderLog('MostRecentCampaignSupport');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
     const { supportersOnStageNow, voterWeVoteId } = this.state;
+    // console.log('MostRecentCampaignSupport render supportersOnStageNow:', supportersOnStageNow);
 
     return (
       <MostRecentCampaignSupportWrapper>
         {supportersOnStageNow && supportersOnStageNow.length > 0 && (
-          <CommentsWrapper id="comments-wrapper">
-              {supportersOnStageNow.map((comment) => (
-                <CommentWrapper className="comment" key={comment.id}>
-                  <CommentVoterPhotoWrapper>
-                    {comment.we_vote_hosted_profile_image_url_tiny ? (
-                      <LazyImage
-                        src={comment.we_vote_hosted_profile_image_url_tiny}
-                        placeholder={anonymous}
-                        className="profile-photo"
-                        height={24}
-                        width={24}
-                        alt="Your Settings"
-                      />
-                    ) : (
-                      <AccountCircle classes={{ root: classes.accountCircleRoot }} />
+          <CommentsWrapper
+            id="comments-wrapper"
+            ref={this.commentsWrapperDiv}
+            onScroll={() => this.handleScroll()}
+          >
+            {supportersOnStageNow.map((comment) => (
+              <CommentWrapper className="comment" key={comment.id}>
+                <CommentVoterPhotoWrapper>
+                  {comment.we_vote_hosted_profile_image_url_tiny ? (
+                    <LazyImage
+                      src={comment.we_vote_hosted_profile_image_url_tiny}
+                      placeholder={anonymous}
+                      className="profile-photo"
+                      height={48}
+                      width={48}
+                      alt="Your Settings"
+                    />
+                  ) : (
+                    <AccountCircle classes={{ root: classes.accountCircleRoot }} />
+                  )}
+                </CommentVoterPhotoWrapper>
+                <CommentTextWrapper>
+                  {comment.supporter_endorsement && (
+                    <Comment>{returnFirstXWords(comment.supporter_endorsement, 18, true)}</Comment>
+                  )}
+                  <CommentNameWrapper>
+                    {!stringContains('Voter-', comment.supporter_name) && (
+                      <CommentName>
+                        {comment.supporter_name}
+                        {' '}
+                      </CommentName>
                     )}
-                  </CommentVoterPhotoWrapper>
-                  <CommentTextWrapper>
-                    {comment.supporter_endorsement && (
-                      <Comment>{returnFirstXWords(comment.supporter_endorsement, 18, true)}</Comment>
+                    supported
+                    {' '}
+                    {timeFromDate(comment.date_supported)}
+                    {comment.voter_we_vote_id === voterWeVoteId && (
+                      <>
+                        &nbsp;&nbsp;&nbsp;
+                        <Link to={`/id/${comment.campaignx_we_vote_id}/why-do-you-support`}>
+                          Edit
+                        </Link>
+                      </>
                     )}
-                    <CommentNameWrapper>
-                      {!stringContains('Voter-', comment.supporter_name) && (
-                        <CommentName>
-                          {comment.supporter_name}
-                          {' '}
-                        </CommentName>
-                      )}
-                      supported
-                      {' '}
-                      {timeFromDate(comment.date_supported)}
-                      {comment.voter_we_vote_id === voterWeVoteId && (
-                        <>
-                          &nbsp;&nbsp;&nbsp;
-                          <Link to={`/id/${comment.campaignx_we_vote_id}/why-do-you-support`}>
-                            Edit
-                          </Link>
-                        </>
-                      )}
-                    </CommentNameWrapper>
-                  </CommentTextWrapper>
-                </CommentWrapper>
-              ))}
+                  </CommentNameWrapper>
+                </CommentTextWrapper>
+              </CommentWrapper>
+            ))}
           </CommentsWrapper>
         )}
       </MostRecentCampaignSupportWrapper>

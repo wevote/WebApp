@@ -22,16 +22,18 @@ class PoliticianRetrieveController extends Component {
 
   componentDidUpdate (prevProps) {
     const {
-      politicianWeVoteId: politicianWeVoteIdPrevious,
+      politicianWeVoteId: previousPoliticianWeVoteId,
     } = prevProps;
     const {
       politicianWeVoteId,
     } = this.props;
-    // console.log('PoliticianRetrieveController componentDidUpdate, politicianWeVoteIdPrevious:', politicianWeVoteIdPrevious, ', politicianWeVoteId:', politicianWeVoteId);
-    if (politicianWeVoteId && politicianWeVoteIdPrevious) {
-      if (politicianWeVoteId !== politicianWeVoteIdPrevious) {
-        this.politicianFirstRetrieve();
-      }
+    if (politicianWeVoteId !== previousPoliticianWeVoteId) {
+      // console.log('PoliticianRetrieveController componentDidUpdate politicianWeVoteId has changed');
+      const politicianRetrieveOverride = true;
+      this.politicianFirstRetrieve(politicianRetrieveOverride);
+    } else {
+      // console.log('PoliticianRetrieveController componentDidUpdate, politicianWeVoteId:', politicianWeVoteId);
+      this.politicianFirstRetrieve();
     }
   }
 
@@ -43,19 +45,19 @@ class PoliticianRetrieveController extends Component {
     this.politicianFirstRetrieve();
   }
 
-  politicianFirstRetrieve = () => {
+  politicianFirstRetrieve = (politicianRetrieveOverride = false) => {
     const { politicianSEOFriendlyPath, politicianWeVoteId } = this.props;
     // console.log('PoliticianRetrieveController politicianSEOFriendlyPath: ', politicianSEOFriendlyPath, ', politicianWeVoteId: ', politicianWeVoteId);
     if (politicianSEOFriendlyPath || politicianWeVoteId) {
       const { politicianRetrieveInitiated } = this.state;
       initializejQuery(() => {
         // console.log('PoliticianRetrieveController politicianRetrieveInitiated: ', politicianRetrieveInitiated, ', voterFirstRetrieveCompleted: ', voterFirstRetrieveCompleted);
-        if (!politicianRetrieveInitiated) {
-          const updatedPoliticianRetrieveInitiated = retrievePoliticianFromIdentifiers(politicianSEOFriendlyPath, politicianWeVoteId);
+        const triggerRetrieve = politicianRetrieveOverride || !politicianRetrieveInitiated;
+        if (triggerRetrieve) {
           // console.log('politicianRetrieveInitiated:', politicianRetrieveInitiated, 'updatedPoliticianRetrieveInitiated:', updatedPoliticianRetrieveInitiated);
           this.setState({
-            politicianRetrieveInitiated: updatedPoliticianRetrieveInitiated,
-          });
+            politicianRetrieveInitiated: true,
+          }, () => retrievePoliticianFromIdentifiers(politicianSEOFriendlyPath, politicianWeVoteId));
         }
       });
     }

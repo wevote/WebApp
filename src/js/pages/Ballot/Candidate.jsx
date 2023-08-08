@@ -2,7 +2,7 @@ import { Info } from '@mui/icons-material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import styled from 'styled-components';
 import ActivityActions from '../../actions/ActivityActions';
 import AnalyticsActions from '../../actions/AnalyticsActions';
@@ -61,7 +61,7 @@ class Candidate extends Component {
     // console.log('Candidate componentDidMount');
     window.scrollTo(0, 0);
     const { match: { params: {
-      candidate_we_vote_id: candidateWeVoteId,
+      candidate_we_vote_id: candidateWeVoteIdFromUrl,
       organization_we_vote_id: organizationWeVoteId,
       modal_to_show: modalToShow,
       shared_item_code: sharedItemCode,
@@ -69,36 +69,36 @@ class Candidate extends Component {
     this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
-    // console.log('candidateWeVoteId:', candidateWeVoteId);
-    if (candidateWeVoteId) {
-      const candidate = CandidateStore.getCandidateByWeVoteId(candidateWeVoteId);
+    // console.log('candidateWeVoteIdFromUrl:', candidateWeVoteIdFromUrl);
+    if (candidateWeVoteIdFromUrl) {
+      const candidate = CandidateStore.getCandidateByWeVoteId(candidateWeVoteIdFromUrl);
       const { ballot_item_display_name: ballotItemDisplayName, contest_office_we_vote_id: officeWeVoteId } = candidate;
       // console.log('candidate:', candidate);
       this.setState({
         ballotItemDisplayName,
         candidate,
       });
-      CandidateActions.candidateRetrieve(candidateWeVoteId);
-      if (candidateWeVoteId &&
-        !this.localPositionListHasBeenRetrievedOnce(candidateWeVoteId) &&
-        !BallotStore.positionListHasBeenRetrievedOnce(candidateWeVoteId) &&
+      CandidateActions.candidateRetrieve(candidateWeVoteIdFromUrl);
+      if (candidateWeVoteIdFromUrl &&
+        !this.localPositionListHasBeenRetrievedOnce(candidateWeVoteIdFromUrl) &&
+        !BallotStore.positionListHasBeenRetrievedOnce(candidateWeVoteIdFromUrl) &&
         !BallotStore.positionListHasBeenRetrievedOnce(officeWeVoteId)
       ) {
-        CandidateActions.positionListForBallotItemPublic(candidateWeVoteId);
+        CandidateActions.positionListForBallotItemPublic(candidateWeVoteIdFromUrl);
         const { positionListHasBeenRetrievedOnce } = this.state;
-        positionListHasBeenRetrievedOnce[candidateWeVoteId] = true;
+        positionListHasBeenRetrievedOnce[candidateWeVoteIdFromUrl] = true;
         this.setState({
           positionListHasBeenRetrievedOnce,
         });
       }
-      if (candidateWeVoteId &&
-        !this.localPositionListFromFriendsHasBeenRetrievedOnce(candidateWeVoteId) &&
-        !BallotStore.positionListFromFriendsHasBeenRetrievedOnce(candidateWeVoteId) &&
+      if (candidateWeVoteIdFromUrl &&
+        !this.localPositionListFromFriendsHasBeenRetrievedOnce(candidateWeVoteIdFromUrl) &&
+        !BallotStore.positionListFromFriendsHasBeenRetrievedOnce(candidateWeVoteIdFromUrl) &&
         !BallotStore.positionListFromFriendsHasBeenRetrievedOnce(officeWeVoteId)
       ) {
-        CandidateActions.positionListForBallotItemFromFriends(candidateWeVoteId);
+        CandidateActions.positionListForBallotItemFromFriends(candidateWeVoteIdFromUrl);
         const { positionListFromFriendsHasBeenRetrievedOnce } = this.state;
-        positionListFromFriendsHasBeenRetrievedOnce[candidateWeVoteId] = true;
+        positionListFromFriendsHasBeenRetrievedOnce[candidateWeVoteIdFromUrl] = true;
         this.setState({
           positionListFromFriendsHasBeenRetrievedOnce,
         });
@@ -113,14 +113,14 @@ class Candidate extends Component {
     // if (voterGuidesForId && Object.keys(voterGuidesForId).length > 0) {
     //   // Do not request them again
     // } else {
-    //   VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(candidateWeVoteId, 'CANDIDATE');
+    //   VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(candidateWeVoteIdFromUrl, 'CANDIDATE');
     // }
 
     if (apiCalming('organizationsFollowedRetrieve', 60000)) {
       OrganizationActions.organizationsFollowedRetrieve();
     }
 
-    const allCachedPositionsForThisCandidate = CandidateStore.getAllCachedPositionsByCandidateWeVoteId(candidateWeVoteId);
+    const allCachedPositionsForThisCandidate = CandidateStore.getAllCachedPositionsByCandidateWeVoteId(candidateWeVoteIdFromUrl);
     if (apiCalming('issueDescriptionsRetrieve', 3600000)) { // Only once per 60 minutes
       IssueActions.issueDescriptionsRetrieve();
     }
@@ -134,7 +134,7 @@ class Candidate extends Component {
 
     this.setState({
       allCachedPositionsForThisCandidate,
-      candidateWeVoteId,
+      candidateWeVoteId: candidateWeVoteIdFromUrl,
       organizationWeVoteId,
       scrolledDown: AppObservableStore.getScrolledDown(),
     });
@@ -154,7 +154,7 @@ class Candidate extends Component {
     if (apiCalming('activityNoticeListRetrieve', 10000)) {
       ActivityActions.activityNoticeListRetrieve();
     }
-    AnalyticsActions.saveActionCandidate(VoterStore.electionId(), candidateWeVoteId);
+    AnalyticsActions.saveActionCandidate(VoterStore.electionId(), candidateWeVoteIdFromUrl);
   }
 
   // eslint-disable-next-line camelcase,react/sort-comp
@@ -294,7 +294,12 @@ class Candidate extends Component {
   render () {
     renderLog('Candidate');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes, match: { params } } = this.props;
-    const { allCachedPositionsForThisCandidate, candidate, organizationWeVoteId, scrolledDown } = this.state;
+    const { match: { params: {
+      candidate_we_vote_id: candidateWeVoteIdFromUrl,
+    } } } = this.props;
+    const {
+      allCachedPositionsForThisCandidate, candidate, organizationWeVoteId, scrolledDown,
+    } = this.state;
     // console.log('candidate: ', candidate);
     if (!candidate || !candidate.ballot_item_display_name) {
       // console.log('No candidate or candidate.ballot_item_display_name, candidate:', candidate);
@@ -318,10 +323,13 @@ class Candidate extends Component {
     return (
       <PageContentContainer>
         <SnackNotifier />
-        <Helmet
-          title={titleText}
-          meta={[{ name: 'description', content: descriptionText }]}
-        />
+        <Helmet>
+          <title>{titleText}</title>
+          {candidateWeVoteIdFromUrl && (
+            <link rel="canonical" href={`https://wevote.us/candidate/${candidateWeVoteIdFromUrl}`} />
+          )}
+          <meta name="description" content={descriptionText} />
+        </Helmet>
         {
           scrolledDown && (
             <CandidateStickyHeader candidate={candidate} />

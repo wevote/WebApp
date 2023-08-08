@@ -1,6 +1,6 @@
 import withStyles from '@mui/styles/withStyles';
 import React, { Component, Suspense } from 'react';
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import styled from 'styled-components';
 import CreditsBody from '../../common/components/CreditsBody';
 import { renderLog } from '../../common/utils/logging';
@@ -24,7 +24,10 @@ class Credits extends Component {
     renderLog('Credits');  // Set LOG_RENDER_EVENTS to log all renders
     return (
       <Wrapper>
-        <Helmet title="Credits - We Vote" />
+        <Helmet>
+          <title>Credits - We Vote</title>
+          <link rel="canonical" href="https://wevote.us/more/credits" />
+        </Helmet>
         <Suspense fallback={<></>}>
           <WelcomeAppbar pathname="/more/pricing" />
         </Suspense>

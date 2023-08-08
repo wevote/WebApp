@@ -21,6 +21,7 @@ class PoliticianStore extends ReduceStore {
       allCachedPoliticians: {}, // key == politicianWeVoteId, value = the Politician
       allCachedPositionsAboutPoliticians: {}, // Dictionary with politician_we_vote_id as one key, organization_we_vote_id as the second key, and the position as value
       allCachedRepresentativeListsByPolitician: {}, // Dictionary with politician_we_vote_id as key and list of representatives under politician
+      politicianDataNotFoundForSEOFriendlyPathList: [], // List of seo_friendly_paths for which a politician could not be found on API server
       voterCanSendUpdatesPoliticianWeVoteIds: [], // These are the politician_we_vote_id's of the politicians this voter can send updates to
       voterCanVoteForPoliticianWeVoteIds: [], // These are the politician_we_vote_id's this voter can vote for
       voterOwnedPoliticianWeVoteIds: [], // These are the politician_we_vote_id's of the politicians this voter can edit
@@ -143,6 +144,16 @@ class PoliticianStore extends ReduceStore {
   getVoterSupportsThisPolitician (politicianWeVoteId) {
     // console.log('this.getState().voterSupportedPoliticianWeVoteIds:', this.getState().voterSupportedPoliticianWeVoteIds);
     return arrayContains(politicianWeVoteId, this.getState().voterSupportedPoliticianWeVoteIds);
+  }
+
+  isPoliticianDataNotFoundForSEOFriendlyPath (politicianSEOFriendlyPath) {
+    if (!politicianSEOFriendlyPath || politicianSEOFriendlyPath === '') return false;
+    const { politicianDataNotFoundForSEOFriendlyPathList } = this.getState();
+    // console.log('PoliticianStore politicianDataNotFoundForSEOFriendlyPathList:', politicianDataNotFoundForSEOFriendlyPathList);
+    // If a valid index is found when searching for the path
+    //  in politicianDataNotFoundForSEOFriendlyPathList, then we found it and this means
+    //  we could not retrieve data for that path, and so we know data was not found
+    return (politicianDataNotFoundForSEOFriendlyPathList.indexOf(politicianSEOFriendlyPath) !== -1);
   }
 
   isPoliticianInStore (politicianId) {
@@ -294,18 +305,17 @@ class PoliticianStore extends ReduceStore {
     const {
       allCachedPoliticianNewsItems,
       allCachedPoliticianWeVoteIdsBySEOFriendlyPath, allCachedNewsItemWeVoteIdsByPolitician,
+      politicianDataNotFoundForSEOFriendlyPathList,
       voterSupportedPoliticianWeVoteIds,
     } = state;
     let {
       allCachedPoliticians, allCachedPoliticianOwners, allCachedCandidateListsByPolitician, allCachedPoliticianOwnerPhotos,
+      politicianListsByOfficeWeVoteId,
       voterCanSendUpdatesPoliticianWeVoteIds, voterCanVoteForPoliticianWeVoteIds, voterOwnedPoliticianWeVoteIds,
       // voterStartedPoliticianWeVoteIds,
     } = state;
-    let {
-      politicianListsByOfficeWeVoteId,
-    } = state;
-    // Exit if we don't have a successful response (since we expect certain variables in a successful response below)
-    if (!action.res || !action.res.success) return state;
+    // We don't want to exit here. We want to fail differently for each type below.
+    // if (!action.res || !action.res.success) return state;
 
     let localPoliticianList;
     let politician;
@@ -322,7 +332,18 @@ class PoliticianStore extends ReduceStore {
         // - latest_politician_supporter_list
         // - voter_politician_supporter
 
-        if (!action.res || !action.res.success) return state;
+        if (!action.res || !action.res.success) {
+          revisedState = state;
+          if (action.res && action.res.seo_friendly_path) {
+            // Incoming seo_friendly_path cannot be found on API server, so we track that
+            if (politicianDataNotFoundForSEOFriendlyPathList.indexOf(action.res.seo_friendly_path) === -1) {
+              politicianDataNotFoundForSEOFriendlyPathList.push(action.res.seo_friendly_path);
+              // console.log('PoliticianStore politicianRetrieve, PUSHED seo_friendly_path:', action.res.seo_friendly_path);
+              revisedState = { ...revisedState, politicianDataNotFoundForSEOFriendlyPathList };
+            }
+          }
+          return revisedState;
+        }
         revisedState = state;
         politician = action.res;
         // console.log('PoliticianStore politicianRetrieve, politician:', politician);
@@ -362,6 +383,14 @@ class PoliticianStore extends ReduceStore {
         if (!(politician.seo_friendly_path in allCachedPoliticianWeVoteIdsBySEOFriendlyPath)) {
           allCachedPoliticianWeVoteIdsBySEOFriendlyPath[politician.seo_friendly_path] = politician.politician_we_vote_id;
         }
+        if (action.res.seo_friendly_path) {
+          const foundIndex = politicianDataNotFoundForSEOFriendlyPathList.indexOf(action.res.seo_friendly_path);
+          if (foundIndex !== -1) {
+            // If the incoming seo_friendly_path is found, remove from politicianDataNotFoundForSEOFriendlyPathList
+            politicianDataNotFoundForSEOFriendlyPathList.splice(foundIndex, 1);
+            revisedState = { ...revisedState, politicianDataNotFoundForSEOFriendlyPathList };
+          }
+        }
         // console.log('PoliticianStore allCachedPoliticianOwners:', allCachedPoliticianOwners);
         if (action.res.voter_can_vote_for_politician_we_vote_ids) {
           // We want to reset this variable with this incoming value
@@ -393,6 +422,7 @@ class PoliticianStore extends ReduceStore {
 
       case 'politiciansQuery':
       case 'politiciansRetrieve':
+        if (!action.res || !action.res.success) return state;
         // Make sure we have information for the office the politician is running for
         if (action.res.contest_office_we_vote_id) {
           const office = OfficeStore.getOffice(action.res.contest_office_we_vote_id);
@@ -424,6 +454,7 @@ class PoliticianStore extends ReduceStore {
 
       case 'voterSignOut':
         // console.log('PoliticianStore voterSignOut, state:', state);
+        if (!action.res || !action.res.success) return state;
         revisedState = state;
         voterSpecificData = this.resetVoterSpecificData();
         revisedState = { ...revisedState, voterSpecificData };

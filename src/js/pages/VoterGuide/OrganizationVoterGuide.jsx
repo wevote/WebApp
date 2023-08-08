@@ -1,6 +1,7 @@
 import { Button } from '@mui/material';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
@@ -110,7 +111,7 @@ export default class OrganizationVoterGuide extends Component {
       OrganizationActions.organizationFollow(organizationWeVoteId);
 
       // Now redirect to the same page without the '/af' in the route
-      const { location: { pathname: currentPathName } } = window;
+      const { location: { pathname: currentPathName } } = this.props;
 
       // AUTO_FOLLOW is 'af'
       const currentPathNameWithoutAutoFollow = currentPathName.replace(`/${AUTO_FOLLOW}`, '');
@@ -134,55 +135,49 @@ export default class OrganizationVoterGuide extends Component {
     }
   }
 
-  // eslint-disable-next-line camelcase,react/sort-comp
-  UNSAFE_componentWillReceiveProps (nextProps) {
-    const { match: { params: nextParams } } = nextProps;
-    // console.log('OrganizationVoterGuide, componentWillReceiveProps, nextParams.organization_we_vote_id: ', nextParams.organization_we_vote_id);
+  componentDidUpdate (prevProps) {
     // When a new organization is passed in, update this component to show the new data
-    // if (nextParams.action_variable === AUTO_FOLLOW) {
-    // Wait until we get the path without the '/af' action variable
-    // console.log('OrganizationVoterGuide, componentWillReceiveProps - waiting');
-    // } else
-
-    // console.log('OrganizationVoterGuide, componentWillReceiveProps, nextParams: ', nextProps.params);
-    const { organization_we_vote_id: organizationWeVoteId } = nextParams;
-    if (organizationWeVoteId) {
-      this.setState({
-        organizationWeVoteId,
-        autoFollowRedirectHappening: false,
-        voterGuideFollowersList: VoterGuideStore.getVoterGuidesFollowingOrganization(nextParams.organization_we_vote_id),
-        voterGuideFollowedList: VoterGuideStore.getVoterGuidesFollowedByOrganization(nextParams.organization_we_vote_id),
-      });
-
-      // We refresh the data for all three tabs here on the top level
-      const { organizationHasBeenRetrievedOnce, voterGuideAnalyticsHasBeenSavedOnce } = this.state;
-      if (!this.localOrganizationHasBeenRetrievedOnce(organizationWeVoteId)) {
-        // console.log('OrganizationVoterGuide organizationHasBeenRetrievedOnce NOT true');
-        OrganizationActions.organizationRetrieve(organizationWeVoteId);
-        organizationHasBeenRetrievedOnce[organizationWeVoteId] = true;
+    if (prevProps.match.params !== this.props.match.params) {
+      const nextParams = this.props.match.params;
+      const { organization_we_vote_id: organizationWeVoteId } = nextParams;
+      if (organizationWeVoteId) {
         this.setState({
-          organizationHasBeenRetrievedOnce,
+          organizationWeVoteId,
+          autoFollowRedirectHappening: false,
+          voterGuideFollowersList: VoterGuideStore.getVoterGuidesFollowingOrganization(nextParams.organization_we_vote_id),
+          voterGuideFollowedList: VoterGuideStore.getVoterGuidesFollowedByOrganization(nextParams.organization_we_vote_id),
         });
+
+        // We refresh the data for all three tabs here on the top level
+        const { organizationHasBeenRetrievedOnce, voterGuideAnalyticsHasBeenSavedOnce } = this.state;
+        if (!this.localOrganizationHasBeenRetrievedOnce(organizationWeVoteId)) {
+          // console.log('OrganizationVoterGuide organizationHasBeenRetrievedOnce NOT true');
+          OrganizationActions.organizationRetrieve(organizationWeVoteId);
+          organizationHasBeenRetrievedOnce[organizationWeVoteId] = true;
+          this.setState({
+            organizationHasBeenRetrievedOnce,
+          });
+        }
+
+        // console.log('VoterStore.getAddressObject(): ', VoterStore.getAddressObject());
+        // AnalyticsActions.saveActionVoterGuideVisit(organizationWeVoteId, VoterStore.electionId());
+        if (!this.localVoterGuideAnalyticsHasBeenSavedOnce(organizationWeVoteId)) {
+          voterGuideAnalyticsHasBeenSavedOnce[organizationWeVoteId] = true;
+          this.setState({
+            voterGuideAnalyticsHasBeenSavedOnce,
+          });
+        }
       }
 
-      // console.log('VoterStore.getAddressObject(): ', VoterStore.getAddressObject());
-      // AnalyticsActions.saveActionVoterGuideVisit(organizationWeVoteId, VoterStore.electionId());
-      if (!this.localVoterGuideAnalyticsHasBeenSavedOnce(organizationWeVoteId)) {
-        voterGuideAnalyticsHasBeenSavedOnce[organizationWeVoteId] = true;
-        this.setState({
-          voterGuideAnalyticsHasBeenSavedOnce,
-        });
-      }
+      // positionListForOpinionMaker is called in js/components/VoterGuide/VoterGuidePositions
+      // DALE 2020-05-13 We only use activeRoute from the props on the first entry
+      // if (nextProps.activeRoute) {
+      //   console.log('OrganizationVoterGuide, componentWillReceiveProps, nextProps.activeRoute: ', nextProps.activeRoute);
+      //   this.setState({
+      //     activeRoute: nextProps.activeRoute || '',
+      //   });
+      // }
     }
-
-    // positionListForOpinionMaker is called in js/components/VoterGuide/VoterGuidePositions
-    // DALE 2020-05-13 We only use activeRoute from the props on the first entry
-    // if (nextProps.activeRoute) {
-    //   console.log('OrganizationVoterGuide, componentWillReceiveProps, nextProps.activeRoute: ', nextProps.activeRoute);
-    //   this.setState({
-    //     activeRoute: nextProps.activeRoute || '',
-    //   });
-    // }
   }
 
   componentWillUnmount () {
@@ -293,8 +288,9 @@ export default class OrganizationVoterGuide extends Component {
     if (!organization || !this.state.voter || this.state.autoFollowRedirectHappening) {
       return <div>{LoadingWheel}</div>;
     }
-    const { match: { params } } = this.props;
-    const { location } = window;
+    const { location, match: { params } } = this.props;
+
+    const titleText = `${organization.organization_name} - We Vote`;
 
     const isVoterOwner = organization.organization_we_vote_id !== undefined &&
       organization.organization_we_vote_id === this.state.voter.linked_organization_we_vote_id;
@@ -332,6 +328,12 @@ export default class OrganizationVoterGuide extends Component {
     return (
       <PageContentContainer>
         <WrapperFlex>
+          {organization.organization_twitter_handle && (
+            <Helmet>
+              <title>{titleText}</title>
+              <link rel="canonical" href={location.pathname} />
+            </Helmet>
+          )}
           {/* Header Banner Spacing for Desktop */}
           <BannerOverlayDesktopOuterWrapper>
             <BannerOverlayDesktopInnerWrapper>
@@ -493,6 +495,7 @@ export default class OrganizationVoterGuide extends Component {
 }
 OrganizationVoterGuide.propTypes = {
   activeRoute: PropTypes.string,
+  location: PropTypes.object,
   match: PropTypes.object.isRequired,
 };
 

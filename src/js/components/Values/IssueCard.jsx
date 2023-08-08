@@ -311,9 +311,9 @@ class IssueCard extends Component {
     );
 
     return (
-      <Wrapper
+      <IssueCardWrapper
         key={`issue-card-${issueWeVoteId}`}
-        className={this.props.condensed ? 'card-child u-full-height' : 'card-child u-inset__h--md u-padding-top--md u-padding-bottom--md u-full-height'}
+        className={this.props.condensed ? 'u-full-height' : 'u-inset__h--md u-padding-top--md u-padding-bottom--md u-full-height'}
         condensed={!!this.props.condensed}
         style={isCordova() ? { margin: 'unset' } : {}}   // stops horizontal scrolling
       >
@@ -351,7 +351,7 @@ class IssueCard extends Component {
                 {includeLinkToIssue ? (
                   <Link id="valueListLink"
                         to={this.getIssueLink}
-                        className="u-no-underline"
+                        className="u-link-color"
                   >
                     {issueNameAndCount}
                   </Link>
@@ -414,7 +414,7 @@ class IssueCard extends Component {
             </FollowersWrapper>
           </OverlayTrigger>
         </IssueAdvocatesAndFollowersWrapper>
-      </Wrapper>
+      </IssueCardWrapper>
     );
   }
 }
@@ -439,7 +439,7 @@ const CheckWrapper = styled('div')`
   margin-top: -4px;
 `;
 
-const Wrapper = styled('div', {
+const IssueCardWrapper = styled('div', {
   shouldForwardProp: (prop) => !['condensed'].includes(prop),
 })(({ condensed }) => (`
   display: block !important;
@@ -448,9 +448,9 @@ const Wrapper = styled('div', {
   // box-shadow: ${condensed ? 'none !important' : ''};
   padding: ${condensed ? '0 0' : ''};
   height: ${condensed ? 'fit-content' : ''};
-  @media (max-width: 479px) {
-    margin: 0 -16px;
-  }
+  // @media (max-width: 479px) {
+  //   margin: 0 -16px;
+  // }
 `));
 
 const FollowersWrapper = styled('div')`

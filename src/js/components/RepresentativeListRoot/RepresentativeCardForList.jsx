@@ -35,14 +35,14 @@ import RepresentativeStore from '../../stores/RepresentativeStore';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import keepHelpingDestination from '../../common/utils/keepHelpingDestination';
 import numberWithCommas from '../../common/utils/numberWithCommas';
-import webAppConfig from '../../config';
+// import webAppConfig from '../../config';
 // import { ElectionInPast, IndicatorButtonWrapper, IndicatorRow } from '../../common/components/Style/CampaignIndicatorStyles';
 
 const ItemActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemActionBar' */ '../Widgets/ItemActionBar/ItemActionBar'));
 const OfficeHeldNameText = React.lazy(() => import(/* webpackChunkName: 'OfficeHeldNameText' */ '../../common/components/Widgets/OfficeHeldNameText'));
 const SupportButtonBeforeCompletionScreen = React.lazy(() => import(/* webpackChunkName: 'SupportButtonBeforeCompletionScreen' */ '../../common/components/CampaignSupport/SupportButtonBeforeCompletionScreen'));
 
-const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
+// const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
 class RepresentativeCardForList extends Component {
   constructor (props) {
@@ -243,6 +243,7 @@ class RepresentativeCardForList extends Component {
       return null;
     }
     const {
+      // ballot_guide_official_statement: ballotGuideOfficialStatement, // Consider using this
       ballot_item_display_name: ballotItemDisplayName,
       linked_campaignx_we_vote_id: linkedCampaignXWeVoteId,
       office_held_name: officeHeldName,
@@ -304,65 +305,63 @@ class RepresentativeCardForList extends Component {
                     </Suspense>
                   </div>
                 )}
-                {nextReleaseFeaturesEnabled && (
-                  <>
-                    {finalElectionDateInPast ? (
-                      <SupportersWrapper>
-                        {(!supportersCount || supportersCount === 0) ? (
-                          <SupportersCount>
-                            0 supporters.
-                            {' '}
-                          </SupportersCount>
-                        ) : (
-                          <SupportersCount>
-                            {numberWithCommas(supportersCount)}
-                            {' '}
-                            {supportersCount === 1 ? 'supporter.' : 'supporters.'}
-                            {' '}
-                          </SupportersCount>
-                        )}
-                        {campaignSupported && (
-                          <SupportersActionLink>
-                            Thank you for supporting!
-                          </SupportersActionLink>
-                        )}
-                      </SupportersWrapper>
-                    ) : (
-                      <SupportersWrapper>
-                        {(!supportersCount || supportersCount === 0) ? (
-                          <SupportersCount>
-                            Be the first.
-                            {' '}
-                          </SupportersCount>
-                        ) : (
-                          <SupportersCount>
-                            {numberWithCommas(supportersCount)}
-                            {' '}
-                            {supportersCount === 1 ? 'supporter.' : 'supporters.'}
-                          </SupportersCount>
-                        )}
-                        {' '}
-                        {campaignSupported ? (
-                          <SupportersActionLink>
-                            Thank you for supporting!
-                          </SupportersActionLink>
-                        ) : (
-                          <SupportersActionLink
-                            className="u-link-color u-link-underline u-cursor--pointer"
-                            id="representativeCardLetsGetTo"
-                            onClick={this.onRepresentativeClick}
-                          >
-                            Let&apos;s get to
-                            {' '}
-                            {numberWithCommas(supportersCountNextGoalWithFloor)}
-                            {' '}
-                            supporters!
-                          </SupportersActionLink>
-                        )}
-                      </SupportersWrapper>
-                    )}
-                  </>
-                )}
+                <>
+                  {finalElectionDateInPast ? (
+                    <SupportersWrapper>
+                      {(!supportersCount || supportersCount === 0) ? (
+                        <SupportersCount>
+                          0 supporters.
+                          {' '}
+                        </SupportersCount>
+                      ) : (
+                        <SupportersCount>
+                          {numberWithCommas(supportersCount)}
+                          {' '}
+                          {supportersCount === 1 ? 'supporter.' : 'supporters.'}
+                          {' '}
+                        </SupportersCount>
+                      )}
+                      {campaignSupported && (
+                        <SupportersActionLink>
+                          Thank you for supporting!
+                        </SupportersActionLink>
+                      )}
+                    </SupportersWrapper>
+                  ) : (
+                    <SupportersWrapper>
+                      {(!supportersCount || supportersCount === 0) ? (
+                        <SupportersCount>
+                          Be the first.
+                          {' '}
+                        </SupportersCount>
+                      ) : (
+                        <SupportersCount>
+                          {numberWithCommas(supportersCount)}
+                          {' '}
+                          {supportersCount === 1 ? 'supporter.' : 'supporters.'}
+                        </SupportersCount>
+                      )}
+                      {' '}
+                      {campaignSupported ? (
+                        <SupportersActionLink>
+                          Thank you for supporting!
+                        </SupportersActionLink>
+                      ) : (
+                        <SupportersActionLink
+                          className="u-link-color u-link-underline u-cursor--pointer"
+                          id="representativeCardLetsGetTo"
+                          onClick={this.onRepresentativeClick}
+                        >
+                          Let&apos;s get to
+                          {' '}
+                          {numberWithCommas(supportersCountNextGoalWithFloor)}
+                          {' '}
+                          supporters!
+                        </SupportersActionLink>
+                      )}
+                    </SupportersWrapper>
+                  )}
+                </>
                 {twitterDescription && (
                   <OneCampaignDescription
                     className="u-cursor--pointer"
@@ -397,30 +396,28 @@ class RepresentativeCardForList extends Component {
                     inCard
                     positionPublicToggleWrapAllowed
                     shareButtonHide
-                    // useSupportWording
+                    useSupportWording
                   />
                 </Suspense>
-                {nextReleaseFeaturesEnabled && (
-                  <>
-                    {linkedCampaignXWeVoteId ? (
-                      <BottomActionButtonWrapper>
-                        <Suspense fallback={<span>&nbsp;</span>}>
-                          <SupportButtonBeforeCompletionScreen
-                            campaignXWeVoteId={linkedCampaignXWeVoteId}
-                            functionToUseToKeepHelping={this.functionToUseToKeepHelping}
-                            functionToUseWhenProfileComplete={this.functionToUseWhenProfileComplete}
-                            inButtonFullWidthMode
-                            // inCompressedMode
-                          />
-                        </Suspense>
-                      </BottomActionButtonWrapper>
-                    ) : (
-                      <BottomActionButtonEmptyWrapper>
-                        {/* MISSING_LINKED_CAMPAIGN_WE_VOTE_ID */}
-                      </BottomActionButtonEmptyWrapper>
-                    )}
-                  </>
-                )}
+                <>
+                  {linkedCampaignXWeVoteId ? (
+                    <BottomActionButtonWrapper>
+                      <Suspense fallback={<span>&nbsp;</span>}>
+                        <SupportButtonBeforeCompletionScreen
+                          campaignXWeVoteId={linkedCampaignXWeVoteId}
+                          functionToUseToKeepHelping={this.functionToUseToKeepHelping}
+                          functionToUseWhenProfileComplete={this.functionToUseWhenProfileComplete}
+                          inButtonFullWidthMode
+                          // inCompressedMode
+                        />
+                      </Suspense>
+                    </BottomActionButtonWrapper>
+                  ) : (
+                    <BottomActionButtonEmptyWrapper>
+                      {/* MISSING_LINKED_CAMPAIGN_WE_VOTE_ID */}
+                    </BottomActionButtonEmptyWrapper>
+                  )}
+                </>
               </CampaignActionButtonsWrapper>
             </OneCampaignTextColumn>
             <OneCampaignPhotoWrapperMobile className="u-cursor--pointer u-show-mobile" onClick={this.onRepresentativeClick}>

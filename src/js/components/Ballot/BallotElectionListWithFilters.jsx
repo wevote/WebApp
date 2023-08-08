@@ -652,7 +652,7 @@ export default class BallotElectionListWithFilters extends Component {
     if (candidatesMode) {
       simpleModeTitle = <>Who&apos;s running for office?</>;
     } else if (voterGuidesMode) {
-      simpleModeTitle = <>Voting recommendations?</>;
+      simpleModeTitle = <>Voting advice?</>;
     }
     // console.log('upcomingElectionList:', upcomingElectionList);
     return (

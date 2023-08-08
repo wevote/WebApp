@@ -94,9 +94,6 @@ class CampaignCardForList extends Component {
     this.appStateSubscription.unsubscribe();
     this.campaignStoreListener.remove();
     this.campaignSupporterStoreListener.remove();
-    if (this.timer) {
-      clearTimeout(this.timer);
-    }
   }
 
   onAppObservableStoreChange () {
@@ -264,6 +261,7 @@ class CampaignCardForList extends Component {
       return null;
     }
     const {
+      // ballot_guide_official_statement: ballotGuideOfficialStatement, // Consider using this
       campaign_description: campaignDescription,
       campaign_title: campaignTitle,
       campaignx_we_vote_id: campaignXWeVoteId,

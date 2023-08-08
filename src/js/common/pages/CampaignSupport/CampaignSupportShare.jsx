@@ -3,7 +3,7 @@ import { Button } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import CampaignSupporterActions from '../../actions/CampaignSupporterActions';
 import commonMuiStyles from '../../components/Style/commonMuiStyles';
 import historyPush from '../../utils/historyPush';
@@ -20,10 +20,14 @@ import AppObservableStore, { messageService } from '../../stores/AppObservableSt
 import CampaignStore from '../../stores/CampaignStore';
 import CampaignSupporterStore from '../../stores/CampaignSupporterStore';
 import { getCampaignXValuesFromIdentifiers, retrieveCampaignXFromIdentifiers } from '../../utils/campaignUtils';
+import webAppConfig from '../../../config';
 
 const CampaignRetrieveController = React.lazy(() => import(/* webpackChunkName: 'CampaignRetrieveController' */ '../../components/Campaign/CampaignRetrieveController'));
 const RecommendedCampaignListRetrieveController = React.lazy(() => import(/* webpackChunkName: 'RecommendedCampaignListRetrieveController' */ '../../components/Campaign/RecommendedCampaignListRetrieveController'));
 const VoterFirstRetrieveController = loadable(() => import(/* webpackChunkName: 'VoterFirstRetrieveController' */ '../../components/Settings/VoterFirstRetrieveController'));
+
+const futureFeaturesDisabled = true;
+const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
 
 class CampaignSupportShare extends Component {
@@ -205,10 +209,11 @@ class CampaignSupportShare extends Component {
     if (shareButtonClicked || showShareCampaignWithOneFriend) {
       // Since showing direct message choices is the final step,
       // link should take voter back to the campaign updates page or on to the  "recommended-campaigns"
-      if (recommendedCampaignXListHasBeenRetrieved && recommendedCampaignXListCount > 0) {
+      if (!futureFeaturesDisabled && recommendedCampaignXListHasBeenRetrieved && recommendedCampaignXListCount > 0) {
         historyPush(`${this.getCampaignXBasePath()}/recommended-campaigns`);
       } else {
-        historyPush(`${this.getCampaignXBasePath()}/updates`);
+        // historyPush(`${this.getCampaignXBasePath()}/updates`);
+        historyPush(`${this.getCampaignXBasePath()}`);
       }
     } else {
       historyPush(`${this.getCampaignXBasePath()}/share-campaign-with-one-friend`);
@@ -245,15 +250,11 @@ class CampaignSupportShare extends Component {
         skipForNowText = 'See latest news about this campaign';
       }
     }
-    const campaignDescriptionLimited = 'This is test from CampaignSupportShare.';
     return (
       <div>
         <Helmet>
           <title>{htmlTitle}</title>
-          <meta
-            name="description"
-            content={campaignDescriptionLimited}
-          />
+          <meta name="robots" content="noindex" data-react-helmet="true" />
         </Helmet>
         <PageWrapperDefault>
           <ContentOuterWrapperDefault>
@@ -289,11 +290,13 @@ class CampaignSupportShare extends Component {
               {showShareCampaignWithOneFriend ? (
                 <CampaignSupportSectionWrapper>
                   <CampaignSupportSection>
-                    <CampaignSupportDesktopButtonWrapper className="u-show-desktop-tablet">
-                      <CampaignSupportDesktopButtonPanel>
-                        <SendFacebookDirectMessageButton campaignXWeVoteId={campaignXWeVoteId} />
-                      </CampaignSupportDesktopButtonPanel>
-                    </CampaignSupportDesktopButtonWrapper>
+                    {(!futureFeaturesDisabled && nextReleaseFeaturesEnabled) && (
+                      <CampaignSupportDesktopButtonWrapper className="u-show-desktop-tablet">
+                        <CampaignSupportDesktopButtonPanel>
+                          <SendFacebookDirectMessageButton campaignXWeVoteId={campaignXWeVoteId} />
+                        </CampaignSupportDesktopButtonPanel>
+                      </CampaignSupportDesktopButtonWrapper>
+                    )}
                     <CampaignSupportDesktopButtonWrapper className="u-show-desktop-tablet">
                       <CampaignSupportDesktopButtonPanel>
                         <ShareByEmailButton campaignXWeVoteId={campaignXWeVoteId} />

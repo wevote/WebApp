@@ -7,6 +7,8 @@ import CampaignStore from '../../stores/CampaignStore';
 import CampaignSupporterStore from '../../stores/CampaignSupporterStore';
 import LoadMoreItemsManually from '../Widgets/LoadMoreItemsManually';
 import CampaignCommentForList from './CampaignCommentForList';
+import CandidateStore from '../../../stores/CandidateStore';
+import arrayContains from '../../utils/arrayContains';
 
 const STARTING_NUMBER_OF_COMMENTS_TO_DISPLAY = 10;
 const NUMBER_OF_COMMENTS_TO_ADD_WHEN_MORE_CLICKED = 4;
@@ -20,61 +22,89 @@ class CampaignCommentsList extends Component {
   }
 
   componentDidMount () {
+    this.onCandidateStoreChange();
+    this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
     this.campaignSupporterStoreListener = CampaignSupporterStore.addListener(this.onCampaignSupporterStoreChange.bind(this));
     this.campaignStoreListener = CampaignStore.addListener(this.onCampaignStoreChange.bind(this));
     const { campaignXWeVoteId, startingNumberOfCommentsToDisplay } = this.props;
-    // console.log('CampaignCommentsList componentDidMount campaignXWeVoteId:', campaignXWeVoteId);
+    // console.log('CampaignCommentsList componentDidMount campaignXWeVoteId:', campaignXWeVoteId, ', startingNumberOfCommentsToDisplay:', startingNumberOfCommentsToDisplay);
     if (startingNumberOfCommentsToDisplay && startingNumberOfCommentsToDisplay > 0) {
       this.setState({
         numberOfCommentsToDisplay: startingNumberOfCommentsToDisplay,
       });
     }
-    const supporterEndorsementsList = CampaignSupporterStore.getCampaignXSupporterEndorsementsList(campaignXWeVoteId);
-    this.setState({
-      supporterEndorsementsList,
-    });
+    this.updateLatestCampaignXSupportersWithTextList(campaignXWeVoteId);
   }
 
   componentDidUpdate (prevProps) {
     // console.log('CampaignCommentsList componentDidUpdate');
     const {
       campaignXWeVoteId: campaignXWeVoteIdPrevious,
+      politicianWeVoteId: politicianWeVoteIdPrevious,
     } = prevProps;
     const {
       campaignXWeVoteId,
+      politicianWeVoteId,
     } = this.props;
-    if (campaignXWeVoteId) {
-      if (campaignXWeVoteId !== campaignXWeVoteIdPrevious) {
-        const supporterEndorsementsList = CampaignSupporterStore.getCampaignXSupporterEndorsementsList(campaignXWeVoteId);
-        this.setState({
-          supporterEndorsementsList,
-        });
-      }
+    if (campaignXWeVoteId && campaignXWeVoteId !== campaignXWeVoteIdPrevious) {
+      this.updateLatestCampaignXSupportersWithTextList(campaignXWeVoteId);
+    }
+    if (politicianWeVoteId && politicianWeVoteId !== politicianWeVoteIdPrevious) {
+      this.onCandidateStoreChange();
     }
   }
 
   componentWillUnmount () {
+    this.candidateStoreListener.remove();
     this.campaignSupporterStoreListener.remove();
     this.campaignStoreListener.remove();
+  }
+
+  onCandidateStoreChange () {
+    const { campaignXWeVoteId, politicianWeVoteId, removePoliticianEndorsements } = this.props;
+    if (politicianWeVoteId && removePoliticianEndorsements) {
+      const organizationWeVoteIdListFromPositions = [];
+      const allCachedPositionsForThisPolitician = CandidateStore.getAllCachedPositionsByPoliticianWeVoteId(politicianWeVoteId);
+      // console.log('allCachedPositionsForThisPolitician:', allCachedPositionsForThisPolitician);
+      for (let i = 0; i < allCachedPositionsForThisPolitician.length; i += 1) {
+        if (allCachedPositionsForThisPolitician[i].speaker_we_vote_id && !arrayContains(allCachedPositionsForThisPolitician[i].speaker_we_vote_id, organizationWeVoteIdListFromPositions)) {
+          organizationWeVoteIdListFromPositions.push(allCachedPositionsForThisPolitician[i].speaker_we_vote_id);
+        }
+      }
+      // console.log('onCandidateStoreChange organizationWeVoteIdListFromPositions:', organizationWeVoteIdListFromPositions);
+      this.setState({
+        organizationWeVoteIdListFromPositions,
+      }, () => this.updateLatestCampaignXSupportersWithTextList(campaignXWeVoteId));
+    }
   }
 
   onCampaignSupporterStoreChange () {
     const { campaignXWeVoteId } = this.props;
     // console.log('CampaignCommentsList onCampaignSupporterStoreChange campaignXWeVoteId:', campaignXWeVoteId);
-    const supporterEndorsementsListUnsorted = CampaignSupporterStore.getCampaignXSupporterEndorsementsList(campaignXWeVoteId);
-    const supporterEndorsementsList = supporterEndorsementsListUnsorted.sort(this.orderByCommentDate);
-    this.setState({
-      supporterEndorsementsList,
-    });
+    this.updateLatestCampaignXSupportersWithTextList(campaignXWeVoteId);
   }
 
   onCampaignStoreChange () {
     const { campaignXWeVoteId } = this.props;
     // console.log('CampaignCommentsList onCampaignStoreChange campaignXWeVoteId:', campaignXWeVoteId);
-    const supporterEndorsementsListUnsorted = CampaignSupporterStore.getCampaignXSupporterEndorsementsList(campaignXWeVoteId);
-    const supporterEndorsementsList = supporterEndorsementsListUnsorted.sort(this.orderByCommentDate);
+    this.updateLatestCampaignXSupportersWithTextList(campaignXWeVoteId);
+  }
+
+  updateLatestCampaignXSupportersWithTextList = (campaignXWeVoteId) => {
+    const { removePoliticianEndorsements } = this.props;
+    const { organizationWeVoteIdListFromPositions } = this.state;
+    // console.log('updateLatestCampaignXSupportersWithTextList organizationWeVoteIdListFromPositions:', organizationWeVoteIdListFromPositions);
+    const campaignXSupportersWithTextUnsorted = CampaignSupporterStore.getLatestCampaignXSupportersWithTextList(campaignXWeVoteId);
+    let campaignXSupportersWithoutEndorsements;
+    if (removePoliticianEndorsements) {
+      campaignXSupportersWithoutEndorsements = campaignXSupportersWithTextUnsorted.filter((supporter) => !arrayContains(supporter.organization_we_vote_id, organizationWeVoteIdListFromPositions));
+    } else {
+      campaignXSupportersWithoutEndorsements = campaignXSupportersWithTextUnsorted;
+    }
+    const campaignXSupportersWithText = campaignXSupportersWithoutEndorsements.sort(this.orderByCommentDate);
+    // console.log('updateLatestCampaignXSupportersWithTextList campaignXSupportersWithText:', campaignXSupportersWithText);
     this.setState({
-      supporterEndorsementsList,
+      campaignXSupportersWithText,
     });
   }
 
@@ -92,10 +122,10 @@ class CampaignCommentsList extends Component {
   render () {
     renderLog('CampaignCommentsList');  // Set LOG_RENDER_EVENTS to log all renders
     const { campaignXWeVoteId, hideEncouragementToComment } = this.props;
-    const { supporterEndorsementsList, numberOfCommentsToDisplay } = this.state;
+    const { campaignXSupportersWithText, numberOfCommentsToDisplay } = this.state;
     // console.log('CampaignCommentsList render numberOfCommentsToDisplay:', numberOfCommentsToDisplay);
 
-    if (!supporterEndorsementsList || supporterEndorsementsList.length === 0) {
+    if (!campaignXSupportersWithText || campaignXSupportersWithText.length === 0) {
       return (
         <Wrapper>
           {!hideEncouragementToComment && (
@@ -110,14 +140,14 @@ class CampaignCommentsList extends Component {
     return (
       <Wrapper>
         <div>
-          {supporterEndorsementsList.map((campaignXSupporter) => {
+          {campaignXSupportersWithText.map((campaignXSupporter) => {
             // console.log('campaignXSupporter:', campaignXSupporter);
             if (numberOfCampaignsDisplayed >= numberOfCommentsToDisplay) {
               return null;
             }
             numberOfCampaignsDisplayed += 1;
             return (
-              <div key={`campaignXSupporterItem-${campaignXWeVoteId}-${campaignXSupporter.voter_we_vote_id}`}>
+              <div key={`campaignXSupporterItem-${campaignXWeVoteId}-${campaignXSupporter.organization_we_vote_id}`}>
                 <CampaignCommentForList
                   campaignXWeVoteId={campaignXWeVoteId}
                   campaignXSupporterId={campaignXSupporter.id}
@@ -127,9 +157,9 @@ class CampaignCommentsList extends Component {
           })}
         </div>
         <LoadMoreItemsManuallyWrapper>
-          {!!(supporterEndorsementsList &&
-              supporterEndorsementsList.length > 1 &&
-              numberOfCommentsToDisplay < supporterEndorsementsList.length) &&
+          {!!(campaignXSupportersWithText &&
+              campaignXSupportersWithText.length > 1 &&
+              numberOfCommentsToDisplay < campaignXSupportersWithText.length) &&
           (
             <LoadMoreItemsManually
               loadMoreFunction={this.increaseNumberOfCampaignsToDisplay}
@@ -144,6 +174,8 @@ class CampaignCommentsList extends Component {
 CampaignCommentsList.propTypes = {
   campaignXWeVoteId: PropTypes.string,
   hideEncouragementToComment: PropTypes.bool,
+  politicianWeVoteId: PropTypes.string,
+  removePoliticianEndorsements: PropTypes.bool,
   startingNumberOfCommentsToDisplay: PropTypes.number,
 };
 

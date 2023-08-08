@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Table from 'react-bootstrap/Table';
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import VoterSessionActions from '../../actions/VoterSessionActions';
 import LazyImage from '../../common/components/LazyImage';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';

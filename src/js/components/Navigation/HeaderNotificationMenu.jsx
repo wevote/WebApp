@@ -78,9 +78,11 @@ class HeaderNotificationMenu extends Component {
     this.handleClose();
     if (activityNotice && activityNotice.campaignx_we_vote_id) {
       if (activityNotice.campaignx_news_item_we_vote_id) {
-        window.open(`https://campaigns.wevote.us/id/${activityNotice.campaignx_we_vote_id}/u/${activityNotice.campaignx_news_item_we_vote_id}`, '_blank');
+        // window.open(`https://campaigns.wevote.us/id/${activityNotice.campaignx_we_vote_id}/u/${activityNotice.campaignx_news_item_we_vote_id}`, '_blank');
+        historyPush(`/id/${activityNotice.campaignx_we_vote_id}/u/${activityNotice.campaignx_news_item_we_vote_id}`);
       } else {
-        window.open(`https://campaigns.wevote.us/id/${activityNotice.campaignx_we_vote_id}`, '_blank');
+        // window.open(`https://campaigns.wevote.us/id/${activityNotice.campaignx_we_vote_id}`, '_blank');
+        historyPush(`/id/${activityNotice.campaignx_we_vote_id}`);
       }
     } else if (activityNotice && activityNotice.activity_tidbit_we_vote_id) {
       historyPush(`/news/a/${activityNotice.activity_tidbit_we_vote_id}`);

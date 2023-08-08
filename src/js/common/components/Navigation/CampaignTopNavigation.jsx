@@ -69,9 +69,9 @@ export default function CampaignTopNavigation (incomingVariables) {
   if (endsWith('/comments', pathname) && value !== 1) {
     // console.log('Render CampaignTopNavigation, initial value set to 1');
     setValue(1);
-  } else if (endsWith('/updates', pathname) && value !== 2) {
-    // console.log('Render CampaignTopNavigation, initial value set to 2');
-    setValue(2);
+  // } else if (endsWith('/updates', pathname) && value !== 2) {
+  //   // console.log('Render CampaignTopNavigation, initial value set to 2');
+  //   setValue(2);
   } else if ((startsWith('/c/', pathname) || startsWith('/id/', pathname)) && value !== 0 && value !== 1 && value !== 2) {
     // console.log('Render CampaignTopNavigation, initial value set to 0');
     setValue(0);
@@ -79,15 +79,15 @@ export default function CampaignTopNavigation (incomingVariables) {
 
   let detailsUrl;
   let commentsUrl;
-  let updatesUrl;
+  // let updatesUrl;
   if (campaignSEOFriendlyPath) {
     detailsUrl = `/c/${campaignSEOFriendlyPath}`;
     commentsUrl = `/c/${campaignSEOFriendlyPath}/comments`;
-    updatesUrl = `/c/${campaignSEOFriendlyPath}/updates`;
+    // updatesUrl = `/c/${campaignSEOFriendlyPath}/updates`;
   } else {
     detailsUrl = `/id/${campaignXWeVoteId}`;
     commentsUrl = `/id/${campaignXWeVoteId}/comments`;
-    updatesUrl = `/id/${campaignXWeVoteId}/updates`;
+    // updatesUrl = `/id/${campaignXWeVoteId}/updates`;
   }
   // Overwrite detailsUrl if politicianWeVoteId is set
   if (politicianWeVoteId) {
@@ -112,7 +112,7 @@ export default function CampaignTopNavigation (incomingVariables) {
               <Tabs value={value} onChange={handleChange} aria-label="Tab menu">
                 <Tab id="weTarget-0" label="Campaign details" onClick={() => history.push(detailsUrl)} />
                 <Tab id="weTarget-1" label="Comments" onClick={() => history.push(commentsUrl)} />
-                <Tab id="weTarget-2" label="Updates" onClick={() => history.push(updatesUrl)} />
+                {/* <Tab id="weTarget-2" label="Updates" onClick={() => history.push(updatesUrl)} /> */}
               </Tabs>
             </Toolbar>
           </ThemeProvider>

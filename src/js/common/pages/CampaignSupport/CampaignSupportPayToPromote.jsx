@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import commonMuiStyles from '../../components/Style/commonMuiStyles';
 import historyPush from '../../utils/historyPush';
 import { renderLog } from '../../utils/logging';
@@ -185,6 +185,9 @@ class CampaignSupportPayToPromote extends Component {
   render () {
     renderLog('CampaignSupportPayToPromote');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
+    const { match: { params } } = this.props;
+    const { campaignSEOFriendlyPath: campaignSEOFriendlyPathFromUrl } = params;
+    // console.log('componentDidMount campaignSEOFriendlyPathFromUrl: ', campaignSEOFriendlyPathFromUrl);
     const {
       campaignPhotoLargeUrl, campaignSEOFriendlyPath, campaignTitle, campaignXWeVoteId,
       chosenWebsiteName, voterFirstName, weVoteHostedProfileImageUrlLarge,
@@ -217,9 +220,22 @@ class CampaignSupportPayToPromote extends Component {
         This campaign can achieve its goals if everyone chips in. Can you help reach the supporter goal?
       </>
     );
+    const chipInDescriptionText2TextOnly = 'WeVote.US (a nonpartisan nonprofit) is here to help you reach more voters in a fraction of the time. Chipping in allows WeVote.US to find like-minded people who can vote for the candidates in this campaign, and distribute this campaign to people through ads and our website. This campaign can achieve its goals if everyone chips in. Can you help reach the supporter goal?';
     return (
       <div>
-        <Helmet title={htmlTitle} />
+        <Helmet>
+          <title>{htmlTitle}</title>
+          {campaignSEOFriendlyPathFromUrl ? (
+            <link rel="canonical" href={`https://wevote.us/c/${campaignSEOFriendlyPathFromUrl}/pay-to-promote`} />
+          ) : (
+            <>
+              {campaignSEOFriendlyPath && (
+                <link rel="canonical" href={`https://wevote.us/c/${campaignSEOFriendlyPath}/pay-to-promote`} />
+              )}
+            </>
+          )}
+          <meta name="description" content={`${chipInDescriptionText1} ${chipInDescriptionText2TextOnly}`} />
+        </Helmet>
         <PageWrapperDefault>
           <ContentOuterWrapperDefault>
             <ContentInnerWrapperDefault>

@@ -4,6 +4,7 @@ import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
+import SupportActions from '../../../actions/SupportActions';
 import VoterActions from '../../../actions/VoterActions';
 import VoterPhotoUpload from './VoterPhotoUpload';
 import DelayedLoad from '../Widgets/DelayedLoad';
@@ -18,6 +19,8 @@ import SettingsVerifySecretCode from './SettingsVerifySecretCode';
 import VoterEmailInputField from './VoterEmailInputField';
 import VoterFirstNameInputField from './VoterFirstNameInputField';
 import VoterLastNameInputField from './VoterLastNameInputField';
+import CandidateStore from '../../../stores/CandidateStore';
+import RepresentativeStore from '../../../stores/RepresentativeStore';
 
 const SignInButton = React.lazy(() => import(/* webpackChunkName: 'SignInButton' */ '../Navigation/SignInButton'));
 // const SignInModalController = React.lazy(() => import(/* webpackChunkName: 'SignInModalController' */ './SignInModalController'));
@@ -199,8 +202,10 @@ class CompleteYourProfile extends Component {
       // All required fields were found
       AppObservableStore.setBlockCampaignXRedirectOnSignIn(false);
       this.sendSignInCodeEmail(event, voterEmailQueuedToSave);
+      this.supportBallotItem();
     } else {
       VoterActions.voterRetrieve();
+      this.supportBallotItem();
       this.functionToUseWhenProfileCompleteTimer = setTimeout(() => {
         AppObservableStore.setBlockCampaignXRedirectOnSignIn(false);
         this.props.functionToUseWhenProfileComplete();
@@ -215,6 +220,28 @@ class CompleteYourProfile extends Component {
     // console.log('voterEmailQueuedToSaveLocal: ', voterEmailQueuedToSaveLocal);
     VoterActions.sendSignInCodeEmail(voterEmailQueuedToSaveLocal);
   };
+
+  supportBallotItem = () => {
+    const { campaignXWeVoteId } = this.props;
+    if (campaignXWeVoteId) {
+      const candidate = CandidateStore.getCandidateByLinkedCampaignXWeVoteId(campaignXWeVoteId);
+      const representative = RepresentativeStore.getRepresentativeByLinkedCampaignXWeVoteId(campaignXWeVoteId);
+      let ballotItemType;
+      let ballotItemWeVoteId;
+      if (candidate && candidate.we_vote_id) {
+        ballotItemType = 'CANDIDATE';
+        ballotItemWeVoteId = candidate.we_vote_id;
+        // console.log('onCampaignSupporterStoreChange from candidate voterOpposesBallotItem:', voterOpposesBallotItem);
+      } else if (representative && representative.politician_we_vote_id) {
+        ballotItemType = 'POLITICIAN';
+        ballotItemWeVoteId = representative.politician_we_vote_id;
+        // console.log('onCampaignSupporterStoreChange from representative voterOpposesBallotItem:', voterOpposesBallotItem);
+      }
+      if (ballotItemType && ballotItemWeVoteId) {
+        SupportActions.voterSupportingSave(ballotItemWeVoteId, ballotItemType);
+      }
+    }
+  }
 
   voterFirstRetrieve = () => {
     initializejQuery(() => {
@@ -260,14 +287,14 @@ class CompleteYourProfile extends Component {
       if (voterCanVoteForPoliticianInCampaign) {
         buttonText = 'Support with my vote';
       } else {
-        buttonText = 'Help them win by endorsing';
+        buttonText = 'Help them win';
       }
       introductionText = <span>Leading up to election day, WeVote.US will remind you to vote for all of the candidates you support. We keep your email secure and confidential.</span>;
     } else if (supportCampaignOnCampaignHome) {
       if (voterCanVoteForPoliticianInCampaign) {
         buttonText = 'Support with my vote';
       } else {
-        buttonText = 'Help them win by endorsing';
+        buttonText = 'Help them win';
       }
       outerMarginsOff = true;
     }

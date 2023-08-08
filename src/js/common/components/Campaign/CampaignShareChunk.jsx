@@ -10,6 +10,10 @@ import ShareByEmailButton from '../CampaignShare/ShareByEmailButton';
 import ShareOnFacebookButton from '../CampaignShare/ShareOnFacebookButton';
 import ShareOnTwitterButton from '../CampaignShare/ShareOnTwitterButton';
 import { CampaignSupportDesktopButtonPanel, CampaignSupportDesktopButtonWrapper, CampaignSupportMobileButtonPanel, CampaignSupportMobileButtonWrapper, CampaignSupportSection, CampaignSupportSectionWrapper } from '../Style/CampaignSupportStyles';
+import webAppConfig from '../../../config';
+
+const futureFeaturesDisabled = true;
+const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
 
 class CampaignShareChunk extends Component {
@@ -62,32 +66,36 @@ class CampaignShareChunk extends Component {
                 </CampaignSupportDesktopButtonPanel>
               </CampaignSupportDesktopButtonWrapper>
             )}
-            <CampaignSupportDesktopButtonWrapper className="u-show-desktop-tablet">
-              <CampaignSupportDesktopButtonPanel>
-                <Button
-                  classes={{ root: classes.buttonDesktop }}
-                  color="primary"
-                  id="superSharingIntroDesktop"
-                  onClick={() => this.superSharingIntro(false)}
-                  variant={darkButtonsOff ? 'outlined' : 'contained'}
-                >
-                  Private emails, supercharged
-                </Button>
-              </CampaignSupportDesktopButtonPanel>
-            </CampaignSupportDesktopButtonWrapper>
-            <CampaignSupportMobileButtonWrapper className="u-show-mobile">
-              <CampaignSupportMobileButtonPanel>
-                <Button
-                  classes={{ root: classes.buttonDesktop }}
-                  color="primary"
-                  id="superSharingIntroMobile"
-                  onClick={() => this.superSharingIntro(false)}
-                  variant={darkButtonsOff ? 'outlined' : 'contained'}
-                >
-                  Private emails, supercharged
-                </Button>
-              </CampaignSupportMobileButtonPanel>
-            </CampaignSupportMobileButtonWrapper>
+            {(!futureFeaturesDisabled && nextReleaseFeaturesEnabled) && (
+              <CampaignSupportDesktopButtonWrapper className="u-show-desktop-tablet">
+                <CampaignSupportDesktopButtonPanel>
+                  <Button
+                    classes={{ root: classes.buttonDesktop }}
+                    color="primary"
+                    id="superSharingIntroDesktop"
+                    onClick={() => this.superSharingIntro(false)}
+                    variant={darkButtonsOff ? 'outlined' : 'contained'}
+                  >
+                    Private emails, supercharged
+                  </Button>
+                </CampaignSupportDesktopButtonPanel>
+              </CampaignSupportDesktopButtonWrapper>
+            )}
+            {(!futureFeaturesDisabled && nextReleaseFeaturesEnabled) && (
+              <CampaignSupportMobileButtonWrapper className="u-show-mobile">
+                <CampaignSupportMobileButtonPanel>
+                  <Button
+                    classes={{ root: classes.buttonDesktop }}
+                    color="primary"
+                    id="superSharingIntroMobile"
+                    onClick={() => this.superSharingIntro(false)}
+                    variant={darkButtonsOff ? 'outlined' : 'contained'}
+                  >
+                    Private emails, supercharged
+                  </Button>
+                </CampaignSupportMobileButtonPanel>
+              </CampaignSupportMobileButtonWrapper>
+            )}
             <CampaignSupportDesktopButtonWrapper className="u-show-desktop-tablet">
               <CampaignSupportDesktopButtonPanel>
                 <ShareByEmailButton campaignXNewsItemWeVoteId={campaignXNewsItemWeVoteId} campaignXWeVoteId={campaignXWeVoteId} />

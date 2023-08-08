@@ -1,6 +1,6 @@
 import { Check } from '@mui/icons-material';
 import React, { Component } from 'react';
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import { renderLog } from '../../common/utils/logging';
 import numberWithCommas from '../../common/utils/numberWithCommas';
 import AddressBox from '../../components/AddressBox';

@@ -34,21 +34,27 @@ export default function EditCandidateForExtension ()  {
       candidatePossibilityPosition = VoterGuidePossibilityPositionStore.getVoterGuidePossibilityPositionByPositionId(candidateWeVoteId);
     }
     // console.log('candidatePossibilityPosition', candidatePossibilityPosition);
-    const {
-      ballot_item_name: candidateNameFromStore,
-      more_info_url: candidateCampaignUrlFromStore,
-      organization_we_vote_id: candidateWeVoteIdFromStore,
-      statement_text: statementTextFromStore,
-      position_stance: stanceFromStore,
-      possibility_position_id: candidatePossibilityPositionIdFromStore } = candidatePossibilityPosition;
-    setCandidate({ ...candidate,
-      candidateName: candidateNameFromStore,
-      candidateWeVoteId: candidateWeVoteIdFromStore,
-      possibilityPositionId: candidatePossibilityPositionIdFromStore,
-      endorsementPageUrl,   // from request url param
-      candidateCampaignUrl: candidateCampaignUrlFromStore,
-      statementText: statementTextFromStore,
-      stance: stanceFromStore });
+    const { $ } = window;
+    if (!$.isEmptyObject(candidatePossibilityPosition)) {
+      const {
+        ballot_item_name: candidateNameFromStore,
+        more_info_url: candidateCampaignUrlFromStore,
+        organization_we_vote_id: candidateWeVoteIdFromStore,
+        statement_text: statementTextFromStore,
+        position_stance: stanceFromStore,
+        possibility_position_id: candidatePossibilityPositionIdFromStore,
+      } = candidatePossibilityPosition;
+      setCandidate({
+        ...candidate,
+        candidateName: candidateNameFromStore,
+        candidateWeVoteId: candidateWeVoteIdFromStore,
+        possibilityPositionId: candidatePossibilityPositionIdFromStore,
+        endorsementPageUrl,   // from request url param
+        candidateCampaignUrl: candidateCampaignUrlFromStore,
+        statementText: statementTextFromStore,
+        stance: stanceFromStore,
+      });
+    }
   };
 
   const handlePossibilityRetrieve = () => {

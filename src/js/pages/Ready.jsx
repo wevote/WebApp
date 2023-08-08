@@ -3,7 +3,7 @@ import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import ActivityActions from '../actions/ActivityActions';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import BallotActions from '../actions/BallotActions';
@@ -174,7 +174,10 @@ class Ready extends Component {
       <PageContentContainer>
         <ReadyPageContainer className="container-fluid" style={this.getTopPadding()}>
           <SnackNotifier />
-          <Helmet title="Ready to Vote? - We Vote" />
+          <Helmet>
+            <title>Ready to Vote? - We Vote</title>
+            <link rel="canonical" href="https://wevote.us/ready" />
+          </Helmet>
           <BrowserPushMessage incomingProps={this.props} />
           <div className="row">
             <ElectionCountdownOuterWrapper className="col-12">

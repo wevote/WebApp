@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import TruncateMarkup from 'react-truncate-markup';
 import commonMuiStyles from '../../components/Style/commonMuiStyles';
 import arrayContains from '../../utils/arrayContains';
@@ -180,7 +180,8 @@ class CampaignRecommendedCampaigns extends Component {
       // Leave this component and go to news page if not signed in
       const { campaignSEOFriendlyPath, campaignXWeVoteId } = this.state;
       if (campaignSEOFriendlyPath || campaignXWeVoteId) {
-        historyPush(`${this.getCampaignXBasePath()}/updates`);
+        // historyPush(`${this.getCampaignXBasePath()}/updates`);
+        historyPush(`${this.getCampaignXBasePath()}`);
       } else {
         console.log('CampaignRecommendedCampaigns onVoterStoreChange cannot redirect. Missing campaignSEOFriendlyPath or campaignXWeVoteId');
       }
@@ -363,6 +364,7 @@ class CampaignRecommendedCampaigns extends Component {
         <div>
           <Helmet>
             <title>{htmlTitle}</title>
+            <meta name="robots" content="noindex" data-react-helmet="true" />
           </Helmet>
           <PageWrapperDefault>
             <ContentOuterWrapperDefault>
@@ -424,6 +426,7 @@ class CampaignRecommendedCampaigns extends Component {
       <div>
         <Helmet>
           <title>{htmlTitle}</title>
+          <meta name="robots" content="noindex" data-react-helmet="true" />
         </Helmet>
         <PageWrapperDefault>
           <ContentOuterWrapperDefault>

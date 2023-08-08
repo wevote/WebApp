@@ -1,5 +1,6 @@
 import PoliticianActions from '../actions/PoliticianActions';
 import PoliticianStore from '../stores/PoliticianStore';
+import apiCalming from './apiCalming';
 import initializejQuery from './initializejQuery';
 
 function orderCandidatesByUltimateDate (firstEntry, secondEntry) {
@@ -13,6 +14,7 @@ export function getPoliticianValuesFromIdentifiers (politicianSEOFriendlyPath, p
   let finalElectionDateInPast = false;
   // let isSupportersCountMinimumExceeded = false;
   let linkedCampaignXWeVoteId = '';
+  let opponentCandidateList = [];
   let politicalParty = '';
   let politician = {};
   let politicianDescription = '';
@@ -43,15 +45,17 @@ export function getPoliticianValuesFromIdentifiers (politicianSEOFriendlyPath, p
       final_election_date_in_past: finalElectionDateInPast,
       // is_supporters_count_minimum_exceeded: isSupportersCountMinimumExceeded,
       linked_campaignx_we_vote_id: linkedCampaignXWeVoteId,
+      opponent_candidate_list: opponentCandidateList,
+      political_party: politicalParty,
       politician_description: politicianDescription,
       politician_name: politicianName,
-      twitter_followers_count: twitterFollowersCount,
       political_party: politicalParty,
       politician_twitter_handle: twitterHandle,
       politician_twitter_handle2: twitterHandle2,
       politician_url: politicianUrl,
       politician_we_vote_id: politicianWeVoteIdFromObject,
       state_code: stateCode,
+      twitter_followers_count: twitterFollowersCount,
       voter_is_politician_owner: voterIsPoliticianOwner,
       we_vote_hosted_profile_image_url_large: politicianImageUrlLarge,
       we_vote_hosted_profile_image_url_medium: politicianImageUrlMedium,
@@ -84,6 +88,7 @@ export function getPoliticianValuesFromIdentifiers (politicianSEOFriendlyPath, p
     finalElectionDateInPast,
     // isSupportersCountMinimumExceeded,
     linkedCampaignXWeVoteId,
+    opponentCandidateList,
     politicalParty,
     politicianDescription,
     politicianImageUrlLarge,
@@ -107,12 +112,16 @@ export function retrievePoliticianFromIdentifiers (politicianSEOFriendlyPath, po
   // console.log('retrievePoliticianFromIdentifiersIfNeeded politicianSEOFriendlyPath: ', politicianSEOFriendlyPath, ', politicianWeVoteId: ', politicianWeVoteId);
   if (politicianSEOFriendlyPath) {
     initializejQuery(() => {
-      PoliticianActions.politicianRetrieveBySEOFriendlyPath(politicianSEOFriendlyPath);
+      if (apiCalming(`politicianRetrieve-${politicianSEOFriendlyPath}`, 2000)) {
+        PoliticianActions.politicianRetrieveBySEOFriendlyPath(politicianSEOFriendlyPath);
+      }
     });
     return true;
   } else if (politicianWeVoteId) {
     initializejQuery(() => {
-      PoliticianActions.politicianRetrieve(politicianWeVoteId);
+      if (apiCalming(`politicianRetrieve-${politicianWeVoteId}`, 2000)) {
+        PoliticianActions.politicianRetrieve(politicianWeVoteId);
+      }
     });
     return true;
   } else {
@@ -139,7 +148,9 @@ export function retrievePoliticianFromIdentifiersIfNeeded (politicianSEOFriendly
     // console.log('retrievePoliticianFromIdentifiersIfNeeded mustRetrieveCampaign:', mustRetrieveCampaign, ', politicianSEOFriendlyPath:', politicianSEOFriendlyPath);
     if (mustRetrieveCampaign) {
       initializejQuery(() => {
-        PoliticianActions.politicianRetrieveBySEOFriendlyPath(politicianSEOFriendlyPath);
+        if (apiCalming(`politicianRetrieve-${politicianSEOFriendlyPath}`, 2000)) {
+          PoliticianActions.politicianRetrieveBySEOFriendlyPath(politicianSEOFriendlyPath);
+        }
       });
     }
   } else if (politicianWeVoteId) {
@@ -154,7 +165,9 @@ export function retrievePoliticianFromIdentifiersIfNeeded (politicianSEOFriendly
     // console.log('retrievePoliticianFromIdentifiersIfNeeded mustRetrieveCampaign:', mustRetrieveCampaign, ', politicianWeVoteId:', politicianWeVoteId);
     if (mustRetrieveCampaign) {
       initializejQuery(() => {
-        PoliticianActions.politicianRetrieve(politicianWeVoteId);
+        if (apiCalming(`politicianRetrieve-${politicianWeVoteId}`, 2000)) {
+          PoliticianActions.politicianRetrieve(politicianWeVoteId);
+        }
       });
     }
   }
