@@ -1,4 +1,4 @@
-import { Chip, FormControl, InputLabel, Select } from '@mui/material';
+import { Chip } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
@@ -8,26 +8,27 @@ import ActivityActions from '../../actions/ActivityActions';
 import IssueActions from '../../actions/IssueActions';
 import SupportActions from '../../actions/SupportActions';
 import { SearchTitleTop } from '../../common/components/Style/FilterStyles';
-import { convertStateCodeToStateText, convertStateTextToStateCode, stateCodeMap } from '../../common/utils/addressFunctions';
+import CampaignStore from '../../common/stores/CampaignStore';
+import { convertStateCodeToStateText, convertStateTextToStateCode } from '../../common/utils/addressFunctions';
+import apiCalming from '../../common/utils/apiCalming';
+import arrayContains from '../../common/utils/arrayContains';
+import { getTodayAsInteger, getYearFromUltimateElectionDate } from '../../common/utils/dateFormat';
 import extractAttributeValueListFromObjectList from '../../common/utils/extractAttributeValueListFromObjectList';
 import historyPush from '../../common/utils/historyPush';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
+import { renderLog } from '../../common/utils/logging';
+import { convertToInteger } from '../../common/utils/textFormat';
+import StateDropDownCore from '../../components/Filter/StateDropDownCore';
 import SearchBar from '../../components/Search/SearchBar';
 import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
+import webAppConfig from '../../config';
 import BallotStore from '../../stores/BallotStore';
-import CampaignStore from '../../common/stores/CampaignStore';
 import CandidateStore from '../../stores/CandidateStore';
 import IssueStore from '../../stores/IssueStore';
 import RepresentativeStore from '../../stores/RepresentativeStore';
 // import SupportStore from '../../stores/SupportStore';
 import VoterStore from '../../stores/VoterStore';
-import { renderLog } from '../../common/utils/logging';
-import apiCalming from '../../common/utils/apiCalming';
-import { convertToInteger } from '../../common/utils/textFormat';
 import { cordovaSimplePageContainerTopOffset } from '../../utils/cordovaCalculatedOffsets';
-import { getTodayAsInteger, getYearFromUltimateElectionDate } from '../../common/utils/dateFormat';
-import arrayContains from '../../common/utils/arrayContains';
-import webAppConfig from '../../config';
 
 const CandidateListRoot = React.lazy(() => import(/* webpackChunkName: 'CandidateListRoot' */ '../../components/CandidateListRoot/CandidateListRoot'));
 const CampaignListRoot = React.lazy(() => import(/* webpackChunkName: 'CampaignListRoot' */ '../../common/components/Campaign/CampaignListRoot'));
@@ -475,19 +476,19 @@ class CampaignsHome extends Component {
     return listOfYearsWhenCampaignExists;
   }
 
-  getListOfYearsWhenCandidateExists = (candidateList) => {
-    const listOfYearsWhenCandidateExists = [];
-    let tempYearInteger;
-    candidateList.forEach((oneCandidate) => {
-      if (oneCandidate.candidate_ultimate_election_date && oneCandidate.candidate_ultimate_election_date > 0) {
-        tempYearInteger = getYearFromUltimateElectionDate(oneCandidate.candidate_ultimate_election_date);
-        if (!arrayContains(tempYearInteger, listOfYearsWhenCandidateExists)) {
-          listOfYearsWhenCandidateExists.push(tempYearInteger);
-        }
-      }
-    });
-    return listOfYearsWhenCandidateExists;
-  }
+  // getListOfYearsWhenCandidateExists = (candidateList) => {
+  //   const listOfYearsWhenCandidateExists = [];
+  //   let tempYearInteger;
+  //   candidateList.forEach((oneCandidate) => {
+  //     if (oneCandidate.candidate_ultimate_election_date && oneCandidate.candidate_ultimate_election_date > 0) {
+  //       tempYearInteger = getYearFromUltimateElectionDate(oneCandidate.candidate_ultimate_election_date);
+  //       if (!arrayContains(tempYearInteger, listOfYearsWhenCandidateExists)) {
+  //         listOfYearsWhenCandidateExists.push(tempYearInteger);
+  //       }
+  //     }
+  //   });
+  //   return listOfYearsWhenCandidateExists;
+  // }
 
   getListOfYearsWhenRepresentativeExists = (representativeList) => {
     const listOfYearsWhenRepresentativeExists = [];
@@ -630,8 +631,6 @@ class CampaignsHome extends Component {
     }
 
     const { match: { params: { state_candidates_phrase: stateCandidatesPhrase } } } = this.props;
-    let stateCodeTemp;
-    const stateNameList = Object.values(stateCodeMap);
     if (stateCode && stateCode !== 'na') {
       const stateText = convertStateCodeToStateText(stateCode);
       titleText = `${stateText} Candidates - We Vote`;
@@ -674,32 +673,13 @@ class CampaignsHome extends Component {
                     )}
                   </span>
                 ))}
-                <FormControl variant="outlined" className={classes.formControl}>
-                  <InputLabel htmlFor="outlined-age-native-simple" />
-                  <Select
-                    classes={{ select: classes.select }}
-                    native
-                    value={stateCode}
-                    onChange={this.handleChooseStateChange}
-                    label="State"
-                    inputProps={{
-                      name: 'age',
-                      id: 'outlined-age-native-simple',
-                    }}
-                  >
-                    <option aria-label="-- any state --" value="all">-- any state --</option>
-                    {stateNameList.map((stateName) => {
-                      if (stateName === 'National') {
-                        return null;
-                      } else {
-                        stateCodeTemp = convertStateTextToStateCode(stateName);
-                        return (
-                          <option key={`${stateCodeTemp}-option`} value={stateCodeTemp}>{stateName}</option>
-                        );
-                      }
-                    })}
-                  </Select>
-                </FormControl>
+                <StateDropDownCore
+                  stateCodesToDisplay=""
+                  onStateDropDownChange={this.handleChooseStateChange}
+                  stateCodesHtml=""
+                  selectedState={stateCode}
+                  dialogLabel="State"
+                />
               </CampaignsHomeFilterChoices>
             )}
             <SearchBarWrapper>

@@ -209,12 +209,6 @@ export default class Header extends Component {
       return null;
     }
 
-    if (isCordova()) {
-      const size = isIOS() ?  getIOSSizeString() : getAndroidSize();
-      console.log('Cordova:  device model', window.device.model, '  size: ', size);
-      // console.log('Header, hasDynamicIsland', hasDynamicIsland());
-    }
-
     const { hideHeader, params } = this.props;
     // console.log('Header global.weVoteGlobalHistory', global.weVoteGlobalHistory);
     const pathname = normalizedHref();

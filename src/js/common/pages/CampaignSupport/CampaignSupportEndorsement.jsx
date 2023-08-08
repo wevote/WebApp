@@ -1,29 +1,30 @@
 import loadable from '@loadable/component';
 import { Button } from '@mui/material';
-import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Helmet } from 'react-helmet-async';
-import CampaignSupporterActions from '../../actions/CampaignSupporterActions';
+import styled from 'styled-components';
 import VoterActions from '../../../actions/VoterActions';
-import VoterPhotoUpload from '../../components/Settings/VoterPhotoUpload';
-import { AdviceBox, AdviceBoxText, AdviceBoxTitle, AdviceBoxWrapper } from '../../components/Style/adviceBoxStyles';
-import commonMuiStyles from '../../components/Style/commonMuiStyles';
-import historyPush from '../../utils/historyPush';
-import { renderLog } from '../../utils/logging';
-import politicianListToSentenceString from '../../utils/politicianListToSentenceString';
+import webAppConfig from '../../../config';
+import VoterStore from '../../../stores/VoterStore';
+import CampaignSupporterActions from '../../actions/CampaignSupporterActions';
 import CampaignEndorsementInputField from '../../components/CampaignSupport/CampaignEndorsementInputField';
 import CampaignSupportSteps from '../../components/Navigation/CampaignSupportSteps';
+import VoterPhotoUpload from '../../components/Settings/VoterPhotoUpload';
+import { AdviceBox, AdviceBoxText, AdviceBoxTitle, AdviceBoxWrapper } from '../../components/Style/adviceBoxStyles';
 import { CampaignImage, CampaignProcessStepIntroductionText, CampaignProcessStepTitle } from '../../components/Style/CampaignProcessStyles';
 import { CampaignSupportDesktopButtonPanel, CampaignSupportDesktopButtonWrapper, CampaignSupportImageWrapper, CampaignSupportImageWrapperText, CampaignSupportMobileButtonPanel, CampaignSupportMobileButtonWrapper, CampaignSupportSection, CampaignSupportSectionWrapper, SkipForNowButtonPanel, SkipForNowButtonWrapper } from '../../components/Style/CampaignSupportStyles';
+import commonMuiStyles from '../../components/Style/commonMuiStyles';
 import { ContentInnerWrapperDefault, ContentOuterWrapperDefault, PageWrapperDefault } from '../../components/Style/PageWrapperStyles';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import CampaignStore from '../../stores/CampaignStore';
 import CampaignSupporterStore from '../../stores/CampaignSupporterStore';
-import VoterStore from '../../../stores/VoterStore';
 import { getCampaignXValuesFromIdentifiers, retrieveCampaignXFromIdentifiersIfNeeded } from '../../utils/campaignUtils';
+import historyPush from '../../utils/historyPush';
 import initializejQuery from '../../utils/initializejQuery';
+import { renderLog } from '../../utils/logging';
+import politicianListToSentenceString from '../../utils/politicianListToSentenceString';
 
 const CampaignRetrieveController = React.lazy(() => import(/* webpackChunkName: 'CampaignRetrieveController' */ '../../components/Campaign/CampaignRetrieveController'));
 const VisibleToPublicCheckbox = React.lazy(() => import(/* webpackChunkName: 'VisibleToPublicCheckbox' */ '../../components/CampaignSupport/VisibleToPublicCheckbox'));
@@ -105,7 +106,7 @@ class CampaignSupportEndorsement extends Component {
     const chosenWebsiteName = AppObservableStore.getChosenWebsiteName();
     const inPrivateLabelMode = AppObservableStore.inPrivateLabelMode();
     // For now, we assume that paid sites with chosenSiteLogoUrl will turn off "Chip in"
-    const payToPromoteStepTurnedOn = !inPrivateLabelMode;
+    const payToPromoteStepTurnedOn = !inPrivateLabelMode && webAppConfig.ENABLE_PAY_TO_PROMOTE;
     this.setState({
       chosenWebsiteName,
       payToPromoteStepTurnedOn,

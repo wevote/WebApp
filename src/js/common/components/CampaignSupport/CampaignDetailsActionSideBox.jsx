@@ -1,14 +1,15 @@
 import { Button } from '@mui/material';
-import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
+import styled from 'styled-components';
 import VoterActions from '../../../actions/VoterActions';
-import { renderLog } from '../../utils/logging';
+import VoterStore from '../../../stores/VoterStore';
 import CampaignStore from '../../stores/CampaignStore';
 import CampaignSupporterStore from '../../stores/CampaignSupporterStore';
-import VoterStore from '../../../stores/VoterStore';
+import { isWebApp } from '../../utils/isCordovaOrWebApp';
+import { renderLog } from '../../utils/logging';
 import CampaignChipInLink from '../Campaign/CampaignChipInLink';
 import CampaignShareChunk from '../Campaign/CampaignShareChunk';
 import SupportButton from './SupportButton';
@@ -238,13 +239,15 @@ class CampaignDetailsActionSideBox extends Component {
                     </Button>
                   </ButtonPanel>
                 )}
-                <CampaignChipInLinkOuterWrapper>
-                  <CampaignChipInLink
-                    campaignSEOFriendlyPath={campaignSEOFriendlyPath}
-                    campaignXWeVoteId={campaignXWeVoteId}
-                    externalUniqueId="desktop"
-                  />
-                </CampaignChipInLinkOuterWrapper>
+                { isWebApp() && (
+                  <CampaignChipInLinkOuterWrapper>
+                    <CampaignChipInLink
+                      campaignSEOFriendlyPath={campaignSEOFriendlyPath}
+                      campaignXWeVoteId={campaignXWeVoteId}
+                      externalUniqueId="desktop"
+                    />
+                  </CampaignChipInLinkOuterWrapper>
+                )}
                 <CampaignShareChunkWrapper>
                   <CampaignShareChunk
                     campaignSEOFriendlyPath={campaignSEOFriendlyPath}
@@ -300,13 +303,15 @@ class CampaignDetailsActionSideBox extends Component {
                 )}
               </>
             )}
-            <CampaignChipInLinkOuterWrapper>
-              <CampaignChipInLink
-                campaignSEOFriendlyPath={campaignSEOFriendlyPath}
-                campaignXWeVoteId={campaignXWeVoteId}
-                externalUniqueId="desktop"
-              />
-            </CampaignChipInLinkOuterWrapper>
+            { isWebApp() && (
+              <CampaignChipInLinkOuterWrapper>
+                <CampaignChipInLink
+                  campaignSEOFriendlyPath={campaignSEOFriendlyPath}
+                  campaignXWeVoteId={campaignXWeVoteId}
+                  externalUniqueId="desktop"
+                />
+              </CampaignChipInLinkOuterWrapper>
+            )}
             <CampaignShareChunkWrapper>
               <CampaignShareChunk
                 campaignSEOFriendlyPath={campaignSEOFriendlyPath}

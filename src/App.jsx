@@ -1,27 +1,28 @@
 import { StyledEngineProvider, ThemeProvider } from '@mui/material/styles';
 import OpenReplay from '@openreplay/tracker';
+import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import FullStory from 'react-fullstory';
 import ReactGA from 'react-ga4';
 import TagManager from 'react-gtm-module';
-import PropTypes from 'prop-types';
 import { Redirect, Route, Switch, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
+import VoterActions from './js/actions/VoterActions';
+import VoterSessionActions from './js/actions/VoterSessionActions';
 import muiTheme from './js/common/components/Style/muiTheme';
 import LoadingWheelComp from './js/common/components/Widgets/LoadingWheelComp';
+import AppObservableStore, { messageService } from './js/common/stores/AppObservableStore';
+import { getAndroidSize, getIOSSizeString, hasDynamicIsland, isIOS } from './js/common/utils/cordovaUtils';
 import historyPush from './js/common/utils/historyPush';
 import { normalizedHref } from './js/common/utils/hrefUtils';
-import { isWebApp } from './js/common/utils/isCordovaOrWebApp';
+import initializejQuery from './js/common/utils/initializejQuery';
+import { isCordova, isWebApp } from './js/common/utils/isCordovaOrWebApp';
 import { renderLog } from './js/common/utils/logging';
 import Header from './js/components/Navigation/Header';
 import HeaderBarSuspense from './js/components/Navigation/HeaderBarSuspense';
 import webAppConfig from './js/config';
-import VoterSessionActions from './js/actions/VoterSessionActions';
-import VoterActions from './js/actions/VoterActions';
-import AppObservableStore, { messageService } from './js/common/stores/AppObservableStore';
 import VoterStore from './js/stores/VoterStore';
 import initializeFacebookSDK from './js/utils/initializeFacebookSDK';
-import initializejQuery from './js/common/utils/initializejQuery';
 import RouterV5SendMatch from './js/utils/RouterV5SendMatch';
 // importRemoveCordovaListenersToken1  -- Do not remove this line!
 
@@ -180,6 +181,12 @@ class App extends Component {
         // Suspect that this isn't correct anymore: "We need to start this initialization early since there is a delay getting the FB object in place"
         initializeFacebookSDK();
       }, 2000);
+    }
+
+    if (isCordova()) {
+      const size = isIOS() ?  getIOSSizeString() : getAndroidSize();
+      console.log('Cordova:   device model', window.device.model, '  size: ', size);
+      console.log('Cordova:   Header, hasDynamicIsland', hasDynamicIsland());
     }
 
     this.bypass2FA();
@@ -342,7 +349,7 @@ class App extends Component {
     if (isWebApp()) {
       console.log('WebApp: href in App.js render: ', window.location.href);
     } else {
-      console.log('Cordova:  href hash in App.js render: ', window.location.hash);
+      console.log('Cordova:   href hash in App.js render: ', window.location.hash);
     }
 
     /*

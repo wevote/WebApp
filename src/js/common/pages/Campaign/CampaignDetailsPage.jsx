@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
+import webAppConfig from '../../../config';
 import CampaignSupporterActions from '../../actions/CampaignSupporterActions';
 import {
   CampaignDescription,
@@ -127,7 +128,7 @@ class CampaignDetailsPage extends Component {
     const chosenWebsiteName = AppObservableStore.getChosenWebsiteName();
     const inPrivateLabelMode = AppObservableStore.inPrivateLabelMode();
     // For now, we assume that paid sites with chosenSiteLogoUrl will turn off "Chip in"
-    const payToPromoteStepTurnedOn = !inPrivateLabelMode;
+    const payToPromoteStepTurnedOn = !inPrivateLabelMode && webAppConfig.ENABLE_PAY_TO_PROMOTE;
     this.setState({
       chosenWebsiteName,
       inPrivateLabelMode,
@@ -396,7 +397,7 @@ class CampaignDetailsPage extends Component {
                         </BlockedIndicator>
                       </IndicatorButtonWrapper>
                     )}
-                    {(!isSupportersCountMinimumExceeded && !inPrivateLabelMode) && (
+                    {(!isSupportersCountMinimumExceeded && !inPrivateLabelMode && webAppConfig.ENABLE_PAY_TO_PROMOTE) && (
                       <IndicatorButtonWrapper>
                         <DraftModeIndicator onClick={this.onCampaignShareClick}>
                           Needs Five Supporters
@@ -516,7 +517,7 @@ class CampaignDetailsPage extends Component {
                             </BlockedIndicator>
                           </IndicatorButtonWrapper>
                         )}
-                        {(!isSupportersCountMinimumExceeded && !inPrivateLabelMode) && (
+                        {(!isSupportersCountMinimumExceeded && webAppConfig.ENABLE_PAY_TO_PROMOTE) && (
                           <IndicatorButtonWrapper>
                             <DraftModeIndicator onClick={this.onCampaignShareClick}>
                               Needs Five Supporters

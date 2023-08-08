@@ -6,9 +6,10 @@ function fileRewriterForCordova (path) {
   fs.readFile(path, 'utf-8', (err, data) => {
     if (err) throw err;
 
-    // console.log('data before  ', data);
+    // Remove stripe
+    let newValue = data.replace(/const stripePromise.*?$/gim, '// loadStripe removed for Cordova');
     // Remove all lazy loading
-    let newValue = data.replace(/(?:const )(.*?)\s(?:.*?\*\/)(.*?)\)\);$/gim,
+    newValue = newValue.replace(/(?:const )(.*?)\s(?:.*?\*\/)(.*?)\)\);$/gim,
       'import $1 from $2;  // rewritten from lazy');
     // Remove all Suspense imports
     newValue = newValue.replace(/import React, { Suspense } from 'react';/gim,
@@ -41,6 +42,7 @@ function fileRewriterForCordova (path) {
     // Remove Donate from Cordova -- Stripe causes problems and is not allowed in the app store
     if (path.includes('App.js')) {
       newValue = newValue.replace(/^.*?Donate.*?\n/gim, '');
+      newValue = newValue.replace(/^(\s*).*?\/pay-to-promote.*?\n/gim, '$1{/* Removed /pay-to-promote for Cordova */}\n');
     }
     // Set is Cordova true in index.jsx
     if (path.endsWith('index.jsx')) {

@@ -170,7 +170,7 @@ class CampaignCardList extends Component {
           )}
         </ListWrapper>
         {/*
-        <Suspense fallback={<></>}>
+        <Sus pense fallback={<></>}>
           <DelayedLoad loadingTextLeftAlign showLoadingText waitBeforeShow={2000}>
             <div>
               {!(numberDisplayed) && (
@@ -199,7 +199,7 @@ class CampaignCardList extends Component {
               )}
             </div>
           </DelayedLoad>
-        </Suspense>
+        </Sus pense>
         */}
       </Wrapper>
     );

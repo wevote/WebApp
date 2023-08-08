@@ -3,6 +3,7 @@ import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { CampaignTitleText, CampaignTitleWrapper, CommentsSectionInnerWrapper, CommentsSectionOuterWrapper } from '../../components/Style/CampaignDetailsStyles';
 import { PageWrapper } from '../../components/Style/stepDisplayStyles';
 import OpenExternalWebSite from '../../components/Widgets/OpenExternalWebSite';
 import { isCordova } from '../../utils/isCordovaOrWebApp';
@@ -228,36 +229,9 @@ const styles = () => ({
 //   padding: 5px 12px;
 // `;
 
-const CampaignTitleWrapper = styled('div')(({ theme }) => (`
-  margin: 10px;
-  ${theme.breakpoints.down('md')} {
-  }
-`));
-
-const CampaignTitleText = styled('h1')`
-  font-size: 22px;
-  margin: 0;
-  margin-bottom: 10px;
-  min-height: 27px;
-  text-align: left;
-`;
 
 const CommentsListWrapper = styled('div')`
   margin: 0 0 25px 0;
-`;
-
-const CommentsSectionInnerWrapper = styled('div')`
-  margin: 0 15px;
-  max-width: 680px;
-  @media (max-width: 1005px) {
-    // Switch to 15px left/right margin when auto is too small
-    margin: 0 15px;
-  }
-`;
-
-const CommentsSectionOuterWrapper = styled('div')`
-  display: flex;
-  justify-content: center;
 `;
 
 const PageSubStatement = styled('div')`
