@@ -353,26 +353,6 @@ class PoliticianDetailsPage extends Component {
       htmlTitle = `${politicianName} - ${chosenWebsiteName}`;
     }
 
-    const updateCandidateInformationLink = 'https://docs.google.com/forms/d/e/1FAIpQLSePdeW32PClaSO1pUWBJnQ75wFGPOtviNaqOABBYps7NIH3hA/viewform?usp=sf_link';
-    const updateCandidateInformation = (
-      <div>
-        {!!(politicianName) && (
-          <div>
-            Are you&nbsp;
-            {politicianName}
-            ?&nbsp;
-            <a href={updateCandidateInformationLink}
-               target="_blank"
-               rel="noreferrer"
-               className="u-link-color"
-            >
-              Click here to update candidate information.
-            </a>
-          </div>
-        )}
-      </div>
-    );
-
     const politicianLinks = (
       <PoliticianLinksWrapper>
         {!!(twitterHandle && twitterFollowersCount) && (
@@ -432,6 +412,25 @@ class PoliticianDetailsPage extends Component {
           <SearchOnGoogle googleQuery={`${politicianName} ${stateText} ${officeHeldNameForSearch}`} />
         )}
       </PoliticianLinksWrapper>
+    );
+    const updateCandidateInformationLink = 'https://docs.google.com/forms/d/e/1FAIpQLSePdeW32PClaSO1pUWBJnQ75wFGPOtviNaqOABBYps7NIH3hA/viewform?usp=sf_link';
+    const updateCandidateInformation = (
+      <div>
+        {!!(politicianName) && (
+          <div>
+            Are you&nbsp;
+            {politicianName}
+            ?&nbsp;
+            <a href={updateCandidateInformationLink}
+               target="_blank"
+               rel="noreferrer"
+               className="u-link-color"
+            >
+              Click here to update candidate information.
+            </a>
+          </div>
+        )}
+      </div>
     );
     let priorCandidateCampaignsHtml = '';
     const currentYear = 2023;
