@@ -257,7 +257,7 @@ class MostRecentCampaignSupport extends React.Component {
     renderLog('MostRecentCampaignSupport');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
     const { supportersOnStageNow, voterWeVoteId } = this.state;
-    // console.log('MostRecentCampaignSupport render supportersOnStageNow:', supportersOnStageNow);
+    // console.log('MostRecentCampaignSupport render voterWeVoteId: ', voterWeVoteId, ', supportersOnStageNow:', supportersOnStageNow);
 
     return (
       <MostRecentCampaignSupportWrapper>
@@ -288,21 +288,38 @@ class MostRecentCampaignSupport extends React.Component {
                     <Comment>{returnFirstXWords(comment.supporter_endorsement, 18, true)}</Comment>
                   )}
                   <CommentNameWrapper>
-                    {!stringContains('Voter-', comment.supporter_name) && (
-                      <CommentName>
-                        {comment.supporter_name}
-                        {' '}
-                      </CommentName>
-                    )}
-                    supported
-                    {' '}
-                    {timeFromDate(comment.date_supported)}
-                    {comment.voter_we_vote_id === voterWeVoteId && (
+                    {comment.voter_we_vote_id === voterWeVoteId ? (
                       <>
+                        You supported
+                        {' '}
+                        {timeFromDate(comment.date_supported)}
+                        {comment.visible_to_public === false && (
+                          <>
+                            {' '}
+                            (not visible to public)
+                          </>
+                        )}
                         &nbsp;&nbsp;&nbsp;
                         <Link to={`/id/${comment.campaignx_we_vote_id}/why-do-you-support`}>
                           Edit
                         </Link>
+                      </>
+                    ) : (
+                      <>
+                        {!stringContains('Voter-', comment.supporter_name) ? (
+                          <CommentName>
+                            {comment.supporter_name}
+                            {' '}
+                          </CommentName>
+                        ) : (
+                          <CommentName>
+                            Anonymous
+                            {' '}
+                          </CommentName>
+                        )}
+                        supported
+                        {' '}
+                        {timeFromDate(comment.date_supported)}
                       </>
                     )}
                   </CommentNameWrapper>
