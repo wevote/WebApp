@@ -548,22 +548,26 @@ class PoliticianDetailsPage extends Component {
     );
     const updateCandidateInformationLink = 'https://docs.google.com/forms/d/e/1FAIpQLSePdeW32PClaSO1pUWBJnQ75wFGPOtviNaqOABBYps7NIH3hA/viewform?usp=sf_link';
     const updateCandidateInformation = (
-      <div>
+      <PoliticianLinksWrapper>
         {!!(politicianName) && (
-          <div>
+          <Suspense fallback={<></>}>
             Are you&nbsp;
             {politicianName}
             ?&nbsp;
-            <a href={updateCandidateInformationLink}
-               target="_blank"
-               rel="noreferrer"
-               className="u-link-color"
-            >
-              Click here to update candidate information.
-            </a>
-          </div>
+            <OpenExternalWebSite
+              linkIdAttribute="updateCandidateInformation"
+              url={updateCandidateInformationLink}
+              target="_blank"
+              className="u-link-color"
+              body={(
+                <div>
+                  Click here to update candidate information.
+                </div>
+              )}
+            />
+          </Suspense>
         )}
-      </div>
+      </PoliticianLinksWrapper>
     );
     let opponentCandidatesHtml = '';
     const opponentsSubtitle = 'Candidates Running for Same Office';
