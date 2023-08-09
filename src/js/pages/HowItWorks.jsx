@@ -207,6 +207,7 @@ class HowItWorks extends Component {
         getStartedMode: 'getStartedForVoters',
         // getStartedUrl: '/ballot',
         selectedCategoryIndex: 0,
+        // Commented line 211 which seems to be causing users who visit the How It Works modal for the first time to experience a glitch when moving from the first slide to the second slide.
         // selectedStepIndex: 0,
       });
     }
