@@ -207,7 +207,7 @@ class HowItWorks extends Component {
         getStartedMode: 'getStartedForVoters',
         // getStartedUrl: '/ballot',
         selectedCategoryIndex: 0,
-        selectedStepIndex: 0,
+        // selectedStepIndex: 0,
       });
     }
     const howItWorksWatched = VoterStore.getInterfaceFlagState(VoterConstants.HOW_IT_WORKS_WATCHED);
