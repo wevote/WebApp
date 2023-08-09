@@ -397,7 +397,7 @@ class CampaignDetailsPage extends Component {
                         </BlockedIndicator>
                       </IndicatorButtonWrapper>
                     )}
-                    {(!isSupportersCountMinimumExceeded && !inPrivateLabelMode && webAppConfig.ENABLE_PAY_TO_PROMOTE) && (
+                    {(!isSupportersCountMinimumExceeded && !inPrivateLabelMode) && (
                       <IndicatorButtonWrapper>
                         <DraftModeIndicator onClick={this.onCampaignShareClick}>
                           Needs Five Supporters
@@ -517,7 +517,7 @@ class CampaignDetailsPage extends Component {
                             </BlockedIndicator>
                           </IndicatorButtonWrapper>
                         )}
-                        {(!isSupportersCountMinimumExceeded && webAppConfig.ENABLE_PAY_TO_PROMOTE) && (
+                        {(!isSupportersCountMinimumExceeded) && (
                           <IndicatorButtonWrapper>
                             <DraftModeIndicator onClick={this.onCampaignShareClick}>
                               Needs Five Supporters

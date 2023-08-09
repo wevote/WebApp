@@ -536,7 +536,7 @@ class CampaignNewsItemDetailsPage extends Component {
                         </BlockedIndicator>
                       </IndicatorButtonWrapper>
                     )}
-                    {(!isSupportersCountMinimumExceeded && !inDraftMode && !inPrivateLabelMode && webAppConfig.ENABLE_PAY_TO_PROMOTE) && (
+                    {(!isSupportersCountMinimumExceeded && !inDraftMode && !inPrivateLabelMode) && (
                       <IndicatorButtonWrapper>
                         <DraftModeIndicator onClick={this.onCampaignGetMinimumSupportersClick}>
                           Needs Five Supporters
@@ -648,7 +648,7 @@ class CampaignNewsItemDetailsPage extends Component {
                             </BlockedIndicator>
                           </IndicatorButtonWrapper>
                         )}
-                        {(!isSupportersCountMinimumExceeded && !inDraftMode && !inPrivateLabelMode && webAppConfig.ENABLE_PAY_TO_PROMOTE) && (
+                        {(!isSupportersCountMinimumExceeded && !inDraftMode && !inPrivateLabelMode) && (
                           <IndicatorButtonWrapper>
                             <DraftModeIndicator onClick={this.onCampaignGetMinimumSupportersClick}>
                               Needs Five Supporters

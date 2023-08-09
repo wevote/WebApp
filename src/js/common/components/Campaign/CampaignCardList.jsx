@@ -169,8 +169,13 @@ class CampaignCardList extends Component {
             </LoadMoreItemsManuallyWrapper>
           )}
         </ListWrapper>
-        {/*
-        <Sus pense fallback={<></>}>
+        {/* Commented out section was moved below to stop breaking the cordova conversion - move it back if actually needed */}
+      </Wrapper>
+    );
+  }
+}
+/*      August 9, 2023:  The word "SusDISABLEDpense" without the "DISABLED" breaks the buildSrcCordova.js, which can't handle that word in a comment
+        <SusDISABLEDpense fallback={<></>}>
           <DelayedLoad loadingTextLeftAlign showLoadingText waitBeforeShow={2000}>
             <div>
               {!(numberDisplayed) && (
@@ -199,12 +204,9 @@ class CampaignCardList extends Component {
               )}
             </div>
           </DelayedLoad>
-        </Sus pense>
-        */}
-      </Wrapper>
-    );
-  }
-}
+        </SusDISABLEDpense>
+*/
+
 CampaignCardList.propTypes = {
   incomingCampaignList: PropTypes.array,
   listModeFilters: PropTypes.array,

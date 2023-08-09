@@ -35,6 +35,7 @@ module.exports = {
   },
 
   ENABLE_FACEBOOK: true,
+  ENABLE_PAY_TO_PROMOTE: true,
 
   // API Keys, some of these are publishable (not secret)
   FACEBOOK_APP_ID: '1097389196952441',

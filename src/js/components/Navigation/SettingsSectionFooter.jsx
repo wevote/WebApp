@@ -7,7 +7,6 @@ import AppObservableStore, { messageService } from '../../common/stores/AppObser
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { isTablet } from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
-import webAppConfig from '../../config';
 import { TermsAndPrivacyText } from '../Style/pageLayoutStyles';
 import DeviceDialog from '../Widgets/DeviceDialog';
 
@@ -91,7 +90,7 @@ class SettingsSectionFooter extends Component {
           <Link to="/more/terms"><TermsAndPrivacyText>Terms</TermsAndPrivacyText></Link>
         </OneRow>
         <OneRow centered={centered}>
-          {(isWebApp() && !inPrivateLabelMode && webAppConfig.ENABLE_PAY_TO_PROMOTE) && (
+          {(isWebApp() && !inPrivateLabelMode) && (
             <>
               <OpenExternalWebSite
                 linkIdAttribute="footerLinkTeam"
