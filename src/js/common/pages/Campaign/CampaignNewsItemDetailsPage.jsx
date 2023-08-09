@@ -1,59 +1,34 @@
 import { AccountCircle, ArrowBack } from '@mui/icons-material';
 import { Button } from '@mui/material';
-import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 import anonymous from '../../../../img/global/icons/avatar-generic.png';
+import { PageContentContainer } from '../../../components/Style/pageLayoutStyles';
+import webAppConfig from '../../../config';
 import CampaignSupporterActions from '../../actions/CampaignSupporterActions';
 import LazyImage from '../../components/LazyImage';
-import {
-  CampaignDescription,
-  CampaignDescriptionDesktop,
-  CampaignDescriptionWrapper,
-  CampaignDescriptionDesktopWrapper,
-  CampaignImagePlaceholder,
-  CampaignImagePlaceholderText,
-  CampaignImage,
-  CampaignImageDesktop,
-  CampaignImageDesktopWrapper,
-  CampaignImageMobileWrapper,
-  CampaignSubSectionSeeAll,
-  CampaignSubSectionTitle,
-  CampaignSubSectionTitleWrapper,
-  CampaignTitleAndScoreBar,
-  CampaignTitleDesktop,
-  CampaignTitleMobile,
-  CommentsListWrapper,
-  DetailsSectionDesktopTablet,
-  DetailsSectionMobile,
-  SpeakerAndPhotoOuterWrapper,
-  SpeakerName,
-  SpeakerVoterPhotoWrapper,
-  SupportButtonFooterWrapper,
-  SupportButtonPanel,
-  CampaignPoliticianImageDesktop,
-} from '../../components/Style/CampaignDetailsStyles';
+import CampaignNewsItemPublishSteps from '../../components/Navigation/CampaignNewsItemPublishSteps';
+import CompleteYourProfileModalController from '../../components/Settings/CompleteYourProfileModalController';
+import { CampaignDescription, CampaignDescriptionDesktop, CampaignDescriptionDesktopWrapper, CampaignDescriptionWrapper, CampaignImage, CampaignImageDesktop, CampaignImageDesktopWrapper, CampaignImageMobileWrapper, CampaignImagePlaceholder, CampaignImagePlaceholderText, CampaignPoliticianImageDesktop, CampaignSubSectionSeeAll, CampaignSubSectionTitle, CampaignSubSectionTitleWrapper, CampaignTitleAndScoreBar, CampaignTitleDesktop, CampaignTitleMobile, CommentsListWrapper, DetailsSectionDesktopTablet, DetailsSectionMobile, SpeakerAndPhotoOuterWrapper, SpeakerName, SpeakerVoterPhotoWrapper, SupportButtonFooterWrapper, SupportButtonPanel, } from '../../components/Style/CampaignDetailsStyles';
+import { BlockedIndicator, BlockedReason, DraftModeIndicator, EditIndicator, ElectionInPast, IndicatorButtonWrapper, IndicatorRow } from '../../components/Style/CampaignIndicatorStyles';
 import { PageWrapper } from '../../components/Style/stepDisplayStyles';
 import DelayedLoad from '../../components/Widgets/DelayedLoad';
 import OpenExternalWebSite from '../../components/Widgets/OpenExternalWebSite';
-import { formatDateToMonthDayYear } from '../../utils/dateFormat';
-import historyPush from '../../utils/historyPush';
-import { renderLog } from '../../utils/logging';
-import returnFirstXWords from '../../utils/returnFirstXWords';
-import stringContains from '../../utils/stringContains';
-import CampaignNewsItemPublishSteps from '../../components/Navigation/CampaignNewsItemPublishSteps';
-import CompleteYourProfileModalController from '../../components/Settings/CompleteYourProfileModalController';
-import { BlockedIndicator, BlockedReason, DraftModeIndicator, EditIndicator, ElectionInPast, IndicatorButtonWrapper, IndicatorRow } from '../../components/Style/CampaignIndicatorStyles';
-import { PageContentContainer } from '../../../components/Style/pageLayoutStyles';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import CampaignStore from '../../stores/CampaignStore';
 import CampaignSupporterStore from '../../stores/CampaignSupporterStore';
 import { getCampaignXValuesFromIdentifiers, retrieveCampaignXFromIdentifiersIfNeeded } from '../../utils/campaignUtils';
+import { formatDateToMonthDayYear } from '../../utils/dateFormat';
+import historyPush from '../../utils/historyPush';
 import initializejQuery from '../../utils/initializejQuery';
 import keepHelpingDestination from '../../utils/keepHelpingDestination';
+import { renderLog } from '../../utils/logging';
+import returnFirstXWords from '../../utils/returnFirstXWords';
+import stringContains from '../../utils/stringContains';
 
 const CampaignCommentsList = React.lazy(() => import(/* webpackChunkName: 'CampaignCommentsList' */ '../../components/Campaign/CampaignCommentsList'));
 const CampaignDetailsActionSideBox = React.lazy(() => import(/* webpackChunkName: 'CampaignDetailsActionSideBox' */ '../../components/CampaignSupport/CampaignDetailsActionSideBox'));
@@ -151,7 +126,7 @@ class CampaignNewsItemDetailsPage extends Component {
     const chosenWebsiteName = AppObservableStore.getChosenWebsiteName();
     const inPrivateLabelMode = AppObservableStore.inPrivateLabelMode();
     // For now, we assume that paid sites with chosenSiteLogoUrl will turn off "Chip in"
-    const payToPromoteStepTurnedOn = !inPrivateLabelMode;
+    const payToPromoteStepTurnedOn = !inPrivateLabelMode && webAppConfig.ENABLE_PAY_TO_PROMOTE;
     this.setState({
       chosenWebsiteName,
       inPrivateLabelMode,

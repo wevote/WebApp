@@ -3,6 +3,7 @@ import { Done } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import webAppConfig from '../../../config';
 import commonMuiStyles from '../Style/commonMuiStyles';
 import { InnerWrapper, OuterWrapperPageTitle, OuterWrapperSteps, PageTitle, StepCircle, StepNumber, StepWrapper } from '../Style/stepDisplayStyles';
 import historyPush from '../../utils/historyPush';
@@ -59,7 +60,7 @@ class CampaignSupportSteps extends Component {
     const inPrivateLabelMode = AppObservableStore.inPrivateLabelMode();
     const siteConfigurationHasBeenRetrieved = AppObservableStore.siteConfigurationHasBeenRetrieved();
     // For now, we assume that paid sites with chosenSiteLogoUrl will turn off "Chip in"
-    const payToPromoteStepTurnedOn = !inPrivateLabelMode;
+    const payToPromoteStepTurnedOn = !inPrivateLabelMode && webAppConfig.ENABLE_PAY_TO_PROMOTE;
     this.setState({
       payToPromoteStepTurnedOn,
       siteConfigurationHasBeenRetrieved,

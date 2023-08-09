@@ -282,3 +282,32 @@ export const SupportButtonPanel = styled('div')`
   border-top: 1px solid #ddd;
   padding: 10px;
 `;
+
+export const CampaignTitleWrapper = styled('div')(({ theme }) => (`
+  margin: 10px;
+  ${theme.breakpoints.down('md')} {
+    margin-top: 21px
+  }
+`));
+
+export const CampaignTitleText = styled('h1')`
+  font-size: 22px;
+  margin: 0 0 10px 0;
+  min-height: 27px;
+  text-align: left;
+`;
+
+export const CommentsSectionOuterWrapper = styled('div')`
+  display: flex;
+  justify-content: center;
+`;
+
+export const CommentsSectionInnerWrapper = styled('div')`
+  margin: 0 15px;
+  max-width: 680px;
+  @media (max-width: 1005px) {
+    // Switch to 15px left/right margin when auto is too small
+    margin: 0 15px;
+  }
+`;
+

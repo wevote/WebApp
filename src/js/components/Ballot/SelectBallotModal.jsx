@@ -12,6 +12,7 @@ import { renderLog } from '../../common/utils/logging';
 import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
 import { calculateBallotBaseUrl } from '../../common/utils/textFormat';
+import StateDropDownCore from '../Filter/StateDropDownCore';
 import BallotTitleHeader from './BallotTitleHeader';
 import EditAddressInPlace from '../Widgets/EditAddressInPlace';
 
@@ -148,73 +149,13 @@ class SelectBallotModal extends Component {
                     <PriorButton id="electionChoicePriorButton" onClick={() => this.setState({ prior: true, upcoming: false })} variant={this.state.prior ? 'contained' : 'outlined'} color="primary">Prior</PriorButton>
                     <UpcomingButton id="electionChoiceUpcomingButton" onClick={() => this.setState({ prior: false, upcoming: true })} variant={this.state.upcoming ? 'contained' : 'outlined'} color="primary">Upcoming</UpcomingButton>
                   </ToggleGroup>
-                  <FormControl variant="outlined" className={classes.formControl}>
-                    <InputLabel htmlFor="outlined-age-native-simple" />
-                    <Select
-                      classes={{ select: classes.select }}
-                      native
-                      value={this.state.selectedState}
-                      onChange={this.handleChooseStateChange}
-                      label="Which State?"
-                      inputProps={{
-                        name: 'age',
-                        id: 'outlined-age-native-simple',
-                      }}
-                    >
-                      <option aria-label="-- show all states --" value="all">-- show all states --</option>
-                      <option value="AL">Alabama</option>
-                      <option value="AK">Alaska</option>
-                      <option value="AZ">Arizona</option>
-                      <option value="AR">Arkansas</option>
-                      <option value="CA">California</option>
-                      <option value="CO">Colorado</option>
-                      <option value="CT">Connecticut</option>
-                      <option value="DE">Delaware</option>
-                      <option value="DC">District Of Columbia</option>
-                      <option value="FL">Florida</option>
-                      <option value="GA">Georgia</option>
-                      <option value="HI">Hawaii</option>
-                      <option value="ID">Idaho</option>
-                      <option value="IL">Illinois</option>
-                      <option value="IN">Indiana</option>
-                      <option value="IA">Iowa</option>
-                      <option value="KS">Kansas</option>
-                      <option value="KY">Kentucky</option>
-                      <option value="LA">Louisiana</option>
-                      <option value="ME">Maine</option>
-                      <option value="MD">Maryland</option>
-                      <option value="MA">Massachusetts</option>
-                      <option value="MI">Michigan</option>
-                      <option value="MN">Minnesota</option>
-                      <option value="MS">Mississippi</option>
-                      <option value="MO">Missouri</option>
-                      <option value="MT">Montana</option>
-                      <option value="NE">Nebraska</option>
-                      <option value="NV">Nevada</option>
-                      <option value="NH">New Hampshire</option>
-                      <option value="NJ">New Jersey</option>
-                      <option value="NM">New Mexico</option>
-                      <option value="NY">New York</option>
-                      <option value="NC">North Carolina</option>
-                      <option value="ND">North Dakota</option>
-                      <option value="OH">Ohio</option>
-                      <option value="OK">Oklahoma</option>
-                      <option value="OR">Oregon</option>
-                      <option value="PA">Pennsylvania</option>
-                      <option value="RI">Rhode Island</option>
-                      <option value="SC">South Carolina</option>
-                      <option value="SD">South Dakota</option>
-                      <option value="TN">Tennessee</option>
-                      <option value="TX">Texas</option>
-                      <option value="UT">Utah</option>
-                      <option value="VT">Vermont</option>
-                      <option value="VA">Virginia</option>
-                      <option value="WA">Washington</option>
-                      <option value="WV">West Virginia</option>
-                      <option value="WI">Wisconsin</option>
-                      <option value="WY">Wyoming</option>
-                    </Select>
-                  </FormControl>
+                  <StateDropDownCore
+                    stateCodesToDisplay=""
+                    handleChooseStateChange={this.handleChooseStateChange}
+                    stateCodesHtml=""
+                    selectedState={this.state.selectedState}
+                    dialogLabel="Which State?"
+                  />
                   <BallotElectionListWrapper addTopMargin={showEditAddress}>
                     <Suspense fallback={<></>}>
                       <BallotElectionListWithFilters

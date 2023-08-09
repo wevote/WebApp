@@ -13,6 +13,7 @@ import apiCalming from '../common/utils/apiCalming';
 import { formatDateToMonthDayYear } from '../common/utils/dateFormat';
 import { renderLog } from '../common/utils/logging';
 import standardBoxShadow from '../common/components/Style/standardBoxShadow';
+import StateDropDownCore from '../components/Filter/StateDropDownCore';
 import { PageContentContainer } from '../components/Style/pageLayoutStyles';
 import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
 import { messageService } from '../common/stores/AppObservableStore';
@@ -103,73 +104,13 @@ class Register extends Component {
       <>
         <Section>
           <h3 style={{ fontSize: 20, fontWeight: 700, marginBottom: 16 }}>What state are you planning to vote in?</h3>
-          <FormControl variant="outlined" className={classes.formControl}>
-            <InputLabel htmlFor="outlined-age-native-simple" />
-            <Select
-                classes={{ select: classes.select }}
-                native
-                value={this.state.selectedState}
-                onChange={this.handleChooseStateChange}
-                label=""
-                inputProps={{
-                  name: 'age',
-                  id: 'outlined-age-native-simple',
-                }}
-            >
-              <option aria-label="-- Select state --" value="all">-- Select state --</option>
-              <option value="AL">Alabama</option>
-              <option value="AK">Alaska</option>
-              <option value="AZ">Arizona</option>
-              <option value="AR">Arkansas</option>
-              <option value="CA">California</option>
-              <option value="CO">Colorado</option>
-              <option value="CT">Connecticut</option>
-              <option value="DE">Delaware</option>
-              <option value="DC">District Of Columbia</option>
-              <option value="FL">Florida</option>
-              <option value="GA">Georgia</option>
-              <option value="HI">Hawaii</option>
-              <option value="ID">Idaho</option>
-              <option value="IL">Illinois</option>
-              <option value="IN">Indiana</option>
-              <option value="IA">Iowa</option>
-              <option value="KS">Kansas</option>
-              <option value="KY">Kentucky</option>
-              <option value="LA">Louisiana</option>
-              <option value="ME">Maine</option>
-              <option value="MD">Maryland</option>
-              <option value="MA">Massachusetts</option>
-              <option value="MI">Michigan</option>
-              <option value="MN">Minnesota</option>
-              <option value="MS">Mississippi</option>
-              <option value="MO">Missouri</option>
-              <option value="MT">Montana</option>
-              <option value="NE">Nebraska</option>
-              <option value="NV">Nevada</option>
-              <option value="NH">New Hampshire</option>
-              <option value="NJ">New Jersey</option>
-              <option value="NM">New Mexico</option>
-              <option value="NY">New York</option>
-              <option value="NC">North Carolina</option>
-              <option value="ND">North Dakota</option>
-              <option value="OH">Ohio</option>
-              <option value="OK">Oklahoma</option>
-              <option value="OR">Oregon</option>
-              <option value="PA">Pennsylvania</option>
-              <option value="RI">Rhode Island</option>
-              <option value="SC">South Carolina</option>
-              <option value="SD">South Dakota</option>
-              <option value="TN">Tennessee</option>
-              <option value="TX">Texas</option>
-              <option value="UT">Utah</option>
-              <option value="VT">Vermont</option>
-              <option value="VA">Virginia</option>
-              <option value="WA">Washington</option>
-              <option value="WV">West Virginia</option>
-              <option value="WI">Wisconsin</option>
-              <option value="WY">Wyoming</option>
-            </Select>
-          </FormControl>
+          <StateDropDownCore
+            stateCodesToDisplay=""
+            handleChooseStateChange={this.handleChooseStateChange}
+            stateCodesHtml=""
+            selectedState={this.state.selectedState}
+            dialogLabel=""
+          />
         </Section>
         {(this.state.minorStep === '2a' || this.state.minorStep === '3') && (
         <Section>
@@ -334,72 +275,13 @@ class Register extends Component {
                 </Column>
                 <Column>
                   <label>State</label>
-                  <FormControl variant="outlined" className={classes.formControlTwo}>
-                    <Select
-                      classes={{ select: classes.selectTwo }}
-                      native
-                      value={this.state.selectedState}
-                      onChange={this.handleChooseStateChange}
-                      label=""
-                      inputProps={{
-                        name: 'age',
-                        id: 'outlined-age-native-simple',
-                      }}
-                    >
-                      <option aria-label="-- Select state --" value="all">-- Select state --</option>
-                      <option value="AL">Alabama</option>
-                      <option value="AK">Alaska</option>
-                      <option value="AZ">Arizona</option>
-                      <option value="AR">Arkansas</option>
-                      <option value="CA">California</option>
-                      <option value="CO">Colorado</option>
-                      <option value="CT">Connecticut</option>
-                      <option value="DE">Delaware</option>
-                      <option value="DC">District Of Columbia</option>
-                      <option value="FL">Florida</option>
-                      <option value="GA">Georgia</option>
-                      <option value="HI">Hawaii</option>
-                      <option value="ID">Idaho</option>
-                      <option value="IL">Illinois</option>
-                      <option value="IN">Indiana</option>
-                      <option value="IA">Iowa</option>
-                      <option value="KS">Kansas</option>
-                      <option value="KY">Kentucky</option>
-                      <option value="LA">Louisiana</option>
-                      <option value="ME">Maine</option>
-                      <option value="MD">Maryland</option>
-                      <option value="MA">Massachusetts</option>
-                      <option value="MI">Michigan</option>
-                      <option value="MN">Minnesota</option>
-                      <option value="MS">Mississippi</option>
-                      <option value="MO">Missouri</option>
-                      <option value="MT">Montana</option>
-                      <option value="NE">Nebraska</option>
-                      <option value="NV">Nevada</option>
-                      <option value="NH">New Hampshire</option>
-                      <option value="NJ">New Jersey</option>
-                      <option value="NM">New Mexico</option>
-                      <option value="NY">New York</option>
-                      <option value="NC">North Carolina</option>
-                      <option value="ND">North Dakota</option>
-                      <option value="OH">Ohio</option>
-                      <option value="OK">Oklahoma</option>
-                      <option value="OR">Oregon</option>
-                      <option value="PA">Pennsylvania</option>
-                      <option value="RI">Rhode Island</option>
-                      <option value="SC">South Carolina</option>
-                      <option value="SD">South Dakota</option>
-                      <option value="TN">Tennessee</option>
-                      <option value="TX">Texas</option>
-                      <option value="UT">Utah</option>
-                      <option value="VT">Vermont</option>
-                      <option value="VA">Virginia</option>
-                      <option value="WA">Washington</option>
-                      <option value="WV">West Virginia</option>
-                      <option value="WI">Wisconsin</option>
-                      <option value="WY">Wyoming</option>
-                    </Select>
-                  </FormControl>
+                  <StateDropDownCore
+                    stateCodesToDisplay=""
+                    handleChooseStateChange={this.handleChooseStateChange}
+                    stateCodesHtml=""
+                    selectedState={this.state.selectedState}
+                    dialogLabel=""
+                  />
                 </Column>
                 <Column>
                   <label>Zip Code</label>

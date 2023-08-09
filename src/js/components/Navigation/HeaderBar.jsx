@@ -306,7 +306,7 @@ class HeaderBar extends Component {
     // console.log('onAnalyticsStoreChange VoterStore.getVoterIsSignedIn(): ', VoterStore.getVoterIsSignedIn(), ' AnalyticsStore.getIsSignedIn(): ', AnalyticsStore.getIsSignedIn(), 'FacebookStore.loggedIn: ', FacebookStore.loggedIn, 'VoterStore.voterDeviceId(): ', VoterStore.voterDeviceId());
     if (isCordova() && VoterStore.getVoterIsSignedIn() === false && (AnalyticsStore.getIsSignedIn() || FacebookStore.loggedIn)) {
       if (apiCalming('voterRetrieve', 500)) {
-        // console.log('Cordova:  HeaderBar onAnalyticsStoreChange, firing voterRetrieve --------------');  // Do not comment out or delete
+        // console.log('Cordova:   HeaderBar onAnalyticsStoreChange, firing voterRetrieve --------------');  // Do not comment out or delete
         VoterActions.voterRetrieve();
       }
     }

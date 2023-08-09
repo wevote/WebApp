@@ -46,7 +46,7 @@ export function isIOSAppOnMac () {
 export function getProcessorArchitecture () {
   const { diagnostic: { getArchitecture } } = window.cordova.plugins;
   getArchitecture((arch) => {
-    console.log(`Cordova:  Processor Architecture: ${arch}`);
+    console.log(`Cordova:   Processor Architecture: ${arch}`);
     return arch;
   }, (error) => {
     console.error('cordova.plugins.diagnostic.getArchitecture threw: ', error);
@@ -449,7 +449,7 @@ export function getAndroidSize () {
     androidSizeString = '--xl';
   }
 
-  console.log(`Cordova:  getAndroidSize(): ${androidSizeString}, reported diagonal: ${diameter} `);
+  console.log(`Cordova:   getAndroidSize(): ${androidSizeString}, reported diagonal: ${diameter} `);
 
   return androidSizeString;
 }

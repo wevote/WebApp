@@ -109,6 +109,7 @@ export default class SearchBar extends Component {
               className="search-options-btn"
               type="button"
               id="search"
+              style={{ paddingLeft: 0 }}
             >
               <Search />
             </button>

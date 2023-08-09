@@ -4,40 +4,21 @@ import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import TruncateMarkup from 'react-truncate-markup';
 import styled from 'styled-components';
-// import { convertStateCodeToStateText } from '../../utils/addressFunctions';
-// import CampaignSupporterActions from '../../actions/CampaignSupporterActions';
-import {
-  CampaignImageMobile,
-  CampaignImagePlaceholderText,
-  CampaignImageMobilePlaceholder,
-  CampaignImageDesktopPlaceholder,
-  CampaignImageDesktop,
-  CampaignPoliticianImageMobile,
-  CandidateCardForListWrapper,
-  CampaignActionButtonsWrapper,
-  OneCampaignPhotoWrapperMobile,
-  OneCampaignPhotoDesktopColumn,
-  OneCampaignTitle,
-  OneCampaignOuterWrapper,
-  OneCampaignTextColumn,
-  OneCampaignInnerWrapper,
-  OneCampaignDescription,
-  SupportersWrapper,
-  SupportersCount,
-  SupportersActionLink,
-  CampaignPoliticianImageDesktop,
-} from '../Style/CampaignCardStyles';
-// import { getTodayAsInteger, getYearFromUltimateElectionDate } from '../../utils/dateFormat';
-import historyPush from '../../utils/historyPush';
-import { renderLog } from '../../utils/logging';
+import webAppConfig from '../../../config';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import CampaignStore from '../../stores/CampaignStore';
-import CampaignOwnersList from '../CampaignSupport/CampaignOwnersList';
 import CampaignSupporterStore from '../../stores/CampaignSupporterStore';
+import historyPush from '../../utils/historyPush';
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import keepHelpingDestination from '../../utils/keepHelpingDestination';
+import { renderLog } from '../../utils/logging';
 import numberWithCommas from '../../utils/numberWithCommas';
 import saveCampaignSupportAndGoToNextPage from '../../utils/saveCampaignSupportAndGoToNextPage';
+import CampaignOwnersList from '../CampaignSupport/CampaignOwnersList';
+import { CampaignActionButtonsWrapper, CampaignImageDesktop, CampaignImageDesktopPlaceholder, CampaignImageMobile, CampaignImageMobilePlaceholder, CampaignImagePlaceholderText, CampaignPoliticianImageDesktop, CampaignPoliticianImageMobile, CandidateCardForListWrapper, OneCampaignDescription, OneCampaignInnerWrapper, OneCampaignOuterWrapper, OneCampaignPhotoDesktopColumn, OneCampaignPhotoWrapperMobile, OneCampaignTextColumn, OneCampaignTitle, SupportersActionLink, SupportersCount, SupportersWrapper, } from '../Style/CampaignCardStyles';
+// import { getTodayAsInteger, getYearFromUltimateElectionDate } from '../../utils/dateFormat';
+// import { convertStateCodeToStateText } from '../../utils/addressFunctions';
+// import CampaignSupporterActions from '../../actions/CampaignSupporterActions';
 // import { BlockedIndicator, DraftModeIndicator, EditIndicator, ElectionInPast, IndicatorButtonWrapper, IndicatorDefaultButtonWrapper, IndicatorRow } from '../Style/CampaignIndicatorStyles';
 
 const SupportButtonBeforeCompletionScreen = React.lazy(() => import(/* webpackChunkName: 'SupportButtonBeforeCompletionScreen' */ '../CampaignSupport/SupportButtonBeforeCompletionScreen'));
@@ -99,7 +80,7 @@ class CampaignCardForList extends Component {
   onAppObservableStoreChange () {
     const { inPrivateLabelMode: inPrivateLabelModePrevious, payToPromoteStepTurnedOn: payToPromoteStepTurnedOnPrevious } = this.state;
     const inPrivateLabelMode = AppObservableStore.inPrivateLabelMode();
-    const payToPromoteStepTurnedOn = !inPrivateLabelMode;
+    const payToPromoteStepTurnedOn = !inPrivateLabelMode && webAppConfig.ENABLE_PAY_TO_PROMOTE;
     if (inPrivateLabelModePrevious !== inPrivateLabelMode) {
       this.setState({
         inPrivateLabelMode,

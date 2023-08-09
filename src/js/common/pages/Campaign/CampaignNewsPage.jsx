@@ -3,6 +3,7 @@ import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { CampaignTitleText, CampaignTitleWrapper, CommentsListWrapper, CommentsSectionInnerWrapper, CommentsSectionOuterWrapper, SupportButtonPanel } from '../../components/Style/CampaignDetailsStyles';
 import { PageWrapper } from '../../components/Style/stepDisplayStyles';
 import OpenExternalWebSite from '../../components/Widgets/OpenExternalWebSite';
 import { isCordova } from '../../utils/isCordovaOrWebApp';
@@ -243,15 +244,6 @@ const styles = () => ({
   },
 });
 
-// const BlockedReason = styled.div`
-//   background-color: #efc2c2;
-//   border-radius: 4px;
-//   color: #2e3c5d;
-//   font-size: 18px;
-//   margin: 10px;
-//   padding: 5px 12px;
-// `;
-
 const CampaignNewsButtonDesktopWrapper = styled('div')`
 `;
 
@@ -260,41 +252,6 @@ const CampaignNewsButtonFooterWrapper = styled('div')`
   width: 100%;
   bottom: 0;
   display: block;
-`;
-
-const SupportButtonPanel = styled('div')`
-  background-color: #fff;
-  border-top: 1px solid #ddd;
-  padding: 10px;
-`;
-
-const CampaignTitleWrapper = styled('div')`
-  margin: 10px;
-`;
-
-const CampaignTitleText = styled('h1')`
-  font-size: 22px;
-  margin: 0 0 10px 0;
-  min-height: 27px;
-  text-align: left;
-`;
-
-const CommentsListWrapper = styled('div')`
-  margin: 0 0 25px 0;
-`;
-
-const CommentsSectionInnerWrapper = styled('div')`
-  margin: 0 15px;
-  max-width: 680px;
-  @media (max-width: 1005px) {
-    // Switch to 15px left/right margin when auto is too small
-    margin: 0 15px;
-  }
-`;
-
-const CommentsSectionOuterWrapper = styled('div')`
-  display: flex;
-  justify-content: center;
 `;
 
 const PageStatement = styled('h2')`

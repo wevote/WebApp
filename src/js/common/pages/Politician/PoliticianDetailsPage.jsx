@@ -1,57 +1,44 @@
-import styled from 'styled-components';
-import { PersonSearch, Launch } from '@mui/icons-material';
+import { Launch, PersonSearch } from '@mui/icons-material';
 import { Button } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
-// import CampaignSupporterActions from '../../actions/CampaignSupporterActions';
-import saveCampaignSupportAndGoToNextPage from '../../utils/saveCampaignSupportAndGoToNextPage';
-import {
-  CampaignDescription, CampaignDescriptionDesktop, CampaignDescriptionWrapper,
-  CampaignDescriptionDesktopWrapper, CampaignImagePlaceholder, CampaignImagePlaceholderText,
-  CampaignImageDesktopWrapper, CampaignImageMobileWrapper,
-  CampaignOwnersDesktopWrapper, CampaignSubSectionSeeAll, CampaignSubSectionTitle, CampaignSubSectionTitleWrapper,  // CampaignOwnersWrapper
-  CampaignTitleAndScoreBar, CommentsListWrapper,
-  DetailsSectionDesktopTablet, DetailsSectionMobile, OtherElectionsWrapper,
-  SupportButtonFooterWrapperAboveFooterButtons, SupportButtonPanel,
-} from '../../components/Style/CampaignDetailsStyles';
-import {
-  CandidateCampaignListDesktop, CandidateCampaignListMobile, CandidateCampaignWrapper,
-  OfficeHeldNameDesktop, OfficeHeldNameMobile,
-  PoliticianImageDesktop, PoliticianImageDesktopPlaceholder,
-  PoliticianImageMobile, PoliticianImageMobilePlaceholder,
-  PoliticianNameMobile, PoliticianNameDesktop, PoliticianNameOuterWrapperDesktop,
-} from '../../components/Style/PoliticianDetailsStyles';
+import styled from 'styled-components';
+import { PageContentContainer } from '../../../components/Style/pageLayoutStyles';
+import TwitterAccountStats from '../../../components/Widgets/TwitterAccountStats';
+import webAppConfig from '../../../config';
+import CandidateStore from '../../../stores/CandidateStore';
+import RepresentativeStore from '../../../stores/RepresentativeStore';
+import CampaignChipInLink from '../../components/Campaign/CampaignChipInLink';
+import CampaignOwnersList from '../../components/CampaignSupport/CampaignOwnersList';
+import CompleteYourProfileModalController from '../../components/Settings/CompleteYourProfileModalController';
+import { CampaignDescription, CampaignDescriptionDesktop, CampaignDescriptionDesktopWrapper, CampaignDescriptionWrapper, CampaignImageDesktopWrapper, CampaignImageMobileWrapper, CampaignImagePlaceholder, CampaignImagePlaceholderText, CampaignOwnersDesktopWrapper, CampaignSubSectionSeeAll, CampaignSubSectionTitle, CampaignSubSectionTitleWrapper, CampaignTitleAndScoreBar, CommentsListWrapper, DetailsSectionDesktopTablet, DetailsSectionMobile, OtherElectionsWrapper, SupportButtonFooterWrapperAboveFooterButtons, SupportButtonPanel, } from '../../components/Style/CampaignDetailsStyles';
+import { EditIndicator, ElectionInPast, IndicatorButtonWrapper, IndicatorRow } from '../../components/Style/CampaignIndicatorStyles';
+import { CandidateCampaignListDesktop, CandidateCampaignListMobile, CandidateCampaignWrapper, OfficeHeldNameDesktop, OfficeHeldNameMobile, PoliticianImageDesktop, PoliticianImageDesktopPlaceholder, PoliticianImageMobile, PoliticianImageMobilePlaceholder, PoliticianNameDesktop, PoliticianNameMobile, PoliticianNameOuterWrapperDesktop, } from '../../components/Style/PoliticianDetailsStyles';
 import { PageWrapper } from '../../components/Style/stepDisplayStyles';
 import DelayedLoad from '../../components/Widgets/DelayedLoad';
 import OfficeHeldNameText from '../../components/Widgets/OfficeHeldNameText';
-// import OpenExternalWebSite from '../../components/Widgets/OpenExternalWebSite';
-import historyPush from '../../utils/historyPush';
-import { renderLog } from '../../utils/logging';
-import returnFirstXWords from '../../utils/returnFirstXWords';
-import CampaignOwnersList from '../../components/CampaignSupport/CampaignOwnersList';
-import CompleteYourProfileModalController from '../../components/Settings/CompleteYourProfileModalController';
-import { EditIndicator, ElectionInPast, IndicatorButtonWrapper, IndicatorRow } from '../../components/Style/CampaignIndicatorStyles';
-import { PageContentContainer } from '../../../components/Style/pageLayoutStyles';
-import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
-import CampaignSupporterStore from '../../stores/CampaignSupporterStore';
-import CandidateStore from '../../../stores/CandidateStore';
-import OfficeHeldStore from '../../stores/OfficeHeldStore';
-import PoliticianStore from '../../stores/PoliticianStore';
-import RepresentativeStore from '../../../stores/RepresentativeStore';
-import { convertStateCodeToStateText } from '../../utils/addressFunctions';
-import { getYearFromUltimateElectionDate } from '../../utils/dateFormat';
-import { getPoliticianValuesFromIdentifiers, retrievePoliticianFromIdentifiersIfNeeded } from '../../utils/politicianUtils';
-import { displayNoneIfSmallerThanDesktop } from '../../utils/isMobileScreenSize';
-import keepHelpingDestination from '../../utils/keepHelpingDestination';
-import CampaignChipInLink from '../../components/Campaign/CampaignChipInLink';
-import TwitterAccountStats from '../../../components/Widgets/TwitterAccountStats';
 import SearchOnGoogle from '../../components/Widgets/SearchOnGoogle';
 import ViewOnBallotpedia from '../../components/Widgets/ViewOnBallotpedia';
 import ViewOnWikipedia from '../../components/Widgets/ViewOnWikipedia';
-import webAppConfig from '../../../config';
+import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
+import CampaignSupporterStore from '../../stores/CampaignSupporterStore';
+import OfficeHeldStore from '../../stores/OfficeHeldStore';
+import PoliticianStore from '../../stores/PoliticianStore';
+import { convertStateCodeToStateText } from '../../utils/addressFunctions';
+import { getYearFromUltimateElectionDate } from '../../utils/dateFormat';
+import historyPush from '../../utils/historyPush';
+import { isWebApp } from '../../utils/isCordovaOrWebApp';
+import { displayNoneIfSmallerThanDesktop } from '../../utils/isMobileScreenSize';
+import keepHelpingDestination from '../../utils/keepHelpingDestination';
+import { renderLog } from '../../utils/logging';
+import { getPoliticianValuesFromIdentifiers, retrievePoliticianFromIdentifiersIfNeeded } from '../../utils/politicianUtils';
+import returnFirstXWords from '../../utils/returnFirstXWords';
+import saveCampaignSupportAndGoToNextPage from '../../utils/saveCampaignSupportAndGoToNextPage';
+// import OpenExternalWebSite from '../../components/Widgets/OpenExternalWebSite';
+// import CampaignSupporterActions from '../../actions/CampaignSupporterActions';
 
 const CampaignCommentsList = React.lazy(() => import(/* webpackChunkName: 'CampaignCommentsList' */ '../../components/Campaign/CampaignCommentsList'));
 const CampaignDetailsActionSideBox = React.lazy(() => import(/* webpackChunkName: 'CampaignDetailsActionSideBox' */ '../../components/CampaignSupport/CampaignDetailsActionSideBox'));
@@ -219,7 +206,7 @@ class PoliticianDetailsPage extends Component {
     const chosenWebsiteName = AppObservableStore.getChosenWebsiteName();
     const inPrivateLabelMode = AppObservableStore.inPrivateLabelMode();
     // For now, we assume that paid sites with chosenSiteLogoUrl will turn off "Chip in"
-    const payToPromoteStepTurnedOn = !inPrivateLabelMode;
+    const payToPromoteStepTurnedOn = !inPrivateLabelMode && webAppConfig.ENABLE_PAY_TO_PROMOTE;
     this.setState({
       chosenWebsiteName,
       // inPrivateLabelMode,
@@ -837,13 +824,15 @@ class PoliticianDetailsPage extends Component {
               )}
             </CampaignDescriptionWrapper>
             {positionListTeaserHtml}
-            <CampaignChipInLinkOuterWrapper>
-              <CampaignChipInLink
-                campaignSEOFriendlyPath={politicianSEOFriendlyPathForDisplay}
-                campaignXWeVoteId={linkedCampaignXWeVoteId}
-                externalUniqueId="mobile"
-              />
-            </CampaignChipInLinkOuterWrapper>
+            {isWebApp() && (
+              <CampaignChipInLinkOuterWrapper>
+                <CampaignChipInLink
+                  campaignSEOFriendlyPath={politicianSEOFriendlyPathForDisplay}
+                  campaignXWeVoteId={linkedCampaignXWeVoteId}
+                  externalUniqueId="mobile"
+                />
+              </CampaignChipInLinkOuterWrapper>
+            )}
             {commentListTeaserHtml}
             <Suspense fallback={<span>&nbsp;</span>}>
               <CampaignShareChunkWrapper>

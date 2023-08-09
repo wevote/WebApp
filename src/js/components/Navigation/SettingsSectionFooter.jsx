@@ -3,10 +3,10 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import OpenExternalWebSite from '../../common/components/Widgets/OpenExternalWebSite';
+import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { isTablet } from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
-import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
 import { TermsAndPrivacyText } from '../Style/pageLayoutStyles';
 import DeviceDialog from '../Widgets/DeviceDialog';
 
