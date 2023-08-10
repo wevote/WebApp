@@ -52,6 +52,7 @@ const PoliticianEndorsementsList = React.lazy(() => import(/* webpackChunkName: 
 const PoliticianRetrieveController = React.lazy(() => import(/* webpackChunkName: 'PoliticianRetrieveController' */ '../../components/Politician/PoliticianRetrieveController'));
 const PoliticianPositionRetrieveController = React.lazy(() => import(/* webpackChunkName: 'PoliticianPositionRetrieveController' */ '../../components/Position/PoliticianPositionRetrieveController'));
 const SupportButtonBeforeCompletionScreen = React.lazy(() => import(/* webpackChunkName: 'SupportButtonBeforeCompletionScreen' */ '../../components/CampaignSupport/SupportButtonBeforeCompletionScreen'));
+const UpdatePoliticianInformation = React.lazy(() => import(/* webpackChunkName: 'UpdatePoliticianInformation' */ '../../components/Politician/UpdatePoliticianInformation'));
 
 const futureFeaturesDisabled = true;
 const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
@@ -546,29 +547,6 @@ class PoliticianDetailsPage extends Component {
         )}
       </PoliticianLinksWrapper>
     );
-    const updateCandidateInformationLink = 'https://docs.google.com/forms/d/e/1FAIpQLSePdeW32PClaSO1pUWBJnQ75wFGPOtviNaqOABBYps7NIH3hA/viewform?usp=sf_link';
-    const updateCandidateInformation = (
-      <PoliticianLinksWrapper>
-        {!!(politicianName) && (
-          <Suspense fallback={<></>}>
-            Are you&nbsp;
-            {politicianName}
-            ?&nbsp;
-            <OpenExternalWebSite
-              linkIdAttribute="updateCandidateInformation"
-              url={updateCandidateInformationLink}
-              target="_blank"
-              className="u-link-color"
-              body={(
-                <div>
-                  Click here to update candidate information.
-                </div>
-              )}
-            />
-          </Suspense>
-        )}
-      </PoliticianLinksWrapper>
-    );
     let opponentCandidatesHtml = '';
     const opponentsSubtitle = 'Candidates Running for Same Office';
     let priorCandidateCampaignsHtml = '';
@@ -798,7 +776,7 @@ class PoliticianDetailsPage extends Component {
               </CampaignDescription>
               {politicianLinks}
               {politicianButtons}
-              {updateCandidateInformation}
+              <UpdatePoliticianInformation politicianName={politicianName} />
               {finalElectionDateInPast && (
                 <IndicatorRow>
                   <IndicatorButtonWrapper>
@@ -948,7 +926,7 @@ class PoliticianDetailsPage extends Component {
                   </CampaignDescriptionDesktop>
                   {politicianLinks}
                   {politicianButtons}
-                  {updateCandidateInformation}
+                  <UpdatePoliticianInformation politicianName={politicianName} />
                   {finalElectionDateInPast && (
                     <IndicatorRow>
                       <IndicatorButtonWrapper>
