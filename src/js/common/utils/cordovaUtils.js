@@ -143,7 +143,7 @@ export function logMatch (device, byModel) {
   }
 }
 
-// https://www.theiphonewiki.com/wiki/Models
+// https://theapplewiki.com/wiki/Models
 // https://gist.github.com/adamawolf/3048717
 // http://socialcompare.com/en/comparison/apple-iphone-product-line-comparison
 // https://www.ios-resolution.com/
@@ -364,8 +364,24 @@ export function isIPad11in () {
       'iPad13,5',  // iPad Pro 11 inch 5th Gen
       'iPad13,6',  // iPad Pro 11 inch 5th Gen
       'iPad13,7',  // iPad Pro 11 inch 5th Gen
+      'iPad13,17', // iPad Air 10.9 inch 5th Gen
     ].includes(window.device.model)) {
     logMatch('iPad11in', true);
+    return true;
+  }
+  return false;
+}
+
+export function isIPadMini () {
+  if (isIOS() && !isIOSAppOnMac() &&
+    ['iPad2,5', 'iPad2,6', 'iPad2,7',     // iPad Mini
+      'iPad4,4', 'iPad4,5', 'iPad4,6',    // iPad Mini 2
+      'iPad4,7', 'iPad4,8', 'iPad4,9',    // iPad Mini 3
+      'iPad5,1', 'iPad5,2',               // iPad Mini 4
+      'iPad11,1', 'iPad11,2',             // iPad Mini 5
+      'iPad14,1', 'iPad14,2',             // iPad Mini 6th generation
+    ].includes(window.device.model)) {
+    logMatch('iPadMini', true);
     return true;
   }
   return false;

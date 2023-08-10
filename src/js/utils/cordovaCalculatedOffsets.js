@@ -239,7 +239,7 @@ export function cordovaSimplePageContainerTopOffset (/* isSignedIn */) {
     } else {
       debugLogging('cordovaSimplePageContainerTopOffset getCordovaSimplePageContainerTopOffsetValue > 0 or height === 0');
       if (height) {
-        console.log('cordovaSimplePageContainerTopOffset DEFAULT FALLTHROUGH pcc.css height', height, page);
+        debugLogging('cordovaSimplePageContainerTopOffset DEFAULT FALLTHROUGH pcc.css height', height, page);
         pageContentContainer.css('padding-top', `${height}px`);
       }
     }

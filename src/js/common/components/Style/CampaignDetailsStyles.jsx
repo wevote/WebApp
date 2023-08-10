@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import { isIPad, isIPadMini } from '../../utils/cordovaUtils';
+import { isCordova, isWebApp } from '../../utils/isCordovaOrWebApp';
 
 export const CampaignDescription = styled('div')`
   font-size: 16px;
@@ -213,6 +215,7 @@ export const DetailsSectionMobile = styled('div')`
   display: flex;
   flex-flow: column;
   margin-bottom: 60px;
+  ${isCordova() ? 'padding-bottom: 20vh' : ''};
 `;
 
 export const OneCampaignInnerWrapper = styled('div')(({ theme }) => (`
@@ -270,10 +273,11 @@ export const SupportButtonFooterWrapper = styled('div')`
   display: block;
 `;
 
+/* eslint-disable no-nested-ternary */
 export const SupportButtonFooterWrapperAboveFooterButtons = styled('div')`
   position: fixed;
-  width: 100%;
-  bottom: 55px;
+  width: ${() => (isCordova() && !isIPadMini() ? '95%' : '100%')};
+  bottom: ${() => (isWebApp() ? '55px' : (isIPad()) ? '0px' : '88px')};
   display: block;
 `;
 
@@ -310,4 +314,3 @@ export const CommentsSectionInnerWrapper = styled('div')`
     margin: 0 15px;
   }
 `;
-

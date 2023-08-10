@@ -29,7 +29,7 @@ class StateDropDownCore extends Component {
 
     return (
       <FormControl variant="outlined" className={classes.formControl}>
-        <InputLabel htmlFor="outlined-age-native-simple" />
+        <InputLabel htmlFor="outlined-age-native-simple" aria-label="Select State" />
         <Select
           classes={{ select: classes.select }}
           native

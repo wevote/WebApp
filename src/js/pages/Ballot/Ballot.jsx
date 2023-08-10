@@ -17,7 +17,7 @@ import VoterActions from '../../actions/VoterActions';
 import { SearchTitle } from '../../common/components/Style/FilterStyles';
 import LoadingWheelComp from '../../common/components/Widgets/LoadingWheelComp';
 import apiCalming from '../../common/utils/apiCalming';
-import { chipLabelText, isAndroidSizeWide, isIOSAppOnMac, isIPadGiantSize, isIPhone6p1in } from '../../common/utils/cordovaUtils';
+import { chipLabelText, isAndroidSizeWide, isIOSAppOnMac, isIPad11in, isIPadGiantSize, isIPadMini, isIPhone6p1in } from '../../common/utils/cordovaUtils';
 import getBooleanValue from '../../common/utils/getBooleanValue';
 import historyPush from '../../common/utils/historyPush';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
@@ -1368,6 +1368,13 @@ class Ballot extends Component {
     let showLoadingText = true;
     let searchTextString = '';
     const showCompleteYourProfile = isWebApp();
+    let paddingTop = '';
+    if (isIPadMini()) {
+      paddingTop = '18%';
+    } else if (isIPad11in()) {
+      paddingTop = '12%';
+    }
+
     return (
       <div className="ballot_root">
         <Suspense fallback={<LoadingWheelComp />}>
@@ -1528,7 +1535,7 @@ class Ballot extends Component {
 
           <PageContentContainer>
             <div className="container-fluid">
-              <BallotWrapper padBottom={padBallotWindowBottomForCordova} id="ballotWrapper">
+              <BallotWrapper padTop={paddingTop} padBottom={padBallotWindowBottomForCordova} id="ballotWrapper">
                 {/* eslint-disable-next-line no-nested-ternary */}
                 <div className={showBallotDecisionsTabs() ? 'row ballot__body' : isWebApp() || twoColumnDisplay ? 'row ballot__body__no-decision-tabs' : undefined}>
                   <div className="col-12">

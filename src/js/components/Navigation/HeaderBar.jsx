@@ -854,7 +854,7 @@ const styles = (theme) => ({
 const HeaderBarWrapper = styled('div', {
   shouldForwardProp: (prop) => !['hasNotch', 'scrolledDown', 'hasSubmenu'].includes(prop),
 })(({ hasNotch, scrolledDown, hasSubmenu }) => (`
-  margin-top: ${hasNotch ? '1.5rem' : ''};
+  margin-top: ${hasNotch ? '9%' : ''};
   box-shadow: ${(!scrolledDown || !hasSubmenu)  ? '' : standardBoxShadow('wide')};
   border-bottom: ${(!scrolledDown || !hasSubmenu) ? '' : '1px solid #aaa'};
 `));

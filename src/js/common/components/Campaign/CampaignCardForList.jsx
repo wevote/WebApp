@@ -15,7 +15,7 @@ import { renderLog } from '../../utils/logging';
 import numberWithCommas from '../../utils/numberWithCommas';
 import saveCampaignSupportAndGoToNextPage from '../../utils/saveCampaignSupportAndGoToNextPage';
 import CampaignOwnersList from '../CampaignSupport/CampaignOwnersList';
-import { CampaignActionButtonsWrapper, CampaignImageDesktop, CampaignImageDesktopPlaceholder, CampaignImageMobile, CampaignImageMobilePlaceholder, CampaignImagePlaceholderText, CampaignPoliticianImageDesktop, CampaignPoliticianImageMobile, CandidateCardForListWrapper, OneCampaignDescription, OneCampaignInnerWrapper, OneCampaignOuterWrapper, OneCampaignPhotoDesktopColumn, OneCampaignPhotoWrapperMobile, OneCampaignTextColumn, OneCampaignTitle, SupportersActionLink, SupportersCount, SupportersWrapper, } from '../Style/CampaignCardStyles';
+import { CampaignActionButtonsWrapper, CampaignImageDesktop, CampaignImageDesktopPlaceholder, CampaignImageMobile, CampaignImageMobilePlaceholder, CampaignImagePlaceholderText, CampaignPoliticianImageDesktop, CampaignPoliticianImageMobile, CandidateCardForListWrapper, OneCampaignDescription, OneCampaignInnerWrapper, OneCampaignOuterWrapper, OneCampaignPhotoDesktopColumn, OneCampaignPhotoWrapperMobile, OneCampaignTextColumn, OneCampaignTitle, SupportersActionLink, SupportersCount, SupportersWrapper } from '../Style/CampaignCardStyles';
 // import { getTodayAsInteger, getYearFromUltimateElectionDate } from '../../utils/dateFormat';
 // import { convertStateCodeToStateText } from '../../utils/addressFunctions';
 // import CampaignSupporterActions from '../../actions/CampaignSupporterActions';

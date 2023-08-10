@@ -14,9 +14,10 @@ import RepresentativeStore from '../../../stores/RepresentativeStore';
 import CampaignChipInLink from '../../components/Campaign/CampaignChipInLink';
 import CampaignOwnersList from '../../components/CampaignSupport/CampaignOwnersList';
 import CompleteYourProfileModalController from '../../components/Settings/CompleteYourProfileModalController';
-import { CampaignDescription, CampaignDescriptionDesktop, CampaignDescriptionDesktopWrapper, CampaignDescriptionWrapper, CampaignImageDesktopWrapper, CampaignImageMobileWrapper, CampaignImagePlaceholder, CampaignImagePlaceholderText, CampaignOwnersDesktopWrapper, CampaignSubSectionSeeAll, CampaignSubSectionTitle, CampaignSubSectionTitleWrapper, CampaignTitleAndScoreBar, CommentsListWrapper, DetailsSectionDesktopTablet, DetailsSectionMobile, OtherElectionsWrapper, SupportButtonFooterWrapperAboveFooterButtons, SupportButtonPanel, } from '../../components/Style/CampaignDetailsStyles';
+import { CampaignDescription, CampaignDescriptionDesktop, CampaignDescriptionDesktopWrapper, CampaignDescriptionWrapper, CampaignImageDesktopWrapper, CampaignImageMobileWrapper, CampaignImagePlaceholder, CampaignImagePlaceholderText, CampaignOwnersDesktopWrapper, CampaignSubSectionSeeAll, CampaignSubSectionTitle, CampaignSubSectionTitleWrapper, CampaignTitleAndScoreBar, CommentsListWrapper, DetailsSectionDesktopTablet, DetailsSectionMobile, OtherElectionsWrapper, SupportButtonFooterWrapperAboveFooterButtons, SupportButtonPanel } from '../../components/Style/CampaignDetailsStyles';
 import { EditIndicator, ElectionInPast, IndicatorButtonWrapper, IndicatorRow } from '../../components/Style/CampaignIndicatorStyles';
-import { CandidateCampaignListDesktop, CandidateCampaignListMobile, CandidateCampaignWrapper, OfficeHeldNameDesktop, OfficeHeldNameMobile, PoliticianImageDesktop, PoliticianImageDesktopPlaceholder, PoliticianImageMobile, PoliticianImageMobilePlaceholder, PoliticianNameDesktop, PoliticianNameMobile, PoliticianNameOuterWrapperDesktop, } from '../../components/Style/PoliticianDetailsStyles';
+import { uShowDesktopTablet, uShowMobile } from '../../components/Style/CordovaFriendlyUShowStyles';
+import { CandidateCampaignListDesktop, CandidateCampaignListMobile, CandidateCampaignWrapper, OfficeHeldNameDesktop, OfficeHeldNameMobile, PoliticianImageDesktop, PoliticianImageDesktopPlaceholder, PoliticianImageMobile, PoliticianImageMobilePlaceholder, PoliticianNameDesktop, PoliticianNameMobile, PoliticianNameOuterWrapperDesktop } from '../../components/Style/PoliticianDetailsStyles';
 import { PageWrapper } from '../../components/Style/stepDisplayStyles';
 import DelayedLoad from '../../components/Widgets/DelayedLoad';
 import OfficeHeldNameText from '../../components/Widgets/OfficeHeldNameText';
@@ -748,7 +749,7 @@ class PoliticianDetailsPage extends Component {
           <meta name="description" content={politicianDescriptionLimited} />
         </Helmet>
         <PageWrapper>
-          <DetailsSectionMobile className="u-show-mobile">
+          <DetailsSectionMobile style={uShowMobile()}>
             <CampaignImageMobileWrapper>
               {politicianImageUrlLarge ? (
                 <PoliticianImageMobilePlaceholder limitCardWidth>
@@ -899,7 +900,7 @@ class PoliticianDetailsPage extends Component {
               </CandidateCampaignListMobile>
             )}
           </DetailsSectionMobile>
-          <DetailsSectionDesktopTablet className="u-show-desktop-tablet">
+          <DetailsSectionDesktopTablet style={uShowDesktopTablet()}>
             <PoliticianNameOuterWrapperDesktop>
               <PoliticianNameDesktop>{politicianName}</PoliticianNameDesktop>
               {officeHeldList.length > 0 ? (
@@ -1038,7 +1039,7 @@ class PoliticianDetailsPage extends Component {
             </ColumnsWrapper>
           </DetailsSectionDesktopTablet>
         </PageWrapper>
-        <SupportButtonFooterWrapperAboveFooterButtons className="u-show-mobile">
+        <SupportButtonFooterWrapperAboveFooterButtons style={uShowMobile()}>
           <SupportButtonPanel>
             <Suspense fallback={<span>&nbsp;</span>}>
               <SupportButtonBeforeCompletionScreen
