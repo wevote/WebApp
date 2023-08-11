@@ -66,8 +66,8 @@ class PoliticianPositionRetrieveController extends Component {
   getDateNowYYYYMMDD = () => {
     const t = new Date();
     const y = t.getFullYear();
-    const m = (`0${  t.getMonth() + 1}`).slice(-2);
-    const d = (`0${  t.getDate()}`).slice(-2);
+    const m = (`0${t.getMonth() + 1}`).slice(-2);
+    const d = (`0${t.getDate()}`).slice(-2);
     return y + m + d;
   }
 

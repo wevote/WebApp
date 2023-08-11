@@ -158,6 +158,7 @@ export function initializationForCordova (startReact) {
                 });
               } catch (errLock) {
                 try {
+                  // Aug 2023: The lock() API does show up, after a second or two, but adding a setTimout causes the app to hang
                   console.log('Cordova:   screen lock 2nd try ', errLock);
                   const { screen: { orientation: { lock } } } = window;
                   lock('portrait').then(() => {

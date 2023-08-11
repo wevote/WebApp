@@ -1,5 +1,5 @@
 import { CheckCircle } from '@mui/icons-material';
-import { Button, Card, CardContent, FormControl, InputLabel, Select } from '@mui/material';
+import { Button, Card, CardContent, FormControl, Select } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
@@ -8,18 +8,18 @@ import styled from 'styled-components';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import BallotActions from '../actions/BallotActions';
 import ReadyActions from '../actions/ReadyActions';
+import standardBoxShadow from '../common/components/Style/standardBoxShadow';
 import LoadingWheel from '../common/components/Widgets/LoadingWheel';
+import { messageService } from '../common/stores/AppObservableStore';
 import apiCalming from '../common/utils/apiCalming';
 import { formatDateToMonthDayYear } from '../common/utils/dateFormat';
+import { formatStateName } from '../common/utils/formatStateName';
 import { renderLog } from '../common/utils/logging';
-import standardBoxShadow from '../common/components/Style/standardBoxShadow';
 import StateDropDownCore from '../components/Filter/StateDropDownCore';
 import { PageContentContainer } from '../components/Style/pageLayoutStyles';
 import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
-import { messageService } from '../common/stores/AppObservableStore';
 import BallotStore from '../stores/BallotStore';
 import VoterStore from '../stores/VoterStore';
-import { formatStateName } from '../common/utils/formatStateName';
 
 const voteDotOrg = '../../img/global/logos/vote_dot_org_logo-530x200.png';
 const turboVote = '../../img/global/logos/turbovote-logo.png';

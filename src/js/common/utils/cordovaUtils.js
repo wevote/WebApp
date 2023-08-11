@@ -143,7 +143,7 @@ export function logMatch (device, byModel) {
   }
 }
 
-// https://www.theiphonewiki.com/wiki/Models
+// https://theapplewiki.com/wiki/Models
 // https://gist.github.com/adamawolf/3048717
 // http://socialcompare.com/en/comparison/apple-iphone-product-line-comparison
 // https://www.ios-resolution.com/
@@ -354,18 +354,29 @@ export function isIPad () {
 
 export function isIPad11in () {
   if (isIOS() && !isIOSAppOnMac() &&
-    ['iPad8,1',    // iPad Pro 11 inch 3rd Gen (WiFi)
-      'iPad8,2',   // iPad Pro 11 inch 3rd Gen (1TB, WiFi)
-      'iPad8,3',   // iPad Pro 11 inch 3rd Gen (WiFi+Cellular)
-      'iPad8,4',   // iPad Pro 11 inch 3rd Gen (1TB, WiFi+Cellular)
-      'iPad8,9',   // iPad Pro 11 inch 4th Gen (WiFi)
-      'iPad8,10',  // iPad Pro 11 inch 4th Gen (WiFi+Cellular)
-      'iPad13,4',  // iPad Pro 11 inch 5th Gen
-      'iPad13,5',  // iPad Pro 11 inch 5th Gen
-      'iPad13,6',  // iPad Pro 11 inch 5th Gen
-      'iPad13,7',  // iPad Pro 11 inch 5th Gen
+    ['iPad8,1', 'iPad8,2', 'iPad8,3', 'iPad8,4', 'iPad8,5', 'iPad8,6', 'iPad8,7', 'iPad8,8',   // iPad Pro 11 inch 3rd Gen
+      'iPad8,9', 'iPad8,10',                                        // iPad Pro 11 inch 4th Gen
+      'iPad13,4', 'iPad13,5', 'iPad13,6', 'iPad13,7', 'iPad13,8',  // iPad Pro 11 inch 5th Gen
+      'iPad13,17', // iPad Air 10.9 inch 5th Gen
+      'iPad13,18', // iPad     10.2 inch 9th Gen (Maybe too small for this category?)
+      'iPad13,19', // iPad     10.9 inch 10th Gen
     ].includes(window.device.model)) {
     logMatch('iPad11in', true);
+    return true;
+  }
+  return false;
+}
+
+export function isIPadMini () {
+  if (isIOS() && !isIOSAppOnMac() &&
+    ['iPad2,5', 'iPad2,6', 'iPad2,7',     // iPad Mini
+      'iPad4,4', 'iPad4,5', 'iPad4,6',    // iPad Mini 2
+      'iPad4,7', 'iPad4,8', 'iPad4,9',    // iPad Mini 3
+      'iPad5,1', 'iPad5,2',               // iPad Mini 4
+      'iPad11,1', 'iPad11,2',             // iPad Mini 5
+      'iPad14,1', 'iPad14,2',             // iPad Mini 6th generation
+    ].includes(window.device.model)) {
+    logMatch('iPadMini', true);
     return true;
   }
   return false;
@@ -398,7 +409,9 @@ export function isIPadGiantSize () {
     width: window.screen.width * ratio,
     height: window.screen.height * ratio,
   };
-  if (screen.width === 2048 && screen.height === 2732) { // iPad Pro 12.9" Gen 2, 2018
+  if (['iPad13,8', 'iPad13,9', 'iPad13,10', 'iPad13,11'].includes(window.device.model)) {      // iPad Pro (12.9-inch) (5th generation)
+    logMatch('iPad12.9in', true);
+  } else if (screen.width === 2048 && screen.height === 2732) { // iPad Pro 12.9" Gen 2, 2018 and same sizeiPad7,1 iPad7,2
     logMatch('iPadGiantSize', true);
     return true;
   }
