@@ -559,6 +559,7 @@ class CampaignsHome extends Component {
       searchText, stateCode,
     } = this.state;
     // console.log('CampaignsHomeLoader.jsx render campaignList:', campaignList);
+    const pigCanFly = false;
 
     if (detailsListMode) {
       // console.log('detailsListMode TRUE');
@@ -609,7 +610,7 @@ class CampaignsHome extends Component {
           searchText={searchText}
           stateCode={stateCode}
         />
-        {nextReleaseFeaturesEnabled && (
+        {(nextReleaseFeaturesEnabled && pigCanFly) && (
           <WhatIsHappeningSection>
             <Suspense fallback={<span><CandidateListRootPlaceholder titleTextForList="Campaigns" /></span>}>
               <CampaignListRoot
