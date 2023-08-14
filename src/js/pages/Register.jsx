@@ -105,7 +105,7 @@ class Register extends Component {
         <Section>
           <h3 style={{ fontSize: 20, fontWeight: 700, marginBottom: 16 }}>What state are you planning to vote in?</h3>
           <StateDropDownCore
-            stateCodesToDisplay=""
+            stateCodesToDisplay={[]}
             handleChooseStateChange={this.handleChooseStateChange}
             stateCodesHtml=""
             selectedState={this.state.selectedState}
@@ -276,7 +276,7 @@ class Register extends Component {
                 <Column>
                   <label>State</label>
                   <StateDropDownCore
-                    stateCodesToDisplay=""
+                    stateCodesToDisplay={[]}
                     handleChooseStateChange={this.handleChooseStateChange}
                     stateCodesHtml=""
                     selectedState={this.state.selectedState}

@@ -18,6 +18,33 @@ class CandidateStore extends ReduceStore {
         contest_office_name: 'President',
         party: 'Nonpartisan',
       },
+      candidateForLoading1: {
+        we_vote_id: 'candidateForLoading1',
+        ballot_guide_official_statement: 'Candidate data is loading now...',
+        ballot_item_display_name: 'Loading...',
+        candidate_photo_url_large: '',
+        contest_office_name: '',
+        linked_campaignx_we_vote_id: 'campaignForLoading1',
+        party: '',
+      },
+      candidateForLoading2: {
+        we_vote_id: 'candidateForLoading2',
+        ballot_item_display_name: 'Loading...',
+        ballot_guide_official_statement: 'Candidate data is loading now...',
+        candidate_photo_url_large: '',
+        contest_office_name: '',
+        linked_campaignx_we_vote_id: 'campaignForLoading1',
+        party: '',
+      },
+      candidateForLoading3: {
+        we_vote_id: 'candidateForLoading3',
+        ballot_item_display_name: 'Loading...',
+        ballot_guide_official_statement: 'Candidate data is loading now...',
+        candidate_photo_url_large: '',
+        contest_office_name: '',
+        linked_campaignx_we_vote_id: 'campaignForLoading1',
+        party: '',
+      },
     };
     const explanationPositions = {
       candidateAlexanderHamilton: [

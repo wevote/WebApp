@@ -368,6 +368,7 @@ class CandidateListRoot extends Component {
       }
     }
     // console.log('CandidateListRoot actually rendering hideDisplayBecauseNoSearchResults', hideDisplayBecauseNoSearchResults);
+    // console.log('CandidateListRoot filteredList:', filteredList);
     return (
       <CandidateListWrapper>
         <TitleAndMobileArrowsOuterWrapper>

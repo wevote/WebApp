@@ -38,7 +38,7 @@ const CampaignCommentsPage = React.lazy(() => import(/* webpackChunkName: 'Campa
 const CampaignDetailsPage = React.lazy(() => import(/* webpackChunkName: 'CampaignDetailsPage' */ './js/common/pages/Campaign/CampaignDetailsPage'));
 const CampaignNewsItemDetailsPage = React.lazy(() => import(/* webpackChunkName: 'CampaignNewsItemDetailsPage' */ './js/common/pages/Campaign/CampaignNewsItemDetailsPage'));
 const CampaignRecommendedCampaigns = React.lazy(() => import(/* webpackChunkName: 'CampaignRecommendedCampaigns' */ './js/common/pages/CampaignSupport/CampaignRecommendedCampaigns'));
-const CampaignsHome = React.lazy(() => import(/* webpackChunkName: 'CampaignsHome' */ './js/pages/Campaigns/CampaignsHome'));
+const CampaignsHomeLoader = React.lazy(() => import(/* webpackChunkName: 'CampaignsHomeLoader' */ './js/pages/Campaigns/CampaignsHomeLoader'));
 const CampaignStartIntro = React.lazy(() => import(/* webpackChunkName: 'CampaignStartIntro' */ './js/common/pages/CampaignStart/CampaignStartIntro'));
 const CampaignSupportEndorsement = React.lazy(() => import(/* webpackChunkName: 'CampaignSupportEndorsement' */ './js/common/pages/CampaignSupport/CampaignSupportEndorsement'));
 const CampaignSupportPayToPromote = React.lazy(() => import(/* webpackChunkName: 'CampaignSupportPayToPromote' */ './js/common/pages/CampaignSupport/CampaignSupportPayToPromote'));
@@ -345,9 +345,17 @@ class App extends Component {
     const isWeVoteMarketingSite = weVoteSites.includes(String(hostname));
     const isNotWeVoteMarketingSite = !isWeVoteMarketingSite;
     // const firstVisit = !cookies.getItem('voter_device_id');
+    const loadingPageHtml = (
+      <div id="loading-screen">
+        <div style={{ display: 'flex', position: 'fixed', height: '100vh', width: '100vw', top: 0, left: 0, backgroundColor: '#fff', justifyContent: 'center', alignItems: 'center', fontSize: '20px', color: '#2E3C5D', flexDirection: 'column', fontFamily: '\'Source Sans Pro\', sans-serif', textAlign: 'center' }}>
+          <h1 style={{ fontFamily: '\'Source Sans Pro\', sans-serif', fontSize: '32px', fontWeight: 'normal', color: '#2E3C5D' }}>Loading your ballot...</h1>
+          <div style={{ margin: '0 15px', textAlign: 'center' }}>Thank you for being a voter!</div>
+        </div>
+      </div>
+    );
 
     if (isWebApp()) {
-      console.log('WebApp: href in App.js render: ', window.location.href);
+      // console.log('WebApp: href in App.js render: ', window.location.href);
     } else {
       console.log('Cordova:   href hash in App.js render: ', window.location.hash);
     }
@@ -424,9 +432,16 @@ class App extends Component {
                   <Route exact path="/c/:campaignSEOFriendlyPath/u-preview/:campaignXNewsItemWeVoteId" render={(props) => <CampaignNewsItemDetailsPage inPreviewMode match={props.match} setShowHeaderFooter={this.setShowHeaderFooter} />} />
                   <Route exact path="/c/:campaignSEOFriendlyPath/updates" render={(props) => <CampaignUpdatesPage match={props.match} />} />
                   <Route exact path="/c/:campaignSEOFriendlyPath/why-do-you-support" render={(props) => <CampaignSupportEndorsement match={props.match} setShowHeaderFooter={this.setShowHeaderFooter} />} />
-                  <Route path="/:state_candidates_phrase/cs/" exact component={CampaignsHome} />
-                  <Route path="/cs/" exact component={CampaignsHome} />
-                  <Route path="/candidatelist/" exact component={CampaignsHome} />
+                  <Route path="/:state_candidates_phrase/cs/"
+                         exact
+                         render={(props) => (
+                           <Suspense fallback={<>{loadingPageHtml}</>}>
+                             <CampaignsHomeLoader match={props.match} />
+                           </Suspense>
+                         )}
+                  />
+                  <Route path="/cs/" exact component={CampaignsHomeLoader} />
+                  <Route path="/candidatelist/" exact component={CampaignsHomeLoader} />
                   <Route path="/candidate-for-extension" component={CandidateForExtension} />
                   <Route path="/candidate/:candidate_we_vote_id/b/:back_to_variable/modal/:modal_to_show" exact component={Candidate} />
                   <Route path="/candidate/:candidate_we_vote_id/b/:back_to_variable/modal/:modal_to_show/:shared_item_code" exact component={Candidate} />

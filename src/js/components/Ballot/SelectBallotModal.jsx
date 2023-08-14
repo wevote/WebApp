@@ -150,7 +150,7 @@ class SelectBallotModal extends Component {
                     <UpcomingButton id="electionChoiceUpcomingButton" onClick={() => this.setState({ prior: false, upcoming: true })} variant={this.state.upcoming ? 'contained' : 'outlined'} color="primary">Upcoming</UpcomingButton>
                   </ToggleGroup>
                   <StateDropDownCore
-                    stateCodesToDisplay=""
+                    stateCodesToDisplay={[]}
                     handleChooseStateChange={this.handleChooseStateChange}
                     stateCodesHtml=""
                     selectedState={this.state.selectedState}
