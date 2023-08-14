@@ -1,5 +1,5 @@
 import { Close } from '@mui/icons-material';
-import { Button, Dialog, DialogContent, DialogTitle, FormControl, IconButton, InputLabel, Select } from '@mui/material';
+import { Button, Dialog, DialogContent, DialogTitle, IconButton } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
@@ -150,7 +150,7 @@ class SelectBallotModal extends Component {
                     <UpcomingButton id="electionChoiceUpcomingButton" onClick={() => this.setState({ prior: false, upcoming: true })} variant={this.state.upcoming ? 'contained' : 'outlined'} color="primary">Upcoming</UpcomingButton>
                   </ToggleGroup>
                   <StateDropDownCore
-                    stateCodesToDisplay=""
+                    stateCodesToDisplay={[]}
                     handleChooseStateChange={this.handleChooseStateChange}
                     stateCodesHtml=""
                     selectedState={this.state.selectedState}

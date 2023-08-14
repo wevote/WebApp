@@ -86,6 +86,7 @@ class CandidateCardList extends Component {
       return null;
     }
     let numberDisplayed = 0;
+    // console.log('CandidateCardList candidateList', candidateList);
     return (
       <CandidateCardListWrapper>
         <ListWrapper verticalListOn={verticalListOn}>

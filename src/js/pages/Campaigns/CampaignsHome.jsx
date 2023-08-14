@@ -1,13 +1,9 @@
-import { Chip } from '@mui/material';
-import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import { Helmet } from 'react-helmet-async';
 import styled from 'styled-components';
 import ActivityActions from '../../actions/ActivityActions';
 import IssueActions from '../../actions/IssueActions';
 import SupportActions from '../../actions/SupportActions';
-import { SearchTitleTop } from '../../common/components/Style/FilterStyles';
 import CampaignStore from '../../common/stores/CampaignStore';
 import { convertStateCodeToStateText, convertStateTextToStateCode } from '../../common/utils/addressFunctions';
 import apiCalming from '../../common/utils/apiCalming';
@@ -15,20 +11,16 @@ import arrayContains from '../../common/utils/arrayContains';
 import { getTodayAsInteger, getYearFromUltimateElectionDate } from '../../common/utils/dateFormat';
 import extractAttributeValueListFromObjectList from '../../common/utils/extractAttributeValueListFromObjectList';
 import historyPush from '../../common/utils/historyPush';
-import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import { convertToInteger } from '../../common/utils/textFormat';
-import StateDropDownCore from '../../components/Filter/StateDropDownCore';
-import SearchBar from '../../components/Search/SearchBar';
-import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import webAppConfig from '../../config';
 import BallotStore from '../../stores/BallotStore';
 import CandidateStore from '../../stores/CandidateStore';
 import IssueStore from '../../stores/IssueStore';
 import RepresentativeStore from '../../stores/RepresentativeStore';
-// import SupportStore from '../../stores/SupportStore';
 import VoterStore from '../../stores/VoterStore';
-import { cordovaSimplePageContainerTopOffset } from '../../utils/cordovaCalculatedOffsets';
+import CampaignsHomeFilter from '../../components/CampaignsHome/CampaignsHomeFilter';
+import CandidateListRootPlaceholder from '../../components/CampaignsHome/CandidateListRootPlaceholder';
 
 const CandidateListRoot = React.lazy(() => import(/* webpackChunkName: 'CandidateListRoot' */ '../../components/CandidateListRoot/CandidateListRoot'));
 const CampaignListRoot = React.lazy(() => import(/* webpackChunkName: 'CampaignListRoot' */ '../../common/components/Campaign/CampaignListRoot'));
@@ -554,17 +546,8 @@ class CampaignsHome extends Component {
     }, () => this.updateActiveFilters());
   }
 
-  getTopPadding = () => {
-    if (isWebApp()) {
-      return { paddingTop: '0 !important' };
-    }
-    cordovaSimplePageContainerTopOffset(VoterStore.getVoterIsSignedIn());
-    return {};
-  }
-
   render () {
     renderLog('CampaignsHome');  // Set LOG_RENDER_EVENTS to log all renders
-    const { classes } = this.props;
     const {
       campaignList, campaignListTimeStampOfChange,
       campaignsShowing,
@@ -575,124 +558,22 @@ class CampaignsHome extends Component {
       representativeListOnYourBallot, representativeListShownAsRepresentatives, representativeListTimeStampOfChange,
       searchText, stateCode,
     } = this.state;
-    // console.log('CampaignsHome.jsx campaignList:', campaignList);
+    // console.log('CampaignsHomeLoader.jsx render campaignList:', campaignList);
 
-    let titleText;
-    let descriptionText;
     if (detailsListMode) {
-      titleText = 'Candidates Detail - We Vote';
-      descriptionText = 'Choose which candidates you support.';
+      // console.log('detailsListMode TRUE');
       return (
-        <PageContentContainer>
-          <CampaignsHomeContainer className="container-fluid" style={this.getTopPadding()}>
-            <Helmet
-              title={titleText}
-              meta={[{ name: 'description', content: descriptionText }]}
-            />
-            <CampaignsHomeFilterWrapper>
-              {(isSearching && searchText) && (
-                <SearchTitleTop>
-                  Searching for &quot;
-                  {searchText}
-                  &quot;
-                </SearchTitleTop>
-              )}
-              <SearchBarWrapper>
-                <SearchBar
-                  clearButton
-                  searchButton
-                  placeholder="Search by name, office or state"
-                  searchFunction={this.searchFunction}
-                  clearFunction={this.clearSearchFunction}
-                  searchUpdateDelayTime={500}
-                />
-              </SearchBarWrapper>
-            </CampaignsHomeFilterWrapper>
-            {nextReleaseFeaturesEnabled && (
-              <WhatIsHappeningSection>
-                <Suspense fallback={<span>&nbsp;</span>}>
-                  <CampaignListRoot
-                    hideCampaignsLinkedToPoliticians
-                    hideIfNoResults
-                    incomingList={campaignList}
-                    incomingListTimeStampOfChange={campaignListTimeStampOfChange}
-                    listModeFilters={listModeFiltersAvailable}
-                    listModeFiltersTimeStampOfChange={listModeFiltersTimeStampOfChange}
-                    searchText={searchText}
-                    stateCode={stateCode}
-                    titleTextForList="Upcoming Campaigns"
-                  />
-                </Suspense>
-              </WhatIsHappeningSection>
-            )}
-          </CampaignsHomeContainer>
-        </PageContentContainer>
-      );
-    }
-
-    const { match: { params: { state_candidates_phrase: stateCandidatesPhrase } } } = this.props;
-    if (stateCode && stateCode !== 'na') {
-      const stateText = convertStateCodeToStateText(stateCode);
-      titleText = `${stateText} Candidates - We Vote`;
-    } else {
-      titleText = 'Candidates - We Vote';
-    }
-    descriptionText = 'Choose which candidates you support or oppose.';
-    const representativesShowing = (representativeListOnYourBallot && representativeListOnYourBallot.length > 0) || (representativeListShownAsRepresentatives && representativeListShownAsRepresentatives.length > 0);
-    const otherTitlesShown = (campaignsShowing && nextReleaseFeaturesEnabled) || (candidateListOnYourBallot && candidateListOnYourBallot.length > 0) || (candidateListIsBattleground && candidateListIsBattleground.length > 0) || representativesShowing;
-    return (
-      <PageContentContainer>
-        <CampaignsHomeContainer className="container-fluid" style={this.getTopPadding()}>
-          <Helmet>
-            <title>{titleText}</title>
-            {stateCandidatesPhrase && (
-              <link rel="canonical" href={`https://wevote.us/${stateCandidatesPhrase}/cs`} />
-            )}
-            <meta name="description" content={descriptionText} />
-          </Helmet>
-          <CampaignsHomeFilterWrapper>
-            {(isSearching && searchText) && (
-              <SearchTitleTop>
-                Searching for &quot;
-                {searchText}
-                &quot;
-              </SearchTitleTop>
-            )}
-            {!!(listModeFiltersAvailable) && (
-              <CampaignsHomeFilterChoices>
-                {listModeFiltersAvailable.map((oneFilter) => (
-                  <span key={oneFilter.filterName}>
-                    {oneFilter.displayAsChip && (
-                      <Chip
-                        label={<span style={oneFilter.filterSelected ? { fontWeight: 600 } : {}}>{oneFilter.filterDisplayName}</span>}
-                        className={oneFilter.filterSelected ? classes.selectedChip : classes.notSelectedChip}
-                        component="div"
-                        onClick={() => this.changeListModeShown(oneFilter.filterName, oneFilter.filterYear)}
-                        variant={oneFilter.filterSelected ? undefined : 'outlined'}
-                      />
-                    )}
-                  </span>
-                ))}
-                <StateDropDownCore
-                  stateCodesToDisplay=""
-                  onStateDropDownChange={this.handleChooseStateChange}
-                  stateCodesHtml=""
-                  selectedState={stateCode}
-                  dialogLabel="State"
-                />
-              </CampaignsHomeFilterChoices>
-            )}
-            <SearchBarWrapper>
-              <SearchBar
-                clearButton
-                searchButton
-                placeholder="Search by name, office or state"
-                searchFunction={this.searchFunction}
-                clearFunction={this.clearSearchFunction}
-                searchUpdateDelayTime={500}
-              />
-            </SearchBarWrapper>
-          </CampaignsHomeFilterWrapper>
+        <CampaignsHomeWrapper>
+          <CampaignsHomeFilter
+            changeListModeShown={this.changeListModeShown}
+            clearSearchFunction={this.clearSearchFunction}
+            handleChooseStateChange={this.handleChooseStateChange}
+            isSearching={isSearching}
+            listModeFiltersAvailable={listModeFiltersAvailable}
+            searchFunction={this.searchFunction}
+            searchText={searchText}
+            stateCode={stateCode}
+          />
           {nextReleaseFeaturesEnabled && (
             <WhatIsHappeningSection>
               <Suspense fallback={<span>&nbsp;</span>}>
@@ -705,30 +586,68 @@ class CampaignsHome extends Component {
                   listModeFiltersTimeStampOfChange={listModeFiltersTimeStampOfChange}
                   searchText={searchText}
                   stateCode={stateCode}
-                  // titleTextForList="Upcoming Campaigns" // TODO: Needs work
-                  titleTextForList="Campaigns"
+                  titleTextForList="Upcoming Campaigns"
                 />
               </Suspense>
             </WhatIsHappeningSection>
           )}
-          {(candidateListIsBattleground && candidateListIsBattleground.length > 0) && (
-            <WhatIsHappeningSection>
-              <Suspense fallback={<span>&nbsp;</span>}>
-                <CandidateListRoot
-                  hideIfNoResults
-                  incomingList={candidateListIsBattleground}
-                  incomingListTimeStampOfChange={candidateListTimeStampOfChange}
-                  listModeFilters={listModeFiltersAvailable}
-                  listModeFiltersTimeStampOfChange={listModeFiltersTimeStampOfChange}
-                  searchText={searchText}
-                  stateCode={stateCode}
-                  titleTextForList="Candidates in Close Races"
-                />
-              </Suspense>
-            </WhatIsHappeningSection>
-          )}
+        </CampaignsHomeWrapper>
+      );
+    }
+
+    const representativesShowing = (representativeListOnYourBallot && representativeListOnYourBallot.length > 0) || (representativeListShownAsRepresentatives && representativeListShownAsRepresentatives.length > 0);
+    const otherTitlesShown = (campaignsShowing && nextReleaseFeaturesEnabled) || (candidateListOnYourBallot && candidateListOnYourBallot.length > 0) || (candidateListIsBattleground && candidateListIsBattleground.length > 0) || representativesShowing;
+    return (
+      <CampaignsHomeWrapper>
+        <CampaignsHomeFilter
+          changeListModeShown={this.changeListModeShown}
+          clearSearchFunction={this.clearSearchFunction}
+          handleChooseStateChange={this.handleChooseStateChange}
+          isSearching={isSearching}
+          listModeFiltersAvailable={listModeFiltersAvailable}
+          searchFunction={this.searchFunction}
+          searchText={searchText}
+          stateCode={stateCode}
+        />
+        {nextReleaseFeaturesEnabled && (
           <WhatIsHappeningSection>
-            <Suspense fallback={<span>&nbsp;</span>}>
+            <Suspense fallback={<span><CandidateListRootPlaceholder titleTextForList="Campaigns" /></span>}>
+              <CampaignListRoot
+                hideCampaignsLinkedToPoliticians
+                hideIfNoResults
+                incomingList={campaignList}
+                incomingListTimeStampOfChange={campaignListTimeStampOfChange}
+                listModeFilters={listModeFiltersAvailable}
+                listModeFiltersTimeStampOfChange={listModeFiltersTimeStampOfChange}
+                searchText={searchText}
+                stateCode={stateCode}
+                // titleTextForList="Upcoming Campaigns" // TODO: Needs work
+                titleTextForList="Campaigns"
+              />
+            </Suspense>
+          </WhatIsHappeningSection>
+        )}
+        {(candidateListIsBattleground && candidateListIsBattleground.length > 0) ? (
+          <WhatIsHappeningSection>
+            <Suspense fallback={<span><CandidateListRootPlaceholder titleTextForList="Candidates in Close Races" /></span>}>
+              <CandidateListRoot
+                hideIfNoResults
+                incomingList={candidateListIsBattleground}
+                incomingListTimeStampOfChange={candidateListTimeStampOfChange}
+                listModeFilters={listModeFiltersAvailable}
+                listModeFiltersTimeStampOfChange={listModeFiltersTimeStampOfChange}
+                searchText={searchText}
+                stateCode={stateCode}
+                titleTextForList="Candidates in Close Races"
+              />
+            </Suspense>
+          </WhatIsHappeningSection>
+        ) : (
+          <CandidateListRootPlaceholder titleTextForList="Candidates in Close Races" />
+        )}
+        {(representativeListShownAsRepresentatives && representativeListShownAsRepresentatives.length > 0) ? (
+          <WhatIsHappeningSection>
+            <Suspense fallback={<span><CandidateListRootPlaceholder titleTextForList="Current Representatives" /></span>}>
               <RepresentativeListRoot
                 hideIfNoResults
                 incomingList={representativeListShownAsRepresentatives}
@@ -741,37 +660,41 @@ class CampaignsHome extends Component {
               />
             </Suspense>
           </WhatIsHappeningSection>
-          {(candidateListOnYourBallot && candidateListOnYourBallot.length > 0) && (
-            <WhatIsHappeningSection>
-              <Suspense fallback={<span>&nbsp;</span>}>
-                <CandidateListRoot
-                  hideIfNoResults
-                  incomingList={candidateListOnYourBallot}
-                  incomingListTimeStampOfChange={candidateListTimeStampOfChange}
-                  listModeFilters={listModeFiltersAvailable}
-                  listModeFiltersTimeStampOfChange={listModeFiltersTimeStampOfChange}
-                  searchText={searchText}
-                  stateCode={stateCode}
-                  titleTextForList="On Your Ballot"
-                />
-              </Suspense>
-            </WhatIsHappeningSection>
-          )}
+        ) : (
+          <CandidateListRootPlaceholder titleTextForList="Current Representatives" />
+        )}
+        {(candidateListOnYourBallot && candidateListOnYourBallot.length > 0) ? (
           <WhatIsHappeningSection>
-            <Suspense fallback={<span>&nbsp;</span>}>
+            <Suspense fallback={<span><CandidateListRootPlaceholder titleTextForList="On Your Ballot" /></span>}>
               <CandidateListRoot
                 hideIfNoResults
-                incomingList={candidateListOther}
+                incomingList={candidateListOnYourBallot}
                 incomingListTimeStampOfChange={candidateListTimeStampOfChange}
                 listModeFilters={listModeFiltersAvailable}
                 listModeFiltersTimeStampOfChange={listModeFiltersTimeStampOfChange}
                 searchText={searchText}
                 stateCode={stateCode}
-                titleTextForList={otherTitlesShown ? 'More Politicians' : 'Candidates'}
+                titleTextForList="On Your Ballot"
               />
             </Suspense>
           </WhatIsHappeningSection>
-        </CampaignsHomeContainer>
+        ) : (
+          <CandidateListRootPlaceholder titleTextForList="On Your Ballot" />
+        )}
+        <WhatIsHappeningSection>
+          <Suspense fallback={<span><CandidateListRootPlaceholder /></span>}>
+            <CandidateListRoot
+              hideIfNoResults
+              incomingList={candidateListOther}
+              incomingListTimeStampOfChange={candidateListTimeStampOfChange}
+              listModeFilters={listModeFiltersAvailable}
+              listModeFiltersTimeStampOfChange={listModeFiltersTimeStampOfChange}
+              searchText={searchText}
+              stateCode={stateCode}
+              titleTextForList={otherTitlesShown ? 'More Politicians' : 'Candidates'}
+            />
+          </Suspense>
+        </WhatIsHappeningSection>
 
         {/* */}
         <Suspense fallback={<></>}>
@@ -785,52 +708,15 @@ class CampaignsHome extends Component {
         <Suspense fallback={<></>}>
           <FirstRepresentativeListController searchText={searchText} stateCode={stateCode} year={filterYear} />
         </Suspense>
-      </PageContentContainer>
+      </CampaignsHomeWrapper>
     );
   }
 }
 CampaignsHome.propTypes = {
-  classes: PropTypes.object,
   match: PropTypes.object,
 };
 
-const styles = () => ({
-  formControl: {
-    marginTop: 2,
-    padding: '0px 4px',
-    width: 200,
-  },
-  select: {
-    padding: '5px 12px',
-    margin: '0px 1px',
-  },
-  iconButton: {
-    padding: 8,
-  },
-  notSelectedChip: {
-    margin: 2,
-  },
-  selectedChip: {
-    border: '1px solid #bdbdbd',
-    margin: 2,
-  },
-});
-
-const CampaignsHomeContainer = styled('div')`
-`;
-
-const CampaignsHomeFilterChoices = styled('div')`
-  margin-top: 8px;
-`;
-
-const CampaignsHomeFilterWrapper = styled('div')`
-  margin-top: 48px;
-  margin-bottom: 24px;
-`;
-
-const SearchBarWrapper = styled('div')`
-  margin-top: 4px;
-  margin-bottom: 8px;
+const CampaignsHomeWrapper = styled('div')`
 `;
 
 const WhatIsHappeningSection = styled('div')`
@@ -838,8 +724,9 @@ const WhatIsHappeningSection = styled('div')`
   // background: linear-gradient(0deg, rgba(2,0,36,1) 0%, rgba(46,55,77,0) 52%);
   // background-color: #f5f5f5;
   // box-shadow: 0 0 80px 0px rgba(46,55,77,.3);
+  height: 460px;
   // padding: 0 0 25px 0;
 `;
 
-export default withStyles(styles)(CampaignsHome);
+export default CampaignsHome;
 

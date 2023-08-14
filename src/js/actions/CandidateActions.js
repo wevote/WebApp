@@ -11,7 +11,7 @@ export default {
   candidatesQuery (electionDay = '', raceOfficeLevelList = '', stateCode = '', searchText = '') {
     Dispatcher.loadEndpoint('candidatesQuery',
       {
-        numberRequested: 50,
+        numberRequested: 24,
         electionDay,
         raceOfficeLevelList,
         searchText,
