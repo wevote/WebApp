@@ -55,7 +55,6 @@ const candidateListForLoading = [
 function CandidateListRootPlaceholder (props) {
   renderLog('CandidateListRootPlaceholder functional component');
   const { classes, titleTextForList } = props;
-  // console.log('CandidateListRootPlaceholder props.stateCode:', props.stateCode);
   return (
     <CandidateListRootPlaceholderWrapper>
       <TitleAndMobileArrowsOuterWrapper>
@@ -98,7 +97,6 @@ function CandidateListRootPlaceholder (props) {
 }
 CandidateListRootPlaceholder.propTypes = {
   classes: PropTypes.object,
-  stateCode: PropTypes.string,
   titleTextForList: PropTypes.string,
 };
 

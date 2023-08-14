@@ -1,4 +1,3 @@
-import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
@@ -12,7 +11,6 @@ import arrayContains from '../../common/utils/arrayContains';
 import { getTodayAsInteger, getYearFromUltimateElectionDate } from '../../common/utils/dateFormat';
 import extractAttributeValueListFromObjectList from '../../common/utils/extractAttributeValueListFromObjectList';
 import historyPush from '../../common/utils/historyPush';
-import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import { convertToInteger } from '../../common/utils/textFormat';
 import webAppConfig from '../../config';
@@ -715,31 +713,8 @@ class CampaignsHome extends Component {
   }
 }
 CampaignsHome.propTypes = {
-  classes: PropTypes.object,
   match: PropTypes.object,
 };
-
-const styles = () => ({
-  formControl: {
-    marginTop: 2,
-    padding: '0px 4px',
-    width: 200,
-  },
-  select: {
-    padding: '5px 12px',
-    margin: '0px 1px',
-  },
-  iconButton: {
-    padding: 8,
-  },
-  notSelectedChip: {
-    margin: 2,
-  },
-  selectedChip: {
-    border: '1px solid #bdbdbd',
-    margin: 2,
-  },
-});
 
 const CampaignsHomeWrapper = styled('div')`
 `;
@@ -753,5 +728,5 @@ const WhatIsHappeningSection = styled('div')`
   // padding: 0 0 25px 0;
 `;
 
-export default withStyles(styles)(CampaignsHome);
+export default CampaignsHome;
 
