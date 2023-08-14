@@ -453,20 +453,20 @@ class CampaignsHome extends Component {
     return 'showUpcomingEndorsements';
   }
 
-  getListOfYearsWhenCampaignExists = (campaignList) => {
-    const listOfYearsWhenCampaignExists = [];
-    let tempYearInteger;
-    campaignList.forEach((oneCampaign) => {
-      if (oneCampaign.final_election_date_as_integer && oneCampaign.final_election_date_as_integer > 0) {
-        tempYearInteger = getYearFromUltimateElectionDate(oneCampaign.final_election_date_as_integer);
-        // console.log('getListOfYearsWhenCampaignExists:', tempYearInteger, ', oneCampaign:', oneCampaign);
-        if (!arrayContains(tempYearInteger, listOfYearsWhenCampaignExists)) {
-          listOfYearsWhenCampaignExists.push(tempYearInteger);
-        }
-      }
-    });
-    return listOfYearsWhenCampaignExists;
-  }
+  // getListOfYearsWhenCampaignExists = (campaignList) => {
+  //   const listOfYearsWhenCampaignExists = [];
+  //   let tempYearInteger;
+  //   campaignList.forEach((oneCampaign) => {
+  //     if (oneCampaign.final_election_date_as_integer && oneCampaign.final_election_date_as_integer > 0) {
+  //       tempYearInteger = getYearFromUltimateElectionDate(oneCampaign.final_election_date_as_integer);
+  //       // console.log('getListOfYearsWhenCampaignExists:', tempYearInteger, ', oneCampaign:', oneCampaign);
+  //       if (!arrayContains(tempYearInteger, listOfYearsWhenCampaignExists)) {
+  //         listOfYearsWhenCampaignExists.push(tempYearInteger);
+  //       }
+  //     }
+  //   });
+  //   return listOfYearsWhenCampaignExists;
+  // }
 
   // getListOfYearsWhenCandidateExists = (candidateList) => {
   //   const listOfYearsWhenCandidateExists = [];
@@ -629,7 +629,7 @@ class CampaignsHome extends Component {
           </WhatIsHappeningSection>
         )}
         {(candidateListIsBattleground && candidateListIsBattleground.length > 0) ? (
-          <WhatIsHappeningSection>
+          <WhatIsHappeningSection useMinimumHeight={!isSearching}>
             <Suspense fallback={<span><CandidateListRootPlaceholder titleTextForList="Candidates in Close Races" /></span>}>
               <CandidateListRoot
                 hideIfNoResults
@@ -647,7 +647,7 @@ class CampaignsHome extends Component {
           <CandidateListRootPlaceholder titleTextForList="Candidates in Close Races" />
         )}
         {(representativeListShownAsRepresentatives && representativeListShownAsRepresentatives.length > 0) ? (
-          <WhatIsHappeningSection>
+          <WhatIsHappeningSection useMinimumHeight={!isSearching}>
             <Suspense fallback={<span><CandidateListRootPlaceholder titleTextForList="Current Representatives" /></span>}>
               <RepresentativeListRoot
                 hideIfNoResults
@@ -665,7 +665,7 @@ class CampaignsHome extends Component {
           <CandidateListRootPlaceholder titleTextForList="Current Representatives" />
         )}
         {(candidateListOnYourBallot && candidateListOnYourBallot.length > 0) ? (
-          <WhatIsHappeningSection>
+          <WhatIsHappeningSection useMinimumHeight={!isSearching}>
             <Suspense fallback={<span><CandidateListRootPlaceholder titleTextForList="On Your Ballot" /></span>}>
               <CandidateListRoot
                 hideIfNoResults
@@ -682,7 +682,7 @@ class CampaignsHome extends Component {
         ) : (
           <CandidateListRootPlaceholder titleTextForList="On Your Ballot" />
         )}
-        <WhatIsHappeningSection>
+        <WhatIsHappeningSection useMinimumHeight={!isSearching}>
           <Suspense fallback={<span><CandidateListRootPlaceholder /></span>}>
             <CandidateListRoot
               hideIfNoResults
@@ -698,9 +698,11 @@ class CampaignsHome extends Component {
         </WhatIsHappeningSection>
 
         {/* */}
-        <Suspense fallback={<></>}>
-          <FirstCampaignListController searchText={searchText} stateCode={stateCode} />
-        </Suspense>
+        {pigCanFly && (
+          <Suspense fallback={<></>}>
+            <FirstCampaignListController searchText={searchText} stateCode={stateCode} />
+          </Suspense>
+        )}
         {/* */}
         <Suspense fallback={<></>}>
           <FirstCandidateListController searchText={searchText} stateCode={stateCode} year={filterYear} />
@@ -720,14 +722,17 @@ CampaignsHome.propTypes = {
 const CampaignsHomeWrapper = styled('div')`
 `;
 
-const WhatIsHappeningSection = styled('div')`
+const WhatIsHappeningSection = styled('div', {
+  shouldForwardProp: (prop) => !['useMinimumHeight'].includes(prop),
+})(({ useMinimumHeight }) => (`
   // background: linear-gradient(180deg, rgba(2,0,36,1) 0%, rgba(46,55,77,0) 52%);
   // background: linear-gradient(0deg, rgba(2,0,36,1) 0%, rgba(46,55,77,0) 52%);
   // background-color: #f5f5f5;
   // box-shadow: 0 0 80px 0px rgba(46,55,77,.3);
-  height: 460px;
+  ${useMinimumHeight ? 'height: 460px;' : ''};
+  ${useMinimumHeight ? 'min-height: 460px;' : ''};
   // padding: 0 0 25px 0;
-`;
+`));
 
 export default CampaignsHome;
 

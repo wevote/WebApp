@@ -16,7 +16,7 @@ import CampaignOwnersList from '../../components/CampaignSupport/CampaignOwnersL
 import CompleteYourProfileModalController from '../../components/Settings/CompleteYourProfileModalController';
 import { CampaignDescription, CampaignDescriptionDesktop, CampaignDescriptionDesktopWrapper, CampaignDescriptionWrapper, CampaignImageDesktopWrapper, CampaignImageMobileWrapper, CampaignImagePlaceholder, CampaignImagePlaceholderText, CampaignOwnersDesktopWrapper, CampaignSubSectionSeeAll, CampaignSubSectionTitle, CampaignSubSectionTitleWrapper, CampaignTitleAndScoreBar, CommentsListWrapper, DetailsSectionDesktopTablet, DetailsSectionMobile, OtherElectionsWrapper, SupportButtonFooterWrapperAboveFooterButtons, SupportButtonPanel } from '../../components/Style/CampaignDetailsStyles';
 import { EditIndicator, ElectionInPast, IndicatorButtonWrapper, IndicatorRow } from '../../components/Style/CampaignIndicatorStyles';
-import { uShowDesktopTablet, uShowMobile } from '../../components/Style/cordovaFriendlyUShowStyles';
+// import { uShowDesktopTablet, uShowMobile } from '../../components/Style/cordovaFriendlyUShowStyles';
 import { CandidateCampaignListDesktop, CandidateCampaignListMobile, CandidateCampaignWrapper, OfficeHeldNameDesktop, OfficeHeldNameMobile, PoliticianImageDesktop, PoliticianImageDesktopPlaceholder, PoliticianImageMobile, PoliticianImageMobilePlaceholder, PoliticianNameDesktop, PoliticianNameMobile, PoliticianNameOuterWrapperDesktop } from '../../components/Style/PoliticianDetailsStyles';
 import { PageWrapper } from '../../components/Style/stepDisplayStyles';
 import DelayedLoad from '../../components/Widgets/DelayedLoad';
@@ -397,17 +397,17 @@ class PoliticianDetailsPage extends Component {
     return `/id/${linkedCampaignXWeVoteId}`;
   }
 
-  getPoliticianBasePath = () => {
-    const { politicianSEOFriendlyPath, politicianWeVoteId } = this.state;
-    let politicianBasePath;
-    if (politicianSEOFriendlyPath) {
-      politicianBasePath = `/${politicianSEOFriendlyPath}/-`;
-    } else {
-      politicianBasePath = `/${politicianWeVoteId}/p`;
-    }
-
-    return politicianBasePath;
-  }
+  // getPoliticianBasePath = () => {
+  //   const { politicianSEOFriendlyPath, politicianWeVoteId } = this.state;
+  //   let politicianBasePath;
+  //   if (politicianSEOFriendlyPath) {
+  //     politicianBasePath = `/${politicianSEOFriendlyPath}/-`;
+  //   } else {
+  //     politicianBasePath = `/${politicianWeVoteId}/p`;
+  //   }
+  //
+  //   return politicianBasePath;
+  // }
 
   functionToUseToKeepHelping = () => {
     const { finalElectionDateInPast, payToPromoteStepCompleted, payToPromoteStepTurnedOn, sharingStepCompleted, step2Completed } = this.state;
@@ -727,7 +727,8 @@ class PoliticianDetailsPage extends Component {
           <meta name="description" content={politicianDescriptionLimited} />
         </Helmet>
         <PageWrapper>
-          <DetailsSectionMobile style={uShowMobile()}>
+          <DetailsSectionMobile className="u-show-mobile">
+            {/* style={uShowMobile()} Breaks WebApp */}
             <CampaignImageMobileWrapper>
               {politicianImageUrlLarge ? (
                 <PoliticianImageMobilePlaceholder limitCardWidth>
@@ -878,7 +879,8 @@ class PoliticianDetailsPage extends Component {
               </CandidateCampaignListMobile>
             )}
           </DetailsSectionMobile>
-          <DetailsSectionDesktopTablet style={uShowDesktopTablet()}>
+          <DetailsSectionDesktopTablet className="u-show-desktop-tablet">
+            {/* style={uShowDesktopTablet()} Breaks WebApp */}
             <PoliticianNameOuterWrapperDesktop>
               <PoliticianNameDesktop>{politicianName}</PoliticianNameDesktop>
               {officeHeldList.length > 0 ? (
@@ -1017,7 +1019,8 @@ class PoliticianDetailsPage extends Component {
             </ColumnsWrapper>
           </DetailsSectionDesktopTablet>
         </PageWrapper>
-        <SupportButtonFooterWrapperAboveFooterButtons style={uShowMobile()}>
+        <SupportButtonFooterWrapperAboveFooterButtons className="u-show-mobile">
+          {/* style={uShowMobile()} Breaks WebApp */}
           <SupportButtonPanel>
             <Suspense fallback={<span>&nbsp;</span>}>
               <SupportButtonBeforeCompletionScreen
