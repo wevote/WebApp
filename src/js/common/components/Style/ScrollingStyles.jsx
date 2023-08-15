@@ -64,7 +64,8 @@ export const CampaignsScrollingInnerWrapper = styled('div')`
 export const CampaignsScrollingOuterWrapper = styled('div')`
   display: flex;
   justify-content: space-between;
-  height: 100%;
+  height: 400px;
+  min-height: 400px;
   min-width: 0;
   width: 100%;
 `;

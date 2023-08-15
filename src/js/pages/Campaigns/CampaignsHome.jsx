@@ -8,7 +8,7 @@ import CampaignStore from '../../common/stores/CampaignStore';
 import { convertStateCodeToStateText, convertStateTextToStateCode } from '../../common/utils/addressFunctions';
 import apiCalming from '../../common/utils/apiCalming';
 import arrayContains from '../../common/utils/arrayContains';
-import { getTodayAsInteger, getYearFromUltimateElectionDate } from '../../common/utils/dateFormat';
+import { getTodayAsInteger } from '../../common/utils/dateFormat'; // getYearFromUltimateElectionDate
 import extractAttributeValueListFromObjectList from '../../common/utils/extractAttributeValueListFromObjectList';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
