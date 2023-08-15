@@ -55,6 +55,10 @@ class HeaderBarModals extends Component {
 
   componentWillUnmount () {
     this.appStateSubscription.unsubscribe();
+    if (this.timer) {
+      clearTimeout(this.timer);
+      this.timer = null;
+    }
   }
 
   onAppObservableStoreChange () {
@@ -133,7 +137,12 @@ class HeaderBarModals extends Component {
     const { showSelectBallotModal } = this.state;
     if (!showSelectBallotModal) {
       if (apiCalming('voterBallotListRetrieve', 10000)) {
-        BallotActions.voterBallotListRetrieve(); // Retrieve a list of ballots for the voter from other elections
+        // Since this component gets loaded by many pages on first render, we want to delay this call
+        // to allow most other requests to get in front of it in line
+        const delayBallotRetrieve = 2000;
+        this.timer = setTimeout(() => {
+          BallotActions.voterBallotListRetrieve(); // Retrieve a list of ballots for the voter from other elections
+        }, delayBallotRetrieve);
       }
     }
     AppObservableStore.setShowSelectBallotModal(false);

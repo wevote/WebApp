@@ -51,6 +51,7 @@ export const CampaignImageDesktopPlaceholder = styled('div', {
   background-color: #eee;
   display: flex;
   ${limitCardWidth ? 'height: 157px;' : 'height: 117px;'}
+  ${limitCardWidth ? 'min-height: 157px;' : 'min-height: 117px;'}
   justify-content: center;
   ${limitCardWidth ? 'width: 300px;' : 'width: 224px;'}
   ${CampaignImageDesktopSharedStyles}
@@ -77,8 +78,9 @@ export const CampaignImageMobilePlaceholder = styled('div')`
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 157px;
   max-height: 157px;
-  min-height: 150px;
+  min-height: 157px;
   ${CampaignImageMobileSharedStyles}
 `;
 
@@ -176,7 +178,8 @@ export const OneCampaignPhotoWrapperMobile = styled('div')(({ theme }) => (`
   cursor: pointer;
   margin-bottom: 8px;
   margin-top: 8px;
-  min-height: 150px;
+  height: 157px;
+  min-height: 157px;
   max-height: 157px;
   ${theme.breakpoints.down('xs')} {
     margin-top: 0;
