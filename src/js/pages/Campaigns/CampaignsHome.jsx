@@ -39,6 +39,10 @@ class CampaignsHome extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      battlegroundDataFoundByStateDict: {},
+      battlegroundDataNotReturnedInTime: false,
+      battlegroundDataNotReturnedInTimeByStateDict: {},
+      battlegroundWaitingForData: false,
       campaignList: [],
       campaignListTimeStampOfChange: 0,
       candidateList: [],
@@ -58,6 +62,7 @@ class CampaignsHome extends Component {
       representativeListShownAsRepresentatives: [],
       representativeListTimeStampOfChange: 0,
       searchText: '',
+      stateCode: '',
     };
   }
 
@@ -166,7 +171,8 @@ class CampaignsHome extends Component {
       const campaignsHomeMode = (stateCandidatesPhrase.includes('-candidates'));
       const detailsListMode = (stateCandidatesPhrase.includes('-politicians-list'));
       this.setState({
-        // campaignsHomeMode,
+        battlegroundDataNotReturnedInTime: false,
+        battlegroundWaitingForData: false,
         detailsListMode,
       });
       let stateName;
@@ -200,12 +206,25 @@ class CampaignsHome extends Component {
     this.candidateStoreListener.remove();
     this.representativeStoreListener.remove();
     this.voterStoreListener.remove();
-    if (this.modalOpenTimer) clearTimeout(this.modalOpenTimer);
+    if (this.timer) {
+      clearTimeout(this.timer);
+      this.timer = null;
+    }
   }
 
   onBallotStoreChange () {
-    const { candidateList } = this.state;
+    const { battlegroundDataFoundByStateDict, candidateList, stateCode } = this.state;
     const { candidateListOnYourBallot, candidateListIsBattleground, candidateListOther } = this.splitUpCandidateList(candidateList);
+    const battlegroundDataFound = !!(candidateListIsBattleground && candidateListIsBattleground.length > 0);
+    if (battlegroundDataFound) {
+      battlegroundDataFoundByStateDict[stateCode] = true;
+      // If battleground data not returned, we let the timer in candidateQueryInitiatedLocal
+      //  set battlegroundWaitingForData to false, but if found, we can set battlegroundWaitingForData to false
+      this.setState({
+        battlegroundDataFoundByStateDict,
+        battlegroundWaitingForData: false,
+      });
+    }
     this.setState({
       candidateListIsBattleground,
       candidateListOnYourBallot,
@@ -225,8 +244,19 @@ class CampaignsHome extends Component {
 
   onCandidateStoreChange () {
     const candidateList = CandidateStore.getCandidateList();
+    const { battlegroundDataFoundByStateDict } = this.state;
     // Note: sorting is being done in CandidateListRoot
-    const { candidateListOnYourBallot, candidateListIsBattleground, candidateListOther } = this.splitUpCandidateList(candidateList);
+    const { candidateListOnYourBallot, candidateListIsBattleground, candidateListOther, stateCode } = this.splitUpCandidateList(candidateList);
+    const battlegroundDataFound = !!(candidateListIsBattleground && candidateListIsBattleground.length > 0);
+    if (battlegroundDataFound) {
+      battlegroundDataFoundByStateDict[stateCode] = true;
+      // If battleground data not returned, we let the timer in candidateQueryInitiatedLocal
+      //  set battlegroundWaitingForData to false, but if found, we can set battlegroundWaitingForData to false
+      this.setState({
+        battlegroundDataFoundByStateDict,
+        battlegroundWaitingForData: false,
+      });
+    }
     this.setState({
       candidateList,
       candidateListIsBattleground,
@@ -425,6 +455,32 @@ class CampaignsHome extends Component {
     }
   }
 
+  candidatesQueryInitiatedLocal = () => {
+    // This gets fired after a state-specific request happens in FirstCandidateListController
+    // console.log('CampaignsHome.candidatesQueryInitiatedLocal reset battlegroundWaitingForData to true');
+    this.setState({
+      battlegroundWaitingForData: true,
+    });
+    const howLongWeWaitForData = 1000;
+    this.timer = setTimeout(() => {
+      const { battlegroundDataFoundByStateDict, battlegroundDataNotReturnedInTimeByStateDict, candidateListIsBattleground, stateCode } = this.state;
+      const battlegroundDataFound = !!(candidateListIsBattleground && candidateListIsBattleground.length > 0);
+      // console.log('CampaignsHome.candidatesQueryInitiatedLocal after 1 second battlegroundDataFound:', battlegroundDataFound, ', and reset battlegroundWaitingForData to false');
+      this.setState({
+        battlegroundWaitingForData: false,
+      });
+      if (!battlegroundDataFound) {
+        battlegroundDataFoundByStateDict[stateCode] = false;
+        battlegroundDataNotReturnedInTimeByStateDict[stateCode] = true;
+        this.setState({
+          battlegroundDataFoundByStateDict,
+          battlegroundDataNotReturnedInTimeByStateDict,
+          battlegroundDataNotReturnedInTime: true,
+        });
+      }
+    }, howLongWeWaitForData);
+  }
+
   changeListModeShown = (newListModeShown, newFilterYear = '') => {
     const filterYearInteger = convertToInteger(newFilterYear);
     this.setState({
@@ -546,6 +602,26 @@ class CampaignsHome extends Component {
     }, () => this.updateActiveFilters());
   }
 
+  displayBattlegroundPlaceholderForState = (stateCode) => {
+    // For one state, should we display a placeholder for the "Candidates in Close Races" horizontal section as the data is loaded?
+    const { battlegroundDataNotReturnedInTimeByStateDict, battlegroundDataNotReturnedInTime, isSearching } = this.state;
+    if (battlegroundDataNotReturnedInTimeByStateDict && stateCode && (stateCode in battlegroundDataNotReturnedInTimeByStateDict)) {
+      return !battlegroundDataNotReturnedInTimeByStateDict[stateCode] && !isSearching;
+    } else {
+      return !battlegroundDataNotReturnedInTime && !isSearching;
+    }
+  }
+
+  useMinimumBattlegroundHeightForState = (stateCode) => {
+    // For one state, should we block out space for the "Candidates in Close Races" horizontal section as the data is loaded?
+    const { battlegroundDataFoundByStateDict, battlegroundDataFound, battlegroundWaitingForData, isSearching } = this.state;
+    if (battlegroundDataFoundByStateDict && battlegroundDataFoundByStateDict[stateCode]) {
+      return !isSearching && battlegroundDataFoundByStateDict[stateCode];
+    } else {
+      return !isSearching && (battlegroundWaitingForData || battlegroundDataFound);
+    }
+  }
+
   render () {
     renderLog('CampaignsHome');  // Set LOG_RENDER_EVENTS to log all renders
     const {
@@ -598,6 +674,8 @@ class CampaignsHome extends Component {
 
     const representativesShowing = (representativeListOnYourBallot && representativeListOnYourBallot.length > 0) || (representativeListShownAsRepresentatives && representativeListShownAsRepresentatives.length > 0);
     const otherTitlesShown = (campaignsShowing && nextReleaseFeaturesEnabled) || (candidateListOnYourBallot && candidateListOnYourBallot.length > 0) || (candidateListIsBattleground && candidateListIsBattleground.length > 0) || representativesShowing;
+    const useMinimumBattlegroundHeight = this.useMinimumBattlegroundHeightForState(stateCode);
+    const displayBattlegroundPlaceholder = this.displayBattlegroundPlaceholderForState(stateCode);
     return (
       <CampaignsHomeWrapper>
         <CampaignsHomeFilter
@@ -629,7 +707,7 @@ class CampaignsHome extends Component {
           </WhatIsHappeningSection>
         )}
         {(candidateListIsBattleground && candidateListIsBattleground.length > 0) ? (
-          <WhatIsHappeningSection useMinimumHeight={!isSearching}>
+          <WhatIsHappeningSection useMinimumHeight={useMinimumBattlegroundHeight}>
             <Suspense fallback={<span><CandidateListRootPlaceholder titleTextForList="Candidates in Close Races" /></span>}>
               <CandidateListRoot
                 hideIfNoResults
@@ -644,7 +722,9 @@ class CampaignsHome extends Component {
             </Suspense>
           </WhatIsHappeningSection>
         ) : (
-          <CandidateListRootPlaceholder titleTextForList="Candidates in Close Races" />
+          <>
+            {displayBattlegroundPlaceholder && <CandidateListRootPlaceholder titleTextForList="Candidates in Close Races" />}
+          </>
         )}
         {(representativeListShownAsRepresentatives && representativeListShownAsRepresentatives.length > 0) ? (
           <WhatIsHappeningSection useMinimumHeight={!isSearching}>
@@ -705,7 +785,12 @@ class CampaignsHome extends Component {
         )}
         {/* */}
         <Suspense fallback={<></>}>
-          <FirstCandidateListController searchText={searchText} stateCode={stateCode} year={filterYear} />
+          <FirstCandidateListController
+            candidatesQueryInitiated={this.candidatesQueryInitiatedLocal}
+            searchText={searchText}
+            stateCode={stateCode}
+            year={filterYear}
+          />
         </Suspense>
         {/* */}
         <Suspense fallback={<></>}>
