@@ -36,6 +36,10 @@ class FirstCandidateListController extends Component {
 
   componentWillUnmount () {
     this.voterStoreListener.remove();
+    if (this.timer) {
+      clearTimeout(this.timer);
+      this.timer = null;
+    }
     if (this.searchTimer) clearTimeout(this.searchTimer);
   }
 
@@ -50,7 +54,11 @@ class FirstCandidateListController extends Component {
       if (voterFirstRetrieveCompleted) {
         // Retrieve ballot for this voter
         if (apiCalming('voterBallotItemsRetrieve', 60000)) {
-          BallotActions.voterBallotItemsRetrieve(0, '', '');
+          // We want to delay this call to allow most other requests to get in front of it in line
+          const delayBallotRetrieve = 2000;
+          this.timer = setTimeout(() => {
+            BallotActions.voterBallotItemsRetrieve(0, '', '');
+          }, delayBallotRetrieve);
         }
       }
     });
@@ -68,6 +76,7 @@ class FirstCandidateListController extends Component {
 
   CandidatesForStateRetrieve = () => {
     const { stateCode } = this.props; // year
+    let candidatesForStateQueryInitiated = false;
     initializejQuery(() => {
       // Retrieve all candidates for this state for this and next year (previously: last two years)
       const today = new Date();
@@ -80,10 +89,12 @@ class FirstCandidateListController extends Component {
       }
       if (apiCalming(`candidatesQuery-${stateCode}-${thisYearInteger}`, 180000)) {
         CandidateActions.candidatesQuery(thisYearInteger, [], filteredStateCode);
+        candidatesForStateQueryInitiated = true;
       }
       // Now retrieve national candidates (Presidential)
       if (apiCalming(`candidatesQuery-na-${thisYearInteger}`, 180000)) {
         CandidateActions.candidatesQuery(thisYearInteger, [], 'na');
+        candidatesForStateQueryInitiated = true;
       }
       // const yearsRetrieved = [];
       // yearsRetrieved.push(thisYearInteger);
@@ -91,10 +102,12 @@ class FirstCandidateListController extends Component {
       // console.log(`candidatesQuery-${stateCode}-${nextYear}`);
       if (apiCalming(`candidatesQuery-${stateCode}-${nextYear}`, 180000)) {
         CandidateActions.candidatesQuery(nextYear, [], filteredStateCode);
+        candidatesForStateQueryInitiated = true;
       }
       // Now retrieve national candidates (Presidential)
       if (apiCalming(`candidatesQuery-na-${nextYear}`, 180000)) {
         CandidateActions.candidatesQuery(nextYear, [], 'na');
+        candidatesForStateQueryInitiated = true;
       }
       // yearsRetrieved.push(nextYear);
       // if (!(year in yearsRetrieved)) {
@@ -102,6 +115,11 @@ class FirstCandidateListController extends Component {
       //     CandidateActions.candidatesQuery(year, [], filteredStateCode);
       //   }
       // }
+      if (candidatesForStateQueryInitiated) {
+        if (this.props.candidatesQueryInitiated) {
+          this.props.candidatesQueryInitiated();
+        }
+      }
     });
   }
 
@@ -128,6 +146,7 @@ class FirstCandidateListController extends Component {
   }
 }
 FirstCandidateListController.propTypes = {
+  candidatesQueryInitiated: PropTypes.func,
   searchText: PropTypes.string,
   stateCode: PropTypes.string,
   year: PropTypes.number,
