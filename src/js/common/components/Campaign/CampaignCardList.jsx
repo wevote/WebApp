@@ -45,12 +45,16 @@ class CampaignCardList extends Component {
   }
 
   componentDidUpdate (prevProps) { // prevProps, prevState, snapshot
-    const { listModeFiltersTimeStampOfChange, timeStampOfChange } = this.props;
+    const { listModeFiltersTimeStampOfChange, timeStampOfChange, shouldLoadMore } = this.props;
     if (listModeFiltersTimeStampOfChange && listModeFiltersTimeStampOfChange !== prevProps.listModeFiltersTimeStampOfChange) {
       this.onFilterChange();
     }
     if (timeStampOfChange && timeStampOfChange !== prevProps.timeStampOfChange) {
       this.onCampaignListChange();
+    }
+    if (shouldLoadMore && shouldLoadMore !== prevProps.shouldLoadMore) {
+      // console.log(shouldLoadMore);
+      this.loadMoreHasBeenClicked();
     }
   }
 
@@ -214,6 +218,7 @@ CampaignCardList.propTypes = {
   timeStampOfChange: PropTypes.number,
   verticalListOn: PropTypes.bool,
   loadMoreScroll: PropTypes.func,
+  shouldLoadMore: PropTypes.bool,
 };
 
 const styles = () => ({

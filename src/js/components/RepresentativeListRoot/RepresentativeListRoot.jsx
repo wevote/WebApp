@@ -11,7 +11,7 @@ import {
   TitleAndMobileArrowsOuterWrapper, MobileArrowsInnerWrapper,
 } from '../../common/components/Style/ScrollingStyles';
 import { convertStateCodeToStateText } from '../../common/utils/addressFunctions';
-import { handleHorizontalScroll, leftAndRightArrowStateCalculation } from '../../common/utils/leftRightArrowCalculation';
+import { handleHorizontalScroll, leftAndRightArrowStateCalculation, checkDivPositionForLoadMore } from '../../common/utils/leftRightArrowCalculation';
 import { getYearFromUltimateElectionDate, isAnyYearInOfficeSetTrue, isThisYearInOfficeSetTrue } from '../../common/utils/dateFormat';
 import filterListToRemoveEntriesWithDuplicateValue from '../../common/utils/filterListToRemoveEntriesWithDuplicateValue';
 import { renderLog } from '../../common/utils/logging';
@@ -26,7 +26,7 @@ const HORIZONTAL_SCROLL_DISTANCE_ON_LEFT_ARROW_CLICK = -630;
 const HORIZONTAL_SCROLL_DISTANCE_ON_RIGHT_ARROW_CLICK = 630;
 const HORIZONTAL_SCROLL_DISTANCE_MOBILE_LEFT_ARROW_CLICK = -315;
 const HORIZONTAL_SCROLL_DISTANCE_MOBILE_RIGHT_ARROW_CLICK = 315;
-const HORIZONTAL_SCROLL_DISTANCE_ON_SHOW_MORE = 315;
+// const HORIZONTAL_SCROLL_DISTANCE_ON_SHOW_MORE = 315;
 const RIGHT_MARGIN_SIZE = 24;
 // const HORIZONTAL_SCROLL_STEP_LEFT = -20;
 // const HORIZONTAL_SCROLL_STEP_RIGHT = 20;
@@ -44,6 +44,7 @@ class RepresentativeListRoot extends Component {
       timeStampOfChange: 0,
       hideLeftArrow: true,
       hideRightArrow: false,
+      callShowMoreCards: false,
     };
   }
 
@@ -321,8 +322,8 @@ class RepresentativeListRoot extends Component {
       }
     } else if ((isMobileScreenSize() && filteredList.length < 2) || (!isMobileScreenSize() && filteredList.length < 3)) {
       this.setState({
-          hideLeftArrow: true,
-          hideRightArrow: true,
+        hideLeftArrow: true,
+        hideRightArrow: true,
       });
     } else {
       this.setState({
@@ -339,7 +340,7 @@ class RepresentativeListRoot extends Component {
     });
   }
 
-  checkScrollPositionLocal = (el) => {
+  leftAndRightArrowSetState = (el) => {
     // set state here
     const leftRightStateDict = leftAndRightArrowStateCalculation(el);
     this.setState({
@@ -348,9 +349,16 @@ class RepresentativeListRoot extends Component {
     });
   }
 
-  loadMoreScrollLocal = (el, distance, func, margin) => {
-    handleHorizontalScroll(this.scrollElement.current, 29, this.checkScrollPositionLocal, RIGHT_MARGIN_SIZE);
-    // handleHorizontalScroll(this.scrollElement.current, distance, this.checkScrollPositionLocal, RIGHT_MARGIN_SIZE);
+  loadMoreScrollLocal = (el) => {
+    handleHorizontalScroll(el, 29, this.leftAndRightArrowSetState, RIGHT_MARGIN_SIZE);
+    // handleHorizontalScroll(this.scrollElement.current, distance, this.leftAndRightArrowSetState, RIGHT_MARGIN_SIZE);
+  }
+
+  shouldLoadMoreSetState = (el) => {
+    const element = el;
+    this.setState({
+      callShowMoreCards: checkDivPositionForLoadMore(element),
+    });
   }
 
   render () {
@@ -389,10 +397,10 @@ class RepresentativeListRoot extends Component {
             </WhatIsHappeningTitle>
           )}
           <MobileArrowsInnerWrapper className="u-show-mobile">
-            <LeftArrowInnerWrapper id="representativeLeftArrowMobile" disableMobileLeftArrow={this.state.hideLeftArrow} onClick={() => { handleHorizontalScroll(this.scrollElement.current, HORIZONTAL_SCROLL_DISTANCE_MOBILE_LEFT_ARROW_CLICK, this.checkScrollPositionLocal, RIGHT_MARGIN_SIZE); }}>
+            <LeftArrowInnerWrapper id="representativeLeftArrowMobile" disableMobileLeftArrow={this.state.hideLeftArrow} onClick={() => { handleHorizontalScroll(this.scrollElement.current, HORIZONTAL_SCROLL_DISTANCE_MOBILE_LEFT_ARROW_CLICK, this.leftAndRightArrowSetState, RIGHT_MARGIN_SIZE); }}>
               <ArrowBackIos classes={{ root: classes.arrowRoot }} />
             </LeftArrowInnerWrapper>
-            <RightArrowInnerWrapper id="representativeRightArrowMobile" disableMobileRightArrow={this.state.hideRightArrow} onClick={() => { handleHorizontalScroll(this.scrollElement.current, HORIZONTAL_SCROLL_DISTANCE_MOBILE_RIGHT_ARROW_CLICK, this.checkScrollPositionLocal, RIGHT_MARGIN_SIZE); }}>
+            <RightArrowInnerWrapper id="representativeRightArrowMobile" disableMobileRightArrow={this.state.hideRightArrow} onClick={() => { handleHorizontalScroll(this.scrollElement.current, HORIZONTAL_SCROLL_DISTANCE_MOBILE_RIGHT_ARROW_CLICK, this.leftAndRightArrowSetState, RIGHT_MARGIN_SIZE); this.shouldLoadMoreSetState(this.scrollElement.current); }}>
               <ArrowForwardIos classes={{ root: classes.arrowRoot }} />
             </RightArrowInnerWrapper>
           </MobileArrowsInnerWrapper>
@@ -400,13 +408,13 @@ class RepresentativeListRoot extends Component {
         {(!hideDisplayBecauseNoSearchResults) && (
           <CampaignsScrollingOuterWrapper>
             <LeftArrowOuterWrapper className="u-show-desktop-tablet">
-              <LeftArrowInnerWrapper id="representativeLeftArrowDesktop" onClick={() => { handleHorizontalScroll(this.scrollElement.current, HORIZONTAL_SCROLL_DISTANCE_ON_LEFT_ARROW_CLICK, this.checkScrollPositionLocal, RIGHT_MARGIN_SIZE); }}>
+              <LeftArrowInnerWrapper id="representativeLeftArrowDesktop" onClick={() => { handleHorizontalScroll(this.scrollElement.current, HORIZONTAL_SCROLL_DISTANCE_ON_LEFT_ARROW_CLICK, this.leftAndRightArrowSetState, RIGHT_MARGIN_SIZE); }}>
                 {this.state.hideLeftArrow ? null : <ArrowBackIos classes={{ root: classes.arrowRoot }} />}
               </LeftArrowInnerWrapper>
             </LeftArrowOuterWrapper>
             <CampaignsScrollingInnerWrapper>
               <CampaignsHorizontallyScrollingContainer ref={this.scrollElement}
-                onScroll={() => { this.checkScrollPositionLocal(this.scrollElement.current); }}
+                onScroll={() => { this.leftAndRightArrowSetState(this.scrollElement.current); }}
                 showLeftGradient={!this.state.hideLeftArrow}
                 showRightGradient={!this.state.hideRightArrow}
               >
@@ -414,12 +422,13 @@ class RepresentativeListRoot extends Component {
                   incomingRepresentativeList={(isSearching ? representativeSearchResults : filteredList)}
                   timeStampOfChange={timeStampOfChange}
                   verticalListOn
-                  loadMoreScroll={() => { this.loadMoreScrollLocal(this.scrollElement.current, HORIZONTAL_SCROLL_DISTANCE_ON_RIGHT_ARROW_CLICK, this.checkScrollPositionLocal, RIGHT_MARGIN_SIZE); }}
+                  loadMoreScroll={isMobileScreenSize() ? () => { handleHorizontalScroll(this.scrollElement.current, HORIZONTAL_SCROLL_DISTANCE_MOBILE_RIGHT_ARROW_CLICK, this.leftAndRightArrowSetState, RIGHT_MARGIN_SIZE); } : () => { handleHorizontalScroll(this.scrollElement.current, HORIZONTAL_SCROLL_DISTANCE_ON_RIGHT_ARROW_CLICK, this.leftAndRightArrowSetState, RIGHT_MARGIN_SIZE); }}
+                  shouldLoadMore={this.state.callShowMoreCards}
                 />
               </CampaignsHorizontallyScrollingContainer>
             </CampaignsScrollingInnerWrapper>
             <RightArrowOuterWrapper className="u-show-desktop-tablet">
-              <RightArrowInnerWrapper id="representativeLeftArrowDesktop" onClick={() => { handleHorizontalScroll(this.scrollElement.current, HORIZONTAL_SCROLL_DISTANCE_ON_RIGHT_ARROW_CLICK, this.checkScrollPositionLocal, RIGHT_MARGIN_SIZE); }}>
+              <RightArrowInnerWrapper id="representativeLeftArrowDesktop" onClick={() => { handleHorizontalScroll(this.scrollElement.current, HORIZONTAL_SCROLL_DISTANCE_ON_RIGHT_ARROW_CLICK, this.leftAndRightArrowSetState, RIGHT_MARGIN_SIZE); this.shouldLoadMoreSetState(this.scrollElement.current); }}>
                 { this.state.hideRightArrow ? null : <ArrowForwardIos classes={{ root: classes.arrowRoot }} /> }
               </RightArrowInnerWrapper>
             </RightArrowOuterWrapper>

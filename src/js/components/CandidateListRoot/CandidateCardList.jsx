@@ -40,9 +40,13 @@ class CandidateCardList extends Component {
   }
 
   componentDidUpdate (prevProps) { // prevProps, prevState, snapshot
-    const { timeStampOfChange } = this.props;
+    const { timeStampOfChange, shouldLoadMore } = this.props;
     if (timeStampOfChange && timeStampOfChange !== prevProps.timeStampOfChange) {
       this.onCandidateListChange();
+    }
+    if (shouldLoadMore && shouldLoadMore !== prevProps.shouldLoadMore) {
+      // console.log(shouldLoadMore);
+      this.loadMoreHasBeenClicked();
     }
   }
 
@@ -134,6 +138,7 @@ CandidateCardList.propTypes = {
   timeStampOfChange: PropTypes.number,
   verticalListOn: PropTypes.bool,
   loadMoreScroll: PropTypes.func,
+  shouldLoadMore: PropTypes.bool,
 };
 
 const styles = () => ({
