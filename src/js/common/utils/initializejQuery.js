@@ -5,6 +5,7 @@ const initializejQuery = (afterFunction) => {
       afterFunction();
     }
   } else {
+    console.log('WARNING: jQuery was not loaded from index.html');
     import(/* webpackChunkName: 'jquery' */ 'jquery').then(({ default: jquery }) => {
       window.jQuery = jquery;
       window.$ = jquery;

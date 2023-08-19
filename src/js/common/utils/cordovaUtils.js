@@ -355,11 +355,11 @@ export function isIPad () {
 export function isIPad11in () {
   if (isIOS() && !isIOSAppOnMac() &&
     ['iPad8,1', 'iPad8,2', 'iPad8,3', 'iPad8,4', 'iPad8,5', 'iPad8,6', 'iPad8,7', 'iPad8,8',   // iPad Pro 11 inch 3rd Gen
-      'iPad8,9', 'iPad8,10',                                        // iPad Pro 11 inch 4th Gen
+      'iPad8,9', 'iPad8,10',                                       // iPad Pro 11 inch 4th Gen
       'iPad13,4', 'iPad13,5', 'iPad13,6', 'iPad13,7', 'iPad13,8',  // iPad Pro 11 inch 5th Gen
-      'iPad13,17', // iPad Air 10.9 inch 5th Gen
-      'iPad13,18', // iPad     10.2 inch 9th Gen (Maybe too small for this category?)
-      'iPad13,19', // iPad     10.9 inch 10th Gen
+      'iPad13,17',                                                 // iPad Air 10.9 inch 5th Gen
+      'iPad13,18',                                                 // iPad     10.2 inch 9th Gen (Maybe too small for this category?)
+      'iPad13,19',                                                 // iPad     10.9 inch 10th Gen
     ].includes(window.device.model)) {
     logMatch('iPad11in', true);
     return true;

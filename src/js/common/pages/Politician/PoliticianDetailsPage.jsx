@@ -16,7 +16,6 @@ import CampaignOwnersList from '../../components/CampaignSupport/CampaignOwnersL
 import CompleteYourProfileModalController from '../../components/Settings/CompleteYourProfileModalController';
 import { CampaignDescription, CampaignDescriptionDesktop, CampaignDescriptionDesktopWrapper, CampaignDescriptionWrapper, CampaignImageDesktopWrapper, CampaignImageMobileWrapper, CampaignImagePlaceholder, CampaignImagePlaceholderText, CampaignOwnersDesktopWrapper, CampaignSubSectionSeeAll, CampaignSubSectionTitle, CampaignSubSectionTitleWrapper, CampaignTitleAndScoreBar, CommentsListWrapper, DetailsSectionDesktopTablet, DetailsSectionMobile, OtherElectionsWrapper, SupportButtonFooterWrapperAboveFooterButtons, SupportButtonPanel } from '../../components/Style/CampaignDetailsStyles';
 import { EditIndicator, ElectionInPast, IndicatorButtonWrapper, IndicatorRow } from '../../components/Style/CampaignIndicatorStyles';
-// import { uShowDesktopTablet, uShowMobile } from '../../components/Style/cordovaFriendlyUShowStyles';
 import { CandidateCampaignListDesktop, CandidateCampaignListMobile, CandidateCampaignWrapper, OfficeHeldNameDesktop, OfficeHeldNameMobile, PoliticianImageDesktop, PoliticianImageDesktopPlaceholder, PoliticianImageMobile, PoliticianImageMobilePlaceholder, PoliticianNameDesktop, PoliticianNameMobile, PoliticianNameOuterWrapperDesktop } from '../../components/Style/PoliticianDetailsStyles';
 import { PageWrapper } from '../../components/Style/stepDisplayStyles';
 import DelayedLoad from '../../components/Widgets/DelayedLoad';
@@ -38,8 +37,6 @@ import { renderLog } from '../../utils/logging';
 import { getPoliticianValuesFromIdentifiers, retrievePoliticianFromIdentifiersIfNeeded } from '../../utils/politicianUtils';
 import returnFirstXWords from '../../utils/returnFirstXWords';
 import saveCampaignSupportAndGoToNextPage from '../../utils/saveCampaignSupportAndGoToNextPage';
-// import OpenExternalWebSite from '../../components/Widgets/OpenExternalWebSite';
-// import CampaignSupporterActions from '../../actions/CampaignSupporterActions';
 
 const CampaignCommentsList = React.lazy(() => import(/* webpackChunkName: 'CampaignCommentsList' */ '../../components/Campaign/CampaignCommentsList'));
 const CampaignDetailsActionSideBox = React.lazy(() => import(/* webpackChunkName: 'CampaignDetailsActionSideBox' */ '../../components/CampaignSupport/CampaignDetailsActionSideBox'));
@@ -436,6 +433,8 @@ class PoliticianDetailsPage extends Component {
     return null;
   }
 
+  // For Cordova builds, the buildSourceCordova.js script substitutes 'className="u-show-mobile"' with 'style={uShowMobile()}'
+  // and 'className="u-show-desktop-tablet"' with 'style={uShowDesktopTablet()}'
   render () {
     renderLog('PoliticianDetailsPage');  // Set LOG_RENDER_EVENTS to log all renders
 
@@ -728,7 +727,6 @@ class PoliticianDetailsPage extends Component {
         </Helmet>
         <PageWrapper>
           <DetailsSectionMobile className="u-show-mobile">
-            {/* style={uShowMobile()} Breaks WebApp */}
             <CampaignImageMobileWrapper>
               {politicianImageUrlLarge ? (
                 <PoliticianImageMobilePlaceholder limitCardWidth>
@@ -880,7 +878,6 @@ class PoliticianDetailsPage extends Component {
             )}
           </DetailsSectionMobile>
           <DetailsSectionDesktopTablet className="u-show-desktop-tablet">
-            {/* style={uShowDesktopTablet()} Breaks WebApp */}
             <PoliticianNameOuterWrapperDesktop>
               <PoliticianNameDesktop>{politicianName}</PoliticianNameDesktop>
               {officeHeldList.length > 0 ? (
@@ -1020,7 +1017,6 @@ class PoliticianDetailsPage extends Component {
           </DetailsSectionDesktopTablet>
         </PageWrapper>
         <SupportButtonFooterWrapperAboveFooterButtons className="u-show-mobile">
-          {/* style={uShowMobile()} Breaks WebApp */}
           <SupportButtonPanel>
             <Suspense fallback={<span>&nbsp;</span>}>
               <SupportButtonBeforeCompletionScreen
