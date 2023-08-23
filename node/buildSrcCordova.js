@@ -39,10 +39,22 @@ function fileRewriterForCordova (path) {
       '    removeCordovaSpecificListeners();');
     // Switch over to HashRouter for Cordova
     newValue = newValue.replace(/BrowserRouter/g, 'HashRouter');
+    // Handle u-show-mobile in PoliticianDetailsPage
+    if (path.includes('PoliticianDetailsPage.jsx')) {
+      newValue = newValue.replace(/^(\s*)<DetailsSectionMobile className="u-show-mobile">\n/gim,
+        '$1<DetailsSectionMobile style={uShowMobile()}>\n');
+      newValue = newValue.replace(/^(\s*)<DetailsSectionDesktopTablet className="u-show-desktop-tablet">\n/gim,
+        '$1<DetailsSectionDesktopTablet style={uShowDesktopTablet()}>\n');
+      newValue = newValue.replace(/^(\s*)<SupportButtonFooterWrapperAboveFooterButtons className="u-show-mobile">.*?\n/gim,
+        '$1<SupportButtonFooterWrapperAboveFooterButtons style={uShowMobile()}>\n');
+      newValue = newValue.replace(/^(.*?CampaignIndicatorStyles';\n)/gim,
+        '$1import { uShowDesktopTablet, uShowMobile } from \'../../components/Style/cordovaFriendlyUShowStyles\';\n');
+    }
     // Remove Donate from Cordova -- Stripe causes problems and is not allowed in the app store
     if (path.includes('App.js')) {
       newValue = newValue.replace(/^.*?Donate.*?\n/gim, '');
       newValue = newValue.replace(/^(\s*).*?\/pay-to-promote.*?\n/gim, '$1{/* Removed /pay-to-promote for Cordova */}\n');
+      newValue = newValue.replace(/^import CampaignSupportPayToPromote.*?\n/gim, '// Removed Import CampaignSupportPayToPromote*\n');
     }
     // Set is Cordova true in index.jsx
     if (path.endsWith('index.jsx')) {
