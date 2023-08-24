@@ -31,7 +31,6 @@ const RIGHT_MARGIN_SIZE = 24;
 // const HORIZONTAL_SCROLL_STEP_LEFT = -20;
 // const HORIZONTAL_SCROLL_STEP_RIGHT = 20;
 
-
 class RepresentativeListRoot extends Component {
   constructor (props) {
     super(props);
@@ -414,7 +413,7 @@ class RepresentativeListRoot extends Component {
             </LeftArrowOuterWrapper>
             <CampaignsScrollingInnerWrapper>
               <CampaignsHorizontallyScrollingContainer ref={this.scrollElement}
-                onScroll={() => { this.leftAndRightArrowSetState(this.scrollElement.current); }}
+                onScroll={() => { this.leftAndRightArrowSetState(this.scrollElement.current); this.shouldLoadMoreSetState(this.scrollElement.current); }}
                 showLeftGradient={!this.state.hideLeftArrow}
                 showRightGradient={!this.state.hideRightArrow}
               >

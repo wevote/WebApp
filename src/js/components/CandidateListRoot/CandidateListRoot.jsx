@@ -347,7 +347,7 @@ class CandidateListRoot extends Component {
   shouldLoadMoreSetState = (el) => {
     const element = el;
     this.setState({
-      callShowMoreCards: checkDivPositionForLoadMore(element),
+      callShowMoreCards: checkDivPositionForLoadMore(element, isMobileScreenSize()),
     });
   }
 
@@ -407,7 +407,7 @@ class CandidateListRoot extends Component {
             </LeftArrowOuterWrapper>
             <CampaignsScrollingInnerWrapper>
               <CampaignsHorizontallyScrollingContainer ref={this.scrollElement}
-               onScroll={() => { this.leftAndRightArrowSetState(this.scrollElement.current); }}
+               onScroll={() => { this.leftAndRightArrowSetState(this.scrollElement.current); this.shouldLoadMoreSetState(this.scrollElement.current); }}
                showLeftGradient={!this.state.hideLeftArrow}
                showRightGradient={!this.state.hideRightArrow}
               >
