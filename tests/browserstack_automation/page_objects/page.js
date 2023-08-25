@@ -1,8 +1,16 @@
-import { driver } from '@wdio/globals';
+import { driver, $ } from '@wdio/globals';
 
 export default class Page {
   constructor () {
     this.title = '';
+  }
+
+  get header () {
+    return $('#header-container');
+  }
+
+  get footer () {
+    return $('#footer');
   }
 
   get isCordova () {
@@ -19,13 +27,5 @@ export default class Page {
 
   async open (path) {
     await driver.url(path);
-  }
-
-  async maximizeWindow () {
-    await driver.maximizeWindow();
-  }
-
-  async rerender () {
-    await driver.pause(5000);
   }
 }
