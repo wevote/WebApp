@@ -31,11 +31,6 @@ module.exports = [
   // https://github.com/Yuvaleros/material-ui-dropzone/blob/master/LICENSE
   'Yuvaleros/material-ui-dropzone is licensed under the MIT License\n' +
   'Copyright (c) 2017 Yuvaleros',
-  // Jan 2019, https://github.com/twbs/bootstrap/blob/v4-dev/LICENSE
-  'twbs/bootstrap is licensed under the MIT License (MIT)\n' +
-  '\n' +
-  'Copyright (c) 2011-2020 Twitter, Inc.\n' +
-  'Copyright (c) 2011-2020 The Bootstrap Authors\n',
   // Jan 2019, https://github.com/JedWatson/classnames/blob/master/LICENSE
   'JedWatson/classnames is licensed under the MIT License (MIT)\n' +
   'Copyright (c) 2018 Jed Watson\n',
@@ -67,29 +62,6 @@ module.exports = [
   ' * Neither the name Facebook nor the names of its contributors may be used to ' +
   'endorse or promote products derived from this software without specific ' +
   'prior written permission.',
-  // Jan 2019, https://github.com/FortAwesome/Font-Awesome
-  'Font Awesome Free License\n' +
-  'Font Awesome Free is free, open source, and GPL friendly. You can use it for ' +
-  'commercial projects, open source projects, or really almost whatever you want.\n' +
-  'Full Font Awesome Free license: https://fontawesome.com/license/free.\n' +
-  '\n' +
-  '# Icons: CC BY 4.0 License (https://creativecommons.org/licenses/by/4.0/)\n' +
-  'In the Font Awesome Free download, the CC BY 4.0 license applies to all icons ' +
-  'packaged as SVG and JS file types.\n' +
-  '\n' +
-  '# Fonts: SIL OFL 1.1 License (https://scripts.sil.org/OFL)\n' +
-  'In the Font Awesome Free download, the SIL OFL license applies to all icons ' +
-  'packaged as web and desktop font files.\n' +
-  '\n' +
-  '# Code: MIT License (https://opensource.org/licenses/MIT)\n' +
-  'In the Font Awesome Free download, the MIT license applies to all non-font and ' +
-  'non-icon files.\n' +
-  '\n' +
-  '# Attribution\n' +
-  'Attribution is required by MIT, SIL OFL, and CC BY licenses. Downloaded Font ' +
-  'Awesome Free files already contain embedded comments with sufficient ' +
-  "attribution, so you shouldn't need to do anything additional when using these " +
-  'files normally.',
   // Jan 2019, https://github.com/davidjbradshaw/iframe-resizer/blob/master/LICENSE
   'davidjbradshaw/iframe-resizer is licensed under the MIT License (MIT)\n' +
   '\n' +
@@ -119,9 +91,6 @@ module.exports = [
   'sindresorhus/object-assign is licensed under the MIT License (MIT)\n' +
   '\n' +
   'Copyright (c) Sindre Sorhus <sindresorhus@gmail.com> (sindresorhus.com)\n',
-  // Jan 2019, https://github.com/FezVrasta/popper.js/blob/master/LICENSE.md
-  'FezVrasta/popper.js is licensed under the MIT License (MIT)\n' +
-  'Copyright (c) 2016 Federico Zivolo and contributors\n',
   // Jan 2019, https://github.com/facebook/prop-types/blob/master/LICENSE
   ' facebook/prop-types is licensed under the MIT License (MIT)\n' +
   '\n' +
@@ -207,9 +176,4 @@ module.exports = [
   // MAY 2021, wordpress-logo.svg
   'wordpress-logo.svg \n' +
   '™/®WordPress, GPL <http://www.gnu.org/licenses/gpl.html>, via Wikimedia Commons',
-  // May 2021
-  'External_link_font_awesome.svg \n' +
-  'Font Awesome by Dave Gandy - https://fortawesome.github.com/Font-Awesome, CC BY-SA 3.0 <https://creativecommons.org/licenses/by-sa/3.0>, via Wikimedia Commons',
-  'Voting graphics by Mere Hunter\n' +
-  'licensed under Extended Commercial License, Copyright (c) https://creativemarket.com/mere_hunter',
 ];

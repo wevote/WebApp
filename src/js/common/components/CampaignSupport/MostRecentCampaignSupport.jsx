@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import React, { createRef } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import anonymous from '../../../../img/global/icons/avatar-generic.png';
+import { avatarGeneric } from '../../../utils/applicationUtils';
 import LazyImage from '../LazyImage';
 import {
   Comment, CommentName, CommentNameWrapper,
@@ -273,7 +273,7 @@ class MostRecentCampaignSupport extends React.Component {
                   {comment.we_vote_hosted_profile_image_url_tiny ? (
                     <LazyImage
                       src={comment.we_vote_hosted_profile_image_url_tiny}
-                      placeholder={anonymous}
+                      placeholder={avatarGeneric()}
                       className="profile-photo"
                       height={48}
                       width={48}

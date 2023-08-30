@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { isIPad, isIPadMini } from '../../utils/cordovaUtils';
+import { isAndroid, isAndroidSizeWide, isIPad, isIPadMini } from '../../utils/cordovaUtils';
 import { isCordova, isWebApp } from '../../utils/isCordovaOrWebApp';
 
 export const CampaignDescription = styled('div')`
@@ -277,7 +277,13 @@ export const SupportButtonFooterWrapper = styled('div')`
 export const SupportButtonFooterWrapperAboveFooterButtons = styled('div')`
   position: fixed;
   width: ${() => (isCordova() && !isIPadMini() ? '95%' : '100%')};
-  bottom: ${() => (isWebApp() ? '55px' : (isIPad()) ? '0px' : '88px')};
+  left: ${() => (isCordova() && !isIPadMini() ? '2.5%' : '')};
+  bottom: ${() => {
+    if (isWebApp()) return '55px';
+    if (isIPad() || isAndroidSizeWide()) return '0px';
+    if (isAndroid()) return '68px';
+    return '88px';
+  }};
   display: block;
 `;
 

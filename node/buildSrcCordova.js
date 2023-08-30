@@ -1,8 +1,60 @@
 const fs = require('fs-extra');
 const { exec } = require('child_process');
 
+// DEBUG:   WebApp % node --inspect-brk ./node/buildSrcCordova.js
+
+function addUShowStylesImport (fileTxt, path) {
+  // Don't add import to exporting file
+  if (path.includes('cordovaFriendlyUShowStyles')) return fileTxt;
+  // is uShowMobile in file, as either an introduced call, or pre-existing call
+  const hasMobile = fileTxt.match(/uShowMobile/) != null;
+  const hasDeskTop = fileTxt.match(/uShowDesktopTablet/) != null;
+  const hasMobileImport = fileTxt.match(/import.*?uShowMobile/) != null;
+  const hasDeskTopImport = fileTxt.match(/import.*?uShowDesktopTablet/) != null;
+
+  if (path.includes('SuggestedFriendDisplayForList')) {
+    console.log(path);
+  }
+
+  // if import needs is already met, return unchanged
+  if (!hasMobile && !hasMobileImport && !hasDeskTop && !hasDeskTopImport) return fileTxt;
+  if (hasMobile && hasMobileImport && hasDeskTop && hasDeskTopImport) return fileTxt;
+  if (hasMobile && hasMobileImport && !hasDeskTop) return fileTxt;
+  if (!hasMobile && hasDeskTop && hasDeskTopImport) return fileTxt;
+
+
+  // build importPath
+  const dirs = path.split('/');
+  let importPath = '';
+  // . srcCordova js         SuperSharingSendEmail.jsx (throw away)
+  for (let i = 0; i < dirs.length - 4; i++) {
+    importPath += '../';
+  }
+
+  let imp = 'import { ';
+  if (hasMobile) imp += 'uShowMobile';
+  if (hasMobile && hasDeskTop) imp += ', ';
+  if (hasDeskTop) imp += 'uShowDesktopTablet';
+  imp += ` } from '${importPath}components/Style/cordovaFriendlyUShowStyles';\n`;
+
+  let ret = '';
+  if (hasMobileImport || hasDeskTopImport) {
+    // import { uShowMobile } from '../Style/cordovaFriendlyUShowStyles';
+    const m = fileTxt.match(/import {.*?cordovaFriendlyUShowStyles';\n/);
+    ret = fileTxt.replace(/import {.*?cordovaFriendlyUShowStyles';\n/, imp);
+  } else {
+    const firstImp = fileTxt.match(/(import.*?;)/);
+    const ind = firstImp.index;
+    ret = fileTxt.substring(0, ind) + imp + fileTxt.substring(ind);
+  }
+  return ret;
+}
+
 function fileRewriterForCordova (path) {
   // console.log('Do  ', path);
+  if (path.endsWith('.css') || path.endsWith('cordovaOffsets.js')) {
+    return;
+  }
   fs.readFile(path, 'utf-8', (err, data) => {
     if (err) throw err;
 
@@ -11,6 +63,13 @@ function fileRewriterForCordova (path) {
     // Remove all lazy loading
     newValue = newValue.replace(/(?:const )(.*?)\s(?:.*?\*\/)(.*?)\)\);$/gim,
       'import $1 from $2;  // rewritten from lazy');
+    // Crash  out on multi-line Suspense
+    const regex = /.*?<Suspense fallback={\(\n/;
+    // console.log(path, newValue.match(regex));
+    if (newValue.match(regex) != null) {
+      const e = `FATAL ERROR multiline suspense fallback in ${path}`;
+      throw new Error(e);
+    }
     // Remove all Suspense imports
     newValue = newValue.replace(/import React, { Suspense } from 'react';/gim,
       'import React from \'react\';');
@@ -39,17 +98,14 @@ function fileRewriterForCordova (path) {
       '    removeCordovaSpecificListeners();');
     // Switch over to HashRouter for Cordova
     newValue = newValue.replace(/BrowserRouter/g, 'HashRouter');
-    // Handle u-show-mobile in PoliticianDetailsPage
-    if (path.includes('PoliticianDetailsPage.jsx')) {
-      newValue = newValue.replace(/^(\s*)<DetailsSectionMobile className="u-show-mobile">\n/gim,
-        '$1<DetailsSectionMobile style={uShowMobile()}>\n');
-      newValue = newValue.replace(/^(\s*)<DetailsSectionDesktopTablet className="u-show-desktop-tablet">\n/gim,
-        '$1<DetailsSectionDesktopTablet style={uShowDesktopTablet()}>\n');
-      newValue = newValue.replace(/^(\s*)<SupportButtonFooterWrapperAboveFooterButtons className="u-show-mobile">.*?\n/gim,
-        '$1<SupportButtonFooterWrapperAboveFooterButtons style={uShowMobile()}>\n');
-      newValue = newValue.replace(/^(.*?CampaignIndicatorStyles';\n)/gim,
-        '$1import { uShowDesktopTablet, uShowMobile } from \'../../components/Style/cordovaFriendlyUShowStyles\';\n');
+    // Handle u-show-mobile and u-show-desktop-tablet not working well with HTML media queries for device width in Cordova
+    if (newValue.match(/u-show-desktop-tablet.(?!.*?>)/gim) != null) {
+      throw new Error(`FATAL ERROR multiline u-show-desktop-tablet in ${path}`);
     }
+    newValue = newValue.replace(/className="u-show-mobile"/gim, 'style={uShowMobile()}');
+    newValue = newValue.replace(/(?!\/\/>)className="u-show-desktop-tablet"/gim, 'style={uShowDesktopTablet()}');
+    newValue = newValue.replace(/(.*?)u-show-mobile(.*?)>/, '$1$2 style={uShowMobile()}>\n');
+    newValue = newValue.replace(/(.*?)u-show-desktop-tablet(.*?)>/, '$1$2 style={uShowDesktopTablet()}>\n');
     // Remove Donate from Cordova -- Stripe causes problems and is not allowed in the app store
     if (path.includes('App.js')) {
       newValue = newValue.replace(/^.*?Donate.*?\n/gim, '');
@@ -63,7 +119,10 @@ function fileRewriterForCordova (path) {
 
     // append an eslint suppression at the top of each file
     newValue = `/* eslint-disable no-unused-vars */\n/* eslint-disable import/newline-after-import */\n/* eslint-disable import/order */\n/* eslint-disable react/jsx-indent */\n${newValue}`;
-    /* eslint-disable react/jsx-props-no-spreading */
+
+    // append an import of cordovaFriendlyUShowStyles.js at top of each file where needed
+    newValue = addUShowStylesImport(newValue, path);
+
     fs.writeFile(path, newValue, 'utf-8', (err2) => {
       if (err2) throw err2;
       // console.log('Done! with ', path);
@@ -79,7 +138,7 @@ fs.remove('./build').then(() => {
     try {
       fs.copy('./src', './srcCordova', () => {
         console.log('> Cordova: Copied the /src dir to a newly created /srcCordova directory');
-        exec('egrep -rl "React.lazy|BrowserRouter|initializeMoment|Suspense" ./srcCordova', (error, stdout, stderr) => {
+        exec('egrep -rl "React.lazy|BrowserRouter|initializeMoment|Suspense|u-show-desktop-tablet|u-show-mobile|uShowMobile|uShowDesktopTablet" ./srcCordova', (error, stdout, stderr) => {
           if (error) {
             console.log(`> Cordova bldSrcCordova error: ${error.message}`);
             return;

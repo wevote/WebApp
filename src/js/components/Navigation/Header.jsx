@@ -268,7 +268,7 @@ export default class Header extends Component {
       return (
         <div id="app-header">
           <IPhoneSpacer />
-          <HeadroomWrapper>
+          <HeadroomWrapper id="hw1">
             <div className={pageHeaderClasses} style={cordovaTopHeaderTopMargin()} id="header-container">
               <Suspense fallback={<></>}>
                 {headerBarObject}
@@ -323,10 +323,11 @@ export default class Header extends Component {
       const backToSettingsLinkText = '';
       const { innerWidth, muiThemeGlobal: { breakpoints: { values: { tabMin } } } } = window;
 
+      // console.log('isCordovaWide()', isCordovaWide(), 'innerWidth', innerWidth, 'tabMin', tabMin, 'isTablet()', isTablet());
       return (
         <div id="app-header">
           <IPhoneSpacer />
-          <HeadroomWrapper>
+          <HeadroomWrapper id="hw2">
             <div className={pageHeaderClasses} style={cordovaTopHeaderTopMargin()} id="header-container">
               { showBackToSettingsDesktop && (
                 <span id="inner_for_showBackToSettingsDesktop">
@@ -347,7 +348,7 @@ export default class Header extends Component {
                 </span>
               )}
               { showBackToSettingsMobile && (
-                <span>
+                <span id="showBackToSettingsMobile">
                   { (!isCordovaWide() && innerWidth < tabMin) && (
                     <span className="BackToSettingsMobileSpan">
                       <Suspense fallback={<></>}>
@@ -432,7 +433,7 @@ export default class Header extends Component {
       return (
         <div id="app-header">
           <IPhoneSpacer />
-          <HeadroomWrapper>
+          <HeadroomWrapper id="hw3">
             {/* <div className={isWebApp ? 'headroom-wrapper-webapp__default' : ''} id="headroom-wrapper"> */}
             <div className={pageHeaderClasses} style={cordovaTopHeaderTopMargin()} id="header-container">
               <Suspense fallback={<></>}>
@@ -499,7 +500,7 @@ export default class Header extends Component {
       return (
         <div id="app-header">
           <IPhoneSpacer />
-          <HeadroomWrapper>
+          <HeadroomWrapper id="hw4">
             <div className={pageHeaderClasses} style={cordovaTopHeaderTopMargin()} id="header-container">
               {(headerNotVisible || hideHeader) ? (
                 <>

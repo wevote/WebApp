@@ -47,10 +47,7 @@ class ReadyTaskBallotGetStarted extends Component {
             >
               {toDoTitle}
             </BallotToDoTitle>
-            <PercentComplete
-              className="u-cursor--pointer u-show-desktop-tablet"
-              onClick={() => this.showMoreButtonsLink()}
-            >
+            <PercentComplete className="u-cursor--pointer u-show-desktop-tablet" onClick={() => this.showMoreButtonsLink()}>
               0%
             </PercentComplete>
           </TitleRowWrapper>

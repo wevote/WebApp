@@ -100,7 +100,7 @@ export function getApplicationViewBooleans (pathname) {
     pathnameLowerCase.startsWith('/add-candidate-for-extension') ||
     pathnameLowerCase.startsWith('/more/extensionsignin')) {
     extensionPageMode = true;
-    // Don't even load Stripe, Google Analytics, Google Maps, FontAwesome and Zen, they make startup very slow and are not needed for the Chrome Extension
+    // Don't even load Stripe, Google Analytics, Google Maps, and Zen, they make startup very slow and are not needed for the Chrome Extension
     window.leanLoadForChromeExtension = true;
     console.log('applicationUtils for Chrome Extension window.leanLoadForChromeExtension set to true');
   } else if (pathnameLowerCase.startsWith('/-')) {

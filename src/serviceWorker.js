@@ -93,12 +93,12 @@ workbox.routing.registerRoute(
     ],
   }),
 );
-workbox.routing.registerRoute(
-  /https:\/\/use\.fontawesome\.com/,
-  new workbox.strategies.CacheFirst({
-    cacheName: 'weVoteCloudFlareCache',
-  }),
-);
+// workbox.routing.registerRoute(
+//   /https:\/\/use\.fontawesome\.com/,
+//   new workbox.strategies.CacheFirst({
+//     cacheName: 'weVoteCloudFlareCache',
+//   }),
+// );
 
 workbox.routing.registerRoute(
   /https:\/\/connect\.facebook\.net/,

@@ -360,6 +360,7 @@ const FooterContainer = styled('div')`
   padding-left: 0;
   position: fixed;
   width: 100%;
+  left: 0;
 `;
 
 export default withStyles(styles)(FooterBar);

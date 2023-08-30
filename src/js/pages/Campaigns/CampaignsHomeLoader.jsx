@@ -131,6 +131,24 @@ class CampaignsHomeLoader extends Component {
     return {};
   }
 
+  // In Cordova a Suspen[d] fallback must be on one line (or else) this makes it one line
+  fallbackMarkup = (stateCode) => {    // eslint-disable-line arrow-body-style
+    return (
+      <>
+        <CampaignsHomeFilterPlaceholder stateCode={stateCode} />
+        <WhatIsHappeningSectionLoading>
+          <CandidateListRootPlaceholder titleTextForList="Candidates in Close Races" />
+        </WhatIsHappeningSectionLoading>
+        <WhatIsHappeningSectionLoading>
+          <CandidateListRootPlaceholder titleTextForList="Current Representatives" />
+        </WhatIsHappeningSectionLoading>
+        <WhatIsHappeningSectionLoading>
+          <CandidateListRootPlaceholder titleTextForList="On Your Ballot" />
+        </WhatIsHappeningSectionLoading>
+      </>
+    );
+  }
+
   render () {
     renderLog('CampaignsHomeLoader');  // Set LOG_RENDER_EVENTS to log all renders
     // const { classes } = this.props;
@@ -162,21 +180,7 @@ class CampaignsHomeLoader extends Component {
             )}
             <meta name="description" content={descriptionText} />
           </Helmet>
-          <Suspense fallback={(
-            <div>
-              <CampaignsHomeFilterPlaceholder stateCode={stateCode} />
-              <WhatIsHappeningSectionLoading>
-                <CandidateListRootPlaceholder titleTextForList="Candidates in Close Races" />
-              </WhatIsHappeningSectionLoading>
-              <WhatIsHappeningSectionLoading>
-                <CandidateListRootPlaceholder titleTextForList="Current Representatives" />
-              </WhatIsHappeningSectionLoading>
-              <WhatIsHappeningSectionLoading>
-                <CandidateListRootPlaceholder titleTextForList="On Your Ballot" />
-              </WhatIsHappeningSectionLoading>
-            </div>
-          )}
-          >
+          <Suspense fallback={this.fallbackMarkup(stateCode)}>
             <CampaignsHome match={this.props.match} />
           </Suspense>
         </CampaignsHomeContainer>

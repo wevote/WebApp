@@ -4,7 +4,7 @@ import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import TruncateMarkup from 'react-truncate-markup';
-import anonymous from '../../../../img/global/icons/avatar-generic.png';
+import { avatarGeneric } from '../../../utils/applicationUtils';
 import LazyImage from '../LazyImage';
 import { timeFromDate } from '../../utils/dateFormat';
 import historyPush from '../../utils/historyPush';
@@ -175,7 +175,7 @@ class CampaignNewsItemForList extends Component {
                   {speakerProfileImageUrlTiny ? (
                     <LazyImage
                       src={speakerProfileImageUrlTiny}
-                      placeholder={anonymous}
+                      placeholder={avatarGeneric()}
                       className="profile-photo"
                       height={48}
                       width={48}

@@ -4,6 +4,7 @@ import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
+import { isAndroidSizeWide } from '../../common/utils/cordovaUtils';
 import BallotTitleHeaderNationalPlaceholder from './BallotTitleHeaderNationalPlaceholder';
 import { formatDateToMonthDayYear } from '../../common/utils/dateFormat';
 import daysUntil from '../../common/utils/daysUntil';
@@ -361,6 +362,7 @@ const styles = {
 };
 
 const BallotShareWrapper = styled('div')`
+  ${() => (isAndroidSizeWide() ? { margin: 0 } : { margin: '0 -8px 0 -8px' })};
   margin-bottom: 12px;
   padding-left: 2px;
 `;

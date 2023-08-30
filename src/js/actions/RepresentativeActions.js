@@ -8,7 +8,7 @@ export default {
       });
   },
 
-  representativesQuery (year = '', raceOfficeLevelList = '', stateCode = '', searchText = '', indexStart = 0) {
+  representativesQuery (year = '', raceOfficeLevelList = [], stateCode = '', searchText = '', indexStart = 0) {
     Dispatcher.loadEndpoint('representativesQuery',
       {
         index_start: indexStart,

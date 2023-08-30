@@ -454,21 +454,15 @@ export default class SignInOptionsPanel extends Component {
                 {voterIsSignedIn ?
                   <div className="u-stack--sm">{yourAccountExplanation}</div> : (
                     <>
-                      <div className="u-show-mobile-bigger-than-iphone5">
-                        <div className="u-f3">{pleaseSignInTitle || pleaseSignInTitleFromState}</div>
-                        <SignInSubtitle className="u-stack--sm">{pleaseSignInSubTitle}</SignInSubtitle>
-                      </div>
-                      <div className="u-show-desktop-tablet">
-                        <div className="u-f3">{pleaseSignInTitle || pleaseSignInTitleFromState}</div>
-                        <SignInSubtitle className="u-stack--sm">{pleaseSignInSubTitle}</SignInSubtitle>
-                      </div>
+                      <div className="u-f3">{pleaseSignInTitle || pleaseSignInTitleFromState}</div>
+                      <SignInSubtitle className="u-stack--sm">{pleaseSignInSubTitle}</SignInSubtitle>
                     </>
                   )}
               </div>
             )}
             {(!voterIsSignedInTwitter || !voterIsSignedInFacebook) && !hideDialogForCordova ? (
               <>
-                <div className="u-stack--md">
+                <div className="u-stack--md" style={isAndroid() ? { paddingBottom: '10px', paddingTop: '10px' } : {}}>
                   { !hideTwitterSignInButton && !voterIsSignedInTwitter && (isOnWeVoteRootUrl || isOnWeVoteSubdomainUrl) && (
                     <span>
                       {showRecommendedText &&
@@ -482,7 +476,7 @@ export default class SignInOptionsPanel extends Component {
                     </span>
                   )}
                 </div>
-                <div className="u-stack--md">
+                <div className="u-stack--md" style={isAndroid() ? { paddingBottom: '10px', paddingTop: '10px' } : {}}>
                   { !hideFacebookSignInButton && !voterIsSignedInFacebook && isOnFacebookSupportedDomainUrl && (
                     <span>
                       <FacebookSignIn
@@ -499,7 +493,7 @@ export default class SignInOptionsPanel extends Component {
               <AppleSignIn signedIn={voterIsSignedInWithApple} closeSignInModal={this.closeSignInModalLocal} />
             )}
             {voterIsSignedIn && !hideDialogForCordova ? (
-              <div className="u-stack--md">
+              <div className="u-stack--md" style={isAndroid() ? { paddingBottom: '10px', paddingTop: '10px' } : {}}>
                 {!hideCurrentlySignedInHeader && (
                   <div className="u-stack--sm">
                     <span className="h3 voterIsSignedIn">Currently Signed In</span>

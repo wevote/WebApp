@@ -315,7 +315,7 @@ export default class OrganizationVoterGuideTabs extends Component {
 
     return (
       <div className="">
-        <TabsContainerWrapper className="u-show-desktop-tablet d-print-none">
+        <TabsContainerWrapper className=" d-print-none u-show-desktop-tablet">
           <div className="tabs__tabs-container">
             <ul className="nav tabs__tabs">
               {/* <li className="tab-item"> */}

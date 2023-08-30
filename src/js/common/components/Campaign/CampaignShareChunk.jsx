@@ -57,7 +57,7 @@ class CampaignShareChunk extends Component {
         <CampaignSupportSectionWrapper marginTopOff={privatePublicIntroductionsOff}>
           <CampaignSupportSection marginBottomOff={privatePublicIntroductionsOff}>
             {!privatePublicIntroductionsOff && (
-              <CampaignSupportDesktopButtonWrapper>
+              <CampaignSupportDesktopButtonWrapper className="u-show-desktop-tablet">
                 <CampaignSupportDesktopButtonPanel>
                   <PublicOrPrivateSectionHeader>Share privately. </PublicOrPrivateSectionHeader>
                   <PublicOrPrivateSectionText>

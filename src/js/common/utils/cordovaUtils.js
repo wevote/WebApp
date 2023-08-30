@@ -450,7 +450,9 @@ export function getAndroidSize () {
   androidPixels = width * height;
   // const screenSize = Math.sqrt(((width / xdpi) ** 2) + ((height / ydpi) ** 2));
   const aspectRatio = height / width;
-  if (aspectRatio < 1) {
+  if (aspectRatio < 1 ||
+    (width === 1848 && height === 2960 && diameter === 14.54)   // Galaxy Tab S9 Ultra (2023)
+  ) {
     androidSizeString = '--wide';
   } else if (diameter < 4.9) {
     androidSizeString = '--sm';

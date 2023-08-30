@@ -163,7 +163,7 @@ class FriendInvitationEmailLinkDisplayForList extends Component {
             )}
           </Avatar>
           <ToRightOfPhotoWrapper>
-            <ToRightOfPhotoTopRow>
+            <ToRightOfPhotoTopRow id="fieldfl1">
               <ToRightOfPhotoContentBlock>
                 <div className="full-width">
                   { voterGuideLink ? (
