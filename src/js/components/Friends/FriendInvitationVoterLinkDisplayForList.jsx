@@ -198,7 +198,7 @@ class FriendInvitationVoterLinkDisplayForList extends Component {
             )}
           </Avatar>
           <ToRightOfPhotoWrapper>
-            <ToRightOfPhotoTopRow>
+            <ToRightOfPhotoTopRow id="fieldfl2">
               <ToRightOfPhotoContentBlock>
                 <div className="full-width">
                   {(voterGuideLinkOn && voterGuideLink) ? (

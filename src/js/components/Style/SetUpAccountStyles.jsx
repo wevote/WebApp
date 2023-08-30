@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import { isCordova } from '../../common/utils/isCordovaOrWebApp';
+
 
 export const InputFieldsWrapper = styled('div')`
   margin-top: 42px;
@@ -37,7 +39,7 @@ export const SetUpAccountTitle = styled('div')`
   font-weight: 600;
   line-height: 136%;
   margin-bottom: 12px;
-  padding: 0 36px;
+  padding: ${() => (isCordova() ? '0' : '0 36px')};
   text-align: center;
   width: 100%;
 `;

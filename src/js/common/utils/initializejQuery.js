@@ -1,3 +1,5 @@
+import { isCordova } from './isCordovaOrWebApp';
+
 const initializejQuery = (afterFunction) => {
   if (window.$) {
     // console.log('jQuery ALREADY LOADED, SO NOT RELOADING');
@@ -5,7 +7,9 @@ const initializejQuery = (afterFunction) => {
       afterFunction();
     }
   } else {
-    console.log('WARNING: jQuery was not loaded from index.html');
+    if (isCordova()) {
+      console.log('WARNING: jQuery was not loaded from index.html');
+    }
     import(/* webpackChunkName: 'jquery' */ 'jquery').then(({ default: jquery }) => {
       window.jQuery = jquery;
       window.$ = jquery;

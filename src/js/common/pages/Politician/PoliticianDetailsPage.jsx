@@ -433,8 +433,6 @@ class PoliticianDetailsPage extends Component {
     return null;
   }
 
-  // For Cordova builds, the buildSourceCordova.js script substitutes 'className="u-show-mobile"' with 'style={uShowMobile()}'
-  // and 'className="u-show-desktop-tablet"' with 'style={uShowDesktopTablet()}'
   render () {
     renderLog('PoliticianDetailsPage');  // Set LOG_RENDER_EVENTS to log all renders
 
@@ -727,14 +725,14 @@ class PoliticianDetailsPage extends Component {
         </Helmet>
         <PageWrapper>
           <DetailsSectionMobile className="u-show-mobile">
-            <CampaignImageMobileWrapper>
+            <CampaignImageMobileWrapper id="cimw3">
               {politicianImageUrlLarge ? (
                 <PoliticianImageMobilePlaceholder limitCardWidth>
                   <PoliticianImageMobile src={politicianImageUrlLarge} alt="Politician" />
                 </PoliticianImageMobilePlaceholder>
               ) : (
                 <DelayedLoad waitBeforeShow={loadSlow ? 1000 : 0}>
-                  <CampaignImagePlaceholder>
+                  <CampaignImagePlaceholder id="cip5">
                     <CampaignImagePlaceholderText>
                       No image provided
                     </CampaignImagePlaceholderText>
@@ -909,7 +907,7 @@ class PoliticianDetailsPage extends Component {
                     </PoliticianImageDesktopPlaceholder>
                   ) : (
                     <DelayedLoad waitBeforeShow={loadSlow ? 1000 : 0}>
-                      <CampaignImagePlaceholder>
+                      <CampaignImagePlaceholder id="cip6">
                         <CampaignImagePlaceholderText>
                           No image provided
                         </CampaignImagePlaceholderText>

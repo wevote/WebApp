@@ -7,23 +7,19 @@ import Tooltip from 'react-bootstrap/Tooltip';
 import styled from 'styled-components';
 import OfficeActions from '../../actions/OfficeActions';
 import { BallotHorizontallyScrollingContainer, BallotScrollingInnerWrapper, BallotScrollingOuterWrapper } from '../../common/components/Style/ScrollingStyles';
+import signInModalGlobalState from '../../common/components/Widgets/signInModalGlobalState';
+import AppObservableStore from '../../common/stores/AppObservableStore';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import toTitleCase from '../../common/utils/toTitleCase';
-import AppObservableStore from '../../common/stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
 import CandidateStore from '../../stores/CandidateStore';
 import SupportStore from '../../stores/SupportStore';
 import { sortCandidateList } from '../../utils/positionFunctions';
-import {
-  Candidate, CandidateBottomRow, CandidateContainer, CandidateInfo, CandidateNameH4,
-  CandidateParty, CandidateTopRow, CandidateWrapper,
-  OfficeItemCompressedWrapper, OfficeNameH2,
-} from '../Style/BallotStyles';
+import { Candidate, CandidateBottomRow, CandidateContainer, CandidateInfo, CandidateNameH4, CandidateParty, CandidateTopRow, CandidateWrapper, OfficeItemCompressedWrapper, OfficeNameH2 } from '../Style/BallotStyles';
 import { PositionRowListEmptyWrapper, PositionRowListInnerWrapper, PositionRowListOneWrapper, PositionRowListOuterWrapper, PositionRowListScoreColumn, PositionRowListScoreHeader, PositionRowListScoreSpacer } from '../Style/PositionRowListStyles';
 import InfoCircleIcon from '../Widgets/InfoCircleIcon';
-import signInModalGlobalState from '../../common/components/Widgets/signInModalGlobalState';
 import PositionRowEmpty from './PositionRowEmpty';
 import PositionRowList from './PositionRowList';
 

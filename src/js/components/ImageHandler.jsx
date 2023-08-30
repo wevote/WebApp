@@ -23,6 +23,7 @@ export default class ImageHandler extends Component {
     // debugger;
     const incomingClassName = this.props.className || '';
     const alt = this.props.alt || '';
+    const style = this.props.style || {};
     let replacementClass = '';
     const sizeClassName = this.props.sizeClassName || '';
     const showPlaceholderIfImageMissing = this.props.hidePlaceholder === undefined || !this.props.hidePlaceholder;
@@ -62,6 +63,7 @@ export default class ImageHandler extends Component {
             alt={alt}
             className={`${sizeClassName} ${incomingClassName} ${replacementClass}`}
             src={placeHolderImageUrl}
+            style={style}
           />
         ) : (
           <img
@@ -69,6 +71,7 @@ export default class ImageHandler extends Component {
             className={`${sizeClassName} ${incomingClassName}`}
             src={this.props.imageUrl}
             onError={this.brokenLink.bind(this)}
+            style={style}
           />
         );
     } else {
@@ -93,4 +96,5 @@ ImageHandler.propTypes = {
   kind_of_ballot_item: PropTypes.string,
   kind_of_image: PropTypes.string,
   sizeClassName: PropTypes.string,
+  style: PropTypes.object,
 };

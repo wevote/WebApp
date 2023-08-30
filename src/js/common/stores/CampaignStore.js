@@ -1,6 +1,6 @@
 import { ReduceStore } from 'flux/utils';
+import { avatarGeneric } from '../../utils/applicationUtils';
 import Dispatcher from '../dispatcher/Dispatcher';
-import anonymous from '../../../img/global/icons/avatar-generic.png';
 import arrayContains from '../utils/arrayContains';
 import VoterStore from '../../stores/VoterStore'; // eslint-disable-line import/no-cycle
 
@@ -226,7 +226,7 @@ class CampaignStore extends ReduceStore {
   }
 
   getCampaignXLeadOwnerProfilePhoto (campaignXWeVoteId, hideAnonymousImage = false) {
-    const alternateImage = hideAnonymousImage ? '' : anonymous;
+    const alternateImage = hideAnonymousImage ? '' : avatarGeneric();
     return this.getState().allCachedCampaignXOwnerPhotos[campaignXWeVoteId] || alternateImage;
   }
 

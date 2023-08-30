@@ -16,10 +16,6 @@ import numberWithCommas from '../../utils/numberWithCommas';
 import saveCampaignSupportAndGoToNextPage from '../../utils/saveCampaignSupportAndGoToNextPage';
 import CampaignOwnersList from '../CampaignSupport/CampaignOwnersList';
 import { CampaignActionButtonsWrapper, CampaignImageDesktop, CampaignImageDesktopPlaceholder, CampaignImageMobile, CampaignImageMobilePlaceholder, CampaignImagePlaceholderText, CampaignPoliticianImageDesktop, CampaignPoliticianImageMobile, CandidateCardForListWrapper, OneCampaignDescription, OneCampaignInnerWrapper, OneCampaignOuterWrapper, OneCampaignPhotoDesktopColumn, OneCampaignPhotoWrapperMobile, OneCampaignTextColumn, OneCampaignTitle, SupportersActionLink, SupportersCount, SupportersWrapper } from '../Style/CampaignCardStyles';
-// import { getTodayAsInteger, getYearFromUltimateElectionDate } from '../../utils/dateFormat';
-// import { convertStateCodeToStateText } from '../../utils/addressFunctions';
-// import CampaignSupporterActions from '../../actions/CampaignSupporterActions';
-// import { BlockedIndicator, DraftModeIndicator, EditIndicator, ElectionInPast, IndicatorButtonWrapper, IndicatorDefaultButtonWrapper, IndicatorRow } from '../Style/CampaignIndicatorStyles';
 
 const SupportButtonBeforeCompletionScreen = React.lazy(() => import(/* webpackChunkName: 'SupportButtonBeforeCompletionScreen' */ '../CampaignSupport/SupportButtonBeforeCompletionScreen'));
 
@@ -425,7 +421,7 @@ class CampaignCardForList extends Component {
                   )}
                 </>
               ) : (
-                <CampaignImageMobilePlaceholder>
+                <CampaignImageMobilePlaceholder id="cimp1">
                   <CampaignImagePlaceholderText>
                     No image provided
                   </CampaignImagePlaceholderText>
@@ -454,7 +450,7 @@ class CampaignCardForList extends Component {
                   )}
                 </>
               ) : (
-                <CampaignImageDesktopPlaceholder limitCardWidth={limitCardWidth}>
+                <CampaignImageDesktopPlaceholder limitCardWidth={limitCardWidth} id="cidp3">
                   <CampaignImagePlaceholderText>
                     No image provided
                   </CampaignImagePlaceholderText>

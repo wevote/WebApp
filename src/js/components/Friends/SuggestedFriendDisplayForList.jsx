@@ -7,17 +7,14 @@ import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
 import VoterActions from '../../actions/VoterActions';
 import ShareActions from '../../common/actions/ShareActions';
+import AppObservableStore from '../../common/stores/AppObservableStore';
 import { renderLog } from '../../common/utils/logging';
 import removeTwitterNameFromDescription from '../../common/utils/removeTwitterNameFromDescription';
-import AppObservableStore from '../../common/stores/AppObservableStore';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
 import Avatar from '../Style/avatarStyles';
-import {
-  CancelButtonWrapper, FriendButtonWithStatsWrapper, FriendButtonsWrapper, FriendColumnWithoutButtons,
-  FriendDisplayDesktopButtonsWrapper, FriendDisplayOuterWrapper, smallButtonIfNeeded,
-  ToRightOfPhotoContentBlock, ToRightOfPhotoTopRow, ToRightOfPhotoWrapper,
-} from '../Style/friendStyles';
+import { uShowMobile } from '../Style/cordovaFriendlyUShowStyles';
+import { CancelButtonWrapper, FriendButtonsWrapper, FriendButtonWithStatsWrapper, FriendColumnWithoutButtons, FriendDisplayDesktopButtonsWrapper, FriendDisplayOuterWrapper, smallButtonIfNeeded, ToRightOfPhotoContentBlock, ToRightOfPhotoTopRow, ToRightOfPhotoWrapper } from '../Style/friendStyles';
 import FriendDetails from './FriendDetails';
 import FriendLocationDisplay from './FriendLocationDisplay';
 import SuggestedFriendToggle from './SuggestedFriendToggle';
@@ -257,24 +254,24 @@ class SuggestedFriendDisplayForList extends Component {
             )}
           </Avatar>
           <ToRightOfPhotoWrapper>
-            <ToRightOfPhotoTopRow>
+            <ToRightOfPhotoTopRow id="sfdfl1">
               <ToRightOfPhotoContentBlock>
-                <div className="full-width">
+                <div id="firstButtonSetA" className="full-width">
                   {(voterGuideLinkOn && voterGuideLink) ? (
                     <Link to={voterGuideLink} className="u-no-underline">
                       {detailsHTML}
                     </Link>
                   ) : (
-                    <>
+                    <div id="firstButtonSetB" style={uShowMobile()}>
                       {detailsHTML}
-                    </>
+                    </div>
                   )}
                 </div>
               </ToRightOfPhotoContentBlock>
               <FriendLocationDisplay cityForDisplay={cityForDisplay} stateCodeForDisplay={stateCodeForDisplay} />
             </ToRightOfPhotoTopRow>
             {friendButtonsExist && (
-              <div className="u-show-mobile">
+              <div id="secondButtonSet" className="u-show-mobile">
                 {friendButtonsWithStatsHtml}
               </div>
             )}

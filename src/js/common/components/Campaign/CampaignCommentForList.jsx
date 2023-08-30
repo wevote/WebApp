@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import TruncateMarkup from 'react-truncate-markup';
 import styled from 'styled-components';
-import anonymous from '../../../../img/global/icons/avatar-generic.png';
+import { avatarGeneric } from '../../../utils/applicationUtils';
 import LazyImage from '../LazyImage';
 import {
   Comment, CommentName, CommentNameWrapper, CommentTextInnerWrapper,
@@ -117,7 +117,7 @@ class CampaignCommentForList extends Component {
                 {voterPhotoUrlTiny ? (
                   <LazyImage
                     src={voterPhotoUrlTiny}
-                    placeholder={anonymous}
+                    placeholder={avatarGeneric()}
                     className="profile-photo"
                     height={48}
                     width={48}

@@ -348,7 +348,7 @@ class CampaignDetailsPage extends Component {
             politicianWeVoteId={linkedPoliticianWeVoteId}
           />
           <DetailsSectionMobile className="u-show-mobile">
-            <CampaignImageMobileWrapper>
+            <CampaignImageMobileWrapper id="cimw1">
               {(campaignPhotoLargeUrl || weVoteHostedProfileImageUrlLarge) ? (
                 <>
                   {campaignPhotoLargeUrl ? (
@@ -359,7 +359,7 @@ class CampaignDetailsPage extends Component {
                 </>
               ) : (
                 <DelayedLoad waitBeforeShow={1000}>
-                  <CampaignImagePlaceholder>
+                  <CampaignImagePlaceholder id="cip1">
                     <CampaignImagePlaceholderText>
                       No image provided
                     </CampaignImagePlaceholderText>
@@ -485,7 +485,7 @@ class CampaignDetailsPage extends Component {
                     </>
                   ) : (
                     <DelayedLoad waitBeforeShow={1000}>
-                      <CampaignImagePlaceholder>
+                      <CampaignImagePlaceholder id="cip2">
                         <CampaignImagePlaceholderText>
                           No image provided
                         </CampaignImagePlaceholderText>

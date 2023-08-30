@@ -6,9 +6,9 @@ import React, { Component, Suspense } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import anonymous from '../../../../img/global/icons/avatar-generic.png';
 import { PageContentContainer } from '../../../components/Style/pageLayoutStyles';
 import webAppConfig from '../../../config';
+import { avatarGeneric } from '../../../utils/applicationUtils';
 import CampaignSupporterActions from '../../actions/CampaignSupporterActions';
 import LazyImage from '../../components/LazyImage';
 import CampaignNewsItemPublishSteps from '../../components/Navigation/CampaignNewsItemPublishSteps';
@@ -365,7 +365,7 @@ class CampaignNewsItemDetailsPage extends Component {
               {speakerProfileImageUrlTiny ? (
                 <LazyImage
                   src={speakerProfileImageUrlTiny}
-                  placeholder={anonymous}
+                  placeholder={avatarGeneric()}
                   className="profile-photo"
                   height={32}
                   width={32}
@@ -483,7 +483,7 @@ class CampaignNewsItemDetailsPage extends Component {
               {campaignNewsSubject}
             </NewsItemSubjectMobile>
             {speakerHTML}
-            <CampaignImageMobileWrapper>
+            <CampaignImageMobileWrapper id="cimw2">
               {(campaignPhotoLargeUrl || weVoteHostedProfileImageUrlLarge) ? (
                 <>
                   {campaignPhotoLargeUrl ? (
@@ -494,7 +494,7 @@ class CampaignNewsItemDetailsPage extends Component {
                 </>
               ) : (
                 <DelayedLoad waitBeforeShow={1000}>
-                  <CampaignImagePlaceholder>
+                  <CampaignImagePlaceholder id="cip3">
                     <CampaignImagePlaceholderText>
                       No image provided
                     </CampaignImagePlaceholderText>
@@ -611,7 +611,7 @@ class CampaignNewsItemDetailsPage extends Component {
                     </>
                   ) : (
                     <DelayedLoad waitBeforeShow={1000}>
-                      <CampaignImagePlaceholder>
+                      <CampaignImagePlaceholder id="cip4">
                         <CampaignImagePlaceholderText>
                           No image provided
                         </CampaignImagePlaceholderText>

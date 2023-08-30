@@ -1,5 +1,5 @@
 import VoterActions from './actions/VoterActions';
-import { getCordovaScreenHeight, getProcessorArchitecture, isIOS, isIOSAppOnMac, isIPad, isSimulator, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from './common/utils/cordovaUtils';
+import { getCordovaScreenHeight, getProcessorArchitecture, isAndroid, isIOS, isIOSAppOnMac, isIPad, isSimulator, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from './common/utils/cordovaUtils';
 import { isCordova } from './common/utils/isCordovaOrWebApp';
 import Cookies from './common/utils/js-cookie/Cookies';
 import { httpLog } from './common/utils/logging';
@@ -74,7 +74,8 @@ function postLockInitialization (voterDeviceId, startReact) {
     window.addEventListener('keyboardDidHide', localRestoreStylesAfterCordovaKeyboard);
   }
 
-  if (isCordova() && !isIOSAppOnMac() && !isSimulator()) {
+  const pigCanFly = !isAndroid();   // August 24, 2023, disable android messaging for now
+  if (pigCanFly && isCordova() && !isIOSAppOnMac() && !isSimulator()) {
     console.log('Cordova:   startMessaging(voterDeviceId)');
     startMessaging(voterDeviceId);
   }

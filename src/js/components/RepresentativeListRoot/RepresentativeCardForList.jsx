@@ -422,11 +422,11 @@ class RepresentativeCardForList extends Component {
             </OneCampaignTextColumn>
             <OneCampaignPhotoWrapperMobile className="u-cursor--pointer u-show-mobile" onClick={this.onRepresentativeClick}>
               {representativePhotoLargeUrl ? (
-                <CampaignImageMobilePlaceholder>
+                <CampaignImageMobilePlaceholder id="cimp5">
                   <CampaignImageMobile src={representativePhotoLargeUrl} alt="" />
                 </CampaignImageMobilePlaceholder>
               ) : (
-                <CampaignImageMobilePlaceholder>
+                <CampaignImageMobilePlaceholder id="cimp3">
                   <CampaignImagePlaceholderText>
                     No image provided
                   </CampaignImagePlaceholderText>
@@ -437,7 +437,7 @@ class RepresentativeCardForList extends Component {
               {representativePhotoLargeUrl ? (
                 <>
                   {limitCardWidth ? (
-                    <CampaignImageDesktopPlaceholder limitCardWidth={limitCardWidth}>
+                    <CampaignImageDesktopPlaceholder limitCardWidth={limitCardWidth} id="cidp1">
                       <CampaignImageDesktop src={representativePhotoLargeUrl} alt="" width="157px" height="157px" />
                     </CampaignImageDesktopPlaceholder>
                   ) : (
@@ -445,7 +445,7 @@ class RepresentativeCardForList extends Component {
                   )}
                 </>
               ) : (
-                <CampaignImageDesktopPlaceholder limitCardWidth={limitCardWidth}>
+                <CampaignImageDesktopPlaceholder limitCardWidth={limitCardWidth} id="cidp2">
                   <CampaignImagePlaceholderText>
                     No image provided
                   </CampaignImagePlaceholderText>

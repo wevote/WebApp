@@ -42,16 +42,18 @@ export default function CampaignsHomeFilterPlaceholder (props) {
   ];
   const searchText = '';
   return (
-    <CampaignsHomeFilter
-      changeListModeShown={changeListModeShown}
-      clearSearchFunction={clearSearchFunction}
-      handleChooseStateChange={handleChooseStateChange}
-      isSearching={isSearching}
-      listModeFiltersAvailable={listModeFiltersAvailable}
-      searchFunction={searchFunction}
-      searchText={searchText}
-      stateCode={stateCode}
-    />
+    <span id="CampaignsHomeFilterPlaceholder">
+      <CampaignsHomeFilter
+        changeListModeShown={changeListModeShown}
+        clearSearchFunction={clearSearchFunction}
+        handleChooseStateChange={handleChooseStateChange}
+        isSearching={isSearching}
+        listModeFiltersAvailable={listModeFiltersAvailable}
+        searchFunction={searchFunction}
+        searchText={searchText}
+        stateCode={stateCode}
+      />
+    </span>
   );
 }
 CampaignsHomeFilterPlaceholder.propTypes = {

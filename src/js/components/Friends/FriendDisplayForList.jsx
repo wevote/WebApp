@@ -98,7 +98,7 @@ class FriendDisplayForList extends Component {
             )}
           </Avatar>
           <ToRightOfPhotoWrapper>
-            <ToRightOfPhotoTopRow>
+            <ToRightOfPhotoTopRow id="fdfl">
               <ToRightOfPhotoContentBlock>
                 <div className="full-width">
                   { (voterGuideLink && voterGuideLinkOn) ? (

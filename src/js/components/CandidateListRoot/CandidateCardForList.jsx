@@ -22,8 +22,6 @@ import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import keepHelpingDestination from '../../common/utils/keepHelpingDestination';
 import numberWithCommas from '../../common/utils/numberWithCommas';
 import saveCampaignSupportAndGoToNextPage from '../../common/utils/saveCampaignSupportAndGoToNextPage';
-// import webAppConfig from '../../config';
-// import { ElectionInPast, IndicatorButtonWrapper, IndicatorRow } from '../../common/components/Style/CampaignIndicatorStyles';
 
 const ItemActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemActionBar' */ '../Widgets/ItemActionBar/ItemActionBar'));
 const OfficeNameText = React.lazy(() => import(/* webpackChunkName: 'OfficeNameText' */ '../../common/components/Widgets/OfficeNameText'));
@@ -179,8 +177,10 @@ class CandidateCardForList extends Component {
     let politicianBasePath;
     if (politicianSEOFriendlyPath) {
       politicianBasePath = `/${politicianSEOFriendlyPath}/-`;
-    } else {
+    } else if (politicianWeVoteId) {
       politicianBasePath = `/${politicianWeVoteId}/p`;
+    } else {
+      politicianBasePath = '';      // Still loading, or other problems
     }
     return politicianBasePath;
   }
@@ -445,27 +445,22 @@ class CandidateCardForList extends Component {
             </OneCampaignTextColumn>
             <OneCampaignPhotoWrapperMobile id="candidatePhotoMobile" className="u-cursor--pointer u-show-mobile" onClick={this.onCandidateClick}>
               {candidatePhotoLargeUrl ? (
-                <CampaignImageMobilePlaceholder>
+                <CampaignImageMobilePlaceholder id="cimp4">
                   <CampaignImageMobile src={candidatePhotoLargeUrl} alt="" />
                 </CampaignImageMobilePlaceholder>
               ) : (
-                <CampaignImageMobilePlaceholder>
+                <CampaignImageMobilePlaceholder id="cimp2">
                   <CampaignImagePlaceholderText>
                     No image provided
                   </CampaignImagePlaceholderText>
                 </CampaignImageMobilePlaceholder>
               )}
             </OneCampaignPhotoWrapperMobile>
-            <OneCampaignPhotoDesktopColumn
-              id="candidatePhotoDesktop"
-              className="u-cursor--pointer u-show-desktop-tablet"
-              limitCardWidth={limitCardWidth}
-              onClick={this.onCandidateClick}
-            >
+            <OneCampaignPhotoDesktopColumn id="candidatePhotoDesktop" className="u-cursor--pointer u-show-desktop-tablet" limitCardWidth={limitCardWidth} onClick={this.onCandidateClick}>
               {candidatePhotoLargeUrl ? (
                 <>
                   {limitCardWidth ? (
-                    <CampaignImageDesktopPlaceholder limitCardWidth={limitCardWidth}>
+                    <CampaignImageDesktopPlaceholder limitCardWidth={limitCardWidth} id="cidp4">
                       <CampaignImageDesktop src={candidatePhotoLargeUrl} alt="" width="157px" height="157px" />
                     </CampaignImageDesktopPlaceholder>
                   ) : (
@@ -473,7 +468,7 @@ class CandidateCardForList extends Component {
                   )}
                 </>
               ) : (
-                <CampaignImageDesktopPlaceholder limitCardWidth={limitCardWidth}>
+                <CampaignImageDesktopPlaceholder limitCardWidth={limitCardWidth} id="cidp5">
                   <CampaignImagePlaceholderText>
                     No image provided
                   </CampaignImagePlaceholderText>
