@@ -42,20 +42,17 @@ export default class SettingsPersonalSideBar extends Component {
     });
   }
 
-  // eslint-disable-next-line camelcase,react/sort-comp
-  UNSAFE_componentWillReceiveProps (nextProps) {
-    const { isSignedIn } = nextProps;
-    this.setState({
-      isOnPartnerUrl: AppObservableStore.isOnPartnerUrl(),
-      voterIsAdminForThisUrl: AppObservableStore.isVoterAdminForThisUrl(VoterStore.getLinkedOrganizationWeVoteId()),
-      isSignedIn,
-    });
-  }
-
   componentDidUpdate (prevProps) {
     // console.log('SettingsPersonalSideBar componentDidUpdate');
     if (prevProps.organizationType !== this.props.organizationType) {
       this.setState({ isOrganization: this.isOrganization(this.props.organizationType) });
+    }
+    if (prevProps.isSignedIn !== this.props.isSignedIn) {
+      this.setState({
+        isOnPartnerUrl: AppObservableStore.isOnPartnerUrl(),
+        voterIsAdminForThisUrl: AppObservableStore.isVoterAdminForThisUrl(VoterStore.getLinkedOrganizationWeVoteId()),
+        isSignedIn: this.props.isSignedIn,
+      });
     }
   }
 
