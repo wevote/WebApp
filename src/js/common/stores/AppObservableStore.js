@@ -269,40 +269,43 @@ export default {
   isOnWeVoteRootUrl () {
     // console.log('AppObservableStore nonFluxState.onWeVoteRootUrl: ', nonFluxState.onWeVoteRootUrl,
     //   ', isOnWeVoteRootUrl weVoteURL: ', weVoteURL,
-    //   ', isCordovaLocal(): ', isCordovaLocal(),
-    //   ', is localhost: ', stringContains('localhost:', window.location.href));
+    //   ', isCordovaLocal(): ', isCordovaLocal());
 
-    const { location: { href: localhost } } = window;
-
+    const { location: { href: hrefValue } } = window;
+    // console.log('AppObservableStore hrefValue: ', hrefValue);
+    const hrefValueLowerCase = (hrefValue) ? hrefValue.toLowerCase() : '';
     return (nonFluxState.onWeVoteRootUrl || false) ||
       isCordovaLocal() ||
-      stringContains('wevote.us:', localhost) ||
-      stringContains('wevote.org:', localhost) ||   // includes quality.wevote.us
-      stringContains('localhost:', localhost) ||
-      stringContains('wevotedeveloper.com:', localhost) ||
-      stringContains('ngrok.io', localhost) ||
-      stringContains('ngrok-free.app', localhost);
+      stringContains('quality.wevote.us:', hrefValueLowerCase) ||
+      stringContains('www.wevote.us:', hrefValueLowerCase) ||
+      stringContains('//wevote.us:', hrefValueLowerCase) ||
+      stringContains('wevote.org:', hrefValueLowerCase) ||
+      stringContains('localhost:', hrefValueLowerCase) ||
+      stringContains('wevotedeveloper.com:', hrefValueLowerCase) ||
+      stringContains('ngrok.io', hrefValueLowerCase) ||
+      stringContains('ngrok-free.app', hrefValueLowerCase);
   },
 
   isOnFacebookJsSdkHostDomainList () {
     const { hostname } = window.location;
-    const host = hostname.replace('www.', '');
+    const hostnameLowerCase = (hostname) ? hostname.toLowerCase() : '';
+    const hostnameFiltered = hostnameLowerCase.replace('www.', '');
     // console.log('----------------------', hostname);
-    return host === 'wevote.us' || host === 'quality.wevote.us' || host === 'localhost' || host === 'wevotedeveloper.com' || isCordovaLocal() || window.location.href.includes('ngrok');
+    return hostnameFiltered === 'wevote.us' ||
+      hostnameFiltered === 'quality.wevote.us' ||
+      hostnameFiltered === 'localhost' ||
+      hostnameFiltered === 'wevotedeveloper.com' ||
+      isCordovaLocal() ||
+      window.location.href.includes('ngrok');
   },
 
   isOnWeVoteSubdomainUrl () {
-    // let onWeVoteSubdomainUrl = nonFluxState.onWeVoteSubdomainUrl || false;
-    // if (onWeVoteSubdomainUrl === undefined) {
-    //   // onChosenFullDomainUrl, onFacebookSupportedDomainUrl, onWeVoteSubdomainUrl,
-    //   const { hostname } = window.location;
-    //   ({ onWeVoteSubdomainUrl } = this.calculateUrlSettings(hostname));
-    // }
-    // return onWeVoteSubdomainUrl;
+    // console.log('AppObservableStore isOnWeVoteSubdomainUrl: ', nonFluxState.onWeVoteSubdomainUrl);
     return nonFluxState.onWeVoteSubdomainUrl;
   },
 
   isOnPartnerUrl () {
+    // console.log('AppObservableStore onWeVoteSubdomainUrl: ', nonFluxState.onWeVoteSubdomainUrl, ', onChosenFullDomainUrl:', nonFluxState.onChosenFullDomainUrl);
     return nonFluxState.onWeVoteSubdomainUrl || nonFluxState.onChosenFullDomainUrl;
   },
 
@@ -765,11 +768,11 @@ export default {
             newHostname = webAppConfig.WE_VOTE_HOSTNAME;
           }
 
-          // console.log('AppObservableStore siteConfigurationRetrieve hostname, newHostname:', hostname, newHostname);
           onWeVoteRootUrl = this.isOnWeVoteRootUrl();
-          if (stringContains('wevote.us', newHostname)) {
+          // console.log('AppObservableStore siteConfigurationRetrieve hostname, newHostname:', hostname, newHostname, ', onWeVoteRootUrl:', onWeVoteRootUrl);
+          if (!onWeVoteRootUrl && stringContains('wevote.us', newHostname)) {
             onWeVoteSubdomainUrl = true;
-          } else {
+          } else if (!onWeVoteRootUrl) {
             onChosenFullDomainUrl = true;
           }
           onFacebookSupportedDomainUrl = this.isOnFacebookJsSdkHostDomainList();
