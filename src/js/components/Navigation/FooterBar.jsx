@@ -1,4 +1,4 @@
-import { Home, HowToVote, Info, People, QuestionAnswer, VerifiedUser } from '@mui/icons-material';
+import { Groups, Home, HowToVote, Info, People, QuestionAnswer, VerifiedUser } from '@mui/icons-material';
 import { Badge, BottomNavigation, BottomNavigationAction } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
@@ -122,10 +122,12 @@ class FooterBar extends React.Component {
       case 3:
         return historyPush('/friends');
       case 4:
-        return historyPush('/news');
+        return historyPush('/squads');
       case 5:
-        return historyPush('/more/donate');
+        return historyPush('/news');
       case 6:
+        return historyPush('/donate');
+      case 7:
         return this.openHowItWorksModal();
       default:
         return null;
@@ -139,8 +141,9 @@ class FooterBar extends React.Component {
     if (stringContains('/ballot', pathname.toLowerCase())) return 1;
     if (pathname.toLowerCase().endsWith('/cs/')) return 2;
     if (stringContains('/friends', pathname.toLowerCase())) return 3;
-    if (stringContains('/news', pathname.toLowerCase())) return 4;
-    if (stringContains('/more/donate', pathname.toLowerCase())) return 5;
+    if (stringContains('/squads', pathname.toLowerCase())) return 4;
+    if (stringContains('/news', pathname.toLowerCase())) return 5;
+    if (stringContains('/donate', pathname.toLowerCase())) return 6;
     return -1;
   };
 
@@ -162,7 +165,7 @@ class FooterBar extends React.Component {
     //   display: 'inline-block',
     // };
     const hideFooterBehindModal = showActivityTidbitDrawer || showingOneCompleteYourProfileModal || showShareModal || showSharedItemModal || showSignInModal || showVoterPlanModal;
-    const bigIcons = {
+    const defaultIconStyles = {
       '& .MuiBottomNavigationAction-root.Mui-selected, svg': {
         fontSize: 37,
       },
@@ -177,25 +180,61 @@ class FooterBar extends React.Component {
         fontSize: 16,
       },
     };
+    const donateIconStyles = {
+      '& .MuiBottomNavigationAction-root.Mui-selected, svg': {
+        fontSize: 32,
+      },
+      '& .MuiBottomNavigationAction-label.Mui-selected': {
+        fontSize: 16,
+        fontWeight: 600,
+      },
+      '& .MuiBottomNavigationAction-root, svg': {
+        fontSize: 30,
+      },
+      '& .MuiBottomNavigationAction-label': {
+        fontSize: 16,
+      },
+    };
+    const groupsIconStyles = {
+      '& .MuiBottomNavigationAction-root.Mui-selected, svg': {
+        fontSize: 44,
+      },
+      '& .MuiBottomNavigationAction-label.Mui-selected': {
+        fontSize: 16,
+        fontWeight: 600,
+        marginBottom: '4px',
+        marginTop: '-5px',
+      },
+      '& .MuiBottomNavigationAction-root, svg': {
+        fontSize: 42,
+      },
+      '& .MuiBottomNavigationAction-label': {
+        fontSize: 16,
+        marginBottom: '4px',
+        marginTop: '-5px',
+      },
+    };
 
     // console.log('friendInvitationsSentToMeCount:', friendInvitationsSentToMeCount);
     // If NOT signed in, turn Discuss off and How It Works on
     let discussVisible;
     let donateVisible;
+    const friendsVisible = false; // 2023-09-04 Dale We are turning off Friends footer icon for now
+    const groupsVisible = true;
     // let howItWorksVisible;
     const howItWorksVisible = false;
     if (isCordova() || inPrivateLabelMode) {
-      discussVisible = true;
-      donateVisible = false;
+      discussVisible = false; // 2023-09-04 Dale We are turning off Discuss footer icon for now
+      donateVisible = true;
       // howItWorksVisible = true;
     } else if (voterIsSignedIn) {
       // If signed in, turn Discuss on, and How It Works off
-      discussVisible = true;
-      donateVisible = false; // 2022-12 Donate not used for now
+      discussVisible = false; // 2023-09-04 Dale We are turning off Discuss footer icon for now
+      donateVisible = true;
       // howItWorksVisible = false;
     } else {
       discussVisible = false;
-      donateVisible = false; // 2022-12 Donate not used for now
+      donateVisible = true; // 2022-12 Donate not used for now
       // howItWorksVisible = true;
     }
     return (
@@ -217,7 +256,7 @@ class FooterBar extends React.Component {
               id="readyTabFooterBar"
               label="Home"
               showLabel
-              sx={bigIcons}
+              sx={defaultIconStyles}
             />
             <BottomNavigationAction
               className="no-outline"
@@ -225,7 +264,7 @@ class FooterBar extends React.Component {
               id="ballotTabFooterBar"
               label="Ballot"
               showLabel
-              sx={bigIcons}
+              sx={defaultIconStyles}
               style={{
                 paddingLeft: '0px',
               }}
@@ -256,37 +295,52 @@ class FooterBar extends React.Component {
               )}
               label="Candidates"
               style={{
-                marginLeft: '-3px',
+                marginLeft: '2px',
               }}
               showLabel
-              sx={bigIcons}
+              sx={defaultIconStyles}
             />
-            <BottomNavigationAction
-              className="no-outline"
-              icon={friendInvitationsSentToMeCount > 0 ? (
-                <Badge
-                  badgeContent={<BadgeCountWrapper>{friendInvitationsSentToMeCount}</BadgeCountWrapper>}
-                  classes={{
-                    badge: classes.footerFriendsNotificationBadge,
-                  }}
-                  color="primary"
-                  max={9}
-                  style={{
-                    fontSize: 10,
-                    right: 0,
-                    top: 4,
-                  }}
-                >
+            {friendsVisible && (
+              <BottomNavigationAction
+                className="no-outline"
+                icon={friendInvitationsSentToMeCount > 0 ? (
+                  <Badge
+                    badgeContent={<BadgeCountWrapper>{friendInvitationsSentToMeCount}</BadgeCountWrapper>}
+                    classes={{
+                      badge: classes.footerFriendsNotificationBadge,
+                    }}
+                    color="primary"
+                    max={9}
+                    style={{
+                      fontSize: 10,
+                      right: 0,
+                      top: 4,
+                    }}
+                  >
+                    <People />
+                  </Badge>
+                ) : (
                   <People />
-                </Badge>
-              ) : (
-                <People />
-              )}
-              id="friendsTabFooterBar"
-              label="Friends"
-              showLabel
-              sx={bigIcons}
-            />
+                )}
+                id="friendsTabFooterBar"
+                label="Friends"
+                showLabel
+                sx={defaultIconStyles}
+              />
+            )}
+            {groupsVisible && (
+              <BottomNavigationAction
+                className="no-outline"
+                icon={<Groups />}
+                id="squadTabFooterBar"
+                label="Squads"
+                showLabel
+                style={{
+                  marginLeft: '8px',
+                }}
+                sx={groupsIconStyles}
+              />
+            )}
             {discussVisible && (
               <BottomNavigationAction
                 className="no-outline"
@@ -297,11 +351,18 @@ class FooterBar extends React.Component {
                 style={{
                   paddingLeft: '0px',
                 }}
-                sx={bigIcons}
+                sx={defaultIconStyles}
               />
             )}
             {donateVisible && (
-              <BottomNavigationAction className="no-outline" id="donateTabFooterBar" label="Donate" showLabel icon={<VerifiedUser />} sx={bigIcons} />
+              <BottomNavigationAction
+                className="no-outline"
+                id="donateTabFooterBar"
+                label="Donate"
+                showLabel
+                icon={<VerifiedUser />}
+                sx={donateIconStyles}
+              />
             )}
             {howItWorksVisible && (
               <BottomNavigationAction
@@ -310,7 +371,7 @@ class FooterBar extends React.Component {
                 label={isMobileScreenSize() ? 'Intro' : 'How It Works'}
                 showLabel
                 icon={<Info />}
-                sx={bigIcons}
+                sx={defaultIconStyles}
               />
             )}
           </BottomNavigation>

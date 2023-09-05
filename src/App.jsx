@@ -101,6 +101,7 @@ const SetUpAccountRoot = React.lazy(() => import(/* webpackChunkName: 'SetUpAcco
 const SharedItemLanding = React.lazy(() => import(/* webpackChunkName: 'SharedItemLanding' */ './js/pages/SharedItemLanding'));
 const SignInEmailProcess = React.lazy(() => import(/* webpackChunkName: 'SignInEmailProcess' */ './js/pages/Process/SignInEmailProcess'));
 const SignInJumpProcess = React.lazy(() => import(/* webpackChunkName: 'SignInJumpProcess' */ './js/pages/Process/SignInJumpProcess'));
+const Squads = React.lazy(() => import(/* webpackChunkName: 'Squads' */ './js/pages/Squads'));
 const SuperSharingAddContacts = React.lazy(() => import(/* webpackChunkName: 'SuperSharingAddContacts' */ './js/common/pages/SuperSharing/SuperSharingAddContacts'));
 const SuperSharingChooseRecipients = React.lazy(() => import(/* webpackChunkName: 'SuperSharingChooseRecipients' */ './js/common/pages/SuperSharing/SuperSharingChooseRecipients'));
 const SuperSharingComposeEmailMessage = React.lazy(() => import(/* webpackChunkName: 'SuperSharingComposeEmailMessage' */ './js/common/pages/SuperSharing/SuperSharingComposeEmailMessage'));
@@ -452,6 +453,7 @@ class App extends Component {
                   <Route path="/candidate/:candidate_we_vote_id/:back_to_variable/:organization_we_vote_id" exact component={OrganizationVoterGuideCandidate} />
                   <Route path="/candidate/:candidate_we_vote_id/:organization_we_vote_id" exact component={OrganizationVoterGuideCandidate} />
                   <Route path="/candidate/:candidate_we_vote_id" exact component={Candidate} />
+                  <Route path="/donate" component={(isNotWeVoteMarketingSite || this.localIsCordova()) ? ReadyRedirect : Donate} />
                   <Route path="/facebook_invitable_friends" component={FacebookInvitableFriends} />
                   <Route path="/findfriends/:set_up_page" exact component={FindFriendsRoot} />
                   <Route path="/findfriends" exact><FindFriendsRoot /></Route>
@@ -552,6 +554,7 @@ class App extends Component {
                   <Route path="/sign_in_email/:email_secret_key" component={SignInEmailProcess} />
                   <Route path="/setupaccount/:set_up_page" exact component={SetUpAccountRoot} />
                   <Route path="/setupaccount" exact><SetUpAccountRoot /></Route>
+                  <Route path="/squads" exact><Squads /></Route>
                   <Route exact path="/start-a-campaign"><CampaignStartIntro /></Route>
                   <Route path="/terms" component={TermsOfService} />
                   <Route path="/twitter_sign_in" exact><TwitterSignInProcess /></Route>
