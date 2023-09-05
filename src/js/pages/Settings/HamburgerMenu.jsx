@@ -196,6 +196,23 @@ export default class HamburgerMenu extends Component {
               />
             )}
 
+            <HamburgerMenuRow
+              fullIcon={this.yourAccountIcon(voterPhotoUrlMedium)}
+              linkText="Friends"
+              onClickAction={null}
+              to="/friends"
+            />
+
+            {isSignedIn && (
+              <HamburgerMenuRow
+                icon="fa fa-comment"
+                iconStyle={{ fontSize: 26, color: '#1c2f4b' }}
+                linkText="Discuss"
+                onClickAction={null}
+                to="/news"
+              />
+            )}
+
             {/* isSignedIn && (
               <HamburgerMenuRow
                 linkText="Your Endorsements"

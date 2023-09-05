@@ -365,11 +365,13 @@ class HeaderBar extends Component {
       const friends = $('#friendsTabHeaderBar');
       const news = $('#discussTabHeaderBar');
       const donate = $('#donateTabHeaderBar');
+      const squads = $('#squadsTabHeaderBar');
       ballot.css(normal);
       candidates.css(normal);   // Candidates (not individual candidate page)
       friends.css(normal);      // Friends
       news.css(normal);         // Discuss
       donate.css(normal);       // Donate
+      squads.css(normal);       // Squads
 
       switch (normalizedHrefPage()) {
         case 'ballot':
@@ -384,8 +386,12 @@ class HeaderBar extends Component {
         case 'news':
           news.css(highlight);
           break;
+        case 'donate':
         case 'more/donate':
           donate.css(highlight);
+          break;
+        case 'squads':
+          squads.css(highlight);
           break;
         default:
           break;
@@ -456,32 +462,38 @@ class HeaderBar extends Component {
     let discussVisible;
     let donateValue;
     let donateVisible;
+    const friendsVisible = false; // 2023-09-04 Dale We are turning off Friends header link for now
     let howItWorksValue;
+    const squadsVisible = true;
+    let squadsValue;
     // let howItWorksVisible;
     const howItWorksVisible = false;
     if (isCordova() || inPrivateLabelMode) {
-      discussValue = 4;
-      discussVisible = true;
+      discussValue = 99; // 4;
+      discussVisible = false; // We are turning off Discuss header link for now
       donateValue = 99; // Donate not used in Cordova
       donateVisible = false;
       howItWorksValue = 5;
       // howItWorksVisible = true;
+      squadsValue = 4;
     } else if (voterIsSignedIn) {
       // If not Cordova and signed in, turn Donate & Discuss on, and How It Works off
-      discussValue = 4;
-      discussVisible = true;
-      donateValue = 4;
-      donateVisible = false; // 2022-12 Donate not used for now
+      // discussValue = 4;
+      // discussVisible = false; // We are turning off Discuss header link for now
+      donateValue = 5;
+      donateVisible = true;
       howItWorksValue = 99;
       // howItWorksVisible = false;
+      squadsValue = 4;
     } else {
       // If not Cordova, and NOT signed in, turn Discuss off & How It Works on
       discussValue = 99; // Not offered prior to sign in
       discussVisible = false;
-      donateValue = 3;
-      donateVisible = false; // 2022-12 Donate not used for now
-      howItWorksValue = 4;
+      donateValue = 5;
+      donateVisible = true;
+      howItWorksValue = 99;
       // howItWorksVisible = true;
+      squadsValue = 4;
     }
     // console.log('HeaderBar !isMobileScreenSize()', displayMenu);
     return (
@@ -531,14 +543,16 @@ class HeaderBar extends Component {
                     label="Candidates"
                     to="/cs/"
                   />
-                  <TabWithPushHistory
-                    classes={isWebApp() ? { root: classes.tabRootFriendsDesktop } : { root: classes.tabRootFriends }}
-                    value={3}
-                    change={this.handleTabChange}
-                    id="friendsTabHeaderBar"
-                    label="Friends"
-                    to="/friends"
-                  />
+                  {friendsVisible && (
+                    <TabWithPushHistory
+                      classes={isWebApp() ? { root: classes.tabRootFriendsDesktop } : { root: classes.tabRootFriends }}
+                      value={3}
+                      change={this.handleTabChange}
+                      id="friendsTabHeaderBar"
+                      label="Friends"
+                      to="/friends"
+                    />
+                  )}
                   {discussVisible && (
                     <TabWithPushHistory
                       classes={isWebApp() ? { root: classes.tabRootNewsDesktop } : { root: classes.tabRootNews }}
@@ -549,6 +563,16 @@ class HeaderBar extends Component {
                       to="/news"
                     />
                   )}
+                  {squadsVisible && (
+                    <TabWithPushHistory
+                      classes={isWebApp() ? { root: classes.tabRootDonateDesktop } : { root: classes.tabRootDonate }}
+                      value={squadsValue}
+                      change={this.handleTabChange}
+                      id="squadsTabHeaderBar"
+                      label="Squads"
+                      to="/squads"
+                    />
+                  )}
                   {donateVisible && (
                     <TabWithPushHistory
                       classes={isWebApp() ? { root: classes.tabRootDonateDesktop } : { root: classes.tabRootDonate }}
@@ -556,7 +580,7 @@ class HeaderBar extends Component {
                       change={this.handleTabChange}
                       id="donateTabHeaderBar"
                       label="Donate"
-                      to="/more/donate"
+                      to="/donate"
                     />
                   )}
                   {howItWorksVisible && (

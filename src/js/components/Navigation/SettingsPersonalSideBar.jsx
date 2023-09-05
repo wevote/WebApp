@@ -152,6 +152,42 @@ export default class SettingsPersonalSideBar extends Component {
             </div>
           )}
 
+          {!isOnPartnerUrl && (
+            <div className={String(editMode) === 'friends' ?
+              'SettingsItem__summary__item-container SettingsItem__summary__item-container--selected' :
+              'SettingsItem__summary__item-container'}
+            >
+              <div>
+                <Link to="/friends" className="SettingsItem__summary__item" id="notifications">
+                  <span className={String(editMode) === 'friends' ?
+                    'SettingsItem__summary__item__display-name SettingsItem__summary__item__display-name--selected' :
+                    'SettingsItem__summary__item__display-name'}
+                  >
+                    Friends
+                  </span>
+                </Link>
+              </div>
+            </div>
+          )}
+
+          {(isSignedIn && !isOnPartnerUrl) && (
+            <div className={String(editMode) === 'discuss' ?
+              'SettingsItem__summary__item-container SettingsItem__summary__item-container--selected' :
+              'SettingsItem__summary__item-container'}
+            >
+              <div>
+                <Link to="/news" className="SettingsItem__summary__item" id="notifications">
+                  <span className={String(editMode) === 'discuss' ?
+                    'SettingsItem__summary__item__display-name SettingsItem__summary__item__display-name--selected' :
+                    'SettingsItem__summary__item__display-name'}
+                  >
+                    Discuss
+                  </span>
+                </Link>
+              </div>
+            </div>
+          )}
+
           {(isSignedIn && showPremiumFeatures && !isOnPartnerUrlAndNotAdmin) && (
             <div className={String(editMode) === 'domain' ?
               'SettingsItem__summary__item-container SettingsItem__summary__item-container--selected' :

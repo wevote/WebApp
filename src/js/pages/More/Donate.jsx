@@ -4,13 +4,14 @@ import withStyles from '@mui/styles/withStyles';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import { GoogleReCaptcha, GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
 import { Helmet } from 'react-helmet-async';
 import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import DonateActions from '../../common/actions/DonateActions';
 import DonationListForm from '../../common/components/Donation/DonationListForm';
+import DonorboxEmbed from '../../common/components/Donation/DonorboxEmbed';
 import InjectedCheckoutForm from '../../common/components/Donation/InjectedCheckoutForm';
 import standardBoxShadow from '../../common/components/Style/standardBoxShadow';
 import OpenExternalWebSite from '../../common/components/Widgets/OpenExternalWebSite';
@@ -35,6 +36,7 @@ class Donate extends Component {
     super(props);
 
     this.state = {
+      isC4Donation: false,
       isMonthly: true,
       joining: true,
       preDonation: true,
@@ -60,11 +62,14 @@ class Donate extends Component {
   }
 
   componentDidUpdate () {
-    initializejQuery(() => {
-      const { $ } = window;
-      const spot = $('#CaptchaSpot');
-      spot.css({ margin: '0 auto', width: '31%', 'padding-top': '16px' });
-    });
+    const { isC4Donation } = this.state;
+    if (isC4Donation) {
+      initializejQuery(() => {
+        const { $ } = window;
+        const spot = $('#CaptchaSpot');
+        spot.css({ margin: '0 auto', width: '31%', 'padding-top': '16px' });
+      });
+    }
   }
 
   componentWillUnmount () {
@@ -72,10 +77,13 @@ class Donate extends Component {
   }
 
   onDonateStoreChange () {
-    if (DonateStore.donationSuccess() && DonateStore.donationResponseReceived()) {
-      this.onSuccessfulDonation();
-    } else {
-      this.forceUpdate();
+    const { isC4Donation } = this.state;
+    if (isC4Donation) {
+      if (DonateStore.donationSuccess() && DonateStore.donationResponseReceived()) {
+        this.onSuccessfulDonation();
+      } else {
+        this.forceUpdate();
+      }
     }
   }
 
@@ -113,32 +121,35 @@ class Donate extends Component {
   }
 
   onVerifyCaptcha (token) {
-    // console.log('------------ onVerifyCaptcha: ', token);
-    $ajax({
-      endpoint: 'googleRecaptchaVerify',
-      data: { token },
-      success: (res) => {
-        const { allowedToDonate, captchaScore, blockedByCaptcha, blockedByOther } = res;
-        const weVoteId = VoterStore.getVoterWeVoteId();
-        const time = weVoteId !== '' ? 0 : 1000;  // Only during testing, if you start the session on this page, the captcha results can beat the voter_retrieve
-        setTimeout(() => {
-          const isSignedin = VoterStore.getVoterIsSignedIn();
-          const pass = allowedToDonate || isSignedin ? 'passed' : 'failed';
-          const signed = isSignedin ? '(signed in)' : '(not signed in)';
-          console.log(`reCAPTCHA ${pass} this user ${signed} with score: ${captchaScore}, blockedByCaptcha: ${blockedByCaptcha}, blockedByOther: ${blockedByOther}`);
-          this.setState({
-            okToDonateWithoutAuth: allowedToDonate,
-            isSignedin,
-          });
-          if (!allowedToDonate) {
-            $ajax({
-              endpoint: 'logToCloudWatch',
-              data: { message: `reCAPTCHA FAILED verification signedIn ${isSignedin}, results ${JSON.stringify(res)}` },
+    const { isC4Donation } = this.state;
+    if (isC4Donation) {
+      // console.log('------------ onVerifyCaptcha: ', token);
+      $ajax({
+        endpoint: 'googleRecaptchaVerify',
+        data: { token },
+        success: (res) => {
+          const { allowedToDonate, captchaScore, blockedByCaptcha, blockedByOther } = res;
+          const weVoteId = VoterStore.getVoterWeVoteId();
+          const time = weVoteId !== '' ? 0 : 1000;  // Only during testing, if you start the session on this page, the captcha results can beat the voter_retrieve
+          setTimeout(() => {
+            const isSignedin = VoterStore.getVoterIsSignedIn();
+            const pass = allowedToDonate || isSignedin ? 'passed' : 'failed';
+            const signed = isSignedin ? '(signed in)' : '(not signed in)';
+            console.log(`reCAPTCHA ${pass} this user ${signed} with score: ${captchaScore}, blockedByCaptcha: ${blockedByCaptcha}, blockedByOther: ${blockedByOther}`);
+            this.setState({
+              okToDonateWithoutAuth: allowedToDonate,
+              isSignedin,
             });
-          }
-        }, time);
-      },
-    });
+            if (!allowedToDonate) {
+              $ajax({
+                endpoint: 'logToCloudWatch',
+                data: { message: `reCAPTCHA FAILED verification signedIn ${isSignedin}, results ${JSON.stringify(res)}` },
+              });
+            }
+          }, time);
+        },
+      });
+    }
   }
 
   postDonationDescription  = () => (
@@ -150,13 +161,17 @@ class Donate extends Component {
   preDonateDescription = () => (
     <Section noTopMargin>
       <DonateDescriptionContainer>
-        For every $7 donated, we reach 50 Americans.
-        {' '}
-        Please join us with a monthly donation.
-        {' '}
+        Thank you for being a voter! For every $10 donated, you help 50 Americans be voters too.
+      </DonateDescriptionContainer>
+    </Section>
+  );
+
+  preDonateDescriptionBottom = (isC4Donation) => (
+    <Section noTopMargin>
+      <DonateDescriptionContainer>
         <OpenExternalWebSite
           linkIdAttribute="annualBudget"
-          url="https://projects.propublica.org/nonprofits/organizations/811052585"
+          url={isC4Donation ? 'https://projects.propublica.org/nonprofits/organizations/811052585' : 'https://projects.propublica.org/nonprofits/organizations/472691544'}
           target="_blank"
           body={(
             <span>
@@ -172,7 +187,10 @@ class Donate extends Component {
             </span>
           )}
         />
-        , so every donation helps us reach more voters, and pay for critical services, like servers and data fees.
+        , so every
+        {' '}
+        {isC4Donation ? '' : 'tax-deductible '}
+        donation helps us reach more voters, and pay for server and data fees.
       </DonateDescriptionContainer>
     </Section>
   );
@@ -192,164 +210,223 @@ class Donate extends Component {
   render () {
     renderLog('Donate');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
-    const { isSignedin, joining, showWaiting, value, isMonthly, preDonation, okToDonateWithoutAuth } = this.state;
+    const { isC4Donation, isSignedin, joining, showWaiting, value, isMonthly, preDonation, okToDonateWithoutAuth } = this.state;
+
+    // Default donation goes to c3, unless we specify a donation to the c4
+    let c3DonationHtml = '';
+    let c4DonationHtml = '';
+
+    if (!isC4Donation) {
+      c3DonationHtml = (
+        <C3DonationWrapper>
+          <Wrapper>
+            <Helmet title="Donate - We Vote" />
+            <ContentTitle>
+              Want more Americans to vote?
+            </ContentTitle>
+            <CenteredText>
+              {this.preDonateDescription()}
+            </CenteredText>
+            <InnerWrapper>
+              <DonorboxWrapper>
+                <Suspense fallback={<div>Loading...</div>}>
+                  <DonorboxEmbed />
+                </Suspense>
+              </DonorboxWrapper>
+            </InnerWrapper>
+            <CenteredText>
+              {this.preDonateDescriptionBottom(isC4Donation)}
+            </CenteredText>
+          </Wrapper>
+        </C3DonationWrapper>
+      );
+    } else {
+      c4DonationHtml = (
+        <C4DonationWrapper>
+          <Wrapper>
+            <Helmet title="Donate - We Vote" />
+            <ContentTitle>
+              {preDonation ? 'Want more Americans to vote?' : 'Thank you for your donation!'}
+            </ContentTitle>
+            <InnerWrapper>
+              {preDonation ? (
+                <CenteredText>
+                  {this.preDonateDescription()}
+                </CenteredText>
+              ) : this.postDonationDescription()}
+              {preDonation ? (
+                <>
+                  <GoogleReCaptchaProvider
+                    reCaptchaKey={webAppConfig.GOOGLE_RECAPTCHA_KEY}
+                    container={{ element: 'CaptchaSpot' }}
+                  >
+                    {okToDonateWithoutAuth || isSignedin ? (
+                      <>
+                        <ContributeGridWrapper>
+                          <ContributeMonthlyText>
+                            <FormControl component="fieldset"
+                                         className={classes.formControl}
+                            >
+                              <RadioGroup row>
+                                <FormControlLabel
+                                  control={(
+                                    <Radio
+                                      checked={isMonthly}
+                                      onChange={this.handleChange}
+                                      name="isMonthly"
+                                      style={{ color: 'black' }}
+                                    />
+                                  )}
+                                  label="Donate monthly"
+                                  id="donateMonthlyRadio"
+                                />
+                                <FormControlLabel
+                                  control={(
+                                    <Radio
+                                      checked={!isMonthly}
+                                      onChange={this.handleChange}
+                                      name="oneTime"
+                                      style={{ color: 'black' }}
+                                    />
+                                  )}
+                                  label="One time donation"
+                                  id="oneTimeDonationRadio"
+                                />
+                              </RadioGroup>
+                            </FormControl>
+                          </ContributeMonthlyText>
+                          <ContributeGridSection>
+                            {['7', '12', '36', '150'].map((price) => (
+                              <ContributeGridItem key={`gridItem-${price}`}>
+                                <Button
+                                  classes={{ root: classes.buttonRoot }}
+                                  variant="contained"
+                                  sx={{
+                                    ':hover': {
+                                      color: 'white',
+                                    },
+                                  }}
+                                  onClick={() => this.changeValue(`${price}.00`)}
+                                >
+                                  {`$${price}`}
+                                </Button>
+                              </ContributeGridItem>
+                            ))}
+                            <ContributeGridItemJoin joining={joining}>
+                              {!joining ? (
+                                <Button
+                                  classes={{ root: classes.buttonRoot }}
+                                  color="primary"
+                                  variant="contained"
+                                  style={{
+                                    width: '100%',
+                                    backgroundColor: 'darkblue',
+                                    color: 'white',
+                                  }}
+                                  onClick={() => this.changeValue('5.00')}
+                                >
+                                  Join
+                                </Button>
+                              ) : (
+                                <TextField
+                                  id="currency-input"
+                                  label="Amount"
+                                  variant="outlined"
+                                  value={value}
+                                  onChange={this.onAmountFieldChange}
+                                  InputLabelProps={{
+                                    classes: {
+                                      root: classes.textFieldInputRoot,
+                                      focused: classes.textFieldInputRoot,
+                                    },
+                                    shrink: true,
+                                  }}
+                                  InputProps={{
+                                    classes: {
+                                      root: classes.textFieldInputRoot,
+                                      focused: classes.textFieldInputRoot,
+                                    },
+                                    startAdornment: <InputAdornment position="start">$</InputAdornment>,
+                                  }}
+                                  style={{
+                                    marginTop: 6,
+                                    textAlign: 'center',
+                                    width: 150,
+                                  }}
+                                />
+                              )}
+                            </ContributeGridItemJoin>
+                          </ContributeGridSection>
+                        </ContributeGridWrapper>
+                        <PaymentWrapper joining={joining}>
+                          <PaymentCenteredWrapper>
+                            <Elements stripe={stripePromise}>
+                              <InjectedCheckoutForm
+                                value={value}
+                                classes={{}}
+                                isMonthly={isMonthly}
+                                showWaiting={showWaiting}
+                              />
+                            </Elements>
+                          </PaymentCenteredWrapper>
+                        </PaymentWrapper>
+                      </>
+                    ) : (
+                      <ReCaptchaFailed>
+                        Please sign in to donate
+                      </ReCaptchaFailed>
+                    )}
+                    <GoogleReCaptcha onVerify={this.onVerifyCaptcha} style={{ margin: '0 auto', width: '40%' }} />
+                  </GoogleReCaptchaProvider>
+                </>
+              ) : null}
+              {preDonation && this.preDonateDescriptionBottom(isC4Donation)}
+              <DonationListForm
+                isCampaign={false}
+                leftTabIsMembership={false}
+              />
+              {preDonation && (
+                <Section>
+                  <DonateDescriptionContainer>
+                    Contributions or gifts made on this page are not tax
+                    deductible, and fund We Vote USA, a 501(c)(4) nonprofit.
+                    Over 50 awesome people like yourself have donated to make We
+                    Vote possible.
+                    {' '}
+                    We Vote also has a 501(c)(3) nonprofit that welcomes
+                    {' '}
+                    {/* This is a mailto! Shouldn't be visible in iPhone or Android apps. */}
+                    <a
+                      href="https://donorbox.org/we-vote-tax-deductible?default_interval=m&amount=10"
+                      title="I would like to donate to We Vote's tax-deductible 501(c)(3)"
+                      rel="noopener noreferrer"
+                      target="_blank"
+                      style={{ color: '#4371cc' }}
+                    >
+                      tax deductible donations
+                      {' '}
+                      <Launch
+                        style={{
+                          height: 14,
+                          marginLeft: 2,
+                          marginTop: '-3px',
+                          width: 14,
+                        }}
+                      />
+                      .
+                    </a>
+                  </DonateDescriptionContainer>
+                </Section>
+              )}
+            </InnerWrapper>
+          </Wrapper>
+        </C4DonationWrapper>
+      );
+    }
 
     return (
       <PageContentContainer>
-        <Wrapper>
-          <Helmet title="Donate - We Vote" />
-          <ContentTitle>
-            {preDonation ? 'Want to make sure more Americans vote?' : 'Thank you for your donation!'}
-          </ContentTitle>
-          <InnerWrapper>
-            {preDonation ? this.preDonateDescription() : this.postDonationDescription()}
-            {preDonation ? (
-              <>
-                <GoogleReCaptchaProvider
-                  reCaptchaKey={webAppConfig.GOOGLE_RECAPTCHA_KEY}
-                  container={{ element: 'CaptchaSpot' }}
-                >
-                  {okToDonateWithoutAuth || isSignedin ? (
-                    <>
-                      <ContributeGridWrapper>
-                        <ContributeMonthlyText>
-                          <FormControl component="fieldset"
-                                       className={classes.formControl}
-                          >
-                            <RadioGroup row>
-                              <FormControlLabel
-                                control={<Radio checked={isMonthly} onChange={this.handleChange} name="isMonthly" style={{ color: 'black' }} />}
-                                label="Donate monthly"
-                                id="donateMonthlyRadio"
-                              />
-                              <FormControlLabel
-                                control={<Radio checked={!isMonthly} onChange={this.handleChange} name="oneTime" style={{ color: 'black' }} />}
-                                label="One time donation"
-                                id="oneTimeDonationRadio"
-                              />
-                            </RadioGroup>
-                          </FormControl>
-                        </ContributeMonthlyText>
-                        <ContributeGridSection>
-                          {['7', '12', '36', '150'].map((price) => (
-                            <ContributeGridItem key={`gridItem-${price}`}>
-                              <Button
-                                classes={{ root: classes.buttonRoot }}
-                                variant="contained"
-                                sx={{
-                                  ':hover': {
-                                    color: 'white',
-                                  },
-                                }}
-                                onClick={() => this.changeValue(`${price}.00`)}
-                              >
-                                {`$${price}`}
-                              </Button>
-                            </ContributeGridItem>
-                          ))}
-                          <ContributeGridItemJoin joining={joining}>
-                            {!joining ? (
-                              <Button
-                                classes={{ root: classes.buttonRoot }}
-                                color="primary"
-                                variant="contained"
-                                style={{
-                                  width: '100%',
-                                  backgroundColor: 'darkblue',
-                                  color: 'white',
-                                }}
-                                onClick={() => this.changeValue('5.00')}
-                              >
-                                Join
-                              </Button>
-                            ) : (
-                              <TextField
-                                id="currency-input"
-                                label="Amount"
-                                variant="outlined"
-                                value={value}
-                                onChange={this.onAmountFieldChange}
-                                InputLabelProps={{
-                                  classes: {
-                                    root: classes.textFieldInputRoot,
-                                    focused: classes.textFieldInputRoot,
-                                  },
-                                  shrink: true,
-                                }}
-                                InputProps={{
-                                  classes: {
-                                    root: classes.textFieldInputRoot,
-                                    focused: classes.textFieldInputRoot,
-                                  },
-                                  startAdornment: <InputAdornment position="start">$</InputAdornment>,
-                                }}
-                                style={{
-                                  marginTop: 6,
-                                  textAlign: 'center',
-                                  width: 150,
-                                }}
-                              />
-                            )}
-                          </ContributeGridItemJoin>
-                        </ContributeGridSection>
-                      </ContributeGridWrapper>
-                      <PaymentWrapper joining={joining}>
-                        <PaymentCenteredWrapper>
-                          <Elements stripe={stripePromise}>
-                            <InjectedCheckoutForm
-                              value={value}
-                              classes={{}}
-                              isMonthly={isMonthly}
-                              showWaiting={showWaiting}
-                            />
-                          </Elements>
-                        </PaymentCenteredWrapper>
-                      </PaymentWrapper>
-                    </>
-                  ) : (
-                    <ReCaptchaFailed>
-                      Please sign in to donate
-                    </ReCaptchaFailed>
-                  )}
-                  <GoogleReCaptcha onVerify={this.onVerifyCaptcha} style={{ margin: '0 auto', width: '40%' }} />
-                </GoogleReCaptchaProvider>
-              </>
-            ) : null}
-            <DonationListForm
-              isCampaign={false}
-              leftTabIsMembership={false}
-            />
-            {preDonation && (
-              <Section>
-                <DonateDescriptionContainer>
-                  Contributions or gifts made on this page are not tax deductible, and fund We Vote USA, a 501(c)(4) nonprofit. Over 50 awesome people like yourself have donated to make We Vote possible.
-                  {' '}
-                  We Vote also has a 501(c)(3) nonprofit that welcomes
-                  {' '}
-                  {/* This is a mailto! Shouldn't be visible in iPhone or Android apps. */}
-                  <a href={"mailto:donate@WeVoteEducation.org?subject=Donate to We Vote's 501(c)(3)&body=I am interested in making at tax deductible donating to We Vote's 501(c)(3)."}
-                     title="I would like to donate to We Vote's 501(c)(3)"
-                     rel="noopener noreferrer"
-                     target="_blank"
-                     style={{ color: '#4371cc' }}
-                  >
-                    tax deductible donations
-                    {' '}
-                    <Launch
-                      style={{
-                        height: 14,
-                        marginLeft: 2,
-                        marginTop: '-3px',
-                        width: 14,
-                      }}
-                    />
-                    .
-                  </a>
-                </DonateDescriptionContainer>
-              </Section>
-            )}
-          </InnerWrapper>
-        </Wrapper>
+        {isC4Donation ? c4DonationHtml : c3DonationHtml}
       </PageContentContainer>
     );
   }
@@ -407,6 +484,19 @@ const styles = (theme) => ({
   },
 });
 
+const C3DonationWrapper = styled('div')`
+`;
+
+const C4DonationWrapper = styled('div')`
+`;
+
+const CenteredText = styled('div')`
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 12px;
+`;
+
 const ContentTitle = styled('h1')(({ theme }) => (`
   font-size: 22px;
   font-weight: 600;
@@ -416,6 +506,12 @@ const ContentTitle = styled('h1')(({ theme }) => (`
     font-size: 20px;
   }
 `));
+
+const DonorboxWrapper = styled('div')`
+  align-items: center;
+  display: flex;
+  justify-content: center;
+`;
 
 const Wrapper = styled('div')`
   display: flex;
@@ -434,7 +530,7 @@ const DonateDescriptionContainer = styled('div')`
   margin-bottom: 12px;
   width: 960px;
   max-width: 90vw;
-  text-align: left;
+  text-align: center;
   @media (min-width: 960px) and (max-width: 991px) {
     > * {
       width: 90%;
