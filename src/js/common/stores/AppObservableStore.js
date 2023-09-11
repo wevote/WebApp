@@ -299,14 +299,14 @@ export default {
       window.location.href.includes('ngrok');
   },
 
-  isOnWeVoteSubdomainUrl () {
-    // console.log('AppObservableStore isOnWeVoteSubdomainUrl: ', nonFluxState.onWeVoteSubdomainUrl);
-    return nonFluxState.onWeVoteSubdomainUrl;
+  isOnWeVotePartnerSubdomainUrl () {
+    // console.log('AppObservableStore isOnWeVotePartnerSubdomainUrl: ', nonFluxState.onWeVotePartnerSubdomainUrl);
+    return nonFluxState.onWeVotePartnerSubdomainUrl;
   },
 
   isOnPartnerUrl () {
-    // console.log('AppObservableStore onWeVoteSubdomainUrl: ', nonFluxState.onWeVoteSubdomainUrl, ', onChosenFullDomainUrl:', nonFluxState.onChosenFullDomainUrl);
-    return nonFluxState.onWeVoteSubdomainUrl || nonFluxState.onChosenFullDomainUrl;
+    // console.log('AppObservableStore onWeVotePartnerSubdomainUrl: ', nonFluxState.onWeVotePartnerSubdomainUrl, ', onChosenFullDomainUrl:', nonFluxState.onChosenFullDomainUrl);
+    return nonFluxState.onWeVotePartnerSubdomainUrl || nonFluxState.onChosenFullDomainUrl;
   },
 
   isVoterAdminForThisUrl (linkedOrganizationWeVoteId) {
@@ -760,7 +760,7 @@ export default {
         let newHostname = hostFromApi ? hostFromApi.replace('www.', '') : hostname.replace('www.', '');
         if (apiSuccess) {
           let onWeVoteRootUrl = false;
-          let onWeVoteSubdomainUrl = false;
+          let onWeVotePartnerSubdomainUrl = false;
           let onFacebookSupportedDomainUrl = false;
           let onChosenFullDomainUrl = false;
 
@@ -771,7 +771,7 @@ export default {
           onWeVoteRootUrl = this.isOnWeVoteRootUrl();
           // console.log('AppObservableStore siteConfigurationRetrieve hostname, newHostname:', hostname, newHostname, ', onWeVoteRootUrl:', onWeVoteRootUrl);
           if (!onWeVoteRootUrl && stringContains('wevote.us', newHostname)) {
-            onWeVoteSubdomainUrl = true;
+            onWeVotePartnerSubdomainUrl = true;
           } else if (!onWeVoteRootUrl) {
             onChosenFullDomainUrl = true;
           }
@@ -806,7 +806,7 @@ export default {
           nonFluxState.hostname = newHostname;
           nonFluxState.onChosenFullDomainUrl = onChosenFullDomainUrl;
           nonFluxState.onFacebookSupportedDomainUrl = onFacebookSupportedDomainUrl;
-          nonFluxState.onWeVoteSubdomainUrl = onWeVoteSubdomainUrl;
+          nonFluxState.onWeVotePartnerSubdomainUrl = onWeVotePartnerSubdomainUrl;
           nonFluxState.onWeVoteRootUrl = onWeVoteRootUrl;
           nonFluxState.siteConfigurationHasBeenRetrieved = true;
           nonFluxState.siteOwnerOrganizationWeVoteId = siteOwnerOrganizationWeVoteId;

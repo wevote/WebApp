@@ -143,10 +143,8 @@ class FooterMainWeVote extends Component {
                   )}
                   className={classes.link}
                 />
-                {/*
                 <RowSpacer />
-                <Link to="/more/donate" className={classes.link}>Donate</Link>
-                */}
+                <Link to="/donate" className={classes.link}>Donate</Link>
               </OneRow>
             )}
           </TopSectionInnerWrapper>

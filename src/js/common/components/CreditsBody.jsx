@@ -106,7 +106,7 @@ class Credits extends Component {
             <span>
               , or by
               {' '}
-              <Link class="u-link-color" to="/more/donate">
+              <Link class="u-link-color" to="/donate">
                 donating now
               </Link>
             </span>

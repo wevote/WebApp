@@ -159,40 +159,39 @@ class Donate extends Component {
   );
 
   preDonateDescription = () => (
-    <Section noTopMargin>
-      <DonateDescriptionContainer>
-        Thank you for being a voter! For every $10 donated, you help 50 Americans be voters too.
-      </DonateDescriptionContainer>
-    </Section>
+    <span>
+      Thank you for being a voter! For every $10 donated, you help 50 Americans be voters too.
+    </span>
   );
 
   preDonateDescriptionBottom = (isC4Donation) => (
-    <Section noTopMargin>
-      <DonateDescriptionContainer>
-        <OpenExternalWebSite
-          linkIdAttribute="annualBudget"
-          url={isC4Donation ? 'https://projects.propublica.org/nonprofits/organizations/811052585' : 'https://projects.propublica.org/nonprofits/organizations/472691544'}
-          target="_blank"
-          body={(
-            <span>
-              Our budgets are small&nbsp;
-              <Launch
-                style={{
-                  height: 14,
-                  marginLeft: 2,
-                  marginTop: '-3px',
-                  width: 14,
-                }}
-              />
-            </span>
-          )}
-        />
-        , so every
-        {' '}
-        {isC4Donation ? '' : 'tax-deductible '}
-        donation helps us reach more voters, and pay for server and data fees.
-      </DonateDescriptionContainer>
-    </Section>
+    <span>
+      <OpenExternalWebSite
+        linkIdAttribute="annualBudget"
+        url={isC4Donation ? 'https://projects.propublica.org/nonprofits/organizations/811052585' : 'https://projects.propublica.org/nonprofits/organizations/472691544'}
+        target="_blank"
+        body={(
+          <span>
+            Our budgets are small&nbsp;
+            <Launch
+              style={{
+                height: 14,
+                marginLeft: 2,
+                marginTop: '-3px',
+                width: 14,
+              }}
+            />
+          </span>
+        )}
+      />
+      , so every
+      {' '}
+      {isC4Donation ? '' : 'tax-deductible '}
+      donation helps us reach more voters.
+      <br />
+      <br />
+      Expenses include server costs ($600 - $2,500 per month), data fees (~$40,000 per year), collaboration tools and other hard costs.
+    </span>
   );
 
   changeValue (newValue) {
@@ -224,19 +223,33 @@ class Donate extends Component {
             <ContentTitle>
               Want more Americans to vote?
             </ContentTitle>
-            <CenteredText>
-              {this.preDonateDescription()}
+            <CenteredText className="u-show-mobile">
+              <Section noTopMargin>
+                <DonateDescriptionContainer>
+                  {this.preDonateDescription()}
+                  {' '}
+                  {this.preDonateDescriptionBottom(isC4Donation)}
+                </DonateDescriptionContainer>
+              </Section>
             </CenteredText>
-            <InnerWrapper>
-              <DonorboxWrapper>
-                <Suspense fallback={<div>Loading...</div>}>
-                  <DonorboxEmbed />
-                </Suspense>
-              </DonorboxWrapper>
-            </InnerWrapper>
-            <CenteredText>
-              {this.preDonateDescriptionBottom(isC4Donation)}
-            </CenteredText>
+            <TwoColumns>
+              <OneColumn50Percent className="u-show-desktop-tablet">
+                {this.preDonateDescription()}
+                {' '}
+                {this.preDonateDescriptionBottom(isC4Donation)}
+              </OneColumn50Percent>
+              <OneColumn50Percent>
+                <InnerWrapper>
+                  <DonorboxWrapper>
+                    <Suspense fallback={<div>Loading...</div>}>
+                      <DonorboxEmbed />
+                    </Suspense>
+                  </DonorboxWrapper>
+                </InnerWrapper>
+              </OneColumn50Percent>
+            </TwoColumns>
+            <br />
+            <br />
           </Wrapper>
         </C3DonationWrapper>
       );
@@ -251,7 +264,11 @@ class Donate extends Component {
             <InnerWrapper>
               {preDonation ? (
                 <CenteredText>
-                  {this.preDonateDescription()}
+                  <Section noTopMargin>
+                    <DonateDescriptionContainer>
+                      {this.preDonateDescription()}
+                    </DonateDescriptionContainer>
+                  </Section>
                 </CenteredText>
               ) : this.postDonationDescription()}
               {preDonation ? (
@@ -380,7 +397,13 @@ class Donate extends Component {
                   </GoogleReCaptchaProvider>
                 </>
               ) : null}
-              {preDonation && this.preDonateDescriptionBottom(isC4Donation)}
+              {preDonation && (
+                <Section noTopMargin>
+                  <DonateDescriptionContainer>
+                    {this.preDonateDescriptionBottom(isC4Donation)}
+                  </DonateDescriptionContainer>
+                </Section>
+              )}
               <DonationListForm
                 isCampaign={false}
                 leftTabIsMembership={false}
@@ -511,6 +534,7 @@ const DonorboxWrapper = styled('div')`
   align-items: center;
   display: flex;
   justify-content: center;
+  min-width: 300px;
 `;
 
 const Wrapper = styled('div')`
@@ -619,5 +643,16 @@ const ContributeGridItemJoin = styled('div', {
   text-align: center;
   grid-column: auto / span 2;
 `));
+
+const OneColumn50Percent = styled('div')`
+  margin: 0 15px;
+  max-width: 480px;
+`;
+
+const TwoColumns = styled('div')`
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+`;
 
 export default withStyles(styles)(Donate);

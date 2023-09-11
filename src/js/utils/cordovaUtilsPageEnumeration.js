@@ -22,7 +22,8 @@ export function pageEnumeration () {
     return CordovaPageConstants.moreCredits;
   } else if (path.startsWith('/more/elections')) {
     return CordovaPageConstants.moreElections;
-  } else if (path.startsWith('/more/attributions') ||
+  } else if (path.startsWith('/donate') ||
+             path.startsWith('/more/attributions') ||
              path.startsWith('/more/donate') ||
              path.startsWith('/more/privacy') ||
              path.startsWith('/more/terms')) {

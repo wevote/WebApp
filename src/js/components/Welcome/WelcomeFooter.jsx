@@ -55,7 +55,7 @@ class WelcomeFooter extends Component {
               <Link id="footerLinkAbout" className={classes.link} to="/about">About &amp; Team</Link>
               <Link id="footerLinkCredits" className={classes.link} to="/more/credits">Credits &amp; Thanks</Link>
               {isWebApp() && (
-                <Link id="footerLinkDonate" className={classes.link} to="/more/donate">Donate</Link>
+                <Link id="footerLinkDonate" className={classes.link} to="/donate">Donate</Link>
               )}
               <Suspense fallback={<></>}>
                 <OpenExternalWebSite
