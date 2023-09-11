@@ -39,7 +39,7 @@ export default class ProcessingDonation extends Component {
       if (DonateStore.donationSuccess()) {
         historyPush('/more/donate_thank_you');
       } else {
-        historyPush('/more/donate');
+        historyPush('/donate');
       }
     }
   };

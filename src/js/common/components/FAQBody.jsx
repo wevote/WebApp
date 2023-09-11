@@ -211,7 +211,7 @@ export default class FAQBody extends Component {
         <br />
         We provide a free place where organizations can share and promote their voter guides, including
         endorsements of candidates and
-        ballot measures, and connect to new constituents.
+        ballot measures, and connect to constituents.
         <br />
         <br />
 
@@ -230,7 +230,7 @@ export default class FAQBody extends Component {
           <>
             If you like We Vote,
             {' '}
-            <Link to="/more/donate" className="u-cursor--pointer u-link-color">please donate</Link>
+            <Link to="/donate" className="u-cursor--pointer u-link-color">please donate</Link>
             {' '}
             so we can do more to help voters.
           </>
@@ -240,24 +240,21 @@ export default class FAQBody extends Component {
 
         <strong>How do you make money?</strong>
         <br />
-        Like most nonprofits, we take in donations from individuals and foundations. We also plan to generate
-        revenues by offering premium features.
+        Like most nonprofits, we take in donations from individuals and foundations.
         <br />
         <br />
 
         <strong>How will you use my donation?</strong>
         <br />
-        While most of the We Vote software is written by unpaid volunteers, we use financial donations to pay the staff
-        required
-        to gather and groom election data, as well as manage communications, operations, and our internship program.
-        Other expenses include server costs and fees required to buy political data.
+        Expenses include server costs ($600 - $2,500 per month), data fees (~$40,000 per year), collaboration tools and other hard costs.
+        In the future, we might hire some key staff with donations, for the smooth operation of We Vote.
         <br />
         <br />
 
         <strong>How will you handle trolls?</strong>
         <br />
-        Unless your name is J.R.R. Tolkien, we know how much you hate trolls. That&apos;s why on We Vote you only hear from
-        people and organizations that you Friend or Follow. We Vote eliminates noise from people with radically
+        Unless your name is J.R.R. Tolkien, we know how much you hate trolls. That&apos;s why on We Vote you mainly hear from
+        people and organizations that you Friend or Follow. We Vote reduces the noise from people with radically
         different
         {' '}
         <Suspense fallback={<></>}>

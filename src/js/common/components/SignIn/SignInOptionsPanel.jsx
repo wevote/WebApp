@@ -49,7 +49,7 @@ export default class SignInOptionsPanel extends Component {
       hideVoterPhoneEntry: false,
       isInternetExplorer: document.documentMode || false, // Yes, we are talking about that old Microsoft product
       isOnWeVoteRootUrl: true,
-      isOnWeVoteSubdomainUrl: false,
+      isOnWeVotePartnerSubdomainUrl: false,
       isOnFacebookSupportedDomainUrl: false,
       pleaseSignInTitleFromState: '',
       pleaseSignInSubTitle: '',
@@ -155,10 +155,10 @@ export default class SignInOptionsPanel extends Component {
       });
     } else {
       const isOnWeVoteRootUrl = AppObservableStore.isOnWeVoteRootUrl();
-      const isOnWeVoteSubdomainUrl = AppObservableStore.isOnWeVoteSubdomainUrl();
+      const isOnWeVotePartnerSubdomainUrl = AppObservableStore.isOnWeVotePartnerSubdomainUrl();
       // No need to query an api to get this answer.  Creates an unneeded dependency:  const isOnFacebookSupportedDomainUrl = AppObservableStore.isOnFacebookSupportedDomainUrl() || window.location.href.includes('ngrok');
       let pleaseSignInSubTitle = '';
-      if (isOnWeVoteRootUrl || isOnWeVoteSubdomainUrl || isOnFacebookSupportedDomainUrl) {
+      if (isOnWeVoteRootUrl || isOnWeVotePartnerSubdomainUrl || isOnFacebookSupportedDomainUrl) {
         pleaseSignInSubTitle = '';
       }
       this.setState({
@@ -168,7 +168,7 @@ export default class SignInOptionsPanel extends Component {
     }
     this.setState({
       isOnWeVoteRootUrl: AppObservableStore.isOnWeVoteRootUrl(),
-      isOnWeVoteSubdomainUrl: AppObservableStore.isOnWeVoteSubdomainUrl(),
+      isOnWeVotePartnerSubdomainUrl: AppObservableStore.isOnWeVotePartnerSubdomainUrl(),
       isOnFacebookSupportedDomainUrl,
     });
 
@@ -233,7 +233,7 @@ export default class SignInOptionsPanel extends Component {
     const { isOnFacebookSupportedDomainUrl } = this.state;
     this.setState({
       isOnWeVoteRootUrl: AppObservableStore.isOnWeVoteRootUrl(),
-      isOnWeVoteSubdomainUrl: AppObservableStore.isOnWeVoteSubdomainUrl(),
+      isOnWeVotePartnerSubdomainUrl: AppObservableStore.isOnWeVotePartnerSubdomainUrl(),
       isOnFacebookSupportedDomainUrl: AppObservableStore.isOnFacebookSupportedDomainUrl() || isOnFacebookSupportedDomainUrl,
     });
   }
@@ -393,7 +393,7 @@ export default class SignInOptionsPanel extends Component {
     const {
       facebookAuthResponse, hideCurrentlySignedInHeader,
       hideAppleSignInButton, hideFacebookSignInButton, hideTwitterSignInButton,
-      hideVoterEmailAddressEntry, hideVoterPhoneEntry, isOnWeVoteRootUrl, isOnWeVoteSubdomainUrl,
+      hideVoterEmailAddressEntry, hideVoterPhoneEntry, isOnWeVoteRootUrl, isOnWeVotePartnerSubdomainUrl,
       isOnFacebookSupportedDomainUrl, pleaseSignInTitleFromState, pleaseSignInSubTitle, showRecommendedText, voter, hideDialogForCordova,
     } = this.state;
     if (!voter) {
@@ -421,7 +421,7 @@ export default class SignInOptionsPanel extends Component {
     let yourAccountTitle = 'Security & Sign In';
     let yourAccountExplanation = '';
     if (voterIsSignedIn) {
-      if (voterIsSignedInFacebook && !voterIsSignedInTwitter && (isOnWeVoteRootUrl || isOnWeVoteSubdomainUrl)) {
+      if (voterIsSignedInFacebook && !voterIsSignedInTwitter && (isOnWeVoteRootUrl || isOnWeVotePartnerSubdomainUrl)) {
         yourAccountTitle = 'Have Twitter Too?';
         yourAccountExplanation = 'By adding your Twitter account to your We Vote profile, you get access to the voter guides of everyone you follow.';
       } else if (voterIsSignedInTwitter && !voterIsSignedInFacebook && isOnFacebookSupportedDomainUrl) {
@@ -463,7 +463,7 @@ export default class SignInOptionsPanel extends Component {
             {(!voterIsSignedInTwitter || !voterIsSignedInFacebook) && !hideDialogForCordova ? (
               <>
                 <div className="u-stack--md" style={isAndroid() ? { paddingBottom: '10px', paddingTop: '10px' } : {}}>
-                  { !hideTwitterSignInButton && !voterIsSignedInTwitter && (isOnWeVoteRootUrl || isOnWeVoteSubdomainUrl) && (
+                  { !hideTwitterSignInButton && !voterIsSignedInTwitter && (isOnWeVoteRootUrl || isOnWeVotePartnerSubdomainUrl) && (
                     <span>
                       {showRecommendedText &&
                         <RecommendedText className="u-tl u-stack--sm">Recommended</RecommendedText>}

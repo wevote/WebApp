@@ -40,6 +40,7 @@ export function getApplicationViewBooleans (pathname) {
   } else if (
     pathnameLowerCase === '/about' ||
     pathnameLowerCase.startsWith('/candidate/') ||
+    pathnameLowerCase.startsWith('/donate') ||
     pathnameLowerCase === '/for-campaigns' ||
     pathnameLowerCase === '/for-organizations' ||
     pathnameLowerCase.startsWith('/how') ||
@@ -223,6 +224,7 @@ export function getApplicationViewBooleans (pathname) {
   } else if (pathnameLowerCase.startsWith('/ballot') ||
       pathnameLowerCase.endsWith('/cs/') || // Show Footer if back to not specified above
       pathnameLowerCase.startsWith('/candidate') || // Show Footer if back to not specified above
+      pathnameLowerCase.startsWith('/donate') || // Show Footer if back to not specified above
       pathnameLowerCase.startsWith('/friends') ||
       pathnameLowerCase.startsWith('/measure') || // Show Footer if back to not specified above
       pathnameLowerCase.startsWith('/more/donate') ||

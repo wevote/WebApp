@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
-import AppObservableStore from '../../common/stores/AppObservableStore';
+import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
 import VoterSessionActions from '../../actions/VoterSessionActions';
 import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../common/utils/logging';
@@ -34,6 +34,7 @@ export default class SettingsPersonalSideBar extends Component {
     if (this.props.organizationType) {
       this.setState({ isOrganization: this.isOrganization(this.props.organizationType) });
     }
+    this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
     const { isSignedIn } = this.props;
     this.setState({
       isOnPartnerUrl: AppObservableStore.isOnPartnerUrl(),
@@ -54,6 +55,16 @@ export default class SettingsPersonalSideBar extends Component {
         isSignedIn: this.props.isSignedIn,
       });
     }
+  }
+
+  componentWillUnmount () {
+    this.appStateSubscription.unsubscribe();
+  }
+
+  onAppObservableStoreChange () {
+    this.setState({
+      isOnPartnerUrl: AppObservableStore.isOnPartnerUrl(),
+    });
   }
 
   voterSignOut = () => {
