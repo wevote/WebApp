@@ -7,4 +7,5 @@ module.exports = {
   TWITTER_USER_NAME: '',
   TWITTER_PASSWORD: '',
   WEB_APP_ROOT_URL: 'https://RANDOMLY-GENERATED-SUBDOMAIN.ngrok-free.app',
+  CID: '',
 };
