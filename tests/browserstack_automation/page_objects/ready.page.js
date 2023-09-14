@@ -6,6 +6,10 @@ class ReadyPage extends Page {
     super().title = 'Ready to Vote? - We Vote';
   }
 
+  get avatar () {
+    return super.avatar;
+  }
+
   get electionCountDownTitle () {
     return $('#electionCountDownTitle');
   }
@@ -64,6 +68,10 @@ class ReadyPage extends Page {
 
   async load () {
     await super.open('/ready');
+  }
+
+  async signIn () {
+    await super.signIn();
   }
 
   async openBallotModal () {

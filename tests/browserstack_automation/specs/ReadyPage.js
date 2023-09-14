@@ -45,4 +45,11 @@ describe('ReadyPage', () => {
     await ReadyPage.toggleFinePrint();
     await expect(ReadyPage.finePrintStepText).toBeElementsArrayOfSize(4);
   });
+
+  it('signIn', async () => {
+    await ReadyPage.load();
+    await expect(ReadyPage.avatar).not.toExist();
+    await ReadyPage.signIn();
+    await expect(ReadyPage.avatar).toBeDisplayed();
+  });
 });
