@@ -1,5 +1,5 @@
 import { driver, $ } from '@wdio/globals';
-import { CID as cid } from '../config/browserstack.config';
+import { VOTER_DEVICE_ID as voterDeviceId } from '../config/browserstack.config';
 
 export default class Page {
   constructor () {
@@ -34,7 +34,7 @@ export default class Page {
     await driver.url(path);
   }
 
-  async getCID () {
+  async getVoterDeviceId () {
     const cookie = await driver.getCookies('voter_device_id');
     if (cookie) {
       const [{ value }] = cookie;
@@ -44,9 +44,9 @@ export default class Page {
   }
 
   async signIn () {
-    if (cid) {
+    if (voterDeviceId) {
       const path = await driver.getUrl();
-      const query = `?cid=${cid}`;
+      const query = `?cid=${voterDeviceId}`;
       await this.open(path + query);
     }
   }
