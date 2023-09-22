@@ -225,7 +225,7 @@ class FooterBar extends React.Component {
     const howItWorksVisible = false;
     if (isCordova() || inPrivateLabelMode) {
       discussVisible = false; // 2023-09-04 Dale We are turning off Discuss footer icon for now
-      donateVisible = true;
+      donateVisible = false;  // Can't have donations in iOS
       // howItWorksVisible = true;
     } else if (voterIsSignedIn) {
       // If signed in, turn Discuss on, and How It Works off

@@ -161,10 +161,10 @@ export function getIOSSizeString () {
   const isIPhone5p5inMiniPhones = ['iPhone13,1', 'iPhone14,4'];
   //    iPhone:               X             X             XS            11 Pro
   const iPhone5p8inPhones = ['iPhone10,3', 'iPhone10,6', 'iPhone11,2', 'iPhone12,3'];
-  //    iPhone:               XR            11            12 Pro         12             13 Pro           13           14
-  const iPhone6p1inPhones = ['iPhone11,8', 'iPhone12,1', 'iPhone13,3', 'iPhone13,2', 'iPhone14,2', 'iPhone14,5', 'iPhone14,7'];
-  //    iPhone:               XS Max        XS Max        11 Pro Max   12ProMax(6.7) 13ProMax(6.7)   14 Plus         14 Pro     14 Pro Max
-  const iPhone6p5inPhones = ['iPhone11,4', 'iPhone11,6', 'iPhone12,5', 'iPhone13,4', 'iPhone14,3', 'iPhone14,8', 'iPhone15,2', 'iPhone15,3'];
+  //    iPhone:               XR            11            12 Pro         12             13 Pro           13           14       15 Pro        15
+  const iPhone6p1inPhones = ['iPhone11,8', 'iPhone12,1', 'iPhone13,3', 'iPhone13,2', 'iPhone14,2', 'iPhone14,5', 'iPhone14,7', 'iPhone16,2', 'iPhone15,4'];
+  //    iPhone:               XS Max        XS Max        11 Pro Max   12ProMax(6.7) 13ProMax(6.7)   14 Plus         14 Pro     14 Pro Max   15ProMax(6.7) 15 Plus(6.7)
+  const iPhone6p5inPhones = ['iPhone11,4', 'iPhone11,6', 'iPhone12,5', 'iPhone13,4', 'iPhone14,3', 'iPhone14,8', 'iPhone15,2', 'iPhone15,3', 'iPhone16,2', 'iPhone15,5'];
   if (iPhone3p5inPhones.includes(window.device.model)) {
     return 'isIPhone3p5in';
   } else if (iPhone4inPhones.includes(window.device.model)) {
@@ -384,8 +384,9 @@ export function isIPadMini () {
 
 export function hasDynamicIsland () {
   if (isIOS() && !isIOSAppOnMac() &&
-    ['iPhone15,2', 'iPhone15,3'].includes(window.device.model)) {
-    logMatch('iPhone 14 Pro or 14 Pro Max, Dynamic Island Sized Header', true);
+    // 14 Pro       14 Pro Max    15           15 Plus        15 Pro        15 Pro Max
+    ['iPhone15,2', 'iPhone15,3', 'iPhone15,4', 'iPhone15,5', 'iPhone16,1', 'iPhone16,1'].includes(window.device.model)) {
+    logMatch('iPhone 14 Pro or 14 Pro Max or 15*, Dynamic Island Sized Header', true);
     return true;
   }
   return false;
@@ -417,7 +418,6 @@ export function isIPadGiantSize () {
   }
   return false;
 }
-
 
 export function hasIPhoneNotch () {
   return isIPhone5p5inMini() || isIPhone5p8in() || isIPhone6p1in() || isIPhone6p5in();

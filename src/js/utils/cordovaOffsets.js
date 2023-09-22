@@ -383,7 +383,7 @@ export function shareBottomOffset (pinToBottom) {
   } else if (isAndroid()) {
     return showFooterBar ? `${measureFooterContainer()}px` : '0px';
   } else if (showFooterBar) {
-    return `${measureFooterContainer()}px`;
+    return '';
   }
 
   // Default for all other devices, including desktop and mobile browsers
