@@ -223,11 +223,11 @@ class Squads extends Component {
               {/* </ViewBallotButtonWrapper> */}
               {/* !isAndroid() && (
                 <ReadyIntroductionMobileWrapper className="u-show-mobile-tablet">
-                  <Suspense fallback={<></>}>
+                  <CommentedOutSuspense fallback={<></>}>
                     <DelayedLoad waitBeforeShow={700}>
                       <ReadyFinePrint showStep3WhenCompressed />
                     </DelayedLoad>
-                  </Suspense>
+                  </CommentedOutSuspense>
                 </ReadyIntroductionMobileWrapper>
               ) */}
               {voterIsSignedIn && (
