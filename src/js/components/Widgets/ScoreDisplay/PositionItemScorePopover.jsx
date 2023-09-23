@@ -241,7 +241,7 @@ class PositionItemScorePopover extends Component {
                 <ReadMore
                   textToDisplay={`"${statementText}"`}
                   numberOfLines={10}
-                  onShowMoreAlternateFunction={this.onShowMoreAlternateFunction}
+                  onShowMoreAlternateFunction={this.props.onShowMoreAlternateFunction}
                 />
               </Suspense>
             </StatementText>
