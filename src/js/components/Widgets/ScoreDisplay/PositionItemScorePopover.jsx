@@ -239,8 +239,9 @@ class PositionItemScorePopover extends Component {
             <StatementText>
               <Suspense fallback={<></>}>
                 <ReadMore
-                  textToDisplay={`"9 ${statementText}"`}
+                  textToDisplay={`"${statementText}"`}
                   numberOfLines={10}
+                  onShowMoreAlternateFunction={this.onShowMoreAlternateFunction}
                 />
               </Suspense>
             </StatementText>
