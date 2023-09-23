@@ -261,18 +261,21 @@ class MeasureItemCompressed extends Component {
                   <PositionRowList
                     ballotItemWeVoteId={measureWeVoteId}
                     showSupport
+                    firstInstance={false}
                   />
                 </PositionRowListOneWrapper>
                 <PositionRowListOneWrapper>
                   <PositionRowList
                     ballotItemWeVoteId={measureWeVoteId}
                     showOppose
+                    firstInstance={false}
                   />
                 </PositionRowListOneWrapper>
                 <PositionRowListOneWrapper>
                   <PositionRowList
                     ballotItemWeVoteId={measureWeVoteId}
                     showInfoOnly
+                    firstInstance={false}
                   />
                 </PositionRowListOneWrapper>
                 <PositionRowListEmptyWrapper>

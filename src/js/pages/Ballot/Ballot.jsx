@@ -1597,6 +1597,7 @@ class Ballot extends Component {
                                 return foundInStringItem;
                               });
                             }
+                            // console.log('-------- Ballot --------- numberOfBallotItemsDisplayed', numberOfBallotItemsDisplayed, item.we_vote_id);
                             isFirstBallotItem = numberOfBallotItemsDisplayed === 1;
                             return (
                               <div className="keyInsertionDiv" key={key}>

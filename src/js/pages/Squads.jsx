@@ -203,31 +203,31 @@ class Squads extends Component {
                 </ReadyIntroductionMobileWrapper>
               )}
               <PrepareForElectionOuterWrapper>
-                {/* <Suspense fallback={<></>}> */}
+                {/* <CommentedOutSuspense fallback={<></>}> */}
                 {/*  <DelayedLoad waitBeforeShow={10}> */}
                 {/*     <ReadyPageValuesList sortByForcedSortOrder sortByNumberOfAdvocates /> */}
                 {/*  </DelayedLoad> */}
-                {/* </Suspense> */}
+                {/* </CommentedOutSuspense> */}
               </PrepareForElectionOuterWrapper>
               {/* <ReadyIntroductionMobileWrapper className="u-show-mobile-tablet"> */}
-              {/*  <Suspense fallback={<></>}> */}
+              {/*  <CommentedOutSuspense fallback={<></>}> */}
               {/*    <DelayedLoad waitBeforeShow={700}> */}
               {/*      <ReadyIntroduction showStep3WhenCompressed /> */}
               {/*    </DelayedLoad> */}
-              {/*  </Suspense> */}
+              {/*  </CommentedOutSuspense> */}
               {/* </ReadyIntroductionMobileWrapper> */}
               {/* <ViewBallotButtonWrapper className="col-12 u-show-mobile-tablet"> */}
-              {/*  <Suspense fallback={<></>}> */}
+              {/*  <CommentedOutSuspense fallback={<></>}> */}
               {/*    <ViewUpcomingBallotButton onClickFunction={this.goToBallot} /> */}
-              {/*  </Suspense> */}
+              {/*  </CommentedOutSuspense> */}
               {/* </ViewBallotButtonWrapper> */}
               {/* !isAndroid() && (
                 <ReadyIntroductionMobileWrapper className="u-show-mobile-tablet">
-                  <Suspense fallback={<></>}>
+                  <CommentedOutSuspense fallback={<></>}>
                     <DelayedLoad waitBeforeShow={700}>
                       <ReadyFinePrint showStep3WhenCompressed />
                     </DelayedLoad>
-                  </Suspense>
+                  </CommentedOutSuspense>
                 </ReadyIntroductionMobileWrapper>
               ) */}
               {voterIsSignedIn && (

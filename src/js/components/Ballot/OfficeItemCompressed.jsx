@@ -269,8 +269,9 @@ class OfficeItemCompressed extends Component {
     return candidatesToRender.length;
   }
 
-  generateCandidates = () => {
-    const { candidateList, externalUniqueId } = this.props;
+  // eslint-disable-next-line no-unused-vars
+  generateCandidates = (officeWeVoteId) => {
+    const { candidateList, externalUniqueId, isFirstBallotItem } = this.props;
     let { candidatesToShowForSearchResults } = this.props;
     candidatesToShowForSearchResults = candidatesToShowForSearchResults || [];
     const { candidateListForDisplay, limitNumberOfCandidatesShownToThisNumber, showAllCandidates } = this.state;
@@ -285,6 +286,7 @@ class OfficeItemCompressed extends Component {
     const hideCandidateDetails = false; // supportedCandidatesList.length;
     let candidateCount = 0;
     const dedupedCandidates = [];
+    // console.log('------- generateCandidates ------ iFirstBallotItem ', isFirstBallotItem, officeWeVoteId);
 
     return (
       <BallotScrollingOuterWrapper>
@@ -293,6 +295,7 @@ class OfficeItemCompressed extends Component {
             if (!oneCandidate || !oneCandidate.we_vote_id || dedupedCandidates.includes(oneCandidate.we_vote_id)) return null;
             dedupedCandidates.push(oneCandidate.we_vote_id);
             candidateCount += 1;
+            // console.log('OfficeItemCompressd candiateCount ', candidateCount);
             const candidatePartyText = oneCandidate.party && oneCandidate.party.length ? `${oneCandidate.party}` : '';
             const avatarCompressed = 'card-main__avatar-compressed';
             const avatarBackgroundImage = normalizedImagePath('../img/global/svg-icons/avatar-generic.svg');
@@ -415,6 +418,7 @@ class OfficeItemCompressed extends Component {
                           <PositionRowList
                             ballotItemWeVoteId={oneCandidate.we_vote_id}
                             showSupport
+                            firstInstance={isFirstBallotItem}
                           />
                         </PositionRowListOneWrapper>
                         <PositionRowListOneWrapper>
@@ -422,12 +426,14 @@ class OfficeItemCompressed extends Component {
                             ballotItemWeVoteId={oneCandidate.we_vote_id}
                             showOppose
                             showOpposeDisplayNameIfNoSupport
+                            firstInstance={isFirstBallotItem}
                           />
                         </PositionRowListOneWrapper>
                         <PositionRowListOneWrapper>
                           <PositionRowList
                             ballotItemWeVoteId={oneCandidate.we_vote_id}
                             showInfoOnly
+                            firstInstance={isFirstBallotItem}
                           />
                         </PositionRowListOneWrapper>
                         <PositionRowListEmptyWrapper>
@@ -530,7 +536,7 @@ class OfficeItemCompressed extends Component {
         {/* *************************
           Display either a) the candidates the voter supports, or b) the first several candidates running for this office
           ************************* */}
-        {this.generateCandidates()}
+        {this.generateCandidates(officeWeVoteId)}
 
         {(moreCandidatesToDisplay) ? (
           <Suspense fallback={<></>}>

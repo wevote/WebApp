@@ -42,7 +42,7 @@ class PositionRowList extends Component {
     // console.log('PositionRowList componentDidMount');
 
     // let { incomingPositionList } = this.props;
-    const { ballotItemWeVoteId } = this.props;
+    const { ballotItemWeVoteId, firstInstance } = this.props;
     // console.log('PositionRowList componentDidMount, ballotItemWeVoteId:', ballotItemWeVoteId);
     let allCachedPositionsForThisBallotItem;
     if (ballotItemWeVoteId.includes('cand')) {
@@ -58,12 +58,15 @@ class PositionRowList extends Component {
     this.measureStoreListener = MeasureStore.addListener(this.onFriendStoreChange.bind(this));
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
+    const callApis = firstInstance || firstInstance === undefined;
 
-    if (apiCalming('organizationsFollowedRetrieve', 60000)) {
-      OrganizationActions.organizationsFollowedRetrieve();
+    if (callApis) {    // Avoid 200 or more apiCalming calls
+      if (apiCalming('organizationsFollowedRetrieve', 60000)) {
+        OrganizationActions.organizationsFollowedRetrieve();
+      }
     }
     const organizationsVoterIsFriendsWith = FriendStore.currentFriendsOrganizationWeVoteIDList();
-    if (!organizationsVoterIsFriendsWith.length > 0) {
+    if (!organizationsVoterIsFriendsWith.length > 0  && callApis) {
       if (apiCalming('friendListsAll', 3000)) {
         FriendActions.friendListsAll();
       }
@@ -319,6 +322,7 @@ PositionRowList.propTypes = {
   showOpposeDisplayName: PropTypes.bool,
   showOpposeDisplayNameIfNoSupport: PropTypes.bool,
   showSupport: PropTypes.bool,
+  firstInstance: PropTypes.bool,
 };
 
 const styles = () => ({
@@ -335,7 +339,7 @@ const CandidateEndorsementContainer = styled('div')(({ theme }) => (`
 `));
 
 const CandidateEndorsementsRightSpacer = styled('div')`
-  margin-right: 0px;
+  margin-right: 0;
 `;
 
 const CandidateEndorsementsWrapper = styled('div')`

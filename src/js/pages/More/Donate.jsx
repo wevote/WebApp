@@ -219,7 +219,10 @@ class Donate extends Component {
       c3DonationHtml = (
         <C3DonationWrapper>
           <Wrapper>
-            <Helmet title="Donate - We Vote" />
+            <Helmet>
+              <title>Donate - We Vote</title>
+              <script src="https://donorbox.org/widget.js" paypalExpress="true" defer />
+            </Helmet>
             <ContentTitle>
               Want more Americans to vote?
             </ContentTitle>

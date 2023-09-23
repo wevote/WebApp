@@ -200,7 +200,7 @@ class App extends Component {
   }
 
   componentDidCatch (error, info) {
-    // We should get this information to Splunk!
+    // We should get this information to Amazon Cloud Watch
     console.error('App caught error: ', `${error} with info: `, info);
   }
 
