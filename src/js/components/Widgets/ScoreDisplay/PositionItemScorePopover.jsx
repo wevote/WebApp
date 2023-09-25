@@ -154,12 +154,6 @@ class PositionItemScorePopover extends Component {
     });
   }
 
-  onShowMoreAlternateFunctionLocal = () => {
-    if (this.props.onShowMoreAlternateFunction) {
-      this.props.onShowMoreAlternateFunction();
-    }
-  }
-
   render () {
     const { classes, popoverHeaderOff, positionWeVoteId, showPersonalScoreInformation } = this.props;
     // console.log('PositionItemScorePopover render');
@@ -247,7 +241,7 @@ class PositionItemScorePopover extends Component {
                 <ReadMore
                   textToDisplay={`"${statementText}"`}
                   numberOfLines={10}
-                  onShowMoreAlternateFunction={this.onShowMoreAlternateFunctionLocal}
+                  onShowMoreAlternateFunction={this.props.onShowMoreAlternateFunction}
                 />
               </Suspense>
             </StatementText>
