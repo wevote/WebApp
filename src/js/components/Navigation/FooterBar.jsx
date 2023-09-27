@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import { isAndroid, isIOS } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
 import { normalizedHref } from '../../common/utils/hrefUtils';
-import { isCordova } from '../../common/utils/isCordovaOrWebApp';
+import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
@@ -220,7 +220,7 @@ class FooterBar extends React.Component {
     let discussVisible;
     let donateVisible;
     const friendsVisible = false; // 2023-09-04 Dale We are turning off Friends footer icon for now
-    const groupsVisible = true;
+    const squadsVisible = isWebApp();
     // let howItWorksVisible;
     const howItWorksVisible = false;
     if (isCordova() || inPrivateLabelMode) {
@@ -328,7 +328,7 @@ class FooterBar extends React.Component {
                 sx={defaultIconStyles}
               />
             )}
-            {groupsVisible && (
+            {squadsVisible && (
               <BottomNavigationAction
                 className="no-outline"
                 icon={<Groups />}
