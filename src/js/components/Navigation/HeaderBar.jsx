@@ -464,7 +464,7 @@ class HeaderBar extends Component {
     let donateVisible;
     const friendsVisible = false; // 2023-09-04 Dale We are turning off Friends header link for now
     let howItWorksValue;
-    const squadsVisible = true;
+    const squadsVisible = isWebApp();
     let squadsValue;
     // let howItWorksVisible;
     const howItWorksVisible = false;
