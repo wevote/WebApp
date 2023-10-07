@@ -185,6 +185,11 @@ export function headroomWrapperOffset (includePosition) {
     const outerHeight = headroomWrapper.outerHeight();
     const position = includePosition ? headroomWrapper.position().top : 0;
     offset = outerHeight + position;
+    const page = pageEnumeration();
+    if (page === 'candidatelist' || page === 'values') {
+      offset /= 3;    // Precious blank vertical space removed in Cordova
+    }
+
     cordovaOffsetLog(`headroomWrapperOffset HeadroomWrapper outerHeight+top: ${outerHeight + position}, new offset: ${offset}, page: ${getPageKey()}`);
   }
   return offset;

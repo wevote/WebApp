@@ -717,6 +717,7 @@ class CampaignNewsItemDetailsPage extends Component {
                     functionToUseToKeepHelping={this.functionToUseToKeepHelping}
                     functionToUseWhenProfileComplete={this.functionToUseWhenProfileComplete}
                     inDraftMode={inDraftMode}
+                    politicianName={campaignTitle}
                   />
                 </Suspense>
               </ColumnOneThird>

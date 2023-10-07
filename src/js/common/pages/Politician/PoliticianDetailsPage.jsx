@@ -299,6 +299,7 @@ class PoliticianDetailsPage extends Component {
       const voterCanEditThisPolitician = PoliticianStore.getVoterCanEditThisPolitician(politicianWeVoteId);
       const voterSupportsThisPolitician = PoliticianStore.getVoterSupportsThisPolitician(politicianWeVoteId);
       this.setState({
+        politicianName,
         politicianWeVoteId,
         politicianWeVoteIdForDisplay: politicianWeVoteId,
         voterCanEditThisPolitician,
@@ -819,6 +820,7 @@ class PoliticianDetailsPage extends Component {
                 <CampaignShareChunk
                   campaignSEOFriendlyPath={politicianSEOFriendlyPathForDisplay}
                   campaignXWeVoteId={linkedCampaignXWeVoteId}
+                  politicianName={politicianName}
                   darkButtonsOff
                   privatePublicIntroductionsOff
                 />
@@ -958,6 +960,7 @@ class PoliticianDetailsPage extends Component {
                     finalElectionDateInPast={finalElectionDateInPast}
                     functionToUseToKeepHelping={this.functionToUseToKeepHelping}
                     functionToUseWhenProfileComplete={this.functionToUseWhenProfileComplete}
+                    politicianName={politicianName}
                   />
                 </Suspense>
                 {(!futureFeaturesDisabled && nextReleaseFeaturesEnabled) && (

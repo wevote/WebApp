@@ -41,7 +41,8 @@ class HeaderNotificationMenu extends Component {
       if (apiCalming('activityListRetrieve', 2000)) {
         ActivityActions.activityListRetrieve();
       }
-      if (!isIOSAppOnMac()) setIconBadgeMessageCount(0);
+      const firebaseEnabled = isWebApp();
+      if (firebaseEnabled && !isIOSAppOnMac()) setIconBadgeMessageCount(0);
     }, 3000);
   }
 
@@ -63,7 +64,8 @@ class HeaderNotificationMenu extends Component {
       .map((activityNotice) => activityNotice.activity_notice_id);
     // console.log('activityNoticeIdListNotSeen:', activityNoticeIdListNotSeen);
     const menuItemList = this.generateMenuItemList(allActivityNotices);
-    if (!isIOSAppOnMac()) setIconBadgeMessageCount(activityNoticeIdListNotSeen.length);
+    const firebaseEnabled = isWebApp();
+    if (firebaseEnabled && !isIOSAppOnMac()) setIconBadgeMessageCount(activityNoticeIdListNotSeen.length);
     this.setState({
       activityNoticeIdListNotSeen,
       allActivityNoticesNotSeenCount: activityNoticeIdListNotSeen.length,

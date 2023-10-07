@@ -1,4 +1,4 @@
-import { cordovaOpenSafariView } from '../../utils/cordovaUtils';
+import { cordovaOpenSafariView, isAndroid } from '../../utils/cordovaUtils';
 import { openSnackbar } from '../Widgets/SnackNotifier';
 
 export function androidFacebookClickHandler (linkToBeShared, quoteForSharingEncoded) {
@@ -78,20 +78,36 @@ function onEmailSendError (error) {
   }
 }
 
-export function cordovaSocialSharingByEmail (subject, messageBody, handleClose = null) {
+export function cordovaSocialSharingByEmail (subject, body, handleClose = null) {
   close = handleClose;
-  console.log('cordovaSocialSharingByEmail ', subject, messageBody);
+  console.log('cordovaSocialSharingByEmail ', subject, body);
   // window.plugins.socialsharing.canShareViaEmail((e) => {console.log("canShareViaEmail 1: " + e)}, (e) => {console.log("canShareViaEmail 2: " + e)});
   // const { plugins: { socialsharing: { shareViaEmail } } } = window;
-  const soc = window.plugins.socialsharing;
-  soc.shareViaEmail(
-    messageBody,               // can contain HTML tags, but support on Android is rather limited:  http://stackoverflow.com/questions/15136480/how-to-send-html-content-with-image-through-android-default-email-client
-    subject,
-    null,               // TO: must be null or an array
-    null,               // CC: must be null or an array
-    null,               // BCC: must be null or an array
-    null,               // FILES: can be null, a string, or an array
-    onEmailSendSuccess, // called when sharing worked, but also when the user cancelled sharing via email. On iOS, the callbacks' boolean result parameter is true when sharing worked, false if cancelled. On Android, this parameter is always true so it can't be used). See section "Notes about the successCallback" below.
-    onEmailSendError,   // called when sh*t hits the fan
-  );
+  if (isAndroid()) {
+    const soc = window.plugins.socialsharing;
+    soc.shareViaEmail(
+      body,               // can contain HTML tags, but support on Android is rather limited:  http://stackoverflow.com/questions/15136480/how-to-send-html-content-with-image-through-android-default-email-client
+      subject,
+      null,               // TO: must be null or an array
+      null,               // CC: must be null or an array
+      null,               // BCC: must be null or an array
+      null,               // FILES: can be null, a string, or an array
+      onEmailSendSuccess, // called when sharing worked, but also when the user cancelled sharing via email. On iOS, the callbacks' boolean result parameter is true when sharing worked, false if cancelled. On Android, this parameter is always true so it can't be used). See section "Notes about the successCallback" below.
+      onEmailSendError,   // called when sh*t hits the fan
+    );
+  } else {
+    const { cordova } = window;
+    /* eslint-disable key-spacing */
+    console.log('before open cordova.plugins.email.open ', subject);
+    cordova.plugins.email.open({
+      from:         'We Vote',          // sending email account (iOS only)
+      to:           '',                 // email addresses for TO field
+      cc:           [],                 // email addresses for CC field
+      bcc:          [],                 // email addresses for BCC field
+      attachments:  [],                 // file paths or base64 data streams
+      subject,                          // subject of the email
+      body,                             // email body
+      isHtml:       true,               // indicates if the body is HTML or plain text (primarily iOS)
+    }, handleClose);
+  }
 }

@@ -4,11 +4,11 @@ import React, { Component } from 'react';
 import { EmailShareButton } from 'react-share';
 import styled from 'styled-components';
 import CampaignSupporterActions from '../../actions/CampaignSupporterActions';
+import CampaignStore from '../../stores/CampaignStore';
 import { isAndroid } from '../../utils/cordovaUtils';
 import { isCordova } from '../../utils/isCordovaOrWebApp';
 import { renderLog } from '../../utils/logging';
 import politicianListToSentenceString from '../../utils/politicianListToSentenceString';
-import CampaignStore from '../../stores/CampaignStore';
 import { cordovaSocialSharingByEmail, generateQuoteForSharing, generateSharingLink } from './shareButtonCommon';
 
 class ShareByEmailButton extends Component {
@@ -81,27 +81,27 @@ class ShareByEmailButton extends Component {
     if (isCordova()) {
       console.log(`ShareByEmailButton window.location.href: ${window.location.href}`);
     }
-    const { darkButton, mobileMode } = this.props;
+    const { darkButton, mobileMode, politicianName } = this.props;
     const { campaignX, numberOfPoliticians, politicianListSentenceString } = this.state;
     const {
       campaign_title: campaignTitle,
     } = campaignX;
     let linkToBeShared = this.generateFullCampaignLink();
-    linkToBeShared = linkToBeShared.replace('https://file:/', 'https://campaigns.wevote.us/');  // Cordova
+    linkToBeShared = linkToBeShared.replace('https://file:/', 'https://campaigns.wevote.us/');  // Cordova, this must have once been exclusively in the Campaigns app???
+    linkToBeShared = linkToBeShared.replace('https://localhost/', 'https://wevote.us/');        // Cordova
     const quoteForSharing = generateQuoteForSharing(campaignTitle, numberOfPoliticians, politicianListSentenceString);
     // console.log('quoteForSharing:', quoteForSharing);
-    const quoteForSharingEncoded = encodeURI(quoteForSharing);
-    let subjectForSharing = `Vote for${politicianListSentenceString}`;
+    const pol = politicianListSentenceString && politicianListSentenceString.length ? politicianListSentenceString : politicianName;
+    let subjectForSharing = `Vote for ${pol}`;
     if (subjectForSharing) {
       subjectForSharing = subjectForSharing.trim();
     }
-    const subjectForSharingEncoded = encodeURI(subjectForSharing);
     // console.log('subjectForSharing:', subjectForSharing);
     return (
       <Wrapper>
         <div id="androidEmail"
-             onClick={() => isAndroid() &&
-               cordovaSocialSharingByEmail(subjectForSharingEncoded, quoteForSharingEncoded)}
+             onClick={() => (isCordova()) &&
+               cordovaSocialSharingByEmail(subjectForSharing, quoteForSharing, politicianName)}
         >
           <EmailShareButton
             className={mobileMode ? 'material_ui_button_mobile' : ''}
@@ -132,6 +132,7 @@ ShareByEmailButton.propTypes = {
   campaignXWeVoteId: PropTypes.string,
   darkButton: PropTypes.bool,
   mobileMode: PropTypes.bool,
+  politicianName: PropTypes.string,
 };
 
 const styles = () => ({

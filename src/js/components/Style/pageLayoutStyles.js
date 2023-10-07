@@ -78,7 +78,7 @@ export const PageContentContainer = styled('div')(({ theme }) => (`
   z-index: 0;
   ${theme.breakpoints.down('sm')} {
     min-height: ${isWebApp() ? '10px' : `${window.innerHeight}px`};
-    margin: ${isWebApp() ? '0 !important' : '0 10px'};  // From Dale: Let's discuss this
+    margin: ${isWebApp() ? '0 !important' : '24px 10px'};  // From Dale: Let's discuss this
   }
 `));
 

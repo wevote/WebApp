@@ -136,7 +136,7 @@
     "react-phone-number-input": "^3.1.11",
     "react-player": "^2.9.0",
     "react-router-dom": "~5.2.0",
-    "react-share": "^4.4.0",
+    "react-share": "^4.4.1",
     "react-slick": "^0.28.1",
     "react-svg": "^14.1.9",
     "react-text-truncate": "^0.17.0",

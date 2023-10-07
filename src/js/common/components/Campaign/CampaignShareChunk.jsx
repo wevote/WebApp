@@ -50,7 +50,7 @@ class CampaignShareChunk extends Component {
     renderLog('CampaignShareChunk');  // Set LOG_RENDER_EVENTS to log all renders
     const {
       campaignXNewsItemWeVoteId, campaignXWeVoteId, classes, darkButtonsOff,
-      privatePublicIntroductionsOff,
+      privatePublicIntroductionsOff, politicianName,
     } = this.props;
     return (
       <div>
@@ -98,12 +98,12 @@ class CampaignShareChunk extends Component {
             )}
             <CampaignSupportDesktopButtonWrapper className="u-show-desktop-tablet">
               <CampaignSupportDesktopButtonPanel>
-                <ShareByEmailButton campaignXNewsItemWeVoteId={campaignXNewsItemWeVoteId} campaignXWeVoteId={campaignXWeVoteId} />
+                <ShareByEmailButton campaignXNewsItemWeVoteId={campaignXNewsItemWeVoteId} campaignXWeVoteId={campaignXWeVoteId} politicianName={politicianName} />
               </CampaignSupportDesktopButtonPanel>
             </CampaignSupportDesktopButtonWrapper>
             <CampaignSupportMobileButtonWrapper className="u-show-mobile">
               <CampaignSupportMobileButtonPanel>
-                <ShareByEmailButton campaignXNewsItemWeVoteId={campaignXNewsItemWeVoteId} campaignXWeVoteId={campaignXWeVoteId} mobileMode />
+                <ShareByEmailButton campaignXNewsItemWeVoteId={campaignXNewsItemWeVoteId} campaignXWeVoteId={campaignXWeVoteId} politicianName={politicianName} mobileMode />
               </CampaignSupportMobileButtonPanel>
             </CampaignSupportMobileButtonWrapper>
             <CampaignSupportDesktopButtonWrapper className="u-show-desktop-tablet">
@@ -162,6 +162,7 @@ CampaignShareChunk.propTypes = {
   campaignXWeVoteId: PropTypes.string,
   classes: PropTypes.object,
   darkButtonsOff: PropTypes.bool,
+  politicianName: PropTypes.string,
   privatePublicIntroductionsOff: PropTypes.bool,
 };
 

@@ -594,6 +594,7 @@ class CampaignDetailsPage extends Component {
                     finalElectionDateInPast={finalElectionDateInPast}
                     functionToUseToKeepHelping={this.functionToUseToKeepHelping}
                     functionToUseWhenProfileComplete={this.functionToUseWhenProfileComplete}
+                    politicianName={campaignTitle}
                   />
                 </Suspense>
               </ColumnOneThird>

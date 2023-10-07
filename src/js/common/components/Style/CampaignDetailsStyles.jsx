@@ -284,7 +284,7 @@ export const SupportButtonFooterWrapperAboveFooterButtons = styled('div')`
     if (isAndroid()) return '68px';
     return '88px';
   }};
-  display: block;
+  display: ${() => (isCordova() ? 'none' : 'block')};
 `;
 
 export const SupportButtonPanel = styled('div')`

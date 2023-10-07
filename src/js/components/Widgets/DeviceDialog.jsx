@@ -61,7 +61,8 @@ class DeviceDialog extends Component {
     if (!this.props.show) {
       return null;
     }
-    const { diameter } = window.pbakondyScreenSize;
+    // HACK 10/2/23 const { diameter } = window.pbakondyScreenSize;
+    const diameter = 'unknown';
 
     return (
       <Dialog
