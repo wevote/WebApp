@@ -299,12 +299,12 @@ class CampaignSupportShare extends Component {
                     )}
                     <CampaignSupportDesktopButtonWrapper className="u-show-desktop-tablet">
                       <CampaignSupportDesktopButtonPanel>
-                        <ShareByEmailButton campaignXWeVoteId={campaignXWeVoteId} />
+                        <ShareByEmailButton campaignXWeVoteId={campaignXWeVoteId} politicianName={campaignTitle} />
                       </CampaignSupportDesktopButtonPanel>
                     </CampaignSupportDesktopButtonWrapper>
                     <CampaignSupportMobileButtonWrapper className="u-show-mobile">
                       <CampaignSupportMobileButtonPanel>
-                        <ShareByEmailButton campaignXWeVoteId={campaignXWeVoteId} darkButton mobileMode />
+                        <ShareByEmailButton campaignXWeVoteId={campaignXWeVoteId} politicianName={campaignTitle} darkButton mobileMode />
                       </CampaignSupportMobileButtonPanel>
                     </CampaignSupportMobileButtonWrapper>
                     <CampaignSupportDesktopButtonWrapper className="u-show-desktop-tablet">
@@ -324,6 +324,7 @@ class CampaignSupportShare extends Component {
                   <CampaignShareChunk
                     campaignSEOFriendlyPath={campaignSEOFriendlyPath}
                     campaignXWeVoteId={campaignXWeVoteId}
+                    politicianName={campaignTitle}
                   />
                 </>
               )}

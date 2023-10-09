@@ -188,7 +188,7 @@ class CampaignDetailsActionSideBox extends Component {
 
   render () {
     renderLog('CampaignDetailsActionSideBox');  // Set LOG_RENDER_EVENTS to log all renders
-    const { campaignSEOFriendlyPath, campaignXWeVoteId, classes, inDraftMode } = this.props;
+    const { campaignSEOFriendlyPath, campaignXWeVoteId, classes, inDraftMode, politicianName } = this.props;
     // console.log('CampaignDetailsActionSideBox render campaignXWeVoteId:', campaignXWeVoteId, ', campaignSEOFriendlyPath:', campaignSEOFriendlyPath);
     if (!campaignSEOFriendlyPath && !campaignXWeVoteId) {
       // console.log('CampaignDetailsActionSideBox render voter NOT found');
@@ -252,6 +252,7 @@ class CampaignDetailsActionSideBox extends Component {
                   <CampaignShareChunk
                     campaignSEOFriendlyPath={campaignSEOFriendlyPath}
                     campaignXWeVoteId={campaignXWeVoteId}
+                    politicianName={politicianName}
                     darkButtonsOff
                     privatePublicIntroductionsOff
                   />
@@ -316,6 +317,7 @@ class CampaignDetailsActionSideBox extends Component {
               <CampaignShareChunk
                 campaignSEOFriendlyPath={campaignSEOFriendlyPath}
                 campaignXWeVoteId={campaignXWeVoteId}
+                politicianName={politicianName}
                 darkButtonsOff
                 privatePublicIntroductionsOff
               />
@@ -333,6 +335,7 @@ CampaignDetailsActionSideBox.propTypes = {
   functionToUseToKeepHelping: PropTypes.func.isRequired,
   functionToUseWhenProfileComplete: PropTypes.func.isRequired,
   inDraftMode: PropTypes.bool,
+  politicianName: PropTypes.string,
 };
 
 const styles = (theme) => ({

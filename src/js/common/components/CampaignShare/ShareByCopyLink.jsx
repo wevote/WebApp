@@ -8,7 +8,6 @@ import CampaignSupporterActions from '../../actions/CampaignSupporterActions';
 import { renderLog } from '../../utils/logging';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import CampaignStore from '../../stores/CampaignStore';
-import { openSnackbar } from '../Widgets/SnackNotifier';
 import { generateSharingLink } from './shareButtonCommon';
 
 class ShareByCopyLink extends Component {
@@ -90,7 +89,7 @@ class ShareByCopyLink extends Component {
   copyLink () {
     // console.log('ShareByCopyLink copyLink');
     CampaignSupporterActions.shareButtonClicked(true);
-    openSnackbar({ message: 'Copied!' });
+    // openSnackbar({ message: 'Copied!' });
     this.setState({
       copyLinkCopied: true,
     });

@@ -43,16 +43,18 @@ export function isIOSAppOnMac () {
   return false;
 }
 
-export function getProcessorArchitecture () {
-  const { diagnostic: { getArchitecture } } = window.cordova.plugins;
-  getArchitecture((arch) => {
-    console.log(`Cordova:   Processor Architecture: ${arch}`);
-    return arch;
-  }, (error) => {
-    console.error('cordova.plugins.diagnostic.getArchitecture threw: ', error);
-    return 'error';
-  });
-}
+// export function getProcessorArchitecture () {
+//   console.log('STEVE       window.cordova.plugins: ', window.cordova.plugins);
+//   const { diagnostic: { getArchitecture } } = window.cordova.plugins;
+//
+//   getArchitecture((arch) => {
+//     console.log(`Cordova:   Processor Architecture: ${arch}`);
+//     return arch;
+//   }, (error) => {
+//     console.error('cordova.plugins.diagnostic.getArchitecture threw: ', error);
+//     return 'error';
+//   });
+// }
 
 export function dumpScreenAndDeviceFields () {
   dumpObjProps('window.screen', window.screen);
@@ -162,7 +164,7 @@ export function getIOSSizeString () {
   //    iPhone:               X             X             XS            11 Pro
   const iPhone5p8inPhones = ['iPhone10,3', 'iPhone10,6', 'iPhone11,2', 'iPhone12,3'];
   //    iPhone:               XR            11            12 Pro         12             13 Pro           13           14       15 Pro        15
-  const iPhone6p1inPhones = ['iPhone11,8', 'iPhone12,1', 'iPhone13,3', 'iPhone13,2', 'iPhone14,2', 'iPhone14,5', 'iPhone14,7', 'iPhone16,2', 'iPhone15,4'];
+  const iPhone6p1inPhones = ['iPhone11,8', 'iPhone12,1', 'iPhone13,3', 'iPhone13,2', 'iPhone14,2', 'iPhone14,5', 'iPhone14,7', 'iPhone16,1', 'iPhone15,4'];
   //    iPhone:               XS Max        XS Max        11 Pro Max   12ProMax(6.7) 13ProMax(6.7)   14 Plus         14 Pro     14 Pro Max   15ProMax(6.7) 15 Plus(6.7)
   const iPhone6p5inPhones = ['iPhone11,4', 'iPhone11,6', 'iPhone12,5', 'iPhone13,4', 'iPhone14,3', 'iPhone14,8', 'iPhone15,2', 'iPhone15,3', 'iPhone16,2', 'iPhone15,5'];
   if (iPhone3p5inPhones.includes(window.device.model)) {
@@ -184,23 +186,25 @@ export function getIOSSizeString () {
   }
   // If we are here, we know that the window.device.model was not matched to any phones we recognize.
   // So now we calculate based on screen size
-  const { pbakondyScreenSize: size } = window;
-  if ((size.height === '480' && size.width === '320') ||  // iPhone Original, 3, 3GS
-      (size.height === '960' && size.width === '640')) {  // iPhone 4, 4S
+  // const { pbakondyScreenSize: size } = window;
+  const { visualViewport: { height, width } } = window;
+
+  if ((height === '480' && width === '320') ||  // iPhone Original, 3, 3GS
+      (height === '960' && width === '640')) {  // iPhone 4, 4S
     return 'isIPhone3p5in';
-  } else if (size.height === '1136' && size.width === '640') {  // iPhone 5, 5c, 5s, SE
+  } else if (height === '1136' && width === '640') {  // iPhone 5, 5c, 5s, SE
     return 'isIPhone4in';
-  } else if (size.height === '1334' && size.width === '750') {  // iPhone 6, 6s, 7, 8, SE (2nd Gen)
+  } else if (height === '1334' && width === '750') {  // iPhone 6, 6s, 7, 8, SE (2nd Gen)
     return 'isIPhone4p7in';
-  } else if ((size.height === '1920' && size.width === '1080') ||  // iPhone 6 Plus, 6s Plus, 7 Plus, 8 Plus
-             (size.height === '2208' && size.width === '1242')) {   // iPhone 8 Plus in simulator
+  } else if ((height === '1920' && width === '1080') ||  // iPhone 6 Plus, 6s Plus, 7 Plus, 8 Plus
+             (height === '2208' && width === '1242')) {   // iPhone 8 Plus in simulator
     return 'isIPhone5p5inEarly';
-  } else if (size.height === '2436' && size.width === '1125') {  // iPhone X, XS, 11 Pro
+  } else if (height === '2436' && width === '1125') {  // iPhone X, XS, 11 Pro
     return 'isIPhone5p8in';
-  } else if ((size.height === '1792' && size.width === '828') ||  // iPhone XR, 11 (11 as described on apple.com)
-    (size.height === '1624' && size.width === '750')) {   // iPhone 11 in Simulator
+  } else if ((height === '1792' && width === '828') ||  // iPhone XR, 11 (11 as described on apple.com)
+    (height === '1624' && width === '750')) {   // iPhone 11 in Simulator
     return 'isIPhone6p1in';
-  } else if (size.height === '2688' && size.width === '1242') {  // iPhone XS Max, 11/12 Pro Max
+  } else if (height === '2688' && width === '1242') {  // iPhone XS Max, 11/12 Pro Max
     return 'isIPhone6p5in';
   }
   return '';
@@ -385,7 +389,7 @@ export function isIPadMini () {
 export function hasDynamicIsland () {
   if (isIOS() && !isIOSAppOnMac() &&
     // 14 Pro       14 Pro Max    15           15 Plus        15 Pro        15 Pro Max
-    ['iPhone15,2', 'iPhone15,3', 'iPhone15,4', 'iPhone15,5', 'iPhone16,1', 'iPhone16,1'].includes(window.device.model)) {
+    ['iPhone15,2', 'iPhone15,3', 'iPhone15,4', 'iPhone15,5', 'iPhone16,1', 'iPhone16,2'].includes(window.device.model)) {
     logMatch('iPhone 14 Pro or 14 Pro Max or 15*, Dynamic Island Sized Header', true);
     return true;
   }
@@ -445,7 +449,11 @@ export function getAndroidSize () {
     return 'device not ready';
   }
   androidSizeString = 'default';
-  const { width, height, diameter } = window.pbakondyScreenSize;
+  // const { width, height, diameter } = window.pbakondyScreenSize;
+  const { visualViewport: { height, width, scale } } = window;
+  const diameter = Math.sqrt(((width * scale) ** 2) + ((height * scale) ** 2));
+  console.log('CALCULATED screen diameter: ', diameter);
+
 
   androidPixels = width * height;
   // const screenSize = Math.sqrt(((width / xdpi) ** 2) + ((height / ydpi) ** 2));
@@ -642,8 +650,10 @@ export function getToastClass () {
 }
 
 export function getCordovaScreenHeight () {
-  const { pbakondyScreenSize: size } = window;
-  return isIPad() ? `${size.height / size.scale}px` : '100%';
+//  const { pbakondyScreenSize: size } = window;    Removed Oct 2, 2023
+//   return isIPad() ? `${size.height / size.scale}px` : '100%';
+  const { visualViewport: { height, scale } } = window;
+  return isIPad() ? `${height / scale}px` : '100%';
 }
 
 export function prepareForCordovaKeyboard (callerString) {
@@ -684,7 +694,8 @@ export function restoreStylesAfterCordovaKeyboard (callerString) {
 
 export function setGlobalScreenSize (result) {
   // this is the place to override detected screen size if needed.
-  console.log(`pbakondy/cordova-plugin-screensize height: ${result.height}, width:  ${result.width}, scale: ${result.scale}`);
+  const { visualViewport: { height, width, scale } } = window;
+  console.log(`setGlobalScreenSize height: ${height}, width:  ${width}, scale: ${scale}`);
   window.pbakondyScreenSize = result;
 }
 

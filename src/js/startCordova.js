@@ -1,11 +1,12 @@
 import VoterActions from './actions/VoterActions';
-import { getCordovaScreenHeight, getProcessorArchitecture, isAndroid, isIOS, isIOSAppOnMac, isIPad, isSimulator, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from './common/utils/cordovaUtils';
+import { getCordovaScreenHeight, isIOS, isIOSAppOnMac, isIPad, isSimulator, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from './common/utils/cordovaUtils';
 import { isCordova } from './common/utils/isCordovaOrWebApp';
 import Cookies from './common/utils/js-cookie/Cookies';
 import { httpLog } from './common/utils/logging';
 import TwitterSignIn from './components/Twitter/TwitterSignIn';
 import webAppConfig from './config';
 import VoterStore from './stores/VoterStore';
+
 // import { dumpObjProps } from './utils/appleSiliconUtils';
 
 function localPrepareForCordovaKeyboard () {
@@ -74,7 +75,7 @@ function postLockInitialization (voterDeviceId, startReact) {
     window.addEventListener('keyboardDidHide', localRestoreStylesAfterCordovaKeyboard);
   }
 
-  const pigCanFly = !isAndroid();   // August 24, 2023, disable android messaging for now
+  const pigCanFly = false;   // August 24, 2023, disable Cordova firebase messaging for now
   if (pigCanFly && isCordova() && !isIOSAppOnMac() && !isSimulator()) {
     console.log('Cordova:   startMessaging(voterDeviceId)');
     startMessaging(voterDeviceId);
@@ -96,91 +97,93 @@ export function initializationForCordova (startReact) {
     window.isDeviceReady = true;
     console.log('Cordova:   window.isDeviceReady', window.isDeviceReady, 'Event: ', id.type);
     console.log(`Cordova:   Running cordova-${window.cordova.platformId}@${window.cordova.version}`);
-    const { plugins: { screensize } } = window;
+    // const { plugins: { screensize } } = window;
     console.log('Cordova:   Startup sequence 2: Wait for pbakondy screensize');
-    screensize.get((result) => {
-      console.log('Cordova:   screensize.get: ', JSON.stringify(result));
-      // dumpObjProps('window.device', window.device);
-      window.pbakondyScreenSize = result;
-      if (isIPad()) {
-        document.querySelector('body').style.height = getCordovaScreenHeight();
-        console.log('Cordova: Initial "body" height for iPad = ', result.height / result.scale);
-      }
-      const { $ } = window;
-      console.log('Cordova:   Startup sequence 3: Wait for an initial voterRetrieve');
-      const cookie = Cookies.get('voter_device_id');
-      const idPathComponent = (cookie && cookie.length > 10) ? `/?voter_device_id=${cookie}` : '';
-      const initialAjaxUrl = `${webAppConfig.WE_VOTE_SERVER_API_ROOT_URL}voterRetrieve${idPathComponent}`;
-      httpLog(`AJAX URL (Initial): ${initialAjaxUrl}`);
-      $.ajax({
-        url: initialAjaxUrl,
-        context: document.body,
-        timeout: 10000,
-      }).done((resp) => {
-        const { voter_device_id: voterDeviceId } = resp;
-        if (voterDeviceId) {
-          console.log('Cordova:   voterRetrieve returned voter_device_id', voterDeviceId);
-          VoterStore.setVoterDeviceIdCookie(voterDeviceId);
-          window.voterDeviceId = voterDeviceId;
-          // --
+    // screensize.get((result) => {
+    //   console.log('Cordova:   screensize.get: ', JSON.stringify(result));
+    //   // dumpObjProps('window.device', window.device);
+    //   window.pbakondyScreenSize = result;
+    if (isIPad()) {
+      document.querySelector('body').style.height = getCordovaScreenHeight();
+      console.log('Cordova: Initial "body" height for iPad = calcualation disabled '); // , result.height / result.scale);
+    }
+    const { $ } = window;
+    console.log('Cordova:   Startup sequence 3: Wait for an initial voterRetrieve');
+    const cookie = Cookies.get('voter_device_id');
+    const idPathComponent = (cookie && cookie.length > 10) ? `/?voter_device_id=${cookie}` : '';
+    const initialAjaxUrl = `${webAppConfig.WE_VOTE_SERVER_API_ROOT_URL}voterRetrieve${idPathComponent}`;
+    httpLog(`AJAX URL (Initial): ${initialAjaxUrl}`);
+    $.ajax({
+      url: initialAjaxUrl,
+      context: document.body,
+      timeout: 10000,
+    }).done((resp) => {
+      const { voter_device_id: voterDeviceId } = resp;
+      if (voterDeviceId) {
+        console.log('Cordova:   voterRetrieve returned voter_device_id', voterDeviceId);
+        VoterStore.setVoterDeviceIdCookie(voterDeviceId);
+        window.voterDeviceId = voterDeviceId;
+        // --
 
-          // Initialize incoming URL handler for oAuth and wevotetwitterscheme
-          window.handleOpenURL = (url) => {
-            console.log('Cordova: window.handleOpenURL ', url);
-            TwitterSignIn.handleTwitterOpenURL(url);
-          };
+        // Initialize incoming URL handler for oAuth and wevotetwitterscheme
+        window.handleOpenURL = (url) => {
+          console.log('Cordova: window.handleOpenURL ', url);
+          TwitterSignIn.handleTwitterOpenURL(url);
+        };
 
-          getProcessorArchitecture();
+        // getProcessorArchitecture();
 
-          // Cordova only, override "open" to use InAppBrowser to open any outside site
-          // const { cordova: { InAppBrowser, plugins: { firebase: { messaging } } } } = window;
-          const { cordova: { InAppBrowser } } = window;
-          if (InAppBrowser) {
-            console.log('Cordova:   InAppBrowser.open');
-            window.open = InAppBrowser.open;
-          } else {
-            console.warn('Cordova: Warning: InAppBrowser for Cordova is not installed!');
-          }
+        // Cordova only, override "open" to use InAppBrowser to open any outside site
+        // const { cordova: { InAppBrowser, plugins: { firebase: { messaging } } } } = window;
+        const { cordova: { InAppBrowser } } = window;
+        if (InAppBrowser) {
+          console.log('Cordova:   InAppBrowser.open');
+          window.open = InAppBrowser.open;
+        } else {
+          console.warn('Cordova: Warning: InAppBrowser for Cordova is not installed!');
+        }
 
-          try {
-            const { cordova: { getAppVersion: getVersionNumber } } = window;
-            getVersionNumber().then((version) => {
-              window.weVoteAppVersion = version;
-              // if (isIOSAppOnMac()) {
-              //   dumpScreenAndDeviceFields();
-              // }
+        try {
+          const { cordova: { getAppVersion: getVersionNumber } } = window;
+          getVersionNumber().then((version) => {
+            window.weVoteAppVersion = version;
+            // if (isIOSAppOnMac()) {
+            //   dumpScreenAndDeviceFields();
+            // }
 
-              // Prevent the app from rotating to Landscape -- mostly to simplify layout permutations
+            // Prevent the app from rotating to Landscape -- mostly to simplify layout permutations
+            try {
+              const { screen: { orientation: { lock } } } = window;
+              console.log('Cordova:   screen lock 1st try');
+              lock('portrait').then(() => {
+                postLockInitialization(voterDeviceId, startReact);
+              });
+            } catch (errLock) {
               try {
+                // Aug 2023: The lock() API does show up, after a second or two, but adding a setTimout causes the app to hang
+                console.log('Cordova:   screen lock 2nd try ', errLock);
                 const { screen: { orientation: { lock } } } = window;
-                console.log('Cordova:   screen lock 1st try');
                 lock('portrait').then(() => {
                   postLockInitialization(voterDeviceId, startReact);
                 });
-              } catch (errLock) {
-                try {
-                  // Aug 2023: The lock() API does show up, after a second or two, but adding a setTimout causes the app to hang
-                  console.log('Cordova:   screen lock 2nd try ', errLock);
-                  const { screen: { orientation: { lock } } } = window;
-                  lock('portrait').then(() => {
-                    postLockInitialization(voterDeviceId, startReact);
-                  });
-                } catch (errLockFinal) {
-                  // Aug 2023:  Often works the second time, if not wait for https://github.com/apache/cordova-plugin-screen-orientation/pull/116 to be resolved for iOS 1.4
-                  console.log('Cordova:   screen lock FAILED the 2nd try, giving up: ', errLock);
-                  postLockInitialization(voterDeviceId, startReact);
-                }
+              } catch (errLockFinal) {
+                // Aug 2023:  Often works the second time, if not wait for https://github.com/apache/cordova-plugin-screen-orientation/pull/116 to be resolved for iOS 1.4
+                console.log('Cordova:   screen lock FAILED the 2nd try, giving up: ', errLock);
+                postLockInitialization(voterDeviceId, startReact);
               }
-            });
-          } catch (err) {
-            console.log('Cordova: ERROR ', err);
-          }
+            }
+          });
+        } catch (err) {
+          console.log('Cordova: ERROR ', err);
         }
-      });
-      if (isIOS()) {
-        window.Keyboard.disableScroll(false);  // Aug 2022, need to set the initial state
       }
     });
+
+    // 9/28/23 TODO HACK TO AVOID PKUGIN THAT MIGHT NOT BE LOADING
+    if (isIOS() && window.Keyboard) {
+      window.Keyboard.disableScroll(false);  // Aug 2022, need to set the initial state
+    }
+    // });
   });
 }
 
