@@ -12,6 +12,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Use Node.js
         uses: actions/setup-node@v3
+      - run: cp src/js/config-template.js src/js/config.js
       - run: npm install
       - run: npm run build --if-present
       - run: npm test
