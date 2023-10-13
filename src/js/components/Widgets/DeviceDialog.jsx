@@ -150,11 +150,6 @@ class DeviceDialog extends Component {
               <div style={{ marginTop: 20 }}>
                 <div style={{ marginTop: 5 }}>
                   <span className="card-main__candidate-name-link">
-                    <Link to="/wevoteintro/network">Navigate to Welcome</Link>
-                  </span>
-                </div>
-                <div style={{ marginTop: 5 }}>
-                  <span className="card-main__candidate-name-link">
                     <Link onClick={DeviceDialog.clearLocationGuessClosedCookie} to="/">Clear Location Guess Cookie</Link>
                   </span>
                 </div>

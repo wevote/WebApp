@@ -14,7 +14,7 @@ import LoadingWheelComp from './js/common/components/Widgets/LoadingWheelComp';
 import AppObservableStore, { messageService } from './js/common/stores/AppObservableStore';
 import { getAndroidSize, getIOSSizeString, hasDynamicIsland, isIOS } from './js/common/utils/cordovaUtils';
 import historyPush from './js/common/utils/historyPush';
-import { normalizedHref } from './js/common/utils/hrefUtils';
+import { isWeVoteMarketingSite, normalizedHref } from './js/common/utils/hrefUtils';
 import initializejQuery from './js/common/utils/initializejQuery';
 import { isCordova, isWebApp } from './js/common/utils/isCordovaOrWebApp';
 import { renderLog } from './js/common/utils/logging';
@@ -339,12 +339,7 @@ class App extends Component {
   render () {
     renderLog('App');
     const { hideHeader, showReadyLight, enableFullStory } = this.state;
-    // console.log('App.js:  enableFullStory: ', enableFullStory);
-    let { hostname } = window.location;
-    hostname = hostname || '';
-    const weVoteSites = ['wevote.org', 'www.wevote.org', 'wevote.us', 'quality.wevote.us', 'www.wevote.us', 'localhost', 'silicon', 'wevotedeveloper.com', ''];   // localhost on Cordova is a ''
-    const isWeVoteMarketingSite = weVoteSites.includes(String(hostname));
-    const isNotWeVoteMarketingSite = !isWeVoteMarketingSite;
+    const isNotWeVoteMarketingSite = !isWeVoteMarketingSite();
     // const firstVisit = !cookies.getItem('voter_device_id');
     const loadingPageHtml = (
       <div id="loading-screen">

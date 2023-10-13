@@ -1,15 +1,14 @@
-import { Button, FormControl, TextField } from '@mui/material';
-import styled from 'styled-components';
+import { FormControl, TextField } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterActions from '../../actions/VoterActions';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import apiCalming from '../../common/utils/apiCalming';
-import { prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../common/utils/cordovaUtils';
-import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
+import { prepareForCordovaKeyboard } from '../../common/utils/cordovaUtils';
 import { renderLog } from '../../common/utils/logging';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';
@@ -40,7 +39,6 @@ class SettingsWidgetFirstLastName extends Component {
     this.handleKeyPressVoterName = this.handleKeyPressVoterName.bind(this);
     this.updateOrganizationName = this.updateOrganizationName.bind(this);
     this.updateVoterName = this.updateVoterName.bind(this);
-    this.saveNameCordova = this.saveNameCordova.bind(this);
   }
 
   componentDidMount () {
@@ -61,11 +59,9 @@ class SettingsWidgetFirstLastName extends Component {
   componentWillUnmount () {
     this.organizationStoreListener.remove();
     this.voterStoreListener.remove();
-    if (isWebApp()) {
-      if (this.clearStatusTimer) clearTimeout(this.clearStatusTimer);
-      if (this.organizationNameTimer) clearTimeout(this.organizationNameTimer);
-      if (this.voterNameTimer) clearTimeout(this.voterNameTimer);
-    }
+    if (this.clearStatusTimer) clearTimeout(this.clearStatusTimer);
+    if (this.organizationNameTimer) clearTimeout(this.organizationNameTimer);
+    if (this.voterNameTimer) clearTimeout(this.voterNameTimer);
     if (apiCalming('friendInvitationsWaitingForVerification')) {
       // console.log('SettingsWidgetFirstAndLastName friendInvitationsWaitingForVerification');
       FriendActions.friendListInvitationsWaitingForVerification();
@@ -73,38 +69,30 @@ class SettingsWidgetFirstLastName extends Component {
   }
 
   handleKeyPressOrganizationName () {
-    if (isWebApp()) {
-      if (this.organizationNameTimer) clearTimeout(this.organizationNameTimer);
-    }
+    if (this.organizationNameTimer) clearTimeout(this.organizationNameTimer);
     if (this.props.voterHasMadeChangesFunction) {
       this.props.voterHasMadeChangesFunction();
     }
-    if (isWebApp()) {
-      this.organizationNameTimer = setTimeout(() => {
-        OrganizationActions.organizationNameSave(
-          this.state.linkedOrganizationWeVoteId,
-          this.state.organizationName,
-        );
-        this.setState({ organizationNameSavedStatus: 'Saved' });
-      }, delayBeforeApiUpdateCall);
-    }
+    this.organizationNameTimer = setTimeout(() => {
+      OrganizationActions.organizationNameSave(
+        this.state.linkedOrganizationWeVoteId,
+        this.state.organizationName,
+      );
+      this.setState({ organizationNameSavedStatus: 'Saved' });
+    }, delayBeforeApiUpdateCall);
   }
 
   handleKeyPressVoterName () {
-    if (isWebApp()) {
-      if (this.voterNameTimer) clearTimeout(this.voterNameTimer);
-    }
+    if (this.voterNameTimer) clearTimeout(this.voterNameTimer);
     if (this.props.voterHasMadeChangesFunction) {
       this.props.voterHasMadeChangesFunction();
     }
 
-    if (isWebApp()) {
-      if (this.voterNameTimer) clearTimeout(this.voterNameTimer);
-      this.voterNameTimer = setTimeout(() => {
-        VoterActions.voterNameSave(this.state.firstName, this.state.lastName);
-        this.setState({ voterNameSavedStatus: 'Saved' });
-      }, delayBeforeApiUpdateCall);
-    }
+    if (this.voterNameTimer) clearTimeout(this.voterNameTimer);
+    this.voterNameTimer = setTimeout(() => {
+      VoterActions.voterNameSave(this.state.firstName, this.state.lastName);
+      this.setState({ voterNameSavedStatus: 'Saved' });
+    }, delayBeforeApiUpdateCall);
   }
 
   onOrganizationStoreChange () {
@@ -182,57 +170,33 @@ class SettingsWidgetFirstLastName extends Component {
     if (event.target.name === 'organizationName') {
       this.setState({
         organizationName: event.target.value,
-        organizationNameSavedStatus: isWebApp() ?
-          'Saving Display Name...' :
-          '',
+        organizationNameSavedStatus: 'Saving Display Name...',
       });
     }
-    if (isWebApp()) {
-      // After some time, clear saved message
-      if (this.clearStatusTimer) clearTimeout(this.clearStatusTimer);
-      this.clearStatusTimer = setTimeout(() => {
-        this.setState({ organizationNameSavedStatus: '' });
-      }, delayBeforeRemovingSavedStatus);
-    }
-  }
-
-  saveNameCordova () {
-    restoreStylesAfterCordovaKeyboard('SettingsWidgetFirstLastName');
-    VoterActions.voterNameSave(this.state.firstName, this.state.lastName);
-    if (
-      !this.props.hideNameShownWithEndorsements &&
-      this.state.organizationName.length
-    ) {
-      OrganizationActions.organizationNameSave(
-        this.state.linkedOrganizationWeVoteId,
-        this.state.organizationName,
-      );
-    }
-    this.setState({
-      voterNameSavedStatus: 'Saved',
-      displayOnly: true,
-    });
+    // After some time, clear saved message
+    if (this.clearStatusTimer) clearTimeout(this.clearStatusTimer);
+    this.clearStatusTimer = setTimeout(() => {
+      this.setState({ organizationNameSavedStatus: '' });
+    }, delayBeforeRemovingSavedStatus);
   }
 
   updateVoterName (event) {
     if (event.target.name === 'firstName') {
       this.setState({
         firstName: event.target.value,
-        voterNameSavedStatus: isWebApp() ? 'Saving First Name...' : '',
+        voterNameSavedStatus: 'Saving First Name...',
       });
     } else if (event.target.name === 'lastName') {
       this.setState({
         lastName: event.target.value,
-        voterNameSavedStatus: isWebApp() ? 'Saving Last Name...' : '',
+        voterNameSavedStatus: 'Saving Last Name...',
       });
     }
-    if (isWebApp()) {
-      // After some time, clear saved message
-      if (this.clearStatusTimer) clearTimeout(this.clearStatusTimer);
-      this.clearStatusTimer = setTimeout(() => {
-        this.setState({ voterNameSavedStatus: '' });
-      }, delayBeforeRemovingSavedStatus);
-    }
+    // After some time, clear saved message
+    if (this.clearStatusTimer) clearTimeout(this.clearStatusTimer);
+    this.clearStatusTimer = setTimeout(() => {
+      this.setState({ voterNameSavedStatus: '' });
+    }, delayBeforeRemovingSavedStatus);
   }
 
   render () {
@@ -371,17 +335,6 @@ class SettingsWidgetFirstLastName extends Component {
                         {organizationNameSavedStatus}
                       </div>
                     </Row>
-                  )}
-                  {isCordova() && (
-                    <Button
-                      color="primary"
-                      id={`firstLastSaveButton-${externalUniqueId}`}
-                      onClick={this.saveNameCordova}
-                      variant="contained"
-                      fullWidth
-                    >
-                      Save
-                    </Button>
                   )}
                 </form>
               )}
