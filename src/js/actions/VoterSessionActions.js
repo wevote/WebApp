@@ -5,10 +5,10 @@ import Cookies from '../common/utils/js-cookie/Cookies';
 import stringContains from '../common/utils/stringContains';
 
 export default {
-  voterSignOut () {
+  voterSignOut (signOutAllDevices = false) {
     AppObservableStore.setShowSignInModal(false);
     AppObservableStore.unsetStoreSignInStartFullUrl();
-    Dispatcher.loadEndpoint('voterSignOut', { sign_out_all_devices: false });
+    Dispatcher.loadEndpoint('voterSignOut', { sign_out_all_devices: signOutAllDevices });
     const names = [
       'voter_device_id',
       'ballot_has_been_visited',

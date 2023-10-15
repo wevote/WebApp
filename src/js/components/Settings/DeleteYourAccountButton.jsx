@@ -3,21 +3,28 @@ import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
-import VoterActions from '../../actions/VoterActions';
-import historyPush from '../../common/utils/historyPush';
 import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
-import Cookies from '../../common/utils/js-cookie/Cookies';
 import { renderLog } from '../../common/utils/logging';
 import VoterStore from '../../stores/VoterStore';
+import VoterActions from '../../actions/VoterActions';
+import VoterSessionActions from '../../actions/VoterSessionActions';
+import CircularLinkedList from '../../utils/CircularLinkedList';
 
+const MESSAGE_ARRAY = [
+  'Scheduling data deletion...',
+  'Please wait...',
+];
+
+const MESSAGE_QUEUE = new CircularLinkedList(MESSAGE_ARRAY);
 
 class DeleteYourAccountButton extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
       deleteAllDataConfirm: false,
-      deletingAllDataNowStatusMessage: 'Deleting all of your data now...',
+      message: MESSAGE_QUEUE.head.data,
+      messageNode: MESSAGE_QUEUE.head,
     };
   }
 
@@ -27,54 +34,39 @@ class DeleteYourAccountButton extends React.Component {
 
   componentWillUnmount () {
     this.voterStoreListener.remove();
-    // The component may unmount before some of the callbacks execute in the deletion call
-    // Cancel them to avoid memory leaks
-    clearTimeout(this.changeVoterDeviceId);
-    clearTimeout(this.updateMessage);
-    clearTimeout(this.remindUser);
+    if (this.updateMessage) clearInterval(this.updateMessage);
   }
 
   onVoterStoreChange () {
-    // console.log('ReadyTaskBallot, onVoterStoreChange voter: ', VoterStore.getVoter());
-    const voterDeleted = VoterStore.getVoterDeleted();
-    // console.log('DeleteYourAccountButton, onVoterStoreChange voterDeleted: ', voterDeleted);
-    if (voterDeleted) {
-      historyPush({
-        pathname: '/ready',   // SnackNotifier that SHOULD handle this is in Friends or Values
+    const voterSignedIn = VoterStore.getVoterIsSignedIn();
+    if (!voterSignedIn) {
+      const { history } = this.props;
+      const location = {
+        pathname: '/ready',
         state: {
-          message: 'All profile information deleted.',
+          message: 'Your data will be deleted in 5 minutes.',
           severity: 'success',
         },
-      });
+      };
+      history.replace(location);
+      // There is a SnackNotifier in Friends or Values
     }
   }
 
   deleteAllData = () => {
-    const deleteVoterAccount = true;
-    VoterActions.voterAccountDelete(deleteVoterAccount);
-    // After triggering this action (with delay, so it doesn't interfere
-    //  with voterAccountDelete, delete the voter_device_id cookie
-    //  from the browser so the voter can start fresh
-    this.changeVoterDeviceId = setTimeout(() => {
-      Cookies.remove('voter_device_id');
-      Cookies.remove('voter_device_id', { path: '/' });
-      Cookies.remove('voter_device_id', { path: '/', domain: 'wevote.us' });
-      // console.log('DeleteYourAccountButton, deleteAllData, Cookies.remove voter_device_id called');
-      VoterActions.voterRetrieve(); // Get fresh data from server for Voter
-    }, 3000);
     this.setState({
       deletingAllDataNow: true,
     });
-    this.updateMessage = setTimeout(() => {
+    this.updateMessage = setInterval(() => {
+      const { messageNode } = this.state;
       this.setState({
-        deletingAllDataNowStatusMessage: 'Please be patient...',
+        message: messageNode.next.data,
+        messageNode: messageNode.next,
       });
     }, 3000);
-    this.remindUser = setTimeout(() => {
-      this.setState({
-        deletingAllDataNowStatusMessage: 'Contact support to verify deletion...',
-      });
-    }, 6000);
+    const deleteVoterAccount = true;
+    VoterActions.voterAccountDelete(deleteVoterAccount);
+    VoterSessionActions.voterSignOut();
   }
 
   deleteAllDataConfirmToggle = () => {
@@ -87,7 +79,7 @@ class DeleteYourAccountButton extends React.Component {
   render () {
     renderLog('DeleteYourAccountButton');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes, leftAlign, textSizeSmall } = this.props;
-    const { deleteAllDataConfirm, deletingAllDataNow, deletingAllDataNowStatusMessage } = this.state;
+    const { deleteAllDataConfirm, deletingAllDataNow, message } = this.state;
     return (
       <>
         {deleteAllDataConfirm && (
@@ -113,7 +105,7 @@ class DeleteYourAccountButton extends React.Component {
                   classes={{ root: classes.deletingAllDataNow }}
                   variant="contained"
                 >
-                  {deletingAllDataNow ? deletingAllDataNowStatusMessage : 'Permanently delete all of your data'}
+                  {deletingAllDataNow ? message : 'Permanently delete all of your data'}
                 </Button>
               </DeleteYourAccountButtonInnerWrapper>
               {!deletingAllDataNow && (
@@ -153,8 +145,10 @@ class DeleteYourAccountButton extends React.Component {
     );
   }
 }
+
 DeleteYourAccountButton.propTypes = {
   classes: PropTypes.object,
+  history: PropTypes.object,
   leftAlign: PropTypes.bool,
   textSizeSmall: PropTypes.bool,
 };
