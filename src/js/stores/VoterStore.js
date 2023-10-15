@@ -1254,10 +1254,8 @@ class VoterStore extends ReduceStore {
         };
 
       case 'voterUpdate':
-        // console.log('VoterStore  voterUpdate: ', action.res);
         if (action.res.success && action.res.voter_deleted) {
           revisedState = state;
-          revisedState = { ...revisedState, ...this.getInitialState() };
           revisedState = { ...revisedState,
             voterDeleted: true,
             voterNotDeleted: false,
