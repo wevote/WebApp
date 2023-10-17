@@ -25,7 +25,7 @@ class StateDropDownCore extends Component {
     } = this.props;
 
     let stateCodeTemp;
-    const stateNameList = Object.values(stateCodeMap);
+    const stateNameList = Object.values(stateCodeMap).sort();
 
     return (
       <FormControl variant="outlined" className={classes.formControl}>
