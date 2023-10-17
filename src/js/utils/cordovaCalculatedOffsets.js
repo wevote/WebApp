@@ -77,7 +77,7 @@ export function setBallotDualHeaderContentContainerTopOffset (isSignedIn) {
             debugLogging(`calculation --------- hasNoNotch ${hasNoNotch}`);
             if (hasNoNotch) {  // ipads and old iPhones and Androids
               const headroomWrapper = $('div[class*=\'HeadroomWrapper\']');
-              topOffset = headroomWrapper.height();
+              topOffset = isIOS() ? 0 : headroomWrapper.height();
             } else if (iosSpacerElem.length) {
               iOsSpacerHeight = iosSpacerElem.height;
               const headerBarWrapperHeight = $('div[class*=\'HeaderBarWrapper\']').height();
@@ -187,7 +187,7 @@ export function headroomWrapperOffset (includePosition) {
     offset = outerHeight + position;
     const page = pageEnumeration();
     if (page === 'candidatelist' || page === 'values') {
-      offset /= 3;    // Precious blank vertical space removed in Cordova
+      offset /= isIPad() ? 2 : 3;
     }
 
     cordovaOffsetLog(`headroomWrapperOffset HeadroomWrapper outerHeight+top: ${outerHeight + position}, new offset: ${offset}, page: ${getPageKey()}`);

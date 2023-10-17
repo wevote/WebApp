@@ -8,6 +8,8 @@ import FriendActions from '../../actions/FriendActions';
 import VoterActions from '../../actions/VoterActions';
 import ShareActions from '../../common/actions/ShareActions';
 import AppObservableStore from '../../common/stores/AppObservableStore';
+import { isCordovaWide } from '../../common/utils/cordovaUtils';
+import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import removeTwitterNameFromDescription from '../../common/utils/removeTwitterNameFromDescription';
 import FriendStore from '../../stores/FriendStore';
@@ -156,7 +158,7 @@ class SuggestedFriendDisplayForList extends Component {
     const useSimpleLinkForIgnore = true;
     const voterContactIsIgnored = (ignoreVoterContactSent || voterContactIgnored) && !stopIgnoringVoterContactSent;
     const friendButtonsWrapperHtml = (
-      <FriendButtonsWrapper inSideColumn={inSideColumn}>
+      <FriendButtonsWrapper id="sfdfl-fbwh" inSideColumn={inSideColumn}>
         <SuggestedFriendSettingsWrapper>
           {(otherVoterWeVoteId && !remindMode) ? (
             <SuggestedFriendToggle
@@ -235,6 +237,7 @@ class SuggestedFriendDisplayForList extends Component {
       </FriendButtonWithStatsWrapper>
     );
 
+    /* eslint-disable react/jsx-one-expression-per-line */
     const suggestedFriendHtml = (
       <FriendDisplayOuterWrapper inSideColumn={inSideColumn}/* previewMode={previewMode} */>
         <FriendColumnWithoutButtons>
@@ -271,16 +274,28 @@ class SuggestedFriendDisplayForList extends Component {
               <FriendLocationDisplay cityForDisplay={cityForDisplay} stateCodeForDisplay={stateCodeForDisplay} />
             </ToRightOfPhotoTopRow>
             {friendButtonsExist && (
-              <div id="secondButtonSet" className="u-show-mobile">
-                {friendButtonsWithStatsHtml}
-              </div>
+              isWebApp() ? (
+                <div id="secondButtonSet" className="u-show-mobile">
+                  {friendButtonsWithStatsHtml}
+                </div>
+              ) : (
+                <SecondButtonSetCordova id="secondButtonSetCordova">
+                  {friendButtonsWithStatsHtml}
+                </SecondButtonSetCordova>
+              )
             )}
           </ToRightOfPhotoWrapper>
         </FriendColumnWithoutButtons>
         {friendButtonsExist && (
-          <FriendDisplayDesktopButtonsWrapper className="u-show-desktop-tablet">
-            {friendButtonsWithStatsHtml}
-          </FriendDisplayDesktopButtonsWrapper>
+          isWebApp() ? (
+            <FriendDisplayDesktopButtonsWrapper id="sfdfl-fddbwW" className="suppressCordova u-show-desktop-tablet">  {/* This is necessary because bldSrcCordova converts u-show-desktop-tablet into something that doesn't make sense in this special case */}
+              {friendButtonsWithStatsHtml}
+            </FriendDisplayDesktopButtonsWrapper>
+          ) : (
+            <FriendDisplayDesktopButtonsWrapper id="sfdfl-fddbwC">
+              {friendButtonsWithStatsHtml}
+            </FriendDisplayDesktopButtonsWrapper>
+          )
         )}
       </FriendDisplayOuterWrapper>
     );
@@ -337,11 +352,9 @@ const styles = {
   },
 };
 
-// const ReminderSentText = styled('div')`
-//   // color: #808080;
-//   // font-weight: bold;
-//   margin-top: 4px;
-// `;
+const SecondButtonSetCordova = styled('div')`
+  ${() => (isCordovaWide() ? { display: 'none !important' } : {})};   // Override the clumsy u-show-mobile
+`;
 
 const SuggestedFriendDisplayForListWrapper = styled('div')`
   width: 100%;

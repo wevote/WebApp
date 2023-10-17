@@ -1379,7 +1379,7 @@ class Ballot extends Component {
       <div className="ballot_root">
         <Suspense fallback={<LoadingWheelComp />}>
           <SnackNotifier />
-          <DualHeaderContainer scrolledDown={scrolledDown}>
+          <DualHeaderContainer id="ballot" scrolledDown={scrolledDown}>
             <HeaderContentOuterContainer>
               <HeaderContentContainer>
                 <div className="container-fluid">

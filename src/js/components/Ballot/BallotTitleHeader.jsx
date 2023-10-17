@@ -4,33 +4,18 @@ import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
-import { isAndroidSizeWide } from '../../common/utils/cordovaUtils';
-import BallotTitleHeaderNationalPlaceholder from './BallotTitleHeaderNationalPlaceholder';
+import AppObservableStore from '../../common/stores/AppObservableStore';
+import { isAndroidSizeWide, isIPad } from '../../common/utils/cordovaUtils';
 import { formatDateToMonthDayYear } from '../../common/utils/dateFormat';
 import daysUntil from '../../common/utils/daysUntil';
 import initializeMoment from '../../common/utils/initializeMoment';
 import { renderLog } from '../../common/utils/logging';
 import stringContains from '../../common/utils/stringContains';
-import AppObservableStore from '../../common/stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
 import VoterStore from '../../stores/VoterStore';
-import {
-  BallotAddress,
-  ClickBlockWrapper,
-  ContentWrapper,
-  ElectionDateBelow,
-  ElectionDateRight,
-  ElectionNameBlock,
-  ElectionNameH1,
-  ElectionNameScrollContent,
-  ElectionStateLabel,
-  OverflowContainer,
-  OverflowContent,
-  VoteByBelowLabel,
-  VoteByBelowWrapper,
-  VoteByRightLabel,
-  VoteByRightWrapper,
-} from '../Style/BallotTitleHeaderStyles';
+import { BallotAddress, ClickBlockWrapper, ContentWrapper, ElectionDateBelow, ElectionDateRight, ElectionNameBlock, ElectionNameH1, ElectionNameScrollContent,
+  ElectionStateLabel, OverflowContainer, OverflowContent, VoteByBelowLabel, VoteByBelowWrapper, VoteByRightLabel, VoteByRightWrapper } from '../Style/BallotTitleHeaderStyles';
+import BallotTitleHeaderNationalPlaceholder from './BallotTitleHeaderNationalPlaceholder';
 
 const ShareButtonDesktopTablet = React.lazy(() => import(/* webpackChunkName: 'ShareButtonDesktopTablet' */ '../Share/ShareButtonDesktopTablet'));
 
@@ -363,6 +348,7 @@ const styles = {
 
 const BallotShareWrapper = styled('div')`
   ${() => (isAndroidSizeWide() ? { margin: 0 } : { margin: '0 -8px 0 -8px' })};
+  ${() => (isIPad() ? { display: 'revert !important' } : {})};  // override u-show-desktop-tablet
   margin-bottom: 12px;
   padding-left: 2px;
 `;
