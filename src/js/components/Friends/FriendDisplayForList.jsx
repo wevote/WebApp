@@ -57,7 +57,7 @@ class FriendDisplayForList extends Component {
     );
     const friendButtonsExist = !friendToggleOff || messageToFriendButtonOn;
     const friendButtonsWrapperHtml = (
-      <FriendButtonsWrapper>
+      <FriendButtonsWrapper id="fbwhfdfl">
         {!friendToggleOff && (
           <FriendSettingsWrapper>
             <FriendToggle otherVoterWeVoteId={voterWeVoteId} showFriendsText />
@@ -81,7 +81,7 @@ class FriendDisplayForList extends Component {
 
     const friendDisplayHtml = (
       <FriendDisplayOuterWrapper>
-        <FriendColumnWithoutButtons>
+        <FriendColumnWithoutButtons id="fdfl-fdh">
           <Avatar>
             { (voterGuideLink && voterGuideLinkOn) ? (
               <Link to={voterGuideLink} className="u-no-underline">
@@ -122,7 +122,7 @@ class FriendDisplayForList extends Component {
           </ToRightOfPhotoWrapper>
         </FriendColumnWithoutButtons>
         {friendButtonsExist && (
-          <FriendDisplayDesktopButtonsWrapper className="u-show-desktop-tablet">
+          <FriendDisplayDesktopButtonsWrapper id="fdfl-1" className="u-show-desktop-tablet">
             {friendButtonsWrapperHtml}
           </FriendDisplayDesktopButtonsWrapper>
         )}

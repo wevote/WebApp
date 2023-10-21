@@ -39,12 +39,14 @@ const requestPermissionContacts = async () => {
 // eslint-disable-next-line import/prefer-default-export
 export const checkPermissionContacts = async (callBack) => {
   ContactsX.hasPermission((success) => {
-    console.log('Results of hasPermission check:', JSON.stringify(success));
-    if (success?.read === false) {
+    console.log('checkPermissionContacts Results of hasPermission check:', JSON.stringify(success));
+    if (success.read === false) {
+      console.log('checkPermissionContacts about to requestPermissionContacts');
       requestPermissionContacts(callBack);
     } else {
       window.contactPermissionIos = 'accepted';
     }
+    console.log('checkPermissionContacts about to getDeviceContacts');
     getDeviceContacts(callBack);
   }, (error) => {
     console.error('checkPermission error:', JSON.stringify(error));

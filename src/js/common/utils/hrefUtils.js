@@ -18,3 +18,10 @@ export function normalizedHrefPage () {
   }
   return page;
 }
+
+export function isWeVoteMarketingSite () {
+  let { hostname } = window.location;
+  hostname = hostname || '';
+  const weVoteSites = ['wevote.org', 'www.wevote.org', 'wevote.us', 'quality.wevote.us', 'www.wevote.us', 'localhost', 'silicon', 'wevotedeveloper.com', ''];   // localhost on Cordova is a ''
+  return weVoteSites.includes(String(hostname));
+}

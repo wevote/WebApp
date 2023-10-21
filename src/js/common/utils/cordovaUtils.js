@@ -85,6 +85,7 @@ export function cordovaOpenSafariViewSub (requestURL, onExit) {
       oAuthLog(`cordovaOpenSafariView requestURL: ${requestURL}`);
       SafariViewController.show({ // eslint-disable-line no-undef
         url: requestURL,
+        dismissButton: 1,
       },
       (result) => {
         if (result.event === 'opened') {
@@ -364,6 +365,8 @@ export function isIPad11in () {
       'iPad13,17',                                                 // iPad Air 10.9 inch 5th Gen
       'iPad13,18',                                                 // iPad     10.2 inch 9th Gen (Maybe too small for this category?)
       'iPad13,19',                                                 // iPad     10.9 inch 10th Gen
+      'iPad14,3',                                                  // iPad     11 inch 4th Gen
+      'iPad14,4',                                                  // iPad     11 inch 4th Gen
     ].includes(window.device.model)) {
     logMatch('iPad11in', true);
     return true;

@@ -5,16 +5,14 @@ import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
+import { isCordovaWide } from '../../common/utils/cordovaUtils';
+import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import removeTwitterNameFromDescription from '../../common/utils/removeTwitterNameFromDescription';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
 import Avatar from '../Style/avatarStyles';
-import {
-  CancelButtonWrapper, FriendButtonsWrapper, FriendColumnWithoutButtons,
-  FriendDisplayDesktopButtonsWrapper, FriendDisplayOuterWrapper, smallButtonIfNeeded,
-  ToRightOfPhotoContentBlock, ToRightOfPhotoTopRow, ToRightOfPhotoWrapper,
-} from '../Style/friendStyles';
+import { CancelButtonWrapper, FriendButtonsWrapper, FriendColumnWithoutButtons, FriendDisplayDesktopButtonsWrapper, FriendDisplayOuterWrapper, smallButtonIfNeeded, ToRightOfPhotoContentBlock, ToRightOfPhotoTopRow, ToRightOfPhotoWrapper } from '../Style/friendStyles';
 import FriendDetails from './FriendDetails';
 import FriendInvitationToggle from './FriendInvitationToggle';
 import FriendLocationDisplay from './FriendLocationDisplay';
@@ -31,6 +29,7 @@ class FriendInvitationVoterLinkDisplayForList extends Component {
     };
     this.cancelFriendInviteVoter = this.cancelFriendInviteVoter.bind(this);
     this.ignoreFriendInvite = this.ignoreFriendInvite.bind(this);
+    this.friendButtonsWrapperHtml = this.friendButtonsWrapperHtml.bind(this);
   }
 
   componentDidMount () {
@@ -75,19 +74,80 @@ class FriendInvitationVoterLinkDisplayForList extends Component {
     FriendActions.ignoreFriendInvite(otherVoterWeVoteId);
   }
 
+  friendButtonsWrapperHtml (specialCaseSuppressIfCordovaWide) {
+    const { cancelFriendInviteVoterSubmitted, friendInvitationByEmailSent } = this.state;
+    const { classes, invitationsSentByMe, voterEmailAddress, voterWeVoteId: otherVoterWeVoteId } = this.props;
+
+    if (invitationsSentByMe) {
+      return (
+        <FriendButtonsWrapper specialCase={specialCaseSuppressIfCordovaWide} id="fivldfl-fbw2">
+          <SentByMeResendButtonWrapper>
+            {otherVoterWeVoteId ? (
+              <SuggestedFriendToggle inviteAgain otherVoterWeVoteId={otherVoterWeVoteId} />
+            ) : (
+              <Button
+                color="primary"
+                disabled={friendInvitationByEmailSent}
+                fullWidth
+                onClick={() => this.friendInvitationByEmailSend(voterEmailAddress)}
+                type="button"
+                variant="contained"
+              >
+                <span className="u-no-break" style={smallButtonIfNeeded()}>
+                  {friendInvitationByEmailSent ? 'Invite sent' : 'Invite again'}
+                </span>
+              </Button>
+            )}
+          </SentByMeResendButtonWrapper>
+          <CancelButtonWrapper>
+            <Button
+              classes={{ root: classes.ignoreButton }}
+              color="primary"
+              disabled={cancelFriendInviteVoterSubmitted}
+              fullWidth
+              onClick={() => this.cancelFriendInviteVoter(otherVoterWeVoteId)}
+              variant="outlined"
+            >
+              <span className="u-no-break" style={smallButtonIfNeeded()}>
+                {cancelFriendInviteVoterSubmitted ? 'Canceled' : 'Cancel Invite'}
+              </span>
+            </Button>
+          </CancelButtonWrapper>
+        </FriendButtonsWrapper>
+      );
+    } else {
+      return (
+        <FriendButtonsWrapper id="divldfl-fbwh2">
+          <FriendInvitationToggle otherVoterWeVoteId={otherVoterWeVoteId} />
+          <IgnoreButtonWrapper>
+            <Button
+              classes={{ root: classes.ignoreButton }}
+              color="primary"
+              fullWidth
+              onClick={() => this.ignoreFriendInvite(otherVoterWeVoteId)}
+              type="button"
+              variant="outlined"
+            >
+              Ignore
+            </Button>
+          </IgnoreButtonWrapper>
+        </FriendButtonsWrapper>
+      );
+    }
+  }
+
+
   render () {
     renderLog('FriendInvitationVoterLinkDisplayForList');  // Set LOG_RENDER_EVENTS to log all renders
 
     // Do not render if already a friend
-    const { cancelFriendInviteVoterSubmitted, friendInvitationByEmailSent, isFriend } = this.state;
+    const { isFriend } = this.state;
     if (isFriend) {
       // We still want to show the invite
     }
 
     const {
       cityForDisplay,
-      classes,
-      invitationsSentByMe,
       linkedOrganizationWeVoteId,
       mutualFriendCount,
       mutualFriendPreviewList,
@@ -99,7 +159,6 @@ class FriendInvitationVoterLinkDisplayForList extends Component {
       voterGuideLinkOn,
       voterTwitterDescription,
       voterTwitterHandle,
-      voterWeVoteId: otherVoterWeVoteId,
       voterPhotoUrlLarge,
     } = this.props;
     // console.log('FriendInvitationVoterLinkDisplayForList, stateCodeForDisplay:', stateCodeForDisplay);
@@ -126,58 +185,6 @@ class FriendInvitationVoterLinkDisplayForList extends Component {
       />
     );
     const friendButtonsExist = true;
-    const friendButtonsWrapperHtml = invitationsSentByMe ? (
-      <FriendButtonsWrapper>
-        <SentByMeResendButtonWrapper>
-          {otherVoterWeVoteId ? (
-            <SuggestedFriendToggle inviteAgain otherVoterWeVoteId={otherVoterWeVoteId} />
-          ) : (
-            <Button
-              color="primary"
-              disabled={friendInvitationByEmailSent}
-              fullWidth
-              onClick={() => this.friendInvitationByEmailSend(voterEmailAddress)}
-              type="button"
-              variant="contained"
-            >
-              <span className="u-no-break" style={smallButtonIfNeeded()}>
-                {friendInvitationByEmailSent ? 'Invite sent' : 'Invite again'}
-              </span>
-            </Button>
-          )}
-        </SentByMeResendButtonWrapper>
-        <CancelButtonWrapper>
-          <Button
-            classes={{ root: classes.ignoreButton }}
-            color="primary"
-            disabled={cancelFriendInviteVoterSubmitted}
-            fullWidth
-            onClick={() => this.cancelFriendInviteVoter(otherVoterWeVoteId)}
-            variant="outlined"
-          >
-            <span className="u-no-break" style={smallButtonIfNeeded()}>
-              {cancelFriendInviteVoterSubmitted ? 'Canceled' : 'Cancel Invite'}
-            </span>
-          </Button>
-        </CancelButtonWrapper>
-      </FriendButtonsWrapper>
-    ) : (
-      <FriendButtonsWrapper>
-        <FriendInvitationToggle otherVoterWeVoteId={otherVoterWeVoteId} />
-        <IgnoreButtonWrapper>
-          <Button
-            classes={{ root: classes.ignoreButton }}
-            color="primary"
-            fullWidth
-            onClick={() => this.ignoreFriendInvite(otherVoterWeVoteId)}
-            type="button"
-            variant="outlined"
-          >
-            Ignore
-          </Button>
-        </IgnoreButtonWrapper>
-      </FriendButtonsWrapper>
-    );
 
     const friendInvitationHtml = (
       <FriendDisplayOuterWrapper/* previewMode={previewMode} */>
@@ -199,7 +206,7 @@ class FriendInvitationVoterLinkDisplayForList extends Component {
           </Avatar>
           <ToRightOfPhotoWrapper>
             <ToRightOfPhotoTopRow id="fieldfl2">
-              <ToRightOfPhotoContentBlock>
+              <ToRightOfPhotoContentBlock id="fieldfl2b">
                 <div className="full-width">
                   {(voterGuideLinkOn && voterGuideLink) ? (
                     <Link to={voterGuideLink} className="u-no-underline">
@@ -216,15 +223,21 @@ class FriendInvitationVoterLinkDisplayForList extends Component {
             </ToRightOfPhotoTopRow>
             {friendButtonsExist && (
               <div className="u-show-mobile">
-                {friendButtonsWrapperHtml}
+                {this.friendButtonsWrapperHtml(isCordovaWide())}
               </div>
             )}
           </ToRightOfPhotoWrapper>
         </FriendColumnWithoutButtons>
         {friendButtonsExist && (
-          <FriendDisplayDesktopButtonsWrapper className="u-show-desktop-tablet">
-            {friendButtonsWrapperHtml}
-          </FriendDisplayDesktopButtonsWrapper>
+          isWebApp() ? (
+            <FriendDisplayDesktopButtonsWrapper id="fivldfl-fddbwW" className="suppressCordova u-show-desktop-tablet">
+              {this.friendButtonsWrapperHtml(false)}
+            </FriendDisplayDesktopButtonsWrapper>
+          ) : (
+            <FriendDisplayDesktopButtonsWrapper id="fivldfl-fddbwC">
+              {this.friendButtonsWrapperHtml(false)}
+            </FriendDisplayDesktopButtonsWrapper>
+          )
         )}
       </FriendDisplayOuterWrapper>
     );

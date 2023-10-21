@@ -416,7 +416,7 @@ class Vote extends Component {
     }
     return (
       <VoteContainer>
-        <DualHeaderContainer className={`ballot__heading-vote-section ${ballotHeaderUnpinned && isWebApp() ? 'ballot__heading__unpinned' : ''}`} style={cordovaVoteMiniHeader()}>
+        <DualHeaderContainer id="vote" className={`ballot__heading-vote-section ${ballotHeaderUnpinned && isWebApp() ? 'ballot__heading__unpinned' : ''}`} style={cordovaVoteMiniHeader()}>
           <PageContentContainer>
             <div className="container-fluid">
               <div className="row">

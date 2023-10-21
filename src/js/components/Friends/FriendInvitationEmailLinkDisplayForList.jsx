@@ -104,7 +104,7 @@ class FriendInvitationEmailLinkDisplayForList extends Component {
     );
     const friendButtonsExist = true;
     const friendButtonsWrapperHtml = (
-      <FriendButtonsWrapper>
+      <FriendButtonsWrapper id="fieldfl-fbwh">
         {invitationState === 'PENDING_EMAIL_VERIFICATION' && !voter.signed_in_with_email ? (
           <Link to="/settings/account">
             <ButtonContainer>
@@ -186,7 +186,7 @@ class FriendInvitationEmailLinkDisplayForList extends Component {
           </ToRightOfPhotoWrapper>
         </FriendColumnWithoutButtons>
         {friendButtonsExist && (
-          <FriendDisplayDesktopButtonsWrapper className="u-show-desktop-tablet">
+          <FriendDisplayDesktopButtonsWrapper id="fieldfl-fddbw" className="u-show-desktop-tablet">
             {friendButtonsWrapperHtml}
           </FriendDisplayDesktopButtonsWrapper>
         )}

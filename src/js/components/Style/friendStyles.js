@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { isAndroidSizeMD, isAndroidSizeSM } from '../../common/utils/cordovaUtils';
-import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
+import { isAndroidSizeMD, isAndroidSizeSM, isCordovaWide } from '../../common/utils/cordovaUtils';
+import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 
 export const CancelButtonWrapper = styled('div')`
   width: fit-content;
@@ -8,9 +8,11 @@ export const CancelButtonWrapper = styled('div')`
   margin-left: 8px;
 `;
 
-export const FriendButtonsWrapper = styled('div')(({ theme }) => (`
+export const FriendButtonsWrapper = styled('div', {
+  shouldForwardProp: (prop) => !['specialCase, theme'].includes(prop),
+})(({ specialCase, theme }) => (`
   align-items: center;
-  display: flex;
+  display: ${specialCase && isCordovaWide() && isCordova() ? 'none' : 'flex'};
   justify-content: flex-end;
   ${theme.breakpoints.down('sm')} {
     margin: 4px 0 0;
@@ -69,6 +71,7 @@ export const FriendDetailsWrapper = isWebApp() ? styled('div', {
 
 export const FriendDisplayDesktopButtonsWrapper = styled('div')`
   margin-left: 24px;
+  ${() => ((isCordovaWide() || isWebApp() ? { display: 'flex !important' } : { display: 'none !important' }))};   // Override the clumsy u-show-desktop-tablet
 `;
 
 // When wider than sm, show Buttons to the right

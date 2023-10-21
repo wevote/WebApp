@@ -40,7 +40,7 @@ function addUShowStylesImport (fileTxt, path) {
   let ret = '';
   if (hasMobileImport || hasDeskTopImport) {
     // import { uShowMobile } from '../Style/cordovaFriendlyUShowStyles';
-    const m = fileTxt.match(/import {.*?cordovaFriendlyUShowStyles';\n/);
+    // const m = fileTxt.match(/import {.*?cordovaFriendlyUShowStyles';\n/);
     ret = fileTxt.replace(/import {.*?cordovaFriendlyUShowStyles';\n/, imp);
   } else {
     const firstImp = fileTxt.match(/(import.*?;)/);
@@ -100,7 +100,9 @@ function fileRewriterForCordova (path) {
     newValue = newValue.replace(/BrowserRouter/g, 'HashRouter');
     // Handle u-show-mobile and u-show-desktop-tablet not working well with HTML media queries for device width in Cordova
     if (newValue.match(/u-show-desktop-tablet.(?!.*?>)/gim) != null) {
-      throw new Error(`FATAL ERROR multiline u-show-desktop-tablet in ${path}`);
+      if (newValue.match(/suppressCordova u-show-desktop-tablet.(?!.*?>)/gim) != null) {
+        throw new Error(`FATAL ERROR multiline u-show-desktop-tablet in ${path}`);
+      }
     }
     newValue = newValue.replace(/className="u-show-mobile"/gim, 'style={uShowMobile()}');
     newValue = newValue.replace(/(?!\/\/>)className="u-show-desktop-tablet"/gim, 'style={uShowDesktopTablet()}');
