@@ -49,7 +49,7 @@ module.exports.config = {
       // Oakland, CA, USA
       gpsLocation: '37.804363,-122.271111',
       maskCommands: 'setValues, getValues, setCookies, getCookies',
-//      video: 'false',
+      video: 'false',
     },
   },
   maxInstances: 1,
