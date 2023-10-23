@@ -1,7 +1,10 @@
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { renderLog } from '../utils/logging';
+
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ './Widgets/OpenExternalWebSite'));
+
 
 export default class TermsOfServiceBody extends Component {
   static getProps () {
@@ -13,7 +16,7 @@ export default class TermsOfServiceBody extends Component {
     return (
       <div>
         <ContentTitle>Terms of Service</ContentTitle>
-        <p><strong>Last updated: August 12th, 2022</strong></p>
+        <p><strong>Last updated: October 23rd, 2023</strong></p>
 
         <h2>Overview</h2>
         <p>This website (also packaged in mobile apps) is operated by We Vote USA. Throughout the site, the terms “We Vote”, “we”, “us” and “our” refer to We Vote USA. We Vote USA offers this website, including all information, tools and services available from this site to you, the user, conditioned upon your acceptance of all terms, conditions, policies and notices stated here.</p>
@@ -28,10 +31,18 @@ export default class TermsOfServiceBody extends Component {
         <h2>General Conditions</h2>
         <p>You agree not to reproduce, duplicate, copy, sell, resell or exploit any portion of the Service, use of the Service, or access to the Service or any contact on the website through which the service is provided, without express written permission by us.</p>
         <p>
-          We Vote grants permission to copy the software that powers this website, made available at &nbsp;
-          <a href="https://github.com/WeVote" className="u-link-color" target="_blank" rel="noopener noreferrer">https://github.com/WeVote</a>
+          We Vote grants permission to copy the software that powers this website, made available at
           {' '}
-          ,&nbsp; under the MIT License.
+          <Suspense fallback={<></>}>
+            <OpenExternalWebSite
+                linkIdAttribute="wevoteGitHub"
+                url="https://github.com/WeVote"
+                target="_blank"
+                body={<span>https://github.com/WeVote</span>}
+            />
+          </Suspense>
+          , under the MIT License.
+          {' '}
         </p>
         <p>The headings used in this agreement are included for convenience only and will not limit or otherwise affect these Terms.</p>
         <h2>Accuracy, Completeness and Timeliness of Information</h2>
