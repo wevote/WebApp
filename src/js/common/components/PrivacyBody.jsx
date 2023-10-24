@@ -1,7 +1,7 @@
 import React, { Component, Suspense } from 'react';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { renderLog } from '../utils/logging';
+import DeleteYourAccountButton from '../../components/Settings/DeleteYourAccountButton';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ './Widgets/OpenExternalWebSite'));
 
@@ -202,27 +202,10 @@ export default class PrivacyBody extends Component {
           </table>
         </HorizontallyScrollingDiv>
         <p className="u-show-desktop-tablet">&nbsp;</p>
-        <h2><b>How to request the deletion of your data</b></h2>
-        <p>
-          <span>
-            You may request the deletion of all of the data we have about you by
-            <Suspense fallback={<></>}>
-              <OpenExternalWebSite
-                linkIdAttribute="weVoteContactUsPage"
-                url="https://help.wevote.us/hc/en-us/requests/new"
-                target="_blank"
-                body=" submitting a request here."
-              />
-            </Suspense>
-          </span>
-        </p>
-        <p>
-          If you have imported your contacts from Google/Gmail, you can delete this data from
-          {' '}
-          <Link to="/settings/yourdata" className="u-link-color">Your Privacy &amp; Data</Link>
-          {' '}
-          profile page.
-        </p>
+        <h2><b>Deleting your account</b></h2>
+        <DeleteYourAccountWrapper>
+          <DeleteYourAccountButton leftAlign />
+        </DeleteYourAccountWrapper>
         <h2><b>Donations and credit card information</b></h2>
         <p>
           <span>When you give money to We Vote online, we collect credit card information from you. That information is used solely for processing your contribution; it is not maintained by We Vote; and is never disclosed to anyone, for any other purpose other than for processing your contribution.</span>
@@ -372,6 +355,10 @@ const ContentTitle = styled('h1')(({ theme }) => (`
     font-size: 20px;
   }
 `));
+
+const DeleteYourAccountWrapper = styled('div')`
+  margin-bottom: 12px;
+`;
 
 const HorizontallyScrollingDiv = styled('div')(({ theme }) => (`
   ${theme.breakpoints.down('md')} {
