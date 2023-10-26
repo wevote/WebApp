@@ -5,6 +5,7 @@ import React, { Suspense } from 'react';
 import styled from 'styled-components';
 import VoterActions from '../../actions/VoterActions';
 import apiCalming from '../../common/utils/apiCalming';
+import { SetUpSignInOptionsPanelWrapper } from '../Style/SignInStyles';
 import { renderLog } from '../../common/utils/logging';
 import VoterStore from '../../stores/VoterStore';
 import {
@@ -144,14 +145,14 @@ class SetUpAccountInviteContactsSignIn extends React.Component {
         <Suspense fallback={<></>}>
           <ContactsImportedPreview showOnlyContactsWithAccounts />
         </Suspense>
-        <SignInOptionsPanelWrapper>
+        <SetUpSignInOptionsPanelWrapper>
           <Suspense fallback={<></>}>
             <SignInOptionsPanel
               pleaseSignInTitle={(contactsWithAccountCount > 0) ? 'Sign in to connect with your friends' : ''}
               pleaseSignInSubTitle={(contactsWithAccountCount > 0) ? 'After you sign in, you will be able to choose which friends to collaborate with.' : ''}
             />
           </Suspense>
-        </SignInOptionsPanelWrapper>
+        </SetUpSignInOptionsPanelWrapper>
       </StepCenteredWrapper>
     );
   }
@@ -165,11 +166,5 @@ const CircularProgressWrapper = styled('div')`
   margin-top: 12px;
 `;
 
-const SignInOptionsPanelWrapper = styled('div')(({ theme }) => (`
-  margin-top: 32px;
-  ${theme.breakpoints.up('sm')} {
-    min-width: 500px;
-  }
-`));
 
 export default SetUpAccountInviteContactsSignIn;

@@ -1,15 +1,16 @@
 import { Close } from '@mui/icons-material';
 import { IconButton } from '@mui/material';
-import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { OuterWrapper } from '../../components/Style/stepDisplayStyles';
-import historyPush from '../../utils/historyPush';
-import { renderLog } from '../../utils/logging';
+import styled from 'styled-components';
 import CompleteYourProfile from '../../components/Settings/CompleteYourProfile';
+import { OuterWrapper } from '../../components/Style/stepDisplayStyles';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
+import historyPush from '../../utils/historyPush';
+import { isCordova, isWebApp } from '../../utils/isCordovaOrWebApp';
+import { renderLog } from '../../utils/logging';
 
 
 class CompleteYourProfileMobile extends Component {
@@ -116,7 +117,7 @@ class CompleteYourProfileMobile extends Component {
                 {completeProfileTitle}
                 <IconButton
                   aria-label="Close"
-                  classes={{ root: classes.closeButton }}
+                  classes={isWebApp() ? { root: classes.closeButton } : { root: classes.closeButtonCordova }}
                   onClick={() => { this.cancelFunction(); }}
                   id="completeYourProfileMobileClose"
                   size="large"
@@ -158,6 +159,11 @@ const styles = () => ({
     right: 0,
     top: 0,
   },
+  closeButtonCordova: {
+    position: 'absolute',
+    right: 5,
+    top: 50,
+  },
 });
 
 const ContentTitle = styled('h1')(({ theme }) => (`
@@ -175,6 +181,7 @@ const InnerWrapper = styled('div')`
 const PageWrapperComplete = styled('div')`
   margin: 0 auto;
   max-width: 480px;
+  ${() => (isCordova() ? 'padding: 28px 0 100px 0;' : '')};
 `;
 
 export default withStyles(styles)(CompleteYourProfileMobile);

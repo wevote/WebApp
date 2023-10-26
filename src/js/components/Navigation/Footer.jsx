@@ -165,6 +165,7 @@ const FooterMainWrapper = styled('div')`
 `;
 
 const FooterWrapper = styled('div')`
+  // In Cordova, display=none, can be set in prepareForCordovaKeyboard()
 `;
 
 export default withStyles(styles)(Footer);

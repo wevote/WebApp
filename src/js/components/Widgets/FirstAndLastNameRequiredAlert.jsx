@@ -155,7 +155,7 @@ class FirstAndLastNameRequiredAlert extends Component {
   }
 
   render () {
-    renderLog('EnterFirstAndLastName');  // Set LOG_RENDER_EVENTS to log all renders
+    renderLog('FirstAndLastNameRequiredAlert');  // Set LOG_RENDER_EVENTS to log all renders
     const {
       componentHasMounted,
       displayThisComponent, friendInvitationsWaitingForVerification, isOrganization,
@@ -214,7 +214,7 @@ class FirstAndLastNameRequiredAlert extends Component {
                 </Alert>
               </ExplanationText>
             )}
-            <SettingsWidgetFirstLastName hideNameShownWithEndorsements />
+            <SettingsWidgetFirstLastName hideNameShownWithEndorsements displayOnly />
           </ParagraphStyled>
         </PrintWrapper>
       );
