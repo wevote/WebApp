@@ -19,9 +19,9 @@ import VoterStore from '../../stores/VoterStore';
 import DownloadAppsButtons from '../Remind/DownloadAppsButtons';
 import { reassuranceTextRemindContacts } from '../Remind/reassuranceTextRemindContacts';
 import Reassurance from '../SetUpAccount/Reassurance';
-import { DesktopNextButtonsInnerWrapper, DesktopNextButtonsOuterWrapperUShowDesktopTablet, } from '../Style/NextButtonStyles';
+import { DesktopNextButtonsInnerWrapper, DesktopNextButtonsOuterWrapperUShowDesktopTablet } from '../Style/NextButtonStyles';
 import { RemindContactsImportText, RemindMainImageImg } from '../Style/RemindStyles';
-import { SetUpAccountContactsText, SetUpAccountContactsTextWrapper, SetUpAccountTitle, SetUpAccountTop, } from '../Style/SetUpAccountStyles';
+import { SetUpAccountContactsText, SetUpAccountContactsTextWrapper, SetUpAccountTitle, SetUpAccountTop } from '../Style/SetUpAccountStyles';
 import { SetUpSignInOptionsPanelWrapper } from '../Style/SignInStyles';
 
 const AddContactsFromGoogleButton = React.lazy(() => import(/* webpackChunkName: 'AddContactsFromGoogleButton' */ '../SetUpAccount/AddContactsFromGoogleButton'));
