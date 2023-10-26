@@ -1,33 +1,28 @@
-import withStyles from '@mui/styles/withStyles';
 import { Button } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
 import { filter } from 'lodash-es';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
-import FriendActions from '../../actions/FriendActions';
 import BallotActions from '../../actions/BallotActions';
+import FriendActions from '../../actions/FriendActions';
 import VoterActions from '../../actions/VoterActions';
+// import NextStepButtons from '../FriendIntro/NextStepButtons';
+import AppObservableStore from '../../common/stores/AppObservableStore';
 import apiCalming from '../../common/utils/apiCalming';
 import { isCordovaWide } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
-import DownloadAppsButtons from '../Remind/DownloadAppsButtons';
-import Reassurance from '../SetUpAccount/Reassurance';
-import { reassuranceTextRemindContacts } from '../Remind/reassuranceTextRemindContacts';
-// import NextStepButtons from '../FriendIntro/NextStepButtons';
-import AppObservableStore from '../../common/stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
-import {
-  DesktopNextButtonsInnerWrapper, DesktopNextButtonsOuterWrapperUShowDesktopTablet,
-} from '../Style/NextButtonStyles';
+import DownloadAppsButtons from '../Remind/DownloadAppsButtons';
+import { reassuranceTextRemindContacts } from '../Remind/reassuranceTextRemindContacts';
+import Reassurance from '../SetUpAccount/Reassurance';
+import { DesktopNextButtonsInnerWrapper, DesktopNextButtonsOuterWrapperUShowDesktopTablet, } from '../Style/NextButtonStyles';
 import { RemindContactsImportText, RemindMainImageImg } from '../Style/RemindStyles';
-import {
-  SetUpAccountContactsText,
-  SetUpAccountContactsTextWrapper,
-  SetUpAccountTitle, SetUpAccountTop,
-} from '../Style/SetUpAccountStyles';
+import { SetUpAccountContactsText, SetUpAccountContactsTextWrapper, SetUpAccountTitle, SetUpAccountTop, } from '../Style/SetUpAccountStyles';
+import { SetUpSignInOptionsPanelWrapper } from '../Style/SignInStyles';
 
 const AddContactsFromGoogleButton = React.lazy(() => import(/* webpackChunkName: 'AddContactsFromGoogleButton' */ '../SetUpAccount/AddContactsFromGoogleButton'));
 const ContactsImportedPreview = React.lazy(() => import(/* webpackChunkName: 'ContactsImportedPreview' */ './ContactsImportedPreview'));
@@ -149,14 +144,14 @@ class FindFriendsStart extends Component {
             <Suspense fallback={<></>}>
               <ContactsImportedPreview showOnlyContactsWithAccounts />
             </Suspense>
-            <SignInOptionsPanelWrapper>
+            <SetUpSignInOptionsPanelWrapper>
               <Suspense fallback={<></>}>
                 <SignInOptionsPanel
                   pleaseSignInTitle={(contactsWithAccountCount > 0) ? 'Sign in to connect with your friends' : ''}
                   pleaseSignInSubTitle={(contactsWithAccountCount > 0) ? 'After you sign in, you will be able to choose which friends to collaborate with.' : ''}
                 />
               </Suspense>
-            </SignInOptionsPanelWrapper>
+            </SetUpSignInOptionsPanelWrapper>
           </FindFriendsStartWithContactsWrapper>
         ) : (
           <FindFriendsStartWrapper>
@@ -251,12 +246,5 @@ const FindFriendsStartWrapper = styled('div')`
   margin-bottom: 48px;
   margin-top: 36px;
 `;
-
-const SignInOptionsPanelWrapper = styled('div')(({ theme }) => (`
-  margin-top: 32px;
-  ${theme.breakpoints.up('sm')} {
-    min-width: 500px;
-  }
-`));
 
 export default withStyles(styles)(FindFriendsStart);

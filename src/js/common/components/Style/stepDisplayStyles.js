@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { isCordova } from '../../utils/isCordovaOrWebApp';
 
 export const InnerWrapper = styled('div')`
   display: flex;
@@ -39,6 +40,7 @@ export const OuterWrapperStepsOff = styled('div')(({ theme }) => (`
 export const PageWrapper = styled('div')`
   margin: 0 auto;
   max-width: 960px;
+  ${isCordova() ? 'padding-top: 14px' : ''};
   @media (max-width: 1005px) {
     // Switch to 15px left/right margin when auto is too small
     margin: 0 15px;
