@@ -50,7 +50,21 @@ function addUShowStylesImport (fileTxt, path) {
   return ret;
 }
 
-function fileRewriterForCordova (path) {
+function getVersionFromConfigXML () {
+  const path = '../WeVoteCordova/config.xml';
+  const data = fs.readFileSync(path, 'utf-8');
+  const regex = /version="(.*?)"/;
+  const found = data.match(regex);
+  if (found.length > 0) {
+    console.log('version from config.xml: ', found[1]);
+    return found[1];
+  } else {
+    console.log('version from config.xml: error');
+    return 'error';
+  }
+}
+
+function fileRewriterForCordova (path, version) {
   // console.log('Do  ', path);
   if (path.endsWith('.css') || path.endsWith('cordovaOffsets.js')) {
     return;
@@ -125,6 +139,9 @@ function fileRewriterForCordova (path) {
     // append an import of cordovaFriendlyUShowStyles.js at top of each file where needed
     newValue = addUShowStylesImport(newValue, path);
 
+    // Inject version string
+    newValue = newValue.replace(/{window\.weVoteAppVersion}/, version);
+
     fs.writeFile(path, newValue, 'utf-8', (err2) => {
       if (err2) throw err2;
       // console.log('Done! with ', path);
@@ -132,7 +149,10 @@ function fileRewriterForCordova (path) {
   });
 }
 
+// Inline node
+
 console.log('> Cordova: Preparing to set up parallel /srcCordova directory.');
+const version = getVersionFromConfigXML();
 fs.remove('./build').then(() => {
   console.log('> Cordova: Removed build directory');
   fs.remove('./srcCordova').then(() => {
@@ -140,7 +160,7 @@ fs.remove('./build').then(() => {
     try {
       fs.copy('./src', './srcCordova', () => {
         console.log('> Cordova: Copied the /src dir to a newly created /srcCordova directory');
-        exec('egrep -rl "React.lazy|BrowserRouter|initializeMoment|Suspense|u-show-desktop-tablet|u-show-mobile|uShowMobile|uShowDesktopTablet" ./srcCordova', (error, stdout, stderr) => {
+        exec('egrep -rl "React.lazy|BrowserRouter|initializeMoment|Suspense|u-show-desktop-tablet|u-show-mobile|uShowMobile|uShowDesktopTablet|window.weVoteAppVersion" ./srcCordova', (error, stdout, stderr) => {
           if (error) {
             console.log(`> Cordova bldSrcCordova error: ${error.message}`);
             return;
@@ -156,7 +176,7 @@ fs.remove('./build').then(() => {
             const path = listOfFiles[i];
             // console.log(`path: ${path}`);
             if (path.length) {
-              fileRewriterForCordova(path);
+              fileRewriterForCordova(path, version);
             }
           }
           console.log(`> Cordova: ${listOfFiles.length} files in ./srcCordova, rewritten without React.lazy`);

@@ -8,25 +8,25 @@ import FacebookActions from '../../../actions/FacebookActions';
 import TwitterActions from '../../../actions/TwitterActions';
 import VoterActions from '../../../actions/VoterActions';
 import VoterSessionActions from '../../../actions/VoterSessionActions';
-import LoadingWheel from '../Widgets/LoadingWheel';
-import { isAndroid, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
-import historyPush from '../../utils/historyPush';
-import { normalizedHref } from '../../utils/hrefUtils';
-import { isWebApp } from '../../utils/isCordovaOrWebApp';
-import Cookies from '../../utils/js-cookie/Cookies';
-import { oAuthLog, renderLog } from '../../utils/logging';
-import stringContains from '../../utils/stringContains';
-import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
-import FacebookStore from '../../../stores/FacebookStore';
-import VoterStore from '../../../stores/VoterStore';
-import initializeAppleSDK from '../../../utils/initializeAppleSDK';
-import initializeFacebookSDK from '../../../utils/initializeFacebookSDK';
 import AppleSignIn from '../../../components/Apple/AppleSignIn';
 import FacebookSignIn from '../../../components/Facebook/FacebookSignIn';
 import VoterEmailAddressEntry from '../../../components/Settings/VoterEmailAddressEntry';
 import VoterPhoneVerificationEntry from '../../../components/Settings/VoterPhoneVerificationEntry';
 import TwitterSignIn from '../../../components/Twitter/TwitterSignIn';
 import BrowserPushMessage from '../../../components/Widgets/BrowserPushMessage';
+import FacebookStore from '../../../stores/FacebookStore';
+import VoterStore from '../../../stores/VoterStore';
+import initializeAppleSDK from '../../../utils/initializeAppleSDK';
+import initializeFacebookSDK from '../../../utils/initializeFacebookSDK';
+import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
+import { isAndroid, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
+import historyPush from '../../utils/historyPush';
+import { normalizedHref } from '../../utils/hrefUtils';
+import { isCordova, isWebApp } from '../../utils/isCordovaOrWebApp';
+import Cookies from '../../utils/js-cookie/Cookies';
+import { oAuthLog, renderLog } from '../../utils/logging';
+import stringContains from '../../utils/stringContains';
+import LoadingWheel from '../Widgets/LoadingWheel';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 import SnackNotifier, { openSnackbar } from '../Widgets/SnackNotifier';
 
@@ -685,6 +685,7 @@ const SignInOptionsPanelWrapper = styled('div')`
   display: flex;
   justify-content: center;
   width: 100%;
+  ${() => (isCordova() ? { paddingTop: '10px' } : {})}
 `;
 
 const SignInSubtitle = styled('p')`

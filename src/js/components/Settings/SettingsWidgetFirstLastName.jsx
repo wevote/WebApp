@@ -8,7 +8,7 @@ import OrganizationActions from '../../actions/OrganizationActions';
 import VoterActions from '../../actions/VoterActions';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import apiCalming from '../../common/utils/apiCalming';
-import { prepareForCordovaKeyboard } from '../../common/utils/cordovaUtils';
+import { prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../common/utils/cordovaUtils';
 import { renderLog } from '../../common/utils/logging';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';
@@ -22,7 +22,6 @@ class SettingsWidgetFirstLastName extends Component {
     super(props);
     this.state = {
       firstName: '',
-      displayOnly: false,
       isOrganization: false,
       initialNameLoaded: false,
       lastName: '',
@@ -49,8 +48,7 @@ class SettingsWidgetFirstLastName extends Component {
     this.voterStoreListener = VoterStore.addListener(
       this.onVoterStoreChange.bind(this),
     );
-    const displayOnly = this.props.displayOnly || false;
-    this.setState({ displayOnly });
+    const { displayOnly = false } = this.props;
     if (!displayOnly) {
       prepareForCordovaKeyboard('SettingsWidgetFirstLastName');
     }
@@ -65,6 +63,10 @@ class SettingsWidgetFirstLastName extends Component {
     if (apiCalming('friendInvitationsWaitingForVerification')) {
       // console.log('SettingsWidgetFirstAndLastName friendInvitationsWaitingForVerification');
       FriendActions.friendListInvitationsWaitingForVerification();
+    }
+    const { displayOnly = false } = this.props;
+    if (!displayOnly) {
+      restoreStylesAfterCordovaKeyboard('SettingsWidgetFirstLastName');
     }
   }
 
@@ -206,7 +208,6 @@ class SettingsWidgetFirstLastName extends Component {
     }
 
     const {
-      displayOnly,
       firstName,
       isOrganization,
       lastName,
@@ -214,7 +215,7 @@ class SettingsWidgetFirstLastName extends Component {
       organizationNameSavedStatus,
       voterNameSavedStatus,
     } = this.state;
-    const { classes, externalUniqueId } = this.props;
+    const { classes, displayOnly = false, externalUniqueId } = this.props;
 
     return (
       <div className="">

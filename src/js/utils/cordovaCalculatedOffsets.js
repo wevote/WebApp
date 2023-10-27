@@ -187,7 +187,13 @@ export function headroomWrapperOffset (includePosition) {
     offset = outerHeight + position;
     const page = pageEnumeration();
     if (page === 'candidatelist' || page === 'values') {
-      offset /= isIPad() ? 2 : 3;
+      if (isIOS()) {
+        offset /= isIPad() ? 2 : 3;
+      } else if (isAndroidSizeXL()) {
+        offset = 1;
+      } else {
+        offset /= 2;
+      }
     }
 
     cordovaOffsetLog(`headroomWrapperOffset HeadroomWrapper outerHeight+top: ${outerHeight + position}, new offset: ${offset}, page: ${getPageKey()}`);

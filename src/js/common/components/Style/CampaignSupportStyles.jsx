@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { isCordova, isWebApp } from '../../utils/isCordovaOrWebApp';
 
 export const CampaignSupportDesktopButtonPanel = styled('div')`
   background-color: #fff;
@@ -60,11 +61,12 @@ export const CampaignSupportSectionWrapper = styled('div', {
 
 export const SkipForNowButtonPanel = styled('div')`
   background-color: #fff;
-  margin-top: 40px;
+  margin-top: ${isWebApp() ? '40px' : ''};
 `;
 
 export const SkipForNowButtonWrapper = styled('div')`
   display: flex;
   justify-content: center;
   width: 100%;
+  ${isCordova() ? 'padding-bottom: 16px' : ''};
 `;

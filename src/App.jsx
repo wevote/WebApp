@@ -169,7 +169,7 @@ class App extends Component {
     // console.log('normalizedHrefPage in App.js componentDidMount: ', normalizedHref());
     const onWeVoteUS = (hostname && (hostname.toLowerCase() === 'wevote.us'));
     const onMobileApp = false;
-    if (onWeVoteUS || onMobileApp) {
+    if ((onWeVoteUS || onMobileApp) && isWebApp()) {
       if (webAppConfig.FULL_STORY_ORG) {
         setTimeout(() => {
           console.log('FullStory ENABLED');

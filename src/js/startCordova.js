@@ -144,35 +144,31 @@ export function initializationForCordova (startReact) {
         }
 
         try {
-          const { cordova: { getAppVersion: getVersionNumber } } = window;
-          getVersionNumber().then((version) => {
-            window.weVoteAppVersion = version;
-            // if (isIOSAppOnMac()) {
-            //   dumpScreenAndDeviceFields();
-            // }
+          console.log('getVersionNumber() cordova', window.cordova);
+          console.log('getVersionNumber() cordova.getAppVersion', window.cordova.getAppVersion);
 
-            // Prevent the app from rotating to Landscape -- mostly to simplify layout permutations
+          // Prevent the app from rotating to Landscape -- mostly to simplify layout permutations
+          try {
+            const { screen: { orientation: { lock } } } = window;
+            console.log('Cordova:   screen lock 1st try');
+            lock('portrait').then(() => {
+              postLockInitialization(voterDeviceId, startReact);
+            });
+          } catch (errLock) {
             try {
+              // Aug 2023: The lock() API does show up, after a second or two, but adding a setTimout causes the app to hang
+              console.log('Cordova:   screen lock 2nd try ', errLock);
               const { screen: { orientation: { lock } } } = window;
-              console.log('Cordova:   screen lock 1st try');
               lock('portrait').then(() => {
                 postLockInitialization(voterDeviceId, startReact);
               });
-            } catch (errLock) {
-              try {
-                // Aug 2023: The lock() API does show up, after a second or two, but adding a setTimout causes the app to hang
-                console.log('Cordova:   screen lock 2nd try ', errLock);
-                const { screen: { orientation: { lock } } } = window;
-                lock('portrait').then(() => {
-                  postLockInitialization(voterDeviceId, startReact);
-                });
-              } catch (errLockFinal) {
-                // Aug 2023:  Often works the second time, if not wait for https://github.com/apache/cordova-plugin-screen-orientation/pull/116 to be resolved for iOS 1.4
-                console.log('Cordova:   screen lock FAILED the 2nd try, giving up: ', errLock);
-                postLockInitialization(voterDeviceId, startReact);
-              }
+            } catch (errLockFinal) {
+              // Aug 2023:  Often works the second time, if not wait for https://github.com/apache/cordova-plugin-screen-orientation/pull/116 to be resolved for iOS 1.4
+              console.log('Cordova:   screen lock FAILED the 2nd try, giving up: ', errLock);
+              postLockInitialization(voterDeviceId, startReact);
             }
-          });
+          }
+          // });
         } catch (err) {
           console.log('Cordova: ERROR ', err);
         }
