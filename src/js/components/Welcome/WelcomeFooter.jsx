@@ -149,7 +149,7 @@ class WelcomeFooter extends Component {
                   className={classes.link}
                 />
               </Suspense>
-              <Link id="footerLinkPrivacy" className={classes.link} to="/more/privacy">Privacy Policy</Link>
+              <Link id="footerLinkPrivacy" className={classes.link} to="/privacy">Privacy Policy</Link>
               <Link id="footerLinkTermsOfUse" className={classes.link} to="/more/terms">Terms of Service</Link>
               <Link id="footerLinkAttributions" className={classes.link} to="/more/attributions">Attributions</Link>
             </Column>

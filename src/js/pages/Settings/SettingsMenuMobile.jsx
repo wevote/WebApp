@@ -136,7 +136,7 @@ export default class SettingsMenuMobile extends Component {
                     <span className="u-no-break">Terms of Service</span>
                   </Link>
                   <span style={{ paddingLeft: 20 }} />
-                  <Link to="/more/privacy">
+                  <Link to="/privacy">
                     <span className="u-no-break">Privacy Policy</span>
                   </Link>
                 </span>

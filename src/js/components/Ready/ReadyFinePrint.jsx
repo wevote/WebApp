@@ -69,7 +69,7 @@ class ReadyFinePrint extends Component {
 
               <ListTitleRow onClick={this.contentUnfurledLink}>
                 <Dot><StepNumber>b</StepNumber></Dot>
-                <StepTitle>We Vote data comes from official and unofficial sources</StepTitle>
+                <StepTitle>We Vote does not represent a government entity</StepTitle>
               </ListTitleRow>
               {contentUnfurled && (
                 <ListRow>
@@ -77,8 +77,9 @@ class ReadyFinePrint extends Component {
                   <StepText id="readyFinePrintStepTextB">
                     <Suspense fallback={<></>}>
                       <ReadMore
-                        textToDisplay="We Vote uses ballot data aggregated from government, nonpartisan, and partisan sources.
-                        We cannot guarantee 100% of the items on your official ballot will be shown on We Vote.
+                        textToDisplay="We Vote should not be considered official government information.
+                        We use ballot data aggregated from government, nonpartisan, and partisan sources, but
+                        we cannot guarantee 100% of the items on your official ballot will be shown on We Vote.
                         We Vote strives to provide a balanced selection of clearly identified voting guides from newspapers and media.
                         Partisan voter guides are also provided from a diversity of sources and points-of-view.
                         These voting guides are captured and updated by volunteers."
@@ -116,7 +117,7 @@ class ReadyFinePrint extends Component {
                   <StepText id="readyFinePrintStepTextD">
                     We Vote will never share or sell your contact information.
                     {' '}
-                    <Link to="/more/privacy" className="u-link-color">See full privacy policy here</Link>
+                    <Link to="/privacy" className="u-link-color">See full privacy policy here</Link>
                     {' '}
                     which includes description of how we use and protect your data.
                   </StepText>

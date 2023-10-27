@@ -26,6 +26,7 @@ export function pageEnumeration () {
              path.startsWith('/more/attributions') ||
              path.startsWith('/more/donate') ||
              path.startsWith('/more/privacy') ||
+             path.startsWith('/privacy') ||
              path.startsWith('/more/terms')) {
     return CordovaPageConstants.moreTerms;
   } else if (path.startsWith('/more/faq') ||
