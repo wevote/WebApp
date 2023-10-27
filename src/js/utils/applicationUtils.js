@@ -63,11 +63,12 @@ export function getApplicationViewBooleans (pathname) {
     pathnameLowerCase === '/more/sign_in' ||
     pathnameLowerCase === '/more/terms' ||
     pathnameLowerCase === '/more/verify' ||
+    pathnameLowerCase === '/privacy' ||
     pathnameLowerCase.startsWith('/verifythisisme/') ||
     pathnameLowerCase === '/welcomehome') {
     contentFullWidthMode = true;
   } else if (pathnameLowerCase.startsWith('/ballot/vote')) {
-    contentFullWidthMode = false; // I set this to false to fix the header padding issues in /ballot/vote
+    contentFullWidthMode = false; // I set this to false, to fix the header padding issues in /ballot/vote
     voteMode = true;
   } else if (pathnameLowerCase.startsWith('/ballot')) {
     contentFullWidthMode = false;
@@ -233,6 +234,7 @@ export function getApplicationViewBooleans (pathname) {
       (pathnameLowerCase === '/more/terms') ||
       pathnameLowerCase.startsWith('/news') ||
       pathnameLowerCase.startsWith('/office') || // Show Footer if back to not specified above
+      (pathnameLowerCase === '/privacy') ||
       pathnameLowerCase.startsWith('/values') ||
       pathnameLowerCase.startsWith('/settings/account') ||
       pathnameLowerCase.startsWith('/settings/domain') ||

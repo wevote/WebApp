@@ -180,7 +180,7 @@ class HeaderBarProfilePopUp extends Component {
                 <span className="u-no-break">Terms of Service</span>
               </Link>
               <span style={{ paddingLeft: 20 }} />
-              <Link id="profilePopUpPrivacyPolicy" onClick={this.hideProfilePopUp} to="/more/privacy">
+              <Link id="profilePopUpPrivacyPolicy" onClick={this.hideProfilePopUp} to="/privacy">
                 <span className="u-no-break">Privacy Policy</span>
               </Link>
               {webAppConfig.SHOW_CORDOVA_URL_FIELD && (
