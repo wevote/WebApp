@@ -211,18 +211,18 @@ class OneValue extends Component {
         });
         organizationsForValue = filter(organizationsForValueModified,
           (organization) => (
-            organization.organization_name.toLowerCase().includes(searchTextLowercase) ||
-            organization.twitter_description.toLowerCase().includes(searchTextLowercase) ||
-            organization.organization_twitter_handle.toLowerCase().includes(searchTextLowercase)
+            organization.organization_name?.toLowerCase().includes(searchTextLowercase) ||
+            organization.twitter_description?.toLowerCase().includes(searchTextLowercase) ||
+            organization.organization_twitter_handle?.toLowerCase().includes(searchTextLowercase)
           ));
         organizationsForValueLength = organizationsForValue.length;
         organizationListIdentifier = `${valueSlug}${organizationsForValueLength}`;
       }
       if (showEndorsersForThisElection) {
         voterGuidesForValue = filter(voterGuidesForValue,
-          (guide) => guide.voter_guide_display_name.toLowerCase().includes(searchTextLowercase) ||
-              guide.twitter_description.toLowerCase().includes(searchTextLowercase) ||
-              guide.twitter_handle.toLowerCase().includes(searchTextLowercase));
+          (guide) => guide.voter_guide_display_name?.toLowerCase().includes(searchTextLowercase) ||
+              guide.twitter_description?.toLowerCase().includes(searchTextLowercase) ||
+              guide.twitter_handle?.toLowerCase().includes(searchTextLowercase));
       }
     }
 
