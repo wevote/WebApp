@@ -95,7 +95,7 @@ class FooterMainWeVote extends Component {
                 className={classes.link}
               />
               <RowSpacer />
-              <Link id="footerLinkPrivacy" className={classes.link} to="/more/privacy">Privacy</Link>
+              <Link id="footerLinkPrivacy" className={classes.link} to="/privacy">Privacy</Link>
               <RowSpacer />
               <Link id="footerLinkTermsOfUse" className={classes.link} to="/more/terms">Terms</Link>
             </OneRow>

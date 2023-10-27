@@ -214,7 +214,7 @@ class SignInModalOriginal extends Component {
           {isCordova() && (
             <div className="text-center">
               <span id="termsAndPrivacySignInModal" className="terms-and-privacy">
-                <Link to="/more/privacy" onClick={this.closeFunction}>
+                <Link to="/privacy" onClick={this.closeFunction}>
                   <span className="u-no-break" style={{ color: 'black', textDecoration: 'underline' }}>Privacy Policy</span>
                 </Link>
                 <span style={{ paddingLeft: 20 }} />

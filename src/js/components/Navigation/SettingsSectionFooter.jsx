@@ -85,7 +85,7 @@ class SettingsSectionFooter extends Component {
             )}
           />
           <span style={{ paddingLeft: 15 }} />
-          <Link to="/more/privacy"><TermsAndPrivacyText>Privacy</TermsAndPrivacyText></Link>
+          <Link to="/privacy"><TermsAndPrivacyText>Privacy</TermsAndPrivacyText></Link>
           <span style={{ paddingLeft: 15 }} />
           <Link to="/more/terms"><TermsAndPrivacyText>Terms</TermsAndPrivacyText></Link>
         </OneRow>
