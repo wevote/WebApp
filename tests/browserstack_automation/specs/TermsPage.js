@@ -4,6 +4,14 @@ import PrivacyPage from '../page_objects/privacy.page';
 import TermsPage from '../page_objects/terms.page';
 
 describe('TermsPage', () => {
+  // Terms_001
+  it.only ('verifyGitHubLinkRedirected', async () => {
+    await ReadyPage.load();
+    await ReadyPage.getTermsLinkElement.findAndClick();;
+    await TermsPage.getGitHubLink.click();
+    driver.switchWindow('https://github.com/WeVote');
+    await expect(driver).toHaveTitle('We Vote · GitHub');
+  });
 
   //Terms_002
   it('verifyPrivacyPolicyLinkRedirected', async () => {
