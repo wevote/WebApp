@@ -12,10 +12,9 @@ class TermsPage extends Page {
     await super.rerender();
   }
 
-// Terms_001 -- link not clickable.                         BUG REPORT # WV-142
-//  get getGitHubLink () {
-//    return $('???');
-//  }
+  get getGitHubLink () {
+    return $('#wevoteGitHub');
+  }
 
   get getPrivacyLinkElement () {
     return $('#privacyPolicy');
