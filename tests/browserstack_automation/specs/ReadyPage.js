@@ -75,7 +75,7 @@ describe('ReadyPage', () => {
   it('verifyPrivacyLinkRedirected', async () => {
     await ReadyPage.load();
     await ReadyPage.findPrivacyLink.click();
-    await expect(driver).toHaveUrlContaining('more/privacy');
+    await expect(driver).toHaveUrlContaining('/privacy');
     await expect(PrivacyPage.pageContentTitleText).toHaveText('WeVote.US Privacy Policy');
   });
 
