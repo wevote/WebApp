@@ -34,12 +34,23 @@ describe('Privacy Page', () => {
   });
 
   // Privacy_005
-  it('verifyYourPrivacyAndDataLink', async () => {
+  it('verifyDeleteYourAccountLink', async () => {
     await ReadyPage.load();
     await ReadyPage.findPrivacyLink.click();
-    await PrivacyPage.findYourPrivacyAndDataLink.click();
-    await driver.switchWindow('https://quality.wevote.us/settings/yourdata');
-    await expect(driver).toHaveTitle('Your Privacy & Data - We Vote');
+    await PrivacyPage.deleteYourAccountLink.click();
+    await PrivacyPage.deleteYourAccountButton.click();
+    await driver.pause(3000);
+    await expect(driver).toHaveTitle('Ready to Vote? - We Vote');
+  });
+
+  // Privacy_005_2
+  it('verifyCancelButtonOfDeleteYourAccountLink', async () => {
+    await ReadyPage.load();
+    await ReadyPage.findPrivacyLink.click();
+    await PrivacyPage.deleteYourAccountLink.click();
+    await expect(PrivacyPage.deleteYourAccountLink).not.toBeDisplayed();
+    await PrivacyPage.cancelOfDeleteYourAccountButton.click();
+    await expect(PrivacyPage.deleteYourAccountLink).toBeDisplayed();
   });
 
   // Privacy_006
