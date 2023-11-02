@@ -32,7 +32,7 @@ class PrivacyPage extends Page {
     return $('#weVoteContactUsPage');
   }
 
-  get findYourPrivacyAndDataLink () {
+  get deleteYourAccountLink () {
     return $('.u-link-color');
   }
 
@@ -55,6 +55,14 @@ class PrivacyPage extends Page {
   get emailLink () {
     return $$('//a[text() = "info@WeVote.US"]');
   }
+
+   get deleteYourAccountButton () {
+    return $('.DeleteYourAccountButtonInnerWrapper-sc-qu6md9-2');
+   }
+
+   get cancelOfDeleteYourAccountButton () {
+    return $('.DeleteYourAccountButtonInnerCancelWrapper-sc-qu6md9-1');
+   }
 
   async getTextFromEmailLinks() {
     const selectorToGetElements = '//a[text() = "info@WeVote.US"]';
