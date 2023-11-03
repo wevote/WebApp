@@ -151,7 +151,6 @@ class TwitterSignIn extends Component {
         } else {
           // There is a problem signing in
           console.log('twitterSignInWebApp ERROR res: ', res);
-
           // When we visit this page and delete the voter_device_id cookie, we can get an error that requires
           // reloading the browser page. This is how we do it:
           // window.location.assign('');
