@@ -287,7 +287,7 @@ PositionPublicToggle.propTypes = {
 const styles = (theme) => ({
   radioPrimary: {
     padding: '.1rem',
-    margin: '.1rem .1rem .6rem .6rem',
+    marginRight: '4px',
     [theme.breakpoints.down('md')]: {
       marginLeft: 0,
     },
@@ -297,7 +297,7 @@ const styles = (theme) => ({
     // bottom: '4px',
     position: 'relative',
     [theme.breakpoints.down('sm')]: {
-      fontSize: '11px',
+      fontSize: '13px',
     },
     marginRight: isAndroidSizeMD() ? '2px' : '',
   },
@@ -309,6 +309,7 @@ const styles = (theme) => ({
 const PositionPublicToggleOuterWrapper = styled('div')`
   // margin-left: auto;
   width: fit-content;
+  //padding-top: 12px;
 `;
 
 const PositionPublicToggleInnerWrapper = styled('div')(({ theme }) => (`
@@ -326,6 +327,7 @@ const RadioItem = styled('div', {
       // width: 100% !important;
       // min-width: 100% !important;
       // margin-bottom: -6px;
+      padding-right: 6px;
   `) : ''}
 `));
 
@@ -335,6 +337,7 @@ const RadioGroup = styled('div', {
   display: flex;
   flex-flow: row nowrap;
   width: 100%;
+  height: 40px;
   ${theme.breakpoints.down('md')} {
     margin-bottom: -10px;
   }

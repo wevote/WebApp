@@ -143,6 +143,7 @@ const PartyAndYearWrapper = styled('span')`
 
 const PartyAndOfficeWrapper = styled('div')`
   line-height: 1.2;
+  font-size: 14px;
 `;
 
 const YearStateWrapper = styled('div', {
