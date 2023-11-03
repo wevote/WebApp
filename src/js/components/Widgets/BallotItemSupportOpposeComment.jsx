@@ -272,7 +272,7 @@ const ActionBarWrapper = styled('div', {
   shouldForwardProp: (prop) => !['isCrunched'].includes(prop),
 })(({ isCrunched }) => (`
   padding: 0;
-  margin-bottom: ${isCrunched ? '3px' : '12px'};
+  margin-bottom: ${isCrunched ? '3px' : '2px'};
 `));
 
 const CommentDisplayWrapper = styled('div', {

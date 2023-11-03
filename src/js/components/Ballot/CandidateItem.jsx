@@ -368,6 +368,28 @@ class CandidateItem extends Component {
               <>
                 {candidateNameRow}
               </>
+              <BallotItemSupportOpposeCountDisplayWrapper isClickable={!blockOnClickShowOrganizationModalWithPositions}>
+                <Suspense fallback={<></>}>
+                  <BallotItemSupportOpposeScoreDisplay
+                ballotItemWeVoteId={candidateWeVoteId}
+                blockOnClickShowOrganizationModalWithPositions={blockOnClickShowOrganizationModalWithPositions}
+                closeSupportOpposeCountDisplayModal={closeSupportOpposeCountDisplayModal}
+                controlAdviserMaterialUIPopoverFromProp={controlAdviserMaterialUIPopoverFromProp}
+                showAllPositions={this.props.goToBallotItem}
+                handleLeaveCandidateCard={forDesktop ? this.handleLeave : null}
+                handleEnterCandidateCard={forDesktop ? this.handleEnter : null}
+                hideEndorsementsOverview={this.props.hideEndorsementsOverview}
+                hideShowMoreLink={!linkToBallotItemPage}
+                openAdviserMaterialUIPopover={openAdviserMaterialUIPopover}
+                openSupportOpposeCountDisplayModal={openSupportOpposeCountDisplayModal}
+                supportOpposeCountDisplayModalTutorialOn={supportOpposeCountDisplayModalTutorialOn}
+                supportOpposeCountDisplayModalTutorialText={supportOpposeCountDisplayModalTutorialText}
+                showDownArrow={showDownArrow}
+                showUpArrow={showUpArrow}
+                  />
+                </Suspense>
+              </BallotItemSupportOpposeCountDisplayWrapper>
+
               { contestOfficeName && (
                 <div
                   className={linkToBallotItemPage && largeAreaHoverColorOnNow && showHover ? 'card__blue' : ''}
@@ -418,27 +440,6 @@ class CandidateItem extends Component {
               </CandidateLinksWrapper>
             </Candidate>
           </CandidateInfo>
-          <BallotItemSupportOpposeCountDisplayWrapper isClickable={!blockOnClickShowOrganizationModalWithPositions}>
-            <Suspense fallback={<></>}>
-              <BallotItemSupportOpposeScoreDisplay
-                ballotItemWeVoteId={candidateWeVoteId}
-                blockOnClickShowOrganizationModalWithPositions={blockOnClickShowOrganizationModalWithPositions}
-                closeSupportOpposeCountDisplayModal={closeSupportOpposeCountDisplayModal}
-                controlAdviserMaterialUIPopoverFromProp={controlAdviserMaterialUIPopoverFromProp}
-                showAllPositions={this.props.goToBallotItem}
-                handleLeaveCandidateCard={forDesktop ? this.handleLeave : null}
-                handleEnterCandidateCard={forDesktop ? this.handleEnter : null}
-                hideEndorsementsOverview={this.props.hideEndorsementsOverview}
-                hideShowMoreLink={!linkToBallotItemPage}
-                openAdviserMaterialUIPopover={openAdviserMaterialUIPopover}
-                openSupportOpposeCountDisplayModal={openSupportOpposeCountDisplayModal}
-                supportOpposeCountDisplayModalTutorialOn={supportOpposeCountDisplayModalTutorialOn}
-                supportOpposeCountDisplayModalTutorialText={supportOpposeCountDisplayModalTutorialText}
-                showDownArrow={showDownArrow}
-                showUpArrow={showUpArrow}
-              />
-            </Suspense>
-          </BallotItemSupportOpposeCountDisplayWrapper>
         </CandidateWrapper>
       </div>
     );
