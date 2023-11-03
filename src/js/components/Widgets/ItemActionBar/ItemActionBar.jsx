@@ -1021,8 +1021,10 @@ const ButtonGroup = styled('div', {
   // border-width: 1 px;
   flex-wrap: nowrap;
   height: fit-content;
+  height: 40px;
   justify-content: center;
   margin-left: 0;
+  margin-right: 8px;
   ${positionPublicToggleWrapAllowed ? 'width: 100%;' : ''};
 `));
 

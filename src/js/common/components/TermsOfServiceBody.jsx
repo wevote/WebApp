@@ -30,7 +30,6 @@ export default class TermsOfServiceBody extends Component {
         <p>A breach or violation of any of the Terms will result in an immediate termination of your Services.</p>
         <h2>General Conditions</h2>
         <p>You agree not to reproduce, duplicate, copy, sell, resell or exploit any portion of the Service, use of the Service, or access to the Service or any contact on the website through which the service is provided, without express written permission by us.</p>
-        <p>We Vote grants permission to copy the software that powers this website, made available at https://github.com/WeVote, under the MIT License.</p>
         <p>
           We Vote grants permission to copy the software that powers this website, made available at
           {' '}
