@@ -78,14 +78,14 @@ const TwitterAccountStatsOuterWrapper = styled('div')`
 
 const TwitterFollowersWrapper = styled('div')`
   color: #000;
-  font-size: 16px;
+  font-size: 14px;
   height: 24px;
   padding: 0 !important;
 `;
 
 const TwitterHandleWrapper = styled('div')`
   color: #000;
-  font-size: 16px;
+  font-size: 14px;
   height: 24px;
   margin-right: 5px;
   padding: 0 !important;
