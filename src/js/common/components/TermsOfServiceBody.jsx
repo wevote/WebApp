@@ -31,18 +31,10 @@ export default class TermsOfServiceBody extends Component {
         <h2>General Conditions</h2>
         <p>You agree not to reproduce, duplicate, copy, sell, resell or exploit any portion of the Service, use of the Service, or access to the Service or any contact on the website through which the service is provided, without express written permission by us.</p>
         <p>
-          We Vote grants permission to copy the software that powers this website, made available at
+          We Vote grants permission to copy the software that powers this website, made available at &nbsp;
+          <a href="https://github.com/WeVote" className="u-link-color" target="_blank" rel="noopener noreferrer">https://github.com/WeVote</a>
           {' '}
-          <Suspense fallback={<></>}>
-            <OpenExternalWebSite
-                linkIdAttribute="wevoteGitHub"
-                url="https://github.com/WeVote"
-                target="_blank"
-                body={<span>https://github.com/WeVote</span>}
-            />
-          </Suspense>
-          , under the MIT License.
-          {' '}
+          ,&nbsp; under the MIT License.
         </p>
         <p>The headings used in this agreement are included for convenience only and will not limit or otherwise affect these Terms.</p>
         <h2>Accuracy, Completeness and Timeliness of Information</h2>
