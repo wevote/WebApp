@@ -193,35 +193,35 @@ class BallotTitleHeader extends Component {
                         </BallotAddress>
                       ) : (
                         <>
-                          {(substitutedAddress && substitutedAddress !== '' && substitutedAddress.length >= 2) ? (
+                          {((textForMapSearch && textForMapSearch !== '' && textForMapSearch.length >= 2) || (originalTextAddress && originalTextAddress !== '' && originalTextAddress.length >= 2)) ? (
                             <BallotAddress
                               allowTextWrap={allowTextWrap}
                               centerText={centerText}
                               className={linksOff ? '' : 'u-cursor--pointer'}
-                              id="ballotTitleBallotAddressSubstituted"
+                              id="ballotTitleBallotAddress"
                               onClick={this.showSelectBallotModalEditAddress}
                             >
                               Ballot for
                               {' '}
                               <span className={linksOff ? '' : 'u-link-color'}>
-                                {substitutedAddress}
+                                {(textForMapSearch && textForMapSearch !== '') ? textForMapSearch : originalTextAddress}
                               </span>
                               {linksOff ? <></> : editIconStyled}
                             </BallotAddress>
                           ) : (
                             <>
-                              {(originalTextAddress && originalTextAddress !== '' && originalTextAddress.length >= 2) ? (
+                              {(substitutedAddress && substitutedAddress !== '' && substitutedAddress.length >= 2) ? (
                                 <BallotAddress
                                   allowTextWrap={allowTextWrap}
                                   centerText={centerText}
                                   className={linksOff ? '' : 'u-cursor--pointer'}
-                                  id="ballotTitleBallotAddress"
+                                  id="ballotTitleBallotAddressSubstituted"
                                   onClick={this.showSelectBallotModalEditAddress}
                                 >
                                   Ballot for
                                   {' '}
                                   <span className={linksOff ? '' : 'u-link-color'}>
-                                    {(textForMapSearch && textForMapSearch !== '') ? textForMapSearch : originalTextAddress}
+                                    {substitutedAddress}
                                   </span>
                                   {linksOff ? <></> : editIconStyled}
                                 </BallotAddress>
