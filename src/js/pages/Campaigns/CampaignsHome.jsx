@@ -129,7 +129,7 @@ class CampaignsHome extends Component {
       }
     }
     if (stateName) {
-      stateName = stateName.replace('-', ' ');
+      stateName = stateName.replaceAll('-', ' ');
       let newStateCode = convertStateTextToStateCode(stateName);
       if (newStateCode.toLowerCase() === 'na') {
         newStateCode = 'all';
@@ -183,7 +183,7 @@ class CampaignsHome extends Component {
       }
 
       if (stateName) {
-        stateName = stateName.replace('-', ' ');
+        stateName = stateName.replaceAll('-', ' ');
         const { stateCode } = this.state;
         let newStateCode = convertStateTextToStateCode(stateName);
         // console.log('stateCode:', stateCode, ', newStateCode:', newStateCode);
@@ -561,7 +561,7 @@ class CampaignsHome extends Component {
   getStateNamePathnameFromStateCode = (stateCode) => {
     const stateName = convertStateCodeToStateText(stateCode);
     const stateNamePhrase = `${stateName}-candidates`;
-    const stateNamePhraseLowerCase = stateNamePhrase.replace(/\s+/g, '-').toLowerCase();
+    const stateNamePhraseLowerCase = stateNamePhrase.replaceAll(/\s+/g, '-').toLowerCase();
     return `/${stateNamePhraseLowerCase}/cs/`;
   }
 
