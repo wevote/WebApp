@@ -17,7 +17,7 @@
     "wdio:upgrade": "ncu -u *wdio* webdriver*",
     "build": "node node/buildDateFile.js && MINIMIZED=1 webpack --mode production",
     "buildCordova": "node node/buildDateFile.js && node node/buildSrcCordova && CORDOVA=1 && webpack --mode development && node node/logCompileDate.js",
-    "buildCordovaAndLinks": "node node/buildDateFile.js && node node/buildSrcCordova && CORDOVA=1 && webpack --mode development && node node/buildSymLinksRemote.js && node node/logCompileDate.js && bash ./node/unSymLinkIOS.sh",
+    "buildCordovaAndLinks": "node node/buildDateFile.js && node node/buildSrcCordova && CORDOVA=1 && webpack --mode development && node node/buildSymLinksRemote.js && bash ./node/unSymLinkIOS.sh && node node/logCompileDate.js",
     "lint": "eslint --format stylish --ext .jsx --ext .js src/js",
     "lintCordova": "eslint --format stylish --ext .jsx --ext .js srcCordova/js",
     "prod": "node node/buildDateFile.js && MINIMIZED=1 webpack --mode production",
