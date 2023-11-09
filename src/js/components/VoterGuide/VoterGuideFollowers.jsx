@@ -11,6 +11,7 @@ import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../common/utils/logging';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import SearchBar from '../Search/SearchBar';
+import { PageContentContainer } from '../Style/pageLayoutStyles';
 import GuideList from './GuideList';
 
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
@@ -156,78 +157,80 @@ class VoterGuideFollowers extends Component {
     }
 
     return (
-      <Wrapper>
-        {/* Since VoterGuidePositions, VoterGuideFollowing, and VoterGuideFollowers are in tabs the title seems to use the Helmet values from the last tab */}
-        <Helmet title={`${organizationName} - We Vote`} />
-        <div className="card">
-          <ul className="card-child__list-group">
-            {((voterGuideFollowersList && voterGuideFollowersList.length > 0) ||
-              (voterGuideFollowersListFilteredBySearch && voterGuideFollowersListFilteredBySearch.length > 0)) ? (
-                <TitleWrapper>
-                  {lookingAtSelf ? (
-                    <>
-                      Your Followers
-                    </>
-                  ) : (
-                    <>
-                      Followers of
-                      {' '}
-                      {organizationName}
-                    </>
-                  )}
-                </TitleWrapper>
-              ) : (
-                <Suspense fallback={<></>}>
-                  <DelayedLoad showLoadingText waitBeforeShow={2000}>
-                    <TitleWrapper>
-                      {lookingAtSelf ? (
-                        <>
-                          No followers can be found.
-                        </>
-                      ) : (
-                        <>
-                          No followers of
-                          {' '}
-                          {organizationName}
-                          {' '}
-                          can be found.
-                        </>
-                      )}
-                    </TitleWrapper>
-                  </DelayedLoad>
-                </Suspense>
+      <PageContentContainer>
+        <Wrapper>
+          {/* Since VoterGuidePositions, VoterGuideFollowing, and VoterGuideFollowers are in tabs the title seems to use the Helmet values from the last tab */}
+          <Helmet title={`${organizationName} - We Vote`} />
+          <div className="card">
+            <ul className="card-child__list-group">
+              {((voterGuideFollowersList && voterGuideFollowersList.length > 0) ||
+                (voterGuideFollowersListFilteredBySearch && voterGuideFollowersListFilteredBySearch.length > 0)) ? (
+                  <TitleWrapper>
+                    {lookingAtSelf ? (
+                      <>
+                        Your Followers
+                      </>
+                    ) : (
+                      <>
+                        Followers of
+                        {' '}
+                        {organizationName}
+                      </>
+                    )}
+                  </TitleWrapper>
+                ) : (
+                  <Suspense fallback={<></>}>
+                    <DelayedLoad showLoadingText waitBeforeShow={2000}>
+                      <TitleWrapper>
+                        {lookingAtSelf ? (
+                          <>
+                            No followers can be found.
+                          </>
+                        ) : (
+                          <>
+                            No followers of
+                            {' '}
+                            {organizationName}
+                            {' '}
+                            can be found.
+                          </>
+                        )}
+                      </TitleWrapper>
+                    </DelayedLoad>
+                  </Suspense>
+                )}
+              {/* ********** */}
+              {/* Search Box */}
+              {voterGuideFollowersList && voterGuideFollowersList.length > 0 && (
+                <SearchInputWrapper>
+                  <SearchBar
+                    clearButton
+                    clearFunction={this.clearSearchBarFunction}
+                    placeholder="Search these followers"
+                    searchButton
+                    searchFunction={this.searchFollowers}
+                    searchUpdateDelayTime={200}
+                  />
+                </SearchInputWrapper>
               )}
-            {/* ********** */}
-            {/* Search Box */}
-            {voterGuideFollowersList && voterGuideFollowersList.length > 0 && (
-              <SearchInputWrapper>
-                <SearchBar
-                  clearButton
-                  clearFunction={this.clearSearchBarFunction}
-                  placeholder="Search these followers"
-                  searchButton
-                  searchFunction={this.searchFollowers}
-                  searchUpdateDelayTime={200}
+              {/* ***************** */}
+              {/* Results Not Found */}
+              {(searchTerm && (voterGuideFollowersListFilteredBySearch && voterGuideFollowersListFilteredBySearch.length === 0)) && (
+                <SearchResultsWrapper>
+                  &quot;
+                  {searchTerm}
+                  &quot; not found
+                </SearchResultsWrapper>
+              )}
+              <span>
+                <GuideList
+                  incomingVoterGuideList={searchTerm ? voterGuideFollowersListFilteredBySearch : voterGuideFollowersList}
                 />
-              </SearchInputWrapper>
-            )}
-            {/* ***************** */}
-            {/* Results Not Found */}
-            {(searchTerm && (voterGuideFollowersListFilteredBySearch && voterGuideFollowersListFilteredBySearch.length === 0)) && (
-              <SearchResultsWrapper>
-                &quot;
-                {searchTerm}
-                &quot; not found
-              </SearchResultsWrapper>
-            )}
-            <span>
-              <GuideList
-                incomingVoterGuideList={searchTerm ? voterGuideFollowersListFilteredBySearch : voterGuideFollowersList}
-              />
-            </span>
-          </ul>
-        </div>
-      </Wrapper>
+              </span>
+            </ul>
+          </div>
+        </Wrapper>
+      </PageContentContainer>
     );
   }
 }
