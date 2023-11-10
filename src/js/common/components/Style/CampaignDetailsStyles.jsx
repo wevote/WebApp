@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { isAndroid, isAndroidSizeWide, isIPad, isIPadMini } from '../../utils/cordovaUtils';
+import { isAndroid, isAndroidSizeWide, isIPad, isIPadMini, isIPhoneMiniOrSmaller } from '../../utils/cordovaUtils';
 import { isCordova, isWebApp } from '../../utils/isCordovaOrWebApp';
 
 export const CampaignDescription = styled('div')`
@@ -282,6 +282,7 @@ export const SupportButtonFooterWrapperAboveFooterButtons = styled('div')`
     if (isWebApp()) return '55px';
     if (isIPad() || isAndroidSizeWide()) return '0px';
     if (isAndroid()) return '68px';
+    if (isIPhoneMiniOrSmaller()) return '54px';
     return '88px';
   }};
 `;

@@ -188,7 +188,11 @@ export function headroomWrapperOffset (includePosition) {
     const page = pageEnumeration();
     if (page === 'candidatelist' || page === 'values') {
       if (isIOS()) {
-        offset /= isIPad() ? 2 : 3;
+        if (page === 'values') {
+          offset /= 3 / 2;
+        } else {
+          offset /= isIPad() ? 2 : 3;
+        }
       } else if (isAndroidSizeXL()) {
         offset = 1;
       } else {

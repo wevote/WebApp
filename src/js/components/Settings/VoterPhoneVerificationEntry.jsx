@@ -491,7 +491,7 @@ class VoterPhoneVerificationEntry extends Component {
             autoFocus={false}
             className={classes.input}
             error={displayIncorrectPhoneNumberError}
-            helperText={(displayIncorrectPhoneNumberError) ? 'Enter valid phone number' : ''}
+            helperText={(displayIncorrectPhoneNumberError) ? 'Enter a valid phone number' : ''}
             id="enterVoterPhone"
             InputProps={{
               startAdornment: (
