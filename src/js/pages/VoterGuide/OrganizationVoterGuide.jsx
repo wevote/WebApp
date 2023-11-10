@@ -278,7 +278,8 @@ export default class OrganizationVoterGuide extends Component {
 
   goToVoterGuideDetailsPage (destinationTab) {
     const { pathname: editLink, href: editLinkCordova } = window.location;
-    const editPathCordova = editLinkCordova.replace(/file:\/\/.*?Vote.app\/www\/index.html#\//, '');
+    const editPathCordova = editLinkCordova.replace(/file:\/\/.*?Vote.app\/www\/index.html#\//, '')
+      .replace(/app.*?index.html#/, '');
     historyPush(`${isWebApp() ? editLink : editPathCordova}/m/${destinationTab}`);
   }
 
