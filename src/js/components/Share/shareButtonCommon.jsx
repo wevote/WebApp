@@ -13,6 +13,7 @@ import VoterStore from '../../stores/VoterStore';
 import { openSnackbar } from '../../common/components/Widgets/SnackNotifier';
 import ShareModalOption from './ShareModalOption';
 
+
 export const shareStyles = () => ({
   dialogPaper: {
     // marginTop: hasIPhoneNotch() ? 68 : 48,
@@ -244,16 +245,19 @@ export function saveActionShareAnalytics () {
   }
 }
 
-let close;
 function onEmailSendSuccess () {
   console.log('successfully shared via email');
-  close();
+  if (this.closeFunc) {
+    this.closeFunc();
+  }
   openSnackbar({ message: 'You have successfully shared via email.' });
 }
 
 function onEmailSendError (error) {
   console.log('share by email failed', error);
-  close();
+  if (this.closeFunc) {
+    this.closeFunc();
+  }
   if (error === 'not available') {
     openSnackbar({ message: 'Your device is not configured to send email' });
   } else {
@@ -262,7 +266,7 @@ function onEmailSendError (error) {
 }
 
 export function cordovaSocialSharingByEmail (subject, linkToBeShared, handleClose) {
-  close = handleClose;
+  this.closeFunc = handleClose;
   const body = `This is a website I am using to get ready to vote. ${linkToBeShared}`;
   console.log('cordovaSocialSharingByEmail ', subject, linkToBeShared);
   // window.plugins.socialsharing.canShareViaEmail((e) => {console.log("canShareViaEmail 1: " + e)}, (e) => {console.log("canShareViaEmail 2: " + e)});

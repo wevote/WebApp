@@ -12,10 +12,6 @@ function addUShowStylesImport (fileTxt, path) {
   const hasMobileImport = fileTxt.match(/import.*?uShowMobile/) != null;
   const hasDeskTopImport = fileTxt.match(/import.*?uShowDesktopTablet/) != null;
 
-  if (path.includes('SuggestedFriendDisplayForList')) {
-    console.log(path);
-  }
-
   // if import needs is already met, return unchanged
   if (!hasMobile && !hasMobileImport && !hasDeskTop && !hasDeskTopImport) return fileTxt;
   if (hasMobile && hasMobileImport && hasDeskTop && hasDeskTopImport) return fileTxt;
@@ -50,21 +46,42 @@ function addUShowStylesImport (fileTxt, path) {
   return ret;
 }
 
-function getVersionFromConfigXML () {
+function getVersionsFromConfigXML () {
   const path = '../WeVoteCordova/config.xml';
+  const versions = {
+    version: 'error',
+    iosBundleVersion: 'error',
+    androidBundleVersion: 'error',
+  };
   const data = fs.readFileSync(path, 'utf-8');
-  const regex = /version="(.*?)"/;
-  const found = data.match(regex);
+  let regex = /version="(.*?)"/;
+  let found = data.match(regex);
   if (found.length > 0) {
     console.log('version from config.xml: ', found[1]);
-    return found[1];
+    versions.version = found[1];
   } else {
     console.log('version from config.xml: error');
-    return 'error';
   }
+  regex = /ios-CFBundleVersion="(.*?)"/;
+  found = data.match(regex);
+  if (found.length > 0) {
+    console.log('ios-CFBundleVersion from config.xml: ', found[1]);
+    versions.iosBundleVersion = found[1];
+  } else {
+    console.log('ios-CFBundleVersion from config.xml: error');
+  }
+  regex = /android-versionCode="(.*?)"/;
+  found = data.match(regex);
+  if (found.length > 0) {
+    console.log('android-versionCode from config.xml: ', found[1]);
+    versions.androidBundleVersion = found[1];
+  } else {
+    console.log('android-versionCode from config.xml: error');
+  }
+  return versions;
 }
 
-function fileRewriterForCordova (path, version) {
+function fileRewriterForCordova (path, versions) {
   // console.log('Do  ', path);
   if (path.endsWith('.css') || path.endsWith('cordovaOffsets.js')) {
     return;
@@ -140,7 +157,9 @@ function fileRewriterForCordova (path, version) {
     newValue = addUShowStylesImport(newValue, path);
 
     // Inject version string
-    newValue = newValue.replace(/{window\.weVoteAppVersion}/, version);
+    newValue = newValue.replace(/window\.weVoteAppVersion/, versions.version);
+    newValue = newValue.replace(/window\.iosBundleVersion/, versions.iosBundleVersion);
+    newValue = newValue.replace(/window\.androidBundleVersion/, versions.androidBundleVersion);
 
     fs.writeFile(path, newValue, 'utf-8', (err2) => {
       if (err2) throw err2;
@@ -152,7 +171,7 @@ function fileRewriterForCordova (path, version) {
 // Inline node
 
 console.log('> Cordova: Preparing to set up parallel /srcCordova directory.');
-const version = getVersionFromConfigXML();
+const versions = getVersionsFromConfigXML();
 fs.remove('./build').then(() => {
   console.log('> Cordova: Removed build directory');
   fs.remove('./srcCordova').then(() => {
@@ -176,7 +195,7 @@ fs.remove('./build').then(() => {
             const path = listOfFiles[i];
             // console.log(`path: ${path}`);
             if (path.length) {
-              fileRewriterForCordova(path, version);
+              fileRewriterForCordova(path, versions);
             }
           }
           console.log(`> Cordova: ${listOfFiles.length} files in ./srcCordova, rewritten without React.lazy`);

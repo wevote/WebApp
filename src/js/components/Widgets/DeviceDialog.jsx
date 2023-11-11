@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { getAndroidSize, getIOSSizeString, hasIPhoneNotch, isAndroid, isIOS, isSimulator } from '../../common/utils/cordovaUtils';
+import { getAndroidSize, getCordovaBuildVersion, getIOSSizeString, hasIPhoneNotch, isAndroid, isIOS, isSimulator } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
 import { getTabletSize } from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
@@ -63,6 +63,7 @@ class DeviceDialog extends Component {
     }
     // HACK 10/2/23 const { diameter } = window.pbakondyScreenSize;
     const diameter = 'unknown';
+    const version = getCordovaBuildVersion();
 
     return (
       <Dialog
@@ -132,7 +133,7 @@ class DeviceDialog extends Component {
               </TableRow>
               <TableRow>
                 <StyledTableCell>Version</StyledTableCell>
-                <StyledTableCell>{window.weVoteAppVersion}</StyledTableCell>
+                <StyledTableCell>{version}</StyledTableCell>
               </TableRow>
               <TableRow>
                 <StyledTableCell>Compile date</StyledTableCell>
