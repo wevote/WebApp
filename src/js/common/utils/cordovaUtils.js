@@ -833,6 +833,14 @@ export function cordovaLinkToBeSharedFixes (link) {
   linkToBeShared = linkToBeShared.replace('app://localhost/index.html#/', 'https://wevote.us/');  // Cordova iOS Nov 2021
   return linkToBeShared;
 }
+
+export function getCordovaBuildVersion () {
+  const version = 'window.weVoteAppVersion';
+  const iosBundleVersion = 'window.iosBundleVersion';
+  const androidBundleVersion = 'window.androidBundleVersion';
+  return `${version} (${isIOS() ? iosBundleVersion : androidBundleVersion})`;
+}
+
 // ////////////////////////
 // this was used in ShareButtonFooter before I started using cordovaLinkToBeSharedFixes above
 // getCurrentFullUrl () {
