@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet-async';
 import VoterSessionActions from '../../actions/VoterSessionActions';
 import LazyImage from '../../common/components/LazyImage';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
+import { getCordovaBuildVersion } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
 import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
@@ -137,6 +138,7 @@ export default class HamburgerMenu extends Component {
     //   `/voterguide/${voterOrganizationWeVoteId}`;
     const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
     // console.log(`Hamburger menu this.state.showDeviceDialog ${this.state.showDeviceDialog}`);
+    const version = getCordovaBuildVersion();
 
     return (
       <PageContentContainer>
@@ -320,7 +322,7 @@ export default class HamburgerMenu extends Component {
                 <div>
                   <span className="hamburger-terms__text" style={{ color: 'black', opacity: '0.7', fontSize: '10px' }}>
                     Version:&nbsp;&nbsp;
-                    {window.weVoteAppVersion}
+                    {version}
                   </span>
                 </div>
               </td>
