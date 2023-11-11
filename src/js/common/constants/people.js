@@ -223,6 +223,11 @@ export const organizationalDonors = [{
   title: 'Servers',
   logo: `${logoPath}aws-logo.png`,
 }, {
+  alt: 'Atlassian',
+  name: '',
+  title: 'Agile Project Management',
+  logo: `${logoPath}atlassian-logo.png`,
+}, {
   alt: 'Ballotpedia',
   name: '',
   title: 'Ballot Data',
