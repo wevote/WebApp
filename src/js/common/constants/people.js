@@ -221,21 +221,25 @@ export const organizationalDonors = [{
   alt: 'Amazon Web Services',
   name: '',
   title: 'Servers',
+  link: 'https://aws.amazon.com/',
   logo: `${logoPath}aws-logo.png`,
 }, {
   alt: 'Atlassian',
   name: '',
   title: 'Agile Project Management',
+  link: 'https://www.atlassian.com/software/jira',
   logo: `${logoPath}atlassian-logo.png`,
 }, {
   alt: 'Ballotpedia',
   name: '',
   title: 'Ballot Data',
+  link: 'https://ballotpedia.org/API-documentation/faq',
   logo: `${logoPath}ballotpedia-logo.png`,
 }, {
   alt: 'BrowserStack',
   name: '',
   title: 'Cross-Platform Testing',
+  link: 'https://www.browserstack.com/',
   logo: `${logoPath}browserstack-logo-600x158.png`,
 }, {
   alt: 'Center for Technology and Civic Life',
@@ -253,16 +257,19 @@ export const organizationalDonors = [{
   alt: 'Code for San Francisco & Code for America',
   name: '',
   title: 'Our Home for Volunteer Work',
+  link: 'https://codeforamerica.org/',
   logo: `${logoPath}cfa-logo.png`,
 }, {
   alt: 'DLA Piper',
   name: '',
   title: 'Legal',
+  link: 'https://www.dlapiper.com/en-us',
   logo: `${logoPath}dla-piper-logo.png`,
 }, {
   alt: 'Facebook',
   name: '',
   title: 'Authentication & Data',
+  link: 'https://www.facebook.com/',
   logo: `${logoPath}facebook-logo.png`,
 }, {
   alt: 'Fast Forward',
@@ -280,26 +287,31 @@ export const organizationalDonors = [{
   alt: 'Google Civic',
   name: '',
   title: 'Ballot Data',
+  link: 'https://developers.google.com/civic-information',
   logo: `${logoPath}google-logo.svg`,
 }, {
   alt: 'Greenberg Traurig, LLP',
   name: '',
   title: 'Legal',
+  link: 'https://www.gtlaw.com/',
   logo: `${logoPath}gt-logo.png`,
 }, {
   alt: 'League of Women Voters',
   name: '',
   title: 'Data',
+  link: 'https://www.lwv.org/',
   logo: `${logoPath}league-of-women-logo.png`,
 }, {
   alt: 'MapLight',
   name: '',
   title: 'Data',
+  link: 'https://www.maplight.org/',
   logo: `${logoPath}maplight-logo.png`,
 }, {
   alt: 'Microsoft',
   name: '',
   title: 'For supporting Code for San Francisco',
+  link: '',
   logo: `${logoPath}microsoft-logo.png`,
 }, {
   alt: 'Open People Search',
@@ -311,6 +323,7 @@ export const organizationalDonors = [{
   alt: 'TurboVote, Democracy Works',
   name: '',
   title: 'Data',
+  link: 'https://www.democracy.works/turbovote',
   logo: `${logoPath}turbovote-logo.png`,
 }, {
   alt: 'Twilio',
@@ -319,14 +332,16 @@ export const organizationalDonors = [{
   link: 'https://twilio.com',
   logo: `${logoPath}twilio-logo.png`,
 }, {
-  alt: 'Twitter',
-  name: '',
+  alt: 'X (Twitter)',
+  name: 'X (Twitter)',
   title: 'Authentication & Data',
-  logo: `${logoPath}twitter-logo.png`,
+  link: 'https://twitter.com/',
+  logo: `${logoPath}twitter-x-logo.png`,
 }, {
   alt: 'Vote Smart',
   name: '',
   title: 'Data',
+  link: 'https://justfacts.votesmart.org/',
   logo: `${logoPath}vote-smart-logo.jpeg`,
 }, {
   alt: 'Vote USA',
@@ -338,16 +353,19 @@ export const organizationalDonors = [{
   alt: 'Voting Information Project, Pew Charitable Trusts',
   name: 'Voting Information Project',
   title: 'Data',
+  link: 'https://www.pewtrusts.org/en/',
   logo: `${logoPath}pew-logo.jpeg`,
 }, {
   alt: 'We Vote Education',
   name: 'We Vote Education',
   title: 'Data',
+  link: 'https://www.wevoteeducation.org/',
   logo: `${logoPath}we-vote-logo.png`,
 }, {
   alt: 'Wikipedia',
   name: '',
   title: 'Data',
+  link: 'https://en.wikipedia.org/wiki/Elections_in_the_United_States',
   logo: `${logoPath}wikipedia-logo.png`,
 },
 ];
