@@ -11,7 +11,7 @@ class ShowMoreItems extends Component {
   render () {
     const { hideShowMoreLink, loadingMoreItemsNow, numberOfItemsDisplayed, numberOfItemsTotal } = this.props;
 
-    if (numberOfItemsDisplayed === 0) {
+    if (numberOfItemsDisplayed <= 1) {
       return null;
     }
 
