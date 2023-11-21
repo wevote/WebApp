@@ -56,7 +56,7 @@ export const PoliticianImageSharedStyles = css`
 export const PoliticianImageDesktopPlaceholder = styled('div', {
   shouldForwardProp: (prop) => !['limitCardWidth'].includes(prop),
 })(({ limitCardWidth }) => (`
-  ${limitCardWidth ? 'height: 315px;' : 'height: 117px;'}
+  ${limitCardWidth ? 'height: 200px;' : 'height: 117px;'}
   align-items: center;
   background-color: #eee;
   display: flex;
