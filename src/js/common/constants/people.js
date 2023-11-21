@@ -311,7 +311,7 @@ export const organizationalDonors = [{
   alt: 'Microsoft',
   name: '',
   title: 'For supporting Code for San Francisco',
-  link: '',
+  link: 'https://www.microsoft.com/',
   logo: `${logoPath}microsoft-logo.png`,
 }, {
   alt: 'Open People Search',
