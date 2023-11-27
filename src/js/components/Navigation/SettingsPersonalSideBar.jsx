@@ -85,6 +85,7 @@ export default class SettingsPersonalSideBar extends Component {
     const { isOnPartnerUrl, isSignedIn, isOrganization, showPremiumFeatures, voterIsAdminForThisUrl } = this.state;
     const showSettingsInDevelopment = false; // If developing any of the new settings, change this to true
     const isOnPartnerUrlAndNotAdmin = isOnPartnerUrl && !voterIsAdminForThisUrl;
+    const alwaysTrue = true; // A temp fix for https://wevoteusa.atlassian.net/browse/WV-168
 
     return (
       <div className="card">
@@ -145,31 +146,29 @@ export default class SettingsPersonalSideBar extends Component {
             </div>
           )}
 
-          {!isOnPartnerUrl && (
-            <div className={String(editMode) === 'notifications' ?
-              'SettingsItem__summary__item-container SettingsItem__summary__item-container--selected' :
-              'SettingsItem__summary__item-container'}
-            >
-              <div>
-                <Link to="/settings/notifications" className="SettingsItem__summary__item" id="notifications">
-                  <span className={String(editMode) === 'notifications' ?
-                    'SettingsItem__summary__item__display-name SettingsItem__summary__item__display-name--selected' :
-                    'SettingsItem__summary__item__display-name'}
-                  >
-                    Notifications
-                  </span>
-                </Link>
-              </div>
+          <div className={String(editMode) === 'notifications' ?
+            'SettingsItem__summary__item-container SettingsItem__summary__item-container--selected' :
+            'SettingsItem__summary__item-container'}
+          >
+            <div>
+              <Link to="/settings/notifications" className="SettingsItem__summary__item" id="settingsNotifications">
+                <span className={String(editMode) === 'notifications' ?
+                  'SettingsItem__summary__item__display-name SettingsItem__summary__item__display-name--selected' :
+                  'SettingsItem__summary__item__display-name'}
+                >
+                  Notifications
+                </span>
+              </Link>
             </div>
-          )}
+          </div>
 
-          {!isOnPartnerUrl && (
+          {alwaysTrue && (/* {!isOnPartnerUrl && ( */
             <div className={String(editMode) === 'friends' ?
               'SettingsItem__summary__item-container SettingsItem__summary__item-container--selected' :
               'SettingsItem__summary__item-container'}
             >
               <div>
-                <Link to="/friends" className="SettingsItem__summary__item" id="notifications">
+                <Link to="/friends" className="SettingsItem__summary__item" id="settingsFriends">
                   <span className={String(editMode) === 'friends' ?
                     'SettingsItem__summary__item__display-name SettingsItem__summary__item__display-name--selected' :
                     'SettingsItem__summary__item__display-name'}
@@ -181,13 +180,13 @@ export default class SettingsPersonalSideBar extends Component {
             </div>
           )}
 
-          {(isSignedIn && !isOnPartnerUrl) && (
+          {(isSignedIn && alwaysTrue/* && !isOnPartnerUrl */) && (
             <div className={String(editMode) === 'discuss' ?
               'SettingsItem__summary__item-container SettingsItem__summary__item-container--selected' :
               'SettingsItem__summary__item-container'}
             >
               <div>
-                <Link to="/news" className="SettingsItem__summary__item" id="notifications">
+                <Link to="/news" className="SettingsItem__summary__item" id="settingsDiscuss">
                   <span className={String(editMode) === 'discuss' ?
                     'SettingsItem__summary__item__display-name SettingsItem__summary__item__display-name--selected' :
                     'SettingsItem__summary__item__display-name'}
@@ -205,7 +204,7 @@ export default class SettingsPersonalSideBar extends Component {
               'SettingsItem__summary__item-container '}
             >
               <div>
-                <Link to="/settings/domain" className="SettingsItem__summary__item" id="domain">
+                <Link to="/settings/domain" className="SettingsItem__summary__item" id="settingsDomain">
                   <span className={String(editMode) === 'domain' ?
                     'SettingsItem__summary__item__display-name SettingsItem__summary__item__display-name--selected' :
                     'SettingsItem__summary__item__display-name'}
@@ -226,7 +225,7 @@ export default class SettingsPersonalSideBar extends Component {
               'SettingsItem__summary__item-container '}
             >
               <div>
-                <Link to="/settings/text" className="SettingsItem__summary__item" id="site text">
+                <Link to="/settings/text" className="SettingsItem__summary__item" id="settingsSiteText">
                   <span className={String(editMode) === 'text' ?
                     'SettingsItem__summary__item__display-name SettingsItem__summary__item__display-name--selected' :
                     'SettingsItem__summary__item__display-name'}
@@ -244,7 +243,7 @@ export default class SettingsPersonalSideBar extends Component {
               'SettingsItem__summary__item-container '}
             >
               <div>
-                <Link to="/settings/sharing" className="SettingsItem__summary__item" id="sharing">
+                <Link to="/settings/sharing" className="SettingsItem__summary__item" id="settingsSharing">
                   <span className={String(editMode) === 'sharing' ?
                     'SettingsItem__summary__item__display-name SettingsItem__summary__item__display-name--selected' :
                     'SettingsItem__summary__item__display-name'}
@@ -265,7 +264,7 @@ export default class SettingsPersonalSideBar extends Component {
               'SettingsItem__summary__item-container '}
             >
               <div>
-                <Link to="/settings/subscription" className="SettingsItem__summary__item" id="subscriptionPlan">
+                <Link to="/settings/subscription" className="SettingsItem__summary__item" id="settingsSubscriptionPlan">
                   <span className={String(editMode) === 'subscription' ?
                     'SettingsItem__summary__item__display-name SettingsItem__summary__item__display-name--selected' :
                     'SettingsItem__summary__item__display-name'}
@@ -286,7 +285,7 @@ export default class SettingsPersonalSideBar extends Component {
               'SettingsItem__summary__item-container '}
             >
               <div>
-                <Link to="/settings/analytics" className="SettingsItem__summary__item" id="analytics">
+                <Link to="/settings/analytics" className="SettingsItem__summary__item" id="settingsAnalytics">
                   <span className={String(editMode) === 'analytics' ?
                     'SettingsItem__summary__item__display-name SettingsItem__summary__item__display-name--selected' :
                     'SettingsItem__summary__item__display-name'}
