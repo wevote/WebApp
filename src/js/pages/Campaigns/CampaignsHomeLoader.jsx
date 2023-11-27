@@ -59,7 +59,7 @@ class CampaignsHomeLoader extends Component {
       const newPathname = this.getStateNamePathnameFromStateCode(voterStateCode);
       const { location: { pathname } } = window;
       if (pathname !== newPathname) {
-        historyPush(newPathname);
+        historyPush(newPathname, true);
       } else {
         this.setState({ stateCode: voterStateCode });
       }
