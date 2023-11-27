@@ -190,13 +190,13 @@ class Ballot extends Component {
         BallotActions.voterBallotItemsRetrieve(0, '', ballotLocationShortcutFromUrl);
 
         // Change the URL to match
-        historyPush(`${ballotBaseUrl}/${ballotLocationShortcutFromUrl}`);
+        historyPush(`${ballotBaseUrl}/${ballotLocationShortcutFromUrl}`, true);
       } else if (ballotReturnedWeVoteIdFromUrl !== '') {
         // Change the ballot on load to make sure we are getting what we expect from the url
         BallotActions.voterBallotItemsRetrieve(0, ballotReturnedWeVoteIdFromUrl, '');
 
         // Change the URL to match
-        historyPush(`${ballotBaseUrl}/id/${ballotReturnedWeVoteIdFromUrl}`);
+        historyPush(`${ballotBaseUrl}/id/${ballotReturnedWeVoteIdFromUrl}`, true);
       } else if (googleCivicElectionIdFromUrl !== 0) {
         // Change the ballot on load to make sure we are getting what we expect from the url
         if (googleCivicElectionId !== googleCivicElectionIdFromUrl) {
@@ -210,7 +210,7 @@ class Ballot extends Component {
           if (!currentPathnameStartsWithNewUrl) {
             // As long as the current pathname starts with the new URL, do NOT redirect
             // console.log('REDIRECTING TO ballotElectionUrl');
-            historyPush(ballotElectionUrl);
+            historyPush(ballotElectionUrl, true);
           }
         }
 
@@ -224,12 +224,12 @@ class Ballot extends Component {
         // console.log('ballotElectionUrl2: ', ballotElectionUrl2);
         const currentPathnameStartsWithNewUrl2 = currentPathname && currentPathname.startsWith(ballotElectionUrl2);
         if (!currentPathnameStartsWithNewUrl2) {
-          historyPush(ballotElectionUrl2);
+          historyPush(ballotElectionUrl2, true);
         }
       }
     } else if (BallotStore.ballotProperties && BallotStore.ballotProperties.ballot_found === false) { // No ballot found
       // console.log('if (BallotStore.ballotProperties && BallotStore.ballotProperties.ballot_found === false');
-      historyPush('/settings/location');
+      historyPush('/settings/location', true);
     } else { // } else if (ballotWithItemsFromCompletionFilterType === undefined) {
       // console.log('WebApp doesn\'t know the election or have ballot data, so ask the API server to return best guess');
       BallotActions.voterBallotItemsRetrieve(0, '', '');
@@ -596,7 +596,7 @@ class Ballot extends Component {
         if (voter && voter.is_signed_in) {
           // console.log('onVoterStoreChange, about to historyPush(pathname):', pathname);
           // Return to the same page without the 'voter_refresh_timer_on' variable
-          historyPush(pathname);
+                    historyPush(pathname, true);
         } else if (numberOfVoterRetrieveAttempts < 3) {
           // console.log('About to startTimerToRetrieveVoter');
           this.startTimerToRetrieveVoter();
@@ -604,7 +604,7 @@ class Ballot extends Component {
           // We have exceeded the number of allowed attempts and want to 'turn off' the request to refresh the voter object
           // Return to the same page without the 'voter_refresh_timer_on' variable
           // console.log('Exiting voterRefreshTimerOn');
-          historyPush(pathname);
+                    historyPush(pathname, true);
         }
       } else {
         // console.log('Ballot.jsx onVoterStoreChange VoterStore.getVoter: ', VoterStore.getVoter());

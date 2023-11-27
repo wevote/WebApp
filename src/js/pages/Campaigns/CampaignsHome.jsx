@@ -143,7 +143,7 @@ class CampaignsHome extends Component {
       const newPathname = this.getStateNamePathnameFromStateCode(voterStateCode);
       const { location: { pathname } } = window;
       if (pathname !== newPathname) {
-        historyPush(newPathname);
+        historyPush(newPathname, true);
       } else {
         this.setState({ stateCode: voterStateCode });
       }
@@ -572,7 +572,7 @@ class CampaignsHome extends Component {
       const newPathname = this.getStateNamePathnameFromStateCode(e.target.value);
       const { location: { pathname } } = window;
       if (pathname !== newPathname) {
-        historyPush(newPathname);
+                historyPush(newPathname);
       } else {
         this.setState({ stateCode: e.target.value });
       }
@@ -624,7 +624,7 @@ class CampaignsHome extends Component {
 
   render () {
     renderLog('CampaignsHome');  // Set LOG_RENDER_EVENTS to log all renders
-    const {
+      const {
       campaignList, campaignListTimeStampOfChange,
       campaignsShowing,
       candidateListOther, candidateListTimeStampOfChange,

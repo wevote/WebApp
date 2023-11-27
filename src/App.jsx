@@ -294,9 +294,7 @@ class App extends Component {
   }
 
   onVoterStoreChange () {
-    historyPush({
-      pathname: this.props.location.pathname,
-    });
+    historyPush(this.props.location.pathname);
   }
 
   setShowHeader (doShowHeader) {
