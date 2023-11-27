@@ -66,7 +66,8 @@ export default class FAQBody extends Component {
 
         <strong>Who&apos;s behind We Vote?</strong>
         <br />
-        We Vote is a collaboration between two nonprofits (
+        We Vote is a collaboration between two nonprofits
+        {' '}
         <Suspense fallback={<></>}>
           <OpenExternalWebSite
             linkIdAttribute="weVoteEducationWebsite"
@@ -79,7 +80,7 @@ export default class FAQBody extends Component {
         {/* August 2022, TODO: Re-enable this once the SSL cert is renewed */}
         {isCordova() ? (
           <>
-            WeVoteUSA.org - 501(c)(4) FEIN 81-1052585),&nbsp;
+            WeVoteUSA.org - 501(c)(4) FEIN 81-1052585,&nbsp;
           </>
         ) : (
           <>
@@ -91,7 +92,7 @@ export default class FAQBody extends Component {
                 body="WeVoteUSA.org"
               />
             </Suspense>
-            - 501(c)(4) FEIN 81-1052585),&nbsp;
+            - 501(c)(4) FEIN 81-1052585,&nbsp;
           </>
         )}
         both based in Oakland, CA. We do not support or oppose any political candidate or party.
@@ -101,46 +102,54 @@ export default class FAQBody extends Component {
 
         <strong>No really, who are you?</strong>
         <br />
-        We Vote is a volunteer-driven movement.
+        We are volunteers from across the country, in over 22 states. See our
+        {' '}
         <Suspense fallback={<></>}>
           <OpenExternalWebSite
             linkIdAttribute="wevoteVolunteerNow"
             url="https://wevote.applytojob.com/apply"
             target="_blank"
-            body="(See volunteer openings here.)"
+            body="volunteer openings here"
           />
         </Suspense>
-        We
-        rely on volunteers across the country who use
-        their engineering, design, and other skills to build
-        We Vote. We are over 100 people who have donated 12,000+ volunteer hours, including
+        , and join us! We use our engineering, design, marketing, and other skills to build
+        We Vote. We are over 400 people (60+ active) who have donated 20,000+ volunteer hours, including
+        {' '}
         <Suspense fallback={<></>}>
           <OpenExternalWebSite
             linkIdAttribute="wevoteGithubContributors"
             url="https://github.com/WeVote"
             target="_blank"
-            body="90+ contributors on GitHub."
+            body="100+ contributors on GitHub."
           />
         </Suspense>
-        We also have a
+        We also have
+        {' '}
         <Suspense fallback={<></>}>
           <OpenExternalWebSite
             linkIdAttribute="weVoteAboutUsPage"
             url="https://WeVote.US/more/about"
             target="_blank"
-            body="small team of core staff"
+            body="volunteer board members"
           />
         </Suspense>
-        and volunteer board members.
+        .
+        <br />
+        <br />
+
+        <strong>How can I contact We Vote?</strong>
+        <br />
         Please feel free to reach out to us with questions via our
         <Suspense fallback={<></>}>
           <OpenExternalWebSite
             linkIdAttribute="weVoteContactUsPage"
             url="https://help.wevote.us/hc/en-us/requests/new"
             target="_blank"
-            body="Contact Us form."
+            body="Contact Us form"
           />
         </Suspense>
+        .
+        {' '}
         Our mailing address is:
         <br />
         We Vote
@@ -230,9 +239,9 @@ export default class FAQBody extends Component {
           <>
             If you like We Vote,
             {' '}
-            <Link to="/donate" className="u-cursor--pointer u-link-color">please donate</Link>
+            <Link to="/donate" className="u-cursor--pointer u-link-color">please donate monthly</Link>
             {' '}
-            so we can do more to help voters.
+            so we can help more voters.
           </>
         )}
         <br />
@@ -286,9 +295,14 @@ export default class FAQBody extends Component {
             url="https://wevote.applytojob.com/apply"
             target="_blank"
             className="open-web-site open-web-site__no-right-padding"
-            body="sign up to volunteer with We Vote."
+            body="sign up to volunteer"
           />
         </Suspense>
+        {' '}
+        and
+        {' '}
+        <Link to="/donate" className="u-cursor--pointer u-link-color">donate $5 monthly</Link>
+        .
         <br />
         <br />
         <Link to="/" className="u-cursor--pointer u-link-color">Let&apos;s get started!</Link>
