@@ -284,9 +284,9 @@ export default class PrivacyBody extends Component {
             <Suspense fallback={<></>}>
               <OpenExternalWebSite
                 linkIdAttribute="openReplayPrivacy"
-                url="https://openreplay.com/privacy.html"
+                url="https://openreplay.com/legal/privacy.html"
                 target="_blank"
-                body={<span>https://openreplay.com/privacy.html</span>}
+                body={<span>https://openreplay.com/legal/privacy.html</span>}
               />
             </Suspense>
             ).
