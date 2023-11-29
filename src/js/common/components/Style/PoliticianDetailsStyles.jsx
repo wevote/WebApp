@@ -46,6 +46,7 @@ export const PoliticianImageMobile = styled('img')`
 export const PoliticianImageDesktop = styled('img')`
   border-radius: 5px;
   height: 100%;
+  max-height: 200px;
 `;
 
 export const PoliticianImageSharedStyles = css`
