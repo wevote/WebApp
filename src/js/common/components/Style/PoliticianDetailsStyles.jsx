@@ -46,6 +46,7 @@ export const PoliticianImageMobile = styled('img')`
 export const PoliticianImageDesktop = styled('img')`
   border-radius: 5px;
   height: 100%;
+  max-height: 200px; // Needs to be revisited when rectangular campaign images are used
 `;
 
 export const PoliticianImageSharedStyles = css`
@@ -56,7 +57,7 @@ export const PoliticianImageSharedStyles = css`
 export const PoliticianImageDesktopPlaceholder = styled('div', {
   shouldForwardProp: (prop) => !['limitCardWidth'].includes(prop),
 })(({ limitCardWidth }) => (`
-  ${limitCardWidth ? 'height: 200px;' : 'height: 117px;'}
+  ${limitCardWidth ? 'height: 315px;' : 'height: 117px;'}
   align-items: center;
   background-color: #eee;
   display: flex;
@@ -68,7 +69,7 @@ export const PoliticianImageDesktopPlaceholder = styled('div', {
 export const PoliticianImageMobilePlaceholder = styled('div', {
   shouldForwardProp: (prop) => !['limitCardWidth'].includes(prop),
 })(({ limitCardWidth }) => (`
-  ${limitCardWidth ? 'height: 200px;' : 'height: 117px;'}
+  ${limitCardWidth ? 'height: 315px;' : 'height: 117px;'}
   align-items: center;
   background-color: #eee;
   display: flex;

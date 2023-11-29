@@ -71,10 +71,10 @@ export const CampaignImageDesktopWrapper = styled('div')(({ theme }) => (`
     min-height: 174px;
   }
   ${theme.breakpoints.up('md')} {
-    min-height: 200px;
+    min-height: 239px;
   }
   ${theme.breakpoints.up('lg')} {
-    min-height: 200px;
+    min-height: 300px;
   }
 `));
 
