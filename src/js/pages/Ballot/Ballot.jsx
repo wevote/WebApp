@@ -596,7 +596,7 @@ class Ballot extends Component {
         if (voter && voter.is_signed_in) {
           // console.log('onVoterStoreChange, about to historyPush(pathname):', pathname);
           // Return to the same page without the 'voter_refresh_timer_on' variable
-                    historyPush(pathname, true);
+          historyPush(pathname, true);
         } else if (numberOfVoterRetrieveAttempts < 3) {
           // console.log('About to startTimerToRetrieveVoter');
           this.startTimerToRetrieveVoter();
@@ -604,7 +604,7 @@ class Ballot extends Component {
           // We have exceeded the number of allowed attempts and want to 'turn off' the request to refresh the voter object
           // Return to the same page without the 'voter_refresh_timer_on' variable
           // console.log('Exiting voterRefreshTimerOn');
-                    historyPush(pathname, true);
+          historyPush(pathname, true);
         }
       } else {
         // console.log('Ballot.jsx onVoterStoreChange VoterStore.getVoter: ', VoterStore.getVoter());
