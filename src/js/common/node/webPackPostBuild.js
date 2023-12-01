@@ -1,5 +1,5 @@
 const fs = require('fs');
-const glob = require('glob');
+const { glob } = require('glob');
 
 // builds a tiny html file, that contains the name of the main.hash.js chunk which is
 // consumed by the WeVote API Server.  When the Server is queried by Fastly to generate an index.html
