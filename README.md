@@ -33,15 +33,21 @@ Automated Installation
 ## Working with WebApp
 1. [Working with WebApp Day-to-Day](docs/working/README_WORKING_WITH_WEB_APP.md)
 
-2. [Debugging Tools and Tips](docs/working/DEBUGGING_TOOLS.md)
+2. [What the Heck is a Pull Request?](docs/contributing/PULL_REQUEST_BACKGROUND.md)
 
-3. [Issues and Reporting Bugs](docs/working/ISSUES.md)
+3. [Before Your First Pull Request](docs/contributing/PULL_REQUEST_SETUP.md)
 
-4. [Styling Guidelines](docs/working/STYLING.md)
+4. [Creating  a Pull Request](docs/contributing/CREATING_PULL_REQUEST.md)
 
-5. [Want to sign in with Facebook or Twitter on localhost?](docs/working/SECURE_CERTIFICATE.md)
+5. [Debugging Tools and Tips](docs/working/DEBUGGING_TOOLS.md)
 
-6. [Working with ngrok to test on mobile](docs/working/WORKING_WITH_NGROK.md)
+6. [Issues and Reporting Bugs](docs/working/ISSUES.md)
+
+7. [Styling Guidelines](docs/working/STYLING.md)
+
+8. [Want to sign in with Facebook or Twitter on localhost?](docs/working/SECURE_CERTIFICATE.md)
+
+9. [Working with ngrok to test on mobile](docs/working/WORKING_WITH_NGROK.md)
 
 Thanks to BrowserStack for helping us with automated testing!
 
