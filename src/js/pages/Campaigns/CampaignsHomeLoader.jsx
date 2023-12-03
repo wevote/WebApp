@@ -118,7 +118,7 @@ class CampaignsHomeLoader extends Component {
 
   getStateNamePathnameFromStateCode = (stateCode) => {
     const stateName = convertStateCodeToStateText(stateCode);
-    const stateNamePhrase = 'all' ? '':`${stateName}-candidates`;
+    const stateNamePhrase = `${stateName}-candidates`;
     const stateNamePhraseLowerCase = stateNamePhrase.replaceAll(/\s+/g, '-').toLowerCase();
     return `/${stateNamePhraseLowerCase}/cs/`;
   }
