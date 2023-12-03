@@ -122,12 +122,24 @@ We value Software Craftsmanship for the We Vote project since it makes working o
 * If you need to fix the open source projects we rely on, please make a pull request against that project.
 
 
-# If there's no issue in github.com, please create one
+# Reporting Bugs / Issues
 
-## Let us Know you're working on the issue
+## Reporting bugs as member of the engineering team
 
-If you're actively working on an issue, please comment in the issue thread stating that you're working on a fix, or (if you're an official contributor) assign it to yourself. You can also keep the team updated on the work you are doing by attending a team stand-up held on the Daily Hangouts, or post a note in the #agile-stand-up Slack channel. This way, others will know they shouldn't try to work on a fix at the same time.
+* We use Jira to track issues with the We Vote website and mobile Apps, thanks to [Atlassian, the makers of Jira](https://www.atlassian.com/software/views/open-source-license-request#/), and their support for open source projects.
+* If you're actively working on an issue, please mark it as "Fix in Progress" and assign the issue to yourself.
+    * Please only "take" one issue at a time, unless you speak to the Engineering Manager first.
+* Please keep the team updated on the work you are doing by attending our weekly stand-up meeting, or post a note in the #coding Slack channel.
+* We encourage "Find it-Fix-it" for issues you find, if you are able.
+* If you would like to report a bug for another engineer to fix, please report it in the #engineering-bug-reports Slack channel
 
+## Reporting bugs if not part the engineering team
+
+* Anyone can report issues [via our support system](https://help.wevote.us/hc/en-us/requests/new)
+* Please provide a link to where you saw the issue
+* Describe the issue with as much detail as you can -- details really help us reproduce the problem so we can find a fix
+* ...and THANK YOU for taking the time to report the issue. We appreciate it!
+* Want to join our team? We are 100% volunteer, and [volunteer opportunities are here](https://wevote.applytojob.com/apply/).
 
 # Version numbering
 
