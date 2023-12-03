@@ -2,6 +2,8 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
+const MINIMUM_DENOMINATOR = 6;
+
 class ShowMoreItems extends Component {
   constructor (props) {
     super(props);
@@ -11,7 +13,7 @@ class ShowMoreItems extends Component {
   render () {
     const { hideShowMoreLink, loadingMoreItemsNow, numberOfItemsDisplayed, numberOfItemsTotal } = this.props;
 
-    if (numberOfItemsDisplayed <= 1) {
+    if (numberOfItemsDisplayed < MINIMUM_DENOMINATOR) {
       return null;
     }
 
