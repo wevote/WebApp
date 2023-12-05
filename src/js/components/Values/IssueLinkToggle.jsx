@@ -37,6 +37,7 @@ export default class IssueLinkToggle extends Component {
   render () {
     renderLog('IssueLinkToggle');  // Set LOG_RENDER_EVENTS to log all renders
     let supportButtonPopoverTooltip;
+    // Dec 2023:  Leave this in for Mobile and Cordova, since it is an error report condition
     if (this.props.incompatibleIssues !== undefined) {
       // Removed bsPrefix="card-popover"
       const incompatibleIssues = <span>{`You cannot link because the issue is incompatible with the following issues: ${this.props.incompatibleIssues.map((issue) => issue.issue_name).join(', ')}`}</span>;

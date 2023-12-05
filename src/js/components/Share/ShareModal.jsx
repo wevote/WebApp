@@ -9,13 +9,14 @@ import AnalyticsActions from '../../actions/AnalyticsActions';
 import FriendActions from '../../actions/FriendActions';
 import VoterActions from '../../actions/VoterActions';
 import ShareActions from '../../common/actions/ShareActions';
+import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
 import ShareStore from '../../common/stores/ShareStore';
 import apiCalming from '../../common/utils/apiCalming';
 import { isIPad } from '../../common/utils/cordovaUtils';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp'; // isCordova
 import { renderLog } from '../../common/utils/logging';
 import stringContains from '../../common/utils/stringContains';
-import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
+import webAppConfig from '../../config';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
 import createMessageToFriendDefaults from '../../utils/createMessageToFriendDefaults';
@@ -287,7 +288,9 @@ class ShareModal extends Component {
                   linkToBeSharedCopy={linkToBeShared}
                 />
                 <ShareWeVoteFriends onClickFunction={() => this.saveActionShareButtonFriends()} />
-                <ShareFacebook titleText={titleText} saveActionShareButtonFacebook={this.saveActionShareButtonFacebook} linkToBeShared={linkToBeSharedUrlEncoded} />
+                {webAppConfig.ENABLE_FACEBOOK && (
+                  <ShareFacebook titleText={titleText} saveActionShareButtonFacebook={this.saveActionShareButtonFacebook} linkToBeShared={linkToBeSharedUrlEncoded} />
+                )}
                 <ShareTwitter titleText={titleText} saveActionShareButtonTwitter={this.saveActionShareButtonTwitter} linkToBeSharedTwitter={linkToBeSharedUrlEncoded} />
               </Flex>
               {(isWebApp() && voterIsSignedIn) && (

@@ -4,22 +4,23 @@ import { Button } from '@mui/material';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { styled as muiStyled } from '@mui/styles';
-import withTheme from '@mui/styles/withTheme';
 import withStyles from '@mui/styles/withStyles';
-import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
-import Tooltip from 'react-bootstrap/Tooltip';
+import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
 import styled from 'styled-components';
 import OrganizationActions from '../../actions/OrganizationActions';
+import { openSnackbar } from '../../common/components/Widgets/SnackNotifier';
 import historyPush from '../../common/utils/historyPush';
+import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import FriendStore from '../../stores/FriendStore';
 import IssueStore from '../../stores/IssueStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
-import { openSnackbar } from '../../common/components/Widgets/SnackNotifier';
 import { createSharedIssuesText } from '../../utils/issueUtils';
 
 
@@ -32,7 +33,7 @@ function AlreadyFollowingOrIgnoringButton (params) {
     alreadyFollowingOrIgnoringPopOverText += ` ${speakerDisplayName},`;
   }
   alreadyFollowingOrIgnoringPopOverText += ' their opinion is added to your score. Click to stop following.';
-  const alreadyFollowingOrIgnoringPopOverTooltip = (
+  const alreadyFollowingOrIgnoringPopOverTooltip = isMobileScreenSize() ? (<span />) : (
     <Tooltip className="u-z-index-9020" id={`alreadyFollowingOrIgnoringButtonPopOver-${ballotItemWeVoteId}-${organizationWeVoteId}`}>
       {alreadyFollowingOrIgnoringPopOverText}
     </Tooltip>
@@ -103,11 +104,12 @@ function FollowButton (params) {
     followOrganizationCheckPlusPopOverText += ` ${speakerDisplayName},`;
   }
   followOrganizationCheckPlusPopOverText += ' and add their opinion to your score.';
-  const followOrganizationCheckPlusPopOverTooltip = (
+  const followOrganizationCheckPlusPopOverTooltip = isMobileScreenSize() ? (<span />) : (
     <Tooltip className="u-z-index-9020" id={`followOrganizationCheckPlusPopOver-${ballotItemWeVoteId}-${organizationWeVoteId}`}>
       {followOrganizationCheckPlusPopOverText}
     </Tooltip>
   );
+
   return (
     <div>
       <OverlayTrigger placement="bottom" overlay={followOrganizationCheckPlusPopOverTooltip}>
@@ -414,7 +416,8 @@ class FollowToggleCheckPlus extends Component {
       friendOrLinkedToIssuePopOverText += ' cares about the same values as you.';
       friendOrLinkedToIssuePopOverText += ' Because of this, their opinion is added to your score.';
     }
-    const friendOrLinkedToIssuePopOverTooltip = (
+
+    const friendOrLinkedToIssuePopOverTooltip = isMobileScreenSize() ? (<span />) : (
       <Tooltip className="u-z-index-9020" id={`friendOrLinkedToIssueButtonPopOver-${ballotItemWeVoteId}-${organizationWeVoteId}`}>
         {friendOrLinkedToIssuePopOverText}
       </Tooltip>
@@ -525,9 +528,9 @@ const FriendOrLinkedToIssue = styled('div')`
   align-items: center;
   display: flex;
   height: 40px;
-  margin: '0 !important';
+  margin: 0 !important;
   min-width: 0;
-  padding: '0 !important';
+  padding: 0 !important;
   width: 32px;
 `;
 

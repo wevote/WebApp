@@ -4,6 +4,7 @@ import { styled as muiStyled } from '@mui/styles';
 import withStyles from '@mui/styles/withStyles';
 import React, { Suspense } from 'react';
 import styled from 'styled-components';
+import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import { renderLog } from '../../utils/logging';
 import normalizedImagePath from '../../utils/normalizedImagePath';
 
@@ -24,7 +25,7 @@ function ToolBar (params) {
             className="u-no-underline"
             url="https://twitter.com/WeVote"
             target="_blank"
-            body={(
+            body={isMobileScreenSize() ? (<span />) : (
               <Tooltip title="Twitter">
                 <IconButton size="large">
                   <TwitterStyled />
@@ -40,7 +41,7 @@ function ToolBar (params) {
             className="u-no-underline"
             url="https://www.facebook.com/WeVoteUSA"
             target="_blank"
-            body={(
+            body={isMobileScreenSize() ? (<span />) : (
               <Tooltip title="Facebook">
                 <IconButton size="large">
                   <FacebookStyled />
@@ -56,7 +57,7 @@ function ToolBar (params) {
             className="u-no-underline"
             url="https://www.instagram.com/WeVote"
             target="_blank"
-            body={(
+            body={isMobileScreenSize() ? (<span />) : (
               <Tooltip title="Instagram">
                 <IconButton size="large">
                   <InstagramStyled />
@@ -70,9 +71,9 @@ function ToolBar (params) {
           <OpenExternalWebSite
             linkIdAttribute="eepurl"
             className="u-no-underline"
-            url="http://eepurl.com/cx_frP"
+            url="https://eepurl.com/cx_frP"
             target="_blank"
-            body={(
+            body={isMobileScreenSize() ? (<span />) : (
               <Tooltip title="Newsletter">
                 <IconButton size="large">
                   <MailStyled />
@@ -89,7 +90,7 @@ function ToolBar (params) {
               className="u-no-underline"
               url="https://github.com/WeVote"
               target="_blank"
-              body={(
+              body={isMobileScreenSize() ? (<span />) : (
                 <Tooltip title="Github">
                   <IconButton size="large">
                     <GitHubStyled />
@@ -105,7 +106,7 @@ function ToolBar (params) {
             className="u-no-underline"
             url="https://blog.wevote.us/"
             target="_blank"
-            body={(
+            body={isMobileScreenSize() ? (<span />) : (
               <Tooltip title="Blog">
                 <IconButton size="large">
                   <img src={normalizedImagePath('/img/global/svg-icons/wordpress-logo.svg')}

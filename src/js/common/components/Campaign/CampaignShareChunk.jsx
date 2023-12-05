@@ -3,6 +3,7 @@ import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import webAppConfig from '../../../config';
 import historyPush from '../../utils/historyPush';
 import { renderLog } from '../../utils/logging';
 import ShareByCopyLink from '../CampaignShare/ShareByCopyLink';
@@ -10,7 +11,6 @@ import ShareByEmailButton from '../CampaignShare/ShareByEmailButton';
 import ShareOnFacebookButton from '../CampaignShare/ShareOnFacebookButton';
 import ShareOnTwitterButton from '../CampaignShare/ShareOnTwitterButton';
 import { CampaignSupportDesktopButtonPanel, CampaignSupportDesktopButtonWrapper, CampaignSupportMobileButtonPanel, CampaignSupportMobileButtonWrapper, CampaignSupportSection, CampaignSupportSectionWrapper } from '../Style/CampaignSupportStyles';
-import webAppConfig from '../../../config';
 
 const futureFeaturesDisabled = true;
 const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
@@ -130,16 +130,20 @@ class CampaignShareChunk extends Component {
                 </CampaignSupportDesktopButtonPanel>
               </CampaignSupportDesktopButtonWrapper>
             )}
-            <CampaignSupportDesktopButtonWrapper className="u-show-desktop-tablet">
-              <CampaignSupportDesktopButtonPanel>
-                <ShareOnFacebookButton campaignXNewsItemWeVoteId={campaignXNewsItemWeVoteId} campaignXWeVoteId={campaignXWeVoteId} darkButton={!darkButtonsOff} />
-              </CampaignSupportDesktopButtonPanel>
-            </CampaignSupportDesktopButtonWrapper>
-            <CampaignSupportMobileButtonWrapper className="u-show-mobile">
-              <CampaignSupportMobileButtonPanel>
-                <ShareOnFacebookButton campaignXNewsItemWeVoteId={campaignXNewsItemWeVoteId} campaignXWeVoteId={campaignXWeVoteId} mobileMode />
-              </CampaignSupportMobileButtonPanel>
-            </CampaignSupportMobileButtonWrapper>
+            {webAppConfig.ENABLE_FACEBOOK && (
+              <>
+                <CampaignSupportDesktopButtonWrapper className="u-show-desktop-tablet">
+                  <CampaignSupportDesktopButtonPanel>
+                    <ShareOnFacebookButton campaignXNewsItemWeVoteId={campaignXNewsItemWeVoteId} campaignXWeVoteId={campaignXWeVoteId} darkButton={!darkButtonsOff} />
+                  </CampaignSupportDesktopButtonPanel>
+                </CampaignSupportDesktopButtonWrapper>
+                <CampaignSupportMobileButtonWrapper className="u-show-mobile">
+                  <CampaignSupportMobileButtonPanel>
+                    <ShareOnFacebookButton campaignXNewsItemWeVoteId={campaignXNewsItemWeVoteId} campaignXWeVoteId={campaignXWeVoteId} mobileMode />
+                  </CampaignSupportMobileButtonPanel>
+                </CampaignSupportMobileButtonWrapper>
+              </>
+            )}
             <CampaignSupportDesktopButtonWrapper className="u-show-desktop-tablet">
               <CampaignSupportDesktopButtonPanel>
                 <ShareOnTwitterButton campaignXNewsItemWeVoteId={campaignXNewsItemWeVoteId} campaignXWeVoteId={campaignXWeVoteId} />
