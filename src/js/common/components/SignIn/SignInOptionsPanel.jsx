@@ -14,6 +14,7 @@ import VoterEmailAddressEntry from '../../../components/Settings/VoterEmailAddre
 import VoterPhoneVerificationEntry from '../../../components/Settings/VoterPhoneVerificationEntry';
 import TwitterSignIn from '../../../components/Twitter/TwitterSignIn';
 import BrowserPushMessage from '../../../components/Widgets/BrowserPushMessage';
+import webAppConfig from '../../../config';
 import FacebookStore from '../../../stores/FacebookStore';
 import VoterStore from '../../../stores/VoterStore';
 import initializeAppleSDK from '../../../utils/initializeAppleSDK';
@@ -285,7 +286,7 @@ export default class SignInOptionsPanel extends Component {
     } = this.state;
     this.setState({
       hideAppleSignInButton: isInternetExplorer || isAndroid(),
-      hideFacebookSignInButton: false,
+      hideFacebookSignInButton: !webAppConfig.ENABLE_FACEBOOK,  // December 12, 2023: All sorts of problems with sign-in with Facebook on Android
       hideTwitterSignInButton: false,
       hideVoterEmailAddressEntry: false,
       hideVoterPhoneEntry: false,
@@ -477,7 +478,7 @@ export default class SignInOptionsPanel extends Component {
                   )}
                 </div>
                 <div className="u-stack--md" style={isAndroid() ? { paddingBottom: '10px', paddingTop: '10px' } : {}}>
-                  { !hideFacebookSignInButton && !voterIsSignedInFacebook && isOnFacebookSupportedDomainUrl && (
+                  { !hideFacebookSignInButton && !voterIsSignedInFacebook && isOnFacebookSupportedDomainUrl && webAppConfig.ENABLE_FACEBOOK && (
                     <span>
                       <FacebookSignIn
                         closeSignInModal={this.closeSignInModalLocal}

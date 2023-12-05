@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import abbreviateNumber from '../../common/utils/abbreviateNumber';
 import { isCordova } from '../../common/utils/isCordovaOrWebApp';
+import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import Cookies from '../../common/utils/js-cookie/Cookies';
 import { renderLog } from '../../common/utils/logging';
 import IssueStore from '../../stores/IssueStore';
@@ -193,7 +194,8 @@ class IssueCard extends Component {
         />
       );
     }
-    const issueTooltip = (
+
+    const issueTooltip = isMobileScreenSize() ? (<span />) : (
       <Tooltip className="u-z-index-9020" id="issueTooltip">
         <div>
           Follow
@@ -207,7 +209,7 @@ class IssueCard extends Component {
     let linkedOrganizationsTooltip = <></>;
     let linkedOrganizationNameCount = 0;
     if (linkedOrganizationPreviewList) {
-      linkedOrganizationsTooltip = (
+      linkedOrganizationsTooltip = isMobileScreenSize() ? (<span />) : (
         <Tooltip className="u-z-index-9020" id="linkedOrganizationsTooltip">
           <div>
             See endorsements from
@@ -249,7 +251,8 @@ class IssueCard extends Component {
         </Tooltip>
       );
     }
-    const followersTooltip = (
+
+    const followersTooltip = isMobileScreenSize() ? (<span />) : (
       <Tooltip className="u-z-index-9020" id="followersTooltip">
         <div>
           {abbreviateNumber(issueFollowersCount)}
@@ -262,6 +265,7 @@ class IssueCard extends Component {
         </div>
       </Tooltip>
     );
+
     const issueNameAndCount = (
       <IssueName>
         {`${issueDisplayName} `}
@@ -274,6 +278,7 @@ class IssueCard extends Component {
     );
     let isFirst = true;
     let organizationImageCount = 0;
+
     const issueAdvocates = (
       <IssueAdvocatesWrapper>
         {!!(linkedOrganizationPreviewList) && (

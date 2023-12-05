@@ -10,6 +10,7 @@ import { BallotHorizontallyScrollingContainer, BallotScrollingInnerWrapper, Ball
 import signInModalGlobalState from '../../common/components/Widgets/signInModalGlobalState';
 import AppObservableStore from '../../common/stores/AppObservableStore';
 import historyPush from '../../common/utils/historyPush';
+import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import toTitleCase from '../../common/utils/toTitleCase';
@@ -300,8 +301,7 @@ class OfficeItemCompressed extends Component {
             const avatarCompressed = 'card-main__avatar-compressed';
             const avatarBackgroundImage = normalizedImagePath('../img/global/svg-icons/avatar-generic.svg');
             const uniqueKey = `candidate_preview-${oneCandidate.we_vote_id}-${window.performance.now()}`;
-            // console.log('ScrollingInnerWrapper: ', uniqueKey);
-            const scoreExplanationTooltip = (
+            const scoreExplanationTooltip = isMobileScreenSize() ? (<span />) : (
               <Tooltip className="u-z-index-9020" id={`scoreDescription-${oneCandidate.we_vote_id}`}>
                 Your personalized score
                 {oneCandidate.ballot_item_display_name && (

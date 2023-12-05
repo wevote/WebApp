@@ -1,8 +1,8 @@
 // eslint-disable-next-line import/no-cycle
+import signInModalGlobalState from '../../common/components/Widgets/signInModalGlobalState';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { oAuthLog } from '../../common/utils/logging';
 import facebookApi from '../../utils/facebookApi';
-import signInModalGlobalState from '../../common/components/Widgets/signInModalGlobalState';
 
 const fbData = {
   connected: false,
@@ -199,7 +199,7 @@ export default {
           this.login2022Response(resolve, response);
         },
         (responseFail) => {
-          console.log('Failure to sign in to Facebook', responseFail);
+          console.log('Failure to sign in to Facebook', JSON.stringify(responseFail));
         });
       }
     });

@@ -8,13 +8,15 @@ import AnalyticsActions from '../../actions/AnalyticsActions';
 import FriendActions from '../../actions/FriendActions';
 import VoterActions from '../../actions/VoterActions';
 import ShareActions from '../../common/actions/ShareActions';
+import { openSnackbar } from '../../common/components/Widgets/SnackNotifier';
+import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
 import ShareStore from '../../common/stores/ShareStore';
 import apiCalming from '../../common/utils/apiCalming';
 import { hasDynamicIsland, hasIPhoneNotch, isAndroid } from '../../common/utils/cordovaUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import stringContains from '../../common/utils/stringContains';
-import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
+import webAppConfig from '../../config';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
 import { getApplicationViewBooleans } from '../../utils/applicationUtils';
@@ -22,7 +24,6 @@ import { shareBottomOffset } from '../../utils/cordovaOffsets';
 import createMessageToFriendDefaults from '../../utils/createMessageToFriendDefaults';
 import sortFriendListByMutualFriends from '../../utils/friendFunctions';
 import isMobile from '../../utils/isMobile';
-import { openSnackbar } from '../../common/components/Widgets/SnackNotifier';
 import { CopyLink, getKindOfShareFromURL, getWhatAndHowMuchToShareDefault, saveActionShareAnalytics, ShareFacebook, SharePreviewFriends, shareStyles, ShareTwitter, ShareWeVoteFriends } from './shareButtonCommon'; // cordovaSocialSharingByEmail // cordovaSocialSharingByEmail
 import ShareModalOption from './ShareModalOption';
 import { generateShareLinks } from './ShareModalText';
@@ -397,7 +398,9 @@ class ShareButtonFooter extends Component {
                 <ShareWeVoteFriends onClickFunction={() => this.saveActionShareButtonFriends()} />
                 {(!(isMobile() && navigator.share) || isCordova()) && (
                   <>
-                    <ShareFacebook titleText={titleText} saveActionShareButtonFacebook={this.saveActionShareButtonFacebook} linkToBeShared={linkToBeShared} />
+                    {webAppConfig.ENABLE_FACEBOOK && (
+                      <ShareFacebook titleText={titleText} saveActionShareButtonFacebook={this.saveActionShareButtonFacebook} linkToBeShared={linkToBeShared} />
+                    )}
                     <ShareTwitter titleText={titleText} saveActionShareButtonTwitter={this.saveActionShareButtonTwitter} saveActionShareButtonCopy={this.saveActionShareButtonCopy} linkToBeSharedTwitter={linkToBeSharedUrlEncoded} linkToBeSharedCopy={linkToBeShared} />
                   </>
                 )}

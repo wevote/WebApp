@@ -257,7 +257,7 @@ class HeaderBackToVoterGuides extends Component {
     const electionName = BallotStore.currentBallotElectionName;
     // const atLeastOnePositionFoundForThisElection = positionListForOneElection && positionListForOneElection.length !== 0;
 
-    const changeElectionButtonHtml = (
+    const changeElectionButtonHtml = isMobileScreenSize() ? (<span />) : (
       <Tooltip title="Change Election" aria-label="Change Election" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
         <span>
           <IconButton

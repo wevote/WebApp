@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
+import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import { vimeoRegX, youTubeRegX } from '../../common/utils/textFormat';
@@ -68,7 +69,10 @@ export default class PositionInformationOnlySnippet extends Component {
     }
 
     const labelText = 'This position is information-only, as opposed to “support” or “oppose”';
-    const tooltip = <Tooltip id="tooltip">{labelText}</Tooltip>;
+    const tooltip = isMobileScreenSize() ? (<span />) : (
+      <Tooltip id="tooltip">{labelText}</Tooltip>
+    );
+
     return (
       <div className="explicit-position">
         <div className="explicit-position__text">
