@@ -4,6 +4,7 @@ import React, { Component, Suspense } from 'react';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 import styled from 'styled-components';
+import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { FriendDetailsLine, FriendDetailsWrapper, FriendName, InviteToWeVoteLine } from '../Style/friendStyles';
 import abbreviateNumber from '../../common/utils/abbreviateNumber';
 import { renderLog } from '../../common/utils/logging';
@@ -57,7 +58,7 @@ class FriendDetails extends Component {
     let mutualFriendImageHtmlArray = <></>;
     if (mutualFriendPreviewList) {
       const mutualFriendPreviewListSorted = mutualFriendPreviewList.sort(this.orderByPhotoExists);
-      mutualFriendsTooltip = (
+      mutualFriendsTooltip = isMobileScreenSize() ? (<span />) : (
         <Tooltip className="u-z-index-9020" id="mutualFriendsTooltip">
           <div>
             {mutualFriendPreviewListSorted.map((mutualFriend) => {

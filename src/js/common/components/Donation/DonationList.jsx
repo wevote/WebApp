@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import VoterStore from '../../../stores/VoterStore';
 import DonateActions from '../../actions/DonateActions';
 import DonateStore from '../../stores/DonateStore';
+import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import { renderLog } from '../../utils/logging';
 import DonationCancelOrRefund from './DonationCancelOrRefund';
 
@@ -178,7 +179,9 @@ class DonationList extends Component {
                   <StyledTableCellAll align="right">{`$${row.amount}`}</StyledTableCellAll>
                   <StyledTableCellTablet align="center">{row.lastCharged}</StyledTableCellTablet>
                   <StyledTableCellTablet align="center">
-                    <Tooltip title={row.subscriptionId || 'Toolman Taylor'} placement="right"><span>{row.brand}</span></Tooltip>
+                    {isMobileScreenSize() ? (<span />) : (
+                      <Tooltip title={row.subscriptionId || 'Toolman Taylor'} placement="right"><span>{row.brand}</span></Tooltip>
+                    )}
                   </StyledTableCellTablet>
                   <StyledTableCellDesktop align="center">{row.last4}</StyledTableCellDesktop>
                   <StyledTableCellDesktop align="center">{row.expires}</StyledTableCellDesktop>

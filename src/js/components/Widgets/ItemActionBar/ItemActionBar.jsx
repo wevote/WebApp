@@ -8,6 +8,7 @@ import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 import SupportActions from '../../../actions/SupportActions';
 import VoterActions from '../../../actions/VoterActions';
+import isMobileScreenSize from '../../../common/utils/isMobileScreenSize';
 import Cookies from '../../../common/utils/js-cookie/Cookies';
 import { convertToInteger } from '../../../common/utils/textFormat';
 import { renderLog } from '../../../common/utils/logging';
@@ -740,12 +741,13 @@ class ItemActionBar extends PureComponent {
       opposeButtonUnselectedPopOverText += '.';
     }
 
-    const supportButtonPopoverTooltip = (
+    const supportButtonPopoverTooltip = isMobileScreenSize() ? (<span />) : (
       <Tooltip className="u-z-index-9020" id="supportButtonTooltip">
         {this.isSupportCalculated() ? supportButtonUnselectedPopOverText : supportButtonSelectedPopOverText }
       </Tooltip>
     );
-    const opposeButtonPopoverTooltip = (
+
+    const opposeButtonPopoverTooltip = isMobileScreenSize() ? (<span />) : (
       <Tooltip className="u-z-index-9020" id="opposeButtonTooltip">
         {this.isOpposeCalculated() ? opposeButtonUnselectedPopOverText : opposeButtonSelectedPopOverText}
       </Tooltip>

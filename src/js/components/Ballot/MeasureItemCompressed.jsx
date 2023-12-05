@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import MeasureActions from '../../actions/MeasureActions';
 import extractNumber from '../../common/utils/extractNumber';
 import historyPush from '../../common/utils/historyPush';
+import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import shortenText from '../../common/utils/shortenText';
 import toTitleCase from '../../common/utils/toTitleCase';
@@ -218,7 +219,7 @@ class MeasureItemCompressed extends Component {
     }
     const measureSubtitleCapitalized = toTitleCase(measureSubtitle);
     ballotItemDisplayName = toTitleCase(ballotItemDisplayName);
-    const scoreExplanationTooltip = (
+    const scoreExplanationTooltip = isMobileScreenSize() ? (<span />) : (
       <Tooltip className="u-z-index-9020" id={`scoreDescription-${measureWeVoteId}`}>
         A positive personalized score
         {ballotDisplay[0] && (

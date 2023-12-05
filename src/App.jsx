@@ -12,7 +12,7 @@ import VoterSessionActions from './js/actions/VoterSessionActions';
 import muiTheme from './js/common/components/Style/muiTheme';
 import LoadingWheelComp from './js/common/components/Widgets/LoadingWheelComp';
 import AppObservableStore, { messageService } from './js/common/stores/AppObservableStore';
-import { getAndroidSize, getIOSSizeString, hasDynamicIsland, isIOS } from './js/common/utils/cordovaUtils';
+import { getAndroidSize, getIOSSizeString, hasDynamicIsland, isAndroid, isIOS } from './js/common/utils/cordovaUtils';
 import historyPush from './js/common/utils/historyPush';
 import { isWeVoteMarketingSite, normalizedHref } from './js/common/utils/hrefUtils';
 import initializejQuery from './js/common/utils/initializejQuery';
@@ -176,6 +176,9 @@ class App extends Component {
           this.setState({ enableFullStory: true });
         }, 3000);
       }
+    }
+    if (isAndroid()) {         // December 12, 2023: All sorts of problems with sign-in with Facebook on Android, so disabling it here
+      webAppConfig.ENABLE_FACEBOOK = false;   // This overrides the config setting for the entire Android app
     }
     if (webAppConfig.ENABLE_FACEBOOK) {
       setTimeout(() => {
@@ -705,7 +708,7 @@ const WeVoteBody = styled('div')`
   height: 100vw;
   position: relative;
   z-index: 0;
-  ${() => console.log('-----------------------------')}
+  // this debug technique works!  ${() => console.log('-----------------------------')}
 `;
 
 App.propTypes = {

@@ -3,17 +3,20 @@ import { Tooltip } from '@mui/material';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 
 
 class TooltipIcon extends Component {
   render () {
     return (
       <Icon>
-        <Tooltip
-          title={this.props.title}
-        >
-          <Info />
-        </Tooltip>
+        {isMobileScreenSize() ? (<span />) : (
+          <Tooltip
+            title={this.props.title}
+          >
+            <Info />
+          </Tooltip>
+        )}
       </Icon>
     );
   }

@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Helmet } from 'react-helmet-async';
 import styled from 'styled-components';
+import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import FriendsCurrent from './FriendsCurrent';
 import FriendInvitationsSentByMe from './FriendInvitationsSentByMe';
 import InviteByEmail from './InviteByEmail';
@@ -523,7 +524,11 @@ class Friends extends Component {
                       <div>
                         <SectionTitle>
                           Invite Friends
-                          <TooltipIcon title="These friends will see what you support and oppose." />
+                          <>
+                            {isMobileScreenSize() ? (<span />) : (
+                              <TooltipIcon title="These friends will see what you support and oppose." />
+                            )}
+                          </>
                         </SectionTitle>
                         <AddFriendsByEmail inSideColumn />
                       </div>

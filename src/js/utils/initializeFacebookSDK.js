@@ -27,17 +27,18 @@ const initializeFacebookSDK = () => {
 
       const { FB } = window;
       console.log('const { FB } = window ------------ FB:', FB);
-      FB.init({
-        appId: webAppConfig.FACEBOOK_APP_ID,
-        autoLogAppEvents: true,
-        xfbml: true,
-        version: 'v15.0', // Facebook JavaScript SDK - Facebook Version
-        status: true, // set this status to true, this will fix the popup blocker issue
-      });
-
-      console.log('initializeFacebookSDK FB.init has been called');
-      // This initial call simply pre-loads the current facebook login status to local FacebookSignedInData object
-      FacebookSignedInData.setConnectedStatus(false, false, false, null);
+      if (webAppConfig.ENABLE_FACEBOOK) {
+        FB.init({
+          appId: webAppConfig.FACEBOOK_APP_ID,
+          autoLogAppEvents: true,
+          xfbml: true,
+          version: 'v15.0', // Facebook JavaScript SDK - Facebook Version
+          status: true, // set this status to true, this will fix the popup blocker issue
+        });
+        console.log('initializeFacebookSDK FB.init has been called');
+        // This initial call simply pre-loads the current facebook login status to local FacebookSignedInData object
+        FacebookSignedInData.setConnectedStatus(false, false, false, null);
+      }
     };
   }
 };

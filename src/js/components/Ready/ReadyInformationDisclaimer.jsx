@@ -5,6 +5,7 @@ import { OverlayTrigger } from 'react-bootstrap'; // TODO APRIL 2021:  Replace w
 import Popover from 'react-bootstrap/Popover';
 import { isAndroid, isIOS } from '../../common/utils/cordovaUtils';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
+import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 
 
@@ -43,7 +44,7 @@ class ReadyInformationDisclaimer extends React.Component {
           trigger="click"
           key="top"
           placement="top"
-          overlay={(
+          overlay={isMobileScreenSize() ? (<span />) : (
             <Popover id="popover-positioned-top">
               <Popover.Content>
                 <strong>

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
+import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import AddFriendsByEmail from '../../components/Friends/AddFriendsByEmail';
 import VoterStore from '../../stores/VoterStore';
@@ -26,7 +27,9 @@ export default class InviteByEmail extends Component {
         <SectionTitle>
           Invite Friends
           <span className="u-show-desktop-tablet">
-            <TooltipIcon title="These friends will see what you support and oppose." />
+            {isMobileScreenSize() ? (<span />) : (
+              <TooltipIcon title="These friends will see what you support and oppose." />
+            )}
           </span>
         </SectionTitle>
         <AddFriendsByEmail />

@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 import { ReactSVG } from 'react-svg';
+import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 
@@ -59,7 +60,9 @@ export default class FriendsOnlyIndicator extends Component {
       );
     }
 
-    const tooltip = <Tooltip id="tooltip">{labelText}</Tooltip>;
+    const tooltip = isMobileScreenSize() ? (<span />) : (
+      <Tooltip id="tooltip">{labelText}</Tooltip>
+    );
 
     return (
       <OverlayTrigger placement="top" overlay={tooltip}>
