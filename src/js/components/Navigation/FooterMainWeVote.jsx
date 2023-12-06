@@ -4,8 +4,8 @@ import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import OpenExternalWebSite from '../../common/components/Widgets/OpenExternalWebSite';
-import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import AppObservableStore from '../../common/stores/AppObservableStore';
+import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import VoterStore from '../../stores/VoterStore';
 
 const BallotElectionListWithFilters = React.lazy(() => import(/* webpackChunkName: 'BallotElectionListWithFilters' */ '../Ballot/BallotElectionListWithFilters'));
@@ -129,6 +129,8 @@ class FooterMainWeVote extends Component {
               ) : (
                 <>
                   <Link to="/more/faq" className={classes.link}>Frequently Asked Questions</Link>
+                  <RowSpacer />
+                  <Link to="/more/attributions" className={classes.link}>Attributions</Link>
                 </>
               )}
             </OneRow>
