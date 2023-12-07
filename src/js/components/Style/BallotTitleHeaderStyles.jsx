@@ -1,10 +1,12 @@
 import styled from 'styled-components';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
+import colors from '../../common/components/Style/Colors';
 
 export const BallotAddress = styled('div', {
   shouldForwardProp: (prop) => !['centerText', 'allowTextWrap'].includes(prop),
 })(({ allowTextWrap, centerText }) => (`
   margin-left: 2px;
+  font-size: 18px;
   ${allowTextWrap ? '' : 'overflow: hidden;'}
   ${allowTextWrap ? '' : 'text-overflow: ellipsis;'}
   ${allowTextWrap ? '' : 'white-space: nowrap;'}
@@ -44,9 +46,13 @@ export const ElectionNameBlock = styled('div', {
 export const ElectionNameH1 = styled('h1', {
   shouldForwardProp: (prop) => !['centerText'].includes(prop),
 })(({ centerText, theme }) => (`
-  font-size: 32px;
+  font-size: 30px;
+  padding-top: 5px;
+  padding-bottom: 18px;
   ${theme.breakpoints.down('sm')} {
     font-size: 26px;
+    padding-top: 5px;
+    padding-bottom: 12px;
   }
   line-height: 1;
   margin: 0px;
@@ -61,8 +67,9 @@ export const ElectionNameScrollContent = styled('div')`
 export const ElectionStateLabel = styled('div', {
   shouldForwardProp: (prop) => !['centerText'].includes(prop),
 })(({ centerText }) => (`
-  color: #888;
-  font-size: 12px;
+  color: ${colors.middleGrey};
+  font-size: 14px;
+  font-weight: 600;
   letter-spacing: .1em;
   margin-left: 2px;
   ${centerText ? 'text-align: center;' : ''}

@@ -1,7 +1,8 @@
-import { Button } from '@mui/material';
+// import { Button } from '@mui/material';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
+import BaseButton from '../Buttons/BaseButton';
 import daysUntil from '../../common/utils/daysUntil';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
@@ -98,24 +99,37 @@ class ViewUpcomingBallotButton extends React.Component {
       electionDataExistsForUpcomingElection,
     } = this.state;
     return (
+    // <ViewUpcomingBallotButtonWrapper>
+    //   <Button
+    //     color="primary"
+    //     id={electionDataExistsForUpcomingElection ? 'viewUpcomingBallotButton' : 'viewUpcomingBallotFindYourFriends'}
+    //     onClick={electionDataExistsForUpcomingElection ? this.onClickFunctionLocal : this.goToFindFriends}
+    //     style={{
+    //       boxShadow: 'none !important',
+    //       textTransform: 'none',
+    //       width: 250,
+    //     }}
+    //     variant="contained"
+    //   >
+    //     {electionDataExistsForUpcomingElection ? (
+    //       <>View your ballot</>
+    //     ) : (
+    //       <>Find your friends</>
+    //     )}
+    //   </Button>
+    // </ViewUpcomingBallotButtonWrapper>
+
       <ViewUpcomingBallotButtonWrapper>
-        <Button
-          color="primary"
+        <BaseButton
           id={electionDataExistsForUpcomingElection ? 'viewUpcomingBallotButton' : 'viewUpcomingBallotFindYourFriends'}
           onClick={electionDataExistsForUpcomingElection ? this.onClickFunctionLocal : this.goToFindFriends}
-          style={{
-            boxShadow: 'none !important',
-            textTransform: 'none',
-            width: 250,
-          }}
-          variant="contained"
-        >
-          {electionDataExistsForUpcomingElection ? (
-            <>View your ballot</>
+          primary
+          label={electionDataExistsForUpcomingElection ? (
+            <>View Your Ballot</>
           ) : (
-            <>Find your friends</>
+            <>Find Your Friends</>
           )}
-        </Button>
+        />
       </ViewUpcomingBallotButtonWrapper>
     );
   }
