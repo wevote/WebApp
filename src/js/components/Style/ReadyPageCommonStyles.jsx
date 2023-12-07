@@ -37,7 +37,7 @@ export const ReadyIntroductionMobileWrapper = styled('div')(({ theme }) => (`
 `));
 
 export const ElectionCountdownOuterWrapper = styled('div')`
-  height: 280px;
+  height: 250px;
   position: relative;
   z-index: 1;
 `;
