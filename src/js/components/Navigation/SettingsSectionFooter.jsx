@@ -115,6 +115,7 @@ class SettingsSectionFooter extends Component {
             <>
               <Link to="/more/faq"><TermsAndPrivacyText>Frequently Asked Questions</TermsAndPrivacyText></Link>
               <span style={{ paddingLeft: 15 }} />
+              <Link to="/more/attributions"><TermsAndPrivacyText>Attributions</TermsAndPrivacyText></Link>
             </>
           )}
         </OneRow>
