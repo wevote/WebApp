@@ -309,9 +309,9 @@ ElectionCountdown.propTypes = {
 };
 
 const CountdownTitleHeaderWrapper = styled('div')(({ theme }) => (`
-  margin-top: 60px;
+  margin-top: 30px;
   ${theme.breakpoints.down('sm')} {
-    margin-top: 42px;
+    margin-top: 30px;
   }
 `));
 
@@ -323,7 +323,7 @@ const CardCountdown = styled('div')(({ theme }) => (`
   padding-top: 4px;
   padding-bottom: 8px;
   ${theme.breakpoints.down('sm')} {
-    min-height: 140px;
+    min-height: 180px;
   }
 `));
 
@@ -335,7 +335,7 @@ const CardTitleUpcoming = styled('h1')(({ theme }) => (`
   font-size: 64px;
   font-weight: 900;
   margin-bottom: 8px;
-  margin-top: 0;
+  margin-top: 12px;
   text-align: center;
   ${theme.breakpoints.down('xs')} {
     font-size: 60px;
