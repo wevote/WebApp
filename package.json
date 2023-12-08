@@ -8,7 +8,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/wevote/WebApp.git"
+    "url": "git+https://github.com/wevote/WebApp.git"
   },
   "commentMay2021": "'production' forces minified libraries (especially react), and 'MINIFIED' passes all our code through the Terser minifier/mangler/compressor tool.",
   "scripts": {
@@ -36,7 +36,8 @@
     "snyk-protect": "snyk-protect",
     "prepare": "npm run snyk-protect",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "chromatic": "npx chromatic --project-token=chpt_89afc2af23dd1fd"
   },
   "devDependencies": {
     "@babel/core": "^7.13.16",
@@ -71,6 +72,7 @@
     "babel-loader": "^9.1.0",
     "babel-plugin-styled-components": "^2.0.6",
     "chai": "^4.3.7",
+    "chromatic": "^10.1.0",
     "clean-webpack-plugin": "^3.0.0",
     "copy-webpack-plugin": "^11.0.0",
     "cordova-plugin-contacts-x": "^2.0.3",
@@ -166,5 +168,11 @@
     "extends": [
       "plugin:storybook/recommended"
     ]
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/wevote/WebApp/issues"
+  },
+  "readme": "ERROR: No README data found!",
+  "homepage": "https://github.com/wevote/WebApp#readme",
+  "_id": "wevoteusa@1.0.0"
 }
