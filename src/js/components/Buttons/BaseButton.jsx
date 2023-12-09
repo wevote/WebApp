@@ -8,6 +8,7 @@ const StyledButton = styled.button`
   color: ${colors.white};
   font-weight: 600;
   border-radius: 4px;
+  aria-label: "Button";
   border: none;
   cursor: pointer;
 
@@ -67,7 +68,7 @@ const StyledButton = styled.button`
 `;
 
 const Button = ({ primary, size, label, ...props }) => (
-  <StyledButton primary={primary === true} size={size} {...props}>
+  <StyledButton primary={primary === true} size={size} aria-label={label} {...props}>
     {label}
   </StyledButton>
 );
