@@ -31,13 +31,13 @@ export const Primary = {
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
 export const AllButtons = (args) => (
   <ButtonContainer>
-    <Button {...Primary.args} primary size="large" label="Primary Large Disabled Button" />
-    <Button {...Primary.args} primary={false} size="large" label="PrimaryLarge Disabled Button" />
-    <Button {...Primary.args} primary label="Primary Medium Button" />
-    <Button {...PrimaryDisabled.args} primary={false} label="Primary Medium Disabled Button" />
-    <Button {...Primary.args} primary size="small" label="Primary Small Button" />
-    <Button {...PrimaryDisabled.args} primary={false} size="small" label="Primary Small Disabled" />
-    <Button {...Secondary.args} secondary label="Secondary Button" />
+    <Button {...Primary.args} primary size="large" label="Primary Large Disabled Button" aria-label="Primary Large Disabled Button" />
+    <Button {...Primary.args} primary={false} size="large" label="PrimaryLarge Disabled Button" aria-label="PrimaryLarge Disabled Button" />
+    <Button {...Primary.args} primary label="Primary Medium Button" aria-label="Primary Medium Button" />
+    <Button {...PrimaryDisabled.args} primary={false} label="Primary Medium Disabled Button" aria-label="Primary Medium Disabled Button" />
+    <Button {...Primary.args} primary size="small" label="Primary Small Button" aria-label="Primary Small Button" />
+    <Button {...PrimaryDisabled.args} primary={false} size="small" label="Primary Small Disabled" aria-label="Primary Small Disabled" />
+    <Button {...Secondary.args} secondary label="Secondary Button" aria-label="Secondary Button" />
   </ButtonContainer>
 );
 
