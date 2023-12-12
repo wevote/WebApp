@@ -99,36 +99,12 @@ class ViewUpcomingBallotButton extends React.Component {
       electionDataExistsForUpcomingElection,
     } = this.state;
     return (
-    // <ViewUpcomingBallotButtonWrapper>
-    //   <Button
-    //     color="primary"
-    //     id={electionDataExistsForUpcomingElection ? 'viewUpcomingBallotButton' : 'viewUpcomingBallotFindYourFriends'}
-    //     onClick={electionDataExistsForUpcomingElection ? this.onClickFunctionLocal : this.goToFindFriends}
-    //     style={{
-    //       boxShadow: 'none !important',
-    //       textTransform: 'none',
-    //       width: 250,
-    //     }}
-    //     variant="contained"
-    //   >
-    //     {electionDataExistsForUpcomingElection ? (
-    //       <>View your ballot</>
-    //     ) : (
-    //       <>Find your friends</>
-    //     )}
-    //   </Button>
-    // </ViewUpcomingBallotButtonWrapper>
-
       <ViewUpcomingBallotButtonWrapper>
         <BaseButton
           id={electionDataExistsForUpcomingElection ? 'viewUpcomingBallotButton' : 'viewUpcomingBallotFindYourFriends'}
           onClick={electionDataExistsForUpcomingElection ? this.onClickFunctionLocal : this.goToFindFriends}
           primary
-          label={electionDataExistsForUpcomingElection ? (
-            <>View Your Ballot</>
-          ) : (
-            <>Find Your Friends</>
-          )}
+          label={electionDataExistsForUpcomingElection ? 'View Your Ballot' : 'Find Your Friends'}
         />
       </ViewUpcomingBallotButtonWrapper>
     );

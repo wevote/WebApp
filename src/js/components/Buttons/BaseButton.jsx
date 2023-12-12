@@ -9,8 +9,14 @@ const StyledButton = styled.button`
   font-weight: 600;
   border-radius: 4px;
   aria-label: "Button";
+  aria-label: "Button";
   border: none;
   cursor: pointer;
+
+  &:focus {
+    outline: 2px solid ${colors.primary} !important;
+    outline-offset: 2px;
+  }
 
   /* Hover state */
   &:hover {
@@ -67,8 +73,14 @@ const StyledButton = styled.button`
   `}
 `;
 
-const Button = ({ primary, size, label, ...props }) => (
-  <StyledButton primary={primary === true} size={size} aria-label={label} {...props}>
+const Button = ({ primary, size, label, onClick, ...props }) => (
+  <StyledButton
+    primary={primary === true}
+    size={size}
+    aria-label={label}
+    onClick={onClick}
+    {...props}
+  >
     {label}
   </StyledButton>
 );
