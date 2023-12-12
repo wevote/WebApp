@@ -11,7 +11,6 @@ import CampaignsHomeFilterPlaceholder from '../../components/CampaignsHome/Campa
 import CandidateListRootPlaceholder from '../../components/CampaignsHome/CandidateListRootPlaceholder';
 import VoterStore from '../../stores/VoterStore';
 import { cordovaSimplePageContainerTopOffset } from '../../utils/cordovaCalculatedOffsets';
-import Header from '../../components/Navigation/Header.jsx'
 
 const CampaignsHome = React.lazy(() => import(/* webpackChunkName: 'CampaignsHome' */ './CampaignsHome'));
 
@@ -118,10 +117,6 @@ class CampaignsHomeLoader extends Component {
   }
 
   getStateNamePathnameFromStateCode = (stateCode) => {
-    // Logging to see what StateCode it says I'm in
-    console.log('getStateNamePathnameFromStateCode:', stateCode);
-    // Trying to find where Ontario is coming from 'ON'
-    console.log('convertStateCodeToStateText of stateCode:', convertStateCodeToStateText(stateCode));
     if (isValidStateCode(stateCode)) {
       const stateName = convertStateCodeToStateText(stateCode);
       if (stateName) {
