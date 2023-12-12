@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Helmet } from 'react-helmet-async';
 import styled from 'styled-components';
-import { convertStateCodeToStateText, convertStateTextToStateCode } from '../../common/utils/addressFunctions';
+import { convertStateCodeToStateText, convertStateTextToStateCode, isValidStateCode } from '../../common/utils/addressFunctions';
 import historyPush from '../../common/utils/historyPush';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
@@ -11,6 +11,7 @@ import CampaignsHomeFilterPlaceholder from '../../components/CampaignsHome/Campa
 import CandidateListRootPlaceholder from '../../components/CampaignsHome/CandidateListRootPlaceholder';
 import VoterStore from '../../stores/VoterStore';
 import { cordovaSimplePageContainerTopOffset } from '../../utils/cordovaCalculatedOffsets';
+import Header from '../../components/Navigation/Header.jsx'
 
 const CampaignsHome = React.lazy(() => import(/* webpackChunkName: 'CampaignsHome' */ './CampaignsHome'));
 
@@ -117,10 +118,22 @@ class CampaignsHomeLoader extends Component {
   }
 
   getStateNamePathnameFromStateCode = (stateCode) => {
-    const stateName = convertStateCodeToStateText(stateCode);
-    const stateNamePhrase = `${stateName}-candidates`;
-    const stateNamePhraseLowerCase = stateNamePhrase.replaceAll(/\s+/g, '-').toLowerCase();
-    return `/${stateNamePhraseLowerCase}/cs/`;
+    // Logging to see what StateCode it says I'm in
+    console.log('getStateNamePathnameFromStateCode:', stateCode);
+    // Trying to find where Ontario is coming from 'ON'
+    console.log('convertStateCodeToStateText of stateCode:', convertStateCodeToStateText(stateCode));
+    if (isValidStateCode(stateCode)) {
+      const stateName = convertStateCodeToStateText(stateCode);
+      if (stateName) {
+        const stateNamePhrase = `${stateName}-candidates`;
+        const stateNamePhraseLowerCase = stateNamePhrase.replaceAll(/\s+/g, '-').toLowerCase();
+        return `/${stateNamePhraseLowerCase}/cs/`;
+      } else {
+        return '/cs';
+      }
+    } else {
+      return '/cs';
+    }
   }
 
   getTopPadding = () => {
