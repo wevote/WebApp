@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Helmet } from 'react-helmet-async';
 import styled from 'styled-components';
-import { convertStateCodeToStateText, convertStateTextToStateCode } from '../../common/utils/addressFunctions';
+import { convertStateCodeToStateText, convertStateTextToStateCode, isValidStateCode } from '../../common/utils/addressFunctions';
 import historyPush from '../../common/utils/historyPush';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
@@ -117,10 +117,18 @@ class CampaignsHomeLoader extends Component {
   }
 
   getStateNamePathnameFromStateCode = (stateCode) => {
-    const stateName = convertStateCodeToStateText(stateCode);
-    const stateNamePhrase = `${stateName}-candidates`;
-    const stateNamePhraseLowerCase = stateNamePhrase.replaceAll(/\s+/g, '-').toLowerCase();
-    return `/${stateNamePhraseLowerCase}/cs/`;
+    if (isValidStateCode(stateCode)) {
+      const stateName = convertStateCodeToStateText(stateCode);
+      if (stateName) {
+        const stateNamePhrase = `${stateName}-candidates`;
+        const stateNamePhraseLowerCase = stateNamePhrase.replaceAll(/\s+/g, '-').toLowerCase();
+        return `/${stateNamePhraseLowerCase}/cs/`;
+      } else {
+        return '/cs';
+      }
+    } else {
+      return '/cs';
+    }
   }
 
   getTopPadding = () => {
