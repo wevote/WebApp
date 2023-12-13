@@ -80,10 +80,7 @@ const Button = ({ primary, size, label, onClick, ...props }) => (
     onClick={onClick}
     {...props}
   >
-    {label}
-  </StyledButton>
-);
-
+    
 export default Button;
 Button.propTypes = {
   primary: PropTypes.bool,
