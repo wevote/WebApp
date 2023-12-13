@@ -98,9 +98,6 @@ class SettingsVerifySecretCode extends Component {
   componentWillUnmount () {
     // console.log('SettingsVerifySecretCode componentWillUnmount');
     this.voterStoreListener.remove();
-    if (this.closeVerifyModalLocalTimer) {
-      clearTimeout(this.closeVerifyModalLocalTimer);
-    }
     if (this.clearSecretCodeVerificationStatusTimer) {
       clearTimeout(this.clearSecretCodeVerificationStatusTimer);
     }
@@ -231,6 +228,12 @@ class SettingsVerifySecretCode extends Component {
     const regex = /^[0-9]$/;
     const regex2 = /^[0-9]{7}$/;
     const digit = e.target.value;
+
+    // Handle iOS verification code "From Messages" auto fill
+    if (isCordova() && digit.length === 6) {
+      this.onPaste(e);
+      return;
+    }
 
     if (regex2.test(digit)) { // change is fired on paste, resulting in multiple digits
       return;
@@ -408,12 +411,17 @@ class SettingsVerifySecretCode extends Component {
   onPaste (e) {
     // console.log(e.clipboardData.getData('Text'));
 
-    const pastedInputArray = e.clipboardData.getData('Text').split('');
-    // console.log(pastedInputArray);
+    let charInputArray = '';
+    if (e.clipboardData) {  // Paste
+      charInputArray = e.clipboardData.getData('Text').split('');
+    } else if (e.target.value) {   // "From Messages" in iOS
+      charInputArray = e.target.value.split('');
+    }
+    // console.log(charInputArray);
 
     const regex = /^[0-9]$/;
 
-    const allDigits = pastedInputArray.filter((digit) => regex.test(digit));
+    const allDigits = charInputArray.filter((digit) => regex.test(digit));
 
     if (allDigits[5]) {
       this.setState({
@@ -533,7 +541,7 @@ class SettingsVerifySecretCode extends Component {
                 onBlur={this.handleBlur}
                 onFocus={this.handleFocus}
                 onChange={this.onDigit1Change}
-                onPaste={this.onPaste}
+                onPaste={() => this.onPaste}
                 type="tel"
                 value={this.state.digit1}
                 autoFocus
@@ -548,7 +556,7 @@ class SettingsVerifySecretCode extends Component {
                 onBlur={this.handleBlur}
                 onFocus={this.handleFocus}
                 onChange={this.onDigit2Change}
-                onPaste={this.onPaste}
+                onPaste={() => this.onPaste}
                 onKeyDown={this.handleKeyDown2}
                 type="tel"
                 value={this.state.digit2}
@@ -563,7 +571,7 @@ class SettingsVerifySecretCode extends Component {
                 onBlur={this.handleBlur}
                 onFocus={this.handleFocus}
                 onChange={this.onDigit3Change}
-                onPaste={this.onPaste}
+                onPaste={() => this.onPaste}
                 onKeyDown={this.handleKeyDown3}
                 type="tel"
                 value={this.state.digit3}
@@ -578,7 +586,7 @@ class SettingsVerifySecretCode extends Component {
                 onBlur={this.handleBlur}
                 onFocus={this.handleFocus}
                 onChange={this.onDigit4Change}
-                onPaste={this.onPaste}
+                onPaste={() => this.onPaste}
                 onKeyDown={this.handleKeyDown4}
                 type="tel"
                 value={this.state.digit4}
@@ -593,7 +601,7 @@ class SettingsVerifySecretCode extends Component {
                 onBlur={this.handleBlur}
                 onFocus={this.handleFocus}
                 onChange={this.onDigit5Change}
-                onPaste={this.onPaste}
+                onPaste={() => this.onPaste}
                 onKeyDown={this.handleKeyDown5}
                 type="tel"
                 value={this.state.digit5}
@@ -608,7 +616,7 @@ class SettingsVerifySecretCode extends Component {
                 onChange={this.onDigit6Change}
                 onFocus={this.handleFocus}
                 onBlur={this.handleDigit6Blur}
-                onPaste={this.onPaste}
+                onPaste={() => this.onPaste}
                 onKeyDown={this.handleKeyDown6}
                 type="tel"
                 value={this.state.digit6}
