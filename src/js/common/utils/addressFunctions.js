@@ -88,6 +88,18 @@ export function convertStateCodeFilterToStateCode (stateCodeFilter) {
   return '';
 }
 
+export function isValidStateCode (incomingStateCode) {
+  if (incomingStateCode) {
+    // Log incoming State Code
+    console.log('incomingStateCode:', incomingStateCode);
+    const incomingStateCodeUpper = incomingStateCode.toUpperCase();
+    const existingStateCodes = Object.keys(stateCodeMap);
+    return existingStateCodes.indexOf(incomingStateCodeUpper) > -1;
+  } else {
+    return false;
+  }
+}
+
 export function getAllStateCodeFilters () {
   return Object.keys(stateCodeMap).map((stateCode) => `stateCode${stateCode}`);
 }
