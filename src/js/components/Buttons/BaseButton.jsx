@@ -4,48 +4,52 @@ import styled from 'styled-components';
 import colors from '../../common/components/Style/Colors';
 
 const StyledButton = styled.button`
-  /* Default styles */
-  color: ${colors.white};
-  font-weight: 600;
-  border-radius: 4px;
-  aria-label: "Button";
-  border: none;
-  cursor: pointer;
+/* Default styles */
+color: ${colors.white};
+font-weight: 600;
+border-radius: 4px;
+aria-label: "Button";
+border: none;
+cursor: pointer;
 
-  /* Hover state */
+&:focus {
+  outline: 2px solid ${colors.primary} !important;
+  outline-offset: 2px;
+}
+
+/* Hover state */
+&:hover {
+  background-color: ${colors.primaryHover};
+}
+
+/* Primary styles */
+${(props) => props.primary && `
+  background-color: ${colors.primary};
+  color: white;
+`}
+
+/* Primary Disabled styles */
+${(props) => !props.primary && `
+  background-color: ${colors.lightGrey};
+  color: ${colors.grey};
+  cursor: not-allowed;
+
   &:hover {
-    background-color: ${colors.primaryHover};
-  }
-
-  /* Primary styles */
-  ${(props) => props.primary && `
-    background-color: ${colors.primary};
-    color: white;
-  `}
-
-  /* Primary Disabled styles */
-  ${(props) => !props.primary && `
     background-color: ${colors.lightGrey};
     color: ${colors.grey};
-    cursor: not-allowed;
+  }
+`}
 
-    &:hover {
-      background-color: ${colors.lightGrey};
-      color: ${colors.grey};
-    }
+/* Secondary styles */
+  ${(props) => props.secondary && `
+  background-color: transparent;
+  color: ${colors.grey};
 
-  `}
-
-  /* Secondary styles */
-    ${(props) => props.secondary && `
-    background-color: transparent;
-    color: ${colors.grey};
-
-    &:hover {
-      background-color: ${colors.secondaryHover};
-      color: ${colors.primary}};
-      cursor: pointer;
-    }
+  &:hover {
+    background-color: ${colors.secondaryHover};
+    color: ${colors.primary}};
+    cursor: pointer;
+  }
     `}
 
   /* Size styles */
@@ -63,12 +67,17 @@ const StyledButton = styled.button`
     font-size: 18px;
     padding: 15px;
     width: 450px;
-
   `}
 `;
 
-const Button = ({ primary, size, label, ...props }) => (
-  <StyledButton primary={primary === true} size={size} aria-label={label} {...props}>
+const Button = ({ primary, size, label, onClick, ...props }) => (
+  <StyledButton
+    primary={primary === true}
+    size={size}
+    aria-label={label}
+    onClick={onClick}
+    {...props}
+  >
     {label}
   </StyledButton>
 );
