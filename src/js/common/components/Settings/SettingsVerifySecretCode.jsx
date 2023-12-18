@@ -58,9 +58,18 @@ class SettingsVerifySecretCode extends Component {
     const { voterEmailAddress, voterPhoneNumber } = this.props;
     // const newVoterPhoneNumber = voterPhoneNumber.replace(/\D+/g, '').replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
     // console.log('voterEmailAddress:', voterEmailAddress);
+
+    let initialDisplay = '';
+    if (isCordova()) {
+      const dlg = $('div[class*="SignInModal-dialogPaper"]');
+      initialDisplay = dlg.css('display');
+      dlg.css('display', 'none');  // Hide the entry dialog
+    }
+
     this.setState({
       voterEmailAddress,
       voterPhoneNumber,
+      initialDisplay,
     });
     const delayBeforeClearingVerificationStatus = 200;
     this.clearSecretCodeVerificationStatusTimer = setTimeout(() => {
@@ -68,10 +77,6 @@ class SettingsVerifySecretCode extends Component {
     }, delayBeforeClearingVerificationStatus);
 
     window.addEventListener('paste', this.onPaste);
-
-    if (isCordova()) {
-      $('#textOrEmailEntryDialog').css('display', 'none');  // Hide the entry dialog
-    }
   }
 
   shouldComponentUpdate (nextProps, nextState) {
@@ -103,6 +108,10 @@ class SettingsVerifySecretCode extends Component {
     }
     window.removeEventListener('paste', this.onPaste);
     this.closeVerifyModalLocal();
+    const { initialDisplay = 'unset' } = this.state;
+    if (isCordova()) {
+      $('div[class*="SignInModal-dialogPaper"]').css('display', initialDisplay);  // un-hide the entry dialog
+    }
   }
 
   handleDigit6Blur = () => {
@@ -697,7 +706,7 @@ const styles = (theme) => ({
     zIndex: '9030 !important',
   },
   codeVerifyCordova: {
-    top: '9%',
+    // top: '9%', Removed 12/13/23 to reduce vertical vibration on digit entry field advance
     bottom: 'unset',
     height: 'unset',
     minHeight: 'unset',
