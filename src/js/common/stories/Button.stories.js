@@ -4,7 +4,7 @@ import Button from '../../components/Buttons/BaseButton';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 export default {
-  title: 'Example/Button',
+  title: 'Design System',
   component: Button,
   parameters: {
     // Optional parameter to center the component in the Canvas. More info: https://storybook.js.org/docs/configure/story-layout
@@ -21,13 +21,6 @@ export default {
   },
 };
 
-export const Primary = {
-  args: {
-    primary: true,
-    label: 'Button',
-  },
-};
-
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
 export const AllButtons = (args) => (
   <ButtonContainer>
@@ -40,6 +33,13 @@ export const AllButtons = (args) => (
     <Button {...Secondary.args} secondary label="Secondary Button" aria-label="Secondary Button" />
   </ButtonContainer>
 );
+
+export const Primary = {
+  args: {
+    primary: true,
+    label: 'Button',
+  },
+};
 
 export const PrimaryDisabled = {
   args: {
