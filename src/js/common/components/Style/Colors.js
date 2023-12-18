@@ -6,6 +6,7 @@ const colors = {
   middleGrey: '#8C92A2',
   grey: '#AEB2BE',
   lightGrey: '#E5E6EA',
+  ultraLightGrey: '#FAFAFA',
   white: '#ffffff',
 };
 
