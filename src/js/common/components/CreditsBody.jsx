@@ -118,7 +118,7 @@ class Credits extends Component {
             { teamOfVolunteers.map((item) => (
               <div key={item.name}>
                 <li>
-                  <strong>{item.name}</strong>
+                  <a href={item.linkedin}>{item.name}</a>
                   {item.title && (
                     <span>
                       {' '}
