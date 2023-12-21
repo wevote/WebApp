@@ -25,6 +25,7 @@ export function getPoliticianValuesFromIdentifiers (politicianSEOFriendlyPath, p
   let politicianSEOFriendlyPathFromObject = '';
   let politicianUrl = '';
   let politicianWeVoteIdFromObject = '';
+  let profileImageBackgroundColor = '';
   let stateCode = '';
   let twitterFollowersCount = 0;
   let twitterHandle = '';
@@ -54,6 +55,7 @@ export function getPoliticianValuesFromIdentifiers (politicianSEOFriendlyPath, p
       politician_twitter_handle2: twitterHandle2,
       politician_url: politicianUrl,
       politician_we_vote_id: politicianWeVoteIdFromObject,
+      profile_image_background_color: profileImageBackgroundColor,
       state_code: stateCode,
       twitter_followers_count: twitterFollowersCount,
       voter_is_politician_owner: voterIsPoliticianOwner,
@@ -98,6 +100,7 @@ export function getPoliticianValuesFromIdentifiers (politicianSEOFriendlyPath, p
     politicianName,
     politicianUrl,
     politicianWeVoteId: politicianWeVoteIdFromObject,
+    profileImageBackgroundColor,
     stateCode,
     twitterFollowersCount,
     twitterHandle,

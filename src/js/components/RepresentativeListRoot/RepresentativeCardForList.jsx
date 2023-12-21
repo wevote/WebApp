@@ -254,6 +254,7 @@ class RepresentativeCardForList extends Component {
       // is_supporters_count_minimum_exceeded: isSupportersCountMinimumExceeded,
       political_party: politicalParty,
       politician_we_vote_id: politicianWeVoteId,
+      profile_image_background_color: profileImageBackgroundColor,
       representative_photo_url_large: representativePhotoLargeUrl,
       representative_ultimate_election_date: representativeUltimateElectionDate,
       // seo_friendly_path: politicianSEOFriendlyPath,
@@ -422,7 +423,7 @@ class RepresentativeCardForList extends Component {
             </OneCampaignTextColumn>
             <OneCampaignPhotoWrapperMobile className="u-cursor--pointer u-show-mobile" onClick={this.onRepresentativeClick}>
               {representativePhotoLargeUrl ? (
-                <CampaignImageMobilePlaceholder id="cimp5">
+                <CampaignImageMobilePlaceholder id="cimp5" profileImageBackgroundColor={profileImageBackgroundColor}>
                   <CampaignImageMobile src={representativePhotoLargeUrl} alt="" />
                 </CampaignImageMobilePlaceholder>
               ) : (
@@ -437,7 +438,11 @@ class RepresentativeCardForList extends Component {
               {representativePhotoLargeUrl ? (
                 <>
                   {limitCardWidth ? (
-                    <CampaignImageDesktopPlaceholder limitCardWidth={limitCardWidth} id="cidp1">
+                    <CampaignImageDesktopPlaceholder
+                      id="cidp1"
+                      limitCardWidth={limitCardWidth}
+                      profileImageBackgroundColor={profileImageBackgroundColor}
+                    >
                       <CampaignImageDesktop src={representativePhotoLargeUrl} alt="" width="157px" height="157px" />
                     </CampaignImageDesktopPlaceholder>
                   ) : (
@@ -445,7 +450,11 @@ class RepresentativeCardForList extends Component {
                   )}
                 </>
               ) : (
-                <CampaignImageDesktopPlaceholder limitCardWidth={limitCardWidth} id="cidp2">
+                <CampaignImageDesktopPlaceholder
+                  id="cidp2"
+                  limitCardWidth={limitCardWidth}
+                  profileImageBackgroundColor={profileImageBackgroundColor}
+                >
                   <CampaignImagePlaceholderText>
                     No image provided
                   </CampaignImagePlaceholderText>

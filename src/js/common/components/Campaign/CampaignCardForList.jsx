@@ -248,6 +248,7 @@ class CampaignCardForList extends Component {
       // is_blocked_by_we_vote: isBlockedByWeVote,
       // is_in_team_review_mode: isInTeamReviewMode,
       // is_supporters_count_minimum_exceeded: isSupportersCountMinimumExceeded,
+      profile_image_background_color: profileImageBackgroundColor,
       supporters_count: supportersCount,
       supporters_count_next_goal: supportersCountNextGoal,
       // visible_on_this_site: visibleOnThisSite,
@@ -450,7 +451,11 @@ class CampaignCardForList extends Component {
                   )}
                 </>
               ) : (
-                <CampaignImageDesktopPlaceholder limitCardWidth={limitCardWidth} id="cidp3">
+                <CampaignImageDesktopPlaceholder
+                  id="cidp3"
+                  limitCardWidth={limitCardWidth}
+                  profileImageBackgroundColor={profileImageBackgroundColor}
+                >
                   <CampaignImagePlaceholderText>
                     No image provided
                   </CampaignImagePlaceholderText>
