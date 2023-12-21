@@ -288,6 +288,7 @@ class PoliticianDetailsPage extends Component {
       politicianName,
       politicianUrl,
       politicianWeVoteId,
+      profileImageBackgroundColor,
       stateCode,
       twitterFollowersCount,
       twitterHandle,
@@ -331,6 +332,7 @@ class PoliticianDetailsPage extends Component {
       politicianImageUrlLarge,
       politicianName,
       politicianUrl,
+      profileImageBackgroundColor,
       stateText,
       twitterFollowersCount,
       twitterHandle,
@@ -370,6 +372,7 @@ class PoliticianDetailsPage extends Component {
       politicianUrl: '',
       politicianWeVoteIdForDisplay: '', // We don't clear politicianWeVoteId because we may need it to load next politician
       politicianSEOFriendlyPathForDisplay: '', // We don't clear politicianSEOFriendlyPath because we may need it to load next politician
+      profileImageBackgroundColor: '',
       stateText: '',
       twitterFollowersCount: 0,
       twitterHandle: '',
@@ -449,7 +452,7 @@ class PoliticianDetailsPage extends Component {
       politicianDescription, politicianDescriptionLimited, politicianImageUrlLarge,
       politicianSEOFriendlyPath, politicianSEOFriendlyPathForDisplay,
       politicianName, politicianUrl,
-      politicianWeVoteId, politicianWeVoteIdForDisplay,
+      politicianWeVoteId, politicianWeVoteIdForDisplay, profileImageBackgroundColor,
       stateText, twitterHandle, twitterHandle2, twitterFollowersCount,
       voterCanEditThisPolitician, voterSupportsThisPolitician,
       wikipediaUrl, // youtubeUrl,
@@ -728,7 +731,7 @@ class PoliticianDetailsPage extends Component {
           <DetailsSectionMobile className="u-show-mobile">
             <CampaignImageMobileWrapper id="cimw3">
               {politicianImageUrlLarge ? (
-                <PoliticianImageMobilePlaceholder limitCardWidth>
+                <PoliticianImageMobilePlaceholder limitCardWidth profileImageBackgroundColor={profileImageBackgroundColor}>
                   <PoliticianImageMobile src={politicianImageUrlLarge} alt="Politician" />
                 </PoliticianImageMobilePlaceholder>
               ) : (
@@ -904,7 +907,7 @@ class PoliticianDetailsPage extends Component {
               <ColumnTwoThirds>
                 <CampaignImageDesktopWrapper>
                   {politicianImageUrlLarge ? (
-                    <PoliticianImageDesktopPlaceholder limitCardWidth>
+                    <PoliticianImageDesktopPlaceholder limitCardWidth profileImageBackgroundColor={profileImageBackgroundColor}>
                       <PoliticianImageDesktop src={politicianImageUrlLarge} alt="Politician" />
                     </PoliticianImageDesktopPlaceholder>
                   ) : (

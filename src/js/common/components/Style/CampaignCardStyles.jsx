@@ -45,10 +45,10 @@ export const CampaignImageDesktopSharedStyles = css`
 `;
 
 export const CampaignImageDesktopPlaceholder = styled('div', {
-  shouldForwardProp: (prop) => !['limitCardWidth'].includes(prop),
-})(({ limitCardWidth }) => (`
+  shouldForwardProp: (prop) => !['limitCardWidth', 'profileImageBackgroundColor'].includes(prop),
+})(({ limitCardWidth, profileImageBackgroundColor }) => (`
   align-items: center;
-  background-color: #eee;
+  background-color: ${profileImageBackgroundColor || '#eee'};
   display: flex;
   ${limitCardWidth ? 'height: 157px;' : 'height: 117px;'}
   ${limitCardWidth ? 'min-height: 157px;' : 'min-height: 117px;'}
@@ -73,16 +73,18 @@ export const CampaignImageMobileSharedStyles = css`
   max-width: 100%;
 `;
 
-export const CampaignImageMobilePlaceholder = styled('div')`
-  background-color: #eee;
-  display: flex;
-  justify-content: center;
+export const CampaignImageMobilePlaceholder = styled('div', {
+  shouldForwardProp: (prop) => !['profileImageBackgroundColor'].includes(prop),
+})(({ profileImageBackgroundColor }) => (`
   align-items: center;
+  background-color: ${profileImageBackgroundColor || '#eee'};
+  display: flex;
   height: 157px;
+  justify-content: center;
   max-height: 157px;
   min-height: 157px;
   ${CampaignImageMobileSharedStyles}
-`;
+`));
 
 export const CampaignImagePlaceholderText = styled('div')`
   color: #ccc;

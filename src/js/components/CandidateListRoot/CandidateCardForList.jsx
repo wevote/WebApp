@@ -255,6 +255,7 @@ class CandidateCardForList extends Component {
       // is_supporters_count_minimum_exceeded: isSupportersCountMinimumExceeded,
       party: politicalParty,
       politician_we_vote_id: politicianWeVoteId,
+      profile_image_background_color: profileImageBackgroundColor,
       state_code: stateCode,
       supporters_count: supportersCount,
       supporters_count_next_goal: supportersCountNextGoalRaw,
@@ -445,7 +446,7 @@ class CandidateCardForList extends Component {
             </OneCampaignTextColumn>
             <OneCampaignPhotoWrapperMobile id="candidatePhotoMobile" className="u-cursor--pointer u-show-mobile" onClick={this.onCandidateClick}>
               {candidatePhotoLargeUrl ? (
-                <CampaignImageMobilePlaceholder id="cimp4">
+                <CampaignImageMobilePlaceholder id="cimp4" profileImageBackgroundColor={profileImageBackgroundColor}>
                   <CampaignImageMobile src={candidatePhotoLargeUrl} alt="" />
                 </CampaignImageMobilePlaceholder>
               ) : (
@@ -460,7 +461,11 @@ class CandidateCardForList extends Component {
               {candidatePhotoLargeUrl ? (
                 <>
                   {limitCardWidth ? (
-                    <CampaignImageDesktopPlaceholder limitCardWidth={limitCardWidth} id="cidp4">
+                    <CampaignImageDesktopPlaceholder
+                      id="cidp4"
+                      limitCardWidth={limitCardWidth}
+                      profileImageBackgroundColor={profileImageBackgroundColor}
+                    >
                       <CampaignImageDesktop src={candidatePhotoLargeUrl} alt="" width="157px" height="157px" />
                     </CampaignImageDesktopPlaceholder>
                   ) : (
@@ -468,7 +473,11 @@ class CandidateCardForList extends Component {
                   )}
                 </>
               ) : (
-                <CampaignImageDesktopPlaceholder limitCardWidth={limitCardWidth} id="cidp5">
+                <CampaignImageDesktopPlaceholder
+                  id="cidp5"
+                  limitCardWidth={limitCardWidth}
+                  profileImageBackgroundColor={profileImageBackgroundColor}
+                >
                   <CampaignImagePlaceholderText>
                     No image provided
                   </CampaignImagePlaceholderText>

@@ -55,11 +55,11 @@ export const PoliticianImageSharedStyles = css`
 `;
 
 export const PoliticianImageDesktopPlaceholder = styled('div', {
-  shouldForwardProp: (prop) => !['limitCardWidth'].includes(prop),
-})(({ limitCardWidth }) => (`
+  shouldForwardProp: (prop) => !['limitCardWidth', 'profileImageBackgroundColor'].includes(prop),
+})(({ limitCardWidth, profileImageBackgroundColor }) => (`
   ${limitCardWidth ? 'height: 315px;' : 'height: 117px;'}
   align-items: center;
-  background-color: #eee;
+  background-color: ${profileImageBackgroundColor || '#eee'};
   display: flex;
   justify-content: center;
   ${limitCardWidth ? 'width: 561px;' : 'width: 224px;'}
@@ -67,11 +67,11 @@ export const PoliticianImageDesktopPlaceholder = styled('div', {
 `));
 
 export const PoliticianImageMobilePlaceholder = styled('div', {
-  shouldForwardProp: (prop) => !['limitCardWidth'].includes(prop),
-})(({ limitCardWidth }) => (`
+  shouldForwardProp: (prop) => !['limitCardWidth', 'profileImageBackgroundColor'].includes(prop),
+})(({ limitCardWidth, profileImageBackgroundColor }) => (`
   ${limitCardWidth ? 'height: 200px;' : 'height: 117px;'}
   align-items: center;
-  background-color: #eee;
+  background-color: ${profileImageBackgroundColor || '#eee'};
   display: flex;
   justify-content: center;
   // ${limitCardWidth ? 'width: 561px;' : 'width: 224px;'}
