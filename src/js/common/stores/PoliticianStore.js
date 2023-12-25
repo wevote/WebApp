@@ -331,7 +331,6 @@ class PoliticianStore extends ReduceStore {
         // - latest_politician_supporter_endorsement_list
         // - latest_politician_supporter_list
         // - voter_politician_supporter
-
         if (!action.res || !action.res.success) {
           revisedState = state;
           if (action.res && action.res.seo_friendly_path) {
@@ -382,6 +381,14 @@ class PoliticianStore extends ReduceStore {
         }
         if (!(politician.seo_friendly_path in allCachedPoliticianWeVoteIdsBySEOFriendlyPath)) {
           allCachedPoliticianWeVoteIdsBySEOFriendlyPath[politician.seo_friendly_path] = politician.politician_we_vote_id;
+        }
+        // Link alternate SEOFriendlyPaths to politician_we_vote_id
+        if (politician.seo_friendly_path_list) {
+          for (let i = 0; i < politician.seo_friendly_path_list.length; ++i) {
+            if (!(politician.seo_friendly_path_list[i] in allCachedPoliticianWeVoteIdsBySEOFriendlyPath)) {
+              allCachedPoliticianWeVoteIdsBySEOFriendlyPath[politician.seo_friendly_path_list[i]] = politician.politician_we_vote_id;
+            }
+          }
         }
         if (action.res.seo_friendly_path) {
           const foundIndex = politicianDataNotFoundForSEOFriendlyPathList.indexOf(action.res.seo_friendly_path);
