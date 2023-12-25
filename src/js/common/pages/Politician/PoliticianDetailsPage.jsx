@@ -101,8 +101,14 @@ class PoliticianDetailsPage extends Component {
     this.politicianStoreListener = PoliticianStore.addListener(this.onPoliticianStoreChange.bind(this));
     this.onRepresentativeStoreChange();
     this.representativeStoreListener = RepresentativeStore.addListener(this.onRepresentativeStoreChange.bind(this));
+    let politicianSEOFriendlyPathFromObject;
+    let triggerSEOPathRedirect = false;
     if (politicianSEOFriendlyPathFromUrl) {
       const politician = PoliticianStore.getPoliticianBySEOFriendlyPath(politicianSEOFriendlyPathFromUrl);
+      politicianSEOFriendlyPathFromObject = politician.seo_friendly_path;
+      triggerSEOPathRedirect = politicianSEOFriendlyPathFromObject && (politicianSEOFriendlyPathFromUrl !== politicianSEOFriendlyPathFromObject);
+      // console.log('componentDidMount politicianSEOFriendlyPathFromObject: ', politicianSEOFriendlyPathFromObject);
+      // Only change politician if the we_vote_id is different
       if (politician && politician.politician_we_vote_id) {
         this.setState({
           linkedCampaignXWeVoteId: politician.linked_campaignx_we_vote_id,
@@ -125,6 +131,10 @@ class PoliticianDetailsPage extends Component {
     }
     // Take the "calculated" identifiers and retrieve if missing
     retrievePoliticianFromIdentifiersIfNeeded(politicianSEOFriendlyPathFromUrl, politicianWeVoteId);
+    // console.log('componentDidMount triggerSEOPathRedirect: ', triggerSEOPathRedirect, ', politicianSEOFriendlyPathFromObject: ', politicianSEOFriendlyPathFromObject);
+    if (triggerSEOPathRedirect && politicianSEOFriendlyPathFromObject) {
+      historyPush(`/${politicianSEOFriendlyPathFromObject}/-`, true);
+    }
     window.scrollTo(0, 0);
   }
 
@@ -134,31 +144,47 @@ class PoliticianDetailsPage extends Component {
     const { politicianSEOFriendlyPath: prevPoliticianSEOFriendlyPath, politicianWeVoteId: prevPoliticianWeVoteId } = prevParams;
     const { match: { params } } = this.props;
     const { politicianSEOFriendlyPath: politicianSEOFriendlyPathFromUrl, politicianWeVoteId } = params;
+    let politicianSEOFriendlyPath = '';
     let triggerFreshRetrieve = false;
-    // console.log('componentDidUpdate politicianSEOFriendlyPathFromUrl: ', politicianSEOFriendlyPathFromUrl, ', politicianWeVoteId: ', politicianWeVoteId);
-    if (politicianSEOFriendlyPathFromUrl && politicianSEOFriendlyPathFromUrl !== prevPoliticianSEOFriendlyPath) {
+    let triggerSEOPathRedirect = false;
+    const politician = PoliticianStore.getPoliticianBySEOFriendlyPath(politicianSEOFriendlyPathFromUrl);
+    const politicianSEOFriendlyPathFromObject = politician.seo_friendly_path;
+    // console.log('componentDidUpdate politicianSEOFriendlyPathFromUrl: ', politicianSEOFriendlyPathFromUrl, ', politicianSEOFriendlyPathFromObject: ', politicianSEOFriendlyPathFromObject);
+    if (politicianSEOFriendlyPathFromObject && (politicianSEOFriendlyPathFromUrl !== politicianSEOFriendlyPathFromObject)) {
+      politicianSEOFriendlyPath = politicianSEOFriendlyPathFromObject;
+      triggerSEOPathRedirect = true;
+    } else if (politicianSEOFriendlyPathFromUrl && politicianSEOFriendlyPathFromUrl !== prevPoliticianSEOFriendlyPath) {
       // console.log('componentDidUpdate prevPoliticianSEOFriendlyPath: ', prevPoliticianSEOFriendlyPath);
-      this.clearPoliticianValues();
-      const politician = PoliticianStore.getPoliticianBySEOFriendlyPath(politicianSEOFriendlyPathFromUrl);
-      if (politician && politician.politician_we_vote_id) {
-        this.setState({
-          linkedCampaignXWeVoteId: politician.linked_campaignx_we_vote_id,
-          politicianSEOFriendlyPath: politicianSEOFriendlyPathFromUrl,
-          politicianSEOFriendlyPathForDisplay: politicianSEOFriendlyPathFromUrl,
-          politicianWeVoteId: politician.politician_we_vote_id,
-          politicianWeVoteIdForDisplay: politician.politician_we_vote_id,
-        }, () => this.onfirstRetrievalOfPoliticianWeVoteId());
+      const politicianWeVoteIdFromUrl = PoliticianStore.getPoliticianWeVoteIdFromPoliticianSEOFriendlyPath(politicianSEOFriendlyPathFromUrl);
+      const politicianWeVoteIdFromPreviousUrl = PoliticianStore.getPoliticianWeVoteIdFromPoliticianSEOFriendlyPath(prevPoliticianSEOFriendlyPath);
+      const isSamePolitician = politicianWeVoteIdFromPreviousUrl && (politicianWeVoteIdFromUrl !== politicianWeVoteIdFromPreviousUrl);
+      // Only change politician if the we_vote_id is different
+      if (isSamePolitician) {
+        // Don't change the politician if the we_vote_id is the same as the previous
+        // but specify that we want to triggerSEOPathRedirect
+        politicianSEOFriendlyPath = politician.seo_friendly_path;
+        triggerSEOPathRedirect = true;
       } else {
-        this.setState({
-          politicianSEOFriendlyPath: politicianSEOFriendlyPathFromUrl,
-          politicianSEOFriendlyPathForDisplay: politicianSEOFriendlyPathFromUrl,
-        }, () => this.onfirstRetrievalOfPoliticianWeVoteId());
+        this.clearPoliticianValues();
+        if (politician && politician.politician_we_vote_id) {
+          this.setState({
+            linkedCampaignXWeVoteId: politician.linked_campaignx_we_vote_id,
+            politicianSEOFriendlyPath: politicianSEOFriendlyPathFromUrl,
+            politicianSEOFriendlyPathForDisplay: politicianSEOFriendlyPathFromUrl,
+            politicianWeVoteId: politician.politician_we_vote_id,
+            politicianWeVoteIdForDisplay: politician.politician_we_vote_id,
+          }, () => this.onfirstRetrievalOfPoliticianWeVoteId());
+        } else {
+          this.setState({
+            politicianSEOFriendlyPath: politicianSEOFriendlyPathFromUrl,
+            politicianSEOFriendlyPathForDisplay: politicianSEOFriendlyPathFromUrl,
+          }, () => this.onfirstRetrievalOfPoliticianWeVoteId());
+        }
+        triggerFreshRetrieve = true;
       }
-      triggerFreshRetrieve = true;
     } else if (politicianWeVoteId && politicianWeVoteId !== prevPoliticianWeVoteId) {
       // console.log('componentDidUpdate prevPoliticianWeVoteId: ', prevPoliticianWeVoteId);
       this.clearPoliticianValues();
-      const politician = PoliticianStore.getPoliticianByWeVoteId(politicianWeVoteId);
       if (politician && politician.politician_we_vote_id) {
         this.setState({
           linkedCampaignXWeVoteId: politician.linked_campaignx_we_vote_id,
@@ -175,9 +201,17 @@ class PoliticianDetailsPage extends Component {
       }
       triggerFreshRetrieve = true;
     }
+    // console.log('componentDidUpdate triggerSEOPathRedirect: ', triggerSEOPathRedirect, ', politicianSEOFriendlyPath: ', politicianSEOFriendlyPath);
+    if (triggerSEOPathRedirect && politicianSEOFriendlyPath) {
+      // Direct to the updated SEO path
+      historyPush(`/${politicianSEOFriendlyPath}/-`, true);
+    }
     if (triggerFreshRetrieve) {
       // Take the "calculated" identifiers and retrieve if missing
       retrievePoliticianFromIdentifiersIfNeeded(politicianSEOFriendlyPathFromUrl, politicianWeVoteId);
+    }
+    if (triggerFreshRetrieve || triggerSEOPathRedirect) {
+      // Take the "calculated" identifiers and retrieve if missing
       window.scrollTo(0, 0);
     }
   }

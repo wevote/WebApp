@@ -91,7 +91,7 @@ export function convertStateCodeFilterToStateCode (stateCodeFilter) {
 export function isValidStateCode (incomingStateCode) {
   if (incomingStateCode) {
     // Log incoming State Code
-    console.log('incomingStateCode:', incomingStateCode);
+    // console.log('incomingStateCode:', incomingStateCode);
     const incomingStateCodeUpper = incomingStateCode.toUpperCase();
     const existingStateCodes = Object.keys(stateCodeMap);
     return existingStateCodes.indexOf(incomingStateCodeUpper) > -1;
