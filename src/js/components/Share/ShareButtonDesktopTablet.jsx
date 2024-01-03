@@ -113,7 +113,7 @@ class ShareButtonDesktopTablet extends Component {
     if (!stringContains('/modal/share', pathname) && isWebApp()) {
       const pathnameWithModalShare = `${pathname}${pathname.endsWith('/') ? '' : '/'}modal/share`;
       // console.log('Navigation ShareButtonDesktopTablet openShareModal ', pathnameWithModalShare)
-      historyPush(pathnameWithModalShare);
+      historyPush(pathnameWithModalShare, false, true);
     }
   }
 
