@@ -381,7 +381,7 @@ export const teamOfVolunteers = [
   { name: 'Uyen (Ashley) Huynh', title: 'San Francisco, CA', linkedin: 'https://www.linkedin.com/in/uyenhuynh99/' },
   { name: 'Amelia Brazil', title: 'CA', linkedin: 'https://www.linkedin.com/in/amelia-brazil-a79b3ab0/' },
   { name: 'Ziwei Yi', title: 'St Louis, MO', linkedin: 'https://www.linkedin.com/in/ziweiyi/' },
-  { name: 'Antoinette (Nettie) Lee', title: 'Brooklyn, NY', linkedin: 'https://www.linkedin.com/in/antoinettelee/' },
+  { name: 'Antoinette (Nette) Lee', title: 'Queens, NY', linkedin: 'https://www.linkedin.com/in/antoinettelee/' },
   { name: 'Stanislav Livadnyi', title: 'Brooklyn, NY', linkedin: '' },
   { name: 'Andrea Ortu', title: 'New York, NY', linkedin: '' },
   { name: 'Theodora Wicks', title: 'Berkeley, CA', linkedin: '' },
