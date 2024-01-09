@@ -4,7 +4,7 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
-const RemovePlugin = require('remove-files-webpack-plugin');
+// const RemovePlugin = require('remove-files-webpack-plugin');  removed due to outdated dependencies 1/3/2023
 const SourceMapDevToolPlugin = require('webpack/lib/SourceMapDevToolPlugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const UnusedWebpackPlugin = require('unused-webpack-plugin');
@@ -158,19 +158,6 @@ module.exports = (env, argv) => ({
         exclude: [/node_modules/, /css/],
       }),
     ]),
-    ...(isWebApp ? [
-      new RemovePlugin({
-        before: {
-          include: [
-            './srcCordova',
-          ],
-          log: true,
-          logWarning: false,
-          // logError: true,
-          // logDebug: true,
-        },
-      }),
-    ] : []),
   ],
   devServer: {
     allowedHosts: 'all',

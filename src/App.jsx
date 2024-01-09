@@ -380,7 +380,7 @@ class App extends Component {
                       if (showReadyLight) {
                         return <ReadyLight showReadyHeavy={this.setShowReadyHeavy} />;
                       } else {
-                        return <Redirect to="/ready" />;
+                        return <Route render={() => <Redirect to="/ready" />} />;
                       }
                     }}
                   </Route>

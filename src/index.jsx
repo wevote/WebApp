@@ -1,9 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { HelmetProvider } from 'react-helmet-async';
+import { CompatRouter } from 'react-router-dom-v5-compat';
+import App from './App';
 import ErrorBoundary from './js/common/components/Widgets/ErrorBoundary';
 import WeVoteRouter from './js/common/components/Widgets/WeVoteRouter';
-import App from './App';
 import { isAndroid } from './js/common/utils/cordovaUtils';
 // importStartCordovaToken -- Do not remove this line!
 
@@ -38,9 +39,11 @@ function startReact () {
   ReactDOM.render(
     <ErrorBoundary>
       <WeVoteRouter>
-        <HelmetProvider>
-          <App />
-        </HelmetProvider>
+        <CompatRouter>
+          <HelmetProvider>
+            <App />
+          </HelmetProvider>
+        </CompatRouter>
       </WeVoteRouter>
     </ErrorBoundary>,
     document.getElementById('app'),
