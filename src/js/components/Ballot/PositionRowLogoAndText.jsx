@@ -185,12 +185,12 @@ class PositionRowLogoAndText extends Component {
                 <OrganizationOverlayOuterWrapper>
                   <OrganizationPhotoOuterWrapper onClick={() => this.onClickShowPositionDrawer(ballotItemWeVoteId, organizationWeVoteId)}>
                     <OrganizationPhotoInnerWrapper>
-                      { position.speaker_image_url_https_medium ? (
+                      { position.speaker_image_url_https_large ? (
                         <Suspense fallback={<></>}>
                           <ImageHandler
                             className="card-child__avatar"
                             sizeClassName="icon-lg"
-                            imageUrl={position.speaker_image_url_https_medium}
+                            imageUrl={position.speaker_image_url_https_large}
                           />
                         </Suspense>
                       ) : (
