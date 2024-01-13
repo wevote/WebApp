@@ -1,4 +1,3 @@
-// import { Card } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
@@ -9,26 +8,18 @@ import AnalyticsActions from '../actions/AnalyticsActions';
 import BallotActions from '../actions/BallotActions';
 import FriendActions from '../actions/FriendActions';
 import ReadyActions from '../actions/ReadyActions';
+import SnackNotifier, { openSnackbar } from '../common/components/Widgets/SnackNotifier';
+import AppObservableStore, { messageService } from '../common/stores/AppObservableStore';
 import apiCalming from '../common/utils/apiCalming';
 import { isAndroid } from '../common/utils/cordovaUtils';
 import historyPush from '../common/utils/historyPush';
 import { isWebApp } from '../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../common/utils/logging';
 import ReadyFinePrint from '../components/Ready/ReadyFinePrint';
-// import ReadyIntroduction from '../components/Ready/ReadyIntroduction';
-// import { ReadyCard } from '../components/Ready/ReadyTaskStyles';
 import { PageContentContainer } from '../components/Style/pageLayoutStyles';
-import {
-  ComingSoon, ElectionCountdownInnerWrapper, ElectionCountdownOuterWrapper, PrepareForElectionOuterWrapper,
-  // ReadyIntroductionDesktopWrapper,
-  ReadyIntroductionMobileWrapper, SquadsPageContainer,
-  // ReadyParagraph, ReadyTitle,
-  ViewBallotButtonWrapper,
-} from '../components/Style/SquadsPageCommonStyles';
+import { ElectionCountdownInnerWrapper, ElectionCountdownOuterWrapper, PrepareForElectionOuterWrapper, ReadyIntroductionMobileWrapper, ViewBallotButtonWrapper } from '../components/Style/ReadyPageCommonStyles';
+import { ComingSoon, SquadsPageContainer } from '../components/Style/SquadsPageCommonStyles';
 import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
-import SnackNotifier, { openSnackbar } from '../common/components/Widgets/SnackNotifier';
-// import webAppConfig from '../config';
-import AppObservableStore, { messageService } from '../common/stores/AppObservableStore';
 import BallotStore from '../stores/BallotStore';
 import VoterStore from '../stores/VoterStore';
 import { cordovaSimplePageContainerTopOffset } from '../utils/cordovaCalculatedOffsets';

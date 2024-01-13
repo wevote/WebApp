@@ -1,10 +1,11 @@
 import { CancelOutlined, Search } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { blurTextFieldAndroid, focusTextFieldAndroid } from '../../common/utils/cordovaUtils';
+import styled from 'styled-components';
+import { blurTextFieldAndroid, focusTextFieldAndroid, isIPhoneMiniOrSmaller } from '../../common/utils/cordovaUtils';
 import { renderLog } from '../../common/utils/logging';
-// Dec 2019 TODO: This is the last icon from the svg-icons package used in the Web App, all the other have been removed from git
-// const removeCircleIcon = '../../../img/global/svg-icons/glyphicons-pro-halflings/glyphicons-halflings-88-remove-circle.svg';
+
+/* eslint-disable jsx-a11y/control-has-associated-label  */
 
 export default class SearchBar extends Component {
   constructor (props) {
@@ -82,7 +83,7 @@ export default class SearchBar extends Component {
     const { searchString } = this.state;
     return (
       <div className="search-bar clearfix">
-        <input
+        <SearchInput
           id="search_input"
           type="text"
           className="form-control"
@@ -128,3 +129,7 @@ SearchBar.propTypes = {
   searchFunction: PropTypes.func.isRequired,
   searchUpdateDelayTime: PropTypes.number.isRequired,
 };
+
+const SearchInput = styled('input')`
+  ${isIPhoneMiniOrSmaller() ? 'font-size: 0.8rem' : ''};
+`;
