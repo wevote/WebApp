@@ -1855,6 +1855,7 @@ const EmptyBallotNotice = styled('div')`
   margin-top: 24px;
   padding: 12px 15px;
   width: 100%;
+  ${isCordova() ? 'margin-top: 50px !important; width: 90%; margin-left: 20px !important' : ''}
 `;
 
 const FindYourFriendsWrapper = styled('div')`
