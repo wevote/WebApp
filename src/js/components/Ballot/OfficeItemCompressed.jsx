@@ -361,7 +361,7 @@ class OfficeItemCompressed extends Component {
                               <ImageHandler
                                 className={avatarCompressed}
                                 sizeClassName="icon-candidate-small u-push--sm "
-                                imageUrl={oneCandidate.candidate_photo_url_medium}
+                                imageUrl={oneCandidate.candidate_photo_url_large}
                                 alt=""
                                 kind_of_ballot_item="CANDIDATE"
                                 style={{ backgroundImage: { avatarBackgroundImage } }}
