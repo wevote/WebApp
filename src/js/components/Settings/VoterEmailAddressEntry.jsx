@@ -234,8 +234,8 @@ class VoterEmailAddressEntry extends Component {
   };
 
   onBlur = () => {
-    const { voterEmailAddressIsValid } = this.state;
-    if (!voterEmailAddressIsValid) {
+    const { voterEmailAddress } = this.state;
+    if (!voterEmailAddress) {
       // Only hide the phone verification button if the user has not "unlocked" the button used to send the message.
       this.setState({
         displayEmailVerificationButton: false,

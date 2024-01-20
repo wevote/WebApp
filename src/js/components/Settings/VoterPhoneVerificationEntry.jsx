@@ -272,8 +272,8 @@ class VoterPhoneVerificationEntry extends Component {
   }
 
   onBlur = () => {
-    const { voterSMSPhoneNumberIsValid } = this.state;
-    if (!voterSMSPhoneNumberIsValid) {
+    const { voterSMSPhoneNumber } = this.state;
+    if (!voterSMSPhoneNumber) {
       // Only hide the phone verification button if the user has not "unlocked" the button used to send the message.
       this.setState({
         displayPhoneVerificationButton: false,
