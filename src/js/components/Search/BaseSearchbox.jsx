@@ -56,6 +56,7 @@ const SearchInput = styled.input`
   padding-left: 12px;
   border-radius: 0.25rem;
   padding-right: 40px;
+  
 
   &:focus-visible {
     border: none;
@@ -101,6 +102,7 @@ class BaseSearchbox extends React.Component {
             value={this.state.searchText} 
             onChange={this.handleInputChange} 
             onClear={this.handleClear}
+            maxLength={50}
         />
         {this.state.searchText && <ClearButton onClick={this.handleClear}/>}
       </SearchWrapper>
