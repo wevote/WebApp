@@ -83,6 +83,7 @@ const Button = ({ primary, size, label, onClick, ...props }) => (
 );
 
 export default Button;
+
 Button.propTypes = {
   primary: PropTypes.bool,
   secondary: PropTypes.bool,
