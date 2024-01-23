@@ -353,14 +353,23 @@ class PositionItem extends Component {
                       <DesktopItemTwitterContainer>
                         { !!(position.twitter_followers_count && String(position.twitter_followers_count) !== '0') && (
                           <DesktopItemTwitter>
-                            <Twitter classes={{ root: classes.twitterLogo }} />
-                            <TwitterHandleWrapper>
-                              @
-                              {position.speaker_twitter_handle}
-                            </TwitterHandleWrapper>
-                            <TwitterFollowersWrapper>
-                              {abbreviateNumber(position.twitter_followers_count)}
-                            </TwitterFollowersWrapper>
+                            <OpenExternalWebSite
+                              body={(
+                                <div style={{ marginTop: '-24px' }}>
+                                  <Twitter classes={{ root: classes.twitterLogo }} />
+                                  <TwitterHandleWrapper>
+                                    @
+                                    {position.speaker_twitter_handle}
+                                  </TwitterHandleWrapper>
+                                  <TwitterFollowersWrapper>
+                                    {abbreviateNumber(position.twitter_followers_count)}
+                                  </TwitterFollowersWrapper>
+                                </div>
+                              )}
+                              linkIdAttribute="candidateTwitterDesktop"
+                              url={`https://twitter.com/${position.speaker_twitter_handle}`}
+                              target="_blank"
+                            />
                           </DesktopItemTwitter>
                         )}
                       </DesktopItemTwitterContainer>
