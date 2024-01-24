@@ -366,7 +366,7 @@ class PositionItem extends Component {
                                   </TwitterFollowersWrapper>
                                 </div>
                               )}
-                              linkIdAttribute="candidateTwitterDesktop"
+                              linkIdAttribute="positionItemTwitterDesktop"
                               url={`https://twitter.com/${position.speaker_twitter_handle}`}
                               target="_blank"
                             />
