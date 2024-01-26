@@ -115,10 +115,14 @@ class Credits extends Component {
           <br />
           <br />
           <ul>
-            { teamOfVolunteers.map((item) => (
+            {teamOfVolunteers.map((item) => (
               <div key={item.name}>
                 <li>
-                  <strong>{item.name}</strong>
+                  {item.linkedin ? (
+                    <a href={item.linkedin} target="_blank">{item.name}</a>
+                  ) : (
+                    <span>{item.name}</span>
+                  )}
                   {item.title && (
                     <span>
                       {' '}
@@ -135,7 +139,7 @@ class Credits extends Component {
           <br />
           This list is in rough order of number of volunteer hours spent (10+ hours) or monetary donation level. Individual monetary donors only listed with express permission.
           {' '}
-          (Our apologies if you should be on this list and are missing. Please contact Dale McGrew with corrections.)
+          (Our apologies if you should be on this list and are missing. Please contact <a href='https://wevote.us/more/faq'>support</a> with corrections.)
         </CreditsDescriptionContainer>
       </Wrapper>
     );
@@ -183,7 +187,16 @@ const CreditsDescriptionContainer = styled('div')(({ theme }) => (`
   width: 960px;
   max-width: 90vw;
   text-align: left;
-  // @media (min-width: 960px) and (max-width: 991px) {
+  
+  > * {
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  a {
+    text-decoration: underline;
+  }
+
   ${[theme.breakpoints.between('lg', 'xl')]}: {
     > * {
       width: 90%;
@@ -195,6 +208,7 @@ const CreditsDescriptionContainer = styled('div')(({ theme }) => (`
     margin: 0 auto;
   }
 `));
+
 
 const CompanyWrapper = styled('div')`
   display: flex;
