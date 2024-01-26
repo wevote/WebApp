@@ -7,7 +7,7 @@ import { renderLog } from '../../common/utils/logging';
 import { SearchTitleTop } from '../../common/components/Style/FilterStyles';
 import StateDropDownCore from '../Filter/StateDropDownCore';
 import SearchBar from '../Search/SearchBar';
-
+import BaseSearchbox from '../../../js/components/Search/BaseSearchbox';
 
 // React functional component example
 function CampaignsHomeFilter (props) {
@@ -16,13 +16,13 @@ function CampaignsHomeFilter (props) {
   // console.log('CampaignsHomeFilter props.listModeFiltersAvailable:', props.listModeFiltersAvailable);
   return (
     <CampaignsHomeFilterWrapper>
-      {(isSearching && searchText) && (
+      {/* {(isSearching && searchText) && (
         <SearchTitleTop>
           Searching for &quot;
           {searchText}
           &quot;
         </SearchTitleTop>
-      )}
+      )} */}
       {!!(listModeFiltersAvailable) && (
         <CampaignsHomeFilterChoices>
           {listModeFiltersAvailable.map((oneFilter) => (
@@ -96,16 +96,16 @@ const styles = () => ({
 
 
 const CampaignsHomeFilterChoices = styled('div')`
-  margin-top: 8px;
+  margin-top: 14px;
 `;
 
 const CampaignsHomeFilterWrapper = styled('div')`
-  margin-top: 48px;
+  margin-top: 20px;
   margin-bottom: 24px;
 `;
 
 const SearchBarWrapper = styled('div')`
-  margin-top: 4px;
+  margin-top: 14px;
   margin-bottom: 8px;
 `;
 
