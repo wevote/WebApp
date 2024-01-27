@@ -9,7 +9,7 @@ import IssueActions from '../../actions/IssueActions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import apiCalming from '../../common/utils/apiCalming';
 import { renderLog } from '../../common/utils/logging';
-import SearchBar from '../../components/Search/SearchBar';
+import SearchBar2024 from '../../components/Search/SearchBar2024';
 import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import GuideList from '../../components/VoterGuide/GuideList';
 import IssueStore from '../../stores/IssueStore';
@@ -21,7 +21,6 @@ import { convertNameToSlug } from '../../common/utils/textFormat';
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
 const IssueCard = React.lazy(() => import(/* webpackChunkName: 'IssueCard' */ '../../components/Values/IssueCard'));
 const OrganizationList = React.lazy(() => import(/* webpackChunkName: 'OrganizationList' */ '../../components/Organization/OrganizationList'));
-
 
 class OneValue extends Component {
   constructor (props) {
@@ -275,7 +274,7 @@ class OneValue extends Component {
             </FilterChoices>
           )}
           <SearchBarWrapper>
-            <SearchBar
+            <SearchBar2024
               clearButton
               searchButton
               placeholder="Search by name, Twitter handle or description"

@@ -12,7 +12,7 @@ import { renderLog } from '../../common/utils/logging';
 import BallotStore from '../../stores/BallotStore';
 import FriendStore from '../../stores/FriendStore';
 import sortFriendListByMutualFriends from '../../utils/friendFunctions';
-import SearchBar from '../Search/SearchBar';
+import SearchBar2024 from '../Search/SearchBar2024';
 import FriendList from './FriendList';
 
 const SuggestedContacts = React.lazy(() => import(/* webpackChunkName: 'SuggestedContacts' */ './SuggestedContacts'));
@@ -175,7 +175,7 @@ class ShareWithFriendsModalBodyWithController extends Component {
         <div className="full-width">
           {totalCurrentFriendListCount > 10 && (
             <>
-              <SearchBar
+              <SearchBar2024
                 clearButton
                 searchButton
                 placeholder="Search by name"

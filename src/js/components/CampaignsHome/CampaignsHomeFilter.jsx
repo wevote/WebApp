@@ -6,8 +6,7 @@ import styled from 'styled-components';
 import { renderLog } from '../../common/utils/logging';
 import { SearchTitleTop } from '../../common/components/Style/FilterStyles';
 import StateDropDownCore from '../Filter/StateDropDownCore';
-import SearchBar from '../Search/SearchBar';
-import BaseSearchbox from '../../../js/components/Search/BaseSearchbox';
+import SearchBar2024 from '../Search/SearchBar2024';
 
 // React functional component example
 function CampaignsHomeFilter (props) {
@@ -48,7 +47,7 @@ function CampaignsHomeFilter (props) {
         </CampaignsHomeFilterChoices>
       )}
       <SearchBarWrapper>
-        <SearchBar
+        <SearchBar2024
           clearButton
           searchButton
           placeholder="Search by name, office or state"

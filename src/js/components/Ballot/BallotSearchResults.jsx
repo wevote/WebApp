@@ -5,7 +5,7 @@ import OrganizationActions from '../../actions/OrganizationActions';
 import BallotStore from '../../stores/BallotStore';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import { renderLog } from '../../common/utils/logging';
-import SearchBar from '../Search/SearchBar';
+import SearchBar2024 from '../Search/SearchBar2024';
 import BallotItemSearchResult from './BallotItemSearchResult';
 
 const thumbUpIcon = '../../../img/global/svg-icons/thumbs-up-icon.svg';
@@ -150,7 +150,7 @@ export default class BallotSearchResults extends Component {
         <div>
           {featureTurnedOff ? null : (
             <div className="u-padding-bottom--sm">
-              <SearchBar
+              <SearchBar2024
                 clearButton
                 clearFunction={this.clearFunction}
                 clearSearchTextNow={clearSearchTextNow}
