@@ -74,6 +74,7 @@ export default class SearchBar2024 extends Component {
     });
   }
 
+  // check limit of 50 characters
   render () {
     renderLog('SearchBar2024');  // Set LOG_RENDER_EVENTS to log all renders
     const { placeholder } = this.props;

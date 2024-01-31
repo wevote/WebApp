@@ -102,7 +102,7 @@ class BaseSearchbox extends React.Component {
             value={this.state.searchText}
             onChange={this.handleInputChange}
             onClear={this.handleClear}
-            maxLength={this.props.maxLength}
+            maxLength={50}
         />
         {this.state.searchText && <ClearButton onClick={this.handleClear} />}
       </SearchWrapper>
