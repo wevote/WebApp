@@ -6,7 +6,7 @@ import FriendActions from '../../actions/FriendActions';
 import apiCalming from '../../common/utils/apiCalming';
 import { renderLog } from '../../common/utils/logging';
 import FriendList from '../../components/Friends/FriendList';
-import SearchBar2024 from '../../components/Search/SearchBar2024';
+import SearchBar from '../../components/Search/SearchBar';
 import FriendStore from '../../stores/FriendStore';
 import sortFriendListByMutualFriends from '../../utils/friendFunctions';
 
@@ -98,7 +98,7 @@ export default class FriendsCurrent extends Component {
               {currentFriendList.length}
               )
             </SectionTitle>
-            <SearchBar2024
+            <SearchBar
               clearButton
               searchButton
               placeholder="Search by name"

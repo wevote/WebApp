@@ -7,7 +7,7 @@ import FriendActions from '../../actions/FriendActions';
 import apiCalming from '../../common/utils/apiCalming';
 import { renderLog } from '../../common/utils/logging';
 import FriendInvitationList from '../../components/Friends/FriendInvitationList';
-import SearchBar2024 from '../../components/Search/SearchBar2024';
+import SearchBar from '../../components/Search/SearchBar';
 import MessageCard from '../../components/Widgets/MessageCard';
 import FriendStore from '../../stores/FriendStore';
 
@@ -101,7 +101,7 @@ export default class FriendInvitationsSentByMe extends Component {
               <AlignRight>
                 <Link className="u-link-color" to="/friends/requests">See friend requests you&apos;ve received</Link>
               </AlignRight>
-              <SearchBar2024
+              <SearchBar
                 clearButton
                 searchButton
                 placeholder="Search by name"

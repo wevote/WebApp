@@ -4,7 +4,7 @@ import React, { Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import SuggestedContactList from './SuggestedContactList';
-import SearchBar2024 from '../Search/SearchBar2024';
+import SearchBar from '../Search/SearchBar';
 import VoterActions from '../../actions/VoterActions';
 import apiCalming from '../../common/utils/apiCalming';
 import { renderLog } from '../../common/utils/logging';
@@ -269,7 +269,7 @@ class SuggestedContactListWithController extends React.Component {
             )}
             {voterContactEmailListCount > 10 && (
               <>
-                <SearchBar2024
+                <SearchBar
                   clearButton
                   searchButton
                   placeholder="Search by name, email, city or state code"

@@ -12,7 +12,7 @@ import { renderLog } from '../../common/utils/logging';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
-import SearchBar2024 from '../Search/SearchBar2024';
+import SearchBar from '../Search/SearchBar';
 import GuideList from './GuideList';
 
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
@@ -239,7 +239,7 @@ class VoterGuideFollowing extends Component {
             {/* Search Box */}
             {voterGuideFollowedList && voterGuideFollowedList.length > 0 && (
               <SearchInputWrapper>
-                <SearchBar2024
+                <SearchBar
                   clearButton
                   clearFunction={this.clearSearchBarFunction}
                   placeholder="Search these voter guides"

@@ -10,7 +10,7 @@ import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../common/utils/logging';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
-import SearchBar2024 from '../Search/SearchBar2024';
+import SearchBar from '../Search/SearchBar';
 import { PageContentContainer } from '../Style/pageLayoutStyles';
 import GuideList from './GuideList';
 
@@ -203,7 +203,7 @@ class VoterGuideFollowers extends Component {
               {/* Search Box */}
               {voterGuideFollowersList && voterGuideFollowersList.length > 0 && (
                 <SearchInputWrapper>
-                  <SearchBar2024
+                  <SearchBar
                     clearButton
                     clearFunction={this.clearSearchBarFunction}
                     placeholder="Search these followers"

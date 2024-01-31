@@ -7,7 +7,7 @@ import IssueActions from '../../actions/IssueActions';
 import apiCalming from '../../common/utils/apiCalming';
 import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
-import SearchBar from '../../components/Search/SearchBar2024';
+import SearchBar2024 from '../../components/Search/SearchBar2024';
 import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import IssueStore from '../../stores/IssueStore';
 
@@ -169,7 +169,7 @@ export default class ValuesList extends Component {
                     />
                   </Suspense>
                 </p>
-                <SearchBar
+                <SearchBar2024
                   clearButton
                   searchButton
                   placeholder="Search by name or Description"

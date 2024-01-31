@@ -4,24 +4,15 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
 import { renderLog } from '../../common/utils/logging';
-import { SearchTitleTop } from '../../common/components/Style/FilterStyles';
 import StateDropDownCore from '../Filter/StateDropDownCore';
 import SearchBar2024 from '../Search/SearchBar2024';
 
-// React functional component example
 function CampaignsHomeFilter (props) {
   renderLog('CampaignsHomeFilter functional component');
-  const { classes, isSearching, listModeFiltersAvailable, searchText, stateCode } = props;
+  const { classes, listModeFiltersAvailable, stateCode } = props;
   // console.log('CampaignsHomeFilter props.listModeFiltersAvailable:', props.listModeFiltersAvailable);
   return (
     <CampaignsHomeFilterWrapper>
-      {/* {(isSearching && searchText) && (
-        <SearchTitleTop>
-          Searching for &quot;
-          {searchText}
-          &quot;
-        </SearchTitleTop>
-      )} */}
       {!!(listModeFiltersAvailable) && (
         <CampaignsHomeFilterChoices>
           {listModeFiltersAvailable.map((oneFilter) => (
