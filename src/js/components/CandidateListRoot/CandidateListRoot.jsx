@@ -51,7 +51,6 @@ class CandidateListRoot extends Component {
   }
 
   componentDidMount () {
-    // console.log('CandidateListRoot componentDidMount');
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
     const { incomingList } = this.props;
     // console.log('CandidateListRoot componentDidMount incomingList:', incomingList);
@@ -158,7 +157,6 @@ class CandidateListRoot extends Component {
   orderByUltimateElectionDate = (firstEntry, secondEntry) => secondEntry.candidate_ultimate_election_date - firstEntry.candidate_ultimate_election_date;
 
   onFilterOrListChange = () => {
-    // console.log('onFilterOrListChange');
     // Start over with full list, and apply all active filters
     const { listModeFilters, searchText, stateCode } = this.props;
     const { candidateList } = this.state;
@@ -257,6 +255,7 @@ class CandidateListRoot extends Component {
     filteredList = filteredList.sort(this.orderByUltimateElectionDate);
     let searchResults = [];
     let hideDisplayBecauseNoSearchResults = false;
+    this.callbackToParentHideIfNoResults(false);
     if (searchText && searchText.length > 0) {
       const searchTextLowercase = searchText.toLowerCase();
       // console.log('searchTextLowercase:', searchTextLowercase);
@@ -289,6 +288,7 @@ class CandidateListRoot extends Component {
         });
       if (searchResults.length === 0) {
         hideDisplayBecauseNoSearchResults = true;
+        this.callbackToParentHideIfNoResults(true);
       }
       if (searchResults.length > 0) {
         // Only allow the first politician entry to be displayed (when there are multiple candidate entries for the same politician)
@@ -349,6 +349,10 @@ class CandidateListRoot extends Component {
     this.setState({
       callShowMoreCards: checkDivPositionForLoadMore(element, isMobileScreenSize()),
     });
+  }
+
+  callbackToParentHideIfNoResults = (newValue) => {
+    this.props.onHideIfNoResultsChange(newValue);
   }
 
   render () {
@@ -435,6 +439,7 @@ class CandidateListRoot extends Component {
 CandidateListRoot.propTypes = {
   classes: PropTypes.object,
   hideIfNoResults: PropTypes.bool,
+  onHideIfNoResultsChange: PropTypes.func,
   hideTitle: PropTypes.bool,
   incomingList: PropTypes.array,
   incomingListTimeStampOfChange: PropTypes.number,

@@ -65,58 +65,58 @@ const SearchInput = styled.input`
 `;
 
 class BaseSearchbox extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.state = { searchText: '' };
   }
 
   handleInputChange = (event) => {
     this.setState({ searchText: event.target.value }, () => {
-        if (this.props.onChange) {
-            this.props.onChange(event);
-        }
-        if (this.props.onKeyDown) {
-            this.props.onKeyDown(event);
-        }
-        if(this.props.onFocus) {
-            this.props.onFocus(event);
-        }
+      if (this.props.onChange) {
+        this.props.onChange(event);
+      }
+      if (this.props.onKeyDown) {
+        this.props.onKeyDown(event);
+      }
+      if (this.props.onFocus) {
+        this.props.onFocus(event);
+      }
     });
   }
 
   handleClear = () => {
     this.setState({ searchText: '' }, () => {
-        if (this.props.onClear) {
-            this.props.onClear();
-        }
+      if (this.props.onClear) {
+        this.props.onClear();
+      }
     });
   }
 
-  render() {
+  render () {
     return (
       <SearchWrapper>
         {!this.state.searchText && <SearchIcon />}
-        <SearchInput 
-            type="search" 
-            placeholder={this.props.placeholder} 
-            value={this.state.searchText} 
-            onChange={this.handleInputChange} 
+        <SearchInput
+            type="search"
+            placeholder={this.props.placeholder}
+            value={this.state.searchText}
+            onChange={this.handleInputChange}
             onClear={this.handleClear}
             maxLength={50}
         />
-        {this.state.searchText && <ClearButton onClick={this.handleClear}/>}
+        {this.state.searchText && <ClearButton onClick={this.handleClear} />}
       </SearchWrapper>
     );
   }
 }
 
 BaseSearchbox.propTypes = {
-    placeholder: PropTypes.string,
-    onChange: PropTypes.func,
-    onKeyDown: PropTypes.func,
-    onFocus: PropTypes.func,
-    onBlur: PropTypes.func,
-    onClear: PropTypes.func,
+  placeholder: PropTypes.string,
+  onChange: PropTypes.func,
+  onKeyDown: PropTypes.func,
+  onFocus: PropTypes.func,
+  onBlur: PropTypes.func,
+  onClear: PropTypes.func,
 };
 
 export default BaseSearchbox;

@@ -1,13 +1,11 @@
-import { CancelOutlined, Search } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import styled from 'styled-components';
-import { blurTextFieldAndroid, focusTextFieldAndroid, isIPhoneMiniOrSmaller } from '../../common/utils/cordovaUtils';
+import { blurTextFieldAndroid, focusTextFieldAndroid } from '../../common/utils/cordovaUtils';
 import { renderLog } from '../../common/utils/logging';
+import BaseSearchbox from './BaseSearchbox';
 
 /* eslint-disable jsx-a11y/control-has-associated-label  */
-
-export default class SearchBar extends Component {
+export default class SearchBar2024 extends Component {
   constructor (props) {
     super(props);
 
@@ -21,7 +19,6 @@ export default class SearchBar extends Component {
   }
 
   componentDidMount () {
-    // console.log("SearchBar, this.props.clearSearchTextNow:", this.props.clearSearchTextNow);
     if (this.props.clearSearchTextNow) {
       if (this.props.clearFunction) {
         this.props.clearFunction();
@@ -77,50 +74,29 @@ export default class SearchBar extends Component {
     });
   }
 
+  // check limit of 50 characters
   render () {
-    renderLog('SearchBar');  // Set LOG_RENDER_EVENTS to log all renders
-    const { clearButton, placeholder, searchButton } = this.props;
+    renderLog('SearchBar2024');  // Set LOG_RENDER_EVENTS to log all renders
+    const { placeholder } = this.props;
     const { searchString } = this.state;
     return (
       <div className="search-bar clearfix">
-        <SearchInput
+        <BaseSearchbox
           id="search_input"
-          type="text"
-          className="form-control"
           placeholder={placeholder}
           value={searchString}
           onKeyDown={this.handleKeyPress}
           onChange={this.updateResults}
-          onFocus={() => focusTextFieldAndroid('SearchBar')}
+          onFocus={() => focusTextFieldAndroid('SearchBar2024')}
           onBlur={blurTextFieldAndroid}
+          onClear={this.clearQuery}
         />
-        <div className="search-bar-options">
-          {(clearButton && searchString && searchString.length > 0) && (
-            <button
-              className="search-clear-btn"
-              onClick={this.clearQuery}
-              type="button"
-              id="search-clear"
-            >
-              <CancelOutlined />
-            </button>
-          )}
-          {(searchButton) && (
-            <button
-              className="search-options-btn"
-              type="button"
-              id="search"
-              style={{ paddingLeft: 0 }}
-            >
-              <Search />
-            </button>
-          )}
-        </div>
       </div>
     );
   }
 }
-SearchBar.propTypes = {
+
+SearchBar2024.propTypes = {
   clearButton: PropTypes.bool,
   clearFunction: PropTypes.func.isRequired,
   clearSearchTextNow: PropTypes.bool,
@@ -129,7 +105,3 @@ SearchBar.propTypes = {
   searchFunction: PropTypes.func.isRequired,
   searchUpdateDelayTime: PropTypes.number.isRequired,
 };
-
-const SearchInput = styled('input')`
-  ${isIPhoneMiniOrSmaller() ? 'font-size: 0.8rem' : ''};
-`;
