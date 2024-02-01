@@ -237,6 +237,8 @@ class OfficeItemCompressed extends Component {
     AppObservableStore.setShowOrganizationModal(true);
   }
 
+  console.log('test')
+
   getCandidateLink (candidateWeVoteId) {
     if (this.state.organizationWeVoteId) {
       // If there is an organizationWeVoteId, signal that we want to link back to voter_guide for that organization
