@@ -151,7 +151,7 @@ class SelectBallotModal extends Component {
                   </ToggleGroup>
                   <StateDropDownCore
                     stateCodesToDisplay={[]}
-                    handleChooseStateChange={this.handleChooseStateChange}
+                    onStateDropDownChange={this.handleChooseStateChange}
                     stateCodesHtml=""
                     selectedState={this.state.selectedState}
                     dialogLabel="Which State?"
