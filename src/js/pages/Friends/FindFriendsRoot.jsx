@@ -69,6 +69,7 @@ class FindFriendsRoot extends React.Component {
       voterFirstName: '',
       voterPhotoUrlLarge: '',
     };
+    console.log('Constructor: backButtonOn initialized to:', this.state.backButtonOn);
   }
 
   componentDidMount () {
@@ -87,6 +88,9 @@ class FindFriendsRoot extends React.Component {
     this.setState({
       displayStep,
       setUpPagePath,
+    }, () => {
+      //i added this to set the next step variables like componentDidUpdate
+        this.setNextStepVariables();
     });
     // this.onBallotStoreChange();
     // this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
@@ -136,7 +140,9 @@ class FindFriendsRoot extends React.Component {
       this.setState({
         displayStep,
         setUpPagePath,
-      }, () => this.setNextStepVariables());
+      }, () => {
+        this.setNextStepVariables();    
+      });
     } else if ((setUpPagePath === 'importcontacts') && (voterContactEmailListCount > 0 && (voterContactEmailListCountPrevious !== voterContactEmailListCount))) {
       // console.log('Leaving importcontacts step');
       this.resetNextButtonClicked();
@@ -254,6 +260,7 @@ class FindFriendsRoot extends React.Component {
 
   goToNextStep = () => {
     this.resetNextButtonClicked();
+
     const { nextStepPath } = this.state;
     // console.log('FindFriendsRoot goToNextStep nextStepPath:', nextStepPath);
     if (nextStepPath) {
@@ -336,6 +343,7 @@ class FindFriendsRoot extends React.Component {
           } else {
             skipForNowPath = '/ready';
           }
+
         } else if (friendConnectionActionAvailable) {
           nextButtonText = 'Next';
           nextStepPath = '/findfriends/friendrequests';
@@ -349,6 +357,8 @@ class FindFriendsRoot extends React.Component {
           nextStepPath = '/ready';
           skipForNowPath = '/ready';
         }
+        console.log('setNextStepVariables [Condition1]: backButtonOn changing to', backButtonOn);
+
         break;
       case 2: // signin
         // console.log('setUpAccountEntryPath:', setUpAccountEntryPath, ', setUpAccountBackLinkPath:', setUpAccountBackLinkPath);
@@ -414,8 +424,10 @@ class FindFriendsRoot extends React.Component {
           skipForNowPath = '/ready';
         }
         editNameStepVisited = true;
+
         break;
       case 4: // 'addphoto'
+
       case 5:
         backButtonOn = true;
         desktopFixedButtonsOn = false;
@@ -468,6 +480,7 @@ class FindFriendsRoot extends React.Component {
         }
         addPhotoStepVisited = true;
         break;
+
       case 6: // invitecontacts
         backButtonOn = true;
         desktopFixedButtonsOn = true;
@@ -496,6 +509,7 @@ class FindFriendsRoot extends React.Component {
           skipForNowPath = '/ready';
         }
         break;
+
       case 7: // friendrequests
         backButtonOn = true;
         desktopFixedButtonsOn = true;
@@ -515,6 +529,7 @@ class FindFriendsRoot extends React.Component {
         skipForNowPath = '/ready';
         reassuranceTextOff = true;
         break;
+
     }
     this.setState({
       addPhotoStepVisited,
