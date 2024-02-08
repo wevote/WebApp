@@ -69,7 +69,6 @@ class FindFriendsRoot extends React.Component {
       voterFirstName: '',
       voterPhotoUrlLarge: '',
     };
-    console.log('Constructor: backButtonOn initialized to:', this.state.backButtonOn);
   }
 
   componentDidMount () {
@@ -89,7 +88,7 @@ class FindFriendsRoot extends React.Component {
       displayStep,
       setUpPagePath,
     }, () => {
-      //i added this to set the next step variables like componentDidUpdate
+      //Paul added this to set the next step variables like componentDidUpdate
         this.setNextStepVariables();
     });
     // this.onBallotStoreChange();
