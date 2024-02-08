@@ -134,9 +134,12 @@ class TwitterSignIn extends Component {
   twitterSignInWebApp = () => {
     const brandingOff = Cookies.get('we_vote_branding_off') || 0;
     oAuthLog(`twitterSignInWebApp isWebApp(): ${isWebApp()},  returnURL: ${returnURL}`);
-    this.setState({
-      twitterSignInStartSubmitted: true,
-    });
+    // causing bug WV-131 in desktop version
+    if (isIOS()) {
+      this.setState({
+        twitterSignInStartSubmitted: true,
+      });
+    }
     $ajax({
       endpoint: 'twitterSignInStart',
       data: { return_url: returnURL },
