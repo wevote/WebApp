@@ -270,9 +270,9 @@ class MostRecentCampaignSupport extends React.Component {
             {supportersOnStageNow.map((comment) => (
               <CommentWrapper className="comment" key={comment.id}>
                 <CommentVoterPhotoWrapper>
-                  {comment.we_vote_hosted_profile_image_url_tiny ? (
+                  {comment.we_vote_hosted_profile_image_url_medium ? (
                     <LazyImage
-                      src={comment.we_vote_hosted_profile_image_url_tiny}
+                      src={comment.we_vote_hosted_profile_image_url_medium}
                       placeholder={avatarGeneric()}
                       className="profile-photo"
                       height={48}
