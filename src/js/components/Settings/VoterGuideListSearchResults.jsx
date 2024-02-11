@@ -7,7 +7,7 @@ import { SearchTitle } from '../../common/components/Style/FilterStyles';
 import { renderLog } from '../../common/utils/logging';
 import BallotStore from '../../stores/BallotStore';
 import voterGuideSearchPriority from '../../utils/voterGuideSearchPriority';
-import SearchBar from '../Search/SearchBar';
+import SearchBar2024 from '../Search/SearchBar2024';
 import BallotItemForAddPositions from './BallotItemForAddPositions';
 
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
@@ -164,7 +164,7 @@ class VoterGuideListSearchResults extends Component {
       <div className="ballot_search">
         <div>
           <div className="u-padding-bottom--sm">
-            <SearchBar
+            <SearchBar2024
               clearButton
               clearFunction={this.clearFunction}
               clearSearchTextNow={clearSearchTextNow}

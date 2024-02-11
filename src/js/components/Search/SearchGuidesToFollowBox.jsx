@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../common/utils/logging';
-import SearchBar from './SearchBar';
+import SearchBar2024 from './SearchBar2024';
 
 export default class SearchGuidesToFollowBox extends Component {
   constructor (props) {
@@ -37,7 +37,7 @@ export default class SearchGuidesToFollowBox extends Component {
   render () {
     renderLog('SearchGuidesToFollowBox');  // Set LOG_RENDER_EVENTS to log all renders
     return (
-      <SearchBar
+      <SearchBar2024
         clearButton
         searchButton
         placeholder="Search by name or Twitter handle"
