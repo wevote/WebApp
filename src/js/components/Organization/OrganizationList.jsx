@@ -4,9 +4,9 @@ import React, { Component, Suspense } from 'react';
 import { renderLog } from '../../common/utils/logging';
 import EndorsementCard from '../Widgets/EndorsementCard';
 import OrganizationDisplayForList from './OrganizationDisplayForList';
+import NoSearchResult from '../Search/NoSearchResult';
 
 const ShowMoreItems = React.lazy(() => import(/* webpackChunkName: 'ShowMoreItems' */ '../Widgets/ShowMoreItems'));
-
 
 class OrganizationList extends Component {
   constructor (props) {
@@ -21,7 +21,6 @@ class OrganizationList extends Component {
   }
 
   componentDidMount () {
-    // console.log('OrganizationList componentDidMount');
     this.onOrganizationListChange();
     window.addEventListener('scroll', this.onScroll);
   }
@@ -44,6 +43,7 @@ class OrganizationList extends Component {
   onOrganizationListChange = () => {
     const { incomingOrganizationList } = this.props;
     const organizationListToDisplay = this.sortOrganizations(incomingOrganizationList);
+
     let organizationListToDisplayCount = 0;
     if (organizationListToDisplay) {
       organizationListToDisplayCount = organizationListToDisplay.length;
@@ -116,24 +116,23 @@ class OrganizationList extends Component {
       return null;
     }
 
-    // console.log('OrganizationList organizationListToDisplay: ', organizationListToDisplayCount, organizationListToDisplayCount, loadingMoreItems);
     let numberOfItemsDisplayed = 0;
-    if (!organizationListToDisplay) {
+
+    if (organizationListToDisplayCount === 0) {
       return (
-        <div className="guidelist">
-          <div className="u-flex u-flex-column u-items-center">
-            <div className="u-margin-top--sm u-stack--sm u-no-break">
-              No results found.
-            </div>
-            <EndorsementCard
+        <NoSearchResultWrapper>
+          <NoSearchResult
+            title="No results found."
+            subtitle="Don't see an organization you want to follow?"
+          />
+          <EndorsementCard
               className="btn endorsement-btn btn-sm"
               bsPrefix="u-margin-top--sm u-stack--xs"
               variant="primary"
-              buttonText="Organization Missing?"
-              text="Don't see an organization you want to follow?"
-            />
-          </div>
-        </div>
+              buttonText="Endorse organization"
+              text=""
+          />
+        </NoSearchResultWrapper>
       );
     }
     return (
@@ -147,7 +146,6 @@ class OrganizationList extends Component {
                 }
                 numberOfItemsDisplayed += 1;
               }
-              // console.log('OrganizationList render organization:', organization);
               return (
                 <OrganizationDisplayForList
                   key={organization.organization_we_vote_id}
@@ -177,6 +175,7 @@ class OrganizationList extends Component {
     );
   }
 }
+
 OrganizationList.propTypes = {
   hideShowMoreItems: PropTypes.bool,
   incomingOrganizationList: PropTypes.array,
@@ -185,6 +184,12 @@ OrganizationList.propTypes = {
 };
 
 const ShowMoreItemsWrapper = styled('div')`
+`;
+
+const NoSearchResultWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 export default (OrganizationList);
