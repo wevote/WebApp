@@ -118,7 +118,7 @@ class OrganizationList extends Component {
 
     let numberOfItemsDisplayed = 0;
 
-    if (organizationListToDisplayCount === 0) {
+    if (!(organizationListToDisplayCount)) {
       return (
         <NoSearchResultWrapper>
           <NoSearchResult
