@@ -135,6 +135,7 @@ module.exports = (env, argv) => ({
           to: 'img/',
           globOptions: { ignore: ['**/DO-NOT-BUNDLE/**']},
         },
+        { from: 'storybook-static', to: './storybook' },
       ],
     }),
     new MomentLocalesPlugin(),

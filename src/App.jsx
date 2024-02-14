@@ -20,6 +20,7 @@ import { isCordova, isWebApp } from './js/common/utils/isCordovaOrWebApp';
 import { renderLog } from './js/common/utils/logging';
 import Header from './js/components/Navigation/Header';
 import HeaderBarSuspense from './js/components/Navigation/HeaderBarSuspense';
+import StorybookRedirect from './js/components/Widgets/StorybookRedirect';
 import webAppConfig from './js/config';
 import VoterStore from './js/stores/VoterStore';
 import initializeFacebookSDK from './js/utils/initializeFacebookSDK';
@@ -550,6 +551,7 @@ class App extends Component {
                   <Route path="/sign_in_email/:email_secret_key" component={SignInEmailProcess} />
                   <Route path="/setupaccount/:set_up_page" exact component={SetUpAccountRoot} />
                   <Route path="/setupaccount" exact><SetUpAccountRoot /></Route>
+                  <Route path="/storybook"><StorybookRedirect /></Route>
                   <Route path="/squads" exact><Squads /></Route>
                   <Route exact path="/start-a-campaign"><CampaignStartIntro /></Route>
                   <Route path="/terms" component={TermsOfService} />
