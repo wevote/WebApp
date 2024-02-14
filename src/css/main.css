@@ -1,5 +1,5 @@
 @charset "UTF-8";
-@import "https://fonts.googleapis.com/css?family=Nunito+Sans:400,700&display=swap";
+@import "https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap";
 
 /*!
  July 31, 2023: ran https://www.cssportal.com/css-optimize/ to shrink the size of the file
@@ -54,7 +54,7 @@ html {
 body {
   background-color:#fff;
   color:#000;
-  font-family:"Nunito Sans","Helvetica Neue Light","Helvetica Neue","Helvetica","Arial",sans-serif;
+  font-family:"Poppins","Helvetica Neue Light","Helvetica Neue","Helvetica","Arial",sans-serif;
   font-size:16px;
   font-style:normal;
   font-weight:normal;
