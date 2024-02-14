@@ -210,7 +210,7 @@ const SupportersText = styled('span', {
 })(({ inCompressedMode }) => (`
   color: black !important;
   font-size: ${inCompressedMode ? '16px' : '18px'};
-  font-weight: ${inCompressedMode ? '400' : '800'};
+  font-weight: ${inCompressedMode ? '400' : '600'};
 `));
 
 const TextWrapper = styled('div')`

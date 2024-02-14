@@ -52,7 +52,7 @@ export default function HeaderBarSuspense () {
       position: 'relative',
       color: 'rgb(51, 51, 51)',
       backgroundColor: 'white',
-      fontFamily: '"Nunito Sans", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif',
+      fontFamily: '"Poppins", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif',
       height: '48px',
       boxShadow: standardBoxShadow('wide'),
     }}
