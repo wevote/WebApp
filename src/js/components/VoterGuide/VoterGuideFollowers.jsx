@@ -10,7 +10,7 @@ import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../common/utils/logging';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
-import SearchBar from '../Search/SearchBar';
+import SearchBar2024 from '../Search/SearchBar2024';
 import { PageContentContainer } from '../Style/pageLayoutStyles';
 import GuideList from './GuideList';
 
@@ -199,11 +199,9 @@ class VoterGuideFollowers extends Component {
                     </DelayedLoad>
                   </Suspense>
                 )}
-              {/* ********** */}
-              {/* Search Box */}
               {voterGuideFollowersList && voterGuideFollowersList.length > 0 && (
                 <SearchInputWrapper>
-                  <SearchBar
+                  <SearchBar2024
                     clearButton
                     clearFunction={this.clearSearchBarFunction}
                     placeholder="Search these followers"
@@ -213,8 +211,6 @@ class VoterGuideFollowers extends Component {
                   />
                 </SearchInputWrapper>
               )}
-              {/* ***************** */}
-              {/* Results Not Found */}
               {(searchTerm && (voterGuideFollowersListFilteredBySearch && voterGuideFollowersListFilteredBySearch.length === 0)) && (
                 <SearchResultsWrapper>
                   &quot;

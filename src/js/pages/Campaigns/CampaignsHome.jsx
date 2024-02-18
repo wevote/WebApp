@@ -21,7 +21,7 @@ import RepresentativeStore from '../../stores/RepresentativeStore';
 import VoterStore from '../../stores/VoterStore';
 import CampaignsHomeFilter from '../../components/CampaignsHome/CampaignsHomeFilter';
 import CandidateListRootPlaceholder from '../../components/CampaignsHome/CandidateListRootPlaceholder';
-import colors from '../../common/components/Style/Colors';
+import NoSearchResult from '../../components/Search/NoSearchResult';
 
 const CandidateListRoot = React.lazy(() => import(/* webpackChunkName: 'CandidateListRoot' */ '../../components/CandidateListRoot/CandidateListRoot'));
 const CampaignListRoot = React.lazy(() => import(/* webpackChunkName: 'CampaignListRoot' */ '../../common/components/Campaign/CampaignListRoot'));
@@ -664,7 +664,7 @@ class CampaignsHome extends Component {
               <Suspense fallback={<span>&nbsp;</span>}>
                 <CampaignListRoot
                   hideCampaignsLinkedToPoliticians
-                  hideIfNoResults={this.state.hideIfNoResults}
+                  hideIfNoResults
                   onHideIfNoResultsChange={this.handleHideIfNoResultsChange}
                   incomingList={campaignList}
                   incomingListTimeStampOfChange={campaignListTimeStampOfChange}
@@ -698,12 +698,11 @@ class CampaignsHome extends Component {
           stateCode={stateCode}
         />
         {((this.state.hideIfNoResults)) && (
-          <NoSearchResult>
-            No Candidate Found
-            <p>
-              Please ensure the accuracy of the candidate's name and try your search again
-            </p>
-          </NoSearchResult>
+          <NoSearchResult
+          title="No Candidate Found"
+          subtitle="Please ensure the accuracy of the candidate's name and try your search again
+          "
+          />
         )}
 
         {(nextReleaseFeaturesEnabled && pigCanFly) && (
@@ -711,7 +710,7 @@ class CampaignsHome extends Component {
             <Suspense fallback={<span><CandidateListRootPlaceholder titleTextForList="Campaigns" /></span>}>
               <CampaignListRoot
                 hideCampaignsLinkedToPoliticians
-                hideIfNoResults={this.state.hideIfNoResults}
+                hideIfNoResults
                 onHideIfNoResultsChange={this.handleHideIfNoResultsChange}
                 incomingList={campaignList}
                 incomingListTimeStampOfChange={campaignListTimeStampOfChange}
@@ -729,7 +728,7 @@ class CampaignsHome extends Component {
           <WhatIsHappeningSection useMinimumHeight={useMinimumBattlegroundHeight}>
             <Suspense fallback={<span><CandidateListRootPlaceholder titleTextForList="Candidates in Close Races" /></span>}>
               <CandidateListRoot
-                hideIfNoResults={this.state.hideIfNoResults}
+                hideIfNoResults
                 onHideIfNoResultsChange={this.handleHideIfNoResultsChange}
                 incomingList={candidateListIsBattleground}
                 incomingListTimeStampOfChange={candidateListTimeStampOfChange}
@@ -750,7 +749,7 @@ class CampaignsHome extends Component {
           <WhatIsHappeningSection useMinimumHeight={!isSearching}>
             <Suspense fallback={<span><CandidateListRootPlaceholder titleTextForList="Current Representatives" /></span>}>
               <RepresentativeListRoot
-                hideIfNoResults={this.state.hideIfNoResults}
+                hideIfNoResults
                 onHideIfNoResultsChange={this.handleHideIfNoResultsChange}
                 incomingList={representativeListShownAsRepresentatives}
                 incomingListTimeStampOfChange={representativeListTimeStampOfChange}
@@ -769,7 +768,7 @@ class CampaignsHome extends Component {
           <WhatIsHappeningSection useMinimumHeight={!isSearching}>
             <Suspense fallback={<span><CandidateListRootPlaceholder titleTextForList="On Your Ballot" /></span>}>
               <CandidateListRoot
-                hideIfNoResults={this.state.hideIfNoResults}
+                hideIfNoResults
                 onHideIfNoResultsChange={this.handleHideIfNoResultsChange}
                 incomingList={candidateListOnYourBallot}
                 incomingListTimeStampOfChange={candidateListTimeStampOfChange}
@@ -787,7 +786,7 @@ class CampaignsHome extends Component {
         <WhatIsHappeningSection useMinimumHeight={!isSearching}>
           <Suspense fallback={<span><CandidateListRootPlaceholder /></span>}>
             <CandidateListRoot
-              hideIfNoResults={this.state.hideIfNoResults}
+              hideIfNoResults
               onHideIfNoResultsChange={this.handleHideIfNoResultsChange}
               incomingList={candidateListOther}
               incomingListTimeStampOfChange={candidateListTimeStampOfChange}
@@ -844,22 +843,6 @@ const WhatIsHappeningSection = styled('div', {
   // padding: 0 0 25px 0;
 `));
 
-const NoSearchResult = styled.div`
-  margin-top: 70px;
-  color: ${colors.darkGrey};
-  text-align: center;
-  font-size: 22px;
-  font-weight: 600;
-  line-height: normal;
 
-p{
-  margin-top: 10px;
-  color: ${colors.darkGrey};
-  text-align: center;
-  font-size: 16px;
-  font-weight: 400;
-  line-height: normal;
-}
-`;
 
 export default CampaignsHome;

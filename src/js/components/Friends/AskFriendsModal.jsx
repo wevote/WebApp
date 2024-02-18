@@ -10,7 +10,7 @@ import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import SearchBar from '../Search/SearchBar';
+import SearchBar2024 from '../Search/SearchBar2024';
 import FriendList from './FriendList';
 import FriendActions from '../../actions/FriendActions';
 import apiCalming from '../../common/utils/apiCalming';
@@ -22,6 +22,7 @@ import { ModalTitleType1 } from '../Style/ModalType1Styles';
 import BallotStore from '../../stores/BallotStore';
 import FriendStore from '../../stores/FriendStore';
 import sortFriendListByMutualFriends from '../../utils/friendFunctions';
+import NoSearchResult from '../Search/NoSearchResult';
 
 const MessageToFriendInputField = React.lazy(() => import(/* webpackChunkName: 'MessageToFriendInputField' */ './MessageToFriendInputField'));
 const SuggestedContacts = React.lazy(() => import(/* webpackChunkName: 'SuggestedContacts' */ './SuggestedContacts'));
@@ -226,7 +227,7 @@ class AskFriendsModal extends Component {
           <div className="full-width">
             {totalCurrentFriendListCount > 10 && (
               <>
-                <SearchBar
+                <SearchBar2024
                   clearButton
                   searchButton
                   placeholder="Search by name"
@@ -239,11 +240,10 @@ class AskFriendsModal extends Component {
             )}
             <FriendListExternalWrapper>
               { (searchFilterOn && currentFriendList.length === 0) && (
-                <p>
-                  &quot;
-                  {searchTerm}
-                  &quot; not found
-                </p>
+              <NoSearchResult
+                title="No results found."
+                subtitle="Please double check and try again."
+              />
               )}
               <FriendList
                 electionDateInFutureFormatted={electionDateInFutureFormatted}

@@ -190,8 +190,6 @@ class OneValue extends Component {
     const showEndorsersForThisElection = (listModeShown === 'voterGuidesForThisElection');
     const advocatesCount = Math.max(organizationsForValueLength, voterGuidesForValueLength);
 
-    // console.log('organizationsForValue:', organizationsForValue);
-    // console.log('voterGuidesForValue:', voterGuidesForValue);
     if (searchText.length > 0) {
       let modifiedOrganization;
       const searchTextLowercase = searchText.toLowerCase();
