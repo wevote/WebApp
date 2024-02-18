@@ -535,8 +535,15 @@ class SettingsVerifySecretCode extends Component {
             <Title condensed={condensed}>Code Verification</Title>
             <Subtitle>A 6-digit code has been sent to</Subtitle>
             <PhoneSubtitle>{voterPhoneNumber || voterEmailAddress}</PhoneSubtitle>
-            {(voterEmailAddress) && (
+
+            {(voterEmailAddress) ? (
               <Subtitle>If you haven&apos;t received the code in 30 seconds, please check your spam folder and mark the email as &apos;Not Spam&apos;.</Subtitle>
+            ) : (
+              <>
+                {(voterPhoneNumber) && (
+                  <Subtitle>If you haven&apos;t received the code within 30 seconds, please verify the number you entered.</Subtitle>
+                )}
+              </>
             )}
             <InputContainer condensed={condensed}>
               <OutlinedInput
