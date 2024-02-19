@@ -12,13 +12,14 @@ const groupIcon = '../../../img/global/svg-icons/group-icon.svg';
 const publicIcon = '../../../img/global/svg-icons/public-icon.svg';
 
 
-export default function FriendsOnlyIndicator({ isFriendsOnly }){
+export default function FriendsOnlyIndicator ({ isFriendsOnlyIncoming }) {
   renderLog('FriendsOnlyIndicator');  // Set LOG_RENDER_EVENTS to log all renders
-  
+
+  let isFriendsOnly = isFriendsOnlyIncoming;
   let labelText = '';
   let visibilityIcon = '';
 
-  if (isFriendsOnly === undefined) {
+  if (isFriendsOnlyIncoming === undefined) {
     isFriendsOnly = true;
   }
 
@@ -71,11 +72,10 @@ export default function FriendsOnlyIndicator({ isFriendsOnly }){
       <PublicFriendsIndicator>{visibilityIcon}</PublicFriendsIndicator>
     </FriendsOnlyOverlayTrigger>
   );
-
-};
+}
 
 FriendsOnlyIndicator.propTypes = {
-  isFriendsOnly: PropTypes.bool,
+  isFriendsOnlyIncoming: PropTypes.bool,
 };
 
 const PublicFriendsIndicator = styled('span')`
