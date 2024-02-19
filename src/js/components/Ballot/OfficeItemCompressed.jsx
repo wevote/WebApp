@@ -31,7 +31,6 @@ const IssuesByBallotItemDisplayList = React.lazy(() => import(/* webpackChunkNam
 const ItemActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemActionBar' */ '../Widgets/ItemActionBar/ItemActionBar'));
 const ShowMoreButtons = React.lazy(() => import(/* webpackChunkName: 'ShowMoreButtons' */ '../Widgets/ShowMoreButtons'));
 
-const SHOW_ALL_CANDIDATES_IF_FEWER_THAN_THIS_NUMBER_OF_BALLOT_ITEMS = 5;
 const NUMBER_OF_CANDIDATES_TO_DISPLAY = 3;
 
 // This is related to components/VoterGuide/VoterGuideOfficeItemCompressed
@@ -43,7 +42,6 @@ class OfficeItemCompressed extends Component {
     this.state = {
       candidateListLength: 0,
       candidateListForDisplay: [],
-      limitNumberOfCandidatesShownToThisNumber: NUMBER_OF_CANDIDATES_TO_DISPLAY,
       organizationWeVoteId: '',
       positionListFromFriendsHasBeenRetrievedOnce: {},
       positionListHasBeenRetrievedOnce: {},
@@ -199,14 +197,6 @@ class OfficeItemCompressed extends Component {
         let sortedCandidateList = {};
         if (candidateListForDisplay && candidateListForDisplay.length) {
           sortedCandidateList = sortCandidateList(candidateListForDisplay);
-          const { totalNumberOfBallotItems } = this.props;
-          const limitCandidatesShownBecauseMoreThanDefaultNumberOfBallotItems = (totalNumberOfBallotItems && totalNumberOfBallotItems > SHOW_ALL_CANDIDATES_IF_FEWER_THAN_THIS_NUMBER_OF_BALLOT_ITEMS);
-          if (!limitCandidatesShownBecauseMoreThanDefaultNumberOfBallotItems) {
-            // If the ballot is only show 5 ballot items, then don't limit the number of candidates we show
-            this.setState({
-              limitNumberOfCandidatesShownToThisNumber: candidateList.length,
-            });
-          }
         }
         this.setState({
           candidateListForDisplay: sortedCandidateList,
@@ -262,12 +252,18 @@ class OfficeItemCompressed extends Component {
     const { candidateList } = this.props;
     let { candidatesToShowForSearchResults } = this.props;
     candidatesToShowForSearchResults = candidatesToShowForSearchResults || [];
-    const { candidateListForDisplay, showAllCandidates } = this.state;
+    const { showAllCandidates } = this.state;
     const supportedCandidatesList = candidateList.filter((candidate) => candidatesToShowForSearchResults.includes(candidate.we_vote_id) || (SupportStore.getVoterSupportsByBallotItemWeVoteId(candidate.we_vote_id) && !candidate.withdrawn_from_election));
     const opposedCandidatesList = candidateList.filter((candidate) => candidatesToShowForSearchResults.includes(candidate.we_vote_id) || (SupportStore.getVoterOpposesByBallotItemWeVoteId(candidate.we_vote_id) && !candidate.withdrawn_from_election));
     const supportedAndOpposedCandidatesList = supportedCandidatesList.concat(opposedCandidatesList);
-    const candidatesToRender = (supportedCandidatesList.length && !showAllCandidates) ? supportedAndOpposedCandidatesList : candidateListForDisplay;
-    return candidatesToRender.length;
+    // console.log('OfficeItemCompressed getCandidatesToRenderCount candidatesToRender: ', candidatesToRender);
+    if (showAllCandidates) {
+      return candidateList.length;
+    } else if (supportedAndOpposedCandidatesList && supportedAndOpposedCandidatesList.length > 0) {
+      return supportedAndOpposedCandidatesList.length;
+    } else {
+      return NUMBER_OF_CANDIDATES_TO_DISPLAY;
+    }
   }
 
   // eslint-disable-next-line no-unused-vars
@@ -275,14 +271,24 @@ class OfficeItemCompressed extends Component {
     const { candidateList, externalUniqueId, isFirstBallotItem } = this.props;
     let { candidatesToShowForSearchResults } = this.props;
     candidatesToShowForSearchResults = candidatesToShowForSearchResults || [];
-    const { candidateListForDisplay, limitNumberOfCandidatesShownToThisNumber, showAllCandidates } = this.state;
+    const { candidateListForDisplay, showAllCandidates } = this.state; // limitNumberOfCandidatesShownToThisNumber
     // If voter has chosen 1+ candidates, only show those
     const supportedCandidatesList = candidateList.filter((candidate) => candidatesToShowForSearchResults.includes(candidate.we_vote_id) || (SupportStore.getVoterSupportsByBallotItemWeVoteId(candidate.we_vote_id) && !candidate.withdrawn_from_election));
     const opposedCandidatesList = candidateList.filter((candidate) => candidatesToShowForSearchResults.includes(candidate.we_vote_id) || (SupportStore.getVoterOpposesByBallotItemWeVoteId(candidate.we_vote_id) && !candidate.withdrawn_from_election));
     const supportedAndOpposedCandidatesList = supportedCandidatesList.concat(opposedCandidatesList);
     // If there are supported candidates, then limit what we show to supported and opposed candidates
-    const candidatesToRender = (supportedCandidatesList.length && !showAllCandidates) ? supportedAndOpposedCandidatesList : candidateListForDisplay;
-    const candidatesToRenderLength = candidatesToRender.length;
+    let candidatesToRender;
+    let limitNumberOfCandidatesShownToThisNumber;
+    if (showAllCandidates) {
+      candidatesToRender = candidateList;
+      limitNumberOfCandidatesShownToThisNumber = candidatesToRender.length;
+    } else if (supportedAndOpposedCandidatesList && supportedAndOpposedCandidatesList.length > 0) {
+      candidatesToRender = supportedAndOpposedCandidatesList;
+      limitNumberOfCandidatesShownToThisNumber = candidatesToRender.length;
+    } else {
+      candidatesToRender = candidateListForDisplay;
+      limitNumberOfCandidatesShownToThisNumber = NUMBER_OF_CANDIDATES_TO_DISPLAY;
+    }
     const hideItemActionBar = false;
     const hideCandidateDetails = false; // supportedCandidatesList.length;
     let candidateCount = 0;
@@ -450,7 +456,8 @@ class OfficeItemCompressed extends Component {
                     </PositionRowListOuterWrapper>
                   </CandidateContainer>
                 </BallotHorizontallyScrollingContainer>
-                {((candidateCount < candidatesToRenderLength) && (candidateCount < limitNumberOfCandidatesShownToThisNumber)) && (
+                {/* {((candidateCount < candidatesToRenderLength) && (candidateCount < limitNumberOfCandidatesShownToThisNumber)) && ( */}
+                {(candidateCount < limitNumberOfCandidatesShownToThisNumber) && (
                   <div>
                     <HrSeparator />
                   </div>
@@ -464,14 +471,12 @@ class OfficeItemCompressed extends Component {
 
   showAllCandidates () {
     this.setState({
-      limitNumberOfCandidatesShownToThisNumber: 99,
       showAllCandidates: true,
     });
   }
 
   showLessCandidates () {
     this.setState({
-      limitNumberOfCandidatesShownToThisNumber: NUMBER_OF_CANDIDATES_TO_DISPLAY,
       showAllCandidates: false,
     }, () => {
       this.targetRef.scrollIntoView({
@@ -513,9 +518,6 @@ class OfficeItemCompressed extends Component {
     const { isFirstBallotItem, officeWeVoteId } = this.props; // classes
     const { candidateListLength, showAllCandidates, totalNumberOfCandidates } = this.state;
     ballotItemDisplayName = toTitleCase(ballotItemDisplayName);
-    // const supportedCandidatesList = candidateList.filter((candidate) => (SupportStore.getVoterSupportsByBallotItemWeVoteId(candidate.we_vote_id) && !candidate.withdrawn_from_election));
-    // const thereIsAtLeastOneSupportedCandidate = supportedCandidatesList.length > 0;
-    // Even if voter has chosen 1+ candidates, show the "Show more" link
     const candidatesToRenderCount = this.getCandidatesToRenderCount();
     const moreCandidatesToDisplay = (candidatesToRenderCount < totalNumberOfCandidates);
     // console.log('ballotItemDisplayName:', ballotItemDisplayName, ', candidatesToRenderCount:', candidatesToRenderCount, ', totalNumberOfCandidates:', totalNumberOfCandidates, ', moreCandidatesToDisplay:', moreCandidatesToDisplay);
@@ -534,7 +536,7 @@ class OfficeItemCompressed extends Component {
           {ballotItemDisplayName}
         </OfficeNameH2>
         {/* *************************
-          Display either a) the candidates the voter supports, or b) the first several candidates running for this office
+          Display either a) the candidates the voter supports, or b) the first few candidates running for this office
           ************************* */}
         {this.generateCandidates(officeWeVoteId)}
 
@@ -574,7 +576,6 @@ OfficeItemCompressed.propTypes = {
   isFirstBallotItem: PropTypes.bool,
   organization: PropTypes.object,
   organizationWeVoteId: PropTypes.string,
-  totalNumberOfBallotItems: PropTypes.number,
 };
 
 const styles = (theme) => ({
