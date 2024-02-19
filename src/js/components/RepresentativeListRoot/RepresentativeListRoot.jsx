@@ -99,6 +99,18 @@ class RepresentativeListRoot extends Component {
 
   componentWillUnmount () {
     this.representativeStoreListener.remove();
+    if (this.timer) clearTimeout(this.timer);
+  }
+
+  handleNumberOfResults (numberOfFilteredResults, numberOfSearchResults) {
+    // console.log('RepresentativeListRoot handleNumberOfResults numberOfFilteredResults:', numberOfFilteredResults, ', numberOfSearchResults:', numberOfSearchResults);
+    if (this.props.handleNumberOfResults) {
+      // Delay telling the parent component that the number of results has changed
+      // if (this.timer) clearTimeout(this.timer);
+      // this.timer = setTimeout(() => {
+      this.props.handleNumberOfResults(numberOfFilteredResults, numberOfSearchResults);
+      // }, 500);
+    }
   }
 
   onRepresentativeStoreChange () {
@@ -336,7 +348,7 @@ class RepresentativeListRoot extends Component {
       hideDisplayBecauseNoSearchResults,
       representativeSearchResults: searchResults,
       timeStampOfChange: Date.now(),
-    });
+    }, () => { this.handleNumberOfResults(filteredList.length, searchResults.length); });
   }
 
   leftAndRightArrowSetState = (el) => {
@@ -439,6 +451,7 @@ class RepresentativeListRoot extends Component {
 }
 RepresentativeListRoot.propTypes = {
   classes: PropTypes.object,
+  handleNumberOfResults: PropTypes.func,
   hideIfNoResults: PropTypes.bool,
   hideTitle: PropTypes.bool,
   incomingList: PropTypes.array,

@@ -178,7 +178,7 @@ class AskFriendsModal extends Component {
     const { location: { pathname } } = window;
     const {
       currentFriendListFilteredBySearch, electionDateInFutureFormatted,
-      electionDateIsToday, numberOfItemsToDisplay, searchFilterOn, searchTerm,
+      electionDateIsToday, numberOfItemsToDisplay, searchFilterOn,
       totalCurrentFriendListCount,
     } = this.state;
     let { currentFriendList } = this.state;

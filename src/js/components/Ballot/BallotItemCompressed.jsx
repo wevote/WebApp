@@ -10,7 +10,7 @@ export default class BallotItemCompressed extends PureComponent {
     const {
       ballotItemDisplayName, candidateList, candidatesToShowForSearchResults,
       isFirstBallotItem, isMeasure,
-      totalNumberOfBallotItems, weVoteId,
+      weVoteId,
     } = this.props;
     return (
       <div id={weVoteId}>
@@ -26,7 +26,6 @@ export default class BallotItemCompressed extends PureComponent {
             candidateList={candidateList}
             candidatesToShowForSearchResults={candidatesToShowForSearchResults}
             isFirstBallotItem={isFirstBallotItem}
-            totalNumberOfBallotItems={totalNumberOfBallotItems}
           />
         )}
       </div>
@@ -39,6 +38,5 @@ BallotItemCompressed.propTypes = {
   candidatesToShowForSearchResults: PropTypes.array,
   isFirstBallotItem: PropTypes.bool,
   isMeasure: PropTypes.bool,
-  totalNumberOfBallotItems: PropTypes.number,
   weVoteId: PropTypes.string.isRequired,
 };

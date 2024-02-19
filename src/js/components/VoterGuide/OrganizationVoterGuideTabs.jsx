@@ -62,7 +62,7 @@ export default class OrganizationVoterGuideTabs extends Component {
     VoterGuideActions.voterGuideFollowersRetrieve(organizationWeVoteId);
     VoterGuideActions.voterGuidesRecommendedByOrganizationRetrieve(organizationWeVoteId, VoterStore.electionId());
     // Positions for this organization, for this voter / election
-    OrganizationActions.positionListForOpinionMaker(organizationWeVoteId, true); // Needed for friends
+    OrganizationActions.positionListForOpinionMaker(organizationWeVoteId, true, false); // Needed for friends
     // Positions for this organization, NOT including for this voter / election
     OrganizationActions.positionListForOpinionMaker(organizationWeVoteId, false, true);
     // New call for all positions
