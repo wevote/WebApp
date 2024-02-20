@@ -30,7 +30,7 @@ if (major < 13) {
   console.log(`Node version is: ${process.version}`);
 }
 console.log('useRealCerts in webpack.config.js ', useRealCerts);
-console.log('key: ', fs.readFileSync(`./${source}/cert/wevotedeveloper.com.crt`).toString());
+// console.log('key: ', fs.readFileSync(`./${source}/cert/wevotedeveloper.com.crt`).toString());
 
 module.exports = (env, argv) => ({
   entry: path.resolve(__dirname, `./${source}/index.jsx`),
