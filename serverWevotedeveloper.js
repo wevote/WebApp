@@ -1,5 +1,10 @@
 /* eslint-disable */
+
 // start the express server
+
+// invoke:
+//    node serverWevotedeveloper.js
+
 const express = require("express");
 const app = express();
 const fs = require("fs");
