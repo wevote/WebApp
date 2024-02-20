@@ -8,7 +8,7 @@ import apiCalming from '../common/utils/apiCalming';
 import { renderLog } from '../common/utils/logging';
 
 import OpinionsFollowedList from '../components/Organization/OpinionsFollowedList';
-import SearchBar from '../components/Search/SearchBar';
+import SearchBar2024 from '../components/Search/SearchBar2024';
 
 export default class OpinionsFollowed extends Component {
   constructor (props) {
@@ -90,7 +90,7 @@ export default class OpinionsFollowed extends Component {
               <em>We will never sell your email</em>
               .
             </p>
-            <SearchBar
+            <SearchBar2024
               clearButton
               searchButton
               placeholder="Search by name or Twitter handle"

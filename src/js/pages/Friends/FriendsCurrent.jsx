@@ -6,9 +6,10 @@ import FriendActions from '../../actions/FriendActions';
 import apiCalming from '../../common/utils/apiCalming';
 import { renderLog } from '../../common/utils/logging';
 import FriendList from '../../components/Friends/FriendList';
-import SearchBar from '../../components/Search/SearchBar';
+import SearchBar2024 from '../../components/Search/SearchBar2024';
 import FriendStore from '../../stores/FriendStore';
 import sortFriendListByMutualFriends from '../../utils/friendFunctions';
+import NoSearchResult from '../../components/Search/NoSearchResult';
 
 export default class FriendsCurrent extends Component {
   constructor (props) {
@@ -98,7 +99,7 @@ export default class FriendsCurrent extends Component {
               {currentFriendList.length}
               )
             </SectionTitle>
-            <SearchBar
+            <SearchBar2024
               clearButton
               searchButton
               placeholder="Search by name"
@@ -108,11 +109,10 @@ export default class FriendsCurrent extends Component {
             />
             <br />
             { (searchFilterOn && friendListForDisplay.length === 0) && (
-              <p>
-                &quot;
-                {searchTerm}
-                &quot; not found
-              </p>
+            <NoSearchResult
+              title="No results found."
+              subtitle="Please double check and try again."
+            />
             )}
           </>
         )}

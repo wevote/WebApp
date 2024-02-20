@@ -20,7 +20,6 @@ import { isCordova, isWebApp } from './js/common/utils/isCordovaOrWebApp';
 import { renderLog } from './js/common/utils/logging';
 import Header from './js/components/Navigation/Header';
 import HeaderBarSuspense from './js/components/Navigation/HeaderBarSuspense';
-import StorybookRedirect from './js/components/Widgets/StorybookRedirect';
 import webAppConfig from './js/config';
 import VoterStore from './js/stores/VoterStore';
 import initializeFacebookSDK from './js/utils/initializeFacebookSDK';
@@ -363,6 +362,12 @@ class App extends Component {
     The props.match.path shows exactly which route string from this file, was selected by the <Switch>
     */
 
+    if (window.location.href.endsWith('/storybook')) {
+      const destinationHref = `${window.location.href}-static/index.html?path=/docs/design-system--docs`;
+      console.log('Storybook redirect from: ', window.location.href, ' to: ', destinationHref);
+      window.location.href = destinationHref;
+    }
+
     return (
       <>
         {enableFullStory && <FullStory org={webAppConfig.FULL_STORY_ORG} />}
@@ -551,7 +556,6 @@ class App extends Component {
                   <Route path="/sign_in_email/:email_secret_key" component={SignInEmailProcess} />
                   <Route path="/setupaccount/:set_up_page" exact component={SetUpAccountRoot} />
                   <Route path="/setupaccount" exact><SetUpAccountRoot /></Route>
-                  <Route path="/storybook"><StorybookRedirect /></Route>
                   <Route path="/squads" exact><Squads /></Route>
                   <Route exact path="/start-a-campaign"><CampaignStartIntro /></Route>
                   <Route path="/terms" component={TermsOfService} />
@@ -707,7 +711,7 @@ const WeVoteBody = styled('div')`
   line-height: 1.4;
   margin: 0 auto;
   // max-width: 960px;
-  height: 100vw;
+  //height: 100vw;
   position: relative;
   z-index: 0;
   // this debug technique works!  ${() => console.log('-----------------------------')}

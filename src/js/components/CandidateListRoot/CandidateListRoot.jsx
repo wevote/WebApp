@@ -104,6 +104,17 @@ class CandidateListRoot extends Component {
     this.candidateStoreListener.remove();
   }
 
+  handleNumberOfResults (numberOfFilteredResults, numberOfSearchResults) {
+    // console.log('RepresentativeListRoot handleNumberOfResults numberOfFilteredResults:', numberOfFilteredResults, ', numberOfSearchResults:', numberOfSearchResults);
+    if (this.props.handleNumberOfResults) {
+      // Delay telling the parent component that the number of results has changed
+      // if (this.timer) clearTimeout(this.timer);
+      // this.timer = setTimeout(() => {
+      this.props.handleNumberOfResults(numberOfFilteredResults, numberOfSearchResults);
+      // }, 500);
+    }
+  }
+
   onCandidateStoreChange () {
     this.onIncomingListChange();
   }
@@ -255,7 +266,7 @@ class CandidateListRoot extends Component {
     filteredList = filteredList.sort(this.orderByUltimateElectionDate);
     let searchResults = [];
     let hideDisplayBecauseNoSearchResults = false;
-    this.callbackToParentHideIfNoResults(false);
+    // this.callbackToParentHideIfNoResults(false);
     if (searchText && searchText.length > 0) {
       const searchTextLowercase = searchText.toLowerCase();
       // console.log('searchTextLowercase:', searchTextLowercase);
@@ -288,7 +299,7 @@ class CandidateListRoot extends Component {
         });
       if (searchResults.length === 0) {
         hideDisplayBecauseNoSearchResults = true;
-        this.callbackToParentHideIfNoResults(true);
+        // this.callbackToParentHideIfNoResults(true);
       }
       if (searchResults.length > 0) {
         // Only allow the first politician entry to be displayed (when there are multiple candidate entries for the same politician)
@@ -327,7 +338,7 @@ class CandidateListRoot extends Component {
       filteredList,
       hideDisplayBecauseNoSearchResults,
       timeStampOfChange: Date.now(),
-    });
+    }, () => { this.handleNumberOfResults(filteredList.length, searchResults.length); });
   }
 
   leftAndRightArrowSetState = (el) => {
@@ -351,9 +362,9 @@ class CandidateListRoot extends Component {
     });
   }
 
-  callbackToParentHideIfNoResults = (newValue) => {
-    this.props.onHideIfNoResultsChange(newValue);
-  }
+  // callbackToParentHideIfNoResults = (newValue) => {
+  //   this.props.onHideIfNoResultsChange(newValue);
+  // }
 
   render () {
     renderLog('CandidateListRoot');  // Set LOG_RENDER_EVENTS to log all renders
@@ -438,8 +449,8 @@ class CandidateListRoot extends Component {
 }
 CandidateListRoot.propTypes = {
   classes: PropTypes.object,
+  handleNumberOfResults: PropTypes.func,
   hideIfNoResults: PropTypes.bool,
-  onHideIfNoResultsChange: PropTypes.func,
   hideTitle: PropTypes.bool,
   incomingList: PropTypes.array,
   incomingListTimeStampOfChange: PropTypes.number,
