@@ -87,7 +87,7 @@ class FindFriendsRoot extends React.Component {
     this.setState({
       displayStep,
       setUpPagePath,
-    });
+    }, () => this.setNextStepVariables());
     // this.onBallotStoreChange();
     // this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
     this.onAppObservableStoreChange();
