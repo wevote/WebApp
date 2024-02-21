@@ -21,6 +21,7 @@ const isWebApp = !process.env.npm_lifecycle_script.includes('CORDOVA=1');
 const useRealCerts = process.env.npm_lifecycle_script.includes('USE_REAL_CERTS=1');
 const source = isWebApp ? 'src' : 'srcCordova';
 const bundleAnalysis = process.env.ANALYSIS || false;  // enable the interactive bundle analyser and the Unused component analyzer
+const minimized = process.env.MINIMIZED === '1' || false;  // enable the Terser plugin that strips comments and shrinks long variable names
 const verBits = process.version.split('.');
 const major = parseInt(verBits[0].replace('v', ''));
 if (major < 13) {
