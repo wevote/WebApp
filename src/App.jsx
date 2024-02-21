@@ -707,7 +707,7 @@ const WeVoteBody = styled('div')`
   background-color: #fff; // rgb(235, 236, 238); // #fafafa;
   color: #333;
   display: block;
-  font-family: "Poppins", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+  font-family: "Nunito Sans", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
   line-height: 1.4;
   margin: 0 auto;
   // max-width: 960px;
