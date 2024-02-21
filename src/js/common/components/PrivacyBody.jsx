@@ -17,7 +17,7 @@ export default class PrivacyBody extends Component {
         <ContentTitle>WeVote.US Privacy Policy</ContentTitle>
         <p><strong>Last updated: August 12th, 2022</strong></p>
         <p>
-          <span>We Vote USA has created this privacy policy to explain how We Vote (or “we”) uses information that we collect from you while you visit We Vote, currently located at </span>
+          <span>We Vote USA has created this privacy policy to explain how WeVote (or “we”) uses information that we collect from you while you visit WeVote, currently located at </span>
           <span>
             <Suspense fallback={<></>}>
               <OpenExternalWebSite
@@ -42,7 +42,7 @@ export default class PrivacyBody extends Component {
             other subdomains,
             {' '}
             provided in mobile apps (the “Site”),
-            or while you use a portion of We Vote that is embedded on another website (the “Services”).  We Vote may modify this policy from time to time, so we encourage you to check this page when revisiting the Site.  The date of the most recent revision is listed above.
+            or while you use a portion of WeVote that is embedded on another website (the “Services”).  WeVote may modify this policy from time to time, so we encourage you to check this page when revisiting the Site.  The date of the most recent revision is listed above.
           </span>
         </p>
         <p>
@@ -80,9 +80,9 @@ export default class PrivacyBody extends Component {
             We use the information we collect about you to operate this Site,
             which includes finding and showing you what candidates and measures are on your United States ballot,
             showing you possible friends you might want to connect with,
-            to send you news and information about We Vote, to measure the effectiveness of our
+            to send you news and information about WeVote, to measure the effectiveness of our
             programs, and to send you timely election reminders.
-            You may opt-out of receiving messages from We Vote by sending any email to
+            You may opt-out of receiving messages from WeVote by sending any email to
             {' '}
             <a href="mailto:info@WeVote.US" target="_blank" rel="noopener noreferrer">info@WeVote.US</a>
             {' '}
@@ -91,7 +91,7 @@ export default class PrivacyBody extends Component {
           </span>
         </p>
         <p>
-          <span>If you have opted-into the We Vote mailing list, your email address and name may be exchanged with named partners and other organizations with principles and/or missions that overlap with those of We Vote. Subscribers may opt out of such mailing list exchanges at any time. Our purpose is to protect your information while making sure you have what you need to make an informed decision on Election Day.</span>
+          <span>If you have opted-into the WeVote mailing list, your email address and name may be exchanged with named partners and other organizations with principles and/or missions that overlap with those of WeVote. Subscribers may opt out of such mailing list exchanges at any time. Our purpose is to protect your information while making sure you have what you need to make an informed decision on Election Day.</span>
         </p>
         <p>These are some ways your information is used or shown:</p>
         <HorizontallyScrollingDiv>
@@ -99,7 +99,7 @@ export default class PrivacyBody extends Component {
             <tbody>
               <tr>
                 <TdColumn1><strong>Your Personal Information</strong></TdColumn1>
-                <TdColumn2><strong>How We Vote Uses or Displays</strong></TdColumn2>
+                <TdColumn2><strong>How WeVote Uses or Displays</strong></TdColumn2>
                 <TdColumn3><strong>Public?</strong></TdColumn3>
                 <TdColumn4><strong>Can Be Hidden?</strong></TdColumn4>
               </tr>
@@ -111,19 +111,19 @@ export default class PrivacyBody extends Component {
               </tr>
               <tr>
                 <TdColumn1>Your Mailing List Email Address and Name</TdColumn1>
-                <TdColumn2>We Vote&apos;s opt-in mailing list uses your email address and name to update you a variety of topic related to voting.</TdColumn2>
+                <TdColumn2>WeVote&apos;s opt-in mailing list uses your email address and name to update you a variety of topic related to voting.</TdColumn2>
                 <TdColumn3>No.</TdColumn3>
                 <TdColumn4>Is hidden</TdColumn4>
               </tr>
               <tr>
-                <TdColumn1>Your We Vote Account Email Address(es)</TdColumn1>
-                <TdColumn2>Used to contact you for sign in, or notifications which you control. When a friend imports contacts which include your email address, we show your friend that you are already on We Vote so they can request to be connected with you. We will never sell your email address.</TdColumn2>
+                <TdColumn1>Your WeVote Account Email Address(es)</TdColumn1>
+                <TdColumn2>Used to contact you for sign in, or notifications which you control. When a friend imports contacts which include your email address, we show your friend that you are already on WeVote so they can request to be connected with you. We will never sell your email address.</TdColumn2>
                 <TdColumn3>No. Discoverable by friends importing their contact lists.</TdColumn3>
                 <TdColumn4>Is hidden from view. Cannot prevent discoverability by friends.</TdColumn4>
               </tr>
               <tr>
                 <TdColumn1>Your Phone Number</TdColumn1>
-                <TdColumn2>Used to contact you for sign in, or notifications which you control. When a friend imports contacts which include your phone number, we show your friend that you are already on We Vote so they can request to be connected with you. We will never sell your phone number.</TdColumn2>
+                <TdColumn2>Used to contact you for sign in, or notifications which you control. When a friend imports contacts which include your phone number, we show your friend that you are already on WeVote so they can request to be connected with you. We will never sell your phone number.</TdColumn2>
                 <TdColumn3>No. Discoverable by friends importing their contact lists.</TdColumn3>
                 <TdColumn4>Is hidden from view. Cannot prevent discoverability by friends.</TdColumn4>
               </tr>
@@ -153,30 +153,30 @@ export default class PrivacyBody extends Component {
               </tr>
               <tr>
                 <TdColumn1>Candidates you Support or Oppose</TdColumn1>
-                <TdColumn2>If marked &apos;Public&apos; by you, your endorsement is displayed on your profile, or under candidate. Otherwise, your endorsement is only visible to friends you add to We Vote.</TdColumn2>
+                <TdColumn2>If marked &apos;Public&apos; by you, your endorsement is displayed on your profile, or under candidate. Otherwise, your endorsement is only visible to friends you add to WeVote.</TdColumn2>
                 <TdColumn3>No by Default</TdColumn3>
                 <TdColumn4>Yes</TdColumn4>
               </tr>
               <tr>
                 <TdColumn1>Measures you Support or Oppose</TdColumn1>
-                <TdColumn2>If marked &apos;Public&apos; by you, your endorsement is displayed on your profile, or under measure.&nbsp;Otherwise, your endorsement is only visible to friends you add to We Vote.</TdColumn2>
+                <TdColumn2>If marked &apos;Public&apos; by you, your endorsement is displayed on your profile, or under measure.&nbsp;Otherwise, your endorsement is only visible to friends you add to WeVote.</TdColumn2>
                 <TdColumn3>&nbsp;No by Default</TdColumn3>
                 <TdColumn4>Yes&nbsp;</TdColumn4>
               </tr>
               <tr>
-                <TdColumn1>Organizations, Public Figures, and Private Individuals you Follow on We Vote</TdColumn1>
+                <TdColumn1>Organizations, Public Figures, and Private Individuals you Follow on WeVote</TdColumn1>
                 <TdColumn2>Displayed on your profile</TdColumn2>
                 <TdColumn3>Yes</TdColumn3>
                 <TdColumn4>No</TdColumn4>
               </tr>
               <tr>
                 <TdColumn1>Who you Follow on Twitter</TdColumn1>
-                <TdColumn2>When you sign in with Twitter, all of the Twitter accounts you follow on Twitter which have endorsements stored in We Vote, are displayed on your profile</TdColumn2>
+                <TdColumn2>When you sign in with Twitter, all of the Twitter accounts you follow on Twitter which have endorsements stored in WeVote, are displayed on your profile</TdColumn2>
                 <TdColumn3>Yes</TdColumn3>
                 <TdColumn4>No</TdColumn4>
               </tr>
               <tr>
-                <TdColumn1>Friends you invite to We Vote</TdColumn1>
+                <TdColumn1>Friends you invite to WeVote</TdColumn1>
                 <TdColumn2>Not displayed</TdColumn2>
                 <TdColumn3>No</TdColumn3>
                 <TdColumn4>Is hidden</TdColumn4>
@@ -184,9 +184,9 @@ export default class PrivacyBody extends Component {
               <tr>
                 <TdColumn1>Contacts imported from Google/Gmail</TdColumn1>
                 <TdColumn2>
-                  Your list of contacts is only shown to you for the purposes of finding friends who are already using We Vote,
-                  and inviting friends to connect with you on We Vote. This data is stored in quarantined database tables,
-                  and subject to Limited Use requirements (see below). Contacts are not added to the We Vote mailing list.
+                  Your list of contacts is only shown to you for the purposes of finding friends who are already using WeVote,
+                  and inviting friends to connect with you on WeVote. This data is stored in quarantined database tables,
+                  and subject to Limited Use requirements (see below). Contacts are not added to the WeVote mailing list.
                   You have 100% control over initiating messages to individuals in your contact list.
                 </TdColumn2>
                 <TdColumn3>No</TdColumn3>
@@ -194,7 +194,7 @@ export default class PrivacyBody extends Component {
               </tr>
               <tr>
                 <TdColumn1>The fact that you have an account</TdColumn1>
-                <TdColumn2>Any We Vote voters who look at the Friends section can see you as a &apos;Suggested Friend&apos; if they are connected to one of your current friends</TdColumn2>
+                <TdColumn2>Any WeVote voters who look at the Friends section can see you as a &apos;Suggested Friend&apos; if they are connected to one of your current friends</TdColumn2>
                 <TdColumn3>Only to friends of friends</TdColumn3>
                 <TdColumn4>Yes, if you don&apos;t add any of your friends</TdColumn4>
               </tr>
@@ -208,16 +208,16 @@ export default class PrivacyBody extends Component {
         </DeleteYourAccountWrapper>
         <h2><b>Donations and credit card information</b></h2>
         <p>
-          <span>When you give money to We Vote online, we collect credit card information from you. That information is used solely for processing your contribution; it is not maintained by We Vote; and is never disclosed to anyone, for any other purpose other than for processing your contribution.</span>
+          <span>When you give money to WeVote online, we collect credit card information from you. That information is used solely for processing your contribution; it is not maintained by WeVote; and is never disclosed to anyone, for any other purpose other than for processing your contribution.</span>
         </p>
         <h2><b>Security</b></h2>
         <p>
-          <span>We Vote uses industry standard security measures to protect the information collected by this Site, but we cannot guarantee complete security.</span>
+          <span>WeVote uses industry standard security measures to protect the information collected by this Site, but we cannot guarantee complete security.</span>
         </p>
         <h2><b>Limited Use Disclosure</b></h2>
         <p>
           <span>
-            We Vote&apos;s use and transfer to any other app of information received from Google APIs adhere to the
+            WeVote&apos;s use and transfer to any other app of information received from Google APIs adhere to the
             {' '}
             <Suspense fallback={<></>}>
               <OpenExternalWebSite
@@ -258,7 +258,7 @@ export default class PrivacyBody extends Component {
         </div>
         <h2><b>Use of services by minors</b></h2>
         <p>
-          <span>We Vote does not knowingly solicit personally identifying information from children under 13 years of age.  We will promptly remove any personal information from children under 13 upon notice to us.</span>
+          <span>WeVote does not knowingly solicit personally identifying information from children under 13 years of age.  We will promptly remove any personal information from children under 13 upon notice to us.</span>
         </p>
         <h2><b>Advertising</b></h2>
         <p>
@@ -291,7 +291,7 @@ export default class PrivacyBody extends Component {
             </Suspense>
             ).
           </span>
-          <span> They help us understand traffic patterns and know if there are problems with our Site. We may also use embedded images in emails to track open rates for our mailings, so that we can tell which mailings appeal most to We Vote subscribers.</span>
+          <span> They help us understand traffic patterns and know if there are problems with our Site. We may also use embedded images in emails to track open rates for our mailings, so that we can tell which mailings appeal most to WeVote subscribers.</span>
         </p>
         <p>
           <span>
@@ -307,11 +307,11 @@ export default class PrivacyBody extends Component {
         </p>
         <h2><b>Links to other sites</b></h2>
         <p>
-          <span>This Privacy Policy does not apply to ANY external links or any website not owned and operated by We Vote. Third party sites will have their own policies which may be different from ours and we recommend that you check the privacy policy of each site that you visit.</span>
+          <span>This Privacy Policy does not apply to ANY external links or any website not owned and operated by WeVote. Third party sites will have their own policies which may be different from ours and we recommend that you check the privacy policy of each site that you visit.</span>
         </p>
         <h2><b>Disclosure of information</b></h2>
         <p>
-          <span>We Vote will challenge any attempt to gain access to the information you give us by government agencies or private organizations. In the unlikely event that we are required by law to disclose any of your information we will do our best to contact you first so that you may have the opportunity to object to the disclosure. We will also independently object to any requests for access to information about users of our Site that we believe to be improper.</span>
+          <span>WeVote will challenge any attempt to gain access to the information you give us by government agencies or private organizations. In the unlikely event that we are required by law to disclose any of your information we will do our best to contact you first so that you may have the opportunity to object to the disclosure. We will also independently object to any requests for access to information about users of our Site that we believe to be improper.</span>
         </p>
         <h2><b>Amendments and consent to this privacy policy</b></h2>
         <p>

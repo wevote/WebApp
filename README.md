@@ -1,4 +1,4 @@
-# We Vote WebApp
+# WeVote WebApp
 
 [![Build Status](https://travis-ci.org/wevote/WebApp.svg?branch=develop)](https://travis-ci.org/wevote/WebApp)
 [![Sauce Test Status](https://saucelabs.com/buildstatus/WeVote)](https://saucelabs.com/u/WeVote)
@@ -14,7 +14,7 @@ To join us, please [review our openings here](https://wevote.applytojob.com/appl
 Our current version is here [https://WeVote.US](https://WeVote.US) and we are working on a new version now!
 
 ## Installing WebApp
-Our installation process is built to allow engineers all over America to contribute to We Vote.
+Our installation process is built to allow engineers all over America to contribute to WeVote.
 It may seem complicated, but it allows anyone to be in a position to make suggestions, and get involved.
 
 Installation on MacOs and Linux

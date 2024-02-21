@@ -121,7 +121,7 @@ class SettingsSectionFooter extends Component {
         </OneRow>
         {(isCordova() || !inPrivateLabelMode) && (
           <DoesNotSupport centered={centered}>
-            We Vote does not support or oppose any political candidate or party.
+            WeVote does not support or oppose any political candidate or party.
           </DoesNotSupport>
         )}
         { isCordova() && isTablet() && (

@@ -132,10 +132,10 @@ class WelcomeForVoters extends PureComponent {
 
     const testimonialAuthor = 'Alissa B., Oakland, California';
     const imageUrl = normalizedImagePath('/img/global/photos/Alissa_B-128x128.jpg');
-    const testimonial = 'Great way to sort through my ballot! My husband and I used We Vote during the last election to learn more about our ballots and make some tough choices. Between following various organizations, and friending a couple of trusted friends, we felt like we had an excellent pool of information to draw from. It was so great!';
+    const testimonial = 'Great way to sort through my ballot! My husband and I used WeVote during the last election to learn more about our ballots and make some tough choices. Between following various organizations, and friending a couple of trusted friends, we felt like we had an excellent pool of information to draw from. It was so great!';
     return (
       <WelcomeForVotersWrapper>
-        <Helmet title="Welcome Voters - We Vote" />
+        <Helmet title="Welcome Voters - WeVote" />
         <Suspense fallback={<></>}>
           <WelcomeAppbar pathname={pathname} id="WelcomeForVoters_WelcomeAppbar" />
         </Suspense>
@@ -162,7 +162,7 @@ class WelcomeForVoters extends PureComponent {
         </HeaderForVoters>
         <Section>
           <SectionTitle>
-            We Vote is
+            WeVote is
             <SectionTitleBold> Free &amp; Easy</SectionTitleBold>
           </SectionTitle>
           <Step>
@@ -252,7 +252,7 @@ class WelcomeForVoters extends PureComponent {
             <SectionTitle>You are Signed In</SectionTitle>
             <Description>
               <Bold>Welcome! </Bold>
-              Thank you for being part of We Vote.
+              Thank you for being part of WeVote.
               <br />
               <Link to="/ready" underline="hover">
                 <span className="u-link-color">
@@ -264,7 +264,7 @@ class WelcomeForVoters extends PureComponent {
           </Section>
         ) : (
           <Section>
-            <SectionTitle>Sign up to get updates about We Vote</SectionTitle>
+            <SectionTitle>Sign up to get updates about WeVote</SectionTitle>
             <SignUpContainer>
               <TextBox
                 icon={<Person />}

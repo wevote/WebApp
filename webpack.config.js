@@ -101,7 +101,7 @@ module.exports = (env, argv) => ({
     new CleanWebpackPlugin(),
     new ESLintPlugin({ failOnError: false, failOnWarning: false  }),
     new HtmlWebpackPlugin({
-      title: 'We Vote Sample Ballot',
+      title: 'WeVote Sample Ballot',
       template: path.resolve(__dirname, `./${source}/index.html`),
     }),
     ...(bundleAnalysis ? [
@@ -137,8 +137,8 @@ module.exports = (env, argv) => ({
           to: 'img/',
           globOptions: { ignore: ['**/DO-NOT-BUNDLE/**']},
         },
-        { from: 'node/STORYBOOK-README.TXT', to: './storybook-static/STORYBOOK-README.TXT' },
-        { from: 'storybook-static', to: './storybook-static' },
+        // { from: 'storybook-static', to: './storybook' },
+        // { from: 'node/STORYBOOK-README.TXT', to: './storybook/STORYBOOK-README.TXT' },
       ],
     }),
     new MomentLocalesPlugin(),

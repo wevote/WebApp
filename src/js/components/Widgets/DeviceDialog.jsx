@@ -74,7 +74,7 @@ class DeviceDialog extends Component {
           <div className="text-center"><TermsAndPrivacyText>Device Information</TermsAndPrivacyText></div>
         </DialogTitle>
         <DialogContent classes={{ root: classes.dialogContent }}>
-          This dialog contains technical information about your device, that might be requested by We Vote&apos;s support engineers.
+          This dialog contains technical information about your device, that might be requested by WeVote&apos;s support engineers.
           <Table className={classes.table}>
             <TableHead>
               <TableRow>
@@ -140,7 +140,7 @@ class DeviceDialog extends Component {
                 <StyledTableCell>{compileDate}</StyledTableCell>
               </TableRow>
               <TableRow>
-                <StyledTableCell>Your internal We Vote id</StyledTableCell>
+                <StyledTableCell>Your internal WeVote id</StyledTableCell>
                 <StyledTableCell>{VoterStore.getVoter().we_vote_id}</StyledTableCell>
               </TableRow>
             </TableBody>

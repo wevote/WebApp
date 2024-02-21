@@ -51,7 +51,7 @@ const SuggestedContacts = React.lazy(() => import(/* webpackChunkName: 'Suggeste
 const testimonialPhoto = '../../../img/global/photos/Dale_McGrew-48x48.jpg';
 const testimonialAuthor = 'Dale M., Oakland, California';
 const imageUrl = normalizedImagePath(testimonialPhoto);
-const testimonial = 'Instead of searching through emails and social media for recommendations, I can see how my friends are voting on We Vote.';
+const testimonial = 'Instead of searching through emails and social media for recommendations, I can see how my friends are voting on WeVote.';
 
 class Friends extends Component {
   static getDerivedStateFromProps (props, state) {
@@ -306,7 +306,7 @@ class Friends extends Component {
                   )}
                   <FindYourContactsWrapper>
                     <SectionTitle>
-                      Find Your Friends on We Vote
+                      Find Your Friends on WeVote
                     </SectionTitle>
                     <SectionDescription>
                       Importing your contacts helps you find your friends on We
@@ -351,7 +351,7 @@ class Friends extends Component {
               )}
               <FindYourContactsWrapper>
                 <SectionTitle>
-                  Find Your Friends on We Vote
+                  Find Your Friends on WeVote
                 </SectionTitle>
                 <SectionDescription>
                   Importing your contacts helps you find your friends on We
@@ -469,7 +469,7 @@ class Friends extends Component {
         default:
           desktopContentToDisplay = (
             <>
-              <Helmet title="Friends - We Vote" />
+              <Helmet title="Friends - WeVote" />
               <BrowserPushMessage incomingProps={this.props} />
               <div className="row">
                 <div className="col-sm-12 col-md-8">
@@ -483,7 +483,7 @@ class Friends extends Component {
                           {' '}
                           {contactsWithAccountCount === 1 ? 'is' : 'are'}
                           {' '}
-                          already on We Vote
+                          already on WeVote
                           {' '}
                         </SetUpAccountTitle>
                         <Suspense fallback={<></>}>
@@ -566,7 +566,7 @@ class Friends extends Component {
                     {' '}
                     {contactsWithAccountCount === 1 ? 'is' : 'are'}
                     {' '}
-                    already on We Vote
+                    already on WeVote
                     {' '}
                   </SetUpAccountTitle>
                   <Suspense fallback={<></>}>
@@ -643,7 +643,7 @@ class Friends extends Component {
           <>
             {findFriendsOn ? (
               <RemindOuterWrapper>
-                <Helmet title="Find Your Friends - We Vote" />
+                <Helmet title="Find Your Friends - WeVote" />
                 <RemindContactsWrapper>
                   <Suspense fallback={<></>}>
                     <FindFriendsStart />
@@ -652,7 +652,7 @@ class Friends extends Component {
               </RemindOuterWrapper>
             ) : (
               <RemindOuterWrapper>
-                <Helmet title="Remind Your Friends - We Vote" />
+                <Helmet title="Remind Your Friends - WeVote" />
                 <RemindContactsWrapper>
                   <Suspense fallback={<></>}>
                     <RemindContactsStart />

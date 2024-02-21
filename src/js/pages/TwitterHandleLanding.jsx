@@ -234,7 +234,7 @@ export default class  TwitterHandleLanding extends Component {
                 } : {}
               }
             >
-              <Helmet title="Not Found - We Vote" />
+              <Helmet title="Not Found - WeVote" />
               <h3 className="h3">Claim Your Page</h3>
               <div className="medium">
                 We were not able to find an account for the Twitter Handle

@@ -202,7 +202,7 @@ export default class ValuesList extends Component {
     } else {
       return (
         <PageContentContainer>
-          <Helmet title="Values - We Vote" />
+          <Helmet title="Values - WeVote" />
           {generatedContent}
         </PageContentContainer>
       );

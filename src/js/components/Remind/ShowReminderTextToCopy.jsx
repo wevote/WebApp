@@ -47,7 +47,7 @@ class ShowReminderTextToCopy extends React.Component {
             If you download the
             {' '}
             <span className="u-no-break">
-              We Vote
+              WeVote
             </span>
             {' '}
             app for your phone or tablet, you can remind friends by text message.

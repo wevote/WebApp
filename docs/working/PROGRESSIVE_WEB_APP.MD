@@ -12,7 +12,7 @@ is available to the voter when offline.  This caching layer also can speed up th
 caching it locally.
 
 It is possible to cache too much, or not have the cached data expire soon enough, which makes for a bloated load
-of the browser, and could needlessly use up valuable RAM memory on the voter's computer.   We Vote developers woring on
+of the browser, and could needlessly use up valuable RAM memory on the voter's computer.   WeVote developers woring on
 this feature should take a look at all the other service workers that your browser has accumulated over the years (Application tab in
 Chrome Tools, under Application/ServiceWorkers  and then at the bottom via "Service workers from other origins").  If you press
 the "Clear storage" button it will not immediatley clear storage, but will show you how much

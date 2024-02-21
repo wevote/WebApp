@@ -6,7 +6,7 @@ Will remove these notes once Big Sur is released, and Apple Silicon (iOS app run
 See Apple [Universal App Quick Start] private forum [662281](https://developer.apple.com/forums/thread/662281?login=true).  Also
 an Apple Beta Feedback Assistant issue, for Big Sur beta 8, has been lodged (FB8755308) titled "No Inspectable Applications" in Safari Debug Menu for targets with "My Mac" -- No response yet from Apple.  
 1. node-sass is tied to macOS versions, so it is not available for Big Sur yet.  Hopefully we will design it out 
-of the "We Vote Web App" this year.  In the meantime, we need to build main.css on an intel Mac, and copy it to the 
+of the "WeVote Web App" this year.  In the meantime, we need to build main.css on an intel Mac, and copy it to the 
 Apple Silicon (ARM64) mac in order to have all the legacy styles work.
 Manual changes have to be made to package.json and webpack.config.js on the ARM64 Mac to remove
 node-sass from the build.

@@ -78,7 +78,7 @@ export default class IntroNetwork extends Component {
 
     return (
       <div>
-        <Helmet title="Welcome to We Vote" />
+        <Helmet title="Welcome to WeVote" />
         <div className="intro-story container-fluid well u-inset--md" style={this.overrideMediaQueryForAndroidTablets()}>
           <span onClick={IntroNetwork.goToReadyLink}>
             <img

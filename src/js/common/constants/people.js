@@ -14,7 +14,7 @@ export const weVoteFounders = [{
   image: `${photoPath}Dale_McGrew-256x256.jpg`,
   title: [
     'Co-Founder / CTO & c3 + c4 Board Member',
-    'Prior to running We Vote, Dale successfully co-founded, built and sold two high tech startups (Gravity.com and GoLightly.com). Dale has managed large software projects for companies like Disney, IBM and Crayola and over 60 nonprofits.',
+    'Prior to running WeVote, Dale successfully co-founded, built and sold two high tech startups (Gravity.com and GoLightly.com). Dale has managed large software projects for companies like Disney, IBM and Crayola and over 60 nonprofits.',
   ],
 },
 {
@@ -124,7 +124,7 @@ export const weVoteStaff = [{
   image: `${photoPath}Jeff_French-256x256.png`,
   title: [
     'Senior Designer',
-    'Digital product designer focused on creating engaging experiences and contributing to the systems that hold them together. Jeff designed the We Vote logo and has been critical to establishing We Vote\'s design systems.',
+    'Digital product designer focused on creating engaging experiences and contributing to the systems that hold them together. Jeff designed the WeVote logo and has been critical to establishing WeVote\'s design systems.',
   ],
 }, {
   name: 'Ashwini Gawande',
@@ -149,7 +149,7 @@ export const weVoteStaff = [{
   image: `${photoPath}Judy_Johnson-256x256.jpg`,
   title: [
     'Operations',
-    'Joined We Vote in 2015 with over 20 years of financial and office administration experience both in the private and public sector. Truly believes every vote counts!',
+    'Joined WeVote in 2015 with over 20 years of financial and office administration experience both in the private and public sector. Truly believes every vote counts!',
   ],
 }, {
   name: 'Thomas Lawson',
@@ -186,14 +186,14 @@ export const weVoteStaff = [{
   image: `${photoPath}Jarod_Peachey-256x256.png`,
   title: [
     'Engineering Intern',
-    'Jarod is a senior in high school, and has been coding since 2018. He is on We Vote\'s React and Javascript team. He enjoys playing guitar in his spare time.',
+    'Jarod is a senior in high school, and has been coding since 2018. He is on WeVote\'s React and Javascript team. He enjoys playing guitar in his spare time.',
   ],
 }, {
   name: 'Steve Podell',
   image: `${photoPath}Steve_Podell-256x256.jpg`,
   title: [
     'Director of Mobile Development',
-    'Steve has been volunteering with We Vote since 2017, and single-handedly launched our iOS and Android apps, as well as contributing to all of We Vote\'s code repositories.',
+    'Steve has been volunteering with WeVote since 2017, and single-handedly launched our iOS and Android apps, as well as contributing to all of WeVote\'s code repositories.',
   ],
 }, {
   name: 'Utsab Saha',

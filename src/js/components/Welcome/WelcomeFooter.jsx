@@ -51,7 +51,7 @@ class WelcomeFooter extends Component {
               <Link id="footerLinkPremiumOnlineTools" className={classes.link} to="/settings/tools">Premium Online Tools</Link>
             </Column>
             <Column>
-              <ColumnTitle>About We Vote</ColumnTitle>
+              <ColumnTitle>About WeVote</ColumnTitle>
               <Link id="footerLinkAbout" className={classes.link} to="/about">About &amp; Team</Link>
               <Link id="footerLinkCredits" className={classes.link} to="/more/credits">Credits &amp; Thanks</Link>
               {isWebApp() && (
@@ -144,7 +144,7 @@ class WelcomeFooter extends Component {
                   url="https://help.wevote.us/hc/en-us"
                   target="_blank"
                   body={(
-                    <span>We Vote Help</span>
+                    <span>WeVote Help</span>
                   )}
                   className={classes.link}
                 />
@@ -175,7 +175,7 @@ class WelcomeFooter extends Component {
         <Bottom>
           <Text>WeVote.US is brought to you by a partnership between two registered nonprofit organizations, one 501(c)(3) and one 501(c)(4). We do not support or oppose any political candidate or party.</Text>
           <Text>
-            The software that powers We Vote is
+            The software that powers WeVote is
             {' '}
             <Suspense fallback={<></>}>
               <OpenExternalWebSite

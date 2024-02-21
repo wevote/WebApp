@@ -88,7 +88,7 @@ class ReadyIntroduction extends Component {
       <OuterWrapper>
         <InnerWrapper>
           <IntroHeader titleCentered={titleCentered} titleLarge={titleLarge}>
-            We Vote helps you:
+            WeVote helps you:
           </IntroHeader>
           <ListWrapper>
             <ListMaxWidth>

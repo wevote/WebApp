@@ -199,7 +199,7 @@ export default class SettingsIssueLinks extends Component {
 
     return (
       <div className="">
-        <Helmet title="Issues - We Vote" />
+        <Helmet title="Issues - WeVote" />
         <BrowserPushMessage incomingProps={this.props} />
 
         <div className="card">

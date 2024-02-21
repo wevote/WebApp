@@ -424,7 +424,7 @@ class UnsubscribeRoot extends React.Component {
     if (showWhatIsWeVote) {
       return (
         <PageContentContainerAccountSetUp>
-          <Helmet title="Unsubscribe - We Vote" />
+          <Helmet title="Unsubscribe - WeVote" />
           <Suspense fallback={<></>}>
             <WhatIsWeVote toggleWhatIsWeVote={this.toggleWhatIsWeVote} />
           </Suspense>
@@ -434,7 +434,7 @@ class UnsubscribeRoot extends React.Component {
 
     return (
       <PageContentContainerAccountSetUp>
-        <Helmet title="Unsubscribe - We Vote" />
+        <Helmet title="Unsubscribe - WeVote" />
         <AccountSetUpRootWrapper>
           <WeVoteLogoWrapper>
             <WeVoteLogo
@@ -470,7 +470,7 @@ class UnsubscribeRoot extends React.Component {
               color="primary"
               onClick={this.toggleWhatIsWeVote}
             >
-              What is We Vote?
+              What is WeVote?
             </Button>
           </WhatIsWeVoteLinkWrapper>
         </AccountSetUpRootWrapper>

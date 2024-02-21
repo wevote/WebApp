@@ -76,7 +76,7 @@ export default class GetStarted2019 extends Component {
 
     return (
       <div>
-        <Helmet title="Welcome to We Vote" />
+        <Helmet title="Welcome to WeVote" />
         <div className="intro-story container-fluid well u-inset--md">
           <span onClick={this.goToBallotLink}>
             <img src={normalizedImagePath(closeIcon)} className="x-close" alt="close" />
@@ -126,7 +126,7 @@ export default class GetStarted2019 extends Component {
               Skip Sign In&nbsp;&nbsp;&gt;
             </button>
             <br />
-            Check out We Vote first
+            Check out WeVote first
           </footer>
         </div>
       </div>

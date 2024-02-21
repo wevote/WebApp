@@ -2,13 +2,13 @@
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 ## Contents
 
-- [We Vote Process for Approving Pull Requests](#we-vote-process-for-approving-pull-requests)
+- [WeVote Process for Approving Pull Requests](#we-vote-process-for-approving-pull-requests)
 - [Bringing a Pull Request to your Local Machine for Verification](#bringing-a-pull-request-to-your-local-machine-for-verification)
   - [](#)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-# We Vote Process for Approving Pull Requests
+# WeVote Process for Approving Pull Requests
 We have a team of engineers who can approve pull requests for WebApp (Nick Fiorini, Rob Simpson, Lisa Cho, Dale McGrew). A few notes about our process:
 
 * Give thumbs up before approving to confirm that you followed this verification process.

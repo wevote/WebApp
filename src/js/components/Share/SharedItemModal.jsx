@@ -276,11 +276,11 @@ class SharedItemModal extends Component {
             <>
               {organizationName}
               {' '}
-              has invited you to We Vote.
+              has invited you to WeVote.
             </>
           ) : (
             <>
-              You&apos;ve been invited to We Vote.
+              You&apos;ve been invited to WeVote.
             </>
           )}
         </IntroductionTopHeader>

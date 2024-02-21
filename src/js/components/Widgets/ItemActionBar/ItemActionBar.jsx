@@ -708,7 +708,7 @@ class ItemActionBar extends PureComponent {
         supportButtonSelectedPopOverText += ' Your choice will be visible to the public.';
       }
     } else {
-      supportButtonSelectedPopOverText += ' Only your We Vote friends will see your choice.';
+      supportButtonSelectedPopOverText += ' Only your WeVote friends will see your choice.';
     }
 
     let supportButtonUnselectedPopOverText = 'Click to remove your choice';
@@ -731,7 +731,7 @@ class ItemActionBar extends PureComponent {
     if (voterPositionIsPublic) {
       opposeButtonSelectedPopOverText += ' Your opposition will be visible to the public.';
     } else {
-      opposeButtonSelectedPopOverText += ' Only your We Vote friends will see your opposition.';
+      opposeButtonSelectedPopOverText += ' Only your WeVote friends will see your opposition.';
     }
 
     let opposeButtonUnselectedPopOverText = 'Click to remove your opposition';

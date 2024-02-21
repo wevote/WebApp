@@ -72,7 +72,7 @@ class ShareModal extends Component {
     });
     AnalyticsActions.saveActionModalShare(VoterStore.electionId());
 
-    // Make sure we have We Vote friends data
+    // Make sure we have WeVote friends data
     if (apiCalming('voterContactListRetrieve', 20000)) {
       VoterActions.voterContactListRetrieve();
     }
@@ -335,7 +335,7 @@ class ShareModal extends Component {
               buttonURL="/friends/invite"
               noCard
               fullWidthButton
-              secondaryText="By adding friends you enjoy discussing politics with to We Vote, you can help each other get ready for elections."
+              secondaryText="By adding friends you enjoy discussing politics with to WeVote, you can help each other get ready for elections."
               inShareModal
               icon={<People />}
               onClickFunc={this.closeShareModal}

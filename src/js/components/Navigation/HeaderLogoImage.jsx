@@ -5,7 +5,7 @@ import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { isLargerThanTablet, isTablet } from '../../common/utils/isMobileScreenSize';
 
 const HeaderLogoImage = ({ src }) => (
-  <LogoImg id="HeaderLogoImage" alt="We Vote Logo" src={src} />
+  <LogoImg id="HeaderLogoImage" alt="WeVote Logo" src={src} />
 );
 
 HeaderLogoImage.propTypes = {

@@ -25,7 +25,7 @@ export const reassuranceText = [
   {
     page: 4,
     headline: '',
-    text: 'Info about your contacts in your address book, including names, phone numbers and nicknames will be sent to We Vote to help you find your friends.',
+    text: 'Info about your contacts in your address book, including names, phone numbers and nicknames will be sent to WeVote to help you find your friends.',
   },
   {
     page: 44,
@@ -35,7 +35,7 @@ export const reassuranceText = [
   {
     page: 444,
     headline: '',
-    text: 'Info about your contacts in your address book, including names, emails and phone numbers will be sent to We Vote to help you find friends faster.',
+    text: 'Info about your contacts in your address book, including names, emails and phone numbers will be sent to WeVote to help you find friends faster.',
   },
   {
     page: 444,
@@ -65,6 +65,6 @@ export const reassuranceText = [
   {
     page: 99,
     headline: 'Never miss an election.',
-    text: 'It feels easy to miss elections sometimes, given how busy life is.  We Vote can help with that.',
+    text: 'It feels easy to miss elections sometimes, given how busy life is.  WeVote can help with that.',
   },
 ];

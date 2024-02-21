@@ -1289,10 +1289,10 @@ class Ballot extends Component {
           )}
           <br />
           <br />
-          We Vote uses ballot data aggregated from government, nonpartisan, and partisan sources. We Vote strives to provide a balanced selection of clearly identified voting guides from newspapers and media. Partisan voter guides are also provided from a diversity of sources and points-of-view.
+          WeVote uses ballot data aggregated from government, nonpartisan, and partisan sources. WeVote strives to provide a balanced selection of clearly identified voting guides from newspapers and media. Partisan voter guides are also provided from a diversity of sources and points-of-view.
           <br />
           <br />
-          While you are waiting, connect with your friends who are already using We Vote.
+          While you are waiting, connect with your friends who are already using WeVote.
         </BallotEmptyExplanation>
         <FindYourFriendsWrapper>
           <Suspense fallback={<></>}>
@@ -1302,7 +1302,7 @@ class Ballot extends Component {
       </EmptyBallotNotice>
     ) : (
       <div className="container-fluid well u-stack--md u-inset--md">
-        <Helmet title="Enter Your Address - We Vote" />
+        <Helmet title="Enter Your Address - WeVote" />
         <div>
           <AddressBox
             introductionHtml={(
@@ -1386,7 +1386,7 @@ class Ballot extends Component {
                   <div className="row">
                     <div className="col-md-12">
                       <Helmet>
-                        <title>Ballot - We Vote</title>
+                        <title>Ballot - WeVote</title>
                         {googleCivicElectionIdFromUrl ? (
                           <link rel="canonical" href={`https://wevote.us/ballot/election/${googleCivicElectionIdFromUrl}`} />
                         ) : (

@@ -421,7 +421,7 @@ class Vote extends Component {
             <div className="container-fluid">
               <div className="row">
                 <div className="col-md-12">
-                  <Helmet title="Vote - We Vote" />
+                  <Helmet title="Vote - WeVote" />
                   <header className="ballot__header__group">
                     <BallotTitleHeader />
                   </header>

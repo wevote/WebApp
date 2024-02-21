@@ -39,7 +39,7 @@ class SharedItemIntroduction extends Component {
       <OuterWrapper>
         <InnerWrapper>
           <IntroHeader>
-            We Vote helps you:
+            WeVote helps you:
           </IntroHeader>
           <ListWrapper>
             <ListMaxWidth>
@@ -74,7 +74,7 @@ class SharedItemIntroduction extends Component {
                 <Dot><StepNumberPlaceholder>&nbsp;</StepNumberPlaceholder></Dot>
                 {showAllStepTwo ? (
                   <StepText>
-                    Who&apos;s running for office? We show you what will be on your actual ballot, based on your full address. What do your trusted friends think about what is on the ballot? We Vote helps you make sense of your options.
+                    Who&apos;s running for office? We show you what will be on your actual ballot, based on your full address. What do your trusted friends think about what is on the ballot? WeVote helps you make sense of your options.
                   </StepText>
                 ) : (
                   <StepText onClick={this.onClickShowAllStepTwo}>

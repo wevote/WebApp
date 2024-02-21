@@ -513,7 +513,7 @@ class Pricing extends Component {
 
     return (
       <Wrapper padTop={cordovaScrollablePaneTopPadding()}>
-        <Helmet title="Pricing - We Vote" />
+        <Helmet title="Pricing - WeVote" />
         {this.props.modalDisplayMode ? null : <Suspense fallback={<></>}><WelcomeAppbar pathname="/more/pricing" /></Suspense>}
         {this.props.modalDisplayMode ? htmlForModalHeader : htmlForStandaloneHeader}
         <Section

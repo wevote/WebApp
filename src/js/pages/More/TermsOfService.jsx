@@ -19,7 +19,7 @@ export default class TermsOfService extends React.Component {
     return (
       <PageContentContainer>
         <Helmet>
-          <title>Terms of Service - We Vote</title>
+          <title>Terms of Service - WeVote</title>
           <link rel="canonical" href="https://wevote.us/more/terms" />
         </Helmet>
         <div className="container-fluid well">

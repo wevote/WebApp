@@ -183,7 +183,7 @@ class FriendDetails extends Component {
         { twitterDescriptionMinusName ? <p>{twitterDescriptionMinusName}</p> : null }
         {!!(indicateIfAlreadyOnWeVote && !voterWeVoteId && !remindMode) && (
           <InviteToWeVoteLine inSideColumn={inSideColumn}>
-            <span style={{ }}>Invite to We Vote</span>
+            <span style={{ }}>Invite to WeVote</span>
           </InviteToWeVoteLine>
         )}
       </FriendDetailsWrapper>

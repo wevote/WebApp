@@ -75,7 +75,7 @@ export default class SettingsElection extends Component {
     return (
       <div>
         <div className="elections-list-container">
-          <Helmet title="Choose Election - We Vote" />
+          <Helmet title="Choose Election - WeVote" />
           <BrowserPushMessage incomingProps={this.props} />
           <div className="card">
             <div className="card-main">

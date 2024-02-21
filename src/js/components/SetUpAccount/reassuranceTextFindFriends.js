@@ -3,7 +3,7 @@ export const reassuranceTextFindFriends = [
   {
     page: 1,
     headline: '',
-    text: 'Info about your contacts in your address book, including names, phone numbers and nicknames will be sent to We Vote to help you find your friends.',
+    text: 'Info about your contacts in your address book, including names, phone numbers and nicknames will be sent to WeVote to help you find your friends.',
   },
   {
     page: 3,

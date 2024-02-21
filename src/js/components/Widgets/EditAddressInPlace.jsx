@@ -76,7 +76,7 @@ class EditAddressInPlace extends Component {
     const noAddressMessageFiltered = noAddressMessage || '- no address entered -';
     const maximumAddressDisplayLength = 60;
     const ballotBaseUrl = calculateBallotBaseUrl(this.props.ballotBaseUrl, pathname);
-    const addressIntroduction = "To find your correct ballot, we need your full address, including house number. We are a nonprofit, and will never reveal your address. Note: our partners who provide what's-on-the-ballot data work incredibly hard to cover the entire United States, but we cannot guarantee 100% of the items on your official ballot will be shown on We Vote. Please contact us using the 'Help' link if you have questions.";
+    const addressIntroduction = "To find your correct ballot, we need your full address, including house number. We are a nonprofit, and will never reveal your address. Note: our partners who provide what's-on-the-ballot data work incredibly hard to cover the entire United States, but we cannot guarantee 100% of the items on your official ballot will be shown on WeVote. Please contact us using the 'Help' link if you have questions.";
     if (editingAddress) {
       return (
         <span>

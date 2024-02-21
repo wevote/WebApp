@@ -220,7 +220,7 @@ class Donate extends Component {
         <C3DonationWrapper>
           <Wrapper>
             <Helmet>
-              <title>Donate - We Vote</title>
+              <title>Donate - WeVote</title>
               <script src="https://donorbox.org/widget.js" paypalExpress="true" defer />
             </Helmet>
             <ContentTitle>
@@ -260,7 +260,7 @@ class Donate extends Component {
       c4DonationHtml = (
         <C4DonationWrapper>
           <Wrapper>
-            <Helmet title="Donate - We Vote" />
+            <Helmet title="Donate - WeVote" />
             <ContentTitle>
               {preDonation ? 'Want more Americans to vote?' : 'Thank you for your donation!'}
             </ContentTitle>
@@ -419,12 +419,12 @@ class Donate extends Component {
                     Over 50 awesome people like yourself have donated to make We
                     Vote possible.
                     {' '}
-                    We Vote also has a 501(c)(3) nonprofit that welcomes
+                    WeVote also has a 501(c)(3) nonprofit that welcomes
                     {' '}
                     {/* This is a mailto! Shouldn't be visible in iPhone or Android apps. */}
                     <a
                       href="https://donorbox.org/we-vote-tax-deductible?default_interval=m&amount=10"
-                      title="I would like to donate to We Vote's tax-deductible 501(c)(3)"
+                      title="I would like to donate to WeVote's tax-deductible 501(c)(3)"
                       rel="noopener noreferrer"
                       target="_blank"
                       style={{ color: '#4371cc' }}

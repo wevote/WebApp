@@ -496,7 +496,7 @@ class PoliticianDetailsPage extends Component {
       return (
         <PageContentContainer>
           <Helmet>
-            <title>Candidate Not Found - We Vote</title>
+            <title>Candidate Not Found - WeVote</title>
             <meta name="robots" content="noindex" data-react-helmet="true" />
           </Helmet>
           <PageWrapper>
