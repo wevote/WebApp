@@ -333,7 +333,7 @@ const CardCountdownInternalWrapper = styled('div')`
 const CardTitleUpcoming = styled('h1')(({ theme }) => (`
   color: #2E3C5D !important;
   font-size: 64px;
-  font-weight: 500;
+  font-weight: 600;
   margin-bottom: 8px;
   margin-top: 12px;
   text-align: center;
@@ -345,7 +345,7 @@ const CardTitleUpcoming = styled('h1')(({ theme }) => (`
 const CardTitleToday = styled('h1')(({ theme }) => (`
   color: #2E3C5D !important;
   font-size: 60px;
-  font-weight: 900;
+  font-weight: 600;
   margin-bottom: 8px;
   margin-top: 0;
   text-align: center;
