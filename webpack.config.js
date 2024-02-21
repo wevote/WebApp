@@ -101,7 +101,7 @@ module.exports = (env, argv) => ({
     new CleanWebpackPlugin(),
     new ESLintPlugin({ failOnError: false, failOnWarning: false  }),
     new HtmlWebpackPlugin({
-      title: 'We Vote Sample Ballot',
+      title: 'WeVote Sample Ballot',
       template: path.resolve(__dirname, `./${source}/index.html`),
     }),
     ...(bundleAnalysis ? [

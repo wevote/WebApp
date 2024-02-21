@@ -82,7 +82,7 @@ export default class Location extends Component {
     return (
       <PageContentContainer>
         <div className="container-fluid well u-stack--md u-inset--md">
-          <Helmet title="Enter Your Address - We Vote" />
+          <Helmet title="Enter Your Address - WeVote" />
           <BrowserPushMessage incomingProps={this.props} />
           <div>
             <AddressBox

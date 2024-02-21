@@ -261,7 +261,7 @@ class IssueCard extends Component {
           {' '}
           <span className="u-no-break">{issueDisplayName}</span>
           {' '}
-          <span className="u-no-break">on We Vote</span>
+          <span className="u-no-break">on WeVote</span>
         </div>
       </Tooltip>
     );

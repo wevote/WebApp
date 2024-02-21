@@ -91,7 +91,7 @@ export default class SearchPage extends Component {
     }
     return (
       <span>
-        <Helmet title="Search Results - We Vote" />
+        <Helmet title="Search Results - WeVote" />
         <SearchResultsDisplay
           links={this.links}
           searchResults={searchResults}

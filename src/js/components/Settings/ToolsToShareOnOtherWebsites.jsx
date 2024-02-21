@@ -11,7 +11,7 @@ const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenEx
 export default function ToolsToShareOnOtherWebsites (props) {
   return (
     <Wrapper padTop={cordovaScrollablePaneTopPadding()}>
-      <Helmet title="Free civic engagement tools - We Vote" />
+      <Helmet title="Free civic engagement tools - WeVote" />
       <div className="card container-fluid well">
         <div className="card-main">
           <h1 className="h2">Tools For Your Website</h1>

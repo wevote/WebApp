@@ -20,7 +20,7 @@ export default class FAQ extends Component {
     return (
       <div>
         <Helmet>
-          <title>FAQ - We Vote</title>
+          <title>FAQ - WeVote</title>
           <link rel="canonical" href="https://wevote.us/more/faq" />
         </Helmet>
         <PageContentContainer>

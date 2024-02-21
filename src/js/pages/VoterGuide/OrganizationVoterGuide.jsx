@@ -291,7 +291,7 @@ export default class OrganizationVoterGuide extends Component {
     }
     const { location, match: { params } } = this.props;
 
-    const titleText = `${organization.organization_name} - We Vote`;
+    const titleText = `${organization.organization_name} - WeVote`;
 
     const isVoterOwner = organization.organization_we_vote_id !== undefined &&
       organization.organization_we_vote_id === this.state.voter.linked_organization_we_vote_id;

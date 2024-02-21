@@ -147,7 +147,7 @@ class VoterGuideListDashboard extends Component {
     // const currentGoogleCivicElectionId = 0;
     return (
       <div className="settings-dashboard">
-        <Helmet title="Your Endorsements - We Vote" />
+        <Helmet title="Your Endorsements - WeVote" />
         <PageContentContainer>
           <div className="container-fluid">
             <div className="row">

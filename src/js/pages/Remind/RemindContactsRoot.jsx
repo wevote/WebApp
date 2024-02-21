@@ -908,7 +908,7 @@ class RemindContactsRoot extends React.Component {
                     classes={{ root: classes.addContactsManuallyLink }}
                     onClick={this.goToDownloadApp}
                   >
-                    Import contacts from We Vote App
+                    Import contacts from WeVote App
                   </Button>
                 </DesktopNextButtonsInnerWrapper>
               </ImportContactsOuterWrapperUShowDesktopTablet>
@@ -985,7 +985,7 @@ class RemindContactsRoot extends React.Component {
                       classes={{ root: classes.addContactsManuallyLink }}
                       onClick={this.goToDownloadApp}
                     >
-                      Import contacts from We Vote App
+                      Import contacts from WeVote App
                     </Button>
                   </DesktopNextButtonsInnerWrapper>
                 </DesktopNextButtonsOuterWrapperUShowDesktopTablet>
@@ -1035,7 +1035,7 @@ class RemindContactsRoot extends React.Component {
 
     return (
       <PageContentContainerAccountSetUp>
-        <Helmet title="Find Your Friends - We Vote" />
+        <Helmet title="Find Your Friends - WeVote" />
         <AccountSetUpRootWrapper>
           <WeVoteLogoWrapper>
             <WeVoteLogo

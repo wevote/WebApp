@@ -2,14 +2,14 @@
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 ## Contents
 
-- [We Vote Culture and Philosophy](#we-vote-culture-and-philosophy)
+- [WeVote Culture and Philosophy](#we-vote-culture-and-philosophy)
   - [](#)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-# We Vote Culture and Philosophy
+# WeVote Culture and Philosophy
 
-Why do we spend our weekends and evenings working on We Vote?
+Why do we spend our weekends and evenings working on WeVote?
 
 ---
 

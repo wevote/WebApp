@@ -171,10 +171,10 @@ class CampaignsHomeLoader extends Component {
     if (stateCode && stateCode !== 'na') {
       const stateText = convertStateCodeToStateText(stateCode);
       descriptionText = `Choose which candidates from ${stateText} you support or oppose.`;
-      titleText = `${stateText} Candidates - We Vote`;
+      titleText = `${stateText} Candidates - WeVote`;
     } else {
       descriptionText = 'Choose which candidates you support or oppose.';
-      titleText = 'Candidates - We Vote';
+      titleText = 'Candidates - WeVote';
     }
     // console.log('descriptionText: ', descriptionText);
 

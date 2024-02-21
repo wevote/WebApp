@@ -87,7 +87,7 @@ class SetUpAccountInviteContactsSignIn extends React.Component {
                   {' '}
                   of your friends are already on
                   {' '}
-                  <span className="u-no-break">We Vote</span>
+                  <span className="u-no-break">WeVote</span>
                 </>
               ) : (
                 <>
@@ -98,7 +98,7 @@ class SetUpAccountInviteContactsSignIn extends React.Component {
                         {' '}
                         contacts saved. Searching
                         {' '}
-                        <span className="u-no-break">We Vote for your friends...</span>
+                        <span className="u-no-break">WeVote for your friends...</span>
                       </div>
                       <CircularProgressWrapper>
                         <CircularProgress />
@@ -111,7 +111,7 @@ class SetUpAccountInviteContactsSignIn extends React.Component {
                       {voterContactEmailListCount}
                       {' '}
                       contacts, but they did not match any existing
-                      <span className="u-no-break"> We Vote </span>
+                      <span className="u-no-break"> WeVote </span>
                       voters.
                     </>
                   )}
@@ -122,7 +122,7 @@ class SetUpAccountInviteContactsSignIn extends React.Component {
             <SetUpAccountTitle>
               Be the first of your friends
               {' '}
-              <span className="u-no-break">to join We Vote</span>
+              <span className="u-no-break">to join WeVote</span>
             </SetUpAccountTitle>
           )}
           {(voterContactEmailListCount > 0) && (
@@ -134,7 +134,7 @@ class SetUpAccountInviteContactsSignIn extends React.Component {
                     {' '}
                     {voterContactEmailListCount}
                     {' '}
-                    contacts to join We Vote.
+                    contacts to join WeVote.
                     <br />
                   </>
                 )}

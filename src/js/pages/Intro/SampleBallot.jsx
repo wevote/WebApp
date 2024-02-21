@@ -32,7 +32,7 @@ export default class SampleBallot extends Component {
 
     return (
       <div className="intro-story intro-story__background background--image3">
-        <Helmet title="See Your Ballot - We Vote" />
+        <Helmet title="See Your Ballot - WeVote" />
         <div className="intro-story__h1--alt">See Your Ballot</div>
         <div id="header2" className="intro-story__h2">
           On the next screen, you&apos;ll see

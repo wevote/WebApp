@@ -49,7 +49,7 @@ class RemindAddContacts extends React.Component {
                   Did you know there is a
                   {' '}
                   <span className="u-no-break">
-                    We Vote App
+                    WeVote App
                   </span>
                   {' '}
                   in the

@@ -166,7 +166,7 @@ We follow [SemVer](http://semver.org/) for our releases. Please read if you plan
 ## I Have Submitted a Pull Request, Now What?
 Sometimes pull requests can take a day or two to be approved. How do you keep working? TODO discuss this.
 
-While your pull request is being considered by the We Vote admins:
+While your pull request is being considered by the WeVote admins:
 Any new changes unrelated to this one should be on a brand new branch (`git
 checkout -b <your-second-feature-branch>`). Don't forget to check out the develop branch first, otherwise you'll 
 branch off of the current PR branch

@@ -377,7 +377,7 @@ class SettingsDomain extends Component {
             <Introduction>
               {chosenFeaturePackage === 'FREE' && (
                 <>
-                  Want to create a configured version of We Vote you can send out to your followers?
+                  Want to create a configured version of WeVote you can send out to your followers?
                   {' '}
                   {!(organizationChosenSubdomainSavedValue || organizationChosenDomainNameSavedValue) && (
                     <>
@@ -432,7 +432,7 @@ class SettingsDomain extends Component {
                 onChange={this.handleRadioGroupChange}
               >
                 <InputBoxLabel error={organizationChosenSubdomainAlreadyTaken}>
-                  We Vote Subdomain
+                  WeVote Subdomain
                 </InputBoxLabel>
                 <FormControlLabel
                   classes={!organizationChosenSubdomainAlreadyTaken ? { root: classes.formControlLabel, label: classes.label } : { root: classes.formControlLabelError, label: classes.label }}
@@ -532,7 +532,7 @@ class SettingsDomain extends Component {
                   </Suspense>
                 </InputBoxLabel>
                 <InputBoxHelperLabel>
-                  If you already own a domain that you want to use, enter it here. You will need to direct this domain name to the We Vote hosted server network, using a CNAME record.
+                  If you already own a domain that you want to use, enter it here. You will need to direct this domain name to the WeVote hosted server network, using a CNAME record.
                   {' '}
                   You can not include folder paths, but you can use a subdomain of your primary domain.
                   {' '}

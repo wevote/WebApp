@@ -68,7 +68,7 @@ class EndorsementCard extends PureComponent {
                   fontColor={fontColor}
                   icon={recommendIcon}
                   id="endorsementCardAddEndorsementsToWeVote"
-                  title="Add endorsements to We Vote"
+                  title="Add endorsements to WeVote"
                 />
               )}
             />

@@ -24,7 +24,7 @@ export default function FriendsOnlyIndicator ({ isFriendsOnlyIncoming }) {
   }
 
   if (isFriendsOnly) {
-    labelText = 'This is only visible to We Vote friends.';
+    labelText = 'This is only visible to WeVote friends.';
     visibilityIcon = (
       <ReactSVG
         src={normalizedImagePath(groupIcon)}

@@ -22,7 +22,7 @@ class FacebookSignInCard extends Component {
             />
             <InfoText>
               <InfoCircleIcon />
-              By adding Facebook to your We Vote profile, it is easier for friends to find you.
+              By adding Facebook to your WeVote profile, it is easier for friends to find you.
             </InfoText>
           </div>
         </div>

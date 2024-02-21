@@ -116,7 +116,7 @@ export default class OrganizationVoterGuideMeasure extends Component {
     }
 
     const measureName = toTitleCase(this.state.measure.ballot_item_display_name);
-    const titleText = `${measureName} - We Vote`;
+    const titleText = `${measureName} - WeVote`;
     const descriptionText = `Information about ${measureName}`;
     const voter = VoterStore.getVoter();
     const measureAdminEditUrl = `${webAppConfig.WE_VOTE_SERVER_ROOT_URL}m/${this.state.measure.id}/edit/?google_civic_election_id=${VoterStore.electionId()}&state_code=`;

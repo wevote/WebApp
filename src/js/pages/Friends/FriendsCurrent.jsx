@@ -89,7 +89,7 @@ export default class FriendsCurrent extends Component {
     const messageToFriendType = 'remindContacts';
     return (
       <FriendsCurrentWrapper>
-        <Helmet title="Your Friends - We Vote" />
+        <Helmet title="Your Friends - WeVote" />
         {(currentFriendList && currentFriendList.length > 0) && (
           <>
             <SectionTitle>

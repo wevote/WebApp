@@ -55,10 +55,10 @@ class WhatIsWeVote extends Component {
           <FlagImageWrapper>
             <FlagImage src={normalizedImagePath(voteFlag)} alt="Your vote counts" />
           </FlagImageWrapper>
-          <WeVoteTextTitle>What is We Vote?</WeVoteTextTitle>
+          <WeVoteTextTitle>What is WeVote?</WeVoteTextTitle>
           <WeVoteTextBody>
-            We Vote shows you information about the next election, side-by-side with your
-            friends&apos; opinions. Use We Vote to track your ballot, see endorsements from your
+            WeVote shows you information about the next election, side-by-side with your
+            friends&apos; opinions. Use WeVote to track your ballot, see endorsements from your
             network for candidates and measures, and collaborate with people and groups who share your values.
           </WeVoteTextBody>
           <WeVoteLogoWrapper>

@@ -9,7 +9,7 @@ export default class ClaimYourPage extends Component {
     renderLog('ClaimYourPage');  // Set LOG_RENDER_EVENTS to log all renders
     return (
       <PageContentContainer>
-        <Helmet title="Claim Your Page - We Vote" />
+        <Helmet title="Claim Your Page - WeVote" />
         <div className="container-fluid well u-stack--md u-inset--md">
           <h3 className="text-center">
             Claim Your Page

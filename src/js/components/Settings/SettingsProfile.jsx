@@ -52,7 +52,7 @@ class SettingsProfile extends Component {
 
     return (
       <HeaderContentContainer>
-        <Helmet title="Name & Photo Settings - We Vote" />
+        <Helmet title="Name & Photo Settings - WeVote" />
         <BrowserPushMessage incomingProps={this.props} />
         <div className="card u-padding-bottom--lg">
           <div className="card-main">

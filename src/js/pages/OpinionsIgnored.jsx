@@ -39,7 +39,7 @@ export default class OpinionsIgnored extends Component {
     renderLog('OpinionsIgnored');  // Set LOG_RENDER_EVENTS to log all renders
     return (
       <div className="opinions-followed__container">
-        <Helmet title="Who You're Ignoring - We Vote" />
+        <Helmet title="Who You're Ignoring - WeVote" />
         <section className="card">
           <div className="card-main">
             <h1 className="h1">Who You&apos;re Ignoring</h1>

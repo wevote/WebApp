@@ -87,7 +87,7 @@ class RemindContactsPreview extends React.Component {
                         {' '}
                         contacts saved. Searching
                         {' '}
-                        <span className="u-no-break">We Vote for your friends...</span>
+                        <span className="u-no-break">WeVote for your friends...</span>
                       </div>
                       <CircularProgressWrapper>
                         <CircularProgress />

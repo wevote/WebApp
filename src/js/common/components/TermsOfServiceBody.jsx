@@ -19,7 +19,7 @@ export default class TermsOfServiceBody extends Component {
         <p><strong>Last updated: October 23rd, 2023</strong></p>
 
         <h2>Overview</h2>
-        <p>This website (also packaged in mobile apps) is operated by We Vote USA. Throughout the site, the terms “We Vote”, “we”, “us” and “our” refer to We Vote USA. We Vote USA offers this website, including all information, tools and services available from this site to you, the user, conditioned upon your acceptance of all terms, conditions, policies and notices stated here.</p>
+        <p>This website (also packaged in mobile apps) is operated by We Vote USA. Throughout the site, the terms “WeVote”, “we”, “us” and “our” refer to We Vote USA. We Vote USA offers this website, including all information, tools and services available from this site to you, the user, conditioned upon your acceptance of all terms, conditions, policies and notices stated here.</p>
         <p>By visiting our site and/or using our tools, you engage in our “Service” and agree to be bound by the following terms and conditions (“Terms of Service”, “Terms”), including those additional terms and conditions and policies referenced herein and/or available by hyperlink. These Terms of Service apply to all users of the site, including without limitation users who are contributors of content.</p>
         <p>Please read these Terms of Service carefully before accessing or using our website. By accessing or using any part of the site, you agree to be bound by these Terms of Service. If you do not agree to all the terms and conditions of this agreement, then you may not access the website or use any services. If these Terms of Service are considered an offer, acceptance is expressly limited to these Terms of Service.</p>
         <p>Any new features or tools which are added to the current site shall also be subject to the Terms of Service. You can review the most current version of the Terms of Service at any time on this page. We reserve the right to update, change or replace any part of these Terms of Service by posting updates and/or changes to this website. It is your responsibility to check this page periodically for changes. Your continued use of or access to the website following the posting of any changes constitutes acceptance of those changes.</p>
@@ -31,7 +31,7 @@ export default class TermsOfServiceBody extends Component {
         <h2>General Conditions</h2>
         <p>You agree not to reproduce, duplicate, copy, sell, resell or exploit any portion of the Service, use of the Service, or access to the Service or any contact on the website through which the service is provided, without express written permission by us.</p>
         <p>
-          We Vote grants permission to copy the software that powers this website, made available at
+          WeVote grants permission to copy the software that powers this website, made available at
           {' '}
           <Suspense fallback={<></>}>
             <OpenExternalWebSite

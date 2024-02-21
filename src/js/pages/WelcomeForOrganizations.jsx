@@ -93,10 +93,10 @@ class WelcomeForOrganizations extends Component {
 
     const testimonialAuthor = 'Judy J., Oakland, California';
     const testimonialImageUrl = normalizedImagePath('/img/global/photos/Judy_J-109x109.jpg');
-    const testimonial = 'Let\'s be real: few people are reading those wonky ballot descriptions. I want deciding how to vote to be as easy and obvious as a solid Yelp review. Finally We Vote helps me plan the whole thing out way faster.';
+    const testimonial = 'Let\'s be real: few people are reading those wonky ballot descriptions. I want deciding how to vote to be as easy and obvious as a solid Yelp review. Finally WeVote helps me plan the whole thing out way faster.';
     return (
       <WelcomeForOrganizationsWrapper>
-        <Helmet title="Welcome Organizations - We Vote" />
+        <Helmet title="Welcome Organizations - WeVote" />
         <Suspense fallback={<></>}>
           <WelcomeAppbar pathname={pathname} id="WelcomeForOrganizations_WelcomeAppbar" />
         </Suspense>
@@ -165,7 +165,7 @@ class WelcomeForOrganizations extends Component {
                 {' '}
                 You will be empowering individuals to register to vote, review their ballot,
                 {' '}
-                find their polling location, and use We Vote tools to confidently make voting decisions.
+                find their polling location, and use WeVote tools to confidently make voting decisions.
               </Description>
               <Description className="u_margin-center">
                 <Button
@@ -196,7 +196,7 @@ class WelcomeForOrganizations extends Component {
             </DescriptionImageColumn>
             <DescriptionLeftColumn>
               <Description>
-                We Vote is a free, easy tool that allows voters to geolocate their specific
+                WeVote is a free, easy tool that allows voters to geolocate their specific
                 {' '}
                 ballot and then plan who to vote for using easy visual guides. Voters can
                 {' '}
@@ -205,7 +205,7 @@ class WelcomeForOrganizations extends Component {
                 friends and organizations.
               </Description>
               <Description>
-                Using We Vote, voters can now confidently plan out their whole ballot.
+                Using WeVote, voters can now confidently plan out their whole ballot.
               </Description>
               <Description className="u_margin-center">
                 <Button
@@ -234,7 +234,7 @@ class WelcomeForOrganizations extends Component {
         </Section>
         <Section>
           <SectionTitle>
-            We Vote
+            WeVote
             {' '}
             <SectionTitleBoldGold>Premium</SectionTitleBoldGold>
           </SectionTitle>
@@ -245,7 +245,7 @@ class WelcomeForOrganizations extends Component {
             <Description>
               Our team can partner with your brand to configure a customized landing page for you to share with members,
               {' '}
-              add a We Vote widget to your website, assist in messaging to launch the partnership, drive additional traffic, or provide analytics. Learn more!
+              add a WeVote widget to your website, assist in messaging to launch the partnership, drive additional traffic, or provide analytics. Learn more!
             </Description>
             <Description className="u_margin-center">
               <Button

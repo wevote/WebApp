@@ -87,10 +87,10 @@ class AppleSignIn extends Component {
         // unless it is a short term bug on the Apple API servers.
         // if (!email || email.length === 0) {
         //   openSnackbar({
-        //     message: 'We Vote does not support "Hide My Email" at this time.',
+        //     message: 'WeVote does not support "Hide My Email" at this time.',
         //     duration: 7000,
         //   });
-        //   oAuthLog('We Vote does not support "Hide My Email" at this time.');
+        //   oAuthLog('WeVote does not support "Hide My Email" at this time.');
         // } else {
         VoterActions.voterAppleSignInSave(email, givenName, middleName, familyName, user, identityToken);
         oAuthLog('Sign in with Apple successful signin for: ', email);

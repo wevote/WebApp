@@ -751,7 +751,7 @@ class ReadyTaskBallot extends React.Component {
                         How It Works
                       </ButtonTextMobileFont>
                       <span className="u-show-desktop-tablet">
-                        How We Vote Works Completed
+                        How WeVote Works Completed
                       </span>
                     </>
                   ) : (
@@ -763,7 +763,7 @@ class ReadyTaskBallot extends React.Component {
                         How It Works
                       </ButtonTextMobileFont>
                       <span className="u-show-desktop-tablet">
-                        How We Vote Works
+                        How WeVote Works
                       </span>
                       <ArrowForward classes={{ root: classes.arrowRoot }} />
                     </span>

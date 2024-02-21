@@ -424,10 +424,10 @@ export default class SignInOptionsPanel extends Component {
     if (voterIsSignedIn) {
       if (voterIsSignedInFacebook && !voterIsSignedInTwitter && (isOnWeVoteRootUrl || isOnWeVotePartnerSubdomainUrl)) {
         yourAccountTitle = 'Have Twitter Too?';
-        yourAccountExplanation = 'By adding your Twitter account to your We Vote profile, you get access to the voter guides of everyone you follow.';
+        yourAccountExplanation = 'By adding your Twitter account to your WeVote profile, you get access to the voter guides of everyone you follow.';
       } else if (voterIsSignedInTwitter && !voterIsSignedInFacebook && isOnFacebookSupportedDomainUrl) {
         yourAccountTitle = 'Have Facebook Too?';
-        yourAccountExplanation = 'By adding Facebook to your We Vote profile, it is easier for friends to find you.';
+        yourAccountExplanation = 'By adding Facebook to your WeVote profile, it is easier for friends to find you.';
       }
     }
 

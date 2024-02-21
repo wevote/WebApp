@@ -277,7 +277,7 @@ class News extends Component {
 
     const testimonialAuthor = 'Alissa B., Oakland, California';
     const imageUrl = normalizedImagePath('/img/global/photos/Alissa_B-128x128.jpg');
-    const testimonial = 'Great way to sort through my ballot! My husband and I used We Vote during the last election to learn more about our ballots and make some tough choices. Between following various organizations, and friending a couple of trusted friends, we felt like we had an excellent pool of information to draw from.';
+    const testimonial = 'Great way to sort through my ballot! My husband and I used WeVote during the last election to learn more about our ballots and make some tough choices. Between following various organizations, and friending a couple of trusted friends, we felt like we had an excellent pool of information to draw from.';
 
     // August 23, 2020: These resolve a problem that exists in the WebApp, but looks much worse in
     // Cordova -- Stop allowing horizontal scroll, (and vertical scroll of the entire window in some cases)
@@ -319,7 +319,7 @@ class News extends Component {
         <Suspense fallback={<LoadingWheelComp />}>
           <PageContentContainer>
             <div className="container-fluid">
-              <Helmet title="Discuss - We Vote" />
+              <Helmet title="Discuss - WeVote" />
               <BrowserPushMessage incomingProps={this.props} />
               <div className="row" style={unsetSomeRowStylesIfCordova}>
                 <div className="col-sm-12 col-md-8" style={unsetSomeRowStylesIfCordova}>
@@ -409,7 +409,7 @@ class News extends Component {
                             />
                           </VoterAndWeVoteLogos>
                           <DateVoterJoined>
-                            You joined We Vote
+                            You joined WeVote
                             {' '}
                             {timeFromDate(dateVoterJoined)}
                             , on
@@ -446,7 +446,7 @@ class News extends Component {
                       <SignInOptionsWrapper style={expandSideMarginsIfCordova}>
                         <SignInOptionsPanel
                           pleaseSignInTitle="Sign In to Join the Discussion"
-                          pleaseSignInSubTitle="We Vote is a community of friends who care about voting and democracy."
+                          pleaseSignInSubTitle="WeVote is a community of friends who care about voting and democracy."
                         />
                       </SignInOptionsWrapper>
                     </Suspense>

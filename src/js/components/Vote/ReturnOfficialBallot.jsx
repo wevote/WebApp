@@ -45,12 +45,12 @@ class ReturnOfficialBallot extends Component {
       return (
         <div id="location_guess" className="card-main__location-guess">
           <ParagraphStyled>
-            We Vote helps you get ready to vote,
+            WeVote helps you get ready to vote,
             {' '}
             <strong>
               but you can
               {'\''}
-              t use We Vote to cast your vote
+              t use WeVote to cast your vote
             </strong>
             .
             {' '}

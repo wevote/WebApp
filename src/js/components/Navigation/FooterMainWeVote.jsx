@@ -154,7 +154,7 @@ class FooterMainWeVote extends Component {
         <BottomSection>
           <Text>
             <WeVoteName>
-              We Vote
+              WeVote
             </WeVoteName>
             {' '}
             is a nonpartisan nonprofit.

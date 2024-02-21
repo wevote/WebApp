@@ -50,7 +50,7 @@ class HowItWorksModal extends Component {
         <ModalTitleArea>
           <div>
             <Title>
-              How We Vote Works
+              How WeVote Works
             </Title>
           </div>
           <IconButton

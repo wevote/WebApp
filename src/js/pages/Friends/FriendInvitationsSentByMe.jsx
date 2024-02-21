@@ -83,7 +83,7 @@ export default class FriendInvitationsSentByMe extends Component {
 
     return (
       <div className="opinion-view">
-        <Helmet title="Friend Requests Sent - We Vote" />
+        <Helmet title="Friend Requests Sent - WeVote" />
         <div>
           { friendInvitationsSentByMe && friendInvitationsSentByMe.length > 0 ? (
             <span>

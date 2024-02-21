@@ -369,12 +369,12 @@ class AddContactsFromGoogleButton extends Component {
               <PermissionDeniedText>
                 iOS only gives you once chance to approve contacts access per installation of an app.
                 <br />
-                To import your contacts, delete the We Vote app then download it again from the App Store.
+                To import your contacts, delete the WeVote app then download it again from the App Store.
                 <br />
                 Be sure to press the
                 <strong> OK </strong>
                 button in the
-                <strong> &quot;We Vote Would Like to Access Your Contacts&quot; </strong>
+                <strong> &quot;WeVote Would Like to Access Your Contacts&quot; </strong>
                 dialog.
               </PermissionDeniedText>
             </>

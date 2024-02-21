@@ -306,11 +306,11 @@ class SettingsSharing extends Component {
             <SeeTheseSettingsInAction />
             <SharingRow>
               <SharingColumn>
-                <InputBoxLabel>Hide We Vote Logo</InputBoxLabel>
+                <InputBoxLabel>Hide WeVote Logo</InputBoxLabel>
                 <DescriptionText>
-                  Remove the We Vote logo from the header bar.
+                  Remove the WeVote logo from the header bar.
                   {' '}
-                  This setting will also hide the We Vote logo from the favicon and social share images for Enterprise Plans, even if you haven&apos;t uploaded your own.
+                  This setting will also hide the WeVote logo from the favicon and social share images for Enterprise Plans, even if you haven&apos;t uploaded your own.
                 </DescriptionText>
               </SharingColumn>
               <SharingColumn alignRight>
