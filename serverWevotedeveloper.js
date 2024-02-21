@@ -8,9 +8,8 @@
 const express = require("express");
 const app = express();
 const fs = require("fs");
-const https = require("https");
+const https = require('https');
 const path = require("path");
-const webAppConfig = require("./src/js/config");
 
 const port = 3000;
 const opts = { redirect: true };
