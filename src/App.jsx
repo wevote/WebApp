@@ -711,7 +711,7 @@ const WeVoteBody = styled('div')`
   line-height: 1.4;
   margin: 0 auto;
   // max-width: 960px;
-  //height: 100vw;
+  height: 100vw;
   position: relative;
   z-index: 0;
   // this debug technique works!  ${() => console.log('-----------------------------')}
