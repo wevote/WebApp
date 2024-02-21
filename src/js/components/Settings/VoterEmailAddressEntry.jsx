@@ -392,7 +392,7 @@ class VoterEmailAddressEntry extends Component {
                       linkIdAttribute="weVoteSupportVoterEmailAddressEntry"
                       url="https://help.wevote.us/hc/en-us/requests/new"
                       target="_blank"
-                      body={<span>contact We Vote support for help.</span>}
+                      body={<span>contact WeVote support for help.</span>}
                     />
                   </Suspense>
                 </div>
@@ -421,8 +421,8 @@ class VoterEmailAddressEntry extends Component {
     );
 
     // let enterEmailTitle = isWebApp() ? 'Email' : 'Email the Sign In code to';
-    // // let enterEmailExplanation = isWebApp() ? "You'll receive a magic link in your email. Click that link to be signed into your We Vote account." :
-    // //   "You'll receive a magic link in the email on this phone. Click that link to be signed into your We Vote account.";
+    // // let enterEmailExplanation = isWebApp() ? "You'll receive a magic link in your email. Click that link to be signed into your WeVote account." :
+    // //   "You'll receive a magic link in the email on this phone. Click that link to be signed into your WeVote account.";
     // if (voter && voter.is_signed_in) {
     //   enterEmailTitle = 'Add New Email';
     //   // enterEmailExplanation = isWebApp() ? "You'll receive a magic link in your email. Click that link to verify this new email." :

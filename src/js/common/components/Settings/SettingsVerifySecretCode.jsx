@@ -207,11 +207,11 @@ class SettingsVerifySecretCode extends Component {
         errorToDisplay = true;
         const { voterEmailAddress, voterPhoneNumber } = this.state;
         if (voterEmailAddress) {
-          errorMessageToDisplay = `Please contact We Vote support regarding ${voterEmailAddress}.`;
+          errorMessageToDisplay = `Please contact WeVote support regarding ${voterEmailAddress}.`;
         } else if (voterPhoneNumber) {
-          errorMessageToDisplay = `Please contact We Vote support regarding ${voterPhoneNumber}.`;
+          errorMessageToDisplay = `Please contact WeVote support regarding ${voterPhoneNumber}.`;
         } else {
-          errorMessageToDisplay = 'Please contact We Vote support. Your account is locked.';
+          errorMessageToDisplay = 'Please contact WeVote support. Your account is locked.';
         }
       } else if (voterMustRequestNewCode) {
         errorToDisplay = true;

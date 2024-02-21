@@ -165,7 +165,7 @@ class VerifyThisIsMe extends Component {
       return (
         <PageContentContainer>
           <Helmet>
-            <title>Claim This Page - We Vote</title>
+            <title>Claim This Page - WeVote</title>
             <meta name="robots" content="noindex" data-react-helmet="true" />
           </Helmet>
           <div className="card">
@@ -221,13 +221,13 @@ class VerifyThisIsMe extends Component {
 
       return (
         <PageContentContainer>
-          <Helmet title={`Claim @${twitterHandle} - We Vote`} />
+          <Helmet title={`Claim @${twitterHandle} - WeVote`} />
           <div className="card">
             <div className="card-main">
               { signedInTwitter ? (
                 <div>
                   <Alert variant="danger">
-                    You are signed into We Vote with @
+                    You are signed into WeVote with @
                     {voter.twitter_screen_name}
                     .
                     To claim
@@ -240,7 +240,7 @@ class VerifyThisIsMe extends Component {
                       sign out
                     </FakeLink>
                     {' '}
-                    of We Vote, and then sign in again with your
+                    of WeVote, and then sign in again with your
                     {' '}
                     @
                     {twitterHandle}
@@ -293,7 +293,7 @@ class VerifyThisIsMe extends Component {
       // console.log("VerifyThisIsMe this.state.kindOfOwner === TWITTER_HANDLE_NOT_FOUND_IN_WE_VOTE");
       return (
         <PageContentContainer>
-          <Helmet title={`Claim @${twitterHandle} - We Vote`} />
+          <Helmet title={`Claim @${twitterHandle} - WeVote`} />
           <TwitterAccountCard
             twitterDescription={twitterDescription}
             twitterHandle={twitterHandle}
@@ -313,14 +313,14 @@ class VerifyThisIsMe extends Component {
           </div>
           { signedInTwitter ? (
             <div>
-              You are signed into We Vote with @
+              You are signed into WeVote with @
               {voter.twitter_screen_name}
               .
               To claim
               {' '}
               @
               {twitterHandle}
-              , sign out of We Vote, and then sign in again with your
+              , sign out of WeVote, and then sign in again with your
               {' '}
               @
               {twitterHandle}
@@ -338,7 +338,7 @@ class VerifyThisIsMe extends Component {
     } else {
       return (
         <PageContentContainer>
-          <Helmet title={`Claim @${twitterHandle} - We Vote`} />
+          <Helmet title={`Claim @${twitterHandle} - WeVote`} />
           <h3 className="h3">Could Not Confirm</h3>
           <div className="small">
             We were not able to find an account for this Twitter Handle

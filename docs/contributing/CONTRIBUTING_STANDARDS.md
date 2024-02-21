@@ -66,7 +66,7 @@ Examples of names we avoid:
 There is no perfect code style.  If you have worked at a few different companies or on a few different open source projects, you
 will have used a few different styles.
 
-As of December 2018, the We Vote WebApp src directory contained 1073 files, that have been created and edited by dozens of volunteer
+As of December 2018, the WeVote WebApp src directory contained 1073 files, that have been created and edited by dozens of volunteer
 software engineers.  And we had dozens of different code styles in different files.
 
 Inconsistently formatted code is less reliable code, so we decided to (mostly) put aside the 
@@ -87,7 +87,7 @@ The list might be quite long, so you may want to redirect it into a file that yo
 
 # Code Craftsmanship
 
-We value Software Craftsmanship for the We Vote project since it makes working on the We Vote code base …
+We value Software Craftsmanship for the WeVote project since it makes working on the WeVote code base …
 * Fun since the product is composed of clean self documenting components that 
   * Do not repeat themselves -- each functional block has a component, or collection of components that can be widely used, or is completely unique.
   * Are easy to rearrange on panels and pages, with less (or no) modifying of the components themselves for new uses or new UI approaches..
@@ -126,7 +126,7 @@ We value Software Craftsmanship for the We Vote project since it makes working o
 
 ## Reporting bugs as member of the engineering team
 
-* We use Jira to track issues with the We Vote website and mobile Apps, thanks to [Atlassian, the makers of Jira](https://www.atlassian.com/software/views/open-source-license-request#/), and their support for open source projects.
+* We use Jira to track issues with the WeVote website and mobile Apps, thanks to [Atlassian, the makers of Jira](https://www.atlassian.com/software/views/open-source-license-request#/), and their support for open source projects.
 * If you're actively working on an issue, please mark it as "Fix in Progress" and assign the issue to yourself.
     * Please only "take" one issue at a time, unless you speak to the Engineering Manager first.
 * Please keep the team updated on the work you are doing by attending our weekly stand-up meeting, or post a note in the #coding Slack channel.

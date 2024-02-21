@@ -175,7 +175,7 @@ class Ready extends Component {
         <ReadyPageContainer className="container-fluid" style={this.getTopPadding()}>
           <SnackNotifier />
           <Helmet>
-            <title>Ready to Vote? - We Vote</title>
+            <title>Ready to Vote? - WeVote</title>
             <link rel="canonical" href="https://wevote.us/ready" />
           </Helmet>
           <BrowserPushMessage incomingProps={this.props} />

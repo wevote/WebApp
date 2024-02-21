@@ -33,7 +33,7 @@ class Credits extends Component {
               summary of open source software
             </Link>
             {' '}
-            We Vote uses.
+            WeVote uses.
           </span>
           <CompanyWrapper>
             { organizationalDonors.map((item) => {
@@ -139,7 +139,9 @@ class Credits extends Component {
           <br />
           This list is in rough order of number of volunteer hours spent (10+ hours) or monetary donation level. Individual monetary donors only listed with express permission.
           {' '}
-          (Our apologies if you should be on this list and are missing. Please contact <a href='https://wevote.us/more/faq'>support</a> with corrections.)
+          (Our apologies if you should be on this list and are missing. Please contact
+          <a href="https://wevote.us/more/faq">support</a>
+          with corrections.)
         </CreditsDescriptionContainer>
       </Wrapper>
     );
@@ -187,7 +189,7 @@ const CreditsDescriptionContainer = styled('div')(({ theme }) => (`
   width: 960px;
   max-width: 90vw;
   text-align: left;
-  
+
   > * {
     width: 100%;
     margin: 0 auto;

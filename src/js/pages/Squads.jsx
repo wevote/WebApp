@@ -165,7 +165,7 @@ class Squads extends Component {
         <SquadsPageContainer className="container-fluid" style={this.getTopPadding()}>
           <SnackNotifier />
           <Helmet>
-            <title>Democracy Squads - We Vote</title>
+            <title>Democracy Squads - WeVote</title>
             <link rel="canonical" href="https://wevote.us/squads" />
           </Helmet>
           <BrowserPushMessage incomingProps={this.props} />

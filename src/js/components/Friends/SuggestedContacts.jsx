@@ -59,10 +59,10 @@ export default class SuggestedContacts extends Component {
         ) : (
           <SuggestedContactsWrapper>
             <SectionTitle>
-              Find Your Contacts on We Vote
+              Find Your Contacts on WeVote
             </SectionTitle>
             <SectionDescription>
-              Importing your contacts helps you find your friends on We Vote. You can delete your contact information at any time.
+              Importing your contacts helps you find your friends on WeVote. You can delete your contact information at any time.
             </SectionDescription>
             <div>
               <Suspense fallback={<></>}>

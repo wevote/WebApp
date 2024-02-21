@@ -28,25 +28,25 @@ class HowItWorks extends Component {
       forCampaignsSteps: {
         Claim: {
           title: '1. Claim your campaign profile',
-          description: 'Sign in & verify your account using your official Twitter account or other secure method. We Vote takes verification very seriously. (No trolls allowed!)',
+          description: 'Sign in & verify your account using your official Twitter account or other secure method. WeVote takes verification very seriously. (No trolls allowed!)',
           imgSrc: '/img/how-it-works/HowItWorksForCampaigns-Claim-20190516.gif?',
           index: 0,
         },
         Import: {
           title: '2. Import your endorsements',
-          description: 'We are here to help you get your opinions in front of voters, whether you have 5 endorsements, or 1,005. We Vote\'s unique tech instamagically captures endorsement data from your website, spreadsheets, or text lists of candidates. No formatting overhauls required.',
+          description: 'We are here to help you get your opinions in front of voters, whether you have 5 endorsements, or 1,005. WeVote\'s unique tech instamagically captures endorsement data from your website, spreadsheets, or text lists of candidates. No formatting overhauls required.',
           imgSrc: '/img/how-it-works/HowItWorksForCampaigns-Import-20190425.gif?',
           index: 1,
         },
         Customize: {
           title: '3. Add more customizations for your supporters',
-          description: 'Want all the bells and whistles?  We Vote offers a lot for free, but has paid premium features that include the endorsements from your chapters and partners, and give you deeper analytics.',
+          description: 'Want all the bells and whistles?  WeVote offers a lot for free, but has paid premium features that include the endorsements from your chapters and partners, and give you deeper analytics.',
           imgSrc: '/img/how-it-works/HowItWorksForCampaigns-Customize-20190425.gif?',
           index: 2,
         },
         Launch: {
           title: '4. Launch to your people',
-          description: 'Promote your unique url over your email, text, and social media channels. Add the We Vote widget directly to your campaign website.',
+          description: 'Promote your unique url over your email, text, and social media channels. Add the WeVote widget directly to your campaign website.',
           imgSrc: '/img/how-it-works/HowItWorksForCampaigns-Launch-20190506.gif?',
           index: 3,
         },
@@ -61,19 +61,19 @@ class HowItWorks extends Component {
       forOrganizationsSteps: {
         Claim: {
           title: '1. Claim your organization profile',
-          description: 'Sign in & verify your organization using your official Twitter account or other secure method. We Vote takes verification very seriously. (No trolls allowed!)',
+          description: 'Sign in & verify your organization using your official Twitter account or other secure method. WeVote takes verification very seriously. (No trolls allowed!)',
           imgSrc: '/img/how-it-works/HowItWorksForOrgs-Claim-20190506.gif?',
           index: 0,
         },
         Customize: {
           title: '2. Customize your Election Center',
-          description: 'Want all the bells and whistles?  We Vote offers a lot for free, but has paid premium features to help you further customize branding and messaging, and give you deeper analytics.',
+          description: 'Want all the bells and whistles?  WeVote offers a lot for free, but has paid premium features to help you further customize branding and messaging, and give you deeper analytics.',
           imgSrc: '/img/how-it-works/HowItWorksForOrgs-Customize-20190507.gif?',
           index: 1,
         },
         Launch: {
           title: '3. Launch',
-          description: 'Share your unique url over your email, text, and social media channels. Add the We Vote widget directly to your website.',
+          description: 'Share your unique url over your email, text, and social media channels. Add the WeVote widget directly to your website.',
           imgSrc: '/img/how-it-works/HowItWorksForOrgs-Launch-20190506.gif?',
           index: 2,
         },
@@ -106,7 +106,7 @@ class HowItWorks extends Component {
         },
         Decide: {
           title: '4. Complete your ballot with confidence',
-          description: 'We Vote is fast, mobile, and helps you decide on the go. Vote with confidence!',
+          description: 'WeVote is fast, mobile, and helps you decide on the go. Vote with confidence!',
           imgSrc: '/img/how-it-works/HowItWorksForVoters-Decide-20190401.gif?',
           index: 3,
         },
@@ -296,17 +296,17 @@ class HowItWorks extends Component {
     let stepLabels;
     if (selectedCategoryIndex === 2) {
       currentSlides = forCampaignsSteps;
-      helmetTitle = 'How We Vote Works for Campaigns';
+      helmetTitle = 'How WeVote Works for Campaigns';
       simulatedPathname = '/how/for-campaigns';
       stepLabels = forCampaignsStepLabels;
     } else if (selectedCategoryIndex === 1) {
       currentSlides = forOrganizationsSteps;
-      helmetTitle = 'How We Vote Works for Organizations';
+      helmetTitle = 'How WeVote Works for Organizations';
       simulatedPathname = '/how/for-organizations';
       stepLabels = forOrganizationsStepLabels;
     } else {
       currentSlides = forVoterSteps;
-      helmetTitle = 'How We Vote Works for Voters';
+      helmetTitle = 'How WeVote Works for Voters';
       simulatedPathname = '/how/for-voters';
       stepLabels = forVoterStepLabels;
     }

@@ -40,7 +40,7 @@ export default class IntroNetworkBallotIsNext extends Component {
           <img
             className="center-block intro-story__img-height intro-story__placeholder"
             src={normalizedImagePath('/img/how-it-works/HowItWorksForVoters-Decide-20190401.gif')}
-            alt="Decide your ballot with We Vote"
+            alt="Decide your ballot with WeVote"
           />
           {/* <div className="center-block intro-story__img-height intro-story__placeholder">Fle Nme: Decide.GIF</div> */}
         </div>

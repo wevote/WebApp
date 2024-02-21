@@ -203,7 +203,7 @@ class ShareButtonFooter extends Component {
     this.setState({
       showSignInModal,
     });
-    // Make sure we have We Vote friends data
+    // Make sure we have WeVote friends data
     if (apiCalming('voterContactListRetrieve', 20000)) {
       VoterActions.voterContactListRetrieve();
     }

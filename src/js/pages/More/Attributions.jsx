@@ -44,7 +44,7 @@ export default class Attributions extends React.Component {
     return (
       <PageContentContainer>
         {/* <div style={{ marginBottom: 30 }}> */}
-        <Helmet title="Attributions - We Vote" />
+        <Helmet title="Attributions - WeVote" />
         <div className="container-fluid well">
           <br />
           <h1 className="text-center">WeVote.US Open Source Software Licenses</h1>

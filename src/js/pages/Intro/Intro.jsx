@@ -75,9 +75,9 @@ export default class Intro extends Component {
     } = this.state;
     return (
       <div>
-        <Helmet title="Welcome to We Vote" />
+        <Helmet title="Welcome to WeVote" />
         <div className="container-fluid well u-stack--md u-inset--md">
-          <h2 className="text-center">We Vote</h2>
+          <h2 className="text-center">WeVote</h2>
           <label // eslint-disable-line
             htmlFor="address"
           >

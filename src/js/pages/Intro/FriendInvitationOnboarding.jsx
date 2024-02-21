@@ -295,7 +295,7 @@ class FriendInvitationOnboarding extends Component {
     const slideHtmlContent = slideHtmlContentDict[currentSlideIndex];
     return (
       <div>
-        <Helmet title="We Vote - Invitation Accepted!" />
+        <Helmet title="WeVote - Invitation Accepted!" />
         <div className="intro-story container-fluid well u-inset--md" style={this.overrideMediaQueryForAndroidTablets()}>
           <span onClick={this.onExitOnboarding}>
             <img

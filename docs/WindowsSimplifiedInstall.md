@@ -110,11 +110,11 @@ The install for procedure using WebStorm is the same as what you see here. WebSt
 23. In PyCharm set up your git remotes. 
     1. Navigate to the Git/'Manage Remotes...' dialog  
 
-    The We Vote projects defines upstream and origin differently than most other projects, so we need to manually reverse them here.
+    The WeVote open source project defines upstream and origin differently than most other projects, so we need to manually reverse them here.
     3. Click the edit (pencil) icon, and change the name field for the URL to your copy of the repository from "upstream" to "origin".  (The following picture shows the dialog before you make the Name change.)
 
     ![ScreenShot](images/WindowsGitUpstream.png)
-    5. Then add a remote for your We Vote's public branch by pressing the '+' button on the Git Remotes dialog. In the dialog that appears, set the name field to "upstream", and the URL to "https://github.com/wevote/WebApp.git".  Press OK and the remotes should look like this:  
+    5. Then add a remote for your WeVote's public branch by pressing the '+' button on the Git Remotes dialog. In the dialog that appears, set the name field to "upstream", and the URL to "https://github.com/wevote/WebApp.git".  Press OK and the remotes should look like this:  
 
     ![ScreenShot](images/WindowsManageRemotes.png)
     Press OK to close the dialog.
@@ -207,7 +207,7 @@ The install for procedure using WebStorm is the same as what you see here. WebSt
 30. Install gulp
    In the terminal `npm install -g gulp-cli`
 
-31. Install (the approximately 1600 open source packages, libraries or "node_modules" that We Vote uses as a foundation for our WebApp)
+31. Install (the approximately 1600 open source packages, libraries or "node_modules" that WeVote uses as a foundation for our WebApp)
 
     In the terminal `npm install`
 
@@ -225,7 +225,7 @@ The install for procedure using WebStorm is the same as what you see here. WebSt
 
 32. Make this configuration change, to allow the WebApp to be compiled under Windows. 
 
-    Background: MS-DOS and subsequently Windows chose to end each line in a text file with a carriage-return followed by a line-feed (CRLF), but UNIX, Linux and macOS simply uses a line-feed (LF).  All WeVote source code files use LF when advancing to the next line, so this configuration is necessary to allow files on Windows to be able to be submitted to We Vote's git repositories.
+    Background: MS-DOS and subsequently Windows chose to end each line in a text file with a carriage-return followed by a line-feed (CRLF), but UNIX, Linux and macOS simply uses a line-feed (LF).  All WeVote source code files use LF when advancing to the next line, so this configuration is necessary to allow files on Windows to be able to be submitted to WeVote's git repositories.
 
     **This "fix" is a bit hacky, and you have to be sure not to commit this '.eslintrc' file to Git if you check in changes.**
 
@@ -238,7 +238,7 @@ The install for procedure using WebStorm is the same as what you see here. WebSt
     This configuration line, disables Windows vs Linux "lint" line break checking, and allows you to run the WebApp you compile on your Windows PC.
 
 
-## Run the We Vote WebApp
+## Run the WeVote WebApp
 
 1. In the terminal, type the command `npm run start-win` to start the local webserver.
    ![ScreenShot](images/WindowsSuccessfulRun.png)

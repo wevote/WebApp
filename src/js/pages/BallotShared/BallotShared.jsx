@@ -233,7 +233,7 @@ class BallotShared extends Component {
     if (sharedByDisplayName) {
       htmlTitleText = `${sharedByDisplayName}'s Voter Guide`;
     }
-    htmlTitleText += ' - We Vote';
+    htmlTitleText += ' - WeVote';
     let shareButtonText = 'Share this Voter Guide';
     if (sharedByFirstName) {
       shareButtonText = `Share ${sharedByFirstName}'s Voter Guide`;
@@ -331,7 +331,7 @@ class BallotShared extends Component {
           <DesktopStaticNextButtonsOuterWrapper breakValue={0}>
             <DesktopNextButtonsInnerWrapper>
               <SetUpAccountNextButton
-                nextButtonText="Save to my ballot on We Vote"
+                nextButtonText="Save to my ballot on WeVote"
                 onClickNextButton={this.onClickNextButton}
               />
             </DesktopNextButtonsInnerWrapper>

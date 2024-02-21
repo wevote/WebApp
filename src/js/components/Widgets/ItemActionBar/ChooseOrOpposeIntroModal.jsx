@@ -52,7 +52,7 @@ class ChooseOrOpposeIntroModal extends Component {
       getReady:
         (
           <>
-            <SubTitle>We Vote helps you get ready to vote, BUT does not officially cast your vote.</SubTitle>
+            <SubTitle>WeVote helps you get ready to vote, BUT does not officially cast your vote.</SubTitle>
             <PlainText>Make sure to return your official ballot to your local election registrar.</PlainText>
             <Options buttons="2">
               {!voterIsSignedIn && (
@@ -79,7 +79,7 @@ class ChooseOrOpposeIntroModal extends Component {
       toggle:
         (
           <>
-            <SubTitle>Your position is only visible to your We Vote friends.</SubTitle>
+            <SubTitle>Your position is only visible to your WeVote friends.</SubTitle>
             <PlainText>You can make your views public with the privacy toggle.</PlainText>
             <Row>
               <BoldText>Test the toggle here:</BoldText>

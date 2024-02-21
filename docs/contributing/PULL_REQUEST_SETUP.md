@@ -11,10 +11,10 @@
 
 # Before Your First Pull Request
 
-Thank you for your interest in the We Vote WebApp project. Please let us know if we can help you get started.
+Thank you for your interest in the WeVote WebApp project. Please let us know if we can help you get started.
  (contact info: https://github.com/wevote)
 
-This document includes the steps you need to take before your first We Vote pull request. 
+This document includes the steps you need to take before your first WeVote pull request. 
 We recommend reading “[What the Heck is a Pull Request?](PULL_REQUEST_BACKGROUND.md)” before following these steps. 
 
 Please [sign the Contributor License Agreement](https://www.clahub.com/agreements/wevote/WebApp) before getting started.

@@ -127,7 +127,7 @@ class ReadyLight extends Component {
       <PageContentContainer>
         <ReadyPageContainer className="container-fluid" style={this.getTopPadding()}>
           <Helmet>
-            <title>Ready to Vote? - We Vote</title>
+            <title>Ready to Vote? - WeVote</title>
             <link rel="canonical" href="https://wevote.us/" />
           </Helmet>
           <BrowserPushMessage incomingProps={this.props} />

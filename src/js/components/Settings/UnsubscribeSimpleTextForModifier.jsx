@@ -104,7 +104,7 @@ class UnsubscribeSimpleTextForModifier extends React.Component {
     const weVoteNoBreak = (
       <span className="u-no-break">
         {' '}
-        We Vote
+        WeVote
       </span>
     );
     const pleaseContactWeVoteSupport = (
@@ -179,7 +179,7 @@ class UnsubscribeSimpleTextForModifier extends React.Component {
         </>
       );
     } else {
-      unsubscribeTitle = 'We Vote Newsletter';
+      unsubscribeTitle = 'WeVote Newsletter';
       unsubscribeDescriptionText = notificationSettingIsOn ? (
         <>
           Click

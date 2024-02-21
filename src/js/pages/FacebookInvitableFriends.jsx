@@ -32,7 +32,7 @@ import { oAuthLog, renderLog } from '../common/utils/logging';
     2) Go to your facebook home page, go to settings then apps.  Delete the WeVote app if it exists.
     3) Go to the live server at https://wevote.us/welcomehome
     4) Logout if you are logged in
-    5) Login with facebook (and note that within the login pop-up you are agreeing to "We Vote will receive:
+    5) Login with facebook (and note that within the login pop-up you are agreeing to "WeVote will receive:
         your public profile, friend list and email address")
     6) You now should be able navigate to "Network" in the live WeVote app, press the "f Choose Friends" button,
        and see a list of your friends.
@@ -324,7 +324,7 @@ export default class FacebookInvitableFriends extends Component {
 
     return (
       <div className="opinion-view">
-        <Helmet title="Your Facebook Friends - We Vote" />
+        <Helmet title="Your Facebook Friends - WeVote" />
         <section className="card">
           <div className="card-main">
             <h4 className="h4">Add Friends from Facebook</h4>
@@ -362,7 +362,7 @@ export default class FacebookInvitableFriends extends Component {
                     <br />
                     <input
                       className="form-control"
-                      defaultValue="Please join me on We Vote."
+                      defaultValue="Please join me on WeVote."
                       id="facebook-friends"
                       name="add_friends_message"
                       onChange={this.cacheAddFriendsByFacebookMessage.bind(this)}

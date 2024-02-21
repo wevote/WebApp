@@ -740,7 +740,7 @@ class FindFriendsRoot extends React.Component {
     }
     return (
       <PageContentContainerAccountSetUp>
-        <Helmet title="Find Your Friends - We Vote" />
+        <Helmet title="Find Your Friends - WeVote" />
         <AccountSetUpRootWrapper>
           <WeVoteLogoWrapper>
             <WeVoteLogo

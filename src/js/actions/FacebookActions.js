@@ -29,7 +29,7 @@ export default {
   },
 
   disconnectFromFacebook () {
-    // Removing connection between We Vote and Facebook
+    // Removing connection between WeVote and Facebook
     FacebookSignedInData.clearFacebookSignedInData();
     Dispatcher.dispatch({
       type: FacebookConstants.FACEBOOK_SIGN_IN_DISCONNECT,
@@ -43,7 +43,7 @@ export default {
   // },
 
   // Sept 2017, We now use the Facebook "games" api "invitable_friends" data on the fly from the webapp for the "Choose Friends" feature.
-  // We use the more limited "friends" api call from the server to find Facebook profiles of friends already using We Vote.
+  // We use the more limited "friends" api call from the server to find Facebook profiles of friends already using WeVote.
   facebookFriendsAction () {
     Dispatcher.loadEndpoint('facebookFriendsAction', {});
     FriendActions.friendListSuggested();

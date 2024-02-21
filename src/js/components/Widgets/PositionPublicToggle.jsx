@@ -128,7 +128,7 @@ class PositionPublicToggle extends Component {
 
     // console.log("PositionPublicToggle-showItemToFriendsOnly, this.props.ballotItemType:", this.props.ballotItemType);
     SupportActions.voterPositionVisibilitySave(this.state.ballotItemWeVoteId, this.props.ballotItemType, 'FRIENDS_ONLY');
-    openSnackbar({ message: 'Endorsement now visible to We Vote friends only!' });
+    openSnackbar({ message: 'Endorsement now visible to WeVote friends only!' });
   }
 
   showItemToPublic () {
@@ -213,7 +213,7 @@ class PositionPublicToggle extends Component {
             <SignInModal
               signedInContentHeader={(
                 <>
-                  Your endorsement is now visible to the public. Click the &quot;Friends&quot; toggle to show to We Vote friends only.
+                  Your endorsement is now visible to the public. Click the &quot;Friends&quot; toggle to show to WeVote friends only.
                 </>
               )}
               signInTitle="Sign in to make your endorsements public."

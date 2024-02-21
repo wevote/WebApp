@@ -166,7 +166,7 @@ class SettingsNotifications extends Component {
 
     return (
       <div className="">
-        <Helmet title="Notifications - We Vote" />
+        <Helmet title="Notifications - WeVote" />
         <BrowserPushMessage incomingProps={this.props} />
         <div className="card">
           <div className="card-main">
@@ -458,7 +458,7 @@ class SettingsNotifications extends Component {
                           component="th"
                           scope="row"
                         >
-                          We Vote newsletter
+                          WeVote newsletter
                         </TableCell>
                         <TableCell align="center" classes={{ root: classes.tableCellColumn }}>
                           &nbsp;

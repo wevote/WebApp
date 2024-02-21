@@ -448,7 +448,7 @@ class VoterPhoneVerificationEntry extends Component {
                       linkIdAttribute="weVoteSupportVoterPhoneVerificationEntry"
                       url="https://help.wevote.us/hc/en-us/requests/new"
                       target="_blank"
-                      body={<span>contact We Vote support for help.</span>}
+                      body={<span>contact WeVote support for help.</span>}
                     />
                   </Suspense>
                 </div>

@@ -22,7 +22,7 @@ class TwitterSignInCard extends Component {
             />
             <InfoText>
               <InfoCircleIcon />
-              Signing into Twitter is the fastest way to find voter guides related to your values. We Vote will find the voter guides of everyone you are following on Twitter.
+              Signing into Twitter is the fastest way to find voter guides related to your values. WeVote will find the voter guides of everyone you are following on Twitter.
             </InfoText>
           </div>
         </div>

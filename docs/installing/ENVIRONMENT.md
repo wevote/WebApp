@@ -77,7 +77,7 @@ Now activate this new virtual environment:
     $ cd /Users/<YOUR NAME HERE>/NodeEnvironments/WebAppEnv/
     $ . bin/activate
 
-**Note** that you will need to do the step above every time before you start local development. Once you have activated this virtual Node environment, it will persist in the current Terminal tab even as you navigate to different folders (e.g., the We Vote WebApp folder). You'll see that each line on the Terminal starts with `(WebAppEnv)` while the virtual environment is in effect. You can read more about nodeenv [here](https://github.com/ekalinin/nodeenv).
+**Note** that you will need to do the step above every time before you start local development. Once you have activated this virtual Node environment, it will persist in the current Terminal tab even as you navigate to different folders (e.g., the WeVote WebApp folder). You'll see that each line on the Terminal starts with `(WebAppEnv)` while the virtual environment is in effect. You can read more about nodeenv [here](https://github.com/ekalinin/nodeenv).
 
 Just to be safe, rebuild node-sass:
 

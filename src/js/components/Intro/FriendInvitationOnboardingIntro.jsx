@@ -98,7 +98,7 @@ class FriendInvitationOnboardingIntro extends Component {
           <HeaderLogoImage src={normalizedImagePath(logoDark)} />
         </WeVoteLogoWrapper>
         <FriendInvitationTopHeader className="FriendInvitationTopHeader">
-          Welcome to We Vote.
+          Welcome to WeVote.
           {' '}
           {friendFirstName || invitationMessage ? (
             <>
@@ -154,7 +154,7 @@ class FriendInvitationOnboardingIntro extends Component {
           )}
         </FriendInvitationTopHeader>
         <FriendInvitationIntroHeader className="FriendInvitationIntroHeader">
-          We Vote helps you:
+          WeVote helps you:
         </FriendInvitationIntroHeader>
         <FriendInvitationListWrapper>
           <FriendInvitationList>
@@ -223,7 +223,7 @@ class FriendInvitationOnboardingIntro extends Component {
               <Dot><StepNumberPlaceholder>&nbsp;</StepNumberPlaceholder></Dot>
               {showAllStepTwo ? (
                 <StepText>
-                  Who&apos;s running for office? We show you what will be on your actual ballot, based on your full address. What do your trusted friends think about what is on the ballot? We Vote helps you make sense of your options.
+                  Who&apos;s running for office? We show you what will be on your actual ballot, based on your full address. What do your trusted friends think about what is on the ballot? WeVote helps you make sense of your options.
                 </StepText>
               ) : (
                 <StepText onClick={this.onClickShowAllStepTwo}>

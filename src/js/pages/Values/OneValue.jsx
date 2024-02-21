@@ -228,7 +228,7 @@ class OneValue extends Component {
       <PageContentContainer>
         <OneValueWrapper>
           <Helmet>
-            <title>{`${pageTitle} - We Vote`}</title>
+            <title>{`${pageTitle} - WeVote`}</title>
             {issueSlugFromName && (
               <link rel="canonical" href={`https://wevote.us/value/${issueSlugFromName}`} />
             )}

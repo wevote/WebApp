@@ -25,7 +25,7 @@ class PageNotFound extends Component {
     return (
       <PageContentContainer>
         <div className="container-fluid">
-          <Helmet title="Page Not Found - We Vote" />
+          <Helmet title="Page Not Found - WeVote" />
           <Wrapper>
             <Card>
               <EmptyBallotMessageContainer>

@@ -63,13 +63,13 @@ class ReadyFinePrint extends Component {
               {contentUnfurled && (
                 <ListRow>
                   <Dot><StepNumberPlaceholder>&nbsp;</StepNumberPlaceholder></Dot>
-                  <StepText id="readyFinePrintStepTextA">We Vote will not submit your vote. You will need to vote in person or vote-by-mail to have your vote count.</StepText>
+                  <StepText id="readyFinePrintStepTextA">WeVote will not submit your vote. You will need to vote in person or vote-by-mail to have your vote count.</StepText>
                 </ListRow>
               )}
 
               <ListTitleRow onClick={this.contentUnfurledLink}>
                 <Dot><StepNumber>b</StepNumber></Dot>
-                <StepTitle>We Vote does not represent a government entity</StepTitle>
+                <StepTitle>WeVote does not represent a government entity</StepTitle>
               </ListTitleRow>
               {contentUnfurled && (
                 <ListRow>
@@ -77,10 +77,10 @@ class ReadyFinePrint extends Component {
                   <StepText id="readyFinePrintStepTextB">
                     <Suspense fallback={<></>}>
                       <ReadMore
-                        textToDisplay="We Vote should not be considered official government information.
+                        textToDisplay="WeVote should not be considered official government information.
                         We use ballot data aggregated from government, nonpartisan, and partisan sources, but
-                        we cannot guarantee 100% of the items on your official ballot will be shown on We Vote.
-                        We Vote strives to provide a balanced selection of clearly identified voting guides from newspapers and media.
+                        we cannot guarantee 100% of the items on your official ballot will be shown on WeVote.
+                        WeVote strives to provide a balanced selection of clearly identified voting guides from newspapers and media.
                         Partisan voter guides are also provided from a diversity of sources and points-of-view.
                         These voting guides are captured and updated by volunteers."
                         numberOfLines={contentUnfurledOnLoad ? 7 : 3}
@@ -115,7 +115,7 @@ class ReadyFinePrint extends Component {
                 <ListRow>
                   <Dot><StepNumberPlaceholder>&nbsp;</StepNumberPlaceholder></Dot>
                   <StepText id="readyFinePrintStepTextD">
-                    We Vote will never share or sell your contact information.
+                    WeVote will never share or sell your contact information.
                     {' '}
                     <Link to="/privacy" className="u-link-color">See full privacy policy here</Link>
                     {' '}

@@ -35,7 +35,7 @@ export default class IntroNetworkSafety extends Component {
           <img
             className="center-block intro-story__img-height intro-story__placeholder"
             src={normalizedImagePath('/img/how-it-works/HowItWorksForVoters-Choose-20190507.gif')}
-            alt="Create your ballot with ease with We Vote"
+            alt="Create your ballot with ease with WeVote"
           />
           {/* <div className="center-block intro-story__img-height intro-story__placeholder">Fle Nme: FollowValues.GIF</div> */}
         </div>

@@ -32,7 +32,7 @@ export default {
     hostname = hostname || '';
     console.log('VoterSessionActions setVoterDeviceIdCookie hostname:', hostname);
     if (hostname && stringContains('wevote.us', hostname)) {
-      // If hanging off We Vote subdomain, store the cookie with top level domain
+      // If hanging off WeVote subdomain, store the cookie with top level domain
       Cookies.set('voter_device_id', id, { expires: 10000, path: '/', domain: 'wevote.us' });
     } else {
       Cookies.set('voter_device_id', id, { expires: 10000, path: '/' });

@@ -354,7 +354,7 @@ export function ShareWeVoteFriends (props) {
       // urlToShare={linkToBeShared}
       noLink
       onClickFunction={onClickFunction}
-      title="We Vote friends"
+      title="WeVote friends"
       uniqueExternalId="shareButtonFooter-Friends"
     />
   );

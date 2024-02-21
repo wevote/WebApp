@@ -42,13 +42,13 @@ class RemindDownloadApp extends React.Component {
       <StepCenteredWrapper>
         <>
           <SetUpAccountTitle>
-            Download the We Vote App
+            Download the WeVote App
           </SetUpAccountTitle>
           <SetUpAccountImportText>
             If you download the
             {' '}
             <span className="u-no-break">
-              We Vote
+              WeVote
             </span>
             {' '}
             app for your phone or tablet, you can remind friends by text message.

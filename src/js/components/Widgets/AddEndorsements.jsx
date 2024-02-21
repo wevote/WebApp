@@ -39,7 +39,7 @@ class AddEndorsements extends Component {
             </Suspense>
             <InfoText>
               <InfoCircleIcon />
-              Don&apos;t see your favorite organization or endorsement? We Vote is nonpartisan and welcomes public endorsements of candidates and measures from any organization or public figure.
+              Don&apos;t see your favorite organization or endorsement? WeVote is nonpartisan and welcomes public endorsements of candidates and measures from any organization or public figure.
             </InfoText>
           </div>
         </div>

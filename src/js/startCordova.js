@@ -35,7 +35,7 @@ function startMessaging (voterDeviceId) {
       console.log('Cordova: Firebase FCM - New foreground FCM decomposed alert message:', alert);
       navigator.notification.alert(alert,
         () => console.log('Cordova: WeVote FCM Message navigator.notification.alert dismissed'),
-        'We Vote');
+        'WeVote');
 
       // Save until Android badge count is working, or we gave up on it
       // for (const [key, value] of Object.entries(payload)) {

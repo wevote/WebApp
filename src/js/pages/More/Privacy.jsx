@@ -19,7 +19,7 @@ export default class Privacy extends Component {
     return (
       <PageContentContainer>
         <Helmet>
-          <title>Privacy Policy - We Vote</title>
+          <title>Privacy Policy - WeVote</title>
           <link rel="canonical" href="https://wevote.us/privacy" />
         </Helmet>
         <div className="container-fluid well">
