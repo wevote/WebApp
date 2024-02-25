@@ -2,12 +2,12 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import VoterActions from '../../actions/VoterActions';
-import { isAndroid, isIOS } from '../../common/utils/cordovaUtils';
-import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
+import { openSnackbar } from '../../common/components/Widgets/SnackNotifier';
+import { isIOS } from '../../common/utils/cordovaUtils';
+import { isAndroid, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import Cookies from '../../common/utils/js-cookie/Cookies';
 import { oAuthLog, renderLog } from '../../common/utils/logging';
 import webAppConfig from '../../config';
-import { openSnackbar } from '../../common/components/Widgets/SnackNotifier';
 
 class AppleSignIn extends Component {
   constructor (props) {

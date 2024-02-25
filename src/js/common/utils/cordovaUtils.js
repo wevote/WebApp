@@ -1,6 +1,6 @@
 import React from 'react';
 import webAppConfig from '../../config';
-import { isCordova, isWebApp } from './isCordovaOrWebApp';
+import { isAndroid, isAndroidTablet, isCordova, isWebApp } from './isCordovaOrWebApp';
 import { cordovaOffsetLog, oAuthLog } from './logging';
 
 /* global $  */
@@ -59,12 +59,6 @@ export function isIOSAppOnMac () {
 export function dumpScreenAndDeviceFields () {
   dumpObjProps('window.screen', window.screen);
   dumpObjProps('window.device', window.device);
-}
-
-export function isAndroid () {
-  if (isWebApp()) return false;
-  const { platform } = window.device || '';
-  return isCordova() && platform === 'Android';  // Ignore the "Condition is always false" warning.  This line works correctly.
 }
 
 // If history retention is not working, see TabWithPushHistory.jsx for an example of how to do it.
@@ -452,18 +446,16 @@ export function getAndroidSize () {
     return 'device not ready';
   }
   androidSizeString = 'default';
-  // const { width, height, diameter } = window.pbakondyScreenSize;
   const { visualViewport: { height, width, scale } } = window;
   const diameter = Math.sqrt(((width * scale) ** 2) + ((height * scale) ** 2));
   console.log('CALCULATED screen diameter: ', diameter);
 
-
   androidPixels = width * height;
-  // const screenSize = Math.sqrt(((width / xdpi) ** 2) + ((height / ydpi) ** 2));
-  const aspectRatio = height / width;
-  if (aspectRatio < 1 ||
-    (width === 1848 && height === 2960 && diameter === 14.54)   // Galaxy Tab S9 Ultra (2023)
-  ) {
+
+  const ua = navigator.userAgent;
+  console.log('Phone user agent: ', ua);
+
+  if (isAndroidTablet()) {
     androidSizeString = '--wide';
   } else if (diameter < 4.9) {
     androidSizeString = '--sm';

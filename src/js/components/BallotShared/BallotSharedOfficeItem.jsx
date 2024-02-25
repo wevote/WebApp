@@ -206,7 +206,7 @@ class BallotSharedOfficeItem extends Component {
   generateCandidates = () => {
     const { externalUniqueId } = this.props; // candidateList
     let { ballotItemDisplayName } = this.props; // candidatesToShowForSearchResults
-    ballotItemDisplayName = toTitleCase(ballotItemDisplayName);
+    ballotItemDisplayName = toTitleCase(ballotItemDisplayName).replace('(Unexpired)', '(Remainder)');
     // candidatesToShowForSearchResults = candidatesToShowForSearchResults || [];
     const { candidateListForDisplay } = this.state;
     // If voter has chosen or opposed 1+ candidates, only show those

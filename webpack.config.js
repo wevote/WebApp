@@ -29,7 +29,7 @@ if (major < 13) {
 } else {
   console.log(`Node version is: ${process.version}`);
 }
-console.log('useRealCerts in webpack.config.js ', useRealCerts);
+if (useRealCerts) console.log('useRealCerts in webpack.config.js ', useRealCerts);
 // console.log('key: ', fs.readFileSync(`./${source}/cert/wevotedeveloper.com.crt`).toString());
 
 module.exports = (env, argv) => ({

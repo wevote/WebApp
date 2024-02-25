@@ -5,7 +5,7 @@ import { CompatRouter } from 'react-router-dom-v5-compat';
 import App from './App';
 import ErrorBoundary from './js/common/components/Widgets/ErrorBoundary';
 import WeVoteRouter from './js/common/components/Widgets/WeVoteRouter';
-import { isAndroid } from './js/common/utils/cordovaUtils';
+import { isAndroid } from './js/common/utils/isCordovaOrWebApp';
 // importStartCordovaToken -- Do not remove this line!
 
 // The following line is rewritten to true by the buildSrcCordova.js node script

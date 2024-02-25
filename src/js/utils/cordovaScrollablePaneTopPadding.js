@@ -1,10 +1,11 @@
+import { getAndroidSize, hasAndroidNotch, hasIPhoneNotch, isAndroidSimulator, isIOS, isIOSAppOnMac, isIPad, isIPadGiantSize, isIPhone4in, isIPhone4p7in, isIPhone5p5inEarly, isIPhone5p5inMini, isIPhone6p1in, isIPhone6p5in, isSimulator } from '../common/utils/cordovaUtils';
+import { isAndroid } from '../common/utils/isCordovaOrWebApp';
+import isMobileScreenSize from '../common/utils/isMobileScreenSize';
+import { cordovaOffsetLog } from '../common/utils/logging';
 import CordovaPageConstants from '../constants/CordovaPageConstants';
 import VoterStore from '../stores/VoterStore';
 import showBallotDecisionsTabs from '../utilsApi/showBallotDecisionsTabs';
-import { getAndroidSize, hasAndroidNotch, hasIPhoneNotch, isAndroid, isAndroidSimulator, isIOS, isIOSAppOnMac, isIPad, isIPadGiantSize, isIPhone4in, isIPhone4p7in, isIPhone5p5inEarly, isIPhone5p5inMini, isIPhone6p1in, isIPhone6p5in, isSimulator } from '../common/utils/cordovaUtils';
 import { pageEnumeration } from './cordovaUtilsPageEnumeration';
-import isMobileScreenSize from '../common/utils/isMobileScreenSize';
-import { cordovaOffsetLog } from '../common/utils/logging';
 
 
 // TODO: August 2022, There are still a few places that use it, but over time we want to replace these with calculated values

@@ -1,13 +1,13 @@
 import { AppBar } from '@mui/material';
 import styled from 'styled-components';
-import { hasDynamicIsland, hasIPhoneNotch, isAndroid, isAndroidSizeMD, isAndroidSizeWide, isAndroidSizeXL, isIOS, isIOSAppOnMac, isIPad, isIPad11in, isIPadMini, isIPhone14Pro, isIPhone4p7in, isIPhone5p5inEarly, isIPhone5p5inMini, isIPhone6p1in, isIPhone6p5in } from '../../common/utils/cordovaUtils';
+import standardBoxShadow from '../../common/components/Style/standardBoxShadow';
+import AppObservableStore from '../../common/stores/AppObservableStore';
+import { hasDynamicIsland, hasIPhoneNotch, isAndroidSizeMD, isAndroidSizeWide, isAndroidSizeXL, isIOS, isIOSAppOnMac, isIPad, isIPad11in, isIPadMini, isIPhone14Pro, isIPhone4p7in, isIPhone5p5inEarly, isIPhone5p5inMini, isIPhone6p1in, isIPhone6p5in } from '../../common/utils/cordovaUtils';
 import { normalizedHrefPage } from '../../common/utils/hrefUtils';
-import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
+import { isAndroid, isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize, { isTablet } from '../../common/utils/isMobileScreenSize';
 import { cordovaOffsetLog } from '../../common/utils/logging';
-import standardBoxShadow from '../../common/components/Style/standardBoxShadow';
 import CordovaPageConstants from '../../constants/CordovaPageConstants';
-import AppObservableStore from '../../common/stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
 import { cordovaComplexHeaderPageContainerTopOffset, cordovaSimplePageContainerTopOffset } from '../../utils/cordovaCalculatedOffsets';
 import { cordovaBallotFilterTopMargin } from '../../utils/cordovaOffsets';
@@ -316,4 +316,10 @@ export const TermsAndPrivacyText = styled('span')`
       color: #0156b3;
       text-decoration: underline;
     }
+`;
+
+export const DeviceInformationSpan = styled('span')`
+  color: #007bff;
+  font-size: 18px;
+  font-weight: 400;
 `;

@@ -5,8 +5,9 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { getAndroidSize, getCordovaBuildVersion, getIOSSizeString, hasIPhoneNotch, isAndroid, isIOS, isSimulator } from '../../common/utils/cordovaUtils';
+import { getAndroidSize, getCordovaBuildVersion, getIOSSizeString, hasIPhoneNotch, isIOS, isSimulator } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
+import { isAndroid } from '../../common/utils/isCordovaOrWebApp';
 import { getTabletSize } from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import compileDate from '../../compileDate';
@@ -101,6 +102,10 @@ class DeviceDialog extends Component {
                   <StyledTableCell>{getAndroidSize()}</StyledTableCell>
                 </TableRow>
               )}
+              <TableRow>
+                <StyledTableCell>User Agent</StyledTableCell>
+                <StyledTableCell>{navigator.userAgent}</StyledTableCell>
+              </TableRow>
               {isIOS() && (
                 <TableRow>
                   <StyledTableCell>iPhone Size Code</StyledTableCell>
