@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { isAndroidSizeWide } from '../../../../srcCordova/js/common/utils/cordovaUtils';
+import { isAndroidSizeWide } from '../../common/utils/cordovaUtils';
 import OpenExternalWebSite from '../../common/components/Widgets/OpenExternalWebSite';
 import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
