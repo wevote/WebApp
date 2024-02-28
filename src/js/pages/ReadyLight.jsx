@@ -6,10 +6,10 @@ import { Helmet } from 'react-helmet-async';
 import ActivityActions from '../actions/ActivityActions';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import ReadyActions from '../actions/ReadyActions';
+import AppObservableStore, { messageService } from '../common/stores/AppObservableStore';
 import apiCalming from '../common/utils/apiCalming';
-import { isAndroid } from '../common/utils/cordovaUtils';
 import historyPush from '../common/utils/historyPush';
-import { isWebApp } from '../common/utils/isCordovaOrWebApp';
+import { isAndroid, isWebApp } from '../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../common/utils/logging';
 import ReadyFinePrint from '../components/Ready/ReadyFinePrint';
 import ReadyIntroduction from '../components/Ready/ReadyIntroduction';
@@ -17,22 +17,9 @@ import ReadyTaskPlan from '../components/Ready/ReadyTaskPlan';
 import ReadyTaskRegister from '../components/Ready/ReadyTaskRegister';
 import { ReadyCard } from '../components/Ready/ReadyTaskStyles';
 import { PageContentContainer } from '../components/Style/pageLayoutStyles';
-import {
-  ElectionCountdownInnerWrapper,
-  ElectionCountdownOuterWrapper,
-  IntroAndFindTabletSpacer,
-  IntroAndFindTabletWrapper,
-  PrepareForElectionOuterWrapper,
-  ReadyIntroductionDesktopWrapper,
-  ReadyIntroductionMobileWrapper,
-  ReadyPageContainer,
-  ReadyParagraph,
-  ReadyTitle,
-  ViewBallotButtonWrapper,
-} from '../components/Style/ReadyPageCommonStyles';
+import { ElectionCountdownInnerWrapper, ElectionCountdownOuterWrapper, IntroAndFindTabletSpacer, IntroAndFindTabletWrapper, PrepareForElectionOuterWrapper, ReadyIntroductionDesktopWrapper, ReadyIntroductionMobileWrapper, ReadyPageContainer, ReadyParagraph, ReadyTitle, ViewBallotButtonWrapper } from '../components/Style/ReadyPageCommonStyles';
 import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
 import webAppConfig from '../config';
-import AppObservableStore, { messageService } from '../common/stores/AppObservableStore';
 import VoterStore from '../stores/VoterStore';
 import { cordovaSimplePageContainerTopOffset } from '../utils/cordovaCalculatedOffsets';
 import lazyPreloadPages from '../utils/lazyPreloadPages';

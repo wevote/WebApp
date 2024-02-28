@@ -6,8 +6,7 @@ import React, { Component } from 'react';
 import GoogleButton from 'react-google-button';
 import styled from 'styled-components';
 import VoterActions from '../../actions/VoterActions';
-import { isAndroid } from '../../common/utils/cordovaUtils';
-import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
+import { isAndroid, isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import webAppConfig from '../../config'; // eslint-disable-line import/no-cycle
 import AddContactConsts from '../../constants/AddContactConsts';

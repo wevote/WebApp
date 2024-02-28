@@ -2,12 +2,13 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { isAndroidSizeWide } from '../../common/utils/cordovaUtils';
 import OpenExternalWebSite from '../../common/components/Widgets/OpenExternalWebSite';
 import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { isTablet } from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
-import { TermsAndPrivacyText } from '../Style/pageLayoutStyles';
+import { DeviceInformationSpan, TermsAndPrivacyText } from '../Style/pageLayoutStyles';
 import DeviceDialog from '../Widgets/DeviceDialog';
 
 
@@ -124,11 +125,11 @@ class SettingsSectionFooter extends Component {
             WeVote does not support or oppose any political candidate or party.
           </DoesNotSupport>
         )}
-        { isCordova() && isTablet() && (
+        { isCordova() && (isTablet() || isAndroidSizeWide()) && (
           <DoesNotSupport centered={centered}>
-            <span className="hamburger-terms__text" onClick={() => this.deviceTableVisibilityOn()} style={{ color: 'black', opacity: '0.6', fontSize: '14px' }}>
+            <DeviceInformationSpan onClick={() => this.deviceTableVisibilityOn()}>
               Device Information
-            </span>
+            </DeviceInformationSpan>
             <DeviceDialog visibilityOffFunction={this.deviceTableVisibilityOff} show={this.state.showDeviceDialog} />
           </DoesNotSupport>
         )}

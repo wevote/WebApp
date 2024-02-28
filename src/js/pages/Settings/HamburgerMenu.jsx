@@ -12,7 +12,7 @@ import { renderLog } from '../../common/utils/logging';
 import voterPhoto from '../../common/utils/voterPhoto';
 import HamburgerMenuRow from '../../components/Navigation/HamburgerMenuRowCentered';
 import SettingsSectionFooter from '../../components/Navigation/SettingsSectionFooter';
-import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
+import { DeviceInformationSpan, PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import DeviceDialog from '../../components/Widgets/DeviceDialog';
 import VoterStore from '../../stores/VoterStore';
 import { avatarGeneric } from '../../utils/applicationUtils';
@@ -137,7 +137,7 @@ export default class HamburgerMenu extends Component {
     //   `/${voterTwitterScreenName}` :
     //   `/voterguide/${voterOrganizationWeVoteId}`;
     const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
-    // console.log(`Hamburger menu this.state.showDeviceDialog ${this.state.showDeviceDialog}`);
+    console.log(`Hamburger menu this.state.showDeviceDialog ${this.state.showDeviceDialog}`);
     const version = getCordovaBuildVersion();
 
     return (
@@ -308,9 +308,9 @@ export default class HamburgerMenu extends Component {
             <tr className="hamburger-terms__tr-terms">
               <td className="hamburger-terms__td" colSpan={3}>
                 <div>
-                  <span className="hamburger-terms__text" onClick={() => this.deviceTableVisibilityOn()} style={{ color: 'black', opacity: '0.7', fontSize: '15px' }}>
+                  <DeviceInformationSpan onClick={() => this.deviceTableVisibilityOn()}>
                     Device Information
-                  </span>
+                  </DeviceInformationSpan>
                   <DeviceDialog visibilityOffFunction={this.deviceTableVisibilityOff} show={this.state.showDeviceDialog} />
                 </div>
               </td>

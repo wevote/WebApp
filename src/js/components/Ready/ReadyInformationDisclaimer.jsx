@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { OverlayTrigger } from 'react-bootstrap'; // TODO APRIL 2021:  Replace with MUI
 import Popover from 'react-bootstrap/Popover';
-import { isAndroid, isIOS } from '../../common/utils/cordovaUtils';
-import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
+import { isIOS } from '../../common/utils/cordovaUtils';
+import { isAndroid, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 

@@ -517,7 +517,7 @@ class OfficeItemCompressed extends Component {
     let { ballotItemDisplayName } = this.props;
     const { isFirstBallotItem, officeWeVoteId } = this.props; // classes
     const { candidateListLength, showAllCandidates, totalNumberOfCandidates } = this.state;
-    ballotItemDisplayName = toTitleCase(ballotItemDisplayName);
+    ballotItemDisplayName = toTitleCase(ballotItemDisplayName).replace('(Unexpired)', '(Remainder)');
     const candidatesToRenderCount = this.getCandidatesToRenderCount();
     const moreCandidatesToDisplay = (candidatesToRenderCount < totalNumberOfCandidates);
     // console.log('ballotItemDisplayName:', ballotItemDisplayName, ', candidatesToRenderCount:', candidatesToRenderCount, ', totalNumberOfCandidates:', totalNumberOfCandidates, ', moreCandidatesToDisplay:', moreCandidatesToDisplay);

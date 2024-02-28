@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { isAndroid, isAndroidSizeWide, isIPad, isIPadMini, isIPhoneMiniOrSmaller } from '../../utils/cordovaUtils';
-import { isCordova, isWebApp } from '../../utils/isCordovaOrWebApp';
+import { isAndroidSizeWide, isIPad, isIPadMini, isIPhoneMiniOrSmaller } from '../../utils/cordovaUtils';
+import { isAndroid, isCordova, isWebApp } from '../../utils/isCordovaOrWebApp';
 
 export const CampaignDescription = styled('div')`
   font-size: 16px;

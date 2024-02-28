@@ -1,4 +1,6 @@
-import { cordovaOpenSafariView, isAndroid } from '../../utils/cordovaUtils';
+import { cordovaOpenSafariView } from '../../utils/cordovaUtils';
+import { isAndroid } from '../../utils/isCordovaOrWebApp';
+
 import { openSnackbar } from '../Widgets/SnackNotifier';
 
 export function androidFacebookClickHandler (linkToBeShared, quoteForSharingEncoded) {

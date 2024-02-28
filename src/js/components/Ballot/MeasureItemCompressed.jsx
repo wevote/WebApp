@@ -524,7 +524,7 @@ const MeasureTitleItem = styled('h1')`
   font-size: 32px;
   margin-bottom: 0;
   margin-top: 0;
-  white-space: nowrap;
+  //white-space: nowrap;  Removed 2-21-24, for long measures in WebApp, Mobile, and Cordova
   width: 100%;
 `;
 // ${() => (isCordova() ? {

@@ -11,17 +11,18 @@ import arrayContains from '../../common/utils/arrayContains';
 import { getTodayAsInteger } from '../../common/utils/dateFormat'; // getYearFromUltimateElectionDate
 import extractAttributeValueListFromObjectList from '../../common/utils/extractAttributeValueListFromObjectList';
 import historyPush from '../../common/utils/historyPush';
+import { isAndroid } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import { convertToInteger } from '../../common/utils/textFormat';
+import CampaignsHomeFilter from '../../components/CampaignsHome/CampaignsHomeFilter';
+import CandidateListRootPlaceholder from '../../components/CampaignsHome/CandidateListRootPlaceholder';
+import NoSearchResult from '../../components/Search/NoSearchResult';
 import webAppConfig from '../../config';
 import BallotStore from '../../stores/BallotStore';
 import CandidateStore from '../../stores/CandidateStore';
 import IssueStore from '../../stores/IssueStore';
 import RepresentativeStore from '../../stores/RepresentativeStore';
 import VoterStore from '../../stores/VoterStore';
-import CampaignsHomeFilter from '../../components/CampaignsHome/CampaignsHomeFilter';
-import CandidateListRootPlaceholder from '../../components/CampaignsHome/CandidateListRootPlaceholder';
-import NoSearchResult from '../../components/Search/NoSearchResult';
 
 const CandidateListRoot = React.lazy(() => import(/* webpackChunkName: 'CandidateListRoot' */ '../../components/CandidateListRoot/CandidateListRoot'));
 const CampaignListRoot = React.lazy(() => import(/* webpackChunkName: 'CampaignListRoot' */ '../../common/components/Campaign/CampaignListRoot'));
@@ -891,6 +892,7 @@ CampaignsHome.propTypes = {
 };
 
 const CampaignsHomeWrapper = styled('div')`
+  padding-top: ${isAndroid() ? '30px' : ''};
 `;
 
 const WhatIsHappeningSection = styled('div', {

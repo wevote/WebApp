@@ -5,13 +5,13 @@ import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import VoterActions from '../../../actions/VoterActions';
-import apiCalming from '../../utils/apiCalming';
-import { isAndroid, isAndroidSizeMD, isAndroidSizeWide } from '../../utils/cordovaUtils';
-import { isCordova, isWebApp } from '../../utils/isCordovaOrWebApp';
-import { renderLog } from '../../utils/logging';
 import VoterStore from '../../../stores/VoterStore';
 import initializeAppleSDK from '../../../utils/initializeAppleSDK';
 import initializeFacebookSDK from '../../../utils/initializeFacebookSDK';
+import apiCalming from '../../utils/apiCalming';
+import { isAndroidSizeMD, isAndroidSizeWide } from '../../utils/cordovaUtils';
+import { isAndroid, isCordova, isWebApp } from '../../utils/isCordovaOrWebApp';
+import { renderLog } from '../../utils/logging';
 
 const SignInOptionsPanel = React.lazy(() => import(/* webpackChunkName: 'SignInOptionsPanel' */ './SignInOptionsPanel'));
 

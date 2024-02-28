@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { Helmet } from 'react-helmet-async';
 import Slider from 'react-slick';
+import { getAndroidSize } from '../../common/utils/cordovaUtils';
+import historyPush from '../../common/utils/historyPush';
+import { isAndroid, isWebApp } from '../../common/utils/isCordovaOrWebApp';
+import { renderLog } from '../../common/utils/logging';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import IntroNetworkBallotIsNext from '../../components/Intro/IntroNetworkBallotIsNext';
 import IntroNetworkDefinition from '../../components/Intro/IntroNetworkDefinition';
 import IntroNetworkSafety from '../../components/Intro/IntroNetworkSafety';
-import { getAndroidSize, isAndroid } from '../../common/utils/cordovaUtils';
-import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
-import normalizedImagePath from '../../common/utils/normalizedImagePath';
-import historyPush from '../../common/utils/historyPush';
-import { renderLog } from '../../common/utils/logging';
 
 const closeIcon = '../../../img/global/icons/x-close.png';
 

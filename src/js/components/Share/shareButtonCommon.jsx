@@ -6,11 +6,11 @@ import { FacebookIcon, FacebookShareButton, TwitterIcon, TwitterShareButton } fr
 import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import OpenExternalWebSite from '../../common/components/Widgets/OpenExternalWebSite';
-import { cordovaOpenSafariView, hasDynamicIsland, hasIPhoneNotch, isAndroid, isIPhone6p5in } from '../../common/utils/cordovaUtils';
-import { normalizedHref } from '../../common/utils/hrefUtils';
-import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
-import VoterStore from '../../stores/VoterStore';
 import { openSnackbar } from '../../common/components/Widgets/SnackNotifier';
+import { cordovaOpenSafariView, hasDynamicIsland, hasIPhoneNotch, isIPhone6p5in } from '../../common/utils/cordovaUtils';
+import { normalizedHref } from '../../common/utils/hrefUtils';
+import { isAndroid, isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
+import VoterStore from '../../stores/VoterStore';
 import ShareModalOption from './ShareModalOption';
 
 
