@@ -181,10 +181,6 @@ class App extends Component {
       webAppConfig.ENABLE_FACEBOOK = false;   // This overrides the config setting for the entire Android app
     }
 
-    // TODO:  REENABLE TWITTER AND FACEBOOK, ASAP  (Feb 28, 2023)
-    webAppConfig.ENABLE_FACEBOOK = false;   // This overrides the config setting for the entire Android app
-    webAppConfig.ENABLE_TWITTER = false;   // This overrides the config setting for the entire Android ap
-
     if (webAppConfig.ENABLE_FACEBOOK) {
       setTimeout(() => {
         // Suspect that this isn't correct anymore: "We need to start this initialization early since there is a delay getting the FB object in place"
