@@ -188,6 +188,10 @@ class App extends Component {
       }, 2000);
     }
 
+    if (!webAppConfig.ENABLE_TWITTER) {
+      webAppConfig.ENABLE_TWITTER = false;  // Avoid crashes in Feb/March 2024 in case not in config.js
+    }
+
     if (isCordova()) {
       const size = isIOS() ?  getIOSSizeString() : getAndroidSize();
       console.log('Cordova:   device model', window.device.model, '  size: ', size);
