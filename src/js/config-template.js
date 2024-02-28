@@ -34,7 +34,8 @@ module.exports = {
     text_for_map_search: '',
   },
 
-  ENABLE_FACEBOOK: true,
+  ENABLE_FACEBOOK: false,     // Temporary 'false' Feb 28, 2024
+  ENABLE_TWITTER: false,      // Temporary 'false' Feb 28, 2024
   ENABLE_PAY_TO_PROMOTE: true,
 
   // API Keys, some of these are publishable (not secret)

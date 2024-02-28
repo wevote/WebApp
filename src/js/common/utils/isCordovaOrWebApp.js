@@ -19,7 +19,7 @@ export function isAndroidTablet () {
     const ua = navigator.userAgent;
     const diameter = Math.sqrt(((width * scale) ** 2) + ((height * scale) ** 2));
     const aspectRatio = height / width;
-    console.log('Phone user agent: ', ua);
+    // console.log('Phone user agent: ', ua);
 
     return (aspectRatio < 1 ||
       (width === 1848 && height === 2960 && diameter === 14.54) ||             // Galaxy Tab S9 Ultra (2023)
