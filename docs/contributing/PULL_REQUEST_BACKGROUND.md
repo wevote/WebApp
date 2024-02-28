@@ -11,7 +11,7 @@
 # What the Heck is a Pull Request?
 
 How to Contribute to an Open Source Project:
-https://egghead.io/
+https://egghead.io/lessons/github-open-a-github-draft-pull-request
 
 Description of Git branching model:
 http://nvie.com/posts/a-successful-git-branching-model/
