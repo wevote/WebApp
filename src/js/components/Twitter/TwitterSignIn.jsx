@@ -81,7 +81,6 @@ class TwitterSignIn extends Component {
     this.state = {
       buttonSubmittedText: '',
       twitterSignInCrash: false,
-      twitterSignInDisabled: false,
       twitterSignInStartSubmitted: false,
     };
   }
@@ -142,6 +141,7 @@ class TwitterSignIn extends Component {
       data: { return_url: returnURL },
       success: (res) => {
         // console.log('twitterSignInWebApp success, res:', res);
+
         if (res.twitter_redirect_url) {
           if (brandingOff) {
             window.open(res.twitter_redirect_url);
@@ -157,7 +157,6 @@ class TwitterSignIn extends Component {
           // window.location.assign('');
           this.setState({
             twitterSignInCrash: true,
-            twitterSignInDisabled: true,
             twitterSignInStartSubmitted: false,
           });
         }
@@ -167,7 +166,7 @@ class TwitterSignIn extends Component {
         console.log('twitterSignInWebApp error: ', res);
 
         // Try reloading the page
-        window.location.assign('');
+        this.reloadApp();
       },
     });
   }
@@ -180,15 +179,16 @@ class TwitterSignIn extends Component {
 
   render () {
     let { buttonText } = this.props;
-    const { buttonSubmittedText, twitterSignInCrash, twitterSignInDisabled, twitterSignInStartSubmitted } = this.state;
-    let disabled = twitterSignInStartSubmitted;
+    const { buttonSubmittedText, twitterSignInCrash, twitterSignInStartSubmitted } = this.state;
+    // fixed for WV-131 disables button for iOS but not for webApp browser
+    let twitterSignInButtonDisabled = (isIOS() && twitterSignInStartSubmitted) || twitterSignInCrash;
     if (isIOS()) {
       const { device: { version } } = window;
       if (version) {
         const floatVersion = parseFloat(version);
         if (floatVersion < 13.0) {
           console.log('Sign in with Twitter is not available on iOS < 13, this phone is running: ', floatVersion);
-          disabled = true;
+          twitterSignInButtonDisabled = true;
           buttonText = '(Requires iOS 13)';
         }
       }
@@ -199,9 +199,9 @@ class TwitterSignIn extends Component {
       <>
         <SplitIconButton
           backgroundColor="#55acee"
-          fontColor={disabled || twitterSignInDisabled ? 'gray' : 'white'}
-          buttonText={twitterSignInStartSubmitted ? shortenText(buttonSubmittedText, 32) : shortenText(buttonText, 32)}
-          disabled={disabled || twitterSignInDisabled}
+          fontColor={twitterSignInButtonDisabled ? 'gray' : 'white'}
+          buttonText={twitterSignInButtonDisabled ? shortenText(buttonSubmittedText, 32) : shortenText(buttonText, 32)}
+          disabled={twitterSignInButtonDisabled}
           externalUniqueId="twitterSignIn"
           icon={<Twitter />}
           id="twitterSignIn"
