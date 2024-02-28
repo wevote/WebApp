@@ -181,7 +181,7 @@ class App extends Component {
       webAppConfig.ENABLE_FACEBOOK = false;   // This overrides the config setting for the entire Android app
     }
 
-    // TODO:  REENABLE TWITTER AND IOS, ASAP  (Feb 28, 2023)
+    // TODO:  REENABLE TWITTER AND FACEBOOK, ASAP  (Feb 28, 2023)
     webAppConfig.ENABLE_FACEBOOK = false;   // This overrides the config setting for the entire Android app
     webAppConfig.ENABLE_TWITTER = false;   // This overrides the config setting for the entire Android ap
 
