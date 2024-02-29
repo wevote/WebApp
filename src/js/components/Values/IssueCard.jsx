@@ -465,7 +465,7 @@ const FollowersWrapper = styled('div')`
 
 const IssueName = styled('h3')`
   font-size: 18px;
-  font-weight: bold;
+  font-weight: 500;
   margin-bottom: 0;
 `;
 

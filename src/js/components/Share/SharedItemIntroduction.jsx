@@ -210,7 +210,7 @@ const StepNumber = styled('div')(({ theme }) => (`
 
 const StepTitle = styled('div')(({ theme }) => (`
   font-size: 20px;
-  font-weight: 600;
+  font-weight: 500;
   padding: 0 8px;
   text-align: left;
   vertical-align: top;

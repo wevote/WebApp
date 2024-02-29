@@ -1,5 +1,5 @@
 @charset "UTF-8";
-@import "https://fonts.googleapis.com/css?family=Nunito+Sans:400,700&display=swap";
+@import "https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap";
 
 /*!
  July 31, 2023: ran https://www.cssportal.com/css-optimize/ to shrink the size of the file
@@ -54,7 +54,7 @@ html {
 body {
   background-color:#fff;
   color:#000;
-  font-family:"Nunito Sans","Helvetica Neue Light","Helvetica Neue","Helvetica","Arial",sans-serif;
+  font-family:"Poppins","Helvetica Neue Light","Helvetica Neue","Helvetica","Arial",sans-serif;
   font-size:16px;
   font-style:normal;
   font-weight:normal;
@@ -2387,7 +2387,7 @@ h1,h2,h3,h4,h5,h6 {
 .card-main__display-name {
   display:inline-block;
   font-size:18px;
-  font-weight:700;
+  font-weight:600;
   margin-right:8px;
   vertical-align:middle
 }
@@ -3671,7 +3671,7 @@ a {
 }
 
 .intro-story__h1 {
-  font-weight:800;
+  font-weight:600;
   font-size:24px;
   padding:32px 0 0
 }
@@ -3687,7 +3687,7 @@ a {
 }
 
 .intro-story__h1--alt {
-  font-weight:700;
+  font-weight:600;
   font-size:30px;
   padding-top:32px
 }
@@ -3892,7 +3892,7 @@ a {
 
 .issue-icon-list__issue-icon {
   color:#999;
-  font-weight:900;
+  font-weight:600;
   height:calc(16px + 4px);
   width:calc(16px + 4px);
   flex:none;
@@ -4533,7 +4533,7 @@ a {
 
 .header-nav__icon--about {
   font-size:.8rem;
-  font-weight:700;
+  font-weight:600;
   height:24px;
   display:flex;
   align-items:center;

@@ -886,7 +886,7 @@ const styles = (theme) => ({
   color: 'rgb(51, 51, 51)',
   display: 'flex',
   flexDirection: 'column',
-  fontFamily: '"Nunito Sans", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif',
+  fontFamily: '"Poppins", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif',
   fontSize: 16,
   height: 173,
   lineHeight: 22,
