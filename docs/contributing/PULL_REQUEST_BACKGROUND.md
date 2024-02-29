@@ -10,8 +10,8 @@
 
 # What the Heck is a Pull Request?
 
-A video series describing pull requests:
-https://egghead.io/series/how-to-contribute-to-an-open-source-project-on-github
+How to Contribute to an Open Source Project:
+https://egghead.io/lessons/github-open-a-github-draft-pull-request
 
 Description of Git branching model:
 http://nvie.com/posts/a-successful-git-branching-model/
