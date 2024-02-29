@@ -144,8 +144,8 @@ export function initializationForCordova (startReact) {
         }
 
         try {
-          console.log('getVersionNumber() cordova', window.cordova);
-          console.log('getVersionNumber() cordova.getAppVersion', window.cordova.getAppVersion);
+          // console.log('getVersionNumber() cordova', window.cordova);
+          // console.log('getVersionNumber() cordova.getAppVersion', window.cordova.getAppVersion);
 
           // Prevent the app from rotating to Landscape -- mostly to simplify layout permutations
           try {

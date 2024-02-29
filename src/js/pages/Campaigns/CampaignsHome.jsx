@@ -105,6 +105,7 @@ class CampaignsHome extends Component {
     const candidateList = CandidateStore.getCandidateList();
     // console.log('ComponentDidMount candidateList', candidateList);
     const { candidateListOnYourBallot, candidateListIsBattleground, candidateListOther } = this.splitUpCandidateList(candidateList);
+    // console.log('ComponentDidMount candidateListOther', candidateListOther);
     this.setState({
       candidateList,
       candidateListIsBattleground,
@@ -350,6 +351,21 @@ class CampaignsHome extends Component {
     const weVoteIdsIsBattlegroundRace = extractAttributeValueListFromObjectList('we_vote_id', candidateListIsBattleground);
     const candidateMinusBattleground = candidateListRemaining.filter((oneCandidate) => !arrayContains(oneCandidate.we_vote_id, weVoteIdsIsBattlegroundRace));
     const candidateListOther = candidateMinusBattleground.filter((oneCandidate) => !arrayContains(oneCandidate.politician_we_vote_id, politicianWeVoteIdsAlreadyShown));
+
+    // Ok to remove once https://wevoteusa.atlassian.net/jira/software/projects/WV/issues/WV-282 is fixed
+    // console.log('------ candidateList biden: ', candidateList.find((x) => x.ballot_item_display_name === 'Joe Biden'));
+    // console.log('------ candidateList trump: ', candidateList.find((x) => x.ballot_item_display_name === 'Donald Trump'));
+    // console.log('candidateListOnYourBallot biden: ', candidateListOnYourBallot.find((x) => x.ballot_item_display_name === 'Joe Biden')?.ballot_item_display_name);
+    // console.log('weVoteIdsOnYourBallot: ', weVoteIdsOnYourBallot);
+    // console.log('candidateListRemaining biden: ', candidateListRemaining.find((x) => x.ballot_item_display_name === 'Joe Biden')?.ballot_item_display_name);
+    // console.log('politicianWeVoteIdsAlreadyShown: ', politicianWeVoteIdsAlreadyShown);
+    // console.log('candidateMinusBattleground biden: ', candidateMinusBattleground.find((x) => x.ballot_item_display_name === 'Joe Biden')?.ballot_item_display_name);
+    // console.log('candidateMinusBattleground trump: ', candidateMinusBattleground.find((x) => x.ballot_item_display_name === 'Donald Trump')?.ballot_item_display_name);
+    // console.log('candidateListOther candidate id biden: ', candidateListOther.find((x) => x.ballot_item_display_name === 'Joe Biden')?.politician_we_vote_id);
+    // console.log('candidateListOther candidate id trump: ', candidateListOther.find((x) => x.ballot_item_display_name === 'Donald Trump')?.politician_we_vote_id);
+    // console.log('candidateListOther biden: ', candidateListOther.find((x) => x.ballot_item_display_name === 'Joe Biden')?.ballot_item_display_name);
+    // console.log('candidateListOther trump: ', candidateListOther.find((x) => x.ballot_item_display_name === 'Donald Trump')?.ballot_item_display_name);
+
     return {
       candidateListOnYourBallot,
       candidateListIsBattleground,
@@ -358,6 +374,7 @@ class CampaignsHome extends Component {
   }
 
   splitUpRepresentativeList = (representativeList) => {
+    // console.log('representativeList = ', representativeList);
     const candidateListOnYourBallot = BallotStore.getAllBallotItemsFlattened();
     const politicianWeVoteIdsOnYourBallot = extractAttributeValueListFromObjectList('politician_we_vote_id', candidateListOnYourBallot);
     const representativeListOnYourBallot = representativeList.filter((oneRepresentative) => arrayContains(oneRepresentative.politician_we_vote_id, politicianWeVoteIdsOnYourBallot));

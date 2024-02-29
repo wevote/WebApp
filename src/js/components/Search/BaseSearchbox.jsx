@@ -1,9 +1,9 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 import styled from 'styled-components';
-import colors from '../../common/components/Style/Colors';
-import searchIcon from '../../../img/global/icons/search.svg';
 import closeIcon from '../../../img/global/icons/cross.svg';
+import searchIcon from '../../../img/global/icons/search.svg';
+import colors from '../../common/components/Style/Colors';
 
 const SearchWrapper = styled.div`
   position: relative;
@@ -16,7 +16,7 @@ const SearchIcon = styled.div`
     top: 50%;
     right: 10px;
     transform: translateY(-50%);
-    color: gray; 
+    color: gray;
     background-image: url(${searchIcon});
     background-repeat: no-repeat;
     background-position: center;
@@ -54,9 +54,7 @@ const SearchInput = styled.input`
   border-radius: 0.25rem;
   padding-right: 40px;
   padding-left: 12px;
-  border-radius: 0.25rem;
-  padding-right: 40px;
-  
+
 
   &:focus-visible {
     border: none;
@@ -101,7 +99,7 @@ class BaseSearchbox extends React.Component {
             placeholder={this.props.placeholder}
             value={this.state.searchText}
             onChange={this.handleInputChange}
-            onClear={this.handleClear}
+            // onClear={this.handleClear} // 2/26/23 temporarily removed, there is no onClear for an HTML input, but using a listener action is possible
             maxLength={50}
         />
         {this.state.searchText && <ClearButton onClick={this.handleClear} />}

@@ -180,11 +180,16 @@ class App extends Component {
     if (isAndroid()) {         // December 12, 2023: All sorts of problems with sign-in with Facebook on Android, so disabling it here
       webAppConfig.ENABLE_FACEBOOK = false;   // This overrides the config setting for the entire Android app
     }
+
     if (webAppConfig.ENABLE_FACEBOOK) {
       setTimeout(() => {
         // Suspect that this isn't correct anymore: "We need to start this initialization early since there is a delay getting the FB object in place"
         initializeFacebookSDK();
       }, 2000);
+    }
+
+    if (!webAppConfig.ENABLE_TWITTER) {
+      webAppConfig.ENABLE_TWITTER = false;  // Avoid crashes in Feb/March 2024 in case not in config.js
     }
 
     if (isCordova()) {

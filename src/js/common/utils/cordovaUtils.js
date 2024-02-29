@@ -448,12 +448,12 @@ export function getAndroidSize () {
   androidSizeString = 'default';
   const { visualViewport: { height, width, scale } } = window;
   const diameter = Math.sqrt(((width * scale) ** 2) + ((height * scale) ** 2));
-  console.log('CALCULATED screen diameter: ', diameter);
+  // console.log('CALCULATED screen diameter: ', diameter);
 
   androidPixels = width * height;
 
-  const ua = navigator.userAgent;
-  console.log('Phone user agent: ', ua);
+  // const ua = navigator.userAgent;
+  // console.log('Phone user agent: ', ua);
 
   if (isAndroidTablet()) {
     androidSizeString = '--wide';
