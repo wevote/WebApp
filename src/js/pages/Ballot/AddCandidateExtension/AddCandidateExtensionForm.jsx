@@ -142,8 +142,8 @@ export default function AddCandidateExtensionForm (props) {
           name="candidateName"
           id="candidateName"
           defaultValue={candidate.candidateName}
-          InputLabelProps={{ style: { fontFamily: 'Nunito Sans' } }}
-          InputProps={{ style: { fontFamily: 'Nunito Sans' } }}
+          InputLabelProps={{ style: { fontFamily: 'Poppins' } }}
+          InputProps={{ style: { fontFamily: 'Poppins' } }}
           onBlur={handleBlur}
         />
         <CandidateTextField
@@ -154,8 +154,8 @@ export default function AddCandidateExtensionForm (props) {
           name="candidateSpecificEndorsementUrl"
           id="candidateSpecificEndorsementUrl"
           defaultValue={candidate.candidateSpecificEndorsementUrl}
-          InputLabelProps={{ style: { fontFamily: 'Nunito Sans' } }}
-          InputProps={{ style: { fontFamily: 'Nunito Sans' } }}
+          InputLabelProps={{ style: { fontFamily: 'Poppins' } }}
+          InputProps={{ style: { fontFamily: 'Poppins' } }}
           onBlur={handleBlur}
         />
         <CandidateTextField
@@ -167,8 +167,8 @@ export default function AddCandidateExtensionForm (props) {
           name="endorsementPageUrl"
           id="endorsementURL"
           defaultValue={candidate.endorsementPageUrl}
-          InputLabelProps={{ style: { fontFamily: 'Nunito Sans' } }}
-          InputProps={{ style: { fontFamily: 'Nunito Sans' } }}
+          InputLabelProps={{ style: { fontFamily: 'Poppins' } }}
+          InputProps={{ style: { fontFamily: 'Poppins' } }}
           onBlur={handleBlur}
         />
         <CheckBoxArea>
@@ -216,10 +216,10 @@ export default function AddCandidateExtensionForm (props) {
           // id="candidateURL"
           defaultValue={candidate.endorsementText}
           InputLabelProps={{
-            style: { fontFamily: 'Nunito Sans' },
+            style: { fontFamily: 'Poppins' },
             shrink: true,
           }}
-          InputProps={{ style: { fontFamily: 'Nunito Sans' } }}
+          InputProps={{ style: { fontFamily: 'Poppins' } }}
           onBlur={handleBlur}
           rows="5"
           // maxRows="5"
@@ -242,7 +242,7 @@ const CandidateForm = styled('div')`
 
 const CandidateTextField = styled(TextField)`
   display: block;
-  font-family: "Nunito Sans", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+  font-family: "Poppins", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
   margin-bottom: 10px;
 `;
 
