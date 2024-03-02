@@ -1332,17 +1332,22 @@ class Ballot extends Component {
               Requesting what is on your ballot...
             </div>
           </DelayedLoad>
-          <DelayedLoad waitBeforeShow={3000}>
+          <DelayedLoad waitBeforeShow={4000}>
             <div>
               Waiting for response...
             </div>
           </DelayedLoad>
-          <DelayedLoad waitBeforeShow={4000}>
+          <DelayedLoad waitBeforeShow={6000}>
             <div>
-              <h3 className="text-center">{this.getEmptyMessageByFilterType(completionLevelFilterType)}</h3>
-              {emptyBallotButton}
+              Thank you for your patience...
             </div>
           </DelayedLoad>
+          {/* <DelayedLoad waitBeforeShow={4000}> */}
+          {/*  <div> */}
+          {/*    <h3 className="text-center">{this.getEmptyMessageByFilterType(completionLevelFilterType)}</h3> */}
+          {/*    {emptyBallotButton} */}
+          {/*  </div> */}
+          {/* </DelayedLoad> */}
         </Suspense>
       </LoadingWrapper>
     ) : null;
