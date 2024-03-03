@@ -868,7 +868,6 @@ class VoterGuideStore extends ReduceStore {
           organizationWeVoteIdsToFollowForLatestBallotItem: state.organizationWeVoteIdsToFollowForLatestBallotItem.filter((existingOrgWeVoteId) => existingOrgWeVoteId !== organizationWeVoteId),
         };
 
-      case 'twitterNativeSignInSave':
       case 'twitterSignInRetrieve':
       case 'voterEmailAddressSignIn':
       case 'voterFacebookSignInRetrieve':

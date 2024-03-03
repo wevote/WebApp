@@ -83,6 +83,7 @@ class TwitterSignIn extends Component {
       twitterSignInCrash: false,
       twitterSignInStartSubmitted: false,
     };
+    oAuthLog(`twitterSignIn redirect url = ${returnURL}`);
   }
 
   componentDidMount () {

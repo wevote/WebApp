@@ -566,6 +566,7 @@ class App extends Component {
                   <Route path="/terms" component={TermsOfService} />
                   <Route path="/twitter_sign_in" exact><TwitterSignInProcess /></Route>
                   <Route path="/twittersigninprocess/:sign_in_step" component={TwitterSignInProcess} />
+                  <Route path="/twittersigninprocess" component={TwitterSignInProcess} />
                   <Route path="/unsubscribe/:subscription_secret_key/:unsubscribe_modifier/instant" exact component={(props) => <UnsubscribeRoot {...props} instantUnsubscribe />} />
                   <Route path="/unsubscribe/:subscription_secret_key/:unsubscribe_modifier" exact component={UnsubscribeRoot} />
                   <Route path="/unsubscribe/:subscription_secret_key" exact component={UnsubscribeRoot} />

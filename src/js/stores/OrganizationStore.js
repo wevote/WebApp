@@ -1006,7 +1006,6 @@ class OrganizationStore extends ReduceStore {
           organizationWeVoteIdsVoterIsIgnoring,
         };
 
-      case 'twitterNativeSignInSave':
       case 'twitterSignInRetrieve':
       case 'voterEmailAddressSignIn':
       case 'voterFacebookSignInRetrieve':

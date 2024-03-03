@@ -234,7 +234,6 @@ class SupportStore extends ReduceStore {
         SupportActions.voterAllPositionsRetrieve();
         return this.resetState();
 
-      case 'twitterNativeSignInSave':
       case 'twitterSignInRetrieve':
       case 'voterEmailAddressSignIn':
       case 'voterFacebookSignInRetrieve':

@@ -1,15 +1,15 @@
 import { ReduceStore } from 'flux/utils';
 import CandidateActions from '../actions/CandidateActions';
 import OrganizationActions from '../actions/OrganizationActions';
-import TwitterActions from '../actions/TwitterActions';
 import VoterActions from '../actions/VoterActions';
 import Dispatcher from '../common/dispatcher/Dispatcher';
 
 class TwitterStore extends ReduceStore {
   getInitialState () {
-  //   return {
-  //     success: true,
-  //   };
+    return {
+      twitter_store_initialized: true,
+      twitter_oauth_voter_info_stored_in_db: false,
+    };
   }
 
   get () {
@@ -101,6 +101,7 @@ class TwitterStore extends ReduceStore {
       existing_twitter_account_found: this.getState().existing_twitter_account_found,
       voter_we_vote_id_attached_to_twitter: this.getState().voter_we_vote_id_attached_to_twitter,
       twitter_image_load_info: this.getState().twitter_image_load_info,
+      twitter_oauth_voter_info_stored_in_db: this.getState().twitter_oauth_voter_info_stored_in_db,
     };
   }
 
@@ -156,21 +157,6 @@ class TwitterStore extends ReduceStore {
           status: action.res.status,
         };
 
-      case 'twitterNativeSignInSave':
-        // Exit if we don't have a successful response (since we expect certain variables in a successful response below)
-        if (!action.res || !action.res.success) return state;
-        if (action.res.success) {
-          TwitterActions.twitterSignInRetrieve();
-        }
-
-        return {
-          // ...state,
-          voter_device_id: action.res.voter_device_id,
-          twitter_handle: action.res.twitter_handle,
-          twitter_handle_found: action.res.twitter_handle_found,
-          twitter_secret_key: action.res.twitter_secret_key,
-        };
-
       case 'twitterProcessDeferredImages':
         if (!action.res || !action.res.success) return state;
         // console.log('twitter twitterProcessDeferredImages', action.res);
@@ -183,10 +169,12 @@ class TwitterStore extends ReduceStore {
           we_vote_hosted_profile_image_url_tiny: action.res.we_vote_hosted_profile_image_url_tiny,
         };
 
-
       case 'twitterSignInRetrieve':
-        // Exit if we don't have a successful response (since we expect certain variables in a successful response below)
-        if (!action.res || !action.res.success) return state;
+        // console.log('twitterSignInRetrieve in TwitterStore received: ', action.res);
+        if (!action.res || !action.res.success) {
+          // Exit if we don't have a successful response (since we expect certain variables in a successful response below)
+          return state;
+        }
         if (action.res.twitter_sign_in_verified) {
           VoterActions.voterRetrieve();
           VoterActions.twitterRetrieveIdsIfollow();
@@ -217,10 +205,16 @@ class TwitterStore extends ReduceStore {
         // return this.resetState();
         return this.resetVoterSpecificData();
 
-      default:
+      case 'twitterOauth1UserHandler':
+        if (!action.res || !action.res.success) return state;
+        console.log('twitterOauth1UserHandler res: ', action.res);
         return {
           ...state,
+          twitter_oauth_voter_info_stored_in_db: true,
         };
+
+      default:
+        return state;
     }
   }
 }
