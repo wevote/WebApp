@@ -36,6 +36,7 @@ export default class TwitterSignInProcess extends Component {
     this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
     this.twitterStoreListener = TwitterStore.addListener(this.onTwitterStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+    window.scrollTo(0, 0);
     this.twitterSignInRetrieve();
     const { location: { search } } = this.props;
     const { redirectCount } = this.state;
