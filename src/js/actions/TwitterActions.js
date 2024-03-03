@@ -20,14 +20,6 @@ export default {
       });
   },
 
-  twitterNativeSignInSave (twitterAccessToken, twitterAccessTokenSecret) {
-    Dispatcher.loadEndpoint('twitterNativeSignInSave',
-      {
-        twitter_access_token: twitterAccessToken,
-        twitter_access_token_secret: twitterAccessTokenSecret,
-      });
-  },
-
   twitterProcessDeferredImages (twitterImageLoadInfo) {
     Dispatcher.loadEndpoint('twitterProcessDeferredImages', {
       status: twitterImageLoadInfo.status,
@@ -51,6 +43,15 @@ export default {
     Dispatcher.loadEndpoint('twitterSignInStart',
       {
         return_url: returnUrl,
+      });
+  },
+
+  twitterOauth1UserHandler (oauthToken, oauthVerifier) {  // For twitter V2 API, March 2024
+    // console.log('twitterOauth1UserHandler: ', oauthToken, oauthVerifier);
+    Dispatcher.loadEndpoint('twitterOauth1UserHandler',
+      {
+        oauth_token: oauthToken,
+        oauth_verifier: oauthVerifier,
       });
   },
 

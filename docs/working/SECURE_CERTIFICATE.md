@@ -38,11 +38,16 @@ In WebApp/src/js/config.js, set SECURE_CERTIFICATE_INSTALLED to true, and then u
 
 WebApp will startup at http://localhost:3000 
 
-## Signing in with Facebook on your dev machine
+## Signing in with Facebook and Twitter on your dev machine
 ### Make a small necessary change to your /etc/hosts
 
 Facebook will no longer redirect to localhost, so we make a second alias for 127.0.0.1 with this specific made up 
 domain: `wevotedeveloper.com` by running the following command in a terminal:
+
+This `wevotedeveloper.com` is also needed to debug "Sign in with Twitter" while using the `wevotedeveloper.com` domain for your local Python API server.   
+NOTE:  As of March 2024, Chrome stopped responding to this domain (possibly since it can't match it with a public DNS lookup), so you will have to debug this setup with Safari.  
+Safari has a version of Devtools called "Web Inspector" that you get to by right-clicking in the tab, and clicking "Inspect Element".  Devtools and Web 
+Inspector share the Chromium code base and have almost identical capabilities.
 
 `sudo node node/updateHosts.js`
 

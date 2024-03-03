@@ -26,15 +26,29 @@ export default class TwitterSignInProcess extends Component {
       savingAccount: false,
       redirectInProgress: false,
       twitterAuthResponse: {},
+      redirectCount: 0,
     };
+    this.twitterOauthLeg3 = this.twitterOauthLeg3.bind(this);
   }
 
   componentDidMount () {
+    // console.log('--------------- TwitterSignInProcess componentDidMount');
     this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
     this.twitterStoreListener = TwitterStore.addListener(this.onTwitterStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     this.twitterSignInRetrieve();
-    window.scrollTo(0, 0);
+    const { location: { search } } = this.props;
+    const { redirectCount } = this.state;
+    oAuthLog('TwitterSignInProcess search props: ', search);
+    const urlParams = new URLSearchParams(search);
+    const oauthToken = urlParams.get('oauth_token');
+    const oauthVerifier = urlParams.get('oauth_verifier');
+    if (oauthToken && oauthVerifier && redirectCount === 0) {
+      oAuthLog('TwitterSignInProcess received redirect from Twitter  redirectCount: ', redirectCount, ', oauthToken: ', oauthToken, ', oauthVerifier: ', oauthVerifier);
+      this.setState({ redirectCount: (redirectCount + 1) });
+      TwitterActions.twitterOauth1UserHandler(oauthToken, oauthVerifier);
+      this.twitterSignInRetrieve();
+    }
   }
 
   componentWillUnmount () {
@@ -54,7 +68,10 @@ export default class TwitterSignInProcess extends Component {
     const { mergingTwoAccounts, savingAccount } = this.state;
     console.log('TwitterSignInProcess onTwitterStoreChange, twitterAuthResponse:', twitterAuthResponse);
 
-    if (twitterAuthResponse.twitter_sign_in_failed) {
+    if (twitterAuthResponse.twitter_sign_in_failed === undefined && twitterAuthResponse.twitter_oauth_voter_info_stored_in_db) {
+      oAuthLog('Twitter sign undefined, but oauth_voter_info_stored_in_db - calling twitterSignInRetrieve()');
+      this.twitterSignInRetrieve();
+    } else if (twitterAuthResponse.twitter_sign_in_failed) {
       oAuthLog('Twitter sign in failed - push to /settings/account');
       historyPush({
         pathname: '/settings/account',  // SnackNotifier that handles this is in SettingsDashboard
@@ -191,7 +208,15 @@ export default class TwitterSignInProcess extends Component {
   }
 
   twitterSignInRetrieve () {
+    oAuthLog('Twitter twitterSignInRetrieve on TwitterSignInProcess component mount');
     TwitterActions.twitterSignInRetrieve();
+  }
+
+  twitterOauthLeg3 (oauthToken, oauthVerifier) {
+    const { redirectCount } = this.state;
+    oAuthLog('TwitterSignInProcess received redirect from Twitter  redirectCount: ', redirectCount, ', oauthToken: ', oauthToken, ', oauthVerifier: ', oauthVerifier);
+    this.setState({ redirectCount: (redirectCount + 1) });
+    TwitterActions.twitterOauth1UserHandler(oauthToken, oauthVerifier);
   }
 
   render () {
