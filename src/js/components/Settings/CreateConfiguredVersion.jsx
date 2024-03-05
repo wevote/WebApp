@@ -18,7 +18,7 @@ class CreateConfiguredVersion extends Component {
     return (
       <div>
         <Introduction>
-          Want to create a configured version of We Vote you can send out to your followers or friends?
+          Want to create a configured version of WeVote you can send out to your followers or friends?
           {' '}
           <Suspense fallback={<></>}>
             <OpenExternalWebSite

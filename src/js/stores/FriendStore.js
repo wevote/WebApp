@@ -439,7 +439,6 @@ class FriendStore extends ReduceStore {
           currentFriendsOrganizationWeVoteIds,
         };
 
-      case 'twitterNativeSignInSave':
       case 'twitterSignInRetrieve':
       case 'voterEmailAddressSignIn':
       case 'voterFacebookSignInRetrieve':

@@ -299,7 +299,7 @@ class Office extends Component {
     }
 
     const officeName = toTitleCase(office.ballot_item_display_name);
-    const titleText = `${officeName} - We Vote`;
+    const titleText = `${officeName} - WeVote`;
     const descriptionText = `Choose who you support for ${officeName} in this election`;
 
     // =========== Testimonial variables ============================

@@ -114,10 +114,10 @@ class WelcomeForCampaigns extends PureComponent {
 
     const testimonialAuthor = 'Neelam J., Columbus, Ohio';
     const imageUrl = normalizedImagePath('/img/global/photos/Neelam_Joshi-200x200.jpg');
-    const testimonial = 'I don\'t have time to attend rallies and listen to campaign speeches, and I don\'t trust much of what I see on Facebook. We Vote helps me cut through the chatter and use endorsements from people I trust.';
+    const testimonial = 'I don\'t have time to attend rallies and listen to campaign speeches, and I don\'t trust much of what I see on Facebook. WeVote helps me cut through the chatter and use endorsements from people I trust.';
     return (
       <WelcomeForCampaignsWrapper id="WelcomeForCampaignsWrapper">
-        <Helmet title="Welcome Campaigns - We Vote" />
+        <Helmet title="Welcome Campaigns - WeVote" />
         <Suspense fallback={<></>}>
           <WelcomeAppbar pathname={pathname} id="WelcomeForCampaigns_WelcomeAppbar" />
         </Suspense>
@@ -172,11 +172,11 @@ class WelcomeForCampaigns extends PureComponent {
                 </FeatureStepLabel>
               </FeatureStep>
               <Description>
-                We Vote compiles endorsement data for all candidates in all states up and down
+                WeVote compiles endorsement data for all candidates in all states up and down
                 {' '}
                 the ballot, so begin adding your endorsements to get more views. Claim your free
                 {' '}
-                We Vote profile today and add your endorsements, values, and branding anytime.
+                WeVote profile today and add your endorsements, values, and branding anytime.
               </Description>
               <FeatureStep>
                 <FeatureStepLabel>
@@ -220,7 +220,7 @@ class WelcomeForCampaigns extends PureComponent {
             </DescriptionImageColumn>
             <DescriptionLeftColumn>
               <Description>
-                We Vote is a free, easy tool that allows voters to geolocate their specific
+                WeVote is a free, easy tool that allows voters to geolocate their specific
                 {' '}
                 ballot and then plan who to vote for using easy visual guides. Voters can
                 {' '}
@@ -229,7 +229,7 @@ class WelcomeForCampaigns extends PureComponent {
                 friends and organizations.
               </Description>
               <Description>
-                Using We Vote, voters can now confidently plan out their whole ballot.
+                Using WeVote, voters can now confidently plan out their whole ballot.
               </Description>
               <Description className="u_margin-center">
                 <Button

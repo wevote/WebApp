@@ -34,7 +34,7 @@ const FirstAndLastNameRequiredAlert = React.lazy(() => import(/* webpackChunkNam
 
 const testimonialPhoto = '../../img/global/photos/Dale_McGrew-48x48.jpg';
 
-// const facebookInfoText = "By signing into Facebook here, you can choose which friends you want to talk politics with, and avoid the trolls (or that guy from work who rambles on)! You control who is in your We Vote network.";
+// const facebookInfoText = "By signing into Facebook here, you can choose which friends you want to talk politics with, and avoid the trolls (or that guy from work who rambles on)! You control who is in your WeVote network.";
 const testimonialAuthor = 'Dale M., Oakland, California';
 const imageUrl = normalizedImagePath(testimonialPhoto);
 const testimonial = 'I like seeing the opinions of people who share my values.';
@@ -141,7 +141,7 @@ export default class Values extends Component {
         <Suspense fallback={<LoadingWheelComp />}>
           <div className="container-fluid">
             <SnackNotifier />
-            <Helmet title="Endorsements - We Vote" />
+            <Helmet title="Endorsements - WeVote" />
             <BrowserPushMessage incomingProps={this.props} />
             <div className="row">
               <div id="mainContentColumn" className="col-sm-12 col-md-8">

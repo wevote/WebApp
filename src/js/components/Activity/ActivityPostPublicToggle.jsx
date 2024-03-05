@@ -81,7 +81,7 @@ class ActivityPostPublicToggle extends Component {
       visibilityIsPublic: false,
     });
     this.props.onToggleChange(false);
-    openSnackbar({ message: 'Post now visible to We Vote friends only!' });
+    openSnackbar({ message: 'Post now visible to WeVote friends only!' });
   }
 
   showItemToPublic () {
@@ -185,7 +185,7 @@ class ActivityPostPublicToggle extends Component {
             <div className="text-center">
               <div className="u-f3">Your post will be visible to anyone who is following you.</div>
               <br />
-              <div className="u-f6">Click the &quot;Friends Only&quot; toggle to show to We Vote friends only.</div>
+              <div className="u-f6">Click the &quot;Friends Only&quot; toggle to show to WeVote friends only.</div>
             </div>
           ) : (
             <div>

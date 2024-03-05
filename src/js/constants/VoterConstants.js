@@ -16,7 +16,7 @@ const VoterConstants = {
 
   // Used for notification_settings bits. Which notification options has the voter chosen?
   NOTIFICATION_ZERO: 0,
-  NOTIFICATION_NEWSLETTER_OPT_IN: 1, // Email: "I would like to receive We Vote newsletter"
+  NOTIFICATION_NEWSLETTER_OPT_IN: 1, // Email: "I would like to receive WeVote newsletter"
   // NOTIFICATION_FRIEND_REQUESTS: n/a, // In App: "Show new friend requests sent to me"
   NOTIFICATION_FRIEND_REQUESTS_EMAIL: 2, // Email: "Show new friend requests sent to me" - friendinvite & friendaccept (for now)
   NOTIFICATION_FRIEND_REQUESTS_SMS: 4, // SMS: "Show new friend requests sent to me"

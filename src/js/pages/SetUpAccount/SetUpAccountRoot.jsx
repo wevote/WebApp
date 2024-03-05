@@ -663,7 +663,7 @@ class SetUpAccountRoot extends React.Component {
     }
     return (
       <PageContentContainerAccountSetUp>
-        <Helmet title="Set Up Account - We Vote" />
+        <Helmet title="Set Up Account - WeVote" />
         <AccountSetUpRootWrapper>
           <WeVoteLogoWrapper>
             <WeVoteLogo

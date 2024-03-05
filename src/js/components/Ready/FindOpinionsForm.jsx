@@ -6,9 +6,9 @@ import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { blurTextFieldAndroid, focusTextFieldAndroid, isAndroid, isIOS } from '../../common/utils/cordovaUtils';
+import { blurTextFieldAndroid, focusTextFieldAndroid, isIOS } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
-import { isCordova } from '../../common/utils/isCordovaOrWebApp';
+import { isAndroid, isCordova } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 

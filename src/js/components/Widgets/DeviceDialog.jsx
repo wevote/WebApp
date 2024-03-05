@@ -5,8 +5,9 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { getAndroidSize, getCordovaBuildVersion, getIOSSizeString, hasIPhoneNotch, isAndroid, isIOS, isSimulator } from '../../common/utils/cordovaUtils';
+import { getAndroidSize, getCordovaBuildVersion, getIOSSizeString, hasIPhoneNotch, isIOS, isSimulator } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
+import { isAndroid } from '../../common/utils/isCordovaOrWebApp';
 import { getTabletSize } from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import compileDate from '../../compileDate';
@@ -74,7 +75,7 @@ class DeviceDialog extends Component {
           <div className="text-center"><TermsAndPrivacyText>Device Information</TermsAndPrivacyText></div>
         </DialogTitle>
         <DialogContent classes={{ root: classes.dialogContent }}>
-          This dialog contains technical information about your device, that might be requested by We Vote&apos;s support engineers.
+          This dialog contains technical information about your device, that might be requested by WeVote&apos;s support engineers.
           <Table className={classes.table}>
             <TableHead>
               <TableRow>
@@ -101,6 +102,10 @@ class DeviceDialog extends Component {
                   <StyledTableCell>{getAndroidSize()}</StyledTableCell>
                 </TableRow>
               )}
+              <TableRow>
+                <StyledTableCell>User Agent</StyledTableCell>
+                <StyledTableCell>{navigator.userAgent}</StyledTableCell>
+              </TableRow>
               {isIOS() && (
                 <TableRow>
                   <StyledTableCell>iPhone Size Code</StyledTableCell>
@@ -140,7 +145,7 @@ class DeviceDialog extends Component {
                 <StyledTableCell>{compileDate}</StyledTableCell>
               </TableRow>
               <TableRow>
-                <StyledTableCell>Your internal We Vote id</StyledTableCell>
+                <StyledTableCell>Your internal WeVote id</StyledTableCell>
                 <StyledTableCell>{VoterStore.getVoter().we_vote_id}</StyledTableCell>
               </TableRow>
             </TableBody>

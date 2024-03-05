@@ -1,4 +1,4 @@
-import { isWebApp } from './isCordovaOrWebApp';
+import { isAndroidTablet, isWebApp } from './isCordovaOrWebApp';
 
 function isCordova () {
   const { cordova } = window;
@@ -16,7 +16,7 @@ export default function isMobileScreenSize () {
 export function isTablet () {
   const { innerWidth, muiThemeGlobal: { breakpoints: { values: { tabMin, tabMax } } } } = window;
   // console.log('isTablet isCordova, innerWidth, tabMin, tabMax, return value:', isCordova(), innerWidth, tabMin, tabMax,  innerWidth > tabMin && innerWidth < tabMax);
-  return innerWidth > tabMin && innerWidth < tabMax;
+  return (innerWidth > tabMin && innerWidth < tabMax) || isAndroidTablet();
 }
 
 export function isLargerThanTablet () {
@@ -59,6 +59,9 @@ export function getTabletSize () {
   }
   if (isLargeSizedTablet()) {
     return 'large tablet';
+  }
+  if (isAndroidTablet()) {
+    return 'Android tablet';
   }
   return 'not a tablet';
 }

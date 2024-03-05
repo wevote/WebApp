@@ -87,7 +87,7 @@ class FindFriendsRoot extends React.Component {
     this.setState({
       displayStep,
       setUpPagePath,
-    });
+    }, () => this.setNextStepVariables());
     // this.onBallotStoreChange();
     // this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
     this.onAppObservableStoreChange();
@@ -740,7 +740,7 @@ class FindFriendsRoot extends React.Component {
     }
     return (
       <PageContentContainerAccountSetUp>
-        <Helmet title="Find Your Friends - We Vote" />
+        <Helmet title="Find Your Friends - WeVote" />
         <AccountSetUpRootWrapper>
           <WeVoteLogoWrapper>
             <WeVoteLogo

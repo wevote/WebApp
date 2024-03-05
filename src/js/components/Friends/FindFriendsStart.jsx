@@ -105,7 +105,7 @@ class FindFriendsStart extends Component {
                     {' '}
                     {contactsWithAccountCount === 1 ? 'is' : 'are'}
                     {' '}
-                    already on We Vote
+                    already on WeVote
                     {' '}
                   </>
                 ) : (
@@ -114,13 +114,13 @@ class FindFriendsStart extends Component {
                       <>
                         Checking for your friends in
                         {' '}
-                        <span className="u-no-break">We Vote...</span>
+                        <span className="u-no-break">WeVote...</span>
                       </>
                     ) : (
                       <>
                         We couldn&apos;t match any of your contacts with other members of
                         {' '}
-                        <span className="u-no-break">We Vote</span>
+                        <span className="u-no-break">WeVote</span>
                       </>
                     )}
                   </>
@@ -134,7 +134,7 @@ class FindFriendsStart extends Component {
                       {' '}
                       {voterContactEmailListCount}
                       {' '}
-                      contacts to join We Vote.
+                      contacts to join WeVote.
                       <br />
                     </>
                   )}
@@ -159,7 +159,7 @@ class FindFriendsStart extends Component {
               Find what your friends are saying
               {' '}
               <span className="u-no-break">
-                on We Vote
+                on WeVote
               </span>
             </SetUpAccountTitle>
             <SetUpAccountContactsTextWrapper>
@@ -167,7 +167,7 @@ class FindFriendsStart extends Component {
                 It is so much easier to figure out how to vote when you see what your friends recommend. If you import your contacts,
                 {' '}
                 <span className="u-no-break">
-                  We Vote will
+                  WeVote will
                 </span>
                 {' '}
                 find your friends and suggest connections.

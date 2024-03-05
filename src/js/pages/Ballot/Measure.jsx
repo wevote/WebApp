@@ -294,7 +294,7 @@ class Measure extends Component {
     }
 
     const measureName = toTitleCase(ballotItemDisplayName);
-    const titleText = `${measureName} - We Vote`;
+    const titleText = `${measureName} - WeVote`;
     const descriptionText = `Information about ${measureName}`;
     const voter = VoterStore.getVoter();
     const { is_admin: isAdmin, is_verified_volunteer: isVerifiedVolunteer } = voter;

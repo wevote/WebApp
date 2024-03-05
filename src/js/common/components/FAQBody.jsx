@@ -30,9 +30,9 @@ export default class FAQBody extends Component {
         </div>
 
         <br />
-        <strong>What is We Vote?</strong>
+        <strong>What is WeVote?</strong>
         <br />
-        We Vote is a nonprofit technology startup, creating a digital voter guide informed by
+        WeVote is a nonprofit technology startup, creating a digital voter guide informed by
         {' '}
         <Suspense fallback={<></>}>
           <OpenExternalWebSite
@@ -46,9 +46,9 @@ export default class FAQBody extends Component {
         <br />
         <br />
 
-        <strong>How does We Vote help voters?</strong>
+        <strong>How does WeVote help voters?</strong>
         <br />
-        We Vote is where you view your ballot, see endorsements from your network for all
+        WeVote is where you view your ballot, see endorsements from your network for all
         candidates and measures, and collaborate with
         folks who share your
         {' '}
@@ -64,9 +64,9 @@ export default class FAQBody extends Component {
         <br />
         <br />
 
-        <strong>Who&apos;s behind We Vote?</strong>
+        <strong>Who&apos;s behind WeVote?</strong>
         <br />
-        We Vote is a collaboration between two nonprofits
+        WeVote is a collaboration between two nonprofits
         {' '}
         <Suspense fallback={<></>}>
           <OpenExternalWebSite
@@ -113,7 +113,7 @@ export default class FAQBody extends Component {
           />
         </Suspense>
         , and join us! We use our engineering, design, marketing, and other skills to build
-        We Vote. We are over 400 people (60+ active) who have donated 20,000+ volunteer hours, including
+        WeVote. We are over 400 people (60+ active) who have donated 20,000+ volunteer hours, including
         {' '}
         <Suspense fallback={<></>}>
           <OpenExternalWebSite
@@ -137,7 +137,7 @@ export default class FAQBody extends Component {
         <br />
         <br />
 
-        <strong>How can I contact We Vote?</strong>
+        <strong>How can I contact WeVote?</strong>
         <br />
         Please feel free to reach out to us with questions via our
         <Suspense fallback={<></>}>
@@ -152,7 +152,7 @@ export default class FAQBody extends Component {
         {' '}
         Our mailing address is:
         <br />
-        We Vote
+        WeVote
         <br />
         1423 Broadway PMB 158
         <br />
@@ -160,10 +160,10 @@ export default class FAQBody extends Component {
         <br />
         <br />
 
-        <strong>How does We Vote work?</strong>
+        <strong>How does WeVote work?</strong>
         <br />
         Follow people and groups you trust to get info on candidates and ballot measures. Ask your friends
-        what they think. Then take We Vote with you to
+        what they think. Then take WeVote with you to
         the polls for an easy-to-use cheat sheet.
         <br />
         <br />
@@ -210,13 +210,13 @@ export default class FAQBody extends Component {
 
         <strong>Wait, what?</strong>
         <br />
-        We Vote does not endorse any candidate or party.
+        WeVote does not endorse any candidate or party.
         Our job is to help you make your own decisions,
         with help from your friends and trusted network.
         <br />
         <br />
 
-        <strong>How does We Vote help nonprofits?</strong>
+        <strong>How does WeVote help nonprofits?</strong>
         <br />
         We provide a free place where organizations can share and promote their voter guides, including
         endorsements of candidates and
@@ -226,18 +226,18 @@ export default class FAQBody extends Component {
 
         <strong>Will you sell my email address?</strong>
         <br />
-        Not a chance. We Vote will not sell your email address or any other individually identifiable information.
+        Not a chance. WeVote will not sell your email address or any other individually identifiable information.
         (We don&apos;t want our email addresses sold either!) We may sell aggregated data.
         <br />
         <br />
 
-        <strong>What does We Vote cost?</strong>
+        <strong>What does WeVote cost?</strong>
         <br />
         It&apos;s free!
         {' '}
         {isWebApp() && (
           <>
-            If you like We Vote,
+            If you like WeVote,
             {' '}
             <Link to="/donate" className="u-cursor--pointer u-link-color">please donate monthly</Link>
             {' '}
@@ -256,14 +256,14 @@ export default class FAQBody extends Component {
         <strong>How will you use my donation?</strong>
         <br />
         Expenses include server costs ($600 - $2,500 per month), data fees (~$40,000 per year), collaboration tools and other hard costs.
-        In the future, we might hire some key staff with donations, for the smooth operation of We Vote.
+        In the future, we might hire some key staff with donations, for the smooth operation of WeVote.
         <br />
         <br />
 
         <strong>How will you handle trolls?</strong>
         <br />
-        Unless your name is J.R.R. Tolkien, we know how much you hate trolls. That&apos;s why on We Vote you mainly hear from
-        people and organizations that you Friend or Follow. We Vote reduces the noise from people with radically
+        Unless your name is J.R.R. Tolkien, we know how much you hate trolls. That&apos;s why on WeVote you mainly hear from
+        people and organizations that you Friend or Follow. WeVote reduces the noise from people with radically
         different
         {' '}
         <Suspense fallback={<></>}>
@@ -278,7 +278,7 @@ export default class FAQBody extends Component {
         <br />
         <br />
 
-        <strong>What&apos;s next for We Vote?</strong>
+        <strong>What&apos;s next for WeVote?</strong>
         <br />
         Better tools to let organizations promote their voter guides and
         poll their members. Tools to let candidates ask for help from their supporters.

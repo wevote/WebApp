@@ -2,12 +2,12 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import VoterActions from '../../actions/VoterActions';
-import { isAndroid, isIOS } from '../../common/utils/cordovaUtils';
-import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
+import { openSnackbar } from '../../common/components/Widgets/SnackNotifier';
+import { isIOS } from '../../common/utils/cordovaUtils';
+import { isAndroid, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import Cookies from '../../common/utils/js-cookie/Cookies';
 import { oAuthLog, renderLog } from '../../common/utils/logging';
 import webAppConfig from '../../config';
-import { openSnackbar } from '../../common/components/Widgets/SnackNotifier';
 
 class AppleSignIn extends Component {
   constructor (props) {
@@ -87,10 +87,10 @@ class AppleSignIn extends Component {
         // unless it is a short term bug on the Apple API servers.
         // if (!email || email.length === 0) {
         //   openSnackbar({
-        //     message: 'We Vote does not support "Hide My Email" at this time.',
+        //     message: 'WeVote does not support "Hide My Email" at this time.',
         //     duration: 7000,
         //   });
-        //   oAuthLog('We Vote does not support "Hide My Email" at this time.');
+        //   oAuthLog('WeVote does not support "Hide My Email" at this time.');
         // } else {
         VoterActions.voterAppleSignInSave(email, givenName, middleName, familyName, user, identityToken);
         oAuthLog('Sign in with Apple successful signin for: ', email);

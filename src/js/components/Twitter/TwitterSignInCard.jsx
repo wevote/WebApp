@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import React, { Component } from 'react';
 import { renderLog } from '../../common/utils/logging';
+import webAppConfig from '../../config';
 import InfoCircleIcon from '../Widgets/InfoCircleIcon';
 import TwitterSignIn from './TwitterSignIn';
 
@@ -12,6 +13,10 @@ class TwitterSignInCard extends Component {
 
   render () {
     renderLog('TwitterSignInCard');  // Set LOG_RENDER_EVENTS to log all renders
+
+    if (!webAppConfig.ENABLE_TWITTER) {
+      return '';
+    }
     return (
       <div>
         <div>
@@ -22,7 +27,7 @@ class TwitterSignInCard extends Component {
             />
             <InfoText>
               <InfoCircleIcon />
-              Signing into Twitter is the fastest way to find voter guides related to your values. We Vote will find the voter guides of everyone you are following on Twitter.
+              Signing into Twitter is the fastest way to find voter guides related to your values. WeVote will find the voter guides of everyone you are following on Twitter.
             </InfoText>
           </div>
         </div>

@@ -11,17 +11,18 @@ import arrayContains from '../../common/utils/arrayContains';
 import { getTodayAsInteger } from '../../common/utils/dateFormat'; // getYearFromUltimateElectionDate
 import extractAttributeValueListFromObjectList from '../../common/utils/extractAttributeValueListFromObjectList';
 import historyPush from '../../common/utils/historyPush';
+import { isAndroid } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import { convertToInteger } from '../../common/utils/textFormat';
+import CampaignsHomeFilter from '../../components/CampaignsHome/CampaignsHomeFilter';
+import CandidateListRootPlaceholder from '../../components/CampaignsHome/CandidateListRootPlaceholder';
+import NoSearchResult from '../../components/Search/NoSearchResult';
 import webAppConfig from '../../config';
 import BallotStore from '../../stores/BallotStore';
 import CandidateStore from '../../stores/CandidateStore';
 import IssueStore from '../../stores/IssueStore';
 import RepresentativeStore from '../../stores/RepresentativeStore';
 import VoterStore from '../../stores/VoterStore';
-import CampaignsHomeFilter from '../../components/CampaignsHome/CampaignsHomeFilter';
-import CandidateListRootPlaceholder from '../../components/CampaignsHome/CandidateListRootPlaceholder';
-import NoSearchResult from '../../components/Search/NoSearchResult';
 
 const CandidateListRoot = React.lazy(() => import(/* webpackChunkName: 'CandidateListRoot' */ '../../components/CandidateListRoot/CandidateListRoot'));
 const CampaignListRoot = React.lazy(() => import(/* webpackChunkName: 'CampaignListRoot' */ '../../common/components/Campaign/CampaignListRoot'));
@@ -104,6 +105,7 @@ class CampaignsHome extends Component {
     const candidateList = CandidateStore.getCandidateList();
     // console.log('ComponentDidMount candidateList', candidateList);
     const { candidateListOnYourBallot, candidateListIsBattleground, candidateListOther } = this.splitUpCandidateList(candidateList);
+    // console.log('ComponentDidMount candidateListOther', candidateListOther);
     this.setState({
       candidateList,
       candidateListIsBattleground,
@@ -349,6 +351,21 @@ class CampaignsHome extends Component {
     const weVoteIdsIsBattlegroundRace = extractAttributeValueListFromObjectList('we_vote_id', candidateListIsBattleground);
     const candidateMinusBattleground = candidateListRemaining.filter((oneCandidate) => !arrayContains(oneCandidate.we_vote_id, weVoteIdsIsBattlegroundRace));
     const candidateListOther = candidateMinusBattleground.filter((oneCandidate) => !arrayContains(oneCandidate.politician_we_vote_id, politicianWeVoteIdsAlreadyShown));
+
+    // Ok to remove once https://wevoteusa.atlassian.net/jira/software/projects/WV/issues/WV-282 is fixed
+    // console.log('------ candidateList biden: ', candidateList.find((x) => x.ballot_item_display_name === 'Joe Biden'));
+    // console.log('------ candidateList trump: ', candidateList.find((x) => x.ballot_item_display_name === 'Donald Trump'));
+    // console.log('candidateListOnYourBallot biden: ', candidateListOnYourBallot.find((x) => x.ballot_item_display_name === 'Joe Biden')?.ballot_item_display_name);
+    // console.log('weVoteIdsOnYourBallot: ', weVoteIdsOnYourBallot);
+    // console.log('candidateListRemaining biden: ', candidateListRemaining.find((x) => x.ballot_item_display_name === 'Joe Biden')?.ballot_item_display_name);
+    // console.log('politicianWeVoteIdsAlreadyShown: ', politicianWeVoteIdsAlreadyShown);
+    // console.log('candidateMinusBattleground biden: ', candidateMinusBattleground.find((x) => x.ballot_item_display_name === 'Joe Biden')?.ballot_item_display_name);
+    // console.log('candidateMinusBattleground trump: ', candidateMinusBattleground.find((x) => x.ballot_item_display_name === 'Donald Trump')?.ballot_item_display_name);
+    // console.log('candidateListOther candidate id biden: ', candidateListOther.find((x) => x.ballot_item_display_name === 'Joe Biden')?.politician_we_vote_id);
+    // console.log('candidateListOther candidate id trump: ', candidateListOther.find((x) => x.ballot_item_display_name === 'Donald Trump')?.politician_we_vote_id);
+    // console.log('candidateListOther biden: ', candidateListOther.find((x) => x.ballot_item_display_name === 'Joe Biden')?.ballot_item_display_name);
+    // console.log('candidateListOther trump: ', candidateListOther.find((x) => x.ballot_item_display_name === 'Donald Trump')?.ballot_item_display_name);
+
     return {
       candidateListOnYourBallot,
       candidateListIsBattleground,
@@ -357,6 +374,7 @@ class CampaignsHome extends Component {
   }
 
   splitUpRepresentativeList = (representativeList) => {
+    // console.log('representativeList = ', representativeList);
     const candidateListOnYourBallot = BallotStore.getAllBallotItemsFlattened();
     const politicianWeVoteIdsOnYourBallot = extractAttributeValueListFromObjectList('politician_we_vote_id', candidateListOnYourBallot);
     const representativeListOnYourBallot = representativeList.filter((oneRepresentative) => arrayContains(oneRepresentative.politician_we_vote_id, politicianWeVoteIdsOnYourBallot));
@@ -891,6 +909,7 @@ CampaignsHome.propTypes = {
 };
 
 const CampaignsHomeWrapper = styled('div')`
+  padding-top: ${isAndroid() ? '30px' : ''};
 `;
 
 const WhatIsHappeningSection = styled('div', {

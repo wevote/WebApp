@@ -6,8 +6,7 @@ import React, { Component } from 'react';
 import GoogleButton from 'react-google-button';
 import styled from 'styled-components';
 import VoterActions from '../../actions/VoterActions';
-import { isAndroid } from '../../common/utils/cordovaUtils';
-import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
+import { isAndroid, isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import webAppConfig from '../../config'; // eslint-disable-line import/no-cycle
 import AddContactConsts from '../../constants/AddContactConsts';
@@ -369,12 +368,12 @@ class AddContactsFromGoogleButton extends Component {
               <PermissionDeniedText>
                 iOS only gives you once chance to approve contacts access per installation of an app.
                 <br />
-                To import your contacts, delete the We Vote app then download it again from the App Store.
+                To import your contacts, delete the WeVote app then download it again from the App Store.
                 <br />
                 Be sure to press the
                 <strong> OK </strong>
                 button in the
-                <strong> &quot;We Vote Would Like to Access Your Contacts&quot; </strong>
+                <strong> &quot;WeVote Would Like to Access Your Contacts&quot; </strong>
                 dialog.
               </PermissionDeniedText>
             </>

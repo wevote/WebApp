@@ -80,7 +80,7 @@ export default class OpinionsFollowed extends Component {
     // console.log('OpinionsFollowed, organizationsFollowedListForDisplay: ', organizationsFollowedListForDisplay);
     return (
       <div className="opinions-followed__container">
-        <Helmet title="Who You're Following - We Vote" />
+        <Helmet title="Who You're Following - WeVote" />
         <section className="card">
           <div className="card-main">
             <h1 className="h1">Who You&apos;re Following</h1>

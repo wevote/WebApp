@@ -751,7 +751,7 @@ class ReadyTaskBallot extends React.Component {
                         How It Works
                       </ButtonTextMobileFont>
                       <span className="u-show-desktop-tablet">
-                        How We Vote Works Completed
+                        How WeVote Works Completed
                       </span>
                     </>
                   ) : (
@@ -763,7 +763,7 @@ class ReadyTaskBallot extends React.Component {
                         How It Works
                       </ButtonTextMobileFont>
                       <span className="u-show-desktop-tablet">
-                        How We Vote Works
+                        How WeVote Works
                       </span>
                       <ArrowForward classes={{ root: classes.arrowRoot }} />
                     </span>
@@ -886,7 +886,7 @@ const styles = (theme) => ({
   color: 'rgb(51, 51, 51)',
   display: 'flex',
   flexDirection: 'column',
-  fontFamily: '"Nunito Sans", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif',
+  fontFamily: '"Poppins", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif',
   fontSize: 16,
   height: 173,
   lineHeight: 22,

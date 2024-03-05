@@ -22,7 +22,7 @@ const muiStyleOverrides = {
     styleOverrides: {
       root: {
         boxShadow: 'unset',
-        fontFamily: '"Nunito Sans", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif',
+        fontFamily: '"Poppins", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif',
         fontSize: '16px',
         textTransform: 'none',
         userSelect: 'none',
@@ -35,7 +35,7 @@ const muiStyleOverrides = {
   MuiChip: {
     styleOverrides: {
       root: {
-        fontFamily: '"Nunito Sans", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif',
+        fontFamily: '"Poppins", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif',
         fontSize: 16,
       },
     },
@@ -43,7 +43,7 @@ const muiStyleOverrides = {
   MuiFormControlLabel: {
     styleOverrides: {
       root: {
-        fontFamily: '"Nunito Sans", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif',
+        fontFamily: '"Poppins", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif',
         marginBottom: '-.5rem',
       },
     },
@@ -51,7 +51,7 @@ const muiStyleOverrides = {
   MuiInputBase: {
     styleOverrides: {
       root: {
-        fontFamily: '"Nunito Sans", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif',
+        fontFamily: '"Poppins", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif',
         fontSize: 16,
       },
     },
@@ -59,7 +59,7 @@ const muiStyleOverrides = {
   MuiMenuItem: {
     styleOverrides: {
       root: {
-        fontFamily: '"Nunito Sans", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif',
+        fontFamily: '"Poppins", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif',
         marginTop: '-6px',
         minHeight: 34,
       },
@@ -68,7 +68,7 @@ const muiStyleOverrides = {
   MuiTab: {
     styleOverrides: {
       root: {
-        fontFamily: '"Nunito Sans", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif',
+        fontFamily: '"Poppins", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif',
         fontSize: 16,
         outline: 'none !important',
         textTransform: 'none',

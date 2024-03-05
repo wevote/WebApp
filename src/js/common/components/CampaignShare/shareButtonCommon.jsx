@@ -1,4 +1,6 @@
-import { cordovaOpenSafariView, isAndroid } from '../../utils/cordovaUtils';
+import { cordovaOpenSafariView } from '../../utils/cordovaUtils';
+import { isAndroid } from '../../utils/isCordovaOrWebApp';
+
 import { openSnackbar } from '../Widgets/SnackNotifier';
 
 export function androidFacebookClickHandler (linkToBeShared, quoteForSharingEncoded) {
@@ -100,7 +102,7 @@ export function cordovaSocialSharingByEmail (subject, body, handleClose = null) 
     /* eslint-disable key-spacing */
     console.log('before open cordova.plugins.email.open ', subject);
     cordova.plugins.email.open({
-      from:         'We Vote',          // sending email account (iOS only)
+      from:         'WeVote',          // sending email account (iOS only)
       to:           '',                 // email addresses for TO field
       cc:           [],                 // email addresses for CC field
       bcc:          [],                 // email addresses for BCC field

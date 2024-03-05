@@ -25,7 +25,7 @@ class Credits extends Component {
     return (
       <Wrapper>
         <Helmet>
-          <title>Credits - We Vote</title>
+          <title>Credits - WeVote</title>
           <link rel="canonical" href="https://wevote.us/more/credits" />
         </Helmet>
         <Suspense fallback={<></>}>

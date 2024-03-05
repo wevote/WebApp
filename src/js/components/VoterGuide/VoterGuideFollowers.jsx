@@ -160,7 +160,7 @@ class VoterGuideFollowers extends Component {
       <PageContentContainer>
         <Wrapper>
           {/* Since VoterGuidePositions, VoterGuideFollowing, and VoterGuideFollowers are in tabs the title seems to use the Helmet values from the last tab */}
-          <Helmet title={`${organizationName} - We Vote`} />
+          <Helmet title={`${organizationName} - WeVote`} />
           <div className="card">
             <ul className="card-child__list-group">
               {((voterGuideFollowersList && voterGuideFollowersList.length > 0) ||

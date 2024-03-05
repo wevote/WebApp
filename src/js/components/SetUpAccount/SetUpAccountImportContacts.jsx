@@ -73,7 +73,7 @@ class SetUpAccountImportContacts extends React.Component {
                   <>
                     {contactsWithAccountCount}
                     {' '}
-                    of your friends are already on We Vote
+                    of your friends are already on WeVote
                     {' '}
                   </>
                 ) : (
@@ -82,13 +82,13 @@ class SetUpAccountImportContacts extends React.Component {
                       <>
                         Checking for your friends in
                         {' '}
-                        <span className="u-no-break">We Vote...</span>
+                        <span className="u-no-break">WeVote...</span>
                       </>
                     ) : (
                       <>
                         We couldn&apos;t match any of your contacts with other members of
                         {' '}
-                        <span className="u-no-break">We Vote</span>
+                        <span className="u-no-break">WeVote</span>
                       </>
                     )}
                   </>
@@ -102,7 +102,7 @@ class SetUpAccountImportContacts extends React.Component {
                       {' '}
                       {voterContactEmailListCount}
                       {' '}
-                      contacts to join We Vote.
+                      contacts to join WeVote.
                       <br />
                     </>
                   )}
@@ -114,12 +114,12 @@ class SetUpAccountImportContacts extends React.Component {
               <SetUpAccountTitle>
                 Find your contacts on
                 {' '}
-                <span className="u-no-break">We Vote</span>
+                <span className="u-no-break">WeVote</span>
               </SetUpAccountTitle>
               <SetUpAccountImportText>
                 Importing your contacts helps
                 {' '}
-                <span className="u-no-break">We Vote</span>
+                <span className="u-no-break">WeVote</span>
                 {' '}
                 find your friends and suggest connections.
               </SetUpAccountImportText>

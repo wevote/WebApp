@@ -333,7 +333,7 @@ const CardCountdownInternalWrapper = styled('div')`
 const CardTitleUpcoming = styled('h1')(({ theme }) => (`
   color: #2E3C5D !important;
   font-size: 64px;
-  font-weight: 900;
+  font-weight: 500;
   margin-bottom: 8px;
   margin-top: 12px;
   text-align: center;
@@ -358,7 +358,7 @@ const CardSubTitle = styled('h3', {
   shouldForwardProp: (prop) => !['desktopMode', 'center'].includes(prop),
 })(({ desktopMode, center }) => (`
   font-size: ${desktopMode ? '18px' : '22px'};
-  font-weight: 700;
+  font-weight: 500;
   color: #2E3C5D !important;
   margin-bottom: 0 !important;
   margin-top: ${desktopMode ? '24px' : null};

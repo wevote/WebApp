@@ -21,7 +21,7 @@ module.exports = {
   LOG_ONLY_FIRST_RENDER_EVENTS: false,
   LOG_HTTP_REQUESTS: false,
   LOG_ROUTING: false,
-  LOG_SIGNIN_STEPS: false,
+  LOG_SIGNIN_STEPS: false,  // oAuthLog function prints to console
   LOG_CORDOVA_OFFSETS: false,
   SHOW_CORDOVA_URL_FIELD: false,  // Only needed for debugging in Cordova
 
@@ -34,7 +34,8 @@ module.exports = {
     text_for_map_search: '',
   },
 
-  ENABLE_FACEBOOK: true,
+  ENABLE_FACEBOOK: false,     // Temporary 'false' Feb 28, 2024
+  ENABLE_TWITTER: false,      // Temporary 'false' Feb 28, 2024
   ENABLE_PAY_TO_PROMOTE: true,
 
   // API Keys, some of these are publishable (not secret)

@@ -27,7 +27,7 @@ export default class SettingsAddress extends Component {
     return (
       <div>
         <div className="u-stack--md">
-          <Helmet title="Enter Address - We Vote" />
+          <Helmet title="Enter Address - WeVote" />
           <BrowserPushMessage incomingProps={this.props} />
           <div className="card">
             <div className="card-main">

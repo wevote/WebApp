@@ -966,7 +966,6 @@ class IssueStore extends ReduceStore {
           issueWeVoteIdsUnderEachBallotItem,
           organizationWeVoteIdsLinkedToIssueDict,
         };
-      case 'twitterNativeSignInSave':
       case 'twitterSignInRetrieve':
       case 'voterEmailAddressSignIn':
       case 'voterFacebookSignInRetrieve':

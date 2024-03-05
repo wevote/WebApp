@@ -134,13 +134,13 @@ class CampaignNewsPage extends Component {
               <CampaignTitleText>{campaignTitle}</CampaignTitleText>
             </CampaignTitleWrapper>
             <BlockedReason>
-              This campaign has been blocked by moderators from We Vote because it is currently violating our terms of service. It is only visible campaign owners. If you have any questions,
+              This campaign has been blocked by moderators from WeVote because it is currently violating our terms of service. It is only visible campaign owners. If you have any questions,
               {' '}
               <OpenExternalWebSite
                 linkIdAttribute="weVoteSupport"
                 url="https://help.wevote.us/hc/en-us/requests/new"
                 target="_blank"
-                body={<span>please contact We Vote support.</span>}
+                body={<span>please contact WeVote support.</span>}
               />
               {isBlockedByWeVoteReason && (
                 <>
@@ -168,13 +168,13 @@ class CampaignNewsPage extends Component {
           </CampaignTitleWrapper>
           {isBlockedByWeVote && (
             <BlockedReason>
-              Your campaign has been blocked by moderators from We Vote. Please make any requested modifications so you are in compliance with our terms of service and
+              Your campaign has been blocked by moderators from WeVote. Please make any requested modifications so you are in compliance with our terms of service and
               {' '}
               <OpenExternalWebSite
                 linkIdAttribute="weVoteSupport"
                 url="https://help.wevote.us/hc/en-us/requests/new"
                 target="_blank"
-                body={<span>contact We Vote support for help.</span>}
+                body={<span>contact WeVote support for help.</span>}
               />
               {isBlockedByWeVoteReason && (
                 <>

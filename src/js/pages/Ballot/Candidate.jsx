@@ -313,7 +313,7 @@ class Candidate extends Component {
     // console.log('Candidate render');
 
     const candidateName = toTitleCase(candidate.ballot_item_display_name);
-    const titleText = `${candidateName} - We Vote`;
+    const titleText = `${candidateName} - WeVote`;
     const descriptionText = `Information about ${candidateName}, candidate for ${candidate.contest_office_name}`;
     const voter = VoterStore.getVoter();
     const candidateAdminEditUrl = `${webAppConfig.WE_VOTE_SERVER_ROOT_URL}c/${candidate.id}/edit/?google_civic_election_id=${VoterStore.electionId()}&state_code=`;

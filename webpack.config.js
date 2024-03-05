@@ -21,7 +21,7 @@ const isWebApp = !process.env.npm_lifecycle_script.includes('CORDOVA=1');
 const useRealCerts = process.env.npm_lifecycle_script.includes('USE_REAL_CERTS=1');
 const source = isWebApp ? 'src' : 'srcCordova';
 const bundleAnalysis = process.env.ANALYSIS || false;  // enable the interactive bundle analyser and the Unused component analyzer
-const minimized = process.env.MINIMIZED === '1' || process.env.MINIMIZED === 1 || false;  // enable the Terser plugin that strips comments and shrinks long variable names
+const minimized = process.env.MINIMIZED === '1' || false;  // enable the Terser plugin that strips comments and shrinks long variable names
 const verBits = process.version.split('.');
 const major = parseInt(verBits[0].replace('v', ''));
 if (major < 13) {
@@ -29,6 +29,8 @@ if (major < 13) {
 } else {
   console.log(`Node version is: ${process.version}`);
 }
+if (useRealCerts) console.log('useRealCerts in webpack.config.js ', useRealCerts);
+// console.log('key: ', fs.readFileSync(`./${source}/cert/wevotedeveloper.com.crt`).toString());
 
 module.exports = (env, argv) => ({
   entry: path.resolve(__dirname, `./${source}/index.jsx`),
@@ -99,7 +101,7 @@ module.exports = (env, argv) => ({
     new CleanWebpackPlugin(),
     new ESLintPlugin({ failOnError: false, failOnWarning: false  }),
     new HtmlWebpackPlugin({
-      title: 'We Vote Sample Ballot',
+      title: 'WeVote Sample Ballot',
       template: path.resolve(__dirname, `./${source}/index.html`),
     }),
     ...(bundleAnalysis ? [
@@ -162,14 +164,13 @@ module.exports = (env, argv) => ({
     ]),
   ],
   devServer: {
-    allowedHosts: 'all',
+    allowedHosts: ['wevotedeveloper.com', 'localhost'],
     static: {
-      directory: path.join(__dirname, './build'),
+      directory: path.join(__dirname, './build/index.html'),
     },
-    host: 'localhost',
+    host: (useRealCerts ? 'wevotedeveloper.com' : 'localhost'),
     port,
     historyApiFallback: true,
-    // open: true,
     ...(isHTTPS ? {
       server: {
         type: 'https',
@@ -178,6 +179,8 @@ module.exports = (env, argv) => ({
             // For testing with Cordova and real authoritative certs
             key: fs.readFileSync(`./${source}/cert/wevotedeveloper.com_key.txt`),
             cert: fs.readFileSync(`./${source}/cert/wevotedeveloper.com.crt`),
+            // requestCert: true,
+            // passphrase: 'webpack-dev-server',
           } : {
             key: fs.readFileSync(`./${source}/cert/server.key`),
             cert: fs.readFileSync(`./${source}/cert/server.crt`),

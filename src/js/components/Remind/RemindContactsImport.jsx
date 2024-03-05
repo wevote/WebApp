@@ -74,7 +74,7 @@ class RemindContactsImport extends React.Component {
                   <>
                     {contactsWithAccountCount}
                     {' '}
-                    of your friends are already on We Vote
+                    of your friends are already on WeVote
                     {' '}
                   </>
                 ) : (
@@ -83,13 +83,13 @@ class RemindContactsImport extends React.Component {
                       <>
                         Checking for your friends in
                         {' '}
-                        <span className="u-no-break">We Vote...</span>
+                        <span className="u-no-break">WeVote...</span>
                       </>
                     ) : (
                       <>
                         We couldn&apos;t match any of your contacts with other members of
                         {' '}
-                        <span className="u-no-break">We Vote</span>
+                        <span className="u-no-break">WeVote</span>
                       </>
                     )}
                   </>
@@ -103,7 +103,7 @@ class RemindContactsImport extends React.Component {
                       {' '}
                       {voterContactEmailListCount}
                       {' '}
-                      contacts to join We Vote.
+                      contacts to join WeVote.
                       <br />
                     </>
                   )}

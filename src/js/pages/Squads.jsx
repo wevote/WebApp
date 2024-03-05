@@ -11,9 +11,8 @@ import ReadyActions from '../actions/ReadyActions';
 import SnackNotifier, { openSnackbar } from '../common/components/Widgets/SnackNotifier';
 import AppObservableStore, { messageService } from '../common/stores/AppObservableStore';
 import apiCalming from '../common/utils/apiCalming';
-import { isAndroid } from '../common/utils/cordovaUtils';
 import historyPush from '../common/utils/historyPush';
-import { isWebApp } from '../common/utils/isCordovaOrWebApp';
+import { isAndroid, isWebApp } from '../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../common/utils/logging';
 import ReadyFinePrint from '../components/Ready/ReadyFinePrint';
 import { PageContentContainer } from '../components/Style/pageLayoutStyles';
@@ -165,7 +164,7 @@ class Squads extends Component {
         <SquadsPageContainer className="container-fluid" style={this.getTopPadding()}>
           <SnackNotifier />
           <Helmet>
-            <title>Democracy Squads - We Vote</title>
+            <title>Democracy Squads - WeVote</title>
             <link rel="canonical" href="https://wevote.us/squads" />
           </Helmet>
           <BrowserPushMessage incomingProps={this.props} />

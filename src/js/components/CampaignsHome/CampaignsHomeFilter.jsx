@@ -3,6 +3,7 @@ import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
+import { isAndroid } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import StateDropDownCore from '../Filter/StateDropDownCore';
 import SearchBar2024 from '../Search/SearchBar2024';
@@ -86,7 +87,7 @@ const styles = () => ({
 
 
 const CampaignsHomeFilterChoices = styled('div')`
-  margin-top: 14px;
+  margin-top: ${isAndroid() ? '28px' : '14px'};
 `;
 
 const CampaignsHomeFilterWrapper = styled('div')`

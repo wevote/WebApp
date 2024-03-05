@@ -261,7 +261,7 @@ class IssueCard extends Component {
           {' '}
           <span className="u-no-break">{issueDisplayName}</span>
           {' '}
-          <span className="u-no-break">on We Vote</span>
+          <span className="u-no-break">on WeVote</span>
         </div>
       </Tooltip>
     );
@@ -465,7 +465,7 @@ const FollowersWrapper = styled('div')`
 
 const IssueName = styled('h3')`
   font-size: 18px;
-  font-weight: bold;
+  font-weight: 500;
   margin-bottom: 0;
 `;
 

@@ -268,7 +268,7 @@ class VoterGuideEndorsements extends Component {
 
     // console.log("lookingAtSelf: ", lookingAtSelf);
     const organizationName = toTitleCase(organization.organization_name);
-    const titleText = `${organizationName} - We Vote`;
+    const titleText = `${organizationName} - WeVote`;
     const descriptionText = `See endorsements and opinions from ${organizationName} for the November election`;
 
     return (

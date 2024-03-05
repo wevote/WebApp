@@ -1,15 +1,14 @@
-import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { FacebookShareButton } from 'react-share';
+import styled from 'styled-components';
 import CampaignSupporterActions from '../../actions/CampaignSupporterActions';
-import { isAndroid } from '../../utils/cordovaUtils';
-import { isCordova } from '../../utils/isCordovaOrWebApp';
-import { renderLog } from '../../utils/logging';
-import politicianListToSentenceString from '../../utils/politicianListToSentenceString';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import CampaignStore from '../../stores/CampaignStore';
+import { isAndroid, isCordova } from '../../utils/isCordovaOrWebApp';
+import { renderLog } from '../../utils/logging';
+import politicianListToSentenceString from '../../utils/politicianListToSentenceString';
 import { androidFacebookClickHandler, generateQuoteForSharing, generateSharingLink } from './shareButtonCommon';
 
 class ShareOnFacebookButton extends Component {

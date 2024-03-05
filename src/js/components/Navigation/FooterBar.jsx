@@ -4,19 +4,19 @@ import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
-import { isAndroid, isIOS } from '../../common/utils/cordovaUtils';
+import signInModalGlobalState from '../../common/components/Widgets/signInModalGlobalState';
+import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
+import { isIOS } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
 import { normalizedHref } from '../../common/utils/hrefUtils';
-import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
+import { isAndroid, isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import stringContains from '../../common/utils/stringContains';
-import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
 import { cordovaFooterHeight } from '../../utils/cordovaOffsets';
-import signInModalGlobalState from '../../common/components/Widgets/signInModalGlobalState';
 
 // It's not ideal to have two images, but this is a complex svg, and I couldn't figure out how to change the fill color with a variable
 const capitalBuilding = '/img/global/svg-icons/capital-building.svg';

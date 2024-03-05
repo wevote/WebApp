@@ -442,7 +442,7 @@ class Register extends Component {
     return (
       <PageContentContainer>
         <PageContainer className="container-fluid">
-          <Helmet title="Register to Vote - We Vote" />
+          <Helmet title="Register to Vote - WeVote" />
           <BrowserPushMessage incomingProps={this.props} />
           <div className="row" style={{ paddingTop: 32 }}>
             <div className="col-sm-12 col-lg-8">

@@ -208,7 +208,7 @@ class SuggestedContactListWithController extends React.Component {
     }
     let sectionDescription;
     if (askMode) {
-      sectionDescription = 'Asking a contact will send the message above and an invitation to be your friend on We Vote.';
+      sectionDescription = 'Asking a contact will send the message above and an invitation to be your friend on WeVote.';
     } else if (remindMode) {
       sectionDescription = (
         <>
@@ -242,7 +242,7 @@ class SuggestedContactListWithController extends React.Component {
                     <strong>
                       {contactsWithAccountCount}
                       {' '}
-                      found on We Vote
+                      found on WeVote
                     </strong>
                     ,
                     {' '}

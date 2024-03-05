@@ -39,7 +39,7 @@ export default class Elections extends Component {
     renderLog('Elections');  // Set LOG_RENDER_EVENTS to log all renders
     return (
       <PageContentContainer>
-        <Helmet title="Elections - We Vote" />
+        <Helmet title="Elections - WeVote" />
         <h1 className="h1">Supported Elections</h1>
         <div className="elections-list-container">
           <BallotElectionListWithFilters

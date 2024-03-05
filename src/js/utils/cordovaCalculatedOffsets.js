@@ -1,9 +1,9 @@
-import { hasIPhoneNotch, isAndroid, isAndroidSizeMD, isAndroidSizeWide, isAndroidSizeXL, isIOS, isIOSAppOnMac, isIPad } from '../common/utils/cordovaUtils';
+import AppObservableStore from '../common/stores/AppObservableStore';
+import { hasIPhoneNotch, isAndroidSizeMD, isAndroidSizeWide, isAndroidSizeXL, isIOS, isIOSAppOnMac, isIPad } from '../common/utils/cordovaUtils';
 import { normalizedHrefPage } from '../common/utils/hrefUtils';
-import { isCordova, isWebApp } from '../common/utils/isCordovaOrWebApp';
+import { isAndroid, isCordova, isWebApp } from '../common/utils/isCordovaOrWebApp';
 import { cordovaOffsetLog } from '../common/utils/logging';
 import CordovaPageConstants from '../constants/CordovaPageConstants';
-import AppObservableStore from '../common/stores/AppObservableStore';
 import { getPageKey } from './cordovaPageUtils';
 import { decorativeSpacing } from './cordovaTopHeaderTopMargin';
 import { pageEnumeration } from './cordovaUtilsPageEnumeration';

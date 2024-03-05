@@ -40,7 +40,7 @@ export default class SettingsYourData extends Component {
     return (
       <div>
         <div className="u-stack--md">
-          <Helmet title="Your Privacy & Data - We Vote" />
+          <Helmet title="Your Privacy & Data - WeVote" />
           <BrowserPushMessage incomingProps={this.props} />
           <div className="card">
             <div className="card-main">
@@ -57,7 +57,7 @@ export default class SettingsYourData extends Component {
                   </DeleteAllContactsWrapper>
                 ) : (
                   <DataSettingText>
-                    We Vote is not storing any of your contact data. If contacts from your address book were previously stored in We Vote, they have been completely removed.
+                    WeVote is not storing any of your contact data. If contacts from your address book were previously stored in WeVote, they have been completely removed.
                     {' '}
                     <Link to="/findfriends/importcontacts" className="u-link-color">Import your contacts to find your friends</Link>
                     .

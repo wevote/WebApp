@@ -12,11 +12,11 @@ import VoterSessionActions from './js/actions/VoterSessionActions';
 import muiTheme from './js/common/components/Style/muiTheme';
 import LoadingWheelComp from './js/common/components/Widgets/LoadingWheelComp';
 import AppObservableStore, { messageService } from './js/common/stores/AppObservableStore';
-import { getAndroidSize, getIOSSizeString, hasDynamicIsland, isAndroid, isIOS } from './js/common/utils/cordovaUtils';
+import { getAndroidSize, getIOSSizeString, hasDynamicIsland, isIOS } from './js/common/utils/cordovaUtils';
 import historyPush from './js/common/utils/historyPush';
 import { isWeVoteMarketingSite, normalizedHref } from './js/common/utils/hrefUtils';
 import initializejQuery from './js/common/utils/initializejQuery';
-import { isCordova, isWebApp } from './js/common/utils/isCordovaOrWebApp';
+import { isAndroid, isCordova, isWebApp } from './js/common/utils/isCordovaOrWebApp';
 import { renderLog } from './js/common/utils/logging';
 import Header from './js/components/Navigation/Header';
 import HeaderBarSuspense from './js/components/Navigation/HeaderBarSuspense';
@@ -180,11 +180,16 @@ class App extends Component {
     if (isAndroid()) {         // December 12, 2023: All sorts of problems with sign-in with Facebook on Android, so disabling it here
       webAppConfig.ENABLE_FACEBOOK = false;   // This overrides the config setting for the entire Android app
     }
+
     if (webAppConfig.ENABLE_FACEBOOK) {
       setTimeout(() => {
         // Suspect that this isn't correct anymore: "We need to start this initialization early since there is a delay getting the FB object in place"
         initializeFacebookSDK();
       }, 2000);
+    }
+
+    if (!webAppConfig.ENABLE_TWITTER) {
+      webAppConfig.ENABLE_TWITTER = false;  // Avoid crashes in Feb/March 2024 in case not in config.js
     }
 
     if (isCordova()) {
@@ -561,6 +566,7 @@ class App extends Component {
                   <Route path="/terms" component={TermsOfService} />
                   <Route path="/twitter_sign_in" exact><TwitterSignInProcess /></Route>
                   <Route path="/twittersigninprocess/:sign_in_step" component={TwitterSignInProcess} />
+                  <Route path="/twittersigninprocess" component={TwitterSignInProcess} />
                   <Route path="/unsubscribe/:subscription_secret_key/:unsubscribe_modifier/instant" exact component={(props) => <UnsubscribeRoot {...props} instantUnsubscribe />} />
                   <Route path="/unsubscribe/:subscription_secret_key/:unsubscribe_modifier" exact component={UnsubscribeRoot} />
                   <Route path="/unsubscribe/:subscription_secret_key" exact component={UnsubscribeRoot} />
@@ -707,7 +713,7 @@ const WeVoteBody = styled('div')`
   background-color: #fff; // rgb(235, 236, 238); // #fafafa;
   color: #333;
   display: block;
-  font-family: "Nunito Sans", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+  font-family: "Poppins", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
   line-height: 1.4;
   margin: 0 auto;
   // max-width: 960px;

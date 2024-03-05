@@ -220,7 +220,7 @@ class FriendIntroLanding extends Component {
 
     return (
       <div>
-        <Helmet title="We Vote - Invitation Accepted!" />
+        <Helmet title="WeVote - Invitation Accepted!" />
         <PageContentContainerFriendIntro>
           {showWhatIsWeVote ? (
             <Suspense fallback={<></>}>
@@ -232,7 +232,7 @@ class FriendIntroLanding extends Component {
                 <WeVoteLogoSpacer />
                 <BodyWrapper>
                   <FriendIntroTitle>
-                    Welcome to We Vote
+                    Welcome to WeVote
                     {voterFirstName && (
                       <>
                         ,
@@ -323,7 +323,7 @@ class FriendIntroLanding extends Component {
                       color="primary"
                       onClick={this.toggleWhatIsWeVote}
                     >
-                      What is We Vote?
+                      What is WeVote?
                     </Button>
                   </WhatIsWeVoteLinkWrapper>
                 </BodyWrapper>

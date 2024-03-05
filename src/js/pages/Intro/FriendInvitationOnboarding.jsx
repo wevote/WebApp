@@ -9,9 +9,9 @@ import FriendActions from '../../actions/FriendActions';
 import IssueActions from '../../actions/IssueActions';
 import VoterActions from '../../actions/VoterActions';
 import apiCalming from '../../common/utils/apiCalming';
-import { getAndroidSize, isAndroid } from '../../common/utils/cordovaUtils';
+import { getAndroidSize } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
-import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
+import { isAndroid, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import PersonalizedScoreIntroBody from '../../components/CompleteYourProfile/PersonalizedScoreIntroBody';
@@ -295,7 +295,7 @@ class FriendInvitationOnboarding extends Component {
     const slideHtmlContent = slideHtmlContentDict[currentSlideIndex];
     return (
       <div>
-        <Helmet title="We Vote - Invitation Accepted!" />
+        <Helmet title="WeVote - Invitation Accepted!" />
         <div className="intro-story container-fluid well u-inset--md" style={this.overrideMediaQueryForAndroidTablets()}>
           <span onClick={this.onExitOnboarding}>
             <img

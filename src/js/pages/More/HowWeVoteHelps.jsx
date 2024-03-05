@@ -20,7 +20,7 @@ export default class HowWeVoteHelps extends Component {
     renderLog('HowWeVoteHelps');  // Set LOG_RENDER_EVENTS to log all renders
     return (
       <div>
-        <Helmet title="How We Vote Helps - We Vote" />
+        <Helmet title="How WeVote Helps - WeVote" />
         <PageContentContainer>
           <ContainerFluidWrapper className="container-fluid card">
             <div className="card-main">

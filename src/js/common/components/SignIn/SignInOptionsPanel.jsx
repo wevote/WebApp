@@ -20,10 +20,10 @@ import VoterStore from '../../../stores/VoterStore';
 import initializeAppleSDK from '../../../utils/initializeAppleSDK';
 import initializeFacebookSDK from '../../../utils/initializeFacebookSDK';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
-import { isAndroid, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
+import { restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
 import historyPush from '../../utils/historyPush';
 import { normalizedHref } from '../../utils/hrefUtils';
-import { isCordova, isWebApp } from '../../utils/isCordovaOrWebApp';
+import { isAndroid, isCordova, isWebApp } from '../../utils/isCordovaOrWebApp';
 import Cookies from '../../utils/js-cookie/Cookies';
 import { oAuthLog, renderLog } from '../../utils/logging';
 import stringContains from '../../utils/stringContains';
@@ -44,8 +44,8 @@ export default class SignInOptionsPanel extends Component {
       hideAppleSignInButton: false,
       hideCurrentlySignedInHeader: false,
       hideDialogForCordova: false,
-      hideFacebookSignInButton: false,
-      hideTwitterSignInButton: false,
+      hideFacebookSignInButton: !webAppConfig.ENABLE_FACEBOOK,
+      hideTwitterSignInButton: !webAppConfig.ENABLE_TWITTER,
       hideVoterEmailAddressEntry: false,
       hideVoterPhoneEntry: false,
       isInternetExplorer: document.documentMode || false, // Yes, we are talking about that old Microsoft product
@@ -287,7 +287,7 @@ export default class SignInOptionsPanel extends Component {
     this.setState({
       hideAppleSignInButton: isInternetExplorer || isAndroid(),
       hideFacebookSignInButton: !webAppConfig.ENABLE_FACEBOOK,  // December 12, 2023: All sorts of problems with sign-in with Facebook on Android
-      hideTwitterSignInButton: false,
+      hideTwitterSignInButton: !webAppConfig.ENABLE_TWITTER,    // Feb 2024 problems with twitter in all apps and cordova, but ok on api server
       hideVoterEmailAddressEntry: false,
       hideVoterPhoneEntry: false,
     });
@@ -422,12 +422,12 @@ export default class SignInOptionsPanel extends Component {
     let yourAccountTitle = 'Security & Sign In';
     let yourAccountExplanation = '';
     if (voterIsSignedIn) {
-      if (voterIsSignedInFacebook && !voterIsSignedInTwitter && (isOnWeVoteRootUrl || isOnWeVotePartnerSubdomainUrl)) {
+      if (webAppConfig.ENABLE_TWITTER && voterIsSignedInFacebook && !voterIsSignedInTwitter && (isOnWeVoteRootUrl || isOnWeVotePartnerSubdomainUrl)) {
         yourAccountTitle = 'Have Twitter Too?';
-        yourAccountExplanation = 'By adding your Twitter account to your We Vote profile, you get access to the voter guides of everyone you follow.';
-      } else if (voterIsSignedInTwitter && !voterIsSignedInFacebook && isOnFacebookSupportedDomainUrl) {
+        yourAccountExplanation = 'By adding your Twitter account to your WeVote profile, you get access to the voter guides of everyone you follow.';
+      } else if (webAppConfig.ENABLE_FACEBOOK && voterIsSignedInTwitter && !voterIsSignedInFacebook && isOnFacebookSupportedDomainUrl) {
         yourAccountTitle = 'Have Facebook Too?';
-        yourAccountExplanation = 'By adding Facebook to your We Vote profile, it is easier for friends to find you.';
+        yourAccountExplanation = 'By adding Facebook to your WeVote profile, it is easier for friends to find you.';
       }
     }
 

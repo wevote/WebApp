@@ -20,7 +20,7 @@ Visit this page when you are signed into Browserstack, and they will customize t
 
     curl -u "YOUR-USERNAME:ACCESS-KEY-HERE" -X POST https://api-cloud.browserstack.com/app-automate/upload -F "file=@/path/to/app/file/Application-debug.apk" -F 'data={"custom_id": "MyApp"}'
 
-You can find the latest We Vote APK (for Android) and IPA (for iOS) in [this Google Drive folder](https://drive.google.com/drive/u/0/folders/10tK7oqY7FKWhe0ilHDcli-DWpT9ldTFs).
+You can find the latest WeVote APK (for Android) and IPA (for iOS) in [this Google Drive folder](https://drive.google.com/drive/u/0/folders/10tK7oqY7FKWhe0ilHDcli-DWpT9ldTFs).
 Please download it to your Download folder. For example, to find this path on a Mac:
 
     (WebAppEnv) $ cd ~/Downloads

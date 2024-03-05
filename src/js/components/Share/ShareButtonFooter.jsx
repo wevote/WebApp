@@ -12,8 +12,8 @@ import { openSnackbar } from '../../common/components/Widgets/SnackNotifier';
 import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
 import ShareStore from '../../common/stores/ShareStore';
 import apiCalming from '../../common/utils/apiCalming';
-import { hasDynamicIsland, hasIPhoneNotch, isAndroid } from '../../common/utils/cordovaUtils';
-import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
+import { hasDynamicIsland, hasIPhoneNotch } from '../../common/utils/cordovaUtils';
+import { isAndroid, isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import stringContains from '../../common/utils/stringContains';
 import webAppConfig from '../../config';
@@ -203,7 +203,7 @@ class ShareButtonFooter extends Component {
     this.setState({
       showSignInModal,
     });
-    // Make sure we have We Vote friends data
+    // Make sure we have WeVote friends data
     if (apiCalming('voterContactListRetrieve', 20000)) {
       VoterActions.voterContactListRetrieve();
     }

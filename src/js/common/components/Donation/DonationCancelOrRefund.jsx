@@ -76,7 +76,7 @@ export default class DonationCancelOrRefund extends Component {
           <StyledModalFrame>
             <h2>{label}</h2>
             <p>
-              We Vote is a nonprofit and nonpartisan organization that relies the generous support from voters like you. Thank you!
+              WeVote is a nonprofit and nonpartisan organization that relies the generous support from voters like you. Thank you!
             </p>
 
             <Grid container spacing={1} style={{ paddingLeft: '0px', backgroundColor: '#08000008', margin: '8px 0 24px 0' }}>

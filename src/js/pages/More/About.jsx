@@ -83,20 +83,20 @@ class About extends Component {
     return (
       <AboutWrapper>
         <Helmet>
-          <title>About We Vote</title>
+          <title>About WeVote</title>
           <link rel="canonical" href="https://wevote.us/about" />
         </Helmet>
         <Suspense fallback={<></>}>
           <WelcomeAppbar pathname="/more/about" />
         </Suspense>
         <HeaderForAbout>
-          <Title>About We Vote</Title>
+          <Title>About WeVote</Title>
           <ToolBar />
         </HeaderForAbout>
         <Section noTopMargin>
           <DescriptionContainer>
             <DescriptionLeftColumn>
-              We Vote is a nonprofit technology startup, building the next generation of voting tech. We
+              WeVote is a nonprofit technology startup, building the next generation of voting tech. We
               {'\''}
               re starting by creating a digital voter guide informed by issues you care about, and people you trust.
               {' '}
@@ -107,11 +107,11 @@ class About extends Component {
             <DescriptionImageColumn>
               <figure>
                 <Image
-                  alt="We Vote at iOS Dev camp, where we won 'Best App for Good'."
-                  title="We Vote at iOS Dev camp, where we won 'Best App for Good'."
+                  alt="WeVote at iOS Dev camp, where we won 'Best App for Good'."
+                  title="WeVote at iOS Dev camp, where we won 'Best App for Good'."
                   src={normalizedImagePath('/img/global/photos/iOSDevCamp2016.png')}
                 />
-                <AboutFigCaption>We Vote at iOS Dev camp.</AboutFigCaption>
+                <AboutFigCaption>WeVote at iOS Dev camp.</AboutFigCaption>
               </figure>
             </DescriptionImageColumn>
           </DescriptionContainer>
@@ -160,7 +160,7 @@ class About extends Component {
             Our Approach
           </SectionTitle>
           <AboutDescriptionContainer>
-            We Vote is made of two fully nonpartisan nonprofit organizations (501(c)(3) and 501(c)(4)) based in Oakland, California. Our software is open source, and our work is driven by over 100 volunteers who have contributed so far. Inspired by groups like
+            WeVote is made of two fully nonpartisan nonprofit organizations (501(c)(3) and 501(c)(4)) based in Oakland, California. Our software is open source, and our work is driven by over 100 volunteers who have contributed so far. Inspired by groups like
             {' '}
             <Suspense fallback={<></>}>
               <OpenExternalWebSite
@@ -318,7 +318,7 @@ class About extends Component {
             Our Story
           </SectionTitle>
           <AboutDescriptionContainer>
-            Founded in 2014, the idea of a nonprofit “Yelp for Politics” was born. We Vote would be a community for voters, created by people concerned about where this country is heading.
+            Founded in 2014, the idea of a nonprofit “Yelp for Politics” was born. WeVote would be a community for voters, created by people concerned about where this country is heading.
             {' '}
             Being an open source, volunteer-driven project means anyone can contribute. Kind of like democracy.
           </AboutDescriptionContainer>

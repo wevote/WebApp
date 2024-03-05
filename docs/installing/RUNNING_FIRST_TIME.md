@@ -67,7 +67,7 @@ At this point you will be asked for certificate information, like this:
      Country Name (2 letter code) []:US
      State or Province Name (full name) []:California
      Locality Name (eg, city) []:Oakland
-     Organization Name (eg, company) []:We Vote
+     Organization Name (eg, company) []:WeVote
      Organizational Unit Name (eg, section) []:
      Common Name (eg, fully qualified host name) []:localhost
      Email Address []:
@@ -97,11 +97,11 @@ You should be able to visit WebApp via HTTPS here:
     https://localhost:3000
 
 
-## Using We Vote API server Locally: OPTIONAL
+## Using WeVote API server Locally: OPTIONAL
 
 The default configuration connections to our live API server at: https://api.wevoteusa.org, so this step is optional.
 
-If you would like to install the We Vote API server locally, start by reading the instructions to 
+If you would like to install the WeVote API server locally, start by reading the instructions to 
 [install WeVoteServer](https://github.com/wevote/WeVoteServer/blob/master/README_API_INSTALL.md).
 
 

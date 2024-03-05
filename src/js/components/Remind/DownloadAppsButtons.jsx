@@ -22,7 +22,7 @@ function DownloadAppsButtons (props) {
         <DownloadAppText>
           Prefer to text friends?
           <br />
-          Download the We Vote App:
+          Download the WeVote App:
         </DownloadAppText>
       )}
       <AppStoreIconsWrapper>

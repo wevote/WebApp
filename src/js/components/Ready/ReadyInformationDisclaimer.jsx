@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { OverlayTrigger } from 'react-bootstrap'; // TODO APRIL 2021:  Replace with MUI
 import Popover from 'react-bootstrap/Popover';
-import { isAndroid, isIOS } from '../../common/utils/cordovaUtils';
-import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
+import { isIOS } from '../../common/utils/cordovaUtils';
+import { isAndroid, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 
@@ -35,7 +35,7 @@ class ReadyInformationDisclaimer extends React.Component {
       <div style={cardStyles}>
         <span>
           <span style={{ fontWeight: 'bold' }}>
-            We Vote helps you make your voting choices, but it does not electronically submit your vote.
+            WeVote helps you make your voting choices, but it does not electronically submit your vote.
           </span>
           <div style={{ padding: '6px' }} />
           You will still need to vote by mail, or vote in person, to have your vote count.
@@ -48,7 +48,7 @@ class ReadyInformationDisclaimer extends React.Component {
             <Popover id="popover-positioned-top">
               <Popover.Content>
                 <strong>
-                  We Vote aggregates ballot data from non-partisan, non-profit, and government ballot databases.
+                  WeVote aggregates ballot data from non-partisan, non-profit, and government ballot databases.
                 </strong>
                 <br />
                 <br />
@@ -74,7 +74,7 @@ class ReadyInformationDisclaimer extends React.Component {
                   color: 'white',
                 }}
               >
-                Where We Vote gets its data
+                Where WeVote gets its data
               </Button>
             </div>
           </div>
