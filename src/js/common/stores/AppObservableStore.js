@@ -217,7 +217,7 @@ export default {
 
   getWeVoteRootURL () {
     const { location: { hostname, origin } } = window;
-    if (hostname === 'localhost' || hostname === 'quality.wevote.us') {
+    if (hostname === 'localhost' || hostname === 'quality.wevote.us' || hostname === 'wevotedeveloper.com') {
       return origin; // ex/ https://localhost:3000
     } else {
       return 'https://wevote.us';
