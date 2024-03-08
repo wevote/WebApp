@@ -119,7 +119,11 @@ class Credits extends Component {
               <div key={item.name}>
                 <li>
                   {item.linkedin ? (
-                    <a href={item.linkedin} target="_blank">{item.name}</a>
+                    <OpenExternalWebSite
+                    url={item.linkedin}
+                    target="_blank"
+                    body={item.name}
+                    />
                   ) : (
                     <span>{item.name}</span>
                   )}
@@ -140,7 +144,13 @@ class Credits extends Component {
           This list is in rough order of number of volunteer hours spent (10+ hours) or monetary donation level. Individual monetary donors only listed with express permission.
           {' '}
           (Our apologies if you should be on this list and are missing. Please contact
-          <a href="https://wevote.us/more/faq">support</a>
+          {' '}
+          <OpenExternalWebSite
+            url="https://wevote.us/more/faq"
+            target="_blank"
+            body="support"
+          />
+          {' '}
           with corrections.)
         </CreditsDescriptionContainer>
       </Wrapper>
