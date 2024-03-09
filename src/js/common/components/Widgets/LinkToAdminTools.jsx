@@ -35,7 +35,7 @@ class LinkToAdminTools extends Component {
     return (
       <LinkToAdminToolsWrapper>
         {/* Show links to this candidate in the admin tools */}
-        {(voter && (voter.is_admin || voter.is_verified_volunteer)) && (
+        {(voter && (voter.is_admin || voter.is_political_data_manager || voter.is_verified_volunteer)) && (
           <span className="u-wrap-links d-print-none">
             Admin only:
             <Suspense fallback={<></>}>
@@ -60,8 +60,8 @@ LinkToAdminTools.propTypes = {
 };
 
 const LinkToAdminToolsWrapper = styled('div')`
-  margin-top: ${() => (isCordova() ? '100px' : null)};
-  padding-bottom: ${() => (isCordova() ? '800px' : null)};
+  margin-top: ${() => (isCordova() ? '100px' : '20px')};
+  padding-bottom: ${() => (isCordova() ? '100px' : '20px')};
 `;
 
 export default LinkToAdminTools;
