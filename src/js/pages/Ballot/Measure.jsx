@@ -17,6 +17,7 @@ import toTitleCase from '../../common/utils/toTitleCase';
 import MeasureStickyHeader from '../../components/Ballot/MeasureStickyHeader';
 import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import EndorsementCard from '../../components/Widgets/EndorsementCard';
+import LinkToAdminTools from '../../common/components/Widgets/LinkToAdminTools';
 import SearchOnGoogle from '../../common/components/Widgets/SearchOnGoogle';
 import SnackNotifier from '../../common/components/Widgets/SnackNotifier';
 import ViewOnBallotpedia from '../../common/components/Widgets/ViewOnBallotpedia';
@@ -30,7 +31,6 @@ import { cordovaBallotFilterTopMargin } from '../../utils/cordovaOffsets';
 
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
 const MeasureItem = React.lazy(() => import(/* webpackChunkName: 'MeasureItem' */ '../../components/Ballot/MeasureItem'));
-const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 const PositionList = React.lazy(() => import(/* webpackChunkName: 'PositionList' */ '../../components/Ballot/PositionList'));
 const ShareButtonDesktopTablet = React.lazy(() => import(/* webpackChunkName: 'ShareButtonDesktopTablet' */ '../../components/Share/ShareButtonDesktopTablet'));
 
@@ -296,8 +296,6 @@ class Measure extends Component {
     const measureName = toTitleCase(ballotItemDisplayName);
     const titleText = `${measureName} - WeVote`;
     const descriptionText = `Information about ${measureName}`;
-    const voter = VoterStore.getVoter();
-    const { is_admin: isAdmin, is_verified_volunteer: isVerifiedVolunteer } = voter;
     const measureAdminEditUrl = `${webAppConfig.WE_VOTE_SERVER_ROOT_URL}m/${measureId}/edit/?google_civic_election_id=${VoterStore.electionId()}&state_code=`;
 
     return (
@@ -371,27 +369,18 @@ class Measure extends Component {
               text={`Are there endorsements for ${measureName} that you expected to see?`}
             />
             <br />
-            {/* Show links to this candidate in the admin tools */}
-            { (isAdmin || isVerifiedVolunteer) && (
-              <span className="u-wrap-links d-print-none">
-                Admin only:
-                <Suspense fallback={<></>}>
-                  <OpenExternalWebSite
-                    linkIdAttribute="measureAdminEdit"
-                    url={measureAdminEditUrl}
-                    target="_blank"
-                    className="open-web-site open-web-site__no-right-padding"
-                    body={(
-                      <span>
-                        edit
-                        {' '}
-                        {measureName}
-                      </span>
-                    )}
-                  />
-                </Suspense>
-              </span>
-            )}
+            {/* Show links to this measure in the admin tools */}
+            <LinkToAdminTools
+              adminToolsUrl={measureAdminEditUrl}
+              linkId="measureAdminEdit"
+              linkTextNode={(
+                <span>
+                  edit
+                  {' '}
+                  {measureName}
+                </span>
+              )}
+            />
           </PageContentContainer>
         </Suspense>
       </>

@@ -17,6 +17,7 @@ import toTitleCase from '../../common/utils/toTitleCase';
 import OrganizationVoterGuideCandidateItem from '../../components/VoterGuide/OrganizationVoterGuideCandidateItem';
 import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import EndorsementCard from '../../components/Widgets/EndorsementCard';
+import LinkToAdminTools from '../../common/components/Widgets/LinkToAdminTools';
 import SnackNotifier from '../../common/components/Widgets/SnackNotifier';
 import ThisIsMeAction from '../../components/Widgets/ThisIsMeAction';
 import webAppConfig from '../../config';
@@ -25,7 +26,6 @@ import CandidateStore from '../../stores/CandidateStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 
-const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 const PositionList = React.lazy(() => import(/* webpackChunkName: 'PositionList' */ '../../components/Ballot/PositionList'));
 const ViewUpcomingBallotButton = React.lazy(() => import(/* webpackChunkName: 'ViewUpcomingBallotButton' */ '../../components/Ready/ViewUpcomingBallotButton'));
 
@@ -114,7 +114,7 @@ class OrganizationVoterGuideCandidate extends Component {
   onVoterGuideStoreChange () {
     // console.log('Candidate onVoterGuideStoreChange');
     const { candidateWeVoteId } = this.state;
-    // When the voterGuidesToFollowForLatestBallotItem changes, trigger an update of the candidate so we can get an updated position_list
+    // When the voterGuidesToFollowForLatestBallotItem changes, trigger an update of the candidate, so we can get an updated position_list
     // CandidateActions.candidateRetrieve(candidateWeVoteId);
     CandidateActions.positionListForBallotItemPublic(candidateWeVoteId);
     CandidateActions.positionListForBallotItemFromFriends(candidateWeVoteId);
@@ -153,7 +153,6 @@ class OrganizationVoterGuideCandidate extends Component {
     const candidateName = toTitleCase(candidate.ballot_item_display_name);
     const titleText = `${candidateName} - WeVote`;
     const descriptionText = `Information about ${candidateName}, candidate for ${candidate.contest_office_name}`;
-    const voter = VoterStore.getVoter();
     const candidateAdminEditUrl = `${webAppConfig.WE_VOTE_SERVER_ROOT_URL}c/${candidate.id}/edit/?google_civic_election_id=${VoterStore.electionId()}&state_code=`;
 
     return (
@@ -235,26 +234,17 @@ class OrganizationVoterGuideCandidate extends Component {
         </EndorsementCardWrapper>
         <br />
         {/* Show links to this candidate in the admin tools */}
-        { (voter.is_admin || voter.is_verified_volunteer) && (
-          <span className="u-wrap-links d-print-none">
-            Admin only:
-            <Suspense fallback={<></>}>
-              <OpenExternalWebSite
-                linkIdAttribute="candidateAdminEdit"
-                url={candidateAdminEditUrl}
-                target="_blank"
-                className="open-web-site open-web-site__no-right-padding"
-                body={(
-                  <span>
-                    edit
-                    {' '}
-                    {candidateName}
-                  </span>
-                )}
-              />
-            </Suspense>
-          </span>
-        )}
+        <LinkToAdminTools
+          adminToolsUrl={candidateAdminEditUrl}
+          linkId="candidateAdminEdit"
+          linkTextNode={(
+            <span>
+              edit
+              {' '}
+              {candidateName}
+            </span>
+          )}
+        />
       </PageContentContainer>
     );
   }
