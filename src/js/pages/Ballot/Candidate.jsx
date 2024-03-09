@@ -19,6 +19,7 @@ import { renderLog } from '../../common/utils/logging';
 import { convertToInteger } from '../../common/utils/textFormat';
 import toTitleCase from '../../common/utils/toTitleCase';
 import CandidateStickyHeader from '../../components/Ballot/CandidateStickyHeader';
+import LinkToAdminTools from '../../common/components/Widgets/LinkToAdminTools';
 import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import SearchOnGoogle from '../../common/components/Widgets/SearchOnGoogle';
 import SnackNotifier from '../../common/components/Widgets/SnackNotifier';
@@ -33,7 +34,6 @@ import VoterStore from '../../stores/VoterStore';
 const CampaignSupportThermometer = React.lazy(() => import(/* webpackChunkName: 'CampaignSupportThermometer' */ '../../common/components/CampaignSupport/CampaignSupportThermometer'));
 const CandidateItem = React.lazy(() => import(/* webpackChunkName: 'CandidateItem' */ '../../components/Ballot/CandidateItem'));
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
-const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 const PositionList = React.lazy(() => import(/* webpackChunkName: 'PositionList' */ '../../components/Ballot/PositionList'));
 const ShareButtonDesktopTablet = React.lazy(() => import(/* webpackChunkName: 'ShareButtonDesktopTablet' */ '../../components/Share/ShareButtonDesktopTablet'));
 const ViewUpcomingBallotButton = React.lazy(() => import(/* webpackChunkName: 'ViewUpcomingBallotButton' */ '../../components/Ready/ViewUpcomingBallotButton'));
@@ -252,7 +252,7 @@ class Candidate extends Component {
 
   onVoterGuideStoreChange () {
     // console.log('Candidate onVoterGuideStoreChange');
-    // Trigger an update of the candidate so we can get an updated position_list
+    // Trigger an update of the candidate, so we can get an updated position_list
     // CandidateActions.candidateRetrieve(this.state.candidateWeVoteId);
     // CandidateActions.positionListForBallotItemPublic(this.state.candidateWeVoteId);
   }
@@ -315,7 +315,6 @@ class Candidate extends Component {
     const candidateName = toTitleCase(candidate.ballot_item_display_name);
     const titleText = `${candidateName} - WeVote`;
     const descriptionText = `Information about ${candidateName}, candidate for ${candidate.contest_office_name}`;
-    const voter = VoterStore.getVoter();
     const candidateAdminEditUrl = `${webAppConfig.WE_VOTE_SERVER_ROOT_URL}c/${candidate.id}/edit/?google_civic_election_id=${VoterStore.electionId()}&state_code=`;
 
     // TODO When we remove expandIssuesByDefault from CandidateItem, the page is pushed very wide. This needs to be fixed.
@@ -419,26 +418,17 @@ class Candidate extends Component {
           */}
           <br />
           {/* Show links to this candidate in the admin tools */}
-          { (voter.is_admin || voter.is_verified_volunteer) && (
-            <span className="u-wrap-links d-print-none">
-              Admin only:
-              <Suspense fallback={<></>}>
-                <OpenExternalWebSite
-                  linkIdAttribute="candidateAdminEdit"
-                  url={candidateAdminEditUrl}
-                  target="_blank"
-                  className="open-web-site open-web-site__no-right-padding"
-                  body={(
-                    <span>
-                      edit
-                      {' '}
-                      {candidateName}
-                    </span>
-                  )}
-                />
-              </Suspense>
-            </span>
-          )}
+          <LinkToAdminTools
+            adminToolsUrl={candidateAdminEditUrl}
+            linkId="candidateAdminEdit"
+            linkTextNode={(
+              <span>
+                edit
+                {' '}
+                {candidateName}
+              </span>
+            )}
+          />
         </PageWrapper>
       </PageContentContainer>
     );

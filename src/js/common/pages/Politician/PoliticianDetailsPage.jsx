@@ -19,6 +19,7 @@ import { EditIndicator, ElectionInPast, IndicatorButtonWrapper, IndicatorRow } f
 import { CandidateCampaignListDesktop, CandidateCampaignListMobile, CandidateCampaignWrapper, OfficeHeldNameDesktop, OfficeHeldNameMobile, PoliticianImageDesktop, PoliticianImageDesktopPlaceholder, PoliticianImageMobile, PoliticianImageMobilePlaceholder, PoliticianNameDesktop, PoliticianNameMobile, PoliticianNameOuterWrapperDesktop } from '../../components/Style/PoliticianDetailsStyles';
 import { PageWrapper } from '../../components/Style/stepDisplayStyles';
 import DelayedLoad from '../../components/Widgets/DelayedLoad';
+import LinkToAdminTools from '../../components/Widgets/LinkToAdminTools';
 import OfficeHeldNameText from '../../components/Widgets/OfficeHeldNameText';
 import SearchOnGoogle from '../../components/Widgets/SearchOnGoogle';
 import ViewOnBallotpedia from '../../components/Widgets/ViewOnBallotpedia';
@@ -491,6 +492,7 @@ class PoliticianDetailsPage extends Component {
       voterCanEditThisPolitician, voterSupportsThisPolitician,
       wikipediaUrl, // youtubeUrl,
     } = this.state;
+    const campaignAdminEditUrl = `${webAppConfig.WE_VOTE_SERVER_ROOT_URL}campaign/${linkedCampaignXWeVoteId}/summary`;
 
     if (politicianDataNotFound) {
       return (
@@ -985,6 +987,12 @@ class PoliticianDetailsPage extends Component {
                 </CampaignDescriptionDesktopWrapper>
                 {positionListTeaserHtml}
                 {commentListTeaserHtml}
+                {/* Show links to this campaign in the admin tools */}
+                <LinkToAdminTools
+                  adminToolsUrl={campaignAdminEditUrl}
+                  linkId="editCampaign"
+                  linkTextNode={<span>edit campaign</span>}
+                />
               </ColumnTwoThirds>
               <ColumnOneThird>
                 <Suspense fallback={<span>&nbsp;</span>}>
