@@ -142,7 +142,7 @@ class VoterGuidePositionList extends Component {
     this.setState({
       positionList: positionListWithFriendData,
       listOfYearsWhenPositionExists: this.getListOfYearsWhenPositionExists(positionList),
-      numberOfPositionItemsToDisplay: this.props.startingNumberOfPositionsToDisplay || STARTING_NUMBER_OF_POSITIONS_TO_DISPLAY,
+      // numberOfPositionItemsToDisplay: this.props.startingNumberOfPositionsToDisplay || STARTING_NUMBER_OF_POSITIONS_TO_DISPLAY, // commented to fix the WV-99 issue - 03/11/2024
     }, () => this.updateActiveFilters(setDefaultListMode));
   }
 
