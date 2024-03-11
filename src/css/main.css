@@ -1516,14 +1516,14 @@ input[type="checkbox"],input[type="radio"] {
 input[type="number"]::-webkit-inner-spin-button,input[type="number"]::-webkit-outer-spin-button {
   height:auto
 }
-
-input:focus {
+/* both of these commented lines cause the border issue around the input fields */
+/* input:focus {
   outline: var(--primary) solid 2px !important;
-}
+} */
 
-input:focus-visible {
+/* input:focus-visible {
   outline: var(--primary) solid 2px !important;
-}
+} */
 
 fieldset {
   border:1px solid #c0c0c0;
