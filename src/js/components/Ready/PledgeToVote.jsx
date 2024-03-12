@@ -216,7 +216,7 @@ const CardTitle = styled('h2')`
   display: inline-block;
   font-size: 26px;
   color: black !important;
-  font-weight: 800;
+  font-weight: 600;
   margin-top: 0;
   margin-bottom: 0;
 `;

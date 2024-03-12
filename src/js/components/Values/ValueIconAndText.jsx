@@ -266,7 +266,7 @@ const ValueIconAndTextSpan = styled('span', {
   align-items: start;
   display: flex;
   flex: none;
-  ${issueFollowedByVoter ? 'font-weight: 800;' : ''}
+  ${issueFollowedByVoter ? 'font-weight: 600;' : ''}
   padding: 4px;
   position: relative;
   width: fit-content;

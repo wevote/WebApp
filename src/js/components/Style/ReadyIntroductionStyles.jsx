@@ -30,7 +30,7 @@ export const IntroHeader = styled('div', {
   padding-top: 0;
   padding-bottom: 0;
   ${titleLarge ? 'font-size: 26px;' : 'font-size: 18px;'}
-  font-weight: 800;
+  font-weight: 600;
   margin: 0 !important;
   ${titleCentered ? 'text-align: center;' : ''}
   ${theme.breakpoints.down('xs')} {
