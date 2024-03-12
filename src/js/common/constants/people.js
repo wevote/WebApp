@@ -426,11 +426,12 @@ export const teamOfVolunteers = [
     title: 'Queens, NY',
     linkedin: 'https://www.linkedin.com/in/antoinettelee/',
   },
-  {
-    name: 'Stanislav Livadnyi',
-    title: 'Brooklyn, NY',
-    linkedin: '',
-  },
+  // 2024-03-12 Commented out upon request
+  // {
+  //   name: 'Stanislav Livadnyi',
+  //   title: 'Brooklyn, NY',
+  //   linkedin: '',
+  // },
   {
     name: 'Andrea Ortu',
     title: 'New York, NY',
