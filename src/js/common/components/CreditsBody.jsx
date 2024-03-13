@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { organizationalDonors, teamOfVolunteers } from '../constants/people';
 import { isWebApp } from '../utils/isCordovaOrWebApp';
 import { renderLog } from '../utils/logging';
+import AppObservableStore from '../stores/AppObservableStore';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ './Widgets/OpenExternalWebSite'));
 
@@ -14,6 +15,7 @@ class Credits extends Component {
   static getProps () {
     return {};
   }
+
 
   render () {
     renderLog('CreditsBody');  // Set LOG_RENDER_EVENTS to log all renders
@@ -62,11 +64,13 @@ class Credits extends Component {
               return (
                 <CreditsCompany key={item.alt}>
                   { item.link ? (
-                    <OpenExternalWebSite
-                      url={item.link}
-                      target="_blank"
-                      body={oneCompany}
-                    />
+                    <Suspense fallback={<></>}>
+                      <OpenExternalWebSite
+                        url={item.link}
+                        target="_blank"
+                        body={oneCompany}
+                      />
+                    </Suspense>
                   ) : (
                     oneCompany
                   )}
@@ -119,11 +123,13 @@ class Credits extends Component {
               <div key={item.name}>
                 <li>
                   {item.linkedin ? (
-                    <OpenExternalWebSite
-                    url={item.linkedin}
-                    target="_blank"
-                    body={item.name}
-                    />
+                    <Suspense fallback={<></>}>
+                      <OpenExternalWebSite
+                        url={item.linkedin}
+                        target="_blank"
+                        body={item.name}
+                      />
+                    </Suspense>
                   ) : (
                     <span>{item.name}</span>
                   )}
@@ -145,11 +151,13 @@ class Credits extends Component {
           {' '}
           (Our apologies if you should be on this list and are missing. Please contact
           {' '}
-          <OpenExternalWebSite
-            url="https://wevote.us/more/faq"
-            target="_blank"
-            body="support"
-          />
+          <Suspense fallback={<></>}>
+            <OpenExternalWebSite
+              url={`${AppObservableStore.getWeVoteRootURL()}/more/faq`}
+              target="_blank"
+              body="support"
+            />
+          </Suspense>
           {' '}
           with corrections.)
         </CreditsDescriptionContainer>

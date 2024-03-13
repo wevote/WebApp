@@ -16,7 +16,7 @@ export default class OpenExternalWebSite extends Component {
     if (!stringContains('http', externalUrl)) {
       externalUrl = `http://${externalUrl}`;
     }
-    if (isAndroid) {
+    if (isAndroid()) {
       // Rendered message:
       // "Webpage not available"
       // "The webpage at http://www.sos.ca.gov/elections/ballot-measures/qualified-ballot-measures could not be loaded because: net::ERR_CLEARTEXT_NOT_PERMITTED"
