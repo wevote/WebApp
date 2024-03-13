@@ -172,7 +172,7 @@ class Donate extends Component {
         target="_blank"
         body={(
           <span>
-            Our budgets are small&nbsp;
+            Our budgets are small,
             <Launch
               style={{
                 height: 14,
@@ -184,7 +184,7 @@ class Donate extends Component {
           </span>
         )}
       />
-      , so every
+      so every
       {' '}
       {isC4Donation ? '' : 'tax-deductible '}
       donation helps us reach more voters.
