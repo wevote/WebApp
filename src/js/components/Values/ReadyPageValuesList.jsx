@@ -167,6 +167,10 @@ const PopularTopicsDescription = styled('p')(({ theme }) => (`
   ${theme.breakpoints.up('sm')} {
     margin-bottom: 0;
   }
+
+  strong {
+    font-weight: 500;
+  }
 `));
 
 const Row = styled('div')(({ theme }) => (`

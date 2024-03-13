@@ -20,6 +20,7 @@ class OrganizationList extends Component {
     this.onScroll = this.onScroll.bind(this);
   }
 
+
   componentDidMount () {
     this.onOrganizationListChange();
     window.addEventListener('scroll', this.onScroll);
@@ -118,7 +119,7 @@ class OrganizationList extends Component {
 
     let numberOfItemsDisplayed = 0;
 
-    if (!(organizationListToDisplayCount)) {
+    if ((!this.props.incomingOrganizationList || this.props.incomingOrganizationList.length === 0)) {
       return (
         <NoSearchResultWrapper>
           <NoSearchResult

@@ -283,7 +283,7 @@ class OneValue extends Component {
           </SearchBarWrapper>
           <Suspense fallback={<></>}>
             <OrganizationList
-              incomingOrganizationList={showAllEndorsers ? organizationsForValue : []}
+              incomingOrganizationList={showEndorsersForThisElection ? voterGuidesForValue : []}
               increaseNumberOfItemsOnScroll
               organizationListIdentifier={showAllEndorsers ? organizationListIdentifier : 'noOrganizations'}
             />
