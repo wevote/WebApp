@@ -59,7 +59,7 @@ export const ViewBallotButtonWrapper = styled('div')`
 
 export const ReadyTitle = styled('h2')(({ theme }) => (`
   font-size: 26px;
-  font-weight: 800;
+  font-weight: 600;
   margin: 0 0 12px;
   ${theme.breakpoints.down('sm')} {
     font-size: 14px;
