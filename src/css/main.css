@@ -1498,14 +1498,14 @@ button::-moz-focus-inner,input::-moz-focus-inner {
 }
 
 input {
-  border: none;
-  height: 38px;
+  /* border: none;
+  height: 38px; */
   line-height:normal;
-  border:1px solid #ced4da;
+  /* border:1px solid #ced4da;
   border-radius: 0.25rem;
   width: 100%;
   padding-left: 12px;
-  padding-right: 10px;
+  padding-right: 10px; */
 }
 
 input[type="checkbox"],input[type="radio"] {
