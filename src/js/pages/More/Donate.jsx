@@ -221,6 +221,7 @@ class Donate extends Component {
           <Wrapper>
             <Helmet>
               <title>Donate - WeVote</title>
+              {/* eslint-disable-next-line react/no-unknown-property */}
               <script src="https://donorbox.org/widget.js" paypalExpress="true" defer />
             </Helmet>
             <ContentTitle>
