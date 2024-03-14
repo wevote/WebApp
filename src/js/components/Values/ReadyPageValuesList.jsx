@@ -117,9 +117,9 @@ export default class ReadyPageValuesList extends Component {
           <PopularTopicsDescription>
             Follow topics
             {' '}
-            <strong>
+            <TextBold>
               to see endorsements
-            </strong>
+            </TextBold>
             {' '}
             for candidates from people who share your values.
           </PopularTopicsDescription>
@@ -167,11 +167,11 @@ const PopularTopicsDescription = styled('p')(({ theme }) => (`
   ${theme.breakpoints.up('sm')} {
     margin-bottom: 0;
   }
-
-  strong {
-    font-weight: 500;
-  }
 `));
+
+const TextBold = styled('strong')`
+  font-weight: 500;
+`;
 
 const Row = styled('div')(({ theme }) => (`
   ${theme.breakpoints.up('sm')} {
