@@ -5,7 +5,7 @@ import { renderLog } from '../../utils/logging';
 
 // 2021-02-23 NOTE FROM DALE: I'd like to try to upgrade ReadMore to use react-truncate-markup
 // This newer package supports truncating JSX, and isn't limited to text only:
-// import TruncateMarkup from 'react-truncate-markup';
+import TruncateMarkup from 'react-truncate-markup';
 
 export default class ReadMore extends Component {
   constructor (...args) {
@@ -111,47 +111,72 @@ export default class ReadMore extends Component {
     if (notEnoughTextToTruncate) {
       return <span className={this.props.className}>{expandedTextToDisplay}</span>;
     }
-    if (this.state.readMore) {
+
+    const readMoreEllipsis = (
+      <span>
+        ...{' '}
+        <a onClick={ this.toggleLines} className="u-link-color u-no-break">
+          {'(read more)'}
+        </a>
+      </span>
+    );
+ 
+    if (this.state.readMore){
       return (
-        <span>
-          <TextTruncate
-            containerClassName={this.props.className}
-            element="span"
-            line={numberOfLines}
-            truncateText="..."
-            text={textToDisplay}
-            textTruncateChild={(
-              <a // eslint-disable-line
-                className="u-link-color u-no-break"
-                // tabIndex="0"
-                href="#"
-                id="readMore"
-                onClick={this.toggleLines}
-                onKeyDown={this.onKeyDown.bind(this)}
-              >
-                {linkText}
-              </a>
-            )}
-          />
-        </span>
+       
+          <span className="text">
+            <TruncateMarkup lines={numberOfLines} ellipsis={readMoreEllipsis}>
+              <span>{textToDisplay}</span>
+            </TruncateMarkup>
+          </span>
+    
+
+        // <span>
+        //   <TextTruncate
+        //     containerClassName={this.props.className}
+        //     element="span"
+        //     line={numberOfLines}
+        //     truncateText="..."
+        //     text={textToDisplay}
+        //     textTruncateChild={(
+        //       <a // eslint-disable-line
+        //         className="u-link-color u-no-break"
+        //         // tabIndex="0"
+        //         href="#"
+        //         id="readMore"
+        //         onClick={this.toggleLines}
+        //         onKeyDown={this.onKeyDown.bind(this)}
+        //       >
+        //         {linkText}
+        //       </a>
+        //     )}
+        //   />
+        // </span>
       );
     } else {
       return (
-        <span className={this.props.className}>
-          {' '}
+        <span> 
           {expandedTextToDisplay}
-          &nbsp;&nbsp;
-          <a // eslint-disable-line
-            className="u-link-color u-no-break"
-            // tabIndex="0"
-            href="#"
-            id="showLess"
-            onClick={this.toggleLines}
-            onKeyDown={this.onKeyDown.bind(this)}
-          >
-            {collapseText}
-          </a>
+            <a onClick={this.toggleLines}  className="u-link-color u-no-break">
+              {'(show less)'}
+            </a>
         </span>
+
+        // <span className={this.props.className}>
+        //   {' '}
+        //   {expandedTextToDisplay}
+        //   &nbsp;&nbsp;
+        //   <a // eslint-disable-line
+        //     className="u-link-color u-no-break"
+        //     // tabIndex="0"
+        //     href="#"
+        //     id="showLess"
+        //     onClick={this.toggleLines}
+        //     onKeyDown={this.onKeyDown.bind(this)}
+        //   >
+        //     {collapseText}
+        //   </a>
+        // </span>
       );
     }
   } // end render
