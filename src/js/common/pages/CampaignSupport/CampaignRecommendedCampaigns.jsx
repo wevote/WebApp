@@ -180,7 +180,7 @@ class CampaignRecommendedCampaigns extends Component {
       // Leave this component and go to news page if not signed in
       const { campaignSEOFriendlyPath, campaignXWeVoteId } = this.state;
       if (campaignSEOFriendlyPath || campaignXWeVoteId) {
-        // historyPush(`${this.getCampaignXBasePath()}/updates`);
+        // historyPush(`${this.getCampaignXBasePath()}updates`);
         historyPush(`${this.getCampaignXBasePath()}`);
       } else {
         console.log('CampaignRecommendedCampaigns onVoterStoreChange cannot redirect. Missing campaignSEOFriendlyPath or campaignXWeVoteId');
@@ -192,9 +192,9 @@ class CampaignRecommendedCampaigns extends Component {
     const { campaignSEOFriendlyPath, campaignXWeVoteId } = this.state;
     let campaignBasePath;
     if (campaignSEOFriendlyPath) {
-      campaignBasePath = `/c/${campaignSEOFriendlyPath}`;
+      campaignBasePath = `/c/${campaignSEOFriendlyPath}/`;
     } else {
-      campaignBasePath = `/id/${campaignXWeVoteId}`;
+      campaignBasePath = `/id/${campaignXWeVoteId}/`;
     }
     return campaignBasePath;
   }
@@ -203,9 +203,9 @@ class CampaignRecommendedCampaigns extends Component {
     const { politicianSEOFriendlyPath, linkedPoliticianWeVoteId } = this.state;
     let politicianBasePath;
     if (politicianSEOFriendlyPath) {
-      politicianBasePath = `/${politicianSEOFriendlyPath}/-`;
+      politicianBasePath = `/${politicianSEOFriendlyPath}/-/`;
     } else if (linkedPoliticianWeVoteId) {
-      politicianBasePath = `/${linkedPoliticianWeVoteId}/p`;
+      politicianBasePath = `/${linkedPoliticianWeVoteId}/p/`;
     } else {
       // console.log('CampaignRecommendedCampaigns getPoliticianBasePath, failed to get politicianBasePath');
       politicianBasePath = this.getCampaignXBasePath();
@@ -218,7 +218,7 @@ class CampaignRecommendedCampaigns extends Component {
   }
 
   goToUpdatesPage = () => {
-    historyPush(`${this.getCampaignXBasePath()}/updates`);
+    historyPush(`${this.getCampaignXBasePath()}updates`);
   }
 
   oneClickSupportActionComplete = (campaignXWeVoteId) => {

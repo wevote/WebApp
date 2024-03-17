@@ -16,9 +16,9 @@ class CampaignChipInLink extends Component {
     const { campaignSEOFriendlyPath, campaignXWeVoteId } = this.props;
     let campaignBasePath;
     if (campaignSEOFriendlyPath) {
-      campaignBasePath = `/c/${campaignSEOFriendlyPath}`;
+      campaignBasePath = `/c/${campaignSEOFriendlyPath}/`;
     } else {
-      campaignBasePath = `/id/${campaignXWeVoteId}`;
+      campaignBasePath = `/id/${campaignXWeVoteId}/`;
     }
     return campaignBasePath;
   }
@@ -32,7 +32,7 @@ class CampaignChipInLink extends Component {
           <Link
             className="u-cursor--pointer u-link-color u-link-underline-on-hover"
             id={`campaignChipInLink-${externalUniqueId}`}
-            to={`${this.getCampaignXBasePath()}/pay-to-promote`}
+            to={`${this.getCampaignXBasePath()}pay-to-promote`}
           >
             Chip In to spread the word
           </Link>

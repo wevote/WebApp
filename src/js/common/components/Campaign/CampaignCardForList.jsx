@@ -141,7 +141,7 @@ class CampaignCardForList extends Component {
     if (inDraftMode) {
       historyPush('/start-a-campaign-preview');
     } else {
-      historyPush(`${this.getCampaignXBasePath()}/edit`);
+      historyPush(`${this.getCampaignXBasePath()}edit`);
     }
     return null;
   }
@@ -152,7 +152,7 @@ class CampaignCardForList extends Component {
     if (!campaignX) {
       return null;
     }
-    historyPush(`${this.getCampaignXBasePath()}/share-campaign`);
+    historyPush(`${this.getCampaignXBasePath()}share-campaign`);
     return null;
   }
 
@@ -162,7 +162,7 @@ class CampaignCardForList extends Component {
     if (!campaignX) {
       return null;
     }
-    historyPush(`${this.getCampaignXBasePath()}/share-campaign`);
+    historyPush(`${this.getCampaignXBasePath()}share-campaign`);
     return null;
   }
 
@@ -178,9 +178,9 @@ class CampaignCardForList extends Component {
     } = campaignX;
     let campaignBasePath;
     if (campaignSEOFriendlyPath) {
-      campaignBasePath = `/c/${campaignSEOFriendlyPath}`;
+      campaignBasePath = `/c/${campaignSEOFriendlyPath}/`;
     } else {
-      campaignBasePath = `/id/${campaignXWeVoteId}`;
+      campaignBasePath = `/id/${campaignXWeVoteId}/`;
     }
     return campaignBasePath;
   }
@@ -217,7 +217,7 @@ class CampaignCardForList extends Component {
     // console.log(payToPromoteStepCompleted, payToPromoteStepTurnedOn, sharingStepCompleted, step2Completed);
     const keepHelpingDestinationString = keepHelpingDestination(step2Completed, payToPromoteStepCompleted, payToPromoteStepTurnedOn, sharingStepCompleted);
     // console.log('functionToUseToKeepHelping keepHelpingDestinationString:', keepHelpingDestinationString);
-    historyPush(`${this.getCampaignXBasePath()}/${keepHelpingDestinationString}`);
+    historyPush(`${this.getCampaignXBasePath()}${keepHelpingDestinationString}`);
   }
 
   functionToUseWhenProfileComplete () {

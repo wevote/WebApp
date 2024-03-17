@@ -200,7 +200,7 @@ class SuperSharingComposeEmailMessage extends Component {
     const { campaignXNewsItemWeVoteId } = this.state;
     const mostRecentlySavedCampaignXNewsItemWeVoteId = CampaignNewsItemStore.getMostRecentlySavedCampaignXNewsItemWeVoteId();
     if (mostRecentlySavedCampaignXNewsItemWeVoteId && mostRecentlySavedCampaignXNewsItemWeVoteId !== campaignXNewsItemWeVoteId) {
-      historyPush(`${this.getCampaignXBasePath()}/u-preview/${mostRecentlySavedCampaignXNewsItemWeVoteId}`);
+      historyPush(`${this.getCampaignXBasePath()}u-preview/${mostRecentlySavedCampaignXNewsItemWeVoteId}`);
     }
   }
 
@@ -225,9 +225,9 @@ class SuperSharingComposeEmailMessage extends Component {
     const { campaignSEOFriendlyPath, campaignXWeVoteId } = this.state;
     let campaignBasePath;
     if (campaignSEOFriendlyPath) {
-      campaignBasePath = `/c/${campaignSEOFriendlyPath}`;
+      campaignBasePath = `/c/${campaignSEOFriendlyPath}/`;
     } else {
-      campaignBasePath = `/id/${campaignXWeVoteId}`;
+      campaignBasePath = `/id/${campaignXWeVoteId}/`;
     }
     return campaignBasePath;
   }
@@ -248,14 +248,14 @@ class SuperSharingComposeEmailMessage extends Component {
   goToNextStep = () => {
     const { campaignXNewsItemWeVoteId } = this.state;
     if (campaignXNewsItemWeVoteId) {
-      historyPush(`${this.getCampaignXBasePath()}/super-sharing-send-email/${campaignXNewsItemWeVoteId}`);
+      historyPush(`${this.getCampaignXBasePath()}super-sharing-send-email/${campaignXNewsItemWeVoteId}`);
     } else {
-      historyPush(`${this.getCampaignXBasePath()}/super-sharing-send-email`);
+      historyPush(`${this.getCampaignXBasePath()}super-sharing-send-email`);
     }
   }
 
   returnToOtherSharingOptions = () => {
-    historyPush(`${this.getCampaignXBasePath()}/share-campaign`);
+    historyPush(`${this.getCampaignXBasePath()}share-campaign`);
   }
 
   submitSkipForNow = () => {
@@ -288,7 +288,7 @@ class SuperSharingComposeEmailMessage extends Component {
         ShareActions.personalizedMessageQueuedToSave(undefined);
       });
     }
-    historyPush(`${this.getCampaignXBasePath()}/super-sharing-send-email`);
+    historyPush(`${this.getCampaignXBasePath()}super-sharing-send-email`);
   }
 
   render () {

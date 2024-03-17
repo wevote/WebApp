@@ -180,9 +180,9 @@ class CampaignSupportShare extends Component {
     const { campaignSEOFriendlyPath, campaignXWeVoteId } = this.state;
     let campaignBasePath;
     if (campaignSEOFriendlyPath) {
-      campaignBasePath = `/c/${campaignSEOFriendlyPath}`;
+      campaignBasePath = `/c/${campaignSEOFriendlyPath}/`;
     } else {
-      campaignBasePath = `/id/${campaignXWeVoteId}`;
+      campaignBasePath = `/id/${campaignXWeVoteId}/`;
     }
     // console.log('getCampaignXBasePath campaignBasePath: ', campaignBasePath);
     return campaignBasePath;
@@ -192,9 +192,9 @@ class CampaignSupportShare extends Component {
     const { politicianSEOFriendlyPath, linkedPoliticianWeVoteId } = this.state;
     let politicianBasePath;
     if (politicianSEOFriendlyPath) {
-      politicianBasePath = `/${politicianSEOFriendlyPath}/-`;
+      politicianBasePath = `/${politicianSEOFriendlyPath}/-/`;
     } else if (linkedPoliticianWeVoteId) {
-      politicianBasePath = `/${linkedPoliticianWeVoteId}/p`;
+      politicianBasePath = `/${linkedPoliticianWeVoteId}/p/`;
     } else {
       // console.log('CampaignRecommendedCampaigns getPoliticianBasePath, failed to get politicianBasePath');
       politicianBasePath = this.getCampaignXBasePath();
@@ -210,13 +210,13 @@ class CampaignSupportShare extends Component {
       // Since showing direct message choices is the final step,
       // link should take voter back to the campaign updates page or on to the  "recommended-campaigns"
       if (!futureFeaturesDisabled && recommendedCampaignXListHasBeenRetrieved && recommendedCampaignXListCount > 0) {
-        historyPush(`${this.getCampaignXBasePath()}/recommended-campaigns`);
+        historyPush(`${this.getCampaignXBasePath()}recommended-campaigns`);
       } else {
-        // historyPush(`${this.getCampaignXBasePath()}/updates`);
+        // historyPush(`${this.getCampaignXBasePath()}updates`);
         historyPush(`${this.getCampaignXBasePath()}`);
       }
     } else {
-      historyPush(`${this.getCampaignXBasePath()}/share-campaign-with-one-friend`);
+      historyPush(`${this.getCampaignXBasePath()}share-campaign-with-one-friend`);
     }
   }
 

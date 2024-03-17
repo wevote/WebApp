@@ -91,7 +91,7 @@ export default function CampaignTopNavigation (incomingVariables) {
   }
   // Overwrite detailsUrl if politicianWeVoteId is set
   if (politicianWeVoteId) {
-    detailsUrl = `/${politicianWeVoteId}/p`;
+    detailsUrl = `/${politicianWeVoteId}/p/`;
   }
 
   // console.log('CampaignTopNavigation, detailsUrl:', detailsUrl);

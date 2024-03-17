@@ -204,9 +204,9 @@ class CampaignDetailsPage extends Component {
     const { campaignSEOFriendlyPath, campaignXWeVoteId } = this.state;
     let campaignBasePath;
     if (campaignSEOFriendlyPath) {
-      campaignBasePath = `/c/${campaignSEOFriendlyPath}`;
+      campaignBasePath = `/c/${campaignSEOFriendlyPath}/`;
     } else {
-      campaignBasePath = `/id/${campaignXWeVoteId}`;
+      campaignBasePath = `/id/${campaignXWeVoteId}/`;
     }
     return campaignBasePath;
   }
@@ -223,7 +223,7 @@ class CampaignDetailsPage extends Component {
     const { finalElectionDateInPast, payToPromoteStepCompleted, payToPromoteStepTurnedOn, sharingStepCompleted, step2Completed } = this.state;
     // console.log('functionToUseToKeepHelping sharingStepCompleted:', sharingStepCompleted, ', payToPromoteStepCompleted:', payToPromoteStepCompleted, ', step2Completed:', step2Completed);
     const keepHelpingDestinationString = keepHelpingDestination(step2Completed, payToPromoteStepCompleted, payToPromoteStepTurnedOn, sharingStepCompleted, finalElectionDateInPast);
-    historyPush(`${this.getCampaignXBasePath()}/${keepHelpingDestinationString}`);
+    historyPush(`${this.getCampaignXBasePath()}${keepHelpingDestinationString}`);
   }
 
   functionToUseWhenProfileComplete = () => {
@@ -247,7 +247,7 @@ class CampaignDetailsPage extends Component {
   }
 
   onCampaignEditClick = () => {
-    historyPush(`${this.getCampaignXBasePath()}/edit`);
+    historyPush(`${this.getCampaignXBasePath()}edit`);
     return null;
   }
 
@@ -434,7 +434,7 @@ class CampaignDetailsPage extends Component {
                       </CampaignSubSectionTitle>
                       {!!(this.getCampaignXBasePath()) && (
                         <CampaignSubSectionSeeAll>
-                          <Link to={`${this.getCampaignXBasePath()}/updates`} className="u-link-color">
+                          <Link to={`${this.getCampaignXBasePath()}updates`} className="u-link-color">
                             See all
                           </Link>
                         </CampaignSubSectionSeeAll>
@@ -459,7 +459,7 @@ class CampaignDetailsPage extends Component {
                     </CampaignSubSectionTitle>
                     {!!(this.getCampaignXBasePath()) && (
                       <CampaignSubSectionSeeAll>
-                        <Link to={`${this.getCampaignXBasePath()}/comments`} className="u-link-color">
+                        <Link to={`${this.getCampaignXBasePath()}comments`} className="u-link-color">
                           See all
                         </Link>
                       </CampaignSubSectionSeeAll>
@@ -547,7 +547,7 @@ class CampaignDetailsPage extends Component {
                           </CampaignSubSectionTitle>
                           {!!(this.getCampaignXBasePath()) && (
                             <CampaignSubSectionSeeAll>
-                              <Link to={`${this.getCampaignXBasePath()}/updates`} className="u-link-color">
+                              <Link to={`${this.getCampaignXBasePath()}updates`} className="u-link-color">
                                 See all
                               </Link>
                             </CampaignSubSectionSeeAll>
@@ -572,7 +572,7 @@ class CampaignDetailsPage extends Component {
                         </CampaignSubSectionTitle>
                         {!!(this.getCampaignXBasePath()) && (
                           <CampaignSubSectionSeeAll>
-                            <Link to={`${this.getCampaignXBasePath()}/comments`} className="u-link-color">
+                            <Link to={`${this.getCampaignXBasePath()}comments`} className="u-link-color">
                               See all
                             </Link>
                           </CampaignSubSectionSeeAll>

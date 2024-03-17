@@ -1,7 +1,7 @@
 import { Tab } from '@mui/material';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom'; // useHistory
 
 
 /*
@@ -13,12 +13,8 @@ import { useHistory } from 'react-router-dom';
 */
 export default function TabWithPushHistory (props) {
   const { classes, id, label, to, value, change: handleTabChange } = props;
-  const history = useHistory();
 
   function handleClick () {
-    if (to) {
-      history.push(to);
-    }
     if (handleTabChange) {
       handleTabChange(value);
     }
@@ -26,7 +22,9 @@ export default function TabWithPushHistory (props) {
 
   // console.log(`TabWithPushHistory label:${label}`);
   return (
-    <Tab classes={classes} id={id} label={label} onClick={() => handleClick(to)} />
+    <Link to={to}>
+      <Tab classes={classes} id={id} label={label} onClick={() => handleClick(to)} />
+    </Link>
   );
 }
 TabWithPushHistory.propTypes = {
