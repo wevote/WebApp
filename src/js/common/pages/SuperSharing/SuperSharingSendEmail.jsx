@@ -207,9 +207,9 @@ class SuperSharingSendEmail extends Component {
     const { campaignSEOFriendlyPath, campaignXWeVoteId } = this.state;
     let campaignBasePath;
     if (campaignSEOFriendlyPath) {
-      campaignBasePath = `/c/${campaignSEOFriendlyPath}`;
+      campaignBasePath = `/c/${campaignSEOFriendlyPath}/`;
     } else {
-      campaignBasePath = `/id/${campaignXWeVoteId}`;
+      campaignBasePath = `/id/${campaignXWeVoteId}/`;
     }
 
     return campaignBasePath;
@@ -243,7 +243,7 @@ class SuperSharingSendEmail extends Component {
   }
 
   returnToOtherSharingOptions = () => {
-    historyPush(`${this.getCampaignXBasePath()}/share-campaign`);
+    historyPush(`${this.getCampaignXBasePath()}share-campaign`);
   }
 
   submitSendEmail = () => {
@@ -255,9 +255,9 @@ class SuperSharingSendEmail extends Component {
           ShareActions.superSharingSendEmail(superShareItemId);
         });
         if (!futureFeaturesDisabled) {
-          historyPush(`${this.getCampaignXBasePath()}/recommended-campaigns`);
+          historyPush(`${this.getCampaignXBasePath()}recommended-campaigns`);
         } else {
-          // historyPush(`${this.getCampaignXBasePath()}/updates`);
+          // historyPush(`${this.getCampaignXBasePath()}updates`);
           historyPush(`${this.getCampaignXBasePath()}`);
         }
       }

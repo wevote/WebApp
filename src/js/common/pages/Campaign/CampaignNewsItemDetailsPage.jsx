@@ -229,9 +229,9 @@ class CampaignNewsItemDetailsPage extends Component {
     const { campaignSEOFriendlyPath, campaignXWeVoteId } = this.state;
     let campaignBasePath;
     if (campaignSEOFriendlyPath) {
-      campaignBasePath = `/c/${campaignSEOFriendlyPath}`;
+      campaignBasePath = `/c/${campaignSEOFriendlyPath}/`;
     } else {
-      campaignBasePath = `/id/${campaignXWeVoteId}`;
+      campaignBasePath = `/id/${campaignXWeVoteId}/`;
     }
     return campaignBasePath;
   }
@@ -252,7 +252,7 @@ class CampaignNewsItemDetailsPage extends Component {
     // console.log('functionToUseToKeepHelping');
     const { payToPromoteStepCompleted, payToPromoteStepTurnedOn, sharingStepCompleted, step2Completed } = this.state;
     const keepHelpingDestinationString = keepHelpingDestination(step2Completed, payToPromoteStepCompleted, payToPromoteStepTurnedOn, sharingStepCompleted);
-    historyPush(`${this.getCampaignXBasePath()}/${keepHelpingDestinationString}`);
+    historyPush(`${this.getCampaignXBasePath()}${keepHelpingDestinationString}`);
   }
 
   functionToUseWhenProfileComplete = () => {
@@ -278,31 +278,31 @@ class CampaignNewsItemDetailsPage extends Component {
   continueToNextStep = () => {
     const { match: { params } } = this.props;
     const { campaignXNewsItemWeVoteId } = params;
-    historyPush(`${this.getCampaignXBasePath()}/send/${campaignXNewsItemWeVoteId}`);
+    historyPush(`${this.getCampaignXBasePath()}send/${campaignXNewsItemWeVoteId}`);
     return null;
   }
 
   onCampaignEditClick = () => {
-    historyPush(`${this.getCampaignXBasePath()}/edit`);
+    historyPush(`${this.getCampaignXBasePath()}edit`);
     return null;
   }
 
   onCampaignNewsItemEditClick = () => {
     const { match: { params } } = this.props;
     const { campaignXNewsItemWeVoteId } = params;
-    historyPush(`${this.getCampaignXBasePath()}/add-update/${campaignXNewsItemWeVoteId}`);
+    historyPush(`${this.getCampaignXBasePath()}add-update/${campaignXNewsItemWeVoteId}`);
     return null;
   }
 
   onCampaignNewsItemShareClick = () => {
     const { match: { params } } = this.props;
     const { campaignXNewsItemWeVoteId } = params;
-    historyPush(`${this.getCampaignXBasePath()}/share-it/${campaignXNewsItemWeVoteId}`);
+    historyPush(`${this.getCampaignXBasePath()}share-it/${campaignXNewsItemWeVoteId}`);
     return null;
   }
 
   onCampaignGetMinimumSupportersClick = () => {
-    historyPush(`${this.getCampaignXBasePath()}/share-campaign`);
+    historyPush(`${this.getCampaignXBasePath()}share-campaign`);
     return null;
   }
 
@@ -581,7 +581,7 @@ class CampaignNewsItemDetailsPage extends Component {
                       </CampaignSubSectionTitle>
                       {!!(this.getCampaignXBasePath()) && (
                         <CampaignSubSectionSeeAll>
-                          <Link to={`${this.getCampaignXBasePath()}/comments`} className="u-link-color">
+                          <Link to={`${this.getCampaignXBasePath()}comments`} className="u-link-color">
                             See all
                           </Link>
                         </CampaignSubSectionSeeAll>
@@ -693,7 +693,7 @@ class CampaignNewsItemDetailsPage extends Component {
                           </CampaignSubSectionTitle>
                           {!!(this.getCampaignXBasePath()) && (
                             <CampaignSubSectionSeeAll>
-                              <Link to={`${this.getCampaignXBasePath()}/comments`} className="u-link-color">
+                              <Link to={`${this.getCampaignXBasePath()}comments`} className="u-link-color">
                                 See all
                               </Link>
                             </CampaignSubSectionSeeAll>

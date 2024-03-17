@@ -164,9 +164,9 @@ class CampaignSupportEndorsement extends Component {
     const { campaignSEOFriendlyPath, campaignXWeVoteId } = this.state;
     let campaignBasePath;
     if (campaignSEOFriendlyPath) {
-      campaignBasePath = `/c/${campaignSEOFriendlyPath}`;
+      campaignBasePath = `/c/${campaignSEOFriendlyPath}/`;
     } else {
-      campaignBasePath = `/id/${campaignXWeVoteId}`;
+      campaignBasePath = `/id/${campaignXWeVoteId}/`;
     }
     return campaignBasePath;
   }
@@ -175,9 +175,9 @@ class CampaignSupportEndorsement extends Component {
     const { politicianSEOFriendlyPath, linkedPoliticianWeVoteId } = this.state;
     let politicianBasePath;
     if (politicianSEOFriendlyPath) {
-      politicianBasePath = `/${politicianSEOFriendlyPath}/-`;
+      politicianBasePath = `/${politicianSEOFriendlyPath}/-/`;
     } else if (linkedPoliticianWeVoteId) {
-      politicianBasePath = `/${linkedPoliticianWeVoteId}/p`;
+      politicianBasePath = `/${linkedPoliticianWeVoteId}/p/`;
     } else {
       // console.log('CampaignRecommendedCampaigns getPoliticianBasePath, failed to get politicianBasePath');
       politicianBasePath = this.getCampaignXBasePath();
@@ -188,9 +188,9 @@ class CampaignSupportEndorsement extends Component {
   goToNextStep = () => {
     const { payToPromoteStepTurnedOn } = this.state;
     if (payToPromoteStepTurnedOn) {
-      historyPush(`${this.getCampaignXBasePath()}/pay-to-promote`);
+      historyPush(`${this.getCampaignXBasePath()}pay-to-promote`);
     } else {
-      historyPush(`${this.getCampaignXBasePath()}/share-campaign`);
+      historyPush(`${this.getCampaignXBasePath()}share-campaign`);
     }
   }
 

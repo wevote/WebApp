@@ -207,7 +207,7 @@ class CampaignSupportPayToPromoteProcess extends Component {
   }
 
   goToIWillShare = () => {
-    const pathForNextStep = `${this.getCampaignXBasePath()}/share-campaign`;
+    const pathForNextStep = `${this.getCampaignXBasePath()}share-campaign`;
     historyPush(pathForNextStep);
   }
 
@@ -215,9 +215,9 @@ class CampaignSupportPayToPromoteProcess extends Component {
     const { campaignSEOFriendlyPath, campaignXWeVoteId } = this.state;
     let campaignBasePath;
     if (campaignSEOFriendlyPath) {
-      campaignBasePath = `/c/${campaignSEOFriendlyPath}`;
+      campaignBasePath = `/c/${campaignSEOFriendlyPath}/`;
     } else {
-      campaignBasePath = `/id/${campaignXWeVoteId}`;
+      campaignBasePath = `/id/${campaignXWeVoteId}/`;
     }
     return campaignBasePath;
   }

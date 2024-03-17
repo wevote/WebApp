@@ -127,7 +127,7 @@ class CampaignSupportSteps extends Component {
                   <StepCircle
                     className="u-cursor--pointer"
                     inverseColor={atStepNumber2}
-                    onClick={() => historyPush(`${campaignBasePath}/why-do-you-support`)}
+                    onClick={() => historyPush(`${campaignBasePath}why-do-you-support`)}
                   >
                     <StepNumber inverseColor={atStepNumber2}>
                       <Done classes={{ root: classes.doneIcon }} />
@@ -137,7 +137,7 @@ class CampaignSupportSteps extends Component {
                   <StepCircle
                     className="u-cursor--pointer"
                     inverseColor={atStepNumber2}
-                    onClick={() => historyPush(`${campaignBasePath}/why-do-you-support`)}
+                    onClick={() => historyPush(`${campaignBasePath}why-do-you-support`)}
                   >
                     <StepNumber inverseColor={atStepNumber2}>2</StepNumber>
                   </StepCircle>
@@ -149,7 +149,7 @@ class CampaignSupportSteps extends Component {
                     <StepCircle
                       className="u-cursor--pointer"
                       inverseColor={atPayToPromoteStep}
-                      onClick={() => historyPush(`${campaignBasePath}/pay-to-promote`)}
+                      onClick={() => historyPush(`${campaignBasePath}pay-to-promote`)}
                     >
                       <StepNumber inverseColor={atPayToPromoteStep}>
                         <Done classes={{ root: classes.doneIcon }} />
@@ -159,7 +159,7 @@ class CampaignSupportSteps extends Component {
                     <StepCircle
                       className="u-cursor--pointer"
                       inverseColor={atPayToPromoteStep}
-                      onClick={() => historyPush(`${campaignBasePath}/pay-to-promote`)}
+                      onClick={() => historyPush(`${campaignBasePath}pay-to-promote`)}
                     >
                       <StepNumber inverseColor={atPayToPromoteStep}>3</StepNumber>
                     </StepCircle>
@@ -171,7 +171,7 @@ class CampaignSupportSteps extends Component {
                   <StepCircle
                     className="u-cursor--pointer"
                     inverseColor={atSharingStep}
-                    onClick={() => historyPush(`${campaignBasePath}/share-campaign`)}
+                    onClick={() => historyPush(`${campaignBasePath}share-campaign`)}
                   >
                     <StepNumber inverseColor={atSharingStep}>
                       <Done classes={{ root: classes.doneIcon }} />
@@ -181,7 +181,7 @@ class CampaignSupportSteps extends Component {
                   <StepCircle
                     className="u-cursor--pointer"
                     inverseColor={atSharingStep}
-                    onClick={() => historyPush(`${campaignBasePath}/share-campaign`)}
+                    onClick={() => historyPush(`${campaignBasePath}share-campaign`)}
                   >
                     <StepNumber inverseColor={atSharingStep}>
                       {payToPromoteStepTurnedOn ? '4' : '3'}

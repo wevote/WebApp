@@ -31,18 +31,18 @@ class CampaignShareChunk extends Component {
     const { campaignSEOFriendlyPath, campaignXWeVoteId } = this.props;
     let campaignBasePath;
     if (campaignSEOFriendlyPath) {
-      campaignBasePath = `/c/${campaignSEOFriendlyPath}`;
+      campaignBasePath = `/c/${campaignSEOFriendlyPath}/`;
     } else {
-      campaignBasePath = `/id/${campaignXWeVoteId}`;
+      campaignBasePath = `/id/${campaignXWeVoteId}/`;
     }
     return campaignBasePath;
   }
 
   superSharingIntro = (sms = false) => {
     if (sms) {
-      historyPush(`${this.getCampaignXBasePath()}/super-sharing-campaign-sms`);
+      historyPush(`${this.getCampaignXBasePath()}super-sharing-campaign-sms`);
     } else {
-      historyPush(`${this.getCampaignXBasePath()}/super-sharing-campaign-email`);
+      historyPush(`${this.getCampaignXBasePath()}super-sharing-campaign-email`);
     }
   }
 
