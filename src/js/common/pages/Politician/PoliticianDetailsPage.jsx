@@ -157,7 +157,7 @@ class PoliticianDetailsPage extends Component {
       // console.log('componentDidUpdate prevPoliticianSEOFriendlyPath: ', prevPoliticianSEOFriendlyPath);
       const politicianWeVoteIdFromUrl = PoliticianStore.getPoliticianWeVoteIdFromPoliticianSEOFriendlyPath(politicianSEOFriendlyPathFromUrl);
       const politicianWeVoteIdFromPreviousUrl = PoliticianStore.getPoliticianWeVoteIdFromPoliticianSEOFriendlyPath(prevPoliticianSEOFriendlyPath);
-      const isSamePolitician = politicianWeVoteIdFromPreviousUrl && (politicianWeVoteIdFromUrl !== politicianWeVoteIdFromPreviousUrl);
+      const isSamePolitician = politicianWeVoteIdFromPreviousUrl && (politicianWeVoteIdFromUrl === politicianWeVoteIdFromPreviousUrl);
       // Only change politician if the we_vote_id is different
       if (isSamePolitician) {
         // console.log('isSamePolitician');
@@ -211,6 +211,8 @@ class PoliticianDetailsPage extends Component {
       }
       triggerFreshRetrieve = true;
       triggerSEOPathRedirect = true;
+    // } else {
+    //   console.log('PoliticianDetailsPage NO CHANGE');
     }
     // console.log('componentDidUpdate triggerSEOPathRedirect: ', triggerSEOPathRedirect, ', politicianSEOFriendlyPath: ', politicianSEOFriendlyPath);
     if (triggerSEOPathRedirect && politicianSEOFriendlyPath) {
