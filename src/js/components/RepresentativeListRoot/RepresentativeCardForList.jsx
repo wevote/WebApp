@@ -121,7 +121,7 @@ class RepresentativeCardForList extends Component {
     if (inDraftMode) {
       historyPush('/start-a-campaign-preview');
     } else {
-      historyPush(`${this.getCampaignXBasePath()}/edit`);
+      historyPush(`${this.getCampaignXBasePath()}edit`);
     }
     return null;
   }
@@ -132,7 +132,7 @@ class RepresentativeCardForList extends Component {
     if (!representative) {
       return null;
     }
-    historyPush(`${this.getCampaignXBasePath()}/share-campaign`);
+    historyPush(`${this.getCampaignXBasePath()}share-campaign`);
     return null;
   }
 
@@ -142,7 +142,7 @@ class RepresentativeCardForList extends Component {
     if (!representative) {
       return null;
     }
-    historyPush(`${this.getCampaignXBasePath()}/share-campaign`);
+    historyPush(`${this.getCampaignXBasePath()}share-campaign`);
     return null;
   }
 
@@ -163,7 +163,7 @@ class RepresentativeCardForList extends Component {
     //   campaignXBasePath = `/id/${campaignXWeVoteId}`;
     // }
     // return campaignXBasePath;
-    return `/id/${campaignXWeVoteId}`;
+    return `/id/${campaignXWeVoteId}/`;
   }
 
   getPoliticianBasePath () {
@@ -178,9 +178,9 @@ class RepresentativeCardForList extends Component {
     } = representative;
     let politicianBasePath;
     if (politicianSEOFriendlyPath) {
-      politicianBasePath = `/${politicianSEOFriendlyPath}/-`;
+      politicianBasePath = `/${politicianSEOFriendlyPath}/-/`;
     } else {
-      politicianBasePath = `/${politicianWeVoteId}/p`;
+      politicianBasePath = `/${politicianWeVoteId}/p/`;
     }
     return politicianBasePath;
   }
@@ -222,7 +222,7 @@ class RepresentativeCardForList extends Component {
     // console.log(payToPromoteStepCompleted, payToPromoteStepTurnedOn, sharingStepCompleted, step2Completed);
     const keepHelpingDestinationString = keepHelpingDestination(step2Completed, payToPromoteStepCompleted, payToPromoteStepTurnedOn, sharingStepCompleted);
     // console.log('functionToUseToKeepHelping keepHelpingDestinationString:', keepHelpingDestinationString);
-    historyPush(`${this.getCampaignXBasePath()}/${keepHelpingDestinationString}`);
+    historyPush(`${this.getCampaignXBasePath()}${keepHelpingDestinationString}`);
   }
 
   functionToUseWhenProfileComplete () {

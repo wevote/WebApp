@@ -134,7 +134,7 @@ class PoliticianDetailsPage extends Component {
     retrievePoliticianFromIdentifiersIfNeeded(politicianSEOFriendlyPathFromUrl, politicianWeVoteId);
     // console.log('componentDidMount triggerSEOPathRedirect: ', triggerSEOPathRedirect, ', politicianSEOFriendlyPathFromObject: ', politicianSEOFriendlyPathFromObject);
     if (triggerSEOPathRedirect && politicianSEOFriendlyPathFromObject) {
-      historyPush(`/${politicianSEOFriendlyPathFromObject}/-`, true);
+      historyPush(`/${politicianSEOFriendlyPathFromObject}/-/`, true);
     }
     window.scrollTo(0, 0);
   }
@@ -150,23 +150,23 @@ class PoliticianDetailsPage extends Component {
     let triggerSEOPathRedirect = false;
     const politician = PoliticianStore.getPoliticianBySEOFriendlyPath(politicianSEOFriendlyPathFromUrl);
     const politicianSEOFriendlyPathFromObject = politician.seo_friendly_path;
-    // console.log('componentDidUpdate politicianSEOFriendlyPathFromUrl: ', politicianSEOFriendlyPathFromUrl, ', politicianSEOFriendlyPathFromObject: ', politicianSEOFriendlyPathFromObject);
-    if (politicianSEOFriendlyPathFromObject && (politicianSEOFriendlyPathFromUrl !== politicianSEOFriendlyPathFromObject)) {
-      politicianSEOFriendlyPath = politicianSEOFriendlyPathFromObject;
-      triggerSEOPathRedirect = true;
-    } else if (politicianSEOFriendlyPathFromUrl && politicianSEOFriendlyPathFromUrl !== prevPoliticianSEOFriendlyPath) {
+    // console.log('componentDidUpdate politicianSEOFriendlyPathFromUrl: ', politicianSEOFriendlyPathFromUrl, ', politicianSEOFriendlyPathFromObject: ', politicianSEOFriendlyPathFromObject, ', prevPoliticianSEOFriendlyPath:', prevPoliticianSEOFriendlyPath);
+    // console.log('politicianWeVoteId: ', politicianWeVoteId, ', prevPoliticianWeVoteId: ', prevPoliticianWeVoteId);
+    if (politicianSEOFriendlyPathFromUrl && (politicianSEOFriendlyPathFromUrl !== prevPoliticianSEOFriendlyPath)) {
+      // console.log('politicianSEOFriendlyPathFromUrl CHANGE 1');
       // console.log('componentDidUpdate prevPoliticianSEOFriendlyPath: ', prevPoliticianSEOFriendlyPath);
       const politicianWeVoteIdFromUrl = PoliticianStore.getPoliticianWeVoteIdFromPoliticianSEOFriendlyPath(politicianSEOFriendlyPathFromUrl);
       const politicianWeVoteIdFromPreviousUrl = PoliticianStore.getPoliticianWeVoteIdFromPoliticianSEOFriendlyPath(prevPoliticianSEOFriendlyPath);
-      const isSamePolitician = politicianWeVoteIdFromPreviousUrl && (politicianWeVoteIdFromUrl !== politicianWeVoteIdFromPreviousUrl);
+      const isSamePolitician = politicianWeVoteIdFromPreviousUrl && (politicianWeVoteIdFromUrl === politicianWeVoteIdFromPreviousUrl);
       // Only change politician if the we_vote_id is different
       if (isSamePolitician) {
+        // console.log('isSamePolitician');
         // Don't change the politician if the we_vote_id is the same as the previous
         // but specify that we want to triggerSEOPathRedirect
         politicianSEOFriendlyPath = politician.seo_friendly_path;
         triggerSEOPathRedirect = true;
       } else {
-        this.clearPoliticianValues();
+        // console.log('NOT isSamePolitician');
         if (politician && politician.politician_we_vote_id) {
           this.setState({
             linkedCampaignXWeVoteId: politician.linked_campaignx_we_vote_id,
@@ -174,18 +174,27 @@ class PoliticianDetailsPage extends Component {
             politicianSEOFriendlyPathForDisplay: politicianSEOFriendlyPathFromUrl,
             politicianWeVoteId: politician.politician_we_vote_id,
             politicianWeVoteIdForDisplay: politician.politician_we_vote_id,
-          }, () => this.onfirstRetrievalOfPoliticianWeVoteId());
+          });  // , () => this.onfirstRetrievalOfPoliticianWeVoteId());
         } else {
           this.setState({
             politicianSEOFriendlyPath: politicianSEOFriendlyPathFromUrl,
             politicianSEOFriendlyPathForDisplay: politicianSEOFriendlyPathFromUrl,
-          }, () => this.onfirstRetrievalOfPoliticianWeVoteId());
+          });  // , () => this.onfirstRetrievalOfPoliticianWeVoteId());
         }
         triggerFreshRetrieve = true;
+        triggerSEOPathRedirect = true;
       }
-    } else if (politicianWeVoteId && politicianWeVoteId !== prevPoliticianWeVoteId) {
-      // console.log('componentDidUpdate prevPoliticianWeVoteId: ', prevPoliticianWeVoteId);
-      this.clearPoliticianValues();
+    } else if (politicianSEOFriendlyPathFromObject && (politicianSEOFriendlyPathFromUrl !== politicianSEOFriendlyPathFromObject)) {
+      // console.log('politicianSEOFriendlyPathFromObject CHANGE');
+      politicianSEOFriendlyPath = politicianSEOFriendlyPathFromObject;
+      triggerFreshRetrieve = true;
+      triggerSEOPathRedirect = true;
+    } else if (politicianSEOFriendlyPathFromUrl !== prevPoliticianSEOFriendlyPath) {
+      // console.log('politicianSEOFriendlyPathFromUrl CHANGE 2');
+      triggerFreshRetrieve = true;
+      triggerSEOPathRedirect = true;
+    } else if (politicianWeVoteId && (politicianWeVoteId !== prevPoliticianWeVoteId)) {
+      // console.log('POLITICIAN CHANGE componentDidUpdate prevPoliticianWeVoteId: ', prevPoliticianWeVoteId);
       if (politician && politician.politician_we_vote_id) {
         this.setState({
           linkedCampaignXWeVoteId: politician.linked_campaignx_we_vote_id,
@@ -193,19 +202,24 @@ class PoliticianDetailsPage extends Component {
           politicianSEOFriendlyPathForDisplay: politician.seo_friendly_path,
           politicianWeVoteId,
           politicianWeVoteIdForDisplay: politicianWeVoteId,
-        }, () => this.onfirstRetrievalOfPoliticianWeVoteId());
+        }); // , () => this.onfirstRetrievalOfPoliticianWeVoteId());
       } else {
         this.setState({
           politicianWeVoteId,
           politicianWeVoteIdForDisplay: politicianWeVoteId,
-        }, () => this.onfirstRetrievalOfPoliticianWeVoteId());
+        }); // , () => this.onfirstRetrievalOfPoliticianWeVoteId());
       }
       triggerFreshRetrieve = true;
+      triggerSEOPathRedirect = true;
+    // } else {
+    //   console.log('PoliticianDetailsPage NO CHANGE');
     }
     // console.log('componentDidUpdate triggerSEOPathRedirect: ', triggerSEOPathRedirect, ', politicianSEOFriendlyPath: ', politicianSEOFriendlyPath);
     if (triggerSEOPathRedirect && politicianSEOFriendlyPath) {
       // Direct to the updated SEO path
-      historyPush(`/${politicianSEOFriendlyPath}/-`, true);
+      historyPush(`/${politicianSEOFriendlyPath}/-/`, true);
+      this.clearPoliticianValues();
+      this.onPoliticianStoreChange();
     }
     if (triggerFreshRetrieve) {
       // Take the "calculated" identifiers and retrieve if missing
@@ -425,21 +439,21 @@ class PoliticianDetailsPage extends Component {
     const { linkedCampaignXWeVoteId } = this.state;
     // let campaignXBasePath;
     // if (politicianSEOFriendlyPath) {
-    //   campaignXBasePath = `/c/${politicianSEOFriendlyPath}`;
+    //   campaignXBasePath = `/c/${politicianSEOFriendlyPath}/`;
     // } else {
-    //   campaignXBasePath = `/id/${campaignXWeVoteId}`;
+    //   campaignXBasePath = `/id/${campaignXWeVoteId}/`;
     // }
     // return campaignXBasePath;
-    return `/id/${linkedCampaignXWeVoteId}`;
+    return `/id/${linkedCampaignXWeVoteId}/`;
   }
 
   // getPoliticianBasePath = () => {
   //   const { politicianSEOFriendlyPath, politicianWeVoteId } = this.state;
   //   let politicianBasePath;
   //   if (politicianSEOFriendlyPath) {
-  //     politicianBasePath = `/${politicianSEOFriendlyPath}/-`;
+  //     politicianBasePath = `/${politicianSEOFriendlyPath}/-/`;
   //   } else {
-  //     politicianBasePath = `/${politicianWeVoteId}/p`;
+  //     politicianBasePath = `/${politicianWeVoteId}/p/`;
   //   }
   //
   //   return politicianBasePath;
@@ -449,7 +463,7 @@ class PoliticianDetailsPage extends Component {
     const { finalElectionDateInPast, payToPromoteStepCompleted, payToPromoteStepTurnedOn, sharingStepCompleted, step2Completed } = this.state;
     // console.log('functionToUseToKeepHelping sharingStepCompleted:', sharingStepCompleted, ', payToPromoteStepCompleted:', payToPromoteStepCompleted, ', step2Completed:', step2Completed);
     const keepHelpingDestinationString = keepHelpingDestination(step2Completed, payToPromoteStepCompleted, payToPromoteStepTurnedOn, sharingStepCompleted, finalElectionDateInPast);
-    historyPush(`${this.getCampaignXBasePath()}/${keepHelpingDestinationString}`);
+    historyPush(`${this.getCampaignXBasePath()}${keepHelpingDestinationString}`);
   }
 
   functionToUseWhenProfileComplete = () => {
@@ -463,12 +477,12 @@ class PoliticianDetailsPage extends Component {
   }
 
   onPoliticianCampaignEditClick = () => {
-    historyPush(`${this.getCampaignXBasePath()}/edit`);
+    historyPush(`${this.getCampaignXBasePath()}edit`);
     return null;
   }
 
   onPoliticianCampaignShareClick = () => {
-    historyPush(`${this.getCampaignXBasePath()}/share-politician`);
+    historyPush(`${this.getCampaignXBasePath()}share-politician`);
     return null;
   }
 
@@ -658,7 +672,7 @@ class PoliticianDetailsPage extends Component {
             <CandidateCampaignWrapper key={opposingCandidateKey}>
               <Link
                 className="u-cursor--pointer u-link-color u-link-underline-on-hover"
-                to={`/${opposingCandidate.seo_friendly_path}/-`}
+                to={`/${opposingCandidate.seo_friendly_path}/-/`}
               >
                 {opposingCandidate.ballot_item_display_name}
               </Link>
@@ -690,7 +704,7 @@ class PoliticianDetailsPage extends Component {
                 {/* LINK THIS TO CURRENT CANDIDATE PAGE */}
                 {/* !!(this.getCampaignXBasePath()) && (
                   <CampaignSubSectionSeeAll>
-                    <Link to={`${this.getCampaignXBasePath()}/updates`} className="u-link-color">
+                    <Link to={`${this.getCampaignXBasePath()}updates`} className="u-link-color">
                       See all
                     </Link>
                   </CampaignSubSectionSeeAll>
@@ -718,7 +732,7 @@ class PoliticianDetailsPage extends Component {
                 {!!(this.getCampaignXBasePath()) && (
                   <CampaignSubSectionSeeAll>
                     <Link
-                      to={`${this.getCampaignXBasePath()}/comments`}
+                      to={`${this.getCampaignXBasePath()}comments`}
                       className="u-link-color"
                     >
                       See all
@@ -753,11 +767,11 @@ class PoliticianDetailsPage extends Component {
         <Helmet>
           <title>{htmlTitle}</title>
           {politicianSEOFriendlyPathFromUrl ? (
-            <link rel="canonical" href={`https://wevote.us/${politicianSEOFriendlyPathFromUrl}/-`} />
+            <link rel="canonical" href={`https://wevote.us/${politicianSEOFriendlyPathFromUrl}/-/`} />
           ) : (
             <>
               {politicianSEOFriendlyPathForDisplay && (
-                <link rel="canonical" href={`https://wevote.us/${politicianSEOFriendlyPathForDisplay}/-`} />
+                <link rel="canonical" href={`https://wevote.us/${politicianSEOFriendlyPathForDisplay}/-/`} />
               )}
             </>
           )}
@@ -875,7 +889,7 @@ class PoliticianDetailsPage extends Component {
                       </CampaignSubSectionTitle>
                       {!!(this.getCampaignXBasePath()) && (
                         <CampaignSubSectionSeeAll>
-                          <Link to={`${this.getCampaignXBasePath()}/updates`} className="u-link-color">
+                          <Link to={`${this.getCampaignXBasePath()}updates`} className="u-link-color">
                             See all
                           </Link>
                         </CampaignSubSectionSeeAll>
@@ -1018,7 +1032,7 @@ class PoliticianDetailsPage extends Component {
                           </CampaignSubSectionTitle>
                           {!!(this.getCampaignXBasePath()) && (
                             <CampaignSubSectionSeeAll>
-                              <Link to={`${this.getCampaignXBasePath()}/updates`} className="u-link-color">
+                              <Link to={`${this.getCampaignXBasePath()}updates`} className="u-link-color">
                                 See all
                               </Link>
                             </CampaignSubSectionSeeAll>

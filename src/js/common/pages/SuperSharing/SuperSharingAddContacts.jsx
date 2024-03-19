@@ -192,9 +192,9 @@ class SuperSharingAddContacts extends Component {
     const { campaignSEOFriendlyPath, campaignXWeVoteId } = this.state;
     let campaignBasePath;
     if (campaignSEOFriendlyPath) {
-      campaignBasePath = `/c/${campaignSEOFriendlyPath}`;
+      campaignBasePath = `/c/${campaignSEOFriendlyPath}/`;
     } else {
-      campaignBasePath = `/id/${campaignXWeVoteId}`;
+      campaignBasePath = `/id/${campaignXWeVoteId}/`;
     }
 
     return campaignBasePath;
@@ -203,14 +203,14 @@ class SuperSharingAddContacts extends Component {
   goToNextStep = () => {
     const { campaignXNewsItemWeVoteId } = this.state;
     if (campaignXNewsItemWeVoteId) {
-      historyPush(`${this.getCampaignXBasePath()}/super-sharing-choose-email-recipients/${campaignXNewsItemWeVoteId}`);
+      historyPush(`${this.getCampaignXBasePath()}super-sharing-choose-email-recipients/${campaignXNewsItemWeVoteId}`);
     } else {
-      historyPush(`${this.getCampaignXBasePath()}/super-sharing-choose-email-recipients`);
+      historyPush(`${this.getCampaignXBasePath()}super-sharing-choose-email-recipients`);
     }
   }
 
   returnToOtherSharingOptions = () => {
-    historyPush(`${this.getCampaignXBasePath()}/share-campaign`);
+    historyPush(`${this.getCampaignXBasePath()}share-campaign`);
   }
 
   submitSkipForNow = () => {
