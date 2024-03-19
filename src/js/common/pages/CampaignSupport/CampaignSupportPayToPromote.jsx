@@ -1,4 +1,5 @@
 import loadable from '@loadable/component';
+import { Launch } from '@mui/icons-material';
 import { Button } from '@mui/material';
 import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
@@ -8,6 +9,7 @@ import { Helmet } from 'react-helmet-async';
 import commonMuiStyles from '../../components/Style/commonMuiStyles';
 import historyPush from '../../utils/historyPush';
 import { renderLog } from '../../utils/logging';
+import { isCordova } from '../../utils/isCordovaOrWebApp';
 import CampaignSupportSteps from '../../components/Navigation/CampaignSupportSteps';
 import { CampaignImage, CampaignProcessStepIntroductionText, CampaignProcessStepTitle } from '../../components/Style/CampaignProcessStyles';
 import { CampaignSupportDesktopButtonPanel, CampaignSupportDesktopButtonWrapper, CampaignSupportImageWrapper, CampaignSupportImageWrapperText, CampaignSupportMobileButtonPanel, CampaignSupportMobileButtonWrapper, CampaignSupportSection, CampaignSupportSectionWrapper, SkipForNowButtonPanel, SkipForNowButtonWrapper } from '../../components/Style/CampaignSupportStyles';
@@ -16,6 +18,7 @@ import AppObservableStore, { messageService } from '../../stores/AppObservableSt
 import CampaignStore from '../../stores/CampaignStore';
 import VoterStore from '../../../stores/VoterStore';
 import { getCampaignXValuesFromIdentifiers, retrieveCampaignXFromIdentifiersIfNeeded } from '../../utils/campaignUtils';
+import OpenExternalWebSite from '../../components/Widgets/OpenExternalWebSite';
 
 const CampaignRetrieveController = React.lazy(() => import(/* webpackChunkName: 'CampaignRetrieveController' */ '../../components/Campaign/CampaignRetrieveController'));
 const CampaignSupportThermometer = React.lazy(() => import(/* webpackChunkName: 'CampaignSupportThermometer' */ '../../components/CampaignSupport/CampaignSupportThermometer'));
@@ -288,7 +291,31 @@ class CampaignSupportPayToPromote extends Component {
                     </CampaignSupportDesktopButtonPanel>
                   </CampaignSupportDesktopButtonWrapper>
                   <CampaignSupportMobileButtonWrapper className="u-show-mobile">
-                    <CampaignSupportMobileButtonPanel>
+                    {(isCordova()) ? (
+                      <CampaignSupportMobileButtonPanel>
+                        <Suspense fallback={<span>&nbsp;</span>}>
+                          <OpenExternalWebSite
+                            linkIdAttribute="submitPayToPromoteMobile"
+                            url={`${AppObservableStore.getWeVoteRootURL()}${this.getCampaignXBasePath()}pay-to-promote-process`}
+                            target="_blank"
+                            title="Yes, I'll chip in $3"
+                            body={(
+                              <Button
+                                classes={{ root: classes.buttonDefault }}
+                                color="primary"
+                                variant="contained"
+                              >
+                                Yes, I&apos;ll chip in $3&nbsp;
+                                <Launch
+                                  style={{
+                                  }}
+                                />
+                              </Button>
+                            )}
+                          />
+                        </Suspense>
+                      </CampaignSupportMobileButtonPanel>
+                    ) : (
                       <Button
                         classes={{ root: classes.buttonDefault }}
                         color="primary"
@@ -298,7 +325,7 @@ class CampaignSupportPayToPromote extends Component {
                       >
                         Yes, I&apos;ll chip in $3
                       </Button>
-                    </CampaignSupportMobileButtonPanel>
+                    )}
                   </CampaignSupportMobileButtonWrapper>
                   <CampaignSupportDesktopButtonWrapper className="u-show-desktop-tablet">
                     <CampaignSupportDesktopButtonPanel>
