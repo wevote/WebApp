@@ -18,10 +18,10 @@ import AppObservableStore, { messageService } from '../../stores/AppObservableSt
 import CampaignStore from '../../stores/CampaignStore';
 import VoterStore from '../../../stores/VoterStore';
 import { getCampaignXValuesFromIdentifiers, retrieveCampaignXFromIdentifiersIfNeeded } from '../../utils/campaignUtils';
-import OpenExternalWebSite from '../../components/Widgets/OpenExternalWebSite';
 
 const CampaignRetrieveController = React.lazy(() => import(/* webpackChunkName: 'CampaignRetrieveController' */ '../../components/Campaign/CampaignRetrieveController'));
 const CampaignSupportThermometer = React.lazy(() => import(/* webpackChunkName: 'CampaignSupportThermometer' */ '../../components/CampaignSupport/CampaignSupportThermometer'));
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../components/Widgets/OpenExternalWebSite'));
 const VoterFirstRetrieveController = loadable(() => import(/* webpackChunkName: 'VoterFirstRetrieveController' */ '../../components/Settings/VoterFirstRetrieveController'));
 
 
@@ -306,25 +306,24 @@ class CampaignSupportPayToPromote extends Component {
                                 variant="contained"
                               >
                                 Yes, I&apos;ll chip in $3&nbsp;
-                                <Launch
-                                  style={{
-                                  }}
-                                />
+                                <Launch />
                               </Button>
                             )}
                           />
                         </Suspense>
                       </CampaignSupportMobileButtonPanel>
                     ) : (
-                      <Button
-                        classes={{ root: classes.buttonDefault }}
-                        color="primary"
-                        id="submitPayToPromoteMobile"
-                        onClick={this.goToIWillChipIn}
-                        variant="contained"
-                      >
-                        Yes, I&apos;ll chip in $3
-                      </Button>
+                      <CampaignSupportMobileButtonPanel>
+                        <Button
+                          classes={{ root: classes.buttonDefault }}
+                          color="primary"
+                          id="submitPayToPromoteMobile"
+                          onClick={this.goToIWillChipIn}
+                          variant="contained"
+                        >
+                          Yes, I&apos;ll chip in $3
+                        </Button>
+                      </CampaignSupportMobileButtonPanel>
                     )}
                   </CampaignSupportMobileButtonWrapper>
                   <CampaignSupportDesktopButtonWrapper className="u-show-desktop-tablet">
