@@ -1,4 +1,5 @@
 import loadable from '@loadable/component';
+import { Launch } from '@mui/icons-material';
 import { Button } from '@mui/material';
 import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
@@ -8,6 +9,7 @@ import { Helmet } from 'react-helmet-async';
 import commonMuiStyles from '../../components/Style/commonMuiStyles';
 import historyPush from '../../utils/historyPush';
 import { renderLog } from '../../utils/logging';
+import { isCordova } from '../../utils/isCordovaOrWebApp';
 import CampaignSupportSteps from '../../components/Navigation/CampaignSupportSteps';
 import { CampaignImage, CampaignProcessStepIntroductionText, CampaignProcessStepTitle } from '../../components/Style/CampaignProcessStyles';
 import { CampaignSupportDesktopButtonPanel, CampaignSupportDesktopButtonWrapper, CampaignSupportImageWrapper, CampaignSupportImageWrapperText, CampaignSupportMobileButtonPanel, CampaignSupportMobileButtonWrapper, CampaignSupportSection, CampaignSupportSectionWrapper, SkipForNowButtonPanel, SkipForNowButtonWrapper } from '../../components/Style/CampaignSupportStyles';
@@ -19,6 +21,7 @@ import { getCampaignXValuesFromIdentifiers, retrieveCampaignXFromIdentifiersIfNe
 
 const CampaignRetrieveController = React.lazy(() => import(/* webpackChunkName: 'CampaignRetrieveController' */ '../../components/Campaign/CampaignRetrieveController'));
 const CampaignSupportThermometer = React.lazy(() => import(/* webpackChunkName: 'CampaignSupportThermometer' */ '../../components/CampaignSupport/CampaignSupportThermometer'));
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../components/Widgets/OpenExternalWebSite'));
 const VoterFirstRetrieveController = loadable(() => import(/* webpackChunkName: 'VoterFirstRetrieveController' */ '../../components/Settings/VoterFirstRetrieveController'));
 
 
@@ -288,17 +291,40 @@ class CampaignSupportPayToPromote extends Component {
                     </CampaignSupportDesktopButtonPanel>
                   </CampaignSupportDesktopButtonWrapper>
                   <CampaignSupportMobileButtonWrapper className="u-show-mobile">
-                    <CampaignSupportMobileButtonPanel>
-                      <Button
-                        classes={{ root: classes.buttonDefault }}
-                        color="primary"
-                        id="submitPayToPromoteMobile"
-                        onClick={this.goToIWillChipIn}
-                        variant="contained"
-                      >
-                        Yes, I&apos;ll chip in $3
-                      </Button>
-                    </CampaignSupportMobileButtonPanel>
+                    {(isCordova()) ? (
+                      <CampaignSupportMobileButtonPanel>
+                        <Suspense fallback={<span>&nbsp;</span>}>
+                          <OpenExternalWebSite
+                            linkIdAttribute="submitPayToPromoteMobile"
+                            url={`${AppObservableStore.getWeVoteRootURL()}${this.getCampaignXBasePath()}pay-to-promote-process`}
+                            target="_blank"
+                            title="Yes, I'll chip in $3"
+                            body={(
+                              <Button
+                                classes={{ root: classes.buttonDefault }}
+                                color="primary"
+                                variant="contained"
+                              >
+                                Yes, I&apos;ll chip in $3&nbsp;
+                                <Launch />
+                              </Button>
+                            )}
+                          />
+                        </Suspense>
+                      </CampaignSupportMobileButtonPanel>
+                    ) : (
+                      <CampaignSupportMobileButtonPanel>
+                        <Button
+                          classes={{ root: classes.buttonDefault }}
+                          color="primary"
+                          id="submitPayToPromoteMobile"
+                          onClick={this.goToIWillChipIn}
+                          variant="contained"
+                        >
+                          Yes, I&apos;ll chip in $3
+                        </Button>
+                      </CampaignSupportMobileButtonPanel>
+                    )}
                   </CampaignSupportMobileButtonWrapper>
                   <CampaignSupportDesktopButtonWrapper className="u-show-desktop-tablet">
                     <CampaignSupportDesktopButtonPanel>
