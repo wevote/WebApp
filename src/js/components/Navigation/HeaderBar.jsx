@@ -354,7 +354,7 @@ class HeaderBar extends Component {
     // Should use theme.colors.brandBlue instead of directly using '#2e3c5d'
     const highlight = {
       opacity: 1,
-      fontWeight: 800,
+      fontWeight: 600,
       color: '#2e3c5d',
     };
 
