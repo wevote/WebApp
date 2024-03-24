@@ -515,7 +515,7 @@ class OfficeItemCompressed extends Component {
     renderLog('OfficeItemCompressed');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('OfficeItemCompressed render');
     let { ballotItemDisplayName } = this.props;
-    const { isFirstBallotItem, officeWeVoteId } = this.props; // classes
+    const { isFirstBallotItem, officeWeVoteId, primaryParty } = this.props; // classes
     const { candidateListLength, showAllCandidates, totalNumberOfCandidates } = this.state;
     ballotItemDisplayName = toTitleCase(ballotItemDisplayName).replace('(Unexpired)', '(Remainder)');
     const candidatesToRenderCount = this.getCandidatesToRenderCount();
@@ -534,6 +534,15 @@ class OfficeItemCompressed extends Component {
         />
         <OfficeNameH2>
           {ballotItemDisplayName}
+          {!!(primaryParty) && (
+            <PrimaryPartyWrapper>
+              {' '}
+              (
+              {primaryParty}
+              {' '}
+              Primary)
+            </PrimaryPartyWrapper>
+          )}
         </OfficeNameH2>
         {/* *************************
           Display either a) the candidates the voter supports, or b) the first few candidates running for this office
@@ -576,6 +585,7 @@ OfficeItemCompressed.propTypes = {
   isFirstBallotItem: PropTypes.bool,
   organization: PropTypes.object,
   organizationWeVoteId: PropTypes.string,
+  primaryParty: PropTypes.string,
 };
 
 const styles = (theme) => ({
@@ -614,6 +624,10 @@ const ItemActionBarOutsideWrapper = styled('div')`
   justify-content: flex-start;
   margin-top: 12px;
   width: 100%;
+`;
+
+const PrimaryPartyWrapper = styled('span')`
+  font-size: 18px;
 `;
 
 const ScoreWrapper = styled('div')`

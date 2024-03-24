@@ -1637,6 +1637,7 @@ class Ballot extends Component {
                                         id={chipLabelText(item.ballot_item_display_name)}
                                         isFirstBallotItem={isFirstBallotItem}
                                         isMeasure={item.kind_of_ballot_item === TYPES.MEASURE}
+                                        primaryParty={item.primary_party}
                                         totalNumberOfBallotItems={totalNumberOfBallotItems}
                                         weVoteId={item.we_vote_id}
                                         key={key}
