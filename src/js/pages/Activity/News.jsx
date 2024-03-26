@@ -482,14 +482,22 @@ class News extends Component {
                   {voterIsSignedIn && (
                     <SignInSmallOptionsWrapper>
                       {!voterSignedInTwitter && (
-                        <TwitterSignInWrapper>
-                          <TwitterSignInCard />
-                        </TwitterSignInWrapper>
+                        <div className='card'>
+                          <div className="card-main">
+                            <TwitterSignInWrapper>
+                              <TwitterSignInCard />
+                            </TwitterSignInWrapper>
+                          </div>
+                        </div>
                       )}
                       {!voterSignedInFacebook && (
-                        <FacebookSignInWrapper>
-                          <FacebookSignInCard />
-                        </FacebookSignInWrapper>
+                        <div className='card'>
+                          <div className="card-main">
+                            <FacebookSignInWrapper>
+                              <FacebookSignInCard />
+                            </FacebookSignInWrapper>
+                          </div>
+                        </div>
                       )}
                     </SignInSmallOptionsWrapper>
                   )}
@@ -606,7 +614,7 @@ const ShowMoreItemsWrapper = styled('div')(({ theme }) => (`
 
 const SignInSmallOptionsWrapper = styled('div')`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-between;
   flex-wrap: wrap;
   ${() => displayNoneIfSmallerThanDesktop()};
