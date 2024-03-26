@@ -108,6 +108,7 @@ class OrganizationList extends Component {
   render () {
     renderLog('OrganizationList');  // Set LOG_RENDER_EVENTS to log all renders
     const { hideShowMoreItems } = this.props;
+    const { incomingOrganizationList } = this.props;
     const {
       loadingMoreItems, numberOfItemsToDisplay, organizationListToDisplay, organizationListToDisplayCount,
     } = this.state;
@@ -118,7 +119,7 @@ class OrganizationList extends Component {
 
     let numberOfItemsDisplayed = 0;
 
-    if (!(organizationListToDisplayCount)) {
+    if ((!incomingOrganizationList || incomingOrganizationList.length === 0)) {
       return (
         <NoSearchResultWrapper>
           <NoSearchResult
