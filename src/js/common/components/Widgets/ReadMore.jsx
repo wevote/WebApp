@@ -116,12 +116,11 @@ export default class ReadMore extends Component {
         &hellip;
         {' '}
         <a //eslint-disable-line
-          className="u-link-color u-no-break"
+          className="u-link-color u-link-underline-on hover u-no-break"
           href="#"
           id="readMore"
           onClick={this.toggleLines}
           onKeyDown={this.onKeyDown.bind(this)}
-          style={{ textDecoration: 'none' }}
         >
           {linkText}
         </a>
@@ -146,12 +145,11 @@ export default class ReadMore extends Component {
           {expandedTextToDisplay}
           {' '}
           <a //eslint-disable-line
-            className="u-link-color u-no-break"
+            className="u-link-color u-link-underline-on hover u-no-break"
             href="#"
             id="showLess"
             onClick={this.toggleLines}
             onKeyDown={this.onKeyDown.bind(this)}
-            style={{ textDecoration: 'none' }}
           >
             {collapseText}
           </a>
