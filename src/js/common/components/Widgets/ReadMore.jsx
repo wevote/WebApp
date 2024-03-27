@@ -113,9 +113,9 @@ export default class ReadMore extends Component {
 
     const showMoreEllipsis = (
       <span>
-        ...
+        &hellip;
         {' '}
-        <a
+        <a //eslint-disable-line
           className="u-link-color u-no-break"
           href="#"
           id="readMore"
@@ -123,8 +123,7 @@ export default class ReadMore extends Component {
           onKeyDown={this.onKeyDown.bind(this)}
           style={{ textDecoration: 'none' }}
         >
-
-          show more
+          {linkText}
         </a>
 
       </span>
@@ -133,35 +132,12 @@ export default class ReadMore extends Component {
     if (this.state.readMore) {
       return (
         <span className="text">
-          <TruncateMarkup lines={numberOfLines} ellipsis={showMoreEllipsis}>
+          <TruncateMarkup lines={numberOfLines} ellipsis={showMoreEllipsis} tokenize="words">
             <span>
-              { textToDisplay }
+              {textToDisplay}
             </span>
           </TruncateMarkup>
         </span>
-
-
-      // <span>
-      //   <TextTruncate
-      //     containerClassName={this.props.className}
-      //     element="span"
-      //     line={numberOfLines}
-      //     truncateText="..."
-      //     text={textToDisplay}
-      //     textTruncateChild={(
-      //       <a // eslint-disable-line
-      //         className="u-link-color u-no-break"
-      //         // tabIndex="0"
-      //         href="#"
-      //         id="readMore"
-      //         onClick={this.toggleLines}
-      //         onKeyDown={this.onKeyDown.bind(this)}
-      //       >
-      //         {linkText}
-      //       </a>
-      //     )}
-      //   />
-      // </span>
       );
     } else {
       return (
@@ -169,33 +145,17 @@ export default class ReadMore extends Component {
         <span>
           {expandedTextToDisplay}
           {' '}
-          <a
-          className="u-link-color u-no-break"
-          href="#"
-          id="showLess"
-          onClick={this.toggleLines}
-          onKeyDown={this.onKeyDown.bind(this)}
-          style={{ textDecoration: 'none' }}
+          <a //eslint-disable-line
+            className="u-link-color u-no-break"
+            href="#"
+            id="showLess"
+            onClick={this.toggleLines}
+            onKeyDown={this.onKeyDown.bind(this)}
+            style={{ textDecoration: 'none' }}
           >
-            show less
+            {collapseText}
           </a>
         </span>
-
-      // <span className={this.props.className}>
-      //   {' '}
-      //   {expandedTextToDisplay}
-      //   &nbsp;&nbsp;
-      //   <a // eslint-disable-line
-      //     className="u-link-color u-no-break"
-      //     // tabIndex="0"
-      //     href="#"
-      //     id="showLess"
-      //     onClick={this.toggleLines}
-      //     onKeyDown={this.onKeyDown.bind(this)}
-      //   >
-      //     {collapseText}
-      //   </a>
-      // </span>
       );
     }
   } // end render
