@@ -17,6 +17,9 @@ import { FirstRowPhoneOrEmail, SecondRowPhoneOrEmail, TrashCan } from '../Style/
 import { ButtonContainerHorizontal } from '../Welcome/sectionStyles';
 import SettingsVerifySecretCode from '../../common/components/Settings/SettingsVerifySecretCode';
 import { validateEmail } from '../../utils/regex-checks';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
+
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 
@@ -528,9 +531,30 @@ class VoterEmailAddressEntry extends Component {
             </FirstRowPhoneOrEmail>
             <SecondRowPhoneOrEmail>
               {isPrimaryEmailAddress ? (
-                <span>
-                  Primary
-                </span>
+                <div key={`${voterEmailAddressFromList.email_we_vote_id}-internal`}>
+                  <span>
+                    Primary
+                    <span style={{ paddingRight: '112px' }}>&nbsp;</span>
+                  </span>
+                  <OverlayTrigger
+                    placement="right"
+                    overlay={(
+                      <Tooltip id="tooltip-top">
+                        Cannot remove primary email. Please add another primary email before removing this one.
+                      </Tooltip>
+                    )}
+                  >
+                    <TrashCan>
+                      <span
+                        // className="u-gray-darker"
+                        style={{ color: '#757575' }}
+
+                      >
+                        <Delete />
+                      </span>
+                    </TrashCan>
+                  </OverlayTrigger>
+                </div>
               ) : (
                 <div key={`${voterEmailAddressFromList.email_we_vote_id}-internal`}>
                   <span

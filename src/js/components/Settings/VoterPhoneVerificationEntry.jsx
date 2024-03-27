@@ -22,6 +22,8 @@ import { FirstRowPhoneOrEmail, SecondRowPhoneOrEmail, TrashCan } from '../Style/
 import { ButtonContainerHorizontal } from '../Welcome/sectionStyles';
 import SettingsVerifySecretCode from '../../common/components/Settings/SettingsVerifySecretCode';
 // import { validatePhoneOrEmail } from '../../utils/regex-checks';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 
@@ -558,29 +560,51 @@ class VoterPhoneVerificationEntry extends Component {
     );
 
     let allowRemoveSMSPhoneNumber;
-    let emailOwnershipIsVerified;
+    let smsOwnershipIsVerified;
     let isPrimarySMSPhoneNumber;
 
     // ///////////////////////////////////
     // LIST OF VERIFIED SMS PHONE NUMBERS
     let verifiedSMSFound = false;
     const verifiedSMSListHtml = smsPhoneNumberList.map((voterSMSPhoneNumberFromList) => {
-      emailOwnershipIsVerified = !!voterSMSPhoneNumberFromList.sms_ownership_is_verified;
+      smsOwnershipIsVerified = !!voterSMSPhoneNumberFromList.sms_ownership_is_verified;
 
-      if (emailOwnershipIsVerified) {
+      if (smsOwnershipIsVerified) {
         verifiedSMSFound = true;
         allowRemoveSMSPhoneNumber = voterSMSPhoneNumberFromList.primary_sms_phone_number !== true;
         isPrimarySMSPhoneNumber = voterSMSPhoneNumberFromList.primary_sms_phone_number === true;
         return (
           <div key={voterSMSPhoneNumberFromList.sms_we_vote_id}>
             <FirstRowPhoneOrEmail>
-              {voterSMSPhoneNumberFromList.normalized_sms_phone_number}
+            <span className="u-no-break">{voterSMSPhoneNumberFromList.normalized_sms_phone_number}</span>
             </FirstRowPhoneOrEmail>
             <SecondRowPhoneOrEmail>
               {isPrimarySMSPhoneNumber ? (
-                <span>
-                  Primary
-                </span>
+                <div key={`${voterSMSPhoneNumberFromList.sms_we_vote_id}-internal`}>
+                  <span>
+                    Primary
+                    <span style={{ paddingRight: '112px' }}>&nbsp;</span>
+                  </span>
+                  <OverlayTrigger
+                    placement="right"
+                    overlay={(
+                      <Tooltip id="tooltip-top">
+                        Cannot remove primary phone number. Please add another primary number before removing this one.
+                      </Tooltip>
+                    )}
+                  >
+                    <TrashCan>
+                      <span
+                        // className="u-gray-mid"
+                        style={{ color: '#757575' }}
+
+                      >
+                        <Delete />
+                      </span>
+                    </TrashCan>
+                  </OverlayTrigger>
+
+                </div>
               ) : (
                 <div key={`${voterSMSPhoneNumberFromList.sms_we_vote_id}-internal`}>
                   <span
@@ -588,6 +612,7 @@ class VoterPhoneVerificationEntry extends Component {
                      onClick={() => this.setAsPrimarySMSPhoneNumber.bind(this, voterSMSPhoneNumberFromList.sms_we_vote_id)}
                   >
                     Make Primary
+                    <span style={{ paddingRight: '65px' }}>&nbsp;</span>
                   </span>
                   {allowRemoveSMSPhoneNumber && (
                     <TrashCan
@@ -611,8 +636,8 @@ class VoterPhoneVerificationEntry extends Component {
     // LIST OF SMS PHONE NUMBERS TO VERIFY
     let unverifiedSMSFound = false;
     const toVerifySMSListHtml = smsPhoneNumberList.map((voterSMSPhoneNumberFromList) => {
-      emailOwnershipIsVerified = !!voterSMSPhoneNumberFromList.sms_ownership_is_verified;
-      if (!emailOwnershipIsVerified) {
+      smsOwnershipIsVerified = !!voterSMSPhoneNumberFromList.sms_ownership_is_verified;
+      if (!smsOwnershipIsVerified) {
         unverifiedSMSFound = true;
         allowRemoveSMSPhoneNumber = !voterSMSPhoneNumberFromList.primary_sms_phone_number;
         isPrimarySMSPhoneNumber = !!voterSMSPhoneNumberFromList.primary_sms_phone_number;
