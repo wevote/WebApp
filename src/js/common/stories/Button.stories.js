@@ -14,49 +14,52 @@ export default {
   },
 };
 
-export const AllButtons = () => (
-  <ButtonContainer>
-    <Button
-      primary
-      size="large"
-      label="Primary Large Disabled Button"
-      aria-label="Primary Large Disabled Button"
-    />
-    <Button
-      primary={false}
-      size="large"
-      label="PrimaryLarge Disabled Button"
-      aria-label="PrimaryLarge Disabled Button"
-    />
-    <Button
-      primary
-      label="Primary Medium Button"
-      aria-label="Primary Medium Button"
-    />
-    <Button
-      primary={false}
-      label="Primary Medium Disabled Button"
-      aria-label="Primary Medium Disabled Button"
-    />
-    <Button
-      primary
-      size="small"
-      label="Primary Small Button"
-      aria-label="Primary Small Button"
-    />
-    <Button
-      primary={false}
-      size="small"
-      label="Primary Small Disabled"
-      aria-label="Primary Small Disabled"
-    />
-    <Button
-      secondary
-      label="Secondary Button"
-      aria-label="Secondary Button"
-    />
-  </ButtonContainer>
-);
+export const AllButtons = (args) => {
+  console.log(args);
+  return (
+    <ButtonContainer>
+      <Button
+        primary
+        size="large"
+        label="Primary Large Disabled Button"
+        aria-label="Primary Large Disabled Button"
+      />
+      <Button
+        primary={false}
+        size="large"
+        label="PrimaryLarge Disabled Button"
+        aria-label="PrimaryLarge Disabled Button"
+      />
+      <Button
+        primary
+        label="Primary Medium Button"
+        aria-label="Primary Medium Button"
+      />
+      <Button
+        primary={false}
+        label="Primary Medium Disabled Button"
+        aria-label="Primary Medium Disabled Button"
+      />
+      <Button
+        primary
+        size="small"
+        label="Primary Small Button"
+        aria-label="Primary Small Button"
+      />
+      <Button
+        primary={false}
+        size="small"
+        label="Primary Small Disabled"
+        aria-label="Primary Small Disabled"
+      />
+      <Button
+        secondary
+        label="Secondary Button"
+        aria-label="Secondary Button"
+      />
+    </ButtonContainer>
+  );
+};
 
 export const Primary = {
   args: {
