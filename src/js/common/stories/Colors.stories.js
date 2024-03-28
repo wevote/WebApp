@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 import colors from '../components/Style/Colors';
 
 export default {
@@ -111,16 +112,23 @@ const ColorRow = ({ color, SemanticLabel, PrimitiveLabel, value }) => (
   </ColorRowContainer>
 );
 
+ColorRow.propTypes = {
+  color: PropTypes.string.isRequired,
+  SemanticLabel: PropTypes.string.isRequired,
+  PrimitiveLabel: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
+};
+
 const Colors = ({ palette, title }) => (
   <div style={{  justifyContent: 'center', paddingLeft: '50px', paddingRight: '50px' }}>
     <h2 style={{ color: colors.darkGrey, fontFamily: 'SF Pro Text', fontSize: '24px', fontStyle: 'normal', fontWeight: 600 }}>{ title }</h2>
-    
+
     <TableColorHeader />
     <div>
       {
         palette?.map((color, index) => (
           <ColorRow
-            key={index}
+            key={`${title}-${color}`}
             PrimitiveLabel={`${title.split('/')[0].toLowerCase()}-${(index + 1) * 100}`}
             SemanticLabel={`${title.split('/')[1].toLowerCase()}-${(index + 1) * 100}`}
             color={color}
@@ -132,41 +140,45 @@ const Colors = ({ palette, title }) => (
   </div>
 );
 
-export const AllColors = () => {
-  return (
-    <>
-      <h1 style={{ 
-        color: colors.darkGrey, 
-        fontFamily: 'SF Pro Text', 
-        fontSize: '38px', 
-        fontWeight: 600, 
-        paddingBottom: '36px', 
-        paddingTop: '26px', 
-        paddingLeft: '50px' 
-        }}>
-          Colors - Product Brand
-      </h1>
-      
-      <Colors palette={bluePalette} title="Blue/Primary" />
-      <Colors palette={steelSecondary} title="Steel/Secondary" />
-      <Colors palette={redTertiary} title="Red/Tertiary" />
-      <Colors palette={orangeAccent} title="Orange/Accent" />
-    </>
-  );
+Colors.propTypes = {
+  palette: PropTypes.arrayOf(PropTypes.string).isRequired,
+  title: PropTypes.string.isRequired,
 };
 
-export const BluePrimary = () => {
-  return <Colors palette={bluePalette} title="Blue/Primary" />
-};
+export const AllColors = () => (
+  <>
+    <h1 style={{
+      color: colors.darkGrey,
+      fontFamily: 'SF Pro Text',
+      fontSize: '38px',
+      fontWeight: 600,
+      paddingBottom: '36px',
+      paddingTop: '26px',
+      paddingLeft: '50px',
+    }}
+    >
+      Colors - Product Brand
+    </h1>
 
-export const SteelSecondary = () => {
-  return <Colors palette={steelSecondary} title="Steel/Secondary" />
-};
+    <Colors palette={bluePalette} title="Blue/Primary" />
+    <Colors palette={steelSecondary} title="Steel/Secondary" />
+    <Colors palette={redTertiary} title="Red/Tertiary" />
+    <Colors palette={orangeAccent} title="Orange/Accent" />
+  </>
+);
 
-export const RedTertiary = () => {
-  return <Colors palette={redTertiary} title="Red/Tertiary" />
-};
+export const BluePrimary = () => (
+  <Colors palette={bluePalette} title="Blue/Primary" />
+);
 
-export const OrangeAccent = () => {
-  return <Colors palette={orangeAccent} title="Orange/Accent" />
-};
+export const SteelSecondary = () => (
+  <Colors palette={steelSecondary} title="Steel/Secondary" />
+);
+
+export const RedTertiary = () => (
+  <Colors palette={redTertiary} title="Red/Tertiary" />
+);
+
+export const OrangeAccent = () => (
+  <Colors palette={orangeAccent} title="Orange/Accent" />
+);
