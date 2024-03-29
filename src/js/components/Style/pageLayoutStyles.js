@@ -290,17 +290,27 @@ export const OfficeShareWrapper = styled('div')`
 `;
 
 export const FirstRowPhoneOrEmail = styled('div')`
-  margin: 5px 5px 2px 36px;
-  text-align: left;
+  margin: 5px 0px 2px 0px;
+  text-align: center;
 `;
 
 export const SecondRowPhoneOrEmail = styled('div')`
-  margin: 0 0 4px 50px;
-  text-align: left;
+  margin-bottom: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
-export const TrashCan = styled('span')`
-  margin-left: 30px;
+export const SecondRowPhoneOrEmailDiv = styled('div')`
+  width: 250px;
+  display: flex;
+  justify-content: space-between;
+`;
+
+export const AllPhoneOrEmailTypes = styled('div')`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 export const TermsAndPrivacyText = styled('span')`
