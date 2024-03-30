@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 import { renderLog } from '../../common/utils/logging';
 
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
@@ -26,7 +27,7 @@ export default class OrganizationDisplayForListCompressed extends Component {
     const voterGuideLink = organizationTwitterHandle ? `/${organizationTwitterHandle}` : `/voterguide/${organizationWeVoteId}`;
 
     return (
-      <div id="organizationDisplayForListCompressed" className="card-child card-child--not-followed">
+      <OrganizationDisplayForListCompressedWrapper id="organizationDisplayForListCompressed" className="card-child card-child--not-followed">
         <div className="card-child__media-object-anchor">
           <Link to={voterGuideLink} className="u-no-underline">
             <Suspense fallback={<></>}>
@@ -46,7 +47,7 @@ export default class OrganizationDisplayForListCompressed extends Component {
             </div>
           </div>
         </div>
-      </div>
+      </OrganizationDisplayForListCompressedWrapper>
     );
   }
 }
@@ -57,3 +58,6 @@ OrganizationDisplayForListCompressed.propTypes = {
   children: PropTypes.array, // A list of the tags in OrganizationDisplayForList when called (from GuideList for example)
   organization_twitter_handle: PropTypes.string,
 };
+
+const OrganizationDisplayForListCompressedWrapper = styled('div')`
+`;

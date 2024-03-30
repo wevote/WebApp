@@ -213,7 +213,7 @@ class GuideList extends Component {
       );
     }
     return (
-      <div>
+      <GuideListWrapper>
         {(filteredOrganizationsWithPositions.length && voterGuideListCount) ? (
           <div className="guidelist">
             {filteredOrganizationsWithPositions.map((organization) => {
@@ -249,7 +249,7 @@ class GuideList extends Component {
             )}
           </div>
         ) : null}
-      </div>
+      </GuideListWrapper>
     );
   }
 }
@@ -259,6 +259,9 @@ GuideList.propTypes = {
   incomingVoterGuideList: PropTypes.array,
   increaseNumberOfItemsOnScroll: PropTypes.bool,
 };
+
+const GuideListWrapper = styled('div')`
+`;
 
 const ShowMoreItemsWrapper = styled('div')`
 `;

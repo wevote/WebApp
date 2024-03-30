@@ -283,7 +283,8 @@ class OneValue extends Component {
           </SearchBarWrapper>
           <Suspense fallback={<></>}>
             <OrganizationList
-              incomingOrganizationList={showEndorsersForThisElection ? voterGuidesForValue : []}
+              incomingOrganizationList={showAllEndorsers ? organizationsForValue : []}
+              // incomingOrganizationList={showEndorsersForThisElection ? voterGuidesForValue : []}  // Causes double-display of orgs. Needs another look.
               increaseNumberOfItemsOnScroll
               organizationListIdentifier={showAllEndorsers ? organizationListIdentifier : 'noOrganizations'}
             />

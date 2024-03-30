@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
+import styled from 'styled-components';
 import OrganizationActions from '../../actions/OrganizationActions';
 import { renderLog } from '../../common/utils/logging';
 import OrganizationDisplayForList from './OrganizationDisplayForList';
@@ -55,12 +56,15 @@ export default class OpinionsFollowedList extends Component {
     });
 
     return (
-      <div className="guidelist card-child__list-group">
+      <OpinionsFollowedListWrapper className="guidelist card-child__list-group">
         {organizationsList}
-      </div>
+      </OpinionsFollowedListWrapper>
     );
   }
 }
 OpinionsFollowedList.propTypes = {
   organizationsFollowed: PropTypes.array,
 };
+
+const OpinionsFollowedListWrapper = styled('div')`
+`;

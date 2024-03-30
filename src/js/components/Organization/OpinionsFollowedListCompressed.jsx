@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
+import styled from 'styled-components';
 import OrganizationActions from '../../actions/OrganizationActions';
 import { renderLog } from '../../common/utils/logging';
 import OrganizationDisplayForListCompressed from './OrganizationDisplayForListCompressed';
@@ -76,9 +77,9 @@ export default class OpinionsFollowedListCompressed extends Component {
     });
 
     return (
-      <div className="guidelist card-child__list-group">
+      <OpinionsFollowedListCompressedWrapper className="guidelist card-child__list-group">
         {organizationsList}
-      </div>
+      </OpinionsFollowedListCompressedWrapper>
     );
   }
 }
@@ -86,3 +87,6 @@ OpinionsFollowedListCompressed.propTypes = {
   organizationsFollowed: PropTypes.array,
   editMode: PropTypes.bool,
 };
+
+const OpinionsFollowedListCompressedWrapper = styled('div')`
+`;

@@ -137,7 +137,7 @@ class OrganizationList extends Component {
       );
     }
     return (
-      <div>
+      <OrganizationListWrapper>
         {(organizationListToDisplay && organizationListToDisplayCount) ? (
           <div>
             {organizationListToDisplay.map((organization) => {
@@ -172,7 +172,7 @@ class OrganizationList extends Component {
             )}
           </div>
         ) : null}
-      </div>
+      </OrganizationListWrapper>
     );
   }
 }
@@ -184,13 +184,16 @@ OrganizationList.propTypes = {
   organizationListIdentifier: PropTypes.string,
 };
 
-const ShowMoreItemsWrapper = styled('div')`
-`;
-
 const NoSearchResultWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+`;
+
+const OrganizationListWrapper = styled('div')`
+`;
+
+const ShowMoreItemsWrapper = styled('div')`
 `;
 
 export default (OrganizationList);
