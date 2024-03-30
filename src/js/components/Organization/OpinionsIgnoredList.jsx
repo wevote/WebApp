@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import styled from 'styled-components';
 import { renderLog } from '../../common/utils/logging';
 import OrganizationDisplayForList from './OrganizationDisplayForList';
 
@@ -35,7 +36,7 @@ export default class OpinionsIgnoredList extends Component {
 
 
     return (
-      <div className="guidelist card-child__list-group">
+      <OpinionsIgnoredListWrapper className="guidelist card-child__list-group">
         {this.state.organizationsIgnored.map((organization) => (
           <OrganizationDisplayForList
             key={organization.organization_we_vote_id}
@@ -47,10 +48,13 @@ export default class OpinionsIgnoredList extends Component {
             twitterHandle={organization.twitter_handle}
           />
         ))}
-      </div>
+      </OpinionsIgnoredListWrapper>
     );
   }
 }
 OpinionsIgnoredList.propTypes = {
   organizationsIgnored: PropTypes.array,
 };
+
+const OpinionsIgnoredListWrapper = styled('div')`
+`;
