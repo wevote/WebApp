@@ -482,7 +482,7 @@ class News extends Component {
                   {voterIsSignedIn && (
                     <SignInSmallOptionsWrapper>
                       {!voterSignedInTwitter && (
-                        <div className='card'>
+                        <div className="card">
                           <div className="card-main">
                             <TwitterSignInWrapper>
                               <TwitterSignInCard />
