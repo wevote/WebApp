@@ -52,7 +52,7 @@ import mapCategoryFilterType from '../../utils/map-category-filter-type';
 import showBallotDecisionsTabs from '../../utilsApi/showBallotDecisionsTabs';
 import { checkShouldUpdate, formatVoterBallotList } from './utils/ballotUtils';
 
-const CompleteYourProfile2024 = React.lazy(() => import(/* webpackChunkName: 'CompleteYourProfile' */ '../../components/CompleteYourProfile/CompleteYourProfile2024/CompleteYourProfile2024'));
+const CompleteYourProfile2024 = React.lazy(() => import(/* webpackChunkName: 'CompleteYourProfile' */ '../../components/CompleteYourProfile/CompleteYourProfile2024'));
 // const CompleteYourProfile = React.lazy(() => import(/* webpackChunkName: 'CompleteYourProfile' */ '../../components/CompleteYourProfile/CompleteYourProfile'));
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
 const FilterBaseSearch = React.lazy(() => import(/* webpackChunkName: 'FilterBaseSearch' */ '../../components/Filter/FilterBaseSearch'));
@@ -1266,57 +1266,57 @@ class Ballot extends Component {
     const ballotReturnedAdminEditUrl = `${webAppConfig.WE_VOTE_SERVER_ROOT_URL}b/${sourcePollingLocationWeVoteId}/list_edit_by_polling_location/?google_civic_election_id=${VoterStore.electionId()}&state_code=`;
     // console.log('electionName: ', electionName, ', electionDayText: ', electionDayText);
 
-    const emptyBallotButton = completionLevelFilterType !== 'none' && !voterAddressMissing ? (
-      <EmptyBallotNotice>
-        <BallotEmptyTitle>
-          Ballot Not Released Yet
-        </BallotEmptyTitle>
-        <BallotEmptyExplanation>
-          Your next ballot isn&apos;t ready yet. Ballot data is usually available 45 days before each election.
-          You can also
-          {' '}
-          <span
-            className="u-cursor--pointer u-link-color u-link-color-on-hover"
-            onClick={() => AppObservableStore.setShowSelectBallotModalOnly(true)}
-          >
-            see what is on the ballot in other states
-          </span>
-          .
-          {!VoterStore.getVoterIsSignedIn() && (
-            <>
-              {' '}
-              Please sign in so we can notify you when your election data is available.
-            </>
-          )}
-          <br />
-          <br />
-          WeVote uses ballot data aggregated from government, nonpartisan, and partisan sources. WeVote strives to provide a balanced selection of clearly identified voting guides from newspapers and media. Partisan voter guides are also provided from a diversity of sources and points-of-view.
-          <br />
-          <br />
-          While you are waiting, connect with your friends who are already using WeVote.
-        </BallotEmptyExplanation>
-        <FindYourFriendsWrapper>
-          <Suspense fallback={<></>}>
-            <ViewUpcomingBallotButton />
-          </Suspense>
-        </FindYourFriendsWrapper>
-      </EmptyBallotNotice>
-    ) : (
-      <div className="container-fluid well u-stack--md u-inset--md">
-        <Helmet title="Enter Your Address - WeVote" />
-        <div>
-          <AddressBox
-            introductionHtml={(
-              <h3 className="h3 row">
-                Enter address where you are registered to vote
-              </h3>
-            )}
-            // classes={this.props.classes}
-            saveUrl={ballotBaseUrl}
-          />
-        </div>
-      </div>
-    );
+    // const emptyBallotButton = completionLevelFilterType !== 'none' && !voterAddressMissing ? (
+    //   <EmptyBallotNotice>
+    //     <BallotEmptyTitle>
+    //       Ballot Not Released Yet
+    //     </BallotEmptyTitle>
+    //     <BallotEmptyExplanation>
+    //       Your next ballot isn&apos;t ready yet. Ballot data is usually available 45 days before each election.
+    //       You can also
+    //       {' '}
+    //       <span
+    //         className="u-cursor--pointer u-link-color u-link-color-on-hover"
+    //         onClick={() => AppObservableStore.setShowSelectBallotModalOnly(true)}
+    //       >
+    //         see what is on the ballot in other states
+    //       </span>
+    //       .
+    //       {!VoterStore.getVoterIsSignedIn() && (
+    //         <>
+    //           {' '}
+    //           Please sign in so we can notify you when your election data is available.
+    //         </>
+    //       )}
+    //       <br />
+    //       <br />
+    //       WeVote uses ballot data aggregated from government, nonpartisan, and partisan sources. WeVote strives to provide a balanced selection of clearly identified voting guides from newspapers and media. Partisan voter guides are also provided from a diversity of sources and points-of-view.
+    //       <br />
+    //       <br />
+    //       While you are waiting, connect with your friends who are already using WeVote.
+    //     </BallotEmptyExplanation>
+    //     <FindYourFriendsWrapper>
+    //       <Suspense fallback={<></>}>
+    //         <ViewUpcomingBallotButton />
+    //       </Suspense>
+    //     </FindYourFriendsWrapper>
+    //   </EmptyBallotNotice>
+    // ) : (
+    //   <div className="container-fluid well u-stack--md u-inset--md">
+    //     <Helmet title="Enter Your Address - WeVote" />
+    //     <div>
+    //       <AddressBox
+    //         introductionHtml={(
+    //           <h3 className="h3 row">
+    //             Enter address where you are registered to vote
+    //           </h3>
+    //         )}
+    //         // classes={this.props.classes}
+    //         saveUrl={ballotBaseUrl}
+    //       />
+    //     </div>
+    //   </div>
+    // );
 
     // console.log('ballotWithItemsFromCompletionFilterType: ', ballotWithItemsFromCompletionFilterType);
     // Was: ballotWithItemsFromCompletionFilterType
@@ -1850,7 +1850,8 @@ const BallotTitleHeaderContainer = styled('div', {
 `));
 
 const CompleteYourProfileWrapper = styled('div')`
-  margin-top: 24px;
+  margin-top: 60px;
+  // margin-top: 24px;  // We can use this spacing when the header spacing is fixed
   margin-bottom: 45px;
 `;
 

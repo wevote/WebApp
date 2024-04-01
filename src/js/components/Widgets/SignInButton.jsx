@@ -17,7 +17,7 @@ export default function SignInButton (props) {
       onClick={props.toggleSignInModal}
       variant="text"
     >
-      <span className="u-no-break">
+      <SignInButtonInnerWrapper className="u-no-break">
         <span
           id="signIn"
           style={{
@@ -47,15 +47,18 @@ export default function SignInButton (props) {
             letterSpacing: '0.4px',
           }}
         >
-          Sign Up
+          Join
         </span>
-      </span>
+      </SignInButtonInnerWrapper>
     </StyledButton>
   );
 }
 SignInButton.propTypes = {
   toggleSignInModal: PropTypes.func,
 };
+
+const SignInButtonInnerWrapper = styled('span')`
+`;
 
 const StyledButton = styled(Button)(({ theme }) => (`
   font-size: 18px;

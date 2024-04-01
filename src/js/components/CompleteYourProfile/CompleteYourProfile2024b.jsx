@@ -1,18 +1,17 @@
+import { PlayCircleFilled, PushPin } from '@mui/icons-material';
+import withStyles from '@mui/styles/withStyles';
+import withTheme from '@mui/styles/withTheme';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import React, { Component, Suspense } from 'react';
-import crossIcon from '../../../../img/global/icons/cross.svg';
-import { renderLog } from '../../../common/utils/logging';
-import VoterConstants from '../../../constants/VoterConstants';
-import AppObservableStore from '../../../common/stores/AppObservableStore';
-import BallotStore from '../../../stores/BallotStore';
-import SupportStore from '../../../stores/SupportStore';
-import VoterStore from '../../../stores/VoterStore';
-import Colors from '../../../common/components/Style/Colors';
-import HowItWorksStep from './Step';
+import React, { Component } from 'react';
+import { renderLog } from '../../common/utils/logging';
+import VoterConstants from '../../constants/VoterConstants';
+import AppObservableStore from '../../common/stores/AppObservableStore';
+import BallotStore from '../../stores/BallotStore';
+import SupportStore from '../../stores/SupportStore';
+import VoterStore from '../../stores/VoterStore';
 
-const SignInModal = React.lazy(() => import(/* webpackChunkName: 'SignInModal' */ '../../../common/components/SignIn/SignInModal'));
-
-class CompleteYourProfile2024 extends Component {
+class CompleteYourProfile extends Component {
   constructor (props) {
     super(props);
     this.state = {
@@ -26,13 +25,13 @@ class CompleteYourProfile2024 extends Component {
       stepIdPersonalizedScore: 2,
       stepIdSignInToSave: 3,
       steps: [],
-      showHowItWorksWizzard: true,
     };
 
     this.previousStep = this.previousStep.bind(this);
     this.nextStep = this.nextStep.bind(this);
   }
 
+  // Steps: options, friends
   componentDidMount () {
     this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
     this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
@@ -41,7 +40,6 @@ class CompleteYourProfile2024 extends Component {
       ballotLength: BallotStore.ballotLength,
       ballotRemainingChoicesLength: BallotStore.ballotRemainingChoicesLength,
       goToNextIncompleteStepForced: true,
-      // textForMapSearch: VoterStore.getTextForMapSearch(),
       voterIsSignedIn: VoterStore.getVoterIsSignedIn(),
     }, () => this.updateStepsArray());
   }
@@ -69,10 +67,8 @@ class CompleteYourProfile2024 extends Component {
   }
 
   onVoterStoreChange () {
-    // console.log('CompleteYourProfile onVoterStoreChange');
     this.setState({
       goToNextIncompleteStepForced: true,
-      // textForMapSearch: VoterStore.getTextForMapSearch(),
       voterIsSignedIn: VoterStore.getVoterIsSignedIn(),
     }, () => this.updateStepsArray());
   }
@@ -104,10 +100,12 @@ class CompleteYourProfile2024 extends Component {
   }
 
   setItemComplete (stepItemIdToMarkComplete) {
+    // console.log('Setting complete!');
     const { steps } = this.state;
     let oneStepModified;
     const newSteps = steps.map((oneStep) => {
       if (oneStep.id === stepItemIdToMarkComplete) {
+        // console.log('Item to mark complete: ', oneStep);
         oneStepModified = oneStep;
         oneStepModified.completed = true;
         return oneStepModified;
@@ -120,10 +118,12 @@ class CompleteYourProfile2024 extends Component {
   }
 
   setItemNotComplete (stepItemIdToMarkNotComplete) {
+    // console.log('Setting not complete!');
     const { steps } = this.state;
     let oneStepModified;
     const newSteps = steps.map((oneStep) => {
       if (oneStep.id === stepItemIdToMarkNotComplete) {
+        // console.log('Item to mark not complete: ', oneStep);
         oneStepModified = oneStep;
         oneStepModified.completed = false;
         return oneStepModified;
@@ -154,13 +154,13 @@ class CompleteYourProfile2024 extends Component {
       steps: [
         {
           id: stepIdHowItWorks,
-          title: 'How WeVote works?',
+          title: 'Watch how it works (no sound)',
           buttonText: '',
           completed: false,
           description: '',
+          icon: (<PlayCircleFilled />),
           onClick: this.openHowItWorksModal,
           titleCanBeClicked: true,
-          width: '29%',
         },
         {
           id: stepIdPersonalizedScore,
@@ -168,9 +168,9 @@ class CompleteYourProfile2024 extends Component {
           buttonText: '',
           completed: false,
           description: '',
+          icon: (<PersonalizedScorePlusOne>+1</PersonalizedScorePlusOne>),
           onClick: this.openPersonalizedScoreIntroModal,
           titleCanBeClicked: true,
-          width: '29%',
         },
         {
           id: stepIdSignInToSave,
@@ -178,15 +178,16 @@ class CompleteYourProfile2024 extends Component {
           buttonText: voterIsSignedIn ? '' : 'Sign up to save choices',
           completed: false,
           description: '',
+          icon: (<PushPin />),
           onClick: this.toggleShowSignInModal,
           titleCanBeClicked: !voterIsSignedIn,
-          width: '42%',
         },
       ],
     }, () => this.setCompletedStatus());
   }
 
   openHowItWorksModal = () => {
+    // console.log('Opening modal');
     AppObservableStore.setShowHowItWorksModal(true);
   }
 
@@ -207,19 +208,11 @@ class CompleteYourProfile2024 extends Component {
 
   goToNextIncompleteStepIfForced = () => {
     const { goToNextIncompleteStepForced } = this.state;
-    // console.log('goToNextIncompleteStepForced:', goToNextIncompleteStepForced);
     if (goToNextIncompleteStepForced) {
       this.goToNextIncompleteStep();
     }
     this.setState({
       goToNextIncompleteStepForced: false,
-    });
-  }
-
-  goToStep = (stepId) => {
-    this.sortSteps();
-    this.setState({
-      activeStep: stepId,
     });
   }
 
@@ -230,16 +223,11 @@ class CompleteYourProfile2024 extends Component {
     });
   }
 
-  hideHowItWorksWizzard = () => {
-    this.setState({
-      showHowItWorksWizzard: false,
-    });
-  }
-
   previousStep () {
     this.sortSteps();
     const { steps } = this.state;
     const currentIndex = steps.map((oneStep) => oneStep.id).indexOf(this.state.activeStep);
+    // console.log('currentIndex: ', currentIndex);
     if (currentIndex >= 1) {
       this.setState({
         activeStep: steps[currentIndex - 1].id,
@@ -251,6 +239,7 @@ class CompleteYourProfile2024 extends Component {
     this.sortSteps();
     const { steps } = this.state;
     const currentIndex = steps.map((e) => e.id).indexOf(this.state.activeStep);
+    // console.log('currentIndex: ', currentIndex);
     if (steps[currentIndex + 1]) {
       this.setState({
         activeStep: steps[currentIndex + 1].id,
@@ -260,6 +249,7 @@ class CompleteYourProfile2024 extends Component {
 
   sortSteps () {
     function compare (a, b) {
+      // Use toUpperCase() to ignore character casing
       const itemA = a;
       const itemB = b;
 
@@ -286,19 +276,15 @@ class CompleteYourProfile2024 extends Component {
   }
 
   render () {
-    renderLog('CompleteYourProfile2024');  // Set LOG_RENDER_EVENTS to log all renders
+    renderLog('CompleteYourProfile');  // Set LOG_RENDER_EVENTS to log all renders
     const {
-      activeStep, ballotLength, ballotRemainingChoicesLength,
+      ballotLength, ballotRemainingChoicesLength,
       howItWorksWatched, personalizedScoreIntroCompleted,
-      showSignInModal,
-      steps,
       voterIsSignedIn,
-      showHowItWorksWizzard,
     } = this.state;
 
     // If we have completed all the steps, don't render this component
     const allStepsHaveBeenCompleted = howItWorksWatched && personalizedScoreIntroCompleted && voterIsSignedIn;
-    // Prior: (addressIntroCompleted || addressIntroCompletedByCookie) && howItWorksWatched && personalizedScoreIntroCompleted && valuesIntroCompleted && voterIsSignedIn
     const showCompleteYourProfileForDebugging = false;
     if (showCompleteYourProfileForDebugging) {
       // Pass by this OFF switch so we render this component
@@ -311,86 +297,58 @@ class CompleteYourProfile2024 extends Component {
 
     return (
       <div>
-        {(showSignInModal && !VoterStore.getVoterIsSignedIn()) && (
-          <Suspense fallback={<></>}>
-            <SignInModal
-              signInTitle="Sign in to save your ballot choices and settings."
-              signInSubTitle=""
-              toggleOnClose={this.toggleShowSignInModal}
-              uponSuccessfulSignIn={this.toggleShowSignInModal}
-            />
-          </Suspense>
-        )}
-        {(showHowItWorksWizzard) && (
-          <HowItWorksContainer>
-            <HowItWorksHeader>
-              <p>See how to turn your values into voting decisions!</p>
-              <HowItWorksCrossIconContainer onClick={this.hideHowItWorksWizzard}>
-                <img src={crossIcon} alt="Close" style={{ filter: 'brightness(1.9)' }} />
-              </HowItWorksCrossIconContainer>
-            </HowItWorksHeader>
-
-            <HowItWorksStepsContainer>
-              {steps.map((step) => (
-                <HowItWorksStep
-                    label={step.title}
-                    step={step.id}
-                    completed={step.completed}
-                    active={step.id === activeStep}
-                    key={`completeYourProfileIndicator-${step.id}`}
-                    id={`completeYourProfileIndicator-${step.id}`}
-                    onClick={() => { step.onClick(); }}
-                    width={step.width}
-                />
-              ))}
-            </HowItWorksStepsContainer>
-          </HowItWorksContainer>
-        )}
+        <HowItWorksContainer>
+          <Step />
+        </HowItWorksContainer>
       </div>
     );
   }
 }
+CompleteYourProfile.propTypes = {
+  classes: PropTypes.object,
+};
+const styles = () => ({
+  navigationButton: {
+    opacity: '0.8',
+    fontWeight: 400,
+  },
+});
 
 const HowItWorksContainer = styled('div')`
-  display: 'flex';
-  flexDirection: 'column';
-  justifyContent: 'center';
-  alignItems: 'center';
-  // height: 168px;
+  width: 458px;
+  height: 168px;
   border-radius: 10px;
-  border: 1px solid ${Colors.lightGrey};
-  background: ${Colors.primary50};
-  margin-bottom: 22px;
-  overflow: hidden;
+  border: 1px solid #B0B0B0;
+  background: #E6F3FF;
 `;
 
-const HowItWorksHeader = styled('div')`
-  min-height: 33px;
-  background: ${Colors.primary2024};
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+const Step = styled('div', {
+  shouldForwardProp: (prop) => !['complete', 'active'].includes(prop),
+})(({ complete, active }) => (`
+  cursor: pointer;
+  flex: 1 1 0;
+  height: 8px;
+  margin: 0 4px;
+  ${complete && active ? 'background: rgb(31,192,111); border-bottom: 2px solid #2E3C5D;' : ''}
+  ${complete && !active ? 'background: rgb(31,192,111);' : ''}
+  ${!complete && active ? 'background: #e1e1e1; border-bottom: 2px solid #2E3C5D;' : ''}
+  ${!complete && !active ? 'background: #e1e1e1;' : ''}
+`));
 
-  p {
-    color: ${Colors.white};
-    font-size: 15px;
-    font-style: normal;
-    font-weight: 500;
-    margin-bottom: 0;
-    padding-left: 16px;
+const PersonalizedScorePlusOne = styled('div')`
+  align-items: center;
+  background: #2E3C5D;
+  border-radius: 5px;
+  color: white;
+  display: flex;
+  font-size: 16px;
+  font-weight: bold;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  @media print{
+    border: 2px solid grey;
   }
 `;
 
-const HowItWorksCrossIconContainer = styled('div')`
-  padding-right: 8px;
-  cursor: pointer;
-`;
-
-const HowItWorksStepsContainer = styled('div')`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-  padding-top: 16px;
-`;
-
-export default CompleteYourProfile2024;
+export default withTheme(withStyles(styles)(CompleteYourProfile));

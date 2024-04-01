@@ -299,7 +299,7 @@ class HeaderBarModals extends Component {
       signInModalHtml = (
         <Suspense fallback={<></>}>
           <SignInModal
-            signInTitle="Sign In Or Sign Up"
+            signInTitle="Sign In or Join"
             signInSubTitle=""
             toggleOnClose={this.closeSignInModal}
             uponSuccessfulSignIn={this.closeSignInModal}

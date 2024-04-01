@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import Colors from '../../../common/components/Style/Colors';
+import Colors from '../../common/components/Style/Colors';
 
 const StepIcon = ({ number, completed }) => (
   <StepIconContainer completed={completed}>
@@ -30,7 +30,7 @@ const StepIconContainer = styled('div')`
     height: 20px;
     border-radius: 50%;
     background-color: ${completed ? 'initial' : Colors.primary2024};
- `}  
+ `}
 
 && p {
     color: ${Colors.white};
