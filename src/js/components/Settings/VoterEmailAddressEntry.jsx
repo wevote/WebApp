@@ -13,7 +13,7 @@ import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import VoterStore from '../../stores/VoterStore';
-import { FirstRowPhoneOrEmail, SecondRowPhoneOrEmail, TrashCan } from '../Style/pageLayoutStyles';
+import { FirstRowPhoneOrEmail, SecondRowPhoneOrEmail, SecondRowPhoneOrEmailDiv, AllPhoneOrEmailTypes } from '../Style/pageLayoutStyles';
 import { ButtonContainerHorizontal } from '../Welcome/sectionStyles';
 import SettingsVerifySecretCode from '../../common/components/Settings/SettingsVerifySecretCode';
 import { validateEmail } from '../../utils/regex-checks';
@@ -531,50 +531,50 @@ class VoterEmailAddressEntry extends Component {
             </FirstRowPhoneOrEmail>
             <SecondRowPhoneOrEmail>
               {isPrimaryEmailAddress ? (
-                <div key={`${voterEmailAddressFromList.email_we_vote_id}-internal`}>
+                <SecondRowPhoneOrEmailDiv>
                   <span>
                     Primary
-                    <span style={{ paddingRight: '112px' }}>&nbsp;</span>
                   </span>
-                  <OverlayTrigger
-                    placement="right"
-                    overlay={(
-                      <Tooltip id="tooltip-top">
-                        Cannot remove primary email. Please add another primary email before removing this one.
-                      </Tooltip>
-                    )}
-                  >
-                    <TrashCan>
-                      <span
-                        // className="u-gray-darker"
-                        style={{ color: '#757575' }}
-
-                      >
-                        <Delete />
-                      </span>
-                    </TrashCan>
-                  </OverlayTrigger>
-                </div>
+                  <span>
+                    <OverlayTrigger
+                      placement="right"
+                      overlay={(
+                        <Tooltip id="tooltip-top">
+                          You must add a new primary email before removing this one.
+                        </Tooltip>
+                      )}
+                    >
+                      <div>
+                        <span
+                          className="u-gray-border"
+                        >
+                          <Delete />
+                        </span>
+                      </div>
+                    </OverlayTrigger>
+                  </span>
+                </SecondRowPhoneOrEmailDiv>
               ) : (
-                <div key={`${voterEmailAddressFromList.email_we_vote_id}-internal`}>
+                <SecondRowPhoneOrEmailDiv key={`${voterEmailAddressFromList.email_we_vote_id}-internal`}>
                   <span
                     className="u-link-color u-cursor--pointer u-no-break"
                     onClick={() => this.setAsPrimaryEmailAddress(voterEmailAddressFromList.email_we_vote_id)}
                   >
                     Make Primary
-                    <span style={{ paddingRight: '65px' }}>&nbsp;</span>
                   </span>
                   {allowRemoveEmail && (
-                    <TrashCan>
-                      <span
-                        className="u-link-color u-cursor--pointer"
-                        onClick={() => this.removeVoterEmailAddress(voterEmailAddressFromList.email_we_vote_id)}
-                      >
-                        <Delete />
-                      </span>
-                    </TrashCan>
+                  <span>
+                    <div>
+                        <span
+                          className="u-link-color u-cursor--pointer"
+                          onClick={() => this.removeVoterEmailAddress(voterEmailAddressFromList.email_we_vote_id)}
+                        >
+                          <Delete />
+                        </span>
+                      </div>
+                  </span>
                   )}
-                </div>
+                </SecondRowPhoneOrEmailDiv>
               )}
             </SecondRowPhoneOrEmail>
           </div>
@@ -602,20 +602,24 @@ class VoterEmailAddressEntry extends Component {
               {voterEmailAddressFromList.email_ownership_is_verified ?
                 null : (
                   <SecondRowPhoneOrEmail>
-                    <span
-                      className="u-link-color u-cursor--pointer u-no-break"
-                      onClick={() => this.reSendSignInCodeEmail(voterEmailAddressFromList.normalized_email_address)}
-                    >
-                      Send verification again
-                    </span>
-                    {allowRemoveEmail && (
-                      <TrashCan
-                        className="u-link-color u-cursor--pointer"
-                        onClick={() => this.removeVoterEmailAddress(voterEmailAddressFromList.email_we_vote_id)}
+                    <SecondRowPhoneOrEmailDiv key={`${voterEmailAddressFromList.email_we_vote_id}-internal`}>
+                      <span
+                        className="u-link-color u-cursor--pointer u-no-break"
+                        onClick={() => this.reSendSignInCodeEmail(voterEmailAddressFromList.normalized_email_address)}
                       >
-                        <Delete />
-                      </TrashCan>
-                    )}
+                        Send verification again
+                      </span>
+                      {allowRemoveEmail && (
+                        <span>
+                          <div
+                            className="u-link-color u-cursor--pointer"
+                            onClick={() => this.removeVoterEmailAddress(voterEmailAddressFromList.email_we_vote_id)}
+                          >
+                            <Delete />
+                          </div>
+                        </span>
+                      )}
+                    </SecondRowPhoneOrEmailDiv>
                   </SecondRowPhoneOrEmail>
                 )}
             </div>
@@ -633,7 +637,7 @@ class VoterEmailAddressEntry extends Component {
             {emailAddressStatusHtml}
           </span>
         ) : (
-          <div>
+          <AllPhoneOrEmailTypes>
             {verifiedEmailsFound ? (
               <EmailSection isWeb={isWebApp()}>
                 <span className="h3">
@@ -654,7 +658,7 @@ class VoterEmailAddressEntry extends Component {
                 {toVerifyEmailListHtml}
               </EmailSection>
             )}
-          </div>
+          </AllPhoneOrEmailTypes>
         )}
         {!hideSignInWithEmailForm && (
           <EmailSection isWeb={isWebApp()}>

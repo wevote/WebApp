@@ -18,7 +18,7 @@ import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import VoterStore from '../../stores/VoterStore';
-import { FirstRowPhoneOrEmail, SecondRowPhoneOrEmail, TrashCan } from '../Style/pageLayoutStyles';
+import { FirstRowPhoneOrEmail, SecondRowPhoneOrEmail, SecondRowPhoneOrEmailDiv, AllPhoneOrEmailTypes } from '../Style/pageLayoutStyles';
 import { ButtonContainerHorizontal } from '../Welcome/sectionStyles';
 import SettingsVerifySecretCode from '../../common/components/Settings/SettingsVerifySecretCode';
 // import { validatePhoneOrEmail } from '../../utils/regex-checks';
@@ -580,49 +580,45 @@ class VoterPhoneVerificationEntry extends Component {
             </FirstRowPhoneOrEmail>
             <SecondRowPhoneOrEmail>
               {isPrimarySMSPhoneNumber ? (
-                <div key={`${voterSMSPhoneNumberFromList.sms_we_vote_id}-internal`}>
+                <SecondRowPhoneOrEmailDiv>
                   <span>
                     Primary
-                    <span style={{ paddingRight: '112px' }}>&nbsp;</span>
                   </span>
                   <OverlayTrigger
                     placement="right"
                     overlay={(
                       <Tooltip id="tooltip-top">
-                        Cannot remove primary phone number. Please add another primary number before removing this one.
+                        You must add a new primary number before removing this one.
                       </Tooltip>
                     )}
                   >
-                    <TrashCan>
+                    <div>
                       <span
-                        // className="u-gray-mid"
-                        style={{ color: '#757575' }}
-
+                        className="u-gray-border"
                       >
                         <Delete />
                       </span>
-                    </TrashCan>
+                    </div>
                   </OverlayTrigger>
 
-                </div>
+                </SecondRowPhoneOrEmailDiv>
               ) : (
-                <div key={`${voterSMSPhoneNumberFromList.sms_we_vote_id}-internal`}>
+                <SecondRowPhoneOrEmailDiv key={`${voterSMSPhoneNumberFromList.sms_we_vote_id}-internal`}>
                   <span
                      className="u-link-color u-cursor--pointer"
                      onClick={() => this.setAsPrimarySMSPhoneNumber.bind(this, voterSMSPhoneNumberFromList.sms_we_vote_id)}
                   >
                     Make Primary
-                    <span style={{ paddingRight: '65px' }}>&nbsp;</span>
                   </span>
                   {allowRemoveSMSPhoneNumber && (
-                    <TrashCan
+                    <div
                       className="u-link-color u-cursor--pointer"
                       onClick={() => this.removeVoterSMSPhoneNumber.bind(this, voterSMSPhoneNumberFromList.sms_we_vote_id)}
                     >
                       <Delete />
-                    </TrashCan>
+                    </div>
                   )}
-                </div>
+                </SecondRowPhoneOrEmailDiv>
               )}
             </SecondRowPhoneOrEmail>
           </div>
@@ -650,20 +646,22 @@ class VoterPhoneVerificationEntry extends Component {
               {voterSMSPhoneNumberFromList.sms_ownership_is_verified ?
                 null : (
                   <SecondRowPhoneOrEmail>
-                    <span
-                      className="u-link-color u-cursor--pointer u-no-break"
-                      onClick={() => this.reSendSignInCodeSMS(voterSMSPhoneNumberFromList.normalized_sms_phone_number)}
-                    >
-                      Send verification again
-                    </span>
-                    {allowRemoveSMSPhoneNumber && (
-                      <TrashCan
-                        className="u-link-color u-cursor--pointer"
-                        onClick={() => this.removeVoterSMSPhoneNumber.bind(this, voterSMSPhoneNumberFromList.sms_we_vote_id)}
+                    <SecondRowPhoneOrEmailDiv>
+                      <span
+                        className="u-link-color u-cursor--pointer u-no-break"
+                        onClick={() => this.reSendSignInCodeSMS(voterSMSPhoneNumberFromList.normalized_sms_phone_number)}
                       >
-                        <Delete />
-                      </TrashCan>
-                    )}
+                        Send verification again
+                      </span>
+                      {allowRemoveSMSPhoneNumber && (
+                        <div
+                          className="u-link-color u-cursor--pointer"
+                          onClick={() => this.removeVoterSMSPhoneNumber.bind(this, voterSMSPhoneNumberFromList.sms_we_vote_id)}
+                        >
+                          <Delete />
+                        </div>
+                      )}
+                    </SecondRowPhoneOrEmailDiv>
                   </SecondRowPhoneOrEmail>
                 )}
             </div>
@@ -681,7 +679,7 @@ class VoterPhoneVerificationEntry extends Component {
             {smsPhoneNumberStatusHtml}
           </span>
         ) : (
-          <div>
+          <AllPhoneOrEmailTypes>
             {verifiedSMSFound ? (
               <PhoneNumberSection isWeb={isWebApp()}>
                 <span className="h3">
@@ -702,7 +700,7 @@ class VoterPhoneVerificationEntry extends Component {
                 {toVerifySMSListHtml}
               </PhoneNumberSection>
             )}
-          </div>
+          </AllPhoneOrEmailTypes>
         )}
         {!hideSignInWithPhoneForm && (
           <PhoneNumberSection isWeb={isWebApp()}>
