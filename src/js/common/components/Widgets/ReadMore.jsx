@@ -1,9 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-// import TextTruncate from 'react-text-truncate'; // TODO APRIL 2021:  This doesn't support the latest React libs, can't we do the same with css? (See note below)
-// 2021-02-23 NOTE FROM DALE: I'd like to try to upgrade ReadMore to use react-truncate-markup
-// This newer package supports truncating JSX, and isn't limited to text only:
 import TruncateMarkup from 'react-truncate-markup';
+import styled from 'styled-components';
 import { renderLog } from '../../utils/logging';
 
 export default class ReadMore extends Component {
@@ -43,6 +41,7 @@ export default class ReadMore extends Component {
     let {
       textToDisplay, linkText, numberOfLines, collapseText,
     } = this.props;
+    const { readMore } = this.state;
     // default prop values
     if (numberOfLines === undefined) {
       numberOfLines = 3;
@@ -112,7 +111,7 @@ export default class ReadMore extends Component {
     }
 
     const showMoreEllipsis = (
-      <span>
+      <ShowMoreEllipsisSpan>
         &hellip;
         {' '}
         <a //eslint-disable-line
@@ -125,23 +124,22 @@ export default class ReadMore extends Component {
           {linkText}
         </a>
 
-      </span>
+      </ShowMoreEllipsisSpan>
     );
 
-    if (this.state.readMore) {
+    if (readMore) {
       return (
-        <span className="text">
+        <ReadMoreExpandedWrapper className="text">
           <TruncateMarkup lines={numberOfLines} ellipsis={showMoreEllipsis} tokenize="words">
             <span>
               {textToDisplay}
             </span>
           </TruncateMarkup>
-        </span>
+        </ReadMoreExpandedWrapper>
       );
     } else {
       return (
-
-        <span>
+        <ReadMoreCollapsedWrapper>
           {expandedTextToDisplay}
           {' '}
           <a //eslint-disable-line
@@ -153,7 +151,7 @@ export default class ReadMore extends Component {
           >
             {collapseText}
           </a>
-        </span>
+        </ReadMoreCollapsedWrapper>
       );
     }
   } // end render
@@ -166,3 +164,12 @@ ReadMore.propTypes = {
   onShowMoreAlternateFunction: PropTypes.func,
   textToDisplay: PropTypes.node.isRequired,
 };
+
+const ReadMoreCollapsedWrapper = styled('span')`
+`;
+
+const ReadMoreExpandedWrapper = styled('span')`
+`;
+
+const ShowMoreEllipsisSpan = styled('span')`
+`;
