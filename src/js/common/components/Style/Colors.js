@@ -1,5 +1,7 @@
 const colors = {
   primary: '#0834CD',
+  primary2024: '#053C6D',
+  primary50: '#E6F3FF',
   primaryHover: '#09288A',
   secondaryHover: '#F5F7FD',
   darkGrey: '#454F69',
