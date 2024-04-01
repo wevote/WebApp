@@ -46,7 +46,7 @@ class Testimonial extends React.Component {
             verticalAlign: 'text-bottom',
             position: 'relative',
             top: '3px',
-            marginLeft: '-4px',
+            // marginLeft: '-4px',
           }}
           />
           {testimonial}
@@ -96,7 +96,7 @@ const TextStyled = styled('div')`
   font-weight: 600;
   font-family: ${'$heading-font-stack'};
   text-align: left;
-  margin: -5px 15px 15px 15px;
+  margin: 10px 0;
   border-width: medium;
   font-size: 14px;
   line-height: normal;
