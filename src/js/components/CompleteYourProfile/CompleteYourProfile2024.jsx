@@ -360,10 +360,10 @@ class CompleteYourProfile2024 extends Component {
 
 const HowItWorksContainer = styled('div')`
   display: 'flex';
+  font-family: 'Open Sans', sans-serif;
   flexDirection: 'column';
   justifyContent: 'center';
   alignItems: 'center';
-  // height: 168px;
   border-radius: 10px;
   border: 1px solid ${Colors.lightGrey};
   background: ${Colors.primary50};
@@ -383,7 +383,7 @@ const HowItWorksHeader = styled('div')`
     font-size: 15px;
     font-style: normal;
     font-weight: 500;
-    margin-bottom: 0;
+    margin: 0;
     padding-left: 16px;
   }
 `;
