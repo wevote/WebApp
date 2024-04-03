@@ -2,6 +2,7 @@ import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { FacebookShareButton } from 'react-share';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 import styled from 'styled-components';
 import CampaignSupporterActions from '../../actions/CampaignSupporterActions';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
@@ -100,7 +101,9 @@ class ShareOnFacebookButton extends Component {
     let linkToBeSharedUrlEncoded = '';
     linkToBeShared = linkToBeShared.replace('https://file:/', 'https://wevote.us/');  // Cordova
     linkToBeSharedUrlEncoded = encodeURI(linkToBeShared);
+    console.log(`ShareOnFacebookButton linkToBeShared: ${linkToBeShared}`)
     const quoteForSharing = generateQuoteForSharing(campaignTitle, numberOfPoliticians, politicianListSentenceString);
+    console.log(`ShareOnFacebookButton quoteForSharing: ${quoteForSharing}`)
     const quoteForSharingEncoded = encodeURI(quoteForSharing);
     return (
       <Wrapper>
@@ -109,6 +112,7 @@ class ShareOnFacebookButton extends Component {
                androidFacebookClickHandler(`${linkToBeSharedUrlEncoded}&t=WeVote`, quoteForSharingEncoded)}
         >
           { /* [WV-104] - If react-share restores the quote feature, add in this prop to FacebookShareButton: quote={quoteForSharing} */ }
+          <CopyToClipboard text={quoteForSharing} onCopy={() => console.log(`Copied the following: ${quoteForSharing}`)}>
           <FacebookShareButton
             className={mobileMode ? 'material_ui_button_mobile' : ''}
             hashtag={inPrivateLabelMode ? null : '#WeVote'}
@@ -126,6 +130,7 @@ class ShareOnFacebookButton extends Component {
               </div>
             </div>
           </FacebookShareButton>
+          </CopyToClipboard>
         </div>
       </Wrapper>
     );
