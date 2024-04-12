@@ -492,7 +492,6 @@ class PoliticianDetailsPage extends Component {
     const { classes } = this.props;
     const { match: { params } } = this.props;
     const { politicianSEOFriendlyPath: politicianSEOFriendlyPathFromUrl } = params;
-    // console.log('componentDidMount politicianSEOFriendlyPathFromUrl: ', politicianSEOFriendlyPathFromUrl);
     const {
       allCachedPositionsForThisPolitician, ballotpediaPoliticianUrl, candidateCampaignList, chosenWebsiteName,
       supporterEndorsementsWithText, finalElectionDateInPast, linkedCampaignXWeVoteId, loadSlow,
@@ -506,6 +505,9 @@ class PoliticianDetailsPage extends Component {
       voterCanEditThisPolitician, voterSupportsThisPolitician,
       wikipediaUrl, // youtubeUrl,
     } = this.state;
+
+    const politicianLinksList = [{ Twitter: this.state.twitterHandle2 }, { Wikipedia: this.state.wikipediaUrl }, { Ballot: this.state.ballotpediaPoliticianUrl }];
+
     const campaignAdminEditUrl = `${webAppConfig.WE_VOTE_SERVER_ROOT_URL}campaign/${linkedCampaignXWeVoteId}/summary`;
 
     if (politicianDataNotFound) {
@@ -533,43 +535,32 @@ class PoliticianDetailsPage extends Component {
       );
     }
 
-    // console.log('render isSupportersCountMinimumExceeded: ', isSupportersCountMinimumExceeded);
     let htmlTitle = `${chosenWebsiteName}`;
     if (politicianName) {
       htmlTitle = `${politicianName} - ${chosenWebsiteName}`;
     }
 
-    const politicianLinks = (
+    const politicianLinksContainer = (
       <PoliticianLinksWrapper>
-        {!!(twitterHandle && twitterFollowersCount) && (
-          <TwitterWrapper>
-            <TwitterAccountStats
-              includeLinkToTwitter
-              twitterFollowersCount={twitterFollowersCount}
-              twitterHandle={twitterHandle}
-            />
-          </TwitterWrapper>
-        )}
-        {!!(twitterHandle2) && (
-          <TwitterWrapper>
-            <TwitterAccountStats
-              includeLinkToTwitter
-              // twitterFollowersCount={twitterFollowersCount}
-              twitterHandle={twitterHandle2}
-            />
-          </TwitterWrapper>
-        )}
-        {(politicianUrl) && (
-          <ExternalWebSiteWrapper>
-            <Suspense fallback={<></>}>
+        <p>More Candidate Information</p>
+
+        <Politicianlinks>
+          {politicianLinksList.map((link) => {
+            const key = Object.keys(link)[0];
+            const value = link[key];
+
+            if (!value) return null;
+
+            return (
               <OpenExternalWebSite
-                linkIdAttribute="candidateDesktop"
-                url={politicianUrl}
+                url={value}
                 target="_blank"
                 className="u-gray-mid"
+                rel="noopener noreferrer"
+                title={key}
                 body={(
-                  <div>
-                    website
+                  <div style={{ paddingRight: '12px', paddingBottom: '4px' }}>
+                    {key}
                     <Launch
                       style={{
                         height: 14,
@@ -581,24 +572,13 @@ class PoliticianDetailsPage extends Component {
                   </div>
                 )}
               />
-            </Suspense>
-          </ExternalWebSiteWrapper>
-        )}
+            );
+          })}
+        </Politicianlinks>
+
       </PoliticianLinksWrapper>
     );
-    const politicianButtons = (
-      <PoliticianLinksWrapper>
-        {ballotpediaPoliticianUrl && (
-          <ViewOnBallotpedia externalLinkUrl={ballotpediaPoliticianUrl} />
-        )}
-        {wikipediaUrl && (
-          <ViewOnWikipedia externalLinkUrl={wikipediaUrl} />
-        )}
-        {politicianName && (
-          <SearchOnGoogle googleQuery={`${politicianName} ${stateText} ${officeHeldNameForSearch}`} />
-        )}
-      </PoliticianLinksWrapper>
-    );
+
     let opponentCandidatesHtml = '';
     const opponentsSubtitle = 'Candidates Running for Same Office';
     let priorCandidateCampaignsHtml = '';
@@ -826,8 +806,7 @@ class PoliticianDetailsPage extends Component {
               <CampaignDescription>
                 {politicianDescription}
               </CampaignDescription>
-              {politicianLinks}
-              {politicianButtons}
+              {politicianLinksContainer}
               <UpdatePoliticianInformation politicianName={politicianName} />
               {finalElectionDateInPast && (
                 <IndicatorRow>
@@ -977,8 +956,8 @@ class PoliticianDetailsPage extends Component {
                   <CampaignDescriptionDesktop>
                     {politicianDescription}
                   </CampaignDescriptionDesktop>
-                  {politicianLinks}
-                  {politicianButtons}
+                  {politicianLinksContainer}
+                  {/* {politicianButtons} */}
                   <UpdatePoliticianInformation politicianName={politicianName} />
                   {finalElectionDateInPast && (
                     <IndicatorRow>
@@ -1162,13 +1141,6 @@ const MissingPoliticianText = styled('p')(({ theme }) => (`
   }
 `));
 
-const ExternalWebSiteWrapper = styled('div')`
-  margin-top: 3px;
-  padding-left: 15px;
-  white-space: nowrap;
-  // ${() => displayNoneIfSmallerThanDesktop()};
-`;
-
 const PoliticalPartyDiv = styled('div')`
   font-size: 18px;
   // text-align: center;
@@ -1182,10 +1154,23 @@ const PoliticianLinksWrapper = styled('div')`
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
+
+    p{
+      font-size: 18px;
+      font-weight: 600;
+      text-align: center;
+      padding-top: 18px;
+      margin: 0;
+    }
+  }
 `;
 
-const TwitterWrapper = styled('div')`
-  margin-right: 20px;
+const Politicianlinks = styled('div')`
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 2px;
+  margin-bottom: 12px;
+  width: 100%;
 `;
 
 export default withStyles(styles)(PoliticianDetailsPage);

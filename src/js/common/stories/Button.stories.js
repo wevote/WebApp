@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Button from '../../components/Buttons/BaseButton';
 
 export default {
-  title: 'Design System',
+  title: 'Design System/Buttons',
   component: Button,
   parameters: {
     layout: 'centered',
