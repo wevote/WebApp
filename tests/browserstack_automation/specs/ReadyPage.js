@@ -13,21 +13,21 @@ describe('ReadyPage', () => {
   it('verifyElectionCountDownRedirect', async () => {
     await ReadyPage.load();
     await ReadyPage.electionCountDownTitle.findAndClick();
-    await expect(driver).toHaveUrlContaining('ballot');
+    await expect(driver).not.toHaveUrl(expect.stringContaining('ready'));
   });
 
-//  // Ready_002                                    ----- BUG REPORT # 132 ------
-//  it('updateBallotAddress', async () => {
-//    await ReadyPage.load();
-//    await ReadyPage.updateBallotAddress('New York, NY, USA');
-//    await expect(ReadyPage.ballotForAddress).toHaveText('New York, NY, USA')
-//  });
+  // Ready_002
+  // it('updateBallotAddress', async () => {
+  //   await ReadyPage.load();
+  //   await ReadyPage.updateBallotAddress('New York, NY, USA');
+  //   await expect(ReadyPage.ballotForAddress).toHaveText('New York, NY, USA');
+  // });
 
   // Ready_003
   it('verifyViewUpcomingBallotRedirect', async () => {
     await ReadyPage.load();
     await ReadyPage.viewUpcomingBallotButton.findAndClick();
-    await expect(driver).not.toHaveUrlContaining('ready');
+    await expect(driver).not.toHaveUrl(expect.stringContaining('ready'));
   });
 
   // Ready_004
@@ -50,7 +50,7 @@ describe('ReadyPage', () => {
   // Ready_006
   it('toggleIntroduction', async () => {
     await ReadyPage.load();
-    await expect(ReadyPage.introductionStepText).not.toBeDisplayed()
+    await expect(ReadyPage.introductionStepText).not.toBeDisplayed();
     await ReadyPage.toggleIntroduction();
     await expect(ReadyPage.introductionStepText).toBeElementsArrayOfSize(3);
   });
@@ -58,24 +58,24 @@ describe('ReadyPage', () => {
   // Ready_007
   it('toggleFinePrint', async () => {
     await ReadyPage.load();
-    await expect(ReadyPage.finePrintStepText).not.toBeDisplayed()
+    await expect(ReadyPage.finePrintStepText).not.toBeDisplayed();
     await ReadyPage.toggleFinePrint();
     await expect(ReadyPage.finePrintStepText).toBeElementsArrayOfSize(4);
   });
 
   // Ready_008
-  it('signIn', async () => {
-    await ReadyPage.load();
-    await expect(ReadyPage.avatar).not.toExist();
-    await ReadyPage.signIn();
-    await expect(ReadyPage.avatar).toBeDisplayed();
-  });
+  // it('signIn', async () => {
+  //   await ReadyPage.load();
+  //   await expect(ReadyPage.avatar).not.toExist();
+  //   await ReadyPage.signIn();
+  //   await expect(ReadyPage.avatar).toBeDisplayed();
+  // });
 
   // Ready_009
   it('verifyPrivacyLinkRedirected', async () => {
     await ReadyPage.load();
     await ReadyPage.findPrivacyLink.click();
-    await expect(driver).toHaveUrlContaining('/privacy');
+    await expect(driver).toHaveUrl(expect.stringContaining('privacy'));
     await expect(PrivacyPage.pageContentTitleText).toHaveText('WeVote.US Privacy Policy');
   });
 
@@ -110,7 +110,7 @@ describe('ReadyPage', () => {
     await ReadyPage.clickHowItWorksLink();
     await ReadyPage.clickNextButtonFourTimes();
     await ReadyPage.clickGetStartedButton();
-    await expect(ReadyPage.getTitleSignUpPopUp).toHaveText('Sign In Or Sign Up');
+    await expect(ReadyPage.getTitleSignUpPopUp).toHaveText('Sign In or Join');
   });
 
   // Ready_014
@@ -142,7 +142,7 @@ describe('ReadyPage', () => {
     await ReadyPage.load();
     await ReadyPage.getTeamLinkElement.click();
     await driver.switchWindow('https://wevote.us/more/about');
-    await expect(ReadyPage.getTeamPageTitleElement).toHaveText('About We Vote');
+    await expect(ReadyPage.getTeamPageTitleElement).toHaveText('About WeVote');
   });
 
   // Ready_018

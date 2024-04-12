@@ -4,7 +4,7 @@ import { driver, expect } from '@wdio/globals';
 
 class ReadyPage extends Page {
   constructor () {
-    super().title = 'Ready to Vote? - We Vote';
+    super().title = 'Ready to Vote? - WeVote';
   }
 
   get avatar () {
