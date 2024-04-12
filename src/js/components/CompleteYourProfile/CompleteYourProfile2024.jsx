@@ -160,7 +160,7 @@ class CompleteYourProfile2024 extends Component {
           description: '',
           onClick: this.openHowItWorksModal,
           titleCanBeClicked: true,
-          width: '29%',
+          width: '33.33%',
         },
         {
           id: stepIdPersonalizedScore,
@@ -170,7 +170,7 @@ class CompleteYourProfile2024 extends Component {
           description: '',
           onClick: this.openPersonalizedScoreIntroModal,
           titleCanBeClicked: true,
-          width: '29%',
+          width: '33.33%',
         },
         {
           id: stepIdSignInToSave,
@@ -180,7 +180,7 @@ class CompleteYourProfile2024 extends Component {
           description: '',
           onClick: this.toggleShowSignInModal,
           titleCanBeClicked: !voterIsSignedIn,
-          width: '42%',
+          width: '33.33%',
         },
       ],
     }, () => this.setCompletedStatus());
@@ -365,7 +365,7 @@ const HowItWorksContainer = styled('div')`
   alignItems: 'center';
   // height: 168px;
   border-radius: 10px;
-  border: 1px solid ${Colors.lightGrey};
+  border: 1px solid #B0B0B0;
   background: ${Colors.primary50};
   margin-bottom: 22px;
   overflow: hidden;
@@ -397,7 +397,6 @@ const HowItWorksStepsContainer = styled('div')`
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
-  padding-top: 16px;
 `;
 
 export default CompleteYourProfile2024;
