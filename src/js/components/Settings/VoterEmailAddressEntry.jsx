@@ -5,6 +5,8 @@ import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
 import VoterActions from '../../actions/VoterActions';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import apiCalming from '../../common/utils/apiCalming';
@@ -17,9 +19,6 @@ import { FirstRowPhoneOrEmail, SecondRowPhoneOrEmail, SecondRowPhoneOrEmailDiv, 
 import { ButtonContainerHorizontal } from '../Welcome/sectionStyles';
 import SettingsVerifySecretCode from '../../common/components/Settings/SettingsVerifySecretCode';
 import { validateEmail } from '../../utils/regex-checks';
-import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
-import Tooltip from 'react-bootstrap/Tooltip';
-
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 
@@ -565,13 +564,13 @@ class VoterEmailAddressEntry extends Component {
                   {allowRemoveEmail && (
                   <span>
                     <div>
-                        <span
-                          className="u-link-color u-cursor--pointer"
-                          onClick={() => this.removeVoterEmailAddress(voterEmailAddressFromList.email_we_vote_id)}
-                        >
-                          <Delete />
-                        </span>
-                      </div>
+                      <span
+                        className="u-link-color u-cursor--pointer"
+                        onClick={() => this.removeVoterEmailAddress(voterEmailAddressFromList.email_we_vote_id)}
+                      >
+                        <Delete />
+                      </span>
+                    </div>
                   </span>
                   )}
                 </SecondRowPhoneOrEmailDiv>
