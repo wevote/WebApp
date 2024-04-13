@@ -159,7 +159,8 @@ staticfiles
 /**/migrations/*.py
 !/**/migrations/__init__.py
 srcCordova
-src/cert/*
+src/cert/*.*
+!src/cert/README.txt
 src/js/compileDate.js
 src/js/config.js
 src/js/config-qa.js
