@@ -1,4 +1,4 @@
-import { Launch, PersonSearch } from '@mui/icons-material';
+import { PersonSearch } from '@mui/icons-material';
 import { Button } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
@@ -7,7 +7,6 @@ import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { PageContentContainer } from '../../../components/Style/pageLayoutStyles';
-import TwitterAccountStats from '../../../components/Widgets/TwitterAccountStats';
 import webAppConfig from '../../../config';
 import CandidateStore from '../../../stores/CandidateStore';
 import RepresentativeStore from '../../../stores/RepresentativeStore';
@@ -21,9 +20,6 @@ import { PageWrapper } from '../../components/Style/stepDisplayStyles';
 import DelayedLoad from '../../components/Widgets/DelayedLoad';
 import LinkToAdminTools from '../../components/Widgets/LinkToAdminTools';
 import OfficeHeldNameText from '../../components/Widgets/OfficeHeldNameText';
-import SearchOnGoogle from '../../components/Widgets/SearchOnGoogle';
-import ViewOnBallotpedia from '../../components/Widgets/ViewOnBallotpedia';
-import ViewOnWikipedia from '../../components/Widgets/ViewOnWikipedia';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import CampaignSupporterStore from '../../stores/CampaignSupporterStore';
 import OfficeHeldStore from '../../stores/OfficeHeldStore';
@@ -32,7 +28,6 @@ import { convertStateCodeToStateText } from '../../utils/addressFunctions';
 import { getYearFromUltimateElectionDate } from '../../utils/dateFormat';
 import historyPush from '../../utils/historyPush';
 import { isWebApp } from '../../utils/isCordovaOrWebApp';
-import { displayNoneIfSmallerThanDesktop } from '../../utils/isMobileScreenSize';
 import keepHelpingDestination from '../../utils/keepHelpingDestination';
 import { renderLog } from '../../utils/logging';
 import { getPoliticianValuesFromIdentifiers, retrievePoliticianFromIdentifiersIfNeeded } from '../../utils/politicianUtils';
@@ -339,7 +334,6 @@ class PoliticianDetailsPage extends Component {
       politicianWeVoteId,
       profileImageBackgroundColor,
       stateCode,
-      twitterFollowersCount,
       twitterHandle,
       twitterHandle2,
       wikipediaUrl,
@@ -383,7 +377,6 @@ class PoliticianDetailsPage extends Component {
       politicianUrl,
       profileImageBackgroundColor,
       stateText,
-      twitterFollowersCount,
       twitterHandle,
       twitterHandle2,
       wikipediaUrl,
@@ -423,7 +416,6 @@ class PoliticianDetailsPage extends Component {
       politicianSEOFriendlyPathForDisplay: '', // We don't clear politicianSEOFriendlyPath because we may need it to load next politician
       profileImageBackgroundColor: '',
       stateText: '',
-      twitterFollowersCount: 0,
       twitterHandle: '',
       twitterHandle2: '',
       wikipediaUrl: '',
@@ -501,12 +493,53 @@ class PoliticianDetailsPage extends Component {
       politicianSEOFriendlyPath, politicianSEOFriendlyPathForDisplay,
       politicianName, politicianUrl,
       politicianWeVoteId, politicianWeVoteIdForDisplay, profileImageBackgroundColor,
-      stateText, twitterHandle, twitterHandle2, twitterFollowersCount,
+      stateText, twitterHandle, twitterHandle2,
       voterCanEditThisPolitician, voterSupportsThisPolitician,
       wikipediaUrl, // youtubeUrl,
     } = this.state;
 
-    const politicianLinksList = [{ Twitter: this.state.twitterHandle2 }, { Wikipedia: this.state.wikipediaUrl }, { Ballot: this.state.ballotpediaPoliticianUrl }];
+    const politicianLinksList = [];
+    if (politicianUrl) {
+      politicianLinksList.push({
+        linkText: 'Candidate website',
+        externalLinkUrl: politicianUrl,
+      });
+    }
+    if (twitterHandle) {
+      const twitterHandleCleaned = twitterHandle.trim();
+      politicianLinksList.push({
+        linkText: `twitter.com/${twitterHandleCleaned}`,
+        externalLinkUrl: `https://twitter.com/${twitterHandleCleaned}`,
+      });
+    }
+    if (twitterHandle2) {
+      const twitterHandle2Cleaned = twitterHandle2.trim();
+      politicianLinksList.push({
+        linkText: `twitter.com/${twitterHandle2Cleaned}`,
+        externalLinkUrl: `https://twitter.com/${twitterHandle2Cleaned}`,
+      });
+    }
+    if (wikipediaUrl) {
+      politicianLinksList.push({
+        linkText: 'wikipedia.org',
+        externalLinkUrl: wikipediaUrl,
+      });
+    }
+    if (ballotpediaPoliticianUrl) {
+      politicianLinksList.push({
+        linkText: 'ballotpedia.org',
+        externalLinkUrl: ballotpediaPoliticianUrl,
+      });
+    }
+    if (politicianName || officeHeldNameForSearch) {
+      const googleQuery = `${politicianName} ${stateText} ${officeHeldNameForSearch}`;
+      const googleQueryUrlFriendly = googleQuery.replace(/ /g, '+');
+      const googleSearchUrl = `https://www.google.com/search?q=${googleQueryUrlFriendly}&oq=${googleQueryUrlFriendly}`;
+      politicianLinksList.push({
+        linkText: 'Google search',
+        externalLinkUrl: googleSearchUrl,
+      });
+    }
 
     const campaignAdminEditUrl = `${webAppConfig.WE_VOTE_SERVER_ROOT_URL}campaign/${linkedCampaignXWeVoteId}/summary`;
 
@@ -544,37 +577,30 @@ class PoliticianDetailsPage extends Component {
       <PoliticianLinksWrapper>
         <p>More Candidate Information</p>
 
-        <Politicianlinks>
+        <PoliticianLinks>
           {politicianLinksList.map((link) => {
-            const key = Object.keys(link)[0];
-            const value = link[key];
+            // const key = Object.keys(link)[0];
+            // const value = link[key];
+            const { linkText, externalLinkUrl } = link;
 
-            if (!value) return null;
+            if (!externalLinkUrl) return null;
 
             return (
               <OpenExternalWebSite
-                url={value}
+                url={externalLinkUrl}
                 target="_blank"
-                className="u-gray-mid"
+                // className="u-gray-mid"
                 rel="noopener noreferrer"
-                title={key}
+                title={linkText}
                 body={(
                   <div style={{ paddingRight: '12px', paddingBottom: '4px' }}>
-                    {key}
-                    <Launch
-                      style={{
-                        height: 14,
-                        marginLeft: 2,
-                        marginTop: '-3px',
-                        width: 14,
-                      }}
-                    />
+                    {linkText}
                   </div>
                 )}
               />
             );
           })}
-        </Politicianlinks>
+        </PoliticianLinks>
 
       </PoliticianLinksWrapper>
     );
@@ -957,7 +983,6 @@ class PoliticianDetailsPage extends Component {
                     {politicianDescription}
                   </CampaignDescriptionDesktop>
                   {politicianLinksContainer}
-                  {/* {politicianButtons} */}
                   <UpdatePoliticianInformation politicianName={politicianName} />
                   {finalElectionDateInPast && (
                     <IndicatorRow>
@@ -1154,18 +1179,16 @@ const PoliticianLinksWrapper = styled('div')`
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
-
-    p{
-      font-size: 18px;
-      font-weight: 600;
-      text-align: center;
-      padding-top: 18px;
-      margin: 0;
-    }
+  p {
+    font-size: 18px;
+    font-weight: 600;
+    text-align: center;
+    padding-top: 18px;
+    margin: 0;
   }
 `;
 
-const Politicianlinks = styled('div')`
+const PoliticianLinks = styled('div')`
   display: flex;
   flex-wrap: wrap;
   margin-top: 2px;
