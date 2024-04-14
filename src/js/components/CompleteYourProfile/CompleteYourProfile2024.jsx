@@ -365,7 +365,7 @@ const HowItWorksContainer = styled('div')`
   justifyContent: 'center';
   alignItems: 'center';
   border-radius: 10px;
-  border: 1px solid #B0B0B0;
+  border: 1px solid ${Colors.grey};
   background: ${Colors.primary50};
   margin-bottom: 22px;
   overflow: hidden;
@@ -379,7 +379,7 @@ const HowItWorksHeader = styled('div')`
   justify-content: space-between;
 
   p {
-    color: ${Colors.white};
+    color: Colors.white;
     font-size: 15px;
     font-style: normal;
     font-weight: 500;

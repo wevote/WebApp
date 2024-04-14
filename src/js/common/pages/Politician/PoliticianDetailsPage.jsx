@@ -46,7 +46,8 @@ const CampaignNewsItemList = React.lazy(() => import(/* webpackChunkName: 'Campa
 const CampaignShareChunk = React.lazy(() => import(/* webpackChunkName: 'CampaignShareChunk' */ '../../components/Campaign/CampaignShareChunk'));
 const CampaignSupportThermometer = React.lazy(() => import(/* webpackChunkName: 'CampaignSupportThermometer' */ '../../components/CampaignSupport/CampaignSupportThermometer'));
 const OfficeNameText = React.lazy(() => import(/* webpackChunkName: 'OfficeNameText' */ '../../components/Widgets/OfficeNameText'));
-const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../components/Widgets/OpenExternalWebSite'));
+// const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../components/Widgets/OpenExternalWebSite'));
+const PoliticianLinks = React.lazy(() => import(/* webpackChunkName: 'PolitianLinks' */ '../../components/Politician/PoliticianLinks'));
 const PoliticianEndorsementsList = React.lazy(() => import(/* webpackChunkName: 'PoliticianEndorsementsList' */ '../../components/Politician/PoliticianEndorsementsList'));
 const PoliticianRetrieveController = React.lazy(() => import(/* webpackChunkName: 'PoliticianRetrieveController' */ '../../components/Politician/PoliticianRetrieveController'));
 const PoliticianPositionRetrieveController = React.lazy(() => import(/* webpackChunkName: 'PoliticianPositionRetrieveController' */ '../../components/Position/PoliticianPositionRetrieveController'));
@@ -544,38 +545,9 @@ class PoliticianDetailsPage extends Component {
       <PoliticianLinksWrapper>
         <p>More Candidate Information</p>
 
-        <Politicianlinks>
-          {politicianLinksList.map((link) => {
-            const key = Object.keys(link)[0];
-            const value = link[key];
-
-            if (!value) return null;
-
-            return (
-              <OpenExternalWebSite
-                url={value}
-                target="_blank"
-                className="u-gray-mid"
-                rel="noopener noreferrer"
-                title={key}
-                body={(
-                  <div style={{ paddingRight: '12px', paddingBottom: '4px' }}>
-                    {key}
-                    <Launch
-                      style={{
-                        height: 14,
-                        marginLeft: 2,
-                        marginTop: '-3px',
-                        width: 14,
-                      }}
-                    />
-                  </div>
-                )}
-              />
-            );
-          })}
-        </Politicianlinks>
-
+        <PoliticianLinks
+          links={politicianLinksList}
+        />
       </PoliticianLinksWrapper>
     );
 
@@ -1150,27 +1122,17 @@ const PoliticalPartyDiv = styled('div')`
 `;
 
 const PoliticianLinksWrapper = styled('div')`
-  align-items: flex-start;
   display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
+  flex-direction: column;
 
     p{
       font-size: 18px;
       font-weight: 600;
-      text-align: center;
+      text-align: left;
       padding-top: 18px;
       margin: 0;
     }
   }
-`;
-
-const Politicianlinks = styled('div')`
-  display: flex;
-  flex-wrap: wrap;
-  margin-top: 2px;
-  margin-bottom: 12px;
-  width: 100%;
 `;
 
 export default withStyles(styles)(PoliticianDetailsPage);

@@ -10,6 +10,7 @@ const colors = {
   lightGrey: '#E5E6EA',
   ultraLightGrey: '#FAFAFA',
   white: '#ffffff',
+  green: '#007800',
 };
 
 export default colors;
