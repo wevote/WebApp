@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Colors from '../../common/components/Style/Colors';
+// import DesignTokenColors from '../../common/components/Style/DesignTokenColors';  // 2024-04-16 Upgrade to using this
 
 const StepIcon = ({ number, completed }) => (
   <StepIconContainer completed={completed}>

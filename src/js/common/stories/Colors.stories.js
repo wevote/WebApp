@@ -2,11 +2,13 @@ import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import colors from '../components/Style/Colors';
+// import DesignTokenColors from '../components/Style/DesignTokenColors';
 
 export default {
   title: 'Design System/Colors - Product Brand',
 };
 
+// Upgrade to use DesignTokenColors
 const bluePalette = ['#E6F3FF', '#B2D6F8', '#8BBCE9', '#66A2D8', '#4187C6', '#206DB3', '#0858A1', '#074986', '#053C6D', '#042B4E'];
 const steelSecondary = ['#ECF2F7', '#C8D4DF', '#A7BACD', '#87A0B9', '#6888A5', '#4E6E8E', '#3A5B7C', '#2C4A66', '#1F3A53', '#142B41'];
 const redTertiary = ['#FFEDF1', '#FFC3D0', '#FF98AE', '#FA708D', '#E1516F', '#CB2649', '#AA203D', '#8B1A32', '#74162A', '#53101E'];
