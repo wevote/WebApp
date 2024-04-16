@@ -12,7 +12,9 @@ describe('ReadyPage', () => {
   // Ready_001
   it('verifyElectionCountDownRedirect', async () => {
     await ReadyPage.load();
+    await driver.pause(9000);
     await ReadyPage.electionCountDownTitle.findAndClick();
+    await driver.pause(9000);
     await expect(driver).not.toHaveUrl(expect.stringContaining('ready'));
   });
 
@@ -51,7 +53,9 @@ describe('ReadyPage', () => {
   it('toggleIntroduction', async () => {
     await ReadyPage.load();
     await expect(ReadyPage.introductionStepText).not.toBeDisplayed();
+    await driver.pause(9000);
     await ReadyPage.toggleIntroduction();
+    await driver.pause(9000);
     await expect(ReadyPage.introductionStepText).toBeElementsArrayOfSize(3);
   });
 
@@ -59,7 +63,10 @@ describe('ReadyPage', () => {
   it('toggleFinePrint', async () => {
     await ReadyPage.load();
     await expect(ReadyPage.finePrintStepText).not.toBeDisplayed();
+    await driver.pause(9000);
+
     await ReadyPage.toggleFinePrint();
+    await driver.pause(9000);
     await expect(ReadyPage.finePrintStepText).toBeElementsArrayOfSize(4);
   });
 
@@ -92,7 +99,7 @@ describe('ReadyPage', () => {
     await ReadyPage.clickHowItWorksLink();
     await ReadyPage.howItWorksTitle.isDisplayed();
     await ReadyPage.closeHowItWorksModalWindow();
-    await expect(ReadyPage.elementHowItWorksWindow).not.toBeDisplayed()
+    await expect(ReadyPage.elementHowItWorksWindow).not.toBeDisplayed();
   });
 
   // Ready_012
@@ -100,7 +107,7 @@ describe('ReadyPage', () => {
     await ReadyPage.load();
     await ReadyPage.clickHowItWorksLink();
 
-    let expectedResult = await ReadyPage.checkTitleOfHowItWorksWindow();
+    const expectedResult = await ReadyPage.checkTitleOfHowItWorksWindow();
     await expect(ReadyPage.howItWorksTitle).toHaveText(expectedResult);
   });
 
@@ -118,7 +125,7 @@ describe('ReadyPage', () => {
     await ReadyPage.load();
     await ReadyPage.clickHowItWorksLink();
 
-    let expectedResult = await ReadyPage.getTitleOfHowItWorksWindowAfterBackButton();
+    const expectedResult = await ReadyPage.getTitleOfHowItWorksWindowAfterBackButton();
     await expect(ReadyPage.howItWorksTitle).toHaveText(expectedResult);
   });
 

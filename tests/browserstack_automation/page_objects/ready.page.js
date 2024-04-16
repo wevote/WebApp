@@ -1,6 +1,5 @@
-import { $, $$ } from '@wdio/globals';
+import { $, $$, driver } from '@wdio/globals';
 import Page from './page';
-import { driver, expect } from '@wdio/globals';
 
 class ReadyPage extends Page {
   constructor () {
@@ -12,7 +11,7 @@ class ReadyPage extends Page {
   }
 
   get electionCountDownTitle () {
-    return $('#electionCountDownTitle');
+    return $('//*[contains(@id, "electionCountDownTitle")]');
   }
 
   get ballotTitle () {
@@ -40,7 +39,7 @@ class ReadyPage extends Page {
   }
 
   get toggleIntroductionButton () {
-    return $('//*[contains(@id, "showMoreReadyIntroductionCompressed")]');
+    return $('//*[contains(@id, "toggleContentButton-showMoreReadyIntroductionCompressed")]');
   }
 
   get introductionStepText () {
@@ -48,7 +47,7 @@ class ReadyPage extends Page {
   }
 
   get toggleFinePrintButton () {
-    return $('//*[contains(@id, "showMoreReadyFinePrintCompressed")]');
+    return $('//*[contains(@id, "toggleContentButton-showMoreReadyFinePrintCompressed")]');
   }
 
   get finePrintStepText () {
@@ -88,7 +87,7 @@ class ReadyPage extends Page {
   }
 
   get findPrivacyLink () {
-   return $('#footerLinkPrivacy');
+    return $('#footerLinkPrivacy');
   }
 
   get findNextButtonHowItWorksWindow () {
@@ -160,7 +159,7 @@ class ReadyPage extends Page {
   }
 
   async waitAboutLinkAndClick () {
-    await driver.pause(2000);
+    await driver.pause(5000);
     await this.getAboutLinkElement.click();
   }
 
@@ -174,6 +173,10 @@ class ReadyPage extends Page {
 
   async openBallotModal () {
     await this.ballotTitle.findAndClick();
+  }
+
+  async openBallotcount () {
+    await this.electionCountDownTitle.findAndClick();
   }
 
   async updateBallotAddress (ballotAddress) {
@@ -214,42 +217,42 @@ class ReadyPage extends Page {
 
   async clickNextButtonHowItWorksWindow () {
     let num = Math.floor(Math.random() * 5);
-    if (num == 0) {
-    num = num + 1;
+    if (num === 0) {
+      num += 1;
     }
 
     for (let i = 1; i <= num; i++) {
-    await this.findNextButtonHowItWorksWindow.click();
+      this.findNextButtonHowItWorksWindow.click();
     }
     return num;
   }
 
-  async checkTitleOfHowItWorksWindow() {
-    let num = await this.clickNextButtonHowItWorksWindow();
-    if(num == 1) {
-      return "2. Follow organizations and people you trust";
-      } else if (num == 2) {
-      return "3. See who endorsed each choice on your ballot";
-      } else if (num == 3) {
-      return "4. Complete your ballot with confidence";
-      } else {
-      return "5. Share with friends who could use a guide"
-      }
+  async checkTitleOfHowItWorksWindow () {
+    const num = await this.clickNextButtonHowItWorksWindow();
+    if (num === 1) {
+      return '2. Follow organizations and people you trust';
+    } else if (num === 2) {
+      return '3. See who endorsed each choice on your ballot';
+    } else if (num === 3) {
+      return '4. Complete your ballot with confidence';
+    } else {
+      return '5. Share with friends who could use a guide';
+    }
   }
 
-  async getTitleOfHowItWorksWindowAfterBackButton() {
-    let num = await this.clickNextButtonHowItWorksWindow();
+  async getTitleOfHowItWorksWindowAfterBackButton () {
+    const num = await this.clickNextButtonHowItWorksWindow();
     await this.findBackButtonHowItWorksWindow.click();
 
-    if(num == 1) {
-      return "1. Choose your interests";
-      } else if (num == 2) {
-      return "2. Follow organizations and people you trust";
-      } else if (num == 3) {
-      return "3. See who endorsed each choice on your ballot";
-      } else {
-      return "4. Complete your ballot with confidence";
-      }
+    if (num === 1) {
+      return '1. Choose your interests';
+    } else if (num === 2) {
+      return '2. Follow organizations and people you trust';
+    } else if (num === 3) {
+      return '3. See who endorsed each choice on your ballot';
+    } else {
+      return '4. Complete your ballot with confidence';
+    }
   }
 
   async clickGetStartedButton () {
@@ -258,7 +261,7 @@ class ReadyPage extends Page {
 
   async clickNextButtonFourTimes () {
     for (let i = 1; i <= 4; i++) {
-      await this.findNextButtonHowItWorksWindow.click();
+      this.findNextButtonHowItWorksWindow.click();
     }
   }
 }
