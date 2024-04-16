@@ -8,6 +8,7 @@ import BallotStore from '../../stores/BallotStore';
 import SupportStore from '../../stores/SupportStore';
 import VoterStore from '../../stores/VoterStore';
 import Colors from '../../common/components/Style/Colors';
+import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 import HowItWorksStep from './Step';
 
 const SignInModal = React.lazy(() => import(/* webpackChunkName: 'SignInModal' */ '../../common/components/SignIn/SignInModal'));
@@ -359,14 +360,14 @@ class CompleteYourProfile2024 extends Component {
 }
 
 const HowItWorksContainer = styled('div')`
-  display: 'flex';
+  //display: flex;
   font-family: 'Open Sans', sans-serif;
-  flexDirection: 'column';
-  justifyContent: 'center';
-  alignItems: 'center';
+  //flex-direction: column;
+  //justify-content: center;
+  //align-items: center;
   border-radius: 10px;
-  border: 1px solid #B0B0B0;
-  background: ${Colors.primary50};
+  border: 1px solid ${Colors.grey};
+  background: ${DesignTokenColors.primary50};
   margin-bottom: 22px;
   overflow: hidden;
 `;

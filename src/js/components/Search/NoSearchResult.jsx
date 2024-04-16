@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import colors from '../../common/components/Style/Colors';
+// import DesignTokenColors from '../../common/components/Style/DesignTokenColors';  // 2024-04-16 Upgrade to using this
 
 class NoSearchResult extends React.Component {
   render () {

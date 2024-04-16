@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import HowItWorks from '../../components/CompleteYourProfile/CompleteYourProfile2024';
 
 export default {
-  title: 'Design System/Wizzard',
+  title: 'Design System/Wizard',
   component: HowItWorks,
   parameters: {
     layout: 'centered',
@@ -17,7 +17,7 @@ const Container = styled.div`
   height: 100vh;
 `;
 
-export const HowItWorksWizzard = () => (
+export const HowItWorksWizard = () => (
   <Container>
     <HowItWorks />
   </Container>
