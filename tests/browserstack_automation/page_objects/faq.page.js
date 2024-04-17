@@ -1,6 +1,5 @@
-import { $, $$ } from '@wdio/globals';
+import { $, $$, driver } from '@wdio/globals';
 import Page from './page';
-import { driver, expect } from '@wdio/globals';
 
 class FAQPage extends Page {
   constructor () {
@@ -30,14 +29,14 @@ class FAQPage extends Page {
   }
 
   get getWeVoteElementFromInstagram () {
-    return $('//h2[contains(text(), "wevote")]')
+    return $('//h2[contains(text(), "wevote")]');
   }
 
   get getEmailIconElement () {
     return $('#eepurl');
   }
 
-  get getGitHubIconElement() {
+  get getGitHubIconElement () {
     return $$('//a[@href = "https://github.com/WeVote"]');
   }
 
@@ -49,17 +48,17 @@ class FAQPage extends Page {
     return $$('//a[@id = "helpSiteValues"]');
   }
 
-  async clickValueLink() {
+  async clickValueLink () {
     const selectorToGetValueElements = '//a[@id = "helpSiteValues"]';
-    let arrOfElements = [];
-    for(let i = 1; i <= await $$(selectorToGetValueElements).length; i++) {
-       await $(`(${selectorToGetValueElements})[${i}]`).click();
-       const windowHandles = await driver.getWindowHandles();
-       await driver.switchToWindow(windowHandles[1]);
-       let textFromElement = await driver.getTitle();
-       await arrOfElements.push(textFromElement);
-       await driver.closeWindow();
-       await driver.switchWindow('https://quality.wevote.us/more/faq');
+    const arrOfElements = [];
+    for (let i = 1; i <= $$(selectorToGetValueElements).length; i++) {
+      $(`(${selectorToGetValueElements})[${i}]`).click();
+      const windowHandles = driver.getWindowHandles();
+      driver.switchToWindow(windowHandles[1]);
+      const textFromElement = driver.getTitle();
+      arrOfElements.push(textFromElement);
+      driver.closeWindow();
+      driver.switchWindow('https://quality.wevote.us/more/faq');
     }
     return arrOfElements;
   }
@@ -76,15 +75,15 @@ class FAQPage extends Page {
     return $$('//a[@href = "https://wevote.applytojob.com/apply"]');
   }
 
-  async clickVolunteerOpeningsLinks() {
+  async clickVolunteerOpeningsLinks () {
     const selectorToGetElements = '//a[@href = "https://wevote.applytojob.com/apply"]';
-    let arrOfElements = [];
-    for(let i = 1; i <= await $$(selectorToGetElements).length; i++) {
-      await $(`(${selectorToGetElements})[${i}]`).click();
-      await driver.switchWindow('https://wevote.applytojob.com/apply');
-      let textFromElement = await driver.getTitle();
+    const arrOfElements = [];
+    for (let i = 1; i <= $$(selectorToGetElements).length; i++) {
+      $(`(${selectorToGetElements})[${i}]`).click();
+      driver.switchWindow('https://wevote.applytojob.com/apply');
+      const textFromElement = driver.getTitle();
       arrOfElements.push(textFromElement);
-      await driver.switchWindow('https://quality.wevote.us/more/faq');
+      driver.switchWindow('https://quality.wevote.us/more/faq');
     }
     return arrOfElements;
   }
@@ -117,18 +116,19 @@ class FAQPage extends Page {
     return $('//a[contains(text(), "get started!")]');
   }
 
-  async clickGitHubIconAndLinks() {
+  async clickGitHubIconAndLinks () {
     const selectorToGetElements = '//a[@href = "https://github.com/WeVote"]';
-    let arrOfElements = [];
-    for(let i = 1; i <= await $$(selectorToGetElements).length; i++) {
-      await $(`(${selectorToGetElements})[${i}]`).click();
-      await driver.switchWindow('https://github.com/WeVote');
-      let textFromElement = await driver.getTitle();
+    const arrOfElements = [];
+    for (let i = 1; i <= $$(selectorToGetElements).length; i++) {
+      $(`(${selectorToGetElements})[${i}]`).click();
+      driver.switchWindow('https://github.com/WeVote');
+      const textFromElement = driver.getTitle();
       arrOfElements.push(textFromElement);
-      await driver.switchWindow('https://quality.wevote.us/more/faq');
+      driver.switchWindow('https://quality.wevote.us/more/faq');
     }
     return arrOfElements;
   }
 }
 
 export default new FAQPage();
+// const { describe } = require('mocha');

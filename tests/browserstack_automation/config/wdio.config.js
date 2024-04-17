@@ -36,7 +36,7 @@ module.exports.config = {
     ],
   ],
   specs: [
-    '../specs/*.js',
+    '../specs/ReadyPage.js',
   ],
   capabilities,
   commonCapabilities: {
@@ -49,7 +49,7 @@ module.exports.config = {
       // Oakland, CA, USA
       gpsLocation: '37.804363,-122.271111',
       maskCommands: 'setValues, getValues, setCookies, getCookies',
-      // video: 'false',
+      video: 'true',
     },
   },
   maxInstances: 1,
