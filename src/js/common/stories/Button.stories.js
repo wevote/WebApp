@@ -14,52 +14,49 @@ export default {
   },
 };
 
-export const AllButtons = (args) => {
-  console.log(args);
-  return (
-    <ButtonContainer>
-      <Button
+export const AllButtons = (args) => (
+  <ButtonContainer>
+    <Button
         primary
         size="large"
         label="Primary Large Disabled Button"
         aria-label="Primary Large Disabled Button"
-      />
-      <Button
+    />
+    <Button
         primary={false}
         size="large"
         label="PrimaryLarge Disabled Button"
         aria-label="PrimaryLarge Disabled Button"
-      />
-      <Button
+    />
+    <Button
         primary
         label="Primary Medium Button"
         aria-label="Primary Medium Button"
-      />
-      <Button
+    />
+    <Button
         primary={false}
         label="Primary Medium Disabled Button"
         aria-label="Primary Medium Disabled Button"
-      />
-      <Button
+    />
+    <Button
         primary
         size="small"
         label="Primary Small Button"
         aria-label="Primary Small Button"
-      />
-      <Button
+    />
+    <Button
         primary={false}
         size="small"
-        label="Primary Small Disabled"
-        aria-label="Primary Small Disabled"
-      />
-      <Button
+        label="Primary S Disabled"
+        aria-label="Primary S Disabled"
+    />
+    <Button
         secondary
         label="Secondary Button"
         aria-label="Secondary Button"
-      />
-    </ButtonContainer>
-  );
-};
+    />
+  </ButtonContainer>
+);
 
 export const Primary = {
   args: {
