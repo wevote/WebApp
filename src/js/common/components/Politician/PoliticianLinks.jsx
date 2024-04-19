@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import Colors from '../Style/Colors';
-// import DesignTokenColors from '../Style/DesignTokenColors';
+import DesignTokenColors from '../Style/DesignTokenColors';
 
 import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 
@@ -43,16 +42,11 @@ const PoliticianLinksContainer = styled('div')`
   width: 100%;
 `;
 
-const IconLink = styled('svg')`
-  margin-left: 4px;
-`;
-
 const LinkContainer = styled('div')`
   padding-bottom: 4px;
-  padding-right: 12px;
-  &:hover ${IconLink} path {
-    stroke: ${Colors.primary};
-  }
+  padding-right: 16px;
+  margin-right: 16px;
+  border-right: 1px solid ${DesignTokenColors.secondary200};
 `;
 
 export default PoliticianLinks;
