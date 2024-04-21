@@ -1,15 +1,11 @@
-import styled from 'styled-components';
 import React, { Component, Suspense } from 'react';
-import crossIcon from '../../../img/global/icons/cross.svg';
 import { renderLog } from '../../common/utils/logging';
 import VoterConstants from '../../constants/VoterConstants';
 import AppObservableStore from '../../common/stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
 import SupportStore from '../../stores/SupportStore';
 import VoterStore from '../../stores/VoterStore';
-import Colors from '../../common/components/Style/Colors';
-import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
-import HowItWorksStep from './Step';
+import HowItWorksWizard from './HowItWorksWizard';
 
 const SignInModal = React.lazy(() => import(/* webpackChunkName: 'SignInModal' */ '../../common/components/SignIn/SignInModal'));
 
@@ -27,7 +23,6 @@ class CompleteYourProfile2024 extends Component {
       stepIdPersonalizedScore: 2,
       stepIdSignInToSave: 3,
       steps: [],
-      showHowItWorksWizard: true,
     };
 
     this.previousStep = this.previousStep.bind(this);
@@ -231,12 +226,6 @@ class CompleteYourProfile2024 extends Component {
     });
   }
 
-  hideHowItWorksWizard = () => {
-    this.setState({
-      showHowItWorksWizard: false,
-    });
-  }
-
   previousStep () {
     this.sortSteps();
     const { steps } = this.state;
@@ -294,7 +283,6 @@ class CompleteYourProfile2024 extends Component {
       showSignInModal,
       steps,
       voterIsSignedIn,
-      showHowItWorksWizard,
     } = this.state;
 
     // If we have completed all the steps, don't render this component
@@ -322,82 +310,11 @@ class CompleteYourProfile2024 extends Component {
             />
           </Suspense>
         )}
-        {(showHowItWorksWizard) && (
-          <HowItWorksContainer>
-            <HowItWorksHeader>
-              <p>
-                <span className="u-show-mobile">
-                  Turn your values into voting decisions!
-                </span>
-                <span className="u-show-desktop-tablet">
-                  See how to turn your values into voting decisions!
-                </span>
-              </p>
-              <HowItWorksCrossIconContainer onClick={this.hideHowItWorksWizard}>
-                <img src={crossIcon} alt="Close" style={{ filter: 'brightness(1.9)' }} />
-              </HowItWorksCrossIconContainer>
-            </HowItWorksHeader>
 
-            <HowItWorksStepsContainer>
-              {steps.map((step) => (
-                <HowItWorksStep
-                    label={step.title}
-                    step={step.id}
-                    completed={step.completed}
-                    active={step.id === activeStep}
-                    key={`completeYourProfileIndicator-${step.id}`}
-                    id={`completeYourProfileIndicator-${step.id}`}
-                    onClick={() => { step.onClick(); }}
-                    width={step.width}
-                />
-              ))}
-            </HowItWorksStepsContainer>
-          </HowItWorksContainer>
-        )}
+        <HowItWorksWizard steps={steps} activeStep={activeStep} />
       </div>
     );
   }
 }
-
-const HowItWorksContainer = styled('div')`
-  //display: flex;
-  font-family: 'Open Sans', sans-serif;
-  //flex-direction: column;
-  //justify-content: center;
-  //align-items: center;
-  border-radius: 10px;
-  border: 1px solid ${Colors.grey};
-  background: ${DesignTokenColors.primary50};
-  margin-bottom: 22px;
-  overflow: hidden;
-`;
-
-const HowItWorksHeader = styled('div')`
-  min-height: 33px;
-  background: ${Colors.primary2024};
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  p {
-    color: ${Colors.white};
-    font-size: 15px;
-    font-style: normal;
-    font-weight: 500;
-    margin: 0;
-    padding-left: 16px;
-  }
-`;
-
-const HowItWorksCrossIconContainer = styled('div')`
-  padding-right: 8px;
-  cursor: pointer;
-`;
-
-const HowItWorksStepsContainer = styled('div')`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-`;
 
 export default CompleteYourProfile2024;
