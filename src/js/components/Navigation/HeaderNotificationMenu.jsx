@@ -16,6 +16,7 @@ import returnFirstXWords from '../../common/utils/returnFirstXWords';
 import ActivityStore from '../../stores/ActivityStore';
 import VoterStore from '../../stores/VoterStore';
 import { createDescriptionOfFriendPosts } from '../../utils/activityUtils';
+import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
 
@@ -57,7 +58,8 @@ class HeaderNotificationMenu extends Component {
   }
 
   onActivityStoreChange () {
-    const allActivityNotices = ActivityStore.allActivityNotices();
+    const allActivityNotices = ActivityStore.allActivityNotices(); // this has no notification content from API
+    // const allActivityNotices = ActivityStore.allActivity(); // this has notification data for me, but missing some things. seed
     // console.log('allActivityNotices:', allActivityNotices);
     const activityNoticeIdListNotSeen = allActivityNotices
       .filter((activityNotice) => activityNotice.activity_notice_seen === false)
@@ -221,7 +223,7 @@ class HeaderNotificationMenu extends Component {
               <MenuItemText>
                 <div>
                   <strong>
-                    {activityNotice.speaker_voter_we_vote_id === voterWeVoteId ? 'You' : activityNotice.speaker_name}
+                    {activityNotice.speaker_voter_we_vote_id === voterWeVoteId ? 'YOU' : activityNotice.speaker_name.toUpperCase()}
                   </strong>
                   {' '}
                   {activityDescription}
@@ -368,20 +370,23 @@ const styles = (theme) => ({
     borderRight: '1px solid #ddd',
     borderBottom: '.5px solid #ddd',
     borderLeft: '1px solid #ddd',
+    color: 'grey', // not sure this is the grey we want, but I don't have any clicked items to check
     display: 'flex',
     fontSize: '14px !important',
+    fontWeight: '300',
     padding: '8px 6px !important',
     textAlign: 'left',
     whiteSpace: 'normal',
     width: '100%',
   },
   menuItemNotClicked: {
-    backgroundColor: '#e6ecfc',
+    backgroundColor: `${DesignTokenColors.info50}`,
     borderRight: '1px solid #ddd',
     borderBottom: '.5px solid #ddd',
-    borderLeft: '1px solid #ddd',
+    borderLeft: `5px solid ${DesignTokenColors.info900}`,
     display: 'flex',
     fontSize: '14px !important',
+    fontWeight: 'bold',
     padding: '8px 6px !important',
     textAlign: 'left',
     whiteSpace: 'normal',
