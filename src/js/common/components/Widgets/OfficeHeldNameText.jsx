@@ -22,7 +22,7 @@ export default function OfficeHeldNameText (props) {
   let nameHtml;
   let officeNameFiltered;
   const {
-    centeredText, districtName: incomingDistrictName, inCard, officeName: incomingOfficeHeldName,
+    centeredText, districtName: incomingDistrictName, inCard, officeName: incomingOfficeName,
     politicalParty, stateName,
   } = props; // Mar 2023: Turning off officeLink until we can do design review
   if (isAllUpperCase(incomingDistrictName)) {
@@ -30,10 +30,10 @@ export default function OfficeHeldNameText (props) {
   } else {
     districtNameFiltered = incomingDistrictName;
   }
-  if (isAllUpperCase(incomingOfficeHeldName)) {
-    officeNameFiltered = toTitleCase(incomingOfficeHeldName);
+  if (isAllUpperCase(incomingOfficeName)) {
+    officeNameFiltered = toTitleCase(incomingOfficeName);
   } else {
-    officeNameFiltered = incomingOfficeHeldName;
+    officeNameFiltered = incomingOfficeName;
   }
   const { districtName, officeName } = adjustDistrictNameAndOfficeName(districtNameFiltered, officeNameFiltered);
   // console.log('districtName: ', districtName, 'officeName: ', officeName);

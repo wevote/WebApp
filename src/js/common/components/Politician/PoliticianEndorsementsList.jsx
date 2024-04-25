@@ -13,6 +13,11 @@ import {
 } from '../../utils/orderByPositionFunctions';
 import LoadMoreItemsManually from '../Widgets/LoadMoreItemsManually';
 import PoliticianEndorsementForList from './PoliticianEndorsementForList';
+import {
+  CampaignSubSectionTitle,
+  CampaignSubSectionTitleWrapper,
+} from '../Style/CampaignDetailsStyles';
+import PoliticianStore from '../../stores/PoliticianStore';
 
 const STARTING_NUMBER_OF_POSITIONS_TO_DISPLAY = 2;
 const NUMBER_OF_POSITIONS_TO_ADD_WHEN_MORE_CLICKED = 10;
@@ -73,8 +78,11 @@ class PoliticianEndorsementsList extends Component {
       filteredPositionList = filteredPositionList.sort(orderByTwitterFollowers);
       filteredPositionList = filteredPositionList.sort(orderByWrittenComment);
       filteredPositionList = limitToOnePositionPerSpeaker(filteredPositionList);
+      const politician = PoliticianStore.getPoliticianByWeVoteId(politicianWeVoteId);
+      const { politician_name: politicianName } = politician;
       this.setState({
         filteredPositionList,
+        politicianName,
       });
     }
   }
@@ -102,24 +110,44 @@ class PoliticianEndorsementsList extends Component {
 
   render () {
     renderLog('PoliticianEndorsementsList');  // Set LOG_RENDER_EVENTS to log all renders
-    const { politicianWeVoteId, hideEncouragementToEndorse } = this.props;
-    const { filteredPositionList, numberOfPositionsToDisplay } = this.state;
+    const { politicianWeVoteId, hideEncouragementToEndorse, showTitle } = this.props;
+    const { filteredPositionList, numberOfPositionsToDisplay, politicianName } = this.state;
     // console.log('PoliticianEndorsementsList render numberOfPositionsToDisplay:', numberOfPositionsToDisplay);
-
-    if (!filteredPositionList || filteredPositionList.length === 0) {
-      return (
-        <Wrapper>
-          {!hideEncouragementToEndorse && (
-            <NoPositionsFound>
-              Be the first to add an endorsement!
-            </NoPositionsFound>
+    const showTitleAndPositionsToShow = showTitle && (filteredPositionList && filteredPositionList.length > 0);
+    const listTitleHtml = showTitleAndPositionsToShow && (
+      <CampaignSubSectionTitleWrapper>
+        <CampaignSubSectionTitle>
+          What people are saying
+          {!!(politicianName) && (
+            <>
+              {' '}
+              about
+              {' '}
+              {politicianName}
+            </>
           )}
-        </Wrapper>
+        </CampaignSubSectionTitle>
+      </CampaignSubSectionTitleWrapper>
+    );
+
+    if ((!filteredPositionList || filteredPositionList.length === 0) && !hideEncouragementToEndorse) {
+      return (
+        <>
+          {listTitleHtml}
+          <PoliticianEndorsementsListWrapper>
+            {!hideEncouragementToEndorse && (
+              <NoPositionsFound>
+                Be the first to add an endorsement!
+              </NoPositionsFound>
+            )}
+          </PoliticianEndorsementsListWrapper>
+        </>
       );
     }
     let numberOfCampaignsDisplayed = 0;
     return (
-      <Wrapper>
+      <PoliticianEndorsementsListWrapper>
+        {listTitleHtml}
         <div>
           {filteredPositionList.map((position) => {
             // console.log('position:', position);
@@ -148,13 +176,14 @@ class PoliticianEndorsementsList extends Component {
             />
           )}
         </LoadMoreItemsManuallyWrapper>
-      </Wrapper>
+      </PoliticianEndorsementsListWrapper>
     );
   }
 }
 PoliticianEndorsementsList.propTypes = {
   hideEncouragementToEndorse: PropTypes.bool,
   politicianWeVoteId: PropTypes.string,
+  showTitle: PropTypes.bool,
   startingNumberOfPositionsToDisplay: PropTypes.number,
 };
 
@@ -177,7 +206,7 @@ const NoPositionsFound = styled('div')`
   padding-top: 25px;
 `;
 
-const Wrapper = styled('div')`
+const PoliticianEndorsementsListWrapper = styled('div')`
 `;
 
 export default withStyles(styles)(PoliticianEndorsementsList);

@@ -54,7 +54,7 @@ export default function OfficeNameText (props) {
     } else {
       officeAndDistrictHtml = (
         <OfficeAndDistrictSpan>
-          <span className="u-gray-darker">
+          <span>
             {officeName}
             {(officeName && districtName) ? ',' : ''}
             {' '}
@@ -70,7 +70,7 @@ export default function OfficeNameText (props) {
   } else if (officeName) {
     officeAndDistrictHtml = (
       <PartyAndYearWrapper>
-        <span className="u-gray-darker">
+        <span>
           {officeName}
         </span>
       </PartyAndYearWrapper>
@@ -122,8 +122,6 @@ OfficeNameText.propTypes = {
 };
 
 const DistrictNameSpan = styled('span')`
-  color: #333;
-  // font-weight: 600;
 `;
 
 const NoPoliticalPartySpan = styled('span')`
@@ -133,8 +131,6 @@ const OfficeAndDistrictSpan = styled('span')`
 `;
 
 const OfficeNameSpan = styled('span')`
-  color: #333;
-  // font-weight: 600;
 `;
 
 const PartyAndYearWrapper = styled('span')`
@@ -143,7 +139,6 @@ const PartyAndYearWrapper = styled('span')`
 
 const PartyAndOfficeWrapper = styled('div')`
   line-height: 1.2;
-  font-size: 14px;
 `;
 
 const YearStateWrapper = styled('div', {

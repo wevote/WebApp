@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Suspense } from 'react';
 import styled from 'styled-components';
+import DesignTokenColors from '../Style/DesignTokenColors';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../Widgets/OpenExternalWebSite'));
 
@@ -12,20 +13,24 @@ function UpdatePoliticianInformation (props) {
     <UpdateInformationWrapper>
       {!!(politicianName) && (
         <Suspense fallback={<></>}>
-          Are you&nbsp;
-          {politicianName}
-          ?&nbsp;
-          <OpenExternalWebSite
-            linkIdAttribute="updateCandidateInformation"
-            url={updateCandidateInformationLink}
-            target="_blank"
-            className="u-link-color"
-            body={(
-              <div>
-                Click here to update candidate information.
-              </div>
-            )}
-          />
+          <FlexLayoutDiv>
+            <CandidateStaffText>
+              For candidate staff:&nbsp;
+            </CandidateStaffText>
+            <AddInfoLink>
+              <OpenExternalWebSite
+                linkIdAttribute="updateCandidateInformation"
+                url={updateCandidateInformationLink}
+                target="_blank"
+                className="u-link-color"
+                body={(
+                  <div>
+                    Add info
+                  </div>
+                )}
+              />
+            </AddInfoLink>
+          </FlexLayoutDiv>
         </Suspense>
       )}
     </UpdateInformationWrapper>
@@ -34,6 +39,20 @@ function UpdatePoliticianInformation (props) {
 UpdatePoliticianInformation.propTypes = {
   politicianName: PropTypes.string,
 };
+
+const AddInfoLink = styled('div')`
+  font-size: 12px;
+`;
+
+const CandidateStaffText = styled('div')`
+  color: 1px solid ${DesignTokenColors.neutralUI100};
+  font-size: 10px;
+`;
+
+const FlexLayoutDiv = styled('div')`
+  display: flex;
+  align-items: flex-end;
+`;
 
 const UpdateInformationWrapper = styled('div')`
   align-items: flex-start;

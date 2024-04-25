@@ -133,11 +133,10 @@ class CampaignSupportThermometer extends React.Component {
           {!!(supportersCountNextGoal && !inCompressedMode && !finalElectionDateInPast) && (
             <GoalText>
               {' '}
-              Let&apos;s get to
+              Help them get to
               {' '}
               {numberWithCommas(supportersCountNextGoal)}
-              {' '}
-              supporters!
+              !
             </GoalText>
           )}
         </TextWrapper>
@@ -170,7 +169,8 @@ const styles = () => ({
 });
 
 const GoalText = styled('span')`
-  font-size: 18px;
+  font-size: 14px;
+  font-weight: 800;
 `;
 
 const ProgressBar = styled('div', {
@@ -205,12 +205,12 @@ const ProgressBarWrapper = styled('div')`
   margin-top: 6px;
 `;
 
-const SupportersText = styled('span', {
+const SupportersText = styled('div', {
   shouldForwardProp: (prop) => !['inCompressedMode'].includes(prop),
 })(({ inCompressedMode }) => (`
   color: black !important;
-  font-size: ${inCompressedMode ? '16px' : '18px'};
-  font-weight: ${inCompressedMode ? '400' : '800'};
+  font-size: ${inCompressedMode ? '14px' : '14px'};
+  font-weight: ${inCompressedMode ? '400' : '400'};
 `));
 
 const TextWrapper = styled('div')`

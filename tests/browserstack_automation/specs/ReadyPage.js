@@ -5,7 +5,8 @@ import DonatePage from '../page_objects/donate.page';
 import TermsPage from '../page_objects/terms.page';
 
 /* eslint-disable no-undef */
-// describe() and it() are available at runtime
+// This eslint-disable turns off warnings for describe() and it()
+// We don't need those warnings, because describe() and it() are available at runtime
 // https://webdriver.io/docs/pageobjects
 
 describe('ReadyPage', () => {

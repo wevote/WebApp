@@ -19,6 +19,9 @@ export default function adjustDistrictNameAndOfficeName (districtNameIncoming, o
       // This removes districtName in cases like officeName: 'Mayor of Los Angeles' with districtName: 'Los Angeles city'
       districtName = '';
     }
+  } else if (officeName && officeName === 'President of the United States') {
+    // This removes districtName (i.e. State name) for candidates running for President
+    districtName = '';
   }
   return { districtName, officeName };
 }

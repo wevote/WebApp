@@ -1,46 +1,10 @@
-import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
-import React, { Component, Suspense } from 'react';
-import { Link } from 'react-router-dom';
-import TruncateMarkup from 'react-truncate-markup';
-import styled from 'styled-components';
-import { convertStateCodeToStateText } from '../../common/utils/addressFunctions';
-import {
-  BottomActionButtonEmptyWrapper,
-  BottomActionButtonWrapper,
-  CampaignActionButtonsWrapper,
-  CampaignImageMobile,
-  CampaignImagePlaceholderText,
-  CampaignImageMobilePlaceholder,
-  CampaignImageDesktopPlaceholder,
-  CampaignImageDesktop,
-  CandidateCardForListWrapper,
-  OneCampaignPhotoWrapperMobile,
-  OneCampaignPhotoDesktopColumn,
-  OneCampaignTitle,
-  OneCampaignOuterWrapper,
-  OneCampaignTextColumn,
-  OneCampaignInnerWrapper,
-  OneCampaignDescription,
-  SupportersWrapper,
-  SupportersCount,
-  SupportersActionLink,
-} from '../../common/components/Style/CampaignCardStyles';
+import React, { Component } from 'react';
+import CardForListBody from '../../common/components/CardForListBody';
 import { getTodayAsInteger } from '../../common/utils/dateFormat';
-import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
-import saveCampaignSupportAndGoToNextPage from '../../common/utils/saveCampaignSupportAndGoToNextPage';
-import CampaignStore from '../../common/stores/CampaignStore';
 import RepresentativeStore from '../../stores/RepresentativeStore';
-import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import keepHelpingDestination from '../../common/utils/keepHelpingDestination';
-import numberWithCommas from '../../common/utils/numberWithCommas';
-// import webAppConfig from '../../config';
-// import { ElectionInPast, IndicatorButtonWrapper, IndicatorRow } from '../../common/components/Style/CampaignIndicatorStyles';
-
-const ItemActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemActionBar' */ '../Widgets/ItemActionBar/ItemActionBar'));
-const OfficeHeldNameText = React.lazy(() => import(/* webpackChunkName: 'OfficeHeldNameText' */ '../../common/components/Widgets/OfficeHeldNameText'));
-const SupportButtonBeforeCompletionScreen = React.lazy(() => import(/* webpackChunkName: 'SupportButtonBeforeCompletionScreen' */ '../../common/components/CampaignSupport/SupportButtonBeforeCompletionScreen'));
 
 // const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
@@ -48,17 +12,15 @@ class RepresentativeCardForList extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      linkedCampaignXWeVoteId: '',
+      // linkedCampaignXWeVoteId: '',
       representative: {},
     };
-    this.functionToUseToKeepHelping = this.functionToUseToKeepHelping.bind(this);
-    this.functionToUseWhenProfileComplete = this.functionToUseWhenProfileComplete.bind(this);
     this.getCampaignXBasePath = this.getCampaignXBasePath.bind(this);
+    this.getPathToUseToKeepHelping = this.getPathToUseToKeepHelping.bind(this);
     this.getPoliticianBasePath = this.getPoliticianBasePath.bind(this);
-    this.onRepresentativeClick = this.onRepresentativeClick.bind(this);
-    this.onCampaignEditClick = this.onCampaignEditClick.bind(this);
-    this.onCampaignGetMinimumSupportersClick = this.onCampaignGetMinimumSupportersClick.bind(this);
-    this.onCampaignShareClick = this.onCampaignShareClick.bind(this);
+    // this.onCampaignEditClick = this.onCampaignEditClick.bind(this);
+    // this.onCampaignGetMinimumSupportersClick = this.onCampaignGetMinimumSupportersClick.bind(this);
+    // this.onCampaignShareClick = this.onCampaignShareClick.bind(this);
     // this.pullCampaignXSupporterVoterEntry = this.pullCampaignXSupporterVoterEntry.bind(this);
   }
 
@@ -96,54 +58,9 @@ class RepresentativeCardForList extends Component {
   onRepresentativeStoreChange () {
     const { representativeWeVoteId } = this.props;
     const representative = RepresentativeStore.getRepresentativeByWeVoteId(representativeWeVoteId);
-    const {
-      linked_campaignx_we_vote_id: linkedCampaignXWeVoteId,
-    } = representative;
     this.setState({
-      linkedCampaignXWeVoteId,
       representative,
     });
-  }
-
-  onRepresentativeClick () {
-    historyPush(this.getPoliticianBasePath());
-  }
-
-  onCampaignEditClick () {
-    const { representative } = this.state;
-    // console.log('representative:', representative);
-    if (!representative) {
-      return null;
-    }
-    const {
-      in_draft_mode: inDraftMode,
-    } = representative;
-    if (inDraftMode) {
-      historyPush('/start-a-campaign-preview');
-    } else {
-      historyPush(`${this.getCampaignXBasePath()}edit`);
-    }
-    return null;
-  }
-
-  onCampaignGetMinimumSupportersClick () {
-    const { representative } = this.state;
-    // console.log('representative:', representative);
-    if (!representative) {
-      return null;
-    }
-    historyPush(`${this.getCampaignXBasePath()}share-campaign`);
-    return null;
-  }
-
-  onCampaignShareClick () {
-    const { representative } = this.state;
-    // console.log('representative:', representative);
-    if (!representative) {
-      return null;
-    }
-    historyPush(`${this.getCampaignXBasePath()}share-campaign`);
-    return null;
   }
 
   getCampaignXBasePath () {
@@ -217,27 +134,17 @@ class RepresentativeCardForList extends Component {
   //   }
   // }
 
-  functionToUseToKeepHelping () {
+  getPathToUseToKeepHelping () {
     const { payToPromoteStepCompleted, payToPromoteStepTurnedOn, sharingStepCompleted, step2Completed } = this.state;
     // console.log(payToPromoteStepCompleted, payToPromoteStepTurnedOn, sharingStepCompleted, step2Completed);
     const keepHelpingDestinationString = keepHelpingDestination(step2Completed, payToPromoteStepCompleted, payToPromoteStepTurnedOn, sharingStepCompleted);
-    // console.log('functionToUseToKeepHelping keepHelpingDestinationString:', keepHelpingDestinationString);
-    historyPush(`${this.getCampaignXBasePath()}${keepHelpingDestinationString}`);
-  }
-
-  functionToUseWhenProfileComplete () {
-    const { linkedCampaignXWeVoteId } = this.state;
-    if (linkedCampaignXWeVoteId) {
-      const campaignXBaseBath = this.getCampaignXBasePath();
-      saveCampaignSupportAndGoToNextPage(linkedCampaignXWeVoteId, campaignXBaseBath);
-    } else {
-      console.log('RepresentativeCardForList functionToUseWhenProfileComplete linkedCampaignXWeVoteId not found');
-    }
+    // console.log('getPathToUseToKeepHelping keepHelpingDestinationString:', keepHelpingDestinationString);
+    return `${this.getCampaignXBasePath()}${keepHelpingDestinationString}`;
   }
 
   render () {
     renderLog('RepresentativeCardForList');  // Set LOG_RENDER_EVENTS to log all renders
-    const { limitCardWidth } = this.props;
+    const { limitCardWidth, useVerticalCard } = this.props;
     const { campaignSupported, representative } = this.state;
     if (!representative) {
       return null;
@@ -260,8 +167,8 @@ class RepresentativeCardForList extends Component {
       // seo_friendly_path: politicianSEOFriendlyPath,
       state_code: stateCode,
       supporters_count: supportersCount,
-      supporters_count_next_goal: supportersCountNextGoal,
-      twitter_description: twitterDescription,
+      supporters_count_next_goal: supportersCountNextGoalRaw,
+      // twitter_description: twitterDescription,
       // visible_on_this_site: visibleOnThisSite,
       we_vote_id: representativeWeVoteId,
     } = representative;
@@ -269,220 +176,42 @@ class RepresentativeCardForList extends Component {
     if (!representativeWeVoteId) {
       return null;
     }
-    const stateName = convertStateCodeToStateText(stateCode);
-    const supportersCountNextGoalWithFloor = supportersCountNextGoal || CampaignStore.getCampaignXSupportersCountNextGoalDefault();
-    // const year = getYearFromUltimateElectionDate(representativeUltimateElectionDate);
     const todayAsInteger = getTodayAsInteger();
     const finalElectionDateInPast = representativeUltimateElectionDate && (representativeUltimateElectionDate <= todayAsInteger);
+    const pathToUseToKeepHelping = this.getPathToUseToKeepHelping();
+    // /////////////////////// START OF DISPLAY
     return (
-      <CandidateCardForListWrapper limitCardWidth={limitCardWidth}>
-        <OneCampaignOuterWrapper limitCardWidth={limitCardWidth}>
-          <OneCampaignInnerWrapper limitCardWidth={limitCardWidth || isMobileScreenSize()}>
-            <OneCampaignTextColumn>
-              <TitleAndTextWrapper>
-                <OneCampaignTitle>
-                  <Link
-                    className="u-link-color u-link-underline"
-                    id="representativeCardDisplayName"
-                    to={this.getPoliticianBasePath()}
-                  >
-                    {ballotItemDisplayName}
-                  </Link>
-                </OneCampaignTitle>
-                {(officeHeldName || politicalParty) && (
-                  <div
-                    className="u-cursor--pointer"
-                    id="representativeCardOfficeName"
-                    onClick={this.onRepresentativeClick}
-                  >
-                    <Suspense fallback={<></>}>
-                      <OfficeHeldNameText
-                        inCard
-                        districtName={districtName}
-                        officeName={officeHeldName}
-                        politicalParty={politicalParty}
-                        stateName={stateName}
-                      />
-                    </Suspense>
-                  </div>
-                )}
-                <>
-                  {finalElectionDateInPast ? (
-                    <SupportersWrapper>
-                      {(!supportersCount || supportersCount === 0) ? (
-                        <SupportersCount>
-                          0 supporters.
-                          {' '}
-                        </SupportersCount>
-                      ) : (
-                        <SupportersCount>
-                          {numberWithCommas(supportersCount)}
-                          {' '}
-                          {supportersCount === 1 ? 'supporter.' : 'supporters.'}
-                          {' '}
-                        </SupportersCount>
-                      )}
-                      {campaignSupported && (
-                        <SupportersActionLink>
-                          Thank you for supporting!
-                        </SupportersActionLink>
-                      )}
-                    </SupportersWrapper>
-                  ) : (
-                    <SupportersWrapper>
-                      {(!supportersCount || supportersCount === 0) ? (
-                        <SupportersCount>
-                          Be the first.
-                          {' '}
-                        </SupportersCount>
-                      ) : (
-                        <SupportersCount>
-                          {numberWithCommas(supportersCount)}
-                          {' '}
-                          {supportersCount === 1 ? 'supporter.' : 'supporters.'}
-                        </SupportersCount>
-                      )}
-                      {' '}
-                      {campaignSupported ? (
-                        <SupportersActionLink>
-                          Thank you for supporting!
-                        </SupportersActionLink>
-                      ) : (
-                        <SupportersActionLink
-                          className="u-link-color u-link-underline u-cursor--pointer"
-                          id="representativeCardLetsGetTo"
-                          onClick={this.onRepresentativeClick}
-                        >
-                          Let&apos;s get to
-                          {' '}
-                          {numberWithCommas(supportersCountNextGoalWithFloor)}
-                          {' '}
-                          supporters!
-                        </SupportersActionLink>
-                      )}
-                    </SupportersWrapper>
-                  )}
-                </>
-                {twitterDescription && (
-                  <OneCampaignDescription
-                    className="u-cursor--pointer"
-                    id="representativeCardTwitterDescription"
-                    onClick={this.onRepresentativeClick}
-                  >
-                    <TruncateMarkup
-                      ellipsis="..."
-                      lines={2}
-                      tokenize="words"
-                    >
-                      <div>
-                        {twitterDescription}
-                      </div>
-                    </TruncateMarkup>
-                  </OneCampaignDescription>
-                )}
-                {/*
-                <CampaignOwnersWrapper>
-                  <CampaignOwnersList campaignXWeVoteId={campaignXWeVoteId} compressedMode />
-                </CampaignOwnersWrapper>
-                */}
-              </TitleAndTextWrapper>
-              <CampaignActionButtonsWrapper>
-                <Suspense fallback={<></>}>
-                  <ItemActionBar
-                    ballotItemWeVoteId={politicianWeVoteId}
-                    ballotItemDisplayName={ballotItemDisplayName}
-                    commentButtonHide
-                    externalUniqueId={`FromRepresentativeCardForList-${politicianWeVoteId}`} // -${externalUniqueId}
-                    hidePositionPublicToggle
-                    inCard
-                    positionPublicToggleWrapAllowed
-                    shareButtonHide
-                    useSupportWording
-                  />
-                </Suspense>
-                <>
-                  {linkedCampaignXWeVoteId ? (
-                    <BottomActionButtonWrapper>
-                      <Suspense fallback={<span>&nbsp;</span>}>
-                        <SupportButtonBeforeCompletionScreen
-                          campaignXWeVoteId={linkedCampaignXWeVoteId}
-                          functionToUseToKeepHelping={this.functionToUseToKeepHelping}
-                          functionToUseWhenProfileComplete={this.functionToUseWhenProfileComplete}
-                          inButtonFullWidthMode
-                          // inCompressedMode
-                        />
-                      </Suspense>
-                    </BottomActionButtonWrapper>
-                  ) : (
-                    <BottomActionButtonEmptyWrapper>
-                      {/* MISSING_LINKED_CAMPAIGN_WE_VOTE_ID */}
-                    </BottomActionButtonEmptyWrapper>
-                  )}
-                </>
-              </CampaignActionButtonsWrapper>
-            </OneCampaignTextColumn>
-            <OneCampaignPhotoWrapperMobile className="u-cursor--pointer u-show-mobile" onClick={this.onRepresentativeClick}>
-              {representativePhotoLargeUrl ? (
-                <CampaignImageMobilePlaceholder id="cimp5" profileImageBackgroundColor={profileImageBackgroundColor}>
-                  <CampaignImageMobile src={representativePhotoLargeUrl} alt="" />
-                </CampaignImageMobilePlaceholder>
-              ) : (
-                <CampaignImageMobilePlaceholder id="cimp3">
-                  <CampaignImagePlaceholderText>
-                    No image provided
-                  </CampaignImagePlaceholderText>
-                </CampaignImageMobilePlaceholder>
-              )}
-            </OneCampaignPhotoWrapperMobile>
-            <OneCampaignPhotoDesktopColumn className="u-cursor--pointer u-show-desktop-tablet" limitCardWidth={limitCardWidth} onClick={this.onRepresentativeClick}>
-              {representativePhotoLargeUrl ? (
-                <>
-                  {limitCardWidth ? (
-                    <CampaignImageDesktopPlaceholder
-                      id="cidp1"
-                      limitCardWidth={limitCardWidth}
-                      profileImageBackgroundColor={profileImageBackgroundColor}
-                    >
-                      <CampaignImageDesktop src={representativePhotoLargeUrl} alt="" width="157px" height="157px" />
-                    </CampaignImageDesktopPlaceholder>
-                  ) : (
-                    <CampaignImageDesktop src={representativePhotoLargeUrl} alt="" width="117px" height="117px" />
-                  )}
-                </>
-              ) : (
-                <CampaignImageDesktopPlaceholder
-                  id="cidp2"
-                  limitCardWidth={limitCardWidth}
-                  profileImageBackgroundColor={profileImageBackgroundColor}
-                >
-                  <CampaignImagePlaceholderText>
-                    No image provided
-                  </CampaignImagePlaceholderText>
-                </CampaignImageDesktopPlaceholder>
-              )}
-            </OneCampaignPhotoDesktopColumn>
-          </OneCampaignInnerWrapper>
-        </OneCampaignOuterWrapper>
-      </CandidateCardForListWrapper>
+      <CardForListBody
+        ballotItemDisplayName={ballotItemDisplayName}
+        campaignSupported={campaignSupported}
+        // candidateWeVoteId={candidateWeVoteId}
+        districtName={districtName}
+        finalElectionDateInPast={finalElectionDateInPast}
+        limitCardWidth={limitCardWidth}
+        linkedCampaignXWeVoteId={linkedCampaignXWeVoteId}
+        officeName={officeHeldName}
+        pathToUseToKeepHelping={pathToUseToKeepHelping}
+        photoLargeUrl={representativePhotoLargeUrl}
+        politicalParty={politicalParty}
+        politicianBaseBath={this.getPoliticianBasePath()}
+        // politicianDescription={twitterDescription}
+        politicianWeVoteId={politicianWeVoteId}
+        profileImageBackgroundColor={profileImageBackgroundColor}
+        stateCode={stateCode}
+        supportersCount={supportersCount}
+        supportersCountNextGoalRaw={supportersCountNextGoalRaw}
+        tagIdBaseName="representativeCard"
+        ultimateElectionDate={representativeUltimateElectionDate}
+        usePoliticianWeVoteIdForBallotItem
+        useVerticalCard={useVerticalCard}
+      />
     );
   }
 }
 RepresentativeCardForList.propTypes = {
   limitCardWidth: PropTypes.bool,
   representativeWeVoteId: PropTypes.string,
+  useVerticalCard: PropTypes.bool,
 };
 
-const styles = (theme) => ({
-  buttonRoot: {
-    width: 250,
-    [theme.breakpoints.down('md')]: {
-      width: '100%',
-    },
-  },
-});
-
-const TitleAndTextWrapper = styled('div')`
-  height: 60px;
-`;
-
-export default withStyles(styles)(RepresentativeCardForList);
+export default RepresentativeCardForList;

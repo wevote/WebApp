@@ -81,7 +81,7 @@ function CandidateListRootPlaceholder (props) {
             <Suspense fallback={<span>&nbsp;</span>}>
               <CandidateCardList
                 incomingCandidateList={candidateListForLoading}
-                verticalListOn
+                useVerticalCard
               />
             </Suspense>
           </CampaignsHorizontallyScrollingContainer>
