@@ -83,7 +83,7 @@ class CandidateCardList extends Component {
   render () {
     renderLog('CandidateCardList');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('CandidateCardList render');
-    const { verticalListOn } = this.props;
+    const { useVerticalCard } = this.props;
     const { candidateList, numberToDisplay } = this.state;
 
     if (!candidateList) {
@@ -93,7 +93,7 @@ class CandidateCardList extends Component {
     // console.log('CandidateCardList candidateList', candidateList);
     return (
       <CandidateCardListWrapper>
-        <ListWrapper verticalListOn={verticalListOn}>
+        <ListWrapper useVerticalCard={useVerticalCard}>
           {candidateList.map((oneCandidate) => {
             if (numberDisplayed >= numberToDisplay) {
               return null;
@@ -103,7 +103,8 @@ class CandidateCardList extends Component {
               <div key={`oneCandidateItem-${oneCandidate.we_vote_id}`}>
                 <CandidateCardForList
                   candidateWeVoteId={oneCandidate.we_vote_id}
-                  limitCardWidth={verticalListOn}
+                  limitCardWidth={useVerticalCard}
+                  useVerticalCard={useVerticalCard}
                 />
               </div>
             );
@@ -137,7 +138,7 @@ CandidateCardList.propTypes = {
   incomingCandidateList: PropTypes.array,
   startingNumberToDisplay: PropTypes.number,
   timeStampOfChange: PropTypes.number,
-  verticalListOn: PropTypes.bool,
+  useVerticalCard: PropTypes.bool,
   loadMoreScroll: PropTypes.func,
   shouldLoadMore: PropTypes.bool,
 };

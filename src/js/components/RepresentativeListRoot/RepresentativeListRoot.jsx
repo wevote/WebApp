@@ -432,7 +432,7 @@ class RepresentativeListRoot extends Component {
                 <RepresentativeCardList
                   incomingRepresentativeList={(isSearching ? representativeSearchResults : filteredList)}
                   timeStampOfChange={timeStampOfChange}
-                  verticalListOn
+                  useVerticalCard
                   loadMoreScroll={isMobileScreenSize() ? () => { handleHorizontalScroll(this.scrollElement.current, HORIZONTAL_SCROLL_DISTANCE_MOBILE_RIGHT_ARROW_CLICK, this.leftAndRightArrowSetState, RIGHT_MARGIN_SIZE); } : () => { handleHorizontalScroll(this.scrollElement.current, HORIZONTAL_SCROLL_DISTANCE_ON_RIGHT_ARROW_CLICK, this.leftAndRightArrowSetState, RIGHT_MARGIN_SIZE); }}
                   shouldLoadMore={this.state.callShowMoreCards}
                 />

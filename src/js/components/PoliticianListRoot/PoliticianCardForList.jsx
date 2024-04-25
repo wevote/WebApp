@@ -5,16 +5,19 @@ import { getTodayAsInteger } from '../../common/utils/dateFormat';
 import { renderLog } from '../../common/utils/logging';
 import CampaignSupporterStore from '../../common/stores/CampaignSupporterStore';
 import CandidateStore from '../../stores/CandidateStore';
+import PoliticianStore from '../../common/stores/PoliticianStore';
 import keepHelpingDestination from '../../common/utils/keepHelpingDestination';
+import { mostLikelyCandidateDictFromList } from '../../utils/candidateFunctions';
 
 // const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
-class CandidateCardForList extends Component {
+class PoliticianCardForList extends Component {
   constructor (props) {
     super(props);
     this.state = {
       candidate: {},
       linkedCampaignXWeVoteId: '',
+      politician: {},
     };
     this.getCampaignXBasePath = this.getCampaignXBasePath.bind(this);
     this.getPathToUseToKeepHelping = this.getPathToUseToKeepHelping.bind(this);
@@ -23,24 +26,27 @@ class CandidateCardForList extends Component {
   }
 
   componentDidMount () {
-    // console.log('CandidateCardForList componentDidMount');
+    // console.log('PoliticianCardForList componentDidMount');
     this.onCandidateStoreChange();
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
     this.onCampaignSupporterStoreChange();
     this.campaignSupporterStoreListener = CampaignSupporterStore.addListener(this.onCampaignSupporterStoreChange.bind(this));
+    this.onPoliticianStoreChange();
+    this.politicianStoreListener = PoliticianStore.addListener(this.onPoliticianStoreChange.bind(this));
   }
 
   componentDidUpdate (prevProps) {
     const {
-      candidateWeVoteId: candidateWeVoteIdPrevious,
+      politicianWeVoteId: politicianWeVoteIdPrevious,
     } = prevProps;
     const {
-      candidateWeVoteId,
+      politicianWeVoteId,
     } = this.props;
-    if (candidateWeVoteId) {
-      if (candidateWeVoteId !== candidateWeVoteIdPrevious) {
+    if (politicianWeVoteId) {
+      if (politicianWeVoteId !== politicianWeVoteIdPrevious) {
         this.onCandidateStoreChange();
         this.onCampaignSupporterStoreChange();
+        this.onPoliticianStoreChange();
       }
     }
   }
@@ -48,13 +54,14 @@ class CandidateCardForList extends Component {
   componentWillUnmount () {
     this.campaignSupporterStoreListener.remove();
     this.candidateStoreListener.remove();
+    this.politicianStoreListener.remove();
     if (this.timer) {
       clearTimeout(this.timer);
     }
   }
 
   onCampaignSupporterStoreChange () {
-    const { politicianWeVoteId } = this.state;
+    const { politicianWeVoteId } = this.props;
     const step2Completed = CampaignSupporterStore.voterSupporterEndorsementExists(politicianWeVoteId);
     const payToPromoteStepCompleted = CampaignSupporterStore.voterChipInExists(politicianWeVoteId);
     const sharingStepCompleted = false;
@@ -67,47 +74,59 @@ class CandidateCardForList extends Component {
   }
 
   onCandidateStoreChange () {
-    const { candidateWeVoteId } = this.props;
+    const { candidateWeVoteId } = this.state;
     const candidate = CandidateStore.getCandidateByWeVoteId(candidateWeVoteId);
-    const {
-      linked_campaignx_we_vote_id: linkedCampaignXWeVoteId,
-    } = candidate;
     this.setState({
       candidate,
+    });
+  }
+
+  onPoliticianStoreChange () {
+    const { politicianWeVoteId } = this.props;
+    const politician = PoliticianStore.getPoliticianByWeVoteId(politicianWeVoteId);
+    const {
+      linked_campaignx_we_vote_id: linkedCampaignXWeVoteId,
+    } = politician;
+    const mostLikelyCandidate = mostLikelyCandidateDictFromList(politician.candidate_list);
+    // console.log('mostLikelyCandidate: ', mostLikelyCandidate);
+    if (mostLikelyCandidate && (mostLikelyCandidate.we_vote_id !== '' || mostLikelyCandidate.we_vote_id !== null)) {
+      this.setState({
+        candidate: mostLikelyCandidate,
+        candidateWeVoteId: mostLikelyCandidate.we_vote_id,
+      });
+    }
+    this.setState({
+      politician,
       linkedCampaignXWeVoteId,
     });
   }
 
   getCampaignXBasePath () {
-    const { candidate } = this.state;
-    // console.log('candidate:', candidate);
-    if (!candidate) {
-      return null;
-    }
-    const {
-      // seo_friendly_path: politicianSEOFriendlyPath,  // Problem -- this is the politician seo friendly path, not the campaignx seo friendly path
-      linked_campaignx_we_vote_id: campaignXWeVoteId,
-    } = candidate;
-    // let campaignXBasePath;
-    // if (politicianSEOFriendlyPath) {
-    //   campaignXBasePath = `/c/${politicianSEOFriendlyPath}`;
-    // } else {
-    //   campaignXBasePath = `/id/${campaignXWeVoteId}`;
-    // }
-    // return campaignXBasePath;
-    return `/id/${campaignXWeVoteId}/`;
-  }
-
-  getPoliticianBasePath () {
-    const { candidate } = this.state;
-    // console.log('candidate:', candidate);
-    if (!candidate) {
+    const { politician } = this.state;
+    // console.log('politician:', politician);
+    if (!politician) {
       return null;
     }
     const {
       seo_friendly_path: politicianSEOFriendlyPath,
-      politician_we_vote_id: politicianWeVoteId,
-    } = candidate;
+      linked_campaignx_we_vote_id: campaignXWeVoteId,
+    } = politician;
+    let campaignXBasePath;
+    if (politicianSEOFriendlyPath) {
+      campaignXBasePath = `/c/${politicianSEOFriendlyPath}/`;
+    } else {
+      campaignXBasePath = `/id/${campaignXWeVoteId}/`;
+    }
+    return campaignXBasePath;
+  }
+
+  getPoliticianBasePath () {
+    const { politicianWeVoteId } = this.props;
+    const { politician } = this.state;
+    // console.log('politician:', politician);
+    const {
+      seo_friendly_path: politicianSEOFriendlyPath,
+    } = politician;
     let politicianBasePath;
     if (politicianSEOFriendlyPath) {
       politicianBasePath = `/${politicianSEOFriendlyPath}/-/`;
@@ -119,38 +138,6 @@ class CandidateCardForList extends Component {
     return politicianBasePath;
   }
 
-  // pullCampaignXSupporterVoterEntry (candidateWeVoteId) {
-  //   // console.log('pullCampaignXSupporterVoterEntry candidateWeVoteId:', candidateWeVoteId);
-  //   if (candidateWeVoteId) {
-  //     const campaignXSupporterVoterEntry = CampaignSupporterStore.getCampaignXSupporterVoterEntry(candidateWeVoteId);
-  //     // console.log('onCampaignSupporterStoreChange campaignXSupporterVoterEntry:', campaignXSupporterVoterEntry);
-  //     const {
-  //       campaign_supported: campaignSupported,
-  //       campaignx_we_vote_id: candidateWeVoteIdFromCampaignXSupporter,
-  //     } = campaignXSupporterVoterEntry;
-  //     // console.log('onCampaignSupporterStoreChange campaignSupported: ', campaignSupported);
-  //     if (candidateWeVoteIdFromCampaignXSupporter) {
-  //       const step2Completed = CampaignSupporterStore.voterSupporterEndorsementExists(candidateWeVoteId);
-  //       const payToPromoteStepCompleted = CampaignSupporterStore.voterChipInExists(candidateWeVoteId);
-  //       const sharingStepCompleted = false;
-  //       this.setState({
-  //         campaignSupported,
-  //         sharingStepCompleted,
-  //         step2Completed,
-  //         payToPromoteStepCompleted,
-  //       });
-  //     } else {
-  //       this.setState({
-  //         campaignSupported: false,
-  //       });
-  //     }
-  //   } else {
-  //     this.setState({
-  //       campaignSupported: false,
-  //     });
-  //   }
-  // }
-
   getPathToUseToKeepHelping () {
     const { payToPromoteStepCompleted, payToPromoteStepTurnedOn, sharingStepCompleted, step2Completed } = this.state;
     // console.log(payToPromoteStepCompleted, payToPromoteStepTurnedOn, sharingStepCompleted, step2Completed);
@@ -160,42 +147,66 @@ class CandidateCardForList extends Component {
   }
 
   render () {
-    renderLog('CandidateCardForList');  // Set LOG_RENDER_EVENTS to log all renders
-    const { limitCardWidth, useVerticalCard } = this.props;
-    const { campaignSupported, candidate, linkedCampaignXWeVoteId } = this.state;
-    if (!candidate) {
+    renderLog('PoliticianCardForList');  // Set LOG_RENDER_EVENTS to log all renders
+    const { limitCardWidth, politicianWeVoteId, useCampaignSupportThermometer, useVerticalCard } = this.props;
+    const { campaignSupported, candidate, candidateWeVoteId, linkedCampaignXWeVoteId, politician } = this.state;
+    if (!politician) {
       return null;
     }
+    // const {
+    //   ballot_guide_official_statement: ballotGuideOfficialStatement,
+    //   ballot_item_display_name: ballotItemDisplayName,
+    //   candidate_photo_url_large: candidatePhotoLargeUrl,
+    //   candidate_ultimate_election_date: candidateUltimateElectionDate,
+    //   contest_office_name: contestOfficeName,
+    //   contest_office_list: contestOfficeList,
+    //   // in_draft_mode: inDraftMode,
+    //   // is_blocked_by_we_vote: isBlockedByWeVote,
+    //   // is_in_team_review_mode: isInTeamReviewMode,
+    //   // is_supporters_count_minimum_exceeded: isSupportersCountMinimumExceeded,
+    //   party: politicalParty,
+    //   profile_image_background_color: profileImageBackgroundColor,
+    //   state_code: stateCode,
+    //   supporters_count: supportersCount,
+    //   supporters_count_next_goal: supportersCountNextGoalRaw,
+    //   twitter_description: twitterDescription,
+    //   // visible_on_this_site: visibleOnThisSite,
+    // } = candidate;
     const {
       ballot_guide_official_statement: ballotGuideOfficialStatement,
-      ballot_item_display_name: ballotItemDisplayName,
-      candidate_photo_url_large: candidatePhotoLargeUrl,
+      // ballot_item_display_name: ballotItemDisplayName,
+      // candidate_photo_url_large: candidatePhotoLargeUrl,
       candidate_ultimate_election_date: candidateUltimateElectionDate,
       contest_office_name: contestOfficeName,
       contest_office_list: contestOfficeList,
-      // in_draft_mode: inDraftMode,
-      // is_blocked_by_we_vote: isBlockedByWeVote,
-      // is_in_team_review_mode: isInTeamReviewMode,
-      // is_supporters_count_minimum_exceeded: isSupportersCountMinimumExceeded,
-      party: politicalParty,
-      politician_we_vote_id: politicianWeVoteId,
+      // supporters_count: supportersCount,
+      // supporters_count_next_goal: supportersCountNextGoalRaw,
+      // twitter_description: twitterDescription,
+    } = candidate;
+    const {
+      politician_description: politicianDescription,
+      politician_name: ballotItemDisplayName,
+      we_vote_hosted_profile_image_url_large: politicianPhotoLargeUrl,
+      political_party: politicalParty,
       profile_image_background_color: profileImageBackgroundColor,
       state_code: stateCode,
       supporters_count: supportersCount,
-      supporters_count_next_goal: supportersCountNextGoalRaw,
+      supporters_count_next_goal: supportersCountNextGoalRaw, // Not provided in every return
       twitter_description: twitterDescription,
       // visible_on_this_site: visibleOnThisSite,
-      we_vote_id: candidateWeVoteId,
-    } = candidate;
+    } = politician;
     // console.log('candidate:', candidate);
-    if (!candidateWeVoteId) {
+    // console.log('politician:', politician);
+    if (!politicianWeVoteId) {
       return null;
     }
-    let candidateDescription;
+    let politicianDescriptionToDisplay;
     if (ballotGuideOfficialStatement) {
-      candidateDescription = ballotGuideOfficialStatement;
+      politicianDescriptionToDisplay = ballotGuideOfficialStatement;
+    } else if (politicianDescription) {
+      politicianDescriptionToDisplay = politicianDescription;
     } else if (twitterDescription) {
-      candidateDescription = twitterDescription;
+      politicianDescriptionToDisplay = twitterDescription;
     }
     let districtName;
     if (contestOfficeList) {
@@ -213,30 +224,35 @@ class CandidateCardForList extends Component {
         candidateWeVoteId={candidateWeVoteId}
         districtName={districtName}
         finalElectionDateInPast={finalElectionDateInPast}
+        hideCardMargins
+        hideItemActionBar
         limitCardWidth={limitCardWidth}
         linkedCampaignXWeVoteId={linkedCampaignXWeVoteId}
         officeName={contestOfficeName}
         pathToUseToKeepHelping={pathToUseToKeepHelping}
-        photoLargeUrl={candidatePhotoLargeUrl}
+        photoLargeUrl={politicianPhotoLargeUrl}
         politicalParty={politicalParty}
         politicianBaseBath={this.getPoliticianBasePath()}
-        // politicianDescription={candidateDescription}
+        // politicianDescription={politicianDescriptionToDisplay}
         politicianWeVoteId={politicianWeVoteId}
         profileImageBackgroundColor={profileImageBackgroundColor}
         stateCode={stateCode}
         supportersCount={supportersCount}
         supportersCountNextGoalRaw={supportersCountNextGoalRaw}
-        tagIdBaseName="candidateCard"
+        tagIdBaseName="politicianCard"
         ultimateElectionDate={candidateUltimateElectionDate}
+        useCampaignSupportThermometer={useCampaignSupportThermometer}
+        usePoliticianWeVoteIdForBallotItem
         useVerticalCard={useVerticalCard}
       />
     );
   }
 }
-CandidateCardForList.propTypes = {
-  candidateWeVoteId: PropTypes.string,
+PoliticianCardForList.propTypes = {
+  politicianWeVoteId: PropTypes.string,
   limitCardWidth: PropTypes.bool,
+  useCampaignSupportThermometer: PropTypes.bool,
   useVerticalCard: PropTypes.bool,
 };
 
-export default CandidateCardForList;
+export default PoliticianCardForList;

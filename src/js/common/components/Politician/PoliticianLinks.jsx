@@ -41,22 +41,22 @@ const PoliticianLinksContainerOverflow = styled('div')`
 const PoliticianLinksContainerLeft16 = styled('div')`
   display: block;
   position: relative;
-  left: -16px;
+  left: -14px;
 `;
 
 const PoliticianLinksContainer = styled('div')`
   display: flex;
   flex-wrap: wrap;
-  margin-top: 2px;
   margin-bottom: 12px;
+  margin-left: -3px;
   width: 100%;
 `;
 
 const LinkContainer = styled('div')`
   padding-bottom: 4px;
-  padding-right: 16px;
-  padding-left: 16px;
-  border-left: 1px solid ${DesignTokenColors.secondary200};  
+  padding-right: 14px;
+  padding-left: 14px;
+  border-left: 1px solid ${DesignTokenColors.neutralUI100};
 `;
 
 export default PoliticianLinks;

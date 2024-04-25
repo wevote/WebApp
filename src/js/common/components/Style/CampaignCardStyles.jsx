@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components';
+import DesignTokenColors from './DesignTokenColors';
 
 export const BottomActionButtonWrapper = styled('div')`
   margin-top: 4px;
@@ -14,10 +15,8 @@ export const CampaignActionButtonsWrapper = styled('div')`
   cursor: pointer;
   display: flex;
   flex-direction: column;
-  height: 166px;
+  height: 156px; // WAS height: 166px;
   justify-content: flex-end;
-  // width: 100%;
-  // width: 300px;
 `;
 
 export const CandidateCardForListWrapper = styled('div', {
@@ -39,21 +38,22 @@ export const CampaignsNotAvailableToShow = styled('div')(({ theme }) => (`
 `));
 
 export const CampaignImageDesktopSharedStyles = css`
-  border-radius: 5px;
   cursor: pointer;
   margin: 0;
 `;
 
 export const CampaignImageDesktopPlaceholder = styled('div', {
-  shouldForwardProp: (prop) => !['limitCardWidth', 'profileImageBackgroundColor'].includes(prop),
-})(({ limitCardWidth, profileImageBackgroundColor }) => (`
+  shouldForwardProp: (prop) => !['limitCardWidth', 'profileImageBackgroundColor', 'useVerticalCard'].includes(prop),
+})(({ limitCardWidth, profileImageBackgroundColor, useVerticalCard }) => (`
   align-items: center;
-  background-color: ${profileImageBackgroundColor || '#eee'};
+  background-color: ${profileImageBackgroundColor || '#fff'};
+  ${useVerticalCard ? `border: 1px solid ${DesignTokenColors.neutralUI100};` : ''}
+  ${useVerticalCard ? 'border-radius: 12px;' : ''}
   display: flex;
-  ${limitCardWidth ? 'height: 157px;' : 'height: 117px;'}
-  ${limitCardWidth ? 'min-height: 157px;' : 'min-height: 117px;'}
+  ${limitCardWidth ? 'height: 157px;' : `${useVerticalCard ? 'height: 200px;' : 'height: 117px;'}`}
+  ${limitCardWidth ? 'min-height: 157px;' : `${useVerticalCard ? 'min-height: 200px;' : 'min-height: 117px;'}`}
   justify-content: center;
-  ${limitCardWidth ? 'width: 300px;' : 'width: 224px;'}
+  ${limitCardWidth ? 'width: 300px;' : `${useVerticalCard ? 'width: 100%;' : 'width: 224px;'}`}
   ${CampaignImageDesktopSharedStyles}
 `));
 
@@ -67,17 +67,18 @@ export const CampaignImageDesktop = styled('img', {
 `));
 
 export const CampaignImageMobileSharedStyles = css`
-  border-radius: 5px;
   cursor: pointer;
   margin: 0;
   max-width: 100%;
 `;
 
 export const CampaignImageMobilePlaceholder = styled('div', {
-  shouldForwardProp: (prop) => !['profileImageBackgroundColor'].includes(prop),
-})(({ profileImageBackgroundColor }) => (`
+  shouldForwardProp: (prop) => !['profileImageBackgroundColor', 'useVerticalCard'].includes(prop),
+})(({ profileImageBackgroundColor, useVerticalCard }) => (`
   align-items: center;
-  background-color: ${profileImageBackgroundColor || '#eee'};
+  background-color: ${profileImageBackgroundColor || '#fff'};
+  ${useVerticalCard ? `border: 1px solid ${DesignTokenColors.neutralUI100};` : ''}
+  ${useVerticalCard ? 'border-radius: 12px;' : ''}
   display: flex;
   height: 157px;
   justify-content: center;
@@ -109,11 +110,29 @@ export const CampaignPoliticianImageMobile = styled('img')`
   ${CampaignImageMobileSharedStyles}
 `;
 
+export const CardForListRow = styled('div')`
+  border-top: 1px solid ${DesignTokenColors.neutralUI100};
+  color: ${DesignTokenColors.neutralUI500};
+  font-size: 12px;
+  padding: 3px 0 3px 8px;
+`;
+
+export const CardRowsWrapper = styled('div')`
+  // border-bottom: 1px solid ${DesignTokenColors.neutralUI100};
+  margin-top: 2px;
+`;
+
+export const ElectionYear = styled('div')`
+  color: ${DesignTokenColors.neutralUI500};
+  font-size: 12px;
+  font-weight: 500;
+`;
+
 export const ListWrapper = styled('div', {
-  shouldForwardProp: (prop) => !['verticalListOn'].includes(prop),
-})(({ verticalListOn }) => (`
+  shouldForwardProp: (prop) => !['useVerticalCard'].includes(prop),
+})(({ useVerticalCard }) => (`
   display: flex;
-  ${verticalListOn ? 'flex-direction: row;' : 'flex-direction: column;'}
+  ${useVerticalCard ? 'flex-direction: row;' : 'flex-direction: column;'}
 `));
 
 export const LoadMoreItemsManuallyWrapper = styled('div')`
@@ -135,48 +154,41 @@ export const OneCampaignDescription = styled('div')`
 
 // https://css-tricks.com/snippets/css/css-box-shadow/
 export const OneCampaignInnerWrapper = styled('div', {
-  shouldForwardProp: (prop) => !['limitCardWidth'].includes(prop),
-})(({ limitCardWidth }) => (`
-  background-color: #fff;
-  // box-shadow: 0 16px 64px -16px rgba(46,55,77,.3);
-  // box-shadow: 0 0 80px -27px rgba(46,55,77,.3);
-  box-shadow: 0 0 80px -16px rgba(46,55,77,.3);
+  shouldForwardProp: (prop) => !['hideCardMargins', 'useVerticalCard'].includes(prop),
+})(({ hideCardMargins, useVerticalCard }) => (`
+  // background-color: #fff;
+  ${useVerticalCard ? 'border-radius: 12px;' : ''}
+  ${hideCardMargins ? '' : 'box-shadow: 0 0 80px -16px rgba(46,55,77,.3);'}
   display: flex;
-  ${limitCardWidth ? 'flex-direction: column-reverse;' : 'flex-direction: row;'}
-  ${limitCardWidth ? 'justify-content: flex-start;' : 'justify-content: space-between;'}
-  &:hover {
-    box-shadow: 0 20px 50px -16px rgba(46,55,77,.7);
-  }
+  ${useVerticalCard ? 'flex-direction: column-reverse;' : 'flex-direction: row;'}
+  ${useVerticalCard ? 'justify-content: flex-start;' : 'justify-content: space-between;'}
+  ${hideCardMargins ? '' : '&:hover { box-shadow: 0 20px 50px -16px rgba(46,55,77,.7); }'}
 `));
 
 export const OneCampaignOuterWrapper = styled('div', {
   shouldForwardProp: (prop) => !['limitCardWidth'].includes(prop),
-})(({ limitCardWidth, theme }) => (`
-  ${limitCardWidth ? 'margin-right: 15px;' : 'margin-bottom: 15px;'}
+})(({ limitCardWidth }) => (`
+  ${limitCardWidth ? 'margin-right: 15px;' : ''} // margin-bottom: 15px;
   ${limitCardWidth ? 'height: 400px;' : ''}
-  // border-top: 1px solid #ddd;
-  // margin-top: 15px;
-  ${theme.breakpoints.up('sm')} {
-    // border: 1px solid #ddd;
-    // border-radius: 5px;
-  }
 `));
 
 export const OneCampaignPhotoDesktopColumn = styled('div', {
-  shouldForwardProp: (prop) => !['limitCardWidth'].includes(prop),
-})(({ limitCardWidth }) => (`
+  shouldForwardProp: (prop) => !['limitCardWidth', 'profileImageBackgroundColor', 'useVerticalCard'].includes(prop),
+})(({ hideCardMargins, limitCardWidth, profileImageBackgroundColor, useVerticalCard }) => (`
   align-items: center;
-  background-color: #eee;
+  ${profileImageBackgroundColor ? `background-color: ${profileImageBackgroundColor};` : 'background-color: #fff;'}
+  // ${useVerticalCard ? `border: 1px solid ${DesignTokenColors.neutralUI100};` : ''}
+  ${useVerticalCard ? 'border-radius: 12px;' : ''}
   display: flex;
-  ${limitCardWidth ? 'height: 157px;' : 'height: 117px;'}
+  ${limitCardWidth ? 'height: 157px;' : `${useVerticalCard ? 'height: 200px;' : 'height: 117px;'}`}
   justify-content: center;
-  margin-bottom: 0;
-  ${limitCardWidth ? '' : 'margin-left: 15px;'}
-  margin-top: 0;
-  ${limitCardWidth ? 'width: 300px;' : 'width: 224px;'}
+  ${useVerticalCard ? '' : 'margin-left: 15px;'}
+  ${useVerticalCard ? `${hideCardMargins ? 'margin: 0 0 6px 0;' : 'margin: 10px 10px 6px 10px;'}` : 'margin-bottom: 0; margin-top: 0;'}
+  ${limitCardWidth ? 'width: 276px;' : `${useVerticalCard ? '' : 'width: 224px;'}`}
 `));
 
 export const OneCampaignPhotoWrapperMobile = styled('div')(({ theme }) => (`
+  border-radius: 12px;
   cursor: pointer;
   margin-bottom: 8px;
   margin-top: 8px;
@@ -190,16 +202,26 @@ export const OneCampaignPhotoWrapperMobile = styled('div')(({ theme }) => (`
   }
 `));
 
-export const OneCampaignTextColumn = styled('div')`
-  padding: 0 10px 10px 10px;
-  // width: 100%;
-`;
+export const OneCampaignTextColumn = styled('div', {
+  shouldForwardProp: (prop) => !['hideCardMargins'].includes(prop),
+})(({ hideCardMargins }) => (`
+  ${hideCardMargins ? 'padding: 0 0 10px 0;' : 'padding: 0 10px;'}
+`));
 
 export const OneCampaignTitle = styled('h1')(({ theme }) => (`
+  font-size: 24px;
+  margin: 0;
+ ${theme.breakpoints.down('sm')} {
+    margin-bottom: 4px;
+  }
+`));
+
+export const OneCampaignTitleLink = styled('h1')(({ theme }) => (`
   font-size: 18px;
   margin: 0;
-   ${theme.breakpoints.down('sm')} {
-    margin-bottom: 4px;
+  margin-bottom: 4px;
+  ${theme.breakpoints.down('sm')} {
+    // margin-bottom: 4px;
   }
 `));
 
@@ -215,6 +237,12 @@ export const StartACampaignWrapper = styled('div')`
   }
 `;
 
+export const StateName = styled('div')`
+  color: ${DesignTokenColors.info700};
+  font-size: 12px;
+  text-transform: uppercase;
+`;
+
 export const SupportersActionLink = styled('span')`
   font-size: 14px;
 `;
@@ -228,3 +256,9 @@ export const SupportersCount = styled('span')`
 export const SupportersWrapper = styled('div')`
   margin-bottom: 6px;
 `;
+
+export const TitleAndTextWrapper = styled('div', {
+  shouldForwardProp: (prop) => !['hideCardMargins'].includes(prop),
+})(({ hideCardMargins }) => (`
+  ${hideCardMargins ? '' : 'height: 60px;'}
+`));

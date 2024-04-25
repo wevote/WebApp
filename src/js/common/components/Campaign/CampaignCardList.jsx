@@ -120,7 +120,7 @@ class CampaignCardList extends Component {
   render () {
     renderLog('CampaignCardList');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('CampaignCardList render');
-    const { searchText, verticalListOn } = this.props;
+    const { searchText, useVerticalCard } = this.props;
     const { campaignList, numberToDisplay, showAllEndorsements, showThisYear, showUpcomingEndorsements } = this.state;
 
     if (!campaignList) {
@@ -129,7 +129,7 @@ class CampaignCardList extends Component {
     let numberDisplayed = 0;
     return (
       <Wrapper>
-        <ListWrapper verticalListOn={verticalListOn}>
+        <ListWrapper useVerticalCard={useVerticalCard}>
           {campaignList.map((oneCampaign) => {
             if (numberDisplayed >= numberToDisplay) {
               return null;
@@ -139,7 +139,8 @@ class CampaignCardList extends Component {
               <div key={`oneCampaignItem-${oneCampaign.campaignx_we_vote_id}`}>
                 <CampaignCardForList
                   campaignXWeVoteId={oneCampaign.campaignx_we_vote_id}
-                  limitCardWidth={verticalListOn}
+                  limitCardWidth={useVerticalCard}
+                  useVerticalCard={useVerticalCard}
                 />
               </div>
             );
@@ -218,7 +219,7 @@ CampaignCardList.propTypes = {
   searchText: PropTypes.string,
   startingNumberToDisplay: PropTypes.number,
   timeStampOfChange: PropTypes.number,
-  verticalListOn: PropTypes.bool,
+  useVerticalCard: PropTypes.bool,
   loadMoreScroll: PropTypes.func,
   shouldLoadMore: PropTypes.bool,
 };

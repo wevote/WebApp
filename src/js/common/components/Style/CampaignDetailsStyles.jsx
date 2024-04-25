@@ -5,6 +5,7 @@ import { isAndroid, isCordova, isWebApp } from '../../utils/isCordovaOrWebApp';
 export const CampaignDescription = styled('div')`
   font-size: 16px;
   line-height: 1.1;
+  padding-bottom: 18px;
   text-align: left;
   white-space: pre-wrap;
 `;
@@ -12,14 +13,16 @@ export const CampaignDescription = styled('div')`
 export const CampaignDescriptionDesktop = styled('div')`
   font-size: 16px;
   line-height: 1.1;
-  margin-top: 32px;
+  padding-bottom: 18px;
   text-align: left;
   white-space: pre-wrap;
 `;
 
-export const CampaignDescriptionWrapper = styled('div')`
-  margin: 10px;
-`;
+export const CampaignDescriptionWrapper = styled('div', {
+  shouldForwardProp: (prop) => !['hideCardMargins'].includes(prop),
+})(({ hideCardMargins }) => (`
+  ${hideCardMargins ? 'padding: 10px 0 10px 0;' : 'margin: 10px;'}
+`));
 
 export const CampaignDescriptionDesktopWrapper = styled('div')(({ theme }) => (`
   margin-bottom: 10px;
@@ -102,14 +105,14 @@ export const CampaignSubSectionSeeAll = styled('div')`
 `;
 
 export const CampaignSubSectionTitle = styled('h2')`
-  font-size: 22px;
+  // font-size: 22px;
 `;
 
 export const CampaignSubSectionTitleWrapper = styled('div')`
   align-items: center;
   display: flex;
   justify-content: space-between;
-  margin: 50px 0 10px 0;
+  margin: 10px 0 0 0;
 `;
 
 export const CampaignTitleAndScoreBar = styled('div')(({ theme }) => (`
@@ -173,10 +176,10 @@ export const CommentNameWrapper = styled('div')`
 `;
 
 export const CommentsListWrapper = styled('div')(({ theme }) => (`
-  margin-bottom: 25px;
-  ${theme.breakpoints.down('md')} {
-    margin: 0 10px 25px 10px;
-  }
+  // margin-bottom: 25px;
+  // ${theme.breakpoints.down('md')} {
+  //   margin: 0 10px 25px 10px;
+  // }
 `));
 
 export const CommentTextInnerWrapper = styled('div')`
@@ -228,8 +231,8 @@ export const OneCampaignInnerWrapper = styled('div')(({ theme }) => (`
 `));
 
 export const OneCampaignOuterWrapper = styled('div')(({ theme }) => (`
-  border-top: 1px solid #ddd;
-  margin-top: 15px;
+  // border-top: 1px solid #ddd;
+  // margin-top: 15px;
   ${theme.breakpoints.up('sm')} {
     border: 1px solid #ddd;
     border-radius: 5px;
@@ -237,9 +240,9 @@ export const OneCampaignOuterWrapper = styled('div')(({ theme }) => (`
 `));
 
 export const OtherElectionsWrapper = styled('div')`
-  border-top: 1px solid #ddd;
-  margin-top: 25px;
-  padding-top: 25px;
+  //border-top: 1px solid #ddd;
+  //margin-top: 25px;
+  //padding-top: 25px;
 `;
 
 export const ReadMoreSpan = styled('div')`
