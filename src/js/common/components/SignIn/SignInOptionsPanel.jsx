@@ -184,36 +184,11 @@ export default class SignInOptionsPanel extends Component {
   }
 
   componentDidUpdate () {
-    // NOTE October 2022:  This file has lots of commented out code, do not remove until there has been an iOS release
-    // if (isCordova()) {
-    //   const sendButtonSMS = $('#voterPhoneSendSMS');
-    //   const sendButtonEmail = $('#voterEmailAddressEntrySendCode');
-    //   const cont = $('.MuiDialog-container');
-    //   const styleWorking = cont.length ? $(cont).attr('style') : '';
-    //   const translate = isIPhone4in() || isIPhone4p7in() ? 'transform: translateY(10%); height: unset;' : 'transform: translateY(40%); height: unset;';
-    //
-    //   // The VoterPhoneEmailCordovaEntryModal dialog gets pushed out of the way when the virtual keyboard appears,
-    //   // so we wait for it to be rendered, then move it into place
-    //
-    //   if (sendButtonSMS.length) {
-    //     console.log('SignInOptionsPanel componentDidUpdate SEND CODE was rendered. sendButtonSMS:', sendButtonSMS);
-    //   } else if ((sendButtonSMS.length)) {
-    //     console.log('SignInOptionsPanel componentDidUpdate SEND CODE was rendered. sendButtonEmail:', sendButtonEmail);
-    //   }
-    //   if (sendButtonSMS.length || sendButtonSMS.length) {
-    //     if (styleWorking && !stringContains(translate, styleWorking)) {
-    //       $(cont).attr('style', `${styleWorking} ${translate}`);
-    //       console.log(`SignInOptionsPanel componentDidUpdate was rendered. NEW style: ${$(cont).attr('style')}`);
-    //     } else {
-    //       console.log(`SignInOptionsPanel componentDidUpdate was rendered. transform was already there. style: ${$(cont).attr('style')}`);
-    //     }
-    //   }
-    // }
     if (AppObservableStore.isSnackMessagePending()) openSnackbar({});
   }
 
   componentDidCatch (error, info) {
-    // We should get this information to Splunk!
+    // We should get this information to AWS CloudWatch!
     console.error('SignInOptionsPanel caught error: ', `${error} with info: `, info);
   }
 
@@ -456,7 +431,7 @@ export default class SignInOptionsPanel extends Component {
                   <div className="u-stack--sm">{yourAccountExplanation}</div> : (
                     <>
                       <div className="u-f3">{pleaseSignInTitle || pleaseSignInTitleFromState}</div>
-                      <SignInSubtitle className="u-stack--sm">{pleaseSignInSubTitle}</SignInSubtitle>
+                      <SignInSubtitle className="u-stack--sm" style={{ paddingBottom: `${isCordova() ? '18px' : ''}` }}>{pleaseSignInSubTitle}</SignInSubtitle>
                     </>
                   )}
               </div>
