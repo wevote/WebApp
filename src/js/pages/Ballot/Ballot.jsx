@@ -26,7 +26,6 @@ import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import Cookies from '../../common/utils/js-cookie/Cookies';
 import { cordovaOffsetLog, renderLog } from '../../common/utils/logging';
-import AddressBox from '../../components/AddressBox';
 import BallotItemCompressed from '../../components/Ballot/BallotItemCompressed';
 import BallotStatusMessage from '../../components/Ballot/BallotStatusMessage';
 import BallotTitleHeader from '../../components/Ballot/BallotTitleHeader';

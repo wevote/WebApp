@@ -510,6 +510,7 @@ class VoterPhoneVerificationEntry extends Component {
             placeholder="Type phone number here..."
             type="tel"
             value={voterSMSPhoneNumber}
+            margin="normal"
             variant="outlined"
           />
           {(displayPhoneVerificationButton || lockOpenPhoneVerificationButton) && (

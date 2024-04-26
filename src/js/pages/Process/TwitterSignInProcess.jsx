@@ -2,19 +2,19 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import TwitterActions from '../../actions/TwitterActions';
 import VoterActions from '../../actions/VoterActions';
+import standardBoxShadow from '../../common/components/Style/standardBoxShadow';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
+import SnackNotifier from '../../common/components/Widgets/SnackNotifier';
+import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
 import { hasDynamicIsland, isCordovaWide } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
 import { normalizedHref } from '../../common/utils/hrefUtils';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import Cookies from '../../common/utils/js-cookie/Cookies';
 import { oAuthLog, renderLog } from '../../common/utils/logging';
-import standardBoxShadow from '../../common/components/Style/standardBoxShadow';
 import stringContains from '../../common/utils/stringContains';
 import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import IPhoneSpacer from '../../components/Widgets/IPhoneSpacer';
-import SnackNotifier from '../../common/components/Widgets/SnackNotifier';
-import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
 import TwitterStore from '../../stores/TwitterStore';
 import VoterStore from '../../stores/VoterStore';
 
@@ -38,17 +38,30 @@ export default class TwitterSignInProcess extends Component {
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     window.scrollTo(0, 0);
     this.twitterSignInRetrieve();
-    const { location: { search } } = this.props;
-    const { redirectCount } = this.state;
-    oAuthLog('TwitterSignInProcess search props: ', search);
-    const urlParams = new URLSearchParams(search);
-    const oauthToken = urlParams.get('oauth_token');
-    const oauthVerifier = urlParams.get('oauth_verifier');
-    if (oauthToken && oauthVerifier && redirectCount === 0) {
-      oAuthLog('TwitterSignInProcess received redirect from Twitter  redirectCount: ', redirectCount, ', oauthToken: ', oauthToken, ', oauthVerifier: ', oauthVerifier);
-      this.setState({ redirectCount: (redirectCount + 1) });
-      TwitterActions.twitterOauth1UserHandler(oauthToken, oauthVerifier);
-      this.twitterSignInRetrieve();
+
+    // Rare case ... April 2024
+    if (Object.keys(this.props).length === 0) {
+      console.log('ERROR:  Return from twitter OAuth arrived with no parameters');
+      historyPush({
+        pathname: '/settings/account',  // SnackNotifier that handles this is in SettingsDashboard
+        state: {
+          message: 'Twitter sign in failed. Please try again.',
+          severity: 'warning',
+        },
+      });
+    } else {
+      const { location: { search } } = this.props;
+      const { redirectCount } = this.state;
+      oAuthLog('TwitterSignInProcess search props: ', search);
+      const urlParams = new URLSearchParams(search);
+      const oauthToken = urlParams.get('oauth_token');
+      const oauthVerifier = urlParams.get('oauth_verifier');
+      if (oauthToken && oauthVerifier && redirectCount === 0) {
+        oAuthLog('TwitterSignInProcess received redirect from Twitter  redirectCount: ', redirectCount, ', oauthToken: ', oauthToken, ', oauthVerifier: ', oauthVerifier);
+        this.setState({ redirectCount: (redirectCount + 1) });
+        TwitterActions.twitterOauth1UserHandler(oauthToken, oauthVerifier);
+        this.twitterSignInRetrieve();
+      }
     }
   }
 
