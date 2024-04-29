@@ -58,7 +58,9 @@ describe('FAQPage', () => {
     await ReadyPage.load();
     await ReadyPage.waitAboutLinkAndClick();
     await FAQPage.getWeVoteEducationWebsiteElement.click();
+    await driver.pause(5000);
     await driver.switchWindow('https://www.wevoteeducation.org/');
+    await driver.pause(5000);
     await expect(driver).toHaveTitle('We Vote Education Fund');
   });
 
@@ -108,6 +110,7 @@ describe('FAQPage', () => {
     await FAQPage.getWeVoteIPhoneLinkElement.click();
     await driver.pause(5000);
     driver.switchWindow('https://apps.apple.com/us/app/we-vote-ballot-guide-wevote/id1347335726');
+    await driver.pause(5000);
     await expect(driver).toHaveTitle('We Vote Ballot Guide, @WeVote on the App Store');
   });
 
@@ -115,7 +118,7 @@ describe('FAQPage', () => {
   it('verifyGooglePlayRedirected', async () => {
     await ReadyPage.load();
     await ReadyPage.waitAboutLinkAndClick();
-    await FAQPage.getWeVoteAndroidLinkElement.findAndClick();
+    await FAQPage.getWeVoteAndroidLinkElement.click();
     await driver.pause(5000);
     await driver.switchWindow('https://play.google.com/store/apps/details?id=org.wevote.cordova&hl=en_US');
     await expect(driver).toHaveTitle('We Vote Ballot Guide, @WeVote - Apps on Google Play');
@@ -134,6 +137,7 @@ describe('FAQPage', () => {
     await ReadyPage.load();
     await ReadyPage.waitAboutLinkAndClick();
     await FAQPage.getLetsGetStartedElement.click();
+    await driver.pause(5000);
     await expect(driver).toHaveTitle('Ready to Vote? - WeVote');
     await expect(ReadyPage.getFollowPopularTopicsElement).toHaveText('Follow Popular Topics');
   });

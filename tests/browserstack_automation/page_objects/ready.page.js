@@ -39,15 +39,15 @@ class ReadyPage extends Page {
   }
 
   get toggleIntroductionButton () {
-    return $('//*[contains(@id, "toggleContentButton-showMoreReadyIntroductionCompressed")]');
+    return $('#toggleContentButton-showMoreReadyIntroductionCompressed');
   }
 
   get introductionStepText () {
-    return $$('//div[contains(@id, "readyIntroductionStepText")]');
+    return $$('//*[contains(@id, "readyIntroductionStepText")]');
   }
 
   get toggleFinePrintButton () {
-    return $('//*[contains(@id, "toggleContentButton-showMoreReadyFinePrintCompressed")]');
+    return $('#toggleContentButton-showMoreReadyFinePrintCompressed');
   }
 
   get finePrintStepText () {

@@ -15,7 +15,16 @@ describe('ReadyPage', () => {
     await ReadyPage.load();
     await driver.pause(9000);
     await ReadyPage.electionCountDownTitle.findAndClick();
-    await driver.pause(9000);
+    await driver.waitUntil(async () => {
+      // Add condition to check for the expected URL
+      const currentUrl = await driver.getUrl();
+      console.log(currentUrl);
+      return currentUrl.includes('ballot');
+    }, {
+      timeout: 10000,
+      timeoutMsg: 'Expected URL, timeout after 10000ms',
+    });
+    await driver.switchWindow('Ballot - WeVote');
     await expect(driver).not.toHaveUrl(expect.stringContaining('ready'));
   });
 
@@ -55,7 +64,8 @@ describe('ReadyPage', () => {
     await ReadyPage.load();
     await expect(ReadyPage.introductionStepText).not.toBeDisplayed();
     await driver.pause(9000);
-    await ReadyPage.toggleIntroduction();
+    await ReadyPage.toggleIntroductionButton.click();
+    // await ReadyPage.toggleIntroduction();
     await driver.pause(9000);
     await expect(ReadyPage.introductionStepText).toBeElementsArrayOfSize(3);
   });
@@ -65,8 +75,8 @@ describe('ReadyPage', () => {
     await ReadyPage.load();
     await expect(ReadyPage.finePrintStepText).not.toBeDisplayed();
     await driver.pause(9000);
-
-    await ReadyPage.toggleFinePrint();
+    await ReadyPage.toggleFinePrintButton.click();
+    // await ReadyPage.toggleFinePrint();
     await driver.pause(9000);
     await expect(ReadyPage.finePrintStepText).toBeElementsArrayOfSize(4);
   });
