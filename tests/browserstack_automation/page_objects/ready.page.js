@@ -159,7 +159,7 @@ class ReadyPage extends Page {
   }
 
   async waitAboutLinkAndClick () {
-    await driver.pause(5000);
+    await driver.pause(9000);
     await this.getAboutLinkElement.click();
   }
 

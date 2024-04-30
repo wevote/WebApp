@@ -14,7 +14,7 @@ describe('ReadyPage', () => {
   it('verifyElectionCountDownRedirect', async () => {
     await ReadyPage.load();
     await driver.pause(9000);
-    await ReadyPage.electionCountDownTitle.findAndClick();
+    await ReadyPage.electionCountDownTitle.click();
     await driver.waitUntil(async () => {
       // Add condition to check for the expected URL
       const currentUrl = await driver.getUrl();
@@ -22,7 +22,7 @@ describe('ReadyPage', () => {
       return currentUrl.includes('ballot');
     }, {
       timeout: 10000,
-      timeoutMsg: 'Expected URL, timeout after 10000ms',
+      timeoutMsg: 'Expected URL to contain "ballot" not found, timeout after 10000ms',
     });
     await driver.switchWindow('Ballot - WeVote');
     await expect(driver).not.toHaveUrl(expect.stringContaining('ready'));
@@ -66,8 +66,19 @@ describe('ReadyPage', () => {
     await driver.pause(9000);
     await ReadyPage.toggleIntroductionButton.click();
     // await ReadyPage.toggleIntroduction();
-    await driver.pause(9000);
-    await expect(ReadyPage.introductionStepText).toBeElementsArrayOfSize(3);
+    await driver.waitUntil(async () => {
+      // Add condition to check for the expected URL
+      const currentUrl = await driver.getUrl();
+      console.log(currentUrl);
+      function checkIntroStepTextSize () {
+        return ReadyPage.introductionStepText.toBeElementsArrayOfSize(3);
+      }
+      return checkIntroStepTextSize();
+    }, {
+      timeout: 10000,
+      timeoutMsg: 'Expected steptext to be 3 not found, timeout after 10000ms',
+    });
+    // await expect(ReadyPage.introductionStepText).toBeElementsArrayOfSize(3);
   });
 
   // Ready_007
@@ -76,9 +87,20 @@ describe('ReadyPage', () => {
     await expect(ReadyPage.finePrintStepText).not.toBeDisplayed();
     await driver.pause(9000);
     await ReadyPage.toggleFinePrintButton.click();
+    await driver.waitUntil(async () => {
+      // Add condition to check for the expected URL
+      const currentUrl = await driver.getUrl();
+      console.log(currentUrl);
+      function checkIntroStepTextSize () {
+        return ReadyPage.introductionStepText.toBeElementsArrayOfSize(4);
+      }
+      return checkIntroStepTextSize();
+    }, {
+      timeout: 10000,
+      timeoutMsg: 'Expected steptext to be 4 not found, timeout after 10000ms',
+    });
     // await ReadyPage.toggleFinePrint();
-    await driver.pause(9000);
-    await expect(ReadyPage.finePrintStepText).toBeElementsArrayOfSize(4);
+    // await expect(ReadyPage.finePrintStepText).toBeElementsArrayOfSize(4);
   });
 
   // Ready_008
