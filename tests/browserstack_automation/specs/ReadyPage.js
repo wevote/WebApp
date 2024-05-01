@@ -78,7 +78,6 @@ describe('ReadyPage', () => {
       timeout: 10000,
       timeoutMsg: 'Expected steptext to be 3 not found, timeout after 10000ms',
     });
-    // await expect(ReadyPage.introductionStepText).toBeElementsArrayOfSize(3);
   });
 
   // Ready_007
@@ -99,8 +98,6 @@ describe('ReadyPage', () => {
       timeout: 10000,
       timeoutMsg: 'Expected steptext to be 4 not found, timeout after 10000ms',
     });
-    // await ReadyPage.toggleFinePrint();
-    // await expect(ReadyPage.finePrintStepText).toBeElementsArrayOfSize(4);
   });
 
   // Ready_008
