@@ -370,23 +370,24 @@ const styles = (theme) => ({
     borderRight: '1px solid #ddd',
     borderBottom: '.5px solid #ddd',
     borderLeft: '1px solid #ddd',
-    color: 'grey', // not sure this is the grey we want, but I don't have any clicked items to check
+    color: DesignTokenColors.neutralUI600,
     display: 'flex',
     fontSize: '14px !important',
-    fontWeight: '300',
+    fontWeight: '500',
     padding: '8px 6px !important',
     textAlign: 'left',
     whiteSpace: 'normal',
     width: '100%',
   },
   menuItemNotClicked: {
-    backgroundColor: `${DesignTokenColors.info50}`,
+    backgroundColor: DesignTokenColors.info50,
     borderRight: '1px solid #ddd',
     borderBottom: '.5px solid #ddd',
     borderLeft: `5px solid ${DesignTokenColors.info900}`,
+    color: DesignTokenColors.neutralUI700,
     display: 'flex',
     fontSize: '14px !important',
-    fontWeight: 'bold',
+    fontWeight: '700',
     padding: '8px 6px !important',
     textAlign: 'left',
     whiteSpace: 'normal',
@@ -407,7 +408,7 @@ const styles = (theme) => ({
 });
 
 const ActivityTime = styled('div')`
-  color: #999;
+  color: ${DesignTokenColors.neutralUI400};
   font-size: 11px;
   font-weight: 400;
 `;
