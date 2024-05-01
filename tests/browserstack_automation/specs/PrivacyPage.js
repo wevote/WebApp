@@ -78,10 +78,15 @@ describe('Privacy Page', () => {
     await ReadyPage.findPrivacyLink.click();
     await driver.pause(5000);
     await PrivacyPage.openReplayPrivacyLink.click();
-    // await driver.pause(5000);
-    await driver.switchWindow('https://openreplay.com/legal/privacy.html');
-    await driver.pause(5000);
-    // await expect(driver).toHaveUrl('https://openreplay.com/privacy.html');
+    await driver.waitUntil(async () => {
+      // Add condition to check for the expected URL
+      await driver.switchWindow('https://openreplay.com/legal/privacy.html');
+      const currentUrl = await driver.getUrl();
+      return currentUrl === 'https://openreplay.com/legal/privacy.html';
+    }, {
+      timeout: 10000,
+      timeoutMsg: 'Expected URL not found, timeout after 10000ms',
+    });
     await expect(driver).toHaveTitle('Privacy | OpenReplay');
   });
 

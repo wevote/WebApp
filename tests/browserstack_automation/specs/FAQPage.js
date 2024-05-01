@@ -58,7 +58,18 @@ describe('FAQPage', () => {
     await ReadyPage.load();
     await ReadyPage.waitAboutLinkAndClick();
     await FAQPage.getWeVoteEducationWebsiteElement.click();
-    await driver.switchWindow('https://www.wevoteeducation.org/');
+    await driver.waitUntil(async () => {
+      // Add condition to check for the expected URL
+      await driver.switchWindow('https://www.wevoteeducation.org/');
+      const currentUrl = await driver.getUrl();
+      console.log(currentUrl);
+      return currentUrl === 'https://www.wevoteeducation.org/';
+    }, {
+      timeout: 10000,
+      timeoutMsg: 'Expected URL not found, timeout after 10000ms',
+    });
+    // await driver.switchWindow('https://www.wevoteeducation.org/');
+    // await driver.pause(5000);
     await expect(driver).toHaveTitle('We Vote Education Fund');
   });
 
@@ -106,8 +117,15 @@ describe('FAQPage', () => {
     await ReadyPage.load();
     await ReadyPage.waitAboutLinkAndClick();
     await FAQPage.getWeVoteIPhoneLinkElement.click();
-    await driver.pause(5000);
-    driver.switchWindow('https://apps.apple.com/us/app/we-vote-ballot-guide-wevote/id1347335726');
+    await driver.waitUntil(async () => {
+      // Add condition to check for the expected URL
+      await driver.switchWindow('https://apps.apple.com/us/app/we-vote-ballot-guide-wevote/id1347335726');
+      const currentUrl = await driver.getUrl();
+      return currentUrl === 'https://apps.apple.com/us/app/we-vote-ballot-guide-wevote/id1347335726';
+    }, {
+      timeout: 10000,
+      timeoutMsg: 'Expected URL not found, timeout after 10000ms',
+    });
     await expect(driver).toHaveTitle('We Vote Ballot Guide, @WeVote on the App Store');
   });
 
@@ -115,9 +133,17 @@ describe('FAQPage', () => {
   it('verifyGooglePlayRedirected', async () => {
     await ReadyPage.load();
     await ReadyPage.waitAboutLinkAndClick();
-    await FAQPage.getWeVoteAndroidLinkElement.findAndClick();
-    await driver.pause(5000);
-    await driver.switchWindow('https://play.google.com/store/apps/details?id=org.wevote.cordova&hl=en_US');
+    await FAQPage.getWeVoteAndroidLinkElement.click();
+    await driver.waitUntil(async () => {
+      // Add condition to check for the expected URL
+      await driver.switchWindow('https://play.google.com/store/apps/details?id=org.wevote.cordova&hl=en_US');
+      const currentUrl = await driver.getUrl();
+      console.log(currentUrl);
+      return currentUrl === 'https://play.google.com/store/apps/details?id=org.wevote.cordova&hl=en_US';
+    }, {
+      timeout: 10000,
+      timeoutMsg: 'Expected URL not found, timeout after 10000ms',
+    });
     await expect(driver).toHaveTitle('We Vote Ballot Guide, @WeVote - Apps on Google Play');
   });
 
@@ -134,7 +160,16 @@ describe('FAQPage', () => {
     await ReadyPage.load();
     await ReadyPage.waitAboutLinkAndClick();
     await FAQPage.getLetsGetStartedElement.click();
-    await expect(driver).toHaveTitle('Ready to Vote? - WeVote');
+    await driver.waitUntil(async () => {
+      // Add condition to check for the expected URL
+      const currentTitle = await driver.getTitle();
+      console.log(currentTitle);
+      return currentTitle === 'Ready to Vote? - WeVote';
+    }, {
+      timeout: 10000,
+      timeoutMsg: 'Expected title not found, timeout after 10000ms',
+    });
+    // await expect(driver).toHaveTitle('Ready to Vote? - WeVote');
     await expect(ReadyPage.getFollowPopularTopicsElement).toHaveText('Follow Popular Topics');
   });
 });
