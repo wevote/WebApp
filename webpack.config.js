@@ -131,7 +131,7 @@ module.exports = (env, argv) => ({
           to: 'css/',
           globOptions: { ignore: ['**/mainPreBeautified.css', '**/mainSubtract.css']},
         },
-        { from: `${source}/js/ApiServer/`, to: 'js/ApiServer/' },
+        { from: `${source}/javascript/api-server/`, to: 'javascript/api-server/' },
         { from: `${source}/extension.html`, to: '.' },
         {
           from: `${source}/img`,
