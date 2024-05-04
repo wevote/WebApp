@@ -43,6 +43,7 @@ export default function AddCandidateForExtension () {
   const showDevStuff = showDevelopmentData || true;
   return (
     <AddCandidateForExtensionWrapper>
+      {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
       <a href="https://wevote.us" target="_blank" rel="noreferrer">
         <AddCandidateLogo src={normalizedImagePath('/img/global/svg-icons/we-vote-icon-square-color-dark.svg')} />
       </a>
