@@ -832,7 +832,6 @@ class CampaignsHome extends Component {
           <>
             {numberOfRepresentativeResults > 0 && (
               <>
-                CandidateListRootPlaceholder
                 <CandidateListRootPlaceholder titleTextForList="Current Representatives" />
               </>
             )}

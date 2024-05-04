@@ -15,7 +15,7 @@ import { renderLog } from '../../utils/logging';
 import numberWithCommas from '../../utils/numberWithCommas';
 import saveCampaignSupportAndGoToNextPage from '../../utils/saveCampaignSupportAndGoToNextPage';
 import CampaignOwnersList from '../CampaignSupport/CampaignOwnersList';
-import { CampaignActionButtonsWrapper, CampaignImageDesktop, CampaignImageDesktopPlaceholder, CampaignImageMobile, CampaignImageMobilePlaceholder, CampaignImagePlaceholderText, CampaignPoliticianImageDesktop, CampaignPoliticianImageMobile, CandidateCardForListWrapper, OneCampaignDescription, OneCampaignInnerWrapper, OneCampaignOuterWrapper, OneCampaignPhotoDesktopColumn, OneCampaignPhotoWrapperMobile, OneCampaignTextColumn, OneCampaignTitle, SupportersActionLink, SupportersCount, SupportersWrapper } from '../Style/CampaignCardStyles';
+import { CampaignActionButtonsWrapper, CampaignImageDesktop, CampaignImageDesktopPlaceholder, CampaignImageMobile, CampaignImageMobilePlaceholder, CampaignImagePlaceholderText, CampaignPoliticianImageDesktop, CampaignPoliticianImageMobile, CandidateCardForListWrapper, OneCampaignDescription, OneCampaignInnerWrapper, OneCampaignOuterWrapper, OneCampaignPhotoDesktopColumn, OneCampaignPhotoWrapperMobile, OneCampaignTextColumn, OneCampaignTitleLink, SupportersActionLink, SupportersCount, SupportersWrapper, TitleAndTextWrapper } from '../Style/CampaignCardStyles';
 
 const SupportButtonBeforeCompletionScreen = React.lazy(() => import(/* webpackChunkName: 'SupportButtonBeforeCompletionScreen' */ '../CampaignSupport/SupportButtonBeforeCompletionScreen'));
 
@@ -232,7 +232,7 @@ class CampaignCardForList extends Component {
 
   render () {
     renderLog('CampaignCardForList');  // Set LOG_RENDER_EVENTS to log all renders
-    const { limitCardWidth } = this.props;
+    const { limitCardWidth, useVerticalCard } = this.props;
     const { campaignSupported, campaignX } = this.state; // , inPrivateLabelMode, voterCanEditThisCampaign
     if (!campaignX) {
       return null;
@@ -262,17 +262,19 @@ class CampaignCardForList extends Component {
     return (
       <CandidateCardForListWrapper limitCardWidth={limitCardWidth}>
         <OneCampaignOuterWrapper limitCardWidth={limitCardWidth}>
-          <OneCampaignInnerWrapper limitCardWidth={limitCardWidth || isMobileScreenSize()}>
+          <OneCampaignInnerWrapper
+            useVerticalCard={limitCardWidth || useVerticalCard || isMobileScreenSize()}
+          >
             <OneCampaignTextColumn>
               <TitleAndTextWrapper>
-                <OneCampaignTitle>
+                <OneCampaignTitleLink>
                   <Link
                     id="campaignCardDisplayName"
                     to={this.onCampaignClickLink()}
                   >
                     {campaignTitle}
                   </Link>
-                </OneCampaignTitle>
+                </OneCampaignTitleLink>
                 <SupportersWrapper>
                   <SupportersCount>
                     {numberWithCommas(supportersCount)}
@@ -422,14 +424,23 @@ class CampaignCardForList extends Component {
                   )}
                 </>
               ) : (
-                <CampaignImageMobilePlaceholder id="cimp1">
+                <CampaignImageMobilePlaceholder
+                  id="cimp1"
+                  useVerticalCard={useVerticalCard}
+                >
                   <CampaignImagePlaceholderText>
                     No image provided
                   </CampaignImagePlaceholderText>
                 </CampaignImageMobilePlaceholder>
               )}
             </OneCampaignPhotoWrapperMobile>
-            <OneCampaignPhotoDesktopColumn className="u-cursor--pointer u-show-desktop-tablet" limitCardWidth={limitCardWidth} onClick={this.onCampaignClick}>
+            <OneCampaignPhotoDesktopColumn
+              className="u-cursor--pointer u-show-desktop-tablet"
+              limitCardWidth={limitCardWidth}
+              onClick={this.onCampaignClick}
+              profileImageBackgroundColor={profileImageBackgroundColor}
+              useVerticalCard={useVerticalCard}
+            >
               {(campaignPhotoMediumUrl || weVoteHostedProfileImageUrlLarge) ? (
                 <>
                   {campaignPhotoMediumUrl ? (
@@ -455,6 +466,7 @@ class CampaignCardForList extends Component {
                   id="cidp3"
                   limitCardWidth={limitCardWidth}
                   profileImageBackgroundColor={profileImageBackgroundColor}
+                  useVerticalCard={useVerticalCard}
                 >
                   <CampaignImagePlaceholderText>
                     No image provided
@@ -471,6 +483,7 @@ class CampaignCardForList extends Component {
 CampaignCardForList.propTypes = {
   campaignXWeVoteId: PropTypes.string,
   limitCardWidth: PropTypes.bool,
+  useVerticalCard: PropTypes.bool,
 };
 
 const styles = (theme) => ({
@@ -483,16 +496,6 @@ const styles = (theme) => ({
 });
 
 const CampaignOwnersWrapper = styled('div')`
-`;
-
-// const IndicatorSupportButtonWrapper = styled('div')`
-//   margin-bottom: 4px;
-//   margin-right: 8px;
-//   margin-top: -1px;
-// `;
-
-const TitleAndTextWrapper = styled('div')`
-  height: 60px;
 `;
 
 export default withStyles(styles)(CampaignCardForList);

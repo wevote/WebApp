@@ -109,7 +109,7 @@ class PoliticianEndorsementForList extends Component {
     }
     // console.log('position:', position, ', positionWeVoteId:', positionWeVoteId);
     return (
-      <Wrapper>
+      <PoliticianEndorsementForListWrapper>
         <OneCampaignOuterWrapper>
           <OneCampaignInnerWrapper>
             <CommentWrapper className="comment" key={positionWeVoteId}>
@@ -203,7 +203,7 @@ class PoliticianEndorsementForList extends Component {
             </CommentWrapper>
           </OneCampaignInnerWrapper>
         </OneCampaignOuterWrapper>
-      </Wrapper>
+      </PoliticianEndorsementForListWrapper>
     );
   }
 }
@@ -228,7 +228,7 @@ const styles = (theme) => ({
   },
 });
 
-const Wrapper = styled('div')`
+const PoliticianEndorsementForListWrapper = styled('div')`
 `;
 
 export default withStyles(styles)(PoliticianEndorsementForList);

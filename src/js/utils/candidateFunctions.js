@@ -1,5 +1,35 @@
 import VoterStore from '../stores/VoterStore';
 
+export function mostLikelyCandidateDictFromList (candidateList) {
+  if (!candidateList || candidateList.length === 0) {
+    return {};
+  }
+
+  // Strategy One: find the candidate in this order of priority:
+  // 1) Furthest in future in time (this or next year)
+  // 2) Most recent previous year
+  // Sort descending so the candidates are ordered future-to-past
+  // console.log('BEFORE candidateList:', candidateList);
+  // console.log('mostLikelyCandidateDictFromList before Strategy One');
+  candidateList.sort((a, b) => {
+    if (a.candidate_ultimate_election_date < b.candidate_ultimate_election_date) return 1;
+    if (a.candidate_ultimate_election_date > b.candidate_ultimate_election_date) return -1;
+    return 0; // default return value (no sorting)
+  });
+  // console.log('AFTER candidateList:', candidateList);
+  for (let counter = 0; counter < candidateList.length; counter++) {
+    if (candidateList[counter].candidate_ultimate_election_date) {
+      return candidateList[counter];
+    }
+  }
+
+  // Finally, just return the first entry (farthest in future)
+  // console.log('mostLikelyCandidateDictFromList before Strategy Four');
+  const firstCandidate = candidateList[0];
+  // console.log('mostLikelyCandidateDictFromList firstCandidate:', firstCandidate)
+  return firstCandidate;
+}
+
 // eslint-disable-next-line import/prefer-default-export
 export function mostLikelyOfficeDictFromList (contestOfficeList) {
   if (!contestOfficeList || contestOfficeList.length === 0) {

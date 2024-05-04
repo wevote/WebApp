@@ -1,15 +1,11 @@
 import styled, { css } from 'styled-components';
 
 export const CandidateCampaignListDesktop = styled('div')`
-  font-size: 18px;
   margin-bottom: 20px;
   min-height: 34px;
 `;
 
 export const CandidateCampaignListMobile = styled('div')`
-  font-size: 16px;
-  // margin-bottom: 20x;
-  // min-height: 34px;
 `;
 
 export const CandidateCampaignWrapper = styled('div')`
@@ -99,4 +95,12 @@ export const PoliticianNameMobile = styled('h1')`
 
 export const PoliticianNameOuterWrapperDesktop = styled('div')`
   margin-bottom: 30px
+`;
+
+export const SectionTitleSimple = styled('div')`
+  font-size: 16px;
+  font-weight: 600;
+  text-align: left;
+  padding-bottom: 8px;
+  margin: 0;
 `;

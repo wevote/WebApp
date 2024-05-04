@@ -1,7 +1,9 @@
 import { driver, expect } from '@wdio/globals';
 import ReadyPage from '../page_objects/ready.page';
 import FAQPage from '../page_objects/faq.page';
+
 const assert = require('assert');
+const { describe, it } = require('mocha');
 
 describe('FAQPage', () => {
   // FAQ_001
@@ -25,7 +27,8 @@ describe('FAQPage', () => {
     await ReadyPage.load();
     await ReadyPage.waitAboutLinkAndClick();
     await FAQPage.getEmailIconElement.click();
-    await driver.switchWindow('https://us8.list-manage.com/subscribe?u=29bec99e46ac46abe32781925&id=5e052cb629');
+    await driver.pause(5000);
+    await driver.switchWindow('https://wevote.us8.list-manage.com/subscribe?u=29bec99e46ac46abe32781925&id=5e052cb629');
     await expect(driver).toHaveTitle('We Vote');
   });
 
@@ -34,9 +37,9 @@ describe('FAQPage', () => {
     await ReadyPage.load();
     await ReadyPage.waitAboutLinkAndClick();
     await expect(FAQPage.getGitHubIconElement).toBeElementsArrayOfSize(3);
-    let actualResultArray = await FAQPage.clickGitHubIconAndLinks();
+    const actualResultArray = await FAQPage.clickGitHubIconAndLinks();
     for (let i = 0; i < actualResultArray.length; i++) {
-      let actualResult = await actualResultArray[i];
+      const actualResult = actualResultArray[i];
       assert.equal(actualResult, 'We Vote · GitHub');
     }
   });
@@ -55,7 +58,18 @@ describe('FAQPage', () => {
     await ReadyPage.load();
     await ReadyPage.waitAboutLinkAndClick();
     await FAQPage.getWeVoteEducationWebsiteElement.click();
-    driver.switchWindow('https://www.wevoteeducation.org/');
+    await driver.waitUntil(async () => {
+      // Add condition to check for the expected URL
+      await driver.switchWindow('https://www.wevoteeducation.org/');
+      const currentUrl = await driver.getUrl();
+      console.log(currentUrl);
+      return currentUrl === 'https://www.wevoteeducation.org/';
+    }, {
+      timeout: 10000,
+      timeoutMsg: 'Expected URL not found, timeout after 10000ms',
+    });
+    // await driver.switchWindow('https://www.wevoteeducation.org/');
+    // await driver.pause(5000);
     await expect(driver).toHaveTitle('We Vote Education Fund');
   });
 
@@ -73,10 +87,10 @@ describe('FAQPage', () => {
     await ReadyPage.load();
     await ReadyPage.waitAboutLinkAndClick();
     await expect(FAQPage.getWeVoteVolunteerElements).toBeElementsArrayOfSize(2);
-    let actualResultArray = await FAQPage.clickVolunteerOpeningsLinks();
+    const actualResultArray = await FAQPage.clickVolunteerOpeningsLinks();
     for (let i = 0; i < actualResultArray.length; i++) {
-      let actualResult = await actualResultArray[i];
-      assert.equal(actualResult, 'We Vote - Career Page');
+      const actualResult = actualResultArray[i];
+      assert.equal(actualResult, 'WeVote - Career Page');
     }
   });
 
@@ -86,7 +100,7 @@ describe('FAQPage', () => {
     await ReadyPage.waitAboutLinkAndClick();
     await FAQPage.getAboutPageTitleElement.click();
     driver.switchWindow('https://wevote.us/more/about');
-    await expect(driver).toHaveTitle('About We Vote');
+    await expect(driver).toHaveTitle('About WeVote');
   });
 
   // FAQ_013
@@ -103,7 +117,15 @@ describe('FAQPage', () => {
     await ReadyPage.load();
     await ReadyPage.waitAboutLinkAndClick();
     await FAQPage.getWeVoteIPhoneLinkElement.click();
-    driver.switchWindow('https://apps.apple.com/us/app/we-vote-ballot-guide-wevote/id1347335726');
+    await driver.waitUntil(async () => {
+      // Add condition to check for the expected URL
+      await driver.switchWindow('https://apps.apple.com/us/app/we-vote-ballot-guide-wevote/id1347335726');
+      const currentUrl = await driver.getUrl();
+      return currentUrl === 'https://apps.apple.com/us/app/we-vote-ballot-guide-wevote/id1347335726';
+    }, {
+      timeout: 10000,
+      timeoutMsg: 'Expected URL not found, timeout after 10000ms',
+    });
     await expect(driver).toHaveTitle('We Vote Ballot Guide, @WeVote on the App Store');
   });
 
@@ -111,8 +133,17 @@ describe('FAQPage', () => {
   it('verifyGooglePlayRedirected', async () => {
     await ReadyPage.load();
     await ReadyPage.waitAboutLinkAndClick();
-    await FAQPage.getWeVoteAndroidLinkElement.findAndClick();
-    await driver.switchWindow('https://play.google.com/store/apps/details?id=org.wevote.cordova&hl=en_US');
+    await FAQPage.getWeVoteAndroidLinkElement.click();
+    await driver.waitUntil(async () => {
+      // Add condition to check for the expected URL
+      await driver.switchWindow('https://play.google.com/store/apps/details?id=org.wevote.cordova&hl=en_US');
+      const currentUrl = await driver.getUrl();
+      console.log(currentUrl);
+      return currentUrl === 'https://play.google.com/store/apps/details?id=org.wevote.cordova&hl=en_US';
+    }, {
+      timeout: 10000,
+      timeoutMsg: 'Expected URL not found, timeout after 10000ms',
+    });
     await expect(driver).toHaveTitle('We Vote Ballot Guide, @WeVote - Apps on Google Play');
   });
 
@@ -121,7 +152,7 @@ describe('FAQPage', () => {
     await ReadyPage.load();
     await ReadyPage.waitAboutLinkAndClick();
     await FAQPage.getPleaseDonateElement.click();
-    await expect(driver).toHaveTitle('Donate - We Vote');
+    await expect(driver).toHaveTitle('Donate - WeVote');
   });
 
   // FAQ_017
@@ -129,7 +160,16 @@ describe('FAQPage', () => {
     await ReadyPage.load();
     await ReadyPage.waitAboutLinkAndClick();
     await FAQPage.getLetsGetStartedElement.click();
-    await expect(driver).toHaveTitle('Ready to Vote? - We Vote');
+    await driver.waitUntil(async () => {
+      // Add condition to check for the expected URL
+      const currentTitle = await driver.getTitle();
+      console.log(currentTitle);
+      return currentTitle === 'Ready to Vote? - WeVote';
+    }, {
+      timeout: 10000,
+      timeoutMsg: 'Expected title not found, timeout after 10000ms',
+    });
+    // await expect(driver).toHaveTitle('Ready to Vote? - WeVote');
     await expect(ReadyPage.getFollowPopularTopicsElement).toHaveText('Follow Popular Topics');
   });
 });

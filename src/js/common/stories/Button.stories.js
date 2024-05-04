@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Button from '../../components/Buttons/BaseButton';
 
 export default {
-  title: 'Design System',
+  title: 'Design System/Buttons',
   component: Button,
   parameters: {
     layout: 'centered',
@@ -16,13 +16,45 @@ export default {
 
 export const AllButtons = (args) => (
   <ButtonContainer>
-    <Button {...Primary.args} primary size="large" label="Primary Large Disabled Button" aria-label="Primary Large Disabled Button" />
-    <Button {...Primary.args} primary={false} size="large" label="PrimaryLarge Disabled Button" aria-label="PrimaryLarge Disabled Button" />
-    <Button {...Primary.args} primary label="Primary Medium Button" aria-label="Primary Medium Button" />
-    <Button {...PrimaryDisabled.args} primary={false} label="Primary Medium Disabled Button" aria-label="Primary Medium Disabled Button" />
-    <Button {...Primary.args} primary size="small" label="Primary Small Button" aria-label="Primary Small Button" />
-    <Button {...PrimaryDisabled.args} primary={false} size="small" label="Primary Small Disabled" aria-label="Primary Small Disabled" />
-    <Button {...Secondary.args} secondary label="Secondary Button" aria-label="Secondary Button" />
+    <Button
+        primary
+        size="large"
+        label="Primary Large Disabled Button"
+        aria-label="Primary Large Disabled Button"
+    />
+    <Button
+        primary={false}
+        size="large"
+        label="PrimaryLarge Disabled Button"
+        aria-label="PrimaryLarge Disabled Button"
+    />
+    <Button
+        primary
+        label="Primary Medium Button"
+        aria-label="Primary Medium Button"
+    />
+    <Button
+        primary={false}
+        label="Primary Medium Disabled Button"
+        aria-label="Primary Medium Disabled Button"
+    />
+    <Button
+        primary
+        size="small"
+        label="Primary Small Button"
+        aria-label="Primary Small Button"
+    />
+    <Button
+        primary={false}
+        size="small"
+        label="Primary S Disabled"
+        aria-label="Primary S Disabled"
+    />
+    <Button
+        secondary
+        label="Secondary Button"
+        aria-label="Secondary Button"
+    />
   </ButtonContainer>
 );
 

@@ -10,6 +10,8 @@ import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { isValidPhoneNumber } from 'react-phone-number-input';
 import styled from 'styled-components';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
 import VoterActions from '../../actions/VoterActions';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import apiCalming from '../../common/utils/apiCalming';
@@ -22,8 +24,6 @@ import { FirstRowPhoneOrEmail, SecondRowPhoneOrEmail, SecondRowPhoneOrEmailDiv, 
 import { ButtonContainerHorizontal } from '../Welcome/sectionStyles';
 import SettingsVerifySecretCode from '../../common/components/Settings/SettingsVerifySecretCode';
 // import { validatePhoneOrEmail } from '../../utils/regex-checks';
-import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
-import Tooltip from 'react-bootstrap/Tooltip';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 
@@ -510,6 +510,7 @@ class VoterPhoneVerificationEntry extends Component {
             placeholder="Type phone number here..."
             type="tel"
             value={voterSMSPhoneNumber}
+            margin="normal"
             variant="outlined"
           />
           {(displayPhoneVerificationButton || lockOpenPhoneVerificationButton) && (
@@ -576,7 +577,9 @@ class VoterPhoneVerificationEntry extends Component {
         return (
           <div key={voterSMSPhoneNumberFromList.sms_we_vote_id}>
             <FirstRowPhoneOrEmail>
-            <span className="u-no-break">{voterSMSPhoneNumberFromList.normalized_sms_phone_number}</span>
+              <span className="u-no-break">
+                {voterSMSPhoneNumberFromList.normalized_sms_phone_number}
+              </span>
             </FirstRowPhoneOrEmail>
             <SecondRowPhoneOrEmail>
               {isPrimarySMSPhoneNumber ? (

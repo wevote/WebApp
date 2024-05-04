@@ -4,7 +4,6 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
-// const RemovePlugin = require('remove-files-webpack-plugin');  removed due to outdated dependencies 1/3/2023
 const SourceMapDevToolPlugin = require('webpack/lib/SourceMapDevToolPlugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const UnusedWebpackPlugin = require('unused-webpack-plugin');
@@ -19,6 +18,7 @@ const port = process.env.PORT || 3000;
 const isHTTPS = process.env.PROTOCOL && process.env.PROTOCOL === 'HTTPS';
 const isWebApp = !process.env.npm_lifecycle_script.includes('CORDOVA=1');
 const useRealCerts = process.env.npm_lifecycle_script.includes('USE_REAL_CERTS=1');
+const isProduction = process.env.npm_lifecycle_script.includes('PRODUCTION=1');
 const source = isWebApp ? 'src' : 'srcCordova';
 const bundleAnalysis = process.env.ANALYSIS || false;  // enable the interactive bundle analyser and the Unused component analyzer
 const minimized = process.env.MINIMIZED === '1' || false;  // enable the Terser plugin that strips comments and shrinks long variable names
@@ -137,8 +137,10 @@ module.exports = (env, argv) => ({
           to: 'img/',
           globOptions: { ignore: ['**/DO-NOT-BUNDLE/**']},
         },
-        { from: 'node/STORYBOOK-README.TXT', to: './storybook-static/STORYBOOK-README.TXT' },
-        { from: 'storybook-static', to: './storybook-static' },
+        ...(isProduction ? [
+          { from: 'node/STORYBOOK-README.TXT', to: './storybook-static/STORYBOOK-README.TXT' },
+          { from: 'storybook-static', to: './storybook-static' },
+        ] : []),
       ],
     }),
     new MomentLocalesPlugin(),

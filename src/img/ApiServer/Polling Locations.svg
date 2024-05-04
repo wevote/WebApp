@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 61 (89581) - https://sketch.com -->
+    <title>Polling Locations</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M12,2 C15.86,2 19,5.14 19,9 C19,14.25 12,22 12,22 C12,22 5,14.25 5,9 C5,5.14 8.14,2 12,2 Z M10.47,14 L17.02,7.45 L15.61,6.03 L10.48,11.17 L8.4,9.1 L6.98,10.52 L10.47,14 Z" id="path-1"></path>
+    </defs>
+    <g id="Polling-Locations" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="icon/content/where_to_vote_24px">
+            <mask id="mask-2" fill="white">
+                <use xlink:href="#path-1"></use>
+            </mask>
+            <g fill-rule="nonzero"></g>
+            <g id="✱-/-Color-/-Icons-/-Selected-/-On-Primary-/-Active-" mask="url(#mask-2)" fill="#FFFFFF" fill-rule="evenodd">
+                <rect id="Rectangle-3" x="0" y="0" width="24" height="24"></rect>
+            </g>
+        </g>
+    </g>
+</svg>

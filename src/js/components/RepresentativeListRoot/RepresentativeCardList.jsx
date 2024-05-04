@@ -81,7 +81,7 @@ class RepresentativeCardList extends Component {
   render () {
     renderLog('RepresentativeCardList');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('RepresentativeCardList render');
-    const { verticalListOn } = this.props;
+    const { useVerticalCard } = this.props;
     const { representativeList, numberToDisplay } = this.state;
 
     if (!representativeList) {
@@ -90,7 +90,7 @@ class RepresentativeCardList extends Component {
     let numberDisplayed = 0;
     return (
       <RepresentativeCardListWrapper>
-        <ListWrapper verticalListOn={verticalListOn}>
+        <ListWrapper useVerticalCard={useVerticalCard}>
           {representativeList.map((oneRepresentative) => {
             if (numberDisplayed >= numberToDisplay) {
               return null;
@@ -100,7 +100,8 @@ class RepresentativeCardList extends Component {
               <div key={`oneRepresentativeItem-${oneRepresentative.we_vote_id}`}>
                 <RepresentativeCardForList
                   representativeWeVoteId={oneRepresentative.we_vote_id}
-                  limitCardWidth={verticalListOn}
+                  limitCardWidth={useVerticalCard}
+                  useVerticalCard
                 />
               </div>
             );
@@ -134,7 +135,7 @@ RepresentativeCardList.propTypes = {
   incomingRepresentativeList: PropTypes.array,
   startingNumberToDisplay: PropTypes.number,
   timeStampOfChange: PropTypes.number,
-  verticalListOn: PropTypes.bool,
+  useVerticalCard: PropTypes.bool,
   loadMoreScroll: PropTypes.func,
   shouldLoadMore: PropTypes.bool,
 };

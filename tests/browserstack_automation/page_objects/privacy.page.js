@@ -56,19 +56,19 @@ class PrivacyPage extends Page {
     return $$('//a[text() = "info@WeVote.US"]');
   }
 
-   get deleteYourAccountButton () {
+  get deleteYourAccountButton () {
     return $('.DeleteYourAccountButtonInnerWrapper-sc-qu6md9-2');
-   }
+  }
 
-   get cancelOfDeleteYourAccountButton () {
+  get cancelOfDeleteYourAccountButton () {
     return $('.DeleteYourAccountButtonInnerCancelWrapper-sc-qu6md9-1');
-   }
+  }
 
-  async getTextFromEmailLinks() {
+  async getTextFromEmailLinks () {
     const selectorToGetElements = '//a[text() = "info@WeVote.US"]';
-    let arrOfElements = [];
-    for(let i = 1; i <= await $$(selectorToGetElements).length; i++) {
-      let textFromElement = await $(`(${selectorToGetElements})[${i}]`).getText();
+    const arrOfElements = [];
+    for (let i = 1; i <= $$(selectorToGetElements).length; i++) {
+      const textFromElement = $(`(${selectorToGetElements})[${i}]`).getText();
       arrOfElements.push(textFromElement);
     }
 

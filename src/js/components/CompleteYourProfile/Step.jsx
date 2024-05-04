@@ -2,17 +2,19 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Colors from '../../common/components/Style/Colors';
+// import DesignTokenColors from '../../common/components/Style/DesignTokenColors';  // 2024-04-16 Upgrade to using this
 import StepIcon from './StepIcon';
 
 const Step = ({ onClick, step, label, completed, width }) => (
   <HowItWorksStep completed={completed} onClick={onClick} width={width}>
     <StepIcon
-       number={step}
-       completed={completed}
+      number={step}
+      completed={completed}
     />
     <p>{label}</p>
   </HowItWorksStep>
 );
+
 
 Step.propTypes = {
   onClick: PropTypes.func.isRequired,
@@ -22,22 +24,30 @@ Step.propTypes = {
   width: PropTypes.string,
 };
 
-const HowItWorksStep = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: ${({ width }) => width};
-    padding: 0 12px;
-    cursor: pointer;
 
-    ${({ completed }) => `
-    p {
-        color: ${completed ? '#007800' : Colors.primary2024};
-        text-align: center;
-        font-size: 16px;
-        font-weight: 400;
-        margin-top: 6px;
-    }
+const HowItWorksStep = styled.div`
+  display: flex;
+  width: 33.33%;
+  flex-direction: column;
+  align-items: center;
+  padding: 18px 12px 0 12px;
+  cursor: pointer;
+  border-right: 0.5px solid ${Colors.grey};
+  border-left: 0.5px solid ${Colors.grey};
+
+  &:hover {
+    background-color: ${Colors.ultraLightGrey};
+  }
+
+  ${({ completed }) => `
+  p {
+    color: ${completed ? Colors.green : Colors.primary2024};
+    text-align: center;
+    font-size: 16px;
+    font-weight: 400;
+    margin-top: 6px;
+  }
+
 `}
 `;
 export default Step;

@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import VoterActions from '../../actions/VoterActions';
 import { openSnackbar } from '../../common/components/Widgets/SnackNotifier';
 import { isIOS } from '../../common/utils/cordovaUtils';
-import { isAndroid, isWebApp } from '../../common/utils/isCordovaOrWebApp';
+import { isAndroid, isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import Cookies from '../../common/utils/js-cookie/Cookies';
 import { oAuthLog, renderLog } from '../../common/utils/logging';
 import webAppConfig from '../../config';
@@ -282,6 +282,7 @@ const AppleSignInContainer  = styled('div', {
   color: ${enabled ? '#fff' : 'grey'};
   display: block;
   margin: 0 auto 11px;
+  ${isCordova() ? 'margin-bottom: 8px' : ''};
   height: 46px;
   border-radius: 4px;
   overflow: hidden;
@@ -307,4 +308,5 @@ const AppleSignedInContainer  = styled('div')`
   overflow: hidden;
   position: relative;
   width: 220px;
+  ${isCordova() ? 'margin-bottom: 8px' : ''};
 `;

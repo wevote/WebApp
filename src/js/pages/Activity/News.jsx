@@ -491,7 +491,7 @@ class News extends Component {
                         </div>
                       )}
                       {!voterSignedInFacebook && (
-                        <div className='card'>
+                        <div className="card">
                           <div className="card-main">
                             <FacebookSignInWrapper>
                               <FacebookSignInCard />

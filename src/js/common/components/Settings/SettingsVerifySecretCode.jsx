@@ -119,6 +119,8 @@ class SettingsVerifySecretCode extends Component {
     // One case is this: clicking "Try a different number" after you have entered a full and correct
     //  verification code, signs you in. But attempts to change/remove
     //  this "handleDigit6Blur" function caused other, worse problems.
+
+    // 2024-04-10 NOTE: This function is no longer being used in order to address WV-328.
     const {
       cancelingVerifyModal, digit1, digit2, digit3, digit4, digit5, digit6,
       voterPhoneNumber, voterVerifySecretCodeSubmitted,
@@ -631,7 +633,8 @@ class SettingsVerifySecretCode extends Component {
                 maxLength={1}
                 onChange={this.onDigit6Change}
                 onFocus={this.handleFocus}
-                onBlur={this.handleDigit6Blur}
+                // This is a fix for WV-328. Changes handleDigit6Blur to handleBlur.
+                onBlur={this.handleBlur}
                 onPaste={() => this.onPaste}
                 onKeyDown={this.handleKeyDown6}
                 type="tel"

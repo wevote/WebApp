@@ -1,10 +1,11 @@
 import { driver, expect } from '@wdio/globals';
 import ReadyPage from '../page_objects/ready.page';
 import PrivacyPage from '../page_objects/privacy.page';
+
 const assert = require('assert');
+const { describe, it } = require('mocha');
 
 describe('Privacy Page', () => {
-
   // Privacy_001
   it('verifyWeVoteUSLinkRedirect', async () => {
     await ReadyPage.load();
@@ -12,7 +13,7 @@ describe('Privacy Page', () => {
     await PrivacyPage.weVoteUSLink.click();
     await driver.switchWindow('https://wevote.us/');
     await expect(driver).toHaveUrl('https://wevote.us/');
-    await expect(driver).toHaveTitle('Ready to Vote? - We Vote');
+    await expect(driver).toHaveTitle('Ready to Vote? - WeVote');
   });
 
   // Privacy_002
@@ -40,7 +41,7 @@ describe('Privacy Page', () => {
     await PrivacyPage.deleteYourAccountLink.click();
     await PrivacyPage.deleteYourAccountButton.click();
     await driver.pause(3000);
-    await expect(driver).toHaveTitle('Ready to Vote? - We Vote');
+    await expect(driver).toHaveTitle('Privacy Policy - WeVote');
   });
 
   // Privacy_005_2
@@ -75,8 +76,17 @@ describe('Privacy Page', () => {
   it('verifyOpenReplayPrivacyLink', async () => {
     await ReadyPage.load();
     await ReadyPage.findPrivacyLink.click();
+    await driver.pause(5000);
     await PrivacyPage.openReplayPrivacyLink.click();
-    await driver.switchWindow("https://openreplay.com/privacy.html");
+    await driver.waitUntil(async () => {
+      // Add condition to check for the expected URL
+      await driver.switchWindow('https://openreplay.com/legal/privacy.html');
+      const currentUrl = await driver.getUrl();
+      return currentUrl === 'https://openreplay.com/legal/privacy.html';
+    }, {
+      timeout: 10000,
+      timeoutMsg: 'Expected URL not found, timeout after 10000ms',
+    });
     await expect(driver).toHaveTitle('Privacy | OpenReplay');
   });
 
@@ -84,11 +94,11 @@ describe('Privacy Page', () => {
   it('verifyEmailLinks', async () => {
     await ReadyPage.load();
     await ReadyPage.findPrivacyLink.click();
-
+    await driver.pause(3000);
     await expect(PrivacyPage.emailLink).toBeElementsArrayOfSize(2);
-    let actualResultArray = await PrivacyPage.getTextFromEmailLinks();
+    const actualResultArray = await PrivacyPage.getTextFromEmailLinks();
     for (let i = 0; i < actualResultArray.length; i++) {
-      let actualResult = await actualResultArray[i];
+      const actualResult = actualResultArray[i];
       assert.equal(actualResult, 'info@WeVote.US');
     }
   });

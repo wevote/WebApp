@@ -351,7 +351,7 @@ class CampaignListRoot extends Component {
                 listModeFiltersTimeStampOfChange={timeStampOfChange}
                 searchText={searchText}
                 timeStampOfChange={timeStampOfChange}
-                verticalListOn
+                useVerticalCard
                 loadMoreScroll={() => { handleHorizontalScroll(this.scrollElement.current, HORIZONTAL_SCROLL_DISTANCE_ON_SHOW_MORE, this.leftAndRightArrowSetState, RIGHT_MARGIN_SIZE); }}
                 shouldLoadMore={this.state.callShowMoreCards}
               />

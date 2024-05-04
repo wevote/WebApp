@@ -20,6 +20,6 @@ const Container = styled.div`
 
 export const Searchbox = () => (
   <Container>
-    <BaseSearchbox placeholder="Search by name, office or state"/>
+    <BaseSearchbox placeholder="Search by name, office or state" />
   </Container>
 );

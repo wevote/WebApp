@@ -36,7 +36,10 @@ module.exports.config = {
     ],
   ],
   specs: [
-    '../specs/*.js',
+    '../specs/FAQPage.js',
+    '../specs/PrivacyPage.js',
+    '../specs/ReadyPage.js',
+    '../specs/TermsPage.js',
   ],
   capabilities,
   commonCapabilities: {
@@ -49,7 +52,7 @@ module.exports.config = {
       // Oakland, CA, USA
       gpsLocation: '37.804363,-122.271111',
       maskCommands: 'setValues, getValues, setCookies, getCookies',
-      video: 'false',
+      video: 'true',
     },
   },
   maxInstances: 1,
