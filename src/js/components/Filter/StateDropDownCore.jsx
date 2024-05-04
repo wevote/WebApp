@@ -22,13 +22,14 @@ class StateDropDownCore extends Component {
       onStateDropDownChange,
       selectedState,
       dialogLabel,
+      customStyle,
     } = this.props;
 
     let stateCodeTemp;
     const stateNameList = Object.values(stateCodeMap).sort();
 
     return (
-      <FormControl variant="outlined" className={classes.formControl}>
+      <FormControl variant="outlined" className={classes.formControl} style={customStyle}>
         <InputLabel htmlFor="outlined-age-native-simple" aria-label="Select State" />
         <Select
           classes={{ select: classes.select }}
@@ -51,7 +52,7 @@ class StateDropDownCore extends Component {
             </>
           ) : (
             <>
-              <option aria-label="-- any state --" value="all">-- any state --</option>
+              <option aria-label="-- any state --" value="all">-- Choose state --</option>
               {stateNameList.map((stateName) => {
                 if (stateName === 'National') {
                   return null;
@@ -76,6 +77,7 @@ StateDropDownCore.propTypes = {
   stateCodesHtml: PropTypes.string,
   selectedState: PropTypes.any,
   dialogLabel: PropTypes.string,
+  customStyle: PropTypes.object,
 };
 
 const styles = ({

@@ -7,6 +7,8 @@ import { renderLog } from '../../../common/utils/logging';
 import voterGuidePossibilityPositionStore from '../../../stores/VoterGuidePossibilityPositionStore';
 import voterGuidePossibilityStore from '../../../stores/VoterGuidePossibilityStore';
 import AddCandidateLoadingButton from './AddCandidateLoadingButton';
+import StateDropDownCore from '../../../components/Filter/StateDropDownCore';
+import { Dropdown } from 'react-bootstrap';
 
 
 let possibilityListener;
@@ -23,7 +25,7 @@ export default function AddCandidateExtensionForm (props) {
   const [finished, setFinished] = useState(false);
   const stateRef = useRef();
   stateRef.current = candidate;
-
+  
   // const urlToStrip = new URL(candidate.endorsementPageUrl);
 
   // const urlStripper = () => {
@@ -43,7 +45,7 @@ export default function AddCandidateExtensionForm (props) {
 
   const handlePossibilityPositionIDChange = (() => {
     const voterGuidePossibilityIdValue = voterGuidePossibilityStore.getVoterGuidePossibilityId();
-    const { candidateName, candidateSpecificEndorsementUrl, endorsementText, stance } = stateRef.current;
+    const { candidateName, candidateSpecificEndorsementUrl, endorsementText, stance, age} = stateRef.current;
     if (voterGuidePossibilityIdValue !== 0) {
       // if the organization does exist, check if the candidate does
       console.log(candidate);
@@ -53,6 +55,7 @@ export default function AddCandidateExtensionForm (props) {
       if (voterGuidePossibilityPositionId === 0) {
         const possibilityPositionDictionary = {
           ballot_item_name: candidateName,
+          ballot_item_state_code: age,
           more_info_url: candidateSpecificEndorsementUrl,
           statement_text: endorsementText,
           position_stance: stance,
@@ -96,7 +99,7 @@ export default function AddCandidateExtensionForm (props) {
 
   const handleBlur = (event) => {
     event.preventDefault();
-    const { name, value } = event.target;
+        const { name, value } = event.target;
     setCandidate((prevInformation) => ({
       ...prevInformation,
       [name]: value,
@@ -170,6 +173,13 @@ export default function AddCandidateExtensionForm (props) {
           InputLabelProps={{ style: { fontFamily: 'Poppins' } }}
           InputProps={{ style: { fontFamily: 'Poppins' } }}
           onBlur={handleBlur}
+        />
+        <StateDropDownCore
+          stateCodesToDisplay={[]}
+          stateCodesHtml=""
+          dialogLabel="Choose State"
+          customStyle={{ width: '100%', padding: '0px', fontFamily: 'Poppins'}} 
+          onStateDropDownChange = {handleBlur}
         />
         <CheckBoxArea>
           <CheckBoxContainer>
