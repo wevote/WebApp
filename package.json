@@ -150,7 +150,7 @@
     "react-phone-number-input": "^3.1.11",
     "react-player": "^2.9.0",
     "react-router-dom": "^5.3.4",
-    "react-router-dom-v5-compat": "^6.21.1",
+    "react-router-dom-v5-compat": "^6.22.3",
     "react-share": "^4.4.1",
     "react-slick": "^0.28.1",
     "react-svg": "^14.1.9",
