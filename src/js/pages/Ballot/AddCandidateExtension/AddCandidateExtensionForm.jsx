@@ -4,11 +4,10 @@ import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import VoterGuidePossibilityActions from '../../../actions/VoterGuidePossibilityActions';
 import { renderLog } from '../../../common/utils/logging';
+import StateDropDownCore from '../../../components/Filter/StateDropDownCore';
 import voterGuidePossibilityPositionStore from '../../../stores/VoterGuidePossibilityPositionStore';
 import voterGuidePossibilityStore from '../../../stores/VoterGuidePossibilityStore';
 import AddCandidateLoadingButton from './AddCandidateLoadingButton';
-import StateDropDownCore from '../../../components/Filter/StateDropDownCore';
-import { Dropdown } from 'react-bootstrap';
 
 
 let possibilityListener;
@@ -25,7 +24,7 @@ export default function AddCandidateExtensionForm (props) {
   const [finished, setFinished] = useState(false);
   const stateRef = useRef();
   stateRef.current = candidate;
-  
+
   // const urlToStrip = new URL(candidate.endorsementPageUrl);
 
   // const urlStripper = () => {
@@ -45,7 +44,7 @@ export default function AddCandidateExtensionForm (props) {
 
   const handlePossibilityPositionIDChange = (() => {
     const voterGuidePossibilityIdValue = voterGuidePossibilityStore.getVoterGuidePossibilityId();
-    const { candidateName, candidateSpecificEndorsementUrl, endorsementText, stance, age} = stateRef.current;
+    const { candidateName, candidateSpecificEndorsementUrl, endorsementText, stance, age } = stateRef.current;
     if (voterGuidePossibilityIdValue !== 0) {
       // if the organization does exist, check if the candidate does
       console.log(candidate);
@@ -99,7 +98,7 @@ export default function AddCandidateExtensionForm (props) {
 
   const handleBlur = (event) => {
     event.preventDefault();
-        const { name, value } = event.target;
+    const { name, value } = event.target;
     setCandidate((prevInformation) => ({
       ...prevInformation,
       [name]: value,
@@ -178,8 +177,8 @@ export default function AddCandidateExtensionForm (props) {
           stateCodesToDisplay={[]}
           stateCodesHtml=""
           dialogLabel="Choose State"
-          customStyle={{ width: '100%', padding: '0px', fontFamily: 'Poppins'}} 
-          onStateDropDownChange = {handleBlur}
+          customStyle={{ width: '100%', padding: '0px', fontFamily: 'Poppins' }}
+          onStateDropDownChange={handleBlur}
         />
         <CheckBoxArea>
           <CheckBoxContainer>
