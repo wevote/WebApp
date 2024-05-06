@@ -14,6 +14,7 @@ describe('ReadyPage', () => {
   it('verifyElectionCountDownRedirect', async () => {
     await ReadyPage.load();
     await driver.pause(9000);
+    await driver.waitUntil(async () => (ReadyPage.electionCountDownTitle.isClickable()));
     await ReadyPage.electionCountDownTitle.click();
     await driver.waitUntil(async () => {
       // Add condition to check for the expected URL
@@ -63,41 +64,18 @@ describe('ReadyPage', () => {
   it('toggleIntroduction', async () => {
     await ReadyPage.load();
     await expect(ReadyPage.introductionStepText).not.toBeDisplayed();
-    await driver.pause(9000);
+    await driver.waitUntil(async () => (ReadyPage.toggleIntroductionButton.isClickable()));
     await ReadyPage.toggleIntroductionButton.click();
-    // await ReadyPage.toggleIntroduction();
-    await driver.waitUntil(async () => {
-      // Add condition to check for the expected URL
-      const currentUrl = await driver.getUrl();
-      console.log(currentUrl);
-      function checkIntroStepTextSize () {
-        return ReadyPage.introductionStepText.toBeElementsArrayOfSize(3);
-      }
-      return checkIntroStepTextSize();
-    }, {
-      timeout: 10000,
-      timeoutMsg: 'Expected steptext to be 3 not found, timeout after 10000ms',
-    });
+    await expect(ReadyPage.introductionStepText).toBeElementsArrayOfSize(3);
   });
 
   // Ready_007
   it('toggleFinePrint', async () => {
     await ReadyPage.load();
     await expect(ReadyPage.finePrintStepText).not.toBeDisplayed();
-    await driver.pause(9000);
+    await driver.waitUntil(async () => (ReadyPage.toggleIntroductionButton.isClickable()));
     await ReadyPage.toggleFinePrintButton.click();
-    await driver.waitUntil(async () => {
-      // Add condition to check for the expected URL
-      const currentUrl = await driver.getUrl();
-      console.log(currentUrl);
-      function checkIntroStepTextSize () {
-        return ReadyPage.introductionStepText.toBeElementsArrayOfSize(4);
-      }
-      return checkIntroStepTextSize();
-    }, {
-      timeout: 10000,
-      timeoutMsg: 'Expected steptext to be 4 not found, timeout after 10000ms',
-    });
+    await expect(ReadyPage.finePrintStepText).toBeElementsArrayOfSize(4);
   });
 
   // Ready_008

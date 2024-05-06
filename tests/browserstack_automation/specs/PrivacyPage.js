@@ -19,6 +19,7 @@ describe('Privacy Page', () => {
   // Privacy_002
   it('verifyCampaignsWeVoteUSLinkRedirect', async () => {
     await ReadyPage.load();
+    await driver.waitUntil(async () => (ReadyPage.findPrivacyLink.isClickable()));
     await ReadyPage.findPrivacyLink.click();
     await PrivacyPage.campaignsWeVoteUSLink.findAndClick();
     await driver.switchWindow('https://campaigns.wevote.us/');

@@ -40,6 +40,7 @@ module.exports.config = {
     '../specs/PrivacyPage.js',
     '../specs/ReadyPage.js',
     '../specs/TermsPage.js',
+    '../specs/TopNavigation.js',
   ],
   capabilities,
   commonCapabilities: {
