@@ -25,7 +25,7 @@ describe('Discuss Page', () => {
   // // });
 
   // Discuss_004
-  it('verifyInviteFriendsButton', async () => {
+  it('verifyEmailVerificationButton', async () => {
     await DiscussPage.load();
     await driver.switchWindow('https://quality.wevote.us/news');
     await expect(DiscussPage.emailVerificationButton).not.toBeClickable();
