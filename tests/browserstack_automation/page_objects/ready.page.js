@@ -46,6 +46,10 @@ class ReadyPage extends Page {
     return $$('//*[contains(@id, "readyIntroductionStepText")]');
   }
 
+  get getIntroText () {
+    return $('.StepText-sc-lvvjo6-11 kIDCci');
+  }
+
   get toggleFinePrintButton () {
     return $('#toggleContentButton-showMoreReadyFinePrintCompressed');
   }
@@ -201,6 +205,10 @@ class ReadyPage extends Page {
 
   async toggleIntroduction () {
     await this.toggleIntroductionButton.findAndClick();
+  }
+
+  async toggleIntroStepText () {
+    await this.introductionStepText.findAndClick();
   }
 
   async toggleFinePrint () {

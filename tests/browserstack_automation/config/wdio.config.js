@@ -36,10 +36,12 @@ module.exports.config = {
     ],
   ],
   specs: [
+    '../specs/DiscussPage.js',
     '../specs/FAQPage.js',
     '../specs/PrivacyPage.js',
     '../specs/ReadyPage.js',
     '../specs/TermsPage.js',
+    '../specs/TopNavigation.js',
   ],
   capabilities,
   commonCapabilities: {
