@@ -60,7 +60,7 @@ export default function AddCandidateExtensionForm (props) {
           position_stance: stance,
         };
         VoterGuidePossibilityActions.voterGuidePossibilityPositionSave(voterGuidePossibilityIdValue, voterGuidePossibilityPositionId, possibilityPositionDictionary);
-        console.log('saved!');
+        console.log('saved! ', possibilityPositionDictionary);
         setFinished(true);
         possibilityPositionListener.remove();
       } else {
@@ -140,7 +140,7 @@ export default function AddCandidateExtensionForm (props) {
           variant="outlined"
           fullWidth
           color="primary"
-          label="Candidate Name"
+          label="Candidate name"
           name="candidateName"
           id="candidateName"
           defaultValue={candidate.candidateName}
@@ -152,7 +152,7 @@ export default function AddCandidateExtensionForm (props) {
           variant="outlined"
           fullWidth
           color="primary"
-          label="Candidate Campaign Url"
+          label="Candidate-specific endorsement URL (if any)"
           name="candidateSpecificEndorsementUrl"
           id="candidateSpecificEndorsementUrl"
           defaultValue={candidate.candidateSpecificEndorsementUrl}
@@ -165,7 +165,7 @@ export default function AddCandidateExtensionForm (props) {
           variant="outlined"
           fullWidth
           color="primary"
-          label="Endorsement Website"
+          label="Endorsement website"
           name="endorsementPageUrl"
           id="endorsementURL"
           defaultValue={candidate.endorsementPageUrl}
