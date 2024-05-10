@@ -49,7 +49,7 @@ export default function AddCandidateForExtension () {
       </a>
       <AddCandidateHeader>Add Candidate</AddCandidateHeader>
       <IntroText>
-        Please check that the following inputs contain the correct information, and fill out the candidate website and endorsement text boxes if possible.
+        Please verify this info, and add endorsement text if you find any.
       </IntroText>
       {showDevStuff && (
         <AddCandidateExtensionForm candidate={candidate} setCandidate={setCandidate} />
