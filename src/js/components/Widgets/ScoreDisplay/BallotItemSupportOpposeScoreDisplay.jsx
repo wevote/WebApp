@@ -29,6 +29,8 @@ import { getPositionListSummaryIncomingDataStats, getPositionSummaryListForBallo
 import StickyPopover from '../../Ballot/StickyPopover';
 import { openSnackbar } from '../../../common/components/Widgets/SnackNotifier';
 
+import LikeDislike from '../../Like/BaseLike';
+
 const PositionSummaryListForPopover = React.lazy(() => import(/* webpackChunkName: 'PositionSummaryListForPopover' */ './PositionSummaryListForPopover'));
 
 
@@ -818,6 +820,8 @@ class BallotItemSupportOpposeScoreDisplay extends Component {
         {/* Gray overview display. Show if no personalized score, or voter position */}
         {(!hideEndorsementsOverview && !hideNumbersOfAllPositions) && (
           <>
+            <LikeDislike />
+
             <EndorsementsOverviewShowOrNotShow>
               <EndorsementsContainer onClick={this.onClickShowOrganizationModalWithPositions}>
                 <EndorsementsTitle>
