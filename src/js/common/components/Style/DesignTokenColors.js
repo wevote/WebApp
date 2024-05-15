@@ -14,6 +14,8 @@ const primitiveColorNames = {
   grayUI700: '#575757',
   grayUI800: '#4A4A4A',
   steel200: '#C8D4DF',
+  white: '#FFFFFF',
+  red: '#EF0716',
 };
 
 // These are semanticColorNames
@@ -33,6 +35,8 @@ const DesignTokenColors = {
   neutralUI800: primitiveColorNames.grayUI800,
   primary50: primitiveColorNames.blue50,
   secondary200: primitiveColorNames.steel200,
+  whiteUI: primitiveColorNames.white,
+  alert500: primitiveColorNames.red,
 };
 
 export default DesignTokenColors;
