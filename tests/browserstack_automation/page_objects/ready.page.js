@@ -1,4 +1,4 @@
-import { $, $$, driver } from '@wdio/globals';
+import { $, $$ } from '@wdio/globals';
 import Page from './page';
 
 class ReadyPage extends Page {
@@ -163,7 +163,8 @@ class ReadyPage extends Page {
   }
 
   async waitAboutLinkAndClick () {
-    await driver.pause(9000);
+    await this.getAboutLinkElement.waitForDisplayed({ timeout: 15000 });
+    // await driver.pause(9000);
     await this.getAboutLinkElement.click();
   }
 
