@@ -20,12 +20,7 @@
       "seleniumVersion": "4.11.0",
       "autoWait": 10
     }
-  },
-   {
-    "os_version": "10.0",
-    "device": "Samsung Galaxy S20",
-    "browserName": "Android",
-    "browserstack.appium_version": "1.17.0"
-  }   
+  }
+   
  
 ]

@@ -12,15 +12,14 @@ class DiscussPage extends Page {
     // await super.rerender();
   }
 
-
+  get getEmailPlaceholderText () {
+    return $('[placeholder="Type email here..."]');
+  }
 
   get emailFriendsTextBox () {
     return $('#EmailAddress-sidebar');
   }
 
-  get emailSignInTextBox () {
-    return $('#voterEmailAddressEntrySendCode');
-  }
 
   get emailVerificationButton () {
     return $('#voterEmailAddressEntrySendCode');
@@ -28,6 +27,14 @@ class DiscussPage extends Page {
 
   get inviteFriendsButton () {
     return $('#friendsNextButton-sidebar');
+  }
+
+  get cancelEmailButton () {
+    return $('#cancelEmailButton');
+  }
+
+  get emailTextBox () {
+    return $('#enterVoterEmailAddress');
   }
 
   async toggleEmailVerificationButton () {
