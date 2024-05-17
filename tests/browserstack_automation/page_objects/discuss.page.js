@@ -12,20 +12,16 @@ class DiscussPage extends Page {
     // await super.rerender();
   }
 
-  get getEmailPlaceholderText () {
-    return $('[placeholder="Type email here..."]');
-  }
-
-  get emailFriendsTextBox () {
+  get emailAddressSidebarFriendsTextBox () {
     return $('#EmailAddress-sidebar');
   }
 
 
-  get emailVerificationButton () {
+  get voterEmailAddressVerificationButton () {
     return $('#voterEmailAddressEntrySendCode');
   }
 
-  get inviteFriendsButton () {
+  get inviteFriendsNextsButton () {
     return $('#friendsNextButton-sidebar');
   }
 
@@ -33,12 +29,12 @@ class DiscussPage extends Page {
     return $('#cancelEmailButton');
   }
 
-  get emailTextBox () {
+  get enterVoterEmailAddressTextBox () {
     return $('#enterVoterEmailAddress');
   }
 
   async toggleEmailVerificationButton () {
-    await this.emailVerificationButton.findAndClick();
+    await this.voterEmailAddressVerificationButton.findAndClick();
   }
 }
 
