@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import HeartFavoriteToggleBase from '../../components/HeartFavoriteToggle/HeartFavoriteToggleBase';
+import HeartFavoriteToggleBase from '../components/Widgets/HeartFavoriteToggle/HeartFavoriteToggleBase';
 
 export default {
   title: 'Design System/Inputs',
