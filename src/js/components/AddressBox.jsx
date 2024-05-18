@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import BallotActions from '../actions/BallotActions';
 import VoterActions from '../actions/VoterActions';
+import DelayedLoad from '../common/components/Widgets/DelayedLoad';
 import LoadingWheel from '../common/components/Widgets/LoadingWheel';
 import { prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../common/utils/cordovaUtils';
 import historyPush from '../common/utils/historyPush';
@@ -120,18 +121,18 @@ class AddressBox extends Component {
       loading: true,
       voterSavedAddress: true,
     });
-    // New June 2021, once they save we want to go back to the original view with the map
-    this.returnNewTextForMapSearchLocal(textForMapSearch);
-    const { toggleSelectAddressModal } = this.props;
-    if (toggleSelectAddressModal) {
-      // console.log('In AddressBox where we normally toggleEditingAddress');
-      const delayBeforeClosingModal = 4000;
-      this.closeModalTimer = setTimeout(() => {
-        toggleSelectAddressModal();
-      }, delayBeforeClosingModal);
-    } else {
-      console.log('AddressBox did not receive a toggleEditingAddress() function');
-    }
+    // We want to leave the voter in the modal until we get a new ballot
+    // this.returnNewTextForMapSearchLocal(textForMapSearch);
+    // const { toggleSelectAddressModal } = this.props;
+    // if (toggleSelectAddressModal) {
+    //   // console.log('In AddressBox where we normally toggleEditingAddress');
+    //   const delayBeforeClosingModal = 4000;
+    //   this.closeModalTimer = setTimeout(() => {
+    //     toggleSelectAddressModal();
+    //   }, delayBeforeClosingModal);
+    // } else {
+    //   console.log('AddressBox did not receive a toggleEditingAddress() function');
+    // }
   }
 
   updateTextForMapSearch = (textForMapSearch) => {
@@ -167,6 +168,20 @@ class AddressBox extends Component {
         <div>
           <h2>{waitingMessage}</h2>
           {LoadingWheel}
+          <DelayedLoad waitBeforeShow={15000}>
+            <div>
+              <Button
+                color="primary"
+                fullWidth
+                id={externalUniqueId ? `addressBoxModalCancelButton-${externalUniqueId}` : 'addressBoxModalCancelButton'}
+                onClick={toggleEditingAddress}
+                classes={{ root: classes.fullWidthSaveButton }}
+                variant="contained"
+              >
+                Cancel and Try Again
+              </Button>
+            </div>
+          </DelayedLoad>
         </div>
       );
     }
