@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
-import LikeDislikeIcon from './LikeDislikeIcon';
+import HeartFavoriteToggleIcon from './HeartFavoriteToggleIcon';
 
 const ContainerLikeDislike = styled.div`
   display: flex;
@@ -32,7 +32,7 @@ const ContainerLikeDislike = styled.div`
 const LikeContainer = styled.div`
   display: flex;
   padding-right: 8px;
-  border-right: 1px solid ${DesignTokenColors.neutralUI100};  
+  border-right: 1px solid ${DesignTokenColors.neutralUI100};
 `;
 
 const DislikeContainer = styled.div`
@@ -97,7 +97,7 @@ class Like extends React.Component {
       <ContainerLikeDislike>
 
         <LikeContainer>
-          <LikeDislikeIcon
+          <HeartFavoriteToggleIcon
             iconType={this.state.likeActive}
             handleData={this.incrementLike}
           />
@@ -109,7 +109,7 @@ class Like extends React.Component {
 
         <DislikeContainer>
 
-          <LikeDislikeIcon
+          <HeartFavoriteToggleIcon
             iconType={this.state.disLikeActive}
             handleData={this.dicrementLike}
           />

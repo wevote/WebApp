@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import BaseLike from '../../components/Like/BaseLike';
+import HeartFavoriteToggleBase from '../../components/HeartFavoriteToggle/HeartFavoriteToggleBase';
 
 export default {
   title: 'Design System/Inputs',
-  component: BaseLike,
+  component: HeartFavoriteToggleBase,
   parameters: {
     layout: 'centered',
   },
@@ -27,7 +27,7 @@ const Container = styled.div`
 
 export const Like = () => (
   <Container>
-    {/* <BaseLike onClick={counterHandler} counter={counterHandler} /> */}
-    <BaseLike />
+    {/* <HeartFavoriteToggleBase onClick={counterHandler} counter={counterHandler} /> */}
+    <HeartFavoriteToggleBase />
   </Container>
 );
