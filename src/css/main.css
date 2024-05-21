@@ -1583,6 +1583,7 @@ img {
   max-width:100%
 }
 
+// commented out for WV-332, changed read mores to buttons
 /* button:focus {
   outline:0!important
 } */
