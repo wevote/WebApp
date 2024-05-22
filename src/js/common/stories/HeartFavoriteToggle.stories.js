@@ -18,16 +18,8 @@ const Container = styled.div`
   width: 340px;
 `;
 
-// const counterHandler = () => {
-//   let counter = 2340;
-//   counter += 1;
-//   console.log(counter, 'counter');
-//   return counter;
-// };
-
 export const Like = () => (
   <Container>
-    {/* <HeartFavoriteToggleBase onClick={counterHandler} counter={counterHandler} /> */}
     <HeartFavoriteToggleBase />
   </Container>
 );

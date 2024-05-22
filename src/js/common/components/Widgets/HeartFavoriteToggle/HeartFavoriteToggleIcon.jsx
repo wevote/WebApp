@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import DesignTokenColors from '../../Style/DesignTokenColors';
@@ -50,51 +50,22 @@ const IconContainer = styled.div`
 
 `;
 
-const HeartFavoriteToggleIcon = ({ iconType: initialIconType, handleData }) => {
-  const [iconType, setIconType] = useState(initialIconType);
+const HeartFavoriteToggleIcon = ({ state }) => (
+  <IconContainer>
+    <Icon
+        state={state}
+    >
+      {state === 'like' && <HeartFavorite />}
+      {state === 'liked' && <HeartFavoritePressed />}
+      {state === 'dislike' && <HeartDislike />}
+      {state === 'dislikePressed' && <HeartDislikePressed />}
+    </Icon>
 
-  const handleClick = () => {
-    switch (iconType) {
-      case 'like':
-        setIconType('likePressed');
-        handleData('+');
-        break;
-      case 'dislike':
-        setIconType('dislikePressed');
-        handleData('-');
-        break;
-      case 'likePressed':
-        setIconType('like');
-        handleData();
-        break;
-      case 'dislikePressed':
-        setIconType('dislike');
-        handleData();
-        break;
-      default:
-        break;
-    }
-  };
-
-  return (
-    <IconContainer>
-      <Icon
-        iconType={iconType}
-        onClick={handleClick}
-      >
-        {iconType === 'like' && <HeartFavorite />}
-        {iconType === 'likePressed' && <HeartFavoritePressed />}
-        {iconType === 'dislike' && <HeartDislike />}
-        {iconType === 'dislikePressed' && <HeartDislikePressed />}
-      </Icon>
-
-    </IconContainer>
-  );
-};
+  </IconContainer>
+);
 
 export default HeartFavoriteToggleIcon;
 
 HeartFavoriteToggleIcon.propTypes = {
-  iconType: PropTypes.string.isRequired,
-  handleData: PropTypes.func,
+  state: PropTypes.string,
 };
