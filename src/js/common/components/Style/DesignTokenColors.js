@@ -16,6 +16,7 @@ const primitiveColorNames = {
   steel200: '#C8D4DF',
   white: '#FFFFFF',
   red: '#EF0716',
+  alert: '#F3363D',
 };
 
 // These are semanticColorNames
@@ -37,6 +38,7 @@ const DesignTokenColors = {
   secondary200: primitiveColorNames.steel200,
   whiteUI: primitiveColorNames.white,
   alert500: primitiveColorNames.red,
+  alert400: primitiveColorNames.alert,
 };
 
 export default DesignTokenColors;
