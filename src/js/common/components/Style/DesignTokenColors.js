@@ -1,5 +1,8 @@
 const primitiveColorNames = {
   blue50: '#E6F3FF',
+  blue600: '#0858A1',
+  blue700: '#074986',
+  blue900: '#042B4E',
   blueUI50: '#E2F2FD',
   blueUI700: '#1073D4',
   blueUI800: '#0E62C2',
@@ -13,14 +16,18 @@ const primitiveColorNames = {
   grayUI600: '#6E6E6E',
   grayUI700: '#575757',
   grayUI800: '#4A4A4A',
+  greenUI300: '#5DB664',
+  redUI400: '#F3363D',
+  redUI500: '#EF0716',
   steel200: '#C8D4DF',
   white: '#FFFFFF',
-  red: '#EF0716',
-  alert: '#F3363D',
 };
 
 // These are semanticColorNames
 const DesignTokenColors = {
+  alert400: primitiveColorNames.redUI400,
+  alert500: primitiveColorNames.redUI500,
+  confirmation300: primitiveColorNames.greenUI300,
   info50: primitiveColorNames.blueUI50,
   info700: primitiveColorNames.blueUI700,
   info800: primitiveColorNames.blueUI800,
@@ -35,10 +42,11 @@ const DesignTokenColors = {
   neutralUI700: primitiveColorNames.grayUI700,
   neutralUI800: primitiveColorNames.grayUI800,
   primary50: primitiveColorNames.blue50,
+  primary600: primitiveColorNames.blue600,
+  primary700: primitiveColorNames.blue700,
+  primary900: primitiveColorNames.blue900,
   secondary200: primitiveColorNames.steel200,
   whiteUI: primitiveColorNames.white,
-  alert500: primitiveColorNames.red,
-  alert400: primitiveColorNames.alert,
 };
 
 export default DesignTokenColors;

@@ -68,10 +68,10 @@ export default class ShareButtonDropDown extends Component {
     const dropdownClass = this.state.open ? ' open' : '';
 
     return (
-      <div className="item-actionbar__btn-set">
+      <div>
         <div className={`btn-group${dropdownClass}`}>
           <button
-            className="dropdown-toggle item-actionbar__btn btn btn-default"
+            className="dropdown-toggle btn btn-default"
             onBlur={this.onButtonBlur.bind(this)}
             onClick={onClick}
             type="button"

@@ -22,6 +22,7 @@ import VoterStore from '../../../stores/VoterStore';
 import PositionPublicToggle from '../PositionPublicToggle';
 import ShareButtonDropDown from '../ShareButtonDropdown';
 import { openSnackbar } from '../../../common/components/Widgets/SnackNotifier';
+import DesignTokenColors from '../../../common/components/Style/DesignTokenColors';
 
 const NUMBER_OF_BALLOT_CHOICES_ALLOWED_BEFORE_SHOW_MODAL = 3;
 const shareIconSvg = '../../../../img/global/svg-icons/share-icon.svg';
@@ -262,21 +263,15 @@ class ItemActionBar extends PureComponent {
         onClick={() => this.opposeItem()}
         variant={this.isOpposeCalculated() ? 'contained' : 'outlined'}
       >
-        <NotInterested classes={{ root: classes.buttonIconNotInterested }} />
+        <NotInterested classes={this.isOpposeCalculated() ? { root: classes.buttonIconNotInterestedSelected } : { root: classes.buttonIconNotInterested }} />
         {this.isOpposeCalculated() ? (
-          <span
-            className={this.props.shareButtonHide ? 'item-actionbar--inline__position-btn-label--at-state' :
-              'item-actionbar__position-btn-label--at-state'}
-          >
+          <OpposeButtonLabelSelected>
             Opposed
-          </span>
+          </OpposeButtonLabelSelected>
         ) : (
-          <span
-            className={this.props.shareButtonHide ? 'item-actionbar--inline__position-btn-label' :
-              'item-actionbar__position-btn-label'}
-          >
+          <OpposeButtonLabel isAtState={!this.props.shareButtonHide}>
             Oppose
-          </span>
+          </OpposeButtonLabel>
         )}
       </Button>
     );
@@ -309,12 +304,9 @@ class ItemActionBar extends PureComponent {
         onClick={() => this.supportItem()}
         variant={this.isSupportCalculated() ? 'contained' : 'outlined'}
       >
-        <Done classes={{ root: classes.buttonIconDone }} />
+        <Done classes={this.isSupportCalculated() ? { root: classes.buttonIconDoneSelected } : { root: classes.buttonIconDone }} />
         {this.isSupportCalculated() ? (
-          <span
-             className={shareButtonHide ? 'item-actionbar--inline__position-choose-btn-label--at-state' :
-               'item-actionbar__position-choose-btn-label--at-state'}
-          >
+          <ChooseButtonLabelSelected>
             {useSupportWording ? (
               <>
                 Supporting
@@ -324,12 +316,9 @@ class ItemActionBar extends PureComponent {
                 Chosen
               </>
             )}
-          </span>
+          </ChooseButtonLabelSelected>
         ) : (
-          <span
-             className={shareButtonHide ? 'item-actionbar--inline__position-choose-btn-label' :
-               'item-actionbar__position-choose-btn-label'}
-          >
+          <ChooseButtonLabel isAtState={!shareButtonHide}>
             {useSupportWording ? (
               <>
                 Support
@@ -339,7 +328,7 @@ class ItemActionBar extends PureComponent {
                 Choose
               </>
             )}
-          </span>
+          </ChooseButtonLabel>
         )}
       </Button>
     );
@@ -372,19 +361,13 @@ class ItemActionBar extends PureComponent {
       >
         <Done classes={{ root: classes.buttonIconDone }} />
         { this.isSupportCalculated() ? (
-          <span
-            className={`u-no-break ${shareButtonHide ? 'item-actionbar--inline__position-btn-label--at-state' :
-              'item-actionbar__position-btn-label--at-state'}`}
-          >
+          <ChooseButtonLabelSelected className="u-no-break">
             Voting Yes
-          </span>
+          </ChooseButtonLabelSelected>
         ) : (
-          <span
-            className={`u-no-break ${shareButtonHide ? 'item-actionbar--inline__position-btn-label' :
-              'item-actionbar__position-btn-label'}`}
-          >
+          <ChooseButtonLabel isAtState={!shareButtonHide} className="u-no-break">
             Vote Yes
-          </span>
+          </ChooseButtonLabel>
         )}
       </Button>
     );
@@ -417,19 +400,13 @@ class ItemActionBar extends PureComponent {
       >
         <NotInterested classes={{ root: classes.buttonIconNotInterested }} />
         { this.isOpposeCalculated() ? (
-          <span
-            className={`u-no-break ${shareButtonHide ? 'item-actionbar--inline__position-btn-label--at-state' :
-              'item-actionbar__position-btn-label--at-state'}`}
-          >
+          <ChooseButtonLabelSelected className="u-no-break">
             Voting No
-          </span>
+          </ChooseButtonLabelSelected>
         ) : (
-          <span
-            className={`u-no-break ${shareButtonHide ? 'item-actionbar--inline__position-btn-label' :
-              'item-actionbar__position-btn-label'}`}
-          >
+          <ChooseButtonLabel isAtState={!shareButtonHide} className="u-no-break">
             Vote No
-          </span>
+          </ChooseButtonLabel>
         )}
       </Button>
     );
@@ -456,16 +433,14 @@ class ItemActionBar extends PureComponent {
       <Button
         id={`itemActionBarCommentButton-${externalUniqueId}-${localUniqueId}`}
         variant="contained"
-        className={`${commentButtonHideInMobile ? 'd-none d-sm-block ' : null}item-actionbar__btn item-actionbar__btn--comment btn-default`}
+        className={`${commentButtonHideInMobile ? 'd-none d-sm-block ' : null} btn-default`}
         onClick={this.togglePositionStatementFunction}
         classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
       >
         <Comment classes={{ root: classes.buttonIcon }} />
-        <span className={shareButtonHide ? 'item-actionbar--inline__position-btn-label' :
-          'item-actionbar__position-btn-label'}
-        >
+        <ChooseButtonLabel isAtState={!shareButtonHide}>
           Comment
-        </span>
+        </ChooseButtonLabel>
       </Button>
     );
   };
@@ -477,7 +452,7 @@ class ItemActionBar extends PureComponent {
         <Button
           id={`itemActionBarCommentButtonNoText-${externalUniqueId}-${localUniqueId}`}
           variant="contained"
-          className={`${commentButtonHideInMobile ? 'd-none d-sm-block ' : null} item-actionbar__btn item-actionbar__btn--comment btn-default`}
+          className={`${commentButtonHideInMobile ? 'd-none d-sm-block ' : null} btn-default`}
           onClick={this.togglePositionStatementFunction}
           classes={{ root: classes.buttonNoTextRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
         >
@@ -850,13 +825,13 @@ class ItemActionBar extends PureComponent {
               null : (
                 <span>
                   {buttonsOnly ? (
-                    <div className="u-push--sm item-actionbar__position-bar">
+                    <CommentFlex>
                       {this.commentButtonNoText(`${ballotItemWeVoteId}`)}
-                    </div>
+                    </CommentFlex>
                   ) : (
-                    <div className="u-push--sm item-actionbar__position-bar">
+                    <CommentFlex>
                       {this.commentButton(`${ballotItemWeVoteId}`)}
-                    </div>
+                    </CommentFlex>
                   )}
                 </span>
               )}
@@ -917,12 +892,28 @@ const styles = (theme) => ({
     },
   },
   buttonIconDone: {
+    /* color: `${DesignTokenColors.primary700}`, *//* change to green */
+    fontSize: 22,
+    fontWeight: 'bold',
+    marginRight: '.3rem',
+    marginTop: '-2px',
+  },
+  buttonIconDoneSelected: {
+    color: `${DesignTokenColors.confirmation300}`, /* change to green */
     fontSize: 22,
     fontWeight: 'bold',
     marginRight: '.3rem',
     marginTop: '-2px',
   },
   buttonIconNotInterested: {
+    /* color: `${DesignTokenColors.alert500}`, *//* change to red */
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginRight: '.3rem',
+    marginTop: '-2px',
+  },
+  buttonIconNotInterestedSelected: {
+    color: `${DesignTokenColors.alert500}`, /* change to red */
     fontSize: 18,
     fontWeight: 'bold',
     marginRight: '.3rem',
@@ -1030,13 +1021,6 @@ const ButtonGroup = styled('div', {
   ${positionPublicToggleWrapAllowed ? 'width: 100%;' : ''};
 `));
 
-const StackedButton = styled('div', {
-  shouldForwardProp: (prop) => prop !== 'onlyTwoButtons',
-})(({ onlyTwoButtons }) => ({
-  marginLeft: '3px',
-  width: onlyTwoButtons ? '50% !important' : '33% !important',
-}));
-
 const ButtonWrapper = styled('div')`
   &:last-child {
     margin-right: 0;
@@ -1053,5 +1037,44 @@ const ButtonWrapperRight = styled('div')`
   align-items: center;
   // {({ onlyTwoButtons }) => (onlyTwoButtons ? 'width: 50% !important;' : '')}
 `;
+
+const ChooseButtonLabel = styled('span', {
+  shouldForwardProp: (prop) => !['isAtState'].includes(prop),
+})(({ isAtState }) => (`
+  color: #000;
+  // ${isAtState ? 'font-weight: bold;' : ''};
+`));
+
+const ChooseButtonLabelSelected = styled('span', {
+  shouldForwardProp: (prop) => !['isAtState'].includes(prop),
+})(({ isAtState }) => (`
+  ${isAtState ? '' : ''};
+`));
+
+const CommentFlex = styled('div')`
+  display: flex;
+  align-items: center;
+  margin-right: 8px;
+`;
+
+const OpposeButtonLabel = styled('span', {
+  shouldForwardProp: (prop) => !['isAtState'].includes(prop),
+})(({ isAtState }) => (`
+  color: #000;
+  ${isAtState ? 'font-weight: bold;' : ''};
+`));
+
+const OpposeButtonLabelSelected = styled('span', {
+  shouldForwardProp: (prop) => !['isAtState'].includes(prop),
+})(({ isAtState }) => (`
+  ${isAtState ? '' : ''};
+`));
+
+const StackedButton = styled('div', {
+  shouldForwardProp: (prop) => prop !== 'onlyTwoButtons',
+})(({ onlyTwoButtons }) => ({
+  marginLeft: '3px',
+  width: onlyTwoButtons ? '50% !important' : '33% !important',
+}));
 
 export default withStyles(styles)(ItemActionBar);
