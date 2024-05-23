@@ -203,7 +203,7 @@ const styles = () => ({
   chipStyle: {
     backgroundColor: '#dbdbdb',
     border: '1px solid #ccc',
-    color: '#555',
+    color: '#555555',
     cursor: 'pointer',
     fontSize: '.7rem',
     height: 'auto',
@@ -287,11 +287,14 @@ const RenderedOrganizationsWrapper = styled('div')`
   margin-top: 6px;
 `;
 
-const WordWrapper = styled('span')`
-  color: #000;
+const WordWrapper = styled.button`
+  color: #000000;
   opacity: 0.6;
   text-decoration: underline;
   text-decoration-color: #ccc;
+  border: none;
+  background-color: #FFF;
+  padding: 0;
   &:hover {
     text-decoration: underline;
   }
