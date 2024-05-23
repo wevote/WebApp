@@ -2983,66 +2983,6 @@ h1,h2,h3,h4,h5,h6 {
   display:inline
 }
 
-.item-actionbar__position-bar {
-  display:flex;
-  align-items:center
-}
-
-@media all and (max-width: 767px) {
-  .item-actionbar__position-bar--mobile {
-    display:flex!important
-  }
-}
-
-.item-actionbar__position-btn-label {
-  color:#000;
-  font-weight:bold
-}
-
-.item-actionbar__position-btn-label--at-state {
-  color:#fff;
-  font-weight:bold
-}
-
-.item-actionbar__position-choose-btn-label {
-  color:#000;
-  font-weight:bold
-}
-
-.item-actionbar__position-choose-btn-label--at-state {
-  font-weight:bold
-}
-
-.item-actionbar__following-text {
-  margin-left:8px
-}
-
-.item-actionbar .support-at-state {
-  color:#fff;
-  font-weight:bold;
-  background-color:#76d00b
-}
-
-.item-actionbar .oppose-at-state {
-  background-color:#ff4921
-}
-
-.item-actionbar--inline__position-btn-label {
-  color:#000
-}
-
-.item-actionbar--inline__position-btn-label--at-state {
-  color:#fff
-}
-
-.item-actionbar--inline__position-choose-btn-label {
-  color:#000
-}
-
-.item-actionbar--inline__position-choose-btn-label--at-state {
-  font-weight:bold
-}
-
 .search-bar {
   width:100%;
   overflow:hidden;

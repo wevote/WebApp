@@ -2,6 +2,7 @@ import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
+import HeartFavoriteToggle from '../Widgets/HeartFavoriteToggle/HeartFavoriteToggleBase';
 import { renderLog } from '../../utils/logging';
 import numberWithCommas from '../../utils/numberWithCommas';
 import CampaignStore from '../../stores/CampaignStore';
@@ -126,20 +127,25 @@ class CampaignSupportThermometer extends React.Component {
 
     return (
       <CampaignSupportThermometerWrapper>
-        <TextWrapper>
-          <SupportersText inCompressedMode={inCompressedMode}>
-            {supportersText}
-          </SupportersText>
-          {!!(supportersCountNextGoal && !inCompressedMode && !finalElectionDateInPast) && (
-            <GoalText>
-              {' '}
-              Help them get to
-              {' '}
-              {numberWithCommas(supportersCountNextGoal)}
-              !
-            </GoalText>
-          )}
-        </TextWrapper>
+        <HeartPlusDetailsWrapper>
+          <HeartWrapper>
+            <HeartFavoriteToggle />
+          </HeartWrapper>
+          <HeartDetailsWrapper>
+            <SupportersText inCompressedMode={inCompressedMode}>
+              {supportersText}
+            </SupportersText>
+            {!!(supportersCountNextGoal && !inCompressedMode && !finalElectionDateInPast) && (
+              <GoalText>
+                {' '}
+                Help them get to
+                {' '}
+                {numberWithCommas(supportersCountNextGoal)}
+                !
+              </GoalText>
+            )}
+          </HeartDetailsWrapper>
+        </HeartPlusDetailsWrapper>
         <ProgressBarWrapper>
           <ProgressBar percentage={percentageForDisplay}>
             <span id="progress-bar" />
@@ -213,7 +219,16 @@ const SupportersText = styled('div', {
   font-weight: ${inCompressedMode ? '400' : '400'};
 `));
 
-const TextWrapper = styled('div')`
+const HeartPlusDetailsWrapper = styled('div')`
+  display: flex;
+  justify-content: left;
+`;
+
+const HeartDetailsWrapper = styled('div')`
+`;
+
+const HeartWrapper = styled('div')`
+  margin-right: 8px;
 `;
 
 const CampaignSupportThermometerWrapper = styled('div')`
