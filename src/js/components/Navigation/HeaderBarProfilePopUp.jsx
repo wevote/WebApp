@@ -98,7 +98,7 @@ class HeaderBarProfilePopUp extends Component {
               </ListItemWrapper>
             </li>
             {/* Desktop or Mobile */}
-            <li>
+            {/* <li>
               <ListItemWrapper>
                 <Link id="profilePopUpYourEndorsements" onClick={this.hideProfilePopUp} to={yourVoterGuideLink.replace('#', '')}>
                   <Button
@@ -110,9 +110,9 @@ class HeaderBarProfilePopUp extends Component {
                   </Button>
                 </Link>
               </ListItemWrapper>
-            </li>
+            </li> */}
             {/* Desktop or Mobile */}
-            <li>
+            {/* <li>
               <ListItemWrapper>
                 <Link id="profilePopUpYourValues" onClick={this.hideProfilePopUp} to="/values">
                   <Button
@@ -124,7 +124,7 @@ class HeaderBarProfilePopUp extends Component {
                   </Button>
                 </Link>
               </ListItemWrapper>
-            </li>
+            </li> */}
             {/* Desktop or Mobile */}
             {voter && isSignedIn ?
               null : (

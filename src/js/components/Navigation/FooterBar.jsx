@@ -220,7 +220,8 @@ class FooterBar extends React.Component {
     let discussVisible;
     let donateVisible;
     const friendsVisible = false; // 2023-09-04 Dale We are turning off Friends footer icon for now
-    const squadsVisible = isWebApp();
+    //const squadsVisible = isWebApp();
+    const squadsVisible = false;
     // let howItWorksVisible;
     const howItWorksVisible = false;
     if (isCordova() || inPrivateLabelMode) {
