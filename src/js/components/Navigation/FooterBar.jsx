@@ -122,7 +122,8 @@ class FooterBar extends React.Component {
       case 3:
         return historyPush('/friends');
       case 4:
-        return historyPush('/squads');
+        // return historyPush('/squads');
+        return
       case 5:
         return historyPush('/news');
       case 6:
@@ -141,7 +142,7 @@ class FooterBar extends React.Component {
     if (stringContains('/ballot', pathname.toLowerCase())) return 1;
     if (pathname.toLowerCase().endsWith('/cs/')) return 2;
     if (stringContains('/friends', pathname.toLowerCase())) return 3;
-    if (stringContains('/squads', pathname.toLowerCase())) return 4;
+    // if (stringContains('/squads', pathname.toLowerCase())) return 4;
     if (stringContains('/news', pathname.toLowerCase())) return 5;
     if (stringContains('/donate', pathname.toLowerCase())) return 6;
     return -1;
@@ -220,7 +221,7 @@ class FooterBar extends React.Component {
     let discussVisible;
     let donateVisible;
     const friendsVisible = false; // 2023-09-04 Dale We are turning off Friends footer icon for now
-    const squadsVisible = isWebApp();
+    // const squadsVisible = isWebApp();
     // let howItWorksVisible;
     const howItWorksVisible = false;
     if (isCordova() || inPrivateLabelMode) {
@@ -328,7 +329,7 @@ class FooterBar extends React.Component {
                 sx={defaultIconStyles}
               />
             )}
-            {squadsVisible && (
+            {/* {squadsVisible && (
               <BottomNavigationAction
                 className="no-outline"
                 icon={<Groups />}
@@ -340,7 +341,7 @@ class FooterBar extends React.Component {
                 }}
                 sx={groupsIconStyles}
               />
-            )}
+            )} */}
             {discussVisible && (
               <BottomNavigationAction
                 className="no-outline"
