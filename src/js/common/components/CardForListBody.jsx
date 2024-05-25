@@ -36,6 +36,7 @@ import { getYearFromUltimateElectionDate } from '../utils/dateFormat';
 import historyPush from '../utils/historyPush';
 import isMobileScreenSize from '../utils/isMobileScreenSize';
 import DesignTokenColors from './Style/DesignTokenColors';
+import HeartFavoriteToggleLoader from './Widgets/HeartFavoriteToggle/HeartFavoriteToggleLoader';
 
 const CampaignSupportThermometer = React.lazy(() => import(/* webpackChunkName: 'CampaignSupportThermometer' */ './CampaignSupport/CampaignSupportThermometer'));
 const ItemActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemActionBar' */ '../../components/Widgets/ItemActionBar/ItemActionBar'));
@@ -97,11 +98,16 @@ export default function CardForListBody (props) {
                   </Link>
                 </OneCampaignTitleLink>
               )}
-              {!!(electionDateYear) && (
-                <ElectionYear>
-                  {electionDateYear}
+              <YearAndHeartDiv>
+                <ElectionYear largeDisplay={!useCampaignSupportThermometer}>
+                  {!!(electionDateYear) && (
+                    <>{electionDateYear}</>
+                  )}
                 </ElectionYear>
-              )}
+                {!useCampaignSupportThermometer && (
+                  <HeartFavoriteToggleLoader campaignXWeVoteId={linkedCampaignXWeVoteId} />
+                )}
+              </YearAndHeartDiv>
               <SpaceBeforeThermometer />
               {useCampaignSupportThermometer && (
                 <Suspense fallback={<span>&nbsp;</span>}>
@@ -333,7 +339,7 @@ export default function CardForListBody (props) {
   );
 }
 CardForListBody.propTypes = {
-  ballotItemDisplayName: PropTypes.string.isRequired,
+  ballotItemDisplayName: PropTypes.string, // PropTypes.string.isRequired,
   candidateWeVoteId: PropTypes.string,
   districtName: PropTypes.string,
   finalElectionDateInPast: PropTypes.bool,
@@ -358,6 +364,11 @@ CardForListBody.propTypes = {
   usePoliticianWeVoteIdForBallotItem: PropTypes.bool,
   useVerticalCard: PropTypes.bool,
 };
+
+export const YearAndHeartDiv = styled('div')`
+  display: flex;
+  justify-content: space-between;
+`;
 
 export const SpaceBeforeThermometer = styled('div')`
   margin-bottom: 8px;

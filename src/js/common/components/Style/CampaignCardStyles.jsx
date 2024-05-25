@@ -122,11 +122,13 @@ export const CardRowsWrapper = styled('div')`
   margin-top: 2px;
 `;
 
-export const ElectionYear = styled('div')`
+export const ElectionYear = styled('div', {
+  shouldForwardProp: (prop) => !['largeDisplay'].includes(prop),
+})(({ largeDisplay }) => (`
   color: ${DesignTokenColors.neutralUI500};
-  font-size: 12px;
   font-weight: 500;
-`;
+  ${largeDisplay ? 'font-size: 20px;' : 'font-size: 12px;'}
+`));
 
 export const ListWrapper = styled('div', {
   shouldForwardProp: (prop) => !['useVerticalCard'].includes(prop),
@@ -217,7 +219,7 @@ export const OneCampaignTitle = styled('h1')(({ theme }) => (`
 `));
 
 export const OneCampaignTitleLink = styled('h1')(({ theme }) => (`
-  font-size: 18px;
+  font-size: 22px;
   margin: 0;
   margin-bottom: 4px;
   ${theme.breakpoints.down('sm')} {

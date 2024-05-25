@@ -50,22 +50,26 @@ const IconContainer = styled.div`
 
 `;
 
-const HeartFavoriteToggleIcon = ({ state }) => (
+const HeartFavoriteToggleIcon = ({ isDislike, isFavorite, voterOpposes, voterSupports }) => (
   <IconContainer>
-    <Icon
-        state={state}
-    >
-      {state === 'like' && <HeartFavorite />}
-      {state === 'liked' && <HeartFavoritePressed />}
-      {state === 'dislike' && <HeartDislike />}
-      {state === 'dislikePressed' && <HeartDislikePressed />}
-    </Icon>
-
+    {isDislike && (
+      <Icon>
+        {voterOpposes ? <HeartDislikePressed /> : <HeartDislike />}
+      </Icon>
+    )}
+    {isFavorite && (
+      <Icon>
+        {voterSupports ? <HeartFavoritePressed /> : <HeartFavorite />}
+      </Icon>
+    )}
   </IconContainer>
 );
 
 export default HeartFavoriteToggleIcon;
 
 HeartFavoriteToggleIcon.propTypes = {
-  state: PropTypes.string,
+  isDislike: PropTypes.bool,
+  isFavorite: PropTypes.bool,
+  voterOpposes: PropTypes.bool,
+  voterSupports: PropTypes.bool,
 };

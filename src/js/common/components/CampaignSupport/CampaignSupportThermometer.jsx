@@ -2,7 +2,7 @@ import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
-import HeartFavoriteToggle from '../Widgets/HeartFavoriteToggle/HeartFavoriteToggleBase';
+import HeartFavoriteToggleLoader from '../Widgets/HeartFavoriteToggle/HeartFavoriteToggleLoader';
 import { renderLog } from '../../utils/logging';
 import numberWithCommas from '../../utils/numberWithCommas';
 import CampaignStore from '../../stores/CampaignStore';
@@ -99,7 +99,7 @@ class CampaignSupportThermometer extends React.Component {
 
   render () {
     renderLog('CampaignSupportThermometer');  // Set LOG_RENDER_EVENTS to log all renders
-    const { inCompressedMode } = this.props;
+    const { campaignXWeVoteId, inCompressedMode } = this.props;
     const { finalElectionDateInPast, supportersCount, supportersCountNextGoal } = this.state;
     let calculatedPercentage = 0;
     if (supportersCount && supportersCountNextGoal) {
@@ -129,7 +129,7 @@ class CampaignSupportThermometer extends React.Component {
       <CampaignSupportThermometerWrapper>
         <HeartPlusDetailsWrapper>
           <HeartWrapper>
-            <HeartFavoriteToggle />
+            <HeartFavoriteToggleLoader campaignXWeVoteId={campaignXWeVoteId} />
           </HeartWrapper>
           <HeartDetailsWrapper>
             <SupportersText inCompressedMode={inCompressedMode}>
