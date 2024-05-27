@@ -150,13 +150,13 @@ class PoliticianEndorsementsList extends Component {
         {listTitleHtml}
         <div>
           {filteredPositionList.map((position) => {
-            // console.log('position:', position);
+            // console.log('PoliticianEndorsementList position:', position);
             if (numberOfCampaignsDisplayed >= numberOfPositionsToDisplay) {
               return null;
             }
             numberOfCampaignsDisplayed += 1;
             return (
-              <div key={`politicianEndorsementItem-${politicianWeVoteId}-${position.position_we_vote_id}`}>
+              <div key={`politicianEndorsementItem-${politicianWeVoteId}-${position.speaker_we_vote_id}-${position.position_we_vote_id}`}>
                 <PoliticianEndorsementForList
                   politicianWeVoteId={politicianWeVoteId}
                   position={position}

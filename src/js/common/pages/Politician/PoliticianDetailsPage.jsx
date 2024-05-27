@@ -75,6 +75,7 @@ class PoliticianDetailsPage extends Component {
       opponentCandidateList: [],
       payToPromoteStepCompleted: false,
       payToPromoteStepTurnedOn: false,
+      politicianDataFound: false,
       politicianDataNotFound: false,
       politicianSEOFriendlyPath: '',
       politicianSEOFriendlyPathForDisplay: '', // Value for politician already received
@@ -333,6 +334,7 @@ class PoliticianDetailsPage extends Component {
       // isSupportersCountMinimumExceeded,
       linkedCampaignXWeVoteId,
       opponentCandidateList,
+      politicianDataFound,
       politicianDescription,
       // politicianSEOFriendlyPath,
       politicianName,
@@ -373,6 +375,7 @@ class PoliticianDetailsPage extends Component {
       // isSupportersCountMinimumExceeded,
       linkedCampaignXWeVoteId,
       opponentCandidateList: filteredOpponentCandidateList,
+      politicianDataFound,
       politicianDataNotFound,
       politicianDescription,
       politicianDescriptionLimited,
@@ -407,6 +410,7 @@ class PoliticianDetailsPage extends Component {
       finalElectionDateInPast: false,
       linkedCampaignXWeVoteId: '',
       opponentCandidateList: [],
+      politicianDataFound: false,
       politicianDataNotFound: false,
       politicianDescription: '',
       politicianDescriptionLimited: '',
@@ -460,8 +464,10 @@ class PoliticianDetailsPage extends Component {
   functionToUseWhenProfileComplete = () => {
     const { linkedCampaignXWeVoteId } = this.state;
     if (linkedCampaignXWeVoteId) {
-      const campaignXBaseBath = this.getCampaignXBasePath();
-      saveCampaignSupportAndGoToNextPage(linkedCampaignXWeVoteId, campaignXBaseBath);
+      // const campaignXBasePath = this.getCampaignXBasePath();
+      // console.log('PoliticianDetailsPage functionToUseWhenProfileComplete campaignXBasePath (IGNORED):', campaignXBasePath);
+      saveCampaignSupportAndGoToNextPage(linkedCampaignXWeVoteId);  // campaignXBasePath
+
     } else {
       console.log('PoliticianDetailsPage functionToUseWhenProfileComplete linkedCampaignXWeVoteId not found');
     }
@@ -489,7 +495,7 @@ class PoliticianDetailsPage extends Component {
       finalElectionDateInPast, linkedCampaignXWeVoteId, loadSlow,
       // officeHeldList,
       officeHeldNameForSearch, opponentCandidateList,
-      politicianDataNotFound,
+      politicianDataFound, politicianDataNotFound,
       politicianDescription, politicianDescriptionLimited,
       politicianSEOFriendlyPath, politicianSEOFriendlyPathForDisplay,
       politicianName, politicianUrl,
@@ -755,24 +761,32 @@ class PoliticianDetailsPage extends Component {
               useVerticalCard
             />
             <CampaignDescriptionWrapper hideCardMargins>
-              <CampaignDescription>
-                <AboutAndEditFlex>
-                  <SectionTitleSimple>
-                    About
-                  </SectionTitleSimple>
-                  <div>
-                    <Suspense fallback={<span>&nbsp;</span>}>
-                      <UpdatePoliticianInformation politicianName={politicianName} />
-                    </Suspense>
-                  </div>
-                </AboutAndEditFlex>
-                {politicianDescription ? (
-                  <ReadMore numberOfLines={6} textToDisplay={politicianDescription} />
-                ) : (
-                  <NoInformationProvided>No information has been provided for this candidate.</NoInformationProvided>
-                )}
-              </CampaignDescription>
-              {politicianLinksContainer}
+              {politicianDataFound && (
+                <DelayedLoad waitBeforeShow={250}>
+                  <CampaignDescription>
+                    <AboutAndEditFlex>
+                      <SectionTitleSimple>
+                        About
+                      </SectionTitleSimple>
+                      <div>
+                        <Suspense fallback={<span>&nbsp;</span>}>
+                          <UpdatePoliticianInformation politicianName={politicianName} />
+                        </Suspense>
+                      </div>
+                    </AboutAndEditFlex>
+                    {politicianDescription ? (
+                      <ReadMore numberOfLines={6} textToDisplay={politicianDescription} />
+                    ) : (
+                      <NoInformationProvided>No information has been provided for this candidate.</NoInformationProvided>
+                    )}
+                  </CampaignDescription>
+                </DelayedLoad>
+              )}
+              {politicianDataFound && (
+                <DelayedLoad waitBeforeShow={250}>
+                  {politicianLinksContainer}
+                </DelayedLoad>
+              )}
               {finalElectionDateInPast && (
                 <IndicatorRow>
                   <IndicatorButtonWrapper>
@@ -887,24 +901,32 @@ class PoliticianDetailsPage extends Component {
                   <CampaignOwnersList politicianWeVoteId={politicianWeVoteIdForDisplay} />
                 </CampaignOwnersDesktopWrapper>
                 <CampaignDescriptionDesktopWrapper>
-                  <CampaignDescriptionDesktop>
-                    <AboutAndEditFlex>
-                      <SectionTitleSimple>
-                        About
-                      </SectionTitleSimple>
-                      <div>
-                        <Suspense fallback={<span>&nbsp;</span>}>
-                          <UpdatePoliticianInformation politicianName={politicianName} />
-                        </Suspense>
-                      </div>
-                    </AboutAndEditFlex>
-                    {politicianDescription ? (
-                      <ReadMore numberOfLines={6} textToDisplay={politicianDescription} />
-                    ) : (
-                      <NoInformationProvided>No information has been provided for this candidate.</NoInformationProvided>
-                    )}
-                  </CampaignDescriptionDesktop>
-                  {politicianLinksContainer}
+                  {politicianDataFound && (
+                    <DelayedLoad waitBeforeShow={250}>
+                      <CampaignDescriptionDesktop>
+                        <AboutAndEditFlex>
+                          <SectionTitleSimple>
+                            About
+                          </SectionTitleSimple>
+                          <div>
+                            <Suspense fallback={<span>&nbsp;</span>}>
+                              <UpdatePoliticianInformation politicianName={politicianName} />
+                            </Suspense>
+                          </div>
+                        </AboutAndEditFlex>
+                        {politicianDescription ? (
+                          <ReadMore numberOfLines={6} textToDisplay={politicianDescription} />
+                        ) : (
+                          <NoInformationProvided>No information has been provided for this candidate.</NoInformationProvided>
+                        )}
+                      </CampaignDescriptionDesktop>
+                    </DelayedLoad>
+                  )}
+                  {politicianDataFound && (
+                    <DelayedLoad waitBeforeShow={250}>
+                      {politicianLinksContainer}
+                    </DelayedLoad>
+                  )}
                   {finalElectionDateInPast && (
                     <IndicatorRow>
                       <IndicatorButtonWrapper>
@@ -1000,7 +1022,7 @@ class PoliticianDetailsPage extends Component {
           </SupportButtonPanel>
         </SupportButtonFooterWrapperAboveFooterButtons>
         <Suspense fallback={<span>&nbsp;</span>}>
-          <CampaignRetrieveController campaignXWeVoteId={linkedCampaignXWeVoteId} />
+          <CampaignRetrieveController campaignXWeVoteId={linkedCampaignXWeVoteId} retrieveAsOwnerIfVoterSignedIn />
           {/* campaignSEOFriendlyPath={campaignSEOFriendlyPath} */}
         </Suspense>
         <CompleteYourProfileModalController

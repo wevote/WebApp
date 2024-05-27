@@ -9,22 +9,46 @@ class HeartFavoriteToggleBase extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      voterSupportsLocal: false,
-      voterOpposesLocal: false,
-      campaignXSupportersCountLocal: 0,
       campaignXOpposersCountLocal: 0,
+      campaignXSupportersCountFromAPI: 0,
+      campaignXSupportersCountLocal: 0,
+      voterOpposesLocal: false,
+      voterSupportsLocal: false,
     };
   }
 
   componentDidMount () {
+    this.onCampaignStoreChange();
+  }
+
+  onCampaignStoreChange () {
     const { campaignXOpposersCount, campaignXSupportersCount, voterSupports, voterOpposes } = this.props;
-    // console.log('campaignXOpposersCount', campaignXOpposersCount, 'campaignXSupportersCount', campaignXSupportersCount);
     this.setState({
+      campaignXSupportersCountFromAPI: campaignXSupportersCount,
       campaignXOpposersCountLocal: campaignXOpposersCount,
       campaignXSupportersCountLocal: campaignXSupportersCount,
       voterSupportsLocal: voterSupports,
       voterOpposesLocal: voterOpposes,
     });
+  }
+
+  componentDidUpdate (prevProps) {
+    // console.log('SupportButton componentDidUpdate');
+    const {
+      campaignXSupportersCount: campaignXSupportersCountPrevious,
+      campaignXWeVoteId: campaignXWeVoteIdPrevious,
+    } = prevProps;
+    const {
+      campaignXSupportersCount,
+      campaignXWeVoteId,
+    } = this.props;
+    if (campaignXWeVoteId) {
+      if (campaignXWeVoteId !== campaignXWeVoteIdPrevious) {
+        this.onCampaignStoreChange();
+      } else if (campaignXSupportersCount !== campaignXSupportersCountPrevious) {
+        this.onCampaignStoreChange();
+      }
+    }
   }
 
   handleOpposeClick = () => {
@@ -109,6 +133,9 @@ class HeartFavoriteToggleBase extends Component {
           }
         }
       });
+      if (this.props.submitSupport) {
+        this.props.submitSupport();
+      }
     }
   };
 
@@ -155,8 +182,9 @@ class HeartFavoriteToggleBase extends Component {
 }
 
 HeartFavoriteToggleBase.propTypes = {
-  campaignXSupportersCount: PropTypes.number,
   campaignXOpposersCount: PropTypes.number,
+  campaignXSupportersCount: PropTypes.number,
+  campaignXWeVoteId: PropTypes.string,
   submitSupport: PropTypes.func,
   voterSignedInWithEmail: PropTypes.bool,
   voterSupports: PropTypes.bool,

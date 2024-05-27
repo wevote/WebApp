@@ -3,6 +3,7 @@ import CampaignStore from '../stores/CampaignStore';
 import VoterStore from '../../stores/VoterStore';
 import initializejQuery from './initializejQuery';
 
+
 export function getCampaignXValuesFromIdentifiers (campaignSEOFriendlyPath, campaignXWeVoteId) {
   // console.log('getCampaignXValuesFromIdentifiers campaignSEOFriendlyPath: ', campaignSEOFriendlyPath, ', campaignXWeVoteId: ', campaignXWeVoteId);
   let campaignX = {};
@@ -64,17 +65,29 @@ export function getCampaignXValuesFromIdentifiers (campaignSEOFriendlyPath, camp
   };
 }
 
-export function retrieveCampaignXFromIdentifiers (campaignSEOFriendlyPath, campaignXWeVoteId) {
+export function retrieveCampaignXFromIdentifiers (campaignSEOFriendlyPath, campaignXWeVoteId, retrieveAsOwner) {
   // console.log('retrieveCampaignXFromIdentifiersIfNeeded campaignSEOFriendlyPath: ', campaignSEOFriendlyPath, ', campaignXWeVoteId: ', campaignXWeVoteId);
   if (campaignSEOFriendlyPath) {
-    initializejQuery(() => {
-      CampaignActions.campaignRetrieveBySEOFriendlyPath(campaignSEOFriendlyPath);
-    });
+    if (retrieveAsOwner) {
+      initializejQuery(() => {
+        CampaignActions.campaignRetrieveBySEOFriendlyPathAsOwner(campaignSEOFriendlyPath);
+      });
+    } else {
+      initializejQuery(() => {
+        CampaignActions.campaignRetrieveBySEOFriendlyPath(campaignSEOFriendlyPath);
+      });
+    }
     return false;
   } else if (campaignXWeVoteId) {
-    initializejQuery(() => {
-      CampaignActions.campaignRetrieve(campaignXWeVoteId);
-    });
+    if (retrieveAsOwner) {
+      initializejQuery(() => {
+        CampaignActions.campaignRetrieveAsOwner(campaignXWeVoteId);
+      });
+    } else {
+      initializejQuery(() => {
+        CampaignActions.campaignRetrieve(campaignXWeVoteId);
+      });
+    }
     return true;
   } else {
     return false;

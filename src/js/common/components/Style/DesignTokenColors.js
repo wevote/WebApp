@@ -19,6 +19,9 @@ const primitiveColorNames = {
   greenUI300: '#5DB664',
   redUI400: '#F3363D',
   redUI500: '#EF0716',
+  red500: '#CB2649',
+  red600: '#AA203D',
+  red800: '#74162A',
   steel200: '#C8D4DF',
   white: '#FFFFFF',
 };
@@ -46,6 +49,9 @@ const DesignTokenColors = {
   primary700: primitiveColorNames.blue700,
   primary900: primitiveColorNames.blue900,
   secondary200: primitiveColorNames.steel200,
+  tertiary500: primitiveColorNames.red500,
+  tertiary600: primitiveColorNames.red600,
+  tertiary800: primitiveColorNames.red800,
   whiteUI: primitiveColorNames.white,
 };
 

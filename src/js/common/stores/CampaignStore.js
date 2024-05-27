@@ -2,6 +2,7 @@ import { ReduceStore } from 'flux/utils';
 import { avatarGeneric } from '../../utils/applicationUtils';
 import Dispatcher from '../dispatcher/Dispatcher';
 import arrayContains from '../utils/arrayContains';
+import generateCampaignXDictFromCandidateDict from '../utils/generateCampaignXDictFromCandidateDict';
 import VoterStore from '../../stores/VoterStore'; // eslint-disable-line import/no-cycle
 
 const SUPPORTERS_COUNT_NEXT_GOAL_DEFAULT = 10;
@@ -346,6 +347,7 @@ class CampaignStore extends ReduceStore {
     let campaignXList;
     let campaignXNewsItem;
     let campaignXNewsItemWeVoteIds;
+    let candidateList;
     let recommendedCampaignsCampaignXWeVoteId;
     let revisedState;
     let voterSpecificData;
@@ -566,6 +568,29 @@ class CampaignStore extends ReduceStore {
         revisedState = { ...revisedState, allCachedPoliticianWeVoteIdsByCampaignX };
         revisedState = { ...revisedState, voterCanSendUpdatesCampaignXWeVoteIds };
         revisedState = { ...revisedState, voterOwnedCampaignXWeVoteIds };
+        return revisedState;
+
+      case 'candidatesQuery':
+        if (!action.res || !action.res.success) return state;
+        revisedState = state;
+        // console.log('CampaignStore candidatesQuery');
+        if (allCachedCampaignXDicts === undefined) {
+          allCachedCampaignXDicts = {};
+        }
+        if (action.type === 'candidatesQuery') {
+          candidateList = action.res.candidates;
+        } else {
+          candidateList = action.res.candidate_list;
+        }
+        // console.log('CandidateStore candidatesRetrieve contestOfficeWeVoteId:', contestOfficeWeVoteId, ', candidateList:', candidateList);
+        candidateList.forEach((candidateDict) => {
+          if (candidateDict.linked_campaignx_we_vote_id) {
+            if (!(candidateDict.linked_campaignx_we_vote_id in allCachedCampaignXDicts)) {
+              allCachedCampaignXDicts[candidateDict.linked_campaignx_we_vote_id] = generateCampaignXDictFromCandidateDict(candidateDict);
+            }
+          }
+        });
+        revisedState = { ...revisedState, allCachedCampaignXDicts };
         return revisedState;
 
       case 'voterSignOut':

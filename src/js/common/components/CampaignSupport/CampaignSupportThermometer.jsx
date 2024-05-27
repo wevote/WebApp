@@ -4,6 +4,7 @@ import React from 'react';
 import styled from 'styled-components';
 import HeartFavoriteToggleLoader from '../Widgets/HeartFavoriteToggle/HeartFavoriteToggleLoader';
 import { renderLog } from '../../utils/logging';
+import DesignTokenColors from '../Style/DesignTokenColors';
 import numberWithCommas from '../../utils/numberWithCommas';
 import CampaignStore from '../../stores/CampaignStore';
 
@@ -195,14 +196,14 @@ const ProgressBar = styled('div', {
     border-radius: 6px 0 0 6px;
     background: linear-gradient(
       to right,
-      #a7194b,
-      #fe2712
+      ${DesignTokenColors.tertiary800},
+      ${DesignTokenColors.tertiary500}
     );
   };
   span#right-arrow {
     top: -6px;
     border-bottom: 6px solid transparent;
-    border-left: 6px solid #fe2712;
+    border-left: 6px solid  ${DesignTokenColors.tertiary500};
     border-top: 6px solid transparent;
   };
 `));

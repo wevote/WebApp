@@ -223,8 +223,8 @@ class CampaignCardForList extends Component {
   functionToUseWhenProfileComplete () {
     const { campaignXWeVoteId } = this.props;
     if (campaignXWeVoteId) {
-      const campaignXBaseBath = this.getCampaignXBasePath();
-      saveCampaignSupportAndGoToNextPage(campaignXWeVoteId, campaignXBaseBath);
+      const campaignXBasePath = this.getCampaignXBasePath();
+      saveCampaignSupportAndGoToNextPage(campaignXWeVoteId, campaignXBasePath);
     } else {
       console.log('CampaignCardForList functionToUseWhenProfileComplete campaignXWeVoteId not found');
     }
