@@ -39,29 +39,16 @@ export default class TwitterSignInProcess extends Component {
     window.scrollTo(0, 0);
     this.twitterSignInRetrieve();
 
-    // Rare case ... April 2024
-    if (Object.keys(this.props).length === 0) {
-      console.log('ERROR:  Return from twitter OAuth arrived with no parameters');
-      historyPush({
-        pathname: '/settings/account',  // SnackNotifier that handles this is in SettingsDashboard
-        state: {
-          message: 'Twitter sign in failed. Please try again.',
-          severity: 'warning',
-        },
-      });
-    } else {
-      const { location: { search } } = this.props;
-      const { redirectCount } = this.state;
-      oAuthLog('TwitterSignInProcess search props: ', search);
-      const urlParams = new URLSearchParams(search);
-      const oauthToken = urlParams.get('oauth_token');
-      const oauthVerifier = urlParams.get('oauth_verifier');
-      if (oauthToken && oauthVerifier && redirectCount === 0) {
-        oAuthLog('TwitterSignInProcess received redirect from Twitter  redirectCount: ', redirectCount, ', oauthToken: ', oauthToken, ', oauthVerifier: ', oauthVerifier);
-        this.setState({ redirectCount: (redirectCount + 1) });
-        TwitterActions.twitterOauth1UserHandler(oauthToken, oauthVerifier);
-        this.twitterSignInRetrieve();
-      }
+    const { redirectCount } = this.state;
+    const urlParams = new URLSearchParams(document.location.search);
+    const oauthToken = urlParams.get('oauth_token');
+    const oauthVerifier = urlParams.get('oauth_verifier');
+    oAuthLog(`TwitterSignInProcess search props oauthToken: ${oauthToken}, oauthVerifier: ${oauthVerifier}`);
+    if (oauthToken && oauthVerifier && redirectCount === 0) {
+      oAuthLog('TwitterSignInProcess received redirect from Twitter  redirectCount: ', redirectCount, ', oauthToken: ', oauthToken, ', oauthVerifier: ', oauthVerifier);
+      this.setState({ redirectCount: (redirectCount + 1) });
+      TwitterActions.twitterOauth1UserHandler(oauthToken, oauthVerifier);
+      this.twitterSignInRetrieve();
     }
   }
 
