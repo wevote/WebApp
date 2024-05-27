@@ -74,7 +74,8 @@ module.exports.config = {
   // https://webdriver.io/docs/customcommands#examples
   before: function before () {
     driver.addCommand('findAndClick', async function findAndClick () {
-      await this.scrollIntoView({ block: 'center', inline: 'center' });
+      await this.waitForExist();
+      await this.moveTo();
       await this.click();
     }, true);
   },
