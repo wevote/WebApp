@@ -22,10 +22,30 @@ export default {
       });
   },
 
+  campaignRetrieveAsOwner (campaignWeVoteId) {
+    let { hostname } = window.location;
+    hostname = hostname || '';
+    Dispatcher.loadEndpoint('campaignRetrieveAsOwner',
+      {
+        campaignx_we_vote_id: campaignWeVoteId,
+        hostname,
+      });
+  },
+
   campaignRetrieveBySEOFriendlyPath (campaignSEOFriendlyPath) {
     let { hostname } = window.location;
     hostname = hostname || '';
     Dispatcher.loadEndpoint('campaignRetrieve',
+      {
+        hostname,
+        seo_friendly_path: campaignSEOFriendlyPath,
+      });
+  },
+
+  campaignRetrieveBySEOFriendlyPathAsOwner (campaignSEOFriendlyPath) {
+    let { hostname } = window.location;
+    hostname = hostname || '';
+    Dispatcher.loadEndpoint('campaignRetrieveAsOwner',
       {
         hostname,
         seo_friendly_path: campaignSEOFriendlyPath,

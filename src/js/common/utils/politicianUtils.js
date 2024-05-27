@@ -17,6 +17,7 @@ export function getPoliticianValuesFromIdentifiers (politicianSEOFriendlyPath, p
   let opponentCandidateList = [];
   let politicalParty = '';
   let politician = {};
+  let politicianDataFound = false;
   let politicianDescription = '';
   let politicianImageUrlLarge = '';
   let politicianImageUrlMedium = '';
@@ -35,9 +36,11 @@ export function getPoliticianValuesFromIdentifiers (politicianSEOFriendlyPath, p
   let youtubeUrl = '';
   if (politicianSEOFriendlyPath) {
     politician = PoliticianStore.getPoliticianBySEOFriendlyPath(politicianSEOFriendlyPath);
+    politicianDataFound = !!(politician && politician.politician_we_vote_id);
   } else if (politicianWeVoteId) {
     politician = PoliticianStore.getPoliticianByWeVoteId(politicianWeVoteId);
     ({ seo_friendly_path: politicianSEOFriendlyPathFromObject } = politician);
+    politicianDataFound = !!(politician && politician.politician_we_vote_id);
   }
   if (politician.constructor === Object && politician.politician_we_vote_id) {
     ({
@@ -91,6 +94,7 @@ export function getPoliticianValuesFromIdentifiers (politicianSEOFriendlyPath, p
     // isSupportersCountMinimumExceeded,
     linkedCampaignXWeVoteId,
     opponentCandidateList,
+    politicianDataFound,
     politicalParty,
     politicianDescription,
     politicianImageUrlLarge,
