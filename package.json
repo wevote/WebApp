@@ -152,7 +152,7 @@
     "react-router-dom": "^5.3.4",
     "react-router-dom-v5-compat": "^6.23.1",
     "react-share": "^4.4.1",
-    "react-slick": "^0.28.1",
+    "react-slick": "^0.30.2",
     "react-svg": "^14.1.9",
     "react-text-truncate": "^0.17.0",
     "react-toastify": "^7.0.4",
