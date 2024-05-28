@@ -134,7 +134,7 @@
     "mui-file-dropzone": "^4.0.1",
     "object-assign": "~4.1.1",
     "process": "^0.11.10",
-    "prop-types": "~15.7.2",
+    "prop-types": "~15.8.1",
     "puppeteer": "^21.11.0",
     "react": "~17.0.2",
     "react-bootstrap": "^1.6.4",
