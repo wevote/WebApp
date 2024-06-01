@@ -2,9 +2,12 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Colors from '../../common/components/Style/Colors';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import HowItWorksStep from './Step';
-import crossIcon from '../../../img/global/icons/cross.svg';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
+
+const crossIcon = normalizedImagePath('../../../img/global/icons/cross.svg');
+
 
 const HowItWorksWizard = ({ steps, activeStep }) => {
   const [showHowItWorksWizard, setShowHowItWorksWizard] = useState(true);

@@ -1608,10 +1608,7 @@ class Ballot extends Component {
                             return (
                               <div className="keyInsertionDiv" key={key}>
                                 <Suspense fallback={<></>}>
-                                  <DelayedLoad
-                                    showLoadingText={showLoadingText}
-                                    waitBeforeShow={500}
-                                  >
+                                  <DelayedLoad showLoadingText={showLoadingText} waitBeforeShow={500}>
                                     <>
                                       {!!(isSearching && searchTextString && item.foundInArray && item.foundInArray.length) && (
                                         <SearchResultsFoundInExplanation>

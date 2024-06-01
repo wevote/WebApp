@@ -9,6 +9,7 @@ import CampaignSupporterStore from '../../../stores/CampaignSupporterStore';
 // import apiCalming from '../../../utils/apiCalming';
 import initializejQuery from '../../../utils/initializejQuery';
 import CampaignSupporterActions from '../../../actions/CampaignSupporterActions';
+import { renderLog } from '../../../utils/logging';
 
 const HeartFavoriteToggleBase = React.lazy(() => import(/* webpackChunkName: 'HeartFavoriteToggleBase' */ './HeartFavoriteToggleBase'));
 
@@ -177,11 +178,23 @@ class HeartFavoriteToggleLive extends React.Component {
   }
 
   render () {
+    renderLog('HeartFavoriteToggleLive');  // Set LOG_RENDER_EVENTS to log all renders
+
     const { campaignXWeVoteId } = this.props;
     const { supportersCount, voterSignedInWithEmail, voterOpposesCampaignX, voterSupportsCampaignX } = this.state;
     return (
       <HeartFavoriteToggleLiveContainer>
-        <Suspense fallback={<HeartFavoriteToggleBase />}>
+        <Suspense fallback={(
+          <HeartFavoriteToggleBase
+            campaignXOpposersCount={0}
+            campaignXSupportersCount={supportersCount}
+            submitSupport={this.submitSupportClick}
+            voterOpposes={false}
+            voterSignedInWithEmail={voterSignedInWithEmail}
+            voterSupports={false}
+          />
+        )}
+        >
           <HeartFavoriteToggleBase
             campaignXOpposersCount={0}
             campaignXSupportersCount={supportersCount}

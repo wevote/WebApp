@@ -181,7 +181,7 @@ class CampaignCardList extends Component {
 }
 /*      August 9, 2023:  The word "SusDISABLEDpense" without the "DISABLED" breaks the buildSrcCordova.js, which can't handle that word in a comment
         <SusDISABLEDpense fallback={<></>}>
-          <DelayedLoad loadingTextLeftAlign showLoadingText waitBeforeShow={2000}>
+          <DelayedDISABLEDLoad loadingTextLeftAlign showLoadingText waitBeforeShow={2000}>
             <div>
               {!(numberDisplayed) && (
                 <CampaignsNotAvailableToShow>
@@ -208,7 +208,7 @@ class CampaignCardList extends Component {
                 </CampaignsNotAvailableToShow>
               )}
             </div>
-          </DelayedLoad>
+          </DelayedDISABLEDLoad>
         </SusDISABLEDpense>
 */
 
