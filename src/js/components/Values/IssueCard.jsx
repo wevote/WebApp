@@ -315,6 +315,8 @@ class IssueCard extends Component {
       </IssueAdvocatesWrapper>
     );
 
+    // console.log('OverlayTrigger debugging issueTooltip: ', issueTooltip);
+
     return (
       <IssueCardWrapper
         key={`issue-card-${issueWeVoteId}`}
@@ -334,39 +336,41 @@ class IssueCard extends Component {
         )}
         <Flex condensed={!!this.props.condensed} followToggleOnItsOwnLine={!!followToggleOnItsOwnLine}>
           <OverlayTrigger overlay={issueTooltip} placement={includeLinkToIssue ? 'top' : 'bottom'}>
-            <FlexNameAndIcon condensed={!!this.props.condensed}>
-              <IssueImage>
-                {!turnOffIssueImage && (
-                  <span>
-                    {includeLinkToIssue ? (
-                      <Link to={this.getIssueLink}
-                            className="u-no-underline"
-                      >
-                        {issueImage}
-                      </Link>
-                    ) : (
-                      <span>
-                        {issueImage}
-                      </span>
-                    )}
-                  </span>
-                )}
-              </IssueImage>
-              <>
-                {includeLinkToIssue ? (
-                  <Link id="valueListLink"
-                        to={this.getIssueLink}
-                        className="u-link-color"
-                  >
-                    {issueNameAndCount}
-                  </Link>
-                ) : (
-                  <>
-                    {issueNameAndCount}
-                  </>
-                )}
-              </>
-            </FlexNameAndIcon>
+            <span>
+              <FlexNameAndIcon condensed={!!this.props.condensed}>
+                <IssueImage>
+                  {!turnOffIssueImage && (
+                    <span>
+                      {includeLinkToIssue ? (
+                        <Link to={this.getIssueLink}
+                              className="u-no-underline"
+                        >
+                          {issueImage}
+                        </Link>
+                      ) : (
+                        <span>
+                          {issueImage}
+                        </span>
+                      )}
+                    </span>
+                  )}
+                </IssueImage>
+                <>
+                  {includeLinkToIssue ? (
+                    <Link id="valueListLink"
+                          to={this.getIssueLink}
+                          className="u-link-color"
+                    >
+                      {issueNameAndCount}
+                    </Link>
+                  ) : (
+                    <>
+                      {issueNameAndCount}
+                    </>
+                  )}
+                </>
+              </FlexNameAndIcon>
+            </span>
           </OverlayTrigger>
           {(followToggleOn && issueWeVoteId) && (
             <FollowIssueCardToggleContainer>
@@ -395,28 +399,32 @@ class IssueCard extends Component {
         )}
         <IssueAdvocatesAndFollowersWrapper>
           <OverlayTrigger overlay={linkedOrganizationsTooltip} placement="top">
-            {includeLinkToIssue ? (
-              <Link id="issueAdvocatesLink"
-                    to={this.getIssueLink}
-              >
-                {issueAdvocates}
-              </Link>
-            ) : (
-              <>
-                {issueAdvocates}
-              </>
-            )}
-          </OverlayTrigger>
-          <OverlayTrigger overlay={followersTooltip} placement="top">
-            <FollowersWrapper>
-              {!!(issueFollowersCount) && (
+            <span>
+              {includeLinkToIssue ? (
+                <Link id="issueAdvocatesLink"
+                      to={this.getIssueLink}
+                >
+                  {issueAdvocates}
+                </Link>
+              ) : (
                 <>
-                  {abbreviateNumber(issueFollowersCount)}
-                  {' '}
-                  followers
+                  {issueAdvocates}
                 </>
               )}
-            </FollowersWrapper>
+            </span>
+          </OverlayTrigger>
+          <OverlayTrigger overlay={followersTooltip} placement="top">
+            <span>
+              <FollowersWrapper>
+                {!!(issueFollowersCount) && (
+                  <>
+                    {abbreviateNumber(issueFollowersCount)}
+                    {' '}
+                    followers
+                  </>
+                )}
+              </FollowersWrapper>
+            </span>
           </OverlayTrigger>
         </IssueAdvocatesAndFollowersWrapper>
       </IssueCardWrapper>

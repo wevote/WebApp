@@ -106,6 +106,7 @@ class TwitterStore extends ReduceStore {
   }
 
   reduce (state, action) {
+    // console.log('/////////////// TwitterStore ', action.type);
     switch (action.type) {
       case 'resetTwitterHandleLanding':
         // console.log('TwitterStore resetTwitterHandleLanding');
@@ -170,7 +171,6 @@ class TwitterStore extends ReduceStore {
         };
 
       case 'twitterSignInRetrieve':
-        // console.log('twitterSignInRetrieve in TwitterStore received: ', action.res);
         if (!action.res || !action.res.success) {
           // Exit if we don't have a successful response (since we expect certain variables in a successful response below)
           return state;

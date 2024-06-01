@@ -6,7 +6,7 @@ import standardBoxShadow from '../../common/components/Style/standardBoxShadow';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import SnackNotifier from '../../common/components/Widgets/SnackNotifier';
 import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
-import { hasDynamicIsland, isCordovaWide } from '../../common/utils/cordovaUtils';
+import { hasDynamicIsland, isCordovaWide, isIOS } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
 import { normalizedHref } from '../../common/utils/hrefUtils';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
@@ -40,7 +40,9 @@ export default class TwitterSignInProcess extends Component {
     this.twitterSignInRetrieve();
 
     const { redirectCount } = this.state;
-    const urlParams = new URLSearchParams(document.location.search);
+    const urlParams = new URLSearchParams(isIOS() ? document.location.hash.replace('#/twittersigninprocess/?', '') : document.location.search);
+    urlParams.forEach((parm) => oAuthLog('TwitterSignInProcess urlParams key: ', parm.key, parm.value));
+
     const oauthToken = urlParams.get('oauth_token');
     const oauthVerifier = urlParams.get('oauth_verifier');
     oAuthLog(`TwitterSignInProcess search props oauthToken: ${oauthToken}, oauthVerifier: ${oauthVerifier}`);
@@ -67,7 +69,7 @@ export default class TwitterSignInProcess extends Component {
     const { twitter_image_load_info: twitterImageLoadInfo, twitter_secret_key: twitterSecretKey } = twitterAuthResponse;
     this.setState({ twitterAuthResponse, twitterImageLoadInfo });
     const { mergingTwoAccounts, savingAccount } = this.state;
-    console.log('TwitterSignInProcess onTwitterStoreChange, twitterAuthResponse:', twitterAuthResponse);
+    // console.log('TwitterSignInProcess onTwitterStoreChange, twitterAuthResponse:', twitterAuthResponse);
 
     if (twitterAuthResponse.twitter_sign_in_failed === undefined && twitterAuthResponse.twitter_oauth_voter_info_stored_in_db) {
       oAuthLog('Twitter sign undefined, but oauth_voter_info_stored_in_db - calling twitterSignInRetrieve()');
@@ -101,6 +103,10 @@ export default class TwitterSignInProcess extends Component {
       } else if (!savingAccount) {
         oAuthLog('Setting up new Twitter entry - voterTwitterSaveToCurrentAccount -- actually calling API');
         this.localVoterTwitterSaveToCurrentAccount();
+      }
+      if (isIOS()) {
+        // eslint-disable-next-line no-undef
+        SafariViewController.hide(); // Hide the previous WKWebView
       }
     }
   }
@@ -244,7 +250,12 @@ export default class TwitterSignInProcess extends Component {
       );
     }
 
-    // oAuthLog('TwitterSignInProcess render');
+    if (isIOS() && twitterAuthResponse && twitterAuthResponse.twitter_sign_in_found && twitterAuthResponse.twitter_sign_in_verified) {
+      // eslint-disable-next-line no-undef
+      SafariViewController.hide(); // Hide the previous WKWebView
+    }
+
+    oAuthLog('-------===------- TwitterSignInProcess twitterAuthResponse:', twitterAuthResponse);
     if (!twitterAuthResponse ||
       !twitterAuthResponse.twitter_retrieve_attempted) {
       oAuthLog('STOPPED, missing twitter_retrieve_attempted: twitterAuthResponse:', twitterAuthResponse);

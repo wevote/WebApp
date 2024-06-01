@@ -129,10 +129,7 @@ export default class ValuesList extends Component {
         // We create a delay after the first 6 issues are rendered, so the initial page load is a little faster
         return (
           <Suspense fallback={<></>} key={`delayed-issue-list-key-${issue.issue_we_vote_id}`}>
-            <DelayedLoad
-              showLoadingText={issuesRenderedCount === (issuesToShowBeforeDelayedLoad + 1)}
-              waitBeforeShow={500}
-            >
+            <DelayedLoad showLoadingText={issuesRenderedCount === (issuesToShowBeforeDelayedLoad + 1)} waitBeforeShow={500}>
               {issueCardHtml}
             </DelayedLoad>
           </Suspense>
