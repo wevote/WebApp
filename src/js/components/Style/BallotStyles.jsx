@@ -92,7 +92,7 @@ export const CandidateNameH1 = styled('h1')(({ theme }) => (`
   }
 `));
 
-export const CandidateNameH4 = styled.button`
+export const CandidateNameH4 = styled('button')`
   color: #4371cc;
   font-weight: 400;
   font-size: 20px;
