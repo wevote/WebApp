@@ -287,7 +287,7 @@ const RenderedOrganizationsWrapper = styled('div')`
   margin-top: 6px;
 `;
 
-const WordWrapper = styled.button`
+const WordWrapper = styled('button')`
   color: #000;
   opacity: 0.6;
   text-decoration: underline;

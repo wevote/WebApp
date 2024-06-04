@@ -245,7 +245,7 @@ export const OtherElectionsWrapper = styled('div')`
   //padding-top: 25px;
 `;
 
-export const ReadMoreSpan = styled.button`
+export const ReadMoreSpan = styled('button')`
   color: #4371cc;
   background: none;
   border: none;
