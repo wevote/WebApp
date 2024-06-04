@@ -154,9 +154,9 @@ button {
   border-radius:0
 }
 
-button:focus:not(:focus-visible) {
+/* button:focus:not(:focus-visible) {
   outline:0
-}
+} */
 
 input,button,select,optgroup,textarea {
   margin:0;
@@ -1583,9 +1583,10 @@ img {
   max-width:100%
 }
 
-button:focus {
+// commented out for WV-332, changed read mores to buttons
+/* button:focus {
   outline:0!important
-}
+} */
 
 .icon-office-child {
   font-size:24px

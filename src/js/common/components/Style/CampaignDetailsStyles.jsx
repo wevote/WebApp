@@ -245,8 +245,21 @@ export const OtherElectionsWrapper = styled('div')`
   //padding-top: 25px;
 `;
 
-export const ReadMoreSpan = styled('div')`
+// export const ReadMoreSpan = styled('div')`
+//   color: #4371cc;
+// `;
+
+export const ReadMoreSpan = styled.button`
   color: #4371cc;
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit; // Inherit font styles from parent
+
+  &:focus {
+    outline: 5px solid #4371cc;
+    outline-offset: 2px;
+  }
 `;
 
 export const SpeakerAndPhotoOuterWrapper = styled('div')(({ theme }) => (`
