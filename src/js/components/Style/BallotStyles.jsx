@@ -92,19 +92,6 @@ export const CandidateNameH1 = styled('h1')(({ theme }) => (`
   }
 `));
 
-// export const CandidateNameH4 = styled('h4')`
-//   color: #4371cc;
-//   font-weight: 400;
-//   font-size: 20px;
-//   margin-bottom: 0 !important;
-//   min-width: 124px;
-//   white-space: normal;
-//   &:hover {
-//     text-decoration: underline;
-//   }
-//   ${constrainedTextMobileStyles}
-// `;
-
 export const CandidateNameH4 = styled.button`
   color: #4371cc;
   font-weight: 400;

@@ -203,7 +203,7 @@ const styles = () => ({
   chipStyle: {
     backgroundColor: '#dbdbdb',
     border: '1px solid #ccc',
-    color: '#555555',
+    color: '#555',
     cursor: 'pointer',
     fontSize: '.7rem',
     height: 'auto',
@@ -287,18 +287,8 @@ const RenderedOrganizationsWrapper = styled('div')`
   margin-top: 6px;
 `;
 
-// const WordWrapper = styled('span')`
-// color: #000;
-// opacity: 0.6;
-// text-decoration: underline;
-// text-decoration-color: #ccc;
-// &:hover {
-//   text-decoration: underline;
-// }
-// `;
-
 const WordWrapper = styled.button`
-  color: #000000;
+  color: #000;
   opacity: 0.6;
   text-decoration: underline;
   text-decoration-color: #ccc;
