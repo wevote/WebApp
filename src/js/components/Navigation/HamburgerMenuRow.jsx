@@ -24,6 +24,7 @@ class HamburgerMenuRow extends Component {
       // "indented" not currently used
       return (
         <tr className="hamburger-menu__tr">
+          {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
           <td className="hamburger-menu__td-0">
             &nbsp;
           </td>

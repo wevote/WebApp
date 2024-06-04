@@ -33,13 +33,13 @@ class HeaderBarProfilePopUp extends Component {
     renderLog('HeaderBarProfilePopUp');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes, isWelcomeMobilePage, voter, profilePopUpOpen } = this.props;
     let isSignedIn = false;
-    let voterOrganizationWeVoteId = '';
-    let voterTwitterScreenName = '';
+    // let voterOrganizationWeVoteId = '';
+    // let voterTwitterScreenName = '';
     if (voter) {
       ({
         is_signed_in: isSignedIn,
-        linked_organization_we_vote_id: voterOrganizationWeVoteId,
-        twitter_screen_name: voterTwitterScreenName,
+        // linked_organization_we_vote_id: voterOrganizationWeVoteId,
+        // twitter_screen_name: voterTwitterScreenName,
       } = voter);
     }
 
@@ -51,9 +51,9 @@ class HeaderBarProfilePopUp extends Component {
       return '';
     }());
 
-    const yourVoterGuideLink = voterTwitterScreenName ?
-      `/${voterTwitterScreenName}` :
-      `/voterguide/${voterOrganizationWeVoteId}`;
+    // const yourVoterGuideLink = voterTwitterScreenName ?
+    //   `/${voterTwitterScreenName}` :
+    //   `/voterguide/${voterOrganizationWeVoteId}`;
 
     return (
       <div className={popUpOpen}>
