@@ -299,6 +299,7 @@ export default class HamburgerMenu extends Component {
             )}
 
             <tr className="hamburger-terms__tr-terms">
+              {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
               <td className="hamburger-terms__td" colSpan={3}>
                 <div style={{ marginTop: 15 }} />
                 <SettingsSectionFooter centered />

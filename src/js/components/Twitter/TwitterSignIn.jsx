@@ -22,7 +22,7 @@ class TwitterSignIn extends Component {
       const search = url.replace(new RegExp('&amp;', 'g'), '&').replace('wevotetwitterscheme://', '');
       const urlParams = new URLSearchParams(search);
 
-      urlParams.forEach( (entry) => oAuthLog('urlParams key: ', entry.key, entry.value));
+      urlParams.forEach((entry) => oAuthLog('urlParams key: ', entry.key, entry.value));
 
       if (urlParams.has('twitter_redirect_url')) {
         const redirectURL = urlParams.get('twitter_redirect_url');
@@ -58,9 +58,9 @@ class TwitterSignIn extends Component {
       } else if (urlParams.has('oauth_verifier')) {
         if (urlParams.get('success') === 'True') {
           oAuthLog('twitterSignIn cordova, received oauth_verifier -- push /twittersigninprocess/');
-          const oauth_token = urlParams.get('oauth_token');
-          const oauth_verifier = urlParams.get('oauth_verifier');
-          historyPush(`/twittersigninprocess/?oauth_token=${oauth_token}&oauth_verifier=${oauth_verifier}`);
+          const oauthToken = urlParams.get('oauth_token');
+          const oauthVerifier = urlParams.get('oauth_verifier');
+          historyPush(`/twittersigninprocess/?oauth_token=${oauthToken}&oauth_verifier=${oauthVerifier}`);
         } else {
           oAuthLog('twitterSignIn cordova, FAILED to receive valid oauth_verifier -- push /twitter_sign_in');
           historyPush('/twitter_sign_in');

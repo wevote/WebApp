@@ -82,6 +82,7 @@ export default function EditCandidateForExtension ()  {
 
   return (
     <CandidateForExtensionWrapper>
+      {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
       <a href="https://wevote.us" target="_blank" rel="noreferrer">
         <CandidateLogo src={normalizedImagePath('/img/global/svg-icons/we-vote-icon-square-color-dark.svg')} />
       </a>
