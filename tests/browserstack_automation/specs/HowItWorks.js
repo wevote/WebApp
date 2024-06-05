@@ -6,12 +6,15 @@ import HowItWorks from '../page_objects/howitworks';
 
 const { describe, it } = require('mocha');
 
+const waitTime = 5000;
+
+
 
 describe('HowItWorks', () => {
   // HowItWorks_001
   it('verifyHowItWorksModalWindowOpen', async () => {
     await ReadyPage.load();
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await TopNavigation.getBallotLinkLocator.click();
     await driver.waitUntil(async () => {
       // Add condition to check for the expected URL
@@ -27,21 +30,21 @@ describe('HowItWorks', () => {
   });
   // it('verifyHowItWorksModalWindowClosed', async () => {
   //   await ReadyPage.load();
-  //   await driver.pause(5000);
+  //   await driver.pause(waitTime);
   //   await ReadyPage.clickHowItWorksLink();
-  //   await driver.pause(5000);
+  //   await driver.pause(waitTime);
   //   await ReadyPage.howItWorksTitle.isDisplayed();
   //   await ReadyPage.closeHowItWorksModalWindow();
-  //   await driver.pause(5000);
+  //   await driver.pause(waitTime);
   //   await expect(ReadyPage.elementHowItWorksWindow).not.toBeDisplayed();
   // });
 
   // // Ready_012
   // it('verifyHowItWorksModalWindowNextButton', async () => {
   //   await ReadyPage.load();
-  //   await driver.pause(5000);
+  //   await driver.pause(waitTime);
   //   await ReadyPage.clickHowItWorksLink();
-  //   await driver.pause(5000);
+  //   await driver.pause(waitTime);
   //   const expectedResult = await ReadyPage.checkTitleOfHowItWorksWindow();
   //   await expect(ReadyPage.howItWorksTitle).toHaveText(expectedResult);
   // });
@@ -50,20 +53,20 @@ describe('HowItWorks', () => {
   // it('verifyHowItWorksModalWindowNextGetStartedButton', async () => {
   //   await ReadyPage.load();
   //   await ReadyPage.clickHowItWorksLink();
-  //   await driver.pause(5000);
+  //   await driver.pause(waitTime);
   //   await ReadyPage.clickNextButtonFourTimes();
-  //   await driver.pause(5000);
+  //   await driver.pause(waitTime);
   //   await ReadyPage.clickGetStartedButton();
-  //   await driver.pause(5000);
+  //   await driver.pause(waitTime);
   //   await expect(ReadyPage.getTitleSignUpPopUp).toHaveText('Sign In or Join');
   // });
 
   // // Ready_014
   // it('verifyHowItWorksModalWindowBackButton', async () => {
   //   await ReadyPage.load();
-  //   await driver.pause(5000);
+  //   await driver.pause(waitTime);
   //   await ReadyPage.clickHowItWorksLink();
-  //   await driver.pause(5000);
+  //   await driver.pause(waitTime);
   //   const expectedResult = await ReadyPage.getTitleOfHowItWorksWindowAfterBackButton();
   //   await expect(ReadyPage.howItWorksTitle).toHaveText(expectedResult);
   // });

@@ -3,6 +3,9 @@ import DiscussPage from '../page_objects/discuss.page';
 
 const { describe, it } = require('mocha');
 
+const waitTime = 5000;
+
+
 describe('Discuss Page', () => {
   // Discuss_001
   it('openDiscussPage', async () => {
@@ -27,45 +30,45 @@ describe('Discuss Page', () => {
   // Discuss_004
   it('verifyvoterEmailAddressVerificationButton', async () => {
     await DiscussPage.load();
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await driver.switchWindow('https://quality.wevote.us/news');
     await expect(DiscussPage.voterEmailAddressVerificationButton).not.toBeClickable();
     const element = await DiscussPage.enterVoterEmailAddressTextBox; // Locate the text box element using a selector
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     element.setValue('wevote@gmail.com');
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await driver.waitUntil(async () => ((DiscussPage.togglevoterEmailAddressVerificationButton)));
   });
 
   // Discuss_005
   it('verifyEmailPlaceholderText', async () => {
     await DiscussPage.load();
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await driver.switchWindow('https://quality.wevote.us/news');
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     const enterVoterEmailAddressTextBoxElement = await DiscussPage.enterVoterEmailAddressTextBox;
     const placeholderText = await enterVoterEmailAddressTextBoxElement.getAttribute('placeholder'); // Retrieve and wait for the placeholder text
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await expect(placeholderText).toBe('Type email here...');
     console.log(placeholderText); // Output the placeholder text
   });
   // Discuss_006
   it('verifyEmailButtons', async () => {
     await DiscussPage.load();
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await driver.switchWindow('https://quality.wevote.us/news');
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     const enterVoterEmailAddressTextBoxElement = await DiscussPage.enterVoterEmailAddressTextBox;
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await expect(enterVoterEmailAddressTextBoxElement).toBeDisplayed();
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await enterVoterEmailAddressTextBoxElement.click();
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     const emailCancelElement = await DiscussPage.cancelEmailButton;
     await expect(emailCancelElement).toBeDisplayed();
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     const emailVerificationElement = await DiscussPage.voterEmailAddressVerificationButton;
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await expect(emailVerificationElement).toBeDisplayed();
   });
 
@@ -80,11 +83,11 @@ describe('Discuss Page', () => {
     for (let i = 0; i < 12; i++) {
       driver.keys(['Tab']);
     }
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     // Check if the active element is the email text box after pressing the tab key 11 times
     const activeElement = await driver.getActiveElement();
     const activeElementWdio = await (await $(activeElement)).getProperty('id');
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     console.log(activeElementWdio);
     await expect(activeElement).toBe(element);
   });
@@ -104,7 +107,7 @@ describe('Discuss Page', () => {
   //   await expect(DiscussPage.voterEmailAddressVerificationButton).not.toBeClickable();
   //   const element = await DiscussPage.emailSignInTextBox; // Locate the text box element using a selector
   //   element.setValue('wevote@gmail.com');
-  //   await driver.pause(5000);
+  //   await driver.pause(waitTime);
   //   // Get the value of the email text box
   //   const enterVoterEmailAddressTextBoxValue = await element.getValue();
 
@@ -131,41 +134,41 @@ describe('Discuss Page', () => {
   // Discuss_013
   it('invalidEmailVerification', async () => {
     await DiscussPage.load();
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await driver.switchWindow('https://quality.wevote.us/news');
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await expect(DiscussPage.voterEmailAddressVerificationButton).not.toBeClickable();
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     const element = await DiscussPage.enterVoterEmailAddressTextBox; // Locate the text box element using a selector
     element.setValue('11111');
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await expect(DiscussPage.voterEmailAddressVerificationButton).not.toBeClickable();
   });
 
   // Discuss_014
   it('missing@EmailVerification', async () => {
     await DiscussPage.load();
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await driver.switchWindow('https://quality.wevote.us/news');
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await expect(DiscussPage.voterEmailAddressVerificationButton).not.toBeClickable();
     const element = await DiscussPage.enterVoterEmailAddressTextBox; // Locate the text box element using a selector
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     element.setValue('wevotewevote.us');
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await expect(DiscussPage.voterEmailAddressVerificationButton).not.toBeClickable();
   });
 
   // Discuss_015
   it('capitalLetterEmailVerification', async () => {
     await DiscussPage.load();
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await driver.switchWindow('https://quality.wevote.us/news');
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await expect(DiscussPage.voterEmailAddressVerificationButton).not.toBeClickable();
     const element = await DiscussPage.enterVoterEmailAddressTextBox; // Locate the text box element using a selector
     element.setValue('WeVote@wevote.us');
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await expect(DiscussPage.voterEmailAddressVerificationButton).toBeClickable();
   });
 
@@ -183,52 +186,52 @@ describe('Discuss Page', () => {
   // Discuss_017
   it('numberEmailVerification', async () => {
     await DiscussPage.load();
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await driver.switchWindow('https://quality.wevote.us/news');
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await expect(DiscussPage.voterEmailAddressVerificationButton).not.toBeClickable();
     const element = await DiscussPage.enterVoterEmailAddressTextBox; // Locate the text box element using a selector
     element.setValue('wevote1@wevote.us');
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await expect(DiscussPage.voterEmailAddressVerificationButton).toBeClickable();
   });
 
   // Discuss_018
   it('periodEmailVerification', async () => {
     await DiscussPage.load();
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await driver.switchWindow('https://quality.wevote.us/news');
     await expect(DiscussPage.voterEmailAddressVerificationButton).not.toBeClickable();
     const element = await DiscussPage.enterVoterEmailAddressTextBox; // Locate the text box element using a selector
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     element.setValue('we.vote@wevote.us');
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await expect(DiscussPage.voterEmailAddressVerificationButton).toBeClickable();
   });
 
   // Discuss_019
   it('underscoreEmailVerification', async () => {
     await DiscussPage.load();
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await driver.switchWindow('https://quality.wevote.us/news');
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await expect(DiscussPage.voterEmailAddressVerificationButton).not.toBeClickable();
     const element = await DiscussPage.enterVoterEmailAddressTextBox; // Locate the text box element using a selector
     element.setValue('we_vote@wevote.us');
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await expect(DiscussPage.voterEmailAddressVerificationButton).toBeClickable();
   });
 
   // Discuss_020
   it('dashEmailVerification', async () => {
     await DiscussPage.load();
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await driver.switchWindow('https://quality.wevote.us/news');
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await expect(DiscussPage.voterEmailAddressVerificationButton).not.toBeClickable();
     const element = await DiscussPage.enterVoterEmailAddressTextBox; // Locate the text box element using a selector
     element.setValue('we-vote@wevote.us');
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await expect(DiscussPage.voterEmailAddressVerificationButton).toBeClickable();
   });
 
@@ -268,42 +271,42 @@ describe('Discuss Page', () => {
   // Discuss_024
   it('domainEmailVerification', async () => {
     await DiscussPage.load();
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await driver.switchWindow('https://quality.wevote.us/news');
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await expect(DiscussPage.voterEmailAddressVerificationButton).not.toBeClickable();
     const element = await DiscussPage.enterVoterEmailAddressTextBox; // Locate the text box element using a selector
     element.setValue('@wevote.us');
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await expect(DiscussPage.voterEmailAddressVerificationButton).not.toBeClickable();
   });
 
   // Discuss_025
   it('domainEmailVerification', async () => {
     await DiscussPage.load();
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await driver.switchWindow('https://quality.wevote.us/news');
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await expect(DiscussPage.voterEmailAddressVerificationButton).not.toBeClickable();
     const element = await DiscussPage.enterVoterEmailAddressTextBox; // Locate the text box element using a selector
     element.setValue('@wevote.us');
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await expect(DiscussPage.voterEmailAddressVerificationButton).not.toBeClickable();
   });
 
   // Discuss_026
   it('symbolEmailVerification', async () => {
     await DiscussPage.load();
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await driver.switchWindow('https://quality.wevote.us/news');
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await expect(DiscussPage.voterEmailAddressVerificationButton).not.toBeClickable();
     const element = await DiscussPage.enterVoterEmailAddressTextBox; // Locate the text box element using a selector
 
     const symbolsArray = ['~', '`', '!', '#', '$', '%', '\'', '^', '&', '*', '(', ')', '+', '=', '\\', ']', '[', '{', '}', '|', '"', ':', ';', '?', '/', '>', ',', '<'];
     for (let i = 0; i < 29; i++) {
       element.setValue(symbolsArray[i]);
-      driver.pause(5000);
+      driver.pause(waitTime);
       expect(DiscussPage.voterEmailAddressVerificationButton).not.toBeClickable();
     }
   });
@@ -311,13 +314,13 @@ describe('Discuss Page', () => {
   // Discuss_027
   it('spaceEmailVerification', async () => {
     await DiscussPage.load();
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await driver.switchWindow('https://quality.wevote.us/news');
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await expect(DiscussPage.voterEmailAddressVerificationButton).not.toBeClickable();
     const element = await DiscussPage.enterVoterEmailAddressTextBox; // Locate the text box element using a selector
     element.setValue('we vote@wevote.us');
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await expect(DiscussPage.voterEmailAddressVerificationButton).not.toBeClickable();
   });
 });

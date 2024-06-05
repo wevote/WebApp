@@ -5,17 +5,19 @@ import PrivacyPage from '../page_objects/privacy.page';
 const assert = require('assert');
 const { describe, it } = require('mocha');
 
+const waitTime = 5000;
+
 describe('Privacy Page', () => {
   // Privacy_001
   it('verifyWeVoteUSLinkRedirect', async () => {
     await ReadyPage.load();
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await ReadyPage.findPrivacyLink.click();
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await PrivacyPage.weVoteUSLink.click();
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await driver.switchWindow('https://wevote.us/');
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await expect(driver).toHaveUrl('https://wevote.us/');
     await expect(driver).toHaveTitle('Ready to Vote? - WeVote');
   });
@@ -23,56 +25,56 @@ describe('Privacy Page', () => {
   // Privacy_002
   it('verifyCampaignsWeVoteUSLinkRedirect', async () => {
     await ReadyPage.load();
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await driver.waitUntil(async () => (ReadyPage.findPrivacyLink.isClickable()));
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await ReadyPage.findPrivacyLink.click();
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await PrivacyPage.campaignsWeVoteUSLink.click();
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await driver.switchWindow('https://campaigns.wevote.us/');
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await expect(PrivacyPage.elementOfCampaignPage).toHaveText('Helping the best candidates win votes');
   });
 
   // Privacy_003
   it('verifyHelpCenterLinkRedirect', async () => {
     await ReadyPage.load();
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await ReadyPage.findPrivacyLink.click();
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await PrivacyPage.helpCenterLink.click();
-    await driver.pause(5000);
-    await driver.switchWindow('https://help.wevote.us/hc/en-us/sections/115000140987-Security-Technology');
-    await driver.pause(5000);
+    await driver.pause(waitTime);
+    await driver.switchWindow('https://help.wevote.us/hc/en-us/sections/11waitTime140987-Security-Technology');
+    await driver.pause(waitTime);
     await expect(driver).toHaveTitle('Security & Technology – We Vote');
   });
 
   // Privacy_005
   it('verifyDeleteYourAccountLink', async () => {
     await ReadyPage.load();
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await ReadyPage.findPrivacyLink.click();
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await PrivacyPage.deleteYourAccountLink.click();
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await PrivacyPage.deleteYourAccountButton.click();
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await expect(driver).toHaveTitle('Privacy Policy - WeVote');
   });
 
   // Privacy_005_2
   it('verifyCancelButtonOfDeleteYourAccountLink', async () => {
     await ReadyPage.load();
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await ReadyPage.findPrivacyLink.click();
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await PrivacyPage.deleteYourAccountLink.click();
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await expect(PrivacyPage.deleteYourAccountLink).not.toBeDisplayed();
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await PrivacyPage.cancelOfDeleteYourAccountButton.click();
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await expect(PrivacyPage.deleteYourAccountLink).toBeDisplayed();
   });
 
@@ -88,24 +90,24 @@ describe('Privacy Page', () => {
   // Privacy_007
   it('verifyGoogleAnalyticsLink', async () => {
     await ReadyPage.load();
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await ReadyPage.findPrivacyLink.click();
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await PrivacyPage.googleAnalyticsLink.click();
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await driver.switchWindow('https://policies.google.com/privacy');
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await expect(driver).toHaveTitle('Privacy Policy – Privacy & Terms – Google');
   });
 
   // Privacy_008
   it('verifyOpenReplayPrivacyLink', async () => {
     await ReadyPage.load();
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await ReadyPage.findPrivacyLink.click();
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await PrivacyPage.openReplayPrivacyLink.click();
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await driver.waitUntil(async () => {
       // Add condition to check for the expected URL
       await driver.switchWindow('https://openreplay.com/legal/privacy.html');
@@ -115,7 +117,7 @@ describe('Privacy Page', () => {
       timeout: 10000,
       timeoutMsg: 'Expected URL not found, timeout after 10000ms',
     });
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await expect(driver).toHaveTitle('Privacy | OpenReplay');
   });
 

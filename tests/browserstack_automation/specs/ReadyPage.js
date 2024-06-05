@@ -4,6 +4,8 @@ import PrivacyPage from '../page_objects/privacy.page';
 import DonatePage from '../page_objects/donate.page';
 import TermsPage from '../page_objects/terms.page';
 
+const waitTime = 5000;
+
 /* eslint-disable no-undef */
 // This eslint-disable turns off warnings for describe() and it()
 // We don't need those warnings, because describe() and it() are available at runtime
@@ -13,7 +15,7 @@ describe('ReadyPage', () => {
   // Ready_001
   it('verifyElectionCountDownRedirect', async () => {
     await ReadyPage.load();
-    await driver.pause(9000);
+    await driver.pause(waitTime);
     await driver.waitUntil(async () => (ReadyPage.electionCountDownTitle.isClickable()));
     await ReadyPage.electionCountDownTitle.click();
     await driver.waitUntil(async () => {
@@ -26,7 +28,7 @@ describe('ReadyPage', () => {
       timeoutMsg: 'Expected URL to contain "ballot" not found, timeout after 10000ms',
     });
     await driver.switchWindow('Ballot - WeVote');
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await expect(driver).not.toHaveUrl(expect.stringContaining('ready'));
   });
 
@@ -41,7 +43,7 @@ describe('ReadyPage', () => {
   it('verifyViewUpcomingBallotRedirect', async () => {
     await ReadyPage.load();
     await ReadyPage.viewUpcomingBallotButton.findAndClick();
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await expect(driver).not.toHaveUrl(expect.stringContaining('ready'));
   });
 
@@ -49,20 +51,20 @@ describe('ReadyPage', () => {
   it('toggleIssueFollowing', async () => {
     await ReadyPage.load();
     await ReadyPage.followFirstIssue();
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await expect(ReadyPage.toggleFollowMenuButtons).toBeElementsArrayOfSize(1);
     await ReadyPage.unfollowFirstIssue();
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await expect(ReadyPage.toggleFollowMenuButtons).toBeElementsArrayOfSize(0);
   });
 
   // Ready_005
   it('unfurlIssues', async () => {
     await ReadyPage.load();
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await expect(ReadyPage.followIssueButtons).toBeElementsArrayOfSize(6);
     await ReadyPage.unfurlIssues();
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await expect(ReadyPage.followIssueButtons).toBeElementsArrayOfSize({ gte: 6 });
   });
 
@@ -72,18 +74,18 @@ describe('ReadyPage', () => {
     await expect(ReadyPage.introductionStepText).not.toBeDisplayed();
     await driver.waitUntil(async () => (ReadyPage.toggleIntroductionButton.isClickable()));
     await ReadyPage.toggleIntroductionButton.click();
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await expect(ReadyPage.introductionStepText).toBeElementsArrayOfSize(3);
   });
 
   // Ready_007
   it('toggleFinePrint', async () => {
     await ReadyPage.load();
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await expect(ReadyPage.finePrintStepText).not.toBeDisplayed();
     await driver.waitUntil(async () => (ReadyPage.toggleIntroductionButton.isClickable()));
     await ReadyPage.toggleFinePrintButton.click();
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await expect(ReadyPage.finePrintStepText).toBeElementsArrayOfSize(4);
   });
 
@@ -98,9 +100,9 @@ describe('ReadyPage', () => {
   // Ready_009
   it('verifyPrivacyLinkRedirected', async () => {
     await ReadyPage.load();
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await ReadyPage.findPrivacyLink.click();
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await expect(driver).toHaveUrl(expect.stringContaining('privacy'));
     await expect(PrivacyPage.pageContentTitleText).toHaveText('WeVote.US Privacy Policy');
   });
@@ -108,21 +110,21 @@ describe('ReadyPage', () => {
   // Ready_010
   it('verifyHowItWorksModalWindowOpen', async () => {
     await ReadyPage.load();
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await ReadyPage.clickHowItWorksLink();
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await expect(ReadyPage.howItWorksTitle).toHaveText('1. Choose your interests');
   });
 
   // Ready_011
   it('verifyHowItWorksModalWindowClosed', async () => {
     await ReadyPage.load();
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await ReadyPage.clickHowItWorksLink();
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await ReadyPage.howItWorksTitle.isDisplayed();
     await ReadyPage.closeHowItWorksModalWindow();
-    await driver.pause(5000);
+    await driver.pause();
     await expect(ReadyPage.elementHowItWorksWindow).not.toBeDisplayed();
   });
 

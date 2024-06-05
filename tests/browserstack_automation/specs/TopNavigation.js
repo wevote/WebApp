@@ -4,11 +4,13 @@ import TopNavigation from '../page_objects/topnavigation';
 
 const { describe, it } = require('mocha');
 
+const waitTime = 5000;
+
 describe('TopNavigation', () => {
 // TopNavigation_001
   it('openWeVoteHomeLogo', async () => {
     await ReadyPage.load();
-    await driver.pause(9000);
+    await driver.pause(waitTime);
     await TopNavigation.getBallotLinkLocator.click();
     await driver.waitUntil(async () => {
       // Add condition to check for the expected URL
@@ -37,7 +39,7 @@ describe('TopNavigation', () => {
   // TopNavigation_002
   it('openBallotTab', async () => {
     await ReadyPage.load();
-    await driver.pause(9000);
+    await driver.pause(waitTime);
     await TopNavigation.getBallotLinkLocator.click();
     await driver.waitUntil(async () => {
       // Add condition to check for the expected URL
@@ -82,7 +84,7 @@ describe('TopNavigation', () => {
   // TopNavigation_007
   it('openDonateTab', async () => {
     await ReadyPage.load();
-    await driver.pause(9000);
+    await driver.pause(waitTime);
     await TopNavigation.toggleDonateTab();
     await driver.waitUntil(async () => {
       // Add condition to check for the expected URL
@@ -94,7 +96,7 @@ describe('TopNavigation', () => {
       timeoutMsg: 'Expected URL to contain "donate" not found, timeout after 10000ms',
     });
     await driver.switchWindow('Donate - WeVote');
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await expect(driver).not.toHaveUrl(expect.stringContaining('ready'));
   });
 
@@ -102,13 +104,13 @@ describe('TopNavigation', () => {
   //   // TopNavigation_008
   //   it('BallotTab', async () => {
   //     await ReadyPage.load();
-  //     await driver.pause(9000);
+  //     await driver.pause(waitTime);
   //   });
 
   // TopNavigation_009
   it('openCandidatesTab', async () => {
     await ReadyPage.load();
-    await driver.pause(9000);
+    await driver.pause(waitTime);
     await TopNavigation.toggleCandidatesTab();
     await driver.waitUntil(async () => {
       // Add condition to check for the expected URL
@@ -119,7 +121,7 @@ describe('TopNavigation', () => {
       timeout: 10000,
       timeoutMsg: 'Expected URL to contain "candidates" not found, timeout after 10000ms',
     });
-    await driver.pause(5000);
+    await driver.pause(waitTime);
     await expect(driver).not.toHaveUrl(expect.stringContaining('ready'));
   });
 
@@ -127,7 +129,7 @@ describe('TopNavigation', () => {
   // Squads feature removed from webapp
   // it('openSquadsTab', async () => {
   //   await ReadyPage.load();
-  //   await driver.pause(9000);
+  //   await driver.pause(waitTime);
   //   await TopNavigation.toggleSquadsTab();
   //   await driver.waitUntil(async () => {
   //     // Add condition to check for the expected URL
