@@ -154,10 +154,6 @@ button {
   border-radius:0
 }
 
-button:focus:not(:focus-visible) {
-  outline:0
-}
-
 input,button,select,optgroup,textarea {
   margin:0;
   font-family:inherit;
@@ -1581,10 +1577,6 @@ a {
 
 img {
   max-width:100%
-}
-
-button:focus {
-  outline:0!important
 }
 
 .icon-office-child {

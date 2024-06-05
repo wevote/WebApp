@@ -287,11 +287,14 @@ const RenderedOrganizationsWrapper = styled('div')`
   margin-top: 6px;
 `;
 
-const WordWrapper = styled('span')`
+const WordWrapper = styled('button')`
   color: #000;
   opacity: 0.6;
   text-decoration: underline;
   text-decoration-color: #ccc;
+  border: none;
+  background-color: #FFF;
+  padding: 0;
   &:hover {
     text-decoration: underline;
   }
