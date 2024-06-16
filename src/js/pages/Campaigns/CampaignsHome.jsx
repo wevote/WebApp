@@ -447,7 +447,7 @@ class CampaignsHome extends Component {
     // // We still want to show this filter option
     // filterCount += 1;
     listModeFiltersAvailable.push({
-      displayAsChip: true,
+      displayAsChip: false,
       filterDisplayName: 'Upcoming',
       filterName: 'showUpcomingEndorsements',
       filterOrder: 1,
