@@ -447,6 +447,7 @@ class CampaignsHome extends Component {
     // // We still want to show this filter option
     // filterCount += 1;
     listModeFiltersAvailable.push({
+      // WV314 Temporary Fix Changed from displayAsChip to true to false to hide the "Upcoming" button on Candidates Page
       displayAsChip: false,
       filterDisplayName: 'Upcoming',
       filterName: 'showUpcomingEndorsements',
