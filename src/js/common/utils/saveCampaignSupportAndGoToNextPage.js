@@ -2,6 +2,7 @@ import CampaignSupporterActions from '../actions/CampaignSupporterActions';
 import CampaignSupporterStore from '../stores/CampaignSupporterStore';
 import historyPush from './historyPush';
 import initializejQuery from './initializejQuery';
+import AppObservableStore from '../stores/AppObservableStore';
 
 function goToNextPage (campaignXBasePath) {
   const pathToUseWhenProfileComplete = `${campaignXBasePath}why-do-you-support`;
@@ -30,11 +31,15 @@ export default function saveCampaignSupportAndGoToNextPage (campaignXWeVoteId = 
   if (campaignXBasePath) {
     initializejQuery(() => {
       CampaignSupporterActions.supportCampaignSave(campaignXWeVoteId, campaignSupported, campaignSupportedChanged, visibleToPublic, saveVisibleToPublic); // campaignSupporterSave
+      AppObservableStore.setShowCompleteYourProfileModal(false);
+      AppObservableStore.setShowSignInModal(false);
     }, goToNextPage(campaignXBasePath));
   } else {
     // If we don't have a campaignXBasePath, do not redirect
     initializejQuery(() => {
       CampaignSupporterActions.supportCampaignSave(campaignXWeVoteId, campaignSupported, campaignSupportedChanged, visibleToPublic, saveVisibleToPublic); // campaignSupporterSave
+      AppObservableStore.setShowCompleteYourProfileModal(false);
+      AppObservableStore.setShowSignInModal(false);
     });
   }
   return null;

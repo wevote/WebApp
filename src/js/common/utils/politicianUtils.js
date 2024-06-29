@@ -12,6 +12,7 @@ export function getPoliticianValuesFromIdentifiers (politicianSEOFriendlyPath, p
   let ballotpediaPoliticianUrl = '';
   let candidateCampaignList = [];
   let finalElectionDateInPast = false;
+  let instagramHandle = '';
   // let isSupportersCountMinimumExceeded = false;
   let linkedCampaignXWeVoteId = '';
   let opponentCandidateList = [];
@@ -47,6 +48,7 @@ export function getPoliticianValuesFromIdentifiers (politicianSEOFriendlyPath, p
       ballotpedia_politician_url: ballotpediaPoliticianUrl,
       candidate_list: candidateCampaignList,
       final_election_date_in_past: finalElectionDateInPast,
+      instagram_handle: instagramHandle,
       // is_supporters_count_minimum_exceeded: isSupportersCountMinimumExceeded,
       linked_campaignx_we_vote_id: linkedCampaignXWeVoteId,
       opponent_candidate_list: opponentCandidateList,
@@ -91,6 +93,7 @@ export function getPoliticianValuesFromIdentifiers (politicianSEOFriendlyPath, p
     ballotpediaPoliticianUrl,
     candidateCampaignList,
     finalElectionDateInPast,
+    instagramHandle,
     // isSupportersCountMinimumExceeded,
     linkedCampaignXWeVoteId,
     opponentCandidateList,

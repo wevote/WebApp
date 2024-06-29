@@ -430,7 +430,7 @@ class HeaderBar extends Component {
     }
 
     if (window.leanLoadForChromeExtension) {
-      console.log('HeaderBar suppressed for Chrome Extension');
+      // console.log('HeaderBar suppressed for Chrome Extension');
       return null;    // No header on the iFramed pages for the Chrome Extension
     }
 

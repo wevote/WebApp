@@ -35,6 +35,7 @@ import CampaignSupporterStore from '../../stores/CampaignSupporterStore';
 import OfficeHeldStore from '../../stores/OfficeHeldStore';
 import PoliticianStore from '../../stores/PoliticianStore';
 import { convertStateCodeToStateText } from '../../utils/addressFunctions';
+import apiCalming from '../../utils/apiCalming';
 import { getYearFromUltimateElectionDate } from '../../utils/dateFormat';
 import historyPush from '../../utils/historyPush';
 import { isWebApp } from '../../utils/isCordovaOrWebApp';
@@ -44,6 +45,7 @@ import { getPoliticianValuesFromIdentifiers, retrievePoliticianFromIdentifiersIf
 import returnFirstXWords from '../../utils/returnFirstXWords';
 import saveCampaignSupportAndGoToNextPage from '../../utils/saveCampaignSupportAndGoToNextPage';
 import DesignTokenColors from '../../components/Style/DesignTokenColors';
+import OrganizationActions from '../../../actions/OrganizationActions';
 
 // const CampaignCommentsList = React.lazy(() => import(/* webpackChunkName: 'CampaignCommentsList' */ '../../components/Campaign/CampaignCommentsList'));
 const CampaignRetrieveController = React.lazy(() => import(/* webpackChunkName: 'CampaignRetrieveController' */ '../../components/Campaign/CampaignRetrieveController'));
@@ -136,6 +138,11 @@ class PoliticianDetailsPage extends Component {
     }
     // Take the "calculated" identifiers and retrieve if missing
     retrievePoliticianFromIdentifiersIfNeeded(politicianSEOFriendlyPathFromUrl, politicianWeVoteId);
+
+    if (apiCalming('organizationsFollowedRetrieve', 60000)) {
+      OrganizationActions.organizationsFollowedRetrieve();
+    }
+
     // console.log('componentDidMount triggerSEOPathRedirect: ', triggerSEOPathRedirect, ', politicianSEOFriendlyPathFromObject: ', politicianSEOFriendlyPathFromObject);
     if (triggerSEOPathRedirect && politicianSEOFriendlyPathFromObject) {
       historyPush(`/${politicianSEOFriendlyPathFromObject}/-/`, true);
@@ -331,6 +338,7 @@ class PoliticianDetailsPage extends Component {
       ballotpediaPoliticianUrl,
       candidateCampaignList,
       finalElectionDateInPast,
+      instagramHandle,
       // isSupportersCountMinimumExceeded,
       linkedCampaignXWeVoteId,
       opponentCandidateList,
@@ -344,7 +352,7 @@ class PoliticianDetailsPage extends Component {
       twitterHandle,
       twitterHandle2,
       wikipediaUrl,
-      // youtubeUrl,
+      youtubeUrl,
     } = getPoliticianValuesFromIdentifiers(politicianSEOFriendlyPathFromUrl, politicianWeVoteIdFromParams);
     if (politicianWeVoteId) {
       const voterCanEditThisPolitician = PoliticianStore.getVoterCanEditThisPolitician(politicianWeVoteId);
@@ -372,6 +380,7 @@ class PoliticianDetailsPage extends Component {
       ballotpediaPoliticianUrl,
       candidateCampaignList: filteredCandidateCampaignList,
       finalElectionDateInPast,
+      instagramHandle,
       // isSupportersCountMinimumExceeded,
       linkedCampaignXWeVoteId,
       opponentCandidateList: filteredOpponentCandidateList,
@@ -385,7 +394,7 @@ class PoliticianDetailsPage extends Component {
       twitterHandle,
       twitterHandle2,
       wikipediaUrl,
-      // youtubeUrl,
+      youtubeUrl,
     });
   }
 
@@ -408,6 +417,8 @@ class PoliticianDetailsPage extends Component {
       candidateCampaignList: [],
       chosenWebsiteName: '',
       finalElectionDateInPast: false,
+      instagramHandle: '',
+      // isSupportersCountMinimumExceeded: false,
       linkedCampaignXWeVoteId: '',
       opponentCandidateList: [],
       politicianDataFound: false,
@@ -422,7 +433,7 @@ class PoliticianDetailsPage extends Component {
       twitterHandle: '',
       twitterHandle2: '',
       wikipediaUrl: '',
-      // youtubeUrl: '',
+      youtubeUrl: '',
     });
   }
 
@@ -492,7 +503,8 @@ class PoliticianDetailsPage extends Component {
     const {
       allCachedPositionsForThisPolitician, ballotpediaPoliticianUrl, candidateCampaignList, chosenWebsiteName,
       // supporterEndorsementsWithText,
-      finalElectionDateInPast, linkedCampaignXWeVoteId, loadSlow,
+      finalElectionDateInPast, instagramHandle,
+      linkedCampaignXWeVoteId, loadSlow,
       // officeHeldList,
       officeHeldNameForSearch, opponentCandidateList,
       politicianDataFound, politicianDataNotFound,
@@ -502,7 +514,7 @@ class PoliticianDetailsPage extends Component {
       politicianWeVoteId, politicianWeVoteIdForDisplay,
       stateText, twitterHandle, twitterHandle2,
       voterCanEditThisPolitician, voterSupportsThisPolitician,
-      wikipediaUrl, // youtubeUrl,
+      wikipediaUrl, youtubeUrl,
     } = this.state;
 
     const politicianLinksList = [];
@@ -510,6 +522,19 @@ class PoliticianDetailsPage extends Component {
       politicianLinksList.push({
         linkText: 'Candidate website',
         externalLinkUrl: politicianUrl,
+      });
+    }
+    if (instagramHandle) {
+      const instagramHandleCleaned = instagramHandle.trim();
+      politicianLinksList.push({
+        linkText: `instagram.com/${instagramHandleCleaned}`,
+        externalLinkUrl: `https://instagram.com/${instagramHandleCleaned}`,
+      });
+    }
+    if (youtubeUrl) {
+      politicianLinksList.push({
+        linkText: 'youtube.com',
+        externalLinkUrl: youtubeUrl,
       });
     }
     if (wikipediaUrl) {
@@ -815,17 +840,6 @@ class PoliticianDetailsPage extends Component {
                 </IndicatorRow>
               )}
             </CampaignDescriptionWrapper>
-            {positionListTeaserHtml}
-            {isWebApp() && (
-              <CampaignChipInLinkOuterWrapper>
-                <CampaignChipInLink
-                  campaignSEOFriendlyPath={politicianSEOFriendlyPathForDisplay}
-                  campaignXWeVoteId={linkedCampaignXWeVoteId}
-                  externalUniqueId="mobile"
-                />
-              </CampaignChipInLinkOuterWrapper>
-            )}
-            {/* {commentListTeaserHtml} */}
             {opponentCandidateList && opponentCandidateList.length > 0 && (
               <CandidateCampaignListMobile>
                 <CampaignSubSectionTitleWrapper>
@@ -838,6 +852,17 @@ class PoliticianDetailsPage extends Component {
                 </OtherElectionsWrapper>
               </CandidateCampaignListMobile>
             )}
+            {positionListTeaserHtml}
+            {isWebApp() && (
+              <CampaignChipInLinkOuterWrapper>
+                <CampaignChipInLink
+                  campaignSEOFriendlyPath={politicianSEOFriendlyPathForDisplay}
+                  campaignXWeVoteId={linkedCampaignXWeVoteId}
+                  externalUniqueId="mobile"
+                />
+              </CampaignChipInLinkOuterWrapper>
+            )}
+            {/* {commentListTeaserHtml} */}
             <Suspense fallback={<span>&nbsp;</span>}>
               <CampaignShareChunkWrapper>
                 <CampaignShareChunk
@@ -950,10 +975,22 @@ class PoliticianDetailsPage extends Component {
                 <LinkToAdminTools
                   adminToolsUrl={campaignAdminEditUrl}
                   linkId="editCampaign"
-                  linkTextNode={<span>edit campaign</span>}
+                  linkTextNode={<span>jump to Admin tools</span>}
                 />
               </ColumnOneThird>
               <ColumnTwoThirds>
+                {opponentCandidateList && opponentCandidateList.length > 0 && (
+                  <CandidateCampaignListDesktop>
+                    <CampaignSubSectionTitleWrapper>
+                      <CampaignSubSectionTitle>
+                        {opponentsSubtitle}
+                      </CampaignSubSectionTitle>
+                    </CampaignSubSectionTitleWrapper>
+                    <OtherElectionsWrapper>
+                      {opponentCandidatesHtml}
+                    </OtherElectionsWrapper>
+                  </CandidateCampaignListDesktop>
+                )}
                 {positionListTeaserHtml}
                 {/* {commentListTeaserHtml} */}
                 {(!futureFeaturesDisabled && nextReleaseFeaturesEnabled) && (
@@ -981,18 +1018,6 @@ class PoliticianDetailsPage extends Component {
                       </Suspense>
                     </DelayedLoad>
                   </CommentsListWrapper>
-                )}
-                {opponentCandidateList && opponentCandidateList.length > 0 && (
-                  <CandidateCampaignListDesktop>
-                    <CampaignSubSectionTitleWrapper>
-                      <CampaignSubSectionTitle>
-                        {opponentsSubtitle}
-                      </CampaignSubSectionTitle>
-                    </CampaignSubSectionTitleWrapper>
-                    <OtherElectionsWrapper>
-                      {opponentCandidatesHtml}
-                    </OtherElectionsWrapper>
-                  </CandidateCampaignListDesktop>
                 )}
                 {candidateCampaignList && candidateCampaignList.length > 0 && (
                   <CandidateCampaignListDesktop>
