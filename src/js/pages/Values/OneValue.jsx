@@ -17,6 +17,8 @@ import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import ValuesList from './ValuesList';
 import { convertNameToSlug } from '../../common/utils/textFormat';
+import NoSearchResult from "../../components/Search/NoSearchResult";
+import EndorsementCard from "../../components/Widgets/EndorsementCard";
 
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
 const IssueCard = React.lazy(() => import(/* webpackChunkName: 'IssueCard' */ '../../components/Values/IssueCard'));
@@ -188,7 +190,6 @@ class OneValue extends Component {
 
     const showAllEndorsers = (listModeShown === 'allEndorsers');
     const showEndorsersForThisElection = (listModeShown === 'voterGuidesForThisElection');
-    const advocatesCount = Math.max(organizationsForValueLength, voterGuidesForValueLength);
 
     if (searchText.length > 0) {
       let modifiedOrganization;
@@ -223,6 +224,14 @@ class OneValue extends Component {
       }
     }
 
+    const advocatesTotalCount = Math.max(organizationsForValueLength, voterGuidesForValueLength);
+    let advocatesVisibleCount = 0;
+    if (showAllEndorsers) {
+      advocatesVisibleCount = organizationsForValueLength;
+    } else {
+      advocatesVisibleCount = voterGuidesForValue.length;
+    }
+
     const ifPigsFly = false;
     return (
       <PageContentContainer>
@@ -236,7 +245,7 @@ class OneValue extends Component {
           <IssueCardOuterWrapper>
             <Suspense fallback={<></>}>
               <IssueCard
-                advocatesCount={advocatesCount}
+                advocatesCount={advocatesTotalCount}
                 condensed
                 followToggleOn
                 hideAdvocatesCount
@@ -292,6 +301,21 @@ class OneValue extends Component {
           <Suspense fallback={<></>}>
             <GuideList incomingVoterGuideList={showEndorsersForThisElection ? voterGuidesForValue : []} increaseNumberOfItemsOnScroll />
           </Suspense>
+          {(advocatesVisibleCount === 0) && (
+            <NoSearchResultWrapper>
+              <NoSearchResult
+                title={`No results found${(showEndorsersForThisElection) ? ' for this election' : ''}.`}
+                subtitle="Don't see an organization you want to follow?"
+              />
+              <EndorsementCard
+                  className="btn endorsement-btn btn-sm"
+                  bsPrefix="u-margin-top--sm u-stack--xs"
+                  variant="primary"
+                  buttonText="Endorse organization"
+                  text=""
+              />
+            </NoSearchResultWrapper>
+          )}
           {ifPigsFly && (
             <Suspense fallback={<></>}>
               <DelayedLoad waitBeforeShow={2000}>
@@ -342,6 +366,12 @@ const FilterChoices = styled('div')`
 
 const IssueCardOuterWrapper = styled('div')`
   margin-bottom: 48px;
+`;
+
+const NoSearchResultWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const OneValueWrapper = styled('div')`

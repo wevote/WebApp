@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
+import DelayedLoad from './DelayedLoad';
 import { isCordova } from '../../utils/isCordovaOrWebApp';
 import VoterStore from '../../../stores/VoterStore';
 
@@ -33,23 +34,26 @@ class LinkToAdminTools extends Component {
     const { adminToolsUrl, linkId, linkTextNode } = this.props;
     const { voter } = this.state;
     return (
-      <LinkToAdminToolsWrapper>
-        {/* Show links to this candidate in the admin tools */}
-        {(voter && (voter.is_admin || voter.is_political_data_manager || voter.is_verified_volunteer)) && (
-          <span className="u-wrap-links d-print-none">
-            Admin only:
-            <Suspense fallback={<></>}>
-              <OpenExternalWebSite
-                linkIdAttribute={linkId || 'linkToAdminTools'}
-                url={adminToolsUrl}
-                target="_blank"
-                className="open-web-site open-web-site__no-right-padding"
-                body={linkTextNode || <span>edit</span>}
-              />
-            </Suspense>
-          </span>
-        )}
-      </LinkToAdminToolsWrapper>
+      <DelayedLoad waitBeforeShow={1000}>
+        <LinkToAdminToolsWrapper>
+          {/* Show links to this candidate in the admin tools */}
+          {(voter && (voter.is_admin || voter.is_political_data_manager || voter.is_verified_volunteer)) && (
+            <span className="u-wrap-links d-print-none">
+              Admin only:
+              {' '}
+              <Suspense fallback={<></>}>
+                <OpenExternalWebSite
+                  linkIdAttribute={linkId || 'linkToAdminTools'}
+                  url={adminToolsUrl}
+                  target="_blank"
+                  className="open-web-site open-web-site__no-right-padding"
+                  body={linkTextNode || <span>edit</span>}
+                />
+              </Suspense>
+            </span>
+          )}
+        </LinkToAdminToolsWrapper>
+      </DelayedLoad>
     );
   }
 }

@@ -1,3 +1,5 @@
+import withStyles from '@mui/styles/withStyles';
+import { HowToVote } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Suspense } from 'react';
 import { Link } from 'react-router-dom';
@@ -37,19 +39,19 @@ import historyPush from '../utils/historyPush';
 import isMobileScreenSize from '../utils/isMobileScreenSize';
 import DesignTokenColors from './Style/DesignTokenColors';
 import HeartFavoriteToggleLoader from './Widgets/HeartFavoriteToggle/HeartFavoriteToggleLoader';
+import SvgImage from './Widgets/SvgImage';
 
 const CampaignSupportThermometer = React.lazy(() => import(/* webpackChunkName: 'CampaignSupportThermometer' */ './CampaignSupport/CampaignSupportThermometer'));
 const ItemActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemActionBar' */ '../../components/Widgets/ItemActionBar/ItemActionBar'));
 const OfficeHeldNameText = React.lazy(() => import(/* webpackChunkName: 'OfficeHeldNameText' */ './Widgets/OfficeHeldNameText'));
 const OfficeNameText = React.lazy(() => import(/* webpackChunkName: 'OfficeNameText' */ './Widgets/OfficeNameText'));
 
-
 // React functional component example
-export default function CardForListBody (props) {
+function CardForListBody (props) {
   renderLog('CardForListBody');  // Set LOG_RENDER_EVENTS to log all renders
   const {
     ballotItemDisplayName, // campaignSupported,
-    candidateWeVoteId, districtName, finalElectionDateInPast, hideCardMargins,
+    candidateWeVoteId, classes, districtName, finalElectionDateInPast, hideCardMargins,
     hideItemActionBar, limitCardWidth, linkedCampaignXWeVoteId, officeName,
     photoLargeUrl, politicalParty, politicianBaseBath,  // pathToUseToKeepHelping
     politicianDescription, politicianWeVoteId, profileImageBackgroundColor,
@@ -67,6 +69,12 @@ export default function CardForListBody (props) {
   // }
   const stateName = convertStateCodeToStateText(stateCode);
   const electionDateYear = getYearFromUltimateElectionDate(ultimateElectionDate);
+  let politicalPartySvgNameWithPath = '../../img/global/svg-icons/political-party-unspecified.svg';
+  if (['Democrat', 'Democratic'].includes(politicalParty)) {
+    politicalPartySvgNameWithPath = '../../img/global/svg-icons/political-party-democrat.svg';
+  } else if (['Republican', 'Republican Party'].includes(politicalParty)) {
+    politicalPartySvgNameWithPath = '../../img/global/svg-icons/political-party-republican.svg';
+  }
 
   // /////////////////////// START OF DISPLAY
   return (
@@ -120,24 +128,43 @@ export default function CardForListBody (props) {
               <CardRowsWrapper>
                 {politicalParty && (
                   <CardForListRow>
-                    {politicalParty}
+                    <FlexDivLeft>
+                      <SvgImageWrapper>
+                        <SvgImage imageName={politicalPartySvgNameWithPath} stylesTextIncoming="width: 18px;" />
+                      </SvgImageWrapper>
+                      <PoliticalPartyDiv>{politicalParty}</PoliticalPartyDiv>
+                    </FlexDivLeft>
                   </CardForListRow>
                 )}
                 <CardForListRow>
                   <Suspense fallback={<></>}>
                     {useOfficeHeld ? (
-                      <OfficeHeldNameText
-                        inCard
-                        districtName={districtName}
-                        officeName={officeName}
-                      />
+                      <FlexDivLeft>
+                        <SvgImageWrapper>
+                          <HowToVote classes={{ root: classes.howToVoteRoot }} />
+                        </SvgImageWrapper>
+                        <OfficeNameWrapper>
+                          <OfficeHeldNameText
+                            inCard
+                            districtName={districtName}
+                            officeName={officeName}
+                          />
+                        </OfficeNameWrapper>
+                      </FlexDivLeft>
                     ) : (
-                      <OfficeNameText
-                        districtName={districtName}
-                        inCard
-                        officeName={officeName}
-                        showOfficeName
-                      />
+                      <FlexDivLeft>
+                        <SvgImageWrapper>
+                          <HowToVote classes={{ root: classes.howToVoteRoot }} />
+                        </SvgImageWrapper>
+                        <OfficeNameWrapper>
+                          <OfficeNameText
+                            districtName={districtName}
+                            inCard
+                            officeName={officeName}
+                            showOfficeName
+                          />
+                        </OfficeNameWrapper>
+                      </FlexDivLeft>
                     )}
                   </Suspense>
                 </CardForListRow>
@@ -365,11 +392,40 @@ CardForListBody.propTypes = {
   useVerticalCard: PropTypes.bool,
 };
 
-export const YearAndHeartDiv = styled('div')`
+const styles = () => ({
+  howToVoteRoot: {
+    color: '#999',
+    height: 18,
+    // marginRight: 3,
+    width: 18,
+  },
+});
+
+export const FlexDivLeft = styled('div')`
+  align-items: center;
   display: flex;
-  justify-content: space-between;
+  justify-content: start;
+`;
+
+export const OfficeNameWrapper = styled('div')`
+`;
+
+export const PoliticalPartyDiv = styled('div')`
 `;
 
 export const SpaceBeforeThermometer = styled('div')`
   margin-bottom: 8px;
 `;
+
+export const SvgImageWrapper = styled('div')`
+  max-width: 25px;
+  min-width: 25px;
+  width: 25px;
+`;
+
+export const YearAndHeartDiv = styled('div')`
+  display: flex;
+  justify-content: space-between;
+`;
+
+export default withStyles(styles)(CardForListBody);

@@ -119,23 +119,6 @@ class OrganizationList extends Component {
 
     let numberOfItemsDisplayed = 0;
 
-    if ((!incomingOrganizationList || incomingOrganizationList.length === 0)) {
-      return (
-        <NoSearchResultWrapper>
-          <NoSearchResult
-            title="No results found."
-            subtitle="Don't see an organization you want to follow?"
-          />
-          <EndorsementCard
-              className="btn endorsement-btn btn-sm"
-              bsPrefix="u-margin-top--sm u-stack--xs"
-              variant="primary"
-              buttonText="Endorse organization"
-              text=""
-          />
-        </NoSearchResultWrapper>
-      );
-    }
     return (
       <OrganizationListWrapper>
         {(organizationListToDisplay && organizationListToDisplayCount) ? (
@@ -183,12 +166,6 @@ OrganizationList.propTypes = {
   increaseNumberOfItemsOnScroll: PropTypes.bool,
   organizationListIdentifier: PropTypes.string,
 };
-
-const NoSearchResultWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
 
 const OrganizationListWrapper = styled('div')`
 `;

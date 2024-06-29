@@ -3,6 +3,7 @@ import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import ActivityActions from '../../actions/ActivityActions';
 import IssueActions from '../../actions/IssueActions';
+import OrganizationActions from '../../actions/OrganizationActions';
 import SupportActions from '../../actions/SupportActions';
 import CampaignStore from '../../common/stores/CampaignStore';
 import { convertStateCodeToStateText, convertStateTextToStateCode } from '../../common/utils/addressFunctions';
@@ -173,6 +174,9 @@ class CampaignsHome extends Component {
     SupportActions.voterAllPositionsRetrieve();
     if (apiCalming('activityNoticeListRetrieve', 10000)) {
       ActivityActions.activityNoticeListRetrieve();
+    }
+    if (apiCalming('organizationsFollowedRetrieve', 60000)) {
+      OrganizationActions.organizationsFollowedRetrieve();
     }
     // AnalyticsActions.saveActionOffice(VoterStore.electionId(), params.office_we_vote_id);
   }
