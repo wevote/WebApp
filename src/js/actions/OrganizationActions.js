@@ -1,29 +1,50 @@
 import Dispatcher from '../common/dispatcher/Dispatcher';
 
 export default {
-  organizationFollow (organizationWeVoteId, organization_twitter_handle = '', organization_follow_based_on_issue = false) {
+  organizationDislike (organizationWeVoteId = '', politicianWeVoteId = '', organization_twitter_handle = '', organization_follow_based_on_issue = false) {
+    // console.log('OrganizationActions.organizationFollow, organizationWeVoteId: ', organizationWeVoteId);
+    Dispatcher.loadEndpoint('organizationDislike', {
+      organization_we_vote_id: organizationWeVoteId,
+      organization_twitter_handle,
+      organization_follow_based_on_issue,
+      politician_we_vote_id: politicianWeVoteId,
+    });
+  },
+
+  organizationFollow (organizationWeVoteId = '', politicianWeVoteId = '', organization_twitter_handle = '', organization_follow_based_on_issue = false) {
     // console.log('OrganizationActions.organizationFollow, organizationWeVoteId: ', organizationWeVoteId);
     Dispatcher.loadEndpoint('organizationFollow', {
       organization_we_vote_id: organizationWeVoteId,
       organization_twitter_handle,
       organization_follow_based_on_issue,
+      politician_we_vote_id: politicianWeVoteId,
     });
+  },
+
+  organizationsFollowedRetrieve (autoFollowedFromTwitterSuggestion) {
+    Dispatcher.loadEndpoint('organizationsFollowedRetrieve', { auto_followed_from_twitter_suggestion: autoFollowedFromTwitterSuggestion });
   },
 
   organizationFollowIgnore (organizationWeVoteId) {
     Dispatcher.loadEndpoint('organizationFollowIgnore', { organization_we_vote_id: organizationWeVoteId });
   },
 
-  organizationStopFollowing (organizationWeVoteId) {
-    Dispatcher.loadEndpoint('organizationStopFollowing', { organization_we_vote_id: organizationWeVoteId });
+  organizationStopDisliking (organizationWeVoteId = '', politicianWeVoteId = '') {
+    Dispatcher.loadEndpoint('organizationStopDisliking', {
+      organization_we_vote_id: organizationWeVoteId,
+      politician_we_vote_id: politicianWeVoteId,
+    });
+  },
+
+  organizationStopFollowing (organizationWeVoteId = '', politicianWeVoteId = '') {
+    Dispatcher.loadEndpoint('organizationStopFollowing', {
+      organization_we_vote_id: organizationWeVoteId,
+      politician_we_vote_id: politicianWeVoteId,
+    });
   },
 
   organizationStopIgnoring (organizationWeVoteId) {
     Dispatcher.loadEndpoint('organizationStopIgnoring', { organization_we_vote_id: organizationWeVoteId });
-  },
-
-  organizationsFollowedRetrieve (autoFollowedFromTwitterSuggestion) {
-    Dispatcher.loadEndpoint('organizationsFollowedRetrieve', { auto_followed_from_twitter_suggestion: autoFollowedFromTwitterSuggestion });
   },
 
   organizationRetrieve (weVoteId) {

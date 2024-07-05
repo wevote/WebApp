@@ -1,7 +1,6 @@
 import React, { Suspense } from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import PropTypes from "prop-types";
 import { renderLog } from '../../../utils/logging';
 
 const HeartFavoriteToggleLive = React.lazy(() => import(/* webpackChunkName: 'HeartFavoriteToggleLive' */ './HeartFavoriteToggleLive'));
@@ -11,10 +10,6 @@ class HeartFavoriteToggleLoader extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
-      likeActive: 'like',
-      disLikeActive: 'dislike',
-      likeCounter: 12345,
-      dislikeCounter: 902,
     };
   }
 
@@ -37,7 +32,7 @@ HeartFavoriteToggleLoader.propTypes = {
   campaignXWeVoteId: PropTypes.string,
 };
 
-const HeartFavoriteToggleLoaderContainer = styled.div`
+const HeartFavoriteToggleLoaderContainer  = styled('div')`
 `;
 
 export default HeartFavoriteToggleLoader;

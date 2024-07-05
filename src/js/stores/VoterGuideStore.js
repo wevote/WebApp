@@ -321,10 +321,14 @@ class VoterGuideStore extends ReduceStore {
           voterGuideWithPledgeInfo.pledge_count = action.res.pledge_count;
           voterGuideWithPledgeInfo.voter_has_pledged = action.res.voter_has_pledged;
           allCachedVoterGuidesByElection[action.res.organization_we_vote_id][convertToInteger(action.res.google_civic_election_id)] = voterGuideWithPledgeInfo;
-          OrganizationActions.organizationsFollowedRetrieve();
+          if (apiCalming('organizationsFollowedRetrieve', 1000)) {
+            OrganizationActions.organizationsFollowedRetrieve();
+          }
           SupportActions.voterAllPositionsRetrieve();
           // VoterGuideActions.voterGuidesToFollowRetrieve(action.res.google_civic_election_id); // DEBUG=1
-          VoterGuideActions.voterGuidesFollowedRetrieve(action.res.google_civic_election_id);
+          if (apiCalming('voterGuidesFollowedRetrieve', 1000)) {
+            VoterGuideActions.voterGuidesFollowedRetrieve(action.res.google_civic_election_id);
+          }
 
           return {
             ...state,
@@ -834,7 +838,9 @@ class VoterGuideStore extends ReduceStore {
 
       case 'organizationFollow':
         // The heavy lift of the reaction to "organizationFollow" is in OrganizationStore
-        VoterGuideActions.voterGuidesIgnoredRetrieve();
+        if (apiCalming('voterGuidesIgnoredRetrieve', 1000)) {
+          VoterGuideActions.voterGuidesIgnoredRetrieve();
+        }
 
         // voterLinkedOrganizationWeVoteId is the voter who clicked the Follow button
         voterLinkedOrganizationWeVoteId = action.res.voter_linked_organization_we_vote_id;
@@ -858,7 +864,9 @@ class VoterGuideStore extends ReduceStore {
 
       case 'organizationFollowIgnore':
         // The heavy lift of the reaction to "organizationFollowIgnore" is in OrganizationStore
-        VoterGuideActions.voterGuidesIgnoredRetrieve();
+        if (apiCalming('voterGuidesIgnoredRetrieve', 1000)) {
+          VoterGuideActions.voterGuidesIgnoredRetrieve();
+        }
 
         // organization_we_vote_id is the organization that was just followed
         organizationWeVoteId = action.res.organization_we_vote_id;

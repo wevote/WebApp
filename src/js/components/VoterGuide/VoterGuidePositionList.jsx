@@ -54,7 +54,9 @@ class VoterGuidePositionList extends Component {
     // if (apiCalming('organizationsFollowedRetrieve', 60000)) {
     // We do not want apiCalming here because the filters on the OneValue page
     // will cause this component to be mounted and unmounted within one session, and we want to get a fresh retrieve each time
-    OrganizationActions.organizationsFollowedRetrieve();
+    if (apiCalming('organizationsFollowedRetrieve', 60000)) {
+      OrganizationActions.organizationsFollowedRetrieve();
+    }
     if (!organizationsVoterIsFriendsWith.length > 0) {
       if (apiCalming('friendListsAll', 3000)) {
         FriendActions.friendListsAll();
