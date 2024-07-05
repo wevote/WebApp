@@ -75,6 +75,7 @@ class PoliticianDetailsPage extends Component {
       loadSlow: false,
       officeHeldList: [],
       opponentCandidateList: [],
+      opponentCandidatesToShowCount: 5,
       payToPromoteStepCompleted: false,
       payToPromoteStepTurnedOn: false,
       politicianDataFound: false,
@@ -437,6 +438,13 @@ class PoliticianDetailsPage extends Component {
     });
   }
 
+  showMoreOpponentCandidates = () => {
+    const { opponentCandidatesToShowCount } = this.state;
+    this.setState({
+      opponentCandidatesToShowCount: opponentCandidatesToShowCount + 10,
+    });
+  }
+
   orderByTwitterFollowers = (firstEntry, secondEntry) => secondEntry.twitter_followers_count - firstEntry.twitter_followers_count;
 
   orderCandidatesByUltimateDate = (firstEntry, secondEntry) => secondEntry.candidate_ultimate_election_date - firstEntry.candidate_ultimate_election_date;
@@ -506,7 +514,7 @@ class PoliticianDetailsPage extends Component {
       finalElectionDateInPast, instagramHandle,
       linkedCampaignXWeVoteId, loadSlow,
       // officeHeldList,
-      officeHeldNameForSearch, opponentCandidateList,
+      officeHeldNameForSearch, opponentCandidateList, opponentCandidatesToShowCount,
       politicianDataFound, politicianDataNotFound,
       politicianDescription, politicianDescriptionLimited,
       politicianSEOFriendlyPath, politicianSEOFriendlyPathForDisplay,
@@ -568,15 +576,15 @@ class PoliticianDetailsPage extends Component {
     if (twitterHandle) {
       const twitterHandleCleaned = twitterHandle.trim();
       politicianLinksList.push({
-        linkText: `twitter.com/${twitterHandleCleaned}`,
-        externalLinkUrl: `https://twitter.com/${twitterHandleCleaned}`,
+        linkText: `X.com/${twitterHandleCleaned}`,
+        externalLinkUrl: `https://x.com/${twitterHandleCleaned}`,
       });
     }
-    if (twitterHandle2) {
+    if (twitterHandle2 && (twitterHandle2 !== twitterHandle)) {
       const twitterHandle2Cleaned = twitterHandle2.trim();
       politicianLinksList.push({
-        linkText: `twitter.com/${twitterHandle2Cleaned}`,
-        externalLinkUrl: `https://twitter.com/${twitterHandle2Cleaned}`,
+        linkText: `X.com/${twitterHandle2Cleaned}`,
+        externalLinkUrl: `https://x.com/${twitterHandle2Cleaned}`,
       });
     }
 
@@ -620,7 +628,7 @@ class PoliticianDetailsPage extends Component {
     ) : <PoliticianLinksWrapper />;
 
     let opponentCandidatesHtml = '';
-    const opponentsSubtitle = 'Candidates running for same office';
+    const opponentsSubtitle = finalElectionDateInPast ? 'Candidates who ran for same office' : 'Candidates running for same office';
     let priorCandidateCampaignsHtml = '';
     const currentYear = 2023;
     let nextYearElectionExists = false;
@@ -685,23 +693,42 @@ class PoliticianDetailsPage extends Component {
       });
     }
     if (opponentCandidateList && opponentCandidateList.length > 0) {
+      let opponentCandidatesShownCount = 0;
       opponentCandidatesHtml = opponentCandidateList.map((opposingCandidate) => {
         if (opposingCandidate.seo_friendly_path) {
-          const opposingCandidateKey = `opposingCandidate-${opposingCandidate.we_vote_id}`;
-          return (
-            <CandidateCampaignWrapper key={opposingCandidateKey}>
-              <Link
-                className="u-cursor--pointer u-link-color u-link-underline-on-hover"
-                to={`/${opposingCandidate.seo_friendly_path}/-/`}
-              >
-                {opposingCandidate.ballot_item_display_name}
-              </Link>
-            </CandidateCampaignWrapper>
-          );
+          if (opponentCandidatesShownCount < opponentCandidatesToShowCount) {
+            opponentCandidatesShownCount += 1;
+            const opposingCandidateKey = `opposingCandidate-${opposingCandidate.we_vote_id}`;
+            return (
+              <CandidateCampaignWrapper key={opposingCandidateKey}>
+                <Link
+                  className="u-cursor--pointer u-link-color u-link-underline-on-hover"
+                  to={`/${opposingCandidate.seo_friendly_path}/-/`}
+                >
+                  {opposingCandidate.ballot_item_display_name}
+                </Link>
+              </CandidateCampaignWrapper>
+            );
+          } else {
+            return null;
+          }
         } else {
           return null;
         }
       });
+      const opponentCandidatesMoreToShow = opponentCandidatesShownCount < opponentCandidateList.length;
+      if (opponentCandidatesMoreToShow) {
+        const showMoreHTML = (
+          <div className="u-link-color u-link-underline-on-hover"
+               id="opposingShowMore"
+               key="opposingShowMoreKey"
+               onClick={this.showMoreOpponentCandidates}
+          >
+            Show more
+          </div>
+        );
+        opponentCandidatesHtml.push(showMoreHTML);
+      }
     }
     let positionListTeaserHtml = <></>;
     if (allCachedPositionsForThisPolitician && allCachedPositionsForThisPolitician.length > 0) {
@@ -812,15 +839,15 @@ class PoliticianDetailsPage extends Component {
                   {politicianLinksContainer}
                 </DelayedLoad>
               )}
-              {finalElectionDateInPast && (
-                <IndicatorRow>
-                  <IndicatorButtonWrapper>
-                    <ElectionInPast>
-                      Election in Past
-                    </ElectionInPast>
-                  </IndicatorButtonWrapper>
-                </IndicatorRow>
-              )}
+              {/* {finalElectionDateInPast && ( */}
+              {/*  <IndicatorRow> */}
+              {/*    <IndicatorButtonWrapper> */}
+              {/*      <ElectionInPast> */}
+              {/*        Election in Past */}
+              {/*      </ElectionInPast> */}
+              {/*    </IndicatorButtonWrapper> */}
+              {/*  </IndicatorRow> */}
+              {/* )} */}
               {!!(voterCanEditThisPolitician || voterSupportsThisPolitician) && (
                 <IndicatorRow>
                   {voterCanEditThisPolitician && (
@@ -952,15 +979,15 @@ class PoliticianDetailsPage extends Component {
                       {politicianLinksContainer}
                     </DelayedLoad>
                   )}
-                  {finalElectionDateInPast && (
-                    <IndicatorRow>
-                      <IndicatorButtonWrapper>
-                        <ElectionInPast>
-                          Election in Past
-                        </ElectionInPast>
-                      </IndicatorButtonWrapper>
-                    </IndicatorRow>
-                  )}
+                  {/* {finalElectionDateInPast && ( */}
+                  {/*  <IndicatorRow> */}
+                  {/*    <IndicatorButtonWrapper> */}
+                  {/*      <ElectionInPast> */}
+                  {/*        Election in Past */}
+                  {/*      </ElectionInPast> */}
+                  {/*    </IndicatorButtonWrapper> */}
+                  {/*  </IndicatorRow> */}
+                  {/* )} */}
                   {voterCanEditThisPolitician && (
                     <IndicatorRow>
                       <IndicatorButtonWrapper>

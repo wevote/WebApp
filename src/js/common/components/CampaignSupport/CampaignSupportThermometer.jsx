@@ -7,20 +7,26 @@ import { renderLog } from '../../utils/logging';
 import DesignTokenColors from '../Style/DesignTokenColors';
 import numberWithCommas from '../../utils/numberWithCommas';
 import CampaignStore from '../../stores/CampaignStore';
+import OrganizationStore from '../../../stores/OrganizationStore';
 
 class CampaignSupportThermometer extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
       finalElectionDateInPast: false,
+      politicianWeVoteId: '',
       supportersCountNextGoal: CampaignStore.getCampaignXSupportersCountNextGoalDefault(),
       supportersCount: 0,
+      voterOpposesCampaignX: false,
+      voterSupportsCampaignX: false,
     };
   }
 
   componentDidMount () {
     this.onCampaignStoreChange();
     this.campaignStoreListener = CampaignStore.addListener(this.onCampaignStoreChange.bind(this));
+    this.onOrganizationStoreChange();
+    this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
   }
 
   componentDidUpdate (prevProps, prevState) {
@@ -61,6 +67,7 @@ class CampaignSupportThermometer extends React.Component {
       clearTimeout(this.campaignTimer);
     }
     this.campaignTimer = null;
+    this.organizationStoreListener.remove();
   }
 
   onCampaignStoreChange () {
@@ -69,20 +76,49 @@ class CampaignSupportThermometer extends React.Component {
     if (campaignXWeVoteId) {
       const campaignX = CampaignStore.getCampaignXByWeVoteId(campaignXWeVoteId);
       // console.log('CampaignSupportThermometer onCampaignStoreChange campaignX:', campaignX);
+      // console.log('onCampaignStoreChange CampaignStore.getCampaignXSupportersCountNextGoalDefault():', CampaignStore.getCampaignXSupportersCountNextGoalDefault());
       const {
         campaignx_we_vote_id: campaignXWeVoteIdFromDict,
         final_election_date_in_past: finalElectionDateInPast,
+        linked_politician_we_vote_id: politicianWeVoteId,
         supporters_count: supportersCount,
         supporters_count_next_goal: supportersCountNextGoal,
       } = campaignX;
-      const supportersCountNextGoalWithFloor = supportersCountNextGoal ||  CampaignStore.getCampaignXSupportersCountNextGoalDefault();
-      if (campaignXWeVoteIdFromDict) {
+      let supportersCountNextGoalWithFloor = supportersCountNextGoal || CampaignStore.getCampaignXSupportersCountNextGoalDefault();
+      if (supportersCountNextGoalWithFloor <= supportersCount) {
+        supportersCountNextGoalWithFloor += 20;
+      }
+      if (campaignXWeVoteIdFromDict && politicianWeVoteId) {
+        const { politicianWeVoteId: politicianWeVoteIdPrevious } = this.state;
+        if (politicianWeVoteId !== politicianWeVoteIdPrevious) {
+          this.setState({
+            finalElectionDateInPast,
+            politicianWeVoteId,
+            supportersCount,
+            supportersCountNextGoal: supportersCountNextGoalWithFloor,
+          }, () => this.onOrganizationStoreChange());
+        }
+      } else if (campaignXWeVoteIdFromDict && !politicianWeVoteId) {
         this.setState({
           finalElectionDateInPast,
           supportersCount,
           supportersCountNextGoal: supportersCountNextGoalWithFloor,
         });
       }
+    }
+  }
+
+  onOrganizationStoreChange () {
+    // Lookup Organization data by politicianWeVoteId, so we can get the number of followers
+    const { politicianWeVoteId } = this.state;
+    // console.log('HeartFavoriteToggleLive onOrganizationStoreChange politicianWeVoteId:', politicianWeVoteId);
+    if (politicianWeVoteId) {
+      // console.log('voterOpposesCampaignX: ', OrganizationStore.isVoterDislikingThisPolitician(politicianWeVoteId));
+      // console.log('voterSupportsCampaignX: ', OrganizationStore.isVoterFollowingThisPolitician(politicianWeVoteId));
+      this.setState({
+        voterOpposesCampaignX: OrganizationStore.isVoterDislikingThisPolitician(politicianWeVoteId),
+        voterSupportsCampaignX: OrganizationStore.isVoterFollowingThisPolitician(politicianWeVoteId),  // A variation on isVoterFollowingThisOrganization
+      });
     }
   }
 
@@ -101,7 +137,7 @@ class CampaignSupportThermometer extends React.Component {
   render () {
     renderLog('CampaignSupportThermometer');  // Set LOG_RENDER_EVENTS to log all renders
     const { campaignXWeVoteId, inCompressedMode } = this.props;
-    const { finalElectionDateInPast, supportersCount, supportersCountNextGoal } = this.state;
+    const { finalElectionDateInPast, supportersCount, supportersCountNextGoal, voterOpposesCampaignX } = this.state;
     let calculatedPercentage = 0;
     if (supportersCount && supportersCountNextGoal) {
       calculatedPercentage = (supportersCount / supportersCountNextGoal) * 100;
@@ -125,6 +161,7 @@ class CampaignSupportThermometer extends React.Component {
     } else {
       supportersText = `${numberWithCommasText} have supported.`;
     }
+    const showEncouragementToSupport = !!(supportersCountNextGoal && !inCompressedMode && !finalElectionDateInPast && !voterOpposesCampaignX);
 
     return (
       <CampaignSupportThermometerWrapper>
@@ -133,10 +170,12 @@ class CampaignSupportThermometer extends React.Component {
             <HeartFavoriteToggleLoader campaignXWeVoteId={campaignXWeVoteId} />
           </HeartWrapper>
           <HeartDetailsWrapper>
+            {showEncouragementToSupport && (
             <SupportersText inCompressedMode={inCompressedMode}>
               {supportersText}
             </SupportersText>
-            {!!(supportersCountNextGoal && !inCompressedMode && !finalElectionDateInPast) && (
+            )}
+            {showEncouragementToSupport && (
               <GoalText>
                 {' '}
                 Help them get to
@@ -148,10 +187,12 @@ class CampaignSupportThermometer extends React.Component {
           </HeartDetailsWrapper>
         </HeartPlusDetailsWrapper>
         <ProgressBarWrapper>
-          <ProgressBar percentage={percentageForDisplay}>
-            <span id="progress-bar" />
-            <span id="right-arrow" />
-          </ProgressBar>
+          {showEncouragementToSupport && (
+            <ProgressBar percentage={percentageForDisplay}>
+              <span id="progress-bar" />
+              <span id="right-arrow" />
+            </ProgressBar>
+          )}
         </ProgressBarWrapper>
       </CampaignSupportThermometerWrapper>
     );
