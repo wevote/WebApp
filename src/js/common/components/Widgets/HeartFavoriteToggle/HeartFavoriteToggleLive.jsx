@@ -19,10 +19,11 @@ class HeartFavoriteToggleLive extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
+      opposersCount: 0,
       politicianWeVoteId: '',
+      supportersCount: 0,
       voterOpposesCampaignX: false,
       voterSupportsCampaignX: false,
-      supportersCount: 0,
       voterCanVoteForPoliticianInCampaign: false,
       voterFirstName: '',
       voterLastName: '',
@@ -76,6 +77,7 @@ class HeartFavoriteToggleLive extends React.Component {
         campaignx_we_vote_id: campaignXWeVoteIdFromDict,
         final_election_date_in_past: finalElectionDateInPast,
         linked_politician_we_vote_id: politicianWeVoteId,
+        opposers_count: opposersCount,
         supporters_count: supportersCount,
         supporters_count_next_goal: supportersCountNextGoal,
         voter_campaignx_supporter: voterCampaignXSupporter,
@@ -87,6 +89,7 @@ class HeartFavoriteToggleLive extends React.Component {
         const { politicianWeVoteId: politicianWeVoteIdPrevious } = this.state;
         if (politicianWeVoteId !== politicianWeVoteIdPrevious) {
           this.setState({
+            opposersCount,
             politicianWeVoteId,
             supportersCount,
             supportersCountNextGoal: supportersCountNextGoalWithFloor,
@@ -109,6 +112,7 @@ class HeartFavoriteToggleLive extends React.Component {
         // console.log('HeartFavoriteToggleLive onCampaignStoreChange campaignXWeVoteIdFromDict:', campaignXWeVoteIdFromDict);
         this.setState({
           finalElectionDateInPast,
+          opposersCount,
           politicianWeVoteId,
           supportersCount,
           supportersCountNextGoal: supportersCountNextGoalWithFloor,
@@ -254,35 +258,69 @@ class HeartFavoriteToggleLive extends React.Component {
   }
 
   submitOpposeClick () {
+    let { supportersCount } = this.state;
+    const { opposersCount, voterSupportsCampaignX } = this.state;
     const oppose = true;
     const support = false;
     const stopOpposing = false;
     const stopSupporting = false;
-    this.submitActionClick(support, oppose, stopSupporting, stopOpposing);
+    if (voterSupportsCampaignX) {
+      supportersCount -= 1;
+    }
+    this.setState({
+      opposersCount: opposersCount + 1,
+      supportersCount,
+      // supportersCountNextGoal: supportersCountNextGoalWithFloor,
+      voterOpposesCampaignX: true,
+      voterSupportsCampaignX: false,
+    }, () => this.submitActionClick(support, oppose, stopSupporting, stopOpposing));
   }
 
   submitStopOpposingClick () {
+    const { opposersCount } = this.state;
     const oppose = false;
     const support = false;
     const stopOpposing = true;
     const stopSupporting = false;
-    this.submitActionClick(support, oppose, stopSupporting, stopOpposing);
+    this.setState({
+      opposersCount: opposersCount - 1,
+      // supportersCountNextGoal: supportersCountNextGoalWithFloor,
+      voterOpposesCampaignX: false,
+      voterSupportsCampaignX: false,
+    }, () => this.submitActionClick(support, oppose, stopSupporting, stopOpposing));
   }
 
   submitStopSupportingClick () {
+    const { supportersCount } = this.state;
     const oppose = false;
     const support = false;
     const stopOpposing = false;
     const stopSupporting = true;
-    this.submitActionClick(support, oppose, stopSupporting, stopOpposing);
+    this.setState({
+      supportersCount: supportersCount - 1,
+      // supportersCountNextGoal: supportersCountNextGoalWithFloor,
+      voterOpposesCampaignX: false,
+      voterSupportsCampaignX: false,
+    }, () => this.submitActionClick(support, oppose, stopSupporting, stopOpposing));
   }
 
   submitSupportClick () {
+    let { opposersCount } = this.state;
+    const { supportersCount, voterOpposesCampaignX } = this.state;
     const oppose = false;
     const support = true;
     const stopOpposing = false;
     const stopSupporting = false;
-    this.submitActionClick(support, oppose, stopSupporting, stopOpposing);
+    if (voterOpposesCampaignX) {
+      opposersCount -= 1;
+    }
+    this.setState({
+      opposersCount,
+      supportersCount: supportersCount + 1,
+      // supportersCountNextGoal: supportersCountNextGoalWithFloor,
+      voterOpposesCampaignX: false,
+      voterSupportsCampaignX: true,
+    }, () => this.submitActionClick(support, oppose, stopSupporting, stopOpposing));
   }
 
   submitActionClick (support = true, oppose = false, stopSupporting = false, stopOpposing = false) {
@@ -305,14 +343,14 @@ class HeartFavoriteToggleLive extends React.Component {
     renderLog('HeartFavoriteToggleLive');  // Set LOG_RENDER_EVENTS to log all renders
 
     const { campaignXWeVoteId } = this.props;
-    const { supportersCount, voterSignedInWithEmail, voterOpposesCampaignX, voterSupportsCampaignX } = this.state;
+    const { opposersCount, supportersCount, voterSignedInWithEmail, voterOpposesCampaignX, voterSupportsCampaignX } = this.state;
     // console.log('HeartFavoriteToggleLive voterSupportsCampaignX: ', voterSupportsCampaignX, ' voterOpposesCampaignX: ', voterOpposesCampaignX);
-    // console.log('HeartFavoriteToggleLive supportersCount: ', supportersCount);
+    // console.log('HeartFavoriteToggleLive supportersCount: ', supportersCount, ', opposersCount: ', opposersCount);
     return (
       <HeartFavoriteToggleLiveContainer>
         <Suspense fallback={<HeartFavoriteToggleBase />}>
           <HeartFavoriteToggleBase
-            campaignXOpposersCount={0}
+            campaignXOpposersCount={opposersCount}
             campaignXSupportersCount={supportersCount}
             campaignXWeVoteId={campaignXWeVoteId}
             submitOppose={this.submitOpposeClick}
