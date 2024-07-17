@@ -111,7 +111,7 @@
     "@loadable/component": "^5.16.4",
     "@mui/icons-material": "^5.15.19",
     "@mui/lab": "^5.0.0-alpha.96",
-    "@mui/material": "^5.15.18",
+    "@mui/material": "^5.15.20",
     "@mui/styled-engine-sc": "^5.10.1",
     "@mui/styles": "^5.15.18",
     "@openreplay/tracker": "^8.1.1",
