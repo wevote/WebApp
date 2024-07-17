@@ -2772,6 +2772,7 @@ h1,h2,h3,h4,h5,h6 {
 
 .ballot__header__group {
   display:block;
+  margin-bottom:40px;
   border-bottom:0 solid #000
 }
 
