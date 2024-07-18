@@ -366,7 +366,7 @@ function CardForListBody (props) {
   );
 }
 CardForListBody.propTypes = {
-  ballotItemDisplayName: PropTypes.string, // PropTypes.string.isRequired,
+  ballotItemDisplayName: PropTypes.string.isRequired, //Changed to be required due to error where this shows as undefined when rendering component 7/18/2024
   candidateWeVoteId: PropTypes.string,
   districtName: PropTypes.string,
   finalElectionDateInPast: PropTypes.bool,
