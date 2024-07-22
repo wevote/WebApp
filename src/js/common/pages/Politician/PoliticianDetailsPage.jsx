@@ -20,7 +20,7 @@ import {
   CampaignOwnersDesktopWrapper, CampaignSubSectionSeeAll, CampaignSubSectionTitle, CampaignSubSectionTitleWrapper, // CampaignTitleAndScoreBar,
   CommentsListWrapper, DetailsSectionDesktopTablet, DetailsSectionMobile, OtherElectionsWrapper, SupportButtonFooterWrapperAboveFooterButtons, SupportButtonPanel,
 } from '../../components/Style/CampaignDetailsStyles';
-import { EditIndicator, ElectionInPast, IndicatorButtonWrapper, IndicatorRow } from '../../components/Style/CampaignIndicatorStyles';
+import { EditIndicator, IndicatorButtonWrapper, IndicatorRow } from '../../components/Style/CampaignIndicatorStyles';
 import {
   CandidateCampaignListDesktop, CandidateCampaignListMobile, CandidateCampaignWrapper,
   // OfficeHeldNameDesktop, OfficeHeldNameMobile, PoliticianImageDesktop, PoliticianImageDesktopPlaceholder, PoliticianImageMobile, PoliticianImageMobilePlaceholder, PoliticianNameDesktop, PoliticianNameMobile, PoliticianNameOuterWrapperDesktop,
@@ -46,18 +46,19 @@ import returnFirstXWords from '../../utils/returnFirstXWords';
 import saveCampaignSupportAndGoToNextPage from '../../utils/saveCampaignSupportAndGoToNextPage';
 import DesignTokenColors from '../../components/Style/DesignTokenColors';
 import OrganizationActions from '../../../actions/OrganizationActions';
+import SupportActions from '../../../actions/SupportActions';
 
 // const CampaignCommentsList = React.lazy(() => import(/* webpackChunkName: 'CampaignCommentsList' */ '../../components/Campaign/CampaignCommentsList'));
 const CampaignRetrieveController = React.lazy(() => import(/* webpackChunkName: 'CampaignRetrieveController' */ '../../components/Campaign/CampaignRetrieveController'));
 const CampaignNewsItemList = React.lazy(() => import(/* webpackChunkName: 'CampaignNewsItemList' */ '../../components/Campaign/CampaignNewsItemList'));
 const CampaignShareChunk = React.lazy(() => import(/* webpackChunkName: 'CampaignShareChunk' */ '../../components/Campaign/CampaignShareChunk'));
+const ItemActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemActionBar' */ '../../../components/Widgets/ItemActionBar/ItemActionBar'));
 const OfficeNameText = React.lazy(() => import(/* webpackChunkName: 'OfficeNameText' */ '../../components/Widgets/OfficeNameText'));
 const PoliticianEndorsementsList = React.lazy(() => import(/* webpackChunkName: 'PoliticianEndorsementsList' */ '../../components/Politician/PoliticianEndorsementsList'));
 const PoliticianLinks = React.lazy(() => import(/* webpackChunkName: 'PolitianLinks' */ '../../components/Politician/PoliticianLinks'));
 const PoliticianRetrieveController = React.lazy(() => import(/* webpackChunkName: 'PoliticianRetrieveController' */ '../../components/Politician/PoliticianRetrieveController'));
 const PoliticianPositionRetrieveController = React.lazy(() => import(/* webpackChunkName: 'PoliticianPositionRetrieveController' */ '../../components/Position/PoliticianPositionRetrieveController'));
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../../components/Widgets/ReadMore'));
-const SupportButtonBeforeCompletionScreen = React.lazy(() => import(/* webpackChunkName: 'SupportButtonBeforeCompletionScreen' */ '../../components/CampaignSupport/SupportButtonBeforeCompletionScreen'));
 const UpdatePoliticianInformation = React.lazy(() => import(/* webpackChunkName: 'UpdatePoliticianInformation' */ '../../components/Politician/UpdatePoliticianInformation'));
 
 const futureFeaturesDisabled = true;
@@ -143,6 +144,7 @@ class PoliticianDetailsPage extends Component {
     if (apiCalming('organizationsFollowedRetrieve', 60000)) {
       OrganizationActions.organizationsFollowedRetrieve();
     }
+    SupportActions.voterAllPositionsRetrieve();
 
     // console.log('componentDidMount triggerSEOPathRedirect: ', triggerSEOPathRedirect, ', politicianSEOFriendlyPathFromObject: ', politicianSEOFriendlyPathFromObject);
     if (triggerSEOPathRedirect && politicianSEOFriendlyPathFromObject) {
@@ -589,6 +591,7 @@ class PoliticianDetailsPage extends Component {
     }
 
     const campaignAdminEditUrl = `${webAppConfig.WE_VOTE_SERVER_ROOT_URL}campaign/${linkedCampaignXWeVoteId}/summary`;
+    const candidateWeVoteId = CandidateStore.getCandidateWeVoteIdRunningFromPoliticianWeVoteId(politicianWeVoteId);
 
     if (politicianDataNotFound) {
       return (
@@ -1065,11 +1068,31 @@ class PoliticianDetailsPage extends Component {
         <SupportButtonFooterWrapperAboveFooterButtons className="u-show-mobile">
           <SupportButtonPanel>
             <Suspense fallback={<span>&nbsp;</span>}>
-              <SupportButtonBeforeCompletionScreen
-                campaignXWeVoteId={linkedCampaignXWeVoteId}
-                functionToUseToKeepHelping={this.functionToUseToKeepHelping}
-                functionToUseWhenProfileComplete={this.functionToUseWhenProfileComplete}
-              />
+              {(finalElectionDateInPast) ? ( /*  || usePoliticianWeVoteIdForBallotItem */
+                <ItemActionBar
+                  ballotItemWeVoteId={politicianWeVoteId}
+                  ballotItemDisplayName={politicianName}
+                  commentButtonHide
+                  externalUniqueId={`PoliticianDetailsPage-ItemActionBar-${politicianWeVoteId}`}
+                  hidePositionPublicToggle
+                  // inCard
+                  positionPublicToggleWrapAllowed
+                  shareButtonHide
+                  useSupportWording
+                />
+              ) : (
+                <ItemActionBar
+                  ballotItemWeVoteId={candidateWeVoteId}
+                  ballotItemDisplayName={politicianName}
+                  commentButtonHide
+                  externalUniqueId={`PoliticianDetailsPage-ItemActionBar-${candidateWeVoteId}`}
+                  hidePositionPublicToggle
+                  // inCard
+                  positionPublicToggleWrapAllowed
+                  shareButtonHide
+                  // useSupportWording
+                />
+              )}
             </Suspense>
           </SupportButtonPanel>
         </SupportButtonFooterWrapperAboveFooterButtons>

@@ -14,6 +14,7 @@ class CampaignSupportThermometer extends React.Component {
     super(props);
     this.state = {
       finalElectionDateInPast: false,
+      opposersCount: 0,
       politicianWeVoteId: '',
       supportersCountNextGoal: CampaignStore.getCampaignXSupportersCountNextGoalDefault(),
       supportersCount: 0,
@@ -37,6 +38,7 @@ class CampaignSupportThermometer extends React.Component {
       campaignXWeVoteId,
     } = this.props;
     const {
+      opposersCount: opposersCountPrevious,
       supportersCount: supportersCountPrevious,
     } = prevState;
     // console.log('CampaignSupportThermometer componentDidUpdate campaignXWeVoteId:', campaignXWeVoteId);
@@ -49,13 +51,16 @@ class CampaignSupportThermometer extends React.Component {
       const campaignX = CampaignStore.getCampaignXByWeVoteId(campaignXWeVoteId);
       const {
         campaignx_we_vote_id: campaignXWeVoteIdFromDict,
+        opposers_count: opposersCount,
         supporters_count: supportersCount,
       } = campaignX;
+      let opposersCountChanged = false;
       let supportersCountChanged = false;
       if (campaignXWeVoteIdFromDict) {
+        opposersCountChanged = opposersCount !== opposersCountPrevious;
         supportersCountChanged = supportersCount !== supportersCountPrevious;
       }
-      if (campaignXWeVoteId !== previousCampaignXWeVoteId || supportersCountChanged) {
+      if (campaignXWeVoteId !== previousCampaignXWeVoteId || opposersCountChanged || supportersCountChanged) {
         this.onCampaignStoreChange();
       }
     }
@@ -81,6 +86,7 @@ class CampaignSupportThermometer extends React.Component {
         campaignx_we_vote_id: campaignXWeVoteIdFromDict,
         final_election_date_in_past: finalElectionDateInPast,
         linked_politician_we_vote_id: politicianWeVoteId,
+        opposers_count: opposersCount,
         supporters_count: supportersCount,
         supporters_count_next_goal: supportersCountNextGoal,
       } = campaignX;
@@ -89,10 +95,17 @@ class CampaignSupportThermometer extends React.Component {
         supportersCountNextGoalWithFloor += 20;
       }
       if (campaignXWeVoteIdFromDict && politicianWeVoteId) {
-        const { politicianWeVoteId: politicianWeVoteIdPrevious } = this.state;
-        if (politicianWeVoteId !== politicianWeVoteIdPrevious) {
+        const {
+          opposersCount: opposersCountPrevious,
+          politicianWeVoteId: politicianWeVoteIdPrevious,
+          supportersCount: supportersCountPrevious,
+        } = this.state;
+        if ((opposersCount !== opposersCountPrevious) ||
+            (politicianWeVoteId !== politicianWeVoteIdPrevious) ||
+            (supportersCount !== supportersCountPrevious)) {
           this.setState({
             finalElectionDateInPast,
+            opposersCount,
             politicianWeVoteId,
             supportersCount,
             supportersCountNextGoal: supportersCountNextGoalWithFloor,
@@ -101,6 +114,7 @@ class CampaignSupportThermometer extends React.Component {
       } else if (campaignXWeVoteIdFromDict && !politicianWeVoteId) {
         this.setState({
           finalElectionDateInPast,
+          opposersCount,
           supportersCount,
           supportersCountNextGoal: supportersCountNextGoalWithFloor,
         });
@@ -129,6 +143,7 @@ class CampaignSupportThermometer extends React.Component {
     // to arrive.
     this.setState({
       finalElectionDateInPast: false,
+      opposersCount: 0,
       supportersCount: 0,
       supportersCountNextGoal: 0,
     });
