@@ -34,17 +34,16 @@ class SupportStore extends ReduceStore {
     }
     const isCandidate = stringContains('cand', ballotItemWeVoteId);
     const isMeasure = stringContains('meas', ballotItemWeVoteId);
-    // const isPolitician = stringContains('pol', ballotItemWeVoteId);
+    const isPolitician = stringContains('pol', ballotItemWeVoteId);
     let allCachedPositions = [];
     if (isCandidate) {
       allCachedPositions = CandidateStore.getAllCachedPositionsByCandidateWeVoteId(ballotItemWeVoteId);
     } else if (isMeasure) {
       allCachedPositions = MeasureStore.getAllCachedPositionsByMeasureWeVoteId(ballotItemWeVoteId);
+    } else if (isPolitician) {
+      // TODO Reality check this
+      allCachedPositions = CandidateStore.getAllCachedPositionsByPoliticianWeVoteId(ballotItemWeVoteId);
     }
-    // TODO Reality check this
-    // else if (isPolitician) {
-    //   allCachedPositions = CandidateStore.getAllCachedPositionsByPoliticianWeVoteId(ballotItemWeVoteId);
-    // }
     // console.log('getBallotItemStatSheet allCachedPositions:', allCachedPositions);
     const results = extractScoreFromNetworkFromPositionList(allCachedPositions);
     const { numberOfSupportPositionsForScore, numberOfOpposePositionsForScore, numberOfInfoOnlyPositionsForScore } = results;

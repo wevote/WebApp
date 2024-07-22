@@ -55,7 +55,7 @@ class ItemActionBar extends PureComponent {
   }
 
   componentDidMount () {
-    // console.log('itemActionBar, NEW componentDidMount');
+    // console.log('ItemActionBar, NEW componentDidMount');
     const { ballotItemWeVoteId } = this.props;
     if (ballotItemWeVoteId) {
       const isCandidate = stringContains('cand', ballotItemWeVoteId); // isCandidate = the default
@@ -76,7 +76,7 @@ class ItemActionBar extends PureComponent {
       let numberOfOpposePositionsForScore = 0;
       let voterTextStatement = '';
       const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(ballotItemWeVoteId);
-      // console.log('ballotItemStatSheet', ballotItemStatSheet);
+      // console.log('ballotItemType:', ballotItemType, ', ballotItemStatSheet:', ballotItemStatSheet);
       if (ballotItemStatSheet) {
         const {
           voterOpposesBallotItem,
@@ -108,11 +108,10 @@ class ItemActionBar extends PureComponent {
   }
 
   componentDidUpdate (prevProps) {
-    // console.log('itemActionBar, RELOAD componentWillReceiveProps');
+    // console.log('ItemActionBar, RELOAD componentWillReceiveProps');
     const { ballotItemWeVoteId: previousBallotItemWeVoteId } = prevProps;
     const { ballotItemWeVoteId } = this.props;
     if (ballotItemWeVoteId !== undefined && ballotItemWeVoteId && ballotItemWeVoteId !== previousBallotItemWeVoteId) {
-      console.log('itemActionBar, ballotItemWeVoteId setState');
       const isCandidate = stringContains('cand', ballotItemWeVoteId); // isCandidate = the default
       const isMeasure = stringContains('meas', ballotItemWeVoteId); // isCandidate = the default
       const isPolitician = stringContains('pol', ballotItemWeVoteId);
@@ -124,6 +123,7 @@ class ItemActionBar extends PureComponent {
       } else if (isPolitician) {
         ballotItemType = 'POLITICIAN';
       }
+      // console.log('ItemActionBar, ballotItemWeVoteId setState, ballotItemWeVoteId: ', ballotItemWeVoteId);
       this.setState({
         ballotItemType,
         ballotItemWeVoteId,
@@ -157,6 +157,7 @@ class ItemActionBar extends PureComponent {
     const { ballotItemWeVoteId, isOpposeAPIState, isSupportAPIState, isOpposeLocalState, isSupportLocalState } = this.state;
     if (ballotItemWeVoteId) {
       const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(ballotItemWeVoteId);
+      // console.log('ItemActionBar, onSupportStoreChange, ballotItemWeVoteId:', ballotItemWeVoteId, ', ballotItemStatSheet:', ballotItemStatSheet);
       if (ballotItemStatSheet) {
         const {
           numberOfOpposePositionsForScore,
@@ -168,13 +169,13 @@ class ItemActionBar extends PureComponent {
         } = ballotItemStatSheet;
 
         if (numberOfOpposePositionsForScore !== undefined && numberOfOpposePositionsForScore !== this.state.numberOfSupportPositionsForScore) {
-          // console.log('itemActionBar, support_count setState');
+          // console.log('ItemActionBar, support_count setState');
           this.setState({
             numberOfSupportPositionsForScore,
           });
         }
         if (numberOfOpposePositionsForScore !== undefined && numberOfOpposePositionsForScore !== this.state.numberOfOpposePositionsForScore) {
-          // console.log('itemActionBar, oppose_count setState');
+          // console.log('ItemActionBar, oppose_count setState');
           this.setState({
             numberOfOpposePositionsForScore,
           });
@@ -194,7 +195,7 @@ class ItemActionBar extends PureComponent {
         if (localOpposeStateLocked) {
           // Don't make a change until the API state matches the local state
           if (voterOpposesBallotItem !== undefined && voterOpposesBallotItem === isOpposeLocalState) {
-            // console.log('itemActionBar, isOpposeAPIState CATCHUP setState');
+            // console.log('ItemActionBar, isOpposeAPIState CATCHUP setState');
             this.setState({
               isOpposeAPIState: voterOpposesBallotItem,
               isOpposeLocalState: undefined,
@@ -203,7 +204,7 @@ class ItemActionBar extends PureComponent {
           }
         } else if (voterOpposesBallotItem !== undefined && voterOpposesBallotItem !== isOpposeAPIState) {
           // Don't make a change if the value from the API server already matches isOpposeAPIState
-          // console.log('itemActionBar, isOpposeAPIState FRESH setState');
+          // console.log('ItemActionBar, isOpposeAPIState FRESH setState');
           this.setState({
             isOpposeAPIState: voterOpposesBallotItem,
             isOpposeLocalState: undefined,
@@ -213,7 +214,7 @@ class ItemActionBar extends PureComponent {
         if (localSupportStateLocked) {
           // Don't make a change until the API state matches the local state
           if (voterSupportsBallotItem !== undefined && voterSupportsBallotItem === isSupportLocalState) {
-            // console.log('itemActionBar, isSupportLocalState CATCHUP setState');
+            // console.log('ItemActionBar, isSupportLocalState CATCHUP setState');
             this.setState({
               isSupportAPIState: voterSupportsBallotItem,
               isSupportLocalState: undefined,
@@ -222,7 +223,7 @@ class ItemActionBar extends PureComponent {
           }
         } else if (voterSupportsBallotItem !== undefined && voterSupportsBallotItem !== isSupportAPIState) {
           // Don't make a change if the value from the API server already matches isSupportAPIState
-          // console.log('itemActionBar, isSupportAPIState FRESH setState');
+          // console.log('ItemActionBar, isSupportAPIState FRESH setState');
           this.setState({
             isSupportAPIState: voterSupportsBallotItem,
             isSupportLocalState: undefined,
