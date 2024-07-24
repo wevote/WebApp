@@ -91,8 +91,7 @@ class PoliticianCardForList extends Component {
 
   onPoliticianStoreChange() {
     const { politicianWeVoteId } = this.props;
-    const politician =
-      PoliticianStore.getPoliticianByWeVoteId(politicianWeVoteId);
+    const politician = PoliticianStore.getPoliticianByWeVoteId(politicianWeVoteId);
     const { linked_campaignx_we_vote_id: linkedCampaignXWeVoteId } = politician;
     const mostLikelyCandidate = mostLikelyCandidateDictFromList(
       politician.candidate_list
