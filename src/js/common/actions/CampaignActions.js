@@ -12,6 +12,22 @@ export default {
       });
   },
 
+  campaignLocalAttributesUpdate (campaignXWeVoteId, supportersCountLocal = false, opposersCountLocal = false) {
+    const payloadDict = {
+      campaignXWeVoteId,
+    };
+    if (supportersCountLocal !== false) {
+      payloadDict.supporters_count = supportersCountLocal;
+    }
+    if (opposersCountLocal !== false) {
+      payloadDict.opposers_count = opposersCountLocal;
+    }
+    Dispatcher.dispatch({
+      type: 'campaignLocalAttributesUpdate',
+      payload: payloadDict,
+    });
+  },
+
   campaignRetrieve (campaignWeVoteId) {
     let { hostname } = window.location;
     hostname = hostname || '';
@@ -61,5 +77,4 @@ export default {
         recommended_campaigns_for_campaignx_we_vote_id: campaignXWeVoteId,
       });
   },
-
 };

@@ -469,6 +469,30 @@ class CampaignStore extends ReduceStore {
         revisedState = { ...revisedState, voterOwnedCampaignXWeVoteIds };
         return revisedState;
 
+      case 'campaignLocalAttributesUpdate':
+        // console.log('CampaignStore campaignLocalAttributesUpdate: ', action.payload);
+        if (action.payload === undefined) {
+          return state;
+        } else {
+          const campaignXWeVoteId = action.payload.campaignXWeVoteId || '';
+          if (campaignXWeVoteId in allCachedCampaignXDicts) {
+            campaignX = this.getCampaignXByWeVoteId(campaignXWeVoteId);
+            if (action.payload.opposers_count) {
+              campaignX.opposers_count = action.payload.opposers_count;
+            }
+            if (action.payload.supporters_count) {
+              campaignX.supporters_count = action.payload.supporters_count;
+            }
+            allCachedCampaignXDicts[campaignXWeVoteId] = campaignX;
+            return {
+              ...state,
+              allCachedCampaignXDicts,
+            };
+          } else {
+            return state;
+          }
+        }
+
       case 'campaignNewsItemSave':
         // console.log('CampaignNewsItemStore campaignNewsItemSave');
         if (action.res.campaignx_we_vote_id && action.res.success) {

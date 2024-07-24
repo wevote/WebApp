@@ -99,6 +99,7 @@ class CandidateStore extends ReduceStore {
       allCachedPositionsAboutCandidates: explanationPositions, // Dictionary with candidate_we_vote_id as one key, organization_we_vote_id as the second key, and the position as value
       candidateListsByOfficeWeVoteId: {}, // Dictionary with office_we_vote_id as key and list of candidates in the office as value
       candidateListsByPoliticianWeVoteId: {}, // Dictionary with politician_we_vote_id as key and list of candidates linked to the politician as value
+      candidateWeVoteIdInFutureByPoliticianWeVoteId: {}, // Dictionary with politician_we_vote_id as key and the candidate_we_vote_id as value
       numberOfCandidatesRetrievedByOffice: {}, // Dictionary with office_we_vote_id as key and number of candidates as value
     };
   }
@@ -117,7 +118,7 @@ class CandidateStore extends ReduceStore {
   //  support.
   getAllCachedPositionsByPoliticianWeVoteId (politicianWeVoteId) {
     const candidateList = this.getState().candidateListsByPoliticianWeVoteId[politicianWeVoteId] || [];
-    // console.log('candidateList', candidateList);
+    // console.log('getAllCachedPositionsByPoliticianWeVoteId candidateList', candidateList);
     let allCachedPositionsList = [];
     let allCachedPositionsListForThisCandidate;
     let allCachedPositionsForThisCandidateDict;
@@ -177,6 +178,18 @@ class CandidateStore extends ReduceStore {
     const candidate = this.getState().allCachedCandidates[candidateWeVoteId] || {};
     if (candidate && candidate.ballot_item_display_name) {
       return candidate.ballot_item_display_name;
+    }
+    return '';
+  }
+
+  // getCandidateRunningFromPoliticianWeVoteId (politicianWeVoteId) {
+  //   return {};
+  // }
+
+  getCandidateWeVoteIdRunningFromPoliticianWeVoteId (politicianWeVoteId) {
+    const candidateWeVoteIdInFutureByPoliticianWeVoteId = this.getState().candidateWeVoteIdInFutureByPoliticianWeVoteId || {};
+    if (politicianWeVoteId && candidateWeVoteIdInFutureByPoliticianWeVoteId && candidateWeVoteIdInFutureByPoliticianWeVoteId[politicianWeVoteId]) {
+      return candidateWeVoteIdInFutureByPoliticianWeVoteId[politicianWeVoteId];
     }
     return '';
   }
@@ -291,7 +304,8 @@ class CandidateStore extends ReduceStore {
 
   reduce (state, action) {
     const {
-      allCachedCandidates, allCachedCandidateWeVoteIdsByCampaignXWeVoteId, allCachedPositionsAboutCandidates, numberOfCandidatesRetrievedByOffice,
+      allCachedCandidates, allCachedCandidateWeVoteIdsByCampaignXWeVoteId, allCachedPositionsAboutCandidates,
+      candidateWeVoteIdInFutureByPoliticianWeVoteId, numberOfCandidatesRetrievedByOffice,
     } = state;
     let {
       candidateListsByOfficeWeVoteId, candidateListsByPoliticianWeVoteId,
@@ -402,6 +416,9 @@ class CandidateStore extends ReduceStore {
         localCandidateList = [];
         candidateList.forEach((one) => {
           allCachedCandidates[one.we_vote_id] = one;
+          if (one.election_is_upcoming) {
+            candidateWeVoteIdInFutureByPoliticianWeVoteId[politicianWeVoteId] = one.we_vote_id;
+          }
           if (one.linked_campaignx_we_vote_id) {
             allCachedCandidateWeVoteIdsByCampaignXWeVoteId[one.linked_campaignx_we_vote_id] = one.we_vote_id;
           }
@@ -420,6 +437,7 @@ class CandidateStore extends ReduceStore {
           allCachedCandidates,
           allCachedCandidateWeVoteIdsByCampaignXWeVoteId,
           candidateListsByPoliticianWeVoteId,
+          candidateWeVoteIdInFutureByPoliticianWeVoteId,
         };
 
       case 'representativesQuery':

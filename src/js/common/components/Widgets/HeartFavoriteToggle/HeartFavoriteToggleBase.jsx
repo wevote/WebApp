@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import CampaignActions from '../../../actions/CampaignActions';
 import DesignTokenColors from '../../Style/DesignTokenColors';
 import numberWithCommas from '../../../utils/numberWithCommas';
 import HeartFavoriteToggleIcon from './HeartFavoriteToggleIcon';
@@ -98,7 +99,7 @@ class HeartFavoriteToggleBase extends Component {
   }
 
   handleActionClick = (support = true, oppose = false, stopSupporting = false, stopOpposing = false) => {
-    const { voterSignedInWithEmail } = this.props;
+    const { campaignXWeVoteId, voterSignedInWithEmail } = this.props;
     const {
       campaignXOpposersCountLocal: campaignXOpposersCountLocalPrevious,
       campaignXSupportersCountLocal: campaignXSupportersCountLocalPrevious,
@@ -125,11 +126,19 @@ class HeartFavoriteToggleBase extends Component {
               if (this.props.submitSupport) {
                 this.props.submitSupport();
               }
+              // Local quick update of supporters_count in CampaignX object
+              const supportersCountLocal = this.state.campaignXSupportersCountLocal;
+              CampaignActions.campaignLocalAttributesUpdate(campaignXWeVoteId, supportersCountLocal);
             });
           }
           if (voterOpposesLocalPrevious) {
             this.setState({
               campaignXOpposersCountLocal: Math.max(0, campaignXOpposersCountLocalPrevious - 1),
+            }, () => {
+              // Local quick update of opposers_count in CampaignX object
+              const opposersCountLocal = this.state.campaignXOpposersCountLocal;
+              const supportersCountLocal = false;
+              CampaignActions.campaignLocalAttributesUpdate(campaignXWeVoteId, supportersCountLocal, opposersCountLocal);
             });
           }
         } else if (stopSupporting) {
@@ -140,6 +149,9 @@ class HeartFavoriteToggleBase extends Component {
               if (this.props.submitStopSupporting) {
                 this.props.submitStopSupporting();
               }
+              // Local quick update of supporters_count in CampaignX object
+              const supportersCountLocal = this.state.campaignXSupportersCountLocal;
+              CampaignActions.campaignLocalAttributesUpdate(campaignXWeVoteId, supportersCountLocal);
             });
           }
         } else if (oppose) {
@@ -150,11 +162,19 @@ class HeartFavoriteToggleBase extends Component {
               if (this.props.submitOppose) {
                 this.props.submitOppose();
               }
+              // Local quick update of opposers_count in CampaignX object
+              const opposersCountLocal = this.state.campaignXOpposersCountLocal;
+              const supportersCountLocal = false;
+              CampaignActions.campaignLocalAttributesUpdate(campaignXWeVoteId, supportersCountLocal, opposersCountLocal);
             });
           }
           if (voterSupportsLocalPrevious) {
             this.setState({
               campaignXSupportersCountLocal: Math.max(0, campaignXSupportersCountLocalPrevious - 1),
+            }, () => {
+              // Local quick update of supporters_count in CampaignX object
+              const supportersCountLocal = this.state.campaignXSupportersCountLocal;
+              CampaignActions.campaignLocalAttributesUpdate(campaignXWeVoteId, supportersCountLocal);
             });
           }
         } else if (stopOpposing) {
@@ -165,6 +185,10 @@ class HeartFavoriteToggleBase extends Component {
               if (this.props.submitStopOpposing) {
                 this.props.submitStopOpposing();
               }
+              // Local quick update of opposers_count in CampaignX object
+              const opposersCountLocal = this.state.campaignXOpposersCountLocal;
+              const supportersCountLocal = false;
+              CampaignActions.campaignLocalAttributesUpdate(campaignXWeVoteId, supportersCountLocal, opposersCountLocal);
             });
           }
         }
@@ -207,7 +231,7 @@ class HeartFavoriteToggleBase extends Component {
           )}
           {/* Add "like this politician?" popout */}
           {(!voterSignedInWithEmail && showSignInPromptSupports) && (
-            <span onClick={() => this.handleSignInClick()}> sign in</span>
+            <span onClick={() => this.handleSignInClick()}>&nbsp;sign in</span>
           )}
         </LikeContainer>
         <DislikeContainer onClick={() => {
@@ -229,7 +253,7 @@ class HeartFavoriteToggleBase extends Component {
           )}
           {/* Add "Don't like this politician?" popout */}
           {(!voterSignedInWithEmail && showSignInPromptOpposes) && (
-            <span onClick={() => this.handleSignInClick()}> sign in</span>
+            <span onClick={() => this.handleSignInClick()}>&nbsp;sign in</span>
           )}
         </DislikeContainer>
       </HeartFavoriteToggleContainer>
