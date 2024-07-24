@@ -1,7 +1,5 @@
 import React, { Component } from "react";
-
 import PropTypes from "prop-types";
-
 import CardForListBody from "../../common/components/CardForListBody";
 import CampaignSupporterStore from "../../common/stores/CampaignSupporterStore";
 import PoliticianStore from "../../common/stores/PoliticianStore";
@@ -256,7 +254,7 @@ class PoliticianCardForList extends Component {
     const pathToUseToKeepHelping = this.getPathToUseToKeepHelping();
     return (
       <CardForListBody
-        ballotItemDisplayName={ballotItemDisplayName || "Unknown Politician"}
+        ballotItemDisplayName={ballotItemDisplayName || ""}
         campaignSupported={campaignSupported}
         candidateWeVoteId={candidateWeVoteId}
         districtName={districtName}
