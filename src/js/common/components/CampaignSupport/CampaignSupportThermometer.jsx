@@ -92,7 +92,7 @@ class CampaignSupportThermometer extends React.Component {
       } = campaignX;
       let supportersCountNextGoalWithFloor = supportersCountNextGoal || CampaignStore.getCampaignXSupportersCountNextGoalDefault();
       if (supportersCountNextGoalWithFloor <= supportersCount) {
-        supportersCountNextGoalWithFloor += 20;
+        supportersCountNextGoalWithFloor = Math.round((supportersCount + 50) / 50) * 50;
       }
       if (campaignXWeVoteIdFromDict && politicianWeVoteId) {
         const {
