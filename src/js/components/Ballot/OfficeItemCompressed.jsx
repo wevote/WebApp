@@ -142,7 +142,7 @@ class OfficeItemCompressed extends Component {
         candidateListLength,
         totalNumberOfCandidates,
       });
-      // console.log('OfficeItemCompressed onCandidateStoreChange', officeWeVoteId);
+      // console.log('OfficeItemCompressed onCandidateStoreChange officeWeVoteId:', officeWeVoteId, ', totalNumberOfCandidates:', totalNumberOfCandidates);
       let changeFound = false;
       if (candidateListLength && officeWeVoteId) {
         if (officeWeVoteId &&
@@ -250,6 +250,9 @@ class OfficeItemCompressed extends Component {
   getCandidatesToRenderCount = () => {
     // How many candidates should we render? If voter has chosen or opposed 1+ candidates, only show those
     const { candidateList } = this.props;
+    if (!candidateList || candidateList.length === 0) {
+      return 0;
+    }
     let { candidatesToShowForSearchResults } = this.props;
     candidatesToShowForSearchResults = candidatesToShowForSearchResults || [];
     const { showAllCandidates } = this.state;
@@ -269,6 +272,14 @@ class OfficeItemCompressed extends Component {
   // eslint-disable-next-line no-unused-vars
   generateCandidates = (officeWeVoteId) => {
     const { candidateList, externalUniqueId, isFirstBallotItem } = this.props;
+    if (!candidateList || candidateList.length === 0) {
+      // console.log('OfficeItemCompressed generateCandidates candidateList is empty');
+      return (
+        <BallotScrollingOuterWrapper>
+          No candidates found.
+        </BallotScrollingOuterWrapper>
+      );
+    }
     let { candidatesToShowForSearchResults } = this.props;
     candidatesToShowForSearchResults = candidatesToShowForSearchResults || [];
     const { candidateListForDisplay, showAllCandidates } = this.state; // limitNumberOfCandidatesShownToThisNumber
