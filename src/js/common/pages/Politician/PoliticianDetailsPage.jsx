@@ -10,6 +10,7 @@ import { PageContentContainer } from '../../../components/Style/pageLayoutStyles
 import webAppConfig from '../../../config';
 import CandidateStore from '../../../stores/CandidateStore';
 import RepresentativeStore from '../../../stores/RepresentativeStore';
+import OfficeItemCompressed from '../../../components/Ballot/OfficeItemCompressed';
 import PoliticianCardForList from '../../../components/PoliticianListRoot/PoliticianCardForList';
 import CampaignChipInLink from '../../components/Campaign/CampaignChipInLink';
 import CampaignOwnersList from '../../components/CampaignSupport/CampaignOwnersList';
@@ -340,10 +341,12 @@ class PoliticianDetailsPage extends Component {
     const {
       ballotpediaPoliticianUrl,
       candidateCampaignList,
+      contestOfficeName,
       finalElectionDateInPast,
       instagramHandle,
       // isSupportersCountMinimumExceeded,
       linkedCampaignXWeVoteId,
+      officeWeVoteId,
       opponentCandidateList,
       politicianDataFound,
       politicianDescription,
@@ -382,10 +385,12 @@ class PoliticianDetailsPage extends Component {
     this.setState({
       ballotpediaPoliticianUrl,
       candidateCampaignList: filteredCandidateCampaignList,
+      contestOfficeName,
       finalElectionDateInPast,
       instagramHandle,
       // isSupportersCountMinimumExceeded,
       linkedCampaignXWeVoteId,
+      officeWeVoteId,
       opponentCandidateList: filteredOpponentCandidateList,
       politicianDataFound,
       politicianDataNotFound,
@@ -419,10 +424,12 @@ class PoliticianDetailsPage extends Component {
       ballotpediaPoliticianUrl: '',
       candidateCampaignList: [],
       chosenWebsiteName: '',
+      contestOfficeName: '',
       finalElectionDateInPast: false,
       instagramHandle: '',
       // isSupportersCountMinimumExceeded: false,
       linkedCampaignXWeVoteId: '',
+      officeWeVoteId: '',
       opponentCandidateList: [],
       politicianDataFound: false,
       politicianDataNotFound: false,
@@ -512,10 +519,12 @@ class PoliticianDetailsPage extends Component {
     const { politicianSEOFriendlyPath: politicianSEOFriendlyPathFromUrl } = params;
     const {
       allCachedPositionsForThisPolitician, ballotpediaPoliticianUrl, candidateCampaignList, chosenWebsiteName,
+      // contestOfficeName: contestOfficeNameFromOpponentList,
       // supporterEndorsementsWithText,
       finalElectionDateInPast, instagramHandle,
       linkedCampaignXWeVoteId, loadSlow,
       // officeHeldList,
+      officeWeVoteId,
       officeHeldNameForSearch, opponentCandidateList, opponentCandidatesToShowCount,
       politicianDataFound, politicianDataNotFound,
       politicianDescription, politicianDescriptionLimited,
@@ -526,6 +535,7 @@ class PoliticianDetailsPage extends Component {
       voterCanEditThisPolitician, voterSupportsThisPolitician,
       wikipediaUrl, youtubeUrl,
     } = this.state;
+    let { contestOfficeName } = this.state;
 
     const politicianLinksList = [];
     if (politicianUrl) {
@@ -638,7 +648,6 @@ class PoliticianDetailsPage extends Component {
     let priorYearElectionExists = false;
     let thisYearElectionExists = false;
     if (candidateCampaignList && candidateCampaignList.length > 0) {
-      let contestOfficeName;
       let districtName;
       let year;
       const yearsAndNamesAlreadySeen = [];
@@ -870,16 +879,29 @@ class PoliticianDetailsPage extends Component {
                 </IndicatorRow>
               )}
             </CampaignDescriptionWrapper>
-            {opponentCandidateList && opponentCandidateList.length > 0 && (
+            {(opponentCandidateList && opponentCandidateList.length > 0) && (
               <CandidateCampaignListMobile>
                 <CampaignSubSectionTitleWrapper>
                   <CampaignSubSectionTitle>
                     {opponentsSubtitle}
                   </CampaignSubSectionTitle>
                 </CampaignSubSectionTitleWrapper>
-                <OtherElectionsWrapper>
-                  {opponentCandidatesHtml}
-                </OtherElectionsWrapper>
+                {(officeWeVoteId) ? (
+                  <BallotOverflowWrapper>
+                    <OfficeItemCompressed
+                      officeWeVoteId={officeWeVoteId}
+                      ballotItemDisplayName=""  // {contestOfficeNameFromOpponentList}
+                      candidateList={opponentCandidateList}
+                      // candidatesToShowForSearchResults={candidatesToShowForSearchResults}
+                      // isFirstBallotItem={isFirstBallotItem}
+                      // primaryParty={primaryParty}
+                    />
+                  </BallotOverflowWrapper>
+                ) : (
+                  <OtherElectionsWrapper>
+                    {opponentCandidatesHtml}
+                  </OtherElectionsWrapper>
+                )}
               </CandidateCampaignListMobile>
             )}
             {positionListTeaserHtml}
@@ -1009,16 +1031,29 @@ class PoliticianDetailsPage extends Component {
                 />
               </ColumnOneThird>
               <ColumnTwoThirds>
-                {opponentCandidateList && opponentCandidateList.length > 0 && (
+                {(opponentCandidateList && opponentCandidateList.length > 0) && (
                   <CandidateCampaignListDesktop>
                     <CampaignSubSectionTitleWrapper>
                       <CampaignSubSectionTitle>
                         {opponentsSubtitle}
                       </CampaignSubSectionTitle>
                     </CampaignSubSectionTitleWrapper>
-                    <OtherElectionsWrapper>
-                      {opponentCandidatesHtml}
-                    </OtherElectionsWrapper>
+                    {(officeWeVoteId) ? (
+                      <BallotOverflowWrapper>
+                        <OfficeItemCompressed
+                          officeWeVoteId={officeWeVoteId}
+                          ballotItemDisplayName=""  // {contestOfficeNameFromOpponentList}
+                          candidateList={opponentCandidateList}
+                          // candidatesToShowForSearchResults={candidatesToShowForSearchResults}
+                          // isFirstBallotItem={isFirstBallotItem}
+                          // primaryParty={primaryParty}
+                        />
+                      </BallotOverflowWrapper>
+                    ) : (
+                      <OtherElectionsWrapper>
+                        {opponentCandidatesHtml}
+                      </OtherElectionsWrapper>
+                    )}
                   </CandidateCampaignListDesktop>
                 )}
                 {positionListTeaserHtml}
@@ -1129,6 +1164,11 @@ const styles = (theme) => ({
 const AboutAndEditFlex = styled('div')`
   display: flex;
   justify-content: space-between;
+`;
+
+const BallotOverflowWrapper = styled('div')`
+  max-width: 560px;
+  overflow-x: hidden;
 `;
 
 const CampaignShareChunkWrapper = styled('div')`
