@@ -6,6 +6,7 @@ import React, { Component, Suspense } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import DesignTokenColors from '../../components/Style/DesignTokenColors';
 import { PageContentContainer } from '../../../components/Style/pageLayoutStyles';
 import webAppConfig from '../../../config';
 import CandidateStore from '../../../stores/CandidateStore';
@@ -32,6 +33,8 @@ import DelayedLoad from '../../components/Widgets/DelayedLoad';
 import LinkToAdminTools from '../../components/Widgets/LinkToAdminTools';
 // import OfficeHeldNameText from '../../components/Widgets/OfficeHeldNameText';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
+import BallotStore from '../../../stores/BallotStore';
+import BallotActions from '../../../actions/BallotActions';
 import CampaignSupporterStore from '../../stores/CampaignSupporterStore';
 import OfficeHeldStore from '../../stores/OfficeHeldStore';
 import PoliticianStore from '../../stores/PoliticianStore';
@@ -45,7 +48,6 @@ import { renderLog } from '../../utils/logging';
 import { getPoliticianValuesFromIdentifiers, retrievePoliticianFromIdentifiersIfNeeded } from '../../utils/politicianUtils';
 import returnFirstXWords from '../../utils/returnFirstXWords';
 import saveCampaignSupportAndGoToNextPage from '../../utils/saveCampaignSupportAndGoToNextPage';
-import DesignTokenColors from '../../components/Style/DesignTokenColors';
 import OrganizationActions from '../../../actions/OrganizationActions';
 import SupportActions from '../../../actions/SupportActions';
 
@@ -61,6 +63,7 @@ const PoliticianRetrieveController = React.lazy(() => import(/* webpackChunkName
 const PoliticianPositionRetrieveController = React.lazy(() => import(/* webpackChunkName: 'PoliticianPositionRetrieveController' */ '../../components/Position/PoliticianPositionRetrieveController'));
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../../components/Widgets/ReadMore'));
 const UpdatePoliticianInformation = React.lazy(() => import(/* webpackChunkName: 'UpdatePoliticianInformation' */ '../../components/Politician/UpdatePoliticianInformation'));
+const ViewUpcomingBallotButton = React.lazy(() => import(/* webpackChunkName: 'ViewUpcomingBallotButton' */ '../../../components/Ready/ViewUpcomingBallotButton'));
 
 const futureFeaturesDisabled = true;
 const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
@@ -146,6 +149,16 @@ class PoliticianDetailsPage extends Component {
       OrganizationActions.organizationsFollowedRetrieve();
     }
     SupportActions.voterAllPositionsRetrieve();
+
+    this.positionItemTimer = setTimeout(() => {
+      // This is a performance killer, so let's delay it for a few seconds
+      if (!BallotStore.ballotFound) {
+        // console.log('WebApp doesn't know the election or have ballot data, so ask the API server to return best guess');
+        if (apiCalming('voterBallotItemsRetrieve', 3000)) {
+          BallotActions.voterBallotItemsRetrieve(0, '', '');
+        }
+      }
+    }, 5000);  // April 19, 2021: Tuned to keep performance above 83.  LCP at 597ms
 
     // console.log('componentDidMount triggerSEOPathRedirect: ', triggerSEOPathRedirect, ', politicianSEOFriendlyPathFromObject: ', politicianSEOFriendlyPathFromObject);
     if (triggerSEOPathRedirect && politicianSEOFriendlyPathFromObject) {
@@ -501,6 +514,10 @@ class PoliticianDetailsPage extends Component {
     }
   }
 
+  goToBallot = () => {
+    historyPush('/ballot');
+  }
+
   onPoliticianCampaignEditClick = () => {
     historyPush(`${this.getCampaignXBasePath()}edit`);
     return null;
@@ -791,6 +808,7 @@ class PoliticianDetailsPage extends Component {
     //     </CommentsListWrapper>
     //   );
     // }
+    const pigsCanFly = false;
     return (
       <PageContentContainer>
         <Suspense fallback={<span>&nbsp;</span>}>
@@ -905,7 +923,7 @@ class PoliticianDetailsPage extends Component {
               </CandidateCampaignListMobile>
             )}
             {positionListTeaserHtml}
-            {isWebApp() && (
+            {(isWebApp() && pigsCanFly) && (
               <CampaignChipInLinkOuterWrapper>
                 <CampaignChipInLink
                   campaignSEOFriendlyPath={politicianSEOFriendlyPathForDisplay}
@@ -915,17 +933,19 @@ class PoliticianDetailsPage extends Component {
               </CampaignChipInLinkOuterWrapper>
             )}
             {/* {commentListTeaserHtml} */}
-            <Suspense fallback={<span>&nbsp;</span>}>
-              <CampaignShareChunkWrapper>
-                <CampaignShareChunk
-                  campaignSEOFriendlyPath={politicianSEOFriendlyPathForDisplay}
-                  campaignXWeVoteId={linkedCampaignXWeVoteId}
-                  politicianName={politicianName}
-                  darkButtonsOff
-                  privatePublicIntroductionsOff
-                />
-              </CampaignShareChunkWrapper>
-            </Suspense>
+            {pigsCanFly && (
+              <Suspense fallback={<span>&nbsp;</span>}>
+                <CampaignShareChunkWrapper>
+                  <CampaignShareChunk
+                    campaignSEOFriendlyPath={politicianSEOFriendlyPathForDisplay}
+                    campaignXWeVoteId={linkedCampaignXWeVoteId}
+                    politicianName={politicianName}
+                    darkButtonsOff
+                    privatePublicIntroductionsOff
+                  />
+                </CampaignShareChunkWrapper>
+              </Suspense>
+            )}
             {(!futureFeaturesDisabled && nextReleaseFeaturesEnabled) && (
               <CommentsListWrapper>
                 <DelayedLoad waitBeforeShow={loadSlow ? 1000 : 0}>
@@ -964,6 +984,11 @@ class PoliticianDetailsPage extends Component {
                 </OtherElectionsWrapper>
               </CandidateCampaignListMobile>
             )}
+            <ViewBallotButtonWrapper>
+              <Suspense fallback={<></>}>
+                <ViewUpcomingBallotButton onClickFunction={this.goToBallot} />
+              </Suspense>
+            </ViewBallotButtonWrapper>
           </DetailsSectionMobile>
           <DetailsSectionDesktopTablet className="u-show-desktop-tablet">
             <ColumnsWrapper>
@@ -1096,6 +1121,11 @@ class PoliticianDetailsPage extends Component {
                     </OtherElectionsWrapper>
                   </CandidateCampaignListDesktop>
                 )}
+                <ViewBallotButtonWrapper>
+                  <Suspense fallback={<></>}>
+                    <ViewUpcomingBallotButton onClickFunction={this.goToBallot} />
+                  </Suspense>
+                </ViewBallotButtonWrapper>
               </ColumnTwoThirds>
             </ColumnsWrapper>
           </DetailsSectionDesktopTablet>
@@ -1231,6 +1261,14 @@ const PoliticianLinksWrapper = styled('div')`
     padding-top: 18px;
     margin: 0;
   }
+`;
+
+export const ViewBallotButtonWrapper = styled('div')`
+  display: flex;
+  height: 40px;
+  justify-content: center;
+  margin-top: 40px;
+  margin-bottom: 60px;
 `;
 
 export default withStyles(styles)(PoliticianDetailsPage);
