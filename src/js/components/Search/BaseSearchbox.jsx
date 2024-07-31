@@ -117,7 +117,7 @@ BaseSearchbox.propTypes = {
   onChange: PropTypes.func,
   onKeyDown: PropTypes.func,
   onFocus: PropTypes.func,
-  onBlur: PropTypes.func,
+  // onBlur: PropTypes.func,
   onClear: PropTypes.func,
 };
 
