@@ -133,11 +133,9 @@ class ReadyIntroduction extends Component {
                     Tell us what topics are important to you and we&apos;ll recommend people and organizations to follow as well as make ballot recommendations.
                     {' '}
                     { twitterEnabled && (
-                      voterIsSignedInWithTwitter ? 
-                        <>
-                          Since you are signed in with Twitter, you will see endorsements of everyone you follow on Twitter.
-                        </>
-                       : 
+                      voterIsSignedInWithTwitter ? (
+                        <>Since you are signed in with Twitter, you will see endorsements of everyone you follow on Twitter. </>
+                      ) : (
                         <>
                           <span className="u-link-color u-link-color-on-hover u-cursor--pointer" onClick={this.onSignInClick}>
                             Link to your Twitter account
@@ -145,11 +143,11 @@ class ReadyIntroduction extends Component {
                           {' '}
                           and see endorsements of everyone you follow on Twitter.
                         </>
-                      )}
+                      )
+                    )}
                   </StepText>
                 </ListRow>
               )}
-
               {(contentUnfurled || showStep3WhenCompressed) && (
                 <ListTitleRow onClick={this.contentUnfurledLink}>
                   <Dot><StepNumber>3</StepNumber></Dot>
@@ -169,17 +167,18 @@ class ReadyIntroduction extends Component {
                     to join WeVote to encourage them to vote, share your ballot and endorsements, engage in discussions and more!
                     {' '}
                     { facebookEnabled && (
-                      voterIsSignedInWithFacebook ? 
-                      <></>
-                      :
-                      <>
-                        <span className="u-link-color u-link-color-on-hover u-cursor--pointer" onClick={this.onSignInClick}>
-                          Link to your Facebook account
-                        </span>
-                        {' '}
-                        so your friends can find you.
-                        {' '}
-                      </>
+                      voterIsSignedInWithFacebook ? (
+                        <></>
+                      ) : (
+                        <>
+                          <span className="u-link-color u-link-color-on-hover u-cursor--pointer" onClick={this.onSignInClick}>
+                            Link to your Facebook account
+                          </span>
+                          {' '}
+                          so your friends can find you.
+                          {' '}
+                        </>
+                      )
                     )}
                     Studies show people are more likely to vote if they see their friends voting.
                   </StepText>
