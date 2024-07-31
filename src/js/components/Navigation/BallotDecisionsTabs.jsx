@@ -71,6 +71,13 @@ class BallotDecisionsTabs extends Component {
         value={this.getSelectedTab()}
         indicatorColor="primary"
         classes={{ root: classes.tabsRoot, flexContainer: classes.tabsFlexContainer, scroller: classes.scroller }}
+        sx={{
+          '& .MuiTab-root': {
+            '&:hover': {
+              backgroundColor: '#E5E6EA'
+            },
+          },
+        }}
       >
         {/* labelContainer: classes.tabLabelContainer,  */}
         <Tab
