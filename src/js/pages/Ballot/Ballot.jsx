@@ -1296,7 +1296,7 @@ class Ballot extends Component {
     //     </BallotEmptyExplanation>
     //     <FindYourFriendsWrapper>
     //       <Suspense fallback={<></>}>
-    //         <ViewUpcomingBallotButton />
+    //         <ViewUpcomingBallotButton onlyOfferViewYourBallot />
     //       </Suspense>
     //     </FindYourFriendsWrapper>
     //   </EmptyBallotNotice>

@@ -212,7 +212,7 @@ class OrganizationVoterGuideCandidate extends Component {
         {(allCachedPositionsForThisCandidate.length < 3) && (
           <PromoteFurtherAction>
             <Suspense fallback={<></>}>
-              <ViewUpcomingBallotButton onClickFunction={this.goToBallot} />
+              <ViewUpcomingBallotButton onClickFunction={this.goToBallot} onlyOfferViewYourBallot />
             </Suspense>
             <HowItWorksLink onClick={this.openHowItWorksModal}>
               How It Works

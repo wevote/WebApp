@@ -9,8 +9,16 @@ import styled from 'styled-components';
 import DesignTokenColors from '../../components/Style/DesignTokenColors';
 import { PageContentContainer } from '../../../components/Style/pageLayoutStyles';
 import webAppConfig from '../../../config';
-import CandidateStore from '../../../stores/CandidateStore';
+import AnalyticsActions from '../../../actions/AnalyticsActions';
+import BallotActions from '../../../actions/BallotActions';
+import OrganizationActions from '../../../actions/OrganizationActions';
+import SupportActions from '../../../actions/SupportActions';
 import RepresentativeStore from '../../../stores/RepresentativeStore';
+import BallotStore from '../../../stores/BallotStore';
+import CampaignSupporterStore from '../../stores/CampaignSupporterStore';
+import CandidateStore from '../../../stores/CandidateStore';
+import OfficeHeldStore from '../../stores/OfficeHeldStore';
+import PoliticianStore from '../../stores/PoliticianStore';
 import OfficeItemCompressed from '../../../components/Ballot/OfficeItemCompressed';
 import PoliticianCardForList from '../../../components/PoliticianListRoot/PoliticianCardForList';
 import CampaignChipInLink from '../../components/Campaign/CampaignChipInLink';
@@ -33,11 +41,6 @@ import DelayedLoad from '../../components/Widgets/DelayedLoad';
 import LinkToAdminTools from '../../components/Widgets/LinkToAdminTools';
 // import OfficeHeldNameText from '../../components/Widgets/OfficeHeldNameText';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
-import BallotStore from '../../../stores/BallotStore';
-import BallotActions from '../../../actions/BallotActions';
-import CampaignSupporterStore from '../../stores/CampaignSupporterStore';
-import OfficeHeldStore from '../../stores/OfficeHeldStore';
-import PoliticianStore from '../../stores/PoliticianStore';
 import { convertStateCodeToStateText } from '../../utils/addressFunctions';
 import apiCalming from '../../utils/apiCalming';
 import { getYearFromUltimateElectionDate } from '../../utils/dateFormat';
@@ -48,8 +51,6 @@ import { renderLog } from '../../utils/logging';
 import { getPoliticianValuesFromIdentifiers, retrievePoliticianFromIdentifiersIfNeeded } from '../../utils/politicianUtils';
 import returnFirstXWords from '../../utils/returnFirstXWords';
 import saveCampaignSupportAndGoToNextPage from '../../utils/saveCampaignSupportAndGoToNextPage';
-import OrganizationActions from '../../../actions/OrganizationActions';
-import SupportActions from '../../../actions/SupportActions';
 
 // const CampaignCommentsList = React.lazy(() => import(/* webpackChunkName: 'CampaignCommentsList' */ '../../components/Campaign/CampaignCommentsList'));
 const CampaignRetrieveController = React.lazy(() => import(/* webpackChunkName: 'CampaignRetrieveController' */ '../../components/Campaign/CampaignRetrieveController'));
@@ -164,6 +165,9 @@ class PoliticianDetailsPage extends Component {
     if (triggerSEOPathRedirect && politicianSEOFriendlyPathFromObject) {
       historyPush(`/${politicianSEOFriendlyPathFromObject}/-/`, true);
     }
+    this.analyticsTimer = setTimeout(() => {
+      AnalyticsActions.saveActionPoliticianPageVisit(politicianSEOFriendlyPathFromUrl, politicianWeVoteId);
+    }, 5000);
     window.scrollTo(0, 0);
   }
 
@@ -986,7 +990,7 @@ class PoliticianDetailsPage extends Component {
             )}
             <ViewBallotButtonWrapper>
               <Suspense fallback={<></>}>
-                <ViewUpcomingBallotButton onClickFunction={this.goToBallot} />
+                <ViewUpcomingBallotButton onClickFunction={this.goToBallot} onlyOfferViewYourBallot />
               </Suspense>
             </ViewBallotButtonWrapper>
           </DetailsSectionMobile>
@@ -1123,7 +1127,7 @@ class PoliticianDetailsPage extends Component {
                 )}
                 <ViewBallotButtonWrapper>
                   <Suspense fallback={<></>}>
-                    <ViewUpcomingBallotButton onClickFunction={this.goToBallot} />
+                    <ViewUpcomingBallotButton onClickFunction={this.goToBallot} onlyOfferViewYourBallot />
                   </Suspense>
                 </ViewBallotButtonWrapper>
               </ColumnTwoThirds>

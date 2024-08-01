@@ -208,7 +208,7 @@ class Squads extends Component {
               {/* </ReadyIntroductionMobileWrapper> */}
               {/* <ViewBallotButtonWrapper className="col-12 u-show-mobile-tablet"> */}
               {/*  <CommentedOutSuspense fallback={<></>}> */}
-              {/*    <ViewUpcomingBallotButton onClickFunction={this.goToBallot} /> */}
+              {/*    <ViewUpcomingBallotButton onClickFunction={this.goToBallot} onlyOfferViewYourBallot /> */}
               {/*  </CommentedOutSuspense> */}
               {/* </ViewBallotButtonWrapper> */}
               {/* !isAndroid() && (
