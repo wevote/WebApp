@@ -79,6 +79,9 @@ import AppObservableStore from '../common/stores/AppObservableStore';
 // ACTION_SHARE_ORGANIZATION_ALL_OPINIONS = 76
 // ACTION_VIEW_SHARED_ORGANIZATION = 77
 // ACTION_VIEW_SHARED_ORGANIZATION_ALL_OPINIONS = 78
+// ACTION_ORGANIZATION_FOLLOW_DISLIKE = 79
+// ACTION_ORGANIZATION_STOP_DISLIKING = 80
+// ACTION_POLITICIAN_PAGE_VISIT = 81
 
 export default {
 
@@ -226,6 +229,16 @@ export default {
   saveActionOffice (googleCivicElectionId, ballotItemWeVoteId) {
     const actionConstant = 33; // ACTION_OFFICE
     this.saveActionWrapperWithBallotItem(actionConstant, googleCivicElectionId, ballotItemWeVoteId);
+  },
+
+  saveActionPoliticianPageVisit (politicianSEOFriendlyPathFromUrl, politicianWeVoteId) {
+    const actionConstant = 81; // ACTION_POLITICIAN_PAGE_VISIT
+    Dispatcher.loadEndpoint('saveAnalyticsAction',
+      {
+        action_constant: actionConstant,
+        seo_friendly_path: politicianSEOFriendlyPathFromUrl,
+        politician_we_vote_id: politicianWeVoteId,
+      });
   },
 
   saveActionReadyVisit (googleCivicElectionId) {
