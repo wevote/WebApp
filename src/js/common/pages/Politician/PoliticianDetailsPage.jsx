@@ -988,11 +988,11 @@ class PoliticianDetailsPage extends Component {
                 </OtherElectionsWrapper>
               </CandidateCampaignListMobile>
             )}
-            <ViewBallotButtonWrapper>
-              <Suspense fallback={<></>}>
-                <ViewUpcomingBallotButton onClickFunction={this.goToBallot} onlyOfferViewYourBallot />
-              </Suspense>
-            </ViewBallotButtonWrapper>
+            {/* <ViewBallotButtonWrapper> */}
+            {/*  <Suspense fallback={<></>}> */}
+            {/*    <ViewUpcomingBallotButton onClickFunction={this.goToBallot} onlyOfferViewYourBallot /> */}
+            {/*  </Suspense> */}
+            {/* </ViewBallotButtonWrapper> */}
           </DetailsSectionMobile>
           <DetailsSectionDesktopTablet className="u-show-desktop-tablet">
             <ColumnsWrapper>
@@ -1127,7 +1127,7 @@ class PoliticianDetailsPage extends Component {
                 )}
                 <ViewBallotButtonWrapper>
                   <Suspense fallback={<></>}>
-                    <ViewUpcomingBallotButton onClickFunction={this.goToBallot} onlyOfferViewYourBallot />
+                    <ViewUpcomingBallotButton buttonText="View Your Full Ballot" onClickFunction={this.goToBallot} onlyOfferViewYourBallot />
                   </Suspense>
                 </ViewBallotButtonWrapper>
               </ColumnTwoThirds>
@@ -1136,33 +1136,38 @@ class PoliticianDetailsPage extends Component {
         </PageWrapper>
         <SupportButtonFooterWrapperAboveFooterButtons className="u-show-mobile">
           <SupportButtonPanel>
-            <Suspense fallback={<span>&nbsp;</span>}>
-              {(finalElectionDateInPast) ? ( /*  || usePoliticianWeVoteIdForBallotItem */
-                <ItemActionBar
-                  ballotItemWeVoteId={politicianWeVoteId}
-                  ballotItemDisplayName={politicianName}
-                  commentButtonHide
-                  externalUniqueId={`PoliticianDetailsPage-ItemActionBar-${politicianWeVoteId}`}
-                  hidePositionPublicToggle
-                  // inCard
-                  positionPublicToggleWrapAllowed
-                  shareButtonHide
-                  useSupportWording
-                />
-              ) : (
-                <ItemActionBar
-                  ballotItemWeVoteId={candidateWeVoteId}
-                  ballotItemDisplayName={politicianName}
-                  commentButtonHide
-                  externalUniqueId={`PoliticianDetailsPage-ItemActionBar-${candidateWeVoteId}`}
-                  hidePositionPublicToggle
-                  // inCard
-                  positionPublicToggleWrapAllowed
-                  shareButtonHide
-                  // useSupportWording
-                />
-              )}
-            </Suspense>
+            <CenteredDiv>
+              <Suspense fallback={<span>&nbsp;</span>}>
+                <ViewUpcomingBallotButton buttonText="View Your Full Ballot" onClickFunction={this.goToBallot} onlyOfferViewYourBallot />
+                {/* {(finalElectionDateInPast) ? ( || usePoliticianWeVoteIdForBallotItem */}
+                {/*  <ItemActionBar */}
+                {/*    ballotItemWeVoteId={politicianWeVoteId} */}
+                {/*    ballotItemDisplayName={politicianName} */}
+                {/*    commentButtonHide */}
+                {/*    externalUniqueId={`PoliticianDetailsPage-ItemActionBar-${politicianWeVoteId}`} */}
+                {/*    hidePositionPublicToggle */}
+                {/*    // inCard */}
+                {/*    positionPublicToggleWrapAllowed */}
+                {/*    shareButtonHide */}
+                {/*    useHelpDefeatOrHelpWin */}
+                {/*    useSupportWording */}
+                {/*  /> */}
+                {/* ) : ( */}
+                {/*  <ItemActionBar */}
+                {/*    ballotItemWeVoteId={candidateWeVoteId} */}
+                {/*    ballotItemDisplayName={politicianName} */}
+                {/*    commentButtonHide */}
+                {/*    externalUniqueId={`PoliticianDetailsPage-ItemActionBar-${candidateWeVoteId}`} */}
+                {/*    hidePositionPublicToggle */}
+                {/*    // inCard */}
+                {/*    positionPublicToggleWrapAllowed */}
+                {/*    shareButtonHide */}
+                {/*    useHelpDefeatOrHelpWin */}
+                {/*    // useSupportWording */}
+                {/*  /> */}
+                {/* )} */}
+              </Suspense>
+            </CenteredDiv>
           </SupportButtonPanel>
         </SupportButtonFooterWrapperAboveFooterButtons>
         <Suspense fallback={<span>&nbsp;</span>}>
@@ -1211,6 +1216,11 @@ const CampaignShareChunkWrapper = styled('div')`
 
 const CampaignChipInLinkOuterWrapper = styled('div')`
   margin-top: 40px;
+`;
+
+const CenteredDiv = styled('div')`
+  display: flex;
+  justify-content: center;
 `;
 
 const ColumnOneThird = styled('div')`
