@@ -418,6 +418,7 @@ class OfficeItemCompressed extends Component {
                                   hidePositionPublicToggle
                                   positionPublicToggleWrapAllowed
                                   shareButtonHide
+                                  useHelpDefeatOrHelpWin
                                 />
                               </Suspense>
                             </ItemActionBarOutsideWrapper>

@@ -95,7 +95,7 @@ class ViewUpcomingBallotButton extends React.Component {
   render () {
     renderLog('ViewUpcomingBallotButton');  // Set LOG_RENDER_EVENTS to log all renders
     const {
-      onlyOfferViewYourBallot,
+      buttonText, onlyOfferViewYourBallot,
     } = this.props;
     const {
       electionDataExistsForUpcomingElection,
@@ -106,13 +106,14 @@ class ViewUpcomingBallotButton extends React.Component {
           id={(electionDataExistsForUpcomingElection || onlyOfferViewYourBallot) ? 'viewUpcomingBallotButton' : 'viewUpcomingBallotFindYourFriends'}
           onClick={(electionDataExistsForUpcomingElection || onlyOfferViewYourBallot) ? this.onClickFunctionLocal : this.goToFindFriends}
           primary
-          label={(electionDataExistsForUpcomingElection || onlyOfferViewYourBallot) ? 'View Your Ballot' : 'Find Your Friends'}
+          label={(electionDataExistsForUpcomingElection || onlyOfferViewYourBallot) ? buttonText || 'View Your Ballot' : 'Find Your Friends'}
         />
       </ViewUpcomingBallotButtonWrapper>
     );
   }
 }
 ViewUpcomingBallotButton.propTypes = {
+  buttonText: PropTypes.string,
   onClickFunction: PropTypes.func,
   onlyOfferViewYourBallot: PropTypes.bool,
 };

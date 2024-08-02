@@ -23,6 +23,7 @@ import PositionPublicToggle from '../PositionPublicToggle';
 import ShareButtonDropDown from '../ShareButtonDropdown';
 import { openSnackbar } from '../../../common/components/Widgets/SnackNotifier';
 import DesignTokenColors from '../../../common/components/Style/DesignTokenColors';
+import PositionStatementModal from '../PositionStatementModal'; // eslint-disable-line import/no-cycle
 
 const NUMBER_OF_BALLOT_CHOICES_ALLOWED_BEFORE_SHOW_MODAL = 3;
 const shareIconSvg = '../../../../img/global/svg-icons/share-icon.svg';
@@ -44,14 +45,16 @@ class ItemActionBar extends PureComponent {
       voterTextStatement: undefined,
       voterTextStatementOpened: false,
     };
+    this.helpDefeatThemButton = this.helpDefeatThemButton.bind(this);
+    this.helpThemWinButton = this.helpThemWinButton.bind(this);
     this.isOpposeCalculated = this.isOpposeCalculated.bind(this);
     this.isSupportCalculated = this.isSupportCalculated.bind(this);
     // this.onScroll = this.onScroll.bind(this);
-    this.opposeItem = this.opposeItem.bind(this);
-    this.supportItem = this.supportItem.bind(this);
     this.opposeButton = this.opposeButton.bind(this);
+    this.opposeItem = this.opposeItem.bind(this);
     this.supportButton = this.supportButton.bind(this);
     this.showChooseOrOpposeIntroModalDecision = this.showChooseOrOpposeIntroModalDecision.bind(this);
+    this.supportItem = this.supportItem.bind(this);
   }
 
   componentDidMount () {
@@ -242,6 +245,12 @@ class ItemActionBar extends PureComponent {
     }
   }
 
+  openPositionStatement = () => {
+    this.setState({
+      voterTextStatementOpened: true,
+    });
+  };
+
   togglePositionStatementFunction = () => {
     const { voterTextStatementOpened } = this.state;
     this.setState({
@@ -250,6 +259,43 @@ class ItemActionBar extends PureComponent {
     if (this.props.togglePositionStatementFunction) {
       this.props.togglePositionStatementFunction();
     }
+  };
+
+  helpThemWinButton = (localUniqueId) => {
+    const { classes, externalUniqueId, inCard } = this.props;
+    const buttonRootClass = inCard ? classes.buttonRootForCard : classes.buttonRoot;
+    return (
+      <Button
+        classes={{ root: buttonRootClass, outlinedPrimary: classes.buttonOutlinedPrimary }}
+        color="secondary"
+        id={`itemActionBarHelpThemWinButton-${externalUniqueId}-${localUniqueId}`}
+        onClick={() => this.openPositionStatement()}
+        variant="outlined"
+      >
+        <ChooseButtonLabel>
+          Help Win
+        </ChooseButtonLabel>
+      </Button>
+    );
+  };
+
+  helpDefeatThemButton = (localUniqueId) => {
+    const { classes, externalUniqueId, inCard, opposeHideInMobile } = this.props;
+    const buttonRootClass = inCard ? classes.buttonRootForCard : classes.buttonRoot;
+    return (
+      <Button
+        classes={{ root: buttonRootClass, outlinedPrimary: classes.buttonOutlinedPrimary }}
+        className={`${opposeHideInMobile ? 'd-none d-sm-block ' : ''}`}
+        color="secondary"
+        id={`itemActionBarHelpDefeatButton-${externalUniqueId}-${localUniqueId}`}
+        onClick={() => this.openPositionStatement()}
+        variant="outlined"
+      >
+        <OpposeButtonLabelSelected>
+          Help Defeat
+        </OpposeButtonLabelSelected>
+      </Button>
+    );
   };
 
   opposeButton = (localUniqueId) => {
@@ -486,13 +532,6 @@ class ItemActionBar extends PureComponent {
   }
 
   supportItem () {
-    // Button to support this item was clicked
-    // const { currentBallotIdInUrl, urlWithoutHash, we_vote_id: weVoteId } = this.props;
-    // DALE 2019-02-26 Verify we still need this
-    // if (currentBallotIdInUrl !== weVoteId) {
-    //   historyPush(`${urlWithoutHash}#${this.props.we_vote_id}`);
-    // }
-
     if (this.props.supportOrOpposeHasBeenClicked) {
       this.props.supportOrOpposeHasBeenClicked();
     }
@@ -538,11 +577,6 @@ class ItemActionBar extends PureComponent {
   }
 
   opposeItem () {
-    // const { currentBallotIdInUrl, urlWithoutHash, we_vote_id: weVoteId } = this.props;
-    // DALE 2019-02-26 Verify we still need this
-    // if (currentBallotIdInUrl !== weVoteId) {
-    //   historyPush(`${urlWithoutHash}#${this.props.we_vote_id}`);
-    // }
     if (this.props.supportOrOpposeHasBeenClicked) {
       this.props.supportOrOpposeHasBeenClicked();
     }
@@ -606,11 +640,14 @@ class ItemActionBar extends PureComponent {
   render () {
     renderLog('ItemActionBar ItemActionBar.jsx');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('ItemActionBar render');
-    const { buttonsOnly, commentButtonHide, commentButtonHideInMobile, hideSupportYes, hideOpposeNo, useSupportWording } = this.props;
+    const {
+      buttonsOnly, commentButtonHide, commentButtonHideInMobile,
+      hideSupportYes, hideOpposeNo, useHelpDefeatOrHelpWin, useSupportWording,
+    } = this.props;
     const {
       ballotItemType, ballotItemWeVoteId, isOpposeAPIState, isSupportAPIState,
       numberOfOpposePositionsForScore, numberOfSupportPositionsForScore,
-      voterPositionIsPublic,
+      voterPositionIsPublic, voterTextStatementOpened,
     } = this.state;
 
     if (
@@ -667,6 +704,19 @@ class ItemActionBar extends PureComponent {
     );
 
     const ballotItemDisplayName = this.props.ballotItemDisplayName || '';
+
+    let helpDefeatButtonPopOverText = 'Share your opinion to help defeat';
+    if (ballotItemDisplayName.length > 0) {
+      helpDefeatButtonPopOverText += ` ${ballotItemDisplayName}`;
+    }
+    helpDefeatButtonPopOverText += '.';
+
+    let helpWinButtonPopOverText = 'Help';
+    if (ballotItemDisplayName.length > 0) {
+      helpWinButtonPopOverText += ` ${ballotItemDisplayName}`;
+    }
+    helpWinButtonPopOverText += ' win by making your opinions visible to other voters.';
+
     let supportButtonSelectedPopOverText = 'Click to choose';
     if (useSupportWording) {
       supportButtonSelectedPopOverText = 'Click to support';
@@ -717,6 +767,18 @@ class ItemActionBar extends PureComponent {
       opposeButtonUnselectedPopOverText += '.';
     }
 
+    const helpDefeatButtonPopoverTooltip = isMobileScreenSize() ? (<span />) : (
+      <Tooltip className="u-z-index-9020" id="helpDefeatButtonTooltip">
+        {helpDefeatButtonPopOverText}
+      </Tooltip>
+    );
+
+    const helpWinButtonPopoverTooltip = isMobileScreenSize() ? (<span />) : (
+      <Tooltip className="u-z-index-9020" id="helpWinButtonTooltip">
+        {helpWinButtonPopOverText}
+      </Tooltip>
+    );
+
     const supportButtonPopoverTooltip = isMobileScreenSize() ? (<span />) : (
       <Tooltip className="u-z-index-9020" id="supportButtonTooltip">
         {this.isSupportCalculated() ? supportButtonUnselectedPopOverText : supportButtonSelectedPopOverText }
@@ -759,12 +821,12 @@ class ItemActionBar extends PureComponent {
                 ) : (
                   <ButtonWrapper className="u-push--xs d-none d-lg-block">
                     <OverlayTrigger
-                      overlay={supportButtonPopoverTooltip}
+                      overlay={(useHelpDefeatOrHelpWin && this.isOpposeCalculated()) ? helpDefeatButtonPopoverTooltip : supportButtonPopoverTooltip}
                       placement="top"
                       rootClose
                     >
                       <div>
-                        {(ballotItemType === 'CANDIDATE' || ballotItemType === 'POLITICIAN') && this.supportButton(`desktopVersion-${ballotItemWeVoteId}`)}
+                        {(ballotItemType === 'CANDIDATE' || ballotItemType === 'POLITICIAN') && ((useHelpDefeatOrHelpWin && this.isOpposeCalculated()) ? this.helpDefeatThemButton(`desktopVersion-${ballotItemWeVoteId}`) : this.supportButton(`desktopVersion-${ballotItemWeVoteId}`))}
                         {(ballotItemType === 'MEASURE') && this.measureYesButton(`desktopVersion-${ballotItemWeVoteId}`)}
                       </div>
                     </OverlayTrigger>
@@ -778,7 +840,7 @@ class ItemActionBar extends PureComponent {
                   </StackedButton>
                 ) : (
                   <ButtonWrapper className="u-push--xs u-push--xs d-lg-none">
-                    {(ballotItemType === 'CANDIDATE' || ballotItemType === 'POLITICIAN') && this.supportButton(`mobileVersion-${ballotItemWeVoteId}`)}
+                    {(ballotItemType === 'CANDIDATE' || ballotItemType === 'POLITICIAN') && ((useHelpDefeatOrHelpWin && this.isOpposeCalculated()) ? this.helpDefeatThemButton(`desktopVersion-${ballotItemWeVoteId}`) : this.supportButton(`mobileVersion-${ballotItemWeVoteId}`))}
                     {ballotItemType === 'MEASURE' && this.measureYesButton(`mobileVersion-${ballotItemWeVoteId}`)}
                   </ButtonWrapper>
                 )}
@@ -797,12 +859,12 @@ class ItemActionBar extends PureComponent {
                 ) : (
                   <ButtonWrapperRight className="d-none d-lg-block">
                     <OverlayTrigger
-                      overlay={opposeButtonPopoverTooltip}
+                      overlay={(useHelpDefeatOrHelpWin && this.isSupportCalculated()) ? helpWinButtonPopoverTooltip : opposeButtonPopoverTooltip}
                       placement="top"
                       rootClose
                     >
                       <div>
-                        {(ballotItemType === 'CANDIDATE' || ballotItemType === 'POLITICIAN') && this.opposeButton(`desktopVersion-${ballotItemWeVoteId}`)}
+                        {(ballotItemType === 'CANDIDATE' || ballotItemType === 'POLITICIAN') && ((useHelpDefeatOrHelpWin && this.isSupportCalculated()) ? this.helpThemWinButton(`desktopVersion-${ballotItemWeVoteId}`) : this.opposeButton(`desktopVersion-${ballotItemWeVoteId}`))}
                         {ballotItemType === 'MEASURE' && this.measureNoButton(`desktopVersion-${ballotItemWeVoteId}`)}
                       </div>
                     </OverlayTrigger>
@@ -816,7 +878,7 @@ class ItemActionBar extends PureComponent {
                   </StackedButton>
                 ) : (
                   <ButtonWrapperRight className="d-lg-none">
-                    {(ballotItemType === 'CANDIDATE' || ballotItemType === 'POLITICIAN') && this.opposeButton(`mobileVersion-${ballotItemWeVoteId}`)}
+                    {(ballotItemType === 'CANDIDATE' || ballotItemType === 'POLITICIAN') && ((useHelpDefeatOrHelpWin && this.isSupportCalculated()) ? this.helpThemWinButton(`desktopVersion-${ballotItemWeVoteId}`) : this.opposeButton(`mobileVersion-${ballotItemWeVoteId}`))}
                     {ballotItemType === 'MEASURE' && this.measureNoButton(`mobileVersion-${ballotItemWeVoteId}`)}
                   </ButtonWrapperRight>
                 )}
@@ -849,6 +911,14 @@ class ItemActionBar extends PureComponent {
               ballotItemType={ballotItemType}
             />
           )}
+          {voterTextStatementOpened && (
+            <PositionStatementModal
+              ballotItemWeVoteId={ballotItemWeVoteId}
+              // externalUniqueId={externalUniqueId}
+              show={voterTextStatementOpened}
+              togglePositionStatementModal={this.togglePositionStatementFunction}
+            />
+          )}
         </ItemActionBarWrapper>
       </>
     );
@@ -875,6 +945,7 @@ ItemActionBar.propTypes = {
   shareButtonHide: PropTypes.bool,
   supportOrOpposeHasBeenClicked: PropTypes.func,
   togglePositionStatementFunction: PropTypes.func,
+  useHelpDefeatOrHelpWin: PropTypes.bool,
   useSupportWording: PropTypes.bool,
   // urlWithoutHash: PropTypes.string,
 };
