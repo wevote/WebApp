@@ -31,7 +31,7 @@ const IssuesByBallotItemDisplayList = React.lazy(() => import(/* webpackChunkNam
 const ItemActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemActionBar' */ '../Widgets/ItemActionBar/ItemActionBar'));
 const ShowMoreButtons = React.lazy(() => import(/* webpackChunkName: 'ShowMoreButtons' */ '../Widgets/ShowMoreButtons'));
 
-const NUMBER_OF_CANDIDATES_TO_DISPLAY = 3;
+const NUMBER_OF_CANDIDATES_TO_DISPLAY = 5;
 
 // This is related to components/VoterGuide/VoterGuideOfficeItemCompressed
 class OfficeItemCompressed extends Component {
@@ -249,7 +249,7 @@ class OfficeItemCompressed extends Component {
 
   getCandidatesToRenderCount = () => {
     // How many candidates should we render? If voter has chosen or opposed 1+ candidates, only show those
-    const { candidateList } = this.props;
+    const { candidateList, disableAutoRollUp } = this.props;
     if (!candidateList || candidateList.length === 0) {
       return 0;
     }
@@ -262,6 +262,8 @@ class OfficeItemCompressed extends Component {
     // console.log('OfficeItemCompressed getCandidatesToRenderCount candidatesToRender: ', candidatesToRender);
     if (showAllCandidates) {
       return candidateList.length;
+    } else if (disableAutoRollUp) {
+      return NUMBER_OF_CANDIDATES_TO_DISPLAY;
     } else if (supportedAndOpposedCandidatesList && supportedAndOpposedCandidatesList.length > 0) {
       return supportedAndOpposedCandidatesList.length;
     } else {
@@ -271,7 +273,7 @@ class OfficeItemCompressed extends Component {
 
   // eslint-disable-next-line no-unused-vars
   generateCandidates = (officeWeVoteId) => {
-    const { candidateList, externalUniqueId, isFirstBallotItem } = this.props;
+    const { candidateList, disableAutoRollUp, externalUniqueId, isFirstBallotItem } = this.props;
     if (!candidateList || candidateList.length === 0) {
       // console.log('OfficeItemCompressed generateCandidates candidateList is empty');
       return (
@@ -293,6 +295,9 @@ class OfficeItemCompressed extends Component {
     if (showAllCandidates) {
       candidatesToRender = candidateList;
       limitNumberOfCandidatesShownToThisNumber = candidatesToRender.length;
+    } else if (disableAutoRollUp) {
+      candidatesToRender = candidateListForDisplay;
+      limitNumberOfCandidatesShownToThisNumber = NUMBER_OF_CANDIDATES_TO_DISPLAY;
     } else if (supportedAndOpposedCandidatesList && supportedAndOpposedCandidatesList.length > 0) {
       candidatesToRender = supportedAndOpposedCandidatesList;
       limitNumberOfCandidatesShownToThisNumber = candidatesToRender.length;
@@ -593,6 +598,7 @@ OfficeItemCompressed.propTypes = {
   candidateList: PropTypes.array,
   candidatesToShowForSearchResults: PropTypes.array,
   // classes: PropTypes.object,
+  disableAutoRollUp: PropTypes.bool,
   externalUniqueId: PropTypes.string,
   isFirstBallotItem: PropTypes.bool,
   organization: PropTypes.object,
