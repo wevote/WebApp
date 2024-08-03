@@ -915,6 +915,7 @@ class PoliticianDetailsPage extends Component {
                       ballotItemDisplayName=""  // {contestOfficeNameFromOpponentList}
                       candidateList={opponentCandidateList}
                       // candidatesToShowForSearchResults={candidatesToShowForSearchResults}
+                      disableAutoRollUp
                       // isFirstBallotItem={isFirstBallotItem}
                       // primaryParty={primaryParty}
                     />
