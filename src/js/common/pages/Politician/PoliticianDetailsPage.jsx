@@ -56,7 +56,7 @@ import saveCampaignSupportAndGoToNextPage from '../../utils/saveCampaignSupportA
 const CampaignRetrieveController = React.lazy(() => import(/* webpackChunkName: 'CampaignRetrieveController' */ '../../components/Campaign/CampaignRetrieveController'));
 const CampaignNewsItemList = React.lazy(() => import(/* webpackChunkName: 'CampaignNewsItemList' */ '../../components/Campaign/CampaignNewsItemList'));
 const CampaignShareChunk = React.lazy(() => import(/* webpackChunkName: 'CampaignShareChunk' */ '../../components/Campaign/CampaignShareChunk'));
-const ItemActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemActionBar' */ '../../../components/Widgets/ItemActionBar/ItemActionBar'));
+// const ItemActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemActionBar' */ '../../../components/Widgets/ItemActionBar/ItemActionBar'));
 const OfficeNameText = React.lazy(() => import(/* webpackChunkName: 'OfficeNameText' */ '../../components/Widgets/OfficeNameText'));
 const PoliticianEndorsementsList = React.lazy(() => import(/* webpackChunkName: 'PoliticianEndorsementsList' */ '../../components/Politician/PoliticianEndorsementsList'));
 const PoliticianLinks = React.lazy(() => import(/* webpackChunkName: 'PolitianLinks' */ '../../components/Politician/PoliticianLinks'));
@@ -622,7 +622,7 @@ class PoliticianDetailsPage extends Component {
     }
 
     const campaignAdminEditUrl = `${webAppConfig.WE_VOTE_SERVER_ROOT_URL}campaign/${linkedCampaignXWeVoteId}/summary`;
-    const candidateWeVoteId = CandidateStore.getCandidateWeVoteIdRunningFromPoliticianWeVoteId(politicianWeVoteId);
+    // const candidateWeVoteId = CandidateStore.getCandidateWeVoteIdRunningFromPoliticianWeVoteId(politicianWeVoteId);
 
     if (politicianDataNotFound) {
       return (
@@ -1075,6 +1075,7 @@ class PoliticianDetailsPage extends Component {
                           ballotItemDisplayName=""  // {contestOfficeNameFromOpponentList}
                           candidateList={opponentCandidateList}
                           // candidatesToShowForSearchResults={candidatesToShowForSearchResults}
+                          disableAutoRollUp
                           // isFirstBallotItem={isFirstBallotItem}
                           // primaryParty={primaryParty}
                         />
