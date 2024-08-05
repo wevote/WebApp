@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import HeartFavoriteToggleBase from '../components/Widgets/HeartFavoriteToggle/HeartFavoriteToggleBase';
 
 export default {
-  title: 'Design System/Inputs',
+  title: 'Design System/Like',
   component: HeartFavoriteToggleBase,
   parameters: {
     layout: 'centered',
@@ -16,16 +16,41 @@ export default {
     voterSignedInWithEmail: true,
     voterSupports: true,
     voterOpposes: false,
+    showSignInPromptSupports: true,
   },
 };
 
 const Container = styled.div`
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: space-evenly;
   align-items: center;
-  height: 200px;
+  height: 340px;
   width: 340px;
 `;
+
+export const AllStates = (args) => (
+  <Container>
+    <HeartFavoriteToggleBase
+      {...args}
+      voterSupports={false}
+    />
+    <HeartFavoriteToggleBase
+      {...args}
+      voterSupports
+    />
+    <HeartFavoriteToggleBase
+      {...args}
+      voterOpposes
+      voterSupports={false}
+    />
+    <HeartFavoriteToggleBase
+      voterSignedInWithEmail={false}
+      showSignInPromptSupports
+    />
+
+  </Container>
+);
 
 const Template = (args) => (
   <Container>
@@ -36,17 +61,21 @@ const Template = (args) => (
   </Container>
 );
 
-export const Like =  Template.bind({});
-Like.args = {
-  voterSupportsLocal: false,
-  campaignXOpposersCount: 24,
-  campaignXSupportersCount: 234,
-  voterSignedInWithEmail: true,
-  voterSupports: true,
-  voterOpposes: false,
-  campaignXWeVoteId: 'wv01camp',
-  submitOppose: () => console.log('submitOppose'),
-  submitStopOpposing: () => console.log('submitStopOpposing'),
-  submitStopSupporting: () => console.log('submitStopSupporting'),
-  submitSupport: () => console.log('submitSupport'),
+export const Default =  {
+  args: {
+    voterSupports: false,
+  },
+};
+
+export const Like =  {
+  args: {
+    voterSupports: true,
+  },
+};
+
+export const Dislike =  {
+  args: {
+    voterOpposes: true,
+    voterSupports: false,
+  },
 };
