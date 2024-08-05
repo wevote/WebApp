@@ -1,4 +1,4 @@
-import React from 'react';
+import React  from 'react';
 import styled from 'styled-components';
 import HeartFavoriteToggleBase from '../components/Widgets/HeartFavoriteToggle/HeartFavoriteToggleBase';
 
@@ -8,18 +8,45 @@ export default {
   parameters: {
     layout: 'centered',
   },
+  tags: ['autodocs'],
+  args: {
+    voterSupportsLocal: false,
+    campaignXOpposersCount: 24,
+    campaignXSupportersCount: 234,
+    voterSignedInWithEmail: true,
+    voterSupports: true,
+    voterOpposes: false,
+  },
 };
 
 const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: 200px;
   width: 340px;
 `;
 
-export const Like = () => (
+const Template = (args) => (
   <Container>
-    <HeartFavoriteToggleBase />
+    <HeartFavoriteToggleBase
+        {...args}
+        voterSupports={args.voterSupports}
+    />
   </Container>
 );
+
+export const Like =  Template.bind({});
+Like.args = {
+  voterSupportsLocal: false,
+  campaignXOpposersCount: 24,
+  campaignXSupportersCount: 234,
+  voterSignedInWithEmail: true,
+  voterSupports: true,
+  voterOpposes: false,
+  campaignXWeVoteId: 'wv01camp',
+  submitOppose: () => console.log('submitOppose'),
+  submitStopOpposing: () => console.log('submitStopOpposing'),
+  submitStopSupporting: () => console.log('submitStopSupporting'),
+  submitSupport: () => console.log('submitSupport'),
+};
