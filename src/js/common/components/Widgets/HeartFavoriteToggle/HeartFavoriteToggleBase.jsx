@@ -259,6 +259,7 @@ class HeartFavoriteToggleBase extends Component {
             <span onClick={() => this.handleSignInClick()}>&nbsp;sign in</span>
           )} */}
         </DislikeContainer>
+        {(!voterSignedInWithEmail && showSignInPromptOpposes || showSignInPromptSupports) && (
           <Popover
               id={id}
               open={open}
@@ -275,6 +276,7 @@ class HeartFavoriteToggleBase extends Component {
                 <a href="#" onClick={this.handleSignInClick}>Sign In</a>
               </Typography>
             </Popover>
+        )}
       </HeartFavoriteToggleContainer>
     );
   }
