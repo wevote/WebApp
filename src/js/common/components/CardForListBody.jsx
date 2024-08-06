@@ -69,7 +69,6 @@ function CardForListBody (props) {
   // }
   const stateName = convertStateCodeToStateText(stateCode);
   const electionDateYear = getYearFromUltimateElectionDate(ultimateElectionDate);
-  console.log(politicalParty)
   let politicalPartySvgNameWithPath = '../../img/global/svg-icons/political-party-unspecified.svg';
   if (['Democrat', 'Democratic'].includes(politicalParty)) {
     politicalPartySvgNameWithPath = '../../img/global/svg-icons/political-party-democrat.svg';
