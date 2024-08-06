@@ -69,6 +69,7 @@ function CardForListBody (props) {
   // }
   const stateName = convertStateCodeToStateText(stateCode);
   const electionDateYear = getYearFromUltimateElectionDate(ultimateElectionDate);
+  console.log(politicalParty)
   let politicalPartySvgNameWithPath = '../../img/global/svg-icons/political-party-unspecified.svg';
   if (['Democrat', 'Democratic'].includes(politicalParty)) {
     politicalPartySvgNameWithPath = '../../img/global/svg-icons/political-party-democrat.svg';
@@ -78,7 +79,7 @@ function CardForListBody (props) {
     politicalPartySvgNameWithPath = '../../img/global/svg-icons/political-party-green-party.svg'
   } else if (['Libertarian', 'Libertarian Party'].includes(politicalParty)) {
     politicalPartySvgNameWithPath = '../../img/global/svg-icons/political-party-libertarian.svg'
-  } else if (['Working', 'Working Families Party'].includes(politicalParty)) {
+  } else if (['Working Families', 'Working Families Party'].includes(politicalParty)) {
     politicalPartySvgNameWithPath = '../../img/global/svg-icons/political-party-working-families.svg'
   } 
 
