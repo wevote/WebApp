@@ -11,10 +11,12 @@ export function getPoliticianValuesFromIdentifiers (politicianSEOFriendlyPath, p
   // console.log('getPoliticianValuesFromIdentifiers politicianSEOFriendlyPath: ', politicianSEOFriendlyPath, ', politicianWeVoteId: ', politicianWeVoteId);
   let ballotpediaPoliticianUrl = '';
   let candidateCampaignList = [];
+  let contestOfficeName = '';
   let finalElectionDateInPast = false;
   let instagramHandle = '';
   // let isSupportersCountMinimumExceeded = false;
   let linkedCampaignXWeVoteId = '';
+  let officeWeVoteId = '';
   let opponentCandidateList = [];
   let politicalParty = '';
   let politician = {};
@@ -47,6 +49,8 @@ export function getPoliticianValuesFromIdentifiers (politicianSEOFriendlyPath, p
     ({
       ballotpedia_politician_url: ballotpediaPoliticianUrl,
       candidate_list: candidateCampaignList,
+      contest_office_name: contestOfficeName,
+      contest_office_we_vote_id: officeWeVoteId,
       final_election_date_in_past: finalElectionDateInPast,
       instagram_handle: instagramHandle,
       // is_supporters_count_minimum_exceeded: isSupportersCountMinimumExceeded,
@@ -92,10 +96,12 @@ export function getPoliticianValuesFromIdentifiers (politicianSEOFriendlyPath, p
   return {
     ballotpediaPoliticianUrl,
     candidateCampaignList,
+    contestOfficeName,
     finalElectionDateInPast,
     instagramHandle,
     // isSupportersCountMinimumExceeded,
     linkedCampaignXWeVoteId,
+    officeWeVoteId,
     opponentCandidateList,
     politicianDataFound,
     politicalParty,

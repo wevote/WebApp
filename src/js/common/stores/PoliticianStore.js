@@ -318,6 +318,9 @@ class PoliticianStore extends ReduceStore {
     // if (!action.res || !action.res.success) return state;
 
     let localPoliticianList;
+    let officeNameFromOpponents;
+    let officeWeVoteIdFromOpponents;
+    let opponentCandidateList;
     let politician;
     let politicianList;
     let politicianNewsItem = {};
@@ -345,11 +348,29 @@ class PoliticianStore extends ReduceStore {
         }
         revisedState = state;
         politician = action.res;
+        opponentCandidateList = action.res.opponent_candidate_list;
         // console.log('PoliticianStore politicianRetrieve, politician:', politician);
         if (allCachedPoliticians === undefined) {
           allCachedPoliticians = {};
         }
-        allCachedPoliticians[politician.politician_we_vote_id] = politician;
+        // //////////////////////////////
+        // Process information about the opponents of this politician
+        // Figure out the contest_office_we_vote_id the opponents ran in opposite this politician
+        opponentCandidateList.forEach((one) => {
+          if (one && one.contest_office_we_vote_id) {
+            officeWeVoteIdFromOpponents = one.contest_office_we_vote_id;
+          }
+          if (one && one.contest_office_name) {
+            officeNameFromOpponents = one.contest_office_name;
+          }
+        });
+        // //////////////////////////////
+        // Store the politician
+        allCachedPoliticians[politician.politician_we_vote_id] = {
+          ...politician,
+          contest_office_we_vote_id: officeWeVoteIdFromOpponents,
+          contest_office_name: officeNameFromOpponents,
+        };
         if ('politician_news_item_list' in politician) {
           politicianNewsItemWeVoteIds = [];
           for (let i = 0; i < politician.politician_news_item_list.length; ++i) {

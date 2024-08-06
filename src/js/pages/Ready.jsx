@@ -188,7 +188,7 @@ class Ready extends Component {
             </ElectionCountdownOuterWrapper>
             <ViewBallotButtonWrapper className="col-12">
               <Suspense fallback={<></>}>
-                <ViewUpcomingBallotButton onClickFunction={this.goToBallot} />
+                <ViewUpcomingBallotButton onClickFunction={this.goToBallot} onlyOfferViewYourBallot />
               </Suspense>
             </ViewBallotButtonWrapper>
 
@@ -235,7 +235,7 @@ class Ready extends Component {
               </ReadyIntroductionMobileWrapper>
               <ViewBallotButtonWrapper className="col-12 u-show-mobile-tablet">
                 <Suspense fallback={<></>}>
-                  <ViewUpcomingBallotButton onClickFunction={this.goToBallot} />
+                  <ViewUpcomingBallotButton onClickFunction={this.goToBallot} onlyOfferViewYourBallot />
                 </Suspense>
               </ViewBallotButtonWrapper>
               {!isAndroid() && (

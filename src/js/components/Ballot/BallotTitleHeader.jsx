@@ -197,14 +197,16 @@ class BallotTitleHeader extends Component {
                             <BallotAddress
                               allowTextWrap={allowTextWrap}
                               centerText={centerText}
-                              className={linksOff ? '' : 'u-cursor--pointer'}
                               id="ballotTitleBallotAddress"
-                              onClick={this.showSelectBallotModalEditAddress}
                             >
                               Ballot for
                               {' '}
-                              <span className={linksOff ? '' : 'u-link-color'}>
-                                {(textForMapSearch && textForMapSearch !== '') ? textForMapSearch : originalTextAddress}
+                              <span
+                                className={linksOff ? '' : 'u-cursor--pointer u-link-color u-link-underline-on-hover'}
+                                onClick={this.showSelectBallotModalEditAddress}
+                              >
+                                  {(textForMapSearch && textForMapSearch !== '') ? textForMapSearch : originalTextAddress}
+                                
                               </span>
                               {linksOff ? <></> : editIconStyled}
                             </BallotAddress>

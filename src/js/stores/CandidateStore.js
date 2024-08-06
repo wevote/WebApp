@@ -137,7 +137,7 @@ class CandidateStore extends ReduceStore {
 
   getCandidateByLinkedCampaignXWeVoteId (campaignXWeVoteId) {
     const candidateWeVoteId = this.getState().allCachedCandidateWeVoteIdsByCampaignXWeVoteId[campaignXWeVoteId] || '';
-    const candidate = this.getState().allCachedCandidates[candidateWeVoteId];
+    const candidate = this.getCandidateByWeVoteId(candidateWeVoteId);
     // console.log('CandidateStore getCandidateByLinkedCampaignXWeVoteId campaignXWeVoteId:', campaignXWeVoteId, ', candidate:', candidate);
     if (candidate === undefined) {
       return {};
@@ -146,7 +146,11 @@ class CandidateStore extends ReduceStore {
   }
 
   getCandidateByWeVoteId (candidateWeVoteId) {
-    return this.getState().allCachedCandidates[candidateWeVoteId] || {};
+    if (this.getState().allCachedCandidates && candidateWeVoteId in this.getState().allCachedCandidates) {
+      return this.getState().allCachedCandidates[candidateWeVoteId] || {};
+    } else {
+      return {};
+    }
   }
 
   getCandidateList () {
@@ -175,7 +179,7 @@ class CandidateStore extends ReduceStore {
   }
 
   getCandidateName (candidateWeVoteId) {
-    const candidate = this.getState().allCachedCandidates[candidateWeVoteId] || {};
+    const candidate = this.getCandidateByWeVoteId(candidateWeVoteId);
     if (candidate && candidate.ballot_item_display_name) {
       return candidate.ballot_item_display_name;
     }
@@ -195,7 +199,7 @@ class CandidateStore extends ReduceStore {
   }
 
   getMostLikelyOfficeDictFromCandidateWeVoteId (candidateWeVoteId) {
-    const candidate = this.getState().allCachedCandidates[candidateWeVoteId] || {};
+    const candidate = this.getCandidateByWeVoteId(candidateWeVoteId);
     // console.log('getMostLikelyOfficeDictFromCandidateWeVoteId candidate:', candidate)
     if (candidate && candidate.contest_office_list && candidate.contest_office_list[0]) {
       return mostLikelyOfficeDictFromList(candidate.contest_office_list);
@@ -314,18 +318,21 @@ class CandidateStore extends ReduceStore {
     if (!action.res || !action.res.success) return state;
 
     let ballotItemWeVoteId;
+    let calculatedOfficeWeVoteId;
     let candidate;
     let candidateList;
+    let contestOfficeWeVoteId = '';
     let googleCivicElectionId;
     let incomingCandidateCount = 0;
     let localCandidateList = [];
     let newPositionList;
     let officePositionList;
+    let oneCandidateModified;
     let onePosition;
-    let voterGuides;
-    let contestOfficeWeVoteId = '';
+    let opponentCandidateList;
     let organizationWeVoteId = '';
     let politicianWeVoteId = '';
+    let voterGuides;
     const positionList = action.res.position_list;
     const isEmpty = voterGuides && voterGuides.length === 0;
     const searchTermExists = action.res.search_string !== '';
@@ -408,11 +415,39 @@ class CandidateStore extends ReduceStore {
       case 'politicianRetrieve':
         incomingCandidateCount = 0;
         candidateList = action.res.candidate_list;
+        opponentCandidateList = action.res.opponent_candidate_list;
         politicianWeVoteId = action.res.politician_we_vote_id;
         // console.log('CandidateStore candidatesRetrieve contestOfficeWeVoteId:', contestOfficeWeVoteId, ', candidateList:', candidateList);
         if (!candidateListsByPoliticianWeVoteId) {
           candidateListsByPoliticianWeVoteId = {};
         }
+        // //////////////////////////////
+        // Process information about the opponents of this politician
+        incomingCandidateCount = 0;
+        localCandidateList = [];
+        // Figure out the contest_office_we_vote_id the opponents ran in opposite this politician
+        opponentCandidateList.forEach((one) => {
+          if (one && one.contest_office_we_vote_id) {
+            calculatedOfficeWeVoteId = one.contest_office_we_vote_id;
+            contestOfficeWeVoteId = calculatedOfficeWeVoteId;
+          }
+        });
+        opponentCandidateList.forEach((one) => {
+          // Not all candidate records have a contest_office_we_vote_id, so we are forcing them all to match
+          oneCandidateModified = { ...one, contest_office_we_vote_id: calculatedOfficeWeVoteId };
+          allCachedCandidates[one.we_vote_id] = oneCandidateModified;
+          if (one.linked_campaignx_we_vote_id) {
+            allCachedCandidateWeVoteIdsByCampaignXWeVoteId[one.linked_campaignx_we_vote_id] = one.we_vote_id;
+          }
+          incomingCandidateCount += 1;
+          localCandidateList.push(oneCandidateModified);
+        });
+        if (contestOfficeWeVoteId) {
+          candidateListsByOfficeWeVoteId[contestOfficeWeVoteId] = localCandidateList;
+          numberOfCandidatesRetrievedByOffice[contestOfficeWeVoteId] = incomingCandidateCount;
+        }
+        // //////////////////////////////
+        // Now Capture the politician's information
         localCandidateList = [];
         candidateList.forEach((one) => {
           allCachedCandidates[one.we_vote_id] = one;
@@ -422,7 +457,7 @@ class CandidateStore extends ReduceStore {
           if (one.linked_campaignx_we_vote_id) {
             allCachedCandidateWeVoteIdsByCampaignXWeVoteId[one.linked_campaignx_we_vote_id] = one.we_vote_id;
           }
-          incomingCandidateCount += 1;
+          // incomingCandidateCount += 1;
           localCandidateList.push(one);
         });
         // console.log('localCandidateList:', localCandidateList);
@@ -436,8 +471,10 @@ class CandidateStore extends ReduceStore {
           ...state,
           allCachedCandidates,
           allCachedCandidateWeVoteIdsByCampaignXWeVoteId,
+          candidateListsByOfficeWeVoteId,
           candidateListsByPoliticianWeVoteId,
           candidateWeVoteIdInFutureByPoliticianWeVoteId,
+          numberOfCandidatesRetrievedByOffice,
         };
 
       case 'representativesQuery':

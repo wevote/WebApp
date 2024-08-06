@@ -255,7 +255,7 @@ export function getApplicationViewBooleans (pathname) {
     showFooterBar = isMobileScreenSize();
   }
 
-  // We are only showing the purpleish bottom of the scrollable page footer
+  // We are only showing the purple-ish bottom of the scrollable page footer
   // on the "Ready" landing page, and if not signed in or not isCordova()
   // Once the voter is signed in, we weave the footer links into the profile page
   let showFooterMain = false;
@@ -263,6 +263,7 @@ export function getApplicationViewBooleans (pathname) {
   //   // Before March 2023 we didn't show footer once voter is signed in
   // } else
   if (
+    pathnameLowerCase.endsWith('/-/') ||
     pathnameLowerCase.endsWith('/cs/') ||
     pathnameLowerCase.startsWith('/ready') ||
     (pathnameLowerCase === '/start-a-campaign') ||

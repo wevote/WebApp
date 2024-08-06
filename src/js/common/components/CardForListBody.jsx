@@ -263,6 +263,7 @@ function CardForListBody (props) {
                       inCard
                       positionPublicToggleWrapAllowed
                       shareButtonHide
+                      useHelpDefeatOrHelpWin
                       // useSupportWording
                     />
                   ) : (
@@ -275,6 +276,7 @@ function CardForListBody (props) {
                       inCard
                       positionPublicToggleWrapAllowed
                       shareButtonHide
+                      useHelpDefeatOrHelpWin
                       // useSupportWording
                     />
                   )}
