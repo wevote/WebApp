@@ -111,7 +111,7 @@ export default class ReadyPageValuesList extends Component {
     return (
       <ReadyPageValuesListWrapper>
         <div>
-          <PopularTopicsH1>
+          <PopularTopicsH1 id="PopularTopicsHeader">
             Follow Popular Topics
           </PopularTopicsH1>
           <PopularTopicsDescription>

@@ -71,7 +71,7 @@ class ReadyPage extends Page {
   }
 
   get getFollowPopularTopicsElement () {
-    return $('.kbkjfm');
+    return $('#PopularTopicsHeader');
   }
 
   get selectAddress () {
