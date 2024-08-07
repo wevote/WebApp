@@ -112,7 +112,7 @@ class HeartFavoriteToggleBase extends Component {
 
     if (!voterSignedInWithEmail) {
       // Toggle sign in prompt
-      const popoverText = support ? 'like this politician?' : 'dislike this politician?';
+      const popoverText = support ? 'Like this politician?' : 'Dislike this politician?';
       this.setState({
         showSignInPromptSupports: support ? !this.state.showSignInPromptSupports : false,
         showSignInPromptOpposes: oppose ? !this.state.showSignInPromptOpposes : false,
@@ -269,11 +269,20 @@ class HeartFavoriteToggleBase extends Component {
                 vertical: 'bottom',
                 horizontal: 'left',
               }}
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'center',
+              }}
+              slotProps={{
+                paper: {
+                  component: CustomPopoverPaper,
+                },
+              }}
             >
-              <Typography variant="h6">{popoverText}</Typography>
+              <Typography className="MuiTypography-root">{popoverText}</Typography>
               <Typography variant="body1">Sign in to make your opinion count.</Typography>
-              <Typography variant="body1">
-                <a href="#" onClick={this.handleSignInClick}>Sign In</a>
+              <Typography>
+                <a href="#" className="signInText" onClick={this.handleSignInClick}>Sign In</a>
               </Typography>
             </Popover>
         )}
@@ -294,6 +303,25 @@ HeartFavoriteToggleBase.propTypes = {
   voterSupports: PropTypes.bool,
   voterOpposes: PropTypes.bool,
 };
+
+const CustomPopoverPaper = styled.div`
+  background-color: #fff;
+  color: #333;
+  padding: 16px;
+  max-width: 300px;
+
+  .MuiTypography-root {
+    font-size: 1rem;
+    margin-bottom: 8px;
+    font-family: "Poppins", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+  }
+
+  .signInText {
+    color: #065FD4;
+    cursor: pointer;
+  }
+`;
+
 
 const HeartFavoriteToggleContainer = styled.div`
   display: flex;
