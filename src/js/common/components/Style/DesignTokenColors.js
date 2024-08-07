@@ -26,6 +26,21 @@ const primitiveColorNames = {
   white: '#FFFFFF',
 };
 
+// New Colors:
+// darkGold: A0910F
+// darkGreen: 516126
+// teal: 06A998
+// green: 4F9A49
+// lightPurple: 6362E8
+// blue: 375FB8
+// purple: 5B12B8
+// lightBlue: 0276CE
+// orange: E16C3D
+// red: D1171E
+// hotPink: 9E0173
+// pink: 8f5573
+// brown: 5A401B
+
 // These are semanticColorNames
 const DesignTokenColors = {
   alert400: primitiveColorNames.redUI400,
