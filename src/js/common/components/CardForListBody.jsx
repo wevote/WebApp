@@ -74,7 +74,13 @@ function CardForListBody (props) {
     politicalPartySvgNameWithPath = '../../img/global/svg-icons/political-party-democrat.svg';
   } else if (['Republican', 'Republican Party'].includes(politicalParty)) {
     politicalPartySvgNameWithPath = '../../img/global/svg-icons/political-party-republican.svg';
-  }
+  } else if (['Green', 'Green Party'].includes(politicalParty)) {
+    politicalPartySvgNameWithPath = '../../img/global/svg-icons/political-party-green-party.svg'
+  } else if (['Libertarian', 'Libertarian Party'].includes(politicalParty)) {
+    politicalPartySvgNameWithPath = '../../img/global/svg-icons/political-party-libertarian.svg'
+  } else if (['Working Families', 'Working Families Party'].includes(politicalParty)) {
+    politicalPartySvgNameWithPath = '../../img/global/svg-icons/political-party-working-families.svg'
+  } 
 
   // /////////////////////// START OF DISPLAY
   return (
