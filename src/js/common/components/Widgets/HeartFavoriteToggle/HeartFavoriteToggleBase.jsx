@@ -16,7 +16,8 @@ class HeartFavoriteToggleBase extends Component {
       campaignXSupportersCountLocal: 0,
       voterOpposesLocal: false,
       voterSupportsLocal: false,
-      anchorEl: null, // Added for popovers
+      anchorEl: null, // Anchors the popover
+      popoverText: '', // Text for the popover
     };
   }
 
@@ -112,7 +113,6 @@ class HeartFavoriteToggleBase extends Component {
 
     if (!voterSignedInWithEmail) {
       // Toggle sign in prompt
-      const popoverText = support ? 'Like this politician?' : 'Dislike this politician?';
       this.setState({
         showSignInPromptSupports: support ? !this.state.showSignInPromptSupports : false,
         showSignInPromptOpposes: oppose ? !this.state.showSignInPromptOpposes : false,
@@ -212,6 +212,8 @@ class HeartFavoriteToggleBase extends Component {
     const open = Boolean(anchorEl);
     const id = open ? 'simple-popover' : undefined;
 
+    console.log(anchorEl, voterSignedInWithEmail)
+
     // console.log('campaignXSupportersCountLocal', campaignXSupportersCountLocal, 'campaignXOpposersCountLocal', campaignXOpposersCountLocal);
     // console.log('HeartFavoriteToggleBase voterSupportsLocal', voterSupportsLocal, 'voterOpposesLocal', voterOpposesLocal);
     return (
@@ -279,10 +281,10 @@ class HeartFavoriteToggleBase extends Component {
                 },
               }}
             >
-              <Typography className="MuiTypography-root">{popoverText}</Typography>
+              <h2 className="MuiTypography-root">{popoverText}</h2>
               <Typography variant="body1">Sign in to make your opinion count.</Typography>
               <Typography>
-                <a href="#" className="signInText" onClick={this.handleSignInClick}>Sign In</a>
+                <a className="signInText" onClick={this.handleSignInClick}>Sign In</a>
               </Typography>
             </Popover>
         )}
@@ -321,7 +323,6 @@ const CustomPopoverPaper = styled.div`
     cursor: pointer;
   }
 `;
-
 
 const HeartFavoriteToggleContainer = styled.div`
   display: flex;
