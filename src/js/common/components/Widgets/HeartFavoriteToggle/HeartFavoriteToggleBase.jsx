@@ -107,6 +107,8 @@ class HeartFavoriteToggleBase extends Component {
     const {
       campaignXOpposersCountLocal: campaignXOpposersCountLocalPrevious,
       campaignXSupportersCountLocal: campaignXSupportersCountLocalPrevious,
+      showSignInPromptSupports: showSignInPromptSupportsPrevious,
+      showSignInPromptOpposes: showSignInPromptOpposesPrevious,
       voterOpposesLocal: voterOpposesLocalPrevious,
       voterSupportsLocal: voterSupportsLocalPrevious,
     } = this.state;
@@ -114,8 +116,8 @@ class HeartFavoriteToggleBase extends Component {
     if (!voterSignedInWithEmail) {
       // Toggle sign in prompt
       this.setState({
-        showSignInPromptSupports: support ? !this.state.showSignInPromptSupports : false,
-        showSignInPromptOpposes: oppose ? !this.state.showSignInPromptOpposes : false,
+        showSignInPromptSupports: support ? !showSignInPromptSupportsPrevious : false,
+        showSignInPromptOpposes: oppose ? !showSignInPromptOpposesPrevious : false,
         anchorEl: event.currentTarget,
         popoverText: popoverText,
       });
@@ -132,15 +134,18 @@ class HeartFavoriteToggleBase extends Component {
               if (this.props.submitSupport) {
                 this.props.submitSupport();
               }
-              CampaignActions.campaignLocalAttributesUpdate(campaignXWeVoteId, this.state.campaignXSupportersCountLocal);
-            });
+              // Local quick update of supporters_count in CampaignX object
+              const supportersCountLocal = this.state.campaignXSupportersCountLocal;
+              CampaignActions.campaignLocalAttributesUpdate(campaignXWeVoteId, supportersCountLocal);            });
           }
           if (voterOpposesLocalPrevious) {
             this.setState({
               campaignXOpposersCountLocal: Math.max(0, campaignXOpposersCountLocalPrevious - 1),
             }, () => {
-              CampaignActions.campaignLocalAttributesUpdate(campaignXWeVoteId, this.state.campaignXSupportersCountLocal, this.state.campaignXOpposersCountLocal);
-            });
+              // Local quick update of opposers_count in CampaignX object
+              const opposersCountLocal = this.state.campaignXOpposersCountLocal;
+              const supportersCountLocal = false;
+              CampaignActions.campaignLocalAttributesUpdate(campaignXWeVoteId, supportersCountLocal, opposersCountLocal);            });
           }
         } else if (stopSupporting) {
           if (voterSupportsLocalPrevious) {
@@ -150,8 +155,9 @@ class HeartFavoriteToggleBase extends Component {
               if (this.props.submitStopSupporting) {
                 this.props.submitStopSupporting();
               }
-              CampaignActions.campaignLocalAttributesUpdate(campaignXWeVoteId, this.state.campaignXSupportersCountLocal);
-            });
+              // Local quick update of supporters_count in CampaignX object
+              const supportersCountLocal = this.state.campaignXSupportersCountLocal;
+              CampaignActions.campaignLocalAttributesUpdate(campaignXWeVoteId, supportersCountLocal);            });
           }
         } else if (oppose) {
           if (!voterOpposesLocalPrevious) {
@@ -161,15 +167,18 @@ class HeartFavoriteToggleBase extends Component {
               if (this.props.submitOppose) {
                 this.props.submitOppose();
               }
-              CampaignActions.campaignLocalAttributesUpdate(campaignXWeVoteId, this.state.campaignXSupportersCountLocal, this.state.campaignXOpposersCountLocal);
-            });
+              // Local quick update of opposers_count in CampaignX object
+              const opposersCountLocal = this.state.campaignXOpposersCountLocal;
+              const supportersCountLocal = false;
+              CampaignActions.campaignLocalAttributesUpdate(campaignXWeVoteId, supportersCountLocal, opposersCountLocal);            });
           }
           if (voterSupportsLocalPrevious) {
             this.setState({
               campaignXSupportersCountLocal: Math.max(0, campaignXSupportersCountLocalPrevious - 1),
             }, () => {
-              CampaignActions.campaignLocalAttributesUpdate(campaignXWeVoteId, this.state.campaignXSupportersCountLocal);
-            });
+              // Local quick update of supporters_count in CampaignX object
+              const supportersCountLocal = this.state.campaignXSupportersCountLocal;
+              CampaignActions.campaignLocalAttributesUpdate(campaignXWeVoteId, supportersCountLocal);            });
           }
         } else if (stopOpposing) {
           if (voterOpposesLocalPrevious) {
@@ -179,8 +188,10 @@ class HeartFavoriteToggleBase extends Component {
               if (this.props.submitStopOpposing) {
                 this.props.submitStopOpposing();
               }
-              CampaignActions.campaignLocalAttributesUpdate(campaignXWeVoteId, this.state.campaignXSupportersCountLocal, this.state.campaignXOpposersCountLocal);
-            });
+              // Local quick update of opposers_count in CampaignX object
+              const opposersCountLocal = this.state.campaignXOpposersCountLocal;
+              const supportersCountLocal = false;
+              CampaignActions.campaignLocalAttributesUpdate(campaignXWeVoteId, supportersCountLocal, opposersCountLocal);            });
           }
         }
       });
