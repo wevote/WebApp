@@ -16,7 +16,7 @@ class HeartFavoriteToggleBase extends Component {
       campaignXSupportersCountLocal: 0,
       voterOpposesLocal: false,
       voterSupportsLocal: false,
-      anchorEl: null, // Anchors the popover
+      anchorEl: null, // Anchors to capture element for popover
       popoverText: '', // Text for the popover
     };
   }
@@ -212,8 +212,6 @@ class HeartFavoriteToggleBase extends Component {
     const open = Boolean(anchorEl);
     const id = open ? 'simple-popover' : undefined;
 
-    console.log(anchorEl, voterSignedInWithEmail)
-
     // console.log('campaignXSupportersCountLocal', campaignXSupportersCountLocal, 'campaignXOpposersCountLocal', campaignXOpposersCountLocal);
     // console.log('HeartFavoriteToggleBase voterSupportsLocal', voterSupportsLocal, 'voterOpposesLocal', voterOpposesLocal);
     return (
@@ -235,10 +233,6 @@ class HeartFavoriteToggleBase extends Component {
               {numberWithCommas(campaignXSupportersCountLocal)}
             </span>
           )}
-          {/* Add "like this politician?" popout */}
-          {/* {(!voterSignedInWithEmail && showSignInPromptSupports) && (
-            <span onClick={() => this.handleSignInClick()}>&nbsp;sign in</span>
-          )} */}
         </LikeContainer>
         <DislikeContainer onClick={(event) => {
           if (voterOpposesLocal) {
@@ -257,9 +251,6 @@ class HeartFavoriteToggleBase extends Component {
               {numberWithCommas(campaignXOpposersCountLocal)}
             </span>
           )}
-          {/* {(!voterSignedInWithEmail && showSignInPromptOpposes) && (
-            <span onClick={() => this.handleSignInClick()}>&nbsp;sign in</span>
-          )} */}
         </DislikeContainer>
         {(!voterSignedInWithEmail && showSignInPromptOpposes || showSignInPromptSupports) && (
           <Popover
@@ -305,6 +296,13 @@ HeartFavoriteToggleBase.propTypes = {
   voterSupports: PropTypes.bool,
   voterOpposes: PropTypes.bool,
 };
+
+
+// WV-399: Creating popover for sign in prompt using MUI Popover component. 
+// Popover text passed into helper functions setting like/dislike text for handleActionClick.
+// voterSignedInWithEmail in handleActionClick to update state for anchorEl and popoverText hooking into Like/Dislike containers.
+// Conditional rendered Popover component with anchorEl and popoverText state.
+// Styled Popover component to match design system.
 
 const CustomPopoverPaper = styled.div`
   background-color: #fff;
