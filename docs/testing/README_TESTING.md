@@ -115,24 +115,31 @@ To run any tests in [the `specs` directory](../../tests/browserstack_automation/
 
 When the test finishes, you should be able to see the video of browser tests on the BrowserStack Automate dashboard and video of the mobile apps on BrowserStack App Automate.
 
-*To run any tests locally* (e.g. in case you have added id for an element and updated the corresponding page object file to use the newly added id as the element selector), you can run the test via BrowserStack on your locally hosted version of the WebApp as below:
+
+
+**Local Testing:**
+
+To run any tests locally (For example, if you've added ID for an element and updated the corresponding page object file to use this new ID as the selector), you can run the test via BrowserStack on your locally hosted version of the WebApp as below:
 
 (WebAppEnv) $ npm run wdio-local
-[this will use the config file wdio.config.local.js which specifies we are using browserstackLocal: true, instead of the regular file wdio.config.js]
- Note: Update the  'WEB_APP_ROOT_URL' in the browserstack.config.js before triggering the test.
+
+[this will use the config file wdio.config.local.js which specifies that we are using browserstackLocal: true, instead of the regular file wdio.config.js]
+
+Note: Update the  'WEB_APP_ROOT_URL' in the browserstack.config.js before triggering the test.
 i.e. URL where your local version of the WebApp is running.
 
-Additional useful options to run the tests:
+**Additional useful options to run the tests:**
 1) Execute test for one specific spec file:
+   
 	(WebAppEnv) $ npm run wdio -- --spec [specs_dir_path]/[spec].js
+
 	(WebAppEnv) $ npm run wdio-local -- --spec [specs_dir_path]/[spec].js
 	
-2) Execute test for one specific test case within a spec file:
+3) Execute test for one specific test case within a spec file:
+   
 	 (WebAppEnv) $  npm run wdio -- --spec [specs_dir_path]/[spec].js --mochaOpts.grep <test_name>
-     (WebAppEnv) $  npm run wdio-local -- --spec [specs_dir_path]/[spec].js --mochaOpts.grep <test_name>
-	 e.g. 
-     npm run wdio-local -- --spec ./tests/browserstack_automation/specs/FAQPage.js --mochaOpts.grep  verifyLetsGetStartedLinkRedirected
----
+  
+   (WebAppEnv) $  npm run wdio-local -- --spec [specs_dir_path]/[spec].js --mochaOpts.grep <test_name>
 
   
 
