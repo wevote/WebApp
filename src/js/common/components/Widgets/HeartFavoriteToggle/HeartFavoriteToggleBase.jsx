@@ -1,12 +1,38 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { Button } from '@mui/material';
+import Popover from '@mui/material/Popover';
+import Typography from '@mui/material/Typography';
 import CampaignActions from '../../../actions/CampaignActions';
 import DesignTokenColors from '../../Style/DesignTokenColors';
 import numberWithCommas from '../../../utils/numberWithCommas';
 import HeartFavoriteToggleIcon from './HeartFavoriteToggleIcon';
-import Popover from '@mui/material/Popover';
-import Typography from '@mui/material/Typography';
+
+
+// WV-399: Creating popover for sign in prompt using MUI Popover component.
+// Popover text passed into helper functions setting like/dislike text for handleActionClick.
+// voterSignedInWithEmail in handleActionClick to update state for anchorEl and popoverText hooking into Like/Dislike containers.
+// Conditional rendered Popover component with anchorEl and popoverText state.
+// Styled Popover component to match design system.
+
+const CustomPopoverPaper = styled('div')`
+  background-color: #fff;
+  color: #333;
+  padding: 16px;
+  max-width: 300px;
+
+  .MuiTypography-root {
+    font-size: 1rem;
+    margin-bottom: 8px;
+    font-family: "Poppins", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+  }
+
+  .signInText {
+    color: #065FD4;
+    cursor: pointer;
+  }
+`;
 
 class HeartFavoriteToggleBase extends Component {
   constructor (props) {
@@ -23,17 +49,6 @@ class HeartFavoriteToggleBase extends Component {
 
   componentDidMount () {
     this.onPropsChange();
-  }
-
-  onPropsChange () {
-    const { campaignXOpposersCount, campaignXSupportersCount, voterSupports, voterOpposes } = this.props;
-    // console.log('HeartFavoriteToggleBase onPropsChange voterOpposes: ', voterOpposes, ', voterSupports: ', voterSupports);
-    this.setState({
-      campaignXOpposersCountLocal: campaignXOpposersCount,
-      campaignXSupportersCountLocal: campaignXSupportersCount,
-      voterSupportsLocal: voterSupports,
-      voterOpposesLocal: voterOpposes,
-    });
   }
 
   componentDidUpdate (prevProps) {
@@ -59,6 +74,17 @@ class HeartFavoriteToggleBase extends Component {
         this.onPropsChange();
       }
     }
+  }
+
+  onPropsChange () {
+    const { campaignXOpposersCount, campaignXSupportersCount, voterSupports, voterOpposes } = this.props;
+    // console.log('HeartFavoriteToggleBase onPropsChange voterOpposes: ', voterOpposes, ', voterSupports: ', voterSupports);
+    this.setState({
+      campaignXOpposersCountLocal: campaignXOpposersCount,
+      campaignXSupportersCountLocal: campaignXSupportersCount,
+      voterSupportsLocal: voterSupports,
+      voterOpposesLocal: voterOpposes,
+    });
   }
 
   handleSignInClick = () => {
@@ -119,7 +145,7 @@ class HeartFavoriteToggleBase extends Component {
         showSignInPromptSupports: support ? !showSignInPromptSupportsPrevious : false,
         showSignInPromptOpposes: oppose ? !showSignInPromptOpposesPrevious : false,
         anchorEl: event.currentTarget,
-        popoverText: popoverText,
+        popoverText,
       });
     } else {
       this.setState({
@@ -207,7 +233,7 @@ class HeartFavoriteToggleBase extends Component {
   handlePopoverClose = () => {
     this.setState({
       anchorEl: null,
-      popoverText: ''
+      popoverText: '',
     });
   }
 
@@ -269,32 +295,32 @@ class HeartFavoriteToggleBase extends Component {
             </span>
           )}
         </DislikeContainer>
-        {(!voterSignedInWithEmail && showSignInPromptOpposes || showSignInPromptSupports) && (
+        {(!voterSignedInWithEmail && (showSignInPromptOpposes || showSignInPromptSupports)) && (
           <Popover
-              id={id}
-              open={open}
-              anchorEl={anchorEl}
-              onClose={() => this.handlePopoverClose()}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
-              }}
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'center',
-              }}
-              slotProps={{
-                paper: {
-                  component: CustomPopoverPaper,
-                },
-              }}
-            >
-              <h2 className="MuiTypography-root">{popoverText}</h2>
-              <Typography variant="body1">Sign in to make your opinion count.</Typography>
-              <Typography>
-                <a className="signInText" onClick={this.handleSignInClick}>Sign In</a>
-              </Typography>
-            </Popover>
+            id={id}
+            open={open}
+            anchorEl={anchorEl}
+            onClose={() => this.handlePopoverClose()}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'left',
+            }}
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'center',
+            }}
+            slotProps={{
+              paper: {
+                component: CustomPopoverPaper,
+              },
+            }}
+          >
+            <h2 className="MuiTypography-root">{popoverText}</h2>
+            <Typography variant="body1">Sign in to make your opinion count.</Typography>
+            <Typography>
+              <Button className="signInText" onClick={this.handleSignInClick}>Sign In</Button>
+            </Typography>
+          </Popover>
         )}
       </HeartFavoriteToggleContainer>
     );
@@ -315,31 +341,7 @@ HeartFavoriteToggleBase.propTypes = {
 };
 
 
-// WV-399: Creating popover for sign in prompt using MUI Popover component. 
-// Popover text passed into helper functions setting like/dislike text for handleActionClick.
-// voterSignedInWithEmail in handleActionClick to update state for anchorEl and popoverText hooking into Like/Dislike containers.
-// Conditional rendered Popover component with anchorEl and popoverText state.
-// Styled Popover component to match design system.
-
-const CustomPopoverPaper = styled.div`
-  background-color: #fff;
-  color: #333;
-  padding: 16px;
-  max-width: 300px;
-
-  .MuiTypography-root {
-    font-size: 1rem;
-    margin-bottom: 8px;
-    font-family: "Poppins", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
-  }
-
-  .signInText {
-    color: #065FD4;
-    cursor: pointer;
-  }
-`;
-
-const HeartFavoriteToggleContainer = styled.div`
+const HeartFavoriteToggleContainer = styled('div')`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -351,14 +353,14 @@ const HeartFavoriteToggleContainer = styled.div`
   background: ${DesignTokenColors.whiteUI};
 `;
 
-const LikeContainer = styled.div`
+const LikeContainer = styled('div')`
   display: flex;
   padding-right: 8px;
   border-right: 1px solid ${DesignTokenColors.neutralUI100};
   cursor: pointer;
 `;
 
-const DislikeContainer = styled.div`
+const DislikeContainer = styled('div')`
   display: flex;
   padding-left: 8px;
   cursor: pointer;
