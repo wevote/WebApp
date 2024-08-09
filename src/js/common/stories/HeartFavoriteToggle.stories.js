@@ -45,7 +45,7 @@ export const AllStates = (args) => (
       voterSupports={false}
     />
     <HeartFavoriteToggleBase
-      voterSignedInWithEmail={false}
+      voterSignedIn={false}
       showSignInPromptSupports
     />
 
