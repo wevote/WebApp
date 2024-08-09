@@ -1,10 +1,38 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { Button } from '@mui/material';
+import Popover from '@mui/material/Popover';
+import Typography from '@mui/material/Typography';
 import CampaignActions from '../../../actions/CampaignActions';
 import DesignTokenColors from '../../Style/DesignTokenColors';
 import numberWithCommas from '../../../utils/numberWithCommas';
 import HeartFavoriteToggleIcon from './HeartFavoriteToggleIcon';
+
+
+// WV-399: Creating popover for sign in prompt using MUI Popover component.
+// Popover text passed into helper functions setting like/dislike text for handleActionClick.
+// voterSignedInWithEmail in handleActionClick to update state for anchorEl and popoverText hooking into Like/Dislike containers.
+// Conditional rendered Popover component with anchorEl and popoverText state.
+// Styled Popover component to match design system.
+
+const CustomPopoverPaper = styled('div')`
+  background-color: #fff;
+  color: #333;
+  padding: 16px;
+  max-width: 300px;
+
+  .MuiTypography-root {
+    font-size: 1rem;
+    margin-bottom: 8px;
+    font-family: "Poppins", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+  }
+
+  .signInText {
+    color: #065FD4;
+    cursor: pointer;
+  }
+`;
 
 class HeartFavoriteToggleBase extends Component {
   constructor (props) {
@@ -14,22 +42,13 @@ class HeartFavoriteToggleBase extends Component {
       campaignXSupportersCountLocal: 0,
       voterOpposesLocal: false,
       voterSupportsLocal: false,
+      anchorEl: null, // Anchors to capture element for popover
+      popoverText: '', // Text for the popover
     };
   }
 
   componentDidMount () {
     this.onPropsChange();
-  }
-
-  onPropsChange () {
-    const { campaignXOpposersCount, campaignXSupportersCount, voterSupports, voterOpposes } = this.props;
-    // console.log('HeartFavoriteToggleBase onPropsChange voterOpposes: ', voterOpposes, ', voterSupports: ', voterSupports);
-    this.setState({
-      campaignXOpposersCountLocal: campaignXOpposersCount,
-      campaignXSupportersCountLocal: campaignXSupportersCount,
-      voterSupportsLocal: voterSupports,
-      voterOpposesLocal: voterOpposes,
-    });
   }
 
   componentDidUpdate (prevProps) {
@@ -57,6 +76,17 @@ class HeartFavoriteToggleBase extends Component {
     }
   }
 
+  onPropsChange () {
+    const { campaignXOpposersCount, campaignXSupportersCount, voterSupports, voterOpposes } = this.props;
+    // console.log('HeartFavoriteToggleBase onPropsChange voterOpposes: ', voterOpposes, ', voterSupports: ', voterSupports);
+    this.setState({
+      campaignXOpposersCountLocal: campaignXOpposersCount,
+      campaignXSupportersCountLocal: campaignXSupportersCount,
+      voterSupportsLocal: voterSupports,
+      voterOpposesLocal: voterOpposes,
+    });
+  }
+
   handleSignInClick = () => {
     const { voterSignedInWithEmail } = this.props;
     if (!voterSignedInWithEmail) {
@@ -66,52 +96,56 @@ class HeartFavoriteToggleBase extends Component {
     }
   };
 
-  handleOpposeClick = () => {
+  handleOpposeClick = (event) => {
     const oppose = true;
     const support = false;
     const stopOpposing = false;
     const stopSupporting = false;
-    this.handleActionClick(support, oppose, stopSupporting, stopOpposing);
+    this.handleActionClick(event, support, oppose, stopSupporting, stopOpposing, 'Don’t like this politician?');
   }
 
-  handleStopOpposingClick = () => {
+  handleStopOpposingClick = (event) => {
     const oppose = false;
     const support = false;
     const stopOpposing = true;
     const stopSupporting = false;
-    this.handleActionClick(support, oppose, stopSupporting, stopOpposing);
+    this.handleActionClick(event, support, oppose, stopSupporting, stopOpposing, 'Don’t like this politician?');
   }
 
-  handleStopSupportingClick = () => {
+  handleStopSupportingClick = (event) => {
     const oppose = false;
     const support = false;
     const stopOpposing = false;
     const stopSupporting = true;
-    this.handleActionClick(support, oppose, stopSupporting, stopOpposing);
+    this.handleActionClick(event, support, oppose, stopSupporting, stopOpposing, 'Like this politician?');
   }
 
-  handleSupportClick = () => {
+  handleSupportClick = (event) => {
     const oppose = false;
     const support = true;
     const stopOpposing = false;
     const stopSupporting = false;
-    this.handleActionClick(support, oppose, stopSupporting, stopOpposing);
+    this.handleActionClick(event, support, oppose, stopSupporting, stopOpposing, 'Like this politician?');
   }
 
-  handleActionClick = (support = true, oppose = false, stopSupporting = false, stopOpposing = false) => {
+  handleActionClick = (event, support = true, oppose = false, stopSupporting = false, stopOpposing = false, popoverText = '') => {
     const { campaignXWeVoteId, voterSignedInWithEmail } = this.props;
     const {
       campaignXOpposersCountLocal: campaignXOpposersCountLocalPrevious,
       campaignXSupportersCountLocal: campaignXSupportersCountLocalPrevious,
       showSignInPromptSupports: showSignInPromptSupportsPrevious,
+      showSignInPromptOpposes: showSignInPromptOpposesPrevious,
       voterOpposesLocal: voterOpposesLocalPrevious,
       voterSupportsLocal: voterSupportsLocalPrevious,
     } = this.state;
+
     if (!voterSignedInWithEmail) {
       // Toggle sign in prompt
       this.setState({
-        showSignInPromptSupports: (support) ? !showSignInPromptSupportsPrevious : false,
-        showSignInPromptOpposes: (oppose) ? !showSignInPromptSupportsPrevious : false,
+        showSignInPromptSupports: support ? !showSignInPromptSupportsPrevious : false,
+        showSignInPromptOpposes: oppose ? !showSignInPromptOpposesPrevious : false,
+        anchorEl: event.currentTarget,
+        popoverText,
       });
     } else {
       this.setState({
@@ -196,6 +230,13 @@ class HeartFavoriteToggleBase extends Component {
     }
   };
 
+  handlePopoverClose = () => {
+    this.setState({
+      anchorEl: null,
+      popoverText: '',
+    });
+  }
+
   render () {
     const {
       voterSignedInWithEmail,
@@ -207,16 +248,22 @@ class HeartFavoriteToggleBase extends Component {
       showSignInPromptSupports,
       voterOpposesLocal,
       voterSupportsLocal,
+      anchorEl,
+      popoverText,
     } = this.state;
+
+    const open = Boolean(anchorEl);
+    const id = open ? 'simple-popover' : undefined;
+
     // console.log('campaignXSupportersCountLocal', campaignXSupportersCountLocal, 'campaignXOpposersCountLocal', campaignXOpposersCountLocal);
     // console.log('HeartFavoriteToggleBase voterSupportsLocal', voterSupportsLocal, 'voterOpposesLocal', voterOpposesLocal);
     return (
       <HeartFavoriteToggleContainer>
-        <LikeContainer onClick={() => {
+        <LikeContainer onClick={(event) => {
           if (voterSupportsLocal) {
-            return this.handleStopSupportingClick();
+            return this.handleStopSupportingClick(event);
           } else {
-            return this.handleSupportClick();
+            return this.handleSupportClick(event);
           }
         }}
         >
@@ -229,16 +276,12 @@ class HeartFavoriteToggleBase extends Component {
               {numberWithCommas(campaignXSupportersCountLocal)}
             </span>
           )}
-          {/* Add "like this politician?" popout */}
-          {(!voterSignedInWithEmail && showSignInPromptSupports) && (
-            <span onClick={() => this.handleSignInClick()}>&nbsp;sign in</span>
-          )}
         </LikeContainer>
-        <DislikeContainer onClick={() => {
+        <DislikeContainer onClick={(event) => {
           if (voterOpposesLocal) {
-            return this.handleStopOpposingClick();
+            return this.handleStopOpposingClick(event);
           } else {
-            return this.handleOpposeClick();
+            return this.handleOpposeClick(event);
           }
         }}
         >
@@ -251,11 +294,34 @@ class HeartFavoriteToggleBase extends Component {
               {numberWithCommas(campaignXOpposersCountLocal)}
             </span>
           )}
-          {/* Add "Don't like this politician?" popout */}
-          {(!voterSignedInWithEmail && showSignInPromptOpposes) && (
-            <span onClick={() => this.handleSignInClick()}>&nbsp;sign in</span>
-          )}
         </DislikeContainer>
+        {(!voterSignedInWithEmail && (showSignInPromptOpposes || showSignInPromptSupports)) && (
+          <Popover
+            id={id}
+            open={open}
+            anchorEl={anchorEl}
+            onClose={() => this.handlePopoverClose()}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'left',
+            }}
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'center',
+            }}
+            slotProps={{
+              paper: {
+                component: CustomPopoverPaper,
+              },
+            }}
+          >
+            <h2 className="MuiTypography-root">{popoverText}</h2>
+            <Typography variant="body1">Sign in to make your opinion count.</Typography>
+            <Typography>
+              <Button className="signInText" onClick={this.handleSignInClick}>Sign In</Button>
+            </Typography>
+          </Popover>
+        )}
       </HeartFavoriteToggleContainer>
     );
   }
@@ -274,7 +340,8 @@ HeartFavoriteToggleBase.propTypes = {
   voterOpposes: PropTypes.bool,
 };
 
-const HeartFavoriteToggleContainer = styled.div`
+
+const HeartFavoriteToggleContainer = styled('div')`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -286,14 +353,14 @@ const HeartFavoriteToggleContainer = styled.div`
   background: ${DesignTokenColors.whiteUI};
 `;
 
-const LikeContainer = styled.div`
+const LikeContainer = styled('div')`
   display: flex;
   padding-right: 8px;
   border-right: 1px solid ${DesignTokenColors.neutralUI100};
   cursor: pointer;
 `;
 
-const DislikeContainer = styled.div`
+const DislikeContainer = styled('div')`
   display: flex;
   padding-left: 8px;
   cursor: pointer;
