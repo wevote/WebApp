@@ -8,19 +8,20 @@ import CampaignActions from '../../../actions/CampaignActions';
 import DesignTokenColors from '../../Style/DesignTokenColors';
 import numberWithCommas from '../../../utils/numberWithCommas';
 import HeartFavoriteToggleIcon from './HeartFavoriteToggleIcon';
+import AppObservableStore from '../../../stores/AppObservableStore';
 
 
 // WV-399: Creating popover for sign in prompt using MUI Popover component.
 // Popover text passed into helper functions setting like/dislike text for handleActionClick.
-// voterSignedInWithEmail in handleActionClick to update state for anchorEl and popoverText hooking into Like/Dislike containers.
+// voterIsSignedIn in handleActionClick to update state for anchorEl and popoverText hooking into Like/Dislike containers.
 // Conditional rendered Popover component with anchorEl and popoverText state.
 // Styled Popover component to match design system.
 
 const CustomPopoverPaper = styled('div')`
   background-color: #fff;
   color: #333;
-  padding: 16px;
-  max-width: 300px;
+  padding: 16px 16px 0 16px;
+  max-width: 350px;
 
   .MuiTypography-root {
     font-size: 1rem;
@@ -40,6 +41,8 @@ class HeartFavoriteToggleBase extends Component {
     this.state = {
       campaignXOpposersCountLocal: 0,
       campaignXSupportersCountLocal: 0,
+      voterOpposesDelayed: false,  // Mark as opposed after sign in finishes
+      voterSupportsDelayed: false,  // Mark as supported after sign in finishes
       voterOpposesLocal: false,
       voterSupportsLocal: false,
       anchorEl: null, // Anchors to capture element for popover
@@ -56,12 +59,14 @@ class HeartFavoriteToggleBase extends Component {
     const {
       campaignXSupportersCount: campaignXSupportersCountPrevious,
       campaignXWeVoteId: campaignXWeVoteIdPrevious,
+      voterIsSignedIn: voterIsSignedInPrevious,
       voterOpposes: voterOpposesPrevious,
       voterSupports: voterSupportsPrevious,
     } = prevProps;
     const {
       campaignXSupportersCount,
       campaignXWeVoteId,
+      voterIsSignedIn,
       voterOpposes,
       voterSupports,
     } = this.props;
@@ -72,6 +77,24 @@ class HeartFavoriteToggleBase extends Component {
         (voterOpposes !== voterOpposesPrevious) ||
         (voterSupports !== voterSupportsPrevious)) {
         this.onPropsChange();
+      }
+    }
+    if (voterIsSignedIn && (voterIsSignedInPrevious !== voterIsSignedIn)) {
+      // If the voter tried to Oppose or Support before signing in, complete the action
+      const { voterOpposesDelayed, voterSupportsDelayed } = this.state;
+      // console.log('componentDidUpdate voterOpposesDelayed: ', voterOpposesDelayed, ', voterSupportsDelayed:', voterSupportsDelayed);
+      if (voterOpposesDelayed || voterSupportsDelayed) {
+        this.setState({
+          voterSupportsDelayed: false,
+          voterOpposesDelayed: false,
+        });
+        this.timer = setTimeout(() => {
+          if (voterOpposesDelayed) {
+            this.handleOpposeClick();
+          } else if (voterSupportsDelayed) {
+            this.handleSupportClick();
+          }
+        }, 500);
       }
     }
   }
@@ -87,13 +110,12 @@ class HeartFavoriteToggleBase extends Component {
     });
   }
 
-  handleSignInClick = () => {
-    const { voterSignedInWithEmail } = this.props;
-    if (!voterSignedInWithEmail) {
-      if (this.props.submitSupport) {
-        this.props.submitSupport();
-      }
-    }
+  handleSignInClick = (voterSupports = false, voterOpposes = false) => {
+    AppObservableStore.setShowSignInModal(true);
+    this.setState({
+      voterSupportsDelayed: voterSupports,
+      voterOpposesDelayed: voterOpposes,
+    });
   };
 
   handleOpposeClick = (event) => {
@@ -129,7 +151,7 @@ class HeartFavoriteToggleBase extends Component {
   }
 
   handleActionClick = (event, support = true, oppose = false, stopSupporting = false, stopOpposing = false, popoverText = '') => {
-    const { campaignXWeVoteId, voterSignedInWithEmail } = this.props;
+    const { campaignXWeVoteId, voterIsSignedIn } = this.props;
     const {
       campaignXOpposersCountLocal: campaignXOpposersCountLocalPrevious,
       campaignXSupportersCountLocal: campaignXSupportersCountLocalPrevious,
@@ -139,12 +161,12 @@ class HeartFavoriteToggleBase extends Component {
       voterSupportsLocal: voterSupportsLocalPrevious,
     } = this.state;
 
-    if (!voterSignedInWithEmail) {
+    if (!voterIsSignedIn) {
       // Toggle sign in prompt
       this.setState({
         showSignInPromptSupports: support ? !showSignInPromptSupportsPrevious : false,
         showSignInPromptOpposes: oppose ? !showSignInPromptOpposesPrevious : false,
-        anchorEl: event.currentTarget,
+        anchorEl: event ? event.currentTarget : null,
         popoverText,
       });
     } else {
@@ -239,7 +261,7 @@ class HeartFavoriteToggleBase extends Component {
 
   render () {
     const {
-      voterSignedInWithEmail,
+      voterIsSignedIn,
     } = this.props;
     const {
       campaignXSupportersCountLocal,
@@ -295,7 +317,7 @@ class HeartFavoriteToggleBase extends Component {
             </span>
           )}
         </DislikeContainer>
-        {(!voterSignedInWithEmail && (showSignInPromptOpposes || showSignInPromptSupports)) && (
+        {(!voterIsSignedIn && (showSignInPromptOpposes || showSignInPromptSupports)) && (
           <Popover
             id={id}
             open={open}
@@ -318,7 +340,13 @@ class HeartFavoriteToggleBase extends Component {
             <h2 className="MuiTypography-root">{popoverText}</h2>
             <Typography variant="body1">Sign in to make your opinion count.</Typography>
             <Typography>
-              <Button className="signInText" onClick={this.handleSignInClick}>Sign In</Button>
+              <Button
+                className="signInText"
+                onClick={() => this.handleSignInClick(showSignInPromptSupports, showSignInPromptOpposes)}
+                style={{ marginLeft: '-8px' }}
+              >
+                Sign in
+              </Button>
             </Typography>
           </Popover>
         )}
@@ -335,7 +363,7 @@ HeartFavoriteToggleBase.propTypes = {
   submitStopOpposing: PropTypes.func,
   submitStopSupporting: PropTypes.func,
   submitSupport: PropTypes.func,
-  voterSignedInWithEmail: PropTypes.bool,
+  voterIsSignedIn: PropTypes.bool,
   voterSupports: PropTypes.bool,
   voterOpposes: PropTypes.bool,
 };
