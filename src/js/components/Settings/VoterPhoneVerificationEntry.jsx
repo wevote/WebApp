@@ -303,9 +303,9 @@ class VoterPhoneVerificationEntry extends Component {
     if (cancelShouldCloseModal) {
       this.closeSignInModalLocal();
     } else if (isCordova() || isMobileScreenSize()) {
-      // if (this.props.showAllSignInOptions) {
-      //   this.props.showAllSignInOptions();
-      // }
+      if (this.props.showAllSignInOptions) {
+        this.props.showAllSignInOptions();
+      }
     }
   };
 
