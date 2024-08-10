@@ -16,6 +16,16 @@ const muiTheme = createTheme({
       dark: `${DesignTokenColors.primary900}`,
       contrastText: '#fff',
     },
+    chosen: {
+      main: `${DesignTokenColors.confirmation100}`,
+      dark: `${DesignTokenColors.confirmation200}`,
+      contrastText: '#fff',
+    },
+    opposed: {
+      main: `${DesignTokenColors.alert200}`,
+      dark: `${DesignTokenColors.alert300}`,
+      contrastText: '#fff',
+    },
   },
   breakpoints: {
     values: {

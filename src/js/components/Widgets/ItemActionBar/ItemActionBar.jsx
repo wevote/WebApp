@@ -267,14 +267,14 @@ class ItemActionBar extends PureComponent {
     return (
       <Button
         classes={{ root: buttonRootClass, outlinedPrimary: classes.buttonOutlinedPrimary }}
-        color="secondary"
+        color="primary"
         id={`itemActionBarHelpThemWinButton-${externalUniqueId}-${localUniqueId}`}
         onClick={() => this.openPositionStatement()}
-        variant="outlined"
+        variant="contained"
       >
-        <ChooseButtonLabel>
+        <HelpButtonLabel>
           Help Win
-        </ChooseButtonLabel>
+        </HelpButtonLabel>
       </Button>
     );
   };
@@ -286,14 +286,14 @@ class ItemActionBar extends PureComponent {
       <Button
         classes={{ root: buttonRootClass, outlinedPrimary: classes.buttonOutlinedPrimary }}
         className={`${opposeHideInMobile ? 'd-none d-sm-block ' : ''}`}
-        color="secondary"
+        color="primary"
         id={`itemActionBarHelpDefeatButton-${externalUniqueId}-${localUniqueId}`}
         onClick={() => this.openPositionStatement()}
-        variant="outlined"
+        variant="contained"
       >
-        <OpposeButtonLabelSelected>
+        <HelpButtonLabel>
           Help Defeat
-        </OpposeButtonLabelSelected>
+        </HelpButtonLabel>
       </Button>
     );
   };
@@ -305,10 +305,11 @@ class ItemActionBar extends PureComponent {
       <Button
         classes={{ root: buttonRootClass, outlinedPrimary: classes.buttonOutlinedPrimary }}
         className={`${opposeHideInMobile ? 'd-none d-sm-block ' : ''}`}
-        color={this.isOpposeCalculated() ? 'secondary' : 'primary'}
+        color={this.isOpposeCalculated() ? 'opposed' : 'primary'}
         id={`itemActionBarOpposeButton-${externalUniqueId}-${localUniqueId}`}
         onClick={() => this.opposeItem()}
         variant={this.isOpposeCalculated() ? 'contained' : 'outlined'}
+        // variant="outlined"
       >
         <NotInterested classes={this.isOpposeCalculated() ? { root: classes.buttonIconNotInterestedSelected } : { root: classes.buttonIconNotInterested }} />
         {this.isOpposeCalculated() ? (
@@ -346,10 +347,11 @@ class ItemActionBar extends PureComponent {
     return (
       <Button
         classes={{ root: buttonRootClass, outlinedPrimary: classes.buttonOutlinedPrimary }}
-        color={this.isSupportCalculated() ? 'secondary' : 'primary'}
+        color={this.isSupportCalculated() ? 'chosen' : 'primary'}
         id={`itemActionBarSupportButton-${externalUniqueId}-${localUniqueId}`}
         onClick={() => this.supportItem()}
         variant={this.isSupportCalculated() ? 'contained' : 'outlined'}
+        // variant="outlined"
       >
         <Done classes={this.isSupportCalculated() ? { root: classes.buttonIconDoneSelected } : { root: classes.buttonIconDone }} />
         {this.isSupportCalculated() ? (
@@ -1007,6 +1009,7 @@ const styles = (theme) => ({
     },
   },
   buttonRoot: {
+    borderRadius: '15px',
     padding: 4,
     width: 110,
     height: 32,
@@ -1022,6 +1025,7 @@ const styles = (theme) => ({
     },
   },
   buttonRootForCard: {
+    borderRadius: '15px',
     padding: 4,
     width: 138,
     height: 32,
@@ -1127,6 +1131,10 @@ const CommentFlex = styled('div')`
   display: flex;
   align-items: center;
   margin-right: 8px;
+`;
+
+const HelpButtonLabel = styled('span')`
+  color: #fff;
 `;
 
 const OpposeButtonLabel = styled('span', {
