@@ -172,6 +172,7 @@ class BallotItemSupportOpposeComment extends PureComponent {
         togglePositionStatementFunction={this.togglePositionStatement}
         transitioning={transitioning}
         urlWithoutHash={urlWithoutHash}
+        useHelpDefeatOrHelpWin
       />
     );
 

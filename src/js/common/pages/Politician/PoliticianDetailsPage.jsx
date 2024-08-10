@@ -1087,6 +1087,11 @@ class PoliticianDetailsPage extends Component {
                     )}
                   </CandidateCampaignListDesktop>
                 )}
+                <ViewBallotButtonWrapper>
+                  <Suspense fallback={<></>}>
+                    <ViewUpcomingBallotButton buttonText="View Your Full Ballot" onClickFunction={this.goToBallot} onlyOfferViewYourBallot />
+                  </Suspense>
+                </ViewBallotButtonWrapper>
                 {positionListTeaserHtml}
                 {/* {commentListTeaserHtml} */}
                 {(!futureFeaturesDisabled && nextReleaseFeaturesEnabled) && (
@@ -1127,11 +1132,6 @@ class PoliticianDetailsPage extends Component {
                     </OtherElectionsWrapper>
                   </CandidateCampaignListDesktop>
                 )}
-                <ViewBallotButtonWrapper>
-                  <Suspense fallback={<></>}>
-                    <ViewUpcomingBallotButton buttonText="View Your Full Ballot" onClickFunction={this.goToBallot} onlyOfferViewYourBallot />
-                  </Suspense>
-                </ViewBallotButtonWrapper>
               </ColumnTwoThirds>
             </ColumnsWrapper>
           </DetailsSectionDesktopTablet>
@@ -1281,10 +1281,10 @@ const PoliticianLinksWrapper = styled('div')`
 
 export const ViewBallotButtonWrapper = styled('div')`
   display: flex;
-  height: 40px;
+  height: 50px;
   justify-content: center;
-  margin-top: 40px;
-  margin-bottom: 60px;
+  margin-top: 0;
+  margin-bottom: 80px;
 `;
 
 export default withStyles(styles)(PoliticianDetailsPage);
