@@ -1,4 +1,3 @@
-import { AccountCircle } from '@mui/icons-material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
@@ -18,8 +17,12 @@ import { getDateFromUltimateElectionDate, getTodayAsInteger, timeFromDate } from
 import { isCordova } from '../../utils/isCordovaOrWebApp';
 import { renderLog } from '../../utils/logging';
 import stringContains from '../../utils/stringContains';
+import stringToColor from '../../utils/stringToColor'
 import PoliticianStore from '../../stores/PoliticianStore';
 import VoterStore from '../../../stores/VoterStore';
+import { Avatar } from '@mui/material';
+import { blue } from '@mui/material/colors';
+
 
 class PoliticianEndorsementForList extends Component {
   constructor (props) {
@@ -72,6 +75,15 @@ class PoliticianEndorsementForList extends Component {
       showFullSupporterEndorsement: true,
     });
   }
+  
+  stringAvatar = (name) => {
+    return {
+      sx: {
+        bgcolor: stringToColor(name),
+      },
+      children: `${name.split(' ')[0][0]}${name.split(' ')[1][0]}`,
+    };
+  }
 
   render () {
     renderLog('PoliticianEndorsementForList');  // Set LOG_RENDER_EVENTS to log all renders
@@ -108,6 +120,7 @@ class PoliticianEndorsementForList extends Component {
       howLongAgoOrThisYear = timeFromDate(positionUltimateElectionDate);
     }
     // console.log('position:', position, ', positionWeVoteId:', positionWeVoteId);
+    console.log(speakerDisplayName)
     return (
       <PoliticianEndorsementForListWrapper>
         <OneCampaignOuterWrapper>
@@ -124,7 +137,7 @@ class PoliticianEndorsementForList extends Component {
                     alt=""
                   />
                 ) : (
-                  <AccountCircle classes={{ root: classes.accountCircleRoot }} />
+                  <Avatar {...this.stringAvatar(speakerDisplayName)} />
                 )}
               </CommentVoterPhotoWrapper>
               <CommentTextWrapper>

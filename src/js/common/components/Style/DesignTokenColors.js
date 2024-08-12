@@ -30,7 +30,7 @@ const primitiveColorNames = {
   steel200: '#C8D4DF',
   white: '#FFFFFF',
   yellowUI700: '#CCA101',
-  yellowUI900: '#9E7100'
+  yellowUI900: '#9E7100',
 };
 
 
