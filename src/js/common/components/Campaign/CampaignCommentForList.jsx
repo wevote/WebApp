@@ -1,4 +1,5 @@
 import { AccountCircle } from '@mui/icons-material';
+import { Avatar } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
@@ -124,7 +125,7 @@ class CampaignCommentForList extends Component {
                     alt="Your Settings"
                   />
                 ) : (
-                  <AccountCircle classes={{ root: classes.accountCircleRoot }} />
+                  <Avatar sx={{bgcolor: blue}}>ts</Avatar>
                 )}
               </CommentVoterPhotoWrapper>
               <CommentTextWrapper>
