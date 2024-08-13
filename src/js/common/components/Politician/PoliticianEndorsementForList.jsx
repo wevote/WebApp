@@ -120,7 +120,6 @@ class PoliticianEndorsementForList extends Component {
       howLongAgoOrThisYear = timeFromDate(positionUltimateElectionDate);
     }
     // console.log('position:', position, ', positionWeVoteId:', positionWeVoteId);
-    console.log(speakerDisplayName)
     return (
       <PoliticianEndorsementForListWrapper>
         <OneCampaignOuterWrapper>
