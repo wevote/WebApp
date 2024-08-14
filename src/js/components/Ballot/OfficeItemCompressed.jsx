@@ -7,6 +7,7 @@ import Tooltip from 'react-bootstrap/Tooltip';
 import styled from 'styled-components';
 import OfficeActions from '../../actions/OfficeActions';
 import { BallotHorizontallyScrollingContainer, BallotScrollingInnerWrapper, BallotScrollingOuterWrapper } from '../../common/components/Style/ScrollingStyles';
+import HeartFavoriteToggleLoader from '../../common/components/Widgets/HeartFavoriteToggle/HeartFavoriteToggleLoader';
 import signInModalGlobalState from '../../common/components/Widgets/signInModalGlobalState';
 import AppObservableStore from '../../common/stores/AppObservableStore';
 import historyPush from '../../common/utils/historyPush';
@@ -318,7 +319,8 @@ class OfficeItemCompressed extends Component {
             if (!oneCandidate || !oneCandidate.we_vote_id || dedupedCandidates.includes(oneCandidate.we_vote_id)) return null;
             dedupedCandidates.push(oneCandidate.we_vote_id);
             candidateCount += 1;
-            // console.log('OfficeItemCompressd candiateCount ', candidateCount);
+            // console.log('OfficeItemCompressed candidateCount ', candidateCount);
+            // console.log('OfficeItemCompressed generateCandidates oneCandidate: ', oneCandidate);
             const candidatePartyText = oneCandidate.party && oneCandidate.party.length ? `${oneCandidate.party}` : '';
             const avatarCompressed = 'card-main__avatar-compressed';
             const avatarBackgroundImage = normalizedImagePath('../img/global/svg-icons/avatar-generic.svg');
@@ -369,7 +371,7 @@ class OfficeItemCompressed extends Component {
             );
             return (
               <BallotScrollingInnerWrapper key={uniqueKey}>
-                <BallotHorizontallyScrollingContainer>
+                <BallotHorizontallyScrollingContainer isChosen={SupportStore.getVoterSupportsByBallotItemWeVoteId(oneCandidate.we_vote_id)}>
                   <CandidateContainer>
                     <CandidateWrapper>
                       <CandidateInfo>
@@ -432,6 +434,11 @@ class OfficeItemCompressed extends Component {
                       </CandidateInfo>
                     </CandidateWrapper>
                     <PositionRowListOuterWrapper>
+                      {!!(oneCandidate.linked_campaignx_we_vote_id) && (
+                        <HeartFavoriteToggleLocalWrapper>
+                          <HeartFavoriteToggleLoader campaignXWeVoteId={oneCandidate.linked_campaignx_we_vote_id} />
+                        </HeartFavoriteToggleLocalWrapper>
+                      )}
                       <PositionRowListInnerWrapper>
                         <div>
                           {/* className="u-show-mobile" */}
@@ -625,6 +632,12 @@ const styles = (theme) => ({
     },
   },
 });
+
+const HeartFavoriteToggleLocalWrapper = styled('div')`
+  margin-bottom: 6px;
+  max-width: 200px;
+  width: 125px;
+`;
 
 const HrSeparator = styled('hr')`
   width: 95%;
