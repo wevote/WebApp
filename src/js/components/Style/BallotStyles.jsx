@@ -60,7 +60,6 @@ export const CandidateBottomRow = styled('div')`
 export const CandidateContainer = styled('div')`
   display: flex;
   justify-content: flex-start;
-  // padding: 10px 5px;
 `;
 
 export const CandidateInfo = styled('div')(({ theme }) => (`
@@ -100,7 +99,7 @@ export const CandidateNameH4 = styled('button')`
   min-width: 124px;
   white-space: normal;
   border: none;
-  background-color: #FFF;
+  background-color: transparent;
   padding: 0;
   &:hover {
     text-decoration: underline;

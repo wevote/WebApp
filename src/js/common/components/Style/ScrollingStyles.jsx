@@ -1,12 +1,18 @@
 import styled from 'styled-components';
+import DesignTokenColors from './DesignTokenColors';
 
-export const BallotHorizontallyScrollingContainer = styled('div')`
-  /* Fade out, right side */
+export const BallotHorizontallyScrollingContainer = styled('div', {
+  shouldForwardProp: (prop) => !['isChosen'].includes(prop),
+})(({ isChosen }) => (`
   -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 95%, rgba(0, 0, 0, 0));
   mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 95%, rgba(0, 0, 0, 0));
 
   overflow-x: auto;
   white-space: nowrap;
+
+  border: 1px solid #fff; /* Default border color so that the hover doesn't create jump */
+  &:hover { border: 1px solid ${DesignTokenColors.neutralUI100}; }
+  ${isChosen ? `background-color: ${DesignTokenColors.confirmation50};` : ''}
 
   /* Make the scrollbar not be visible */
   -ms-overflow-style: none;  /* IE and Edge */
@@ -14,7 +20,7 @@ export const BallotHorizontallyScrollingContainer = styled('div')`
   ::-webkit-scrollbar {  /* Chrome, Safari and Opera */
     display: none;
   }
-`;
+`));
 
 export const BallotScrollingInnerWrapper = styled('div')`
   overflow-x: hidden;

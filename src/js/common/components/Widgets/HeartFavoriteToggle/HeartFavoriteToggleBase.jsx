@@ -299,6 +299,7 @@ class HeartFavoriteToggleBase extends Component {
             </span>
           )}
         </LikeContainer>
+        <LikeDislikeSeperator>&nbsp;</LikeDislikeSeperator>
         <DislikeContainer onClick={(event) => {
           if (voterOpposesLocal) {
             return this.handleStopOpposingClick(event);
@@ -384,8 +385,12 @@ const HeartFavoriteToggleContainer = styled('div')`
 const LikeContainer = styled('div')`
   display: flex;
   padding-right: 8px;
-  border-right: 1px solid ${DesignTokenColors.neutralUI100};
   cursor: pointer;
+`;
+
+const LikeDislikeSeperator = styled('div')`
+  max-width: 1px;
+  border-right: 1px solid ${DesignTokenColors.neutralUI100};
 `;
 
 const DislikeContainer = styled('div')`
