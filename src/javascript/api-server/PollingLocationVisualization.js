@@ -4,6 +4,7 @@
 let map;
 let state = '';
 let stateHtml = '';
+let selectedSourceCodes = []; // added by Paul to collect selected source codes
 let googleCivicID = 0;
 let infoWindow;
 const markers = [];
@@ -19,7 +20,7 @@ function createSelect () {
   // "[('AK', 'Alaska'), ('AL', 'Alabama'), ('AR', 'Arkansas')
   const regex = /(\(.*?\))/gm;
   const matches = Array.from(stateListString.matchAll(regex));
-  let selectComponent = "<span>Select a state: <select id='state_code' name='state_code'>";
+  let selectComponent = "<span style='display: inline-block;'>Select a state: <select id='state_code' name='state_code'>";
   for (let i = 0; i < matches.length; i++) {
     const match = matches[i][0];                      // "('AL', 'Alabama')"
     const matchStateCode = match.substring(2, 4);
@@ -41,7 +42,6 @@ function createSelect () {
   });
 }
 
-
 function setStateVariable () {
   stateCodeSelector = $('#state_code');
   if (stateCodeSelector.length) {
@@ -57,7 +57,58 @@ function setStateVariable () {
   }
 }
 
-function createMarker (latlng, name, address, icon, showPin) {
+// Function to create checkboxes to filter markers by source_code. The two checkboxes should be labeled "Public Schools" and "Post Offices".
+function createCheckboxes () {
+    const sourceCodeListString = $('#source_code_list').val();
+    const regex = /'([^']+)'/g;
+    const matches = Array.from(sourceCodeListString.matchAll(regex));
+    let checkboxComponent = "<span style='margin-left: 10px;'>Filter by: ";
+    for (let i = 0; i < matches.length; i++) {
+        const match = matches[i][1];
+        const selected = '';
+        if (match === 'PUBLIC_SCHOOLS') {
+            checkboxComponent += `<input type='checkbox' id='${match}' name='source_code' value='${match}' ${selected} />Public Schools `;
+        } else if (match === 'POST_OFFICE_LAT_LONG') {
+            checkboxComponent += `<input type='checkbox' id='${match}' name='source_code' value='${match}' ${selected} />Post Offices `;
+        }
+    }
+    checkboxComponent += '</span>'
+    $(checkboxComponent).insertAfter('#state_code');
+
+    $('input[name="source_code"]').change(handleCheckboxChange);
+}
+
+// Function to handle the change event on the checkboxes. This function should collect the values of the selected checkboxes and store them in the selectedSourceCodes array.
+function handleCheckboxChange() {
+    selectedSourceCodes = [];
+    const checkedBoxes =  $('input[name="source_code"]:checked');
+    checkedBoxes.each(function() {
+      selectedSourceCodes.push($(this).val()); 
+    });
+    console.log('Selected Source Codes:', selectedSourceCodes);
+    toggleMarkersVisibility()
+}
+
+// Function to toggle the visibility of the markers based on the selected source codes. This function should hide markers that do not have a source_code that is in the selectedSourceCodes array.
+// If no checkboxes are selected, all markers should be shown.
+// If both checkboxes are selected, both Public Schools and Post Offices should be shown, but hide all other markers.
+function toggleMarkersVisibility() {
+  for (let i = 0; i < markers.length; i++) {
+      const marker = markers[i];
+      if (selectedSourceCodes.length === 0) {
+          marker.setVisible(true);
+      } else {
+          if (selectedSourceCodes.includes(marker.sourceCode)) {
+              marker.setVisible(true);
+          } else {
+              marker.setVisible(false);
+          }
+      }
+  }
+}
+
+// added sourceCode parameter to createMarker function to store the source_code value in the marker object
+function createMarker (latlng, name, address, icon, showPin, sourceCode) {
   const html = `<b>${name}</b> <br/>${address}`;
   const marker = new google.maps.Marker({
     position: latlng,
@@ -65,6 +116,8 @@ function createMarker (latlng, name, address, icon, showPin) {
     map,
     visible: showPin,
   });
+  // add a property to each marker that stores the source_code value
+  marker.sourceCode = sourceCode;
 
   marker.addListener("click", () => {
     infoWindow.setContent(html);
@@ -73,17 +126,18 @@ function createMarker (latlng, name, address, icon, showPin) {
   markers.push(marker);
 }
 
+// added source_code parameter to addMarkers function to pass the source_code value to the createMarker function
 function addMarkers (resultsMap) {
   // Create markers.
   for (const [key, item] of resultsMap) {
     const { latitude, longitude, location_name: locationName, line1, city, state: resultsState, we_vote_id: weVoteId,
-      id: pollingLocTableId, icon, showPin  } = item;
+      id: pollingLocTableId, icon, showPin, source_code: source_code  } = item;
     let { href } = window.location;
     const offset = href.lastIndexOf('/pl/') > 0 ? href.lastIndexOf('/pl/') : href.lastIndexOf('/e/');
     const url = `${href.substring(0, offset)}/pl/${pollingLocTableId}/summary/`;
     const link = `<a href='${url}' target='_blank'>Open ${weVoteId}</a>`;
     const address = `${line1}, ${city} ${resultsState.toUpperCase()}<br/>${link}`;
-    createMarker(new google.maps.LatLng(latitude, longitude), locationName, address, icon, showPin);
+    createMarker(new google.maps.LatLng(latitude, longitude), locationName, address, icon, showPin, source_code);
   }
 }
 
@@ -203,5 +257,6 @@ $(() => {
   const nationalSelector = $('#is_national_election');
   if(nationalSelector.length === 0 || nationalSelector.val().toLowerCase() === "true") {
     createSelect();
+    createCheckboxes(); // added by Paul to create checkboxes
   }
 });
