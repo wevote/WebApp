@@ -53,12 +53,10 @@ class PrivacyPage extends Page {
   }
 
   get deleteYourAccountButton () {
-    // return $('.DeleteYourAccountButtonInnerWrapper-sc-qu6md9-2');
     return $('#deleteAllAccountDataButton');
   }
 
   get cancelOfDeleteYourAccountButton () {
-    // return $('.DeleteYourAccountButtonInnerCancelWrapper-sc-qu6md9-1');
     return $('#deleteAllAccountDataCancelButton');
   }
 
