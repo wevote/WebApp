@@ -104,6 +104,7 @@ class DeleteYourAccountButton extends React.Component {
                   onClick={this.deleteAllData}
                   classes={{ root: classes.deletingAllDataNow }}
                   variant="contained"
+                  id="deleteAllAccountDataButton"
                 >
                   {deletingAllDataNow ? message : 'Permanently delete all of your data'}
                 </Button>
@@ -113,6 +114,7 @@ class DeleteYourAccountButton extends React.Component {
                   <Button
                     classes={{ root: classes.deleteAllDataCancelLink }}
                     onClick={this.deleteAllDataConfirmToggle}
+                    id="deleteAllAccountDataCancelButton"
                   >
                     Cancel
                   </Button>
@@ -128,11 +130,12 @@ class DeleteYourAccountButton extends React.Component {
                 fontSize: 16,
               }}
               onClick={this.deleteAllDataConfirmToggle}
+              id="deleteAllAccountDataButton"
             >
               <div className={leftAlign ? '' : 'u-no-break'} style={isCordova() || isMobileScreenSize() ? { paddingLeft: 11 } : {}}>
                 You can
                 {' '}
-                <span className="u-link-color u-link-color-on-hover">
+                <span className="u-link-color u-link-color-on-hover" id="deleteAllAccountDataLink">
                   delete your account and all of your data
                 </span>
                 {' '}
