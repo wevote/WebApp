@@ -39,11 +39,8 @@ const primitiveColorNames = {
   grayUI600: '#6E6E6E',
   grayUI700: '#575757',
   grayUI800: '#4A4A4A',
-<<<<<<< Updated upstream
-=======
   grayUI900: '#3D3D3D',
 
->>>>>>> Stashed changes
   greenUI50: '#E5F4E3',
   greenUI100: '#C1E4BB',
   greenUI200: '#9CD299',
@@ -141,8 +138,6 @@ const DesignTokenColors = {
   alert300: primitiveColorNames.redUI300,
   alert400: primitiveColorNames.redUI400,
   alert500: primitiveColorNames.redUI500,
-<<<<<<< Updated upstream
-=======
   alert600: primitiveColorNames.redUI600,
   alert700: primitiveColorNames.redUI700,
   alert800: primitiveColorNames.redUI800,
@@ -159,7 +154,6 @@ const DesignTokenColors = {
   caution800: primitiveColorNames.yellowUI800,
   caution900: primitiveColorNames.yellowUI900,
 
->>>>>>> Stashed changes
   confirmation50: primitiveColorNames.greenUI50,
   confirmation100: primitiveColorNames.greenUI100,
   confirmation200: primitiveColorNames.greenUI200,
