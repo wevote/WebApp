@@ -48,7 +48,7 @@ class HeartFavoriteToggleLive extends React.Component {
     // Not the most efficient, but allows us to put this component anywhere
     const { campaignXWeVoteId } = this.props;
     if (campaignXWeVoteId) {
-      if (apiCalming(`campaignRetrieve-${campaignXWeVoteId}`, 30000)) {
+      if (apiCalming(`campaignRetrieve-${campaignXWeVoteId}`, 300000)) {
         CampaignActions.campaignRetrieve(campaignXWeVoteId);
       }
     }
@@ -128,7 +128,7 @@ class HeartFavoriteToggleLive extends React.Component {
         });
       }
       if (politicianWeVoteId) {
-        if (apiCalming(`politicianRetrieve-${politicianWeVoteId}`, 30000)) {
+        if (apiCalming(`politicianRetrieve-${politicianWeVoteId}`, 300000)) {
           PoliticianActions.politicianRetrieve(politicianWeVoteId);
         }
       }
