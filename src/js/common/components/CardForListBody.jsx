@@ -75,12 +75,12 @@ function CardForListBody (props) {
   } else if (['Republican', 'Republican Party'].includes(politicalParty)) {
     politicalPartySvgNameWithPath = '../../img/global/svg-icons/political-party-republican.svg';
   } else if (['Green', 'Green Party'].includes(politicalParty)) {
-    politicalPartySvgNameWithPath = '../../img/global/svg-icons/political-party-green-party.svg'
+    politicalPartySvgNameWithPath = '../../img/global/svg-icons/political-party-green-party.svg';
   } else if (['Libertarian', 'Libertarian Party'].includes(politicalParty)) {
-    politicalPartySvgNameWithPath = '../../img/global/svg-icons/political-party-libertarian.svg'
+    politicalPartySvgNameWithPath = '../../img/global/svg-icons/political-party-libertarian.svg';
   } else if (['Working Families', 'Working Families Party'].includes(politicalParty)) {
-    politicalPartySvgNameWithPath = '../../img/global/svg-icons/political-party-working-families.svg'
-  } 
+    politicalPartySvgNameWithPath = '../../img/global/svg-icons/political-party-working-families.svg';
+  }
 
   // /////////////////////// START OF DISPLAY
   return (
@@ -316,9 +316,12 @@ function CardForListBody (props) {
                 profileImageBackgroundColor={profileImageBackgroundColor}
                 useVerticalCard={useVerticalCard}
               >
-                <CampaignImagePlaceholderText>
-                  No image provided
-                </CampaignImagePlaceholderText>
+                <SvgWatermarkWrapper>
+                  <SvgImage imageName={politicalPartySvgNameWithPath} color={DesignTokenColors.neutralUI300} opacity="0.33" height="140px" applyFillColor />
+                  <CampaignImagePlaceholderText>
+                    No candidate image available.
+                  </CampaignImagePlaceholderText>
+                </SvgWatermarkWrapper>
               </CampaignImageMobilePlaceholder>
             )}
           </OneCampaignPhotoWrapperMobile>
@@ -363,7 +366,8 @@ function CardForListBody (props) {
                 useVerticalCard={useVerticalCard}
               >
                 <CampaignImagePlaceholderText>
-                  No image provided
+                  <SvgImage imageName={politicalPartySvgNameWithPath} color={DesignTokenColors.neutralUI300} opacity="0.33" height="140px" applyFillColor />
+                  No candidate image available.
                 </CampaignImagePlaceholderText>
               </CampaignImageDesktopPlaceholder>
             )}
@@ -376,6 +380,7 @@ function CardForListBody (props) {
 CardForListBody.propTypes = {
   ballotItemDisplayName: PropTypes.string.isRequired, // Changed to be required due to error where this shows as undefined [WV-379] when fetching from PoliticianStore 7/18/2024
   candidateWeVoteId: PropTypes.string,
+  classes: PropTypes.object,
   districtName: PropTypes.string,
   finalElectionDateInPast: PropTypes.bool,
   hideCardMargins: PropTypes.bool,
@@ -429,6 +434,9 @@ export const SvgImageWrapper = styled('div')`
   max-width: 25px;
   min-width: 25px;
   width: 25px;
+`;
+
+export const SvgWatermarkWrapper = styled('div')`
 `;
 
 export const YearAndHeartDiv = styled('div')`

@@ -8,7 +8,7 @@ import { renderLog } from '../../utils/logging';
 
 // A function component to avoid CORS issues in Cordova for ReactSVG
 export default function SvgImage (props) {
-  const { imageName, width: localWidth, alt, stylesTextIncoming } = props;
+  const { imageName, width: localWidth, height, alt, stylesTextIncoming, opacity, color, applyFillColor } = props;
   const passedAlt = (typeof alt === 'string') ? alt : '';
   let imageSrc;
   if (imageName.includes('/img/')) {
@@ -17,9 +17,11 @@ export default function SvgImage (props) {
     imageSrc = normalizedImagePath(`../../img/global/svg-icons/issues/${imageName}.svg`);
   }
   let stylesText = `
-    fill: #2e3c5d;
+    fill: ${color || '#2e3c5d'};
     padding: 1px 1px 1px 0px;
     ${localWidth ? `width: ${localWidth};` : ''};
+    ${height ? `height: ${height};` : ''};
+    ${opacity ? `opacity: ${opacity};` : ''}
   `;
   if (stylesTextIncoming) {
     stylesText = stylesTextIncoming;
@@ -33,7 +35,15 @@ export default function SvgImage (props) {
       <ReactSVG
         alt={passedAlt}
         src={imageSrc}
-        beforeInjection={(svg) => svg.setAttribute('style', stylesText)}
+        beforeInjection={(svg) => {
+          svg.setAttribute('style', stylesText);
+          if (applyFillColor) {
+            // Fill property applied to the path element, not SVG element. querySelector to grab the path element and set the attribute.
+            svg.querySelectorAll('path').forEach((path) => {
+              path.setAttribute('fill', color || '#2e3c5d');
+            });
+          }
+        }}
       />
     );
   } else {
@@ -49,6 +59,10 @@ export default function SvgImage (props) {
 SvgImage.propTypes = {
   imageName: PropTypes.string,
   width: PropTypes.string,
+  height: PropTypes.string,
   alt: PropTypes.string,
   stylesTextIncoming: PropTypes.string,
+  opacity: PropTypes.string,
+  color: PropTypes.string,
+  applyFillColor: PropTypes.bool,
 };
