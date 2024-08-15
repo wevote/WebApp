@@ -1,16 +1,16 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import HowItWorks from '../../components/CompleteYourProfile/HowItWorksWizard';
 import { action } from '@storybook/addon-actions';
 
-const steps = [
+const initialSteps = [
   {
     id: 1,
     title: 'How WeVote works',
     buttonText: '',
     completed: false,
     description: '',
-    onClick: (event) => action(event),
+    onClick: '',
     titleCanBeClicked: true,
     width: '33.33%',
   },
@@ -20,7 +20,7 @@ const steps = [
     buttonText: '',
     completed: false,
     description: '',
-    onClick: action('Step 2 Clicked'),
+    onClick: '',
     titleCanBeClicked: true,
     width: '33.33%',
   },
@@ -30,7 +30,7 @@ const steps = [
     buttonText: 'Sign up to save choices',
     completed: false,
     description: '',
-    onClick: action('Step 3 Clicked'),
+    onClick: '',
     titleCanBeClicked: false,
     width: '33.33%',
   },
@@ -44,19 +44,28 @@ export default {
   parameters: {
     layout: 'centered',
   },
-  // argType: {
-  //   steps: { control: 'select' },
-  //   activeStep: { 
-  //     options: [1, 2, 3],
-  //     control: { type: 'select' },
-  //    },
-  // },
   argTypes: {
     activeStep: {
-      options: steps.map((step) => step.id),
-      control: { type: 'radio' },
-      description: 'Select which step is active',
-      onClick: action('Step Clicked'),
+      control: { type: 'check' },
+      options: initialSteps.map(step => step.id),
+      description: 'Select which steps are active',
+    },
+    completed: {
+      control: { type: 'boolean' },
+      description: 'Toggle the completed status',
+    },
+    steps: {
+      control: 'object',
+      description: 'Modify the steps',
+      defaultValue: initialSteps,
+      table: {
+        type: { summary: 'array' },
+        defaultValue: { summary: JSON.stringify(initialSteps) },
+      },
+      fields: {
+        title: { control: 'text', description: 'Step title' },
+        completed: { control: 'boolean', description: 'Step completed status' },
+      },
     },
   },
 };
@@ -69,18 +78,37 @@ const Container = styled.div`
 `;
 
 export const HowItWorksWizard = (args) => {
+  const [steps, setSteps] = useState(args.steps);
   useEffect(() => {
+    setSteps(steps.map(step => ({
+      ...step,
+      completed: args.completed && args.activeStep.includes(step.id),
+    })));
     action(`Active Step Changed to: ${args.activeStep}`)();
   }, [args.activeStep]);
 
+
+  const handleStepToggle = (index) => {
+    const updatedSteps = steps.map((step, i) =>
+      i === index ? { ...step, completed: !step.completed } : step
+    );
+    setSteps(updatedSteps);
+    action(`Step ${index + 1} Clicked - Completed: ${updatedSteps[index].completed}`)();
+  };
+
   return (
     <Container>
-      <HowItWorks steps={steps} activeStep={args.activeStep} {...args}/>
+      <HowItWorks steps={steps.map((step, i) => ({
+        ...step,
+        onClick: () => handleStepToggle(i),
+      }))}
+      activeStep={args.activeStep}/>
     </Container>
   );
 };
 
 HowItWorksWizard.args = {
-  steps: steps,
-  activeStep: 1,
+  steps: initialSteps,
+  activeStep: [1],
+  completed: false,
 };
