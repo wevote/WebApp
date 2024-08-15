@@ -303,12 +303,15 @@ class VoterPhoneVerificationEntry extends Component {
     if (cancelShouldCloseModal) {
       this.closeSignInModalLocal();
     } else if (isCordova()) {
-      if (this.props.showAllSignInOptions) {
-        // WV-316: seperated Cordovoa and Mobile screen cancel logic, Mobile only shows all sign in options on cancel.
-      } 
+      // WV-316: seperated Cordovoa and Mobile screen cancel logic, Mobile only shows all sign in options on cancel.
+      // if (this.props.showAllSignInOptions) {
+      //   this.props.showAllSignInOptions();
+      // }
     } else if (isMobileScreenSize()) {
-     this.props.showAllSignInOptions(); 
-    }
+      if (this.props.showAllSignInOptions) {
+        this.props.showAllSignInOptions();
+      };
+    };
   };
 
   onFocus = () => {
