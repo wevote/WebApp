@@ -67,9 +67,9 @@ function createCheckboxes () {
         const match = matches[i][1];
         const selected = '';
         if (match === 'PUBLIC_SCHOOLS') {
-            checkboxComponent += `<input type='checkbox' id='${match}' name='source_code' value='${match}' ${selected} />Public Schools `;
+            checkboxComponent += `<input type='checkbox' id='${match}' name='source_code' value='${match}' ${selected} />&nbsp;Public Schools&nbsp;&nbsp;&nbsp; `;
         } else if (match === 'POST_OFFICE_LAT_LONG') {
-            checkboxComponent += `<input type='checkbox' id='${match}' name='source_code' value='${match}' ${selected} />Post Offices `;
+            checkboxComponent += `<input type='checkbox' id='${match}' name='source_code' value='${match}' ${selected} />&nbsp;Post Offices `;
         }
     }
     checkboxComponent += '</span>'
