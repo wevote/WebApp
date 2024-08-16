@@ -6,8 +6,6 @@ import IssueStore from '../../stores/IssueStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import signInModalGlobalState from '../../common/components/Widgets/signInModalGlobalState';
 import ValueNameWithPopoverDisplay from './ValueNameWithPopoverDisplay';
-import Chip from '@mui/material/Chip';
-import StickyPopover from '../Ballot/StickyPopover';
 
 // Show a voter a horizontal list of all of the issues they are following that relate to this ballot item
 class IssuesByBallotItemDisplayList extends Component {
@@ -199,22 +197,7 @@ class IssuesByBallotItemDisplayList extends Component {
             showEllipses = false;
           }
           return (
-            <>
-            <Chip
-              variant="outlined"
-              // onClick={() => { console.log('chip clicked'); }}
-              key={`${ballotItemWeVoteId}-${oneIssue.issue_we_vote_id}`}
-              label={oneIssue.issue_name}
-              ballotItemDisplayName={ballotItemDisplayName}
-              ballotItemWeVoteId={ballotItemWeVoteId}
-              externalUniqueId={`${ballotItemWeVoteId}-${externalUniqueId}`}
-              issueFollowedByVoter={issueFollowedByVoter}
-              oneIssue={oneIssue}
-              showEllipses={showEllipses}
-              style={{ margin: "5px", borderRadius: 2, color: "#7b7b79", }}
-              />
-            {/* </StickyPopover> */}
-            {/* <ValueNameWithPopoverDisplay
+            <ValueNameWithPopoverDisplay
               key={`${ballotItemWeVoteId}-${oneIssue.issue_we_vote_id}-${showEllipses}`}
               addComma={localCounter < issueRenderCountTemp}
               ballotItemDisplayName={ballotItemDisplayName}
@@ -223,8 +206,7 @@ class IssuesByBallotItemDisplayList extends Component {
               issueFollowedByVoter={issueFollowedByVoter}
               oneIssue={oneIssue}
               showEllipses={showEllipses}
-              /> */}
-              </>
+            />
           );
         } else {
           return null;
