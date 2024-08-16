@@ -115,7 +115,9 @@ export default class ReadMore extends Component {
         &hellip;
         {' '}
         <a //eslint-disable-line
-          className="u-link-color u-link-underline-on hover u-no-break"
+//         className="u-underline"
+//EAW - Having it underlined improves the score -
+          className="u-link-underline u-no-break"
           href="#"
           id="readMore"
           onClick={this.toggleLines}

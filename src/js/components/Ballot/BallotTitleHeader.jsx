@@ -74,6 +74,7 @@ class BallotTitleHeader extends Component {
       substitutedAddress: BallotStore.getSubstitutedAddress(),
       substitutedState: BallotStore.getSubstitutedState(),
     });
+
   }
 
   onVoterStoreChange () {
@@ -109,6 +110,7 @@ class BallotTitleHeader extends Component {
   }
 
   render () {
+
     renderLog('BallotTitleHeader');  // Set LOG_RENDER_EVENTS to log all renders
     const { allowTextWrap, centerText, electionDateBelow, linksOff, shareButtonText, showBallotCaveat, showShareButton, turnOffVoteByBelow } = this.props;
     const {
@@ -206,7 +208,7 @@ class BallotTitleHeader extends Component {
                                 onClick={this.showSelectBallotModalEditAddress}
                               >
                                   {(textForMapSearch && textForMapSearch !== '') ? textForMapSearch : originalTextAddress}
-                                
+
                               </span>
                               {linksOff ? <></> : editIconStyled}
                             </BallotAddress>

@@ -181,9 +181,9 @@ FooterMainWeVote.propTypes = {
 
 const styles = () => ({
   link: {
-    color: '#808080',
+    color: '#5E5E5B',
     '&:hover': {
-      color: '#4371cc',
+      color: '#5E5E5B',
     },
     textDecoration: 'none',
   },
@@ -191,14 +191,14 @@ const styles = () => ({
     color: '#333',
     textDecoration: 'none',
     '&:hover': {
-      color: '#4371cc',
+      color: '#5E5E5B',
     },
   },
   onClickDiv: {
-    color: '#808080',
+    color: '#5E5E5B',
     cursor: 'pointer',
     '&:hover': {
-      color: '#4371cc',
+      color: '#5E5E5B',
       textDecoration: 'underline',
     },
   },
@@ -244,7 +244,7 @@ const SearchEngineOptimizationSection = styled('div')`
 `;
 
 const Text = styled('p')(({ theme }) => (`
-  color: #808080;
+  color: #5E5E5B;
   font-size: 14px;
   margin-right: 0.5em;
   text-align: center;

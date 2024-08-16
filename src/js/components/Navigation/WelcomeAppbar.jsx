@@ -318,6 +318,7 @@ class WelcomeAppbar extends Component {
                       <IconButton
                         classes={{ root: classes.iconButtonRoot }}
                         id="profileAvatarHeaderBar"
+
                         onClick={this.toggleProfilePopUp}
                         size="large"
                       >
