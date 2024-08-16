@@ -310,8 +310,8 @@ class VoterPhoneVerificationEntry extends Component {
     } else if (isMobileScreenSize()) {
       if (this.props.showAllSignInOptions) {
         this.props.showAllSignInOptions();
-      };
-    };
+      }
+    }
   };
 
   onFocus = () => {
@@ -736,7 +736,7 @@ VoterPhoneVerificationEntry.propTypes = {
   hideEverythingButSignInWithPhoneForm: PropTypes.bool,
   hideSignInWithPhoneForm: PropTypes.bool,
   lockOpenPhoneVerificationButton: PropTypes.bool,
-  // showAllSignInOptions: PropTypes.func,
+  showAllSignInOptions: PropTypes.func,
   showPhoneOnlySignIn: PropTypes.func,
 };
 

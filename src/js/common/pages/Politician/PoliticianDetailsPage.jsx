@@ -45,15 +45,20 @@ import { convertStateCodeToStateText } from '../../utils/addressFunctions';
 import apiCalming from '../../utils/apiCalming';
 import { getYearFromUltimateElectionDate } from '../../utils/dateFormat';
 import historyPush from '../../utils/historyPush';
-import { isWebApp } from '../../utils/isCordovaOrWebApp';
+import { isCordova, isWebApp } from '../../utils/isCordovaOrWebApp';
 import keepHelpingDestination from '../../utils/keepHelpingDestination';
-import { renderLog } from '../../utils/logging';
+import { cordovaOffsetLog, renderLog } from '../../utils/logging';
 import { getPoliticianValuesFromIdentifiers, retrievePoliticianFromIdentifiersIfNeeded } from '../../utils/politicianUtils';
 import returnFirstXWords from '../../utils/returnFirstXWords';
 import saveCampaignSupportAndGoToNextPage from '../../utils/saveCampaignSupportAndGoToNextPage';
+import standardBoxShadow from '../../components/Style/standardBoxShadow';
+import { cordovaBallotFilterTopMargin } from '../../../utils/cordovaOffsets';
+import { headroomWrapperOffset } from '../../../utils/cordovaCalculatedOffsets';
+import { getPageKey } from '../../../utils/cordovaPageUtils';
 
 // const CampaignCommentsList = React.lazy(() => import(/* webpackChunkName: 'CampaignCommentsList' */ '../../components/Campaign/CampaignCommentsList'));
 const CampaignRetrieveController = React.lazy(() => import(/* webpackChunkName: 'CampaignRetrieveController' */ '../../components/Campaign/CampaignRetrieveController'));
+const CampaignSupportThermometer = React.lazy(() => import(/* webpackChunkName: 'CampaignSupportThermometer' */ '../../components/CampaignSupport/CampaignSupportThermometer'));
 const CampaignNewsItemList = React.lazy(() => import(/* webpackChunkName: 'CampaignNewsItemList' */ '../../components/Campaign/CampaignNewsItemList'));
 const CampaignShareChunk = React.lazy(() => import(/* webpackChunkName: 'CampaignShareChunk' */ '../../components/Campaign/CampaignShareChunk'));
 // const ItemActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemActionBar' */ '../../../components/Widgets/ItemActionBar/ItemActionBar'));
@@ -68,6 +73,35 @@ const ViewUpcomingBallotButton = React.lazy(() => import(/* webpackChunkName: 'V
 
 const futureFeaturesDisabled = true;
 const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
+
+function marginTopOffset (scrolledDown) {
+  // if (isIOSAppOnMac()) {
+  //   return '44px';
+  // } else if (isIPad()) {
+  //   return '12px';
+  // } else if (isIOS()) {
+  //   return '85px';
+  // } else if (isWebApp() && isMobileScreenSize()) {
+  //   if (scrolledDown) {
+  //     return '54px';
+  //   } else {
+  //     return '64px';
+  //   }
+  if (isWebApp()) {
+    if (scrolledDown) {
+      return '-6px';
+    } else {
+      return '39px';
+    }
+  } else if (isCordova()) {
+    // Calculated approach Nov 2022
+    const offset = `${headroomWrapperOffset(true)}px`;
+    cordovaOffsetLog(`PoliticianDetailsPage HeadroomWrapper offset: ${offset}, page: ${getPageKey()}`);
+    return offset;
+    // end calculated approach
+  }
+  return 0;
+}
 
 
 class PoliticianDetailsPage extends Component {
@@ -92,6 +126,7 @@ class PoliticianDetailsPage extends Component {
       politicianWeVoteId: '',
       politicianWeVoteIdForDisplay: '', // Value for politician already received
       sharingStepCompleted: false,
+      showMobileViewUpcomingBallot: false,
       stateText: '',
       step2Completed: false,
       supporterEndorsementsWithText: [],
@@ -99,6 +134,7 @@ class PoliticianDetailsPage extends Component {
       wikipediaUrl: '',
       // youtubeUrl: '',
     };
+    // this.onScroll = this.onScroll.bind(this);
   }
 
   componentDidMount () {
@@ -161,14 +197,21 @@ class PoliticianDetailsPage extends Component {
       }
     }, 5000);  // April 19, 2021: Tuned to keep performance above 83.  LCP at 597ms
 
+    this.ballotButtonTimer = setTimeout(() => {
+      this.setState({
+        showMobileViewUpcomingBallot: true,
+      });
+    }, 5000);
+
     // console.log('componentDidMount triggerSEOPathRedirect: ', triggerSEOPathRedirect, ', politicianSEOFriendlyPathFromObject: ', politicianSEOFriendlyPathFromObject);
     if (triggerSEOPathRedirect && politicianSEOFriendlyPathFromObject) {
       historyPush(`/${politicianSEOFriendlyPathFromObject}/-/`, true);
     }
     this.analyticsTimer = setTimeout(() => {
       AnalyticsActions.saveActionPoliticianPageVisit(politicianSEOFriendlyPathFromUrl, politicianWeVoteId);
-    }, 5000);
+    }, 3000);
     window.scrollTo(0, 0);
+    // window.addEventListener('scroll', this.onScroll);
   }
 
   componentDidUpdate (prevProps) {
@@ -264,6 +307,14 @@ class PoliticianDetailsPage extends Component {
   }
 
   componentWillUnmount () {
+    if (this.ballotButtonTimer) {
+      clearTimeout(this.ballotButtonTimer);
+      this.ballotButtonTimer = null;
+    }
+    if (this.positionItemTimer) {
+      clearTimeout(this.positionItemTimer);
+      this.positionItemTimer = null;
+    }
     if (this.timer) {
       clearTimeout(this.timer);
       this.timer = null;
@@ -274,6 +325,7 @@ class PoliticianDetailsPage extends Component {
     this.officeHeldStoreListener.remove();
     this.politicianStoreListener.remove();
     this.representativeStoreListener.remove();
+    // window.removeEventListener('scroll', this.onScroll);
   }
 
   onfirstRetrievalOfPoliticianWeVoteId () {
@@ -291,6 +343,7 @@ class PoliticianDetailsPage extends Component {
       chosenWebsiteName,
       // inPrivateLabelMode,
       payToPromoteStepTurnedOn,
+      scrolledDown: AppObservableStore.getScrolledDown(),
     });
   }
 
@@ -427,6 +480,13 @@ class PoliticianDetailsPage extends Component {
     //
   }
 
+  // onScroll () {
+  //   const showMoreItemsElement =  document.querySelector('#showMoreItemsId');
+  //   // console.log('showMoreItemsElement: ', showMoreItemsElement);
+  //   if (showMoreItemsElement) {
+  //   }
+  // }
+
   getCandidateCampaignListTitle () {
     // thisYearElectionExists, nextYearElectionExists, priorYearElectionExists
     return 'Elections with Candidate';
@@ -512,7 +572,6 @@ class PoliticianDetailsPage extends Component {
       // const campaignXBasePath = this.getCampaignXBasePath();
       // console.log('PoliticianDetailsPage functionToUseWhenProfileComplete campaignXBasePath (IGNORED):', campaignXBasePath);
       saveCampaignSupportAndGoToNextPage(linkedCampaignXWeVoteId);  // campaignXBasePath
-
     } else {
       console.log('PoliticianDetailsPage functionToUseWhenProfileComplete linkedCampaignXWeVoteId not found');
     }
@@ -552,6 +611,7 @@ class PoliticianDetailsPage extends Component {
       politicianSEOFriendlyPath, politicianSEOFriendlyPathForDisplay,
       politicianName, politicianUrl,
       politicianWeVoteId, politicianWeVoteIdForDisplay,
+      scrolledDown, showMobileViewUpcomingBallot,
       stateText, twitterHandle, twitterHandle2,
       voterCanEditThisPolitician, voterSupportsThisPolitician,
       wikipediaUrl, youtubeUrl,
@@ -841,6 +901,22 @@ class PoliticianDetailsPage extends Component {
         </Helmet>
         <PageWrapper>
           <DetailsSectionMobile className="u-show-mobile">
+            <MobileHeaderOuterContainer id="politicianHeaderContainer" scrolledDown={scrolledDown}>
+              <MobileHeaderInnerContainer>
+                <MobileHeaderContentContainer>
+                  <br />
+                  {politicianName}
+                  <br />
+                  <br />
+                  <Suspense fallback={<span>&nbsp;</span>}>
+                    <CampaignSupportThermometer
+                      campaignXWeVoteId={linkedCampaignXWeVoteId}
+                      finalElectionDateInPast={finalElectionDateInPast}
+                    />
+                  </Suspense>
+                </MobileHeaderContentContainer>
+              </MobileHeaderInnerContainer>
+            </MobileHeaderOuterContainer>
             <PoliticianCardForList
               politicianWeVoteId={politicianWeVoteIdForDisplay}
               useCampaignSupportThermometer
@@ -863,7 +939,7 @@ class PoliticianDetailsPage extends Component {
                     {politicianDescription ? (
                       <ReadMore numberOfLines={6} textToDisplay={politicianDescription} />
                     ) : (
-                      <NoInformationProvided>No information has been provided for this candidate.</NoInformationProvided>
+                      <NoInformationProvided>No description has been provided for this candidate.</NoInformationProvided>
                     )}
                   </CampaignDescription>
                 </DelayedLoad>
@@ -1024,7 +1100,7 @@ class PoliticianDetailsPage extends Component {
                         {politicianDescription ? (
                           <ReadMore numberOfLines={6} textToDisplay={politicianDescription} />
                         ) : (
-                          <NoInformationProvided>No information has been provided for this candidate.</NoInformationProvided>
+                          <NoInformationProvided>No description has been provided for this candidate.</NoInformationProvided>
                         )}
                       </CampaignDescriptionDesktop>
                     </DelayedLoad>
@@ -1136,42 +1212,44 @@ class PoliticianDetailsPage extends Component {
             </ColumnsWrapper>
           </DetailsSectionDesktopTablet>
         </PageWrapper>
-        <SupportButtonFooterWrapperAboveFooterButtons className="u-show-mobile">
-          <SupportButtonPanel>
-            <CenteredDiv>
-              <Suspense fallback={<span>&nbsp;</span>}>
-                <ViewUpcomingBallotButton buttonText="View Your Full Ballot" onClickFunction={this.goToBallot} onlyOfferViewYourBallot />
-                {/* {(finalElectionDateInPast) ? ( || usePoliticianWeVoteIdForBallotItem */}
-                {/*  <ItemActionBar */}
-                {/*    ballotItemWeVoteId={politicianWeVoteId} */}
-                {/*    ballotItemDisplayName={politicianName} */}
-                {/*    commentButtonHide */}
-                {/*    externalUniqueId={`PoliticianDetailsPage-ItemActionBar-${politicianWeVoteId}`} */}
-                {/*    hidePositionPublicToggle */}
-                {/*    // inCard */}
-                {/*    positionPublicToggleWrapAllowed */}
-                {/*    shareButtonHide */}
-                {/*    useHelpDefeatOrHelpWin */}
-                {/*    useSupportWording */}
-                {/*  /> */}
-                {/* ) : ( */}
-                {/*  <ItemActionBar */}
-                {/*    ballotItemWeVoteId={candidateWeVoteId} */}
-                {/*    ballotItemDisplayName={politicianName} */}
-                {/*    commentButtonHide */}
-                {/*    externalUniqueId={`PoliticianDetailsPage-ItemActionBar-${candidateWeVoteId}`} */}
-                {/*    hidePositionPublicToggle */}
-                {/*    // inCard */}
-                {/*    positionPublicToggleWrapAllowed */}
-                {/*    shareButtonHide */}
-                {/*    useHelpDefeatOrHelpWin */}
-                {/*    // useSupportWording */}
-                {/*  /> */}
-                {/* )} */}
-              </Suspense>
-            </CenteredDiv>
-          </SupportButtonPanel>
-        </SupportButtonFooterWrapperAboveFooterButtons>
+        {showMobileViewUpcomingBallot && (
+          <SupportButtonFooterWrapperAboveFooterButtons className="u-show-mobile">
+            <SupportButtonPanel>
+              <CenteredDiv>
+                <Suspense fallback={<span>&nbsp;</span>}>
+                  <ViewUpcomingBallotButton buttonText="View Your Full Ballot" onClickFunction={this.goToBallot} onlyOfferViewYourBallot />
+                  {/* {(finalElectionDateInPast) ? ( || usePoliticianWeVoteIdForBallotItem */}
+                  {/*  <ItemActionBar */}
+                  {/*    ballotItemWeVoteId={politicianWeVoteId} */}
+                  {/*    ballotItemDisplayName={politicianName} */}
+                  {/*    commentButtonHide */}
+                  {/*    externalUniqueId={`PoliticianDetailsPage-ItemActionBar-${politicianWeVoteId}`} */}
+                  {/*    hidePositionPublicToggle */}
+                  {/*    // inCard */}
+                  {/*    positionPublicToggleWrapAllowed */}
+                  {/*    shareButtonHide */}
+                  {/*    useHelpDefeatOrHelpWin */}
+                  {/*    useSupportWording */}
+                  {/*  /> */}
+                  {/* ) : ( */}
+                  {/*  <ItemActionBar */}
+                  {/*    ballotItemWeVoteId={candidateWeVoteId} */}
+                  {/*    ballotItemDisplayName={politicianName} */}
+                  {/*    commentButtonHide */}
+                  {/*    externalUniqueId={`PoliticianDetailsPage-ItemActionBar-${candidateWeVoteId}`} */}
+                  {/*    hidePositionPublicToggle */}
+                  {/*    // inCard */}
+                  {/*    positionPublicToggleWrapAllowed */}
+                  {/*    shareButtonHide */}
+                  {/*    useHelpDefeatOrHelpWin */}
+                  {/*    // useSupportWording */}
+                  {/*  /> */}
+                  {/* )} */}
+                </Suspense>
+              </CenteredDiv>
+            </SupportButtonPanel>
+          </SupportButtonFooterWrapperAboveFooterButtons>
+        )}
         <Suspense fallback={<span>&nbsp;</span>}>
           <CampaignRetrieveController campaignXWeVoteId={linkedCampaignXWeVoteId} retrieveAsOwnerIfVoterSignedIn />
           {/* campaignSEOFriendlyPath={campaignSEOFriendlyPath} */}
@@ -1262,6 +1340,41 @@ const MissingPoliticianText = styled('p')(({ theme }) => (`
   }
 `));
 
+const MobileHeaderOuterContainer = styled('div', {
+  shouldForwardProp: (prop) => !['scrolledDown'].includes(prop),
+})(({ scrolledDown }) => (`
+  margin-top: ${marginTopOffset(scrolledDown)};
+  width: 100%;
+  background-color: #fff;
+  ${scrolledDown ? 'border-bottom: 1px solid #aaa' : ''};
+  ${scrolledDown ? `box_shadow: ${standardBoxShadow('wide')}` : ''};
+  ${scrolledDown ? 'display: block' : 'display: none'};
+  overflow: hidden;
+  position: fixed;
+  z-index: 1;
+  right: 0;
+`));
+
+const MobileHeaderInnerContainer = styled('div')`
+  display: flex;
+  justify-content: center;
+  width: 100%;
+`;
+
+
+const MobileHeaderContentContainer = styled('div')(({ theme }) => (`
+  padding: 15px;
+  margin: ${() => cordovaBallotFilterTopMargin()} auto 0 auto;
+  position: relative;
+  max-width: 960px;
+  width: 100%;
+  z-index: 0;
+  ${theme.breakpoints.down('sm')} {
+    min-height: 10px;
+    //margin: 0 10px;
+  }
+`));
+
 const NoInformationProvided = styled('div')`
   color: 1px solid ${DesignTokenColors.neutralUI100};
   font-size: 12px;
@@ -1279,7 +1392,7 @@ const PoliticianLinksWrapper = styled('div')`
   }
 `;
 
-export const ViewBallotButtonWrapper = styled('div')`
+const ViewBallotButtonWrapper = styled('div')`
   display: flex;
   height: 50px;
   justify-content: center;
