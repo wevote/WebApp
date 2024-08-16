@@ -3,7 +3,9 @@ import { action } from '@storybook/addon-actions';
 import styled from 'styled-components';
 import HowItWorks from '../../components/CompleteYourProfile/HowItWorksWizard';
 
-// WV-380: Created controls for action ...
+// WV-380: Created controls for the HowItWorks component allowing steps object to be modified,
+// multi check on activeSteps,
+// and completed status to be toggled true/false.
 
 const initialSteps = [
   {
@@ -86,12 +88,12 @@ const Container = styled.div`
 export const HowItWorksWizard = (args) => {
   const [steps, setSteps] = useState(args.steps);
   useEffect(() => {
-    setSteps(steps.map((step) => ({
+    setSteps((prevSteps) => prevSteps.map((step) => ({
       ...step,
       completed: args.completed && args.activeStep.includes(step.id),
     })));
     action(`Active Step Changed to: ${args.activeStep}`)();
-  }, [args.activeStep, args.completed, steps]);
+  }, [args.activeStep, args.completed, args.steps]);
 
 
   const handleStepToggle = (index) => {
