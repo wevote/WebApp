@@ -317,7 +317,14 @@ function CardForListBody (props) {
                 useVerticalCard={useVerticalCard}
               >
                 <SvgWatermarkWrapper>
-                  <SvgImage imageName={politicalPartySvgNameWithPath} color={DesignTokenColors.neutralUI300} opacity="0.33" height="140px" applyFillColor />
+                  <SvgImage
+                    applyFillColor
+                    color={DesignTokenColors.neutralUI300}
+                    height="100px"
+                    imageName={politicalPartySvgNameWithPath}
+                    marginBottom="-10px"
+                    opacity="0.33"
+                  />
                   <CampaignImagePlaceholderText>
                     No candidate image available.
                   </CampaignImagePlaceholderText>
@@ -366,7 +373,14 @@ function CardForListBody (props) {
                 useVerticalCard={useVerticalCard}
               >
                 <CampaignImagePlaceholderText>
-                  <SvgImage imageName={politicalPartySvgNameWithPath} color={DesignTokenColors.neutralUI300} opacity="0.33" height="140px" applyFillColor />
+                  <SvgImage
+                    applyFillColor
+                    color={DesignTokenColors.neutralUI300}
+                    height="140px"
+                    imageName={politicalPartySvgNameWithPath}
+                    marginBottom="-10px"
+                    opacity="0.33"
+                  />
                   No candidate image available.
                 </CampaignImagePlaceholderText>
               </CampaignImageDesktopPlaceholder>

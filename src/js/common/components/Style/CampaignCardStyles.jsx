@@ -89,7 +89,7 @@ export const CampaignImageMobilePlaceholder = styled('div', {
 
 export const CampaignImagePlaceholderText = styled('div')`
   color: ${DesignTokenColors.neutralUI400};
-  margin-bottom: 10px;
+  margin-top: 0;
 `;
 
 export const CampaignImageMobile = styled('img')`

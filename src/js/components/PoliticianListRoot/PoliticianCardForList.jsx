@@ -219,7 +219,7 @@ class PoliticianCardForList extends Component {
     const pathToUseToKeepHelping = this.getPathToUseToKeepHelping();
     return (
       <CardForListBody
-        ballotItemDisplayName={ballotItemDisplayName || ""}
+        ballotItemDisplayName={ballotItemDisplayName || ''}
         campaignSupported={campaignSupported}
         candidateWeVoteId={candidateWeVoteId}
         districtName={districtName}
