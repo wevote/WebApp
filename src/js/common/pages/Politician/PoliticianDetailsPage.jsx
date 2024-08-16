@@ -572,7 +572,6 @@ class PoliticianDetailsPage extends Component {
       // const campaignXBasePath = this.getCampaignXBasePath();
       // console.log('PoliticianDetailsPage functionToUseWhenProfileComplete campaignXBasePath (IGNORED):', campaignXBasePath);
       saveCampaignSupportAndGoToNextPage(linkedCampaignXWeVoteId);  // campaignXBasePath
-
     } else {
       console.log('PoliticianDetailsPage functionToUseWhenProfileComplete linkedCampaignXWeVoteId not found');
     }
