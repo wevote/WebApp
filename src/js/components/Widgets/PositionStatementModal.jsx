@@ -238,7 +238,7 @@ class PositionStatementModal extends Component {
           className={classes.formStyles}
           onBlur={this.onBlurInput}
           onFocus={this.onFocusInput}
-          onSubmit={this.savePositionStatement.bind(this)}
+          onSubmit={this.savePositionStatement}
         >
           <TextFieldDiv>
             <VoterAvatarImg

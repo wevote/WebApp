@@ -37,18 +37,20 @@ class ModalDisplayTemplateA extends Component {
         style={{ paddingTop: `${isCordova() ? '75px' : 'undefined'}` }}
       >
         <DialogTitle classes={{ root: classes.dialogTitle }}>
-          <Title>
-            {dialogTitleJSX}
-          </Title>
-          <IconButton
-            aria-label="Close"
-            classes={{ root: classes.closeButton }}
-            onClick={() => { this.props.toggleModal(); }}
-            id={`closeModalDisplayTemplateA${externalUniqueId}`}
-            size="large"
-          >
-            <Close />
-          </IconButton>
+          <DialogTitleInnerWrapper>
+            <Title>
+              {dialogTitleJSX || <>&nbsp;</>}
+            </Title>
+            <IconButton
+              aria-label="Close"
+              classes={{ root: classes.closeButton }}
+              onClick={() => { this.props.toggleModal(); }}
+              id={`closeModalDisplayTemplateA${externalUniqueId}`}
+              size="large"
+            >
+              <Close />
+            </IconButton>
+          </DialogTitleInnerWrapper>
         </DialogTitle>
         <DialogContent classes={{ root: classes.dialogContent }}>
           <DialogContentInnerWrapper>
@@ -150,6 +152,12 @@ const DialogContentInnerWrapper = styled('div')`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+`;
+
+const DialogTitleInnerWrapper = styled('div')`
+  display: flex;
+  justify-content: space-between;
+  min-height: 28px;
 `;
 
 export const horizontalEllipsis = '\u2026';

@@ -305,7 +305,7 @@ class CompleteYourProfile extends Component {
   }
 }
 CompleteYourProfile.propTypes = {
-  classes: PropTypes.object,
+  // classes: PropTypes.object,
 };
 const styles = () => ({
   navigationButton: {

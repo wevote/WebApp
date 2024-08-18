@@ -40,7 +40,7 @@ import isMobileScreenSize from '../utils/isMobileScreenSize';
 import DesignTokenColors from './Style/DesignTokenColors';
 import HeartFavoriteToggleLoader from './Widgets/HeartFavoriteToggle/HeartFavoriteToggleLoader';
 import SvgImage from './Widgets/SvgImage';
-import webAppConfig from "../../config";
+import webAppConfig from '../../config';
 
 const CampaignSupportThermometer = React.lazy(() => import(/* webpackChunkName: 'CampaignSupportThermometer' */ './CampaignSupport/CampaignSupportThermometer'));
 const ItemActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemActionBar' */ '../../components/Widgets/ItemActionBar/ItemActionBar'));

@@ -134,7 +134,7 @@ class ActivityPostModal extends Component {
           className={classes.formStyles}
           onBlur={this.onBlurInput}
           onFocus={this.onFocusInput}
-          onSubmit={this.saveActivityPost.bind(this)}
+          onSubmit={this.saveActivityPost}
         >
           <TextFieldDiv>
             <VoterAvatarImg

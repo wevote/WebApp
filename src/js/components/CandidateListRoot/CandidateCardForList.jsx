@@ -191,11 +191,11 @@ class CandidateCardForList extends Component {
     if (!candidateWeVoteId) {
       return null;
     }
-    let candidateDescription;
+    // let candidateDescription;
     if (ballotGuideOfficialStatement) {
-      candidateDescription = ballotGuideOfficialStatement;
+      // candidateDescription = ballotGuideOfficialStatement;
     } else if (twitterDescription) {
-      candidateDescription = twitterDescription;
+      // candidateDescription = twitterDescription;
     }
     let districtName;
     if (contestOfficeList) {

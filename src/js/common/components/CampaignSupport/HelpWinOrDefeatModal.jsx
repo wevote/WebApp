@@ -28,12 +28,10 @@ class HelpWinOrDefeatModal extends Component {
     const { ballotItemWeVoteId } = this.props;
     const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(ballotItemWeVoteId);
     if (ballotItemStatSheet) {
-      const { voterOpposesBallotItem, voterPositionIsPublic, voterSupportsBallotItem, voterTextStatement } = ballotItemStatSheet;
+      const { voterOpposesBallotItem, voterSupportsBallotItem } = ballotItemStatSheet;
       this.setState({
         voterOpposesBallotItem,
-        voterPositionIsPublic,
         voterSupportsBallotItem,
-        voterTextStatement,
       });
     }
 
@@ -158,28 +156,27 @@ class HelpWinOrDefeatModal extends Component {
       voterOpposesBallotItem, voterSupportsBallotItem,
     } = this.state;
 
-    const dialogTitleText = '';
-
     const horizontalEllipsis = '\u2026';
-    let statementPlaceholderText = `Your thoughts${horizontalEllipsis}`;
+    let dialogTitleText = '';
 
     if (voterSupportsBallotItem) {
       if (ballotItemDisplayName) {
-        statementPlaceholderText = `Why you chose ${ballotItemDisplayName}${horizontalEllipsis}`;
+        dialogTitleText = `Why you chose ${ballotItemDisplayName}${horizontalEllipsis}`;
       } else {
-        statementPlaceholderText = `Why you support${horizontalEllipsis}`;
+        dialogTitleText = `Why you support${horizontalEllipsis}`;
       }
     } else if (voterOpposesBallotItem) {
       if (ballotItemDisplayName) {
-        statementPlaceholderText = `Why you oppose ${ballotItemDisplayName}${horizontalEllipsis}`;
+        dialogTitleText = `Why you oppose ${ballotItemDisplayName}${horizontalEllipsis}`;
       } else {
-        statementPlaceholderText = `Why you oppose${horizontalEllipsis}`;
+        dialogTitleText = `Why you oppose${horizontalEllipsis}`;
       }
     } else if (ballotItemDisplayName) {
-      statementPlaceholderText = `Your thoughts about ${ballotItemDisplayName}${horizontalEllipsis}`;
+      dialogTitleText = `Your thoughts about ${ballotItemDisplayName}${horizontalEllipsis}`;
     } else {
-      statementPlaceholderText = `Your thoughts${horizontalEllipsis}`;
+      dialogTitleText = `Your thoughts${horizontalEllipsis}`;
     }
+    dialogTitleText = ''; // Overwrite until we can adjust
 
     // console.log('HelpWinOrDefeatModal render, voter_address_object: ', voter_address_object);
     const textFieldJSX = (

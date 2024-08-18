@@ -200,13 +200,13 @@ class PoliticianCardForList extends Component {
     if (!politicianWeVoteId) {
       return null;
     }
-    let politicianDescriptionToDisplay;
+    // let politicianDescriptionToDisplay;
     if (ballotGuideOfficialStatement) {
-      politicianDescriptionToDisplay = ballotGuideOfficialStatement;
+      // politicianDescriptionToDisplay = ballotGuideOfficialStatement;
     } else if (politicianDescription) {
-      politicianDescriptionToDisplay = politicianDescription;
+      // politicianDescriptionToDisplay = politicianDescription;
     } else if (twitterDescription) {
-      politicianDescriptionToDisplay = twitterDescription;
+      // politicianDescriptionToDisplay = twitterDescription;
     }
     let districtName;
     if (contestOfficeList) {

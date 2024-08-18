@@ -17,9 +17,9 @@ import historyPush from '../../utils/historyPush';
 import { renderLog } from '../../utils/logging';
 import { payToPromoteProcessStyles } from '../Style/CampaignSupportStyles';
 import webAppConfig from '../../../config';
-import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
+// import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import CampaignStore from '../../stores/CampaignStore';
-import VoterStore from '../../../stores/VoterStore';
+// import VoterStore from '../../../stores/VoterStore';
 import { getCampaignXValuesFromIdentifiers, retrieveCampaignXFromIdentifiersIfNeeded } from '../../utils/campaignUtils';
 import initializejQuery from '../../utils/initializejQuery';
 import SplitIconButton from '../Widgets/SplitIconButton';
@@ -45,7 +45,7 @@ class PayToPromoteProcess extends Component {
       chipInPaymentOtherValue: '',
       preDonation: true,
       showWaiting: false,
-      voterFirstName: '',
+      // voterFirstName: '',
     };
     this.onOtherAmountFieldChange = this.onOtherAmountFieldChange.bind(this);
     this.onChipIn = this.onChipIn.bind(this);
@@ -57,13 +57,13 @@ class PayToPromoteProcess extends Component {
       // console.log('PayToPromoteProcess, componentDidMount after init jQuery');
       const { campaignXWeVoteId, chipInPaymentValueDefault } = this.props;
       this.setState({ loaded: true });
-      this.onAppObservableStoreChange();
-      this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
+      // this.onAppObservableStoreChange();
+      // this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
       this.campaignStoreListener = CampaignStore.addListener(this.onCampaignStoreChange.bind(this));
       this.donateStoreListener = DonateStore.addListener(this.onDonateStoreChange.bind(this));
       // dumpCookies();
-      this.onVoterStoreChange();
-      this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+      // this.onVoterStoreChange();
+      // this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
       if (chipInPaymentValueDefault) {
         this.setState({ chipInPaymentValue: chipInPaymentValueDefault });
       }
@@ -94,21 +94,21 @@ class PayToPromoteProcess extends Component {
   }
 
   componentWillUnmount () {
-    this.appStateSubscription.unsubscribe();
+    // this.appStateSubscription.unsubscribe();
     this.campaignStoreListener.remove();
     this.donateStoreListener.remove();
-    this.voterStoreListener.remove();
+    // this.voterStoreListener.remove();
     if (this.timer) {
       clearTimeout(this.timer);
     }
   }
 
-  onAppObservableStoreChange () {
-    const chosenWebsiteName = AppObservableStore.getChosenWebsiteName();
-    this.setState({
-      chosenWebsiteName,
-    });
-  }
+  // onAppObservableStoreChange () {
+  //   const chosenWebsiteName = AppObservableStore.getChosenWebsiteName();
+  //   this.setState({
+  //     chosenWebsiteName,
+  //   });
+  // }
 
   onCampaignStoreChange () {
     const { campaignXWeVoteId } = this.props;
@@ -145,12 +145,12 @@ class PayToPromoteProcess extends Component {
     return {};
   }
 
-  onVoterStoreChange () {
-    const voterFirstName = VoterStore.getVoterFirstName();
-    this.setState({
-      voterFirstName,
-    });
-  }
+  // onVoterStoreChange () {
+  //   const voterFirstName = VoterStore.getVoterFirstName();
+  //   this.setState({
+  //     voterFirstName,
+  //   });
+  // }
 
   onOtherAmountFieldChange (event) {
     if (event && event.target) {
@@ -234,7 +234,7 @@ class PayToPromoteProcess extends Component {
           <InnerWrapper>
             <ContributeGridWrapper show={preDonation}>
               <ContributeMonthlyText>
-                Please chip in what you can:
+                Chip in to reach more voters:
               </ContributeMonthlyText>
               <ContributeGridSection>
                 {lowerDonations && (
@@ -249,8 +249,8 @@ class PayToPromoteProcess extends Component {
                           $1
                         </PaymentAmount>
                         <WhatYouGet>
-                          <span className="u-show-mobile">5 views</span>
-                          <span className="u-show-desktop-tablet">5 views of campaign</span>
+                          <span className="u-show-mobile">5 voters</span>
+                          <span className="u-show-desktop-tablet">5 voters reached</span>
                         </WhatYouGet>
                       </ButtonInsideWrapper>
                     </Button>
@@ -267,8 +267,8 @@ class PayToPromoteProcess extends Component {
                         $3
                       </PaymentAmount>
                       <WhatYouGet>
-                        <span className="u-show-mobile">25 views</span>
-                        <span className="u-show-desktop-tablet">25 views of campaign</span>
+                        <span className="u-show-mobile">15 voters</span>
+                        <span className="u-show-desktop-tablet">15 voters reached</span>
                       </WhatYouGet>
                     </ButtonInsideWrapper>
                   </Button>
@@ -284,8 +284,8 @@ class PayToPromoteProcess extends Component {
                         $15
                       </PaymentAmount>
                       <WhatYouGet>
-                        <span className="u-show-mobile">200 views</span>
-                        <span className="u-show-desktop-tablet">200 views of campaign</span>
+                        <span className="u-show-mobile">75 voters</span>
+                        <span className="u-show-desktop-tablet">75 voters reached</span>
                       </WhatYouGet>
                     </ButtonInsideWrapper>
                   </Button>
@@ -301,8 +301,8 @@ class PayToPromoteProcess extends Component {
                         $35
                       </PaymentAmount>
                       <WhatYouGet>
-                        <span className="u-show-mobile">750 views</span>
-                        <span className="u-show-desktop-tablet">750 views of campaign</span>
+                        <span className="u-show-mobile">175 voters</span>
+                        <span className="u-show-desktop-tablet">175 voters reached</span>
                       </WhatYouGet>
                     </ButtonInsideWrapper>
                   </Button>
@@ -319,8 +319,8 @@ class PayToPromoteProcess extends Component {
                           $50
                         </PaymentAmount>
                         <WhatYouGet>
-                          <span className="u-show-mobile">1,250 views</span>
-                          <span className="u-show-desktop-tablet">1,250 views of campaign</span>
+                          <span className="u-show-mobile">250 voters</span>
+                          <span className="u-show-desktop-tablet">250 voters reached</span>
                         </WhatYouGet>
                       </ButtonInsideWrapper>
                     </Button>
@@ -373,7 +373,7 @@ class PayToPromoteProcess extends Component {
                 ) : (
                   <div>
                     Thank you for your choice!
-                    We are still building our payment processing system.
+                    We are still building our payment processing system, but have recorded your choice.
                   </div>
                 )}
               </ButtonContainer>
