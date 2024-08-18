@@ -161,7 +161,7 @@ class CandidateCardForList extends Component {
 
   render () {
     renderLog('CandidateCardForList');  // Set LOG_RENDER_EVENTS to log all renders
-    const { limitCardWidth, useVerticalCard } = this.props;
+    const { limitCardWidth, showPoliticianOpenInNewWindow, useVerticalCard } = this.props;
     const { campaignSupported, candidate, linkedCampaignXWeVoteId } = this.state;
     if (!candidate) {
       return null;
@@ -191,11 +191,11 @@ class CandidateCardForList extends Component {
     if (!candidateWeVoteId) {
       return null;
     }
-    let candidateDescription;
+    // let candidateDescription;
     if (ballotGuideOfficialStatement) {
-      candidateDescription = ballotGuideOfficialStatement;
+      // candidateDescription = ballotGuideOfficialStatement;
     } else if (twitterDescription) {
-      candidateDescription = twitterDescription;
+      // candidateDescription = twitterDescription;
     }
     let districtName;
     if (contestOfficeList) {
@@ -223,6 +223,7 @@ class CandidateCardForList extends Component {
         // politicianDescription={candidateDescription}
         politicianWeVoteId={politicianWeVoteId}
         profileImageBackgroundColor={profileImageBackgroundColor}
+        showPoliticianOpenInNewWindow={showPoliticianOpenInNewWindow}
         stateCode={stateCode}
         supportersCount={supportersCount}
         supportersCountNextGoalRaw={supportersCountNextGoalRaw}
@@ -236,6 +237,7 @@ class CandidateCardForList extends Component {
 CandidateCardForList.propTypes = {
   candidateWeVoteId: PropTypes.string,
   limitCardWidth: PropTypes.bool,
+  showPoliticianOpenInNewWindow: PropTypes.bool,
   useVerticalCard: PropTypes.bool,
 };
 

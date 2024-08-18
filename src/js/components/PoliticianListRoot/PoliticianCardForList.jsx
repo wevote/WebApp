@@ -148,7 +148,7 @@ class PoliticianCardForList extends Component {
 
   render () {
     renderLog('PoliticianCardForList');  // Set LOG_RENDER_EVENTS to log all renders
-    const { limitCardWidth, politicianWeVoteId, useCampaignSupportThermometer, useVerticalCard } = this.props;
+    const { limitCardWidth, politicianWeVoteId, showPoliticianOpenInNewWindow, useCampaignSupportThermometer, useVerticalCard } = this.props;
     const { campaignSupported, candidate, candidateWeVoteId, linkedCampaignXWeVoteId, politician } = this.state;
     if (!politician) {
       return null;
@@ -200,13 +200,13 @@ class PoliticianCardForList extends Component {
     if (!politicianWeVoteId) {
       return null;
     }
-    let politicianDescriptionToDisplay;
+    // let politicianDescriptionToDisplay;
     if (ballotGuideOfficialStatement) {
-      politicianDescriptionToDisplay = ballotGuideOfficialStatement;
+      // politicianDescriptionToDisplay = ballotGuideOfficialStatement;
     } else if (politicianDescription) {
-      politicianDescriptionToDisplay = politicianDescription;
+      // politicianDescriptionToDisplay = politicianDescription;
     } else if (twitterDescription) {
-      politicianDescriptionToDisplay = twitterDescription;
+      // politicianDescriptionToDisplay = twitterDescription;
     }
     let districtName;
     if (contestOfficeList) {
@@ -236,6 +236,7 @@ class PoliticianCardForList extends Component {
         // politicianDescription={politicianDescriptionToDisplay}
         politicianWeVoteId={politicianWeVoteId}
         profileImageBackgroundColor={profileImageBackgroundColor}
+        showPoliticianOpenInNewWindow={showPoliticianOpenInNewWindow}
         stateCode={stateCode}
         supportersCount={supportersCount}
         supportersCountNextGoalRaw={supportersCountNextGoalRaw}
@@ -251,6 +252,7 @@ class PoliticianCardForList extends Component {
 PoliticianCardForList.propTypes = {
   politicianWeVoteId: PropTypes.string,
   limitCardWidth: PropTypes.bool,
+  showPoliticianOpenInNewWindow: PropTypes.bool,
   useCampaignSupportThermometer: PropTypes.bool,
   useVerticalCard: PropTypes.bool,
 };

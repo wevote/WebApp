@@ -353,19 +353,8 @@ class OrganizationModal extends Component {
         onClose={this.closeOrganizationModal}
         open={modalOpen}
       >
-        <IconButton
-          aria-label="Close"
-          className={classes.closeButton}
-          id="closeOrganizationModal"
-          onClick={this.closeOrganizationModal}
-          size="large"
-        >
-          <span className="u-cursor--pointer">
-            <Close classes={{ root: classes.closeIcon }} />
-          </span>
-        </IconButton>
-        <DrawerHeaderOuterContainer id="politicianHeaderContainer" scrolledDown={scrolledDown}>
-          <DrawerHeaderInnerContainer>
+        <CloseDrawerIconWrapper>
+          <div>
             <IconButton
               aria-label="Close"
               className={classes.closeButton}
@@ -377,6 +366,25 @@ class OrganizationModal extends Component {
                 <Close classes={{ root: classes.closeIcon }} />
               </span>
             </IconButton>
+          </div>
+        </CloseDrawerIconWrapper>
+        <DrawerHeaderOuterContainer id="politicianHeaderContainer" scrolledDown={scrolledDown}>
+          <DrawerHeaderInnerContainer>
+            <CloseDrawerIconWrapper>
+              <div>
+                <IconButton
+                  aria-label="Close"
+                  className={classes.closeButton}
+                  id="closeOrganizationModal"
+                  onClick={this.closeOrganizationModal}
+                  size="large"
+                >
+                  <span className="u-cursor--pointer">
+                    <Close classes={{ root: classes.closeIcon }} />
+                  </span>
+                </IconButton>
+              </div>
+            </CloseDrawerIconWrapper>
             <DrawerHeaderContentContainer>
               {ballotItemDisplayName}
             </DrawerHeaderContentContainer>
@@ -386,6 +394,7 @@ class OrganizationModal extends Component {
           <PoliticianCardForListWrapper>
             <PoliticianCardForList
               politicianWeVoteId={politicianWeVoteId}
+              showPoliticianOpenInNewWindow
               useCampaignSupportThermometer
               useVerticalCard
             />
@@ -559,6 +568,12 @@ const styles = () => ({
 
 const BallotItemBottomSpacer = styled('div')`
   margin-bottom: 32px;
+`;
+
+const CloseDrawerIconWrapper = styled('div')`
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
 `;
 
 const PoliticianCardForListWrapper = styled('div')`

@@ -1,5 +1,5 @@
 import withStyles from '@mui/styles/withStyles';
-import { HowToVote } from '@mui/icons-material';
+import { HowToVote, Launch } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Suspense } from 'react';
 import { Link } from 'react-router-dom';
@@ -40,11 +40,13 @@ import isMobileScreenSize from '../utils/isMobileScreenSize';
 import DesignTokenColors from './Style/DesignTokenColors';
 import HeartFavoriteToggleLoader from './Widgets/HeartFavoriteToggle/HeartFavoriteToggleLoader';
 import SvgImage from './Widgets/SvgImage';
+import webAppConfig from '../../config';
 
 const CampaignSupportThermometer = React.lazy(() => import(/* webpackChunkName: 'CampaignSupportThermometer' */ './CampaignSupport/CampaignSupportThermometer'));
 const ItemActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemActionBar' */ '../../components/Widgets/ItemActionBar/ItemActionBar'));
 const OfficeHeldNameText = React.lazy(() => import(/* webpackChunkName: 'OfficeHeldNameText' */ './Widgets/OfficeHeldNameText'));
 const OfficeNameText = React.lazy(() => import(/* webpackChunkName: 'OfficeNameText' */ './Widgets/OfficeNameText'));
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ './Widgets/OpenExternalWebSite'));
 
 // React functional component example
 function CardForListBody (props) {
@@ -55,7 +57,7 @@ function CardForListBody (props) {
     hideItemActionBar, limitCardWidth, linkedCampaignXWeVoteId, officeName,
     photoLargeUrl, politicalParty, politicianBaseBath,  // pathToUseToKeepHelping
     politicianDescription, politicianWeVoteId, profileImageBackgroundColor,
-    stateCode, tagIdBaseName, // supportersCount, supportersCountNextGoalRaw,
+    showPoliticianOpenInNewWindow, stateCode, tagIdBaseName, // supportersCount, supportersCountNextGoalRaw,
     ultimateElectionDate,
     useCampaignSupportThermometer, useOfficeHeld,
     usePoliticianWeVoteIdForBallotItem, useVerticalCard,
@@ -81,6 +83,7 @@ function CardForListBody (props) {
   } else if (['Working Families', 'Working Families Party'].includes(politicalParty)) {
     politicalPartySvgNameWithPath = '../../img/global/svg-icons/political-party-working-families.svg';
   }
+  const politicianDetailsURL = `${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}${politicianBaseBath}`;
 
   // /////////////////////// START OF DISPLAY
   return (
@@ -100,6 +103,30 @@ function CardForListBody (props) {
               {hideCardMargins ? (
                 <OneCampaignTitle>
                   {ballotItemDisplayName}
+                  {showPoliticianOpenInNewWindow && (
+                    <LaunchIconWrapper>
+                      <Suspense fallback={<></>}>
+                        <OpenExternalWebSite
+                          linkIdAttribute="openPoliticianPage"
+                          url={politicianDetailsURL}
+                          target="_blank"
+                          className="open-web-site open-web-site__no-right-padding"
+                          body={(
+                            <span>
+                              <Launch
+                                style={{
+                                  height: 14,
+                                  marginLeft: 2,
+                                  marginTop: '-3px',
+                                  width: 14,
+                                }}
+                              />
+                            </span>
+                          )}
+                        />
+                      </Suspense>
+                    </LaunchIconWrapper>
+                  )}
                 </OneCampaignTitle>
               ) : (
                 <OneCampaignTitleLink>
@@ -408,6 +435,7 @@ CardForListBody.propTypes = {
   politicianDescription: PropTypes.string,
   politicianWeVoteId: PropTypes.string,
   profileImageBackgroundColor: PropTypes.string,
+  showPoliticianOpenInNewWindow: PropTypes.bool,
   stateCode: PropTypes.string,
   // supportersCount: PropTypes.number.isRequired,
   // supportersCountNextGoalRaw: PropTypes.number,
@@ -432,6 +460,9 @@ export const FlexDivLeft = styled('div')`
   align-items: center;
   display: flex;
   justify-content: start;
+`;
+
+const LaunchIconWrapper = styled('span')`
 `;
 
 export const OfficeNameWrapper = styled('div')`

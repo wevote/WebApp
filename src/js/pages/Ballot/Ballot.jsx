@@ -34,6 +34,7 @@ import BallotShowAllItemsFooter from '../../components/Navigation/BallotShowAllI
 import { DualHeaderContainer, HeaderContentContainer, HeaderContentOuterContainer, PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import webAppConfig from '../../config';
 import BallotStore from '../../stores/BallotStore';
+import CampaignStore from '../../common/stores/CampaignStore';
 import ElectionStore from '../../stores/ElectionStore';
 import IssueStore from '../../stores/IssueStore';
 import SupportStore from '../../stores/SupportStore';
@@ -127,6 +128,7 @@ class Ballot extends Component {
     this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
     // We need a ballotStoreListener here because we want the ballot to display before positions are received
     this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
+    this.campaignStoreListener = CampaignStore.addListener(this.onCampaignStoreChange.bind(this));
     this.electionStoreListener = ElectionStore.addListener(this.onElectionStoreChange.bind(this));
     this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
     this.supportStoreListener = SupportStore.addListener(this.onBallotStoreChange.bind(this));
@@ -761,6 +763,10 @@ class Ballot extends Component {
         ballotItemUnfurledTracker: BallotStore.currentBallotItemUnfurledTracker,
       });
     }
+  }
+
+  onCampaignStoreChange () {
+    // We want the CampaignStore active so it can take in the response data from voterBallotItemsRetrieve
   }
 
   onElectionStoreChange () {
