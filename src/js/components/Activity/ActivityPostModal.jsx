@@ -1,17 +1,20 @@
-import { Close } from '@mui/icons-material';
-import { Button, Dialog, DialogContent, DialogTitle, IconButton, InputBase } from '@mui/material';
+import { Button, InputBase } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import styled from 'styled-components';
+// import styled from 'styled-components';
 import ActivityActions from '../../actions/ActivityActions';
-import { hasIPhoneNotch, isAndroidSizeLG, isAndroidSizeMD, isAndroidSizeWide, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../common/utils/cordovaUtils';
+import { prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../common/utils/cordovaUtils';
 import { isAndroid } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import ActivityStore from '../../stores/ActivityStore';
 import VoterStore from '../../stores/VoterStore';
 import { avatarGeneric } from '../../utils/applicationUtils';
+import ModalDisplayTemplateA, {
+  PostSaveButton, templateAStyles, TextFieldDiv,
+  TextFieldForm, TextFieldWrapper, VoterAvatarImg,
+} from '../Widgets/ModalDisplayTemplateA';
 import ActivityPostPublicToggle from './ActivityPostPublicToggle';
 
 
@@ -97,7 +100,7 @@ class ActivityPostModal extends Component {
     // console.log('ActivityPostModal activityTidbitWeVoteId:', activityTidbitWeVoteId, 'statementText: ', statementText, 'visibilityIsPublic: ', visibilityIsPublic);
     const visibilitySetting = visibilityIsPublic ? 'SHOW_PUBLIC' : 'FRIENDS_ONLY';
     ActivityActions.activityPostSave(activityTidbitWeVoteId, statementText, visibilitySetting);
-    this.props.toggleActivityPostModal();
+    this.props.toggleModal();
   }
 
   updateStatementTextToBeSaved = (e) => {
@@ -110,7 +113,7 @@ class ActivityPostModal extends Component {
     renderLog('ActivityPostModal');  // Set LOG_RENDER_EVENTS to log all renders
     const { activityTidbitWeVoteId } = this.props;
     const {
-      classes, externalUniqueId,
+      classes, externalUniqueId, show,
     } = this.props;
     const {
       visibilityIsPublic,
@@ -119,95 +122,65 @@ class ActivityPostModal extends Component {
     } = this.state;
 
     // const horizontalEllipsis = '\u2026';
+    const dialogTitleText = activityTidbitWeVoteId === '' ? 'Create Post' : 'Edit Post';
     const statementPlaceholderText = 'What\'s on your mind?';
 
     const rowsToShow = isAndroid() ? 4 : 6;
 
     // console.log('ActivityPostModal render, voter_address_object: ', voter_address_object);
-
-    // TODO: This class is too similar to PositionStatementModal -- the common code should be extracted, so that it doesn't have to be maintained twice (the code was copied to make a slightly different version)
-    return (
-      <Dialog
-        classes={{ paper: classes.dialogPaper }}
-        open={this.props.show}
-        onClose={() => { this.props.toggleActivityPostModal(); }}
-      >
-        <DialogTitle classes={{ root: classes.dialogTitle }}>
-          <Title>
-            {activityTidbitWeVoteId === '' ? 'Create Post' : 'Edit Post'}
-          </Title>
-          <IconButton
-            aria-label="Close"
-            classes={{ root: classes.closeButton }}
-            onClick={() => { this.props.toggleActivityPostModal(); }}
-            id="closeActivityPostModal"
-            size="large"
-          >
-            <Close />
-          </IconButton>
-        </DialogTitle>
-        <DialogContent classes={{ root: classes.dialogContent }}>
-          <TextFieldWrapper>
-            <form
-              className={classes.formStyles}
-              onSubmit={this.saveActivityPost.bind(this)}
-              onFocus={this.onFocusInput}
-              onBlur={this.onBlurInput}
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-                height: '95%',
-              }}
+    const textFieldJSX = (
+      <TextFieldWrapper>
+        <TextFieldForm
+          className={classes.formStyles}
+          onBlur={this.onBlurInput}
+          onFocus={this.onFocusInput}
+          onSubmit={this.saveActivityPost.bind(this)}
+        >
+          <TextFieldDiv>
+            <VoterAvatarImg
+              alt=""
+              src={voterPhotoUrlMedium || avatarGeneric()}
+            />
+            <InputBase
+              classes={{ root: classes.inputStyles, inputMultiline: classes.inputMultiline }}
+              id={`activityPostModalStatementText-${activityTidbitWeVoteId}-${externalUniqueId}`}
+              inputRef={(input) => { this.activityPostInput = input; }}
+              multiline
+              name="statementText"
+              onChange={this.updateStatementTextToBeSaved}
+              placeholder={statementPlaceholderText}
+              rows={rowsToShow}
+              value={statementText || ''}
+            />
+          </TextFieldDiv>
+          <ActivityPostPublicToggle
+            initialVisibilityIsPublic={visibilityIsPublic}
+            onToggleChange={this.onPublicToggleChange}
+            preventStackedButtons
+          />
+          <PostSaveButton className="postsave-button">
+            <Button
+              id={`ActivityPostSave-${activityTidbitWeVoteId}-${externalUniqueId}`}
+              variant="contained"
+              color="primary"
+              classes={{ root: classes.saveButtonRoot }}
+              type="submit"
+              disabled={!statementText}
             >
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'flex-start',
-                  border: '1px solid #e8e8e8',
-                  borderRadius: 3,
-                  padding: isAndroidSizeWide() ? '12px 12px 0 12px' : '12px',
-                  marginBottom: 0,
-                }}
-              >
-                <img
-                  alt=""
-                  src={voterPhotoUrlMedium || avatarGeneric()}
-                  style={{ borderRadius: 6, display: 'block', marginRight: 12, width: 50 }}
-                />
-                <InputBase
-                  classes={{ root: classes.inputStyles, inputMultiline: classes.inputMultiline }}
-                  id={`activityPostModalStatementText-${activityTidbitWeVoteId}-${externalUniqueId}`}
-                  inputRef={(input) => { this.activityPostInput = input; }}
-                  multiline
-                  name="statementText"
-                  onChange={this.updateStatementTextToBeSaved}
-                  placeholder={statementPlaceholderText}
-                  rows={rowsToShow}
-                  value={statementText || ''}
-                />
-              </div>
-              <ActivityPostPublicToggle
-                initialVisibilityIsPublic={visibilityIsPublic}
-                onToggleChange={this.onPublicToggleChange}
-                preventStackedButtons
-              />
-              <PostSaveButton className="postsave-button">
-                <Button
-                  id={`ActivityPostSave-${activityTidbitWeVoteId}-${externalUniqueId}`}
-                  variant="contained"
-                  color="primary"
-                  classes={{ root: classes.saveButtonRoot }}
-                  type="submit"
-                  disabled={!statementText}
-                >
-                  {activityTidbitWeVoteId === '' ? 'Post' : 'Save Changes'}
-                </Button>
-              </PostSaveButton>
-            </form>
-          </TextFieldWrapper>
-        </DialogContent>
-      </Dialog>
+              {activityTidbitWeVoteId === '' ? 'Post' : 'Save Changes'}
+            </Button>
+          </PostSaveButton>
+        </TextFieldForm>
+      </TextFieldWrapper>
+    );
+
+    return (
+      <ModalDisplayTemplateA
+        dialogTitleJSX={<>{dialogTitleText}</>}
+        show={show}
+        textFieldJSX={textFieldJSX}
+        toggleModal={this.props.toggleModal}
+      />
     );
   }
 }
@@ -216,95 +189,7 @@ ActivityPostModal.propTypes = {
   classes: PropTypes.object,
   externalUniqueId: PropTypes.string,
   show: PropTypes.bool,
-  toggleActivityPostModal: PropTypes.func.isRequired,
+  toggleModal: PropTypes.func.isRequired,
 };
 
-const styles = (theme) => ({
-  dialogTitle: {
-    padding: isAndroid() ? 8 : 16,
-  },
-  dialogPaper: {
-    marginTop: hasIPhoneNotch() ? '107px !important' : '48px !important',
-    minHeight: isAndroid() ? '257px' : '200px',
-    maxHeight: '350px',
-    height: '80%',
-    width: '90%',
-    maxWidth: '600px',
-    top: '0',
-    transform: isAndroid() ? 'none' : 'translate(0%, -20%)',
-    [theme.breakpoints.down('xs')]: {
-      minWidth: '95%',
-      maxWidth: '95%',
-      width: '95%',
-      minHeight: '200px',
-      maxHeight: '330px',
-      height: isAndroid() ? '79%' : '70%',
-      margin: '0 auto',
-      transform: isAndroidSizeMD()  || isAndroidSizeLG() ? 'translate(0%, -20%)' : 'translate(0%, -30%)',
-    },
-  },
-  dialogContent: {
-    padding: '0 16px',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    height: '100%',
-  },
-  closeButton: {
-    position: 'absolute',
-    right: theme.spacing(1),
-    top: isAndroid() ? '-4px' : theme.spacing(1),
-  },
-  saveButtonRoot: {
-    width: '100%',
-  },
-  formStyles: {
-    width: '100%',
-  },
-  formControl: {
-    width: '100%',
-    marginTop: 16,
-  },
-  inputMultiline: {
-    fontSize: 20,
-    height: '100%',
-    width: '100%',
-    [theme.breakpoints.down('sm')]: {
-      fontSize: 18,
-    },
-  },
-  inputStyles: {
-    flex: '1 1 0',
-    fontSize: 18,
-    height: '100%',
-    width: '100%',
-    [theme.breakpoints.down('sm')]: {
-      fontSize: 16,
-    },
-  },
-  select: {
-    padding: '12px 12px',
-    margin: '0 1px',
-  },
-});
-
-const PostSaveButton = styled('div')`
-  width: 100%;
-`;
-
-const TextFieldWrapper = styled('div')`
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-`;
-
-const Title = styled('div')`
-  font-size: 16px;
-  font-weight: bold;
-  margin: 0;
-  margin-top: 2px;
-  text-align: left;
-`;
-
-export default withTheme(withStyles(styles)(ActivityPostModal));
+export default withTheme(withStyles(templateAStyles)(ActivityPostModal));

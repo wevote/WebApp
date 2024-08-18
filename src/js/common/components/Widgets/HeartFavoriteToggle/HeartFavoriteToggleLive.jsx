@@ -1,17 +1,17 @@
 import React, { Suspense } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import CampaignActions from '../../../actions/CampaignActions';
+// import CampaignActions from '../../../actions/CampaignActions';
 import CampaignStore from '../../../stores/CampaignStore';
 import OrganizationStore from '../../../../stores/OrganizationStore';
 import VoterStore from '../../../../stores/VoterStore';
 import AppObservableStore from '../../../stores/AppObservableStore';
 import CampaignSupporterStore from '../../../stores/CampaignSupporterStore';
-import apiCalming from '../../../utils/apiCalming';
+// import apiCalming from '../../../utils/apiCalming';
 import initializejQuery from '../../../utils/initializejQuery';
 import CampaignSupporterActions from '../../../actions/CampaignSupporterActions';
 import OrganizationActions from '../../../../actions/OrganizationActions';
-import PoliticianActions from '../../../actions/PoliticianActions';
+// import PoliticianActions from '../../../actions/PoliticianActions';
 import { renderLog } from '../../../utils/logging';
 
 const HeartFavoriteToggleBase = React.lazy(() => import(/* webpackChunkName: 'HeartFavoriteToggleBase' */ './HeartFavoriteToggleBase'));
@@ -46,12 +46,12 @@ class HeartFavoriteToggleLive extends React.Component {
     this.onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     // Not the most efficient, but allows us to put this component anywhere
-    const { campaignXWeVoteId } = this.props;
-    if (campaignXWeVoteId) {
-      if (apiCalming(`campaignRetrieve-${campaignXWeVoteId}`, 300000)) {
-        CampaignActions.campaignRetrieve(campaignXWeVoteId);
-      }
-    }
+    // const { campaignXWeVoteId } = this.props;
+    // if (campaignXWeVoteId) {
+    //   if (apiCalming(`campaignRetrieve-${campaignXWeVoteId}`, 300000)) {
+    //     CampaignActions.campaignRetrieve(campaignXWeVoteId);
+    //   }
+    // }
   }
 
   componentDidUpdate (prevProps) {
@@ -127,11 +127,11 @@ class HeartFavoriteToggleLive extends React.Component {
           voterCanVoteForPoliticianInCampaign,
         });
       }
-      if (politicianWeVoteId) {
-        if (apiCalming(`politicianRetrieve-${politicianWeVoteId}`, 300000)) {
-          PoliticianActions.politicianRetrieve(politicianWeVoteId);
-        }
-      }
+      // if (politicianWeVoteId) {
+      //   if (apiCalming(`politicianRetrieve-${politicianWeVoteId}`, 300000)) {
+      //     PoliticianActions.politicianRetrieve(politicianWeVoteId);
+      //   }
+      // }
     }
   }
 

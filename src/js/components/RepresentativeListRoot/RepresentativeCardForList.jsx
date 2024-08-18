@@ -144,7 +144,7 @@ class RepresentativeCardForList extends Component {
 
   render () {
     renderLog('RepresentativeCardForList');  // Set LOG_RENDER_EVENTS to log all renders
-    const { limitCardWidth, useVerticalCard } = this.props;
+    const { limitCardWidth, showPoliticianOpenInNewWindow, useVerticalCard } = this.props;
     const { campaignSupported, representative } = this.state;
     if (!representative) {
       return null;
@@ -197,6 +197,7 @@ class RepresentativeCardForList extends Component {
         // politicianDescription={twitterDescription}
         politicianWeVoteId={politicianWeVoteId}
         profileImageBackgroundColor={profileImageBackgroundColor}
+        showPoliticianOpenInNewWindow={showPoliticianOpenInNewWindow}
         stateCode={stateCode}
         supportersCount={supportersCount}
         supportersCountNextGoalRaw={supportersCountNextGoalRaw}
@@ -211,6 +212,7 @@ class RepresentativeCardForList extends Component {
 RepresentativeCardForList.propTypes = {
   limitCardWidth: PropTypes.bool,
   representativeWeVoteId: PropTypes.string,
+  showPoliticianOpenInNewWindow: PropTypes.bool,
   useVerticalCard: PropTypes.bool,
 };
 
