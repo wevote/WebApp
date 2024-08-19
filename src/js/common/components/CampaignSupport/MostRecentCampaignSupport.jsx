@@ -284,7 +284,6 @@ class MostRecentCampaignSupport extends React.Component {
                     <Avatar sx={speakerDisplayNameToAvatarColor(comment.supporter_name)}>
                       {speakerDisplayNameToInitials(comment.supporter_name)}
                     </Avatar>
-                  // comment.supporter_name
                   )}
                 </CommentVoterPhotoWrapper>
                 <CommentTextWrapper>
