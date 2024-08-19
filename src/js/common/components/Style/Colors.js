@@ -8,7 +8,7 @@ const colors = {
   darkGrey: '#454F69',
   middleGrey: '#5E5E5B',
   grey: '#AEB2BE',
-  lightGrey: '5E5E5B',
+  lightGrey: '#E5E6EA',
   ultraLightGrey: '#FAFAFA',
   white: '#ffffff',
   green: '#007800',

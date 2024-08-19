@@ -116,7 +116,6 @@ export default class ReadMore extends Component {
         {' '}
         <a //eslint-disable-line
 //         className="u-underline"
-//EAW - Having it underlined improves the score -
           className="u-link-underline u-no-break"
           href="#"
           id="readMore"
