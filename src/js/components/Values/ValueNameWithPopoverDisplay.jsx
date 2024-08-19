@@ -169,12 +169,13 @@ class ValueNameWithPopoverDisplay extends Component {
       >
         <Chip
           id={`${externalUniqueId}-valueIconAndText-${oneIssue.issue_we_vote_id}`}
-          issueFollowedByVoter={issueFollowedByVoter}
+          // issueFollowedByVoter={issueFollowedByVoter}
           key={`${externalUniqueId}-valueIconAndTextKey-${oneIssue.issue_we_vote_id}`}
           className="u-cursor--pointer"
           style={{ margin: "5px", borderRadius: 2, backgroundColor: "#fff", border: "1px solid #ccc", color: "#555" }}
           label={oneIssue.issue_name}
-          {...(issueFollowedByVoter ? { icon: <DoneIcon /> } : {})}
+          // {...(issueFollowedByVoter ? { icon: <DoneIcon /> } : {})}
+          icon={issueFollowedByVoter ? <DoneIcon /> : null}
         >
           {/* <WordWrapper>
             {oneIssue.issue_name}
