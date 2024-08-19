@@ -5,7 +5,9 @@ function speakerDisplayNameToAvatarColor (speakerDisplayName) {
   let hashForRandomIndexValue = 0;
   /* eslint-disable no-bitwise */
   for (let i = 0; i < speakerDisplayName.length; i += 1) {
-    hashForRandomIndexValue = speakerDisplayName.charCodeAt(i) + ((hashForRandomIndexValue << 5) - hashForRandomIndexValue);
+    hashForRandomIndexValue =
+      speakerDisplayName.charCodeAt(i) +
+      ((hashForRandomIndexValue << 5) - hashForRandomIndexValue);
   }
   const avatarColorKeys = Object.keys(DesignTokenColors).filter((key) => key.startsWith('avatar'));
   /* eslint-enable no-bitwise */

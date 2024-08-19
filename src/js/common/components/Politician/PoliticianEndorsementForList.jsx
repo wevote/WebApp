@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import TruncateMarkup from 'react-truncate-markup';
 import styled from 'styled-components';
+import { Avatar } from '@mui/material';
 import { avatarGeneric } from '../../../utils/applicationUtils';
 import LazyImage from '../LazyImage';
 import {
@@ -17,10 +18,9 @@ import { getDateFromUltimateElectionDate, getTodayAsInteger, timeFromDate } from
 import { isCordova } from '../../utils/isCordovaOrWebApp';
 import { renderLog } from '../../utils/logging';
 import stringContains from '../../utils/stringContains';
-import speakerDisplayNameToAvatarColor from '../../utils/speakerDisplayNameToAvatarColor'
 import PoliticianStore from '../../stores/PoliticianStore';
 import VoterStore from '../../../stores/VoterStore';
-import { Avatar } from '@mui/material';
+import speakerDisplayNameToInitials from '../../utils/speakerDisplayNameToInitials';
 
 
 class PoliticianEndorsementForList extends Component {
@@ -74,26 +74,13 @@ class PoliticianEndorsementForList extends Component {
       showFullSupporterEndorsement: true,
     });
   }
-  
-  stringAvatar = (name) => {
-  const nameParts = name.split(' ');
-  const initials = nameParts.length > 1
-    ? `${nameParts[0][0]}${nameParts[1][0]}` 
-    : `${nameParts[0][0]}`;
-    return {
-      sx: {
-        bgcolor: speakerDisplayNameToAvatarColor(name),
-      },
-      children: initials,
-    };
-  }
 
   render () {
     renderLog('PoliticianEndorsementForList');  // Set LOG_RENDER_EVENTS to log all renders
     if (isCordova()) {
       console.log(`PoliticianEndorsementForList window.location.href: ${window.location.href}`);
     }
-    const { classes, position } = this.props;
+    const { position } = this.props;
     const { pathToUseToEditSupporterEndorsement, showFullSupporterEndorsement, todayAsInteger, voterWeVoteId } = this.state;
     if (!position || !('position_we_vote_id' in position)) {
       return null;
@@ -110,6 +97,7 @@ class PoliticianEndorsementForList extends Component {
       speaker_image_url_https_medium: speakerImageMedium,
       twitter_followers_count: twitterFollowersCount,
     } = position;
+    const { sx, children } = speakerDisplayNameToInitials(speakerDisplayName);
     let howLongAgoOrThisYear = '';
     const currentYear = new Date().getFullYear();
     // console.log('currentYear', currentYear, ', positionYear', positionYear);
@@ -139,7 +127,7 @@ class PoliticianEndorsementForList extends Component {
                     alt=""
                   />
                 ) : (
-                  <Avatar {...this.stringAvatar(speakerDisplayName)} />
+                  <Avatar sx={sx}>{children}</Avatar>
                 )}
               </CommentVoterPhotoWrapper>
               <CommentTextWrapper>

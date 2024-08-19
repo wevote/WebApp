@@ -1,5 +1,5 @@
-import { AccountCircle, Send } from '@mui/icons-material';
-import { FormControl, IconButton, InputAdornment, TextField } from '@mui/material';
+import { Send } from '@mui/icons-material';
+import { Avatar, FormControl, IconButton, InputAdornment, TextField } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
@@ -11,6 +11,7 @@ import { renderLog } from '../../common/utils/logging';
 import ActivityStore from '../../stores/ActivityStore';
 import AppObservableStore from '../../common/stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
+import speakerDisplayNameToInitials from '../../common/utils/speakerDisplayNameToInitials';
 
 
 class ActivityCommentAdd extends Component {
@@ -96,6 +97,7 @@ class ActivityCommentAdd extends Component {
     renderLog('ActivityCommentAdd');  // Set LOG_RENDER_EVENTS to log all renders
     const { activityCommentWeVoteId, activityTidbitWeVoteId, classes, hidePhotoFromTextField, inEditMode } = this.props;
     const { statementText, activityCommentCount, voterFullName, voterPhotoUrlTiny } = this.state;
+    const { sx, children } = speakerDisplayNameToInitials(voterFullName);
     if (!activityTidbitWeVoteId) {
       return null;
     }
@@ -128,7 +130,7 @@ class ActivityCommentAdd extends Component {
                       </SpeakerAvatar>
                     ) : (
                       <SpeakerAvatar>
-                        <AccountCircle classes={{ root: classes.accountCircle }} />
+                        <Avatar sx={sx}>{children}</Avatar>
                       </SpeakerAvatar>
                     )}
                   </InputAdornment>

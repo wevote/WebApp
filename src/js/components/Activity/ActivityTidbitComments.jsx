@@ -1,5 +1,5 @@
-import { AccountCircle, MoreHoriz } from '@mui/icons-material';
-import { IconButton } from '@mui/material';
+import { MoreHoriz } from '@mui/icons-material';
+import { Avatar, IconButton } from '@mui/material';
 import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
@@ -14,6 +14,8 @@ import ReactionStore from '../../stores/ReactionStore';
 import VoterStore from '../../stores/VoterStore';
 import ActivityCommentAdd from './ActivityCommentAdd';
 import ChildCommentList from './ChildCommentList';
+import speakerDisplayNameToAvatarColor from '../../common/utils/speakerDisplayNameToAvatarColor';
+import speakerDisplayNameToInitials from '../../common/utils/speakerDisplayNameToInitials';
 
 
 const STARTING_NUMBER_OF_PARENT_COMMENTS_TO_DISPLAY = 1;
@@ -237,7 +239,9 @@ class ActivityTidbitComments extends Component {
                   </SpeakerAvatar>
                 ) : (
                   <SpeakerAvatar>
-                    <AccountCircle classes={{ root: classes.accountCircle }} />
+                    <Avatar sx={speakerDisplayNameToAvatarColor(parentComment.commenter_name)}>
+                      {speakerDisplayNameToInitials(parentComment.commenter_name)}
+                    </Avatar>
                   </SpeakerAvatar>
                 )}
               </ParentPhotoDiv>
