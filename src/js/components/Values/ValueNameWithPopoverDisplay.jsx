@@ -80,7 +80,6 @@ class ValueNameWithPopoverDisplay extends Component {
   valuePopover = () => {
     const { ballotItemWeVoteId, ballotItemDisplayName, issueFollowedByVoter, oneIssue } = this.props;
     const { issueSpecificPositionList, organizationsUnderThisIssueCount } = this.state;
-    // console.log('ValueNameWithPopoverDisplay valuePopover, oneIssue:', oneIssue);
     return (
       <PopoverWrapper>
         <PopoverHeader>
