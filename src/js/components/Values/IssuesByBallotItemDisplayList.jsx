@@ -6,8 +6,7 @@ import IssueStore from '../../stores/IssueStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import signInModalGlobalState from '../../common/components/Widgets/signInModalGlobalState';
 import ValueNameWithPopoverDisplay from './ValueNameWithPopoverDisplay';
-import Chip from '@mui/material/Chip';
-import StickyPopover from '../Ballot/StickyPopover'
+// import Chip from '@mui/material/Chip';
 import DoneIcon from '@mui/icons-material/Done';
 
 // Show a voter a horizontal list of all of the issues they are following that relate to this ballot item
@@ -201,15 +200,7 @@ class IssuesByBallotItemDisplayList extends Component {
           }
           return (
             <>
-            <Chip
-              variant="outlined"
-              key={`${ballotItemWeVoteId}-${oneIssue.issue_we_vote_id}`}
-              label={oneIssue.issue_name}
-              style={{ margin: "5px", borderRadius: 2, color: "#7b7b79", }}
-              // issueFollowedByVoter={issueFollowedByVoter}
-              {...(issueFollowedByVoter ? { icon: <DoneIcon /> } : {})}
-              />
-            {/* <ValueNameWithPopoverDisplay
+            <ValueNameWithPopoverDisplay
               key={`${ballotItemWeVoteId}-${oneIssue.issue_we_vote_id}-${showEllipses}`}
               addComma={localCounter < issueRenderCountTemp}
               ballotItemDisplayName={ballotItemDisplayName}
@@ -218,7 +209,7 @@ class IssuesByBallotItemDisplayList extends Component {
               issueFollowedByVoter={issueFollowedByVoter}
               oneIssue={oneIssue}
               showEllipses={showEllipses}
-              /> */}
+              />
             </>
           );
         } else {

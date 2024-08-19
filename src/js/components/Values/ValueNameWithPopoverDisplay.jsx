@@ -10,6 +10,8 @@ import IssueStore from '../../stores/IssueStore';
 import { getPositionSummaryListForBallotItem } from '../../utils/positionFunctions';
 import StickyPopover from '../Ballot/StickyPopover';
 import IssueFollowToggleButton from './IssueFollowToggleButton';
+import Chip from '@mui/material/Chip';
+import DoneIcon from '@mui/icons-material/Done';
 
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../../common/components/Widgets/ReadMore'));
 const PositionSummaryListForPopover = React.lazy(() => import(/* webpackChunkName: 'PositionSummaryListForPopover' */ '../Widgets/ScoreDisplay/PositionSummaryListForPopover'));
@@ -78,6 +80,7 @@ class ValueNameWithPopoverDisplay extends Component {
   valuePopover = () => {
     const { ballotItemWeVoteId, ballotItemDisplayName, issueFollowedByVoter, oneIssue } = this.props;
     const { issueSpecificPositionList, organizationsUnderThisIssueCount } = this.state;
+    // console.log('ValueNameWithPopoverDisplay valuePopover, oneIssue:', oneIssue);
     return (
       <PopoverWrapper>
         <PopoverHeader>
@@ -164,13 +167,16 @@ class ValueNameWithPopoverDisplay extends Component {
         openOnClick
         showCloseIcon
       >
-        <ValueNameWithPopoverDisplaySpan
+        <Chip
           id={`${externalUniqueId}-valueIconAndText-${oneIssue.issue_we_vote_id}`}
           issueFollowedByVoter={issueFollowedByVoter}
           key={`${externalUniqueId}-valueIconAndTextKey-${oneIssue.issue_we_vote_id}`}
           className="u-cursor--pointer"
+          style={{ margin: "5px", borderRadius: 2, backgroundColor: "#fff", border: "1px solid #ccc", color: "#555" }}
+          label={oneIssue.issue_name}
+          {...(issueFollowedByVoter ? { icon: <DoneIcon /> } : {})}
         >
-          <WordWrapper>
+          {/* <WordWrapper>
             {oneIssue.issue_name}
           </WordWrapper>
           {showEllipses ? (
@@ -183,8 +189,8 @@ class ValueNameWithPopoverDisplay extends Component {
               {addComma ? ',' : ''}
               &nbsp;
             </>
-          )}
-        </ValueNameWithPopoverDisplaySpan>
+          )} */}
+        </Chip>
       </StickyPopover>
     );
   }
