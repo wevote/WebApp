@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import HowItWorks from '../../components/CompleteYourProfile/HowItWorksWizard';
 
 // WV-380: Created controls for the HowItWorks component allowing steps object to be modified,
-// multi check on activeSteps,
+// multi-check on activeSteps,
 // and completed status to be toggled true/false.
 
 const initialSteps = [
@@ -56,12 +56,6 @@ export default {
       control: { type: 'boolean' },
       description: 'Toggle the completed status',
     },
-    // title: {
-    //   control: 'text',
-    //   options: initialSteps.map(step => step.title),
-    //   label: 'How WeVote works',
-    //   description: 'Modify the title',
-    // },
     steps: {
       control: 'object',
       description: 'Modify the steps',
@@ -93,7 +87,7 @@ export const HowItWorksWizard = (args) => {
       completed: args.completed && args.activeStep.includes(step.id),
     })));
     action(`Active Step Changed to: ${args.activeStep}`)();
-  }, [args.activeStep, args.completed, args.steps]);
+  }, [args.activeStep, args.completed]);
 
 
   const handleStepToggle = (index) => {
