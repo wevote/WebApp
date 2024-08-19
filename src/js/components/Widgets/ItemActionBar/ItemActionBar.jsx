@@ -2,7 +2,7 @@ import { Comment, Done, NotInterested, ThumbDown, ThumbUp } from '@mui/icons-mat
 import { Button } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
-import React, { PureComponent } from 'react';
+import React, { PureComponent, Suspense } from 'react';
 import styled from 'styled-components';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
@@ -23,8 +23,9 @@ import PositionPublicToggle from '../PositionPublicToggle';
 import ShareButtonDropDown from '../ShareButtonDropdown';
 import { openSnackbar } from '../../../common/components/Widgets/SnackNotifier';
 import DesignTokenColors from '../../../common/components/Style/DesignTokenColors';
-import HelpWinOrDefeatModal from '../../../common/components/CampaignSupport/HelpWinOrDefeatModal'; // eslint-disable-line import/no-cycle
 import PositionStatementModal from '../PositionStatementModal'; // eslint-disable-line import/no-cycle
+
+const HelpWinOrDefeatModal = React.lazy(() => import(/* webpackChunkName: 'HelpWinOrDefeatModal' */ '../../../common/components/CampaignSupport/HelpWinOrDefeatModal')); // eslint-disable-line import/no-cycle
 
 const NUMBER_OF_BALLOT_CHOICES_ALLOWED_BEFORE_SHOW_MODAL = 3;
 const shareIconSvg = '../../../../img/global/svg-icons/share-icon.svg';
@@ -62,6 +63,7 @@ class ItemActionBar extends PureComponent {
   componentDidMount () {
     // console.log('ItemActionBar, NEW componentDidMount');
     const { ballotItemWeVoteId } = this.props;
+    // console.log('ItemActionBar, NEW componentDidMount ballotItemWeVoteId:', ballotItemWeVoteId);
     if (ballotItemWeVoteId) {
       const isCandidate = stringContains('cand', ballotItemWeVoteId); // isCandidate = the default
       const isMeasure = stringContains('meas', ballotItemWeVoteId);
@@ -248,6 +250,8 @@ class ItemActionBar extends PureComponent {
   }
 
   openHelpWinOrDefeatModal = () => {
+    // const { ballotItemWeVoteId } = this.props;
+    // console.log('openHelpWinOrDefeatModal ballotItemWeVoteId: ', ballotItemWeVoteId);
     this.setState({
       helpWinOrDefeatModalOpen: true,
     });
@@ -977,14 +981,14 @@ class ItemActionBar extends PureComponent {
               ballotItemType={ballotItemType}
             />
           )}
-          {helpWinOrDefeatModalOpen && (
+          <Suspense fallback={<></>}>
             <HelpWinOrDefeatModal
               ballotItemWeVoteId={ballotItemWeVoteId}
               // externalUniqueId={externalUniqueId}
               show={helpWinOrDefeatModalOpen}
               toggleModal={this.toggleHelpWinOrDefeatFunction}
             />
-          )}
+          </Suspense>
           {voterTextStatementOpened && (
             <PositionStatementModal
               ballotItemWeVoteId={ballotItemWeVoteId}

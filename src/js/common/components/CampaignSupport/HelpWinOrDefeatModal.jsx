@@ -1,7 +1,7 @@
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
-import React, { Component, Suspense } from 'react';
+import React, { Component } from 'react';
 import ModalDisplayTemplateA, { templateAStyles, TextFieldWrapper } from '../../../components/Widgets/ModalDisplayTemplateA';
 import { renderLog } from '../../utils/logging';
 import stringContains from '../../utils/stringContains';
@@ -9,8 +9,9 @@ import CandidateStore from '../../../stores/CandidateStore';
 import MeasureStore from '../../../stores/MeasureStore';
 import SupportStore from '../../../stores/SupportStore';
 import VoterStore from '../../../stores/VoterStore';
+import PayToPromoteProcess from './PayToPromoteProcess';
 
-const PayToPromoteProcess = React.lazy(() => import(/* webpackChunkName: 'PayToPromoteProcess' */ './PayToPromoteProcess')); // eslint-disable-line import/no-cycle
+// const PayToPromoteProcess = React.lazy(() => import(/* webpackChunkName: 'PayToPromoteProcess' */ './PayToPromoteProcess')); // eslint-disable-line import/no-cycle
 
 
 class HelpWinOrDefeatModal extends Component {
@@ -150,7 +151,9 @@ class HelpWinOrDefeatModal extends Component {
 
   render () {
     renderLog('HelpWinOrDefeatModal');  // Set LOG_RENDER_EVENTS to log all renders
+    // const { ballotItemWeVoteId } = this.props;
     const { show } = this.props;
+    // console.log('HelpWinOrDefeatModal render, ballotItemWeVoteId: ', ballotItemWeVoteId, ', show: ', show);
     const {
       ballotItemDisplayName, campaignXWeVoteId,
       voterOpposesBallotItem, voterSupportsBallotItem,
@@ -181,13 +184,11 @@ class HelpWinOrDefeatModal extends Component {
     // console.log('HelpWinOrDefeatModal render, voter_address_object: ', voter_address_object);
     const textFieldJSX = (
       <TextFieldWrapper>
-        <Suspense fallback={<></>}>
-          <PayToPromoteProcess
-            campaignXWeVoteId={campaignXWeVoteId}
-            chipInPaymentValueDefault="1.00"
-            lowerDonations
-          />
-        </Suspense>
+        <PayToPromoteProcess
+          campaignXWeVoteId={campaignXWeVoteId}
+          chipInPaymentValueDefault="1.00"
+          lowerDonations
+        />
       </TextFieldWrapper>
     );
 

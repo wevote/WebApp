@@ -20,7 +20,7 @@ class ModalDisplayTemplateA extends Component {
   render () {
     renderLog('ModalDisplayTemplateA');  // Set LOG_RENDER_EVENTS to log all renders
     const {
-      classes, dialogTitleJSX, externalUniqueId, tallMode, textFieldJSX,
+      classes, dialogTitleJSX, externalUniqueId, show, tallMode, textFieldJSX,
     } = this.props;
     let dialogPaperCombined;
     if (tallMode) {
@@ -32,8 +32,8 @@ class ModalDisplayTemplateA extends Component {
     return (
       <Dialog
         classes={{ paper: dialogPaperCombined }}
-        onClose={() => { this.props.toggleModal(); }}
-        open={this.props.show}
+        onClose={() => this.props.toggleModal()}
+        open={show}
         style={{ paddingTop: `${isCordova() ? '75px' : 'undefined'}` }}
       >
         <DialogTitle classes={{ root: classes.dialogTitle }}>
@@ -44,7 +44,7 @@ class ModalDisplayTemplateA extends Component {
             <IconButton
               aria-label="Close"
               classes={{ root: classes.closeButton }}
-              onClick={() => { this.props.toggleModal(); }}
+              onClick={() => this.props.toggleModal()}
               id={`closeModalDisplayTemplateA${externalUniqueId}`}
               size="large"
             >
