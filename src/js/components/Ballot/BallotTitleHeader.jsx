@@ -208,7 +208,6 @@ class BallotTitleHeader extends Component {
                                 onClick={this.showSelectBallotModalEditAddress}
                               >
                                 {(textForMapSearch && textForMapSearch !== '') ? textForMapSearch : originalTextAddress}
-
                               </span>
                               {linksOff ? <></> : editIconStyled}
                             </BallotAddress>
