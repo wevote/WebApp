@@ -1,4 +1,3 @@
-import { AccountCircle } from '@mui/icons-material';
 import { Avatar } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
@@ -21,6 +20,7 @@ import stringContains from '../../utils/stringContains';
 import CampaignStore from '../../stores/CampaignStore';
 import CampaignSupporterStore from '../../stores/CampaignSupporterStore';
 import VoterStore from '../../../stores/VoterStore';
+import speakerDisplayNameToInitials from '../../utils/speakerDisplayNameToInitials';
 
 class CampaignCommentForList extends Component {
   constructor (props) {
@@ -95,7 +95,6 @@ class CampaignCommentForList extends Component {
     if (isCordova()) {
       console.log(`CampaignCommentForList window.location.href: ${window.location.href}`);
     }
-    const { classes } = this.props;
     const { campaignXSupporter, pathToUseToEditSupporterEndorsement, showFullSupporterEndorsement, voterWeVoteId } = this.state;
     if (!campaignXSupporter || !('id' in campaignXSupporter)) {
       return null;
@@ -108,6 +107,7 @@ class CampaignCommentForList extends Component {
       voter_we_vote_id: supporterVoterWeVoteId,
       we_vote_hosted_profile_image_url_tiny: voterPhotoUrlTiny,
     } = campaignXSupporter;
+    const { sx, children } = speakerDisplayNameToInitials(supporterName);
     // console.log('supporterVoterWeVoteId:', supporterVoterWeVoteId);
     return (
       <Wrapper>
@@ -125,7 +125,7 @@ class CampaignCommentForList extends Component {
                     alt="Your Settings"
                   />
                 ) : (
-                  <Avatar sx={{bgcolor: blue}}>ts</Avatar>
+                  <Avatar sx={sx}>{children}</Avatar>
                 )}
               </CommentVoterPhotoWrapper>
               <CommentTextWrapper>
