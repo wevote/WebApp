@@ -1,6 +1,5 @@
 import DesignTokenColors from '../components/Style/DesignTokenColors';
 
-// rename function to speakerDisplayNameToAvatarColor
 function speakerDisplayNameToAvatarColor (speakerDisplayName) {
   let hashForRandomIndexValue = 0;
   /* eslint-disable no-bitwise */
