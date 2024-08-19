@@ -8,6 +8,7 @@ import signInModalGlobalState from '../../common/components/Widgets/signInModalG
 import ValueNameWithPopoverDisplay from './ValueNameWithPopoverDisplay';
 import Chip from '@mui/material/Chip';
 import StickyPopover from '../Ballot/StickyPopover'
+import DoneIcon from '@mui/icons-material/Done';
 
 // Show a voter a horizontal list of all of the issues they are following that relate to this ballot item
 class IssuesByBallotItemDisplayList extends Component {
@@ -205,6 +206,8 @@ class IssuesByBallotItemDisplayList extends Component {
               key={`${ballotItemWeVoteId}-${oneIssue.issue_we_vote_id}`}
               label={oneIssue.issue_name}
               style={{ margin: "5px", borderRadius: 2, color: "#7b7b79", }}
+              // issueFollowedByVoter={issueFollowedByVoter}
+              {...(issueFollowedByVoter ? { icon: <DoneIcon /> } : {})}
               />
             {/* <ValueNameWithPopoverDisplay
               key={`${ballotItemWeVoteId}-${oneIssue.issue_we_vote_id}-${showEllipses}`}
