@@ -2,6 +2,8 @@ import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
+import Chip from '@mui/material/Chip';
+import DoneIcon from '@mui/icons-material/Done';
 import React, { Component, Suspense } from 'react';
 import SvgImage from '../../common/components/Widgets/SvgImage';
 import { renderLog } from '../../common/utils/logging';
@@ -10,8 +12,6 @@ import IssueStore from '../../stores/IssueStore';
 import { getPositionSummaryListForBallotItem } from '../../utils/positionFunctions';
 import StickyPopover from '../Ballot/StickyPopover';
 import IssueFollowToggleButton from './IssueFollowToggleButton';
-import Chip from '@mui/material/Chip';
-import DoneIcon from '@mui/icons-material/Done';
 
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../../common/components/Widgets/ReadMore'));
 const PositionSummaryListForPopover = React.lazy(() => import(/* webpackChunkName: 'PositionSummaryListForPopover' */ '../Widgets/ScoreDisplay/PositionSummaryListForPopover'));
@@ -169,12 +169,10 @@ class ValueNameWithPopoverDisplay extends Component {
       >
         <Chip
           id={`${externalUniqueId}-valueIconAndText-${oneIssue.issue_we_vote_id}`}
-          // issueFollowedByVoter={issueFollowedByVoter}
           key={`${externalUniqueId}-valueIconAndTextKey-${oneIssue.issue_we_vote_id}`}
           className="u-cursor--pointer"
-          style={{ margin: "5px", borderRadius: 2, backgroundColor: "#fff", border: "1px solid #ccc", color: "#555" }}
+          style={{ margin: '5px', borderRadius: 2, backgroundColor: '#fff', border: '1px solid #ccc', color: '#555' }}
           label={oneIssue.issue_name}
-          // {...(issueFollowedByVoter ? { icon: <DoneIcon /> } : {})}
           icon={issueFollowedByVoter ? <DoneIcon /> : null}
         >
           {/* <WordWrapper>
