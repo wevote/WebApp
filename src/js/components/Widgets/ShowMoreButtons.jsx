@@ -59,7 +59,7 @@ const styles = (theme) => ({
 
 const ShowMoreButtonsStyled = styled('div')(({ theme }) => (`
   border: 0 !important;
-  color: #4371CC;
+  color: #0858A1;
   cursor: pointer;
   display: block !important;
   background: #fff !important;

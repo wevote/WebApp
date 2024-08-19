@@ -16,13 +16,14 @@ export default class IssueImageDisplay extends Component {
       return null;
     }
 
-    const oneIssue = IssueStore.getIssueByWeVoteId(this.props.issueWeVoteId);
 
+    const oneIssue = IssueStore.getIssueByWeVoteId(this.props.issueWeVoteId);
+      //   console.log(oneIssue.issue_name)
     let issueIconLocalPath = '';
     if (oneIssue.issue_icon_local_path) {
       issueIconLocalPath = oneIssue.issue_icon_local_path;
     }
-    // console.log('IssueImageDisplay issueIconLocalPath:', issueIconLocalPath);
+      //     console.log('IssueImageDisplay issueIconLocalPath:', issueIconLocalPath);
 
     const issueIconImageUrl = (!issueIconLocalPath || issueIconLocalPath.length === 0) ?
       normalizedImagePath('/img/global/svg-icons/issues/thumbs-up-icon.svg') :
@@ -52,7 +53,7 @@ export default class IssueImageDisplay extends Component {
     if (issueImageSize === 'SMALL') {
       issueImage = (
         <ImageHandler
-          alt=""
+          alt={oneIssue.issue_name}
           className={`card-main__org-avatar ${supportOrOpposeClass}${voterIsNotFollowingThisIssueClass}`}
           hidePlaceholder={hidePlaceholder}
           imageUrl={issueIconImageUrl}
@@ -62,7 +63,7 @@ export default class IssueImageDisplay extends Component {
     } else if (issueImageSize === 'MEDIUM') {
       issueImage = (
         <ImageHandler
-          alt=""
+          alt={oneIssue.issue_name}
           className={`card-main__org-avatar ${supportOrOpposeClass}${voterIsNotFollowingThisIssueClass}`}
           hidePlaceholder={hidePlaceholder}
           imageUrl={issueIconImageUrl}
@@ -72,7 +73,7 @@ export default class IssueImageDisplay extends Component {
     } else if (issueImageSize === 'LARGE') {
       issueImage = (
         <ImageHandler
-          alt=""
+          alt={oneIssue.issue_name}
           className={`card-main__org-avatar ${supportOrOpposeClass}${voterIsNotFollowingThisIssueClass}`}
           hidePlaceholder={hidePlaceholder}
           imageUrl={issueIconImageUrl}

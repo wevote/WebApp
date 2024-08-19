@@ -38,11 +38,13 @@ const FooterCandidateListWrapper = styled('span')`
   display: flex;
   flex-flow: column;
   margin-top: 10px; // To match BallotElectionListWithFilters
+
 `;
 
 const SimpleModeItemWrapper = styled('div')`
   cursor: pointer;
   margin-top: 12px;
+
 `;
 
 const SimpleModeTitle = styled('h2')`

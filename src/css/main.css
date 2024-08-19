@@ -102,13 +102,13 @@ small {
 }
 
 a {
-  color:#007bff;
+  color:#0858A1;
   text-decoration:none;
   background-color:transparent
 }
 
 a:hover {
-  color:#0056b3;
+  color:#0858A1;
   text-decoration:underline
 }
 
@@ -1743,15 +1743,15 @@ h1,h2,h3,h4,h5,h6 {
 }
 
 .u-link-color {
-  color:#4371cc
+  color:#0858A1
 }
 
 .u-link-color-on-hover {
-  color:#4371cc
+  color:#0858A1
 }
 
 .u-link-color-on-hover:hover {
-  color:#4371cc
+  color:#0858A1
 }
 
 .u-bold {
@@ -1763,7 +1763,8 @@ h1,h2,h3,h4,h5,h6 {
 }
 
 .u-link-underline {
-  text-decoration:underline
+  text-decoration:underline;
+  color:#0858A1;
 }
 
 .u-link-underline-on-hover:hover {

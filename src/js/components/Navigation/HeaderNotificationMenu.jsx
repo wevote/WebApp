@@ -271,6 +271,7 @@ class HeaderNotificationMenu extends Component {
     return (
       <HeaderNotificationMenuWrapper id="HeaderNotificationMenuWrapper">
         <IconButton
+          aria-label="IconButton"
           aria-controls="headerNotificationsMenu"
           aria-haspopup="true"
           classes={menuOpen ? { root: classes.iconButtonRootSelected } : { root: classes.iconButtonRoot }}
