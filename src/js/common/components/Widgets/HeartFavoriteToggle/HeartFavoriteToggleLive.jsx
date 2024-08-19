@@ -11,6 +11,7 @@ import CampaignSupporterStore from '../../../stores/CampaignSupporterStore';
 import initializejQuery from '../../../utils/initializejQuery';
 import CampaignSupporterActions from '../../../actions/CampaignSupporterActions';
 import OrganizationActions from '../../../../actions/OrganizationActions';
+// import PoliticianActions from '../../../actions/PoliticianActions';
 import { renderLog } from '../../../utils/logging';
 
 const HeartFavoriteToggleBase = React.lazy(() => import(/* webpackChunkName: 'HeartFavoriteToggleBase' */ './HeartFavoriteToggleBase'));
@@ -27,7 +28,7 @@ class HeartFavoriteToggleLive extends React.Component {
       voterCanVoteForPoliticianInCampaign: false,
       voterFirstName: '',
       voterLastName: '',
-      voterSignedInWithEmail: false,
+      voterIsSignedIn: false,
     };
     this.functionToUseWhenProfileComplete = this.functionToUseWhenProfileComplete.bind(this);
     this.submitOpposeClick = this.submitOpposeClick.bind(this);
@@ -44,6 +45,13 @@ class HeartFavoriteToggleLive extends React.Component {
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+    // Not the most efficient, but allows us to put this component anywhere
+    // const { campaignXWeVoteId } = this.props;
+    // if (campaignXWeVoteId) {
+    //   if (apiCalming(`campaignRetrieve-${campaignXWeVoteId}`, 300000)) {
+    //     CampaignActions.campaignRetrieve(campaignXWeVoteId);
+    //   }
+    // }
   }
 
   componentDidUpdate (prevProps) {
@@ -119,6 +127,11 @@ class HeartFavoriteToggleLive extends React.Component {
           voterCanVoteForPoliticianInCampaign,
         });
       }
+      // if (politicianWeVoteId) {
+      //   if (apiCalming(`politicianRetrieve-${politicianWeVoteId}`, 300000)) {
+      //     PoliticianActions.politicianRetrieve(politicianWeVoteId);
+      //   }
+      // }
     }
   }
 
@@ -175,16 +188,16 @@ class HeartFavoriteToggleLive extends React.Component {
 
   onVoterStoreChange () {
     // const { campaignXWeVoteId } = this.props;
-    const { voterSignedInWithEmail: voterSignedInWithEmailPrevious } = this.state;
+    const { voterIsSignedIn: voterIsSignedInPrevious } = this.state;
     const voterFirstName = VoterStore.getFirstName();
     const voterLastName = VoterStore.getLastName();
-    const voterSignedInWithEmail = VoterStore.getVoterIsSignedInWithEmail();
+    const voterIsSignedIn = VoterStore.getVoterIsSignedIn();
     this.setState({
       voterFirstName,
       voterLastName,
-      voterSignedInWithEmail,
+      voterIsSignedIn,
     }, () => {
-      if (voterSignedInWithEmail !== voterSignedInWithEmailPrevious) {
+      if (voterIsSignedIn !== voterIsSignedInPrevious) {
         // TODO: Needs to be figured out in bulk -- not in this component
         // if (apiCalming(`campaignRetrieveAsOwner-${campaignXWeVoteId}`, 500)) {
         //   CampaignActions.campaignRetrieveAsOwner(campaignXWeVoteId);
@@ -325,11 +338,11 @@ class HeartFavoriteToggleLive extends React.Component {
 
   submitActionClick (support = true, oppose = false, stopSupporting = false, stopOpposing = false) {
     const { campaignXWeVoteId } = this.props;
-    const { voterFirstName, voterLastName, voterSignedInWithEmail } = this.state;
+    const { voterFirstName, voterLastName, voterIsSignedIn } = this.state;
     // console.log('HeartFavoriteToggleLive submitActionClick');
     if (!campaignXWeVoteId) {
       console.log('HeartFavoriteToggleLive submitActionClick: missing campaignXWeVoteId:', campaignXWeVoteId);
-    } else if (!voterFirstName || !voterLastName || !voterSignedInWithEmail) {
+    } else if (!voterFirstName || !voterLastName || !voterIsSignedIn) {
       // Open complete your profile modal
       AppObservableStore.setShowCompleteYourProfileModal(true);
     } else {
@@ -343,7 +356,7 @@ class HeartFavoriteToggleLive extends React.Component {
     renderLog('HeartFavoriteToggleLive');  // Set LOG_RENDER_EVENTS to log all renders
 
     const { campaignXWeVoteId } = this.props;
-    const { opposersCount, supportersCount, voterSignedInWithEmail, voterOpposesCampaignX, voterSupportsCampaignX } = this.state;
+    const { opposersCount, supportersCount, voterIsSignedIn, voterOpposesCampaignX, voterSupportsCampaignX } = this.state;
     // console.log('HeartFavoriteToggleLive voterSupportsCampaignX: ', voterSupportsCampaignX, ' voterOpposesCampaignX: ', voterOpposesCampaignX);
     // console.log('HeartFavoriteToggleLive supportersCount: ', supportersCount, ', opposersCount: ', opposersCount);
     return (
@@ -358,7 +371,7 @@ class HeartFavoriteToggleLive extends React.Component {
             submitStopSupporting={this.submitStopSupportingClick}
             submitSupport={this.submitSupportClick}
             voterOpposes={voterOpposesCampaignX}
-            voterSignedInWithEmail={voterSignedInWithEmail}
+            voterIsSignedIn={voterIsSignedIn}
             voterSupports={voterSupportsCampaignX}
           />
         </Suspense>

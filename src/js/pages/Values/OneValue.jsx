@@ -17,8 +17,8 @@ import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import ValuesList from './ValuesList';
 import { convertNameToSlug } from '../../common/utils/textFormat';
-import NoSearchResult from "../../components/Search/NoSearchResult";
-import EndorsementCard from "../../components/Widgets/EndorsementCard";
+import NoSearchResult from '../../components/Search/NoSearchResult';
+import EndorsementCard from '../../components/Widgets/EndorsementCard';
 
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
 const IssueCard = React.lazy(() => import(/* webpackChunkName: 'IssueCard' */ '../../components/Values/IssueCard'));

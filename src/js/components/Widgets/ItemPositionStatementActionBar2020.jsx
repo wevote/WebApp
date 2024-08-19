@@ -278,7 +278,7 @@ class ItemPositionStatementActionBar2020 extends Component {
             ballotItemWeVoteId={ballotItemWeVoteId}
             externalUniqueId={externalUniqueId}
             show={showPositionStatementModal}
-            togglePositionStatementModal={this.togglePositionStatementModal}
+            toggleModal={this.togglePositionStatementModal}
           />
         )}
       </Wrapper>

@@ -12,10 +12,6 @@ class PrivacyPage extends Page {
     await super.rerender();
   }
 
-  get pageContentTitleText () {
-    return $('.ContentTitle-sc-aac96k-0');
-  }
-
   get weVoteUSLink () {
     return $('#wevote');
   }
@@ -33,7 +29,7 @@ class PrivacyPage extends Page {
   }
 
   get deleteYourAccountLink () {
-    return $('.u-link-color');
+    return $('#deleteAllAccountDataLink');
   }
 
   get googleApiUserDataPolicyLink () {
@@ -57,11 +53,11 @@ class PrivacyPage extends Page {
   }
 
   get deleteYourAccountButton () {
-    return $('.DeleteYourAccountButtonInnerWrapper-sc-qu6md9-2');
+    return $('#deleteAllAccountDataButton');
   }
 
   get cancelOfDeleteYourAccountButton () {
-    return $('.DeleteYourAccountButtonInnerCancelWrapper-sc-qu6md9-1');
+    return $('#deleteAllAccountDataCancelButton');
   }
 
   async getTextFromEmailLinks () {

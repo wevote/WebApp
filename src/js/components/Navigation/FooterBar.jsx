@@ -9,7 +9,7 @@ import AppObservableStore, { messageService } from '../../common/stores/AppObser
 import { isIOS } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
 import { normalizedHref } from '../../common/utils/hrefUtils';
-import { isAndroid, isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
+import { isAndroid, isCordova } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
@@ -220,7 +220,7 @@ class FooterBar extends React.Component {
     let discussVisible;
     let donateVisible;
     const friendsVisible = false; // 2023-09-04 Dale We are turning off Friends footer icon for now
-    //const squadsVisible = isWebApp();
+    // const squadsVisible = isWebApp();
     const squadsVisible = false;
     // let howItWorksVisible;
     const howItWorksVisible = false;

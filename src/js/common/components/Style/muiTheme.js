@@ -9,11 +9,21 @@ import muiStyleOverrides from '../../../components/Style/muiStyleOverrides';
 const muiTheme = createTheme({
   palette: {
     primary: {
-      main: '#0834CD', // brandBlue #2E3C5D
+      main: `${DesignTokenColors.primary600}`, // Former brandBlue #2E3C5D
+      dark: `${DesignTokenColors.primary700}`,
     },
     secondary: {
       main: `${DesignTokenColors.primary700}`,
       dark: `${DesignTokenColors.primary900}`,
+      contrastText: '#fff',
+    },
+    chosen: {
+      main: '#fff',
+      dark: `${DesignTokenColors.neutralUI50}`,
+    },
+    opposed: {
+      main: `${DesignTokenColors.alert200}`,
+      dark: `${DesignTokenColors.alert300}`,
       contrastText: '#fff',
     },
   },

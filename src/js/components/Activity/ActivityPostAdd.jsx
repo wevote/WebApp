@@ -149,7 +149,7 @@ class ActivityPostAdd extends Component {
                 activityPostWeVoteId=""
                 externalUniqueId={externalUniqueId}
                 show={showActivityPostModal}
-                toggleActivityPostModal={this.toggleActivityPostModal}
+                toggleModal={this.toggleActivityPostModal}
               />
             </Suspense>
           )}

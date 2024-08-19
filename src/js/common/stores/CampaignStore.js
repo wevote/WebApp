@@ -331,6 +331,52 @@ class CampaignStore extends ReduceStore {
     return arrayContains(campaignXWeVoteId, this.getState().voterSupportedCampaignXWeVoteIds);
   }
 
+  createCampaignXFromCandidate (candidateObject) {
+    // We want to create a pseudo CampaignX object from an incoming Candidate object
+    // console.log('candidateObject: ', candidateObject);
+    return {
+      campaign_description: candidateObject.ballot_guide_official_statement,
+      campaign_title: candidateObject.ballot_item_display_name,
+      campaignx_news_item_list: [],
+      campaignx_owner_list: [],
+      campaignx_politician_list: [],
+      campaignx_politician_list_exists: false,
+      campaignx_politician_starter_list: [],
+      campaignx_we_vote_id: candidateObject.linked_campaignx_we_vote_id,
+      final_election_date_as_integer: candidateObject.candidate_ultimate_election_date,
+      final_election_date_in_past: !(candidateObject.election_is_upcoming),
+      in_draft_mode: false,
+      is_blocked_by_we_vote: false,
+      is_blocked_by_we_vote_reason: null,
+      is_supporters_count_minimum_exceeded: true,
+      latest_campaignx_supporter_endorsement_list: [],
+      latest_campaignx_supporter_list: [],
+      linked_politician_we_vote_id: candidateObject.politician_we_vote_id,
+      opposers_count: candidateObject.opposers_count,
+      order_in_list: 0,
+      profile_image_background_color: candidateObject.profile_image_background_color,
+      seo_friendly_path: candidateObject.seo_friendly_path,
+      seo_friendly_path_list: [],
+      status: 'PSEUDO_CAMPAIGNX_GENERATED_FROM_CANDIDATE ',
+      success: true,
+      supporters_count: candidateObject.supporters_count,
+      supporters_count_next_goal: 0,
+      supporters_count_victory_goal: 0,
+      visible_on_this_site: true,
+      voter_campaignx_supporter: {},
+      voter_can_send_updates_to_campaignx: false,
+      voter_can_vote_for_politician_we_vote_ids: [],
+      voter_is_campaignx_owner: false,
+      voter_signed_in_with_email: false,
+      we_vote_hosted_campaign_photo_large_url: null,
+      we_vote_hosted_campaign_photo_medium_url: null,
+      we_vote_hosted_campaign_photo_small_url: null,
+      we_vote_hosted_profile_image_url_large: candidateObject.candidate_photo_url_large,
+      we_vote_hosted_profile_image_url_medium: candidateObject.candidate_photo_url_medium,
+      we_vote_hosted_profile_image_url_tiny: candidateObject.candidate_photo_url_tiny,
+    };
+  }
+
   reduce (state, action) {
     const {
       allCachedCampaignXNewsItems,
@@ -348,6 +394,7 @@ class CampaignStore extends ReduceStore {
     let campaignXNewsItem;
     let campaignXNewsItemWeVoteIds;
     let candidateList;
+    let opponentCandidateList = [];
     let recommendedCampaignsCampaignXWeVoteId;
     let revisedState;
     let voterSpecificData;
@@ -616,6 +663,63 @@ class CampaignStore extends ReduceStore {
         });
         revisedState = { ...revisedState, allCachedCampaignXDicts };
         return revisedState;
+
+      case 'politicianRetrieve':
+        // For the candidate-related data attached to the Politician, create a pseudo-CampaignX object
+        //  which is needed for objects like HeartFavoriteToggle
+        candidateList = action.res.candidate_list;
+        // //////////////////////////////
+        // Process information about the opponents of this politician
+        opponentCandidateList = action.res.opponent_candidate_list;
+        if (opponentCandidateList) {
+          opponentCandidateList.forEach((one) => {
+            // console.log('CampaignStore: Opponent Candidate:', one);
+            if (one && one.linked_campaignx_we_vote_id) {
+              // Only store a value if there isn't already a campaignX record for this linked_campaignx_we_vote_id
+              if (!(one.linked_campaignx_we_vote_id in allCachedCampaignXDicts)) {
+                campaignX = this.createCampaignXFromCandidate(one);
+                if (campaignX && campaignX.campaignx_we_vote_id) {
+                  allCachedCampaignXDicts[one.linked_campaignx_we_vote_id] = campaignX;
+                }
+              }
+            }
+          });
+        }
+        // //////////////////////////////
+        // Now Capture the politician's information
+        // TODO this.createCampaignXFromPolitician(politician);
+
+        return {
+          ...state,
+          allCachedCampaignXDicts,
+        };
+
+      case 'voterBallotItemsRetrieve':
+        // For the candidate-related data coming in, create a pseudo-CampaignX object
+        //  which is needed for objects like HeartFavoriteToggle
+        if (!action.res || !action.res.ballot_item_list) return state;
+
+        action.res.ballot_item_list.forEach((ballotItem) => {
+          // console.log('CampaignStore, voterBallotItemsRetrieve: Ballot Item:', ballotItem);
+          if (ballotItem && ballotItem.candidate_list) {
+            ballotItem.candidate_list.forEach((candidate) => {
+              if (candidate && candidate.linked_campaignx_we_vote_id) {
+                // Only store a value if there isn't already a campaignX record for this linked_campaignx_we_vote_id
+                if (!(candidate.linked_campaignx_we_vote_id in allCachedCampaignXDicts)) {
+                  campaignX = this.createCampaignXFromCandidate(candidate);
+                  if (campaignX && campaignX.campaignx_we_vote_id) {
+                    allCachedCampaignXDicts[candidate.linked_campaignx_we_vote_id] = campaignX;
+                  }
+                }
+              }
+            });
+          }
+        });
+
+        return {
+          ...state,
+          allCachedCampaignXDicts,
+        };
 
       case 'voterSignOut':
         // console.log('CampaignStore voterSignOut, state:', state);

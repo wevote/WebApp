@@ -184,7 +184,7 @@ class ActivityTidbitItem extends Component {
               activityTidbitWeVoteId={activityTidbitWeVoteId}
               externalUniqueId={externalUniqueId}
               show={showActivityPostModal}
-              toggleActivityPostModal={this.toggleActivityPostModal}
+              toggleModal={this.toggleActivityPostModal}
             />
           </Suspense>
         )}

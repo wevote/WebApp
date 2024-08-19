@@ -205,8 +205,7 @@ class BallotTitleHeader extends Component {
                                 className={linksOff ? '' : 'u-cursor--pointer u-link-color u-link-underline-on-hover'}
                                 onClick={this.showSelectBallotModalEditAddress}
                               >
-                                  {(textForMapSearch && textForMapSearch !== '') ? textForMapSearch : originalTextAddress}
-                                
+                                {(textForMapSearch && textForMapSearch !== '') ? textForMapSearch : originalTextAddress}
                               </span>
                               {linksOff ? <></> : editIconStyled}
                             </BallotAddress>

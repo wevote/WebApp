@@ -49,6 +49,7 @@ const nonFluxState = {
   pendingSnackSeverity: '',
   recommendedCampaignListFirstRetrieveInitiated: false,
   scrolledDown: false,
+  scrolledDownDrawer: false,
   setUpAccountBackLinkPath: '',
   setUpAccountEntryPath: '',
   whatAndHowMuchToShare: '',
@@ -196,6 +197,10 @@ export default {
 
   getScrolledDown () {
     return nonFluxState.scrolledDown;
+  },
+
+  getScrolledDownDrawer () {
+    return nonFluxState.scrolledDownDrawer;
   },
 
   getSetUpAccountBackLinkPath () {
@@ -445,6 +450,11 @@ export default {
   setScrolled (scrolledDown) {
     nonFluxState.scrolledDown = scrolledDown;
     messageService.sendMessage('state updated scrolledDown');
+  },
+
+  setScrolledDownDrawer (scrolledDown) {
+    nonFluxState.scrolledDownDrawer = scrolledDown;
+    messageService.sendMessage('state updated scrolledDownDrawer');
   },
 
   setSetUpAccountBackLinkPath (backLinkPath) {

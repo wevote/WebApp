@@ -7,6 +7,7 @@ import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import AppObservableStore from '../../common/stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
+import webAppConfig from '../../config';
 import {
   Dot,
   InnerWrapper,
@@ -23,6 +24,9 @@ import {
   StepTitle,
 } from '../Style/ReadyIntroductionStyles';
 import ShowMoreButtons from '../Widgets/ShowMoreButtons';
+
+const twitterEnabled = webAppConfig.ENABLE_TWITTER === undefined ? false : webAppConfig.ENABLE_TWITTER;
+const facebookEnabled =  webAppConfig.ENABLE_FACEBOOK === undefined ? false : webAppConfig.ENABLE_FACEBOOK;
 
 class ReadyIntroduction extends Component {
   constructor (props) {
@@ -128,23 +132,22 @@ class ReadyIntroduction extends Component {
                   <StepText id="readyIntroductionStepText2">
                     Tell us what topics are important to you and we&apos;ll recommend people and organizations to follow as well as make ballot recommendations.
                     {' '}
-                    {voterIsSignedInWithTwitter ? (
-                      <>
-                        Since you are signed in with Twitter, you will see endorsements of everyone you follow on Twitter.
-                      </>
-                    ) : (
-                      <>
-                        <span className="u-link-color u-link-color-on-hover u-cursor--pointer" onClick={this.onSignInClick}>
-                          Link to your Twitter account
-                        </span>
-                        {' '}
-                        and see endorsements of everyone you follow on Twitter.
-                      </>
+                    { twitterEnabled && (
+                      voterIsSignedInWithTwitter ? (
+                        <>Since you are signed in with Twitter, you will see endorsements of everyone you follow on Twitter. </>
+                      ) : (
+                        <>
+                          <span className="u-link-color u-link-color-on-hover u-cursor--pointer" onClick={this.onSignInClick}>
+                            Link to your Twitter account
+                          </span>
+                          {' '}
+                          and see endorsements of everyone you follow on Twitter.
+                        </>
+                      )
                     )}
                   </StepText>
                 </ListRow>
               )}
-
               {(contentUnfurled || showStep3WhenCompressed) && (
                 <ListTitleRow onClick={this.contentUnfurledLink}>
                   <Dot><StepNumber>3</StepNumber></Dot>
@@ -163,15 +166,19 @@ class ReadyIntroduction extends Component {
                     {' '}
                     to join WeVote to encourage them to vote, share your ballot and endorsements, engage in discussions and more!
                     {' '}
-                    {!voterIsSignedInWithFacebook && (
-                      <>
-                        <span className="u-link-color u-link-color-on-hover u-cursor--pointer" onClick={this.onSignInClick}>
-                          Link to your Facebook account
-                        </span>
-                        {' '}
-                        so your friends can find you.
-                        {' '}
-                      </>
+                    { facebookEnabled && (
+                      voterIsSignedInWithFacebook ? (
+                        <></>
+                      ) : (
+                        <>
+                          <span className="u-link-color u-link-color-on-hover u-cursor--pointer" onClick={this.onSignInClick}>
+                            Link to your Facebook account
+                          </span>
+                          {' '}
+                          so your friends can find you.
+                          {' '}
+                        </>
+                      )
                     )}
                     Studies show people are more likely to vote if they see their friends voting.
                   </StepText>

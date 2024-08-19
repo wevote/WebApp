@@ -19,36 +19,36 @@ export const AllButtons = (args) => (
     <Button
         primary
         size="large"
-        label="Primary Large Disabled Button"
-        aria-label="Primary Large Disabled Button"
+        label="Primary Large"
+        aria-label="Primary Large"
     />
     <Button
         primary={false}
         size="large"
-        label="PrimaryLarge Disabled Button"
-        aria-label="PrimaryLarge Disabled Button"
+        label="Primary Large Disabled"
+        aria-label="Primary Large Disabled"
     />
     <Button
         primary
-        label="Primary Medium Button"
-        aria-label="Primary Medium Button"
+        label="Primary Medium"
+        aria-label="Primary Medium"
     />
     <Button
         primary={false}
-        label="Primary Medium Disabled Button"
-        aria-label="Primary Medium Disabled Button"
+        label="Primary Medium Disabled"
+        aria-label="Primary Medium Disabled"
     />
     <Button
         primary
         size="small"
-        label="Primary Small Button"
-        aria-label="Primary Small Button"
+        label="Primary Small"
+        aria-label="Primary Small"
     />
     <Button
         primary={false}
         size="small"
         label="Primary S Disabled"
-        aria-label="Primary S Disabled"
+        aria-label="Primary Small Disabled"
     />
     <Button
         secondary

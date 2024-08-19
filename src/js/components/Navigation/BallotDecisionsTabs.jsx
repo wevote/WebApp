@@ -74,7 +74,7 @@ class BallotDecisionsTabs extends Component {
         sx={{
           '& .MuiTab-root': {
             '&:hover': {
-              backgroundColor: '#E5E6EA'
+              backgroundColor: '#E5E6EA',
             },
           },
         }}

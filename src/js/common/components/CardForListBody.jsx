@@ -1,5 +1,5 @@
 import withStyles from '@mui/styles/withStyles';
-import { HowToVote } from '@mui/icons-material';
+import { HowToVote, Launch } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Suspense } from 'react';
 import { Link } from 'react-router-dom';
@@ -40,11 +40,13 @@ import isMobileScreenSize from '../utils/isMobileScreenSize';
 import DesignTokenColors from './Style/DesignTokenColors';
 import HeartFavoriteToggleLoader from './Widgets/HeartFavoriteToggle/HeartFavoriteToggleLoader';
 import SvgImage from './Widgets/SvgImage';
+import webAppConfig from '../../config';
 
 const CampaignSupportThermometer = React.lazy(() => import(/* webpackChunkName: 'CampaignSupportThermometer' */ './CampaignSupport/CampaignSupportThermometer'));
 const ItemActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemActionBar' */ '../../components/Widgets/ItemActionBar/ItemActionBar'));
 const OfficeHeldNameText = React.lazy(() => import(/* webpackChunkName: 'OfficeHeldNameText' */ './Widgets/OfficeHeldNameText'));
 const OfficeNameText = React.lazy(() => import(/* webpackChunkName: 'OfficeNameText' */ './Widgets/OfficeNameText'));
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ './Widgets/OpenExternalWebSite'));
 
 // React functional component example
 function CardForListBody (props) {
@@ -55,7 +57,7 @@ function CardForListBody (props) {
     hideItemActionBar, limitCardWidth, linkedCampaignXWeVoteId, officeName,
     photoLargeUrl, politicalParty, politicianBaseBath,  // pathToUseToKeepHelping
     politicianDescription, politicianWeVoteId, profileImageBackgroundColor,
-    stateCode, tagIdBaseName, // supportersCount, supportersCountNextGoalRaw,
+    showPoliticianOpenInNewWindow, stateCode, tagIdBaseName, // supportersCount, supportersCountNextGoalRaw,
     ultimateElectionDate,
     useCampaignSupportThermometer, useOfficeHeld,
     usePoliticianWeVoteIdForBallotItem, useVerticalCard,
@@ -74,7 +76,14 @@ function CardForListBody (props) {
     politicalPartySvgNameWithPath = '../../img/global/svg-icons/political-party-democrat.svg';
   } else if (['Republican', 'Republican Party'].includes(politicalParty)) {
     politicalPartySvgNameWithPath = '../../img/global/svg-icons/political-party-republican.svg';
+  } else if (['Green', 'Green Party'].includes(politicalParty)) {
+    politicalPartySvgNameWithPath = '../../img/global/svg-icons/political-party-green-party.svg';
+  } else if (['Libertarian', 'Libertarian Party'].includes(politicalParty)) {
+    politicalPartySvgNameWithPath = '../../img/global/svg-icons/political-party-libertarian.svg';
+  } else if (['Working Families', 'Working Families Party'].includes(politicalParty)) {
+    politicalPartySvgNameWithPath = '../../img/global/svg-icons/political-party-working-families.svg';
   }
+  const politicianDetailsURL = `${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}${politicianBaseBath}`;
 
   // /////////////////////// START OF DISPLAY
   return (
@@ -94,6 +103,30 @@ function CardForListBody (props) {
               {hideCardMargins ? (
                 <OneCampaignTitle>
                   {ballotItemDisplayName}
+                  {showPoliticianOpenInNewWindow && (
+                    <LaunchIconWrapper>
+                      <Suspense fallback={<></>}>
+                        <OpenExternalWebSite
+                          linkIdAttribute="openPoliticianPage"
+                          url={politicianDetailsURL}
+                          target="_blank"
+                          className="open-web-site open-web-site__no-right-padding"
+                          body={(
+                            <span>
+                              <Launch
+                                style={{
+                                  height: 14,
+                                  marginLeft: 2,
+                                  marginTop: '-3px',
+                                  width: 14,
+                                }}
+                              />
+                            </span>
+                          )}
+                        />
+                      </Suspense>
+                    </LaunchIconWrapper>
+                  )}
                 </OneCampaignTitle>
               ) : (
                 <OneCampaignTitleLink>
@@ -310,9 +343,19 @@ function CardForListBody (props) {
                 profileImageBackgroundColor={profileImageBackgroundColor}
                 useVerticalCard={useVerticalCard}
               >
-                <CampaignImagePlaceholderText>
-                  No image provided
-                </CampaignImagePlaceholderText>
+                <SvgWatermarkWrapper>
+                  <SvgImage
+                    applyFillColor
+                    color={DesignTokenColors.neutralUI300}
+                    height="100px"
+                    imageName={politicalPartySvgNameWithPath}
+                    marginBottom="-10px"
+                    opacity="0.33"
+                  />
+                  <CampaignImagePlaceholderText>
+                    No candidate image available.
+                  </CampaignImagePlaceholderText>
+                </SvgWatermarkWrapper>
               </CampaignImageMobilePlaceholder>
             )}
           </OneCampaignPhotoWrapperMobile>
@@ -357,7 +400,15 @@ function CardForListBody (props) {
                 useVerticalCard={useVerticalCard}
               >
                 <CampaignImagePlaceholderText>
-                  No image provided
+                  <SvgImage
+                    applyFillColor
+                    color={DesignTokenColors.neutralUI300}
+                    height="140px"
+                    imageName={politicalPartySvgNameWithPath}
+                    marginBottom="-10px"
+                    opacity="0.33"
+                  />
+                  No candidate image available.
                 </CampaignImagePlaceholderText>
               </CampaignImageDesktopPlaceholder>
             )}
@@ -370,6 +421,7 @@ function CardForListBody (props) {
 CardForListBody.propTypes = {
   ballotItemDisplayName: PropTypes.string.isRequired, // Changed to be required due to error where this shows as undefined [WV-379] when fetching from PoliticianStore 7/18/2024
   candidateWeVoteId: PropTypes.string,
+  classes: PropTypes.object,
   districtName: PropTypes.string,
   finalElectionDateInPast: PropTypes.bool,
   hideCardMargins: PropTypes.bool,
@@ -383,6 +435,7 @@ CardForListBody.propTypes = {
   politicianDescription: PropTypes.string,
   politicianWeVoteId: PropTypes.string,
   profileImageBackgroundColor: PropTypes.string,
+  showPoliticianOpenInNewWindow: PropTypes.bool,
   stateCode: PropTypes.string,
   // supportersCount: PropTypes.number.isRequired,
   // supportersCountNextGoalRaw: PropTypes.number,
@@ -409,6 +462,9 @@ export const FlexDivLeft = styled('div')`
   justify-content: start;
 `;
 
+const LaunchIconWrapper = styled('span')`
+`;
+
 export const OfficeNameWrapper = styled('div')`
 `;
 
@@ -423,6 +479,9 @@ export const SvgImageWrapper = styled('div')`
   max-width: 25px;
   min-width: 25px;
   width: 25px;
+`;
+
+export const SvgWatermarkWrapper = styled('div')`
 `;
 
 export const YearAndHeartDiv = styled('div')`
