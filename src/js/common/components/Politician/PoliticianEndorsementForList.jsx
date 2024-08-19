@@ -17,11 +17,10 @@ import { getDateFromUltimateElectionDate, getTodayAsInteger, timeFromDate } from
 import { isCordova } from '../../utils/isCordovaOrWebApp';
 import { renderLog } from '../../utils/logging';
 import stringContains from '../../utils/stringContains';
-import stringToColor from '../../utils/stringToColor'
+import speakerDisplayNameToAvatarColor from '../../utils/speakerDisplayNameToAvatarColor'
 import PoliticianStore from '../../stores/PoliticianStore';
 import VoterStore from '../../../stores/VoterStore';
 import { Avatar } from '@mui/material';
-import { blue } from '@mui/material/colors';
 
 
 class PoliticianEndorsementForList extends Component {
@@ -77,11 +76,15 @@ class PoliticianEndorsementForList extends Component {
   }
   
   stringAvatar = (name) => {
+  const nameParts = name.split(' ');
+  const initials = nameParts.length > 1
+    ? `${nameParts[0][0]}${nameParts[1][0]}` 
+    : `${nameParts[0][0]}`;
     return {
       sx: {
-        bgcolor: stringToColor(name),
+        bgcolor: speakerDisplayNameToAvatarColor(name),
       },
-      children: `${name.split(' ')[0][0]}${name.split(' ')[1][0]}`,
+      children: initials,
     };
   }
 
