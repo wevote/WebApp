@@ -294,6 +294,8 @@ const MoreWrapper = styled('span')`
   cursor: pointer;
   text-decoration: underline;
   text-decoration-color: #ccc;
+  justify-content: center;
+  align-content: space-evenly;
   &:hover {
     text-decoration: underline;
   }
