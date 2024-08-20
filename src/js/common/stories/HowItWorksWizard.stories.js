@@ -52,10 +52,6 @@ export default {
       options: initialSteps.map((step) => step.id),
       description: 'Select which steps are active',
     },
-    completed: {
-      control: { type: 'boolean' },
-      description: 'Toggle the completed status',
-    },
     steps: {
       control: 'object',
       description: 'Modify the steps',
@@ -84,10 +80,10 @@ export const HowItWorksWizard = (args) => {
   useEffect(() => {
     setSteps((prevSteps) => prevSteps.map((step) => ({
       ...step,
-      completed: args.completed && args.activeStep.includes(step.id),
+      completed: true && args.activeStep.includes(step.id),
     })));
     action(`Active Step Changed to: ${args.activeStep}`)();
-  }, [args.activeStep, args.completed]);
+  }, [args.activeStep]);
 
 
   const handleStepToggle = (index) => {
@@ -113,5 +109,4 @@ export const HowItWorksWizard = (args) => {
 HowItWorksWizard.args = {
   steps: initialSteps,
   activeStep: [1],
-  completed: false,
 };
