@@ -2,6 +2,8 @@ import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
+import Chip from '@mui/material/Chip';
+import DoneIcon from '@mui/icons-material/Done';
 import React, { Component, Suspense } from 'react';
 import SvgImage from '../../common/components/Widgets/SvgImage';
 import { renderLog } from '../../common/utils/logging';
@@ -164,13 +166,16 @@ class ValueNameWithPopoverDisplay extends Component {
         openOnClick
         showCloseIcon
       >
-        <ValueNameWithPopoverDisplaySpan
+        <Chip
           id={`${externalUniqueId}-valueIconAndText-${oneIssue.issue_we_vote_id}`}
-          issueFollowedByVoter={issueFollowedByVoter}
           key={`${externalUniqueId}-valueIconAndTextKey-${oneIssue.issue_we_vote_id}`}
           className="u-cursor--pointer"
-        >
-          <WordWrapper>
+          style={{ margin: '5px', borderRadius: '4px', backgroundColor: '#fff', border: '1px solid #ccc', color: '#555', fontSize: '.8rem' }}
+          // style={styles().chipStyle}
+          label={oneIssue.issue_name}
+          icon={issueFollowedByVoter ? <DoneIcon /> : null}
+        />
+          {/* <WordWrapper>
             {oneIssue.issue_name}
           </WordWrapper>
           {showEllipses ? (
@@ -183,8 +188,8 @@ class ValueNameWithPopoverDisplay extends Component {
               {addComma ? ',' : ''}
               &nbsp;
             </>
-          )}
-        </ValueNameWithPopoverDisplaySpan>
+          )} */}
+        {/* </Chip> */}
       </StickyPopover>
     );
   }
