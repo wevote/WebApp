@@ -170,10 +170,11 @@ class ValueNameWithPopoverDisplay extends Component {
           id={`${externalUniqueId}-valueIconAndText-${oneIssue.issue_we_vote_id}`}
           key={`${externalUniqueId}-valueIconAndTextKey-${oneIssue.issue_we_vote_id}`}
           className="u-cursor--pointer"
-          style={{ margin: '5px', borderRadius: 2, backgroundColor: '#fff', border: '1px solid #ccc', color: '#555' }}
+          style={{ margin: '5px', borderRadius: '4px', backgroundColor: '#fff', border: '1px solid #ccc', color: '#555', fontSize: '.8rem' }}
+          // style={styles().chipStyle}
           label={oneIssue.issue_name}
           icon={issueFollowedByVoter ? <DoneIcon /> : null}
-        >
+        />
           {/* <WordWrapper>
             {oneIssue.issue_name}
           </WordWrapper>
@@ -188,7 +189,7 @@ class ValueNameWithPopoverDisplay extends Component {
               &nbsp;
             </>
           )} */}
-        </Chip>
+        {/* </Chip> */}
       </StickyPopover>
     );
   }
