@@ -102,7 +102,7 @@ export default class TermsOfServiceBody extends Component {
           <span>
             If you have any questions about the Terms of Service, you may contact us by sending an e-mail to
             {' '}
-            <a href="mailto:info@WeVote.US" className="u-link-color" target="_blank" rel="noopener noreferrer">info@WeVote.US</a>
+            <a href="mailto:info@WeVote.US" id="infoWeVoteEmailLink" className="u-link-color" target="_blank" rel="noopener noreferrer">info@WeVote.US</a>
             {' '}
 
           </span>
