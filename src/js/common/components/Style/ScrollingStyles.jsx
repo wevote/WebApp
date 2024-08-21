@@ -2,8 +2,8 @@ import styled from 'styled-components';
 import DesignTokenColors from './DesignTokenColors';
 
 export const BallotHorizontallyScrollingContainer = styled('div', {
-  shouldForwardProp: (prop) => !['isChosen'].includes(prop),
-})(({ isChosen }) => (`
+  shouldForwardProp: (prop) => !['isChosen', 'showLeftGradient', 'showRightGradient'].includes(prop),
+})(({ isChosen, showLeftGradient, showRightGradient }) => (`
   -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 95%, rgba(0, 0, 0, 0));
   mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 95%, rgba(0, 0, 0, 0));
 
@@ -13,6 +13,19 @@ export const BallotHorizontallyScrollingContainer = styled('div', {
   border: 1px solid #fff; /* Default border color so that the hover doesn't create jump */
   &:hover { border: 1px solid ${DesignTokenColors.neutralUI100}; }
   ${isChosen ? `background-color: ${DesignTokenColors.confirmation50};` : ''}
+
+    /* Fade out, right side */
+  ${showRightGradient ? '-webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 88%, rgba(0, 0, 0, 0));' : ''}
+  ${showRightGradient ? 'mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 88%, rgba(0, 0, 0, 0));' : ''} );
+
+  /* Fade out, left side */
+  ${showLeftGradient ? '-webkit-mask-image: linear-gradient(to left, rgba(0, 0, 0, 1) 88%, rgba(0, 0, 0, 0));' : ''}
+  ${showLeftGradient ? 'mask-image: linear-gradient(to left, rgba(0, 0, 0, 1) 88%, rgba(0, 0, 0, 0));' : ''}
+
+  /* Fade out, both sides */
+  ${showLeftGradient && showRightGradient ? '-webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1) 6%, rgba(0, 0, 0, 1) 94%, rgba(0, 0, 0, 0));' : ''}
+  ${showLeftGradient && showRightGradient ? 'mask-image: linear-gradient(to right, rgba(255, 0, 0, 0), rgba(0, 0, 0, 1) 6%, rgba(0, 0, 0, 1) 94%, rgba(0, 0, 0, 0));' : ''}
+
 
   /* Make the scrollbar not be visible */
   -ms-overflow-style: none;  /* IE and Edge */
@@ -25,6 +38,7 @@ export const BallotHorizontallyScrollingContainer = styled('div', {
 export const BallotScrollingInnerWrapper = styled('div')`
   overflow-x: hidden;
   overflow-y: hidden;
+  display: flex;
 `;
 
 export const BallotScrollingOuterWrapper = styled('div')`
