@@ -1,9 +1,9 @@
-import { AccountCircle } from '@mui/icons-material';
 import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import TruncateMarkup from 'react-truncate-markup';
+import { Avatar } from '@mui/material';
 import { avatarGeneric } from '../../../utils/applicationUtils';
 import LazyImage from '../LazyImage';
 import { timeFromDate } from '../../utils/dateFormat';
@@ -13,6 +13,7 @@ import stringContains from '../../utils/stringContains';
 import CampaignStore from '../../stores/CampaignStore';
 import { ReadMoreSpan, SpeakerAndPhotoOuterWrapper, SpeakerName, SpeakerVoterPhotoWrapper } from '../Style/CampaignDetailsStyles';
 import { BlockedIndicator, DraftModeIndicator, EditIndicator, IndicatorButtonWrapper, IndicatorDefaultButtonWrapper, IndicatorRow } from '../Style/CampaignIndicatorStyles';
+import speakerDisplayNameToInitials from '../../utils/speakerDisplayNameToInitials';
 
 class CampaignNewsItemForList extends Component {
   constructor (props) {
@@ -124,7 +125,7 @@ class CampaignNewsItemForList extends Component {
 
   render () {
     renderLog('CampaignNewsItemForList');  // Set LOG_RENDER_EVENTS to log all renders
-    const { campaignXNewsItemWeVoteId, classes } = this.props;
+    const { campaignXNewsItemWeVoteId } = this.props;
     const {
       campaignNewsSubject,
       campaignNewsText,
@@ -135,6 +136,7 @@ class CampaignNewsItemForList extends Component {
       speakerProfileImageUrlTiny,
       voterCanEditThisCampaign,
     } = this.state;
+    const { sx, children } = speakerDisplayNameToInitials(speakerName);
     if (!campaignNewsSubject && !campaignNewsText) {
       return null;
     }
@@ -182,7 +184,7 @@ class CampaignNewsItemForList extends Component {
                       alt="Your Settings"
                     />
                   ) : (
-                    <AccountCircle classes={{ root: classes.accountCircleRoot }} />
+                    <Avatar sx={sx}>{children}</Avatar>
                   )}
                 </SpeakerVoterPhotoWrapper>
                 <SpeakerAndTimeWrapper>

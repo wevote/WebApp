@@ -1,5 +1,5 @@
-import { AccountCircle, ArrowBack } from '@mui/icons-material';
-import { Button } from '@mui/material';
+import { ArrowBack } from '@mui/icons-material';
+import { Avatar, Button } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
@@ -29,6 +29,7 @@ import keepHelpingDestination from '../../utils/keepHelpingDestination';
 import { renderLog } from '../../utils/logging';
 import returnFirstXWords from '../../utils/returnFirstXWords';
 import stringContains from '../../utils/stringContains';
+import speakerDisplayNameToInitials from '../../utils/speakerDisplayNameToInitials';
 
 const CampaignCommentsList = React.lazy(() => import(/* webpackChunkName: 'CampaignCommentsList' */ '../../components/Campaign/CampaignCommentsList'));
 const CampaignDetailsActionSideBox = React.lazy(() => import(/* webpackChunkName: 'CampaignDetailsActionSideBox' */ '../../components/CampaignSupport/CampaignDetailsActionSideBox'));
@@ -318,6 +319,7 @@ class CampaignNewsItemDetailsPage extends Component {
       speakerName, speakerProfileImageUrlTiny,
       voterCanEditThisCampaign, weVoteHostedProfileImageUrlLarge,
     } = this.state;
+    const { sx, children } = speakerDisplayNameToInitials(speakerName);
     const htmlTitle = `${campaignTitle} - ${chosenWebsiteName}`;
     if (isBlockedByWeVote && !voterCanEditThisCampaign) {
       return (
@@ -372,7 +374,7 @@ class CampaignNewsItemDetailsPage extends Component {
                   alt={speakerName}
                 />
               ) : (
-                <AccountCircle classes={{ root: classes.accountCircleRoot }} />
+                <Avatar sx={sx}>{children}</Avatar>
               )}
             </SpeakerVoterPhotoWrapper>
             <SpeakerName>

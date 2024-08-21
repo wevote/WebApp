@@ -1,9 +1,9 @@
-import { AccountCircle } from '@mui/icons-material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { createRef } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { Avatar } from '@mui/material';
 import { avatarGeneric } from '../../../utils/applicationUtils';
 import LazyImage from '../LazyImage';
 import {
@@ -18,6 +18,8 @@ import stringContains from '../../utils/stringContains';
 import CampaignStore from '../../stores/CampaignStore';
 import CampaignSupporterStore from '../../stores/CampaignSupporterStore';
 import VoterStore from '../../../stores/VoterStore';
+import speakerDisplayNameToInitials from '../../utils/speakerDisplayNameToInitials';
+import speakerDisplayNameToAvatarColor from '../../utils/speakerDisplayNameToAvatarColor';
 
 class MostRecentCampaignSupport extends React.Component {
   constructor (props) {
@@ -255,7 +257,6 @@ class MostRecentCampaignSupport extends React.Component {
 
   render () {
     renderLog('MostRecentCampaignSupport');  // Set LOG_RENDER_EVENTS to log all renders
-    const { classes } = this.props;
     const { supportersOnStageNow, voterWeVoteId } = this.state;
     // console.log('MostRecentCampaignSupport render voterWeVoteId: ', voterWeVoteId, ', supportersOnStageNow:', supportersOnStageNow);
 
@@ -267,7 +268,7 @@ class MostRecentCampaignSupport extends React.Component {
             ref={this.commentsWrapperDiv}
             onScroll={() => this.handleScroll()}
           >
-            {supportersOnStageNow.map((comment) => (
+            {supportersOnStageNow.map((comment) =>  (
               <CommentWrapper className="comment" key={comment.id}>
                 <CommentVoterPhotoWrapper>
                   {comment.we_vote_hosted_profile_image_url_medium ? (
@@ -280,7 +281,9 @@ class MostRecentCampaignSupport extends React.Component {
                       alt="Your Settings"
                     />
                   ) : (
-                    <AccountCircle classes={{ root: classes.accountCircleRoot }} />
+                    <Avatar sx={speakerDisplayNameToAvatarColor(comment.supporter_name)}>
+                      {speakerDisplayNameToInitials(comment.supporter_name)}
+                    </Avatar>
                   )}
                 </CommentVoterPhotoWrapper>
                 <CommentTextWrapper>
