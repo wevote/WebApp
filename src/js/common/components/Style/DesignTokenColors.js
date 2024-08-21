@@ -10,18 +10,15 @@ const primitiveColorNames = {
   blue800: '#053C6D',
   blue900: '#042B4E',
   blueUI50: '#E2F2FD',
-
   blueUI100: '#BADCFF',
   blueUI200: '#8CC7FF',
   blueUI300: '#66B7F2',
   blueUI400: '#35A1FF',
   blueUI500: '#1293F5',
   blueUI600: '#1285E7',
-
   blueUI700: '#1073D4',
   blueUI800: '#0E62C2',
   blueUI900: '#0943A3',
-
   gray50: '#F2F2F0',
   gray100: '#D2D2D2',
   gray200: '#B7B7B7',
@@ -42,19 +39,16 @@ const primitiveColorNames = {
   grayUI700: '#575757',
   grayUI800: '#4A4A4A',
   grayUI900: '#3D3D3D',
-
   greenUI50: '#E5F4E3',
   greenUI100: '#C1E4BB',
   greenUI200: '#9CD299',
   greenUI300: '#5DB664',
   greenUI400: '#45B63B',
-
   greenUI500: '#06A900',
   greenUI600: '#009A00',
   greenUI700: '#008900',
   greenUI800: '#007800',
   greenUI900: '#005A00',
-
   orange50: '#FCEFE4',
   orange100: '#FBC89C',
   orange200: '#FBA255',
@@ -75,12 +69,10 @@ const primitiveColorNames = {
   orangeUI700: '#E4531B',
   orangeUI800: '#D74C19',
   orangeUI900: '#BE3E14',
-
   redUI50: '#FFE8EB',
   redUI100: '#FEC8CC',
   redUI200: '#F4908E',
   redUI300: '#EB6163',
-
   redUI400: '#F3363D',
   redUI500: '#EF0716',
   redUI600: '#DC2B23',
@@ -97,7 +89,6 @@ const primitiveColorNames = {
   red700: '#8B1A32',
   red800: '#74162A',
   red900: '#53101E',
-
   steel50: '#ECF2F7',
   steel100: '#C8D4DF',
   steel200: '#A7BACD',
@@ -108,10 +99,7 @@ const primitiveColorNames = {
   steel700: '#2C4A66',
   steel800: '#1F3A53',
   steel900: '#142B41',
-
   white: '#FFFFFF',
-
-
   yellowUI50: '#FBF6DF',
   yellowUI100: '#FAE8AE',
   yellowUI200: '#F6DA79',
@@ -121,7 +109,6 @@ const primitiveColorNames = {
   yellowUI600: '#DDAD00',
   yellowUI700: '#CCA101',
   yellowUI800: '#BE9500',
-
   yellowUI900: '#9E7100',
 };
 
@@ -139,14 +126,12 @@ const DesignTokenColors = {
   accent700: primitiveColorNames.orange700,
   accent800: primitiveColorNames.orange800,
   accent900: primitiveColorNames.orange900,
-
   alert50: primitiveColorNames.redUI50,
   alert100: primitiveColorNames.redUI100,
   alert200: primitiveColorNames.redUI200,
   alert300: primitiveColorNames.redUI300,
   alert400: primitiveColorNames.redUI400,
   alert500: primitiveColorNames.redUI500,
-
   avatarBlue700: primitiveColorNames.blueUI700,
   avatarBlue900: primitiveColorNames.blueUI900,
   avatarBlue200: primitiveColorNames.blueUI200,
@@ -158,12 +143,10 @@ const DesignTokenColors = {
   avatarYellow700: primitiveColorNames.yellowUI700,
   avatarYellow900: primitiveColorNames.yellowUI900,
   avatargray600: primitiveColorNames.grayUI600,
-
   alert600: primitiveColorNames.redUI600,
   alert700: primitiveColorNames.redUI700,
   alert800: primitiveColorNames.redUI800,
   alert900: primitiveColorNames.redUI900,
-
   caution50: primitiveColorNames.yellowUI50,
   caution100: primitiveColorNames.yellowUI100,
   caution200: primitiveColorNames.yellowUI200,
@@ -174,11 +157,9 @@ const DesignTokenColors = {
   caution700: primitiveColorNames.yellowUI700,
   caution800: primitiveColorNames.yellowUI800,
   caution900: primitiveColorNames.yellowUI900,
-
   confirmation50: primitiveColorNames.greenUI50,
   confirmation100: primitiveColorNames.greenUI100,
   confirmation200: primitiveColorNames.greenUI200,
-
   confirmation300: primitiveColorNames.greenUI300,
   confirmation400: primitiveColorNames.greenUI400,
   confirmation500: primitiveColorNames.greenUI500,
@@ -186,7 +167,6 @@ const DesignTokenColors = {
   confirmation700: primitiveColorNames.greenUI700,
   confirmation800: primitiveColorNames.greenUI800,
   confirmation900: primitiveColorNames.greenUI900,
-
   info50: primitiveColorNames.blueUI50,
   info100: primitiveColorNames.blueUI100,
   info200: primitiveColorNames.blueUI200,
@@ -197,7 +177,6 @@ const DesignTokenColors = {
   info700: primitiveColorNames.blueUI700,
   info800: primitiveColorNames.blueUI800,
   info900: primitiveColorNames.blueUI900,
-
   neutral50: primitiveColorNames.gray50,
   neutral100: primitiveColorNames.gray100,
   neutral200: primitiveColorNames.gray200,
@@ -208,7 +187,6 @@ const DesignTokenColors = {
   neutral700: primitiveColorNames.gray700,
   neutral800: primitiveColorNames.gray800,
   neutral900: primitiveColorNames.gray900,
-
   neutralUI50: primitiveColorNames.grayUI50,
   neutralUI100: primitiveColorNames.grayUI100,
   neutralUI200: primitiveColorNames.grayUI200,
@@ -219,7 +197,6 @@ const DesignTokenColors = {
   neutralUI700: primitiveColorNames.grayUI700,
   neutralUI800: primitiveColorNames.grayUI800,
   neutralUI900: primitiveColorNames.grayUI900,
-
   primary50: primitiveColorNames.blue50,
   primary100: primitiveColorNames.blue100,
   primary200: primitiveColorNames.blue200,
@@ -230,7 +207,6 @@ const DesignTokenColors = {
   primary700: primitiveColorNames.blue700,
   primary800: primitiveColorNames.blue800,
   primary900: primitiveColorNames.blue900,
-
   secondary50: primitiveColorNames.steel50,
   secondary100: primitiveColorNames.steel100,
   secondary200: primitiveColorNames.steel200,
@@ -241,7 +217,6 @@ const DesignTokenColors = {
   secondary700: primitiveColorNames.steel700,
   secondary800: primitiveColorNames.steel800,
   secondary900: primitiveColorNames.steel900,
-
   tertiary50: primitiveColorNames.red50,
   tertiary100: primitiveColorNames.red100,
   tertiary200: primitiveColorNames.red200,
@@ -252,7 +227,6 @@ const DesignTokenColors = {
   tertiary700: primitiveColorNames.red700,
   tertiary800: primitiveColorNames.red800,
   tertiary900: primitiveColorNames.red900,
-
   warning50: primitiveColorNames.orangeUI50,
   warning100: primitiveColorNames.orangeUI100,
   warning200: primitiveColorNames.orangeUI200,
@@ -263,7 +237,6 @@ const DesignTokenColors = {
   warning700: primitiveColorNames.orangeUI700,
   warning800: primitiveColorNames.orangeUI800,
   warning900: primitiveColorNames.orangeUI900,
-
   whiteUI: primitiveColorNames.white,
 };
 
