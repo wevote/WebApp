@@ -96,7 +96,7 @@ export const CandidateNameH4 = styled('button')`
   font-weight: 400;
   font-size: 20px;
   margin-bottom: 0 !important;
-  min-width: 124px;
+  // min-width: 124px;
   white-space: normal;
   border: none;
   background-color: transparent;
@@ -105,6 +105,13 @@ export const CandidateNameH4 = styled('button')`
     text-decoration: underline;
   }
   ${constrainedTextMobileStyles}
+`;
+
+export const CandidateNameAndPartyWrapper = styled('div')`
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: flex-start;
+  justify-content: flex-start;
 `;
 
 export const CandidateParty = styled('div')`

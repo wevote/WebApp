@@ -1,3 +1,4 @@
+import { keyframes } from '@emotion/react';
 import { PersonSearch } from '@mui/icons-material';
 import { Button } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
@@ -24,6 +25,7 @@ import PoliticianCardForList from '../../../components/PoliticianListRoot/Politi
 import CampaignChipInLink from '../../components/Campaign/CampaignChipInLink';
 import CampaignOwnersList from '../../components/CampaignSupport/CampaignOwnersList';
 import CompleteYourProfileModalController from '../../components/Settings/CompleteYourProfileModalController';
+import { Candidate, CandidateNameH4, CandidateNameAndPartyWrapper, CandidateParty, CandidateTopRow } from '../../../components/Style/BallotStyles';
 import {
   CampaignDescription, CampaignDescriptionDesktop, CampaignDescriptionDesktopWrapper, CampaignDescriptionWrapper,
   // CampaignImageDesktopWrapper, CampaignImageMobileWrapper, CampaignImagePlaceholder, CampaignImagePlaceholderText,
@@ -55,12 +57,14 @@ import standardBoxShadow from '../../components/Style/standardBoxShadow';
 import { cordovaBallotFilterTopMargin } from '../../../utils/cordovaOffsets';
 import { headroomWrapperOffset } from '../../../utils/cordovaCalculatedOffsets';
 import { getPageKey } from '../../../utils/cordovaPageUtils';
+import normalizedImagePath from '../../utils/normalizedImagePath';
 
 // const CampaignCommentsList = React.lazy(() => import(/* webpackChunkName: 'CampaignCommentsList' */ '../../components/Campaign/CampaignCommentsList'));
 const CampaignRetrieveController = React.lazy(() => import(/* webpackChunkName: 'CampaignRetrieveController' */ '../../components/Campaign/CampaignRetrieveController'));
 const CampaignSupportThermometer = React.lazy(() => import(/* webpackChunkName: 'CampaignSupportThermometer' */ '../../components/CampaignSupport/CampaignSupportThermometer'));
 const CampaignNewsItemList = React.lazy(() => import(/* webpackChunkName: 'CampaignNewsItemList' */ '../../components/Campaign/CampaignNewsItemList'));
 const CampaignShareChunk = React.lazy(() => import(/* webpackChunkName: 'CampaignShareChunk' */ '../../components/Campaign/CampaignShareChunk'));
+const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../../../components/ImageHandler'));
 // const ItemActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemActionBar' */ '../../../components/Widgets/ItemActionBar/ItemActionBar'));
 const OfficeNameText = React.lazy(() => import(/* webpackChunkName: 'OfficeNameText' */ '../../components/Widgets/OfficeNameText'));
 const PoliticianEndorsementsList = React.lazy(() => import(/* webpackChunkName: 'PoliticianEndorsementsList' */ '../../components/Politician/PoliticianEndorsementsList'));
@@ -418,9 +422,11 @@ class PoliticianDetailsPage extends Component {
       linkedCampaignXWeVoteId,
       officeWeVoteId,
       opponentCandidateList,
+      politicalParty,
       politicianDataFound,
       politicianDescription,
       // politicianSEOFriendlyPath,
+      politicianImageUrlLarge,
       politicianName,
       politicianUrl,
       politicianWeVoteId,
@@ -462,10 +468,12 @@ class PoliticianDetailsPage extends Component {
       linkedCampaignXWeVoteId,
       officeWeVoteId,
       opponentCandidateList: filteredOpponentCandidateList,
+      politicalParty,
       politicianDataFound,
       politicianDataNotFound,
       politicianDescription,
       politicianDescriptionLimited,
+      politicianImageUrlLarge,
       politicianName,
       politicianUrl,
       stateText,
@@ -508,10 +516,12 @@ class PoliticianDetailsPage extends Component {
       linkedCampaignXWeVoteId: '',
       officeWeVoteId: '',
       opponentCandidateList: [],
+      politicalParty: '',
       politicianDataFound: false,
       politicianDataNotFound: false,
       politicianDescription: '',
       politicianDescriptionLimited: '',
+      politicianImageUrlLarge: '',
       politicianName: '',
       politicianUrl: '',
       politicianWeVoteIdForDisplay: '', // We don't clear politicianWeVoteId because we may need it to load next politician
@@ -606,8 +616,9 @@ class PoliticianDetailsPage extends Component {
       // officeHeldList,
       officeWeVoteId,
       officeHeldNameForSearch, opponentCandidateList, opponentCandidatesToShowCount,
+      politicalParty,
       politicianDataFound, politicianDataNotFound,
-      politicianDescription, politicianDescriptionLimited,
+      politicianDescription, politicianDescriptionLimited, politicianImageUrlLarge,
       politicianSEOFriendlyPath, politicianSEOFriendlyPathForDisplay,
       politicianName, politicianUrl,
       politicianWeVoteId, politicianWeVoteIdForDisplay,
@@ -683,6 +694,8 @@ class PoliticianDetailsPage extends Component {
 
     const campaignAdminEditUrl = `${webAppConfig.WE_VOTE_SERVER_ROOT_URL}campaign/${linkedCampaignXWeVoteId}/summary`;
     // const candidateWeVoteId = CandidateStore.getCandidateWeVoteIdRunningFromPoliticianWeVoteId(politicianWeVoteId);
+    const avatarBackgroundImage = normalizedImagePath('../img/global/svg-icons/avatar-generic.svg');
+    const avatarCompressed = 'card-main__avatar-compressed';
 
     if (politicianDataNotFound) {
       return (
@@ -904,16 +917,40 @@ class PoliticianDetailsPage extends Component {
             <MobileHeaderOuterContainer id="politicianHeaderContainer" scrolledDown={scrolledDown}>
               <MobileHeaderInnerContainer>
                 <MobileHeaderContentContainer>
-                  <br />
-                  {politicianName}
-                  <br />
-                  <br />
-                  <Suspense fallback={<span>&nbsp;</span>}>
-                    <CampaignSupportThermometer
-                      campaignXWeVoteId={linkedCampaignXWeVoteId}
-                      finalElectionDateInPast={finalElectionDateInPast}
-                    />
-                  </Suspense>
+                  <CandidateTopRow>
+                    <Candidate
+                      id={`officeItemCompressedCandidateImageAndName-${politicianWeVoteId}`}
+                    >
+                      {/* Candidate Image */}
+                      <Suspense fallback={<></>}>
+                        <ImageHandler
+                          className={avatarCompressed}
+                          sizeClassName="icon-candidate-small u-push--sm "
+                          imageUrl={politicianImageUrlLarge}
+                          alt=""
+                          kind_of_ballot_item="CANDIDATE"
+                          style={{ backgroundImage: { avatarBackgroundImage } }}
+                        />
+                      </Suspense>
+                      {/* Candidate Name */}
+                      <CandidateNameAndPartyWrapper>
+                        <CandidateNameH4>
+                          {politicianName}
+                        </CandidateNameH4>
+                        <CandidateParty>
+                          {politicalParty}
+                        </CandidateParty>
+                      </CandidateNameAndPartyWrapper>
+                    </Candidate>
+                  </CandidateTopRow>
+                  <HeartToggleAndThermometerWrapper>
+                    <Suspense fallback={<span>&nbsp;</span>}>
+                      <CampaignSupportThermometer
+                        campaignXWeVoteId={linkedCampaignXWeVoteId}
+                        finalElectionDateInPast={finalElectionDateInPast}
+                      />
+                    </Suspense>
+                  </HeartToggleAndThermometerWrapper>
                 </MobileHeaderContentContainer>
               </MobileHeaderInnerContainer>
             </MobileHeaderOuterContainer>
@@ -1324,6 +1361,10 @@ const ColumnTwoThirds = styled('div')`
   margin: 0 0 0 25px;
 `;
 
+const HeartToggleAndThermometerWrapper = styled('div')`
+  margin-top: 12px;
+`;
+
 const MissingPoliticianMessageContainer = styled('div')`
   padding: 3em 2em;
   display: flex;
@@ -1340,9 +1381,33 @@ const MissingPoliticianText = styled('p')(({ theme }) => (`
   }
 `));
 
+const slideDown = keyframes`
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+`;
+
+const MobileHeaderContentContainer = styled('div')(({ theme }) => (`
+  padding: 15px 15px 0 15px;
+  margin: ${() => cordovaBallotFilterTopMargin()} auto 0 auto;
+  position: relative;
+  max-width: 960px;
+  width: 100%;
+  z-index: 0;
+  ${theme.breakpoints.down('sm')} {
+    min-height: 10px;
+    //margin: 0 10px;
+  }
+`));
+
 const MobileHeaderOuterContainer = styled('div', {
   shouldForwardProp: (prop) => !['scrolledDown'].includes(prop),
 })(({ scrolledDown }) => (`
+  animation: ${slideDown} 300ms ease-in;  // Not currently working -- needs debugging
+  // transition: visibility 1s linear;  // Not currently working -- needs debugging
   margin-top: ${marginTopOffset(scrolledDown)};
   width: 100%;
   background-color: #fff;
@@ -1360,20 +1425,6 @@ const MobileHeaderInnerContainer = styled('div')`
   justify-content: center;
   width: 100%;
 `;
-
-
-const MobileHeaderContentContainer = styled('div')(({ theme }) => (`
-  padding: 15px;
-  margin: ${() => cordovaBallotFilterTopMargin()} auto 0 auto;
-  position: relative;
-  max-width: 960px;
-  width: 100%;
-  z-index: 0;
-  ${theme.breakpoints.down('sm')} {
-    min-height: 10px;
-    //margin: 0 10px;
-  }
-`));
 
 const NoInformationProvided = styled('div')`
   color: 1px solid ${DesignTokenColors.neutralUI100};

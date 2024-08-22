@@ -6,7 +6,6 @@ import styled from 'styled-components';
 import OfficeActions from '../../actions/OfficeActions';
 import { BallotScrollingOuterWrapper } from '../../common/components/Style/ScrollingStyles';
 import signInModalGlobalState from '../../common/components/Widgets/signInModalGlobalState';
-import AppObservableStore from '../../common/stores/AppObservableStore';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
 import toTitleCase from '../../common/utils/toTitleCase';
@@ -41,9 +40,6 @@ class OfficeItemCompressed extends Component {
     this.getOfficeLink = this.getOfficeLink.bind(this);
     this.goToCandidateLink = this.goToCandidateLink.bind(this);
     this.goToOfficeLink = this.goToOfficeLink.bind(this);
-    this.onClickShowOrganizationModalWithBallotItemInfo = this.onClickShowOrganizationModalWithBallotItemInfo.bind(this);
-    this.onClickShowOrganizationModalWithPositions = this.onClickShowOrganizationModalWithPositions.bind(this);
-    this.onClickShowOrganizationModalWithBallotItemInfoAndPositions = this.onClickShowOrganizationModalWithBallotItemInfoAndPositions.bind(this);
     this.showAllCandidates = this.showAllCandidates.bind(this);
     this.showLessCandidates = this.showLessCandidates.bind(this);
   }
@@ -196,23 +192,6 @@ class OfficeItemCompressed extends Component {
   onSupportStoreChange () {
     // Trigger re-render, so we show/hide candidates as voter support changes
     this.setState({});
-  }
-
-  onClickShowOrganizationModalWithBallotItemInfo (candidateWeVoteId) {
-    AppObservableStore.setOrganizationModalBallotItemWeVoteId(candidateWeVoteId);
-    AppObservableStore.setShowOrganizationModal(true);
-    AppObservableStore.setHideOrganizationModalPositions(true);
-  }
-
-  onClickShowOrganizationModalWithPositions (candidateWeVoteId) {
-    AppObservableStore.setOrganizationModalBallotItemWeVoteId(candidateWeVoteId);
-    AppObservableStore.setShowOrganizationModal(true);
-    AppObservableStore.setHideOrganizationModalBallotItemInfo(true);
-  }
-
-  onClickShowOrganizationModalWithBallotItemInfoAndPositions (candidateWeVoteId) {
-    AppObservableStore.setOrganizationModalBallotItemWeVoteId(candidateWeVoteId);
-    AppObservableStore.setShowOrganizationModal(true);
   }
 
   getCandidateLink (candidateWeVoteId) {
