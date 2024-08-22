@@ -9,8 +9,9 @@ import HeartFavoriteToggleLoader from '../../common/components/Widgets/HeartFavo
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { handleHorizontalScroll, leftAndRightArrowStateCalculation } from '../../common/utils/leftRightArrowCalculation';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
+import AppObservableStore from '../../common/stores/AppObservableStore';
 import SupportStore from '../../stores/SupportStore';
-import { Candidate, CandidateBottomRow, CandidateContainer, CandidateInfo, CandidateNameH4, CandidateParty, CandidateTopRow, CandidateWrapper } from '../Style/BallotStyles';
+import { Candidate, CandidateBottomRow, CandidateContainer, CandidateInfo, CandidateNameH4, CandidateNameAndPartyWrapper, CandidateParty, CandidateTopRow, CandidateWrapper } from '../Style/BallotStyles';
 import { PositionRowListEmptyWrapper, PositionRowListInnerWrapper, PositionRowListOneWrapper, PositionRowListOuterWrapper, PositionRowListScoreColumn, PositionRowListScoreHeader, PositionRowListScoreSpacer } from '../Style/PositionRowListStyles';
 import InfoCircleIcon from '../Widgets/InfoCircleIcon';
 import PositionRowEmpty from './PositionRowEmpty';
@@ -33,6 +34,9 @@ class BallotScrollingContainer extends Component {
       hideLeftArrow: true,
       hideRightArrow: false,
     };
+    this.onClickShowOrganizationModalWithBallotItemInfo = this.onClickShowOrganizationModalWithBallotItemInfo.bind(this);
+    this.onClickShowOrganizationModalWithPositions = this.onClickShowOrganizationModalWithPositions.bind(this);
+    this.onClickShowOrganizationModalWithBallotItemInfoAndPositions = this.onClickShowOrganizationModalWithBallotItemInfoAndPositions.bind(this);
   }
 
   componentDidMount () {
@@ -44,7 +48,7 @@ class BallotScrollingContainer extends Component {
 
   checkArrowVisibility = () => {
     const el = this.scrollElement.current;
-    console.log(el.scrollWidth);
+    // console.log(el.scrollWidth);
     if (el) {
       if (el.scrollWidth < 751) {
         this.setState({
@@ -59,6 +63,23 @@ class BallotScrollingContainer extends Component {
       }
     }
   };
+
+  onClickShowOrganizationModalWithBallotItemInfo (candidateWeVoteId) {
+    AppObservableStore.setOrganizationModalBallotItemWeVoteId(candidateWeVoteId);
+    AppObservableStore.setShowOrganizationModal(true);
+    AppObservableStore.setHideOrganizationModalPositions(true);
+  }
+
+  onClickShowOrganizationModalWithPositions (candidateWeVoteId) {
+    AppObservableStore.setOrganizationModalBallotItemWeVoteId(candidateWeVoteId);
+    AppObservableStore.setShowOrganizationModal(true);
+    AppObservableStore.setHideOrganizationModalBallotItemInfo(true);
+  }
+
+  onClickShowOrganizationModalWithBallotItemInfoAndPositions (candidateWeVoteId) {
+    AppObservableStore.setOrganizationModalBallotItemWeVoteId(candidateWeVoteId);
+    AppObservableStore.setShowOrganizationModal(true);
+  }
 
   handleScroll = () => {
     setTimeout(() => {
@@ -151,14 +172,14 @@ class BallotScrollingContainer extends Component {
                       />
                     </Suspense>
                     {/* Candidate Name */}
-                    <div>
+                    <CandidateNameAndPartyWrapper>
                       <CandidateNameH4>
                         {oneCandidate.ballot_item_display_name}
                       </CandidateNameH4>
                       <CandidateParty>
                         {candidatePartyText}
                       </CandidateParty>
-                    </div>
+                    </CandidateNameAndPartyWrapper>
                   </Candidate>
                 </CandidateTopRow>
                 <CandidateBottomRow>
