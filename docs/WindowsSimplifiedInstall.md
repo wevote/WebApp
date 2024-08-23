@@ -3,7 +3,7 @@
 
 
 **Caveats**
-1. These instructions are for if you never plan to install WeVoteServer under WSL/Linux. We ask all developers to install both WebApp & WeVoteServer. [See WeVoteServer instructions here](https://github.com/wevote/WeVoteServer/blob/develop/docs/README_API_INSTALL.md), get WSL or Linux working, and then install WebApp with [these instructions](../installing/CLONING_CODE.md).
+1. These instructions are for if you never plan to install WeVoteServer under WSL/Linux. We ask all developers to install both WebApp & WeVoteServer. [See WeVoteServer instructions here](https://github.com/wevote/WeVoteServer/blob/develop/docs/README_API_INSTALL.md), get WSL or Linux working, and then install WebApp with [these instructions](installing/CLONING_CODE.md).
 
 2. Operating Systems, IDEs, tools, packages, dependencies, and languages are constantly changing.
 We do our best to keep this procedure current with the external changes.  Tell us if you run into troubles.
