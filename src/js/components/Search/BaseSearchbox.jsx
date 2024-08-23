@@ -102,8 +102,8 @@ class BaseSearchbox extends React.Component {
             type="search"
             placeholder={this.props.placeholder}
             value={this.state.searchText}
+            onBlur={this.props.onBlur}
             onChange={this.handleInputChange}
-            // onClear={this.handleClear} // 2/26/23 temporarily removed, there is no onClear for an HTML input, but using a listener action is possible
             maxLength={50}
         />
         {this.state.searchText && <ClearButton onClick={this.handleClear} />}

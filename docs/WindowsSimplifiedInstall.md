@@ -1,12 +1,14 @@
 # Simplified Installation with PyCharm on Windows
-[Back to root README](README.md)
+[Back to root README](../README.md)
 
 
 **Caveats**
-1. Operating Systems, IDEs, tools, packages, dependencies, and languages are constantly changing.
+1. These instructions are for if you never plan to install WeVoteServer under WSL/Linux. We ask all developers to install both WebApp & WeVoteServer. [See WeVoteServer instructions here](https://github.com/wevote/WeVoteServer/blob/develop/docs/README_API_INSTALL.md), get WSL or Linux working, and then install WebApp with [these instructions](installing/CLONING_CODE.md).
+
+2. Operating Systems, IDEs, tools, packages, dependencies, and languages are constantly changing.
 We do our best to keep this procedure current with the external changes.  Tell us if you run into troubles.
 
-2. This is a simplified install.  It does not set up the WebApp on your PC to run in SSL (HTTPS mode), so some sign-in features will not be available.  Sign in by Text and Email work perfectly well.
+3. This is a simplified install.  It does not set up the WebApp on your PC to run in SSL (HTTPS mode), so some sign-in features will not be available.  Sign in by Text and Email work perfectly well.
 
     A lot of productive development can be done on Windows with this install procedure, but with these current limitations:
     * Sign in with Apple, Google, Facebook, and Twitter will not work without SSL.

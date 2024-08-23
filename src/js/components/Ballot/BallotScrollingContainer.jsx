@@ -155,13 +155,11 @@ class BallotScrollingContainer extends Component {
                 <CandidateBottomRow>
                   {!hideCandidateDetails && (
                     <Suspense fallback={<></>}>
-                      <DelayedLoad waitBeforeShow={500}>
-                        <IssuesByBallotItemDisplayList
+                      <IssuesByBallotItemDisplayList
                         ballotItemDisplayName={oneCandidate.ballot_item_display_name}
                         ballotItemWeVoteId={oneCandidate.we_vote_id}
                         externalUniqueId={`officeItemCompressed-${oneCandidate.we_vote_id}-${externalUniqueId}`}
-                        />
-                      </DelayedLoad>
+                      />
                     </Suspense>
                   )}
                   {!hideItemActionBar && (
