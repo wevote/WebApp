@@ -101,10 +101,18 @@ export const CandidateNameH4 = styled('button')`
   border: none;
   background-color: transparent;
   padding: 0;
+  text-align: left;
   &:hover {
     text-decoration: underline;
   }
   ${constrainedTextMobileStyles}
+`;
+
+export const CandidateImageAndMatchWrapper = styled('div')`
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: flex-start;
+  justify-content: flex-start;
 `;
 
 export const CandidateNameAndPartyWrapper = styled('div')`

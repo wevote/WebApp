@@ -18,12 +18,12 @@ export default class IssueImageDisplay extends Component {
 
 
     const oneIssue = IssueStore.getIssueByWeVoteId(this.props.issueWeVoteId);
-      //   console.log(oneIssue.issue_name)
+    //   console.log(oneIssue.issue_name)
     let issueIconLocalPath = '';
     if (oneIssue.issue_icon_local_path) {
       issueIconLocalPath = oneIssue.issue_icon_local_path;
     }
-      //     console.log('IssueImageDisplay issueIconLocalPath:', issueIconLocalPath);
+    //     console.log('IssueImageDisplay issueIconLocalPath:', issueIconLocalPath);
 
     const issueIconImageUrl = (!issueIconLocalPath || issueIconLocalPath.length === 0) ?
       normalizedImagePath('/img/global/svg-icons/issues/thumbs-up-icon.svg') :
