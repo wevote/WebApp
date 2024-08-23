@@ -18,7 +18,6 @@ import PositionRowEmpty from './PositionRowEmpty';
 import PositionRowList from './PositionRowList';
 
 const BallotItemSupportOpposeScoreDisplay = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeScoreDisplay' */ '../Widgets/ScoreDisplay/BallotItemSupportOpposeScoreDisplay'));
-const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
 const IssuesByBallotItemDisplayList = React.lazy(() => import(/* webpackChunkName: 'IssuesByBallotItemDisplayList' */ '../Values/IssuesByBallotItemDisplayList'));
 const ItemActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemActionBar' */ '../Widgets/ItemActionBar/ItemActionBar'));
@@ -185,13 +184,11 @@ class BallotScrollingContainer extends Component {
                 <CandidateBottomRow>
                   {!hideCandidateDetails && (
                     <Suspense fallback={<></>}>
-                      <DelayedLoad waitBeforeShow={500}>
-                        <IssuesByBallotItemDisplayList
+                      <IssuesByBallotItemDisplayList
                         ballotItemDisplayName={oneCandidate.ballot_item_display_name}
                         ballotItemWeVoteId={oneCandidate.we_vote_id}
                         externalUniqueId={`officeItemCompressed-${oneCandidate.we_vote_id}-${externalUniqueId}`}
-                        />
-                      </DelayedLoad>
+                      />
                     </Suspense>
                   )}
                   {!hideItemActionBar && (
