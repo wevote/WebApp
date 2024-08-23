@@ -2,22 +2,29 @@ import { ArrowForwardIos, ArrowBackIos } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
-import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
-import Tooltip from 'react-bootstrap/Tooltip';
 import { BallotHorizontallyScrollingContainer, BallotScrollingInnerWrapper, LeftArrowOuterWrapper, LeftArrowInnerWrapper, RightArrowOuterWrapper, RightArrowInnerWrapper } from '../../common/components/Style/ScrollingStyles';
 import HeartFavoriteToggleLoader from '../../common/components/Widgets/HeartFavoriteToggle/HeartFavoriteToggleLoader';
-import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { handleHorizontalScroll, leftAndRightArrowStateCalculation } from '../../common/utils/leftRightArrowCalculation';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import AppObservableStore from '../../common/stores/AppObservableStore';
 import SupportStore from '../../stores/SupportStore';
-import { Candidate, CandidateBottomRow, CandidateContainer, CandidateInfo, CandidateNameH4, CandidateNameAndPartyWrapper, CandidateParty, CandidateTopRow, CandidateWrapper } from '../Style/BallotStyles';
-import { PositionRowListEmptyWrapper, PositionRowListInnerWrapper, PositionRowListOneWrapper, PositionRowListOuterWrapper, PositionRowListScoreColumn, PositionRowListScoreHeader, PositionRowListScoreSpacer } from '../Style/PositionRowListStyles';
-import InfoCircleIcon from '../Widgets/InfoCircleIcon';
-import PositionRowEmpty from './PositionRowEmpty';
-import PositionRowList from './PositionRowList';
+import {
+  Candidate,
+  CandidateBottomRow,
+  CandidateContainer,
+  CandidateInfo,
+  CandidateNameH4,
+  CandidateNameAndPartyWrapper,
+  CandidateParty,
+  CandidateTopRow,
+  CandidateWrapper,
+  CandidateImageAndMatchWrapper,
+} from '../Style/BallotStyles';
+import { PositionRowListInnerWrapper, PositionRowListOneWrapper, PositionRowListOuterWrapper } from '../Style/PositionRowListStyles';
+import BallotMatchIndicator from './BallotMatchIndicator';
+import PositionRowListCompressed from './PositionRowListCompressed';
 
-const BallotItemSupportOpposeScoreDisplay = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeScoreDisplay' */ '../Widgets/ScoreDisplay/BallotItemSupportOpposeScoreDisplay'));
+const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
 const IssuesByBallotItemDisplayList = React.lazy(() => import(/* webpackChunkName: 'IssuesByBallotItemDisplayList' */ '../Values/IssuesByBallotItemDisplayList'));
 const ItemActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemActionBar' */ '../Widgets/ItemActionBar/ItemActionBar'));
@@ -91,52 +98,8 @@ class BallotScrollingContainer extends Component {
     const candidatePartyText = oneCandidate.party && oneCandidate.party.length ? `${oneCandidate.party}` : '';
     const avatarCompressed = 'card-main__avatar-compressed';
     const avatarBackgroundImage = normalizedImagePath('../img/global/svg-icons/avatar-generic.svg');
-    const scoreExplanationTooltip = isMobileScreenSize() ? (<span />) : (
-      <Tooltip className="u-z-index-9020" id={`scoreDescription-${oneCandidate.we_vote_id}`}>
-        Your personalized score
-        {oneCandidate.ballot_item_display_name && (
-          <>
-            {' '}
-            for
-            {' '}
-            {oneCandidate.ballot_item_display_name}
-          </>
-        )}
-        {' '}
-        is the number of people who support this candidate, from among the people you trust. Trust by clicking the plus sign.
-      </Tooltip>
-    );
 
-    const positionRowListScoreColumn = (
-      <PositionRowListScoreColumn>
-        <PositionRowListScoreHeader>
-          <OverlayTrigger
-            placement="bottom"
-            overlay={scoreExplanationTooltip}
-          >
-            <ScoreWrapper>
-              <div>
-                Score
-              </div>
-              <InfoCircleIconWrapper>
-                <InfoCircleIcon />
-              </InfoCircleIconWrapper>
-            </ScoreWrapper>
-          </OverlayTrigger>
-        </PositionRowListScoreHeader>
-        <PositionRowListScoreSpacer>
-          <Suspense fallback={<></>}>
-            <BallotItemSupportOpposeScoreDisplay
-              ballotItemWeVoteId={oneCandidate.we_vote_id}
-              onClickFunction={this.onClickShowOrganizationModalWithPositions}
-              hideEndorsementsOverview
-              hideNumbersOfAllPositions
-            />
-          </Suspense>
-        </PositionRowListScoreSpacer>
-      </PositionRowListScoreColumn>
-    );
-
+    const pigsCanFly = false;
     return (
       <BallotScrollingInnerWrapper>
         <LeftArrowOuterWrapper className="u-show-desktop-tablet">
@@ -160,16 +123,24 @@ class BallotScrollingContainer extends Component {
                     onClick={() => this.onClickShowOrganizationModalWithBallotItemInfoAndPositions(oneCandidate.we_vote_id)}
                   >
                     {/* Candidate Image */}
-                    <Suspense fallback={<></>}>
-                      <ImageHandler
-                        className={avatarCompressed}
-                        sizeClassName="icon-candidate-small u-push--sm "
-                        imageUrl={oneCandidate.candidate_photo_url_large}
-                        alt=""
-                        kind_of_ballot_item="CANDIDATE"
-                        style={{ backgroundImage: { avatarBackgroundImage } }}
-                      />
-                    </Suspense>
+                    <CandidateImageAndMatchWrapper>
+                      <Suspense fallback={<></>}>
+                        <ImageHandler
+                          className={avatarCompressed}
+                          sizeClassName="icon-candidate-small u-push--sm "
+                          imageUrl={oneCandidate.candidate_photo_url_large}
+                          alt=""
+                          kind_of_ballot_item="CANDIDATE"
+                          style={{ backgroundImage: { avatarBackgroundImage } }}
+                        />
+                      </Suspense>
+                      {pigsCanFly && (
+                        <BallotMatchIndicator
+                          oneCandidate={oneCandidate}
+                        />
+                      )}
+                    </CandidateImageAndMatchWrapper>
+
                     {/* Candidate Name */}
                     <CandidateNameAndPartyWrapper>
                       <CandidateNameH4>
@@ -195,14 +166,14 @@ class BallotScrollingContainer extends Component {
                     <ItemActionBarOutsideWrapper>
                       <Suspense fallback={<></>}>
                         <ItemActionBar
-                        ballotItemWeVoteId={oneCandidate.we_vote_id}
-                        ballotItemDisplayName={oneCandidate.ballot_item_display_name}
-                        commentButtonHide
-                        externalUniqueId={`OfficeItemCompressed-ItemActionBar-${oneCandidate.we_vote_id}-${externalUniqueId}`}
-                        hidePositionPublicToggle
-                        positionPublicToggleWrapAllowed
-                        shareButtonHide
-                        useHelpDefeatOrHelpWin
+                          ballotItemWeVoteId={oneCandidate.we_vote_id}
+                          ballotItemDisplayName={oneCandidate.ballot_item_display_name}
+                          commentButtonHide
+                          externalUniqueId={`OfficeItemCompressed-ItemActionBar-${oneCandidate.we_vote_id}-${externalUniqueId}`}
+                          hidePositionPublicToggle
+                          positionPublicToggleWrapAllowed
+                          shareButtonHide
+                          useHelpDefeatOrHelpWin
                         />
                       </Suspense>
                     </ItemActionBarOutsideWrapper>
@@ -217,42 +188,13 @@ class BallotScrollingContainer extends Component {
                 </HeartFavoriteToggleLocalWrapper>
               )}
               <PositionRowListInnerWrapper>
-                <div>
-                  {/* className="u-show-mobile" */}
-                  {positionRowListScoreColumn}
-                </div>
                 <PositionRowListOneWrapper>
-                  <PositionRowList
+                  <PositionRowListCompressed
                     ballotItemWeVoteId={oneCandidate.we_vote_id}
                     showSupport
                     firstInstance={isFirstBallotItem}
                   />
                 </PositionRowListOneWrapper>
-                <PositionRowListOneWrapper>
-                  <PositionRowList
-                    ballotItemWeVoteId={oneCandidate.we_vote_id}
-                    showOppose
-                    showOpposeDisplayNameIfNoSupport
-                    firstInstance={isFirstBallotItem}
-                  />
-                </PositionRowListOneWrapper>
-                <PositionRowListOneWrapper>
-                  <PositionRowList
-                    ballotItemWeVoteId={oneCandidate.we_vote_id}
-                    showInfoOnly
-                    firstInstance={isFirstBallotItem}
-                  />
-                </PositionRowListOneWrapper>
-                <PositionRowListEmptyWrapper>
-                  <PositionRowEmpty
-                    ballotItemWeVoteId={oneCandidate.we_vote_id}
-                  />
-                </PositionRowListEmptyWrapper>
-                {/*
-                <div className="u-show-desktop-tablet">
-                {positionRowListScoreColumn}
-                </div>
-                */}
               </PositionRowListInnerWrapper>
             </PositionRowListOuterWrapper>
           </CandidateContainer>
@@ -290,11 +232,6 @@ const HrSeparator = styled('hr')`
   width: 95%;
 `;
 
-const InfoCircleIconWrapper = styled('div')`
-  margin-bottom: -4px;
-  margin-left: 3px;
-`;
-
 const ItemActionBarOutsideWrapper = styled('div')`
   display: flex;
   cursor: pointer;
@@ -302,10 +239,6 @@ const ItemActionBarOutsideWrapper = styled('div')`
   justify-content: flex-start;
   margin-top: 12px;
   width: 100%;
-`;
-
-const ScoreWrapper = styled('div')`
-  display: flex;
 `;
 
 export default BallotScrollingContainer;
