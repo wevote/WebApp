@@ -47,6 +47,8 @@ const CampaignSupportShare = React.lazy(() => import(/* webpackChunkName: 'Campa
 const CampaignUpdatesPage = React.lazy(() => import(/* webpackChunkName: 'CampaignNewsPage' */ './js/common/pages/Campaign/CampaignNewsPage'));
 const Candidate = React.lazy(() => import(/* webpackChunkName: 'Candidate' */ './js/pages/Ballot/Candidate'));
 const CandidateForExtension = React.lazy(() => import(/* webpackChunkName: 'EditCandidateForExtension' */ './js/pages/Ballot/EditCandidateForExtension/EditCandidateForExtension'));
+const ChallengeHomePage = React.lazy(() => import(/* webpackChunkName: 'ChallengeHomePage' */ './js/common/pages/Challenge/ChallengeHomePage'));
+const ChallengeSupportJoin = React.lazy(() => import(/* webpackChunkName: 'ChallengeSupportJoin' */ './js/common/pages/ChallengeSupport/ChallengeSupportJoin'));
 const ClaimYourPage = React.lazy(() => import(/* webpackChunkName: 'ClaimYourPage' */ './js/pages/Settings/ClaimYourPage'));
 const CompleteYourProfileMobile = React.lazy(() => import(/* webpackChunkName: 'CompleteYourProfileMobile' */ './js/common/pages/Settings/CompleteYourProfileMobile'));
 const Credits = React.lazy(() => import(/* webpackChunkName: 'Credits' */ './js/pages/More/Credits'));
@@ -398,6 +400,9 @@ class App extends Component {
                   <Route path="/-/:custom_link_string" exact component={SharedItemLanding} />
                   <Route path="/-:shared_item_code/modal/share" exact component={SharedItemLanding} />
                   <Route path="/-:shared_item_code" exact component={SharedItemLanding} />
+                  <Route exact path="/+/:challengeWeVoteId/" render={(props) => <ChallengeHomePage match={props.match} />} />
+                  <Route exact path="/:challengeSEOFriendlyPath/+/" render={(props) => <ChallengeHomePage match={props.match} />} />
+                  <Route exact path="/:challengeSEOFriendlyPath/+/join-challenge" render={(props) => <ChallengeSupportJoin match={props.match} setShowHeaderFooter={this.setShowHeaderFooter} />} />
                   <Route exact path="/:politicianWeVoteId/p/" render={(props) => <PoliticianDetailsPage match={props.match} />} />
                   <Route exact path="/:politicianSEOFriendlyPath/-/" render={(props) => <PoliticianDetailsPage match={props.match} />} />
                   <Route exact path="/:campaignSEOFriendlyPath/-/share-campaign" render={(props) => <CampaignSupportShare match={props.match} setShowHeaderFooter={this.setShowHeaderFooter} />} />

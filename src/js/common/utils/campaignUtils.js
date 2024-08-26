@@ -149,5 +149,3 @@ export function retrieveCampaignXFromIdentifiersIfNotAlreadyRetrieved (campaignS
   }
   return retrieveCampaignXFromIdentifiersIfNeeded(campaignSEOFriendlyPath, campaignXWeVoteId);
 }
-
-

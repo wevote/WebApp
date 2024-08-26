@@ -3,6 +3,7 @@ import { normalizedHrefPage } from '../common/utils/hrefUtils';
 import { isCordova, isWebApp } from '../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize, { isSmallerThanTablet } from '../common/utils/isMobileScreenSize';
 import Cookies from '../common/utils/js-cookie/Cookies';
+import isSEOFriendlyURL from '../common/utils/isSEOFriendlyURL';
 import normalizedImagePath from '../common/utils/normalizedImagePath';
 import stringContains from '../common/utils/stringContains';
 
@@ -39,11 +40,11 @@ export function getApplicationViewBooleans (pathname) {
     inTheaterMode = true;
   } else if (
     pathnameLowerCase === '/about' ||
-    pathnameLowerCase.startsWith('/candidate/') ||
-    pathnameLowerCase.startsWith('/donate') ||
+    (pathnameLowerCase.startsWith('/candidate/') && !isSEOFriendlyURL(pathnameLowerCase)) ||
+    (pathnameLowerCase.startsWith('/donate') && !isSEOFriendlyURL(pathnameLowerCase)) ||
     pathnameLowerCase === '/for-campaigns' ||
     pathnameLowerCase === '/for-organizations' ||
-    pathnameLowerCase.startsWith('/how') ||
+    (pathnameLowerCase.startsWith('/how') && !isSEOFriendlyURL(pathnameLowerCase)) ||
     pathnameLowerCase === '/intro' ||
     pathnameLowerCase.startsWith('/measure/') ||
     pathnameLowerCase === '/more/about' ||
@@ -70,7 +71,7 @@ export function getApplicationViewBooleans (pathname) {
   } else if (pathnameLowerCase.startsWith('/ballot/vote')) {
     contentFullWidthMode = false; // I set this to false, to fix the header padding issues in /ballot/vote
     voteMode = true;
-  } else if (pathnameLowerCase.startsWith('/ballot')) {
+  } else if (pathnameLowerCase.startsWith('/ballot') && !isSEOFriendlyURL(pathnameLowerCase)) {
     contentFullWidthMode = false;
   } else if (pathnameLowerCase.startsWith('/c/') || pathnameLowerCase.startsWith('/id/')) {
     contentFullWidthMode = true;
@@ -79,23 +80,23 @@ export function getApplicationViewBooleans (pathname) {
       (pathnameLowerCase === '/start-a-campaign')) {
     contentFullWidthMode = true;
     candidatesMode = true;
-  } else if (pathnameLowerCase.startsWith('/news')) {
+  } else if (pathnameLowerCase.startsWith('/news') && !isSEOFriendlyURL(pathnameLowerCase)) {
     contentFullWidthMode = false;
   } else if (stringContains('/settings/positions', pathnameLowerCase)) {
     // contentFullWidthMode = true;
     voterGuideCreatorMode = true;
-  } else if (pathnameLowerCase.startsWith('/ready') ||
+  } else if ((pathnameLowerCase.startsWith('/ready') && !isSEOFriendlyURL(pathnameLowerCase)) ||
     (pathnameLowerCase === '/welcome') ||
     (pathnameLowerCase === '/')) {
     contentFullWidthMode = true;
     readyMode = true;
-  } else if (stringContains('/settings', pathnameLowerCase) ||
+  } else if ((stringContains('/settings', pathnameLowerCase) && !isSEOFriendlyURL(pathnameLowerCase)) ||
     pathnameLowerCase === '/settings/voterguidesmenu' ||
     pathnameLowerCase === '/settings/voterguidelist') {
     contentFullWidthMode = true;
     settingsMode = true;
-  } else if (pathnameLowerCase.startsWith('/value') || // '/values'
-    pathnameLowerCase.startsWith('/opinions')) {
+  } else if ((pathnameLowerCase.startsWith('/value') && !isSEOFriendlyURL(pathnameLowerCase)) || // '/values'
+    (pathnameLowerCase.startsWith('/opinions') && !isSEOFriendlyURL(pathnameLowerCase))) {
     contentFullWidthMode = true;
     valuesMode = true;
   } else if (pathnameLowerCase.startsWith('/candidate-for-extension') ||
@@ -105,11 +106,11 @@ export function getApplicationViewBooleans (pathname) {
     // Don't even load Stripe, Google Analytics, Google Maps, and Zen, they make startup very slow and are not needed for the Chrome Extension
     window.leanLoadForChromeExtension = true;
     console.log('applicationUtils for Chrome Extension window.leanLoadForChromeExtension set to true');
-  } else if (pathnameLowerCase.startsWith('/-')) {
+  } else if (pathnameLowerCase.startsWith('/-') && !isSEOFriendlyURL(pathnameLowerCase)) {
     sharedItemLandingPage = true;
   } else if (pathnameLowerCase.startsWith('/twitter_sign_in')) {
     twitterSignInMode = true;
-  } else if (pathnameLowerCase.startsWith('/friends') ||
+  } else if ((pathnameLowerCase.startsWith('/friends') && !isSEOFriendlyURL(pathnameLowerCase)) ||
     pathnameLowerCase === '/facebook_invitable_friends') {
     contentFullWidthMode = true;
     friendsMode = true;
@@ -195,7 +196,7 @@ export function getApplicationViewBooleans (pathname) {
   // ///////// EXCLUDE: The following are URLS we want to specifically exclude (because otherwise they will be picked up in a broader pattern in the next branch
   } else if (pathnameLowerCase.startsWith('/-') || // Shared item
       stringContains('/b/btdb', pathnameLowerCase) ||
-      (pathnameLowerCase === '/about') ||
+      ((pathnameLowerCase === '/about') && !isSEOFriendlyURL(pathnameLowerCase)) ||
       (pathnameLowerCase === '/for-campaigns') ||
       (pathnameLowerCase === '/for-organizations') ||
       (pathnameLowerCase === '/more/about') ||
@@ -205,10 +206,10 @@ export function getApplicationViewBooleans (pathname) {
       (pathnameLowerCase === '/values/list') ||
       (pathnameLowerCase === '/welcomehome') ||
       pathnameLowerCase.startsWith('/findfriends') ||
-      pathnameLowerCase.startsWith('/how') ||
+      (pathnameLowerCase.startsWith('/how') && !isSEOFriendlyURL(pathnameLowerCase)) ||
       pathnameLowerCase.startsWith('/more/pricing') ||
-      pathnameLowerCase.startsWith('/register') ||
-      pathnameLowerCase.startsWith('/remind') ||
+      (pathnameLowerCase.startsWith('/register') && !isSEOFriendlyURL(pathnameLowerCase)) ||
+      (pathnameLowerCase.startsWith('/remind') && !isSEOFriendlyURL(pathnameLowerCase)) ||
       pathnameLowerCase.startsWith('/settings/voterguidelist') ||
       pathnameLowerCase.startsWith('/setupaccount') ||
       pathnameLowerCase.startsWith('/settings/voterguidesmenu') ||
@@ -263,9 +264,9 @@ export function getApplicationViewBooleans (pathname) {
   //   // Before March 2023 we didn't show footer once voter is signed in
   // } else
   if (
-    pathnameLowerCase.endsWith('/-/') ||
+    isSEOFriendlyURL(pathnameLowerCase) ||
     pathnameLowerCase.endsWith('/cs/') ||
-    pathnameLowerCase.startsWith('/ready') ||
+    (pathnameLowerCase.startsWith('/ready') && !isSEOFriendlyURL(pathnameLowerCase)) ||
     (pathnameLowerCase === '/start-a-campaign') ||
     (pathnameLowerCase === '/welcome') ||
     (pathnameLowerCase === '/')) {
@@ -278,9 +279,9 @@ export function getApplicationViewBooleans (pathname) {
   if (extensionPageMode) {
     // No headers or footers
   } else if (pathnameLowerCase.startsWith('/ballot') ||
-    pathnameLowerCase.startsWith('/candidate') ||
-    pathnameLowerCase.startsWith('/measure') ||
-    pathnameLowerCase.startsWith('/office') ||
+    (pathnameLowerCase.startsWith('/candidate') && !isSEOFriendlyURL(pathnameLowerCase)) ||
+    (pathnameLowerCase.startsWith('/measure') && !isSEOFriendlyURL(pathnameLowerCase)) ||
+    (pathnameLowerCase.startsWith('/office') && !isSEOFriendlyURL(pathnameLowerCase)) ||
     (voterGuideMode && !onFollowSubPage)) {
     showShareButtonFooter = isWebApp() || (!isIOSAppOnMac() && isSmallScreen);
   }
