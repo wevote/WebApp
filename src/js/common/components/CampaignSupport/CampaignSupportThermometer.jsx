@@ -19,7 +19,7 @@ class CampaignSupportThermometer extends React.Component {
       supportersCountNextGoal: CampaignStore.getCampaignXSupportersCountNextGoalDefault(),
       supportersCount: 0,
       voterOpposesCampaignX: false,
-      voterSupportsCampaignX: false,
+      // voterSupportsCampaignX: false,
     };
   }
 
@@ -131,7 +131,7 @@ class CampaignSupportThermometer extends React.Component {
       // console.log('voterSupportsCampaignX: ', OrganizationStore.isVoterFollowingThisPolitician(politicianWeVoteId));
       this.setState({
         voterOpposesCampaignX: OrganizationStore.isVoterDislikingThisPolitician(politicianWeVoteId),
-        voterSupportsCampaignX: OrganizationStore.isVoterFollowingThisPolitician(politicianWeVoteId),  // A variation on isVoterFollowingThisOrganization
+        // voterSupportsCampaignX: OrganizationStore.isVoterFollowingThisPolitician(politicianWeVoteId),  // A variation on isVoterFollowingThisOrganization
       });
     }
   }

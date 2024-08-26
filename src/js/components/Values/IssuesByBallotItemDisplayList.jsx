@@ -178,7 +178,6 @@ class IssuesByBallotItemDisplayList extends Component {
       return this.props.children || null;
     }
 
-    const issueRenderCountTemp = issuesToRender.length;
     let issueFollowedByVoter = false;
     let localCounter = 0;
     let showEllipses = false;
@@ -199,7 +198,6 @@ class IssuesByBallotItemDisplayList extends Component {
           return (
             <ValueNameWithPopoverDisplay
               key={`${ballotItemWeVoteId}-${oneIssue.issue_we_vote_id}-${showEllipses}`}
-              addComma={localCounter < issueRenderCountTemp}
               ballotItemDisplayName={ballotItemDisplayName}
               ballotItemWeVoteId={ballotItemWeVoteId}
               externalUniqueId={`${ballotItemWeVoteId}-${externalUniqueId}`}
