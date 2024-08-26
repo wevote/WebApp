@@ -25,7 +25,6 @@ class HeartFavoriteToggleLive extends React.Component {
       supportersCount: 0,
       voterOpposesCampaignX: false,
       voterSupportsCampaignX: false,
-      voterCanVoteForPoliticianInCampaign: false,
       voterFirstName: '',
       voterLastName: '',
       voterIsSignedIn: false,
@@ -91,7 +90,6 @@ class HeartFavoriteToggleLive extends React.Component {
         voter_campaignx_supporter: voterCampaignXSupporter,
       } = campaignX;
       const supportersCountNextGoalWithFloor = supportersCountNextGoal || CampaignStore.getCampaignXSupportersCountNextGoalDefault();
-      const voterCanVoteForPoliticianInCampaign = CampaignStore.getVoterCanVoteForPoliticianInCampaign(campaignXWeVoteId);
       if (campaignXWeVoteIdFromDict && politicianWeVoteId) {
         //
         const { politicianWeVoteId: politicianWeVoteIdPrevious } = this.state;
@@ -124,7 +122,6 @@ class HeartFavoriteToggleLive extends React.Component {
           politicianWeVoteId,
           supportersCount,
           supportersCountNextGoal: supportersCountNextGoalWithFloor,
-          voterCanVoteForPoliticianInCampaign,
         });
       }
       // if (politicianWeVoteId) {

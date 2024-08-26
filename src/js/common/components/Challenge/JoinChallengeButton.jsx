@@ -54,7 +54,7 @@ class JoinChallengeButton extends React.Component {
       } else {
         setUpAccountEntryPath = `${challengeBasePath}customize-message`;
       }
-      const { location: { pathname: currentPathname} } = window;
+      const { location: { pathname: currentPathname } } = window;
       AppObservableStore.setSetUpAccountBackLinkPath(currentPathname);
       AppObservableStore.setSetUpAccountEntryPath(setUpAccountEntryPath);
       historyPush(setUpAccountEntryPath);

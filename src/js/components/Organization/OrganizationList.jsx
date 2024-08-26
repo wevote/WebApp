@@ -2,9 +2,7 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { renderLog } from '../../common/utils/logging';
-import EndorsementCard from '../Widgets/EndorsementCard';
 import OrganizationDisplayForList from './OrganizationDisplayForList';
-import NoSearchResult from '../Search/NoSearchResult';
 
 const ShowMoreItems = React.lazy(() => import(/* webpackChunkName: 'ShowMoreItems' */ '../Widgets/ShowMoreItems'));
 
@@ -108,7 +106,6 @@ class OrganizationList extends Component {
   render () {
     renderLog('OrganizationList');  // Set LOG_RENDER_EVENTS to log all renders
     const { hideShowMoreItems } = this.props;
-    const { incomingOrganizationList } = this.props;
     const {
       loadingMoreItems, numberOfItemsToDisplay, organizationListToDisplay, organizationListToDisplayCount,
     } = this.state;
