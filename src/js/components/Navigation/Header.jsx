@@ -9,6 +9,7 @@ import historyPush from '../../common/utils/historyPush';
 import { normalizedHref } from '../../common/utils/hrefUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize, { displayNoneIfSmallerThanDesktop, handleResize, isTablet } from '../../common/utils/isMobileScreenSize';
+import isSEOFriendlyURL from '../../common/utils/isSEOFriendlyURL';
 import { renderLog } from '../../common/utils/logging';
 import stringContains from '../../common/utils/stringContains';
 import VoterStore from '../../stores/VoterStore';
@@ -184,15 +185,15 @@ export default class Header extends Component {
     const path = normalizedHref();
     return (
       // path.startsWith('/-') || // Shared item
-      path.startsWith('/about') ||
+      (path.startsWith('/about') && !isSEOFriendlyURL(path)) ||
       path.startsWith('/findfriends') ||
       path.startsWith('/for-campaigns') ||
       path.startsWith('/how/for-campaigns') ||
       path.startsWith('/more/about') ||
       path.startsWith('/more/credits') ||
-      path.startsWith('/remind') ||
+      (path.startsWith('/remind') && !isSEOFriendlyURL(path)) ||
       path.startsWith('/setupaccount') ||
-      (path.startsWith('/start') && !path.startsWith('/start-a-campaign')) ||
+      (path.startsWith('/start') && !path.startsWith('/start-a-campaign') && !isSEOFriendlyURL(path)) ||
       path.startsWith('/twitter_sign_in') ||
       path.startsWith('/unsubscribe') ||
       path.startsWith('/wevoteintro') ||

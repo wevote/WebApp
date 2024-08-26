@@ -72,9 +72,6 @@ export function getPoliticianValuesFromIdentifiers (politicianSEOFriendlyPath, p
       we_vote_hosted_profile_image_url_medium: politicianImageUrlMedium,
       we_vote_hosted_profile_image_url_tiny: politicianImageUrlTiny,
       voter_is_politician_owner: voterIsPoliticianOwner,
-      we_vote_hosted_profile_image_url_large: politicianImageUrlLarge,
-      we_vote_hosted_profile_image_url_medium: politicianImageUrlMedium,
-      we_vote_hosted_profile_image_url_tiny: politicianImageUrlTiny,
       wikipedia_url: wikipediaUrl,
       youtube_url: youtubeUrl,
     } = politician);
@@ -199,5 +196,3 @@ export function retrievePoliticianFromIdentifiersIfNotAlreadyRetrieved (politici
   }
   return retrievePoliticianFromIdentifiersIfNeeded(politicianSEOFriendlyPath, politicianWeVoteId);
 }
-
-
