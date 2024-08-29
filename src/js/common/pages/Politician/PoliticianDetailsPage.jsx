@@ -1409,18 +1409,19 @@ const MobileHeaderContentContainer = styled('div')(({ theme }) => (`
 const MobileHeaderOuterContainer = styled('div', {
   shouldForwardProp: (prop) => !['scrolledDown'].includes(prop),
 })(({ scrolledDown }) => (`
-  animation: ${slideDown} 300ms ease-in;  // Not currently working -- needs debugging
-  // transition: visibility 1s linear;  // Not currently working -- needs debugging
+  // animation: ${slideDown} 300ms ease-in;  // Not currently working -- needs debugging
+  transition: transform .7s ease-in-out;
   margin-top: ${marginTopOffset(scrolledDown)};
   width: 100%;
   background-color: #fff;
   ${scrolledDown ? 'border-bottom: 1px solid #aaa' : ''};
   ${scrolledDown ? `box_shadow: ${standardBoxShadow('wide')}` : ''};
-  ${scrolledDown ? 'display: block' : 'display: none'};
+  // ${scrolledDown ? 'display: block' : 'display: none'};
   overflow: hidden;
   position: fixed;
   z-index: 1;
   right: 0;
+  transform: translateY(${scrolledDown ? '0' : '-120%'})
 `));
 
 const MobileHeaderInnerContainer = styled('div')`
