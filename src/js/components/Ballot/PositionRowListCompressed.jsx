@@ -350,14 +350,23 @@ const CandidateEndorsementPhotos = styled('div')`
 `;
 
 const CandidateEndorsementText = styled('div')`
-  cursor: pointer;
+cursor: pointer;
   overflow-wrap: break-word;
+  color: #1073d4;
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17.92px;
+  letter-spacing: 0.5%;
+  text-decoration: underline;
 `;
 
 const CandidateEndorsementsWrapper = styled('div')`
   height: 100%;
-  max-width: 400px;
+  max-width: 212px;
   white-space: wrap;
+  width: 212px;
+  height: 102px;
 `;
 
 export default withTheme(withStyles(styles)(PositionRowListCompressed));
