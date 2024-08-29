@@ -67,7 +67,7 @@ class PositionRowListCompressed extends Component {
       }
     }
     const organizationsVoterIsFriendsWith = FriendStore.currentFriendsOrganizationWeVoteIDList();
-    if (!organizationsVoterIsFriendsWith.length > 0  && callApis) {
+    if (!organizationsVoterIsFriendsWith.length > 0 && callApis) {
       if (apiCalming('friendListsAll', 30000)) {
         FriendActions.friendListsAll();
       }
@@ -358,7 +358,6 @@ const CandidateEndorsementsWrapper = styled('div')`
   height: 100%;
   max-width: 400px;
   white-space: wrap;
-  width: 400px;
 `;
 
 export default withTheme(withStyles(styles)(PositionRowListCompressed));

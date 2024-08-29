@@ -4,9 +4,7 @@ import DesignTokenColors from './DesignTokenColors';
 export const BallotHorizontallyScrollingContainer = styled('div', {
   shouldForwardProp: (prop) => !['isChosen', 'showLeftGradient', 'showRightGradient'].includes(prop),
 })(({ isChosen, showLeftGradient, showRightGradient }) => (`
-  -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 95%, rgba(0, 0, 0, 0));
-  mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 95%, rgba(0, 0, 0, 0));
-
+  width: 100%;
   overflow-x: auto;
   white-space: nowrap;
 
@@ -15,12 +13,12 @@ export const BallotHorizontallyScrollingContainer = styled('div', {
   ${isChosen ? `background-color: ${DesignTokenColors.confirmation50};` : ''}
 
     /* Fade out, right side */
-  ${showRightGradient ? '-webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 88%, rgba(0, 0, 0, 0));' : ''}
-  ${showRightGradient ? 'mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 88%, rgba(0, 0, 0, 0));' : ''} );
+  ${showRightGradient ? '-webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 85%, rgba(0, 0, 0, 0));' : ''}
+  ${showRightGradient ? 'mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 85%, rgba(0, 0, 0, 0));' : ''} );
 
   /* Fade out, left side */
-  ${showLeftGradient ? '-webkit-mask-image: linear-gradient(to left, rgba(0, 0, 0, 1) 88%, rgba(0, 0, 0, 0));' : ''}
-  ${showLeftGradient ? 'mask-image: linear-gradient(to left, rgba(0, 0, 0, 1) 88%, rgba(0, 0, 0, 0));' : ''}
+  ${showLeftGradient ? '-webkit-mask-image: linear-gradient(to left, rgba(0, 0, 0, 1) 85%, rgba(0, 0, 0, 0));' : ''}
+  ${showLeftGradient ? 'mask-image: linear-gradient(to left, rgba(0, 0, 0, 1) 85%, rgba(0, 0, 0, 0));' : ''}
 
   /* Fade out, both sides */
   ${showLeftGradient && showRightGradient ? '-webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1) 6%, rgba(0, 0, 0, 1) 94%, rgba(0, 0, 0, 0));' : ''}
@@ -39,6 +37,7 @@ export const BallotScrollingInnerWrapper = styled('div')`
   overflow-x: hidden;
   overflow-y: hidden;
   display: flex;
+  position: relative;
 `;
 
 export const BallotScrollingOuterWrapper = styled('div')`
@@ -88,6 +87,7 @@ export const CampaignsScrollingOuterWrapper = styled('div')`
   min-height: 400px;
   min-width: 0;
   width: 100%;
+  position:relative
 `;
 
 export const RightArrowInnerWrapper = styled('div', {
@@ -101,11 +101,12 @@ export const RightArrowInnerWrapper = styled('div', {
 export const RightArrowOuterWrapper = styled('div')`
   display: flex;
   flex-direction: column;
-  height: 100%;
   justify-content: center;
-  min-height: 330px;
-  min-width: 24px;
   z-index: 9000;
+  position: absolute;
+  right: 0;
+  height: 100%;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0), white 20%)
 `;
 
 export const LeftArrowInnerWrapper = styled('div', {
@@ -117,13 +118,14 @@ export const LeftArrowInnerWrapper = styled('div', {
 `));
 
 export const LeftArrowOuterWrapper = styled('div')`
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  justify-content: center;
-  min-height: 330px;
-  min-width: 24px;
-  z-index: 9000;
+display: flex;
+flex-direction: column;
+justify-content: center;
+z-index: 9000;
+position: absolute;
+left: 0;
+height: 100%;
+background: linear-gradient(to left, rgba(0, 0, 0, 0), white 20%)
 `;
 
 export const TitleAndMobileArrowsOuterWrapper = styled('div')`

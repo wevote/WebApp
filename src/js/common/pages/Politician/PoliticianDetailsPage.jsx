@@ -290,8 +290,8 @@ class PoliticianDetailsPage extends Component {
       }
       triggerFreshRetrieve = true;
       triggerSEOPathRedirect = true;
-    // } else {
-    //   console.log('PoliticianDetailsPage NO CHANGE');
+      // } else {
+      //   console.log('PoliticianDetailsPage NO CHANGE');
     }
     // console.log('componentDidUpdate triggerSEOPathRedirect: ', triggerSEOPathRedirect, ', politicianSEOFriendlyPath: ', politicianSEOFriendlyPath);
     if (triggerSEOPathRedirect && politicianSEOFriendlyPath) {
@@ -826,9 +826,9 @@ class PoliticianDetailsPage extends Component {
       if (opponentCandidatesMoreToShow) {
         const showMoreHTML = (
           <div className="u-link-color u-link-underline-on-hover"
-               id="opposingShowMore"
-               key="opposingShowMoreKey"
-               onClick={this.showMoreOpponentCandidates}
+            id="opposingShowMore"
+            key="opposingShowMoreKey"
+            onClick={this.showMoreOpponentCandidates}
           >
             Show more
           </div>
@@ -1029,8 +1029,8 @@ class PoliticianDetailsPage extends Component {
                       candidateList={opponentCandidateList}
                       // candidatesToShowForSearchResults={candidatesToShowForSearchResults}
                       disableAutoRollUp
-                      // isFirstBallotItem={isFirstBallotItem}
-                      // primaryParty={primaryParty}
+                    // isFirstBallotItem={isFirstBallotItem}
+                    // primaryParty={primaryParty}
                     />
                   </BallotOverflowWrapper>
                 ) : (
@@ -1189,8 +1189,8 @@ class PoliticianDetailsPage extends Component {
                           candidateList={opponentCandidateList}
                           // candidatesToShowForSearchResults={candidatesToShowForSearchResults}
                           disableAutoRollUp
-                          // isFirstBallotItem={isFirstBallotItem}
-                          // primaryParty={primaryParty}
+                        // isFirstBallotItem={isFirstBallotItem}
+                        // primaryParty={primaryParty}
                         />
                       </BallotOverflowWrapper>
                     ) : (
@@ -1322,10 +1322,13 @@ const AboutAndEditFlex = styled('div')`
   justify-content: space-between;
 `;
 
-const BallotOverflowWrapper = styled('div')`
-  max-width: 560px;
+const BallotOverflowWrapper = styled('div')(({ theme }) => (`
   overflow-x: hidden;
-`;
+  max-width: 55vw;
+  ${theme.breakpoints.down('sm')} {
+    max-width: 500px;
+  }
+`));
 
 const CampaignShareChunkWrapper = styled('div')`
   margin-top: 10px;
