@@ -213,7 +213,6 @@ class PoliticianEndorsementForList extends Component {
 PoliticianEndorsementForList.propTypes = {
   position: PropTypes.object,
   politicianWeVoteId: PropTypes.string,
-  classes: PropTypes.object,
 };
 
 const styles = (theme) => ({

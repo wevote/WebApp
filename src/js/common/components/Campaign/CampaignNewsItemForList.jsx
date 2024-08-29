@@ -248,7 +248,6 @@ class CampaignNewsItemForList extends Component {
 CampaignNewsItemForList.propTypes = {
   campaignXNewsItemWeVoteId: PropTypes.string,
   campaignXWeVoteId: PropTypes.string,
-  classes: PropTypes.object,
 };
 
 const styles = (theme) => ({

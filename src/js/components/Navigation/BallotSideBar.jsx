@@ -155,8 +155,8 @@ class BallotSideBar extends Component {
     return (
       <div
         key={key}
-        isOpen={this.props.activeRaceItem === type}
-        label={type}
+        // isOpen={this.props.activeRaceItem === type}
+        // label={type}
       >
         <ul className="BallotItem__summary__list">
           {filteredBallotListItems}

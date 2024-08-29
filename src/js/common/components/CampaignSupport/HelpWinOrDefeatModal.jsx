@@ -8,7 +8,6 @@ import stringContains from '../../utils/stringContains';
 import CandidateStore from '../../../stores/CandidateStore';
 import MeasureStore from '../../../stores/MeasureStore';
 import SupportStore from '../../../stores/SupportStore';
-import VoterStore from '../../../stores/VoterStore';
 import PayToPromoteProcess from './PayToPromoteProcess';
 
 // const PayToPromoteProcess = React.lazy(() => import(/* webpackChunkName: 'PayToPromoteProcess' */ './PayToPromoteProcess')); // eslint-disable-line import/no-cycle
@@ -23,7 +22,7 @@ class HelpWinOrDefeatModal extends Component {
 
   componentDidMount () {
     this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
-    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+    // this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
     this.measureStoreListener = MeasureStore.addListener(this.onMeasureStoreChange.bind(this));
     const { ballotItemWeVoteId } = this.props;
@@ -36,35 +35,35 @@ class HelpWinOrDefeatModal extends Component {
       });
     }
 
-    const voter = VoterStore.getVoter();
-    const voterIsSignedIn = VoterStore.getVoterIsSignedIn();
-    const { voter_photo_url_medium: voterPhotoUrlMedium } = voter;
+    // const voter = VoterStore.getVoter();
+    // const voterIsSignedIn = VoterStore.getVoterIsSignedIn();
+    // const { voter_photo_url_medium: voterPhotoUrlMedium } = voter;
 
     let ballotItemDisplayName = '';
-    let ballotItemType;
+    // let ballotItemType;
     let campaignXWeVoteId;
     let isCandidate = false;
     let isMeasure = false;
     if (stringContains('cand', this.props.ballotItemWeVoteId)) {
       const candidate = CandidateStore.getCandidateByWeVoteId(this.props.ballotItemWeVoteId);
       ballotItemDisplayName = candidate.ballot_item_display_name || '';
-      ballotItemType = 'CANDIDATE';
+      // ballotItemType = 'CANDIDATE';
       campaignXWeVoteId = candidate.linked_campaignx_we_vote_id || '';
       isCandidate = true;
     } else if (stringContains('meas', this.props.ballotItemWeVoteId)) {
       const measure = MeasureStore.getMeasure(this.props.ballotItemWeVoteId);
       ballotItemDisplayName = measure.ballot_item_display_name || '';
-      ballotItemType = 'MEASURE';
+      // ballotItemType = 'MEASURE';
       isMeasure = true;
     }
     this.setState({
       ballotItemDisplayName,
-      ballotItemType,
+      // ballotItemType,
       campaignXWeVoteId,
       isCandidate,
       isMeasure,
-      voterIsSignedIn,
-      voterPhotoUrlMedium,
+      // voterIsSignedIn,
+      // voterPhotoUrlMedium,
     });
   }
 
@@ -88,7 +87,7 @@ class HelpWinOrDefeatModal extends Component {
     this.candidateStoreListener.remove();
     this.measureStoreListener.remove();
     this.supportStoreListener.remove();
-    this.voterStoreListener.remove();
+    // this.voterStoreListener.remove();
   }
 
   onCandidateStoreChange () {
@@ -120,8 +119,8 @@ class HelpWinOrDefeatModal extends Component {
     const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(ballotItemWeVoteId);
     let voterOpposesBallotItem = '';
     let voterSupportsBallotItem = '';
-    let voterTextStatement = '';
-    let voterPositionIsPublic = '';
+    // let voterTextStatement = '';
+    // let voterPositionIsPublic = '';
     if (ballotItemStatSheet) {
       ({ voterOpposesBallotItem, voterSupportsBallotItem } = ballotItemStatSheet);
     }
@@ -130,24 +129,24 @@ class HelpWinOrDefeatModal extends Component {
       voterSupportsBallotItem,
     });
 
-    if (ballotItemStatSheet) {
-      ({ voterPositionIsPublic, voterTextStatement } = ballotItemStatSheet);
-    }
-    this.setState({
-      voterTextStatement,
-      voterPositionIsPublic,
-    });
+    // if (ballotItemStatSheet) {
+    //   ({ voterPositionIsPublic, voterTextStatement } = ballotItemStatSheet);
+    // }
+    // this.setState({
+    //   voterTextStatement,
+    //   voterPositionIsPublic,
+    // });
   }
 
-  onVoterStoreChange () {
-    const voter = VoterStore.getVoter();
-    const voterIsSignedIn = VoterStore.getVoterIsSignedIn();
-    const { voter_photo_url_medium: voterPhotoUrlMedium } = voter;
-    this.setState({
-      voterIsSignedIn,
-      voterPhotoUrlMedium,
-    });
-  }
+  // onVoterStoreChange () {
+  //   const voter = VoterStore.getVoter();
+  //   const voterIsSignedIn = VoterStore.getVoterIsSignedIn();
+  //   const { voter_photo_url_medium: voterPhotoUrlMedium } = voter;
+  //   this.setState({
+  //     voterIsSignedIn,
+  //     voterPhotoUrlMedium,
+  //   });
+  // }
 
   render () {
     renderLog('HelpWinOrDefeatModal');  // Set LOG_RENDER_EVENTS to log all renders
@@ -155,30 +154,31 @@ class HelpWinOrDefeatModal extends Component {
     const { show } = this.props;
     // console.log('HelpWinOrDefeatModal render, ballotItemWeVoteId: ', ballotItemWeVoteId, ', show: ', show);
     const {
-      ballotItemDisplayName, campaignXWeVoteId,
-      voterOpposesBallotItem, voterSupportsBallotItem,
+      // ballotItemDisplayName,
+      campaignXWeVoteId,
+      // voterOpposesBallotItem, voterSupportsBallotItem,
     } = this.state;
 
-    const horizontalEllipsis = '\u2026';
+    // const horizontalEllipsis = '\u2026';
     let dialogTitleText = '';
 
-    if (voterSupportsBallotItem) {
-      if (ballotItemDisplayName) {
-        dialogTitleText = `Why you chose ${ballotItemDisplayName}${horizontalEllipsis}`;
-      } else {
-        dialogTitleText = `Why you support${horizontalEllipsis}`;
-      }
-    } else if (voterOpposesBallotItem) {
-      if (ballotItemDisplayName) {
-        dialogTitleText = `Why you oppose ${ballotItemDisplayName}${horizontalEllipsis}`;
-      } else {
-        dialogTitleText = `Why you oppose${horizontalEllipsis}`;
-      }
-    } else if (ballotItemDisplayName) {
-      dialogTitleText = `Your thoughts about ${ballotItemDisplayName}${horizontalEllipsis}`;
-    } else {
-      dialogTitleText = `Your thoughts${horizontalEllipsis}`;
-    }
+    // if (voterSupportsBallotItem) {
+    //   if (ballotItemDisplayName) {
+    //     dialogTitleText = `Why you chose ${ballotItemDisplayName}${horizontalEllipsis}`;
+    //   } else {
+    //     dialogTitleText = `Why you support${horizontalEllipsis}`;
+    //   }
+    // } else if (voterOpposesBallotItem) {
+    //   if (ballotItemDisplayName) {
+    //     dialogTitleText = `Why you oppose ${ballotItemDisplayName}${horizontalEllipsis}`;
+    //   } else {
+    //     dialogTitleText = `Why you oppose${horizontalEllipsis}`;
+    //   }
+    // } else if (ballotItemDisplayName) {
+    //   dialogTitleText = `Your thoughts about ${ballotItemDisplayName}${horizontalEllipsis}`;
+    // } else {
+    //   dialogTitleText = `Your thoughts${horizontalEllipsis}`;
+    // }
     dialogTitleText = ''; // Overwrite until we can adjust
 
     // console.log('HelpWinOrDefeatModal render, voter_address_object: ', voter_address_object);

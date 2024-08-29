@@ -18,7 +18,7 @@ export default class FriendsCurrent extends Component {
       currentFriendList: [],
       currentFriendListFilteredBySearch: [],
       searchFilterOn: false,
-      searchTerm: '',
+      // searchTerm: '',
     };
     this.clearSearch = this.clearSearch.bind(this);
     this.searchFriends = this.searchFriends.bind(this);
@@ -54,7 +54,7 @@ export default class FriendsCurrent extends Component {
       this.setState({
         currentFriendListFilteredBySearch: [],
         searchFilterOn: false,
-        searchTerm: '',
+        // searchTerm: '',
       });
     } else {
       const searchTermLowercase = searchTerm.toLowerCase();
@@ -65,7 +65,7 @@ export default class FriendsCurrent extends Component {
       this.setState({
         currentFriendListFilteredBySearch: searchedFriendList,
         searchFilterOn: true,
-        searchTerm,
+        // searchTerm,
       });
     }
   }
@@ -73,14 +73,14 @@ export default class FriendsCurrent extends Component {
   clearSearch () {
     this.setState({
       searchFilterOn: false,
-      searchTerm: '',
+      // searchTerm: '',
       currentFriendListFilteredBySearch: [],
     });
   }
 
   render () {
     renderLog('FriendsCurrent');  // Set LOG_RENDER_EVENTS to log all renders
-    const { currentFriendListFilteredBySearch, searchFilterOn, searchTerm } = this.state;
+    const { currentFriendListFilteredBySearch, searchFilterOn } = this.state;
     const { currentFriendList } = this.state;
     let { currentFriendList: friendListForDisplay } = this.state;
     if (searchFilterOn) {

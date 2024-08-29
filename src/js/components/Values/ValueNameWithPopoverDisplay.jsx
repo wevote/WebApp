@@ -154,7 +154,7 @@ class ValueNameWithPopoverDisplay extends Component {
 
   render () {
     renderLog('ValueNameWithPopoverDisplay');  // Set LOG_RENDER_EVENTS to log all renders
-    const { addComma, ballotItemWeVoteId, externalUniqueId, issueFollowedByVoter, oneIssue, showEllipses } = this.props;
+    const { ballotItemWeVoteId, externalUniqueId, issueFollowedByVoter, oneIssue, showEllipses } = this.props;
     // console.log('ValueNameWithPopoverDisplay render, oneIssue.issue_name:', oneIssue.issue_name, ', showEllipses:', showEllipses);
     return (
       <StickyPopover
@@ -175,27 +175,11 @@ class ValueNameWithPopoverDisplay extends Component {
           label={oneIssue.issue_name}
           icon={issueFollowedByVoter ? <DoneIcon /> : null}
         />
-          {/* <WordWrapper>
-            {oneIssue.issue_name}
-          </WordWrapper>
-          {showEllipses ? (
-            <>
-              ...
-              &nbsp;
-            </>
-          ) : (
-            <>
-              {addComma ? ',' : ''}
-              &nbsp;
-            </>
-          )} */}
-        {/* </Chip> */}
       </StickyPopover>
     );
   }
 }
 ValueNameWithPopoverDisplay.propTypes = {
-  addComma: PropTypes.bool,
   ballotItemWeVoteId: PropTypes.string,
   ballotItemDisplayName: PropTypes.string,
   externalUniqueId: PropTypes.string,
@@ -240,16 +224,6 @@ const PopoverWrapper = styled('div')`
   margin-top: 8px;
 `;
 
-const ValueNameWithPopoverDisplaySpan = styled('span', {
-  shouldForwardProp: (prop) => !['issueFollowedByVoter'].includes(prop),
-})(({ issueFollowedByVoter }) => (`
-  align-items: start;
-  display: flex;
-  flex: none;
-  ${issueFollowedByVoter ? 'font-weight: 600;' : ''}
-  position: relative;
-`));
-
 const FollowIfYouCare = styled('div')`
   color: #999;
   font-size: .75rem;
@@ -290,19 +264,6 @@ const PopoverDescriptionText = styled('div')`
 
 const RenderedOrganizationsWrapper = styled('div')`
   margin-top: 6px;
-`;
-
-const WordWrapper = styled('button')`
-  color: #000;
-  opacity: 0.6;
-  text-decoration: underline;
-  text-decoration-color: #ccc;
-  border: none;
-  background-color: #FFF;
-  padding: 0;
-  &:hover {
-    text-decoration: underline;
-  }
 `;
 
 export default withTheme(withStyles(styles)(ValueNameWithPopoverDisplay));

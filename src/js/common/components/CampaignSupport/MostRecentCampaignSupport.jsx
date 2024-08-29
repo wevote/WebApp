@@ -337,7 +337,6 @@ class MostRecentCampaignSupport extends React.Component {
 }
 MostRecentCampaignSupport.propTypes = {
   campaignXWeVoteId: PropTypes.string,
-  classes: PropTypes.object,
 };
 
 const styles = () => ({

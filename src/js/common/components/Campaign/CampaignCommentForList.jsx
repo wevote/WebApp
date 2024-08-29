@@ -191,7 +191,6 @@ class CampaignCommentForList extends Component {
 CampaignCommentForList.propTypes = {
   campaignXSupporterId: PropTypes.number,
   campaignXWeVoteId: PropTypes.string,
-  classes: PropTypes.object,
 };
 
 const styles = (theme) => ({

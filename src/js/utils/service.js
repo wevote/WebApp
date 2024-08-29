@@ -60,6 +60,7 @@ function innerAjax (options) {
     options.endpoint === 'candidateRetrieve' ||
     options.endpoint === 'candidatesQuery' ||
     options.endpoint === 'candidatesRetrieve' ||
+    options.endpoint === 'challengeRetrieve' ||
     options.endpoint === 'defaultPricing' ||
     options.endpoint === 'electionsRetrieve' ||
     options.endpoint === 'issueDescriptionsRetrieve' ||
