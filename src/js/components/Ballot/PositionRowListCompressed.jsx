@@ -351,6 +351,7 @@ const CandidateEndorsementContainer = styled('div')(({ theme }) => (`
   min-width: 36px;
   border-radius: 50%;
   margin-right: -12px;
+  position: relative; 
 
   ${theme.breakpoints.down('xs')} {
     display: none;
@@ -369,10 +370,13 @@ const CandidateEndorsementPhotos = styled('div')`
   display: flex;
   align-items: center;
   width: 100%;
+  cursor: pointer;
 `;
 
 const CandidateEndorsementText = styled('div')`
-cursor: pointer;
+  width: 100%;  
+  height: 54px;
+  cursor: pointer;
   overflow-wrap: break-word;
   color: #1073d4;
   font-family: "Poppins", sans-serif;
@@ -381,7 +385,7 @@ cursor: pointer;
   line-height: 17.92px;
   letter-spacing: 0.5%;
   text-decoration: underline;
-  width: 100%; 
+  margin-top: 12px;
 `;
 
 const CandidateEndorsementsWrapper = styled('div')`
