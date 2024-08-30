@@ -298,9 +298,18 @@ class PositionRowListCompressed extends Component {
                       alt=""
                     />
                   ) : (
-                    <Avatar sx={styleWithBackgroundColor}>
-                      {speakerDisplayNameInitials}
-                    </Avatar>
+                    <Avatar
+  sx={{
+    ...styleWithBackgroundColor,
+    width: '36px',
+    height: '36px',
+    borderRadius: '50%',
+    objectFit: 'cover',
+    border: '2px solid #FFFFFF',
+  }}
+>
+  {speakerDisplayNameInitials}
+</Avatar>
                   )}
                 </CandidateEndorsementContainer>
               );
@@ -333,20 +342,30 @@ const CandidateEndorsementsContainer = styled('div')`
   align-items: flex-start;
   display: flex;
   flex-flow: column;
+  width: 212px;
 `;
 
 const CandidateEndorsementContainer = styled('div')(({ theme }) => (`
-  min-width: 42px;
+  min-width: 36px;
+  border-radius: 50%;
+  margin-right: -12px;
+
   ${theme.breakpoints.down('xs')} {
     display: none;
   }
+    
+  img{
+    width: 36px;
+    height: 36px;
+    border-radius: 50%; 
+    object-fit: cover; 
+    border: 2px solid #FFFFFF; 
+}
 `));
 
 const CandidateEndorsementPhotos = styled('div')`
-  cursor: pointer;
   display: flex;
-  justify-content: flex-start;
-  margin-right: 0;
+  align-items: center;
 `;
 
 const CandidateEndorsementText = styled('div')`
@@ -363,9 +382,8 @@ cursor: pointer;
 
 const CandidateEndorsementsWrapper = styled('div')`
   height: 100%;
-  max-width: 212px;
+  max-width: 100%;
   white-space: wrap;
-  width: 212px;
   height: 102px;
 `;
 
