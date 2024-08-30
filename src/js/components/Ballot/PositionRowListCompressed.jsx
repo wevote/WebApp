@@ -380,7 +380,6 @@ const CandidateEndorsementText = styled('div')`
   overflow-wrap: break-word;
   color: #1073d4;
   font-family: "Poppins", sans-serif;
-  font-weight: 500;
   font-size: 14px;
   line-height: 17.92px;
   letter-spacing: 0.5%;
