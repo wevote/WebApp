@@ -71,7 +71,7 @@ const commonMuiStyles = {
     [theme.breakpoints.down('lg')]: {
       fontSize: 28,
     },
-    paddingTop: '5px',
+    paddingTop: '1px',
   },
 };
 

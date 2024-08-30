@@ -47,7 +47,9 @@ function innerAjax (options) {
   options.success = options.success || defaults.success;
   options.error = options.error || defaults.error;
   // console.log('service.js, options.endpoint: ', options.endpoint);
-  if (options.endpoint === 'organizationPhotosSave' ||
+  if (options.endpoint === 'campaignStartSave' ||
+      options.endpoint === 'challengeStartSave' ||
+      options.endpoint === 'organizationPhotosSave' ||
       options.endpoint === 'reactionLikeStatusRetrieve' ||
       options.endpoint === 'voterContactListSave' ||
       options.endpoint === 'voterUpdate') {

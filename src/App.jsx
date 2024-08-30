@@ -48,6 +48,12 @@ const CampaignUpdatesPage = React.lazy(() => import(/* webpackChunkName: 'Campai
 const Candidate = React.lazy(() => import(/* webpackChunkName: 'Candidate' */ './js/pages/Ballot/Candidate'));
 const CandidateForExtension = React.lazy(() => import(/* webpackChunkName: 'EditCandidateForExtension' */ './js/pages/Ballot/EditCandidateForExtension/EditCandidateForExtension'));
 const ChallengeHomePage = React.lazy(() => import(/* webpackChunkName: 'ChallengeHomePage' */ './js/common/pages/Challenge/ChallengeHomePage'));
+const ChallengeStartAddDescription = React.lazy(() => import(/* webpackChunkName: 'ChallengeStartAddDescription' */ './js/common/pages/ChallengeStart/ChallengeStartAddDescription'));
+const ChallengeStartAddPhoto = React.lazy(() => import(/* webpackChunkName: 'ChallengeStartAddPhoto' */ './js/common/pages/ChallengeStart/ChallengeStartAddPhoto'));
+const ChallengeStartAddTitle = React.lazy(() => import(/* webpackChunkName: 'ChallengeStartAddTitle' */ './js/common/pages/ChallengeStart/ChallengeStartAddTitle'));
+const ChallengeStartEditAll = React.lazy(() => import(/* webpackChunkName: 'ChallengeStartEditAll' */ './js/common/pages/ChallengeStart/ChallengeStartEditAll'));
+const ChallengeStartIntro = React.lazy(() => import(/* webpackChunkName: 'ChallengeStartIntro' */ './js/common/pages/ChallengeStart/ChallengeStartIntro'));
+const ChallengeStartPreview = React.lazy(() => import(/* webpackChunkName: 'ChallengeStartPreview' */ './js/common/pages/ChallengeStart/ChallengeStartPreview'));
 const ChallengeSupportJoin = React.lazy(() => import(/* webpackChunkName: 'ChallengeSupportJoin' */ './js/common/pages/ChallengeSupport/ChallengeSupportJoin'));
 const ClaimYourPage = React.lazy(() => import(/* webpackChunkName: 'ClaimYourPage' */ './js/pages/Settings/ClaimYourPage'));
 const CompleteYourProfileMobile = React.lazy(() => import(/* webpackChunkName: 'CompleteYourProfileMobile' */ './js/common/pages/Settings/CompleteYourProfileMobile'));
@@ -402,6 +408,7 @@ class App extends Component {
                   <Route path="/-:shared_item_code" exact component={SharedItemLanding} />
                   <Route exact path="/+/:challengeWeVoteId/" render={(props) => <ChallengeHomePage match={props.match} />} />
                   <Route exact path="/:challengeSEOFriendlyPath/+/" render={(props) => <ChallengeHomePage match={props.match} />} />
+                  <Route exact path="/:challengeSEOFriendlyPath/+/edit" render={(props) => <ChallengeStartEditAll match={props.match} editExistingChallenge setShowHeaderFooter={this.setShowHeaderFooter} />} />
                   <Route exact path="/:challengeSEOFriendlyPath/+/join-challenge" render={(props) => <ChallengeSupportJoin match={props.match} setShowHeaderFooter={this.setShowHeaderFooter} />} />
                   <Route exact path="/:politicianWeVoteId/p/" render={(props) => <PoliticianDetailsPage match={props.match} />} />
                   <Route exact path="/:politicianSEOFriendlyPath/-/" render={(props) => <PoliticianDetailsPage match={props.match} />} />
@@ -568,6 +575,13 @@ class App extends Component {
                   <Route path="/setupaccount" exact><SetUpAccountRoot /></Route>
                   <Route path="/squads" exact><Squads /></Route>
                   <Route exact path="/start-a-campaign"><CampaignStartIntro /></Route>
+                  <Route exact path="/start-a-challenge"><ChallengeStartIntro /></Route>
+                  <Route exact path="/start-a-challenge-why-winning-matters"><ChallengeStartAddDescription /></Route>
+                  <Route exact path="/start-a-challenge-add-photo"><ChallengeStartAddPhoto /></Route>
+                  <Route exact path="/start-a-challenge-add-title"><ChallengeStartAddTitle /></Route>
+                  <Route exact path="/start-a-challenge-complete-your-profile" render={(props) => <CompleteYourProfileMobile match={props.match} createNewsItem setShowHeaderFooter={this.setShowHeaderFooter} />} />
+                  <Route exact path="/start-a-challenge-edit-all"><ChallengeStartEditAll setShowHeaderFooter={this.setShowHeaderFooter} /></Route>
+                  <Route exact path="/start-a-challenge-preview"><ChallengeStartPreview /></Route>
                   <Route path="/terms" component={TermsOfService} />
                   <Route path="/twitter_sign_in" exact><TwitterSignInProcess /></Route>
                   <Route path="/twittersigninprocess/:sign_in_step" component={TwitterSignInProcess} />

@@ -202,6 +202,8 @@ export function getApplicationViewBooleans (pathname) {
       (pathnameLowerCase === '/more/about') ||
       (pathnameLowerCase === '/more/credits') ||
       (pathnameLowerCase === '/more/myballot') ||
+      (pathnameLowerCase.startsWith('/start-a-campaign') && !(pathnameLowerCase === '/start-a-campaign')) ||
+      (pathnameLowerCase.startsWith('/start-a-challenge') && !(pathnameLowerCase === '/start-a-challenge')) ||
       ((pathnameLowerCase === '/start') && !(pathnameLowerCase === '/start-a-campaign')) ||
       (pathnameLowerCase === '/values/list') ||
       (pathnameLowerCase === '/welcomehome') ||
@@ -247,7 +249,8 @@ export function getApplicationViewBooleans (pathname) {
       pathnameLowerCase.startsWith('/settings/tools') ||
       pathnameLowerCase.startsWith('/settings/yourdata') ||
       pathnameLowerCase.startsWith('/settings') ||
-      (pathnameLowerCase === '/start-a-campaign')) {
+      (pathnameLowerCase === '/start-a-campaign') ||
+      (pathnameLowerCase === '/start-a-challenge')) {
     // We want to SHOW the footer bar on the above path patterns
     showFooterBar = isMobileScreenSize();
   } else {
