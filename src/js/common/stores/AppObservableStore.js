@@ -103,6 +103,10 @@ export default {
     return nonFluxState.chosenDomainTypeIsCampaign;
   },
 
+  getChosenDomainTypeIsChallenge () {
+    return false;
+  },
+
   getChosenGoogleAnalyticsTrackingID () {
     return nonFluxState.chosenGoogleAnalyticsTrackingID;
   },

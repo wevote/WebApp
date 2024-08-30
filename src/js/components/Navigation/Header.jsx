@@ -193,7 +193,9 @@ export default class Header extends Component {
       path.startsWith('/more/credits') ||
       (path.startsWith('/remind') && !isSEOFriendlyURL(path)) ||
       path.startsWith('/setupaccount') ||
-      (path.startsWith('/start') && !path.startsWith('/start-a-campaign') && !isSEOFriendlyURL(path)) ||
+      // (path.startsWith('/start') && !path.startsWith('/start-a-campaign') && !path.startsWith('/start-a-challenge') && !isSEOFriendlyURL(path)) ||
+      (path.startsWith('/start-a-campaign') && (path !== '/start-a-campaign')) ||
+      (path.startsWith('/start-a-challenge') && (path !== '/start-a-challenge')) ||
       path.startsWith('/twitter_sign_in') ||
       path.startsWith('/unsubscribe') ||
       path.startsWith('/wevoteintro') ||
