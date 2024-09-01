@@ -3,6 +3,7 @@ import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import ChallengeStartActions from '../../actions/ChallengeStartActions';
 import { OuterWrapper, PageWrapper } from '../../components/Style/stepDisplayStyles';
@@ -22,12 +23,10 @@ class ChallengeStartPreview extends Component {
     this.state = {
       challengeDescription: '',
       challengePhotoLargeUrl: '',
-      challengePoliticianList: [],
       challengeTitle: '',
       readyToPublish: false,
       voterFirstName: '',
-      voterLastName: '',
-      voterSignedInWithEmail: false,
+      voterSignedIn: false,
     };
   }
 
@@ -64,27 +63,23 @@ class ChallengeStartPreview extends Component {
     const challengePhotoLargeUrl = ChallengeStartStore.getChallengePhotoLargeUrl();
     const challengeTitle = ChallengeStartStore.getChallengeTitle();
     const step1Completed = ChallengeStartStore.challengeTitleExists();
-    const step2Completed = ChallengeStartStore.challengePoliticianListExists();
-    const step3Completed = ChallengeStartStore.challengeDescriptionExists();
+    const step2Completed = ChallengeStartStore.challengeDescriptionExists();
+    const step3Completed = ChallengeStartStore.challengePhotoExists();
     const readyToPublish = step1Completed && step2Completed && step3Completed;
-    const voterSignedInWithEmail = ChallengeStartStore.getVoterSignedInWithEmail();
     this.setState({
       challengeDescription,
       challengePhotoLargeUrl,
       challengeTitle,
       readyToPublish,
-      voterSignedInWithEmail,
     });
   }
 
   onVoterStoreChange () {
     const voterFirstName = VoterStore.getFirstName();
-    const voterLastName = VoterStore.getLastName();
-    const voterSignedInWithEmail = VoterStore.getVoterIsSignedInWithEmail();
+    const voterSignedIn = VoterStore.getVoterIsSignedIn();
     this.setState({
       voterFirstName,
-      voterLastName,
-      voterSignedInWithEmail,
+      voterSignedIn,
     });
   }
 
@@ -93,8 +88,8 @@ class ChallengeStartPreview extends Component {
   }
 
   submitPublishNowDesktop = () => {
-    const { voterFirstName, voterLastName, voterSignedInWithEmail } = this.state;
-    if (!voterFirstName || !voterLastName || !voterSignedInWithEmail) {
+    const { voterFirstName, voterSignedIn } = this.state;
+    if (!voterFirstName || !voterSignedIn) {
       // Open complete your profile modal
       AppObservableStore.setShowCompleteYourProfileModal(true);
     } else {
@@ -106,9 +101,9 @@ class ChallengeStartPreview extends Component {
   }
 
   submitPublishNowMobile = () => {
-    const { voterFirstName, voterLastName, voterSignedInWithEmail } = this.state;
+    const { voterFirstName, voterSignedIn } = this.state;
     // console.log('ChallengeStartPreview submitPublishNowMobile');
-    if (!voterFirstName || !voterLastName || !voterSignedInWithEmail) {
+    if (!voterFirstName || !voterSignedIn) {
       // Navigate to the mobile complete your profile page
       historyPush('/start-a-challenge-complete-your-profile');
     } else {
@@ -127,19 +122,33 @@ class ChallengeStartPreview extends Component {
     renderLog('ChallengeStartPreview');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
     const {
-      challengeDescription, challengePhotoLargeUrl, challengePoliticianList,
+      challengeDescription, challengePhotoLargeUrl,
       challengeTitle, chosenWebsiteName, readyToPublish,
     } = this.state;
-    let challengePoliticianNumber = 0;
-    let commaOrNot = '';
     return (
       <div>
         <Helmet title={`Preview Your Challenge - ${chosenWebsiteName}`} />
         <SaveCancelOuterWrapper>
           <SaveCancelInnerWrapper>
             <SaveCancelButtonsWrapper>
+              <Link
+                id="startChallengePublishLater"
+                to="/"
+              >
+                <Button
+                  classes={{root: classes.buttonSimpleLink}}
+                  color="primary"
+                >
+                  <div className="u-show-mobile">
+                    Skip
+                  </div>
+                  <div className="u-show-desktop-tablet">
+                    Publish&nbsp;later&nbsp;&nbsp;&nbsp;
+                  </div>
+                </Button>
+              </Link>
               <Button
-                classes={{ root: classes.buttonEdit }}
+                classes={{root: classes.buttonEdit}}
                 color="primary"
                 id="challengeEditAll"
                 onClick={this.challengeEditAll}
@@ -147,7 +156,7 @@ class ChallengeStartPreview extends Component {
               >
                 Edit
               </Button>
-              <div className="u-show-mobile-tablet">
+              <div className="u-show-mobile">
                 <Button
                   classes={{ root: classes.buttonSave }}
                   color="primary"
@@ -159,7 +168,7 @@ class ChallengeStartPreview extends Component {
                   Publish now
                 </Button>
               </div>
-              <div className="u-show-desktop">
+              <div className="u-show-desktop-tablet">
                 <Button
                   classes={{ root: classes.buttonSave }}
                   color="primary"
@@ -179,10 +188,10 @@ class ChallengeStartPreview extends Component {
             <InnerWrapper>
               <ChallengeStartSectionWrapper>
                 <ChallengeStartSection>
-                  <DesktopDisplayWrapper className="u-show-desktop-tablet">
+                  <DesktopDisplayWrapper className="u-show-desktop">
                     <ChallengeTitleDesktop>{challengeTitle || <ChallengeTitleMissing>Title Required</ChallengeTitleMissing>}</ChallengeTitleDesktop>
                   </DesktopDisplayWrapper>
-                  <MobileDisplayWrapper className="u-show-mobile">
+                  <MobileDisplayWrapper className="u-show-mobile-tablet">
                     <ChallengeTitleMobile>{challengeTitle || <ChallengeTitleMissing>Title Required</ChallengeTitleMissing>}</ChallengeTitleMobile>
                   </MobileDisplayWrapper>
                   {challengePhotoLargeUrl ? (
@@ -272,17 +281,6 @@ const ChallengeImageMissingWrapper = styled('div')`
   justify-content: flex-start;
 `;
 
-const ChallengePoliticianList = styled('div')`
-  font-size: 17px;
-  margin: 10px 0;
-`;
-
-const ChallengePoliticianListMissing = styled('div')`
-  color: red;
-  font-size: 18px;
-  margin: 10px 0;
-`;
-
 const ChallengeStartSection = styled('div')`
   margin-bottom: 60px !important;
   max-width: 620px;
@@ -324,6 +322,7 @@ const MobileDisplayWrapper = styled('div')`
 `;
 
 const SaveCancelButtonsWrapper = styled('div')`
+  align-items: center;
   display: flex;
 `;
 

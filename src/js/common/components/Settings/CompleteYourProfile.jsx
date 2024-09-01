@@ -174,12 +174,14 @@ class CompleteYourProfile extends Component {
     // VoterActions.voterFirstNameQueuedToSave(undefined);
     // VoterActions.voterLastNameQueuedToSave(undefined);
     // VoterActions.voterPhotoQueuedToSave(undefined);
+    const voterIsSignedIn = VoterStore.getVoterIsSignedIn();
     const voterIsSignedInWithEmail = VoterStore.getVoterIsSignedInWithEmail();
     const voterEmailQueuedToSave = VoterStore.getVoterEmailQueuedToSave();
     // const voterEmailQueuedToSaveSet = VoterStore.getVoterEmailQueuedToSaveSet();
     if (!voterIsSignedInWithEmail && !voterEmailQueuedToSave) {
       voterEmailMissing = true;
-    } else if (voterEmailQueuedToSave) {
+    }
+    if (voterEmailQueuedToSave) {
       // Check to see if valid email format
       // if so,
       this.setState({
@@ -192,24 +194,29 @@ class CompleteYourProfile extends Component {
     if (!voterLastNameQueuedToSave && !VoterStore.getLastName()) {
       voterLastNameMissing = true;
     }
-    if (voterEmailMissing || voterFirstNameMissing || voterLastNameMissing) {
+    if (voterFirstNameMissing || voterLastNameMissing || !voterIsSignedIn) {
+      // Stop forward progress if any required fields are missing
+      // If voter is not signed in another way, require that they sign in with email
       this.setState({
         voterEmailMissing,
         voterFirstNameMissing,
         voterLastNameMissing,
       });
-    } else if (!voterIsSignedInWithEmail) {
-      // All required fields were found
-      AppObservableStore.setBlockCampaignXRedirectOnSignIn(false);
-      this.sendSignInCodeEmail(event, voterEmailQueuedToSave);
-      this.supportBallotItem();
-    } else {
+    } else if (voterIsSignedIn) {
       VoterActions.voterRetrieve();
       this.supportBallotItem();
       this.functionToUseWhenProfileCompleteTimer = setTimeout(() => {
         AppObservableStore.setBlockCampaignXRedirectOnSignIn(false);
         this.props.functionToUseWhenProfileComplete();
       }, 500);
+    } else if (!voterIsSignedInWithEmail && !voterEmailMissing) {
+      // All required fields were found
+      AppObservableStore.setBlockCampaignXRedirectOnSignIn(false);
+      this.sendSignInCodeEmail(event, voterEmailQueuedToSave);
+      this.supportBallotItem();
+    } else {
+      // Should not be able to get here
+      console.log('CompleteYourProfile did not sendSignInCodeEmail -- should not be able to get here');
     }
   }
 

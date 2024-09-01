@@ -11,6 +11,7 @@ class ChallengeRetrieveController extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      challengeRetrieveAsOwnerInitiated: false,
       challengeRetrieveInitiated: false,
     };
   }
@@ -59,7 +60,7 @@ class ChallengeRetrieveController extends Component {
   }
 
   onVoterStoreChange () {
-    // this.challengeFirstRetrieve();
+    this.challengeFirstRetrieve();
     this.setState({});  // Trigger componentDidUpdate
   }
 
@@ -67,15 +68,25 @@ class ChallengeRetrieveController extends Component {
     const { challengeSEOFriendlyPath, challengeWeVoteId } = this.props;
     // console.log('ChallengeRetrieveController challengeFirstRetrieve challengeSEOFriendlyPath: ', challengeSEOFriendlyPath, ', challengeWeVoteId: ', challengeWeVoteId);
     if (challengeSEOFriendlyPath || challengeWeVoteId) {
-      const { challengeRetrieveInitiated } = this.state;
+      const { challengeRetrieveAsOwnerInitiated, challengeRetrieveInitiated } = this.state;
       initializejQuery(() => {
         const voterFirstRetrieveCompleted = VoterStore.voterFirstRetrieveCompleted();
-        // console.log('ChallengeRetrieveController challengeRetrieveInitiated: ', challengeRetrieveInitiated, ', voterFirstRetrieveCompleted: ', voterFirstRetrieveCompleted);
-        const triggerRetrieve = challengeRetrieveOverride || !challengeRetrieveInitiated;
-        if (voterFirstRetrieveCompleted && triggerRetrieve) {
+        // console.log('ChallengeRetrieveController challengeRetrieveInitiated: ', challengeRetrieveInitiated, ', challengeRetrieveAsOwnerInitiated: ', challengeRetrieveAsOwnerInitiated, ', voterFirstRetrieveCompleted: ', voterFirstRetrieveCompleted, ', challengeRetrieveOverride: ', challengeRetrieveOverride);
+        // If NOT challengeRetrieveInitiated, we can start that at any time
+        const eitherRetrieveInitiated = challengeRetrieveAsOwnerInitiated || challengeRetrieveInitiated;
+        const startChallengeRetrieve = !retrieveAsOwner && (challengeRetrieveOverride || !eitherRetrieveInitiated);
+        // If voterFirstRetrieveCompleted, we can start challengeRetrieveAsOwner
+        const startChallengeRetrieveAsOwner = retrieveAsOwner && voterFirstRetrieveCompleted && (challengeRetrieveOverride || !challengeRetrieveAsOwnerInitiated);
+        if (startChallengeRetrieveAsOwner) {
+          // console.log('ChallengeRetrieveController starting challengeRetrieveAsOwner');
+          this.setState({
+            challengeRetrieveAsOwnerInitiated: true,
+          }, () => retrieveChallengeFromIdentifiers(challengeSEOFriendlyPath, challengeWeVoteId, retrieveAsOwner));
+        } else if (startChallengeRetrieve) {
+          // console.log('ChallengeRetrieveController starting challengeRetrieve');
           this.setState({
             challengeRetrieveInitiated: true,
-          }, () => retrieveChallengeFromIdentifiers(challengeSEOFriendlyPath, challengeWeVoteId, retrieveAsOwner));
+          }, () => retrieveChallengeFromIdentifiers(challengeSEOFriendlyPath, challengeWeVoteId));
         }
       });
     }

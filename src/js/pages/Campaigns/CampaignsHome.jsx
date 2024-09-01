@@ -26,8 +26,8 @@ import RepresentativeStore from '../../stores/RepresentativeStore';
 import VoterStore from '../../stores/VoterStore';
 
 const CandidateListRoot = React.lazy(() => import(/* webpackChunkName: 'CandidateListRoot' */ '../../components/CandidateListRoot/CandidateListRoot'));
-const CampaignListRoot = React.lazy(() => import(/* webpackChunkName: 'CampaignListRoot' */ '../../common/components/Campaign/CampaignListRoot'));
-const FirstCampaignListController = React.lazy(() => import(/* webpackChunkName: 'FirstCampaignListController' */ '../../common/components/Campaign/FirstCampaignListController'));
+const CampaignListRoot = React.lazy(() => import(/* webpackChunkName: 'CampaignListRoot' */ '../../common/components/CampaignListRoot/CampaignListRoot'));
+const FirstCampaignListController = React.lazy(() => import(/* webpackChunkName: 'FirstCampaignListController' */ '../../common/components/CampaignListRoot/FirstCampaignListController'));
 const FirstCandidateListController = React.lazy(() => import(/* webpackChunkName: 'FirstCandidateListController' */ '../../components/CandidateListRoot/FirstCandidateListController'));
 const FirstRepresentativeListController = React.lazy(() => import(/* webpackChunkName: 'FirstRepresentativeListController' */ '../../components/RepresentativeListRoot/FirstRepresentativeListController'));
 const RepresentativeListRoot = React.lazy(() => import(/* webpackChunkName: 'RepresentativeListRoot' */ '../../components/RepresentativeListRoot/RepresentativeListRoot'));
