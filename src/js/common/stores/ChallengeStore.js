@@ -183,6 +183,7 @@ class ChallengeStore extends ReduceStore {
 
   getChallengeByWeVoteId (challengeWeVoteId) {
     const challenge = this.getState().allCachedChallengeDicts[challengeWeVoteId];
+    // console.log('ChallengeStore getChallengeByWeVoteId challengeWeVoteId:', challengeWeVoteId, ', challenge:', challenge);
     if (challenge === undefined) {
       return {};
     }

@@ -15,7 +15,7 @@ import BallotActions from '../../../actions/BallotActions';
 import BallotStore from '../../../stores/BallotStore';
 import ChallengeSupporterStore from '../../stores/ChallengeSupporterStore';
 import ChallengeStore from '../../stores/ChallengeStore';
-import PoliticianCardForList from '../../../components/PoliticianListRoot/PoliticianCardForList';
+import VoterStore from '../../../stores/VoterStore';
 import CompleteYourProfileModalController from '../../components/Settings/CompleteYourProfileModalController';
 import { Candidate, CandidateNameH4, CandidateNameAndPartyWrapper, CandidateTopRow } from '../../../components/Style/BallotStyles';
 import {
@@ -45,14 +45,15 @@ import { headroomWrapperOffset } from '../../../utils/cordovaCalculatedOffsets';
 import { getPageKey } from '../../../utils/cordovaPageUtils';
 import normalizedImagePath from '../../utils/normalizedImagePath';
 
+const ChallengeCardForList = React.lazy(() => import(/* webpackChunkName: 'ChallengeCardForList' */ '../../components/ChallengeListRoot/ChallengeCardForList'));
 // const ChallengeCommentsList = React.lazy(() => import(/* webpackChunkName: 'ChallengeCommentsList' */ '../../components/Challenge/ChallengeCommentsList'));
 const ChallengeRetrieveController = React.lazy(() => import(/* webpackChunkName: 'ChallengeRetrieveController' */ '../../components/Challenge/ChallengeRetrieveController'));
 // const ChallengeNewsItemList = React.lazy(() => import(/* webpackChunkName: 'ChallengeNewsItemList' */ '../../components/Challenge/ChallengeNewsItemList'));
 // const ChallengeShareChunk = React.lazy(() => import(/* webpackChunkName: 'ChallengeShareChunk' */ '../../components/Challenge/ChallengeShareChunk'));
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../../../components/ImageHandler'));
+const JoinChallengeButton = React.lazy(() => import(/* webpackChunkName: 'JoinChallengeButton' */ '../../components/Challenge/JoinChallengeButton'));
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../../components/Widgets/ReadMore'));
 const UpdateChallengeInformation = React.lazy(() => import(/* webpackChunkName: 'UpdateChallengeInformation' */ '../../components/Challenge/UpdateChallengeInformation'));
-const JoinChallengeButton = React.lazy(() => import(/* webpackChunkName: 'JoinChallengeButton' */ '../../components/Challenge/JoinChallengeButton'));
 
 const futureFeaturesDisabled = true;
 const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
@@ -122,6 +123,8 @@ class ChallengeHomePage extends Component {
     this.challengeSupporterStoreListener = ChallengeSupporterStore.addListener(this.onChallengeSupporterStoreChange.bind(this));
     this.onChallengeStoreChange();
     this.challengeStoreListener = ChallengeStore.addListener(this.onChallengeStoreChange.bind(this));
+    this.onVoterStoreChange();
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     let challengeSEOFriendlyPathFromObject;
     let triggerSEOPathRedirect = false;
     if (challengeSEOFriendlyPathFromUrl) {
@@ -173,7 +176,7 @@ class ChallengeHomePage extends Component {
   }
 
   componentDidUpdate (prevProps) {
-    // console.log('ChallengeHomePage componentDidMount');
+    // console.log('ChallengeHomePage componentDidUpdate');
     const { match: { params: prevParams } } = prevProps;
     const { challengeSEOFriendlyPath: prevChallengeSEOFriendlyPath, challengeWeVoteId: prevChallengeWeVoteId } = prevParams;
     const { match: { params } } = this.props;
@@ -242,8 +245,6 @@ class ChallengeHomePage extends Component {
       }
       triggerFreshRetrieve = true;
       triggerSEOPathRedirect = true;
-    // } else {
-    //   console.log('ChallengeHomePage NO CHANGE');
     }
     // console.log('componentDidUpdate triggerSEOPathRedirect: ', triggerSEOPathRedirect, ', challengeSEOFriendlyPath: ', challengeSEOFriendlyPath);
     if (triggerSEOPathRedirect && challengeSEOFriendlyPath) {
@@ -326,6 +327,7 @@ class ChallengeHomePage extends Component {
       isSupportersCountMinimumExceeded,
       weVoteHostedProfileImageUrlLarge,
     } = getChallengeValuesFromIdentifiers(challengeSEOFriendlyPathFromParams, challengeWeVoteIdFromParams);
+    // console.log('onChallengeStoreChange AFTER getChallengeValuesFromIdentifiers challengeWeVoteId: ', challengeWeVoteId);
     let pathToUseWhenProfileComplete;
     if (challengeSEOFriendlyPath) {
       this.setState({
@@ -340,6 +342,7 @@ class ChallengeHomePage extends Component {
       const voterSupportsThisChallenge = ChallengeStore.getVoterSupportsThisChallenge(challengeWeVoteId);
       this.setState({
         challengeWeVoteId,
+        challengeWeVoteIdForDisplay: challengeWeVoteId,
         voterCanEditThisChallenge,
         voterSupportsThisChallenge,
       });
@@ -354,7 +357,6 @@ class ChallengeHomePage extends Component {
       isBlockedByWeVote,
       isBlockedByWeVoteReason,
       isSupportersCountMinimumExceeded,
-      challengeWeVoteId,
       pathToUseWhenProfileComplete,
       weVoteHostedProfileImageUrlLarge,
     });
@@ -366,6 +368,12 @@ class ChallengeHomePage extends Component {
   //   if (showMoreItemsElement) {
   //   }
   // }
+
+  onVoterStoreChange () {
+    this.setState({
+      voterWeVoteId: VoterStore.getVoterWeVoteId(),
+    }, () => this.onChallengeStoreChange());
+  }
 
   clearChallengeValues = () => {
     // When we transition from one challenge to another challenge, there
@@ -449,6 +457,7 @@ class ChallengeHomePage extends Component {
       challengeWeVoteIdForDisplay,
       scrolledDown,
       voterCanEditThisPolitician, voterSupportsThisPolitician,
+      voterWeVoteId,
     } = this.state;
     // console.log('ChallengeHomePage render challengeTitle: ', challengeTitle);
     const challengeAdminEditUrl = `${webAppConfig.WE_VOTE_SERVER_ROOT_URL}challenge/${challengeWeVoteId}/summary`;
@@ -571,11 +580,12 @@ class ChallengeHomePage extends Component {
                 </MobileHeaderContentContainer>
               </MobileHeaderInnerContainer>
             </MobileHeaderOuterContainer>
-            <PoliticianCardForList
+            <ChallengeCardForList
               challengeWeVoteId={challengeWeVoteIdForDisplay}
-              useCampaignSupportThermometer
               useVerticalCard
+              voterWeVoteId={voterWeVoteId}
             />
+            ==== MOBILE
             <CampaignDescriptionWrapper hideCardMargins>
               {challengeDataFound && (
                 <DelayedLoad waitBeforeShow={250}>
@@ -648,12 +658,14 @@ class ChallengeHomePage extends Component {
           <DetailsSectionDesktopTablet className="u-show-desktop-tablet">
             <ColumnsWrapper>
               <ColumnOneThird>
-                <PoliticianCardForList
-                  politicianWeVoteId={challengeWeVoteIdForDisplay}
+                <ChallengeCardForList
+                  challengeWeVoteId={challengeWeVoteIdForDisplay}
                   // limitCardWidth
                   // useCampaignSupportThermometer
                   useVerticalCard
+                  voterWeVoteId={voterWeVoteId}
                 />
+                ==== DESKTOP
                 <CampaignDescriptionDesktopWrapper>
                   {challengeDataFound && (
                     <DelayedLoad waitBeforeShow={250}>

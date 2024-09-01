@@ -46,7 +46,7 @@ export function getChallengeValuesFromIdentifiers (challengeSEOFriendlyPath, cha
     } = challenge);
     challengePoliticianList = ChallengeStore.getChallengePoliticianList(challengeWeVoteIdFromObject);
   }
-  // console.log('getChallengeValuesFromIdentifiers, challenge: ', challenge, ', challengeTitle:', challengeTitle);
+  // console.log('getChallengeValuesFromIdentifiers, challenge: ', challenge, ', challengeWeVoteIdFromObject:', challengeWeVoteIdFromObject, ', challengeTitle:', challengeTitle);
   return {
     challengeDescription,
     challengePhotoLargeUrl,
@@ -102,7 +102,8 @@ export function retrieveChallengeFromIdentifiersIfNeeded (challengeSEOFriendlyPa
   const voter = VoterStore.getVoter();
   if (!('we_vote_id' in voter) || voter.we_vote_id.length < 0) {
     // Calling challengeRetrieve before we have a voter, is useless
-    return false;
+    // return false;
+    // DALE 2024-08-31 I don't think this is true any more
   }
 
   // console.log('retrieveChallengeFromIdentifiersIfNeeded voter:', voter);
