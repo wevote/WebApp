@@ -60,6 +60,7 @@ class OrganizationModal extends Component {
     };
 
     this.closeOrganizationModal = this.closeOrganizationModal.bind(this);
+    this.handleScrolledDownDrawer = this.handleScrolledDownDrawer.bind(this);
   }
 
   // Ids: options, friends
@@ -77,6 +78,14 @@ class OrganizationModal extends Component {
       isCandidate,
       isMeasure,
     });
+    setTimeout(() => {
+      const drawer = document.querySelector('.MuiDrawer-paper');
+      if (drawer) {
+        drawer.addEventListener('scroll', this.handleScrolledDownDrawer);
+      } else {
+        console.log('Drawer element NOT found');
+      }
+    }, 100);
     if (isCandidate) {
       const candidate = CandidateStore.getCandidateByWeVoteId(ballotItemWeVoteId);
       const {
@@ -172,14 +181,6 @@ class OrganizationModal extends Component {
     if (VoterStore.electionId() && !IssueStore.issuesUnderBallotItemsRetrieveCalled(VoterStore.electionId())) {
       IssueActions.issuesUnderBallotItemsRetrieve(VoterStore.electionId());
     }
-    // This isn't currently working. Also tried with "politicianHeaderContainer"
-    const elementForScrollListener = document.getElementById('share-menu');
-    if (elementForScrollListener) {
-      console.log('elementForScrollListener ');
-      elementForScrollListener.addEventListener('scroll', this.handleScrolledDownDrawer);
-    } else {
-      console.log('elementForScrollListener NOT Found ');
-    }
     // window.addEventListener('scroll', this.handleWindowScroll);
     // window.addEventListener('resize', this.handleResizeLocal);
 
@@ -188,10 +189,42 @@ class OrganizationModal extends Component {
     });
   }
 
+  // componentDidUpdate () {
+  //   const elementForScrollListener = document.querySelector('.MuiDrawer-paper');
+  //   if (elementForScrollListener) {
+  //     console.log('elementForScrollListener:', elementForScrollListener);
+  //     elementForScrollListener.removeEventListener('scroll', this.handleScrolledDownDrawer);
+  //     elementForScrollListener.addEventListener('scroll', this.handleScrolledDownDrawer);
+  //   } else {
+  //     console.log('elementForScrollListener NOT Found ');
+  //   }
+  //   // const elementForScrollListener = document.querySelector('.MuiDrawer-paper');
+  //   // if (elementForScrollListener) {
+  //   //   console.log('elementForScrollListener:', elementForScrollListener);
+  //   //   elementForScrollListener.addEventListener('scroll', this.handleScrolledDownDrawer);
+  //   // } else {
+  //   //   console.log('elementForScrollListener NOT Found ');
+  //   // }
+  // }
+
   componentWillUnmount () {
     this.candidateStoreListener.remove();
     this.measureStoreListener.remove();
     AppObservableStore.setScrolledDownDrawer(false);
+    const drawer = document.querySelector('.MuiDrawer-paper');
+    if (drawer) {
+      drawer.removeEventListener('scroll', this.handleScrolledDownDrawer);
+    }
+  }
+
+  handleScrolledDownDrawer (evt) {
+    const { scrollTop } = evt.target;
+    if (scrollTop > 200 && !AppObservableStore.getScrolledDownDrawer()) {
+      AppObservableStore.setScrolledDownDrawer(true);
+    }
+    if (scrollTop < 200 && AppObservableStore.getScrolledDownDrawer()) {
+      AppObservableStore.setScrolledDownDrawer(false);
+    }
   }
 
   onAppObservableStoreChange () {
@@ -202,7 +235,7 @@ class OrganizationModal extends Component {
   }
 
   onScroll = () => {
-    // console.log('OrganizationModal onScroll: ', AppObservableStore.getScrolledDownDrawer());
+    console.log('OrganizationModal onScroll: ', AppObservableStore.getScrolledDownDrawer());
     this.setState({
       scrolledDown: AppObservableStore.getScrolledDownDrawer(),
     });
@@ -262,16 +295,7 @@ class OrganizationModal extends Component {
     }
   }
 
-  handleScrolledDownDrawer = (evt) => {
-    // console.log('handleScrolledDownDrawer');
-    const { scrollTop } = evt.target.scrollingElement;
-    if (scrollTop > 60 && !AppObservableStore.getScrolledDownDrawer()) {
-      AppObservableStore.setScrolledDownDrawer(true);
-    }
-    if (scrollTop < 60 && AppObservableStore.getScrolledDownDrawer()) {
-      AppObservableStore.setScrolledDownDrawer(false);
-    }
-  };
+
 
   // handleResizeLocal () {
   //   if (handleResize('Footer')) {
@@ -368,7 +392,7 @@ class OrganizationModal extends Component {
             </IconButton>
           </div>
         </CloseDrawerIconWrapper>
-        <DrawerHeaderOuterContainer id="politicianHeaderContainer" scrolledDown={scrolledDown}>
+        <DrawerHeaderOuterContainer style={{ display: scrolledDown ? 'block' : 'none' }} id="politicianHeaderContainer" scrolledDown={scrolledDown}>
           <DrawerHeaderInnerContainer>
             <CloseDrawerIconWrapper>
               <div>
