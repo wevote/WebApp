@@ -82,7 +82,7 @@ class OrganizationModal extends Component {
       if (drawer) {
         drawer.addEventListener('scroll', this.handleScrolledDownDrawer);
       } else {
-        console.log('Drawer element NOT found');
+        console.log('Drawer element NOT found make timeout longer.');
       }
     }, 100);
     if (isCandidate) {
@@ -210,7 +210,7 @@ class OrganizationModal extends Component {
     this.candidateStoreListener.remove();
     this.measureStoreListener.remove();
     AppObservableStore.setScrolledDownDrawer(false);
-    const drawer = document.querySelector('.MuiDrawer-paper');
+    const drawer = document.querySelector('#share-menu');
     if (drawer) {
       drawer.removeEventListener('scroll', this.handleScrolledDownDrawer);
     }
