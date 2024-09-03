@@ -60,7 +60,6 @@ class OrganizationModal extends Component {
     };
 
     this.closeOrganizationModal = this.closeOrganizationModal.bind(this);
-    this.handleScrolledDownDrawer = this.handleScrolledDownDrawer.bind(this);
   }
 
   // Ids: options, friends
