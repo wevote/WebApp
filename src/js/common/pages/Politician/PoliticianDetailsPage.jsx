@@ -1415,7 +1415,7 @@ const MobileHeaderOuterContainer = styled('div', {
   position: fixed;
   z-index: 1;
   right: 0;
-  transform: translateY(${scrolledDown ? '-10px' : '-100%'});
+  transform: translateY(${scrolledDown ? 0 : '-100%'});
   transition: transform 0.3s ease-in-out;
   visibility: ${scrolledDown ? 'visible' : 'hidden'};
   opacity: ${scrolledDown ? 1 : 0};
