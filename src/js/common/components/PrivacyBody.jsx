@@ -84,7 +84,7 @@ export default class PrivacyBody extends Component {
             programs, and to send you timely election reminders.
             You may opt-out of receiving messages from WeVote by sending any email to
             {' '}
-            <a href="mailto:info@WeVote.US" target="_blank" rel="noopener noreferrer">info@WeVote.US</a>
+            <a href="mailto:info@WeVote.US" target="_blank" class="class u-link-color" rel="noopener noreferrer">info@WeVote.US</a>
             {' '}
             and asking that you not receive future email messages.
             You may also opt-out by following the unsubscribe link at the bottom of each email.
@@ -95,7 +95,7 @@ export default class PrivacyBody extends Component {
         </p>
         <p>These are some ways your information is used or shown:</p>
         <HorizontallyScrollingDiv>
-          <table style={{ height: 166, width: 631 }} border="1">
+          <table style={{ height: 166, width: 631 }} border="1" tabindex="0">
             <tbody>
               <tr>
                 <TdColumn1><strong>Your Personal Information</strong></TdColumn1>
@@ -322,8 +322,9 @@ export default class PrivacyBody extends Component {
           <span>
             If you have any questions about this Privacy Policy, you may contact us by sending an e-mail to
             {' '}
-            <a href="mailto:info@WeVote.US" target="_blank" rel="noopener noreferrer">info@WeVote.US</a>
+            <a href="mailto:info@WeVote.US" target="_blank" class="class u-link-color" rel="noopener noreferrer">info@WeVote.US</a>
             {' '}
+            {/* Something needs to be written here, since otherwise it gives an "unable to ditinguish link due to lack of contrast". None of the Blue/Primary colors seem are able to "distinguish" the link */}
           </span>
           <br />
           <span>You can also write to us at the following address:</span>
