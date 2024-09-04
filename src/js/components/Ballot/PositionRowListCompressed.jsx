@@ -299,17 +299,17 @@ class PositionRowListCompressed extends Component {
                     />
                   ) : (
                     <Avatar
-  sx={{
-    ...styleWithBackgroundColor,
-    width: '36px',
-    height: '36px',
-    borderRadius: '50%',
-    objectFit: 'cover',
-    border: '2px solid #FFFFFF',
-  }}
->
-  {speakerDisplayNameInitials}
-</Avatar>
+                      sx={{
+                        ...styleWithBackgroundColor,
+                        border: '2px solid #FFFFFF',
+                        borderRadius: '50%',
+                        height: '36px',
+                        objectFit: 'cover',
+                        width: '36px',
+                      }}
+                    >
+                      {speakerDisplayNameInitials}
+                    </Avatar>
                   )}
                 </CandidateEndorsementContainer>
               );
@@ -342,9 +342,9 @@ const CandidateEndorsementsContainer = styled('div')`
   align-items: flex-start;
   display: flex;
   flex-flow: column;
-  width: 100%;
   max-width: 212px;
   overflow: hidden;
+  width: 100%;
 `;
 
 const CandidateEndorsementContainer = styled('div')(({ theme }) => (`
@@ -358,40 +358,40 @@ const CandidateEndorsementContainer = styled('div')(({ theme }) => (`
   }
     
   img{
-    width: 36px;
-    height: 36px;
-    border-radius: 50%; 
-    object-fit: cover; 
     border: 2px solid #FFFFFF; 
-}
+    border-radius: 50%; 
+    height: 36px;
+    object-fit: cover; 
+    width: 36px;    
+  }
 `));
 
 const CandidateEndorsementPhotos = styled('div')`
-  display: flex;
-  align-items: center;
-  width: 100%;
+  align-items: center;  
   cursor: pointer;
+  display: flex;
+  width: 100%;
 `;
 
 const CandidateEndorsementText = styled('div')`
-  width: 100%;  
-  height: 54px;
-  cursor: pointer;
-  overflow-wrap: break-word;
   color: #1073d4;
+  cursor: pointer;
   font-family: "Poppins", sans-serif;
   font-size: 14px;
-  line-height: 17.92px;
+  height: 54px;
   letter-spacing: 0.5%;
-  text-decoration: underline;
+  line-height: 17.92px;
   margin-top: 12px;
+  overflow-wrap: break-word;
+  text-decoration: underline;
+  width: 100%;
 `;
 
 const CandidateEndorsementsWrapper = styled('div')`
-  width: 212px;
+  height: 102px;  
   max-width: 100%;
   white-space: wrap;
-  height: 102px;
+  width: 212px;
 `;
 
 export default withTheme(withStyles(styles)(PositionRowListCompressed));
