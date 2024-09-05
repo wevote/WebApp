@@ -8,25 +8,23 @@ import styled from 'styled-components';
 import VoterActions from '../../../actions/VoterActions';
 import webAppConfig from '../../../config';
 import VoterStore from '../../../stores/VoterStore';
-import CampaignSupporterActions from '../../actions/CampaignSupporterActions';
-import CampaignEndorsementInputField from '../../components/CampaignSupport/CampaignEndorsementInputField';
-import CampaignSupportSteps from '../../components/Navigation/CampaignSupportSteps';
+import ChallengeSupporterActions from '../../actions/ChallengeSupporterActions';
 import VoterPhotoUpload from '../../components/Settings/VoterPhotoUpload';
+import VoterPlan from '../../../components/Ready/VoterPlan';
 import { AdviceBox, AdviceBoxText, AdviceBoxTitle, AdviceBoxWrapper } from '../../components/Style/adviceBoxStyles';
-import { CampaignImage, CampaignProcessStepIntroductionText, CampaignProcessStepTitle } from '../../components/Style/CampaignProcessStyles';
-import { CampaignSupportDesktopButtonPanel, CampaignSupportDesktopButtonWrapper, CampaignSupportImageWrapper, CampaignSupportImageWrapperText, CampaignSupportMobileButtonPanel, CampaignSupportMobileButtonWrapper, CampaignSupportSection, CampaignSupportSectionWrapper, SkipForNowButtonPanel, SkipForNowButtonWrapper } from '../../components/Style/CampaignSupportStyles';
+import { CampaignProcessStepIntroductionText, CampaignProcessStepTitle } from '../../components/Style/CampaignProcessStyles';
+import { CampaignSupportDesktopButtonPanel, CampaignSupportDesktopButtonWrapper, CampaignSupportMobileButtonPanel, CampaignSupportMobileButtonWrapper, CampaignSupportSection, CampaignSupportSectionWrapper, SkipForNowButtonPanel, SkipForNowButtonWrapper } from '../../components/Style/CampaignSupportStyles';
 import commonMuiStyles from '../../components/Style/commonMuiStyles';
 import { ContentInnerWrapperDefault, ContentOuterWrapperDefault, PageWrapperDefault } from '../../components/Style/PageWrapperStyles';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
-import CampaignStore from '../../stores/CampaignStore';
-import CampaignSupporterStore from '../../stores/CampaignSupporterStore';
-import { getCampaignXValuesFromIdentifiers, retrieveCampaignXFromIdentifiersIfNeeded } from '../../utils/campaignUtils';
+import ChallengeStore from '../../stores/ChallengeStore';
+import ChallengeSupporterStore from '../../stores/ChallengeSupporterStore';
+import { getChallengeValuesFromIdentifiers, retrieveChallengeFromIdentifiersIfNeeded } from '../../utils/challengeUtils';
 import historyPush from '../../utils/historyPush';
 import initializejQuery from '../../utils/initializejQuery';
 import { renderLog } from '../../utils/logging';
-import politicianListToSentenceString from '../../utils/politicianListToSentenceString';
 
-const CampaignRetrieveController = React.lazy(() => import(/* webpackChunkName: 'CampaignRetrieveController' */ '../../components/Campaign/CampaignRetrieveController'));
+const ChallengeRetrieveController = React.lazy(() => import(/* webpackChunkName: 'ChallengeRetrieveController' */ '../../components/Challenge/ChallengeRetrieveController'));
 const VisibleToPublicCheckbox = React.lazy(() => import(/* webpackChunkName: 'VisibleToPublicCheckbox' */ '../../components/CampaignSupport/VisibleToPublicCheckbox'));
 const VoterFirstRetrieveController = loadable(() => import(/* webpackChunkName: 'VoterFirstRetrieveController' */ '../../components/Settings/VoterFirstRetrieveController'));
 
@@ -35,10 +33,10 @@ class ChallengeSupportJoin extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      campaignPhotoLargeUrl: '',
-      campaignSEOFriendlyPath: '',
-      campaignTitle: '',
-      campaignXWeVoteId: '',
+      challengePhotoLargeUrl: '',
+      challengeSEOFriendlyPath: '',
+      challengeTitle: '',
+      challengeWeVoteId: '',
       chosenWebsiteName: '',
       linkedPoliticianWeVoteId: '',
       payToPromoteStepTurnedOn: true,
@@ -51,54 +49,54 @@ class ChallengeSupportJoin extends Component {
     this.props.setShowHeaderFooter(false);
     this.onAppObservableStoreChange();
     this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
-    this.onCampaignStoreChange();
-    this.campaignStoreListener = CampaignStore.addListener(this.onCampaignStoreChange.bind(this));
+    this.onChallengeStoreChange();
+    this.challengeStoreListener = ChallengeStore.addListener(this.onChallengeStoreChange.bind(this));
     this.onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     const { match: { params } } = this.props;
-    const { campaignSEOFriendlyPath: campaignSEOFriendlyPathFromParams, campaignXWeVoteId: campaignXWeVoteIdFromParams } = params;
-    // console.log('componentDidMount campaignSEOFriendlyPathFromParams: ', campaignSEOFriendlyPathFromParams, ', campaignXWeVoteIdFromParams: ', campaignXWeVoteIdFromParams);
+    const { challengeSEOFriendlyPath: challengeSEOFriendlyPathFromParams, challengeWeVoteId: challengeWeVoteIdFromParams } = params;
+    // console.log('componentDidMount challengeSEOFriendlyPathFromParams: ', challengeSEOFriendlyPathFromParams, ', challengeWeVoteIdFromParams: ', challengeWeVoteIdFromParams);
     const {
-      campaignPhotoLargeUrl,
-      campaignSEOFriendlyPath,
-      campaignXPoliticianList,
-      campaignXWeVoteId,
+      challengePhotoLargeUrl,
+      challengeSEOFriendlyPath,
+      challengePoliticianList,
+      challengeWeVoteId,
       linkedPoliticianWeVoteId,
       weVoteHostedProfileImageUrlLarge,
-    } = getCampaignXValuesFromIdentifiers(campaignSEOFriendlyPathFromParams, campaignXWeVoteIdFromParams);
+    } = getChallengeValuesFromIdentifiers(challengeSEOFriendlyPathFromParams, challengeWeVoteIdFromParams);
     this.setState({
-      campaignPhotoLargeUrl,
-      campaignXPoliticianList,
+      challengePhotoLargeUrl,
+      challengePoliticianList,
       linkedPoliticianWeVoteId,
       weVoteHostedProfileImageUrlLarge,
     });
-    if (campaignSEOFriendlyPath) {
+    if (challengeSEOFriendlyPath) {
       this.setState({
-        campaignSEOFriendlyPath,
+        challengeSEOFriendlyPath,
       });
-    } else if (campaignSEOFriendlyPathFromParams) {
+    } else if (challengeSEOFriendlyPathFromParams) {
       this.setState({
-        campaignSEOFriendlyPath: campaignSEOFriendlyPathFromParams,
+        challengeSEOFriendlyPath: challengeSEOFriendlyPathFromParams,
       });
     }
-    if (campaignXWeVoteId) {
+    if (challengeWeVoteId) {
       this.setState({
-        campaignXWeVoteId,
+        challengeWeVoteId,
       });
-    } else if (campaignXWeVoteIdFromParams) {
+    } else if (challengeWeVoteIdFromParams) {
       this.setState({
-        campaignXWeVoteId: campaignXWeVoteIdFromParams,
+        challengeWeVoteId: challengeWeVoteIdFromParams,
       });
     }
     // Take the "calculated" identifiers and retrieve if missing
-    retrieveCampaignXFromIdentifiersIfNeeded(campaignSEOFriendlyPath, campaignXWeVoteId);
+    retrieveChallengeFromIdentifiersIfNeeded(challengeSEOFriendlyPath, challengeWeVoteId);
     window.scrollTo(0, 0);
   }
 
   componentWillUnmount () {
     this.props.setShowHeaderFooter(true);
     this.appStateSubscription.unsubscribe();
-    this.campaignStoreListener.remove();
+    this.challengeStoreListener.remove();
     this.voterStoreListener.remove();
   }
 
@@ -113,42 +111,42 @@ class ChallengeSupportJoin extends Component {
     });
   }
 
-  onCampaignStoreChange () {
+  onChallengeStoreChange () {
     const { match: { params } } = this.props;
-    const { campaignSEOFriendlyPath: campaignSEOFriendlyPathFromParams, campaignXWeVoteId: campaignXWeVoteIdFromParams } = params;
-    // console.log('onCampaignStoreChange campaignSEOFriendlyPathFromParams: ', campaignSEOFriendlyPathFromParams, ', campaignXWeVoteIdFromParams: ', campaignXWeVoteIdFromParams);
+    const { challengeSEOFriendlyPath: challengeSEOFriendlyPathFromParams, challengeWeVoteId: challengeWeVoteIdFromParams } = params;
+    // console.log('onChallengeStoreChange challengeSEOFriendlyPathFromParams: ', challengeSEOFriendlyPathFromParams, ', challengeWeVoteIdFromParams: ', challengeWeVoteIdFromParams);
     const {
-      campaignPhotoLargeUrl,
-      campaignSEOFriendlyPath,
-      campaignTitle,
-      campaignXPoliticianList,
-      campaignXWeVoteId,
+      challengePhotoLargeUrl,
+      challengeSEOFriendlyPath,
+      challengeTitle,
+      challengePoliticianList,
+      challengeWeVoteId,
       linkedPoliticianWeVoteId,
       weVoteHostedProfileImageUrlLarge,
-    } = getCampaignXValuesFromIdentifiers(campaignSEOFriendlyPathFromParams, campaignXWeVoteIdFromParams);
+    } = getChallengeValuesFromIdentifiers(challengeSEOFriendlyPathFromParams, challengeWeVoteIdFromParams);
     this.setState({
-      campaignPhotoLargeUrl,
-      campaignTitle,
-      campaignXPoliticianList,
+      challengePhotoLargeUrl,
+      challengeTitle,
+      challengePoliticianList,
       linkedPoliticianWeVoteId,
       weVoteHostedProfileImageUrlLarge,
     });
-    if (campaignSEOFriendlyPath) {
+    if (challengeSEOFriendlyPath) {
       this.setState({
-        campaignSEOFriendlyPath,
+        challengeSEOFriendlyPath,
       });
-    } else if (campaignSEOFriendlyPathFromParams) {
+    } else if (challengeSEOFriendlyPathFromParams) {
       this.setState({
-        campaignSEOFriendlyPath: campaignSEOFriendlyPathFromParams,
+        challengeSEOFriendlyPath: challengeSEOFriendlyPathFromParams,
       });
     }
-    if (campaignXWeVoteId) {
+    if (challengeWeVoteId) {
       this.setState({
-        campaignXWeVoteId,
+        challengeWeVoteId,
       });
-    } else if (campaignXWeVoteIdFromParams) {
+    } else if (challengeWeVoteIdFromParams) {
       this.setState({
-        campaignXWeVoteId: campaignXWeVoteIdFromParams,
+        challengeWeVoteId: challengeWeVoteIdFromParams,
       });
     }
   }
@@ -160,15 +158,15 @@ class ChallengeSupportJoin extends Component {
     });
   }
 
-  getCampaignXBasePath = () => {
-    const { campaignSEOFriendlyPath, campaignXWeVoteId } = this.state;
-    let campaignBasePath;
-    if (campaignSEOFriendlyPath) {
-      campaignBasePath = `/c/${campaignSEOFriendlyPath}/`;
+  getChallengeBasePath = () => {
+    const { challengeSEOFriendlyPath, challengeWeVoteId } = this.state;
+    let challengeBasePath;
+    if (challengeSEOFriendlyPath) {
+      challengeBasePath = `/c/${challengeSEOFriendlyPath}/`;
     } else {
-      campaignBasePath = `/id/${campaignXWeVoteId}/`;
+      challengeBasePath = `/id/${challengeWeVoteId}/`;
     }
-    return campaignBasePath;
+    return challengeBasePath;
   }
 
   getPoliticianBasePath = () => {
@@ -179,8 +177,8 @@ class ChallengeSupportJoin extends Component {
     } else if (linkedPoliticianWeVoteId) {
       politicianBasePath = `/${linkedPoliticianWeVoteId}/p/`;
     } else {
-      // console.log('CampaignRecommendedCampaigns getPoliticianBasePath, failed to get politicianBasePath');
-      politicianBasePath = this.getCampaignXBasePath();
+      // console.log('ChallengeRecommendedChallenges getPoliticianBasePath, failed to get politicianBasePath');
+      politicianBasePath = this.getChallengeBasePath();
     }
     return politicianBasePath;
   }
@@ -188,36 +186,36 @@ class ChallengeSupportJoin extends Component {
   goToNextStep = () => {
     const { payToPromoteStepTurnedOn } = this.state;
     if (payToPromoteStepTurnedOn) {
-      historyPush(`${this.getCampaignXBasePath()}pay-to-promote`);
+      historyPush(`${this.getChallengeBasePath()}pay-to-promote`);
     } else {
-      historyPush(`${this.getCampaignXBasePath()}share-campaign`);
+      historyPush(`${this.getChallengeBasePath()}share-challenge`);
     }
   }
 
   submitSkipForNow = () => {
     initializejQuery(() => {
-      CampaignSupporterActions.supporterEndorsementQueuedToSave(undefined);
+      ChallengeSupporterActions.supporterEndorsementQueuedToSave(undefined);
     });
     this.goToNextStep();
   }
 
   submitSupporterEndorsement = () => {
-    const { campaignXWeVoteId } = this.state;
-    if (campaignXWeVoteId) {
-      const supporterEndorsementQueuedToSave = CampaignSupporterStore.getSupporterEndorsementQueuedToSave();
-      const supporterEndorsementQueuedToSaveSet = CampaignSupporterStore.getSupporterEndorsementQueuedToSaveSet();
-      let visibleToPublic = CampaignSupporterStore.getVisibleToPublic();
-      const visibleToPublicChanged = CampaignSupporterStore.getVisibleToPublicQueuedToSaveSet();
+    const { challengeWeVoteId } = this.state;
+    if (challengeWeVoteId) {
+      const supporterEndorsementQueuedToSave = ChallengeSupporterStore.getSupporterEndorsementQueuedToSave();
+      const supporterEndorsementQueuedToSaveSet = ChallengeSupporterStore.getSupporterEndorsementQueuedToSaveSet();
+      let visibleToPublic = ChallengeSupporterStore.getVisibleToPublic();
+      const visibleToPublicChanged = ChallengeSupporterStore.getVisibleToPublicQueuedToSaveSet();
       if (visibleToPublicChanged) {
         // If it has changed, use new value
-        visibleToPublic = CampaignSupporterStore.getVisibleToPublicQueuedToSave();
+        visibleToPublic = ChallengeSupporterStore.getVisibleToPublicQueuedToSave();
       }
       if (supporterEndorsementQueuedToSaveSet || visibleToPublicChanged) {
         // console.log('ChallengeSupportJoin, supporterEndorsementQueuedToSave:', supporterEndorsementQueuedToSave);
         const saveVisibleToPublic = true;
         initializejQuery(() => {
-          CampaignSupporterActions.supporterEndorsementSave(campaignXWeVoteId, supporterEndorsementQueuedToSave, visibleToPublic, saveVisibleToPublic); // campaignSupporterSave
-          CampaignSupporterActions.supporterEndorsementQueuedToSave(undefined);
+          ChallengeSupporterActions.supporterEndorsementSave(challengeWeVoteId, supporterEndorsementQueuedToSave, visibleToPublic, saveVisibleToPublic); // challengeSupporterSave
+          ChallengeSupporterActions.supporterEndorsementQueuedToSave(undefined);
         });
       }
       const voterPhotoQueuedToSave = VoterStore.getVoterPhotoQueuedToSave();
@@ -236,16 +234,11 @@ class ChallengeSupportJoin extends Component {
     renderLog('ChallengeSupportJoin');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
     const {
-      campaignPhotoLargeUrl, campaignSEOFriendlyPath, campaignTitle,
-      campaignXPoliticianList, campaignXWeVoteId, chosenWebsiteName,
-      voterPhotoUrlLarge, weVoteHostedProfileImageUrlLarge,
+      challengeSEOFriendlyPath, challengeTitle,
+      challengeWeVoteId, chosenWebsiteName,
+      voterPhotoUrlLarge,
     } = this.state;
-    const htmlTitle = `Why do you support ${campaignTitle}? - ${chosenWebsiteName}`;
-    let numberOfPoliticians = 0;
-    if (campaignXPoliticianList && campaignXPoliticianList.length) {
-      numberOfPoliticians = campaignXPoliticianList.length;
-    }
-    const politicianListSentenceString = politicianListToSentenceString(campaignXPoliticianList);
+    const htmlTitle = `Why do you support ${challengeTitle}? - ${chosenWebsiteName}`;
     return (
       <div>
         <Helmet>
@@ -255,50 +248,33 @@ class ChallengeSupportJoin extends Component {
         <PageWrapperDefault>
           <ContentOuterWrapperDefault>
             <ContentInnerWrapperDefault>
-              <CampaignSupportSteps
+              {/*
+              <ChallengeSupportSteps
                 atStepNumber2
-                campaignBasePath={this.getCampaignXBasePath()}
-                campaignXWeVoteId={campaignXWeVoteId}
+                challengeBasePath={this.getChallengeBasePath()}
+                challengeWeVoteId={challengeWeVoteId}
                 politicianBasePath={this.getPoliticianBasePath()}
               />
-              <CampaignSupportImageWrapper>
-                {(campaignPhotoLargeUrl || weVoteHostedProfileImageUrlLarge) ? (
-                  <>
-                    {campaignPhotoLargeUrl ? (
-                      <CampaignImage src={campaignPhotoLargeUrl} alt="Campaign" />
-                    ) : (
-                      <CampaignImage src={weVoteHostedProfileImageUrlLarge} alt="Campaign" />
-                    )}
-                  </>
-                ) : (
-                  <CampaignSupportImageWrapperText>
-                    {campaignTitle}
-                  </CampaignSupportImageWrapperText>
-                )}
-              </CampaignSupportImageWrapper>
+              */}
               <CampaignProcessStepTitle>
-                Why do you support
-                {' '}
-                {numberOfPoliticians > 1 ? (
-                  <>these candidates?</>
-                ) : (
-                  <>this candidate?</>
-                )}
+                To join this challenge, share how you will vote &mdash; then ask your friends to join.
               </CampaignProcessStepTitle>
+              {/*
               <CampaignProcessStepIntroductionText>
-                People are more likely to support this campaign if it’s clear why you care. Explain how
+                People are more likely to support this challenge if it’s clear why you care. Explain how
                 {' '}
                 {politicianListSentenceString}
                 {' '}
                 winning will impact you, your family, or your community.
               </CampaignProcessStepIntroductionText>
+              */}
               <CampaignSupportSectionWrapper>
                 <CampaignSupportSection>
-                  <CampaignEndorsementInputField campaignXWeVoteId={campaignXWeVoteId} />
+                  <VoterPlan />
                   { !voterPhotoUrlLarge && <VoterPhotoUpload /> }
                   <VisibleToPublicCheckboxWrapper>
                     <Suspense fallback={<span>&nbsp;</span>}>
-                      <VisibleToPublicCheckbox campaignXWeVoteId={campaignXWeVoteId} />
+                      <VisibleToPublicCheckbox challengeWeVoteId={challengeWeVoteId} />
                     </Suspense>
                   </VisibleToPublicCheckboxWrapper>
                   <CampaignSupportDesktopButtonWrapper className="u-show-desktop-tablet">
@@ -310,7 +286,7 @@ class ChallengeSupportJoin extends Component {
                         onClick={this.submitSupporterEndorsement}
                         variant="contained"
                       >
-                        Save and continue
+                        Join Challenge now
                       </Button>
                     </CampaignSupportDesktopButtonPanel>
                   </CampaignSupportDesktopButtonWrapper>
@@ -323,7 +299,7 @@ class ChallengeSupportJoin extends Component {
                         onClick={this.submitSupporterEndorsement}
                         variant="contained"
                       >
-                        Save and continue
+                        Join Challenge now
                       </Button>
                     </CampaignSupportMobileButtonPanel>
                   </CampaignSupportMobileButtonWrapper>
@@ -351,7 +327,7 @@ class ChallengeSupportJoin extends Component {
                         Make it personal
                       </AdviceBoxTitle>
                       <AdviceBoxText>
-                        Voters are more likely to sign and support this campaign if it’s clear why you care.
+                        Voters are more likely to sign and support this challenge if it’s clear why you care.
                       </AdviceBoxText>
                       <AdviceBoxText>
                         &nbsp;
@@ -364,6 +340,7 @@ class ChallengeSupportJoin extends Component {
                       </AdviceBoxText>
                     </AdviceBox>
                   </AdviceBoxWrapper>
+                  {/*
                   <SkipForNowButtonWrapper>
                     <SkipForNowButtonPanel show>
                       <Button
@@ -376,13 +353,14 @@ class ChallengeSupportJoin extends Component {
                       </Button>
                     </SkipForNowButtonPanel>
                   </SkipForNowButtonWrapper>
+                  */}
                 </CampaignSupportSection>
               </CampaignSupportSectionWrapper>
             </ContentInnerWrapperDefault>
           </ContentOuterWrapperDefault>
         </PageWrapperDefault>
         <Suspense fallback={<span>&nbsp;</span>}>
-          <CampaignRetrieveController campaignSEOFriendlyPath={campaignSEOFriendlyPath} campaignXWeVoteId={campaignXWeVoteId} />
+          <ChallengeRetrieveController challengeSEOFriendlyPath={challengeSEOFriendlyPath} challengeWeVoteId={challengeWeVoteId} />
         </Suspense>
         <Suspense fallback={<span>&nbsp;</span>}>
           <VoterFirstRetrieveController />

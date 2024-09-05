@@ -342,8 +342,6 @@ const CandidateEndorsementsContainer = styled('div')`
   align-items: flex-start;
   display: flex;
   flex-flow: column;
-  max-width: 212px;
-  overflow: hidden;
   width: 100%;
 `;
 
@@ -351,23 +349,23 @@ const CandidateEndorsementContainer = styled('div')(({ theme }) => (`
   min-width: 36px;
   border-radius: 50%;
   margin-right: -12px;
-  position: relative; 
+  position: relative;
 
   ${theme.breakpoints.down('xs')} {
     display: none;
   }
-    
+
   img{
-    border: 2px solid #FFFFFF; 
-    border-radius: 50%; 
+    border: 2px solid #FFFFFF;
+    border-radius: 50%;
     height: 36px;
-    object-fit: cover; 
-    width: 36px;    
+    object-fit: cover;
+    width: 36px;
   }
 `));
 
 const CandidateEndorsementPhotos = styled('div')`
-  align-items: center;  
+  align-items: center;
   cursor: pointer;
   display: flex;
   width: 100%;
@@ -388,10 +386,10 @@ const CandidateEndorsementText = styled('div')`
 `;
 
 const CandidateEndorsementsWrapper = styled('div')`
-  height: 102px;  
+  height: 102px;
   max-width: 100%;
   white-space: wrap;
-  width: 212px;
+  width: 275px;
 `;
 
 export default withTheme(withStyles(styles)(PositionRowListCompressed));
