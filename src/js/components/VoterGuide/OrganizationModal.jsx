@@ -26,7 +26,7 @@ import MeasureStore from '../../stores/MeasureStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import {
-  DrawerHeaderContentContainer, DrawerHeaderInnerContainer, DrawerHeaderOuterContainer,
+  DrawerHeaderInnerContainer, DrawerHeaderOuterContainer,
 } from '../Style/drawerLayoutStyles';
 import { cordovaDrawerTopMargin } from '../../utils/cordovaOffsets';
 import { convertToInteger } from '../../common/utils/textFormat';
@@ -34,6 +34,10 @@ import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { headroomWrapperOffset } from '../../utils/cordovaCalculatedOffsets';
 import { getPageKey } from '../../utils/cordovaPageUtils';
 import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
+import { Candidate, CandidateNameAndPartyWrapper, CandidateNameH4, CandidateParty, CandidateTopRow } from '../Style/BallotStyles';
+import ImageHandler from '../ImageHandler';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
+import CampaignSupportThermometer from '../../common/components/CampaignSupport/CampaignSupportThermometer';
 // import { handleResize } from '../../common/utils/isMobileScreenSize';
 
 const CampaignRetrieveController = React.lazy(() => import(/* webpackChunkName: 'CampaignRetrieveController' */ '../../common/components/Campaign/CampaignRetrieveController'));
@@ -56,6 +60,7 @@ class OrganizationModal extends Component {
       positionListHasBeenRetrievedOnce: {},
       scrolledDown: false,
       unFurlPositions: false,
+      finalElectionDateInPast: false,
       voterGuidesFromFriendsUpcomingHasBeenRetrievedOnce: {},
     };
 
@@ -91,8 +96,10 @@ class OrganizationModal extends Component {
         ballot_item_display_name: ballotItemDisplayName,
         contest_office_we_vote_id: officeWeVoteId,
         politician_we_vote_id: politicianWeVoteId,
+        party: politicalParty,
+        candidate_photo_url_large: politicianImageUrlLarge,
       } = candidate;
-      // console.log('candidate:', candidate);
+      console.log('candidate:', candidate);
       PoliticianActions.politicianRetrieve(politicianWeVoteId);
       CandidateActions.candidateRetrieve(ballotItemWeVoteId);
       if (!this.localPositionListHasBeenRetrievedOnce(ballotItemWeVoteId) &&
@@ -121,6 +128,8 @@ class OrganizationModal extends Component {
       this.setState({
         allCachedPositionsForThisBallotItem,
         ballotItemDisplayName,
+        politicalParty,
+        politicianImageUrlLarge,
       });
       AnalyticsActions.saveActionCandidate(VoterStore.electionId(), ballotItemWeVoteId);
     }
@@ -188,24 +197,6 @@ class OrganizationModal extends Component {
     });
   }
 
-  // componentDidUpdate () {
-  //   const elementForScrollListener = document.querySelector('.MuiDrawer-paper');
-  //   if (elementForScrollListener) {
-  //     console.log('elementForScrollListener:', elementForScrollListener);
-  //     elementForScrollListener.removeEventListener('scroll', this.handleScrolledDownDrawer);
-  //     elementForScrollListener.addEventListener('scroll', this.handleScrolledDownDrawer);
-  //   } else {
-  //     console.log('elementForScrollListener NOT Found ');
-  //   }
-  //   // const elementForScrollListener = document.querySelector('.MuiDrawer-paper');
-  //   // if (elementForScrollListener) {
-  //   //   console.log('elementForScrollListener:', elementForScrollListener);
-  //   //   elementForScrollListener.addEventListener('scroll', this.handleScrolledDownDrawer);
-  //   // } else {
-  //   //   console.log('elementForScrollListener NOT Found ');
-  //   // }
-  // }
-
   componentWillUnmount () {
     this.candidateStoreListener.remove();
     this.measureStoreListener.remove();
@@ -253,6 +244,7 @@ class OrganizationModal extends Component {
         google_civic_election_id: googleCivicElectionId,
         linked_campaignx_we_vote_id: linkedCampaignXWeVoteId,
         politician_we_vote_id: politicianWeVoteId,
+        party: politicalParty,
       } = candidate;
       // console.log('OrganizationModal onCandidateStoreChange candidate:', candidate);
       if (googleCivicElectionId &&
@@ -272,6 +264,7 @@ class OrganizationModal extends Component {
         ballotItemDisplayName,
         linkedCampaignXWeVoteId,
         politicianWeVoteId,
+        politicalParty,
       });
     }
   }
@@ -364,9 +357,10 @@ class OrganizationModal extends Component {
     const {
       allCachedPositionsForThisBallotItem, ballotItemDisplayName,
       isCandidate, isMeasure, linkedCampaignXWeVoteId, modalOpen,
-      politicianWeVoteId, scrolledDown, unFurlPositions,
+      politicianWeVoteId, scrolledDown, unFurlPositions, politicalParty, politicianImageUrlLarge,
     } = this.state;
-
+    const avatarBackgroundImage = normalizedImagePath('../img/global/svg-icons/avatar-generic.svg');
+    const avatarCompressed = 'card-main__avatar-compressed';
     return (
       <Drawer
         anchor="right"
@@ -393,24 +387,52 @@ class OrganizationModal extends Component {
         </CloseDrawerIconWrapper>
         <DrawerHeaderOuterContainer style={{ display: scrolledDown ? 'block' : 'none' }} id="politicianHeaderContainer" scrolledDown={scrolledDown}>
           <DrawerHeaderInnerContainer>
-            <CloseDrawerIconWrapper>
-              <div>
-                <IconButton
+            <CandidateTopRow>
+              <Candidate
+                      id={`officeItemCompressedCandidateImageAndName-${politicianWeVoteId}`}
+              >
+                <Suspense fallback={<></>}>
+                  <ImageHandler
+                          className={avatarCompressed}
+                          sizeClassName="icon-candidate-small u-push--sm "
+                          imageUrl={politicianImageUrlLarge}
+                          alt=""
+                          kind_of_ballot_item="CANDIDATE"
+                          style={{ backgroundImage: { avatarBackgroundImage } }}
+                  />
+                </Suspense>
+                <CandidateNameAndPartyWrapper>
+                  <CandidateNameH4>
+                    {ballotItemDisplayName}
+                  </CandidateNameH4>
+                  <CandidateParty>
+                    {politicalParty}
+                  </CandidateParty>
+                </CandidateNameAndPartyWrapper>
+              </Candidate>
+              <CloseDrawerHeaderIconWrapper>
+                <div>
+                  <IconButton
                   aria-label="Close"
                   className={classes.closeButton}
                   id="closeOrganizationModal"
                   onClick={this.closeOrganizationModal}
                   size="large"
-                >
-                  <span className="u-cursor--pointer">
-                    <Close classes={{ root: classes.closeIcon }} />
-                  </span>
-                </IconButton>
-              </div>
-            </CloseDrawerIconWrapper>
-            <DrawerHeaderContentContainer>
-              {ballotItemDisplayName}
-            </DrawerHeaderContentContainer>
+                  >
+                    <span className="u-cursor--pointer">
+                      <Close classes={{ root: classes.closeIcon }} />
+                    </span>
+                  </IconButton>
+                </div>
+              </CloseDrawerHeaderIconWrapper>
+            </CandidateTopRow>
+            <HeartToggleAndThermometerWrapper>
+              <Suspense fallback={<span>&nbsp;</span>}>
+                <CampaignSupportThermometer
+                        campaignXWeVoteId={linkedCampaignXWeVoteId}
+                />
+              </Suspense>
+            </HeartToggleAndThermometerWrapper>
           </DrawerHeaderInnerContainer>
         </DrawerHeaderOuterContainer>
         {(isCandidate && !hideBallotItemInfo) && (
@@ -596,7 +618,9 @@ const BallotItemBottomSpacer = styled('div')`
 const CloseDrawerIconWrapper = styled('div')`
   display: flex;
   justify-content: flex-end;
-  width: 100%;
+`;
+
+const CloseDrawerHeaderIconWrapper = styled('div')`
 `;
 
 const PoliticianCardForListWrapper = styled('div')`
@@ -605,6 +629,10 @@ const PoliticianCardForListWrapper = styled('div')`
 
 const ScoreSummaryListControllerBottomSpacer = styled('div')`
   margin-bottom: 42px;
+`;
+
+const HeartToggleAndThermometerWrapper = styled('div')`
+  margin-top: 12px;
 `;
 
 const ShowMoreWrapper = styled('div')`
