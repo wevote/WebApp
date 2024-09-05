@@ -47,9 +47,10 @@ class JoinChallengeButton extends React.Component {
     const { challengeBasePath } = this.props;
     const { voterFirstName } = this.state;
     // TODO: Check to see if voter has filled out a voting plan
+    const itemsAreMissing = true; // Temporarily assume we have something we need from voter
     if (VoterStore.getVoterIsSignedIn()) {
       let setUpAccountEntryPath = '';
-      if (!voterFirstName) {
+      if (!voterFirstName || itemsAreMissing) {
         setUpAccountEntryPath = `${challengeBasePath}join-challenge`;
       } else {
         setUpAccountEntryPath = `${challengeBasePath}customize-message`;
