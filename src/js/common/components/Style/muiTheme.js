@@ -15,16 +15,21 @@ const muiTheme = createTheme({
     secondary: {
       main: `${DesignTokenColors.primary700}`,
       dark: `${DesignTokenColors.primary900}`,
-      contrastText: '#fff',
+      contrastText: `${DesignTokenColors.whiteUI}`,
     },
     chosen: {
-      main: '#fff',
+      main: `${DesignTokenColors.whiteUI}`,
       dark: `${DesignTokenColors.neutralUI50}`,
     },
     opposed: {
       main: `${DesignTokenColors.alert200}`,
       dark: `${DesignTokenColors.alert300}`,
-      contrastText: '#fff',
+      contrastText: `${DesignTokenColors.whiteUI}`,
+    },
+    valueChip: {
+      main: `${DesignTokenColors.whiteUI}`,
+      dark: `${DesignTokenColors.neutralUI100}`,
+      contrastText: `${DesignTokenColors.neutral600}`,
     },
   },
   breakpoints: {

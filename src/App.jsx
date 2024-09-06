@@ -48,6 +48,7 @@ const CampaignUpdatesPage = React.lazy(() => import(/* webpackChunkName: 'Campai
 const Candidate = React.lazy(() => import(/* webpackChunkName: 'Candidate' */ './js/pages/Ballot/Candidate'));
 const CandidateForExtension = React.lazy(() => import(/* webpackChunkName: 'EditCandidateForExtension' */ './js/pages/Ballot/EditCandidateForExtension/EditCandidateForExtension'));
 const ChallengeHomePage = React.lazy(() => import(/* webpackChunkName: 'ChallengeHomePage' */ './js/common/pages/Challenge/ChallengeHomePage'));
+const ChallengesHomeLoader = React.lazy(() => import(/* webpackChunkName: 'ChallengesHomeLoader' */ './js/common/pages/Challenge/ChallengesHomeLoader'));
 const ChallengeStartAddDescription = React.lazy(() => import(/* webpackChunkName: 'ChallengeStartAddDescription' */ './js/common/pages/ChallengeStart/ChallengeStartAddDescription'));
 const ChallengeStartAddPhoto = React.lazy(() => import(/* webpackChunkName: 'ChallengeStartAddPhoto' */ './js/common/pages/ChallengeStart/ChallengeStartAddPhoto'));
 const ChallengeStartAddTitle = React.lazy(() => import(/* webpackChunkName: 'ChallengeStartAddTitle' */ './js/common/pages/ChallengeStart/ChallengeStartAddTitle'));
@@ -159,7 +160,7 @@ class App extends Component {
 
   // See https://reactjs.org/docs/error-boundaries.html
   static getDerivedStateFromError (error) { // eslint-disable-line no-unused-vars
-    // Update state so the next render will show the fallback UI, We should have a "Oh snap" page
+    // Update state so the next render will show the fallback UI, We should have an "Oh snap" page
     console.log('App caught error ', error);
     return { hasError: true };
   }
@@ -472,6 +473,7 @@ class App extends Component {
                   <Route path="/candidate/:candidate_we_vote_id/:back_to_variable/:organization_we_vote_id" exact component={OrganizationVoterGuideCandidate} />
                   <Route path="/candidate/:candidate_we_vote_id/:organization_we_vote_id" exact component={OrganizationVoterGuideCandidate} />
                   <Route path="/candidate/:candidate_we_vote_id" exact component={Candidate} />
+                  <Route path="/challenges/" exact component={ChallengesHomeLoader} />
                   <Route path="/donate" component={(isNotWeVoteMarketingSite || this.localIsCordova()) ? ReadyRedirect : Donate} />
                   <Route path="/facebook_invitable_friends" component={FacebookInvitableFriends} />
                   <Route path="/findfriends/:set_up_page" exact component={FindFriendsRoot} />

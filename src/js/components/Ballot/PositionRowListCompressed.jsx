@@ -315,7 +315,7 @@ class PositionRowListCompressed extends Component {
               );
             })}
           </CandidateEndorsementPhotos>
-          <CandidateEndorsementText onClick={() => this.onClickShowOrganizationModalWithPositions()}>
+          <CandidateEndorsementText onClick={() => this.onClickShowOrganizationModalWithPositions()} className="u-link-underline-on-hover">
             {talkingAboutText}
             {!!(talkingAboutText) && <>&hellip;</>}
           </CandidateEndorsementText>
@@ -381,7 +381,7 @@ const CandidateEndorsementText = styled('div')`
   line-height: 17.92px;
   margin-top: 12px;
   overflow-wrap: break-word;
-  text-decoration: underline;
+  // text-decoration: underline;
   width: 100%;
 `;
 
