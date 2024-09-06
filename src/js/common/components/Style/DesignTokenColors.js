@@ -132,17 +132,14 @@ const DesignTokenColors = {
   alert300: primitiveColorNames.redUI300,
   alert400: primitiveColorNames.redUI400,
   alert500: primitiveColorNames.redUI500,
-  avatarBlue700: primitiveColorNames.blueUI700,
   avatarBlue900: primitiveColorNames.blueUI900,
-  avatarBlue200: primitiveColorNames.blueUI200,
-  avatarGreen400: primitiveColorNames.greenUI400,
   avatarGreen900: primitiveColorNames.greenUI900,
-  avatarOrange400: primitiveColorNames.orangeUI400,
-  avatarRed400: primitiveColorNames.redUI400,
-  avatarRed800: primitiveColorNames.redUI800,
+  avatarOrange900: primitiveColorNames.orangeUI900,
+  avatarRed600: primitiveColorNames.redUI600,
+  avatarRed900: primitiveColorNames.redUI900,
   avatarYellow700: primitiveColorNames.yellowUI700,
   avatarYellow900: primitiveColorNames.yellowUI900,
-  avatargray600: primitiveColorNames.grayUI600,
+  avatarGray600: primitiveColorNames.grayUI600,
   alert600: primitiveColorNames.redUI600,
   alert700: primitiveColorNames.redUI700,
   alert800: primitiveColorNames.redUI800,
@@ -241,3 +238,16 @@ const DesignTokenColors = {
 };
 
 export default DesignTokenColors;
+
+
+//  avatarBlue700: primitiveColorNames.blueUI700,
+//  avatarBlue900: primitiveColorNames.blueUI900,
+//  avatarBlue200: primitiveColorNames.blueUI200,
+//  avatarGreen400: primitiveColorNames.greenUI400,
+//  avatarGreen900: primitiveColorNames.greenUI900,
+//  avatarOrange900: primitiveColorNames.orangeUI900, //changed from 400
+//  avatarRed600: primitiveColorNames.redUI600, //changed from 400
+//  avatarRed900: primitiveColorNames.redUI900, //changed from 800
+//  avatarYellow700: primitiveColorNames.yellowUI700, //no yellows work
+//  avatarYellow900: primitiveColorNames.yellowUI900, //no yellows work
+//  avatarGray600: primitiveColorNames.grayUI600,

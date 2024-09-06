@@ -114,7 +114,7 @@ export const VoteByBelowWrapper = styled('div', {
 `));
 
 export const VoteByRightLabel = styled('div')`
-  color: #888;
+  color: #5E5E5B;
   font-size: 12px;
   letter-spacing: .1em;
   text-transform: uppercase;
