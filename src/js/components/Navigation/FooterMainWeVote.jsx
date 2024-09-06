@@ -108,7 +108,7 @@ class FooterMainWeVote extends Component {
                   <RowSpacer />
                   <OpenExternalWebSite
                     linkIdAttribute="footerLinkTeam"
-                    url="https://wevote.us/more/about"
+                    url="https://quality.wevote.us/more/about"
                     target="_blank"
                     body={(
                       <span>Team</span>
@@ -118,7 +118,7 @@ class FooterMainWeVote extends Component {
                   <RowSpacer />
                   <OpenExternalWebSite
                     linkIdAttribute="footerLinkCredits"
-                    url="https://wevote.us/more/credits"
+                    url="https://quality.wevote.us/more/credits"
                     target="_blank"
                     body={(
                       <span>Credits &amp; Thanks</span>

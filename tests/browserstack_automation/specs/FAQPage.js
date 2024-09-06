@@ -113,7 +113,7 @@ describe('FAQPage', () => {
     await ReadyPage.waitAboutLinkAndClick();
     await driver.pause(waitTime);
     await FAQPage.getAboutPageTitleElement.click();
-    driver.switchWindow('https://wevote.us/more/about');
+    driver.switchWindow('https://quality.wevote.us/more/about');
     await driver.pause(waitTime);
     await expect(driver).toHaveTitle('About WeVote');
   });

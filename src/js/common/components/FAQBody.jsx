@@ -128,7 +128,7 @@ export default class FAQBody extends Component {
         <Suspense fallback={<></>}>
           <OpenExternalWebSite
             linkIdAttribute="weVoteAboutUsPage"
-            url="https://WeVote.US/more/about"
+            url="https://quality.WeVote.US/more/about"
             target="_blank"
             body="volunteer board members"
           />

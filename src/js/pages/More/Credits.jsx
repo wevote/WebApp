@@ -26,7 +26,7 @@ class Credits extends Component {
       <Wrapper>
         <Helmet>
           <title>Credits - WeVote</title>
-          <link rel="canonical" href="https://wevote.us/more/credits" />
+          <link rel="canonical" href="https://quality.wevote.us/more/credits" />
         </Helmet>
         <Suspense fallback={<></>}>
           <WelcomeAppbar pathname="/more/pricing" />

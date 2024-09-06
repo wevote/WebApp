@@ -95,7 +95,7 @@ class SettingsSectionFooter extends Component {
             <>
               <OpenExternalWebSite
                 linkIdAttribute="footerLinkTeam"
-                url="https://wevote.us/more/about"
+                url="https://quality.wevote.us/more/about"
                 target="_blank"
                 body={(
                   <TermsAndPrivacyText>Team</TermsAndPrivacyText>
@@ -104,7 +104,7 @@ class SettingsSectionFooter extends Component {
               <span style={{ paddingLeft: 15 }} />
               <OpenExternalWebSite
                 linkIdAttribute="footerLinkCredit"
-                url="https://wevote.us/more/credits"
+                url="https://quality.wevote.us/more/credits"
                 target="_blank"
                 body={(
                   <TermsAndPrivacyText className="u-no-break">Credits &amp; Thanks</TermsAndPrivacyText>

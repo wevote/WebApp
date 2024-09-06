@@ -192,7 +192,7 @@ describe('ReadyPage', () => {
     await driver.pause(waitTime);
     await ReadyPage.getTeamLinkElement.click();
     await driver.pause(waitTime);
-    await driver.switchWindow('https://wevote.us/more/about');
+    await driver.switchWindow('https://quality.wevote.us/more/about');
     await driver.pause(waitTime);
     await expect(ReadyPage.getTeamPageTitleElement).toHaveText('About WeVote');
   });
@@ -203,7 +203,7 @@ describe('ReadyPage', () => {
     await driver.pause(waitTime);
     await ReadyPage.getCreditsAndThanksElement.click();
     await driver.pause(waitTime);
-    await driver.switchWindow('https://wevote.us/more/credits');
+    await driver.switchWindow('https://quality.wevote.us/more/credits');
     await driver.pause(waitTime);
     await expect(ReadyPage.getCreditsAndThanksPageTitleElement).toHaveText('Credits & Thanks');
   });
