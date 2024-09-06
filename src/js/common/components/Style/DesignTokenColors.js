@@ -240,14 +240,4 @@ const DesignTokenColors = {
 export default DesignTokenColors;
 
 
-//  avatarBlue700: primitiveColorNames.blueUI700,
-//  avatarBlue900: primitiveColorNames.blueUI900,
-//  avatarBlue200: primitiveColorNames.blueUI200,
-//  avatarGreen400: primitiveColorNames.greenUI400,
-//  avatarGreen900: primitiveColorNames.greenUI900,
-//  avatarOrange900: primitiveColorNames.orangeUI900, //changed from 400
-//  avatarRed600: primitiveColorNames.redUI600, //changed from 400
-//  avatarRed900: primitiveColorNames.redUI900, //changed from 800
-//  avatarYellow700: primitiveColorNames.yellowUI700, //no yellows work
-//  avatarYellow900: primitiveColorNames.yellowUI900, //no yellows work
-//  avatarGray600: primitiveColorNames.grayUI600,
+
