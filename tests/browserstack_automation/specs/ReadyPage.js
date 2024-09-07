@@ -94,6 +94,7 @@ describe('ReadyPage', () => {
   });
 
   // Ready_009 and Ready_016
+  //Modified by Shanthi - 09/06/2024 at 11:51 pm
   it('verifyPrivacyLinkRedirected', async () => {
     await ReadyPage.load();
     await driver.pause(waitTime);
