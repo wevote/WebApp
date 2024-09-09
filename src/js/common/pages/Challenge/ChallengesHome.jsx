@@ -16,18 +16,12 @@ import { convertToInteger } from '../../utils/textFormat';
 import ChallengesHomeFilter from '../../components/Challenge/ChallengesHomeFilter';
 import ChallengeListRootPlaceholder from '../../components/ChallengeListRoot/ChallengeListRootPlaceholder';
 import NoSearchResult from '../../../components/Search/NoSearchResult';
-import webAppConfig from '../../../config';
-import BallotStore from '../../../stores/BallotStore';
-import CandidateStore from '../../../stores/CandidateStore';
 import IssueStore from '../../../stores/IssueStore';
-import RepresentativeStore from '../../../stores/RepresentativeStore';
 import VoterStore from '../../../stores/VoterStore';
+import { Link } from "react-router-dom";
 
 const ChallengeListRoot = React.lazy(() => import(/* webpackChunkName: 'ChallengeListRoot' */ '../../components/ChallengeListRoot/ChallengeListRoot'));
 const FirstChallengeListController = React.lazy(() => import(/* webpackChunkName: 'FirstChallengeListController' */ '../../components/ChallengeListRoot/FirstChallengeListController'));
-
-// const representativeDataExistsYears = [2023];
-const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
 // import OfficeHeldConstants from '../../constants/OfficeHeldConstants';  // I couldn't get this to work
 const OFFICE_HELD_YEARS_AVAILABLE = [2023, 2024, 2025, 2026];
@@ -36,14 +30,8 @@ class ChallengesHome extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      battlegroundDataFoundByStateDict: {},
-      battlegroundDataNotReturnedInTime: false,
-      battlegroundDataNotReturnedInTimeByStateDict: {},
-      battlegroundWaitingForData: false,
       challengeList: [],
       challengeListTimeStampOfChange: 0,
-      candidateList: [],
-      candidateListIsBattleground: [],
       isSearching: false,
       listModeShown: 'showUpcomingEndorsements',
       listModeFiltersAvailable: [],
@@ -62,10 +50,7 @@ class ChallengesHome extends Component {
   componentDidMount () {
     // console.log('ChallengesHome componentDidMount');
     window.scrollTo(0, 0);
-    this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
     this.challengeStoreListener = ChallengeStore.addListener(this.onChallengeStoreChange.bind(this));
-    this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
-    this.representativeStoreListener = RepresentativeStore.addListener(this.onRepresentativeStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
 
     // /////////////////////////
@@ -76,34 +61,6 @@ class ChallengesHome extends Component {
       challengeList,
       challengeListTimeStampOfChange: Date.now(),
     }, () => this.onIncomingChallengeListChange(true));
-
-    // /////////////////////////
-    // Pulled from onCandidateStoreChange and onBallotStoreChange
-    // Note: sorting is being done in CandidateListRoot
-    const candidateList = CandidateStore.getCandidateList();
-    // console.log('ComponentDidMount candidateList', candidateList);
-    const { candidateListOnYourBallot, candidateListIsBattleground, candidateListOther } = this.splitUpCandidateList(candidateList);
-    // console.log('ComponentDidMount candidateListOther', candidateListOther);
-    this.setState({
-      candidateList,
-      candidateListIsBattleground,
-      candidateListOnYourBallot,
-      candidateListOther,
-      candidateListTimeStampOfChange: Date.now(),
-    }, () => this.onIncomingCandidateListChange(true));
-
-    // /////////////////////////
-    // Pulled from onRepresentativeStoreChange
-    const representativeList = RepresentativeStore.getRepresentativeList();
-    // Note: sorting is being done in RepresentativeListRoot
-    const { politicianWeVoteIdsAlreadyShown, representativeListOnYourBallot, representativeListShownAsRepresentatives } = this.splitUpRepresentativeList(representativeList); // representativeListIsBattleground
-    this.setState({
-      politicianWeVoteIdsAlreadyShown,
-      representativeList,
-      representativeListOnYourBallot,
-      representativeListShownAsRepresentatives,
-      representativeListTimeStampOfChange: Date.now(),
-    }, () => this.onIncomingRepresentativeListChange(true));
 
     if (apiCalming('issueDescriptionsRetrieve', 3600000)) { // Only once per 60 minutes
       IssueActions.issueDescriptionsRetrieve();
@@ -125,36 +82,12 @@ class ChallengesHome extends Component {
   }
 
   componentWillUnmount () {
-    this.ballotStoreListener.remove();
     this.challengeStoreListener.remove();
-    this.candidateStoreListener.remove();
-    this.representativeStoreListener.remove();
     this.voterStoreListener.remove();
     if (this.timer) {
       clearTimeout(this.timer);
       this.timer = null;
     }
-  }
-
-  onBallotStoreChange () {
-    const { battlegroundDataFoundByStateDict, candidateList, stateCode } = this.state;
-    const { candidateListOnYourBallot, candidateListIsBattleground, candidateListOther } = this.splitUpCandidateList(candidateList);
-    const battlegroundDataFound = !!(candidateListIsBattleground && candidateListIsBattleground.length > 0);
-    if (battlegroundDataFound) {
-      battlegroundDataFoundByStateDict[stateCode] = true;
-      // If battleground data not returned, we let the timer in candidateQueryInitiatedLocal
-      //  set battlegroundWaitingForData to false, but if found, we can set battlegroundWaitingForData to false
-      this.setState({
-        battlegroundDataFoundByStateDict,
-        battlegroundWaitingForData: false,
-      });
-    }
-    this.setState({
-      candidateListIsBattleground,
-      candidateListOnYourBallot,
-      candidateListOther,
-      candidateListTimeStampOfChange: Date.now(),
-    }, () => this.onIncomingCandidateListChange());
   }
 
   onChallengeStoreChange () {
@@ -164,43 +97,6 @@ class ChallengesHome extends Component {
       challengeList,
       challengeListTimeStampOfChange: Date.now(),
     }, () => this.onIncomingChallengeListChange());
-  }
-
-  onCandidateStoreChange () {
-    const candidateList = CandidateStore.getCandidateList();
-    const { battlegroundDataFoundByStateDict } = this.state;
-    // Note: sorting is being done in CandidateListRoot
-    const { candidateListOnYourBallot, candidateListIsBattleground, candidateListOther, stateCode } = this.splitUpCandidateList(candidateList);
-    const battlegroundDataFound = !!(candidateListIsBattleground && candidateListIsBattleground.length > 0);
-    if (battlegroundDataFound) {
-      battlegroundDataFoundByStateDict[stateCode] = true;
-      // If battleground data not returned, we let the timer in candidateQueryInitiatedLocal
-      //  set battlegroundWaitingForData to false, but if found, we can set battlegroundWaitingForData to false
-      this.setState({
-        battlegroundDataFoundByStateDict,
-        battlegroundWaitingForData: false,
-      });
-    }
-    this.setState({
-      candidateList,
-      candidateListIsBattleground,
-      candidateListOnYourBallot,
-      candidateListOther,
-      candidateListTimeStampOfChange: Date.now(),
-    }, () => this.onIncomingCandidateListChange());
-  }
-
-  onRepresentativeStoreChange () {
-    const representativeList = RepresentativeStore.getRepresentativeList();
-    // Note: sorting is being done in RepresentativeListRoot
-    const { politicianWeVoteIdsAlreadyShown, representativeListOnYourBallot, representativeListShownAsRepresentatives } = this.splitUpRepresentativeList(representativeList);  // representativeListIsBattleground
-    this.setState({
-      politicianWeVoteIdsAlreadyShown,
-      representativeList,
-      representativeListOnYourBallot,
-      representativeListShownAsRepresentatives,
-      representativeListTimeStampOfChange: Date.now(),
-    }, () => this.onIncomingRepresentativeListChange());
   }
 
   onVoterStoreChange () {
@@ -233,75 +129,11 @@ class ChallengesHome extends Component {
     }, () => this.updateActiveFilters(setDefaultListMode));
   }
 
-  onIncomingCandidateListChange (setDefaultListMode = false) {
-    // const { candidateList } = this.state;
-    // console.log('ChallengesHome onIncomingCandidateListChange, candidateList:', candidateList);
-    this.setState({
-      // listOfYearsWhenCandidateExists: this.getListOfYearsWhenCandidateExists(candidateList),
-    }, () => this.updateActiveFilters(setDefaultListMode));
-  }
-
-  onIncomingRepresentativeListChange (setDefaultListMode = false) {
-    const { representativeList } = this.state;
-    // console.log('ChallengesHome onIncomingRepresentativeListChange, representativeList:', representativeList);
-    this.setState({
-      listOfYearsWhenRepresentativeExists: this.getListOfYearsWhenRepresentativeExists(representativeList),
-    }, () => this.updateActiveFilters(setDefaultListMode));
-  }
-
   orderByFilterOrder = (firstFilter, secondFilter) => firstFilter.filterOrder - secondFilter.filterOrder;
-
-  splitUpCandidateList = (candidateList) => {
-    const { politicianWeVoteIdsAlreadyShown } = this.state;
-    // console.log('splitUpCandidateList, politicianWeVoteIdsAlreadyShown:', politicianWeVoteIdsAlreadyShown);
-    const candidateListOnYourBallot = BallotStore.getAllBallotItemsFlattened();
-    // console.log('splitUpCandidateList, candidateListOnYourBallot:', candidateListOnYourBallot);
-    const weVoteIdsOnYourBallot = extractAttributeValueListFromObjectList('we_vote_id', candidateListOnYourBallot);
-    const candidateListRemaining = candidateList.filter((oneCandidate) => !arrayContains(oneCandidate.we_vote_id, weVoteIdsOnYourBallot));
-    const candidateListIsBattleground = candidateListRemaining.filter((oneCandidate) => oneCandidate.is_battleground_race);
-    const weVoteIdsIsBattlegroundRace = extractAttributeValueListFromObjectList('we_vote_id', candidateListIsBattleground);
-    const candidateMinusBattleground = candidateListRemaining.filter((oneCandidate) => !arrayContains(oneCandidate.we_vote_id, weVoteIdsIsBattlegroundRace));
-    const candidateListOther = candidateMinusBattleground.filter((oneCandidate) => !arrayContains(oneCandidate.politician_we_vote_id, politicianWeVoteIdsAlreadyShown));
-
-    // Ok to remove once https://wevoteusa.atlassian.net/jira/software/projects/WV/issues/WV-282 is fixed
-    // console.log('------ candidateList biden: ', candidateList.find((x) => x.ballot_item_display_name === 'Joe Biden'));
-    // console.log('------ candidateList trump: ', candidateList.find((x) => x.ballot_item_display_name === 'Donald Trump'));
-    // console.log('candidateListOnYourBallot biden: ', candidateListOnYourBallot.find((x) => x.ballot_item_display_name === 'Joe Biden')?.ballot_item_display_name);
-    // console.log('weVoteIdsOnYourBallot: ', weVoteIdsOnYourBallot);
-    // console.log('candidateListRemaining biden: ', candidateListRemaining.find((x) => x.ballot_item_display_name === 'Joe Biden')?.ballot_item_display_name);
-    // console.log('politicianWeVoteIdsAlreadyShown: ', politicianWeVoteIdsAlreadyShown);
-    // console.log('candidateMinusBattleground biden: ', candidateMinusBattleground.find((x) => x.ballot_item_display_name === 'Joe Biden')?.ballot_item_display_name);
-    // console.log('candidateMinusBattleground trump: ', candidateMinusBattleground.find((x) => x.ballot_item_display_name === 'Donald Trump')?.ballot_item_display_name);
-    // console.log('candidateListOther candidate id biden: ', candidateListOther.find((x) => x.ballot_item_display_name === 'Joe Biden')?.politician_we_vote_id);
-    // console.log('candidateListOther candidate id trump: ', candidateListOther.find((x) => x.ballot_item_display_name === 'Donald Trump')?.politician_we_vote_id);
-    // console.log('candidateListOther biden: ', candidateListOther.find((x) => x.ballot_item_display_name === 'Joe Biden')?.ballot_item_display_name);
-    // console.log('candidateListOther trump: ', candidateListOther.find((x) => x.ballot_item_display_name === 'Donald Trump')?.ballot_item_display_name);
-
-    return {
-      candidateListOnYourBallot,
-      candidateListIsBattleground,
-      candidateListOther,
-    };
-  }
-
-  splitUpRepresentativeList = (representativeList) => {
-    // console.log('representativeList = ', representativeList);
-    const candidateListOnYourBallot = BallotStore.getAllBallotItemsFlattened();
-    const politicianWeVoteIdsOnYourBallot = extractAttributeValueListFromObjectList('politician_we_vote_id', candidateListOnYourBallot);
-    const representativeListOnYourBallot = representativeList.filter((oneRepresentative) => arrayContains(oneRepresentative.politician_we_vote_id, politicianWeVoteIdsOnYourBallot));
-    const representativeListShownAsRepresentatives = representativeList.filter((oneRepresentative) => !arrayContains(oneRepresentative.politician_we_vote_id, politicianWeVoteIdsOnYourBallot));
-    const politicianWeVoteIdsShownAsRepresentatives = extractAttributeValueListFromObjectList('politician_we_vote_id', representativeListShownAsRepresentatives);
-    const politicianWeVoteIdsAlreadyShown = politicianWeVoteIdsOnYourBallot.concat(politicianWeVoteIdsShownAsRepresentatives);
-    return {
-      politicianWeVoteIdsAlreadyShown,
-      representativeListOnYourBallot,
-      representativeListShownAsRepresentatives,
-    };
-  }
 
   updateActiveFilters = (setDefaultListMode = false) => {
     const {
-      challengeList, candidateList,
+      challengeList,
       // listOfYearsWhenChallengeExists, listOfYearsWhenCandidateExists,
       listOfYearsWhenRepresentativeExists,
     } = this.state;
@@ -315,11 +147,6 @@ class ChallengesHome extends Component {
     // console.log('thisYearInteger:', thisYearInteger);
     challengeList.forEach((oneChallenge) => {
       if (oneChallenge.final_election_date_as_integer >= todayAsInteger) {
-        upcomingEndorsementsAvailable = true;
-      }
-    });
-    candidateList.forEach((oneCandidate) => {
-      if (oneCandidate.candidate_ultimate_election_date >= todayAsInteger) {
         upcomingEndorsementsAvailable = true;
       }
     });
@@ -425,26 +252,6 @@ class ChallengesHome extends Component {
     return 'showUpcomingEndorsements';
   }
 
-  getListOfYearsWhenRepresentativeExists = (representativeList) => {
-    const listOfYearsWhenRepresentativeExists = [];
-    let yearInOfficeKey;
-    representativeList.forEach((oneRepresentative) => {
-      for (let i = 0; i < OFFICE_HELD_YEARS_AVAILABLE.length; i++) {
-        // console.log('One year from OFFICE_HELD_YEARS_AVAILABLE: ', OFFICE_HELD_YEARS_AVAILABLE[i]);
-        yearInOfficeKey = `year_in_office_${OFFICE_HELD_YEARS_AVAILABLE[i]}`;
-        // console.log('yearInOfficeKey: ', yearInOfficeKey);
-        if ((yearInOfficeKey in oneRepresentative) && oneRepresentative[yearInOfficeKey]) {
-          // console.log('oneRepresentative[yearInOfficeKey]: ', oneRepresentative[yearInOfficeKey]);
-          if (!arrayContains(OFFICE_HELD_YEARS_AVAILABLE[i], listOfYearsWhenRepresentativeExists)) {
-            listOfYearsWhenRepresentativeExists.push(OFFICE_HELD_YEARS_AVAILABLE[i]);
-          }
-        }
-      }
-    });
-    // console.log('listOfYearsWhenRepresentativeExists: ', listOfYearsWhenRepresentativeExists);
-    return listOfYearsWhenRepresentativeExists;
-  }
-
   clearSearchFunction = () => {
     this.setState({
       isSearching: false,
@@ -469,16 +276,6 @@ class ChallengesHome extends Component {
     }, () => this.updateActiveFilters());
   }
 
-  displayBattlegroundPlaceholderForState = (stateCode) => {
-    // For one state, should we display a placeholder for the "Candidates in Close Races" horizontal section as the data is loaded?
-    const { battlegroundDataNotReturnedInTimeByStateDict, battlegroundDataNotReturnedInTime, isSearching } = this.state;
-    if (battlegroundDataNotReturnedInTimeByStateDict && stateCode && (stateCode in battlegroundDataNotReturnedInTimeByStateDict)) {
-      return !battlegroundDataNotReturnedInTimeByStateDict[stateCode] && !isSearching;
-    } else {
-      return !battlegroundDataNotReturnedInTime && !isSearching;
-    }
-  }
-
   handleNumberOfChallengeResults = (listResults, searchResults) => {
     this.setState({
       numberOfChallengeResults: listResults,
@@ -496,46 +293,40 @@ class ChallengesHome extends Component {
       searchText, stateCode,
     } = this.state;
     const numberOfSearchResults = numberOfChallengeSearchResults;
-    // console.log('ChallengesHomeLoader.jsx render challengeList:', challengeList);
+    // console.log('ChallengesHome.jsx render challengeList:', challengeList);
 
     if (detailsListMode) {
       // console.log('detailsListMode TRUE');
       return (
         <ChallengesHomeWrapper>
           <ChallengesHomeFilter
-            changeListModeShown={this.changeListModeShown}
             clearSearchFunction={this.clearSearchFunction}
-            // handleChooseStateChange={this.handleChooseStateChange}
-            isSearching={isSearching}
-            listModeFiltersAvailable={listModeFiltersAvailable}
             searchFunction={this.searchFunction}
-            searchText={searchText}
-            stateCode={stateCode}
           />
-          {(nextReleaseFeaturesEnabled) && (
-            <WhatIsHappeningSection useMinimumHeight={!!(numberOfChallengeResults)}>
-              <Suspense fallback={<span>&nbsp;</span>}>
-                <ChallengeListRoot
-                  hideChallengesLinkedToPoliticians
-                  hideIfNoResults
-                  handleNumberOfResults={this.handleNumberOfChallengeResults}
-                  incomingList={challengeList}
-                  incomingListTimeStampOfChange={challengeListTimeStampOfChange}
-                  listModeFilters={listModeFiltersAvailable}
-                  listModeFiltersTimeStampOfChange={listModeFiltersTimeStampOfChange}
-                  searchText={searchText}
-                  stateCode={stateCode}
-                  titleTextForList="Upcoming Challenges"
-                />
-              </Suspense>
-            </WhatIsHappeningSection>
-          )}
+          <StartAChallengeWrapper>
+            <Link className="u-link-color" to="/start-a-challenge">
+              Start your own Democracy Challenge
+            </Link>
+          </StartAChallengeWrapper>
+          <WhatIsHappeningSection useMinimumHeight={!!(numberOfChallengeResults)}>
+            <Suspense fallback={<span>&nbsp;</span>}>
+              <ChallengeListRoot
+                hideChallengesLinkedToPoliticians
+                handleNumberOfResults={this.handleNumberOfChallengeResults}
+                incomingList={challengeList}
+                incomingListTimeStampOfChange={challengeListTimeStampOfChange}
+                listModeFilters={listModeFiltersAvailable}
+                listModeFiltersTimeStampOfChange={listModeFiltersTimeStampOfChange}
+                searchText={searchText}
+                stateCode={stateCode}
+                titleTextForList="Upcoming Challenges"
+              />
+            </Suspense>
+          </WhatIsHappeningSection>
         </ChallengesHomeWrapper>
       );
     }
 
-    // const useMinimumBattlegroundHeight = this.useMinimumBattlegroundHeightForState(stateCode);
-    const displayBattlegroundPlaceholder = this.displayBattlegroundPlaceholderForState(stateCode);
     // console.log('ChallengesHome, isSearching: ', isSearching, 'numberOfRepresentativeResults:', numberOfRepresentativeResults);
     return (
       <ChallengesHomeWrapper>
@@ -551,34 +342,33 @@ class ChallengesHome extends Component {
         />
         {(isSearching && numberOfSearchResults === 0) && (
           <NoSearchResult
-            title="No Candidates Found"
+            title="No Democracy Challenges Found"
             subtitle="Please try a different search term."
           />
         )}
+        <StartAChallengeWrapper>
+          <Link className="u-link-color" to="/start-a-challenge">
+            Start your own Democracy Challenge
+          </Link>
+        </StartAChallengeWrapper>
 
-        {(nextReleaseFeaturesEnabled) ? (
-          <WhatIsHappeningSection useMinimumHeight>
-            <Suspense fallback={<span><ChallengeListRootPlaceholder titleTextForList="Challenges" /></span>}>
-              <ChallengeListRoot
-                hideChallengesLinkedToPoliticians
-                hideIfNoResults
-                // onHideIfNoResultsChange={this.handleHideIfNoResultsChange}
-                incomingList={challengeList}
-                incomingListTimeStampOfChange={challengeListTimeStampOfChange}
-                listModeFilters={listModeFiltersAvailable}
-                listModeFiltersTimeStampOfChange={listModeFiltersTimeStampOfChange}
-                searchText={searchText}
-                stateCode={stateCode}
-                // titleTextForList="Upcoming Challenges" // TODO: Needs work
-                titleTextForList="Democracy Challenges"
-              />
-            </Suspense>
-          </WhatIsHappeningSection>
-        ) : (
-          <>
-            {displayBattlegroundPlaceholder && <ChallengeListRootPlaceholder titleTextForList="Challenges" />}
-          </>
-        )}
+        <WhatIsHappeningSection useMinimumHeight>
+          <Suspense fallback={<span><ChallengeListRootPlaceholder titleTextForList="Democracy Challenges" /></span>}>
+            <ChallengeListRoot
+              hideChallengesLinkedToPoliticians
+              hideIfNoResults
+              // onHideIfNoResultsChange={this.handleHideIfNoResultsChange}
+              incomingList={challengeList}
+              incomingListTimeStampOfChange={challengeListTimeStampOfChange}
+              listModeFilters={listModeFiltersAvailable}
+              listModeFiltersTimeStampOfChange={listModeFiltersTimeStampOfChange}
+              searchText={searchText}
+              stateCode={stateCode}
+              // titleTextForList="Upcoming Challenges" // TODO: Needs work
+              titleTextForList="Democracy Challenges"
+            />
+          </Suspense>
+        </WhatIsHappeningSection>
 
         {/* */}
         <Suspense fallback={<></>}>
@@ -594,6 +384,10 @@ ChallengesHome.propTypes = {
 
 const ChallengesHomeWrapper = styled('div')`
   padding-top: ${isAndroid() ? '30px' : ''};
+`;
+
+const StartAChallengeWrapper = styled('div')`
+  margin-bottom: 24px;
 `;
 
 const WhatIsHappeningSection = styled('div', {

@@ -88,10 +88,10 @@ class ChallengeCardForList extends Component {
   onChallengeStoreChange () {
     const { challengeWeVoteId } = this.props;
     const challenge = ChallengeStore.getChallengeByWeVoteId(challengeWeVoteId);
-    // const voterCanEditThisChallenge = ChallengeStore.getVoterCanEditThisChallenge(challengeWeVoteId);
+    const voterCanEditThisChallenge = ChallengeStore.getVoterCanEditThisChallenge(challengeWeVoteId);
     this.setState({
       challenge,
-      // voterCanEditThisChallenge,
+      voterCanEditThisChallenge,
     });
   }
 
@@ -178,9 +178,9 @@ class ChallengeCardForList extends Component {
     } = challenge;
     let challengeBasePath;
     if (challengeSEOFriendlyPath) {
-      challengeBasePath = `/c/${challengeSEOFriendlyPath}/`;
+      challengeBasePath = `/${challengeSEOFriendlyPath}/+/`;
     } else {
-      challengeBasePath = `/id/${challengeWeVoteId}/`;
+      challengeBasePath = `/+/${challengeWeVoteId}/`;
     }
     return challengeBasePath;
   }
@@ -233,7 +233,7 @@ class ChallengeCardForList extends Component {
   render () {
     renderLog('ChallengeCardForList');  // Set LOG_RENDER_EVENTS to log all renders
     const { limitCardWidth, useVerticalCard } = this.props;
-    const { challengeSupported } = this.state; // , inPrivateLabelMode, voterCanEditThisChallenge
+    const { challengeSupported, voterCanEditThisChallenge } = this.state; // , inPrivateLabelMode
     const { challengeWeVoteId } = this.props;
     const challenge = ChallengeStore.getChallengeByWeVoteId(challengeWeVoteId);
     if (!challenge) {
@@ -274,12 +274,14 @@ class ChallengeCardForList extends Component {
         limitCardWidth={limitCardWidth}
         onChallengeClick={this.onChallengeClick}
         onChallengeClickLink={this.onChallengeClickLink}
+        onChallengeEditClick={this.onChallengeEditClick}
         photoLargeUrl={challengePhotoLargeUrl}
         profileImageBackgroundColor={profileImageBackgroundColor}
         supportersCount={supportersCount}
         supportersCountNextGoalWithFloor={supportersCountNextGoalWithFloor}
         tagIdBaseName=""
         useVerticalCard={useVerticalCard}
+        voterCanEditThisChallenge={voterCanEditThisChallenge}
       />
     );
   }

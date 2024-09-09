@@ -251,7 +251,8 @@ class PositionRowListCompressed extends Component {
     if (filteredPositionList.length > 0) {
       filteredPositionList.forEach((onePosition) => {
         candidateName = onePosition.ballot_item_display_name; // Same for all positions
-        if (numberOfNamesDisplayed < numberOfNamesToDisplay) {
+        if ((onePosition.speaker_display_name && !onePosition.speaker_display_name.includes('Voter-')) &&
+            (numberOfNamesDisplayed < numberOfNamesToDisplay)) {
           if (!isFirstPosition) {
             if ((numberOfNamesDisplayed + 1) === filteredPositionList.length) {
               talkingAboutText += ' and ';

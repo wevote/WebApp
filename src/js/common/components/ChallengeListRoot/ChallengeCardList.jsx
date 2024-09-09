@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import { Link } from 'react-router-dom';
 import { CampaignsNotAvailableToShow, ListWrapper, LoadMoreItemsManuallyWrapper, StartACampaignWrapper } from '../Style/CampaignCardStyles';
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import { renderLog } from '../../utils/logging';
@@ -145,6 +144,7 @@ class ChallengeCardList extends Component {
               </div>
             );
           })}
+          {/*
           {!!(numberDisplayed && (searchText || showAllEndorsements || showThisYear || showUpcomingEndorsements)) && (
             <StartACampaignWrapper>
               <Link className="u-link-color" to="/start-a-challenge">
@@ -162,6 +162,7 @@ class ChallengeCardList extends Component {
               </Link>
             </StartACampaignWrapper>
           )}
+          */}
           {!!(challengeList &&
               challengeList.length > 1 &&
               numberToDisplay < challengeList.length) &&
@@ -180,6 +181,7 @@ class ChallengeCardList extends Component {
               {!(numberDisplayed) && (
                 <CampaignsNotAvailableToShow>
                   No challenges match.
+                  {/*
                   {!!(searchText || showAllEndorsements || showThisYear || showUpcomingEndorsements) && (
                     <>
                       {' '}
@@ -199,6 +201,7 @@ class ChallengeCardList extends Component {
                       .
                     </>
                   )}
+                  */}
                 </CampaignsNotAvailableToShow>
               )}
             </div>

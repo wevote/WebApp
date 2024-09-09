@@ -411,6 +411,8 @@ class App extends Component {
                   <Route exact path="/:challengeSEOFriendlyPath/+/" render={(props) => <ChallengeHomePage match={props.match} />} />
                   <Route exact path="/:challengeSEOFriendlyPath/+/edit" render={(props) => <ChallengeStartEditAll match={props.match} editExistingChallenge setShowHeaderFooter={this.setShowHeaderFooter} />} />
                   <Route exact path="/:challengeSEOFriendlyPath/+/join-challenge" render={(props) => <ChallengeSupportJoin match={props.match} setShowHeaderFooter={this.setShowHeaderFooter} />} />
+                  {/* <Route exact path="/:challengeSEOFriendlyPath/+/customize-message" render={(props) => <ChallengeSupportJoin match={props.match} setShowHeaderFooter={this.setShowHeaderFooter} />} /> */}
+                  {/* <Route exact path="/:challengeSEOFriendlyPath/+/copy-message" render={(props) => <ChallengeSupportJoin match={props.match} setShowHeaderFooter={this.setShowHeaderFooter} />} /> */}
                   <Route exact path="/:politicianWeVoteId/p/" render={(props) => <PoliticianDetailsPage match={props.match} />} />
                   <Route exact path="/:politicianSEOFriendlyPath/-/" render={(props) => <PoliticianDetailsPage match={props.match} />} />
                   <Route exact path="/:campaignSEOFriendlyPath/-/share-campaign" render={(props) => <CampaignSupportShare match={props.match} setShowHeaderFooter={this.setShowHeaderFooter} />} />

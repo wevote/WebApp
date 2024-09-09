@@ -11,10 +11,7 @@ import {
   TitleAndMobileArrowsOuterWrapper, MobileArrowsInnerWrapper,
 } from '../Style/ScrollingStyles';
 import { convertStateCodeToStateText } from '../../utils/addressFunctions';
-import arrayContains from '../../utils/arrayContains';
 import { handleHorizontalScroll, leftAndRightArrowStateCalculation, checkDivPositionForLoadMore } from '../../utils/leftRightArrowCalculation';
-import { getTodayAsInteger, getYearFromUltimateElectionDate } from '../../utils/dateFormat';
-import extractAttributeValueListFromObjectList from '../../utils/extractAttributeValueListFromObjectList';
 import { renderLog } from '../../utils/logging';
 import ChallengeStore from '../../stores/ChallengeStore';
 import ChallengeSupporterStore from '../../stores/ChallengeSupporterStore';
@@ -77,17 +74,6 @@ class ChallengeListRoot extends Component {
     this.challengeStoreListener.remove();
   }
 
-  handleNumberOfResults (numberOfFilteredResults, numberOfSearchResults) {
-    // console.log('RepresentativeListRoot handleNumberOfResults numberOfFilteredResults:', numberOfFilteredResults, ', numberOfSearchResults:', numberOfSearchResults);
-    if (this.props.handleNumberOfResults) {
-      // Delay telling the parent component that the number of results has changed
-      // if (this.timer) clearTimeout(this.timer);
-      // this.timer = setTimeout(() => {
-      this.props.handleNumberOfResults(numberOfFilteredResults, numberOfSearchResults);
-      // }, 500);
-    }
-  }
-
   onChallengeSupporterStoreChange () {
     // We need to instantiate ChallengeSupporterStore before we call challengeListRetrieve so that store gets filled with data
   }
@@ -129,7 +115,7 @@ class ChallengeListRoot extends Component {
   onFilterOrListChange = () => {
     // console.log('onFilterOrListChange');
     // Start over with full list, and apply all active filters
-    const { hideChallengesLinkedToPoliticians, listModeFilters, searchText, stateCode } = this.props;
+    const { hideChallengesLinkedToPoliticians, searchText } = this.props;
     const { challengeList } = this.state;
     let filteredList = challengeList;
     // console.log('filteredList:', filteredList);
@@ -167,24 +153,7 @@ class ChallengeListRoot extends Component {
     filteredList = filteredListModified;
     // //////////////////////
     // Now filter
-    if (listModeFilters && listModeFilters.length > 0) {
-      const todayAsInteger = getTodayAsInteger();
-      listModeFilters.forEach((oneFilter) => {
-        // console.log('oneFilter:', oneFilter);
-        if ((oneFilter.filterType === 'showUpcomingEndorsements') && (oneFilter.filterSelected === true)) {
-          filteredList = filteredList.filter((oneEntry) => oneEntry.final_election_date_as_integer >= todayAsInteger);
-        }
-        if ((oneFilter.filterType === 'showYear') && (oneFilter.filterSelected === true)) {
-          filteredList = filteredList.filter((oneEntry) => getYearFromUltimateElectionDate(oneEntry.final_election_date_as_integer) === oneFilter.filterYear);
-        }
-      });
-    }
-    if (stateCode && stateCode.toLowerCase() !== 'all') {
-      filteredList = filteredList.filter((oneEntry) => {
-        const politicianStateCodeList = extractAttributeValueListFromObjectList('state_code', oneEntry.challenge_politician_list, true);
-        return arrayContains(stateCode.toLowerCase(), politicianStateCodeList);
-      });
-    }
+
     // //////////
     // Now sort
     // We need to add support for ballot_item_twitter_followers_count

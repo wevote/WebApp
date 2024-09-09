@@ -133,14 +133,14 @@ class ChallengeStartPreview extends Component {
             <SaveCancelButtonsWrapper>
               <Link
                 id="startChallengePublishLater"
-                to="/"
+                to="/challenges"
               >
                 <Button
                   classes={{root: classes.buttonSimpleLink}}
                   color="primary"
                 >
                   <div className="u-show-mobile">
-                    Skip
+                    Later
                   </div>
                   <div className="u-show-desktop-tablet">
                     Publish&nbsp;later&nbsp;&nbsp;&nbsp;
