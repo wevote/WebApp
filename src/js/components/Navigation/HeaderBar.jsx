@@ -30,9 +30,11 @@ import FriendsTabs from './FriendsTabs';
 import HeaderBarLogo from './HeaderBarLogo';
 import HeaderBarModals from './HeaderBarModals';
 import TabWithPushHistory from './TabWithPushHistory';
+import webAppConfig from '../../config';
 
 
 const HeaderNotificationMenu = React.lazy(() => import(/* webpackChunkName: 'HeaderNotificationMenu' */ './HeaderNotificationMenu'));
+const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
 /* global $ */
 
@@ -464,8 +466,8 @@ class HeaderBar extends Component {
     let donateVisible;
     const friendsVisible = false; // 2023-09-04 Dale We are turning off Friends header link for now
     let howItWorksValue;
-    // const squadsVisible = isWebApp();
-    const squadsVisible = false;
+    const squadsVisible = isWebApp() && nextReleaseFeaturesEnabled;
+    // const squadsVisible = false;
     let squadsValue;
     // let howItWorksVisible;
     const howItWorksVisible = false;
@@ -570,8 +572,8 @@ class HeaderBar extends Component {
                       value={squadsValue}
                       change={this.handleTabChange}
                       id="squadsTabHeaderBar"
-                      label="Squads"
-                      to="/squads"
+                      label="Challenges"  // Was Squads
+                      to="/challenges"  // Was "/squads"
                     />
                   )}
                   {donateVisible && (
