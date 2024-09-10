@@ -28,6 +28,7 @@ class ReadyFinePrint extends Component {
     this.state = {
       contentUnfurled: false,
     };
+    this.firstListItemRef = React.createRef();
   }
 
   componentDidMount () {
@@ -42,6 +43,9 @@ class ReadyFinePrint extends Component {
     this.setState({
       contentUnfurled: !contentUnfurled,
     });
+    if (!contentUnfurled) {
+      this.firstListItemRef.current.focus();
+    }
   }
 
   render () {
@@ -51,7 +55,7 @@ class ReadyFinePrint extends Component {
     return (
       <OuterWrapper>
         <InnerWrapper>
-          <IntroHeader titleCentered={titleCentered} titleLarge={titleLarge}>
+          <IntroHeader titleCentered={titleCentered} titleLarge={titleLarge} tabIndex={0} ref={this.firstListItemRef}>
             The fine print:
           </IntroHeader>
           <ListWrapper>
