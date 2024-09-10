@@ -385,7 +385,7 @@ class OrganizationModal extends Component {
             </IconButton>
           </div>
         </CloseDrawerIconWrapper>
-        <DrawerHeaderOuterContainer style={{ display: scrolledDown ? 'block' : 'none' }} id="politicianHeaderContainer" scrolledDown={scrolledDown}>
+        <DrawerHeaderOuterContainer id="politicianHeaderContainer" scrolledDown={scrolledDown}>
           <DrawerHeaderInnerContainer>
             <CandidateTopRow>
               <Candidate
