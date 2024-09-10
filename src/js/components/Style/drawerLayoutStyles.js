@@ -13,7 +13,7 @@ const slideIn = keyframes`
 
 export const DrawerHeaderOuterContainer = styled.div.attrs(({ scrolledDown }) => ({
   style: {
-    marginTop: scrolledDown ? '0px' : 'initial',
+    display: scrolledDown ? 'block' : 'hidden',
   },
 }))`
   width: 100%;
