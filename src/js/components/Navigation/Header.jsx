@@ -9,7 +9,7 @@ import historyPush from '../../common/utils/historyPush';
 import { normalizedHref } from '../../common/utils/hrefUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize, { displayNoneIfSmallerThanDesktop, handleResize, isTablet } from '../../common/utils/isMobileScreenSize';
-import isSEOFriendlyURL from '../../common/utils/isSEOFriendlyURL';
+import { isSEOFriendlyURL } from '../../common/utils/isSEOFriendlyURL';
 import { renderLog } from '../../common/utils/logging';
 import stringContains from '../../common/utils/stringContains';
 import VoterStore from '../../stores/VoterStore';
