@@ -479,7 +479,7 @@ class ChallengeHomePage extends Component {
                 classes={{ root: classes.buttonRoot }}
                 color="primary"
                 variant="contained"
-                onClick={() => historyPush('/cs')}
+                onClick={() => historyPush('/challenges')}
               >
                 <PersonSearch classes={{ root: classes.buttonIconRoot }} location={window.location} />
                 See other challenges
