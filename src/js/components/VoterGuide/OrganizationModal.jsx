@@ -99,7 +99,7 @@ class OrganizationModal extends Component {
         party: politicalParty,
         candidate_photo_url_large: politicianImageUrlLarge,
       } = candidate;
-      console.log('candidate:', candidate);
+      // console.log('candidate:', candidate);
       PoliticianActions.politicianRetrieve(politicianWeVoteId);
       CandidateActions.candidateRetrieve(ballotItemWeVoteId);
       if (!this.localPositionListHasBeenRetrievedOnce(ballotItemWeVoteId) &&
@@ -201,10 +201,6 @@ class OrganizationModal extends Component {
     this.candidateStoreListener.remove();
     this.measureStoreListener.remove();
     AppObservableStore.setScrolledDownDrawer(false);
-    const drawer = document.querySelector('#share-menu');
-    if (drawer) {
-      drawer.removeEventListener('scroll', this.handleScrolledDownDrawer);
-    }
   }
 
   handleScrolledDownDrawer (evt) {
