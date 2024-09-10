@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { isCordova, isWebApp } from '../utils/isCordovaOrWebApp';
 import { renderLog } from '../utils/logging';
 import ToolBar from './Widgets/ToolBar';
+import webAppConfig from "../../config";
 
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ './Widgets/OpenExternalWebSite'));
@@ -128,7 +129,7 @@ export default class FAQBody extends Component {
         <Suspense fallback={<></>}>
           <OpenExternalWebSite
             linkIdAttribute="weVoteAboutUsPage"
-            url="https://quality.WeVote.US/more/about"
+            url={`${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}/more/about`}
             target="_blank"
             body="volunteer board members"
           />

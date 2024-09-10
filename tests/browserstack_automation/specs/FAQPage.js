@@ -1,6 +1,7 @@
 import { driver, expect } from '@wdio/globals';
 import ReadyPage from '../page_objects/ready.page';
 import FAQPage from '../page_objects/faq.page';
+import webAppConfig from "../../../src/js/config";
 
 const assert = require('assert');
 const { describe, it } = require('mocha');
@@ -113,7 +114,7 @@ describe('FAQPage', () => {
     await ReadyPage.waitAboutLinkAndClick();
     await driver.pause(waitTime);
     await FAQPage.getAboutPageTitleElement.click();
-    driver.switchWindow('https://quality.wevote.us/more/about');
+    driver.switchWindow(`${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}/more/about`);
     await driver.pause(waitTime);
     await expect(driver).toHaveTitle('About WeVote');
   });
