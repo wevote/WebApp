@@ -29,7 +29,7 @@ export const DrawerHeaderOuterContainer = styled.div.attrs(({ scrolledDown }) =>
 
   ${({ scrolledDown }) => scrolledDown &&
     css`
-      animation: ${slideIn} 0.7s ease-out;
+      animation: ${slideIn} 0.3s ease-out;
       border-bottom: 1px solid #aaa;
       box-shadow: ${standardBoxShadow('wide')};
     `}

@@ -614,6 +614,7 @@ const BallotItemBottomSpacer = styled('div')`
 const CloseDrawerIconWrapper = styled('div')`
   display: flex;
   justify-content: flex-end;
+  margin-right: 12px;
 `;
 
 const CloseDrawerHeaderIconWrapper = styled('div')`
