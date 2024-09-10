@@ -9,11 +9,14 @@ import VoterActions from '../../../actions/VoterActions';
 import webAppConfig from '../../../config';
 import VoterStore from '../../../stores/VoterStore';
 import ChallengeSupporterActions from '../../actions/ChallengeSupporterActions';
+import ChallengeHeaderSimple from '../../components/Navigation/ChallengeHeaderSimple';
 import VoterPhotoUpload from '../../components/Settings/VoterPhotoUpload';
 import VoterPlan from '../../../components/Ready/VoterPlan';
-import { AdviceBox, AdviceBoxText, AdviceBoxTitle, AdviceBoxWrapper } from '../../components/Style/adviceBoxStyles';
-import { CampaignProcessStepIntroductionText, CampaignProcessStepTitle } from '../../components/Style/CampaignProcessStyles';
-import { CampaignSupportDesktopButtonPanel, CampaignSupportDesktopButtonWrapper, CampaignSupportMobileButtonPanel, CampaignSupportMobileButtonWrapper, CampaignSupportSection, CampaignSupportSectionWrapper, SkipForNowButtonPanel, SkipForNowButtonWrapper } from '../../components/Style/CampaignSupportStyles';
+import {
+  SupportButtonFooterWrapper, SupportButtonPanel,
+} from '../../components/Style/CampaignDetailsStyles';
+import { CampaignProcessStepTitle } from '../../components/Style/CampaignProcessStyles';
+import { CampaignSupportDesktopButtonPanel, CampaignSupportDesktopButtonWrapper, CampaignSupportSection, CampaignSupportSectionWrapper } from '../../components/Style/CampaignSupportStyles';
 import commonMuiStyles from '../../components/Style/commonMuiStyles';
 import { ContentInnerWrapperDefault, ContentOuterWrapperDefault, PageWrapperDefault } from '../../components/Style/PageWrapperStyles';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
@@ -29,7 +32,7 @@ const VisibleToPublicCheckbox = React.lazy(() => import(/* webpackChunkName: 'Vi
 const VoterFirstRetrieveController = loadable(() => import(/* webpackChunkName: 'VoterFirstRetrieveController' */ '../../components/Settings/VoterFirstRetrieveController'));
 
 
-class ChallengeSupportJoin extends Component {
+class ChallengeInviteFriendsJoin extends Component {
   constructor (props) {
     super(props);
     this.state = {
@@ -45,7 +48,7 @@ class ChallengeSupportJoin extends Component {
   }
 
   componentDidMount () {
-    // console.log('ChallengeSupportJoin componentDidMount');
+    // console.log('ChallengeInviteFriendsJoin componentDidMount');
     this.props.setShowHeaderFooter(false);
     this.onAppObservableStoreChange();
     this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
@@ -162,9 +165,9 @@ class ChallengeSupportJoin extends Component {
     const { challengeSEOFriendlyPath, challengeWeVoteId } = this.state;
     let challengeBasePath;
     if (challengeSEOFriendlyPath) {
-      challengeBasePath = `/c/${challengeSEOFriendlyPath}/`;
+      challengeBasePath = `/${challengeSEOFriendlyPath}/+/`;
     } else {
-      challengeBasePath = `/id/${challengeWeVoteId}/`;
+      challengeBasePath = `/+/${challengeWeVoteId}/`;
     }
     return challengeBasePath;
   }
@@ -184,12 +187,11 @@ class ChallengeSupportJoin extends Component {
   }
 
   goToNextStep = () => {
-    const { payToPromoteStepTurnedOn } = this.state;
-    if (payToPromoteStepTurnedOn) {
-      historyPush(`${this.getChallengeBasePath()}pay-to-promote`);
-    } else {
-      historyPush(`${this.getChallengeBasePath()}share-challenge`);
-    }
+    historyPush(`${this.getChallengeBasePath()}customize-message`);
+  }
+
+  goToChallengeHome = () => {
+    historyPush(this.getChallengeBasePath());
   }
 
   submitSkipForNow = () => {
@@ -199,7 +201,7 @@ class ChallengeSupportJoin extends Component {
     this.goToNextStep();
   }
 
-  submitSupporterEndorsement = () => {
+  joinChallengeNowSubmit = () => {
     const { challengeWeVoteId } = this.state;
     if (challengeWeVoteId) {
       const supporterEndorsementQueuedToSave = ChallengeSupporterStore.getSupporterEndorsementQueuedToSave();
@@ -211,7 +213,7 @@ class ChallengeSupportJoin extends Component {
         visibleToPublic = ChallengeSupporterStore.getVisibleToPublicQueuedToSave();
       }
       if (supporterEndorsementQueuedToSaveSet || visibleToPublicChanged) {
-        // console.log('ChallengeSupportJoin, supporterEndorsementQueuedToSave:', supporterEndorsementQueuedToSave);
+        // console.log('ChallengeInviteFriendsJoin, supporterEndorsementQueuedToSave:', supporterEndorsementQueuedToSave);
         const saveVisibleToPublic = true;
         initializejQuery(() => {
           ChallengeSupporterActions.supporterEndorsementSave(challengeWeVoteId, supporterEndorsementQueuedToSave, visibleToPublic, saveVisibleToPublic); // challengeSupporterSave
@@ -231,7 +233,7 @@ class ChallengeSupportJoin extends Component {
   }
 
   render () {
-    renderLog('ChallengeSupportJoin');  // Set LOG_RENDER_EVENTS to log all renders
+    renderLog('ChallengeInviteFriendsJoin');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
     const {
       challengeSEOFriendlyPath, challengeTitle,
@@ -245,17 +247,16 @@ class ChallengeSupportJoin extends Component {
           <title>{htmlTitle}</title>
           <meta name="robots" content="noindex" data-react-helmet="true" />
         </Helmet>
+        <ChallengeHeaderSimple
+          challengeBasePath={this.getChallengeBasePath()}
+          challengeTitle={challengeTitle}
+          challengeWeVoteId={challengeWeVoteId}
+          goToChallengeHome={this.goToChallengeHome}
+          politicianBasePath={this.getPoliticianBasePath()}
+        />
         <PageWrapperDefault>
           <ContentOuterWrapperDefault>
             <ContentInnerWrapperDefault>
-              {/*
-              <ChallengeSupportSteps
-                atStepNumber2
-                challengeBasePath={this.getChallengeBasePath()}
-                challengeWeVoteId={challengeWeVoteId}
-                politicianBasePath={this.getPoliticianBasePath()}
-              />
-              */}
               <CampaignProcessStepTitle>
                 To join this challenge, share how you will vote &mdash; then ask your friends to join.
               </CampaignProcessStepTitle>
@@ -282,83 +283,34 @@ class ChallengeSupportJoin extends Component {
                       <Button
                         classes={{ root: classes.buttonDesktop }}
                         color="primary"
-                        id="saveSupporterEndorsement"
-                        onClick={this.submitSupporterEndorsement}
+                        id="joinChallengeNow"
+                        onClick={this.joinChallengeNowSubmit}
                         variant="contained"
                       >
                         Join Challenge now
                       </Button>
                     </CampaignSupportDesktopButtonPanel>
                   </CampaignSupportDesktopButtonWrapper>
-                  <CampaignSupportMobileButtonWrapper className="u-show-mobile">
-                    <CampaignSupportMobileButtonPanel>
-                      <Button
-                        classes={{ root: classes.buttonDefault }}
-                        color="primary"
-                        id="saveSupporterEndorsementMobile"
-                        onClick={this.submitSupporterEndorsement}
-                        variant="contained"
-                      >
-                        Join Challenge now
-                      </Button>
-                    </CampaignSupportMobileButtonPanel>
-                  </CampaignSupportMobileButtonWrapper>
-                  <AdviceBoxWrapper>
-                    <AdviceBox>
-                      <AdviceBoxTitle>
-                        Describe the people who will be affected if this candidate loses
-                      </AdviceBoxTitle>
-                      <AdviceBoxText>
-                        People are most likely to vote when they understand the consequences of this candidate not being elected, described in terms of the people impacted.
-                      </AdviceBoxText>
-                      <AdviceBoxText>
-                        &nbsp;
-                      </AdviceBoxText>
-                      <AdviceBoxTitle>
-                        Describe the benefits of this candidate winning
-                      </AdviceBoxTitle>
-                      <AdviceBoxText>
-                        Explain why this candidate or candidates winning will bring positive change.
-                      </AdviceBoxText>
-                      <AdviceBoxText>
-                        &nbsp;
-                      </AdviceBoxText>
-                      <AdviceBoxTitle>
-                        Make it personal
-                      </AdviceBoxTitle>
-                      <AdviceBoxText>
-                        Voters are more likely to sign and support this challenge if it’s clear why you care.
-                      </AdviceBoxText>
-                      <AdviceBoxText>
-                        &nbsp;
-                      </AdviceBoxText>
-                      <AdviceBoxTitle>
-                        Respect others
-                      </AdviceBoxTitle>
-                      <AdviceBoxText>
-                        Don’t bully, use hate speech, threaten violence or make things up.
-                      </AdviceBoxText>
-                    </AdviceBox>
-                  </AdviceBoxWrapper>
-                  {/*
-                  <SkipForNowButtonWrapper>
-                    <SkipForNowButtonPanel show>
-                      <Button
-                        classes={{ root: classes.buttonSimpleLink }}
-                        color="primary"
-                        id="skipSupporterEndorsementMobile"
-                        onClick={this.submitSkipForNow}
-                      >
-                        Skip for now
-                      </Button>
-                    </SkipForNowButtonPanel>
-                  </SkipForNowButtonWrapper>
-                  */}
                 </CampaignSupportSection>
               </CampaignSupportSectionWrapper>
             </ContentInnerWrapperDefault>
           </ContentOuterWrapperDefault>
         </PageWrapperDefault>
+        <SupportButtonFooterWrapper className="u-show-mobile">
+          <SupportButtonPanel>
+            <CenteredDiv>
+              <Button
+                classes={{ root: classes.buttonDefault }}
+                color="primary"
+                id="joinChallengeNowMobile"
+                onClick={this.joinChallengeNowSubmit}
+                variant="contained"
+              >
+                Join Challenge now
+              </Button>
+            </CenteredDiv>
+          </SupportButtonPanel>
+        </SupportButtonFooterWrapper>
         <Suspense fallback={<span>&nbsp;</span>}>
           <ChallengeRetrieveController challengeSEOFriendlyPath={challengeSEOFriendlyPath} challengeWeVoteId={challengeWeVoteId} />
         </Suspense>
@@ -369,15 +321,20 @@ class ChallengeSupportJoin extends Component {
     );
   }
 }
-ChallengeSupportJoin.propTypes = {
+ChallengeInviteFriendsJoin.propTypes = {
   classes: PropTypes.object,
   match: PropTypes.object,
   setShowHeaderFooter: PropTypes.func,
 };
 
 
+const CenteredDiv = styled('div')`
+  display: flex;
+  justify-content: center;
+`;
+
 const VisibleToPublicCheckboxWrapper = styled('div')`
   min-height: 25px;
 `;
 
-export default withStyles(commonMuiStyles)(ChallengeSupportJoin);
+export default withStyles(commonMuiStyles)(ChallengeInviteFriendsJoin);
