@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { isIPadMini } from '../../utils/cordovaUtils';
 import { isCordova, isWebApp } from '../../utils/isCordovaOrWebApp';
 import standardBoxShadow from './standardBoxShadow';
 
@@ -123,6 +124,14 @@ export const CampaignSupportMobileButtonPanel = styled('div')`
 export const CampaignSupportMobileButtonWrapper = styled('div')`
   display: block;
   width: 100%;
+`;
+
+export const CampaignSupportMobileButtonFixedWrapper = styled('div')`
+  bottom: 0;
+  display: block;
+  position: fixed;
+  width: ${() => (isCordova() && !isIPadMini() ? '95%' : '100%')};
+  left: ${() => (isCordova() && !isIPadMini() ? '2.5%' : '')};
 `;
 
 export const CampaignSupportSection = styled('div', {

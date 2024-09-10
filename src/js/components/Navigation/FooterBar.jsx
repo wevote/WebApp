@@ -9,7 +9,7 @@ import AppObservableStore, { messageService } from '../../common/stores/AppObser
 import { isIOS } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
 import { normalizedHref } from '../../common/utils/hrefUtils';
-import { isAndroid, isCordova } from '../../common/utils/isCordovaOrWebApp';
+import { isAndroid, isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
@@ -17,10 +17,12 @@ import stringContains from '../../common/utils/stringContains';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
 import { cordovaFooterHeight } from '../../utils/cordovaOffsets';
+import webAppConfig from '../../config';
 
 // It's not ideal to have two images, but this is a complex svg, and I couldn't figure out how to change the fill color with a variable
 const capitalBuilding = '/img/global/svg-icons/capital-building.svg';
 const capitalBuildingSelected = '/img/global/svg-icons/capital-building-selected.svg';
+const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
 class FooterBar extends React.Component {
   constructor (props) {
@@ -122,7 +124,7 @@ class FooterBar extends React.Component {
       case 3:
         return historyPush('/friends');
       case 4:
-        return historyPush('/squads');
+        return historyPush('/challenges');  // was "/squads"
       case 5:
         return historyPush('/news');
       case 6:
@@ -141,6 +143,7 @@ class FooterBar extends React.Component {
     if (stringContains('/ballot', pathname.toLowerCase())) return 1;
     if (pathname.toLowerCase().endsWith('/cs/')) return 2;
     if (stringContains('/friends', pathname.toLowerCase())) return 3;
+    if (stringContains('/challenges', pathname.toLowerCase())) return 4;
     if (stringContains('/squads', pathname.toLowerCase())) return 4;
     if (stringContains('/news', pathname.toLowerCase())) return 5;
     if (stringContains('/donate', pathname.toLowerCase())) return 6;
@@ -220,8 +223,8 @@ class FooterBar extends React.Component {
     let discussVisible;
     let donateVisible;
     const friendsVisible = false; // 2023-09-04 Dale We are turning off Friends footer icon for now
-    // const squadsVisible = isWebApp();
-    const squadsVisible = false;
+    const squadsVisible = isWebApp() && nextReleaseFeaturesEnabled;
+    // const squadsVisible = false;
     // let howItWorksVisible;
     const howItWorksVisible = false;
     if (isCordova() || inPrivateLabelMode) {
@@ -334,7 +337,7 @@ class FooterBar extends React.Component {
                 className="no-outline"
                 icon={<Groups />}
                 id="squadTabFooterBar"
-                label="Squads"
+                label="Challenges"
                 showLabel
                 style={{
                   marginLeft: '8px',

@@ -1384,11 +1384,11 @@ const MissingPoliticianText = styled('p')(({ theme }) => (`
   }
 `));
 
-const slideDown = keyframes`
-  from {
+const slideIn = keyframes`
+  from { 
     transform: translateY(-100%);
   }
-  to {
+  to { 
     transform: translateY(0);
   }
 `;
@@ -1409,19 +1409,27 @@ const MobileHeaderContentContainer = styled('div')(({ theme }) => (`
 const MobileHeaderOuterContainer = styled('div', {
   shouldForwardProp: (prop) => !['scrolledDown'].includes(prop),
 })(({ scrolledDown }) => (`
-  // animation: ${slideDown} 300ms ease-in;  // Not currently working -- needs debugging
-  transition: transform .7s ease-in-out;
-  margin-top: ${marginTopOffset(scrolledDown)};
   width: 100%;
   background-color: #fff;
-  ${scrolledDown ? 'border-bottom: 1px solid #aaa' : ''};
-  ${scrolledDown ? `box_shadow: ${standardBoxShadow('wide')}` : ''};
+  // ${scrolledDown ? 'border-bottom: 1px solid #aaa' : ''};
+  // ${scrolledDown ? `box_shadow: ${standardBoxShadow('wide')}` : ''};
   // ${scrolledDown ? 'display: block' : 'display: none'};
   overflow: hidden;
   position: fixed;
   z-index: 1;
   right: 0;
-  transform: translateY(${scrolledDown ? '0' : '-120%'})
+  transform: translateY(${scrolledDown ? 0 : '-100%'});
+  transition: transform 0.3s ease-in-out;
+  visibility: ${scrolledDown ? 'visible' : 'hidden'};
+  opacity: ${scrolledDown ? 1 : 0};
+
+  ${scrolledDown && `
+    animation: ${slideIn} 0.7s ease-out;
+    border-bottom: 1px solid #aaa;
+    box-shadow: ${standardBoxShadow('wide')};
+ `}
+
+  margin-top: ${marginTopOffset(scrolledDown)};
 `));
 
 const MobileHeaderInnerContainer = styled('div')`
