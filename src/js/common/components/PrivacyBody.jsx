@@ -84,7 +84,7 @@ export default class PrivacyBody extends Component {
             programs, and to send you timely election reminders.
             You may opt-out of receiving messages from WeVote by sending any email to
             {' '}
-            <a href="mailto:info@WeVote.US" target="_blank" class="class u-link-color" rel="noopener noreferrer">info@WeVote.US</a>
+            <a href="mailto:info@WeVote.US" target="_blank" class="u-link-color" rel="noopener noreferrer">info@WeVote.US</a>
             {' '}
             and asking that you not receive future email messages.
             You may also opt-out by following the unsubscribe link at the bottom of each email.
@@ -322,7 +322,7 @@ export default class PrivacyBody extends Component {
           <span>
             If you have any questions about this Privacy Policy, you may contact us by sending an e-mail to
             {' '}
-            <a href="mailto:info@WeVote.US" target="_blank" class="class u-link-color" rel="noopener noreferrer">info@WeVote.US</a>
+            <a href="mailto:info@WeVote.US" target="_blank" class="u-link-color" rel="noopener noreferrer">info@WeVote.US</a>
             {' '}
             {/* Something needs to be written here, since otherwise it gives an "unable to ditinguish link due to lack of contrast". None of the Blue/Primary colors seem are able to "distinguish" the link */}
           </span>
