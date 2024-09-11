@@ -786,9 +786,12 @@ const ElectionState = styled('div')`
   margin: 0 2px;
 `;
 
-const SimpleModeItemWrapper = styled('div')`
+const SimpleModeItemWrapper = styled('button')`
   cursor: pointer;
   margin-top: 12px;
+  padding: 0;
+  background: transparent;
+  border: none;
 `;
 
 const PriorOrUpcomingElectionsWrapper = styled('div')`
