@@ -224,6 +224,7 @@ class FilterBaseSearch extends Component {
           classes={{ root: classes.iconButtonRoot }}
           onClick={!alwaysOpen ? this.toggleSearch : undefined}
           size="large"
+          aria-label="Search Button"
         >
           <Search classes={{ root: searchIconClasses }} />
         </IconButton>

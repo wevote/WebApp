@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import colors from '../../common/components/Style/Colors';
-// import DesignTokenColors from '../../common/components/Style/DesignTokenColors';  // 2024-04-16 Upgrade to using this
+import DesignTokenColors from '../../common/components/Style/DesignTokenColors';  // 2024-04-16 Upgrade to using this
 
 export const BallotAddress = styled('div', {
   shouldForwardProp: (prop) => !['centerText', 'allowTextWrap'].includes(prop),
@@ -114,7 +114,7 @@ export const VoteByBelowWrapper = styled('div', {
 `));
 
 export const VoteByRightLabel = styled('div')`
-  color: #888;
+  color: ${DesignTokenColors.neutral600};
   font-size: 12px;
   letter-spacing: .1em;
   text-transform: uppercase;
