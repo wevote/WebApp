@@ -44,9 +44,8 @@ export const BallotHorizontallyScrollingContainer = styled('div', {
 `));
 
 export const BallotScrollingInnerWrapper = styled('div')`
-  border: none;
   display: flex;
-//   position: relative;
+  position: relative;
 `;
 
 export const BallotScrollingOuterWrapper = styled('div')`
