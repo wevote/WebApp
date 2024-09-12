@@ -265,13 +265,17 @@ class PositionRowListCompressed extends Component {
           numberOfNamesDisplayed += 1;
         }
       });
-      if (numberOfNamesDisplayed < filteredPositionList.length) {
-        talkingAboutText += ` and ${filteredPositionListLength - numberOfNamesDisplayed} others`;
-      }
-      if (candidateName) {
-        talkingAboutText += ` are talking about ${candidateName}`;
-      }
-    }
+//
+      const remainingCount = filteredPositionList.length - numberOfNamesDisplayed;
+        if (remainingCount > 0) {
+          talkingAboutText += ` and ${remainingCount} ${remainingCount === 1 ? 'other' : 'others'}`;
+        }
+
+        if (candidateName) {
+          talkingAboutText += ` are talking about ${candidateName}`;
+        }
+          }
+
     return (
       <CandidateEndorsementsWrapper>
         <CandidateEndorsementsContainer>

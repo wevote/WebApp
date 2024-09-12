@@ -140,7 +140,7 @@ export const CandidateWrapper = styled('div')(({ theme }) => (`
     width: 100%;
   }
   ${theme.breakpoints.up('sm')} {
-    // margin-left: 48px;
+//     margin-left: 48px;
     min-width: 320px;
   }
 `));
