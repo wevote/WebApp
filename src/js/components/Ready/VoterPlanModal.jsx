@@ -1,22 +1,19 @@
-import { Close, EditLocation } from '@mui/icons-material';
-import { Button, Checkbox, Dialog, DialogContent, FormControlLabel, IconButton, InputBase, Paper, Select } from '@mui/material';
+import { Close } from '@mui/icons-material';
+import { Button, Dialog, DialogContent, IconButton } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
-import React, { Component, Suspense } from 'react';
+import React, { Component } from 'react';
 import styled from 'styled-components';
+import VoterPlan from './VoterPlan';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import ReadyActions from '../../actions/ReadyActions';
 import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
 import { formatDateToMonthDayYear } from '../../common/utils/dateFormat';
 import { renderLog } from '../../common/utils/logging';
-import webAppConfig from '../../config';
 import BallotStore from '../../stores/BallotStore';
 import ReadyStore from '../../stores/ReadyStore';
 import VoterStore from '../../stores/VoterStore';
-
-const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
-const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
 class VoterPlanModal extends Component {
   constructor (props) {
@@ -43,11 +40,6 @@ class VoterPlanModal extends Component {
     };
 
     this.closeVoterPlanModal = this.closeVoterPlanModal.bind(this);
-    this.handleVotingRoughDateChange = this.handleVotingRoughDateChange.bind(this);
-    this.handleVotingRoughDateClick = this.handleVotingRoughDateClick.bind(this);
-    this.handleApproximateTimeChange = this.handleApproximateTimeChange.bind(this);
-    this.handleModeOfTransportChange = this.handleModeOfTransportChange.bind(this);
-    this.handleLocationToDeliverBallotChange = this.handleLocationToDeliverBallotChange.bind(this);
   }
 
   componentDidMount () {
@@ -129,32 +121,6 @@ class VoterPlanModal extends Component {
   componentWillUnmount () {
     this.ballotStoreListener.remove();
     this.readyStoreListener.remove();
-  }
-
-
-  handleVotingLocationAddressChange = (event) => {
-    this.setState({ votingLocationAddress: event.target.value });
-  };
-
-  handleLocationToDeliverBallotChange (event) {
-    this.setState({ locationToDeliverBallot: event.target.value });
-  }
-
-  handleModeOfTransportChange (event) {
-    this.setState({ modeOfTransport: event.target.value });
-  }
-
-  handleApproximateTimeChange (event) {
-    this.setState({ approximateTime: event.target.value });
-  }
-
-  handleVotingRoughDateChange (event) {
-    this.setState({ votingRoughDate: event.target.value });
-  }
-
-  handleVotingRoughDateClick (event) {
-    console.log(event.target.value);
-    this.setState({ votingRoughDate: event.target.value });
   }
 
   onBallotStoreChange () {
@@ -270,13 +236,9 @@ class VoterPlanModal extends Component {
     const { classes } = this.props;
     const { location: { pathname } } = window;
     const {
-      approximateTime, electionDateMonthYear, locationToDeliverBallot, modeOfTransport,
-      savedVoterPlanFound, voterPlanChangedLocally, votingLocationAddress, votingRoughDate,
+      savedVoterPlanFound, voterPlanChangedLocally,
     } = this.state;
-    const getPollingLocationUrl = 'https://gttp.votinginfoproject.org/';
-    const voterPlanText = this.generateVoterPlanText();
     const showSaveButton = voterPlanChangedLocally || !savedVoterPlanFound;
-    const pigsCanFly = false;
     return (
       <Dialog
         classes={{ paper: classes.dialogPaper }}
@@ -300,237 +262,7 @@ class VoterPlanModal extends Component {
           </IconButton>
         </ModalTitleArea>
         <DialogContent classes={{ root: classes.dialogContent }}>
-          <div className="full-width">
-            <CreatePlanWrapper>
-              {(electionDateMonthYear) && (
-                <span>
-                  My upcoming election day is
-                  {' '}
-                  {electionDateMonthYear}
-                  .
-                  {' '}
-                </span>
-              )}
-              <Select
-                id="selectVotingRoughDate"
-                input={<InputBase classes={{ root: classes.selectDefault, input: classes.selectInput }} label="What day will you fill out ballot?" />}
-                native
-                value={votingRoughDate}
-                onChange={this.handleVotingRoughDateChange}
-                onClick={this.handleVotingRoughDateClick}
-                inputProps={{
-                  placeholder: 'select when',
-                }}
-              >
-                {/* <option value="select-when" className="emphasize">select when</option> */}
-                <option value="on-day">On election day</option>
-                <option value="day-before">The day before election day</option>
-                <option value="two-days-before">Two days before election day</option>
-                <option value="week-before">One week before election day</option>
-                <option value="two-weeks-before">Two weeks before election day</option>
-                <option value="asap">On the day my ballot arrives</option>
-              </Select>
-              {' '}
-              around
-              {' '}
-              <Select
-                id="selectApproximateTime"
-                input={<InputBase classes={{ root: classes.selectDefault, input: classes.selectInput }} label="What time will you fill out ballot?" />}
-                native
-                value={approximateTime}
-                onChange={this.handleApproximateTimeChange}
-                inputProps={{
-                  placeholder: 'select time',
-                }}
-              >
-                {/* <option value="select-time" className="emphasize">select time</option> */}
-                <option value="8:00 AM">8:00 AM</option>
-                <option value="9:00 AM">9:00 AM</option>
-                <option value="10:00 AM">10:00 AM</option>
-                <option value="11:00 AM">11:00 AM</option>
-                <option value="Noon">Noon</option>
-                <option value="1:00 PM">1:00 PM</option>
-                <option value="2:00 PM">2:00 PM</option>
-                <option value="3:00 PM">3:00 PM</option>
-                <option value="4:00 PM">4:00 PM</option>
-                <option value="5:00 PM">5:00 PM</option>
-                <option value="6:00 PM">6:00 PM</option>
-                <option value="7:00 PM">7:00 PM</option>
-              </Select>
-              {' '}
-              I will
-              {' '}
-              {' '}
-              <Select
-                id="selectModeOfTransport"
-                input={<InputBase classes={{ root: classes.selectDefault, input: classes.selectInput }} label="Mode of transport for delivering your ballot?" />}
-                native
-                value={modeOfTransport}
-                onChange={this.handleModeOfTransportChange}
-                inputProps={{
-                  placeholder: 'select transport',
-                }}
-              >
-                {/* <option value="select-mode-of-transport" className="emphasize">select transport</option> */}
-                <option value="walk">walk</option>
-                <option value="run">run</option>
-                <option value="bike">bike</option>
-                <option value="drive">drive</option>
-                <option value="take a bus">take a bus</option>
-                <option value="carpool">carpool</option>
-                <option value="take subway">take subway</option>
-                <option value="jetpack">jetpack</option>
-                <option value="ride a giraffe">ride a giraffe</option>
-              </Select>
-              {' '}
-              with my ballot to my
-              {' '}
-              {' '}
-              <Select
-                id="selectLocationToDeliverBallot"
-                input={<InputBase classes={{ root: classes.selectDefault, input: classes.selectInput }} label="Where will you deliver your ballot?" />}
-                native
-                value={locationToDeliverBallot}
-                onChange={this.handleLocationToDeliverBallotChange}
-                inputProps={{
-                  placeholder: 'select location',
-                }}
-              >
-                {/* <option value="select-location" className="emphasize">select location</option> */}
-                <option value="polling place">polling place</option>
-                <option value="ballot drop box">ballot drop box</option>
-                <option value="voting center">voting center</option>
-                <option value="mailbox">mailbox</option>
-                <option value="post office">post office</option>
-              </Select>
-              {(pigsCanFly && ((locationToDeliverBallot === 'polling place') || (locationToDeliverBallot === 'voting center'))) ? (
-                <span>
-                  {' '}
-                  at:
-                  {' '}
-                  <div>
-                    <InternalFormWrapper>
-                      <Paper className={classes.paperInputForm} elevation={2}>
-                        <EditLocation className="ion-input-icon" />
-                        <InputBase
-                          aria-label="Address"
-                          className={classes.inputBase}
-                          id="enterVotingLocationAddress"
-                          name="votingLocationAddress"
-                          onChange={this.handleVotingLocationAddressChange}
-                          placeholder={(locationToDeliverBallot === 'voting center') ? 'Address of Voting Center' : 'Address of Polling Location'}
-                          value={votingLocationAddress}
-                        />
-                        <Suspense fallback={<></>}>
-                          <OpenExternalWebSite
-                            linkIdAttribute="getPollingLocationVoterPlanModal"
-                            url={getPollingLocationUrl}
-                            target="_blank"
-                            className="u-gray-mid"
-                            body={(
-                              <Button
-                                id="findPollingLocationButton"
-                                classes={{ root: classes.saveButton }}
-                                color="primary"
-                                fullWidth
-                                variant="contained"
-                              >
-                                <div className="u-show-mobile">
-                                  Find
-                                </div>
-                                <div className="u-show-desktop-tablet">
-                                  {(locationToDeliverBallot === 'polling place') && 'Find Polling Location'}
-                                  {(locationToDeliverBallot === 'voting center') && 'Find Voting Center'}
-                                </div>
-                              </Button>
-                            )}
-                          />
-                        </Suspense>
-                      </Paper>
-                    </InternalFormWrapper>
-                  </div>
-                </span>
-              ) : (
-                <span>.</span>
-              )}
-            </CreatePlanWrapper>
-            <VoterPlanPreview>
-              {voterPlanText}
-            </VoterPlanPreview>
-
-            {nextReleaseFeaturesEnabled && (
-              <HowWillIRememberWrapper style={{
-                marginTop: 48,
-              }}
-              >
-                <Bold>How will I remember to do this?</Bold>
-                <AddToMyCalendarWrapper>
-                  <FormControlLabel
-                    classes={{ root: classes.formControlLabel }}
-                    id="addedToCalendar"
-                    control={(
-                      <Checkbox
-                        // checked={state.checkedB}
-                        // onChange={handleChange}
-                        name="addedToCalendar"
-                        color="primary"
-                      />
-                    )}
-                    label="I added this to my calendar."
-                  />
-                </AddToMyCalendarWrapper>
-                <TextReminderWrapper>
-                  <FormControlLabel
-                    classes={{ root: classes.formControlLabel }}
-                    id="textMeReminder"
-                    control={(
-                      <Checkbox
-                        // checked={state.checkedB}
-                        // onChange={handleChange}
-                        name="textMeReminder"
-                        color="primary"
-                      />
-                    )}
-                    label="Please text me a reminder at:"
-                  />
-                  {/* <InputItem> */}
-                  <Paper className={classes.paperInputForm} elevation={2}>
-                    <InputBase
-                      className={classes.inputBase}
-                      name="textMeReminderPhoneNumber"
-                      aria-label="phone"
-                      placeholder="Phone Number"
-                    />
-                  </Paper>
-                </TextReminderWrapper>
-                <EmailReminderWrapper>
-                  {/* </InputItem> */}
-                  <FormControlLabel
-                    classes={{ root: classes.formControlLabel }}
-                    id="emailMeReminder"
-                    control={(
-                      <Checkbox
-                        // checked={state.checkedB}
-                        // onChange={handleChange}
-                        name="emailMeReminder"
-                        color="primary"
-                      />
-                    )}
-                    label="Please email me a reminder at:"
-                  />
-                  {/* <InputItem> */}
-                  <Paper className={classes.paperInputForm} elevation={2}>
-                    <InputBase
-                      className={classes.inputBase}
-                      name="emailMeReminderEmailAddress"
-                      aria-label="email"
-                      placeholder="Email Address"
-                    />
-                  </Paper>
-                </EmailReminderWrapper>
-              </HowWillIRememberWrapper>
-            )}
-          </div>
+          <VoterPlan toggleFunction={this.props.toggleFunction} />
         </DialogContent>
         <ModalFooter>
           <Button
@@ -650,41 +382,6 @@ const styles = (theme) => ({
     marginTop: 10,
   },
 });
-
-const AddToMyCalendarWrapper = styled('div')`
-`;
-
-const CreatePlanWrapper = styled('div')`
-  line-height: 2;
-`;
-
-const HowWillIRememberWrapper = styled('div')`
-`;
-
-const EmailReminderWrapper = styled('div')`
-`;
-
-const TextReminderWrapper = styled('div')`
-`;
-
-const VoterPlanPreview = styled('div')`
-  padding: 8px;
-  background: #e8e8e8;
-  font-size: 16px;
-  border-radius: 5px;
-  margin-top: 32px;
-`;
-
-const Bold = styled('h3')`
-  font-weight: bold;
-  font-size: 18px;
-`;
-
-const InternalFormWrapper = styled('div')`
-  display: flex;
-  justify-content: center;
-  margin-top: 4px;
-`;
 
 /* eslint no-nested-ternary: ["off"] */
 const ModalTitleArea = styled('div', {

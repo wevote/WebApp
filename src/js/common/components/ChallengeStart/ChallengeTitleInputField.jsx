@@ -52,7 +52,7 @@ class ChallengeTitleInputField extends Component {
 
   onChallengeStartStoreChange () {
     const { challengeWeVoteId, editExistingChallenge } = this.props;
-    console.log('ChallengeTitleInputField challengeWeVoteId:', challengeWeVoteId);
+    // console.log('ChallengeTitleInputField challengeWeVoteId:', challengeWeVoteId);
     let challengeTitle = '';
     if (editExistingChallenge) {
       const challenge = ChallengeStore.getChallengeByWeVoteId(challengeWeVoteId);
@@ -62,14 +62,14 @@ class ChallengeTitleInputField extends Component {
     } else {
       challengeTitle = ChallengeStartStore.getChallengeTitle();
     }
-    console.log('ChallengeTitleInputField challengeTitle:', challengeTitle);
+    // console.log('ChallengeTitleInputField challengeTitle:', challengeTitle);
     const challengeTitleQueuedToSave = ChallengeStartStore.getChallengeTitleQueuedToSave();
     const challengeTitleQueuedToSaveSet = ChallengeStartStore.getChallengeTitleQueuedToSaveSet();
     let challengeTitleAdjusted = challengeTitle;
     if (challengeTitleQueuedToSaveSet) {
       challengeTitleAdjusted = challengeTitleQueuedToSave;
     }
-    console.log('onChallengeStartStoreChange challengeTitle: ', challengeTitle, ', challengeTitleQueuedToSave: ', challengeTitleQueuedToSave, ', challengeTitleAdjusted:', challengeTitleAdjusted);
+    // console.log('onChallengeStartStoreChange challengeTitle: ', challengeTitle, ', challengeTitleQueuedToSave: ', challengeTitleQueuedToSave, ', challengeTitleAdjusted:', challengeTitleAdjusted);
     this.setState({
       challengeTitle: challengeTitleAdjusted,
     });

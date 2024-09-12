@@ -22,6 +22,7 @@ export const messageService = {
 const nonFluxState = {
   activityTidbitWeVoteIdForDrawer: '',
   blockCampaignXRedirectOnSignIn: false, // When signing in from the header, don't mark a campaign as supported
+  blockChallengeRedirectOnSignIn: false, // When signing in from the header, don't mark a challenge as supported
   chosenDomainTypeIsCampaign: false,
   chosenGoogleAnalyticsTrackingID: false,
   chosenPreventSharingOpinions: false,
@@ -89,6 +90,10 @@ const nonFluxState = {
 export default {
   blockCampaignXRedirectOnSignIn () {
     return nonFluxState.blockCampaignXRedirectOnSignIn;
+  },
+
+  blockChallengeRedirectOnSignIn () {
+    return nonFluxState.blockChallengeRedirectOnSignIn;
   },
 
   getActivityTidbitWeVoteIdForDrawer () {
@@ -353,6 +358,11 @@ export default {
   setBlockCampaignXRedirectOnSignIn (value) {
     nonFluxState.blockCampaignXRedirectOnSignIn = value;
     messageService.sendMessage('state updated blockCampaignXRedirectOnSignIn');
+  },
+
+  setBlockChallengeRedirectOnSignIn (value) {
+    nonFluxState.blockChallengeRedirectOnSignIn = value;
+    messageService.sendMessage('state updated blockChallengeRedirectOnSignIn');
   },
 
   setCurrentPathname (currentPathname) {

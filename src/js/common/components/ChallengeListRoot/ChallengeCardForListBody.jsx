@@ -2,12 +2,12 @@ import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Suspense } from 'react';
 import { Link } from 'react-router-dom';
-import TruncateMarkup from 'react-truncate-markup';
+// import TruncateMarkup from 'react-truncate-markup';
 import styled from 'styled-components';
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import { renderLog } from '../../utils/logging';
-import numberWithCommas from '../../utils/numberWithCommas';
-// import ChallengeOwnersList from '../ChallengeSupport/ChallengeOwnersList';
+// import numberWithCommas from '../../utils/numberWithCommas';
+// import ChallengeOwnersList from '../ChallengeInviteFriends/ChallengeOwnersList';
 import {
   CampaignActionButtonsWrapper,
   CampaignImageDesktop, CampaignImageDesktopPlaceholder,
@@ -20,6 +20,7 @@ import {
   OneCampaignTextColumn, OneCampaignTitleLink, SupportersActionLink,
   SupportersCount, SupportersWrapper, TitleAndTextWrapper,
 } from '../Style/CampaignCardStyles';
+import { BlockedIndicator, BlockedReason, DraftModeIndicator, EditIndicator, ElectionInPast, IndicatorDefaultButtonWrapper, IndicatorButtonWrapper, IndicatorRow } from '../Style/CampaignIndicatorStyles';
 import DesignTokenColors from '../Style/DesignTokenColors';
 import SvgImage from '../Widgets/SvgImage';
 
@@ -31,9 +32,10 @@ function ChallengeCardForListBody (props) {
   const {
     challengeDescription, challengeSupported, challengeTitle, challengeWeVoteId,
     hideCardMargins, inDraftMode, functionToUseToKeepHelping, functionToUseWhenProfileComplete,
-    limitCardWidth, onChallengeClick, onChallengeClickLink,
+    limitCardWidth, onChallengeClick, onChallengeClickLink, onChallengeEditClick,
     photoLargeUrl, profileImageBackgroundColor,
     supportersCount, supportersCountNextGoalWithFloor, tagIdBaseName, useVerticalCard,
+    voterCanEditThisChallenge,
   } = props;
   const politicalPartySvgNameWithPath = '../../img/global/svg-icons/political-party-unspecified.svg';
 
@@ -126,6 +128,7 @@ function ChallengeCardForListBody (props) {
                 </IndicatorButtonWrapper>
               )}
             </IndicatorRow>
+            */}
             <IndicatorRow>
               {inDraftMode && (
                 <IndicatorDefaultButtonWrapper onClick={onChallengeClick}>
@@ -134,6 +137,7 @@ function ChallengeCardForListBody (props) {
                   </DraftModeIndicator>
                 </IndicatorDefaultButtonWrapper>
               )}
+              {/*
               {!visibleOnThisSite && (
                 <IndicatorButtonWrapper>
                   <DraftModeIndicator>
@@ -158,9 +162,10 @@ function ChallengeCardForListBody (props) {
                   </DraftModeIndicator>
                 </IndicatorButtonWrapper>
               )}
+              */}
               {voterCanEditThisChallenge && (
                 <IndicatorButtonWrapper>
-                  <EditIndicator onClick={this.onChallengeEditClick}>
+                  <EditIndicator onClick={onChallengeEditClick}>
                     <span className="u-show-mobile">
                       Edit
                     </span>
@@ -170,6 +175,7 @@ function ChallengeCardForListBody (props) {
                   </EditIndicator>
                 </IndicatorButtonWrapper>
               )}
+              {/*
               {(challengeSupported && !inDraftMode) && (
                 <IndicatorButtonWrapper>
                   <EditIndicator onClick={this.onChallengeShareClick}>
@@ -182,21 +188,8 @@ function ChallengeCardForListBody (props) {
                   </EditIndicator>
                 </IndicatorButtonWrapper>
               )}
-            </IndicatorRow>
             */}
-            <CampaignActionButtonsWrapper>
-              {!inDraftMode && (
-                <Suspense fallback={<span>&nbsp;</span>}>
-                  <SupportButtonBeforeCompletionScreen
-                    challengeWeVoteId={challengeWeVoteId}
-                    functionToUseToKeepHelping={functionToUseToKeepHelping}
-                    functionToUseWhenProfileComplete={functionToUseWhenProfileComplete}
-                    inButtonFullWidthMode
-                    // inCompressedMode
-                  />
-                </Suspense>
-              )}
-            </CampaignActionButtonsWrapper>
+            </IndicatorRow>
           </OneCampaignTextColumn>
           <OneCampaignPhotoWrapperMobile
             className="u-cursor--pointer u-show-mobile"

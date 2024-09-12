@@ -10,6 +10,7 @@ export const BallotHorizontallyScrollingContainer = styled('div', {
 
   border: 1px solid #fff; /* Default border color so that the hover doesn't create jump */
   &:hover { border: 1px solid ${DesignTokenColors.neutralUI100}; }
+  ${isChosen ? '' : `&:hover { background-color: ${DesignTokenColors.neutral50}; }`}
   ${isChosen ? `background-color: ${DesignTokenColors.confirmation50};` : ''}
 
     /* Fade out, right side */

@@ -3,7 +3,7 @@ import { normalizedHrefPage } from '../common/utils/hrefUtils';
 import { isCordova, isWebApp } from '../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize, { isSmallerThanTablet } from '../common/utils/isMobileScreenSize';
 import Cookies from '../common/utils/js-cookie/Cookies';
-import isSEOFriendlyURL from '../common/utils/isSEOFriendlyURL';
+import { isSEOFriendlyURL, isChallengeSEOFriendlyURL, isPoliticianSEOFriendlyURL } from '../common/utils/isSEOFriendlyURL';
 import normalizedImagePath from '../common/utils/normalizedImagePath';
 import stringContains from '../common/utils/stringContains';
 
@@ -221,6 +221,9 @@ export function getApplicationViewBooleans (pathname) {
       pathnameLowerCase.startsWith('/value/') ||
       stringContains('/b/btdo', pathnameLowerCase) ||
       stringContains('/btcand/', pathnameLowerCase) ||
+      stringContains('/+/copy-message', pathnameLowerCase) ||
+      stringContains('/+/customize-message', pathnameLowerCase) ||
+      stringContains('/+/join-challenge', pathnameLowerCase) ||
       stringContains('/settings/positions', pathnameLowerCase)) {
     // We want to HIDE the footer bar on the above path patterns
     showFooterBar = false;
@@ -259,15 +262,14 @@ export function getApplicationViewBooleans (pathname) {
     showFooterBar = isMobileScreenSize();
   }
 
-  // We are only showing the purple-ish bottom of the scrollable page footer
-  // on the "Ready" landing page, and if not signed in or not isCordova()
+  // We are only showing the page footer on the "Ready" landing page.
   // Once the voter is signed in, we weave the footer links into the profile page
   let showFooterMain = false;
-  // if (VoterStore.getVoterIsSignedIn()) {
-  //   // Before March 2023 we didn't show footer once voter is signed in
-  // } else
-  if (
-    isSEOFriendlyURL(pathnameLowerCase) ||
+  if (isChallengeSEOFriendlyURL(pathnameLowerCase)) {
+    // We never want to show the footer on Challenge URLs
+    showFooterMain = false;
+  } else if (
+    isPoliticianSEOFriendlyURL(pathnameLowerCase) ||
     pathnameLowerCase.endsWith('/cs/') ||
     (pathnameLowerCase.startsWith('/ready') && !isSEOFriendlyURL(pathnameLowerCase)) ||
     (pathnameLowerCase === '/start-a-campaign') ||
