@@ -59,7 +59,7 @@ export default function ChallengeInviteFriendsTopNavigation (incomingVariables) 
     },
   });
 
-  const { challengeSEOFriendlyPath, challengeWeVoteId } = incomingVariables;
+  const { challengeSEOFriendlyPath, challengeWeVoteId, hideAboutTab } = incomingVariables;
   // console.log('ChallengeInviteFriendsTopNavigation incomingVariables:', incomingVariables);
   // console.log('ChallengeInviteFriendsTopNavigation challengeSEOFriendlyPath:', challengeSEOFriendlyPath);
   const handleChange = (event, newValue) => {
@@ -67,18 +67,30 @@ export default function ChallengeInviteFriendsTopNavigation (incomingVariables) 
   };
 
   const { location: { pathname } } = window;
-  if (endsWith('/about', pathname) && value !== 1) {
-    // console.log('Render ChallengeInviteFriendsTopNavigation, initial value set to 1');
-    setValue(1);
-  } else if (endsWith('/leaderboard', pathname) && value !== 2) {
-    // console.log('Render ChallengeInviteFriendsTopNavigation, initial value set to 2');
-    setValue(2);
-  } else if (endsWith('/friends', pathname) && value !== 3) {
-    // console.log('Render ChallengeInviteFriendsTopNavigation, initial value set to 3');
-    setValue(3);
-  } else if (stringContains('/+/', pathname) && value !== 0 && value !== 1 && value !== 2) {
+  if (endsWith('/about', pathname)) {
+    if (value !== 1) {
+      // console.log('Render ChallengeInviteFriendsTopNavigation, initial value set to 1');
+      setValue(1);
+    }
+  } else if (endsWith('/leaderboard', pathname)) {
+    if (value !== 2) {
+      // console.log('Render ChallengeInviteFriendsTopNavigation, initial value set to 2');
+      setValue(2);
+    }
+  } else if (endsWith('/friends', pathname)) {
+    if (value !== 3) {
+      // console.log('Render ChallengeInviteFriendsTopNavigation, initial value set to 3');
+      setValue(3);
+    }
+  } else if (stringContains('/+/', pathname)) {
     // console.log('Render ChallengeInviteFriendsTopNavigation, initial value set to 0');
-    setValue(0);
+    if (hideAboutTab) {
+      if (value !== 2) {
+        setValue(2);
+      }
+    } else if (value !== 1) {
+      setValue(1);
+    }
   }
 
   let aboutUrl;
@@ -110,9 +122,9 @@ export default function ChallengeInviteFriendsTopNavigation (incomingVariables) 
           <ThemeProvider theme={theme}>
             <Toolbar disableGutters className={classes.toolbarRoot}>
               <Tabs value={value} onChange={handleChange} aria-label="Tab menu">
-                <Tab id="challengeLandingTab-0" label="About" onClick={() => history.push(aboutUrl)} />
-                <Tab id="challengeLandingTab-1" label="Leaderboard" onClick={() => history.push(leaderboardUrl)} />
-                <Tab id="challengeLandingTab-2" label="Invited friends" onClick={() => history.push(friendsUrl)} />
+                {!hideAboutTab && <Tab id="challengeLandingTab-0" label="About" onClick={() => history.push(aboutUrl)} value={1} />}
+                <Tab id="challengeLandingTab-1" label="Leaderboard" onClick={() => history.push(leaderboardUrl)} value={2} />
+                <Tab id="challengeLandingTab-2" label="Invited friends" onClick={() => history.push(friendsUrl)} value={3} />
               </Tabs>
             </Toolbar>
           </ThemeProvider>
