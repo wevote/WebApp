@@ -271,7 +271,10 @@ class PositionRowListCompressed extends Component {
           talkingAboutText += ` and ${remainingCount} ${remainingCount === 1 ? 'other' : 'others'}`;
         }
 
-        if (candidateName) {
+        if (candidateName && numberOfNamesDisplayed === 1) {
+          talkingAboutText += ` is talking about ${candidateName}`;
+        }
+        else {
           talkingAboutText += ` are talking about ${candidateName}`;
         }
           }
