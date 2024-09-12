@@ -4,14 +4,24 @@ import DesignTokenColors from './DesignTokenColors';
 export const BallotHorizontallyScrollingContainer = styled('div', {
   shouldForwardProp: (prop) => !['isChosen', 'showLeftGradient', 'showRightGradient'].includes(prop),
 })(({ isChosen, showLeftGradient, showRightGradient }) => (`
-  width: 100%;
+    width: 100%;
   overflow-x: auto;
   white-space: nowrap;
+  border: none;
+  border-radius: 16px;
+  margin-bottom: 5px;
+  transition: box-shadow 0.2s ease, background-color 0.3s ease; /* Smooth transition for shadow and background color */
 
-  border: 1px solid #fff; /* Default border color so that the hover doesn't create jump */
-  &:hover { border: 1px solid ${DesignTokenColors.neutralUI100}; }
-  ${isChosen ? '' : `&:hover { background-color: ${DesignTokenColors.neutral50}; }`}
-  ${isChosen ? `background-color: ${DesignTokenColors.confirmation50};` : ''}
+ /* Default styles */
+  background-color: ${isChosen ? DesignTokenColors.confirmation50 : ''};
+  box-shadow: ${isChosen ? '0 4px 8px rgba(0, 0, 0, 0.3)' : 'none'};
+
+  /* Hover effect */
+  &:hover {
+    background-color: ${isChosen ? DesignTokenColors.confirmation50 : DesignTokenColors.neutral50};
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Shadow effect on hover */
+  }
+
 
     /* Fade out, right side */
   ${showRightGradient ? '-webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 85%, rgba(0, 0, 0, 0));' : ''}
@@ -35,8 +45,6 @@ export const BallotHorizontallyScrollingContainer = styled('div', {
 `));
 
 export const BallotScrollingInnerWrapper = styled('div')`
-  overflow-x: hidden;
-  overflow-y: hidden;
   display: flex;
   position: relative;
 `;
