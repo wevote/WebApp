@@ -144,6 +144,7 @@ class FooterBar extends React.Component {
     if (pathname.toLowerCase().endsWith('/cs/')) return 2;
     if (stringContains('/friends', pathname.toLowerCase())) return 3;
     if (stringContains('/challenges', pathname.toLowerCase())) return 4;
+    if (stringContains('/+/', pathname)) return 4;
     if (stringContains('/squads', pathname.toLowerCase())) return 4;
     if (stringContains('/news', pathname.toLowerCase())) return 5;
     if (stringContains('/donate', pathname.toLowerCase())) return 6;

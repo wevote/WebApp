@@ -7,6 +7,7 @@ import React, { Component, Suspense } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import ChallengeInviteFriendsTopNavigation from '../../components/Navigation/ChallengeInviteFriendsTopNavigation';
 import DesignTokenColors from '../../components/Style/DesignTokenColors';
 import { PageContentContainer } from '../../../components/Style/pageLayoutStyles';
 import webAppConfig from '../../../config';
@@ -585,6 +586,7 @@ class ChallengeHomePage extends Component {
               useVerticalCard
               voterWeVoteId={voterWeVoteId}
             />
+            <ChallengeInviteFriendsTopNavigation challengeSEOFriendlyPath={challengeSEOFriendlyPathForDisplay} />
             ==== MOBILE
             <CampaignDescriptionWrapper hideCardMargins>
               {challengeDataFound && (
@@ -715,6 +717,7 @@ class ChallengeHomePage extends Component {
                 />
               </ColumnOneThird>
               <ColumnTwoThirds>
+                <ChallengeInviteFriendsTopNavigation challengeSEOFriendlyPath={challengeSEOFriendlyPathForDisplay} />
                 <ViewBallotButtonWrapper>
                   <Suspense fallback={<></>}>
                     <JoinChallengeButton

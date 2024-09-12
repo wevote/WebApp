@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 import DesignTokenColors from './DesignTokenColors';
+import standardBoxShadow from './/standardBoxShadow';
+
 
 export const BallotHorizontallyScrollingContainer = styled('div', {
   shouldForwardProp: (prop) => !['isChosen', 'showLeftGradient', 'showRightGradient'].includes(prop),
@@ -8,9 +10,11 @@ export const BallotHorizontallyScrollingContainer = styled('div', {
   overflow-x: auto;
   white-space: nowrap;
 
-  border: 1px solid #fff; /* Default border color so that the hover doesn't create jump */
-  &:hover { border: 1px solid ${DesignTokenColors.neutralUI100}; }
-  ${isChosen ? '' : `&:hover { background-color: ${DesignTokenColors.neutral50}; }`}
+  border: none; /* remove the border */
+  border-radius: 16px; /* rounded border */
+  ${isChosen ? '' : `&:hover {
+                        background-color: ${DesignTokenColors.neutral50};
+                        box-shadow: 5px 10px 10px 10px;}`}
   ${isChosen ? `background-color: ${DesignTokenColors.confirmation50};` : ''}
 
     /* Fade out, right side */
@@ -138,3 +142,9 @@ export const MobileArrowsInnerWrapper = styled('div')`
   display: flex;
   min-width: 24px;
 `;
+
+
+// border: none; /* remove the border */
+//   border-radius: 16px; /* rounded border */
+//   ${isChosen ? '' : `&:hover { background-color: ${DesignTokenColors.neutral50}; }`}
+//   ${isChosen ? `background-color: ${DesignTokenColors.confirmation50};` : ''}

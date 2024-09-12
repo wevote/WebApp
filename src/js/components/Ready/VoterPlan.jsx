@@ -435,7 +435,7 @@ class VoterPlan extends Component {
           {voterPlanText}
         </VoterPlanPreview>
 
-        {nextReleaseFeaturesEnabled && (
+        {(nextReleaseFeaturesEnabled && pigsCanFly) && (
           <HowWillIRememberWrapper style={{
             marginTop: 48,
           }}
