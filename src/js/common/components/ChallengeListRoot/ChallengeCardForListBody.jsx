@@ -190,19 +190,6 @@ function ChallengeCardForListBody (props) {
               )}
             */}
             </IndicatorRow>
-            <CampaignActionButtonsWrapper>
-              {!inDraftMode && (
-                <Suspense fallback={<span>&nbsp;</span>}>
-                  <SupportButtonBeforeCompletionScreen
-                    challengeWeVoteId={challengeWeVoteId}
-                    functionToUseToKeepHelping={functionToUseToKeepHelping}
-                    functionToUseWhenProfileComplete={functionToUseWhenProfileComplete}
-                    inButtonFullWidthMode
-                    // inCompressedMode
-                  />
-                </Suspense>
-              )}
-            </CampaignActionButtonsWrapper>
           </OneCampaignTextColumn>
           <OneCampaignPhotoWrapperMobile
             className="u-cursor--pointer u-show-mobile"
