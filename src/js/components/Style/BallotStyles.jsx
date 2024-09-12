@@ -96,7 +96,6 @@ export const CandidateNameH4 = styled('button')`
   font-weight: 400;
   font-size: 20px;
   margin-bottom: 0 !important;
-  // min-width: 124px;
   white-space: normal;
   border: none;
   background-color: transparent;
