@@ -63,7 +63,6 @@ export const CandidateContainer = styled('div')`
 `;
 
 export const CandidateInfo = styled('div')(({ theme }) => (`
-  border: 1px solid #fff;
   display: block;
   height: 100%;
   margin: 0 !important;
