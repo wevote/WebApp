@@ -9,6 +9,7 @@ export const BallotHorizontallyScrollingContainer = styled('div', {
   white-space: nowrap;
   border: none;
   border-radius: 16px;
+  margin-bottom: 5px;
   transition: box-shadow 0.2s ease, background-color 0.3s ease; /* Smooth transition for shadow and background color */
 
  /* Default styles */
