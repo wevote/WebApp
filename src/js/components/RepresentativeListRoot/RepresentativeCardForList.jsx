@@ -1,11 +1,12 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-import CardForListBody from '../../common/components/CardForListBody';
+import React, { Component, Suspense } from 'react';
+import CardForListBodyPlaceholder from '../../common/components/CardForListBodyPlaceholder';
 import { getTodayAsInteger } from '../../common/utils/dateFormat';
 import { renderLog } from '../../common/utils/logging';
 import RepresentativeStore from '../../stores/RepresentativeStore';
 import keepHelpingDestination from '../../common/utils/keepHelpingDestination';
 
+const CardForListBody = React.lazy(() => import('../../common/components/CardForListBody'));
 // const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
 class RepresentativeCardForList extends Component {
@@ -179,9 +180,21 @@ class RepresentativeCardForList extends Component {
     const todayAsInteger = getTodayAsInteger();
     const finalElectionDateInPast = representativeUltimateElectionDate && (representativeUltimateElectionDate <= todayAsInteger);
     const pathToUseToKeepHelping = this.getPathToUseToKeepHelping();
+    const fallbackJsx = (
+      <span>
+        <CardForListBodyPlaceholder
+      useVerticalCard
+      hideCardMargins
+      limitCardWidth
+      profileImageBackgroundColor
+        />
+      </span>
+      )
     // /////////////////////// START OF DISPLAY
     return (
-      <CardForListBody
+      <Suspense fallback={fallbackJsx}
+      >
+        <CardForListBody
         ballotItemDisplayName={ballotItemDisplayName}
         campaignSupported={campaignSupported}
         // candidateWeVoteId={candidateWeVoteId}
@@ -205,7 +218,8 @@ class RepresentativeCardForList extends Component {
         ultimateElectionDate={representativeUltimateElectionDate}
         usePoliticianWeVoteIdForBallotItem
         useVerticalCard={useVerticalCard}
-      />
+        />
+      </Suspense>
     );
   }
 }

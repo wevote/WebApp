@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-import CardForListBody from '../../common/components/CardForListBody';
+import React, { Component, Suspense } from 'react';
+import CardForListBodyPlaceholder from '../../common/components/CardForListBodyPlaceholder';
 import { getTodayAsInteger } from '../../common/utils/dateFormat';
 import { renderLog } from '../../common/utils/logging';
 import CampaignSupporterStore from '../../common/stores/CampaignSupporterStore';
@@ -8,6 +8,8 @@ import CandidateStore from '../../stores/CandidateStore';
 import PoliticianStore from '../../common/stores/PoliticianStore';
 import keepHelpingDestination from '../../common/utils/keepHelpingDestination';
 import { mostLikelyCandidateDictFromList } from '../../utils/candidateFunctions';
+
+const CardForListBody = React.lazy(() => import('../../common/components/CardForListBody'));
 
 // const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
@@ -217,8 +219,19 @@ class PoliticianCardForList extends Component {
     const todayAsInteger = getTodayAsInteger();
     const finalElectionDateInPast = candidateUltimateElectionDate && (candidateUltimateElectionDate <= todayAsInteger);
     const pathToUseToKeepHelping = this.getPathToUseToKeepHelping();
+    const fallbackJsx = (
+      <span>
+        <CardForListBodyPlaceholder
+          useVerticalCard
+          hideCardMargins
+          limitCardWidth
+          profileImageBackgroundColor
+        />
+      </span>
+    );
     return (
-      <CardForListBody
+      <Suspense fallback={fallbackJsx}>
+        <CardForListBody
         ballotItemDisplayName={ballotItemDisplayName || ''}
         campaignSupported={campaignSupported}
         candidateWeVoteId={candidateWeVoteId}
@@ -245,7 +258,8 @@ class PoliticianCardForList extends Component {
         useCampaignSupportThermometer={useCampaignSupportThermometer}
         usePoliticianWeVoteIdForBallotItem
         useVerticalCard={useVerticalCard}
-      />
+        />
+      </Suspense>
     );
   }
 }
