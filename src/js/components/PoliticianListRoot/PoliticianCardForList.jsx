@@ -232,32 +232,32 @@ class PoliticianCardForList extends Component {
     return (
       <Suspense fallback={fallbackJsx}>
         <CardForListBody
-        ballotItemDisplayName={ballotItemDisplayName || ''}
-        campaignSupported={campaignSupported}
-        candidateWeVoteId={candidateWeVoteId}
-        districtName={districtName}
-        finalElectionDateInPast={finalElectionDateInPast}
-        hideCardMargins
-        hideItemActionBar
-        limitCardWidth={limitCardWidth}
-        linkedCampaignXWeVoteId={linkedCampaignXWeVoteId}
-        officeName={contestOfficeName}
-        pathToUseToKeepHelping={pathToUseToKeepHelping}
-        photoLargeUrl={politicianPhotoLargeUrl}
-        politicalParty={politicalParty}
-        politicianBaseBath={this.getPoliticianBasePath()}
-        // politicianDescription={politicianDescriptionToDisplay}
-        politicianWeVoteId={politicianWeVoteId}
-        profileImageBackgroundColor={profileImageBackgroundColor}
-        showPoliticianOpenInNewWindow={showPoliticianOpenInNewWindow}
-        stateCode={stateCode}
-        supportersCount={supportersCount}
-        supportersCountNextGoalRaw={supportersCountNextGoalRaw}
-        tagIdBaseName="politicianCard"
-        ultimateElectionDate={candidateUltimateElectionDate}
-        useCampaignSupportThermometer={useCampaignSupportThermometer}
-        usePoliticianWeVoteIdForBallotItem
-        useVerticalCard={useVerticalCard}
+          ballotItemDisplayName={ballotItemDisplayName || ''}
+          campaignSupported={campaignSupported}
+          candidateWeVoteId={candidateWeVoteId}
+          districtName={districtName}
+          finalElectionDateInPast={finalElectionDateInPast}
+          hideCardMargins
+          hideItemActionBar
+          limitCardWidth={limitCardWidth}
+          linkedCampaignXWeVoteId={linkedCampaignXWeVoteId}
+          officeName={contestOfficeName}
+          pathToUseToKeepHelping={pathToUseToKeepHelping}
+          photoLargeUrl={politicianPhotoLargeUrl}
+          politicalParty={politicalParty}
+          politicianBaseBath={this.getPoliticianBasePath()}
+          // politicianDescription={politicianDescriptionToDisplay}
+          politicianWeVoteId={politicianWeVoteId}
+          profileImageBackgroundColor={profileImageBackgroundColor}
+          showPoliticianOpenInNewWindow={showPoliticianOpenInNewWindow}
+          stateCode={stateCode}
+          supportersCount={supportersCount}
+          supportersCountNextGoalRaw={supportersCountNextGoalRaw}
+          tagIdBaseName="politicianCard"
+          ultimateElectionDate={candidateUltimateElectionDate}
+          useCampaignSupportThermometer={useCampaignSupportThermometer}
+          usePoliticianWeVoteIdForBallotItem
+          useVerticalCard={useVerticalCard}
         />
       </Suspense>
     );
