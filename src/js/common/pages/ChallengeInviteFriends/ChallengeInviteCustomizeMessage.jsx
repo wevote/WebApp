@@ -24,6 +24,7 @@ import { getChallengeValuesFromIdentifiers, retrieveChallengeFromIdentifiersIfNe
 import historyPush from '../../utils/historyPush';
 import initializejQuery from '../../utils/initializejQuery';
 import { renderLog } from '../../utils/logging';
+import ChallengeInviteSteps from '../../components/Navigation/ChallengeInviteSteps';
 
 const ChallengeRetrieveController = React.lazy(() => import(/* webpackChunkName: 'ChallengeRetrieveController' */ '../../components/Challenge/ChallengeRetrieveController'));
 const VoterFirstRetrieveController = loadable(() => import(/* webpackChunkName: 'VoterFirstRetrieveController' */ '../../components/Settings/VoterFirstRetrieveController'));
@@ -257,6 +258,9 @@ class ChallengeInviteCustomizeMessage extends Component {
               <CampaignProcessStepTitle>
                 Customize the message to your friends
               </CampaignProcessStepTitle>
+              <ChallengeInviteSteps
+                currentStep={1}
+                challengeSEOFriendlyPath={challengeSEOFriendlyPath} />
               <CampaignSupportSectionWrapper>
                 <CampaignSupportSection>
                   <CampaignSupportDesktopButtonWrapper className="u-show-desktop-tablet">
