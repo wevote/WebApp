@@ -1,54 +1,142 @@
-// ChallengeLeaderboard.jsx
 import React from 'react';
 import styled from 'styled-components';
+import { Button } from '@mui/material';
+import PropTypes from 'prop-types';
+import { withStyles } from '@mui/styles';
+import DesignTokenColors from '../Style/DesignTokenColors';
 import ChallengeLeaderboardList from './ChallengeLeaderboardList';
+import SearchBar2024 from '../../../components/Search/SearchBar2024';
+
 
 const LeaderboardContainer = styled.div`
-  padding: 20px;
   max-width: 600px;
   margin: 0 auto;
-  font-family: Arial, sans-serif;
 `;
 
 const TopSection = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  padding: 0px 16px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  z-index: 1;
+  position: sticky;
+  top: 0;
 `;
 
-const Button = styled.button`
-  padding: 8px 15px;
-  font-size: 14px;
-  cursor: pointer;
-  background-color: #f5f5f5;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  margin-right: 10px;
-  &:hover {
-    background-color: #e0e0e0;
-  }
+const ButtonAndSearchWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+  margin-bottom: 8px;
+  margin-top: 8px;
 `;
 
-const SearchInput = styled.input`
-  padding: 10px;
-  font-size: 14px;
-  width: 200px;
-  border-radius: 5px;
-  border: 1px solid #ddd;
+const LeaderboardInfoWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-top: 8px;
+  margin-bottom: 8px;
 `;
 
-const ChallengeLeaderboard = () => (
+const SearchBarWrapper = styled('div')`
+  // margin-top: 14px;
+  // margin-bottom: 8px;
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  gap: 8px;
+`;
+
+const LeaderboardTableHeader = styled('div')`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  font-weight: bold;
+  font-size: 12px;
+  color: #333;
+`;
+
+
+const ChallengeLeaderboard = ({ classes, clearSearchFunction, searchFunction }) => (
   <LeaderboardContainer>
     <TopSection>
-      <div>
-        <Button>You</Button>
-        <Button>Top 50</Button>
-      </div>
-      <SearchInput type="text" placeholder="Search by rank or name" />
+      <ButtonAndSearchWrapper>
+        <ButtonWrapper>
+          <Button
+          classes={{ root: classes.buttonDesktop }}
+          color="primary"
+          id="challengeLeaderboardYouButton"
+          onClick={() => console.log('You button clicked')}
+          variant="outlined"
+          >
+            You
+          </Button>
+          <Button
+          classes={{ root: classes.buttonDesktop }}
+          color="primary"
+          id="challengeLeaderboardTop50Button"
+          onClick={() => console.log('Top 50 button clicked')}
+          variant="outlined"
+          >
+            Top 50
+          </Button>
+        </ButtonWrapper>
+        <SearchBarWrapper>
+          <SearchBar2024
+            clearButton
+            searchButton
+            placeholder="Search by rank or name"
+            searchFunction={searchFunction}
+            clearFunction={clearSearchFunction}
+            searchUpdateDelayTime={500}
+          />
+        </SearchBarWrapper>
+      </ButtonAndSearchWrapper>
+      <LeaderboardInfoWrapper>
+        <p>
+          <span style={{ color: DesignTokenColors.neutral900, fontWeight: 'bold' }}>You&apos;re</span>
+          {' '}
+          <span style={{ color: DesignTokenColors.accent500, fontWeight: 'bold' }}>#5341</span>
+          {' '}
+          (of 6441)
+        </p>
+
+      </LeaderboardInfoWrapper>
+      <LeaderboardTableHeader>
+        <div style={{ display: 'flex', gap: '32px' }}>
+          <p>RANK</p>
+          <p>NAME</p>
+        </div>
+        <div style={{ display: 'flex', gap: '25px'  }}>
+          <p>POINTS</p>
+          <p>FRIENDS JOINED</p>
+        </div>
+      </LeaderboardTableHeader>
     </TopSection>
     <ChallengeLeaderboardList />
   </LeaderboardContainer>
 );
 
-export default ChallengeLeaderboard;
+ChallengeLeaderboard.propTypes = {
+  classes: PropTypes.object.isRequired,
+  clearSearchFunction: PropTypes.func.isRequired,
+  searchFunction: PropTypes.func.isRequired,
+};
+
+const styles = () => ({
+  buttonDesktop: {
+    padding: '2px 16px',
+    borderRadius: 5,
+  },
+  searchButton: {
+    borderRadius: 50,
+  },
+});
+
+export default withStyles(styles)(ChallengeLeaderboard);

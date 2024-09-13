@@ -7,7 +7,12 @@ const participants = [
   { rank: 5340, name: 'Melina H.', points: 142, friendsJoined: 3, invited: 10, viewed: 8, totalViews: 21 },
   { rank: 5341, name: 'David N.', points: 121, friendsJoined: 1, invited: 7, viewed: 3, totalViews: 18 },
   { rank: 5342, name: 'Anusha G.', points: 118, friendsJoined: 1, invited: 5, viewed: 2, totalViews: 15 },
-  // Add more participants here
+  { rank: 5340, name: 'Melina H.', points: 142, friendsJoined: 3, invited: 10, viewed: 8, totalViews: 21 },
+  { rank: 5341, name: 'David B.', points: 121, friendsJoined: 1, invited: 7, viewed: 3, totalViews: 18 },
+  { rank: 5342, name: 'Anusha G.', points: 118, friendsJoined: 1, invited: 5, viewed: 2, totalViews: 15 },
+  { rank: 5340, name: 'Melina H.', points: 142, friendsJoined: 3, invited: 10, viewed: 8, totalViews: 21 },
+  { rank: 5341, name: 'David A.', points: 121, friendsJoined: 1, invited: 7, viewed: 3, totalViews: 18 },
+  { rank: 5342, name: 'Anusha G.', points: 118, friendsJoined: 1, invited: 5, viewed: 2, totalViews: 15 },
 ];
 
 const currentUserName = 'David N.'; // Assume this is the logged-in user
@@ -15,7 +20,6 @@ const currentUserName = 'David N.'; // Assume this is the logged-in user
 const LeaderboardListContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 15px;
 `;
 
 const ChallengeLeaderboardList = () => (
