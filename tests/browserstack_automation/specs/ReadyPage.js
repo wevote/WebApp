@@ -3,7 +3,7 @@ import ReadyPage from '../page_objects/ready.page';
 import PrivacyPage from '../page_objects/privacy.page';
 import DonatePage from '../page_objects/donate.page';
 import TermsPage from '../page_objects/terms.page';
-import webAppConfig from "../../../src/js/config";
+import webAppConfig from '../../../src/js/config';
 
 const waitTime = 8000;
 
