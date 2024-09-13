@@ -653,6 +653,7 @@ class HeaderBar extends Component {
                   id="profileAvatarHeaderBar"
                   onClick={this.goToSettings}
                   size="large"
+                  aria-label="Your Settings"
                 >
                   <AccountCircle />
                 </IconButton>

@@ -34,6 +34,7 @@ class ReadyIntroduction extends Component {
     this.state = {
       contentUnfurled: false,
     };
+    this.firstListItemRef = React.createRef();
   }
 
   componentDidMount () {
@@ -65,6 +66,9 @@ class ReadyIntroduction extends Component {
     this.setState({
       contentUnfurled: !contentUnfurled,
     });
+    if (!contentUnfurled) {
+      this.firstListItemRef.current.focus();
+    }
   }
 
   showSelectBallotModalEditAddress = () => {
@@ -91,7 +95,7 @@ class ReadyIntroduction extends Component {
     return (
       <OuterWrapper>
         <InnerWrapper>
-          <IntroHeader titleCentered={titleCentered} titleLarge={titleLarge}>
+          <IntroHeader titleCentered={titleCentered} titleLarge={titleLarge} tabIndex={0} ref={this.firstListItemRef}>
             WeVote helps you:
           </IntroHeader>
           <ListWrapper>
@@ -104,9 +108,9 @@ class ReadyIntroduction extends Component {
                 <ListRow>
                   <Dot><StepNumberPlaceholder>&nbsp;</StepNumberPlaceholder></Dot>
                   <StepText id="readyIntroductionStepText1">
-                    <span className="u-link-color u-link-color-on-hover u-cursor--pointer" onClick={this.showSelectBallotModalEditAddress}>
-                      Enter your address
-                    </span>
+                    <button style={{ backgroundColor: 'transparent', border: 'none', padding: '0' }} onClick={this.showSelectBallotModalEditAddress} type="button">
+                      <span className="u-link-color u-link-color-on-hover u-link-underline-on-hover">Enter your address</span>
+                    </button>
                     {' '}
                     to find out when your next election is, and
                     {' '}
