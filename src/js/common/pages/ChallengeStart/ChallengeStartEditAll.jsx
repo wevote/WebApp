@@ -163,9 +163,9 @@ class ChallengeStartEditAll extends Component {
       ChallengeStartActions.challengeEditAllReset();
       const { challengeWeVoteId, challengeSEOFriendlyPath } = this.state;
       if (challengeSEOFriendlyPath) {
-        historyPush(`/c/${challengeSEOFriendlyPath}`);
+        historyPush(`/${challengeSEOFriendlyPath}/+/`);
       } else {
-        historyPush(`/id/${challengeWeVoteId}`);
+        historyPush(`/+/${challengeWeVoteId}`);
       }
     } else {
       historyPush('/start-a-challenge-preview');
@@ -207,9 +207,9 @@ class ChallengeStartEditAll extends Component {
       if (editExistingChallenge) {
         const { challengeSEOFriendlyPath } = this.state;
         if (challengeSEOFriendlyPath) {
-          historyPush(`/c/${challengeSEOFriendlyPath}`);
+          historyPush(`/${challengeSEOFriendlyPath}/+/`);
         } else {
-          historyPush(`/id/${challengeWeVoteId}`);
+          historyPush(`/+/${challengeWeVoteId}`);
         }
       } else {
         historyPush('/start-a-challenge-preview');
@@ -227,7 +227,11 @@ class ChallengeStartEditAll extends Component {
     return (
       <div>
         <Suspense fallback={<span>&nbsp;</span>}>
-          <ChallengeRetrieveController challengeSEOFriendlyPath={challengeSEOFriendlyPath} challengeWeVoteId={challengeWeVoteId} />
+          <ChallengeRetrieveController
+            challengeSEOFriendlyPath={challengeSEOFriendlyPath}
+            challengeWeVoteId={challengeWeVoteId}
+            retrieveAsOwnerIfVoterSignedIn
+          />
         </Suspense>
         <Helmet title={`Edit Your Challenge - ${chosenWebsiteName}`} />
         <SaveCancelOuterWrapper>
