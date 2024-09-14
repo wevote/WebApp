@@ -109,7 +109,7 @@ class ChallengeHomePage extends Component {
       challengeWeVoteIdForDisplay: '', // Value for challenge already received
       sharingStepCompleted: false,
       step2Completed: false,
-      voterCanEditThisPolitician: false,
+      voterCanEditThisChallenge: false,
     };
     // this.onScroll = this.onScroll.bind(this);
   }
@@ -437,12 +437,12 @@ class ChallengeHomePage extends Component {
     historyPush('/ballot');
   }
 
-  onPoliticianCampaignEditClick = () => {
+  onChallengeCampaignEditClick = () => {
     historyPush(`${this.getChallengeBasePath()}edit`);
     return null;
   }
 
-  onPoliticianCampaignShareClick = () => {
+  onChallengeCampaignShareClick = () => {
     historyPush(`${this.getChallengeBasePath()}share-challenge`);
     return null;
   }
@@ -462,10 +462,11 @@ class ChallengeHomePage extends Component {
       challengeTitle,
       challengeWeVoteIdForDisplay,
       scrolledDown,
-      voterCanEditThisPolitician, voterSupportsThisPolitician,
+      voterCanEditThisChallenge,
+      voterSupportsThisChallenge,
       voterWeVoteId,
     } = this.state;
-    // console.log('ChallengeHomePage render challengeTitle: ', challengeTitle);
+    console.log('ChallengeHomePage render challengeSEOFriendlyPath: ', challengeSEOFriendlyPath, ', challengeSEOFriendlyPathForDisplay: ', challengeSEOFriendlyPathForDisplay);
     const challengeAdminEditUrl = `${webAppConfig.WE_VOTE_SERVER_ROOT_URL}challenge/${challengeWeVoteId}/summary`;
     // const candidateWeVoteId = CandidateStore.getCandidateWeVoteIdRunningFromChallengeWeVoteId(challengeWeVoteId);
     const avatarBackgroundImage = normalizedImagePath('../img/global/svg-icons/avatar-generic.svg');
@@ -479,8 +480,8 @@ class ChallengeHomePage extends Component {
             <meta name="robots" content="noindex" data-react-helmet="true" />
           </Helmet>
           <PageWrapper>
-            <MissingPoliticianMessageContainer>
-              <MissingPoliticianText>Democracy Challenge not found.</MissingPoliticianText>
+            <MissingChallengeMessageContainer>
+              <MissingChallengeText>Democracy Challenge not found.</MissingChallengeText>
               <Button
                 classes={{ root: classes.buttonRoot }}
                 color="primary"
@@ -490,7 +491,7 @@ class ChallengeHomePage extends Component {
                 <PersonSearch classes={{ root: classes.buttonIconRoot }} location={window.location} />
                 See other challenges
               </Button>
-            </MissingPoliticianMessageContainer>
+            </MissingChallengeMessageContainer>
           </PageWrapper>
         </PageContentContainer>
       );
@@ -553,7 +554,7 @@ class ChallengeHomePage extends Component {
                 <MobileHeaderContentContainer>
                   <CandidateTopRow>
                     <Candidate
-                      id={`challengeHomeImageAndName-${challengeWeVoteId}`}
+                      id={`challengeHomeImageAndName-${challengeWeVoteIdForDisplay}`}
                     >
                       {/* Challenge Image */}
                       <Suspense fallback={<></>}>
@@ -604,19 +605,19 @@ class ChallengeHomePage extends Component {
                           {challengeDescriptionJsx}
                         </DelayedLoad>
                       )}
-                      {!!(voterCanEditThisPolitician || voterSupportsThisPolitician) && (
+                      {!!(voterCanEditThisChallenge || voterSupportsThisChallenge) && (
                         <IndicatorRow>
-                          {voterCanEditThisPolitician && (
+                          {voterCanEditThisChallenge && (
                             <IndicatorButtonWrapper>
-                              <EditIndicator onClick={this.onPoliticianCampaignEditClick}>
-                                Edit Politician
+                              <EditIndicator onClick={this.onChallengeCampaignEditClick}>
+                                Edit Challenge
                               </EditIndicator>
                             </IndicatorButtonWrapper>
                           )}
-                          {voterSupportsThisPolitician && (
+                          {voterSupportsThisChallenge && (
                             <IndicatorButtonWrapper>
-                              <EditIndicator onClick={this.onPoliticianCampaignShareClick}>
-                                Share Politician
+                              <EditIndicator onClick={this.onChallengeCampaignShareClick}>
+                                Share Challenge
                               </EditIndicator>
                             </IndicatorButtonWrapper>
                           )}
@@ -653,8 +654,8 @@ class ChallengeHomePage extends Component {
                 <ViewBallotButtonWrapper>
                   <Suspense fallback={<></>}>
                     <JoinChallengeButton
-                      buttonText="Join Challenge"
-                      challengeBasePath={this.getChallengeBasePath()}
+                      challengeSEOFriendlyPath={challengeSEOFriendlyPathForDisplay}
+                      challengeWeVoteId={challengeWeVoteIdForDisplay}
                     />
                   </Suspense>
                 </ViewBallotButtonWrapper>
@@ -689,11 +690,11 @@ class ChallengeHomePage extends Component {
                   {/*    </IndicatorButtonWrapper> */}
                   {/*  </IndicatorRow> */}
                   {/* )} */}
-                  {voterCanEditThisPolitician && (
+                  {voterCanEditThisChallenge && (
                     <IndicatorRow>
                       <IndicatorButtonWrapper>
-                        <EditIndicator onClick={this.onPoliticianCampaignEditClick}>
-                          Edit This Politician
+                        <EditIndicator onClick={this.onChallengeCampaignEditClick}>
+                          Edit This Challenge
                         </EditIndicator>
                       </IndicatorButtonWrapper>
                     </IndicatorRow>
@@ -755,7 +756,10 @@ class ChallengeHomePage extends Component {
           <SupportButtonPanel>
             <CenteredDiv>
               <Suspense fallback={<span>&nbsp;</span>}>
-                <JoinChallengeButton buttonText="Join Challenge" onClickFunction={this.goToBallot} />
+                <JoinChallengeButton
+                  challengeSEOFriendlyPath={challengeSEOFriendlyPathForDisplay}
+                  challengeWeVoteId={challengeWeVoteIdForDisplay}
+                />
               </Suspense>
             </CenteredDiv>
           </SupportButtonPanel>
@@ -826,14 +830,14 @@ const FriendsSectionWrapper = styled('div')`
 const LeaderboardSectionWrapper = styled('div')`
 `;
 
-const MissingPoliticianMessageContainer = styled('div')`
+const MissingChallengeMessageContainer = styled('div')`
   padding: 3em 2em;
   display: flex;
   flex-flow: column;
   align-items: center;
 `;
 
-const MissingPoliticianText = styled('p')(({ theme }) => (`
+const MissingChallengeText = styled('p')(({ theme }) => (`
   font-size: 24px;
   text-align: center;
   margin: 1em 2em 3em;

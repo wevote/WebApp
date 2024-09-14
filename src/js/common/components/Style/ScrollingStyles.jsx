@@ -4,12 +4,11 @@ import DesignTokenColors from './DesignTokenColors';
 export const BallotHorizontallyScrollingContainer = styled('div', {
   shouldForwardProp: (prop) => !['isChosen', 'showLeftGradient', 'showRightGradient'].includes(prop),
 })(({ isChosen, showLeftGradient, showRightGradient }) => (`
-    width: 100%;
+  width: 100%;
   overflow-x: auto;
   white-space: nowrap;
-  border: none;
-  border-radius: 16px;
-  margin-bottom: 5px;
+  border-bottom: 1px solid #ddd;
+  padding-top: 6px;
   transition: box-shadow 0.2s ease, background-color 0.3s ease; /* Smooth transition for shadow and background color */
 
  /* Default styles */
@@ -22,8 +21,7 @@ export const BallotHorizontallyScrollingContainer = styled('div', {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Shadow effect on hover */
   }
 
-
-    /* Fade out, right side */
+  /* Fade out, right side */
   ${showRightGradient ? '-webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 85%, rgba(0, 0, 0, 0));' : ''}
   ${showRightGradient ? 'mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 85%, rgba(0, 0, 0, 0));' : ''} );
 
@@ -34,7 +32,6 @@ export const BallotHorizontallyScrollingContainer = styled('div', {
   /* Fade out, both sides */
   ${showLeftGradient && showRightGradient ? '-webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1) 6%, rgba(0, 0, 0, 1) 94%, rgba(0, 0, 0, 0));' : ''}
   ${showLeftGradient && showRightGradient ? 'mask-image: linear-gradient(to right, rgba(255, 0, 0, 0), rgba(0, 0, 0, 1) 6%, rgba(0, 0, 0, 1) 94%, rgba(0, 0, 0, 0));' : ''}
-
 
   /* Make the scrollbar not be visible */
   -ms-overflow-style: none;  /* IE and Edge */
