@@ -7,7 +7,7 @@ import OpenExternalWebSite from '../../common/components/Widgets/OpenExternalWeb
 import AppObservableStore from '../../common/stores/AppObservableStore';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import VoterStore from '../../stores/VoterStore';
-import webAppConfig from "../../config";
+import webAppConfig from '../../config';
 
 const BallotElectionListWithFilters = React.lazy(() => import(/* webpackChunkName: 'BallotElectionListWithFilters' */ '../Ballot/BallotElectionListWithFilters'));
 const DeleteAllContactsButton = React.lazy(() => import(/* webpackChunkName: 'DeleteAllContactsButton' */ '../SetUpAccount/DeleteAllContactsButton'));

@@ -10,7 +10,7 @@ import { isTablet } from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import { DeviceInformationSpan, TermsAndPrivacyText } from '../Style/pageLayoutStyles';
 import DeviceDialog from '../Widgets/DeviceDialog';
-import webAppConfig from "../../config";
+import webAppConfig from '../../config';
 
 
 class SettingsSectionFooter extends Component {

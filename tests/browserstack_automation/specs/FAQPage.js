@@ -1,7 +1,7 @@
 import { driver, expect } from '@wdio/globals';
 import ReadyPage from '../page_objects/ready.page';
 import FAQPage from '../page_objects/faq.page';
-import webAppConfig from "../../../src/js/config";
+import webAppConfig from '../../../src/js/config';
 
 const assert = require('assert');
 const { describe, it } = require('mocha');
