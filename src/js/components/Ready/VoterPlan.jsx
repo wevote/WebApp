@@ -7,13 +7,13 @@ import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import ReadyActions from '../../actions/ReadyActions';
-import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
 import { formatDateToMonthDayYear } from '../../common/utils/dateFormat';
 import { renderLog } from '../../common/utils/logging';
 import webAppConfig from '../../config';
 import BallotStore from '../../stores/BallotStore';
 import ReadyStore from '../../stores/ReadyStore';
 import VoterStore from '../../stores/VoterStore';
+import initializeMoment from '../../common/utils/initializeMoment';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
@@ -56,13 +56,16 @@ class VoterPlan extends Component {
 
     const googleCivicElectionId = VoterStore.electionId();
     const savedVoterPlan = ReadyStore.getVoterPlanForVoterByElectionId(googleCivicElectionId);
-    // console.log('componentDidMount savedVoterPlan: ', savedVoterPlan);
+    console.log('componentDidMount savedVoterPlan: ', savedVoterPlan);
     let savedVoterPlanFound = false;
     if (savedVoterPlan.google_civic_election_id === undefined) {
       ReadyActions.voterPlansForVoterRetrieve();
     } else {
       savedVoterPlanFound = true;
     }
+    initializeMoment(() => {
+      // console.log('moment initialized');
+    });
 
     const ballotElectionDate = BallotStore.currentBallotElectionDate;
     if (ballotElectionDate) {
@@ -78,13 +81,17 @@ class VoterPlan extends Component {
   }
 
   componentDidUpdate (prevProps, prevState) {
-    // Update the Json that we save with all of the settings
+    const { triggerVotingPlanSave: triggerVotingPlanSavePrevious } = prevProps;
+    const { triggerVotingPlanSave } = this.props;
+    const triggerToSaveNow = triggerVotingPlanSave === true && triggerVotingPlanSavePrevious !== true;
+    // Update the Json that we save with all the settings
     const {
       approximateTime, electionDateMonthYear, locationToDeliverBallot,
       modeOfTransport, showToPublic, voterPlanDataSerializedCalculatedFirstTime,
       votingLocationAddress, votingRoughDate,
     } = this.state;
     const voterPlanText = this.generateVoterPlanText();
+    // console.log('componentDidUpdate electionDateMonthYear:', electionDateMonthYear);
     const {
       approximateTime: previousApproximateTime,
       electionDateMonthYear: previousElectionDateMonthYear,
@@ -116,13 +123,15 @@ class VoterPlan extends Component {
         votingLocationAddress,
         votingRoughDate,
       });
-      // console.log('voterPlanDataSerialized:', voterPlanDataSerialized);
+      // console.log('componentDidUpdate electionDateMonthYear:', electionDateMonthYear);
       this.setState({
         voterPlanChangedLocally,
         voterPlanDataSerialized,
         voterPlanDataSerializedCalculatedFirstTime: true,
         voterPlanText,
-      });
+      }, () => this.saveNowIfTriggered(triggerToSaveNow));
+    } else {
+      this.saveNowIfTriggered(triggerToSaveNow);
     }
   }
 
@@ -131,6 +140,12 @@ class VoterPlan extends Component {
     this.readyStoreListener.remove();
   }
 
+  saveNowIfTriggered = (triggeredToSaveNow = false) => {
+    if (triggeredToSaveNow) {
+      // console.log('saveNowIfTriggered');
+      this.onSaveVoterPlanButton();
+    }
+  }
 
   handleVotingLocationAddressChange = (event) => {
     this.setState({ votingLocationAddress: event.target.value });
@@ -208,8 +223,16 @@ class VoterPlan extends Component {
     this.setState({
       voterPlanChangedLocally: false,
     });
-    event.preventDefault();
-    this.props.toggleFunction(pathname);
+    if (event) {
+      event.preventDefault();
+    }
+    if (this.props.toggleFunction) {
+      this.props.toggleFunction(pathname);
+    }
+    if (this.props.votingPlanSaved) {
+      // console.log('VoterPlan calling votingPlanSaved');
+      this.props.votingPlanSaved();
+    }
   }
 
   setVoterPlanSavedStates = (voterPlan, firstTime = false) => {
@@ -262,17 +285,20 @@ class VoterPlan extends Component {
 
   closeVoterPlanModal () {
     const { location: { pathname } } = window;
-    this.props.toggleFunction(pathname);
+    if (this.props.toggleFunction) {
+      this.props.toggleFunction(pathname);
+    }
   }
 
   render () {
     renderLog('VoterPlan');  // Set LOG_RENDER_EVENTS to log all renders
-    const { classes } = this.props;
-    const { location: { pathname } } = window;
+    const { classes, showVoterPlanText } = this.props;
+    // const { location: { pathname } } = window;
     const {
       approximateTime, electionDateMonthYear, locationToDeliverBallot, modeOfTransport,
       votingLocationAddress, votingRoughDate,
     } = this.state;
+    // console.log('VoterPlan render, electionDateMonthYear:', electionDateMonthYear);
     const getPollingLocationUrl = 'https://gttp.votinginfoproject.org/';
     const voterPlanText = this.generateVoterPlanText();
     const pigsCanFly = false;
@@ -431,9 +457,11 @@ class VoterPlan extends Component {
             <span>.</span>
           )}
         </CreatePlanWrapper>
-        <VoterPlanPreview>
-          {voterPlanText}
-        </VoterPlanPreview>
+        {showVoterPlanText && (
+          <VoterPlanPreview>
+            {voterPlanText}
+          </VoterPlanPreview>
+        )}
 
         {(nextReleaseFeaturesEnabled && pigsCanFly) && (
           <HowWillIRememberWrapper style={{
@@ -513,43 +541,13 @@ class VoterPlan extends Component {
 }
 VoterPlan.propTypes = {
   classes: PropTypes.object,
-  toggleFunction: PropTypes.func.isRequired,
+  showVoterPlanText: PropTypes.bool,
+  toggleFunction: PropTypes.func,
+  triggerVotingPlanSave: PropTypes.bool,
+  votingPlanSaved: PropTypes.func,
 };
 
 const styles = (theme) => ({
-  dialogPaper: {
-    marginTop: hasIPhoneNotch() ? 68 : 48,
-    '@media (min-width: 576px)': {
-      maxWidth: '600px',
-      width: '90%',
-      height: 'fit-content',
-      margin: '0 auto',
-      minWidth: 0,
-      minHeight: 0,
-      transitionDuration: '.25s',
-    },
-    minWidth: '100%',
-    maxWidth: '100%',
-    width: '100%',
-    minHeight: hasIPhoneNotch() ? '84%' : '90%',
-    maxHeight: hasIPhoneNotch() ? '84%' : '90%',
-    height: hasIPhoneNotch() ? '84%' : '90%',
-    margin: '0 auto',
-  },
-  dialogContent: {
-    padding: '0 24px 26px',
-    background: '#f7f7f7',
-    display: 'flex',
-    justifyContent: 'center',
-  },
-  closeButton: {
-    marginLeft: 'auto',
-  },
-  closeButtonAbsolute: {
-    position: 'absolute',
-    right: 14,
-    top: 14,
-  },
   selectDefault: {
     position: 'relative',
     background: '#e8e8e8 !important',

@@ -11,9 +11,9 @@ import removeTwitterNameFromDescription from '../../common/utils/removeTwitterNa
 import OrganizationStore from '../../stores/OrganizationStore';
 import ParsedTwitterDescription from '../Twitter/ParsedTwitterDescription';
 import IssuesByOrganizationDisplayList from '../Values/IssuesByOrganizationDisplayList';
-import PositionInformationOnlySnippet from '../Widgets/PositionInformationOnlySnippet';
-import PositionRatingSnippet from '../Widgets/PositionRatingSnippet';
-import PositionSupportOpposeSnippet from '../Widgets/PositionSupportOpposeSnippet';
+import PositionInformationOnlySnippet from '../PositionItem/PositionInformationOnlySnippet';
+import PositionRatingSnippet from '../PositionItem/PositionRatingSnippet';
+import PositionSupportOpposeSnippet from '../PositionItem/PositionSupportOpposeSnippet';
 import RatingPopover from '../Widgets/RatingPopover';
 import TwitterAccountStats from '../Widgets/TwitterAccountStats';
 

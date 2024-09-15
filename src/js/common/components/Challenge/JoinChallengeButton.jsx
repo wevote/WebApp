@@ -6,6 +6,7 @@ import historyPush from '../../utils/historyPush';
 import { renderLog } from '../../utils/logging';
 import AppObservableStore from '../../stores/AppObservableStore';
 import ChallengeStore from '../../stores/ChallengeStore';
+import ReadyStore from '../../../stores/ReadyStore';
 import VoterStore from '../../../stores/VoterStore';
 import { getChallengeValuesFromIdentifiers } from '../../utils/challengeUtils';
 
@@ -18,6 +19,7 @@ class JoinChallengeButton extends React.Component {
       goToNextStepAfterSignIn: false,
       voterFirstName: '',
       voterIsSignedIn: false,
+      voterPhotoUrlLarge: '',
       voterSupportsThisChallenge: false,
     };
   }
@@ -37,7 +39,7 @@ class JoinChallengeButton extends React.Component {
 
   onChallengeStoreChange () {
     const { challengeSEOFriendlyPath: challengeSEOFriendlyPathFromProps, challengeWeVoteId: challengeWeVoteIdFromProps } = this.props;
-    console.log('onChallengeStoreChange challengeSEOFriendlyPathFromProps: ', challengeSEOFriendlyPathFromProps, ', challengeWeVoteIdFromProps: ', challengeWeVoteIdFromProps);
+    // console.log('onChallengeStoreChange challengeSEOFriendlyPathFromProps: ', challengeSEOFriendlyPathFromProps, ', challengeWeVoteIdFromProps: ', challengeWeVoteIdFromProps);
     const {
       challengeSEOFriendlyPath,
       challengeWeVoteId,
@@ -76,6 +78,7 @@ class JoinChallengeButton extends React.Component {
     this.setState({
       voterFirstName: VoterStore.getFirstName(),
       voterIsSignedIn: VoterStore.getVoterIsSignedIn(),
+      voterPhotoUrlLarge: VoterStore.getVoterPhotoUrlLarge(),
     }, () => {
       // We started the sign-in process, and seem to have completed it.
       if (voterIsSignedIn && voterIsSignedIn !== voterIsSignedInPrevious) {
@@ -109,13 +112,15 @@ class JoinChallengeButton extends React.Component {
 
   goToJoinChallenge = () => {
     const challengeBasePath = this.getChallengeBasePath();
-    console.log('goToJoinChallenge challengeBasePath: ', challengeBasePath);
-    const { voterFirstName } = this.state;
-    // TODO: Check to see if voter has filled out a voting plan
-    const itemsAreMissing = true; // Temporarily assume we have something we need from voter
+    // console.log('goToJoinChallenge challengeBasePath: ', challengeBasePath);
+    const { voterFirstName, voterPhotoUrlLarge } = this.state;
+    const upcomingGoogleCivicElectionId = VoterStore.electionId();
+    const voterPlanCreatedForThisElection = ReadyStore.getVoterPlanTextForVoterByElectionId(upcomingGoogleCivicElectionId);
+    console.log('upcomingGoogleCivicElectionId: ', upcomingGoogleCivicElectionId, 'voterPlanCreatedForThisElection: ', voterPlanCreatedForThisElection);
+    const itemsAreMissing = !(voterFirstName) || !(voterPhotoUrlLarge) || !(voterPlanCreatedForThisElection); // Temporarily assume we have something we need from voter
     if (VoterStore.getVoterIsSignedIn()) {
       let joinChallengeNextStepPath = '';
-      if (!voterFirstName || itemsAreMissing) {
+      if (itemsAreMissing) {
         joinChallengeNextStepPath = `${challengeBasePath}join-challenge`;
       } else {
         joinChallengeNextStepPath = `${challengeBasePath}customize-message`;
@@ -135,15 +140,18 @@ class JoinChallengeButton extends React.Component {
   render () {
     renderLog('JoinChallengeButton');  // Set LOG_RENDER_EVENTS to log all renders
     const { voterSupportsThisChallenge } = this.state;
-    const { challengeSEOFriendlyPath, challengeWeVoteId } = this.state;
-    console.log('JoinChallengeButton render challengeSEOFriendlyPath: ', challengeSEOFriendlyPath, ', challengeWeVoteId: ', challengeWeVoteId);
+    // const { challengeSEOFriendlyPath, challengeWeVoteId } = this.state;
+    // console.log('JoinChallengeButton render challengeSEOFriendlyPath: ', challengeSEOFriendlyPath, ', challengeWeVoteId: ', challengeWeVoteId);
     let buttonText;
     if (voterSupportsThisChallenge) {
       buttonText = 'Invite more friends';
     } else {
       buttonText = 'Join Challenge';
     }
-    console.log('JoinChallengeButton render voterSupportsThisChallenge: ', voterSupportsThisChallenge);
+    // console.log('JoinChallengeButton render voterSupportsThisChallenge: ', voterSupportsThisChallenge);
+    const upcomingGoogleCivicElectionId = VoterStore.electionId();
+    const voterPlanCreatedForThisElection = ReadyStore.getVoterPlanTextForVoterByElectionId(upcomingGoogleCivicElectionId);
+    // console.log('upcomingGoogleCivicElectionId: ', upcomingGoogleCivicElectionId, 'voterPlanCreatedForThisElection: ', voterPlanCreatedForThisElection);
     return (
       <JoinChallengeButtonWrapper>
         <BaseButton

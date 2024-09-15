@@ -26,6 +26,7 @@ const ChallengeRetrieveController = React.lazy(() => import(/* webpackChunkName:
 const VoterFirstRetrieveController = loadable(() => import(/* webpackChunkName: 'VoterFirstRetrieveController' */ '../../components/Settings/VoterFirstRetrieveController'));
 
 
+// TODO SOON: Change name to ChallengeInviteFriends
 class ChallengeInviteCopy extends Component {
   constructor (props) {
     super(props);
