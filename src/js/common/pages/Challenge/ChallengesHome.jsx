@@ -1,7 +1,9 @@
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import ActivityActions from '../../../actions/ActivityActions';
+import BallotActions from '../../../actions/BallotActions';
 import IssueActions from '../../../actions/IssueActions';
 import OrganizationActions from '../../../actions/OrganizationActions';
 import SupportActions from '../../../actions/SupportActions';
@@ -18,7 +20,6 @@ import ChallengeListRootPlaceholder from '../../components/ChallengeListRoot/Cha
 import NoSearchResult from '../../../components/Search/NoSearchResult';
 import IssueStore from '../../../stores/IssueStore';
 import VoterStore from '../../../stores/VoterStore';
-import { Link } from "react-router-dom";
 
 const ChallengeListRoot = React.lazy(() => import(/* webpackChunkName: 'ChallengeListRoot' */ '../../components/ChallengeListRoot/ChallengeListRoot'));
 const FirstChallengeListController = React.lazy(() => import(/* webpackChunkName: 'FirstChallengeListController' */ '../../components/ChallengeListRoot/FirstChallengeListController'));
@@ -78,6 +79,12 @@ class ChallengesHome extends Component {
     if (apiCalming('organizationsFollowedRetrieve', 60000)) {
       OrganizationActions.organizationsFollowedRetrieve();
     }
+    this.ballotRetrieveTimer = setTimeout(() => {
+      // voterBallotItemsRetrieve is takes significant resources, so let's delay it for a few seconds
+      if (apiCalming('voterBallotItemsRetrieve', 600000)) {
+        BallotActions.voterBallotItemsRetrieve(0, '', '');
+      }
+    }, 5000);  // April 19, 2021: Tuned to keep performance above 83.  LCP at 597ms
     // AnalyticsActions.saveActionOffice(VoterStore.electionId(), params.office_we_vote_id);
   }
 
@@ -87,6 +94,10 @@ class ChallengesHome extends Component {
     if (this.timer) {
       clearTimeout(this.timer);
       this.timer = null;
+    }
+    if (this.ballotRetrieveTimer) {
+      clearTimeout(this.ballotRetrieveTimer);
+      this.ballotRetrieveTimer = null;
     }
   }
 

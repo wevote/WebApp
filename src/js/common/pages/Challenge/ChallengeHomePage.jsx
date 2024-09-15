@@ -156,13 +156,10 @@ class ChallengeHomePage extends Component {
     // Take the "calculated" identifiers and retrieve if missing
     retrieveChallengeFromIdentifiersIfNeeded(challengeSEOFriendlyPathFromUrl, challengeWeVoteId);
 
-    this.positionItemTimer = setTimeout(() => {
-      // This is a performance killer, so let's delay it for a few seconds
-      if (!BallotStore.ballotFound) {
-        // console.log('WebApp doesn't know the election or have ballot data, so ask the API server to return best guess');
-        if (apiCalming('voterBallotItemsRetrieve', 3000)) {
-          BallotActions.voterBallotItemsRetrieve(0, '', '');
-        }
+    this.ballotRetrieveTimer = setTimeout(() => {
+      // voterBallotItemsRetrieve is takes significant resources, so let's delay it for a few seconds
+      if (apiCalming('voterBallotItemsRetrieve', 600000)) {
+        BallotActions.voterBallotItemsRetrieve(0, '', '');
       }
     }, 5000);  // April 19, 2021: Tuned to keep performance above 83.  LCP at 597ms
 
@@ -270,9 +267,9 @@ class ChallengeHomePage extends Component {
   }
 
   componentWillUnmount () {
-    if (this.positionItemTimer) {
-      clearTimeout(this.positionItemTimer);
-      this.positionItemTimer = null;
+    if (this.ballotRetrieveTimer) {
+      clearTimeout(this.ballotRetrieveTimer);
+      this.ballotRetrieveTimer = null;
     }
     if (this.timer) {
       clearTimeout(this.timer);
@@ -466,7 +463,7 @@ class ChallengeHomePage extends Component {
       voterSupportsThisChallenge,
       voterWeVoteId,
     } = this.state;
-    console.log('ChallengeHomePage render challengeSEOFriendlyPath: ', challengeSEOFriendlyPath, ', challengeSEOFriendlyPathForDisplay: ', challengeSEOFriendlyPathForDisplay);
+    // console.log('ChallengeHomePage render challengeSEOFriendlyPath: ', challengeSEOFriendlyPath, ', challengeSEOFriendlyPathForDisplay: ', challengeSEOFriendlyPathForDisplay);
     const challengeAdminEditUrl = `${webAppConfig.WE_VOTE_SERVER_ROOT_URL}challenge/${challengeWeVoteId}/summary`;
     // const candidateWeVoteId = CandidateStore.getCandidateWeVoteIdRunningFromChallengeWeVoteId(challengeWeVoteId);
     const avatarBackgroundImage = normalizedImagePath('../img/global/svg-icons/avatar-generic.svg');
