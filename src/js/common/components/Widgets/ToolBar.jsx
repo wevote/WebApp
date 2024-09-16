@@ -25,6 +25,7 @@ function ToolBar (params) {
             className="u-no-underline"
             url="https://twitter.com/WeVote"
             target="_blank"
+            ariaLabel="Twitter"
             body={isMobileScreenSize() ? (<span />) : (
               <Tooltip title="Twitter">
                 <IconButton size="large">
@@ -41,6 +42,7 @@ function ToolBar (params) {
             className="u-no-underline"
             url="https://www.facebook.com/WeVoteUSA"
             target="_blank"
+            ariaLabel="Facebook"
             body={isMobileScreenSize() ? (<span />) : (
               <Tooltip title="Facebook">
                 <IconButton size="large">
@@ -57,6 +59,7 @@ function ToolBar (params) {
             className="u-no-underline"
             url="https://www.instagram.com/WeVote"
             target="_blank"
+            ariaLabel="Instagram"
             body={isMobileScreenSize() ? (<span />) : (
               <Tooltip title="Instagram">
                 <IconButton size="large">
@@ -73,6 +76,7 @@ function ToolBar (params) {
             className="u-no-underline"
             url="https://eepurl.com/cx_frP"
             target="_blank"
+            ariaLabel="Newsletter"
             body={isMobileScreenSize() ? (<span />) : (
               <Tooltip title="Newsletter">
                 <IconButton size="large">
@@ -90,6 +94,7 @@ function ToolBar (params) {
               className="u-no-underline"
               url="https://github.com/WeVote"
               target="_blank"
+              ariaLabel="Github"
               body={isMobileScreenSize() ? (<span />) : (
                 <Tooltip title="Github">
                   <IconButton size="large">
@@ -106,6 +111,7 @@ function ToolBar (params) {
             className="u-no-underline"
             url="https://blog.wevote.us/"
             target="_blank"
+            ariaLabel="Blog"
             body={isMobileScreenSize() ? (<span />) : (
               <Tooltip title="Blog">
                 <IconButton size="large">
