@@ -46,12 +46,15 @@ import { headroomWrapperOffset } from '../../../utils/cordovaCalculatedOffsets';
 import { getPageKey } from '../../../utils/cordovaPageUtils';
 import normalizedImagePath from '../../utils/normalizedImagePath';
 
+
+
 const ChallengeCardForList = React.lazy(() => import(/* webpackChunkName: 'ChallengeCardForList' */ '../../components/ChallengeListRoot/ChallengeCardForList'));
 // const ChallengeCommentsList = React.lazy(() => import(/* webpackChunkName: 'ChallengeCommentsList' */ '../../components/Challenge/ChallengeCommentsList'));
 const ChallengeRetrieveController = React.lazy(() => import(/* webpackChunkName: 'ChallengeRetrieveController' */ '../../components/Challenge/ChallengeRetrieveController'));
 // const ChallengeNewsItemList = React.lazy(() => import(/* webpackChunkName: 'ChallengeNewsItemList' */ '../../components/Challenge/ChallengeNewsItemList'));
 // const ChallengeShareChunk = React.lazy(() => import(/* webpackChunkName: 'ChallengeShareChunk' */ '../../components/Challenge/ChallengeShareChunk'));
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../../../components/ImageHandler'));
+const ChallengeAbout = React.lazy(() => import(/* webpackChunkName: 'ChallengeAbout' */ '../../components/Challenge/ChallengeAbout'));
 const JoinChallengeButton = React.lazy(() => import(/* webpackChunkName: 'JoinChallengeButton' */ '../../components/Challenge/JoinChallengeButton'));
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../../components/Widgets/ReadMore'));
 const UpdateChallengeInformation = React.lazy(() => import(/* webpackChunkName: 'UpdateChallengeInformation' */ '../../components/Challenge/UpdateChallengeInformation'));
@@ -574,6 +577,9 @@ class ChallengeHomePage extends Component {
                       </CandidateNameAndPartyWrapper>
                     </Candidate>
                   </CandidateTopRow>
+                  <Suspense fallback={<></>}>
+                    <ChallengeAbout />
+                  </Suspense>
                 </MobileHeaderContentContainer>
               </MobileHeaderInnerContainer>
             </MobileHeaderOuterContainer>
@@ -650,6 +656,9 @@ class ChallengeHomePage extends Component {
                     </CampaignDescription>
                   </DelayedLoad>
                 )}
+                <Suspense fallback={<></>}>
+                  <ChallengeAbout />
+                </Suspense>
                 <ViewBallotButtonWrapper>
                   <Suspense fallback={<></>}>
                     <JoinChallengeButton
