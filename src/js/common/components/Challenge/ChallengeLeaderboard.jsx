@@ -9,7 +9,7 @@ import SearchBar2024 from '../../../components/Search/SearchBar2024';
 
 
 const LeaderboardContainer = styled.div`
-  max-width: 600px;
+  max-width: 100vw;
   margin: 0 auto;
 `;
 

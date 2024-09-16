@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { AccountCircle } from '@mui/icons-material';
+import { Avatar } from '@mui/material';
 import DesignTokenColors from '../Style/DesignTokenColors';
 
 const ParticipantItem = styled.div`
@@ -20,6 +20,9 @@ const Rank = styled.div`
 `;
 
 const Name = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
   flex: 1;
   margin-left: 10px;
   color: ${DesignTokenColors.neutral900};
@@ -47,10 +50,10 @@ const Details = styled.div`
 
 const ChallengeParticipantListItem = ({ participant, isCurrentUser }) => (
   <ParticipantItem isCurrentUser={isCurrentUser}>
-    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
       <Rank>{`#${participant.rank}`}</Rank>
       <Name>
-        <AccountCircle />
+        <Avatar>{`${participant.name.split(' ')[0][0]}${participant.name.split(' ')[1][0]}`}</Avatar>
         {' '}
         {participant.name}
       </Name>
