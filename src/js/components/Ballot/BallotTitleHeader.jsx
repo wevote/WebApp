@@ -201,13 +201,15 @@ class BallotTitleHeader extends Component {
                             >
                               Ballot for
                               {' '}
-                              <span
-                                className={linksOff ? '' : 'u-cursor--pointer u-link-color u-link-underline-on-hover'}
-                                onClick={this.showSelectBallotModalEditAddress}
-                              >
-                                {(textForMapSearch && textForMapSearch !== '') ? textForMapSearch : originalTextAddress}
-                              </span>
-                              {linksOff ? <></> : editIconStyled}
+                              <button style={{ backgroundColor: 'transparent', border: 'none', padding: '0' }} type="button">
+                                <span
+                                  className={linksOff ? '' : 'u-cursor--pointer u-link-color u-link-underline-on-hover'}
+                                  onClick={this.showSelectBallotModalEditAddress}
+                                >
+                                  {(textForMapSearch && textForMapSearch !== '') ? textForMapSearch : originalTextAddress}
+                                </span>
+                                {linksOff ? <></> : editIconStyled}
+                              </button>
                             </BallotAddress>
                           ) : (
                             <>
