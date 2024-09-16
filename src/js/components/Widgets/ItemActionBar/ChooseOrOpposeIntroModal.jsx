@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import VoterStore from '../../../stores/VoterStore';
-import PositionPublicToggle from '../PositionPublicToggle';
+import PositionPublicToggle from '../../PositionItem/PositionPublicToggle';
 
 const SignInOptionsPanel = React.lazy(() => import(/* webpackChunkName: 'SignInOptionsPanel' */ '../../../common/components/SignIn/SignInOptionsPanel'));
 

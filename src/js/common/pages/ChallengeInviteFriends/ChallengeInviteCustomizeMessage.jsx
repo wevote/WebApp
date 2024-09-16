@@ -184,7 +184,7 @@ class ChallengeInviteCustomizeMessage extends Component {
   }
 
   goToNextStep = () => {
-    historyPush(`${this.getChallengeBasePath()}copy-message`);
+    historyPush(`${this.getChallengeBasePath()}invite-friends`);
   }
 
   goToChallengeHome = () => {
