@@ -8,19 +8,24 @@
       "seleniumLogs": "false",
       "seleniumVersion": "4.11.0",
       "autoWait": 10
+    } 
+      
+    
+    },
+
+    {
+      
+      "browserName": "Safari",
+      "bstack:options": {
+        "os": "OS X",
+        "osVersion": "Ventura",
+        "browserVersion": "16.5",
+        "seleniumLogs": "false",
+        "seleniumVersion": "4.11.0",
+        "autoWait": 10
+      }
     }
-  },
-  {
-    "browserName": "Safari",
-    "bstack:options": {
-      "os": "OS X",
-      "osVersion": "Ventura",
-      "browserVersion": "16.5",
-      "seleniumLogs": "false",
-      "seleniumVersion": "4.11.0",
-      "autoWait": 10
-    }
-  }
-   
+  
+  
  
 ]

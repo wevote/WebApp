@@ -97,6 +97,8 @@ class ReadyPage extends Page {
     return $('#footerLinkPrivacy');
   }
 
+ 
+
   get findNextButtonHowItWorksWindow () {
     return $('.kMeOcV');
   }
@@ -158,7 +160,9 @@ class ReadyPage extends Page {
   }
 
   get getDonateLinkLocator () {
-    return $('[href = "/donate"]');
+   return $('[href = "/donate"]');
+   //return $('.FooterMainWeVote-link-77=Donate');
+  // return $('//a[contains(text(),"Donate")]');
   }
 
   get getAboutLinkElement () {
@@ -276,6 +280,9 @@ class ReadyPage extends Page {
       this.findNextButtonHowItWorksWindow.click();
     }
   }
+
+
+
 }
 
 export default new ReadyPage();
