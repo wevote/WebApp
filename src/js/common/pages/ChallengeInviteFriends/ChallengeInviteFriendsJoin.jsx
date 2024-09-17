@@ -339,7 +339,7 @@ class ChallengeInviteFriendsJoin extends Component {
                   Privacy Policy.
                 </div>
                 <Button
-                  classes={{ root: classes.buttonDesktop }}
+                  // classes={{ root: classes.buttonDesktop }}
                   color="primary"
                   id="joinChallengeNow"
                   onClick={this.joinChallengeNowSubmit}

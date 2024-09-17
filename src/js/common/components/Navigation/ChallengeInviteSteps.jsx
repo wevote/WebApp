@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { withStyles } from '@mui/styles';
 import commonMuiStyles from '../Style/commonMuiStyles';
@@ -117,6 +118,17 @@ class ChallengeInviteSteps extends React.Component {
     });
   }
 
+  getChallengeBasePath = () => {
+    const { challengeSEOFriendlyPath, challengeWeVoteId } = this.props;
+    let challengeBasePath;
+    if (challengeSEOFriendlyPath) {
+      challengeBasePath = `/${challengeSEOFriendlyPath}/+/`;
+    } else {
+      challengeBasePath = `/+/${challengeWeVoteId}/`;
+    }
+    return challengeBasePath;
+  }
+
   render() {
     const { step1Completed, step2Completed } = this.state;
     const { classes, currentStep } = this.props;
@@ -150,9 +162,9 @@ class ChallengeInviteSteps extends React.Component {
           {/* Step 1 Icon and Text */}
           <div style={{ ...styles.stepIconContainer, marginRight: '10px' }}>
             <img src={StepOneIcon} alt="Step 1 Icon" style={styles.stepIcon} />
-            <p style={styles.stepText}>
+            <Link to={`${this.getChallengeBasePath()}customize-message`} style={styles.stepText}>
               Customize the message to your friends
-            </p>
+            </Link>
           </div>
 
           {/* Horizontal Line */}
@@ -161,9 +173,9 @@ class ChallengeInviteSteps extends React.Component {
           {/* Step 2 Icon and Text */}
           <div style={{ ...styles.stepIconContainer, marginLeft: '10px' }}>
             <img src={StepTwoIcon} alt="Step 2 Icon" style={styles.stepIcon} />
-            <p style={styles.stepText}>
+            <Link to={`${this.getChallengeBasePath()}invite-friends`} style={styles.stepText}>
               Copy message & link
-            </p>
+            </Link>
           </div>
         </div>
       </OuterWrapper>

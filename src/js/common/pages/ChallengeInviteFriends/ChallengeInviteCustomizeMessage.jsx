@@ -25,6 +25,7 @@ import historyPush from '../../utils/historyPush';
 import initializejQuery from '../../utils/initializejQuery';
 import { renderLog } from '../../utils/logging';
 import ChallengeInviteSteps from '../../components/Navigation/ChallengeInviteSteps';
+import DesignTokenColors from "../../components/Style/DesignTokenColors";
 
 const ChallengeRetrieveController = React.lazy(() => import(/* webpackChunkName: 'ChallengeRetrieveController' */ '../../components/Challenge/ChallengeRetrieveController'));
 const VoterFirstRetrieveController = loadable(() => import(/* webpackChunkName: 'VoterFirstRetrieveController' */ '../../components/Settings/VoterFirstRetrieveController'));
@@ -252,47 +253,35 @@ class ChallengeInviteCustomizeMessage extends Component {
           goToChallengeHome={this.goToChallengeHome}
           politicianBasePath={this.getPoliticianBasePath()}
         />
+        <ChallengeTabsWrapper>
+          <ChallengeInviteSteps
+            currentStep={1}
+            challengeSEOFriendlyPath={challengeSEOFriendlyPath}
+          />
+        </ChallengeTabsWrapper>
         <PageWrapperDefault>
           <ContentOuterWrapperDefault>
             <ContentInnerWrapperDefault>
               <CampaignProcessStepTitle>
                 Customize the message to your friends
               </CampaignProcessStepTitle>
-              <ChallengeInviteSteps
-                currentStep={1}
-                challengeSEOFriendlyPath={challengeSEOFriendlyPath} />
-              <CampaignSupportSectionWrapper>
-                <CampaignSupportSection>
-                  <CampaignSupportDesktopButtonWrapper className="u-show-desktop-tablet">
-                    <CampaignSupportDesktopButtonPanel>
-                      <Button
-                        classes={{ root: classes.buttonDesktop }}
-                        color="primary"
-                        id="joinChallengeNow"
-                        onClick={this.joinChallengeNowSubmit}
-                        variant="contained"
-                      >
-                        Next
-                      </Button>
-                    </CampaignSupportDesktopButtonPanel>
-                  </CampaignSupportDesktopButtonWrapper>
-                </CampaignSupportSection>
-              </CampaignSupportSectionWrapper>
             </ContentInnerWrapperDefault>
           </ContentOuterWrapperDefault>
         </PageWrapperDefault>
-        <SupportButtonFooterWrapper className="u-show-mobile">
+        <SupportButtonFooterWrapper>
           <SupportButtonPanel>
             <CenteredDiv>
-              <Button
-                classes={{ root: classes.buttonDefault }}
-                color="primary"
-                id="joinChallengeNowMobile"
-                onClick={this.joinChallengeNowSubmit}
-                variant="contained"
-              >
-                Next
-              </Button>
+              <StackedDiv>
+                <Button
+                  // classes={{ root: classes.buttonDefault }}
+                  color="primary"
+                  id="joinChallengeNowMobile"
+                  onClick={this.joinChallengeNowSubmit}
+                  variant="contained"
+                >
+                  Next
+                </Button>
+              </StackedDiv>
             </CenteredDiv>
           </SupportButtonPanel>
         </SupportButtonFooterWrapper>
@@ -316,6 +305,20 @@ ChallengeInviteCustomizeMessage.propTypes = {
 const CenteredDiv = styled('div')`
   display: flex;
   justify-content: center;
+`;
+
+const ChallengeTabsWrapper = styled('div')`
+  background-color: ${DesignTokenColors.neutralUI50};
+  display: flex;
+  justify-content: center;
+`;
+
+const StackedDiv = styled('div')`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 620px;
+  min-width: 300px;
 `;
 
 export default withStyles(commonMuiStyles)(ChallengeInviteCustomizeMessage);
