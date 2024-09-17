@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import VoterActions from '../../../actions/VoterActions';
 import webAppConfig from '../../../config';
 import VoterStore from '../../../stores/VoterStore';
-import ChallengeSupporterActions from '../../actions/ChallengeSupporterActions';
+import ChallengeParticipantActions from '../../actions/ChallengeParticipantActions';
 import ChallengeHeaderSimple from '../../components/Navigation/ChallengeHeaderSimple';
 import { CampaignProcessStepTitle, CampaignProcessStepIntroductionText } from '../../components/Style/CampaignProcessStyles';
 import { CampaignSupportDesktopButtonPanel, CampaignSupportDesktopButtonWrapper, CampaignSupportSection, CampaignSupportSectionWrapper } from '../../components/Style/CampaignSupportStyles';
@@ -16,11 +16,13 @@ import commonMuiStyles from '../../components/Style/commonMuiStyles';
 import { ContentInnerWrapperDefault, ContentOuterWrapperDefault, PageWrapperDefault } from '../../components/Style/PageWrapperStyles';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import ChallengeStore from '../../stores/ChallengeStore';
-import ChallengeSupporterStore from '../../stores/ChallengeSupporterStore';
+import ChallengeParticipantStore from '../../stores/ChallengeParticipantStore';
 import { getChallengeValuesFromIdentifiers, retrieveChallengeFromIdentifiersIfNeeded } from '../../utils/challengeUtils';
 import historyPush from '../../utils/historyPush';
 import initializejQuery from '../../utils/initializejQuery';
 import { renderLog } from '../../utils/logging';
+import DesignTokenColors from '../../components/Style/DesignTokenColors';
+import ChallengeInviteSteps from '../../components/Navigation/ChallengeInviteSteps';
 
 const ChallengeRetrieveController = React.lazy(() => import(/* webpackChunkName: 'ChallengeRetrieveController' */ '../../components/Challenge/ChallengeRetrieveController'));
 const VoterFirstRetrieveController = loadable(() => import(/* webpackChunkName: 'VoterFirstRetrieveController' */ '../../components/Settings/VoterFirstRetrieveController'));
@@ -196,7 +198,7 @@ class ChallengeInviteCopy extends Component {
 
   submitSkipForNow = () => {
     initializejQuery(() => {
-      ChallengeSupporterActions.supporterEndorsementQueuedToSave(undefined);
+      ChallengeParticipantActions.participantEndorsementQueuedToSave(undefined);
     });
     this.goToNextStep();
   }
@@ -204,20 +206,20 @@ class ChallengeInviteCopy extends Component {
   joinChallengeNowSubmit = () => {
     const { challengeWeVoteId } = this.state;
     if (challengeWeVoteId) {
-      const supporterEndorsementQueuedToSave = ChallengeSupporterStore.getSupporterEndorsementQueuedToSave();
-      const supporterEndorsementQueuedToSaveSet = ChallengeSupporterStore.getSupporterEndorsementQueuedToSaveSet();
-      let visibleToPublic = ChallengeSupporterStore.getVisibleToPublic();
-      const visibleToPublicChanged = ChallengeSupporterStore.getVisibleToPublicQueuedToSaveSet();
+      const participantEndorsementQueuedToSave = ChallengeParticipantStore.getSupporterEndorsementQueuedToSave();
+      const participantEndorsementQueuedToSaveSet = ChallengeParticipantStore.getSupporterEndorsementQueuedToSaveSet();
+      let visibleToPublic = ChallengeParticipantStore.getVisibleToPublic();
+      const visibleToPublicChanged = ChallengeParticipantStore.getVisibleToPublicQueuedToSaveSet();
       if (visibleToPublicChanged) {
         // If it has changed, use new value
-        visibleToPublic = ChallengeSupporterStore.getVisibleToPublicQueuedToSave();
+        visibleToPublic = ChallengeParticipantStore.getVisibleToPublicQueuedToSave();
       }
-      if (supporterEndorsementQueuedToSaveSet || visibleToPublicChanged) {
-        // console.log('ChallengeInviteCopy, supporterEndorsementQueuedToSave:', supporterEndorsementQueuedToSave);
+      if (participantEndorsementQueuedToSaveSet || visibleToPublicChanged) {
+        // console.log('ChallengeInviteCopy, participantEndorsementQueuedToSave:', participantEndorsementQueuedToSave);
         const saveVisibleToPublic = true;
         initializejQuery(() => {
-          ChallengeSupporterActions.supporterEndorsementSave(challengeWeVoteId, supporterEndorsementQueuedToSave, visibleToPublic, saveVisibleToPublic); // challengeSupporterSave
-          ChallengeSupporterActions.supporterEndorsementQueuedToSave(undefined);
+          ChallengeParticipantActions.participantEndorsementSave(challengeWeVoteId, participantEndorsementQueuedToSave, visibleToPublic, saveVisibleToPublic); // challengeParticipantSave
+          ChallengeParticipantActions.participantEndorsementQueuedToSave(undefined);
         });
       }
       const voterPhotoQueuedToSave = VoterStore.getVoterPhotoQueuedToSave();
@@ -254,6 +256,12 @@ class ChallengeInviteCopy extends Component {
           goToChallengeHome={this.goToChallengeHome}
           politicianBasePath={this.getPoliticianBasePath()}
         />
+        <ChallengeTabsWrapper>
+          <ChallengeInviteSteps
+            currentStep={1}
+            challengeSEOFriendlyPath={challengeSEOFriendlyPath}
+          />
+        </ChallengeTabsWrapper>
         <PageWrapperDefault>
           <ContentOuterWrapperDefault>
             <ContentInnerWrapperDefault>
@@ -307,6 +315,12 @@ ChallengeInviteCopy.propTypes = {
 
 
 const CenteredDiv = styled('div')`
+  display: flex;
+  justify-content: center;
+`;
+
+const ChallengeTabsWrapper = styled('div')`
+  background-color: ${DesignTokenColors.neutralUI50};
   display: flex;
   justify-content: center;
 `;

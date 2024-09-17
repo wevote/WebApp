@@ -34,7 +34,7 @@ function ChallengeCardForListBody (props) {
     hideCardMargins, inDraftMode, functionToUseToKeepHelping, functionToUseWhenProfileComplete,
     limitCardWidth, onChallengeClick, onChallengeClickLink, onChallengeEditClick,
     photoLargeUrl, profileImageBackgroundColor,
-    supportersCount, supportersCountNextGoalWithFloor, tagIdBaseName, useVerticalCard,
+    participantsCount, participantsCountNextGoalWithFloor, tagIdBaseName, useVerticalCard,
     voterCanEditThisChallenge,
   } = props;
   const politicalPartySvgNameWithPath = '../../img/global/svg-icons/political-party-unspecified.svg';
@@ -60,9 +60,9 @@ function ChallengeCardForListBody (props) {
               {/*
               <SupportersWrapper>
                 <SupportersCount>
-                  {numberWithCommas(supportersCount)}
+                  {numberWithCommas(participantsCount)}
                   {' '}
-                  {supportersCount === 1 ? 'supporter.' : 'supporters.'}
+                  {participantsCount === 1 ? 'participant.' : 'participants.'}
                 </SupportersCount>
                 {' '}
                 {challengeSupported ? (
@@ -77,7 +77,7 @@ function ChallengeCardForListBody (props) {
                   >
                     Let&apos;s get to
                     {' '}
-                    {numberWithCommas(supportersCountNextGoalWithFloor)}
+                    {numberWithCommas(participantsCountNextGoalWithFloor)}
                     !
                   </SupportersActionLink>
                 )}
@@ -305,8 +305,8 @@ ChallengeCardForListBody.propTypes = {
   onChallengeClickLink: PropTypes.func,
   photoLargeUrl: PropTypes.string,
   profileImageBackgroundColor: PropTypes.string,
-  supportersCount: PropTypes.number,
-  supportersCountNextGoalWithFloor: PropTypes.number,
+  participantsCount: PropTypes.number,
+  participantsCountNextGoalWithFloor: PropTypes.number,
   tagIdBaseName: PropTypes.string,
   useVerticalCard: PropTypes.bool,
 };

@@ -14,7 +14,7 @@ import { convertStateCodeToStateText } from '../../utils/addressFunctions';
 import { handleHorizontalScroll, leftAndRightArrowStateCalculation, checkDivPositionForLoadMore } from '../../utils/leftRightArrowCalculation';
 import { renderLog } from '../../utils/logging';
 import ChallengeStore from '../../stores/ChallengeStore';
-import ChallengeSupporterStore from '../../stores/ChallengeSupporterStore';
+import ChallengeParticipantStore from '../../stores/ChallengeParticipantStore';
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
 
 const ChallengeCardList = React.lazy(() => import(/* webpackChunkName: 'ChallengeCardList' */ './ChallengeCardList'));
@@ -42,7 +42,7 @@ class ChallengeListRoot extends Component {
 
   componentDidMount () {
     // console.log('ChallengeListRoot componentDidMount');
-    this.challengeSupporterStoreListener = ChallengeSupporterStore.addListener(this.onChallengeSupporterStoreChange.bind(this));
+    this.challengeParticipantStoreListener = ChallengeParticipantStore.addListener(this.onChallengeParticipantStoreChange.bind(this));
     this.challengeStoreListener = ChallengeStore.addListener(this.onChallengeStoreChange.bind(this));
     this.onIncomingListChange();
   }
@@ -70,12 +70,12 @@ class ChallengeListRoot extends Component {
   }
 
   componentWillUnmount () {
-    this.challengeSupporterStoreListener.remove();
+    this.challengeParticipantStoreListener.remove();
     this.challengeStoreListener.remove();
   }
 
-  onChallengeSupporterStoreChange () {
-    // We need to instantiate ChallengeSupporterStore before we call challengeListRetrieve so that store gets filled with data
+  onChallengeParticipantStoreChange () {
+    // We need to instantiate ChallengeParticipantStore before we call challengeListRetrieve so that store gets filled with data
   }
 
   onChallengeStoreChange () {
@@ -108,7 +108,7 @@ class ChallengeListRoot extends Component {
   // Order by 1, 2, 3. Push 0's to the bottom in the same order.
   orderByOrderInList = (firstEntry, secondEntry) => (firstEntry.order_in_list || Number.MAX_VALUE) - (secondEntry.order_in_list || Number.MAX_VALUE);
 
-  orderBySupportersCount = (firstEntry, secondEntry) => secondEntry.supporters_count - firstEntry.supporters_count;
+  orderBySupportersCount = (firstEntry, secondEntry) => secondEntry.participants_count - firstEntry.participants_count;
 
   orderCandidatesByUltimateDate = (firstEntry, secondEntry) => secondEntry.candidate_ultimate_election_date - firstEntry.candidate_ultimate_election_date;
 
