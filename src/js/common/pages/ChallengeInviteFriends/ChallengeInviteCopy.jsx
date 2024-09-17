@@ -21,6 +21,8 @@ import { getChallengeValuesFromIdentifiers, retrieveChallengeFromIdentifiersIfNe
 import historyPush from '../../utils/historyPush';
 import initializejQuery from '../../utils/initializejQuery';
 import { renderLog } from '../../utils/logging';
+import DesignTokenColors from '../../components/Style/DesignTokenColors';
+import ChallengeInviteSteps from '../../components/Navigation/ChallengeInviteSteps';
 
 const ChallengeRetrieveController = React.lazy(() => import(/* webpackChunkName: 'ChallengeRetrieveController' */ '../../components/Challenge/ChallengeRetrieveController'));
 const VoterFirstRetrieveController = loadable(() => import(/* webpackChunkName: 'VoterFirstRetrieveController' */ '../../components/Settings/VoterFirstRetrieveController'));
@@ -254,6 +256,12 @@ class ChallengeInviteCopy extends Component {
           goToChallengeHome={this.goToChallengeHome}
           politicianBasePath={this.getPoliticianBasePath()}
         />
+        <ChallengeTabsWrapper>
+          <ChallengeInviteSteps
+            currentStep={1}
+            challengeSEOFriendlyPath={challengeSEOFriendlyPath}
+          />
+        </ChallengeTabsWrapper>
         <PageWrapperDefault>
           <ContentOuterWrapperDefault>
             <ContentInnerWrapperDefault>
@@ -307,6 +315,12 @@ ChallengeInviteCopy.propTypes = {
 
 
 const CenteredDiv = styled('div')`
+  display: flex;
+  justify-content: center;
+`;
+
+const ChallengeTabsWrapper = styled('div')`
+  background-color: ${DesignTokenColors.neutralUI50};
   display: flex;
   justify-content: center;
 `;
