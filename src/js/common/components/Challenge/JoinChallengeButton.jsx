@@ -20,7 +20,7 @@ class JoinChallengeButton extends React.Component {
       voterFirstName: '',
       voterIsSignedIn: false,
       voterPhotoUrlLarge: '',
-      voterSupportsThisChallenge: false,
+      voterIsChallengeParticipant: false,
     };
   }
 
@@ -54,20 +54,20 @@ class JoinChallengeButton extends React.Component {
         challengeSEOFriendlyPath: challengeSEOFriendlyPathFromProps,
       });
     }
-    let voterSupportsThisChallenge
+    let voterIsChallengeParticipant
     if (challengeWeVoteId) {
       // const voterCanEditThisChallenge = ChallengeStore.getVoterCanEditThisChallenge(challengeWeVoteId);
-      voterSupportsThisChallenge = ChallengeStore.getVoterSupportsThisChallenge(challengeWeVoteId);
+      voterIsChallengeParticipant = ChallengeStore.getVoterIsChallengeParticipant(challengeWeVoteId);
       this.setState({
         challengeWeVoteId,
         // voterCanEditThisChallenge,
-        voterSupportsThisChallenge,
+        voterIsChallengeParticipant,
       });
     } else {
-      voterSupportsThisChallenge = ChallengeStore.getVoterSupportsThisChallenge(challengeWeVoteIdFromProps);
+      voterIsChallengeParticipant = ChallengeStore.getVoterIsChallengeParticipant(challengeWeVoteIdFromProps);
       this.setState({
         challengeWeVoteId: challengeWeVoteIdFromProps,
-        voterSupportsThisChallenge,
+        voterIsChallengeParticipant,
       });
     }
   }
@@ -119,6 +119,8 @@ class JoinChallengeButton extends React.Component {
     console.log('upcomingGoogleCivicElectionId: ', upcomingGoogleCivicElectionId, 'voterPlanCreatedForThisElection: ', voterPlanCreatedForThisElection);
     const itemsAreMissing = !(voterFirstName) || !(voterPhotoUrlLarge) || !(voterPlanCreatedForThisElection); // Temporarily assume we have something we need from voter
     if (VoterStore.getVoterIsSignedIn()) {
+      // TODO: Make API call that joins this challenge
+
       let joinChallengeNextStepPath = '';
       if (itemsAreMissing) {
         joinChallengeNextStepPath = `${challengeBasePath}join-challenge`;
@@ -139,24 +141,24 @@ class JoinChallengeButton extends React.Component {
 
   render () {
     renderLog('JoinChallengeButton');  // Set LOG_RENDER_EVENTS to log all renders
-    const { voterSupportsThisChallenge } = this.state;
+    const { voterIsChallengeParticipant } = this.state;
     // const { challengeSEOFriendlyPath, challengeWeVoteId } = this.state;
     // console.log('JoinChallengeButton render challengeSEOFriendlyPath: ', challengeSEOFriendlyPath, ', challengeWeVoteId: ', challengeWeVoteId);
     let buttonText;
-    if (voterSupportsThisChallenge) {
+    if (voterIsChallengeParticipant) {
       buttonText = 'Invite more friends';
     } else {
       buttonText = 'Join Challenge';
     }
-    // console.log('JoinChallengeButton render voterSupportsThisChallenge: ', voterSupportsThisChallenge);
-    const upcomingGoogleCivicElectionId = VoterStore.electionId();
-    const voterPlanCreatedForThisElection = ReadyStore.getVoterPlanTextForVoterByElectionId(upcomingGoogleCivicElectionId);
+    // console.log('JoinChallengeButton render voterIsChallengeParticipant: ', voterIsChallengeParticipant);
+    // const upcomingGoogleCivicElectionId = VoterStore.electionId();
+    // const voterPlanCreatedForThisElection = ReadyStore.getVoterPlanTextForVoterByElectionId(upcomingGoogleCivicElectionId);
     // console.log('upcomingGoogleCivicElectionId: ', upcomingGoogleCivicElectionId, 'voterPlanCreatedForThisElection: ', voterPlanCreatedForThisElection);
     return (
       <JoinChallengeButtonWrapper>
         <BaseButton
           id="joinChallengeButton"
-          onClick={voterSupportsThisChallenge ? this.goToInviteFriends : this.goToJoinChallenge}
+          onClick={voterIsChallengeParticipant ? this.goToInviteFriends : this.goToJoinChallenge}
           primary
           label={buttonText}
         />

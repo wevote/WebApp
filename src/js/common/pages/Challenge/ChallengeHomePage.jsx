@@ -14,7 +14,7 @@ import webAppConfig from '../../../config';
 // import AnalyticsActions from '../../../actions/AnalyticsActions';
 import BallotActions from '../../../actions/BallotActions';
 import BallotStore from '../../../stores/BallotStore';
-import ChallengeSupporterStore from '../../stores/ChallengeSupporterStore';
+import ChallengeParticipantStore from '../../stores/ChallengeParticipantStore';
 import ChallengeStore from '../../stores/ChallengeStore';
 import VoterStore from '../../../stores/VoterStore';
 import CompleteYourProfileModalController from '../../components/Settings/CompleteYourProfileModalController';
@@ -122,7 +122,7 @@ class ChallengeHomePage extends Component {
     // console.log('componentDidMount challengeSEOFriendlyPathFromUrl: ', challengeSEOFriendlyPathFromUrl, ', challengeWeVoteId: ', challengeWeVoteId);
     this.onAppObservableStoreChange();
     this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
-    this.challengeSupporterStoreListener = ChallengeSupporterStore.addListener(this.onChallengeSupporterStoreChange.bind(this));
+    this.challengeParticipantStoreListener = ChallengeParticipantStore.addListener(this.onChallengeParticipantStoreChange.bind(this));
     this.onChallengeStoreChange();
     this.challengeStoreListener = ChallengeStore.addListener(this.onChallengeStoreChange.bind(this));
     this.onVoterStoreChange();
@@ -276,13 +276,13 @@ class ChallengeHomePage extends Component {
       this.timer = null;
     }
     this.appStateSubscription.unsubscribe();
-    this.challengeSupporterStoreListener.remove();
+    this.challengeParticipantStoreListener.remove();
     this.challengeStoreListener.remove();
     // window.removeEventListener('scroll', this.onScroll);
   }
 
   onFirstRetrievalOfChallengeWeVoteId () {
-    this.onChallengeSupporterStoreChange();
+    this.onChallengeParticipantStoreChange();
     this.onChallengeStoreChange();
   }
 
@@ -299,15 +299,15 @@ class ChallengeHomePage extends Component {
     });
   }
 
-  onChallengeSupporterStoreChange () {
+  onChallengeParticipantStoreChange () {
     const { challengeWeVoteId } = this.state;
-    const supporterEndorsementsWithText = ChallengeSupporterStore.getLatestChallengeSupportersWithTextList(challengeWeVoteId);
-    const step2Completed = ChallengeSupporterStore.voterSupporterEndorsementExists(challengeWeVoteId);
-    const payToPromoteStepCompleted = ChallengeSupporterStore.voterChipInExists(challengeWeVoteId);
+    const participantEndorsementsWithText = ChallengeParticipantStore.getLatestChallengeParticipantsWithTextList(challengeWeVoteId);
+    const step2Completed = ChallengeParticipantStore.voterSupporterEndorsementExists(challengeWeVoteId);
+    const payToPromoteStepCompleted = ChallengeParticipantStore.voterChipInExists(challengeWeVoteId);
     const sharingStepCompleted = false;
-    // console.log('onChallengeSupporterStoreChange step2Completed: ', step2Completed, ', sharingStepCompleted: ', sharingStepCompleted, ', payToPromoteStepCompleted:', payToPromoteStepCompleted);
+    // console.log('onChallengeParticipantStoreChange step2Completed: ', step2Completed, ', sharingStepCompleted: ', sharingStepCompleted, ', payToPromoteStepCompleted:', payToPromoteStepCompleted);
     this.setState({
-      supporterEndorsementsWithText,
+      participantEndorsementsWithText,
       sharingStepCompleted,
       step2Completed,
       payToPromoteStepCompleted,
@@ -342,12 +342,12 @@ class ChallengeHomePage extends Component {
     }
     if (challengeWeVoteId) {
       const voterCanEditThisChallenge = ChallengeStore.getVoterCanEditThisChallenge(challengeWeVoteId);
-      const voterSupportsThisChallenge = ChallengeStore.getVoterSupportsThisChallenge(challengeWeVoteId);
+      const voterIsChallengeParticipant = ChallengeStore.getVoterIsChallengeParticipant(challengeWeVoteId);
       this.setState({
         challengeWeVoteId,
         challengeWeVoteIdForDisplay: challengeWeVoteId,
         voterCanEditThisChallenge,
-        voterSupportsThisChallenge,
+        voterIsChallengeParticipant,
       });
     }
     const challengeDescriptionLimited = returnFirstXWords(challengeDescription, 200);
@@ -460,7 +460,7 @@ class ChallengeHomePage extends Component {
       challengeWeVoteIdForDisplay,
       scrolledDown,
       voterCanEditThisChallenge,
-      voterSupportsThisChallenge,
+      voterIsChallengeParticipant,
       voterWeVoteId,
     } = this.state;
     // console.log('ChallengeHomePage render challengeSEOFriendlyPath: ', challengeSEOFriendlyPath, ', challengeSEOFriendlyPathForDisplay: ', challengeSEOFriendlyPathForDisplay);
@@ -602,7 +602,7 @@ class ChallengeHomePage extends Component {
                           {challengeDescriptionJsx}
                         </DelayedLoad>
                       )}
-                      {!!(voterCanEditThisChallenge || voterSupportsThisChallenge) && (
+                      {!!(voterCanEditThisChallenge || voterIsChallengeParticipant) && (
                         <IndicatorRow>
                           {voterCanEditThisChallenge && (
                             <IndicatorButtonWrapper>
@@ -611,7 +611,7 @@ class ChallengeHomePage extends Component {
                               </EditIndicator>
                             </IndicatorButtonWrapper>
                           )}
-                          {voterSupportsThisChallenge && (
+                          {voterIsChallengeParticipant && (
                             <IndicatorButtonWrapper>
                               <EditIndicator onClick={this.onChallengeCampaignShareClick}>
                                 Share Challenge

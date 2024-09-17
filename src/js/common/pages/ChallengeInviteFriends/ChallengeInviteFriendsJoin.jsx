@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import VoterActions from '../../../actions/VoterActions';
 import webAppConfig from '../../../config';
 import VoterStore from '../../../stores/VoterStore';
-import ChallengeSupporterActions from '../../actions/ChallengeSupporterActions';
+import ChallengeParticipantActions from '../../actions/ChallengeParticipantActions';
 import ChallengeHeaderSimple from '../../components/Navigation/ChallengeHeaderSimple';
 import VoterPhotoUpload from '../../components/Settings/VoterPhotoUpload';
 import VoterPlan from '../../../components/Ready/VoterPlan';
@@ -16,12 +16,12 @@ import {
   SupportButtonFooterWrapper, SupportButtonPanel,
 } from '../../components/Style/CampaignDetailsStyles';
 import DesignTokenColors from '../../components/Style/DesignTokenColors';
-import { CampaignSupportDesktopButtonPanel, CampaignSupportDesktopButtonWrapper, CampaignSupportSection, CampaignSupportSectionWrapper } from '../../components/Style/CampaignSupportStyles';
+import { CampaignSupportSection, CampaignSupportSectionWrapper } from '../../components/Style/CampaignSupportStyles';
 import commonMuiStyles from '../../components/Style/commonMuiStyles';
 import { ContentInnerWrapperDefault, ContentOuterWrapperDefault, PageWrapperDefault } from '../../components/Style/PageWrapperStyles';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import ChallengeStore from '../../stores/ChallengeStore';
-import ChallengeSupporterStore from '../../stores/ChallengeSupporterStore';
+import ChallengeParticipantStore from '../../stores/ChallengeParticipantStore';
 import { getChallengeValuesFromIdentifiers, retrieveChallengeFromIdentifiersIfNeeded } from '../../utils/challengeUtils';
 import historyPush from '../../utils/historyPush';
 import initializejQuery from '../../utils/initializejQuery';
@@ -211,22 +211,22 @@ class ChallengeInviteFriendsJoin extends Component {
     const { challengeWeVoteId } = this.state;
     // console.log('ChallengeInviteFriendsJoin, joinChallengeNowSubmitPart2, challengeWeVoteId:', challengeWeVoteId);
     if (challengeWeVoteId) {
-      const supporterEndorsementQueuedToSave = ChallengeSupporterStore.getSupporterEndorsementQueuedToSave();
-      const supporterEndorsementQueuedToSaveSet = ChallengeSupporterStore.getSupporterEndorsementQueuedToSaveSet();
-      let visibleToPublic = ChallengeSupporterStore.getVisibleToPublic();
-      const visibleToPublicChanged = ChallengeSupporterStore.getVisibleToPublicQueuedToSaveSet();
-      if (visibleToPublicChanged) {
-        // If it has changed, use new value
-        // TODO Convert to first name/last name visibility save
-        // visibleToPublic = ChallengeSupporterStore.getVisibleToPublicQueuedToSave();
-      }
+      // const participantEndorsementQueuedToSave = ChallengeParticipantStore.getSupporterEndorsementQueuedToSave();
+      // const participantEndorsementQueuedToSaveSet = ChallengeParticipantStore.getSupporterEndorsementQueuedToSaveSet();
+      // let visibleToPublic = ChallengeParticipantStore.getVisibleToPublic();
+      // const visibleToPublicChanged = ChallengeParticipantStore.getVisibleToPublicQueuedToSaveSet();
+      // if (visibleToPublicChanged) {
+      //   // If it has changed, use new value
+      //   // TODO Convert to first name/last name visibility save
+      //   // visibleToPublic = ChallengeParticipantStore.getVisibleToPublicQueuedToSave();
+      // }
       // TODO: Convert to saving "Why You Will Vote"
-      // if (supporterEndorsementQueuedToSaveSet || visibleToPublicChanged) {
-      //   // console.log('ChallengeInviteFriendsJoin, supporterEndorsementQueuedToSave:', supporterEndorsementQueuedToSave);
+      // if (participantEndorsementQueuedToSaveSet || visibleToPublicChanged) {
+      //   // console.log('ChallengeInviteFriendsJoin, participantEndorsementQueuedToSave:', participantEndorsementQueuedToSave);
       //   const saveVisibleToPublic = true;
       //   initializejQuery(() => {
-      //     ChallengeSupporterActions.supporterEndorsementSave(challengeWeVoteId, supporterEndorsementQueuedToSave, visibleToPublic, saveVisibleToPublic); // challengeSupporterSave
-      //     ChallengeSupporterActions.supporterEndorsementQueuedToSave(undefined);
+      //     ChallengeParticipantActions.participantEndorsementSave(challengeWeVoteId, participantEndorsementQueuedToSave, visibleToPublic, saveVisibleToPublic); // challengeParticipantSave
+      //     ChallengeParticipantActions.participantEndorsementQueuedToSave(undefined);
       //   });
       // }
       const voterPhotoQueuedToSave = VoterStore.getVoterPhotoQueuedToSave();
@@ -240,6 +240,7 @@ class ChallengeInviteFriendsJoin extends Component {
       // Has all the necessary data been saved?
 
       // TODO Save "Join Challenge" here
+      ChallengeParticipantActions.challengeParticipantSave(challengeWeVoteId);
 
       // If all the necessary data has been saved, proceed to the next step
       console.log(`ChallengeInviteFriendsJoin, joinChallengeNowSubmitPart2, redirect to ${this.getChallengeBasePath()}customize-message`);
@@ -255,7 +256,7 @@ class ChallengeInviteFriendsJoin extends Component {
       challengeWeVoteId, chosenWebsiteName,
       triggerVotingPlanSave, voterPhotoUrlLarge,
     } = this.state;
-    const htmlTitle = `Why do you support ${challengeTitle}? - ${chosenWebsiteName}`;
+    const htmlTitle = `Join now: ${challengeTitle}? - ${chosenWebsiteName}`;
     return (
       <div>
         <Helmet>
@@ -302,12 +303,12 @@ class ChallengeInviteFriendsJoin extends Component {
                     </HeaderAddendum>
                   </ChallengeH2>
                   <SettingsWidgetFirstLastName hideNameShownWithEndorsements />
-                  <VoterPhotoUpload />
-                  <VisibleToPublicCheckboxWrapper>
-                    <Suspense fallback={<span>&nbsp;</span>}>
-                      <VisibleToPublicCheckbox challengeWeVoteId={challengeWeVoteId} />
-                    </Suspense>
-                  </VisibleToPublicCheckboxWrapper>
+                  <VoterPhotoUpload maxWidth={48} />
+                  {/* <VisibleToPublicCheckboxWrapper> */}
+                  {/*  <Suspense fallback={<span>&nbsp;</span>}> */}
+                  {/*    <VisibleToPublicCheckbox challengeWeVoteId={challengeWeVoteId} /> */}
+                  {/*  </Suspense> */}
+                  {/* </VisibleToPublicCheckboxWrapper> */}
                 </CampaignSupportSection>
               </CampaignSupportSectionWrapper>
               <CampaignSupportSectionWrapper>
@@ -327,15 +328,26 @@ class ChallengeInviteFriendsJoin extends Component {
         <SupportButtonFooterWrapper>
           <SupportButtonPanel>
             <CenteredDiv>
-              <Button
-                classes={{ root: classes.buttonDesktop }}
-                color="primary"
-                id="joinChallengeNow"
-                onClick={this.joinChallengeNowSubmit}
-                variant="contained"
-              >
-                Join Challenge now
-              </Button>
+              <StackedDiv>
+                <div>
+                  By continuing, you accept WeVote.US&apos;s
+                  {' '}
+                  Terms of Service
+                  {' '}
+                  and
+                  {' '}
+                  Privacy Policy.
+                </div>
+                <Button
+                  classes={{ root: classes.buttonDesktop }}
+                  color="primary"
+                  id="joinChallengeNow"
+                  onClick={this.joinChallengeNowSubmit}
+                  variant="contained"
+                >
+                  Join Challenge now
+                </Button>
+              </StackedDiv>
             </CenteredDiv>
           </SupportButtonPanel>
         </SupportButtonFooterWrapper>
@@ -389,6 +401,13 @@ const HeaderAddendum = styled('span')`
   color: ${DesignTokenColors.neutral400};
   font-size: 14px;
   font-weight: 300;
+`;
+
+const StackedDiv = styled('div')`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 620px;
 `;
 
 const VisibleToPublicCheckboxWrapper = styled('div')`
