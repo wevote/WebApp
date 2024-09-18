@@ -13,7 +13,6 @@ import { PageContentContainer } from '../../../components/Style/pageLayoutStyles
 import webAppConfig from '../../../config';
 // import AnalyticsActions from '../../../actions/AnalyticsActions';
 import BallotActions from '../../../actions/BallotActions';
-import BallotStore from '../../../stores/BallotStore';
 import ChallengeParticipantStore from '../../stores/ChallengeParticipantStore';
 import ChallengeStore from '../../stores/ChallengeStore';
 import VoterStore from '../../../stores/VoterStore';
