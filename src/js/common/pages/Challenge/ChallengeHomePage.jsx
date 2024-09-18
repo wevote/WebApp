@@ -592,7 +592,7 @@ class ChallengeHomePage extends Component {
               <>
                 {tabSelectedChosen === 'leaderboard' ? (
                   <LeaderboardSectionWrapper>
-                    <ChallengeLeaderboard />
+                    <ChallengeLeaderboard challengeWeVoteId={challengeWeVoteIdForDisplay} />
                   </LeaderboardSectionWrapper>
                 ) : (
                   <AboutSectionWrapper>
@@ -715,7 +715,7 @@ class ChallengeHomePage extends Component {
                   </FriendsSectionWrapper>
                 ) : (
                   <LeaderboardSectionWrapper>
-                    <ChallengeLeaderboard />
+                    <ChallengeLeaderboard challengeWeVoteId={challengeWeVoteIdForDisplay} />
                   </LeaderboardSectionWrapper>
                 )}
                 {/* {commentListTeaserHtml} */}
