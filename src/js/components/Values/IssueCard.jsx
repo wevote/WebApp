@@ -344,6 +344,7 @@ class IssueCard extends Component {
                       {includeLinkToIssue ? (
                         <Link to={this.getIssueLink}
                               className="u-no-underline"
+                              tabIndex={-1}
                         >
                           {issueImage}
                         </Link>

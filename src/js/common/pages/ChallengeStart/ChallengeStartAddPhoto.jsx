@@ -75,7 +75,7 @@ class ChallengeStartAddPhoto extends Component {
                 Add a photo
               </CampaignProcessStepTitle>
               <CampaignProcessStepIntroductionText>
-                Campaigns with a photo receive six times more supporters than those without. Include one that captures the emotion of your story.
+                Challenges with a photo receive six times more participants than those without. Include one that captures the emotion of your story.
               </CampaignProcessStepIntroductionText>
               <CampaignStartSectionWrapper>
                 <CampaignStartSection>
