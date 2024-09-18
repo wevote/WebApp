@@ -3,41 +3,37 @@ import { EventOutlined, CampaignOutlined, EmojiEventsOutlined } from '@mui/icons
 import React, { Suspense } from 'react';
 import styled from 'styled-components';
 import { renderLog } from '../../utils/logging';
+import DesignTokenColors from '../Style/DesignTokenColors';
 
-import {
-    CardRowsWrapper,
-    CardForListRow
-} from '../Style/CampaignCardStyles';
+function CardForListBody(props) {
+  renderLog('CardForListBody');
 
-function CardForListBody (props) {
-    renderLog('CardForListBody');  
+  // Variables to hold dummy data
+  const challengeDates = (
+    <span>
+      Jan 20, 24 - Sep 10, 24 · <strong>5 days left</strong>
+    </span>
+  );
+  const remindFriends = "Remind as many friends as you can about the date of the election, and let them know you will be voting.";
+  const currentLeader = "Current leader: Tamika M.";
+  const friendsInvited = (
+    <span>
+      <strong>31,477 friends invited</strong> by 6,441 participants
+    </span>
+  );
 
-    // Variables to hold dummy data
-    const challengeDates = (
-      <span>
-        "Jan 20, 24  Sep 10, 24 · <strong>5 days left</strong>";
-      </span>
-    );
-    const remindFriends = "Remind as many friends as you can about the date of the election, and let them know you will be voting.";
-    const currentLeader = "Current leader: Tamika M.";
-    const friendsInvited = (
-      <span>
-        "<strong>31,477 friends invited</strong> by 6,441 participants";
-      </span>
-    );
-    
-return (
-  <CardRowsWrapper>
-    {challengeDates && (
-      <CardForListRow>
-        <FlexDivLeft>
-          <SvgImageWrapper>
-            <EventOutlined />
-          </SvgImageWrapper>
-          <ChallengeDatesDiv >{challengeDates}</ChallengeDatesDiv>
-        </FlexDivLeft>
-      </CardForListRow>
-    )}
+  return (
+    <CardRowsWrapper>
+      {challengeDates && (
+        <CardForListRow>
+          <FlexDivLeft>
+            <SvgImageWrapper>
+              <EventOutlined />
+            </SvgImageWrapper>
+            <ChallengeDatesDiv>{challengeDates}</ChallengeDatesDiv>
+          </FlexDivLeft>
+        </CardForListRow>
+      )}
       <CardForListRow>
         <Suspense fallback={<></>}>
           {remindFriends && (
@@ -66,20 +62,29 @@ return (
         </Suspense>
       </CardForListRow>
     </CardRowsWrapper>
-  )
+  );
 }
 
 const styles = () => ({
-    howToVoteRoot: {
-      color: '#999',
-      height: 18,
-      // marginRight: 3,
-      width: 18,
-    },
-  });
+  howToVoteRoot: {
+    color: '#999',
+    height: 18,
+    width: 18,
+  },
+});
+
+export const CardForListRow = styled('div')`
+  color: ${DesignTokenColors.neutralUI500};
+  font-size: 12px;
+  padding: 3px 0 3px 8px;
+`;
+
+export const CardRowsWrapper = styled('div')`
+  margin-top: 2px;
+`;
 
 export const FlexDivLeft = styled('div')`
-  align-items: center;
+  align-items: flex-start;
   display: flex;
   justify-content: start;
 `;
@@ -88,6 +93,7 @@ export const SvgImageWrapper = styled('div')`
   max-width: 25px;
   min-width: 25px;
   width: 25px;
+  margin-right: 15px;
 `;
 
 export const ChallengeDatesDiv = styled('div')`
