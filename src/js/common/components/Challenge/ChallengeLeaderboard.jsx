@@ -6,7 +6,7 @@ import { withStyles } from '@mui/styles';
 import DesignTokenColors from '../Style/DesignTokenColors';
 import ChallengeLeaderboardList from './ChallengeLeaderboardList';
 import SearchBar2024 from '../../../components/Search/SearchBar2024';
-// import ChallengeParticipantStore from '../../stores/ChallengeParticipantStore';
+import ChallengeParticipantStore from '../../stores/ChallengeParticipantStore';
 
 
 const LeaderboardContainer = styled.div`
@@ -75,7 +75,23 @@ function searchFunction () {
 
 
 const ChallengeLeaderboard = ({ classes, challengeWeVoteId }) => {
-  console.log('test  mounted', challengeWeVoteId);
+  // eslint-disable-next-line no-unused-vars
+  const [latestParticipants, setLatestParticipants] = React.useState([]);
+
+  React.useEffect(() => {
+    console.log('Fetching participants for:', challengeWeVoteId);
+    const handleStoreChange = () => {
+      const updatedParticipants = ChallengeParticipantStore.getLatestChallengeParticipantsList(challengeWeVoteId);
+      console.log('Updated participants:', updatedParticipants);
+      setLatestParticipants(updatedParticipants);
+    };
+    const storeListener = ChallengeParticipantStore.addListener(handleStoreChange);
+    handleStoreChange();
+
+    return () => {
+      storeListener.remove();
+    };
+  }, [challengeWeVoteId]);
   return (
     <LeaderboardContainer>
       <TopSection>
