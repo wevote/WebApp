@@ -74,7 +74,7 @@ const styles = () => ({
 });
 
 export const CardForListRow = styled('div')`
-  color: ${DesignTokenColors.neutralUI500};
+  color: black;
   font-size: 12px;
   padding: 3px 0 3px 8px;
 `;
