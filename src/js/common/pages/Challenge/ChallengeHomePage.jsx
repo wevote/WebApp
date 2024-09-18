@@ -44,6 +44,7 @@ import { cordovaBallotFilterTopMargin } from '../../../utils/cordovaOffsets';
 import { headroomWrapperOffset } from '../../../utils/cordovaCalculatedOffsets';
 import { getPageKey } from '../../../utils/cordovaPageUtils';
 import normalizedImagePath from '../../utils/normalizedImagePath';
+import ChallengeAbout from '../../components/Challenge/ChallengeAbout';
 import ChallengeLeaderboard from '../../components/Challenge/ChallengeLeaderboard';
 
 const ChallengeCardForList = React.lazy(() => import(/* webpackChunkName: 'ChallengeCardForList' */ '../../components/ChallengeListRoot/ChallengeCardForList'));
@@ -572,6 +573,7 @@ class ChallengeHomePage extends Component {
                       </CandidateNameAndPartyWrapper>
                     </Candidate>
                   </CandidateTopRow>
+                    <ChallengeAbout />
                 </MobileHeaderContentContainer>
               </MobileHeaderInnerContainer>
             </MobileHeaderOuterContainer>
@@ -648,6 +650,7 @@ class ChallengeHomePage extends Component {
                     </CampaignDescription>
                   </DelayedLoad>
                 )}
+                  <ChallengeAbout />
                 <ViewBallotButtonWrapper>
                   <Suspense fallback={<></>}>
                     <JoinChallengeButton
