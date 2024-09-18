@@ -221,7 +221,7 @@ export function getApplicationViewBooleans (pathname) {
       pathnameLowerCase.startsWith('/value/') ||
       stringContains('/b/btdo', pathnameLowerCase) ||
       stringContains('/btcand/', pathnameLowerCase) ||
-      stringContains('/+/copy-message', pathnameLowerCase) ||
+      stringContains('/+/invite-friends', pathnameLowerCase) ||
       stringContains('/+/customize-message', pathnameLowerCase) ||
       stringContains('/+/join-challenge', pathnameLowerCase) ||
       stringContains('/settings/positions', pathnameLowerCase)) {

@@ -7,13 +7,21 @@ export const BallotHorizontallyScrollingContainer = styled('div', {
   width: 100%;
   overflow-x: auto;
   white-space: nowrap;
+  border-bottom: 1px solid #ddd;
+  padding-top: 6px;
+  transition: box-shadow 0.2s ease, background-color 0.3s ease; /* Smooth transition for shadow and background color */
 
-  border: 1px solid #fff; /* Default border color so that the hover doesn't create jump */
-  &:hover { border: 1px solid ${DesignTokenColors.neutralUI100}; }
-  ${isChosen ? '' : `&:hover { background-color: ${DesignTokenColors.neutral50}; }`}
-  ${isChosen ? `background-color: ${DesignTokenColors.confirmation50};` : ''}
+ /* Default styles */
+  background-color: ${isChosen ? DesignTokenColors.confirmation50 : ''};
+  box-shadow: ${isChosen ? '0 4px 8px rgba(0, 0, 0, 0.3)' : 'none'};
 
-    /* Fade out, right side */
+  /* Hover effect */
+  &:hover {
+    background-color: ${isChosen ? DesignTokenColors.confirmation50 : DesignTokenColors.neutral50};
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Shadow effect on hover */
+  }
+
+  /* Fade out, right side */
   ${showRightGradient ? '-webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 85%, rgba(0, 0, 0, 0));' : ''}
   ${showRightGradient ? 'mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 85%, rgba(0, 0, 0, 0));' : ''} );
 
@@ -25,7 +33,6 @@ export const BallotHorizontallyScrollingContainer = styled('div', {
   ${showLeftGradient && showRightGradient ? '-webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1) 6%, rgba(0, 0, 0, 1) 94%, rgba(0, 0, 0, 0));' : ''}
   ${showLeftGradient && showRightGradient ? 'mask-image: linear-gradient(to right, rgba(255, 0, 0, 0), rgba(0, 0, 0, 1) 6%, rgba(0, 0, 0, 1) 94%, rgba(0, 0, 0, 0));' : ''}
 
-
   /* Make the scrollbar not be visible */
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
@@ -35,8 +42,6 @@ export const BallotHorizontallyScrollingContainer = styled('div', {
 `));
 
 export const BallotScrollingInnerWrapper = styled('div')`
-  overflow-x: hidden;
-  overflow-y: hidden;
   display: flex;
   position: relative;
 `;

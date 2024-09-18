@@ -6,6 +6,7 @@ import CreditsBody from '../../common/components/CreditsBody';
 import { renderLog } from '../../common/utils/logging';
 import { Section } from '../../components/Welcome/sectionStyles';
 import cordovaScrollablePaneTopPadding from '../../utils/cordovaScrollablePaneTopPadding';
+import webAppConfig from '../../config';
 
 const WelcomeAppbar = React.lazy(() => import(/* webpackChunkName: 'WelcomeAppbar' */ '../../components/Navigation/WelcomeAppbar'));
 const WelcomeFooter = React.lazy(() => import(/* webpackChunkName: 'WelcomeFooter' */ '../../components/Welcome/WelcomeFooter'));
@@ -26,7 +27,7 @@ class Credits extends Component {
       <Wrapper>
         <Helmet>
           <title>Credits - WeVote</title>
-          <link rel="canonical" href="https://wevote.us/more/credits" />
+          <link rel="canonical" href={`${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}/more/credits`} />
         </Helmet>
         <Suspense fallback={<></>}>
           <WelcomeAppbar pathname="/more/pricing" />

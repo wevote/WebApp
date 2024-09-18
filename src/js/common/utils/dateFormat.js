@@ -4,7 +4,7 @@ import { convertToInteger } from './textFormat';
 
 // eslint-disable-next-line consistent-return
 export function formatDateToMonthDayYear (dateString) {
-  // console.log(`typeof window.moment is ${typeof window.moment}` );
+  // console.log(`typeof window.moment is ${typeof window.moment}`);
   if (typeof window.moment === 'undefined') {
     initializeMoment(() => {
       const momentDate = window.moment(dateString, 'YYYY-MM-DD');

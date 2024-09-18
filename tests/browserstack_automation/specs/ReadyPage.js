@@ -3,6 +3,7 @@ import ReadyPage from '../page_objects/ready.page';
 import PrivacyPage from '../page_objects/privacy.page';
 import DonatePage from '../page_objects/donate.page';
 import TermsPage from '../page_objects/terms.page';
+import webAppConfig from '../../../src/js/config';
 
 const waitTime = 8000;
 
@@ -192,7 +193,7 @@ describe('ReadyPage', () => {
     await driver.pause(waitTime);
     await ReadyPage.getTeamLinkElement.click();
     await driver.pause(waitTime);
-    await driver.switchWindow('https://wevote.us/more/about');
+    await driver.switchWindow(`${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}/more/about`);
     await driver.pause(waitTime);
     await expect(ReadyPage.getTeamPageTitleElement).toHaveText('About WeVote');
   });
@@ -203,7 +204,7 @@ describe('ReadyPage', () => {
     await driver.pause(waitTime);
     await ReadyPage.getCreditsAndThanksElement.click();
     await driver.pause(waitTime);
-    await driver.switchWindow('https://wevote.us/more/credits');
+    await driver.switchWindow(`${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}/more/credits`);
     await driver.pause(waitTime);
     await expect(ReadyPage.getCreditsAndThanksPageTitleElement).toHaveText('Credits & Thanks');
   });

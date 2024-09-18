@@ -1,27 +1,44 @@
-import styled from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 import standardBoxShadow from '../../common/components/Style/standardBoxShadow';
 import { cordovaBallotFilterTopMargin } from '../../utils/cordovaOffsets';
 
+const slideIn = keyframes`
+  from { 
+    transform: translateY(-100%);
+  }
+  to { 
+    transform: translateY(0);
+  }
+`;
 
-export const DrawerHeaderOuterContainer = styled('div', {
-  shouldForwardProp: (prop) => !['scrolledDown'].includes(prop),
-})(({ scrolledDown }) => (`
-  // padding-top: cordovaDualHeaderContainerPadding()
+export const DrawerHeaderOuterContainer = styled.div.attrs(({ scrolledDown }) => ({
+  style: {
+    display: scrolledDown ? 'block' : 'hidden',
+  },
+}))`
   width: 100%;
   background-color: #fff;
-  ${scrolledDown ? 'border-bottom: 1px solid #aaa' : ''};
-  ${scrolledDown ? `box_shadow: ${standardBoxShadow('wide')}` : ''};
-  ${scrolledDown ? 'display: block' : 'display: none'};
   overflow: hidden;
   position: fixed;
-  z-index: 1;
+  z-index: 9000;
   right: 0;
-`));
+  transform: translateY(${({ scrolledDown }) => (scrolledDown ? '0' : '-100%')});
+  transition: transform 0.3s ease-in-out;
+  visibility: ${({ scrolledDown }) => (scrolledDown ? 'visible' : 'hidden')};
+  opacity: ${({ scrolledDown }) => (scrolledDown ? 1 : 0)};
 
+  ${({ scrolledDown }) => scrolledDown &&
+    css`
+      animation: ${slideIn} 0.3s ease-out;
+      border-bottom: 1px solid #aaa;
+      box-shadow: ${standardBoxShadow('wide')};
+    `}
+`;
 export const DrawerHeaderInnerContainer = styled('div')`
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  width: 100%;
+  padding: 10px;
 `;
 
 

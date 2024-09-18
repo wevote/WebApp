@@ -277,7 +277,7 @@ const Issues = styled('div')`
   margin-left: 0;
 `;
 
-const IssueListWrapper = styled('ul')`
+const IssueListWrapper = styled('div')`
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;

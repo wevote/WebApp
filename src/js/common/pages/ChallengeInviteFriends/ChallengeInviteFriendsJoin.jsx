@@ -8,24 +8,28 @@ import styled from 'styled-components';
 import VoterActions from '../../../actions/VoterActions';
 import webAppConfig from '../../../config';
 import VoterStore from '../../../stores/VoterStore';
-import ChallengeSupporterActions from '../../actions/ChallengeSupporterActions';
+import ChallengeParticipantActions from '../../actions/ChallengeParticipantActions';
 import ChallengeHeaderSimple from '../../components/Navigation/ChallengeHeaderSimple';
 import VoterPhotoUpload from '../../components/Settings/VoterPhotoUpload';
 import VoterPlan from '../../../components/Ready/VoterPlan';
 import {
   SupportButtonFooterWrapper, SupportButtonPanel,
 } from '../../components/Style/CampaignDetailsStyles';
-import { CampaignProcessStepTitle } from '../../components/Style/CampaignProcessStyles';
-import { CampaignSupportDesktopButtonPanel, CampaignSupportDesktopButtonWrapper, CampaignSupportSection, CampaignSupportSectionWrapper } from '../../components/Style/CampaignSupportStyles';
+import DesignTokenColors from '../../components/Style/DesignTokenColors';
+import { CampaignSupportSection, CampaignSupportSectionWrapper } from '../../components/Style/CampaignSupportStyles';
 import commonMuiStyles from '../../components/Style/commonMuiStyles';
 import { ContentInnerWrapperDefault, ContentOuterWrapperDefault, PageWrapperDefault } from '../../components/Style/PageWrapperStyles';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import ChallengeStore from '../../stores/ChallengeStore';
-import ChallengeSupporterStore from '../../stores/ChallengeSupporterStore';
+import ChallengeParticipantStore from '../../stores/ChallengeParticipantStore';
 import { getChallengeValuesFromIdentifiers, retrieveChallengeFromIdentifiersIfNeeded } from '../../utils/challengeUtils';
 import historyPush from '../../utils/historyPush';
 import initializejQuery from '../../utils/initializejQuery';
+import { isCordova } from '../../utils/isCordovaOrWebApp';
 import { renderLog } from '../../utils/logging';
+import BallotActions from '../../../actions/BallotActions';
+import apiCalming from '../../utils/apiCalming';
+import SettingsWidgetFirstLastName from '../../../components/Settings/SettingsWidgetFirstLastName';
 
 const ChallengeRetrieveController = React.lazy(() => import(/* webpackChunkName: 'ChallengeRetrieveController' */ '../../components/Challenge/ChallengeRetrieveController'));
 const VisibleToPublicCheckbox = React.lazy(() => import(/* webpackChunkName: 'VisibleToPublicCheckbox' */ '../../components/CampaignSupport/VisibleToPublicCheckbox'));
@@ -43,6 +47,7 @@ class ChallengeInviteFriendsJoin extends Component {
       chosenWebsiteName: '',
       linkedPoliticianWeVoteId: '',
       payToPromoteStepTurnedOn: true,
+      triggerVotingPlanSave: false,
       weVoteHostedProfileImageUrlLarge: '',
     };
   }
@@ -94,6 +99,9 @@ class ChallengeInviteFriendsJoin extends Component {
     // Take the "calculated" identifiers and retrieve if missing
     retrieveChallengeFromIdentifiersIfNeeded(challengeSEOFriendlyPath, challengeWeVoteId);
     window.scrollTo(0, 0);
+    if (apiCalming('voterBallotItemsRetrieve', 600000)) {
+      BallotActions.voterBallotItemsRetrieve(0, '', '');
+    }
   }
 
   componentWillUnmount () {
@@ -186,40 +194,41 @@ class ChallengeInviteFriendsJoin extends Component {
     return politicianBasePath;
   }
 
-  goToNextStep = () => {
-    historyPush(`${this.getChallengeBasePath()}customize-message`);
-  }
-
   goToChallengeHome = () => {
     historyPush(this.getChallengeBasePath());
   }
 
-  submitSkipForNow = () => {
-    initializejQuery(() => {
-      ChallengeSupporterActions.supporterEndorsementQueuedToSave(undefined);
+  joinChallengeNowSubmit = () => {
+    // The function to save the voter plan is in the VoterPlan component because that's where the latest data is.
+    // We pass this triggerVotingPlanSave into that component to make the save.
+    // The VoterPlan component then triggers a function which calls joinChallengeNowSubmitPart2
+    this.setState({
+      triggerVotingPlanSave: true,
     });
-    this.goToNextStep();
   }
 
-  joinChallengeNowSubmit = () => {
+  joinChallengeNowSubmitPart2 = () => {
     const { challengeWeVoteId } = this.state;
+    // console.log('ChallengeInviteFriendsJoin, joinChallengeNowSubmitPart2, challengeWeVoteId:', challengeWeVoteId);
     if (challengeWeVoteId) {
-      const supporterEndorsementQueuedToSave = ChallengeSupporterStore.getSupporterEndorsementQueuedToSave();
-      const supporterEndorsementQueuedToSaveSet = ChallengeSupporterStore.getSupporterEndorsementQueuedToSaveSet();
-      let visibleToPublic = ChallengeSupporterStore.getVisibleToPublic();
-      const visibleToPublicChanged = ChallengeSupporterStore.getVisibleToPublicQueuedToSaveSet();
-      if (visibleToPublicChanged) {
-        // If it has changed, use new value
-        visibleToPublic = ChallengeSupporterStore.getVisibleToPublicQueuedToSave();
-      }
-      if (supporterEndorsementQueuedToSaveSet || visibleToPublicChanged) {
-        // console.log('ChallengeInviteFriendsJoin, supporterEndorsementQueuedToSave:', supporterEndorsementQueuedToSave);
-        const saveVisibleToPublic = true;
-        initializejQuery(() => {
-          ChallengeSupporterActions.supporterEndorsementSave(challengeWeVoteId, supporterEndorsementQueuedToSave, visibleToPublic, saveVisibleToPublic); // challengeSupporterSave
-          ChallengeSupporterActions.supporterEndorsementQueuedToSave(undefined);
-        });
-      }
+      // const participantEndorsementQueuedToSave = ChallengeParticipantStore.getSupporterEndorsementQueuedToSave();
+      // const participantEndorsementQueuedToSaveSet = ChallengeParticipantStore.getSupporterEndorsementQueuedToSaveSet();
+      // let visibleToPublic = ChallengeParticipantStore.getVisibleToPublic();
+      // const visibleToPublicChanged = ChallengeParticipantStore.getVisibleToPublicQueuedToSaveSet();
+      // if (visibleToPublicChanged) {
+      //   // If it has changed, use new value
+      //   // TODO Convert to first name/last name visibility save
+      //   // visibleToPublic = ChallengeParticipantStore.getVisibleToPublicQueuedToSave();
+      // }
+      // TODO: Convert to saving "Why You Will Vote"
+      // if (participantEndorsementQueuedToSaveSet || visibleToPublicChanged) {
+      //   // console.log('ChallengeInviteFriendsJoin, participantEndorsementQueuedToSave:', participantEndorsementQueuedToSave);
+      //   const saveVisibleToPublic = true;
+      //   initializejQuery(() => {
+      //     ChallengeParticipantActions.participantEndorsementSave(challengeWeVoteId, participantEndorsementQueuedToSave, visibleToPublic, saveVisibleToPublic); // challengeParticipantSave
+      //     ChallengeParticipantActions.participantEndorsementQueuedToSave(undefined);
+      //   });
+      // }
       const voterPhotoQueuedToSave = VoterStore.getVoterPhotoQueuedToSave();
       const voterPhotoQueuedToSaveSet = VoterStore.getVoterPhotoQueuedToSaveSet();
       if (voterPhotoQueuedToSaveSet) {
@@ -228,7 +237,14 @@ class ChallengeInviteFriendsJoin extends Component {
           VoterActions.voterPhotoQueuedToSave(undefined);
         });
       }
-      this.goToNextStep();
+      // Has all the necessary data been saved?
+
+      // TODO Save "Join Challenge" here
+      ChallengeParticipantActions.challengeParticipantSave(challengeWeVoteId);
+
+      // If all the necessary data has been saved, proceed to the next step
+      console.log(`ChallengeInviteFriendsJoin, joinChallengeNowSubmitPart2, redirect to ${this.getChallengeBasePath()}customize-message`);
+      historyPush(`${this.getChallengeBasePath()}customize-message`);
     }
   }
 
@@ -238,9 +254,9 @@ class ChallengeInviteFriendsJoin extends Component {
     const {
       challengeSEOFriendlyPath, challengeTitle,
       challengeWeVoteId, chosenWebsiteName,
-      voterPhotoUrlLarge,
+      triggerVotingPlanSave, voterPhotoUrlLarge,
     } = this.state;
-    const htmlTitle = `Why do you support ${challengeTitle}? - ${chosenWebsiteName}`;
+    const htmlTitle = `Join now: ${challengeTitle}? - ${chosenWebsiteName}`;
     return (
       <div>
         <Helmet>
@@ -254,60 +270,84 @@ class ChallengeInviteFriendsJoin extends Component {
           goToChallengeHome={this.goToChallengeHome}
           politicianBasePath={this.getPoliticianBasePath()}
         />
+        <ChallengeH1Wrapper>
+          <ChallengeH1>
+            To join this challenge, share how you will vote &mdash; then ask your friends to join.
+          </ChallengeH1>
+        </ChallengeH1Wrapper>
         <PageWrapperDefault>
           <ContentOuterWrapperDefault>
             <ContentInnerWrapperDefault>
-              <CampaignProcessStepTitle>
-                To join this challenge, share how you will vote &mdash; then ask your friends to join.
-              </CampaignProcessStepTitle>
-              {/*
-              <CampaignProcessStepIntroductionText>
-                People are more likely to support this challenge if it’s clear why you care. Explain how
-                {' '}
-                {politicianListSentenceString}
-                {' '}
-                winning will impact you, your family, or your community.
-              </CampaignProcessStepIntroductionText>
-              */}
               <CampaignSupportSectionWrapper>
                 <CampaignSupportSection>
-                  <VoterPlan />
-                  { !voterPhotoUrlLarge && <VoterPhotoUpload /> }
-                  <VisibleToPublicCheckboxWrapper>
-                    <Suspense fallback={<span>&nbsp;</span>}>
-                      <VisibleToPublicCheckbox challengeWeVoteId={challengeWeVoteId} />
-                    </Suspense>
-                  </VisibleToPublicCheckboxWrapper>
-                  <CampaignSupportDesktopButtonWrapper className="u-show-desktop-tablet">
-                    <CampaignSupportDesktopButtonPanel>
-                      <Button
-                        classes={{ root: classes.buttonDesktop }}
-                        color="primary"
-                        id="joinChallengeNow"
-                        onClick={this.joinChallengeNowSubmit}
-                        variant="contained"
-                      >
-                        Join Challenge now
-                      </Button>
-                    </CampaignSupportDesktopButtonPanel>
-                  </CampaignSupportDesktopButtonWrapper>
+                  <ChallengeH2>
+                    1. Your voting plan
+                    {' '}
+                    <HeaderAddendum>
+                      (only visible to you)
+                    </HeaderAddendum>
+                  </ChallengeH2>
+                  <VoterPlan
+                    triggerVotingPlanSave={triggerVotingPlanSave}
+                    votingPlanSaved={this.joinChallengeNowSubmitPart2}
+                  />
+                </CampaignSupportSection>
+              </CampaignSupportSectionWrapper>
+              <CampaignSupportSectionWrapper>
+                <CampaignSupportSection>
+                  <ChallengeH2>
+                    2. Your name and photo
+                    {' '}
+                    <HeaderAddendum>
+                      (visible to all)
+                    </HeaderAddendum>
+                  </ChallengeH2>
+                  <SettingsWidgetFirstLastName hideNameShownWithEndorsements />
+                  <VoterPhotoUpload maxWidth={48} />
+                  {/* <VisibleToPublicCheckboxWrapper> */}
+                  {/*  <Suspense fallback={<span>&nbsp;</span>}> */}
+                  {/*    <VisibleToPublicCheckbox challengeWeVoteId={challengeWeVoteId} /> */}
+                  {/*  </Suspense> */}
+                  {/* </VisibleToPublicCheckboxWrapper> */}
+                </CampaignSupportSection>
+              </CampaignSupportSectionWrapper>
+              <CampaignSupportSectionWrapper>
+                <CampaignSupportSection>
+                  <ChallengeH2>
+                    3. Why you will vote
+                    {' '}
+                    <HeaderAddendum>
+                      (optional, visible to all)
+                    </HeaderAddendum>
+                  </ChallengeH2>
                 </CampaignSupportSection>
               </CampaignSupportSectionWrapper>
             </ContentInnerWrapperDefault>
           </ContentOuterWrapperDefault>
         </PageWrapperDefault>
-        <SupportButtonFooterWrapper className="u-show-mobile">
+        <SupportButtonFooterWrapper>
           <SupportButtonPanel>
             <CenteredDiv>
-              <Button
-                classes={{ root: classes.buttonDefault }}
-                color="primary"
-                id="joinChallengeNowMobile"
-                onClick={this.joinChallengeNowSubmit}
-                variant="contained"
-              >
-                Join Challenge now
-              </Button>
+              <StackedDiv>
+                <div>
+                  By continuing, you accept WeVote.US&apos;s
+                  {' '}
+                  Terms of Service
+                  {' '}
+                  and
+                  {' '}
+                  Privacy Policy.
+                </div>
+                <Button
+                  // classes={{ root: classes.buttonDesktop }}
+                  color="primary"
+                  id="joinChallengeNow"
+                  onClick={this.joinChallengeNowSubmit}
+                  variant="contained"
+                >
+                  Join Challenge now
+                </Button>
+              </StackedDiv>
             </CenteredDiv>
           </SupportButtonPanel>
         </SupportButtonFooterWrapper>
@@ -331,6 +371,43 @@ ChallengeInviteFriendsJoin.propTypes = {
 const CenteredDiv = styled('div')`
   display: flex;
   justify-content: center;
+`;
+
+const ChallengeH1Wrapper = styled('div')`
+  background-color: ${DesignTokenColors.neutralUI50};
+  display: flex;
+  justify-content: center;
+`;
+
+const ChallengeH1 = styled('h1')`
+  font-size: 24px;
+  font-weight: 600;
+  margin: 20px 0;
+  max-width: 620px;
+  ${isCordova() ? 'padding-top: 14px' : ''};
+  @media (max-width: 1005px) {
+    // Switch to 15px left/right margin when auto is too small
+    margin-left: 15px;
+    margin-right: 15px;
+  }
+`;
+
+const ChallengeH2 = styled('h2')`
+  font-size: 18px;
+  font-weight: 500;
+`;
+
+const HeaderAddendum = styled('span')`
+  color: ${DesignTokenColors.neutral400};
+  font-size: 14px;
+  font-weight: 300;
+`;
+
+const StackedDiv = styled('div')`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 620px;
 `;
 
 const VisibleToPublicCheckboxWrapper = styled('div')`
