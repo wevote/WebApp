@@ -140,12 +140,7 @@ class BallotDecisionsTabs extends Component {
                 id="ballotDecisionsTabsItemsDecided"
                 invisible={itemsDecidedCount === 0}
               >
-                <span className="u-show-mobile">
-                  Decided
-                </span>
-                <span className="u-show-desktop-tablet">
-                  Decided
-                </span>
+                Chosen
               </Badge>
             )}
           />
