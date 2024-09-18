@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { isCordova, isWebApp } from '../utils/isCordovaOrWebApp';
 import { renderLog } from '../utils/logging';
 import ToolBar from './Widgets/ToolBar';
-import webAppConfig from "../../config";
+import webAppConfig from '../../config';
 
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ './Widgets/OpenExternalWebSite'));

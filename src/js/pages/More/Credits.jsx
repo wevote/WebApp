@@ -6,7 +6,7 @@ import CreditsBody from '../../common/components/CreditsBody';
 import { renderLog } from '../../common/utils/logging';
 import { Section } from '../../components/Welcome/sectionStyles';
 import cordovaScrollablePaneTopPadding from '../../utils/cordovaScrollablePaneTopPadding';
-import webAppConfig from "../../config";
+import webAppConfig from '../../config';
 
 const WelcomeAppbar = React.lazy(() => import(/* webpackChunkName: 'WelcomeAppbar' */ '../../components/Navigation/WelcomeAppbar'));
 const WelcomeFooter = React.lazy(() => import(/* webpackChunkName: 'WelcomeFooter' */ '../../components/Welcome/WelcomeFooter'));

@@ -1,11 +1,13 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-import CardForListBody from '../../common/components/CardForListBody';
+import React, { Component, Suspense } from 'react';
+import CardForListBodyPlaceholder from '../../common/components/CardForListBodyPlaceholder';
 import { getTodayAsInteger } from '../../common/utils/dateFormat';
 import { renderLog } from '../../common/utils/logging';
 import CampaignSupporterStore from '../../common/stores/CampaignSupporterStore';
 import CandidateStore from '../../stores/CandidateStore';
 import keepHelpingDestination from '../../common/utils/keepHelpingDestination';
+
+const CardForListBody = React.lazy(() => import('../../common/components/CardForListBody'));
 
 // const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
@@ -206,31 +208,43 @@ class CandidateCardForList extends Component {
     const todayAsInteger = getTodayAsInteger();
     const finalElectionDateInPast = candidateUltimateElectionDate && (candidateUltimateElectionDate <= todayAsInteger);
     const pathToUseToKeepHelping = this.getPathToUseToKeepHelping();
+    const fallbackJsx = (
+      <span>
+        <CardForListBodyPlaceholder
+          useVerticalCard
+          hideCardMargins
+          limitCardWidth
+          profileImageBackgroundColor
+        />
+      </span>
+    );
     return (
-      <CardForListBody
-        ballotItemDisplayName={ballotItemDisplayName}
-        campaignSupported={campaignSupported}
-        candidateWeVoteId={candidateWeVoteId}
-        districtName={districtName}
-        finalElectionDateInPast={finalElectionDateInPast}
-        limitCardWidth={limitCardWidth}
-        linkedCampaignXWeVoteId={linkedCampaignXWeVoteId}
-        officeName={contestOfficeName}
-        pathToUseToKeepHelping={pathToUseToKeepHelping}
-        photoLargeUrl={candidatePhotoLargeUrl}
-        politicalParty={politicalParty}
-        politicianBaseBath={this.getPoliticianBasePath()}
-        // politicianDescription={candidateDescription}
-        politicianWeVoteId={politicianWeVoteId}
-        profileImageBackgroundColor={profileImageBackgroundColor}
-        showPoliticianOpenInNewWindow={showPoliticianOpenInNewWindow}
-        stateCode={stateCode}
-        supportersCount={supportersCount}
-        supportersCountNextGoalRaw={supportersCountNextGoalRaw}
-        tagIdBaseName="candidateCard"
-        ultimateElectionDate={candidateUltimateElectionDate}
-        useVerticalCard={useVerticalCard}
-      />
+      <Suspense fallback={fallbackJsx}>
+        <CardForListBody
+          ballotItemDisplayName={ballotItemDisplayName}
+          campaignSupported={campaignSupported}
+          candidateWeVoteId={candidateWeVoteId}
+          districtName={districtName}
+          finalElectionDateInPast={finalElectionDateInPast}
+          limitCardWidth={limitCardWidth}
+          linkedCampaignXWeVoteId={linkedCampaignXWeVoteId}
+          officeName={contestOfficeName}
+          pathToUseToKeepHelping={pathToUseToKeepHelping}
+          photoLargeUrl={candidatePhotoLargeUrl}
+          politicalParty={politicalParty}
+          politicianBaseBath={this.getPoliticianBasePath()}
+          // politicianDescription={candidateDescription}
+          politicianWeVoteId={politicianWeVoteId}
+          profileImageBackgroundColor={profileImageBackgroundColor}
+          showPoliticianOpenInNewWindow={showPoliticianOpenInNewWindow}
+          stateCode={stateCode}
+          supportersCount={supportersCount}
+          supportersCountNextGoalRaw={supportersCountNextGoalRaw}
+          tagIdBaseName="candidateCard"
+          ultimateElectionDate={candidateUltimateElectionDate}
+          useVerticalCard={useVerticalCard}
+        />
+      </Suspense>
     );
   }
 }

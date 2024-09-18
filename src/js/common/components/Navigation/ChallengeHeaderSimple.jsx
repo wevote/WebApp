@@ -8,7 +8,10 @@ import React, { Suspense } from 'react';
 // import { Link } from 'react-router-dom';
 import { renderLog } from '../../utils/logging';
 import {
-  Candidate, CandidateNameAndPartyWrapper, CandidateNameH4, CandidateTopRow,
+  Candidate,
+  CandidateNameAndPartyWrapper,
+  CandidateNameH4,
+  CandidateTopRow,
 } from '../../../components/Style/BallotStyles';
 import { cordovaBallotFilterTopMargin } from '../../../utils/cordovaOffsets';
 import standardBoxShadow from '../Style/standardBoxShadow';
@@ -27,8 +30,8 @@ function ChallengeHeaderSimple (props) {
     <ChallengeHeaderSimpleOuterContainer id="politicianHeaderContainer">
       <ChallengeHeaderSimpleInnerContainer>
         <ChallengeHeaderSimpleContentContainer>
-          <CandidateTopRow>
-            <Candidate
+          <ChallengeTitleRow>
+            <ChallengePhotoAndTitle
               id={`officeItemCompressedCandidateImageAndName-${challengeWeVoteId}`}
             >
               {/* Candidate Image */}
@@ -42,13 +45,13 @@ function ChallengeHeaderSimple (props) {
                   style={{ backgroundImage: { avatarBackgroundImage } }}
                 />
               </Suspense>
-              {/* Candidate Name */}
+              {/* Title of the Challenge */}
               <CandidateNameAndPartyWrapper>
-                <CandidateNameH4>
+                <ChallengeNameH4>
                   {challengeTitle}
-                </CandidateNameH4>
+                </ChallengeNameH4>
               </CandidateNameAndPartyWrapper>
-            </Candidate>
+            </ChallengePhotoAndTitle>
             <CloseDrawerIconWrapper>
               <div>
                 <IconButton
@@ -64,7 +67,7 @@ function ChallengeHeaderSimple (props) {
                 </IconButton>
               </div>
             </CloseDrawerIconWrapper>
-          </CandidateTopRow>
+          </ChallengeTitleRow>
           <HeartToggleAndThermometerWrapper>
             &nbsp;
           </HeartToggleAndThermometerWrapper>
@@ -127,10 +130,31 @@ const ChallengeHeaderSimpleInnerContainer = styled('div')`
   width: 100%;
 `;
 
+const ChallengeNameH4 = styled('div')`
+  font-weight: 400;
+  font-size: 20px;
+  margin-bottom: 0 !important;
+  white-space: normal;
+  border: none;
+  background-color: transparent;
+  padding: 0;
+  text-align: left;
+`;
+
+const ChallengePhotoAndTitle = styled('div')`
+  display: flex;
+  flex-grow: 8;
+`;
+
+const ChallengeTitleRow = styled('div')`
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+`;
+
 const CloseDrawerIconWrapper = styled('div')`
   display: flex;
   justify-content: flex-end;
-  width: 100%;
 `;
 
 export default withTheme(withStyles(styles)(ChallengeHeaderSimple));

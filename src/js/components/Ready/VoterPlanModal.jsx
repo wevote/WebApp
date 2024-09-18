@@ -286,7 +286,7 @@ VoterPlanModal.propTypes = {
   toggleFunction: PropTypes.func.isRequired,
 };
 
-const styles = (theme) => ({
+const styles = () => ({
   dialogPaper: {
     marginTop: hasIPhoneNotch() ? 68 : 48,
     '@media (min-width: 576px)': {
@@ -314,72 +314,6 @@ const styles = (theme) => ({
   },
   closeButton: {
     marginLeft: 'auto',
-  },
-  closeButtonAbsolute: {
-    position: 'absolute',
-    right: 14,
-    top: 14,
-  },
-  selectDefault: {
-    position: 'relative',
-    background: '#e8e8e8 !important',
-    border: 'none',
-    borderBottom: '1px solid rgba(0, 0, 0, 0.5)',
-    color: '#2E3C5D',
-    fontSize: 16,
-    fontWeight: 'bold',
-    padding: '0 0 0 0',
-    marginLeft: '0px',
-    width: 'fit-content !important',
-    // padding: '10px 26px 10px 12px',
-    // Use the system font instead of the default Roboto font.
-    fontFamily: [
-      '-apple-system',
-      'BlinkMacSystemFont',
-      '"Segoe UI"',
-      'Roboto',
-      '"Helvetica Neue"',
-      'Arial',
-      'sans-serif',
-      '"Apple Color Emoji"',
-      '"Segoe UI Emoji"',
-      '"Segoe UI Symbol"',
-    ].join(','),
-    '&:focus': {
-      background: '#00000030 !important',
-    },
-  },
-  selectInput: {
-    paddingBottom: '1px',
-    paddingLeft: '6px',
-  },
-  paperInputForm: {
-    padding: '0 0 0 .7rem',
-    display: 'flex',
-    alignItems: 'center',
-    width: '100%',
-    boxShadow: 'none',
-    border: '2px solid #e8e8e8',
-  },
-  saveButton: {
-    height: 'fit-content',
-    marginLeft: 8,
-    margin: 0,
-    borderTopLeftRadius: 0,
-    borderBottomLeftRadius: 0,
-  },
-  inputBase: {
-    flex: 1,
-    [theme.breakpoints.up('sm')]: {
-      width: 210,
-    },
-    [theme.breakpoints.up('md')]: {
-      width: 250,
-    },
-  },
-  formControlLabel: {
-    marginBottom: 4,
-    marginTop: 10,
   },
 });
 
