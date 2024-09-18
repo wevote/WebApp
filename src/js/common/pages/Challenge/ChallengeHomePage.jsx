@@ -595,7 +595,7 @@ class ChallengeHomePage extends Component {
               <>
                 {tabSelectedChosen === 'leaderboard' ? (
                   <LeaderboardSectionWrapper>
-                    LEADERBOARD (MOBILE) GOES HERE
+                    <ChallengeLeaderboard />
                   </LeaderboardSectionWrapper>
                 ) : (
                   <AboutSectionWrapper>
