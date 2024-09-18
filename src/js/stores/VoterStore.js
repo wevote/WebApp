@@ -1253,7 +1253,7 @@ class VoterStore extends ReduceStore {
           },
         };
 
-      case 'voterUpdate':
+      case 'voterUpdate':  // Formerly voterDeleteAccount
         if (action.res.success && action.res.voter_deleted) {
           revisedState = state;
           revisedState = { ...revisedState,

@@ -136,7 +136,7 @@ class ChallengeStartPreview extends Component {
                 to="/challenges"
               >
                 <Button
-                  classes={{root: classes.buttonSimpleLink}}
+                  classes={{ root: classes.buttonSimpleLink }}
                   color="primary"
                 >
                   <div className="u-show-mobile">
@@ -148,7 +148,7 @@ class ChallengeStartPreview extends Component {
                 </Button>
               </Link>
               <Button
-                classes={{root: classes.buttonEdit}}
+                classes={{ root: classes.buttonEdit }}
                 color="primary"
                 id="challengeEditAll"
                 onClick={this.challengeEditAll}

@@ -9,8 +9,8 @@ import { OuterWrapper, PageWrapper, StepNumberBordered, StepNumberPlaceholder } 
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import historyPush from '../../utils/historyPush';
 import { renderLog } from '../../utils/logging';
-import { publicFigureQuotes } from "../../constants/whyVoteQuotes";
-import WhyVoteQuote from "../../../components/Remind/WhyVoteQuote";
+import { publicFigureQuotes } from '../../constants/whyVoteQuotes';
+import WhyVoteQuote from '../../../components/Remind/WhyVoteQuote';
 
 
 class ChallengeStartIntro extends Component {

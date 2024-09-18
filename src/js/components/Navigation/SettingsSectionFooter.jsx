@@ -10,6 +10,7 @@ import { isTablet } from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import { DeviceInformationSpan, TermsAndPrivacyText } from '../Style/pageLayoutStyles';
 import DeviceDialog from '../Widgets/DeviceDialog';
+import webAppConfig from '../../config';
 
 
 class SettingsSectionFooter extends Component {
@@ -95,7 +96,7 @@ class SettingsSectionFooter extends Component {
             <>
               <OpenExternalWebSite
                 linkIdAttribute="footerLinkTeam"
-                url="https://wevote.us/more/about"
+                url={`${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}/more/about`}
                 target="_blank"
                 body={(
                   <TermsAndPrivacyText>Team</TermsAndPrivacyText>
@@ -104,7 +105,7 @@ class SettingsSectionFooter extends Component {
               <span style={{ paddingLeft: 15 }} />
               <OpenExternalWebSite
                 linkIdAttribute="footerLinkCredit"
-                url="https://wevote.us/more/credits"
+                url={`${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}/more/credits`}
                 target="_blank"
                 body={(
                   <TermsAndPrivacyText className="u-no-break">Credits &amp; Thanks</TermsAndPrivacyText>
