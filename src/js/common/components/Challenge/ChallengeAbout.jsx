@@ -1,9 +1,6 @@
 import withStyles from '@mui/styles/withStyles';
 import { EventOutlined, CampaignOutlined, EmojiEventsOutlined } from '@mui/icons-material';
-import PropTypes from 'prop-types';
 import React, { Suspense } from 'react';
-import { Link } from 'react-router-dom';
-import TruncateMarkup from 'react-truncate-markup';
 import styled from 'styled-components';
 import { renderLog } from '../../utils/logging';
 
@@ -12,11 +9,10 @@ import {
     CardForListRow
 } from '../Style/CampaignCardStyles';
 
-// React functional component example
 function CardForListBody (props) {
-    renderLog('CardForListBody');  // Set LOG_RENDER_EVENTS to log all renders
+    renderLog('CardForListBody');  
 
-    // variable to hold the dummy data "Jan 20, 24 - Sep 10, 24 "
+    // Variables to hold dummy data
     const challengeDates = (
       <span>
         "Jan 20, 24  Sep 10, 24 · <strong>5 days left</strong>";
