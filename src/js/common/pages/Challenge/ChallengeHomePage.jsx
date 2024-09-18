@@ -44,6 +44,7 @@ import { cordovaBallotFilterTopMargin } from '../../../utils/cordovaOffsets';
 import { headroomWrapperOffset } from '../../../utils/cordovaCalculatedOffsets';
 import { getPageKey } from '../../../utils/cordovaPageUtils';
 import normalizedImagePath from '../../utils/normalizedImagePath';
+import ChallengeLeaderboard from './ChallengeLeaderboard';
 
 const ChallengeCardForList = React.lazy(() => import(/* webpackChunkName: 'ChallengeCardForList' */ '../../components/ChallengeListRoot/ChallengeCardForList'));
 // const ChallengeCommentsList = React.lazy(() => import(/* webpackChunkName: 'ChallengeCommentsList' */ '../../components/Challenge/ChallengeCommentsList'));
@@ -591,7 +592,7 @@ class ChallengeHomePage extends Component {
               <>
                 {tabSelectedChosen === 'leaderboard' ? (
                   <LeaderboardSectionWrapper>
-                    LEADERBOARD (MOBILE) GOES HERE
+                    <ChallengeLeaderboard />
                   </LeaderboardSectionWrapper>
                 ) : (
                   <AboutSectionWrapper>
@@ -714,7 +715,7 @@ class ChallengeHomePage extends Component {
                   </FriendsSectionWrapper>
                 ) : (
                   <LeaderboardSectionWrapper>
-                    LEADERBOARD (DESKTOP) GOES HERE
+                    <ChallengeLeaderboard />
                   </LeaderboardSectionWrapper>
                 )}
                 {/* {commentListTeaserHtml} */}
