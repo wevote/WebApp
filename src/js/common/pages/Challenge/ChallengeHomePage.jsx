@@ -46,6 +46,7 @@ import { getPageKey } from '../../../utils/cordovaPageUtils';
 import normalizedImagePath from '../../utils/normalizedImagePath';
 import ChallengeAbout from '../../components/Challenge/ChallengeAbout';
 import ChallengeLeaderboard from '../../components/Challenge/ChallengeLeaderboard';
+import ChallengeInvitedFriends from '../../components/ChallengeInviteFriends/ChallengeInvitedFriends';
 
 const ChallengeCardForList = React.lazy(() => import(/* webpackChunkName: 'ChallengeCardForList' */ '../../components/ChallengeListRoot/ChallengeCardForList'));
 // const ChallengeCommentsList = React.lazy(() => import(/* webpackChunkName: 'ChallengeCommentsList' */ '../../components/Challenge/ChallengeCommentsList'));
@@ -588,7 +589,7 @@ class ChallengeHomePage extends Component {
             />
             {tabSelectedChosen === 'friends' ? (
               <FriendsSectionWrapper>
-                FRIENDS (MOBILE) GO HERE
+                <ChallengeInvitedFriends />
               </FriendsSectionWrapper>
             ) : (
               <>
@@ -714,7 +715,7 @@ class ChallengeHomePage extends Component {
                 />
                 {tabSelectedChosen === 'friends' ? (
                   <FriendsSectionWrapper>
-                    FRIENDS (DESKTOP) GOES HERE
+                    <ChallengeInvitedFriends />
                   </FriendsSectionWrapper>
                 ) : (
                   <LeaderboardSectionWrapper>
