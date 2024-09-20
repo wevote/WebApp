@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import styled from 'styled-components';
 import { Button } from '@mui/material';
 import PropTypes from 'prop-types';
@@ -7,7 +7,9 @@ import DesignTokenColors from '../Style/DesignTokenColors';
 import ChallengeLeaderboardList from './ChallengeLeaderboardList';
 import SearchBar2024 from '../../../components/Search/SearchBar2024';
 import ChallengeParticipantStore from '../../stores/ChallengeParticipantStore';
+import FirstChallengeParticipantListController from './FirstChallengeParticipantListController';
 
+// const FirstChallengeParticipantListController = React.lazy(() => import(/* webpackChunkName: 'FirstChallengeParticipantListController' */ './FirstChallengeParticipantListController'));
 
 const LeaderboardContainer = styled.div`
   max-width: 100vw;
@@ -81,7 +83,7 @@ const ChallengeLeaderboard = ({ classes, challengeWeVoteId }) => {
   React.useEffect(() => {
     console.log('Fetching participants for:', challengeWeVoteId);
     const handleStoreChange = () => {
-      const updatedParticipants = ChallengeParticipantStore.getLatestChallengeParticipantsList(challengeWeVoteId);
+      const updatedParticipants = ChallengeParticipantStore.getChallengeParticipantList(challengeWeVoteId);
       console.log('Updated participants:', updatedParticipants);
       setLatestParticipants(updatedParticipants);
     };
@@ -148,7 +150,10 @@ const ChallengeLeaderboard = ({ classes, challengeWeVoteId }) => {
           </div>
         </LeaderboardTableHeader>
       </TopSection>
-      <ChallengeLeaderboardList />
+      <ChallengeLeaderboardList currentVoterWeVoteId={'wv02voter123'} />
+      <Suspense fallback={<></>}>
+        <FirstChallengeParticipantListController challengeWeVoteId={challengeWeVoteId} searchText="SEARCH TEXT HERE" />
+      </Suspense>
     </LeaderboardContainer>
   );
 };

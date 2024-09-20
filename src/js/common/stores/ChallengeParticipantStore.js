@@ -4,10 +4,11 @@ import Dispatcher from '../dispatcher/Dispatcher';
 class ChallengeParticipantStore extends ReduceStore {
   getInitialState () {
     return {
+      // TODO: Not quite right
       allCachedChallengeParticipants: {}, // Dictionary with ChallengeParticipant simple id as key and the ChallengeParticipant as value
       allCachedChallengeParticipantVoterEntries: {}, // Dictionary with challenge_we_vote_id as key and the ChallengeParticipant for this voter as value
+      challengeParticipantList: {}, // Dict with key challenge_we_vote_id and value of List of Dicts w/ latest challenge_participant entries, ordered newest to oldest
       latestChallengeParticipants: {}, // Dict with key challenge_we_vote_id and value of List of Dicts w/ latest challenge_participant entries, ordered newest to oldest
-      latestChallengeParticipantsWithText: {}, // Dict with key challenge_we_vote_id and value of List of Dicts w/ latest challenge_participant entries with text endorsements
       shareButtonClicked: false,
       participantEndorsementQueuedToSave: '',
       participantEndorsementQueuedToSaveSet: false,
@@ -49,17 +50,13 @@ class ChallengeParticipantStore extends ReduceStore {
     return this.getState().allCachedChallengeParticipants[challengeParticipantId] || {};
   }
 
+  // These are the most recent challenge_participant entries, with visible signers. May or may not have text endorsements.
+  getChallengeParticipantList (challengeWeVoteId) {
+    return this.getState().challengeParticipantList[challengeWeVoteId] || [];
+  }
+
   getChallengeParticipantVoterEntry (challengeWeVoteId) {
     return this.getState().allCachedChallengeParticipantVoterEntries[challengeWeVoteId] || {};
-  }
-
-  // These are the most recent challenge_participant entries, with visible signers. May or may not have text endorsements.
-  getLatestChallengeParticipantsList (challengeWeVoteId) {
-    return this.getState().latestChallengeParticipants[challengeWeVoteId] || [];
-  }
-
-  getLatestChallengeParticipantsWithTextList (challengeWeVoteId) {
-    return this.getState().latestChallengeParticipantsWithText[challengeWeVoteId] || [];
   }
 
   getShareButtonClicked () {
@@ -126,11 +123,10 @@ class ChallengeParticipantStore extends ReduceStore {
       allCachedChallengeParticipants, allCachedChallengeParticipantVoterEntries,
     } = state;
     let {
-      latestChallengeParticipantsWithText, latestChallengeParticipants,
+      latestChallengeParticipants,
     } = state;
     let challengeList;
     let challengeParticipant;
-    let challengeParticipantWithText;
 
     let revisedState;
     switch (action.type) {
@@ -145,18 +141,10 @@ class ChallengeParticipantStore extends ReduceStore {
         revisedState = state;
         challengeList = action.res.challenge_list || [];
         // console.log('challengeListRetrieve latestChallengeParticipants before:', latestChallengeParticipants);
-        // console.log('challengeListRetrieve latestChallengeParticipantsWithText before:', latestChallengeParticipantsWithText);
         challengeList.forEach((oneChallenge) => {
           // if (!(oneChallenge.seo_friendly_path in allCachedChallengeWeVoteIdsBySEOFriendlyPath)) {
           //   allCachedChallengeWeVoteIdsBySEOFriendlyPath[oneChallenge.seo_friendly_path] = oneChallenge.challenge_we_vote_id;
           // }
-          if ('latest_challenge_participant_endorsement_list' in oneChallenge) {
-            for (let i = 0; i < oneChallenge.latest_challenge_participant_endorsement_list.length; ++i) {
-              challengeParticipantWithText = oneChallenge.latest_challenge_participant_endorsement_list[i];
-              allCachedChallengeParticipants[challengeParticipantWithText.id] = challengeParticipantWithText;
-              latestChallengeParticipantsWithText = this.updateChallengeParticipantGenericList(latestChallengeParticipantsWithText, challengeParticipantWithText);
-            }
-          }
           if ('latest_challenge_participant_list' in oneChallenge) {
             for (let i = 0; i < oneChallenge.latest_challenge_participant_list.length; ++i) {
               challengeParticipant = oneChallenge.latest_challenge_participant_list[i];
@@ -172,11 +160,9 @@ class ChallengeParticipantStore extends ReduceStore {
           }
         });
         // console.log('challengeListRetrieve latestChallengeParticipants after:', latestChallengeParticipants);
-        // console.log('challengeListRetrieve latestChallengeParticipantsWithText after:', latestChallengeParticipantsWithText);
         revisedState = { ...revisedState, allCachedChallengeParticipants };
         revisedState = { ...revisedState, allCachedChallengeParticipantVoterEntries };
         revisedState = { ...revisedState, latestChallengeParticipants };
-        revisedState = { ...revisedState, latestChallengeParticipantsWithText };
         return revisedState;
 
       case 'challengeRetrieve':
@@ -190,13 +176,6 @@ class ChallengeParticipantStore extends ReduceStore {
         if (!action.res || !action.res.success) return state;
         revisedState = state;
         if (action.res.challenge_we_vote_id) {
-          if ('latest_challenge_participant_endorsement_list' in action.res) {
-            for (let i = 0; i < action.res.latest_challenge_participant_endorsement_list.length; ++i) {
-              challengeParticipantWithText = action.res.latest_challenge_participant_endorsement_list[i];
-              allCachedChallengeParticipants[challengeParticipantWithText.id] = challengeParticipantWithText;
-              latestChallengeParticipantsWithText = this.updateChallengeParticipantGenericList(latestChallengeParticipantsWithText, challengeParticipantWithText);
-            }
-          }
           if ('latest_challenge_participant_list' in action.res) {
             for (let i = 0; i < action.res.latest_challenge_participant_list.length; ++i) {
               challengeParticipant = action.res.latest_challenge_participant_list[i];
@@ -215,7 +194,6 @@ class ChallengeParticipantStore extends ReduceStore {
         revisedState = { ...revisedState, allCachedChallengeParticipants };
         revisedState = { ...revisedState, allCachedChallengeParticipantVoterEntries };
         revisedState = { ...revisedState, latestChallengeParticipants };
-        revisedState = { ...revisedState, latestChallengeParticipantsWithText };
         return revisedState;
 
       case 'challengeParticipantSave':
@@ -224,16 +202,12 @@ class ChallengeParticipantStore extends ReduceStore {
           allCachedChallengeParticipantVoterEntries[action.res.challenge_we_vote_id] = action.res;
         }
         // console.log('challengeParticipantSave latestChallengeParticipants before:', latestChallengeParticipants);
-        if (action.res.participant_endorsement) {
-          latestChallengeParticipantsWithText = this.updateChallengeParticipantGenericList(latestChallengeParticipantsWithText, action.res);
-        }
         latestChallengeParticipants = this.updateChallengeParticipantGenericList(latestChallengeParticipants, action.res);
         // console.log('challengeParticipantSave latestChallengeParticipants after:', latestChallengeParticipants);
         return {
           ...state,
           allCachedChallengeParticipantVoterEntries,
           latestChallengeParticipants,
-          latestChallengeParticipantsWithText,
           voterSignedInWithEmail: Boolean(action.res.voter_signed_in_with_email),
         };
 
