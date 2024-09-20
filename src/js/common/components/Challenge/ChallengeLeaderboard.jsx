@@ -11,6 +11,33 @@ import FirstChallengeParticipantListController from './FirstChallengeParticipant
 
 // const FirstChallengeParticipantListController = React.lazy(() => import(/* webpackChunkName: 'FirstChallengeParticipantListController' */ './FirstChallengeParticipantListController'));
 
+const participants = [
+  { rank: 5340, participant_name: 'Melina H.', points: 142, friends_who_joined: 3, friends_invited: 10, friends_who_viewed: 8, friends_who_viewed_plus: 21, voter_we_vote_id: 'wv02voter1238' },
+  { rank: 5341, participant_name: 'David N.', points: 121, friends_who_joined: 1, friends_invited: 7, friends_who_viewed: 3, friends_who_viewed_plus: 18, voter_we_vote_id: 'wv02voter1237' },
+  { rank: 5342, participant_name: 'Anusha G.', points: 118, friends_who_joined: 1, friends_invited: 5, friends_who_viewed: 2, friends_who_viewed_plus: 15, voter_we_vote_id: 'wv02voter1236' },
+  { rank: 5340, participant_name: 'Melina H.', points: 142, friends_who_joined: 3, friends_invited: 10, friends_who_viewed: 8, friends_who_viewed_plus: 21, voter_we_vote_id: 'wv02voter1235' },
+  { rank: 5341, participant_name: 'David B.', points: 121, friends_who_joined: 1, friends_invited: 7, friends_who_viewed: 3, friends_who_viewed_plus: 18, voter_we_vote_id: 'wv02voter1234' },
+  { rank: 5342, participant_name: 'Anusha G.', points: 118, friends_who_joined: 1, friends_invited: 5, friends_who_viewed: 2, friends_who_viewed_plus: 15, voter_we_vote_id: 'wv02voter123' },
+  { rank: 5340, participant_name: 'Melina H.', points: 142, friends_who_joined: 3, friends_invited: 10, friends_who_viewed: 8, friends_who_viewed_plus: 21, voter_we_vote_id: 'wv02voter12333' },
+  { rank: 5341, participant_name: 'David A.', points: 121, friends_who_joined: 1, friends_invited: 7, friends_who_viewed: 3, friends_who_viewed_plus: 18, voter_we_vote_id: 'wv02voter12344' },
+  { rank: 5342, participant_name: 'Anusha G.', points: 118, friends_who_joined: 1, friends_invited: 5, friends_who_viewed: 2, friends_who_viewed_plus: 15, voter_we_vote_id: 'wv02voter12355' },
+  { rank: 5341, participant_name: 'David B.', points: 121, friends_who_joined: 1, friends_invited: 7, friends_who_viewed: 3, friends_who_viewed_plus: 18, voter_we_vote_id: 'wv02voter12366' },
+  { rank: 5342, participant_name: 'Anusha G.', points: 118, friends_who_joined: 1, friends_invited: 5, friends_who_viewed: 2, friends_who_viewed_plus: 15, voter_we_vote_id: 'wv02voter12377' },
+  { rank: 5340, participant_name: 'Melina H.', points: 142, friends_who_joined: 3, friends_invited: 10, friends_who_viewed: 8, friends_who_viewed_plus: 21, voter_we_vote_id: 'wv02voter12388' },
+  { rank: 5341, participant_name: 'David A.', points: 121, friends_who_joined: 1, friends_invited: 7, friends_who_viewed: 3, friends_who_viewed_plus: 18, voter_we_vote_id: 'wv02voter12399' },
+  { rank: 5342, participant_name: 'Anusha G.', points: 118, friends_who_joined: 1, friends_invited: 5, friends_who_viewed: 2, friends_who_viewed_plus: 15, voter_we_vote_id: 'wv02voter12390' },
+  { rank: 5341, participant_name: 'David B.', points: 121, friends_who_joined: 1, friends_invited: 7, friends_who_viewed: 3, friends_who_viewed_plus: 18, voter_we_vote_id: 'wv02voter12312' },
+  { rank: 5342, participant_name: 'Anusha G.', points: 118, friends_who_joined: 1, friends_invited: 5, friends_who_viewed: 2, friends_who_viewed_plus: 15, voter_we_vote_id: 'wv02voter12314' },
+  { rank: 5340, participant_name: 'Melina H.', points: 142, friends_who_joined: 3, friends_invited: 10, friends_who_viewed: 8, friends_who_viewed_plus: 21, voter_we_vote_id: 'wv02voter12315' },
+  { rank: 5341, participant_name: 'David A.', points: 121, friends_who_joined: 1, friends_invited: 7, friends_who_viewed: 3, friends_who_viewed_plus: 18, voter_we_vote_id: 'wv02voter12316' },
+  { rank: 5342, participant_name: 'Anusha G.', points: 118, friends_who_joined: 1, friends_invited: 5, friends_who_viewed: 2, friends_who_viewed_plus: 15, voter_we_vote_id: 'wv02voter12317' },
+  { rank: 5341, participant_name: 'David B.', points: 121, friends_who_joined: 1, friends_invited: 7, friends_who_viewed: 3, friends_who_viewed_plus: 18, voter_we_vote_id: 'wv02voter12318' },
+  { rank: 5342, participant_name: 'Anusha G.', points: 118, friends_who_joined: 1, friends_invited: 5, friends_who_viewed: 2, friends_who_viewed_plus: 15, voter_we_vote_id: 'wv02voter12319' },
+  { rank: 5340, participant_name: 'Melina H.', points: 142, friends_who_joined: 3, friends_invited: 10, friends_who_viewed: 8, friends_who_viewed_plus: 21, voter_we_vote_id: 'wv02voter12323' },
+  { rank: 5341, participant_name: 'David A.', points: 121, friends_who_joined: 1, friends_invited: 7, friends_who_viewed: 3, friends_who_viewed_plus: 18, voter_we_vote_id: 'wv02voter12324' },
+  { rank: 5342, participant_name: 'Anusha G.', points: 118, friends_who_joined: 1, friends_invited: 5, friends_who_viewed: 2, friends_who_viewed_plus: 15, voter_we_vote_id: 'wv02voter12325' },
+];
+
 const LeaderboardContainer = styled.div`
   max-width: 100vw;
   margin: 0 auto;
@@ -80,15 +107,14 @@ const ChallengeLeaderboard = ({ classes, challengeWeVoteId }) => {
   // eslint-disable-next-line no-unused-vars
   const [latestParticipants, setLatestParticipants] = React.useState([]);
 
+  const onChallengeParticipantStoreChange = () => {
+    setLatestParticipants(ChallengeParticipantStore.getChallengeParticipantList(challengeWeVoteId));
+  };
+
   React.useEffect(() => {
-    console.log('Fetching participants for:', challengeWeVoteId);
-    const handleStoreChange = () => {
-      const updatedParticipants = ChallengeParticipantStore.getChallengeParticipantList(challengeWeVoteId);
-      console.log('Updated participants:', updatedParticipants);
-      setLatestParticipants(updatedParticipants);
-    };
-    const storeListener = ChallengeParticipantStore.addListener(handleStoreChange);
-    handleStoreChange();
+    // console.log('Fetching participants for:', challengeWeVoteId);
+    const storeListener = ChallengeParticipantStore.addListener(onChallengeParticipantStoreChange);
+    onChallengeParticipantStoreChange();
 
     return () => {
       storeListener.remove();
@@ -100,32 +126,32 @@ const ChallengeLeaderboard = ({ classes, challengeWeVoteId }) => {
         <ButtonAndSearchWrapper>
           <ButtonWrapper>
             <Button
-          classes={{ root: classes.buttonDesktop }}
-          color="primary"
-          id="challengeLeaderboardYouButton"
-          onClick={() => console.log('You button clicked', challengeWeVoteId)}
-          variant="outlined"
+              classes={{ root: classes.buttonDesktop }}
+              color="primary"
+              id="challengeLeaderboardYouButton"
+              onClick={() => console.log('You button clicked', challengeWeVoteId)}
+              variant="outlined"
             >
               You
             </Button>
             <Button
-          classes={{ root: classes.buttonDesktop }}
-          color="primary"
-          id="challengeLeaderboardTop50Button"
-          onClick={() => console.log('Top 50 button clicked')}
-          variant="outlined"
+              classes={{ root: classes.buttonDesktop }}
+              color="primary"
+              id="challengeLeaderboardTop50Button"
+              onClick={() => console.log('Top 50 button clicked')}
+              variant="outlined"
             >
               Top 50
             </Button>
           </ButtonWrapper>
           <SearchBarWrapper>
             <SearchBar2024
-            clearButton
-            searchButton
-            placeholder="Search by rank or name"
-            searchFunction={searchFunction}
-            clearFunction={clearSearchFunction}
-            searchUpdateDelayTime={500}
+              clearButton
+              searchButton
+              placeholder="Search by rank or name"
+              searchFunction={searchFunction}
+              clearFunction={clearSearchFunction}
+              searchUpdateDelayTime={500}
             />
           </SearchBarWrapper>
         </ButtonAndSearchWrapper>
@@ -150,7 +176,11 @@ const ChallengeLeaderboard = ({ classes, challengeWeVoteId }) => {
           </div>
         </LeaderboardTableHeader>
       </TopSection>
-      <ChallengeLeaderboardList currentVoterWeVoteId={'wv02voter123'} />
+      <ChallengeLeaderboardList
+        // participantList={latestParticipants}
+        participantList={participants}
+        currentVoterWeVoteId={'wv02voter123'}
+      />
       <Suspense fallback={<></>}>
         <FirstChallengeParticipantListController challengeWeVoteId={challengeWeVoteId} searchText="SEARCH TEXT HERE" />
       </Suspense>

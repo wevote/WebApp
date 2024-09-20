@@ -6,8 +6,8 @@ class ChallengeParticipantStore extends ReduceStore {
     return {
       // TODO: Not quite right
       allCachedChallengeParticipants: {}, // Dictionary with ChallengeParticipant simple id as key and the ChallengeParticipant as value
-      allCachedChallengeParticipantVoterEntries: {}, // Dictionary with challenge_we_vote_id as key and the ChallengeParticipant for this voter as value
-      challengeParticipantList: {}, // Dict with key challenge_we_vote_id and value of List of Dicts w/ latest challenge_participant entries, ordered newest to oldest
+      allCachedChallengeParticipantVoterEntries: {}, // Dictionary with challenge_we_vote_id and voter_we_vote_id as keys and the ChallengeParticipant for this voter as value
+      allChallengeParticipantLists: {}, // Dict with key challenge_we_vote_id and value of List of Dicts w/ challenge_participant entries, ordered highest rank to lowest
       latestChallengeParticipants: {}, // Dict with key challenge_we_vote_id and value of List of Dicts w/ latest challenge_participant entries, ordered newest to oldest
       shareButtonClicked: false,
       participantEndorsementQueuedToSave: '',
@@ -50,9 +50,8 @@ class ChallengeParticipantStore extends ReduceStore {
     return this.getState().allCachedChallengeParticipants[challengeParticipantId] || {};
   }
 
-  // These are the most recent challenge_participant entries, with visible signers. May or may not have text endorsements.
   getChallengeParticipantList (challengeWeVoteId) {
-    return this.getState().challengeParticipantList[challengeWeVoteId] || [];
+    return this.getState().allChallengeParticipantLists[challengeWeVoteId] || [];
   }
 
   getChallengeParticipantVoterEntry (challengeWeVoteId) {
@@ -121,12 +120,14 @@ class ChallengeParticipantStore extends ReduceStore {
   reduce (state, action) {
     const {
       allCachedChallengeParticipants, allCachedChallengeParticipantVoterEntries,
+      allChallengeParticipantLists,
     } = state;
     let {
       latestChallengeParticipants,
     } = state;
     let challengeList;
     let challengeParticipant;
+    let challengeParticipantList;
 
     let revisedState;
     switch (action.type) {
@@ -163,6 +164,23 @@ class ChallengeParticipantStore extends ReduceStore {
         revisedState = { ...revisedState, allCachedChallengeParticipants };
         revisedState = { ...revisedState, allCachedChallengeParticipantVoterEntries };
         revisedState = { ...revisedState, latestChallengeParticipants };
+        return revisedState;
+
+      case 'challengeParticipantListRetrieve':
+        // console.log('ChallengeParticipantStore challengeParticipantListRetrieve');
+        if (!action.res || !action.res.success) return state;
+        revisedState = state;
+        challengeParticipantList = action.res.challenge_participant_list || [];
+        // console.log('challengeParticipantListRetrieve challenge_participant_list:', challengeParticipantList);
+        allChallengeParticipantLists[action.res.challenge_we_vote_id] = challengeParticipantList;
+        challengeParticipantList.forEach((oneParticipant) => {
+          if (!(oneParticipant.voter_we_vote_id in allCachedChallengeParticipants)) {
+            allCachedChallengeParticipants[oneParticipant.voter_we_vote_id] = {};
+          }
+          allCachedChallengeParticipants[oneParticipant.voter_we_vote_id][oneParticipant.challenge_we_vote_id] = oneParticipant;
+        });
+        revisedState = { ...revisedState, allCachedChallengeParticipants };
+        revisedState = { ...revisedState, allChallengeParticipantLists };
         return revisedState;
 
       case 'challengeRetrieve':
