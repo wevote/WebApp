@@ -1,6 +1,14 @@
 import Dispatcher from '../dispatcher/Dispatcher';
 
 export default {
+  challengeParticipantListRetrieve (challengeWeVoteId, searchText = '') {
+    Dispatcher.loadEndpoint('challengeParticipantListRetrieve',
+      {
+        challenge_we_vote_id: challengeWeVoteId,
+        search_text: searchText,
+      });
+  },
+
   challengeParticipantRetrieve (challengeWeVoteId) {
     Dispatcher.loadEndpoint('challengeParticipantRetrieve',
       {

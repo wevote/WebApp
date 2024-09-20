@@ -119,7 +119,7 @@ const ChallengeLeaderboard = ({ classes, clearSearchFunction, searchFunction }) 
         </div>
       </LeaderboardTableHeader>
     </TopSection>
-    <ChallengeLeaderboardList />
+    <ChallengeLeaderboardList currentVoterWeVoteId={'wv02voter123'} />
   </LeaderboardContainer>
 );
 

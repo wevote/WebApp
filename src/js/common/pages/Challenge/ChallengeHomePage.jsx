@@ -303,13 +303,11 @@ class ChallengeHomePage extends Component {
 
   onChallengeParticipantStoreChange () {
     const { challengeWeVoteId } = this.state;
-    const participantEndorsementsWithText = ChallengeParticipantStore.getLatestChallengeParticipantsWithTextList(challengeWeVoteId);
     const step2Completed = ChallengeParticipantStore.voterSupporterEndorsementExists(challengeWeVoteId);
     const payToPromoteStepCompleted = ChallengeParticipantStore.voterChipInExists(challengeWeVoteId);
     const sharingStepCompleted = false;
     // console.log('onChallengeParticipantStoreChange step2Completed: ', step2Completed, ', sharingStepCompleted: ', sharingStepCompleted, ', payToPromoteStepCompleted:', payToPromoteStepCompleted);
     this.setState({
-      participantEndorsementsWithText,
       sharingStepCompleted,
       step2Completed,
       payToPromoteStepCompleted,

@@ -8,7 +8,7 @@ const ParticipantItem = styled.div`
   flex-direction: column;
   justify-content: space-between;
   padding: 15px 20px;
-  background-color: ${(props) => (props.isCurrentUser ? '#f9e79f' : '#fff')}; 
+  background-color: ${(props) => (props.isCurrentUser ? '#f9e79f' : '#fff')};
   border-bottom: 1px solid ${DesignTokenColors.neutral100};
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 `;
@@ -53,15 +53,15 @@ const ChallengeParticipantListItem = ({ participant, isCurrentUser }) => (
     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
       <Rank>{`#${participant.rank}`}</Rank>
       <Name>
-        <Avatar>{`${participant.name.split(' ')[0][0]}${participant.name.split(' ')[1][0]}`}</Avatar>
+        <Avatar>{`${participant.participant_name.split(' ')[0][0]}${participant.participant_name.split(' ')[1][0]}`}</Avatar>
         {' '}
-        {participant.name}
+        {participant.participant_name}
       </Name>
       <Points>{participant.points}</Points>
-      <FriendsJoined>{participant.friendsJoined}</FriendsJoined>
+      <FriendsJoined>{participant.friends_who_joined}</FriendsJoined>
     </div>
     <Details>
-      {`${participant.invited} invited, ${participant.viewed} viewed challenge - ${participant.totalViews} total views`}
+      {`${participant.friends_invited} invited, ${participant.friends_who_viewed} viewed challenge - ${participant.friends_who_viewed_plus} total views`}
     </Details>
   </ParticipantItem>
 );

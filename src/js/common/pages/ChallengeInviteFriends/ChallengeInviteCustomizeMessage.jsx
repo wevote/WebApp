@@ -25,7 +25,7 @@ import historyPush from '../../utils/historyPush';
 import initializejQuery from '../../utils/initializejQuery';
 import { renderLog } from '../../utils/logging';
 import ChallengeInviteSteps from '../../components/Navigation/ChallengeInviteSteps';
-import DesignTokenColors from "../../components/Style/DesignTokenColors";
+import DesignTokenColors from '../../components/Style/DesignTokenColors';
 
 const ChallengeRetrieveController = React.lazy(() => import(/* webpackChunkName: 'ChallengeRetrieveController' */ '../../components/Challenge/ChallengeRetrieveController'));
 const VoterFirstRetrieveController = loadable(() => import(/* webpackChunkName: 'VoterFirstRetrieveController' */ '../../components/Settings/VoterFirstRetrieveController'));

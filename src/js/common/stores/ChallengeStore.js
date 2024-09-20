@@ -349,7 +349,6 @@ class ChallengeStore extends ReduceStore {
       is_blocked_by_we_vote: false,
       is_blocked_by_we_vote_reason: null,
       is_participants_count_minimum_exceeded: true,
-      latest_challenge_participant_endorsement_list: [],
       latest_challenge_participant_list: [],
       opposers_count: candidateObject.opposers_count,
       order_in_list: 0,
@@ -399,7 +398,6 @@ class ChallengeStore extends ReduceStore {
     switch (action.type) {
       case 'challengeListRetrieve':
         // See ChallengeParticipantStore for code to take in the following challenge values:
-        // - latest_challenge_participant_endorsement_list
         // - latest_challenge_participant_list
         // - voter_challenge_participant
 
@@ -559,7 +557,6 @@ class ChallengeStore extends ReduceStore {
       case 'challengeRetrieveAsOwner':
       case 'challengeStartSave':
         // See ChallengeParticipantStore for code to take in the following challenge values:
-        // - latest_challenge_participant_endorsement_list
         // - latest_challenge_participant_list
         // - voter_challenge_participant
 
