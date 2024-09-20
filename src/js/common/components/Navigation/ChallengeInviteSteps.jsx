@@ -3,115 +3,53 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { withStyles } from '@mui/styles';
 import commonMuiStyles from '../Style/commonMuiStyles';
-import historyPush from '../../utils/historyPush';//We can use this to navigate to different steps later
-import { OuterWrapper, StepCircle, StepNumber, StepWrapper } from '../Style/stepDisplayStyles';
+// Import icons
+import RocketIcon from '../../../../img/global/svg-icons/issues/rocket-ship.svg';
+import StepOneIcon from '../../../../img/global/svg-icons/issues/material-symbols-counter-1.svg';
+import StepOneActiveIcon from '../../../../img/global/svg-icons/issues/material-symbols-counter-1-active.svg';
+import StepTwoIcon from '../../../../img/global/svg-icons/issues/material-symbols-counter-2.svg';
+import StepTwoActiveIcon from '../../../../img/global/svg-icons/issues/material-symbols-counter-2-active.svg';
 
-// URLs for the steps
+import historyPush from '../../utils/historyPush'; // We will use this to navigate to different steps later
+import {
+  OuterWrapper,
+  StepCircle,
+  StepNumber,
+  StepWrapper,
+} from '../Style/stepDisplayStyles';
+
+// URLs for the steps (Use later for navigation)
 const STEP1_URL = '/:challengeSEOFriendlyPath/+/customize-message';
 const STEP2_URL = '/:challengeSEOFriendlyPath/+/copy-message';
 
-// Import the rocket ship SVG icon
-import StepOneIcon from '../../../../img/global/svg-icons/issues/material-symbols-counter-1.svg';
-import StepTwoIcon from '../../../../img/global/svg-icons/issues/material-symbols-counter-2.svg';
-import RocketIcon from '../../../../img/global/svg-icons/issues/rocket-ship.svg';
 
-
-// Styles Object
-const styles = {
-    outerWrapper: {
-      alignItems: 'center',
-      backgroundColor: '#F2F2F0',
-      display: 'flex',
-      flexDirection: 'column',
-      padding: '20px',
-      position: 'relative',
-    },
-    headerContainer: {
-      alignItems: 'center',
-      display: 'flex',
-      justifyContent: 'space-between',
-      position: 'relative',
-      textAlign: 'left',
-      width: '100%',
-    },
-    rocketIcon: {
-      height: '70px',
-      position: 'relative',
-      width: '40px',
-    },
-    headerText: {
-      flex: '1',
-      fontFamily: 'Poppins',
-      fontSize: '28px',
-      fontWeight: '600',
-      lineHeight: '35px',
-      margin: '0 10px',
-      textAlign: 'left',
-    },
-    verticalLine: {
-      backgroundColor: '#D2D2D2',
-      height: '25px',
-      marginRight: '10px',
-      width: '1px',
-    },
-    learnMoreLink: {
-      color: '#0858A1',
-      fontSize: '16px',
-      fontWeight: '500',
-      textDecoration: 'none',
-      width: '52px',
-    },
-    stepsContainer: {
-      alignItems: 'flex-start',
-      display: 'flex',
-      justifyContent: 'center',
-      marginTop: '20px',
-      position: 'relative',
-      width: '100%',
-    },
-    stepIconContainer: {
-      alignItems: 'center',
-      display: 'flex',
-      flexDirection: 'column',
-      marginRight: '10px',
-      zIndex: 1,
-    },
-    stepIcon: {
-      height: '24px',
-      marginBottom: '5px',
-      width: '24px',
-    },
-    stepText: {
-      fontSize: '16px',
-      marginBottom: '15px',
-      textAlign: 'center',
-      width: '169px',
-    },
-    horizontalLine: {
-      borderTop: '1px solid #D2D2D2',
-      left: 'calc(50% - 90px)',
-      position: 'absolute',
-      top: '10%',
-      width: '170px',
-      zIndex: 0,
-    },
-  };
-
+// Color and font variables
+const baseTextColor = '#2A2A2C';
+const hoverFontWeight = '600';
+const defaultFontWeight = '400';
+const fontFamily = 'Poppins';
+const commonTextStyle = {
+  fontSize: '13px',
+  lineHeight: '15px',
+  textAlign: 'center',
+  fontFamily,
+};
 // ChallengeInviteSteps component
 class ChallengeInviteSteps extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.state = {
       step1Completed: false,
       step2Completed: false,
+      isHovered1: false,
+      isHovered2: false,
     };
   }
 
-  componentDidMount() {
+  componentDidMount () {
     // Status for the steps
     const step1Completed = false;
     const step2Completed = false;
-
     this.setState({
       step1Completed,
       step2Completed,
@@ -127,58 +65,183 @@ class ChallengeInviteSteps extends React.Component {
       challengeBasePath = `/+/${challengeWeVoteId}/`;
     }
     return challengeBasePath;
-  }
+  };
 
-  render() {
-    const { step1Completed, step2Completed } = this.state;
-    const { classes, currentStep } = this.props;
+  // Handle mouse enter and leave events for hover effects
+  handleMouseEnter = (step) => {
+    this.setState({ [`isHovered${step}`]: true });
+  };
+
+  handleMouseLeave = (step) => {
+    this.setState({ [`isHovered${step}`]: false });
+  };
+
+  render () {
+    const { step1Completed, step2Completed, isHovered1, isHovered2 } =
+      this.state;
 
     return (
-      <OuterWrapper style={styles.outerWrapper}>
+      <div
+        style={{
+          alignItems: 'center',
+          backgroundColor: '#F2F2F0',
+          display: 'flex',
+          flexDirection: 'column',
+          padding: '20px',
+          position: 'relative',
+        }}
+      >
         {/* Rocket, Invite more friends, and Learn More */}
-        <div style={styles.headerContainer}>
-          {/* Rocket Icon */}
-          <img src={RocketIcon} alt="Rocket Icon" style={styles.rocketIcon} />
-
-          {/* Title Text */}
-          <h2 style={styles.headerText}>
+        <div
+          style={{
+            alignItems: 'center',
+            display: 'flex',
+            justifyContent: 'space-between',
+            width: '100%',
+          }}
+        >
+          <img
+            src={RocketIcon}
+            alt="Rocket Icon"
+            style={{ height: '70px', width: '40px' }}
+          />
+          <h2
+            style={{
+              ...commonTextStyle,
+              fontWeight: '600',
+              fontSize: '20px',
+              lineHeight: '25px',
+              color: baseTextColor,
+              width: '272px',
+              height: '63px',
+              margin: '0 10px',
+            }}
+          >
             To boost your ranking, invite your friends to join.
           </h2>
-
-          {/* Vertical Line and Learn More Link */}
-          <div style={{ display: 'flex', alignItems: 'center', marginLeft: 'auto' }}>
-            {/* Vertical Line */}
-            <div style={styles.verticalLine}></div>
-
-            {/* Learn More Link */}
-            <a href="#" style={styles.learnMoreLink}>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              marginLeft: 'auto',
+            }}
+          >
+            <div
+              style={{
+                backgroundColor: '#D2D2D2',
+                height: '50px',
+                width: '1px',
+                marginRight: '15px',
+              }}
+            />
+            <a
+              href="#"
+              style={{
+                color: '#0858A1',
+                fontSize: '13px',
+                fontWeight: '500',
+                textDecoration: 'none',
+              }}
+            >
               Learn more
             </a>
           </div>
         </div>
 
         {/* Steps (Step 1, Line, Step 2) */}
-        <div style={styles.stepsContainer}>
+        <div
+          style={{
+            alignItems: 'center',
+            display: 'flex',
+            justifyContent: 'center',
+            width: '100%',
+            position: 'relative',
+          }}
+        >
           {/* Step 1 Icon and Text */}
-          <div style={{ ...styles.stepIconContainer, marginRight: '10px' }}>
-            <img src={StepOneIcon} alt="Step 1 Icon" style={styles.stepIcon} />
-            <Link to={`${this.getChallengeBasePath()}customize-message`} style={styles.stepText}>
+          <div
+            style={{
+              alignItems: 'center',
+              display: 'flex',
+              flexDirection: 'column',
+              width: '169px',
+              textAlign: 'center',
+              marginRight: '25px',
+              cursor: 'pointer',
+            }}
+            onMouseEnter={() => this.handleMouseEnter(1)}
+            onMouseLeave={() => this.handleMouseLeave(1)}
+          >
+            <img
+              src={
+                isHovered1 || step1Completed ? StepOneActiveIcon : StepOneIcon
+              }
+              alt="Step 1 Icon"
+            />
+            <Link
+              to={`${this.getChallengeBasePath()}customize-message`}
+              style={{
+                ...commonTextStyle,
+                fontWeight:
+                  isHovered1 || step1Completed ?
+                    hoverFontWeight :
+                    defaultFontWeight,
+                color: isHovered1 ? '#206DB3' : baseTextColor,
+                textDecoration: 'none',
+              }}
+            >
               Customize the message to your friends
             </Link>
           </div>
 
           {/* Horizontal Line */}
-          <div style={styles.horizontalLine}></div>
+          <div
+            style={{
+              borderTop: '1px solid #D2D2D2',
+              left: 'calc(50% - 67px)',
+              position: 'absolute',
+              top: '20%',
+              width: '164px',
+            }}
+          />
 
           {/* Step 2 Icon and Text */}
-          <div style={{ ...styles.stepIconContainer, marginLeft: '10px' }}>
-            <img src={StepTwoIcon} alt="Step 2 Icon" style={styles.stepIcon} />
-            <Link to={`${this.getChallengeBasePath()}invite-friends`} style={styles.stepText}>
+          <div
+            style={{
+              alignItems: 'center',
+              display: 'flex',
+              flexDirection: 'column',
+              width: '109px',
+              textAlign: 'center',
+              marginLeft: '25px',
+              cursor: 'pointer',
+            }}
+            onMouseEnter={() => this.handleMouseEnter(2)}
+            onMouseLeave={() => this.handleMouseLeave(2)}
+          >
+            <img
+              src={
+                isHovered2 || step2Completed ? StepTwoActiveIcon : StepTwoIcon
+              }
+              alt="Step 2 Icon"
+            />
+            <Link
+              to={`${this.getChallengeBasePath()}invite-friends`}
+              style={{
+                ...commonTextStyle,
+                fontWeight:
+                  isHovered2 || step2Completed ?
+                    hoverFontWeight :
+                    defaultFontWeight,
+                color: baseTextColor,
+                textDecoration: 'none',
+              }}
+            >
               Copy message & link
             </Link>
           </div>
         </div>
-      </OuterWrapper>
+      </div>
     );
   }
 }
