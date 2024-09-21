@@ -190,8 +190,8 @@ const ChallengeLeaderboard = ({ classes, challengeWeVoteId }) => {
 
 ChallengeLeaderboard.propTypes = {
   classes: PropTypes.object.isRequired,
-  clearSearchFunction: PropTypes.func.isRequired,
-  searchFunction: PropTypes.func.isRequired,
+  // clearSearchFunction: PropTypes.func.isRequired,
+  // searchFunction: PropTypes.func.isRequired,
   challengeWeVoteId: PropTypes.string,
 };
 
