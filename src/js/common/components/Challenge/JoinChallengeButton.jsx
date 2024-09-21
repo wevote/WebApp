@@ -1,7 +1,8 @@
+import withStyles from '@mui/styles/withStyles';
+import { Button } from '@mui/material';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
-import BaseButton from '../../../components/Buttons/BaseButton';
 import historyPush from '../../utils/historyPush';
 import { renderLog } from '../../utils/logging';
 import AppObservableStore from '../../stores/AppObservableStore';
@@ -54,7 +55,7 @@ class JoinChallengeButton extends React.Component {
         challengeSEOFriendlyPath: challengeSEOFriendlyPathFromProps,
       });
     }
-    let voterIsChallengeParticipant
+    let voterIsChallengeParticipant;
     if (challengeWeVoteId) {
       // const voterCanEditThisChallenge = ChallengeStore.getVoterCanEditThisChallenge(challengeWeVoteId);
       voterIsChallengeParticipant = ChallengeStore.getVoterIsChallengeParticipant(challengeWeVoteId);
@@ -141,6 +142,7 @@ class JoinChallengeButton extends React.Component {
 
   render () {
     renderLog('JoinChallengeButton');  // Set LOG_RENDER_EVENTS to log all renders
+    const { classes } = this.props;
     const { voterIsChallengeParticipant } = this.state;
     // const { challengeSEOFriendlyPath, challengeWeVoteId } = this.state;
     // console.log('JoinChallengeButton render challengeSEOFriendlyPath: ', challengeSEOFriendlyPath, ', challengeWeVoteId: ', challengeWeVoteId);
@@ -156,20 +158,34 @@ class JoinChallengeButton extends React.Component {
     // console.log('upcomingGoogleCivicElectionId: ', upcomingGoogleCivicElectionId, 'voterPlanCreatedForThisElection: ', voterPlanCreatedForThisElection);
     return (
       <JoinChallengeButtonWrapper>
-        <BaseButton
+        <Button
+          classes={{ root: classes.buttonDesktop }}
           id="joinChallengeButton"
           onClick={voterIsChallengeParticipant ? this.goToInviteFriends : this.goToJoinChallenge}
-          primary
-          label={buttonText}
-        />
+          color="primary"
+          variant="contained"
+        >
+          {buttonText}
+        </Button>
       </JoinChallengeButtonWrapper>
     );
   }
 }
 JoinChallengeButton.propTypes = {
+  classes: PropTypes.object,
   challengeSEOFriendlyPath: PropTypes.string,
   challengeWeVoteId: PropTypes.string,
 };
+
+
+const styles = () => ({
+  buttonDesktop: {
+    borderRadius: 45,
+    // fontSize: '18px',
+    minWidth: '300px',
+    width: '100%',
+  },
+});
 
 const JoinChallengeButtonWrapper = styled('div')`
   align-items: center;
@@ -177,4 +193,4 @@ const JoinChallengeButtonWrapper = styled('div')`
   justify-content: center;
 `;
 
-export default JoinChallengeButton;
+export default withStyles(styles)(JoinChallengeButton);

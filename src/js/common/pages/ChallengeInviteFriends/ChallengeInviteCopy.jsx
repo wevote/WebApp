@@ -1,5 +1,4 @@
 import loadable from '@loadable/component';
-import { Button } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
@@ -10,8 +9,8 @@ import webAppConfig from '../../../config';
 import VoterStore from '../../../stores/VoterStore';
 import ChallengeParticipantActions from '../../actions/ChallengeParticipantActions';
 import ChallengeHeaderSimple from '../../components/Navigation/ChallengeHeaderSimple';
-import { CampaignProcessStepTitle, CampaignProcessStepIntroductionText } from '../../components/Style/CampaignProcessStyles';
-import { CampaignSupportDesktopButtonPanel, CampaignSupportDesktopButtonWrapper, CampaignSupportSection, CampaignSupportSectionWrapper } from '../../components/Style/CampaignSupportStyles';
+import { CampaignProcessStepIntroductionText } from '../../components/Style/CampaignProcessStyles';
+import { CampaignSupportSection, CampaignSupportSectionWrapper } from '../../components/Style/CampaignSupportStyles';
 import commonMuiStyles from '../../components/Style/commonMuiStyles';
 import { ContentInnerWrapperDefault, ContentOuterWrapperDefault, PageWrapperDefault } from '../../components/Style/PageWrapperStyles';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
@@ -23,6 +22,8 @@ import initializejQuery from '../../utils/initializejQuery';
 import { renderLog } from '../../utils/logging';
 import DesignTokenColors from '../../components/Style/DesignTokenColors';
 import ChallengeInviteSteps from '../../components/Navigation/ChallengeInviteSteps';
+import ChallengeInvitedFriends from '../../components/ChallengeInviteFriends/ChallengeInvitedFriends';
+import InviteFriendToChallengeInput from '../../components/ChallengeInviteFriends/InviteFriendToChallengeInput';
 
 const ChallengeRetrieveController = React.lazy(() => import(/* webpackChunkName: 'ChallengeRetrieveController' */ '../../components/Challenge/ChallengeRetrieveController'));
 const VoterFirstRetrieveController = loadable(() => import(/* webpackChunkName: 'VoterFirstRetrieveController' */ '../../components/Settings/VoterFirstRetrieveController'));
@@ -236,13 +237,11 @@ class ChallengeInviteCopy extends Component {
 
   render () {
     renderLog('ChallengeInviteCopy');  // Set LOG_RENDER_EVENTS to log all renders
-    const { classes } = this.props;
     const {
       challengeSEOFriendlyPath, challengeTitle,
       challengeWeVoteId, chosenWebsiteName,
-      voterPhotoUrlLarge,
     } = this.state;
-    const htmlTitle = `Why do you support ${challengeTitle}? - ${chosenWebsiteName}`;
+    const htmlTitle = `Invite your friends - ${chosenWebsiteName}`;
     return (
       <div>
         <Helmet>
@@ -265,9 +264,6 @@ class ChallengeInviteCopy extends Component {
         <PageWrapperDefault>
           <ContentOuterWrapperDefault>
             <ContentInnerWrapperDefault>
-              <CampaignProcessStepTitle>
-                Copy message &amp; link
-              </CampaignProcessStepTitle>
               <CampaignProcessStepIntroductionText>
                 So we can correctly calculate your boost points,
                 {' '}
@@ -277,26 +273,18 @@ class ChallengeInviteCopy extends Component {
                 {' '}
                 (a unique link is generated for each friend).
               </CampaignProcessStepIntroductionText>
-              <CampaignSupportSectionWrapper>
-                <CampaignSupportSection>
-                  <CampaignSupportDesktopButtonWrapper>
-                    <CampaignSupportDesktopButtonPanel>
-                      <Button
-                        classes={{ root: classes.buttonDesktop }}
-                        color="primary"
-                        id="joinChallengeNow"
-                        onClick={this.joinChallengeNowSubmit}
-                        variant="contained"
-                      >
-                        Invite friend to challenge
-                      </Button>
-                    </CampaignSupportDesktopButtonPanel>
-                  </CampaignSupportDesktopButtonWrapper>
+              <CampaignSupportSectionWrapper marginTopOff>
+                <CampaignSupportSection marginBottomOff>
+                  <InviteFriendToChallengeInput />
                 </CampaignSupportSection>
               </CampaignSupportSectionWrapper>
             </ContentInnerWrapperDefault>
           </ContentOuterWrapperDefault>
         </PageWrapperDefault>
+        <InvitedFriendsWrapper>
+          YOUR RANK IN CHALLENGE HERE
+          <ChallengeInvitedFriends />
+        </InvitedFriendsWrapper>
         <Suspense fallback={<span>&nbsp;</span>}>
           <ChallengeRetrieveController challengeSEOFriendlyPath={challengeSEOFriendlyPath} challengeWeVoteId={challengeWeVoteId} />
         </Suspense>
@@ -308,16 +296,10 @@ class ChallengeInviteCopy extends Component {
   }
 }
 ChallengeInviteCopy.propTypes = {
-  classes: PropTypes.object,
   match: PropTypes.object,
   setShowHeaderFooter: PropTypes.func,
 };
 
-
-const CenteredDiv = styled('div')`
-  display: flex;
-  justify-content: center;
-`;
 
 const ChallengeTabsWrapper = styled('div')`
   background-color: ${DesignTokenColors.neutralUI50};
@@ -325,8 +307,11 @@ const ChallengeTabsWrapper = styled('div')`
   justify-content: center;
 `;
 
-const VisibleToPublicCheckboxWrapper = styled('div')`
-  min-height: 25px;
+const InvitedFriendsWrapper = styled('div')`
+  align-items: center;
+  background-color: ${DesignTokenColors.neutralUI50};
+  display: flex;
+  flex-direction: column;
 `;
 
 export default withStyles(commonMuiStyles)(ChallengeInviteCopy);
