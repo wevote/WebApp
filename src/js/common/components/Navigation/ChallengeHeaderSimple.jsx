@@ -16,11 +16,12 @@ import {
 import { cordovaBallotFilterTopMargin } from '../../../utils/cordovaOffsets';
 import standardBoxShadow from '../Style/standardBoxShadow';
 import normalizedImagePath from '../../utils/normalizedImagePath';
+import JoinedAndDaysLeft from '../Challenge/JoinedAndDaysLeft';
 
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../../../components/ImageHandler'));
 
 // React functional component example
-function ChallengeHeaderSimple (props) {
+function ChallengeHeaderSimple(props) {
   renderLog('ChallengeHeaderSimple');  // Set LOG_RENDER_EVENTS to log all renders
   const { challengeTitle, challengeWeVoteId, classes, imageUrlLarge, goToChallengeHome } = props;
   const avatarBackgroundImage = normalizedImagePath('../img/global/svg-icons/avatar-generic.svg');
@@ -71,6 +72,13 @@ function ChallengeHeaderSimple (props) {
           <HeartToggleAndThermometerWrapper>
             &nbsp;
           </HeartToggleAndThermometerWrapper>
+          {/* Joined and Days Left Info */}
+          <JoinedAndDaysLeft
+            daysLeft={props.daysLeft}
+            challengeTitle={challengeTitle}
+            imageUrl={imageUrlLarge}
+            goToChallengeHome={goToChallengeHome}
+          />
         </ChallengeHeaderSimpleContentContainer>
       </ChallengeHeaderSimpleInnerContainer>
     </ChallengeHeaderSimpleOuterContainer>
