@@ -2,7 +2,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { withStyles } from '@mui/styles';
+import styled from 'styled-components';
 import commonMuiStyles from '../Style/commonMuiStyles';
+
 // Import icons
 import RocketIcon from '../../../../img/global/svg-icons/issues/rocket-ship.svg';
 import StepOneIcon from '../../../../img/global/svg-icons/issues/material-symbols-counter-1.svg';
@@ -36,7 +38,7 @@ const commonTextStyle = {
 };
 // ChallengeInviteSteps component
 class ChallengeInviteSteps extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.state = {
       step1Completed: false,
@@ -46,7 +48,7 @@ class ChallengeInviteSteps extends React.Component {
     };
   }
 
-  componentDidMount () {
+  componentDidMount() {
     // Status for the steps
     const step1Completed = false;
     const step2Completed = false;
@@ -76,29 +78,14 @@ class ChallengeInviteSteps extends React.Component {
     this.setState({ [`isHovered${step}`]: false });
   };
 
-  render () {
+  render() {
     const { step1Completed, step2Completed, isHovered1, isHovered2 } =
       this.state;
 
     return (
-      <div
-        style={{
-          alignItems: 'center',
-          backgroundColor: '#F2F2F0',
-          display: 'flex',
-          flexDirection: 'column',
-          padding: '20px',
-          position: 'relative',
-        }}
-      >
+      <ChallengeInviteStepsContainer>
         {/* Rocket, Invite more friends, and Learn More */}
-        <div
-          style={{
-            alignItems: 'center',
-            display: 'flex',
-            justifyContent: 'space-between',
-            width: '100%',
-          }}
+        <HeaderContainer
         >
           <img
             src={RocketIcon}
@@ -119,16 +106,11 @@ class ChallengeInviteSteps extends React.Component {
           >
             To boost your ranking, invite your friends to join.
           </h2>
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              marginLeft: 'auto',
-            }}
+          <Wrapper
+
           >
-            <div
+            <LearnMoreTextBlock
               style={{
-                backgroundColor: '#D2D2D2',
                 height: '50px',
                 width: '1px',
                 marginRight: '15px',
@@ -145,30 +127,16 @@ class ChallengeInviteSteps extends React.Component {
             >
               Learn more
             </a>
-          </div>
-        </div>
+          </Wrapper>
+        </HeaderContainer>
 
         {/* Steps (Step 1, Line, Step 2) */}
-        <div
-          style={{
-            alignItems: 'center',
-            display: 'flex',
-            justifyContent: 'center',
-            width: '100%',
-            position: 'relative',
-          }}
+        <StepsContainer
+
         >
           {/* Step 1 Icon and Text */}
-          <div
-            style={{
-              alignItems: 'center',
-              display: 'flex',
-              flexDirection: 'column',
-              width: '169px',
-              textAlign: 'center',
-              marginRight: '25px',
-              cursor: 'pointer',
-            }}
+          <StepOneIconAndText
+
             onMouseEnter={() => this.handleMouseEnter(1)}
             onMouseLeave={() => this.handleMouseLeave(1)}
           >
@@ -183,7 +151,8 @@ class ChallengeInviteSteps extends React.Component {
               style={{
                 ...commonTextStyle,
                 fontWeight:
-                  isHovered1 || step1Completed ?
+                  isHovered1 
+                  || step1Completed ?
                     hoverFontWeight :
                     defaultFontWeight,
                 color: isHovered1 ? '#206DB3' : baseTextColor,
@@ -192,30 +161,12 @@ class ChallengeInviteSteps extends React.Component {
             >
               Customize the message to your friends
             </Link>
-          </div>
+          </StepOneIconAndText>
 
-          {/* Horizontal Line */}
-          <div
-            style={{
-              borderTop: '1px solid #D2D2D2',
-              left: 'calc(50% - 67px)',
-              position: 'absolute',
-              top: '20%',
-              width: '164px',
-            }}
-          />
-
+          {/* Horizontal Line Between Steps */}
+          <HorizontalLine />
           {/* Step 2 Icon and Text */}
-          <div
-            style={{
-              alignItems: 'center',
-              display: 'flex',
-              flexDirection: 'column',
-              width: '109px',
-              textAlign: 'center',
-              marginLeft: '25px',
-              cursor: 'pointer',
-            }}
+          <StepTwoIconAndText
             onMouseEnter={() => this.handleMouseEnter(2)}
             onMouseLeave={() => this.handleMouseLeave(2)}
           >
@@ -239,9 +190,9 @@ class ChallengeInviteSteps extends React.Component {
             >
               Copy message & link
             </Link>
-          </div>
-        </div>
-      </div>
+          </StepTwoIconAndText>
+        </StepsContainer>
+      </ChallengeInviteStepsContainer>
     );
   }
 }
@@ -250,5 +201,73 @@ ChallengeInviteSteps.propTypes = {
   classes: PropTypes.object.isRequired,
   currentStep: PropTypes.number.isRequired,
 };
+
+
+// Styled Components
+
+const ChallengeInviteStepsContainer = styled.div`
+  align-items: center;
+  background-color: #f2f2f0;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  position: relative;
+  width: 445px;
+`;
+
+const HeaderContainer = styled.div`
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+`;
+
+const Wrapper = styled.div`
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+`;
+
+const LearnMoreTextBlock = styled.div`
+  height: 50px;
+  width: 1px;
+  margin-right: 15px;
+`;
+
+const StepsContainer = styled.div`
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  position: relative;
+`;
+
+const StepOneIconAndText = styled.div`
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  width: 169px;
+  text-align: center;
+  margin-right: 25px;
+  cursor: pointer;
+`;
+
+const StepTwoIconAndText = styled.div`
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  width: 109px;
+  text-align: center;
+  margin-left: 25px;
+  cursor: pointer;
+`;
+
+const HorizontalLine = styled.div`
+  border-top: 1px solid #d2d2d2;
+  left: calc(50% - 67px);
+  position: absolute;
+  top: 20%;
+  width: 164px;
+`;
 
 export default withStyles(commonMuiStyles)(ChallengeInviteSteps);
