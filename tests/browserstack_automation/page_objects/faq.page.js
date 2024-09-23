@@ -3,7 +3,7 @@ import Page from './page';
 
 class FAQPage extends Page {
   constructor () {
-    super().title = 'FAQ - We Vote';
+    super().title = 'FAQ - WeVote';
   }
 
   async load () {
@@ -76,14 +76,16 @@ class FAQPage extends Page {
   }
 
   async clickVolunteerOpeningsLinks () {
-    const selectorToGetElements = '//a[@href = "https://wevote.applytojob.com/apply"]';
+    //const selectorToGetElements = '//a[@href = "https://wevote.applytojob.com/apply"]';
+    const selectorToGetElements = await this.getWeVoteVolunteerElements;
+
     const arrOfElements = [];
     for (let i = 1; i <= $$(selectorToGetElements).length; i++) {
       $(`(${selectorToGetElements})[${i}]`).click();
       driver.switchWindow('https://wevote.applytojob.com/apply');
       const textFromElement = driver.getTitle();
       arrOfElements.push(textFromElement);
-      driver.switchWindow('https://quality.wevote.us/more/faq');
+     // driver.switchWindow('https://quality.wevote.us/more/faq');
     }
     return arrOfElements;
   }
@@ -115,6 +117,18 @@ class FAQPage extends Page {
   get getLetsGetStartedElement () {
     return $('//a[contains(text(), "get started!")]');
   }
+
+  async waitForURL(expectedURL){
+    driver.waitUntil(async()=>{
+     await driver.switchWindow(expectedURL);
+    const currenturl= await driver.getUrl();
+    return currenturl=== expectedURL;
+    },{
+      timeout: 10000,
+      timeoutMsg: 'Expected URL not found'
+
+  });
+}
 
   async clickGitHubIconAndLinks () {
     const selectorToGetElements = '//a[@href = "https://github.com/WeVote"]';
