@@ -205,7 +205,7 @@ ChallengeInviteSteps.propTypes = {
 
 // Styled Components
 
-const ChallengeInviteStepsContainer = styled.div`
+const ChallengeInviteStepsContainer = styled('div')`
   align-items: center;
   background-color: #f2f2f0;
   display: flex;
@@ -215,26 +215,26 @@ const ChallengeInviteStepsContainer = styled.div`
   width: 445px;
 `;
 
-const HeaderContainer = styled.div`
+const HeaderContainer = styled('div')`
   align-items: center;
   display: flex;
   justify-content: space-between;
   width: 100%;
 `;
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
   display: flex;
   align-items: center;
   margin-left: auto;
 `;
 
-const LearnMoreTextBlock = styled.div`
+const LearnMoreTextBlock = styled('div')`
   height: 50px;
   width: 1px;
   margin-right: 15px;
 `;
 
-const StepsContainer = styled.div`
+const StepsContainer = styled('div')`
   align-items: center;
   display: flex;
   justify-content: center;
@@ -242,7 +242,7 @@ const StepsContainer = styled.div`
   position: relative;
 `;
 
-const StepOneIconAndText = styled.div`
+const StepOneIconAndText = styled('div')`
   align-items: center;
   display: flex;
   flex-direction: column;
@@ -252,7 +252,7 @@ const StepOneIconAndText = styled.div`
   cursor: pointer;
 `;
 
-const StepTwoIconAndText = styled.div`
+const StepTwoIconAndText = styled('div')`
   align-items: center;
   display: flex;
   flex-direction: column;
@@ -262,7 +262,7 @@ const StepTwoIconAndText = styled.div`
   cursor: pointer;
 `;
 
-const HorizontalLine = styled.div`
+const HorizontalLine = styled('div')`
   border-top: 1px solid #d2d2d2;
   left: calc(50% - 67px);
   position: absolute;
