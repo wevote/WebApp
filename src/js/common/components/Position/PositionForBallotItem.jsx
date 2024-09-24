@@ -1,13 +1,17 @@
 // import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
 import BlockOutlinedIcon from '@mui/icons-material/BlockOutlined';
 import ThumbDownOffAltRoundedIcon from '@mui/icons-material/ThumbDownOffAltRounded';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import Popover from '@mui/material/Popover';
+import { Typography } from '@mui/material';
 import HeartFavoriteToggleBase from '../Widgets/HeartFavoriteToggle/HeartFavoriteToggleBase';
 
 function PositionForBallotItem () {
+  const [anchorEl, setAnchorEL] = useState(null);
+
   const voter = {
     image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvVfSCpfKXUaZB8s159zxg1HFNApJU2ra_vg&s',
     name: 'Bobbi Odessa',
@@ -15,6 +19,17 @@ function PositionForBallotItem () {
   };
 
   const voterEndorsed = true;
+
+  const onDotButtonClick = (e) => {
+    setAnchorEL(e.currentTarget);
+  };
+
+  const handlePopoverClose = () => {
+    setAnchorEL(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? 'simple-popover' : undefined;
 
   return (
     <PositionForBallotItemWrapper>
@@ -55,9 +70,28 @@ function PositionForBallotItem () {
               <button type="button" aria-label="Dislike" style={{ background: 'transparent', border: 'none' }}>
                 <ThumbDownOffAltRoundedIcon style={{ fontSize: '21px', color: 'rgba(154, 154, 154, 1)', marginLeft: '10px' }} />
               </button>
-              <button type="button" aria-label="Source" style={{ background: 'transparent', border: 'none' }}>
-                <MoreHorizIcon style={{ color: 'rgba(132, 132, 132, 1)', fontSize: '30px' }} />
+              <button type="button" aria-label="Source" style={{ background: !anchorEl ? 'transparent' : 'rgba(210, 210, 210, 1)', width: '34px', height: '34px', border: 'none', borderRadius: '30px', marginLeft: '10px' }} onClick={onDotButtonClick}>
+                <MoreHorizIcon style={{ color: 'rgba(132, 132, 132, 1)', fontSize: '30px', marginLeft: '-4px', marginTop: '-.5px' }} />
               </button>
+              <Popover
+                id={id}
+                open={open}
+                anchorEl={anchorEl}
+                onClose={handlePopoverClose}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'left',
+                }}
+                sx={{
+                  '& .MuiPopover-paper': {
+                    borderRadius: 2,
+                    border: '1px solid rgba(210, 210, 210, 1)',
+                    marginTop: '3px',
+                  },
+                }}
+              >
+                <Typography sx={{ p: 1 }}>View source of opinion</Typography>
+              </Popover>
             </VoterLikes>
           </VoterLikesSourceWrapper>
         </VoterPositionLikesSourceWrapper>
@@ -71,6 +105,10 @@ function PositionForBallotItem () {
 
 const PositionForBallotItemWrapper = styled('div')`
   display: flex;
+
+  &:not(:last-child) {
+    border-bottom: 1px solid rgba(210, 210, 210, 1);
+  }
 `;
 
 const VoterImageWrapper = styled('div')`
@@ -85,7 +123,7 @@ const VoterImage = styled('img')`
 const VoterInfoWrapper = styled('div')`
   display: flex;
   flex-direction: column;
-  width: 450px;
+  width: 500px;
   margin-left: 15px;
 `;
 
