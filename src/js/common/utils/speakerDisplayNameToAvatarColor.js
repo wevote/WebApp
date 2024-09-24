@@ -12,7 +12,7 @@ function speakerDisplayNameToAvatarColor (speakerDisplayName) {
   /* eslint-enable no-bitwise */
   if (avatarColorKeys.length === 0) {
     console.error('No avatar colors found in DesignTokenColors.');
-    return DesignTokenColors.avatarBlue700;
+    return DesignTokenColors.avatarBlue900;
   }
   const colorIndex = Math.abs(hashForRandomIndexValue) % avatarColorKeys.length;
   const colorKey = avatarColorKeys[colorIndex];

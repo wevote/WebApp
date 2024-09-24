@@ -12,12 +12,12 @@ export default {
       });
   },
 
-  challengeLocalAttributesUpdate (challengeWeVoteId, supportersCountLocal = false, opposersCountLocal = false) {
+  challengeLocalAttributesUpdate (challengeWeVoteId, participantsCountLocal = false, opposersCountLocal = false) {
     const payloadDict = {
       challengeWeVoteId,
     };
-    if (supportersCountLocal !== false) {
-      payloadDict.supporters_count = supportersCountLocal;
+    if (participantsCountLocal !== false) {
+      payloadDict.participants_count = participantsCountLocal;
     }
     if (opposersCountLocal !== false) {
       payloadDict.opposers_count = opposersCountLocal;

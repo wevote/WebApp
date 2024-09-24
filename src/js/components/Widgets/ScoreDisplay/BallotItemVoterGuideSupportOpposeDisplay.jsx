@@ -130,7 +130,7 @@ class BallotItemVoterGuideSupportOpposeDisplay extends Component {
                         alt="organization-photo-16x16"
                         imageUrl={organizationImageUrlHttpsTiny}
                         kind_of_ballot_item="ORGANIZATION"
-                        sizeClassName="image-16x16 "
+                        sizeClassName="image-16x16"
                       />
                     </Suspense>
                   ) : <TinyImageSpacer />}
@@ -345,10 +345,13 @@ const OverlayImage = styled('div')`
   // border: 2px solid {({ theme }) => theme.colors.supportGreenRgb};
   // color: {({ theme }) => theme.colors.supportGreenRgb};
   display: flex;
-  width: 36px;
+  align-items: center;
+  justify-content: space-around;
+  width: 40px;
   height: 20px;
-  margin-left: -2px;
-  margin-top: -12px;
+  background-color: white;
+  // margin-left: -2px;
+  margin-top: -10px;
   z-index: 2;
 `;
 
@@ -357,6 +360,7 @@ const OrganizationIconWrapper = styled('div')`
   padding: 0 !important;
   width: 22px;
   display: flex;
+  // justify-content: center;
 `;
 
 const TinyImageSpacer = styled('div')`
@@ -364,8 +368,8 @@ const TinyImageSpacer = styled('div')`
   border-radius: 3px;
   margin: 0 !important;
   padding: 0 !important;
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
 `;
 
 export default withTheme(withStyles(styles)(BallotItemVoterGuideSupportOpposeDisplay));

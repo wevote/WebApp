@@ -266,11 +266,6 @@ class Ready extends Component {
                   </DelayedLoad>
                 </Suspense>
               )}
-              {nextReleaseFeaturesEnabled && (
-                <ReadyTaskPlan
-                  arrowsOn
-                />
-              )}
             </div>
             <div className="col-lg-4 d-none d-lg-block">
               {(chosenReadyIntroductionTitle || chosenReadyIntroductionText) && (
@@ -293,6 +288,11 @@ class Ready extends Component {
               </ReadyIntroductionDesktopWrapper>
               {/* nextReleaseFeaturesEnabled && <PledgeToVote /> */}
             </div>
+            {nextReleaseFeaturesEnabled && (
+              <ReadyTaskPlan
+                arrowsOn
+              />
+            )}
           </div>
         </ReadyPageContainer>
       </PageContentContainer>

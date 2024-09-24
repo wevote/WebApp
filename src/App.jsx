@@ -48,13 +48,16 @@ const CampaignUpdatesPage = React.lazy(() => import(/* webpackChunkName: 'Campai
 const Candidate = React.lazy(() => import(/* webpackChunkName: 'Candidate' */ './js/pages/Ballot/Candidate'));
 const CandidateForExtension = React.lazy(() => import(/* webpackChunkName: 'EditCandidateForExtension' */ './js/pages/Ballot/EditCandidateForExtension/EditCandidateForExtension'));
 const ChallengeHomePage = React.lazy(() => import(/* webpackChunkName: 'ChallengeHomePage' */ './js/common/pages/Challenge/ChallengeHomePage'));
+const ChallengesHomeLoader = React.lazy(() => import(/* webpackChunkName: 'ChallengesHomeLoader' */ './js/common/pages/Challenge/ChallengesHomeLoader'));
 const ChallengeStartAddDescription = React.lazy(() => import(/* webpackChunkName: 'ChallengeStartAddDescription' */ './js/common/pages/ChallengeStart/ChallengeStartAddDescription'));
 const ChallengeStartAddPhoto = React.lazy(() => import(/* webpackChunkName: 'ChallengeStartAddPhoto' */ './js/common/pages/ChallengeStart/ChallengeStartAddPhoto'));
 const ChallengeStartAddTitle = React.lazy(() => import(/* webpackChunkName: 'ChallengeStartAddTitle' */ './js/common/pages/ChallengeStart/ChallengeStartAddTitle'));
 const ChallengeStartEditAll = React.lazy(() => import(/* webpackChunkName: 'ChallengeStartEditAll' */ './js/common/pages/ChallengeStart/ChallengeStartEditAll'));
 const ChallengeStartIntro = React.lazy(() => import(/* webpackChunkName: 'ChallengeStartIntro' */ './js/common/pages/ChallengeStart/ChallengeStartIntro'));
 const ChallengeStartPreview = React.lazy(() => import(/* webpackChunkName: 'ChallengeStartPreview' */ './js/common/pages/ChallengeStart/ChallengeStartPreview'));
-const ChallengeSupportJoin = React.lazy(() => import(/* webpackChunkName: 'ChallengeSupportJoin' */ './js/common/pages/ChallengeSupport/ChallengeSupportJoin'));
+const ChallengeInviteFriendsJoin = React.lazy(() => import(/* webpackChunkName: 'ChallengeInviteFriendsJoin' */ './js/common/pages/ChallengeInviteFriends/ChallengeInviteFriendsJoin'));
+const ChallengeInviteCustomizeMessage = React.lazy(() => import(/* webpackChunkName: 'ChallengeInviteCustomizeMessage' */ './js/common/pages/ChallengeInviteFriends/ChallengeInviteCustomizeMessage'));
+const ChallengeInviteCopy = React.lazy(() => import(/* webpackChunkName: 'ChallengeInviteCopy' */ './js/common/pages/ChallengeInviteFriends/ChallengeInviteCopy'));
 const ClaimYourPage = React.lazy(() => import(/* webpackChunkName: 'ClaimYourPage' */ './js/pages/Settings/ClaimYourPage'));
 const CompleteYourProfileMobile = React.lazy(() => import(/* webpackChunkName: 'CompleteYourProfileMobile' */ './js/common/pages/Settings/CompleteYourProfileMobile'));
 const Credits = React.lazy(() => import(/* webpackChunkName: 'Credits' */ './js/pages/More/Credits'));
@@ -159,7 +162,7 @@ class App extends Component {
 
   // See https://reactjs.org/docs/error-boundaries.html
   static getDerivedStateFromError (error) { // eslint-disable-line no-unused-vars
-    // Update state so the next render will show the fallback UI, We should have a "Oh snap" page
+    // Update state so the next render will show the fallback UI, We should have an "Oh snap" page
     console.log('App caught error ', error);
     return { hasError: true };
   }
@@ -409,7 +412,10 @@ class App extends Component {
                   <Route exact path="/+/:challengeWeVoteId/" render={(props) => <ChallengeHomePage match={props.match} />} />
                   <Route exact path="/:challengeSEOFriendlyPath/+/" render={(props) => <ChallengeHomePage match={props.match} />} />
                   <Route exact path="/:challengeSEOFriendlyPath/+/edit" render={(props) => <ChallengeStartEditAll match={props.match} editExistingChallenge setShowHeaderFooter={this.setShowHeaderFooter} />} />
-                  <Route exact path="/:challengeSEOFriendlyPath/+/join-challenge" render={(props) => <ChallengeSupportJoin match={props.match} setShowHeaderFooter={this.setShowHeaderFooter} />} />
+                  <Route exact path="/:challengeSEOFriendlyPath/+/join-challenge" render={(props) => <ChallengeInviteFriendsJoin match={props.match} setShowHeaderFooter={this.setShowHeaderFooter} />} />
+                  <Route exact path="/:challengeSEOFriendlyPath/+/customize-message" render={(props) => <ChallengeInviteCustomizeMessage match={props.match} setShowHeaderFooter={this.setShowHeaderFooter} />} />
+                  <Route exact path="/:challengeSEOFriendlyPath/+/invite-friends" render={(props) => <ChallengeInviteCopy match={props.match} setShowHeaderFooter={this.setShowHeaderFooter} />} />
+                  <Route exact path="/:challengeSEOFriendlyPath/+/:tabSelected" render={(props) => <ChallengeHomePage match={props.match} />} />
                   <Route exact path="/:politicianWeVoteId/p/" render={(props) => <PoliticianDetailsPage match={props.match} />} />
                   <Route exact path="/:politicianSEOFriendlyPath/-/" render={(props) => <PoliticianDetailsPage match={props.match} />} />
                   <Route exact path="/:campaignSEOFriendlyPath/-/share-campaign" render={(props) => <CampaignSupportShare match={props.match} setShowHeaderFooter={this.setShowHeaderFooter} />} />
@@ -472,6 +478,7 @@ class App extends Component {
                   <Route path="/candidate/:candidate_we_vote_id/:back_to_variable/:organization_we_vote_id" exact component={OrganizationVoterGuideCandidate} />
                   <Route path="/candidate/:candidate_we_vote_id/:organization_we_vote_id" exact component={OrganizationVoterGuideCandidate} />
                   <Route path="/candidate/:candidate_we_vote_id" exact component={Candidate} />
+                  <Route path="/challenges/" exact component={ChallengesHomeLoader} />
                   <Route path="/donate" component={(isNotWeVoteMarketingSite || this.localIsCordova()) ? ReadyRedirect : Donate} />
                   <Route path="/facebook_invitable_friends" component={FacebookInvitableFriends} />
                   <Route path="/findfriends/:set_up_page" exact component={FindFriendsRoot} />

@@ -1,7 +1,6 @@
 import { driver, expect } from '@wdio/globals';
 import ReadyPage from '../page_objects/ready.page';
 import FAQPage from '../page_objects/faq.page';
-import { iterateSync } from 'glob';
 //import { optionGroupClasses } from '@mui/material/node_modules/@mui/base';
 
 const assert = require('assert');
@@ -10,17 +9,17 @@ const waitTime = 10000;
 let originalWindowHandle;
 
 beforeEach(async () => {
- 
 
-  await ReadyPage.load();  
+
+  await ReadyPage.load();
   await driver.maximizeWindow();
-  ;
+
   await driver.pause(waitTime);
 
   originalWindowHandle = await driver.getWindowHandle();
   //Ensure you are focused on the Ready page if it opens in a new tab
   const allWindowHandles = await driver.getWindowHandles();
-  
+
   // Iterate through all windows to ensure you are on the correct one
   for (let handle of allWindowHandles) {
     await driver.switchToWindow(handle);
@@ -29,7 +28,7 @@ beforeEach(async () => {
       // If it's the Ready page, break out of the loop
       break;
     }
- //await driver.switchWindow('https://quality.wevote.us/ready');
+    //await driver.switchWindow('https://quality.wevote.us/ready');
   }
   await ReadyPage.waitAboutLinkAndClick();
   //await driver.refresh();  // Refresh the page between tests
@@ -38,10 +37,7 @@ beforeEach(async () => {
 
 describe('FAQPage', () => {
   // FAQ_001
-  iterateSync('verifyAboutLinkRedirected', async () => {
-   // await ReadyPage.load();   ;
-    //await driver.pause(waitTime);
-    //await driver.maximizeWindow();
+  it('verifyAboutLinkRedirected', async () => {
 
     await expect(await FAQPage.getFAQPageTitleElement).toHaveText('Frequently Asked Questions');
 
@@ -49,19 +45,9 @@ describe('FAQPage', () => {
 
   // FAQ_003
   it('verifyFacebookIconRedirected', async () => {
-   // await ReadyPage.load();
-   // await driver.pause(waitTime);
-   // await ReadyPage.waitAboutLinkAndClick();
-   //const originalWindowHandle = await driver.getWindowHandle();
 
-   await (await FAQPage.getFacebookIconElement).waitForClickable();
-   
-    
-
-    await FAQPage.getFacebookIconElement.click();   
-   // const windowHandles = await driver.getWindowHandles();
-   // await driver.switchToWindow(windowHandles[1]); // Assumes Facebook is the new window
-
+    await (await FAQPage.getFacebookIconElement).waitForClickable();
+    await FAQPage.getFacebookIconElement.click();
     await FAQPage.waitForURL('https://www.facebook.com/WeVoteUSA');
     await expect(driver).toHaveTitle('We Vote | Facebook');
 
@@ -80,25 +66,19 @@ describe('FAQPage', () => {
 
   // FAQ_006
   it('verifyGitHubIconAndLinksRedirected', async () => {
-    //await ReadyPage.load();
-   // await driver.pause(waitTime);
-   // await ReadyPage.waitAboutLinkAndClick();
-   await FAQPage.getGitHubIconElement;
+
+    await FAQPage.getGitHubIconElement;
     await expect(await FAQPage.getGitHubIconElement).toBeElementsArrayOfSize(3);
     const actualResultArray = await FAQPage.clickGitHubIconAndLinks();
     for (let i = 0; i < actualResultArray.length; i++) {
       const actualResult = actualResultArray[i];
       await expect(actualResult).toHaveTitle('We Vote · GitHub');
-
-     // assert.equal(actualResult, 'We Vote · GitHub');
-    }   
+    }
   });
 
   // FAQ_007
   it('verifyBlogIconRedirected', async () => {
-   // await ReadyPage.load();
-   // await driver.pause(waitTime);
-    //await ReadyPage.waitAboutLinkAndClick();
+
     await (await FAQPage.getBlogIconElement).waitForClickable();
     await FAQPage.getBlogIconElement.click();
     await FAQPage.waitForURL('https://blog.wevote.us/');
@@ -107,9 +87,7 @@ describe('FAQPage', () => {
 
   // FAQ_009
   it('verifyEducationLinkRedirected', async () => {
-   // await ReadyPage.load(); 
-    //await driver.pause(waitTime);  
-   // await ReadyPage.waitAboutLinkAndClick();
+
     await (await FAQPage.getWeVoteEducationWebsiteElement).waitForClickable();
     await FAQPage.getWeVoteEducationWebsiteElement.click();
     await FAQPage.waitForURL('https://www.wevoteeducation.org/');
@@ -118,10 +96,7 @@ describe('FAQPage', () => {
 
   // FAQ_010
   it('verifyWeVoteUSALinkRedirected', async () => {
-    //await ReadyPage.load(); 
-     //await driver.pause(waitTime);  
 
-   // await ReadyPage.waitAboutLinkAndClick();
     await (await FAQPage.getWeVoteUSAWebsiteElement).waitForClickable();
     await FAQPage.getWeVoteUSAWebsiteElement.click();
     await FAQPage.waitForURL('https://www.wevoteusa.org/');
@@ -130,12 +105,9 @@ describe('FAQPage', () => {
 
   // FAQ_011
   it('verifyVolunteerOpeningsLinkRedirected', async () => {
-    //await ReadyPage.load();  
-    //await driver.pause(waitTime);  
 
-    //await ReadyPage.waitAboutLinkAndClick();
-   const volunteerElements=await FAQPage.getWeVoteVolunteerElements;
-  // await volunteerElements[0].waitForClickable();
+    const volunteerElements = await FAQPage.getWeVoteVolunteerElements;
+    // await volunteerElements[0].waitForClickable();
     await expect(volunteerElements).toBeElementsArrayOfSize(2);
     const actualResultArray = await FAQPage.clickVolunteerOpeningsLinks();
     for (let i = 0; i < actualResultArray.length; i++) {
@@ -154,24 +126,18 @@ describe('FAQPage', () => {
   //   await driver.pause(waitTime);
   //   await expect(driver).toHaveTitle('About WeVote');
   // });
-//   // FAQ_012
+  //   // FAQ_012
   it('verifyTeamLinkRedirected', async () => {
-   /// await ReadyPage.load(); 
-   //await driver.pause(waitTime);
 
-   // await ReadyPage.waitAboutLinkAndClick();
-   await (await FAQPage.getAboutPageTitleElement).waitForClickable();
-await FAQPage.getAboutPageTitleElement.click();
-   await FAQPage.waitForURL('https://quality.wevote.us/more/about');
+    await (await FAQPage.getAboutPageTitleElement).waitForClickable();
+    await FAQPage.getAboutPageTitleElement.click();
+    await FAQPage.waitForURL('https://quality.wevote.us/more/about');
     await expect(driver).toHaveTitle('About WeVote');
   });
 
   // FAQ_013
   it('verifyContactUsRedirected', async () => {
-    //await ReadyPage.load(); 
-    // await driver.pause(waitTime); 
 
-   // await ReadyPage.waitAboutLinkAndClick();
     await (await FAQPage.getWeVoteContactUsFormElement).waitForClickable();
     await FAQPage.getWeVoteContactUsFormElement.click();
     await FAQPage.waitForURL('https://help.wevote.us/hc/en-us/requests/new');
@@ -181,8 +147,7 @@ await FAQPage.getAboutPageTitleElement.click();
 
   // FAQ_014
   it('verifyAppStoreRedirected', async () => {
-    //await ReadyPage.load();  
-   // await ReadyPage.waitAboutLinkAndClick();
+
     await (await FAQPage.getWeVoteIPhoneLinkElement).waitForClickable();
     await FAQPage.getWeVoteIPhoneLinkElement.click();
     await FAQPage.waitForURL('https://apps.apple.com/us/app/we-vote-ballot-guide-wevote/id1347335726');
@@ -191,20 +156,16 @@ await FAQPage.getAboutPageTitleElement.click();
 
   // FAQ_015
   it('verifyGooglePlayRedirected', async () => {
-    //await ReadyPage.load();
-    //await driver.pause(waitTime); 
-   // await ReadyPage.waitAboutLinkAndClick();
+
     await (await FAQPage.getWeVoteAndroidLinkElement).waitForClickable();
     await FAQPage.getWeVoteAndroidLinkElement.click();
     await FAQPage.waitForURL('https://play.google.com/store/apps/details?id=org.wevote.cordova&hl=en_US');
     await expect(driver).toHaveTitle('We Vote Ballot Guide, @WeVote - Apps on Google Play');
-  }); 
+  });
 
   // FAQ_016
   it('verifyDonateLinkRedirected', async () => {
-   // await ReadyPage.load();
-    //await driver.pause(waitTime);
-   // await ReadyPage.waitAboutLinkAndClick();
+
     await (await FAQPage.getPleaseDonateElement).waitForClickable();
     await FAQPage.getPleaseDonateElement.click();
 
@@ -213,9 +174,6 @@ await FAQPage.getAboutPageTitleElement.click();
 
   // FAQ_017
   it('verifyLetsGetStartedLinkRedirected', async () => {
-//     await ReadyPage.load();  
-// await driver.pause(waitTime);
-//     await ReadyPage.waitAboutLinkAndClick();
     await (await FAQPage.getLetsGetStartedElement).waitForClickable();
     await FAQPage.getLetsGetStartedElement.click();
     await driver.waitUntil(async () => {

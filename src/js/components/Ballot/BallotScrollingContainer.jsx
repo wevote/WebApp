@@ -21,7 +21,7 @@ import {
   CandidateImageAndMatchWrapper,
 } from '../Style/BallotStyles';
 import { PositionRowListInnerWrapper, PositionRowListOneWrapper, PositionRowListOuterWrapper } from '../Style/PositionRowListStyles';
-import BallotMatchIndicator from './BallotMatchIndicator';
+import BallotMatchIndicator from '../BallotItem/BallotMatchIndicator';
 import PositionRowListCompressed from './PositionRowListCompressed';
 
 // const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
@@ -98,6 +98,23 @@ class BallotScrollingContainer extends Component {
     }
   };
 
+  handleContainerClick = (e, weVoteId, externalUniqueId) => {
+//     const candidateContainer = e.target.closest(".candidate-container-div")
+    const candidateContainer = document.getElementsByClassName('candidate-container-div')[0]
+    const positionRowListOuterWrapper = document.getElementsByClassName('position-row-list-outer-wrapper-div')[0]
+    const candidateImageAndName = document.getElementById(`officeItemCompressedCandidateImageAndName-${weVoteId}-${externalUniqueId}`);
+    const candidateNameAndPartyWrapper = document.getElementsByClassName('candidate-name-and-party-wrapper-div')[0]
+    const candidateNameH4 = document.getElementsByClassName('candidate-name-h4-div')[0]
+    console.log(positionRowListOuterWrapper, candidateNameAndPartyWrapper)
+      if (e.target === candidateImageAndName
+            || e.target === candidateContainer
+            || e.target === positionRowListOuterWrapper
+            || e.target === candidateNameAndPartyWrapper
+            ||e.target ===candidateNameH4) {
+        this.onClickShowOrganizationModalWithBallotItemInfoAndPositions(weVoteId)
+        }
+    }
+
   render () {
     const { oneCandidate, externalUniqueId, isFirstBallotItem, candidateCount, limitNumberOfCandidatesShownToThisNumber } = this.props;
     const candidatePartyText = oneCandidate.party && oneCandidate.party.length ? `${oneCandidate.party}` : '';
@@ -118,14 +135,14 @@ class BallotScrollingContainer extends Component {
           onScroll={this.checkArrowVisibility}
           showLeftGradient={!this.state.hideLeftArrow}
           showRightGradient={!this.state.hideRightArrow}
+          onClick={(e) => this.handleContainerClick(e, oneCandidate.we_vote_id, externalUniqueId)}
         >
-          <CandidateContainer>
+          <CandidateContainer className="candidate-container-div" >
             <CandidateWrapper>
               <CandidateInfo>
                 <CandidateTopRow>
                   <Candidate
                     id={`officeItemCompressedCandidateImageAndName-${oneCandidate.we_vote_id}-${externalUniqueId}`}
-                    onClick={() => this.onClickShowOrganizationModalWithBallotItemInfoAndPositions(oneCandidate.we_vote_id)}
                   >
                     {/* Candidate Image */}
                     <CandidateImageAndMatchWrapper>
@@ -145,10 +162,9 @@ class BallotScrollingContainer extends Component {
                         />
                       )}
                     </CandidateImageAndMatchWrapper>
-
                     {/* Candidate Name */}
-                    <CandidateNameAndPartyWrapper>
-                      <CandidateNameH4>
+                    <CandidateNameAndPartyWrapper className="candidate-name-and-party-wrapper-div">
+                      <CandidateNameH4 className="candidate-name-h4-div">
                         {oneCandidate.ballot_item_display_name}
                       </CandidateNameH4>
                       <CandidateParty>
@@ -157,7 +173,7 @@ class BallotScrollingContainer extends Component {
                     </CandidateNameAndPartyWrapper>
                   </Candidate>
                 </CandidateTopRow>
-                <CandidateBottomRow>
+                <CandidateBottomRow className="candidate-bottom-row">
                   {!hideCandidateDetails && (
                     <Suspense fallback={<></>}>
                       <IssuesByBallotItemDisplayList
@@ -186,7 +202,7 @@ class BallotScrollingContainer extends Component {
                 </CandidateBottomRow>
               </CandidateInfo>
             </CandidateWrapper>
-            <PositionRowListOuterWrapper>
+            <PositionRowListOuterWrapper className="position-row-list-outer-wrapper-div">
               {!!(oneCandidate.linked_campaignx_we_vote_id) && (
                 <HeartFavoriteToggleLocalWrapper>
                   <HeartFavoriteToggleLoader campaignXWeVoteId={oneCandidate.linked_campaignx_we_vote_id} />

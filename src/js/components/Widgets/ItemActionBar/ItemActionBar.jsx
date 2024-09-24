@@ -19,7 +19,7 @@ import VoterConstants from '../../../constants/VoterConstants';
 import AppObservableStore from '../../../common/stores/AppObservableStore';
 import SupportStore from '../../../stores/SupportStore';
 import VoterStore from '../../../stores/VoterStore';
-import PositionPublicToggle from '../PositionPublicToggle';
+import PositionPublicToggle from '../../PositionItem/PositionPublicToggle';
 import ShareButtonDropDown from '../ShareButtonDropdown';
 import { openSnackbar } from '../../../common/components/Widgets/SnackNotifier';
 import DesignTokenColors from '../../../common/components/Style/DesignTokenColors';

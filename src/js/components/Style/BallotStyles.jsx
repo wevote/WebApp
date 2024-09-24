@@ -63,7 +63,6 @@ export const CandidateContainer = styled('div')`
 `;
 
 export const CandidateInfo = styled('div')(({ theme }) => (`
-  border: 1px solid #fff;
   display: block;
   height: 100%;
   margin: 0 !important;
@@ -96,7 +95,6 @@ export const CandidateNameH4 = styled('button')`
   font-weight: 400;
   font-size: 20px;
   margin-bottom: 0 !important;
-  // min-width: 124px;
   white-space: normal;
   border: none;
   background-color: transparent;
@@ -140,7 +138,7 @@ export const CandidateWrapper = styled('div')(({ theme }) => (`
     width: 100%;
   }
   ${theme.breakpoints.up('sm')} {
-    // margin-left: 48px;
+//     margin-left: 48px;
     min-width: 320px;
   }
 `));

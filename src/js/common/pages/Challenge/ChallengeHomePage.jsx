@@ -7,13 +7,13 @@ import React, { Component, Suspense } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import ChallengeInviteFriendsTopNavigation from '../../components/Navigation/ChallengeInviteFriendsTopNavigation';
 import DesignTokenColors from '../../components/Style/DesignTokenColors';
 import { PageContentContainer } from '../../../components/Style/pageLayoutStyles';
 import webAppConfig from '../../../config';
 // import AnalyticsActions from '../../../actions/AnalyticsActions';
 import BallotActions from '../../../actions/BallotActions';
-import BallotStore from '../../../stores/BallotStore';
-import ChallengeSupporterStore from '../../stores/ChallengeSupporterStore';
+import ChallengeParticipantStore from '../../stores/ChallengeParticipantStore';
 import ChallengeStore from '../../stores/ChallengeStore';
 import VoterStore from '../../../stores/VoterStore';
 import CompleteYourProfileModalController from '../../components/Settings/CompleteYourProfileModalController';
@@ -44,6 +44,9 @@ import { cordovaBallotFilterTopMargin } from '../../../utils/cordovaOffsets';
 import { headroomWrapperOffset } from '../../../utils/cordovaCalculatedOffsets';
 import { getPageKey } from '../../../utils/cordovaPageUtils';
 import normalizedImagePath from '../../utils/normalizedImagePath';
+import ChallengeAbout from '../../components/Challenge/ChallengeAbout';
+import ChallengeLeaderboard from '../../components/Challenge/ChallengeLeaderboard';
+import ChallengeInvitedFriends from '../../components/ChallengeInviteFriends/ChallengeInvitedFriends';
 
 const ChallengeCardForList = React.lazy(() => import(/* webpackChunkName: 'ChallengeCardForList' */ '../../components/ChallengeListRoot/ChallengeCardForList'));
 // const ChallengeCommentsList = React.lazy(() => import(/* webpackChunkName: 'ChallengeCommentsList' */ '../../components/Challenge/ChallengeCommentsList'));
@@ -108,7 +111,7 @@ class ChallengeHomePage extends Component {
       challengeWeVoteIdForDisplay: '', // Value for challenge already received
       sharingStepCompleted: false,
       step2Completed: false,
-      voterCanEditThisPolitician: false,
+      voterCanEditThisChallenge: false,
     };
     // this.onScroll = this.onScroll.bind(this);
   }
@@ -117,10 +120,11 @@ class ChallengeHomePage extends Component {
     // console.log('ChallengeHomePage componentDidMount');
     const { match: { params } } = this.props;
     const { challengeSEOFriendlyPath: challengeSEOFriendlyPathFromUrl, challengeWeVoteId } = params;
+    // console.log('ChallengeHomePage componentDidMount tabSelected: ', tabSelected);
     // console.log('componentDidMount challengeSEOFriendlyPathFromUrl: ', challengeSEOFriendlyPathFromUrl, ', challengeWeVoteId: ', challengeWeVoteId);
     this.onAppObservableStoreChange();
     this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
-    this.challengeSupporterStoreListener = ChallengeSupporterStore.addListener(this.onChallengeSupporterStoreChange.bind(this));
+    this.challengeParticipantStoreListener = ChallengeParticipantStore.addListener(this.onChallengeParticipantStoreChange.bind(this));
     this.onChallengeStoreChange();
     this.challengeStoreListener = ChallengeStore.addListener(this.onChallengeStoreChange.bind(this));
     this.onVoterStoreChange();
@@ -154,13 +158,10 @@ class ChallengeHomePage extends Component {
     // Take the "calculated" identifiers and retrieve if missing
     retrieveChallengeFromIdentifiersIfNeeded(challengeSEOFriendlyPathFromUrl, challengeWeVoteId);
 
-    this.positionItemTimer = setTimeout(() => {
-      // This is a performance killer, so let's delay it for a few seconds
-      if (!BallotStore.ballotFound) {
-        // console.log('WebApp doesn't know the election or have ballot data, so ask the API server to return best guess');
-        if (apiCalming('voterBallotItemsRetrieve', 3000)) {
-          BallotActions.voterBallotItemsRetrieve(0, '', '');
-        }
+    this.ballotRetrieveTimer = setTimeout(() => {
+      // voterBallotItemsRetrieve is takes significant resources, so let's delay it for a few seconds
+      if (apiCalming('voterBallotItemsRetrieve', 600000)) {
+        BallotActions.voterBallotItemsRetrieve(0, '', '');
       }
     }, 5000);  // April 19, 2021: Tuned to keep performance above 83.  LCP at 597ms
 
@@ -178,9 +179,9 @@ class ChallengeHomePage extends Component {
   componentDidUpdate (prevProps) {
     // console.log('ChallengeHomePage componentDidUpdate');
     const { match: { params: prevParams } } = prevProps;
-    const { challengeSEOFriendlyPath: prevChallengeSEOFriendlyPath, challengeWeVoteId: prevChallengeWeVoteId } = prevParams;
+    const { challengeSEOFriendlyPath: prevChallengeSEOFriendlyPath, challengeWeVoteId: prevChallengeWeVoteId, tabSelected: tabSelectedPrevious } = prevParams;
     const { match: { params } } = this.props;
-    const { challengeSEOFriendlyPath: challengeSEOFriendlyPathFromUrl, challengeWeVoteId } = params;
+    const { challengeSEOFriendlyPath: challengeSEOFriendlyPathFromUrl, challengeWeVoteId, tabSelected } = params;
     let challengeSEOFriendlyPath = '';
     let triggerFreshRetrieve = false;
     let triggerSEOPathRedirect = false;
@@ -245,6 +246,10 @@ class ChallengeHomePage extends Component {
       }
       triggerFreshRetrieve = true;
       triggerSEOPathRedirect = true;
+    } else if (tabSelected && tabSelected !== tabSelectedPrevious) {
+      // Trigger a re-render
+      // console.log('componentDidUpdate tabSelected CHANGE');
+      this.setState({});
     }
     // console.log('componentDidUpdate triggerSEOPathRedirect: ', triggerSEOPathRedirect, ', challengeSEOFriendlyPath: ', challengeSEOFriendlyPath);
     if (triggerSEOPathRedirect && challengeSEOFriendlyPath) {
@@ -264,22 +269,22 @@ class ChallengeHomePage extends Component {
   }
 
   componentWillUnmount () {
-    if (this.positionItemTimer) {
-      clearTimeout(this.positionItemTimer);
-      this.positionItemTimer = null;
+    if (this.ballotRetrieveTimer) {
+      clearTimeout(this.ballotRetrieveTimer);
+      this.ballotRetrieveTimer = null;
     }
     if (this.timer) {
       clearTimeout(this.timer);
       this.timer = null;
     }
     this.appStateSubscription.unsubscribe();
-    this.challengeSupporterStoreListener.remove();
+    this.challengeParticipantStoreListener.remove();
     this.challengeStoreListener.remove();
     // window.removeEventListener('scroll', this.onScroll);
   }
 
   onFirstRetrievalOfChallengeWeVoteId () {
-    this.onChallengeSupporterStoreChange();
+    this.onChallengeParticipantStoreChange();
     this.onChallengeStoreChange();
   }
 
@@ -296,15 +301,13 @@ class ChallengeHomePage extends Component {
     });
   }
 
-  onChallengeSupporterStoreChange () {
+  onChallengeParticipantStoreChange () {
     const { challengeWeVoteId } = this.state;
-    const supporterEndorsementsWithText = ChallengeSupporterStore.getLatestChallengeSupportersWithTextList(challengeWeVoteId);
-    const step2Completed = ChallengeSupporterStore.voterSupporterEndorsementExists(challengeWeVoteId);
-    const payToPromoteStepCompleted = ChallengeSupporterStore.voterChipInExists(challengeWeVoteId);
+    const step2Completed = ChallengeParticipantStore.voterSupporterEndorsementExists(challengeWeVoteId);
+    const payToPromoteStepCompleted = ChallengeParticipantStore.voterChipInExists(challengeWeVoteId);
     const sharingStepCompleted = false;
-    // console.log('onChallengeSupporterStoreChange step2Completed: ', step2Completed, ', sharingStepCompleted: ', sharingStepCompleted, ', payToPromoteStepCompleted:', payToPromoteStepCompleted);
+    // console.log('onChallengeParticipantStoreChange step2Completed: ', step2Completed, ', sharingStepCompleted: ', sharingStepCompleted, ', payToPromoteStepCompleted:', payToPromoteStepCompleted);
     this.setState({
-      supporterEndorsementsWithText,
       sharingStepCompleted,
       step2Completed,
       payToPromoteStepCompleted,
@@ -339,12 +342,12 @@ class ChallengeHomePage extends Component {
     }
     if (challengeWeVoteId) {
       const voterCanEditThisChallenge = ChallengeStore.getVoterCanEditThisChallenge(challengeWeVoteId);
-      const voterSupportsThisChallenge = ChallengeStore.getVoterSupportsThisChallenge(challengeWeVoteId);
+      const voterIsChallengeParticipant = ChallengeStore.getVoterIsChallengeParticipant(challengeWeVoteId);
       this.setState({
         challengeWeVoteId,
         challengeWeVoteIdForDisplay: challengeWeVoteId,
         voterCanEditThisChallenge,
-        voterSupportsThisChallenge,
+        voterIsChallengeParticipant,
       });
     }
     const challengeDescriptionLimited = returnFirstXWords(challengeDescription, 200);
@@ -431,12 +434,12 @@ class ChallengeHomePage extends Component {
     historyPush('/ballot');
   }
 
-  onPoliticianCampaignEditClick = () => {
+  onChallengeCampaignEditClick = () => {
     historyPush(`${this.getChallengeBasePath()}edit`);
     return null;
   }
 
-  onPoliticianCampaignShareClick = () => {
+  onChallengeCampaignShareClick = () => {
     historyPush(`${this.getChallengeBasePath()}share-challenge`);
     return null;
   }
@@ -446,7 +449,7 @@ class ChallengeHomePage extends Component {
 
     const { classes } = this.props;
     const { match: { params } } = this.props;
-    const { challengeSEOFriendlyPath: challengeSEOFriendlyPathFromUrl } = params;
+    const { challengeSEOFriendlyPath: challengeSEOFriendlyPathFromUrl, tabSelected } = params;
     const {
       chosenWebsiteName,
       challengeWeVoteId, loadSlow,
@@ -456,10 +459,11 @@ class ChallengeHomePage extends Component {
       challengeTitle,
       challengeWeVoteIdForDisplay,
       scrolledDown,
-      voterCanEditThisPolitician, voterSupportsThisPolitician,
+      voterCanEditThisChallenge,
+      voterIsChallengeParticipant,
       voterWeVoteId,
     } = this.state;
-    // console.log('ChallengeHomePage render challengeTitle: ', challengeTitle);
+    // console.log('ChallengeHomePage render challengeSEOFriendlyPath: ', challengeSEOFriendlyPath, ', challengeSEOFriendlyPathForDisplay: ', challengeSEOFriendlyPathForDisplay);
     const challengeAdminEditUrl = `${webAppConfig.WE_VOTE_SERVER_ROOT_URL}challenge/${challengeWeVoteId}/summary`;
     // const candidateWeVoteId = CandidateStore.getCandidateWeVoteIdRunningFromChallengeWeVoteId(challengeWeVoteId);
     const avatarBackgroundImage = normalizedImagePath('../img/global/svg-icons/avatar-generic.svg');
@@ -473,18 +477,18 @@ class ChallengeHomePage extends Component {
             <meta name="robots" content="noindex" data-react-helmet="true" />
           </Helmet>
           <PageWrapper>
-            <MissingPoliticianMessageContainer>
-              <MissingPoliticianText>Democracy Challenge not found.</MissingPoliticianText>
+            <MissingChallengeMessageContainer>
+              <MissingChallengeText>Democracy Challenge not found.</MissingChallengeText>
               <Button
                 classes={{ root: classes.buttonRoot }}
                 color="primary"
                 variant="contained"
-                onClick={() => historyPush('/cs')}
+                onClick={() => historyPush('/challenges')}
               >
                 <PersonSearch classes={{ root: classes.buttonIconRoot }} location={window.location} />
                 See other challenges
               </Button>
-            </MissingPoliticianMessageContainer>
+            </MissingChallengeMessageContainer>
           </PageWrapper>
         </PageContentContainer>
       );
@@ -494,39 +498,30 @@ class ChallengeHomePage extends Component {
     if (challengeTitle) {
       htmlTitle = `${challengeTitle} - ${chosenWebsiteName}`;
     }
+    let tabSelectedChosen = 'about';
+    if (tabSelected === 'friends' || tabSelected === 'leaderboard') {
+      tabSelectedChosen = tabSelected;
+    }
 
-    // let commentListTeaserHtml = <></>;
-    // if (supporterEndorsementsWithText && supporterEndorsementsWithText.length > 0) {
-    //   commentListTeaserHtml = (
-    //     <CommentsListWrapper>
-    //       <DelayedLoad waitBeforeShow={loadSlow ? 1500 : 0}>
-    //         <Suspense fallback={<span>&nbsp;</span>}>
-    //           <CampaignSubSectionTitleWrapper>
-    //             <CampaignSubSectionTitle>
-    //               Reasons for supporting
-    //             </CampaignSubSectionTitle>
-    //             {!!(this.getChallengeBasePath()) && (
-    //               <CampaignSubSectionSeeAll>
-    //                 <Link
-    //                   to={`${this.getChallengeBasePath()}comments`}
-    //                   className="u-link-color"
-    //                 >
-    //                   See all
-    //                 </Link>
-    //               </CampaignSubSectionSeeAll>
-    //             )}
-    //           </CampaignSubSectionTitleWrapper>
-    //           <CampaignCommentsList
-    //             campaignXWeVoteId={challengeWeVoteId}
-    //             challengeWeVoteId={challengeWeVoteIdForDisplay}
-    //             removePoliticianEndorsements
-    //             startingNumberOfCommentsToDisplay={2}
-    //           />
-    //         </Suspense>
-    //       </DelayedLoad>
-    //     </CommentsListWrapper>
-    //   );
-    // }
+    const challengeDescriptionJsx = (
+      <CampaignDescription>
+        <AboutAndEditFlex>
+          <SectionTitleSimple>
+            About
+          </SectionTitleSimple>
+          <div>
+            <Suspense fallback={<span>&nbsp;</span>}>
+              <UpdateChallengeInformation challengeTitle={challengeTitle} />
+            </Suspense>
+          </div>
+        </AboutAndEditFlex>
+        {challengeDescription ? (
+          <ReadMore numberOfLines={6} textToDisplay={challengeDescription} />
+        ) : (
+          <NoInformationProvided>No description has been provided for this candidate.</NoInformationProvided>
+        )}
+      </CampaignDescription>
+    );
     return (
       <PageContentContainer>
         <Suspense fallback={<span>&nbsp;</span>}>
@@ -556,7 +551,7 @@ class ChallengeHomePage extends Component {
                 <MobileHeaderContentContainer>
                   <CandidateTopRow>
                     <Candidate
-                      id={`challengeHomeImageAndName-${challengeWeVoteId}`}
+                      id={`challengeHomeImageAndName-${challengeWeVoteIdForDisplay}`}
                     >
                       {/* Challenge Image */}
                       <Suspense fallback={<></>}>
@@ -577,6 +572,7 @@ class ChallengeHomePage extends Component {
                       </CandidateNameAndPartyWrapper>
                     </Candidate>
                   </CandidateTopRow>
+                    <ChallengeAbout />
                 </MobileHeaderContentContainer>
               </MobileHeaderInnerContainer>
             </MobileHeaderOuterContainer>
@@ -585,74 +581,50 @@ class ChallengeHomePage extends Component {
               useVerticalCard
               voterWeVoteId={voterWeVoteId}
             />
-            ==== MOBILE
-            <CampaignDescriptionWrapper hideCardMargins>
-              {challengeDataFound && (
-                <DelayedLoad waitBeforeShow={250}>
-                  <CampaignDescription>
-                    <AboutAndEditFlex>
-                      <SectionTitleSimple>
-                        About
-                      </SectionTitleSimple>
-                      <div>
-                        <Suspense fallback={<span>&nbsp;</span>}>
-                          <UpdateChallengeInformation challengeTitle={challengeTitle} />
-                        </Suspense>
-                      </div>
-                    </AboutAndEditFlex>
-                    {challengeDescription ? (
-                      <ReadMore numberOfLines={6} textToDisplay={challengeDescription} />
-                    ) : (
-                      <NoInformationProvided>No description has been provided for this candidate.</NoInformationProvided>
-                    )}
-                  </CampaignDescription>
-                </DelayedLoad>
-              )}
-              {!!(voterCanEditThisPolitician || voterSupportsThisPolitician) && (
-                <IndicatorRow>
-                  {voterCanEditThisPolitician && (
-                    <IndicatorButtonWrapper>
-                      <EditIndicator onClick={this.onPoliticianCampaignEditClick}>
-                        Edit Politician
-                      </EditIndicator>
-                    </IndicatorButtonWrapper>
-                  )}
-                  {voterSupportsThisPolitician && (
-                    <IndicatorButtonWrapper>
-                      <EditIndicator onClick={this.onPoliticianCampaignShareClick}>
-                        Share Politician
-                      </EditIndicator>
-                    </IndicatorButtonWrapper>
-                  )}
-                </IndicatorRow>
-              )}
-            </CampaignDescriptionWrapper>
-            {/* {commentListTeaserHtml} */}
-            {(!futureFeaturesDisabled && nextReleaseFeaturesEnabled) && (
-              <CommentsListWrapper>
-                <DelayedLoad waitBeforeShow={loadSlow ? 1000 : 0}>
-                  <Suspense fallback={<span>&nbsp;</span>}>
-                    <CampaignSubSectionTitleWrapper>
-                      <CampaignSubSectionTitle>
-                        Updates
-                      </CampaignSubSectionTitle>
-                      {!!(this.getChallengeBasePath()) && (
-                        <CampaignSubSectionSeeAll>
-                          <Link to={`${this.getChallengeBasePath()}updates`} className="u-link-color">
-                            See all
-                          </Link>
-                        </CampaignSubSectionSeeAll>
+            <ChallengeInviteFriendsTopNavigation
+              challengeSEOFriendlyPath={challengeSEOFriendlyPathForDisplay}
+              tabSelected={tabSelectedChosen}
+            />
+            {tabSelectedChosen === 'friends' ? (
+              <FriendsSectionWrapper>
+                <ChallengeInvitedFriends />
+              </FriendsSectionWrapper>
+            ) : (
+              <>
+                {tabSelectedChosen === 'leaderboard' ? (
+                  <LeaderboardSectionWrapper>
+                    <ChallengeLeaderboard challengeWeVoteId={challengeWeVoteIdForDisplay} />
+                  </LeaderboardSectionWrapper>
+                ) : (
+                  <AboutSectionWrapper>
+                    <CampaignDescriptionWrapper hideCardMargins>
+                      {challengeDescription && (
+                        <DelayedLoad waitBeforeShow={250}>
+                          {challengeDescriptionJsx}
+                        </DelayedLoad>
                       )}
-                    </CampaignSubSectionTitleWrapper>
-                    {/* <CampaignNewsItemList */}
-                    {/*  politicianWeVoteId={challengeWeVoteIdForDisplay} */}
-                    {/*  challengeSEOFriendlyPath={challengeSEOFriendlyPathForDisplay} */}
-                    {/*  showAddNewsItemIfNeeded */}
-                    {/*  startingNumberOfCommentsToDisplay={1} */}
-                    {/* /> */}
-                  </Suspense>
-                </DelayedLoad>
-              </CommentsListWrapper>
+                      {!!(voterCanEditThisChallenge || voterIsChallengeParticipant) && (
+                        <IndicatorRow>
+                          {voterCanEditThisChallenge && (
+                            <IndicatorButtonWrapper>
+                              <EditIndicator onClick={this.onChallengeCampaignEditClick}>
+                                Edit Challenge
+                              </EditIndicator>
+                            </IndicatorButtonWrapper>
+                          )}
+                          {voterIsChallengeParticipant && (
+                            <IndicatorButtonWrapper>
+                              <EditIndicator onClick={this.onChallengeCampaignShareClick}>
+                                Share Challenge
+                              </EditIndicator>
+                            </IndicatorButtonWrapper>
+                          )}
+                        </IndicatorRow>
+                      )}
+                    </CampaignDescriptionWrapper>
+                  </AboutSectionWrapper>
+                )}
+              </>
             )}
           </DetailsSectionMobile>
           <DetailsSectionDesktopTablet className="u-show-desktop-tablet">
@@ -665,7 +637,27 @@ class ChallengeHomePage extends Component {
                   useVerticalCard
                   voterWeVoteId={voterWeVoteId}
                 />
-                ==== DESKTOP
+                {challengeDescription && (
+                  <DelayedLoad waitBeforeShow={250}>
+                    <CampaignDescription>
+                      <AboutAndEditFlex>
+                        <SectionTitleSimple>
+                          About
+                        </SectionTitleSimple>
+                      </AboutAndEditFlex>
+                      <ReadMore numberOfLines={6} textToDisplay={challengeDescription} />
+                    </CampaignDescription>
+                  </DelayedLoad>
+                )}
+                  <ChallengeAbout />
+                <ViewBallotButtonWrapper>
+                  <Suspense fallback={<></>}>
+                    <JoinChallengeButton
+                      challengeSEOFriendlyPath={challengeSEOFriendlyPathForDisplay}
+                      challengeWeVoteId={challengeWeVoteIdForDisplay}
+                    />
+                  </Suspense>
+                </ViewBallotButtonWrapper>
                 <CampaignDescriptionDesktopWrapper>
                   {challengeDataFound && (
                     <DelayedLoad waitBeforeShow={250}>
@@ -697,11 +689,11 @@ class ChallengeHomePage extends Component {
                   {/*    </IndicatorButtonWrapper> */}
                   {/*  </IndicatorRow> */}
                   {/* )} */}
-                  {voterCanEditThisPolitician && (
+                  {voterCanEditThisChallenge && (
                     <IndicatorRow>
                       <IndicatorButtonWrapper>
-                        <EditIndicator onClick={this.onPoliticianCampaignEditClick}>
-                          Edit This Politician
+                        <EditIndicator onClick={this.onChallengeCampaignEditClick}>
+                          Edit This Challenge
                         </EditIndicator>
                       </IndicatorButtonWrapper>
                     </IndicatorRow>
@@ -715,14 +707,19 @@ class ChallengeHomePage extends Component {
                 />
               </ColumnOneThird>
               <ColumnTwoThirds>
-                <ViewBallotButtonWrapper>
-                  <Suspense fallback={<></>}>
-                    <JoinChallengeButton
-                      buttonText="Join Challenge"
-                      challengeBasePath={this.getChallengeBasePath()}
-                    />
-                  </Suspense>
-                </ViewBallotButtonWrapper>
+                <ChallengeInviteFriendsTopNavigation
+                  challengeSEOFriendlyPath={challengeSEOFriendlyPathForDisplay}
+                  hideAboutTab
+                />
+                {tabSelectedChosen === 'friends' ? (
+                  <FriendsSectionWrapper>
+                    <ChallengeInvitedFriends />
+                  </FriendsSectionWrapper>
+                ) : (
+                  <LeaderboardSectionWrapper>
+                    <ChallengeLeaderboard challengeWeVoteId={challengeWeVoteIdForDisplay} />
+                  </LeaderboardSectionWrapper>
+                )}
                 {/* {commentListTeaserHtml} */}
                 {(!futureFeaturesDisabled && nextReleaseFeaturesEnabled) && (
                   <CommentsListWrapper>
@@ -754,17 +751,18 @@ class ChallengeHomePage extends Component {
             </ColumnsWrapper>
           </DetailsSectionDesktopTablet>
         </PageWrapper>
-        {scrolledDown && (
-          <SupportButtonFooterWrapperAboveFooterButtons className="u-show-mobile">
-            <SupportButtonPanel>
-              <CenteredDiv>
-                <Suspense fallback={<span>&nbsp;</span>}>
-                  <JoinChallengeButton buttonText="Join Challenge" onClickFunction={this.goToBallot} />
-                </Suspense>
-              </CenteredDiv>
-            </SupportButtonPanel>
-          </SupportButtonFooterWrapperAboveFooterButtons>
-        )}
+        <SupportButtonFooterWrapperAboveFooterButtons className="u-show-mobile">
+          <SupportButtonPanel>
+            <CenteredDiv>
+              <Suspense fallback={<span>&nbsp;</span>}>
+                <JoinChallengeButton
+                  challengeSEOFriendlyPath={challengeSEOFriendlyPathForDisplay}
+                  challengeWeVoteId={challengeWeVoteIdForDisplay}
+                />
+              </Suspense>
+            </CenteredDiv>
+          </SupportButtonPanel>
+        </SupportButtonFooterWrapperAboveFooterButtons>
         <CompleteYourProfileModalController
           politicianWeVoteId={challengeWeVoteId}
           functionToUseWhenProfileComplete={this.functionToUseWhenProfileComplete}
@@ -796,6 +794,9 @@ const AboutAndEditFlex = styled('div')`
   justify-content: space-between;
 `;
 
+const AboutSectionWrapper = styled('div')`
+`;
+
 const CenteredDiv = styled('div')`
   display: flex;
   justify-content: center;
@@ -822,14 +823,20 @@ const ColumnTwoThirds = styled('div')`
   margin: 0 0 0 25px;
 `;
 
-const MissingPoliticianMessageContainer = styled('div')`
+const FriendsSectionWrapper = styled('div')`
+`;
+
+const LeaderboardSectionWrapper = styled('div')`
+`;
+
+const MissingChallengeMessageContainer = styled('div')`
   padding: 3em 2em;
   display: flex;
   flex-flow: column;
   align-items: center;
 `;
 
-const MissingPoliticianText = styled('p')(({ theme }) => (`
+const MissingChallengeText = styled('p')(({ theme }) => (`
   font-size: 24px;
   text-align: center;
   margin: 1em 2em 3em;

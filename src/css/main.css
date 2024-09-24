@@ -1636,7 +1636,7 @@ h1,h2,h3,h4,h5,h6 {
 }
 
 .image-16x16 {
-  border-radius:3px;
+  border-radius:2px;
   height:16px;
   width:16px
 }
@@ -1648,17 +1648,20 @@ h1,h2,h3,h4,h5,h6 {
 }
 
 .image-border-gray-border {
-  border:2px solid #999;
+  border:3px solid #999;
+  border-top: 2px solid #999;
   border-radius:4px
 }
 
 .image-border-support {
-  border:2px solid #1fc06f;
+  border:3px solid #1fc06f;
+  border-top: 2px solid #1fc06f;
   border-radius:4px
 }
 
 .image-border-oppose {
-  border:2px solid #ff4922;
+  border:3px solid #ff4922;
+  border-top: 2px solid #ff4922;
   border-radius:4px
 }
 
