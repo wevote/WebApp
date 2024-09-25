@@ -131,7 +131,6 @@ const ChallengeLeaderboard = ({ classes, challengeWeVoteId }) => {
     </LeaderboardContainer>
   );
 };
-
 ChallengeLeaderboard.propTypes = {
   classes: PropTypes.object.isRequired,
   // clearSearchFunction: PropTypes.func.isRequired,

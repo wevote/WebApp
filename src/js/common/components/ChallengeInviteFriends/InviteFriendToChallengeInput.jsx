@@ -4,11 +4,11 @@ import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { renderLog } from '../../utils/logging';
-// import ChallengeInviteeActions from '../../actions/ChallengeInviteeActions';
-// import ChallengeInviteeStore from '../../stores/ChallengeInviteeStore';
+import ChallengeInviteeActions from '../../actions/ChallengeInviteeActions';
+import ChallengeInviteeStore from '../../stores/ChallengeInviteeStore';
 
 const InviteFriendToChallengeInput = ({ classes, challengeWeVoteId, externalUniqueId }) => {
-  renderLog('InviteFriendToChallengeInput');  // Set LOG_RENDER_EVENTS to log all renders
+  renderLog('InviteFriendToChallengeInputBox');  // Set LOG_RENDER_EVENTS to log all renders
   const [friendName, setFriendName] = React.useState([]);
 
   function setFriendNameFromEvent (event) {
@@ -29,7 +29,7 @@ const InviteFriendToChallengeInput = ({ classes, challengeWeVoteId, externalUniq
                 margin="dense"
                 variant="outlined"
                 placeholder="Your friend's name"
-                onChange={setFriendNameFromEvent}
+                onChange={setFriendNameFromEvent} // eslint-disable-line react/jsx-no-bind
               />
             </FormControl>
           </ColumnFullWidth>
@@ -41,7 +41,7 @@ const InviteFriendToChallengeInput = ({ classes, challengeWeVoteId, externalUniq
             classes={{ root: classes.buttonDesktop }}
             color="primary"
             id="joinChallengeNow"
-            // onClick={this.joinChallengeNowSubmit}
+            onClick={() => ChallengeInviteeActions.challengeInviteeSave(challengeWeVoteId, friendName)}
             variant="contained"
           >
             Invite
