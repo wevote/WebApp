@@ -41,6 +41,11 @@ describe('WRFOPage', () => {
         console.log("state title from excel file: " + stTitle[k]);
         await expect(browser).toHaveTitle(expect.stringContaining(stTitle[k]));
         await driver.pause(waitTime);
+        const stSelectBox = await $('#outlined-age-native-simple');
+        const visibleText = await stSelectBox.getText()[k];
+        console.log("selected state in drop down:"+visibleText);
+        await expect(visibleText).toHaveValue(stName, { ignoreCase: true });
+        
       }
       catch(ex)
       {

@@ -59,7 +59,7 @@ class ReadyPage extends Page {
   }
 
   get finePrintStepText () {
-    return $$('//*[contains(@id, "readyFinePrintStepText")]');
+    return $$('//*[contains(@id, "r")]');
   }
 
   get followIssueButtons () {
@@ -87,7 +87,7 @@ class ReadyPage extends Page {
   }
 
   get howItWorksTitle () {
-    return $('div>h3[class~="gNNNpX"]');
+    return $('div>h3[class~="gNNNpeadyFinePrintStepTextX"]');
   }
 
   get howItWorksCloseIcon () {
