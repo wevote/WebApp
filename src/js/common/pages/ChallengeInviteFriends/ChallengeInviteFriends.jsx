@@ -22,15 +22,14 @@ import initializejQuery from '../../utils/initializejQuery';
 import { renderLog } from '../../utils/logging';
 import DesignTokenColors from '../../components/Style/DesignTokenColors';
 import ChallengeInviteSteps from '../../components/Navigation/ChallengeInviteSteps';
-import ChallengeInvitedFriends from '../../components/ChallengeInviteFriends/ChallengeInvitedFriends';
-import InviteFriendToChallengeInput from '../../components/ChallengeInviteFriends/InviteFriendToChallengeInput';
+import ChallengeInviteeListRoot from '../../components/ChallengeInviteeListRoot/ChallengeInviteeListRoot';
+import InviteFriendToChallengeInput from '../../components/ChallengeInviteeListRoot/InviteFriendToChallengeInput';
 
 const ChallengeRetrieveController = React.lazy(() => import(/* webpackChunkName: 'ChallengeRetrieveController' */ '../../components/Challenge/ChallengeRetrieveController'));
 const VoterFirstRetrieveController = loadable(() => import(/* webpackChunkName: 'VoterFirstRetrieveController' */ '../../components/Settings/VoterFirstRetrieveController'));
 
 
-// TODO SOON: Change name to ChallengeInviteFriends
-class ChallengeInviteCopy extends Component {
+class ChallengeInviteFriends extends Component {
   constructor (props) {
     super(props);
     this.state = {
@@ -46,7 +45,7 @@ class ChallengeInviteCopy extends Component {
   }
 
   componentDidMount () {
-    // console.log('ChallengeInviteCopy componentDidMount');
+    // console.log('ChallengeInviteFriends componentDidMount');
     this.props.setShowHeaderFooter(false);
     this.onAppObservableStoreChange();
     this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
@@ -216,7 +215,7 @@ class ChallengeInviteCopy extends Component {
         visibleToPublic = ChallengeParticipantStore.getVisibleToPublicQueuedToSave();
       }
       if (participantEndorsementQueuedToSaveSet || visibleToPublicChanged) {
-        // console.log('ChallengeInviteCopy, participantEndorsementQueuedToSave:', participantEndorsementQueuedToSave);
+        // console.log('ChallengeInviteFriends, participantEndorsementQueuedToSave:', participantEndorsementQueuedToSave);
         const saveVisibleToPublic = true;
         initializejQuery(() => {
           ChallengeParticipantActions.participantEndorsementSave(challengeWeVoteId, participantEndorsementQueuedToSave, visibleToPublic, saveVisibleToPublic); // challengeParticipantSave
@@ -236,7 +235,7 @@ class ChallengeInviteCopy extends Component {
   }
 
   render () {
-    renderLog('ChallengeInviteCopy');  // Set LOG_RENDER_EVENTS to log all renders
+    renderLog('ChallengeInviteFriends');  // Set LOG_RENDER_EVENTS to log all renders
     const {
       challengeSEOFriendlyPath, challengeTitle,
       challengeWeVoteId, chosenWebsiteName,
@@ -275,7 +274,7 @@ class ChallengeInviteCopy extends Component {
               </CampaignProcessStepIntroductionText>
               <CampaignSupportSectionWrapper marginTopOff>
                 <CampaignSupportSection marginBottomOff>
-                  <InviteFriendToChallengeInput />
+                  <InviteFriendToChallengeInput challengeWeVoteId={challengeWeVoteId} />
                 </CampaignSupportSection>
               </CampaignSupportSectionWrapper>
             </ContentInnerWrapperDefault>
@@ -283,7 +282,7 @@ class ChallengeInviteCopy extends Component {
         </PageWrapperDefault>
         <InvitedFriendsWrapper>
           YOUR RANK IN CHALLENGE HERE
-          <ChallengeInvitedFriends />
+          <ChallengeInviteeListRoot challengeWeVoteId={challengeWeVoteId} />
         </InvitedFriendsWrapper>
         <Suspense fallback={<span>&nbsp;</span>}>
           <ChallengeRetrieveController challengeSEOFriendlyPath={challengeSEOFriendlyPath} challengeWeVoteId={challengeWeVoteId} />
@@ -295,7 +294,7 @@ class ChallengeInviteCopy extends Component {
     );
   }
 }
-ChallengeInviteCopy.propTypes = {
+ChallengeInviteFriends.propTypes = {
   match: PropTypes.object,
   setShowHeaderFooter: PropTypes.func,
 };
@@ -314,4 +313,4 @@ const InvitedFriendsWrapper = styled('div')`
   flex-direction: column;
 `;
 
-export default withStyles(commonMuiStyles)(ChallengeInviteCopy);
+export default withStyles(commonMuiStyles)(ChallengeInviteFriends);

@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import { renderLog } from '../../utils/logging';
 // import numberWithCommas from '../../utils/numberWithCommas';
-// import ChallengeOwnersList from '../ChallengeInviteFriends/ChallengeOwnersList';
+// import ChallengeOwnersList from '../ChallengeInviteeListRoot/ChallengeOwnersList';
 import {
   CampaignActionButtonsWrapper,
   CampaignImageDesktop, CampaignImageDesktopPlaceholder,

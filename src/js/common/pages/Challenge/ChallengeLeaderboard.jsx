@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@mui/styles';
 import SearchBar2024 from '../../../components/Search/SearchBar2024';
 import DesignTokenColors from '../../components/Style/DesignTokenColors';
-import ChallengeLeaderboardList from '../../components/Challenge/ChallengeLeaderboardList';
+import ChallengeParticipantList from '../../components/ChallengeParticipantListRoot/ChallengeParticipantList';
 
 
 const LeaderboardContainer = styled.div`
@@ -119,7 +119,7 @@ const ChallengeLeaderboard = ({ classes, clearSearchFunction, searchFunction }) 
         </div>
       </LeaderboardTableHeader>
     </TopSection>
-    <ChallengeLeaderboardList currentVoterWeVoteId={'wv02voter123'} />
+    <ChallengeParticipantList currentVoterWeVoteId={'wv02voter123'} />
   </LeaderboardContainer>
 );
 

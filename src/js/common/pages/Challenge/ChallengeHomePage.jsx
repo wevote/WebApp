@@ -45,8 +45,8 @@ import { headroomWrapperOffset } from '../../../utils/cordovaCalculatedOffsets';
 import { getPageKey } from '../../../utils/cordovaPageUtils';
 import normalizedImagePath from '../../utils/normalizedImagePath';
 import ChallengeAbout from '../../components/Challenge/ChallengeAbout';
-import ChallengeLeaderboard from '../../components/Challenge/ChallengeLeaderboard';
-import ChallengeInvitedFriends from '../../components/ChallengeInviteFriends/ChallengeInvitedFriends';
+import ChallengeParticipantListRoot from '../../components/ChallengeParticipantListRoot/ChallengeParticipantListRoot';
+import ChallengeInviteeListRoot from '../../components/ChallengeInviteeListRoot/ChallengeInviteeListRoot';
 
 const ChallengeCardForList = React.lazy(() => import(/* webpackChunkName: 'ChallengeCardForList' */ '../../components/ChallengeListRoot/ChallengeCardForList'));
 // const ChallengeCommentsList = React.lazy(() => import(/* webpackChunkName: 'ChallengeCommentsList' */ '../../components/Challenge/ChallengeCommentsList'));
@@ -572,7 +572,7 @@ class ChallengeHomePage extends Component {
                       </CandidateNameAndPartyWrapper>
                     </Candidate>
                   </CandidateTopRow>
-                    <ChallengeAbout />
+                  <ChallengeAbout />
                 </MobileHeaderContentContainer>
               </MobileHeaderInnerContainer>
             </MobileHeaderOuterContainer>
@@ -587,13 +587,13 @@ class ChallengeHomePage extends Component {
             />
             {tabSelectedChosen === 'friends' ? (
               <FriendsSectionWrapper>
-                <ChallengeInvitedFriends />
+                <ChallengeInviteeListRoot challengeWeVoteId={challengeWeVoteIdForDisplay} />
               </FriendsSectionWrapper>
             ) : (
               <>
                 {tabSelectedChosen === 'leaderboard' ? (
                   <LeaderboardSectionWrapper>
-                    <ChallengeLeaderboard challengeWeVoteId={challengeWeVoteIdForDisplay} />
+                    <ChallengeParticipantListRoot challengeWeVoteId={challengeWeVoteIdForDisplay} />
                   </LeaderboardSectionWrapper>
                 ) : (
                   <AboutSectionWrapper>
@@ -649,7 +649,7 @@ class ChallengeHomePage extends Component {
                     </CampaignDescription>
                   </DelayedLoad>
                 )}
-                  <ChallengeAbout />
+                <ChallengeAbout />
                 <ViewBallotButtonWrapper>
                   <Suspense fallback={<></>}>
                     <JoinChallengeButton
@@ -713,11 +713,11 @@ class ChallengeHomePage extends Component {
                 />
                 {tabSelectedChosen === 'friends' ? (
                   <FriendsSectionWrapper>
-                    <ChallengeInvitedFriends />
+                    <ChallengeInviteeListRoot challengeWeVoteId={challengeWeVoteIdForDisplay} />
                   </FriendsSectionWrapper>
                 ) : (
                   <LeaderboardSectionWrapper>
-                    <ChallengeLeaderboard challengeWeVoteId={challengeWeVoteIdForDisplay} />
+                    <ChallengeParticipantListRoot challengeWeVoteId={challengeWeVoteIdForDisplay} />
                   </LeaderboardSectionWrapper>
                 )}
                 {/* {commentListTeaserHtml} */}

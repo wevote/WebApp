@@ -5,8 +5,8 @@ class ChallengeInviteeStore extends ReduceStore {
   getInitialState () {
     return {
       // TODO: Not quite right
-      allCachedChallengeInvitees: {}, // Dictionary with ChallengeInvitee simple id as key and the ChallengeInvitee as value
-      allCachedChallengeInviteeVoterEntries: {}, // Dictionary with challenge_we_vote_id and voter_we_vote_id as keys and the ChallengeInvitee for this voter as value
+      allCachedChallengeInvitees: {}, // Dictionary with ChallengeInviteeListRoot simple id as key and the ChallengeInviteeListRoot as value
+      allCachedChallengeInviteeVoterEntries: {}, // Dictionary with challenge_we_vote_id and voter_we_vote_id as keys and the ChallengeInviteeListRoot for this voter as value
       allChallengeInviteeLists: {}, // Dict with key challenge_we_vote_id and value of List of Dicts w/ challenge_invitee entries, ordered highest rank to lowest
       latestChallengeInvitees: {}, // Dict with key challenge_we_vote_id and value of List of Dicts w/ latest challenge_invitee entries, ordered newest to oldest
       shareButtonClicked: false,
@@ -119,7 +119,7 @@ class ChallengeInviteeStore extends ReduceStore {
 
   reduce (state, action) {
     const {
-      allCachedChallengeInvitees, allCachedChallengeInviteeVoterEntries,
+      allCachedChallengeInvitees,
       allChallengeInviteeLists,
     } = state;
     let {
@@ -143,9 +143,6 @@ class ChallengeInviteeStore extends ReduceStore {
         challengeList = action.res.challenge_list || [];
         // console.log('challengeListRetrieve latestChallengeInvitees before:', latestChallengeInvitees);
         challengeList.forEach((oneChallenge) => {
-          // if (!(oneChallenge.seo_friendly_path in allCachedChallengeWeVoteIdsBySEOFriendlyPath)) {
-          //   allCachedChallengeWeVoteIdsBySEOFriendlyPath[oneChallenge.seo_friendly_path] = oneChallenge.challenge_we_vote_id;
-          // }
           if ('latest_challenge_invitee_list' in oneChallenge) {
             for (let i = 0; i < oneChallenge.latest_challenge_invitee_list.length; ++i) {
               challengeInvitee = oneChallenge.latest_challenge_invitee_list[i];
@@ -153,16 +150,8 @@ class ChallengeInviteeStore extends ReduceStore {
               latestChallengeInvitees = this.updateChallengeInviteeGenericList(latestChallengeInvitees, challengeInvitee);
             }
           }
-          if ('voter_challenge_invitee' in oneChallenge) {
-            if ('challenge_we_vote_id' in oneChallenge.voter_challenge_invitee) {
-              allCachedChallengeInviteeVoterEntries[oneChallenge.challenge_we_vote_id] = oneChallenge.voter_challenge_invitee;
-              allCachedChallengeInvitees[oneChallenge.voter_challenge_invitee.id] = oneChallenge.voter_challenge_invitee;
-            }
-          }
         });
         // console.log('challengeListRetrieve latestChallengeInvitees after:', latestChallengeInvitees);
-        revisedState = { ...revisedState, allCachedChallengeInvitees };
-        revisedState = { ...revisedState, allCachedChallengeInviteeVoterEntries };
         revisedState = { ...revisedState, latestChallengeInvitees };
         return revisedState;
 
@@ -174,74 +163,26 @@ class ChallengeInviteeStore extends ReduceStore {
         // console.log('challengeInviteeListRetrieve challenge_invitee_list:', challengeInviteeList);
         allChallengeInviteeLists[action.res.challenge_we_vote_id] = challengeInviteeList;
         challengeInviteeList.forEach((oneInvitee) => {
-          if (!(oneInvitee.voter_we_vote_id in allCachedChallengeInvitees)) {
-            allCachedChallengeInvitees[oneInvitee.voter_we_vote_id] = {};
+          if (oneInvitee.invitee_id) {
+            allCachedChallengeInvitees[oneInvitee.invitee_id] = oneInvitee;
           }
-          allCachedChallengeInvitees[oneInvitee.voter_we_vote_id][oneInvitee.challenge_we_vote_id] = oneInvitee;
         });
         revisedState = { ...revisedState, allCachedChallengeInvitees };
         revisedState = { ...revisedState, allChallengeInviteeLists };
         return revisedState;
 
-      case 'challengeRetrieve':
-      case 'challengeRetrieveAsOwner':
-        // See ChallengeStore for code to take in the following challenge values:
-        // - challenge_owner_list
-        // - challenge_politician_list
-        // - seo_friendly_path_list
-
-        // console.log('ChallengeInviteeStore challengeRetrieve action.res:', action.res);
-        if (!action.res || !action.res.success) return state;
-        revisedState = state;
-        if (action.res.challenge_we_vote_id) {
-          if ('latest_challenge_invitee_list' in action.res) {
-            for (let i = 0; i < action.res.latest_challenge_invitee_list.length; ++i) {
-              challengeInvitee = action.res.latest_challenge_invitee_list[i];
-              allCachedChallengeInvitees[challengeInvitee.id] = challengeInvitee;
-              latestChallengeInvitees = this.updateChallengeInviteeGenericList(latestChallengeInvitees, challengeInvitee);
-            }
-          }
-          if ('voter_challenge_invitee' in action.res) {
-            if ('challenge_we_vote_id' in action.res.voter_challenge_invitee) {
-              allCachedChallengeInviteeVoterEntries[action.res.challenge_we_vote_id] = action.res.voter_challenge_invitee;
-              allCachedChallengeInvitees[action.res.voter_challenge_invitee.id] = action.res.voter_challenge_invitee;
-            }
-          }
-        }
-        // console.log('allCachedChallengeInvitees:', allCachedChallengeInvitees);
-        revisedState = { ...revisedState, allCachedChallengeInvitees };
-        revisedState = { ...revisedState, allCachedChallengeInviteeVoterEntries };
-        revisedState = { ...revisedState, latestChallengeInvitees };
-        return revisedState;
-
       case 'challengeInviteeSave':
-        // console.log('ChallengeInviteeStore challengeInviteeSave');
+        console.log('ChallengeInviteeStore challengeInviteeSave');
+        if (!action.res || !action.res.success) return state;
         if (action.res.challenge_we_vote_id && action.res.success) {
-          allCachedChallengeInviteeVoterEntries[action.res.challenge_we_vote_id] = action.res;
+          if (action.res.invitee_id) {
+            allCachedChallengeInvitees[action.res.invitee_id] = action.res;
+          }
         }
-        // console.log('challengeInviteeSave latestChallengeInvitees before:', latestChallengeInvitees);
-        latestChallengeInvitees = this.updateChallengeInviteeGenericList(latestChallengeInvitees, action.res);
-        // console.log('challengeInviteeSave latestChallengeInvitees after:', latestChallengeInvitees);
         return {
           ...state,
-          allCachedChallengeInviteeVoterEntries,
-          latestChallengeInvitees,
-          voterSignedInWithEmail: Boolean(action.res.voter_signed_in_with_email),
+          allCachedChallengeInvitees,
         };
-
-      case 'shareButtonClicked':
-        // console.log('ChallengeInviteeStore shareButtonClicked: ', action.payload);
-        if (action.payload === undefined) {
-          return {
-            ...state,
-            shareButtonClicked: false,
-          };
-        } else {
-          return {
-            ...state,
-            shareButtonClicked: action.payload,
-          };
-        }
 
       case 'inviteeEndorsementQueuedToSave':
         // console.log('ChallengeInviteeStore inviteeEndorsementQueuedToSave: ', action.payload);
