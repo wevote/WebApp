@@ -10,7 +10,6 @@ import ChallengeParticipantStore from '../../stores/ChallengeParticipantStore';
 import FirstChallengeParticipantListController from './FirstChallengeParticipantListController';
 
 // const FirstChallengeParticipantListController = React.lazy(() => import(/* webpackChunkName: 'FirstChallengeParticipantListController' */ './FirstChallengeParticipantListController'));
-
 const participants = [
   { rank: 5340, participant_name: 'Melina H.', points: 142, friends_who_joined: 3, friends_invited: 10, friends_who_viewed: 8, friends_who_viewed_plus: 21, voter_we_vote_id: 'wv02voter1238' },
   { rank: 5341, participant_name: 'David N.', points: 121, friends_who_joined: 1, friends_invited: 7, friends_who_viewed: 3, friends_who_viewed_plus: 18, voter_we_vote_id: 'wv02voter1237' },
@@ -37,60 +36,6 @@ const participants = [
   { rank: 5341, participant_name: 'David A.', points: 121, friends_who_joined: 1, friends_invited: 7, friends_who_viewed: 3, friends_who_viewed_plus: 18, voter_we_vote_id: 'wv02voter12324' },
   { rank: 5342, participant_name: 'Anusha G.', points: 118, friends_who_joined: 1, friends_invited: 5, friends_who_viewed: 2, friends_who_viewed_plus: 15, voter_we_vote_id: 'wv02voter12325' },
 ];
-
-const LeaderboardContainer = styled.div`
-  max-width: 100vw;
-  margin: 0 auto;
-`;
-
-const TopSection = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0px 16px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  z-index: 1;
-  position: sticky;
-  top: 0;
-`;
-
-const ButtonAndSearchWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  align-items: center;
-  margin-bottom: 8px;
-  margin-top: 8px;
-`;
-
-const LeaderboardInfoWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  margin-top: 8px;
-  margin-bottom: 8px;
-`;
-
-const SearchBarWrapper = styled('div')`
-  // margin-top: 14px;
-  // margin-bottom: 8px;
-`;
-
-const ButtonWrapper = styled.div`
-  display: flex;
-  gap: 8px;
-`;
-
-const LeaderboardTableHeader = styled('div')`
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  font-weight: bold;
-  font-size: 12px;
-  color: #333;
-`;
 
 function clearSearchFunction () {
   // This is just a stub
@@ -156,30 +101,29 @@ const ChallengeLeaderboard = ({ classes, challengeWeVoteId }) => {
           </SearchBarWrapper>
         </ButtonAndSearchWrapper>
         <LeaderboardInfoWrapper>
-          <p>
-            <span style={{ color: DesignTokenColors.neutral900, fontWeight: 'bold' }}>You&apos;re</span>
+          <RankContainer>
+            <RankText>You&apos;re</RankText>
             {' '}
-            <span style={{ color: DesignTokenColors.accent500, fontWeight: 'bold' }}>#5341</span>
+            <RankNumber>#5341</RankNumber>
             {' '}
-            (of 6441)
-          </p>
+            <RankDetails>(of 6441)</RankDetails>
+          </RankContainer>
 
         </LeaderboardInfoWrapper>
         <LeaderboardTableHeader>
-          <div style={{ display: 'flex', gap: '32px' }}>
-            <p>RANK</p>
-            <p>NAME</p>
-          </div>
-          <div style={{ display: 'flex', gap: '25px'  }}>
-            <p>POINTS</p>
-            <p>FRIENDS JOINED</p>
-          </div>
+          <HeaderGroup gap="32px">
+            <HeaderItem>RANK</HeaderItem>
+            <HeaderItem>NAME</HeaderItem>
+          </HeaderGroup>
+          <HeaderGroup gap="25px">
+            <HeaderItem>POINTS</HeaderItem>
+            <HeaderItem>FRIENDS JOINED</HeaderItem>
+          </HeaderGroup>
         </LeaderboardTableHeader>
       </TopSection>
       <ChallengeLeaderboardList
-        // participantList={latestParticipants}
-        participantList={participants}
-        currentVoterWeVoteId={'wv02voter123'}
+      participantList={latestParticipants}
+        // participantList={participants}
       />
       <Suspense fallback={<></>}>
         <FirstChallengeParticipantListController challengeWeVoteId={challengeWeVoteId} searchText="SEARCH TEXT HERE" />
@@ -204,5 +148,87 @@ const styles = () => ({
     borderRadius: 50,
   },
 });
+
+const LeaderboardContainer = styled.div`
+  max-width: 100vw;
+  margin: 0 auto;
+`;
+
+const TopSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  background-color: white;
+  box-shadow: 0px 6px 6px -2px rgba(0, 0, 0, 0.1);
+  z-index: 1;
+  position: sticky;
+  top: 0;
+`;
+
+const ButtonAndSearchWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+  margin-bottom: 8px;
+  margin-top: 8px;
+`;
+
+const LeaderboardInfoWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-top: 8px;
+  margin-bottom: 8px;
+`;
+
+const SearchBarWrapper = styled('div')`
+  // margin-top: 14px;
+  // margin-bottom: 8px;
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  gap: 8px;
+`;
+
+const LeaderboardTableHeader = styled('div')`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  font-weight: bold;
+  font-size: 12px;
+  color: #333;
+`;
+
+const HeaderGroup = styled.div`
+  display: flex;
+  gap: ${(props) => props.gap || '32px'}; /* Default gap of 32px, adjustable via props */
+`;
+
+const HeaderItem = styled.p`
+  margin: 0;  /* Reset default margins */
+`;
+
+const RankContainer = styled.p`
+  font-size: 16px;
+  color: ${DesignTokenColors.neutral900}; /* Default color */
+`;
+
+const RankText = styled.span`
+  font-weight: bold;
+  color: ${DesignTokenColors.neutral900};  /* Color for "You're" */
+`;
+
+const RankNumber = styled.span`
+  font-weight: bold;
+  color: ${DesignTokenColors.accent500};  /* Accent color for the rank number */
+`;
+
+const RankDetails = styled.span`
+  color: ${DesignTokenColors.neutral600};  /* Subdued color for "(of 6441)" */
+`;
 
 export default withStyles(styles)(ChallengeLeaderboard);
