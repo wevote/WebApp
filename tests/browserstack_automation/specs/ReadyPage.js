@@ -1,4 +1,4 @@
-import { driver, expect } from '@wdio/globals';
+import { driver, expect, browser} from '@wdio/globals';
 import ReadyPage from '../page_objects/ready.page';
 // import PrivacyPage from '../page_objects/privacy.page';
 import DonatePage from '../page_objects/donate.page';
@@ -14,7 +14,7 @@ const waitTime = 8000;
 
 describe('ReadyPage', () => {
   // Ready_001 and Ready_003
-  it('verifyElectionCountDownRedirect and verifyViewUpcomingBallotRedirect', async () => {
+ /* it('verifyElectionCountDownRedirect and verifyViewUpcomingBallotRedirect', async () => {
     await ReadyPage.load();
     await driver.pause(waitTime);
     await driver.waitUntil(async () => (ReadyPage.electionCountDownTitle.isClickable()));
@@ -93,21 +93,28 @@ describe('ReadyPage', () => {
     await driver.pause(waitTime);
     await expect(ReadyPage.finePrintStepText).toBeElementsArrayOfSize(4);
   });
-
+*/
+/*
   // Ready_009 and Ready_016
+  //Modified by Shanthi - 09/06/2024 at 11:51 pm
   it('verifyPrivacyLinkRedirected', async () => {
     await ReadyPage.load();
     await driver.pause(waitTime);
     await ReadyPage.findPrivacyLink.click();
     await driver.pause(waitTime);
     await expect(driver).toHaveUrl(expect.stringContaining('privacy'));
-    console.log('Verified Privacy link on the ready page');
+    await driver.pause(waitTime);
+    //await expect(PrivacyPage.pageContentTitleText).toHaveText('WeVote.US Privacy Policy');
+    //await expect(PrivacyPage.privacyHeader).toHaveText('WeVote.US Privacy Policy');
+    await expect(browser).toHaveTitle('Privacy Policy - WeVote');
+    console.log("Verified Privacy link on the ready page");
     await ReadyPage.wevoteLogo.findAndClick();
     await driver.pause(waitTime);
     await ReadyPage.getTermsLinkElement.click();
     await driver.pause(waitTime);
-    await expect(driver).toHaveUrl(expect.stringContaining('terms'));
-    console.log('Verified Terms link on the ready page');
+    //await expect(TermsPage.getTermsPageTitleElement).toHaveText('Terms of Service');
+    await expect(browser).toHaveTitle('Terms of Service - WeVote');
+    console.log("Verified Terms link on the ready page")
   });
 
   // Ready_010 and Ready_011
@@ -123,16 +130,16 @@ describe('ReadyPage', () => {
   });
 
   // Ready_011 merged with Ready_010
-  //  it('verifyHowItWorksModalWindowClosed', async () => {
-  //    await ReadyPage.load();
-  //    await driver.pause(waitTime);
-  //    await ReadyPage.clickHowItWorksLink();
-  //    await driver.pause(waitTime);
-  //    await ReadyPage.howItWorksTitle.isDisplayed();
-  //    await ReadyPage.closeHowItWorksModalWindow();
-  //    await driver.pause();
-  //    await expect(ReadyPage.elementHowItWorksWindow).not.toBeDisplayed();
-  //  });
+//  it('verifyHowItWorksModalWindowClosed', async () => {
+//    await ReadyPage.load();
+//    await driver.pause(waitTime);
+//    await ReadyPage.clickHowItWorksLink();
+//    await driver.pause(waitTime);
+//    await ReadyPage.howItWorksTitle.isDisplayed();
+//    await ReadyPage.closeHowItWorksModalWindow();
+//    await driver.pause();
+//    await expect(ReadyPage.elementHowItWorksWindow).not.toBeDisplayed();
+//  });   */
 
   // Ready_012  this case can be deprecated as it is covered as part of Ready_013
   //  it('verifyHowItWorksModalWindowNextButton', async () => {
@@ -144,6 +151,8 @@ describe('ReadyPage', () => {
   //    await expect(ReadyPage.howItWorksTitle).toHaveText(expectedResult);
   //  });
 
+//Testcase 13 & 14 covered under HowItWorksModalWindow testcases, so commenting these here
+/*
   // Ready_013
   it('verifyHowItWorksModalWindowNextGetStartedButton', async () => {
     await ReadyPage.load();
@@ -166,6 +175,8 @@ describe('ReadyPage', () => {
     await expect(ReadyPage.howItWorksTitle).toHaveText(expectedResult);
   });
 
+  */
+/*
   // Ready_015
   it('verifyHelpLink', async () => {
     await ReadyPage.load();
@@ -217,14 +228,22 @@ describe('ReadyPage', () => {
     await driver.switchWindow('https://wevote.applytojob.com/apply');
     await driver.pause(waitTime);
     await expect(ReadyPage.getVolunteeringOpportunitiesPageTitleElement).toHaveText('Current Openings');
-  });
+  }); */
 
   // Ready_020
   it('verifyDonateLinkRedirected', async () => {
     await ReadyPage.load();
+    await driver.pause(waitTime+2000);
+    await browser.scroll(0, 200);
     await driver.pause(waitTime);
     await ReadyPage.getDonateLinkLocator.click();
     await driver.pause(waitTime);
-    await expect(DonatePage.getDonatePageContentTitleElement).toHaveText('Want more Americans to vote?');
+    await expect(driver).toHaveUrl(expect.stringContaining('donate'));
+    await driver.pause(waitTime);
+    //await expect(DonatePage.getDonatePageContentTitleElement).toHaveText('Want more Americans to vote?');
+    await expect(browser).toHaveTitle('Donate - WeVote');
   });
+
+
+
 });

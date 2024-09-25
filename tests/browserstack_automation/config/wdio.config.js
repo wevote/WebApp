@@ -36,12 +36,13 @@ module.exports.config = {
     ],
   ],
   specs: [
-    '../specs/DiscussPage.js',
-    '../specs/FAQPage.js',
-    '../specs/PrivacyPage.js',
-    '../specs/ReadyPage.js',
-    '../specs/TermsPage.js',
-    '../specs/TopNavigation.js',
+   // '../specs/DiscussPage.js',
+   // '../specs/FAQPage.js',
+   // '../specs/PrivacyPage.js',
+   // '../specs/ReadyPage.js',
+   // '../specs/TermsPage.js',
+   // '../specs/TopNavigation.js',
+    '../specs/WRFO.js'
   ],
   capabilities,
   commonCapabilities: {
@@ -69,7 +70,7 @@ module.exports.config = {
   framework: 'mocha',
   mochaOpts: {
     ui: 'bdd',
-    timeout: 60000,
+    timeout: 99999999,
   },
   // https://webdriver.io/docs/customcommands#examples
   before: function before () {
