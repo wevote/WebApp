@@ -124,7 +124,6 @@ const ChallengeLeaderboard = ({ classes, challengeWeVoteId }) => {
       <ChallengeLeaderboardList
       participantList={latestParticipants}
         // participantList={participants}
-        currentVoterWeVoteId="wv02voter123"
       />
       <Suspense fallback={<></>}>
         <FirstChallengeParticipantListController challengeWeVoteId={challengeWeVoteId} searchText="SEARCH TEXT HERE" />

@@ -7,9 +7,19 @@ import VoterStore from '../../../stores/VoterStore';
 
 const ChallengeLeaderboardList = ({ participantList }) => {
   const [voterWeVoteID, setVoterWeVoteID] = React.useState('');
+
+  const handleVoterStoreChange = () => {
+    const voterID = VoterStore.getVoterWeVoteId();
+    console.log('Fetching voterWeVoteID:', voterID);
+    setVoterWeVoteID(voterID);
+  };
+
   React.useEffect(() => {
-    // console.log('Fetching voterWeVoteID:', voterWeVoteID);
-    setVoterWeVoteID(VoterStore.getVoterWeVoteId());
+    handleVoterStoreChange();
+    const storeListener = VoterStore.addListener(handleVoterStoreChange);
+    return () => {
+      storeListener.remove();
+    };
   }, []);
 
   return (
@@ -25,7 +35,6 @@ const ChallengeLeaderboardList = ({ participantList }) => {
   );
 };
 ChallengeLeaderboardList.propTypes = {
-  currentVoterWeVoteId: PropTypes.string,
   participantList: PropTypes.array,
 };
 const LeaderboardListContainer = styled.div`
