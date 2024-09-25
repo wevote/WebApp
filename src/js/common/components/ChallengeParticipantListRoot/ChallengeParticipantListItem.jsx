@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Avatar } from '@mui/material';
 import DesignTokenColors from '../Style/DesignTokenColors';
@@ -25,10 +26,14 @@ const ChallengeParticipantListItem = ({ participant, isCurrentUser }) => {
     </ParticipantItem>
   );
 };
+ChallengeParticipantListItem.propTypes = {
+  isCurrentUser: PropTypes.bool,
+  participant: PropTypes.object,
+};
 
 const ParticipantItem = styled.div`
   background-color: ${(props) => (props.isCurrentUser ? '#f9e79f' : '#fff')};
-  padding: 15px 0px;
+  padding: 15px 0;
   border-bottom: 1px solid ${DesignTokenColors.neutral100};
 `;
 

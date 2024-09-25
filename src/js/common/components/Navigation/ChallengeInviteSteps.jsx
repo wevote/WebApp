@@ -85,8 +85,7 @@ class ChallengeInviteSteps extends React.Component {
     return (
       <ChallengeInviteStepsContainer>
         {/* Rocket, Invite more friends, and Learn More */}
-        <HeaderContainer
-        >
+        <HeaderContainer>
           <img
             src={RocketIcon}
             alt="Rocket Icon"
@@ -106,9 +105,7 @@ class ChallengeInviteSteps extends React.Component {
           >
             To boost your ranking, invite your friends to join.
           </h2>
-          <Wrapper
-
-          >
+          <Wrapper>
             <LearnMoreTextBlock
               style={{
                 height: '50px',
@@ -131,12 +128,9 @@ class ChallengeInviteSteps extends React.Component {
         </HeaderContainer>
 
         {/* Steps (Step 1, Line, Step 2) */}
-        <StepsContainer
-
-        >
+        <StepsContainer>
           {/* Step 1 Icon and Text */}
           <StepOneIconAndText
-
             onMouseEnter={() => this.handleMouseEnter(1)}
             onMouseLeave={() => this.handleMouseLeave(1)}
           >
@@ -151,7 +145,7 @@ class ChallengeInviteSteps extends React.Component {
               style={{
                 ...commonTextStyle,
                 fontWeight:
-                  isHovered1 
+                  isHovered1
                   || step1Completed ?
                     hoverFontWeight :
                     defaultFontWeight,
@@ -210,9 +204,11 @@ const ChallengeInviteStepsContainer = styled('div')`
   background-color: #f2f2f0;
   display: flex;
   flex-direction: column;
+  max-width: 620px;
   padding: 20px;
   position: relative;
-  width: 445px;
+  // width: 445px;
+  width: 100%;
 `;
 
 const HeaderContainer = styled('div')`

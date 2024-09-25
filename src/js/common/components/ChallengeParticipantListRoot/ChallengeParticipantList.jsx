@@ -1,11 +1,11 @@
-// ChallengeLeaderboardList.jsx
+// ChallengeParticipantList.jsx
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import ChallengeParticipantListItem from './ChallengeParticipantListItem';
 import VoterStore from '../../../stores/VoterStore';
 
-const ChallengeLeaderboardList = ({ participantList }) => {
+const ChallengeParticipantList = ({ participantList }) => {
   const [voterWeVoteID, setVoterWeVoteID] = React.useState('');
 
   const handleVoterStoreChange = () => {
@@ -34,9 +34,10 @@ const ChallengeLeaderboardList = ({ participantList }) => {
     </LeaderboardListContainer>
   );
 };
-ChallengeLeaderboardList.propTypes = {
+ChallengeParticipantList.propTypes = {
   participantList: PropTypes.array,
 };
+
 const LeaderboardListContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -44,4 +45,4 @@ const LeaderboardListContainer = styled.div`
   height: calc(100vh - 270px);
 `;
 
-export default ChallengeLeaderboardList;
+export default ChallengeParticipantList;

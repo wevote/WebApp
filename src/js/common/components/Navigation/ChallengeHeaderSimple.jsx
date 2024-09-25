@@ -51,6 +51,11 @@ function ChallengeHeaderSimple(props) {
                 <ChallengeNameH4>
                   {challengeTitle}
                 </ChallengeNameH4>
+                {/* Joined and Days Left Info */}
+                <JoinedAndDaysLeft
+                  challengeWeVoteId={challengeWeVoteId}
+                  goToChallengeHome={goToChallengeHome}
+                />
               </CandidateNameAndPartyWrapper>
             </ChallengePhotoAndTitle>
             <CloseDrawerIconWrapper>
@@ -72,13 +77,6 @@ function ChallengeHeaderSimple(props) {
           <HeartToggleAndThermometerWrapper>
             &nbsp;
           </HeartToggleAndThermometerWrapper>
-          {/* Joined and Days Left Info */}
-          <JoinedAndDaysLeft
-            daysLeft={props.daysLeft}
-            challengeTitle={challengeTitle}
-            imageUrl={imageUrlLarge}
-            goToChallengeHome={goToChallengeHome}
-          />
         </ChallengeHeaderSimpleContentContainer>
       </ChallengeHeaderSimpleInnerContainer>
     </ChallengeHeaderSimpleOuterContainer>
