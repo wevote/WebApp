@@ -1,19 +1,28 @@
-import React from 'react';
+import React, { Suspense } from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import ChallengeFriendInviteList from './ChallengeFriendInviteList';
+import FirstChallengeInviteeListController from '../Challenge/FirstChallengeInviteeListController';
 
-const ChallengeInvitedFriends = () => {
+const ChallengeInvitedFriends = ({ challengeWeVoteId, classes }) => {
   return (
-    <InvitedFriendsContainer>
+    <ChallengeInvitedFriendsContainer>
       <Heading>
         <p style={{ fontWeight: 'bold', padding: '10px' }}>Invited Friends</p>
       </Heading>
       <ChallengeFriendInviteList />
-    </InvitedFriendsContainer>
+      <Suspense fallback={<></>}>
+        <FirstChallengeInviteeListController challengeWeVoteId={challengeWeVoteId} searchText="SEARCH TEXT HERE" />
+      </Suspense>
+    </ChallengeInvitedFriendsContainer>
   );
 };
+ChallengeInvitedFriends.propTypes = {
+  classes: PropTypes.object.isRequired,
+  challengeWeVoteId: PropTypes.string,
+};
 
-const InvitedFriendsContainer = styled.div`
+const ChallengeInvitedFriendsContainer = styled.div`
   max-width: 110vw;
   margin: 0 auto;
 `;
