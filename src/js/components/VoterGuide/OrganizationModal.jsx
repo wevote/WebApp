@@ -7,11 +7,11 @@ import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import CandidateActions from '../../actions/CandidateActions';
+import CardForListBodyPlaceholder from '../../common/components/CardForListBodyPlaceholder';
 import IssueActions from '../../actions/IssueActions';
 import MeasureActions from '../../actions/MeasureActions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import PoliticianActions from '../../common/actions/PoliticianActions';
-import PoliticianCardForList from '../PoliticianListRoot/PoliticianCardForList';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import apiCalming from '../../common/utils/apiCalming';
 import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
@@ -44,7 +44,7 @@ const CampaignRetrieveController = React.lazy(() => import(/* webpackChunkName: 
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
 const IssuesByBallotItemDisplayList = React.lazy(() => import(/* webpackChunkName: 'IssuesByBallotItemDisplayList' */ '../Values/IssuesByBallotItemDisplayList'));
 const MeasureItem = React.lazy(() => import(/* webpackChunkName: 'MeasureItem' */ '../Ballot/MeasureItem'));
-// const PoliticianCardForList = React.lazy(() => import(/* webpackChunkName: 'PoliticianCardForList' */ '../PoliticianListRoot/PoliticianCardForList'));
+const PoliticianCardForList = React.lazy(() => import(/* webpackChunkName: 'PoliticianCardForList' */ '../PoliticianListRoot/PoliticianCardForList'));
 const PositionList = React.lazy(() => import(/* webpackChunkName: 'PositionList' */ '../Ballot/PositionList'));
 const ScoreSummaryListController = React.lazy(() => import(/* webpackChunkName: 'ScoreSummaryListController' */ '../Widgets/ScoreDisplay/ScoreSummaryListController'));
 
@@ -433,12 +433,20 @@ class OrganizationModal extends Component {
         </DrawerHeaderOuterContainer>
         {(isCandidate && !hideBallotItemInfo) && (
           <PoliticianCardForListWrapper>
-            <PoliticianCardForList
-              politicianWeVoteId={politicianWeVoteId}
-              showPoliticianOpenInNewWindow
-              useCampaignSupportThermometer
-              useVerticalCard
-            />
+            {politicianWeVoteId ? (
+              <PoliticianCardForList
+                politicianWeVoteId={politicianWeVoteId}
+                useCampaignSupportThermometer
+                useVerticalCard
+              />
+            ) : (
+              <CardForListBodyPlaceholder
+                useVerticalCard
+                hideCardMargins
+                limitCardWidth
+                profileImageBackgroundColor
+              />
+            )}
             <Suspense fallback={<></>}>
               <IssuesByBallotItemDisplayList
                 ballotItemDisplayName={ballotItemDisplayName}

@@ -18,10 +18,10 @@ import RepresentativeStore from '../../../stores/RepresentativeStore';
 import BallotStore from '../../../stores/BallotStore';
 import CampaignSupporterStore from '../../stores/CampaignSupporterStore';
 import CandidateStore from '../../../stores/CandidateStore';
+import CardForListBodyPlaceholder from '../../components/CardForListBodyPlaceholder';
 import OfficeHeldStore from '../../stores/OfficeHeldStore';
 import PoliticianStore from '../../stores/PoliticianStore';
 import OfficeItemCompressed from '../../../components/Ballot/OfficeItemCompressed';
-import PoliticianCardForList from '../../../components/PoliticianListRoot/PoliticianCardForList';
 import CampaignChipInLink from '../../components/Campaign/CampaignChipInLink';
 import CampaignOwnersList from '../../components/CampaignSupport/CampaignOwnersList';
 import CompleteYourProfileModalController from '../../components/Settings/CompleteYourProfileModalController';
@@ -67,6 +67,7 @@ const CampaignShareChunk = React.lazy(() => import(/* webpackChunkName: 'Campaig
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../../../components/ImageHandler'));
 // const ItemActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemActionBar' */ '../../../components/Widgets/ItemActionBar/ItemActionBar'));
 const OfficeNameText = React.lazy(() => import(/* webpackChunkName: 'OfficeNameText' */ '../../components/Widgets/OfficeNameText'));
+const PoliticianCardForList = React.lazy(() => import(/* webpackChunkName: 'PoliticianCardForList' */ '../../../components/PoliticianListRoot/PoliticianCardForList'));
 const PoliticianEndorsementsList = React.lazy(() => import(/* webpackChunkName: 'PoliticianEndorsementsList' */ '../../components/Politician/PoliticianEndorsementsList'));
 const PoliticianLinks = React.lazy(() => import(/* webpackChunkName: 'PolitianLinks' */ '../../components/Politician/PoliticianLinks'));
 const PoliticianRetrieveController = React.lazy(() => import(/* webpackChunkName: 'PoliticianRetrieveController' */ '../../components/Politician/PoliticianRetrieveController'));
@@ -954,11 +955,20 @@ class PoliticianDetailsPage extends Component {
                 </MobileHeaderContentContainer>
               </MobileHeaderInnerContainer>
             </MobileHeaderOuterContainer>
-            <PoliticianCardForList
-              politicianWeVoteId={politicianWeVoteIdForDisplay}
-              useCampaignSupportThermometer
-              useVerticalCard
-            />
+            {politicianWeVoteId ? (
+              <PoliticianCardForList
+                politicianWeVoteId={politicianWeVoteId}
+                useCampaignSupportThermometer
+                useVerticalCard
+              />
+            ) : (
+              <CardForListBodyPlaceholder
+                useVerticalCard
+                hideCardMargins
+                limitCardWidth
+                profileImageBackgroundColor
+              />
+            )}
             <CampaignDescriptionWrapper hideCardMargins>
               {politicianDataFound && (
                 <DelayedLoad waitBeforeShow={250}>
@@ -1111,12 +1121,20 @@ class PoliticianDetailsPage extends Component {
           <DetailsSectionDesktopTablet className="u-show-desktop-tablet">
             <ColumnsWrapper>
               <ColumnOneThird>
-                <PoliticianCardForList
-                  politicianWeVoteId={politicianWeVoteIdForDisplay}
-                  // limitCardWidth
-                  useCampaignSupportThermometer
-                  useVerticalCard
-                />
+                {politicianWeVoteId ? (
+                  <PoliticianCardForList
+                    politicianWeVoteId={politicianWeVoteId}
+                    useCampaignSupportThermometer
+                    useVerticalCard
+                  />
+                ) : (
+                  <CardForListBodyPlaceholder
+                    useVerticalCard
+                    hideCardMargins
+                    limitCardWidth
+                    profileImageBackgroundColor
+                  />
+                )}
                 <CampaignOwnersDesktopWrapper>
                   <CampaignOwnersList politicianWeVoteId={politicianWeVoteIdForDisplay} />
                 </CampaignOwnersDesktopWrapper>
