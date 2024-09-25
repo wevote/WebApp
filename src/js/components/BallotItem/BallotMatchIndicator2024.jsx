@@ -95,8 +95,6 @@ export default function BallotMatchIndicator2024({
     return "";
   };
 
-  // Move match bold up
-
   return (
     <StyledButton
       backgroundColor={getBackgroundColor()}
