@@ -23,9 +23,7 @@ const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler'
 // React functional component example
 function ChallengeHeaderSimple(props) {
   renderLog('ChallengeHeaderSimple');  // Set LOG_RENDER_EVENTS to log all renders
-  const { challengeTitle, challengeWeVoteId, classes, imageUrlLarge, goToChallengeHome } = props;
-  const avatarBackgroundImage = normalizedImagePath('../img/global/svg-icons/avatar-generic.svg');
-  const avatarCompressed = 'card-main__avatar-compressed';
+  const { challengeTitle, challengeWeVoteId, classes, challengePhotoLargeUrl, goToChallengeHome } = props;
 
   return (
     <ChallengeHeaderSimpleOuterContainer id="politicianHeaderContainer">
@@ -35,17 +33,10 @@ function ChallengeHeaderSimple(props) {
             <ChallengePhotoAndTitle
               id={`officeItemCompressedCandidateImageAndName-${challengeWeVoteId}`}
             >
-              {/* Candidate Image */}
-              <Suspense fallback={<></>}>
-                <ImageHandler
-                  className={avatarCompressed}
-                  sizeClassName="icon-candidate-small u-push--sm "
-                  imageUrl={imageUrlLarge}
-                  alt=""
-                  kind_of_ballot_item="CANDIDATE"
-                  style={{ backgroundImage: { avatarBackgroundImage } }}
-                />
-              </Suspense>
+              {/* Challenge Image */}
+              {challengePhotoLargeUrl && (
+                <ChallengeImageMedium src={challengePhotoLargeUrl} />
+              )}
               {/* Title of the Challenge */}
               <CandidateNameAndPartyWrapper>
                 <ChallengeNameH4>
@@ -87,7 +78,7 @@ ChallengeHeaderSimple.propTypes = {
   challengeTitle: PropTypes.string,
   challengeWeVoteId: PropTypes.string,
   classes: PropTypes.object,
-  imageUrlLarge: PropTypes.string,
+  challengePhotoLargeUrl: PropTypes.string,
 };
 
 const styles = () => ({
@@ -135,6 +126,15 @@ const ChallengeHeaderSimpleInnerContainer = styled('div')`
   justify-content: center;
   width: 100%;
 `;
+
+const ChallengeImageMedium = styled('img')(({ theme }) => (`
+  border-radius: 12px;
+  height: 64px;
+  margin-right: 10px;
+  ${theme.breakpoints.up('sm')} {
+    height: 100px;
+  }
+`));
 
 const ChallengeNameH4 = styled('div')`
   font-weight: 400;
