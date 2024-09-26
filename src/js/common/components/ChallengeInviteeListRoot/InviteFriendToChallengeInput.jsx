@@ -40,7 +40,7 @@ const InviteFriendToChallengeInput = ({ classes, challengeWeVoteId, externalUniq
           <Button
             classes={{ root: classes.buttonDesktop }}
             color="primary"
-            id="joinChallengeNow"
+            id="inviteToChallengeNow"
             onClick={() => ChallengeInviteeActions.challengeInviteeSave(challengeWeVoteId, friendName)}
             variant="contained"
           >

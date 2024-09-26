@@ -237,7 +237,7 @@ class ChallengeInviteFriends extends Component {
   render () {
     renderLog('ChallengeInviteFriends');  // Set LOG_RENDER_EVENTS to log all renders
     const {
-      challengeSEOFriendlyPath, challengeTitle,
+      challengePhotoLargeUrl, challengeSEOFriendlyPath, challengeTitle,
       challengeWeVoteId, chosenWebsiteName,
     } = this.state;
     const htmlTitle = `Invite your friends - ${chosenWebsiteName}`;
@@ -249,6 +249,7 @@ class ChallengeInviteFriends extends Component {
         </Helmet>
         <ChallengeHeaderSimple
           challengeBasePath={this.getChallengeBasePath()}
+          challengePhotoLargeUrl={challengePhotoLargeUrl}
           challengeTitle={challengeTitle}
           challengeWeVoteId={challengeWeVoteId}
           goToChallengeHome={this.goToChallengeHome}
