@@ -11,7 +11,6 @@ import ChallengeInviteFriendsTopNavigation from '../../components/Navigation/Cha
 import DesignTokenColors from '../../components/Style/DesignTokenColors';
 import { PageContentContainer } from '../../../components/Style/pageLayoutStyles';
 import webAppConfig from '../../../config';
-// import AnalyticsActions from '../../../actions/AnalyticsActions';
 import BallotActions from '../../../actions/BallotActions';
 import ChallengeParticipantStore from '../../stores/ChallengeParticipantStore';
 import ChallengeStore from '../../stores/ChallengeStore';
@@ -24,9 +23,6 @@ import {
   CommentsListWrapper, DetailsSectionDesktopTablet, DetailsSectionMobile, SupportButtonFooterWrapperAboveFooterButtons, SupportButtonPanel,
 } from '../../components/Style/CampaignDetailsStyles';
 import { EditIndicator, IndicatorButtonWrapper, IndicatorRow } from '../../components/Style/CampaignIndicatorStyles';
-import {
-  SectionTitleSimple,
-} from '../../components/Style/PoliticianDetailsStyles';
 import { PageWrapper } from '../../components/Style/stepDisplayStyles';
 import DelayedLoad from '../../components/Widgets/DelayedLoad';
 import LinkToAdminTools from '../../components/Widgets/LinkToAdminTools';
@@ -506,9 +502,6 @@ class ChallengeHomePage extends Component {
     const challengeDescriptionJsx = (
       <CampaignDescription>
         <AboutAndEditFlex>
-          <SectionTitleSimple>
-            About
-          </SectionTitleSimple>
           <div>
             <Suspense fallback={<span>&nbsp;</span>}>
               <UpdateChallengeInformation challengeTitle={challengeTitle} />
@@ -593,7 +586,10 @@ class ChallengeHomePage extends Component {
               <>
                 {tabSelectedChosen === 'leaderboard' ? (
                   <LeaderboardSectionWrapper>
-                    <ChallengeParticipantListRoot challengeWeVoteId={challengeWeVoteIdForDisplay} />
+                    <ChallengeParticipantListRoot
+                      challengeWeVoteId={challengeWeVoteIdForDisplay}
+                      uniqueExternalId="mobile"
+                    />
                   </LeaderboardSectionWrapper>
                 ) : (
                   <AboutSectionWrapper>
@@ -640,11 +636,6 @@ class ChallengeHomePage extends Component {
                 {challengeDescription && (
                   <DelayedLoad waitBeforeShow={250}>
                     <CampaignDescription>
-                      <AboutAndEditFlex>
-                        <SectionTitleSimple>
-                          About
-                        </SectionTitleSimple>
-                      </AboutAndEditFlex>
                       <ReadMore numberOfLines={6} textToDisplay={challengeDescription} />
                     </CampaignDescription>
                   </DelayedLoad>
@@ -662,16 +653,6 @@ class ChallengeHomePage extends Component {
                   {challengeDataFound && (
                     <DelayedLoad waitBeforeShow={250}>
                       <CampaignDescriptionDesktop>
-                        <AboutAndEditFlex>
-                          <SectionTitleSimple>
-                            About
-                          </SectionTitleSimple>
-                          <div>
-                            <Suspense fallback={<span>&nbsp;</span>}>
-                              <UpdateChallengeInformation politicianName={challengeTitle} />
-                            </Suspense>
-                          </div>
-                        </AboutAndEditFlex>
                         {challengeDescription ? (
                           <ReadMore numberOfLines={6} textToDisplay={challengeDescription} />
                         ) : (
@@ -717,7 +698,10 @@ class ChallengeHomePage extends Component {
                   </FriendsSectionWrapper>
                 ) : (
                   <LeaderboardSectionWrapper>
-                    <ChallengeParticipantListRoot challengeWeVoteId={challengeWeVoteIdForDisplay} />
+                    <ChallengeParticipantListRoot
+                      challengeWeVoteId={challengeWeVoteIdForDisplay}
+                      uniqueExternalId="desktop"
+                    />
                   </LeaderboardSectionWrapper>
                 )}
                 {/* {commentListTeaserHtml} */}

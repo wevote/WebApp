@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import { CampaignsNotAvailableToShow, ListWrapper, LoadMoreItemsManuallyWrapper, StartACampaignWrapper } from '../Style/CampaignCardStyles';
+import { ChallengesNotAvailableToShow, ListWrapper, LoadMoreItemsManuallyWrapper } from '../Style/ChallengeCardStyles';
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import { renderLog } from '../../utils/logging';
 import ChallengeCardForList from './ChallengeCardForList';
@@ -146,7 +146,7 @@ class ChallengeCardList extends Component {
           })}
           {/*
           {!!(numberDisplayed && (searchText || showAllEndorsements || showThisYear || showUpcomingEndorsements)) && (
-            <StartACampaignWrapper>
+            <StartAChallengeWrapper>
               <Link className="u-link-color" to="/start-a-challenge">
                 Start a challenge
                 {(searchText && searchText.length > 0) && (
@@ -160,7 +160,7 @@ class ChallengeCardList extends Component {
                   </>
                 )}
               </Link>
-            </StartACampaignWrapper>
+            </StartAChallengeWrapper>
           )}
           */}
           {!!(challengeList &&
@@ -179,7 +179,7 @@ class ChallengeCardList extends Component {
           <DelayedLoad loadingTextLeftAlign showLoadingText waitBeforeShow={2000}>
             <div>
               {!(numberDisplayed) && (
-                <CampaignsNotAvailableToShow>
+                <ChallengesNotAvailableToShow>
                   No challenges match.
                   {/*
                   {!!(searchText || showAllEndorsements || showThisYear || showUpcomingEndorsements) && (
@@ -202,7 +202,7 @@ class ChallengeCardList extends Component {
                     </>
                   )}
                   */}
-                </CampaignsNotAvailableToShow>
+                </ChallengesNotAvailableToShow>
               )}
             </div>
           </DelayedLoad>

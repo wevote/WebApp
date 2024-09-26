@@ -23,6 +23,7 @@ import {
 import { PositionRowListInnerWrapper, PositionRowListOneWrapper, PositionRowListOuterWrapper } from '../Style/PositionRowListStyles';
 import BallotMatchIndicator from '../BallotItem/BallotMatchIndicator';
 import PositionRowListCompressed from './PositionRowListCompressed';
+import BallotMatchIndicator2024 from '../BallotItem/BallotMatchIndicator2024';
 
 // const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
@@ -120,7 +121,16 @@ class BallotScrollingContainer extends Component {
     const candidatePartyText = oneCandidate.party && oneCandidate.party.length ? `${oneCandidate.party}` : '';
     const avatarCompressed = 'card-main__avatar-compressed';
     const avatarBackgroundImage = normalizedImagePath('../img/global/svg-icons/avatar-generic.svg');
+    // Placeholder for dynamic match level
+    const matchLevel = 'Good Match';
 
+    // Convert matchLevel string to boolean props
+    const isBestMatch = matchLevel === 'Best Match';
+    const isGoodMatch = matchLevel === 'Good Match';
+    const isFairMatch = matchLevel === 'Fair Match';
+    const isPoorMatch = matchLevel === 'Poor Match';
+    const isItAMatch = matchLevel === 'Is it a Match?';
+    const noData = matchLevel === 'No Data';
     const pigsCanFly = false;
     return (
       <BallotScrollingInnerWrapper>
@@ -170,6 +180,14 @@ class BallotScrollingContainer extends Component {
                       <CandidateParty>
                         {candidatePartyText}
                       </CandidateParty>
+                      <BallotMatchIndicator2024
+                        isBestMatch={isBestMatch}
+                        isGoodMatch={isGoodMatch}
+                        isFairMatch={isFairMatch}
+                        isPoorMatch={isPoorMatch}
+                        isItAMatch={isItAMatch}
+                        noData={noData}
+                      />
                     </CandidateNameAndPartyWrapper>
                   </Candidate>
                 </CandidateTopRow>
