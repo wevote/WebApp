@@ -241,9 +241,8 @@ class ChallengeInviteCustomizeMessage extends Component {
     renderLog('ChallengeInviteCustomizeMessage');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
     const {
-      challengeSEOFriendlyPath, challengeTitle,
+      challengePhotoLargeUrl, challengeSEOFriendlyPath, challengeTitle,
       challengeWeVoteId, chosenWebsiteName,
-      voterPhotoUrlLarge,
     } = this.state;
     const htmlTitle = `Why do you support ${challengeTitle}? - ${chosenWebsiteName}`;
     return (
@@ -254,6 +253,7 @@ class ChallengeInviteCustomizeMessage extends Component {
         </Helmet>
         <ChallengeHeaderSimple
           challengeBasePath={this.getChallengeBasePath()}
+          challengePhotoLargeUrl={challengePhotoLargeUrl}
           challengeTitle={challengeTitle}
           challengeWeVoteId={challengeWeVoteId}
           goToChallengeHome={this.goToChallengeHome}

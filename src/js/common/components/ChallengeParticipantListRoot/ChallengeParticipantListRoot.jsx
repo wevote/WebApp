@@ -48,7 +48,7 @@ function searchFunction () {
 }
 
 
-const ChallengeParticipantListRoot = ({ challengeWeVoteId, classes }) => {
+const ChallengeParticipantListRoot = ({ challengeWeVoteId, classes, uniqueExternalId }) => {
   // eslint-disable-next-line no-unused-vars
   const [latestParticipants, setLatestParticipants] = React.useState([]);
 
@@ -124,6 +124,7 @@ const ChallengeParticipantListRoot = ({ challengeWeVoteId, classes }) => {
       <ChallengeParticipantList
         // participantList={latestParticipants}
         participantList={participantListDummyData}
+        uniqueExternalId={uniqueExternalId}
       />
       <Suspense fallback={<></>}>
         <FirstChallengeParticipantListController challengeWeVoteId={challengeWeVoteId} searchText="SEARCH TEXT HERE" />
@@ -136,6 +137,7 @@ ChallengeParticipantListRoot.propTypes = {
   // clearSearchFunction: PropTypes.func.isRequired,
   // searchFunction: PropTypes.func.isRequired,
   challengeWeVoteId: PropTypes.string,
+  uniqueExternalId: PropTypes.string,
 };
 
 const styles = () => ({
