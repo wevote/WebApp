@@ -7,6 +7,7 @@ import historyPush from '../../utils/historyPush';
 import { renderLog } from '../../utils/logging';
 import AppObservableStore from '../../stores/AppObservableStore';
 import ChallengeStore from '../../stores/ChallengeStore';
+import ChallengeParticipantActions from '../../actions/ChallengeParticipantActions';
 import ReadyStore from '../../../stores/ReadyStore';
 import VoterStore from '../../../stores/VoterStore';
 import { getChallengeValuesFromIdentifiers } from '../../utils/challengeUtils';
@@ -50,7 +51,7 @@ class JoinChallengeButton extends React.Component {
       this.setState({
         challengeSEOFriendlyPath,
       });
-    } else {
+    } else if (challengeSEOFriendlyPathFromProps) {
       this.setState({
         challengeSEOFriendlyPath: challengeSEOFriendlyPathFromProps,
       });
@@ -64,7 +65,7 @@ class JoinChallengeButton extends React.Component {
         // voterCanEditThisChallenge,
         voterIsChallengeParticipant,
       });
-    } else {
+    } else if (challengeWeVoteIdFromProps) {
       voterIsChallengeParticipant = ChallengeStore.getVoterIsChallengeParticipant(challengeWeVoteIdFromProps);
       this.setState({
         challengeWeVoteId: challengeWeVoteIdFromProps,
@@ -114,14 +115,12 @@ class JoinChallengeButton extends React.Component {
   goToJoinChallenge = () => {
     const challengeBasePath = this.getChallengeBasePath();
     // console.log('goToJoinChallenge challengeBasePath: ', challengeBasePath);
-    const { voterFirstName, voterPhotoUrlLarge } = this.state;
+    const { challengeWeVoteId, voterFirstName, voterPhotoUrlLarge } = this.state;
     const upcomingGoogleCivicElectionId = VoterStore.electionId();
     const voterPlanCreatedForThisElection = ReadyStore.getVoterPlanTextForVoterByElectionId(upcomingGoogleCivicElectionId);
-    console.log('upcomingGoogleCivicElectionId: ', upcomingGoogleCivicElectionId, 'voterPlanCreatedForThisElection: ', voterPlanCreatedForThisElection);
-    const itemsAreMissing = !(voterFirstName) || !(voterPhotoUrlLarge) || !(voterPlanCreatedForThisElection); // Temporarily assume we have something we need from voter
+    // console.log('upcomingGoogleCivicElectionId: ', upcomingGoogleCivicElectionId, 'voterPlanCreatedForThisElection: ', voterPlanCreatedForThisElection);
+    const itemsAreMissing = !(voterFirstName) || !(voterPhotoUrlLarge) || (upcomingGoogleCivicElectionId && !(voterPlanCreatedForThisElection));
     if (VoterStore.getVoterIsSignedIn()) {
-      // TODO: Make API call that joins this challenge
-
       let joinChallengeNextStepPath = '';
       if (itemsAreMissing) {
         joinChallengeNextStepPath = `${challengeBasePath}join-challenge`;
@@ -131,7 +130,15 @@ class JoinChallengeButton extends React.Component {
       const { location: { pathname: currentPathname } } = window;
       AppObservableStore.setSetUpAccountBackLinkPath(currentPathname);
       AppObservableStore.setSetUpAccountEntryPath(joinChallengeNextStepPath);
-      historyPush(joinChallengeNextStepPath);
+      if (itemsAreMissing) {
+        historyPush(joinChallengeNextStepPath);
+      } else {
+        ChallengeParticipantActions.challengeParticipantSave(challengeWeVoteId);
+        // Delay the redirect, so we have time to fire the above API call first
+        this.timer = setTimeout(() => {
+          historyPush(joinChallengeNextStepPath);
+        }, 500);
+      }
     } else {
       this.setState({
         goToNextStepAfterSignIn: true,

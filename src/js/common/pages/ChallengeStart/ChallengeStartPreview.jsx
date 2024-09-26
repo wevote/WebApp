@@ -64,8 +64,9 @@ class ChallengeStartPreview extends Component {
     const challengeTitle = ChallengeStartStore.getChallengeTitle();
     const step1Completed = ChallengeStartStore.challengeTitleExists();
     const step2Completed = ChallengeStartStore.challengeDescriptionExists();
-    const step3Completed = ChallengeStartStore.challengePhotoExists();
-    const readyToPublish = step1Completed && step2Completed && step3Completed;
+    // const step3Completed = ChallengeStartStore.challengePhotoExists();
+    // const readyToPublish = step1Completed && step2Completed && step3Completed;
+    const readyToPublish = step1Completed && step2Completed;
     this.setState({
       challengeDescription,
       challengePhotoLargeUrl,
@@ -96,7 +97,7 @@ class ChallengeStartPreview extends Component {
       // Mark the challenge as published
       const challengeWeVoteId = '';
       ChallengeStartActions.inDraftModeSave(challengeWeVoteId, false);
-      historyPush('/profile/started');
+      historyPush(`/+/${challengeWeVoteId}`);
     }
   }
 
@@ -115,7 +116,7 @@ class ChallengeStartPreview extends Component {
     // Mark the challenge as published
     const challengeWeVoteId = '';
     ChallengeStartActions.inDraftModeSave(challengeWeVoteId, false);
-    historyPush('/profile/started');
+    historyPush(`/+/${challengeWeVoteId}`);
   }
 
   render () {
