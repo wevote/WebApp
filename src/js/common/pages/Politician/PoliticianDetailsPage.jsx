@@ -957,7 +957,7 @@ class PoliticianDetailsPage extends Component {
             </MobileHeaderOuterContainer>
             {politicianWeVoteId ? (
               <PoliticianCardForList
-                politicianWeVoteId={politicianWeVoteId}
+                politicianWeVoteId={politicianWeVoteIdForDisplay}
                 useCampaignSupportThermometer
                 useVerticalCard
               />
@@ -1123,7 +1123,7 @@ class PoliticianDetailsPage extends Component {
               <ColumnOneThird>
                 {politicianWeVoteId ? (
                   <PoliticianCardForList
-                    politicianWeVoteId={politicianWeVoteId}
+                    politicianWeVoteId={politicianWeVoteIdForDisplay}
                     useCampaignSupportThermometer
                     useVerticalCard
                   />
