@@ -26,13 +26,13 @@ import initializejQuery from '../../utils/initializejQuery';
 import { renderLog } from '../../utils/logging';
 import ChallengeInviteSteps from '../../components/Navigation/ChallengeInviteSteps';
 import DesignTokenColors from '../../components/Style/DesignTokenColors';
-
+import ThanksForJoiningChallenge from '../../components/ChallengeInviteeListRoot/ThanksForJoiningChallenge'
 const ChallengeRetrieveController = React.lazy(() => import(/* webpackChunkName: 'ChallengeRetrieveController' */ '../../components/Challenge/ChallengeRetrieveController'));
 const VoterFirstRetrieveController = loadable(() => import(/* webpackChunkName: 'VoterFirstRetrieveController' */ '../../components/Settings/VoterFirstRetrieveController'));
 
 
 class ChallengeInviteCustomizeMessage extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.state = {
       challengePhotoLargeUrl: '',
@@ -42,11 +42,12 @@ class ChallengeInviteCustomizeMessage extends Component {
       chosenWebsiteName: '',
       linkedPoliticianWeVoteId: '',
       payToPromoteStepTurnedOn: true,
+      showThanksComponent: true,
       weVoteHostedProfileImageUrlLarge: '',
     };
   }
 
-  componentDidMount () {
+  componentDidMount() {
     // console.log('ChallengeInviteCustomizeMessage componentDidMount');
     this.props.setShowHeaderFooter(false);
     this.onAppObservableStoreChange();
@@ -95,14 +96,14 @@ class ChallengeInviteCustomizeMessage extends Component {
     window.scrollTo(0, 0);
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     this.props.setShowHeaderFooter(true);
     this.appStateSubscription.unsubscribe();
     this.challengeStoreListener.remove();
     this.voterStoreListener.remove();
   }
 
-  onAppObservableStoreChange () {
+  onAppObservableStoreChange() {
     const chosenWebsiteName = AppObservableStore.getChosenWebsiteName();
     const inPrivateLabelMode = AppObservableStore.inPrivateLabelMode();
     // For now, we assume that paid sites with chosenSiteLogoUrl will turn off "Chip in"
@@ -113,7 +114,7 @@ class ChallengeInviteCustomizeMessage extends Component {
     });
   }
 
-  onChallengeStoreChange () {
+  onChallengeStoreChange() {
     const { match: { params } } = this.props;
     const { challengeSEOFriendlyPath: challengeSEOFriendlyPathFromParams, challengeWeVoteId: challengeWeVoteIdFromParams } = params;
     // console.log('onChallengeStoreChange challengeSEOFriendlyPathFromParams: ', challengeSEOFriendlyPathFromParams, ', challengeWeVoteIdFromParams: ', challengeWeVoteIdFromParams);
@@ -153,7 +154,12 @@ class ChallengeInviteCustomizeMessage extends Component {
     }
   }
 
-  onVoterStoreChange () {
+  onShowThanksComponent = () => {
+    this.setState({
+      showThanksComponent: false,
+    });
+  }
+  onVoterStoreChange() {
     const voterPhotoUrlLarge = VoterStore.getVoterPhotoUrlLarge();
     this.setState({
       voterPhotoUrlLarge,
@@ -231,7 +237,7 @@ class ChallengeInviteCustomizeMessage extends Component {
     }
   }
 
-  render () {
+  render() {
     renderLog('ChallengeInviteCustomizeMessage');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
     const {
@@ -253,6 +259,13 @@ class ChallengeInviteCustomizeMessage extends Component {
           goToChallengeHome={this.goToChallengeHome}
           politicianBasePath={this.getPoliticianBasePath()}
         />
+        {this.state.showThanksComponent && (
+          <ThanksForJoiningChallenge
+            userName='David'
+            challengeOwner='Mr. Beast'
+            onClose={this.onShowThanksComponent}
+          />
+        )}
         <ChallengeTabsWrapper>
           <ChallengeInviteSteps
             currentStep={1}
