@@ -138,7 +138,7 @@ class PositionRowListCompressed extends Component {
 
   onClickShowOrganizationModalWithPositions () {
     const { ballotItemWeVoteId } = this.props;
-    console.log(ballotItemWeVoteId)
+//     console.log(ballotItemWeVoteId)
     // console.log('onClickShowOrganizationModalWithPositions, ballotItemWeVoteId:', ballotItemWeVoteId);
     AppObservableStore.setOrganizationModalBallotItemWeVoteId(ballotItemWeVoteId);
     AppObservableStore.setShowOrganizationModal(true);
