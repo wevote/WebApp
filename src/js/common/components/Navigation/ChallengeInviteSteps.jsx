@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { withStyles } from '@mui/styles';
 import styled from 'styled-components';
@@ -13,52 +13,39 @@ import StepOneActiveIcon from '../../../../img/global/svg-icons/issues/material-
 import StepTwoIcon from '../../../../img/global/svg-icons/issues/material-symbols-counter-2.svg';
 import StepTwoActiveIcon from '../../../../img/global/svg-icons/issues/material-symbols-counter-2-active.svg';
 
-import historyPush from '../../utils/historyPush'; // We will use this to navigate to different steps later
-import {
-  OuterWrapper,
-  StepCircle,
-  StepNumber,
-  StepWrapper,
-} from '../Style/stepDisplayStyles';
-
-// URLs for the steps (Use later for navigation)
-const STEP1_URL = '/:challengeSEOFriendlyPath/+/customize-message';
-const STEP2_URL = '/:challengeSEOFriendlyPath/+/copy-message';
-
-
 // Color and font variables
-const baseTextColor = '#2A2A2C';
-const hoverFontWeight = '600';
-const defaultFontWeight = '400';
-const fontFamily = 'Poppins';
 const commonTextStyle = {
   fontSize: '13px',
+  fontFamily: 'Poppins',
   lineHeight: '15px',
   textAlign: 'center',
-  fontFamily,
+  colors: DesignTokenColors.neutral900,
+  textDecoration: 'none',
+  // width: '272px',
 };
-// ChallengeInviteSteps component
+// ChallengeInviteSteps component to display the steps
 class ChallengeInviteSteps extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      step1Completed: false,
-      step2Completed: false,
-      isHovered1: false,
-      isHovered2: false,
+      activeStep: this.getActiveStepFromPath(),
     };
   }
+  // Get the current step based on the URL to determine which step is active by default when the page loads
+  getActiveStepFromPath = () => {
+    const { location } = this.props;
+    if (location.pathname.includes('customize-message')) {
+      return 1;
+    } else if (location.pathname.includes('invite-friends')) {
+      return 2;
+    }
+    return 1;
+  };
 
-  componentDidMount() {
-    // Status for the steps
-    const step1Completed = false;
-    const step2Completed = false;
-    this.setState({
-      step1Completed,
-      step2Completed,
-    });
-  }
+  // Check if a step is active based on the current step number
+  isStepActive = (stepNumber) => this.props.currentStep === stepNumber;
 
+  // Get the path for the challenge
   getChallengeBasePath = () => {
     const { challengeSEOFriendlyPath, challengeWeVoteId } = this.props;
     let challengeBasePath;
@@ -70,19 +57,15 @@ class ChallengeInviteSteps extends React.Component {
     return challengeBasePath;
   };
 
-  // Handle mouse enter and leave events for hover effects
-  handleMouseEnter = (step) => {
-    this.setState({ [`isHovered${step}`]: true });
-  };
+  // Set a step as active when clicked
+  isStepActive = (stepNumber) => this.state.activeStep === stepNumber;
 
-  handleMouseLeave = (step) => {
-    this.setState({ [`isHovered${step}`]: false });
+  // Update the active step when the link is clicked
+  handleStepClick = (stepNumber) => {
+    this.setState({ activeStep: stepNumber });
   };
 
   render() {
-    const { step1Completed, step2Completed, isHovered1, isHovered2 } =
-      this.state;
-
     return (
       <ChallengeInviteStepsContainer>
         {/* Rocket, Invite more friends, and Learn More */}
@@ -92,39 +75,14 @@ class ChallengeInviteSteps extends React.Component {
             alt="Rocket Icon"
             style={{ height: '70px', width: '40px' }}
           />
-          <h2
-            style={{
-              ...commonTextStyle,
-              fontWeight: '600',
-              fontSize: '20px',
-              lineHeight: '25px',
-              color: baseTextColor,
-              width: '272px',
-              height: '63px',
-              margin: '0 10px',
-            }}
-          >
+          <h2>
             To boost your ranking, invite your friends to join.
           </h2>
           <Wrapper>
-            <LearnMoreTextBlock
-              style={{
-                height: '50px',
-                width: '1px',
-                marginRight: '15px',
-              }}
-            />
-            <a
-              href="#"
-              style={{
-                color: '#0858A1',
-                fontSize: '13px',
-                fontWeight: '500',
-                textDecoration: 'none',
-              }}
-            >
+            <LearnMoreTextBlock />
+            <button type="button">
               Learn more
-            </a>
+            </button>
           </Wrapper>
         </HeaderContainer>
 
@@ -132,27 +90,18 @@ class ChallengeInviteSteps extends React.Component {
         <StepsContainer>
           {/* Step 1 Icon and Text */}
           <StepOneIconAndText
-            onMouseEnter={() => this.handleMouseEnter(1)}
-            onMouseLeave={() => this.handleMouseLeave(1)}
+            isActive={this.isStepActive(1)}
+            onClick={() => this.handleStepClick(1)}
           >
             <img
-              src={
-                isHovered1 || step1Completed ? StepOneActiveIcon : StepOneIcon
-              }
+              src={this.isStepActive(1) ? StepOneActiveIcon : StepOneIcon}
               alt="Step 1 Icon"
             />
             <Link
               to={`${this.getChallengeBasePath()}customize-message`}
-              style={{
-                ...commonTextStyle,
-                fontWeight:
-                  isHovered1
-                  || step1Completed ?
-                    hoverFontWeight :
-                    defaultFontWeight,
-                color: isHovered1 ? '#206DB3' : baseTextColor,
-                textDecoration: 'none',
-              }}
+              style={commonTextStyle}
+              // Handle click to update state
+              onClick={() => this.handleStepClick(1)}
             >
               Customize the message to your friends
             </Link>
@@ -162,26 +111,18 @@ class ChallengeInviteSteps extends React.Component {
           <HorizontalLine />
           {/* Step 2 Icon and Text */}
           <StepTwoIconAndText
-            onMouseEnter={() => this.handleMouseEnter(2)}
-            onMouseLeave={() => this.handleMouseLeave(2)}
+            isActive={this.isStepActive(2)}
+            onClick={() => this.handleStepClick(2)}
           >
             <img
-              src={
-                isHovered2 || step2Completed ? StepTwoActiveIcon : StepTwoIcon
-              }
+              src={this.isStepActive(2) ? StepTwoActiveIcon : StepTwoIcon}
               alt="Step 2 Icon"
             />
             <Link
               to={`${this.getChallengeBasePath()}invite-friends`}
-              style={{
-                ...commonTextStyle,
-                fontWeight:
-                  isHovered2 || step2Completed ?
-                    hoverFontWeight :
-                    defaultFontWeight,
-                color: baseTextColor,
-                textDecoration: 'none',
-              }}
+              style={commonTextStyle}
+              // Handle click to update state
+              onClick={() => this.handleStepClick(2)}
             >
               Copy message & link
             </Link>
@@ -193,13 +134,14 @@ class ChallengeInviteSteps extends React.Component {
 }
 
 ChallengeInviteSteps.propTypes = {
-  classes: PropTypes.object.isRequired,
   currentStep: PropTypes.number.isRequired,
+  challengeSEOFriendlyPath: PropTypes.string,
+  challengeWeVoteId: PropTypes.string,
+  location: PropTypes.object.isRequired,
 };
 
 
 // Styled Components
-
 const ChallengeInviteStepsContainer = styled('div')`
   align-items: center;
   background-color: ${DesignTokenColors.neutralUI50};
@@ -207,7 +149,6 @@ const ChallengeInviteStepsContainer = styled('div')`
   flex-direction: column;
   max-width: 620px;
   padding: 20px;
-  position: relative;
   // width: 445px;
   width: 100%;
 `;
@@ -217,54 +158,117 @@ const HeaderContainer = styled('div')`
   display: flex;
   justify-content: space-between;
   width: 100%;
+
+  h2 {
+    color: ${DesignTokenColors.neutral900};
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 25px;
+    margin: 0 10px;
+
+    // h2 size for medium screens (between 600px and 1024px)
+    @media (min-width: 601px) and (max-width: 1024px) {
+      font-size: 18px;
+      line-height: 22px;
+    }
+     
+    // h2 smaller on small screens
+    @media (max-width: 600px) {
+      font-size: 16px;
+      line-height: 20px;
+    }
+  }
+    button {
+    background: none;
+    border: none;
+    color: ${DesignTokenColors.primary600};
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+  }
 `;
 
 const Wrapper = styled('div')`
+  align-items: center;  
   display: flex;
-  align-items: center;
   margin-left: auto;
 `;
 
 const LearnMoreTextBlock = styled('div')`
+  background-color: ${DesignTokenColors.neutral100};
   height: 50px;
-  width: 1px;
   margin-right: 15px;
+  width: 1px;
 `;
 
 const StepsContainer = styled('div')`
   align-items: center;
   display: flex;
   justify-content: center;
-  width: 100%;
   position: relative;
+  width: 100%;
 `;
 
 const StepOneIconAndText = styled('div')`
   align-items: center;
+  border-bottom: 2px solid ${({ isActive }) => (isActive ? DesignTokenColors.primary600 : 'transparent')};
+  cursor: pointer;
   display: flex;
   flex-direction: column;
-  width: 169px;
-  text-align: center;
   margin-right: 25px;
-  cursor: pointer;
+  text-align: center;
+  width: 169px;
+
+  img {
+    content: url(${({ isActive }) => (isActive ? StepOneActiveIcon : StepOneIcon)});
+  }
+
+  a {
+    font-weight: ${({ isActive }) => (isActive ? '600' : 'normal')};
+    color: ${({ isActive }) => (isActive ? DesignTokenColors.primary600 : 'inherit')};
+  }
+
+  &:hover {
+    border-bottom: 2px solid ${DesignTokenColors.primary600};
+  }
 `;
 
 const StepTwoIconAndText = styled('div')`
   align-items: center;
+  border-bottom: 2px solid ${({ isActive }) => (isActive ? DesignTokenColors.primary600 : 'transparent')};
+  cursor: pointer;
   display: flex;
   flex-direction: column;
-  width: 109px;
-  text-align: center;
   margin-left: 25px;
-  cursor: pointer;
+  text-align: center;
+  width: 109px;
+
+  img {
+    content: url(${({ isActive }) => (isActive ? StepTwoActiveIcon : StepTwoIcon)});
+  }
+
+  a {
+    font-weight: ${({ isActive }) => (isActive ? '600' : 'normal')};
+    color: ${({ isActive }) => (isActive ? DesignTokenColors.primary600 : 'inherit')};
+  }
+
+  &:hover {
+    border-bottom: 2px solid ${DesignTokenColors.primary600};
+  }
 `;
 
 const HorizontalLine = styled('div')`
-  border-top: 1px solid #d2d2d2;
+  border-top: 1px solid ${DesignTokenColors.neutral100};
   left: calc(50% - 67px);
   position: absolute;
   top: 20%;
   width: 164px;
+
+  // Horizontal line smaller on small screens
+  @media (max-width: 600px) {
+    width: 120px;
+    left: calc(50% - 50px);
+  }
 `;
 
-export default withStyles(commonMuiStyles)(ChallengeInviteSteps);
+export default withRouter(withStyles(commonMuiStyles)(ChallengeInviteSteps));
