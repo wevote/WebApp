@@ -100,17 +100,12 @@ class BallotScrollingContainer extends Component {
   };
 
   handleContainerClick = (e, weVoteId, externalUniqueId) => {
-    console.log(e.target, e.currentTarget)
-//     const candidateContainer = e.target.closest(".candidate-container-div")
-//     const candidateContainer = document.getElementsByClassName('candidate-container-div')[0]
+
     const candidateContainer = document.getElementById(`candidateContainer-${weVoteId}-${externalUniqueId}`)
-//     const positionRowListOuterWrapper = document.getElementsByClassName('position-row-list-outer-wrapper-div')[0]
     const positionRowListOuterWrapper = document.getElementById(`positionRowListOuterWrapper-${weVoteId}-${externalUniqueId}`)
     const candidateImageAndName = document.getElementById(`officeItemCompressedCandidateImageAndName-${weVoteId}-${externalUniqueId}`);
-//     const candidateNameAndPartyWrapper = document.getElementsByClassName('candidate-name-and-party-wrapper-div')[0]
     const candidateNameAndPartyWrapper = document.getElementById(`candidateNameAndPartyWrapper-${weVoteId}-${externalUniqueId}`)
     const candidateNameH4 = document.getElementById(`candidateNameH4-${weVoteId}-${externalUniqueId}`)
-//     const candidateNameH4 = document.getElementsByClassName('candidate-name-h4-div')[0]
       if (e.target === candidateImageAndName
             || e.target === candidateContainer
             || e.target === positionRowListOuterWrapper
