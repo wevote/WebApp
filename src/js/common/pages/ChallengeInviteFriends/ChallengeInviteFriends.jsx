@@ -22,14 +22,16 @@ import initializejQuery from '../../utils/initializejQuery';
 import { renderLog } from '../../utils/logging';
 import DesignTokenColors from '../../components/Style/DesignTokenColors';
 import ChallengeInviteSteps from '../../components/Navigation/ChallengeInviteSteps';
-import ChallengeInviteeListRoot from '../../components/ChallengeInviteeListRoot/ChallengeInviteeListRoot';
-import InviteFriendToChallengeInput from '../../components/ChallengeInviteeListRoot/InviteFriendToChallengeInput';
+import ChallengeInvitedFriends from '../../components/ChallengeInviteFriends/ChallengeInvitedFriends';
+import InviteFriendToChallengeInput from '../../components/ChallengeInviteFriends/InviteFriendToChallengeInput';
+import YourRank from '../../components/Challenge/YourRank';
 
 const ChallengeRetrieveController = React.lazy(() => import(/* webpackChunkName: 'ChallengeRetrieveController' */ '../../components/Challenge/ChallengeRetrieveController'));
 const VoterFirstRetrieveController = loadable(() => import(/* webpackChunkName: 'VoterFirstRetrieveController' */ '../../components/Settings/VoterFirstRetrieveController'));
 
 
-class ChallengeInviteFriends extends Component {
+// TODO SOON: Change name to ChallengeInviteFriends
+class ChallengeInviteCopy extends Component {
   constructor (props) {
     super(props);
     this.state = {
@@ -45,7 +47,7 @@ class ChallengeInviteFriends extends Component {
   }
 
   componentDidMount () {
-    // console.log('ChallengeInviteFriends componentDidMount');
+    // console.log('ChallengeInviteCopy componentDidMount');
     this.props.setShowHeaderFooter(false);
     this.onAppObservableStoreChange();
     this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
@@ -215,7 +217,7 @@ class ChallengeInviteFriends extends Component {
         visibleToPublic = ChallengeParticipantStore.getVisibleToPublicQueuedToSave();
       }
       if (participantEndorsementQueuedToSaveSet || visibleToPublicChanged) {
-        // console.log('ChallengeInviteFriends, participantEndorsementQueuedToSave:', participantEndorsementQueuedToSave);
+        // console.log('ChallengeInviteCopy, participantEndorsementQueuedToSave:', participantEndorsementQueuedToSave);
         const saveVisibleToPublic = true;
         initializejQuery(() => {
           ChallengeParticipantActions.participantEndorsementSave(challengeWeVoteId, participantEndorsementQueuedToSave, visibleToPublic, saveVisibleToPublic); // challengeParticipantSave
@@ -235,9 +237,9 @@ class ChallengeInviteFriends extends Component {
   }
 
   render () {
-    renderLog('ChallengeInviteFriends');  // Set LOG_RENDER_EVENTS to log all renders
+    renderLog('ChallengeInviteCopy');  // Set LOG_RENDER_EVENTS to log all renders
     const {
-      challengePhotoLargeUrl, challengeSEOFriendlyPath, challengeTitle,
+      challengeSEOFriendlyPath, challengeTitle,
       challengeWeVoteId, chosenWebsiteName,
     } = this.state;
     const htmlTitle = `Invite your friends - ${chosenWebsiteName}`;
@@ -249,7 +251,6 @@ class ChallengeInviteFriends extends Component {
         </Helmet>
         <ChallengeHeaderSimple
           challengeBasePath={this.getChallengeBasePath()}
-          challengePhotoLargeUrl={challengePhotoLargeUrl}
           challengeTitle={challengeTitle}
           challengeWeVoteId={challengeWeVoteId}
           goToChallengeHome={this.goToChallengeHome}
@@ -275,15 +276,15 @@ class ChallengeInviteFriends extends Component {
               </CampaignProcessStepIntroductionText>
               <CampaignSupportSectionWrapper marginTopOff>
                 <CampaignSupportSection marginBottomOff>
-                  <InviteFriendToChallengeInput challengeWeVoteId={challengeWeVoteId} />
+                  <InviteFriendToChallengeInput />
                 </CampaignSupportSection>
               </CampaignSupportSectionWrapper>
             </ContentInnerWrapperDefault>
           </ContentOuterWrapperDefault>
         </PageWrapperDefault>
         <InvitedFriendsWrapper>
-          YOUR RANK IN CHALLENGE HERE
-          <ChallengeInviteeListRoot challengeWeVoteId={challengeWeVoteId} />
+          <YourRank challengeSEOFriendlyPath={challengeSEOFriendlyPath}/>
+          <ChallengeInvitedFriends />
         </InvitedFriendsWrapper>
         <Suspense fallback={<span>&nbsp;</span>}>
           <ChallengeRetrieveController challengeSEOFriendlyPath={challengeSEOFriendlyPath} challengeWeVoteId={challengeWeVoteId} />
@@ -295,7 +296,7 @@ class ChallengeInviteFriends extends Component {
     );
   }
 }
-ChallengeInviteFriends.propTypes = {
+ChallengeInviteCopy.propTypes = {
   match: PropTypes.object,
   setShowHeaderFooter: PropTypes.func,
 };
@@ -314,4 +315,4 @@ const InvitedFriendsWrapper = styled('div')`
   flex-direction: column;
 `;
 
-export default withStyles(commonMuiStyles)(ChallengeInviteFriends);
+export default withStyles(commonMuiStyles)(ChallengeInviteCopy);
