@@ -74,9 +74,9 @@ class CampaignStartAddTitle extends Component {
               <CampaignProcessStepTitle>
                 Write your campaign title
               </CampaignProcessStepTitle>
-              <CampaignProcessStepIntroductionText>
-                This is the first thing people will see about your campaign. Get their attention with a short title that focuses on what the candidate(s) you support will do to improve people&apos;s lives.
-              </CampaignProcessStepIntroductionText>
+              {/* <CampaignProcessStepIntroductionText> */}
+              {/*  This is the first thing people will see about your campaign. Get their attention with a short title that focuses on what the candidate(s) you support will do to improve people&apos;s lives. */}
+              {/* </CampaignProcessStepIntroductionText> */}
               <CampaignStartSectionWrapper>
                 <CampaignStartSection>
                   <CampaignTitleInputField />

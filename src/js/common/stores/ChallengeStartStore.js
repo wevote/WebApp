@@ -135,6 +135,10 @@ class ChallengeStartStore extends ReduceStore {
     return this.getState().challengeTitleQueuedToSaveSet;
   }
 
+  getChallengeWeVoteId () {
+    return this.getState().challengeWeVoteId || '';
+  }
+
   getInDraftMode () {
     return this.getState().inDraftMode;
   }
@@ -257,12 +261,12 @@ class ChallengeStartStore extends ReduceStore {
           challengePhotoLargeUrl: action.res.we_vote_hosted_challenge_photo_large_url,
           challengePhotoMediumUrl: action.res.we_vote_hosted_challenge_photo_medium_url,
           challengePhotoSmallUrl: action.res.we_vote_hosted_challenge_photo_small_url,
-          challengePoliticianList: action.res.challengex_politician_list,
-          challengePoliticianListExists: action.res.challengex_politician_list_exists,
-          challengePoliticianStarterList: action.res.challengex_politician_starter_list,
+          challengePoliticianList: action.res.challenge_politician_list,
+          challengePoliticianListExists: action.res.challenge_politician_list_exists,
+          challengePoliticianStarterList: action.res.challenge_politician_starter_list,
           challengeTitle: action.res.challenge_title,
-          challengeOwnerList: action.res.challengex_owner_list,
-          challengeWeVoteId: action.res.challengex_we_vote_id,
+          challengeOwnerList: action.res.challenge_owner_list,
+          challengeWeVoteId: action.res.challenge_we_vote_id,
           inDraftMode: action.res.in_draft_mode,
           voterSignedInWithEmail: action.res.voter_signed_in_with_email,
         };
@@ -275,12 +279,12 @@ class ChallengeStartStore extends ReduceStore {
           challengePhotoLargeUrl: action.res.we_vote_hosted_challenge_photo_large_url,
           challengePhotoMediumUrl: action.res.we_vote_hosted_challenge_photo_medium_url,
           challengePhotoSmallUrl: action.res.we_vote_hosted_challenge_photo_small_url,
-          challengePoliticianList: action.res.challengex_politician_list,
-          challengePoliticianListExists: action.res.challengex_politician_list_exists,
-          challengePoliticianStarterList: action.res.challengex_politician_starter_list,
+          challengePoliticianList: action.res.challenge_politician_list,
+          challengePoliticianListExists: action.res.challenge_politician_list_exists,
+          challengePoliticianStarterList: action.res.challenge_politician_starter_list,
           challengeTitle: action.res.challenge_title,
-          challengeOwnerList: action.res.challengex_owner_list,
-          challengeWeVoteId: action.res.challengex_we_vote_id,
+          challengeOwnerList: action.res.challenge_owner_list,
+          challengeWeVoteId: action.res.challenge_we_vote_id,
           inDraftMode: action.res.in_draft_mode,
           voterSignedInWithEmail: action.res.voter_signed_in_with_email,
         };

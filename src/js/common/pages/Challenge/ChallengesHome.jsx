@@ -310,15 +310,15 @@ class ChallengesHome extends Component {
       // console.log('detailsListMode TRUE');
       return (
         <ChallengesHomeWrapper>
+          <StartAChallengeWrapper>
+            <Link className="u-link-color" to="/start-a-challenge">
+              Create Challenge
+            </Link>
+          </StartAChallengeWrapper>
           <ChallengesHomeFilter
             clearSearchFunction={this.clearSearchFunction}
             searchFunction={this.searchFunction}
           />
-          <StartAChallengeWrapper>
-            <Link className="u-link-color" to="/start-a-challenge">
-              Start your own Democracy Challenge
-            </Link>
-          </StartAChallengeWrapper>
           <WhatIsHappeningSection useMinimumHeight={!!(numberOfChallengeResults)}>
             <Suspense fallback={<span>&nbsp;</span>}>
               <ChallengeListRoot
@@ -341,6 +341,11 @@ class ChallengesHome extends Component {
     // console.log('ChallengesHome, isSearching: ', isSearching, 'numberOfRepresentativeResults:', numberOfRepresentativeResults);
     return (
       <ChallengesHomeWrapper>
+        <StartAChallengeWrapper>
+          <Link className="u-link-color" to="/start-a-challenge">
+            Create Challenge
+          </Link>
+        </StartAChallengeWrapper>
         <ChallengesHomeFilter
           changeListModeShown={this.changeListModeShown}
           clearSearchFunction={this.clearSearchFunction}
@@ -357,11 +362,6 @@ class ChallengesHome extends Component {
             subtitle="Please try a different search term."
           />
         )}
-        <StartAChallengeWrapper>
-          <Link className="u-link-color" to="/start-a-challenge">
-            Start your own Democracy Challenge
-          </Link>
-        </StartAChallengeWrapper>
 
         <WhatIsHappeningSection useMinimumHeight>
           <Suspense fallback={<span><ChallengeListRootPlaceholder titleTextForList="Democracy Challenges" /></span>}>
@@ -398,7 +398,8 @@ const ChallengesHomeWrapper = styled('div')`
 `;
 
 const StartAChallengeWrapper = styled('div')`
-  margin-bottom: 24px;
+  margin-bottom: 18px;
+  margin-top: 12px;
 `;
 
 const WhatIsHappeningSection = styled('div', {
