@@ -41,7 +41,7 @@ const ChallengeInviteeListRoot = ({ challengeWeVoteId, classes }) => {
   return (
     <ChallengeInviteeListRootContainer>
       <Heading>
-        <p style={{ fontWeight: 'bold', padding: '10px' }}>Invited Friends</p>
+        <StyledP>Invited Friends</StyledP>
       </Heading>
       <ChallengeInviteeList
         challengeWeVoteId={challengeWeVoteId}
@@ -70,13 +70,18 @@ const styles = () => ({
 });
 
 const ChallengeInviteeListRootContainer = styled.div`
-  max-width: 110vw;
+  max-width: 100vw;
   margin: 0 auto;
 `;
 
 const Heading = styled.div`
-  padding: 0 16px;
+  padding: 0 5px;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+`;
+
+const StyledP = styled.p`
+  font-weight: bold;
+  padding: 10px;
 `;
 
 export default withStyles(styles)(ChallengeInviteeListRoot);

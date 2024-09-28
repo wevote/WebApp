@@ -6,7 +6,6 @@ import React, { Component, Suspense } from 'react';
 import { Helmet } from 'react-helmet-async';
 import styled from 'styled-components';
 import VoterActions from '../../../actions/VoterActions';
-import webAppConfig from '../../../config';
 import VoterStore from '../../../stores/VoterStore';
 import ChallengeParticipantActions from '../../actions/ChallengeParticipantActions';
 import ChallengeHeaderSimple from '../../components/Navigation/ChallengeHeaderSimple';
@@ -14,7 +13,6 @@ import {
   SupportButtonFooterWrapper, SupportButtonPanel,
 } from '../../components/Style/CampaignDetailsStyles';
 import { CampaignProcessStepTitle } from '../../components/Style/CampaignProcessStyles';
-import { CampaignSupportDesktopButtonPanel, CampaignSupportDesktopButtonWrapper, CampaignSupportSection, CampaignSupportSectionWrapper } from '../../components/Style/CampaignSupportStyles';
 import commonMuiStyles from '../../components/Style/commonMuiStyles';
 import { ContentInnerWrapperDefault, ContentOuterWrapperDefault, PageWrapperDefault } from '../../components/Style/PageWrapperStyles';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
@@ -26,7 +24,8 @@ import initializejQuery from '../../utils/initializejQuery';
 import { renderLog } from '../../utils/logging';
 import ChallengeInviteSteps from '../../components/Navigation/ChallengeInviteSteps';
 import DesignTokenColors from '../../components/Style/DesignTokenColors';
-import ThanksForJoiningChallenge from '../../components/ChallengeInviteeListRoot/ThanksForJoiningChallenge'
+import ThanksForJoiningChallenge from '../../components/ChallengeInviteeListRoot/ThanksForJoiningChallenge';
+
 const ChallengeRetrieveController = React.lazy(() => import(/* webpackChunkName: 'ChallengeRetrieveController' */ '../../components/Challenge/ChallengeRetrieveController'));
 const VoterFirstRetrieveController = loadable(() => import(/* webpackChunkName: 'VoterFirstRetrieveController' */ '../../components/Settings/VoterFirstRetrieveController'));
 
@@ -41,9 +40,7 @@ class ChallengeInviteCustomizeMessage extends Component {
       challengeWeVoteId: '',
       chosenWebsiteName: '',
       linkedPoliticianWeVoteId: '',
-      payToPromoteStepTurnedOn: true,
-      showThanksComponent: true,
-      weVoteHostedProfileImageUrlLarge: '',
+      showChallengeThanksForJoining: false,
     };
   }
 
@@ -94,6 +91,8 @@ class ChallengeInviteCustomizeMessage extends Component {
     // Take the "calculated" identifiers and retrieve if missing
     retrieveChallengeFromIdentifiersIfNeeded(challengeSEOFriendlyPath, challengeWeVoteId);
     window.scrollTo(0, 0);
+    // When testing the ThanksForJoiningChallenge component, turn this on
+    // AppObservableStore.setShowChallengeThanksForJoining(true);
   }
 
   componentWillUnmount() {
@@ -103,18 +102,17 @@ class ChallengeInviteCustomizeMessage extends Component {
     this.voterStoreListener.remove();
   }
 
-  onAppObservableStoreChange() {
+  onAppObservableStoreChange () {
     const chosenWebsiteName = AppObservableStore.getChosenWebsiteName();
-    const inPrivateLabelMode = AppObservableStore.inPrivateLabelMode();
+    const showChallengeThanksForJoining = AppObservableStore.showChallengeThanksForJoining();
     // For now, we assume that paid sites with chosenSiteLogoUrl will turn off "Chip in"
-    const payToPromoteStepTurnedOn = !inPrivateLabelMode && webAppConfig.ENABLE_PAY_TO_PROMOTE;
     this.setState({
       chosenWebsiteName,
-      payToPromoteStepTurnedOn,
+      showChallengeThanksForJoining,
     });
   }
 
-  onChallengeStoreChange() {
+  onChallengeStoreChange () {
     const { match: { params } } = this.props;
     const { challengeSEOFriendlyPath: challengeSEOFriendlyPathFromParams, challengeWeVoteId: challengeWeVoteIdFromParams } = params;
     // console.log('onChallengeStoreChange challengeSEOFriendlyPathFromParams: ', challengeSEOFriendlyPathFromParams, ', challengeWeVoteIdFromParams: ', challengeWeVoteIdFromParams);
@@ -154,11 +152,6 @@ class ChallengeInviteCustomizeMessage extends Component {
     }
   }
 
-  onShowThanksComponent = () => {
-    this.setState({
-      showThanksComponent: false,
-    });
-  }
   onVoterStoreChange() {
     const voterPhotoUrlLarge = VoterStore.getVoterPhotoUrlLarge();
     this.setState({
@@ -242,7 +235,7 @@ class ChallengeInviteCustomizeMessage extends Component {
     const { classes } = this.props;
     const {
       challengePhotoLargeUrl, challengeSEOFriendlyPath, challengeTitle,
-      challengeWeVoteId, chosenWebsiteName,
+      challengeWeVoteId, chosenWebsiteName, showChallengeThanksForJoining,
     } = this.state;
     const htmlTitle = `Why do you support ${challengeTitle}? - ${chosenWebsiteName}`;
     return (
@@ -259,11 +252,11 @@ class ChallengeInviteCustomizeMessage extends Component {
           goToChallengeHome={this.goToChallengeHome}
           politicianBasePath={this.getPoliticianBasePath()}
         />
-        {this.state.showThanksComponent && (
+        {showChallengeThanksForJoining && (
           <ThanksForJoiningChallenge
-            userName='David'
-            challengeOwner='Mr. Beast'
-            onClose={this.onShowThanksComponent}
+            userName="David"
+            challengeOwner="Mr. Beast"
+            onClose={() => AppObservableStore.setShowChallengeThanksForJoining(false)}
           />
         )}
         <ChallengeTabsWrapper>

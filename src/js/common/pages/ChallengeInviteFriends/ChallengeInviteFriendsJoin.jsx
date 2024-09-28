@@ -56,6 +56,7 @@ class ChallengeInviteFriendsJoin extends Component {
     this.props.setShowHeaderFooter(false);
     this.onAppObservableStoreChange();
     this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
+    AppObservableStore.setShowChallengeThanksForJoining(true);
     this.onChallengeStoreChange();
     this.challengeStoreListener = ChallengeStore.addListener(this.onChallengeStoreChange.bind(this));
     this.onVoterStoreChange();
@@ -208,7 +209,7 @@ class ChallengeInviteFriendsJoin extends Component {
 
   joinChallengeNowSubmitPart2 = () => {
     const { challengeWeVoteId } = this.state;
-    console.log('ChallengeInviteFriendsJoin, joinChallengeNowSubmitPart2, challengeWeVoteId:', challengeWeVoteId);
+    // console.log('ChallengeInviteFriendsJoin, joinChallengeNowSubmitPart2, challengeWeVoteId:', challengeWeVoteId);
     if (challengeWeVoteId) {
       // const participantEndorsementQueuedToSave = ChallengeParticipantStore.getSupporterEndorsementQueuedToSave();
       // const participantEndorsementQueuedToSaveSet = ChallengeParticipantStore.getSupporterEndorsementQueuedToSaveSet();
@@ -230,7 +231,7 @@ class ChallengeInviteFriendsJoin extends Component {
       // }
       const voterPhotoQueuedToSave = VoterStore.getVoterPhotoQueuedToSave();
       const voterPhotoQueuedToSaveSet = VoterStore.getVoterPhotoQueuedToSaveSet();
-      console.log('ChallengeInviteFriendsJoin, voterPhotoQueuedToSave:', voterPhotoQueuedToSave, ', voterPhotoQueuedToSaveSet:', voterPhotoQueuedToSaveSet);
+      // console.log('ChallengeInviteFriendsJoin, voterPhotoQueuedToSave:', voterPhotoQueuedToSave, ', voterPhotoQueuedToSaveSet:', voterPhotoQueuedToSaveSet);
       if (voterPhotoQueuedToSaveSet) {
         initializejQuery(() => {
           VoterActions.voterPhotoSave(voterPhotoQueuedToSave, voterPhotoQueuedToSaveSet);
@@ -243,7 +244,7 @@ class ChallengeInviteFriendsJoin extends Component {
       ChallengeParticipantActions.challengeParticipantSave(challengeWeVoteId);
 
       // If all the necessary data has been saved, proceed to the next step
-      console.log(`ChallengeInviteFriendsJoin, joinChallengeNowSubmitPart2, redirect to ${this.getChallengeBasePath()}customize-message`);
+      // console.log(`ChallengeInviteFriendsJoin, joinChallengeNowSubmitPart2, redirect to ${this.getChallengeBasePath()}customize-message`);
       historyPush(`${this.getChallengeBasePath()}customize-message`);
     }
   }
@@ -333,15 +334,6 @@ class ChallengeInviteFriendsJoin extends Component {
           <SupportButtonPanel>
             <CenteredDiv>
               <StackedDiv>
-                <div>
-                  By continuing, you accept WeVote.US&apos;s
-                  {' '}
-                  Terms of Service
-                  {' '}
-                  and
-                  {' '}
-                  Privacy Policy.
-                </div>
                 <Button
                   // classes={{ root: classes.buttonDesktop }}
                   color="primary"

@@ -138,10 +138,17 @@ class PositionRowListCompressed extends Component {
 
   onClickShowOrganizationModalWithPositions () {
     const { ballotItemWeVoteId } = this.props;
+//     console.log(ballotItemWeVoteId)
     // console.log('onClickShowOrganizationModalWithPositions, ballotItemWeVoteId:', ballotItemWeVoteId);
     AppObservableStore.setOrganizationModalBallotItemWeVoteId(ballotItemWeVoteId);
     AppObservableStore.setShowOrganizationModal(true);
     AppObservableStore.setHideOrganizationModalBallotItemInfo(true);
+  }
+
+  onClickShowOrganizationModalWithBallotItemInfoAndPositions() {
+    const { ballotItemWeVoteId } = this.props;
+    AppObservableStore.setOrganizationModalBallotItemWeVoteId(ballotItemWeVoteId);
+    AppObservableStore.setShowOrganizationModal(true);
   }
 
   onPositionListUpdate = (allCachedPositionsForThisBallotItem) => {
@@ -323,7 +330,15 @@ class PositionRowListCompressed extends Component {
               );
             })}
           </CandidateEndorsementPhotos>
-          <CandidateEndorsementText onClick={() => this.onClickShowOrganizationModalWithPositions()} className="u-link-underline-on-hover">
+          <CandidateEndorsementText
+              onClick={() => {
+                if (filteredPositionList && filteredPositionList.length === 0) {
+                  this.onClickShowOrganizationModalWithBallotItemInfoAndPositions()
+                  } else {
+                    this.onClickShowOrganizationModalWithPositions()
+                    }
+                }} className="u-link-underline-on-hover"
+          >
             {talkingAboutText}
             {!!(talkingAboutText) && <>&hellip;</>}
           </CandidateEndorsementText>

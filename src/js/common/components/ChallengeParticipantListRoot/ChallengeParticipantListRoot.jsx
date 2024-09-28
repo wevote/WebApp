@@ -86,7 +86,7 @@ const ChallengeParticipantListRoot = ({ challengeWeVoteId, classes, uniqueExtern
               onClick={() => console.log('Top 50 button clicked')}
               variant="outlined"
             >
-              Top 50
+              Top&nbsp;50
             </Button>
           </ButtonWrapper>
           <SearchBarWrapper>
@@ -142,8 +142,9 @@ ChallengeParticipantListRoot.propTypes = {
 
 const styles = () => ({
   buttonDesktop: {
-    padding: '2px 16px',
+    padding: '2px 6px',
     borderRadius: 5,
+    fontSize: 14,
   },
   searchButton: {
     borderRadius: 50,

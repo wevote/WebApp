@@ -72,11 +72,11 @@ class ChallengeStartAddDescription extends Component {
             <InnerWrapper>
               <ChallengeStartSteps atStepNumber2 />
               <CampaignProcessStepTitle>
-                Explain why voting matters to you
+                Describe your challenge
               </CampaignProcessStepTitle>
-              <CampaignProcessStepIntroductionText>
-                People are more likely to join your challenge if it’s clear why you care. Explain how voting will impact you, your family, or your community.
-              </CampaignProcessStepIntroductionText>
+              {/* <CampaignProcessStepIntroductionText> */}
+              {/*  Get Out the Vote Florida */}
+              {/* </CampaignProcessStepIntroductionText> */}
               <CampaignStartSectionWrapper>
                 <CampaignStartSection>
                   <ChallengeDescriptionInputField />
@@ -96,28 +96,10 @@ class ChallengeStartAddDescription extends Component {
                   <AdviceBoxWrapper>
                     <AdviceBox>
                       <AdviceBoxTitle>
-                        Describe the people who will be affected if this candidate loses
-                      </AdviceBoxTitle>
-                      <AdviceBoxText>
-                        People are most likely to vote when they understand the consequences of this candidate not being elected, described in terms of the people impacted.
-                      </AdviceBoxText>
-                      <AdviceBoxText>
-                        &nbsp;
-                      </AdviceBoxText>
-                      <AdviceBoxTitle>
-                        Describe the benefits of this candidate winning
-                      </AdviceBoxTitle>
-                      <AdviceBoxText>
-                        Explain why this candidate or candidates winning will bring positive change.
-                      </AdviceBoxText>
-                      <AdviceBoxText>
-                        &nbsp;
-                      </AdviceBoxText>
-                      <AdviceBoxTitle>
                         Make it personal
                       </AdviceBoxTitle>
                       <AdviceBoxText>
-                        Voters are more likely to sign and support your challenge if it’s clear why you care.
+                        Your friends and followers are more likely to join your challenge if it’s clear why you care.
                       </AdviceBoxText>
                       <AdviceBoxText>
                         &nbsp;
