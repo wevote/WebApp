@@ -624,7 +624,8 @@ export default class SignInOptionsPanel extends Component {
             </div>
             )}
             <TermsWrapper>
-              By continuing, you accept WeVote.US’s 
+              By continuing, you accept WeVote.US’s
+              {' '}
               <Suspense fallback={<></>}>
                 <OpenExternalWebSite
                   linkIdAttribute="openTermsOfService"
@@ -637,8 +638,10 @@ export default class SignInOptionsPanel extends Component {
                     </span>
                   )}
                 />
-              </Suspense> 
-              and 
+              </Suspense>
+              {' '}
+              and
+              {' '}
               <Suspense fallback={<></>}>
                 <OpenExternalWebSite
                   linkIdAttribute="openPrivacyPolicy"
@@ -651,9 +654,9 @@ export default class SignInOptionsPanel extends Component {
                     </span>
                   )}
                 />
-              </Suspense> 
+              </Suspense>
               .
-              </TermsWrapper>
+            </TermsWrapper>
           </Main>
         </SignInOptionsPanelWrapper>
       </>
@@ -681,9 +684,10 @@ const OrWrapper = styled('div')(({ theme }) => (`
 `));
 
 const TermsWrapper = styled('div')(({ theme }) => (`
-  ${theme.breakpoints.down('sm')} {
-    padding-top: 30px;
-  }
+  margin-top: 30px;
+  // ${theme.breakpoints.down('sm')} {
+  //   padding-top: 30px;
+  // }
 `));
 
 const Main = styled('div', {

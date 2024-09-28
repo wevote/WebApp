@@ -84,7 +84,7 @@ const ChallengeLeaderboard = ({ classes, clearSearchFunction, searchFunction }) 
           onClick={() => console.log('Top 50 button clicked')}
           variant="outlined"
           >
-            Top 50
+            Top&nbsp;50
           </Button>
         </ButtonWrapper>
         <SearchBarWrapper>

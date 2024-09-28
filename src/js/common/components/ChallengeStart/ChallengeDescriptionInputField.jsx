@@ -102,7 +102,7 @@ class ChallengeDescriptionInputField extends Component {
                   multiline
                   rows={8}
                   variant="outlined"
-                  placeholder="Why is it important to you that more people vote?"
+                  placeholder="Challenge description"
                   value={challengeDescription}
                   onKeyDown={this.handleKeyPress}
                   onChange={this.updateChallengeDescription}

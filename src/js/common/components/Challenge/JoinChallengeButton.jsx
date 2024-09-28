@@ -134,6 +134,7 @@ class JoinChallengeButton extends React.Component {
         historyPush(joinChallengeNextStepPath);
       } else {
         ChallengeParticipantActions.challengeParticipantSave(challengeWeVoteId);
+        AppObservableStore.setShowChallengeThanksForJoining(true);
         // Delay the redirect, so we have time to fire the above API call first
         this.timer = setTimeout(() => {
           historyPush(joinChallengeNextStepPath);

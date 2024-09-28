@@ -101,7 +101,7 @@ class ChallengeTitleInputField extends Component {
                   name="challengeTitle"
                   margin="dense"
                   variant="outlined"
-                  placeholder={challengeTitlePlaceholder || 'Challenge title - the name voters will see'}
+                  placeholder={challengeTitlePlaceholder || 'Challenge name'}
                   value={challengeTitle}
                   onKeyDown={this.handleKeyPress}
                   onChange={this.updateChallengeTitle}

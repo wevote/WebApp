@@ -65,9 +65,6 @@ function ChallengeHeaderSimple(props) {
               </div>
             </CloseDrawerIconWrapper>
           </ChallengeTitleRow>
-          <HeartToggleAndThermometerWrapper>
-            &nbsp;
-          </HeartToggleAndThermometerWrapper>
         </ChallengeHeaderSimpleContentContainer>
       </ChallengeHeaderSimpleInnerContainer>
     </ChallengeHeaderSimpleOuterContainer>
@@ -156,6 +153,7 @@ const ChallengeTitleRow = styled('div')`
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-between;
+  margin-bottom: 16px;
 `;
 
 const CloseDrawerIconWrapper = styled('div')`
