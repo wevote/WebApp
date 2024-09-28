@@ -1,3 +1,5 @@
+import { Button } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
@@ -18,6 +20,7 @@ import { convertToInteger } from '../../utils/textFormat';
 import ChallengesHomeFilter from '../../components/Challenge/ChallengesHomeFilter';
 import ChallengeListRootPlaceholder from '../../components/ChallengeListRoot/ChallengeListRootPlaceholder';
 import NoSearchResult from '../../../components/Search/NoSearchResult';
+import commonMuiStyles from '../../components/Style/commonMuiStyles';
 import IssueStore from '../../../stores/IssueStore';
 import VoterStore from '../../../stores/VoterStore';
 
@@ -288,6 +291,7 @@ class ChallengesHome extends Component {
   }
 
   handleNumberOfChallengeResults = (listResults, searchResults) => {
+    // console.log('ChallengesHome handleNumberOfChallengeResults listResults:', listResults, ', searchResults:', searchResults);
     this.setState({
       numberOfChallengeResults: listResults,
       numberOfChallengeSearchResults: searchResults,
@@ -296,6 +300,7 @@ class ChallengesHome extends Component {
 
   render () {
     renderLog('ChallengesHome');  // Set LOG_RENDER_EVENTS to log all renders
+    const { classes } = this.props;
     const {
       challengeList, challengeListTimeStampOfChange,
       detailsListMode,
@@ -310,11 +315,18 @@ class ChallengesHome extends Component {
       // console.log('detailsListMode TRUE');
       return (
         <ChallengesHomeWrapper>
-          <StartAChallengeWrapper>
-            <Link className="u-link-color" to="/start-a-challenge">
-              Create Challenge
+          <StartAChallengeMobileWrapper>
+            <Link to="/start-a-challenge">
+              <Button
+                classes={{ root: classes.buttonDesktop }}
+                color="primary"
+                id="saveChallengeTitle"
+                variant="contained"
+              >
+                Create Challenge
+              </Button>
             </Link>
-          </StartAChallengeWrapper>
+          </StartAChallengeMobileWrapper>
           <ChallengesHomeFilter
             clearSearchFunction={this.clearSearchFunction}
             searchFunction={this.searchFunction}
@@ -341,21 +353,54 @@ class ChallengesHome extends Component {
     // console.log('ChallengesHome, isSearching: ', isSearching, 'numberOfRepresentativeResults:', numberOfRepresentativeResults);
     return (
       <ChallengesHomeWrapper>
-        <StartAChallengeWrapper>
-          <Link className="u-link-color" to="/start-a-challenge">
-            Create Challenge
+        <StartAChallengeMobileWrapper className="u-show-mobile">
+          <Link to="/start-a-challenge">
+            <Button
+              classes={{ root: classes.buttonDefault }}
+              color="primary"
+              id="createChalllengeMobile"
+              variant="contained"
+            >
+              Create Challenge
+            </Button>
           </Link>
-        </StartAChallengeWrapper>
-        <ChallengesHomeFilter
-          changeListModeShown={this.changeListModeShown}
-          clearSearchFunction={this.clearSearchFunction}
-          // handleChooseStateChange={this.handleChooseStateChange}
-          isSearching={isSearching}
-          listModeFiltersAvailable={listModeFiltersAvailable}
-          searchFunction={this.searchFunction}
-          searchText={searchText}
-          stateCode={stateCode}
-        />
+          <ChallengesHomeFilter
+            changeListModeShown={this.changeListModeShown}
+            clearSearchFunction={this.clearSearchFunction}
+            // handleChooseStateChange={this.handleChooseStateChange}
+            isSearching={isSearching}
+            listModeFiltersAvailable={listModeFiltersAvailable}
+            searchFunction={this.searchFunction}
+            searchText={searchText}
+            stateCode={stateCode}
+          />
+        </StartAChallengeMobileWrapper>
+        <CreateAndSearchWrapper className="u-show-desktop-tablet">
+          <StartAChallengeDesktopWrapper>
+            <Link className="u-link-color" to="/start-a-challenge">
+              <Button
+                classes={{ root: classes.buttonDesktop }}
+                color="primary"
+                id="createChalllengeDesktop"
+                variant="contained"
+              >
+                Create Challenge
+              </Button>
+            </Link>
+          </StartAChallengeDesktopWrapper>
+          <SearchDesktopWrapper>
+            <ChallengesHomeFilter
+              changeListModeShown={this.changeListModeShown}
+              clearSearchFunction={this.clearSearchFunction}
+              // handleChooseStateChange={this.handleChooseStateChange}
+              isSearching={isSearching}
+              listModeFiltersAvailable={listModeFiltersAvailable}
+              searchFunction={this.searchFunction}
+              searchText={searchText}
+              stateCode={stateCode}
+            />
+          </SearchDesktopWrapper>
+        </CreateAndSearchWrapper>
         {(isSearching && numberOfSearchResults === 0) && (
           <NoSearchResult
             title="No Democracy Challenges Found"
@@ -367,15 +412,14 @@ class ChallengesHome extends Component {
           <Suspense fallback={<span><ChallengeListRootPlaceholder titleTextForList="Democracy Challenges" /></span>}>
             <ChallengeListRoot
               hideChallengesLinkedToPoliticians
+              handleNumberOfResults={this.handleNumberOfChallengeResults}
               hideIfNoResults
-              // onHideIfNoResultsChange={this.handleHideIfNoResultsChange}
               incomingList={challengeList}
               incomingListTimeStampOfChange={challengeListTimeStampOfChange}
               listModeFilters={listModeFiltersAvailable}
               listModeFiltersTimeStampOfChange={listModeFiltersTimeStampOfChange}
               searchText={searchText}
               stateCode={stateCode}
-              // titleTextForList="Upcoming Challenges" // TODO: Needs work
               titleTextForList="Democracy Challenges"
             />
           </Suspense>
@@ -390,6 +434,7 @@ class ChallengesHome extends Component {
   }
 }
 ChallengesHome.propTypes = {
+  classes: PropTypes.object,
   match: PropTypes.object,
 };
 
@@ -397,7 +442,24 @@ const ChallengesHomeWrapper = styled('div')`
   padding-top: ${isAndroid() ? '30px' : ''};
 `;
 
-const StartAChallengeWrapper = styled('div')`
+const CreateAndSearchWrapper = styled('div')`
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 18px;
+  margin-top: 12px;
+`;
+
+const SearchDesktopWrapper = styled('div')`
+  margin-left: 15px;
+  width: 100%;
+`;
+
+const StartAChallengeDesktopWrapper = styled('div')`
+  margin-bottom: 24px;
+  margin-top: 20px;
+`;
+
+const StartAChallengeMobileWrapper = styled('div')`
   margin-bottom: 18px;
   margin-top: 12px;
 `;
@@ -416,4 +478,4 @@ const WhatIsHappeningSection = styled('div', {
 
 
 
-export default ChallengesHome;
+export default withStyles(commonMuiStyles)(ChallengesHome);

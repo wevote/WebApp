@@ -83,6 +83,18 @@ class ChallengeStartStore extends ReduceStore {
     return this.getState().challengeDescriptionQueuedToSaveSet;
   }
 
+  getChallengeInviteTextDefault () {
+    return this.getState().challengeInviteTextDefault || '';
+  }
+
+  getChallengeInviteTextDefaultQueuedToSave () {
+    return this.getState().challengeInviteTextDefaultQueuedToSave;
+  }
+
+  getChallengeInviteTextDefaultQueuedToSaveSet () {
+    return this.getState().challengeInviteTextDefaultQueuedToSaveSet;
+  }
+
   getChallengePhotoLargeUrl () {
     return this.getState().challengePhotoLargeUrl || '';
   }
@@ -172,6 +184,8 @@ class ChallengeStartStore extends ReduceStore {
           ...state,
           challengeDescriptionQueuedToSave: '',
           challengeDescriptionQueuedToSaveSet: false,
+          challengeInviteTextDefaultQueuedToSave: '',
+          challengeInviteTextDefaultQueuedToSaveSet: false,
           challengePhotoQueuedToDelete: false,
           challengePhotoQueuedToDeleteSet: false,
           challengePhotoQueuedToSave: '',
@@ -181,6 +195,22 @@ class ChallengeStartStore extends ReduceStore {
           challengeTitleQueuedToSave: '',
           challengeTitleQueuedToSaveSet: false,
         };
+
+      case 'challengeInviteTextDefaultQueuedToSave':
+        // console.log('ChallengeStartStore challengeInviteTextDefaultQueuedToSave: ', action.payload);
+        if (action.payload === undefined) {
+          return {
+            ...state,
+            challengeInviteTextDefaultQueuedToSave: '',
+            challengeInviteTextDefaultQueuedToSaveSet: false,
+          };
+        } else {
+          return {
+            ...state,
+            challengeInviteTextDefaultQueuedToSave: action.payload,
+            challengeInviteTextDefaultQueuedToSaveSet: true,
+          };
+        }
 
       case 'challengePhotoQueuedToDelete':
         console.log('ChallengeStartStore challengePhotoQueuedToDelete: ', action.payload);
@@ -258,6 +288,7 @@ class ChallengeStartStore extends ReduceStore {
         return {
           ...state,
           challengeDescription: action.res.challenge_description,
+          challengeInviteTextDefault: action.res.challenge_invite_text_default,
           challengePhotoLargeUrl: action.res.we_vote_hosted_challenge_photo_large_url,
           challengePhotoMediumUrl: action.res.we_vote_hosted_challenge_photo_medium_url,
           challengePhotoSmallUrl: action.res.we_vote_hosted_challenge_photo_small_url,
@@ -276,6 +307,7 @@ class ChallengeStartStore extends ReduceStore {
         return {
           ...state,
           challengeDescription: action.res.challenge_description,
+          challengeInviteTextDefault: action.res.challenge_invite_text_default,
           challengePhotoLargeUrl: action.res.we_vote_hosted_challenge_photo_large_url,
           challengePhotoMediumUrl: action.res.we_vote_hosted_challenge_photo_medium_url,
           challengePhotoSmallUrl: action.res.we_vote_hosted_challenge_photo_small_url,

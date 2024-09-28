@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@mui/styles';
 import styled from 'styled-components';
 import commonMuiStyles from '../Style/commonMuiStyles';
+import DesignTokenColors from '../Style/DesignTokenColors';
 
 // Import icons
 import RocketIcon from '../../../../img/global/svg-icons/issues/rocket-ship.svg';
@@ -201,7 +202,7 @@ ChallengeInviteSteps.propTypes = {
 
 const ChallengeInviteStepsContainer = styled('div')`
   align-items: center;
-  background-color: #f2f2f0;
+  background-color: ${DesignTokenColors.neutralUI50};
   display: flex;
   flex-direction: column;
   max-width: 620px;

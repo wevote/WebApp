@@ -97,6 +97,7 @@ class ChallengeDescriptionInputField extends Component {
                 <TextField
                   // classes={{ root: classes.textField }} // Not working yet
                   id={`challengeDescriptionTextArea-${externalUniqueId}`}
+                  label="Challenge description"
                   name="challengeDescription"
                   margin="dense"
                   multiline

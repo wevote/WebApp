@@ -70,8 +70,9 @@ const styles = () => ({
 });
 
 const ChallengeInviteeListRootContainer = styled.div`
-  max-width: 100vw;
-  margin: 0 auto;
+  max-width: 620px;
+  //margin: 0 auto;
+  width: 100%;
 `;
 
 const Heading = styled.div`
