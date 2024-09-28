@@ -10,11 +10,10 @@ import { OuterWrapper, PageWrapper } from '../../components/Style/stepDisplaySty
 import OpenExternalWebSite from '../../components/Widgets/OpenExternalWebSite';
 import historyPush from '../../utils/historyPush';
 import { renderLog } from '../../utils/logging';
-// import AddCandidateInputField from '../../components/ChallengeStart/AddPoliticianInputField';
 import ChallengeDescriptionInputField from '../../components/ChallengeStart/ChallengeDescriptionInputField';
+import ChallengeInviteTextDefaultInputField from '../../components/ChallengeStart/ChallengeInviteTextDefaultInputField';
 import ChallengePhotoUpload from '../../components/ChallengeStart/ChallengePhotoUpload';
 import ChallengeTitleInputField from '../../components/ChallengeStart/ChallengeTitleInputField';
-// import EditPoliticianList from '../../components/ChallengeStart/EditPoliticianList';
 import { BlockedReason } from '../../components/Style/CampaignIndicatorStyles';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import ChallengeStartStore from '../../stores/ChallengeStartStore';
@@ -177,6 +176,8 @@ class ChallengeStartEditAll extends Component {
     const { challengeWeVoteId, voterIsChallengeOwner } = this.state;
     const challengeDescriptionQueuedToSave = ChallengeStartStore.getChallengeDescriptionQueuedToSave();
     const challengeDescriptionQueuedToSaveSet = ChallengeStartStore.getChallengeDescriptionQueuedToSaveSet();
+    const challengeInviteTextDefaultQueuedToSave = ChallengeStartStore.getChallengeInviteTextDefaultQueuedToSave();
+    const challengeInviteTextDefaultQueuedToSaveSet = ChallengeStartStore.getChallengeInviteTextDefaultQueuedToSaveSet();
     const challengePhotoQueuedToDelete = ChallengeStartStore.getChallengePhotoQueuedToDelete();
     const challengePhotoQueuedToDeleteSet = ChallengeStartStore.getChallengePhotoQueuedToDeleteSet();
     const challengePhotoQueuedToSave = ChallengeStartStore.getChallengePhotoQueuedToSave();
@@ -187,13 +188,14 @@ class ChallengeStartEditAll extends Component {
     const challengeTitleQueuedToSave = ChallengeStartStore.getChallengeTitleQueuedToSave();
     const challengeTitleQueuedToSaveSet = ChallengeStartStore.getChallengeTitleQueuedToSaveSet();
     // console.log('ChallengeStartEditAll challengePoliticianStarterListQueuedToSaveSet:', challengePoliticianStarterListQueuedToSaveSet);
-    if (voterIsChallengeOwner && (challengeDescriptionQueuedToSaveSet || challengePhotoQueuedToDeleteSet || challengePhotoQueuedToSaveSet || challengePoliticianDeleteList || challengePoliticianStarterListQueuedToSaveSet || challengeTitleQueuedToSaveSet)) {
+    if (voterIsChallengeOwner && (challengeDescriptionQueuedToSaveSet || challengeInviteTextDefaultQueuedToSaveSet || challengePhotoQueuedToDeleteSet || challengePhotoQueuedToSaveSet || challengePoliticianDeleteList || challengePoliticianStarterListQueuedToSaveSet || challengeTitleQueuedToSaveSet)) {
       const challengePoliticianDeleteListJson = JSON.stringify(challengePoliticianDeleteList);
       const challengePoliticianStarterListQueuedToSaveJson = JSON.stringify(challengePoliticianStarterListQueuedToSave);
       // console.log('ChallengeStartEditAll challengePoliticianStarterListQueuedToSaveJson:', challengePoliticianStarterListQueuedToSaveJson);
       ChallengeStartActions.challengeEditAllSave(
         challengeWeVoteId,
         challengeDescriptionQueuedToSave, challengeDescriptionQueuedToSaveSet,
+        challengeInviteTextDefaultQueuedToSave, challengeInviteTextDefaultQueuedToSaveSet,
         challengePhotoQueuedToDelete, challengePhotoQueuedToDeleteSet,
         challengePhotoQueuedToSave, challengePhotoQueuedToSaveSet,
         challengePoliticianDeleteListJson,
@@ -292,7 +294,6 @@ class ChallengeStartEditAll extends Component {
                 <ChallengeStartSectionWrapper>
                   <ChallengeStartSection>
                     <ChallengeTitleInputField
-                      challengeTitlePlaceholder="Title of your challenge"
                       challengeWeVoteId={challengeWeVoteId}
                       editExistingChallenge={editExistingChallenge}
                     />
@@ -304,6 +305,10 @@ class ChallengeStartEditAll extends Component {
                       />
                     </PhotoUploadWrapper>
                     <ChallengeDescriptionInputField
+                      challengeWeVoteId={challengeWeVoteId}
+                      editExistingChallenge={editExistingChallenge}
+                    />
+                    <ChallengeInviteTextDefaultInputField
                       challengeWeVoteId={challengeWeVoteId}
                       editExistingChallenge={editExistingChallenge}
                     />

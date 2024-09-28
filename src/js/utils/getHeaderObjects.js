@@ -5,6 +5,8 @@ export default function getHeaderObjects () {
       logo: null,
       ready: null,
       ballot: null,
+      candidates: null,
+      challenges: null,
       opinions: null,
       discuss: null,
       bell: null,

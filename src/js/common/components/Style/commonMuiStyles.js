@@ -3,6 +3,7 @@ import muiTheme from './muiTheme';
 const theme = muiTheme;
 const commonMuiStyles = {
   buttonDefault: {
+    borderRadius: 25,
     boxShadow: 'none !important',
     fontSize: '18px',
     height: '45px !important',
@@ -19,6 +20,7 @@ const commonMuiStyles = {
     width: '100%',
   },
   buttonDesktop: {
+    borderRadius: 25,
     boxShadow: 'none !important',
     fontSize: '18px',
     height: '45px !important',
