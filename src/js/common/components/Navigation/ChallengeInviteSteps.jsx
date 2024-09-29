@@ -149,7 +149,6 @@ const ChallengeInviteStepsContainer = styled('div')`
   flex-direction: column;
   max-width: 620px;
   padding: 20px;
-  // width: 445px;
   width: 100%;
 `;
 
@@ -166,17 +165,6 @@ const HeaderContainer = styled('div')`
     line-height: 25px;
     margin: 0 10px;
 
-    // h2 size for medium screens (between 600px and 1024px)
-    @media (min-width: 601px) and (max-width: 1024px) {
-      font-size: 18px;
-      line-height: 22px;
-    }
-     
-    // h2 smaller on small screens
-    @media (max-width: 600px) {
-      font-size: 16px;
-      line-height: 20px;
-    }
   }
     button {
     background: none;
@@ -226,6 +214,12 @@ const StepOneIconAndText = styled('div')`
   a {
     font-weight: ${({ isActive }) => (isActive ? '600' : 'normal')};
     color: ${({ isActive }) => (isActive ? DesignTokenColors.primary600 : 'inherit')};
+
+    &:hover {
+      color: ${DesignTokenColors.primary600};
+      font-weight: 600;
+      text-decoration: underline;
+    }
   }
 
   &:hover {
@@ -235,7 +229,8 @@ const StepOneIconAndText = styled('div')`
 
 const StepTwoIconAndText = styled('div')`
   align-items: center;
-  border-bottom: 2px solid ${({ isActive }) => (isActive ? DesignTokenColors.primary600 : 'transparent')};
+  // border-bottom: 2px solid ${({ isActive }) => (isActive ? DesignTokenColors.primary600 : 'transparent')};
+  border-bottom: 2px solid transparent;
   cursor: pointer;
   display: flex;
   flex-direction: column;
@@ -249,11 +244,16 @@ const StepTwoIconAndText = styled('div')`
 
   a {
     font-weight: ${({ isActive }) => (isActive ? '600' : 'normal')};
-    color: ${({ isActive }) => (isActive ? DesignTokenColors.primary600 : 'inherit')};
+    color: ${({ isActive }) => (isActive ? DesignTokenColors.neutral900 : 'inherit')};
+
+    &:hover {
+      color: ${DesignTokenColors.neutral900};
+      font-weight: 600;
+    }
   }
 
   &:hover {
-    border-bottom: 2px solid ${DesignTokenColors.primary600};
+   // border-bottom: 2px solid ${DesignTokenColors.primary600};
   }
 `;
 
@@ -263,12 +263,6 @@ const HorizontalLine = styled('div')`
   position: absolute;
   top: 20%;
   width: 164px;
-
-  // Horizontal line smaller on small screens
-  @media (max-width: 600px) {
-    width: 120px;
-    left: calc(50% - 50px);
-  }
 `;
 
 export default withRouter(withStyles(commonMuiStyles)(ChallengeInviteSteps));
