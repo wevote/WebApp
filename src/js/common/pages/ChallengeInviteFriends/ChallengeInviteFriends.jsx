@@ -1,4 +1,5 @@
 import loadable from '@loadable/component';
+import Chip from '@mui/material/Chip';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
@@ -178,6 +179,8 @@ class ChallengeInviteFriends extends Component {
           <ContentOuterWrapperDefault>
             <ContentInnerWrapperDefault>
               <CampaignProcessStepIntroductionText>
+                <StyledChip label="TIP" />
+                &nbsp;
                 So we can correctly calculate your boost points,
                 {' '}
                 <strong>
@@ -225,6 +228,11 @@ const InvitedFriendsWrapper = styled('div')`
   background-color: ${DesignTokenColors.neutralUI50};
   display: flex;
   flex-direction: column;
+`;
+
+const StyledChip = styled(Chip)`
+  background-color: ${DesignTokenColors.confirmation700};
+  color: ${DesignTokenColors.whiteUI};
 `;
 
 export default withStyles(commonMuiStyles)(ChallengeInviteFriends);
