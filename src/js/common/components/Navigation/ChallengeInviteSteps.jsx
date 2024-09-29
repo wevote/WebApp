@@ -230,8 +230,7 @@ const StepOneIconAndText = styled('div')`
 
 const StepTwoIconAndText = styled('div')`
   align-items: center;
-  // border-bottom: 2px solid ${({ isActive }) => (isActive ? DesignTokenColors.primary600 : 'transparent')};
-  border-bottom: 2px solid transparent;
+  border-bottom: 2px solid ${({ isActive }) => (isActive ? DesignTokenColors.primary600 : 'transparent')};
   cursor: pointer;
   display: flex;
   flex-direction: column;
@@ -245,10 +244,10 @@ const StepTwoIconAndText = styled('div')`
 
   a {
     font-weight: ${({ isActive }) => (isActive ? '600' : 'normal')};
-    color: ${({ isActive }) => (isActive ? DesignTokenColors.neutral900 : 'inherit')};
+    color: ${({ isActive }) => (isActive ? DesignTokenColors.primary600 : 'inherit')};
 
     &:hover {
-      color: ${DesignTokenColors.neutral900};
+      color: ${DesignTokenColors.primary600};
       font-weight: 600;
     }
   }
