@@ -148,7 +148,7 @@ const ChallengeInviteStepsContainer = styled('div')`
   display: flex;
   flex-direction: column;
   max-width: 620px;
-  padding: 20px;
+  padding: 20px 20px 0;
   width: 100%;
 `;
 
@@ -156,6 +156,7 @@ const HeaderContainer = styled('div')`
   align-items: center;
   display: flex;
   justify-content: space-between;
+  margin-bottom: 10px;
   width: 100%;
 
   h2 {
