@@ -1,15 +1,16 @@
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import styled, { withTheme } from 'styled-components';
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
 import BlockOutlinedIcon from '@mui/icons-material/BlockOutlined';
 import ThumbDownOffAltRoundedIcon from '@mui/icons-material/ThumbDownOffAltRounded';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import Popover from '@mui/material/Popover';
 import { Typography } from '@mui/material';
+import { withStyles } from '@mui/styles';
 import HeartFavoriteToggleBase from '../Widgets/HeartFavoriteToggle/HeartFavoriteToggleBase';
 
-function PositionForBallotItem () {
+function PositionForBallotItem ({ classes }) {
   const [anchorEl, setAnchorEL] = useState(null);
 
   const voter = {
@@ -62,9 +63,9 @@ function PositionForBallotItem () {
           </VoterPositionWrapper>
           <VoterLikesSourceWrapper>
             <VoterLikes>
-              <button type="button" aria-label="Like" style={{ background: 'transparent', border: 'none' }}>
+              <VoterLikesThumbsUpContainer type="button" aria-label="Source">
                 <ThumbDownOffAltRoundedIcon style={{ fontSize: '21px', color: 'rgba(154, 154, 154, 1)', marginRight: '10px', transform: 'rotate(180deg)' }} />
-              </button>
+              </VoterLikesThumbsUpContainer>
               <h3 style={{ marginTop: '7px' }}>7</h3>
               <LikeDislikeSeperator>&nbsp;</LikeDislikeSeperator>
               <button type="button" aria-label="Dislike" style={{ background: 'transparent', border: 'none' }}>
@@ -78,19 +79,28 @@ function PositionForBallotItem () {
                 open={open}
                 anchorEl={anchorEl}
                 onClose={handlePopoverClose}
-                anchorOrigin={{
-                  vertical: 'bottom',
+                // anchorOrigin={{
+                //   vertical: 'top',
+                //   horizontal: 'left',
+                // }}
+                anchorReference="anchorPosition"
+                anchorPosition={{ top: 75, left: 370 }}
+                transformOrigin={{
+                  vertical: 'top',
                   horizontal: 'left',
                 }}
-                sx={{
-                  '& .MuiPopover-paper': {
-                    borderRadius: 2,
-                    border: '1px solid rgba(210, 210, 210, 1)',
-                    marginTop: '3px',
-                  },
-                }}
+                classes={{ root: classes.popoverRoot }}
+                // sx={{
+                //   '& .MuiPopover-paper': {
+                //     borderRadius: 2,
+                //     border: '1px solid rgba(210, 210, 210, 1)',
+                //     marginTop: '3px',
+                //   },
+                // }}
               >
-                <Typography sx={{ p: 1 }}>View source of opinion</Typography>
+                <Typography sx={{ p: 1 }}>
+                  <OpinionSource target="_blank">View source of opinion</OpinionSource>
+                </Typography>
               </Popover>
             </VoterLikes>
           </VoterLikesSourceWrapper>
@@ -100,8 +110,9 @@ function PositionForBallotItem () {
   );
 }
 
-// PositionForBallotItem.propTypes = {
-// };
+PositionForBallotItem.propTypes = {
+  classes: PropTypes.object,
+};
 
 const PositionForBallotItemWrapper = styled('div')`
   display: flex;
@@ -182,10 +193,28 @@ const VoterLikes = styled('div')`
   display: flex;
 `;
 
+const OpinionSource = styled('button')`
+  background: transparent;
+  border:none;
+`;
+
+const VoterLikesThumbsUpContainer = styled('button')`
+  background: transparent; 
+  border: none;
+`;
+
 const LikeDislikeSeperator = styled('div')`
   margin-left: 8px;
   line-height: 16px;
   border-right: 1px solid rgba(197, 197, 197, 1);
 `;
 
-export default PositionForBallotItem;
+const styles = () => ({
+  popoverRoot: {
+    borderRadius: 2,
+    border: '1px solid rgba(210, 210, 210, 1)',
+    marginTop: '3px',
+  },
+});
+
+export default withTheme(withStyles(styles)(PositionForBallotItem));
