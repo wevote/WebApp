@@ -190,6 +190,14 @@ class ChallengeStore extends ReduceStore {
     return challenge;
   }
 
+  getChallengeInviteTextDefaultByWeVoteId (challengeWeVoteId) {
+    const challenge = this.getState().allCachedChallengeDicts[challengeWeVoteId];
+    if (challenge === undefined || challenge.challenge_invite_text_default === undefined) {
+      return '';
+    }
+    return challenge.challenge_invite_text_default;
+  }
+
   getChallengeNewsItemByWeVoteId (challengeNewsItemWeVoteId) {
     return this.getState().allCachedChallengeNewsItems[challengeNewsItemWeVoteId] || {};
   }
@@ -392,6 +400,7 @@ class ChallengeStore extends ReduceStore {
     let challengeList;
     let challengeNewsItem;
     let challengeNewsItemWeVoteIds;
+    let tempChallengeWeVoteId;
     let recommendedChallengesChallengeWeVoteId;
     let revisedState;
     let voterSpecificData;
@@ -552,6 +561,19 @@ class ChallengeStore extends ReduceStore {
           allCachedChallengeNewsItems,
           allCachedNewsItemWeVoteIdsByChallenge,
         };
+
+      case 'challengeParticipantRetrieve':
+      case 'challengeParticipantSave':
+        if (!action.res || !action.res.success) return state;
+        revisedState = state;
+        tempChallengeWeVoteId = action.res.challenge_we_vote_id;
+        if (action.res.voter_we_vote_id === VoterStore.getVoterWeVoteId()) {
+          if (!(tempChallengeWeVoteId in challengeWeVoteIdsWhereVoterIsParticipant)) {
+            challengeWeVoteIdsWhereVoterIsParticipant.push(tempChallengeWeVoteId);
+          }
+          revisedState = { ...revisedState, challengeWeVoteIdsWhereVoterIsParticipant };
+        }
+        return revisedState;
 
       case 'challengeRetrieve':
       case 'challengeRetrieveAsOwner':

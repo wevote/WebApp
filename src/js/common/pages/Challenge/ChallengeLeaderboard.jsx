@@ -8,61 +8,6 @@ import DesignTokenColors from '../../components/Style/DesignTokenColors';
 import ChallengeParticipantList from '../../components/ChallengeParticipantListRoot/ChallengeParticipantList';
 
 
-const LeaderboardContainer = styled.div`
-  max-width: 100vw;
-  margin: 0 auto;
-`;
-
-const TopSection = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0px 16px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  z-index: 1;
-  position: sticky;
-  top: 0;
-`;
-
-const ButtonAndSearchWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  align-items: center;
-  margin-bottom: 8px;
-  margin-top: 8px;
-`;
-
-const LeaderboardInfoWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  margin-top: 8px;
-  margin-bottom: 8px;
-`;
-
-const SearchBarWrapper = styled('div')`
-  // margin-top: 14px;
-  // margin-bottom: 8px;
-`;
-
-const ButtonWrapper = styled.div`
-  display: flex;
-  gap: 8px;
-`;
-
-const LeaderboardTableHeader = styled('div')`
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  font-weight: bold;
-  font-size: 12px;
-  color: #333;
-`;
-
-
 const ChallengeLeaderboard = ({ classes, clearSearchFunction, searchFunction }) => (
   <LeaderboardContainer>
     <TopSection>
@@ -138,5 +83,60 @@ const styles = () => ({
     borderRadius: 50,
   },
 });
+
+const LeaderboardContainer = styled.div`
+  max-width: 100vw;
+  margin: 0 auto;
+`;
+
+const TopSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px 16px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  z-index: 1;
+  position: sticky;
+  top: 0;
+`;
+
+const ButtonAndSearchWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+  margin-bottom: 8px;
+  margin-top: 8px;
+`;
+
+const LeaderboardInfoWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-top: 8px;
+  margin-bottom: 8px;
+`;
+
+const SearchBarWrapper = styled('div')`
+  // margin-top: 14px;
+  // margin-bottom: 8px;
+  width: 100%;
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  gap: 8px;
+`;
+
+const LeaderboardTableHeader = styled('div')`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  font-weight: bold;
+  font-size: 12px;
+  color: #333;
+`;
 
 export default withStyles(styles)(ChallengeLeaderboard);

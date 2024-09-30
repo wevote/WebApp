@@ -2,11 +2,15 @@ import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
+import { Link } from 'react-router-dom';
 import { ChallengesNotAvailableToShow, ListWrapper, LoadMoreItemsManuallyWrapper } from '../Style/ChallengeCardStyles';
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import { renderLog } from '../../utils/logging';
 import ChallengeCardForList from './ChallengeCardForList';
 import LoadMoreItemsManually from '../Widgets/LoadMoreItemsManually';
+import ChallengeAbout from '../Challenge/ChallengeAbout';
+import { isWebApp } from '../../utils/isCordovaOrWebApp';
+import ChallengeStore from '../../stores/ChallengeStore';
 
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../Widgets/DelayedLoad'));
 
@@ -116,11 +120,44 @@ class ChallengeCardList extends Component {
     }
   }
 
+  onChallengeClickLink (challengeWeVoteId) {
+    const challenge = ChallengeStore.getChallengeByWeVoteId(challengeWeVoteId);
+    if (!challenge) {
+      return null;
+    }
+    const {
+      in_draft_mode: inDraftMode,
+    } = challenge;
+    if (inDraftMode) {
+      return '/start-a-challenge-preview';
+    } else {
+      return `${this.getChallengeBasePath(challengeWeVoteId)}`;
+    }
+  }
+
+  getChallengeBasePath (challengeWeVoteId) {
+    const challenge = ChallengeStore.getChallengeByWeVoteId(challengeWeVoteId);
+    // console.log('challenge:', challenge);
+    if (!challenge) {
+      return null;
+    }
+    const {
+      seo_friendly_path: challengeSEOFriendlyPath,
+    } = challenge;
+    let challengeBasePath;
+    if (challengeSEOFriendlyPath) {
+      challengeBasePath = `/${challengeSEOFriendlyPath}/+/`;
+    } else {
+      challengeBasePath = `/+/${challengeWeVoteId}/`;
+    }
+    return challengeBasePath;
+  }
+
   render () {
     renderLog('ChallengeCardList');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('ChallengeCardList render');
-    const { searchText, useVerticalCard } = this.props;
-    const { challengeList, numberToDisplay, showAllEndorsements, showThisYear, showUpcomingEndorsements } = this.state;
+    const { useVerticalCard } = this.props;
+    const { challengeList, numberToDisplay } = this.state;
 
     if (!challengeList) {
       return null;
@@ -135,13 +172,19 @@ class ChallengeCardList extends Component {
             }
             numberDisplayed += 1;
             return (
-              <div key={`oneChallengeItem-${oneChallenge.challenge_we_vote_id}`}>
+              <ChallengeCardForListVerticalWrapper key={`oneChallengeItem-${oneChallenge.challenge_we_vote_id}`}>
                 <ChallengeCardForList
                   challengeWeVoteId={oneChallenge.challenge_we_vote_id}
                   limitCardWidth={useVerticalCard}
                   useVerticalCard={useVerticalCard}
                 />
-              </div>
+                <Link
+                  id="challengeCardAbout"
+                  to={this.onChallengeClickLink(oneChallenge.challenge_we_vote_id)}
+                >
+                  <ChallengeAbout />
+                </Link>
+              </ChallengeCardForListVerticalWrapper>
             );
           })}
           {/*
@@ -229,6 +272,14 @@ const styles = () => ({
     padding: 8,
   },
 });
+
+const ChallengeCardForListVerticalWrapper = styled('div')`
+  display: flex;
+  flex-direction: column;
+  // height: ${isWebApp() ?  '100%' : 'unset'};
+  width: 80%;
+  max-width: 300px;
+`;
 
 const Wrapper = styled('div')`
   min-height: 30px;

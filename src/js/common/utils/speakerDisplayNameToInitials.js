@@ -1,14 +1,27 @@
 import speakerDisplayNameToAvatarColor from './speakerDisplayNameToAvatarColor';
 
 function speakerDisplayNameToInitials (speakerDisplayName) {
-  const nameParts = speakerDisplayName.split(' ');
-  const initials =
-    nameParts.length > 1 ?
-      `${nameParts[0][0]}${nameParts[1][0]}` :
-      `${nameParts[0][0]}`;
+  let initials;
+  let speakerDisplayNameModified = speakerDisplayName;
+  if (speakerDisplayName instanceof String) {
+    const nameParts = speakerDisplayName.split(' ');
+    if (nameParts && nameParts instanceof Array) {
+      initials =
+        nameParts.length > 1 ?
+          `${nameParts[0][0]}${nameParts[1][0]}` :
+          `${nameParts[0][0]}`;
+    } else {
+      // eslint-disable-next-line prefer-destructuring
+      initials = Array.from(speakerDisplayName)[0];
+      speakerDisplayNameModified = speakerDisplayName;
+    }
+  } else {
+    initials = 'AB';
+    speakerDisplayNameModified = 'AB';
+  }
   return {
     sx: {
-      bgcolor: speakerDisplayNameToAvatarColor(speakerDisplayName),
+      bgcolor: speakerDisplayNameToAvatarColor(speakerDisplayNameModified),
     },
     children: initials,
   };

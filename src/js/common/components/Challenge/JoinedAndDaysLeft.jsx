@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import JoinedGreenCircle from '../../../../img/global/svg-icons/issues/joined-green-circle.svg';
 import InfoOutlineIcon from '../../../../img/global/svg-icons/issues/material-symbols-info-outline.svg';
 import ChallengeStore from '../../stores/ChallengeStore';
 import daysUntil from '../../utils/daysUntil';
+
+const ChallengeParticipantFirstRetrieveController = React.lazy(() => import(/* webpackChunkName: 'ChallengeParticipantFirstRetrieveController' */ '../ChallengeParticipant/ChallengeParticipantFirstRetrieveController'));
 
 function JoinedAndDaysLeft ({ challengeWeVoteId }) {
   // eslint-disable-next-line no-unused-vars
@@ -28,11 +30,11 @@ function JoinedAndDaysLeft ({ challengeWeVoteId }) {
 
   React.useEffect(() => {
     // console.log('Fetching participants for:', challengeWeVoteId);
-    const storeListener = ChallengeStore.addListener(onChallengeStoreChange);
+    const challengeStoreListener = ChallengeStore.addListener(onChallengeStoreChange);
     onChallengeStoreChange();
 
     return () => {
-      storeListener.remove();
+      challengeStoreListener.remove();
     };
   }, [challengeWeVoteId]);
   return (
@@ -54,6 +56,9 @@ function JoinedAndDaysLeft ({ challengeWeVoteId }) {
           Days Left
         </DaysLeftText>
       </JoinedInfoWrapper>
+      <Suspense fallback={<span>&nbsp;</span>}>
+        <ChallengeParticipantFirstRetrieveController challengeWeVoteId={challengeWeVoteId} />
+      </Suspense>
     </InfoWrapper>
   );
 }

@@ -21,6 +21,9 @@ class FirstChallengeParticipantListController extends Component {
   }
 
   componentDidUpdate (prevProps) {
+    if (this.props.challengeWeVoteId !== prevProps.challengeWeVoteId) {
+      this.challengeParticipantListFirstRetrieve();
+    }
     if (this.props.searchText !== prevProps.searchText) {
       if (this.searchTimer) clearTimeout(this.searchTimer);
       this.searchTimer = setTimeout(() => {
@@ -42,9 +45,9 @@ class FirstChallengeParticipantListController extends Component {
     const { challengeWeVoteId } = this.props;
     initializejQuery(() => {
       const voterFirstRetrieveCompleted = VoterStore.voterFirstRetrieveCompleted();
-      // console.log('FirstChallengeParticipantListController challengeParticipantListFirstRetrieveInitiated: ', challengeParticipantListFirstRetrieveInitiated, ', voterFirstRetrieveCompleted: ', voterFirstRetrieveCompleted);
-      if (voterFirstRetrieveCompleted) {
-        if (apiCalming(`challengeParticipantListFirstRetrieve-${challengeWeVoteId}`, 60000)) {
+      // console.log('FirstChallengeParticipantListController challengeParticipantListFirstRetrieveInitiated, voterFirstRetrieveCompleted: ', voterFirstRetrieveCompleted, ', challengeWeVoteId: ', challengeWeVoteId);
+      if (voterFirstRetrieveCompleted && challengeWeVoteId) {
+        if (apiCalming(`challengeParticipantListFirstRetrieve-${challengeWeVoteId}`, 30000)) {
           ChallengeParticipantActions.challengeParticipantListRetrieve(challengeWeVoteId);
         }
       }
@@ -55,8 +58,10 @@ class FirstChallengeParticipantListController extends Component {
     const { challengeWeVoteId, searchText } = this.props;
     initializejQuery(() => {
       // console.log(`challengeParticipantListRetrieve-${searchText}`);
-      if (apiCalming(`challengeParticipantListRetrieve-${challengeWeVoteId}-${searchText}`, 180000)) {
-        ChallengeParticipantActions.challengeParticipantListRetrieve(challengeWeVoteId, searchText);
+      if (challengeWeVoteId) {
+        if (apiCalming(`challengeParticipantListRetrieve-${challengeWeVoteId}-${searchText}`, 180000)) {
+          ChallengeParticipantActions.challengeParticipantListRetrieve(challengeWeVoteId, searchText);
+        }
       }
     });
   }

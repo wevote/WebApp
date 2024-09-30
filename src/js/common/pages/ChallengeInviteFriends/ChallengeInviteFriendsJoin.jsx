@@ -113,12 +113,9 @@ class ChallengeInviteFriendsJoin extends Component {
 
   onAppObservableStoreChange () {
     const chosenWebsiteName = AppObservableStore.getChosenWebsiteName();
-    const inPrivateLabelMode = AppObservableStore.inPrivateLabelMode();
     // For now, we assume that paid sites with chosenSiteLogoUrl will turn off "Chip in"
-    const payToPromoteStepTurnedOn = !inPrivateLabelMode && webAppConfig.ENABLE_PAY_TO_PROMOTE;
     this.setState({
       chosenWebsiteName,
-      payToPromoteStepTurnedOn,
     });
   }
 
@@ -225,7 +222,7 @@ class ChallengeInviteFriendsJoin extends Component {
       //   // console.log('ChallengeInviteFriendsJoin, participantEndorsementQueuedToSave:', participantEndorsementQueuedToSave);
       //   const saveVisibleToPublic = true;
       //   initializejQuery(() => {
-      //     ChallengeParticipantActions.participantEndorsementSave(challengeWeVoteId, participantEndorsementQueuedToSave, visibleToPublic, saveVisibleToPublic); // challengeParticipantSave
+      //     ChallengeParticipantActions.challengeParticipantSave(challengeWeVoteId, participantEndorsementQueuedToSave, visibleToPublic, saveVisibleToPublic);
       //     ChallengeParticipantActions.participantEndorsementQueuedToSave(undefined);
       //   });
       // }
@@ -238,9 +235,6 @@ class ChallengeInviteFriendsJoin extends Component {
           VoterActions.voterPhotoQueuedToSave(undefined);
         });
       }
-      // Has all the necessary data been saved?
-
-      // TODO Save "Join Challenge" here
       ChallengeParticipantActions.challengeParticipantSave(challengeWeVoteId);
 
       // If all the necessary data has been saved, proceed to the next step

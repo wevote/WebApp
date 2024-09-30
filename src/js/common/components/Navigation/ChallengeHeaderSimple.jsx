@@ -90,15 +90,11 @@ const styles = () => ({
   },
 });
 
-const HeartToggleAndThermometerWrapper = styled('div')`
-  margin-top: 12px;
-`;
-
 const ChallengeHeaderSimpleContentContainer = styled('div')(({ theme }) => (`
   padding: 15px 15px 0 15px;
   margin: ${() => cordovaBallotFilterTopMargin()} auto 0 auto;
   position: relative;
-  max-width: 960px;
+  max-width: 650px;
   width: 100%;
   z-index: 0;
   ${theme.breakpoints.down('sm')} {
