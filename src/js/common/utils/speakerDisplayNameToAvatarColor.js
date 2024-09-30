@@ -1,7 +1,7 @@
 import DesignTokenColors from '../components/Style/DesignTokenColors';
 
 function speakerDisplayNameToAvatarColor (speakerDisplayName) {
-  if (speakerDisplayName instanceof String) {
+  if (speakerDisplayName && speakerDisplayName.length > 0) {
     let hashForRandomIndexValue = 0;
     /* eslint-disable no-bitwise */
     for (let i = 0; i < speakerDisplayName.length; i += 1) {
