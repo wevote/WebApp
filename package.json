@@ -14,7 +14,8 @@
   "scripts": {
     "wdio:setup": "node tests/browserstack_automation/buildMobileCapabilities.js",
     "wdio": "wdio ./tests/browserstack_automation/config/wdio.config.js",
-    "wdio-local": "wdio ./tests/browserstack_automation/config/wdio.config.local.js",
+    "wdio-local-bs": "wdio ./tests/browserstack_automation/config/wdio.config.local.js",
+    "wdio-local": "wdio ./tests/browserstack_automation/config/wdio.local.config.js",
     "build": "node node/buildDateFile.js && npm run build-storybook && PRODUCTION=1 && MINIMIZED=1 webpack --mode production",
     "buildCordova": "node node/buildDateFile.js && node node/buildSrcCordova && CORDOVA=1 && webpack --mode development && node node/logCompileDate.js",
     "buildCordovaAndLinks": "node node/buildDateFile.js && node node/buildSrcCordova && CORDOVA=1 && webpack --mode development && node node/buildSymLinksRemote.js && bash ./node/unSymLinkIOS.sh && node node/logCompileDate.js",
