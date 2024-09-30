@@ -14,7 +14,7 @@ function ChallengesHomeFilter (props) {
         <SearchBar2024
           clearButton
           searchButton
-          placeholder="Search by name or state"
+          placeholder="Search challenges by name or state"
           searchFunction={props.searchFunction}
           clearFunction={props.clearSearchFunction}
           searchUpdateDelayTime={500}

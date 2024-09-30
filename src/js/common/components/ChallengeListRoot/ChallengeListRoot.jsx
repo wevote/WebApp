@@ -242,7 +242,18 @@ class ChallengeListRoot extends Component {
       challengeSearchResults,
       filteredList,
       timeStampOfChange: Date.now(),
-    });
+    }, () => { this.handleNumberOfResults(filteredList.length, challengeSearchResults.length); });
+  }
+
+  handleNumberOfResults (numberOfFilteredResults, numberOfSearchResults) {
+    // console.log('RepresentativeListRoot handleNumberOfResults numberOfFilteredResults:', numberOfFilteredResults, ', numberOfSearchResults:', numberOfSearchResults);
+    if (this.props.handleNumberOfResults) {
+      // Delay telling the parent component that the number of results has changed
+      // if (this.timer) clearTimeout(this.timer);
+      // this.timer = setTimeout(() => {
+      this.props.handleNumberOfResults(numberOfFilteredResults, numberOfSearchResults);
+      // }, 500);
+    }
   }
 
   leftAndRightArrowSetState = (el) => {

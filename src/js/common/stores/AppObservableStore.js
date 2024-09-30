@@ -498,6 +498,11 @@ export default {
     messageService.sendMessage('state updated showAskFriendsModal');
   },
 
+  setShowChallengeThanksForJoining (show) {
+    nonFluxState.showChallengeThanksForJoining = show;
+    messageService.sendMessage('state updated showChallengeThanksForJoining');
+  },
+
   setShowChooseOrOpposeIntroModal (show, ballotItemType = 'CANDIDATE') {
     nonFluxState.showChooseOrOpposeIntroModal = show;
     nonFluxState.showChooseOrOpposeIntroModalBallotItemType = ballotItemType;
@@ -659,6 +664,10 @@ export default {
 
   showAskFriendsModal () {
     return nonFluxState.showAskFriendsModal;
+  },
+
+  showChallengeThanksForJoining () {
+    return nonFluxState.showChallengeThanksForJoining;
   },
 
   showChooseOrOpposeIntroModal () {

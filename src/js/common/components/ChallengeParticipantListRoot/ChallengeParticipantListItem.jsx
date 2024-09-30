@@ -6,15 +6,19 @@ import DesignTokenColors from '../Style/DesignTokenColors';
 import speakerDisplayNameToInitials from '../../utils/speakerDisplayNameToInitials';
 
 const ChallengeParticipantListItem = ({ participant, isCurrentUser }) => {
-  const { sx, children } = speakerDisplayNameToInitials(participant.participant_name);
+  let avatarJsx;
+  if (participant && participant.we_vote_hosted_profile_image_url_medium) {
+    avatarJsx = <Avatar src={participant.we_vote_hosted_profile_image_url_medium} alt={participant.participant_name} />;
+  } else {
+    const { sx, children } = speakerDisplayNameToInitials(participant.participant_name);
+    avatarJsx = <Avatar sx={sx}>{children}</Avatar>;
+  }
   return (
     <ParticipantItem isCurrentUser={isCurrentUser}>
       <ParticipantRow>
         <Rank>{`#${participant.rank}`}</Rank>
         <Name>
-          <Avatar sx={sx}>
-            {children}
-          </Avatar>
+          {avatarJsx}
           {participant.participant_name}
         </Name>
         <Points>{participant.points}</Points>

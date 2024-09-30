@@ -3,6 +3,8 @@ import { isCordova } from '../../utils/isCordovaOrWebApp';
 
 
 export const ContentInnerWrapperDefault = styled('div')`
+  max-width: 620px;
+  width: 100%;
 `;
 
 export const ContentOuterWrapperDefault = styled('div')`

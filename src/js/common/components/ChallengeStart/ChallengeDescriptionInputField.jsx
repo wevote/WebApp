@@ -97,12 +97,13 @@ class ChallengeDescriptionInputField extends Component {
                 <TextField
                   // classes={{ root: classes.textField }} // Not working yet
                   id={`challengeDescriptionTextArea-${externalUniqueId}`}
+                  label="Challenge description"
                   name="challengeDescription"
                   margin="dense"
                   multiline
                   rows={8}
                   variant="outlined"
-                  placeholder="Why is it important to you that more people vote?"
+                  placeholder="Challenge description"
                   value={challengeDescription}
                   onKeyDown={this.handleKeyPress}
                   onChange={this.updateChallengeDescription}

@@ -230,7 +230,7 @@ class PoliticianCardForList extends Component {
       </span>
     );
     return (
-      <Suspense fallback={fallbackJsx}>
+      // <Suspense fallback={fallbackJsx}>
         <CardForListBody
           ballotItemDisplayName={ballotItemDisplayName || ''}
           campaignSupported={campaignSupported}
@@ -259,7 +259,7 @@ class PoliticianCardForList extends Component {
           usePoliticianWeVoteIdForBallotItem
           useVerticalCard={useVerticalCard}
         />
-      </Suspense>
+      // </Suspense>
     );
   }
 }
