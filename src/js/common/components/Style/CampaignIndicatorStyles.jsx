@@ -87,5 +87,4 @@ export const IndicatorRow = styled('div')`
   display: flex;
   flex-wrap: wrap;
   justify-content: start;
-  margin-top: 12px;
 `;

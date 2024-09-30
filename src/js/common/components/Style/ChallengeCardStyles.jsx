@@ -1,10 +1,10 @@
 import styled, { css } from 'styled-components';
 import DesignTokenColors from './DesignTokenColors';
 
-export const CandidateCardForListWrapper = styled('div', {
+export const ChallengeCardForListWrapper = styled('div', {
   shouldForwardProp: (prop) => !['limitCardWidth'].includes(prop),
 })(({ limitCardWidth }) => (`
-  ${limitCardWidth ? 'width: 315px;' : ''}
+  ${limitCardWidth ? 'width: 290px;' : ''}
   white-space: normal;
 `));
 
@@ -115,7 +115,7 @@ export const OneChallengeOuterWrapper = styled('div', {
   shouldForwardProp: (prop) => !['limitCardWidth'].includes(prop),
 })(({ limitCardWidth }) => (`
   ${limitCardWidth ? 'margin-right: 15px;' : ''} // margin-bottom: 15px;
-  ${limitCardWidth ? 'height: 400px;' : ''}
+  // ${limitCardWidth ? 'height: 400px;' : ''}
 `));
 
 export const OneChallengePhotoDesktopColumn = styled('div', {
@@ -151,11 +151,12 @@ export const OneChallengePhotoWrapperMobile = styled('div')(({ theme }) => (`
 export const OneChallengeTextColumn = styled('div', {
   shouldForwardProp: (prop) => !['hideCardMargins'].includes(prop),
 })(({ hideCardMargins }) => (`
-  ${hideCardMargins ? 'padding: 0 0 10px 0;' : 'padding: 0 10px;'}
+  ${hideCardMargins ? 'padding: 0;' : 'padding: 0 10px;'}
 `));
 
 export const OneChallengeTitleLink = styled('h1')(({ theme }) => (`
   font-size: 22px;
+  font-weight: 400;
   margin: 0;
   margin-bottom: 4px;
   ${theme.breakpoints.down('sm')} {

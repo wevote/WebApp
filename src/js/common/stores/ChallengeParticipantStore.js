@@ -70,6 +70,17 @@ class ChallengeParticipantStore extends ReduceStore {
     return this.getState().participantEndorsementQueuedToSaveSet;
   }
 
+  getInviteTextForFriends (challengeWeVoteId) {
+    if (challengeWeVoteId) {
+      const challengeParticipantVoterEntry = this.getChallengeParticipantVoterEntry(challengeWeVoteId);
+      // console.log('ChallengeParticipantStore, challengeParticipantVoterEntry:', challengeParticipantVoterEntry);
+      if ('invite_text_for_friends' in challengeParticipantVoterEntry) {
+        return challengeParticipantVoterEntry.invite_text_for_friends;
+      }
+    }
+    return '';
+  }
+
   getVisibleToPublic (challengeWeVoteId) {
     if (challengeWeVoteId) {
       const challengeParticipantVoterEntry = this.getChallengeParticipantVoterEntry(challengeWeVoteId);
@@ -128,6 +139,8 @@ class ChallengeParticipantStore extends ReduceStore {
     let challengeList;
     let challengeParticipant;
     let challengeParticipantList;
+    const challengeParticipantListModified = [];
+    const voterWeVoteIdList = [];
 
     let revisedState;
     switch (action.type) {
@@ -171,6 +184,14 @@ class ChallengeParticipantStore extends ReduceStore {
         if (!action.res || !action.res.success) return state;
         revisedState = state;
         challengeParticipantList = action.res.challenge_participant_list || [];
+        // A little filtering to keep data clean and avoid duplicates
+        challengeParticipantList.forEach((oneParticipant) => {
+          if (!(oneParticipant.voter_we_vote_id in voterWeVoteIdList) && oneParticipant.challenge_we_vote_id === action.res.challenge_we_vote_id) {
+            challengeParticipantListModified.push(oneParticipant);
+          }
+          voterWeVoteIdList.push(oneParticipant.voter_we_vote_id);
+        });
+        challengeParticipantList = challengeParticipantListModified;
         // console.log('challengeParticipantListRetrieve challenge_participant_list:', challengeParticipantList);
         allChallengeParticipantLists[action.res.challenge_we_vote_id] = challengeParticipantList;
         challengeParticipantList.forEach((oneParticipant) => {
@@ -214,6 +235,7 @@ class ChallengeParticipantStore extends ReduceStore {
         revisedState = { ...revisedState, latestChallengeParticipants };
         return revisedState;
 
+      case 'challengeParticipantRetrieve':
       case 'challengeParticipantSave':
         // console.log('ChallengeParticipantStore challengeParticipantSave');
         if (action.res.challenge_we_vote_id && action.res.success) {

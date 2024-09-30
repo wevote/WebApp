@@ -9,13 +9,20 @@ import { renderLog } from '../../utils/logging';
 // import numberWithCommas from '../../utils/numberWithCommas';
 // import ChallengeOwnersList from '../ChallengeInviteeListRoot/ChallengeOwnersList';
 import {
-  ChallengeImageDesktop, ChallengeImageDesktopPlaceholder,
-  ChallengeImageMobile, ChallengeImageMobilePlaceholder,
+  ChallengeImageDesktop,
+  ChallengeImageDesktopPlaceholder,
+  ChallengeImageMobile,
+  ChallengeImageMobilePlaceholder,
   ChallengeImagePlaceholderText,
   CandidateCardForListWrapper,
-  OneChallengeInnerWrapper, OneChallengeOuterWrapper,
-  OneChallengePhotoDesktopColumn, OneChallengePhotoWrapperMobile,
-  OneChallengeTextColumn, OneChallengeTitleLink, TitleAndTextWrapper,
+  OneChallengeInnerWrapper,
+  OneChallengeOuterWrapper,
+  OneChallengePhotoDesktopColumn,
+  OneChallengePhotoWrapperMobile,
+  OneChallengeTextColumn,
+  OneChallengeTitleLink,
+  TitleAndTextWrapper,
+  ChallengeCardForListWrapper,
 } from '../Style/ChallengeCardStyles';
 import { DraftModeIndicator, IndicatorDefaultButtonWrapper, IndicatorRow } from '../Style/CampaignIndicatorStyles';
 import DesignTokenColors from '../Style/DesignTokenColors';
@@ -36,7 +43,7 @@ function ChallengeCardForListBody (props) {
 
   // /////////////////////// START OF DISPLAY
   return (
-    <CandidateCardForListWrapper limitCardWidth={limitCardWidth}>
+    <ChallengeCardForListWrapper limitCardWidth={limitCardWidth}>
       <OneChallengeOuterWrapper limitCardWidth={limitCardWidth}>
         <OneChallengeInnerWrapper
           hideCardMargins={hideCardMargins}
@@ -285,7 +292,7 @@ function ChallengeCardForListBody (props) {
           </OneChallengePhotoDesktopColumn>
         </OneChallengeInnerWrapper>
       </OneChallengeOuterWrapper>
-    </CandidateCardForListWrapper>
+    </ChallengeCardForListWrapper>
   );
 }
 ChallengeCardForListBody.propTypes = {

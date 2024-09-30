@@ -565,7 +565,6 @@ class ChallengeHomePage extends Component {
                       </CandidateNameAndPartyWrapper>
                     </Candidate>
                   </CandidateTopRow>
-                  <ChallengeAbout />
                 </MobileHeaderContentContainer>
               </MobileHeaderInnerContainer>
             </MobileHeaderOuterContainer>
@@ -599,6 +598,7 @@ class ChallengeHomePage extends Component {
                           {challengeDescriptionJsx}
                         </DelayedLoad>
                       )}
+                      <ChallengeAbout />
                       {!!(voterCanEditThisChallenge || voterIsChallengeParticipant) && (
                         <IndicatorRow>
                           {voterCanEditThisChallenge && (
@@ -608,6 +608,7 @@ class ChallengeHomePage extends Component {
                               </EditIndicator>
                             </IndicatorButtonWrapper>
                           )}
+                          {/*
                           {voterIsChallengeParticipant && (
                             <IndicatorButtonWrapper>
                               <EditIndicator onClick={this.onChallengeCampaignShareClick}>
@@ -615,6 +616,7 @@ class ChallengeHomePage extends Component {
                               </EditIndicator>
                             </IndicatorButtonWrapper>
                           )}
+                          */}
                         </IndicatorRow>
                       )}
                     </CampaignDescriptionWrapper>
@@ -641,14 +643,14 @@ class ChallengeHomePage extends Component {
                   </DelayedLoad>
                 )}
                 <ChallengeAbout />
-                <ViewBallotButtonWrapper>
+                <JoinChallengeButtonWrapper>
                   <Suspense fallback={<></>}>
                     <JoinChallengeButton
                       challengeSEOFriendlyPath={challengeSEOFriendlyPathForDisplay}
                       challengeWeVoteId={challengeWeVoteIdForDisplay}
                     />
                   </Suspense>
-                </ViewBallotButtonWrapper>
+                </JoinChallengeButtonWrapper>
                 <CampaignDescriptionDesktopWrapper>
                   {challengeDataFound && (
                     <DelayedLoad waitBeforeShow={250}>
@@ -879,12 +881,12 @@ const NoInformationProvided = styled('div')`
   font-size: 12px;
 `;
 
-const ViewBallotButtonWrapper = styled('div')`
+const JoinChallengeButtonWrapper = styled('div')`
   display: flex;
   height: 50px;
   justify-content: center;
-  margin-top: 0;
-  margin-bottom: 80px;
+  margin-top: 30px;
+  margin-bottom: 20px;
 `;
 
 export default withStyles(styles)(ChallengeHomePage);
