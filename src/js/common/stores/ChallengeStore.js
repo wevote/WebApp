@@ -192,6 +192,7 @@ class ChallengeStore extends ReduceStore {
 
   getChallengeInviteTextDefaultByWeVoteId (challengeWeVoteId) {
     const challenge = this.getState().allCachedChallengeDicts[challengeWeVoteId];
+    // console.log('ChallengeStore getChallengeInviteTextDefaultByWeVoteId challengeWeVoteId:', challengeWeVoteId, ', challenge:', challenge);
     if (challenge === undefined || challenge.challenge_invite_text_default === undefined) {
       return '';
     }
@@ -247,6 +248,14 @@ class ChallengeStore extends ReduceStore {
     return SUPPORTERS_COUNT_NEXT_GOAL_DEFAULT;
   }
 
+  getChallengeTitleByWeVoteId (challengeWeVoteId) {
+    const challenge = this.getState().allCachedChallengeDicts[challengeWeVoteId];
+    if (challenge === undefined || challenge.challenge_title === undefined) {
+      return '';
+    }
+    return challenge.challenge_title;
+  }
+
   getRecommendedChallengeList (challengeWeVoteId) {
     const recommendedChallengeWeVoteIdList = this.getState().allCachedRecommendedChallengeWeVoteIdLists[challengeWeVoteId] || [];
     return this.getChallengeListFromListOfWeVoteIds(recommendedChallengeWeVoteIdList);
@@ -292,6 +301,16 @@ class ChallengeStore extends ReduceStore {
 
   getPromotedChallengeDicts () {
     return this.getChallengeListFromListOfWeVoteIds(this.getState().promotedChallengeWeVoteIds);
+  }
+
+  getSiteUrl (challengeWeVoteId) {
+    const challenge = this.getChallengeByWeVoteId(challengeWeVoteId);
+    // console.log('this.getState().voterOwnedChallengeWeVoteIds:', this.getState().voterOwnedChallengeWeVoteIds);
+    if (challenge && challenge.site_url) {
+      return challenge.site_url;
+    } else {
+      return 'https://wevote.us';
+    }
   }
 
   getVoterCanEditThisChallenge (challengeWeVoteId) {

@@ -12,6 +12,7 @@ class ChallengeInviteeStore extends ReduceStore {
       shareButtonClicked: false,
       inviteeEndorsementQueuedToSave: '',
       inviteeEndorsementQueuedToSaveSet: false,
+      nextInviteeUrlCode: '',
       visibleToPublic: true, // Default setting
       visibleToPublicQueuedToSave: true, // Default setting
       visibleToPublicQueuedToSaveSet: false,
@@ -56,6 +57,19 @@ class ChallengeInviteeStore extends ReduceStore {
 
   getChallengeInviteeVoterEntry (challengeWeVoteId) {
     return this.getState().allCachedChallengeInviteeVoterEntries[challengeWeVoteId] || {};
+  }
+
+  getInviteTextFromInviter (challengeInviteeId) {
+    const challengeInvitee = this.getChallengeInviteeById(challengeInviteeId);
+    if ('invite_text_from_inviter' in challengeInvitee) {
+      return challengeInvitee.invite_text_from_inviter;
+    } else {
+      return '';
+    }
+  }
+
+  getNextInviteeUrlCode () {
+    return this.getState().nextInviteeUrlCode || '--';
   }
 
   getShareButtonClicked () {
@@ -117,17 +131,34 @@ class ChallengeInviteeStore extends ReduceStore {
     return challengeInviteeGenericList;
   }
 
+  mostRecentDateFromChallengeInvitee (challengeInvitee) {
+    let mostRecentDate = challengeInvitee.date_invite_sent;
+    if (challengeInvitee.date_invite_viewed > mostRecentDate) {
+      mostRecentDate = challengeInvitee.date_invite_viewed;
+    }
+    if (challengeInvitee.date_challenge_joined > mostRecentDate) {
+      mostRecentDate = challengeInvitee.date_challenge_joined;
+    }
+    return mostRecentDate;
+  }
+
+  orderByMostRecentDate = (firstItem, secondItem) => new Date(secondItem.most_recent_date) - new Date(firstItem.most_recent_date);
+
   reduce (state, action) {
     const {
       allCachedChallengeInvitees,
       allChallengeInviteeLists,
     } = state;
     let {
-      latestChallengeInvitees,
+      latestChallengeInvitees, nextInviteeUrlCode,
     } = state;
     let challengeList;
     let challengeInvitee;
+    let challengeInviteeTemp;
     let challengeInviteeList;
+    let challengeInviteeListTemp = [];
+    let alreadyInList;
+    let mostRecentDate;
 
     let revisedState;
     switch (action.type) {
@@ -161,28 +192,59 @@ class ChallengeInviteeStore extends ReduceStore {
         revisedState = state;
         challengeInviteeList = action.res.challenge_invitee_list || [];
         // console.log('challengeInviteeListRetrieve challenge_invitee_list:', challengeInviteeList);
-        allChallengeInviteeLists[action.res.challenge_we_vote_id] = challengeInviteeList;
-        challengeInviteeList.forEach((oneInvitee) => {
-          if (oneInvitee.invitee_id) {
-            allCachedChallengeInvitees[oneInvitee.invitee_id] = oneInvitee;
+        challengeInviteeListTemp = [];
+        challengeInviteeList.forEach((oneChallengeInvitee) => {
+          mostRecentDate = this.mostRecentDateFromChallengeInvitee(oneChallengeInvitee);
+          challengeInviteeTemp = oneChallengeInvitee;
+          challengeInviteeTemp.most_recent_date = mostRecentDate;
+          challengeInviteeListTemp.push(challengeInviteeTemp);
+          if (oneChallengeInvitee.invitee_id) {
+            allCachedChallengeInvitees[oneChallengeInvitee.invitee_id] = challengeInviteeTemp;
           }
         });
+        // console.log('challengeInviteeListRetrieve challengeInviteeListTemp:', challengeInviteeListTemp);
+        challengeInviteeListTemp = challengeInviteeListTemp.sort(this.orderByMostRecentDate);
+        allChallengeInviteeLists[action.res.challenge_we_vote_id] = challengeInviteeListTemp;
+        if (action.res.next_invitee_url_code) {
+          nextInviteeUrlCode = action.res.next_invitee_url_code;
+          revisedState = { ...revisedState, nextInviteeUrlCode };
+        }
         revisedState = { ...revisedState, allCachedChallengeInvitees };
         revisedState = { ...revisedState, allChallengeInviteeLists };
         return revisedState;
 
       case 'challengeInviteeSave':
-        console.log('ChallengeInviteeStore challengeInviteeSave');
         if (!action.res || !action.res.success) return state;
-        if (action.res.challenge_we_vote_id && action.res.success) {
-          if (action.res.invitee_id) {
-            allCachedChallengeInvitees[action.res.invitee_id] = action.res;
+        revisedState = state;
+        challengeInvitee = action.res;
+        if (challengeInvitee.challenge_we_vote_id) {
+          if (challengeInvitee.invitee_id) {
+            mostRecentDate = this.mostRecentDateFromChallengeInvitee(challengeInvitee);
+            challengeInvitee.most_recent_date = mostRecentDate;
+            allCachedChallengeInvitees[challengeInvitee.invitee_id] = challengeInvitee;
+            revisedState = { ...revisedState, allCachedChallengeInvitees };
           }
         }
-        return {
-          ...state,
-          allCachedChallengeInvitees,
-        };
+        if (challengeInvitee.invitee_id) {
+          alreadyInList = false;
+          challengeInviteeList = allChallengeInviteeLists[challengeInvitee.challenge_we_vote_id];
+          challengeInviteeList.forEach((oneChallengeInvitee) => {
+            if (oneChallengeInvitee.invitee_id === challengeInvitee.invitee_id) {
+              alreadyInList = true;
+            }
+          });
+          if (!alreadyInList) {
+            challengeInviteeListTemp = allChallengeInviteeLists[challengeInvitee.challenge_we_vote_id];
+            challengeInviteeListTemp.unshift(action.res);
+            allChallengeInviteeLists[challengeInvitee.challenge_we_vote_id] = [...challengeInviteeListTemp];
+            revisedState = { ...revisedState, allChallengeInviteeLists };
+          }
+        }
+        if (action.res.next_invitee_url_code) {
+          nextInviteeUrlCode = action.res.next_invitee_url_code;
+          revisedState = { ...revisedState, nextInviteeUrlCode };
+        }
+        return revisedState;
 
       case 'inviteeEndorsementQueuedToSave':
         // console.log('ChallengeInviteeStore inviteeEndorsementQueuedToSave: ', action.payload);
