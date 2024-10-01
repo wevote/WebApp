@@ -2,20 +2,110 @@ import { Button, FormControl, TextField } from '@mui/material';
 import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { Suspense } from 'react';
+import CopyToClipboard from 'react-copy-to-clipboard';
 import { renderLog } from '../../utils/logging';
 import ChallengeInviteeActions from '../../actions/ChallengeInviteeActions';
 import ChallengeInviteeStore from '../../stores/ChallengeInviteeStore';
+import ChallengeParticipantStore from '../../stores/ChallengeParticipantStore';
+import ChallengeStore from '../../stores/ChallengeStore';
+
+const ChallengeParticipantFirstRetrieveController = React.lazy(() => import(/* webpackChunkName: 'ChallengeParticipantFirstRetrieveController' */ '../ChallengeParticipant/ChallengeParticipantFirstRetrieveController'));
 
 const InviteFriendToChallengeInput = ({ classes, challengeWeVoteId, externalUniqueId }) => {
   renderLog('InviteFriendToChallengeInputBox');  // Set LOG_RENDER_EVENTS to log all renders
-  const [friendName, setFriendName] = React.useState([]);
+  const [challengeInviteTextDefault, setChallengeInviteTextDefault] = React.useState('');
+  const [challengeTitle, setChallengeTitle] = React.useState('');
+  const [inviteCopiedMessageOn, setInviteCopiedMessageOn] = React.useState(false);
+  const [inviteeName, setInviteeName] = React.useState('');
+  const [inviteTextForFriends, setInviteTextForFriends] = React.useState('');
+  const [inviteTextToSend, setInviteTextToSend] = React.useState('');
+  // const [urlToSend, setUrlToSend] = React.useState('');
 
-  function setFriendNameFromEvent (event) {
-    if (event.target.name === 'friendNameTextField') {
-      setFriendName(event.target.value);
+  function prepareInviteTextToSend () {
+    const inviteeFirstName = inviteeName.split(' ')[0];
+    const inviterFirstName = 'David';
+    const inviteTextToSendTemp1 = `Hi ${inviteeFirstName}, this is ${inviterFirstName}. `;
+    const inviteTextToSendTemp2 = inviteTextForFriends || challengeInviteTextDefault;
+    const inviteeUrlCode = ChallengeInviteeStore.getNextInviteeUrlCode();
+    const urlToSendTemp = `${ChallengeStore.getSiteUrl(challengeWeVoteId)}/++/${inviteeUrlCode}`;
+    const inviteTextToSendTemp3 = `${inviteTextToSendTemp1}${inviteTextToSendTemp2} ${urlToSendTemp}`;
+    setInviteTextToSend(inviteTextToSendTemp3);
+    // setUrlToSend(urlToSendTemp);
+  }
+
+  function resetForm () {
+    setInviteeName('');
+    setTimeout(() => {
+      prepareInviteTextToSend();
+    }, 250);
+  }
+
+  const handleShare = async () => {
+    const inviteeUrlCode = ChallengeInviteeStore.getNextInviteeUrlCode();
+    ChallengeInviteeActions.challengeInviteeSave(challengeWeVoteId, inviteeName, true, inviteTextToSend, true, inviteeUrlCode, true);
+    setInviteCopiedMessageOn(true);
+    setTimeout(() => {
+      console.log('handleShare setTimeout fired');
+      setInviteCopiedMessageOn(false);
+      resetForm();
+    }, 1000);
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: challengeTitle,
+          text: inviteTextToSend,
+          // url: urlToSend,
+        });
+        console.log('Content shared successfully!');
+      } catch (error) {
+        console.error('Error sharing:', error);
+      }
+    } else {
+      console.log('Web Share API is not supported on this browser.');
+      // Fallback to a custom share modal or other sharing methods
+    }
+  };
+
+  function setInviteeNameFromEvent (event) {
+    if (event.target.name === 'inviteeNameTextField') {
+      setInviteeName(event.target.value);
+      prepareInviteTextToSend();
     }
   }
+
+  React.useEffect(() => {
+    const onChallengeInviteeStoreChange = () => {
+      console.log('InviteeStore change');
+      prepareInviteTextToSend();
+    };
+
+    const onChallengeParticipantStoreChange = () => {
+      setInviteTextForFriends(ChallengeParticipantStore.getInviteTextForFriends(challengeWeVoteId));
+      prepareInviteTextToSend();
+    };
+
+    const onChallengeStoreChange = () => {
+      setChallengeInviteTextDefault(ChallengeStore.getChallengeInviteTextDefaultByWeVoteId(challengeWeVoteId));
+      setChallengeTitle(ChallengeStore.getChallengeTitleByWeVoteId(challengeWeVoteId));
+      prepareInviteTextToSend();
+    };
+
+    // console.log('Fetching participants for:', challengeWeVoteId);
+    const challengeInviteeStoreListener = ChallengeInviteeStore.addListener(onChallengeInviteeStoreChange);
+    onChallengeParticipantStoreChange();
+    const challengeParticipantStoreListener = ChallengeParticipantStore.addListener(onChallengeParticipantStoreChange);
+    onChallengeParticipantStoreChange();
+    const challengeStoreListener = ChallengeStore.addListener(onChallengeStoreChange);
+    onChallengeStoreChange();
+
+    return () => {
+      challengeInviteeStoreListener.remove();
+      challengeParticipantStoreListener.remove();
+      challengeStoreListener.remove();
+    };
+  }, [challengeWeVoteId]);
+
   return (
     <InviteFriendToChallengeInputWrapper>
       <form onSubmit={(e) => { e.preventDefault(); }}>
@@ -25,11 +115,12 @@ const InviteFriendToChallengeInput = ({ classes, challengeWeVoteId, externalUniq
               <TextField
                 // classes={{ root: classes.textField }} // Not working yet
                 id={`campaignTitleTextArea-${externalUniqueId}`}
-                name="friendNameTextField"
+                name="inviteeNameTextField"
                 margin="dense"
+                value={inviteeName}
                 variant="outlined"
                 placeholder="Your friend's name"
-                onChange={setFriendNameFromEvent} // eslint-disable-line react/jsx-no-bind
+                onChange={setInviteeNameFromEvent} // eslint-disable-line react/jsx-no-bind
               />
             </FormControl>
           </ColumnFullWidth>
@@ -37,21 +128,35 @@ const InviteFriendToChallengeInput = ({ classes, challengeWeVoteId, externalUniq
       </form>
       <InviteFriendButtonOuterWrapper>
         <InviteFriendButtonInnerWrapper>
-          <Button
-            classes={{ root: classes.buttonDesktop }}
-            color="primary"
-            id="inviteToChallengeNow"
-            onClick={() => ChallengeInviteeActions.challengeInviteeSave(challengeWeVoteId, friendName)}
-            variant="contained"
-          >
-            Invite
-            {' '}
-            {`${friendName || 'friend'}`}
-            {' '}
-            to challenge
-          </Button>
+          {/* onCopy={this.copyLink} */}
+          <CopyToClipboard text={inviteTextToSend}>
+            <Button
+              classes={{ root: classes.buttonDesktop }}
+              color="primary"
+              id="inviteToChallengeNow"
+              onClick={() => handleShare()}
+              variant="contained"
+            >
+              {inviteCopiedMessageOn ? (
+                <span>
+                  Invite copied!
+                </span>
+              ) : (
+                <span>
+                  Invite
+                  {' '}
+                  {`${inviteeName || 'friend'}`}
+                  {' '}
+                  to challenge
+                </span>
+              )}
+            </Button>
+          </CopyToClipboard>
         </InviteFriendButtonInnerWrapper>
       </InviteFriendButtonOuterWrapper>
+      <Suspense fallback={<span>&nbsp;</span>}>
+        <ChallengeParticipantFirstRetrieveController challengeWeVoteId={challengeWeVoteId} />
+      </Suspense>
     </InviteFriendToChallengeInputWrapper>
   );
 };
