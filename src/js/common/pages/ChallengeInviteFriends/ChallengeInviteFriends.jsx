@@ -233,6 +233,7 @@ const InvitedFriendsWrapper = styled('div')`
 const StyledChip = styled(Chip)`
   background-color: ${DesignTokenColors.confirmation700};
   color: ${DesignTokenColors.whiteUI};
+  height: 20px;
 `;
 
 export default withStyles(commonMuiStyles)(ChallengeInviteFriends);
