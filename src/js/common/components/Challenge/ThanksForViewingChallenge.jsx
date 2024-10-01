@@ -5,8 +5,8 @@ import PropTypes from 'prop-types';
 
 import React, { useState, useEffect } from 'react';
 
-const ThanksForJoiningChallenge = ({ userName, challengeOwner, onClose }) => {
-  const [isClosing, setIsClosing] = useState(true);
+const ThanksForViewingChallenge = ({ userName, challengeOwner, onClose }) => {
+  const [isClosing, setIsClosing] = useState(false);
 
   useEffect(() => {
     if (isClosing) {
@@ -18,14 +18,13 @@ const ThanksForJoiningChallenge = ({ userName, challengeOwner, onClose }) => {
   }, [isClosing, onClose]);
 
   return (
-    <ThanksForJoiningOuterWrapper isClosing={isClosing}>
-      <ThanksForJoiningInnerWrapper isClosing={isClosing}>
+    <ThanksForViewingOuterWrapper isClosing={isClosing}>
+      <ThanksForViewingInnerWrapper isClosing={isClosing}>
         <ThankYouMessageWrapper>
           <ThankYouMessage>
-            Thanks for joining&nbsp;
+            Thanks for confirming
+            the link from&nbsp;
             {challengeOwner}
-            &apos;s challenge,&nbsp;
-            {userName}
             !
           </ThankYouMessage>
           <CloseMessageIconWrapper>
@@ -40,13 +39,11 @@ const ThanksForJoiningChallenge = ({ userName, challengeOwner, onClose }) => {
             </IconButton>
           </CloseMessageIconWrapper>
         </ThankYouMessageWrapper>
-        <RankMessageWrapper>Insert Rank Message Here</RankMessageWrapper>
-        <RankListOuterWrapper>Insert Rank List Here</RankListOuterWrapper>
-      </ThanksForJoiningInnerWrapper>
-    </ThanksForJoiningOuterWrapper>
+      </ThanksForViewingInnerWrapper>
+    </ThanksForViewingOuterWrapper>
   );
 };
-ThanksForJoiningChallenge.propTypes = {
+ThanksForViewingChallenge.propTypes = {
   userName: PropTypes.string.isRequired,
   challengeOwner: PropTypes.string.isRequired,
   onClose: PropTypes.func.isRequired,
@@ -69,7 +66,7 @@ const RankMessageWrapper = styled.div`
   margin-bottom: 10px;
 `;
 
-const ThanksForJoiningInnerWrapper = styled.div`
+const ThanksForViewingInnerWrapper = styled.div`
   width: 500px;
   max-height: ${(props) => (props.isClosing ? '0' : '300px')};
   border-radius: 20px;
@@ -87,7 +84,7 @@ const ThanksForJoiningInnerWrapper = styled.div`
   transform: ${(props) => (props.isClosing ? 'translateY(-20px)' : 'translateY(0)')};
 `;
 
-const ThanksForJoiningOuterWrapper = styled.div`
+const ThanksForViewingOuterWrapper = styled.div`
   max-height: ${(props) => (props.isClosing ? '0' : '400px')};
   overflow: hidden;
   display: flex;
@@ -116,4 +113,4 @@ const ThankYouMessageWrapper = styled.div`
   justify-content: space-between;
   align-items: baseline;
 `;
-export default ThanksForJoiningChallenge;
+export default ThanksForViewingChallenge;

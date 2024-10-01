@@ -43,6 +43,7 @@ import normalizedImagePath from '../../utils/normalizedImagePath';
 import ChallengeAbout from '../../components/Challenge/ChallengeAbout';
 import ChallengeParticipantListRoot from '../../components/ChallengeParticipantListRoot/ChallengeParticipantListRoot';
 import ChallengeInviteeListRoot from '../../components/ChallengeInviteeListRoot/ChallengeInviteeListRoot';
+import ThanksForViewingChallenge from '../../components/Challenge/ThanksForViewingChallenge'
 
 const ChallengeCardForList = React.lazy(() => import(/* webpackChunkName: 'ChallengeCardForList' */ '../../components/ChallengeListRoot/ChallengeCardForList'));
 // const ChallengeCommentsList = React.lazy(() => import(/* webpackChunkName: 'ChallengeCommentsList' */ '../../components/Challenge/ChallengeCommentsList'));
@@ -440,6 +441,10 @@ class ChallengeHomePage extends Component {
     return null;
   }
 
+  handleCloseFunction = () => {
+    console.log('click')
+    }
+
   render () {
     renderLog('ChallengeHomePage');  // Set LOG_RENDER_EVENTS to log all renders
 
@@ -517,6 +522,11 @@ class ChallengeHomePage extends Component {
     );
     return (
       <PageContentContainer>
+        <ThanksForViewingChallenge
+           userName="User Name"
+           challengeOwner="David"
+           onClose={this.handleCloseFunction}
+        />
         <Suspense fallback={<span>&nbsp;</span>}>
           <ChallengeRetrieveController
             challengeSEOFriendlyPath={challengeSEOFriendlyPath}
