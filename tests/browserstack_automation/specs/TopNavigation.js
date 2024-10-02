@@ -143,4 +143,22 @@ describe('TopNavigation', () => {
   //   await driver.switchWindow('Democracy Squads - WeVote');
   //   await expect(driver).not.toHaveUrl(expect.stringContaining('ready'));
   // });
+
+  // TopNavigation_011
+  it('openChallengesTab', async () => {
+    await ReadyPage.load();
+    await driver.pause(waitTime);
+    await TopNavigation.toggleChallengesTab();
+    await driver.waitUntil(async () => {
+      // Add condition to check for the expected URL
+      const currentUrl = await driver.getUrl();
+      console.log(currentUrl);
+      return currentUrl.includes('challenges');
+    }, {
+      timeout: 10000,
+      timeoutMsg: 'Expected URL to contain "challenges" not found, timeout after 10000ms',
+    });
+    await driver.pause(waitTime);
+    await expect(driver).not.toHaveUrl(expect.stringContaining('ready'));
+  });
 });
