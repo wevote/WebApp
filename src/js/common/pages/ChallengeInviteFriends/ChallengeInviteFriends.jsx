@@ -234,6 +234,8 @@ const StyledChip = styled(Chip)`
   background-color: ${DesignTokenColors.confirmation700};
   color: ${DesignTokenColors.whiteUI};
   height: 20px;
+  align-items: center;
+  justify-content: center;
 `;
 
 export default withStyles(commonMuiStyles)(ChallengeInviteFriends);
