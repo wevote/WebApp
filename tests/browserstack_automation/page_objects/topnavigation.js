@@ -16,6 +16,10 @@ class TopNavigation extends Page {
     return $('#candidatesTabHeaderBar');
   }
 
+  get getChallengesTabLocator () {
+    return $('#challengesTabHeaderBar');
+  }
+
   get getDonateTabLocator () {
     return $('#donateTabHeaderBar');
   }
@@ -31,6 +35,11 @@ class TopNavigation extends Page {
   async toggleCandidatesTab () {
     await this.getCandidatesTabLocator.findAndClick();
   }
+
+  async toggleChallengesTab () {
+    await this.getChallengesTabLocator.findAndClick();
+  }
+
 
   async toggleDonateTab () {
     await this.getDonateTabLocator.findAndClick();
