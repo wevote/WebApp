@@ -27,6 +27,7 @@ import {
 import { DraftModeIndicator, IndicatorDefaultButtonWrapper, IndicatorRow } from '../Style/CampaignIndicatorStyles';
 import DesignTokenColors from '../Style/DesignTokenColors';
 import SvgImage from '../Widgets/SvgImage';
+import JoinedAndDaysLeft from '../Challenge/JoinedAndDaysLeft';
 
 // React functional component example
 function ChallengeCardForListBody (props) {
@@ -200,20 +201,25 @@ function ChallengeCardForListBody (props) {
             onClick={onChallengeClick}
           >
             {photoLargeUrl ? (
-              <ChallengeImageMobilePlaceholder
-                id="cimp4"
-                profileImageBackgroundColor={profileImageBackgroundColor}
-                useVerticalCard={useVerticalCard}
-              >
-                <ChallengeImageMobile
-                  alt=""
-                  src={photoLargeUrl}
-                  style={useVerticalCard ? {
-                    borderBottom: `1px solid ${DesignTokenColors.neutralUI100}`,
-                    borderTop: `1px solid ${DesignTokenColors.neutralUI100}`,
-                  } : {}}
-                />
-              </ChallengeImageMobilePlaceholder>
+              <ChallengeImageContainer>
+                <ChallengeImageMobilePlaceholder
+                  id="cimp4"
+                  profileImageBackgroundColor={profileImageBackgroundColor}
+                  useVerticalCard={useVerticalCard}
+                >
+                  <ChallengeImageMobile
+                    alt=""
+                    src={photoLargeUrl}
+                    style={useVerticalCard ? {
+                      borderBottom: `1px solid ${DesignTokenColors.neutralUI100}`,
+                      borderTop: `1px solid ${DesignTokenColors.neutralUI100}`,
+                    } : {}}
+                  />
+                </ChallengeImageMobilePlaceholder>
+                <JoinedDaysLeftOverlayMobile>
+                  <JoinedAndDaysLeft challengeWeVoteId={challengeWeVoteId} />
+                </JoinedDaysLeftOverlayMobile>
+              </ChallengeImageContainer>
             ) : (
               <ChallengeImageMobilePlaceholder
                 id="cimp2"
@@ -246,29 +252,35 @@ function ChallengeCardForListBody (props) {
             useVerticalCard={useVerticalCard}
           >
             {photoLargeUrl ? (
-              <>
-                {useVerticalCard ? (
-                  <ChallengeImageDesktopPlaceholder
-                    id="cidp4"
-                    limitCardWidth={limitCardWidth}
-                    profileImageBackgroundColor={profileImageBackgroundColor}
-                    useVerticalCard={useVerticalCard}
-                  >
-                    <ChallengeImageDesktop
-                      src={photoLargeUrl}
-                      alt=""
-                      style={useVerticalCard ? {
-                        borderBottom: `1px solid ${DesignTokenColors.neutralUI100}`,
-                        borderTop: `1px solid ${DesignTokenColors.neutralUI100}`,
-                      } : {}}
-                      width={limitCardWidth ? '257px' : '320px'}
-                      height={limitCardWidth ? '157px' : '168px'}
-                    />
-                  </ChallengeImageDesktopPlaceholder>
-                ) : (
-                  <ChallengeImageDesktop src={photoLargeUrl} alt="" width="117px" height="117px" />
-                )}
-              </>
+              <ChallengeImageContainer>
+                <>
+                  {useVerticalCard ? (
+                    <ChallengeImageDesktopPlaceholder
+                      id="cidp4"
+                      limitCardWidth={limitCardWidth}
+                      profileImageBackgroundColor={profileImageBackgroundColor}
+                      useVerticalCard={useVerticalCard}
+                    >
+                      <ChallengeImageDesktop
+                        src={photoLargeUrl}
+                        alt=""
+                        style={useVerticalCard ? {
+                          borderBottom: `1px solid ${DesignTokenColors.neutralUI100}`,
+                          borderTop: `1px solid ${DesignTokenColors.neutralUI100}`,
+                        } : {}}
+                        width={limitCardWidth ? '257px' : '320px'}
+                        height={limitCardWidth ? '157px' : '168px'}
+                      />
+                    </ChallengeImageDesktopPlaceholder>
+                  ) : (
+                    <ChallengeImageDesktop src={photoLargeUrl} alt="" width="117px" height="117px" />
+                  )}
+                </>
+                {/* Joined and Days Left */}
+                <JoinedDaysLeftOverlayDesctop>
+                  <JoinedAndDaysLeft challengeWeVoteId={challengeWeVoteId} />
+                </JoinedDaysLeftOverlayDesctop>
+              </ChallengeImageContainer>
             ) : (
               <ChallengeImageDesktopPlaceholder
                 id="cidp5"
@@ -323,7 +335,20 @@ const styles = (theme) => ({
     },
   },
 });
-
+const ChallengeImageContainer = styled('div')`
+  position: relative;
+  width: 100%;
+  height: auto;
+`;
+const JoinedDaysLeftOverlayMobile = styled('div')`
+  position: absolute;
+  top: 130px;
+  left: 10px;
+  `;
+const JoinedDaysLeftOverlayDesctop = styled('div')`
+  position: absolute;
+  top: 175px;
+  left: 10px;
 // const ChallengeOwnersWrapper = styled('div')`
 // `;
 
