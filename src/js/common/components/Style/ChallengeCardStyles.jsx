@@ -157,8 +157,7 @@ export const OneChallengeTextColumn = styled('div', {
 export const OneChallengeTitleLink = styled('h1')(({ theme }) => (`
   font-size: 22px;
   font-weight: 400;
-  margin: 0;
-  margin-bottom: 4px;
+  margin: 20px 0 4px 0;
   ${theme.breakpoints.down('sm')} {
     // margin-bottom: 4px;
   }
