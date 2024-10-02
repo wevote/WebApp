@@ -37,7 +37,7 @@ describe('Discuss Page', () => {
     await driver.pause(waitTime);
     element.setValue('wevote@gmail.com');
     await driver.pause(waitTime);
-    await driver.waitUntil(async () => ((DiscussPage.togglevoterEmailAddressVerificationButton)));
+    await driver.waitUntil(async () => ((DiscussPage.toggleEmailVerificationButton)));
   });
 
   // Discuss_005
