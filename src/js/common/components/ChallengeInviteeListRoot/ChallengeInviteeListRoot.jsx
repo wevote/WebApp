@@ -26,16 +26,20 @@ const ChallengeInviteeListRoot = ({ challengeWeVoteId, classes }) => {
   const [inviteeList, setInviteeList] = React.useState([]);
 
   const onChallengeInviteeStoreChange = () => {
-    setInviteeList(ChallengeInviteeStore.getChallengeInviteeList(challengeWeVoteId));
+    // console.log('ChallengeInviteeStoreChange');
+    const incomingInviteeList = ChallengeInviteeStore.getChallengeInviteeList(challengeWeVoteId);
+    // console.log('ChallengeInviteeListRoot onChallengeInviteeStoreChange incomingInviteeList:', incomingInviteeList);
+    const incomingInviteeListNew = [...incomingInviteeList];  // So React detects this as a new list
+    setInviteeList(incomingInviteeListNew);
   };
 
   React.useEffect(() => {
     // console.log('Fetching participants for:', challengeWeVoteId);
-    const storeListener = ChallengeInviteeStore.addListener(onChallengeInviteeStoreChange);
+    const challengeInviteeStoreListener = ChallengeInviteeStore.addListener(onChallengeInviteeStoreChange);
     onChallengeInviteeStoreChange();
 
     return () => {
-      storeListener.remove();
+      challengeInviteeStoreListener.remove();
     };
   }, [challengeWeVoteId]);
   return (
@@ -45,8 +49,8 @@ const ChallengeInviteeListRoot = ({ challengeWeVoteId, classes }) => {
       </Heading>
       <ChallengeInviteeList
         challengeWeVoteId={challengeWeVoteId}
-        // inviteeList={inviteeList}
-        inviteeList={inviteeListDummyData}
+        inviteeList={inviteeList}
+        // inviteeList={inviteeListDummyData}
       />
       <Suspense fallback={<></>}>
         <FirstChallengeInviteeListController challengeWeVoteId={challengeWeVoteId} searchText="SEARCH TEXT HERE" />
