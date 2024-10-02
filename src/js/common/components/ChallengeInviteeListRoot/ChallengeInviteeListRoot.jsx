@@ -26,27 +26,31 @@ const ChallengeInviteeListRoot = ({ challengeWeVoteId, classes }) => {
   const [inviteeList, setInviteeList] = React.useState([]);
 
   const onChallengeInviteeStoreChange = () => {
-    setInviteeList(ChallengeInviteeStore.getChallengeInviteeList(challengeWeVoteId));
+    // console.log('ChallengeInviteeStoreChange');
+    const incomingInviteeList = ChallengeInviteeStore.getChallengeInviteeList(challengeWeVoteId);
+    // console.log('ChallengeInviteeListRoot onChallengeInviteeStoreChange incomingInviteeList:', incomingInviteeList);
+    const incomingInviteeListNew = [...incomingInviteeList];  // So React detects this as a new list
+    setInviteeList(incomingInviteeListNew);
   };
 
   React.useEffect(() => {
     // console.log('Fetching participants for:', challengeWeVoteId);
-    const storeListener = ChallengeInviteeStore.addListener(onChallengeInviteeStoreChange);
+    const challengeInviteeStoreListener = ChallengeInviteeStore.addListener(onChallengeInviteeStoreChange);
     onChallengeInviteeStoreChange();
 
     return () => {
-      storeListener.remove();
+      challengeInviteeStoreListener.remove();
     };
   }, [challengeWeVoteId]);
   return (
     <ChallengeInviteeListRootContainer>
       <Heading>
-        <p style={{ fontWeight: 'bold', padding: '10px' }}>Invited Friends</p>
+        <StyledP>Invited Friends</StyledP>
       </Heading>
       <ChallengeInviteeList
         challengeWeVoteId={challengeWeVoteId}
-        // inviteeList={inviteeList}
-        inviteeList={inviteeListDummyData}
+        inviteeList={inviteeList}
+        // inviteeList={inviteeListDummyData}
       />
       <Suspense fallback={<></>}>
         <FirstChallengeInviteeListController challengeWeVoteId={challengeWeVoteId} searchText="SEARCH TEXT HERE" />
@@ -70,13 +74,19 @@ const styles = () => ({
 });
 
 const ChallengeInviteeListRootContainer = styled.div`
-  max-width: 110vw;
-  margin: 0 auto;
+  max-width: 620px;
+  //margin: 0 auto;
+  width: 100%;
 `;
 
 const Heading = styled.div`
-  padding: 0 16px;
+  padding: 0 5px;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+`;
+
+const StyledP = styled.p`
+  font-weight: bold;
+  padding: 10px;
 `;
 
 export default withStyles(styles)(ChallengeInviteeListRoot);

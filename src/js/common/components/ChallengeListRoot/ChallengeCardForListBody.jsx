@@ -9,22 +9,24 @@ import { renderLog } from '../../utils/logging';
 // import numberWithCommas from '../../utils/numberWithCommas';
 // import ChallengeOwnersList from '../ChallengeInviteeListRoot/ChallengeOwnersList';
 import {
-  CampaignActionButtonsWrapper,
-  CampaignImageDesktop, CampaignImageDesktopPlaceholder,
-  CampaignImageMobile, CampaignImageMobilePlaceholder,
-  CampaignImagePlaceholderText,
-  // CampaignPoliticianImageDesktop, CampaignPoliticianImageMobile,
-  CandidateCardForListWrapper, OneCampaignDescription,
-  OneCampaignInnerWrapper, OneCampaignOuterWrapper,
-  OneCampaignPhotoDesktopColumn, OneCampaignPhotoWrapperMobile,
-  OneCampaignTextColumn, OneCampaignTitleLink, SupportersActionLink,
-  SupportersCount, SupportersWrapper, TitleAndTextWrapper,
-} from '../Style/CampaignCardStyles';
-import { BlockedIndicator, BlockedReason, DraftModeIndicator, EditIndicator, ElectionInPast, IndicatorDefaultButtonWrapper, IndicatorButtonWrapper, IndicatorRow } from '../Style/CampaignIndicatorStyles';
+  ChallengeImageDesktop,
+  ChallengeImageDesktopPlaceholder,
+  ChallengeImageMobile,
+  ChallengeImageMobilePlaceholder,
+  ChallengeImagePlaceholderText,
+  CandidateCardForListWrapper,
+  OneChallengeInnerWrapper,
+  OneChallengeOuterWrapper,
+  OneChallengePhotoDesktopColumn,
+  OneChallengePhotoWrapperMobile,
+  OneChallengeTextColumn,
+  OneChallengeTitleLink,
+  TitleAndTextWrapper,
+  ChallengeCardForListWrapper,
+} from '../Style/ChallengeCardStyles';
+import { DraftModeIndicator, IndicatorDefaultButtonWrapper, IndicatorRow } from '../Style/CampaignIndicatorStyles';
 import DesignTokenColors from '../Style/DesignTokenColors';
 import SvgImage from '../Widgets/SvgImage';
-
-const SupportButtonBeforeCompletionScreen = React.lazy(() => import(/* webpackChunkName: 'SupportButtonBeforeCompletionScreen' */ '../CampaignSupport/SupportButtonBeforeCompletionScreen'));
 
 // React functional component example
 function ChallengeCardForListBody (props) {
@@ -41,22 +43,22 @@ function ChallengeCardForListBody (props) {
 
   // /////////////////////// START OF DISPLAY
   return (
-    <CandidateCardForListWrapper limitCardWidth={limitCardWidth}>
-      <OneCampaignOuterWrapper limitCardWidth={limitCardWidth}>
-        <OneCampaignInnerWrapper
+    <ChallengeCardForListWrapper limitCardWidth={limitCardWidth}>
+      <OneChallengeOuterWrapper limitCardWidth={limitCardWidth}>
+        <OneChallengeInnerWrapper
           hideCardMargins={hideCardMargins}
           useVerticalCard={limitCardWidth || useVerticalCard || isMobileScreenSize()}
         >
-          <OneCampaignTextColumn hideCardMargins={hideCardMargins}>
+          <OneChallengeTextColumn hideCardMargins={hideCardMargins}>
             <TitleAndTextWrapper hideCardMargins={hideCardMargins}>
-              <OneCampaignTitleLink>
+              <OneChallengeTitleLink>
                 <Link
                   id="challengeCardDisplayName"
                   to={onChallengeClickLink()}
                 >
                   {challengeTitle}
                 </Link>
-              </OneCampaignTitleLink>
+              </OneChallengeTitleLink>
               {/*
               <SupportersWrapper>
                 <SupportersCount>
@@ -82,7 +84,7 @@ function ChallengeCardForListBody (props) {
                   </SupportersActionLink>
                 )}
               </SupportersWrapper>
-              <OneCampaignDescription
+              <OneChallengeDescription
                 className="u-cursor--pointer"
                 id="challengeCardDescription"
                 onClick={onChallengeClick}
@@ -96,7 +98,7 @@ function ChallengeCardForListBody (props) {
                     {challengeDescription}
                   </div>
                 </TruncateMarkup>
-              </OneCampaignDescription>
+              </OneChallengeDescription>
               */}
               {/*
               <ChallengeOwnersWrapper>
@@ -163,6 +165,7 @@ function ChallengeCardForListBody (props) {
                 </IndicatorButtonWrapper>
               )}
               */}
+              {/*
               {voterCanEditThisChallenge && (
                 <IndicatorButtonWrapper>
                   <EditIndicator onClick={onChallengeEditClick}>
@@ -175,6 +178,7 @@ function ChallengeCardForListBody (props) {
                   </EditIndicator>
                 </IndicatorButtonWrapper>
               )}
+              */}
               {/*
               {(challengeSupported && !inDraftMode) && (
                 <IndicatorButtonWrapper>
@@ -190,18 +194,18 @@ function ChallengeCardForListBody (props) {
               )}
             */}
             </IndicatorRow>
-          </OneCampaignTextColumn>
-          <OneCampaignPhotoWrapperMobile
+          </OneChallengeTextColumn>
+          <OneChallengePhotoWrapperMobile
             className="u-cursor--pointer u-show-mobile"
             onClick={onChallengeClick}
           >
             {photoLargeUrl ? (
-              <CampaignImageMobilePlaceholder
+              <ChallengeImageMobilePlaceholder
                 id="cimp4"
                 profileImageBackgroundColor={profileImageBackgroundColor}
                 useVerticalCard={useVerticalCard}
               >
-                <CampaignImageMobile
+                <ChallengeImageMobile
                   alt=""
                   src={photoLargeUrl}
                   style={useVerticalCard ? {
@@ -209,9 +213,9 @@ function ChallengeCardForListBody (props) {
                     borderTop: `1px solid ${DesignTokenColors.neutralUI100}`,
                   } : {}}
                 />
-              </CampaignImageMobilePlaceholder>
+              </ChallengeImageMobilePlaceholder>
             ) : (
-              <CampaignImageMobilePlaceholder
+              <ChallengeImageMobilePlaceholder
                 id="cimp2"
                 profileImageBackgroundColor={profileImageBackgroundColor}
                 useVerticalCard={useVerticalCard}
@@ -225,14 +229,14 @@ function ChallengeCardForListBody (props) {
                     marginBottom="-10px"
                     opacity="0.33"
                   />
-                  <CampaignImagePlaceholderText>
+                  <ChallengeImagePlaceholderText>
                     No image available.
-                  </CampaignImagePlaceholderText>
+                  </ChallengeImagePlaceholderText>
                 </SvgWatermarkWrapper>
-              </CampaignImageMobilePlaceholder>
+              </ChallengeImageMobilePlaceholder>
             )}
-          </OneCampaignPhotoWrapperMobile>
-          <OneCampaignPhotoDesktopColumn
+          </OneChallengePhotoWrapperMobile>
+          <OneChallengePhotoDesktopColumn
             className="u-cursor--pointer u-show-desktop-tablet"
             hideCardMargins={hideCardMargins}
             id={`${tagIdBaseName}PhotoDesktop`}
@@ -244,13 +248,13 @@ function ChallengeCardForListBody (props) {
             {photoLargeUrl ? (
               <>
                 {useVerticalCard ? (
-                  <CampaignImageDesktopPlaceholder
+                  <ChallengeImageDesktopPlaceholder
                     id="cidp4"
                     limitCardWidth={limitCardWidth}
                     profileImageBackgroundColor={profileImageBackgroundColor}
                     useVerticalCard={useVerticalCard}
                   >
-                    <CampaignImageDesktop
+                    <ChallengeImageDesktop
                       src={photoLargeUrl}
                       alt=""
                       style={useVerticalCard ? {
@@ -260,19 +264,19 @@ function ChallengeCardForListBody (props) {
                       width={limitCardWidth ? '257px' : '320px'}
                       height={limitCardWidth ? '157px' : '168px'}
                     />
-                  </CampaignImageDesktopPlaceholder>
+                  </ChallengeImageDesktopPlaceholder>
                 ) : (
-                  <CampaignImageDesktop src={photoLargeUrl} alt="" width="117px" height="117px" />
+                  <ChallengeImageDesktop src={photoLargeUrl} alt="" width="117px" height="117px" />
                 )}
               </>
             ) : (
-              <CampaignImageDesktopPlaceholder
+              <ChallengeImageDesktopPlaceholder
                 id="cidp5"
                 limitCardWidth={limitCardWidth}
                 profileImageBackgroundColor={profileImageBackgroundColor}
                 useVerticalCard={useVerticalCard}
               >
-                <CampaignImagePlaceholderText>
+                <ChallengeImagePlaceholderText>
                   <SvgImage
                     applyFillColor
                     color={DesignTokenColors.neutralUI300}
@@ -282,13 +286,13 @@ function ChallengeCardForListBody (props) {
                     opacity="0.33"
                   />
                   No image available.
-                </CampaignImagePlaceholderText>
-              </CampaignImageDesktopPlaceholder>
+                </ChallengeImagePlaceholderText>
+              </ChallengeImageDesktopPlaceholder>
             )}
-          </OneCampaignPhotoDesktopColumn>
-        </OneCampaignInnerWrapper>
-      </OneCampaignOuterWrapper>
-    </CandidateCardForListWrapper>
+          </OneChallengePhotoDesktopColumn>
+        </OneChallengeInnerWrapper>
+      </OneChallengeOuterWrapper>
+    </ChallengeCardForListWrapper>
   );
 }
 ChallengeCardForListBody.propTypes = {

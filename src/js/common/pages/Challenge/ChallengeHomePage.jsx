@@ -11,7 +11,6 @@ import ChallengeInviteFriendsTopNavigation from '../../components/Navigation/Cha
 import DesignTokenColors from '../../components/Style/DesignTokenColors';
 import { PageContentContainer } from '../../../components/Style/pageLayoutStyles';
 import webAppConfig from '../../../config';
-// import AnalyticsActions from '../../../actions/AnalyticsActions';
 import BallotActions from '../../../actions/BallotActions';
 import ChallengeParticipantStore from '../../stores/ChallengeParticipantStore';
 import ChallengeStore from '../../stores/ChallengeStore';
@@ -24,9 +23,6 @@ import {
   CommentsListWrapper, DetailsSectionDesktopTablet, DetailsSectionMobile, SupportButtonFooterWrapperAboveFooterButtons, SupportButtonPanel,
 } from '../../components/Style/CampaignDetailsStyles';
 import { EditIndicator, IndicatorButtonWrapper, IndicatorRow } from '../../components/Style/CampaignIndicatorStyles';
-import {
-  SectionTitleSimple,
-} from '../../components/Style/PoliticianDetailsStyles';
 import { PageWrapper } from '../../components/Style/stepDisplayStyles';
 import DelayedLoad from '../../components/Widgets/DelayedLoad';
 import LinkToAdminTools from '../../components/Widgets/LinkToAdminTools';
@@ -506,9 +502,6 @@ class ChallengeHomePage extends Component {
     const challengeDescriptionJsx = (
       <CampaignDescription>
         <AboutAndEditFlex>
-          <SectionTitleSimple>
-            About
-          </SectionTitleSimple>
           <div>
             <Suspense fallback={<span>&nbsp;</span>}>
               <UpdateChallengeInformation challengeTitle={challengeTitle} />
@@ -572,7 +565,6 @@ class ChallengeHomePage extends Component {
                       </CandidateNameAndPartyWrapper>
                     </Candidate>
                   </CandidateTopRow>
-                  <ChallengeAbout />
                 </MobileHeaderContentContainer>
               </MobileHeaderInnerContainer>
             </MobileHeaderOuterContainer>
@@ -593,7 +585,10 @@ class ChallengeHomePage extends Component {
               <>
                 {tabSelectedChosen === 'leaderboard' ? (
                   <LeaderboardSectionWrapper>
-                    <ChallengeParticipantListRoot challengeWeVoteId={challengeWeVoteIdForDisplay} />
+                    <ChallengeParticipantListRoot
+                      challengeWeVoteId={challengeWeVoteIdForDisplay}
+                      uniqueExternalId="mobile"
+                    />
                   </LeaderboardSectionWrapper>
                 ) : (
                   <AboutSectionWrapper>
@@ -603,6 +598,7 @@ class ChallengeHomePage extends Component {
                           {challengeDescriptionJsx}
                         </DelayedLoad>
                       )}
+                      <ChallengeAbout />
                       {!!(voterCanEditThisChallenge || voterIsChallengeParticipant) && (
                         <IndicatorRow>
                           {voterCanEditThisChallenge && (
@@ -612,6 +608,7 @@ class ChallengeHomePage extends Component {
                               </EditIndicator>
                             </IndicatorButtonWrapper>
                           )}
+                          {/*
                           {voterIsChallengeParticipant && (
                             <IndicatorButtonWrapper>
                               <EditIndicator onClick={this.onChallengeCampaignShareClick}>
@@ -619,6 +616,7 @@ class ChallengeHomePage extends Component {
                               </EditIndicator>
                             </IndicatorButtonWrapper>
                           )}
+                          */}
                         </IndicatorRow>
                       )}
                     </CampaignDescriptionWrapper>
@@ -640,38 +638,23 @@ class ChallengeHomePage extends Component {
                 {challengeDescription && (
                   <DelayedLoad waitBeforeShow={250}>
                     <CampaignDescription>
-                      <AboutAndEditFlex>
-                        <SectionTitleSimple>
-                          About
-                        </SectionTitleSimple>
-                      </AboutAndEditFlex>
                       <ReadMore numberOfLines={6} textToDisplay={challengeDescription} />
                     </CampaignDescription>
                   </DelayedLoad>
                 )}
                 <ChallengeAbout />
-                <ViewBallotButtonWrapper>
+                <JoinChallengeButtonWrapper>
                   <Suspense fallback={<></>}>
                     <JoinChallengeButton
                       challengeSEOFriendlyPath={challengeSEOFriendlyPathForDisplay}
                       challengeWeVoteId={challengeWeVoteIdForDisplay}
                     />
                   </Suspense>
-                </ViewBallotButtonWrapper>
+                </JoinChallengeButtonWrapper>
                 <CampaignDescriptionDesktopWrapper>
                   {challengeDataFound && (
                     <DelayedLoad waitBeforeShow={250}>
                       <CampaignDescriptionDesktop>
-                        <AboutAndEditFlex>
-                          <SectionTitleSimple>
-                            About
-                          </SectionTitleSimple>
-                          <div>
-                            <Suspense fallback={<span>&nbsp;</span>}>
-                              <UpdateChallengeInformation politicianName={challengeTitle} />
-                            </Suspense>
-                          </div>
-                        </AboutAndEditFlex>
                         {challengeDescription ? (
                           <ReadMore numberOfLines={6} textToDisplay={challengeDescription} />
                         ) : (
@@ -717,7 +700,10 @@ class ChallengeHomePage extends Component {
                   </FriendsSectionWrapper>
                 ) : (
                   <LeaderboardSectionWrapper>
-                    <ChallengeParticipantListRoot challengeWeVoteId={challengeWeVoteIdForDisplay} />
+                    <ChallengeParticipantListRoot
+                      challengeWeVoteId={challengeWeVoteIdForDisplay}
+                      uniqueExternalId="desktop"
+                    />
                   </LeaderboardSectionWrapper>
                 )}
                 {/* {commentListTeaserHtml} */}
@@ -895,12 +881,12 @@ const NoInformationProvided = styled('div')`
   font-size: 12px;
 `;
 
-const ViewBallotButtonWrapper = styled('div')`
+const JoinChallengeButtonWrapper = styled('div')`
   display: flex;
   height: 50px;
   justify-content: center;
-  margin-top: 0;
-  margin-bottom: 80px;
+  margin-top: 30px;
+  margin-bottom: 20px;
 `;
 
 export default withStyles(styles)(ChallengeHomePage);

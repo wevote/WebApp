@@ -11,16 +11,16 @@ const ChallengeInviteeListItem = ({ invitee }) => {
   const { sx, children } = speakerDisplayNameToInitials(invitee.invitee_name);
   return (
     <InvitedFriendDetails>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <PrimaryDetails>
         <FriendName>
-          <Avatar sx={{ ...sx, width: 35, height: 35, fontSize: '1rem' }}>{children}</Avatar>
+          <AvatarDetails sx={sx}>{children}</AvatarDetails>
           {' '}
-          <span>{invitee.invitee_name}</span>
+          <Name>{invitee.invitee_name}</Name>
         </FriendName>
         <MessageStatus>
-          {invitee.messageStatus === 'Message Viewed' && <RemoveRedEye style={{ color: '#008000' }} />}
+          {invitee.messageStatus === 'Message Viewed' && <RemoveRedEye />}
           {invitee.messageStatus === 'Message Sent' && <Check />}
-          {invitee.messageStatus === 'Challenge Joined' && <CheckCircle style={{ color: '#008000' }} />}
+          {invitee.messageStatus === 'Challenge Joined' && <CheckCircle />}
           {'  '}
           {invitee.messageStatus}
         </MessageStatus>
@@ -28,7 +28,7 @@ const ChallengeInviteeListItem = ({ invitee }) => {
         <ActivityCommentEditWrapper>
           <MoreHoriz />
         </ActivityCommentEditWrapper>
-      </div>
+      </PrimaryDetails>
       <Options>
         <div>
           {invitee.invite_sent === false && (
@@ -38,14 +38,15 @@ const ChallengeInviteeListItem = ({ invitee }) => {
           )}
         </div>
         {invitee.messageStatus !== 'Challenge Joined' && (
-          <div style={{ padding: '5px' }}>
+          <Invite>
             Invite Again
-          </div>
+          </Invite>
         )}
       </Options>
     </InvitedFriendDetails>
   );
 };
+
 ChallengeInviteeListItem.propTypes = {
   invitee: PropTypes.object,
 };
@@ -55,9 +56,15 @@ const InvitedFriendDetails = styled.div`
   flex-direction: column;
   justify-content: space-between;
   gap: 10px;
-  padding: 15px 20px;
+  padding: 15px 2px;
   border-bottom: 1px solid ${DesignTokenColors.neutral100};
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+`;
+
+const PrimaryDetails = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 const FriendName = styled.div`
@@ -65,18 +72,24 @@ const FriendName = styled.div`
   align-items: center;
   gap: 10px;
   flex: 1;
-  margin-left: 10px;
-  span {
-    font-weight: bold;
-    color: ${DesignTokenColors.neutral900};
-  }
+`;
+
+const AvatarDetails = styled(Avatar)`
+  width: 35px;
+  height: 35px;
+  font-size: 1rem;
+`;
+
+const Name = styled.div`
+  font-weight: bold;
+  color: ${DesignTokenColors.neutral900};
 `;
 
 const MessageStatus = styled.div`
-  width: 200px;
+  width: 170px;
   text-align: center;
   font-size: 14px;
-  color: ${DesignTokenColors.greenUI500};
+  color: ${DesignTokenColors.confirmation800};
 `;
 
 const VerticalLine = styled.div`
@@ -86,7 +99,7 @@ const VerticalLine = styled.div`
 `;
 
 const ActivityCommentEditWrapper = styled('div')`
-  margin-left: 10px;
+  margin-right: 10px;
 `;
 
 const Options = styled.div`
@@ -102,6 +115,10 @@ const InformationtoWevote = styled.div`
   border-radius: 15px;
   padding:5px;
   font-size: 15px;;
+`;
+
+const Invite = styled.div`
+  padding: 5px;
 `;
 
 export default ChallengeInviteeListItem;

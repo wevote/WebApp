@@ -8,26 +8,26 @@ import { renderLog } from '../../utils/logging';
 import ChallengeStartStore from '../../stores/ChallengeStartStore';
 import ChallengeStore from '../../stores/ChallengeStore';
 
-class ChallengeTitleInputField extends Component {
+class ChallengeInviteTextDefaultInputField extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      challengeTitle: '',
+      challengeInviteTextDefault: '',
     };
 
     this.handleKeyPress = this.handleKeyPress.bind(this);
-    this.updateChallengeTitle = this.updateChallengeTitle.bind(this);
+    this.updateChallengeInviteTextDefault = this.updateChallengeInviteTextDefault.bind(this);
   }
 
   componentDidMount () {
-    // console.log('ChallengeTitleInputField, componentDidMount');
+    // console.log('ChallengeInviteTextDefaultInputField, componentDidMount');
     this.challengeStartStoreListener = ChallengeStartStore.addListener(this.onChallengeStartStoreChange.bind(this));
     this.challengeStoreListener = ChallengeStore.addListener(this.onChallengeStartStoreChange.bind(this));
     this.onChallengeStartStoreChange();
   }
 
   componentDidUpdate (prevProps) {
-    // console.log('ChallengeTitleInputField componentDidUpdate');
+    // console.log('ChallengeInviteTextDefaultInputField componentDidUpdate');
     const {
       challengeWeVoteId: challengeWeVoteIdPrevious,
     } = prevProps;
@@ -52,43 +52,42 @@ class ChallengeTitleInputField extends Component {
 
   onChallengeStartStoreChange () {
     const { challengeWeVoteId, editExistingChallenge } = this.props;
-    // console.log('ChallengeTitleInputField challengeWeVoteId:', challengeWeVoteId);
-    let challengeTitle = '';
+    let challengeInviteTextDefault = '';
     if (editExistingChallenge) {
       const challenge = ChallengeStore.getChallengeByWeVoteId(challengeWeVoteId);
       if (challenge && challenge.challenge_we_vote_id) {
-        challengeTitle = challenge.challenge_title;
+        challengeInviteTextDefault = challenge.challenge_invite_text_default;
       }
     } else {
-      challengeTitle = ChallengeStartStore.getChallengeTitle();
+      challengeInviteTextDefault = ChallengeStartStore.getChallengeInviteTextDefault();
     }
-    // console.log('ChallengeTitleInputField challengeTitle:', challengeTitle);
-    const challengeTitleQueuedToSave = ChallengeStartStore.getChallengeTitleQueuedToSave();
-    const challengeTitleQueuedToSaveSet = ChallengeStartStore.getChallengeTitleQueuedToSaveSet();
-    let challengeTitleAdjusted = challengeTitle;
-    if (challengeTitleQueuedToSaveSet) {
-      challengeTitleAdjusted = challengeTitleQueuedToSave;
+    const challengeInviteTextDefaultQueuedToSave = ChallengeStartStore.getChallengeInviteTextDefaultQueuedToSave();
+    const challengeInviteTextDefaultQueuedToSaveSet = ChallengeStartStore.getChallengeInviteTextDefaultQueuedToSaveSet();
+    let challengeInviteTextDefaultAdjusted = challengeInviteTextDefault;
+    if (challengeInviteTextDefaultQueuedToSaveSet) {
+      challengeInviteTextDefaultAdjusted = challengeInviteTextDefaultQueuedToSave;
     }
-    // console.log('onChallengeStartStoreChange challengeTitle: ', challengeTitle, ', challengeTitleQueuedToSave: ', challengeTitleQueuedToSave, ', challengeTitleAdjusted:', challengeTitleAdjusted);
+    // console.log('onChallengeStartStoreChange challengeInviteTextDefault: ', challengeInviteTextDefault, ', challengeInviteTextDefaultQueuedToSave: ', challengeInviteTextDefaultQueuedToSave, ', challengeInviteTextDefaultAdjusted:', challengeInviteTextDefaultAdjusted);
     this.setState({
-      challengeTitle: challengeTitleAdjusted,
+      challengeInviteTextDefault: challengeInviteTextDefaultAdjusted,
     });
   }
 
-  updateChallengeTitle (event) {
-    if (event.target.name === 'challengeTitle') {
-      ChallengeStartActions.challengeTitleQueuedToSave(event.target.value);
+  updateChallengeInviteTextDefault (event) {
+    if (event.target.name === 'challengeInviteTextDefault') {
+      ChallengeStartActions.challengeInviteTextDefaultQueuedToSave(event.target.value);
       this.setState({
-        challengeTitle: event.target.value,
+        challengeInviteTextDefault: event.target.value,
       });
     }
   }
 
   render () {
-    renderLog('ChallengeTitleInputField');  // Set LOG_RENDER_EVENTS to log all renders
+    renderLog('ChallengeInviteTextDefaultInputField');  // Set LOG_RENDER_EVENTS to log all renders
 
-    const { challengeTitlePlaceholder, classes, externalUniqueId } = this.props;
-    const { challengeTitle } = this.state;
+    const { classes, externalUniqueId } = this.props;
+    const { challengeInviteTextDefault } = this.state;
+
     return (
       <div className="">
         <form onSubmit={(e) => { e.preventDefault(); }}>
@@ -97,15 +96,17 @@ class ChallengeTitleInputField extends Component {
               <FormControl classes={{ root: classes.formControl }}>
                 <TextField
                   // classes={{ root: classes.textField }} // Not working yet
-                  id={`challengeTitleTextArea-${externalUniqueId}`}
-                  label={challengeTitlePlaceholder || 'Challenge name'}
-                  name="challengeTitle"
+                  id={`challengeInviteTextDefaultTextArea-${externalUniqueId}`}
+                  label="Text participants will send to friends"
+                  name="challengeInviteTextDefault"
                   margin="dense"
+                  multiline
+                  rows={8}
                   variant="outlined"
-                  placeholder={challengeTitlePlaceholder || 'Challenge name'}
-                  value={challengeTitle}
+                  placeholder="Text participants will send to friends"
+                  value={challengeInviteTextDefault}
                   onKeyDown={this.handleKeyPress}
-                  onChange={this.updateChallengeTitle}
+                  onChange={this.updateChallengeInviteTextDefault}
                 />
               </FormControl>
             </ColumnFullWidth>
@@ -115,8 +116,7 @@ class ChallengeTitleInputField extends Component {
     );
   }
 }
-ChallengeTitleInputField.propTypes = {
-  challengeTitlePlaceholder: PropTypes.string,
+ChallengeInviteTextDefaultInputField.propTypes = {
   challengeWeVoteId: PropTypes.string,
   classes: PropTypes.object,
   editExistingChallenge: PropTypes.bool,
@@ -145,4 +145,4 @@ const Wrapper = styled('div')`
   width: calc(100% + 24px);
 `;
 
-export default withStyles(styles)(ChallengeTitleInputField);
+export default withStyles(styles)(ChallengeInviteTextDefaultInputField);

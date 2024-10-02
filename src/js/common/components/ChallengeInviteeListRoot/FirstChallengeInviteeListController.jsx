@@ -21,6 +21,9 @@ class FirstChallengeInviteeListController extends Component {
   }
 
   componentDidUpdate (prevProps) {
+    if (this.props.challengeWeVoteId !== prevProps.challengeWeVoteId) {
+      this.challengeInviteeListFirstRetrieve();
+    }
     if (this.props.searchText !== prevProps.searchText) {
       if (this.searchTimer) clearTimeout(this.searchTimer);
       this.searchTimer = setTimeout(() => {
@@ -42,9 +45,9 @@ class FirstChallengeInviteeListController extends Component {
     const { challengeWeVoteId } = this.props;
     initializejQuery(() => {
       const voterFirstRetrieveCompleted = VoterStore.voterFirstRetrieveCompleted();
-      // console.log('FirstChallengeInviteeListController challengeInviteeListFirstRetrieveInitiated: ', challengeInviteeListFirstRetrieveInitiated, ', voterFirstRetrieveCompleted: ', voterFirstRetrieveCompleted);
-      if (voterFirstRetrieveCompleted) {
-        if (apiCalming(`challengeInviteeListFirstRetrieve-${challengeWeVoteId}`, 60000)) {
+      // console.log('FirstChallengeInviteeListController challengeInviteeListFirstRetrieveInitiated, voterFirstRetrieveCompleted: ', voterFirstRetrieveCompleted);
+      if (voterFirstRetrieveCompleted && challengeWeVoteId) {
+        if (apiCalming(`challengeInviteeListFirstRetrieve-${challengeWeVoteId}`, 30000)) {
           ChallengeInviteeActions.challengeInviteeListRetrieve(challengeWeVoteId);
         }
       }

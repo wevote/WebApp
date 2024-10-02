@@ -16,12 +16,17 @@ export default {
       });
   },
 
-  challengeInviteeSave (challengeWeVoteId, inviteeName) {
-    console.log('challengeInviteeSave called with challengeWeVoteId: ', challengeWeVoteId, ' and inviteeName: ', inviteeName);
+  challengeInviteeSave (challengeWeVoteId, inviteeName = '', inviteeNameChanged = false, inviteTextFromInviter = '', inviteTextFromInviterChanged = false, inviteeUrlCode = '', inviteeUrlCodeChanged = false) {
+    // console.log('challengeInviteeSave called with challengeWeVoteId: ', challengeWeVoteId, ' and inviteeName: ', inviteeName);
     Dispatcher.loadEndpoint('challengeInviteeSave',
       {
         challenge_we_vote_id: challengeWeVoteId,
         invitee_name: inviteeName,
+        invitee_name_changed: inviteeNameChanged,
+        invitee_text_from_inviter: inviteTextFromInviter,
+        invitee_text_from_inviter_changed: inviteTextFromInviterChanged,
+        invitee_url_code: inviteeUrlCode,
+        invitee_url_code_changed: inviteeUrlCodeChanged,
       });
   },
 

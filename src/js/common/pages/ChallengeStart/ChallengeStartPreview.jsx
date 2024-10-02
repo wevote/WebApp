@@ -1,7 +1,7 @@
 import { Button } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
@@ -10,11 +10,13 @@ import { OuterWrapper, PageWrapper } from '../../components/Style/stepDisplaySty
 import DelayedLoad from '../../components/Widgets/DelayedLoad';
 import historyPush from '../../utils/historyPush';
 import { renderLog } from '../../utils/logging';
-import CompleteYourProfileModalController from '../../components/Settings/CompleteYourProfileModalController';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import ChallengeStartStore from '../../stores/ChallengeStartStore';
 import VoterStore from '../../../stores/VoterStore';
 import initializejQuery from '../../utils/initializejQuery';
+import ChallengeParticipantActions from '../../actions/ChallengeParticipantActions';
+
+const SignInModal = React.lazy(() => import(/* webpackChunkName: 'SignInModal' */ '../../components/SignIn/SignInModal'));
 
 
 class ChallengeStartPreview extends Component {
@@ -24,8 +26,11 @@ class ChallengeStartPreview extends Component {
       challengeDescription: '',
       challengePhotoLargeUrl: '',
       challengeTitle: '',
+      challengeWeVoteId: '',
+      publishOnceSignedIn: false,
+      publishWhenOutOfDraft: false,
       readyToPublish: false,
-      voterFirstName: '',
+      showSignInModal: false,
       voterSignedIn: false,
     };
   }
@@ -62,60 +67,107 @@ class ChallengeStartPreview extends Component {
     const challengeDescription = ChallengeStartStore.getChallengeDescription();
     const challengePhotoLargeUrl = ChallengeStartStore.getChallengePhotoLargeUrl();
     const challengeTitle = ChallengeStartStore.getChallengeTitle();
+    const challengeWeVoteId = ChallengeStartStore.getChallengeWeVoteId();
     const step1Completed = ChallengeStartStore.challengeTitleExists();
     const step2Completed = ChallengeStartStore.challengeDescriptionExists();
-    const step3Completed = ChallengeStartStore.challengePhotoExists();
-    const readyToPublish = step1Completed && step2Completed && step3Completed;
+    // const step3Completed = ChallengeStartStore.challengePhotoExists();
+    // const readyToPublish = step1Completed && step2Completed && step3Completed;
+    const readyToPublish = step1Completed && step2Completed;
+    const voterSignedIn = VoterStore.getVoterIsSignedIn();
+    const { publishWhenOutOfDraft } = this.state;
     this.setState({
       challengeDescription,
       challengePhotoLargeUrl,
       challengeTitle,
+      challengeWeVoteId,
       readyToPublish,
+    }, () => {
+      if (voterSignedIn && publishWhenOutOfDraft) {
+        // console.log('ChallengeStartPreview, onChallengeStartStoreChange, voterSignedIn && publishWhenOutOfDraft, calling functionToUseWhenOutOfDraft');
+        this.setState({
+          publishWhenOutOfDraft: false,
+        }, () => this.functionToUseWhenOutOfDraft());
+      }
     });
   }
 
   onVoterStoreChange () {
-    const voterFirstName = VoterStore.getFirstName();
+    const { challengeWeVoteId, publishOnceSignedIn } = this.state;
+    // const voterFirstName = VoterStore.getFirstName();
     const voterSignedIn = VoterStore.getVoterIsSignedIn();
     this.setState({
-      voterFirstName,
+      // voterFirstName,
       voterSignedIn,
     });
+    if (voterSignedIn && publishOnceSignedIn) {
+      // console.log('ChallengeStartPreview, onVoterStoreChange, voterSignedIn && publishOnceSignedIn, Publishing the challenge now');
+      this.setState({
+        publishOnceSignedIn: false,
+        publishWhenOutOfDraft: true,
+      }, () => ChallengeStartActions.inDraftModeSave(challengeWeVoteId, false));
+    }
   }
 
   challengeEditAll = () => {
     historyPush('/start-a-challenge-edit-all');
   }
 
-  submitPublishNowDesktop = () => {
-    const { voterFirstName, voterSignedIn } = this.state;
-    if (!voterFirstName || !voterSignedIn) {
-      // Open complete your profile modal
-      AppObservableStore.setShowCompleteYourProfileModal(true);
+  submitPublishNow = () => {
+    const { challengeWeVoteId, voterSignedIn } = this.state;
+    // console.log('ChallengeStartPreview submitPublishNow challengeWeVoteId:', challengeWeVoteId);
+    if (!voterSignedIn) {
+      // Open sign in modal
+      this.toggleShowSignInModal(true);
+      this.setState({
+        publishOnceSignedIn: true,
+      });
     } else {
       // Mark the challenge as published
-      const challengeWeVoteId = '';
       ChallengeStartActions.inDraftModeSave(challengeWeVoteId, false);
-      historyPush('/profile/started');
+      this.setState({
+        publishWhenOutOfDraft: true,
+      });
     }
   }
 
-  submitPublishNowMobile = () => {
-    const { voterFirstName, voterSignedIn } = this.state;
-    // console.log('ChallengeStartPreview submitPublishNowMobile');
-    if (!voterFirstName || !voterSignedIn) {
-      // Navigate to the mobile complete your profile page
-      historyPush('/start-a-challenge-complete-your-profile');
+  functionToUseWhenOutOfDraft = () => {
+    const { challengeWeVoteId } = this.state;
+    if (challengeWeVoteId) {
+      const challengeBasePath = `/+/${challengeWeVoteId}`;
+      // console.log('ChallengeStartPreview, functionToUseWhenOutOfDraft challengeBasePath: ', challengeBasePath, ', challengeWeVoteId: ', challengeWeVoteId);
+      ChallengeParticipantActions.challengeParticipantSave(challengeWeVoteId);
+      AppObservableStore.setShowCompleteYourProfileModal(false);
+      AppObservableStore.setShowSignInModal(false);
+      // ChallengeStartActions.inDraftModeSave(challengeWeVoteId, false);
+      // console.log('goToNextPage challengeBasePath before setTimeout: ', challengeBasePath);
+      setTimeout(() => {
+        // console.log('historyPush challengeBasePath: ', challengeBasePath);
+        historyPush(challengeBasePath);
+      }, 500);
+      return null;
     } else {
-      this.functionToUseWhenProfileComplete();
+      console.log('ChallengeStartPreview functionToUseWhenOutOfDraft challengeWeVoteId not found');
+      return null;
     }
   }
 
-  functionToUseWhenProfileComplete = () => {
-    // Mark the challenge as published
-    const challengeWeVoteId = '';
-    ChallengeStartActions.inDraftModeSave(challengeWeVoteId, false);
-    historyPush('/profile/started');
+  functionToUseWhenSignedIn = () => {
+    const { challengeWeVoteId } = this.state;
+    if (challengeWeVoteId) {
+      // Mark the challenge as published
+      ChallengeStartActions.inDraftModeSave(challengeWeVoteId, false);
+      return null;
+    } else {
+      console.log('ChallengeStartPreview functionToUseWhenSignedIn challengeWeVoteId not found');
+      return null;
+    }
+  }
+
+  toggleShowSignInModal = () => {
+    const { showSignInModal } = this.state;
+    this.setState({
+      showSignInModal: !showSignInModal,
+    });
   }
 
   render () {
@@ -123,11 +175,21 @@ class ChallengeStartPreview extends Component {
     const { classes } = this.props;
     const {
       challengeDescription, challengePhotoLargeUrl,
-      challengeTitle, chosenWebsiteName, readyToPublish,
+      challengeTitle, chosenWebsiteName, showSignInModal, readyToPublish,
     } = this.state;
     return (
       <div>
         <Helmet title={`Preview Your Challenge - ${chosenWebsiteName}`} />
+        { showSignInModal && (
+          <Suspense fallback={<></>}>
+            <SignInModal
+              signInTitle="Sign in to publish your Democracy Challenge"
+              signInSubTitle="You can continue making changes after signing in."
+              toggleOnClose={this.toggleShowSignInModal}
+              uponSuccessfulSignIn={this.functionToUseWhenSignedIn}
+            />
+          </Suspense>
+        )}
         <SaveCancelOuterWrapper>
           <SaveCancelInnerWrapper>
             <SaveCancelButtonsWrapper>
@@ -143,7 +205,7 @@ class ChallengeStartPreview extends Component {
                     Later
                   </div>
                   <div className="u-show-desktop-tablet">
-                    Publish&nbsp;later&nbsp;&nbsp;&nbsp;
+                    Finish&nbsp;later&nbsp;&nbsp;&nbsp;
                   </div>
                 </Button>
               </Link>
@@ -156,30 +218,16 @@ class ChallengeStartPreview extends Component {
               >
                 Edit
               </Button>
-              <div className="u-show-mobile">
-                <Button
-                  classes={{ root: classes.buttonSave }}
-                  color="primary"
-                  disabled={!readyToPublish}
-                  id="saveChallengePublishNowMobile"
-                  onClick={this.submitPublishNowMobile}
-                  variant="contained"
-                >
-                  Publish now
-                </Button>
-              </div>
-              <div className="u-show-desktop-tablet">
-                <Button
-                  classes={{ root: classes.buttonSave }}
-                  color="primary"
-                  disabled={!readyToPublish}
-                  id="saveChallengePublishNowDesktop"
-                  onClick={this.submitPublishNowDesktop}
-                  variant="contained"
-                >
-                  Publish now
-                </Button>
-              </div>
+              <Button
+                classes={{ root: classes.buttonSave }}
+                color="primary"
+                disabled={!readyToPublish}
+                id="saveChallengePublishNow"
+                onClick={this.submitPublishNow}
+                variant="contained"
+              >
+                Publish
+              </Button>
             </SaveCancelButtonsWrapper>
           </SaveCancelInnerWrapper>
         </SaveCancelOuterWrapper>
@@ -217,10 +265,6 @@ class ChallengeStartPreview extends Component {
             </InnerWrapper>
           </OuterWrapper>
         </PageWrapper>
-        <CompleteYourProfileModalController
-          functionToUseWhenProfileComplete={this.functionToUseWhenProfileComplete}
-          startChallenge
-        />
       </div>
     );
   }

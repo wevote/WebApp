@@ -48,7 +48,7 @@ function searchFunction () {
 }
 
 
-const ChallengeParticipantListRoot = ({ challengeWeVoteId, classes }) => {
+const ChallengeParticipantListRoot = ({ challengeWeVoteId, classes, uniqueExternalId }) => {
   // eslint-disable-next-line no-unused-vars
   const [latestParticipants, setLatestParticipants] = React.useState([]);
 
@@ -86,7 +86,7 @@ const ChallengeParticipantListRoot = ({ challengeWeVoteId, classes }) => {
               onClick={() => console.log('Top 50 button clicked')}
               variant="outlined"
             >
-              Top 50
+              Top&nbsp;50
             </Button>
           </ButtonWrapper>
           <SearchBarWrapper>
@@ -124,6 +124,7 @@ const ChallengeParticipantListRoot = ({ challengeWeVoteId, classes }) => {
       <ChallengeParticipantList
         // participantList={latestParticipants}
         participantList={participantListDummyData}
+        uniqueExternalId={uniqueExternalId}
       />
       <Suspense fallback={<></>}>
         <FirstChallengeParticipantListController challengeWeVoteId={challengeWeVoteId} searchText="SEARCH TEXT HERE" />
@@ -136,12 +137,14 @@ ChallengeParticipantListRoot.propTypes = {
   // clearSearchFunction: PropTypes.func.isRequired,
   // searchFunction: PropTypes.func.isRequired,
   challengeWeVoteId: PropTypes.string,
+  uniqueExternalId: PropTypes.string,
 };
 
 const styles = () => ({
   buttonDesktop: {
-    padding: '2px 16px',
+    padding: '2px 6px',
     borderRadius: 5,
+    fontSize: 14,
   },
   searchButton: {
     borderRadius: 50,
