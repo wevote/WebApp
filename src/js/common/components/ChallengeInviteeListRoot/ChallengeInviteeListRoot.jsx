@@ -5,6 +5,7 @@ import { withStyles } from '@mui/styles';
 import ChallengeInviteeList from './ChallengeInviteeList';
 import FirstChallengeInviteeListController from './FirstChallengeInviteeListController';
 import ChallengeInviteeStore from '../../stores/ChallengeInviteeStore';
+import DesignTokenColors from '../Style/DesignTokenColors';
 
 const inviteeListDummyData = [
   { invitee_id: 1, invitee_name: 'Jane', invite_sent: false, invite_viewed: false, challenge_joined: false, messageStatus: '' },
@@ -19,6 +20,9 @@ const inviteeListDummyData = [
   { invitee_id: 10, invitee_name: 'Melina H.', invite_sent: true, invite_viewed: true, challenge_joined: true, messageStatus: 'Challenge Joined' },
   { invitee_id: 11, invitee_name: 'Melina H.', invite_sent: true, invite_viewed: false, challenge_joined: false, messageStatus: 'Message Sent' },
   { invitee_id: 12, invitee_name: 'Melina H.', invite_sent: true, invite_viewed: false, challenge_joined: false, messageStatus: 'Message Sent' },
+  { invitee_id: 13, invitee_name: 'Melina H.', invite_sent: true, invite_viewed: true, challenge_joined: true, messageStatus: 'Challenge Joined' },
+  { invitee_id: 14, invitee_name: 'Melina H.', invite_sent: true, invite_viewed: false, challenge_joined: false, messageStatus: 'Message Sent' },
+  { invitee_id: 15, invitee_name: 'Melina H.', invite_sent: true, invite_viewed: false, challenge_joined: false, messageStatus: 'Message Sent' },
 ];
 
 const ChallengeInviteeListRoot = ({ challengeWeVoteId, classes }) => {
@@ -45,12 +49,22 @@ const ChallengeInviteeListRoot = ({ challengeWeVoteId, classes }) => {
   return (
     <ChallengeInviteeListRootContainer>
       <Heading>
-        <StyledP>Invited Friends</StyledP>
+        <RankContainer>
+          <RankText>You&apos;re</RankText>
+          {' '}
+          <RankNumber>#5341</RankNumber>
+          {' '}
+          <RankDetails>(of 6441)</RankDetails>
+        </RankContainer>
+        <FirendsTableHeader>
+          <HeaderItem>FRIENDS NAME</HeaderItem>
+          <HeaderItem>STATUS</HeaderItem>
+        </FirendsTableHeader>
       </Heading>
       <ChallengeInviteeList
         challengeWeVoteId={challengeWeVoteId}
-        inviteeList={inviteeList}
-        // inviteeList={inviteeListDummyData}
+        // inviteeList={inviteeList}
+        inviteeList={inviteeListDummyData}
       />
       <Suspense fallback={<></>}>
         <FirstChallengeInviteeListController challengeWeVoteId={challengeWeVoteId} searchText="SEARCH TEXT HERE" />
@@ -68,9 +82,6 @@ const styles = () => ({
     padding: '2px 16px',
     borderRadius: 5,
   },
-  searchButton: {
-    borderRadius: 50,
-  },
 });
 
 const ChallengeInviteeListRootContainer = styled.div`
@@ -80,13 +91,40 @@ const ChallengeInviteeListRootContainer = styled.div`
 `;
 
 const Heading = styled.div`
-  padding: 0 5px;
+  padding: 10px 0;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 `;
 
-const StyledP = styled.p`
+const FirendsTableHeader = styled('div')`
+  display: flex;
+  justify-content: space-between;
+  width: 80%;
   font-weight: bold;
-  padding: 10px;
+  font-size: 12px;
+  color: #333;
+`;
+
+const HeaderItem = styled.p`
+  margin: 0;  /* Reset default margins */
+`;
+
+const RankContainer = styled.p`
+  font-size: 16px;
+  color: ${DesignTokenColors.neutral900}; /* Default color */
+`;
+
+const RankText = styled.span`
+  font-weight: bold;
+  color: ${DesignTokenColors.neutral900};  /* Color for "You're" */
+`;
+
+const RankNumber = styled.span`
+  font-weight: bold;
+  color: ${DesignTokenColors.accent500};  /* Accent color for the rank number */
+`;
+
+const RankDetails = styled.span`
+  color: ${DesignTokenColors.neutral600};  /* Subdued color for "(of 6441)" */
 `;
 
 export default withStyles(styles)(ChallengeInviteeListRoot);
