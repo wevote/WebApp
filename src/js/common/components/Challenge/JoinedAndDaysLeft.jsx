@@ -9,7 +9,7 @@ import DesignTokenColors from '../Style/DesignTokenColors';
 
 const ChallengeParticipantFirstRetrieveController = React.lazy(() => import(/* webpackChunkName: 'ChallengeParticipantFirstRetrieveController' */ '../ChallengeParticipant/ChallengeParticipantFirstRetrieveController'));
 
-function JoinedAndDaysLeft ({ challengeWeVoteId }) {
+function JoinedAndDaysLeft ({ challengeWeVoteId, style }) {
   // eslint-disable-next-line no-unused-vars
   const [daysLeft, setDaysLeft] = React.useState(0);
   const [voterIsChallengeParticipant, setVoterIsChallengeParticipant] = React.useState(false);
@@ -41,7 +41,7 @@ function JoinedAndDaysLeft ({ challengeWeVoteId }) {
   return (
     <InfoWrapper>
       {/* SVG, Joined, Dot, and Days Left */}
-      <JoinedInfoWrapper>
+      <JoinedInfoWrapper style={style}>
         {voterIsChallengeParticipant ? (
           <>
             <JoinedIcon src={JoinedGreenCircle} alt="Joined" />
@@ -66,6 +66,7 @@ function JoinedAndDaysLeft ({ challengeWeVoteId }) {
 
 JoinedAndDaysLeft.propTypes = {
   challengeWeVoteId: PropTypes.string.isRequired,
+  style: PropTypes.object,
 };
 
 // Styled Components
