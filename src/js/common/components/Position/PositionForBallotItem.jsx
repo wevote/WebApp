@@ -3,12 +3,12 @@ import React, { useState } from 'react';
 import styled, { withTheme } from 'styled-components';
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
 import BlockOutlinedIcon from '@mui/icons-material/BlockOutlined';
-import ThumbDownOffAltRoundedIcon from '@mui/icons-material/ThumbDownOffAltRounded';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import Popover from '@mui/material/Popover';
 import { Typography } from '@mui/material';
 import { withStyles } from '@mui/styles';
 import HeartFavoriteToggleBase from '../Widgets/HeartFavoriteToggle/HeartFavoriteToggleBase';
+import ThumbsUpDownToggle from '../Widgets/ThumbsUpDownToggle/ThumbsUpDownToggle';
 
 function PositionForBallotItem ({ classes }) {
   const [anchorEl, setAnchorEL] = useState(null);
@@ -63,15 +63,8 @@ function PositionForBallotItem ({ classes }) {
           </VoterPositionWrapper>
           <VoterLikesSourceWrapper>
             <VoterLikes>
-              <VoterLikesThumbsUpContainer type="button" aria-label="Source">
-                <ThumbDownOffAltRoundedIcon style={{ fontSize: '21px', color: 'rgba(154, 154, 154, 1)', marginRight: '10px', transform: 'rotate(180deg)' }} />
-              </VoterLikesThumbsUpContainer>
-              <h3 style={{ marginTop: '7px' }}>7</h3>
-              <LikeDislikeSeperator>&nbsp;</LikeDislikeSeperator>
-              <button type="button" aria-label="Dislike" style={{ background: 'transparent', border: 'none' }}>
-                <ThumbDownOffAltRoundedIcon style={{ fontSize: '21px', color: 'rgba(154, 154, 154, 1)', marginLeft: '10px' }} />
-              </button>
-              <button type="button" aria-label="Source" style={{ background: !anchorEl ? 'transparent' : 'rgba(210, 210, 210, 1)', width: '34px', height: '34px', border: 'none', borderRadius: '30px', marginLeft: '10px' }} onClick={onDotButtonClick}>
+              <ThumbsUpDownToggle />
+              <button type="button" aria-label="Source" style={{ background: !anchorEl ? 'transparent' : 'rgba(210, 210, 210, 1)', width: '34px', height: '34px', border: 'none', borderRadius: '30px', marginLeft: '10px', marginTop: '-5px' }} onClick={onDotButtonClick}>
                 <MoreHorizIcon style={{ color: 'rgba(132, 132, 132, 1)', fontSize: '30px', marginLeft: '-4px', marginTop: '-.5px' }} />
               </button>
               <Popover
@@ -79,10 +72,6 @@ function PositionForBallotItem ({ classes }) {
                 open={open}
                 anchorEl={anchorEl}
                 onClose={handlePopoverClose}
-                // anchorOrigin={{
-                //   vertical: 'top',
-                //   horizontal: 'left',
-                // }}
                 anchorReference="anchorPosition"
                 anchorPosition={{ top: 75, left: 370 }}
                 transformOrigin={{
@@ -90,13 +79,6 @@ function PositionForBallotItem ({ classes }) {
                   horizontal: 'left',
                 }}
                 classes={{ root: classes.popoverRoot }}
-                // sx={{
-                //   '& .MuiPopover-paper': {
-                //     borderRadius: 2,
-                //     border: '1px solid rgba(210, 210, 210, 1)',
-                //     marginTop: '3px',
-                //   },
-                // }}
               >
                 <Typography sx={{ p: 1 }}>
                   <OpinionSource target="_blank">View source of opinion</OpinionSource>
@@ -186,7 +168,6 @@ const VoterLikesSourceWrapper = styled('div')`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: -15px;
   `;
 
 const VoterLikes = styled('div')`
@@ -196,17 +177,6 @@ const VoterLikes = styled('div')`
 const OpinionSource = styled('button')`
   background: transparent;
   border:none;
-`;
-
-const VoterLikesThumbsUpContainer = styled('button')`
-  background: transparent; 
-  border: none;
-`;
-
-const LikeDislikeSeperator = styled('div')`
-  margin-left: 8px;
-  line-height: 16px;
-  border-right: 1px solid rgba(197, 197, 197, 1);
 `;
 
 const styles = () => ({
