@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Avatar } from '@mui/material';
+import { Avatar, Button } from '@mui/material';
+import { withStyles } from '@mui/styles';
 import { RemoveRedEye, CheckCircle, Check, MoreHoriz } from '@mui/icons-material';
 import DesignTokenColors from '../Style/DesignTokenColors';
 import speakerDisplayNameToInitials from '../../utils/speakerDisplayNameToInitials';
 
-const ChallengeInviteeListItem = ({ invitee }) => {
+const ChallengeInviteeListItem = ({ invitee, classes }) => {
   // console.log('ChallengeInviteeListItem:', invitee);
   const { sx, children } = speakerDisplayNameToInitials(invitee.invitee_name);
   return (
@@ -17,13 +18,14 @@ const ChallengeInviteeListItem = ({ invitee }) => {
           {' '}
           <Name>{invitee.invitee_name}</Name>
         </FriendName>
-        <MessageStatus>
-          {invitee.messageStatus === 'Message Viewed' && <RemoveRedEye />}
-          {invitee.messageStatus === 'Message Sent' && <Check />}
-          {invitee.messageStatus === 'Challenge Joined' && <CheckCircle />}
-          {'  '}
+        <MessageContainer>
+          <MessageStatus>
+            {invitee.messageStatus === 'Message Viewed' && <RemoveRedEye />}
+            {invitee.messageStatus === 'Message Sent' && <Check />}
+            {invitee.messageStatus === 'Challenge Joined' && <CheckCircle />}
+          </MessageStatus>
           {invitee.messageStatus}
-        </MessageStatus>
+        </MessageContainer>
         <VerticalLine />
         <ActivityCommentEditWrapper>
           <MoreHoriz />
@@ -32,14 +34,20 @@ const ChallengeInviteeListItem = ({ invitee }) => {
       <Options>
         <div>
           {invitee.invite_sent === false && (
-            <InformationtoWevote>
+            <Button
+            classes={{ root: classes.buttonDesktop }}
+              color="primary"
+              id="challengeLeaderboardTop50Button"
+              onClick={() => console.log('Top 50 button clicked')}
+              variant="outlined"
+            >
               Let us know you sent the message
-            </InformationtoWevote>
+            </Button>
           )}
         </div>
         {invitee.messageStatus !== 'Challenge Joined' && (
           <Invite>
-            Invite Again
+            Invite again
           </Invite>
         )}
       </Options>
@@ -49,7 +57,20 @@ const ChallengeInviteeListItem = ({ invitee }) => {
 
 ChallengeInviteeListItem.propTypes = {
   invitee: PropTypes.object,
+  classes: PropTypes.object.isRequired,
 };
+
+const styles = () => ({
+  buttonDesktop: {
+    padding: '2px 10px',
+    borderRadius: 20,
+    fontSize: 14,
+  },
+  searchButton: {
+    borderRadius: 50,
+  },
+});
+
 
 const InvitedFriendDetails = styled.div`
   display: flex;
@@ -58,7 +79,6 @@ const InvitedFriendDetails = styled.div`
   gap: 10px;
   padding: 15px 2px;
   border-bottom: 1px solid ${DesignTokenColors.neutral100};
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 `;
 
 const PrimaryDetails = styled.div`
@@ -85,21 +105,30 @@ const Name = styled.div`
   color: ${DesignTokenColors.neutral900};
 `;
 
+const MessageContainer = styled.div`
+  display: flex;
+`;
+
 const MessageStatus = styled.div`
-  width: 170px;
   text-align: center;
   font-size: 14px;
   color: ${DesignTokenColors.confirmation800};
+  margin-right: 10px;
 `;
 
 const VerticalLine = styled.div`
-  border-left: 1px solid black;
+  border-left: 1px solid ${DesignTokenColors.neutral200};
   height: 30px;
   margin: 0 10px;
 `;
 
 const ActivityCommentEditWrapper = styled('div')`
   margin-right: 10px;
+  color: ${DesignTokenColors.neutral900};
+  :hover {
+    color: ${DesignTokenColors.neutral400};
+    cursor: pointer;
+  }
 `;
 
 const Options = styled.div`
@@ -107,18 +136,11 @@ const Options = styled.div`
   flex-direction: row;
   justify-content: space-between;
   font-size: 14px;
+`;
+
+const Invite = styled.a`
+  padding: 5px;
   color: #4371cc;
 `;
 
-const InformationtoWevote = styled.div`
-  border: 2px solid #4371cc;
-  border-radius: 15px;
-  padding:5px;
-  font-size: 15px;;
-`;
-
-const Invite = styled.div`
-  padding: 5px;
-`;
-
-export default ChallengeInviteeListItem;
+export default withStyles(styles)(ChallengeInviteeListItem);

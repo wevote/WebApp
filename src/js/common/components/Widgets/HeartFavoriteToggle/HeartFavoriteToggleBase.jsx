@@ -263,36 +263,36 @@ class HeartFavoriteToggleBase extends Component {
   }
 
   supportHoverText = () => {
-    const { campaignXWeVoteId, voterIsSignedIn } = this.props;
     const {
-      campaignXOpposersCountLocal: campaignXOpposersCountLocalPrevious,
       campaignXSupportersCountLocal: campaignXSupportersCountLocalPrevious,
       voterOpposesLocal: voterOpposesLocalPrevious,
       voterSupportsLocal: voterSupportsLocalPrevious,
     } = this.state;
 
+    const supportersCount = campaignXSupportersCountLocalPrevious ? Number(campaignXSupportersCountLocalPrevious) : 0;
+
     if (!voterOpposesLocalPrevious && !voterSupportsLocalPrevious) {
       return "Favoriting helps us show you what other candidates match your values.";
     } else if (voterOpposesLocalPrevious) {
-      return "Favorited by " + campaignXSupportersCountLocalPrevious + " people. Favoriting helps us show you what other candidates match your values.";
+      return "Favorited by " + supportersCount + " people. Favoriting helps us show you what other candidates match your values.";
     } else {
       return "Remove Favorite";
     }
   }
 
   opposeHoverText = () => {
-    const { campaignXWeVoteId, voterIsSignedIn } = this.props;
     const {
       campaignXOpposersCountLocal: campaignXOpposersCountLocalPrevious,
-      campaignXSupportersCountLocal: campaignXSupportersCountLocalPrevious,
       voterOpposesLocal: voterOpposesLocalPrevious,
       voterSupportsLocal: voterSupportsLocalPrevious,
     } = this.state;
 
+    const opposersCount = campaignXOpposersCountLocalPrevious ? Number(campaignXOpposersCountLocalPrevious) : 0;
+
     if (!voterOpposesLocalPrevious && !voterSupportsLocalPrevious) {
-      return "Disliking helps us show you what other candidates match your values.";
+      return "Disliked by " + opposersCount + " people. Disliking helps us show you what other candidates match your values.";
     } else if (voterSupportsLocalPrevious) {
-      return "Disliked by " + campaignXOpposersCountLocalPrevious + " people. Disliking helps us show you what other candidates match your values.";
+      return "Disliked by " + opposersCount + " people. Disliking helps us show you what other candidates match your values.";
     } else {
       return "Remove Dislike";
     }

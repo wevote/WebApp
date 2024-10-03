@@ -5,6 +5,7 @@ import JoinedGreenCircle from '../../../../img/global/svg-icons/issues/joined-gr
 import InfoOutlineIcon from '../../../../img/global/svg-icons/issues/material-symbols-info-outline.svg';
 import ChallengeStore from '../../stores/ChallengeStore';
 import daysUntil from '../../utils/daysUntil';
+import DesignTokenColors from '../Style/DesignTokenColors';
 
 const ChallengeParticipantFirstRetrieveController = React.lazy(() => import(/* webpackChunkName: 'ChallengeParticipantFirstRetrieveController' */ '../ChallengeParticipant/ChallengeParticipantFirstRetrieveController'));
 
@@ -84,8 +85,8 @@ const InfoWrapper = styled('div')`
 
 const JoinedInfoWrapper = styled('div')`
   align-items: center;
-  background-color: #ffffff;
-  border: 1px solid #d2d2d2;
+  background-color: ${DesignTokenColors.whiteUI};
+  border: 1px solid ${DesignTokenColors.gray100};
   border-radius: 20px;
   display: flex;
   height: auto;
@@ -101,20 +102,20 @@ const JoinedIcon = styled('img')`
 `;
 
 const JoinedText = styled('span')`
-  color: #2a2a2c;
+  color: ${DesignTokenColors.gray900};
   font-size: 13px;
   font-weight: 400;
 `;
 
 const DotSeparator = styled('span')`
-  color: #6b6b6b;
+  color: ${DesignTokenColors.gray500};
   font-size: 13px;
   font-weight: 400;
   margin: 0 5px;
 `;
 
 const DaysLeftText = styled('span')`
-  color: #2a2a2c;
+  color: ${DesignTokenColors.gray900};
   font-size: 13px;
   font-weight: 600;
   letter-spacing: -0.03em;
