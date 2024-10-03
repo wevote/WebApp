@@ -5,8 +5,84 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@mui/styles';
 import SearchBar2024 from '../../../components/Search/SearchBar2024';
 import DesignTokenColors from '../../components/Style/DesignTokenColors';
-import ChallengeLeaderboardList from '../../components/Challenge/ChallengeLeaderboardList';
+import ChallengeParticipantList from '../../components/ChallengeParticipantListRoot/ChallengeParticipantList';
 
+
+const ChallengeLeaderboard = ({ classes, clearSearchFunction, searchFunction }) => (
+  <LeaderboardContainer>
+    <TopSection>
+      <ButtonAndSearchWrapper>
+        <ButtonWrapper>
+          <Button
+          classes={{ root: classes.buttonDesktop }}
+          color="primary"
+          id="challengeLeaderboardYouButton"
+          onClick={() => console.log('You button clicked')}
+          variant="outlined"
+          >
+            You
+          </Button>
+          <Button
+          classes={{ root: classes.buttonDesktop }}
+          color="primary"
+          id="challengeLeaderboardTop50Button"
+          onClick={() => console.log('Top 50 button clicked')}
+          variant="outlined"
+          >
+            Top&nbsp;50
+          </Button>
+        </ButtonWrapper>
+        <SearchBarWrapper>
+          <SearchBar2024
+            clearButton
+            searchButton
+            placeholder="Search by rank or name"
+            searchFunction={searchFunction}
+            clearFunction={clearSearchFunction}
+            searchUpdateDelayTime={500}
+          />
+        </SearchBarWrapper>
+      </ButtonAndSearchWrapper>
+      <LeaderboardInfoWrapper>
+        <p>
+          <span style={{ color: DesignTokenColors.neutral900, fontWeight: 'bold' }}>You&apos;re</span>
+          {' '}
+          <span style={{ color: DesignTokenColors.accent500, fontWeight: 'bold' }}>#5341</span>
+          {' '}
+          (of 6441)
+        </p>
+
+      </LeaderboardInfoWrapper>
+      <LeaderboardTableHeader>
+        <div style={{ display: 'flex', gap: '32px' }}>
+          <p>RANK</p>
+          <p>NAME</p>
+        </div>
+        <div style={{ display: 'flex', gap: '25px'  }}>
+          <p>POINTS</p>
+          <p>FRIENDS JOINED</p>
+        </div>
+      </LeaderboardTableHeader>
+    </TopSection>
+    <ChallengeParticipantList currentVoterWeVoteId={'wv02voter123'} />
+  </LeaderboardContainer>
+);
+
+ChallengeLeaderboard.propTypes = {
+  classes: PropTypes.object.isRequired,
+  clearSearchFunction: PropTypes.func.isRequired,
+  searchFunction: PropTypes.func.isRequired,
+};
+
+const styles = () => ({
+  buttonDesktop: {
+    padding: '2px 16px',
+    borderRadius: 5,
+  },
+  searchButton: {
+    borderRadius: 50,
+  },
+});
 
 const LeaderboardContainer = styled.div`
   max-width: 100vw;
@@ -46,6 +122,7 @@ const LeaderboardInfoWrapper = styled.div`
 const SearchBarWrapper = styled('div')`
   // margin-top: 14px;
   // margin-bottom: 8px;
+  width: 100%;
 `;
 
 const ButtonWrapper = styled.div`
@@ -61,82 +138,5 @@ const LeaderboardTableHeader = styled('div')`
   font-size: 12px;
   color: #333;
 `;
-
-
-const ChallengeLeaderboard = ({ classes, clearSearchFunction, searchFunction }) => (
-  <LeaderboardContainer>
-    <TopSection>
-      <ButtonAndSearchWrapper>
-        <ButtonWrapper>
-          <Button
-          classes={{ root: classes.buttonDesktop }}
-          color="primary"
-          id="challengeLeaderboardYouButton"
-          onClick={() => console.log('You button clicked')}
-          variant="outlined"
-          >
-            You
-          </Button>
-          <Button
-          classes={{ root: classes.buttonDesktop }}
-          color="primary"
-          id="challengeLeaderboardTop50Button"
-          onClick={() => console.log('Top 50 button clicked')}
-          variant="outlined"
-          >
-            Top 50
-          </Button>
-        </ButtonWrapper>
-        <SearchBarWrapper>
-          <SearchBar2024
-            clearButton
-            searchButton
-            placeholder="Search by rank or name"
-            searchFunction={searchFunction}
-            clearFunction={clearSearchFunction}
-            searchUpdateDelayTime={500}
-          />
-        </SearchBarWrapper>
-      </ButtonAndSearchWrapper>
-      <LeaderboardInfoWrapper>
-        <p>
-          <span style={{ color: DesignTokenColors.neutral900, fontWeight: 'bold' }}>You&apos;re</span>
-          {' '}
-          <span style={{ color: DesignTokenColors.accent500, fontWeight: 'bold' }}>#5341</span>
-          {' '}
-          (of 6441)
-        </p>
-
-      </LeaderboardInfoWrapper>
-      <LeaderboardTableHeader>
-        <div style={{ display: 'flex', gap: '32px' }}>
-          <p>RANK</p>
-          <p>NAME</p>
-        </div>
-        <div style={{ display: 'flex', gap: '25px'  }}>
-          <p>POINTS</p>
-          <p>FRIENDS JOINED</p>
-        </div>
-      </LeaderboardTableHeader>
-    </TopSection>
-    <ChallengeLeaderboardList currentVoterWeVoteId={'wv02voter123'} />
-  </LeaderboardContainer>
-);
-
-ChallengeLeaderboard.propTypes = {
-  classes: PropTypes.object.isRequired,
-  clearSearchFunction: PropTypes.func.isRequired,
-  searchFunction: PropTypes.func.isRequired,
-};
-
-const styles = () => ({
-  buttonDesktop: {
-    padding: '2px 16px',
-    borderRadius: 5,
-  },
-  searchButton: {
-    borderRadius: 50,
-  },
-});
 
 export default withStyles(styles)(ChallengeLeaderboard);

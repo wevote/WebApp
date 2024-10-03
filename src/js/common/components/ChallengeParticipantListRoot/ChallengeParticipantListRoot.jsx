@@ -1,16 +1,16 @@
 import React, { Suspense } from 'react';
 import styled from 'styled-components';
-import { Button } from '@mui/material';
 import PropTypes from 'prop-types';
+import { Button } from '@mui/material';
 import { withStyles } from '@mui/styles';
 import DesignTokenColors from '../Style/DesignTokenColors';
-import ChallengeLeaderboardList from './ChallengeLeaderboardList';
+import ChallengeParticipantList from './ChallengeParticipantList';
 import SearchBar2024 from '../../../components/Search/SearchBar2024';
 import ChallengeParticipantStore from '../../stores/ChallengeParticipantStore';
 import FirstChallengeParticipantListController from './FirstChallengeParticipantListController';
 
 // const FirstChallengeParticipantListController = React.lazy(() => import(/* webpackChunkName: 'FirstChallengeParticipantListController' */ './FirstChallengeParticipantListController'));
-const participants = [
+const participantListDummyData = [
   { rank: 5340, participant_name: 'Melina H.', points: 142, friends_who_joined: 3, friends_invited: 10, friends_who_viewed: 8, friends_who_viewed_plus: 21, voter_we_vote_id: 'wv02voter1238' },
   { rank: 5341, participant_name: 'David N.', points: 121, friends_who_joined: 1, friends_invited: 7, friends_who_viewed: 3, friends_who_viewed_plus: 18, voter_we_vote_id: 'wv02voter1237' },
   { rank: 5342, participant_name: 'Anusha G.', points: 118, friends_who_joined: 1, friends_invited: 5, friends_who_viewed: 2, friends_who_viewed_plus: 15, voter_we_vote_id: 'wv02voter1236' },
@@ -48,7 +48,7 @@ function searchFunction () {
 }
 
 
-const ChallengeLeaderboard = ({ classes, challengeWeVoteId }) => {
+const ChallengeParticipantListRoot = ({ challengeWeVoteId, classes, uniqueExternalId }) => {
   // eslint-disable-next-line no-unused-vars
   const [latestParticipants, setLatestParticipants] = React.useState([]);
 
@@ -66,7 +66,7 @@ const ChallengeLeaderboard = ({ classes, challengeWeVoteId }) => {
     };
   }, [challengeWeVoteId]);
   return (
-    <LeaderboardContainer>
+    <ChallengeParticipantListRootContainer>
       <TopSection>
         <ButtonAndSearchWrapper>
           <ButtonWrapper>
@@ -86,7 +86,7 @@ const ChallengeLeaderboard = ({ classes, challengeWeVoteId }) => {
               onClick={() => console.log('Top 50 button clicked')}
               variant="outlined"
             >
-              Top 50
+              Top&nbsp;50
             </Button>
           </ButtonWrapper>
           <SearchBarWrapper>
@@ -121,35 +121,37 @@ const ChallengeLeaderboard = ({ classes, challengeWeVoteId }) => {
           </HeaderGroup>
         </LeaderboardTableHeader>
       </TopSection>
-      <ChallengeLeaderboardList
-      participantList={latestParticipants}
-        // participantList={participants}
+      <ChallengeParticipantList
+        // participantList={latestParticipants}
+        participantList={participantListDummyData}
+        uniqueExternalId={uniqueExternalId}
       />
       <Suspense fallback={<></>}>
         <FirstChallengeParticipantListController challengeWeVoteId={challengeWeVoteId} searchText="SEARCH TEXT HERE" />
       </Suspense>
-    </LeaderboardContainer>
+    </ChallengeParticipantListRootContainer>
   );
 };
-
-ChallengeLeaderboard.propTypes = {
+ChallengeParticipantListRoot.propTypes = {
   classes: PropTypes.object.isRequired,
   // clearSearchFunction: PropTypes.func.isRequired,
   // searchFunction: PropTypes.func.isRequired,
   challengeWeVoteId: PropTypes.string,
+  uniqueExternalId: PropTypes.string,
 };
 
 const styles = () => ({
   buttonDesktop: {
-    padding: '2px 16px',
+    padding: '2px 6px',
     borderRadius: 5,
+    fontSize: 14,
   },
   searchButton: {
     borderRadius: 50,
   },
 });
 
-const LeaderboardContainer = styled.div`
+const ChallengeParticipantListRootContainer = styled.div`
   max-width: 100vw;
   margin: 0 auto;
 `;
@@ -231,4 +233,4 @@ const RankDetails = styled.span`
   color: ${DesignTokenColors.neutral600};  /* Subdued color for "(of 6441)" */
 `;
 
-export default withStyles(styles)(ChallengeLeaderboard);
+export default withStyles(styles)(ChallengeParticipantListRoot);

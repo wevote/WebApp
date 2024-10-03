@@ -12,7 +12,7 @@ import historyPush from '../../utils/historyPush';
 import { renderLog } from '../../utils/logging';
 import ChallengeTitleInputField from '../../components/ChallengeStart/ChallengeTitleInputField';
 import ChallengeStartSteps from '../../components/Navigation/ChallengeStartSteps';
-import { CampaignProcessStepIntroductionText, CampaignProcessStepTitle } from '../../components/Style/CampaignProcessStyles';
+import { CampaignProcessStepTitle } from '../../components/Style/CampaignProcessStyles'; // CampaignProcessStepIntroductionText
 import { CampaignStartDesktopButtonPanel, CampaignStartDesktopButtonWrapper, CampaignStartMobileButtonPanel, CampaignStartMobileButtonWrapper, CampaignStartSection, CampaignStartSectionWrapper } from '../../components/Style/CampaignStartStyles';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import ChallengeStartStore from '../../stores/ChallengeStartStore';
@@ -73,11 +73,11 @@ class ChallengeStartAddTitle extends Component {
             <InnerWrapper>
               <ChallengeStartSteps atStepNumber1 />
               <CampaignProcessStepTitle>
-                Write your Democracy Challenge title
+                Name your challenge
               </CampaignProcessStepTitle>
-              <CampaignProcessStepIntroductionText>
-                This is the first thing people will see about your challenge. Get their attention with a short title that focuses on why we vote.
-              </CampaignProcessStepIntroductionText>
+              {/* <CampaignProcessStepIntroductionText> */}
+              {/*  This is the first thing people will see about your challenge. Get their attention with a short title that focuses on why we vote. */}
+              {/* </CampaignProcessStepIntroductionText> */}
               <CampaignStartSectionWrapper>
                 <CampaignStartSection>
                   <ChallengeTitleInputField />
@@ -97,13 +97,32 @@ class ChallengeStartAddTitle extends Component {
                   <AdviceBoxWrapper>
                     <AdviceBox>
                       <AdviceBoxTitle>
-                        Keep it short and to the point
+                        Keep it short and to the point:
                       </AdviceBoxTitle>
                       <AdviceBoxText>
-                        Example: &quot;Sam Davis for Oakland School Board&quot;
+                        Make Your Voice Count Oakland
+                        <br />
+                        <br />
                       </AdviceBoxText>
                       <AdviceBoxText>
-                        Not: &quot;If you want to have your kids be more engaged at school, vote for Sam Davis for Oakland School Board&quot;
+                        Stand up and Vote Florida
+                        <br />
+                        <br />
+                      </AdviceBoxText>
+                      <AdviceBoxText>
+                        Oaklander&apos;s Unite: Let&apos;s Make November 5th BIG
+                        <br />
+                        <br />
+                      </AdviceBoxText>
+                      <AdviceBoxText>
+                        Vote for a Better Tomorrow Georgia
+                        <br />
+                        <br />
+                      </AdviceBoxText>
+                      <AdviceBoxText>
+                        Arizona For the Win
+                        <br />
+                        <br />
                       </AdviceBoxText>
                     </AdviceBox>
                   </AdviceBoxWrapper>

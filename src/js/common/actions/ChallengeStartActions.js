@@ -22,6 +22,7 @@ export default {
   challengeEditAllSave (
     challengeWeVoteId,
     challengeDescriptionQueuedToSave, challengeDescriptionQueuedToSaveSet,
+    challengeInviteTextDefaultQueuedToSave, challengeInviteTextDefaultQueuedToSaveSet,
     challengePhotoQueuedToDelete, challengePhotoQueuedToDeleteSet,
     challengePhotoQueuedToSave, challengePhotoQueuedToSaveSet,
     challengePoliticianDeleteListJson,
@@ -32,6 +33,8 @@ export default {
       {
         challenge_description: challengeDescriptionQueuedToSave,
         challenge_description_changed: challengeDescriptionQueuedToSaveSet,
+        challenge_invite_text_default: challengeInviteTextDefaultQueuedToSave,
+        challenge_invite_text_default_changed: challengeInviteTextDefaultQueuedToSaveSet,
         challenge_photo_from_file_reader: challengePhotoQueuedToSave,
         challenge_photo_changed: challengePhotoQueuedToSaveSet,
         challenge_photo_delete: challengePhotoQueuedToDelete,
@@ -42,6 +45,20 @@ export default {
         politician_delete_list: challengePoliticianDeleteListJson,
         politician_starter_list: challengePoliticianStarterListQueuedToSave,
         politician_starter_list_changed: challengePoliticianStarterListQueuedToSaveSet,
+      });
+  },
+
+  challengeInviteTextDefaultQueuedToSave (challengeInviteTextDefault) {
+    Dispatcher.dispatch({ type: 'challengeInviteTextDefaultQueuedToSave', payload: challengeInviteTextDefault });
+  },
+
+  challengeInviteTextDefaultSave (challengeWeVoteId, challengeInviteTextDefault) {
+    // console.log('challengeInviteTextDefaultSave: ', challengeInviteTextDefault);
+    Dispatcher.loadEndpoint('challengeStartSave',
+      {
+        challenge_invite_text_default: challengeInviteTextDefault,
+        challenge_invite_text_default_changed: true,
+        challenge_we_vote_id: challengeWeVoteId,
       });
   },
 

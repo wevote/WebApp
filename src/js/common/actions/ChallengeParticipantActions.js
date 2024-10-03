@@ -16,11 +16,13 @@ export default {
       });
   },
 
-  challengeParticipantSave (challengeWeVoteId) { // challengeParticipantSave
+  challengeParticipantSave (challengeWeVoteId, inviteText = '', inviteTextChanged = false) { // challengeParticipantSave
     // console.log('challengeParticipantSave');
     Dispatcher.loadEndpoint('challengeParticipantSave',
       {
         challenge_we_vote_id: challengeWeVoteId,
+        invite_text_for_friends: inviteText,
+        invite_text_for_friends_changed: inviteTextChanged,
         // visible_to_public: visibleToPublic,
         // visible_to_public_changed: visibleToPublicChanged,
       });
@@ -36,17 +38,5 @@ export default {
 
   visibleToPublicQueuedToSave (visibleToPublic) {
     Dispatcher.dispatch({ type: 'visibleToPublicQueuedToSave', payload: visibleToPublic });
-  },
-
-  participantEndorsementSave (challengeWeVoteId, participantEndorsement, visibleToPublic, visibleToPublicChanged) { // challengeParticipantSave
-    // console.log('participantEndorsementSave: ', participantEndorsement);
-    Dispatcher.loadEndpoint('challengeParticipantSave',
-      {
-        challenge_we_vote_id: challengeWeVoteId,
-        participant_endorsement: participantEndorsement,
-        participant_endorsement_changed: true,
-        visible_to_public: visibleToPublic,
-        visible_to_public_changed: visibleToPublicChanged,
-      });
   },
 };

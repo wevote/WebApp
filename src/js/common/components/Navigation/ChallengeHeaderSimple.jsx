@@ -23,9 +23,7 @@ const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler'
 // React functional component example
 function ChallengeHeaderSimple(props) {
   renderLog('ChallengeHeaderSimple');  // Set LOG_RENDER_EVENTS to log all renders
-  const { challengeTitle, challengeWeVoteId, classes, imageUrlLarge, goToChallengeHome } = props;
-  const avatarBackgroundImage = normalizedImagePath('../img/global/svg-icons/avatar-generic.svg');
-  const avatarCompressed = 'card-main__avatar-compressed';
+  const { challengeTitle, challengeWeVoteId, classes, challengePhotoLargeUrl, goToChallengeHome } = props;
 
   return (
     <ChallengeHeaderSimpleOuterContainer id="politicianHeaderContainer">
@@ -35,22 +33,20 @@ function ChallengeHeaderSimple(props) {
             <ChallengePhotoAndTitle
               id={`officeItemCompressedCandidateImageAndName-${challengeWeVoteId}`}
             >
-              {/* Candidate Image */}
-              <Suspense fallback={<></>}>
-                <ImageHandler
-                  className={avatarCompressed}
-                  sizeClassName="icon-candidate-small u-push--sm "
-                  imageUrl={imageUrlLarge}
-                  alt=""
-                  kind_of_ballot_item="CANDIDATE"
-                  style={{ backgroundImage: { avatarBackgroundImage } }}
-                />
-              </Suspense>
+              {/* Challenge Image */}
+              {challengePhotoLargeUrl && (
+                <ChallengeImageMedium src={challengePhotoLargeUrl} />
+              )}
               {/* Title of the Challenge */}
               <CandidateNameAndPartyWrapper>
                 <ChallengeNameH4>
                   {challengeTitle}
                 </ChallengeNameH4>
+                {/* Joined and Days Left Info */}
+                <JoinedAndDaysLeft
+                  challengeWeVoteId={challengeWeVoteId}
+                  goToChallengeHome={goToChallengeHome}
+                />
               </CandidateNameAndPartyWrapper>
             </ChallengePhotoAndTitle>
             <CloseDrawerIconWrapper>
@@ -69,16 +65,6 @@ function ChallengeHeaderSimple(props) {
               </div>
             </CloseDrawerIconWrapper>
           </ChallengeTitleRow>
-          <HeartToggleAndThermometerWrapper>
-            &nbsp;
-          </HeartToggleAndThermometerWrapper>
-          {/* Joined and Days Left Info */}
-          <JoinedAndDaysLeft
-            daysLeft={props.daysLeft}
-            challengeTitle={challengeTitle}
-            imageUrl={imageUrlLarge}
-            goToChallengeHome={goToChallengeHome}
-          />
         </ChallengeHeaderSimpleContentContainer>
       </ChallengeHeaderSimpleInnerContainer>
     </ChallengeHeaderSimpleOuterContainer>
@@ -89,7 +75,7 @@ ChallengeHeaderSimple.propTypes = {
   challengeTitle: PropTypes.string,
   challengeWeVoteId: PropTypes.string,
   classes: PropTypes.object,
-  imageUrlLarge: PropTypes.string,
+  challengePhotoLargeUrl: PropTypes.string,
 };
 
 const styles = () => ({
@@ -104,15 +90,11 @@ const styles = () => ({
   },
 });
 
-const HeartToggleAndThermometerWrapper = styled('div')`
-  margin-top: 12px;
-`;
-
 const ChallengeHeaderSimpleContentContainer = styled('div')(({ theme }) => (`
   padding: 15px 15px 0 15px;
   margin: ${() => cordovaBallotFilterTopMargin()} auto 0 auto;
   position: relative;
-  max-width: 960px;
+  max-width: 650px;
   width: 100%;
   z-index: 0;
   ${theme.breakpoints.down('sm')} {
@@ -138,6 +120,15 @@ const ChallengeHeaderSimpleInnerContainer = styled('div')`
   width: 100%;
 `;
 
+const ChallengeImageMedium = styled('img')(({ theme }) => (`
+  border-radius: 12px;
+  height: 64px;
+  margin-right: 10px;
+  ${theme.breakpoints.up('sm')} {
+    height: 100px;
+  }
+`));
+
 const ChallengeNameH4 = styled('div')`
   font-weight: 400;
   font-size: 20px;
@@ -158,6 +149,7 @@ const ChallengeTitleRow = styled('div')`
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-between;
+  margin-bottom: 16px;
 `;
 
 const CloseDrawerIconWrapper = styled('div')`

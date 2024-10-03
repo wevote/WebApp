@@ -1,19 +1,24 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Avatar } from '@mui/material';
 import DesignTokenColors from '../Style/DesignTokenColors';
 import speakerDisplayNameToInitials from '../../utils/speakerDisplayNameToInitials';
 
 const ChallengeParticipantListItem = ({ participant, isCurrentUser }) => {
-  const { sx, children } = speakerDisplayNameToInitials(participant.participant_name);
+  let avatarJsx;
+  if (participant && participant.we_vote_hosted_profile_image_url_medium) {
+    avatarJsx = <Avatar src={participant.we_vote_hosted_profile_image_url_medium} alt={participant.participant_name} />;
+  } else {
+    const { sx, children } = speakerDisplayNameToInitials(participant.participant_name);
+    avatarJsx = <Avatar sx={sx}>{children}</Avatar>;
+  }
   return (
     <ParticipantItem isCurrentUser={isCurrentUser}>
       <ParticipantRow>
         <Rank>{`#${participant.rank}`}</Rank>
         <Name>
-          <Avatar sx={sx}>
-            {children}
-          </Avatar>
+          {avatarJsx}
           {participant.participant_name}
         </Name>
         <Points>{participant.points}</Points>
@@ -25,10 +30,14 @@ const ChallengeParticipantListItem = ({ participant, isCurrentUser }) => {
     </ParticipantItem>
   );
 };
+ChallengeParticipantListItem.propTypes = {
+  isCurrentUser: PropTypes.bool,
+  participant: PropTypes.object,
+};
 
 const ParticipantItem = styled.div`
   background-color: ${(props) => (props.isCurrentUser ? '#f9e79f' : '#fff')};
-  padding: 15px 0px;
+  padding: 15px 0;
   border-bottom: 1px solid ${DesignTokenColors.neutral100};
 `;
 

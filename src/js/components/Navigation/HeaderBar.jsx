@@ -109,6 +109,9 @@ class HeaderBar extends Component {
         if (document.getElementById('candidatesTabHeaderBar')) {
           headerObjects.candidates = document.getElementById('candidatesTabHeaderBar').innerHTML;
         }
+        if (document.getElementById('challengesTabHeaderBar')) {
+          headerObjects.challenges = document.getElementById('challengesTabHeaderBar').innerHTML;
+        }
         if (document.getElementById('friendsTabHeaderBar')) {
           headerObjects.opinions = document.getElementById('friendsTabHeaderBar').innerHTML;
         }
@@ -364,12 +367,14 @@ class HeaderBar extends Component {
       // console.log('customHighlightSelector called for page: ', normalizedHrefPage());
       const ballot = $('#ballotTabHeaderBar');
       const candidates = $('#candidatesTabHeaderBar');
+      const challenges = $('#challengesTabHeaderBar');
       const friends = $('#friendsTabHeaderBar');
       const news = $('#discussTabHeaderBar');
       const donate = $('#donateTabHeaderBar');
       const squads = $('#squadsTabHeaderBar');
       ballot.css(normal);
       candidates.css(normal);   // Candidates (not individual candidate page)
+      challenges.css(normal);   // Democracy Challenges
       friends.css(normal);      // Friends
       news.css(normal);         // Discuss
       donate.css(normal);       // Donate
@@ -381,6 +386,9 @@ class HeaderBar extends Component {
           break;
         case 'candidatelist': // displays same page as "cs"
           candidates.css(highlight);
+          break;
+        case 'challenges':
+          challenges.css(highlight);
           break;
         case 'friends':
           friends.css(highlight);
@@ -571,7 +579,7 @@ class HeaderBar extends Component {
                       classes={isWebApp() ? { root: classes.tabRootDonateDesktop } : { root: classes.tabRootDonate }}
                       value={squadsValue}
                       change={this.handleTabChange}
-                      id="squadsTabHeaderBar"
+                      id="challengesTabHeaderBar"
                       label="Challenges"  // Was Squads
                       to="/challenges"  // Was "/squads"
                     />
