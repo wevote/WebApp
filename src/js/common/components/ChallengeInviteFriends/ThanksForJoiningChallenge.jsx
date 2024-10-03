@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 import React, { useState, useEffect } from 'react';
 
-const ThanksForJoiningChallenge = ({ userName, challengeOwner, onClose }) => {
+const ThanksForJoiningChallenge = ({ voterFirstName, challengeTitle, onClose }) => {
   const [isClosing, setIsClosing] = useState(false);
 
   useEffect(() => {
@@ -23,9 +23,15 @@ const ThanksForJoiningChallenge = ({ userName, challengeOwner, onClose }) => {
         <ThankYouMessageWrapper>
           <ThankYouMessage>
             Thanks for joining&nbsp;
-            {challengeOwner}
-            &apos;s challenge,&nbsp;
-            {userName}
+            <BoldText>
+              {challengeTitle}
+            </BoldText>
+            {voterFirstName && (
+              <span>
+                ,&nbsp;
+                {voterFirstName}
+              </span>
+            )}
             !
           </ThankYouMessage>
           <CloseMessageIconWrapper>
@@ -40,15 +46,17 @@ const ThanksForJoiningChallenge = ({ userName, challengeOwner, onClose }) => {
             </IconButton>
           </CloseMessageIconWrapper>
         </ThankYouMessageWrapper>
+        {/*
         <RankMessageWrapper>Insert Rank Message Here</RankMessageWrapper>
         <RankListOuterWrapper>Insert Rank List Here</RankListOuterWrapper>
+        */}
       </ThanksForJoiningInnerWrapper>
     </ThanksForJoiningOuterWrapper>
   );
 };
 ThanksForJoiningChallenge.propTypes = {
-  userName: PropTypes.string.isRequired,
-  challengeOwner: PropTypes.string.isRequired,
+  voterFirstName: PropTypes.string.isRequired,
+  challengeTitle: PropTypes.string.isRequired,
   onClose: PropTypes.func.isRequired,
 };
 
@@ -106,9 +114,12 @@ const ThanksForJoiningOuterWrapper = styled.div`
 const ThankYouMessage = styled.p`
   font-size: large;
   text-align: left;
-  font-family: Poppins;
-  font-weight: 500;
+  font-weight: 400;
   text-decoration: none;
+`;
+
+const BoldText = styled.span`
+  font-weight: 600;
 `;
 
 const ThankYouMessageWrapper = styled.div`

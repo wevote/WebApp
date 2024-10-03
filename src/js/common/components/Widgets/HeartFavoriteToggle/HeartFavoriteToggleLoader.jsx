@@ -20,8 +20,10 @@ class HeartFavoriteToggleLoader extends React.Component {
     // console.log('HeartFavoriteToggleLoader render campaignXWeVoteId:', campaignXWeVoteId);
     return (
       <HeartFavoriteToggleLoaderContainer>
-        <Suspense fallback={<HeartFavoriteToggleBase />}>
-          <HeartFavoriteToggleLive campaignXWeVoteId={campaignXWeVoteId} />
+        <Suspense fallback={<></>}>
+          <Suspense fallback={<HeartFavoriteToggleBase />}>
+            <HeartFavoriteToggleLive campaignXWeVoteId={campaignXWeVoteId} />
+          </Suspense>
         </Suspense>
       </HeartFavoriteToggleLoaderContainer>
     );

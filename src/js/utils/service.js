@@ -48,6 +48,7 @@ function innerAjax (options) {
   options.error = options.error || defaults.error;
   // console.log('service.js, options.endpoint: ', options.endpoint);
   if (options.endpoint === 'campaignStartSave' ||
+      // options.endpoint === 'challengeSave' || // TBD
       options.endpoint === 'challengeStartSave' ||
       options.endpoint === 'organizationPhotosSave' ||
       options.endpoint === 'reactionLikeStatusRetrieve' ||

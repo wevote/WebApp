@@ -22,10 +22,15 @@ const ChallengeParticipantListItem = ({ participant, isCurrentUser }) => {
           {participant.participant_name}
         </Name>
         <Points>{participant.points}</Points>
-        <FriendsJoined>{participant.friends_who_joined}</FriendsJoined>
+        <FriendsJoined>{participant.invitees_who_joined}</FriendsJoined>
       </ParticipantRow>
       <Details>
-        {`${participant.friends_invited} invited, ${participant.friends_who_viewed} viewed challenge - ${participant.friends_who_viewed_plus} total views`}
+        {`${participant.invitees_count} invited, `}
+        {`${participant.invitees_who_viewed} viewed challenge`}
+        {/*
+        {' '}
+        {`- ${participant.invitees_who_viewed_plus} total views`}
+        */}
       </Details>
     </ParticipantItem>
   );

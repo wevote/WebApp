@@ -63,8 +63,8 @@ const ChallengeInviteeListRoot = ({ challengeWeVoteId, classes }) => {
       </Heading>
       <ChallengeInviteeList
         challengeWeVoteId={challengeWeVoteId}
-        // inviteeList={inviteeList}
-        inviteeList={inviteeListDummyData}
+        inviteeList={inviteeList}
+        // inviteeList={inviteeListDummyData}
       />
       <Suspense fallback={<></>}>
         <FirstChallengeInviteeListController challengeWeVoteId={challengeWeVoteId} searchText="SEARCH TEXT HERE" />

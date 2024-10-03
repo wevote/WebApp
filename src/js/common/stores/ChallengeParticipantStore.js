@@ -54,6 +54,11 @@ class ChallengeParticipantStore extends ReduceStore {
     return this.getState().allChallengeParticipantLists[challengeWeVoteId] || [];
   }
 
+  getNumberOfParticipantsInChallenge (challengeWeVoteId) {
+    const participantList = this.getChallengeParticipantList(challengeWeVoteId) || [];
+    return participantList.length;
+  }
+
   getChallengeParticipantVoterEntry (challengeWeVoteId) {
     return this.getState().allCachedChallengeParticipantVoterEntries[challengeWeVoteId] || {};
   }

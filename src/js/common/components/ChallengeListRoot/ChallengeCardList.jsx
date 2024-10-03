@@ -175,6 +175,7 @@ class ChallengeCardList extends Component {
               <ChallengeCardForListVerticalWrapper key={`oneChallengeItem-${oneChallenge.challenge_we_vote_id}`}>
                 <ChallengeCardForList
                   challengeWeVoteId={oneChallenge.challenge_we_vote_id}
+                  joinedAndDaysLeftOff
                   limitCardWidth={useVerticalCard}
                   useVerticalCard={useVerticalCard}
                 />
@@ -182,7 +183,7 @@ class ChallengeCardList extends Component {
                   id="challengeCardAbout"
                   to={this.onChallengeClickLink(oneChallenge.challenge_we_vote_id)}
                 >
-                  <ChallengeAbout />
+                  <ChallengeAbout challengeWeVoteId={oneChallenge.challenge_we_vote_id} />
                 </Link>
               </ChallengeCardForListVerticalWrapper>
             );

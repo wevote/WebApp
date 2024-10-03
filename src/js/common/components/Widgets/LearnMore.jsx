@@ -42,11 +42,14 @@ class LearnMore extends Component {
   render () {
     renderLog('LearnMore');  // Set LOG_RENDER_EVENTS to log all renders
     let {
-      text_to_display: textToDisplay, num_of_lines: numOfLines,
+      text_to_display: textToDisplay,
+      num_of_lines: numOfLines,
       learn_more_text: learnMoreText,
     } = this.props;
     const {
-      always_show_external_link: alwaysShowExternalLink, classes, learn_more_link: learnMoreLink,
+      always_show_external_link: alwaysShowExternalLink,
+      classes,
+      learn_more_link: learnMoreLink,
       on_click: onClick, show_more_text: showMoreText,
     } = this.props;
     // default prop values

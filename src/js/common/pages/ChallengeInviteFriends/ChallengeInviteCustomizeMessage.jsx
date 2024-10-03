@@ -13,6 +13,7 @@ import commonMuiStyles from '../../components/Style/commonMuiStyles';
 import { ContentInnerWrapperDefault, ContentOuterWrapperDefault, PageWrapperDefault } from '../../components/Style/PageWrapperStyles';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import ChallengeStore from '../../stores/ChallengeStore';
+import VoterStore from '../../../stores/VoterStore';
 import { getChallengeValuesFromIdentifiers, retrieveChallengeFromIdentifiersIfNeeded } from '../../utils/challengeUtils';
 import historyPush from '../../utils/historyPush';
 import { renderLog } from '../../utils/logging';
@@ -184,8 +185,8 @@ class ChallengeInviteCustomizeMessage extends Component {
         />
         {showChallengeThanksForJoining && (
           <ThanksForJoiningChallenge
-            userName="David"
-            challengeOwner="Mr. Beast"
+            voterFirstName={VoterStore.getFirstName()}
+            challengeTitle={challengeTitle}
             onClose={() => AppObservableStore.setShowChallengeThanksForJoining(false)}
           />
         )}
