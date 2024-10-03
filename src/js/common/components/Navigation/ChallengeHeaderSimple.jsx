@@ -43,7 +43,7 @@ function ChallengeHeaderSimple(props) {
                   {challengeTitle}
                 </ChallengeNameH4>
                 {/* Joined and Days Left Info */}
-                <JoinedAndDaysLeft
+                <JoinedAndDaysLeft style={{ border: 'none' }}
                   challengeWeVoteId={challengeWeVoteId}
                   goToChallengeHome={goToChallengeHome}
                 />
