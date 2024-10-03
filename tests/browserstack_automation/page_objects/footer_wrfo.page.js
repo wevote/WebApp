@@ -8,27 +8,19 @@ class WRFOPage extends Page {
   }
   
   get stateCandidateLink() {
-  return $('//a[@href="/'+staName+'-candidates/cs/"]');
-   //return $('="Alaska candidates"]');
-   //return $('a="Alaska"');
-   //return $('[href = "/donate"]');
+    return $('//a[@href="/'+staName+'-candidates/cs/"]');
     
   }
 
 
   get californiaCandidateLink() {
-    //return $('[href="/alaska-candidates/cs/"]');
-     //return $('="Alaska candidates"]');
-    // return $('a="Alaska"');
-     return $('//a[@href="/california-candidates/cs/"]');
-      
+       return $('//a[@href="/california-candidates/cs/"]');
+     
     }
 
 
     get hawaiiCandidateLink() {
-      //return $('[href="/alaska-candidates/cs/"]');
-       //return $('="Alaska candidates"]');
-      // return $('a="Alaska"');
+     
        return $('//a[@href="/hawaii-candidates/cs/"]');
         
       }
