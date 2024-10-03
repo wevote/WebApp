@@ -35,13 +35,13 @@ const ChallengeInviteeListItem = ({ invitee, classes }) => {
         <div>
           {invitee.invite_sent === false && (
             <Button
-            classes={{ root: classes.buttonDesktop }}
+              classes={{ root: classes.buttonDesktop }}
               color="primary"
-              id="challengeLeaderboardTop50Button"
-              onClick={() => console.log('Top 50 button clicked')}
+              id="inviteSentButton"
+              onClick={() => console.log('Confirm you sent the message')}
               variant="outlined"
             >
-              Let us know you sent the message
+              Confirm you sent invite
             </Button>
           )}
         </div>

@@ -2,7 +2,8 @@ import { ReduceStore } from 'flux/utils';
 import { avatarGeneric } from '../../utils/applicationUtils';
 import Dispatcher from '../dispatcher/Dispatcher';
 import arrayContains from '../utils/arrayContains';
-import VoterStore from '../../stores/VoterStore'; // eslint-disable-line import/no-cycle
+import VoterStore from '../../stores/VoterStore';
+import daysUntil from '../utils/daysUntil'; // eslint-disable-line import/no-cycle
 
 const SUPPORTERS_COUNT_NEXT_GOAL_DEFAULT = 10;
 
@@ -297,6 +298,36 @@ class ChallengeStore extends ReduceStore {
     // console.log('getChallengeListFromListOfWeVoteIds challengeList: ', challengeList);
 
     return challengeList;
+  }
+
+  getDaysUntilChallengeEnds (challengeWeVoteId) {
+    const challenge = this.getChallengeByWeVoteId(challengeWeVoteId);
+    let challengeEndsDayText = '';
+    if (challenge && challenge.challenge_ends_date_as_integer) {
+      // TODO: Convert integer to date format
+      challengeEndsDayText = '2024-11-05';
+    } else {
+      challengeEndsDayText = '2024-11-05';
+    }
+    return daysUntil(challengeEndsDayText);
+  }
+
+  getNumberOfInviteesInChallenge (challengeWeVoteId) {
+    const challenge = this.getChallengeByWeVoteId(challengeWeVoteId);
+    if (challenge && challenge.invitees_count) {
+      return challenge.invitees_count;
+    } else {
+      return 0;
+    }
+  }
+
+  getNumberOfParticipantsInChallenge (challengeWeVoteId) {
+    const challenge = this.getChallengeByWeVoteId(challengeWeVoteId);
+    if (challenge && challenge.participants_count) {
+      return challenge.participants_count;
+    } else {
+      return 0;
+    }
   }
 
   getPromotedChallengeDicts () {
@@ -594,6 +625,7 @@ class ChallengeStore extends ReduceStore {
         }
         return revisedState;
 
+      // case 'challengeSave': TBD
       case 'challengeRetrieve':
       case 'challengeRetrieveAsOwner':
       case 'challengeStartSave':

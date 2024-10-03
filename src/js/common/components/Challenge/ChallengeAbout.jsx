@@ -1,26 +1,74 @@
 import withStyles from '@mui/styles/withStyles';
 import { EventOutlined, CampaignOutlined, EmojiEventsOutlined } from '@mui/icons-material';
+import PropTypes from 'prop-types';
 import React, { Suspense } from 'react';
 import styled from 'styled-components';
 import DesignTokenColors from '../Style/DesignTokenColors';
 import { renderLog } from '../../utils/logging';
+import ChallengeParticipantStore from '../../stores/ChallengeParticipantStore';
+import ChallengeStore from '../../stores/ChallengeStore';
 
-function CardForListBody() {
+function ChallengeAbout ({ challengeWeVoteId }) {
   renderLog('ChallengeAbout');
+  const [challengeInviteesCount, setChallengeInviteesCount] = React.useState(0);
+  const [challengeParticipantCount, setChallengeParticipantCount] = React.useState(0);
+  const [daysLeft, setDaysLeft] = React.useState(0);
+
+  React.useEffect(() => {
+    const onChallengeStoreChange = () => {
+      if (challengeInviteesCount < ChallengeStore.getNumberOfInviteesInChallenge(challengeWeVoteId)) {
+        setChallengeInviteesCount(ChallengeStore.getNumberOfInviteesInChallenge(challengeWeVoteId));
+      }
+      if (challengeParticipantCount < ChallengeStore.getNumberOfParticipantsInChallenge(challengeWeVoteId)) {
+        setChallengeParticipantCount(ChallengeStore.getNumberOfParticipantsInChallenge(challengeWeVoteId));
+      }
+      setDaysLeft(ChallengeStore.getDaysUntilChallengeEnds(challengeWeVoteId));
+    };
+    const onChallengeParticipantStoreChange = () => {
+      if (challengeParticipantCount < ChallengeParticipantStore.getNumberOfParticipantsInChallenge(challengeWeVoteId)) {
+        setChallengeParticipantCount(ChallengeParticipantStore.getNumberOfParticipantsInChallenge(challengeWeVoteId));
+      }
+    };
+    const challengeParticipantStoreListener = ChallengeParticipantStore.addListener(onChallengeParticipantStoreChange);
+    const challengeStoreListener = ChallengeStore.addListener(onChallengeStoreChange);
+    onChallengeParticipantStoreChange();
+
+    return () => {
+      challengeParticipantStoreListener.remove();
+      challengeStoreListener.remove();
+    };
+  }, [challengeWeVoteId]);
 
   // Variables to hold dummy data
   const challengeDates = (
     <span>
-      Jan 20, 24 - Sep 10, 24 ·
+      {/* Jan 20, 24 - Sep 10, 24 · */}
+      Ends Nov 5, 2024
       {' '}
-      <strong>5 days left</strong>
+      ·
+      {' '}
+      <strong>
+        {daysLeft}
+        {' '}
+        days left
+      </strong>
     </span>
   );
   const remindFriends = 'Remind as many friends as you can about the date of the election, and let them know you will be voting.';
   const currentLeader = 'Current leader: Tamika M.';
   const friendsInvited = (
     <span>
-      <strong>31,477 friends invited</strong> by 6,441 participants
+      <strong>
+        {challengeInviteesCount}
+        {' '}
+        friends invited
+      </strong>
+      {' '}
+      by
+      {' '}
+      {challengeParticipantCount}
+      {' '}
+      participants
     </span>
   );
 
@@ -68,6 +116,9 @@ function CardForListBody() {
     </ChallengeAboutWrapper>
   );
 }
+ChallengeAbout.propTypes = {
+  challengeWeVoteId: PropTypes.string,
+};
 
 const styles = () => ({
   howToVoteRoot: {
@@ -119,4 +170,4 @@ export const CurrentLeaderDiv = styled('div')`
 export const FriendsInvitedDiv = styled('div')`
 `;
 
-export default withStyles(styles)(CardForListBody);
+export default withStyles(styles)(ChallengeAbout);

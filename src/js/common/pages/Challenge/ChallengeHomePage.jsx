@@ -509,7 +509,9 @@ class ChallengeHomePage extends Component {
           </div>
         </AboutAndEditFlex>
         {challengeDescription ? (
-          <ReadMore numberOfLines={6} textToDisplay={challengeDescription} />
+          <Suspense fallback={<span>&nbsp;</span>}>
+            <ReadMore numberOfLines={6} textToDisplay={challengeDescription} />
+          </Suspense>
         ) : (
           <NoInformationProvided>No description has been provided for this candidate.</NoInformationProvided>
         )}
@@ -575,6 +577,7 @@ class ChallengeHomePage extends Component {
             />
             <ChallengeInviteFriendsTopNavigation
               challengeSEOFriendlyPath={challengeSEOFriendlyPathForDisplay}
+              challengeWeVoteId={challengeWeVoteIdForDisplay}
               tabSelected={tabSelectedChosen}
             />
             {tabSelectedChosen === 'friends' ? (
@@ -598,7 +601,7 @@ class ChallengeHomePage extends Component {
                           {challengeDescriptionJsx}
                         </DelayedLoad>
                       )}
-                      <ChallengeAbout />
+                      <ChallengeAbout challengeWeVoteId={challengeWeVoteIdForDisplay} />
                       {!!(voterCanEditThisChallenge || voterIsChallengeParticipant) && (
                         <IndicatorRow>
                           {voterCanEditThisChallenge && (
@@ -638,11 +641,13 @@ class ChallengeHomePage extends Component {
                 {challengeDescription && (
                   <DelayedLoad waitBeforeShow={250}>
                     <CampaignDescription>
-                      <ReadMore numberOfLines={6} textToDisplay={challengeDescription} />
+                      <Suspense fallback={<></>}>
+                        <ReadMore numberOfLines={6} textToDisplay={challengeDescription} />
+                      </Suspense>
                     </CampaignDescription>
                   </DelayedLoad>
                 )}
-                <ChallengeAbout />
+                <ChallengeAbout challengeWeVoteId={challengeWeVoteIdForDisplay} />
                 <JoinChallengeButtonWrapper>
                   <Suspense fallback={<></>}>
                     <JoinChallengeButton
@@ -656,7 +661,9 @@ class ChallengeHomePage extends Component {
                     <DelayedLoad waitBeforeShow={250}>
                       <CampaignDescriptionDesktop>
                         {challengeDescription ? (
-                          <ReadMore numberOfLines={6} textToDisplay={challengeDescription} />
+                          <Suspense fallback={<></>}>
+                            <ReadMore numberOfLines={6} textToDisplay={challengeDescription} />
+                          </Suspense>
                         ) : (
                           <NoInformationProvided>No description has been provided for this candidate.</NoInformationProvided>
                         )}
@@ -692,6 +699,7 @@ class ChallengeHomePage extends Component {
               <ColumnTwoThirds>
                 <ChallengeInviteFriendsTopNavigation
                   challengeSEOFriendlyPath={challengeSEOFriendlyPathForDisplay}
+                  challengeWeVoteId={challengeWeVoteIdForDisplay}
                   hideAboutTab
                 />
                 {tabSelectedChosen === 'friends' ? (

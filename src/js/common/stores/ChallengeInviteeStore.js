@@ -51,6 +51,12 @@ class ChallengeInviteeStore extends ReduceStore {
     return this.getState().allCachedChallengeInvitees[challengeInviteeId] || {};
   }
 
+  // Note that these are only invitees invited by the viewing voter, not ALL invitees for the challenge
+  getNumberOfInviteesInChallenge (challengeWeVoteId) {
+    const inviteeList = this.getChallengeInviteeList(challengeWeVoteId) || [];
+    return inviteeList.length;
+  }
+
   getChallengeInviteeList (challengeWeVoteId) {
     return this.getState().allChallengeInviteeLists[challengeWeVoteId] || [];
   }

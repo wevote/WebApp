@@ -108,7 +108,11 @@ class ChallengeListRoot extends Component {
   // Order by 1, 2, 3. Push 0's to the bottom in the same order.
   orderByOrderInList = (firstEntry, secondEntry) => (firstEntry.order_in_list || Number.MAX_VALUE) - (secondEntry.order_in_list || Number.MAX_VALUE);
 
-  orderBySupportersCount = (firstEntry, secondEntry) => secondEntry.participants_count - firstEntry.participants_count;
+  orderByInviteesCount = (firstEntry, secondEntry) => secondEntry.invitees_count - firstEntry.invitees_count;
+
+  orderByInviteesPlusParticipantsCount = (firstEntry, secondEntry) => (secondEntry.invitees_count + secondEntry.participants_count) - (firstEntry.invitees_count + firstEntry.participants_count);
+
+  orderByParticipantsCount = (firstEntry, secondEntry) => secondEntry.participants_count - firstEntry.participants_count;
 
   orderCandidatesByUltimateDate = (firstEntry, secondEntry) => secondEntry.candidate_ultimate_election_date - firstEntry.candidate_ultimate_election_date;
 
@@ -155,11 +159,11 @@ class ChallengeListRoot extends Component {
     // Now filter
 
     // //////////
-    // Now sort
-    // We need to add support for ballot_item_twitter_followers_count
-    // filteredList = filteredList.sort(this.orderPositionsByBallotItemTwitterFollowers);
+    // Now sort, with the most important sort at the bottom of this list
     filteredList = filteredList.sort(this.orderByAlphabetical);
-    filteredList = filteredList.sort(this.orderBySupportersCount);
+    filteredList = filteredList.sort(this.orderByParticipantsCount);
+    // filteredList = filteredList.sort(this.orderByInviteesCount);
+    filteredList = filteredList.sort(this.orderByInviteesPlusParticipantsCount);
     filteredList = filteredList.sort(this.orderByOrderInList);
     let challengeSearchResults = [];
     if (searchText && searchText.length > 0) {
