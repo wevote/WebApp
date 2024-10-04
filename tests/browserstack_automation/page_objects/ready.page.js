@@ -1,4 +1,4 @@
-import { $, $$ } from '@wdio/globals';
+import { $, $$ , expect} from '@wdio/globals';
 import Page from './page';
 
 class ReadyPage extends Page {
@@ -22,7 +22,9 @@ class ReadyPage extends Page {
   }
 
   get ballotAddress () {
-    return $('#ballotTitleBallotAddress');
+    //return $('#ballotTitleBallotAddress');
+    return $('//span[@class ="u-cursor--pointer u-link-color u-link-underline-on-hover"]');
+
   }
 
   get ballotAddressInput () {
@@ -61,6 +63,45 @@ class ReadyPage extends Page {
     return $$('//*[contains(@id, "readyFinePrintStepText")]');
   }
 
+  get finePrintStepHeaderText1()
+  {
+    return $("(//div[@class='StepTitle-sc-lvvjo6-10 iKrjzD'][normalize-space()='You cannot cast your vote electronically'])[1]");
+  }
+
+  get finePrintStepHeaderText2()
+  {
+    return $('//div[text() = "WeVote does not represent a government entity"]');
+  }
+
+  get finePrintStepHeaderText3()
+  {
+    return $('//div[text() = "Please make sure you are registered to vote"]');
+  }
+
+  get finePrintStepHeaderText4()
+  {
+    return $('//div[text() = "How your data is used & protected"]');
+  }
+
+  async checkFinePrintHeaders()
+  {
+    const text1 = (await this.finePrintStepHeaderText1);
+    console.log("text1: " + text1);
+    const text2 = (await this.finePrintStepHeaderText2);
+    console.log("text2: " + text2);
+    const text3 = (await this.finePrintStepHeaderText3);
+    console.log("text3: " + text3);
+    const text4 = (await this.finePrintStepHeaderText4);
+    console.log("text4: " + text4);
+
+    await expect(text1).toHaveText('You cannot cast your vote electronically');
+    await expect(text2).toHaveText('WeVote does not represent a government entity');
+    await expect(text3).toHaveText('Please make sure you are registered to vote');
+    await expect(text4).toHaveText('How your data is used & protected');
+
+  }
+
+
   get followIssueButtons () {
     return $$('//*[contains(@id, "issueFollowButton")]');
   }
@@ -86,7 +127,8 @@ class ReadyPage extends Page {
   }
 
   get howItWorksTitle () {
-    return $('div>h3[class~="gNNNpX"]');
+    //return $('div>h3[class~="gNNNpeadyFinePrintStepTextX"]');
+    return $('//h3[text()="1. Choose your interests"]');
   }
 
   get howItWorksCloseIcon () {
@@ -120,8 +162,10 @@ class ReadyPage extends Page {
   }
 
   get ballotForAddress () {
-    return $('span[class = u-link-color]');
-  }
+    //return $('span[class = u-link-color]');
+    return $('(span[class~="u-link-underline-on-hover"])');
+   // return $ ('.u-cursor--pointer u-link-color u-link-underline-on-hover');
+   }
 
   get getHelpLinkElement () {
     return $('#footerLinkWeVoteHelp');
@@ -140,7 +184,8 @@ class ReadyPage extends Page {
   }
 
   get getTeamPageTitleElement () {
-    return $('.bpNVDR');
+    //return $('.bpNVDR');
+    return $("//h1[normalize-space()='About WeVote']");
   }
 
   get getCreditsAndThanksElement () {
@@ -148,7 +193,8 @@ class ReadyPage extends Page {
   }
 
   get getCreditsAndThanksPageTitleElement () {
-    return $('.fmguXD');
+    //return $('.fmguXD');
+    return $("//h1[normalize-space()='Credits & Thanks']");
   }
 
   get getVolunteeringOpportunitiesElement () {
@@ -193,6 +239,7 @@ class ReadyPage extends Page {
 
   async updateBallotAddress (ballotAddress) {
     await this.ballotAddress.findAndClick();
+
     await this.ballotAddressInput.setValue(ballotAddress);
     await this.selectAddress.click();
     await this.saveBallotAddressButton.findAndClick();
