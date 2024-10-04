@@ -24,7 +24,7 @@
   --white:#fff;
   --gray:#6c757d;
   --gray-dark:#343a40;
-  --primary:#0858A1;
+  --primary:#206DB3;
   --secondary:#6c757d;
   --success:#28a745;
   --info:#17a2b8;
@@ -102,13 +102,13 @@ small {
 }
 
 a {
-  color:#0858A1;
+  color:#206DB3; /* primary500 */
   text-decoration:none;
   background-color:transparent
 }
 
 a:hover {
-  color:#0858A1;
+  color:#206DB3; /* primary500 */
   text-decoration:underline
 }
 
@@ -1746,15 +1746,15 @@ h1,h2,h3,h4,h5,h6 {
 }
 
 .u-link-color {
-  color:#0858A1
+  color:#206DB3; /* primary500 */
 }
 
 .u-link-color-on-hover {
-  color:#0858A1
+  color:#206DB3; /* primary500 */
 }
 
 .u-link-color-on-hover:hover {
-  color:#0858A1
+  color:#206DB3; /* primary500 */
 }
 
 .u-bold {
@@ -1767,7 +1767,7 @@ h1,h2,h3,h4,h5,h6 {
 
 .u-link-underline {
   text-decoration:underline;
-  color:#0858A1;
+  color:#206DB3; /* primary500 */
 }
 
 .u-link-underline-on-hover:hover {
@@ -2665,7 +2665,7 @@ h1,h2,h3,h4,h5,h6 {
 }
 
 .open-web-site {
-  color:#4371cc;
+  color:#206DB3; /* primary500 */
   padding-right:2px;
   padding-left:2px
 }
