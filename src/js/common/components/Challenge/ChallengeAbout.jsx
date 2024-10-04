@@ -7,6 +7,7 @@ import DesignTokenColors from '../Style/DesignTokenColors';
 import { renderLog } from '../../utils/logging';
 import ChallengeParticipantStore from '../../stores/ChallengeParticipantStore';
 import ChallengeStore from '../../stores/ChallengeStore';
+import JoinChallengeAndLearnMoreButtons from './JoinChallengeAndLearnMoreButtons';
 
 function ChallengeAbout ({ challengeWeVoteId }) {
   renderLog('ChallengeAbout');
@@ -113,6 +114,7 @@ function ChallengeAbout ({ challengeWeVoteId }) {
           </Suspense>
         </CardForListRow>
       </CardRowsWrapper>
+      <JoinChallengeAndLearnMoreButtons/>
     </ChallengeAboutWrapper>
   );
 }
