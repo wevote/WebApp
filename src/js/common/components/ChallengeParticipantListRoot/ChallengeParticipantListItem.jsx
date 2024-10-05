@@ -42,7 +42,7 @@ ChallengeParticipantListItem.propTypes = {
 
 const ParticipantItem = styled.div`
   background-color: ${(props) => (props.isCurrentUser ? '#f9e79f' : '#fff')};
-  padding: 15px 0;
+  padding: 15px 0 15px 7px;
   border-bottom: 1px solid ${DesignTokenColors.neutral100};
 `;
 
