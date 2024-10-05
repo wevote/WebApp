@@ -3,6 +3,8 @@ import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
 import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
 import OrganizationActions from '../../actions/OrganizationActions';
@@ -22,6 +24,8 @@ import VoterStore from '../../stores/VoterStore';
 import LazyImage from '../../common/components/LazyImage';
 import { avatarGeneric } from '../../utils/applicationUtils';
 import speakerDisplayNameToInitials from '../../common/utils/speakerDisplayNameToInitials';
+import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
+
 
 
 const STARTING_NUMBER_OF_IMAGES_TO_DISPLAY = 10;
@@ -138,14 +142,14 @@ class PositionRowListCompressed extends Component {
 
   onClickShowOrganizationModalWithPositions () {
     const { ballotItemWeVoteId } = this.props;
-//     console.log(ballotItemWeVoteId)
+    // console.log(ballotItemWeVoteId)
     // console.log('onClickShowOrganizationModalWithPositions, ballotItemWeVoteId:', ballotItemWeVoteId);
     AppObservableStore.setOrganizationModalBallotItemWeVoteId(ballotItemWeVoteId);
     AppObservableStore.setShowOrganizationModal(true);
     AppObservableStore.setHideOrganizationModalBallotItemInfo(true);
   }
 
-  onClickShowOrganizationModalWithBallotItemInfoAndPositions() {
+  onClickShowOrganizationModalWithBallotItemInfoAndPositions () {
     const { ballotItemWeVoteId } = this.props;
     AppObservableStore.setOrganizationModalBallotItemWeVoteId(ballotItemWeVoteId);
     AppObservableStore.setShowOrganizationModal(true);
@@ -272,20 +276,53 @@ class PositionRowListCompressed extends Component {
           numberOfNamesDisplayed += 1;
         }
       });
-//
       const remainingCount = filteredPositionList.length - numberOfNamesDisplayed;
-        if (remainingCount > 0) {
-          talkingAboutText += ` and ${remainingCount} ${remainingCount === 1 ? 'other' : 'others'}`;
-        }
-
-        if (candidateName && numberOfNamesDisplayed === 1) {
-          talkingAboutText += ` is talking about ${candidateName}`;
-        }
-        else {
-          talkingAboutText += ` are talking about ${candidateName}`;
-        }
-          }
-
+      if (remainingCount > 0) {
+        talkingAboutText += ` and ${remainingCount} ${remainingCount === 1 ? 'other' : 'others'}`;
+      }
+      if (candidateName && numberOfNamesDisplayed === 1) {
+        talkingAboutText += ` is talking about ${candidateName}`;
+      } else {
+        talkingAboutText += ` are talking about ${candidateName}`;
+      }
+    }
+    let filteredPositionListTooltip = <></>;
+    let onePositionNameCount = 1;
+    const displayedSpeakerNames = new Set();
+    if (filteredPositionList) {
+      filteredPositionListTooltip = isMobileScreenSize() ? (<span />) : (
+        <Tooltipstyle className="u-z-index-9020" id="filteredPositionListTooltip">
+          <div>
+            {filteredPositionList.length === 1 ? (
+              <>
+                See endorsement from
+              </>
+            ) : (
+              <>
+                See endorsements from {filteredPositionList.length} advocates, like:
+              </>
+            )}
+            <br />
+            {filteredPositionList.map((onePosition) => {
+              if (onePosition.speaker_display_name && onePositionNameCount <= 15 && !displayedSpeakerNames.has(onePosition.speaker_display_name)) {
+                onePositionNameCount += 1;
+                displayedSpeakerNames.add(onePosition.speaker_display_name);
+                return (
+                  <OneOrganizationName
+                    key={`PositionName-${onePosition.position_we_vote_id}-${onePositionNameCount}`}
+                  >
+                    {onePosition.speaker_display_name}
+                    <br />
+                  </OneOrganizationName>
+                );
+              } else {
+                return null;
+              }
+            })}
+          </div>
+        </Tooltipstyle>
+      );
+    }
     return (
       <CandidateEndorsementsWrapper>
         <CandidateEndorsementsContainer>
@@ -330,18 +367,21 @@ class PositionRowListCompressed extends Component {
               );
             })}
           </CandidateEndorsementPhotos>
-          <CandidateEndorsementText
-              onClick={() => {
-                if (filteredPositionList && filteredPositionList.length === 0) {
-                  this.onClickShowOrganizationModalWithBallotItemInfoAndPositions()
+          <OverlayTrigger overlay={filteredPositionListTooltip} placement="top" delay={{ show: 750 }}>
+            <CandidateEndorsementText
+                onClick={() => {
+                  if (filteredPositionList && filteredPositionList.length === 0) {
+                    this.onClickShowOrganizationModalWithBallotItemInfoAndPositions();
                   } else {
-                    this.onClickShowOrganizationModalWithPositions()
-                    }
-                }} className="u-link-underline-on-hover"
-          >
-            {talkingAboutText}
-            {!!(talkingAboutText) && <>&hellip;</>}
-          </CandidateEndorsementText>
+                    this.onClickShowOrganizationModalWithPositions();
+                  }
+                }}
+                className="u-link-underline-on-hover"
+            >
+              {talkingAboutText}
+              {!!(talkingAboutText) && <>&hellip;</>}
+            </CandidateEndorsementText>
+          </OverlayTrigger>
         </CandidateEndorsementsContainer>
       </CandidateEndorsementsWrapper>
     );
@@ -413,6 +453,15 @@ const CandidateEndorsementsWrapper = styled('div')`
   max-width: 100%;
   white-space: wrap;
   width: 275px;
+`;
+
+const Tooltipstyle = styled(Tooltip)`
+  .tooltip-inner {
+    max-width: 475px;
+  }
+`;
+
+const OneOrganizationName = styled('span')`
 `;
 
 export default withTheme(withStyles(styles)(PositionRowListCompressed));
