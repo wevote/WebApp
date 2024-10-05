@@ -7,6 +7,8 @@ import FirstChallengeInviteeListController from './FirstChallengeInviteeListCont
 import ChallengeInviteeStore from '../../stores/ChallengeInviteeStore';
 import DesignTokenColors from '../Style/DesignTokenColors';
 
+const ChallengeParticipantFirstRetrieveController = React.lazy(() => import(/* webpackChunkName: 'ChallengeParticipantFirstRetrieveController' */ '../ChallengeParticipant/ChallengeParticipantFirstRetrieveController'));
+
 const inviteeListDummyData = [
   { invitee_id: 1, invitee_name: 'Jane', invite_sent: false, invite_viewed: false, challenge_joined: false, messageStatus: '' },
   { invitee_id: 2, invitee_name: 'Unnamed friend1', invite_sent: true, invite_viewed: false, challenge_joined: false, messageStatus: 'Message Sent' },
@@ -69,6 +71,9 @@ const ChallengeInviteeListRoot = ({ challengeWeVoteId, classes }) => {
       <Suspense fallback={<></>}>
         <FirstChallengeInviteeListController challengeWeVoteId={challengeWeVoteId} searchText="SEARCH TEXT HERE" />
       </Suspense>
+      <Suspense fallback={<span>&nbsp;</span>}>
+        <ChallengeParticipantFirstRetrieveController challengeWeVoteId={challengeWeVoteId} />
+      </Suspense>
     </ChallengeInviteeListRootContainer>
   );
 };
@@ -85,8 +90,8 @@ const styles = () => ({
 });
 
 const ChallengeInviteeListRootContainer = styled.div`
+  margin-left: 10px;
   max-width: 620px;
-  //margin: 0 auto;
   width: 100%;
 `;
 

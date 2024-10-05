@@ -9,6 +9,7 @@ import ChallengeInviteeActions from '../../actions/ChallengeInviteeActions';
 import ChallengeInviteeStore from '../../stores/ChallengeInviteeStore';
 import ChallengeParticipantStore from '../../stores/ChallengeParticipantStore';
 import ChallengeStore from '../../stores/ChallengeStore';
+import VoterStore from '../../../stores/VoterStore';
 
 const ChallengeParticipantFirstRetrieveController = React.lazy(() => import(/* webpackChunkName: 'ChallengeParticipantFirstRetrieveController' */ '../ChallengeParticipant/ChallengeParticipantFirstRetrieveController'));
 
@@ -18,14 +19,16 @@ const InviteFriendToChallengeInput = ({ classes, challengeWeVoteId, externalUniq
   const [challengeTitle, setChallengeTitle] = React.useState('');
   const [inviteCopiedMessageOn, setInviteCopiedMessageOn] = React.useState(false);
   const [inviteeName, setInviteeName] = React.useState('');
+  const [inviterName, setInviterName] = React.useState('');
   const [inviteTextForFriends, setInviteTextForFriends] = React.useState('');
   const [inviteTextToSend, setInviteTextToSend] = React.useState('');
   // const [urlToSend, setUrlToSend] = React.useState('');
 
   function prepareInviteTextToSend () {
-    const inviteeFirstName = inviteeName.split(' ')[0];
-    const inviterFirstName = 'David';
-    const inviteTextToSendTemp1 = `Hi ${inviteeFirstName}, this is ${inviterFirstName}. `;
+    const inviteeFirstName = inviteeName ? inviteeName.split(' ')[0] : '';
+    const inviterFirstName = inviterName ? inviterName.split(' ')[0] : '';
+    let inviteTextToSendTemp1 = inviteeFirstName ? `Hi ${inviteeFirstName}` : 'Hi';
+    inviteTextToSendTemp1 += inviterFirstName ? `, this is ${inviterFirstName}. ` : ', ';
     const inviteTextToSendTemp2 = inviteTextForFriends || challengeInviteTextDefault;
     const inviteeUrlCode = ChallengeInviteeStore.getNextInviteeUrlCode();
     const urlToSendTemp = `${ChallengeStore.getSiteUrl(challengeWeVoteId)}/++/${inviteeUrlCode}`;
@@ -43,7 +46,7 @@ const InviteFriendToChallengeInput = ({ classes, challengeWeVoteId, externalUniq
 
   const handleShare = async () => {
     const inviteeUrlCode = ChallengeInviteeStore.getNextInviteeUrlCode();
-    ChallengeInviteeActions.challengeInviteeSave(challengeWeVoteId, inviteeName, true, inviteTextToSend, true, inviteeUrlCode, true);
+    ChallengeInviteeActions.challengeInviteeSave(challengeWeVoteId, 0, inviteeName, true, inviteTextToSend, true, inviteeUrlCode, true);
     setInviteCopiedMessageOn(true);
     setTimeout(() => {
       console.log('handleShare setTimeout fired');
@@ -76,16 +79,18 @@ const InviteFriendToChallengeInput = ({ classes, challengeWeVoteId, externalUniq
 
   React.useEffect(() => {
     const onChallengeInviteeStoreChange = () => {
-      console.log('InviteeStore change');
+      setInviterName(VoterStore.getFirstName());
       prepareInviteTextToSend();
     };
 
     const onChallengeParticipantStoreChange = () => {
+      setInviterName(VoterStore.getFirstName());
       setInviteTextForFriends(ChallengeParticipantStore.getInviteTextForFriends(challengeWeVoteId));
       prepareInviteTextToSend();
     };
 
     const onChallengeStoreChange = () => {
+      setInviterName(VoterStore.getFirstName());
       setChallengeInviteTextDefault(ChallengeStore.getChallengeInviteTextDefaultByWeVoteId(challengeWeVoteId));
       setChallengeTitle(ChallengeStore.getChallengeTitleByWeVoteId(challengeWeVoteId));
       prepareInviteTextToSend();
@@ -145,9 +150,9 @@ const InviteFriendToChallengeInput = ({ classes, challengeWeVoteId, externalUniq
                 <span>
                   Invite
                   {' '}
-                  {`${inviteeName || 'friend'}`}
+                  {`${inviteeName ? `${inviteeName.length > 18 ? `${inviteeName.slice(0, 18)}...` : inviteeName}` : 'friend'}`}
                   {' '}
-                  to challenge
+                  {inviteeName.length < 12 && 'to challenge'}
                 </span>
               )}
             </Button>
