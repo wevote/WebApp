@@ -22,9 +22,7 @@ export default function TabWithPushHistory (props) {
 
   // console.log(`TabWithPushHistory label:${label}`);
   return (
-    <Link to={to}>
-      <Tab classes={classes} id={id} label={label} onClick={() => handleClick(to)} />
-    </Link>
+    <Tab component={Link} to={to} classes={classes} id={id} label={label} onClick={() => handleClick(to)} />
   );
 }
 TabWithPushHistory.propTypes = {
