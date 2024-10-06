@@ -170,7 +170,7 @@ const HeaderContainer = styled('div')`
     button {
     background: none;
     border: none;
-    color: ${DesignTokenColors.primary600};
+    color: ${DesignTokenColors.primary500};
     font-size: 13px;
     font-weight: 500;
     text-decoration: none;
@@ -178,7 +178,7 @@ const HeaderContainer = styled('div')`
 `;
 
 const Wrapper = styled('div')`
-  align-items: center;  
+  align-items: center;
   display: flex;
   margin-left: auto;
 `;
@@ -200,7 +200,7 @@ const StepsContainer = styled('div')`
 
 const StepOneIconAndText = styled('div')`
   align-items: center;
-  border-bottom: 2px solid ${({ isActive }) => (isActive ? DesignTokenColors.primary600 : 'transparent')};
+  border-bottom: 2px solid ${({ isActive }) => (isActive ? DesignTokenColors.primary500 : 'transparent')};
   cursor: pointer;
   display: flex;
   flex-direction: column;
@@ -214,23 +214,23 @@ const StepOneIconAndText = styled('div')`
 
   a {
     font-weight: ${({ isActive }) => (isActive ? '600' : 'normal')};
-    color: ${({ isActive }) => (isActive ? DesignTokenColors.primary600 : 'inherit')};
+    color: ${({ isActive }) => (isActive ? DesignTokenColors.primary500 : 'inherit')};
 
     &:hover {
-      color: ${DesignTokenColors.primary600};
+      color: ${DesignTokenColors.primary500};
       font-weight: 600;
       text-decoration: underline;
     }
   }
 
   &:hover {
-    border-bottom: 2px solid ${DesignTokenColors.primary600};
+    border-bottom: 2px solid ${DesignTokenColors.primary500};
   }
 `;
 
 const StepTwoIconAndText = styled('div')`
   align-items: center;
-  border-bottom: 2px solid ${({ isActive }) => (isActive ? DesignTokenColors.primary600 : 'transparent')};
+  border-bottom: 2px solid ${({ isActive }) => (isActive ? DesignTokenColors.primary500 : 'transparent')};
   cursor: pointer;
   display: flex;
   flex-direction: column;
@@ -244,16 +244,16 @@ const StepTwoIconAndText = styled('div')`
 
   a {
     font-weight: ${({ isActive }) => (isActive ? '600' : 'normal')};
-    color: ${({ isActive }) => (isActive ? DesignTokenColors.primary600 : 'inherit')};
+    color: ${({ isActive }) => (isActive ? DesignTokenColors.primary500 : 'inherit')};
 
     &:hover {
-      color: ${DesignTokenColors.primary600};
+      color: ${DesignTokenColors.primary500};
       font-weight: 600;
     }
   }
 
   &:hover {
-   // border-bottom: 2px solid ${DesignTokenColors.primary600};
+   // border-bottom: 2px solid ${DesignTokenColors.primary500};
   }
 `;
 
