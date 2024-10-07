@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { withStyles } from '@mui/styles';
@@ -12,6 +12,8 @@ import StepOneIcon from '../../../../img/global/svg-icons/issues/material-symbol
 import StepOneActiveIcon from '../../../../img/global/svg-icons/issues/material-symbols-counter-1-active.svg';
 import StepTwoIcon from '../../../../img/global/svg-icons/issues/material-symbols-counter-2.svg';
 import StepTwoActiveIcon from '../../../../img/global/svg-icons/issues/material-symbols-counter-2-active.svg';
+
+const BoostLearnMoreModal = React.lazy(() => import(/* webpackChunkName: 'BoostLearnMoreModal' */ '../ChallengeInviteFriends/BoostLearnMoreModal'));
 
 // Color and font variables
 const commonTextStyle = {
@@ -29,8 +31,10 @@ class ChallengeInviteSteps extends React.Component {
     super(props);
     this.state = {
       activeStep: this.getActiveStepFromPath(),
+      showBoostLearnMoreModal: false,
     };
   }
+
   // Get the current step based on the URL to determine which step is active by default when the page loads
   getActiveStepFromPath = () => {
     const { location } = this.props;
@@ -65,6 +69,13 @@ class ChallengeInviteSteps extends React.Component {
     this.setState({ activeStep: stepNumber });
   };
 
+  // Function to toggle modal visibility
+  toggleBoostLearnMoreModal = () => {
+    this.setState((prevState) => ({
+      showBoostLearnMoreModal: !prevState.showBoostLearnMoreModal,
+    }));
+  };
+
   render() {
     return (
       <ChallengeInviteStepsContainer>
@@ -80,7 +91,7 @@ class ChallengeInviteSteps extends React.Component {
           </h2>
           <Wrapper>
             <LearnMoreTextBlock />
-            <button type="button">
+            <button type="button" onClick={this.toggleBoostLearnMoreModal}>
               Learn more
             </button>
           </Wrapper>
@@ -128,6 +139,16 @@ class ChallengeInviteSteps extends React.Component {
             </Link>
           </StepTwoIconAndText>
         </StepsContainer>
+        {/* Render BoostLearnMoreModal */}
+        <Suspense fallback={<></>}>
+          {this.state.showBoostLearnMoreModal && (
+            <BoostLearnMoreModal
+              show={this.state.showBoostLearnMoreModal}
+              toggleModal={this.toggleBoostLearnMoreModal}
+              ballotItemWeVoteId={this.props.challengeWeVoteId}
+            />
+          )}
+        </Suspense>
       </ChallengeInviteStepsContainer>
     );
   }

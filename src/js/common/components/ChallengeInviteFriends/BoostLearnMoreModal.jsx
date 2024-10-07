@@ -193,10 +193,12 @@ class BoostLearnMoreModal extends Component {
 
     return (
       <ModalDisplayTemplateA
-        dialogTitleJSX={<>{dialogTitleText}</>}
+       // dialogTitleJSX={<>{dialogTitleText}</>} commented because it is not working but can restore if needed
         show={show}
-        tallMode
-        textFieldJSX={textFieldJSX}
+        dialogTitleJSX={<div>Learn More</div>}
+        textFieldJSX={<div>Your content here</div>}
+        // tallMode commented because it is not working but can restore if needed
+       // textFieldJSX={textFieldJSX} commented because it is not working but can restore if needed
         toggleModal={this.props.toggleModal}
       />
     );
