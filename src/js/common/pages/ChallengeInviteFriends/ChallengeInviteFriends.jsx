@@ -198,7 +198,7 @@ class ChallengeInviteFriends extends Component {
           </ContentOuterWrapperDefault>
         </PageWrapperDefault>
         <InvitedFriendsWrapper>
-          <YourRank challengeSEOFriendlyPath={challengeSEOFriendlyPath} />
+          <YourRank challengeSEOFriendlyPath={challengeSEOFriendlyPath} challengeWeVoteId={challengeWeVoteId} />
           <ChallengeInviteeListRoot challengeWeVoteId={challengeWeVoteId} />
         </InvitedFriendsWrapper>
         <Suspense fallback={<span>&nbsp;</span>}>
