@@ -441,10 +441,6 @@ class ChallengeHomePage extends Component {
     return null;
   }
 
-  handleCloseFunction = () => {
-    console.log('click')
-    }
-
   render () {
     renderLog('ChallengeHomePage');  // Set LOG_RENDER_EVENTS to log all renders
 
@@ -525,7 +521,6 @@ class ChallengeHomePage extends Component {
         <ThanksForViewingChallenge
            userName="User Name"
            challengeOwner="David"
-           onClose={this.handleCloseFunction}
         />
         <Suspense fallback={<span>&nbsp;</span>}>
           <ChallengeRetrieveController
