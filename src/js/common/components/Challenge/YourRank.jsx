@@ -25,7 +25,7 @@ const YourRank =({classes})=>{
 
       setTimeout(() => {
         setClicked(false);
-        setArrowImage(arrow)
+        setArrowImage(arrow);
       }, 3000);
       return newPoints;
     });
