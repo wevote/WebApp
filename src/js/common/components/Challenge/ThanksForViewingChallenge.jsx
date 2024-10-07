@@ -2,26 +2,37 @@ import { IconButton } from '@mui/material';
 import { Close } from '@mui/icons-material';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-
+import Confetti from 'react-confetti';
 import React, { useState, useEffect } from 'react';
 
-const ThanksForViewingChallenge = ({ userName, challengeOwner, onClose }) => {
+const ThanksForViewingChallenge = ({ challengeOwner }) => {
   const [isClosing, setIsClosing] = useState(false);
+  const [showConfetti, setShowConfetti] = useState(false)
 
   useEffect(() => {
     if (isClosing) {
       const timer = setTimeout(() => {
-        onClose();
       }, 500);
       return () => clearTimeout(timer);
     }
-  }, [isClosing, onClose]);
+  }, [isClosing]);
+
+  useEffect(() => {
+      // Show confetti when the component mounts
+      setShowConfetti(true);
+      // Hide confetti after a short duration
+      const timer = setTimeout(() => {
+        setShowConfetti(false);
+      }, 3000); // Adjust the duration as needed
+      return () => clearTimeout(timer);
+    }, []);
 
   return (
     <ThanksForViewingOuterWrapper isClosing={isClosing}>
       <ThanksForViewingInnerWrapper isClosing={isClosing}>
         <ThankYouMessageWrapper>
           <ThankYouMessage>
+            {showConfetti && <Confetti />}
             Thanks for confirming
             the link from&nbsp;
             {challengeOwner}
@@ -75,7 +86,7 @@ const ThanksForViewingInnerWrapper = styled.div`
   flex-direction: column;
   overflow: hidden;
   background-color: white;
-  padding: ${(props) => (props.isClosing ? '0' : '0px 10px 20px 20px')};
+  padding: ${(props) => (props.isClosing ? '0' : '0px 10px 10px')};
   transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1),
               padding 0.5s cubic-bezier(0.4, 0, 0.2, 1),
               opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1),
@@ -114,3 +125,6 @@ const ThankYouMessageWrapper = styled.div`
   align-items: baseline;
 `;
 export default ThanksForViewingChallenge;
+
+
+
