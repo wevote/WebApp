@@ -1569,7 +1569,6 @@ svg {
 
 *,::before,::after {
   box-sizing:inherit;
-  height:fit-content
 }
 
 a {
