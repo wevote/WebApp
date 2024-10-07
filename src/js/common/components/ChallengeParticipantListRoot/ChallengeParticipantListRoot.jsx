@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useState } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { Button } from '@mui/material';
@@ -6,6 +6,7 @@ import { withStyles } from '@mui/styles';
 import DesignTokenColors from '../Style/DesignTokenColors';
 import ChallengeParticipantList from './ChallengeParticipantList';
 import SearchBar2024 from '../../../components/Search/SearchBar2024';
+import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import ChallengeParticipantStore from '../../stores/ChallengeParticipantStore';
 import FirstChallengeParticipantListController from './FirstChallengeParticipantListController';
 
@@ -50,18 +51,29 @@ function searchFunction () {
 
 const ChallengeParticipantListRoot = ({ challengeWeVoteId, classes, uniqueExternalId }) => {
   // eslint-disable-next-line no-unused-vars
-  const [latestParticipants, setLatestParticipants] = React.useState([]);
+  const [participantList, setParticipantList] = React.useState([]);
+  const [participantsCount, setParticipantsCount] = useState(0);
+  const [rankOfVoter, setRankOfVoter] = React.useState(0);
+
+  const onAppObservableStoreChange = () => {
+    setRankOfVoter(AppObservableStore.getChallengeParticipantRankOfVoterByChallengeWeVoteId(challengeWeVoteId));
+  };
 
   const onChallengeParticipantStoreChange = () => {
-    setLatestParticipants(ChallengeParticipantStore.getChallengeParticipantList(challengeWeVoteId));
+    const sortedParticipantsWithRank = ChallengeParticipantStore.getChallengeParticipantList(challengeWeVoteId);
+    setParticipantList(sortedParticipantsWithRank);
+    setParticipantsCount(sortedParticipantsWithRank.length);
   };
 
   React.useEffect(() => {
     // console.log('Fetching participants for:', challengeWeVoteId);
+    const appStateSubscription = messageService.getMessage().subscribe(() => onAppObservableStoreChange());
+    onAppObservableStoreChange();
     const challengeParticipantStoreListener = ChallengeParticipantStore.addListener(onChallengeParticipantStoreChange);
     onChallengeParticipantStoreChange();
 
     return () => {
+      appStateSubscription.unsubscribe();
       challengeParticipantStoreListener.remove();
     };
   }, [challengeWeVoteId]);
@@ -101,14 +113,23 @@ const ChallengeParticipantListRoot = ({ challengeWeVoteId, classes, uniqueExtern
           </SearchBarWrapper>
         </ButtonAndSearchWrapper>
         <LeaderboardInfoWrapper>
-          <RankContainer>
-            <RankText>You&apos;re</RankText>
-            {' '}
-            <RankNumber>#5341</RankNumber>
-            {' '}
-            <RankDetails>(of 6441)</RankDetails>
-          </RankContainer>
-
+          {!!(rankOfVoter) && (
+            <RankContainer>
+              <RankText>You&apos;re</RankText>
+              {' '}
+              <RankNumber>
+                #
+                {rankOfVoter}
+              </RankNumber>
+              {' '}
+              <RankDetails>
+                (of
+                {' '}
+                {participantsCount}
+                )
+              </RankDetails>
+            </RankContainer>
+          )}
         </LeaderboardInfoWrapper>
         <LeaderboardTableHeader>
           <HeaderGroup gap="32px">
@@ -122,7 +143,7 @@ const ChallengeParticipantListRoot = ({ challengeWeVoteId, classes, uniqueExtern
         </LeaderboardTableHeader>
       </TopSection>
       <ChallengeParticipantList
-        participantList={latestParticipants}
+        participantList={participantList}
         // participantList={participantListDummyData}
         uniqueExternalId={uniqueExternalId}
       />

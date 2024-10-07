@@ -23,6 +23,8 @@ const nonFluxState = {
   activityTidbitWeVoteIdForDrawer: '',
   blockCampaignXRedirectOnSignIn: false, // When signing in from the header, don't mark a campaign as supported
   blockChallengeRedirectOnSignIn: false, // When signing in from the header, don't mark a challenge as supported
+  challengeParticipantNameWithHighestRankByChallengeWeVoteId: {}, // Key is challengeWeVoteId, value is name for voter with the highest rank for that challenge
+  challengeParticipantRankOfVoterByChallengeWeVoteId: {}, // Key is challengeWeVoteId, value is rank of voter for that challenge
   chosenDomainTypeIsCampaign: false,
   chosenGoogleAnalyticsTrackingID: false,
   chosenPreventSharingOpinions: false,
@@ -98,6 +100,22 @@ export default {
 
   getActivityTidbitWeVoteIdForDrawer () {
     return nonFluxState.activityTidbitWeVoteIdForDrawer;
+  },
+
+  getChallengeParticipantNameWithHighestRankByChallengeWeVoteId (challengeWeVoteId) {
+    if (challengeWeVoteId && challengeWeVoteId in nonFluxState.challengeParticipantNameWithHighestRankByChallengeWeVoteId) {
+      return nonFluxState.challengeParticipantNameWithHighestRankByChallengeWeVoteId[challengeWeVoteId];
+    } else {
+      return '';
+    }
+  },
+
+  getChallengeParticipantRankOfVoterByChallengeWeVoteId (challengeWeVoteId) {
+    if (challengeWeVoteId && challengeWeVoteId in nonFluxState.challengeParticipantRankOfVoterByChallengeWeVoteId) {
+      return nonFluxState.challengeParticipantRankOfVoterByChallengeWeVoteId[challengeWeVoteId];
+    } else {
+      return 0;
+    }
   },
 
   getChosenAboutOrganizationExternalUrl () {
@@ -363,6 +381,18 @@ export default {
   setBlockChallengeRedirectOnSignIn (value) {
     nonFluxState.blockChallengeRedirectOnSignIn = value;
     messageService.sendMessage('state updated blockChallengeRedirectOnSignIn');
+  },
+
+  setChallengeParticipantRankOfVoter (challengeWeVoteId, rank) {
+    // console.log('setChallengeParticipantRankOfVoter: ', challengeWeVoteId, ', rank: ', rank);
+    nonFluxState.challengeParticipantRankOfVoterByChallengeWeVoteId[challengeWeVoteId] = rank;
+    messageService.sendMessage('state updated challengeParticipantRankOfVoterByChallengeWeVoteId');
+  },
+
+  setChallengeParticipantNameWithHighestRank (challengeWeVoteId, voterName) {
+    // console.log('setChallengeParticipantNameWithHighestRank: ', challengeWeVoteId, ', voterName: ', voterName);
+    nonFluxState.challengeParticipantNameWithHighestRankByChallengeWeVoteId[challengeWeVoteId] = voterName;
+    messageService.sendMessage('state updated challengeParticipantNameWithHighestRankByChallengeWeVoteId');
   },
 
   setCurrentPathname (currentPathname) {

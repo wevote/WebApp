@@ -25,12 +25,13 @@ const ThanksForJoiningChallenge = ({ voterFirstName, challengeTitle, onClose }) 
             Thanks for joining&nbsp;
             <BoldText>
               {challengeTitle}
+              {voterFirstName && ','}
             </BoldText>
             {voterFirstName && (
-              <span>
-                ,&nbsp;
+              <>
+                {' '}
                 {voterFirstName}
-              </span>
+              </>
             )}
             !
           </ThankYouMessage>
