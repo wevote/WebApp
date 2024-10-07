@@ -89,13 +89,13 @@ const ThanksForViewingOuterWrapper = styled.div`
   overflow: hidden;
   display: flex;
   justify-content: center;
-  padding: ${(props) => (props.isClosing ? '0' : '30px 0px 30px')};
+  padding: ${(props) => (props.isClosing ? '0' : '0px 0px 30px')};
   transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1),
               padding 0.5s cubic-bezier(0.4, 0, 0.2, 1),
               opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1),
               margin-bottom 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   opacity: ${(props) => (props.isClosing ? 0 : 1)};
-  margin-bottom:  ${(props) => (props.isClosing ? '0' : '-50px')};
+  margin-bottom:  ${(props) => (props.isClosing ? '0' : '5px')};
   z-index: 100;
   position: relative;
 `;
