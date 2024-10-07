@@ -19,7 +19,7 @@ const commonTextStyle = {
 };
 // ChallengeInviteSteps component to display the steps
 class ChallengeInviteSteps extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.state = {
       activeStep: this.getActiveStepFromPath(),
@@ -60,7 +60,7 @@ class ChallengeInviteSteps extends React.Component {
     this.setState({ activeStep: stepNumber });
   };
 
-  render() {
+  render () {
     return (
       <ChallengeInviteStepsContainer>
         {/* Rocket, Invite more friends, and Learn More */}
