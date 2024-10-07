@@ -23,7 +23,7 @@ const ThanksForViewingChallenge = ({ challengeOwner }) => {
       // Hide confetti after a short duration
       const timer = setTimeout(() => {
         setShowConfetti(false);
-      }, 3000); // Adjust the duration as needed
+      }, 3000);
       return () => clearTimeout(timer);
     }, []);
 
