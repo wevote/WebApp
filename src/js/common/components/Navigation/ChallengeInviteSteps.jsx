@@ -114,14 +114,14 @@ class ChallengeInviteSteps extends React.Component {
               imageName={this.isStepActive(2) ? 'material-symbols-counter-2-active' : 'material-symbols-counter-2'}
               alt="Step 2 Icon"
             />
-            <Link
+            <StyledLink
               to={`${this.getChallengeBasePath()}invite-friends`}
               style={commonTextStyle}
               // Handle click to update state
               onClick={() => this.handleStepClick(2)}
             >
               Copy message & link
-            </Link>
+            </StyledLink>
           </StepTwoIconAndText>
         </StepsContainer>
       </ChallengeInviteStepsContainer>
@@ -229,18 +229,16 @@ const StepTwoIconAndText = styled('div')`
   margin-left: 25px;
   text-align: center;
   width: 109px;
+`;
+const StyledLink = styled(Link)`
+  font-weight: ${({ isActive }) => (isActive ? '600' : 'normal')};
+  color: ${({ isActive }) => (isActive ? DesignTokenColors.primary500 : 'inherit')};
+  text-decoration: none;
 
-  a {
-    font-weight: ${({ isActive }) => (isActive ? '600' : 'normal')};
-    color: ${({ isActive }) => (isActive ? DesignTokenColors.primary500 : 'inherit')};
-
-    &:hover {
-      color: ${DesignTokenColors.primary500};
-      font-weight: 600;
-    }
-  }
   &:hover {
-   // border-bottom: 2px solid ${DesignTokenColors.primary500};
+    color: ${DesignTokenColors.primary500};
+    font-weight: 600;
+    text-decoration: underline;
   }
 `;
 
