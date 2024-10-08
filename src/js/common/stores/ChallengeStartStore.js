@@ -65,7 +65,7 @@ class ChallengeStartStore extends ReduceStore {
 
   challengeTitleExists () {
     if (this.getState().challengeTitle) {
-      return Boolean(this.getState().challengeTitle.length > 10);
+      return Boolean(this.getState().challengeTitle.length > 0);
     } else {
       return false;
     }

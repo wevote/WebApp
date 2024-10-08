@@ -41,6 +41,7 @@ function ChallengeCardForListBody (props) {
     voterCanEditThisChallenge,
   } = props;
   const politicalPartySvgNameWithPath = '../../img/global/svg-icons/political-party-unspecified.svg';
+  // console.log('ChallengeCardForListBody functional component photoLargeUrl:', photoLargeUrl);
 
   // /////////////////////// START OF DISPLAY
   return (
