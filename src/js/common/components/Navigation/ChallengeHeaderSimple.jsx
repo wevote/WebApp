@@ -21,7 +21,7 @@ import JoinedAndDaysLeft from '../Challenge/JoinedAndDaysLeft';
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../../../components/ImageHandler'));
 
 // React functional component example
-function ChallengeHeaderSimple(props) {
+function ChallengeHeaderSimple (props) {
   renderLog('ChallengeHeaderSimple');  // Set LOG_RENDER_EVENTS to log all renders
   const { challengeTitle, challengeWeVoteId, classes, challengePhotoLargeUrl, goToChallengeHome } = props;
 
