@@ -8,6 +8,7 @@ import stringContains from '../../utils/stringContains';
 import CandidateStore from '../../../stores/CandidateStore';
 import MeasureStore from '../../../stores/MeasureStore';
 import SupportStore from '../../../stores/SupportStore';
+import PayToPromoteProcess from '../CampaignSupport/PayToPromoteProcess';
 
 // const PayToPromoteProcess = React.lazy(() => import(/* webpackChunkName: 'PayToPromoteProcess' */ './PayToPromoteProcess')); // eslint-disable-line import/no-cycle
 
