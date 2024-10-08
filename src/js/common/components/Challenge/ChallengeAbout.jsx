@@ -7,34 +7,44 @@ import DesignTokenColors from '../Style/DesignTokenColors';
 import { renderLog } from '../../utils/logging';
 import ChallengeParticipantStore from '../../stores/ChallengeParticipantStore';
 import ChallengeStore from '../../stores/ChallengeStore';
-import JoinChallengeAndLearnMoreButtons from './JoinChallengeAndLearnMoreButtons';
+import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 
 function ChallengeAbout ({ challengeWeVoteId }) {
   renderLog('ChallengeAbout');
   const [challengeInviteesCount, setChallengeInviteesCount] = React.useState(0);
   const [challengeParticipantCount, setChallengeParticipantCount] = React.useState(0);
   const [daysLeft, setDaysLeft] = React.useState(0);
+  const [participantNameWithHighestRank, setParticipantNameWithHighestRank] = React.useState('');
+
+  const onAppObservableStoreChange = () => {
+    setParticipantNameWithHighestRank(AppObservableStore.getChallengeParticipantNameWithHighestRankByChallengeWeVoteId(challengeWeVoteId));
+  };
+
+  const onChallengeStoreChange = () => {
+    if (challengeInviteesCount < ChallengeStore.getNumberOfInviteesInChallenge(challengeWeVoteId)) {
+      setChallengeInviteesCount(ChallengeStore.getNumberOfInviteesInChallenge(challengeWeVoteId));
+    }
+    if (challengeParticipantCount < ChallengeStore.getNumberOfParticipantsInChallenge(challengeWeVoteId)) {
+      setChallengeParticipantCount(ChallengeStore.getNumberOfParticipantsInChallenge(challengeWeVoteId));
+    }
+    setDaysLeft(ChallengeStore.getDaysUntilChallengeEnds(challengeWeVoteId));
+  };
+  const onChallengeParticipantStoreChange = () => {
+    if (challengeParticipantCount < ChallengeParticipantStore.getNumberOfParticipantsInChallenge(challengeWeVoteId)) {
+      setChallengeParticipantCount(ChallengeParticipantStore.getNumberOfParticipantsInChallenge(challengeWeVoteId));
+    }
+  };
 
   React.useEffect(() => {
-    const onChallengeStoreChange = () => {
-      if (challengeInviteesCount < ChallengeStore.getNumberOfInviteesInChallenge(challengeWeVoteId)) {
-        setChallengeInviteesCount(ChallengeStore.getNumberOfInviteesInChallenge(challengeWeVoteId));
-      }
-      if (challengeParticipantCount < ChallengeStore.getNumberOfParticipantsInChallenge(challengeWeVoteId)) {
-        setChallengeParticipantCount(ChallengeStore.getNumberOfParticipantsInChallenge(challengeWeVoteId));
-      }
-      setDaysLeft(ChallengeStore.getDaysUntilChallengeEnds(challengeWeVoteId));
-    };
-    const onChallengeParticipantStoreChange = () => {
-      if (challengeParticipantCount < ChallengeParticipantStore.getNumberOfParticipantsInChallenge(challengeWeVoteId)) {
-        setChallengeParticipantCount(ChallengeParticipantStore.getNumberOfParticipantsInChallenge(challengeWeVoteId));
-      }
-    };
+    const appStateSubscription = messageService.getMessage().subscribe(() => onAppObservableStoreChange());
+    onAppObservableStoreChange();
     const challengeParticipantStoreListener = ChallengeParticipantStore.addListener(onChallengeParticipantStoreChange);
-    const challengeStoreListener = ChallengeStore.addListener(onChallengeStoreChange);
     onChallengeParticipantStoreChange();
+    const challengeStoreListener = ChallengeStore.addListener(onChallengeStoreChange);
+    onChallengeStoreChange();
 
     return () => {
+      appStateSubscription.unsubscribe();
       challengeParticipantStoreListener.remove();
       challengeStoreListener.remove();
     };
@@ -56,7 +66,7 @@ function ChallengeAbout ({ challengeWeVoteId }) {
     </span>
   );
   const remindFriends = 'Remind as many friends as you can about the date of the election, and let them know you will be voting.';
-  const currentLeader = 'Current leader: Tamika M.';
+  const currentLeader = `Current leader: ${participantNameWithHighestRank}`;
   const friendsInvited = (
     <span>
       <strong>
@@ -100,13 +110,15 @@ function ChallengeAbout ({ challengeWeVoteId }) {
         </CardForListRow>
         <CardForListRow>
           <Suspense fallback={<></>}>
-            {currentLeader && friendsInvited && (
+            {friendsInvited && (
               <FlexDivLeft>
                 <SvgImageWrapper>
                   <EmojiEventsOutlined />
                 </SvgImageWrapper>
                 <ChallengeLeaderWrapper>
-                  <CurrentLeaderDiv>{currentLeader}</CurrentLeaderDiv>
+                  {!!(participantNameWithHighestRank) && (
+                    <CurrentLeaderDiv>{currentLeader}</CurrentLeaderDiv>
+                  )}
                   <FriendsInvitedDiv>{friendsInvited}</FriendsInvitedDiv>
                 </ChallengeLeaderWrapper>
               </FlexDivLeft>
@@ -114,7 +126,6 @@ function ChallengeAbout ({ challengeWeVoteId }) {
           </Suspense>
         </CardForListRow>
       </CardRowsWrapper>
-      <JoinChallengeAndLearnMoreButtons/>
     </ChallengeAboutWrapper>
   );
 }

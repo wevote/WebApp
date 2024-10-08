@@ -32,7 +32,7 @@ export default {
   },
 
   challengeInviteeFlagsSave (challengeWeVoteId, inviteeId = 0, inviteSent = false, inviteSentChanged = false) {
-    console.log('challengeInviteeFlagsSave called with challengeWeVoteId: ', challengeWeVoteId, ' and inviteeId: ', inviteeId, ', inviteSent:', inviteSent, ', inviteSentChanged:', inviteSentChanged);
+    // console.log('challengeInviteeFlagsSave called with challengeWeVoteId: ', challengeWeVoteId, ' and inviteeId: ', inviteeId, ', inviteSent:', inviteSent, ', inviteSentChanged:', inviteSentChanged);
     Dispatcher.loadEndpoint('challengeInviteeSave',
       {
         challenge_we_vote_id: challengeWeVoteId,

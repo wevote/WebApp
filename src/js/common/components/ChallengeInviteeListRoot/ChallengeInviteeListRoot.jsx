@@ -1,11 +1,13 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { withStyles } from '@mui/styles';
 import ChallengeInviteeList from './ChallengeInviteeList';
 import FirstChallengeInviteeListController from './FirstChallengeInviteeListController';
+import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import ChallengeInviteeStore from '../../stores/ChallengeInviteeStore';
 import DesignTokenColors from '../Style/DesignTokenColors';
+import ChallengeParticipantStore from "../../stores/ChallengeParticipantStore";
 
 const ChallengeParticipantFirstRetrieveController = React.lazy(() => import(/* webpackChunkName: 'ChallengeParticipantFirstRetrieveController' */ '../ChallengeParticipant/ChallengeParticipantFirstRetrieveController'));
 
@@ -27,9 +29,15 @@ const inviteeListDummyData = [
   { invitee_id: 15, invitee_name: 'Melina H.', invite_sent: true, invite_viewed: false, challenge_joined: false, messageStatus: 'Message Sent' },
 ];
 
-const ChallengeInviteeListRoot = ({ challengeWeVoteId, classes }) => {
+const ChallengeInviteeListRoot = ({ challengeWeVoteId }) => {
   // eslint-disable-next-line no-unused-vars
   const [inviteeList, setInviteeList] = React.useState([]);
+  const [participantsCount, setParticipantsCount] = useState(0);
+  const [rankOfVoter, setRankOfVoter] = React.useState(0);
+
+  const onAppObservableStoreChange = () => {
+    setRankOfVoter(AppObservableStore.getChallengeParticipantRankOfVoterByChallengeWeVoteId(challengeWeVoteId));
+  };
 
   const onChallengeInviteeStoreChange = () => {
     // console.log('ChallengeInviteeStoreChange');
@@ -39,25 +47,46 @@ const ChallengeInviteeListRoot = ({ challengeWeVoteId, classes }) => {
     setInviteeList(incomingInviteeListNew);
   };
 
+  const onChallengeParticipantStoreChange = () => {
+    const sortedParticipantsWithRank = ChallengeParticipantStore.getChallengeParticipantList(challengeWeVoteId);
+    setParticipantsCount(sortedParticipantsWithRank.length);
+  };
+
   React.useEffect(() => {
     // console.log('Fetching participants for:', challengeWeVoteId);
+    const appStateSubscription = messageService.getMessage().subscribe(() => onAppObservableStoreChange());
+    onAppObservableStoreChange();
     const challengeInviteeStoreListener = ChallengeInviteeStore.addListener(onChallengeInviteeStoreChange);
     onChallengeInviteeStoreChange();
+    const challengeParticipantStoreListener = ChallengeParticipantStore.addListener(onChallengeParticipantStoreChange);
+    onChallengeParticipantStoreChange();
 
     return () => {
+      appStateSubscription.unsubscribe();
       challengeInviteeStoreListener.remove();
+      challengeParticipantStoreListener.remove();
     };
   }, [challengeWeVoteId]);
   return (
     <ChallengeInviteeListRootContainer>
       <Heading>
-        <RankContainer>
-          <RankText>You&apos;re</RankText>
-          {' '}
-          <RankNumber>#5341</RankNumber>
-          {' '}
-          <RankDetails>(of 6441)</RankDetails>
-        </RankContainer>
+        {!!(rankOfVoter) && (
+          <RankContainer>
+            <RankText>You&apos;re</RankText>
+            {' '}
+            <RankNumber>
+              #
+              {rankOfVoter}
+            </RankNumber>
+            {' '}
+            <RankDetails>
+              (of
+              {' '}
+              {participantsCount}
+              )
+            </RankDetails>
+          </RankContainer>
+        )}
         <FirendsTableHeader>
           <HeaderItem>FRIENDS NAME</HeaderItem>
           <HeaderItem>STATUS</HeaderItem>
