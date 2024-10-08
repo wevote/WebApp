@@ -38,12 +38,12 @@ const participantListDummyData = [
   { rank: 5342, participant_name: 'Anusha G.', points: 118, invitees_who_joined: 1, invitees_count: 5, invitees_who_viewed: 2, invitees_who_viewed_plus: 15, voter_we_vote_id: 'wv02voter12325' },
 ];
 
-function clearSearchFunction() {
+function clearSearchFunction () {
   // This is just a stub
   return true;
 }
 
-function searchFunction() {
+function searchFunction () {
   // This is just a stub
   return true;
 }
