@@ -37,9 +37,6 @@ class ChallengeInviteSteps extends React.Component {
     return 1;
   };
 
-  // Check if a step is active based on the current step number
-  isStepActive = (stepNumber) => this.props.currentStep === stepNumber;
-
   // Get the path for the challenge
   getChallengeBasePath = () => {
     const { challengeSEOFriendlyPath, challengeWeVoteId } = this.props;
@@ -130,7 +127,6 @@ class ChallengeInviteSteps extends React.Component {
 }
 
 ChallengeInviteSteps.propTypes = {
-  currentStep: PropTypes.number.isRequired,
   challengeSEOFriendlyPath: PropTypes.string,
   challengeWeVoteId: PropTypes.string,
   location: PropTypes.object.isRequired,
