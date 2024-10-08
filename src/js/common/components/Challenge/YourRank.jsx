@@ -1,39 +1,61 @@
+import { Button } from '@mui/material';
 import React, { useState, Suspense } from 'react';
 import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
-import DesignTokenColors from '../../components/Style/DesignTokenColors';
-import { Button } from '@mui/material';
-import { CampaignSupportDesktopButtonPanel, CampaignSupportDesktopButtonWrapper, CampaignSupportSection, CampaignSupportSectionWrapper } from '../../components/Style/CampaignSupportStyles';
-import { SupportButtonFooterWrapper, SupportButtonPanel} from '../../components/Style/CampaignDetailsStyles';
+import DesignTokenColors from '../Style/DesignTokenColors';
+// import { CampaignSupportDesktopButtonPanel, CampaignSupportDesktopButtonWrapper, CampaignSupportSection, CampaignSupportSectionWrapper } from '../../components/Style/CampaignSupportStyles';
+// import { SupportButtonFooterWrapper, SupportButtonPanel} from '../../components/Style/CampaignDetailsStyles';
 import arrow from '../../../../img/global/icons/ph_arrow-up-bold.png';
 import arrow1 from '../../../../img/global/icons/ph_arrow-up-bold_1.png';
 import YourRankModal from './YourRankModal';
-const URL = '/:challengeSEOFriendlyPath/+/customize-message';
+import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
+import ChallengeParticipantStore from '../../stores/ChallengeParticipantStore';
 
-const YourRank =({classes})=>{
+const YourRank = ({ classes, challengeWeVoteId }) => {
   const [clicked, setClicked] = useState(false);
+  const [participantsCount, setParticipantsCount] = useState(0);
   const [points, setPoints] = useState(0);
-  const [note, setNote] = useState("");
+  // const [note, setNote] = useState("");
   const [arrowImage, setArrowImage] = useState(arrow)
 
   const [openYourRankModal, setOpenYourRankModal] = useState(false)
 
-  const calculateRank = (points) => 5336 + points * 5;
+  const onAppObservableStoreChange = () => {
+    setRankOfVoter(AppObservableStore.getChallengeParticipantRankOfVoterByChallengeWeVoteId(challengeWeVoteId));
+  };
+
+  const onChallengeParticipantStoreChange = () => {
+    const sortedParticipantsWithRank = ChallengeParticipantStore.getChallengeParticipantList(challengeWeVoteId);
+    setParticipantsCount(sortedParticipantsWithRank.length);
+  };
 
   const handleClick = () => {
     setPoints((prevPoints) => {
       const newPoints = prevPoints + 1;
       setClicked(true);
-      setArrowImage(arrow1)
+      setArrowImage(arrow1);
 
       setTimeout(() => {
         setClicked(false);
-        setArrowImage(arrow)
+        setArrowImage(arrow);
       }, 3000);
       return newPoints;
     });
     setOpenYourRankModal(!openYourRankModal)
   };
+
+  React.useEffect(() => {
+    // console.log('Fetching participants for:', challengeWeVoteId);
+    const appStateSubscription = messageService.getMessage().subscribe(() => onAppObservableStoreChange());
+    onAppObservableStoreChange();
+    const challengeParticipantStoreListener = ChallengeParticipantStore.addListener(onChallengeParticipantStoreChange);
+    onChallengeParticipantStoreChange();
+
+    return () => {
+      appStateSubscription.unsubscribe();
+      challengeParticipantStoreListener.remove();
+    };
+  }, [challengeWeVoteId]);
   return (
     <YourRankWrapper>
       <div
@@ -61,77 +83,79 @@ const YourRank =({classes})=>{
           classes={{ root: classes.buttonDesktop }}
           style={{ color: clicked ? '#FFFFFF' : '#AC5204' }}
         >
-          # {calculateRank(points)}
+          #
+          {rankOfVoter}
+          {' '}
           <span className="arrow">
-            <img src={arrowImage} alt="arrow" classes ={{ root: classes.arrow}}/>
+            <img src={arrowImage} alt="arrow" classes={{ root: classes.arrow }} />
           </span>
         </Button>
         <Suspense fallback={<></>}>
-            <YourRankModal
-              userRank={calculateRank(points)}
-              show={openYourRankModal}
-              toggleModal={() => setOpenYourRankModal(!openYourRankModal)}
-            />
-          </Suspense>
+          <YourRankModal
+            userRank={calculateRank(points)}
+            show={openYourRankModal}
+            toggleModal={() => setOpenYourRankModal(!openYourRankModal)}
+          />
+        </Suspense>
       </CompleteYourProfileButtonWrapper>
     </YourRankWrapper>
   );
-  };
-  const styles = (theme) => ({
-    buttonDesktop: {
-      boxShadow: 'none !important',
-      color: '#AC5204',
-      width: '105px',
-      height: '34px',
-      border: '1px solid #AC5204',
-      borderRadius: '20px 20px 20px 20px',
-      transition: 'color 0.3s ease',
-      textTransform: 'none',
-      width: '100%',
+};
+const styles = (theme) => ({
+  buttonDesktop: {
+    boxShadow: 'none !important',
+    color: '#AC5204',
+    width: '105px',
+    height: '34px',
+    border: '1px solid #AC5204',
+    borderRadius: '20px 20px 20px 20px',
+    transition: 'color 0.3s ease',
+    textTransform: 'none',
+    width: '100%',
+  },
+  desktopSimpleLink: {
+    border: '2px solid #AC5204',
+    boxShadow: 'none !important',
+    color: '#999',
+    marginTop: 10,
+    padding: '0 20px',
+    textTransform: 'none',
+    width: 250,
+  },
+  mobileSimpleLink: {
+    boxShadow: 'none !important',
+    color: '#999',
+    marginTop: 10,
+    padding: '0 20px',
+    textTransform: 'none',
+    width: '100%',
+    '&:hover': {
+      color: '#4371cc',
+      textDecoration: 'underline',
     },
-    desktopSimpleLink: {
-      border: '2px solid #AC5204',
-      boxShadow: 'none !important',
-      color: '#999',
-      marginTop: 10,
-      padding: '0 20px',
-      textTransform: 'none',
-      width: 250,
-    },
-    mobileSimpleLink: {
-      boxShadow: 'none !important',
-      color: '#999',
-      marginTop: 10,
-      padding: '0 20px',
-      textTransform: 'none',
-      width: '100%',
-      '&:hover': {
-        color: '#4371cc',
-        textDecoration: 'underline',
-      },
-    },
-    arrow: {
-      width: '10.5px',
-      height: '12.5px',
-      top: '2.75px',
-      left: '14.25px',
-      gap: '0px',
-      opacity: '0px',
-      angle: '-90 deg',
-    },
-  });
-  const ChallengeTabsWrapper = styled('div')`
+  },
+  arrow: {
+    width: '10.5px',
+    height: '12.5px',
+    top: '2.75px',
+    left: '14.25px',
+    gap: '0px',
+    opacity: '0px',
+    angle: '-90 deg',
+  },
+});
+const ChallengeTabsWrapper = styled('div')`
     background-color: ${DesignTokenColors.neutralUI50};
     display: flex;
     justify-content: center;
   `;
-  const YourRankWrapper = styled('div')`
+const YourRankWrapper = styled('div')`
     background-color: ${DesignTokenColors.neutralUI50};
     display: flex;
     justify-content: center;
   `;
-  const CompleteYourProfileButtonWrapper = styled('div')`
-    background-color: ${(props)=>(props.clicked ? "#AC5204" : "#FFFFFF")};
+const CompleteYourProfileButtonWrapper = styled('div')`
+    background-color: ${(props) => (props.clicked ? "#AC5204" : "#FFFFFF")};
     width: 105px;
     height: 34px;
     top: 443px;

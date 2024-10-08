@@ -1,11 +1,14 @@
 import { AppBar, Tab, Tabs, Toolbar } from '@mui/material';
 import { createTheme, StyledEngineProvider, ThemeProvider } from '@mui/material/styles';
 import makeStyles from '@mui/styles/makeStyles';
+import PropTypes from 'prop-types';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { renderLog } from '../../utils/logging';
 import { endsWith } from '../../utils/startsWith';
 import stringContains from '../../utils/stringContains';
+import ChallengeParticipantStore from '../../stores/ChallengeParticipantStore';
+import ChallengeStore from '../../stores/ChallengeStore';
 
 
 // TODO: Mar 23, 2022, makeStyles is legacy in MUI 5, replace instance with styled-components or sx if there are issues
@@ -27,8 +30,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export default function ChallengeInviteFriendsTopNavigation (incomingVariables) {
+export default function ChallengeInviteFriendsTopNavigation ({ challengeSEOFriendlyPath, challengeWeVoteId, hideAboutTab }) {
   const [value, setValue] = React.useState(0);
+  const [voterIsChallengeParticipant, setVoterIsChallengeParticipant] = React.useState(false);
+  // console.log('ChallengeInviteFriendsTopNavigation challengeWeVoteId:', challengeWeVoteId, ', voterIsChallengeParticipant:', voterIsChallengeParticipant);
+
   const classes = useStyles();
   const history = useHistory();
 
@@ -59,9 +65,6 @@ export default function ChallengeInviteFriendsTopNavigation (incomingVariables) 
     },
   });
 
-  const { challengeSEOFriendlyPath, challengeWeVoteId, hideAboutTab } = incomingVariables;
-  // console.log('ChallengeInviteFriendsTopNavigation incomingVariables:', incomingVariables);
-  // console.log('ChallengeInviteFriendsTopNavigation challengeSEOFriendlyPath:', challengeSEOFriendlyPath);
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -110,6 +113,27 @@ export default function ChallengeInviteFriendsTopNavigation (incomingVariables) 
   // console.log('ChallengeInviteFriendsTopNavigation, leaderboardUrl:', leaderboardUrl);
   // console.log('ChallengeInviteFriendsTopNavigation, friendsUrl:', friendsUrl);
 
+  React.useEffect(() => {
+    // console.log('Fetching participants for:', challengeWeVoteId);
+
+    const onChallengeParticipantStoreChange = () => {
+      setVoterIsChallengeParticipant(ChallengeStore.getVoterIsChallengeParticipant(challengeWeVoteId));
+    };
+
+    const onChallengeStoreChange = () => {
+      setVoterIsChallengeParticipant(ChallengeStore.getVoterIsChallengeParticipant(challengeWeVoteId));
+    };
+
+    const challengeParticipantStoreListener = ChallengeParticipantStore.addListener(onChallengeParticipantStoreChange);
+    const challengeStoreListener = ChallengeStore.addListener(onChallengeStoreChange);
+    onChallengeStoreChange();
+
+    return () => {
+      challengeParticipantStoreListener.remove();
+      challengeStoreListener.remove();
+    };
+  }, [challengeWeVoteId]);
+
   renderLog('ChallengeInviteFriendsTopNavigation functional component');
   return (
     <div className={classes.root}>
@@ -124,7 +148,7 @@ export default function ChallengeInviteFriendsTopNavigation (incomingVariables) 
               <Tabs value={value} onChange={handleChange} aria-label="Tab menu">
                 {!hideAboutTab && <Tab id="challengeLandingTab-0" label="About" onClick={() => history.push(aboutUrl)} value={1} />}
                 <Tab id="challengeLandingTab-1" label="Leaderboard" onClick={() => history.push(leaderboardUrl)} value={2} />
-                <Tab id="challengeLandingTab-2" label="Invited friends" onClick={() => history.push(friendsUrl)} value={3} />
+                {voterIsChallengeParticipant && <Tab id="challengeLandingTab-2" label="Invited friends" onClick={() => history.push(friendsUrl)} value={3} />}
               </Tabs>
             </Toolbar>
           </ThemeProvider>
@@ -133,3 +157,8 @@ export default function ChallengeInviteFriendsTopNavigation (incomingVariables) 
     </div>
   );
 }
+ChallengeInviteFriendsTopNavigation.propTypes = {
+  challengeSEOFriendlyPath: PropTypes.string,
+  challengeWeVoteId: PropTypes.string,
+  hideAboutTab: PropTypes.bool,
+};
