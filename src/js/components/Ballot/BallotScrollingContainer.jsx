@@ -100,12 +100,16 @@ class BallotScrollingContainer extends Component {
   };
 
   handleContainerClick = (e, weVoteId, externalUniqueId) => {
-
+    console.log(e.target, externalUniqueId)
     const candidateContainer = document.getElementById(`candidateContainer-${weVoteId}-${externalUniqueId}`)
     const positionRowListOuterWrapper = document.getElementById(`positionRowListOuterWrapper-${weVoteId}-${externalUniqueId}`)
     const candidateImageAndName = document.getElementById(`officeItemCompressedCandidateImageAndName-${weVoteId}-${externalUniqueId}`);
     const candidateNameAndPartyWrapper = document.getElementById(`candidateNameAndPartyWrapper-${weVoteId}-${externalUniqueId}`)
     const candidateNameH4 = document.getElementById(`candidateNameH4-${weVoteId}-${externalUniqueId}`)
+    //change to ! any of the ones below instead
+    //get rid of these ones in IssuesByBallotItemDisplayList and PositionRowListCompressed
+    const listWrapper = document.getElementById(`IssueListWrapper-${weVoteId}`)
+    const candidateEndorsementText = document.getElementById(`CandidateEndorsementText-${weVoteId}`)
       if (e.target === candidateImageAndName
             || e.target === candidateContainer
             || e.target === positionRowListOuterWrapper
@@ -148,6 +152,8 @@ class BallotScrollingContainer extends Component {
         >
           <CandidateContainer
             id={`candidateContainer-${oneCandidate.we_vote_id}-${externalUniqueId}`}
+            //EAW VERIFY
+            className="u-cursor--pointer"
            >
             <CandidateWrapper>
               <CandidateInfo>
@@ -203,6 +209,7 @@ class BallotScrollingContainer extends Component {
                         ballotItemDisplayName={oneCandidate.ballot_item_display_name}
                         ballotItemWeVoteId={oneCandidate.we_vote_id}
                         externalUniqueId={`officeItemCompressed-${oneCandidate.we_vote_id}-${externalUniqueId}`}
+                        handleContainerClick={this.handleContainerClick}
                       />
                     </Suspense>
                   )}
