@@ -74,13 +74,9 @@ get sendVeificationAgainElement(){
 }
     async getIcons(){
         const iconList= await this.iconElements;
-      //  for(const icon of iconList){
-      //      console.log('Icon: ${icon.toString()}'); // If toString() provides meaningful output
-     //   }
               const visibilityList = [];   
-
         for(const icon of iconList){
-        const  isIconVisible =await icon.isDisplayed(); // call isDisplayed
+        const  isIconVisible =await icon.isDisplayed()// call isDisplayed
         visibilityList.push(isIconVisible);
         }
         return visibilityList;
