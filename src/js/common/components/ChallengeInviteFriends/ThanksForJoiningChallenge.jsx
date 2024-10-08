@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import React, { useState, useEffect } from 'react';
 
 const ThanksForJoiningChallenge = ({ userName, challengeOwner, onClose }) => {
-  const [isClosing, setIsClosing] = useState(true);
+  const [isClosing, setIsClosing] = useState(false);
 
   useEffect(() => {
     if (isClosing) {
