@@ -37,12 +37,12 @@ const participantListDummyData = [
   { rank: 5342, participant_name: 'Anusha G.', points: 118, friends_who_joined: 1, friends_invited: 5, friends_who_viewed: 2, friends_who_viewed_plus: 15, voter_we_vote_id: 'wv02voter12325' },
 ];
 
-function clearSearchFunction () {
+function clearSearchFunction() {
   // This is just a stub
   return true;
 }
 
-function searchFunction () {
+function searchFunction() {
   // This is just a stub
   return true;
 }
@@ -166,6 +166,7 @@ const TopSection = styled.div`
   z-index: 1;
   position: sticky;
   top: 0;
+  padding: 10px;
 `;
 
 const ButtonAndSearchWrapper = styled.div`

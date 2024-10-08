@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, Suspense } from 'react';
 import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
 import DesignTokenColors from '../../components/Style/DesignTokenColors';
@@ -7,6 +7,7 @@ import { CampaignSupportDesktopButtonPanel, CampaignSupportDesktopButtonWrapper,
 import { SupportButtonFooterWrapper, SupportButtonPanel} from '../../components/Style/CampaignDetailsStyles';
 import arrow from '../../../../img/global/icons/ph_arrow-up-bold.png';
 import arrow1 from '../../../../img/global/icons/ph_arrow-up-bold_1.png';
+import YourRankModal from './YourRankModal';
 const URL = '/:challengeSEOFriendlyPath/+/customize-message';
 
 const YourRank =({classes})=>{
@@ -14,6 +15,8 @@ const YourRank =({classes})=>{
   const [points, setPoints] = useState(0);
   const [note, setNote] = useState("");
   const [arrowImage, setArrowImage] = useState(arrow)
+
+  const [openYourRankModal, setOpenYourRankModal] = useState(false)
 
   const calculateRank = (points) => 5336 + points * 5;
 
@@ -29,6 +32,7 @@ const YourRank =({classes})=>{
       }, 3000);
       return newPoints;
     });
+    setOpenYourRankModal(!openYourRankModal)
   };
   return (
     <YourRankWrapper>
@@ -62,6 +66,13 @@ const YourRank =({classes})=>{
             <img src={arrowImage} alt="arrow" classes ={{ root: classes.arrow}}/>
           </span>
         </Button>
+        <Suspense fallback={<></>}>
+            <YourRankModal
+              userRank={calculateRank(points)}
+              show={openYourRankModal}
+              toggleModal={() => setOpenYourRankModal(!openYourRankModal)}
+            />
+          </Suspense>
       </CompleteYourProfileButtonWrapper>
     </YourRankWrapper>
   );
