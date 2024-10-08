@@ -8,7 +8,6 @@ import stringContains from '../../utils/stringContains';
 import CandidateStore from '../../../stores/CandidateStore';
 import MeasureStore from '../../../stores/MeasureStore';
 import SupportStore from '../../../stores/SupportStore';
-import PayToPromoteProcess from '../CampaignSupport/PayToPromoteProcess';
 
 // const PayToPromoteProcess = React.lazy(() => import(/* webpackChunkName: 'PayToPromoteProcess' */ './PayToPromoteProcess')); // eslint-disable-line import/no-cycle
 
@@ -183,11 +182,8 @@ class BoostLearnMoreModal extends Component {
     // console.log('BoostLearnMoreModal render, voter_address_object: ', voter_address_object);
     const textFieldJSX = (
       <TextFieldWrapper>
-        <PayToPromoteProcess
-          campaignXWeVoteId={campaignXWeVoteId}
-          chipInPaymentValueDefault="1.00"
-          lowerDonations
-        />
+        
+        <div>Learn more content here</div>
       </TextFieldWrapper>
     );
 
@@ -196,9 +192,9 @@ class BoostLearnMoreModal extends Component {
        // dialogTitleJSX={<>{dialogTitleText}</>} commented because it is not working but can restore if needed
         show={show}
         dialogTitleJSX={<div>Learn More</div>}
-        textFieldJSX={<div>Learn more content here</div>}
+        //textFieldJSX={<div>Learn more content here</div>}
         // tallMode commented because it is not working but can restore if needed
-       // textFieldJSX={textFieldJSX} commented because it is not working but can restore if needed
+        textFieldJSX={textFieldJSX}
         toggleModal={this.props.toggleModal}
       />
     );
