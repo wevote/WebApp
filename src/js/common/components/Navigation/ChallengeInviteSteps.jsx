@@ -15,7 +15,6 @@ const commonTextStyle = {
   textAlign: 'center',
   colors: DesignTokenColors.neutral900,
   textDecoration: 'none',
-  // width: '272px',
 };
 // ChallengeInviteSteps component to display the steps
 class ChallengeInviteSteps extends React.Component {
@@ -90,14 +89,14 @@ class ChallengeInviteSteps extends React.Component {
               imageName={this.isStepActive(1) ? 'material-symbols-counter-1-active' : 'material-symbols-counter-1'}
               alt="Step 1 Icon"
             />
-            <Link
+            <StyledLink
               to={`${this.getChallengeBasePath()}customize-message`}
               style={commonTextStyle}
               // Handle click to update state
               onClick={() => this.handleStepClick(1)}
             >
               Customize the message to your friends
-            </Link>
+            </StyledLink>
           </StepOneIconAndText>
 
           {/* Horizontal Line Between Steps */}
