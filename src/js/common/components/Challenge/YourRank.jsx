@@ -16,9 +16,8 @@ const YourRank = ({ classes, challengeWeVoteId }) => {
   const [participantsCount, setParticipantsCount] = useState(0);
   const [points, setPoints] = useState(0);
   // const [note, setNote] = useState("");
-  const [arrowImage, setArrowImage] = useState(arrow)
-
-  const [openYourRankModal, setOpenYourRankModal] = useState(false)
+  const [arrowImage, setArrowImage] = useState(arrow);
+  const [openYourRankModal, setOpenYourRankModal] = useState(false);
 
   const onAppObservableStoreChange = () => {
     setRankOfVoter(AppObservableStore.getChallengeParticipantRankOfVoterByChallengeWeVoteId(challengeWeVoteId));
@@ -41,7 +40,7 @@ const YourRank = ({ classes, challengeWeVoteId }) => {
       }, 3000);
       return newPoints;
     });
-    setOpenYourRankModal(!openYourRankModal)
+    setOpenYourRankModal(!openYourRankModal);
   };
 
   React.useEffect(() => {
@@ -72,7 +71,7 @@ const YourRank = ({ classes, challengeWeVoteId }) => {
           fontWeight: '400',
           lineHeight: '19.5px',
           textAlign: 'left',
-          color: 'var(--Neutral-700, #484848)'
+          color: 'var(--Neutral-700, #484848)',
         }}
       >
         <h1>Your rank in the challenge:</h1>
@@ -92,7 +91,6 @@ const YourRank = ({ classes, challengeWeVoteId }) => {
         </Button>
         <Suspense fallback={<></>}>
           <YourRankModal
-            userRank={calculateRank(points)}
             show={openYourRankModal}
             toggleModal={() => setOpenYourRankModal(!openYourRankModal)}
           />
@@ -111,7 +109,6 @@ const styles = (theme) => ({
     borderRadius: '20px 20px 20px 20px',
     transition: 'color 0.3s ease',
     textTransform: 'none',
-    width: '100%',
   },
   desktopSimpleLink: {
     border: '2px solid #AC5204',
@@ -155,7 +152,7 @@ const YourRankWrapper = styled('div')`
     justify-content: center;
   `;
 const CompleteYourProfileButtonWrapper = styled('div')`
-    background-color: ${(props) => (props.clicked ? "#AC5204" : "#FFFFFF")};
+    background-color: ${(props) => (props.clicked ? '#AC5204' : '#FFFFFF')};
     width: 105px;
     height: 34px;
     top: 443px;
