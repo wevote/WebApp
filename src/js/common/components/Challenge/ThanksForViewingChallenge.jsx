@@ -7,7 +7,7 @@ import React, { useState, useEffect } from 'react';
 
 const ThanksForViewingChallenge = ({ challengeOwner }) => {
   const [isClosing, setIsClosing] = useState(false);
-  const [showConfetti, setShowConfetti] = useState(false)
+  const [showConfetti, setShowConfetti] = useState(false);
 
   useEffect(() => {
     if (isClosing) {
@@ -18,14 +18,14 @@ const ThanksForViewingChallenge = ({ challengeOwner }) => {
   }, [isClosing]);
 
   useEffect(() => {
-      // Show confetti when the component mounts
-      setShowConfetti(true);
-      // Hide confetti after a short duration
-      const timer = setTimeout(() => {
-        setShowConfetti(false);
-      }, 3000);
-      return () => clearTimeout(timer);
-    }, []);
+    // Show confetti when the component mounts
+    setShowConfetti(true);
+    // Hide confetti after a short duration
+    const timer = setTimeout(() => {
+      setShowConfetti(false);
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <ThanksForViewingOuterWrapper isClosing={isClosing}>
@@ -55,9 +55,7 @@ const ThanksForViewingChallenge = ({ challengeOwner }) => {
   );
 };
 ThanksForViewingChallenge.propTypes = {
-  userName: PropTypes.string.isRequired,
   challengeOwner: PropTypes.string.isRequired,
-  onClose: PropTypes.func.isRequired,
 };
 
 const CloseMessageIconWrapper = styled.div`
@@ -65,16 +63,6 @@ const CloseMessageIconWrapper = styled.div`
   border: none;
   display: flex;
   justify-content: flex-end;
-`;
-
-const RankListOuterWrapper = styled.div`
-  display: flex;
-  margin-bottom: 10px;
-`;
-
-const RankMessageWrapper = styled.div`
-  display: flex;
-  margin-bottom: 10px;
 `;
 
 const ThanksForViewingInnerWrapper = styled.div`
