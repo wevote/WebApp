@@ -136,6 +136,7 @@ const StyledButton = styled("div")`
   justify-content: center; // Centers text horizontally
   align-items: center; // Centers text vertically
   min-width: 72px;
+  cursor: default;
 `;
 
 const BoldText = styled.span`

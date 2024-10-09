@@ -853,7 +853,10 @@ class ItemActionBar extends PureComponent {
                     {(ballotItemType === 'MEASURE') && this.measureYesButtonNoText(`desktopVersion-${ballotItemWeVoteId}`)}
                   </StackedButton>
                 ) : (
-                  <ButtonWrapper className="u-push--xs d-none d-lg-block">
+                  <ButtonWrapper
+                    className="u-push--xs d-none d-lg-block"
+                    id={`buttonWrapper-${ballotItemWeVoteId}`}
+                  >
                     <OverlayTrigger
                       overlay={(useHelpDefeatOrHelpWin && this.isOpposeCalculated()) ? helpDefeatButtonPopoverTooltip : supportButtonPopoverTooltip}
                       placement="top"

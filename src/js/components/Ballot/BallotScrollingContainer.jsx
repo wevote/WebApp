@@ -99,23 +99,24 @@ class BallotScrollingContainer extends Component {
     }
   };
 
-  handleContainerClick = (e, weVoteId, externalUniqueId) => {
-    console.log(e.target, externalUniqueId);
-    const candidateContainer = document.getElementById(`candidateContainer-${weVoteId}-${externalUniqueId}`);
-    const positionRowListOuterWrapper = document.getElementById(`positionRowListOuterWrapper-${weVoteId}-${externalUniqueId}`);
+  handleContainerClick = (e, weVoteId) => {
+    console.log(e.target);
+    const candidateContainer = document.getElementById(`candidateContainer-${weVoteId}`);
+    const positionRowListOuterWrapper = document.getElementById(`positionRowListOuterWrapper-${weVoteId}`);
     const candidateDiv = document.getElementById(`candidateDiv-${weVoteId}`);
-    const candidateNameAndPartyWrapper = document.getElementById(`candidateNameAndPartyWrapper-${weVoteId}-${externalUniqueId}`);
+    const candidateNameAndPartyWrapper = document.getElementById(`candidateNameAndPartyWrapper-${weVoteId}`);
     const candidateImageAndMatchWrapper = document.getElementById(`candidateImageAndMatchWrapper-${weVoteId}`);
     const imageHandlerDiv = document.getElementById(`imageHandlerDiv-${weVoteId}`);
-    const candidateNameH4 = document.getElementById(`candidateNameH4-${weVoteId}-${externalUniqueId}`);
+    const candidateNameH4 = document.getElementById(`candidateNameH4-${weVoteId}`);
     const candidateEndorsementsContainer = document.getElementById(`CandidateEndorsementsContainer-${weVoteId}`);
     const candidateBottomRow = document.getElementById(`candidateBottomRow-${weVoteId}`);
     const issuesListWrapper = document.getElementById(`IssueListWrapper-${weVoteId}`);
     const candidateInfo = document.getElementById(`candidateInfo-${weVoteId}`);
     const itemActionBarOutsideWrapper = document.getElementById(`itemActionBarOutsideWrapper-${weVoteId}`);
+    const buttonWrapper = document.getElementById(`buttonWrapper-${weVoteId}`);
     // EAW VERIFY - might not need this one
     const candidateParty = document.getElementById(`candidateParty-${weVoteId}`);
-    console.log(itemActionBarOutsideWrapper);
+    console.log(buttonWrapper);
     if (e.target === candidateDiv ||
           e.target === candidateContainer ||
           e.target === positionRowListOuterWrapper ||
@@ -128,8 +129,9 @@ class BallotScrollingContainer extends Component {
           e.target === candidateImageAndMatchWrapper ||
           e.target === imageHandlerDiv ||
           e.target === candidateParty ||
-          e.target === itemActionBarOutsideWrapper)
-       this.onClickShowOrganizationModalWithBallotItemInfoAndPositions(weVoteId);
+          e.target === itemActionBarOutsideWrapper ||
+          e.target === buttonWrapper) {
+      this.onClickShowOrganizationModalWithBallotItemInfoAndPositions(weVoteId);
     }
   }
 
@@ -165,7 +167,7 @@ class BallotScrollingContainer extends Component {
           onClick={(e) => this.handleContainerClick(e, oneCandidate.we_vote_id, externalUniqueId)}
         >
           <CandidateContainer
-            id={`candidateContainer-${oneCandidate.we_vote_id}-${externalUniqueId}`}
+            id={`candidateContainer-${oneCandidate.we_vote_id}`}
             className="u-cursor--pointer"
           >
             <CandidateWrapper>
@@ -195,12 +197,12 @@ class BallotScrollingContainer extends Component {
                     </CandidateImageAndMatchWrapper>
                     {/* Candidate Name */}
                     <CandidateNameAndPartyWrapper
-                      id={`candidateNameAndPartyWrapper-${oneCandidate.we_vote_id}-${externalUniqueId}`}
+                      id={`candidateNameAndPartyWrapper-${oneCandidate.we_vote_id}`}
                     >
                       <CandidateNameH4
-                        id={`candidateNameH4-${oneCandidate.we_vote_id}-${externalUniqueId}`}
+                        id={`candidateNameH4-${oneCandidate.we_vote_id}`}
                       >
-                            {oneCandidate.ballot_item_display_name}
+                        {oneCandidate.ballot_item_display_name}
                       </CandidateNameH4>
                       <CandidateParty id={`candidateParty-${oneCandidate.we_vote_id}`}>
                         {candidatePartyText}
@@ -247,7 +249,7 @@ class BallotScrollingContainer extends Component {
               </CandidateInfo>
             </CandidateWrapper>
             <PositionRowListOuterWrapper
-              id={`positionRowListOuterWrapper-${oneCandidate.we_vote_id}-${externalUniqueId}`}
+              id={`positionRowListOuterWrapper-${oneCandidate.we_vote_id}`}
             >
               {!!(oneCandidate.linked_campaignx_we_vote_id) && (
                 <HeartFavoriteToggleLocalWrapper>

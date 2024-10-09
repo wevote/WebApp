@@ -186,7 +186,7 @@ class IssuesByBallotItemDisplayList extends Component {
         if (!oneIssue) {
           return null;
         }
-        //console.log('oneIssue.issue_name: ', oneIssue.issue_name);
+        // console.log('oneIssue.issue_name: ', oneIssue.issue_name);
         localCounter++;
         if (localCounter <= currentNumberOfIssuesToDisplay) {
           issueFollowedByVoter = IssueStore.isVoterFollowingThisIssue(oneIssue.issue_we_vote_id);
