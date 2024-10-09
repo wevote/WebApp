@@ -198,6 +198,16 @@ const StepOneIconAndText = styled('div')`
   margin-right: 25px;
   text-align: center;
   width: 169px;
+  a {
+    font-weight: ${({ isActive }) => (isActive ? '600' : 'normal')};
+    color: ${({ isActive }) => (isActive ? DesignTokenColors.primary500 : 'inherit')};
+
+    &:hover {
+      color: ${DesignTokenColors.primary500};
+      font-weight: 600;
+      text-decoration: underline;
+    }
+  }
 `;
 
 const StepTwoIconAndText = styled('div')`
