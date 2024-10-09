@@ -51,6 +51,12 @@ class ChallengeInviteeStore extends ReduceStore {
     return this.getState().allCachedChallengeInvitees[challengeInviteeId] || {};
   }
 
+  // Note that these are only invitees invited by the viewing voter, not ALL invitees for the challenge
+  getNumberOfInviteesInChallenge (challengeWeVoteId) {
+    const inviteeList = this.getChallengeInviteeList(challengeWeVoteId) || [];
+    return inviteeList.length;
+  }
+
   getChallengeInviteeList (challengeWeVoteId) {
     return this.getState().allChallengeInviteeLists[challengeWeVoteId] || [];
   }
@@ -227,18 +233,23 @@ class ChallengeInviteeStore extends ReduceStore {
         }
         if (challengeInvitee.invitee_id) {
           alreadyInList = false;
+          challengeInviteeListTemp = [];
           challengeInviteeList = allChallengeInviteeLists[challengeInvitee.challenge_we_vote_id];
           challengeInviteeList.forEach((oneChallengeInvitee) => {
             if (oneChallengeInvitee.invitee_id === challengeInvitee.invitee_id) {
               alreadyInList = true;
+              // Swap for new challengeInvitee
+              challengeInviteeListTemp.push(challengeInvitee);
+            } else {
+              // Keep using previous challengeInvitee
+              challengeInviteeListTemp.push(oneChallengeInvitee);
             }
           });
           if (!alreadyInList) {
-            challengeInviteeListTemp = allChallengeInviteeLists[challengeInvitee.challenge_we_vote_id];
-            challengeInviteeListTemp.unshift(action.res);
-            allChallengeInviteeLists[challengeInvitee.challenge_we_vote_id] = [...challengeInviteeListTemp];
-            revisedState = { ...revisedState, allChallengeInviteeLists };
+            challengeInviteeListTemp.unshift(challengeInvitee);
           }
+          allChallengeInviteeLists[challengeInvitee.challenge_we_vote_id] = [...challengeInviteeListTemp];
+          revisedState = { ...revisedState, allChallengeInviteeLists };
         }
         if (action.res.next_invitee_url_code) {
           nextInviteeUrlCode = action.res.next_invitee_url_code;

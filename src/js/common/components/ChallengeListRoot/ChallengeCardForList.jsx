@@ -232,14 +232,13 @@ class ChallengeCardForList extends Component {
 
   render () {
     renderLog('ChallengeCardForList');  // Set LOG_RENDER_EVENTS to log all renders
-    const { limitCardWidth, useVerticalCard } = this.props;
-    const { challengeSupported, voterCanEditThisChallenge } = this.state; // , inPrivateLabelMode
-    const { challengeWeVoteId } = this.props;
-    const challenge = ChallengeStore.getChallengeByWeVoteId(challengeWeVoteId);
+    const { challengeWeVoteId, joinedAndDaysLeftOff, limitCardWidth, useVerticalCard } = this.props;
+    const { challenge, challengeSupported, voterCanEditThisChallenge } = this.state; // , inPrivateLabelMode
+    // const challenge = ChallengeStore.getChallengeByWeVoteId(challengeWeVoteId);
     if (!challenge) {
       return null;
     }
-    // console.log('ChallengeCardForList render, challenge:', challenge);
+    // console.log('ChallengeCardForList Component render, challenge:', challenge);
     const {
       // ballot_guide_official_statement: ballotGuideOfficialStatement, // Consider using this
       challenge_description: challengeDescription,
@@ -261,6 +260,7 @@ class ChallengeCardForList extends Component {
     // const stateName = convertStateCodeToStateText(stateCode);
     const participantsCountNextGoalWithFloor = participantsCountNextGoal || ChallengeStore.getChallengeParticipantsCountNextGoalDefault();
     // const year = getYearFromUltimateElectionDate(finalElectionDateAsInteger);
+    // console.log('ChallengeCardForList Component render, challengePhotoLargeUrl:', challengePhotoLargeUrl);
     return (
       <ChallengeCardForListBody
         challengeDescription={challengeDescription}
@@ -269,6 +269,7 @@ class ChallengeCardForList extends Component {
         challengeWeVoteId={challengeWeVoteId}
         hideCardMargins
         inDraftMode={inDraftMode}
+        joinedAndDaysLeftOff={joinedAndDaysLeftOff}
         functionToUseToKeepHelping={this.functionToUseToKeepHelping}
         functionToUseWhenProfileComplete={this.functionToUseWhenProfileComplete}
         limitCardWidth={limitCardWidth}
@@ -287,6 +288,7 @@ class ChallengeCardForList extends Component {
   }
 }
 ChallengeCardForList.propTypes = {
+  joinedAndDaysLeftOff: PropTypes.bool,
   challengeWeVoteId: PropTypes.string,
   voterWeVoteId: PropTypes.string,
   limitCardWidth: PropTypes.bool,

@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useState } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { Button } from '@mui/material';
@@ -6,35 +6,36 @@ import { withStyles } from '@mui/styles';
 import DesignTokenColors from '../Style/DesignTokenColors';
 import ChallengeParticipantList from './ChallengeParticipantList';
 import SearchBar2024 from '../../../components/Search/SearchBar2024';
+import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import ChallengeParticipantStore from '../../stores/ChallengeParticipantStore';
 import FirstChallengeParticipantListController from './FirstChallengeParticipantListController';
 
 // const FirstChallengeParticipantListController = React.lazy(() => import(/* webpackChunkName: 'FirstChallengeParticipantListController' */ './FirstChallengeParticipantListController'));
 const participantListDummyData = [
-  { rank: 5340, participant_name: 'Melina H.', points: 142, friends_who_joined: 3, friends_invited: 10, friends_who_viewed: 8, friends_who_viewed_plus: 21, voter_we_vote_id: 'wv02voter1238' },
-  { rank: 5341, participant_name: 'David N.', points: 121, friends_who_joined: 1, friends_invited: 7, friends_who_viewed: 3, friends_who_viewed_plus: 18, voter_we_vote_id: 'wv02voter1237' },
-  { rank: 5342, participant_name: 'Anusha G.', points: 118, friends_who_joined: 1, friends_invited: 5, friends_who_viewed: 2, friends_who_viewed_plus: 15, voter_we_vote_id: 'wv02voter1236' },
-  { rank: 5340, participant_name: 'Melina H.', points: 142, friends_who_joined: 3, friends_invited: 10, friends_who_viewed: 8, friends_who_viewed_plus: 21, voter_we_vote_id: 'wv02voter1235' },
-  { rank: 5341, participant_name: 'David B.', points: 121, friends_who_joined: 1, friends_invited: 7, friends_who_viewed: 3, friends_who_viewed_plus: 18, voter_we_vote_id: 'wv02voter1234' },
-  { rank: 5342, participant_name: 'Anusha G.', points: 118, friends_who_joined: 1, friends_invited: 5, friends_who_viewed: 2, friends_who_viewed_plus: 15, voter_we_vote_id: 'wv02voter123' },
-  { rank: 5340, participant_name: 'Melina H.', points: 142, friends_who_joined: 3, friends_invited: 10, friends_who_viewed: 8, friends_who_viewed_plus: 21, voter_we_vote_id: 'wv02voter12333' },
-  { rank: 5341, participant_name: 'David A.', points: 121, friends_who_joined: 1, friends_invited: 7, friends_who_viewed: 3, friends_who_viewed_plus: 18, voter_we_vote_id: 'wv02voter12344' },
-  { rank: 5342, participant_name: 'Anusha G.', points: 118, friends_who_joined: 1, friends_invited: 5, friends_who_viewed: 2, friends_who_viewed_plus: 15, voter_we_vote_id: 'wv02voter12355' },
-  { rank: 5341, participant_name: 'David B.', points: 121, friends_who_joined: 1, friends_invited: 7, friends_who_viewed: 3, friends_who_viewed_plus: 18, voter_we_vote_id: 'wv02voter12366' },
-  { rank: 5342, participant_name: 'Anusha G.', points: 118, friends_who_joined: 1, friends_invited: 5, friends_who_viewed: 2, friends_who_viewed_plus: 15, voter_we_vote_id: 'wv02voter12377' },
-  { rank: 5340, participant_name: 'Melina H.', points: 142, friends_who_joined: 3, friends_invited: 10, friends_who_viewed: 8, friends_who_viewed_plus: 21, voter_we_vote_id: 'wv02voter12388' },
-  { rank: 5341, participant_name: 'David A.', points: 121, friends_who_joined: 1, friends_invited: 7, friends_who_viewed: 3, friends_who_viewed_plus: 18, voter_we_vote_id: 'wv02voter12399' },
-  { rank: 5342, participant_name: 'Anusha G.', points: 118, friends_who_joined: 1, friends_invited: 5, friends_who_viewed: 2, friends_who_viewed_plus: 15, voter_we_vote_id: 'wv02voter12390' },
-  { rank: 5341, participant_name: 'David B.', points: 121, friends_who_joined: 1, friends_invited: 7, friends_who_viewed: 3, friends_who_viewed_plus: 18, voter_we_vote_id: 'wv02voter12312' },
-  { rank: 5342, participant_name: 'Anusha G.', points: 118, friends_who_joined: 1, friends_invited: 5, friends_who_viewed: 2, friends_who_viewed_plus: 15, voter_we_vote_id: 'wv02voter12314' },
-  { rank: 5340, participant_name: 'Melina H.', points: 142, friends_who_joined: 3, friends_invited: 10, friends_who_viewed: 8, friends_who_viewed_plus: 21, voter_we_vote_id: 'wv02voter12315' },
-  { rank: 5341, participant_name: 'David A.', points: 121, friends_who_joined: 1, friends_invited: 7, friends_who_viewed: 3, friends_who_viewed_plus: 18, voter_we_vote_id: 'wv02voter12316' },
-  { rank: 5342, participant_name: 'Anusha G.', points: 118, friends_who_joined: 1, friends_invited: 5, friends_who_viewed: 2, friends_who_viewed_plus: 15, voter_we_vote_id: 'wv02voter12317' },
-  { rank: 5341, participant_name: 'David B.', points: 121, friends_who_joined: 1, friends_invited: 7, friends_who_viewed: 3, friends_who_viewed_plus: 18, voter_we_vote_id: 'wv02voter12318' },
-  { rank: 5342, participant_name: 'Anusha G.', points: 118, friends_who_joined: 1, friends_invited: 5, friends_who_viewed: 2, friends_who_viewed_plus: 15, voter_we_vote_id: 'wv02voter12319' },
-  { rank: 5340, participant_name: 'Melina H.', points: 142, friends_who_joined: 3, friends_invited: 10, friends_who_viewed: 8, friends_who_viewed_plus: 21, voter_we_vote_id: 'wv02voter12323' },
-  { rank: 5341, participant_name: 'David A.', points: 121, friends_who_joined: 1, friends_invited: 7, friends_who_viewed: 3, friends_who_viewed_plus: 18, voter_we_vote_id: 'wv02voter12324' },
-  { rank: 5342, participant_name: 'Anusha G.', points: 118, friends_who_joined: 1, friends_invited: 5, friends_who_viewed: 2, friends_who_viewed_plus: 15, voter_we_vote_id: 'wv02voter12325' },
+  { rank: 5340, participant_name: 'Melina H.', points: 142, invitees_who_joined: 3, invitees_count: 10, invitees_who_viewed: 8, invitees_who_viewed_plus: 21, voter_we_vote_id: 'wv02voter1238' },
+  { rank: 5341, participant_name: 'David N.', points: 121, invitees_who_joined: 1, invitees_count: 7, invitees_who_viewed: 3, invitees_who_viewed_plus: 18, voter_we_vote_id: 'wv02voter1237' },
+  { rank: 5342, participant_name: 'Anusha G.', points: 118, invitees_who_joined: 1, invitees_count: 5, invitees_who_viewed: 2, invitees_who_viewed_plus: 15, voter_we_vote_id: 'wv02voter1236' },
+  { rank: 5340, participant_name: 'Melina H.', points: 142, invitees_who_joined: 3, invitees_count: 10, invitees_who_viewed: 8, invitees_who_viewed_plus: 21, voter_we_vote_id: 'wv02voter1235' },
+  { rank: 5341, participant_name: 'David B.', points: 121, invitees_who_joined: 1, invitees_count: 7, invitees_who_viewed: 3, invitees_who_viewed_plus: 18, voter_we_vote_id: 'wv02voter1234' },
+  { rank: 5342, participant_name: 'Anusha G.', points: 118, invitees_who_joined: 1, invitees_count: 5, invitees_who_viewed: 2, invitees_who_viewed_plus: 15, voter_we_vote_id: 'wv02voter123' },
+  { rank: 5340, participant_name: 'Melina H.', points: 142, invitees_who_joined: 3, invitees_count: 10, invitees_who_viewed: 8, invitees_who_viewed_plus: 21, voter_we_vote_id: 'wv02voter12333' },
+  { rank: 5341, participant_name: 'David A.', points: 121, invitees_who_joined: 1, invitees_count: 7, invitees_who_viewed: 3, invitees_who_viewed_plus: 18, voter_we_vote_id: 'wv02voter12344' },
+  { rank: 5342, participant_name: 'Anusha G.', points: 118, invitees_who_joined: 1, invitees_count: 5, invitees_who_viewed: 2, invitees_who_viewed_plus: 15, voter_we_vote_id: 'wv02voter12355' },
+  { rank: 5341, participant_name: 'David B.', points: 121, invitees_who_joined: 1, invitees_count: 7, invitees_who_viewed: 3, invitees_who_viewed_plus: 18, voter_we_vote_id: 'wv02voter12366' },
+  { rank: 5342, participant_name: 'Anusha G.', points: 118, invitees_who_joined: 1, invitees_count: 5, invitees_who_viewed: 2, invitees_who_viewed_plus: 15, voter_we_vote_id: 'wv02voter12377' },
+  { rank: 5340, participant_name: 'Melina H.', points: 142, invitees_who_joined: 3, invitees_count: 10, invitees_who_viewed: 8, invitees_who_viewed_plus: 21, voter_we_vote_id: 'wv02voter12388' },
+  { rank: 5341, participant_name: 'David A.', points: 121, invitees_who_joined: 1, invitees_count: 7, invitees_who_viewed: 3, invitees_who_viewed_plus: 18, voter_we_vote_id: 'wv02voter12399' },
+  { rank: 5342, participant_name: 'Anusha G.', points: 118, invitees_who_joined: 1, invitees_count: 5, invitees_who_viewed: 2, invitees_who_viewed_plus: 15, voter_we_vote_id: 'wv02voter12390' },
+  { rank: 5341, participant_name: 'David B.', points: 121, invitees_who_joined: 1, invitees_count: 7, invitees_who_viewed: 3, invitees_who_viewed_plus: 18, voter_we_vote_id: 'wv02voter12312' },
+  { rank: 5342, participant_name: 'Anusha G.', points: 118, invitees_who_joined: 1, invitees_count: 5, invitees_who_viewed: 2, invitees_who_viewed_plus: 15, voter_we_vote_id: 'wv02voter12314' },
+  { rank: 5340, participant_name: 'Melina H.', points: 142, invitees_who_joined: 3, invitees_count: 10, invitees_who_viewed: 8, invitees_who_viewed_plus: 21, voter_we_vote_id: 'wv02voter12315' },
+  { rank: 5341, participant_name: 'David A.', points: 121, invitees_who_joined: 1, invitees_count: 7, invitees_who_viewed: 3, invitees_who_viewed_plus: 18, voter_we_vote_id: 'wv02voter12316' },
+  { rank: 5342, participant_name: 'Anusha G.', points: 118, invitees_who_joined: 1, invitees_count: 5, invitees_who_viewed: 2, invitees_who_viewed_plus: 15, voter_we_vote_id: 'wv02voter12317' },
+  { rank: 5341, participant_name: 'David B.', points: 121, invitees_who_joined: 1, invitees_count: 7, invitees_who_viewed: 3, invitees_who_viewed_plus: 18, voter_we_vote_id: 'wv02voter12318' },
+  { rank: 5342, participant_name: 'Anusha G.', points: 118, invitees_who_joined: 1, invitees_count: 5, invitees_who_viewed: 2, invitees_who_viewed_plus: 15, voter_we_vote_id: 'wv02voter12319' },
+  { rank: 5340, participant_name: 'Melina H.', points: 142, invitees_who_joined: 3, invitees_count: 10, invitees_who_viewed: 8, invitees_who_viewed_plus: 21, voter_we_vote_id: 'wv02voter12323' },
+  { rank: 5341, participant_name: 'David A.', points: 121, invitees_who_joined: 1, invitees_count: 7, invitees_who_viewed: 3, invitees_who_viewed_plus: 18, voter_we_vote_id: 'wv02voter12324' },
+  { rank: 5342, participant_name: 'Anusha G.', points: 118, invitees_who_joined: 1, invitees_count: 5, invitees_who_viewed: 2, invitees_who_viewed_plus: 15, voter_we_vote_id: 'wv02voter12325' },
 ];
 
 function clearSearchFunction () {
@@ -50,19 +51,30 @@ function searchFunction () {
 
 const ChallengeParticipantListRoot = ({ challengeWeVoteId, classes, uniqueExternalId }) => {
   // eslint-disable-next-line no-unused-vars
-  const [latestParticipants, setLatestParticipants] = React.useState([]);
+  const [participantList, setParticipantList] = React.useState([]);
+  const [participantsCount, setParticipantsCount] = useState(0);
+  const [rankOfVoter, setRankOfVoter] = React.useState(0);
+
+  const onAppObservableStoreChange = () => {
+    setRankOfVoter(AppObservableStore.getChallengeParticipantRankOfVoterByChallengeWeVoteId(challengeWeVoteId));
+  };
 
   const onChallengeParticipantStoreChange = () => {
-    setLatestParticipants(ChallengeParticipantStore.getChallengeParticipantList(challengeWeVoteId));
+    const sortedParticipantsWithRank = ChallengeParticipantStore.getChallengeParticipantList(challengeWeVoteId);
+    setParticipantList(sortedParticipantsWithRank);
+    setParticipantsCount(sortedParticipantsWithRank.length);
   };
 
   React.useEffect(() => {
     // console.log('Fetching participants for:', challengeWeVoteId);
-    const storeListener = ChallengeParticipantStore.addListener(onChallengeParticipantStoreChange);
+    const appStateSubscription = messageService.getMessage().subscribe(() => onAppObservableStoreChange());
+    onAppObservableStoreChange();
+    const challengeParticipantStoreListener = ChallengeParticipantStore.addListener(onChallengeParticipantStoreChange);
     onChallengeParticipantStoreChange();
 
     return () => {
-      storeListener.remove();
+      appStateSubscription.unsubscribe();
+      challengeParticipantStoreListener.remove();
     };
   }, [challengeWeVoteId]);
   return (
@@ -101,14 +113,23 @@ const ChallengeParticipantListRoot = ({ challengeWeVoteId, classes, uniqueExtern
           </SearchBarWrapper>
         </ButtonAndSearchWrapper>
         <LeaderboardInfoWrapper>
-          <RankContainer>
-            <RankText>You&apos;re</RankText>
-            {' '}
-            <RankNumber>#5341</RankNumber>
-            {' '}
-            <RankDetails>(of 6441)</RankDetails>
-          </RankContainer>
-
+          {!!(rankOfVoter) && (
+            <RankContainer>
+              <RankText>You&apos;re</RankText>
+              {' '}
+              <RankNumber>
+                #
+                {rankOfVoter}
+              </RankNumber>
+              {' '}
+              <RankDetails>
+                (of
+                {' '}
+                {participantsCount}
+                )
+              </RankDetails>
+            </RankContainer>
+          )}
         </LeaderboardInfoWrapper>
         <LeaderboardTableHeader>
           <HeaderGroup gap="32px">
@@ -122,8 +143,8 @@ const ChallengeParticipantListRoot = ({ challengeWeVoteId, classes, uniqueExtern
         </LeaderboardTableHeader>
       </TopSection>
       <ChallengeParticipantList
-        // participantList={latestParticipants}
-        participantList={participantListDummyData}
+        participantList={participantList}
+        // participantList={participantListDummyData}
         uniqueExternalId={uniqueExternalId}
       />
       <Suspense fallback={<></>}>

@@ -4,33 +4,25 @@ import styled from 'styled-components';
 import JoinedGreenCircle from '../../../../img/global/svg-icons/issues/joined-green-circle.svg';
 import InfoOutlineIcon from '../../../../img/global/svg-icons/issues/material-symbols-info-outline.svg';
 import ChallengeStore from '../../stores/ChallengeStore';
-import daysUntil from '../../utils/daysUntil';
 import DesignTokenColors from '../Style/DesignTokenColors';
 
 const ChallengeParticipantFirstRetrieveController = React.lazy(() => import(/* webpackChunkName: 'ChallengeParticipantFirstRetrieveController' */ '../ChallengeParticipant/ChallengeParticipantFirstRetrieveController'));
 
-function JoinedAndDaysLeft ({ challengeWeVoteId }) {
+function JoinedAndDaysLeft ({ challengeWeVoteId, style }) {
   // eslint-disable-next-line no-unused-vars
   const [daysLeft, setDaysLeft] = React.useState(0);
   const [voterIsChallengeParticipant, setVoterIsChallengeParticipant] = React.useState(false);
 
-  const onChallengeStoreChange = () => {
-    const challenge = ChallengeStore.getChallengeByWeVoteId(challengeWeVoteId);
-    let challengeEndsDayText = '';
-    if (challenge && challenge.challenge_ends_date_as_integer) {
-      // TODO: Convert integer to date format
-      challengeEndsDayText = '2024-11-05';
-    } else {
-      challengeEndsDayText = '2024-11-05';
-    }
-    const daysToChallengeEnds = daysUntil(challengeEndsDayText);
-    // console.log('Days to challenge ends:', daysToChallengeEnds);
-    setDaysLeft(daysToChallengeEnds);
-    setVoterIsChallengeParticipant(ChallengeStore.getVoterIsChallengeParticipant(challengeWeVoteId));
-  };
-
   React.useEffect(() => {
     // console.log('Fetching participants for:', challengeWeVoteId);
+
+    const onChallengeStoreChange = () => {
+      const daysToChallengeEnds = ChallengeStore.getDaysUntilChallengeEnds(challengeWeVoteId);
+      // console.log('Days to challenge ends:', daysToChallengeEnds);
+      setDaysLeft(daysToChallengeEnds);
+      setVoterIsChallengeParticipant(ChallengeStore.getVoterIsChallengeParticipant(challengeWeVoteId));
+    };
+
     const challengeStoreListener = ChallengeStore.addListener(onChallengeStoreChange);
     onChallengeStoreChange();
 
@@ -41,7 +33,7 @@ function JoinedAndDaysLeft ({ challengeWeVoteId }) {
   return (
     <InfoWrapper>
       {/* SVG, Joined, Dot, and Days Left */}
-      <JoinedInfoWrapper>
+      <JoinedInfoWrapper style={style}>
         {voterIsChallengeParticipant ? (
           <>
             <JoinedIcon src={JoinedGreenCircle} alt="Joined" />
@@ -63,9 +55,9 @@ function JoinedAndDaysLeft ({ challengeWeVoteId }) {
     </InfoWrapper>
   );
 }
-
 JoinedAndDaysLeft.propTypes = {
   challengeWeVoteId: PropTypes.string.isRequired,
+  style: PropTypes.object,
 };
 
 // Styled Components

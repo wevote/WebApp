@@ -11,6 +11,7 @@ import LoadMoreItemsManually from '../Widgets/LoadMoreItemsManually';
 import ChallengeAbout from '../Challenge/ChallengeAbout';
 import { isWebApp } from '../../utils/isCordovaOrWebApp';
 import ChallengeStore from '../../stores/ChallengeStore';
+import JoinChallengeAndLearnMoreButtons from '../Challenge/JoinChallengeAndLearnMoreButtons';
 
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../Widgets/DelayedLoad'));
 
@@ -163,6 +164,7 @@ class ChallengeCardList extends Component {
       return null;
     }
     let numberDisplayed = 0;
+    const pigsCanFly = false;
     return (
       <Wrapper>
         <ListWrapper useVerticalCard={useVerticalCard}>
@@ -175,6 +177,7 @@ class ChallengeCardList extends Component {
               <ChallengeCardForListVerticalWrapper key={`oneChallengeItem-${oneChallenge.challenge_we_vote_id}`}>
                 <ChallengeCardForList
                   challengeWeVoteId={oneChallenge.challenge_we_vote_id}
+                  joinedAndDaysLeftOff
                   limitCardWidth={useVerticalCard}
                   useVerticalCard={useVerticalCard}
                 />
@@ -182,8 +185,11 @@ class ChallengeCardList extends Component {
                   id="challengeCardAbout"
                   to={this.onChallengeClickLink(oneChallenge.challenge_we_vote_id)}
                 >
-                  <ChallengeAbout />
+                  <ChallengeAbout challengeWeVoteId={oneChallenge.challenge_we_vote_id} />
                 </Link>
+                {pigsCanFly && (
+                  <JoinChallengeAndLearnMoreButtons />
+                )}
               </ChallengeCardForListVerticalWrapper>
             );
           })}

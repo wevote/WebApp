@@ -1,15 +1,29 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 import styled from 'styled-components';
-import { Avatar, Button } from '@mui/material';
+import { Avatar } from '@mui/material';
 import { withStyles } from '@mui/styles';
 import { RemoveRedEye, CheckCircle, Check, MoreHoriz } from '@mui/icons-material';
 import DesignTokenColors from '../Style/DesignTokenColors';
+import ConfirmYouSentInviteButton from './ConfirmYouSentInviteButton';
+import InviteAgainButton from './InviteAgainButton';
 import speakerDisplayNameToInitials from '../../utils/speakerDisplayNameToInitials';
 
 const ChallengeInviteeListItem = ({ invitee, classes }) => {
   // console.log('ChallengeInviteeListItem:', invitee);
   const { sx, children } = speakerDisplayNameToInitials(invitee.invitee_name);
+  let challengeStatusIconJsx = <></>;
+  let challengeStatusMessage = ''
+  if (invitee.challenge_joined) {
+    challengeStatusIconJsx = <CheckCircle />;
+    challengeStatusMessage = 'Challenge joined';
+  } else if (invitee.invite_viewed) {
+    challengeStatusIconJsx = <RemoveRedEye />;
+    challengeStatusMessage = 'Challenge viewed';
+  } else if (invitee.invite_sent) {
+    challengeStatusIconJsx = <Check />;
+    challengeStatusMessage = 'Invite sent';
+  }
   return (
     <InvitedFriendDetails>
       <PrimaryDetails>
@@ -18,14 +32,6 @@ const ChallengeInviteeListItem = ({ invitee, classes }) => {
           {' '}
           <Name>{invitee.invitee_name}</Name>
         </FriendName>
-        <MessageContainer>
-          <MessageStatus>
-            {invitee.messageStatus === 'Message Viewed' && <RemoveRedEye />}
-            {invitee.messageStatus === 'Message Sent' && <Check />}
-            {invitee.messageStatus === 'Challenge Joined' && <CheckCircle />}
-          </MessageStatus>
-          {invitee.messageStatus}
-        </MessageContainer>
         <VerticalLine />
         <ActivityCommentEditWrapper>
           <MoreHoriz />
@@ -33,22 +39,25 @@ const ChallengeInviteeListItem = ({ invitee, classes }) => {
       </PrimaryDetails>
       <Options>
         <div>
-          {invitee.invite_sent === false && (
-            <Button
-            classes={{ root: classes.buttonDesktop }}
-              color="primary"
-              id="challengeLeaderboardTop50Button"
-              onClick={() => console.log('Top 50 button clicked')}
-              variant="outlined"
-            >
-              Let us know you sent the message
-            </Button>
+          {invitee.invite_sent === false ? (
+            <ConfirmYouSentInviteButton
+              challengeInviteeId={invitee.invitee_id}
+              challengeWeVoteId={invitee.challenge_we_vote_id}
+            />
+          ) : (
+            <MessageContainer>
+              <MessageStatus>
+                {challengeStatusIconJsx}
+              </MessageStatus>
+              {challengeStatusMessage}
+            </MessageContainer>
           )}
         </div>
         {invitee.messageStatus !== 'Challenge Joined' && (
-          <Invite>
-            Invite again
-          </Invite>
+          <InviteAgainButton
+            challengeInviteeId={invitee.invitee_id}
+            challengeWeVoteId={invitee.challenge_we_vote_id}
+          />
         )}
       </Options>
     </InvitedFriendDetails>
@@ -61,11 +70,6 @@ ChallengeInviteeListItem.propTypes = {
 };
 
 const styles = () => ({
-  buttonDesktop: {
-    padding: '2px 10px',
-    borderRadius: 20,
-    fontSize: 14,
-  },
   searchButton: {
     borderRadius: 50,
   },

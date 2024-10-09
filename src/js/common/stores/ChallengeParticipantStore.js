@@ -1,5 +1,12 @@
 import { ReduceStore } from 'flux/utils';
 import Dispatcher from '../dispatcher/Dispatcher';
+import VoterStore from '../../stores/VoterStore';
+import AppObservableStore from './AppObservableStore';
+
+
+const orderByDateJoined = (firstEntry, secondEntry) => new Date(secondEntry.date_joined) - new Date(firstEntry.date_joined);
+
+const orderByParticipantsCount = (firstEntry, secondEntry) => secondEntry.points - firstEntry.points;
 
 class ChallengeParticipantStore extends ReduceStore {
   getInitialState () {
@@ -52,6 +59,11 @@ class ChallengeParticipantStore extends ReduceStore {
 
   getChallengeParticipantList (challengeWeVoteId) {
     return this.getState().allChallengeParticipantLists[challengeWeVoteId] || [];
+  }
+
+  getNumberOfParticipantsInChallenge (challengeWeVoteId) {
+    const participantList = this.getChallengeParticipantList(challengeWeVoteId) || [];
+    return participantList.length;
   }
 
   getChallengeParticipantVoterEntry (challengeWeVoteId) {
@@ -139,7 +151,7 @@ class ChallengeParticipantStore extends ReduceStore {
     let challengeList;
     let challengeParticipant;
     let challengeParticipantList;
-    const challengeParticipantListModified = [];
+    let challengeParticipantListModified = [];
     const voterWeVoteIdList = [];
 
     let revisedState;
@@ -190,6 +202,17 @@ class ChallengeParticipantStore extends ReduceStore {
             challengeParticipantListModified.push(oneParticipant);
           }
           voterWeVoteIdList.push(oneParticipant.voter_we_vote_id);
+        });
+        challengeParticipantListModified = challengeParticipantListModified.sort(orderByDateJoined);
+        challengeParticipantListModified = challengeParticipantListModified.sort(orderByParticipantsCount);
+        challengeParticipantListModified = challengeParticipantListModified.map((participant, index) => ({ ...participant, rank: index + 1 }));
+        challengeParticipantListModified.forEach((participant, index) => {
+          if (index === 0) {
+            AppObservableStore.setChallengeParticipantNameWithHighestRank(action.res.challenge_we_vote_id, participant.participant_name);
+          }
+          if (VoterStore.getVoterWeVoteId() && participant.voter_we_vote_id === VoterStore.getVoterWeVoteId()) {
+            AppObservableStore.setChallengeParticipantRankOfVoter(action.res.challenge_we_vote_id, participant.rank);
+          }
         });
         challengeParticipantList = challengeParticipantListModified;
         // console.log('challengeParticipantListRetrieve challenge_participant_list:', challengeParticipantList);

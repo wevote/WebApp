@@ -34,13 +34,14 @@ function ChallengeCardForListBody (props) {
   renderLog('ChallengeCardForListBody');  // Set LOG_RENDER_EVENTS to log all renders
   const {
     challengeDescription, challengeSupported, challengeTitle, challengeWeVoteId,
-    hideCardMargins, inDraftMode, functionToUseToKeepHelping, functionToUseWhenProfileComplete,
+    hideCardMargins, inDraftMode, joinedAndDaysLeftOff, functionToUseToKeepHelping, functionToUseWhenProfileComplete,
     limitCardWidth, onChallengeClick, onChallengeClickLink, onChallengeEditClick,
     photoLargeUrl, profileImageBackgroundColor,
     participantsCount, participantsCountNextGoalWithFloor, tagIdBaseName, useVerticalCard,
     voterCanEditThisChallenge,
   } = props;
   const politicalPartySvgNameWithPath = '../../img/global/svg-icons/political-party-unspecified.svg';
+  // console.log('ChallengeCardForListBody functional component photoLargeUrl:', photoLargeUrl);
 
   // /////////////////////// START OF DISPLAY
   return (
@@ -216,9 +217,11 @@ function ChallengeCardForListBody (props) {
                     } : {}}
                   />
                 </ChallengeImageMobilePlaceholder>
-                <JoinedDaysLeftOverlayMobile>
-                  <JoinedAndDaysLeft challengeWeVoteId={challengeWeVoteId} />
-                </JoinedDaysLeftOverlayMobile>
+                {!joinedAndDaysLeftOff && (
+                  <JoinedDaysLeftOverlayMobile>
+                    <JoinedAndDaysLeft challengeWeVoteId={challengeWeVoteId} />
+                  </JoinedDaysLeftOverlayMobile>
+                )}
               </ChallengeImageContainer>
             ) : (
               <ChallengeImageMobilePlaceholder
@@ -277,9 +280,11 @@ function ChallengeCardForListBody (props) {
                   )}
                 </>
                 {/* Joined and Days Left */}
-                <JoinedDaysLeftOverlayDesctop>
-                  <JoinedAndDaysLeft challengeWeVoteId={challengeWeVoteId} />
-                </JoinedDaysLeftOverlayDesctop>
+                {!joinedAndDaysLeftOff && (
+                  <JoinedDaysLeftOverlayDesktop>
+                    <JoinedAndDaysLeft challengeWeVoteId={challengeWeVoteId} />
+                  </JoinedDaysLeftOverlayDesktop>
+                )}
               </ChallengeImageContainer>
             ) : (
               <ChallengeImageDesktopPlaceholder
@@ -314,6 +319,7 @@ ChallengeCardForListBody.propTypes = {
   challengeDescription: PropTypes.string,
   inDraftMode: PropTypes.bool,
   hideCardMargins: PropTypes.bool,
+  joinedAndDaysLeftOff: PropTypes.bool,
   limitCardWidth: PropTypes.bool,
   functionToUseToKeepHelping: PropTypes.func,
   functionToUseWhenProfileComplete: PropTypes.func,
@@ -345,7 +351,7 @@ const JoinedDaysLeftOverlayMobile = styled('div')`
   top: 130px;
   left: 10px;
   `;
-const JoinedDaysLeftOverlayDesctop = styled('div')`
+const JoinedDaysLeftOverlayDesktop = styled('div')`
   position: absolute;
   top: 175px;
   left: 10px;

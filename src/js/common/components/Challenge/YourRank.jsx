@@ -1,35 +1,58 @@
+import { Button } from '@mui/material';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
-import DesignTokenColors from '../../components/Style/DesignTokenColors';
-import { Button } from '@mui/material';
-import { CampaignSupportDesktopButtonPanel, CampaignSupportDesktopButtonWrapper, CampaignSupportSection, CampaignSupportSectionWrapper } from '../../components/Style/CampaignSupportStyles';
-import { SupportButtonFooterWrapper, SupportButtonPanel} from '../../components/Style/CampaignDetailsStyles';
+import DesignTokenColors from '../Style/DesignTokenColors';
+// import { CampaignSupportDesktopButtonPanel, CampaignSupportDesktopButtonWrapper, CampaignSupportSection, CampaignSupportSectionWrapper } from '../../components/Style/CampaignSupportStyles';
+// import { SupportButtonFooterWrapper, SupportButtonPanel} from '../../components/Style/CampaignDetailsStyles';
 import arrow from '../../../../img/global/icons/ph_arrow-up-bold.png';
 import arrow1 from '../../../../img/global/icons/ph_arrow-up-bold_1.png';
-const URL = '/:challengeSEOFriendlyPath/+/customize-message';
+import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
+import ChallengeParticipantStore from '../../stores/ChallengeParticipantStore';
 
-const YourRank =({classes})=>{
+const YourRank = ({ classes, challengeWeVoteId }) =>{
   const [clicked, setClicked] = useState(false);
+  const [participantsCount, setParticipantsCount] = useState(0);
   const [points, setPoints] = useState(0);
-  const [note, setNote] = useState("");
-  const [arrowImage, setArrowImage] = useState(arrow)
+  // const [note, setNote] = useState("");
+  const [arrowImage, setArrowImage] = useState(arrow);
+  const [rankOfVoter, setRankOfVoter] = React.useState(0);
 
-  const calculateRank = (points) => 5336 + points * 5;
+  const onAppObservableStoreChange = () => {
+    setRankOfVoter(AppObservableStore.getChallengeParticipantRankOfVoterByChallengeWeVoteId(challengeWeVoteId));
+  };
+
+  const onChallengeParticipantStoreChange = () => {
+    const sortedParticipantsWithRank = ChallengeParticipantStore.getChallengeParticipantList(challengeWeVoteId);
+    setParticipantsCount(sortedParticipantsWithRank.length);
+  };
 
   const handleClick = () => {
     setPoints((prevPoints) => {
       const newPoints = prevPoints + 1;
       setClicked(true);
-      setArrowImage(arrow1)
+      setArrowImage(arrow1);
 
       setTimeout(() => {
         setClicked(false);
-        setArrowImage(arrow)
+        setArrowImage(arrow);
       }, 3000);
       return newPoints;
     });
   };
+
+  React.useEffect(() => {
+    // console.log('Fetching participants for:', challengeWeVoteId);
+    const appStateSubscription = messageService.getMessage().subscribe(() => onAppObservableStoreChange());
+    onAppObservableStoreChange();
+    const challengeParticipantStoreListener = ChallengeParticipantStore.addListener(onChallengeParticipantStoreChange);
+    onChallengeParticipantStoreChange();
+
+    return () => {
+      appStateSubscription.unsubscribe();
+      challengeParticipantStoreListener.remove();
+    };
+  }, [challengeWeVoteId]);
   return (
     <YourRankWrapper>
       <div
@@ -57,7 +80,9 @@ const YourRank =({classes})=>{
           classes={{ root: classes.buttonDesktop }}
           style={{ color: clicked ? '#FFFFFF' : '#AC5204' }}
         >
-          # {calculateRank(points)}
+          #
+          {rankOfVoter}
+          {' '}
           <span className="arrow">
             <img src={arrowImage} alt="arrow" classes ={{ root: classes.arrow}}/>
           </span>
