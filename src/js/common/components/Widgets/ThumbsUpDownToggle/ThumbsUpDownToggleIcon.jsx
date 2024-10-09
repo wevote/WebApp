@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { ThumbDownAltRounded, ThumbDownOffAltRounded } from '@mui/icons-material';
 import DesignTokenColors from '../../Style/DesignTokenColors';
 
-const ThumbsUpDownToggleIcon = ({ isFavorite, isDislike, supports, rejects }) => (
+const ThumbsUpDownToggleIcon = ({ isFavorite, isDislike, supports, opposes }) => (
   <>
     {isFavorite && (
       <Icon>
@@ -13,7 +13,7 @@ const ThumbsUpDownToggleIcon = ({ isFavorite, isDislike, supports, rejects }) =>
     )}
     {isDislike && (
       <Icon>
-        {rejects ? <ThumbsDownPressedStyled /> : <ThumbsDownOutlineStyled />}
+        {opposes ? <ThumbsDownPressedStyled /> : <ThumbsDownOutlineStyled />}
       </Icon>
     )}
   </>
@@ -21,7 +21,7 @@ const ThumbsUpDownToggleIcon = ({ isFavorite, isDislike, supports, rejects }) =>
 
 const Icon = styled('div')`
   flex: display;
-  padding: 0 5px 0 5px;
+  padding-left: 5px;
 
 `;
 
@@ -32,9 +32,7 @@ const ThumbsUpOutlineStyled = styled(ThumbDownOffAltRounded)`
   transition: path 0.3 ease;
 
   &:hover {
-    path {
-      fill: ${DesignTokenColors.neutral400};
-    }
+    color: ${DesignTokenColors.neutral600}
   }
 `;
 
@@ -48,6 +46,10 @@ const ThumbsDownOutlineStyled = styled(ThumbDownOffAltRounded)`
   color: ${DesignTokenColors.neutral400};
   cursor: pointer;
   transition: color 0.3 ease;
+
+   &:hover {
+    color: ${DesignTokenColors.neutral600}
+  }
 `;
 
 const ThumbsDownPressedStyled = styled(ThumbDownAltRounded)`
@@ -61,5 +63,5 @@ ThumbsUpDownToggleIcon.propTypes = {
   isFavorite: PropTypes.bool,
   isDislike: PropTypes.bool,
   supports: PropTypes.bool,
-  rejects: PropTypes.bool,
+  opposes: PropTypes.bool,
 };

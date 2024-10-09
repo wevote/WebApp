@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
-import styled, { withTheme } from 'styled-components';
+import styled from 'styled-components';
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
 import BlockOutlinedIcon from '@mui/icons-material/BlockOutlined';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
@@ -9,6 +9,7 @@ import { Typography } from '@mui/material';
 import { withStyles } from '@mui/styles';
 import HeartFavoriteToggleBase from '../Widgets/HeartFavoriteToggle/HeartFavoriteToggleBase';
 import ThumbsUpDownToggle from '../Widgets/ThumbsUpDownToggle/ThumbsUpDownToggle';
+import DesignTokenColors from '../Style/DesignTokenColors';
 
 function PositionForBallotItem ({ classes }) {
   const [anchorEl, setAnchorEL] = useState(null);
@@ -19,7 +20,7 @@ function PositionForBallotItem ({ classes }) {
     bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
   };
 
-  const voterEndorsed = true;
+  const positionEndorsed = false;
 
   const onDotButtonClick = (e) => {
     setAnchorEL(e.currentTarget);
@@ -49,14 +50,14 @@ function PositionForBallotItem ({ classes }) {
         </VoterInfoBioWrapper>
         <VoterPositionLikesSourceWrapper>
           <VoterPositionWrapper>
-            {voterEndorsed ? (
+            {positionEndorsed ? (
               <VoterPosition>
-                <CheckOutlinedIcon style={{ color: 'rgba(61, 61, 61, 1)' }} />
+                <CheckIcon />
                 <PositionText>Endorsed a month ago</PositionText>
               </VoterPosition>
             ) : (
               <VoterPosition>
-                <BlockOutlinedIcon style={{ color: 'rgba(61, 61, 61, 1)' }} />
+                <BlockIcon />
                 <PositionText>Opposed a month ago</PositionText>
               </VoterPosition>
             )}
@@ -64,9 +65,9 @@ function PositionForBallotItem ({ classes }) {
           <VoterLikesSourceWrapper>
             <VoterLikes>
               <ThumbsUpDownToggle />
-              <button type="button" aria-label="Source" style={{ background: !anchorEl ? 'transparent' : 'rgba(210, 210, 210, 1)', width: '34px', height: '34px', border: 'none', borderRadius: '30px', marginLeft: '10px', marginTop: '-5px' }} onClick={onDotButtonClick}>
-                <MoreHorizIcon style={{ color: 'rgba(132, 132, 132, 1)', fontSize: '30px', marginLeft: '-4px', marginTop: '-.5px' }} />
-              </button>
+              <SourceButton type="button" aria-label="Source" style={{ background: !anchorEl ? 'transparent' : `${DesignTokenColors.neutral100}` }} onClick={onDotButtonClick}>
+                <SourceButtonIcon />
+              </SourceButton>
               <Popover
                 id={id}
                 open={open}
@@ -100,7 +101,7 @@ const PositionForBallotItemWrapper = styled('div')`
   display: flex;
 
   &:not(:last-child) {
-    border-bottom: 1px solid rgba(210, 210, 210, 1);
+    border-bottom: 1px solid ${DesignTokenColors.neutral100};
   }
 `;
 
@@ -131,8 +132,7 @@ const HeartFavoriteToggleBaseWrapper = styled('div')`
 `;
 
 const VoterName = styled('h3')`
-  font: Nunito;
-  color: var(--NeutralUI-900, rgba(61, 61, 61, 1));
+  color: ${DesignTokenColors.neutral900};
 `;
 
 const VoterInfoBioWrapper = styled('div')`
@@ -140,7 +140,7 @@ const VoterInfoBioWrapper = styled('div')`
 `;
 
 const VoterInfoBio = styled('p')`
-  color: var(Neutral/900, rgba(42, 42, 44, 1));
+  color: ${DesignTokenColors.neutral900};
 `;
 
 const VoterPositionLikesSourceWrapper = styled('div')`
@@ -156,35 +156,59 @@ const VoterPosition = styled('div')`
   display: flex;
 `;
 
+const CheckIcon = styled(CheckOutlinedIcon)`
+  color: ${DesignTokenColors.neutral900}
+`;
+
+const BlockIcon = styled(BlockOutlinedIcon)`
+  color: ${DesignTokenColors.neutral900}
+`;
+
 const PositionText = styled('p')`
   margin-left: 5px;
-  font: Nunito;
   font-weight: 400;
   size: 14px;
-  color: var(--Neutral-700, rgba(72, 72, 72, 1));
+  color: ${DesignTokenColors.neutral700};
 `;
 
 const VoterLikesSourceWrapper = styled('div')`
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-evenly;
+  margin-top: -15px;
   `;
 
 const VoterLikes = styled('div')`
   display: flex;
 `;
 
+const SourceButton = styled('button')`
+  width: 34px;
+  height: 34px;
+  border: none; 
+  border-radius: 30px;
+  margin-left: 25px;
+  margin-top: -5px;
+`;
+
+const SourceButtonIcon = styled(MoreHorizIcon)`
+  color: ${DesignTokenColors.neutral400};
+  font-size: 30px;
+  margin-left: -1px;
+  margin-top: -.5px;
+`;
+
 const OpinionSource = styled('button')`
   background: transparent;
-  border:none;
+  border: none;
 `;
 
 const styles = () => ({
   popoverRoot: {
     borderRadius: 2,
-    border: '1px solid rgba(210, 210, 210, 1)',
+    border: `1px solid ${DesignTokenColors.neutral100}`,
     marginTop: '3px',
   },
 });
 
-export default withTheme(withStyles(styles)(PositionForBallotItem));
+export default withStyles(styles)(PositionForBallotItem);
