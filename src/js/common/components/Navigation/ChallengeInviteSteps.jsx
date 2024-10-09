@@ -209,6 +209,16 @@ const StepTwoIconAndText = styled('div')`
   margin-left: 25px;
   text-align: center;
   width: 109px;
+  a {
+    font-weight: ${({ isActive }) => (isActive ? '600' : 'normal')};
+    color: ${({ isActive }) => (isActive ? DesignTokenColors.primary500 : 'inherit')};
+
+    &:hover {
+      color: ${DesignTokenColors.primary500};
+      font-weight: 600;
+      text-decoration: underline;
+    }
+  }
 `;
 const StyledLink = styled('a')`
   font-weight: ${({ isActive }) => (isActive ? '600' : 'normal')};
