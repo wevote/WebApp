@@ -89,14 +89,14 @@ class ChallengeInviteSteps extends React.Component {
               imageName={this.isStepActive(1) ? 'material-symbols-counter-1-active' : 'material-symbols-counter-1'}
               alt="Step 1 Icon"
             />
-            <StyledLink
+            <Link
               to={`${this.getChallengeBasePath()}customize-message`}
               style={commonTextStyle}
               // Handle click to update state
               onClick={() => this.handleStepClick(1)}
             >
               Customize the message to your friends
-            </StyledLink>
+            </Link>
           </StepOneIconAndText>
 
           {/* Horizontal Line Between Steps */}
@@ -110,14 +110,14 @@ class ChallengeInviteSteps extends React.Component {
               imageName={this.isStepActive(2) ? 'material-symbols-counter-2-active' : 'material-symbols-counter-2'}
               alt="Step 2 Icon"
             />
-            <StyledLink
+            <Link
               to={`${this.getChallengeBasePath()}invite-friends`}
               style={commonTextStyle}
               // Handle click to update state
               onClick={() => this.handleStepClick(2)}
             >
               Copy message & link
-            </StyledLink>
+            </Link>
           </StepTwoIconAndText>
         </StepsContainer>
       </ChallengeInviteStepsContainer>
@@ -228,17 +228,6 @@ const StepTwoIconAndText = styled('div')`
       font-weight: 600;
       text-decoration: underline;
     }
-  }
-`;
-const StyledLink = styled('a')`
-  font-weight: ${({ isActive }) => (isActive ? '600' : 'normal')};
-  color: ${({ isActive }) => (isActive ? DesignTokenColors.primary500 : 'inherit')};
-  text-decoration: none;
-
-  &:hover {
-    color: ${DesignTokenColors.primary500};
-    font-weight: 600;
-    text-decoration: underline;
   }
 `;
 
