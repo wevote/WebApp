@@ -180,7 +180,6 @@ class BoostLearnMoreModal extends Component {
     // console.log('BoostLearnMoreModal render, voter_address_object: ', voter_address_object);
     const textFieldJSX = (
       <TextFieldWrapper>
-        
         <div>Learn more content here</div>
       </TextFieldWrapper>
     );
