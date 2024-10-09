@@ -2,36 +2,23 @@ import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
-import Tooltip from 'react-bootstrap/Tooltip';
 import styled from 'styled-components';
 import OfficeActions from '../../actions/OfficeActions';
-import { BallotHorizontallyScrollingContainer, BallotScrollingInnerWrapper, BallotScrollingOuterWrapper } from '../../common/components/Style/ScrollingStyles';
+import { BallotScrollingOuterWrapper } from '../../common/components/Style/ScrollingStyles';
 import signInModalGlobalState from '../../common/components/Widgets/signInModalGlobalState';
-import AppObservableStore from '../../common/stores/AppObservableStore';
 import historyPush from '../../common/utils/historyPush';
-import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
-import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import toTitleCase from '../../common/utils/toTitleCase';
 import BallotStore from '../../stores/BallotStore';
 import CandidateStore from '../../stores/CandidateStore';
 import SupportStore from '../../stores/SupportStore';
 import { sortCandidateList } from '../../utils/positionFunctions';
-import { Candidate, CandidateBottomRow, CandidateContainer, CandidateInfo, CandidateNameH4, CandidateParty, CandidateTopRow, CandidateWrapper, OfficeItemCompressedWrapper, OfficeNameH2 } from '../Style/BallotStyles';
-import { PositionRowListEmptyWrapper, PositionRowListInnerWrapper, PositionRowListOneWrapper, PositionRowListOuterWrapper, PositionRowListScoreColumn, PositionRowListScoreHeader, PositionRowListScoreSpacer } from '../Style/PositionRowListStyles';
-import InfoCircleIcon from '../Widgets/InfoCircleIcon';
-import PositionRowEmpty from './PositionRowEmpty';
-import PositionRowList from './PositionRowList';
+import { OfficeItemCompressedWrapper, OfficeNameH2 } from '../Style/BallotStyles';
+import BallotScrollingContainer from './BallotScrollingContainer';
 
-const BallotItemSupportOpposeScoreDisplay = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeScoreDisplay' */ '../Widgets/ScoreDisplay/BallotItemSupportOpposeScoreDisplay'));
-const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
-const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
-const IssuesByBallotItemDisplayList = React.lazy(() => import(/* webpackChunkName: 'IssuesByBallotItemDisplayList' */ '../Values/IssuesByBallotItemDisplayList'));
-const ItemActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemActionBar' */ '../Widgets/ItemActionBar/ItemActionBar'));
 const ShowMoreButtons = React.lazy(() => import(/* webpackChunkName: 'ShowMoreButtons' */ '../Widgets/ShowMoreButtons'));
 
-const NUMBER_OF_CANDIDATES_TO_DISPLAY = 3;
+const NUMBER_OF_CANDIDATES_TO_DISPLAY = 5;
 
 // This is related to components/VoterGuide/VoterGuideOfficeItemCompressed
 class OfficeItemCompressed extends Component {
@@ -53,9 +40,6 @@ class OfficeItemCompressed extends Component {
     this.getOfficeLink = this.getOfficeLink.bind(this);
     this.goToCandidateLink = this.goToCandidateLink.bind(this);
     this.goToOfficeLink = this.goToOfficeLink.bind(this);
-    this.onClickShowOrganizationModalWithBallotItemInfo = this.onClickShowOrganizationModalWithBallotItemInfo.bind(this);
-    this.onClickShowOrganizationModalWithPositions = this.onClickShowOrganizationModalWithPositions.bind(this);
-    this.onClickShowOrganizationModalWithBallotItemInfoAndPositions = this.onClickShowOrganizationModalWithBallotItemInfoAndPositions.bind(this);
     this.showAllCandidates = this.showAllCandidates.bind(this);
     this.showLessCandidates = this.showLessCandidates.bind(this);
   }
@@ -142,7 +126,7 @@ class OfficeItemCompressed extends Component {
         candidateListLength,
         totalNumberOfCandidates,
       });
-      // console.log('OfficeItemCompressed onCandidateStoreChange', officeWeVoteId);
+      // console.log('OfficeItemCompressed onCandidateStoreChange officeWeVoteId:', officeWeVoteId, ', totalNumberOfCandidates:', totalNumberOfCandidates);
       let changeFound = false;
       if (candidateListLength && officeWeVoteId) {
         if (officeWeVoteId &&
@@ -210,23 +194,6 @@ class OfficeItemCompressed extends Component {
     this.setState({});
   }
 
-  onClickShowOrganizationModalWithBallotItemInfo (candidateWeVoteId) {
-    AppObservableStore.setOrganizationModalBallotItemWeVoteId(candidateWeVoteId);
-    AppObservableStore.setShowOrganizationModal(true);
-    AppObservableStore.setHideOrganizationModalPositions(true);
-  }
-
-  onClickShowOrganizationModalWithPositions (candidateWeVoteId) {
-    AppObservableStore.setOrganizationModalBallotItemWeVoteId(candidateWeVoteId);
-    AppObservableStore.setShowOrganizationModal(true);
-    AppObservableStore.setHideOrganizationModalBallotItemInfo(true);
-  }
-
-  onClickShowOrganizationModalWithBallotItemInfoAndPositions (candidateWeVoteId) {
-    AppObservableStore.setOrganizationModalBallotItemWeVoteId(candidateWeVoteId);
-    AppObservableStore.setShowOrganizationModal(true);
-  }
-
   getCandidateLink (candidateWeVoteId) {
     if (this.state.organizationWeVoteId) {
       // If there is an organizationWeVoteId, signal that we want to link back to voter_guide for that organization
@@ -249,7 +216,10 @@ class OfficeItemCompressed extends Component {
 
   getCandidatesToRenderCount = () => {
     // How many candidates should we render? If voter has chosen or opposed 1+ candidates, only show those
-    const { candidateList } = this.props;
+    const { candidateList, disableAutoRollUp } = this.props;
+    if (!candidateList || candidateList.length === 0) {
+      return 0;
+    }
     let { candidatesToShowForSearchResults } = this.props;
     candidatesToShowForSearchResults = candidatesToShowForSearchResults || [];
     const { showAllCandidates } = this.state;
@@ -259,6 +229,8 @@ class OfficeItemCompressed extends Component {
     // console.log('OfficeItemCompressed getCandidatesToRenderCount candidatesToRender: ', candidatesToRender);
     if (showAllCandidates) {
       return candidateList.length;
+    } else if (disableAutoRollUp) {
+      return NUMBER_OF_CANDIDATES_TO_DISPLAY;
     } else if (supportedAndOpposedCandidatesList && supportedAndOpposedCandidatesList.length > 0) {
       return supportedAndOpposedCandidatesList.length;
     } else {
@@ -268,7 +240,15 @@ class OfficeItemCompressed extends Component {
 
   // eslint-disable-next-line no-unused-vars
   generateCandidates = (officeWeVoteId) => {
-    const { candidateList, externalUniqueId, isFirstBallotItem } = this.props;
+    const { candidateList, disableAutoRollUp, externalUniqueId, isFirstBallotItem } = this.props;
+    if (!candidateList || candidateList.length === 0) {
+      // console.log('OfficeItemCompressed generateCandidates candidateList is empty');
+      return (
+        <BallotScrollingOuterWrapper>
+          No candidates found.
+        </BallotScrollingOuterWrapper>
+      );
+    }
     let { candidatesToShowForSearchResults } = this.props;
     candidatesToShowForSearchResults = candidatesToShowForSearchResults || [];
     const { candidateListForDisplay, showAllCandidates } = this.state; // limitNumberOfCandidatesShownToThisNumber
@@ -282,6 +262,9 @@ class OfficeItemCompressed extends Component {
     if (showAllCandidates) {
       candidatesToRender = candidateList;
       limitNumberOfCandidatesShownToThisNumber = candidatesToRender.length;
+    } else if (disableAutoRollUp) {
+      candidatesToRender = candidateListForDisplay;
+      limitNumberOfCandidatesShownToThisNumber = NUMBER_OF_CANDIDATES_TO_DISPLAY;
     } else if (supportedAndOpposedCandidatesList && supportedAndOpposedCandidatesList.length > 0) {
       candidatesToRender = supportedAndOpposedCandidatesList;
       limitNumberOfCandidatesShownToThisNumber = candidatesToRender.length;
@@ -289,8 +272,6 @@ class OfficeItemCompressed extends Component {
       candidatesToRender = candidateListForDisplay;
       limitNumberOfCandidatesShownToThisNumber = NUMBER_OF_CANDIDATES_TO_DISPLAY;
     }
-    const hideItemActionBar = false;
-    const hideCandidateDetails = false; // supportedCandidatesList.length;
     let candidateCount = 0;
     const dedupedCandidates = [];
     // console.log('------- generateCandidates ------ iFirstBallotItem ', isFirstBallotItem, officeWeVoteId);
@@ -302,167 +283,18 @@ class OfficeItemCompressed extends Component {
             if (!oneCandidate || !oneCandidate.we_vote_id || dedupedCandidates.includes(oneCandidate.we_vote_id)) return null;
             dedupedCandidates.push(oneCandidate.we_vote_id);
             candidateCount += 1;
-            // console.log('OfficeItemCompressd candiateCount ', candidateCount);
-            const candidatePartyText = oneCandidate.party && oneCandidate.party.length ? `${oneCandidate.party}` : '';
-            const avatarCompressed = 'card-main__avatar-compressed';
-            const avatarBackgroundImage = normalizedImagePath('../img/global/svg-icons/avatar-generic.svg');
+            // console.log('OfficeItemCompressed candidateCount ', candidateCount);
+            // console.log('OfficeItemCompressed generateCandidates oneCandidate: ', oneCandidate);
             const uniqueKey = `candidate_preview-${oneCandidate.we_vote_id}-${window.performance.now()}`;
-            const scoreExplanationTooltip = isMobileScreenSize() ? (<span />) : (
-              <Tooltip className="u-z-index-9020" id={`scoreDescription-${oneCandidate.we_vote_id}`}>
-                Your personalized score
-                {oneCandidate.ballot_item_display_name && (
-                  <>
-                    {' '}
-                    for
-                    {' '}
-                    {oneCandidate.ballot_item_display_name}
-                  </>
-                )}
-                {' '}
-                is the number of people who support this candidate, from among the people you trust. Trust by clicking the plus sign.
-              </Tooltip>
-            );
-            const positionRowListScoreColumn = (
-              <PositionRowListScoreColumn>
-                <PositionRowListScoreHeader>
-                  <OverlayTrigger
-                    placement="bottom"
-                    overlay={scoreExplanationTooltip}
-                  >
-                    <ScoreWrapper>
-                      <div>
-                        Score
-                      </div>
-                      <InfoCircleIconWrapper>
-                        <InfoCircleIcon />
-                      </InfoCircleIconWrapper>
-                    </ScoreWrapper>
-                  </OverlayTrigger>
-                </PositionRowListScoreHeader>
-                <PositionRowListScoreSpacer>
-                  <Suspense fallback={<></>}>
-                    <BallotItemSupportOpposeScoreDisplay
-                      ballotItemWeVoteId={oneCandidate.we_vote_id}
-                      onClickFunction={this.onClickShowOrganizationModalWithPositions}
-                      hideEndorsementsOverview
-                      hideNumbersOfAllPositions
-                    />
-                  </Suspense>
-                </PositionRowListScoreSpacer>
-              </PositionRowListScoreColumn>
-            );
             return (
-              <BallotScrollingInnerWrapper key={uniqueKey}>
-                <BallotHorizontallyScrollingContainer>
-                  <CandidateContainer>
-                    <CandidateWrapper>
-                      <CandidateInfo>
-                        <CandidateTopRow>
-                          <Candidate
-                            id={`officeItemCompressedCandidateImageAndName-${oneCandidate.we_vote_id}-${externalUniqueId}`}
-                            onClick={() => this.onClickShowOrganizationModalWithBallotItemInfoAndPositions(oneCandidate.we_vote_id)}
-                          >
-                            {/* Candidate Image */}
-                            <Suspense fallback={<></>}>
-                              <ImageHandler
-                                className={avatarCompressed}
-                                sizeClassName="icon-candidate-small u-push--sm "
-                                imageUrl={oneCandidate.candidate_photo_url_large}
-                                alt=""
-                                kind_of_ballot_item="CANDIDATE"
-                                style={{ backgroundImage: { avatarBackgroundImage } }}
-                              />
-                            </Suspense>
-                            {/* Candidate Name */}
-                            <div>
-                              <CandidateNameH4>
-                                {oneCandidate.ballot_item_display_name}
-                              </CandidateNameH4>
-                              <CandidateParty>
-                                {candidatePartyText}
-                              </CandidateParty>
-                            </div>
-                          </Candidate>
-                        </CandidateTopRow>
-                        <CandidateBottomRow>
-                          {!hideCandidateDetails && (
-                            <Suspense fallback={<></>}>
-                              <DelayedLoad waitBeforeShow={500}>
-                                <IssuesByBallotItemDisplayList
-                                  ballotItemDisplayName={oneCandidate.ballot_item_display_name}
-                                  ballotItemWeVoteId={oneCandidate.we_vote_id}
-                                  externalUniqueId={`officeItemCompressed-${oneCandidate.we_vote_id}-${externalUniqueId}`}
-                                />
-                              </DelayedLoad>
-                            </Suspense>
-                          )}
-                          {!hideItemActionBar && (
-                            <ItemActionBarOutsideWrapper>
-                              <Suspense fallback={<></>}>
-                                <ItemActionBar
-                                  ballotItemWeVoteId={oneCandidate.we_vote_id}
-                                  ballotItemDisplayName={oneCandidate.ballot_item_display_name}
-                                  commentButtonHide
-                                  externalUniqueId={`OfficeItemCompressed-ItemActionBar-${oneCandidate.we_vote_id}-${externalUniqueId}`}
-                                  hidePositionPublicToggle
-                                  positionPublicToggleWrapAllowed
-                                  shareButtonHide
-                                />
-                              </Suspense>
-                            </ItemActionBarOutsideWrapper>
-                          )}
-                        </CandidateBottomRow>
-                      </CandidateInfo>
-                    </CandidateWrapper>
-                    <PositionRowListOuterWrapper>
-                      <PositionRowListInnerWrapper>
-                        <div>
-                          {/* className="u-show-mobile" */}
-                          {positionRowListScoreColumn}
-                        </div>
-                        <PositionRowListOneWrapper>
-                          <PositionRowList
-                            ballotItemWeVoteId={oneCandidate.we_vote_id}
-                            showSupport
-                            firstInstance={isFirstBallotItem}
-                          />
-                        </PositionRowListOneWrapper>
-                        <PositionRowListOneWrapper>
-                          <PositionRowList
-                            ballotItemWeVoteId={oneCandidate.we_vote_id}
-                            showOppose
-                            showOpposeDisplayNameIfNoSupport
-                            firstInstance={isFirstBallotItem}
-                          />
-                        </PositionRowListOneWrapper>
-                        <PositionRowListOneWrapper>
-                          <PositionRowList
-                            ballotItemWeVoteId={oneCandidate.we_vote_id}
-                            showInfoOnly
-                            firstInstance={isFirstBallotItem}
-                          />
-                        </PositionRowListOneWrapper>
-                        <PositionRowListEmptyWrapper>
-                          <PositionRowEmpty
-                            ballotItemWeVoteId={oneCandidate.we_vote_id}
-                          />
-                        </PositionRowListEmptyWrapper>
-                        {/*
-                        <div className="u-show-desktop-tablet">
-                          {positionRowListScoreColumn}
-                        </div>
-                        */}
-                      </PositionRowListInnerWrapper>
-                    </PositionRowListOuterWrapper>
-                  </CandidateContainer>
-                </BallotHorizontallyScrollingContainer>
-                {/* {((candidateCount < candidatesToRenderLength) && (candidateCount < limitNumberOfCandidatesShownToThisNumber)) && ( */}
-                {(candidateCount < limitNumberOfCandidatesShownToThisNumber) && (
-                  <div>
-                    <HrSeparator />
-                  </div>
-                )}
-              </BallotScrollingInnerWrapper>
+              <BallotScrollingContainer
+                key={uniqueKey}
+                oneCandidate={oneCandidate}
+                isFirstBallotItem={isFirstBallotItem}
+                externalUniqueId={externalUniqueId}
+                candidateCount={candidateCount}
+                limitNumberOfCandidatesShownToThisNumber={limitNumberOfCandidatesShownToThisNumber}
+              />
             );
           })}
       </BallotScrollingOuterWrapper>
@@ -581,6 +413,7 @@ OfficeItemCompressed.propTypes = {
   candidateList: PropTypes.array,
   candidatesToShowForSearchResults: PropTypes.array,
   // classes: PropTypes.object,
+  disableAutoRollUp: PropTypes.bool,
   externalUniqueId: PropTypes.string,
   isFirstBallotItem: PropTypes.bool,
   organization: PropTypes.object,
@@ -608,30 +441,8 @@ const styles = (theme) => ({
   },
 });
 
-const HrSeparator = styled('hr')`
-  width: 95%;
-`;
-
-const InfoCircleIconWrapper = styled('div')`
-  margin-bottom: -4px;
-  margin-left: 3px;
-`;
-
-const ItemActionBarOutsideWrapper = styled('div')`
-  display: flex;
-  cursor: pointer;
-  flex-direction: row;
-  justify-content: flex-start;
-  margin-top: 12px;
-  width: 100%;
-`;
-
 const PrimaryPartyWrapper = styled('span')`
   font-size: 18px;
-`;
-
-const ScoreWrapper = styled('div')`
-  display: flex;
 `;
 
 export default withTheme(withStyles(styles)(OfficeItemCompressed));

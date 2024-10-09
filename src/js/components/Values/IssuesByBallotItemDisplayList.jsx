@@ -178,7 +178,6 @@ class IssuesByBallotItemDisplayList extends Component {
       return this.props.children || null;
     }
 
-    const issueRenderCountTemp = issuesToRender.length;
     let issueFollowedByVoter = false;
     let localCounter = 0;
     let showEllipses = false;
@@ -199,7 +198,6 @@ class IssuesByBallotItemDisplayList extends Component {
           return (
             <ValueNameWithPopoverDisplay
               key={`${ballotItemWeVoteId}-${oneIssue.issue_we_vote_id}-${showEllipses}`}
-              addComma={localCounter < issueRenderCountTemp}
               ballotItemDisplayName={ballotItemDisplayName}
               ballotItemWeVoteId={ballotItemWeVoteId}
               externalUniqueId={`${ballotItemWeVoteId}-${externalUniqueId}`}
@@ -279,7 +277,7 @@ const Issues = styled('div')`
   margin-left: 0;
 `;
 
-const IssueListWrapper = styled('ul')`
+const IssueListWrapper = styled('div')`
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
@@ -294,6 +292,8 @@ const MoreWrapper = styled('span')`
   cursor: pointer;
   text-decoration: underline;
   text-decoration-color: #ccc;
+  justify-content: center;
+  align-content: space-evenly;
   &:hover {
     text-decoration: underline;
   }

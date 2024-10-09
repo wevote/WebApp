@@ -10,11 +10,13 @@ import CandidateActions from '../../actions/CandidateActions';
 import IssueActions from '../../actions/IssueActions';
 import MeasureActions from '../../actions/MeasureActions';
 import OrganizationActions from '../../actions/OrganizationActions';
+import PoliticianActions from '../../common/actions/PoliticianActions';
+import PoliticianCardForList from '../PoliticianListRoot/PoliticianCardForList';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import apiCalming from '../../common/utils/apiCalming';
 import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
 import { normalizedHref } from '../../common/utils/hrefUtils';
-import { renderLog } from '../../common/utils/logging';
+import { cordovaOffsetLog, renderLog } from '../../common/utils/logging';
 import stringContains from '../../common/utils/stringContains';
 import ShowMoreButtons from '../Widgets/ShowMoreButtons';
 import BallotStore from '../../stores/BallotStore';
@@ -23,12 +25,26 @@ import IssueStore from '../../stores/IssueStore';
 import MeasureStore from '../../stores/MeasureStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
+import {
+  DrawerHeaderInnerContainer, DrawerHeaderOuterContainer,
+} from '../Style/drawerLayoutStyles';
 import { cordovaDrawerTopMargin } from '../../utils/cordovaOffsets';
 import { convertToInteger } from '../../common/utils/textFormat';
+import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
+import { headroomWrapperOffset } from '../../utils/cordovaCalculatedOffsets';
+import { getPageKey } from '../../utils/cordovaPageUtils';
+import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
+import { Candidate, CandidateNameAndPartyWrapper, CandidateNameH4, CandidateParty, CandidateTopRow } from '../Style/BallotStyles';
+import ImageHandler from '../ImageHandler';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
+import CampaignSupportThermometer from '../../common/components/CampaignSupport/CampaignSupportThermometer';
+// import { handleResize } from '../../common/utils/isMobileScreenSize';
 
-const CandidateItem = React.lazy(() => import(/* webpackChunkName: 'CandidateItem' */ '../Ballot/CandidateItem'));
+const CampaignRetrieveController = React.lazy(() => import(/* webpackChunkName: 'CampaignRetrieveController' */ '../../common/components/Campaign/CampaignRetrieveController'));
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
+const IssuesByBallotItemDisplayList = React.lazy(() => import(/* webpackChunkName: 'IssuesByBallotItemDisplayList' */ '../Values/IssuesByBallotItemDisplayList'));
 const MeasureItem = React.lazy(() => import(/* webpackChunkName: 'MeasureItem' */ '../Ballot/MeasureItem'));
+// const PoliticianCardForList = React.lazy(() => import(/* webpackChunkName: 'PoliticianCardForList' */ '../PoliticianListRoot/PoliticianCardForList'));
 const PositionList = React.lazy(() => import(/* webpackChunkName: 'PositionList' */ '../Ballot/PositionList'));
 const ScoreSummaryListController = React.lazy(() => import(/* webpackChunkName: 'ScoreSummaryListController' */ '../Widgets/ScoreDisplay/ScoreSummaryListController'));
 
@@ -42,7 +58,9 @@ class OrganizationModal extends Component {
       politicianWeVoteId: '',
       positionListFromFriendsHasBeenRetrievedOnce: {},
       positionListHasBeenRetrievedOnce: {},
+      scrolledDown: false,
       unFurlPositions: false,
+      finalElectionDateInPast: false,
       voterGuidesFromFriendsUpcomingHasBeenRetrievedOnce: {},
     };
 
@@ -53,6 +71,7 @@ class OrganizationModal extends Component {
 
   componentDidMount () {
     // console.log('OrganizationModal componentDidMount');
+    this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
     this.measureStoreListener = MeasureStore.addListener(this.onMeasureStoreChange.bind(this));
     const { ballotItemWeVoteId } = this.props;
@@ -63,10 +82,25 @@ class OrganizationModal extends Component {
       isCandidate,
       isMeasure,
     });
+    setTimeout(() => {
+      const drawer = document.querySelector('.MuiDrawer-paper');
+      if (drawer) {
+        drawer.addEventListener('scroll', this.handleScrolledDownDrawer);
+      } else {
+        console.log('Drawer element NOT found make timeout longer.');
+      }
+    }, 100);
     if (isCandidate) {
       const candidate = CandidateStore.getCandidateByWeVoteId(ballotItemWeVoteId);
-      const { ballot_item_display_name: ballotItemDisplayName, contest_office_we_vote_id: officeWeVoteId } = candidate;
+      const {
+        ballot_item_display_name: ballotItemDisplayName,
+        contest_office_we_vote_id: officeWeVoteId,
+        politician_we_vote_id: politicianWeVoteId,
+        party: politicalParty,
+        candidate_photo_url_large: politicianImageUrlLarge,
+      } = candidate;
       // console.log('candidate:', candidate);
+      PoliticianActions.politicianRetrieve(politicianWeVoteId);
       CandidateActions.candidateRetrieve(ballotItemWeVoteId);
       if (!this.localPositionListHasBeenRetrievedOnce(ballotItemWeVoteId) &&
         !BallotStore.positionListHasBeenRetrievedOnce(ballotItemWeVoteId) &&
@@ -94,6 +128,8 @@ class OrganizationModal extends Component {
       this.setState({
         allCachedPositionsForThisBallotItem,
         ballotItemDisplayName,
+        politicalParty,
+        politicianImageUrlLarge,
       });
       AnalyticsActions.saveActionCandidate(VoterStore.electionId(), ballotItemWeVoteId);
     }
@@ -136,7 +172,7 @@ class OrganizationModal extends Component {
     }
 
     // This puts too much strain on the browser
-    // // We want to make sure we have all of the position information so that comments show up
+    // // We want to make sure we have all the position information so that comments show up
     // const voterGuidesForThisBallotItem = VoterGuideStore.getVoterGuidesToFollowForBallotItemId(ballotItemWeVoteId);
     //
     // if (voterGuidesForThisBallotItem) {
@@ -153,6 +189,8 @@ class OrganizationModal extends Component {
     if (VoterStore.electionId() && !IssueStore.issuesUnderBallotItemsRetrieveCalled(VoterStore.electionId())) {
       IssueActions.issuesUnderBallotItemsRetrieve(VoterStore.electionId());
     }
+    // window.addEventListener('scroll', this.handleWindowScroll);
+    // window.addEventListener('resize', this.handleResizeLocal);
 
     this.setState({
       modalOpen: this.props.modalOpen,
@@ -162,6 +200,31 @@ class OrganizationModal extends Component {
   componentWillUnmount () {
     this.candidateStoreListener.remove();
     this.measureStoreListener.remove();
+    AppObservableStore.setScrolledDownDrawer(false);
+  }
+
+  handleScrolledDownDrawer (evt) {
+    const { scrollTop } = evt.target;
+    if (scrollTop > 200 && !AppObservableStore.getScrolledDownDrawer()) {
+      AppObservableStore.setScrolledDownDrawer(true);
+    }
+    if (scrollTop < 200 && AppObservableStore.getScrolledDownDrawer()) {
+      AppObservableStore.setScrolledDownDrawer(false);
+    }
+  }
+
+  onAppObservableStoreChange () {
+    // console.log('OrganizationModal onAppObservableStoreChange getScrolledDownDrawer: ', AppObservableStore.getScrolledDownDrawer());
+    this.setState({
+      scrolledDown: AppObservableStore.getScrolledDownDrawer(),
+    });
+  }
+
+  onScroll = () => {
+    console.log('OrganizationModal onScroll: ', AppObservableStore.getScrolledDownDrawer());
+    this.setState({
+      scrolledDown: AppObservableStore.getScrolledDownDrawer(),
+    });
   }
 
   onCandidateStoreChange () {
@@ -175,9 +238,11 @@ class OrganizationModal extends Component {
       const {
         ballot_item_display_name: ballotItemDisplayName,
         google_civic_election_id: googleCivicElectionId,
+        linked_campaignx_we_vote_id: linkedCampaignXWeVoteId,
         politician_we_vote_id: politicianWeVoteId,
-        seo_friendly_path: seoFriendlyPath,
+        party: politicalParty,
       } = candidate;
+      // console.log('OrganizationModal onCandidateStoreChange candidate:', candidate);
       if (googleCivicElectionId &&
         !VoterGuideStore.voterGuidesUpcomingFromFriendsStopped(googleCivicElectionId) &&
         !this.localVoterGuidesFromFriendsUpcomingHasBeenRetrievedOnce(googleCivicElectionId)
@@ -193,8 +258,9 @@ class OrganizationModal extends Component {
       this.setState({
         allCachedPositionsForThisBallotItem,
         ballotItemDisplayName,
+        linkedCampaignXWeVoteId,
         politicianWeVoteId,
-        seoFriendlyPath,
+        politicalParty,
       });
     }
   }
@@ -216,6 +282,15 @@ class OrganizationModal extends Component {
       });
     }
   }
+
+
+
+  // handleResizeLocal () {
+  //   if (handleResize('Footer')) {
+  //     // console.log('Footer handleResizeEntry update');
+  //     this.updateCachedSiteVars();
+  //   }
+  // }
 
   showHiddenPositions = () => {
     this.setState({ unFurlPositions: true });
@@ -246,6 +321,24 @@ class OrganizationModal extends Component {
     return false;
   }
 
+  marginTopOffset () {
+    const { scrolledDown } = this.state;
+    if (isWebApp()) {
+      if (scrolledDown) {
+        return '64px';
+      } else {
+        return '110px';
+      }
+    } else if (isCordova()) {
+      // Calculated approach Nov 2022
+      const offset = `${headroomWrapperOffset(true)}px`;
+      cordovaOffsetLog(`DrawerHeaderOuterContainer HeadroomWrapper offset: ${offset}, page: ${getPageKey()}`);
+      return offset;
+      // end calculated approach
+    }
+    return 0;
+  }
+
   closeOrganizationModal () {
     this.setState({ modalOpen: false });
     setTimeout(() => {
@@ -256,9 +349,14 @@ class OrganizationModal extends Component {
   render () {
     // console.log(this.props.candidate_we_vote_id);
     renderLog('OrganizationModal');  // Set LOG_RENDER_EVENTS to log all renders
-    const { ballotItemWeVoteId, classes, hideBallotItemInfo, hidePositions, organizationWeVoteId, params } = this.props;
-    const { allCachedPositionsForThisBallotItem, ballotItemDisplayName, isCandidate, isMeasure, modalOpen, politicianWeVoteId, seoFriendlyPath, unFurlPositions } = this.state;
-
+    const { ballotItemWeVoteId, classes, hideBallotItemInfo, hidePositions, params } = this.props;
+    const {
+      allCachedPositionsForThisBallotItem, ballotItemDisplayName,
+      isCandidate, isMeasure, linkedCampaignXWeVoteId, modalOpen,
+      politicianWeVoteId, scrolledDown, unFurlPositions, politicalParty, politicianImageUrlLarge,
+    } = this.state;
+    const avatarBackgroundImage = normalizedImagePath('../img/global/svg-icons/avatar-generic.svg');
+    const avatarCompressed = 'card-main__avatar-compressed';
     return (
       <Drawer
         anchor="right"
@@ -268,39 +366,88 @@ class OrganizationModal extends Component {
         onClose={this.closeOrganizationModal}
         open={modalOpen}
       >
-        <IconButton
-          aria-label="Close"
-          className={classes.closeButton}
-          id="closeOrganizationModal"
-          onClick={this.closeOrganizationModal}
-          size="large"
-        >
-          <span className="u-cursor--pointer">
-            <Close classes={{ root: classes.closeIcon }} />
-          </span>
-        </IconButton>
+        <CloseDrawerIconWrapper>
+          <div>
+            <IconButton
+              aria-label="Close"
+              className={classes.closeButton}
+              id="closeOrganizationModal"
+              onClick={this.closeOrganizationModal}
+              size="large"
+            >
+              <span className="u-cursor--pointer">
+                <Close classes={{ root: classes.closeIcon }} />
+              </span>
+            </IconButton>
+          </div>
+        </CloseDrawerIconWrapper>
+        <DrawerHeaderOuterContainer id="politicianHeaderContainer" scrolledDown={scrolledDown}>
+          <DrawerHeaderInnerContainer>
+            <CandidateTopRow>
+              <Candidate
+                      id={`officeItemCompressedCandidateImageAndName-${politicianWeVoteId}`}
+              >
+                <Suspense fallback={<></>}>
+                  <ImageHandler
+                          className={avatarCompressed}
+                          sizeClassName="icon-candidate-small u-push--sm "
+                          imageUrl={politicianImageUrlLarge}
+                          alt=""
+                          kind_of_ballot_item="CANDIDATE"
+                          style={{ backgroundImage: { avatarBackgroundImage } }}
+                  />
+                </Suspense>
+                <CandidateNameAndPartyWrapper>
+                  <CandidateNameH4>
+                    {ballotItemDisplayName}
+                  </CandidateNameH4>
+                  <CandidateParty>
+                    {politicalParty}
+                  </CandidateParty>
+                </CandidateNameAndPartyWrapper>
+              </Candidate>
+              <CloseDrawerHeaderIconWrapper>
+                <div>
+                  <IconButton
+                  aria-label="Close"
+                  className={classes.closeButton}
+                  id="closeOrganizationModal"
+                  onClick={this.closeOrganizationModal}
+                  size="large"
+                  >
+                    <span className="u-cursor--pointer">
+                      <Close classes={{ root: classes.closeIcon }} />
+                    </span>
+                  </IconButton>
+                </div>
+              </CloseDrawerHeaderIconWrapper>
+            </CandidateTopRow>
+            <HeartToggleAndThermometerWrapper>
+              <Suspense fallback={<span>&nbsp;</span>}>
+                <CampaignSupportThermometer
+                        campaignXWeVoteId={linkedCampaignXWeVoteId}
+                />
+              </Suspense>
+            </HeartToggleAndThermometerWrapper>
+          </DrawerHeaderInnerContainer>
+        </DrawerHeaderOuterContainer>
         {(isCandidate && !hideBallotItemInfo) && (
-          <Suspense fallback={<></>}>
-            <>
-              <CandidateItem
-                blockOnClickShowOrganizationModalWithPositions
-                candidateWeVoteId={ballotItemWeVoteId}
-                expandIssuesByDefault
-                forMoreInformationTextOff
-                hideShowMoreFooter
-                inModal
-                linksOpenNewPage
-                linkToBallotItemPage
-                organizationWeVoteId={organizationWeVoteId}
-                politicianWeVoteId={politicianWeVoteId}
-                seoFriendlyPath={seoFriendlyPath}
-                showLargeImage
-                showOfficeName
-                showPositionStatementActionBar
+          <PoliticianCardForListWrapper>
+            <PoliticianCardForList
+              politicianWeVoteId={politicianWeVoteId}
+              showPoliticianOpenInNewWindow
+              useCampaignSupportThermometer
+              useVerticalCard
+            />
+            <Suspense fallback={<></>}>
+              <IssuesByBallotItemDisplayList
+                ballotItemDisplayName={ballotItemDisplayName}
+                ballotItemWeVoteId={ballotItemWeVoteId}
+                externalUniqueId={`candidateItem-${ballotItemWeVoteId}`}
               />
-              <BallotItemBottomSpacer />
-            </>
-          </Suspense>
+            </Suspense>
+            <BallotItemBottomSpacer />
+          </PoliticianCardForListWrapper>
         )}
         {(isMeasure && !hideBallotItemInfo) && (
           <Suspense fallback={<></>}>
@@ -357,6 +504,11 @@ class OrganizationModal extends Component {
               </ShowMoreWrapper>
             )}
           </>
+        )}
+        {!!(linkedCampaignXWeVoteId) && (
+          <Suspense fallback={<span>&nbsp;</span>}>
+            <CampaignRetrieveController campaignXWeVoteId={linkedCampaignXWeVoteId} retrieveAsOwnerIfVoterSignedIn />
+          </Suspense>
         )}
       </Drawer>
     );
@@ -459,12 +611,25 @@ const BallotItemBottomSpacer = styled('div')`
   margin-bottom: 32px;
 `;
 
-// const PositionListIntroductionText = styled('div')`
-//   color: #999;
-// `;
+const CloseDrawerIconWrapper = styled('div')`
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 12px;
+`;
+
+const CloseDrawerHeaderIconWrapper = styled('div')`
+`;
+
+const PoliticianCardForListWrapper = styled('div')`
+  margin: 0 15px;
+`;
 
 const ScoreSummaryListControllerBottomSpacer = styled('div')`
   margin-bottom: 42px;
+`;
+
+const HeartToggleAndThermometerWrapper = styled('div')`
+  margin-top: 12px;
 `;
 
 const ShowMoreWrapper = styled('div')`

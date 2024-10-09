@@ -5,7 +5,7 @@ import PrivacyPage from '../page_objects/privacy.page';
 const assert = require('assert');
 const { describe, it } = require('mocha');
 
-const waitTime = 5000;
+const waitTime = 10000;
 
 describe('Privacy Page', () => {
   // Privacy_001
@@ -45,7 +45,7 @@ describe('Privacy Page', () => {
     await driver.pause(waitTime);
     await PrivacyPage.helpCenterLink.click();
     await driver.pause(waitTime);
-    await driver.switchWindow('https://help.wevote.us/hc/en-us/sections/11waitTime140987-Security-Technology');
+    await driver.switchWindow('https://help.wevote.us/hc/en-us/sections/115000140987-Security-Technology');
     await driver.pause(waitTime);
     await expect(driver).toHaveTitle('Security & Technology – We Vote');
   });

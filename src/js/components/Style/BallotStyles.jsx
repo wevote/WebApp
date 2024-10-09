@@ -60,11 +60,9 @@ export const CandidateBottomRow = styled('div')`
 export const CandidateContainer = styled('div')`
   display: flex;
   justify-content: flex-start;
-  // padding: 10px 5px;
 `;
 
 export const CandidateInfo = styled('div')(({ theme }) => (`
-  border: 1px solid #fff;
   display: block;
   height: 100%;
   margin: 0 !important;
@@ -97,15 +95,29 @@ export const CandidateNameH4 = styled('button')`
   font-weight: 400;
   font-size: 20px;
   margin-bottom: 0 !important;
-  min-width: 124px;
   white-space: normal;
   border: none;
-  background-color: #FFF;
+  background-color: transparent;
   padding: 0;
+  text-align: left;
   &:hover {
     text-decoration: underline;
   }
   ${constrainedTextMobileStyles}
+`;
+
+export const CandidateImageAndMatchWrapper = styled('div')`
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: flex-start;
+  justify-content: flex-start;
+`;
+
+export const CandidateNameAndPartyWrapper = styled('div')`
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: flex-start;
+  justify-content: flex-start;
 `;
 
 export const CandidateParty = styled('div')`
@@ -126,7 +138,7 @@ export const CandidateWrapper = styled('div')(({ theme }) => (`
     width: 100%;
   }
   ${theme.breakpoints.up('sm')} {
-    // margin-left: 48px;
+//     margin-left: 48px;
     min-width: 320px;
   }
 `));

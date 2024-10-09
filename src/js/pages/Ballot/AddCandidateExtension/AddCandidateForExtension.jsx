@@ -3,17 +3,22 @@ import styled from 'styled-components';
 import AddCandidateExtensionForm from './AddCandidateExtensionForm';
 import normalizedImagePath from '../../../common/utils/normalizedImagePath';
 import { renderLog } from '../../../common/utils/logging';
-// import voterGuidePossibilityStore from '../../../stores/VoterGuidePossibilityStore';
+import webAppConfig from '../../../config';
 
 
 // https://localhost:3000/add-candidate-for-extension?candidate_name=Phil%20Ting&candidate_we_vote_id=wv02cand40131&endorsement_page_url=https%3A%2F%2Fwww.sierraclub.org%2Fcalifornia%2F2020-endorsements&candidate_specific_endorsement_url=https%3A%2F%2Fwww.philting.com%2F&show_data=1
 // https://quality.wevote.us/candidate-for-extension?candidate_name=DOYLE%20CANNING&candidate_we_vote_id=wv02cand63228&endorsement_page_url=http%3A%2F%2Fclimatehawksvote.com%2Fendorsements%2Fendorsements-2020%2F&candidate_specific_endorsement_url=&voter_guide_possibility_id=
 
 let {
-  candidate_name: candidateName, candidate_specific_endorsement_url: candidateSpecificEndorsementUrl, endorsement_page_url: endorsementPageUrl, endorsement_text: endorsementText,
+  candidate_name: candidateName,
+  candidate_specific_endorsement_url: candidateSpecificEndorsementUrl,
+  endorsement_page_url: endorsementPageUrl,
+  endorsement_text: endorsementText,
 } = Object.fromEntries(new URLSearchParams(document.location.search));
-
-const { show_data: showDevelopmentData } = Object.fromEntries(new URLSearchParams(document.location.search));
+const {
+  show_data: showDevelopmentData,
+  voter_is_signed_in_within_extension: voterIsSignedInWithinExtension,
+} = Object.fromEntries(new URLSearchParams(document.location.search));
 
 
 if (!candidateName) {
@@ -29,6 +34,7 @@ if (!endorsementText) {
   endorsementText = '';
 }
 const stance = 'SUPPORT';
+const webAppURL = `${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}`;
 
 
 /**
@@ -36,7 +42,7 @@ const stance = 'SUPPORT';
  * @returns {JSX.Element}
  */
 export default function AddCandidateForExtension () {
-  const [candidate, setCandidate] = useState({ candidateName, endorsementPageUrl, candidateSpecificEndorsementUrl, endorsementText, stance });
+  const [candidate, setCandidate] = useState({ candidateName, endorsementPageUrl, candidateSpecificEndorsementUrl, endorsementText, stance, voterIsSignedInWithinExtension });
 
   renderLog('AddCandidateForExtension');  // Set LOG_RENDER_EVENTS to log all renders
 
@@ -44,7 +50,7 @@ export default function AddCandidateForExtension () {
   return (
     <AddCandidateForExtensionWrapper>
       {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-      <a href="https://wevote.us" target="_blank" rel="noreferrer">
+      <a href={webAppURL} target="_blank" rel="noreferrer">
         <AddCandidateLogo src={normalizedImagePath('/img/global/svg-icons/we-vote-icon-square-color-dark.svg')} />
       </a>
       <AddCandidateHeader>Add Candidate</AddCandidateHeader>

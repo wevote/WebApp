@@ -344,6 +344,7 @@ class IssueCard extends Component {
                       {includeLinkToIssue ? (
                         <Link to={this.getIssueLink}
                               className="u-no-underline"
+                              tabIndex={-1}
                         >
                           {issueImage}
                         </Link>
@@ -467,7 +468,7 @@ const IssueCardWrapper = styled('div', {
 `));
 
 const FollowersWrapper = styled('div')`
-  color: #999;
+  color: #5E5E5B;
   font-size: 14px;
 `;
 
@@ -497,7 +498,7 @@ const IssueAdvocatesImages = styled('div')`
 
 const IssueAdvocatesWrapper = styled('div')`
   align-items: center;
-  color: #999;
+  color: #5E5E5B;
   display: flex;
   font-size: 14px;
   justify-content: flex-start;

@@ -5,14 +5,14 @@ import TermsPage from '../page_objects/terms.page';
 
 const { describe, it } = require('mocha');
 
-const waitTime = 5000;
+const waitTime = 10000;
 
 describe('TermsPage', () => {
   // Terms_001
   it.only('verifyGitHubLinkRedirected', async () => {
     await ReadyPage.load();
     await driver.pause(waitTime);
-    await ReadyPage.getTermsLinkElement.findAndClick();
+    await ReadyPage.getTermsLinkElement.click();
     await driver.pause(waitTime);
     await TermsPage.getGitHubLink.click();
     await driver.pause(waitTime);
@@ -25,7 +25,7 @@ describe('TermsPage', () => {
   it('verifyPrivacyPolicyLinkRedirected', async () => {
     await ReadyPage.load();
     await driver.pause(waitTime);
-    await ReadyPage.getTermsLinkElement.findAndClick();
+    await ReadyPage.getTermsLinkElement.click();
     await driver.pause(waitTime);
     await TermsPage.getPrivacyLinkElement.click();
     await driver.pause(waitTime);

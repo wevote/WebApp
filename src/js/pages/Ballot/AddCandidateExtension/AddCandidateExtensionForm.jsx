@@ -77,7 +77,7 @@ export default function AddCandidateExtensionForm (props) {
     // setTimeout(() => { window.close(); }, 1000);
   });
 
-  const handleIdChange = (() => {
+  const onVoterGuidePossibilityStoreChange = (() => {
     const voterGuidePossibilityIdValue = voterGuidePossibilityStore.getVoterGuidePossibilityId();
     console.log(`VGPI is ${voterGuidePossibilityIdValue}`);
     VoterGuidePossibilityActions.voterGuidePossibilityPositionsRetrieve(voterGuidePossibilityIdValue);
@@ -92,7 +92,7 @@ export default function AddCandidateExtensionForm (props) {
 
   // when the voter guide possibility store is updated, handle the change
   useEffect(() => {
-    possibilityListener = voterGuidePossibilityStore.addListener(handleIdChange);
+    possibilityListener = voterGuidePossibilityStore.addListener(onVoterGuidePossibilityStoreChange);
     return () => possibilityListener.remove;
   }, []);
 
@@ -131,112 +131,119 @@ export default function AddCandidateExtensionForm (props) {
   }
 
   renderLog('AddCandidateExtensionForm');  // Set LOG_RENDER_EVENTS to log all renders
-
   return (
     <form onSubmit={handleSubmit}>
-      <CandidateForm>
-        <CandidateTextField
-          required
-          variant="outlined"
-          fullWidth
-          color="primary"
-          label="Candidate name"
-          name="candidateName"
-          id="candidateName"
-          defaultValue={candidate.candidateName}
-          InputLabelProps={{ style: { fontFamily: 'Poppins' } }}
-          InputProps={{ style: { fontFamily: 'Poppins' } }}
-          onBlur={handleBlur}
-        />
-        <CandidateTextField
-          variant="outlined"
-          fullWidth
-          color="primary"
-          label="Candidate-specific endorsement URL (if any)"
-          name="candidateSpecificEndorsementUrl"
-          id="candidateSpecificEndorsementUrl"
-          defaultValue={candidate.candidateSpecificEndorsementUrl}
-          InputLabelProps={{ style: { fontFamily: 'Poppins' } }}
-          InputProps={{ style: { fontFamily: 'Poppins' } }}
-          onBlur={handleBlur}
-        />
-        <CandidateTextField
-          required
-          variant="outlined"
-          fullWidth
-          color="primary"
-          label="Endorsement website"
-          name="endorsementPageUrl"
-          id="endorsementURL"
-          defaultValue={candidate.endorsementPageUrl}
-          InputLabelProps={{ style: { fontFamily: 'Poppins' } }}
-          InputProps={{ style: { fontFamily: 'Poppins' } }}
-          onBlur={handleBlur}
-        />
-        <StateDropDownCore
-          stateCodesToDisplay={[]}
-          stateCodesHtml=""
-          dialogLabel="Choose State"
-          customStyle={{ width: '100%', padding: '0px', fontFamily: 'Poppins' }}
-          onStateDropDownChange={handleBlur}
-        />
-        <CheckBoxArea>
-          <CheckBoxContainer>
-            <CheckBoxInput
-              type="radio"
-              name="stanceGroup"
-              value="SUPPORT"
-              id="support"
-              checked={candidate.stance === 'SUPPORT'}
-              onChange={onStanceChange}
-            />
-            <CheckBoxLabel htmlFor="support">Support</CheckBoxLabel>
-          </CheckBoxContainer>
-          <CheckBoxContainer>
-            <CheckBoxInput
-              type="radio"
-              name="stanceGroup"
-              value="OPPOSE"
-              id="oppose"
-              checked={candidate.stance === 'OPPOSE'}
-              onChange={onStanceChange}
-            />
-            <CheckBoxLabel htmlFor="oppose">Oppose</CheckBoxLabel>
-          </CheckBoxContainer>
-          <CheckBoxContainer>
-            <CheckBoxInput
-              type="radio"
-              name="stanceGroup"
-              value="INFO_ONLY"
-              id="infoOnly"
-              checked={candidate.stance === 'INFO_ONLY'}
-              onChange={onStanceChange}
-            />
-            <CheckBoxLabel htmlFor="infoOnly">Info Only</CheckBoxLabel>
-          </CheckBoxContainer>
-        </CheckBoxArea>
-        <CandidateTextField
-          variant="outlined"
-          fullWidth
-          multiline
-          color="primary"
-          label="Endorsement Text"
-          name="endorsementText"
-          // id="candidateURL"
-          defaultValue={candidate.endorsementText}
-          InputLabelProps={{
-            style: { fontFamily: 'Poppins' },
-            shrink: true,
-          }}
-          InputProps={{ style: { fontFamily: 'Poppins' } }}
-          onBlur={handleBlur}
-          rows="5"
-          // maxRows="5"
-        />
-      </CandidateForm>
-      <ButtonWrapper>
-        <AddCandidateLoadingButton loading={loading} finished={finished} text="Submit" />
-      </ButtonWrapper>
+      {candidate.voterIsSignedInWithinExtension ? (
+        <CandidateForm>
+          <CandidateTextField
+            required
+            variant="outlined"
+            fullWidth
+            color="primary"
+            label="Candidate name"
+            name="candidateName"
+            id="candidateName"
+            defaultValue={candidate.candidateName}
+            InputLabelProps={{ style: { fontFamily: 'Poppins' } }}
+            InputProps={{ style: { fontFamily: 'Poppins' } }}
+            onBlur={handleBlur}
+          />
+          <CandidateTextField
+            variant="outlined"
+            fullWidth
+            color="primary"
+            label="Candidate-specific endorsement URL (if any)"
+            name="candidateSpecificEndorsementUrl"
+            id="candidateSpecificEndorsementUrl"
+            defaultValue={candidate.candidateSpecificEndorsementUrl}
+            InputLabelProps={{ style: { fontFamily: 'Poppins' } }}
+            InputProps={{ style: { fontFamily: 'Poppins' } }}
+            onBlur={handleBlur}
+          />
+          <CandidateTextField
+            required
+            variant="outlined"
+            fullWidth
+            color="primary"
+            label="Endorsement website"
+            name="endorsementPageUrl"
+            id="endorsementURL"
+            defaultValue={candidate.endorsementPageUrl}
+            InputLabelProps={{ style: { fontFamily: 'Poppins' } }}
+            InputProps={{ style: { fontFamily: 'Poppins' } }}
+            onBlur={handleBlur}
+          />
+          <StateDropDownCore
+            stateCodesToDisplay={[]}
+            stateCodesHtml=""
+            dialogLabel="Choose State"
+            customStyle={{ width: '100%', padding: '0px', fontFamily: 'Poppins' }}
+            onStateDropDownChange={handleBlur}
+          />
+          <CheckBoxArea>
+            <CheckBoxContainer>
+              <CheckBoxInput
+                type="radio"
+                name="stanceGroup"
+                value="SUPPORT"
+                id="support"
+                checked={candidate.stance === 'SUPPORT'}
+                onChange={onStanceChange}
+              />
+              <CheckBoxLabel htmlFor="support">Support</CheckBoxLabel>
+            </CheckBoxContainer>
+            <CheckBoxContainer>
+              <CheckBoxInput
+                type="radio"
+                name="stanceGroup"
+                value="OPPOSE"
+                id="oppose"
+                checked={candidate.stance === 'OPPOSE'}
+                onChange={onStanceChange}
+              />
+              <CheckBoxLabel htmlFor="oppose">Oppose</CheckBoxLabel>
+            </CheckBoxContainer>
+            <CheckBoxContainer>
+              <CheckBoxInput
+                type="radio"
+                name="stanceGroup"
+                value="INFO_ONLY"
+                id="infoOnly"
+                checked={candidate.stance === 'INFO_ONLY'}
+                onChange={onStanceChange}
+              />
+              <CheckBoxLabel htmlFor="infoOnly">Info Only</CheckBoxLabel>
+            </CheckBoxContainer>
+          </CheckBoxArea>
+          <CandidateTextField
+            variant="outlined"
+            fullWidth
+            multiline
+            color="primary"
+            label="Endorsement Text"
+            name="endorsementText"
+            // id="candidateURL"
+            defaultValue={candidate.endorsementText}
+            InputLabelProps={{
+              style: { fontFamily: 'Poppins' },
+              shrink: true,
+            }}
+            InputProps={{ style: { fontFamily: 'Poppins' } }}
+            onBlur={handleBlur}
+            rows="5"
+            // maxRows="5"
+          />
+        </CandidateForm>
+      ) : (
+        <CandidateForm>
+          <SignInWarning>Please sign in to use this form.</SignInWarning>
+        </CandidateForm>
+      )}
+      {candidate.voterIsSignedInWithinExtension && (
+        <ButtonWrapper>
+          <AddCandidateLoadingButton loading={loading} finished={finished} text="Submit" />
+        </ButtonWrapper>
+      )}
     </form>
   );
 }
@@ -274,4 +281,10 @@ const CheckBoxLabel =  styled('label')`
 
 const CheckBoxInput = styled('input')`
   transform: translateY(1px);
+`;
+
+const SignInWarning  = styled('div')`
+  color: red;
+  font-size: 28px;
+  font-weight: bold;
 `;

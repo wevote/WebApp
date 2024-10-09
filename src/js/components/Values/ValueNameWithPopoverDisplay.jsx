@@ -2,6 +2,8 @@ import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
+import Chip from '@mui/material/Chip';
+import DoneIcon from '@mui/icons-material/Done';
 import React, { Component, Suspense } from 'react';
 import SvgImage from '../../common/components/Widgets/SvgImage';
 import { renderLog } from '../../common/utils/logging';
@@ -152,7 +154,7 @@ class ValueNameWithPopoverDisplay extends Component {
 
   render () {
     renderLog('ValueNameWithPopoverDisplay');  // Set LOG_RENDER_EVENTS to log all renders
-    const { addComma, ballotItemWeVoteId, externalUniqueId, issueFollowedByVoter, oneIssue, showEllipses } = this.props;
+    const { ballotItemWeVoteId, externalUniqueId, issueFollowedByVoter, oneIssue, showEllipses } = this.props;
     // console.log('ValueNameWithPopoverDisplay render, oneIssue.issue_name:', oneIssue.issue_name, ', showEllipses:', showEllipses);
     return (
       <StickyPopover
@@ -164,33 +166,26 @@ class ValueNameWithPopoverDisplay extends Component {
         openOnClick
         showCloseIcon
       >
-        <ValueNameWithPopoverDisplaySpan
+        <Chip
+          color="valueChip"
           id={`${externalUniqueId}-valueIconAndText-${oneIssue.issue_we_vote_id}`}
-          issueFollowedByVoter={issueFollowedByVoter}
           key={`${externalUniqueId}-valueIconAndTextKey-${oneIssue.issue_we_vote_id}`}
           className="u-cursor--pointer"
-        >
-          <WordWrapper>
-            {oneIssue.issue_name}
-          </WordWrapper>
-          {showEllipses ? (
-            <>
-              ...
-              &nbsp;
-            </>
-          ) : (
-            <>
-              {addComma ? ',' : ''}
-              &nbsp;
-            </>
-          )}
-        </ValueNameWithPopoverDisplaySpan>
+          style={{
+            margin: '5px',
+            borderRadius: '4px',
+            border: '1px solid #ccc',
+            color: '#555',
+            fontSize: '.8rem',
+          }}
+          label={oneIssue.issue_name}
+          icon={issueFollowedByVoter ? <DoneIcon /> : null}
+        />
       </StickyPopover>
     );
   }
 }
 ValueNameWithPopoverDisplay.propTypes = {
-  addComma: PropTypes.bool,
   ballotItemWeVoteId: PropTypes.string,
   ballotItemDisplayName: PropTypes.string,
   externalUniqueId: PropTypes.string,
@@ -235,16 +230,6 @@ const PopoverWrapper = styled('div')`
   margin-top: 8px;
 `;
 
-const ValueNameWithPopoverDisplaySpan = styled('span', {
-  shouldForwardProp: (prop) => !['issueFollowedByVoter'].includes(prop),
-})(({ issueFollowedByVoter }) => (`
-  align-items: start;
-  display: flex;
-  flex: none;
-  ${issueFollowedByVoter ? 'font-weight: 600;' : ''}
-  position: relative;
-`));
-
 const FollowIfYouCare = styled('div')`
   color: #999;
   font-size: .75rem;
@@ -285,19 +270,6 @@ const PopoverDescriptionText = styled('div')`
 
 const RenderedOrganizationsWrapper = styled('div')`
   margin-top: 6px;
-`;
-
-const WordWrapper = styled('button')`
-  color: #000;
-  opacity: 0.6;
-  text-decoration: underline;
-  text-decoration-color: #ccc;
-  border: none;
-  background-color: #FFF;
-  padding: 0;
-  &:hover {
-    text-decoration: underline;
-  }
 `;
 
 export default withTheme(withStyles(styles)(ValueNameWithPopoverDisplay));

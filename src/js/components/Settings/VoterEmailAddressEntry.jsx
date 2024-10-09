@@ -68,7 +68,7 @@ class VoterEmailAddressEntry extends Component {
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     VoterActions.voterEmailAddressRetrieve();
     const inputFld = $('#enterVoterEmailAddress');
-    console.log('enterVoterEmailAddress ', $(inputFld));
+    // console.log('enterVoterEmailAddress ', $(inputFld));
     $(inputFld).blur();
     this._isMounted = true;
   }

@@ -33,6 +33,7 @@ export default class OpenExternalWebSite extends Component {
           target={this.props.target || ''}
           rel="noopener noreferrer"
           title={this.props.title || ''}
+          aria-label={this.props.ariaLabel || this.props.title || ''}
         >
           {this.props.body ? this.props.body : ''}
         </a>
@@ -57,6 +58,7 @@ OpenExternalWebSite.propTypes = {
   linkIdAttribute: PropTypes.string,
   target: PropTypes.string,
   title: PropTypes.string,
+  ariaLabel: PropTypes.string,
   body: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.object,

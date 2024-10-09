@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import DesignTokenColors from './DesignTokenColors';
 import { isAndroidSizeWide, isIPad, isIPadMini, isIPhoneMiniOrSmaller } from '../../utils/cordovaUtils';
 import { isAndroid, isCordova, isWebApp } from '../../utils/isCordovaOrWebApp';
 
@@ -300,7 +301,7 @@ export const SupportButtonFooterWrapperAboveFooterButtons = styled('div')`
 `;
 
 export const SupportButtonPanel = styled('div')`
-  background-color: #fff;
+  background-color: ${DesignTokenColors.neutralUI50};
   border-top: 1px solid #ddd;
   padding: 10px;
 `;

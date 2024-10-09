@@ -47,6 +47,17 @@ const CampaignSupportShare = React.lazy(() => import(/* webpackChunkName: 'Campa
 const CampaignUpdatesPage = React.lazy(() => import(/* webpackChunkName: 'CampaignNewsPage' */ './js/common/pages/Campaign/CampaignNewsPage'));
 const Candidate = React.lazy(() => import(/* webpackChunkName: 'Candidate' */ './js/pages/Ballot/Candidate'));
 const CandidateForExtension = React.lazy(() => import(/* webpackChunkName: 'EditCandidateForExtension' */ './js/pages/Ballot/EditCandidateForExtension/EditCandidateForExtension'));
+const ChallengeHomePage = React.lazy(() => import(/* webpackChunkName: 'ChallengeHomePage' */ './js/common/pages/Challenge/ChallengeHomePage'));
+const ChallengesHomeLoader = React.lazy(() => import(/* webpackChunkName: 'ChallengesHomeLoader' */ './js/common/pages/Challenge/ChallengesHomeLoader'));
+const ChallengeStartAddDescription = React.lazy(() => import(/* webpackChunkName: 'ChallengeStartAddDescription' */ './js/common/pages/ChallengeStart/ChallengeStartAddDescription'));
+const ChallengeStartAddPhoto = React.lazy(() => import(/* webpackChunkName: 'ChallengeStartAddPhoto' */ './js/common/pages/ChallengeStart/ChallengeStartAddPhoto'));
+const ChallengeStartAddTitle = React.lazy(() => import(/* webpackChunkName: 'ChallengeStartAddTitle' */ './js/common/pages/ChallengeStart/ChallengeStartAddTitle'));
+const ChallengeStartEditAll = React.lazy(() => import(/* webpackChunkName: 'ChallengeStartEditAll' */ './js/common/pages/ChallengeStart/ChallengeStartEditAll'));
+const ChallengeStartIntro = React.lazy(() => import(/* webpackChunkName: 'ChallengeStartIntro' */ './js/common/pages/ChallengeStart/ChallengeStartIntro'));
+const ChallengeStartPreview = React.lazy(() => import(/* webpackChunkName: 'ChallengeStartPreview' */ './js/common/pages/ChallengeStart/ChallengeStartPreview'));
+const ChallengeInviteFriendsJoin = React.lazy(() => import(/* webpackChunkName: 'ChallengeInviteFriendsJoin' */ './js/common/pages/ChallengeInviteFriends/ChallengeInviteFriendsJoin'));
+const ChallengeInviteCustomizeMessage = React.lazy(() => import(/* webpackChunkName: 'ChallengeInviteCustomizeMessage' */ './js/common/pages/ChallengeInviteFriends/ChallengeInviteCustomizeMessage'));
+const ChallengeInviteFriends = React.lazy(() => import(/* webpackChunkName: 'ChallengeInviteFriends' */ './js/common/pages/ChallengeInviteFriends/ChallengeInviteFriends'));
 const ClaimYourPage = React.lazy(() => import(/* webpackChunkName: 'ClaimYourPage' */ './js/pages/Settings/ClaimYourPage'));
 const CompleteYourProfileMobile = React.lazy(() => import(/* webpackChunkName: 'CompleteYourProfileMobile' */ './js/common/pages/Settings/CompleteYourProfileMobile'));
 const Credits = React.lazy(() => import(/* webpackChunkName: 'Credits' */ './js/pages/More/Credits'));
@@ -151,7 +162,7 @@ class App extends Component {
 
   // See https://reactjs.org/docs/error-boundaries.html
   static getDerivedStateFromError (error) { // eslint-disable-line no-unused-vars
-    // Update state so the next render will show the fallback UI, We should have a "Oh snap" page
+    // Update state so the next render will show the fallback UI, We should have an "Oh snap" page
     console.log('App caught error ', error);
     return { hasError: true };
   }
@@ -398,6 +409,14 @@ class App extends Component {
                   <Route path="/-/:custom_link_string" exact component={SharedItemLanding} />
                   <Route path="/-:shared_item_code/modal/share" exact component={SharedItemLanding} />
                   <Route path="/-:shared_item_code" exact component={SharedItemLanding} />
+                  <Route exact path="/+/:challengeWeVoteId/" render={(props) => <ChallengeHomePage match={props.match} />} />
+                  <Route exact path="/+/:challengeWeVoteId/edit" render={(props) => <ChallengeStartEditAll match={props.match} editExistingChallenge setShowHeaderFooter={this.setShowHeaderFooter} />} />
+                  <Route exact path="/:challengeSEOFriendlyPath/+/" render={(props) => <ChallengeHomePage match={props.match} />} />
+                  <Route exact path="/:challengeSEOFriendlyPath/+/edit" render={(props) => <ChallengeStartEditAll match={props.match} editExistingChallenge setShowHeaderFooter={this.setShowHeaderFooter} />} />
+                  <Route exact path="/:challengeSEOFriendlyPath/+/join-challenge" render={(props) => <ChallengeInviteFriendsJoin match={props.match} setShowHeaderFooter={this.setShowHeaderFooter} />} />
+                  <Route exact path="/:challengeSEOFriendlyPath/+/customize-message" render={(props) => <ChallengeInviteCustomizeMessage match={props.match} setShowHeaderFooter={this.setShowHeaderFooter} />} />
+                  <Route exact path="/:challengeSEOFriendlyPath/+/invite-friends" render={(props) => <ChallengeInviteFriends match={props.match} setShowHeaderFooter={this.setShowHeaderFooter} />} />
+                  <Route exact path="/:challengeSEOFriendlyPath/+/:tabSelected" render={(props) => <ChallengeHomePage match={props.match} />} />
                   <Route exact path="/:politicianWeVoteId/p/" render={(props) => <PoliticianDetailsPage match={props.match} />} />
                   <Route exact path="/:politicianSEOFriendlyPath/-/" render={(props) => <PoliticianDetailsPage match={props.match} />} />
                   <Route exact path="/:campaignSEOFriendlyPath/-/share-campaign" render={(props) => <CampaignSupportShare match={props.match} setShowHeaderFooter={this.setShowHeaderFooter} />} />
@@ -460,6 +479,7 @@ class App extends Component {
                   <Route path="/candidate/:candidate_we_vote_id/:back_to_variable/:organization_we_vote_id" exact component={OrganizationVoterGuideCandidate} />
                   <Route path="/candidate/:candidate_we_vote_id/:organization_we_vote_id" exact component={OrganizationVoterGuideCandidate} />
                   <Route path="/candidate/:candidate_we_vote_id" exact component={Candidate} />
+                  <Route path="/challenges/" exact component={ChallengesHomeLoader} />
                   <Route path="/donate" component={(isNotWeVoteMarketingSite || this.localIsCordova()) ? ReadyRedirect : Donate} />
                   <Route path="/facebook_invitable_friends" component={FacebookInvitableFriends} />
                   <Route path="/findfriends/:set_up_page" exact component={FindFriendsRoot} />
@@ -563,6 +583,13 @@ class App extends Component {
                   <Route path="/setupaccount" exact><SetUpAccountRoot /></Route>
                   <Route path="/squads" exact><Squads /></Route>
                   <Route exact path="/start-a-campaign"><CampaignStartIntro /></Route>
+                  <Route exact path="/start-a-challenge"><ChallengeStartIntro /></Route>
+                  <Route exact path="/start-a-challenge-why-winning-matters"><ChallengeStartAddDescription /></Route>
+                  <Route exact path="/start-a-challenge-add-photo"><ChallengeStartAddPhoto /></Route>
+                  <Route exact path="/start-a-challenge-add-title"><ChallengeStartAddTitle /></Route>
+                  <Route exact path="/start-a-challenge-complete-your-profile" render={(props) => <CompleteYourProfileMobile match={props.match} createNewsItem setShowHeaderFooter={this.setShowHeaderFooter} />} />
+                  <Route exact path="/start-a-challenge-edit-all"><ChallengeStartEditAll setShowHeaderFooter={this.setShowHeaderFooter} /></Route>
+                  <Route exact path="/start-a-challenge-preview"><ChallengeStartPreview /></Route>
                   <Route path="/terms" component={TermsOfService} />
                   <Route path="/twitter_sign_in" exact><TwitterSignInProcess /></Route>
                   <Route path="/twittersigninprocess/:sign_in_step" component={TwitterSignInProcess} />
@@ -711,7 +738,7 @@ class App extends Component {
 
 const WeVoteBody = styled('div')`
   background-color: #fff; // rgb(235, 236, 238); // #fafafa;
-  color: #333;
+  color: #000;
   display: block;
   font-family: "Poppins", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
   line-height: 1.4;

@@ -302,10 +302,15 @@ class VoterPhoneVerificationEntry extends Component {
     // console.log('cancelShouldCloseModal:', cancelShouldCloseModal);
     if (cancelShouldCloseModal) {
       this.closeSignInModalLocal();
-    } else if (isCordova() || isMobileScreenSize()) {
+    } else if (isCordova()) {
+      // WV-316: seperated Cordovoa and Mobile screen cancel logic, Mobile only shows all sign in options on cancel.
       // if (this.props.showAllSignInOptions) {
       //   this.props.showAllSignInOptions();
       // }
+    } else if (isMobileScreenSize()) {
+      if (this.props.showAllSignInOptions) {
+        this.props.showAllSignInOptions();
+      }
     }
   };
 
@@ -731,7 +736,7 @@ VoterPhoneVerificationEntry.propTypes = {
   hideEverythingButSignInWithPhoneForm: PropTypes.bool,
   hideSignInWithPhoneForm: PropTypes.bool,
   lockOpenPhoneVerificationButton: PropTypes.bool,
-  // showAllSignInOptions: PropTypes.func,
+  showAllSignInOptions: PropTypes.func,
   showPhoneOnlySignIn: PropTypes.func,
 };
 

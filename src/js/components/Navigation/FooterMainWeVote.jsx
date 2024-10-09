@@ -7,6 +7,7 @@ import OpenExternalWebSite from '../../common/components/Widgets/OpenExternalWeb
 import AppObservableStore from '../../common/stores/AppObservableStore';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import VoterStore from '../../stores/VoterStore';
+import webAppConfig from '../../config';
 
 const BallotElectionListWithFilters = React.lazy(() => import(/* webpackChunkName: 'BallotElectionListWithFilters' */ '../Ballot/BallotElectionListWithFilters'));
 const DeleteAllContactsButton = React.lazy(() => import(/* webpackChunkName: 'DeleteAllContactsButton' */ '../SetUpAccount/DeleteAllContactsButton'));
@@ -83,7 +84,7 @@ class FooterMainWeVote extends Component {
         <TopSectionOuterWrapper>
           <TopSectionInnerWrapper>
             <OneRow>
-              <div id="footerLinkHowItWorks" className={classes.onClickDiv} onClick={this.openHowItWorksModal}>How It Works</div>
+              <button type="button" style={{ border: 'none', backgroundColor: 'transparent', padding: '0' }} id="footerLinkHowItWorks" className={classes.onClickDiv} onClick={this.openHowItWorksModal}>How It Works</button>
               <RowSpacer />
               <OpenExternalWebSite
                 linkIdAttribute="footerLinkWeVoteHelp"
@@ -108,7 +109,7 @@ class FooterMainWeVote extends Component {
                   <RowSpacer />
                   <OpenExternalWebSite
                     linkIdAttribute="footerLinkTeam"
-                    url="https://wevote.us/more/about"
+                    url={`${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}/more/about`}
                     target="_blank"
                     body={(
                       <span>Team</span>
@@ -118,7 +119,7 @@ class FooterMainWeVote extends Component {
                   <RowSpacer />
                   <OpenExternalWebSite
                     linkIdAttribute="footerLinkCredits"
-                    url="https://wevote.us/more/credits"
+                    url={`${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}/more/credits`}
                     target="_blank"
                     body={(
                       <span>Credits &amp; Thanks</span>
@@ -146,7 +147,13 @@ class FooterMainWeVote extends Component {
                   className={classes.link}
                 />
                 <RowSpacer />
-                <Link to="/donate" className={classes.link}>Donate</Link>
+                <Link
+                  className={classes.link}
+                  id="footerMainLinkDonate"
+                  to="/donate"
+                >
+                  Donate
+                </Link>
               </OneRow>
             )}
           </TopSectionInnerWrapper>
@@ -181,9 +188,9 @@ FooterMainWeVote.propTypes = {
 
 const styles = () => ({
   link: {
-    color: '#808080',
+    color: '#5E5E5B',
     '&:hover': {
-      color: '#4371cc',
+      color: '#5E5E5B',
     },
     textDecoration: 'none',
   },
@@ -191,14 +198,14 @@ const styles = () => ({
     color: '#333',
     textDecoration: 'none',
     '&:hover': {
-      color: '#4371cc',
+      color: '#5E5E5B',
     },
   },
   onClickDiv: {
-    color: '#808080',
+    color: '#5E5E5B',
     cursor: 'pointer',
     '&:hover': {
-      color: '#4371cc',
+      color: '#5E5E5B',
       textDecoration: 'underline',
     },
   },
@@ -244,7 +251,7 @@ const SearchEngineOptimizationSection = styled('div')`
 `;
 
 const Text = styled('p')(({ theme }) => (`
-  color: #808080;
+  color: #5E5E5B;
   font-size: 14px;
   margin-right: 0.5em;
   text-align: center;

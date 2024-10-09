@@ -1,13 +1,16 @@
-import { Close } from '@mui/icons-material';
-import { Button, Dialog, DialogContent, DialogTitle, IconButton, InputBase } from '@mui/material';
+import { Button, InputBase } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
+// import styled from 'styled-components';
+import ModalDisplayTemplateA, {
+  PostSaveButton, templateAStyles, TextFieldDiv,
+  TextFieldForm, TextFieldWrapper, VoterAvatarImg,
+} from './ModalDisplayTemplateA';
 import SupportActions from '../../actions/SupportActions';
-import { hasIPhoneNotch, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../common/utils/cordovaUtils';
-import { isAndroid, isCordova } from '../../common/utils/isCordovaOrWebApp';
+import { prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../common/utils/cordovaUtils';
+import { isAndroid } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import stringContains from '../../common/utils/stringContains';
 import CandidateStore from '../../stores/CandidateStore';
@@ -17,7 +20,7 @@ import VoterStore from '../../stores/VoterStore';
 import { avatarGeneric } from '../../utils/applicationUtils';
 
 const FirstAndLastNameRequiredAlert = React.lazy(() => import(/* webpackChunkName: 'FirstAndLastNameRequiredAlert' */ './FirstAndLastNameRequiredAlert'));
-const ItemActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemActionBar' */ './ItemActionBar/ItemActionBar'));
+const ItemActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemActionBar' */ './ItemActionBar/ItemActionBar')); // eslint-disable-line import/no-cycle
 
 
 class PositionStatementModal extends Component {
@@ -166,7 +169,7 @@ class PositionStatementModal extends Component {
     const { ballotItemType, voterTextStatement } = this.state;
     // console.log('PositionStatementModal ballotItemWeVoteId:', ballotItemWeVoteId, 'ballotItemType: ', ballotItemType, 'voterTextStatement: ', voterTextStatement);
     SupportActions.voterPositionCommentSave(ballotItemWeVoteId, ballotItemType, voterTextStatement);
-    this.props.togglePositionStatementModal();
+    this.props.toggleModal();
   }
 
   updateStatementTextToBeSaved = (e) => {
@@ -178,7 +181,7 @@ class PositionStatementModal extends Component {
   render () {
     renderLog('PositionStatementModal');  // Set LOG_RENDER_EVENTS to log all renders
     const {
-      ballotItemWeVoteId, classes, externalUniqueId, showEditAddress,
+      ballotItemWeVoteId, classes, externalUniqueId, show, showEditAddress,
     } = this.props;
     const {
       ballotItemDisplayName, voterIsSignedIn, voterPhotoUrlMedium,
@@ -224,109 +227,78 @@ class PositionStatementModal extends Component {
     const rowsToShow = isAndroid() ? 4 : 6;
 
     // console.log('PositionStatementModal render, voter_address_object: ', voter_address_object);
-
-    // TODO: This class is too similar to ActivityPostModal - the common code should be extracted, so that it doesn't have to be maintained twice (the code was copied to make a slightly different version)
-    return (
-      <Dialog
-        classes={{ paper: classes.dialogPaper }}
-        open={this.props.show}
-        onClose={() => { this.props.togglePositionStatementModal(); }}
-        style={{ paddingTop: `${isCordova() ? '75px' : 'undefined'}` }}
-      >
-        <DialogTitle classes={{ root: classes.dialogTitle }}>
-          <Title>
-            {dialogTitleText}
-          </Title>
-          <IconButton
-            aria-label="Close"
-            classes={{ root: classes.closeButton }}
-            onClick={() => { this.props.togglePositionStatementModal(); }}
-            id="closePositionStatementModal"
-            size="large"
-          >
-            <Close />
-          </IconButton>
-        </DialogTitle>
-        <DialogContent classes={{ root: classes.dialogContent }}>
-          <TextFieldWrapper>
-            {voterIsSignedIn && (
-              <Suspense fallback={<></>}>
-                <FirstAndLastNameRequiredAlert />
-              </Suspense>
-            )}
-            <form
-              className={classes.formStyles}
-              onSubmit={this.savePositionStatement.bind(this)}
-              onFocus={this.onFocusInput}
-              onBlur={this.onBlurInput}
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-                height: '95%',
-              }}
+    const textFieldJSX = (
+      <TextFieldWrapper>
+        {voterIsSignedIn && (
+          <Suspense fallback={<></>}>
+            <FirstAndLastNameRequiredAlert />
+          </Suspense>
+        )}
+        <TextFieldForm
+          className={classes.formStyles}
+          onBlur={this.onBlurInput}
+          onFocus={this.onFocusInput}
+          onSubmit={this.savePositionStatement}
+        >
+          <TextFieldDiv>
+            <VoterAvatarImg
+              alt=""
+              src={voterPhotoUrlMedium || avatarGeneric()}
+            />
+            <InputBase
+              classes={{ root: classes.inputStyles, inputMultiline: classes.inputMultiline }}
+              defaultValue={voterTextStatement}
+              id={`itemPositionStatementActionBarTextArea-${ballotItemWeVoteId}-${externalUniqueId}`}
+              inputRef={(input) => { this.positionInput = input; }}
+              multiline
+              name="voterTextStatement"
+              onChange={this.updateStatementTextToBeSaved}
+              placeholder={statementPlaceholderText}
+              rows={rowsToShow}
+            />
+          </TextFieldDiv>
+          <Suspense fallback={<></>}>
+            <ItemActionBar
+              showPositionPublicToggle
+              inModal
+              // showPositionStatementActionBar={showPositionStatementActionBar}
+              ballotItemDisplayName={ballotItemDisplayName}
+              ballotItemWeVoteId={ballotItemWeVoteId}
+              commentButtonHide
+              commentButtonHideInMobile
+              // currentBallotIdInUrl={currentBallotIdInUrl}
+              externalUniqueId={`${externalUniqueId}-ballotItemSupportOpposeComment-${ballotItemWeVoteId}`}
+              shareButtonHide
+              // hidePositionPublicToggle={hidePositionPublicToggle}
+              // supportOrOpposeHasBeenClicked={this.passDataBetweenItemActionToItemPosition}
+              // togglePositionStatementFunction={this.togglePositionStatement}
+              // transitioning={transitioning}
+              // urlWithoutHash={urlWithoutHash}
+            />
+          </Suspense>
+          <PostSaveButton className="postsave-button">
+            <Button
+              id={`itemPositionStatementActionBarSave-${ballotItemWeVoteId}-${externalUniqueId}`}
+              variant="contained"
+              color="primary"
+              classes={{ root: classes.saveButtonRoot }}
+              type="submit"
+              disabled={!voterTextStatement}
             >
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'flex-start',
-                  border: '1px solid #e8e8e8',
-                  borderRadius: 3,
-                  padding: 12,
-                  marginBottom: 0,
-                }}
-              >
-                <img
-                  alt=""
-                  src={voterPhotoUrlMedium || avatarGeneric()}
-                  style={{ borderRadius: 6, display: 'block', marginRight: 12, width: 50 }}
-                />
-                <InputBase onChange={this.updateStatementTextToBeSaved}
-                  id={`itemPositionStatementActionBarTextArea-${ballotItemWeVoteId}-${externalUniqueId}`}
-                  name="voterTextStatement"
-                  classes={{ root: classes.inputStyles, inputMultiline: classes.inputMultiline }}
-                  placeholder={statementPlaceholderText}
-                  defaultValue={voterTextStatement}
-                  inputRef={(input) => { this.positionInput = input; }}
-                  multiline
-                  rows={rowsToShow}
-                />
-              </div>
-              <Suspense fallback={<></>}>
-                <ItemActionBar
-                  showPositionPublicToggle
-                  inModal
-                  // showPositionStatementActionBar={showPositionStatementActionBar}
-                  ballotItemDisplayName={ballotItemDisplayName}
-                  ballotItemWeVoteId={ballotItemWeVoteId}
-                  commentButtonHide
-                  commentButtonHideInMobile
-                  // currentBallotIdInUrl={currentBallotIdInUrl}
-                  externalUniqueId={`${externalUniqueId}-ballotItemSupportOpposeComment-${ballotItemWeVoteId}`}
-                  shareButtonHide
-                  // hidePositionPublicToggle={hidePositionPublicToggle}
-                  // supportOrOpposeHasBeenClicked={this.passDataBetweenItemActionToItemPosition}
-                  // togglePositionStatementFunction={this.togglePositionStatement}
-                  // transitioning={transitioning}
-                  // urlWithoutHash={urlWithoutHash}
-                />
-              </Suspense>
-              <PostSaveButton className="postsave-button">
-                <Button
-                  id={`itemPositionStatementActionBarSave-${ballotItemWeVoteId}-${externalUniqueId}`}
-                  variant="contained"
-                  color="primary"
-                  classes={{ root: classes.saveButtonRoot }}
-                  type="submit"
-                  disabled={!voterTextStatement}
-                >
-                  {postButtonText}
-                </Button>
-              </PostSaveButton>
-            </form>
-          </TextFieldWrapper>
-        </DialogContent>
-      </Dialog>
+              {postButtonText}
+            </Button>
+          </PostSaveButton>
+        </TextFieldForm>
+      </TextFieldWrapper>
+    );
+
+    return (
+      <ModalDisplayTemplateA
+        dialogTitleJSX={<>{dialogTitleText}</>}
+        show={show}
+        textFieldJSX={textFieldJSX}
+        toggleModal={this.props.toggleModal}
+      />
     );
   }
 }
@@ -336,97 +308,7 @@ PositionStatementModal.propTypes = {
   externalUniqueId: PropTypes.string,
   showEditAddress: PropTypes.bool,
   show: PropTypes.bool,
-  togglePositionStatementModal: PropTypes.func.isRequired,
+  toggleModal: PropTypes.func.isRequired,
 };
 
-const styles = (theme) => ({
-  dialogTitle: {
-    padding: isAndroid() ? 8 : 'inherit',
-    paddingTop: !isAndroid() ? 16 : 'inherit',
-  },
-  dialogPaper: {
-    marginTop: hasIPhoneNotch() ? 68 : 48,
-    minHeight: isAndroid() ? '257px' : '200px',
-    maxHeight: '350px',
-    height: '80%',
-    width: '90%',
-    maxWidth: '600px',
-    top: '0',
-    transform: isAndroid() ? 'translate(0%, -18%)' : 'translate(0%, -20%)',
-    [theme.breakpoints.down('xs')]: {
-      minWidth: '95%',
-      maxWidth: '95%',
-      width: '95%',
-      minHeight: isAndroid() ? '237px' : '200px',
-      maxHeight: '330px',
-      height: '70%',
-      margin: '0 auto',
-      transform: 'translate(0%, -30%)',
-    },
-  },
-  dialogContent: {
-    padding: '0 16px',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    height: '100%',
-  },
-  closeButton: {
-    position: 'absolute',
-    right: theme.spacing(1),
-    top: isAndroid() ? '-4px' : theme.spacing(1),
-  },
-  saveButtonRoot: {
-    width: '100%',
-  },
-  formStyles: {
-    width: '100%',
-  },
-  formControl: {
-    width: '100%',
-    marginTop: 16,
-  },
-  inputMultiline: {
-    fontSize: 20,
-    height: '100%',
-    width: '100%',
-    [theme.breakpoints.down('sm')]: {
-      fontSize: 18,
-    },
-  },
-  inputStyles: {
-    flex: '1 1 0',
-    fontSize: 18,
-    height: '100%',
-    width: '100%',
-    [theme.breakpoints.down('sm')]: {
-      fontSize: 16,
-    },
-  },
-  select: {
-    padding: '12px 12px',
-    margin: '0 1px',
-  },
-});
-
-const PostSaveButton = styled('div')`
-  width: 100%;
-`;
-
-const TextFieldWrapper = styled('div')`
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-`;
-
-const Title = styled('div')`
-  font-size: 16px;
-  font-weight: bold;
-  margin: 0;
-  margin-top: 2px;
-  text-align: left;
-  padding-left: 16px;
-`;
-
-export default withTheme(withStyles(styles)(PositionStatementModal));
+export default withTheme(withStyles(templateAStyles)(PositionStatementModal));

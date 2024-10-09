@@ -15,6 +15,10 @@ class ReadyPage extends Page {
     return $('//*[contains(@id, "electionCountDownTitle")]');
   }
 
+  get wevoteLogo () {
+    return $('//*[contains(@id, "HeaderLogoImage")]');
+  }
+
   get ballotTitle () {
     return $('//*[contains(@id, "ballotTitleHeader")]');
   }
@@ -72,7 +76,7 @@ class ReadyPage extends Page {
   }
 
   get getFollowPopularTopicsElement () {
-    return $('.kbkjfm');
+    return $('#PopularTopicsHeader');
   }
 
   get selectAddress () {

@@ -8,9 +8,9 @@ import { renderLog } from '../../common/utils/logging';
 import toTitleCase from '../../common/utils/toTitleCase';
 import FriendsOnlyIndicator from '../Widgets/FriendsOnlyIndicator';
 import ItemPositionStatementActionBar from '../Widgets/ItemPositionStatementActionBar';
-import PositionInformationOnlySnippet from '../Widgets/PositionInformationOnlySnippet';
-import PositionRatingSnippet from '../Widgets/PositionRatingSnippet';
-import PositionSupportOpposeSnippet from '../Widgets/PositionSupportOpposeSnippet';
+import PositionInformationOnlySnippet from '../PositionItem/PositionInformationOnlySnippet';
+import PositionRatingSnippet from '../PositionItem/PositionRatingSnippet';
+import PositionSupportOpposeSnippet from '../PositionItem/PositionSupportOpposeSnippet';
 
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
 const ItemActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemActionBar' */ '../Widgets/ItemActionBar/ItemActionBar'));

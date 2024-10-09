@@ -1,4 +1,4 @@
-import { $, $$ } from '@wdio/globals';
+import { $ } from '@wdio/globals';
 import Page from './page';
 
 class TermsPage extends Page {
@@ -20,16 +20,8 @@ class TermsPage extends Page {
     return $('#privacyPolicy');
   }
 
-  get getTermsPageTitleElement () {
-    return $('.ContentTitle-sc-1h3qvzv-0.gyirbV');
-  }
-
-  get pageContentTitleText () {
-    return $('.ContentTitle-sc-aac96k-0');
-  }
-
   get emailLink () {
-    return $$('//a[text() = "info@WeVote.US"]');
+    return $('#infoWeVoteEmailLink');
   }
 }
 

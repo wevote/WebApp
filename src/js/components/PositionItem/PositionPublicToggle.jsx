@@ -25,6 +25,8 @@ class PositionPublicToggle extends Component {
       showPositionPublicHelpModal: false,
       voterWeVoteId: '',
     };
+    this.showItemToPublic = this.showItemToPublic.bind(this);
+    this.togglePositionPublicHelpModal = this.togglePositionPublicHelpModal.bind(this);
   }
 
   componentDidMount () {

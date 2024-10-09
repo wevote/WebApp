@@ -520,6 +520,7 @@ class CandidateItem extends Component {
                           commentButtonHide
                           externalUniqueId={`candidateItem-ItemActionBar-${localUniqueId}`}
                           shareButtonHide
+                          useHelpDefeatOrHelpWin
                         />
                       </div>
                     </div>

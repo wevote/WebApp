@@ -71,6 +71,13 @@ class BallotDecisionsTabs extends Component {
         value={this.getSelectedTab()}
         indicatorColor="primary"
         classes={{ root: classes.tabsRoot, flexContainer: classes.tabsFlexContainer, scroller: classes.scroller }}
+        sx={{
+          '& .MuiTab-root': {
+            '&:hover': {
+              backgroundColor: '#E5E6EA',
+            },
+          },
+        }}
       >
         {/* labelContainer: classes.tabLabelContainer,  */}
         <Tab
@@ -133,12 +140,7 @@ class BallotDecisionsTabs extends Component {
                 id="ballotDecisionsTabsItemsDecided"
                 invisible={itemsDecidedCount === 0}
               >
-                <span className="u-show-mobile">
-                  Decided
-                </span>
-                <span className="u-show-desktop-tablet">
-                  Decided
-                </span>
+                Chosen
               </Badge>
             )}
           />

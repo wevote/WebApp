@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-import CardForListBody from '../../common/components/CardForListBody';
+import React, { Component, Suspense } from 'react';
+import CardForListBodyPlaceholder from '../../common/components/CardForListBodyPlaceholder';
 import { getTodayAsInteger } from '../../common/utils/dateFormat';
 import { renderLog } from '../../common/utils/logging';
 import CampaignSupporterStore from '../../common/stores/CampaignSupporterStore';
@@ -8,6 +8,8 @@ import CandidateStore from '../../stores/CandidateStore';
 import PoliticianStore from '../../common/stores/PoliticianStore';
 import keepHelpingDestination from '../../common/utils/keepHelpingDestination';
 import { mostLikelyCandidateDictFromList } from '../../utils/candidateFunctions';
+
+const CardForListBody = React.lazy(() => import('../../common/components/CardForListBody'));
 
 // const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
@@ -148,7 +150,7 @@ class PoliticianCardForList extends Component {
 
   render () {
     renderLog('PoliticianCardForList');  // Set LOG_RENDER_EVENTS to log all renders
-    const { limitCardWidth, politicianWeVoteId, useCampaignSupportThermometer, useVerticalCard } = this.props;
+    const { limitCardWidth, politicianWeVoteId, showPoliticianOpenInNewWindow, useCampaignSupportThermometer, useVerticalCard } = this.props;
     const { campaignSupported, candidate, candidateWeVoteId, linkedCampaignXWeVoteId, politician } = this.state;
     if (!politician) {
       return null;
@@ -200,13 +202,13 @@ class PoliticianCardForList extends Component {
     if (!politicianWeVoteId) {
       return null;
     }
-    let politicianDescriptionToDisplay;
+    // let politicianDescriptionToDisplay;
     if (ballotGuideOfficialStatement) {
-      politicianDescriptionToDisplay = ballotGuideOfficialStatement;
+      // politicianDescriptionToDisplay = ballotGuideOfficialStatement;
     } else if (politicianDescription) {
-      politicianDescriptionToDisplay = politicianDescription;
+      // politicianDescriptionToDisplay = politicianDescription;
     } else if (twitterDescription) {
-      politicianDescriptionToDisplay = twitterDescription;
+      // politicianDescriptionToDisplay = twitterDescription;
     }
     let districtName;
     if (contestOfficeList) {
@@ -217,40 +219,54 @@ class PoliticianCardForList extends Component {
     const todayAsInteger = getTodayAsInteger();
     const finalElectionDateInPast = candidateUltimateElectionDate && (candidateUltimateElectionDate <= todayAsInteger);
     const pathToUseToKeepHelping = this.getPathToUseToKeepHelping();
+    const fallbackJsx = (
+      <span>
+        <CardForListBodyPlaceholder
+          useVerticalCard
+          hideCardMargins
+          limitCardWidth
+          profileImageBackgroundColor
+        />
+      </span>
+    );
     return (
-      <CardForListBody
-        ballotItemDisplayName={ballotItemDisplayName}
-        campaignSupported={campaignSupported}
-        candidateWeVoteId={candidateWeVoteId}
-        districtName={districtName}
-        finalElectionDateInPast={finalElectionDateInPast}
-        hideCardMargins
-        hideItemActionBar
-        limitCardWidth={limitCardWidth}
-        linkedCampaignXWeVoteId={linkedCampaignXWeVoteId}
-        officeName={contestOfficeName}
-        pathToUseToKeepHelping={pathToUseToKeepHelping}
-        photoLargeUrl={politicianPhotoLargeUrl}
-        politicalParty={politicalParty}
-        politicianBaseBath={this.getPoliticianBasePath()}
-        // politicianDescription={politicianDescriptionToDisplay}
-        politicianWeVoteId={politicianWeVoteId}
-        profileImageBackgroundColor={profileImageBackgroundColor}
-        stateCode={stateCode}
-        supportersCount={supportersCount}
-        supportersCountNextGoalRaw={supportersCountNextGoalRaw}
-        tagIdBaseName="politicianCard"
-        ultimateElectionDate={candidateUltimateElectionDate}
-        useCampaignSupportThermometer={useCampaignSupportThermometer}
-        usePoliticianWeVoteIdForBallotItem
-        useVerticalCard={useVerticalCard}
-      />
+      <Suspense fallback={fallbackJsx}>
+        <CardForListBody
+          ballotItemDisplayName={ballotItemDisplayName || ''}
+          campaignSupported={campaignSupported}
+          candidateWeVoteId={candidateWeVoteId}
+          districtName={districtName}
+          finalElectionDateInPast={finalElectionDateInPast}
+          hideCardMargins
+          hideItemActionBar
+          limitCardWidth={limitCardWidth}
+          linkedCampaignXWeVoteId={linkedCampaignXWeVoteId}
+          officeName={contestOfficeName}
+          pathToUseToKeepHelping={pathToUseToKeepHelping}
+          photoLargeUrl={politicianPhotoLargeUrl}
+          politicalParty={politicalParty}
+          politicianBaseBath={this.getPoliticianBasePath()}
+          // politicianDescription={politicianDescriptionToDisplay}
+          politicianWeVoteId={politicianWeVoteId}
+          profileImageBackgroundColor={profileImageBackgroundColor}
+          showPoliticianOpenInNewWindow={showPoliticianOpenInNewWindow}
+          stateCode={stateCode}
+          supportersCount={supportersCount}
+          supportersCountNextGoalRaw={supportersCountNextGoalRaw}
+          tagIdBaseName="politicianCard"
+          ultimateElectionDate={candidateUltimateElectionDate}
+          useCampaignSupportThermometer={useCampaignSupportThermometer}
+          usePoliticianWeVoteIdForBallotItem
+          useVerticalCard={useVerticalCard}
+        />
+      </Suspense>
     );
   }
 }
 PoliticianCardForList.propTypes = {
   politicianWeVoteId: PropTypes.string,
   limitCardWidth: PropTypes.bool,
+  showPoliticianOpenInNewWindow: PropTypes.bool,
   useCampaignSupportThermometer: PropTypes.bool,
   useVerticalCard: PropTypes.bool,
 };

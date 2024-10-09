@@ -1,10 +1,10 @@
-import { AccountCircle } from '@mui/icons-material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import TruncateMarkup from 'react-truncate-markup';
 import styled from 'styled-components';
+import { Avatar } from '@mui/material';
 import { avatarGeneric } from '../../../utils/applicationUtils';
 import LazyImage from '../LazyImage';
 import {
@@ -20,6 +20,8 @@ import { renderLog } from '../../utils/logging';
 import stringContains from '../../utils/stringContains';
 import PoliticianStore from '../../stores/PoliticianStore';
 import VoterStore from '../../../stores/VoterStore';
+import speakerDisplayNameToInitials from '../../utils/speakerDisplayNameToInitials';
+
 
 class PoliticianEndorsementForList extends Component {
   constructor (props) {
@@ -78,7 +80,7 @@ class PoliticianEndorsementForList extends Component {
     if (isCordova()) {
       console.log(`PoliticianEndorsementForList window.location.href: ${window.location.href}`);
     }
-    const { classes, position } = this.props;
+    const { position } = this.props;
     const { pathToUseToEditSupporterEndorsement, showFullSupporterEndorsement, todayAsInteger, voterWeVoteId } = this.state;
     if (!position || !('position_we_vote_id' in position)) {
       return null;
@@ -95,6 +97,7 @@ class PoliticianEndorsementForList extends Component {
       speaker_image_url_https_medium: speakerImageMedium,
       twitter_followers_count: twitterFollowersCount,
     } = position;
+    const { sx, children } = speakerDisplayNameToInitials(speakerDisplayName);
     let howLongAgoOrThisYear = '';
     const currentYear = new Date().getFullYear();
     // console.log('currentYear', currentYear, ', positionYear', positionYear);
@@ -124,7 +127,7 @@ class PoliticianEndorsementForList extends Component {
                     alt=""
                   />
                 ) : (
-                  <AccountCircle classes={{ root: classes.accountCircleRoot }} />
+                  <Avatar sx={sx}>{children}</Avatar>
                 )}
               </CommentVoterPhotoWrapper>
               <CommentTextWrapper>
@@ -210,7 +213,6 @@ class PoliticianEndorsementForList extends Component {
 PoliticianEndorsementForList.propTypes = {
   position: PropTypes.object,
   politicianWeVoteId: PropTypes.string,
-  classes: PropTypes.object,
 };
 
 const styles = (theme) => ({

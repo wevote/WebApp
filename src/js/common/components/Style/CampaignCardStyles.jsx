@@ -46,7 +46,7 @@ export const CampaignImageDesktopPlaceholder = styled('div', {
   shouldForwardProp: (prop) => !['limitCardWidth', 'profileImageBackgroundColor', 'useVerticalCard'].includes(prop),
 })(({ limitCardWidth, profileImageBackgroundColor, useVerticalCard }) => (`
   align-items: center;
-  background-color: ${profileImageBackgroundColor || '#fff'};
+  background-color: ${profileImageBackgroundColor ||  DesignTokenColors.neutralUI50};
   ${useVerticalCard ? `border: 1px solid ${DesignTokenColors.neutralUI100};` : ''}
   ${useVerticalCard ? 'border-radius: 12px;' : ''}
   display: flex;
@@ -76,7 +76,7 @@ export const CampaignImageMobilePlaceholder = styled('div', {
   shouldForwardProp: (prop) => !['profileImageBackgroundColor', 'useVerticalCard'].includes(prop),
 })(({ profileImageBackgroundColor, useVerticalCard }) => (`
   align-items: center;
-  background-color: ${profileImageBackgroundColor || '#fff'};
+  background-color: ${profileImageBackgroundColor || DesignTokenColors.neutralUI50};
   ${useVerticalCard ? `border: 1px solid ${DesignTokenColors.neutralUI100};` : ''}
   ${useVerticalCard ? 'border-radius: 12px;' : ''}
   display: flex;
@@ -88,7 +88,8 @@ export const CampaignImageMobilePlaceholder = styled('div', {
 `));
 
 export const CampaignImagePlaceholderText = styled('div')`
-  color: #ccc;
+  color: ${DesignTokenColors.neutralUI400};
+  margin-top: 0;
 `;
 
 export const CampaignImageMobile = styled('img')`

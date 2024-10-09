@@ -1,13 +1,18 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { action } from '@storybook/addon-actions';
 import styled from 'styled-components';
 import HowItWorks from '../../components/CompleteYourProfile/HowItWorksWizard';
 
-const steps = [
+// WV-380: Created controls for the HowItWorks component allowing steps object to be modified,
+// multi-check on activeSteps,
+// and completed status to be toggled true/false.
+
+const initialSteps = [
   {
     id: 1,
     title: 'How WeVote works',
     buttonText: '',
-    completed: true,
+    completed: false,
     description: '',
     onClick: '',
     titleCanBeClicked: true,
@@ -35,13 +40,31 @@ const steps = [
   },
 ];
 
-const activeStep = 1;
-
 export default {
   title: 'Design System/CompleteYourProfile',
   component: HowItWorks,
   parameters: {
     layout: 'centered',
+  },
+  argTypes: {
+    activeStep: {
+      control: { type: 'check' },
+      options: initialSteps.map((step) => step.id),
+      description: 'Select which steps are active',
+    },
+    steps: {
+      control: 'object',
+      description: 'Modify the steps',
+      defaultValue: initialSteps,
+      table: {
+        type: { summary: 'array' },
+        defaultValue: { summary: JSON.stringify(initialSteps) },
+      },
+      fields: {
+        title: { control: 'text', description: 'Step title' },
+        completed: { control: 'boolean', description: 'Step completed status' },
+      },
+    },
   },
 };
 
@@ -52,8 +75,38 @@ const Container = styled.div`
   height: 100vh;
 `;
 
-export const HowItWorksWizard = () => (
-  <Container>
-    <HowItWorks steps={steps} activeStep={activeStep} />
-  </Container>
-);
+export const HowItWorksWizard = (args) => {
+  const [steps, setSteps] = useState(args.steps);
+  useEffect(() => {
+    setSteps((prevSteps) => prevSteps.map((step) => ({
+      ...step,
+      completed: true && args.activeStep.includes(step.id),
+    })));
+    action(`Active Step Changed to: ${args.activeStep}`)();
+  }, [args.activeStep]);
+
+
+  const handleStepToggle = (index) => {
+    const updatedSteps = steps.map((step, i) => (
+      i === index ? { ...step, completed: !step.completed } : step
+    ));
+    setSteps(updatedSteps);
+    action(`Step ${index + 1} Clicked - Completed: ${updatedSteps[index].completed}`)();
+  };
+
+  return (
+    <Container>
+      <HowItWorks steps={steps.map((step, i) => ({
+        ...step,
+        onClick: () => handleStepToggle(i),
+      }))}
+      activeStep={args.activeStep}
+      />
+    </Container>
+  );
+};
+
+HowItWorksWizard.args = {
+  steps: initialSteps,
+  activeStep: [1],
+};

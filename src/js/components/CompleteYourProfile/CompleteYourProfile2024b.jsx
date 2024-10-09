@@ -1,7 +1,6 @@
 import { PlayCircleFilled, PushPin } from '@mui/icons-material';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import React, { Component } from 'react';
 import { renderLog } from '../../common/utils/logging';
@@ -305,7 +304,7 @@ class CompleteYourProfile extends Component {
   }
 }
 CompleteYourProfile.propTypes = {
-  classes: PropTypes.object,
+  // classes: PropTypes.object,
 };
 const styles = () => ({
   navigationButton: {

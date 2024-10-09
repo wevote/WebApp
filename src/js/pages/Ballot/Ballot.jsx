@@ -34,6 +34,7 @@ import BallotShowAllItemsFooter from '../../components/Navigation/BallotShowAllI
 import { DualHeaderContainer, HeaderContentContainer, HeaderContentOuterContainer, PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import webAppConfig from '../../config';
 import BallotStore from '../../stores/BallotStore';
+import CampaignStore from '../../common/stores/CampaignStore';
 import ElectionStore from '../../stores/ElectionStore';
 import IssueStore from '../../stores/IssueStore';
 import SupportStore from '../../stores/SupportStore';
@@ -57,7 +58,7 @@ const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' *
 const FilterBaseSearch = React.lazy(() => import(/* webpackChunkName: 'FilterBaseSearch' */ '../../components/Filter/FilterBaseSearch'));
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 const ShowMoreItems = React.lazy(() => import(/* webpackChunkName: 'ShowMoreItems' */ '../../components/Widgets/ShowMoreItems'));
-const ViewUpcomingBallotButton = React.lazy(() => import(/* webpackChunkName: 'ViewUpcomingBallotButton' */ '../../components/Ready/ViewUpcomingBallotButton'));
+// const ViewUpcomingBallotButton = React.lazy(() => import(/* webpackChunkName: 'ViewUpcomingBallotButton' */ '../../components/Ready/ViewUpcomingBallotButton'));
 
 const TYPES = require('keymirror')({
   OFFICE: null,
@@ -127,6 +128,7 @@ class Ballot extends Component {
     this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
     // We need a ballotStoreListener here because we want the ballot to display before positions are received
     this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
+    this.campaignStoreListener = CampaignStore.addListener(this.onCampaignStoreChange.bind(this));
     this.electionStoreListener = ElectionStore.addListener(this.onElectionStoreChange.bind(this));
     this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
     this.supportStoreListener = SupportStore.addListener(this.onBallotStoreChange.bind(this));
@@ -763,6 +765,10 @@ class Ballot extends Component {
     }
   }
 
+  onCampaignStoreChange () {
+    // We want the CampaignStore active so it can take in the response data from voterBallotItemsRetrieve
+  }
+
   onElectionStoreChange () {
     // console.log('Elections, onElectionStoreChange');
     this.setState({
@@ -1142,7 +1148,7 @@ class Ballot extends Component {
 
   render () {
     renderLog('Ballot');  // Set LOG_RENDER_EVENTS to log all renders
-    const ballotBaseUrl = '/ballot';
+    // const ballotBaseUrl = '/ballot';
     const { classes, match: { params } } = this.props;
     const googleCivicElectionIdFromUrl = params.google_civic_election_id || 0;
     let ballotReturnedWeVoteIdFromUrl = params.ballot_returned_we_vote_id || '';
@@ -1257,7 +1263,7 @@ class Ballot extends Component {
       );
     }
 
-    const voterAddressMissing = this.state.location === null;
+    // const voterAddressMissing = this.state.location === null;
 
     // const ballot_caveat = BallotStore.ballotProperties.ballot_caveat; // ballotProperties might be undefined
     // const ballotCaveat = BallotStore.getBallotCaveat() || '';
@@ -1296,7 +1302,7 @@ class Ballot extends Component {
     //     </BallotEmptyExplanation>
     //     <FindYourFriendsWrapper>
     //       <Suspense fallback={<></>}>
-    //         <ViewUpcomingBallotButton />
+    //         <ViewUpcomingBallotButton onlyOfferViewYourBallot />
     //       </Suspense>
     //     </FindYourFriendsWrapper>
     //   </EmptyBallotNotice>
@@ -1795,16 +1801,16 @@ const BallotOverflowWrapper = styled('div')`
   overflow-x: hidden;
 `;
 
-const BallotEmptyExplanation = styled('div')(({ theme }) => (`
-  ${theme.breakpoints.down('sm')} {
-    margin-left: -15px !important;
-    margin-right: -15px !important;
-  }
-`));
+// const BallotEmptyExplanation = styled('div')(({ theme }) => (`
+//   ${theme.breakpoints.down('sm')} {
+//     margin-left: -15px !important;
+//     margin-right: -15px !important;
+//   }
+// `));
 
-const BallotEmptyTitle = styled('h3')`
-  font-size: 24px;
-`;
+// const BallotEmptyTitle = styled('h3')`
+//   font-size: 24px;
+// `;
 
 const BallotListWrapper = styled('div')`
   padding-bottom: 40px;
@@ -1851,21 +1857,21 @@ const CompleteYourProfileWrapper = styled('div')`
   margin-bottom: 45px;
 `;
 
-const EmptyBallotNotice = styled('div')`
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  margin-bottom: 22px;
-  padding: 12px 15px;
-  margin-top: 50px !important;
-  width: 90%;
-  margin-left: 20px !important;
-`;
+// const EmptyBallotNotice = styled('div')`
+//   align-items: center;
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: center;
+//   margin-bottom: 22px;
+//   padding: 12px 15px;
+//   margin-top: 50px !important;
+//   width: 90%;
+//   margin-left: 20px !important;
+// `;
 
-const FindYourFriendsWrapper = styled('div')`
-  margin-top: 24px;
-`;
+// const FindYourFriendsWrapper = styled('div')`
+//   margin-top: 24px;
+// `;
 
 const SearchResultsFoundInExplanation = styled('div')`
   background-color: #C2DCE8;
