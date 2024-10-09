@@ -12,7 +12,7 @@ try {
   // Run `npm run wdio:setup`
 }
 
-const capabilities = [...browserCapabilities ]; //,...mobileCapabilities];
+const capabilities = [...browserCapabilities,...mobileCapabilities];
 
 const date = new Date();
 
