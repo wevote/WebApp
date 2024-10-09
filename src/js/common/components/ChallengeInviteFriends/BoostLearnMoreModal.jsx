@@ -9,8 +9,6 @@ import CandidateStore from '../../../stores/CandidateStore';
 import MeasureStore from '../../../stores/MeasureStore';
 import SupportStore from '../../../stores/SupportStore';
 
-// const PayToPromoteProcess = React.lazy(() => import(/* webpackChunkName: 'PayToPromoteProcess' */ './PayToPromoteProcess')); // eslint-disable-line import/no-cycle
-
 class BoostLearnMoreModal extends Component {
   constructor (props) {
     super(props);
