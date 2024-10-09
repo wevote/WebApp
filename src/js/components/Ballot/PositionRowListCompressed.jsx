@@ -3,6 +3,8 @@ import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
 import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
 import OrganizationActions from '../../actions/OrganizationActions';
@@ -22,6 +24,8 @@ import VoterStore from '../../stores/VoterStore';
 import LazyImage from '../../common/components/LazyImage';
 import { avatarGeneric } from '../../utils/applicationUtils';
 import speakerDisplayNameToInitials from '../../common/utils/speakerDisplayNameToInitials';
+import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
+
 
 
 const STARTING_NUMBER_OF_IMAGES_TO_DISPLAY = 10;
@@ -138,10 +142,17 @@ class PositionRowListCompressed extends Component {
 
   onClickShowOrganizationModalWithPositions () {
     const { ballotItemWeVoteId } = this.props;
+    // console.log(ballotItemWeVoteId)
     // console.log('onClickShowOrganizationModalWithPositions, ballotItemWeVoteId:', ballotItemWeVoteId);
     AppObservableStore.setOrganizationModalBallotItemWeVoteId(ballotItemWeVoteId);
     AppObservableStore.setShowOrganizationModal(true);
     AppObservableStore.setHideOrganizationModalBallotItemInfo(true);
+  }
+
+  onClickShowOrganizationModalWithBallotItemInfoAndPositions () {
+    const { ballotItemWeVoteId } = this.props;
+    AppObservableStore.setOrganizationModalBallotItemWeVoteId(ballotItemWeVoteId);
+    AppObservableStore.setShowOrganizationModal(true);
   }
 
   onPositionListUpdate = (allCachedPositionsForThisBallotItem) => {
@@ -251,7 +262,8 @@ class PositionRowListCompressed extends Component {
     if (filteredPositionList.length > 0) {
       filteredPositionList.forEach((onePosition) => {
         candidateName = onePosition.ballot_item_display_name; // Same for all positions
-        if (numberOfNamesDisplayed < numberOfNamesToDisplay) {
+        if ((onePosition.speaker_display_name && !onePosition.speaker_display_name.includes('Voter-')) &&
+            (numberOfNamesDisplayed < numberOfNamesToDisplay)) {
           if (!isFirstPosition) {
             if ((numberOfNamesDisplayed + 1) === filteredPositionList.length) {
               talkingAboutText += ' and ';
@@ -264,12 +276,52 @@ class PositionRowListCompressed extends Component {
           numberOfNamesDisplayed += 1;
         }
       });
-      if (numberOfNamesDisplayed < filteredPositionList.length) {
-        talkingAboutText += ` and ${filteredPositionListLength - numberOfNamesDisplayed} others`;
+      const remainingCount = filteredPositionList.length - numberOfNamesDisplayed;
+      if (remainingCount > 0) {
+        talkingAboutText += ` and ${remainingCount} ${remainingCount === 1 ? 'other' : 'others'}`;
       }
-      if (candidateName) {
+      if (candidateName && numberOfNamesDisplayed === 1) {
+        talkingAboutText += ` is talking about ${candidateName}`;
+      } else {
         talkingAboutText += ` are talking about ${candidateName}`;
       }
+    }
+    let filteredPositionListTooltip = <></>;
+    let onePositionNameCount = 1;
+    const displayedSpeakerNames = new Set();
+    if (filteredPositionList) {
+      filteredPositionListTooltip = isMobileScreenSize() ? (<span />) : (
+        <Tooltipstyle className="u-z-index-9020" id="filteredPositionListTooltip">
+          <div>
+            {filteredPositionList.length === 1 ? (
+              <>
+                See endorsement from
+              </>
+            ) : (
+              <>
+                See endorsements from {filteredPositionList.length} advocates, like:
+              </>
+            )}
+            <br />
+            {filteredPositionList.map((onePosition) => {
+              if (onePosition.speaker_display_name && onePositionNameCount <= 15 && !displayedSpeakerNames.has(onePosition.speaker_display_name)) {
+                onePositionNameCount += 1;
+                displayedSpeakerNames.add(onePosition.speaker_display_name);
+                return (
+                  <OneOrganizationName
+                    key={`PositionName-${onePosition.position_we_vote_id}-${onePositionNameCount}`}
+                  >
+                    {onePosition.speaker_display_name}
+                    <br />
+                  </OneOrganizationName>
+                );
+              } else {
+                return null;
+              }
+            })}
+          </div>
+        </Tooltipstyle>
+      );
     }
     return (
       <CandidateEndorsementsWrapper>
@@ -315,10 +367,21 @@ class PositionRowListCompressed extends Component {
               );
             })}
           </CandidateEndorsementPhotos>
-          <CandidateEndorsementText onClick={() => this.onClickShowOrganizationModalWithPositions()}>
-            {talkingAboutText}
-            {!!(talkingAboutText) && <>&hellip;</>}
-          </CandidateEndorsementText>
+          <OverlayTrigger overlay={filteredPositionListTooltip} placement="top" delay={{ show: 750 }}>
+            <CandidateEndorsementText
+                onClick={() => {
+                  if (filteredPositionList && filteredPositionList.length === 0) {
+                    this.onClickShowOrganizationModalWithBallotItemInfoAndPositions();
+                  } else {
+                    this.onClickShowOrganizationModalWithPositions();
+                  }
+                }}
+                className="u-link-underline-on-hover"
+            >
+              {talkingAboutText}
+              {!!(talkingAboutText) && <>&hellip;</>}
+            </CandidateEndorsementText>
+          </OverlayTrigger>
         </CandidateEndorsementsContainer>
       </CandidateEndorsementsWrapper>
     );
@@ -342,8 +405,6 @@ const CandidateEndorsementsContainer = styled('div')`
   align-items: flex-start;
   display: flex;
   flex-flow: column;
-  max-width: 212px;
-  overflow: hidden;
   width: 100%;
 `;
 
@@ -351,23 +412,23 @@ const CandidateEndorsementContainer = styled('div')(({ theme }) => (`
   min-width: 36px;
   border-radius: 50%;
   margin-right: -12px;
-  position: relative; 
+  position: relative;
 
   ${theme.breakpoints.down('xs')} {
     display: none;
   }
-    
+
   img{
-    border: 2px solid #FFFFFF; 
-    border-radius: 50%; 
+    border: 2px solid #FFFFFF;
+    border-radius: 50%;
     height: 36px;
-    object-fit: cover; 
-    width: 36px;    
+    object-fit: cover;
+    width: 36px;
   }
 `));
 
 const CandidateEndorsementPhotos = styled('div')`
-  align-items: center;  
+  align-items: center;
   cursor: pointer;
   display: flex;
   width: 100%;
@@ -383,15 +444,24 @@ const CandidateEndorsementText = styled('div')`
   line-height: 17.92px;
   margin-top: 12px;
   overflow-wrap: break-word;
-  text-decoration: underline;
+  // text-decoration: underline;
   width: 100%;
 `;
 
 const CandidateEndorsementsWrapper = styled('div')`
-  height: 102px;  
+  height: 102px;
   max-width: 100%;
   white-space: wrap;
-  width: 212px;
+  width: 275px;
+`;
+
+const Tooltipstyle = styled(Tooltip)`
+  .tooltip-inner {
+    max-width: 475px;
+  }
+`;
+
+const OneOrganizationName = styled('span')`
 `;
 
 export default withTheme(withStyles(styles)(PositionRowListCompressed));

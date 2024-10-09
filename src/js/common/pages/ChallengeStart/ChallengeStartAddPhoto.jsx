@@ -75,7 +75,7 @@ class ChallengeStartAddPhoto extends Component {
                 Add a photo
               </CampaignProcessStepTitle>
               <CampaignProcessStepIntroductionText>
-                Campaigns with a photo receive six times more supporters than those without. Include one that captures the emotion of your story.
+                Challenges with a photo receive six times more participants than those without. Include one that captures the emotion of your story.
               </CampaignProcessStepIntroductionText>
               <CampaignStartSectionWrapper>
                 <CampaignStartSection>
@@ -89,7 +89,7 @@ class ChallengeStartAddPhoto extends Component {
                         onClick={this.submitChallengePhoto}
                         variant="contained"
                       >
-                        Save and preview
+                        Review
                       </Button>
                     </CampaignStartDesktopButtonPanel>
                   </CampaignStartDesktopButtonWrapper>
@@ -99,7 +99,7 @@ class ChallengeStartAddPhoto extends Component {
                         Choose a photo that captures the emotion of your challenge
                       </AdviceBoxTitle>
                       <AdviceBoxText>
-                        A photo of people with your candidate(s) works well.
+                        A photo of people works well.
                       </AdviceBoxText>
                       <AdviceBoxText>
                         &nbsp;
@@ -135,7 +135,7 @@ class ChallengeStartAddPhoto extends Component {
               onClick={this.submitChallengePhoto}
               variant="contained"
             >
-              Save and preview
+              Review
             </Button>
           </CampaignStartMobileButtonPanel>
         </CampaignStartMobileButtonWrapper>

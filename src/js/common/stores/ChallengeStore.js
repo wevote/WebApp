@@ -2,7 +2,8 @@ import { ReduceStore } from 'flux/utils';
 import { avatarGeneric } from '../../utils/applicationUtils';
 import Dispatcher from '../dispatcher/Dispatcher';
 import arrayContains from '../utils/arrayContains';
-import VoterStore from '../../stores/VoterStore'; // eslint-disable-line import/no-cycle
+import VoterStore from '../../stores/VoterStore';
+import daysUntil from '../utils/daysUntil'; // eslint-disable-line import/no-cycle
 
 const SUPPORTERS_COUNT_NEXT_GOAL_DEFAULT = 10;
 
@@ -24,7 +25,7 @@ class ChallengeStore extends ReduceStore {
       voterCanVoteForPoliticianWeVoteIds: [], // These are the politician_we_vote_id's this voter can vote for
       voterOwnedChallengeWeVoteIds: [], // These are the challenge_we_vote_id's of the challenges this voter can edit
       voterStartedChallengeWeVoteIds: [], // These are the challenge_we_vote_id's of the challenges this voter started
-      voterSupportedChallengeWeVoteIds: [], // These are the challenge_we_vote_id's of the challenges this voter supports
+      challengeWeVoteIdsWhereVoterIsParticipant: [], // These are the challenge_we_vote_id's of the challenges this voter supports
       voterWeVoteId: '',
     };
   }
@@ -37,7 +38,7 @@ class ChallengeStore extends ReduceStore {
       voterCanVoteForPoliticianWeVoteIds: [], // These are the politician_we_vote_id's this voter can vote for
       voterOwnedChallengeWeVoteIds: [], // These are the challenge_we_vote_id's of the challenges this voter can edit
       voterStartedChallengeWeVoteIds: [], // These are the challenge_we_vote_id's of the challenges this voter started
-      voterSupportedChallengeWeVoteIds: [], // These are the challenge_we_vote_id's of the challenges this voter supports
+      challengeWeVoteIdsWhereVoterIsParticipant: [], // These are the challenge_we_vote_id's of the challenges this voter supports
       voterWeVoteId: '',
     };
   }
@@ -45,7 +46,7 @@ class ChallengeStore extends ReduceStore {
   challengeNewsItemTextExists (challengeNewsItemWeVoteId) {
     if (challengeNewsItemWeVoteId) {
       const challengeNewsItem = this.getChallengeNewsItemByWeVoteId(challengeNewsItemWeVoteId);
-      // console.log('challengeNewsItemTextExists, challengeSupporterVoterEntry:', challengeSupporterVoterEntry);
+      // console.log('challengeNewsItemTextExists, challengeParticipantVoterEntry:', challengeParticipantVoterEntry);
       if ('challenge_news_text' in challengeNewsItem && challengeNewsItem.challenge_news_text) {
         return Boolean(challengeNewsItem.challenge_news_text.length > 0);
       }
@@ -190,6 +191,15 @@ class ChallengeStore extends ReduceStore {
     return challenge;
   }
 
+  getChallengeInviteTextDefaultByWeVoteId (challengeWeVoteId) {
+    const challenge = this.getState().allCachedChallengeDicts[challengeWeVoteId];
+    // console.log('ChallengeStore getChallengeInviteTextDefaultByWeVoteId challengeWeVoteId:', challengeWeVoteId, ', challenge:', challenge);
+    if (challenge === undefined || challenge.challenge_invite_text_default === undefined) {
+      return '';
+    }
+    return challenge.challenge_invite_text_default;
+  }
+
   getChallengeNewsItemByWeVoteId (challengeNewsItemWeVoteId) {
     return this.getState().allCachedChallengeNewsItems[challengeNewsItemWeVoteId] || {};
   }
@@ -235,8 +245,16 @@ class ChallengeStore extends ReduceStore {
     return this.getState().allCachedChallengePoliticianLists[challengeWeVoteId] || [];
   }
 
-  getChallengeSupportersCountNextGoalDefault () {
+  getChallengeParticipantsCountNextGoalDefault () {
     return SUPPORTERS_COUNT_NEXT_GOAL_DEFAULT;
+  }
+
+  getChallengeTitleByWeVoteId (challengeWeVoteId) {
+    const challenge = this.getState().allCachedChallengeDicts[challengeWeVoteId];
+    if (challenge === undefined || challenge.challenge_title === undefined) {
+      return '';
+    }
+    return challenge.challenge_title;
   }
 
   getRecommendedChallengeList (challengeWeVoteId) {
@@ -282,8 +300,48 @@ class ChallengeStore extends ReduceStore {
     return challengeList;
   }
 
+  getDaysUntilChallengeEnds (challengeWeVoteId) {
+    const challenge = this.getChallengeByWeVoteId(challengeWeVoteId);
+    let challengeEndsDayText = '';
+    if (challenge && challenge.challenge_ends_date_as_integer) {
+      // TODO: Convert integer to date format
+      challengeEndsDayText = '2024-11-05';
+    } else {
+      challengeEndsDayText = '2024-11-05';
+    }
+    return daysUntil(challengeEndsDayText);
+  }
+
+  getNumberOfInviteesInChallenge (challengeWeVoteId) {
+    const challenge = this.getChallengeByWeVoteId(challengeWeVoteId);
+    if (challenge && challenge.invitees_count) {
+      return challenge.invitees_count;
+    } else {
+      return 0;
+    }
+  }
+
+  getNumberOfParticipantsInChallenge (challengeWeVoteId) {
+    const challenge = this.getChallengeByWeVoteId(challengeWeVoteId);
+    if (challenge && challenge.participants_count) {
+      return challenge.participants_count;
+    } else {
+      return 0;
+    }
+  }
+
   getPromotedChallengeDicts () {
     return this.getChallengeListFromListOfWeVoteIds(this.getState().promotedChallengeWeVoteIds);
+  }
+
+  getSiteUrl (challengeWeVoteId) {
+    const challenge = this.getChallengeByWeVoteId(challengeWeVoteId);
+    // console.log('this.getState().voterOwnedChallengeWeVoteIds:', this.getState().voterOwnedChallengeWeVoteIds);
+    if (challenge && challenge.site_url) {
+      return challenge.site_url;
+    } else {
+      return 'https://wevote.us';
+    }
   }
 
   getVoterCanEditThisChallenge (challengeWeVoteId) {
@@ -323,12 +381,12 @@ class ChallengeStore extends ReduceStore {
   }
 
   getVoterSupportedChallengeDicts () {
-    return this.getChallengeListFromListOfWeVoteIds(this.getState().voterSupportedChallengeWeVoteIds);
+    return this.getChallengeListFromListOfWeVoteIds(this.getState().challengeWeVoteIdsWhereVoterIsParticipant);
   }
 
-  getVoterSupportsThisChallenge (challengeWeVoteId) {
-    // console.log('this.getState().voterSupportedChallengeWeVoteIds:', this.getState().voterSupportedChallengeWeVoteIds);
-    return arrayContains(challengeWeVoteId, this.getState().voterSupportedChallengeWeVoteIds);
+  getVoterIsChallengeParticipant (challengeWeVoteId) {
+    // console.log('this.getState().challengeWeVoteIdsWhereVoterIsParticipant:', this.getState().challengeWeVoteIdsWhereVoterIsParticipant);
+    return arrayContains(challengeWeVoteId, this.getState().challengeWeVoteIdsWhereVoterIsParticipant);
   }
 
   createChallengeFromCandidate (candidateObject) {
@@ -348,9 +406,8 @@ class ChallengeStore extends ReduceStore {
       in_draft_mode: false,
       is_blocked_by_we_vote: false,
       is_blocked_by_we_vote_reason: null,
-      is_supporters_count_minimum_exceeded: true,
-      latest_challenge_supporter_endorsement_list: [],
-      latest_challenge_supporter_list: [],
+      is_participants_count_minimum_exceeded: true,
+      latest_challenge_participant_list: [],
       opposers_count: candidateObject.opposers_count,
       order_in_list: 0,
       politician_we_vote_id: candidateObject.politician_we_vote_id,
@@ -359,11 +416,11 @@ class ChallengeStore extends ReduceStore {
       seo_friendly_path_list: [],
       status: 'PSEUDO_CHALLENGE_GENERATED_FROM_CANDIDATE ',
       success: true,
-      supporters_count: candidateObject.supporters_count,
-      supporters_count_next_goal: 0,
-      supporters_count_victory_goal: 0,
+      participants_count: candidateObject.participants_count,
+      participants_count_next_goal: 0,
+      participants_count_victory_goal: 0,
       visible_on_this_site: true,
-      voter_challenge_supporter: {},
+      voter_challenge_participant: {},
       voter_can_send_updates_to_challenge: false,
       voter_can_vote_for_politician_we_vote_ids: [],
       voter_is_challenge_owner: false,
@@ -381,7 +438,7 @@ class ChallengeStore extends ReduceStore {
     const {
       allCachedChallengeNewsItems,
       allCachedChallengeWeVoteIdsBySEOFriendlyPath, allCachedNewsItemWeVoteIdsByChallenge,
-      allCachedRecommendedChallengeWeVoteIdLists, voterSupportedChallengeWeVoteIds,
+      allCachedRecommendedChallengeWeVoteIdLists, challengeWeVoteIdsWhereVoterIsParticipant,
     } = state;
     let {
       allCachedChallengeDicts, allCachedChallengeOwners, allCachedChallengePoliticianLists, allCachedChallengeOwnerPhotos,
@@ -393,15 +450,15 @@ class ChallengeStore extends ReduceStore {
     let challengeList;
     let challengeNewsItem;
     let challengeNewsItemWeVoteIds;
+    let tempChallengeWeVoteId;
     let recommendedChallengesChallengeWeVoteId;
     let revisedState;
     let voterSpecificData;
     switch (action.type) {
       case 'challengeListRetrieve':
-        // See ChallengeSupporterStore for code to take in the following challenge values:
-        // - latest_challenge_supporter_endorsement_list
-        // - latest_challenge_supporter_list
-        // - voter_challenge_supporter
+        // See ChallengeParticipantStore for code to take in the following challenge values:
+        // - latest_challenge_participant_list
+        // - voter_challenge_participant
 
         if (!action.res || !action.res.success) return state;
         revisedState = state;
@@ -444,15 +501,15 @@ class ChallengeStore extends ReduceStore {
             revisedState = { ...revisedState, voterStartedChallengeWeVoteIds };
           }
         }
-        if (action.res.voter_supported_challenge_list_returned) {
-          if (action.res.voter_supported_challenge_we_vote_ids) {
-            // console.log('action.res.voter_supported_challenge_we_vote_ids:', action.res.voter_supported_challenge_we_vote_ids);
-            action.res.voter_supported_challenge_we_vote_ids.forEach((oneChallengeWeVoteId) => {
-              if (!(oneChallengeWeVoteId in voterSupportedChallengeWeVoteIds)) {
-                voterSupportedChallengeWeVoteIds.push(oneChallengeWeVoteId);
+        if (action.res.challenge_we_vote_ids_where_voter_is_participant_returned) {
+          if (action.res.challenge_we_vote_ids_where_voter_is_participant) {
+            // console.log('action.res.challenge_we_vote_ids_where_voter_is_participant:', action.res.challenge_we_vote_ids_where_voter_is_participant);
+            action.res.challenge_we_vote_ids_where_voter_is_participant.forEach((oneChallengeWeVoteId) => {
+              if (!(oneChallengeWeVoteId in challengeWeVoteIdsWhereVoterIsParticipant)) {
+                challengeWeVoteIdsWhereVoterIsParticipant.push(oneChallengeWeVoteId);
               }
             });
-            revisedState = { ...revisedState, voterSupportedChallengeWeVoteIds };
+            revisedState = { ...revisedState, challengeWeVoteIdsWhereVoterIsParticipant };
           }
         }
 
@@ -525,8 +582,8 @@ class ChallengeStore extends ReduceStore {
             if (action.payload.opposers_count) {
               challenge.opposers_count = action.payload.opposers_count;
             }
-            if (action.payload.supporters_count) {
-              challenge.supporters_count = action.payload.supporters_count;
+            if (action.payload.participants_count) {
+              challenge.participants_count = action.payload.participants_count;
             }
             allCachedChallengeDicts[challengeWeVoteId] = challenge;
             return {
@@ -555,13 +612,26 @@ class ChallengeStore extends ReduceStore {
           allCachedNewsItemWeVoteIdsByChallenge,
         };
 
+      case 'challengeParticipantRetrieve':
+      case 'challengeParticipantSave':
+        if (!action.res || !action.res.success) return state;
+        revisedState = state;
+        tempChallengeWeVoteId = action.res.challenge_we_vote_id;
+        if (action.res.voter_we_vote_id === VoterStore.getVoterWeVoteId()) {
+          if (!(tempChallengeWeVoteId in challengeWeVoteIdsWhereVoterIsParticipant)) {
+            challengeWeVoteIdsWhereVoterIsParticipant.push(tempChallengeWeVoteId);
+          }
+          revisedState = { ...revisedState, challengeWeVoteIdsWhereVoterIsParticipant };
+        }
+        return revisedState;
+
+      // case 'challengeSave': TBD
       case 'challengeRetrieve':
       case 'challengeRetrieveAsOwner':
       case 'challengeStartSave':
-        // See ChallengeSupporterStore for code to take in the following challenge values:
-        // - latest_challenge_supporter_endorsement_list
-        // - latest_challenge_supporter_list
-        // - voter_challenge_supporter
+        // See ChallengeParticipantStore for code to take in the following challenge values:
+        // - latest_challenge_participant_list
+        // - voter_challenge_participant
 
         if (!action.res || !action.res.success) return state;
         revisedState = state;
@@ -615,14 +685,14 @@ class ChallengeStore extends ReduceStore {
           voterCanVoteForPoliticianWeVoteIds = action.res.voter_can_vote_for_politician_we_vote_ids;
           revisedState = { ...revisedState, voterCanVoteForPoliticianWeVoteIds };
         }
-        if ('voter_challenge_supporter' in action.res) {
-          if ('challenge_supported' in action.res.voter_challenge_supporter) {
+        if ('voter_challenge_participant' in action.res) {
+          if ('visible_to_public' in action.res.voter_challenge_participant) {
             //
-            // console.log('action.res.voter_challenge_supporter.challenge_supported:', action.res.voter_challenge_supporter.challenge_supported);
-            if (action.res.voter_challenge_supporter.challenge_supported) {
-              if (!(action.res.voter_challenge_supporter.challenge_we_vote_id in voterSupportedChallengeWeVoteIds)) {
-                voterSupportedChallengeWeVoteIds.push(action.res.voter_challenge_supporter.challenge_we_vote_id);
-                revisedState = { ...revisedState, voterSupportedChallengeWeVoteIds };
+            // console.log('action.res.voter_challenge_participant.visible_to_public:', action.res.voter_challenge_participant.visible_to_public);
+            if (action.res.voter_challenge_participant.visible_to_public) {
+              if (!(action.res.voter_challenge_participant.challenge_we_vote_id in challengeWeVoteIdsWhereVoterIsParticipant)) {
+                challengeWeVoteIdsWhereVoterIsParticipant.push(action.res.voter_challenge_participant.challenge_we_vote_id);
+                revisedState = { ...revisedState, challengeWeVoteIdsWhereVoterIsParticipant };
               }
             }
           }

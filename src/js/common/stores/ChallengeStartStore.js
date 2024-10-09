@@ -65,7 +65,7 @@ class ChallengeStartStore extends ReduceStore {
 
   challengeTitleExists () {
     if (this.getState().challengeTitle) {
-      return Boolean(this.getState().challengeTitle.length > 10);
+      return Boolean(this.getState().challengeTitle.length > 0);
     } else {
       return false;
     }
@@ -81,6 +81,18 @@ class ChallengeStartStore extends ReduceStore {
 
   getChallengeDescriptionQueuedToSaveSet () {
     return this.getState().challengeDescriptionQueuedToSaveSet;
+  }
+
+  getChallengeInviteTextDefault () {
+    return this.getState().challengeInviteTextDefault || '';
+  }
+
+  getChallengeInviteTextDefaultQueuedToSave () {
+    return this.getState().challengeInviteTextDefaultQueuedToSave;
+  }
+
+  getChallengeInviteTextDefaultQueuedToSaveSet () {
+    return this.getState().challengeInviteTextDefaultQueuedToSaveSet;
   }
 
   getChallengePhotoLargeUrl () {
@@ -135,6 +147,10 @@ class ChallengeStartStore extends ReduceStore {
     return this.getState().challengeTitleQueuedToSaveSet;
   }
 
+  getChallengeWeVoteId () {
+    return this.getState().challengeWeVoteId || '';
+  }
+
   getInDraftMode () {
     return this.getState().inDraftMode;
   }
@@ -168,6 +184,8 @@ class ChallengeStartStore extends ReduceStore {
           ...state,
           challengeDescriptionQueuedToSave: '',
           challengeDescriptionQueuedToSaveSet: false,
+          challengeInviteTextDefaultQueuedToSave: '',
+          challengeInviteTextDefaultQueuedToSaveSet: false,
           challengePhotoQueuedToDelete: false,
           challengePhotoQueuedToDeleteSet: false,
           challengePhotoQueuedToSave: '',
@@ -177,6 +195,22 @@ class ChallengeStartStore extends ReduceStore {
           challengeTitleQueuedToSave: '',
           challengeTitleQueuedToSaveSet: false,
         };
+
+      case 'challengeInviteTextDefaultQueuedToSave':
+        // console.log('ChallengeStartStore challengeInviteTextDefaultQueuedToSave: ', action.payload);
+        if (action.payload === undefined) {
+          return {
+            ...state,
+            challengeInviteTextDefaultQueuedToSave: '',
+            challengeInviteTextDefaultQueuedToSaveSet: false,
+          };
+        } else {
+          return {
+            ...state,
+            challengeInviteTextDefaultQueuedToSave: action.payload,
+            challengeInviteTextDefaultQueuedToSaveSet: true,
+          };
+        }
 
       case 'challengePhotoQueuedToDelete':
         console.log('ChallengeStartStore challengePhotoQueuedToDelete: ', action.payload);
@@ -254,15 +288,16 @@ class ChallengeStartStore extends ReduceStore {
         return {
           ...state,
           challengeDescription: action.res.challenge_description,
+          challengeInviteTextDefault: action.res.challenge_invite_text_default,
           challengePhotoLargeUrl: action.res.we_vote_hosted_challenge_photo_large_url,
           challengePhotoMediumUrl: action.res.we_vote_hosted_challenge_photo_medium_url,
           challengePhotoSmallUrl: action.res.we_vote_hosted_challenge_photo_small_url,
-          challengePoliticianList: action.res.challengex_politician_list,
-          challengePoliticianListExists: action.res.challengex_politician_list_exists,
-          challengePoliticianStarterList: action.res.challengex_politician_starter_list,
+          challengePoliticianList: action.res.challenge_politician_list,
+          challengePoliticianListExists: action.res.challenge_politician_list_exists,
+          challengePoliticianStarterList: action.res.challenge_politician_starter_list,
           challengeTitle: action.res.challenge_title,
-          challengeOwnerList: action.res.challengex_owner_list,
-          challengeWeVoteId: action.res.challengex_we_vote_id,
+          challengeOwnerList: action.res.challenge_owner_list,
+          challengeWeVoteId: action.res.challenge_we_vote_id,
           inDraftMode: action.res.in_draft_mode,
           voterSignedInWithEmail: action.res.voter_signed_in_with_email,
         };
@@ -272,15 +307,16 @@ class ChallengeStartStore extends ReduceStore {
         return {
           ...state,
           challengeDescription: action.res.challenge_description,
+          challengeInviteTextDefault: action.res.challenge_invite_text_default,
           challengePhotoLargeUrl: action.res.we_vote_hosted_challenge_photo_large_url,
           challengePhotoMediumUrl: action.res.we_vote_hosted_challenge_photo_medium_url,
           challengePhotoSmallUrl: action.res.we_vote_hosted_challenge_photo_small_url,
-          challengePoliticianList: action.res.challengex_politician_list,
-          challengePoliticianListExists: action.res.challengex_politician_list_exists,
-          challengePoliticianStarterList: action.res.challengex_politician_starter_list,
+          challengePoliticianList: action.res.challenge_politician_list,
+          challengePoliticianListExists: action.res.challenge_politician_list_exists,
+          challengePoliticianStarterList: action.res.challenge_politician_starter_list,
           challengeTitle: action.res.challenge_title,
-          challengeOwnerList: action.res.challengex_owner_list,
-          challengeWeVoteId: action.res.challengex_we_vote_id,
+          challengeOwnerList: action.res.challenge_owner_list,
+          challengeWeVoteId: action.res.challenge_we_vote_id,
           inDraftMode: action.res.in_draft_mode,
           voterSignedInWithEmail: action.res.voter_signed_in_with_email,
         };

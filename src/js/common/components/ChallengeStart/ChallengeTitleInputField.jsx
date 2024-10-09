@@ -52,7 +52,7 @@ class ChallengeTitleInputField extends Component {
 
   onChallengeStartStoreChange () {
     const { challengeWeVoteId, editExistingChallenge } = this.props;
-    console.log('ChallengeTitleInputField challengeWeVoteId:', challengeWeVoteId);
+    // console.log('ChallengeTitleInputField challengeWeVoteId:', challengeWeVoteId);
     let challengeTitle = '';
     if (editExistingChallenge) {
       const challenge = ChallengeStore.getChallengeByWeVoteId(challengeWeVoteId);
@@ -62,14 +62,14 @@ class ChallengeTitleInputField extends Component {
     } else {
       challengeTitle = ChallengeStartStore.getChallengeTitle();
     }
-    console.log('ChallengeTitleInputField challengeTitle:', challengeTitle);
+    // console.log('ChallengeTitleInputField challengeTitle:', challengeTitle);
     const challengeTitleQueuedToSave = ChallengeStartStore.getChallengeTitleQueuedToSave();
     const challengeTitleQueuedToSaveSet = ChallengeStartStore.getChallengeTitleQueuedToSaveSet();
     let challengeTitleAdjusted = challengeTitle;
     if (challengeTitleQueuedToSaveSet) {
       challengeTitleAdjusted = challengeTitleQueuedToSave;
     }
-    console.log('onChallengeStartStoreChange challengeTitle: ', challengeTitle, ', challengeTitleQueuedToSave: ', challengeTitleQueuedToSave, ', challengeTitleAdjusted:', challengeTitleAdjusted);
+    // console.log('onChallengeStartStoreChange challengeTitle: ', challengeTitle, ', challengeTitleQueuedToSave: ', challengeTitleQueuedToSave, ', challengeTitleAdjusted:', challengeTitleAdjusted);
     this.setState({
       challengeTitle: challengeTitleAdjusted,
     });
@@ -98,10 +98,11 @@ class ChallengeTitleInputField extends Component {
                 <TextField
                   // classes={{ root: classes.textField }} // Not working yet
                   id={`challengeTitleTextArea-${externalUniqueId}`}
+                  label={challengeTitlePlaceholder || 'Challenge name'}
                   name="challengeTitle"
                   margin="dense"
                   variant="outlined"
-                  placeholder={challengeTitlePlaceholder || 'Challenge title - the name voters will see'}
+                  placeholder={challengeTitlePlaceholder || 'Challenge name'}
                   value={challengeTitle}
                   onKeyDown={this.handleKeyPress}
                   onChange={this.updateChallengeTitle}

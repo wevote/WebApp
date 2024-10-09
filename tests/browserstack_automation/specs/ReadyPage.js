@@ -27,7 +27,7 @@ describe('ReadyPage', () => {
     await driver.switchWindow('Ballot - WeVote');
     await driver.pause(waitTime);
     await expect(driver).not.toHaveUrl(expect.stringContaining('ready'));
-    console.log("Verified verifyElectionCountDownRedirect")
+    console.log('Verified verifyElectionCountDownRedirect');
     await ReadyPage.wevoteLogo.findAndClick();
     await ReadyPage.viewUpcomingBallotButton.findAndClick();
     await driver.pause(waitTime);
@@ -92,7 +92,7 @@ describe('ReadyPage', () => {
     await expect(ReadyPage.finePrintStepText).toBeElementsArrayOfSize(4);
    });
 
- // Ready_008 - signin testcases - worked in signin module
+ // Ready_008 - signin testcases - moved to signin module
 
   // Ready_009 and Ready_016
   it('verifyPrivacyLinkRedirected', async () => {
@@ -150,9 +150,10 @@ describe('ReadyPage', () => {
     await driver.pause(waitTime);
     await ReadyPage.getTeamLinkElement.click();
     await driver.pause(waitTime);
-    await driver.switchWindow('/more/about');
+    await driver.switchWindow(`${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}/more/about`);
     await driver.pause(waitTime);
     await expect(ReadyPage.getTeamPageTitleElement).toHaveText('About WeVote');
+    await expect(browser).toHaveTitle('About WeVote');
   });
 
   // Ready_018
@@ -162,9 +163,10 @@ describe('ReadyPage', () => {
     await driver.pause(waitTime);
     await ReadyPage.getCreditsAndThanksElement.click();
     await driver.pause(waitTime);
-    await driver.switchWindow('/more/credits');
+    await driver.switchWindow(`${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}/more/credits`);
     await driver.pause(waitTime);
     await expect(ReadyPage.getCreditsAndThanksPageTitleElement).toHaveText('Credits & Thanks');
+    await expect(browser).toHaveTitle('Credits - WeVote');
   });
 
   // Ready_019
@@ -190,7 +192,7 @@ describe('ReadyPage', () => {
     await driver.pause(waitTime);
     await expect(driver).toHaveUrl(expect.stringContaining('donate'));
     await driver.pause(waitTime);
-    //await expect(DonatePage.getDonatePageContentTitleElement).toHaveText('Want more Americans to vote?');
+    await expect(DonatePage.getDonatePageContentTitleElement).toHaveText('Want more Americans to vote?');
     await expect(browser).toHaveTitle('Donate - WeVote');
   });
 

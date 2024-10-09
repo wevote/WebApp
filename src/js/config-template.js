@@ -41,7 +41,7 @@ module.exports = {
   // API Keys, some of these are publishable (not secret)
   FACEBOOK_APP_ID: '1097389196952441',
   FULL_STORY_ORG: '',
-  GOOGLE_ADS_TRACKING_ID: '',
+  GOOGLE_ADS_TRACKING_ID: '', // Also used for Google TagManager
   GOOGLE_ANALYTICS_TRACKING_ID: '',
   GOOGLE_MAPS_API_KEY: '',
   GOOGLE_PEOPLE_API_KEY: '',

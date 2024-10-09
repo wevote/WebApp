@@ -2,15 +2,17 @@ import { Button } from '@mui/material';
 import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { PageContentContainer } from '../../../components/Style/pageLayoutStyles';
 import { OuterWrapper, PageWrapper, StepNumberBordered, StepNumberPlaceholder } from '../../components/Style/stepDisplayStyles';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import historyPush from '../../utils/historyPush';
 import { renderLog } from '../../utils/logging';
-import { publicFigureQuotes } from "../../constants/whyVoteQuotes";
-import WhyVoteQuote from "../../../components/Remind/WhyVoteQuote";
+import { publicFigureQuotes } from '../../constants/whyVoteQuotes';
+import WhyVoteQuote from '../../../components/Remind/WhyVoteQuote';
+
+const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../../components/Widgets/ReadMore'));
 
 
 class ChallengeStartIntro extends Component {
@@ -57,6 +59,9 @@ class ChallengeStartIntro extends Component {
     const { classes } = this.props;
     const { chosenDomainTypeIsChallenge, chosenWebsiteName, inPrivateLabelMode, siteConfigurationHasBeenRetrieved } = this.state;
     const mobileButtonClasses = classes.buttonDefault; // isWebApp() ? classes.buttonDefault : classes.buttonDefaultCordova;
+    const step1Text = 'We get it—life is busy, and your calendar is packed. But you care about our Democracy. It is what allows your voice, creativity, and opinions to be heard. You, your friends, your community - these are all voices that matter, that should be counted. Join us in making our Democracy stronger for everyone.';
+    const step2Text = 'Help your friends and followers! We’re not just choosing our next President, but selecting leaders who will empower hopes, dreams, and values up and down the entire ballot! WeVote has taken the guesswork out of Democracy - giving everyone the tools to make informed choices. Through social posts, texts, DMs, and emails - you can connect your friends and followers directly to their individual ballot box. And we’ve made it fun. Earn points on the leaderboard, and when your followers engage, you get extra credit!';
+    const step3Text = 'By reminding your friends and followers about the upcoming election, people who share your concerns for our country, you have the power to shape our future. The more people you reach, the bigger impact you’ll have on the outcome. It’s simple—every reminder counts, and your voice can help shape the future!';
     return (
       <div>
         <PageContentContainer>
@@ -66,43 +71,46 @@ class ChallengeStartIntro extends Component {
               {siteConfigurationHasBeenRetrieved && (
                 <InnerWrapper>
                   <ContentTitle>
-                    Help energize elections!
+                    Influence Your Democracy
                   </ContentTitle>
                   <ChallengeStartSectionWrapper>
                     <ChallengeStartSection>
                       <TitleRow>
                         <Dot><StepNumberBordered>1</StepNumberBordered></Dot>
-                        <StepTitle>Your why?</StepTitle>
+                        <StepTitle>Why you?</StepTitle>
                       </TitleRow>
                       <ContentRow>
                         <Dot><StepNumberPlaceholder>&nbsp;</StepNumberPlaceholder></Dot>
                         <StepText>
-                          We recognize you have a tremendously busy schedule. As you consider embracing our mission:
-                          Democracy is fundamental to your freedom to express yourself, your creativity, and your opinion. Protecting these rights are important.
-                          Powerful people spend millions to deceive your friends and followers to stay home, or worse, make misinformed decisions against their own interests.
+                          <Suspense fallback={<></>}>
+                            <ReadMore numberOfLines={4} textToDisplay={step1Text} />
+                          </Suspense>
                         </StepText>
                       </ContentRow>
 
                       <TitleRow>
                         <Dot><StepNumberBordered>2</StepNumberBordered></Dot>
-                        <StepTitle>You can increase participation</StepTitle>
+                        <StepTitle>Connecting your community </StepTitle>
                       </TitleRow>
                       <ContentRow>
                         <Dot><StepNumberPlaceholder>&nbsp;</StepNumberPlaceholder></Dot>
                         <StepText>
-                          Help your friends and followers make choices that align with their hopes, dreams, and values across the entire ballot.
-                          WeVote.US has tools to help engage directly with friends via text and email, more broadly via social media, or with other WeVote.US voters.
+                          <Suspense fallback={<></>}>
+                            <ReadMore numberOfLines={4} textToDisplay={step2Text} />
+                          </Suspense>
                         </StepText>
                       </ContentRow>
 
                       <TitleRow>
                         <Dot><StepNumberBordered>3</StepNumberBordered></Dot>
-                        <StepTitle>Person-to-person persuasion is effective</StepTitle>
+                        <StepTitle>You can make the difference</StepTitle>
                       </TitleRow>
                       <ContentRow>
                         <Dot><StepNumberPlaceholder>&nbsp;</StepNumberPlaceholder></Dot>
                         <StepText>
-                          You can make a difference by reminding your friends and followers about the upcoming election. The more of your friends who vote, the more impact you will have on the outcome of the election.
+                          <Suspense fallback={<></>}>
+                            <ReadMore numberOfLines={4} textToDisplay={step3Text} />
+                          </Suspense>
                         </StepText>
                       </ContentRow>
 
@@ -212,7 +220,7 @@ const styles = (theme) => ({
 });
 
 const ChallengeStartSection = styled('div')`
-  margin-bottom: 60px !important;
+  margin-bottom: 40px !important;
   max-width: 450px;
 `;
 

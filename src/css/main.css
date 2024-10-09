@@ -24,7 +24,7 @@
   --white:#fff;
   --gray:#6c757d;
   --gray-dark:#343a40;
-  --primary:#0858A1;
+  --primary:#206DB3;
   --secondary:#6c757d;
   --success:#28a745;
   --info:#17a2b8;
@@ -102,13 +102,13 @@ small {
 }
 
 a {
-  color:#0858A1;
+  color:#206DB3; /* primary500 */
   text-decoration:none;
   background-color:transparent
 }
 
 a:hover {
-  color:#0858A1;
+  color:#206DB3; /* primary500 */
   text-decoration:underline
 }
 
@@ -1568,7 +1568,7 @@ svg {
 }
 
 *,::before,::after {
-  box-sizing:inherit
+  box-sizing:inherit;
 }
 
 a {
@@ -1636,7 +1636,7 @@ h1,h2,h3,h4,h5,h6 {
 }
 
 .image-16x16 {
-  border-radius:3px;
+  border-radius:2px;
   height:16px;
   width:16px
 }
@@ -1648,17 +1648,20 @@ h1,h2,h3,h4,h5,h6 {
 }
 
 .image-border-gray-border {
-  border:2px solid #999;
+  border:3px solid #999;
+  border-top: 2px solid #999;
   border-radius:4px
 }
 
 .image-border-support {
-  border:2px solid #1fc06f;
+  border:3px solid #1fc06f;
+  border-top: 2px solid #1fc06f;
   border-radius:4px
 }
 
 .image-border-oppose {
-  border:2px solid #ff4922;
+  border:3px solid #ff4922;
+  border-top: 2px solid #ff4922;
   border-radius:4px
 }
 
@@ -1743,15 +1746,15 @@ h1,h2,h3,h4,h5,h6 {
 }
 
 .u-link-color {
-  color:#0858A1
+  color:#206DB3; /* primary500 */
 }
 
 .u-link-color-on-hover {
-  color:#0858A1
+  color:#206DB3; /* primary500 */
 }
 
 .u-link-color-on-hover:hover {
-  color:#0858A1
+  color:#206DB3; /* primary500 */
 }
 
 .u-bold {
@@ -1764,7 +1767,7 @@ h1,h2,h3,h4,h5,h6 {
 
 .u-link-underline {
   text-decoration:underline;
-  color:#0858A1;
+  color:#206DB3; /* primary500 */
 }
 
 .u-link-underline-on-hover:hover {
@@ -2662,7 +2665,7 @@ h1,h2,h3,h4,h5,h6 {
 }
 
 .open-web-site {
-  color:#4371cc;
+  color:#206DB3; /* primary500 */
   padding-right:2px;
   padding-left:2px
 }

@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Button } from '@mui/material';
 import Popover from '@mui/material/Popover';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import isMobileScreenSize from '../../../../common/utils/isMobileScreenSize';
+import Tooltip from 'react-bootstrap/Tooltip';
 import Typography from '@mui/material/Typography';
 import CampaignActions from '../../../actions/CampaignActions';
 import DesignTokenColors from '../../Style/DesignTokenColors';
@@ -259,6 +262,42 @@ class HeartFavoriteToggleBase extends Component {
     });
   }
 
+  supportHoverText = () => {
+    const {
+      campaignXSupportersCountLocal: campaignXSupportersCountLocalPrevious,
+      voterOpposesLocal: voterOpposesLocalPrevious,
+      voterSupportsLocal: voterSupportsLocalPrevious,
+    } = this.state;
+
+    const supportersCount = campaignXSupportersCountLocalPrevious ? Number(campaignXSupportersCountLocalPrevious) : 0;
+
+    if (!voterOpposesLocalPrevious && !voterSupportsLocalPrevious) {
+      return "Favoriting helps us show you what other candidates match your values.";
+    } else if (voterOpposesLocalPrevious) {
+      return "Favorited by " + supportersCount + " people. Favoriting helps us show you what other candidates match your values.";
+    } else {
+      return "Remove Favorite";
+    }
+  }
+
+  opposeHoverText = () => {
+    const {
+      campaignXOpposersCountLocal: campaignXOpposersCountLocalPrevious,
+      voterOpposesLocal: voterOpposesLocalPrevious,
+      voterSupportsLocal: voterSupportsLocalPrevious,
+    } = this.state;
+
+    const opposersCount = campaignXOpposersCountLocalPrevious ? Number(campaignXOpposersCountLocalPrevious) : 0;
+
+    if (!voterOpposesLocalPrevious && !voterSupportsLocalPrevious) {
+      return "Disliked by " + opposersCount + " people. Disliking helps us show you what other candidates match your values.";
+    } else if (voterSupportsLocalPrevious) {
+      return "Disliked by " + opposersCount + " people. Disliking helps us show you what other candidates match your values.";
+    } else {
+      return "Remove Dislike";
+    }
+  }
+
   render () {
     const {
       voterIsSignedIn,
@@ -277,47 +316,67 @@ class HeartFavoriteToggleBase extends Component {
     const open = Boolean(anchorEl);
     const id = open ? 'simple-popover' : undefined;
 
+    const supportToolTip = isMobileScreenSize() ? (<span />) : (
+      <Tooltip className="u-z-index-9020" id="supportTooltip">
+        <div>
+          <span>{this.supportHoverText()}</span>
+        </div>
+      </Tooltip>
+    );
+
+    const opposeToolTip = isMobileScreenSize() ? (<span />) : (
+      <Tooltip className="u-z-index-9020" id="opposeTooltip">
+        <div>
+          <span>{this.opposeHoverText()}</span>
+        </div>
+      </Tooltip>
+    );
+
     // console.log('campaignXSupportersCountLocal', campaignXSupportersCountLocal, 'campaignXOpposersCountLocal', campaignXOpposersCountLocal);
     // console.log('HeartFavoriteToggleBase voterSupportsLocal', voterSupportsLocal, 'voterOpposesLocal', voterOpposesLocal);
     return (
       <HeartFavoriteToggleContainer>
-        <LikeContainer onClick={(event) => {
-          if (voterSupportsLocal) {
-            return this.handleStopSupportingClick(event);
-          } else {
-            return this.handleSupportClick(event);
-          }
-        }}
-        >
-          <HeartFavoriteToggleIcon
-            isFavorite
-            voterSupports={voterSupportsLocal}
-          />
-          {!voterOpposesLocal && (
-            <span>
-              {numberWithCommas(campaignXSupportersCountLocal)}
-            </span>
-          )}
-        </LikeContainer>
+        <OverlayTrigger overlay={supportToolTip} placement="top">
+          <LikeContainer onClick={(event) => {
+            if (voterSupportsLocal) {
+              return this.handleStopSupportingClick(event);
+            } else {
+              return this.handleSupportClick(event);
+            }
+          }}
+          >
+            <HeartFavoriteToggleIcon
+              isFavorite
+              voterSupports={voterSupportsLocal}
+            />
+            {!voterOpposesLocal && (
+              <span>
+                {numberWithCommas(campaignXSupportersCountLocal)}
+              </span>
+            )}
+          </LikeContainer>
+        </OverlayTrigger>
         <LikeDislikeSeperator>&nbsp;</LikeDislikeSeperator>
-        <DislikeContainer onClick={(event) => {
-          if (voterOpposesLocal) {
-            return this.handleStopOpposingClick(event);
-          } else {
-            return this.handleOpposeClick(event);
-          }
-        }}
-        >
-          <HeartFavoriteToggleIcon
-            isDislike
-            voterOpposes={voterOpposesLocal}
-          />
-          {voterOpposesLocal && (
-            <span>
-              {numberWithCommas(campaignXOpposersCountLocal)}
-            </span>
-          )}
-        </DislikeContainer>
+        <OverlayTrigger overlay={opposeToolTip} placement="top">
+          <DislikeContainer onClick={(event) => {
+            if (voterOpposesLocal) {
+              return this.handleStopOpposingClick(event);
+            } else {
+              return this.handleOpposeClick(event);
+            }
+          }}
+          >
+            <HeartFavoriteToggleIcon
+              isDislike
+              voterOpposes={voterOpposesLocal}
+            />
+            {voterOpposesLocal && (
+              <span>
+                {numberWithCommas(campaignXOpposersCountLocal)}
+              </span>
+            )}
+          </DislikeContainer>
+        </OverlayTrigger>
         {(!voterIsSignedIn && (showSignInPromptOpposes || showSignInPromptSupports)) && (
           <Popover
             id={id}

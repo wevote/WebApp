@@ -1,6 +1,6 @@
 import { Facebook, Twitter } from '@mui/icons-material';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import Button from 'react-bootstrap/Button';
 import styled from 'styled-components';
 import AnalyticsActions from '../../../actions/AnalyticsActions';
@@ -31,7 +31,7 @@ import LoadingWheel from '../Widgets/LoadingWheel';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 import SnackNotifier, { openSnackbar } from '../Widgets/SnackNotifier';
 
-
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../Widgets/OpenExternalWebSite'));
 /* global $ */
 
 const debugMode = false;
@@ -412,6 +412,9 @@ export default class SignInOptionsPanel extends Component {
     //   'hideFacebookSignInButton', hideFacebookSignInButton, 'hideDialogForCordova', hideDialogForCordova,
     //   '\nisOnFacebookSupportedDomainUrl', isOnFacebookSupportedDomainUrl, 'isOnWeVoteRootUrl', isOnWeVoteRootUrl);
 
+    const termsOfServiceURL = `${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}/more/terms`;
+    const privacyPolicyURL = `${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}/privacy`;
+
     return (
       <>
         <SnackNotifier />
@@ -620,6 +623,40 @@ export default class SignInOptionsPanel extends Component {
               <br />
             </div>
             )}
+            <TermsWrapper>
+              By continuing, you accept WeVote.US’s
+              {' '}
+              <Suspense fallback={<></>}>
+                <OpenExternalWebSite
+                  linkIdAttribute="openTermsOfService"
+                  url={termsOfServiceURL}
+                  target="_blank"
+                  className="open-web-site"
+                  body={(
+                    <span>
+                      Terms of Service
+                    </span>
+                  )}
+                />
+              </Suspense>
+              {' '}
+              and
+              {' '}
+              <Suspense fallback={<></>}>
+                <OpenExternalWebSite
+                  linkIdAttribute="openPrivacyPolicy"
+                  url={privacyPolicyURL}
+                  target="_blank"
+                  className="open-web-site open-web-site__no-right-padding"
+                  body={(
+                    <span>
+                      Privacy Policy
+                    </span>
+                  )}
+                />
+              </Suspense>
+              .
+            </TermsWrapper>
           </Main>
         </SignInOptionsPanelWrapper>
       </>
@@ -644,6 +681,13 @@ const OrWrapper = styled('div')(({ theme }) => (`
     margin-bottom: -2px;
     margin-top: 0;
   }
+`));
+
+const TermsWrapper = styled('div')(({ theme }) => (`
+  margin-top: 30px;
+  // ${theme.breakpoints.down('sm')} {
+  //   padding-top: 30px;
+  // }
 `));
 
 const Main = styled('div', {

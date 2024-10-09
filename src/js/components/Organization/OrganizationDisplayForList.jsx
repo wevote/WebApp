@@ -6,9 +6,9 @@ import { renderLog } from '../../common/utils/logging';
 import removeTwitterNameFromDescription from '../../common/utils/removeTwitterNameFromDescription';
 import OrganizationStore from '../../stores/OrganizationStore';
 import { NameAndTwitter, OrganizationDescriptionText, OrganizationDetailsWrapper, OrganizationImage, OrganizationFollowWrapper, OrganizationName, OrganizationLogoWrapper, TwitterOuterWrapper } from '../Style/DisplayForList';
-import PositionInformationOnlySnippet from '../Widgets/PositionInformationOnlySnippet';
-import PositionRatingSnippet from '../Widgets/PositionRatingSnippet';
-import PositionSupportOpposeSnippet from '../Widgets/PositionSupportOpposeSnippet';
+import PositionInformationOnlySnippet from '../PositionItem/PositionInformationOnlySnippet';
+import PositionRatingSnippet from '../PositionItem/PositionRatingSnippet';
+import PositionSupportOpposeSnippet from '../PositionItem/PositionSupportOpposeSnippet';
 import TwitterAccountStats from '../Widgets/TwitterAccountStats';
 
 const FollowToggle = React.lazy(() => import(/* webpackChunkName: 'FollowToggle' */ '../Widgets/FollowToggle'));

@@ -8,6 +8,7 @@ export function getChallengeValuesFromIdentifiers (challengeSEOFriendlyPath, cha
   // console.log('getChallengeValuesFromIdentifiers challengeSEOFriendlyPath: ', challengeSEOFriendlyPath, ', challengeWeVoteId: ', challengeWeVoteId);
   let challenge = {};
   let challengeDescription = '';
+  let challengeInviteTextDefault = '';
   let challengePhotoLargeUrl = '';
   let challengePhotoMediumUrl = '';
   let challengePhotoSmallUrl = '';
@@ -31,6 +32,7 @@ export function getChallengeValuesFromIdentifiers (challengeSEOFriendlyPath, cha
   if (challenge.constructor === Object && challenge.challenge_we_vote_id) {
     ({
       challenge_description: challengeDescription,
+      challenge_invite_text_default: challengeInviteTextDefault,
       challenge_title: challengeTitle,
       challenge_we_vote_id: challengeWeVoteIdFromObject,
       final_election_date_in_past: finalElectionDateInPast,
@@ -49,6 +51,7 @@ export function getChallengeValuesFromIdentifiers (challengeSEOFriendlyPath, cha
   // console.log('getChallengeValuesFromIdentifiers, challenge: ', challenge, ', challengeWeVoteIdFromObject:', challengeWeVoteIdFromObject, ', challengeTitle:', challengeTitle);
   return {
     challengeDescription,
+    challengeInviteTextDefault,
     challengePhotoLargeUrl,
     challengePhotoMediumUrl,
     challengePhotoSmallUrl,

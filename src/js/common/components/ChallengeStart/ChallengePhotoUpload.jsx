@@ -67,7 +67,7 @@ class ChallengePhotoUpload extends Component {
     let challengePhotoLargeUrl = '';
     if (editExistingChallenge) {
       const challenge = ChallengeStore.getChallengeByWeVoteId(challengeWeVoteId);
-      if (challenge && challenge.challengex_we_vote_id) {
+      if (challenge && challenge.challenge_we_vote_id) {
         challengePhotoLargeUrl = challenge.we_vote_hosted_challenge_photo_large_url;
       }
     } else {

@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 import webAppConfig from '../../../config';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import ChallengeStore from '../../stores/ChallengeStore';
-import ChallengeSupporterStore from '../../stores/ChallengeSupporterStore';
+import ChallengeParticipantStore from '../../stores/ChallengeParticipantStore';
 import historyPush from '../../utils/historyPush';
 import keepHelpingDestination from '../../utils/keepHelpingDestination';
 import { renderLog } from '../../utils/logging';
@@ -32,7 +32,7 @@ class ChallengeCardForList extends Component {
     this.onChallengeEditClick = this.onChallengeEditClick.bind(this);
     this.onChallengeGetMinimumSupportersClick = this.onChallengeGetMinimumSupportersClick.bind(this);
     this.onChallengeShareClick = this.onChallengeShareClick.bind(this);
-    this.pullChallengeSupporterVoterEntry = this.pullChallengeSupporterVoterEntry.bind(this);
+    this.pullChallengeParticipantVoterEntry = this.pullChallengeParticipantVoterEntry.bind(this);
   }
 
   componentDidMount () {
@@ -41,8 +41,8 @@ class ChallengeCardForList extends Component {
     this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
     this.onChallengeStoreChange();
     this.challengeStoreListener = ChallengeStore.addListener(this.onChallengeStoreChange.bind(this));
-    this.onChallengeSupporterStoreChange();
-    this.challengeSupporterStoreListener = ChallengeSupporterStore.addListener(this.onChallengeSupporterStoreChange.bind(this));
+    this.onChallengeParticipantStoreChange();
+    this.challengeParticipantStoreListener = ChallengeParticipantStore.addListener(this.onChallengeParticipantStoreChange.bind(this));
   }
 
   componentDidUpdate (prevProps) {
@@ -58,7 +58,7 @@ class ChallengeCardForList extends Component {
       if ((challengeWeVoteId !== challengeWeVoteIdPrevious) ||
           (voterWeVoteId !== voterWeVoteIdPrevious)) {
         this.onChallengeStoreChange();
-        this.onChallengeSupporterStoreChange();
+        this.onChallengeParticipantStoreChange();
       }
     }
   }
@@ -66,7 +66,7 @@ class ChallengeCardForList extends Component {
   componentWillUnmount () {
     this.appStateSubscription.unsubscribe();
     this.challengeStoreListener.remove();
-    this.challengeSupporterStoreListener.remove();
+    this.challengeParticipantStoreListener.remove();
   }
 
   onAppObservableStoreChange () {
@@ -88,20 +88,20 @@ class ChallengeCardForList extends Component {
   onChallengeStoreChange () {
     const { challengeWeVoteId } = this.props;
     const challenge = ChallengeStore.getChallengeByWeVoteId(challengeWeVoteId);
-    // const voterCanEditThisChallenge = ChallengeStore.getVoterCanEditThisChallenge(challengeWeVoteId);
+    const voterCanEditThisChallenge = ChallengeStore.getVoterCanEditThisChallenge(challengeWeVoteId);
     this.setState({
       challenge,
-      // voterCanEditThisChallenge,
+      voterCanEditThisChallenge,
     });
   }
 
-  onChallengeSupporterStoreChange () {
+  onChallengeParticipantStoreChange () {
     const {
       challengeWeVoteId,
     } = this.props;
-    // console.log('ChallengeCardForList onChallengeSupporterStoreChange challengeWeVoteId:', challengeWeVoteId, ', challengeSEOFriendlyPath:', challengeSEOFriendlyPath);
+    // console.log('ChallengeCardForList onChallengeParticipantStoreChange challengeWeVoteId:', challengeWeVoteId, ', challengeSEOFriendlyPath:', challengeSEOFriendlyPath);
     if (challengeWeVoteId) {
-      this.pullChallengeSupporterVoterEntry(challengeWeVoteId);
+      this.pullChallengeParticipantVoterEntry(challengeWeVoteId);
     }
   }
 
@@ -178,25 +178,25 @@ class ChallengeCardForList extends Component {
     } = challenge;
     let challengeBasePath;
     if (challengeSEOFriendlyPath) {
-      challengeBasePath = `/c/${challengeSEOFriendlyPath}/`;
+      challengeBasePath = `/${challengeSEOFriendlyPath}/+/`;
     } else {
-      challengeBasePath = `/id/${challengeWeVoteId}/`;
+      challengeBasePath = `/+/${challengeWeVoteId}/`;
     }
     return challengeBasePath;
   }
 
-  pullChallengeSupporterVoterEntry (challengeWeVoteId) {
+  pullChallengeParticipantVoterEntry (challengeWeVoteId) {
     if (challengeWeVoteId) {
-      const challengeSupporterVoterEntry = ChallengeSupporterStore.getChallengeSupporterVoterEntry(challengeWeVoteId);
-      // console.log('onChallengeSupporterStoreChange challengeSupporterVoterEntry:', challengeSupporterVoterEntry);
+      const challengeParticipantVoterEntry = ChallengeParticipantStore.getChallengeParticipantVoterEntry(challengeWeVoteId);
+      // console.log('onChallengeParticipantStoreChange challengeParticipantVoterEntry:', challengeParticipantVoterEntry);
       const {
         challenge_supported: challengeSupported,
-        challenge_we_vote_id: challengeWeVoteIdFromChallengeSupporter,
-      } = challengeSupporterVoterEntry;
-      // console.log('onChallengeSupporterStoreChange challengeSupported: ', challengeSupported);
-      if (challengeWeVoteIdFromChallengeSupporter) {
-        const step2Completed = ChallengeSupporterStore.voterSupporterEndorsementExists(challengeWeVoteId);
-        const payToPromoteStepCompleted = ChallengeSupporterStore.voterChipInExists(challengeWeVoteId);
+        challenge_we_vote_id: challengeWeVoteIdFromChallengeParticipant,
+      } = challengeParticipantVoterEntry;
+      // console.log('onChallengeParticipantStoreChange challengeSupported: ', challengeSupported);
+      if (challengeWeVoteIdFromChallengeParticipant) {
+        const step2Completed = ChallengeParticipantStore.voterSupporterEndorsementExists(challengeWeVoteId);
+        const payToPromoteStepCompleted = ChallengeParticipantStore.voterChipInExists(challengeWeVoteId);
         const sharingStepCompleted = false;
         this.setState({
           challengeSupported,
@@ -232,14 +232,13 @@ class ChallengeCardForList extends Component {
 
   render () {
     renderLog('ChallengeCardForList');  // Set LOG_RENDER_EVENTS to log all renders
-    const { limitCardWidth, useVerticalCard } = this.props;
-    const { challengeSupported } = this.state; // , inPrivateLabelMode, voterCanEditThisChallenge
-    const { challengeWeVoteId } = this.props;
-    const challenge = ChallengeStore.getChallengeByWeVoteId(challengeWeVoteId);
+    const { challengeWeVoteId, joinedAndDaysLeftOff, limitCardWidth, useVerticalCard } = this.props;
+    const { challenge, challengeSupported, voterCanEditThisChallenge } = this.state; // , inPrivateLabelMode
+    // const challenge = ChallengeStore.getChallengeByWeVoteId(challengeWeVoteId);
     if (!challenge) {
       return null;
     }
-    // console.log('ChallengeCardForList render, challenge:', challenge);
+    // console.log('ChallengeCardForList Component render, challenge:', challenge);
     const {
       // ballot_guide_official_statement: ballotGuideOfficialStatement, // Consider using this
       challenge_description: challengeDescription,
@@ -249,18 +248,19 @@ class ChallengeCardForList extends Component {
       in_draft_mode: inDraftMode,
       // is_blocked_by_we_vote: isBlockedByWeVote,
       // is_in_team_review_mode: isInTeamReviewMode,
-      // is_supporters_count_minimum_exceeded: isSupportersCountMinimumExceeded,
+      // is_participants_count_minimum_exceeded: isSupportersCountMinimumExceeded,
       profile_image_background_color: profileImageBackgroundColor,
-      supporters_count: supportersCount,
-      supporters_count_next_goal: supportersCountNextGoal,
+      participants_count: participantsCount,
+      participants_count_next_goal: participantsCountNextGoal,
       // visible_on_this_site: visibleOnThisSite,
       we_vote_hosted_challenge_photo_large_url: challengePhotoLargeUrl,
       // we_vote_hosted_challenge_photo_medium_url: challengePhotoMediumUrl,
       // we_vote_hosted_profile_image_url_large: weVoteHostedProfileImageUrlLarge,
     } = challenge;
     // const stateName = convertStateCodeToStateText(stateCode);
-    const supportersCountNextGoalWithFloor = supportersCountNextGoal || ChallengeStore.getChallengeSupportersCountNextGoalDefault();
+    const participantsCountNextGoalWithFloor = participantsCountNextGoal || ChallengeStore.getChallengeParticipantsCountNextGoalDefault();
     // const year = getYearFromUltimateElectionDate(finalElectionDateAsInteger);
+    // console.log('ChallengeCardForList Component render, challengePhotoLargeUrl:', challengePhotoLargeUrl);
     return (
       <ChallengeCardForListBody
         challengeDescription={challengeDescription}
@@ -269,22 +269,26 @@ class ChallengeCardForList extends Component {
         challengeWeVoteId={challengeWeVoteId}
         hideCardMargins
         inDraftMode={inDraftMode}
+        joinedAndDaysLeftOff={joinedAndDaysLeftOff}
         functionToUseToKeepHelping={this.functionToUseToKeepHelping}
         functionToUseWhenProfileComplete={this.functionToUseWhenProfileComplete}
         limitCardWidth={limitCardWidth}
         onChallengeClick={this.onChallengeClick}
         onChallengeClickLink={this.onChallengeClickLink}
+        onChallengeEditClick={this.onChallengeEditClick}
         photoLargeUrl={challengePhotoLargeUrl}
         profileImageBackgroundColor={profileImageBackgroundColor}
-        supportersCount={supportersCount}
-        supportersCountNextGoalWithFloor={supportersCountNextGoalWithFloor}
+        participantsCount={participantsCount}
+        participantsCountNextGoalWithFloor={participantsCountNextGoalWithFloor}
         tagIdBaseName=""
         useVerticalCard={useVerticalCard}
+        voterCanEditThisChallenge={voterCanEditThisChallenge}
       />
     );
   }
 }
 ChallengeCardForList.propTypes = {
+  joinedAndDaysLeftOff: PropTypes.bool,
   challengeWeVoteId: PropTypes.string,
   voterWeVoteId: PropTypes.string,
   limitCardWidth: PropTypes.bool,
