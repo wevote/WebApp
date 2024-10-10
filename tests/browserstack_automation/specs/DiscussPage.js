@@ -4,6 +4,7 @@ import DiscussPage from '../page_objects/discuss.page';
 const { describe, it } = require('mocha');
 
 const waitTime = 5000;
+const email = 'wevote@wevote.us';
 
 
 describe('Discuss Page', () => {
@@ -35,7 +36,7 @@ describe('Discuss Page', () => {
     await expect(DiscussPage.voterEmailAddressVerificationButton).not.toBeClickable();
     const element = await DiscussPage.enterVoterEmailAddressTextBox; // Locate the text box element using a selector
     await driver.pause(waitTime);
-    element.setValue('wevote@gmail.com');
+    element.setValue(email);
     await driver.pause(waitTime);
     await driver.waitUntil(async () => ((DiscussPage.toggleEmailVerificationButton)));
   });
@@ -73,23 +74,22 @@ describe('Discuss Page', () => {
   });
 
   // Discuss_007
-  it('verifyTabKeySelectenterVoterEmailAddressTextBox', async () => {
+  it('verifyTabKeySelectEnterVoterEmailAddressTextBox', async () => {
     await DiscussPage.load();
     await driver.switchWindow('https://quality.wevote.us/news');
 
-    const element = await DiscussPage.enterVoterEmailAddressTextBox; // Locate the text box element using a selector
-    element.setValue('wevote@wevote.us');
-    // Press the tab key 11 times
-    for (let i = 0; i < 12; i++) {
-      driver.keys(['Tab']);
+    const element = await DiscussPage.enterVoterEmailAddressTextBox;
+    const elementId = await element.getAttribute('id');
+
+    const voterEmailAddressTextBox = await DiscussPage.tabToSelectElement(driver, elementId);
+    if (voterEmailAddressTextBox) {
+      await voterEmailAddressTextBox.setValue(email);
+    } else {
+      throw new Error('Element with ID ' + elementId + ' not found or not reachable while selectig with Tab.');
     }
-    await driver.pause(waitTime);
-    // Check if the active element is the email text box after pressing the tab key 11 times
-    const activeElement = await driver.getActiveElement();
-    const activeElementWdio = await (await $(activeElement)).getProperty('id');
-    await driver.pause(waitTime);
-    console.log(activeElementWdio);
-    await expect(activeElement).toBe(element);
+
+    await expect(DiscussPage.voterEmailAddressVerificationButton).toBeClickable();
+    await expect(await element.getAttribute('value')).toBe(email);
   });
 
   // Test Case Doesn't work
