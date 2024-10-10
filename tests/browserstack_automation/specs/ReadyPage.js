@@ -1,4 +1,4 @@
-import { $,driver, expect, browser} from '@wdio/globals';
+import { driver, expect, browser } from '@wdio/globals';
 import ReadyPage from '../page_objects/ready.page';
 import DonatePage from '../page_objects/donate.page';
 import webAppConfig from '../../../src/js/config';
@@ -13,12 +13,12 @@ const waitTime = 8000;
 describe('ReadyPage', () => {
   // Ready_001 and Ready_003
   it('verifyElectionCountDownRedirect and verifyViewYourBallotRedirect', async () => {
-    console.log("Tcs : Ready_001 and Ready_003");
+    console.log('Tcs : Ready_001 and Ready_003');
     await ReadyPage.load();
     await driver.pause(waitTime);
     await driver.waitUntil(async () => (ReadyPage.electionCountDownTitle.isClickable()));
     await ReadyPage.electionCountDownTitle.click();
-    await driver.pause(waitTime+2000);
+    await driver.pause(waitTime + 2000);
     await driver.switchWindow('ballot/election/1000336');
     await expect(browser).toHaveTitle('Ballot - WeVote');
 
@@ -35,22 +35,22 @@ describe('ReadyPage', () => {
   });
 
   // Ready_002 : In progress - locater issues
-   it.skip('updateBallotAddress', async () => {
-    console.log("Tcs : Ready_002");
-     await ReadyPage.load();
-     await ReadyPage.updateBallotAddress('New York, NY, USA');
-     await driver.pause(waitTime);
+  it.skip('updateBallotAddress', async () => {
+    console.log('Tcs : Ready_002');
+    await ReadyPage.load();
+    await ReadyPage.updateBallotAddress('New York, NY, USA');
+    await driver.pause(waitTime);
     // const newAdd = browser.getText("//span[@class='u-cursor--pointer u-link-color u-link-underline-on-hover']");
-     //console.log("newAdd :" +newAdd);
-     expect((await ReadyPage.ballotForAddress).toHaveText('New York, NY, USA'));
-   });
+    // console.log("newAdd :" +newAdd);
+    expect((await ReadyPage.ballotForAddress).toHaveText('New York, NY, USA'));
+  });
 
   // Ready_003 - merged with ready_001
-  
+
 
   // Ready_004
   it('toggleIssueFollowing - Follow/UnfollowPopular Topics', async () => {
-    console.log("Tcs : Ready_004");
+    console.log('Tcs : Ready_004');
     await ReadyPage.load();
     await ReadyPage.followFirstIssue();
     await driver.pause(waitTime);
@@ -62,7 +62,7 @@ describe('ReadyPage', () => {
 
   // Ready_005
   it('unfurlIssues - PopularIssues/ShowMoreIssues', async () => {
-    console.log("Tcs : Ready_005");
+    console.log('Tcs : Ready_005');
     await ReadyPage.load();
     await driver.pause(waitTime);
     await expect(ReadyPage.followIssueButtons).toBeElementsArrayOfSize(6);
@@ -73,7 +73,7 @@ describe('ReadyPage', () => {
 
   // Ready_006
   it('toggleIntroduction - ShowMore-WeVoteHelpsYouList', async () => {
-    console.log("Tcs : Ready_006");
+    console.log('Tcs : Ready_006');
     await ReadyPage.load();
     await driver.waitUntil(async () => (ReadyPage.toggleIntroductionButton.isClickable()));
     await ReadyPage.toggleIntroductionButton.click();
@@ -83,20 +83,20 @@ describe('ReadyPage', () => {
 
   // Ready_007  -- In progress -- Seeing issues with locators
   it('toggleFinePrint - ShowMore-TheFinePrintList', async () => {
-    console.log("Tcs : Ready_007");
+    console.log('Tcs : Ready_007');
     await ReadyPage.load();
     await driver.pause(waitTime);
     await driver.waitUntil(async () => (ReadyPage.toggleIntroductionButton.isClickable()));
     await ReadyPage.toggleFinePrintButton.click();
     await driver.pause(waitTime);
     await expect(ReadyPage.finePrintStepText).toBeElementsArrayOfSize(4);
-   });
+  });
 
- // Ready_008 - signin testcases - moved to signin module
+  // Ready_008 - signin testcases - moved to signin module
 
   // Ready_009 and Ready_016
   it('verifyPrivacyLinkRedirected', async () => {
-    console.log("Tcs : Ready_009 && Ready_016");
+    console.log('Tcs : Ready_009 && Ready_016');
     await ReadyPage.load();
     await driver.pause(waitTime);
     await ReadyPage.findPrivacyLink.click();
@@ -104,7 +104,7 @@ describe('ReadyPage', () => {
     await expect(driver).toHaveUrl(expect.stringContaining('privacy'));
     await driver.pause(waitTime);
     await expect(browser).toHaveTitle('Privacy Policy - WeVote');
-    console.log("Verified Privacy link on the ready page");
+    console.log('Verified Privacy link on the ready page');
     await ReadyPage.wevoteLogo.findAndClick();
     await driver.pause(waitTime);
     await ReadyPage.getTermsLinkElement.click();
@@ -114,7 +114,7 @@ describe('ReadyPage', () => {
 
   // Ready_010 and Ready_011
   it('verifyHowItWorksModalWindowOpen and verifyHowItWorksModalWindowClosed', async () => {
-    console.log("Tcs : Ready_010 & Ready_011");
+    console.log('Tcs : Ready_010 & Ready_011');
     await ReadyPage.load();
     await driver.pause(waitTime);
     await ReadyPage.clickHowItWorksLink();
@@ -125,13 +125,13 @@ describe('ReadyPage', () => {
     await expect(ReadyPage.elementHowItWorksWindow).not.toBeDisplayed();
   });
 
-// Ready_012 deprecated as it is covered as part of Ready_013
-  
-//Testcase 13 & 14 covered under HowItWorksModalWindow testcases
+  // Ready_012 deprecated as it is covered as part of Ready_013
+
+  // Testcase 13 & 14 covered under HowItWorksModalWindow testcases
 
   // Ready_015
   it('verifyHelpLink', async () => {
-    console.log("Tcs : Ready_015");
+    console.log('Tcs : Ready_015');
     await ReadyPage.load();
     await driver.pause(waitTime);
     await ReadyPage.getHelpLinkElement.click();
@@ -142,10 +142,10 @@ describe('ReadyPage', () => {
   });
 
   // Ready_016 merged with Ready_009
-  
+
   // Ready_017
   it('verifyTeamLink', async () => {
-    console.log("Tcs : Ready_017");
+    console.log('Tcs : Ready_017');
     await ReadyPage.load();
     await driver.pause(waitTime);
     await ReadyPage.getTeamLinkElement.click();
@@ -158,7 +158,7 @@ describe('ReadyPage', () => {
 
   // Ready_018
   it('verifyCreditsAndThanksLink', async () => {
-    console.log("Tcs : Ready_018");
+    console.log('Tcs : Ready_018');
     await ReadyPage.load();
     await driver.pause(waitTime);
     await ReadyPage.getCreditsAndThanksElement.click();
@@ -171,7 +171,7 @@ describe('ReadyPage', () => {
 
   // Ready_019
   it('verifyVolunteeringOpportunitiesLink', async () => {
-    console.log("Tcs : Ready_019");
+    console.log('Tcs : Ready_019');
     await ReadyPage.load();
     await driver.pause(waitTime);
     await ReadyPage.getVolunteeringOpportunitiesElement.click();
@@ -179,13 +179,13 @@ describe('ReadyPage', () => {
     await driver.switchWindow('wevote.applytojob.com/apply');
     await driver.pause(waitTime);
     await expect(ReadyPage.getVolunteeringOpportunitiesPageTitleElement).toHaveText('Current Openings');
-  }); 
+  });
 
   // Ready_020
   it('verifyDonateLinkRedirected', async () => {
-    console.log("Tcs : Ready_020");
+    console.log('Tcs : Ready_020');
     await ReadyPage.load();
-    await driver.pause(waitTime+2000);
+    await driver.pause(waitTime + 2000);
     await browser.scroll(0, 200);
     await driver.pause(waitTime);
     await ReadyPage.getDonateLinkLocator.click();
@@ -195,7 +195,4 @@ describe('ReadyPage', () => {
     await expect(DonatePage.getDonatePageContentTitleElement).toHaveText('Want more Americans to vote?');
     await expect(browser).toHaveTitle('Donate - WeVote');
   });
-
-
-
 });

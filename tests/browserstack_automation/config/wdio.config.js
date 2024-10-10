@@ -41,8 +41,8 @@ module.exports.config = {
     '../specs/PrivacyPage.js',
     '../specs/ReadyPage.js',
     '../specs/TermsPage.js',
-     '../specs/TopNavigation.js',
-     '../specs/WRFO.js'
+    '../specs/TopNavigation.js',
+    '../specs/WRFO.js',
   ],
   capabilities,
   commonCapabilities: {
@@ -63,7 +63,7 @@ module.exports.config = {
   logLevel: 'error',
   coloredLogs: true,
   baseUrl: browserStackConfig.WEB_APP_ROOT_URL,
-  waitforTimeout: 20000,
+  waitforTimeout: 10000,
   connectionRetryTimeout: 90000,
   connectionRetryCount: 1,
   services: [['browserstack']],
