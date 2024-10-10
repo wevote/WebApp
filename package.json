@@ -175,5 +175,7 @@
   },
   "readme": "ERROR: No README data found!",
   "homepage": "https://github.com/wevote/WebApp#readme",
-  "_id": "wevoteusa@1.0.0"
+  "_id": "wevoteusa@1.0.0",
+  "type": "commonjs"
 }
+  

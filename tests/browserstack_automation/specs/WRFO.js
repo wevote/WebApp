@@ -2,6 +2,7 @@ import { $,driver, expect, browser} from '@wdio/globals';
 import ReadyPage from '../page_objects/ready.page';
 import WRFOPage from '../page_objects/footer_wrfo.page';
 const ExcelData = require('../config/readExcel.js');
+const assert = require('assert');
   
 const { describe, it } = require('mocha');
 const waitTime = 8000;
@@ -22,10 +23,11 @@ describe('WRFOPage', () => {
     let stName = (await excelRead.read("stateName"));
     let stUrl = (await excelRead.read("stateURL"));
     let stTitle = (await excelRead.read("stateTitle"));
+    let stAbb = (await excelRead.read("stateAbb"));
 
-    console.log("state names: " +stName);
-    console.log("state urls :" +stUrl);
-    console.log("state titles :" +stTitle);
+    //console.log("state names: " +stName);
+    //console.log("state urls :" +stUrl);
+    //console.log("state titles :" +stTitle);
 
     for (let k=0; k < stName.length; k++ )
     {
@@ -42,10 +44,10 @@ describe('WRFOPage', () => {
         await expect(browser).toHaveTitle(expect.stringContaining(stTitle[k]));
         await driver.pause(waitTime);
         const stSelectBox = await $('#outlined-age-native-simple');
-        const visibleText = await stSelectBox.getText()[k];
+        const visibleText = await stSelectBox.getValue();
         console.log("selected state in drop down:"+visibleText);
-        await expect(visibleText).toHaveValue(stName, { ignoreCase: true });
-        
+        assert.equal(visibleText, stAbb[k],"Error: Actual state: "+visibleText+ " diff from expected state:" +stAbb[k]);
+               
       }
       catch(ex)
       {
