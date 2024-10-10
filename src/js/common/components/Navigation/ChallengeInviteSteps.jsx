@@ -5,13 +5,7 @@ import { withStyles } from '@mui/styles';
 import styled from 'styled-components';
 import commonMuiStyles from '../Style/commonMuiStyles';
 import DesignTokenColors from '../Style/DesignTokenColors';
-
-// Import icons
-import RocketIcon from '../../../../img/global/svg-icons/issues/rocket-ship.svg';
-import StepOneIcon from '../../../../img/global/svg-icons/issues/material-symbols-counter-1.svg';
-import StepOneActiveIcon from '../../../../img/global/svg-icons/issues/material-symbols-counter-1-active.svg';
-import StepTwoIcon from '../../../../img/global/svg-icons/issues/material-symbols-counter-2.svg';
-import StepTwoActiveIcon from '../../../../img/global/svg-icons/issues/material-symbols-counter-2-active.svg';
+import SvgImage from '../Widgets/SvgImage';
 
 // Color and font variables
 const commonTextStyle = {
@@ -21,16 +15,16 @@ const commonTextStyle = {
   textAlign: 'center',
   colors: DesignTokenColors.neutral900,
   textDecoration: 'none',
-  // width: '272px',
 };
 // ChallengeInviteSteps component to display the steps
 class ChallengeInviteSteps extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.state = {
       activeStep: this.getActiveStepFromPath(),
     };
   }
+
   // Get the current step based on the URL to determine which step is active by default when the page loads
   getActiveStepFromPath = () => {
     const { location } = this.props;
@@ -41,9 +35,6 @@ class ChallengeInviteSteps extends React.Component {
     }
     return 1;
   };
-
-  // Check if a step is active based on the current step number
-  isStepActive = (stepNumber) => this.props.currentStep === stepNumber;
 
   // Get the path for the challenge
   getChallengeBasePath = () => {
@@ -65,24 +56,25 @@ class ChallengeInviteSteps extends React.Component {
     this.setState({ activeStep: stepNumber });
   };
 
-  render() {
+  render () {
     return (
       <ChallengeInviteStepsContainer>
         {/* Rocket, Invite more friends, and Learn More */}
         <HeaderContainer>
-          <img
-            src={RocketIcon}
+          <SvgImage
+            imageName="rocket-ship"
             alt="Rocket Icon"
+            color="none"
             style={{ height: '70px', width: '40px' }}
           />
-          <h2>
+          <TitleH2>
             To boost your ranking, invite your friends to join.
-          </h2>
+          </TitleH2>
           <Wrapper>
             <LearnMoreTextBlock />
-            <button type="button">
+            <LearnMoreButton type="button">
               Learn more
-            </button>
+            </LearnMoreButton>
           </Wrapper>
         </HeaderContainer>
 
@@ -93,8 +85,8 @@ class ChallengeInviteSteps extends React.Component {
             isActive={this.isStepActive(1)}
             onClick={() => this.handleStepClick(1)}
           >
-            <img
-              src={this.isStepActive(1) ? StepOneActiveIcon : StepOneIcon}
+            <SvgImage
+              imageName={this.isStepActive(1) ? 'material-symbols-counter-1-active' : 'material-symbols-counter-1'}
               alt="Step 1 Icon"
             />
             <Link
@@ -114,8 +106,8 @@ class ChallengeInviteSteps extends React.Component {
             isActive={this.isStepActive(2)}
             onClick={() => this.handleStepClick(2)}
           >
-            <img
-              src={this.isStepActive(2) ? StepTwoActiveIcon : StepTwoIcon}
+            <SvgImage
+              imageName={this.isStepActive(2) ? 'material-symbols-counter-2-active' : 'material-symbols-counter-2'}
               alt="Step 2 Icon"
             />
             <Link
@@ -134,12 +126,10 @@ class ChallengeInviteSteps extends React.Component {
 }
 
 ChallengeInviteSteps.propTypes = {
-  currentStep: PropTypes.number.isRequired,
   challengeSEOFriendlyPath: PropTypes.string,
   challengeWeVoteId: PropTypes.string,
   location: PropTypes.object.isRequired,
 };
-
 
 // Styled Components
 const ChallengeInviteStepsContainer = styled('div')`
@@ -158,17 +148,10 @@ const HeaderContainer = styled('div')`
   justify-content: space-between;
   margin-bottom: 10px;
   width: 100%;
+`;
 
-  h2 {
-    color: ${DesignTokenColors.neutral900};
-    font-size: 20px;
-    font-weight: 600;
-    line-height: 25px;
-    margin: 0 10px;
-
-  }
-    button {
-    background: none;
+const LearnMoreButton = styled('button')`{
+background: none;
     border: none;
     color: ${DesignTokenColors.primary500};
     font-size: 13px;
@@ -177,6 +160,14 @@ const HeaderContainer = styled('div')`
   }
 `;
 
+const TitleH2 = styled('h2')`
+    color: ${DesignTokenColors.neutral900};
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 25px;
+    margin: 0 10px;
+  }
+`;
 const Wrapper = styled('div')`
   align-items: center;
   display: flex;
@@ -207,11 +198,6 @@ const StepOneIconAndText = styled('div')`
   margin-right: 25px;
   text-align: center;
   width: 169px;
-
-  img {
-    content: url(${({ isActive }) => (isActive ? StepOneActiveIcon : StepOneIcon)});
-  }
-
   a {
     font-weight: ${({ isActive }) => (isActive ? '600' : 'normal')};
     color: ${({ isActive }) => (isActive ? DesignTokenColors.primary500 : 'inherit')};
@@ -221,10 +207,6 @@ const StepOneIconAndText = styled('div')`
       font-weight: 600;
       text-decoration: underline;
     }
-  }
-
-  &:hover {
-    border-bottom: 2px solid ${DesignTokenColors.primary500};
   }
 `;
 
@@ -237,11 +219,6 @@ const StepTwoIconAndText = styled('div')`
   margin-left: 25px;
   text-align: center;
   width: 109px;
-
-  img {
-    content: url(${({ isActive }) => (isActive ? StepTwoActiveIcon : StepTwoIcon)});
-  }
-
   a {
     font-weight: ${({ isActive }) => (isActive ? '600' : 'normal')};
     color: ${({ isActive }) => (isActive ? DesignTokenColors.primary500 : 'inherit')};
@@ -249,11 +226,8 @@ const StepTwoIconAndText = styled('div')`
     &:hover {
       color: ${DesignTokenColors.primary500};
       font-weight: 600;
+      text-decoration: underline;
     }
-  }
-
-  &:hover {
-   // border-bottom: 2px solid ${DesignTokenColors.primary500};
   }
 `;
 
