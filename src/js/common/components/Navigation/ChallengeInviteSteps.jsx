@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { withStyles } from '@mui/styles';
@@ -6,6 +6,8 @@ import styled from 'styled-components';
 import commonMuiStyles from '../Style/commonMuiStyles';
 import DesignTokenColors from '../Style/DesignTokenColors';
 import SvgImage from '../Widgets/SvgImage';
+
+const BoostLearnMoreModal = React.lazy(() => import(/* webpackChunkName: 'BoostLearnMoreModal' */ '../ChallengeInviteFriends/BoostLearnMoreModal'));
 
 // Color and font variables
 const commonTextStyle = {
@@ -22,6 +24,7 @@ class ChallengeInviteSteps extends React.Component {
     super(props);
     this.state = {
       activeStep: this.getActiveStepFromPath(),
+      showBoostLearnMoreModal: false,
     };
   }
 
@@ -56,7 +59,14 @@ class ChallengeInviteSteps extends React.Component {
     this.setState({ activeStep: stepNumber });
   };
 
-  render () {
+  // Function to toggle modal visibility
+  toggleBoostLearnMoreModal = () => {
+    this.setState((prevState) => ({
+      showBoostLearnMoreModal: !prevState.showBoostLearnMoreModal,
+    }));
+  };
+
+  render() {
     return (
       <ChallengeInviteStepsContainer>
         {/* Rocket, Invite more friends, and Learn More */}
@@ -72,7 +82,7 @@ class ChallengeInviteSteps extends React.Component {
           </TitleH2>
           <Wrapper>
             <LearnMoreTextBlock />
-            <LearnMoreButton type="button">
+            <LearnMoreButton type="button" onClick={this.toggleBoostLearnMoreModal}>
               Learn more
             </LearnMoreButton>
           </Wrapper>
@@ -120,6 +130,16 @@ class ChallengeInviteSteps extends React.Component {
             </Link>
           </StepTwoIconAndText>
         </StepsContainer>
+        {/* Render BoostLearnMoreModal */}
+        <Suspense fallback={<></>}>
+          {this.state.showBoostLearnMoreModal && (
+            <BoostLearnMoreModal
+              show={this.state.showBoostLearnMoreModal}
+              toggleModal={this.toggleBoostLearnMoreModal}
+              ballotItemWeVoteId={this.props.challengeWeVoteId}
+            />
+          )}
+        </Suspense>
       </ChallengeInviteStepsContainer>
     );
   }
