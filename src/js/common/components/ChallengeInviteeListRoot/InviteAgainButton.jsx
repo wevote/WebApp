@@ -107,7 +107,7 @@ const InviteAgainButton = ({ classes, challengeWeVoteId, challengeInviteeId }) =
     }
     // console.log('challengeInviteTextDefault: ', challengeInviteTextDefault);
     const inviteeUrlCode = ChallengeInviteeStore.getNextInviteeUrlCode();
-    const urlToSendTemp = `${ChallengeStore.getSiteUrl(challengeWeVoteId)}/++/${inviteeUrlCode}`;
+    const urlToSendTemp = `${ChallengeStore.getSiteUrl(challengeWeVoteId)}/-${inviteeUrlCode}`;
     const inviteTextToSendTemp3 = `${inviteTextToSendTemp1}${inviteTextToSendTemp2} ${urlToSendTemp}`;
     setInviteTextToSend(inviteTextToSendTemp3);
     // setUrlToSend(urlToSendTemp);

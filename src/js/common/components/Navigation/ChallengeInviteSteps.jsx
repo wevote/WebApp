@@ -39,6 +39,12 @@ class ChallengeInviteSteps extends React.Component {
     return 1;
   };
 
+  // Check if a step is active based on the current step number
+  // isStepActive = (stepNumber) => this.props.currentStep === stepNumber;
+
+  // Set a step as active when clicked
+  isStepActive = (stepNumber) => this.state.activeStep === stepNumber;
+
   // Get the path for the challenge
   getChallengeBasePath = () => {
     const { challengeSEOFriendlyPath, challengeWeVoteId } = this.props;
@@ -50,9 +56,6 @@ class ChallengeInviteSteps extends React.Component {
     }
     return challengeBasePath;
   };
-
-  // Set a step as active when clicked
-  isStepActive = (stepNumber) => this.state.activeStep === stepNumber;
 
   // Update the active step when the link is clicked
   handleStepClick = (stepNumber) => {
@@ -146,6 +149,7 @@ class ChallengeInviteSteps extends React.Component {
 }
 
 ChallengeInviteSteps.propTypes = {
+  currentStep: PropTypes.number.isRequired,
   challengeSEOFriendlyPath: PropTypes.string,
   challengeWeVoteId: PropTypes.string,
   location: PropTypes.object.isRequired,

@@ -44,6 +44,7 @@ import ChallengeAbout from '../../components/Challenge/ChallengeAbout';
 import ChallengeParticipantListRoot from '../../components/ChallengeParticipantListRoot/ChallengeParticipantListRoot';
 import ChallengeInviteeListRoot from '../../components/ChallengeInviteeListRoot/ChallengeInviteeListRoot';
 import ThanksForViewingChallenge from '../../components/Challenge/ThanksForViewingChallenge'
+import ShareStore from '../../stores/ShareStore';
 
 const ChallengeCardForList = React.lazy(() => import(/* webpackChunkName: 'ChallengeCardForList' */ '../../components/ChallengeListRoot/ChallengeCardForList'));
 // const ChallengeCommentsList = React.lazy(() => import(/* webpackChunkName: 'ChallengeCommentsList' */ '../../components/Challenge/ChallengeCommentsList'));
@@ -108,6 +109,7 @@ class ChallengeHomePage extends Component {
       challengeWeVoteIdForDisplay: '', // Value for challenge already received
       sharingStepCompleted: false,
       step2Completed: false,
+      thanksForViewingChallengeOn: false,
       voterCanEditThisChallenge: false,
     };
     // this.onScroll = this.onScroll.bind(this);
@@ -116,7 +118,11 @@ class ChallengeHomePage extends Component {
   componentDidMount () {
     // console.log('ChallengeHomePage componentDidMount');
     const { match: { params } } = this.props;
-    const { challengeSEOFriendlyPath: challengeSEOFriendlyPathFromUrl, challengeWeVoteId } = params;
+    const {
+      challengeSEOFriendlyPath: challengeSEOFriendlyPathFromUrl,
+      challengeWeVoteId,
+      shared_item_code: sharedItemCodeIncoming,
+    } = params;
     // console.log('ChallengeHomePage componentDidMount tabSelected: ', tabSelected);
     // console.log('componentDidMount challengeSEOFriendlyPathFromUrl: ', challengeSEOFriendlyPathFromUrl, ', challengeWeVoteId: ', challengeWeVoteId);
     this.onAppObservableStoreChange();
@@ -161,6 +167,20 @@ class ChallengeHomePage extends Component {
         BallotActions.voterBallotItemsRetrieve(0, '', '');
       }
     }, 5000);  // April 19, 2021: Tuned to keep performance above 83.  LCP at 597ms
+
+    // If we came in through a sharedItem link and then redirected to this page, fetch the shared item details
+    const sharedItem = ShareStore.getSharedItemByCode(sharedItemCodeIncoming);
+    // console.log('sharedItem:', sharedItem);
+    if (sharedItem && sharedItem.shared_by_display_name) {
+      const {
+        shared_by_display_name: sharedByDisplayName,
+        // shared_by_first_name: sharedByFirstName,
+      } = sharedItem;
+      this.setState({
+        sharedByDisplayName,
+        thanksForViewingChallengeOn: true,
+      });
+    }
 
     // console.log('componentDidMount triggerSEOPathRedirect: ', triggerSEOPathRedirect, ', challengeSEOFriendlyPathFromObject: ', challengeSEOFriendlyPathFromObject);
     if (triggerSEOPathRedirect && challengeSEOFriendlyPathFromObject) {
@@ -453,12 +473,9 @@ class ChallengeHomePage extends Component {
       challengeDataFound, challengeDataNotFound,
       challengeDescription, challengeDescriptionLimited, challengeImageUrlLarge,
       challengeSEOFriendlyPath, challengeSEOFriendlyPathForDisplay,
-      challengeTitle,
-      challengeWeVoteIdForDisplay,
-      scrolledDown,
-      voterCanEditThisChallenge,
-      voterIsChallengeParticipant,
-      voterWeVoteId,
+      challengeTitle, challengeWeVoteIdForDisplay,
+      scrolledDown, sharedByDisplayName, thanksForViewingChallengeOn,
+      voterCanEditThisChallenge, voterIsChallengeParticipant, voterWeVoteId,
     } = this.state;
     // console.log('ChallengeHomePage render challengeSEOFriendlyPath: ', challengeSEOFriendlyPath, ', challengeSEOFriendlyPathForDisplay: ', challengeSEOFriendlyPathForDisplay);
     const challengeAdminEditUrl = `${webAppConfig.WE_VOTE_SERVER_ROOT_URL}challenge/${challengeWeVoteId}/summary`;
@@ -520,10 +537,11 @@ class ChallengeHomePage extends Component {
     );
     return (
       <PageContentContainer>
-        <ThanksForViewingChallenge
-           userName="User Name"
-           challengeOwner="David"
-        />
+        {thanksForViewingChallengeOn && (
+          <ThanksForViewingChallenge
+             sharedByDisplayName={sharedByDisplayName}
+          />
+        )}
         <Suspense fallback={<span>&nbsp;</span>}>
           <ChallengeRetrieveController
             challengeSEOFriendlyPath={challengeSEOFriendlyPath}

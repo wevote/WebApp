@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import Confetti from 'react-confetti';
 import React, { useState, useEffect } from 'react';
 
-const ThanksForViewingChallenge = ({ challengeOwner }) => {
+const ThanksForViewingChallenge = ({ sharedByDisplayName }) => {
   const [isClosing, setIsClosing] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
 
@@ -33,10 +33,18 @@ const ThanksForViewingChallenge = ({ challengeOwner }) => {
         <ThankYouMessageWrapper>
           <ThankYouMessage>
             {showConfetti && <Confetti />}
-            Thanks for confirming
-            the link from&nbsp;
-            {challengeOwner}
-            !
+            Thanks for checking out this challenge
+            {sharedByDisplayName && (
+              <>
+                {' '}
+                your friend
+                {' '}
+                {sharedByDisplayName}
+                {' '}
+                has shared with you
+              </>
+            )}
+            ! Join the challenge below.
           </ThankYouMessage>
           <CloseMessageIconWrapper>
             <IconButton
@@ -55,7 +63,7 @@ const ThanksForViewingChallenge = ({ challengeOwner }) => {
   );
 };
 ThanksForViewingChallenge.propTypes = {
-  challengeOwner: PropTypes.string.isRequired,
+  sharedByDisplayName: PropTypes.string,
 };
 
 const CloseMessageIconWrapper = styled.div`

@@ -47,7 +47,7 @@ class PositionItem extends Component {
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
 
     // This creates too much load on the browser
-    // // We want to make sure we have all of the position information so that comments show up
+    // // We want to make sure we have all the position information so that comments show up
     // if (ballotItemWeVoteId) {
     //   const voterGuidesForThisBallotItem = VoterGuideStore.getVoterGuidesToFollowForBallotItemId(ballotItemWeVoteId);
     //
@@ -105,7 +105,7 @@ class PositionItem extends Component {
     // const { ballot_item_we_vote_id: ballotItemWeVoteId, speaker_we_vote_id: organizationWeVoteId } = position;
 
     // This puts too much strain on the browser since PositionItems are in a list
-    // // We want to make sure we have all of the position information so that comments show up
+    // // We want to make sure we have all the position information so that comments show up
     // if (ballotItemWeVoteId) {
     //   const voterGuidesForThisBallotItem = VoterGuideStore.getVoterGuidesToFollowForBallotItemId(ballotItemWeVoteId);
     //

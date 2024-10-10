@@ -2,7 +2,7 @@ import Dispatcher from '../common/dispatcher/Dispatcher';
 
 export default {
   voterPlansForVoterRetrieve (year = 0, month = 0, googleCivicElectionId = 0, stateCode = '') {
-    // Retrieve the click statistics for all of the items you have shared
+    // Retrieve the click statistics for all the items you have shared
     return Dispatcher.loadEndpoint('voterPlansForVoterRetrieve', {
       google_civic_election_id: googleCivicElectionId,
       month,

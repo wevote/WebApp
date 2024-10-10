@@ -17,6 +17,8 @@ const InviteFriendToChallengeInput = ({ classes, challengeWeVoteId, externalUniq
   renderLog('InviteFriendToChallengeInputBox');  // Set LOG_RENDER_EVENTS to log all renders
   const [challengeInviteTextDefault, setChallengeInviteTextDefault] = React.useState('');
   const [challengeTitle, setChallengeTitle] = React.useState('');
+  const [destinationFullURL, setDestinationFullURL] = React.useState('');
+  const [googleCivicElectionId, setGoogleCivicElectionId] = React.useState(0);
   const [inviteCopiedMessageOn, setInviteCopiedMessageOn] = React.useState(false);
   const [inviteeName, setInviteeName] = React.useState('');
   const [inviterName, setInviterName] = React.useState('');
@@ -31,9 +33,11 @@ const InviteFriendToChallengeInput = ({ classes, challengeWeVoteId, externalUniq
     inviteTextToSendTemp1 += inviterFirstName ? `, this is ${inviterFirstName}. ` : ', ';
     const inviteTextToSendTemp2 = inviteTextForFriends || challengeInviteTextDefault;
     const inviteeUrlCode = ChallengeInviteeStore.getNextInviteeUrlCode();
-    const urlToSendTemp = `${ChallengeStore.getSiteUrl(challengeWeVoteId)}/++/${inviteeUrlCode}`;
+    const urlToSendTemp = `${ChallengeStore.getSiteUrl(challengeWeVoteId)}/-${inviteeUrlCode}`;
     const inviteTextToSendTemp3 = `${inviteTextToSendTemp1}${inviteTextToSendTemp2} ${urlToSendTemp}`;
     setInviteTextToSend(inviteTextToSendTemp3);
+    const SEOFriendlyPath = ChallengeStore.getChallengeSEOFriendlyPathByWeVoteId(challengeWeVoteId);
+    setDestinationFullURL(`${ChallengeStore.getSiteUrl(challengeWeVoteId)}/${SEOFriendlyPath}/+/`);
     // setUrlToSend(urlToSendTemp);
   }
 
@@ -46,13 +50,21 @@ const InviteFriendToChallengeInput = ({ classes, challengeWeVoteId, externalUniq
 
   const handleShare = async () => {
     const inviteeUrlCode = ChallengeInviteeStore.getNextInviteeUrlCode();
-    ChallengeInviteeActions.challengeInviteeSave(challengeWeVoteId, 0, inviteeName, true, inviteTextToSend, true, inviteeUrlCode, true);
+    ChallengeInviteeActions.challengeInviteeSave(
+      challengeWeVoteId,
+      destinationFullURL,
+      googleCivicElectionId,
+      0,
+      inviteeName, true,
+      inviteTextToSend, true,
+      inviteeUrlCode, true,
+    );
     setInviteCopiedMessageOn(true);
     setTimeout(() => {
       console.log('handleShare setTimeout fired');
       setInviteCopiedMessageOn(false);
       resetForm();
-    }, 1000);
+    }, 2000);
     if (navigator.share) {
       try {
         await navigator.share({
@@ -84,15 +96,19 @@ const InviteFriendToChallengeInput = ({ classes, challengeWeVoteId, externalUniq
     };
 
     const onChallengeParticipantStoreChange = () => {
-      setInviterName(VoterStore.getFirstName());
       setInviteTextForFriends(ChallengeParticipantStore.getInviteTextForFriends(challengeWeVoteId));
       prepareInviteTextToSend();
     };
 
     const onChallengeStoreChange = () => {
-      setInviterName(VoterStore.getFirstName());
       setChallengeInviteTextDefault(ChallengeStore.getChallengeInviteTextDefaultByWeVoteId(challengeWeVoteId));
       setChallengeTitle(ChallengeStore.getChallengeTitleByWeVoteId(challengeWeVoteId));
+      prepareInviteTextToSend();
+    };
+
+    const onVoterStoreChange = () => {
+      setGoogleCivicElectionId(VoterStore.electionId());
+      setInviterName(VoterStore.getFirstName());
       prepareInviteTextToSend();
     };
 
@@ -103,11 +119,14 @@ const InviteFriendToChallengeInput = ({ classes, challengeWeVoteId, externalUniq
     onChallengeParticipantStoreChange();
     const challengeStoreListener = ChallengeStore.addListener(onChallengeStoreChange);
     onChallengeStoreChange();
+    const voterStoreListener = VoterStore.addListener(onVoterStoreChange);
+    onVoterStoreChange();
 
     return () => {
       challengeInviteeStoreListener.remove();
       challengeParticipantStoreListener.remove();
       challengeStoreListener.remove();
+      voterStoreListener.remove();
     };
   }, [challengeWeVoteId]);
 

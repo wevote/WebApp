@@ -7,7 +7,7 @@ import FirstChallengeInviteeListController from './FirstChallengeInviteeListCont
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import ChallengeInviteeStore from '../../stores/ChallengeInviteeStore';
 import DesignTokenColors from '../Style/DesignTokenColors';
-import ChallengeParticipantStore from "../../stores/ChallengeParticipantStore";
+import ChallengeParticipantStore from '../../stores/ChallengeParticipantStore';
 
 const ChallengeParticipantFirstRetrieveController = React.lazy(() => import(/* webpackChunkName: 'ChallengeParticipantFirstRetrieveController' */ '../ChallengeParticipant/ChallengeParticipantFirstRetrieveController'));
 
