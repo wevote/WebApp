@@ -18,10 +18,12 @@ import { renderLog } from '../../utils/logging';
 import DesignTokenColors from '../../components/Style/DesignTokenColors';
 import ChallengeInviteSteps from '../../components/Navigation/ChallengeInviteSteps';
 import ChallengeInviteeListRoot from '../../components/ChallengeInviteeListRoot/ChallengeInviteeListRoot';
+import ChallengeInviteeStore from '../../stores/ChallengeInviteeStore';
 import InviteFriendToChallengeInput from '../../components/ChallengeInviteFriends/InviteFriendToChallengeInput';
 import YourRank from '../../components/Challenge/YourRank';
 
 const ChallengeRetrieveController = React.lazy(() => import(/* webpackChunkName: 'ChallengeRetrieveController' */ '../../components/Challenge/ChallengeRetrieveController'));
+const FirstChallengeInviteeListController = React.lazy(() => import(/* webpackChunkName: 'ChallengeRetrieveController' */ '../../components/ChallengeInviteeListRoot/FirstChallengeInviteeListController'));
 const VoterFirstRetrieveController = loadable(() => import(/* webpackChunkName: 'VoterFirstRetrieveController' */ '../../components/Settings/VoterFirstRetrieveController'));
 
 
@@ -34,6 +36,7 @@ class ChallengeInviteFriends extends Component {
       challengeTitle: '',
       challengeWeVoteId: '',
       chosenWebsiteName: '',
+      inviteeList: [],
     };
   }
 
@@ -42,6 +45,8 @@ class ChallengeInviteFriends extends Component {
     this.props.setShowHeaderFooter(false);
     this.onAppObservableStoreChange();
     this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
+    this.onChallengeInviteeStoreChange();
+    this.challengeInviteeStoreListener = ChallengeInviteeStore.addListener(this.onChallengeInviteeStoreChange.bind(this));
     this.onChallengeStoreChange();
     this.challengeStoreListener = ChallengeStore.addListener(this.onChallengeStoreChange.bind(this));
     const { match: { params } } = this.props;
@@ -85,6 +90,7 @@ class ChallengeInviteFriends extends Component {
   componentWillUnmount () {
     this.props.setShowHeaderFooter(true);
     this.appStateSubscription.unsubscribe();
+    this.challengeInviteeStoreListener.remove();
     this.challengeStoreListener.remove();
   }
 
@@ -94,6 +100,16 @@ class ChallengeInviteFriends extends Component {
     this.setState({
       chosenWebsiteName,
     });
+  }
+
+  onChallengeInviteeStoreChange () {
+    const { challengeWeVoteId } = this.state;
+    if (challengeWeVoteId) {
+      const inviteeList = ChallengeInviteeStore.getChallengeInviteeList(challengeWeVoteId);
+      this.setState({
+        inviteeList,
+      });
+    }
   }
 
   onChallengeStoreChange () {
@@ -153,7 +169,7 @@ class ChallengeInviteFriends extends Component {
     renderLog('ChallengeInviteFriends');  // Set LOG_RENDER_EVENTS to log all renders
     const {
       challengePhotoLargeUrl, challengeSEOFriendlyPath, challengeTitle,
-      challengeWeVoteId, chosenWebsiteName,
+      challengeWeVoteId, chosenWebsiteName, inviteeList,
     } = this.state;
     const htmlTitle = `Invite your friends - ${chosenWebsiteName}`;
     return (
@@ -197,15 +213,20 @@ class ChallengeInviteFriends extends Component {
             </ContentInnerWrapperDefault>
           </ContentOuterWrapperDefault>
         </PageWrapperDefault>
-        <InvitedFriendsWrapper>
-          <YourRank challengeSEOFriendlyPath={challengeSEOFriendlyPath} challengeWeVoteId={challengeWeVoteId} />
-          <ChallengeInviteeListRoot challengeWeVoteId={challengeWeVoteId} />
-        </InvitedFriendsWrapper>
+        {inviteeList.length > 0 && (
+          <InvitedFriendsWrapper>
+            <YourRank challengeSEOFriendlyPath={challengeSEOFriendlyPath} challengeWeVoteId={challengeWeVoteId} />
+            <ChallengeInviteeListRoot challengeWeVoteId={challengeWeVoteId} />
+          </InvitedFriendsWrapper>
+        )}
         <Suspense fallback={<span>&nbsp;</span>}>
           <ChallengeRetrieveController challengeSEOFriendlyPath={challengeSEOFriendlyPath} challengeWeVoteId={challengeWeVoteId} />
         </Suspense>
         <Suspense fallback={<span>&nbsp;</span>}>
           <VoterFirstRetrieveController />
+        </Suspense>
+        <Suspense fallback={<></>}>
+          <FirstChallengeInviteeListController challengeWeVoteId={challengeWeVoteId} />
         </Suspense>
       </div>
     );

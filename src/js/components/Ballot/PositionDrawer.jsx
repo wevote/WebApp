@@ -120,7 +120,7 @@ class PositionDrawer extends Component {
     }
 
     // 2022-04-28 This slows down rendering too much
-    // // We want to make sure we have all of the position information so that comments show up
+    // // We want to make sure we have all the position information so that comments show up
     // const voterGuidesForThisBallotItem = VoterGuideStore.getVoterGuidesToFollowForBallotItemId(ballotItemWeVoteId);
     //
     // if (voterGuidesForThisBallotItem) {

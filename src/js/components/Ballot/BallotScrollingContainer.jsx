@@ -100,7 +100,7 @@ class BallotScrollingContainer extends Component {
   };
 
   handleContainerClick = (e, weVoteId) => {
-    console.log(e.target);
+    // console.log(e.target);
     const candidateContainer = document.getElementById(`candidateContainer-${weVoteId}`);
     const positionRowListOuterWrapper = document.getElementById(`positionRowListOuterWrapper-${weVoteId}`);
     const candidateDiv = document.getElementById(`candidateDiv-${weVoteId}`);
@@ -116,7 +116,7 @@ class BallotScrollingContainer extends Component {
     const buttonWrapper = document.getElementById(`buttonWrapper-${weVoteId}`);
     // EAW VERIFY - might not need this one
     const candidateParty = document.getElementById(`candidateParty-${weVoteId}`);
-    console.log(buttonWrapper);
+    // console.log(buttonWrapper);
     if (e.target === candidateDiv ||
           e.target === candidateContainer ||
           e.target === positionRowListOuterWrapper ||
