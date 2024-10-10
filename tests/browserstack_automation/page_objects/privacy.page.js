@@ -28,6 +28,10 @@ class PrivacyPage extends Page {
     return $('#weVoteContactUsPage');
   }
 
+  get privacyHeader () {
+    return $('.ContentTitle-sc-aac96k-0 MAaSL=WeVote.US Privacy Policy');
+  }
+
   get deleteYourAccountLink () {
     return $('#deleteAllAccountDataLink');
   }
