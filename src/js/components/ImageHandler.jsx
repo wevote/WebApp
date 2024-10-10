@@ -31,7 +31,7 @@ export default class ImageHandler extends Component {
     const { kind_of_ballot_item: kindOfBallotItem } = this.props;
     const kindOfImage = this.props.kind_of_image ? this.props.kind_of_image : kindOfBallotItem;
     const imagePlaceholderIcon = null;
-
+    const { ballotItemWeVoteId } = this.props;
     // handles setting the placeholder image by "kind_of_image" or "ballot item" type.
     switch (kindOfImage) {
       case 'CANDIDATE':
@@ -62,6 +62,7 @@ export default class ImageHandler extends Component {
           <img
             alt={alt}
             className={`${sizeClassName} ${incomingClassName} ${replacementClass}`}
+            id={`imageHandlerDiv-${ballotItemWeVoteId}`}
             src={placeHolderImageUrl}
             style={style}
           />
@@ -69,6 +70,7 @@ export default class ImageHandler extends Component {
           <img
             alt={alt}
             className={`${sizeClassName} ${incomingClassName}`}
+            id={`imageHandlerDiv-${ballotItemWeVoteId}`}
             src={this.props.imageUrl}
             onError={this.brokenLink.bind(this)}
             style={style}
@@ -97,4 +99,5 @@ ImageHandler.propTypes = {
   kind_of_image: PropTypes.string,
   sizeClassName: PropTypes.string,
   style: PropTypes.object,
+  ballotItemWeVoteId: PropTypes.string,
 };
