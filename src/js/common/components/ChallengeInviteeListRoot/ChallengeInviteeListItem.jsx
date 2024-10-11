@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
 import { Avatar } from '@mui/material';
 import { withStyles } from '@mui/styles';
@@ -8,9 +8,13 @@ import DesignTokenColors from '../Style/DesignTokenColors';
 import ConfirmYouSentInviteButton from './ConfirmYouSentInviteButton';
 import InviteAgainButton from './InviteAgainButton';
 import speakerDisplayNameToInitials from '../../utils/speakerDisplayNameToInitials';
+import Popover from '@mui/material/Popover';
+import Typography from '@mui/material/Typography';
+
 
 const ChallengeInviteeListItem = ({ invitee, classes }) => {
   // console.log('ChallengeInviteeListItem:', invitee);
+  const [anchorEl, setAnchorEl] = useState(null);
   const { sx, children } = speakerDisplayNameToInitials(invitee.invitee_name);
   let challengeStatusIconJsx = <></>;
   let challengeStatusMessage = ''
@@ -24,6 +28,19 @@ const ChallengeInviteeListItem = ({ invitee, classes }) => {
     challengeStatusIconJsx = <Check />;
     challengeStatusMessage = 'Invite sent';
   }
+
+const onDotButtonClick = (e) => {
+  console.log(e.currentTarget)
+  setAnchorEl(e.currentTarget);
+};
+
+const handlePopoverClose = () => {
+  setAnchorEl(null);
+};
+
+const open = Boolean(anchorEl);
+const id = open ? 'simple-popover' : undefined;
+
   return (
     <InvitedFriendDetails>
       <PrimaryDetails>
@@ -34,7 +51,31 @@ const ChallengeInviteeListItem = ({ invitee, classes }) => {
         </FriendName>
         <VerticalLine />
         <ActivityCommentEditWrapper>
-          <MoreHoriz />
+          <button type="button" aria-label="source" onClick={onDotButtonClick}>
+            <MoreHoriz />
+          </button>
+          <Popover
+            id={id}
+            open={open}
+            anchorEl={anchorEl}
+            onClose={handlePopoverClose}
+
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'right',
+            }}
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'left',
+            }}
+          >
+            <Typography component="div" style={{ padding: '5px', fontFamily: 'Roboto, sans-serif' }}>
+              Edit name & message
+            </Typography>
+            <Typography component="div" style={{ padding: '5px', fontFamily: 'Roboto, sans-serif' }}>
+                View details
+            </Typography>
+          </Popover>
         </ActivityCommentEditWrapper>
       </PrimaryDetails>
       <Options>
@@ -73,6 +114,7 @@ const styles = () => ({
   searchButton: {
     borderRadius: 50,
   },
+
 });
 
 
@@ -146,5 +188,7 @@ const Invite = styled.a`
   padding: 5px;
   color: #4371cc;
 `;
+
+
 
 export default withStyles(styles)(ChallengeInviteeListItem);
