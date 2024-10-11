@@ -3,18 +3,23 @@ import React, {useState} from 'react';
 import styled from 'styled-components';
 import { Avatar } from '@mui/material';
 import { withStyles } from '@mui/styles';
-import { RemoveRedEye, CheckCircle, Check, MoreHoriz } from '@mui/icons-material';
+import { RemoveRedEye, CheckCircle, Check, Info, Edit, MoreHoriz } from '@mui/icons-material';
 import DesignTokenColors from '../Style/DesignTokenColors';
 import ConfirmYouSentInviteButton from './ConfirmYouSentInviteButton';
 import InviteAgainButton from './InviteAgainButton';
 import speakerDisplayNameToInitials from '../../utils/speakerDisplayNameToInitials';
 import Popover from '@mui/material/Popover';
 import Typography from '@mui/material/Typography';
+import ViewInviteeDetails from '../ChallengeInviteFriends/ViewInviteeDetails';
 
+// const ViewInviteeDetails = React.lazy(() => import(/* webpackChunkName: 'ViewInviteeDetails' */ '../../../common/components/ChallengeInviteFriends/ViewInviteeDetails')); //
 
 const ChallengeInviteeListItem = ({ invitee, classes }) => {
+
   // console.log('ChallengeInviteeListItem:', invitee);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [viewInviteeDetails, setViewInviteeDetails] = useState(false)
+
   const { sx, children } = speakerDisplayNameToInitials(invitee.invitee_name);
   let challengeStatusIconJsx = <></>;
   let challengeStatusMessage = ''
@@ -30,13 +35,16 @@ const ChallengeInviteeListItem = ({ invitee, classes }) => {
   }
 
 const onDotButtonClick = (e) => {
-  console.log(e.currentTarget)
   setAnchorEl(e.currentTarget);
 };
 
 const handlePopoverClose = () => {
   setAnchorEl(null);
 };
+
+const openViewInviteeDetails = () => {
+  setViewInviteeDetails(true);
+ }
 
 const open = Boolean(anchorEl);
 const id = open ? 'simple-popover' : undefined;
@@ -69,13 +77,19 @@ const id = open ? 'simple-popover' : undefined;
               horizontal: 'left',
             }}
           >
-            <Typography component="div" style={{ padding: '5px', fontFamily: 'Roboto, sans-serif' }}>
+            <Typography component="div" style={{ padding: '5px', fontFamily: 'Roboto, sans-serif', fontSize: '14px'}}>
+              <Edit style={{fontSize:"14px"}}/>
               Edit name & message
             </Typography>
-            <Typography component="div" style={{ padding: '5px', fontFamily: 'Roboto, sans-serif' }}>
-                View details
+            <Typography onClick={openViewInviteeDetails} component="div" style={{ padding: '5px', fontFamily: 'Roboto, sans-serif', fontSize: '14px' }} >
+              <Info style={{fontSize:"14px"}}/>
+              View details
             </Typography>
           </Popover>
+          <ViewInviteeDetails
+            show={helpWinOrDefeatModalOpen}
+
+          />
         </ActivityCommentEditWrapper>
       </PrimaryDetails>
       <Options>
