@@ -7,7 +7,6 @@ import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import CandidateActions from '../../actions/CandidateActions';
-import CardForListBodyPlaceholder from '../../common/components/CardForListBodyPlaceholder';
 import IssueActions from '../../actions/IssueActions';
 import MeasureActions from '../../actions/MeasureActions';
 import OrganizationActions from '../../actions/OrganizationActions';
@@ -35,7 +34,6 @@ import { headroomWrapperOffset } from '../../utils/cordovaCalculatedOffsets';
 import { getPageKey } from '../../utils/cordovaPageUtils';
 import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
 import { Candidate, CandidateNameAndPartyWrapper, CandidateNameH4, CandidateParty, CandidateTopRow } from '../Style/BallotStyles';
-import ImageHandler from '../ImageHandler';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import CampaignSupportThermometer from '../../common/components/CampaignSupport/CampaignSupportThermometer';
 // import { handleResize } from '../../common/utils/isMobileScreenSize';
@@ -44,6 +42,7 @@ const CampaignRetrieveController = React.lazy(() => import(/* webpackChunkName: 
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
 const IssuesByBallotItemDisplayList = React.lazy(() => import(/* webpackChunkName: 'IssuesByBallotItemDisplayList' */ '../Values/IssuesByBallotItemDisplayList'));
 const MeasureItem = React.lazy(() => import(/* webpackChunkName: 'MeasureItem' */ '../Ballot/MeasureItem'));
+const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
 const PoliticianCardForList = React.lazy(() => import(/* webpackChunkName: 'PoliticianCardForList' */ '../PoliticianListRoot/PoliticianCardForList'));
 const PositionList = React.lazy(() => import(/* webpackChunkName: 'PositionList' */ '../Ballot/PositionList'));
 const ScoreSummaryListController = React.lazy(() => import(/* webpackChunkName: 'ScoreSummaryListController' */ '../Widgets/ScoreDisplay/ScoreSummaryListController'));
@@ -389,12 +388,13 @@ class OrganizationModal extends Component {
               >
                 <Suspense fallback={<></>}>
                   <ImageHandler
-                          className={avatarCompressed}
-                          sizeClassName="icon-candidate-small u-push--sm "
-                          imageUrl={politicianImageUrlLarge}
-                          alt=""
-                          kind_of_ballot_item="CANDIDATE"
-                          style={{ backgroundImage: { avatarBackgroundImage } }}
+                    key={politicianImageUrlLarge} // Forces re-render when URL changes
+                    className={avatarCompressed}
+                    sizeClassName="icon-candidate-small u-push--sm "
+                    imageUrl={politicianImageUrlLarge}
+                    alt=""
+                    kind_of_ballot_item="CANDIDATE"
+                    style={{ backgroundImage: { avatarBackgroundImage } }}
                   />
                 </Suspense>
                 <CandidateNameAndPartyWrapper>
@@ -433,20 +433,14 @@ class OrganizationModal extends Component {
         </DrawerHeaderOuterContainer>
         {(isCandidate && !hideBallotItemInfo) && (
           <PoliticianCardForListWrapper>
-            {politicianWeVoteId ? (
+            <Suspense fallback={<></>}>
               <PoliticianCardForList
                 politicianWeVoteId={politicianWeVoteId}
+                showPoliticianOpenInNewWindow
                 useCampaignSupportThermometer
                 useVerticalCard
               />
-            ) : (
-              <CardForListBodyPlaceholder
-                useVerticalCard
-                hideCardMargins
-                limitCardWidth
-                profileImageBackgroundColor
-              />
-            )}
+            </Suspense>
             <Suspense fallback={<></>}>
               <IssuesByBallotItemDisplayList
                 ballotItemDisplayName={ballotItemDisplayName}

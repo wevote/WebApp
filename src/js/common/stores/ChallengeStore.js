@@ -2,6 +2,7 @@ import { ReduceStore } from 'flux/utils';
 import { avatarGeneric } from '../../utils/applicationUtils';
 import Dispatcher from '../dispatcher/Dispatcher';
 import arrayContains from '../utils/arrayContains';
+import AppObservableStore from './AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
 import daysUntil from '../utils/daysUntil'; // eslint-disable-line import/no-cycle
 
@@ -249,6 +250,14 @@ class ChallengeStore extends ReduceStore {
     return SUPPORTERS_COUNT_NEXT_GOAL_DEFAULT;
   }
 
+  getChallengeSEOFriendlyPathByWeVoteId (challengeWeVoteId) {
+    const challenge = this.getState().allCachedChallengeDicts[challengeWeVoteId];
+    if (challenge === undefined || challenge.seo_friendly_path === undefined) {
+      return '';
+    }
+    return challenge.seo_friendly_path;
+  }
+
   getChallengeTitleByWeVoteId (challengeWeVoteId) {
     const challenge = this.getState().allCachedChallengeDicts[challengeWeVoteId];
     if (challenge === undefined || challenge.challenge_title === undefined) {
@@ -340,7 +349,7 @@ class ChallengeStore extends ReduceStore {
     if (challenge && challenge.site_url) {
       return challenge.site_url;
     } else {
-      return 'https://wevote.us';
+      return AppObservableStore.getWeVoteRootURL();
     }
   }
 

@@ -21,7 +21,6 @@ import CandidateStore from '../../../stores/CandidateStore';
 import CardForListBodyPlaceholder from '../../components/CardForListBodyPlaceholder';
 import OfficeHeldStore from '../../stores/OfficeHeldStore';
 import PoliticianStore from '../../stores/PoliticianStore';
-import OfficeItemCompressed from '../../../components/Ballot/OfficeItemCompressed';
 import CampaignChipInLink from '../../components/Campaign/CampaignChipInLink';
 import CampaignOwnersList from '../../components/CampaignSupport/CampaignOwnersList';
 import CompleteYourProfileModalController from '../../components/Settings/CompleteYourProfileModalController';
@@ -67,6 +66,7 @@ const CampaignShareChunk = React.lazy(() => import(/* webpackChunkName: 'Campaig
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../../../components/ImageHandler'));
 // const ItemActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemActionBar' */ '../../../components/Widgets/ItemActionBar/ItemActionBar'));
 const OfficeNameText = React.lazy(() => import(/* webpackChunkName: 'OfficeNameText' */ '../../components/Widgets/OfficeNameText'));
+const OfficeItemCompressed = React.lazy(() => import(/* webpackChunkName: 'OfficeItemCompressed' */ '../../../components/Ballot/OfficeItemCompressed'));
 const PoliticianCardForList = React.lazy(() => import(/* webpackChunkName: 'PoliticianCardForList' */ '../../../components/PoliticianListRoot/PoliticianCardForList'));
 const PoliticianEndorsementsList = React.lazy(() => import(/* webpackChunkName: 'PoliticianEndorsementsList' */ '../../components/Politician/PoliticianEndorsementsList'));
 const PoliticianLinks = React.lazy(() => import(/* webpackChunkName: 'PolitianLinks' */ '../../components/Politician/PoliticianLinks'));
@@ -955,20 +955,11 @@ class PoliticianDetailsPage extends Component {
                 </MobileHeaderContentContainer>
               </MobileHeaderInnerContainer>
             </MobileHeaderOuterContainer>
-            {politicianWeVoteId ? (
-              <PoliticianCardForList
-                politicianWeVoteId={politicianWeVoteIdForDisplay}
-                useCampaignSupportThermometer
-                useVerticalCard
-              />
-            ) : (
-              <CardForListBodyPlaceholder
-                useVerticalCard
-                hideCardMargins
-                limitCardWidth
-                profileImageBackgroundColor
-              />
-            )}
+            <PoliticianCardForList
+              politicianWeVoteId={politicianWeVoteIdForDisplay}
+              useCampaignSupportThermometer
+              useVerticalCard
+            />
             <CampaignDescriptionWrapper hideCardMargins>
               {politicianDataFound && (
                 <DelayedLoad waitBeforeShow={250}>
@@ -1033,15 +1024,17 @@ class PoliticianDetailsPage extends Component {
                 </CampaignSubSectionTitleWrapper>
                 {(officeWeVoteId) ? (
                   <BallotOverflowWrapper>
-                    <OfficeItemCompressed
-                      officeWeVoteId={officeWeVoteId}
-                      ballotItemDisplayName=""  // {contestOfficeNameFromOpponentList}
-                      candidateList={opponentCandidateList}
-                      // candidatesToShowForSearchResults={candidatesToShowForSearchResults}
-                      disableAutoRollUp
-                    // isFirstBallotItem={isFirstBallotItem}
-                    // primaryParty={primaryParty}
-                    />
+                    <Suspense fallback={<span>&nbsp;</span>}>
+                      <OfficeItemCompressed
+                        officeWeVoteId={officeWeVoteId}
+                        ballotItemDisplayName=""  // {contestOfficeNameFromOpponentList}
+                        candidateList={opponentCandidateList}
+                        // candidatesToShowForSearchResults={candidatesToShowForSearchResults}
+                        disableAutoRollUp
+                      // isFirstBallotItem={isFirstBallotItem}
+                      // primaryParty={primaryParty}
+                      />
+                    </Suspense>
                   </BallotOverflowWrapper>
                 ) : (
                   <OtherElectionsWrapper>
@@ -1121,20 +1114,11 @@ class PoliticianDetailsPage extends Component {
           <DetailsSectionDesktopTablet className="u-show-desktop-tablet">
             <ColumnsWrapper>
               <ColumnOneThird>
-                {politicianWeVoteId ? (
-                  <PoliticianCardForList
-                    politicianWeVoteId={politicianWeVoteIdForDisplay}
-                    useCampaignSupportThermometer
-                    useVerticalCard
-                  />
-                ) : (
-                  <CardForListBodyPlaceholder
-                    useVerticalCard
-                    hideCardMargins
-                    limitCardWidth
-                    profileImageBackgroundColor
-                  />
-                )}
+                <PoliticianCardForList
+                  politicianWeVoteId={politicianWeVoteIdForDisplay}
+                  useCampaignSupportThermometer
+                  useVerticalCard
+                />
                 <CampaignOwnersDesktopWrapper>
                   <CampaignOwnersList politicianWeVoteId={politicianWeVoteIdForDisplay} />
                 </CampaignOwnersDesktopWrapper>

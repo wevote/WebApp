@@ -66,7 +66,7 @@ class PositionRowItem extends Component {
     const { position } = this.props;
     const { ballot_item_we_vote_id: ballotItemWeVoteId, speaker_we_vote_id: organizationWeVoteId } = position;
 
-    // We want to make sure we have all of the position information so that comments show up
+    // We want to make sure we have all the position information so that comments show up
     if (ballotItemWeVoteId) {
       const voterGuidesForThisBallotItem = VoterGuideStore.getVoterGuidesToFollowForBallotItemId(ballotItemWeVoteId);
 

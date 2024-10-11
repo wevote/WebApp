@@ -59,8 +59,8 @@ body {
   font-style:normal;
   font-weight:normal;
   letter-spacing:.15px;
-  line-height:24px;
-  margin:0;
+  line-height: 1.4;
+  margin:0 auto;
   text-align:left
 }
 

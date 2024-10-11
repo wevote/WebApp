@@ -141,6 +141,8 @@ class IssueFollowToggleButton extends Component {
     this.setState({
       isFollowing: false,
       isFollowingLocalValue: false,
+      open: false,
+      anchorEl: null
     });
   }
 

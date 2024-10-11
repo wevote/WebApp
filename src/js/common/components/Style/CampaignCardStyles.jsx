@@ -47,7 +47,7 @@ export const CampaignImageDesktopPlaceholder = styled('div', {
 })(({ limitCardWidth, profileImageBackgroundColor, useVerticalCard }) => (`
   align-items: center;
   background-color: ${profileImageBackgroundColor ||  DesignTokenColors.neutralUI50};
-  ${useVerticalCard ? `border: 1px solid ${DesignTokenColors.neutralUI100};` : ''}
+  ${useVerticalCard ? `border: 1px solid ${DesignTokenColors.neutralUI50};` : ''}
   ${useVerticalCard ? 'border-radius: 12px;' : ''}
   display: flex;
   ${limitCardWidth ? 'height: 157px;' : `${useVerticalCard ? 'height: 200px;' : 'height: 117px;'}`}

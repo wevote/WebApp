@@ -42,6 +42,7 @@ module.exports.config = {
     '../specs/ReadyPage.js',
     '../specs/TermsPage.js',
     '../specs/TopNavigation.js',
+    '../specs/HowItWorks.js',
   ],
   capabilities,
   commonCapabilities: {

@@ -170,6 +170,7 @@ class ChallengeInviteCustomizeMessage extends Component {
     } = this.state;
     const htmlTitle = `Customize the message to your friends for ${challengeTitle}? - ${chosenWebsiteName}`;
     const footerNextButtonOn = false;
+    const voterFirstName = VoterStore.getFirstName();
     return (
       <div>
         <Helmet>
@@ -200,7 +201,15 @@ class ChallengeInviteCustomizeMessage extends Component {
           <ContentOuterWrapperDefault>
             <ContentInnerWrapperDefault>
               <CampaignProcessStepIntroductionText>
-                Hi [your friend&apos;s name], it&apos;s David.
+                Hi [your friend&apos;s name]
+                {voterFirstName && (
+                  <>
+                    , it&apos;s
+                    {' '}
+                    {voterFirstName}
+                  </>
+                )}
+                .
               </CampaignProcessStepIntroductionText>
               <CampaignSupportSectionWrapper marginTopOff>
                 <CampaignSupportSection marginBottomOff>

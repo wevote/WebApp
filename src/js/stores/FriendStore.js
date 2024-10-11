@@ -459,7 +459,7 @@ class FriendStore extends ReduceStore {
         if (!action.res.success) {
           return state;
         } else {
-          // Firing all of these "just in case" api queries is slow, and firing queries from Stores should bed avoidd
+          // Firing all these "just in case" api queries is slow, and firing queries from Stores should bed avoidd
           // console.log('resetting FriendStore from voterSignOut');
           if (apiCalming('friendListsAll', 1500)) {
             FriendActions.friendListsAll();

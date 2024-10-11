@@ -16,11 +16,13 @@ export default {
       });
   },
 
-  challengeInviteeSave (challengeWeVoteId, inviteeId = 0, inviteeName = '', inviteeNameChanged = false, inviteTextFromInviter = '', inviteTextFromInviterChanged = false, inviteeUrlCode = '', inviteeUrlCodeChanged = false) {
+  challengeInviteeSave (challengeWeVoteId, destinationFullURL = '', googleCivicElectionId = 0, inviteeId = 0, inviteeName = '', inviteeNameChanged = false, inviteTextFromInviter = '', inviteTextFromInviterChanged = false, inviteeUrlCode = '', inviteeUrlCodeChanged = false) {
     // console.log('challengeInviteeSave called with challengeWeVoteId: ', challengeWeVoteId, ' and inviteeName: ', inviteeName);
     Dispatcher.loadEndpoint('challengeInviteeSave',
       {
         challenge_we_vote_id: challengeWeVoteId,
+        destination_full_url: destinationFullURL,
+        google_civic_election_id: googleCivicElectionId,
         invitee_id: inviteeId,
         invitee_name: inviteeName,
         invitee_name_changed: inviteeNameChanged,
