@@ -5,7 +5,7 @@ import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import abbreviateNumber from '../../common/utils/abbreviateNumber';
+import numberAbbreviate from '../../common/utils/numberAbbreviate';
 import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import Cookies from '../../common/utils/js-cookie/Cookies';
@@ -255,7 +255,7 @@ class IssueCard extends Component {
     const followersTooltip = isMobileScreenSize() ? (<span />) : (
       <Tooltip className="u-z-index-9020" id="followersTooltip">
         <div>
-          {abbreviateNumber(issueFollowersCount)}
+          {numberAbbreviate(issueFollowersCount)}
           {' '}
           people have followed
           {' '}
@@ -306,7 +306,7 @@ class IssueCard extends Component {
         )}
         {!!(linkedOrganizationCount) && (
           <LinkedOrganizationCountWrapper>
-            {abbreviateNumber(linkedOrganizationCount)}
+            {numberAbbreviate(linkedOrganizationCount)}
             <CheckWrapper>
               <Check />
             </CheckWrapper>
@@ -419,7 +419,7 @@ class IssueCard extends Component {
               <FollowersWrapper>
                 {!!(issueFollowersCount) && (
                   <>
-                    {abbreviateNumber(issueFollowersCount)}
+                    {numberAbbreviate(issueFollowersCount)}
                     {' '}
                     followers
                   </>

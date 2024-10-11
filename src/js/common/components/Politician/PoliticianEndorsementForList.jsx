@@ -13,7 +13,7 @@ import {
   CommentVoterPhotoWrapper, CommentWrapper, OneCampaignInnerWrapper,
   OneCampaignOuterWrapper, ReadMoreSpan,
 } from '../Style/CampaignDetailsStyles';
-import abbreviateNumber from '../../utils/abbreviateNumber';
+import numberAbbreviate from '../../utils/numberAbbreviate';
 import { getDateFromUltimateElectionDate, getTodayAsInteger, timeFromDate } from '../../utils/dateFormat';
 import { isCordova } from '../../utils/isCordovaOrWebApp';
 import { renderLog } from '../../utils/logging';
@@ -188,7 +188,7 @@ class PoliticianEndorsementForList extends Component {
                   </CommentNameWithTimeWrapper>
                   {!!(twitterFollowersCount) && (
                     <CommentNameTwitterFollowers>
-                      { abbreviateNumber(twitterFollowersCount) }
+                      { numberAbbreviate(twitterFollowersCount) }
                       {' '}
                       Twitter Followers
                     </CommentNameTwitterFollowers>

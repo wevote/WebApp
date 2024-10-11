@@ -4,11 +4,11 @@ import { styled, Tooltip } from '@mui/material';
 import { withStyles } from '@mui/styles';
 import DesignTokenColors from '../../Style/DesignTokenColors';
 import ThumbsUpDownToggleIcon from './ThumbsUpDownToggleIcon';
-import numberWithCommas from '../../../utils/numberWithCommas';
+import numberAbbreviate from '../../../utils/numberAbbreviate';
 
 function ThumbsUpDownToggle ({ classes }) {
-  const [thumbsUpAmountLocal, setThumbsUpAmountLocal] = useState(1237653);
-  const [thumbsDownAmountLocal, setThumbsDownAmountLocal] = useState(1237653);
+  const [thumbsUpAmountLocal, setThumbsUpAmountLocal] = useState(9000);
+  const [thumbsDownAmountLocal, setThumbsDownAmountLocal] = useState(9990);
   const [supports, setSupports] = useState(false);
   const [opposes, setOpposes] = useState(false);
 
@@ -88,16 +88,6 @@ function ThumbsUpDownToggle ({ classes }) {
     }
   };
 
-  const displayAmountConversion = (amount) => {
-    if (amount >= 1000000) {
-      return `${(amount / 100000).toFixed(1).replace(/\.0$/, '')}M`;
-    }
-    if (amount >= 1000) {
-      return `${(amount / 1000).toFixed(1).replace(/\.0$/, '')}K`;
-    }
-    return numberWithCommas(amount);
-  };
-
   return (
     <ThumbsUpThumbsDownContainer>
       <ThumbsContainer>
@@ -111,7 +101,7 @@ function ThumbsUpDownToggle ({ classes }) {
             <ThumbsUpDownToggleIcon isFavorite supports={supports} />
           </ThumbsUpClickableContainer>
         </Tooltip>
-        <Amount className={opposes ? 'hidden' : ''}>{displayAmountConversion(thumbsUpAmountLocal)}</Amount>
+        <Amount className={opposes ? 'hidden' : ''}>{numberAbbreviate(thumbsUpAmountLocal)}</Amount>
       </ThumbsContainer>
       <ThumbsUpDownSeperator>&nbsp;</ThumbsUpDownSeperator>
       <ThumbsContainer>
@@ -125,7 +115,7 @@ function ThumbsUpDownToggle ({ classes }) {
             <ThumbsUpDownToggleIcon isDislike opposes={opposes} />
           </ThumbsDownClickableContainer>
         </Tooltip>
-        <Amount className={!opposes ? 'hidden' : ''}>{displayAmountConversion(thumbsDownAmountLocal)}</Amount>
+        <Amount className={!opposes ? 'hidden' : ''}>{numberAbbreviate(thumbsDownAmountLocal)}</Amount>
       </ThumbsContainer>
     </ThumbsUpThumbsDownContainer>
   );
