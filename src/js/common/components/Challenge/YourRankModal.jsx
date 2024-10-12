@@ -1,11 +1,12 @@
 import { Close } from '@mui/icons-material';
 import { Dialog, DialogContent, DialogTitle, IconButton } from '@mui/material';
 import { withStyles } from '@mui/styles';
+import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
 import ChallengeParticipantListRoot from '../ChallengeParticipantListRoot/ChallengeParticipantListRoot';
 
-const YourRankModal = ({ classes, show, toggleModal }) => {
+const YourRankModal = ({ challengeWeVoteId, classes, show, toggleModal }) => {
   const challengeName = `Mr. Beast's "Get Out the Vote"`;
   return (
     <Dialog
@@ -33,12 +34,15 @@ const YourRankModal = ({ classes, show, toggleModal }) => {
         </DialogTitleWrapper>
       </DialogTitle>
       <DialogContent style={{ padding: 0 }}>
-        <ChallengeParticipantListRoot />
+        <ChallengeParticipantListRoot
+          challengeWeVoteId={challengeWeVoteId}
+        />
       </DialogContent>
     </Dialog>
   );
 };
 YourRankModal.propTypes = {
+  challengeWeVoteId: PropTypes.string.isRequired,
   classes: PropTypes.object.isRequired,
   show: PropTypes.bool.isRequired,
   toggleModal: PropTypes.func.isRequired,
@@ -52,6 +56,7 @@ const styles = (theme) => ({
     padding: '0px 0px 0px 10px',
   },
 });
+
 const DialogTitleWrapper = styled.div`
   display: flex;
   min-height: 30px;

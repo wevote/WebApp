@@ -37,11 +37,9 @@ const ThanksForViewingChallenge = ({ sharedByDisplayName }) => {
             {sharedByDisplayName && (
               <>
                 {' '}
-                your friend
+                shared with you by
                 {' '}
                 {sharedByDisplayName}
-                {' '}
-                has shared with you
               </>
             )}
             ! Join the challenge below.

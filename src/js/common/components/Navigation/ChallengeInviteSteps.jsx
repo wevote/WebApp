@@ -6,6 +6,11 @@ import styled from 'styled-components';
 import commonMuiStyles from '../Style/commonMuiStyles';
 import DesignTokenColors from '../Style/DesignTokenColors';
 import SvgImage from '../Widgets/SvgImage';
+import RocketIcon from '../../../../img/global/svg-icons/rocket-ship.svg';
+import StepOneIcon from '../../../../img/global/svg-icons/material-symbols-counter-1.svg';
+import StepOneActiveIcon from '../../../../img/global/svg-icons/material-symbols-counter-1-active.svg';
+import StepTwoIcon from '../../../../img/global/svg-icons/material-symbols-counter-2.svg';
+import StepTwoActiveIcon from '../../../../img/global/svg-icons/material-symbols-counter-2-active.svg';
 
 const BoostLearnMoreModal = React.lazy(() => import(/* webpackChunkName: 'BoostLearnMoreModal' */ '../ChallengeInviteFriends/BoostLearnMoreModal'));
 
@@ -75,10 +80,10 @@ class ChallengeInviteSteps extends React.Component {
         {/* Rocket, Invite more friends, and Learn More */}
         <HeaderContainer>
           <SvgImage
-            imageName="rocket-ship"
+            imageName={RocketIcon}
             alt="Rocket Icon"
             color="none"
-            style={{ height: '70px', width: '40px' }}
+            width="40px"
           />
           <TitleH2>
             To boost your ranking, invite your friends to join.
@@ -96,12 +101,17 @@ class ChallengeInviteSteps extends React.Component {
           {/* Step 1 Icon and Text */}
           <StepOneIconAndText
             isActive={this.isStepActive(1)}
-            onClick={() => this.handleStepClick(1)}
           >
-            <SvgImage
-              imageName={this.isStepActive(1) ? 'material-symbols-counter-1-active' : 'material-symbols-counter-1'}
-              alt="Step 1 Icon"
-            />
+            <Link
+              to={`${this.getChallengeBasePath()}customize-message`}
+              // Handle click to update state
+              onClick={() => this.handleStepClick(1)}
+            >
+              <SvgImage
+                alt="Step 1 Icon"
+                imageName={this.isStepActive(1) ? StepOneActiveIcon : StepOneIcon}
+              />
+            </Link>
             <Link
               to={`${this.getChallengeBasePath()}customize-message`}
               style={commonTextStyle}
@@ -117,12 +127,17 @@ class ChallengeInviteSteps extends React.Component {
           {/* Step 2 Icon and Text */}
           <StepTwoIconAndText
             isActive={this.isStepActive(2)}
-            onClick={() => this.handleStepClick(2)}
           >
-            <SvgImage
-              imageName={this.isStepActive(2) ? 'material-symbols-counter-2-active' : 'material-symbols-counter-2'}
-              alt="Step 2 Icon"
-            />
+            <Link
+              to={`${this.getChallengeBasePath()}invite-friends`}
+              // Handle click to update state
+              onClick={() => this.handleStepClick(2)}
+            >
+              <SvgImage
+                alt="Step 2 Icon"
+                imageName={this.isStepActive(2) ? StepTwoActiveIcon : StepTwoIcon}
+              />
+            </Link>
             <Link
               to={`${this.getChallengeBasePath()}invite-friends`}
               style={commonTextStyle}
