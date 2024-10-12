@@ -187,6 +187,7 @@ const TopSection = styled.div`
   z-index: 1;
   position: sticky;
   top: 0;
+  padding: 10px;
 `;
 
 const ButtonAndSearchWrapper = styled.div`

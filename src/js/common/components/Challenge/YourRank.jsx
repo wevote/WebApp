@@ -1,5 +1,5 @@
 import { Button } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useState, Suspense } from 'react';
 import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
 import DesignTokenColors from '../Style/DesignTokenColors';
@@ -7,16 +7,17 @@ import DesignTokenColors from '../Style/DesignTokenColors';
 // import { SupportButtonFooterWrapper, SupportButtonPanel} from '../../components/Style/CampaignDetailsStyles';
 import arrow from '../../../../img/global/icons/ph_arrow-up-bold.png';
 import arrow1 from '../../../../img/global/icons/ph_arrow-up-bold_1.png';
+import YourRankModal from './YourRankModal';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import ChallengeParticipantStore from '../../stores/ChallengeParticipantStore';
 
-const YourRank = ({ classes, challengeWeVoteId }) =>{
+const YourRank = ({ classes, challengeWeVoteId }) => {
   const [clicked, setClicked] = useState(false);
   const [participantsCount, setParticipantsCount] = useState(0);
   const [points, setPoints] = useState(0);
   // const [note, setNote] = useState("");
   const [arrowImage, setArrowImage] = useState(arrow);
-  const [rankOfVoter, setRankOfVoter] = React.useState(0);
+  const [openYourRankModal, setOpenYourRankModal] = useState(false);
 
   const onAppObservableStoreChange = () => {
     setRankOfVoter(AppObservableStore.getChallengeParticipantRankOfVoterByChallengeWeVoteId(challengeWeVoteId));
@@ -39,6 +40,7 @@ const YourRank = ({ classes, challengeWeVoteId }) =>{
       }, 3000);
       return newPoints;
     });
+    setOpenYourRankModal(!openYourRankModal);
   };
 
   React.useEffect(() => {
@@ -69,7 +71,7 @@ const YourRank = ({ classes, challengeWeVoteId }) =>{
           fontWeight: '400',
           lineHeight: '19.5px',
           textAlign: 'left',
-          color: 'var(--Neutral-700, #484848)'
+          color: 'var(--Neutral-700, #484848)',
         }}
       >
         <h1>Your rank in the challenge:</h1>
@@ -84,68 +86,73 @@ const YourRank = ({ classes, challengeWeVoteId }) =>{
           {rankOfVoter}
           {' '}
           <span className="arrow">
-            <img src={arrowImage} alt="arrow" classes ={{ root: classes.arrow}}/>
+            <img src={arrowImage} alt="arrow" classes={{ root: classes.arrow }} />
           </span>
         </Button>
+        <Suspense fallback={<></>}>
+          <YourRankModal
+            show={openYourRankModal}
+            toggleModal={() => setOpenYourRankModal(!openYourRankModal)}
+          />
+        </Suspense>
       </CompleteYourProfileButtonWrapper>
     </YourRankWrapper>
   );
-  };
-  const styles = (theme) => ({
-    buttonDesktop: {
-      boxShadow: 'none !important',
-      color: '#AC5204',
-      width: '105px',
-      height: '34px',
-      border: '1px solid #AC5204',
-      borderRadius: '20px 20px 20px 20px',
-      transition: 'color 0.3s ease',
-      textTransform: 'none',
-      width: '100%',
+};
+const styles = (theme) => ({
+  buttonDesktop: {
+    boxShadow: 'none !important',
+    color: '#AC5204',
+    width: '105px',
+    height: '34px',
+    border: '1px solid #AC5204',
+    borderRadius: '20px 20px 20px 20px',
+    transition: 'color 0.3s ease',
+    textTransform: 'none',
+  },
+  desktopSimpleLink: {
+    border: '2px solid #AC5204',
+    boxShadow: 'none !important',
+    color: '#999',
+    marginTop: 10,
+    padding: '0 20px',
+    textTransform: 'none',
+    width: 250,
+  },
+  mobileSimpleLink: {
+    boxShadow: 'none !important',
+    color: '#999',
+    marginTop: 10,
+    padding: '0 20px',
+    textTransform: 'none',
+    width: '100%',
+    '&:hover': {
+      color: '#4371cc',
+      textDecoration: 'underline',
     },
-    desktopSimpleLink: {
-      border: '2px solid #AC5204',
-      boxShadow: 'none !important',
-      color: '#999',
-      marginTop: 10,
-      padding: '0 20px',
-      textTransform: 'none',
-      width: 250,
-    },
-    mobileSimpleLink: {
-      boxShadow: 'none !important',
-      color: '#999',
-      marginTop: 10,
-      padding: '0 20px',
-      textTransform: 'none',
-      width: '100%',
-      '&:hover': {
-        color: '#4371cc',
-        textDecoration: 'underline',
-      },
-    },
-    arrow: {
-      width: '10.5px',
-      height: '12.5px',
-      top: '2.75px',
-      left: '14.25px',
-      gap: '0px',
-      opacity: '0px',
-      angle: '-90 deg',
-    },
-  });
-  const ChallengeTabsWrapper = styled('div')`
+  },
+  arrow: {
+    width: '10.5px',
+    height: '12.5px',
+    top: '2.75px',
+    left: '14.25px',
+    gap: '0px',
+    opacity: '0px',
+    angle: '-90 deg',
+  },
+});
+const ChallengeTabsWrapper = styled('div')`
     background-color: ${DesignTokenColors.neutralUI50};
     display: flex;
     justify-content: center;
   `;
-  const YourRankWrapper = styled('div')`
+const YourRankWrapper = styled('div')`
     background-color: ${DesignTokenColors.neutralUI50};
     display: flex;
     justify-content: center;
   `;
-  const CompleteYourProfileButtonWrapper = styled('div')`
-    background-color: ${(props)=>(props.clicked ? "#AC5204" : "#FFFFFF")};
+const CompleteYourProfileButtonWrapper = styled('div')`
+    background-color: ${(props) => (props.clicked ? '#AC5204' : '#FFFFFF')};
     width: 105px;
     height: 34px;
     top: 443px;
