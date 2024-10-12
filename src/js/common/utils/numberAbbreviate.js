@@ -1,6 +1,6 @@
-// abbreviateNumber.js
+// numberAbbreviate.js
 
-export default function abbreviateNumber (num) {
+export default function numberAbbreviate (num) {
   // =< 1,000,000 - round to hundred-thousand (1.4M)
   if (num >= 1000000) {
     return `${(num / 1000000).toFixed(1).replace(/\.0$/, '')}M`;

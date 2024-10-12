@@ -2,7 +2,7 @@ import { Launch, Twitter } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
-import abbreviateNumber from '../../common/utils/abbreviateNumber';
+import numberAbbreviate from '../../common/utils/numberAbbreviate';
 import { renderLog } from '../../common/utils/logging';
 import numberWithCommas from '../../common/utils/numberWithCommas';
 import removeTwitterNameFromDescription from '../../common/utils/removeTwitterNameFromDescription';
@@ -56,7 +56,7 @@ export default class TwitterAccountCard extends Component {
               {twitterFollowersCount ? (
                 <span className="twitter-followers__badge">
                   <Twitter />
-                  <span title={numberWithCommas(twitterFollowersCount)}>{abbreviateNumber(twitterFollowersCount)}</span>
+                  <span title={numberWithCommas(twitterFollowersCount)}>{numberAbbreviate(twitterFollowersCount)}</span>
                 </span>
               ) : null}
               {twitterUserWebsite ? (

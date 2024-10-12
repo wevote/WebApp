@@ -6,7 +6,7 @@ import Tooltip from 'react-bootstrap/Tooltip';
 import styled from 'styled-components';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { FriendDetailsLine, FriendDetailsWrapper, FriendName, InviteToWeVoteLine } from '../Style/friendStyles';
-import abbreviateNumber from '../../common/utils/abbreviateNumber';
+import numberAbbreviate from '../../common/utils/numberAbbreviate';
 import { renderLog } from '../../common/utils/logging';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
@@ -165,7 +165,7 @@ class FriendDetails extends Component {
                 )}
                 <MutualFriendCountWrapper>
                   <span>
-                    {abbreviateNumber(mutualFriendCount)}
+                    {numberAbbreviate(mutualFriendCount)}
                     {' '}
                   </span>
                   <span className="u-show-desktop-tablet">

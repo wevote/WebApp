@@ -7,7 +7,7 @@ import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import SvgImage from '../../common/components/Widgets/SvgImage';
-import abbreviateNumber from '../../common/utils/abbreviateNumber';
+import numberAbbreviate from '../../common/utils/numberAbbreviate';
 import { renderLog } from '../../common/utils/logging';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import AppObservableStore from '../../common/stores/AppObservableStore';
@@ -362,7 +362,7 @@ class PositionItem extends Component {
                                     {position.speaker_twitter_handle}
                                   </TwitterHandleWrapper>
                                   <TwitterFollowersWrapper>
-                                    {abbreviateNumber(position.twitter_followers_count)}
+                                    {numberAbbreviate(position.twitter_followers_count)}
                                   </TwitterFollowersWrapper>
                                 </div>
                               )}
