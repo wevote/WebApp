@@ -4,7 +4,7 @@ import VoterStore from '../../stores/VoterStore';
 import AppObservableStore from './AppObservableStore';
 
 
-const orderByDateJoined = (firstEntry, secondEntry) => new Date(secondEntry.date_joined) - new Date(firstEntry.date_joined);
+const orderByDateJoined = (firstEntry, secondEntry) => new Date(firstEntry.date_joined) - new Date(secondEntry.date_joined);
 
 const orderByPoints = (firstEntry, secondEntry) => secondEntry.points - firstEntry.points;
 

@@ -1,8 +1,8 @@
 import React, { Suspense } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import JoinedGreenCircle from '../../../../img/global/svg-icons/issues/joined-green-circle.svg';
-import InfoOutlineIcon from '../../../../img/global/svg-icons/issues/material-symbols-info-outline.svg';
+import JoinedGreenCircle from '../../../../img/global/svg-icons/joined-green-circle.svg';
+import InfoOutlineIcon from '../../../../img/global/svg-icons/material-symbols-info-outline.svg';
 import ChallengeStore from '../../stores/ChallengeStore';
 import DesignTokenColors from '../Style/DesignTokenColors';
 

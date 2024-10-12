@@ -29,7 +29,7 @@ const inviteeListDummyData = [
   { invitee_id: 15, invitee_name: 'Melina H.', invite_sent: true, invite_viewed: false, challenge_joined: false, messageStatus: 'Message Sent' },
 ];
 
-const ChallengeInviteeListRoot = ({ challengeWeVoteId }) => {
+const ChallengeInviteeListRoot = ({ challengeWeVoteId, hideRank }) => {
   // eslint-disable-next-line no-unused-vars
   const [inviteeList, setInviteeList] = React.useState([]);
   const [participantsCount, setParticipantsCount] = useState(0);
@@ -70,7 +70,7 @@ const ChallengeInviteeListRoot = ({ challengeWeVoteId }) => {
   return (
     <ChallengeInviteeListRootContainer>
       <Heading>
-        {!!(rankOfVoter) && (
+        {!!(rankOfVoter && !hideRank) && (
           <RankContainer>
             <RankText>You&apos;re</RankText>
             {' '}
@@ -109,6 +109,7 @@ const ChallengeInviteeListRoot = ({ challengeWeVoteId }) => {
 ChallengeInviteeListRoot.propTypes = {
   classes: PropTypes.object,
   challengeWeVoteId: PropTypes.string,
+  hideRank: PropTypes.bool,
 };
 
 const styles = () => ({

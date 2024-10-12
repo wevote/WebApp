@@ -82,6 +82,7 @@ import AppObservableStore from '../common/stores/AppObservableStore';
 // ACTION_ORGANIZATION_FOLLOW_DISLIKE = 79
 // ACTION_ORGANIZATION_STOP_DISLIKING = 80
 // ACTION_POLITICIAN_PAGE_VISIT = 81
+// ACTION_VIEW_SHARED_CHALLENGE = 82
 
 export default {
 

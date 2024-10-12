@@ -18,10 +18,11 @@ import VoterStore from '../../../stores/VoterStore';
 import CompleteYourProfileModalController from '../../components/Settings/CompleteYourProfileModalController';
 import { Candidate, CandidateNameH4, CandidateNameAndPartyWrapper, CandidateTopRow } from '../../../components/Style/BallotStyles';
 import {
-  CampaignDescription, CampaignDescriptionDesktop, CampaignDescriptionDesktopWrapper, CampaignDescriptionWrapper,
+  CampaignDescriptionDesktop, CampaignDescriptionDesktopWrapper, CampaignDescriptionWrapper,
   CampaignSubSectionSeeAll, CampaignSubSectionTitle, CampaignSubSectionTitleWrapper,
   CommentsListWrapper, DetailsSectionDesktopTablet, DetailsSectionMobile, SupportButtonFooterWrapperAboveFooterButtons, SupportButtonPanel,
 } from '../../components/Style/CampaignDetailsStyles';
+import { ChallengeDescription } from '../../components/Style/ChallengeCardStyles';
 import { EditIndicator, IndicatorButtonWrapper, IndicatorRow } from '../../components/Style/CampaignIndicatorStyles';
 import { PageWrapper } from '../../components/Style/stepDisplayStyles';
 import DelayedLoad from '../../components/Widgets/DelayedLoad';
@@ -43,7 +44,7 @@ import normalizedImagePath from '../../utils/normalizedImagePath';
 import ChallengeAbout from '../../components/Challenge/ChallengeAbout';
 import ChallengeParticipantListRoot from '../../components/ChallengeParticipantListRoot/ChallengeParticipantListRoot';
 import ChallengeInviteeListRoot from '../../components/ChallengeInviteeListRoot/ChallengeInviteeListRoot';
-import ThanksForViewingChallenge from '../../components/Challenge/ThanksForViewingChallenge'
+import ThanksForViewingChallenge from '../../components/Challenge/ThanksForViewingChallenge';
 import ShareStore from '../../stores/ShareStore';
 
 const ChallengeCardForList = React.lazy(() => import(/* webpackChunkName: 'ChallengeCardForList' */ '../../components/ChallengeListRoot/ChallengeCardForList'));
@@ -516,25 +517,6 @@ class ChallengeHomePage extends Component {
     if (tabSelected === 'friends' || tabSelected === 'leaderboard') {
       tabSelectedChosen = tabSelected;
     }
-
-    const challengeDescriptionJsx = (
-      <CampaignDescription>
-        <AboutAndEditFlex>
-          <div>
-            <Suspense fallback={<span>&nbsp;</span>}>
-              <UpdateChallengeInformation challengeTitle={challengeTitle} />
-            </Suspense>
-          </div>
-        </AboutAndEditFlex>
-        {challengeDescription ? (
-          <Suspense fallback={<span>&nbsp;</span>}>
-            <ReadMore numberOfLines={6} textToDisplay={challengeDescription} />
-          </Suspense>
-        ) : (
-          <NoInformationProvided>No description has been provided for this candidate.</NoInformationProvided>
-        )}
-      </CampaignDescription>
-    );
     return (
       <PageContentContainer>
         {thanksForViewingChallengeOn && (
@@ -619,12 +601,16 @@ class ChallengeHomePage extends Component {
                 ) : (
                   <AboutSectionWrapper>
                     <CampaignDescriptionWrapper hideCardMargins>
+                      <ChallengeAbout challengeWeVoteId={challengeWeVoteIdForDisplay} />
                       {challengeDescription && (
                         <DelayedLoad waitBeforeShow={250}>
-                          {challengeDescriptionJsx}
+                          <ChallengeDescription>
+                            <Suspense fallback={<></>}>
+                              <ReadMore numberOfLines={6} textToDisplay={challengeDescription} />
+                            </Suspense>
+                          </ChallengeDescription>
                         </DelayedLoad>
                       )}
-                      <ChallengeAbout challengeWeVoteId={challengeWeVoteIdForDisplay} />
                       {!!(voterCanEditThisChallenge || voterIsChallengeParticipant) && (
                         <IndicatorRow>
                           {voterCanEditThisChallenge && (
@@ -661,16 +647,16 @@ class ChallengeHomePage extends Component {
                   useVerticalCard
                   voterWeVoteId={voterWeVoteId}
                 />
+                <ChallengeAbout challengeWeVoteId={challengeWeVoteIdForDisplay} />
                 {challengeDescription && (
                   <DelayedLoad waitBeforeShow={250}>
-                    <CampaignDescription>
+                    <ChallengeDescription>
                       <Suspense fallback={<></>}>
                         <ReadMore numberOfLines={6} textToDisplay={challengeDescription} />
                       </Suspense>
-                    </CampaignDescription>
+                    </ChallengeDescription>
                   </DelayedLoad>
                 )}
-                <ChallengeAbout challengeWeVoteId={challengeWeVoteIdForDisplay} />
                 <JoinChallengeButtonWrapper>
                   <Suspense fallback={<></>}>
                     <JoinChallengeButton

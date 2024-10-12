@@ -13,7 +13,7 @@ const ChallengeInviteeListItem = ({ invitee, classes }) => {
   // console.log('ChallengeInviteeListItem:', invitee);
   const { sx, children } = speakerDisplayNameToInitials(invitee.invitee_name);
   let challengeStatusIconJsx = <></>;
-  let challengeStatusMessage = ''
+  let challengeStatusMessage = '';
   if (invitee.challenge_joined) {
     challengeStatusIconJsx = <CheckCircle />;
     challengeStatusMessage = 'Challenge joined';
@@ -23,6 +23,27 @@ const ChallengeInviteeListItem = ({ invitee, classes }) => {
   } else if (invitee.invite_sent) {
     challengeStatusIconJsx = <Check />;
     challengeStatusMessage = 'Invite sent';
+  }
+
+  let underNameJsx = <></>;
+  if (invitee.challenge_joined || invitee.invite_viewed || invitee.invite_sent === true) {
+    underNameJsx = (
+      <MessageContainer>
+        <MessageStatus>
+          {challengeStatusIconJsx}
+        </MessageStatus>
+        <MessageText>
+          {challengeStatusMessage}
+        </MessageText>
+      </MessageContainer>
+    );
+  } else if (invitee.invite_sent === false) {
+    underNameJsx = (
+      <ConfirmYouSentInviteButton
+        challengeInviteeId={invitee.invitee_id}
+        challengeWeVoteId={invitee.challenge_we_vote_id}
+      />
+    );
   }
   return (
     <InvitedFriendDetails>
@@ -39,19 +60,7 @@ const ChallengeInviteeListItem = ({ invitee, classes }) => {
       </PrimaryDetails>
       <Options>
         <div>
-          {invitee.invite_sent === false ? (
-            <ConfirmYouSentInviteButton
-              challengeInviteeId={invitee.invitee_id}
-              challengeWeVoteId={invitee.challenge_we_vote_id}
-            />
-          ) : (
-            <MessageContainer>
-              <MessageStatus>
-                {challengeStatusIconJsx}
-              </MessageStatus>
-              {challengeStatusMessage}
-            </MessageContainer>
-          )}
+          {underNameJsx}
         </div>
         {invitee.messageStatus !== 'Challenge Joined' && (
           <InviteAgainButton
@@ -76,7 +85,7 @@ const styles = () => ({
 });
 
 
-const InvitedFriendDetails = styled.div`
+const InvitedFriendDetails = styled('div')`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -85,13 +94,13 @@ const InvitedFriendDetails = styled.div`
   border-bottom: 1px solid ${DesignTokenColors.neutral100};
 `;
 
-const PrimaryDetails = styled.div`
+const PrimaryDetails = styled('div')`
   display: flex;
   justify-content: space-between;
   align-items: center;
 `;
 
-const FriendName = styled.div`
+const FriendName = styled('div')`
   display: flex;
   align-items: center;
   gap: 10px;
@@ -104,23 +113,29 @@ const AvatarDetails = styled(Avatar)`
   font-size: 1rem;
 `;
 
-const Name = styled.div`
+const Name = styled('div')`
   font-weight: bold;
   color: ${DesignTokenColors.neutral900};
 `;
 
-const MessageContainer = styled.div`
+const MessageContainer = styled('div')`
+  align-items: center;
   display: flex;
+  margin-left: 45px;
 `;
 
-const MessageStatus = styled.div`
+const MessageStatus = styled('div')`
   text-align: center;
   font-size: 14px;
   color: ${DesignTokenColors.confirmation800};
   margin-right: 10px;
 `;
 
-const VerticalLine = styled.div`
+const MessageText = styled('div')`
+  margin-top: 3px;
+`;
+
+const VerticalLine = styled('div')`
   border-left: 1px solid ${DesignTokenColors.neutral200};
   height: 30px;
   margin: 0 10px;
@@ -135,14 +150,14 @@ const ActivityCommentEditWrapper = styled('div')`
   }
 `;
 
-const Options = styled.div`
+const Options = styled('div')`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   font-size: 14px;
 `;
 
-const Invite = styled.a`
+const Invite = styled('a')`
   padding: 5px;
   color: #4371cc;
 `;
