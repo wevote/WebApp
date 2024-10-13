@@ -19,6 +19,7 @@ class JoinChallengeButton extends React.Component {
       challengeSEOFriendlyPath: '',
       challengeWeVoteId: '',
       goToNextStepAfterSignIn: false,
+      challengeInviteTextDefault: '',
       voterFirstName: '',
       voterIsSignedIn: false,
       voterPhotoUrlLarge: '',
@@ -43,10 +44,14 @@ class JoinChallengeButton extends React.Component {
     const { challengeSEOFriendlyPath: challengeSEOFriendlyPathFromProps, challengeWeVoteId: challengeWeVoteIdFromProps } = this.props;
     // console.log('onChallengeStoreChange challengeSEOFriendlyPathFromProps: ', challengeSEOFriendlyPathFromProps, ', challengeWeVoteIdFromProps: ', challengeWeVoteIdFromProps);
     const {
+      challengeInviteTextDefault,
       challengeSEOFriendlyPath,
       challengeWeVoteId,
     } = getChallengeValuesFromIdentifiers(challengeSEOFriendlyPathFromProps, challengeWeVoteIdFromProps);
     // console.log('onChallengeStoreChange AFTER getChallengeValuesFromIdentifiers challengeWeVoteId: ', challengeWeVoteId);
+    this.setState({
+      challengeInviteTextDefault,
+    });
     if (challengeSEOFriendlyPath) {
       this.setState({
         challengeSEOFriendlyPath,
@@ -115,7 +120,7 @@ class JoinChallengeButton extends React.Component {
   goToJoinChallenge = () => {
     const challengeBasePath = this.getChallengeBasePath();
     // console.log('goToJoinChallenge challengeBasePath: ', challengeBasePath);
-    const { challengeWeVoteId, voterFirstName, voterPhotoUrlLarge } = this.state;
+    const { challengeWeVoteId, challengeInviteTextDefault, voterFirstName, voterPhotoUrlLarge } = this.state;
     const upcomingGoogleCivicElectionId = VoterStore.electionId();
     const voterPlanCreatedForThisElection = ReadyStore.getVoterPlanTextForVoterByElectionId(upcomingGoogleCivicElectionId);
     // console.log('upcomingGoogleCivicElectionId: ', upcomingGoogleCivicElectionId, 'voterPlanCreatedForThisElection: ', voterPlanCreatedForThisElection);
@@ -133,7 +138,7 @@ class JoinChallengeButton extends React.Component {
       if (itemsAreMissing) {
         historyPush(joinChallengeNextStepPath);
       } else {
-        ChallengeParticipantActions.challengeParticipantSave(challengeWeVoteId);
+        ChallengeParticipantActions.challengeParticipantSave(challengeWeVoteId, challengeInviteTextDefault, true);
         AppObservableStore.setShowChallengeThanksForJoining(true);
         // Delay the redirect, so we have time to fire the above API call first
         this.timer = setTimeout(() => {

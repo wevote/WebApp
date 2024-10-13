@@ -11,7 +11,6 @@ import speakerDisplayNameToInitials from '../../utils/speakerDisplayNameToInitia
 
 const ChallengeInviteeListItem = ({ invitee, classes }) => {
   // console.log('ChallengeInviteeListItem:', invitee);
-  const { sx, children } = speakerDisplayNameToInitials(invitee.invitee_name);
   let challengeStatusIconJsx = <></>;
   let challengeStatusMessage = '';
   if (invitee.challenge_joined) {
@@ -45,13 +44,19 @@ const ChallengeInviteeListItem = ({ invitee, classes }) => {
       />
     );
   }
+  const inviteeName = invitee.invitee_voter_name || invitee.invitee_name;
+  const { sx, children } = speakerDisplayNameToInitials(inviteeName);
   return (
     <InvitedFriendDetails>
       <PrimaryDetails>
         <FriendName>
-          <AvatarDetails sx={sx}>{children}</AvatarDetails>
+          {invitee.we_vote_hosted_profile_image_url_medium !== '' ? (
+            <AvatarDetails src={invitee.we_vote_hosted_profile_image_url_medium} alt={inviteeName} />
+          ) : (
+            <AvatarDetails sx={sx}>{children}</AvatarDetails>
+          )}
           {' '}
-          <Name>{invitee.invitee_name}</Name>
+          <Name>{inviteeName}</Name>
         </FriendName>
         <VerticalLine />
         <ActivityCommentEditWrapper>
@@ -62,11 +67,13 @@ const ChallengeInviteeListItem = ({ invitee, classes }) => {
         <div>
           {underNameJsx}
         </div>
-        {invitee.messageStatus !== 'Challenge Joined' && (
+        {!(invitee.challenge_joined) ? (
           <InviteAgainButton
             challengeInviteeId={invitee.invitee_id}
             challengeWeVoteId={invitee.challenge_we_vote_id}
           />
+        ) : (
+          <div>&nbsp;</div>
         )}
       </Options>
     </InvitedFriendDetails>
@@ -155,11 +162,6 @@ const Options = styled('div')`
   flex-direction: row;
   justify-content: space-between;
   font-size: 14px;
-`;
-
-const Invite = styled('a')`
-  padding: 5px;
-  color: #4371cc;
 `;
 
 export default withStyles(styles)(ChallengeInviteeListItem);
