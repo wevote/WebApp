@@ -53,7 +53,8 @@ const InviteAgainButton = ({ classes, challengeWeVoteId, challengeInviteeId }) =
     setInviterName(VoterStore.getFirstName());
     const invitee = ChallengeInviteeStore.getChallengeInviteeById(challengeInviteeId);
     // console.log('InviteAgainButton onChallengeInviteeStoreChange invitee:', invitee);
-    setInviteeName(invitee.invitee_name);
+    const inviteeNameTemp = invitee.invitee_voter_name || invitee.invitee_name;
+    setInviteeName(inviteeNameTemp);
     setInviteTextFromInviter(invitee.invite_text_from_inviter);
     setInviteTextVarsChangedCount(varsChangedNew);
   };

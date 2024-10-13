@@ -7,6 +7,7 @@ import CopyToClipboard from 'react-copy-to-clipboard';
 import { renderLog } from '../../utils/logging';
 import ChallengeInviteeActions from '../../actions/ChallengeInviteeActions';
 import ChallengeInviteeStore from '../../stores/ChallengeInviteeStore';
+import ChallengeParticipantActions from '../../actions/ChallengeParticipantActions';
 import ChallengeParticipantStore from '../../stores/ChallengeParticipantStore';
 import ChallengeStore from '../../stores/ChallengeStore';
 import VoterStore from '../../../stores/VoterStore';
@@ -20,6 +21,7 @@ const InviteFriendToChallengeInput = ({ classes, challengeWeVoteId, externalUniq
   const [destinationFullURL, setDestinationFullURL] = React.useState('');
   const [googleCivicElectionId, setGoogleCivicElectionId] = React.useState(0);
   const [inviteCopiedMessageOn, setInviteCopiedMessageOn] = React.useState(false);
+  const [inviteeListLength, setInviteeListLength] = React.useState(0);
   const [inviteeName, setInviteeName] = React.useState('');
   const [inviterName, setInviterName] = React.useState('');
   const [inviteTextForFriends, setInviteTextForFriends] = React.useState('');
@@ -92,6 +94,13 @@ const InviteFriendToChallengeInput = ({ classes, challengeWeVoteId, externalUniq
   React.useEffect(() => {
     const onChallengeInviteeStoreChange = () => {
       setInviterName(VoterStore.getFirstName());
+      const inviteeList = ChallengeInviteeStore.getChallengeInviteeList(challengeWeVoteId);
+      console.log('Former inviteeListLength:', inviteeListLength, 'New inviteeList.length:', inviteeList.length);
+      if (inviteeListLength < inviteeList.length) {
+        // If inviteeList length changes, make call for refreshed ChallengeParticipant, so we can make sure we have the updated score/rank.
+        ChallengeParticipantActions.challengeParticipantRetrieve(challengeWeVoteId);
+      }
+      setInviteeListLength(inviteeList.length);
       prepareInviteTextToSend();
     };
 
@@ -143,7 +152,7 @@ const InviteFriendToChallengeInput = ({ classes, challengeWeVoteId, externalUniq
                 margin="dense"
                 value={inviteeName}
                 variant="outlined"
-                placeholder="Your friend's name"
+                placeholder="Your friend's name (or a friend group name)"
                 onChange={setInviteeNameFromEvent} // eslint-disable-line react/jsx-no-bind
               />
             </FormControl>
@@ -196,7 +205,7 @@ const styles = () => ({
     boxShadow: '0 4px 6px rgb(50 50 93 / 11%)',
     fontSize: '18px',
     height: '45px !important',
-    minWidth: '300px',
+    minWidth: '350px',
     padding: '0 12px',
     textTransform: 'none',
     width: '100%',
