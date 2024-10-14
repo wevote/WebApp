@@ -552,6 +552,7 @@ export default class SignInOptionsPanel extends Component {
               // hideSignInWithPhoneForm={isCordova()}
               showAllSignInOptions={this.showAllSignInOptions}
               showPhoneOnlySignIn={this.showPhoneOnlySignIn}
+              showEmailOnlySignIn={this.showEmailOnlySignIn}
             />
             {/* {isCordova() && ( */}
             {/*  <VoterPhoneEmailCordovaEntryModal */}
