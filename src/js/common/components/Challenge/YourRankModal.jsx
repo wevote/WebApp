@@ -7,23 +7,26 @@ import DesignTokenColors from '../Style/DesignTokenColors';
 import ModalDisplayTemplateA, { templateAStyles, TextFieldWrapper } from '../../../components/Widgets/ModalDisplayTemplateA';
 import { DialogTitle, DialogTitleText } from '@mui/material';
 import { renderLog } from '../../utils/logging';
-import { Card } from 'react-bootstrap';
 
 class YourRankModal extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      showTerms: false,
     };
   }
+
+  toggleTerms = () => {
+    this.setState({ showTerms: !this.state.showTerms });
+  };
+
   render() {
-    renderLog('YourRankModal');  // Set LOG_RENDER_EVENTS to log all renders
+    renderLog('YourRankModal');
     const { show, toggleModal } = this.props;
+    const { showTerms } = this.state;
 
     const dialogTitleText = '';
 
-    // The textField should have the following text:
-    // How we calculate the challenge leaderboard ranking
-    // At the end of a challenge, the participant who has the most points is ranked as #1 and wins the challenge.
     const textFieldJSX = (
       <PointsWrapper>
         <CardRowsWrapper>
@@ -83,10 +86,37 @@ class YourRankModal extends Component {
           <CardForListRow>
             <FlexDivLeft>
               <ViewContestTermsDiv>
-                <span>View contest terms</span>
+                <ViewContestTermsLink onClick={this.toggleTerms}>
+                  <span>{showTerms ? 'Hide contest terms' : 'View contest terms'}</span>
+                </ViewContestTermsLink>
               </ViewContestTermsDiv>
             </FlexDivLeft>
           </CardForListRow>
+
+          {showTerms && (
+            <>
+              <CardForListRow>
+                <FlexDivLeft>
+                  <ContestTermDiv>
+                    <span>Contest terms</span>
+                  </ContestTermDiv>
+                </FlexDivLeft>
+              </CardForListRow>
+              <Ul>
+                <li>Sponsor: WeVote USA</li>
+                <li>Eligibility: Open to residents of the USA who are 18 years or older.</li>
+                <li>Entry Period: see challenge homepage</li>
+                <li>How to Enter: To enter, simply [Describe entry method].</li>
+                <li>Price: One lucky winner will receive [Price Description].</li>
+                <li>Odds of Winning: Odds of winning depend on the number of eligible entries received.</li>
+                <li>No Purchase necessary: No purchase is necessary to enter or win.</li>
+                <li>Alternative Method of Entry: To enter without purchasing, send a handwritten letter to [Address].</li>
+                <li>Taxes: Winner is responsible for all applicable taxes.</li>
+                <li>Winner Notification: Winners will be notified by email or phone.</li>
+                <li>Rules and Regulations: For a complete set of rules, please visit [Link to Rules].</li>
+              </Ul>
+            </>
+          )}
       </CardRowsWrapper>
       </PointsWrapper>
 
@@ -137,6 +167,7 @@ export const CardForListRow = styled('div')`
   
   &:nth-child(2) {
     padding-top: 8px;
+  }
 `;
 
 export const FlexDivLeft = styled('div')`
@@ -180,9 +211,8 @@ const Th = styled('th')`
 `;
 
 const Tr = styled('tr')`
-  background-color: white; /* Set background color of all rows to white */
+  background-color: white; 
 
-  // No border on last row
   &:last-child {
     td {
       border-bottom: none;
@@ -198,6 +228,23 @@ const Td = styled('td')`
   &:nth-child(2) {
     text-align: right;
   }
+`;
+
+const ViewContestTermsLink = styled('span')`
+  color: ${DesignTokenColors.accent500}; 
+  cursor: pointer;
+  text-decoration: underline; 
+`;
+
+export const ContestTermDiv = styled('div')`
+  font-size: 12px;
+`;
+
+const Ul = styled('ul')`
+  font-size: 10px;
+  line-height: 1.5;
+  text-align: left;
+  padding-left: 10px;
 `;
 
 export default withTheme(withStyles(templateAStyles)(YourRankModal));
