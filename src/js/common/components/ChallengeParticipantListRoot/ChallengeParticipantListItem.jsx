@@ -27,10 +27,12 @@ const ChallengeParticipantListItem = ({ participant, isCurrentUser }) => {
       <Details>
         {`${participant.invitees_count} invited, `}
         {`${participant.invitees_who_viewed} viewed challenge`}
-        {/*
-        {' '}
-        {`- ${participant.invitees_who_viewed_plus} total views`}
-        */}
+        {(participant.invitees_who_viewed_plus > 0 && participant.invitees_who_viewed !== participant.invitees_who_viewed_plus) && (
+          <>
+            {' '}
+            {`- ${participant.invitees_who_viewed_plus} total views`}
+          </>
+        )}
       </Details>
     </ParticipantItem>
   );

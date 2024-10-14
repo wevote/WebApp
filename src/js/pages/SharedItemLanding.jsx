@@ -16,6 +16,7 @@ export default class SharedItemLanding extends Component {
     this.state = {
       componentDidMount: false,
       customLinkString: '',
+      destinationBackupPath: '',
       destinationFullUrl: '',
       destinationFullUrlOverride: '',
       isBallotShare: false,
@@ -100,6 +101,11 @@ export default class SharedItemLanding extends Component {
           sharedItemCodeRetrieved: true,
           waitForVoterDeviceId,
         });
+      } else if (sharedItem && sharedItem.destination_path_backup && sharedItem.destination_path_backup !== '') {
+        this.setState({
+          destinationBackupPath: sharedItem.destination_path_backup,
+          sharedItemCodeRetrieved: true,
+        });
       } else {
         console.log('SharedItemLanding destination_full_url not found');
       }
@@ -120,7 +126,7 @@ export default class SharedItemLanding extends Component {
   render () {
     renderLog('SharedItemLanding');  // Set LOG_RENDER_EVENTS to log all renders
     const {
-      componentDidMount, destinationFullUrlOverride,
+      componentDidMount, destinationBackupPath, destinationFullUrlOverride,
       isBallotShare, isChallengeShare,
       sharedItemCodeAllOpinions, sharedItemCodeIncoming, sharedItemCodeRetrieved,
     } = this.state;
@@ -139,6 +145,10 @@ export default class SharedItemLanding extends Component {
     } else if (sharedItemCodeRetrieved && (destinationFullUrl === undefined || destinationFullUrl === '')) {
       // console.log('SharedItemLanding destinationFullUrl undefined, directing to /ready');
       this.localHistoryPush('/ready');
+      return LoadingWheel;
+    } else if (destinationBackupPath !== '') {
+      console.log('If we receive a destinationBackupPath, then the shared item was not found:', destinationBackupPath);
+      this.localHistoryPush(destinationBackupPath);
       return LoadingWheel;
     } else {
       // console.log('destinationFullUrl:', destinationFullUrl);
