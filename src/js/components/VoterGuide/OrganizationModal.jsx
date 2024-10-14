@@ -432,7 +432,7 @@ class OrganizationModal extends Component {
         </DrawerHeaderOuterContainer>
         {(isCandidate && !hideBallotItemInfo) && (
           <PoliticianCardForListWrapper>
-            <Suspense fallback={<></>}>
+            <Suspense fallback={<span>&nbsp;</span>}>
               <PoliticianCardForList
                 politicianWeVoteId={politicianWeVoteId}
                 showPoliticianOpenInNewWindow
