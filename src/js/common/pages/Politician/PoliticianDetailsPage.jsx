@@ -18,7 +18,6 @@ import RepresentativeStore from '../../../stores/RepresentativeStore';
 import BallotStore from '../../../stores/BallotStore';
 import CampaignSupporterStore from '../../stores/CampaignSupporterStore';
 import CandidateStore from '../../../stores/CandidateStore';
-import CardForListBodyPlaceholder from '../../components/CardForListBodyPlaceholder';
 import OfficeHeldStore from '../../stores/OfficeHeldStore';
 import PoliticianStore from '../../stores/PoliticianStore';
 import CampaignChipInLink from '../../components/Campaign/CampaignChipInLink';

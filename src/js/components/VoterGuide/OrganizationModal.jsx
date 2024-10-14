@@ -388,7 +388,6 @@ class OrganizationModal extends Component {
               >
                 <Suspense fallback={<></>}>
                   <ImageHandler
-                    key={politicianImageUrlLarge} // Forces re-render when URL changes
                     className={avatarCompressed}
                     sizeClassName="icon-candidate-small u-push--sm "
                     imageUrl={politicianImageUrlLarge}
