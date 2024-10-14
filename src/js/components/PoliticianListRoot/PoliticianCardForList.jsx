@@ -155,7 +155,6 @@ class PoliticianCardForList extends Component {
     if (!politicianWeVoteId) {
       return (
         <CardForListBodyPlaceholder
-          politicianPhotoLargeUrl
           useVerticalCard={useVerticalCard}
           hideCardMargins
           profileImageBackgroundColor
