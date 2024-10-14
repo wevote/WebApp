@@ -7,7 +7,8 @@ import styled from 'styled-components';
 import ChallengeParticipantListRoot from '../ChallengeParticipantListRoot/ChallengeParticipantListRoot';
 
 const YourRankModal = ({ challengeWeVoteId, classes, show, toggleModal }) => {
-  const challengeName = `Mr. Beast's "Get Out the Vote"`;
+  // Consider including name of the challenge here
+  // const challengeName = `Mr. Beast's "Get Out the Vote"`;
   return (
     <Dialog
       classes={{ paper: classes.dialogPaper }}
@@ -19,10 +20,7 @@ const YourRankModal = ({ challengeWeVoteId, classes, show, toggleModal }) => {
       >
         <DialogTitleWrapper>
           <Title>
-            Ranking -&nbsp;
-            {challengeName}
-            &nbsp;
-            Challenge
+            Challenge Ranking
           </Title>
           <IconButton
             aria-label="Close"
@@ -59,16 +57,16 @@ const styles = (theme) => ({
 
 const DialogTitleWrapper = styled.div`
   display: flex;
+  justify-content: space-between;
   min-height: 30px;
 `;
 
 const Title = styled.h2`
   font-size: 16px;
   font-weight: bold;
-  margin: 0;
-  margin-top: 10px;
+  margin: 10px 0 0 0;
   text-align: left;
-  padding-left: 0px;
+  padding-left: 0;
 `;
 
 export default withStyles(styles)(YourRankModal);
