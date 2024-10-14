@@ -1,11 +1,16 @@
 import React, { Suspense } from 'react';
-import { Link, withRouter } from 'react-router-dom';
+import { NavLink, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { withStyles } from '@mui/styles';
 import styled from 'styled-components';
 import commonMuiStyles from '../Style/commonMuiStyles';
 import DesignTokenColors from '../Style/DesignTokenColors';
 import SvgImage from '../Widgets/SvgImage';
+import RocketIcon from '../../../../img/global/svg-icons/rocket-ship.svg';
+import StepOneIcon from '../../../../img/global/svg-icons/material-symbols-counter-1.svg';
+import StepOneActiveIcon from '../../../../img/global/svg-icons/material-symbols-counter-1-active.svg';
+import StepTwoIcon from '../../../../img/global/svg-icons/material-symbols-counter-2.svg';
+import StepTwoActiveIcon from '../../../../img/global/svg-icons/material-symbols-counter-2-active.svg';
 
 const BoostLearnMoreModal = React.lazy(() => import(/* webpackChunkName: 'BoostLearnMoreModal' */ '../ChallengeInviteFriends/BoostLearnMoreModal'));
 
@@ -39,9 +44,6 @@ class ChallengeInviteSteps extends React.Component {
     return 1;
   };
 
-  // Check if a step is active based on the current step number
-  // isStepActive = (stepNumber) => this.props.currentStep === stepNumber;
-
   // Set a step as active when clicked
   isStepActive = (stepNumber) => this.state.activeStep === stepNumber;
 
@@ -69,16 +71,16 @@ class ChallengeInviteSteps extends React.Component {
     }));
   };
 
-  render() {
+  render () {
     return (
       <ChallengeInviteStepsContainer>
         {/* Rocket, Invite more friends, and Learn More */}
         <HeaderContainer>
           <SvgImage
-            imageName="rocket-ship"
+            imageName={RocketIcon}
             alt="Rocket Icon"
             color="none"
-            style={{ height: '70px', width: '40px' }}
+            width="40px"
           />
           <TitleH2>
             To boost your ranking, invite your friends to join.
@@ -96,20 +98,25 @@ class ChallengeInviteSteps extends React.Component {
           {/* Step 1 Icon and Text */}
           <StepOneIconAndText
             isActive={this.isStepActive(1)}
-            onClick={() => this.handleStepClick(1)}
           >
-            <SvgImage
-              imageName={this.isStepActive(1) ? 'material-symbols-counter-1-active' : 'material-symbols-counter-1'}
-              alt="Step 1 Icon"
-            />
-            <Link
+            <StyledNavLink
+              to={`${this.getChallengeBasePath()}customize-message`}
+              // Handle click to update state
+              onClick={() => this.handleStepClick(1)}
+            >
+              <SvgImage
+                alt="Step 1 Icon"
+                imageName={this.isStepActive(1) ? StepOneActiveIcon : StepOneIcon}
+              />
+            </StyledNavLink>
+            <StyledNavLink
               to={`${this.getChallengeBasePath()}customize-message`}
               style={commonTextStyle}
               // Handle click to update state
               onClick={() => this.handleStepClick(1)}
             >
               Customize the message to your friends
-            </Link>
+            </StyledNavLink>
           </StepOneIconAndText>
 
           {/* Horizontal Line Between Steps */}
@@ -117,20 +124,25 @@ class ChallengeInviteSteps extends React.Component {
           {/* Step 2 Icon and Text */}
           <StepTwoIconAndText
             isActive={this.isStepActive(2)}
-            onClick={() => this.handleStepClick(2)}
           >
-            <SvgImage
-              imageName={this.isStepActive(2) ? 'material-symbols-counter-2-active' : 'material-symbols-counter-2'}
-              alt="Step 2 Icon"
-            />
-            <Link
+            <StyledNavLink
+              to={`${this.getChallengeBasePath()}invite-friends`}
+              // Handle click to update state
+              onClick={() => this.handleStepClick(2)}
+            >
+              <SvgImage
+                alt="Step 2 Icon"
+                imageName={this.isStepActive(2) ? StepTwoActiveIcon : StepTwoIcon}
+              />
+            </StyledNavLink>
+            <StyledNavLink
               to={`${this.getChallengeBasePath()}invite-friends`}
               style={commonTextStyle}
               // Handle click to update state
               onClick={() => this.handleStepClick(2)}
             >
               Copy message & link
-            </Link>
+            </StyledNavLink>
           </StepTwoIconAndText>
         </StepsContainer>
         {/* Render BoostLearnMoreModal */}
@@ -175,7 +187,7 @@ const HeaderContainer = styled('div')`
 `;
 
 const LearnMoreButton = styled('button')`{
-background: none;
+    background: none;
     border: none;
     color: ${DesignTokenColors.primary500};
     font-size: 13px;
@@ -222,16 +234,6 @@ const StepOneIconAndText = styled('div')`
   margin-right: 25px;
   text-align: center;
   width: 169px;
-  a {
-    font-weight: ${({ isActive }) => (isActive ? '600' : 'normal')};
-    color: ${({ isActive }) => (isActive ? DesignTokenColors.primary500 : 'inherit')};
-
-    &:hover {
-      color: ${DesignTokenColors.primary500};
-      font-weight: 600;
-      text-decoration: underline;
-    }
-  }
 `;
 
 const StepTwoIconAndText = styled('div')`
@@ -243,15 +245,20 @@ const StepTwoIconAndText = styled('div')`
   margin-left: 25px;
   text-align: center;
   width: 109px;
-  a {
-    font-weight: ${({ isActive }) => (isActive ? '600' : 'normal')};
-    color: ${({ isActive }) => (isActive ? DesignTokenColors.primary500 : 'inherit')};
+`;
 
-    &:hover {
-      color: ${DesignTokenColors.primary500};
-      font-weight: 600;
-      text-decoration: underline;
-    }
+const StyledNavLink = styled(NavLink)`
+  font-weight: normal;
+  color: inherit;
+  text-decoration: none;
+  &.active {
+    font-weight: 600;
+    color: ${DesignTokenColors.primary500};
+  }
+  &:hover {
+    color: ${DesignTokenColors.primary500};
+    font-weight: 600;
+    text-decoration: underline;
   }
 `;
 

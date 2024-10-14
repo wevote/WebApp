@@ -5,7 +5,7 @@ import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import VoterGuidePossibilityActions from '../../actions/VoterGuidePossibilityActions';
-import abbreviateNumber from '../../common/utils/abbreviateNumber';
+import numberAbbreviate from '../../common/utils/numberAbbreviate';
 import historyPush from '../../common/utils/historyPush';
 import { displayNoneIfSmallerThanDesktop } from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
@@ -391,7 +391,7 @@ class CandidateItemEndorsement extends Component {
                   className="twitter-followers__badge"
                 >
                   <Twitter />
-                  <span title={numberWithCommas(twitterFollowersCount)}>{abbreviateNumber(twitterFollowersCount)}</span>
+                  <span title={numberWithCommas(twitterFollowersCount)}>{numberAbbreviate(twitterFollowersCount)}</span>
                 </span>
               )}
               {(!hideCandidateUrl && candidateUrl) && (

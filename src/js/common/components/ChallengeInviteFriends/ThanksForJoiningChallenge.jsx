@@ -1,12 +1,14 @@
 import { IconButton } from '@mui/material';
 import { Close } from '@mui/icons-material';
-import styled from 'styled-components';
 import PropTypes from 'prop-types';
-
+import Confetti from 'react-confetti';
 import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
+
 
 const ThanksForJoiningChallenge = ({ voterFirstName, challengeTitle, onClose }) => {
   const [isClosing, setIsClosing] = useState(false);
+  const [showConfetti, setShowConfetti] = useState(false);
 
   useEffect(() => {
     if (isClosing) {
@@ -17,11 +19,22 @@ const ThanksForJoiningChallenge = ({ voterFirstName, challengeTitle, onClose }) 
     }
   }, [isClosing, onClose]);
 
+  useEffect(() => {
+    // Show confetti when the component mounts
+    setShowConfetti(true);
+    // Hide confetti after a short duration
+    const timer = setTimeout(() => {
+      setShowConfetti(false);
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <ThanksForJoiningOuterWrapper isClosing={isClosing}>
       <ThanksForJoiningInnerWrapper isClosing={isClosing}>
         <ThankYouMessageWrapper>
           <ThankYouMessage>
+            {showConfetti && <Confetti />}
             Thanks for joining&nbsp;
             <BoldText>
               {challengeTitle}

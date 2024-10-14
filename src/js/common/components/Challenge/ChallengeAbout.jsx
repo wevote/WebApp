@@ -143,7 +143,7 @@ const styles = () => ({
 
 export const CardForListRow = styled('div')`
   color: ${DesignTokenColors.neutral500};
-  font-size: 12px;
+  font-size: 14px;
   padding: 3px 0;
 `;
 

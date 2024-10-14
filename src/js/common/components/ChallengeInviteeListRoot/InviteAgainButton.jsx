@@ -53,7 +53,8 @@ const InviteAgainButton = ({ classes, challengeWeVoteId, challengeInviteeId }) =
     setInviterName(VoterStore.getFirstName());
     const invitee = ChallengeInviteeStore.getChallengeInviteeById(challengeInviteeId);
     // console.log('InviteAgainButton onChallengeInviteeStoreChange invitee:', invitee);
-    setInviteeName(invitee.invitee_name);
+    const inviteeNameTemp = invitee.invitee_voter_name || invitee.invitee_name;
+    setInviteeName(inviteeNameTemp);
     setInviteTextFromInviter(invitee.invite_text_from_inviter);
     setInviteTextVarsChangedCount(varsChangedNew);
   };
@@ -61,16 +62,16 @@ const InviteAgainButton = ({ classes, challengeWeVoteId, challengeInviteeId }) =
   const onChallengeParticipantStoreChange = () => {
     const varsChangedNew = inviteTextVarsChangedCount + 1;
     setInviterName(VoterStore.getFirstName());
-    setInviteTextForFriends(ChallengeParticipantStore.getInviteTextForFriends(challengeWeVoteId));
     // console.log('InviteAgainButton onChallengeParticipantStoreChange Participant TextForFriends:', ChallengeParticipantStore.getInviteTextForFriends(challengeWeVoteId));
+    setInviteTextForFriends(ChallengeParticipantStore.getInviteTextForFriends(challengeWeVoteId));
     setInviteTextVarsChangedCount(varsChangedNew);
   };
 
   const onChallengeStoreChange = () => {
     const varsChangedNew = inviteTextVarsChangedCount + 1;
     setInviterName(VoterStore.getFirstName());
-    setChallengeInviteTextDefault(ChallengeStore.getChallengeInviteTextDefaultByWeVoteId(challengeWeVoteId));
     // console.log('InviteAgainButton onChallengeStoreChange InviteTextDefault:', ChallengeStore.getChallengeInviteTextDefaultByWeVoteId(challengeWeVoteId));
+    setChallengeInviteTextDefault(ChallengeStore.getChallengeInviteTextDefaultByWeVoteId(challengeWeVoteId));
     setChallengeTitle(ChallengeStore.getChallengeTitleByWeVoteId(challengeWeVoteId));
     setInviteTextVarsChangedCount(varsChangedNew);
   };
@@ -93,24 +94,27 @@ const InviteAgainButton = ({ classes, challengeWeVoteId, challengeInviteeId }) =
   }, []);
 
   React.useEffect(() => {
-    const inviteeFirstName = inviteeName ? inviteeName.split(' ')[0] : '';
-    const inviterFirstName = inviterName ? inviterName.split(' ')[0] : '';
-    // console.log('inviteeName: ', inviteeName, ', inviterName: ', inviterName);
-    let inviteTextToSendTemp1 = inviteeFirstName ? `Hi ${inviteeFirstName}` : 'Hi';
-    inviteTextToSendTemp1 += inviterFirstName ? `, this is ${inviterFirstName}. ` : ', ';
-    let inviteTextToSendTemp2 = challengeInviteTextDefault;
-    if (inviteTextForFriends && inviteTextForFriends.trim() !== '') {
-      inviteTextToSendTemp2 = inviteTextForFriends;
+    let inviteTextToSendAgain = inviteTextFromInviter;
+    if (!inviteTextToSendAgain || inviteTextToSendAgain.trim() === '') {
+      const inviteeFirstName = inviteeName ? inviteeName.split(' ')[0] : '';
+      const inviterFirstName = inviterName ? inviterName.split(' ')[0] : '';
+      // console.log('inviteeName: ', inviteeName, ', inviterName: ', inviterName);
+      let inviteTextToSendTemp1 = inviteeFirstName ? `Hi ${inviteeFirstName}` : 'Hi';
+      inviteTextToSendTemp1 += inviterFirstName ? `, this is ${inviterFirstName}. ` : ', ';
+      let inviteTextToSendTemp2 = challengeInviteTextDefault;
+      if (inviteTextForFriends && inviteTextForFriends.trim() !== '') {
+        inviteTextToSendTemp2 = inviteTextForFriends;
+      }
+      if (inviteTextForFriends && inviteTextFromInviter.trim() !== '') {
+        inviteTextToSendTemp2 = inviteTextFromInviter;
+      }
+      // console.log('challengeInviteTextDefault: ', challengeInviteTextDefault);
+      const invitee = ChallengeInviteeStore.getChallengeInviteeById(challengeInviteeId);
+      const inviteeUrlCode = invitee.invitee_url_code || '';
+      const urlToSendTemp = `${ChallengeStore.getSiteUrl(challengeWeVoteId)}/-${inviteeUrlCode}`;
+      inviteTextToSendAgain = `${inviteTextToSendTemp1}${inviteTextToSendTemp2} ${urlToSendTemp}`;
     }
-    if (inviteTextForFriends && inviteTextFromInviter.trim() !== '') {
-      inviteTextToSendTemp2 = inviteTextFromInviter;
-    }
-    // console.log('challengeInviteTextDefault: ', challengeInviteTextDefault);
-    const inviteeUrlCode = ChallengeInviteeStore.getNextInviteeUrlCode();
-    const urlToSendTemp = `${ChallengeStore.getSiteUrl(challengeWeVoteId)}/-${inviteeUrlCode}`;
-    const inviteTextToSendTemp3 = `${inviteTextToSendTemp1}${inviteTextToSendTemp2} ${urlToSendTemp}`;
-    setInviteTextToSend(inviteTextToSendTemp3);
-    // setUrlToSend(urlToSendTemp);
+    setInviteTextToSend(inviteTextToSendAgain);
   }, [inviteTextVarsChangedCount]);
 
   React.useEffect(() => {
@@ -127,7 +131,7 @@ const InviteAgainButton = ({ classes, challengeWeVoteId, challengeInviteeId }) =
           onClick={() => handleShare()}
           variant="outlined"
         >
-          {inviteCopiedMessageOn ? 'Invite copied!' : 'Invite again'}
+          {inviteCopiedMessageOn ? 'Invite copied!' : 'Copy invite again'}
         </Button>
       </CopyToClipboard>
     </InviteAgainButtonWrapper>

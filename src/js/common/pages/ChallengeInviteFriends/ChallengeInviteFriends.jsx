@@ -1,12 +1,10 @@
 import loadable from '@loadable/component';
-import Chip from '@mui/material/Chip';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Helmet } from 'react-helmet-async';
 import styled from 'styled-components';
 import ChallengeHeaderSimple from '../../components/Navigation/ChallengeHeaderSimple';
-import { CampaignProcessStepIntroductionText } from '../../components/Style/CampaignProcessStyles';
 import { CampaignSupportSection, CampaignSupportSectionWrapper } from '../../components/Style/CampaignSupportStyles';
 import commonMuiStyles from '../../components/Style/commonMuiStyles';
 import { ContentInnerWrapperDefault, ContentOuterWrapperDefault, PageWrapperDefault } from '../../components/Style/PageWrapperStyles';
@@ -19,6 +17,7 @@ import DesignTokenColors from '../../components/Style/DesignTokenColors';
 import ChallengeInviteSteps from '../../components/Navigation/ChallengeInviteSteps';
 import ChallengeInviteeListRoot from '../../components/ChallengeInviteeListRoot/ChallengeInviteeListRoot';
 import ChallengeInviteeStore from '../../stores/ChallengeInviteeStore';
+import InviteFriendsTips from '../../components/ChallengeInviteFriends/InviteFriendsTips';
 import InviteFriendToChallengeInput from '../../components/ChallengeInviteFriends/InviteFriendToChallengeInput';
 import YourRank from '../../components/Challenge/YourRank';
 
@@ -85,6 +84,18 @@ class ChallengeInviteFriends extends Component {
     // Take the "calculated" identifiers and retrieve if missing
     retrieveChallengeFromIdentifiersIfNeeded(challengeSEOFriendlyPath, challengeWeVoteId);
     window.scrollTo(0, 0);
+  }
+
+  componentDidUpdate (prevProps, prevState) {
+    const {
+      challengeWeVoteId: prevChallengeWeVoteId,
+    } = prevState;
+    const {
+      challengeWeVoteId,
+    } = this.state;
+    if (challengeWeVoteId !== prevChallengeWeVoteId) {
+      this.onChallengeInviteeStoreChange();
+    }
   }
 
   componentWillUnmount () {
@@ -194,17 +205,7 @@ class ChallengeInviteFriends extends Component {
         <PageWrapperDefault>
           <ContentOuterWrapperDefault>
             <ContentInnerWrapperDefault>
-              <CampaignProcessStepIntroductionText>
-                <StyledChip label="TIP" />
-                &nbsp;
-                So we can correctly calculate your boost points,
-                {' '}
-                <strong>
-                  name each friend and invite them separately
-                </strong>
-                {' '}
-                (a unique link is generated for each friend).
-              </CampaignProcessStepIntroductionText>
+              <InviteFriendsTips startingTipName="nameEachFriend" />
               <CampaignSupportSectionWrapper marginTopOff>
                 <CampaignSupportSection marginBottomOff>
                   <InviteFriendToChallengeInput challengeWeVoteId={challengeWeVoteId} />
@@ -216,7 +217,7 @@ class ChallengeInviteFriends extends Component {
         {inviteeList.length > 0 && (
           <InvitedFriendsWrapper>
             <YourRank challengeSEOFriendlyPath={challengeSEOFriendlyPath} challengeWeVoteId={challengeWeVoteId} />
-            <ChallengeInviteeListRoot challengeWeVoteId={challengeWeVoteId} />
+            <ChallengeInviteeListRoot challengeWeVoteId={challengeWeVoteId} hideRank />
           </InvitedFriendsWrapper>
         )}
         <Suspense fallback={<span>&nbsp;</span>}>
@@ -249,14 +250,6 @@ const InvitedFriendsWrapper = styled('div')`
   background-color: ${DesignTokenColors.neutralUI50};
   display: flex;
   flex-direction: column;
-`;
-
-const StyledChip = styled(Chip)`
-  background-color: ${DesignTokenColors.confirmation700};
-  color: ${DesignTokenColors.whiteUI};
-  height: 20px;
-  padding-top: 2px;
-  padding-bottom: 2px;
 `;
 
 export default withStyles(commonMuiStyles)(ChallengeInviteFriends);

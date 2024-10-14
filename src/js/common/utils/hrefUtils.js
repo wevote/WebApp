@@ -15,6 +15,10 @@ export function normalizedHrefPage () {
     return 'candidatelist';
   } else if (second && second === 'cs') { // Does the pathname end with '/cs/', i.e., candidates for state?
     return 'candidatelist';
+  } else if (second && second === '-') { // Does the pathname end with '/-/', i.e., on a candidate landing page?
+    return 'candidatelist';
+  } else if (second && second === '+') { // Does the pathname end with '/-/', i.e., on a candidate landing page?
+    return 'challenges';
   }
   return page;
 }

@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import abbreviateNumber from '../../common/utils/abbreviateNumber';
+import numberAbbreviate from '../../common/utils/numberAbbreviate';
 import historyPush from '../../common/utils/historyPush';
 import { displayNoneIfSmallerThanDesktop } from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
@@ -240,7 +240,7 @@ class CandidateItemForOpinions extends Component {
                 onClick={() => this.goToCandidateLink}
               >
                 <Twitter />
-                <span title={numberWithCommas(oneCandidate.twitter_followers_count)}>{abbreviateNumber(oneCandidate.twitter_followers_count)}</span>
+                <span title={numberWithCommas(oneCandidate.twitter_followers_count)}>{numberAbbreviate(oneCandidate.twitter_followers_count)}</span>
               </TwitterWrapperDesktop>
             )}
           </Candidate>
