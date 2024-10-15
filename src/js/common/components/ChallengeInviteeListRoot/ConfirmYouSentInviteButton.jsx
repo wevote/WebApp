@@ -66,6 +66,7 @@ const styles = () => ({
     padding: '2px 10px',
     borderRadius: 20,
     fontSize: 14,
+    lineHeight: '1.2',
   },
 });
 
