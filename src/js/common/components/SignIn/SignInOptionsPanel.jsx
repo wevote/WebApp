@@ -447,7 +447,7 @@ export default class SignInOptionsPanel extends Component {
                       {showRecommendedText &&
                         <RecommendedText className="u-tl u-stack--sm">Recommended</RecommendedText>}
                       <TwitterSignIn
-                        buttonText="Sign in with Twitter"
+                        buttonText="Sign in with X"
                         buttonSubmittedText="Signing in..."
                         inModal={inModal}
                         closeSignInModal={this.closeSignInModalLocal}
