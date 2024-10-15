@@ -284,7 +284,7 @@ class OneValue extends Component {
             <SearchBar2024
               clearButton
               searchButton
-              placeholder="Search by name, Twitter handle or description"
+              placeholder="Search by name, X handle or description"
               searchFunction={this.searchFunction}
               clearFunction={this.clearFunction}
               searchUpdateDelayTime={250}

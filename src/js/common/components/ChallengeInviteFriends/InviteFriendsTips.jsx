@@ -88,7 +88,7 @@ function InviteFriendsTips ({ challengeWeVoteId, startingTipName }) {
   } else if (tipToShow === 'sendMessage') {
     tipJsx = (
       <CampaignProcessStepIntroductionText>
-        <StyledChip label="TIP" />
+        <StyledChip label="TIP" colorOptionNumber={1} />
         &nbsp;
         Send the copied message
         {' '}
@@ -104,7 +104,7 @@ function InviteFriendsTips ({ challengeWeVoteId, startingTipName }) {
   } else if (tipToShow === 'youWillGetPoints') {
     tipJsx = (
       <CampaignProcessStepIntroductionText>
-        <StyledChip label="TIP" />
+        <StyledChip label="TIP" colorOptionNumber={2} />
         &nbsp;
         When your friend views or joins this challenge
         {' '}
@@ -147,12 +147,16 @@ const NextSpan = styled('span')`
   text-decoration:underline;
 `;
 
-const StyledChip = styled(Chip)`
-  background-color: ${DesignTokenColors.confirmation700};
+const StyledChip = styled(Chip, {
+  shouldForwardProp: (prop) => !['colorOptionNumber'].includes(prop),
+})(({ colorOptionNumber }) => (`
+  ${colorOptionNumber ? '' : `background-color: ${DesignTokenColors.confirmation700};`}
+  ${colorOptionNumber === 1 ? `background-color: ${DesignTokenColors.warning800};` : ''}
+  ${colorOptionNumber === 2 ? `background-color: ${DesignTokenColors.info900};` : ''}
   color: ${DesignTokenColors.whiteUI};
   height: 20px;
   padding-top: 2px;
   padding-bottom: 2px;
-`;
+`));
 
 export default withStyles(styles)(InviteFriendsTips);

@@ -648,6 +648,14 @@ class ChallengeHomePage extends Component {
                   voterWeVoteId={voterWeVoteId}
                 />
                 <ChallengeAbout challengeWeVoteId={challengeWeVoteIdForDisplay} />
+                <JoinChallengeButtonWrapper>
+                  <Suspense fallback={<></>}>
+                    <JoinChallengeButton
+                      challengeSEOFriendlyPath={challengeSEOFriendlyPathForDisplay}
+                      challengeWeVoteId={challengeWeVoteIdForDisplay}
+                    />
+                  </Suspense>
+                </JoinChallengeButtonWrapper>
                 {challengeDescription && (
                   <DelayedLoad waitBeforeShow={250}>
                     <ChallengeDescription>
@@ -657,14 +665,6 @@ class ChallengeHomePage extends Component {
                     </ChallengeDescription>
                   </DelayedLoad>
                 )}
-                <JoinChallengeButtonWrapper>
-                  <Suspense fallback={<></>}>
-                    <JoinChallengeButton
-                      challengeSEOFriendlyPath={challengeSEOFriendlyPathForDisplay}
-                      challengeWeVoteId={challengeWeVoteIdForDisplay}
-                    />
-                  </Suspense>
-                </JoinChallengeButtonWrapper>
                 <CampaignDescriptionDesktopWrapper>
                   {challengeDataFound && (
                     <DelayedLoad waitBeforeShow={250}>
