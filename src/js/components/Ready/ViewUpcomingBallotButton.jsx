@@ -1,15 +1,15 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
-import BaseButton from '../Buttons/BaseButton';
+import VoterActions from '../../actions/VoterActions';
+import AppObservableStore from '../../common/stores/AppObservableStore';
+import apiCalming from '../../common/utils/apiCalming';
 import daysUntil from '../../common/utils/daysUntil';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
-import AppObservableStore from '../../common/stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
 import VoterStore from '../../stores/VoterStore';
-import VoterActions from '../../actions/VoterActions';
-import apiCalming from '../../common/utils/apiCalming';
+import BaseButton from '../Buttons/BaseButton';
 
 class ViewUpcomingBallotButton extends React.Component {
   constructor (props) {

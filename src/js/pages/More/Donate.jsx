@@ -1,8 +1,6 @@
 import { Launch } from '@mui/icons-material';
 import { Button, FormControl, FormControlLabel, InputAdornment, Radio, RadioGroup, TextField } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
-import { Elements } from '@stripe/react-stripe-js';
-import { loadStripe } from '@stripe/stripe-js';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { GoogleReCaptcha, GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
@@ -12,7 +10,6 @@ import AnalyticsActions from '../../actions/AnalyticsActions';
 import DonateActions from '../../common/actions/DonateActions';
 import DonationListForm from '../../common/components/Donation/DonationListForm';
 import DonorboxEmbed from '../../common/components/Donation/DonorboxEmbed';
-import InjectedCheckoutForm from '../../common/components/Donation/InjectedCheckoutForm';
 import standardBoxShadow from '../../common/components/Style/standardBoxShadow';
 import OpenExternalWebSite from '../../common/components/Widgets/OpenExternalWebSite';
 import DonateStore from '../../common/stores/DonateStore';
@@ -24,7 +21,7 @@ import webAppConfig from '../../config';
 import VoterStore from '../../stores/VoterStore';
 import $ajax from '../../utils/service';
 
-const stripePromise = loadStripe(webAppConfig.STRIPE_API_KEY);
+// const stripePromise = loadStripe(webAppConfig.STRIPE_API_KEY);
 
 
 class Donate extends Component {
@@ -380,16 +377,16 @@ class Donate extends Component {
                           </ContributeGridSection>
                         </ContributeGridWrapper>
                         <PaymentWrapper joining={joining}>
-                          <PaymentCenteredWrapper>
-                            <Elements stripe={stripePromise}>
-                              <InjectedCheckoutForm
-                                value={value}
-                                classes={{}}
-                                isMonthly={isMonthly}
-                                showWaiting={showWaiting}
-                              />
-                            </Elements>
-                          </PaymentCenteredWrapper>
+                          {/*<PaymentCenteredWrapper>*/}
+                            {/* <Elements stripe={stripePromise}> */}
+                            {/*  <InjectedCheckoutForm */}
+                            {/*    value={value} */}
+                            {/*    classes={{}} */}
+                            {/*    isMonthly={isMonthly} */}
+                            {/*    showWaiting={showWaiting} */}
+                            {/*  /> */}
+                            {/* </Elements> */}
+                          {/* </PaymentCenteredWrapper> */}
                         </PaymentWrapper>
                       </>
                     ) : (
@@ -592,18 +589,18 @@ const DonateCaveat = styled('p')`
   font-style: italic;
 `;
 
-const PaymentCenteredWrapper  = styled('div')(({ theme }) => (`
-  width: 500px;
-  ${theme.breakpoints.down('sm')} {
-    width: 300px;
-  }
-  display: inline-block;
-  background-color: rgb(246, 244,246);
-  box-shadow: ${standardBoxShadow('medium')};
-  border: 2px solid darkgrey;
-  border-radius: 3px;
-  padding: 8px;
-`));
+// const PaymentCenteredWrapper  = styled('div')(({ theme }) => (`
+//   width: 500px;
+//   ${theme.breakpoints.down('sm')} {
+//     width: 300px;
+//   }
+//   display: inline-block;
+//   background-color: rgb(246, 244,246);
+//   box-shadow: ${standardBoxShadow('medium')};
+//   border: 2px solid darkgrey;
+//   border-radius: 3px;
+//   padding: 8px;
+// `));
 
 
 const ContributeGridWrapper = styled('div')(({ theme }) => (`

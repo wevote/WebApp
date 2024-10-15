@@ -1,16 +1,17 @@
 import styled from 'styled-components';
-import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import colors from '../../common/components/Style/Colors';
-import DesignTokenColors from '../../common/components/Style/DesignTokenColors';  // 2024-04-16 Upgrade to using this
+import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
+import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
+import isMobileScreenSize from '../../common/utils/isMobileScreenSize'; // 2024-04-16 Upgrade to using this
 
 export const BallotAddress = styled('div', {
   shouldForwardProp: (prop) => !['centerText', 'allowTextWrap'].includes(prop),
 })(({ allowTextWrap, centerText }) => (`
   margin-left: 2px;
-  font-size: 18px;
-  ${allowTextWrap ? '' : 'overflow: hidden;'}
-  ${allowTextWrap ? '' : 'text-overflow: ellipsis;'}
-  ${allowTextWrap ? '' : 'white-space: nowrap;'}
+  ${isMobileScreenSize() || isCordova() ? '' : 'font-size: 18px;'}
+  ${allowTextWrap || isMobileScreenSize() || isCordova() ? '' : 'overflow: hidden;'}
+  ${allowTextWrap || isMobileScreenSize() || isCordova() ? '' : 'text-overflow: ellipsis;'}
+  ${allowTextWrap || isMobileScreenSize() || isCordova() ? '' : 'white-space: nowrap;'}
   ${centerText ? 'text-align: center;' : ''}
 `));
 
