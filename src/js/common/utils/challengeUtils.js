@@ -46,6 +46,7 @@ export function getChallengeValuesFromIdentifiers (challengeSEOFriendlyPath, cha
       we_vote_hosted_challenge_photo_small_url: challengePhotoSmallUrl,
       we_vote_hosted_profile_image_url_large: weVoteHostedProfileImageUrlLarge,
     } = challenge);
+    // console.log('getChallengeValuesFromIdentifiers, challenge:', challenge);
     challengePoliticianList = ChallengeStore.getChallengePoliticianList(challengeWeVoteIdFromObject);
   }
   // console.log('getChallengeValuesFromIdentifiers, challenge: ', challenge, ', challengeWeVoteIdFromObject:', challengeWeVoteIdFromObject, ', challengeTitle:', challengeTitle);

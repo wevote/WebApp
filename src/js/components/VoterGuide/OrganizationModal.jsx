@@ -282,8 +282,6 @@ class OrganizationModal extends Component {
     }
   }
 
-
-
   // handleResizeLocal () {
   //   if (handleResize('Footer')) {
   //     // console.log('Footer handleResizeEntry update');
@@ -384,7 +382,7 @@ class OrganizationModal extends Component {
           <DrawerHeaderInnerContainer>
             <CandidateTopRow>
               <Candidate
-                      id={`officeItemCompressedCandidateImageAndName-${politicianWeVoteId}`}
+                id={`organizationModalCandidateImageAndName-${politicianWeVoteId}`}
               >
                 <Suspense fallback={<></>}>
                   <ImageHandler
@@ -408,11 +406,11 @@ class OrganizationModal extends Component {
               <CloseDrawerHeaderIconWrapper>
                 <div>
                   <IconButton
-                  aria-label="Close"
-                  className={classes.closeButton}
-                  id="closeOrganizationModal"
-                  onClick={this.closeOrganizationModal}
-                  size="large"
+                    aria-label="Close"
+                    className={classes.closeButton}
+                    id="closeOrganizationModal"
+                    onClick={this.closeOrganizationModal}
+                    size="large"
                   >
                     <span className="u-cursor--pointer">
                       <Close classes={{ root: classes.closeIcon }} />
@@ -424,7 +422,7 @@ class OrganizationModal extends Component {
             <HeartToggleAndThermometerWrapper>
               <Suspense fallback={<span>&nbsp;</span>}>
                 <CampaignSupportThermometer
-                        campaignXWeVoteId={linkedCampaignXWeVoteId}
+                  campaignXWeVoteId={linkedCampaignXWeVoteId}
                 />
               </Suspense>
             </HeartToggleAndThermometerWrapper>

@@ -149,6 +149,7 @@ const styles = () => ({
     boxShadow: 'none !important',
     color: `${DesignTokenColors.primary500}`,
     fontSize: 14,
+    lineHeight: '1.2',
     marginRight: '-5px',
     padding: '0 20px',
     textTransform: 'none',

@@ -30,11 +30,11 @@ import FriendsTabs from './FriendsTabs';
 import HeaderBarLogo from './HeaderBarLogo';
 import HeaderBarModals from './HeaderBarModals';
 import TabWithPushHistory from './TabWithPushHistory';
-import webAppConfig from '../../config';
+// import webAppConfig from '../../config';
 
 
 const HeaderNotificationMenu = React.lazy(() => import(/* webpackChunkName: 'HeaderNotificationMenu' */ './HeaderNotificationMenu'));
-const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
+// const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
 /* global $ */
 
@@ -474,7 +474,7 @@ class HeaderBar extends Component {
     let donateVisible;
     const friendsVisible = false; // 2023-09-04 Dale We are turning off Friends header link for now
     let howItWorksValue;
-    const squadsVisible = isWebApp() && nextReleaseFeaturesEnabled;
+    const squadsVisible = isWebApp();
     // const squadsVisible = false;
     let squadsValue;
     // let howItWorksVisible;

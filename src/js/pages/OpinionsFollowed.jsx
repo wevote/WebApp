@@ -93,7 +93,7 @@ export default class OpinionsFollowed extends Component {
             <SearchBar2024
               clearButton
               searchButton
-              placeholder="Search by name or Twitter handle"
+              placeholder="Search by name or X handle"
               searchFunction={this.searchFunction}
               clearFunction={this.clearFunction}
               searchUpdateDelayTime={250}

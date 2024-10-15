@@ -184,7 +184,7 @@ const TopSection = styled.div`
   align-items: center;
   background-color: white;
   box-shadow: 0px 6px 6px -2px rgba(0, 0, 0, 0.1);
-  z-index: 1;
+  // z-index: 1;
   position: sticky;
   top: 0;
   padding: 10px;

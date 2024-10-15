@@ -207,14 +207,16 @@ class BallotScrollingContainer extends Component {
                       <CandidateParty id={`candidateParty-${oneCandidate.we_vote_id}`}>
                         {candidatePartyText}
                       </CandidateParty>
-                      <BallotMatchIndicator2024
-                        isBestMatch={isBestMatch}
-                        isGoodMatch={isGoodMatch}
-                        isFairMatch={isFairMatch}
-                        isPoorMatch={isPoorMatch}
-                        isItAMatch={isItAMatch}
-                        noData={noData}
-                      />
+                      {pigsCanFly && (
+                        <BallotMatchIndicator2024
+                          isBestMatch={isBestMatch}
+                          isGoodMatch={isGoodMatch}
+                          isFairMatch={isFairMatch}
+                          isPoorMatch={isPoorMatch}
+                          isItAMatch={isItAMatch}
+                          noData={noData}
+                        />
+                      )}
                     </CandidateNameAndPartyWrapper>
                   </Candidate>
                 </CandidateTopRow>
