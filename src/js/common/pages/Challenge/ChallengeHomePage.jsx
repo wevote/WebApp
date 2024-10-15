@@ -16,7 +16,6 @@ import ChallengeParticipantStore from '../../stores/ChallengeParticipantStore';
 import ChallengeStore from '../../stores/ChallengeStore';
 import VoterStore from '../../../stores/VoterStore';
 import CompleteYourProfileModalController from '../../components/Settings/CompleteYourProfileModalController';
-import { Candidate, CandidateNameH4, CandidateNameAndPartyWrapper, CandidateTopRow } from '../../../components/Style/BallotStyles';
 import {
   CampaignDescriptionDesktop, CampaignDescriptionDesktopWrapper, CampaignDescriptionWrapper,
   CampaignSubSectionSeeAll, CampaignSubSectionTitle, CampaignSubSectionTitleWrapper,
@@ -40,22 +39,20 @@ import standardBoxShadow from '../../components/Style/standardBoxShadow';
 import { cordovaBallotFilterTopMargin } from '../../../utils/cordovaOffsets';
 import { headroomWrapperOffset } from '../../../utils/cordovaCalculatedOffsets';
 import { getPageKey } from '../../../utils/cordovaPageUtils';
-import normalizedImagePath from '../../utils/normalizedImagePath';
 import ChallengeAbout from '../../components/Challenge/ChallengeAbout';
 import ChallengeParticipantListRoot from '../../components/ChallengeParticipantListRoot/ChallengeParticipantListRoot';
 import ChallengeInviteeListRoot from '../../components/ChallengeInviteeListRoot/ChallengeInviteeListRoot';
 import ThanksForViewingChallenge from '../../components/Challenge/ThanksForViewingChallenge';
 import ShareStore from '../../stores/ShareStore';
+import ChallengeHeaderSimple from '../../components/Navigation/ChallengeHeaderSimple';
 
 const ChallengeCardForList = React.lazy(() => import(/* webpackChunkName: 'ChallengeCardForList' */ '../../components/ChallengeListRoot/ChallengeCardForList'));
 // const ChallengeCommentsList = React.lazy(() => import(/* webpackChunkName: 'ChallengeCommentsList' */ '../../components/Challenge/ChallengeCommentsList'));
 const ChallengeRetrieveController = React.lazy(() => import(/* webpackChunkName: 'ChallengeRetrieveController' */ '../../components/Challenge/ChallengeRetrieveController'));
 // const ChallengeNewsItemList = React.lazy(() => import(/* webpackChunkName: 'ChallengeNewsItemList' */ '../../components/Challenge/ChallengeNewsItemList'));
 // const ChallengeShareChunk = React.lazy(() => import(/* webpackChunkName: 'ChallengeShareChunk' */ '../../components/Challenge/ChallengeShareChunk'));
-const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../../../components/ImageHandler'));
 const JoinChallengeButton = React.lazy(() => import(/* webpackChunkName: 'JoinChallengeButton' */ '../../components/Challenge/JoinChallengeButton'));
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../../components/Widgets/ReadMore'));
-const UpdateChallengeInformation = React.lazy(() => import(/* webpackChunkName: 'UpdateChallengeInformation' */ '../../components/Challenge/UpdateChallengeInformation'));
 
 const futureFeaturesDisabled = true;
 const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
@@ -103,6 +100,7 @@ class ChallengeHomePage extends Component {
       challengeDataFound: false,
       challengeDataNotFound: false,
       challengeDescription: '',
+      challengePhotoLargeUrl: '',
       challengeSEOFriendlyPath: '',
       challengeSEOFriendlyPathForDisplay: '', // Value for challenge already received
       challengeTitle: '',
@@ -339,6 +337,7 @@ class ChallengeHomePage extends Component {
     const {
       challengeDescription,
       challengePhotoLargeUrl,
+      challengePhotoMediumUrl,
       challengeSEOFriendlyPath,
       challengeTitle,
       challengeWeVoteId,
@@ -373,6 +372,7 @@ class ChallengeHomePage extends Component {
       challengeDescription,
       challengeDescriptionLimited,
       challengePhotoLargeUrl,
+      challengePhotoMediumUrl,
       challengeTitle,
       finalElectionDateInPast,
       isBlockedByWeVote,
@@ -406,12 +406,11 @@ class ChallengeHomePage extends Component {
       finalElectionDateInPast: false,
       // isSupportersCountMinimumExceeded: false,
       challengeWeVoteId: '',
-      politicalParty: '',
       challengeDataFound: false,
       challengeDataNotFound: false,
       challengeDescription: '',
       challengeDescriptionLimited: '',
-      challengeImageUrlLarge: '',
+      challengePhotoLargeUrl: '',
       challengeTitle: '',
       challengeWeVoteIdForDisplay: '', // We don't clear challengeWeVoteId because we may need it to load next challenge
       challengeSEOFriendlyPathForDisplay: '', // We don't clear challengeSEOFriendlyPath because we may need it to load next challenge
@@ -472,7 +471,7 @@ class ChallengeHomePage extends Component {
       chosenWebsiteName,
       challengeWeVoteId, loadSlow,
       challengeDataFound, challengeDataNotFound,
-      challengeDescription, challengeDescriptionLimited, challengeImageUrlLarge,
+      challengeDescription, challengeDescriptionLimited, challengePhotoLargeUrl,
       challengeSEOFriendlyPath, challengeSEOFriendlyPathForDisplay,
       challengeTitle, challengeWeVoteIdForDisplay,
       scrolledDown, sharedByDisplayName, thanksForViewingChallengeOn,
@@ -481,8 +480,6 @@ class ChallengeHomePage extends Component {
     // console.log('ChallengeHomePage render challengeSEOFriendlyPath: ', challengeSEOFriendlyPath, ', challengeSEOFriendlyPathForDisplay: ', challengeSEOFriendlyPathForDisplay);
     const challengeAdminEditUrl = `${webAppConfig.WE_VOTE_SERVER_ROOT_URL}challenge/${challengeWeVoteId}/summary`;
     // const candidateWeVoteId = CandidateStore.getCandidateWeVoteIdRunningFromChallengeWeVoteId(challengeWeVoteId);
-    const avatarBackgroundImage = normalizedImagePath('../img/global/svg-icons/avatar-generic.svg');
-    const avatarCompressed = 'card-main__avatar-compressed';
 
     if (challengeDataNotFound) {
       return (
@@ -549,29 +546,14 @@ class ChallengeHomePage extends Component {
             <MobileHeaderOuterContainer id="challengeHeaderContainer" scrolledDown={scrolledDown}>
               <MobileHeaderInnerContainer>
                 <MobileHeaderContentContainer>
-                  <CandidateTopRow>
-                    <Candidate
-                      id={`challengeHomeImageAndName-${challengeWeVoteIdForDisplay}`}
-                    >
-                      {/* Challenge Image */}
-                      <Suspense fallback={<></>}>
-                        <ImageHandler
-                          className={avatarCompressed}
-                          sizeClassName="icon-candidate-small u-push--sm "
-                          imageUrl={challengeImageUrlLarge}
-                          alt=""
-                          kind_of_ballot_item="CANDIDATE"
-                          style={{ backgroundImage: { avatarBackgroundImage } }}
-                        />
-                      </Suspense>
-                      {/* Challenge Name */}
-                      <CandidateNameAndPartyWrapper>
-                        <CandidateNameH4>
-                          {challengeTitle}
-                        </CandidateNameH4>
-                      </CandidateNameAndPartyWrapper>
-                    </Candidate>
-                  </CandidateTopRow>
+                  <ChallengeHeaderSimple
+                    challengeBasePath={this.getChallengeBasePath()}
+                    challengePhotoLargeUrl={challengePhotoLargeUrl}
+                    challengeTitle={challengeTitle}
+                    challengeWeVoteId={challengeWeVoteIdForDisplay}
+                    // goToChallengeHome={this.goToChallengeHome}
+                    hideCloseIcon
+                  />
                 </MobileHeaderContentContainer>
               </MobileHeaderInnerContainer>
             </MobileHeaderOuterContainer>
@@ -792,11 +774,6 @@ const styles = (theme) => ({
   },
 });
 
-const AboutAndEditFlex = styled('div')`
-  display: flex;
-  justify-content: space-between;
-`;
-
 const AboutSectionWrapper = styled('div')`
 `;
 
@@ -858,7 +835,7 @@ const slideDown = keyframes`
 `;
 
 const MobileHeaderContentContainer = styled('div')(({ theme }) => (`
-  padding: 15px 15px 0 15px;
+  // padding: 15px 15px 0 15px;
   margin: ${() => cordovaBallotFilterTopMargin()} auto 0 auto;
   position: relative;
   max-width: 960px;

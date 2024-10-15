@@ -23,7 +23,7 @@ const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler'
 // React functional component example
 function ChallengeHeaderSimple (props) {
   renderLog('ChallengeHeaderSimple');  // Set LOG_RENDER_EVENTS to log all renders
-  const { challengeTitle, challengeWeVoteId, classes, challengePhotoLargeUrl, goToChallengeHome } = props;
+  const { challengeTitle, challengeWeVoteId, classes, challengePhotoLargeUrl, goToChallengeHome, hideCloseIcon } = props;
 
   return (
     <ChallengeHeaderSimpleOuterContainer id="politicianHeaderContainer">
@@ -31,7 +31,7 @@ function ChallengeHeaderSimple (props) {
         <ChallengeHeaderSimpleContentContainer>
           <ChallengeTitleRow>
             <ChallengePhotoAndTitle
-              id={`officeItemCompressedCandidateImageAndName-${challengeWeVoteId}`}
+              id={`challengeHeaderSimpleImageAndName-${challengeWeVoteId}`}
             >
               {/* Challenge Image */}
               {challengePhotoLargeUrl && (
@@ -49,21 +49,23 @@ function ChallengeHeaderSimple (props) {
                 />
               </CandidateNameAndPartyWrapper>
             </ChallengePhotoAndTitle>
-            <CloseDrawerIconWrapper>
-              <div>
-                <IconButton
-                  aria-label="Close"
-                  className={classes.closeButton}
-                  id="goToChallengeHome"
-                  onClick={goToChallengeHome}
-                  size="large"
-                >
-                  <span className="u-cursor--pointer">
-                    <Close classes={{ root: classes.closeIcon }} />
-                  </span>
-                </IconButton>
-              </div>
-            </CloseDrawerIconWrapper>
+            {!hideCloseIcon && (
+              <CloseDrawerIconWrapper>
+                <div>
+                  <IconButton
+                    aria-label="Close"
+                    className={classes.closeButton}
+                    id="goToChallengeHome"
+                    onClick={goToChallengeHome}
+                    size="large"
+                  >
+                    <span className="u-cursor--pointer">
+                      <Close classes={{ root: classes.closeIcon }} />
+                    </span>
+                  </IconButton>
+                </div>
+              </CloseDrawerIconWrapper>
+            )}
           </ChallengeTitleRow>
         </ChallengeHeaderSimpleContentContainer>
       </ChallengeHeaderSimpleInnerContainer>
@@ -76,6 +78,7 @@ ChallengeHeaderSimple.propTypes = {
   challengeWeVoteId: PropTypes.string,
   classes: PropTypes.object,
   challengePhotoLargeUrl: PropTypes.string,
+  hideCloseIcon: PropTypes.bool,
 };
 
 const styles = () => ({
