@@ -7,7 +7,7 @@ import AppObservableStore, { messageService } from '../../common/stores/AppObser
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
-import abbreviateNumber from '../../common/utils/abbreviateNumber';
+import numberAbbreviate from '../../common/utils/numberAbbreviate';
 import apiCalming from '../../common/utils/apiCalming';
 import { renderLog } from '../../common/utils/logging';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
@@ -334,7 +334,7 @@ export default class OrganizationVoterGuideTabs extends Component {
                 >
                   {(allOrganizationPositionsLength > 0) && (
                     <>
-                      {abbreviateNumber(allOrganizationPositionsLength)}
+                      {numberAbbreviate(allOrganizationPositionsLength)}
                       &nbsp;
                     </>
                   )}

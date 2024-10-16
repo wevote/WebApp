@@ -237,7 +237,7 @@ class IssueStore extends ReduceStore {
   //   if (!ballotItemWeVoteId) {
   //     return 0;
   //   }
-  //   // These are scores based on all of the organizations under all of the issues a voter follows
+  //   // These are scores based on all the organizations under all the issues a voter follows
   //   const issueScore = this.getState().issueScoreForEachBallotItem[ballotItemWeVoteId];
   //   if (issueScore === undefined) {
   //     return 0;
@@ -876,7 +876,7 @@ class IssueStore extends ReduceStore {
         };
 
       case 'voterGuidesUpcomingRetrieve': // List of all public voter guides from CDN
-        // Collect all of the issues an organization is tagged with
+        // Collect all the issues an organization is tagged with
         // console.log('IssueStore, case voterGuidesToFollowRetrieve');
         voterGuides = action.res.voter_guides;
         if (!voterGuides || voterGuides.length === 0) {

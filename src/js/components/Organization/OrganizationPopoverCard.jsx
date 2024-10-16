@@ -8,7 +8,7 @@ import Button from 'react-bootstrap/Button';
 import { Link } from 'react-router-dom';
 import OrganizationActions from '../../actions/OrganizationActions';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
-import abbreviateNumber from '../../common/utils/abbreviateNumber';
+import numberAbbreviate from '../../common/utils/numberAbbreviate';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
 import numberWithCommas from '../../common/utils/numberWithCommas';
@@ -189,7 +189,7 @@ class OrganizationPopoverCard extends Component {
                   @
                   {organizationTwitterHandle}
                 </TwitterHandleWrapper>
-                <span title={numberWithCommas(twitterFollowersCount)}>{abbreviateNumber(twitterFollowersCount)}</span>
+                <span title={numberWithCommas(twitterFollowersCount)}>{numberAbbreviate(twitterFollowersCount)}</span>
               </TwitterWrapper>
             )}
             {twitterDescriptionMinusName && (

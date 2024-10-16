@@ -36,6 +36,26 @@ class DiscussPage extends Page {
   async toggleEmailVerificationButton () {
     await this.voterEmailAddressVerificationButton.findAndClick();
   }
-}
 
+  async tabToSelectElement(driver, targetElementId) {
+    // Max number of iterations to find target element.
+    // Prevents waiting for a timeout when the element is missing or unreachable.
+    const maxCount = 100;
+    let count = 0;
+
+    let activeElement;
+    let activeElementId;
+
+    do {
+      await driver.keys(['Tab']);
+      activeElement = await driver.getActiveElement();
+      activeElementId = await (await $(activeElement)).getProperty('id');
+      if (targetElementId === activeElementId) {
+        return $(activeElement);
+      }
+      ++count;
+    } while (activeElementId !== targetElementId && count <= maxCount);
+    return null;
+  }
+}
 export default new DiscussPage();

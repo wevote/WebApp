@@ -7,6 +7,7 @@ import CopyToClipboard from 'react-copy-to-clipboard';
 import { renderLog } from '../../utils/logging';
 import ChallengeInviteeActions from '../../actions/ChallengeInviteeActions';
 import ChallengeInviteeStore from '../../stores/ChallengeInviteeStore';
+import ChallengeParticipantActions from '../../actions/ChallengeParticipantActions';
 import ChallengeParticipantStore from '../../stores/ChallengeParticipantStore';
 import ChallengeStore from '../../stores/ChallengeStore';
 import VoterStore from '../../../stores/VoterStore';
@@ -17,7 +18,10 @@ const InviteFriendToChallengeInput = ({ classes, challengeWeVoteId, externalUniq
   renderLog('InviteFriendToChallengeInputBox');  // Set LOG_RENDER_EVENTS to log all renders
   const [challengeInviteTextDefault, setChallengeInviteTextDefault] = React.useState('');
   const [challengeTitle, setChallengeTitle] = React.useState('');
+  const [destinationFullURL, setDestinationFullURL] = React.useState('');
+  const [googleCivicElectionId, setGoogleCivicElectionId] = React.useState(0);
   const [inviteCopiedMessageOn, setInviteCopiedMessageOn] = React.useState(false);
+  const [inviteeListLength, setInviteeListLength] = React.useState(0);
   const [inviteeName, setInviteeName] = React.useState('');
   const [inviterName, setInviterName] = React.useState('');
   const [inviteTextForFriends, setInviteTextForFriends] = React.useState('');
@@ -31,9 +35,11 @@ const InviteFriendToChallengeInput = ({ classes, challengeWeVoteId, externalUniq
     inviteTextToSendTemp1 += inviterFirstName ? `, this is ${inviterFirstName}. ` : ', ';
     const inviteTextToSendTemp2 = inviteTextForFriends || challengeInviteTextDefault;
     const inviteeUrlCode = ChallengeInviteeStore.getNextInviteeUrlCode();
-    const urlToSendTemp = `${ChallengeStore.getSiteUrl(challengeWeVoteId)}/++/${inviteeUrlCode}`;
+    const urlToSendTemp = `${ChallengeStore.getSiteUrl(challengeWeVoteId)}/-${inviteeUrlCode}`;
     const inviteTextToSendTemp3 = `${inviteTextToSendTemp1}${inviteTextToSendTemp2} ${urlToSendTemp}`;
     setInviteTextToSend(inviteTextToSendTemp3);
+    const SEOFriendlyPath = ChallengeStore.getChallengeSEOFriendlyPathByWeVoteId(challengeWeVoteId);
+    setDestinationFullURL(`${ChallengeStore.getSiteUrl(challengeWeVoteId)}/${SEOFriendlyPath}/+/`);
     // setUrlToSend(urlToSendTemp);
   }
 
@@ -46,13 +52,21 @@ const InviteFriendToChallengeInput = ({ classes, challengeWeVoteId, externalUniq
 
   const handleShare = async () => {
     const inviteeUrlCode = ChallengeInviteeStore.getNextInviteeUrlCode();
-    ChallengeInviteeActions.challengeInviteeSave(challengeWeVoteId, 0, inviteeName, true, inviteTextToSend, true, inviteeUrlCode, true);
+    ChallengeInviteeActions.challengeInviteeSave(
+      challengeWeVoteId,
+      destinationFullURL,
+      googleCivicElectionId,
+      0,
+      inviteeName, true,
+      inviteTextToSend, true,
+      inviteeUrlCode, true,
+    );
     setInviteCopiedMessageOn(true);
     setTimeout(() => {
       console.log('handleShare setTimeout fired');
       setInviteCopiedMessageOn(false);
       resetForm();
-    }, 1000);
+    }, 2000);
     if (navigator.share) {
       try {
         await navigator.share({
@@ -80,19 +94,30 @@ const InviteFriendToChallengeInput = ({ classes, challengeWeVoteId, externalUniq
   React.useEffect(() => {
     const onChallengeInviteeStoreChange = () => {
       setInviterName(VoterStore.getFirstName());
+      const inviteeList = ChallengeInviteeStore.getChallengeInviteeList(challengeWeVoteId);
+      console.log('Former inviteeListLength:', inviteeListLength, 'New inviteeList.length:', inviteeList.length);
+      if (inviteeListLength < inviteeList.length) {
+        // If inviteeList length changes, make call for refreshed ChallengeParticipant, so we can make sure we have the updated score/rank.
+        ChallengeParticipantActions.challengeParticipantRetrieve(challengeWeVoteId);
+      }
+      setInviteeListLength(inviteeList.length);
       prepareInviteTextToSend();
     };
 
     const onChallengeParticipantStoreChange = () => {
-      setInviterName(VoterStore.getFirstName());
       setInviteTextForFriends(ChallengeParticipantStore.getInviteTextForFriends(challengeWeVoteId));
       prepareInviteTextToSend();
     };
 
     const onChallengeStoreChange = () => {
-      setInviterName(VoterStore.getFirstName());
       setChallengeInviteTextDefault(ChallengeStore.getChallengeInviteTextDefaultByWeVoteId(challengeWeVoteId));
       setChallengeTitle(ChallengeStore.getChallengeTitleByWeVoteId(challengeWeVoteId));
+      prepareInviteTextToSend();
+    };
+
+    const onVoterStoreChange = () => {
+      setGoogleCivicElectionId(VoterStore.electionId());
+      setInviterName(VoterStore.getFirstName());
       prepareInviteTextToSend();
     };
 
@@ -103,11 +128,14 @@ const InviteFriendToChallengeInput = ({ classes, challengeWeVoteId, externalUniq
     onChallengeParticipantStoreChange();
     const challengeStoreListener = ChallengeStore.addListener(onChallengeStoreChange);
     onChallengeStoreChange();
+    const voterStoreListener = VoterStore.addListener(onVoterStoreChange);
+    onVoterStoreChange();
 
     return () => {
       challengeInviteeStoreListener.remove();
       challengeParticipantStoreListener.remove();
       challengeStoreListener.remove();
+      voterStoreListener.remove();
     };
   }, [challengeWeVoteId]);
 
@@ -124,7 +152,7 @@ const InviteFriendToChallengeInput = ({ classes, challengeWeVoteId, externalUniq
                 margin="dense"
                 value={inviteeName}
                 variant="outlined"
-                placeholder="Your friend's name"
+                placeholder="Your friend's name (or a friend group name)"
                 onChange={setInviteeNameFromEvent} // eslint-disable-line react/jsx-no-bind
               />
             </FormControl>
@@ -177,7 +205,7 @@ const styles = () => ({
     boxShadow: '0 4px 6px rgb(50 50 93 / 11%)',
     fontSize: '18px',
     height: '45px !important',
-    minWidth: '300px',
+    minWidth: '350px',
     padding: '0 12px',
     textTransform: 'none',
     width: '100%',

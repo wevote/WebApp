@@ -12,6 +12,8 @@ import ChallengeAbout from '../Challenge/ChallengeAbout';
 import { isWebApp } from '../../utils/isCordovaOrWebApp';
 import ChallengeStore from '../../stores/ChallengeStore';
 import JoinChallengeAndLearnMoreButtons from '../Challenge/JoinChallengeAndLearnMoreButtons';
+import JoinedAndDaysLeft from '../Challenge/JoinedAndDaysLeft';
+import DesignTokenColors from '../Style/DesignTokenColors';
 
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../Widgets/DelayedLoad'));
 
@@ -175,12 +177,18 @@ class ChallengeCardList extends Component {
             numberDisplayed += 1;
             return (
               <ChallengeCardForListVerticalWrapper key={`oneChallengeItem-${oneChallenge.challenge_we_vote_id}`}>
-                <ChallengeCardForList
-                  challengeWeVoteId={oneChallenge.challenge_we_vote_id}
-                  joinedAndDaysLeftOff
-                  limitCardWidth={useVerticalCard}
-                  useVerticalCard={useVerticalCard}
-                />
+                <CardContainer>
+                  <ChallengeCardForList
+                    challengeWeVoteId={oneChallenge.challenge_we_vote_id}
+                    joinedAndDaysLeftOff
+                    limitCardWidth={useVerticalCard}
+                    useVerticalCard={useVerticalCard}
+                  />
+                  {/* JoinedAndDaysLeft component positioned absolutely */}
+                  <JoinedAndDaysForChallengePage>
+                    <JoinedAndDaysLeft challengeWeVoteId={oneChallenge.challenge_we_vote_id} />
+                  </JoinedAndDaysForChallengePage>
+                </CardContainer>
                 <Link
                   id="challengeCardAbout"
                   to={this.onChallengeClickLink(oneChallenge.challenge_we_vote_id)}
@@ -213,16 +221,16 @@ class ChallengeCardList extends Component {
           )}
           */}
           {!!(challengeList &&
-              challengeList.length > 1 &&
-              numberToDisplay < challengeList.length) &&
-          (
-            <LoadMoreItemsManuallyWrapper>
-              <LoadMoreItemsManually
-                loadMoreFunction={this.loadMoreHasBeenClicked}
-                uniqueExternalId="ChallengeCardList"
-              />
-            </LoadMoreItemsManuallyWrapper>
-          )}
+            challengeList.length > 1 &&
+            numberToDisplay < challengeList.length) &&
+            (
+              <LoadMoreItemsManuallyWrapper>
+                <LoadMoreItemsManually
+                  loadMoreFunction={this.loadMoreHasBeenClicked}
+                  uniqueExternalId="ChallengeCardList"
+                />
+              </LoadMoreItemsManuallyWrapper>
+            )}
         </ListWrapper>
         <Suspense fallback={<></>}>
           <DelayedLoad loadingTextLeftAlign showLoadingText waitBeforeShow={2000}>
@@ -279,16 +287,32 @@ const styles = () => ({
   },
 });
 
+const CardContainer = styled('div')`
+  position: relative;
+`;
+
 const ChallengeCardForListVerticalWrapper = styled('div')`
   display: flex;
   flex-direction: column;
-  // height: ${isWebApp() ?  '100%' : 'unset'};
+  // height: ${isWebApp() ? '100%' : 'unset'};
   width: 80%;
   max-width: 300px;
 `;
 
 const Wrapper = styled('div')`
   min-height: 30px;
+`;
+
+const JoinedAndDaysForChallengePage = styled('div')`
+align-items: center;
+border-radius: 20px;
+color: ${DesignTokenColors.gray900};
+display: flex;
+font-size: 12px;
+left: 10px;
+padding: 5px 10px;
+position: absolute;
+top: 125px;
 `;
 
 export default withStyles(styles)(ChallengeCardList);

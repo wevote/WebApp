@@ -22,15 +22,17 @@ const ChallengeParticipantListItem = ({ participant, isCurrentUser }) => {
           {participant.participant_name}
         </Name>
         <Points>{participant.points}</Points>
-        <FriendsJoined>{participant.invitees_who_joined}</FriendsJoined>
+        <FriendsJoined makeBold={participant.invitees_who_joined > 0}>{participant.invitees_who_joined}</FriendsJoined>
       </ParticipantRow>
       <Details>
         {`${participant.invitees_count} invited, `}
         {`${participant.invitees_who_viewed} viewed challenge`}
-        {/*
-        {' '}
-        {`- ${participant.invitees_who_viewed_plus} total views`}
-        */}
+        {(participant.invitees_who_viewed_plus > 0 && participant.invitees_who_viewed !== participant.invitees_who_viewed_plus) && (
+          <>
+            {' '}
+            {`- ${participant.invitees_who_viewed_plus} total views`}
+          </>
+        )}
       </Details>
     </ParticipantItem>
   );
@@ -40,11 +42,13 @@ ChallengeParticipantListItem.propTypes = {
   participant: PropTypes.object,
 };
 
-const ParticipantItem = styled.div`
-  background-color: ${(props) => (props.isCurrentUser ? '#f9e79f' : '#fff')};
+const ParticipantItem = styled('div', {
+  shouldForwardProp: (prop) => !['isCurrentUser'].includes(prop),
+})(({ isCurrentUser }) => (`
+  background-color: ${isCurrentUser ? '#f9e79f' : '#fff'};
   padding: 15px 0 15px 7px;
   border-bottom: 1px solid ${DesignTokenColors.neutral100};
-`;
+`));
 
 const ParticipantRow = styled.div`
   display: flex;
@@ -55,37 +59,42 @@ const ParticipantRow = styled.div`
 const Rank = styled.div`
   font-weight: bold;
   color: ${DesignTokenColors.neutral900};
-  width: 60px; /* Adjust width as needed */
+  width: 35px; /* Adjust width as needed */
 `;
 
 const Name = styled.div`
-  flex: 1;
-  display: flex;
   align-items: center;
-  margin-left: 10px;
-  gap: 10px;
   color: ${DesignTokenColors.neutral900};
+  display: flex;
+  flex: 1;
+  font-weight: bold;
+  gap: 10px;
+  margin-left: 10px;
 `;
 
 const Points = styled.div`
-  text-align: center;
+  color: ${DesignTokenColors.neutral900};
   font-size: 14px;
   font-weight: bold;
-  color: ${DesignTokenColors.neutral900};
+  text-align: center;
   width: 80px;
 `;
 
-const FriendsJoined = styled.div`
-  text-align: center;
-  font-size: 14px;
+const FriendsJoined = styled('div', {
+  shouldForwardProp: (prop) => !['makeBold'].includes(prop),
+})(({ makeBold }) => (`
   color: ${DesignTokenColors.neutral900};
-  width: 100px;
-`;
+  font-size: 14px;
+  ${makeBold ? 'font-weight: bold;' : ''}
+  text-align: center;
+  width: 76px;
+`));
 
 const Details = styled.div`
-  text-align: left;
+  color: ${DesignTokenColors.neutral900};
   font-size: 14px;
   margin-top: 8px;
+  text-align: left;
 `;
 
 export default ChallengeParticipantListItem;

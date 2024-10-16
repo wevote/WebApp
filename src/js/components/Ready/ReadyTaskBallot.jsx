@@ -32,7 +32,7 @@ class ReadyTaskBallot extends React.Component {
       allCandidatesButtonNeeded: false, // Are there candidates on this ballot?
       allCandidatesAllCompleted: false,
       allCandidatesNumberCompleted: 0,
-      allCandidatesShowButton: false, // Given all of the buttons we need to show, should this one be "unfurled"?
+      allCandidatesShowButton: false, // Given all the buttons we need to show, should this one be "unfurled"?
       allCandidatesTotalNumber: 0,
       federalButtonNeeded: false, // Are there Federal candidates on this ballot?
       federalAllCompleted: false,
@@ -256,7 +256,7 @@ class ReadyTaskBallot extends React.Component {
     // If there are measures, measureShowButton is always true
     measureShowButton = (measureButtonNeeded);
     // console.log('measureButtonNeeded:', measureButtonNeeded, ', measureShowButton:', measureShowButton);
-    // If all of the possible decisions have been made
+    // If all the possible decisions have been made
     allDecisionsMadeCount += federalAllCompleted ? 1 : 0;
     allDecisionsMadeCount += localAllCompleted ? 1 : 0;
     allDecisionsMadeCount += measureAllCompleted ? 1 : 0;

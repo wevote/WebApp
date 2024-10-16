@@ -1,12 +1,10 @@
 import loadable from '@loadable/component';
-import Chip from '@mui/material/Chip';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Helmet } from 'react-helmet-async';
 import styled from 'styled-components';
 import ChallengeHeaderSimple from '../../components/Navigation/ChallengeHeaderSimple';
-import { CampaignProcessStepIntroductionText } from '../../components/Style/CampaignProcessStyles';
 import { CampaignSupportSection, CampaignSupportSectionWrapper } from '../../components/Style/CampaignSupportStyles';
 import commonMuiStyles from '../../components/Style/commonMuiStyles';
 import { ContentInnerWrapperDefault, ContentOuterWrapperDefault, PageWrapperDefault } from '../../components/Style/PageWrapperStyles';
@@ -18,10 +16,13 @@ import { renderLog } from '../../utils/logging';
 import DesignTokenColors from '../../components/Style/DesignTokenColors';
 import ChallengeInviteSteps from '../../components/Navigation/ChallengeInviteSteps';
 import ChallengeInviteeListRoot from '../../components/ChallengeInviteeListRoot/ChallengeInviteeListRoot';
+import ChallengeInviteeStore from '../../stores/ChallengeInviteeStore';
+import InviteFriendsTips from '../../components/ChallengeInviteFriends/InviteFriendsTips';
 import InviteFriendToChallengeInput from '../../components/ChallengeInviteFriends/InviteFriendToChallengeInput';
 import YourRank from '../../components/Challenge/YourRank';
 
 const ChallengeRetrieveController = React.lazy(() => import(/* webpackChunkName: 'ChallengeRetrieveController' */ '../../components/Challenge/ChallengeRetrieveController'));
+const FirstChallengeInviteeListController = React.lazy(() => import(/* webpackChunkName: 'ChallengeRetrieveController' */ '../../components/ChallengeInviteeListRoot/FirstChallengeInviteeListController'));
 const VoterFirstRetrieveController = loadable(() => import(/* webpackChunkName: 'VoterFirstRetrieveController' */ '../../components/Settings/VoterFirstRetrieveController'));
 
 
@@ -34,6 +35,7 @@ class ChallengeInviteFriends extends Component {
       challengeTitle: '',
       challengeWeVoteId: '',
       chosenWebsiteName: '',
+      inviteeList: [],
     };
   }
 
@@ -42,6 +44,8 @@ class ChallengeInviteFriends extends Component {
     this.props.setShowHeaderFooter(false);
     this.onAppObservableStoreChange();
     this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
+    this.onChallengeInviteeStoreChange();
+    this.challengeInviteeStoreListener = ChallengeInviteeStore.addListener(this.onChallengeInviteeStoreChange.bind(this));
     this.onChallengeStoreChange();
     this.challengeStoreListener = ChallengeStore.addListener(this.onChallengeStoreChange.bind(this));
     const { match: { params } } = this.props;
@@ -82,9 +86,22 @@ class ChallengeInviteFriends extends Component {
     window.scrollTo(0, 0);
   }
 
+  componentDidUpdate (prevProps, prevState) {
+    const {
+      challengeWeVoteId: prevChallengeWeVoteId,
+    } = prevState;
+    const {
+      challengeWeVoteId,
+    } = this.state;
+    if (challengeWeVoteId !== prevChallengeWeVoteId) {
+      this.onChallengeInviteeStoreChange();
+    }
+  }
+
   componentWillUnmount () {
     this.props.setShowHeaderFooter(true);
     this.appStateSubscription.unsubscribe();
+    this.challengeInviteeStoreListener.remove();
     this.challengeStoreListener.remove();
   }
 
@@ -94,6 +111,16 @@ class ChallengeInviteFriends extends Component {
     this.setState({
       chosenWebsiteName,
     });
+  }
+
+  onChallengeInviteeStoreChange () {
+    const { challengeWeVoteId } = this.state;
+    if (challengeWeVoteId) {
+      const inviteeList = ChallengeInviteeStore.getChallengeInviteeList(challengeWeVoteId);
+      this.setState({
+        inviteeList,
+      });
+    }
   }
 
   onChallengeStoreChange () {
@@ -153,7 +180,7 @@ class ChallengeInviteFriends extends Component {
     renderLog('ChallengeInviteFriends');  // Set LOG_RENDER_EVENTS to log all renders
     const {
       challengePhotoLargeUrl, challengeSEOFriendlyPath, challengeTitle,
-      challengeWeVoteId, chosenWebsiteName,
+      challengeWeVoteId, chosenWebsiteName, inviteeList,
     } = this.state;
     const htmlTitle = `Invite your friends - ${chosenWebsiteName}`;
     return (
@@ -178,17 +205,7 @@ class ChallengeInviteFriends extends Component {
         <PageWrapperDefault>
           <ContentOuterWrapperDefault>
             <ContentInnerWrapperDefault>
-              <CampaignProcessStepIntroductionText>
-                <StyledChip label="TIP" />
-                &nbsp;
-                So we can correctly calculate your boost points,
-                {' '}
-                <strong>
-                  name each friend and invite them separately
-                </strong>
-                {' '}
-                (a unique link is generated for each friend).
-              </CampaignProcessStepIntroductionText>
+              <InviteFriendsTips startingTipName="nameEachFriend" />
               <CampaignSupportSectionWrapper marginTopOff>
                 <CampaignSupportSection marginBottomOff>
                   <InviteFriendToChallengeInput challengeWeVoteId={challengeWeVoteId} />
@@ -197,15 +214,20 @@ class ChallengeInviteFriends extends Component {
             </ContentInnerWrapperDefault>
           </ContentOuterWrapperDefault>
         </PageWrapperDefault>
-        <InvitedFriendsWrapper>
-          <YourRank challengeSEOFriendlyPath={challengeSEOFriendlyPath} challengeWeVoteId={challengeWeVoteId} />
-          <ChallengeInviteeListRoot challengeWeVoteId={challengeWeVoteId} />
-        </InvitedFriendsWrapper>
+        {inviteeList.length > 0 && (
+          <InvitedFriendsWrapper>
+            <YourRank challengeSEOFriendlyPath={challengeSEOFriendlyPath} challengeWeVoteId={challengeWeVoteId} />
+            <ChallengeInviteeListRoot challengeWeVoteId={challengeWeVoteId} hideRank />
+          </InvitedFriendsWrapper>
+        )}
         <Suspense fallback={<span>&nbsp;</span>}>
           <ChallengeRetrieveController challengeSEOFriendlyPath={challengeSEOFriendlyPath} challengeWeVoteId={challengeWeVoteId} />
         </Suspense>
         <Suspense fallback={<span>&nbsp;</span>}>
           <VoterFirstRetrieveController />
+        </Suspense>
+        <Suspense fallback={<></>}>
+          <FirstChallengeInviteeListController challengeWeVoteId={challengeWeVoteId} />
         </Suspense>
       </div>
     );
@@ -228,14 +250,6 @@ const InvitedFriendsWrapper = styled('div')`
   background-color: ${DesignTokenColors.neutralUI50};
   display: flex;
   flex-direction: column;
-`;
-
-const StyledChip = styled(Chip)`
-  background-color: ${DesignTokenColors.confirmation700};
-  color: ${DesignTokenColors.whiteUI};
-  height: 20px;
-  padding-top: 2px;
-  padding-bottom: 2px;
 `;
 
 export default withStyles(commonMuiStyles)(ChallengeInviteFriends);

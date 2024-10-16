@@ -28,7 +28,7 @@ class HowItWorks extends Component {
       forCampaignsSteps: {
         Claim: {
           title: '1. Claim your campaign profile',
-          description: 'Sign in & verify your account using your official Twitter account or other secure method. WeVote takes verification very seriously. (No trolls allowed!)',
+          description: 'Sign in & verify your account using your official X account or other secure method. WeVote takes verification very seriously. (No trolls allowed!)',
           imgSrc: '/img/how-it-works/HowItWorksForCampaigns-Claim-20190516.gif?',
           index: 0,
         },
@@ -61,7 +61,7 @@ class HowItWorks extends Component {
       forOrganizationsSteps: {
         Claim: {
           title: '1. Claim your organization profile',
-          description: 'Sign in & verify your organization using your official Twitter account or other secure method. WeVote takes verification very seriously. (No trolls allowed!)',
+          description: 'Sign in & verify your organization using your official X account or other secure method. WeVote takes verification very seriously. (No trolls allowed!)',
           imgSrc: '/img/how-it-works/HowItWorksForOrgs-Claim-20190506.gif?',
           index: 0,
         },
