@@ -1,5 +1,6 @@
 import { $, $$ } from '@wdio/globals';
 import Page from './page';
+import { driver } from '@wdio/globals';
 
 class ReadyPage extends Page {
   constructor () {
@@ -165,6 +166,95 @@ class ReadyPage extends Page {
   get getAboutLinkElement () {
     return $('//a[text() = "About & FAQ"]');
   }
+
+  get getSignInElement () {
+    return $('#signIn');
+  }
+
+  get getMobilePhoneNumberElement () {
+    return $('#enterVoterPhone');
+  }
+
+  get getSendCodeElement () {
+    return $('#desktopSmsSendCode');
+  }
+
+  get getCodeVerificationDigit1Element () {
+    return $('#digit1');
+  }
+
+  get getCodeVerificationDigit2Element () {
+    return $('#digit2');
+  }
+
+  get getCodeVerificationDigit3Element () {
+    return $('#digit3');
+  }
+
+  get getCodeVerificationDigit4Element () {
+    return $('#digit4');
+  }
+
+  get getCodeVerificationDigit5Element () {
+    return $('#digit5');
+  }
+
+  get getCodeVerificationDigit6Element () {
+    return $('#digit6');
+  }
+
+  get getVerifyButtonElement () {
+    return $('#emailVerifyButton');
+  }
+
+  get getProChoiceLinkElement () {
+    return $('a[href="/value/pro-choice"]');
+  }
+
+  get getDemocraticClubsLinkElement() {
+    return $('a[href="/value/democratic_clubs"]')
+  }
+
+  get getProfileIconElement() {
+    return $('#profileAvatarHeaderBar');
+  }
+
+
+  async login () {
+    const waitTime = 5000;
+    await this.load();
+    await driver.pause(waitTime);
+    await driver.waitUntil(async () => (this.getSignInElement.isClickable()));
+    await this.getSignInElement.click();
+   
+    await driver.waitUntil(async () => (this.getMobilePhoneNumberElement.isClickable()));
+    await this.getMobilePhoneNumberElement.setValue("8089358555");
+
+    await driver.waitUntil(async () => (this.getSendCodeElement.isClickable()));
+    await this.getSendCodeElement.click();
+
+    await driver.waitUntil(async () => (this.getCodeVerificationDigit1Element.isClickable()));
+    await this.getCodeVerificationDigit1Element.setValue("1");
+
+    await driver.waitUntil(async () => (this.getCodeVerificationDigit2Element.isClickable()));
+    await this.getCodeVerificationDigit2Element.setValue("2");
+
+    await driver.waitUntil(async () => (this.getCodeVerificationDigit3Element.isClickable()));
+    await this.getCodeVerificationDigit3Element.setValue("3");
+
+    await driver.waitUntil(async () => (this.getCodeVerificationDigit4Element.isClickable()));
+    await this.getCodeVerificationDigit4Element.setValue("4");
+
+    await driver.waitUntil(async () => (this.getCodeVerificationDigit5Element.isClickable()));
+    await this.getCodeVerificationDigit5Element.setValue("5");
+
+    await driver.waitUntil(async () => (this.getCodeVerificationDigit6Element.isClickable()));
+    await this.getCodeVerificationDigit6Element.setValue("6");
+
+    await driver.waitUntil(async () => (this.getVerifyButtonElement.isClickable()));
+    await this.getVerifyButtonElement.click();
+  } 
+  
 
   async waitAboutLinkAndClick () {
     await this.getAboutLinkElement.waitForDisplayed({ timeout: 15000 });
