@@ -152,6 +152,16 @@ class PoliticianCardForList extends Component {
     renderLog('PoliticianCardForList');  // Set LOG_RENDER_EVENTS to log all renders
     const { limitCardWidth, politicianWeVoteId, showPoliticianOpenInNewWindow, useCampaignSupportThermometer, useVerticalCard } = this.props;
     const { campaignSupported, candidate, candidateWeVoteId, linkedCampaignXWeVoteId, politician } = this.state;
+    if (!politicianWeVoteId) {
+      return (
+        <CardForListBodyPlaceholder
+          useVerticalCard={useVerticalCard}
+          hideCardMargins
+          profileImageBackgroundColor
+          limitCardWidth={limitCardWidth}
+        />
+      );
+    }
     if (!politician) {
       return null;
     }

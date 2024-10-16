@@ -69,7 +69,7 @@ function CardForListBodyPlaceholder (props) {
             >
               <CampaignImageMobilePlaceholder
                 id="cimp2"
-                profileImageBackgroundColor={DesignTokenColors.neutralUI100}
+                profileImageBackgroundColor={DesignTokenColors.neutralUI50}
                 useVerticalCard={useVerticalCard}
               >
                 <CampaignImagePlaceholderText>
@@ -80,13 +80,13 @@ function CardForListBodyPlaceholder (props) {
             <OneCampaignPhotoDesktopColumn
             className="u-cursor--pointer u-show-desktop-tablet"
             hideCardMargins={hideCardMargins}
-            profileImageBackgroundColor={DesignTokenColors.neutralUI100}
+            profileImageBackgroundColor={DesignTokenColors.neutralUI50}
             useVerticalCard={useVerticalCard}
             >
               <CampaignImageDesktopPlaceholder
                 id="cidp5"
                 limitCardWidth={limitCardWidth}
-                profileImageBackgroundColor={DesignTokenColors.neutralUI100}
+                profileImageBackgroundColor={DesignTokenColors.neutralUI50}
                 useVerticalCard={useVerticalCard}
                 hideCardMargins={hideCardMargins}
               >
@@ -123,12 +123,6 @@ export const FlexDivLeft = styled('div')`
 `;
 
 export const CardForListBodyPlaceholderWrapper = styled('div')`
-  height: 440px;
-
-  @media (max-width: 480px) {
-    width: 330px;
-    height: 416px;
-  }
 `;
 
 const PlaceholderThermometer = styled('div')`
