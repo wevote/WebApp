@@ -4,27 +4,27 @@ import PropTypes from 'prop-types';
 import DesignTokenColors from '../Style/DesignTokenColors';
 import { InfoOutlined } from '@mui/icons-material';
 
-const YourRankModal = React.lazy(() => import(/* webpackChunkName: 'YourRankModal' */ './YourRankModal')); // eslint-disable-line import/no-cycle
+const PointsExplanationModal = React.lazy(() => import(/* webpackChunkName: 'PointsExplanationModal' */ './PointsExplanationModal')); // eslint-disable-line import/no-cycle
 
 class YourRankOutOf extends PureComponent {
     constructor (props) {
       super(props);
       this.state = {
-        yourRankModalOpen: false,
+        pointsExplanationModalOpen: false,
         moreInfoIconHovered: false,
       };
     }
     
-    openYourRankModal = () => {
+    openPointsExplanationModal = () => {
         this.setState({
-          yourRankModalOpen: true,
+          pointsExplanationModalOpen: true,
         });
     };
 
     toggleYourRankFunction = () => {
-        const { yourRankModalOpen } = this.state;
+        const { pointsExplanationModalOpen } = this.state;
         this.setState({
-          yourRankModalOpen: !yourRankModalOpen,
+          pointsExplanationModalOpen: !pointsExplanationModalOpen,
         });
       };
 
@@ -43,7 +43,7 @@ class YourRankOutOf extends PureComponent {
 
     render() {
         const { rankOfVoter, participantsCount } = this.props;
-        const { yourRankModalOpen, moreInfoIconHovered } = this.state;
+        const { pointsExplanationModalOpen, moreInfoIconHovered } = this.state;
 
         return (
             <RankContainer>
@@ -65,12 +65,12 @@ class YourRankOutOf extends PureComponent {
                 style={{ color: moreInfoIconHovered ? DesignTokenColors.primary500 : DesignTokenColors.neutral600, cursor: 'pointer' }}
                 onMouseEnter={() => this.handleMoreInfoIconHover()}
                 onMouseLeave={() => this.handleMoreInfoIconLeave()}
-                onClick={() => this.openYourRankModal()}
+                onClick={() => this.openPointsExplanationModal()}
             />
-            {yourRankModalOpen && (
+            {pointsExplanationModalOpen && (
                 <Suspense fallback={<div>Loading...</div>}>
-                    <YourRankModal
-                        show={this.state.yourRankModalOpen}
+                    <PointsExplanationModal
+                        show={this.state.pointsExplanationModalOpen}
                         toggleModal={this.toggleYourRankFunction}/>
                 </Suspense>
             )}
