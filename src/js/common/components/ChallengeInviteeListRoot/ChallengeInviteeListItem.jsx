@@ -43,6 +43,7 @@ const handlePopoverClose = () => {
 };
 
 const openViewInviteeDetails = () => {
+  console.log('click')
   setViewInviteeDetails(true);
  }
 
@@ -87,8 +88,8 @@ const id = open ? 'simple-popover' : undefined;
             </Typography>
           </Popover>
           <ViewInviteeDetails
-            show={helpWinOrDefeatModalOpen}
-
+            show={viewInviteeDetails}
+            setShow={setViewInviteeDetails}
           />
         </ActivityCommentEditWrapper>
       </PrimaryDetails>
