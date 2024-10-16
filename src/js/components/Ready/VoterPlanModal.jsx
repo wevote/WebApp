@@ -70,7 +70,7 @@ class VoterPlanModal extends Component {
   }
 
   componentDidUpdate (prevProps, prevState) {
-    // Update the Json that we save with all of the settings
+    // Update the Json that we save with all the settings
     const {
       approximateTime, electionDateMonthYear, locationToDeliverBallot,
       modeOfTransport, showToPublic, voterPlanDataSerializedCalculatedFirstTime,

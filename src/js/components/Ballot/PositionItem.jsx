@@ -7,7 +7,7 @@ import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import SvgImage from '../../common/components/Widgets/SvgImage';
-import abbreviateNumber from '../../common/utils/abbreviateNumber';
+import numberAbbreviate from '../../common/utils/numberAbbreviate';
 import { renderLog } from '../../common/utils/logging';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import AppObservableStore from '../../common/stores/AppObservableStore';
@@ -47,7 +47,7 @@ class PositionItem extends Component {
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
 
     // This creates too much load on the browser
-    // // We want to make sure we have all of the position information so that comments show up
+    // // We want to make sure we have all the position information so that comments show up
     // if (ballotItemWeVoteId) {
     //   const voterGuidesForThisBallotItem = VoterGuideStore.getVoterGuidesToFollowForBallotItemId(ballotItemWeVoteId);
     //
@@ -105,7 +105,7 @@ class PositionItem extends Component {
     // const { ballot_item_we_vote_id: ballotItemWeVoteId, speaker_we_vote_id: organizationWeVoteId } = position;
 
     // This puts too much strain on the browser since PositionItems are in a list
-    // // We want to make sure we have all of the position information so that comments show up
+    // // We want to make sure we have all the position information so that comments show up
     // if (ballotItemWeVoteId) {
     //   const voterGuidesForThisBallotItem = VoterGuideStore.getVoterGuidesToFollowForBallotItemId(ballotItemWeVoteId);
     //
@@ -362,7 +362,7 @@ class PositionItem extends Component {
                                     {position.speaker_twitter_handle}
                                   </TwitterHandleWrapper>
                                   <TwitterFollowersWrapper>
-                                    {abbreviateNumber(position.twitter_followers_count)}
+                                    {numberAbbreviate(position.twitter_followers_count)}
                                   </TwitterFollowersWrapper>
                                 </div>
                               )}

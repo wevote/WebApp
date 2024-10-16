@@ -269,7 +269,7 @@ class ChallengeInviteFriendsJoin extends Component {
         />
         <ChallengeH1Wrapper>
           <ChallengeH1>
-            To join this challenge, share how you will vote &mdash; then ask your friends to join.
+            To join this challenge, share when you will cast your vote &mdash; then ask your friends to join.
           </ChallengeH1>
         </ChallengeH1Wrapper>
         <PageWrapperDefault>

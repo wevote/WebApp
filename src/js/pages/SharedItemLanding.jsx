@@ -16,8 +16,11 @@ export default class SharedItemLanding extends Component {
     this.state = {
       componentDidMount: false,
       customLinkString: '',
+      destinationBackupPath: '',
       destinationFullUrl: '',
       destinationFullUrlOverride: '',
+      isBallotShare: false,
+      isChallengeShare: false,
       sharedItemCodeIncoming: '',
       sharedItemCodeRetrieved: false,
       waitForVoterDeviceId: false,
@@ -59,41 +62,53 @@ export default class SharedItemLanding extends Component {
       //   destinationFullUrl,
       // });
     }
+    // console.log('sharedItemCodeIncoming:', sharedItemCodeIncoming);
     if (sharedItemCodeIncoming) {
       const sharedItem = ShareStore.getSharedItemByCode(sharedItemCodeIncoming);
       // console.log('sharedItem:', sharedItem);
-      const {
-        destination_full_url: destinationFullUrl,
-        destination_full_url_override: destinationFullUrlOverride,
-        email_secret_key: emailSecretKey,
-        is_ballot_share: isBallotShare,
-        shared_item_code_all_opinions: sharedItemCodeAllOpinions,
-        other_voter_display_name: voterDisplayName,
-        other_voter_first_name: voterFirstName,
-        other_voter_last_name: voterLastName,
-      } = sharedItem;
-      // console.log('SharedItemLanding emailSecretKey:', emailSecretKey);
-      let waitForVoterDeviceId = false;
-      if (emailSecretKey) {
-        if (VoterStore.voterDeviceId()) {
-          // We trigger this here (instead of on the API server with ShareActions.sharedItemRetrieveByCode)
-          //  to reduce delay around first page display
-          //  If the email hasn't been previously verified, this verifies it and attaches it to this account
-          // console.log('SharedItemLanding firstName:', voterFirstName, ', lastName:', voterLastName, ', fullName:', voterDisplayName);
-          VoterActions.voterEmailAddressVerify(emailSecretKey, voterFirstName, voterLastName, voterDisplayName);
-          // VoterActions.voterFullNameSoftSave(voterFirstName, voterLastName, voterDisplayName);
-        } else {
-          waitForVoterDeviceId = true;
+      if (sharedItem && sharedItem.destination_full_url) {
+        const {
+          destination_full_url: destinationFullUrl,
+          destination_full_url_override: destinationFullUrlOverride,
+          email_secret_key: emailSecretKey,
+          is_ballot_share: isBallotShare,
+          is_challenge_share: isChallengeShare,
+          shared_item_code_all_opinions: sharedItemCodeAllOpinions,
+          other_voter_display_name: voterDisplayName,
+          other_voter_first_name: voterFirstName,
+          other_voter_last_name: voterLastName,
+        } = sharedItem;
+        // console.log('SharedItemLanding emailSecretKey:', emailSecretKey);
+        let waitForVoterDeviceId = false;
+        if (emailSecretKey) {
+          if (VoterStore.voterDeviceId()) {
+            // We trigger this here (instead of on the API server with ShareActions.sharedItemRetrieveByCode)
+            //  to reduce delay around first page display
+            //  If the email hasn't been previously verified, this verifies it and attaches it to this account
+            // console.log('SharedItemLanding firstName:', voterFirstName, ', lastName:', voterLastName, ', fullName:', voterDisplayName);
+            VoterActions.voterEmailAddressVerify(emailSecretKey, voterFirstName, voterLastName, voterDisplayName);
+            // VoterActions.voterFullNameSoftSave(voterFirstName, voterLastName, voterDisplayName);
+          } else {
+            waitForVoterDeviceId = true;
+          }
         }
+        this.setState({
+          destinationFullUrl,
+          destinationFullUrlOverride,
+          isBallotShare,
+          isChallengeShare,
+          sharedItemCodeAllOpinions,
+          sharedItemCodeRetrieved: true,
+          waitForVoterDeviceId,
+        });
+      } else if (sharedItem && sharedItem.destination_path_backup && sharedItem.destination_path_backup !== '') {
+        this.setState({
+          destinationBackupPath: sharedItem.destination_path_backup,
+          sharedItemCodeRetrieved: true,
+        });
+      } else {
+        console.log('SharedItemLanding destination_full_url not found');
       }
-      this.setState({
-        destinationFullUrl,
-        destinationFullUrlOverride,
-        isBallotShare,
-        sharedItemCodeAllOpinions,
-        sharedItemCodeRetrieved: true,
-        waitForVoterDeviceId,
-      });
     }
   }
 
@@ -110,7 +125,11 @@ export default class SharedItemLanding extends Component {
 
   render () {
     renderLog('SharedItemLanding');  // Set LOG_RENDER_EVENTS to log all renders
-    const { componentDidMount, isBallotShare, destinationFullUrlOverride, sharedItemCodeAllOpinions, sharedItemCodeIncoming, sharedItemCodeRetrieved } = this.state;
+    const {
+      componentDidMount, destinationBackupPath, destinationFullUrlOverride,
+      isBallotShare, isChallengeShare,
+      sharedItemCodeAllOpinions, sharedItemCodeIncoming, sharedItemCodeRetrieved,
+    } = this.state;
     let { destinationFullUrl } = this.state;
     // console.log('sharedItemCodeIncoming:', sharedItemCodeIncoming, 'sharedItemCodeAllOpinions:', sharedItemCodeAllOpinions);
     // console.log('destinationFullUrl:', destinationFullUrl, 'destinationFullUrlOverride:', destinationFullUrlOverride);
@@ -124,8 +143,12 @@ export default class SharedItemLanding extends Component {
       // console.log('SharedItemLanding sharedItemCodeRetrieved not retrieved');
       return LoadingWheel;
     } else if (sharedItemCodeRetrieved && (destinationFullUrl === undefined || destinationFullUrl === '')) {
-      // console.log('SharedItemLanding destinationFullUrl undefined');
+      // console.log('SharedItemLanding destinationFullUrl undefined, directing to /ready');
       this.localHistoryPush('/ready');
+      return LoadingWheel;
+    } else if (destinationBackupPath !== '') {
+      console.log('If we receive a destinationBackupPath, then the shared item was not found:', destinationBackupPath);
+      this.localHistoryPush(destinationBackupPath);
       return LoadingWheel;
     } else {
       // console.log('destinationFullUrl:', destinationFullUrl);
@@ -138,14 +161,20 @@ export default class SharedItemLanding extends Component {
         // console.log('Ballot Share AllOpinions');
         return <BallotShared sharedItemCodeIncoming={sharedItemCodeIncoming} />;
       } else if (destinationFullUrl && destinationFullUrl.startsWith(hrefHostname)) {
-        let destinationLocalUrl = destinationFullUrl.replace(hrefHostname, '');
-        destinationLocalUrl = destinationLocalUrl.replace(':3000', ''); // For local development machines
-        this.localHistoryPush(destinationLocalUrl);
-        // const destinationLocalUrlWithModal = `${destinationLocalUrl}/modal/sic/${sharedItemCodeIncoming}`;
-        // // console.log('*** WILL Direct to LOCAL destinationLocalUrlWithModal:', destinationLocalUrlWithModal);
-        // historyPush(destinationLocalUrlWithModal);
+        let destinationPath = destinationFullUrl.replace(hrefHostname, '');
+        destinationPath = destinationPath.replace(':3000', ''); // For local development machines
+        if (isChallengeShare) {
+          // Add the sharedItemCode to the end of the URL so we have access to the sharedItem data on the next page
+          destinationPath += `-${sharedItemCodeIncoming}`;
+        }
+        // console.log('SharedItemLanding destinationPath:', destinationPath);
+        this.localHistoryPush(destinationPath);
+        // const destinationPathWithModal = `${destinationPath}/modal/sic/${sharedItemCodeIncoming}`;
+        // // console.log('*** WILL Direct to LOCAL destinationPathWithModal:', destinationPathWithModal);
+        // historyPush(destinationPathWithModal);
         return LoadingWheel;
       } else {
+        // console.log('SharedItemLanding destinationFullUrl:', destinationFullUrl);
         this.localHistoryPush(destinationFullUrl);
         // const destinationFullUrlWithModal = `${destinationFullUrl}/modal/sic/${sharedItemCodeIncoming}`;
         // // console.log('*** WILL Direct to EXTERNAL destinationFullUrlWithModal:', destinationFullUrlWithModal);

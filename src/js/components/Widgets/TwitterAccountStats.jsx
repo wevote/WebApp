@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import React, { Suspense } from 'react';
 import { renderLog } from '../../common/utils/logging';
 import numberWithCommas from '../../common/utils/numberWithCommas';
-import abbreviateNumber from '../../common/utils/abbreviateNumber';
+import numberAbbreviate from '../../common/utils/numberAbbreviate';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 
@@ -24,7 +24,7 @@ function TwitterAccountStats (props) {
           {twitterHandle}
         </TwitterHandleWrapper>
       )}
-      <TwitterFollowersWrapper title={`${numberWithCommas(twitterFollowersCount)} followers`}>{abbreviateNumber(twitterFollowersCount)}</TwitterFollowersWrapper>
+      <TwitterFollowersWrapper title={`${numberWithCommas(twitterFollowersCount)} followers`}>{numberAbbreviate(twitterFollowersCount)}</TwitterFollowersWrapper>
     </TwitterHtmlWrapper>
   );
   return (

@@ -6,6 +6,7 @@ import initializejQuery from '../../utils/initializejQuery';
 import { renderLog } from '../../utils/logging';
 import VoterStore from '../../../stores/VoterStore';
 
+const UPDATE_NO_MORE_OFTEN_THAN = 30000;  // 30 seconds
 
 class ChallengeParticipantFirstRetrieveController extends Component {
   constructor (props) {
@@ -34,7 +35,7 @@ class ChallengeParticipantFirstRetrieveController extends Component {
       const voterFirstRetrieveCompleted = VoterStore.voterFirstRetrieveCompleted();
       // console.log('ChallengeParticipantFirstRetrieveController challengeParticipantFirstRetrieveInitiated: ', challengeParticipantFirstRetrieveInitiated, ', voterFirstRetrieveCompleted: ', voterFirstRetrieveCompleted);
       if (voterFirstRetrieveCompleted) {
-        if (apiCalming(`challengeParticipantFirstRetrieve-${challengeWeVoteId}`, 60000)) {
+        if (apiCalming(`challengeParticipantFirstRetrieve-${challengeWeVoteId}`, UPDATE_NO_MORE_OFTEN_THAN)) {
           ChallengeParticipantActions.challengeParticipantRetrieve(challengeWeVoteId);
         }
       }

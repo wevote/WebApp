@@ -1,23 +1,21 @@
 import { IconButton } from '@mui/material';
 import { Close } from '@mui/icons-material';
+import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import Confetti from 'react-confetti';
 import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
 
-
-const ThanksForJoiningChallenge = ({ voterFirstName, challengeTitle, onClose }) => {
+const ThanksForViewingChallenge = ({ sharedByDisplayName }) => {
   const [isClosing, setIsClosing] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
 
   useEffect(() => {
     if (isClosing) {
       const timer = setTimeout(() => {
-        onClose();
       }, 500);
       return () => clearTimeout(timer);
     }
-  }, [isClosing, onClose]);
+  }, [isClosing]);
 
   useEffect(() => {
     // Show confetti when the component mounts
@@ -30,23 +28,21 @@ const ThanksForJoiningChallenge = ({ voterFirstName, challengeTitle, onClose }) 
   }, []);
 
   return (
-    <ThanksForJoiningOuterWrapper isClosing={isClosing}>
-      <ThanksForJoiningInnerWrapper isClosing={isClosing}>
+    <ThanksForViewingOuterWrapper isClosing={isClosing}>
+      <ThanksForViewingInnerWrapper isClosing={isClosing}>
         <ThankYouMessageWrapper>
           <ThankYouMessage>
             {showConfetti && <Confetti />}
-            Thanks for joining&nbsp;
-            <BoldText>
-              {challengeTitle}
-              {voterFirstName && ','}
-            </BoldText>
-            {voterFirstName && (
+            Thanks for checking out this challenge
+            {sharedByDisplayName && (
               <>
                 {' '}
-                {voterFirstName}
+                shared with you by
+                {' '}
+                {sharedByDisplayName}
               </>
             )}
-            !
+            ! Join the challenge below.
           </ThankYouMessage>
           <CloseMessageIconWrapper>
             <IconButton
@@ -60,18 +56,12 @@ const ThanksForJoiningChallenge = ({ voterFirstName, challengeTitle, onClose }) 
             </IconButton>
           </CloseMessageIconWrapper>
         </ThankYouMessageWrapper>
-        {/*
-        <RankMessageWrapper>Insert Rank Message Here</RankMessageWrapper>
-        <RankListOuterWrapper>Insert Rank List Here</RankListOuterWrapper>
-        */}
-      </ThanksForJoiningInnerWrapper>
-    </ThanksForJoiningOuterWrapper>
+      </ThanksForViewingInnerWrapper>
+    </ThanksForViewingOuterWrapper>
   );
 };
-ThanksForJoiningChallenge.propTypes = {
-  voterFirstName: PropTypes.string.isRequired,
-  challengeTitle: PropTypes.string.isRequired,
-  onClose: PropTypes.func.isRequired,
+ThanksForViewingChallenge.propTypes = {
+  sharedByDisplayName: PropTypes.string,
 };
 
 const CloseMessageIconWrapper = styled.div`
@@ -81,17 +71,7 @@ const CloseMessageIconWrapper = styled.div`
   justify-content: flex-end;
 `;
 
-const RankListOuterWrapper = styled.div`
-  display: flex;
-  margin-bottom: 10px;
-`;
-
-const RankMessageWrapper = styled.div`
-  display: flex;
-  margin-bottom: 10px;
-`;
-
-const ThanksForJoiningInnerWrapper = styled.div`
+const ThanksForViewingInnerWrapper = styled.div`
   width: 500px;
   max-height: ${(props) => (props.isClosing ? '0' : '300px')};
   border-radius: 20px;
@@ -100,7 +80,7 @@ const ThanksForJoiningInnerWrapper = styled.div`
   flex-direction: column;
   overflow: hidden;
   background-color: white;
-  padding: ${(props) => (props.isClosing ? '0' : '0px 10px 20px 20px')};
+  padding: ${(props) => (props.isClosing ? '0' : '0px 10px 10px')};
   transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1),
               padding 0.5s cubic-bezier(0.4, 0, 0.2, 1),
               opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1),
@@ -109,18 +89,18 @@ const ThanksForJoiningInnerWrapper = styled.div`
   transform: ${(props) => (props.isClosing ? 'translateY(-20px)' : 'translateY(0)')};
 `;
 
-const ThanksForJoiningOuterWrapper = styled.div`
+const ThanksForViewingOuterWrapper = styled.div`
   max-height: ${(props) => (props.isClosing ? '0' : '400px')};
   overflow: hidden;
   display: flex;
   justify-content: center;
-  padding: ${(props) => (props.isClosing ? '0' : '30px 0px 30px')};
+  padding: ${(props) => (props.isClosing ? '0' : '0px 0px 30px')};
   transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1),
               padding 0.5s cubic-bezier(0.4, 0, 0.2, 1),
               opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1),
               margin-bottom 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   opacity: ${(props) => (props.isClosing ? 0 : 1)};
-  margin-bottom:  ${(props) => (props.isClosing ? '0' : '-50px')};
+  margin-bottom:  ${(props) => (props.isClosing ? '0' : '5px')};
   z-index: 100;
   position: relative;
 `;
@@ -128,12 +108,9 @@ const ThanksForJoiningOuterWrapper = styled.div`
 const ThankYouMessage = styled.p`
   font-size: large;
   text-align: left;
-  font-weight: 400;
+  font-family: Poppins;
+  font-weight: 500;
   text-decoration: none;
-`;
-
-const BoldText = styled.span`
-  font-weight: 600;
 `;
 
 const ThankYouMessageWrapper = styled.div`
@@ -141,4 +118,7 @@ const ThankYouMessageWrapper = styled.div`
   justify-content: space-between;
   align-items: baseline;
 `;
-export default ThanksForJoiningChallenge;
+export default ThanksForViewingChallenge;
+
+
+

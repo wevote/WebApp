@@ -16,12 +16,12 @@ import ChallengeParticipantStore from '../../stores/ChallengeParticipantStore';
 import ChallengeStore from '../../stores/ChallengeStore';
 import VoterStore from '../../../stores/VoterStore';
 import CompleteYourProfileModalController from '../../components/Settings/CompleteYourProfileModalController';
-import { Candidate, CandidateNameH4, CandidateNameAndPartyWrapper, CandidateTopRow } from '../../../components/Style/BallotStyles';
 import {
-  CampaignDescription, CampaignDescriptionDesktop, CampaignDescriptionDesktopWrapper, CampaignDescriptionWrapper,
+  CampaignDescriptionDesktop, CampaignDescriptionDesktopWrapper, CampaignDescriptionWrapper,
   CampaignSubSectionSeeAll, CampaignSubSectionTitle, CampaignSubSectionTitleWrapper,
   CommentsListWrapper, DetailsSectionDesktopTablet, DetailsSectionMobile, SupportButtonFooterWrapperAboveFooterButtons, SupportButtonPanel,
 } from '../../components/Style/CampaignDetailsStyles';
+import { ChallengeDescription } from '../../components/Style/ChallengeCardStyles';
 import { EditIndicator, IndicatorButtonWrapper, IndicatorRow } from '../../components/Style/CampaignIndicatorStyles';
 import { PageWrapper } from '../../components/Style/stepDisplayStyles';
 import DelayedLoad from '../../components/Widgets/DelayedLoad';
@@ -39,20 +39,20 @@ import standardBoxShadow from '../../components/Style/standardBoxShadow';
 import { cordovaBallotFilterTopMargin } from '../../../utils/cordovaOffsets';
 import { headroomWrapperOffset } from '../../../utils/cordovaCalculatedOffsets';
 import { getPageKey } from '../../../utils/cordovaPageUtils';
-import normalizedImagePath from '../../utils/normalizedImagePath';
 import ChallengeAbout from '../../components/Challenge/ChallengeAbout';
 import ChallengeParticipantListRoot from '../../components/ChallengeParticipantListRoot/ChallengeParticipantListRoot';
 import ChallengeInviteeListRoot from '../../components/ChallengeInviteeListRoot/ChallengeInviteeListRoot';
+import ThanksForViewingChallenge from '../../components/Challenge/ThanksForViewingChallenge';
+import ShareStore from '../../stores/ShareStore';
+import ChallengeHeaderSimple from '../../components/Navigation/ChallengeHeaderSimple';
 
 const ChallengeCardForList = React.lazy(() => import(/* webpackChunkName: 'ChallengeCardForList' */ '../../components/ChallengeListRoot/ChallengeCardForList'));
 // const ChallengeCommentsList = React.lazy(() => import(/* webpackChunkName: 'ChallengeCommentsList' */ '../../components/Challenge/ChallengeCommentsList'));
 const ChallengeRetrieveController = React.lazy(() => import(/* webpackChunkName: 'ChallengeRetrieveController' */ '../../components/Challenge/ChallengeRetrieveController'));
 // const ChallengeNewsItemList = React.lazy(() => import(/* webpackChunkName: 'ChallengeNewsItemList' */ '../../components/Challenge/ChallengeNewsItemList'));
 // const ChallengeShareChunk = React.lazy(() => import(/* webpackChunkName: 'ChallengeShareChunk' */ '../../components/Challenge/ChallengeShareChunk'));
-const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../../../components/ImageHandler'));
 const JoinChallengeButton = React.lazy(() => import(/* webpackChunkName: 'JoinChallengeButton' */ '../../components/Challenge/JoinChallengeButton'));
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../../components/Widgets/ReadMore'));
-const UpdateChallengeInformation = React.lazy(() => import(/* webpackChunkName: 'UpdateChallengeInformation' */ '../../components/Challenge/UpdateChallengeInformation'));
 
 const futureFeaturesDisabled = true;
 const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
@@ -100,6 +100,7 @@ class ChallengeHomePage extends Component {
       challengeDataFound: false,
       challengeDataNotFound: false,
       challengeDescription: '',
+      challengePhotoLargeUrl: '',
       challengeSEOFriendlyPath: '',
       challengeSEOFriendlyPathForDisplay: '', // Value for challenge already received
       challengeTitle: '',
@@ -107,6 +108,7 @@ class ChallengeHomePage extends Component {
       challengeWeVoteIdForDisplay: '', // Value for challenge already received
       sharingStepCompleted: false,
       step2Completed: false,
+      thanksForViewingChallengeOn: false,
       voterCanEditThisChallenge: false,
     };
     // this.onScroll = this.onScroll.bind(this);
@@ -115,7 +117,11 @@ class ChallengeHomePage extends Component {
   componentDidMount () {
     // console.log('ChallengeHomePage componentDidMount');
     const { match: { params } } = this.props;
-    const { challengeSEOFriendlyPath: challengeSEOFriendlyPathFromUrl, challengeWeVoteId } = params;
+    const {
+      challengeSEOFriendlyPath: challengeSEOFriendlyPathFromUrl,
+      challengeWeVoteId,
+      shared_item_code: sharedItemCodeIncoming,
+    } = params;
     // console.log('ChallengeHomePage componentDidMount tabSelected: ', tabSelected);
     // console.log('componentDidMount challengeSEOFriendlyPathFromUrl: ', challengeSEOFriendlyPathFromUrl, ', challengeWeVoteId: ', challengeWeVoteId);
     this.onAppObservableStoreChange();
@@ -160,6 +166,20 @@ class ChallengeHomePage extends Component {
         BallotActions.voterBallotItemsRetrieve(0, '', '');
       }
     }, 5000);  // April 19, 2021: Tuned to keep performance above 83.  LCP at 597ms
+
+    // If we came in through a sharedItem link and then redirected to this page, fetch the shared item details
+    const sharedItem = ShareStore.getSharedItemByCode(sharedItemCodeIncoming);
+    // console.log('sharedItem:', sharedItem);
+    if (sharedItem && sharedItem.shared_by_display_name) {
+      const {
+        shared_by_display_name: sharedByDisplayName,
+        // shared_by_first_name: sharedByFirstName,
+      } = sharedItem;
+      this.setState({
+        sharedByDisplayName,
+        thanksForViewingChallengeOn: true,
+      });
+    }
 
     // console.log('componentDidMount triggerSEOPathRedirect: ', triggerSEOPathRedirect, ', challengeSEOFriendlyPathFromObject: ', challengeSEOFriendlyPathFromObject);
     if (triggerSEOPathRedirect && challengeSEOFriendlyPathFromObject) {
@@ -317,6 +337,7 @@ class ChallengeHomePage extends Component {
     const {
       challengeDescription,
       challengePhotoLargeUrl,
+      challengePhotoMediumUrl,
       challengeSEOFriendlyPath,
       challengeTitle,
       challengeWeVoteId,
@@ -351,6 +372,7 @@ class ChallengeHomePage extends Component {
       challengeDescription,
       challengeDescriptionLimited,
       challengePhotoLargeUrl,
+      challengePhotoMediumUrl,
       challengeTitle,
       finalElectionDateInPast,
       isBlockedByWeVote,
@@ -384,12 +406,11 @@ class ChallengeHomePage extends Component {
       finalElectionDateInPast: false,
       // isSupportersCountMinimumExceeded: false,
       challengeWeVoteId: '',
-      politicalParty: '',
       challengeDataFound: false,
       challengeDataNotFound: false,
       challengeDescription: '',
       challengeDescriptionLimited: '',
-      challengeImageUrlLarge: '',
+      challengePhotoLargeUrl: '',
       challengeTitle: '',
       challengeWeVoteIdForDisplay: '', // We don't clear challengeWeVoteId because we may need it to load next challenge
       challengeSEOFriendlyPathForDisplay: '', // We don't clear challengeSEOFriendlyPath because we may need it to load next challenge
@@ -450,20 +471,15 @@ class ChallengeHomePage extends Component {
       chosenWebsiteName,
       challengeWeVoteId, loadSlow,
       challengeDataFound, challengeDataNotFound,
-      challengeDescription, challengeDescriptionLimited, challengeImageUrlLarge,
+      challengeDescription, challengeDescriptionLimited, challengePhotoLargeUrl,
       challengeSEOFriendlyPath, challengeSEOFriendlyPathForDisplay,
-      challengeTitle,
-      challengeWeVoteIdForDisplay,
-      scrolledDown,
-      voterCanEditThisChallenge,
-      voterIsChallengeParticipant,
-      voterWeVoteId,
+      challengeTitle, challengeWeVoteIdForDisplay,
+      scrolledDown, sharedByDisplayName, thanksForViewingChallengeOn,
+      voterCanEditThisChallenge, voterIsChallengeParticipant, voterWeVoteId,
     } = this.state;
     // console.log('ChallengeHomePage render challengeSEOFriendlyPath: ', challengeSEOFriendlyPath, ', challengeSEOFriendlyPathForDisplay: ', challengeSEOFriendlyPathForDisplay);
     const challengeAdminEditUrl = `${webAppConfig.WE_VOTE_SERVER_ROOT_URL}challenge/${challengeWeVoteId}/summary`;
     // const candidateWeVoteId = CandidateStore.getCandidateWeVoteIdRunningFromChallengeWeVoteId(challengeWeVoteId);
-    const avatarBackgroundImage = normalizedImagePath('../img/global/svg-icons/avatar-generic.svg');
-    const avatarCompressed = 'card-main__avatar-compressed';
 
     if (challengeDataNotFound) {
       return (
@@ -498,27 +514,13 @@ class ChallengeHomePage extends Component {
     if (tabSelected === 'friends' || tabSelected === 'leaderboard') {
       tabSelectedChosen = tabSelected;
     }
-
-    const challengeDescriptionJsx = (
-      <CampaignDescription>
-        <AboutAndEditFlex>
-          <div>
-            <Suspense fallback={<span>&nbsp;</span>}>
-              <UpdateChallengeInformation challengeTitle={challengeTitle} />
-            </Suspense>
-          </div>
-        </AboutAndEditFlex>
-        {challengeDescription ? (
-          <Suspense fallback={<span>&nbsp;</span>}>
-            <ReadMore numberOfLines={6} textToDisplay={challengeDescription} />
-          </Suspense>
-        ) : (
-          <NoInformationProvided>No description has been provided for this candidate.</NoInformationProvided>
-        )}
-      </CampaignDescription>
-    );
     return (
       <PageContentContainer>
+        {thanksForViewingChallengeOn && (
+          <ThanksForViewingChallenge
+             sharedByDisplayName={sharedByDisplayName}
+          />
+        )}
         <Suspense fallback={<span>&nbsp;</span>}>
           <ChallengeRetrieveController
             challengeSEOFriendlyPath={challengeSEOFriendlyPath}
@@ -544,29 +546,14 @@ class ChallengeHomePage extends Component {
             <MobileHeaderOuterContainer id="challengeHeaderContainer" scrolledDown={scrolledDown}>
               <MobileHeaderInnerContainer>
                 <MobileHeaderContentContainer>
-                  <CandidateTopRow>
-                    <Candidate
-                      id={`challengeHomeImageAndName-${challengeWeVoteIdForDisplay}`}
-                    >
-                      {/* Challenge Image */}
-                      <Suspense fallback={<></>}>
-                        <ImageHandler
-                          className={avatarCompressed}
-                          sizeClassName="icon-candidate-small u-push--sm "
-                          imageUrl={challengeImageUrlLarge}
-                          alt=""
-                          kind_of_ballot_item="CANDIDATE"
-                          style={{ backgroundImage: { avatarBackgroundImage } }}
-                        />
-                      </Suspense>
-                      {/* Challenge Name */}
-                      <CandidateNameAndPartyWrapper>
-                        <CandidateNameH4>
-                          {challengeTitle}
-                        </CandidateNameH4>
-                      </CandidateNameAndPartyWrapper>
-                    </Candidate>
-                  </CandidateTopRow>
+                  <ChallengeHeaderSimple
+                    challengeBasePath={this.getChallengeBasePath()}
+                    challengePhotoLargeUrl={challengePhotoLargeUrl}
+                    challengeTitle={challengeTitle}
+                    challengeWeVoteId={challengeWeVoteIdForDisplay}
+                    // goToChallengeHome={this.goToChallengeHome}
+                    hideCloseIcon
+                  />
                 </MobileHeaderContentContainer>
               </MobileHeaderInnerContainer>
             </MobileHeaderOuterContainer>
@@ -596,12 +583,16 @@ class ChallengeHomePage extends Component {
                 ) : (
                   <AboutSectionWrapper>
                     <CampaignDescriptionWrapper hideCardMargins>
+                      <ChallengeAbout challengeWeVoteId={challengeWeVoteIdForDisplay} />
                       {challengeDescription && (
                         <DelayedLoad waitBeforeShow={250}>
-                          {challengeDescriptionJsx}
+                          <ChallengeDescription>
+                            <Suspense fallback={<></>}>
+                              <ReadMore numberOfLines={6} textToDisplay={challengeDescription} />
+                            </Suspense>
+                          </ChallengeDescription>
                         </DelayedLoad>
                       )}
-                      <ChallengeAbout challengeWeVoteId={challengeWeVoteIdForDisplay} />
                       {!!(voterCanEditThisChallenge || voterIsChallengeParticipant) && (
                         <IndicatorRow>
                           {voterCanEditThisChallenge && (
@@ -638,15 +629,6 @@ class ChallengeHomePage extends Component {
                   useVerticalCard
                   voterWeVoteId={voterWeVoteId}
                 />
-                {challengeDescription && (
-                  <DelayedLoad waitBeforeShow={250}>
-                    <CampaignDescription>
-                      <Suspense fallback={<></>}>
-                        <ReadMore numberOfLines={6} textToDisplay={challengeDescription} />
-                      </Suspense>
-                    </CampaignDescription>
-                  </DelayedLoad>
-                )}
                 <ChallengeAbout challengeWeVoteId={challengeWeVoteIdForDisplay} />
                 <JoinChallengeButtonWrapper>
                   <Suspense fallback={<></>}>
@@ -656,6 +638,15 @@ class ChallengeHomePage extends Component {
                     />
                   </Suspense>
                 </JoinChallengeButtonWrapper>
+                {challengeDescription && (
+                  <DelayedLoad waitBeforeShow={250}>
+                    <ChallengeDescription>
+                      <Suspense fallback={<></>}>
+                        <ReadMore numberOfLines={6} textToDisplay={challengeDescription} />
+                      </Suspense>
+                    </ChallengeDescription>
+                  </DelayedLoad>
+                )}
                 <CampaignDescriptionDesktopWrapper>
                   {challengeDataFound && (
                     <DelayedLoad waitBeforeShow={250}>
@@ -783,11 +774,6 @@ const styles = (theme) => ({
   },
 });
 
-const AboutAndEditFlex = styled('div')`
-  display: flex;
-  justify-content: space-between;
-`;
-
 const AboutSectionWrapper = styled('div')`
 `;
 
@@ -849,7 +835,7 @@ const slideDown = keyframes`
 `;
 
 const MobileHeaderContentContainer = styled('div')(({ theme }) => (`
-  padding: 15px 15px 0 15px;
+  // padding: 15px 15px 0 15px;
   margin: ${() => cordovaBallotFilterTopMargin()} auto 0 auto;
   position: relative;
   max-width: 960px;

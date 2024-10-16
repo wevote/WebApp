@@ -170,7 +170,6 @@ class ValueNameWithPopoverDisplay extends Component {
           color="valueChip"
           id={`${externalUniqueId}-valueIconAndText-${oneIssue.issue_we_vote_id}`}
           key={`${externalUniqueId}-valueIconAndTextKey-${oneIssue.issue_we_vote_id}`}
-          className="u-cursor--pointer"
           style={{
             margin: '5px',
             borderRadius: '4px',

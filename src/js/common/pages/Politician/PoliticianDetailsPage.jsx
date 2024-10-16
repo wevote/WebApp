@@ -919,7 +919,7 @@ class PoliticianDetailsPage extends Component {
                 <MobileHeaderContentContainer>
                   <CandidateTopRow>
                     <Candidate
-                      id={`officeItemCompressedCandidateImageAndName-${politicianWeVoteId}`}
+                      id={`politicianDetailsImageAndName-${politicianWeVoteId}`}
                     >
                       {/* Candidate Image */}
                       <Suspense fallback={<></>}>
@@ -1385,10 +1385,10 @@ const MissingPoliticianText = styled('p')(({ theme }) => (`
 `));
 
 const slideIn = keyframes`
-  from { 
+  from {
     transform: translateY(-100%);
   }
-  to { 
+  to {
     transform: translateY(0);
   }
 `;

@@ -73,7 +73,7 @@ export default class YourPage extends Component {
       <div>
         <div className="container-fluid well u-stack--md u-inset--md">
           <h1 className="h4">
-            Enter your Twitter handle to create a public voter guide.
+            Enter your X handle to create a public voter guide.
           </h1>
           <div>
             <TwitterHandleBox />

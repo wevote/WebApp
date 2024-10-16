@@ -409,8 +409,10 @@ class App extends Component {
                   <Route path="/-/:custom_link_string" exact component={SharedItemLanding} />
                   <Route path="/-:shared_item_code/modal/share" exact component={SharedItemLanding} />
                   <Route path="/-:shared_item_code" exact component={SharedItemLanding} />
+                  <Route path="/-" exact><Ready /></Route>
                   <Route exact path="/+/:challengeWeVoteId/" render={(props) => <ChallengeHomePage match={props.match} />} />
                   <Route exact path="/+/:challengeWeVoteId/edit" render={(props) => <ChallengeStartEditAll match={props.match} editExistingChallenge setShowHeaderFooter={this.setShowHeaderFooter} />} />
+                  <Route exact path="/:challengeSEOFriendlyPath/+/-:shared_item_code" render={(props) => <ChallengeHomePage match={props.match} />} />
                   <Route exact path="/:challengeSEOFriendlyPath/+/" render={(props) => <ChallengeHomePage match={props.match} />} />
                   <Route exact path="/:challengeSEOFriendlyPath/+/edit" render={(props) => <ChallengeStartEditAll match={props.match} editExistingChallenge setShowHeaderFooter={this.setShowHeaderFooter} />} />
                   <Route exact path="/:challengeSEOFriendlyPath/+/join-challenge" render={(props) => <ChallengeInviteFriendsJoin match={props.match} setShowHeaderFooter={this.setShowHeaderFooter} />} />
@@ -737,14 +739,14 @@ class App extends Component {
 }
 
 const WeVoteBody = styled('div')`
-  background-color: #fff; // rgb(235, 236, 238); // #fafafa;
-  color: #000;
+  // We rely on many of these from the body from main.css, including:
+  //background-color: #fff; // rgb(235, 236, 238); // #fafafa;
+  //color: #000;
+  //font-family: "Poppins", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+  //line-height: 1.4;
+  // margin: 0 auto;
+
   display: block;
-  font-family: "Poppins", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
-  line-height: 1.4;
-  margin: 0 auto;
-  // max-width: 960px;
-  //height: 100vw;
   position: relative;
   z-index: 0;
   // this debug technique works!  ${() => console.log('-----------------------------')}

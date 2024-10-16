@@ -201,7 +201,7 @@ class TwitterSignIn extends Component {
       if (version) {
         const floatVersion = parseFloat(version);
         if (floatVersion < 13.0) {
-          console.log('Sign in with Twitter is not available on iOS < 13, this phone is running: ', floatVersion);
+          console.log('Sign in with X is not available on iOS < 13, this phone is running: ', floatVersion);
           twitterSignInButtonDisabled = true;
           buttonText = '(Requires iOS 13)';
         }

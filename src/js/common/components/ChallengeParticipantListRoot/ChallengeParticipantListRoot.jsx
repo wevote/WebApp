@@ -136,7 +136,7 @@ const ChallengeParticipantListRoot = ({ challengeWeVoteId, classes, uniqueExtern
             <HeaderItem>RANK</HeaderItem>
             <HeaderItem>NAME</HeaderItem>
           </HeaderGroup>
-          <HeaderGroup gap="25px">
+          <HeaderGroup gap="10px">
             <HeaderItem>POINTS</HeaderItem>
             <HeaderItem>FRIENDS JOINED</HeaderItem>
           </HeaderGroup>
@@ -184,9 +184,10 @@ const TopSection = styled.div`
   align-items: center;
   background-color: white;
   box-shadow: 0px 6px 6px -2px rgba(0, 0, 0, 0.1);
-  z-index: 1;
+  // z-index: 1;
   position: sticky;
   top: 0;
+  padding: 10px;
 `;
 
 const ButtonAndSearchWrapper = styled.div`

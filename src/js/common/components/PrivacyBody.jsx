@@ -171,7 +171,7 @@ export default class PrivacyBody extends Component {
               </tr>
               <tr>
                 <TdColumn1>Who you Follow on Twitter</TdColumn1>
-                <TdColumn2>When you sign in with Twitter, all of the Twitter accounts you follow on Twitter which have endorsements stored in WeVote, are displayed on your profile</TdColumn2>
+                <TdColumn2>When you sign in with Twitter, all the Twitter accounts you follow on Twitter which have endorsements stored in WeVote, are displayed on your profile</TdColumn2>
                 <TdColumn3>Yes</TdColumn3>
                 <TdColumn4>No</TdColumn4>
               </tr>

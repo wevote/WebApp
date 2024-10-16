@@ -44,6 +44,7 @@ const LeaderboardListContainer = styled.div`
   flex-direction: column;
   overflow-y: scroll;
   height: calc(100vh - 270px);
+  padding: 10px;
 `;
 
 export default ChallengeParticipantList;

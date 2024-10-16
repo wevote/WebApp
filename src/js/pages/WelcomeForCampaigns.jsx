@@ -163,7 +163,7 @@ class WelcomeForCampaigns extends PureComponent {
               <Description>
                 Empower your supporters to share your localized, responsive endorsement
                 {' '}
-                experience with their friends and family on Facebook, Twitter, email and SMS.
+                experience with their friends and family on Facebook, X, email and SMS.
               </Description>
               <FeatureStep>
                 <FeatureStepLabel>

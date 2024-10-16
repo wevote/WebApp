@@ -219,12 +219,20 @@ class ShareStore extends ReduceStore {
         sharedItem = action.res || {};
         sharedItemDestinationFullUrl = action.res.destination_full_url || '';
         sharedItemDestinationFullUrlLowerCase = sharedItemDestinationFullUrl.toLowerCase();
-        allCachedSharedItemsByFullUrl[sharedItemDestinationFullUrlLowerCase] = sharedItem;
+        if (sharedItemDestinationFullUrlLowerCase !== '') {
+          allCachedSharedItemsByFullUrl[sharedItemDestinationFullUrlLowerCase] = sharedItem;
+        }
+        if (action.res.shared_item_code) {
+          allCachedSharedItemsBySharedItemCode[action.res.shared_item_code] = sharedItem;
+        }
         if (action.res.shared_item_code_no_opinions) {
           allCachedSharedItemsBySharedItemCode[action.res.shared_item_code_no_opinions] = sharedItem;
         }
         if (action.res.shared_item_code_all_opinions) {
           allCachedSharedItemsBySharedItemCode[action.res.shared_item_code_all_opinions] = sharedItem;
+        }
+        if (action.res.shared_item_code_challenge) {
+          allCachedSharedItemsBySharedItemCode[action.res.shared_item_code_challenge] = sharedItem;
         }
         if (action.res.shared_item_code_ready) {
           allCachedSharedItemsBySharedItemCode[action.res.shared_item_code_ready] = sharedItem;
