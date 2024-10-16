@@ -242,8 +242,12 @@ class VoterEmailAddressEntry extends Component {
       this.setState({
         displayEmailVerificationButton: false,
       });
+      const TermsOfServiceLink = document.getElementById("openTermsOfService");
+      if (TermsOfServiceLink) {
+        TermsOfServiceLink.focus(); 
+      }
       blurTextFieldAndroid();
-    }
+    } 
   };
 
   onCancel = () => {
@@ -266,6 +270,10 @@ class VoterEmailAddressEntry extends Component {
       if (this.props.showAllSignInOptions) {
         this.props.showAllSignInOptions();
       }
+    }
+    const TermsOfServiceLink = document.getElementById("openTermsOfService");
+    if (TermsOfServiceLink) {
+      TermsOfServiceLink.focus(); 
     }
   };
 

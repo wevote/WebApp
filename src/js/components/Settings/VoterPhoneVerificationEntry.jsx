@@ -280,6 +280,10 @@ class VoterPhoneVerificationEntry extends Component {
       this.setState({
         displayPhoneVerificationButton: false,
       });
+      const nextField = document.getElementById("enterVoterEmailAddress") || document.getElementById("openTermsOfService");    
+      if (nextField) {
+        nextField.focus();
+      }
     }
     blurTextFieldAndroid();
   };
@@ -306,12 +310,18 @@ class VoterPhoneVerificationEntry extends Component {
       // WV-316: seperated Cordovoa and Mobile screen cancel logic, Mobile only shows all sign in options on cancel.
       // if (this.props.showAllSignInOptions) {
       //   this.props.showAllSignInOptions();
-      // }
+      // }  
     } else if (isMobileScreenSize()) {
-      if (this.props.showAllSignInOptions) {
-        this.props.showAllSignInOptions();
+      if (this.props.showEmailOnlySignIn) {
+        this.props.showEmailOnlySignIn();
+      }
+    } else {
+      const nextField = document.getElementById("enterVoterEmailAddress") || document.getElementById("openTermsOfService");    
+      if (nextField) {
+        nextField.focus();
       }
     }
+
   };
 
   onFocus = () => {
@@ -738,6 +748,7 @@ VoterPhoneVerificationEntry.propTypes = {
   lockOpenPhoneVerificationButton: PropTypes.bool,
   showAllSignInOptions: PropTypes.func,
   showPhoneOnlySignIn: PropTypes.func,
+  showEmailOnlySignIn: PropTypes.func
 };
 
 const styles = {
