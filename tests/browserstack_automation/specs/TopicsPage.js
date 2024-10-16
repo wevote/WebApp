@@ -1,6 +1,7 @@
 import { driver, expect } from '@wdio/globals';
 import ReadyPage from '../page_objects/ready.page';
 import TopicsPage from '../page_objects/topics.page';
+import ProfilePage from '../page_objects/profile.page';
 
 const waitTime = 5000;
 
@@ -12,7 +13,7 @@ const waitTime = 5000;
 describe('TopicsPage', () => {
   // Ready_001
 
-  /*
+  
   it('verifyProChoiceTopicsPageLoads', async () => {
 
     await ReadyPage.login();
@@ -46,9 +47,15 @@ describe('TopicsPage', () => {
     // verify follow button appears
     await expect(TopicsPage.getProChoiceFollowElement).toBeDisplayed();
 
+    await driver.waitUntil(async () => (TopicsPage.avatar.isClickable()));
+    await TopicsPage.avatar.click();
+
+    await driver.waitUntil(async () => (ProfilePage.getSignOutElement.isClickable()));
+    await ProfilePage.getSignOutElement.click();
+
   });
 
-  */
+  
 
   it('verifyDemocraticClubsTopicsPageLoads', async () => {
 
@@ -78,6 +85,12 @@ describe('TopicsPage', () => {
     await TopicsPage.getDemocraticClubsUnfollowElement.click();
     // verify follow button appears
     await expect(TopicsPage.getDemocraticClubsFollowElement).toBeDisplayed();
+
+    await driver.waitUntil(async () => (TopicsPage.avatar.isClickable()));
+    await TopicsPage.avatar.click();
+
+    await driver.waitUntil(async () => (ProfilePage.getSignOutElement.isClickable()));
+    await ProfilePage.getSignOutElement.click();
 
   });
 

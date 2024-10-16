@@ -215,6 +215,10 @@ class ReadyPage extends Page {
     return $('a[href="/value/democratic_clubs"]')
   }
 
+  get getProfileIconElement() {
+    return $('#profileAvatarHeaderBar');
+  }
+
 
   async login () {
     const waitTime = 5000;

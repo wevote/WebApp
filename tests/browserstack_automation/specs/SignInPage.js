@@ -10,7 +10,7 @@ const waitTime = 5000;
 
 describe('SignInPage', () => {
 
-  /*
+  
     it('verifySignIn', async () => {
         await ReadyPage.load();
         await driver.pause(waitTime);
@@ -48,7 +48,7 @@ describe('SignInPage', () => {
 
     
       });
-      */
+      
     it('verifyLogin', async () => {
         await ReadyPage.login();
     });
