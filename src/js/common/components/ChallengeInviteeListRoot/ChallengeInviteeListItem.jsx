@@ -90,6 +90,7 @@ const id = open ? 'simple-popover' : undefined;
           <ViewInviteeDetails
             show={viewInviteeDetails}
             setShow={setViewInviteeDetails}
+            setAnchorEl={setAnchorEl}
           />
         </ActivityCommentEditWrapper>
       </PrimaryDetails>

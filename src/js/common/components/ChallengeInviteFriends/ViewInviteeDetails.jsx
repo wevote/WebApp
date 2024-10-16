@@ -1,6 +1,7 @@
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
+import { styled } from '@mui/material/styles';
 import { Dialog, DialogContent, DialogTitle, DialogActions, Typography, IconButton } from '@mui/material';
 import { Close } from '@mui/icons-material';
 import React, { Component, useState } from 'react';
@@ -11,31 +12,46 @@ import CandidateStore from '../../../stores/CandidateStore';
 import MeasureStore from '../../../stores/MeasureStore';
 import SupportStore from '../../../stores/SupportStore';
 import PayToPromoteProcess from '../CampaignSupport/PayToPromoteProcess';
+import { isAndroid, isCordova } from '../../utils/isCordovaOrWebApp';
 
 // const PayToPromoteProcess = React.lazy(() => import(/* webpackChunkName: 'PayToPromoteProcess' */ './PayToPromoteProcess')); // eslint-disable-line import/no-cycle
 
+// const BootstrapDialog = styled(Dialog)(({ theme }) => ({
+//   '& .MuiDialogContent-root': {
+//     padding: theme.spacing(2),
+//   },
+//   '& .MuiDialogActions-root': {
+//     padding: theme.spacing(1),
+//   },
+// }));
 
-const ViewInviteeDetails = ({show, setShow}) => {
+const ViewInviteeDetails = ({show, setShow, setAnchorEl}) => {
 
   const handleClose = () => {
-    setShow(false)}
+    setShow(false)
+    setAnchorEl(null)}
 
    return (
       <Dialog
         open={show}
         aria-label="view-invitee-details-modal"
         onClose={handleClose}
+        style={{paddingTop: `${isCordova() ? '75px' : 'undefined'}` } }
       >
-        <DialogTitle sx={{ m: 0, p: 2, position: 'relative' }} id="customized-dialog-title">
+        <DialogTitle id="customized-dialog-title">
+          <DialogTitleInnerWrapper>
+            <Title>
           Jane's invitation history
-        </DialogTitle>
+            </Title>
          <IconButton
             aria-label="close"
             onClick={handleClose}
             size="large"
-            sx={{ position: 'absolute', right: 8, top: 8 }}>
+            sx={{ marginLeft: 'auto' }}>
            <Close />
          </IconButton>
+         </DialogTitleInnerWrapper>
+        </DialogTitle>
         <DialogContent dividers>
           <Typography gutterBottom>
             Invitation sent
@@ -51,6 +67,23 @@ const ViewInviteeDetails = ({show, setShow}) => {
     );
   }
 
+const DialogTitleInnerWrapper = styled('div')`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 28px;
+`;
+
+const Title = styled('div')`
+  font-size: 16px;
+  font-weight: bold;
+  margin: 0;
+  margin-top: 2px;
+  text-align: left;
+  padding-left: 16px;
+`;
+
+export default withTheme(withStyles()(ViewInviteeDetails));
 
 //
 // class ViewInviteeDetails extends Component {
@@ -267,5 +300,3 @@ const ViewInviteeDetails = ({show, setShow}) => {
 //   show: PropTypes.bool,
 //   toggleModal: PropTypes.func.isRequired,
 // };
-
-export default withTheme(withStyles(templateAStyles)(ViewInviteeDetails));
