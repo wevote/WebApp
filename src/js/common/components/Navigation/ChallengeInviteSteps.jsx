@@ -186,23 +186,21 @@ const HeaderContainer = styled('div')`
   width: 100%;
 `;
 
-const LearnMoreButton = styled('button')`{
-    background: none;
-    border: none;
-    color: ${DesignTokenColors.primary500};
-    font-size: 13px;
-    font-weight: 500;
-    text-decoration: none;
-  }
+const LearnMoreButton = styled('button')`
+  background: none;
+  border: none;
+  color: ${DesignTokenColors.primary500};
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: none;
 `;
 
 const TitleH2 = styled('h2')`
-    color: ${DesignTokenColors.neutral900};
-    font-size: 20px;
-    font-weight: 600;
-    line-height: 25px;
-    margin: 0 10px;
-  }
+  color: ${DesignTokenColors.neutral900};
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 25px;
+  margin: 0 10px;
 `;
 const Wrapper = styled('div')`
   align-items: center;

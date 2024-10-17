@@ -108,9 +108,9 @@ export const VoteByBelowWrapper = styled('div', {
   display: flex;
   ${centerText ? 'justify-content: center;' : 'justify-content: start;'}
   margin: -2px 0 0 2px;
-  ${theme.breakpoints.up('md')} {
-    ${electionDateBelow ? '' : 'display: none;'}
-  }
+  // ${theme.breakpoints.up('md')} {
+  //   ${electionDateBelow ? '' : 'display: none;'}
+  // }
 `));
 
 export const VoteByRightLabel = styled('div')`
@@ -123,7 +123,7 @@ export const VoteByRightLabel = styled('div')`
 export const VoteByRightWrapper = styled('div', {
   shouldForwardProp: (prop) => !['electionDateBelow'].includes(prop),
 })(({ electionDateBelow, theme }) => (`
-  ${electionDateBelow ? 'display: none;' : 'display: block;'}
+  // ${electionDateBelow ? 'display: none;' : 'display: block;'}
   margin-left: 8px;
   margin-top: 4px;
   ${theme.breakpoints.down('md')} {
