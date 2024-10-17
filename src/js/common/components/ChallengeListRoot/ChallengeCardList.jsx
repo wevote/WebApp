@@ -13,7 +13,6 @@ import { isWebApp } from '../../utils/isCordovaOrWebApp';
 import ChallengeStore from '../../stores/ChallengeStore';
 import JoinChallengeAndLearnMoreButtons from '../Challenge/JoinChallengeAndLearnMoreButtons';
 import JoinedAndDaysLeft from '../Challenge/JoinedAndDaysLeft';
-import DesignTokenColors from '../Style/DesignTokenColors';
 
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../Widgets/DelayedLoad'));
 
@@ -304,15 +303,12 @@ const Wrapper = styled('div')`
 `;
 
 const JoinedAndDaysForChallengePage = styled('div')`
-align-items: center;
-border-radius: 20px;
-color: ${DesignTokenColors.gray900};
-display: flex;
-font-size: 12px;
 left: 10px;
-padding: 5px 10px;
 position: absolute;
-top: 125px;
+top: 130px;
+@media (max-width: 600px) {
+    top: 140px;
+  }
 `;
 
 export default withStyles(styles)(ChallengeCardList);
