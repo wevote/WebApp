@@ -9,6 +9,7 @@ import SearchBar2024 from '../../../components/Search/SearchBar2024';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import ChallengeParticipantStore from '../../stores/ChallengeParticipantStore';
 import FirstChallengeParticipantListController from './FirstChallengeParticipantListController';
+import YourRankOutOf from '../Challenge/YourRankOutOf';
 
 // const FirstChallengeParticipantListController = React.lazy(() => import(/* webpackChunkName: 'FirstChallengeParticipantListController' */ './FirstChallengeParticipantListController'));
 const participantListDummyData = [
@@ -114,21 +115,7 @@ const ChallengeParticipantListRoot = ({ challengeWeVoteId, classes, uniqueExtern
         </ButtonAndSearchWrapper>
         <LeaderboardInfoWrapper>
           {!!(rankOfVoter) && (
-            <RankContainer>
-              <RankText>You&apos;re</RankText>
-              {' '}
-              <RankNumber>
-                #
-                {rankOfVoter}
-              </RankNumber>
-              {' '}
-              <RankDetails>
-                (of
-                {' '}
-                {participantsCount}
-                )
-              </RankDetails>
-            </RankContainer>
+            <YourRankOutOf rankOfVoter={rankOfVoter} participantsCount={participantsCount} />
           )}
         </LeaderboardInfoWrapper>
         <LeaderboardTableHeader>
@@ -234,25 +221,6 @@ const HeaderGroup = styled.div`
 
 const HeaderItem = styled.p`
   margin: 0;  /* Reset default margins */
-`;
-
-const RankContainer = styled.p`
-  font-size: 16px;
-  color: ${DesignTokenColors.neutral900}; /* Default color */
-`;
-
-const RankText = styled.span`
-  font-weight: bold;
-  color: ${DesignTokenColors.neutral900};  /* Color for "You're" */
-`;
-
-const RankNumber = styled.span`
-  font-weight: bold;
-  color: ${DesignTokenColors.accent500};  /* Accent color for the rank number */
-`;
-
-const RankDetails = styled.span`
-  color: ${DesignTokenColors.neutral600};  /* Subdued color for "(of 6441)" */
 `;
 
 export default withStyles(styles)(ChallengeParticipantListRoot);

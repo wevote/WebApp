@@ -7,13 +7,22 @@ import SearchBar2024 from '../../../components/Search/SearchBar2024';
 import DesignTokenColors from '../../components/Style/DesignTokenColors';
 import ChallengeParticipantList from '../../components/ChallengeParticipantListRoot/ChallengeParticipantList';
 import AppObservableStore from '../../stores/AppObservableStore';
+import YourRankOutOf from '../Challenge/YourRankOutOf';
 
 
 const ChallengeLeaderboard = ({ classes, challengeWeVoteId, clearSearchFunction, searchFunction }) => {
+  const [participantList, setParticipantList] = React.useState([]);
   const [rankOfVoter, setRankOfVoter] = React.useState(0);
+  const [participantsCount, setParticipantsCount] = useState(0);
 
   const onAppObservableStoreChange = () => {
     setRankOfVoter(AppObservableStore.getChallengeParticipantRankOfVoterByChallengeWeVoteId(challengeWeVoteId));
+  };
+
+  const onChallengeParticipantStoreChange = () => {
+    const sortedParticipantsWithRank = ChallengeParticipantStore.getChallengeParticipantList(challengeWeVoteId);
+    setParticipantList(sortedParticipantsWithRank);
+    setParticipantsCount(sortedParticipantsWithRank.length);
   };
   return (
     <LeaderboardContainer>
@@ -48,28 +57,12 @@ const ChallengeLeaderboard = ({ classes, challengeWeVoteId, clearSearchFunction,
               clearFunction={clearSearchFunction}
               searchUpdateDelayTime={500}
             />
-          </SearchBarWrapper>
+          </SearchBarWrapper>f
         </ButtonAndSearchWrapper>
         <LeaderboardInfoWrapper>
-          <p>
-            <span style={{
-              color: DesignTokenColors.neutral900,
-              fontWeight: 'bold',
-            }}>
-              You&apos;re
-            </span>
-            {' '}
-            {/* getChallengeParticipantRankOfVoterByChallengeWeVoteId */}
-            <span style={{
-              color: DesignTokenColors.accent500,
-              fontWeight: 'bold',
-            }}>
-              #5341
-            </span>
-            {' '}
-            (of 6441)
-          </p>
-
+          {!!(rankOfVoter) && (
+              <YourRankOutOf rankOfVoter={rankOfVoter} participantsCount={participantsCount} />
+            )}
         </LeaderboardInfoWrapper>
         <LeaderboardTableHeader>
           <div style={{display: 'flex', gap: '32px'}}>
