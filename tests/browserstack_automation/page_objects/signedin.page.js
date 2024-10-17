@@ -1,7 +1,7 @@
 import { $, $$, expect, driver } from '@wdio/globals';
 import Page from './page';
 
-const waitTime = 2000;
+const waitTime = 3000;
 
 class SignedIn extends Page {
   
@@ -29,13 +29,13 @@ class SignedIn extends Page {
         return $('[data-testid = "DeleteIcon"]');
     }
 
-    // get firstNameInput() {
-    //     return $('//*[contains(@id,"first-name-domainDesktop"]');
-    // }
+    get firstNameInput() {
+        return $('//*[contains(@id,"first-name-domainDesktop")]');
+    }
 
-    // get lastNameInput() {
-    //     return $('//*[contains(@id,"last-name-domainDesktop"]');
-    // }
+    get lastNameInput() {
+        return $('//*[contains(@id,"last-name-domainDesktop")]');
+    }
 
     get organizationNameInput() {
         return $('//*[contains(@id,"organization-name-domainDesktop")]');
@@ -149,12 +149,12 @@ class SignedIn extends Page {
         await $(`#${id}`).setValue(textToEnter);
         const entered = await $(`#${id}`).getValue();
         await expect(entered).toBe(textToEnter);
-        await $(`#${id}`).setValue("");
+        await $(`#${id}`).clearValue();
         driver.pause(waitTime);
     }
 
     async enterAndRemoveTextFromInputFields() { //organizationname commented as it is not getting removed
-        const ids = [/*'organization-name-domainDesktop', 'organizationWebsiteTextArea-domainDesktop-label',*/ 'organizationDescriptionTextArea-domainDesktop'];
+        const ids = ['first-name-domainDesktop', 'last-name-domainDesktop', /*'organization-name-domainDesktop',*/ 'organizationWebsiteTextArea-domainDesktop', 'organizationDescriptionTextArea-domainDesktop'];
         const text = 'AutomatedTest';
         for (const id of ids) {
             await this.idOfInputFields(id, text);
@@ -212,14 +212,12 @@ class SignedIn extends Page {
         }
     }
 
-    async clickOnHowItWorksLink() { //does not seem to work with text
-        //await $('//*[contains(text(), "How It Works")]').click();
-        //await $('//*[contains(text(), "How It Works") and contains(@class, "TermsAndPrivacyText-sc-fer9th-20") and contains(@class, "hNtPfJ")]').click();
-        await $('//*[contains(text(), "How It Works") and @class="TermsAndPrivacyText-sc-fer9th-20 hNtPfJ"]').click();
+    async clickOnHowItWorksLink() {
+        await $('//span[contains(text(), "How") and contains(text(), "It") and contains(text(), "Works")]').click();
     }
 
     async clickOnAboutAndFAQLink() {
-        await $('//*[contains(text(), "About & FAQ")]').click();
+        await $('//span[contains(text(), "About") and contains(text(), "&") and contains(text(), "FAQ")]').click();
     }
 
     async clickOnHelpLink() {
@@ -243,7 +241,7 @@ class SignedIn extends Page {
     }
 
     async closeTheHowItWorksDialogBox() {
-        await $('[data-testid="CloseIcon"]')
+        await $('[data-testid="CloseIcon"]').click();
     }
     
     async clickOnSignOutFromSideBar() {
@@ -262,10 +260,10 @@ class SignedIn extends Page {
     async notificationTypes() {
         await expect($('//*[contains(text(), "Notification Settings")]')).toBeDisplayed();
         await expect($('//*[contains(text(), "New friend requests, and responses to your requests")]')).toBeDisplayed();
-        //await expect($('//*[text()= "Friends\' opinions"]')).toBeDisplayed(); //does not work with text
+        await expect($('//*[contains(., "Friends") and contains(., "opinions")]')).toBeDisplayed();
         await expect($('//*[contains(text(), "(on your ballot)")]')).toBeDisplayed();
         await expect($('//*[contains(text(), "(all regions)")]')).toBeDisplayed();
-        //await expect($('//*[text()= "Friends\' activity,"]')).toBeDisplayed(); //does not work with text
+        await expect($('//*[contains(., "Friends") and contains(., "activity")]')).toBeDisplayed();
         await expect($('//*[contains(text(), "summarized daily")]')).toBeDisplayed();
         await expect($('//*[contains(text(), "WeVote newsletter")]')).toBeDisplayed();
     }

@@ -6,7 +6,7 @@ const waitTime = 14000;
 
 describe('Profile(Signed In)', () => {
 
-    // ProfileSignedIn_001
+    ProfileSignedIn_001
     it.only('verifySignInButton', async () => {
       await ReadyPage.load();
       await driver.pause(waitTime);
@@ -44,7 +44,7 @@ describe('Profile(Signed In)', () => {
       await expect(SignedIn.bellIconNoNotificationText).toBeDisplayed();
     });
 
-    // // //ProfileSignedIn_004  //not completed yet to be taken later
+    // // //ProfileSignedIn_004  //not completed yet, to be taken later
     // // it.only('verifyUploadPhotoInNamePhotoSettings', async () => {
     // //   await ReadyPage.load();
     // //   await driver.pause(waitTime);
@@ -154,6 +154,8 @@ describe('Profile(Signed In)', () => {
       await driver.pause(waitTime);
       await SignedIn.clickOnProfilePhotoPlaceholder();
       await driver.pause(waitTime);
+      await expect(SignedIn.firstNameInput).toBeDisplayed();
+      await expect(SignedIn.lastNameInput).toBeDisplayed();
       await expect(SignedIn.organizationNameInput).toBeDisplayed();
       await expect(SignedIn.websiteInput).toBeDisplayed();
       await expect(SignedIn.descriptionInput).toBeDisplayed();
@@ -237,12 +239,12 @@ describe('Profile(Signed In)', () => {
       await SignedIn.clickOnProfilePhotoPlaceholder();
       await driver.pause(waitTime);
       await expect(driver).toHaveUrl(expect.stringContaining('profile'));
-      // await SignedIn.clickOnHowItWorksLink();                            //commented as id is not getting detected
-      // await expect(SignedIn.howItWorksTitleText).toBeDisplayed();
-      // await SignedIn.closeTheHowItWorksDialogBox();
-      // await SignedIn.clickOnAboutAndFAQLink();
-      // await expect(driver).toHaveUrl(expect.stringContaining('faq'));
-      // await driver.back();
+      await SignedIn.clickOnHowItWorksLink();                            //commented as id is not getting detected
+      await expect(SignedIn.howItWorksTitleText).toBeDisplayed();
+      await SignedIn.closeTheHowItWorksDialogBox();
+      await SignedIn.clickOnAboutAndFAQLink();
+      await expect(driver).toHaveUrl(expect.stringContaining('faq'));
+      await driver.back();
       const profileWindow = await driver.getWindowHandle();
       await SignedIn.clickOnHelpLink();
       await driver.pause(waitTime);

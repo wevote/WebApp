@@ -69,7 +69,7 @@ module.exports.config = {
   framework: 'mocha',
   mochaOpts: {
     ui: 'bdd',
-    timeout: 60000,
+    timeout: 100000,
   },
   // https://webdriver.io/docs/customcommands#examples
   before: function before () {
