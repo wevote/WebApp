@@ -5,6 +5,8 @@ import { styled } from '@mui/material/styles';
 import { Dialog, DialogContent, DialogTitle, DialogActions, Typography, IconButton } from '@mui/material';
 import { Close } from '@mui/icons-material';
 import React, { Component, useState } from 'react';
+import DesignTokenColors from '../Style/DesignTokenColors';
+
 import ModalDisplayTemplateA, { templateAStyles, TextFieldWrapper } from '../../../components/Widgets/ModalDisplayTemplateA';
 import { renderLog } from '../../utils/logging';
 import stringContains from '../../utils/stringContains';
@@ -14,64 +16,72 @@ import SupportStore from '../../../stores/SupportStore';
 import PayToPromoteProcess from '../CampaignSupport/PayToPromoteProcess';
 import { isAndroid, isCordova } from '../../utils/isCordovaOrWebApp';
 
-// const PayToPromoteProcess = React.lazy(() => import(/* webpackChunkName: 'PayToPromoteProcess' */ './PayToPromoteProcess')); // eslint-disable-line import/no-cycle
-
-// const BootstrapDialog = styled(Dialog)(({ theme }) => ({
-//   '& .MuiDialogContent-root': {
-//     padding: theme.spacing(2),
-//   },
-//   '& .MuiDialogActions-root': {
-//     padding: theme.spacing(1),
-//   },
-// }));
-
 const ViewInviteeDetails = ({show, setShow, setAnchorEl}) => {
 
   const handleClose = () => {
     setShow(false)
     setAnchorEl(null)}
 
-   return (
-      <Dialog
-        open={show}
-        aria-label="view-invitee-details-modal"
-        onClose={handleClose}
-        style={{paddingTop: `${isCordova() ? '75px' : 'undefined'}` } }
-      >
-        <DialogTitle id="customized-dialog-title">
-          <DialogTitleInnerWrapper>
-            <Title>
-          Jane's invitation history
-            </Title>
-         <IconButton
-            aria-label="close"
-            onClick={handleClose}
-            size="large"
-            sx={{ marginLeft: 'auto' }}>
-           <Close />
-         </IconButton>
-         </DialogTitleInnerWrapper>
-        </DialogTitle>
-        <DialogContent dividers>
-          <Typography gutterBottom>
-            Invitation sent
-          </Typography>
-          <Typography gutterBottom>
-            Challenge viewed
-          </Typography>
-          <Typography gutterBottom>
-            Challenge joined
-          </Typography>
-        </DialogContent>
-      </Dialog>
-    );
-  }
+
+// const textFieldJSX = ""
+
+return (
+  <Dialog
+    open={show}
+    aria-label="view-invitee-details-modal"
+    onClose={handleClose}
+    style={{paddingTop: `${isCordova() ? '75px' : 'undefined'}` } }
+  >
+    <DialogTitle id="customized-dialog-title">
+      <DialogTitleInnerWrapper>
+        <Title>
+      Jane's invitation history
+        </Title>
+     <IconButton
+        aria-label="close"
+        onClick={handleClose}
+        size="large"
+        sx={{ marginLeft: 'auto' }}>
+       <Close />
+     </IconButton>
+     </DialogTitleInnerWrapper>
+    </DialogTitle>
+    <DialogContent dividers>
+      <Table>
+          <thead>
+            <tr>
+              <Th>STATUS</Th>
+              <Th>DATE</Th>
+            </tr>
+          </thead>
+          <tbody>
+            <Tr>
+              <Td>Invitation sent</Td>
+              <Td>Oct 1, 2024 - 11:06 AM</Td>
+            </Tr>
+            <Tr>
+              <Td>Challenge viewed</Td>
+              <Td>Oct 1, 2024 - 4:32 PM</Td>
+            </Tr>
+            <Tr>
+              <Td>Challenge joined</Td>
+              <Td>Oct 1, 2024 - 5:02 PM</Td>
+            </Tr>
+          </tbody>
+        </Table>
+    </DialogContent>
+  </Dialog>
+);
+}
+
+
+
 
 const DialogTitleInnerWrapper = styled('div')`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  min-height: 28px;
+  min-height: 18px;
 `;
 
 const Title = styled('div')`
@@ -83,7 +93,44 @@ const Title = styled('div')`
   padding-left: 16px;
 `;
 
-export default withTheme(withStyles()(ViewInviteeDetails));
+const Table = styled('table')`
+  width: 100%;
+  border-collapse: collapse;
+`;
+
+const Th = styled('th')`
+  text-align: left;
+  color: ${DesignTokenColors.neutral900};
+  font-size: 10px;
+  padding-top: 8px;
+  &:nth-child(2) {
+    text-align: right;
+  }
+`;
+
+const Tr = styled('tr')`
+  background-color: white;
+  &:last-child {
+    td {
+      border-bottom: none;
+    }
+`;
+
+const Td = styled('td')`
+  color: ${DesignTokenColors.neutral900};
+  font-size: 14px;
+  padding-bottom: 5px;
+  padding-top: 5px;
+  border-bottom: 1px solid ${DesignTokenColors.neutral300};
+  &:nth-child(2) {
+    text-align: right;
+  }
+`;
+export default withTheme(withStyles(templateAStyles)(ViewInviteeDetails));
+
+
+
+
 
 //
 // class ViewInviteeDetails extends Component {
