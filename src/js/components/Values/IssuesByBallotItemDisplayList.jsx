@@ -224,7 +224,7 @@ class IssuesByBallotItemDisplayList extends Component {
           <div ref={this.issuesList}>
             <IssueListWrapper
               key={`issuesByBallotItemDisplayList-${ballotItemWeVoteId}`}
-              id={`IssueListWrapper-${ballotItemWeVoteId}`}
+              data-modal-trigger
             >
               {issuesChips}
               {totalLengthOfIssuesToRenderList && (
