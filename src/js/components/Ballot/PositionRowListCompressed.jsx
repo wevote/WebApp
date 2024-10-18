@@ -328,7 +328,7 @@ class PositionRowListCompressed extends Component {
     }
     return (
       <CandidateEndorsementsWrapper>
-        <CandidateEndorsementsContainer id={`CandidateEndorsementsContainer-${ballotItemWeVoteId}`} data-modal-trigger>
+        <CandidateEndorsementsContainer data-modal-trigger>
           <CandidateEndorsementPhotos onClick={() => this.onClickShowOrganizationModalWithPositions()}>
             {filteredPositionList.map((onePosition) => {
               // console.log('numberOfPositionItemsDisplayed:', numberOfPositionItemsDisplayed, ', numberOfImagesToDisplay:', numberOfImagesToDisplay);
