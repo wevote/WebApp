@@ -855,7 +855,6 @@ class ItemActionBar extends PureComponent {
                 ) : (
                   <ButtonWrapper
                     className="u-push--xs d-none d-lg-block"
-                    id={`buttonWrapper-${ballotItemWeVoteId}`}
                     data-modal-trigger
                   >
                     <OverlayTrigger
