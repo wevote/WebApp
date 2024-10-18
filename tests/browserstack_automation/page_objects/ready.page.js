@@ -1,4 +1,5 @@
 import { $, $$ , expect} from '@wdio/globals';
+import { $, $$ , expect} from '@wdio/globals';
 import Page from './page';
 
 class ReadyPage extends Page {
@@ -23,6 +24,9 @@ class ReadyPage extends Page {
   }
 
   get ballotAddress () {
+    //return $('#ballotTitleBallotAddress');
+    return $('//span[@class ="u-cursor--pointer u-link-color u-link-underline-on-hover"]');
+
     //return $('#ballotTitleBallotAddress');
     return $('//span[@class ="u-cursor--pointer u-link-color u-link-underline-on-hover"]');
 
@@ -128,6 +132,8 @@ class ReadyPage extends Page {
   }
 
   get howItWorksTitle () {
+    //return $('div>h3[class~="gNNNpeadyFinePrintStepTextX"]');
+    return $('//h3[text()="1. Choose your interests"]');
     //return $('div>h3[class~="gNNNpeadyFinePrintStepTextX"]');
     return $('//h3[text()="1. Choose your interests"]');
   }
@@ -240,6 +246,7 @@ class ReadyPage extends Page {
 
   async updateBallotAddress (ballotAddress) {
     await this.ballotAddress.findAndClick();
+
 
     await this.ballotAddressInput.setValue(ballotAddress);
     await this.selectAddress.click();
