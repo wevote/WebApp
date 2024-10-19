@@ -70,7 +70,7 @@ export default class ImageHandler extends Component {
           <img
             alt={alt}
             className={`${sizeClassName} ${incomingClassName}`}
-            id={`imageHandlerDiv-${ballotItemWeVoteId}`}
+            data-modal-trigger
             src={this.props.imageUrl}
             onError={this.brokenLink.bind(this)}
             style={style}

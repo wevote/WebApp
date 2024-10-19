@@ -197,6 +197,7 @@ class FooterBar extends React.Component {
       },
       '& .MuiBottomNavigationAction-label': {
         fontSize: 16,
+        marginBottom: '-4px',
       },
     };
     const groupsIconStyles = {
@@ -214,7 +215,7 @@ class FooterBar extends React.Component {
       },
       '& .MuiBottomNavigationAction-label': {
         fontSize: 16,
-        marginBottom: '4px',
+        marginBottom: '3px',
         marginTop: '-5px',
       },
     };
@@ -271,7 +272,8 @@ class FooterBar extends React.Component {
               showLabel
               sx={defaultIconStyles}
               style={{
-                paddingLeft: '0px',
+                marginLeft: '-4px',
+                paddingLeft: 0,
               }}
             />
             <BottomNavigationAction
@@ -300,7 +302,7 @@ class FooterBar extends React.Component {
               )}
               label="Candidates"
               style={{
-                marginLeft: '2px',
+                marginLeft: '-4px',
               }}
               showLabel
               sx={defaultIconStyles}
@@ -341,7 +343,7 @@ class FooterBar extends React.Component {
                 label="Challenges"
                 showLabel
                 style={{
-                  marginLeft: '8px',
+                  marginLeft: '4px',
                 }}
                 sx={groupsIconStyles}
               />

@@ -243,9 +243,6 @@ class PositionRowListCompressed extends Component {
     //   showOpposeDisplayNameIfNoSupport, showSupport,
     // } = this.props;
     const {
-      ballotItemWeVoteId,
-    } = this.props;
-    const {
       filteredPositionList, filteredPositionListLength, numberOfImagesToDisplay, numberOfNamesToDisplay,
       // supportPositionListLength,
     } = this.state;
@@ -328,7 +325,7 @@ class PositionRowListCompressed extends Component {
     }
     return (
       <CandidateEndorsementsWrapper>
-        <CandidateEndorsementsContainer id={`CandidateEndorsementsContainer-${ballotItemWeVoteId}`}>
+        <CandidateEndorsementsContainer data-modal-trigger>
           <CandidateEndorsementPhotos onClick={() => this.onClickShowOrganizationModalWithPositions()}>
             {filteredPositionList.map((onePosition) => {
               // console.log('numberOfPositionItemsDisplayed:', numberOfPositionItemsDisplayed, ', numberOfImagesToDisplay:', numberOfImagesToDisplay);

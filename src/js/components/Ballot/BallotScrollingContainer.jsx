@@ -99,38 +99,10 @@ class BallotScrollingContainer extends Component {
     }
   };
 
+  // Add data-modal-trigger attribute to elements that should be triggered
   handleContainerClick = (e, weVoteId) => {
-    // console.log(e.target);
-    const candidateContainer = document.getElementById(`candidateContainer-${weVoteId}`);
-    const positionRowListOuterWrapper = document.getElementById(`positionRowListOuterWrapper-${weVoteId}`);
-    const candidateDiv = document.getElementById(`candidateDiv-${weVoteId}`);
-    const candidateNameAndPartyWrapper = document.getElementById(`candidateNameAndPartyWrapper-${weVoteId}`);
-    const candidateImageAndMatchWrapper = document.getElementById(`candidateImageAndMatchWrapper-${weVoteId}`);
-    const imageHandlerDiv = document.getElementById(`imageHandlerDiv-${weVoteId}`);
-    const candidateNameH4 = document.getElementById(`candidateNameH4-${weVoteId}`);
-    const candidateEndorsementsContainer = document.getElementById(`CandidateEndorsementsContainer-${weVoteId}`);
-    const candidateBottomRow = document.getElementById(`candidateBottomRow-${weVoteId}`);
-    const issuesListWrapper = document.getElementById(`IssueListWrapper-${weVoteId}`);
-    const candidateInfo = document.getElementById(`candidateInfo-${weVoteId}`);
-    const itemActionBarOutsideWrapper = document.getElementById(`itemActionBarOutsideWrapper-${weVoteId}`);
-    const buttonWrapper = document.getElementById(`buttonWrapper-${weVoteId}`);
-    // EAW VERIFY - might not need this one
-    const candidateParty = document.getElementById(`candidateParty-${weVoteId}`);
-    // console.log(buttonWrapper);
-    if (e.target === candidateDiv ||
-          e.target === candidateContainer ||
-          e.target === positionRowListOuterWrapper ||
-          e.target === candidateNameAndPartyWrapper ||
-          e.target === candidateNameH4 ||
-          e.target === candidateEndorsementsContainer ||
-          e.target === candidateBottomRow ||
-          e.target === issuesListWrapper ||
-          e.target === candidateInfo ||
-          e.target === candidateImageAndMatchWrapper ||
-          e.target === imageHandlerDiv ||
-          e.target === candidateParty ||
-          e.target === itemActionBarOutsideWrapper ||
-          e.target === buttonWrapper) {
+    const target = e.target;
+    if (target.hasAttribute('data-modal-trigger')) {
       this.onClickShowOrganizationModalWithBallotItemInfoAndPositions(weVoteId);
     }
   }
@@ -167,17 +139,15 @@ class BallotScrollingContainer extends Component {
           onClick={(e) => this.handleContainerClick(e, oneCandidate.we_vote_id, externalUniqueId)}
         >
           <CandidateContainer
-            id={`candidateContainer-${oneCandidate.we_vote_id}`}
+            data-modal-trigger
             className="u-cursor--pointer"
           >
             <CandidateWrapper>
-              <CandidateInfo id={`candidateInfo-${oneCandidate.we_vote_id}`}>
+              <CandidateInfo data-modal-trigger>
                 <CandidateTopRow>
-                  <Candidate
-                    id={`candidateDiv-${oneCandidate.we_vote_id}`}
-                  >
+                  <Candidate data-modal-trigger>
                     {/* Candidate Image */}
-                    <CandidateImageAndMatchWrapper id={`candidateImageAndMatchWrapper-${oneCandidate.we_vote_id}`}>
+                    <CandidateImageAndMatchWrapper data-modal-trigger>
                       <Suspense fallback={<></>}>
                         <ImageHandler
                           className={avatarCompressed}
@@ -196,15 +166,11 @@ class BallotScrollingContainer extends Component {
                       )}
                     </CandidateImageAndMatchWrapper>
                     {/* Candidate Name */}
-                    <CandidateNameAndPartyWrapper
-                      id={`candidateNameAndPartyWrapper-${oneCandidate.we_vote_id}`}
-                    >
-                      <CandidateNameH4
-                        id={`candidateNameH4-${oneCandidate.we_vote_id}`}
-                      >
+                    <CandidateNameAndPartyWrapper data-modal-trigger>
+                      <CandidateNameH4 data-modal-trigger>
                         {oneCandidate.ballot_item_display_name}
                       </CandidateNameH4>
-                      <CandidateParty id={`candidateParty-${oneCandidate.we_vote_id}`}>
+                      <CandidateParty data-modal-trigger>
                         {candidatePartyText}
                       </CandidateParty>
                       {pigsCanFly && (
@@ -220,7 +186,7 @@ class BallotScrollingContainer extends Component {
                     </CandidateNameAndPartyWrapper>
                   </Candidate>
                 </CandidateTopRow>
-                <CandidateBottomRow id={`candidateBottomRow-${oneCandidate.we_vote_id}`}>
+                <CandidateBottomRow data-modal-trigger>
                   {!hideCandidateDetails && (
                     <Suspense fallback={<></>}>
                       <IssuesByBallotItemDisplayList
@@ -232,7 +198,7 @@ class BallotScrollingContainer extends Component {
                     </Suspense>
                   )}
                   {!hideItemActionBar && (
-                    <ItemActionBarOutsideWrapper id={`itemActionBarOutsideWrapper-${oneCandidate.we_vote_id}`}>
+                    <ItemActionBarOutsideWrapper data-modal-trigger>
                       <Suspense fallback={<></>}>
                         <ItemActionBar
                           ballotItemWeVoteId={oneCandidate.we_vote_id}
@@ -250,9 +216,7 @@ class BallotScrollingContainer extends Component {
                 </CandidateBottomRow>
               </CandidateInfo>
             </CandidateWrapper>
-            <PositionRowListOuterWrapper
-              id={`positionRowListOuterWrapper-${oneCandidate.we_vote_id}`}
-            >
+            <PositionRowListOuterWrapper data-modal-trigger>
               {!!(oneCandidate.linked_campaignx_we_vote_id) && (
                 <HeartFavoriteToggleLocalWrapper>
                   <HeartFavoriteToggleLoader campaignXWeVoteId={oneCandidate.linked_campaignx_we_vote_id} />
