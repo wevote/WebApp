@@ -126,7 +126,7 @@ class ReadyLight extends Component {
                 </Suspense>
               </ElectionCountdownInnerWrapper>
             </ElectionCountdownOuterWrapper>
-            <ViewBallotButtonWrapper className="col-12">
+            <ViewBallotButtonWrapper className="col-12" style={{ paddingTop: '18px' }}>
               <Suspense fallback={<></>}>
                 <ViewUpcomingBallotButton onClickFunction={this.goToBallot} onlyOfferViewYourBallot />
               </Suspense>

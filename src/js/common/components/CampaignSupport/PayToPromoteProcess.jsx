@@ -2,35 +2,26 @@ import { LockOutlined } from '@mui/icons-material';
 import { Button, InputAdornment, TextField } from '@mui/material';
 import { styled as muiStyled } from '@mui/styles';
 import withStyles from '@mui/styles/withStyles';
-import { Elements } from '@stripe/react-stripe-js';
-import { loadStripe } from '@stripe/stripe-js';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import CampaignStore from '../../stores/CampaignStore';
+import DonateStore from '../../stores/DonateStore';
+import { getCampaignXValuesFromIdentifiers, retrieveCampaignXFromIdentifiersIfNeeded } from '../../utils/campaignUtils';
+import historyPush from '../../utils/historyPush';
+import initializejQuery from '../../utils/initializejQuery';
+import { renderLog } from '../../utils/logging';
 import DonationListForm from '../Donation/DonationListForm';
-import InjectedCheckoutForm from '../Donation/InjectedCheckoutForm';
+import { payToPromoteProcessStyles } from '../Style/CampaignSupportStyles';
 import standardBoxShadow from '../Style/standardBoxShadow';
 import { OuterWrapper } from '../Style/stepDisplayStyles';
 import LoadingWheelComp from '../Widgets/LoadingWheelComp';
-import DonateStore from '../../stores/DonateStore';
-import historyPush from '../../utils/historyPush';
-import { renderLog } from '../../utils/logging';
-import { payToPromoteProcessStyles } from '../Style/CampaignSupportStyles';
-import webAppConfig from '../../../config';
-// import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
-import CampaignStore from '../../stores/CampaignStore';
-// import VoterStore from '../../../stores/VoterStore';
-import { getCampaignXValuesFromIdentifiers, retrieveCampaignXFromIdentifiersIfNeeded } from '../../utils/campaignUtils';
-import initializejQuery from '../../utils/initializejQuery';
-import SplitIconButton from '../Widgets/SplitIconButton';
 
-const stripePromise = loadStripe(webAppConfig.STRIPE_API_KEY);
 
-const futureFeaturesDisabled = true;
-const iconButtonStyles = {
-  width: window.innerWidth < 1280 ? 250 : 300,
-  margin: '16px',
-};
+// const iconButtonStyles = {
+//   width: window.innerWidth < 1280 ? 250 : 300,
+//   margin: '16px',
+// };
 
 class PayToPromoteProcess extends Component {
   constructor (props) {
@@ -354,58 +345,58 @@ class PayToPromoteProcess extends Component {
             </ContributeGridWrapper>
           </InnerWrapper>
         </OuterWrapper>
-        <PaymentWrapper>
-          {futureFeaturesDisabled ? (
-            <PaymentCenteredWrapper show>
-              <ButtonContainer>
-                {preDonation ? (
-                  <SplitIconButton
-                    buttonText="Submit my choice"
-                    backgroundColor="#0834CD"
-                    separatorColor="#0834CD"
-                    styles={iconButtonStyles}
-                    adjustedIconWidth={40}
-                    externalUniqueId="becomeAMember"
-                    icon={<LockStyled />}
-                    id="stripeCheckOutForm"
-                    onClick={this.onDonationTempSubmit}
-                  />
-                ) : (
-                  <div>
-                    Thank you for your choice!
-                    We are still building our payment processing system, but have recorded your choice.
-                  </div>
-                )}
-              </ButtonContainer>
-            </PaymentCenteredWrapper>
-          ) : (
-            <PaymentCenteredWrapper show={preDonation}>
-              {preDonation ? (
-                <Elements stripe={stripePromise}>
-                  <InjectedCheckoutForm
-                    value={chipInPaymentOtherValue || chipInPaymentValue}
-                    classes={{}}
-                    stopShowWaiting={this.stopShowWaiting}
-                    onDonation={this.onChipIn}
-                    showWaiting={showWaiting}
-                    isChipIn
-                    campaignXWeVoteId={campaignXWeVoteId}
-                  />
-                </Elements>
-              ) : (
-                <Button
-                  id="buttonReturn"
-                  classes={{ root: classes.buttonDefault }}
-                  color="primary"
-                  variant="contained"
-                  onClick={() => historyPush(returnPath)}
-                >
-                  {`Return to the "${campaignTitle}" Campaign`}
-                </Button>
-              )}
-            </PaymentCenteredWrapper>
-          )}
-        </PaymentWrapper>
+        {/*<PaymentWrapper>*/}
+        {/*  {futureFeaturesDisabled ? (*/}
+        {/*    <PaymentCenteredWrapper show>*/}
+        {/*      <ButtonContainer>*/}
+        {/*        {preDonation ? (*/}
+        {/*          <SplitIconButton*/}
+        {/*            buttonText="Submit my choice"*/}
+        {/*            backgroundColor="#0834CD"*/}
+        {/*            separatorColor="#0834CD"*/}
+        {/*            styles={iconButtonStyles}*/}
+        {/*            adjustedIconWidth={40}*/}
+        {/*            externalUniqueId="becomeAMember"*/}
+        {/*            icon={<LockStyled />}*/}
+        {/*            id="stripeCheckOutForm"*/}
+        {/*            onClick={this.onDonationTempSubmit}*/}
+        {/*          />*/}
+        {/*        ) : (*/}
+        {/*          <div>*/}
+        {/*            Thank you for your choice!*/}
+        {/*            We are still building our payment processing system, but have recorded your choice.*/}
+        {/*          </div>*/}
+        {/*        )}*/}
+        {/*      </ButtonContainer>*/}
+        {/*    </PaymentCenteredWrapper>*/}
+        {/*  ) : (*/}
+        {/*    <PaymentCenteredWrapper show={preDonation}>*/}
+        {/*      {preDonation ? (*/}
+        {/*        <Elements stripe={stripePromise}>*/}
+        {/*          <InjectedCheckoutForm*/}
+        {/*            value={chipInPaymentOtherValue || chipInPaymentValue}*/}
+        {/*            classes={{}}*/}
+        {/*            stopShowWaiting={this.stopShowWaiting}*/}
+        {/*            onDonation={this.onChipIn}*/}
+        {/*            showWaiting={showWaiting}*/}
+        {/*            isChipIn*/}
+        {/*            campaignXWeVoteId={campaignXWeVoteId}*/}
+        {/*          />*/}
+        {/*        </Elements>*/}
+        {/*      ) : (*/}
+        {/*        <Button*/}
+        {/*          id="buttonReturn"*/}
+        {/*          classes={{ root: classes.buttonDefault }}*/}
+        {/*          color="primary"*/}
+        {/*          variant="contained"*/}
+        {/*          onClick={() => historyPush(returnPath)}*/}
+        {/*        >*/}
+        {/*          {`Return to the "${campaignTitle}" Campaign`}*/}
+        {/*        </Button>*/}
+        {/*      )}*/}
+        {/*    </PaymentCenteredWrapper>*/}
+        {/*  )}*/}
+        {/*</PaymentWrapper>*/}
         <DonationListForm isCampaign leftTabIsMembership={false} />
       </PaymentToPromoteWrapper>
     );
