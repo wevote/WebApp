@@ -34,7 +34,7 @@ describe('SignIn', () => {
 
     // SignIn_002 and SignIn_007 and SignIn_008
     it('verifySpellingsOfAllElementsOnSignInPage', async () => {
-        const TwitterText = "Sign in with Twitter";
+        const TwitterText = "Sign in with X";
         const AppleText = "Sign in with Apple";
         await expect(SignIn.signInWithTwitterTextElement).toHaveText(TwitterText);
         await expect(SignIn.signInWithAppleTextElement).toHaveText(AppleText);
