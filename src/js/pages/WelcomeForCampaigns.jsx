@@ -75,18 +75,18 @@ class WelcomeForCampaigns extends PureComponent {
     });
   };
 
-  updateVoterEmailAddress = (event) => {
-    const isEmailValid = validateEmail(event.target.value);
-    let submitEnabled = false;
-    if (isEmailValid) {
-      submitEnabled = true;
-    }
+  // updateVoterEmailAddress = (event) => {
+  //   const isEmailValid = validateEmail(event.target.value);
+  //   let submitEnabled = false;
+  //   if (isEmailValid) {
+  //     submitEnabled = true;
+  //   }
 
-    this.setState({
-      voterEmail: event.target.value,
-      submitEnabled,
-    });
-  };
+  //   this.setState({
+  //     voterEmail: event.target.value,
+  //     submitEnabled,
+  //   });
+  // };
 
   voterEmailAddressSignUpSave = (event) => {
     // Only proceed after we have a valid email address, which will enable the submit
