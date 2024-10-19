@@ -142,7 +142,7 @@ class IssueFollowToggleButton extends Component {
       isFollowing: false,
       isFollowingLocalValue: false,
       open: false,
-      anchorEl: null
+      anchorEl: null,
     });
   }
 
