@@ -142,7 +142,7 @@ class IssueFollowToggleButton extends Component {
       isFollowing: false,
       isFollowingLocalValue: false,
       open: false,
-      anchorEl: null
+      anchorEl: null,
     });
   }
 
@@ -164,7 +164,7 @@ class IssueFollowToggleButton extends Component {
     const { isFollowing } = this.state;
     let followButtonText = 'Follow';
     if (showIssueNameOnFollowButton) {
-      followButtonText = shortenText(`Follow ${issueName}`, 27);
+      followButtonText = shortenText(`Follow ${issueName}`, 24);
     }
     return (
       <div className="issues-follow-container" id="issues-follow-container">
