@@ -50,31 +50,31 @@ class SignedIn extends Page {
     }
 
     get typeOfProfile() {
-        return $('//*[text()="Type of Profile"]');
+        return $('//*[contains(@id,"typeOfProfileText")]');
     }
 
-    async clickOnDragDropBoxToUploadPhoto() { //not completed
-        //return $('[data-testid = "AccountCircleIcon"]');
-        const localFilePath = '/Users/ayusheedash/MyProjects/wevote_profile_image.jpg';
-        const remoteFilePath = await driver.uploadFile(localFilePath);
-        const fileInput = await $('[data-testid = "AccountCircleIcon"]');
-        await fileInput.setValue(remoteFilePath);
-    }
+    // async clickOnDragDropBoxToUploadPhoto() { //photo upload on hold for now
+    //     //return $('[data-testid = "AccountCircleIcon"]');
+    //     const localFilePath = '/Users/ayusheedash/MyProjects/wevote_profile_image.jpg';
+    //     const remoteFilePath = await driver.uploadFile(localFilePath);
+    //     const fileInput = await $('[data-testid = "AccountCircleIcon"]');
+    //     await fileInput.setValue(remoteFilePath);
+    // }
 
     async enterPhoneNumberInPhoneNumberInput() {
-        (await $('#enterVoterPhone')).setValue("808-935-8555");
+        await $('#enterVoterPhone').setValue("808-935-8555");
     }
 
     async clickOnSendCodeOption() {
-        (await $('#desktopSmsSendCode')).click();
+        await $('#desktopSmsSendCode').click();
     }
 
-    get bellIconNoNotificationText() {
-        return $('//*[contains(@id, "noActivities")]');
+    get bellIconNotificationsSettingsText() {
+        return $('//*[contains(@id, "notificationsHeader") or contains(@id, "noActivities")]');
     }
 
     get notificationTitleText() {
-        return $('//*[text()="Notification Settings"]');
+        return $('//*[contains(@id, "notificationTitleText")]');
     }
 
     get notificationBellIcon() {
@@ -86,15 +86,15 @@ class SignedIn extends Page {
     }
 
     get addEmailAddressLink() {
-        return $('//*[contains(text(), "Add Email Address")]');
+        return $('//*[contains(@id, "addEmailLink")]');
     }
 
     get howItWorksTitleText() {
-        return $('//*[contains(text(), "How WeVote Works")]');
+        return $('//*[contains(@id, "howWeVoteWorksTitleText")]');
     }
 
     get sideBarText() {
-        return $('//*[contains(text(), "WeVote does not support or oppose any political candidate or party.")]');
+        return $('//*[contains(@id, "profileSideBarText")]');
     }
 
     async enterVerificationCode() {
@@ -110,7 +110,6 @@ class SignedIn extends Page {
 
     async clickOnVerifyButtonForCodeVerification() {
         await $('#emailVerifyButton').click();
-
     }
 
     async clickOnProfilePhotoPlaceholder() {
@@ -138,7 +137,7 @@ class SignedIn extends Page {
     }
 
     async clickOnRemovePhoto() {
-        await $('//*[text()="remove photo"]').click();
+        await $('//*[contains(@id, "removePhotoLink")]').click();
     }
 
     async clickOnSavePhoto() {
@@ -153,7 +152,7 @@ class SignedIn extends Page {
         driver.pause(waitTime);
     }
 
-    async enterAndRemoveTextFromInputFields() { //organizationname commented as it is not getting removed
+    async enterAndRemoveTextFromInputFields() { //organizationname commented as it is not getting removed - existing bug
         const ids = ['first-name-domainDesktop', 'last-name-domainDesktop', /*'organization-name-domainDesktop',*/ 'organizationWebsiteTextArea-domainDesktop', 'organizationDescriptionTextArea-domainDesktop'];
         const text = 'AutomatedTest';
         for (const id of ids) {
@@ -184,7 +183,7 @@ class SignedIn extends Page {
     }
 
     async clickOnImportContactsLink() {
-        await $('//*[text()="Import your contacts to find your friends"]').click();
+        await $('#importContactsLink').click();
     }
 
     async clickOnDeleteYourAccountLink() {
@@ -200,8 +199,8 @@ class SignedIn extends Page {
     }
 
     async verifyAlreadyAddedEmailIdIfPresent() {
-        if (await $('//*[text()="Emails to Verify"]').isDisplayed()) {
-            const sendVerificationLink = await $('//*[text()="Send verification again"]');
+        if (await $('//*[contains(@id, "emailVerifyTitle")]').isDisplayed()) {
+            const sendVerificationLink = await $('//*[contains(@id, "sendVerificationCodeAgain"]');
             const trashIcon = await $('[data-testid="DeleteIcon"]');
             const emailId = await $('//*[text()="wevote@wevote.us"]');
             expect (sendVerificationLink).toBeDisplayed();
@@ -213,11 +212,11 @@ class SignedIn extends Page {
     }
 
     async clickOnHowItWorksLink() {
-        await $('//span[contains(text(), "How") and contains(text(), "It") and contains(text(), "Works")]').click();
+        await $('#footerLinkHowItWorks').click();
     }
 
     async clickOnAboutAndFAQLink() {
-        await $('//span[contains(text(), "About") and contains(text(), "&") and contains(text(), "FAQ")]').click();
+        await $('#footerLinkAbout&FAQ').click();
     }
 
     async clickOnHelpLink() {
@@ -225,11 +224,11 @@ class SignedIn extends Page {
     }
 
     async clickOnPrivacyLink() {
-        await $('//*[text()="Privacy"]').click();
+        await $('#footerLinkPrivacy').click();
     }
     
     async clickOnTermsLink() {
-        await $('//*[text()="Terms"]').click();
+        await $('#footerLinkTerms').click();
     }
 
     async clickOnTeamLink() {
@@ -245,27 +244,25 @@ class SignedIn extends Page {
     }
     
     async clickOnSignOutFromSideBar() {
-        await $('//*[text()="Sign Out"]').click();
+        await $('#signOut_Settings').click();
     } 
 
     async clickOnSignOutFromSecuritySignIn() {
-        await $('//*[text()="sign out"]').click();
+        await $('#signOut_securitySignIn').click();
     }
 
     async privacyDataTopics() {
-        await expect($('//*[contains(text(), "Your Address Book Contact Data")]')).toBeDisplayed();
-        await expect($('//*[contains(text(), "Delete Your Account")]')).toBeDisplayed();
+        await expect($('//*[contains(@id, "yourAddressBookText")]')).toBeDisplayed();
+        await expect($('//*[contains(@id, "deleteAccountText")]')).toBeDisplayed();
     }
 
     async notificationTypes() {
-        await expect($('//*[contains(text(), "Notification Settings")]')).toBeDisplayed();
-        await expect($('//*[contains(text(), "New friend requests, and responses to your requests")]')).toBeDisplayed();
-        await expect($('//*[contains(., "Friends") and contains(., "opinions")]')).toBeDisplayed();
-        await expect($('//*[contains(text(), "(on your ballot)")]')).toBeDisplayed();
-        await expect($('//*[contains(text(), "(all regions)")]')).toBeDisplayed();
-        await expect($('//*[contains(., "Friends") and contains(., "activity")]')).toBeDisplayed();
-        await expect($('//*[contains(text(), "summarized daily")]')).toBeDisplayed();
-        await expect($('//*[contains(text(), "WeVote newsletter")]')).toBeDisplayed();
+        await expect($('//*[contains(@id, "notificationTitleText")]')).toBeDisplayed();
+        await expect($('//*[contains(@id, "newFriendRequest_notification")]')).toBeDisplayed();
+        await expect($('//*[contains(@id, "friendsOpinion_yourBallot_notification")]')).toBeDisplayed();
+        await expect($('//*[contains(@id, "friendsOpinion_allRegions_notification")]')).toBeDisplayed();
+        await expect($('//*[contains(@id, "friendsActivity_notification")]')).toBeDisplayed();
+        await expect($('//*[contains(@id, "weVote_newsletter_notification")]')).toBeDisplayed();
     }
 
     async deleteAccountOptions() {
