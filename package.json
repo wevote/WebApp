@@ -129,7 +129,7 @@
     "fs-extra": "^10.0.0",
     "gapi-script": "github:wevote/gapi-script",
     "glob": "^9.0.0",
-    "iframe-resizer-react": "^1.1.0",
+    "iframe-resizer-react": "1.1.0",
     "jquery": "^3.7.1",
     "keymirror": "~0.1.1",
     "lodash-es": "^4.17.21",
