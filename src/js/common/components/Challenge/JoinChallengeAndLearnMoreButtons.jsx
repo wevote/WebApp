@@ -17,7 +17,7 @@ const JoinChallengeAndLearnMoreButtons = ({ classes }) => {
       </Button>
       <Button
         classes={{ root: classes.learnMoreButton }}
-        color="primary"
+        color="secondary"
         variant="contained"
       >
         Learn More
@@ -29,20 +29,24 @@ const JoinChallengeAndLearnMoreButtons = ({ classes }) => {
 const styles = () => ({
   joinChallengeButton: {
     borderRadius: 45,
-    maxWidth: '300px',
+    maxWidth: 300,
     background: 'var(--Primary-600, #0858A1)',
-    border: ' 1px solid var(--Primary-400, #4187C6)',
+    border: '1px solid var(--Primary-400, #4187C6)',
     color: 'var(--WhiteUI, #FFFFFF)',
     marginRight: '10px',
-    marginTop: '10px'
+    marginTop: '10px',
   },
-learnMoreButton:{
+  learnMoreButton:{
     borderRadius: 45,
-    maxWidth: '300px',
+    maxWidth: 300,
     background: 'white',
-    border: ' 1px solid var(--Primary-400, #4187C6)',
+    border: '1px solid var(--Primary-400, #4187C6)',
     color: 'var(--Neutral-900, #2A2A2C)',
-    marginTop: '10px'
+    marginTop: '10px',
+    '&:hover': {
+      backgroundColor: 'white',
+      color: 'var(--Neutral-900, #2A2A2C)',
+    },
   },
 });
 
