@@ -11,9 +11,9 @@ import ChallengeStore from '../../stores/ChallengeStore';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import normalizedImagePath from '../../utils/normalizedImagePath';
 
-import rocketShipNoThrust from '../../../../img/global/svg-icons/rocket-ship-no-thrust.svg'
+import rocketShipNoThrust from '../../../../img/global/svg-icons/rocket-ship-no-thrust.svg';
 
-function ChallengeAbout({ challengeWeVoteId }) {
+function ChallengeAbout ({ challengeWeVoteId }) {
   renderLog('ChallengeAbout');
   const [challengeCreator, setChallengeCreator] = React.useState('');
   const [challengeInviteesCount, setChallengeInviteesCount] = React.useState(0);
@@ -35,8 +35,8 @@ function ChallengeAbout({ challengeWeVoteId }) {
       setChallengeParticipantCount(ChallengeStore.getNumberOfParticipantsInChallenge(challengeWeVoteId));
     }
     setDaysLeft(ChallengeStore.getDaysUntilChallengeEnds(challengeWeVoteId));
-    setChallengeCreator('Anusha P.')
-    setChallengeIsSupporting('John Smith')
+    setChallengeCreator('Anusha P.');
+    setChallengeIsSupporting('John Smith');
   };
   const onChallengeParticipantStoreChange = () => {
     if (challengeParticipantCount < ChallengeParticipantStore.getNumberOfParticipantsInChallenge(challengeWeVoteId)) {
@@ -81,9 +81,12 @@ function ChallengeAbout({ challengeWeVoteId }) {
   );
   const challengeStarted = (
     <span>
-      Challenge started by <strong>{challengeCreator}</strong> to support <strong>{challengeIsSupporting}</strong>
+      Challenge started by 
+      <strong>{challengeCreator}</strong> 
+      to support 
+      <strong>{challengeIsSupporting}</strong>
     </span>
-  )
+  );
   const remindFriends = 'Remind as many friends as you can about the date of the election, and let them know you will be voting.';
   const currentLeader = `Current leader: ${participantNameWithHighestRank}`;
   const friendsInvited = (
@@ -127,10 +130,9 @@ function ChallengeAbout({ challengeWeVoteId }) {
                       // Fill property applied to the path element, not SVG element. querySelector to grab the path element and set the attribute.
                       svg.querySelectorAll('path').forEach((path) => {
                         path.setAttribute('fill', 'none');
-                        path.setAttribute('stroke', '#606060')
+                        path.setAttribute('stroke', '#606060');
                       });
-                    }
-                    }
+                    }}
                   />
                 </SvgImageWrapper>
                 <ChallengeStartedDiv>{challengeStarted}</ChallengeStartedDiv>
