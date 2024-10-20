@@ -7,7 +7,7 @@ import { renderLog } from '../../utils/logging';
 import {
   CampaignsHorizontallyScrollingContainer,
   CampaignsScrollingInnerWrapper,
-  CampaignsScrollingOuterWrapper,
+  ChallengesScrollingOuterWrapper,
   LeftArrowInnerWrapper, LeftArrowOuterWrapper,
   MobileArrowsInnerWrapper, RightArrowInnerWrapper, RightArrowOuterWrapper,
   TitleAndMobileArrowsOuterWrapper,
@@ -70,7 +70,7 @@ function ChallengeListRootPlaceholder (props) {
           </RightArrowInnerWrapper>
         </MobileArrowsInnerWrapper>
       </TitleAndMobileArrowsOuterWrapper>
-      <CampaignsScrollingOuterWrapper>
+      <ChallengesScrollingOuterWrapper>
         <LeftArrowOuterWrapper className="u-show-desktop-tablet">
           <LeftArrowInnerWrapper disableMobileLeftArrow id="candidateLeftArrowDesktop">
             &nbsp;
@@ -91,7 +91,7 @@ function ChallengeListRootPlaceholder (props) {
             <ArrowForwardIos classes={{ root: classes.arrowRoot }} />
           </RightArrowInnerWrapper>
         </RightArrowOuterWrapper>
-      </CampaignsScrollingOuterWrapper>
+      </ChallengesScrollingOuterWrapper>
     </ChallengeListRootPlaceholderWrapper>
   );
 }

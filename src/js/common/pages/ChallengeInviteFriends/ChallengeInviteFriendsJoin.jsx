@@ -124,6 +124,7 @@ class ChallengeInviteFriendsJoin extends Component {
     const { challengeSEOFriendlyPath: challengeSEOFriendlyPathFromParams, challengeWeVoteId: challengeWeVoteIdFromParams } = params;
     // console.log('onChallengeStoreChange challengeSEOFriendlyPathFromParams: ', challengeSEOFriendlyPathFromParams, ', challengeWeVoteIdFromParams: ', challengeWeVoteIdFromParams);
     const {
+      challengeInviteTextDefault,
       challengePhotoLargeUrl,
       challengeSEOFriendlyPath,
       challengeTitle,
@@ -133,6 +134,7 @@ class ChallengeInviteFriendsJoin extends Component {
       weVoteHostedProfileImageUrlLarge,
     } = getChallengeValuesFromIdentifiers(challengeSEOFriendlyPathFromParams, challengeWeVoteIdFromParams);
     this.setState({
+      challengeInviteTextDefault,
       challengePhotoLargeUrl,
       challengeTitle,
       challengePoliticianList,
@@ -205,7 +207,7 @@ class ChallengeInviteFriendsJoin extends Component {
   }
 
   joinChallengeNowSubmitPart2 = () => {
-    const { challengeWeVoteId } = this.state;
+    const { challengeInviteTextDefault, challengeWeVoteId } = this.state;
     // console.log('ChallengeInviteFriendsJoin, joinChallengeNowSubmitPart2, challengeWeVoteId:', challengeWeVoteId);
     if (challengeWeVoteId) {
       // const participantEndorsementQueuedToSave = ChallengeParticipantStore.getSupporterEndorsementQueuedToSave();
@@ -235,7 +237,7 @@ class ChallengeInviteFriendsJoin extends Component {
           VoterActions.voterPhotoQueuedToSave(undefined);
         });
       }
-      ChallengeParticipantActions.challengeParticipantSave(challengeWeVoteId);
+      ChallengeParticipantActions.challengeParticipantSave(challengeWeVoteId, challengeInviteTextDefault, true);
 
       // If all the necessary data has been saved, proceed to the next step
       // console.log(`ChallengeInviteFriendsJoin, joinChallengeNowSubmitPart2, redirect to ${this.getChallengeBasePath()}customize-message`);

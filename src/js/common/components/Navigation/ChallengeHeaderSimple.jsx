@@ -4,27 +4,17 @@ import withTheme from '@mui/styles/withTheme';
 import withStyles from '@mui/styles/withStyles';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import React, { Suspense } from 'react';
-// import { Link } from 'react-router-dom';
+import React from 'react';
+import TruncateMarkup from 'react-truncate-markup';
 import { renderLog } from '../../utils/logging';
-import {
-  Candidate,
-  CandidateNameAndPartyWrapper,
-  CandidateNameH4,
-  CandidateTopRow,
-} from '../../../components/Style/BallotStyles';
 import { cordovaBallotFilterTopMargin } from '../../../utils/cordovaOffsets';
 import standardBoxShadow from '../Style/standardBoxShadow';
-import normalizedImagePath from '../../utils/normalizedImagePath';
 import JoinedAndDaysLeft from '../Challenge/JoinedAndDaysLeft';
-
-const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../../../components/ImageHandler'));
 
 // React functional component example
 function ChallengeHeaderSimple (props) {
   renderLog('ChallengeHeaderSimple');  // Set LOG_RENDER_EVENTS to log all renders
   const { challengeTitle, challengeWeVoteId, classes, challengePhotoLargeUrl, goToChallengeHome, hideCloseIcon } = props;
-
   return (
     <ChallengeHeaderSimpleOuterContainer id="politicianHeaderContainer">
       <ChallengeHeaderSimpleInnerContainer>
@@ -38,16 +28,20 @@ function ChallengeHeaderSimple (props) {
                 <ChallengeImageMedium src={challengePhotoLargeUrl} />
               )}
               {/* Title of the Challenge */}
-              <CandidateNameAndPartyWrapper>
+              <ChallengeTitleAndDaysLeftWrapper>
                 <ChallengeNameH4>
-                  {challengeTitle}
+                  <TruncateMarkup lines={2} ellipsis={<>&hellip;</>} tokenize="words">
+                    <span>
+                      {challengeTitle}
+                    </span>
+                  </TruncateMarkup>
                 </ChallengeNameH4>
                 {/* Joined and Days Left Info */}
                 <JoinedAndDaysLeft borderSwitcher={false}
                   challengeWeVoteId={challengeWeVoteId}
                   goToChallengeHome={goToChallengeHome}
                 />
-              </CandidateNameAndPartyWrapper>
+              </ChallengeTitleAndDaysLeftWrapper>
             </ChallengePhotoAndTitle>
             {!hideCloseIcon && (
               <CloseDrawerIconWrapper>
@@ -146,6 +140,13 @@ const ChallengeNameH4 = styled('div')`
 const ChallengePhotoAndTitle = styled('div')`
   display: flex;
   flex-grow: 8;
+`;
+
+const ChallengeTitleAndDaysLeftWrapper = styled('div')`
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: flex-start;
+  justify-content: flex-start;
 `;
 
 const ChallengeTitleRow = styled('div')`

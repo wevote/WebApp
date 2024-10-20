@@ -69,11 +69,9 @@ function ChallengeAbout ({ challengeWeVoteId }) {
           {' '}
           ·
           {' '}
-          <strong>
-            {daysLeft}
-            {' '}
-            days left
-          </strong>
+          {daysLeft}
+          {' '}
+          days left
         </ShowDaysLeftText>
       )}
 
@@ -81,21 +79,18 @@ function ChallengeAbout ({ challengeWeVoteId }) {
   );
   const challengeStarted = (
     <span>
-      Challenge started by 
-      <strong>{challengeCreator}</strong> 
-      to support 
-      <strong>{challengeIsSupporting}</strong>
+      Challenge started by
+      {' '}
+      {challengeCreator}
     </span>
   );
   const remindFriends = 'Remind as many friends as you can about the date of the election, and let them know you will be voting.';
   const currentLeader = `Current leader: ${participantNameWithHighestRank}`;
   const friendsInvited = (
     <span>
-      <strong>
-        {challengeInviteesCount}
-        {' '}
-        friends invited
-      </strong>
+      {challengeInviteesCount}
+      {' '}
+      friends invited
       {' '}
       by
       {' '}
@@ -105,65 +100,68 @@ function ChallengeAbout ({ challengeWeVoteId }) {
     </span>
   );
 
+  const showStartedBy = false;
   return (
     <ChallengeAboutWrapper>
       <CardRowsWrapper>
-        {challengeDates && (
-          <CardForListRow>
-            <FlexDivLeft>
-              <SvgImageWrapper>
-                <EventOutlined />
-              </SvgImageWrapper>
-              <ChallengeDatesDiv>{challengeDates}</ChallengeDatesDiv>
-            </FlexDivLeft>
-          </CardForListRow>
-        )}
-        <CardForListRow>
-          <Suspense fallback={<></>}>
-            {challengeStarted && (
-              <FlexDivLeft>
-                <SvgImageWrapper style={{ paddingTop: '3px' }}>
-                  <ReactSVG
-                    src={normalizedImagePath(rocketShipNoThrust)}
-                    alt="Rocket Ship"
-                    beforeInjection={(svg) => {
-                      // Fill property applied to the path element, not SVG element. querySelector to grab the path element and set the attribute.
-                      svg.querySelectorAll('path').forEach((path) => {
-                        path.setAttribute('fill', 'none');
-                        path.setAttribute('stroke', '#606060');
-                      });
-                    }}
-                  />
-                </SvgImageWrapper>
-                <ChallengeStartedDiv>{challengeStarted}</ChallengeStartedDiv>
-              </FlexDivLeft>
-            )}
-          </Suspense>
-        </CardForListRow>
         <CardForListRow>
           <Suspense fallback={<></>}>
             {remindFriends && (
               <FlexDivLeft>
                 <SvgImageWrapper>
-                  <CampaignOutlined />
+                  <CampaignOutlinedStyled />
                 </SvgImageWrapper>
                 <RemindFriendsDiv>{remindFriends}</RemindFriendsDiv>
               </FlexDivLeft>
             )}
           </Suspense>
         </CardForListRow>
+        {challengeDates && (
+          <CardForListRow>
+            <FlexDivLeft>
+              <SvgImageWrapper>
+                <EventOutlinedStyled />
+              </SvgImageWrapper>
+              <ChallengeDatesDiv>{challengeDates}</ChallengeDatesDiv>
+            </FlexDivLeft>
+          </CardForListRow>
+        )}
+        {showStartedBy && (
+          <CardForListRow>
+            <Suspense fallback={<></>}>
+              {challengeStarted && (
+                <FlexDivLeft>
+                  <SvgImageWrapper style={{ paddingTop: '3px' }}>
+                    <ReactSVG
+                      src={normalizedImagePath(rocketShipNoThrust)}
+                      alt="Rocket Ship"
+                      beforeInjection={(svg) => {
+                        // Fill property applied to the path element, not SVG element. querySelector to grab the path element and set the attribute.
+                        svg.querySelectorAll('path').forEach((path) => {
+                          path.setAttribute('fill', 'none');
+                          path.setAttribute('stroke', '#606060');
+                        });
+                      }}
+                    />
+                  </SvgImageWrapper>
+                  <ChallengeStartedDiv>{challengeStarted}</ChallengeStartedDiv>
+                </FlexDivLeft>
+              )}
+            </Suspense>
+          </CardForListRow>
+        )}
         <CardForListRow>
           <Suspense fallback={<></>}>
             {friendsInvited && (
               <FlexDivLeft>
                 <SvgImageWrapper>
-                  <EmojiEventsOutlined />
+                  <EmojiEventsOutlinedStyled />
                 </SvgImageWrapper>
                 <ChallengeLeaderWrapper>
+                  <FriendsInvitedDiv>{friendsInvited}</FriendsInvitedDiv>
                   {!!(participantNameWithHighestRank) && (
                     <CurrentLeaderDiv>{currentLeader}</CurrentLeaderDiv>
                   )}
-                  <FriendsInvitedDiv>{friendsInvited}</FriendsInvitedDiv>
                 </ChallengeLeaderWrapper>
               </FlexDivLeft>
             )}
@@ -185,9 +183,21 @@ const styles = () => ({
   },
 });
 
+export const CampaignOutlinedStyled = styled(CampaignOutlined)`
+  font-size: 30px;
+`;
+
+export const EmojiEventsOutlinedStyled = styled(EmojiEventsOutlined)`
+  margin-top: 2px;
+`;
+
+export const EventOutlinedStyled = styled(EventOutlined)`
+  font-size: 25px;
+`;
+
 export const CardForListRow = styled('div')`
   color: ${DesignTokenColors.neutral500};
-  font-size: 14px;
+  font-size: 16px;
   padding: 3px 0;
 `;
 
@@ -209,16 +219,21 @@ export const FlexDivLeft = styled('div')`
 `;
 
 export const SvgImageWrapper = styled('div')`
-  max-width: 25px;
-  min-width: 25px;
-  width: 25px;
-  margin-right: 15px;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  max-width: 35px;
+  min-width: 35px;
+  width: 35px;
+  margin-right: 5px;
+  margin-top: -4px;
 `;
 
 export const ChallengeDatesDiv = styled('div')`
 `;
 
 export const RemindFriendsDiv = styled('div')`
+  font-weight: 600;
 `;
 
 export const ChallengeLeaderWrapper = styled('div')`

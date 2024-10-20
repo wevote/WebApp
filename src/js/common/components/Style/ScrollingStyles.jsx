@@ -93,7 +93,17 @@ export const CampaignsScrollingOuterWrapper = styled('div')`
   min-height: 400px;
   min-width: 0;
   width: 100%;
-  position:relative
+  position:relative;
+`;
+
+export const ChallengesScrollingOuterWrapper = styled('div')`
+  display: flex;
+  justify-content: space-between;
+  height: 450px;
+  min-height: 450px;
+  min-width: 0;
+  width: 100%;
+  position:relative;
 `;
 
 export const RightArrowInnerWrapper = styled('div', {

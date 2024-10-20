@@ -115,7 +115,6 @@ export default class ReadMore extends Component {
         &hellip;
         {' '}
         <a //eslint-disable-line
-//         className="u-underline"
           className="u-link-underline u-no-break"
           href="#"
           id="readMore"
@@ -124,7 +123,6 @@ export default class ReadMore extends Component {
         >
           {linkText}
         </a>
-
       </ShowMoreEllipsisSpan>
     );
 

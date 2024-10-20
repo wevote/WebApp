@@ -10,6 +10,7 @@ import AppObservableStore, { messageService } from '../../stores/AppObservableSt
 import ChallengeParticipantStore from '../../stores/ChallengeParticipantStore';
 import FirstChallengeParticipantListController from './FirstChallengeParticipantListController';
 import YourRankOutOf from '../Challenge/YourRankOutOf';
+import ChallengeStore from "../../stores/ChallengeStore";
 
 // const FirstChallengeParticipantListController = React.lazy(() => import(/* webpackChunkName: 'FirstChallengeParticipantListController' */ './FirstChallengeParticipantListController'));
 const participantListDummyData = [
@@ -55,6 +56,7 @@ const ChallengeParticipantListRoot = ({ challengeWeVoteId, classes, uniqueExtern
   const [participantList, setParticipantList] = React.useState([]);
   const [participantsCount, setParticipantsCount] = useState(0);
   const [rankOfVoter, setRankOfVoter] = React.useState(0);
+  const [voterIsChallengeParticipant, setVoterIsChallengeParticipant] = React.useState(false);
 
   const onAppObservableStoreChange = () => {
     setRankOfVoter(AppObservableStore.getChallengeParticipantRankOfVoterByChallengeWeVoteId(challengeWeVoteId));
@@ -66,53 +68,62 @@ const ChallengeParticipantListRoot = ({ challengeWeVoteId, classes, uniqueExtern
     setParticipantsCount(sortedParticipantsWithRank.length);
   };
 
+  const onChallengeStoreChange = () => {
+    setVoterIsChallengeParticipant(ChallengeStore.getVoterIsChallengeParticipant(challengeWeVoteId));
+  };
+
   React.useEffect(() => {
     // console.log('Fetching participants for:', challengeWeVoteId);
     const appStateSubscription = messageService.getMessage().subscribe(() => onAppObservableStoreChange());
     onAppObservableStoreChange();
     const challengeParticipantStoreListener = ChallengeParticipantStore.addListener(onChallengeParticipantStoreChange);
     onChallengeParticipantStoreChange();
+    const challengeStoreListener = ChallengeStore.addListener(onChallengeStoreChange);
+    onChallengeStoreChange();
 
     return () => {
       appStateSubscription.unsubscribe();
       challengeParticipantStoreListener.remove();
+      challengeStoreListener.remove();
     };
   }, [challengeWeVoteId]);
   return (
     <ChallengeParticipantListRootContainer>
       <TopSection>
-        <ButtonAndSearchWrapper>
-          <ButtonWrapper>
-            <Button
-              classes={{ root: classes.buttonDesktop }}
-              color="primary"
-              id="challengeLeaderboardYouButton"
-              onClick={() => console.log('You button clicked', challengeWeVoteId)}
-              variant="outlined"
-            >
-              You
-            </Button>
-            <Button
-              classes={{ root: classes.buttonDesktop }}
-              color="primary"
-              id="challengeLeaderboardTop50Button"
-              onClick={() => console.log('Top 50 button clicked')}
-              variant="outlined"
-            >
-              Top&nbsp;50
-            </Button>
-          </ButtonWrapper>
-          <SearchBarWrapper>
-            <SearchBar2024
-              clearButton
-              searchButton
-              placeholder="Search by rank or name"
-              searchFunction={searchFunction}
-              clearFunction={clearSearchFunction}
-              searchUpdateDelayTime={500}
-            />
-          </SearchBarWrapper>
-        </ButtonAndSearchWrapper>
+        {voterIsChallengeParticipant && (
+          <ButtonAndSearchWrapper>
+            <ButtonWrapper>
+              <Button
+                classes={{ root: classes.buttonDesktop }}
+                color="primary"
+                id="challengeLeaderboardYouButton"
+                onClick={() => console.log('You button clicked', challengeWeVoteId)}
+                variant="outlined"
+              >
+                You
+              </Button>
+              <Button
+                classes={{ root: classes.buttonDesktop }}
+                color="primary"
+                id="challengeLeaderboardTop50Button"
+                onClick={() => console.log('Top 50 button clicked')}
+                variant="outlined"
+              >
+                Top&nbsp;50
+              </Button>
+            </ButtonWrapper>
+            <SearchBarWrapper>
+              <SearchBar2024
+                clearButton
+                searchButton
+                placeholder="Search by rank or name"
+                searchFunction={searchFunction}
+                clearFunction={clearSearchFunction}
+                searchUpdateDelayTime={500}
+              />
+            </SearchBarWrapper>
+          </ButtonAndSearchWrapper>
+        )}
         <LeaderboardInfoWrapper>
           {!!(rankOfVoter) && (
             <YourRankOutOf rankOfVoter={rankOfVoter} participantsCount={participantsCount} />

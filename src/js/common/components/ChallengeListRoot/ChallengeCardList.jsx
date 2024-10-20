@@ -130,8 +130,11 @@ class ChallengeCardList extends Component {
     const {
       in_draft_mode: inDraftMode,
     } = challenge;
+    const voterIsChallengeParticipant = ChallengeStore.getVoterIsChallengeParticipant(challengeWeVoteId);
     if (inDraftMode) {
       return '/start-a-challenge-preview';
+    } else if (voterIsChallengeParticipant) {
+      return `${this.getChallengeBasePath(challengeWeVoteId)}leaderboard`;
     } else {
       return `${this.getChallengeBasePath(challengeWeVoteId)}`;
     }
@@ -181,6 +184,7 @@ class ChallengeCardList extends Component {
                     challengeWeVoteId={oneChallenge.challenge_we_vote_id}
                     joinedAndDaysLeftOff
                     limitCardWidth={useVerticalCard}
+                    titleLengthRestricted
                     useVerticalCard={useVerticalCard}
                   />
                   {/* JoinedAndDaysLeft component positioned absolutely */}
