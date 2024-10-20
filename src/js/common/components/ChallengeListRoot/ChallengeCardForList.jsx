@@ -23,6 +23,8 @@ class ChallengeCardForList extends Component {
       payToPromoteStepTurnedOn: false,
       sharingStepCompleted: false,
       step2Completed: false,
+      voterCanEditThisChallenge: false,
+      voterIsChallengeParticipant: false,
     };
     this.functionToUseToKeepHelping = this.functionToUseToKeepHelping.bind(this);
     this.functionToUseWhenProfileComplete = this.functionToUseWhenProfileComplete.bind(this);
@@ -89,9 +91,11 @@ class ChallengeCardForList extends Component {
     const { challengeWeVoteId } = this.props;
     const challenge = ChallengeStore.getChallengeByWeVoteId(challengeWeVoteId);
     const voterCanEditThisChallenge = ChallengeStore.getVoterCanEditThisChallenge(challengeWeVoteId);
+    const voterIsChallengeParticipant = ChallengeStore.getVoterIsChallengeParticipant(challengeWeVoteId);
     this.setState({
       challenge,
       voterCanEditThisChallenge,
+      voterIsChallengeParticipant,
     });
   }
 
@@ -107,6 +111,7 @@ class ChallengeCardForList extends Component {
 
   onChallengeClickLink () {
     const { challengeWeVoteId } = this.props;
+    const { voterIsChallengeParticipant } = this.state;
     const challenge = ChallengeStore.getChallengeByWeVoteId(challengeWeVoteId);
     if (!challenge) {
       return null;
@@ -116,6 +121,8 @@ class ChallengeCardForList extends Component {
     } = challenge;
     if (inDraftMode) {
       return '/start-a-challenge-preview';
+    } else if (voterIsChallengeParticipant) {
+      return `${this.getChallengeBasePath()}leaderboard`;
     } else {
       return `${this.getChallengeBasePath()}`;
     }
@@ -232,7 +239,7 @@ class ChallengeCardForList extends Component {
 
   render () {
     renderLog('ChallengeCardForList');  // Set LOG_RENDER_EVENTS to log all renders
-    const { challengeWeVoteId, joinedAndDaysLeftOff, limitCardWidth, useVerticalCard } = this.props;
+    const { challengeWeVoteId, joinedAndDaysLeftOff, limitCardWidth, titleLengthRestricted, titleLinkOff, useVerticalCard } = this.props;
     const { challenge, challengeSupported, voterCanEditThisChallenge } = this.state; // , inPrivateLabelMode
     // const challenge = ChallengeStore.getChallengeByWeVoteId(challengeWeVoteId);
     if (!challenge) {
@@ -281,6 +288,8 @@ class ChallengeCardForList extends Component {
         participantsCount={participantsCount}
         participantsCountNextGoalWithFloor={participantsCountNextGoalWithFloor}
         tagIdBaseName=""
+        titleLengthRestricted={titleLengthRestricted}
+        titleLinkOff={titleLinkOff}
         useVerticalCard={useVerticalCard}
         voterCanEditThisChallenge={voterCanEditThisChallenge}
       />
@@ -292,6 +301,8 @@ ChallengeCardForList.propTypes = {
   challengeWeVoteId: PropTypes.string,
   voterWeVoteId: PropTypes.string,
   limitCardWidth: PropTypes.bool,
+  titleLengthRestricted: PropTypes.bool,
+  titleLinkOff: PropTypes.bool,
   useVerticalCard: PropTypes.bool,
 };
 

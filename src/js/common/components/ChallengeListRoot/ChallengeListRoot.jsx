@@ -5,10 +5,15 @@ import PropTypes from 'prop-types';
 import React, { Component, createRef } from 'react';
 import styled from 'styled-components';
 import {
-  CampaignsHorizontallyScrollingContainer, RightArrowInnerWrapper,
-  RightArrowOuterWrapper, LeftArrowInnerWrapper, LeftArrowOuterWrapper,
-  CampaignsScrollingInnerWrapper, CampaignsScrollingOuterWrapper,
-  TitleAndMobileArrowsOuterWrapper, MobileArrowsInnerWrapper,
+  CampaignsHorizontallyScrollingContainer,
+  RightArrowInnerWrapper,
+  RightArrowOuterWrapper,
+  LeftArrowInnerWrapper,
+  LeftArrowOuterWrapper,
+  CampaignsScrollingInnerWrapper,
+  ChallengesScrollingOuterWrapper,
+  TitleAndMobileArrowsOuterWrapper,
+  MobileArrowsInnerWrapper,
 } from '../Style/ScrollingStyles';
 import { convertStateCodeToStateText } from '../../utils/addressFunctions';
 import { handleHorizontalScroll, leftAndRightArrowStateCalculation, checkDivPositionForLoadMore } from '../../utils/leftRightArrowCalculation';
@@ -317,7 +322,7 @@ class ChallengeListRoot extends Component {
             </RightArrowInnerWrapper>
           </MobileArrowsInnerWrapper>
         </TitleAndMobileArrowsOuterWrapper>
-        <CampaignsScrollingOuterWrapper>
+        <ChallengesScrollingOuterWrapper>
           <LeftArrowOuterWrapper className="u-show-desktop-tablet">
             <LeftArrowInnerWrapper id="campaignLeftArrowDesktop" onClick={() => { handleHorizontalScroll(this.scrollElement.current, HORIZONTAL_SCROLL_DISTANCE_ON_LEFT_ARROW_CLICK, this.leftAndRightArrowSetState, RIGHT_MARGIN_SIZE); }}>
               { this.state.hideLeftArrow ? null : <ArrowBackIos classes={{ root: classes.arrowRoot }} /> }
@@ -346,7 +351,7 @@ class ChallengeListRoot extends Component {
               { this.state.hideRightArrow ? null : <ArrowForwardIos classes={{ root: classes.arrowRoot }} /> }
             </RightArrowInnerWrapper>
           </RightArrowOuterWrapper>
-        </CampaignsScrollingOuterWrapper>
+        </ChallengesScrollingOuterWrapper>
       </ChallengeListWrapper>
     );
   }

@@ -150,7 +150,7 @@ class ChallengeInviteCustomizeMessage extends Component {
   }
 
   goToChallengeHome = () => {
-    historyPush(this.getChallengeBasePath());
+    historyPush(`${this.getChallengeBasePath()}leaderboard`);
   }
 
   saveInviteTextForFriendsAndGoToNextStep = () => {
