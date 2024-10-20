@@ -4,9 +4,18 @@ import ReadyPage from '../page_objects/ready.page';
 
 const waitTime = 14000;
 
+async function switchWindow(currentWindowHandle, allWindows) {
+  for (const window of allWindows) {
+    if (window !== currentWindowHandle) {
+      await driver.switchToWindow(window);
+      break;
+    }
+  }
+}
+
 describe('Profile(Signed In)', () => {
 
-    ProfileSignedIn_001
+    // ProfileSignedIn_001
     it.only('verifySignInButton', async () => {
       await ReadyPage.load();
       await driver.pause(waitTime);
@@ -41,43 +50,33 @@ describe('Profile(Signed In)', () => {
       await driver.pause(waitTime);
       await SignedIn.clickOnBellIconForNotifications();
       await driver.pause(waitTime);
-      await expect(SignedIn.bellIconNoNotificationText).toBeDisplayed();
+      await expect(SignedIn.bellIconNotificationsSettingsText).toBeDisplayed();
     });
 
-    // // //ProfileSignedIn_004  //not completed yet, to be taken later
-    // // it.only('verifyUploadPhotoInNamePhotoSettings', async () => {
-    // //   await ReadyPage.load();
-    // //   await driver.pause(waitTime);
-    // //   await SignedIn.signInButton.click();
-    // //   await driver.pause(waitTime);
-    // //   await SignedIn.enterPhoneNumberInPhoneNumberInput();
-    // //   await SignedIn.clickOnSendCodeOption();
-    // //   await SignedIn.enterVerificationCode();
-    // //   await SignedIn.clickOnVerifyButtonForCodeVerification();
-    // //   await driver.pause(waitTime);
-      
-    // //   // await ReadyPage.load();
-    // //   // await driver.pause(waitTime);
-    // //   await SignedIn.clickOnProfilePhotoPlaceholder();
-    // //   await driver.pause(waitTime);
-    // //   await expect(driver).toHaveUrl(expect.stringContaining('profile'));
-    // //   await driver.pause(waitTime);
-    // //   await SignedIn.clickOnRemovePhoto();  //added this line as existing account already has a profile image
-    // //   await driver.pause(waitTime);
-    // //   //await SignedIn.clickOnDragDropBoxToUploadPhoto();
-    // //   const localFilePath = '/Users/ayusheedash/MyProjects/wevote_profile_image.jpg';
-    // //   const remoteFilePath = await driver.uploadFile(localFilePath);
-    // //   const uploadIcon = await $('[data-testid = "AccountCircleIcon"]');
-    // //   await expect(uploadIcon).toBeDisplayed();
-    // //   await uploadIcon.click();
-    // //   await driver.pause(waitTime);
-    // //   const fileInput = await $('input[type="file"]');
-    // //   //await expect(uploadIcon).toBeDisplayed();
-    // //   await fileInput.setValue(remoteFilePath);
-    // //   await driver.pause(waitTime);
-    // //   await expect(SignedIn.deleteIconAfterUploadingPhoto).toBeDisplayed();
-    // //   await SignedIn.clickOnSavePhoto();
-    // // });
+    // //ProfileSignedIn_004  //not completed yet, to be taken later
+    // it.only('verifyUploadPhotoInNamePhotoSettings', async () => {
+    //   // await ReadyPage.load();
+    //   // await driver.pause(waitTime);
+    //   await SignedIn.clickOnProfilePhotoPlaceholder();
+    //   await driver.pause(waitTime);
+    //   await expect(driver).toHaveUrl(expect.stringContaining('profile'));
+    //   await driver.pause(waitTime);
+    //   await SignedIn.clickOnRemovePhoto();  //added this line as existing account already has a profile image
+    //   await driver.pause(waitTime);
+    //   //await SignedIn.clickOnDragDropBoxToUploadPhoto();
+    //   const localFilePath = '/Users/ayusheedash/MyProjects/wevote_profile_image.jpg';
+    //   const remoteFilePath = await driver.uploadFile(localFilePath);
+    //   const uploadIcon = await $('[data-testid = "AccountCircleIcon"]');
+    //   await expect(uploadIcon).toBeDisplayed();
+    //   await uploadIcon.click();
+    //   await driver.pause(waitTime);
+    //   const fileInput = await $('input[type="file"]');
+    //   //await expect(uploadIcon).toBeDisplayed();
+    //   await fileInput.setValue(remoteFilePath);
+    //   await driver.pause(waitTime);
+    //   await expect(SignedIn.deleteIconAfterUploadingPhoto).toBeDisplayed();
+    //   await SignedIn.clickOnSavePhoto();
+    // });
 
     //ProfileSignedIn_005
     it.only('verifyNavigationToSecuritySignInSettings', async () => {
@@ -115,24 +114,14 @@ describe('Profile(Signed In)', () => {
       await SignedIn.clickOnTermsOfServiceFooterLink();
       await driver.pause(waitTime);
       let allWindows = await driver.getWindowHandles();
-      for (const window of allWindows) {
-        if (window !== accountWindow) {
-          await driver.switchToWindow(window);
-          break;
-        }
-      }
+      switchWindow(accountWindow, allWindows);
       await expect(driver).toHaveUrl(expect.stringContaining('terms'));
       await driver.closeWindow();
       await driver.switchToWindow(accountWindow);
       await SignedIn.clickOnPrivacyPolicyFooterLink();
       await driver.pause(waitTime);
       allWindows = await driver.getWindowHandles();
-      for (const window of allWindows) {
-        if (window !== accountWindow) {
-          await driver.switchToWindow(window);
-          break;
-        }
-      }
+      switchWindow(accountWindow, allWindows);
       await expect(driver).toHaveUrl(expect.stringContaining('privacy'));
     });
 
@@ -210,15 +199,15 @@ describe('Profile(Signed In)', () => {
       await SignedIn.verifyAlreadyAddedEmailIdIfPresent();
     });
 
-    // // // //ProfileSignedIn_014
-    // // // it.only('verifyFriendsOptionInSettings', async () => {
-    // // //   //on hold
-    // // //   });
+    // //ProfileSignedIn_014
+    // it.only('verifyFriendsOptionInSettings', async () => {
+    //   //on hold
+    //   });
 
-    // // // //ProfileSignedIn_015
-    // // // it.only('verifyDifferentTabsInFriendsPage', async () => {
-    // // //   //on hold
-    // // //   });
+    // //ProfileSignedIn_015
+    // it.only('verifyDifferentTabsInFriendsPage', async () => {
+    //   //on hold
+    //   });
 
     //ProfileSignedIn_016
     it.only('verifyDiscussPageNavigationFromSettings', async () => {
@@ -237,11 +226,11 @@ describe('Profile(Signed In)', () => {
       await ReadyPage.load();
       await driver.pause(waitTime);
       await SignedIn.clickOnProfilePhotoPlaceholder();
-      await driver.pause(waitTime);
       await expect(driver).toHaveUrl(expect.stringContaining('profile'));
-      await SignedIn.clickOnHowItWorksLink();                            //commented as id is not getting detected
+      await SignedIn.clickOnHowItWorksLink();                            
       await expect(SignedIn.howItWorksTitleText).toBeDisplayed();
       await SignedIn.closeTheHowItWorksDialogBox();
+      await driver.pause(waitTime);
       await SignedIn.clickOnAboutAndFAQLink();
       await expect(driver).toHaveUrl(expect.stringContaining('faq'));
       await driver.back();
@@ -249,12 +238,7 @@ describe('Profile(Signed In)', () => {
       await SignedIn.clickOnHelpLink();
       await driver.pause(waitTime);
       let allWindows = await driver.getWindowHandles();
-      for (const window of allWindows) {
-        if (window !== profileWindow) {
-          await driver.switchToWindow(window);
-          break;
-        }
-      }
+      switchWindow(profileWindow, allWindows);
       await expect(driver).toHaveUrl(expect.stringContaining('hc/en-us'));
       await driver.closeWindow();
       await driver.switchToWindow(profileWindow);
@@ -267,24 +251,14 @@ describe('Profile(Signed In)', () => {
       await SignedIn.clickOnTeamLink();
       await driver.pause(waitTime);
       allWindows = await driver.getWindowHandles();
-      for (const window of allWindows) {
-        if (window !== profileWindow) {
-          await driver.switchToWindow(window);
-          break;
-        }
-      }
+      switchWindow(profileWindow, allWindows);
       await expect(driver).toHaveUrl(expect.stringContaining('more/about'));
       await driver.closeWindow();
       await driver.switchToWindow(profileWindow);
       await SignedIn.clickOnCreditAndThanksLink();
       await driver.pause(waitTime);
       allWindows = await driver.getWindowHandles();
-      for (const window of allWindows) {
-        if (window !== profileWindow) {
-          await driver.switchToWindow(window);
-          break;
-        }
-      }
+      switchWindow(profileWindow, allWindows);
       await expect(driver).toHaveUrl(expect.stringContaining('more/credits'));
     });
 
