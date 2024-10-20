@@ -48,7 +48,7 @@ export default class SettingsYourData extends Component {
                 Your Privacy &amp; Data
               </h1>
               <DataSettingSection>
-                <h4 className="h4">
+                <h4 className="h4" id = "yourAddressBookText">
                   Your Address Book Contact Data
                 </h4>
                 {voterContactEmailListCount > 0 ? (
@@ -59,13 +59,13 @@ export default class SettingsYourData extends Component {
                   <DataSettingText>
                     WeVote is not storing any of your contact data. If contacts from your address book were previously stored in WeVote, they have been completely removed.
                     {' '}
-                    <Link to="/findfriends/importcontacts" className="u-link-color">Import your contacts to find your friends</Link>
+                    <Link to="/findfriends/importcontacts" className="u-link-color" id = "importContactsLink">Import your contacts to find your friends</Link>
                     .
                   </DataSettingText>
                 )}
               </DataSettingSection>
               <DataSettingSection>
-                <h4 className="h4">
+                <h4 className="h4" id = "deleteAccountText">
                   Delete Your Account
                 </h4>
                 <DeleteAllContactsWrapper>

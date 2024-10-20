@@ -49,7 +49,7 @@ class HowItWorksModal extends Component {
       >
         <ModalTitleArea>
           <div>
-            <Title>
+            <Title id = "howWeVoteWorksTitleText">
               How WeVote Works
             </Title>
           </div>

@@ -613,6 +613,7 @@ class VoterEmailAddressEntry extends Component {
                       <span
                         className="u-link-color u-cursor--pointer u-no-break"
                         onClick={() => this.reSendSignInCodeEmail(voterEmailAddressFromList.normalized_email_address)}
+                        id = "sendVerificationCodeAgain"
                       >
                         Send verification again
                       </span>
@@ -661,7 +662,7 @@ class VoterEmailAddressEntry extends Component {
             )}
             {unverifiedEmailsFound && (
               <EmailSection isWeb={isWebApp()}>
-                <span className="h3">Emails to Verify</span>
+                <span className="h3" id = "emailVerifyTitle">Emails to Verify</span>
                 {toVerifyEmailListHtml}
               </EmailSection>
             )}

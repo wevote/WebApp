@@ -103,7 +103,7 @@ class VoterPhotoUpload extends Component {
                   <VoterPhotoImage maxWidth={maxWidth} src={voterProfileUploadedImageUrlLarge} alt="Profile Photo" />
                   <DeleteLink
                     className="u-link-color u-link-underline u-cursor--pointer"
-                    onClick={this.submitDeleteYourPhoto}
+                    onClick={this.submitDeleteYourPhoto} id = "removePhotoLink"
                   >
                     remove photo
                   </DeleteLink>

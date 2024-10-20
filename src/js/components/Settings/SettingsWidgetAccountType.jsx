@@ -206,7 +206,7 @@ export default class SettingsWidgetAccountType extends Component {
     return (
       <Wrapper className="">
         <div>
-          <h3 className="h3">Type of Profile</h3>
+          <h3 className="h3" id = "typeOfProfileText">Type of Profile</h3>
           <div className="u-gray-mid">
             {this.state.organizationTypeSavedStatus}
           </div>

@@ -372,7 +372,7 @@ export default class SettingsPersonalSideBar extends Component {
                 <Link to="/ready" className="SettingsItem__summary__item" id="site text">
                   <span className={String(editMode) === 'text' ?
                     'SettingsItem__summary__item__display-name SettingsItem__summary__item__display-name--selected' :
-                    'SettingsItem__summary__item__display-name'}
+                    'SettingsItem__summary__item__display-name'} id = "signOut_Settings"
                   >
                     Sign Out
                   </span>

@@ -480,7 +480,7 @@ export default class SignInOptionsPanel extends Component {
                     <span className="account-edit-action" onKeyDown={this.twitterLogOutOnKeyDown.bind(this)}>
                       <span
                         className="pull-right u-link-color u-cursor--pointer"
-                        onClick={this.signOut.bind(this)}
+                        onClick={this.signOut.bind(this)} id = "signOut_securitySignIn"
                       >
                         sign out
                       </span>
