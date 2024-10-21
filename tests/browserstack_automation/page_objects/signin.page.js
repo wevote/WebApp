@@ -15,10 +15,10 @@ class SignIn extends Page{
     }
 
     get signInWithTwitterTextElement(){
-        return $('//span[text()="Sign in with Twitter"]');
+        return $('.csbvaL');
     }
     get signInWithAppleTextElement(){
-        return $('//span[text()="Sign in with Apple"]');  // #appleSignInText
+        return $('.dVlXMt');  // #appleSignInText
     }
     get twitterBttnElement(){
         return $('#twitterSignIn-splitIconButton');
