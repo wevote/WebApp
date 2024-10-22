@@ -239,8 +239,12 @@ class App extends Component {
         if (chosenTrackingId && weVoteTrackingId) {
           console.log('Google Analytics (2) ENABLED');
           ReactGA.initialize([
-            { trackingId: chosenTrackingId },
-            { trackingId: weVoteTrackingId },
+            {
+              trackingId: chosenTrackingId,
+            },
+            {
+              trackingId: weVoteTrackingId,
+            },
           ]);
         } else if (chosenTrackingId) {
           console.log('Google Analytics Chosen ENABLED');
