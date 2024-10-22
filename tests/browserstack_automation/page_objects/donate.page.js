@@ -1,4 +1,4 @@
-import { $, $$, driver } from '@wdio/globals';
+import { $, driver } from '@wdio/globals';
 import Page from './page';
 
 class DonatePage extends Page {
@@ -11,28 +11,28 @@ class DonatePage extends Page {
   }
 
   async checkLinkAndTite () {
-    await expect(driver).toHaveUrl('https://quality.wevote.us/donate');
+    await expect(driver).toHaveUrl(path + '/donate');
     await expect(driver).toHaveTitle('Donate - WeVote');
   }
 
   getDonateHeader () {
-    return $('//*[@id="app"]//h1');
+    return $('#want_to_vote');
   } 
 
   getFirstParagraph () {
-    return $('//*[@id="app"]/div/div[2]/div/div/div[2]/div[1]/span[1]');
+    return $('(//*[@id="first_paragraph"])[2]');
   }
 
   getSecondParagraph () {
-    return $('//*[@id="app"]/div/div[2]/div/div/div[2]/div[1]/span[2]');
+    return $('(//*[@id="second_paragraph"])[2]');
   }
 
   getTextLink () {
-    return $('#annualBudget > span');
+    return $('#budgets_small');
   }
 
   getOneTimeButton () {
-    return $('//label[@for="plan_duration_one_time"]');
+    return $('#plan_duration_one_time');
   }
 
   getDonateAmountButton (amount) {
@@ -41,10 +41,6 @@ class DonatePage extends Page {
 
   getDonorBoxIFrame () {
     return $('#donorbox-iframe');
-  }
-
-  getCommentCheckbox () {
-    return $('//*[@id="standard-donation-section"]/div[6]/div/label/span[4]');
   }
 
   getCommentField () {
@@ -76,10 +72,10 @@ class DonatePage extends Page {
   }
 
   getOneTimeLabel () {
-    return $('//*[@id="donation-amount-description"]/div/h3/span[2]');
+    return $('.donation-interval.plan_duration_one_time');
   }
 
-  getAmount () {
+  getOneTimeAmount () {
     return $('h3 > var > span');
   }
 
@@ -95,16 +91,28 @@ class DonatePage extends Page {
     return $('#donation_custom_amount');
   }
 
+  getCommentCheckbox () {
+    return $('//span[text()="Write us a comment"]/../span[4]');
+  }
+
   getDisplayDonationCheckbox () {
-    return $('//*[@id="standard-donation-section"]/div[8]/div[1]/div/label/span[4]');
+    return $('//span[contains(text(), "on the donor wall")]/../span[4]');
   }
 
   getDisplayFirstNameCheckbox () {
-    return $('//*[@id="standard-donation-section"]/div[8]/div[2]/div/label/span[4]');
+    return $('//span[contains(text(), "first name instead")]/../span[4]');
   }
 
   getHideDonationAmountCheckbox () {
-    return $('//*[@id="standard-donation-section"]/div[8]/div[3]/div/label/span[4]');
+    return $('//span[contains(text(), "Hide donation")]/../span[4]');
+  }
+
+  getDedicateMyDonationCheckbox () {
+    return $('//span[contains(text(), "Dedicate")]/../span[4]');
+  }
+
+  getInMemoryOfRadioButton () {
+    return $('label[for="donation_donation_honor_attributes_honor_type_memory"]');
   }
 
   getFirstName () {
@@ -123,40 +131,32 @@ class DonatePage extends Page {
     return $('#footer_button');
   }
 
-  getMonthlyLabel () {
-    return $('//*[@id="linkButton"]/span[1]/span[2]');
+  getIntervalLabel () {
+    return $('.plan_duration_monthly.interval');
   }
 
   getProcessingFeeLabel () {
-    return $('//*[@id="donor-form-step-4"]/div/label[2]/span/var/span');
+    return $('(//span[@class="processing_fee"])[2]');
   }
 
   getMonthlyAmount () {
-    return $('//*[@id="linkButton"]/span[1]/span[2]/var/span');
+    return $('(//span[@class="donation-amt"])[3]');
   } 
 
   getQuarterlyAmount () {
-    return $('//*[@id="linkButton"]/span[1]/span[3]/var/span');
+    return $('(//span[@class="donation-amt"])[4]');
   } 
 
   getAnnuallyAmount () {
-    return $('//*[@id="linkButton"]/span[1]/span[4]/var/span');
+    return $('(//span[@class="donation-amt"])[5]');
   } 
 
   getQuarterlyButton () {
-    return $('label[for="plan_duration_quarterly"]');
+    return $('#plan_duration_quarterly');
   }
 
   getAnnuallyButton () {
-    return $('label[for="plan_duration_annual"]');
-  }
-
-  getDedicateMyDonationCheckbox () {
-    return $('//*[@id="standard-donation-section"]/div[5]/div/label/span[4]');
-  }
-
-  getInMemoryOfRadioButton () {
-    return $('label[for="donation_donation_honor_attributes_honor_type_memory"]');
+    return $('#plan_duration_annual');
   }
 
   getHonoreeNameField () {

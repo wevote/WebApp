@@ -1,14 +1,41 @@
 import { driver, expect, $ } from '@wdio/globals';
 import ReadyPage from '../page_objects/ready.page';
 import DonatePage from '../page_objects/donate.page';
-import { attach } from 'webdriverio';
 
 /* eslint-disable no-undef
    This eslint-disable turns off warnings for describe() and it()
    We don't need those warnings, because describe() and it() are available at runtime
    Refer to https://webdriver.io/docs/pageobjects for guidance */
 
-const waitTime = 2000;
+var fillDonationForm = async (name, lastName, email) => {
+  await DonatePage.getFirstName().setValue(name);
+  await DonatePage.getLasttName().setValue(lastName);
+  await DonatePage.getEmail().setValue(email);
+  (await DonatePage.getNextButton()).click();
+};
+
+async function nextButtonScrollIntoView() {
+  const nextButton = await DonatePage.getNextButton();
+  await nextButton.scrollIntoView();
+  await expect(nextButton).toBeDisplayed();
+  await nextButton.click();
+}
+
+var checkAmounts = async (interval, processingFee, fullAmount, withoutFeeAmount, amountLabel) => {
+    const elementText = await DonatePage.getIntervalLabel().getText();
+    const amount = await amountLabel;
+    expect(elementText.includes(interval)); 
+    await expect(DonatePage.getProcessingFeeLabel()).toHaveText(processingFee);
+    await expect(amount).toHaveText(fullAmount);
+    driver.pause(3000);
+    (await DonatePage.getOptionalFeesCheckbox()).click();
+    driver.pause(3000);
+    await expect(amount).toHaveText(withoutFeeAmount);
+
+    (await DonatePage.getDonateButton()).click();
+    await expect(driver).toHaveTitle('Log in to your PayPal account');
+};
+
 
 describe('DonatePage', () => {
 
@@ -65,17 +92,19 @@ describe('DonatePage', () => {
     const value = await DonatePage.getCommentField().getValue();
     await expect(value).toBe('Hello, WeVote!');
 
-    const nextButton = await DonatePage.getNextButton();
-    await nextButton.scrollIntoView();
-    await expect(nextButton).toBeDisplayed();
-    await nextButton.click();
+    await nextButtonScrollIntoView();
 
     await DonatePage.getPayPalButton().click();
     await expect(DonatePage.getOneTimeLabel()).toHaveText("One-time");
-    await expect(DonatePage.getAmount()).toHaveText('$125.17');
+    await expect(DonatePage.getOneTimeAmount()).toHaveText('$125.17');
 
     await driver.switchToFrame(await DonatePage.getPayPalIFrame());
-    await DonatePage.getPayPalButton2().click();
+    const payPalButton = await DonatePage.getPayPalButton2();
+    await payPalButton.waitForClickable({ timeout: 5000 });
+    await payPalButton.scrollIntoView();
+    await expect(payPalButton).toBeDisplayed();
+    await expect(payPalButton).toBeClickable();
+    await payPalButton.click();
 
     const allWindowHandles = await driver.getWindowHandles();
     await driver.switchToWindow(allWindowHandles[allWindowHandles.length - 1]);
@@ -105,26 +134,9 @@ describe('DonatePage', () => {
         await checkbox.click();
     }
 
-    const nextButton = await DonatePage.getNextButton();
-    await nextButton.scrollIntoView();
-    await expect(nextButton).toBeDisplayed();
-    await nextButton.click();
-
-    await DonatePage.getFirstName().setValue('Dmytro');
-    await DonatePage.getLasttName().setValue('Dolbilov');
-    await DonatePage.getEmail().setValue('dolbilov@gmail.com');
-    await nextButton.click();
-
-    const elementText = await DonatePage.getMonthlyLabel().getText();
-    expect(elementText.includes('Monthly')); 
-    await expect(DonatePage.getProcessingFeeLabel()).toHaveText('$0.70');
-    await expect(DonatePage.getMonthlyAmount()).toHaveText('$5.71');
-    (await DonatePage.getOptionalFeesCheckbox()).click();
-    await expect(DonatePage.getMonthlyAmount()).toHaveText('$5.01');
-
-    (await DonatePage.getDonateButton()).click();
-    await expect(driver).toHaveTitle('Log in to your PayPal account');
-    await driver.pause(waitTime);
+    await nextButtonScrollIntoView();
+    await fillDonationForm('Dmytro', 'Dolbilov', 'dolbilov@gmail.com');
+    await checkAmounts('Monthly', '$0.70', '$5.71', '$5.01', DonatePage.getMonthlyAmount());
   });
 
   // Donate_006
@@ -141,25 +153,9 @@ describe('DonatePage', () => {
     (await DonatePage.getRecipientEmailField()).setValue('bill@gmail.com');
     (await DonatePage.getRecipientMessageField()).setValue('Donation in memory of John F. Kennedy');
 
-    const nextButton = await DonatePage.getNextButton();
-    await nextButton.scrollIntoView();
-    await expect(nextButton).toBeDisplayed();
-    await nextButton.click();
-
-    await DonatePage.getFirstName().setValue('Dmytro');
-    await DonatePage.getLasttName().setValue('Dolbilov');
-    await DonatePage.getEmail().setValue('dolbilov@gmail.com');
-    await nextButton.click();
-
-    const elementText = await DonatePage.getMonthlyLabel().getText();
-    expect(elementText.includes('Quarterly')); 
-    await expect(DonatePage.getProcessingFeeLabel()).toHaveText('$2.45');
-    await expect(DonatePage.getQuarterlyAmount()).toHaveText('$52.45');
-    (await DonatePage.getOptionalFeesCheckbox()).click();
-    await expect(DonatePage.getQuarterlyAmount()).toHaveText('$50');
-
-    (await DonatePage.getDonateButton()).click();
-    await expect(driver).toHaveTitle('Log in to your PayPal account');
+    await nextButtonScrollIntoView();
+    await fillDonationForm('Dmytro', 'Dolbilov', 'dolbilov@gmail.com');
+    await checkAmounts('Quarterly', '$2.45', '$52.45', '$50', DonatePage.getQuarterlyAmount());
   });
 
   // Donate_007
@@ -186,32 +182,14 @@ describe('DonatePage', () => {
 
     await expect(DonatePage.getDisplayDonationCheckbox()).not.toBeChecked();
     (await DonatePage.getDisplayDonationCheckbox()).click();
-
     await expect(DonatePage.getDisplayFirstNameCheckbox()).not.toBeChecked();
     (await DonatePage.getDisplayFirstNameCheckbox()).click();
-
     await expect(DonatePage.getHideDonationAmountCheckbox()).not.toBeChecked();
     (await DonatePage.getHideDonationAmountCheckbox()).click();
     
-    const nextButton = await DonatePage.getNextButton();
-    await nextButton.scrollIntoView();
-    await expect(nextButton).toBeDisplayed();
-    await nextButton.click();
-
-    await DonatePage.getFirstName().setValue('Dmytro');
-    await DonatePage.getLasttName().setValue('Dolbilov');
-    await DonatePage.getEmail().setValue('dolbilov@gmail.com');
-    await nextButton.click();
-
-    const elementText = await DonatePage.getMonthlyLabel().getText();
-    expect(elementText.includes('Annually')); 
-    await expect(DonatePage.getProcessingFeeLabel()).toHaveText('$12.16');
-    await expect(DonatePage.getAnnuallyAmount()).toHaveText('$312.16');
-    (await DonatePage.getOptionalFeesCheckbox()).click();
-    await expect(DonatePage.getAnnuallyAmount()).toHaveText('$300');
-
-    (await DonatePage.getDonateButton()).click();
-    await expect(driver).toHaveTitle('Log in to your PayPal account');
+    await nextButtonScrollIntoView();
+    await fillDonationForm('Dmytro', 'Dolbilov', 'dolbilov@gmail.com');
+    await checkAmounts('Anually', '$12.16', '$312.16', '$300', DonatePage.getAnnuallyAmount());
   });
     
 });
