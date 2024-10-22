@@ -234,7 +234,8 @@ class App extends Component {
       AppObservableStore.setGoogleAnalyticsPending(true);
       setTimeout(() => {
         const chosenTrackingId = AppObservableStore.getChosenGoogleAnalyticsTrackingID();
-        const weVoteTrackingId = webAppConfig.GOOGLE_ANALYTICS_TRACKING_ID === undefined ? '' : webAppConfig.GOOGLE_ANALYTICS_TRACKING_ID;
+        const weVoteTrackingId = webAppConfig.GOOGLE_ANALYTICS_TRACKING_ID || '';
+
         if (chosenTrackingId && weVoteTrackingId) {
           console.log('Google Analytics (2) ENABLED');
           ReactGA.initialize([
@@ -258,16 +259,22 @@ class App extends Component {
         } else {
           console.log('Google Analytics did not receive a trackingID, NOT ENABLED');
         }
+
         const voterWeVoteId = VoterStore.getVoterWeVoteId();
-        ReactGA.gtag('set', 'voter', {
-          weVoteId: voterWeVoteId,
-        });
-        const weVoteGTMId = webAppConfig.GOOGLE_ADS_TRACKING_ID === undefined ? '' : webAppConfig.GOOGLE_ADS_TRACKING_ID;
+        const weVoteGTMId = webAppConfig.GOOGLE_TAG_MANAGER_ID || '';
+
         if (weVoteGTMId) {
           const tagManagerArgs = {
             gtmId: weVoteGTMId,
+            dataLayer: {
+              weVoteId: voterWeVoteId,
+            },
           };
+
+          console.log('Initializing Google Tag Manager with GTM ID:', weVoteGTMId);
           TagManager.initialize(tagManagerArgs);
+        } else {
+          console.log('Google Tag Manager did not receive a valid GTM ID, NOT ENABLED');
         }
       }, 3000);
     }
