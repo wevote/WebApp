@@ -259,13 +259,13 @@ class App extends Component {
           console.log('Google Analytics did not receive a trackingID, NOT ENABLED');
         }
         const voterWeVoteId = VoterStore.getVoterWeVoteId();
-        ReactGA.gtag('set', 'voter', {
-          weVoteId: voterWeVoteId,
-        });
         const weVoteGTMId = webAppConfig.GOOGLE_ADS_TRACKING_ID === undefined ? '' : webAppConfig.GOOGLE_ADS_TRACKING_ID;
         if (weVoteGTMId) {
           const tagManagerArgs = {
-            gtmId: weVoteGTMId,
+            gtmId: webAppConfig.GOOGLE_TAG_MANAGER_ID,
+            dataLayer: {
+              weVoteId: voterWeVoteId,
+            },
           };
           TagManager.initialize(tagManagerArgs);
         }
