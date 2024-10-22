@@ -96,14 +96,16 @@ const YourRank = ({ classes, challengeWeVoteId }) => {
             id="confettiReward"
             onClick={handleClick}
             classes={{ root: classes.buttonDesktop }}
-            style={{ color: clicked ? '#FFFFFF' : '#AC5204'}}
+            style={{
+              backgroundColor: clicked ? '#AC5204' : 'white',
+              color: clicked ? '#FFFFFF' : '#AC5204' }}
           >
             #
             {rankOfVoter}
             {' '}
-            <span className="arrow">
-              <img src={arrowImage} alt="arrow" classes={{ root: classes.arrow }} />
-            </span>
+            <StyledArrowContainer>
+              <ArrowImg src={arrowImage} alt="arrow"/>
+            </StyledArrowContainer>
           </Button>
         </YourRankButtonWrapper>
       </YourRankInnerWrapper>
@@ -152,15 +154,6 @@ const styles = (theme) => ({
       textDecoration: 'underline',
     },
   },
-  arrow: {
-    width: '10.5px',
-    height: '12.5px',
-    top: '2.75px',
-    left: '14.25px',
-    gap: '0px',
-    opacity: '0px',
-    angle: '-90 deg',
-  },
 });
 
 const YourRankInnerWrapper = styled('div')`
@@ -175,23 +168,40 @@ const YourRankOuterWrapper = styled('div')`
   z-index: 100;
 `;
 
-const YourRankButtonWrapper = styled('div')`
-  background-color: ${(props) => (props.clicked ? '#AC5204' : '#FFFFFF')};
+const YourRankButtonWrapper = styled('div', {
+  shouldForwardProp: (prop) => !['clicked'].includes(prop),
+})(({ clicked }) => `
+  background-color: ${clicked ? DesignTokenColors.orange500 : DesignTokenColors.white};
   width: 105px;
   height: 34px;
-  //top: 443px;
-  //left: 234px;
-  gap: 0px;
+  // top: 443px;
+  // left: 234px;
+  gap: 0;
   border-radius: 20px;
   border: 1px solid #AC5204;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: background-color 0.3s ease, color 0.3s ease;
-`;
+`);
 
 const YourRankText = styled('div')`
   margin-right: 10px;
+`;
+
+const StyledArrowContainer = styled('div')`
+  width: '10.5px',
+  height: '12.5px',
+  top: '2.75px',
+  left: '14.25px',
+  gap: 0,
+  opacity: 0,
+  angle: '-90 deg',
+`;
+
+const ArrowImg = styled('img')`
+  width: 10.5px;
+  height: 12.5px;
 `;
 
 export default withStyles(styles)(YourRank);
