@@ -3,7 +3,7 @@ import React, {useState} from 'react';
 import styled from 'styled-components';
 import { Avatar } from '@mui/material';
 import { withStyles } from '@mui/styles';
-import { RemoveRedEye, CheckCircle, Check, Info, Edit, MoreHoriz } from '@mui/icons-material';
+import { RemoveRedEye, CheckCircle, Check, InfoOutlined, EditOutlined, MoreHoriz } from '@mui/icons-material';
 import DesignTokenColors from '../Style/DesignTokenColors';
 import ConfirmYouSentInviteButton from './ConfirmYouSentInviteButton';
 import InviteAgainButton from './InviteAgainButton';
@@ -79,11 +79,11 @@ const id = open ? 'simple-popover' : undefined;
             }}
           >
             <Typography component="div" style={{ padding: '5px', fontFamily: 'Roboto, sans-serif', fontSize: '14px'}}>
-              <Edit style={{fontSize:"14px", padding: '2px'}}/>
+              <EditOutlined style={{fontSize:"14px", cursor: 'pointer'}}/>
               Edit name & message
             </Typography>
             <Typography onClick={openViewInviteeDetails} component="div" style={{ padding: '5px', fontFamily: 'Roboto, sans-serif', fontSize: '14px' }} >
-              <Info style={{fontSize:"14px", padding: '2px'}}/>
+              <InfoOutlined style={{fontSize:"14px", cursor: 'pointer' }}/>
               View details
             </Typography>
           </Popover>

@@ -22,37 +22,40 @@ const handleClose = () => {
   setAnchorEl(null)
 }
 
-const dialogTitleText = "Title"
+const dialogTitleText = "Jane's Invitation History"
 
 const textFieldJSX = (
+  <InvitationHistoryWrapper>
+    <HorizontalLine/>
       <Table>
           <thead>
             <tr>
-              <Th>STATUS</Th>
-              <Th>DATE</Th>
+              <TableHeader>STATUS</TableHeader>
+              <TableHeader>DATE</TableHeader>
             </tr>
           </thead>
           <tbody>
-            <Tr>
-              <Td>Invitation sent</Td>
-              <Td>Oct 1, 2024 - 11:06 AM</Td>
-            </Tr>
-            <Tr>
-              <Td>Challenge viewed</Td>
-              <Td>Oct 1, 2024 - 4:32 PM</Td>
-            </Tr>
-            <Tr>
-              <Td>Challenge joined</Td>
-              <Td>Oct 1, 2024 - 5:02 PM</Td>
-            </Tr>
+            <TableRow>
+              <ColumnLeft>Invitation sent</ColumnLeft>
+              <ColumnLeft>Oct 1, 2024 - 11:06 AM</ColumnLeft>
+            </TableRow>
+            <TableRow>
+              <ColumnLeft>Challenge viewed</ColumnLeft>
+              <ColumnLeft>Oct 1, 2024 - 4:32 PM</ColumnLeft>
+            </TableRow>
+            <TableRow>
+              <ColumnLeft>Challenge joined</ColumnLeft>
+              <ColumnLeft>Oct 1, 2024 - 5:02 PM</ColumnLeft>
+            </TableRow>
           </tbody>
         </Table>
+  </InvitationHistoryWrapper>
 );
 
 return (
 
   <ModalDisplayTemplateA
-        dialogTitleJSX={dialogTitleText}
+        dialogTitleJSX={<Title>{dialogTitleText}</Title>}
         textFieldJSX={textFieldJSX}
         show={show}
         tallMode
@@ -62,31 +65,31 @@ return (
  }
 
 
+const InvitationHistoryWrapper = styled('div')`
+  white-space: 2px;
+`
+const HorizontalLine = styled('div')`
+  border-top: 1px solid ${DesignTokenColors.neutral300};
+  padding: 0;
+  margin: 0;
 
-// const DialogTitleInnerWrapper = styled('div')`
-//   display: flex;
-//   align-items: center;
-//   justify-content: space-between;
-//   min-height: 18px;
-// `;
-
-
-// const Title = styled('div')`
-//   font-size: 16px;
-//   font-weight: bold;
-//   margin: 0;
-//   margin-top: 2px;
-//   text-align: left;
-//   padding-left: 16px;
-//   border-bottom: 1px solid ${DesignTokenColors.neutral300}
-// `;
+`
+const Title = styled('div')`
+  font-size: 16px;
+  font-weight: bold;
+  margin: 0;
+  margin-top: 2px;
+  padding-bottom: 8px;
+  text-align: center;
+`;
 
 const Table = styled('table')`
   width: 100%;
   border-collapse: collapse;
+  border-top: 1px solid ${DesignTokenColors.neutral300};
 `;
 
-const Th = styled('th')`
+const TableHeader = styled('th')`
   text-align: left;
   color: ${DesignTokenColors.neutral900};
   font-size: 10px;
@@ -96,7 +99,7 @@ const Th = styled('th')`
   }
 `;
 
-const Tr = styled('tr')`
+const TableRow = styled('tr')`
   background-color: white;
   &:last-child {
     td {
@@ -104,7 +107,7 @@ const Tr = styled('tr')`
     }
 `;
 
-const Td = styled('td')`
+const ColumnLeft = styled('td')`
   color: ${DesignTokenColors.neutral900};
   font-size: 14px;
   padding-bottom: 5px;
@@ -114,6 +117,8 @@ const Td = styled('td')`
     text-align: right;
   }
 `;
+
+
 export default withTheme(withStyles(templateAStyles)(ViewInviteeDetails));
 
 
