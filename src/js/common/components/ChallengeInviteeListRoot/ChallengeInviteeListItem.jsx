@@ -79,11 +79,11 @@ const id = open ? 'simple-popover' : undefined;
             }}
           >
             <Typography component="div" style={{ padding: '5px', fontFamily: 'Roboto, sans-serif', fontSize: '14px'}}>
-              <Edit style={{fontSize:"14px"}}/>
+              <Edit style={{fontSize:"14px", padding: '2px'}}/>
               Edit name & message
             </Typography>
             <Typography onClick={openViewInviteeDetails} component="div" style={{ padding: '5px', fontFamily: 'Roboto, sans-serif', fontSize: '14px' }} >
-              <Info style={{fontSize:"14px"}}/>
+              <Info style={{fontSize:"14px", padding: '2px'}}/>
               View details
             </Typography>
           </Popover>

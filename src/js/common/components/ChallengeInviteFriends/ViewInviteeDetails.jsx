@@ -6,7 +6,6 @@ import { Dialog, DialogContent, DialogTitle, DialogActions, Typography, IconButt
 import { Close } from '@mui/icons-material';
 import React, { Component, useState } from 'react';
 import DesignTokenColors from '../Style/DesignTokenColors';
-
 import ModalDisplayTemplateA, { templateAStyles, TextFieldWrapper } from '../../../components/Widgets/ModalDisplayTemplateA';
 import { renderLog } from '../../utils/logging';
 import stringContains from '../../utils/stringContains';
@@ -18,35 +17,14 @@ import { isAndroid, isCordova } from '../../utils/isCordovaOrWebApp';
 
 const ViewInviteeDetails = ({show, setShow, setAnchorEl}) => {
 
-  const handleClose = () => {
-    setShow(false)
-    setAnchorEl(null)}
+const handleClose = () => {
+  setShow(false)
+  setAnchorEl(null)
+}
 
+const dialogTitleText = "Title"
 
-// const textFieldJSX = ""
-
-return (
-  <Dialog
-    open={show}
-    aria-label="view-invitee-details-modal"
-    onClose={handleClose}
-    style={{paddingTop: `${isCordova() ? '75px' : 'undefined'}` } }
-  >
-    <DialogTitle id="customized-dialog-title">
-      <DialogTitleInnerWrapper>
-        <Title>
-      Jane's invitation history
-        </Title>
-     <IconButton
-        aria-label="close"
-        onClick={handleClose}
-        size="large"
-        sx={{ marginLeft: 'auto' }}>
-       <Close />
-     </IconButton>
-     </DialogTitleInnerWrapper>
-    </DialogTitle>
-    <DialogContent dividers>
+const textFieldJSX = (
       <Table>
           <thead>
             <tr>
@@ -69,29 +47,39 @@ return (
             </Tr>
           </tbody>
         </Table>
-    </DialogContent>
-  </Dialog>
 );
-}
+
+return (
+
+  <ModalDisplayTemplateA
+        dialogTitleJSX={dialogTitleText}
+        textFieldJSX={textFieldJSX}
+        show={show}
+        tallMode
+        toggleModal={handleClose}
+      />
+     );
+ }
 
 
 
+// const DialogTitleInnerWrapper = styled('div')`
+//   display: flex;
+//   align-items: center;
+//   justify-content: space-between;
+//   min-height: 18px;
+// `;
 
-const DialogTitleInnerWrapper = styled('div')`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  min-height: 18px;
-`;
 
-const Title = styled('div')`
-  font-size: 16px;
-  font-weight: bold;
-  margin: 0;
-  margin-top: 2px;
-  text-align: left;
-  padding-left: 16px;
-`;
+// const Title = styled('div')`
+//   font-size: 16px;
+//   font-weight: bold;
+//   margin: 0;
+//   margin-top: 2px;
+//   text-align: left;
+//   padding-left: 16px;
+//   border-bottom: 1px solid ${DesignTokenColors.neutral300}
+// `;
 
 const Table = styled('table')`
   width: 100%;
@@ -268,45 +256,7 @@ export default withTheme(withStyles(templateAStyles)(ViewInviteeDetails));
 //   //   });
 //   // }
 //
-//   render () {
-//     renderLog('ViewInviteeDetails');  // Set LOG_RENDER_EVENTS to log all renders
-//     // const { ballotItemWeVoteId } = this.props;
-//     const { show } = this.props;
-//     // console.log('ViewInviteeDetails render, ballotItemWeVoteId: ', ballotItemWeVoteId, ', show: ', show);
-//     const {
-//       // ballotItemDisplayName,
-//       campaignXWeVoteId,
-//       // voterOpposesBallotItem, voterSupportsBallotItem,
-//     } = this.state;
-//
-//     // const horizontalEllipsis = '\u2026';
-//     let dialogTitleText = '';
-//
-//     // if (voterSupportsBallotItem) {
-//     //   if (ballotItemDisplayName) {
-//     //     dialogTitleText = `Why you chose ${ballotItemDisplayName}${horizontalEllipsis}`;
-//     //   } else {
-//     //     dialogTitleText = `Why you support${horizontalEllipsis}`;
-//     //   }
-//     // } else if (voterOpposesBallotItem) {
-//     //   if (ballotItemDisplayName) {
-//     //     dialogTitleText = `Why you oppose ${ballotItemDisplayName}${horizontalEllipsis}`;
-//     //   } else {
-//     //     dialogTitleText = `Why you oppose${horizontalEllipsis}`;
-//     //   }
-//     // } else if (ballotItemDisplayName) {
-//     //   dialogTitleText = `Your thoughts about ${ballotItemDisplayName}${horizontalEllipsis}`;
-//     // } else {
-//     //   dialogTitleText = `Your thoughts${horizontalEllipsis}`;
-//     // }
-//     dialogTitleText = ''; // Overwrite until we can adjust
-//
-//     // console.log('ViewInviteeDetails render, voter_address_object: ', voter_address_object);
-//     const textFieldJSX = (
-//       <TextFieldWrapper>
-//         Text
-//       </TextFieldWrapper>
-//     );
+
 //
 //     return (
 //       <Dialog
@@ -347,3 +297,56 @@ export default withTheme(withStyles(templateAStyles)(ViewInviteeDetails));
 //   show: PropTypes.bool,
 //   toggleModal: PropTypes.func.isRequired,
 // };
+
+
+
+
+
+//   <Dialog
+//     open={show}
+//     aria-label="view-invitee-details-modal"
+//     onClose={handleClose}
+//     style={{paddingTop: `${isCordova() ? '75px' : 'undefined'}` } }
+//   >
+//     <DialogTitle id="customized-dialog-title">
+//       <DialogTitleInnerWrapper>
+//         <Title>
+//       Jane's invitation history
+//         </Title>
+//      <IconButton
+//         aria-label="close"
+//         onClick={handleClose}
+//         size="large"
+//         sx={{ marginLeft: 'auto' }}>
+//        <Close />
+//      </IconButton>
+//      </DialogTitleInnerWrapper>
+//     </DialogTitle>
+//     <DialogContent dividers>
+//       <Table>
+//           <thead>
+//             <tr>
+//               <Th>STATUS</Th>
+//               <Th>DATE</Th>
+//             </tr>
+//           </thead>
+//           <tbody>
+//             <Tr>
+//               <Td>Invitation sent</Td>
+//               <Td>Oct 1, 2024 - 11:06 AM</Td>
+//             </Tr>
+//             <Tr>
+//               <Td>Challenge viewed</Td>
+//               <Td>Oct 1, 2024 - 4:32 PM</Td>
+//             </Tr>
+//             <Tr>
+//               <Td>Challenge joined</Td>
+//               <Td>Oct 1, 2024 - 5:02 PM</Td>
+//             </Tr>
+//           </tbody>
+//         </Table>
+//     </DialogContent>
+//   </Dialog>
+
+
+
