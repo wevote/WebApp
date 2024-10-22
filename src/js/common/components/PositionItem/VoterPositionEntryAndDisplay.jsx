@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { ThumbDownAltRounded } from '@mui/icons-material';
+import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import { Popover } from '@mui/material';
 import DesignTokenColors from '../Style/DesignTokenColors';
 
@@ -20,8 +21,12 @@ function VoterPositionEntryAndDisplay () {
   const opinion = {
     opinion_body: 'Holly can get the job done',
     opinion_time_created: new Date(),
-    opinion_likes: [],
-    opinion_dislike: [],
+    opinion_likes: ['Blair H', 'Malena H', 'Anusha K', 'Ayobami B', 'Blair H', 'Blair H', 'Blair H', 'Blair H', 'Blair H', 'Blair H', 'Blair H', 'Blair H', 'Blair H', 'Blair H', 'Blair H', 'Blair H', 'Blair H', 'Blair H'],
+    opinion_dislikes: ['Enrique C'],
+  };
+
+  const handleVoterEditClick = () => {
+    console.log('Edit voter logic will go here');
   };
 
   const formatNewDate = (date) => new Intl.DateTimeFormat('en-US', { month: '2-digit', day: 'numeric', year: '2-digit' }).format(date);
@@ -41,6 +46,26 @@ function VoterPositionEntryAndDisplay () {
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
 
+  const formatLikesDislikes = (arr) => {
+    if (arr.length > 4) {
+      const firstFourNames = arr.slice(0, 4).join(', ');
+      const remainder = arr.length - 4;
+      return (
+        <p>
+          {firstFourNames}
+          {' '}
+          and
+          {' '}
+          {remainder}
+          {' '}
+          others
+        </p>
+      );
+    } else {
+      return <p>{arr.join(', ')}</p>;
+    }
+  };
+
   return (
     <VoterPositionContainer>
       <VoterAvatarDisplayContainer>
@@ -58,7 +83,7 @@ function VoterPositionEntryAndDisplay () {
               </>
             )}
         </VoterAvatar>
-        <VoterEdit>
+        <VoterEdit onClick={handleVoterEditClick}>
           <EditIcon />
         </VoterEdit>
       </VoterAvatarDisplayContainer>
@@ -85,9 +110,18 @@ function VoterPositionEntryAndDisplay () {
                 anchorEl={anchorEl}
                 onClose={handleEditCommentClose}
                 anchorReference="anchorPosition"
-                anchorPosition={{ top: 20, left: 290 }}
+                anchorPosition={{ top: 0, left: 220 }}
               >
-                <p>The popover is open</p>
+                <EditDeleteCommentContainer>
+                  <EditCommentClick type="button">
+                    <EditIconLrg />
+                    Edit opinion
+                  </EditCommentClick>
+                  <DeleteCommentClick type="button">
+                    <DeleteIcon />
+                    Delete opinion
+                  </DeleteCommentClick>
+                </EditDeleteCommentContainer>
               </Popover>
             </CommentDetailsContainer>
             <CommentLikeDislikeContainer>
@@ -95,10 +129,18 @@ function VoterPositionEntryAndDisplay () {
                 <CommentLikeIconContainer>
                   <CommentLikeIcon />
                 </CommentLikeIconContainer>
+                <CommentLikesDislikesNamesContainer>
+                  {formatLikesDislikes(opinion.opinion_likes)}
+                </CommentLikesDislikesNamesContainer>
               </CommentLikeContainer>
-              <CommentDislikeIconContainer>
-                <CommentDislikeIcon />
-              </CommentDislikeIconContainer>
+              <CommentDislikeContainer>
+                <CommentDislikeIconContainer>
+                  <CommentDislikeIcon />
+                </CommentDislikeIconContainer>
+                <CommentLikesDislikesNamesContainer>
+                  {formatLikesDislikes(opinion.opinion_dislikes)}
+                </CommentLikesDislikesNamesContainer>
+              </CommentDislikeContainer>
             </CommentLikeDislikeContainer>
           </VoterOpinionContainer>
         ) :
@@ -228,6 +270,53 @@ const EditCommentPopoverClick = styled('button')`
   }
 `;
 
+const EditDeleteCommentContainer = styled('div')`
+  display: flex;
+  flex-direction: column;
+`;
+
+const EditCommentClick = styled('button')`
+  background-color: white;
+  color: ${DesignTokenColors.neutral900};
+  border-radius: 5px 5px 0 0;
+  border: 1px solid ${DesignTokenColors.neutral100};
+  width: 201px;
+  height: 42px;
+  text-align: left;
+  font-size: 16px;
+
+  &:hover {
+    background-color: ${DesignTokenColors.neutral100};
+  }
+`;
+
+const EditIconLrg = styled(CreateOutlinedIcon)`
+  margin: 0 5px 0 10px;
+  color: ${DesignTokenColors.neutral400};
+`;
+
+const DeleteCommentClick = styled('button')`
+  background-color: white;
+  color: ${DesignTokenColors.neutral900};
+  border-radius: 0 0 5px 5px;
+  border-top: none;
+  border-right: 1px solid ${DesignTokenColors.neutral100};
+  border-bottom: 1px solid ${DesignTokenColors.neutral100};
+  border-left: 1px solid ${DesignTokenColors.neutral100};
+  width: 201px;
+  height: 42px;
+  text-align: left;
+
+  &:hover {
+    background-color: ${DesignTokenColors.neutral100};
+  }
+`;
+
+const DeleteIcon = styled(DeleteOutlinedIcon)`
+  margin: 0 5px 0 10px;
+  color: ${DesignTokenColors.neutral400};
+`;
+
 const ThreeDotsIcon = styled(MoreHorizIcon)`
   color: ${DesignTokenColors.neutral400}
 `;
@@ -251,11 +340,18 @@ const LeaveOpinionText = styled('span')`
 const CommentLikeDislikeContainer = styled('div')`
   display: flex;
   flex-direction: column;
+  margin-top: 5px;
 `;
 
 const CommentLikeContainer = styled('div')`
   display: flex;
-  margin-bottom: 8px;
+  cursor: pointer;
+`;
+
+const CommentDislikeContainer = styled('div')`
+  display: flex;
+  cursor: pointer;
+  margin: -5px 0 -15px 0;
 `;
 
 const CommentLikeIconContainer = styled('div')`
@@ -272,6 +368,12 @@ const CommentLikeIconContainer = styled('div')`
 const CommentLikeIcon = styled(ThumbDownAltRounded)`
   transform: rotate(180deg) scale(.75);
   color: white;
+`;
+
+const CommentLikesDislikesNamesContainer = styled('div')`
+  display: flex;
+  font-size: 12px;
+  margin-left: 5px;
 `;
 
 const CommentDislikeIconContainer = styled('div')`
