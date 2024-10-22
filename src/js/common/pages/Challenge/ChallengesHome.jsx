@@ -331,7 +331,9 @@ class ChallengesHome extends Component {
             clearSearchFunction={this.clearSearchFunction}
             searchFunction={this.searchFunction}
           />
-          <WhatIsHappeningSection useMinimumHeight={!!(numberOfChallengeResults)}>
+          <WhatIsHappeningSection
+            useMinimumHeight={!!(numberOfChallengeResults)}
+          >
             <Suspense fallback={<span>&nbsp;</span>}>
               <ChallengeListRoot
                 hideChallengesLinkedToPoliticians
@@ -439,6 +441,7 @@ ChallengesHome.propTypes = {
 };
 
 const ChallengesHomeWrapper = styled('div')`
+  padding-bottom: 60px;
   padding-top: ${isAndroid() ? '30px' : ''};
 `;
 

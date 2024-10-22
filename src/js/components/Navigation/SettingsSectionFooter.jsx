@@ -73,9 +73,9 @@ class SettingsSectionFooter extends Component {
     return (
       <Wrapper>
         <OneRow centered={centered}>
-          <span className="u-cursor--pointer u-link-color-on-hover" onClick={this.openHowItWorksModal}><TermsAndPrivacyText>How&nbsp;It&nbsp;Works</TermsAndPrivacyText></span>
+          <span className="u-cursor--pointer u-link-color-on-hover" onClick={this.openHowItWorksModal}><TermsAndPrivacyText id = "footerLinkHowItWorks">How&nbsp;It&nbsp;Works</TermsAndPrivacyText></span>
           <span style={{ paddingLeft: 15 }} />
-          <Link to="/more/faq"><TermsAndPrivacyText>About&nbsp;&amp;&nbsp;FAQ</TermsAndPrivacyText></Link>
+          <Link to="/more/faq"><TermsAndPrivacyText id = "footerLinkAbout&FAQ">About&nbsp;&amp;&nbsp;FAQ</TermsAndPrivacyText></Link>
         </OneRow>
         <OneRow centered={centered}>
           <OpenExternalWebSite
@@ -87,9 +87,9 @@ class SettingsSectionFooter extends Component {
             )}
           />
           <span style={{ paddingLeft: 15 }} />
-          <Link to="/privacy"><TermsAndPrivacyText>Privacy</TermsAndPrivacyText></Link>
+          <Link to="/privacy"><TermsAndPrivacyText id = "footerLinkPrivacy">Privacy</TermsAndPrivacyText></Link>
           <span style={{ paddingLeft: 15 }} />
-          <Link to="/more/terms"><TermsAndPrivacyText>Terms</TermsAndPrivacyText></Link>
+          <Link to="/more/terms"><TermsAndPrivacyText id = "footerLinkTerms">Terms</TermsAndPrivacyText></Link>
         </OneRow>
         <OneRow centered={centered}>
           {(isWebApp() && !inPrivateLabelMode) && (
@@ -122,7 +122,7 @@ class SettingsSectionFooter extends Component {
           )}
         </OneRow>
         {(isCordova() || !inPrivateLabelMode) && (
-          <DoesNotSupport centered={centered}>
+          <DoesNotSupport centered={centered} id = "profileSideBarText">
             WeVote does not support or oppose any political candidate or party.
           </DoesNotSupport>
         )}

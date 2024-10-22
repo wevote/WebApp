@@ -1,20 +1,17 @@
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
-import React, { Suspense } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-// import TruncateMarkup from 'react-truncate-markup';
 import styled from 'styled-components';
+import TruncateMarkup from 'react-truncate-markup';
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import { renderLog } from '../../utils/logging';
-// import numberWithCommas from '../../utils/numberWithCommas';
-// import ChallengeOwnersList from '../ChallengeInviteeListRoot/ChallengeOwnersList';
 import {
   ChallengeImageDesktop,
   ChallengeImageDesktopPlaceholder,
   ChallengeImageMobile,
   ChallengeImageMobilePlaceholder,
   ChallengeImagePlaceholderText,
-  CandidateCardForListWrapper,
   OneChallengeInnerWrapper,
   OneChallengeOuterWrapper,
   OneChallengePhotoDesktopColumn,
@@ -33,12 +30,11 @@ import JoinedAndDaysLeft from '../Challenge/JoinedAndDaysLeft';
 function ChallengeCardForListBody (props) {
   renderLog('ChallengeCardForListBody');  // Set LOG_RENDER_EVENTS to log all renders
   const {
-    challengeDescription, challengeSupported, challengeTitle, challengeWeVoteId,
-    hideCardMargins, inDraftMode, joinedAndDaysLeftOff, functionToUseToKeepHelping, functionToUseWhenProfileComplete,
-    limitCardWidth, onChallengeClick, onChallengeClickLink, onChallengeEditClick,
+    challengeTitle, challengeWeVoteId,
+    hideCardMargins, inDraftMode, joinedAndDaysLeftOff,
+    limitCardWidth, onChallengeClick, onChallengeClickLink,
     photoLargeUrl, profileImageBackgroundColor,
-    participantsCount, participantsCountNextGoalWithFloor, tagIdBaseName, useVerticalCard,
-    voterCanEditThisChallenge,
+    tagIdBaseName, titleLengthRestricted, titleLinkOff, useVerticalCard,
   } = props;
   const politicalPartySvgNameWithPath = '../../img/global/svg-icons/political-party-unspecified.svg';
   // console.log('ChallengeCardForListBody functional component photoLargeUrl:', photoLargeUrl);
@@ -54,85 +50,50 @@ function ChallengeCardForListBody (props) {
           <OneChallengeTextColumn hideCardMargins={hideCardMargins}>
             <TitleAndTextWrapper hideCardMargins={hideCardMargins}>
               <OneChallengeTitleLink>
-                <Link
-                  id="challengeCardDisplayName"
-                  to={onChallengeClickLink()}
-                >
-                  {challengeTitle}
-                </Link>
-              </OneChallengeTitleLink>
-              {/*
-              <SupportersWrapper>
-                <SupportersCount>
-                  {numberWithCommas(participantsCount)}
-                  {' '}
-                  {participantsCount === 1 ? 'participant.' : 'participants.'}
-                </SupportersCount>
-                {' '}
-                {challengeSupported ? (
-                  <SupportersActionLink>
-                    Thank you for supporting!
-                  </SupportersActionLink>
+                {titleLinkOff ? (
+                  <>
+                    {titleLengthRestricted ? (
+                      <TruncateMarkup
+                        ellipsis="..."
+                        lines={2}
+                        tokenize="words"
+                      >
+                        <span>
+                          {challengeTitle}
+                        </span>
+                      </TruncateMarkup>
+                    ) : (
+                      <span>
+                        {challengeTitle}
+                      </span>
+                    )}
+                  </>
                 ) : (
-                  <SupportersActionLink
-                    className="u-link-color u-link-underline u-cursor--pointer"
-                    id="challengeCardLetsGetTo"
-                    onClick={onChallengeClick}
+                  <Link
+                    id="challengeCardDisplayName"
+                    to={onChallengeClickLink()}
                   >
-                    Let&apos;s get to
-                    {' '}
-                    {numberWithCommas(participantsCountNextGoalWithFloor)}
-                    !
-                  </SupportersActionLink>
+                    <span>
+                      {titleLengthRestricted ? (
+                        <TruncateMarkup
+                          ellipsis="..."
+                          lines={2}
+                          tokenize="words"
+                        >
+                          <span>
+                            {challengeTitle}
+                          </span>
+                        </TruncateMarkup>
+                      ) : (
+                        <span>
+                          {challengeTitle}
+                        </span>
+                      )}
+                    </span>
+                  </Link>
                 )}
-              </SupportersWrapper>
-              <OneChallengeDescription
-                className="u-cursor--pointer"
-                id="challengeCardDescription"
-                onClick={onChallengeClick}
-              >
-                <TruncateMarkup
-                  ellipsis="..."
-                  lines={2}
-                  tokenize="words"
-                >
-                  <div>
-                    {challengeDescription}
-                  </div>
-                </TruncateMarkup>
-              </OneChallengeDescription>
-              */}
-              {/*
-              <ChallengeOwnersWrapper>
-                <ChallengeOwnersList challengeWeVoteId={challengeWeVoteId} compressedMode />
-              </ChallengeOwnersWrapper>
-              */}
+              </OneChallengeTitleLink>
             </TitleAndTextWrapper>
-            {/*
-            <IndicatorRow>
-              {finalElectionDateInPast && (
-                <IndicatorButtonWrapper>
-                  <ElectionInPast>
-                    Election in Past
-                  </ElectionInPast>
-                </IndicatorButtonWrapper>
-              )}
-              {isBlockedByWeVote && (
-                <IndicatorButtonWrapper>
-                  <BlockedIndicator onClick={this.onChallengeEditClick}>
-                    Blocked: Changes Needed
-                  </BlockedIndicator>
-                </IndicatorButtonWrapper>
-              )}
-              {!!(!inDraftMode && !isSupportersCountMinimumExceeded && !inPrivateLabelMode) && (
-                <IndicatorButtonWrapper onClick={this.onChallengeGetMinimumSupportersClick}>
-                  <DraftModeIndicator>
-                    Needs Five Supporters
-                  </DraftModeIndicator>
-                </IndicatorButtonWrapper>
-              )}
-            </IndicatorRow>
-            */}
             <IndicatorRow>
               {inDraftMode && (
                 <IndicatorDefaultButtonWrapper onClick={onChallengeClick}>
@@ -141,60 +102,6 @@ function ChallengeCardForListBody (props) {
                   </DraftModeIndicator>
                 </IndicatorDefaultButtonWrapper>
               )}
-              {/*
-              {!visibleOnThisSite && (
-                <IndicatorButtonWrapper>
-                  <DraftModeIndicator>
-                    <span className="u-show-mobile">
-                      Not Visible
-                    </span>
-                    <span className="u-show-desktop-tablet">
-                      Not Visible On This Site
-                    </span>
-                  </DraftModeIndicator>
-                </IndicatorButtonWrapper>
-              )}
-              {isInTeamReviewMode && (
-                <IndicatorButtonWrapper>
-                  <DraftModeIndicator onClick={this.onChallengeEditClick}>
-                    <span className="u-show-mobile">
-                      Team Reviewing
-                    </span>
-                    <span className="u-show-desktop-tablet">
-                      Team Still Reviewing
-                    </span>
-                  </DraftModeIndicator>
-                </IndicatorButtonWrapper>
-              )}
-              */}
-              {/*
-              {voterCanEditThisChallenge && (
-                <IndicatorButtonWrapper>
-                  <EditIndicator onClick={onChallengeEditClick}>
-                    <span className="u-show-mobile">
-                      Edit
-                    </span>
-                    <span className="u-show-desktop-tablet">
-                      Edit Challenge
-                    </span>
-                  </EditIndicator>
-                </IndicatorButtonWrapper>
-              )}
-              */}
-              {/*
-              {(challengeSupported && !inDraftMode) && (
-                <IndicatorButtonWrapper>
-                  <EditIndicator onClick={this.onChallengeShareClick}>
-                    <span className="u-show-mobile">
-                      Share
-                    </span>
-                    <span className="u-show-desktop-tablet">
-                      Share Challenge
-                    </span>
-                  </EditIndicator>
-                </IndicatorButtonWrapper>
-              )}
-            */}
             </IndicatorRow>
           </OneChallengeTextColumn>
           <OneChallengePhotoWrapperMobile
@@ -313,23 +220,19 @@ function ChallengeCardForListBody (props) {
   );
 }
 ChallengeCardForListBody.propTypes = {
-  challengeSupported: PropTypes.bool,
   challengeTitle: PropTypes.string,
   challengeWeVoteId: PropTypes.string,
-  challengeDescription: PropTypes.string,
   inDraftMode: PropTypes.bool,
   hideCardMargins: PropTypes.bool,
   joinedAndDaysLeftOff: PropTypes.bool,
   limitCardWidth: PropTypes.bool,
-  functionToUseToKeepHelping: PropTypes.func,
-  functionToUseWhenProfileComplete: PropTypes.func,
   onChallengeClick: PropTypes.func,
   onChallengeClickLink: PropTypes.func,
   photoLargeUrl: PropTypes.string,
   profileImageBackgroundColor: PropTypes.string,
-  participantsCount: PropTypes.number,
-  participantsCountNextGoalWithFloor: PropTypes.number,
   tagIdBaseName: PropTypes.string,
+  titleLengthRestricted: PropTypes.bool,
+  titleLinkOff: PropTypes.bool,
   useVerticalCard: PropTypes.bool,
 };
 
@@ -341,34 +244,24 @@ const styles = (theme) => ({
     },
   },
 });
+
 const ChallengeImageContainer = styled('div')`
   position: relative;
   width: 100%;
   height: auto;
 `;
+
 const JoinedDaysLeftOverlayMobile = styled('div')`
   position: absolute;
   top: 130px;
   left: 10px;
-  `;
+`;
+
 const JoinedDaysLeftOverlayDesktop = styled('div')`
   position: absolute;
   top: 175px;
   left: 10px;
-// const ChallengeOwnersWrapper = styled('div')`
-// `;
-
-// export const FlexDivLeft = styled('div')`
-//   align-items: center;
-//   display: flex;
-//   justify-content: start;
-// `;
-
-// export const SvgImageWrapper = styled('div')`
-//   max-width: 25px;
-//   min-width: 25px;
-//   width: 25px;
-// `;
+`;
 
 export const SvgWatermarkWrapper = styled('div')`
 `;

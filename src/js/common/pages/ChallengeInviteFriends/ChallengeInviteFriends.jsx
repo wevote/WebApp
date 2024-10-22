@@ -173,7 +173,7 @@ class ChallengeInviteFriends extends Component {
   }
 
   goToChallengeHome = () => {
-    historyPush(this.getChallengeBasePath());
+    historyPush(`${this.getChallengeBasePath()}leaderboard`);
   }
 
   render () {
@@ -214,12 +214,10 @@ class ChallengeInviteFriends extends Component {
             </ContentInnerWrapperDefault>
           </ContentOuterWrapperDefault>
         </PageWrapperDefault>
-        {inviteeList.length > 0 && (
-          <InvitedFriendsWrapper>
-            <YourRank challengeSEOFriendlyPath={challengeSEOFriendlyPath} challengeWeVoteId={challengeWeVoteId} />
-            <ChallengeInviteeListRoot challengeWeVoteId={challengeWeVoteId} hideRank />
-          </InvitedFriendsWrapper>
-        )}
+        <InvitedFriendsWrapper>
+          <YourRank challengeSEOFriendlyPath={challengeSEOFriendlyPath} challengeWeVoteId={challengeWeVoteId} />
+          <ChallengeInviteeListRoot challengeWeVoteId={challengeWeVoteId} hideRank />
+        </InvitedFriendsWrapper>
         <Suspense fallback={<span>&nbsp;</span>}>
           <ChallengeRetrieveController challengeSEOFriendlyPath={challengeSEOFriendlyPath} challengeWeVoteId={challengeWeVoteId} />
         </Suspense>

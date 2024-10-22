@@ -1,11 +1,11 @@
+import { DialogTitle } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import DesignTokenColors from '../Style/DesignTokenColors';
-import ModalDisplayTemplateA, { templateAStyles, TextFieldWrapper } from '../../../components/Widgets/ModalDisplayTemplateA';
-import { DialogTitle, DialogTitleText } from '@mui/material';
+import ModalDisplayTemplateA, { templateAStyles } from '../../../components/Widgets/ModalDisplayTemplateA';
 import { renderLog } from '../../utils/logging';
 
 class PointsExplanationModal extends Component {
@@ -17,7 +17,8 @@ class PointsExplanationModal extends Component {
   }
 
   toggleTerms = () => {
-    this.setState({ showTerms: !this.state.showTerms });
+    const { showTerms } = this.state;
+    this.setState({ showTerms: !showTerms });
   };
 
   render() {
@@ -102,26 +103,26 @@ class PointsExplanationModal extends Component {
                   </ContestTermDiv>
                 </FlexDivLeft>
               </CardForListRow>
-              <Ul>
-                <li>Sponsor: WeVote USA</li>
+              <StyledUnorderedList>
+                <li>Sponsor: We Vote USA</li>
                 <li>Eligibility: Open to residents of the USA who are 18 years or older.</li>
                 <li>Entry Period: see challenge homepage</li>
-                <li>How to Enter: To enter, simply [Describe entry method].</li>
-                <li>Price: One lucky winner will receive [Price Description].</li>
+                <li>How to Enter: To enter, simply click the Join Challenge button.</li>
+                <li>Prize: No prizes are given by We Vote USA.</li>
                 <li>Odds of Winning: Odds of winning depend on the number of eligible entries received.</li>
                 <li>No Purchase necessary: No purchase is necessary to enter or win.</li>
-                <li>Alternative Method of Entry: To enter without purchasing, send a handwritten letter to [Address].</li>
+                {/* <li>Alternative Method of Entry: To enter without purchasing, send a handwritten letter to [Address].</li> */}
                 <li>Taxes: Winner is responsible for all applicable taxes.</li>
                 <li>Winner Notification: Winners will be notified by email or phone.</li>
-                <li>Rules and Regulations: For a complete set of rules, please visit [Link to Rules].</li>
-              </Ul>
+                {/* <li>Rules and Regulations: For a complete set of rules, please visit [Link to Rules].</li> */}
+              </StyledUnorderedList>
             </>
           )}
-      </CardRowsWrapper>
+        </CardRowsWrapper>
       </PointsWrapper>
 
     );
-    
+
     return (
       <ModalDisplayTemplateA
         dialogTitleJSX={<DialogTitle>{dialogTitleText}</DialogTitle>}
@@ -133,19 +134,10 @@ class PointsExplanationModal extends Component {
     );
   }
 }
-
 PointsExplanationModal.propTypes = {
   show: PropTypes.bool.isRequired,
   toggleModal: PropTypes.func.isRequired,
 };
-
-const styles = () => ({
-  howToVoteRoot: {
-    color: '#999',
-    height: 18,
-    width: 18,
-  },
-});
 
 const PointsWrapper = styled('div')`
   white-space: normal;
@@ -157,14 +149,14 @@ export const CardRowsWrapper = styled('div')`
 
 export const CardForListRow = styled('div')`
   color: ${DesignTokenColors.neutral900};
-  font-size: 12px;
+  //font-size: 12px;
   line-height: 1.5;
   padding-bottom: 8px;
 
   &:First-child {
     border-bottom: 1px solid ${DesignTokenColors.neutral300};
   }
-  
+
   &:nth-child(2) {
     padding-top: 8px;
   }
@@ -177,21 +169,20 @@ export const FlexDivLeft = styled('div')`
 `;
 
 export const HowWeCalculateDiv = styled('div')`
-  font-size: 10px;
-
+  //font-size: 10px;
 `;
 
 export const AtTheEndDiv = styled('div')`
   font-weight: bold;
-  font-size: 10px;
+  //font-size: 10px;
 `;
 
 export const HowYouEarnPointsDiv = styled('div')`
-  font-size: 12px;
+  //font-size: 12px;
 `;
 
 export const ViewContestTermsDiv = styled('div')`
-  font-size: 8px;
+  //font-size: 8px;
 `;
 
 const Table = styled('table')`
@@ -202,7 +193,7 @@ const Table = styled('table')`
 const Th = styled('th')`
   text-align: left;
   color: ${DesignTokenColors.neutral900};
-  font-size: 8px;
+  //font-size: 8px;
   padding-top: 8px;
 
   &:nth-child(2) {
@@ -211,7 +202,7 @@ const Th = styled('th')`
 `;
 
 const Tr = styled('tr')`
-  background-color: white; 
+  background-color: white;
 
   &:last-child {
     td {
@@ -221,7 +212,7 @@ const Tr = styled('tr')`
 
 const Td = styled('td')`
   color: ${DesignTokenColors.neutral900};
-  font-size: 10px;
+  //font-size: 10px;
   padding: 2px;
   border-bottom: 1px solid ${DesignTokenColors.neutral300};
 
@@ -231,17 +222,15 @@ const Td = styled('td')`
 `;
 
 const ViewContestTermsLink = styled('span')`
-  color: ${DesignTokenColors.accent500}; 
+  color: ${DesignTokenColors.accent500};
   cursor: pointer;
-  text-decoration: underline; 
+  text-decoration: underline;
 `;
 
 export const ContestTermDiv = styled('div')`
-  font-size: 12px;
 `;
 
-const Ul = styled('ul')`
-  font-size: 10px;
+const StyledUnorderedList = styled('ul')`
   line-height: 1.5;
   text-align: left;
   padding-left: 10px;

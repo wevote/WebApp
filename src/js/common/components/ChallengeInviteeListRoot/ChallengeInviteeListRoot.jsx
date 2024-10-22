@@ -87,10 +87,9 @@ const ChallengeInviteeListRoot = ({ challengeWeVoteId, hideRank }) => {
             </RankDetails>
           </RankContainer>
         )}
-        <FirendsTableHeader>
-          <HeaderItem>FRIENDS NAME</HeaderItem>
-          <HeaderItem>STATUS</HeaderItem>
-        </FirendsTableHeader>
+        <FriendsTableHeader>
+          Invited Friends
+        </FriendsTableHeader>
       </Heading>
       <ChallengeInviteeList
         challengeWeVoteId={challengeWeVoteId}
@@ -130,17 +129,11 @@ const Heading = styled.div`
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 `;
 
-const FirendsTableHeader = styled('div')`
-  display: flex;
-  justify-content: space-between;
+const FriendsTableHeader = styled('div')`
   width: 80%;
-  font-weight: bold;
-  font-size: 12px;
-  color: #333;
-`;
-
-const HeaderItem = styled.p`
-  margin: 0;  /* Reset default margins */
+  font-size: 18px;
+  color: ${DesignTokenColors.neutral900}; /* Default color */
+  padding: 0 10px;
 `;
 
 const RankContainer = styled.p`
