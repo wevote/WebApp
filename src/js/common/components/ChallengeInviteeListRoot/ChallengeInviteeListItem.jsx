@@ -1,28 +1,28 @@
 import PropTypes from 'prop-types';
-import React, {useState} from 'react';
+import withTheme from '@mui/styles/withTheme';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Avatar } from '@mui/material';
 import { withStyles } from '@mui/styles';
 import { RemoveRedEye, CheckCircle, Check, InfoOutlined, EditOutlined, MoreHoriz } from '@mui/icons-material';
+import Popover from '@mui/material/Popover';
+import Typography from '@mui/material/Typography';
 import DesignTokenColors from '../Style/DesignTokenColors';
 import ConfirmYouSentInviteButton from './ConfirmYouSentInviteButton';
 import InviteAgainButton from './InviteAgainButton';
 import speakerDisplayNameToInitials from '../../utils/speakerDisplayNameToInitials';
-import Popover from '@mui/material/Popover';
-import Typography from '@mui/material/Typography';
 import ViewInviteeDetails from '../ChallengeInviteFriends/ViewInviteeDetails';
 
-// const ViewInviteeDetails = React.lazy(() => import(/* webpackChunkName: 'ViewInviteeDetails' */ '../../../common/components/ChallengeInviteFriends/ViewInviteeDetails')); //
 
 const ChallengeInviteeListItem = ({ invitee, classes }) => {
 
   // console.log('ChallengeInviteeListItem:', invitee);
   const [anchorEl, setAnchorEl] = useState(null);
-  const [viewInviteeDetails, setViewInviteeDetails] = useState(false)
+  const [viewInviteeDetails, setViewInviteeDetails] = useState(false);
 
   const { sx, children } = speakerDisplayNameToInitials(invitee.invitee_name);
   let challengeStatusIconJsx = <></>;
-  let challengeStatusMessage = ''
+  let challengeStatusMessage = '';
   if (invitee.challenge_joined) {
     challengeStatusIconJsx = <CheckCircle />;
     challengeStatusMessage = 'Challenge joined';
@@ -34,21 +34,20 @@ const ChallengeInviteeListItem = ({ invitee, classes }) => {
     challengeStatusMessage = 'Invite sent';
   }
 
-const onDotButtonClick = (e) => {
-  setAnchorEl(e.currentTarget);
-};
+  const onDotButtonClick = (e) => {
+    setAnchorEl(e.currentTarget);
+  };
 
-const handlePopoverClose = () => {
-  setAnchorEl(null);
-};
+  const handlePopoverClose = () => {
+    setAnchorEl(null);
+  };
 
-const openViewInviteeDetails = () => {
-  console.log('click')
-  setViewInviteeDetails(true);
- }
+  const openViewInviteeDetails = () => {
+    setViewInviteeDetails(true);
+  };
 
-const open = Boolean(anchorEl);
-const id = open ? 'simple-popover' : undefined;
+  const open = Boolean(anchorEl);
+  const id = open ? 'simple-popover' : undefined;
 
   return (
     <InvitedFriendDetails>
@@ -68,7 +67,6 @@ const id = open ? 'simple-popover' : undefined;
             open={open}
             anchorEl={anchorEl}
             onClose={handlePopoverClose}
-
             anchorOrigin={{
               vertical: 'bottom',
               horizontal: 'right',
@@ -80,14 +78,14 @@ const id = open ? 'simple-popover' : undefined;
           >
             <PopoverWrapper>
               <PopoverNameAndMessageText>
-                <Typography component="div" style={{fontSize: '12px'}}>
-                  <EditOutlined style={{fontSize:"14px", cursor: 'pointer', marginRight: "4px"}}/>
+                <Typography component="div" style={{ fontSize: '12px', fontFamily: 'inherit' }}>
+                  <EditOutlined style={{ fontSize:'14px', cursor: 'pointer', marginRight: '4px' }}/>
                   Edit name & message
                 </Typography>
-               </PopoverNameAndMessageText>
-               <PopoverViewDetailsText>
-                <Typography onClick={openViewInviteeDetails} component="div" style={{fontSize: '12px' }} >
-                  <InfoOutlined style={{fontSize:"14px", cursor: 'pointer', marginRight: "4px" }}/>
+              </PopoverNameAndMessageText>
+              <PopoverViewDetailsText>
+                <Typography onClick={ openViewInviteeDetails } component="div" style={{ fontSize: '12px', fontFamily: 'inherit' }}>
+                  <InfoOutlined style={{ fontSize: '14px', cursor: 'pointer', marginRight: '4px' }}/>
                   View details
                 </Typography>
               </PopoverViewDetailsText>
@@ -138,7 +136,6 @@ const styles = () => ({
   },
 
 });
-
 
 const InvitedFriendDetails = styled.div`
   display: flex;
@@ -210,9 +207,11 @@ const Invite = styled.a`
   padding: 5px;
   color: #4371cc;
 `;
+
 const PopoverWrapper = styled('div')`
   padding: 5px;
-`
+`;
+
 const PopoverNameAndMessageText = styled('div')`
   padding: 6px;
 `;
@@ -222,6 +221,4 @@ const PopoverViewDetailsText = styled('div')`
   cursor: pointer;
 `;
 
-
-
-export default withStyles(styles)(ChallengeInviteeListItem);
+export default withTheme(withStyles(styles)(ChallengeInviteeListItem));
