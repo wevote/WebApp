@@ -163,6 +163,14 @@ class ReadyPage extends Page {
     return $('[href = "/donate"]');
   }
 
+  get getDonateLinkHeader () {
+    return $('#donateTabHeaderBar');
+  }
+
+  get getDonateLinkFooter () {
+    return $('#footerMainLinkDonate');
+  }
+
   get getAboutLinkElement () {
     return $('//a[text() = "About & FAQ"]');
   }
