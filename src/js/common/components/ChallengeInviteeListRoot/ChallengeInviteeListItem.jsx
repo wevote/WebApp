@@ -78,14 +78,20 @@ const id = open ? 'simple-popover' : undefined;
               horizontal: 'left',
             }}
           >
-            <Typography component="div" style={{ padding: '5px', fontFamily: 'Roboto, sans-serif', fontSize: '14px'}}>
-              <EditOutlined style={{fontSize:"14px", cursor: 'pointer'}}/>
-              Edit name & message
-            </Typography>
-            <Typography onClick={openViewInviteeDetails} component="div" style={{ padding: '5px', fontFamily: 'Roboto, sans-serif', fontSize: '14px' }} >
-              <InfoOutlined style={{fontSize:"14px", cursor: 'pointer' }}/>
-              View details
-            </Typography>
+            <PopoverWrapper>
+              <PopoverNameAndMessageText>
+                <Typography component="div" style={{fontSize: '12px'}}>
+                  <EditOutlined style={{fontSize:"14px", cursor: 'pointer', marginRight: "4px"}}/>
+                  Edit name & message
+                </Typography>
+               </PopoverNameAndMessageText>
+               <PopoverViewDetailsText>
+                <Typography onClick={openViewInviteeDetails} component="div" style={{fontSize: '12px' }} >
+                  <InfoOutlined style={{fontSize:"14px", cursor: 'pointer', marginRight: "4px" }}/>
+                  View details
+                </Typography>
+              </PopoverViewDetailsText>
+            </PopoverWrapper>
           </Popover>
           <ViewInviteeDetails
             show={viewInviteeDetails}
@@ -203,6 +209,17 @@ const Options = styled.div`
 const Invite = styled.a`
   padding: 5px;
   color: #4371cc;
+`;
+const PopoverWrapper = styled('div')`
+  padding: 5px;
+`
+const PopoverNameAndMessageText = styled('div')`
+  padding: 6px;
+`;
+
+const PopoverViewDetailsText = styled('div')`
+  padding: 6px;
+  cursor: pointer;
 `;
 
 
