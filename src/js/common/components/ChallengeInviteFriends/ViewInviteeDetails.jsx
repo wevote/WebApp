@@ -18,7 +18,7 @@ const ViewInviteeDetails = ({ show, setShow, setAnchorEl }) => {
 
  const textFieldJSX = (
   <TableContainer components={Paper} sx={{ paddingBottom: '5px' }}>
-    <TableTestContainer>
+    <TableWrapper>
      <Table sx={{ midWidth: 650 }} size="small" aria-label="simple table">
       <TableHead>
         <TableRow>
@@ -49,7 +49,7 @@ const ViewInviteeDetails = ({ show, setShow, setAnchorEl }) => {
         </TableRow>
         </TableBody>
      </Table>
-    </TableTestContainer>
+    </TableWrapper>
   </TableContainer>
   );
 
@@ -71,24 +71,15 @@ const StyledTableCell = styled(TableCell)`
   font-weight: bold;
 `;
 
-// const ViewInviteeDetailsWrapper = styled('div')`
-//   font-family: ${({ theme }) => theme.typography.fontFamily}; // Use theme if available
-//   /* Or directly specify the font-family */
-//   // font-family: 'YourMainFont', sans-serif;
-// `;
-
 const TitleWrapper = styled('div')`
   font-size: 16px;
   font-weight: bold;
   padding-bottom: 4px;
   text-align: center;
   margin: 0;
-
-  /* Adding a border-bottom to create a horizontal line */
-  width: 100%; /* Make sure it spans the width */
 `;
 
-const TableTestContainer = styled('div')`
+const TableWrapper = styled('div')`
   border-top: 1px solid ${DesignTokenColors.neutral300};
   width: 100%;
   margin-top: 8px; /* Adjust to give space below the title */
