@@ -98,7 +98,7 @@ const YourRank = ({ classes, challengeWeVoteId }) => {
             classes={{ root: classes.buttonDesktop }}
             style={{
               backgroundColor: clicked ? '#AC5204' : 'white',
-              color: clicked ? '#FFFFFF' : '#AC5204' }}
+              color: clicked ? '#FFFFFF' : '#AC5204'}}
           >
             #
             {rankOfVoter}

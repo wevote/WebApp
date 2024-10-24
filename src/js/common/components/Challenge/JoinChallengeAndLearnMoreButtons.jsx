@@ -5,12 +5,13 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import JoinChallengeButton from './JoinChallengeButton'
 
-const JoinChallengeAndLearnMoreButtons = ({ classes }) => {
+const JoinChallengeAndLearnMoreButtons = ({ challengeWeVoteId, classes }) => {
   return (
     <JoinChallengeButtonWrapper>
       <Button
         classes={{ root: classes.joinChallengeButton }}
         color="primary"
+        id={`challengeLearnMore-${challengeWeVoteId}`}
         variant="contained"
       >
        Join Challenge
@@ -18,7 +19,8 @@ const JoinChallengeAndLearnMoreButtons = ({ classes }) => {
       <Button
         classes={{ root: classes.learnMoreButton }}
         color="secondary"
-        variant="contained"
+        id={`challengeLearnMore-${challengeWeVoteId}`}
+        variant="outlined"
       >
         Learn More
       </Button>
@@ -30,23 +32,23 @@ const styles = () => ({
   joinChallengeButton: {
     borderRadius: 45,
     maxWidth: 300,
-    background: 'var(--Primary-600, #0858A1)',
-    border: '1px solid var(--Primary-400, #4187C6)',
-    color: 'var(--WhiteUI, #FFFFFF)',
+//     background: 'var(--Primary-600, #0858A1)',
+//     border: '1px solid var(--Primary-400, #4187C6)',
+//     color: 'var(--WhiteUI, #FFFFFF)',
     marginRight: '10px',
     marginTop: '10px',
   },
   learnMoreButton:{
     borderRadius: 45,
     maxWidth: 300,
-    background: 'white',
-    border: '1px solid var(--Primary-400, #4187C6)',
-    color: 'var(--Neutral-900, #2A2A2C)',
+//     background: 'white',
+//     border: '1px solid var(--Primary-400, #4187C6)',
+//     color: 'var(--Neutral-900, #2A2A2C)',
     marginTop: '10px',
-    '&:hover': {
-      backgroundColor: 'white',
-      color: 'var(--Neutral-900, #2A2A2C)',
-    },
+//     '&:hover': {
+//       backgroundColor: 'white',
+//       color: 'var(--Neutral-900, #2A2A2C)',
+//     },
   },
 });
 
@@ -57,6 +59,7 @@ const JoinChallengeButtonWrapper = styled('div')`
 `;
 
 JoinChallengeAndLearnMoreButtons.propTypes = {
+  challengeWeVoteId: PropTypes.string,
   classes: PropTypes.object.isRequired,
 };
 
