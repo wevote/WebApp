@@ -38,6 +38,7 @@ function ChallengeHeaderSimple (props) {
                 </ChallengeNameH4>
                 {/* Joined and Days Left Info */}
                 <JoinedAndDaysLeft borderSwitcher={false}
+                  padding="5px 0"
                   challengeWeVoteId={challengeWeVoteId}
                   goToChallengeHome={goToChallengeHome}
                 />
