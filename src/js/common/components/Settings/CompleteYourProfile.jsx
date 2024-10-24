@@ -21,6 +21,7 @@ import VoterFirstNameInputField from './VoterFirstNameInputField';
 import VoterLastNameInputField from './VoterLastNameInputField';
 import CandidateStore from '../../../stores/CandidateStore';
 import RepresentativeStore from '../../../stores/RepresentativeStore';
+import { validateEmail } from '../../../utils/regex-checks';
 
 const SignInButton = React.lazy(() => import(/* webpackChunkName: 'SignInButton' */ '../Navigation/SignInButton'));
 // const SignInModalController = React.lazy(() => import(/* webpackChunkName: 'SignInModalController' */ './SignInModalController'));
@@ -182,11 +183,12 @@ class CompleteYourProfile extends Component {
       voterEmailMissing = true;
     }
     if (voterEmailQueuedToSave) {
-      // Check to see if valid email format
-      // if so,
-      this.setState({
-        voterEmailQueuedToSaveLocal: voterEmailQueuedToSave,
-      });
+      const voterEmailQueuedToSaveIsValid = validateEmail(voterEmailQueuedToSave);
+      if (voterEmailQueuedToSaveIsValid) {
+        this.setState({
+          voterEmailQueuedToSaveLocal: voterEmailQueuedToSave,
+        });
+      }
     }
     if (!voterFirstNameQueuedToSave && !VoterStore.getFirstName()) {
       voterFirstNameMissing = true;

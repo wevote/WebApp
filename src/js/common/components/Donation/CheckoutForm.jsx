@@ -13,7 +13,7 @@ import DonateStore from '../../stores/DonateStore';
 import { renderLog } from '../../utils/logging';
 import moneyStringToPennies from '../../utils/moneyStringToPennies';
 import SplitIconButton from '../Widgets/SplitIconButton';
-
+import { validateEmail } from '../../../utils/regex-checks';
 
 const iconButtonStyles = {
   width: window.innerWidth < 1280 ? 250 : 300,
@@ -222,16 +222,14 @@ class CheckoutForm extends React.Component {
   }
 
   emailChange = (event) => {
-    const currentEntry = event.target.value;
-    const validEmailPattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
-    const valid = currentEntry.match(validEmailPattern) != null;
-    console.log('valid? : ', currentEntry, ' valid: ', valid);
+    const currentEmail = event.target.value;
+    const currentEmailIsValid = validateEmail(currentEmail);
     if (this.emailErrorTimer) clearInterval(this.emailErrorTimer);
-    if (!valid) {
+    if (currentEmail && !currentEmailIsValid) {
       this.emailErrorTimer = setTimeout(() => {
         this.setState({
           emailFieldError: true,
-          emailFieldText: currentEntry,
+          emailFieldText: currentEmail,
           emailValidationErrorText: 'Our payment processor requires a valid email address',
         });
         this.emailErrorTimer = null;
@@ -239,7 +237,7 @@ class CheckoutForm extends React.Component {
     } else {
       this.setState({
         emailFieldError: false,
-        emailFieldText: currentEntry,
+        emailFieldText: currentEmail,
         emailValidationErrorText: '',
       });
     }
