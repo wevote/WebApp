@@ -2,6 +2,8 @@ const { driver } = require('@wdio/globals');
 const { readFileSync } = require('fs');
 const browserStackConfig = require('./browserstack.config');
 const browserCapabilities = require('../capabilities/browser.json');
+const projpath = require('path');
+const androidAppPath = projpath.join(process.cwd(),"/apps/WeVoteV2.5.0.0Sept27.apk");
 
 let mobileCapabilities = [];
 
@@ -13,7 +15,7 @@ try {
   // Run `npm run wdio:setup`
 }
 
-const capabilities = [...browserCapabilities, ...mobileCapabilities];
+const capabilities = [...mobileCapabilities];
 
 const date = new Date();
 
@@ -37,7 +39,7 @@ module.exports.config = {
     ],
   ],
   specs: [
-    '../specs/DiscussPage.js',
+   /* '../specs/DiscussPage.js',
     '../specs/FAQPage.js',
     '../specs/PrivacyPage.js',
     '../specs/ReadyPage.js',
@@ -52,11 +54,27 @@ module.exports.config = {
     '../specs/CandidatesPage.js',
 
     '../specs/WhosRunningForOffice.js',
-
+    '../specs/ReadyPageMobileApp.js',
+    '../specs/TestLogin.js',*/
+    '../specs/ReadyPageMobileBrowserTest.js',
   ],
 
-  capabilities,
-  commonCapabilities: {
+  capabilities:[
+    {
+      /*"platformName": "Android",
+    "appium:platformVersion": "12.0",
+    "appium:deviceName": "Samsung Galaxy S22",
+    //"appium:app": "bs://2bb0853b76891d207035ae99c1dcf7d2b12f3254",
+    "browserName": "chrome",
+   "appium:automationName": "UIAutomator2"*/
+   browserName: 'chrome',
+    'bstack:options': {
+      deviceName: 'Samsung Galaxy S22',
+      osVersion: '12.0',
+      platformName: 'android'
+    }
+    }],
+  commonCapabilities:{
     'bstack:options': {
       buildName,
       debug: 'true',
@@ -67,7 +85,9 @@ module.exports.config = {
       gpsLocation: '37.804363,-122.271111',
       maskCommands: 'setValues, getValues, setCookies, getCookies',
       video: 'true',
-    },
+    }
+
+    
   },
   maxInstances: 1,
   exclude: [],
@@ -75,9 +95,10 @@ module.exports.config = {
   coloredLogs: true,
   baseUrl: browserStackConfig.WEB_APP_ROOT_URL,
   waitforTimeout: 10000,
-  connectionRetryTimeout: 90000,
+  connectionRetryTimeout: 999999999,
   connectionRetryCount: 1,
-  services: [['browserstack']],
+  port: 443,
+  services: [['browserstack'],['appium']],
   framework: 'mocha',
   mochaOpts: {
     ui: 'bdd',
