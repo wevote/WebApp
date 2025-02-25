@@ -25,6 +25,18 @@ class TopicsPage extends Page {
   get getProChoiceUnfollowElement() {
     return $('#issueUnfollowButton-wv02issue63-pro-choice')
   }
+  get getFollowersElement() {
+    return $('#followers')
+  }
+  get getAllEndorsersElement() {
+    return $('allEndorsersId')
+  }
+  get getEndorsementsElement() {
+    return $('#numberOfEndorsements')
+  }
+  get getEndorsementsElementAfterScrollingDown() {
+    return $('#showMoreItemsId')
+  }
   get getDemocraticClubsFollowElement() {
     return $('#issueFollowButton-wv02issue25-democratic-clubs')
   }
