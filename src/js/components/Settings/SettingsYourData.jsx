@@ -41,7 +41,7 @@ export default class SettingsYourData extends Component {
     return (
       <div>
         <div className="u-stack--md">
-          <Helmet title="Your Privacy & Data - WeVote" />
+          <Helmet title="Privacy & Data - WeVote" />
           <BrowserPushMessage incomingProps={this.props} />
           <div className="card">
             <div className="card-main">
@@ -52,7 +52,7 @@ export default class SettingsYourData extends Component {
                 </h1>
               </HeaderContainer>
               <DataSettingSection>
-                <h4 className="h4" id = "yourAddressBookText">
+                <h4 className="h4" id="yourAddressBookText">
                   Your Address Book Contact Data
                 </h4>
                 {voterContactEmailListCount > 0 ? (
