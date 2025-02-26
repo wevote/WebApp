@@ -73,6 +73,11 @@ class SearchBar2024 extends Component {
     const dataLayerObject = {
       event: 'searchKeyword',
       searchKeyword: searchString,
+      source:{
+        pageName: window.location.href,
+        pageType: "challenge",
+        pathName: window.location.pathname,
+      },
       user:{
         voterWeVoteId: VoterStore.getVoterWeVoteId()
       }
