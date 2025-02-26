@@ -194,6 +194,7 @@ class ReadyIntroduction extends Component {
                     showMoreId="showMoreReadyIntroductionCompressed"
                     showMoreButtonWasClicked={contentUnfurled}
                     showMoreButtonsLink={this.contentUnfurledLink}
+                    trackInGTM={true}
                   />
                 </ShowMoreWrapper>
               )}

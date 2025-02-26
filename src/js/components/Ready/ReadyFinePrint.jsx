@@ -133,6 +133,7 @@ class ReadyFinePrint extends Component {
                     showMoreId="showMoreReadyFinePrintCompressed"
                     showMoreButtonWasClicked={contentUnfurled}
                     showMoreButtonsLink={this.contentUnfurledLink}
+                    trackInGTM={true}
                   />
                 </ShowMoreWrapper>
               )}

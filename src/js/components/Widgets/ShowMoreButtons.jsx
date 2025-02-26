@@ -5,9 +5,45 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
 import { renderLog } from '../../common/utils/logging';
+import TagManager from 'react-gtm-module';
+import VoterStore from '../../stores/VoterStore';
 
 
 class ShowMoreButtons extends React.Component {
+  handleClick=()=>{
+    //console.log('click')
+    const { showMoreId, showMoreButtonWasClicked, showMoreCustomText, trackInGTM } = this.props;
+
+    if (trackInGTM && !showMoreButtonWasClicked) {  
+      // console.log("Show More clicked (tracked):", showMoreId);
+      // const eventName = showMoreCustomText || 'show more';
+      const dataLayerObject = {
+        event: 'Show More Button Clicked',
+        element_id: showMoreId,
+        source:{
+          pageName: window.location.href,
+          pageType: "homepage",
+          pathName: window.location.pathname,
+        },
+        user:{
+          weVoteVoterId: VoterStore.getVoterWeVoteId(),
+          userStatus:"",
+          method:""
+        },
+        // button_text: eventName,
+      };
+    //  console.log("dataLayerObject:", dataLayerObject)
+      TagManager.dataLayer({ dataLayer: dataLayerObject });
+    } else if (trackInGTM && showMoreButtonWasClicked){
+       console.log("Show Less clicked (not tracked):", showMoreId);
+    }
+    else {
+      console.log("Show More/Less clicked (not tracked):", showMoreId);
+    }
+
+    this.props.showMoreButtonsLink(); 
+  };
+
   render () {
     renderLog('ShowMoreButtons');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes, showLessCustomText, showMoreButtonsLink, showMoreButtonWasClicked, showMoreCustomText, showMoreId } = this.props;
@@ -18,9 +54,9 @@ class ShowMoreButtons extends React.Component {
     } else {
       showMoreText = showMoreCustomText || 'show more';
     }
-
+    // onClick={showMoreButtonsLink}
     return (
-      <ShowMoreButtonsStyled className="card-child" id={`toggleContentButton-${showMoreId}`} onClick={showMoreButtonsLink}>
+      <ShowMoreButtonsStyled className="card-child" id={`toggleContentButton-${showMoreId}`} onClick={this.handleClick} >
         <ShowMoreButtonsText id="showMoreLink">
           { showMoreText }
           {' '}
