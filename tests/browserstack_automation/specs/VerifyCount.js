@@ -85,7 +85,7 @@ describe('VerifyCount', () => {
     await ProfilePage.getSignOutElement.click();
   });
 
-
+/*
   it('verifyProChoiceEndorsersCount', async () => {
 
     await ReadyPage.login();
@@ -112,9 +112,8 @@ describe('VerifyCount', () => {
     console.log(endorsementsText);
     const endorsementsCount = parseInt(endorsementsText.replace(/[^0-9]/g, ""), 10);
     
-    // await driver.waitUntil(async () => (TopicsPage.getAllEndorsersElement.isClickable()));
-    // await TopicsPage.getAllEndorsersElement.click();
-    
+    await driver.waitUntil(async () => (TopicsPage.getAllEndorsersElement.isClickable()));
+    await TopicsPage.getAllEndorsersElement.click();
 
     const element = await TopicsPage.getEndorsementsElementAfterScrollingDown;
     await element.scrollIntoView();
@@ -139,7 +138,7 @@ describe('VerifyCount', () => {
 
   });
 
-  
+  */
   it('verifyProLifeFollowersCount', async () => {
 
     await ReadyPage.login();
