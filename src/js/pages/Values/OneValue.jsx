@@ -266,7 +266,6 @@ class OneValue extends Component {
                 key="forThisElectionKey"
                 id = "forThisElection"
                 label={<span style={showEndorsersForThisElection ? { fontWeight: 600 } : {}}>For This Election</span>}
-                id="forThisElectionId"
                 className={showEndorsersForThisElection ? classes.selectedChip : classes.notSelectedChip}
                 component="div"
                 onClick={() => this.changeListModeShown('voterGuidesForThisElection')}
@@ -276,7 +275,6 @@ class OneValue extends Component {
                 key="allOrganizationsKey"
                 id = "allEndorsers"
                 label={<span style={showAllEndorsers ? { fontWeight: 600 } : {}}>All Endorsers</span>}
-                id="allEndorsersId"
                 className={showAllEndorsers ? classes.selectedChip : classes.notSelectedChip}
                 component="div"
                 onClick={() => this.changeListModeShown('allEndorsers')}

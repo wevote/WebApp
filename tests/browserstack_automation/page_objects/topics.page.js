@@ -29,7 +29,7 @@ class TopicsPage extends Page {
     return $('#followers')
   }
   get getAllEndorsersElement() {
-    return $('allEndorsersId')
+    return $('allEndorsers')
   }
   get getEndorsementsElement() {
     return $('#numberOfEndorsements')

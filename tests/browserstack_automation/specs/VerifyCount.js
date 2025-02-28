@@ -85,7 +85,7 @@ describe('VerifyCount', () => {
     await ProfilePage.getSignOutElement.click();
   });
 
-/*
+
   it('verifyProChoiceEndorsersCount', async () => {
 
     await ReadyPage.login();
@@ -138,7 +138,7 @@ describe('VerifyCount', () => {
 
   });
 
-  */
+  
   it('verifyProLifeFollowersCount', async () => {
 
     await ReadyPage.login();
