@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 
@@ -91,7 +92,7 @@ export const CandidateNameH1 = styled('h1')(({ theme }) => (`
 `));
 
 export const CandidateNameH4 = styled('button')`
-  color: #4371cc;
+  color: ${(props) => (props?.showAsLink ? `${DesignTokenColors.primary600}` : '#000')};
   font-weight: 400;
   font-size: 20px;
   margin-bottom: 0 !important;
@@ -101,7 +102,7 @@ export const CandidateNameH4 = styled('button')`
   padding: 0;
   text-align: left;
   &:hover {
-    text-decoration: underline;
+    ${(props) => (props?.showAsLink ? 'text-decoration: underline;' : '')};
   }
   ${constrainedTextMobileStyles}
 `;

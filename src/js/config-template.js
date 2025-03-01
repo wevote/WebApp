@@ -35,7 +35,8 @@ module.exports = {
   },
 
   ENABLE_FACEBOOK: false,     // Temporary 'false' Feb 28, 2024
-  ENABLE_TWITTER: false,      // Temporary 'false' Feb 28, 2024
+  ENABLE_TWITTER: false,      // Allow Twitter sign in anywhere on site. Twitter sign in may only be shown in special cases dependent on ENABLE_TWITTER_AS_VOTER_SIGN_IN_OPTION
+  ENABLE_TWITTER_AS_VOTER_SIGN_IN_OPTION: false,  // Show in sign in modal for any voter?
   ENABLE_PAY_TO_PROMOTE: true,
 
   // API Keys, some of these are publishable (not secret)
