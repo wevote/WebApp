@@ -89,7 +89,7 @@ export const templateBStyles = (theme) => ({
     cursor: 'pointer',
     display: 'flex',
     fontSize: '24px',
-    margin: '19px 0 0 -20px',
+    margin: '22px 0 0 -15px',
     padding: '5px',
     position: 'relative',
   },
@@ -147,12 +147,9 @@ export const templateBStyles = (theme) => ({
     width: '100%',
   },
   inputMultiline: {
-    fontSize: 20,
+    fontSize: 16,
     height: '100%',
     width: '100%',
-    [theme.breakpoints.down('sm')]: {
-      fontSize: 18,
-    },
   },
   inputStyles: {
     flex: '1 1 0',
@@ -257,6 +254,7 @@ export const TextFieldDiv = styled('div')`
   border: 1px solid ${DesignTokenColors.primary600};
   border-radius: 16px;
   display: flex;
+  line-height: 21.82px;
   margin-bottom: 0;
   padding: ${isAndroidSizeWide() ? '12px 12px 0 12px' : '12px'};
 `;

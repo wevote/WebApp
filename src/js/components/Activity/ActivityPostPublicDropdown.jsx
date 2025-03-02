@@ -79,41 +79,27 @@ const styles = (theme) => ({
     fontWeight: '400',
     lineHeight: '21.82px',
     outline: 'none',
-    padding: 0,
+    padding: '0',
     '&:focus': {
       outline: 'none',
       boxShadow: 'none',
     },
+    '& .MuiSelect-select': {
+      minHeight: 'unset',
+      display: 'flex',
+      alignItems: 'center',
+    },
+    '& .MuiOutlinedInput-input': {
+      padding: '0 32px 0 0',
+      minHeight: 'unset',
+    },
     '& .MuiOutlinedInput-notchedOutline': {
       border: 'none',
     },
-    [theme.breakpoints.down('sm')]: {
-      padding: 0,
-    },
-    [theme.breakpoints.down('xs')]: {
-      padding: '0 32px 0 0',
-      fontSize: '14px',
-    },
-  },
-  menuItem: {
-    color: DesignTokenColors.neutralUI900,
-    fontSize: '16px',
-    fontWeight: '400',
-    lineHeight: '21.82px',
-    padding: '10px',
-    [theme.breakpoints.down('xs')]: {
-      fontSize: '14px',
-    },
-  },
-  menuPaper: {
-    '& .MuiMenu-list': {
-      padding: 0,
-    },
-  },
-  outlinedInputRoot: {
-    padding: 0,
-    '& .MuiSelect-select': {
-      padding: '0 !important',
+    '& .MuiSelect-icon': {
+      right: '8px',
+      top: '50%',
+      transform: 'translateY(-50%)',
     },
   },
 });

@@ -46,6 +46,7 @@ import normalizedImagePath from '../../utils/normalizedImagePath';
 import { getPoliticianValuesFromIdentifiers, retrievePoliticianFromIdentifiersIfNeeded } from '../../utils/politicianUtils';
 import returnFirstXWords from '../../utils/returnFirstXWords';
 import saveCampaignSupportAndGoToNextPage from '../../utils/saveCampaignSupportAndGoToNextPage';
+import VoterPositionEntryAndDisplay from '../../../components/PositionItem/VoterPositionEntryAndDisplay';
 
 const CampaignRetrieveController = React.lazy(() => import(/* webpackChunkName: 'CampaignRetrieveController' */ '../../components/Campaign/CampaignRetrieveController'));
 const CampaignSupportThermometer = React.lazy(() => import(/* webpackChunkName: 'CampaignSupportThermometer' */ '../../components/CampaignSupport/CampaignSupportThermometer'));
@@ -657,6 +658,7 @@ class PoliticianDetailsPage extends Component {
       wikipediaUrl, youtubeUrl,
     } = this.state;
     let { contestOfficeName } = this.state;
+    const { showOpinionModal } = this.state;
 
     const politicianLinksList = [];
     if (politicianUrl) {
@@ -1208,6 +1210,13 @@ class PoliticianDetailsPage extends Component {
                 />
               </ColumnOneThird>
               <ColumnTwoThirds>
+                {/* Opinion block */}
+                {/* Render the modal */}
+                <VoterPositionEntryAndDisplay
+                  show={showOpinionModal}
+                  toggleModal={this.toggleOpinionModal}
+                  politicianName={politicianName}
+                />
                 {(opponentCandidateList && opponentCandidateList.length > 0) && (
                   <CandidateCampaignListDesktop>
                     <CampaignSubSectionTitleWrapper>

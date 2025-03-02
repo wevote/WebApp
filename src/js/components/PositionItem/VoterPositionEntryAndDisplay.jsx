@@ -20,7 +20,7 @@ import ActivityPostPublicDropdown from '../Activity/ActivityPostPublicDropdown';
 import VoterPositionEditNameAndPhotoModal from './VoterPositionEditNameAndPhotoModal';
 
 const VoterPositionEntryAndDisplay = (props) => {
-  const { activityTidbitWeVoteId, classes, externalUniqueId, toggleModal } = props;
+  const { activityTidbitWeVoteId, classes, externalUniqueId, toggleModal, politicianName } = props;
 
   // useState used for state variables
   const [visibilityIsPublic, setVisibilityIsPublic] = useState(false);
@@ -99,12 +99,12 @@ const VoterPositionEntryAndDisplay = (props) => {
   const updateStatementTextToBeSaved = (e) => {
     setStatementText(e.target.value);
   };
-
+ 
   const activityTidbitIdCheck = activityTidbitWeVoteId === '' || activityTidbitWeVoteId === undefined;
 
   renderLog('VoterPositionEntryAndDisplay'); // Set LOG_RENDER_EVENTS to log all renders
 
-  const dialogTitleText = activityTidbitIdCheck ? 'Create post' : 'Edit post';
+  const dialogTitleText = politicianName ? `Create opinion about ${politicianName}`  : `Edit opinion about:  ${politicianName}`;
   const statementPlaceholderText = 'What\'s on your mind?';
   const rowsToShow = isAndroid() ? 4 : 6;
   const [showModal, setShowModal] = useState(false);
@@ -249,6 +249,7 @@ VoterPositionEntryAndDisplay.propTypes = {
   classes: PropTypes.object,
   externalUniqueId: PropTypes.string,
   toggleModal: PropTypes.func.isRequired,
+  politicianName: PropTypes.string,
 };
 
 export default withStyles(templateBStyles)(VoterPositionEntryAndDisplay);
