@@ -51,7 +51,7 @@ class PopulateData {
       { stateName: 'virginia', stateURL: 'virginia-candidates\/cs\/', stateTitle: 'Virginia Candidates - WeVote', stateAbb: 'VA' },
       { stateName: 'vermont', stateURL: 'vermont-candidates\/cs\/', stateTitle: 'Vermont Candidates - WeVote', stateAbb: 'VT' },
       { stateName: 'washington', stateURL: 'washington-candidates\/cs\/', stateTitle: 'Washington Candidates - WeVote', stateAbb: 'WA' },
-      { stateName: 'wisconsin', stateURL: 'wisconsin-candidates\/cs\/', stateTitle: 'wisconsin Candidates - WeVote', stateAbb: 'WI' },
+      { stateName: 'wisconsin', stateURL: 'wisconsin-candidates\/cs\/', stateTitle: 'Wisconsin Candidates - WeVote', stateAbb: 'WI' },
       { stateName: 'west-virginia', stateURL: 'west-virginia-candidates\/cs\/', stateTitle: 'West Virginia Candidates - WeVote', stateAbb: 'WV' },
       { stateName: 'wyoming', stateURL: 'wyoming-candidates\/cs\/', stateTitle: 'Wyoming Candidates - WeVote', stateAbb: 'WY' },
 
