@@ -5,12 +5,46 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
 import { renderLog } from '../../common/utils/logging';
+import TagManager from 'react-gtm-module';
+import VoterStore from '../../stores/VoterStore';
+
 
 
 class ShowMoreButtons extends React.Component {
+  handleShowMoreClick = () => {
+    const { showMoreId, showMoreButtonWasClicked, trackInGTM, showMoreButtonsLink } = this.props;
+
+    if (trackInGTM) {
+        const eventName = showMoreButtonWasClicked ? 'showLessButtonClick' : 'showMoreButtonClick';
+        this.pushDataLayer(eventName, showMoreId);
+    } else {
+        console.log("Show More/Less clicked (not tracked):", showMoreId);
+    }
+    showMoreButtonsLink();
+};
+
+pushDataLayer = (eventName, showMoreId) => {
+    const dataLayerObject = {
+        event: eventName,
+        element_id: showMoreId,
+        pageDetails: {
+            pageName: "Ready",
+            pageType: "homepage",
+            pathName: window.location.pathname,
+        },
+        userDetails: {
+            weVoteVoterId: VoterStore.getVoterWeVoteId(),
+            userStatus: "",
+            method: ""
+        },
+    };
+    TagManager.dataLayer({ dataLayer: dataLayerObject });
+};
+
+
   render () {
     renderLog('ShowMoreButtons');  // Set LOG_RENDER_EVENTS to log all renders
-    const { classes, showLessCustomText, showMoreButtonsLink, showMoreButtonWasClicked, showMoreCustomText, showMoreId } = this.props;
+    const { classes, showLessCustomText, showMoreButtonWasClicked, showMoreCustomText, showMoreId } = this.props;
     let showMoreText;
 
     if (showMoreButtonWasClicked) {
@@ -20,7 +54,7 @@ class ShowMoreButtons extends React.Component {
     }
 
     return (
-      <ShowMoreButtonsStyled className="card-child" id={`toggleContentButton-${showMoreId}`} onClick={showMoreButtonsLink}>
+      <ShowMoreButtonsStyled className="card-child" id={`toggleContentButton-${showMoreId}`} onClick={this.handleShowMoreClick}>
         <ShowMoreButtonsText id="showMoreLink">
           { showMoreText }
           {' '}
