@@ -19,6 +19,7 @@ import {
   CampaignSubSectionTitleWrapper,
 } from '../Style/CampaignDetailsStyles';
 import PoliticianStore from '../../stores/PoliticianStore';
+import VoterPositionEntryAndDisplay from '../../../components/PositionItem/VoterPositionEntryAndDisplay';
 
 const STARTING_NUMBER_OF_POSITIONS_TO_DISPLAY = 2;
 const NUMBER_OF_POSITIONS_TO_ADD_WHEN_MORE_CLICKED = 10;
@@ -112,7 +113,7 @@ class PoliticianEndorsementsList extends Component {
   render () {
     renderLog('PoliticianEndorsementsList');  // Set LOG_RENDER_EVENTS to log all renders
     const { politicianWeVoteId, hideEncouragementToEndorse, showTitle } = this.props;
-    const { filteredPositionList, numberOfPositionsToDisplay, politicianName } = this.state;
+    const { filteredPositionList, numberOfPositionsToDisplay, politicianName, showOpinionModal } = this.state;
     // console.log('PoliticianEndorsementsList render numberOfPositionsToDisplay:', numberOfPositionsToDisplay);
     const showTitleAndPositionsToShow = showTitle && (filteredPositionList && filteredPositionList.length > 0);
     const listTitleHtml = showTitleAndPositionsToShow && (
@@ -168,6 +169,13 @@ class PoliticianEndorsementsList extends Component {
             );
           })}
         </div>
+        {/* Opinion block */}
+        {/* Render the modal */}
+        <VoterPositionEntryAndDisplay
+          show={showOpinionModal}
+          toggleModal={this.toggleOpinionModal}
+          politicianName={politicianName}
+        />
         <LoadMoreItemsManuallyWrapper>
           {!!(filteredPositionList &&
               filteredPositionList.length > 1 &&
