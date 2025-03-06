@@ -79,7 +79,7 @@ const styles = (theme) => ({
     fontWeight: '400',
     lineHeight: '21.82px',
     outline: 'none',
-    padding: '0',
+    padding: 0,
     '&:focus': {
       outline: 'none',
       boxShadow: 'none',
