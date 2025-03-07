@@ -130,17 +130,22 @@ class JoinChallengeButton extends React.Component {
     TagManager.dataLayer({
       dataLayer: {
         event: 'inviteFriendsToChallenge',
-        user: {
-          // isSignedIn: VoterStore.getVoterIsSignedIn(),
+        userDetails: {
           voterWeVoteId: VoterStore.getVoterWeVoteId(),
         },
-        challengeWeVoteId,
-        destinationPageName: 'joinChallenge',
-        destinationPageType: 'challenge',
-        destinationPathName: '',
-        pageType: 'challenge',
-        pageName: '', // Populate from URL pathname
-        pathName: currentPathname,
+        challengeDetails: {
+          challengeWeVoteId,
+        },
+        pageDetails: {
+          pageType: "challenge",
+          pageName: window.location.href,
+          pathName: currentPathname,
+        },
+        destinationDetails: {
+          destinationPageType: "challenge",
+          destinationPageName: `${window.location.origin}${inviteFriendsPath}`,
+          destinationPathName: inviteFriendsPath,
+        },
       },
     });
 
@@ -171,15 +176,23 @@ class JoinChallengeButton extends React.Component {
       // Adding event data to dataLayer for Google Tag Manager to fire the inviteFriendsToChallenge tag
       TagManager.dataLayer({
         dataLayer: {
-          event: 'inviteFriendsToChallenge',
-          user: {
+          event: 'joinChallenge',
+          userDetails: {
             voterWeVoteId: VoterStore.getVoterWeVoteId(),
           },
-          challengeWeVoteId,
-          pageDestination: 'goToInviteFriends',
-          pageType: 'challenge',
-          pageName: '', // Populate from URL pathname
-          pathName: currentPathname,
+          challengeDetails: {
+            challengeWeVoteId,
+          },
+          pageDetails: {
+            pageType: "challenge",
+            pageName: window.location.href,
+            pathName: currentPathname,
+          },
+          destinationDetails: {
+            destinationPageType: 'challenge',
+            destinationPageName: `${window.location.origin}${joinChallengeNextStepPath}`,
+            destinationPathName: joinChallengeNextStepPath,
+          },
         },
       });
 
