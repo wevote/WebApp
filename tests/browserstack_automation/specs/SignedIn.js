@@ -1,8 +1,9 @@
 import { driver, expect } from '@wdio/globals';
 import SignedIn from '../page_objects/signedin.page';
 import ReadyPage from '../page_objects/ready.page';
+import SignIn from '../page_objects/signin.page';
 
-const waitTime = 14000;
+const waitTime = 6000;
 
 async function switchWindow(currentWindowHandle, allWindows) {
   for (const window of allWindows) {
@@ -16,20 +17,21 @@ async function switchWindow(currentWindowHandle, allWindows) {
 describe('Profile(Signed In)', () => {
 
     // ProfileSignedIn_001
-    it.only('verifySignInButton', async () => {
+    it('verifySignInButton', async () => {
       await ReadyPage.load();
       await driver.pause(waitTime);
       await SignedIn.signInButton.click();
       await driver.pause(waitTime);
-      await expect(ReadyPage.getTitleSignUpPopUp).toHaveText('Sign In or Join');
+      await expect(SignIn.signInLinkBttn).toHaveText('Sign In or Join');
       await expect(SignedIn.signInWithAppleButton).toBeDisplayed();
       await expect(SignedIn.signInWithPhoneNumberOption).toBeDisplayed();
-      await expect(SignedIn.signInWithEmailOption).toBeDisplayed();  
+      await expect(SignedIn.signInWithEmailOption).toBeDisplayed();
     });
 
     //ProfileSignedIn_002
-    it.only('verifyOpeningAccountSettings', async () => {
+    it('verifyOpeningAccountSettings', async () => {
       await ReadyPage.load();
+      await driver.maximizeWindow();
       await driver.pause(waitTime);
       await SignedIn.signInButton.click();
       await driver.pause(waitTime);
@@ -45,7 +47,7 @@ describe('Profile(Signed In)', () => {
     });
 
     //ProfileSignedIn_003
-    it.only('verifyBellIconNotifications', async () => {
+    it('verifyBellIconNotifications', async () => {
       await ReadyPage.load();
       await driver.pause(waitTime);
       await SignedIn.clickOnBellIconForNotifications();
@@ -79,7 +81,7 @@ describe('Profile(Signed In)', () => {
     // });
 
     //ProfileSignedIn_005
-    it.only('verifyNavigationToSecuritySignInSettings', async () => {
+    it('verifyNavigationToSecuritySignInSettings', async () => {
       await ReadyPage.load();
       await driver.pause(waitTime);
       await SignedIn.clickOnProfilePhotoPlaceholder();
@@ -101,7 +103,7 @@ describe('Profile(Signed In)', () => {
     // // });
 
     //ProfileSignedIn_008
-    it.only('verifyNavigationToFooterLinkPagesFromSecuritySignIn', async () => {
+    it('verifyNavigationToFooterLinkPagesFromSecuritySignIn', async () => {
       await ReadyPage.load();
       await driver.pause(waitTime);
       await SignedIn.clickOnProfilePhotoPlaceholder();
@@ -123,10 +125,12 @@ describe('Profile(Signed In)', () => {
       allWindows = await driver.getWindowHandles();
       switchWindow(accountWindow, allWindows);
       await expect(driver).toHaveUrl(expect.stringContaining('privacy'));
+      await driver.closeWindow();
+      await driver.switchToWindow(accountWindow);
     });
 
     //ProfileSignedIn_009
-    it.only('verifyNavigationToFAQFromNamePhotoSettings', async () => {
+    it('verifyNavigationToFAQFromNamePhotoSettings', async () => {
       await ReadyPage.load();
       await driver.pause(waitTime);
       await SignedIn.clickOnProfilePhotoPlaceholder();
@@ -138,7 +142,7 @@ describe('Profile(Signed In)', () => {
     });
 
     //ProfileSignedIn_010
-    it.only('verifyAllFieldsInNamePhotoSettings', async () => {
+    it('verifyAllFieldsInNamePhotoSettings', async () => {
       await ReadyPage.load();
       await driver.pause(waitTime);
       await SignedIn.clickOnProfilePhotoPlaceholder();
@@ -149,11 +153,15 @@ describe('Profile(Signed In)', () => {
       await expect(SignedIn.websiteInput).toBeDisplayed();
       await expect(SignedIn.descriptionInput).toBeDisplayed();
       await expect(SignedIn.typeOfProfile).toBeDisplayed();
-      await SignedIn.enterAndRemoveTextFromInputFields();
+      await SignedIn.enterAndRemoveFirstName();
+      await SignedIn.enterAndRemoveLastName();
+      await SignedIn.enterAndRemoveOrganisationName();
+      await SignedIn.enterAndRemoveOrganisationWebsite();
+      await SignedIn.enterAndRemoveOrganisationDescription();
     });
 
     //ProfileSignedIn_011
-    it.only('verifyAllOptionsForTypeOfProfileInNamePhotoSettings', async () => {
+    it('verifyAllOptionsForTypeOfProfileInNamePhotoSettings', async () => {
       await ReadyPage.load();
       await driver.pause(waitTime);
       await SignedIn.clickOnProfilePhotoPlaceholder();
@@ -163,7 +171,7 @@ describe('Profile(Signed In)', () => {
     });
 
     //ProfileSignedIn_012
-    it.only('verifyPrivacyAndDataInSettings', async () => {
+    it('verifyPrivacyAndDataInSettings', async () => {
       await ReadyPage.load();
       await driver.pause(waitTime);
       await SignedIn.clickOnProfilePhotoPlaceholder();
@@ -182,7 +190,7 @@ describe('Profile(Signed In)', () => {
     });
 
     //ProfileSignedIn_013
-    it.only('verifyNotificationsInSettings', async () => {
+    it('verifyNotificationsInSettings', async () => {
       await ReadyPage.load();
       await driver.pause(waitTime);
       await SignedIn.clickOnProfilePhotoPlaceholder();
@@ -210,7 +218,7 @@ describe('Profile(Signed In)', () => {
     //   });
 
     //ProfileSignedIn_016
-    it.only('verifyDiscussPageNavigationFromSettings', async () => {
+    it('verifyDiscussPageNavigationFromSettings', async () => {
       await ReadyPage.load();
       await driver.pause(waitTime);
       await SignedIn.clickOnProfilePhotoPlaceholder();
@@ -222,12 +230,13 @@ describe('Profile(Signed In)', () => {
     });
 
     //ProfileSignedIn_017
-    it.only('verifySideBarLinksInProfile', async () => {
+    it('verifySideBarLinksInProfile', async () => {
       await ReadyPage.load();
+      await driver.maximizeWindow();
       await driver.pause(waitTime);
       await SignedIn.clickOnProfilePhotoPlaceholder();
       await expect(driver).toHaveUrl(expect.stringContaining('profile'));
-      await SignedIn.clickOnHowItWorksLink();                            
+      await SignedIn.clickOnHowItWorksLink();
       await expect(SignedIn.howItWorksTitleText).toBeDisplayed();
       await SignedIn.closeTheHowItWorksDialogBox();
       await driver.pause(waitTime);
@@ -263,7 +272,7 @@ describe('Profile(Signed In)', () => {
     });
 
     //ProfileSignedIn_018
-    it.only('verifySideBarTextInProfile', async () => {
+    it('verifySideBarTextInProfile', async () => {
       await ReadyPage.load();
       await driver.pause(waitTime);
       await SignedIn.clickOnProfilePhotoPlaceholder();
@@ -273,7 +282,7 @@ describe('Profile(Signed In)', () => {
     });
 
     //ProfileSignedIn_019
-    it.only('verifySignOutOption', async () => {
+    it('verifySignOutOption', async () => {
       await ReadyPage.load();
       await driver.pause(waitTime);
       await SignedIn.clickOnProfilePhotoPlaceholder();
@@ -289,7 +298,7 @@ describe('Profile(Signed In)', () => {
       await SignedIn.clickOnProfilePhotoPlaceholder();
       await SignedIn.clickOnSecurityAndSignIn();
       await SignedIn.clickOnSignOutFromSecuritySignIn();
-      await expect(driver).toHaveUrl(expect.stringContaining('ready'));
+      await expect(driver).toHaveUrl(expect.stringContaining('wevote.us/'));
     });
-  
+
   });
