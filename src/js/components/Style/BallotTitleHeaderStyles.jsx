@@ -4,9 +4,10 @@ import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize'; // 2024-04-16 Upgrade to using this
 
-export const BallotAddress = styled('div', {
+export const BallotAddress = styled('button', {
   shouldForwardProp: (prop) => !['centerText', 'allowTextWrap'].includes(prop),
 })(({ allowTextWrap, centerText }) => (`
+  all: unset;
   margin-left: 2px;
   ${isMobileScreenSize() || isCordova() ? '' : 'font-size: 18px;'}
   ${allowTextWrap || isMobileScreenSize() || isCordova() ? '' : 'overflow: hidden;'}

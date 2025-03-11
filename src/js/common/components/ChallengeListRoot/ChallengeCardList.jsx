@@ -105,23 +105,6 @@ class ChallengeCardList extends Component {
     });
   }
 
-  increaseNumberToDisplay = () => {
-    let { numberToDisplay } = this.state;
-    numberToDisplay += NUMBER_TO_ADD_WHEN_MORE_CLICKED;
-    this.setState({
-      numberToDisplay,
-    });
-  }
-
-  loadMoreHasBeenClicked = () => {
-    this.increaseNumberToDisplay();
-    // console.log('load more has been clicked');
-    if (this.props.loadMoreScroll) {
-      // console.log('loadMoreScroll exists');
-      this.props.loadMoreScroll();
-    }
-  }
-
   onChallengeClickLink (challengeWeVoteId) {
     const challenge = ChallengeStore.getChallengeByWeVoteId(challengeWeVoteId);
     if (!challenge) {
@@ -158,6 +141,23 @@ class ChallengeCardList extends Component {
     return challengeBasePath;
   }
 
+  loadMoreHasBeenClicked = () => {
+    this.increaseNumberToDisplay();
+    // console.log('load more has been clicked');
+    if (this.props.loadMoreScroll) {
+      // console.log('loadMoreScroll exists');
+      this.props.loadMoreScroll();
+    }
+  }
+
+  increaseNumberToDisplay = () => {
+    let { numberToDisplay } = this.state;
+    numberToDisplay += NUMBER_TO_ADD_WHEN_MORE_CLICKED;
+    this.setState({
+      numberToDisplay,
+    });
+  }
+
   render () {
     renderLog('ChallengeCardList');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('ChallengeCardList render');
@@ -168,7 +168,7 @@ class ChallengeCardList extends Component {
       return null;
     }
     let numberDisplayed = 0;
-    const pigsCanFly = true;
+    const inChallengeList = true; // checks if item is in the challenge list
     return (
       <Wrapper>
         <ListWrapper useVerticalCard={useVerticalCard}>
@@ -186,6 +186,7 @@ class ChallengeCardList extends Component {
                     limitCardWidth={useVerticalCard}
                     titleLengthRestricted
                     useVerticalCard={useVerticalCard}
+                    inChallengeList={inChallengeList}
                   />
                   {/* JoinedAndDaysLeft component positioned absolutely */}
                   <JoinedAndDaysForChallengePage>
@@ -198,13 +199,13 @@ class ChallengeCardList extends Component {
                 >
                   <ChallengeAbout challengeWeVoteId={oneChallenge.challenge_we_vote_id} />
                 </Link>
-                {pigsCanFly && (
-                  <JoinedButtonsOuterWrapper>
-                    <JoinedButtonsInnerWrapper>
-                      <JoinChallengeAndLearnMoreButtons />
-                    </JoinedButtonsInnerWrapper>
-                  </JoinedButtonsOuterWrapper>
-                )}
+                <JoinedButtonsOuterWrapper>
+                  <JoinedButtonsInnerWrapper>
+                    <JoinChallengeAndLearnMoreButtons
+                      inChallengeList={inChallengeList}
+                    />
+                  </JoinedButtonsInnerWrapper>
+                </JoinedButtonsOuterWrapper>
               </ChallengeCardForListVerticalWrapper>
             );
           })}
@@ -302,18 +303,21 @@ const ChallengeCardForListVerticalWrapper = styled('div')`
   display: flex;
   flex-direction: column;
   // height: ${isWebApp() ? '100%' : 'unset'};
-  height: 450px;
+  height: auto;
   position: relative;
   width: 80%;
   max-width: 250px;
   margin-right: 5px;
+  margin-bottom: 20px;
 `;
 
-const JoinedButtonsInnerWrapper = styled('div')``;
+const JoinedButtonsInnerWrapper = styled('div')`
+`;
 
 const JoinedButtonsOuterWrapper = styled('div')`
   bottom: 0;
   display: flex;
+  justify-content: space-between;
   position: absolute;
   width: 250px;
 `;

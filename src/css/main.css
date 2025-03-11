@@ -3335,20 +3335,6 @@ a {
   background-color:#fff
 }
 
-.page-logo {
-  width:45px
-}
-
-@media all and (min-width: 576px) {
-  .page-logo {
-    width:120px
-  }
-}
-
-.page-logo > .beta-marker {
-  position:relative
-}
-
 .search-container--cordova {
   left:0;
   width:auto

@@ -13,7 +13,6 @@ import numberWithCommas from '../../../utils/numberWithCommas';
 import HeartFavoriteToggleIcon from './HeartFavoriteToggleIcon';
 import AppObservableStore from '../../../stores/AppObservableStore';
 
-
 // WV-399: Creating popover for sign in prompt using MUI Popover component.
 // Popover text passed into helper functions setting like/dislike text for handleActionClick.
 // voterIsSignedIn in handleActionClick to update state for anchorEl and popoverText hooking into Like/Dislike containers.
@@ -441,10 +440,14 @@ const HeartFavoriteToggleContainer = styled('div')`
   background: ${DesignTokenColors.whiteUI};
 `;
 
-const LikeContainer = styled('div')`
+const LikeContainer = styled('button')`
+  all: unset;
   display: flex;
   padding-right: 8px;
   cursor: pointer;
+  &:focus {
+    border: 1px solid black; /* Black border on focus */
+  }
 `;
 
 const LikeDislikeSeperator = styled('div')`
@@ -452,10 +455,14 @@ const LikeDislikeSeperator = styled('div')`
   border-right: 1px solid ${DesignTokenColors.neutralUI100};
 `;
 
-const DislikeContainer = styled('div')`
+const DislikeContainer = styled('button')`
+  all: unset;
   display: flex;
   padding-left: 8px;
   cursor: pointer;
+  &:focus {
+    border: 1px solid black; /* Black border on focus */
+  }
 `;
 
 export default HeartFavoriteToggleBase;

@@ -168,7 +168,13 @@ class BallotTitleHeaderNationalPlaceholder extends Component {
                         >
                           Ballot for
                           {' '}
-                          <span className={linksOff ? '' : 'u-link-color'}>
+                          <span
+                            tabIndex={0}
+                            role="button"
+                            onKeyDown={(event) => {
+                              if (event.key === 'Enter') this.showSelectBallotModalEditAddress()
+                              }}
+                            className={linksOff ? '' : 'u-link-color'}>
                             {textForMapSearch}
                           </span>
                         </BallotAddress>

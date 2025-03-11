@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import { blurTextFieldAndroid, focusTextFieldAndroid } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import SearchBase from './SearchBase';
+import VoterStore from '../../../stores/VoterStore';
+import TagManager from 'react-gtm-module';
 
 /* eslint-disable jsx-a11y/control-has-associated-label  */
 class SearchBar2024 extends Component {
@@ -56,12 +58,32 @@ class SearchBar2024 extends Component {
     }
   }
 
-  handleKeyPress () {
-    if (this.timer) clearTimeout(this.timer);
-    this.timer = setTimeout(() => {
-      this.props.searchFunction(this.state.searchString);
-    }, this.props.searchUpdateDelayTime);
+  
+ handleKeyPress = () => {
+  if (this.timer) {
+    clearTimeout(this.timer);
   }
+  this.timer = setTimeout(() => {
+    const { searchString } = this.state;
+    if (searchString.length === 0) {
+      return;
+    }
+    this.props.searchFunction(searchString);
+    if(this.props.trackSearch){
+    const dataLayerObject = {
+      event: 'searchKeyword',
+      searchKeyword: searchString,
+      user:{
+        voterWeVoteId: VoterStore.getVoterWeVoteId()
+      }
+    };
+    //console.log(dataLayerObject)
+    TagManager.dataLayer({dataLayer: dataLayerObject});
+  }
+  }, 3000);
+  const { searchString } = this.state;
+  this.props.searchFunction(searchString);
+};
 
   clearQuery () {
     this.props.clearFunction();

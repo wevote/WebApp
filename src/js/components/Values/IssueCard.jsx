@@ -34,6 +34,9 @@ class IssueCard extends Component {
       issue: {},
       issueImageSize: 'SMALL', // We support SMALL, MEDIUM, LARGE
       issueWeVoteId: '',
+      // Temporary adjustment to issueFollowersCount that reflects whether
+      // the user clicked "follow" or "unfollow" button in this session.
+      issueFollowersAdjustment: 0,
     };
     this.getIssueLink = this.getIssueLink.bind(this);
     this.toggleShowSignInModal = this.toggleShowSignInModal.bind(this);
@@ -131,6 +134,18 @@ class IssueCard extends Component {
       Cookies.set('sign_in_opened_from_issue_follow', '1', { expires: 1, path: '/' });
       this.toggleShowSignInModal();
     }
+    this.addToIssueFollowersAdjustment(1);
+  }
+
+  onIssueStopFollowingClick = () => {
+    this.addToIssueFollowersAdjustment(-1);
+  }
+
+  addToIssueFollowersAdjustment (value) {
+    let { issueFollowersAdjustment } = this.state;
+    issueFollowersAdjustment =
+      Math.max(-1, Math.min(1, issueFollowersAdjustment + value));
+    this.setState({ issueFollowersAdjustment });
   }
 
   toggleShowSignInModal () {
@@ -152,8 +167,10 @@ class IssueCard extends Component {
       ballotItemWeVoteId, countOfVoterGuidesUnderThisIssue,
       issue, issueFollowersCount, issueImageSize, issueWeVoteId,
       linkedOrganizationCount, linkedOrganizationPreviewList,
-      showSignInModal,
+      showSignInModal, issueFollowersAdjustment,
     } = this.state;
+    const adjustedFollowersCount =
+      Math.max(0, issueFollowersCount + issueFollowersAdjustment);
 
     if (!issueWeVoteId) {
       return null;
@@ -256,7 +273,7 @@ class IssueCard extends Component {
     const followersTooltip = isMobileScreenSize() ? (<span />) : (
       <Tooltip className="u-z-index-9020" id="followersToolTip">
         <div>
-          {numberAbbreviate(issueFollowersCount)}
+          {numberAbbreviate(adjustedFollowersCount)}
           {' '}
           people have followed
           {' '}
@@ -385,6 +402,7 @@ class IssueCard extends Component {
                 issueWeVoteId={issueWeVoteId}
                 lightModeOn
                 onIssueFollowFunction={this.onIssueFollowClick}
+                onIssueStopFollowingFunction={this.onIssueStopFollowingClick}
                 urlWithoutHash={urlWithoutHash}
               />
             </FollowIssueCardToggleContainer>
@@ -419,9 +437,9 @@ class IssueCard extends Component {
           <OverlayTrigger overlay={followersTooltip} placement="top">
             <span>
               <FollowersWrapper id="followers">
-                {!!(issueFollowersCount) && (
+                {!!(adjustedFollowersCount) && (
                   <>
-                    {numberAbbreviate(issueFollowersCount)}
+                    {numberAbbreviate(adjustedFollowersCount)}
                     {' '}
                     followers
                   </>

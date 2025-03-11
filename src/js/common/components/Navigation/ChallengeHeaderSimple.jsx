@@ -16,7 +16,7 @@ function ChallengeHeaderSimple (props) {
   renderLog('ChallengeHeaderSimple');  // Set LOG_RENDER_EVENTS to log all renders
   const { challengeTitle, challengeWeVoteId, classes, challengePhotoLargeUrl, goToChallengeHome, hideCloseIcon } = props;
   return (
-    <ChallengeHeaderSimpleOuterContainer id="politicianHeaderContainer">
+    <ChallengeHeaderSimpleOuterContainer id="challengeHeaderSimpleContainer">
       <ChallengeHeaderSimpleInnerContainer>
         <ChallengeHeaderSimpleContentContainer>
           <ChallengeTitleRow>

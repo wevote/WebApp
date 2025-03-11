@@ -145,4 +145,4 @@ class FAQPage extends Page {
 }
 
 export default new FAQPage();
-// const { describe } = require('mocha');
+

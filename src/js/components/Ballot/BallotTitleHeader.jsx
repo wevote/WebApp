@@ -116,7 +116,7 @@ class BallotTitleHeader extends Component {
       electionName, nextNationalElectionDateMDY, originalTextAddress, originalTextState,
       substitutedAddress, substitutedState, textForMapSearch,
     } = this.state;
-    console.log('BallotTitleHeader daysUntilElection:', daysUntilElection);
+    // console.log('BallotTitleHeader daysUntilElection:', daysUntilElection);
     const electionNameContainsWordElection = stringContains('election', electionName.toLowerCase());
     const stateTextUsed = substitutedState || originalTextState || '';
     const electionNameContainsState = stringContains(stateTextUsed.toLowerCase(), electionName.toLowerCase());
@@ -203,7 +203,7 @@ class BallotTitleHeader extends Component {
                             >
                               Ballot for
                               {' '}
-                              <span
+                              <span tabIndex={0}
                                 className={linksOff ? '' : 'u-link-color u-link-underline-on-hover'}
                               >
                                 <span>
@@ -224,7 +224,7 @@ class BallotTitleHeader extends Component {
                                 >
                                   Ballot for
                                   {' '}
-                                  <span className={linksOff ? '' : 'u-link-color u-link-underline-on-hover'}>
+                                  <span tabIndex={0} className={linksOff ? '' : 'u-link-color u-link-underline-on-hover'}>
                                     {substitutedAddress}
                                   </span>
                                   {linksOff ? <></> : editIconStyled}
@@ -237,7 +237,7 @@ class BallotTitleHeader extends Component {
                                   id="ballotTitleBallotAddress"
                                   onClick={this.showSelectBallotModalEditAddress}
                                 >
-                                  <span className={linksOff ? '' : 'u-link-color u-link-underline-on-hover'}>
+                                  <span tabIndex={0} className={linksOff ? '' : 'u-link-color u-link-underline-on-hover'}>
                                     Click to enter your address
                                   </span>
                                   {linksOff ? <></> : editIconStyled}

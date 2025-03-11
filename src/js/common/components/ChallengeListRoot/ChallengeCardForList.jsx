@@ -239,7 +239,7 @@ class ChallengeCardForList extends Component {
 
   render () {
     renderLog('ChallengeCardForList');  // Set LOG_RENDER_EVENTS to log all renders
-    const { challengeWeVoteId, joinedAndDaysLeftOff, limitCardWidth, titleLengthRestricted, titleLinkOff, useVerticalCard } = this.props;
+    const { challengeWeVoteId, joinedAndDaysLeftOff, limitCardWidth, titleLengthRestricted, titleLinkOff, useVerticalCard, inChallengeList } = this.props;
     const { challenge, challengeSupported, voterCanEditThisChallenge } = this.state; // , inPrivateLabelMode
     // const challenge = ChallengeStore.getChallengeByWeVoteId(challengeWeVoteId);
     if (!challenge) {
@@ -275,6 +275,7 @@ class ChallengeCardForList extends Component {
         challengeTitle={challengeTitle}
         challengeWeVoteId={challengeWeVoteId}
         hideCardMargins
+        inChallengeList={inChallengeList}
         inDraftMode={inDraftMode}
         joinedAndDaysLeftOff={joinedAndDaysLeftOff}
         functionToUseToKeepHelping={this.functionToUseToKeepHelping}
@@ -304,6 +305,7 @@ ChallengeCardForList.propTypes = {
   titleLengthRestricted: PropTypes.bool,
   titleLinkOff: PropTypes.bool,
   useVerticalCard: PropTypes.bool,
+  inChallengeList: PropTypes.bool,
 };
 
 const styles = (theme) => ({

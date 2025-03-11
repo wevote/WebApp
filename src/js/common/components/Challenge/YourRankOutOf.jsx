@@ -1,87 +1,89 @@
+import { InfoOutlined } from '@mui/icons-material';
 import React, { PureComponent, Suspense } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import DesignTokenColors from '../Style/DesignTokenColors';
-import { InfoOutlined } from '@mui/icons-material';
 
 const PointsExplanationModal = React.lazy(() => import(/* webpackChunkName: 'PointsExplanationModal' */ './PointsExplanationModal')); // eslint-disable-line import/no-cycle
 
 class YourRankOutOf extends PureComponent {
-    constructor (props) {
-      super(props);
-      this.state = {
-        pointsExplanationModalOpen: false,
-        moreInfoIconHovered: false,
-      };
-    }
-    
-    openPointsExplanationModal = () => {
-        this.setState({
-          pointsExplanationModalOpen: true,
-        });
+  constructor (props) {
+    super(props);
+    this.state = {
+      pointsExplanationModalOpen: false,
+      moreInfoIconHovered: false,
     };
+  }
 
-    toggleYourRankFunction = () => {
-        const { pointsExplanationModalOpen } = this.state;
-        this.setState({
-          pointsExplanationModalOpen: !pointsExplanationModalOpen,
-        });
-      };
+  openPointsExplanationModal = () => {
+    this.setState({
+      pointsExplanationModalOpen: true,
+    });
+  };
 
-    handleMoreInfoIconHover = () => {
-        this.setState({
-          moreInfoIconHovered: true,
-        });
-    }
+  toggleYourRankFunction = () => {
+    const { pointsExplanationModalOpen } = this.state;
+    this.setState({
+      pointsExplanationModalOpen: !pointsExplanationModalOpen,
+    });
+  };
 
-    handleMoreInfoIconLeave = () => {
-        this.setState({
-          moreInfoIconHovered: false,
-        });
-    }
+  handleMoreInfoIconHover = () => {
+    this.setState({
+      moreInfoIconHovered: true,
+    });
+  }
+
+  handleMoreInfoIconLeave = () => {
+    this.setState({
+      moreInfoIconHovered: false,
+    });
+  }
 
 
-    render() {
-        const { rankOfVoter, participantsCount } = this.props;
-        const { pointsExplanationModalOpen, moreInfoIconHovered } = this.state;
+  render() {
+    const { rankOfVoter, participantsCount } = this.props;
+    const { pointsExplanationModalOpen, moreInfoIconHovered } = this.state;
 
-        return (
-            <RankContainer>
-            <RankText>You&apos;re</RankText>
-            {' '}
-            <RankNumber>
-              #
-              {rankOfVoter}
-            </RankNumber>
-            {' '}
-            <RankDetails>
-              (of
-              {' '}
-              {participantsCount}
-              )
-            </RankDetails>
-            {' '}
-            <InfoOutlined
-                style={{ color: moreInfoIconHovered ? DesignTokenColors.primary500 : DesignTokenColors.neutral600, cursor: 'pointer' }}
-                onMouseEnter={() => this.handleMoreInfoIconHover()}
-                onMouseLeave={() => this.handleMoreInfoIconLeave()}
-                onClick={() => this.openPointsExplanationModal()}
+    return (
+      <RankContainer>
+        <RankText>You&apos;re</RankText>
+        {' '}
+        <RankNumber>
+          #
+          {rankOfVoter}
+        </RankNumber>
+        {' '}
+        <RankDetails>
+          (of
+          {' '}
+          {participantsCount}
+          )
+        </RankDetails>
+        {' '}
+        <InfoOutlined
+          style={{ color: moreInfoIconHovered ? DesignTokenColors.primary500 : DesignTokenColors.neutral600, cursor: 'pointer' }}
+          onMouseEnter={() => this.handleMoreInfoIconHover()}
+          onMouseLeave={() => this.handleMoreInfoIconLeave()}
+          onClick={() => this.openPointsExplanationModal()}
+        />
+        {pointsExplanationModalOpen && (
+          <Suspense fallback={<div>Loading...</div>}>
+            <PointsExplanationModal
+              show={this.state.pointsExplanationModalOpen}
+              toggleModal={this.toggleYourRankFunction}
+              unfurlEarnPoints
             />
-            {pointsExplanationModalOpen && (
-                <Suspense fallback={<div>Loading...</div>}>
-                    <PointsExplanationModal
-                        show={this.state.pointsExplanationModalOpen}
-                        toggleModal={this.toggleYourRankFunction}/>
-                </Suspense>
-            )}
-          </RankContainer>
-        );
-    }
+          </Suspense>
+        )}
+      </RankContainer>
+    );
+  }
 }
 
 YourRankOutOf.propTypes = {
-    rankOfVoter: PropTypes.number.isRequired,
-    participantsCount: PropTypes.number.isRequired,
+  rankOfVoter: PropTypes.number.isRequired,
+  participantsCount: PropTypes.number.isRequired,
 };
 
 // Styles

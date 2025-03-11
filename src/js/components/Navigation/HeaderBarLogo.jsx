@@ -19,16 +19,16 @@ const HeaderBarLogo = ({ chosenSiteLogoUrl, isBeta, light }) => (
       </Link>
     ) : (
       <WeVoteLogoWrapper>
-        <Link to="/ready" className="page-logo page-logo-full-size" id="logoHeaderBar">
+        <Link to="/ready" id="logoHeaderBar">
           <HeaderLogoImage src={light ? normalizedImagePath(logoLight) : normalizedImagePath(logoDark)} />
           {(isBeta && !isCordova()) && (
-            <span className="beta-marker">
+            <BetaMarker>
               <Suspense fallback={<></>}>
                 <DelayedLoad waitBeforeShow={200}>
                   <BetaMarkerInner light={light}>ballot</BetaMarkerInner>
                 </DelayedLoad>
               </Suspense>
-            </span>
+            </BetaMarker>
           )}
         </Link>
       </WeVoteLogoWrapper>
@@ -41,6 +41,10 @@ HeaderBarLogo.propTypes = {
   isBeta: PropTypes.bool,
   light: PropTypes.bool,
 };
+
+const BetaMarker = styled('span')`
+  position:relative;
+`;
 
 const BetaMarkerInner = styled('span', {
   shouldForwardProp: (prop) => !['light'].includes(prop),

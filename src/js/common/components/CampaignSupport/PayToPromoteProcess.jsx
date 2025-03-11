@@ -28,7 +28,7 @@ const stripePromise = loadStripe(webAppConfig.STRIPE_API_KEY);
 
 const futureFeaturesDisabled = true;
 const iconButtonStyles = {
-  width: window.innerWidth < 1280 ? 250 : 300,
+  width: 250,
   margin: '16px',
 };
 
@@ -419,7 +419,7 @@ PayToPromoteProcess.propTypes = {
 };
 
 const ButtonContainer = styled('div')`
-  width: 100%; 
+  width: 100%;
   max-width: 500px; // Limiting the max-width to avoid it expanding too far
   @media (max-width: 600px) {
     max-width: 300px; // Adjust max-width for small screens
@@ -431,6 +431,7 @@ const ButtonInsideWrapper = styled('div')`
   display: flex;
   justify-content: space-between;
   width: 100%;
+  align-items: center;
 `;
 
 const ContributeGridWrapper = styled('div', {
@@ -499,6 +500,8 @@ const PaymentCenteredWrapper = styled('div', {
 `));
 
 const PaymentToPromoteWrapper  = styled('div')`
+  display: grid;
+  justify-content: center;
   margin-bottom: 15px;
 `;
 

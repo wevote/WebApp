@@ -9,7 +9,7 @@
     },
     {
         "HeaderText":"More Politicians",
-        "Mandatory":"Y"
+        "Mandatory":"N"
     },
     {
         "HeaderText":"Current Representatives",

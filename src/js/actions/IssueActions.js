@@ -5,6 +5,12 @@ import Dispatcher from '../common/dispatcher/Dispatcher';
 // let uniqueKeyIssuesFollowedRetrieve = '';
 
 export default {
+  updateFollowersForIssue (issueWeVoteId, followersChangeAmount) {
+    Dispatcher.dispatch({
+      type: 'updateFollowersForIssue',
+      payload: { issueWeVoteId, followersChangeAmount },
+    });
+  },
   issueDescriptionsRetrieve () {
     /*
     April 2021: We were firing off issueDescriptionsRetrieve four times upon loading the Ready page.

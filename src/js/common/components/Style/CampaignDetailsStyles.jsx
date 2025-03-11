@@ -22,7 +22,7 @@ export const CampaignDescriptionDesktop = styled('div')`
 export const CampaignDescriptionWrapper = styled('div', {
   shouldForwardProp: (prop) => !['hideCardMargins'].includes(prop),
 })(({ hideCardMargins }) => (`
-  ${hideCardMargins ? 'padding: 10px 0 10px 0;' : 'margin: 10px;'}
+  ${hideCardMargins ? 'padding:  0;' : 'margin: 10px;'}
 `));
 
 export const CampaignDescriptionDesktopWrapper = styled('div')(({ theme }) => (`

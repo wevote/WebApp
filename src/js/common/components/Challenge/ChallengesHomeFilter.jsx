@@ -18,6 +18,8 @@ function ChallengesHomeFilter (props) {
           searchFunction={props.searchFunction}
           clearFunction={props.clearSearchFunction}
           searchUpdateDelayTime={500}
+          trackSearch={true}
+          parentComponentName="ChallengesHomeFilter"
         />
       </SearchBarWrapper>
     </ChallengesHomeFilterWrapper>

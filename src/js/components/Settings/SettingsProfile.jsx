@@ -16,7 +16,7 @@ import SettingsWidgetAccountType from './SettingsWidgetAccountType';
 import SettingsWidgetFirstLastName from './SettingsWidgetFirstLastName';
 import SettingsWidgetOrganizationDescription from './SettingsWidgetOrganizationDescription';
 import SettingsWidgetOrganizationWebsite from './SettingsWidgetOrganizationWebsite';
-
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
 
 class SettingsProfile extends Component {
   constructor (props) {
@@ -56,7 +56,10 @@ class SettingsProfile extends Component {
         <BrowserPushMessage incomingProps={this.props} />
         <div className="card u-padding-bottom--lg">
           <div className="card-main">
-            <h1 className="h2">Name &amp; Photo Settings</h1>
+            <HeaderContainer>
+              <IdIcon />
+              <h1 className="h2">Name &amp; Photo Settings</h1>
+            </HeaderContainer>
             <IntroductionWrapper>
               <Info classes={{ root: classes.informationIcon }} />
               We are serious about protecting your information. We are a nonprofit, and will never sell your information.
@@ -99,6 +102,18 @@ const styles = () => ({
 
 const IntroductionWrapper = styled('div')`
   margin-bottom: 12px;
+`;
+
+const HeaderContainer = styled('div')`
+  display: flex;
+  align-items: center;
+`;
+
+const IdIcon = styled(AccountBoxIcon)`
+  color: black;
+  height: 23px;
+  width: 23px;
+  margin: 8px 8px 0px -2px;
 `;
 
 export default withStyles(styles)(SettingsProfile);

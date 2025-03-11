@@ -577,6 +577,25 @@ class IssueStore extends ReduceStore {
           issueWeVoteIdsVoterIsFollowing };
         return revisedState;
 
+      case 'updateFollowersForIssue': {
+        const { issueWeVoteId, followersChangeAmount } = action.payload;
+        revisedState = { ...state };
+
+        if (revisedState.allCachedIssues && revisedState.allCachedIssues[issueWeVoteId]) {
+          const tempIssue = { ...revisedState.allCachedIssues[issueWeVoteId] };
+
+          // Ensure followers_count exists before updating
+          tempIssue.followers_count = (tempIssue.followers_count || 0) + followersChangeAmount;
+
+          // Assign the updated issue object back to state
+          revisedState.allCachedIssues = {
+            ...revisedState.allCachedIssues,
+            [issueWeVoteId]: tempIssue,
+          };
+        }
+
+        return revisedState;
+      }
       case 'issuesUnderBallotItemsRetrieve':
         revisedState = state;
         googleCivicElectionId = action.res.google_civic_election_id === false ? state.googleCivicElectionId : action.res.google_civic_election_id;

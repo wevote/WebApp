@@ -5,7 +5,7 @@ import colors from '../Style/Colors';
 import normalizedImagePath from '../../utils/normalizedImagePath';
 
 const closeIcon = normalizedImagePath('../../../img/global/icons/cross.svg');
-const searchIcon = normalizedImagePath('../../../img/global/icons/search.svg');
+const searchIcon = normalizedImagePath('../../../img/global/svg-icons/search.svg');
 
 class SearchBase extends React.Component {
   constructor (props) {

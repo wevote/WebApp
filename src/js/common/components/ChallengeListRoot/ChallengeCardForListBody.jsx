@@ -34,7 +34,7 @@ function ChallengeCardForListBody (props) {
     hideCardMargins, inDraftMode, joinedAndDaysLeftOff,
     limitCardWidth, onChallengeClick, onChallengeClickLink,
     photoLargeUrl, profileImageBackgroundColor,
-    tagIdBaseName, titleLengthRestricted, titleLinkOff, useVerticalCard,
+    tagIdBaseName, titleLengthRestricted, titleLinkOff, useVerticalCard, inChallengeList,
   } = props;
   const politicalPartySvgNameWithPath = '../../img/global/svg-icons/political-party-unspecified.svg';
   // console.log('ChallengeCardForListBody functional component photoLargeUrl:', photoLargeUrl);
@@ -114,13 +114,15 @@ function ChallengeCardForListBody (props) {
                   id="cimp4"
                   profileImageBackgroundColor={profileImageBackgroundColor}
                   useVerticalCard={useVerticalCard}
+                  inChallengeList={inChallengeList}
                 >
                   <ChallengeImageMobile
                     alt=""
                     src={photoLargeUrl}
                     style={useVerticalCard ? {
-                      borderBottom: `1px solid ${DesignTokenColors.neutralUI100}`,
-                      borderTop: `1px solid ${DesignTokenColors.neutralUI100}`,
+                      // borderBottom: `1px solid ${DesignTokenColors.neutralUI100}`,
+                      // borderTop: `1px solid ${DesignTokenColors.neutralUI100}`,
+                      objectFit: 'cover',
                     } : {}}
                   />
                 </ChallengeImageMobilePlaceholder>
@@ -135,6 +137,7 @@ function ChallengeCardForListBody (props) {
                 id="cimp2"
                 profileImageBackgroundColor={profileImageBackgroundColor}
                 useVerticalCard={useVerticalCard}
+                inChallengeList={inChallengeList}
               >
                 <SvgWatermarkWrapper>
                   <SvgImage
@@ -178,9 +181,10 @@ function ChallengeCardForListBody (props) {
                           borderBottom: `1px solid ${DesignTokenColors.neutralUI100}`,
                           borderTop: `1px solid ${DesignTokenColors.neutralUI100}`,
                           borderRadius: '12px',
+                          objectFit: 'cover',
                         } : {}}
                         width={limitCardWidth ? '250px' : '320px'}
-                        height={limitCardWidth ? '157px' : '168px'}
+                        height={limitCardWidth ? '157px' : '188px'}
                       />
                     </ChallengeImageDesktopPlaceholder>
                   ) : (
@@ -223,6 +227,7 @@ function ChallengeCardForListBody (props) {
 ChallengeCardForListBody.propTypes = {
   challengeTitle: PropTypes.string,
   challengeWeVoteId: PropTypes.string,
+  inChallengeList: PropTypes.bool,
   inDraftMode: PropTypes.bool,
   hideCardMargins: PropTypes.bool,
   joinedAndDaysLeftOff: PropTypes.bool,
@@ -260,11 +265,12 @@ const JoinedDaysLeftOverlayMobile = styled('div')`
 
 const JoinedDaysLeftOverlayDesktop = styled('div')`
   position: absolute;
-  top: 175px;
+  top: 160px;
   left: 10px;
 `;
 
 export const SvgWatermarkWrapper = styled('div')`
+  margin-top: 15px;
 `;
 
 export default withStyles(styles)(ChallengeCardForListBody);

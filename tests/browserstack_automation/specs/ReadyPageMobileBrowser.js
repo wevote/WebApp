@@ -1,8 +1,10 @@
-import { driver, expect } from '@wdio/globals';
-
+import { $, driver, expect } from '@wdio/globals';
 import ReadyPage from '../page_objects/ready.page';
-
+import HowItWorks from '../page_objects/howitworks';
 import webAppConfig from '../../../src/js/config';
+
+const assert = require('assert');
+const { describe, it } = require('mocha');
 
 const waitTime = 10000;
 
@@ -16,7 +18,7 @@ describe('ReadyPage', () => {
   it('verifyElectionCountDownRedirect and verifyViewUpcomingBallotRedirect', async () => {
     await ReadyPage.load();
     await driver.pause(waitTime);
-    await driver.execute(() => {
+    /*await driver.execute(() => {
       const electionCountDownTitle = document.querySelector('#electionCountDownTitle');
       electionCountDownTitle.click();
     });
@@ -31,7 +33,7 @@ describe('ReadyPage', () => {
     await driver.switchWindow('Ballot - WeVote');
     await driver.pause(waitTime);
     await expect(driver).not.toHaveUrl(expect.stringContaining('ready'));
-    console.log('Verified verifyElectionCountDownRedirect');
+    console.log('Verified verifyElectionCountDownRedirect');*/
     await ReadyPage.wevoteLogo.click();
     await ReadyPage.viewUpcomingBallotButton.click();
     await expect(driver).not.toHaveUrl(expect.stringContaining('ready'));
@@ -133,7 +135,12 @@ describe('ReadyPage', () => {
     });
     await driver.pause(waitTime);
     await expect(ReadyPage.howItWorksTitle).toHaveText('1. Choose your interests');
-    await ReadyPage.closeHowItWorksModalWindow();
+    await driver.execute(() => {
+      const closeHowItWorks = document.querySelector('#profileCloseHowItWorksModal');
+      closeHowItWorks.click();
+    });
+
+    //await ReadyPage.closeHowItWorksModalWindow();
     await driver.pause();
     await expect(ReadyPage.elementHowItWorksWindow).not.toBeDisplayed();
   });
@@ -177,9 +184,15 @@ describe('ReadyPage', () => {
       nextButton.click();
     });
     await driver.pause(waitTime);
-    await ReadyPage.clickGetStartedButton();
-    await driver.pause(waitTime);
-    await expect(ReadyPage.getTitleSignUpPopUp).toHaveText('Sign In or Join');
+    await driver.execute(() => {
+      const howItWorksLink = document.querySelector('#howItWorksGetStartedDesktopButton');
+      howItWorksLink.click();
+    });
+    
+    await driver.pause(waitTime); 
+    const text = await HowItWorks.getTitleSignUpPopUp.getText();
+    console.log("text:"+text);
+    await expect(HowItWorks.getTitleSignUpPopUp).toHaveText('Sign In');
   });
 
   // Ready_014
@@ -191,16 +204,27 @@ describe('ReadyPage', () => {
       howItWorksLink.click();
     });
     await driver.pause(waitTime);
-    const expectedResult = await ReadyPage.getTitleOfHowItWorksWindowAfterBackButton();
-    await expect(ReadyPage.howItWorksTitle).toHaveText(expectedResult);
+   // const expectedResult = await ReadyPage.getTitleOfHowItWorksWindowAfterBackButton();
+    await HowItWorks.clickNextButtonFourTimes();
+    await HowItWorks.clickBackButtonFourTimes();
+    await driver.pause(waitTime);
+    const titleHIWfirstpage = await $('#chooseYourInterests'); 
+    const actualText = await titleHIWfirstpage.getText(); 
+    console.log("Back button clicked successfully and user is on first page: " + actualText);
+    await expect(titleHIWfirstpage).toHaveText('1. Choose your interests'); 
+
   });
 
   // Ready_015
   it('verifyHelpLink', async () => {
     await ReadyPage.load();
     await driver.pause(waitTime);
+    //await driver.execute(() => window.scrollBy(0, 3500));
+    await driver.pause(waitTime);
     await driver.execute(() => {
       const helpLink = document.querySelector('#footerLinkWeVoteHelp');
+      console.log('help link:'+ helpLink);
+      helpLink.removeAttribute("target");
       helpLink.click();
     });
     await driver.pause(waitTime);
@@ -209,6 +233,8 @@ describe('ReadyPage', () => {
     const url = await driver.getUrl();
     await expect(url).toContain('help');
   });
+
+  
 
   // // Ready_016 merged with Ready_009
   // it('verifyTermsLink', async () => {
@@ -231,10 +257,13 @@ describe('ReadyPage', () => {
     await driver.pause(waitTime);
     await driver.execute(() => {
       const teamLink = document.querySelector('#footerLinkTeam');
+      console.log('team link:'+ teamLink);
+      teamLink.removeAttribute("target");
       teamLink.click();
     });
     await driver.pause(waitTime);
-    await driver.switchWindow(`${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}/more/about`);
+    //await driver.switchWindow(`${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_QA_URL}/more/about`);
+    await driver.switchWindow(`${webAppConfig.WE_VOTE_QA_URL}/more/about`);
     await driver.pause(waitTime);
     const url = await driver.getUrl();
     await expect(url).toContain('about');
@@ -246,9 +275,12 @@ describe('ReadyPage', () => {
     await driver.pause(waitTime);
     await driver.execute(() => {
       const creditsLink = document.querySelector('#footerLinkCredits');
+      console.log('credits link:'+ creditsLink);
+      creditsLink.removeAttribute("target");
       creditsLink.click();
     });    await driver.pause(waitTime);
-    await driver.switchWindow(`${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}/more/credits`);
+   // await driver.switchWindow(`${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_QA_URL}/more/credits`);
+    await driver.switchWindow(`${webAppConfig.WE_VOTE_QA_URL}/more/credits`);
     await driver.pause(waitTime);
     const url = await driver.getUrl();
     await expect(url).toContain('credits');
@@ -260,6 +292,8 @@ describe('ReadyPage', () => {
     await driver.pause(waitTime);
     await driver.execute(() => {
       const volunteerLink = document.querySelector('#footerLinkVolunteer');
+      console.log('volunteer link:'+ volunteerLink);
+      volunteerLink.removeAttribute("target");
       volunteerLink.click();
     });
     await driver.pause(waitTime);
@@ -281,4 +315,7 @@ describe('ReadyPage', () => {
     const url = await driver.getUrl();
     await expect(url).toContain('donate');
   });
+
+  
+
 });

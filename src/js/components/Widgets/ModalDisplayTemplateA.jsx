@@ -113,7 +113,7 @@ export const templateAStyles = (theme) => ({
   closeButton: {
     position: 'absolute',
     right: theme.spacing(1),
-    top: isAndroid() ? '-4px' : theme.spacing(2.6),
+    top: isAndroid() ? '-4px' : theme.spacing(2.8),
   },
   saveButtonRoot: {
     width: '100%',

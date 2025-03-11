@@ -12,7 +12,7 @@ const waitTime = 5000;
 
 describe('TopicsPage', () => {
   // Ready_001
-  
+
   it('verifyProChoiceTopicsPageLoads', async () => {
 
     await ReadyPage.login();
@@ -33,7 +33,7 @@ describe('TopicsPage', () => {
     await driver.pause(waitTime);
     await expect(driver).toHaveTitle(expect.stringContaining('Pro-choice - WeVote'));
     // Checking Follow and Unfollow buttons
-    
+
     const circleIcon = await (TopicsPage.getProChoiceCircleIconElement).isExisting();
     if (!circleIcon) {
       await driver.waitUntil(async () => (TopicsPage.getProChoiceFollowElement.isClickable()));
@@ -53,12 +53,12 @@ describe('TopicsPage', () => {
     await ProfilePage.getSignOutElement.click();
 
   });
-  
+
   it('verifyProLifePageLoads', async () => {
 
     await ReadyPage.login();
     await ReadyPage.load();
-    await driver.pause(waitTime);  
+    await driver.pause(waitTime);
     await driver.waitUntil(async () => (ReadyPage.getProLifeLinkElement.isClickable()));
     await ReadyPage.getProLifeLinkElement.click();
     await driver.waitUntil(async () => {
@@ -138,7 +138,7 @@ describe('TopicsPage', () => {
 
     await ReadyPage.login();
     await ReadyPage.load();
-    await driver.pause(waitTime);  
+    await driver.pause(waitTime);
     await driver.waitUntil(async () => (ReadyPage.getRepublicanClubsLinkElement.isClickable()));
     await ReadyPage.getRepublicanClubsLinkElement.click();
     await driver.waitUntil(async () => {
@@ -178,7 +178,7 @@ describe('TopicsPage', () => {
 
     await ReadyPage.login();
     await ReadyPage.load();
-    await driver.pause(waitTime);  
+    await driver.pause(waitTime);
     await driver.waitUntil(async () => (ReadyPage.getClimateChangeLinkElement.isClickable()));
     await ReadyPage.getClimateChangeLinkElement.click();
     await driver.waitUntil(async () => {
@@ -218,7 +218,7 @@ describe('TopicsPage', () => {
 
     await ReadyPage.login();
     await ReadyPage.load();
-    await driver.pause(waitTime);  
+    await driver.pause(waitTime);
     await driver.waitUntil(async () => (ReadyPage.getLGBTQLinkElement.isClickable()));
     await ReadyPage.getLGBTQLinkElement.click();
     await driver.waitUntil(async () => {
@@ -259,9 +259,9 @@ describe('TopicsPage', () => {
 
     await ReadyPage.login();
     await ReadyPage.load();
-    await driver.pause(waitTime);  
+    await driver.pause(waitTime);
     await driver.waitUntil(async () => (ReadyPage.getShowMoreLinkElement.isClickable()));
-    await ReadyPage.getShowMoreLinkElement.click(); 
+    await ReadyPage.getShowMoreLinkElement.click();
     await driver.waitUntil(async () => (ReadyPage.getDemocraticPartyPoliticiansLinkElement.isClickable()));
     await ReadyPage.getDemocraticPartyPoliticiansLinkElement.click();
     await driver.waitUntil(async () => {
@@ -301,9 +301,9 @@ describe('TopicsPage', () => {
 
     await ReadyPage.login();
     await ReadyPage.load();
-    await driver.pause(waitTime);  
+    await driver.pause(waitTime);
     await driver.waitUntil(async () => (ReadyPage.getShowMoreLinkElement.isClickable()));
-    await ReadyPage.getShowMoreLinkElement.click(); 
+    await ReadyPage.getShowMoreLinkElement.click();
     await driver.waitUntil(async () => (ReadyPage.getRepublicanPartyPoliticiansLinkElement.isClickable()));
     await ReadyPage.getRepublicanPartyPoliticiansLinkElement.click();
     await driver.waitUntil(async () => {
@@ -344,9 +344,9 @@ describe('TopicsPage', () => {
 
     await ReadyPage.login();
     await ReadyPage.load();
-    await driver.pause(waitTime);  
+    await driver.pause(waitTime);
     await driver.waitUntil(async () => (ReadyPage.getShowMoreLinkElement.isClickable()));
-    await ReadyPage.getShowMoreLinkElement.click(); 
+    await ReadyPage.getShowMoreLinkElement.click();
     await driver.waitUntil(async () => (ReadyPage.getProgressiveValuesLinkElement.isClickable()));
     await ReadyPage.getProgressiveValuesLinkElement.click();
     await driver.waitUntil(async () => {
@@ -386,9 +386,9 @@ describe('TopicsPage', () => {
 
     await ReadyPage.login();
     await ReadyPage.load();
-    await driver.pause(waitTime);  
+    await driver.pause(waitTime);
     await driver.waitUntil(async () => (ReadyPage.getShowMoreLinkElement.isClickable()));
-    await ReadyPage.getShowMoreLinkElement.click(); 
+    await ReadyPage.getShowMoreLinkElement.click();
     await driver.waitUntil(async () => (ReadyPage.getConservativeValuesLinkElement.isClickable()));
     await ReadyPage.getConservativeValuesLinkElement.click();
     await driver.waitUntil(async () => {
@@ -428,9 +428,9 @@ describe('TopicsPage', () => {
 
     await ReadyPage.login();
     await ReadyPage.load();
-    await driver.pause(waitTime); 
+    await driver.pause(waitTime);
     await driver.waitUntil(async () => (ReadyPage.getShowMoreLinkElement.isClickable()));
-    await ReadyPage.getShowMoreLinkElement.click();  
+    await ReadyPage.getShowMoreLinkElement.click();
     await driver.waitUntil(async () => (ReadyPage.getCommonSenseGunReformLinkElement.isClickable()));
     await ReadyPage.getCommonSenseGunReformLinkElement.click();
     await driver.waitUntil(async () => {
@@ -470,9 +470,9 @@ describe('TopicsPage', () => {
 
     await ReadyPage.login();
     await ReadyPage.load();
-    await driver.pause(waitTime);  
+    await driver.pause(waitTime);
     await driver.waitUntil(async () => (ReadyPage.getShowMoreLinkElement.isClickable()));
-    await ReadyPage.getShowMoreLinkElement.click(); 
+    await ReadyPage.getShowMoreLinkElement.click();
     await driver.waitUntil(async () => (ReadyPage.getGun2ndAmendmentRightsLinkElement.isClickable()));
     await ReadyPage.getGun2ndAmendmentRightsLinkElement.click();
     await driver.waitUntil(async () => {
@@ -506,15 +506,15 @@ describe('TopicsPage', () => {
     await driver.waitUntil(async () => (ProfilePage.getSignOutElement.isClickable()));
     await ProfilePage.getSignOutElement.click();
 
-  }); 
+  });
 
   it('verifyAffordableHousingPageLoads', async () => {
 
     await ReadyPage.login();
     await ReadyPage.load();
-    await driver.pause(waitTime);  
+    await driver.pause(waitTime);
     await driver.waitUntil(async () => (ReadyPage.getShowMoreLinkElement.isClickable()));
-    await ReadyPage.getShowMoreLinkElement.click(); 
+    await ReadyPage.getShowMoreLinkElement.click();
     await driver.waitUntil(async () => (ReadyPage.getAffordableHousingLinkElement.isClickable()));
     await ReadyPage.getAffordableHousingLinkElement.click();
     await driver.waitUntil(async () => {
@@ -554,9 +554,9 @@ describe('TopicsPage', () => {
 
     await ReadyPage.login();
     await ReadyPage.load();
-    await driver.pause(waitTime);  
+    await driver.pause(waitTime);
     await driver.waitUntil(async () => (ReadyPage.getShowMoreLinkElement.isClickable()));
-    await ReadyPage.getShowMoreLinkElement.click(); 
+    await ReadyPage.getShowMoreLinkElement.click();
     await driver.waitUntil(async () => (ReadyPage.getVotingRightsAndEducationLinkElement.isClickable()));
     await ReadyPage.getVotingRightsAndEducationLinkElement.click();
     await driver.waitUntil(async () => {
@@ -596,9 +596,9 @@ describe('TopicsPage', () => {
 
     await ReadyPage.login();
     await ReadyPage.load();
-    await driver.pause(waitTime);  
+    await driver.pause(waitTime);
     await driver.waitUntil(async () => (ReadyPage.getShowMoreLinkElement.isClickable()));
-    await ReadyPage.getShowMoreLinkElement.click(); 
+    await ReadyPage.getShowMoreLinkElement.click();
     await driver.waitUntil(async () => (ReadyPage.getCommunitiesOfColorLinkElement.isClickable()));
     await ReadyPage.getCommunitiesOfColorLinkElement.click();
     await driver.waitUntil(async () => {
@@ -638,9 +638,9 @@ describe('TopicsPage', () => {
 
     await ReadyPage.login();
     await ReadyPage.load();
-    await driver.pause(waitTime);  
+    await driver.pause(waitTime);
     await driver.waitUntil(async () => (ReadyPage.getShowMoreLinkElement.isClickable()));
-    await ReadyPage.getShowMoreLinkElement.click(); 
+    await ReadyPage.getShowMoreLinkElement.click();
     await driver.waitUntil(async () => (ReadyPage.getAnimalsAndWildlifeLinkElement.isClickable()));
     await ReadyPage.getAnimalsAndWildlifeLinkElement.click();
     await driver.waitUntil(async () => {
@@ -667,22 +667,22 @@ describe('TopicsPage', () => {
     await TopicsPage.getAnimalsAndWildlifeUnfollowElement.click();
     // verify follow button appears
     await expect(TopicsPage.getAnimalsAndWildlifeFollowElement).toBeDisplayed();
-  
+
     await driver.waitUntil(async () => (TopicsPage.avatar.isClickable()));
     await TopicsPage.avatar.click();
-  
+
     await driver.waitUntil(async () => (ProfilePage.getSignOutElement.isClickable()));
     await ProfilePage.getSignOutElement.click();
-  
+
   });
-  
+
   it('verifyImmigrationRightsPageLoads', async () => {
 
     await ReadyPage.login();
     await ReadyPage.load();
-    await driver.pause(waitTime);  
+    await driver.pause(waitTime);
     await driver.waitUntil(async () => (ReadyPage.getShowMoreLinkElement.isClickable()));
-    await ReadyPage.getShowMoreLinkElement.click(); 
+    await ReadyPage.getShowMoreLinkElement.click();
     await driver.waitUntil(async () => (ReadyPage.getImmigrationRightsLinkElement.isClickable()));
     await ReadyPage.getImmigrationRightsLinkElement.click();
     await driver.waitUntil(async () => {
@@ -709,22 +709,22 @@ describe('TopicsPage', () => {
     await TopicsPage.getImmigrationRightsUnfollowElement.click();
     // verify follow button appears
     await expect(TopicsPage.getImmigrationRightsFollowElement).toBeDisplayed();
-  
+
     await driver.waitUntil(async () => (TopicsPage.avatar.isClickable()));
     await TopicsPage.avatar.click();
-  
+
     await driver.waitUntil(async () => (ProfilePage.getSignOutElement.isClickable()));
     await ProfilePage.getSignOutElement.click();
-  
+
   });
 
   it('verifyCriminalJusticeReformPageLoads', async () => {
 
     await ReadyPage.login();
     await ReadyPage.load();
-    await driver.pause(waitTime);  
+    await driver.pause(waitTime);
     await driver.waitUntil(async () => (ReadyPage.getShowMoreLinkElement.isClickable()));
-    await ReadyPage.getShowMoreLinkElement.click(); 
+    await ReadyPage.getShowMoreLinkElement.click();
     await driver.waitUntil(async () => (ReadyPage.getCriminalJusticeReformLinkElement.isClickable()));
     await ReadyPage.getCriminalJusticeReformLinkElement.click();
     await driver.waitUntil(async () => {
@@ -751,22 +751,22 @@ describe('TopicsPage', () => {
     await TopicsPage.getCriminalJusticeReformUnfollowElement.click();
     // verify follow button appears
     await expect(TopicsPage.getCriminalJusticeReformFollowElement).toBeDisplayed();
-  
+
     await driver.waitUntil(async () => (TopicsPage.avatar.isClickable()));
     await TopicsPage.avatar.click();
-  
+
     await driver.waitUntil(async () => (ProfilePage.getSignOutElement.isClickable()));
     await ProfilePage.getSignOutElement.click();
-  
+
   });
 
   it('verifyReducingMoneyInPoliticsPageLoads', async () => {
 
     await ReadyPage.login();
     await ReadyPage.load();
-    await driver.pause(waitTime);  
+    await driver.pause(waitTime);
     await driver.waitUntil(async () => (ReadyPage.getShowMoreLinkElement.isClickable()));
-    await ReadyPage.getShowMoreLinkElement.click(); 
+    await ReadyPage.getShowMoreLinkElement.click();
     await driver.waitUntil(async () => (ReadyPage.getReducingMoneyInPoliticsLinkElement.isClickable()));
     await ReadyPage.getReducingMoneyInPoliticsLinkElement.click();
     await driver.waitUntil(async () => {
@@ -793,22 +793,22 @@ describe('TopicsPage', () => {
     await TopicsPage.getReducingMoneyInPoliticsUnfollowElement.click();
     // verify follow button appears
     await expect(TopicsPage.getReducingMoneyInPoliticsFollowElement).toBeDisplayed();
-  
+
     await driver.waitUntil(async () => (TopicsPage.avatar.isClickable()));
     await TopicsPage.avatar.click();
-  
+
     await driver.waitUntil(async () => (ProfilePage.getSignOutElement.isClickable()));
     await ProfilePage.getSignOutElement.click();
-  
+
   });
 
   it('verifySocialSecurityAndMedicarePageLoads', async () => {
 
     await ReadyPage.login();
     await ReadyPage.load();
-    await driver.pause(waitTime);  
+    await driver.pause(waitTime);
     await driver.waitUntil(async () => (ReadyPage.getShowMoreLinkElement.isClickable()));
-    await ReadyPage.getShowMoreLinkElement.click(); 
+    await ReadyPage.getShowMoreLinkElement.click();
     await driver.waitUntil(async () => (ReadyPage.getSocialSecurityAndMedicareLinkElement.isClickable()));
     await ReadyPage.getSocialSecurityAndMedicareLinkElement.click();
     await driver.waitUntil(async () => {
@@ -835,22 +835,22 @@ describe('TopicsPage', () => {
     await TopicsPage.getSocialSecurityAndMedicareUnfollowElement.click();
     // verify follow button appears
     await expect(TopicsPage.getSocialSecurityAndMedicareFollowElement).toBeDisplayed();
-  
+
     await driver.waitUntil(async () => (TopicsPage.avatar.isClickable()));
     await TopicsPage.avatar.click();
-  
+
     await driver.waitUntil(async () => (ProfilePage.getSignOutElement.isClickable()));
     await ProfilePage.getSignOutElement.click();
-  
+
   });
 
   it('verifyReducingStudentDebtPageLoads', async () => {
 
     await ReadyPage.login();
     await ReadyPage.load();
-    await driver.pause(waitTime);  
+    await driver.pause(waitTime);
     await driver.waitUntil(async () => (ReadyPage.getShowMoreLinkElement.isClickable()));
-    await ReadyPage.getShowMoreLinkElement.click(); 
+    await ReadyPage.getShowMoreLinkElement.click();
     await driver.waitUntil(async () => (ReadyPage.getReducingStudentDebtLinkElement.isClickable()));
     await ReadyPage.getReducingStudentDebtLinkElement.click();
     await driver.waitUntil(async () => {
@@ -877,22 +877,22 @@ describe('TopicsPage', () => {
     await TopicsPage.getReducingStudentDebtUnfollowElement.click();
     // verify follow button appears
     await expect(TopicsPage.getReducingStudentDebtFollowElement).toBeDisplayed();
-  
+
     await driver.waitUntil(async () => (TopicsPage.avatar.isClickable()));
     await TopicsPage.avatar.click();
-  
+
     await driver.waitUntil(async () => (ProfilePage.getSignOutElement.isClickable()));
     await ProfilePage.getSignOutElement.click();
-  
+
   });
-  
+
   it('verifyMarijuanaLegalizationPageLoads', async () => {
-  
+
     await ReadyPage.login();
     await ReadyPage.load();
-    await driver.pause(waitTime);  
+    await driver.pause(waitTime);
     await driver.waitUntil(async () => (ReadyPage.getShowMoreLinkElement.isClickable()));
-    await ReadyPage.getShowMoreLinkElement.click(); 
+    await ReadyPage.getShowMoreLinkElement.click();
     await driver.waitUntil(async () => (ReadyPage.getMarijuanaLegalizationLinkElement.isClickable()));
     await ReadyPage.getMarijuanaLegalizationLinkElement.click();
     await driver.waitUntil(async () => {
@@ -919,22 +919,22 @@ describe('TopicsPage', () => {
     await TopicsPage.getMarijuanaLegalizationUnfollowElement.click();
     // verify follow button appears
     await expect(TopicsPage.getMarijuanaLegalizationFollowElement).toBeDisplayed();
-  
+
     await driver.waitUntil(async () => (TopicsPage.avatar.isClickable()));
     await TopicsPage.avatar.click();
-  
+
     await driver.waitUntil(async () => (ProfilePage.getSignOutElement.isClickable()));
     await ProfilePage.getSignOutElement.click();
-  
+
   });
-  
+
   it('verifyLowIncomeAndUnemploymentPageLoads', async () => {
 
     await ReadyPage.login();
     await ReadyPage.load();
-    await driver.pause(waitTime);  
+    await driver.pause(waitTime);
     await driver.waitUntil(async () => (ReadyPage.getShowMoreLinkElement.isClickable()));
-    await ReadyPage.getShowMoreLinkElement.click(); 
+    await ReadyPage.getShowMoreLinkElement.click();
     await driver.waitUntil(async () => (ReadyPage.getLowIncomeAndUnemploymentLinkElement.isClickable()));
     await ReadyPage.getLowIncomeAndUnemploymentLinkElement.click();
     await driver.waitUntil(async () => {
@@ -961,22 +961,22 @@ describe('TopicsPage', () => {
     await TopicsPage.getLowIncomeAndUnemploymentUnfollowElement.click();
     // verify follow button appears
     await expect(TopicsPage.getLowIncomeAndUnemploymentFollowElement).toBeDisplayed();
-  
+
     await driver.waitUntil(async () => (TopicsPage.avatar.isClickable()));
     await TopicsPage.avatar.click();
-  
+
     await driver.waitUntil(async () => (ProfilePage.getSignOutElement.isClickable()));
     await ProfilePage.getSignOutElement.click();
-  
+
   });
-  
+
   it('verifyHomelessWellBeingPageLoads', async () => {
 
     await ReadyPage.login();
     await ReadyPage.load();
-    await driver.pause(waitTime);  
+    await driver.pause(waitTime);
     await driver.waitUntil(async () => (ReadyPage.getShowMoreLinkElement.isClickable()));
-    await ReadyPage.getShowMoreLinkElement.click(); 
+    await ReadyPage.getShowMoreLinkElement.click();
     await driver.waitUntil(async () => (ReadyPage.getHomelessWellBeingLinkElement.isClickable()));
     await ReadyPage.getHomelessWellBeingLinkElement.click();
     await driver.waitUntil(async () => {
@@ -1003,22 +1003,22 @@ describe('TopicsPage', () => {
     await TopicsPage.getHomelessWellBeingUnfollowElement.click();
     // verify follow button appears
     await expect(TopicsPage.getHomelessWellBeingFollowElement).toBeDisplayed();
-  
+
     await driver.waitUntil(async () => (TopicsPage.avatar.isClickable()));
     await TopicsPage.avatar.click();
-  
+
     await driver.waitUntil(async () => (ProfilePage.getSignOutElement.isClickable()));
     await ProfilePage.getSignOutElement.click();
-  
+
   });
 
   it('verifyBicyclingPageLoads', async () => {
 
     await ReadyPage.login();
     await ReadyPage.load();
-    await driver.pause(waitTime);  
+    await driver.pause(waitTime);
     await driver.waitUntil(async () => (ReadyPage.getShowMoreLinkElement.isClickable()));
-    await ReadyPage.getShowMoreLinkElement.click(); 
+    await ReadyPage.getShowMoreLinkElement.click();
     await driver.waitUntil(async () => (ReadyPage.getBicyclingLinkElement.isClickable()));
     await ReadyPage.getBicyclingLinkElement.click();
     await driver.waitUntil(async () => {
@@ -1045,22 +1045,22 @@ describe('TopicsPage', () => {
     await TopicsPage.getBicyclingUnfollowElement.click();
     // verify follow button appears
     await expect(TopicsPage.getBicyclingFollowElement).toBeDisplayed();
-  
+
     await driver.waitUntil(async () => (TopicsPage.avatar.isClickable()));
     await TopicsPage.avatar.click();
-  
+
     await driver.waitUntil(async () => (ProfilePage.getSignOutElement.isClickable()));
     await ProfilePage.getSignOutElement.click();
-  
+
   });
-  
+
   it('verifySecuringOurBordersPageLoads', async () => {
 
     await ReadyPage.login();
     await ReadyPage.load();
-    await driver.pause(waitTime);  
+    await driver.pause(waitTime);
     await driver.waitUntil(async () => (ReadyPage.getShowMoreLinkElement.isClickable()));
-    await ReadyPage.getShowMoreLinkElement.click(); 
+    await ReadyPage.getShowMoreLinkElement.click();
     await driver.waitUntil(async () => (ReadyPage.getSecuringOurBordersLinkElement.isClickable()));
     await ReadyPage.getSecuringOurBordersLinkElement.click();
     await driver.waitUntil(async () => {
@@ -1087,22 +1087,22 @@ describe('TopicsPage', () => {
     await TopicsPage.getSecuringOurBordersUnfollowElement.click();
     // verify follow button appears
     await expect(TopicsPage.getSecuringOurBordersFollowElement).toBeDisplayed();
-  
+
     await driver.waitUntil(async () => (TopicsPage.avatar.isClickable()));
     await TopicsPage.avatar.click();
-  
+
     await driver.waitUntil(async () => (ProfilePage.getSignOutElement.isClickable()));
     await ProfilePage.getSignOutElement.click();
-  
+
   });
-  
+
   it('verifyWomensEqualityPageLoads', async () => {
-  
+
     await ReadyPage.login();
     await ReadyPage.load();
-    await driver.pause(waitTime);  
+    await driver.pause(waitTime);
     await driver.waitUntil(async () => (ReadyPage.getShowMoreLinkElement.isClickable()));
-    await ReadyPage.getShowMoreLinkElement.click(); 
+    await ReadyPage.getShowMoreLinkElement.click();
     await driver.waitUntil(async () => (ReadyPage.getWomensEqualityLinkElement.isClickable()));
     await ReadyPage.getWomensEqualityLinkElement.click();
     await driver.waitUntil(async () => {
@@ -1129,22 +1129,22 @@ describe('TopicsPage', () => {
     await TopicsPage.getWomensEqualityUnfollowElement.click();
     // verify follow button appears
     await expect(TopicsPage.getWomensEqualityFollowElement).toBeDisplayed();
-  
+
     await driver.waitUntil(async () => (TopicsPage.avatar.isClickable()));
     await TopicsPage.avatar.click();
-  
+
     await driver.waitUntil(async () => (ProfilePage.getSignOutElement.isClickable()));
     await ProfilePage.getSignOutElement.click();
-  
+
   });
-  
+
   it('verifyGreenPartyClubsPageLoads', async () => {
-  
+
     await ReadyPage.login();
     await ReadyPage.load();
-    await driver.pause(waitTime);  
+    await driver.pause(waitTime);
     await driver.waitUntil(async () => (ReadyPage.getShowMoreLinkElement.isClickable()));
-    await ReadyPage.getShowMoreLinkElement.click(); 
+    await ReadyPage.getShowMoreLinkElement.click();
     await driver.waitUntil(async () => (ReadyPage.getGreenPartyClubsLinkElement.isClickable()));
     await ReadyPage.getGreenPartyClubsLinkElement.click();
     await driver.waitUntil(async () => {
@@ -1171,22 +1171,22 @@ describe('TopicsPage', () => {
     await TopicsPage.getGreenPartyClubsUnfollowElement.click();
     // verify follow button appears
     await expect(TopicsPage.getGreenPartyClubsFollowElement).toBeDisplayed();
-  
+
     await driver.waitUntil(async () => (TopicsPage.avatar.isClickable()));
     await TopicsPage.avatar.click();
-  
+
     await driver.waitUntil(async () => (ProfilePage.getSignOutElement.isClickable()));
     await ProfilePage.getSignOutElement.click();
-  
+
   });
-  
+
   it('verifyLibertarianClubsPageLoads', async () => {
-  
+
     await ReadyPage.login();
     await ReadyPage.load();
-    await driver.pause(waitTime);  
+    await driver.pause(waitTime);
     await driver.waitUntil(async () => (ReadyPage.getShowMoreLinkElement.isClickable()));
-    await ReadyPage.getShowMoreLinkElement.click(); 
+    await ReadyPage.getShowMoreLinkElement.click();
     await driver.waitUntil(async () => (ReadyPage.getLibertarianClubsLinkElement.isClickable()));
     await ReadyPage.getLibertarianClubsLinkElement.click();
     await driver.waitUntil(async () => {
@@ -1213,22 +1213,22 @@ describe('TopicsPage', () => {
     await TopicsPage.getLibertarianClubsUnfollowElement.click();
     // verify follow button appears
     await expect(TopicsPage.getLibertarianClubsFollowElement).toBeDisplayed();
-  
+
     await driver.waitUntil(async () => (TopicsPage.avatar.isClickable()));
     await TopicsPage.avatar.click();
-  
+
     await driver.waitUntil(async () => (ProfilePage.getSignOutElement.isClickable()));
     await ProfilePage.getSignOutElement.click();
-  
+
   });
-  
+
   it('verifyProPublicSchoolsPageLoads', async () => {
-  
+
     await ReadyPage.login();
     await ReadyPage.load();
-    await driver.pause(waitTime);  
+    await driver.pause(waitTime);
     await driver.waitUntil(async () => (ReadyPage.getShowMoreLinkElement.isClickable()));
-    await ReadyPage.getShowMoreLinkElement.click(); 
+    await ReadyPage.getShowMoreLinkElement.click();
     await driver.waitUntil(async () => (ReadyPage.getProPublicSchoolsLinkElement.isClickable()));
     await ReadyPage.getProPublicSchoolsLinkElement.click();
     await driver.waitUntil(async () => {
@@ -1255,22 +1255,22 @@ describe('TopicsPage', () => {
     await TopicsPage.getProPublicSchoolsUnfollowElement.click();
     // verify follow button appears
     await expect(TopicsPage.getProPublicSchoolsFollowElement).toBeDisplayed();
-  
+
     await driver.waitUntil(async () => (TopicsPage.avatar.isClickable()));
     await TopicsPage.avatar.click();
-  
+
     await driver.waitUntil(async () => (ProfilePage.getSignOutElement.isClickable()));
     await ProfilePage.getSignOutElement.click();
-  
+
   });
-  
+
   it('verifyPubliclyFundedHealthcarePageLoads', async () => {
-  
+
     await ReadyPage.login();
     await ReadyPage.load();
-    await driver.pause(waitTime);  
+    await driver.pause(waitTime);
     await driver.waitUntil(async () => (ReadyPage.getShowMoreLinkElement.isClickable()));
-    await ReadyPage.getShowMoreLinkElement.click(); 
+    await ReadyPage.getShowMoreLinkElement.click();
     await driver.waitUntil(async () => (ReadyPage.getPubliclyFundedHealthcareLinkElement.isClickable()));
     await ReadyPage.getPubliclyFundedHealthcareLinkElement.click();
     await driver.waitUntil(async () => {
@@ -1297,22 +1297,22 @@ describe('TopicsPage', () => {
     await TopicsPage.getPubliclyFundedHealthcareUnfollowElement.click();
     // verify follow button appears
     await expect(TopicsPage.getPubliclyFundedHealthcareFollowElement).toBeDisplayed();
-  
+
     await driver.waitUntil(async () => (TopicsPage.avatar.isClickable()));
     await TopicsPage.avatar.click();
-  
+
     await driver.waitUntil(async () => (ProfilePage.getSignOutElement.isClickable()));
     await ProfilePage.getSignOutElement.click();
-  
+
   });
-  
+
   it('verifyGreenPartyPoliticiansPageLoads', async () => {
-  
+
     await ReadyPage.login();
     await ReadyPage.load();
-    await driver.pause(waitTime);  
+    await driver.pause(waitTime);
     await driver.waitUntil(async () => (ReadyPage.getShowMoreLinkElement.isClickable()));
-    await ReadyPage.getShowMoreLinkElement.click(); 
+    await ReadyPage.getShowMoreLinkElement.click();
     await driver.waitUntil(async () => (ReadyPage.getGreenPartyPoliticiansLinkElement.isClickable()));
     await ReadyPage.getGreenPartyPoliticiansLinkElement.click();
     await driver.waitUntil(async () => {
@@ -1339,22 +1339,22 @@ describe('TopicsPage', () => {
     await TopicsPage.getGreenPartyPoliticiansUnfollowElement.click();
     // verify follow button appears
     await expect(TopicsPage.getGreenPartyPoliticiansFollowElement).toBeDisplayed();
-  
+
     await driver.waitUntil(async () => (TopicsPage.avatar.isClickable()));
     await TopicsPage.avatar.click();
-  
+
     await driver.waitUntil(async () => (ProfilePage.getSignOutElement.isClickable()));
     await ProfilePage.getSignOutElement.click();
-  
+
   });
-  
+
   it('verifyLibertarianPartyPoliticiansPageLoads', async () => {
-  
+
     await ReadyPage.login();
     await ReadyPage.load();
-    await driver.pause(waitTime);  
+    await driver.pause(waitTime);
     await driver.waitUntil(async () => (ReadyPage.getShowMoreLinkElement.isClickable()));
-    await ReadyPage.getShowMoreLinkElement.click(); 
+    await ReadyPage.getShowMoreLinkElement.click();
     await driver.waitUntil(async () => (ReadyPage.getLibertarianPartyPoliticiansLinkElement.isClickable()));
     await ReadyPage.getLibertarianPartyPoliticiansLinkElement.click();
     await driver.waitUntil(async () => {
@@ -1381,22 +1381,22 @@ describe('TopicsPage', () => {
     await TopicsPage.getLibertarianPartyPoliticiansUnfollowElement.click();
     // verify follow button appears
     await expect(TopicsPage.getLibertarianPartyPoliticiansFollowElement).toBeDisplayed();
-  
+
     await driver.waitUntil(async () => (TopicsPage.avatar.isClickable()));
     await TopicsPage.avatar.click();
-  
+
     await driver.waitUntil(async () => (ProfilePage.getSignOutElement.isClickable()));
     await ProfilePage.getSignOutElement.click();
-  
+
   });
-  
+
   it('verifyIndependentPoliticiansPageLoads', async () => {
-  
+
     await ReadyPage.login();
     await ReadyPage.load();
-    await driver.pause(waitTime);  
+    await driver.pause(waitTime);
     await driver.waitUntil(async () => (ReadyPage.getShowMoreLinkElement.isClickable()));
-    await ReadyPage.getShowMoreLinkElement.click(); 
+    await ReadyPage.getShowMoreLinkElement.click();
     await driver.waitUntil(async () => (ReadyPage.getIndependentPoliticiansLinkElement.isClickable()));
     await ReadyPage.getIndependentPoliticiansLinkElement.click();
     await driver.waitUntil(async () => {
@@ -1423,22 +1423,22 @@ describe('TopicsPage', () => {
     await TopicsPage.getIndependentPoliticiansUnfollowElement.click();
     // verify follow button appears
     await expect(TopicsPage.getIndependentPoliticiansFollowElement).toBeDisplayed();
-  
+
     await driver.waitUntil(async () => (TopicsPage.avatar.isClickable()));
     await TopicsPage.avatar.click();
-  
+
     await driver.waitUntil(async () => (ProfilePage.getSignOutElement.isClickable()));
     await ProfilePage.getSignOutElement.click();
-  
+
   });
-  
+
   it('verifyProSchoolChoicePageLoads', async () => {
-  
+
     await ReadyPage.login();
     await ReadyPage.load();
-    await driver.pause(waitTime);  
+    await driver.pause(waitTime);
     await driver.waitUntil(async () => (ReadyPage.getShowMoreLinkElement.isClickable()));
-    await ReadyPage.getShowMoreLinkElement.click(); 
+    await ReadyPage.getShowMoreLinkElement.click();
     await driver.waitUntil(async () => (ReadyPage.getProSchoolChoiceLinkElement.isClickable()));
     await ReadyPage.getProSchoolChoiceLinkElement.click();
     await driver.waitUntil(async () => {
@@ -1465,22 +1465,22 @@ describe('TopicsPage', () => {
     await TopicsPage.getProSchoolChoiceUnfollowElement.click();
     // verify follow button appears
     await expect(TopicsPage.getProSchoolChoiceFollowElement).toBeDisplayed();
-  
+
     await driver.waitUntil(async () => (TopicsPage.avatar.isClickable()));
     await TopicsPage.avatar.click();
-  
+
     await driver.waitUntil(async () => (ProfilePage.getSignOutElement.isClickable()));
     await ProfilePage.getSignOutElement.click();
-  
+
   });
-  
+
   it('verifyMakeAmericaGreatAgainPageLoads', async () => {
-  
+
     await ReadyPage.login();
     await ReadyPage.load();
-    await driver.pause(waitTime);  
+    await driver.pause(waitTime);
     await driver.waitUntil(async () => (ReadyPage.getShowMoreLinkElement.isClickable()));
-    await ReadyPage.getShowMoreLinkElement.click(); 
+    await ReadyPage.getShowMoreLinkElement.click();
     await driver.waitUntil(async () => (ReadyPage.getMakeAmericaGreatAgainLinkElement.isClickable()));
     await ReadyPage.getMakeAmericaGreatAgainLinkElement.click();
     await driver.waitUntil(async () => {
@@ -1507,13 +1507,29 @@ describe('TopicsPage', () => {
     await TopicsPage.getMakeAmericaGreatAgainUnfollowElement.click();
     // verify follow button appears
     await expect(TopicsPage.getMakeAmericaGreatAgainFollowElement).toBeDisplayed();
-  
+
     await driver.waitUntil(async () => (TopicsPage.avatar.isClickable()));
     await TopicsPage.avatar.click();
-  
+
     await driver.waitUntil(async () => (ProfilePage.getSignOutElement.isClickable()));
     await ProfilePage.getSignOutElement.click();
-  
+
   });
-  
+
+  //Topics_037
+  it('verifyFilterButtonsinProChoice', async () => {
+    await ReadyPage.load();
+    await driver.pause(waitTime);
+    await driver.waitUntil(async () => (ReadyPage.getProChoiceLinkElement.isClickable()));
+    await ReadyPage.getProChoiceLinkElement.click();
+    await driver.waitUntil(async () => (TopicsPage.forThisElectionFilter.isClickable()));
+    await driver.waitUntil(async () => (TopicsPage.forAllEndorsersFilter.isClickable()));
+    await driver.refresh()
+    await driver.waitUntil(async () => (TopicsPage.forThisElectionFilter.isClickable()));
+    await TopicsPage.forThisElectionFilter.click();
+    await driver.waitUntil(async () => (TopicsPage.forAllEndorsersFilter.isClickable()));
+    await TopicsPage.forAllEndorsersFilter.click();
+
+  });
+
 });

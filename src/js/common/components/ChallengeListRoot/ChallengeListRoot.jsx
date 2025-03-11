@@ -23,10 +23,10 @@ import ChallengeParticipantStore from '../../stores/ChallengeParticipantStore';
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
 
 const ChallengeCardList = React.lazy(() => import(/* webpackChunkName: 'ChallengeCardList' */ './ChallengeCardList'));
-const HORIZONTAL_SCROLL_DISTANCE_ON_LEFT_ARROW_CLICK = -630;
-const HORIZONTAL_SCROLL_DISTANCE_ON_RIGHT_ARROW_CLICK = 630;
-const HORIZONTAL_SCROLL_DISTANCE_MOBILE_LEFT_ARROW_CLICK = -315;
-const HORIZONTAL_SCROLL_DISTANCE_MOBILE_RIGHT_ARROW_CLICK = 315;
+const HORIZONTAL_SCROLL_DISTANCE_ON_LEFT_ARROW_CLICK = -500;
+const HORIZONTAL_SCROLL_DISTANCE_ON_RIGHT_ARROW_CLICK = 500;
+const HORIZONTAL_SCROLL_DISTANCE_MOBILE_LEFT_ARROW_CLICK = -250;
+const HORIZONTAL_SCROLL_DISTANCE_MOBILE_RIGHT_ARROW_CLICK = 250;
 const HORIZONTAL_SCROLL_DISTANCE_ON_SHOW_MORE = 315;
 const RIGHT_MARGIN_SIZE = 24;
 
@@ -77,6 +77,17 @@ class ChallengeListRoot extends Component {
   componentWillUnmount () {
     this.challengeParticipantStoreListener.remove();
     this.challengeStoreListener.remove();
+  }
+
+  handleNumberOfResults (numberOfFilteredResults, numberOfSearchResults) {
+    // console.log('RepresentativeListRoot handleNumberOfResults numberOfFilteredResults:', numberOfFilteredResults, ', numberOfSearchResults:', numberOfSearchResults);
+    if (this.props.handleNumberOfResults) {
+      // Delay telling the parent component that the number of results has changed
+      // if (this.timer) clearTimeout(this.timer);
+      // this.timer = setTimeout(() => {
+      this.props.handleNumberOfResults(numberOfFilteredResults, numberOfSearchResults);
+      // }, 500);
+    }
   }
 
   onChallengeParticipantStoreChange () {
@@ -252,17 +263,6 @@ class ChallengeListRoot extends Component {
       filteredList,
       timeStampOfChange: Date.now(),
     }, () => { this.handleNumberOfResults(filteredList.length, challengeSearchResults.length); });
-  }
-
-  handleNumberOfResults (numberOfFilteredResults, numberOfSearchResults) {
-    // console.log('RepresentativeListRoot handleNumberOfResults numberOfFilteredResults:', numberOfFilteredResults, ', numberOfSearchResults:', numberOfSearchResults);
-    if (this.props.handleNumberOfResults) {
-      // Delay telling the parent component that the number of results has changed
-      // if (this.timer) clearTimeout(this.timer);
-      // this.timer = setTimeout(() => {
-      this.props.handleNumberOfResults(numberOfFilteredResults, numberOfSearchResults);
-      // }, 500);
-    }
   }
 
   leftAndRightArrowSetState = (el) => {

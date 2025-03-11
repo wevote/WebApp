@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { SecurityRounded } from '@mui/icons-material';
 import VoterActions from '../../actions/VoterActions';
 import { renderLog } from '../../common/utils/logging';
 import DeleteYourAccountButton from './DeleteYourAccountButton';
@@ -40,15 +41,18 @@ export default class SettingsYourData extends Component {
     return (
       <div>
         <div className="u-stack--md">
-          <Helmet title="Your Privacy & Data - WeVote" />
+          <Helmet title="Privacy & Data - WeVote" />
           <BrowserPushMessage incomingProps={this.props} />
           <div className="card">
             <div className="card-main">
-              <h1 className="h2">
-                Your Privacy &amp; Data
-              </h1>
+              <HeaderContainer>
+                <ShieldIcon />
+                <h1 className="h2">
+                  Privacy &amp; Data
+                </h1>
+              </HeaderContainer>
               <DataSettingSection>
-                <h4 className="h4" id = "yourAddressBookText">
+                <h4 className="h4" id="yourAddressBookText">
                   Your Address Book Contact Data
                 </h4>
                 {voterContactEmailListCount > 0 ? (
@@ -65,7 +69,7 @@ export default class SettingsYourData extends Component {
                 )}
               </DataSettingSection>
               <DataSettingSection>
-                <h4 className="h4" id = "deleteAccountText">
+                <h4 className="h4" id="deleteAccountText">
                   Delete Your Account
                 </h4>
                 <DeleteAllContactsWrapper>
@@ -91,4 +95,16 @@ const DataSettingText = styled('div')`
 const DeleteAllContactsWrapper = styled('div')`
   margin-top: 8px;
   width: 100%;
+`;
+
+const HeaderContainer = styled('div')`
+  display: flex;
+  align-items: center;
+`;
+
+const ShieldIcon = styled(SecurityRounded)`
+  color: black;
+  height: 23px;
+  width: 23px;
+  margin: 5px 8px 0 -3px;
 `;

@@ -379,7 +379,7 @@ class OrganizationModal extends Component {
             </IconButton>
           </div>
         </CloseDrawerIconWrapper>
-        <DrawerHeaderOuterContainer id="politicianHeaderContainer" scrolledDown={scrolledDown}>
+        <DrawerHeaderOuterContainer id="organizationModalHeaderContainer" scrolledDown={scrolledDown}>
           <DrawerHeaderInnerContainer>
             <CandidateTopRow>
               <Candidate

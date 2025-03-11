@@ -199,12 +199,23 @@ export const CardRowsWrapper = styled('div')`
   margin: 2px 0 0 2px;
   padding-bottom: 20px;
   overflow-y: auto;
-  height: 170px;
+  height: 250px;
+
+  @media screen and (min-width: 786px) {
+    height: auto;
+    overflow-y: visible;
+  }
 `;
 
 const ChallengeAboutWrapper = styled('div')`
   white-space: normal;
   position: relative;
+  height: auto;
+  margin-bottom: 40px;
+
+  @media screen and (min-width: 786px) {
+    margin-bottom: 20px;
+  }
 
   &::after {
     content: '';
@@ -212,7 +223,7 @@ const ChallengeAboutWrapper = styled('div')`
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 15px;
+    height: 20px;
     background: linear-gradient(to top, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
     pointer-events: none;
 `;

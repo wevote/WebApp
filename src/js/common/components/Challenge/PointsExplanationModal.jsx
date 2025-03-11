@@ -19,7 +19,7 @@ class PointsExplanationModal extends Component {
 
   render () {
     renderLog('PointsExplanationModalModal');
-    const { show, toggleModal } = this.props;
+    const { show, toggleModal, unfurlContestTerms, unfurlEarnPoints, unfurlInviteFriends, unfurlMission } = this.props;
 
     // need to replace hardcode with props
     const dialogTitleText = 'About challenges and WeVote';
@@ -27,7 +27,14 @@ class PointsExplanationModal extends Component {
     return (
       <ModalDisplayTemplateA
         dialogTitleJSX={<DialogTitle>{dialogTitleText}</DialogTitle>}
-        textFieldJSX={<ExplanationContent />}
+        textFieldJSX={(
+          <ExplanationContent
+            unfurlContestTerms={unfurlContestTerms}
+            unfurlEarnPoints={unfurlEarnPoints}
+            unfurlInviteFriends={unfurlInviteFriends}
+            unfurlMission={unfurlMission}
+          />
+        )}
         show={show}
         tallMode
         toggleModal={toggleModal}
@@ -38,6 +45,10 @@ class PointsExplanationModal extends Component {
 PointsExplanationModal.propTypes = {
   show: PropTypes.bool.isRequired,
   toggleModal: PropTypes.func.isRequired,
+  unfurlContestTerms: PropTypes.bool,
+  unfurlEarnPoints: PropTypes.bool,
+  unfurlInviteFriends: PropTypes.bool,
+  unfurlMission: PropTypes.bool,
 };
 
 

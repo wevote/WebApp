@@ -49,6 +49,7 @@ import saveCampaignSupportAndGoToNextPage from '../../utils/saveCampaignSupportA
 import TagManager from 'react-gtm-module';
 import VoterStore from '../../../stores/VoterStore';
 
+import VoterPositionEntryAndDisplay from '../../../components/PositionItem/VoterPositionEntryAndDisplay';
 
 const CampaignRetrieveController = React.lazy(() => import(/* webpackChunkName: 'CampaignRetrieveController' */ '../../components/Campaign/CampaignRetrieveController'));
 const CampaignSupportThermometer = React.lazy(() => import(/* webpackChunkName: 'CampaignSupportThermometer' */ '../../components/CampaignSupport/CampaignSupportThermometer'));
@@ -653,8 +654,8 @@ class PoliticianDetailsPage extends Component {
   render () {
     renderLog('PoliticianDetailsPage');  // Set LOG_RENDER_EVENTS to log all renders
 
-    const { politicianStateParsedFromURLBeforeLoad } = this.state; // reaname variable state calculated from URL to be used when page is still loading. 
-    const { politicianNameParsedFromURLBeforeLoad } = this.state; // reaname variable name calculated from URL to be used when page is still loading.
+    const { politicianStateParsedFromURLBeforeLoad } = this.state; // State calculated from URL to be used when page is still loading.
+    const { politicianNameParsedFromURLBeforeLoad } = this.state; // Politician name calculated from URL to be used when page is still loading.
     const { classes } = this.props;
     const { match: { params } } = this.props;
     const { politicianSEOFriendlyPath: politicianSEOFriendlyPathFromUrl } = params;
@@ -679,6 +680,7 @@ class PoliticianDetailsPage extends Component {
       wikipediaUrl, youtubeUrl,
     } = this.state;
     let { contestOfficeName } = this.state;
+    const { showOpinionModal } = this.state;
 
     const politicianLinksList = [];
     if (politicianUrl) {
@@ -965,7 +967,7 @@ class PoliticianDetailsPage extends Component {
         </Helmet>
         <PageWrapper>
           <DetailsSectionMobile className="u-show-mobile">
-            <MobileHeaderOuterContainer id="politicianHeaderContainer" scrolledDown={scrolledDown}>
+            <MobileHeaderOuterContainer id="politicianDetailsHeaderContainer" scrolledDown={scrolledDown}>
               <MobileHeaderInnerContainer>
                 <MobileHeaderContentContainer>
                   <CandidateTopRow>
@@ -1230,6 +1232,13 @@ class PoliticianDetailsPage extends Component {
                 />
               </ColumnOneThird>
               <ColumnTwoThirds>
+                {/* Opinion block */}
+                {/* Render the modal */}
+                <VoterPositionEntryAndDisplay
+                  show={showOpinionModal}
+                  toggleModal={this.toggleOpinionModal}
+                  politicianName={politicianName}
+                />
                 {(opponentCandidateList && opponentCandidateList.length > 0) && (
                   <CandidateCampaignListDesktop>
                     <CampaignSubSectionTitleWrapper>

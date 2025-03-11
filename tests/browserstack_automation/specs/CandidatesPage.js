@@ -68,7 +68,6 @@ describe('Candidates Page', () => {
 
   // Candidates_004
   const stateNamesRandomTC4 = readTestDataStates('random', 3);
-  const MandatoryHeaders = readTestDataMandatoryHeaders();
   stateNamesRandomTC4.forEach((state) => {
     it('verifyMandatoryHeaderPresent', async () => {
       console.log(`Running verifyMandatoryHeaderPresent -> Using sate: ${state}`);
@@ -81,10 +80,22 @@ describe('Candidates Page', () => {
       await actualHeaders.forEach(async (header) => {
         actualHeadersText.push(await header.getText());
       });
-      MandatoryHeaders.forEach((mandatoryHeader) => {
+
+      // Update 02/03/2025: Updating the check for mandatory headers, as per the latest update from Dale.
+      // Expected: Atleast one of the headers should be present on the page.
+      /* MandatoryHeaders.forEach((mandatoryHeader) => {
         console.log(`Checking if mandatory header '${mandatoryHeader}' is found on the page.`);
         assert(actualHeadersText.includes(mandatoryHeader), `Mandatory Header section -> '${mandatoryHeader}'  .. not found on the page..`);
-      });
+      }); */
+      let atleastOneHeaderFound = false;
+      for (let i = 0; i < possibleHeaders.length; i++) {
+        if (actualHeadersText.includes(possibleHeaders[i])) {
+          atleastOneHeaderFound = true;
+          console.log(`Atleast one of the possible headers found on the page: ${possibleHeaders[i]}`);
+          break;
+        }
+      }
+      assert.equal(atleastOneHeaderFound, true, 'None of the possible headers found on the page.');
     });
   });
 
@@ -101,6 +112,8 @@ describe('Candidates Page', () => {
       const candidateCards = await CandidatesPage.CandidateCardList;
       for (let i = 0; i < candidateCards.length; i++) {
         const card = candidateCards[i];
+        // Update 02/03/2025: wait for 4 seconds for the data to get loaded, suggested by Dale 01/14/2025.
+        await driver.waitUntil(async () =>  !(await card.getAttribute('id')).includes('Loading'), { timeout: 4000, timeoutMsg: 'Card Data not Loaded within expected duration of 4 seconds.' });
         const cardId = await card.getAttribute('id');
         const candidateNameDisplayed = await CandidatesPage.getCandidateCardCandidateName(cardId);
         const stateNameDisplayed = await CandidatesPage.getCandidateCardState(cardId);
@@ -132,12 +145,14 @@ describe('Candidates Page', () => {
     const possibleHeadersData = jsonObjH.map((i) => i.HeaderText);
     return possibleHeadersData;
   }
+  // Update 02/03/2025: Commenting out this function as we are not checking mandatory headers now.
   // read Mandatory Headers from candidatesPage_TC001.json
-  function readTestDataMandatoryHeaders () {
+  /* function readTestDataMandatoryHeaders () {
     const jsonObjH = JSON.parse(fs.readFileSync(`${testDataPath}candidatesPage_TDHeaders.json`));
     const MandatoryHeadersData = (jsonObjH.filter((header) => header.Mandatory === 'Y')).map((i) => i.HeaderText);
     return MandatoryHeadersData;
-  }
+  } */
+
   // read stateNames from candidatesPage_TDStates.json, return n random states for test run
   function readTestDataStates (type, count) {
     const jsonObjSt = JSON.parse(fs.readFileSync(`${testDataPath}candidatesPage_TDStates.json`));

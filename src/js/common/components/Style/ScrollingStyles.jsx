@@ -99,7 +99,7 @@ export const CampaignsScrollingOuterWrapper = styled('div')`
 export const ChallengesScrollingOuterWrapper = styled('div')`
   display: flex;
   justify-content: space-between;
-  height: 450px;
+  height: auto;
   min-height: 450px;
   min-width: 0;
   width: 100%;

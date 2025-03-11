@@ -3,6 +3,7 @@ import { Button } from '@mui/material';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
+import TagManager from 'react-gtm-module';
 import historyPush from '../../utils/historyPush';
 import { renderLog } from '../../utils/logging';
 import AppObservableStore from '../../stores/AppObservableStore';
@@ -11,7 +12,6 @@ import ChallengeParticipantActions from '../../actions/ChallengeParticipantActio
 import ReadyStore from '../../../stores/ReadyStore';
 import VoterStore from '../../../stores/VoterStore';
 import { getChallengeValuesFromIdentifiers } from '../../utils/challengeUtils';
-import TagManager from 'react-gtm-module';
 
 class JoinChallengeButton extends React.Component {
   constructor (props) {
@@ -131,10 +131,13 @@ class JoinChallengeButton extends React.Component {
       dataLayer: {
         event: 'inviteFriendsToChallenge',
         user: {
+          // isSignedIn: VoterStore.getVoterIsSignedIn(),
           voterWeVoteId: VoterStore.getVoterWeVoteId(),
         },
         challengeWeVoteId,
-        pageDestination: 'joinChallenge',
+        destinationPageName: 'joinChallenge',
+        destinationPageType: 'challenge',
+        destinationPathName: '',
         pageType: 'challenge',
         pageName: '', // Populate from URL pathname
         pathName: currentPathname,
@@ -207,6 +210,8 @@ class JoinChallengeButton extends React.Component {
     let buttonText;
     if (voterIsChallengeParticipant) {
       buttonText = 'Invite more friends';
+    } if (this.props.inChallengeList) {
+      buttonText = 'Join';
     } else {
       buttonText = 'Join Challenge';
     }
@@ -233,20 +238,24 @@ JoinChallengeButton.propTypes = {
   classes: PropTypes.object,
   challengeSEOFriendlyPath: PropTypes.string,
   challengeWeVoteId: PropTypes.string,
+  inChallengeList: PropTypes.bool,
 };
 
 const styles = () => ({
   buttonDesktop: {
-    borderRadius: 45,
-    minWidth: '300px',
     width: '100%',
+    borderRadius: 45,
+    minWidth: 110,
+    //    background: 'var(--Primary-600, #0858A1)',
+    //    border: '1px solid var(--Primary-400, #4187C6)',
+    //    color: 'var(--WhiteUI, #FFFFFF)',
+    marginRight: 5,
+    marginTop: 0,
+    fontSize: 14,
   },
 });
 
 const JoinChallengeButtonWrapper = styled('div')`
-  align-items: center;
-  flex-direction: row;
-  justify-content: center;
 `;
 
 export default withStyles(styles)(JoinChallengeButton);

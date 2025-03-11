@@ -167,7 +167,7 @@ class BallotScrollingContainer extends Component {
                     </CandidateImageAndMatchWrapper>
                     {/* Candidate Name */}
                     <CandidateNameAndPartyWrapper data-modal-trigger>
-                      <CandidateNameH4 data-modal-trigger>
+                      <CandidateNameH4 data-modal-trigger showAsLink>
                         {oneCandidate.ballot_item_display_name}
                       </CandidateNameH4>
                       <CandidateParty data-modal-trigger>

@@ -11,12 +11,14 @@ import ConfirmYouSentInviteButton from './ConfirmYouSentInviteButton';
 import InviteAgainButton from './InviteAgainButton';
 import speakerDisplayNameToInitials from '../../utils/speakerDisplayNameToInitials';
 import ViewInviteeDetails from '../ChallengeInviteFriends/ViewInviteeDetails';
+import EditInviteeDetails from '../ChallengeInviteFriends/EditInviteeDetails';
 
 
 const ChallengeInviteeListItem = ({ invitee }) => {
 //   console.log('ChallengeInviteeListItem:', invitee);
   const [anchorEl, setAnchorEl] = useState(null);
   const [viewInviteeDetails, setViewInviteeDetails] = useState(false);
+  const [editInviteeDetails, setEditInviteeDetails] = useState(false);
 
   const { sx, children } = speakerDisplayNameToInitials(invitee.invitee_name);
   let challengeStatusIconJsx = <></>;
@@ -44,6 +46,9 @@ const ChallengeInviteeListItem = ({ invitee }) => {
     setViewInviteeDetails(true);
   };
 
+  const openEditInviteeDetails = () => {
+    setEditInviteeDetails(true);
+  };
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
 
@@ -76,7 +81,7 @@ const ChallengeInviteeListItem = ({ invitee }) => {
           >
             <PopoverWrapper>
               <PopoverNameAndMessageText>
-                <StyledTypography>
+                <StyledTypography onClick={openEditInviteeDetails}>
                   <EditOutlined style={{ fontSize: '14px', cursor: 'pointer', marginRight: '4px' }} />
                   Edit name & message
                 </StyledTypography>
@@ -89,6 +94,12 @@ const ChallengeInviteeListItem = ({ invitee }) => {
               </PopoverViewDetailsText>
             </PopoverWrapper>
           </Popover>
+          <EditInviteeDetails
+            show={editInviteeDetails}
+            setShow={setEditInviteeDetails}
+            setAnchorEl={setAnchorEl}
+            inviteeId={invitee.invitee_id}
+          />
           <ViewInviteeDetails
             show={viewInviteeDetails}
             setShow={setViewInviteeDetails}
@@ -217,6 +228,7 @@ const PopoverViewDetailsText = styled('div')`
 const StyledTypography = styled('div')`
   font-size: 12px;
   font-family: inherit;
+  cursor: pointer;
 `;
 
 const TripleDotButton = styled('button')`

@@ -91,6 +91,12 @@ const ExplanationContent = ({
     </AccordionSection>
   </PointsWrapper>
 );
+ExplanationContent.propTypes = {
+  unfurlInviteFriends: PropTypes.bool,
+  unfurlEarnPoints: PropTypes.bool,
+  unfurlMission: PropTypes.bool,
+  unfurlContestTerms: PropTypes.bool,
+};
 
 const AccordionSection = ({ title, children, isOpen }) => (
   <StyledAccordion defaultExpanded={isOpen}>
@@ -100,11 +106,10 @@ const AccordionSection = ({ title, children, isOpen }) => (
     <AccordionDetails>{children}</AccordionDetails>
   </StyledAccordion>
 );
-
 AccordionSection.propTypes = {
-  title: PropTypes.string.isRequired,
   children: PropTypes.node.isRequired,
   isOpen: PropTypes.bool,
+  title: PropTypes.string.isRequired,
 };
 
 

@@ -7,13 +7,14 @@ import PropTypes from 'prop-types';
 
 const JoinChallengeButton = React.lazy(() => import(/* webpackChunkName: 'JoinChallengeButton' */ '../../components/Challenge/JoinChallengeButton'));
 
-const JoinChallengeAndLearnMoreButtons = ({ challengeWeVoteId, classes }) => {
+const JoinChallengeAndLearnMoreButtons = ({ challengeWeVoteId, classes, inChallengeList }) => {
   return (
     <JoinChallengeButtonWrapper>
       <Suspense fallback={<></>}>
         <JoinChallengeButton
           // challengeSEOFriendlyPath={challengeSEOFriendlyPathForDisplay}
           challengeWeVoteId={challengeWeVoteId}
+          inChallengeList={inChallengeList}
         />
       </Suspense>
       <Button
@@ -32,20 +33,19 @@ const styles = () => ({
   joinChallengeButton: {
     borderRadius: 45,
     maxWidth: 300,
+    minWidth: 110,
     //    background: 'var(--Primary-600, #0858A1)',
     //     border: '1px solid var(--Primary-400, #4187C6)',
     //     color: 'var(--WhiteUI, #FFFFFF)',
-    marginRight: '5px',
-    marginTop: '10px',
-    fontSize: '14px',
   },
   learnMoreButton: {
     borderRadius: 45,
     maxWidth: 300,
+    minWidth: 110,
     //     background: 'white',
     //     border: '1px solid var(--Primary-400, #4187C6)',
     //     color: 'var(--Neutral-900, #2A2A2C)',
-    marginTop: '10px',
+    //     marginTop: '10px',
     fontSize: '14px',
     //     '&:hover': {
     //       backgroundColor: 'white',
@@ -57,12 +57,14 @@ const styles = () => ({
 const JoinChallengeButtonWrapper = styled('div')`
   display: flex;
   align-items: center;
-  justify-content: flex;
+  justify-content: space-around;
+  width: 250px;
 `;
 
 JoinChallengeAndLearnMoreButtons.propTypes = {
   challengeWeVoteId: PropTypes.string,
   classes: PropTypes.object.isRequired,
+  inChallengeList: PropTypes.bool,
 };
 
 export default withStyles(styles)(JoinChallengeAndLearnMoreButtons);

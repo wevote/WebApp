@@ -193,7 +193,7 @@ export default class HamburgerMenu extends Component {
             {isSignedIn && (
               <HamburgerMenuRow
                 fullIcon={this.yourAccountIcon(voterPhotoUrlMedium)}
-                linkText="Your Privacy & Data"
+                linkText="Privacy & Data"
                 onClickAction={null}
                 to="/settings/yourdata"
               />
