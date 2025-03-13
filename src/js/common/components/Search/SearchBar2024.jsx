@@ -59,12 +59,12 @@ class SearchBar2024 extends Component {
   }
 
   
- handleKeyPress = () => {
-  if (this.timer) {
-    clearTimeout(this.timer);
-  }
-  this.timer = setTimeout(() => {
-    const { searchString } = this.state;
+  handleKeyPress = () => {
+    if (this.timer) {
+      clearTimeout(this.timer);
+    }
+    this.timer = setTimeout(() => {
+      const { searchString } = this.state;
     if (searchString.length === 0) {
       return;
     }
@@ -73,22 +73,23 @@ class SearchBar2024 extends Component {
     const dataLayerObject = {
       event: 'searchKeyword',
       searchKeyword: searchString,
-      source:{
+      pageDetails:{
         pageName: window.location.href,
         pageType: "challenge",
         pathName: window.location.pathname,
       },
-      user:{
-        voterWeVoteId: VoterStore.getVoterWeVoteId()
+      userDetails:{
+        voterWeVoteId: VoterStore.getVoterWeVoteId(),
+        userStatus:"",
+        method:"",
       }
     };
-    //console.log(dataLayerObject)
     TagManager.dataLayer({dataLayer: dataLayerObject});
-  }
+    }
   }, 3000);
-  const { searchString } = this.state;
-  this.props.searchFunction(searchString);
-};
+    const { searchString } = this.state;
+    this.props.searchFunction(searchString);
+  };
 
   clearQuery () {
     this.props.clearFunction();
