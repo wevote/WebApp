@@ -650,7 +650,6 @@ class PoliticianDetailsPage extends Component {
   }
  //TagManger from Candidate page on View your full Ballot button-AnujaLawankar
   goToBallot = () => {
-    const { pageName, pageType } = lookupPageNameAndPageTypeDict(window.location.pathname);
    TagManager.dataLayer({
     dataLayer: {
       event: 'viewYourFullBallot',
@@ -663,8 +662,8 @@ class PoliticianDetailsPage extends Component {
         destinationPageType: 'ballot',  // Type of page
       },
       pageDetails: {
-        pageName,                       // Dynamically determined page name
-        pageType,                       // Dynamically determined page type
+       pageName : 'PoliticianDetailsPage',                      
+        pageType: 'politician',                             
         pathname: window.location.pathname, // Current page path
       },
     },
