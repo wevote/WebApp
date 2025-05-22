@@ -4,6 +4,10 @@ import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
+// Zubin (WV-1010)
+import TagManager from 'react-gtm-module';
+import lookupPageNameAndPageTypeDict from '../../utils/lookupPageNameAndPageTypeDict';
+
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterActions from '../../actions/VoterActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
@@ -239,10 +243,60 @@ class HeaderBar extends Component {
     if (this.setStyleTimeout) clearTimeout(this.setStyleTimeout);
   }
 
-  handleTabChange (newValue) {
+  handleTabChange (tabValue) {
+    // Get the tab info from the mapping
+    console.log('handleTabChange ', tabValue);
     this.customHighlightSelector();
-    // console.log('handleTabChange ', newValue);
-    this.setState({ tabsValue: newValue });
+
+    // Get current user details
+    const voterWeVoteId = VoterStore.getVoterWeVoteId();
+    const stateCode = VoterStore.getVoterStateCode();
+    console.log('VoterStore results:', voterWeVoteId, stateCode);
+
+    // Get current page info
+    const { location: { pathname: currentPathname } } = window;
+    const currentPage = lookupPageNameAndPageTypeDict(currentPathname);
+    console.log('Source page object', currentPage);
+
+    // Map tabValue to destination pathname
+    const tabPathMappings = {
+      1: '/ballot',
+      2: '/cs/',
+      3: '/friends',
+      4: '/challenges',
+      5: '/donate',
+    };
+
+    // Define destination info based on tab value
+    const destinationPathname = tabPathMappings[tabValue];
+    const destinationPage = lookupPageNameAndPageTypeDict(destinationPathname);
+    console.log('Destination page object: ', destinationPage);
+
+    // TODO:
+    // Replace switch statements with object lookup
+    // from calculatePageNameAndPageTypeDict
+
+    // Push to Tag Manager data layer
+    // TODO: Add statecode to userDetils
+    TagManager.dataLayer({
+      dataLayer: {
+        event: 'headerItemsClick',
+        userDetails: {
+          voterWeVoteId,
+          stateCode,
+        },
+        pageDetails: {
+          pageName: currentPage.pageName,
+          pageType: currentPage.pageType,
+          pathname: currentPathname,
+        },
+        destinationDetails: {
+          pageName: destinationPage.pageName,
+          pageType: destinationPage.pageType,
+          pathname: destinationPathname,
+        },
+      },
+    });
   }
 
   handleResizeLocal () {
@@ -468,17 +522,24 @@ class HeaderBar extends Component {
     const displayMenu = !isMobileScreenSize() || isTablet();
     // console.log('HeaderBar isMobileScreenSize(), isTablet()', isMobileScreenSize(), isTablet());
     // If NOT signed in, turn Discuss off and How It Works on
+
+    // Added hardcoded variables for ballot, candidates and challenges
+    let ballotValue;
+    let candidatesValue;
     let discussValue;
     let discussVisible;
     let donateValue;
     let donateVisible;
     const friendsVisible = false; // 2023-09-04 Dale We are turning off Friends header link for now
+    let friendsValue;
     let howItWorksValue;
     const squadsVisible = nextReleaseFeaturesEnabled && isWebApp();
     let squadsValue;
     // let howItWorksVisible;
     const howItWorksVisible = false;
     if (isCordova() || inPrivateLabelMode) {
+      ballotValue = 1;
+      candidatesValue = 2;
       discussValue = 99; // 4;
       discussVisible = false; // We are turning off Discuss header link for now
       donateValue = 99; // Donate not used in Cordova
@@ -487,6 +548,8 @@ class HeaderBar extends Component {
       // howItWorksVisible = true;
       squadsValue = 4;
     } else if (voterIsSignedIn) {
+      ballotValue = 1;
+      candidatesValue = 2;
       // If not Cordova and signed in, turn Donate & Discuss on, and How It Works off
       // discussValue = 4;
       // discussVisible = false; // We are turning off Discuss header link for now
@@ -495,7 +558,18 @@ class HeaderBar extends Component {
       howItWorksValue = 99;
       // howItWorksVisible = false;
       squadsValue = 4;
+    } else if (friendsVisible) {
+      ballotValue = 1;
+      candidatesValue = 2;
+      friendsValue = 3;
+      donateValue = 5;
+      donateVisible = true;
+      howItWorksValue = 99;
+      // howItWorksVisible = false;
+      squadsValue = 4;
     } else {
+      ballotValue = 1;
+      candidatesValue = 2;
       // If not Cordova, and NOT signed in, turn Discuss off & How It Works on
       discussValue = 99; // Not offered prior to sign in
       discussVisible = false;
@@ -539,7 +613,7 @@ class HeaderBar extends Component {
                 >
                   <TabWithPushHistory
                     classes={isWebApp() ? { root: classes.tabRootBallotDesktop } : { root: classes.tabRootBallot }}
-                    value={1}
+                    value={ballotValue} // ballotValue added
                     change={this.handleTabChange}
                     id="ballotTabHeaderBar"
                     label="Ballot"
@@ -547,7 +621,7 @@ class HeaderBar extends Component {
                   />
                   <TabWithPushHistory
                     classes={isWebApp() ? { root: classes.tabRootCandidatesDesktop } : { root: classes.tabRootCandidates }}
-                    value={2}
+                    value={candidatesValue} // candidatesValue added
                     change={this.handleTabChange}
                     id="candidatesTabHeaderBar"
                     label="Candidates"
@@ -556,7 +630,7 @@ class HeaderBar extends Component {
                   {friendsVisible && (
                     <TabWithPushHistory
                       classes={isWebApp() ? { root: classes.tabRootFriendsDesktop } : { root: classes.tabRootFriends }}
-                      value={3}
+                      value={friendsValue}
                       change={this.handleTabChange}
                       id="friendsTabHeaderBar"
                       label="Friends"
