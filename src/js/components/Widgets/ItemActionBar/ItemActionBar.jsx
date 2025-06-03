@@ -375,7 +375,31 @@ class ItemActionBar extends PureComponent {
         className={`${opposeHideInMobile ? 'd-none d-sm-block ' : ''}`}
         color={this.isOpposeCalculated() ? 'opposed' : 'primary'}
         id={`itemActionBarOpposeButton-${externalUniqueId}-${localUniqueId}`}
-        onClick={() => this.opposeItem()}
+        onClick={() => {                                           // Added dataLayer for choose button By AnujaLawankar
+          TagManager.dataLayer({
+            dataLayer: {
+              event: 'oppose_button_clicked',
+              userDetails: {
+                voterWeVoteId: VoterStore.getVoterWeVoteId(),
+                userStatus: VoterStore.getState(),
+                method: 'ItemActionBar',
+                stateCode: VoterStore.getStateCode(),
+
+              },
+              destinationDetails: {
+                destinationPageName: 'Ballot',
+                destinationPageType: 'ballot',
+                destinationPathname: '/ballot',
+              },
+              pageDetails: {
+                pageName: 'Ballot',
+                pageType: 'ballot',
+                pathname: window.location.pathname,
+              },
+            },
+          });
+          this.opposeItem();
+        }}
         variant={this.isOpposeCalculated() ? 'contained' : 'outlined'}
         // variant="outlined"
       >
@@ -422,7 +446,31 @@ class ItemActionBar extends PureComponent {
         classes={{ root: buttonRootClass, outlinedPrimary: classes.buttonOutlinedPrimary }}
         color={this.isSupportCalculated() ? 'chosen' : 'primary'}
         id={`itemActionBarSupportButton-${externalUniqueId}-${localUniqueId}`}
-        onClick={() => this.supportItem()}
+        onClick={() => {                                           // Added dataLayer for choose button By AnujaLawankar
+          TagManager.dataLayer({
+            dataLayer: {
+              event: 'choose_button_clicked',
+              userDetails: {
+                voterWeVoteId: VoterStore.getVoterWeVoteId(),
+                userStatus: VoterStore.getState(),
+                method: 'ItemActionBar',
+                stateCode: VoterStore.getStateCode(),
+
+              },
+              destinationDetails: {
+                destinationPageName: 'Ballot',
+                destinationPageType: 'ballot',
+                destinationPathname: '/ballot',
+              },
+              pageDetails: {
+                pageName: 'Ballot',
+                pageType: 'ballot',
+                pathname: window.location.pathname,
+              },
+            },
+          });
+          this.supportItem();
+        }}
         variant={this.isSupportCalculated() ? 'contained' : 'outlined'}
         // variant="outlined"
       >
