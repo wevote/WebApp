@@ -25,7 +25,7 @@ import {
 } from '../Style/ReadyIntroductionStyles';
 import ShowMoreButtons from '../Widgets/ShowMoreButtons';
 
-const twitterEnabled = webAppConfig.ENABLE_TWITTER === undefined ? false : webAppConfig.ENABLE_TWITTER;
+const twitterEnabled = (webAppConfig.ENABLE_TWITTER && webAppConfig.ENABLE_TWITTER_AS_VOTER_SIGN_IN_OPTION);
 const facebookEnabled =  webAppConfig.ENABLE_FACEBOOK === undefined ? false : webAppConfig.ENABLE_FACEBOOK;
 
 class ReadyIntroduction extends Component {

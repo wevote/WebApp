@@ -119,6 +119,11 @@ export const CandidateNameAndPartyWrapper = styled('div')`
   flex-flow: column nowrap;
   align-items: flex-start;
   justify-content: flex-start;
+  max-width: 225px;
+
+  @media (width < 450px) {
+    max-width: 150px;
+  }
 `;
 
 export const CandidateParty = styled('div')`

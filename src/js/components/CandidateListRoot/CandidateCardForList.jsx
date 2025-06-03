@@ -232,7 +232,7 @@ class CandidateCardForList extends Component {
           pathToUseToKeepHelping={pathToUseToKeepHelping}
           photoLargeUrl={candidatePhotoLargeUrl}
           politicalParty={politicalParty}
-          politicianBaseBath={this.getPoliticianBasePath()}
+          politicianBasePath={this.getPoliticianBasePath()}
           // politicianDescription={candidateDescription}
           politicianWeVoteId={politicianWeVoteId}
           profileImageBackgroundColor={profileImageBackgroundColor}

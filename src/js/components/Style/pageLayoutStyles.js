@@ -105,6 +105,7 @@ export const HeaderContentOuterContainer = styled('div')`
   display: flex;
   justify-content: center;
   width: 100%;
+  padding-left: calc(-100% + 100vw);
 `;
 
 export const DualHeaderContainer = styled('div', {

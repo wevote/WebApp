@@ -65,12 +65,12 @@ describe('SignIn', () => {
     await expect(SignIn.phoneNumberFieldElement).toBePresent();
     await expect(SignIn.emailFieldElement).toBePresent();
 
-    await expect(SignIn.xBttnElement).toBePresent();
+    //await expect(SignIn.xBttnElement).toBePresent(); Removing as it is not present in the latest design
 
-    await expect(SignIn.signInWithXTextElement).toBePresent();
+    //await expect(SignIn.signInWithXTextElement).toBePresent();Removing as it is not present in the latest design
 
 
-    await expect(await (await SignIn.xBttnElement.getCSSProperty('display')).value).toBe('inline-flex');
+    //await expect(await (await SignIn.xBttnElement.getCSSProperty('display')).value).toBe('inline-flex');Removing as it is not present in the latest design
 
     await expect(await (await SignIn.phoneNumberFieldElement.getCSSProperty('display')).value).toBe('block');
 

@@ -256,12 +256,12 @@ class ItemActionBar extends PureComponent {
     }
   }
 
-  openHelpWinOrDefeatModal = () => {
+  openHelpWinOrDefeatModal = (isHelpWinOrHelpDefeat) => {
     const { location: { pathname: currentPathname } } = window;
     const page = lookupPageNameAndPageTypeDict(currentPathname);
 
     const dataLayerObject = {
-      event: 'HelpDefeatOrWinClick', // Dale Note: events should be camelCase
+      event: `click_${isHelpWinOrHelpDefeat}_modal_open`,
       userDetails: {
         voterWeVoteId: VoterStore.getVoterWeVoteId(),
       },
@@ -272,11 +272,11 @@ class ItemActionBar extends PureComponent {
       },
       destinationDetails: {
         destinationPageName: page.pageName,
-        destinationPageType: "PayToPromoteProcessModal",
+        destinationPageType: 'PayToPromoteProcessModal',
         destinationPathname: currentPathname,
-      }
+      },
     };
-    TagManager.dataLayer({dataLayer: dataLayerObject})
+    TagManager.dataLayer({ dataLayer: dataLayerObject });
     // const { ballotItemWeVoteId } = this.props;
     // console.log('openHelpWinOrDefeatModal ballotItemWeVoteId: ', ballotItemWeVoteId);
     this.setState({
@@ -321,7 +321,7 @@ class ItemActionBar extends PureComponent {
           }}
           color="primary"
           id={`itemActionBarHelpThemWinButton-${externalUniqueId}-${localUniqueId}`}
-          onClick={() => this.openHelpWinOrDefeatModal()}
+          onClick={() => this.openHelpWinOrDefeatModal('help_win')}
           variant="contained"
         >
           <HelpButtonLabel>
@@ -348,7 +348,7 @@ class ItemActionBar extends PureComponent {
           className={`${opposeHideInMobile ? 'd-none d-sm-block ' : ''}`}
           color="primary"
           id={`itemActionBarHelpDefeatButton-${externalUniqueId}-${localUniqueId}`}
-          onClick={() => this.openHelpWinOrDefeatModal()}
+          onClick={() => this.openHelpWinOrDefeatModal('help_defeat')}
           variant="contained"
         >
           <HelpButtonLabel>

@@ -3,6 +3,7 @@ import { Badge, IconButton, Menu, MenuItem } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
+import TagManager from 'react-gtm-module';
 import styled from 'styled-components';
 import ActivityActions from '../../actions/ActivityActions';
 import apiCalming from '../../common/utils/apiCalming';
@@ -17,6 +18,7 @@ import ActivityStore from '../../stores/ActivityStore';
 import VoterStore from '../../stores/VoterStore';
 import { createDescriptionOfFriendPosts } from '../../utils/activityUtils';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
+import lookupPageNameAndPageTypeDict from '../../utils/lookupPageNameAndPageTypeDict';
 
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
 
@@ -95,22 +97,46 @@ class HeaderNotificationMenu extends Component {
     }
   }
 
-  onSettingsClick = () => {
-    this.handleClose();
-    historyPush('/settings/notifications');
-  }
+
+onSettingsClick = (currentPathname) => {
+  const currentPage = lookupPageNameAndPageTypeDict(currentPathname);
+  const destinationPage = lookupPageNameAndPageTypeDict('/settings/notifications');
+  TagManager.dataLayer({
+    dataLayer: {
+      event: 'clickSettingsButton', // Added detailed event name
+      pageDetails: {
+        pageName: currentPage.pageName,
+        pageType: currentPage.pageType,
+        pathname: currentPathname,
+      },
+      destinationDetails: {
+        destinationPageName: destinationPage.pageName,
+        destinationPageType: destinationPage.pageType,
+        destinationPathname: '/settings/notifications',
+      },
+      userDetails: {
+        stateCode: VoterStore.getVoterStateCode(),
+        userCohort: VoterStore.getAnalyticsUserCohort(),
+        voterWeVoteId: VoterStore.getVoterWeVoteId(),
+      },
+    },
+  });
+  this.handleClose();
+  historyPush('/settings/notifications');
+}
 
   generateMenuItemList = (allActivityNotices) => {
     const { classes } = this.props;
     const voterWeVoteId = VoterStore.getVoterWeVoteId();
     const menuItemList = [];
+    const { location: { pathname: currentPathname } } = window; // Get path here
     menuItemList.push(
       <MenuItem
         className={classes.menuItemClicked}
         data-toggle="dropdown"
         id="notificationsHeader"
         key="notificationsHeader"
-        onClick={this.onSettingsClick}
+        onClick={() => this.onSettingsClick(currentPathname)}
       >
         <NotificationsHeaderWrapper>
           <NotificationsTitle>
@@ -248,6 +274,29 @@ class HeaderNotificationMenu extends Component {
     const { activityNoticeIdListNotSeen } = this.state;
     ActivityActions.activityNoticeListRetrieve([], activityNoticeIdListNotSeen);
     ActivityActions.activityListRetrieve();
+
+    const { location: { pathname: currentPathname } } = window;
+    const page = lookupPageNameAndPageTypeDict(currentPathname);
+
+    TagManager.dataLayer({
+      dataLayer: {
+        event: 'click',
+        userDetails: {
+          voterWeVoteId: VoterStore.getVoterWeVoteId(),
+        },
+        pageDetails: {
+          pageType: page.pageType,
+          pageName: page.pageName,
+          pathname: currentPathname,
+        },
+        destinationDetails: {
+          destinationPageType: page.pageType,
+          destinationPageName: 'NotificationsModal',
+          destinationPathname: currentPathname,
+        },
+      },
+    });
+
     this.setState({
       anchorEl: event.currentTarget,
       menuOpen: true,
@@ -306,7 +355,7 @@ class HeaderNotificationMenu extends Component {
           open={menuOpen}
           onClose={this.handleClose}
           elevation={2}
-           anchorEl={anchorEl}
+          anchorEl={anchorEl}
           anchorOrigin={{
             vertical: 'bottom',
             horizontal: 'right',

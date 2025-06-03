@@ -11,17 +11,10 @@ import {
   orderByWrittenComment,
   limitToOnePositionPerSpeaker,
 } from '../../utils/orderByPositionFunctions';
-// import VoterPositionEntryAndDisplayJohnMook from '../PositionItem/VoterPositionEntryAndDisplay';
 import LoadMoreItemsManually from '../Widgets/LoadMoreItemsManually';
-import PoliticianEndorsementForList from './PoliticianEndorsementForList';
-import {
-  CampaignSubSectionTitle,
-  CampaignSubSectionTitleWrapper,
-} from '../Style/CampaignDetailsStyles';
-import PoliticianStore from '../../stores/PoliticianStore';
-import VoterPositionEntryAndDisplay from '../../../components/PositionItem/VoterPositionEntryAndDisplay';
+import PositionForBallotItem from '../Position/PositionForBallotItem';
 
-const STARTING_NUMBER_OF_POSITIONS_TO_DISPLAY = 2;
+const STARTING_NUMBER_OF_POSITIONS_TO_DISPLAY = 3;
 const NUMBER_OF_POSITIONS_TO_ADD_WHEN_MORE_CLICKED = 10;
 
 class PoliticianEndorsementsList extends Component {
@@ -80,11 +73,8 @@ class PoliticianEndorsementsList extends Component {
       filteredPositionList = filteredPositionList.sort(orderByTwitterFollowers);
       filteredPositionList = filteredPositionList.sort(orderByWrittenComment);
       filteredPositionList = limitToOnePositionPerSpeaker(filteredPositionList);
-      const politician = PoliticianStore.getPoliticianByWeVoteId(politicianWeVoteId);
-      const { politician_name: politicianName } = politician;
       this.setState({
         filteredPositionList,
-        politicianName,
       });
     }
   }
@@ -112,30 +102,13 @@ class PoliticianEndorsementsList extends Component {
 
   render () {
     renderLog('PoliticianEndorsementsList');  // Set LOG_RENDER_EVENTS to log all renders
-    const { politicianWeVoteId, hideEncouragementToEndorse, showTitle } = this.props;
-    const { filteredPositionList, numberOfPositionsToDisplay, politicianName, showOpinionModal } = this.state;
+    const { politicianWeVoteId, hideEncouragementToEndorse } = this.props;
+    const { filteredPositionList, numberOfPositionsToDisplay } = this.state;
     // console.log('PoliticianEndorsementsList render numberOfPositionsToDisplay:', numberOfPositionsToDisplay);
-    const showTitleAndPositionsToShow = showTitle && (filteredPositionList && filteredPositionList.length > 0);
-    const listTitleHtml = showTitleAndPositionsToShow && (
-      <CampaignSubSectionTitleWrapper>
-        <CampaignSubSectionTitle>
-          What people are saying
-          {!!(politicianName) && (
-            <>
-              {' '}
-              about
-              {' '}
-              {politicianName}
-            </>
-          )}
-        </CampaignSubSectionTitle>
-      </CampaignSubSectionTitleWrapper>
-    );
 
     if ((!filteredPositionList || filteredPositionList.length === 0) && !hideEncouragementToEndorse) {
       return (
         <>
-          {listTitleHtml}
           <PoliticianEndorsementsListWrapper>
             {!hideEncouragementToEndorse && (
               <NoPositionsFound>
@@ -149,9 +122,6 @@ class PoliticianEndorsementsList extends Component {
     let numberOfCampaignsDisplayed = 0;
     return (
       <PoliticianEndorsementsListWrapper>
-        {listTitleHtml}
-        {/* WV-532 This component forces open the width of the entire product, so commenting out for now. */}
-        {/* <VoterPositionEntryAndDisplayJohnMook /> */}
         <div>
           {filteredPositionList.map((position) => {
             // console.log('PoliticianEndorsementList position:', position);
@@ -161,7 +131,8 @@ class PoliticianEndorsementsList extends Component {
             numberOfCampaignsDisplayed += 1;
             return (
               <div key={`politicianEndorsementItem-${politicianWeVoteId}-${position.speaker_we_vote_id}-${position.position_we_vote_id}`}>
-                <PoliticianEndorsementForList
+                <PositionForBallotItem
+                  linksOpenExternalWebsite
                   politicianWeVoteId={politicianWeVoteId}
                   position={position}
                 />
@@ -169,13 +140,6 @@ class PoliticianEndorsementsList extends Component {
             );
           })}
         </div>
-        {/* Opinion block */}
-        {/* Render the modal */}
-        <VoterPositionEntryAndDisplay
-          show={showOpinionModal}
-          toggleModal={this.toggleOpinionModal}
-          politicianName={politicianName}
-        />
         <LoadMoreItemsManuallyWrapper>
           {!!(filteredPositionList &&
               filteredPositionList.length > 1 &&
@@ -194,7 +158,6 @@ class PoliticianEndorsementsList extends Component {
 PoliticianEndorsementsList.propTypes = {
   hideEncouragementToEndorse: PropTypes.bool,
   politicianWeVoteId: PropTypes.string,
-  showTitle: PropTypes.bool,
   startingNumberOfPositionsToDisplay: PropTypes.number,
 };
 

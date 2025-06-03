@@ -1,26 +1,24 @@
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React, { Suspense, useState } from 'react';
 import styled from 'styled-components';
-import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
-import BlockOutlinedIcon from '@mui/icons-material/BlockOutlined';
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import { BlockOutlined, CheckOutlined, Launch, MoreHoriz } from '@mui/icons-material';
 import Popover from '@mui/material/Popover';
-import { Typography } from '@mui/material';
+import { Avatar, Typography } from '@mui/material';
 import { withStyles } from '@mui/styles';
-import HeartFavoriteToggleBase from '../Widgets/HeartFavoriteToggle/HeartFavoriteToggleBase';
+import HeartFavoriteToggleLive from '../Widgets/HeartFavoriteToggle/HeartFavoriteToggleLive';
 import ThumbsUpDownToggle from '../Widgets/ThumbsUpDownToggle/ThumbsUpDownToggle';
 import DesignTokenColors from '../Style/DesignTokenColors';
+import speakerDisplayNameToInitials from '../../utils/speakerDisplayNameToInitials';
+import {
+  getDateFromUltimateElectionDate, getTodayAsInteger, timeFromDate,
+} from '../../utils/dateFormat';
+import AppObservableStore from "../../stores/AppObservableStore";
 
-function PositionForBallotItem ({ classes }) {
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../Widgets/OpenExternalWebSite'));
+const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../Widgets/ReadMore'));
+
+function PositionForBallotItem ({ classes, linksOpenExternalWebsite, politicianWeVoteId, position }) {
   const [anchorEl, setAnchorEL] = useState(null);
-
-  const voter = {
-    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvVfSCpfKXUaZB8s159zxg1HFNApJU2ra_vg&s',
-    name: 'Bobbi Odessa',
-    bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-  };
-
-  const positionEndorsed = false;
 
   const onDotButtonClick = (e) => {
     setAnchorEL(e.currentTarget);
@@ -33,68 +31,192 @@ function PositionForBallotItem ({ classes }) {
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
 
+  const {
+    is_oppose_or_negative_rating: isOpposeOrNegativeRating,
+    is_support_or_positive_rating: isSupportOrPositiveRating,
+    more_info_url: moreInfoUrl,
+    organization_we_vote_id: organizationWeVoteId,
+    position_ultimate_election_date: positionUltimateElectionDateAsInteger,
+    position_we_vote_id: positionWeVoteId,
+    position_year: positionYear,
+    statement_text: statementText,
+    speaker_display_name: speakerDisplayName,
+    speaker_twitter_handle: speakerTwitterHandle,
+    speaker_we_vote_id: speakerWeVoteId,
+    speaker_image_url_https_medium: speakerImageMedium,
+  } = position;
+  const campaignXWeVoteId = ''; // Get this from politicianWeVoteId
+  const { sx, children } = speakerDisplayNameToInitials(speakerDisplayName);
+  // I think we need a HeartFavoriteToggleLive that accepts an organizationWeVoteId
+  const heartToggleOn = false;
+  const voterLikesOn = false;
+  let howLongAgoOrThisYear = '';
+  const todayAsInteger = getTodayAsInteger(0);
+  const currentYear = new Date().getFullYear();
+  // console.log('currentYear', currentYear, ', positionYear', positionYear);
+  // console.log('todayAsInteger', todayAsInteger, ', positionUltimateElectionDateAsInteger', positionUltimateElectionDateAsInteger);
+  if (todayAsInteger && currentYear) {
+    if (positionYear === currentYear) {
+      howLongAgoOrThisYear = 'this year';
+    } else if (positionUltimateElectionDateAsInteger && (todayAsInteger <= positionUltimateElectionDateAsInteger)) {
+      howLongAgoOrThisYear = 'this year';
+    } else if (positionUltimateElectionDateAsInteger && (todayAsInteger > positionUltimateElectionDateAsInteger)) {
+      const positionUltimateElectionDate = getDateFromUltimateElectionDate(positionUltimateElectionDateAsInteger);
+      howLongAgoOrThisYear = timeFromDate(positionUltimateElectionDate);
+    }
+  }
+  const organizationWeVoteIdForDisplay = organizationWeVoteId || speakerWeVoteId;
+  const voterGuideWeVoteIdLink = `/voterguide/${organizationWeVoteIdForDisplay}`;
+  const speakerLink = speakerTwitterHandle ? `/${speakerTwitterHandle}` : voterGuideWeVoteIdLink;
+  const hostnameAndPort = AppObservableStore.getWeVoteRootURL();
+  const speakerLinkExternal = `${hostnameAndPort}${speakerLink}`;
+
+  const speakerImageJsx = (
+    <SpeakerImageWrapper>
+      {speakerImageMedium ? (
+        <SpeakerImage src={speakerImageMedium} />
+      ) : (
+        <Avatar sx={sx}>{children}</Avatar>
+      )}
+    </SpeakerImageWrapper>
+  );
   return (
     <PositionForBallotItemWrapper>
-      <VoterImageWrapper>
-        <VoterImage src={voter.image} />
-      </VoterImageWrapper>
-      <VoterInfoWrapper>
-        <VoterInfoNameFavoritesWrapper>
-          <VoterName>{voter.name}</VoterName>
-          <HeartFavoriteToggleBaseWrapper>
-            <HeartFavoriteToggleBase />
-          </HeartFavoriteToggleBaseWrapper>
-        </VoterInfoNameFavoritesWrapper>
-        <VoterInfoBioWrapper>
-          <VoterInfoBio>{voter.bio}</VoterInfoBio>
-        </VoterInfoBioWrapper>
-        <VoterPositionLikesSourceWrapper>
-          <VoterPositionWrapper>
-            {positionEndorsed ? (
-              <VoterPosition>
-                <CheckIcon />
-                <PositionText>Endorsed a month ago</PositionText>
-              </VoterPosition>
-            ) : (
-              <VoterPosition>
-                <BlockIcon />
-                <PositionText>Opposed a month ago</PositionText>
-              </VoterPosition>
+      {(linksOpenExternalWebsite && speakerLinkExternal) ? (
+        <Suspense fallback={<></>}>
+          <OpenExternalWebSite
+            body={<>{speakerImageJsx}</>}
+            target="_blank"
+            trackingOn
+            url={speakerLinkExternal}
+          />
+        </Suspense>
+      ) : (
+        <>{speakerImageJsx}</>
+      )}
+      <SpeakerInfoWrapper>
+        <SpeakerInfoNameFavoritesWrapper>
+          {(linksOpenExternalWebsite && speakerLinkExternal) ? (
+            <Suspense fallback={<></>}>
+              <OpenExternalWebSite
+                body={<SpeakerName>{speakerDisplayName}</SpeakerName>}
+                target="_blank"
+                trackingOn
+                url={speakerLinkExternal}
+              />
+            </Suspense>
+          ) : (
+            <SpeakerName>{speakerDisplayName}</SpeakerName>
+          )}
+          {heartToggleOn && (
+            <HeartFavoriteToggleWrapper>
+              <HeartFavoriteToggleLive campaignXWeVoteId={campaignXWeVoteId} />
+            </HeartFavoriteToggleWrapper>
+          )}
+        </SpeakerInfoNameFavoritesWrapper>
+        {statementText && (
+          <SpeakerStatementWrapper>
+            <SpeakerStatement>
+              <Suspense fallback={<></>}>
+                <ReadMore
+                  textToDisplay={statementText}
+                  numberOfLines={6}
+                />
+              </Suspense>
+            </SpeakerStatement>
+          </SpeakerStatementWrapper>
+        )}
+        <SpeakerPositionLikesSourceWrapper>
+          <SpeakerPositionWrapper>
+            {isSupportOrPositiveRating && (
+              <SpeakerPosition>
+                <CheckOutlinedStyled />
+                <PositionText>
+                  Endorsed
+                  {' '}
+                  {howLongAgoOrThisYear}
+                </PositionText>
+              </SpeakerPosition>
             )}
-          </VoterPositionWrapper>
-          <VoterLikesSourceWrapper>
-            <VoterLikes>
-              <ThumbsUpDownToggle />
-              <SourceButton type="button" aria-label="Source" style={{ background: !anchorEl ? 'transparent' : `${DesignTokenColors.neutral100}` }} onClick={onDotButtonClick}>
-                <SourceButtonIcon />
-              </SourceButton>
-              <Popover
-                id={id}
-                open={open}
-                anchorEl={anchorEl}
-                onClose={handlePopoverClose}
-                anchorReference="anchorPosition"
-                anchorPosition={{ top: 75, left: 370 }}
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'left',
-                }}
-                classes={{ root: classes.popoverRoot }}
-              >
-                <Typography sx={{ p: 1 }}>
-                  <OpinionSource target="_blank">View source of opinion</OpinionSource>
-                </Typography>
-              </Popover>
-            </VoterLikes>
-          </VoterLikesSourceWrapper>
-        </VoterPositionLikesSourceWrapper>
-      </VoterInfoWrapper>
+            {isOpposeOrNegativeRating && (
+              <SpeakerPosition>
+                <BlockOutlinedStyled />
+                <PositionText>
+                  Opposed
+                  {' '}
+                  {howLongAgoOrThisYear}
+                </PositionText>
+              </SpeakerPosition>
+            )}
+            {(!isOpposeOrNegativeRating && !isSupportOrPositiveRating) && (
+              <SpeakerPosition>
+                <PositionText>
+                  Commented
+                  {' '}
+                  {howLongAgoOrThisYear}
+                </PositionText>
+              </SpeakerPosition>
+            )}
+          </SpeakerPositionWrapper>
+          <ThumbsUpAndSourceWrapper>
+            <FlexDiv>
+              {voterLikesOn && (
+                <ThumbsUpDownToggle />
+              )}
+              {moreInfoUrl && (
+                <SourceButton
+                  aria-label="Source"
+                  onClick={onDotButtonClick}
+                  style={{ background: !anchorEl ? 'transparent' : `${DesignTokenColors.neutral100}` }}
+                  type="button"
+                >
+                  <MoreHorizStyled />
+                </SourceButton>
+              )}
+              {moreInfoUrl && (
+                <Popover
+                  id={id}
+                  open={open}
+                  anchorEl={anchorEl}
+                  onClose={handlePopoverClose}
+                  anchorReference="anchorPosition"
+                  anchorPosition={{ top: 75, left: 370 }}
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'left',
+                  }}
+                  classes={{ root: classes.popoverRoot }}
+                >
+                  <Suspense fallback={<></>}>
+                    <OpenExternalWebSite
+                      body={(
+                        <Typography sx={{ p: 1 }}>
+                          <OpinionSource>
+                            View source of opinion
+                            {' '}
+                            <LaunchStyled />
+                          </OpinionSource>
+                        </Typography>
+                      )}
+                      target="_blank"
+                      trackingOn
+                      url={moreInfoUrl}
+                    />
+                  </Suspense>
+                </Popover>
+              )}
+            </FlexDiv>
+          </ThumbsUpAndSourceWrapper>
+        </SpeakerPositionLikesSourceWrapper>
+      </SpeakerInfoWrapper>
     </PositionForBallotItemWrapper>
   );
 }
-
 PositionForBallotItem.propTypes = {
   classes: PropTypes.object,
+  linksOpenExternalWebsite: PropTypes.bool,
+  politicianWeVoteId: PropTypes.string,
+  position: PropTypes.object,
 };
 
 const PositionForBallotItemWrapper = styled('div')`
@@ -105,93 +227,103 @@ const PositionForBallotItemWrapper = styled('div')`
   }
 `;
 
-const VoterImageWrapper = styled('div')`
+const SpeakerImageWrapper = styled('div')`
+  width: 42px;
 `;
 
-const VoterImage = styled('img')`
-  width: 43px;
-  height: 43px;
-  border-radius: 43px;
+const SpeakerImage = styled('img')`
+  border-radius: 42px;
+  height: 42px;
+  min-width: 42px;
+  width: 42px;
 `;
 
-const VoterInfoWrapper = styled('div')`
+const SpeakerInfoWrapper = styled('div')`
   display: flex;
   flex-direction: column;
   width: 500px;
   margin-left: 15px;
 `;
 
-const VoterInfoNameFavoritesWrapper = styled('div')`
+const SpeakerInfoNameFavoritesWrapper = styled('div')`
   display: flex;
   align-items: center;
 `;
 
-const HeartFavoriteToggleBaseWrapper = styled('div')`
+const HeartFavoriteToggleWrapper = styled('div')`
   margin-top: -5px;
   margin-left: 5px;
 `;
 
-const VoterName = styled('h3')`
+const SpeakerName = styled('h3')`
   color: ${DesignTokenColors.neutral900};
 `;
 
-const VoterInfoBioWrapper = styled('div')`
+const SpeakerStatementWrapper = styled('div')`
   max-width: 415px;
 `;
 
-const VoterInfoBio = styled('p')`
+const SpeakerStatement = styled('p')`
   color: ${DesignTokenColors.neutral900};
 `;
 
-const VoterPositionLikesSourceWrapper = styled('div')`
+const SpeakerPositionLikesSourceWrapper = styled('div')`
   display: flex;
   justify-content: space-between;
 `;
 
-const VoterPositionWrapper = styled('div')`
+const SpeakerPositionWrapper = styled('div')`
   display: flex;
 `;
 
-const VoterPosition = styled('div')`
+const SpeakerPosition = styled('div')`
   display: flex;
 `;
 
-const CheckIcon = styled(CheckOutlinedIcon)`
+const CheckOutlinedStyled = styled(CheckOutlined)`
   color: ${DesignTokenColors.neutral900}
 `;
 
-const BlockIcon = styled(BlockOutlinedIcon)`
+const BlockOutlinedStyled = styled(BlockOutlined)`
   color: ${DesignTokenColors.neutral900}
 `;
 
 const PositionText = styled('p')`
-  margin-left: 5px;
-  font-weight: 400;
-  size: 14px;
   color: ${DesignTokenColors.neutral700};
+  font-weight: 400;
+  font-size: 14px;
+  margin-left: 5px;
+  white-space: nowrap;
 `;
 
-const VoterLikesSourceWrapper = styled('div')`
+const ThumbsUpAndSourceWrapper = styled('div')`
   display: flex;
   align-items: center;
   justify-content: space-evenly;
   margin-top: -15px;
-  `;
+`;
 
-const VoterLikes = styled('div')`
+const FlexDiv = styled('div')`
   display: flex;
 `;
 
 const SourceButton = styled('button')`
   width: 34px;
   height: 34px;
-  border: none; 
+  border: none;
   border-radius: 30px;
   margin-left: 25px;
   margin-top: -5px;
 `;
 
-const SourceButtonIcon = styled(MoreHorizIcon)`
+const LaunchStyled = styled(Launch)`
+  height: 14px;
+  margin-left: 2px;
+  margin-top: -3px;
+  width: 14px;
+`;
+
+const MoreHorizStyled = styled(MoreHoriz)`
   color: ${DesignTokenColors.neutral400};
   font-size: 30px;
   margin-left: -1px;

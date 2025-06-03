@@ -255,7 +255,7 @@ class PoliticianCardForList extends Component {
           pathToUseToKeepHelping={pathToUseToKeepHelping}
           photoLargeUrl={politicianPhotoLargeUrl}
           politicalParty={politicalParty}
-          politicianBaseBath={this.getPoliticianBasePath()}
+          politicianBasePath={this.getPoliticianBasePath()}
           // politicianDescription={politicianDescriptionToDisplay}
           politicianWeVoteId={politicianWeVoteId}
           profileImageBackgroundColor={profileImageBackgroundColor}

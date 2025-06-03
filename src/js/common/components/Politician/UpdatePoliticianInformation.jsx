@@ -9,29 +9,51 @@ const updateCandidateInformationLink = 'https://docs.google.com/forms/d/e/1FAIpQ
 
 function UpdatePoliticianInformation (props) {
   const { politicianName } = props;
+  const newDesign2025 = false;
+  const voterCanEditCandidate = false;
+  const voterCanEditCandidateHighlight = false;
   return (
     <UpdateInformationWrapper>
       {!!(politicianName) && (
-        <Suspense fallback={<></>}>
-          <FlexLayoutDiv>
-            <CandidateStaffText>
-              For candidate staff:&nbsp;
-            </CandidateStaffText>
-            <AddInfoLink>
-              <OpenExternalWebSite
-                linkIdAttribute="updateCandidateInformation"
-                url={updateCandidateInformationLink}
-                target="_blank"
-                className="u-link-color"
-                body={(
-                  <div>
-                    Add info
-                  </div>
-                )}
-              />
-            </AddInfoLink>
-          </FlexLayoutDiv>
-        </Suspense>
+        <>
+          {newDesign2025 ? (
+            <>
+              {voterCanEditCandidate ? (
+                <>
+                  Edit profile
+                </>
+              ) : (
+                <>
+                  Candidate staff access
+                </>
+              )}
+            </>
+          ) : (
+            <Suspense fallback={<></>}>
+              <FlexLayoutDiv>
+                <CandidateStaffText>
+                  For candidate staff:&nbsp;
+                </CandidateStaffText>
+                <AddInfoLink>
+                  <OpenExternalWebSite
+                    linkIdAttribute="updateCandidateInformation"
+                    url={updateCandidateInformationLink}
+                    target="_blank"
+                    className="u-link-color"
+                    body={(
+                      <div>
+                        Add info
+                      </div>
+                    )}
+                    destinationPageName="PoliticianEditForm"
+                    destinationPageType="politician"
+                    trackingOn
+                  />
+                </AddInfoLink>
+              </FlexLayoutDiv>
+            </Suspense>
+          )}
+        </>
       )}
     </UpdateInformationWrapper>
   );

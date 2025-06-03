@@ -4,6 +4,23 @@
 -->
 <html lang="en">
   <head>
+    <script>
+      function isOldSafari() {
+        var ua = navigator.userAgent;
+        var isSafari = ua.indexOf('Safari') !== -1 && ua.indexOf('Chrome') === -1;
+        var safariVersionMatch = ua.match(/Version\/(\d+\.\d+)/);
+        var safariVersion = safariVersionMatch ? parseFloat(safariVersionMatch[1]) : 0;
+        return isSafari && safariVersion > 0 && safariVersion < 6;
+      }
+    
+      if (isOldSafari()) {
+        document.write(
+          '<style>body { background: #fff; text-align: center; padding: 50px; font-family: sans-serif; }</style>' +
+          '<h2>This browser is not supported.<br>Please use a more recent browser version.</h2>'
+        );
+        window.stop();
+      }
+    </script>    
 <!--    <title><%= htmlWebpackPlugin.options.title %></title>-->
     <meta
       name="description"

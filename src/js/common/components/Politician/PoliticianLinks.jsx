@@ -10,17 +10,20 @@ const PoliticianLinks = ({ links }) => (
       <PoliticianLinksContainer>
         {links.map((link, index) => {
           const { linkText, externalLinkUrl } = link;
-          if (!externalLinkUrl) return null;
+          if (!externalLinkUrl || !linkText) return null;
+          const linkIdAttribute = `politicianLink-${linkText.replace(/[\s./]+/g, '-').toLowerCase()}`;
 
           return (
             <LinkContainer key={linkText} isFirst={index !== 0}>
               <OpenExternalWebSite
+                body={linkText}
                 key={linkText}
+                linkIdAttribute={linkIdAttribute}
+                rel="noopener noreferrer"
                 url={externalLinkUrl}
                 target="_blank"
-                rel="noopener noreferrer"
                 title={linkText}
-                body={linkText}
+                trackingOn
               />
             </LinkContainer>
           );

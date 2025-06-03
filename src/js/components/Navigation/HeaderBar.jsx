@@ -892,6 +892,7 @@ const HeaderBarWrapper = styled('div', {
   margin-top: ${hasNotch ? '9%' : ''};
   box-shadow: ${(!scrolledDown || !hasSubmenu)  ? '' : standardBoxShadow('wide')};
   border-bottom: ${(!scrolledDown || !hasSubmenu) ? '' : '1px solid #aaa'};
+  padding-left: calc(100vw - 100%);
 `));
 
 const StyledHeaderMenuTabs = styled(Tabs)`

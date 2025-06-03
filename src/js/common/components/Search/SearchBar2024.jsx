@@ -76,6 +76,8 @@ class SearchBar2024 extends Component {
       const dataLayerObject = {
         event: 'searchKeyword',
         userDetails: {
+          stateCode: VoterStore.getVoterStateCode(),
+          userCohort: VoterStore.getAnalyticsUserCohort(),
           voterWeVoteId: VoterStore.getVoterWeVoteId(),
         },
         pageDetails: {

@@ -1,14 +1,10 @@
 name: Build Value Testing
 on:
-  pull_request:
+  push:
     branches:
       - develop
-    types:
-      - closed
-
 jobs:
-  if_merged:
-    if: github.event.pull_request.merged == true
+  windows_test:
     name: Execute Tests on Windows
     runs-on: windows-latest
     steps:

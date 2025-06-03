@@ -406,7 +406,7 @@ class ChallengesHome extends Component {
         {(isSearching && numberOfSearchResults === 0) && (
           <NoSearchResult
             title="No Democracy Challenges Found"
-            subtitle="Please try a different search term."
+            subtitle={stateCode ? 'Please try a different search term or state.' : 'Please try a different search term.'}
           />
         )}
 

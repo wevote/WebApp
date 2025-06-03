@@ -2,6 +2,7 @@ import { ArrowForwardIos, ArrowBackIos } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
+import TagManager from 'react-gtm-module';
 import { BallotHorizontallyScrollingContainer, BallotScrollingInnerWrapper, LeftArrowInnerWrapper, LeftArrowOuterWrapper, RightArrowInnerWrapper, RightArrowOuterWrapper } from '../../common/components/Style/ScrollingStyles';
 import HeartFavoriteToggleLoader from '../../common/components/Widgets/HeartFavoriteToggle/HeartFavoriteToggleLoader';
 import { handleHorizontalScroll } from '../../common/utils/leftRightArrowCalculation';
@@ -24,6 +25,7 @@ import { PositionRowListInnerWrapper, PositionRowListOneWrapper, PositionRowList
 import BallotMatchIndicator from '../BallotItem/BallotMatchIndicator';
 import PositionRowListCompressed from './PositionRowListCompressed';
 import BallotMatchIndicator2024 from '../BallotItem/BallotMatchIndicator2024';
+import lookupPageNameAndPageTypeDict from '../../utils/lookupPageNameAndPageTypeDict';
 
 // const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
@@ -77,7 +79,34 @@ class BallotScrollingContainer extends Component {
     AppObservableStore.setHideOrganizationModalBallotItemInfo(true);
   }
 
-  onClickShowOrganizationModalWithBallotItemInfoAndPositions (candidateWeVoteId) {
+  onClickShowOrganizationModalWithBallotItemInfoAndPositions (candidateWeVoteId, candidateData) {
+    const { location: { pathname: currentPathname } } = window;
+    const currentPageDetails = lookupPageNameAndPageTypeDict(currentPathname);
+    const dataLayerObject = {
+      event: 'click',
+      element_id: candidateData.we_vote_id,
+      candidateDetails: {
+        candidateWeVoteId: candidateData.we_vote_id,
+        candidateName: candidateData.ballot_item_display_name,
+        image: candidateData.candidate_photo_url_large,
+        officeName: candidateData.contest_office_name,
+        politicianWeVoteId: candidateData.politician_we_vote_id,
+        politicalParty: candidateData.party,
+        stateCode: candidateData.state_code,
+      },
+      pageDetails: {
+        pageName: currentPageDetails.pageName,
+        pageType: currentPageDetails.pageType,
+        pathname: currentPathname,
+      },
+      destinationDetails: {
+        pageName: 'CandidateModal',
+        pageType: currentPageDetails.pageType,
+        pathname: currentPathname,
+      },
+    };
+    console.log('Pushing to dataLayer:', dataLayerObject);
+    TagManager.dataLayer({ dataLayer: dataLayerObject });
     AppObservableStore.setOrganizationModalBallotItemWeVoteId(candidateWeVoteId);
     AppObservableStore.setShowOrganizationModal(true);
   }
@@ -100,10 +129,10 @@ class BallotScrollingContainer extends Component {
   };
 
   // Add data-modal-trigger attribute to elements that should be triggered
-  handleContainerClick = (e, weVoteId) => {
+  handleContainerClick = (e, weVoteId, candidateData) => {
     const target = e.target;
     if (target.hasAttribute('data-modal-trigger')) {
-      this.onClickShowOrganizationModalWithBallotItemInfoAndPositions(weVoteId);
+      this.onClickShowOrganizationModalWithBallotItemInfoAndPositions(weVoteId, candidateData);
     }
   }
 
@@ -136,7 +165,7 @@ class BallotScrollingContainer extends Component {
           onScroll={this.checkArrowVisibility}
           showLeftGradient={!this.state.hideLeftArrow}
           showRightGradient={!this.state.hideRightArrow}
-          onClick={(e) => this.handleContainerClick(e, oneCandidate.we_vote_id, externalUniqueId)}
+          onClick={(e) => this.handleContainerClick(e, oneCandidate.we_vote_id, oneCandidate)}
         >
           <CandidateContainer
             data-modal-trigger

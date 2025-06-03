@@ -22,7 +22,8 @@ export default function extractPoliticianDetailsFromUrl (url) {
 
   if (fromIndex === -1) {
     const nameWithoutFrom = capitalizeWords.slice(0, words.length).join(' '); // Creates a name for urls without 'from'
-    return { state: null, name: nameWithoutFrom }; // If 'from' is not found, return null for both
+    const nameWithoutFromAndPolitician = nameWithoutFrom ? nameWithoutFrom.replace(/\bpolitician\b/i, '').trim() : null;
+    return { state: null, name: nameWithoutFromAndPolitician }; // If 'from' is not found, return null for both
   }
 
   // Extract state and name based on the position of 'from'

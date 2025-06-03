@@ -144,6 +144,15 @@ class OfficeItemCompressed extends Component {
     );
   }
 }
+OfficeItemCompressed.propTypes = {
+  officeWeVoteId: PropTypes.string.isRequired,
+  ballotItemDisplayName: PropTypes.string.isRequired,
+  candidateList: PropTypes.array,
+  disableAutoRollUp: PropTypes.bool,
+  isFirstBallotItem: PropTypes.bool,
+  organizationWeVoteId: PropTypes.string,
+  primaryParty: PropTypes.string,
+};
 
 // OneOfficeCandidateList takes the list of candidates from props, renders them.
 // It takes two props: candidates (the list of candidates to render) and goToCandidateLink (a function to navigate to the candidate's page).
@@ -153,7 +162,7 @@ const OneOfficeCandidateList = ({ candidates, goToCandidateLink }) => (
       const isSupported = SupportStore.getVoterSupportsByBallotItemWeVoteId(candidate.we_vote_id); // Get support status from SupportStore
       return (
         <BallotScrollingContainer
-          key={candidate.we_vote_id}
+          key={`candidatePreview-${candidate.we_vote_id}`}
           oneCandidate={candidate}
           goToCandidateLink={goToCandidateLink}
           isSupported={isSupported} // Pass the support status as a prop
@@ -162,20 +171,9 @@ const OneOfficeCandidateList = ({ candidates, goToCandidateLink }) => (
     })}
   </BallotScrollingOuterWrapper>
 );
-
 OneOfficeCandidateList.propTypes = {
   candidates: PropTypes.array.isRequired,
   goToCandidateLink: PropTypes.func.isRequired,
-};
-
-OfficeItemCompressed.propTypes = {
-  officeWeVoteId: PropTypes.string.isRequired,
-  ballotItemDisplayName: PropTypes.string.isRequired,
-  candidateList: PropTypes.array,
-  disableAutoRollUp: PropTypes.bool,
-  isFirstBallotItem: PropTypes.bool,
-  organizationWeVoteId: PropTypes.string,
-  primaryParty: PropTypes.string,
 };
 
 const styles = (theme) => ({

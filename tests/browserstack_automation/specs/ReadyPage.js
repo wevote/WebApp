@@ -25,8 +25,8 @@ const waitTime = 8000;
 describe('ReadyPage',  function () {
   this.timeout(9999999);
  // Ready_001 and Ready_003
- it('verifyElectionCountDownRedirect and verifyViewYourBallotRedirect @BVT', async () => {
-   console.log('Tcs : Ready_001 and Ready_003');
+ it('Ready_001 and Ready_003:verifyElectionCountDownRedirect and verifyViewYourBallotRedirect', async () => {
+   console.log('Tcs : Ready_001 and Ready_003 : verifyElectionCountDownRedirect and verifyViewYourBallotRedirect');
    await ReadyPage.load();
    await driver.pause(waitTime);
    /* await driver.waitUntil(async () => (ReadyPage.electionCountDownTitle.isClickable()));
@@ -59,8 +59,8 @@ describe('ReadyPage',  function () {
 
 
  // Ready_002 : In progress - locater issues
- it('updateBallotAddress', async () => {
-   console.log('Tcs : Ready_002');
+ it('Ready_002 :updateBallotAddress', async () => {
+   console.log('Tcs : Ready_002 : updateBallotAddress');
    await ReadyPage.load();
    const baladd = await ReadyPage.ballotAddress.getText();
    console.log(`baladd:${baladd}`);
@@ -74,8 +74,8 @@ describe('ReadyPage',  function () {
  // Ready_003 - merged with ready_001
 
  // Ready_004
- it('toggleIssueFollowing - Follow/UnfollowPopular Topics', async () => {
-   console.log('Tcs : Ready_004');
+ it('Ready_004: toggleIssueFollowing - Follow/UnfollowPopular Topics', async () => {
+   console.log('Tcs : Ready_004 : toggleIssueFollowing - Follow/UnfollowPopular Topics ');
    await ReadyPage.load();
    await ReadyPage.followFirstIssue();
    await driver.pause(waitTime);
@@ -86,8 +86,8 @@ describe('ReadyPage',  function () {
  });
 
  // Ready_005
- it('unfurlIssues - PopularIssues/ShowMoreIssues', async () => {
-   console.log('Tcs : Ready_005');
+ it('Ready_005: unfurlIssues - PopularIssues/ShowMoreIssues', async () => {
+   console.log('Tcs : Ready_005 : unfurlIssues - PopularIssues/ShowMoreIssues');
    await ReadyPage.load();
    await driver.pause(waitTime);
    await expect(ReadyPage.followIssueButtons).toBeElementsArrayOfSize(6);
@@ -98,8 +98,8 @@ describe('ReadyPage',  function () {
 
 
  // Ready_006
- it('toggleIntroduction - ShowMore-WeVoteHelpsYouList', async () => {
-   console.log('Tcs : Ready_006');
+ it('Ready_006: toggleIntroduction - ShowMore-WeVoteHelpsYouList', async () => {
+   console.log('Tcs : Ready_006 : toggleIntroduction - ShowMore-WeVoteHelpsYouList');
    await ReadyPage.load();
    await driver.waitUntil(async () => (ReadyPage.toggleIntroductionButton.isClickable()));
    await ReadyPage.toggleIntroductionButton.click();
@@ -109,8 +109,8 @@ describe('ReadyPage',  function () {
 
 
  // Ready_007
- it('toggleFinePrint - ShowMore-TheFinePrintList', async () => {
-   console.log('Tcs : Ready_007');
+ it('Ready_007: toggleFinePrint - ShowMore-TheFinePrintList', async () => {
+   console.log('Tcs : Ready_007 : toggleFinePrint - ShowMore-TheFinePrintList');
    await ReadyPage.load();
    await ReadyPage.toggleFinePrintButton.scrollIntoView();
    await driver.waitUntil(async () => (ReadyPage.toggleFinePrintButton.isClickable()));
@@ -125,8 +125,8 @@ describe('ReadyPage',  function () {
 
 
 // Ready_021
-it('check Alert msgs - Follow Popular Topics', async () => {
- console.log('Tcs : Ready_021');
+it('Ready_021: check Alert msgs - Follow Popular Topics', async () => {
+ console.log('Tcs : Ready_021 : check Alert msgs - Follow Popular Topics');
  await ReadyPage.load();
  await ReadyPage.followFirstIssue();
  const alertText = await ReadyPage.followAlertMsg;
@@ -138,8 +138,8 @@ it('check Alert msgs - Follow Popular Topics', async () => {
 
 
 // Ready_022
-it('check Alert msgs - Unfollow Popular Topics', async () => {
- console.log('Tcs : Ready_022');
+it('Ready_022: check Alert msgs - Unfollow Popular Topics', async () => {
+ console.log('Tcs : Ready_022 : check Alert msgs - Unfollow Popular Topics');
  await ReadyPage.load();
  await ReadyPage.followFirstIssue();
  await driver.pause(waitTime-3000);
@@ -157,8 +157,8 @@ it('check Alert msgs - Unfollow Popular Topics', async () => {
 
 
 // Ready_023
-it('Verify Text and links -> we vote helps you - Be ready to vote', async () => {
- console.log('Tcs : Ready_023');
+it('Ready_023: Verify Text and links -> we vote helps you - Be ready to vote', async () => {
+ console.log('Tcs : Ready_023 : Verify Text and links -> we vote helps you - Be ready to vote');
  await ReadyPage.load();
  await driver.pause(waitTime);
  await ReadyPage.weVoteHelpsYouMenuItem1.click();
@@ -213,8 +213,8 @@ it('Verify Text and links -> we vote helps you - Be ready to vote', async () => 
 
 
 // Ready_024
-it('Verify Text and links -> we vote helps you - Be confident in your choices', async () => {
- console.log('Tcs : Ready_024');
+it('Ready_024: Verify Text and links -> we vote helps you - Be confident in your choices', async () => {
+ console.log('Tcs : Ready_024: Verify Text and links -> we vote helps you - Be confident in your choices');
  await ReadyPage.load();
  await driver.pause(waitTime);
  await ReadyPage.weVoteHelpsYouMenuItem2.click();
@@ -245,8 +245,8 @@ it('Verify Text and links -> we vote helps you - Be confident in your choices', 
 
 
 // Ready_025
-it('Verify Text and links -> we vote helps you - Help friends & amplify your impact', async () => {
- console.log('Tcs : Ready_025');
+it('Ready_025: Verify Text and links -> we vote helps you - Help friends & amplify your impact', async () => {
+ console.log('Tcs : Ready_025: Verify Text and links -> we vote helps you - Help friends & amplify your impact');
  await ReadyPage.load();
  await driver.pause(waitTime);
  await browser.execute(() => window.scrollBy(0, 700));
@@ -297,8 +297,8 @@ it('Verify Text and links -> we vote helps you - Help friends & amplify your imp
 
 
 // Ready_026
-it('Verify Text and links -> The fine print: You cannot cast your vote electronically', async () => {
- console.log('Tcs : Ready_026');
+it('Ready_026: Verify Text and links -> The fine print: You cannot cast your vote electronically', async () => {
+ console.log('Tcs : Ready_026 : Verify Text and links -> The fine print: You cannot cast your vote electronically');
  await ReadyPage.load();
  await driver.pause(waitTime);
  await browser.execute(() => window.scrollBy(0, 600));
@@ -319,8 +319,8 @@ it('Verify Text and links -> The fine print: You cannot cast your vote electroni
 
 
 // Ready_027
-it('Verify Text and links -> The fine print: WeVote does not represent a government entity', async () => {
- console.log('Tcs : Ready_027');
+it('Ready_027: Verify Text and links -> The fine print: WeVote does not represent a government entity', async () => {
+ console.log('Tcs : Ready_027 : Verify Text and links -> The fine print: WeVote does not represent a government entity');
  await ReadyPage.load();
  await driver.pause(waitTime);
  await browser.execute(() => window.scrollBy(0, 600));
@@ -341,8 +341,8 @@ it('Verify Text and links -> The fine print: WeVote does not represent a governm
 
 
 // Ready_028
-it('Verify Text and links -> The fine print: - Please make sure you are registered to vote', async () => {
- console.log('Tcs : Ready_028');
+it('Ready_028: Verify Text and links -> The fine print: - Please make sure you are registered to vote', async () => {
+ console.log('Tcs : Ready_028 : Verify Text and links -> The fine print: - Please make sure you are registered to vote');
  await ReadyPage.load();
  //await driver.pause(waitTime);
  await browser.execute(() => window.scrollBy(0, 600));
@@ -363,8 +363,8 @@ it('Verify Text and links -> The fine print: - Please make sure you are register
 
 
 // Ready_029
-it('Verify Text and links -> The fine print:- How your data is used & protected ', async () => {
- console.log('Tcs : Ready_029');
+it('Ready_029: Verify Text and links -> The fine print:- How your data is used & protected ', async () => {
+ console.log('Tcs : Ready_029: Verify Text and links -> The fine print:- How your data is used & protected');
  await ReadyPage.load();
  await driver.pause(waitTime);
  await browser.execute(() => window.scrollBy(0, 600));
@@ -412,10 +412,10 @@ it('Verify Text and links -> The fine print:- How your data is used & protected 
 });
 
 // Ready_030, Ready_031
-it('Verify tooltip msgs on pointing to topic name, topic icon', async () => {
- console.log('Tcs : Ready_030,Ready_31');
+it('Ready_030,Ready_31: Verify tooltip msgs on pointing to topic name, topic icon', async () => {
+ console.log('Tcs : Ready_030,Ready_31: Verify tooltip msgs on pointing to topic name, topic icon');
  // Read topics from the JSON file
- const popTopics = JSON.parse(fs.readFileSync(`${testDataPath}popularTopics.json`, 'utf8')).topics;
+ const popTopics = JSON.parse(fs.readFileSync(`${testDataPath}popularTopics.json`, 'utf8')).topics1;
   // Function to point to an element and verify the tooltip
  async function pointToElementAndVerifyTooltip(selectorType, selectorValue) {
    let elementXPath;
@@ -466,10 +466,10 @@ it('Verify tooltip msgs on pointing to topic name, topic icon', async () => {
 
 
 // Ready_032
-it('Verify popular topics and the icons are a link', async () => {
- console.log('Tcs : Ready_032');
+it('Ready_032: Verify popular topics and the icons are a link', async () => {
+ console.log('Tcs : Ready_032 : Verify popular topics and the icons are a link');
  // Read topics from the JSON file
- const popTopics = JSON.parse(fs.readFileSync(`${testDataPath}popularTopics.json`, 'utf8')).topics;
+ const popTopics = JSON.parse(fs.readFileSync(`${testDataPath}popularTopics.json`, 'utf8')).topics1;
   // Function to point to an element and verify the tooltip
  async function pointToElementAndVerifyLink(selectorType, selectorValue) {
    let elementXPath;
@@ -512,10 +512,10 @@ it('Verify popular topics and the icons are a link', async () => {
 
 
 // Ready_033
-it('Verify followers text and tooltip for every topic', async () => {
- console.log('Tcs : Ready_033');
+it('Ready_033: Verify followers text and tooltip for every topic', async () => {
+ console.log('Tcs : Ready_033: Verify followers text and tooltip for every topic');
  // Read topics from the JSON file
- const popTopics = JSON.parse(fs.readFileSync(`${testDataPath}popularTopics.json`, 'utf8')).topics;
+ const popTopics = JSON.parse(fs.readFileSync(`${testDataPath}popularTopics.json`, 'utf8')).topics1;
 
 
  // Function to point to an element and verify the tooltip
@@ -596,10 +596,10 @@ it('Verify followers text and tooltip for every topic', async () => {
 
 
 // Ready_034
-it('Verify endorsements text and link for every topic', async () => {
-
- console.log('Tcs : Ready_034');
- const popTopics = JSON.parse(fs.readFileSync(`${testDataPath}popularTopics.json`, 'utf8')).topics;
+it('Ready_034: Verify endorsements text and link for every topic', async () => {
+  
+ console.log('Tcs : Ready_034: Verify endorsements text and link for every topic');
+ const popTopics = JSON.parse(fs.readFileSync(`${testDataPath}popularTopics.json`, 'utf8')).topics1;
 
 
 //Function to point to an endorsement and verify text and tooltip
@@ -667,8 +667,8 @@ it('Verify endorsements text and link for every topic', async () => {
 
 
 // Ready_035
-it('Verify count of topics displayed with showMore link', async () => {
- console.log('Tcs : Ready_035');
+it('Ready_035: Verify count of topics displayed with showMore link', async () => {
+ console.log('Tcs : Ready_035: Verify count of topics displayed with showMore link');
  try {
 
    var h3ElementsSelector;

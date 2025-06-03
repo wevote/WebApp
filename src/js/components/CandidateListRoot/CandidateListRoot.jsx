@@ -282,11 +282,12 @@ class CandidateListRoot extends Component {
           searchWordArray.forEach((oneSearchWordLowerCase) => {
             thisWordFound = (
               oneEntry.ballot_item_display_name.toLowerCase().includes(oneSearchWordLowerCase) ||
-              oneEntry.state_code.toLowerCase().includes(oneSearchWordLowerCase) ||
-              oneEntry.candidate_state_name.toLowerCase().includes(oneSearchWordLowerCase) ||
-              oneEntry.contest_office_name.toLowerCase().includes(oneSearchWordLowerCase) ||
-              oneEntry.twitter_description.toLowerCase().includes(oneSearchWordLowerCase) ||
-              oneEntry.twitter_handle.toLowerCase().includes(oneSearchWordLowerCase)
+              // NOTE: WV-1084 We decided to search on fewer fields
+              // oneEntry.state_code.toLowerCase().includes(oneSearchWordLowerCase) ||
+              // oneEntry.candidate_state_name.toLowerCase().includes(oneSearchWordLowerCase) ||
+              // oneEntry.twitter_description.toLowerCase().includes(oneSearchWordLowerCase) ||
+              // oneEntry.twitter_handle.toLowerCase().includes(oneSearchWordLowerCase) ||
+              oneEntry.contest_office_name.toLowerCase().includes(oneSearchWordLowerCase)
             );
             if (isFirstWord) {
               foundInThisEntry = thisWordFound;
