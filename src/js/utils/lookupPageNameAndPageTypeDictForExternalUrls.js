@@ -4,6 +4,7 @@
 //  you'll need to generate the pageName and pageType dynamically in calculatePageNameAndPageTypeDict below.
 // TODO Update to with hard-coded External URLs we use
 import { isPoliticianSEOFriendlyURL } from '../common/utils/isSEOFriendlyURL';
+import lookupPageNameAndPageTypeDict from './lookupPageNameAndPageTypeDict';
 
 const pageNameAndTypeSimpleDictForExternalUrls = {
   'https://google.com': {
@@ -22,6 +23,10 @@ const pageNameAndTypeSimpleDictForExternalUrls = {
 
 // TODO Update to recognize social sites, and other regular places we send people
 function calculatePageNameAndPageTypeDictForExternalUrls (path) {
+  // If it's a WeVote URL, use the existing function
+  if (path.startsWith('/') || path.includes('wevote.us')) {
+    return lookupPageNameAndPageTypeDict(path);
+  }
   // console.log("gtmPageNameAndType, path:", path);
   let pageName = 'notSet'; // Per our naming convention for pageName, this would normally be 'NotSet' but I think the value of having pageName being identical to settingsPageType will save us grief in the future.
   let pageType = 'notSet';

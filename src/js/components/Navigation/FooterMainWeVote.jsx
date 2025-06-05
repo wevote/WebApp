@@ -133,21 +133,21 @@ class FooterMainWeVote extends Component {
                 linkIdAttribute="footerLinkWeVoteHelp"
                 url="https://help.wevote.us/hc/en-us"
                 target="_blank"
-                className="open-web-site"
+                className={classes.link}
                 // destinationPageName={helpDestinationPage.pageName}
                 // destinationPageType={helpDestinationPage.pageType}
                 trackingOn
                 body={(<span>Help</span>)}
               />
               <RowSpacer />
-              <Link id="footerLinkPrivacy" className={classes.link} to="/privacy" onClick={() => this.pushDataLayer("/privacy")}>Privacy</Link>
+              <Link id="footerLinkPrivacy" className={classes.link} to="/privacy" onClick={() => this.pushDataLayer('/privacy')}>Privacy</Link>
               <RowSpacer />
-              <Link id="footerLinkTermsOfUse" className={classes.link} to="/more/terms" onClick={() => this.pushDataLayer("/more/terms")}>Terms</Link>
+              <Link id="footerLinkTermsOfUse" className={classes.link} to="/more/terms" onClick={() => this.pushDataLayer('/more/terms')}>Terms</Link>
             </OneRow>
             <OneRow>
               {isWebApp() ? (
                 <>
-                  <Link id="footerLinkAboutFAQ" to="/more/faq" className={classes.link} onClick={() => this.pushDataLayer("/more/faq")}>
+                  <Link id="footerLinkAboutFAQ" to="/more/faq" className={classes.link} onClick={() => this.pushDataLayer('/more/faq')}>
                     About &amp; FAQ
                   </Link>
                   <RowSpacer />
@@ -171,9 +171,9 @@ class FooterMainWeVote extends Component {
                 </>
               ) : (
                 <>
-                  <Link to="/more/faq" className={classes.link} onClick={() => this.pushDataLayer("/more/faq")}>Frequently Asked Questions</Link>
+                  <Link to="/more/faq" className={classes.link} onClick={() => this.pushDataLayer('/more/faq')}>Frequently Asked Questions</Link>
                   <RowSpacer />
-                  <Link to="/more/attributions" className={classes.link} onClick={() => this.pushDataLayer("/more/attributions")}>Attributions</Link>
+                  <Link to="/more/attributions" className={classes.link} onClick={() => this.pushDataLayer('/more/attributions')}>Attributions</Link>
                 </>
               )}
             </OneRow>
@@ -192,7 +192,7 @@ class FooterMainWeVote extends Component {
                   className={classes.link}
                   id="footerMainLinkDonate"
                   to="/donate"
-                  onClick={() => this.pushDataLayer("/donate")}
+                  onClick={() => this.pushDataLayer('/donate')}
                 >
                   Donate
                 </Link>
