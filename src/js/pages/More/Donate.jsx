@@ -5,6 +5,7 @@ import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
+import TagManager from 'react-gtm-module';
 import { GoogleReCaptcha, GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
 import { Helmet } from 'react-helmet-async';
 import styled from 'styled-components';
@@ -23,6 +24,7 @@ import { Section } from '../../components/Welcome/sectionStyles';
 import webAppConfig from '../../config';
 import VoterStore from '../../stores/VoterStore';
 import $ajax from '../../utils/service';
+import lookupPageNameAndPageTypeDict from '../../utils/lookupPageNameAndPageTypeDict';
 
 const stripePromise = loadStripe(webAppConfig.STRIPE_API_KEY);
 
@@ -59,6 +61,25 @@ class Donate extends Component {
     AnalyticsActions.saveActionDonateVisit(VoterStore.electionId());
     DonateActions.donationRefreshDonationList();
     window.scrollTo(0, 0);
+
+    const currentPathname = window.location.pathname;
+    const currentPage = lookupPageNameAndPageTypeDict(currentPathname);
+
+    TagManager.dataLayer({
+      dataLayer: {
+        event: 'landing',
+        pageDetails: {
+          pageName: currentPage.pageName,
+          pageType: currentPage.pageType,
+          pathname: currentPathname
+        },
+        userDetails: {
+          stateCode: VoterStore.getVoterStateCode(),
+          userCohort: VoterStore.getAnalyticsUserCohort(),
+          voterWeVoteId: VoterStore.getVoterWeVoteId(),
+        },
+      },
+    });
   }
 
   componentDidUpdate () {

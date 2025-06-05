@@ -59,20 +59,22 @@ class OfficeItemCompressed extends Component {
   onCandidateStoreChange () {
     const { candidateList, officeWeVoteId } = this.props;
     const totalNumberOfCandidates = officeWeVoteId ? CandidateStore.getNumberOfCandidatesRetrievedByOffice(officeWeVoteId) : 0;
-    const sortedCandidateList = sortCandidateList(candidateList || []);
+    // const sortedCandidateList = sortCandidateList(candidateList || []);
     this.setState({
-      candidateListForDisplay: sortedCandidateList,
+      // candidateListForDisplay: sortedCandidateList,
       totalNumberOfCandidates,
     });
   }
 
   getCandidatesToRender () {
-    const { candidateListForDisplay, showAllCandidates } = this.state;
-    const { disableAutoRollUp } = this.props;
+    const { showAllCandidates } = this.state;
+    const { disableAutoRollUp, candidateList } = this.props;
+    // uses candidateList from props of FilterBaseSearch instead of onCandidateStoreChange variable to render list
+    const sortedCandidateList = sortCandidateList(candidateList || []);
     if (showAllCandidates || disableAutoRollUp) {
-      return candidateListForDisplay;
+      return sortedCandidateList;
     }
-    return candidateListForDisplay.slice(0, NUMBER_OF_CANDIDATES_TO_DISPLAY);
+    return sortedCandidateList.slice(0, NUMBER_OF_CANDIDATES_TO_DISPLAY);
   }
 
   showAllCandidates = () => {

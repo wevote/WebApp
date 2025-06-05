@@ -1,3 +1,4 @@
+// lookupPageNameAndPageTypeDict.js
 import { isChallengeSEOFriendlyURL, isPoliticianSEOFriendlyURL } from '../common/utils/isSEOFriendlyURL';
 import { isWeVoteMarketingSite } from '../common/utils/hrefUtils';
 

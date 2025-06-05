@@ -264,7 +264,8 @@ class VoterGuideStore extends ReduceStore {
     // Exit if we don't have a successful response (since we expect certain variables in a successful response below)
     if (!action.res || !action.res.success) return state;
     const {
-      allCachedVoterGuides, allCachedVoterGuidesByElection, organizationWeVoteIdsByIssueWeVoteId,
+      allCachedVoterGuides, allCachedVoterGuidesByElection,
+      organizationWeVoteIdsByIssueWeVoteId,
       organizationWeVoteIdsToFollowOrganizationRecommendationDict, organizationWeVoteIdsToFollowBallotItemsDict,
     } = state;
     let {

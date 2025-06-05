@@ -4,6 +4,7 @@ import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
+import TagManager from 'react-gtm-module';
 import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import FriendActions from '../../actions/FriendActions';
@@ -21,6 +22,7 @@ import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
 import createMessageToFriendDefaults from '../../utils/createMessageToFriendDefaults';
 import sortFriendListByMutualFriends from '../../utils/friendFunctions';
+import lookupPageNameAndPageTypeDict from '../../utils/lookupPageNameAndPageTypeDict';
 import MessageCard from '../Widgets/MessageCard';
 import { CopyLink, getKindOfShareFromURL, saveActionShareAnalytics, ShareFacebook, SharePreviewFriends, shareStyles, ShareTwitter, ShareWeVoteFriends } from './shareButtonCommon'; // cordovaSocialSharingByEmail
 import { generateShareLinks } from './ShareModalText';
@@ -182,8 +184,29 @@ class ShareModal extends Component {
   }
 
   closeShareModal = () => {
-    const { location: { pathname } } = window;
-    this.props.closeShareModal(pathname);
+    const { location: { pathname: currentPathname } } = window;
+    const page = lookupPageNameAndPageTypeDict(currentPathname);
+    
+    TagManager.dataLayer({
+      dataLayer: {
+        event: 'click',
+        userDetails: {
+          voterWeVoteId: VoterStore.getVoterWeVoteId(),
+        },
+        pageDetails: {
+          pageType: page.pageType,
+          pageName: page.pageName,
+          pathname: currentPathname,
+        },
+        destinationDetails: {
+          destinationPageType: page.pageType,
+          destinationPageName: page.pageName,
+          destinationPathname: currentPathname,
+        },
+      },
+    });
+    
+    this.props.closeShareModal(currentPathname);
   }
 
   render () {

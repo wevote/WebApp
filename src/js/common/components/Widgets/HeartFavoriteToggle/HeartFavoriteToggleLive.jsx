@@ -1,17 +1,14 @@
 import React, { Suspense } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-// import CampaignActions from '../../../actions/CampaignActions';
+import CampaignSupporterActions from '../../../actions/CampaignSupporterActions';
+import OrganizationActions from '../../../../actions/OrganizationActions';
 import CampaignStore from '../../../stores/CampaignStore';
 import OrganizationStore from '../../../../stores/OrganizationStore';
 import VoterStore from '../../../../stores/VoterStore';
 import AppObservableStore from '../../../stores/AppObservableStore';
 import CampaignSupporterStore from '../../../stores/CampaignSupporterStore';
-// import apiCalming from '../../../utils/apiCalming';
 import initializejQuery from '../../../utils/initializejQuery';
-import CampaignSupporterActions from '../../../actions/CampaignSupporterActions';
-import OrganizationActions from '../../../../actions/OrganizationActions';
-// import PoliticianActions from '../../../actions/PoliticianActions';
 import { renderLog } from '../../../utils/logging';
 
 const HeartFavoriteToggleBase = React.lazy(() => import(/* webpackChunkName: 'HeartFavoriteToggleBase' */ './HeartFavoriteToggleBase'));
@@ -23,8 +20,8 @@ class HeartFavoriteToggleLive extends React.Component {
       opposersCount: 0,
       politicianWeVoteId: '',
       supportersCount: 0,
-      voterOpposesCampaignX: false,
-      voterSupportsCampaignX: false,
+      voterOpposes: false,
+      voterSupports: false,
       voterFirstName: '',
       voterLastName: '',
       voterIsSignedIn: false,
@@ -44,25 +41,25 @@ class HeartFavoriteToggleLive extends React.Component {
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-    // Not the most efficient, but allows us to put this component anywhere
-    // const { campaignXWeVoteId } = this.props;
-    // if (campaignXWeVoteId) {
-    //   if (apiCalming(`campaignRetrieve-${campaignXWeVoteId}`, 300000)) {
-    //     CampaignActions.campaignRetrieve(campaignXWeVoteId);
-    //   }
-    // }
   }
 
   componentDidUpdate (prevProps) {
     const {
       campaignXWeVoteId: campaignXWeVoteIdPrevious,
+      organizationWeVoteId: organizationWeVoteIdPrevious,
     } = prevProps;
     const {
       campaignXWeVoteId,
+      organizationWeVoteId,
     } = this.props;
     if (campaignXWeVoteId) {
       if (campaignXWeVoteId !== campaignXWeVoteIdPrevious) {
         this.onCampaignStoreChange();
+      }
+    }
+    if (organizationWeVoteId) {
+      if (organizationWeVoteId !== organizationWeVoteIdPrevious) {
+        this.onOrganizationStoreChange();
       }
     }
   }
@@ -105,14 +102,14 @@ class HeartFavoriteToggleLive extends React.Component {
         // console.log('HeartFavoriteToggleLive onCampaignStoreChange voterCampaignXSupporter:', voterCampaignXSupporter);
         if (voterCampaignXSupporter && 'campaign_supported' in voterCampaignXSupporter) {
           const {
-            campaign_opposed: voterOpposesCampaignX,
-            campaign_supported: voterSupportsCampaignX,
-            organization_we_vote_id: organizationWeVoteId,
+            campaign_opposed: voterOpposes,
+            campaign_supported: voterSupports,
+            // organization_we_vote_id: organizationWeVoteId,
           } = voterCampaignXSupporter;
           this.setState({
-            organizationWeVoteId,
-            voterOpposesCampaignX,
-            voterSupportsCampaignX,
+            // organizationWeVoteId,
+            voterOpposes,
+            voterSupports,
           });
         }
         // console.log('HeartFavoriteToggleLive onCampaignStoreChange campaignXWeVoteIdFromDict:', campaignXWeVoteIdFromDict);
@@ -139,24 +136,24 @@ class HeartFavoriteToggleLive extends React.Component {
     const pigsCanFly = false;
     if (pigsCanFly && !politicianWeVoteId) {
       const {
-        voterOpposesCampaignX: voterOpposesCampaignXPrevious,
-        voterSupportsCampaignX: voterSupportsCampaignXPrevious,
+        voterOpposes: voterOpposesPrevious,
+        voterSupports: voterSupportsPrevious,
       } = this.state;
       if (campaignXWeVoteId) {
         const voterCampaignXSupporter = CampaignSupporterStore.getCampaignXSupporterVoterEntry(campaignXWeVoteId);
         // console.log('HeartFavoriteToggleLive onCampaignSupporterStoreChange voterCampaignXSupporter:', voterCampaignXSupporter)
         if (voterCampaignXSupporter && 'campaign_supported' in voterCampaignXSupporter) {
           const {
-            campaign_opposed: voterOpposesCampaignX,
-            campaign_supported: voterSupportsCampaignX,
-            organization_we_vote_id: organizationWeVoteId,
+            campaign_opposed: voterOpposes,
+            campaign_supported: voterSupports,
+            // organization_we_vote_id: organizationWeVoteId,
           } = voterCampaignXSupporter;
-          if ((voterOpposesCampaignX !== voterOpposesCampaignXPrevious) || (voterSupportsCampaignX !== voterSupportsCampaignXPrevious)) {
+          if ((voterOpposes !== voterOpposesPrevious) || (voterSupports !== voterSupportsPrevious)) {
             // If this voter's support/oppose status has changed, refresh data
             this.setState({
-              organizationWeVoteId,
-              voterOpposesCampaignX,
-              voterSupportsCampaignX,
+              // organizationWeVoteId,
+              voterOpposes,
+              voterSupports,
             }, () => {
               // TODO: Needs to be figured out in bulk -- not in this component
               // if (apiCalming(`campaignRetrieveAsOwner-${campaignXWeVoteId}`, 500)) {
@@ -171,14 +168,24 @@ class HeartFavoriteToggleLive extends React.Component {
 
   onOrganizationStoreChange () {
     // Lookup Organization data by politicianWeVoteId, so we can get the number of followers
+    const { organizationWeVoteId } = this.props;
     const { politicianWeVoteId } = this.state;
-    // console.log('HeartFavoriteToggleLive onOrganizationStoreChange politicianWeVoteId:', politicianWeVoteId);
+    // console.log('HeartFavoriteToggleLive onOrganizationStoreChange organizationWeVoteId:', organizationWeVoteId, ', politicianWeVoteId:', politicianWeVoteId);
     if (politicianWeVoteId) {
-      // console.log('voterOpposesCampaignX: ', OrganizationStore.isVoterDislikingThisPolitician(politicianWeVoteId));
-      // console.log('voterSupportsCampaignX: ', OrganizationStore.isVoterFollowingThisPolitician(politicianWeVoteId));
+      // console.log('voterOpposes: ', OrganizationStore.isVoterDislikingThisPolitician(politicianWeVoteId));
+      // console.log('voterSupports: ', OrganizationStore.isVoterFollowingThisPolitician(politicianWeVoteId));
       this.setState({
-        voterOpposesCampaignX: OrganizationStore.isVoterDislikingThisPolitician(politicianWeVoteId),
-        voterSupportsCampaignX: OrganizationStore.isVoterFollowingThisPolitician(politicianWeVoteId),  // A variation on isVoterFollowingThisOrganization
+        voterOpposes: OrganizationStore.isVoterDislikingThisPolitician(politicianWeVoteId),
+        voterSupports: OrganizationStore.isVoterFollowingThisPolitician(politicianWeVoteId),  // A variation on isVoterFollowingThisOrganization
+      });
+    } else if (organizationWeVoteId) {
+      // console.log('voterOpposes: ', OrganizationStore.isVoterDislikingThisOrganization(organizationWeVoteId));
+      // console.log('voterSupports: ', OrganizationStore.isVoterFollowingThisOrganization(organizationWeVoteId));
+      this.setState({
+        opposersCount: OrganizationStore.getOrganizationDislikeCount(organizationWeVoteId),
+        supportersCount: OrganizationStore.getOrganizationFollowersCount(organizationWeVoteId),  // A variation on isVoterFollowingThisOrganization
+        voterOpposes: OrganizationStore.isVoterDislikingThisOrganization(organizationWeVoteId),
+        voterSupports: OrganizationStore.isVoterFollowingThisOrganization(organizationWeVoteId),  // A variation on isVoterFollowingThisOrganization
       });
     }
   }
@@ -205,26 +212,31 @@ class HeartFavoriteToggleLive extends React.Component {
 
   functionToUseWhenProfileComplete (support = true, oppose = false, stopSupporting = false, stopOpposing = false) {
     // console.log('HeartFavoriteToggleLive functionToUseWhenProfileComplete');
-    const { campaignXWeVoteId } = this.props;
-    const { organizationWeVoteId, politicianWeVoteId } = this.state;
-    const campaignSupportedChanged = true;
-    // From this page we always send value for 'visibleToPublic'
-    let visibleToPublic = CampaignSupporterStore.getVisibleToPublic(campaignXWeVoteId);
-    const visibleToPublicChanged = CampaignSupporterStore.getVisibleToPublicQueuedToSaveSet();
-    if (visibleToPublicChanged) {
-      // If it has changed, use new value
-      visibleToPublic = CampaignSupporterStore.getVisibleToPublicQueuedToSave();
-    }
-    // console.log('HeartFavoriteToggleLive functionToUseWhenProfileComplete, politicianWeVoteId:', politicianWeVoteId);
-    let campaignSupported = true;
+    const { campaignXWeVoteId, organizationWeVoteId } = this.props;
+    const { politicianWeVoteId } = this.state;
+    let campaignSupported = false;
+    let campaignSupportedChanged = false;
     const saveVisibleToPublic = true;
+    let visibleToPublic = true;
+    if (campaignXWeVoteId) {
+      campaignSupported = true;
+      campaignSupportedChanged = true;
+      // From this page we always send value for 'visibleToPublic'
+      visibleToPublic = CampaignSupporterStore.getVisibleToPublic(campaignXWeVoteId);
+      const visibleToPublicChanged = CampaignSupporterStore.getVisibleToPublicQueuedToSaveSet();
+      if (visibleToPublicChanged) {
+        // If it has changed, use new value
+        visibleToPublic = CampaignSupporterStore.getVisibleToPublicQueuedToSave();
+      }
+      // console.log('HeartFavoriteToggleLive functionToUseWhenProfileComplete, politicianWeVoteId:', politicianWeVoteId);
+    }
     initializejQuery(() => {
       if (support) {
         if (politicianWeVoteId) {
           OrganizationActions.organizationFollow('', politicianWeVoteId);
         } else if (organizationWeVoteId) {
           OrganizationActions.organizationFollow(organizationWeVoteId);
-        } else {
+        } else if (campaignXWeVoteId) {
           CampaignSupporterActions.supportCampaignSave(campaignXWeVoteId, campaignSupported, campaignSupportedChanged, visibleToPublic, saveVisibleToPublic); // campaignSupporterSave
         }
       } else if (stopSupporting) {
@@ -232,7 +244,7 @@ class HeartFavoriteToggleLive extends React.Component {
           OrganizationActions.organizationStopFollowing('', politicianWeVoteId);
         } else if (organizationWeVoteId) {
           OrganizationActions.organizationStopFollowing(organizationWeVoteId);
-        } else {
+        } else if (campaignXWeVoteId) {
           campaignSupported = false;
           // TODO: Needs "stop campaign save" method
           CampaignSupporterActions.supportCampaignSave(campaignXWeVoteId, campaignSupported, campaignSupportedChanged, visibleToPublic, saveVisibleToPublic); // campaignSupporterSave
@@ -244,7 +256,7 @@ class HeartFavoriteToggleLive extends React.Component {
         } else if (organizationWeVoteId) {
           // Create organizationDislike
           OrganizationActions.organizationDislike(organizationWeVoteId);
-        } else {
+        } else if (campaignXWeVoteId) {
           // TODO: Needs "oppose" method
           campaignSupported = false;
           CampaignSupporterActions.supportCampaignSave(campaignXWeVoteId, campaignSupported, campaignSupportedChanged, visibleToPublic, saveVisibleToPublic); // campaignSupporterSave
@@ -256,7 +268,7 @@ class HeartFavoriteToggleLive extends React.Component {
         } else if (organizationWeVoteId) {
           // Create organizationStopDisliking
           OrganizationActions.organizationStopDisliking(organizationWeVoteId);
-        } else {
+        } else if (campaignXWeVoteId) {
           // TODO: Needs "stop opposing" method
           campaignSupported = false;
           CampaignSupporterActions.supportCampaignSave(campaignXWeVoteId, campaignSupported, campaignSupportedChanged, visibleToPublic, saveVisibleToPublic); // campaignSupporterSave
@@ -269,20 +281,20 @@ class HeartFavoriteToggleLive extends React.Component {
 
   submitOpposeClick () {
     let { supportersCount } = this.state;
-    const { opposersCount, voterSupportsCampaignX } = this.state;
+    const { opposersCount, voterSupports } = this.state;
     const oppose = true;
     const support = false;
     const stopOpposing = false;
     const stopSupporting = false;
-    if (voterSupportsCampaignX) {
+    if (voterSupports) {
       supportersCount -= 1;
     }
     this.setState({
       opposersCount: opposersCount + 1,
       supportersCount,
       // supportersCountNextGoal: supportersCountNextGoalWithFloor,
-      voterOpposesCampaignX: true,
-      voterSupportsCampaignX: false,
+      voterOpposes: true,
+      voterSupports: false,
     }, () => this.submitActionClick(support, oppose, stopSupporting, stopOpposing));
   }
 
@@ -295,8 +307,8 @@ class HeartFavoriteToggleLive extends React.Component {
     this.setState({
       opposersCount: opposersCount - 1,
       // supportersCountNextGoal: supportersCountNextGoalWithFloor,
-      voterOpposesCampaignX: false,
-      voterSupportsCampaignX: false,
+      voterOpposes: false,
+      voterSupports: false,
     }, () => this.submitActionClick(support, oppose, stopSupporting, stopOpposing));
   }
 
@@ -309,42 +321,46 @@ class HeartFavoriteToggleLive extends React.Component {
     this.setState({
       supportersCount: supportersCount - 1,
       // supportersCountNextGoal: supportersCountNextGoalWithFloor,
-      voterOpposesCampaignX: false,
-      voterSupportsCampaignX: false,
+      voterOpposes: false,
+      voterSupports: false,
     }, () => this.submitActionClick(support, oppose, stopSupporting, stopOpposing));
   }
 
   submitSupportClick () {
     let { opposersCount } = this.state;
-    const { supportersCount, voterOpposesCampaignX } = this.state;
+    const { supportersCount, voterOpposes } = this.state;
     const oppose = false;
     const support = true;
     const stopOpposing = false;
     const stopSupporting = false;
-    if (voterOpposesCampaignX) {
+    if (voterOpposes) {
       opposersCount -= 1;
     }
     this.setState({
       opposersCount,
       supportersCount: supportersCount + 1,
       // supportersCountNextGoal: supportersCountNextGoalWithFloor,
-      voterOpposesCampaignX: false,
-      voterSupportsCampaignX: true,
+      voterOpposes: false,
+      voterSupports: true,
     }, () => this.submitActionClick(support, oppose, stopSupporting, stopOpposing));
   }
 
   submitActionClick (support = true, oppose = false, stopSupporting = false, stopOpposing = false) {
-    const { campaignXWeVoteId } = this.props;
+    const { campaignXWeVoteId, organizationWeVoteId } = this.props;
     const { voterFirstName, voterLastName, voterIsSignedIn } = this.state;
     // console.log('HeartFavoriteToggleLive submitActionClick');
-    if (!campaignXWeVoteId) {
-      console.log('HeartFavoriteToggleLive submitActionClick: missing campaignXWeVoteId:', campaignXWeVoteId);
+    if (!campaignXWeVoteId && !organizationWeVoteId) {
+      console.log('HeartFavoriteToggleLive submitActionClick: missing campaignXWeVoteId:', campaignXWeVoteId, ', or organizationWeVoteId:', organizationWeVoteId);
     } else if (!voterFirstName || !voterLastName || !voterIsSignedIn) {
       // Open complete your profile modal
       AppObservableStore.setShowCompleteYourProfileModal(true);
     } else {
-      // Mark that voter supports this campaign
-      AppObservableStore.setBlockCampaignXRedirectOnSignIn(false);
+      if (campaignXWeVoteId) {
+        // Mark that voter supports this campaign after they sign in
+        AppObservableStore.setBlockCampaignXRedirectOnSignIn(false);
+      } else if (organizationWeVoteId) {
+        // Add equivalent to the above?
+      }
       this.functionToUseWhenProfileComplete(support, oppose, stopSupporting, stopOpposing);
     }
   }
@@ -352,24 +368,26 @@ class HeartFavoriteToggleLive extends React.Component {
   render () {
     renderLog('HeartFavoriteToggleLive');  // Set LOG_RENDER_EVENTS to log all renders
 
-    const { campaignXWeVoteId } = this.props;
-    const { opposersCount, supportersCount, voterIsSignedIn, voterOpposesCampaignX, voterSupportsCampaignX } = this.state;
-    // console.log('HeartFavoriteToggleLive voterSupportsCampaignX: ', voterSupportsCampaignX, ' voterOpposesCampaignX: ', voterOpposesCampaignX);
+    const { campaignXWeVoteId, organizationWeVoteId } = this.props;
+    const { opposersCount, supportersCount, voterIsSignedIn, voterOpposes, voterSupports } = this.state;
+    // console.log('HeartFavoriteToggleLive campaignXWeVoteId: ', campaignXWeVoteId);
+    // console.log('HeartFavoriteToggleLive voterSupports: ', voterSupports, ' voterOpposes: ', voterOpposes);
     // console.log('HeartFavoriteToggleLive supportersCount: ', supportersCount, ', opposersCount: ', opposersCount);
     return (
       <HeartFavoriteToggleLiveContainer>
         <Suspense fallback={<HeartFavoriteToggleBase />}>
           <HeartFavoriteToggleBase
-            campaignXOpposersCount={opposersCount}
-            campaignXSupportersCount={supportersCount}
+            opposersCount={opposersCount}
+            supportersCount={supportersCount}
             campaignXWeVoteId={campaignXWeVoteId}
+            organizationWeVoteId={organizationWeVoteId}
             submitOppose={this.submitOpposeClick}
             submitStopOpposing={this.submitStopOpposingClick}
             submitStopSupporting={this.submitStopSupportingClick}
             submitSupport={this.submitSupportClick}
-            voterOpposes={voterOpposesCampaignX}
+            voterOpposes={voterOpposes}
             voterIsSignedIn={voterIsSignedIn}
-            voterSupports={voterSupportsCampaignX}
+            voterSupports={voterSupports}
           />
         </Suspense>
       </HeartFavoriteToggleLiveContainer>
@@ -379,6 +397,7 @@ class HeartFavoriteToggleLive extends React.Component {
 
 HeartFavoriteToggleLive.propTypes = {
   campaignXWeVoteId: PropTypes.string,
+  organizationWeVoteId: PropTypes.string,
 };
 
 const HeartFavoriteToggleLiveContainer = styled.div`

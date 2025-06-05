@@ -18,6 +18,8 @@ class OrganizationStore extends ReduceStore {
       allCachedPositionsByOrganization: {}, // This is a dictionary with organizationWeVoteId as key with the list of all positions for the organization as value
       allCachedPositionsByPositionWeVoteId: {}, // This is a dictionary with positionWeVoteId as key with the position for the value
       allCachedPositionsByOrganizationDict: {}, // This is a dictionary with organizationWeVoteId as key and another dictionary with contestWeVoteId as second key
+      organizationDislikeCount: {}, // Dictionary with organization_we_vote_id as key and the number of people disliking the organization as value
+      organizationFollowersCount: {}, // Dictionary with organization_we_vote_id as key and the number of people following the organization as value
       organizationWeVoteIdsFollowedByOrganizationDict: {}, // Dictionary with organizationWeVoteId as key and list of organizationWeVoteId's being followed as value
       organizationWeVoteIdsFollowingByOrganizationDict: {}, // Dictionary with organizationWeVoteId as key and list of organizationWeVoteId's following that org as value
       organizationWeVoteIdsVoterIsDisliking: [],
@@ -152,6 +154,16 @@ class OrganizationStore extends ReduceStore {
   getOrganizationByWeVoteId (organizationWeVoteId) {
     const { allCachedOrganizationsDict } = this.getState();
     return allCachedOrganizationsDict[organizationWeVoteId] || {};
+  }
+
+  getOrganizationDislikeCount (organizationWeVoteId) {
+    const { organizationDislikeCount } = this.getState();
+    return organizationDislikeCount[organizationWeVoteId] || 0;
+  }
+
+  getOrganizationFollowersCount (organizationWeVoteId) {
+    const { organizationFollowersCount } = this.getState();
+    return organizationFollowersCount[organizationWeVoteId] || 0;
   }
 
   getOrganizationPositionByWeVoteId (organizationWeVoteId, ballotItemWeVoteId) {
@@ -377,6 +389,23 @@ class OrganizationStore extends ReduceStore {
     return positionItem;
   }
 
+  updateDislikeAndFollowersCounts (action, revisedState, organizationWeVoteId, organizationDislikeCount, organizationFollowersCount) {
+    if (!organizationDislikeCount) {
+      organizationDislikeCount = {};
+    }
+    organizationDislikeCount[organizationWeVoteId] = action.res.organization_dislike_count || 0;
+    if (!organizationFollowersCount) {
+      organizationFollowersCount = {};
+    }
+    organizationFollowersCount[organizationWeVoteId] = action.res.organization_followers_count || 0;
+    revisedState = {
+      ...revisedState,
+      organizationDislikeCount,
+      organizationFollowersCount,
+    };
+    return revisedState;
+  }
+
   reduce (state, action) {
     // Note: We deal with errors (!action.res.success) on an API-by-API basis.
     if (!action.res) {
@@ -390,6 +419,7 @@ class OrganizationStore extends ReduceStore {
       politicianWeVoteIdsVoterIsDisliking, politicianWeVoteIdsVoterIsFollowing,
     } = state;
     let {
+      organizationDislikeCount, organizationFollowersCount,
       organizationWeVoteIdsVoterIsDisliking, organizationWeVoteIdsVoterIsFollowing, organizationWeVoteIdsVoterIsIgnoring,
     } = state;
     const allCachedPositionsForOneOrganization = [];
@@ -506,6 +536,9 @@ class OrganizationStore extends ReduceStore {
             (existingOrgWeVoteId) => existingOrgWeVoteId !== organizationWeVoteId,
           ),
         };
+        if (organizationWeVoteId) {
+          revisedState = this.updateDislikeAndFollowersCounts(action, revisedState, organizationWeVoteId, organizationDislikeCount, organizationFollowersCount);
+        }
         if (politicianWeVoteId) {
           if (!politicianWeVoteIdsVoterIsDisliking.includes(politicianWeVoteId)) {
             politicianWeVoteIdsVoterIsDisliking.push(politicianWeVoteId);
@@ -573,6 +606,9 @@ class OrganizationStore extends ReduceStore {
             (existingOrgWeVoteId) => existingOrgWeVoteId !== organizationWeVoteId,
           ),
         };
+        if (organizationWeVoteId) {
+          revisedState = this.updateDislikeAndFollowersCounts(action, revisedState, organizationWeVoteId, organizationDislikeCount, organizationFollowersCount);
+        }
         if (politicianWeVoteId) {
           revisedState = {
             ...revisedState,
@@ -613,6 +649,9 @@ class OrganizationStore extends ReduceStore {
             (existingOrgWeVoteId) => existingOrgWeVoteId !== organizationWeVoteId,
           ),
         };
+        if (organizationWeVoteId) {
+          revisedState = this.updateDislikeAndFollowersCounts(action, revisedState, organizationWeVoteId, organizationDislikeCount, organizationFollowersCount);
+        }
         if (politicianWeVoteId) {
           revisedState = {
             ...revisedState,
@@ -809,6 +848,9 @@ class OrganizationStore extends ReduceStore {
           organizationWeVoteIdsVoterIsDisliking: organizationWeVoteIdsVoterIsDisliking.filter((existingOrgWeVoteId) => existingOrgWeVoteId !== organizationWeVoteId),
           organizationWeVoteIdsVoterIsFollowing: organizationWeVoteIdsVoterIsFollowing.filter((existingOrgWeVoteId) => existingOrgWeVoteId !== organizationWeVoteId),
         };
+        if (organizationWeVoteId) {
+          revisedState = this.updateDislikeAndFollowersCounts(action, revisedState, organizationWeVoteId, organizationDislikeCount, organizationFollowersCount);
+        }
         if (politicianWeVoteId) {
           revisedState = {
             ...revisedState,
@@ -840,6 +882,9 @@ class OrganizationStore extends ReduceStore {
           organizationWeVoteIdsVoterIsDisliking: organizationWeVoteIdsVoterIsDisliking.filter((existingOrgWeVoteId) => existingOrgWeVoteId !== organizationWeVoteId),
           organizationWeVoteIdsVoterIsFollowing: organizationWeVoteIdsVoterIsFollowing.filter((existingOrgWeVoteId) => existingOrgWeVoteId !== organizationWeVoteId),
         };
+        if (organizationWeVoteId) {
+          revisedState = this.updateDislikeAndFollowersCounts(action, revisedState, organizationWeVoteId, organizationDislikeCount, organizationFollowersCount);
+        }
         if (politicianWeVoteId) {
           revisedState = {
             ...revisedState,
@@ -1192,6 +1237,16 @@ class OrganizationStore extends ReduceStore {
           console.log('OrganizationStore ', action.type, ' FAILED action.res:', action.res);
           return state;
         }
+        if (action.res.organization_we_vote_id) {
+          if (!organizationDislikeCount) {
+            organizationDislikeCount = {};
+          }
+          organizationDislikeCount[action.res.organization_we_vote_id] = action.res.organization_dislike_count || 0;
+          if (!organizationFollowersCount) {
+            organizationFollowersCount = {};
+          }
+          organizationFollowersCount[action.res.organization_we_vote_id] = action.res.organization_followers_count || 0;
+        }
         voterGuides = action.res.voter_guides;
         // Reset the followers for this organization
         organizationWeVoteIdsFollowingByOrganizationDict[action.res.organization_we_vote_id] = [];
@@ -1200,6 +1255,8 @@ class OrganizationStore extends ReduceStore {
         });
         return {
           ...state,
+          organizationDislikeCount,
+          organizationFollowersCount,
           organizationWeVoteIdsFollowingByOrganizationDict,
         };
 

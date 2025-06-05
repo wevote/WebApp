@@ -104,8 +104,8 @@ export default class SettingsPersonalSideBar extends Component {
             >
               <BorderBottomContainer>
                 <Link to="/settings/profile" className="SettingsItem__summary__item">
-                  <ImportContactsIcon isActive={String(editMode) === 'contact'} />
-                  <LinkSpan isActive={String(editMode) === 'contacts'}>
+                  <ImportContactsIcon $isActive={String(editMode) === 'contact'} />
+                  <LinkSpan $isActive={String(editMode) === 'contacts'}>
                     Import Contacts
                   </LinkSpan>
                 </Link>
@@ -118,11 +118,11 @@ export default class SettingsPersonalSideBar extends Component {
             //   'SettingsItem__summary__item-container SettingsItem__summary__item-container--selected' :
             //   'SettingsItem__summary__item-container '}
             // >
-            <LinkContainer isActive={String(editMode) === 'profile'}>
+            <LinkContainer $isActive={String(editMode) === 'profile'}>
               <div>
                 <Link to="/settings/profile" className="SettingsItem__summary__item">
-                  <ProfileIcon isActive={String(editMode) === 'profile'} />
-                  <LinkSpan isActive={String(editMode) === 'profile'}>
+                  <ProfileIcon $isActive={String(editMode) === 'profile'} />
+                  <LinkSpan $isActive={String(editMode) === 'profile'}>
                     Name &amp; Photo
                   </LinkSpan>
                 </Link>
@@ -130,11 +130,11 @@ export default class SettingsPersonalSideBar extends Component {
             </LinkContainer>
           )}
 
-          <LinkContainer isActive={String(editMode) === 'account'}>
+          <LinkContainer $isActive={String(editMode) === 'account'}>
             <div>
               <Link to="/settings/account" className="SettingsItem__summary__item" id="securityAndSignIn">
-                <SecurityIcon isActive={String(editMode) === 'account'} />
-                <LinkSpan isActive={String(editMode) === 'account'}>
+                <SecurityIcon $isActive={String(editMode) === 'account'} />
+                <LinkSpan $isActive={String(editMode) === 'account'}>
                   {isSignedIn ?
                     <span>Security & Sign In</span> :
                     <span>Sign In</span> }
@@ -144,11 +144,11 @@ export default class SettingsPersonalSideBar extends Component {
           </LinkContainer>
 
           {(isSignedIn) && (
-            <LinkContainer isActive={String(editMode) === 'yourdata'}>
+            <LinkContainer $isActive={String(editMode) === 'yourdata'}>
               <div>
                 <Link to="/settings/yourdata" className="SettingsItem__summary__item" id="yourData">
-                  <PrivacyIcon isActive={String(editMode) === 'yourdata'} />
-                  <LinkSpan isActive={String(editMode) === 'yourdata'}>
+                  <PrivacyIcon $isActive={String(editMode) === 'yourdata'} />
+                  <LinkSpan $isActive={String(editMode) === 'yourdata'}>
                     Privacy &amp; Data
                   </LinkSpan>
                 </Link>
@@ -156,11 +156,11 @@ export default class SettingsPersonalSideBar extends Component {
             </LinkContainer>
           )}
 
-          <LinkContainer isActive={String(editMode) === 'notifications'}>
+          <LinkContainer $isActive={String(editMode) === 'notifications'}>
             <div>
               <Link to="/settings/notifications" className="SettingsItem__summary__item" id="settingsNotifications">
-                <NotificationsIcon isActive={String(editMode) === 'notifications'} />
-                <LinkSpan isActive={String(editMode) === 'notifications'}>
+                <NotificationsIcon $isActive={String(editMode) === 'notifications'} />
+                <LinkSpan $isActive={String(editMode) === 'notifications'}>
                   Notifications
                 </LinkSpan>
               </Link>
@@ -168,11 +168,11 @@ export default class SettingsPersonalSideBar extends Component {
           </LinkContainer>
 
           {alwaysTrue && (/* {!isOnPartnerUrl && ( */
-            <LinkContainer isActive={String(editMode) === 'friends'}>
+            <LinkContainer $isActive={String(editMode) === 'friends'}>
               <div>
                 <Link to="/friends" className="SettingsItem__summary__item" id="settingsFriends">
-                  <FriendsIcon isActive={String(editMode) === 'friends'} />
-                  <LinkSpan isActive={String(editMode) === 'friends'}>
+                  <FriendsIcon $isActive={String(editMode) === 'friends'} />
+                  <LinkSpan $isActive={String(editMode) === 'friends'}>
                     Friends
                   </LinkSpan>
                 </Link>
@@ -181,11 +181,11 @@ export default class SettingsPersonalSideBar extends Component {
           )}
 
           {(isSignedIn && alwaysTrue/* && !isOnPartnerUrl */) && (
-            <LinkContainer isActive={String(editMode) === 'discuss'}>
+            <LinkContainer $isActive={String(editMode) === 'discuss'}>
               <div>
                 <Link to="/news" className="SettingsItem__summary__item" id="settingsDiscuss">
-                  <DiscussIcon isActive={String(editMode) === 'discuss'} />
-                  <LinkSpan isActive={String(editMode) === 'discuss'}>
+                  <DiscussIcon $isActive={String(editMode) === 'discuss'} />
+                  <LinkSpan $isActive={String(editMode) === 'discuss'}>
                     Discuss
                   </LinkSpan>
                 </Link>
@@ -200,7 +200,7 @@ export default class SettingsPersonalSideBar extends Component {
             >
               <div>
                 <Link to="/settings/domain" className="SettingsItem__summary__item" id="settingsDomain">
-                  <LinkSpan isActive={String(editMode) === 'domain'}>
+                  <LinkSpan $isActive={String(editMode) === 'domain'}>
                     Domain
                   </LinkSpan>
                   <Suspense fallback={<></>}>
@@ -356,12 +356,12 @@ export default class SettingsPersonalSideBar extends Component {
           )}
 
           {isSignedIn && (
-            <LinkContainer isActive={String(editMode) === 'text'}>
+            <LinkContainer $isActive={String(editMode) === 'text'}>
               <BorderTopContainer onClick={this.voterSignOut}>
                 <Link to="/ready" className="SettingsItem__summary__item" id="site text">
                   <SignOutIcon />
                   <LinkSpan
-                    isActive={String(editMode) === 'text'}
+                    $isActive={String(editMode) === 'text'}
                     id="signOut_Settings"
                   >
                     Sign Out
@@ -382,37 +382,37 @@ const BorderBottomContainer = styled('div')`
 `;
 
 const ImportContactsIcon = styled(ImportContactsOutlined)`
-  color: ${(props) => (props.isActive ? DesignTokenColors.primary600 : DesignTokenColors.neutralUI600)};
+  color: ${(props) => (props.$isActive ? DesignTokenColors.primary600 : DesignTokenColors.neutralUI600)};
   margin: -3px 10px 0 8px;
 `;
 
 const ProfileIcon = styled(AccountBoxRounded)`
-  color: ${(props) => (props.isActive ? DesignTokenColors.primary600 : DesignTokenColors.neutralUI600)};
+  color: ${(props) => (props.$isActive ? DesignTokenColors.primary600 : DesignTokenColors.neutralUI600)};
   margin: -3px 10px 0 6px;
 `;
 
 const SecurityIcon = styled(Lock)`
-  color: ${(props) => (props.isActive ? DesignTokenColors.primary600 : DesignTokenColors.neutralUI600)};
+  color: ${(props) => (props.$isActive ? DesignTokenColors.primary600 : DesignTokenColors.neutralUI600)};
   margin: -3px 10px 0 6px;
 `;
 
 const PrivacyIcon = styled(SecurityRounded)`
-  color: ${(props) => (props.isActive ? DesignTokenColors.primary600 : DesignTokenColors.neutralUI600)};
+  color: ${(props) => (props.$isActive ? DesignTokenColors.primary600 : DesignTokenColors.neutralUI600)};
   margin: -3px 10px 0 6px;
 `;
 
 const NotificationsIcon = styled(CampaignRounded)`
-  color: ${(props) => (props.isActive ? DesignTokenColors.primary600 : DesignTokenColors.neutralUI600)};
+  color: ${(props) => (props.$isActive ? DesignTokenColors.primary600 : DesignTokenColors.neutralUI600)};
   margin: -3px 7px 0 9px;
 `;
 
 const FriendsIcon = styled(PeopleAltRounded)`
-  color: ${(props) => (props.isActive ? DesignTokenColors.primary600 : DesignTokenColors.neutralUI600)};
+  color: ${(props) => (props.$isActive ? DesignTokenColors.primary600 : DesignTokenColors.neutralUI600)};
   margin: -3px 10px 0 8px;
 `;
 
 const DiscussIcon = styled(TextsmsRounded)`
-  color: ${(props) => (props.isActive ? DesignTokenColors.primary600 : DesignTokenColors.neutralUI600)};
+  color: ${(props) => (props.$isActive ? DesignTokenColors.primary600 : DesignTokenColors.neutralUI600)};
   margin: -3px 10px 0 8px;
 `;
 
@@ -428,13 +428,13 @@ const BorderTopContainer = styled('div')`
 `;
 
 const LinkContainer = styled('div')`
-  border-left: ${(props) => (props.isActive ? `3px solid ${DesignTokenColors.primary600}` : 'none')};
-  margin: 0 0 .25rem ${(props) => (props.isActive ? '-.2rem' : 0)};
+  border-left: ${(props) => (props.$isActive ? `3px solid ${DesignTokenColors.primary600}` : 'none')};
+  margin: 0 0 .25rem ${(props) => (props.$isActive ? '-.2rem' : 0)};
   padding-bottom: .25rem;
 `;
 
 const LinkSpan = styled('span')`
-  color: ${(props) => (props.isActive ? `${DesignTokenColors.primary600}` : `${DesignTokenColors.neutral600}`)};
+  color: ${(props) => (props.$isActive ? `${DesignTokenColors.primary600}` : `${DesignTokenColors.neutral600}`)};
   fontSize: '1rem',
   textDecoration: 'none',
 `;

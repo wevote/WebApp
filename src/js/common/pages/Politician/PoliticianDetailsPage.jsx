@@ -85,7 +85,7 @@ function marginTopOffset (scrolledDown) {
   //   }
   if (isWebApp()) {
     if (scrolledDown) {
-      return '-6px';
+      return '-11px';
     } else {
       return '39px';
     }

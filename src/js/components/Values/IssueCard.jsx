@@ -5,6 +5,7 @@ import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import TagManager from 'react-gtm-module';
 import numberAbbreviate from '../../common/utils/numberAbbreviate';
 import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
@@ -17,6 +18,7 @@ import convertToInteger from '../../common/utils/convertToInteger';
 import { convertNameToSlug } from '../../common/utils/textFormat';
 import IssueFollowToggleButton from './IssueFollowToggleButton';
 import IssueImageDisplay from './IssueImageDisplay';
+import lookupPageNameAndPageTypeDict from '../../utils/lookupPageNameAndPageTypeDict';
 
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../../common/components/Widgets/ReadMore'));
 const SignInModal = React.lazy(() => import(/* webpackChunkName: 'SignInModal' */ '../../common/components/SignIn/SignInModal'));
@@ -140,6 +142,33 @@ class IssueCard extends Component {
   onIssueStopFollowingClick = () => {
     this.addToIssueFollowersAdjustment(-1);
   }
+
+  handleIssueClick = () => {
+    const { location: { pathname: currentPathname } } = window;
+    const { issue } = this.state;
+    const { pageName, pageType } = lookupPageNameAndPageTypeDict(currentPathname);
+    TagManager.dataLayer({
+      dataLayer: {
+        event: 'issueClick',
+        pageDetails: {
+          pageName,
+          pageType,
+          pathname: currentPathname,
+        },
+        userDetails: {
+          stateCode: VoterStore.getVoterStateCode(),
+          userCohort: VoterStore.getAnalyticsUserCohort(),
+          voterWeVoteId: VoterStore.getVoterWeVoteId(),
+        },
+        topicDetails: {
+          consideredLeft: issue.considered_left,
+          consideredRight: issue.considered_right,
+          topicName: issue.issue_name,
+          topicWeVoteId: issue.issue_we_vote_id,
+        },
+      },
+    });
+  };
 
   addToIssueFollowersAdjustment (value) {
     let { issueFollowersAdjustment } = this.state;
@@ -364,6 +393,7 @@ class IssueCard extends Component {
                               to={this.getIssueLink}
                               className="u-no-underline"
                               tabIndex={-1}
+                              onClick={this.handleIssueClick}
                         >
                           {issueImage}
                         </Link>
@@ -380,6 +410,7 @@ class IssueCard extends Component {
                     <Link id="valueListLink"
                           to={this.getIssueLink}
                           className="u-link-color"
+                          onClick={this.handleIssueClick}
                     >
                       {issueNameAndCount}
                     </Link>
@@ -580,5 +611,7 @@ const OrganizationImage = styled('img', {
   width: 32px;
   z-index: ${200 - organizationImageCount};
 `));
+
+
 
 export default IssueCard;

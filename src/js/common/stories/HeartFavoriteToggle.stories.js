@@ -11,8 +11,8 @@ export default {
   tags: ['autodocs'],
   args: {
     voterSupportsLocal: false,
-    campaignXOpposersCount: 24,
-    campaignXSupportersCount: 234,
+    opposersCount: 24,
+    supportersCount: 234,
     voterSignedInWithEmail: true,
     voterSupports: true,
     voterOpposes: false,

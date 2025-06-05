@@ -66,10 +66,10 @@ export default {
     });
   },
 
-  voterGuideFollowersRetrieve (organizationWeVoteId) {
+  voterGuideFollowersRetrieve (organizationWeVoteId, numberToRetrieve = 50) {
     Dispatcher.loadEndpoint('voterGuideFollowersRetrieve', {
       organization_we_vote_id: organizationWeVoteId,
-      maximum_number_to_retrieve: 200,
+      maximum_number_to_retrieve: numberToRetrieve,
     });
   },
 

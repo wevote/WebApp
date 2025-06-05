@@ -212,9 +212,10 @@ class ChildCommentList extends Component {
                   </SpeakerAvatar>
                 ) : (
                   <SpeakerAvatar>
-                    <Avatar sx={speakerDisplayNameToAvatarColor(childComment.commenter_name)}>
-                      {speakerDisplayNameToInitials(childComment.commenter_name)}
-                    </Avatar>
+                    {(() => {
+                      const { sx, children } = speakerDisplayNameToInitials(childComment.commenter_name);
+                      return <Avatar sx={sx}>{children}</Avatar>;
+                    })()}
                   </SpeakerAvatar>
                 )}
               </ChildCommentPhotoDiv>
