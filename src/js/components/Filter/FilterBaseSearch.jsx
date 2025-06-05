@@ -5,6 +5,7 @@ import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import TagManager from 'react-gtm-module';
 import BallotActions from '../../actions/BallotActions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import { blurTextFieldAndroid, focusTextFieldAndroid, isAndroidSizeWide } from '../../common/utils/cordovaUtils';
@@ -15,7 +16,7 @@ import ballotSearchPriority from '../../utils/ballotSearchPriority';
 import opinionsAndBallotItemsSearchPriority from '../../utils/opinionsAndBallotItemsSearchPriority';
 import positionSearchPriority from '../../utils/positionSearchPriority';
 import voterGuidePositionSearchPriority from '../../utils/voterGuidePositionSearchPriority';
-import TagManager from 'react-gtm-module';
+import VoterStore from '../../stores/VoterStore';
 import lookupPageNameAndPageTypeDict from '../../utils/lookupPageNameAndPageTypeDict';
 
 
@@ -25,35 +26,10 @@ class FilterBaseSearch extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      tabCounter: 0,
       searchText: '',
       searchTextAlreadyRetrieved: [],
     };
     this.handleSearch = this.handleSearch.bind(this);
-    this.handleClick = this.handleClick.bind(this);
-  }
-  handleClick = (path)=> {
-//     console.log('User clicked search icon at', new Date().toLocaleTimeString());
-//     console.log('handleClick called with:', path);
-    const { location: { pathname: currentPathname } } = window;
-    const page = lookupPageNameAndPageTypeDict(currentPathname);
-    const destinationPage = lookupPageNameAndPageTypeDict(path);
-
-    TagManager.dataLayer({
-      dataLayer: {
-        e: "click",
-        pageDetails: {
-          pageType: page.pageType,
-          pageName: page.pageName,
-          pathname: currentPathname,
-        },
-        destinationDetails: {
-          destinationPageType: destinationPage.pageType,
-          destinationPageName: destinationPage.pageName,
-          destinationPathname: path,
-        },
-      },
-    });
   }
 
   componentDidMount () {
@@ -234,10 +210,38 @@ class FilterBaseSearch extends Component {
   searchNewItems = (searchText) => {
     const { opinionsAndBallotItemsSearchMode } = this.props;
     const { searchTextAlreadyRetrieved } = this.state;
+    console.log('searchNewItems CALLED with:', searchText);
+    console.log('opinionsAndBallotItemsSearchMode:', opinionsAndBallotItemsSearchMode);
+    console.log('searchTextAlreadyRetrieved:', searchTextAlreadyRetrieved);
     // console.log('searchNewItems searchText:', searchText, ', searchTextAlreadyRetrieved:', searchTextAlreadyRetrieved);
     if (opinionsAndBallotItemsSearchMode) {
       // Reach out to API server to get more Organizations or Ballot items.
+      console.log('Entered opinionsAndBallotItemsSearchMode');
+      console.log('searchTextAlreadyRetrieved:', searchTextAlreadyRetrieved);
+      console.log('Includes?', searchTextAlreadyRetrieved.includes(searchText));
+
       if (!searchTextAlreadyRetrieved.includes(searchText)) {
+        console.log('Proceeding with dataLayerObject');
+        const { location: { pathname: currentPathname } } = window;
+        const page = lookupPageNameAndPageTypeDict(currentPathname);
+
+        const dataLayerObject = {
+          event: 'search',
+          searchKeyword: searchText,
+          userDetails: {
+            stateCode: VoterStore.getVoterStateCode(),
+            userCohort: VoterStore.getAnalyticsUserCohort(),
+            voterWeVoteId: VoterStore.getVoterWeVoteId(),
+          },
+          pageDetails: {
+            pageType: page.pageType,
+            pageName: page.pageName,
+            pathname: currentPathname,
+          },
+        };
+        console.log('dataLayerObject:', dataLayerObject);
+        TagManager.dataLayer({ dataLayer: dataLayerObject });
+
         OrganizationActions.organizationSearch(searchText);
         BallotActions.ballotItemOptionsRetrieve('', searchText);
         searchTextAlreadyRetrieved.push(searchText);
@@ -252,19 +256,7 @@ class FilterBaseSearch extends Component {
       this.toggleSearch();
     }
   }
-//   handleKeyDown=(e)=>{
-//     e.preventDefault()
-//   }
-  handleKeyDown = (e) => {
-  if (e.key === "Tab" && e.target.id === "searchInput") {
-    e.preventDefault();
-  }
-  };
 
-  handleIconClick =(event)=>{
-    this.toggleSearch(event);
-    this.handleClick('/search');;
-  };
 
   render () {
     const { alwaysOpen, classes, isSearching, searchTextLarge, theme } = this.props;
@@ -292,7 +284,7 @@ class FilterBaseSearch extends Component {
           <IconButton
             classes={{ root: classes.iconButtonRoot }}
             id="searchIcon"
-            onClick={(!isAndroid() && !alwaysOpen) ? this.handleIconClick : undefined}
+            onClick={(!isAndroid() && !alwaysOpen) ? this.toggleSearch : undefined}
             size="large"
             aria-label="Search Button"
             tabIndex={0}
