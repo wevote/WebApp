@@ -13,6 +13,8 @@ import numberWithCommas from '../../../utils/numberWithCommas';
 import HeartFavoriteToggleIcon from './HeartFavoriteToggleIcon';
 import AppObservableStore from '../../../stores/AppObservableStore';
 
+window.dataLayer = window.dataLayer || [];
+
 // WV-399: Creating popover for sign in prompt using MUI Popover component.
 // Popover text passed into helper functions setting like/dislike text for handleActionClick.
 // voterIsSignedIn in handleActionClick to update state for anchorEl and popoverText hooking into Like/Dislike containers.
@@ -163,7 +165,40 @@ class HeartFavoriteToggleBase extends Component {
       voterSupportsLocal: voterSupportsLocalPrevious,
     } = this.state;
 
+    // Determine the interaction type and action
+    let interactionType = '';
+    let action = '';
+    if (support) {
+      interactionType = 'favorite';
+      action = 'add';
+    } else if (stopSupporting) {
+      interactionType = 'favorite';
+      action = 'remove';
+    } else if (oppose) {
+      interactionType = 'dislike';
+      action = 'add';
+    } else if (stopOpposing) {
+      interactionType = 'dislike';
+      action = 'remove';
+    }
+
+    const pushToDataLayer = (data) => {
+      if (window.dataLayer) {
+        window.dataLayer.push(data);
+        console.log('DataLayer Push:', data);
+      } else {
+        console.log('DataLayer not initialized, would have pushed:', data);
+      }
+    };
     if (!voterIsSignedIn) {
+      pushToDataLayer({
+        event: 'candidateInteractionAttempt',
+        interactionType,
+        action,
+        candidateId: campaignXWeVoteId,
+        pageType: 'candidateProfile',
+        userStatus: 'notSignedIn',
+      });
       // Toggle sign in prompt
       this.setState({
         showSignInPromptSupports: support ? !showSignInPromptSupportsPrevious : false,
@@ -172,6 +207,43 @@ class HeartFavoriteToggleBase extends Component {
         popoverText,
       });
     } else {
+      if (support) {
+        pushToDataLayer({
+          event: 'candidateInteraction',
+          interactionType: 'favorite',
+          action: 'add',
+          candidateId: campaignXWeVoteId,
+          pageType: 'candidateProfile',
+          interactionCount: campaignXSupportersCountLocalPrevious + 1,
+        });
+      } else if (stopSupporting) {
+        pushToDataLayer({
+          event: 'candidateInteraction',
+          interactionType: 'favorite',
+          action: 'remove',
+          candidateId: campaignXWeVoteId,
+          pageType: 'candidateProfile',
+          interactionCount: Math.max(0, campaignXSupportersCountLocalPrevious - 1),
+        });
+      } else if (oppose) {
+        pushToDataLayer({
+          event: 'candidateInteraction',
+          interactionType: 'dislike',
+          action: 'add',
+          candidateId: campaignXWeVoteId,
+          pageType: 'candidateProfile',
+          interactionCount: campaignXOpposersCountLocalPrevious + 1,
+        });
+      } else if (stopOpposing) {
+        pushToDataLayer({
+          event: 'candidateInteraction',
+          interactionType: 'dislike',
+          action: 'remove',
+          candidateId: campaignXWeVoteId,
+          pageType: 'candidateProfile',
+          interactionCount: Math.max(0, campaignXOpposersCountLocalPrevious - 1),
+        });
+      }
       this.setState({
         voterSupportsLocal: support,
         voterOpposesLocal: oppose,
