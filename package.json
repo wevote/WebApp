@@ -142,7 +142,7 @@
     "puppeteer": "^22.10.0",
     "react": "~17.0.2",
     "react-bootstrap": "^1.6.4",
-    "react-confetti": "~6.1.0",
+    "react-confetti": "~6.4.0",
     "react-copy-to-clipboard": "^5.1.0",
     "react-dom": "~17.0.2",
     "react-fullstory": "^1.4.0",
