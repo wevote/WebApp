@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
-import TagManager from 'react-gtm-module';
 import styled from 'styled-components';
 import { renderLog } from '../../common/utils/logging';
 import removeTwitterNameFromDescription from '../../common/utils/removeTwitterNameFromDescription';
@@ -11,8 +10,6 @@ import PositionInformationOnlySnippet from '../PositionItem/PositionInformationO
 import PositionRatingSnippet from '../PositionItem/PositionRatingSnippet';
 import PositionSupportOpposeSnippet from '../PositionItem/PositionSupportOpposeSnippet';
 import TwitterAccountStats from '../Widgets/TwitterAccountStats';
-import VoterStore from '../../stores/VoterStore';
-import lookupPageNameAndPageTypeDict from '../../utils/lookupPageNameAndPageTypeDict';
 
 const FollowToggle = React.lazy(() => import(/* webpackChunkName: 'FollowToggle' */ '../Widgets/FollowToggle'));
 
@@ -106,37 +103,6 @@ class OrganizationDisplayForList extends Component {
     });
   }
 
-  sendEndorserClickEvent (buttonId) {
-    const { location: { pathname: currentPathname } } = window;
-    const { pageName, pageType } = lookupPageNameAndPageTypeDict(currentPathname);
-    const { twitterHandle } = this.state;
-    const { organizationWeVoteId } = this.props;
-    const destinationPathname = twitterHandle ? `/${twitterHandle}` : `/voterguide/${organizationWeVoteId}`;
-    const { pageName: destinationPageName, pageType: destinationPageType } = lookupPageNameAndPageTypeDict(destinationPathname);
-
-    const dataLayerObject = {
-      actionDetails: {
-        actionType: 'navigate',
-        buttonId,
-      },
-      event: 'action',
-      destinationDetails: {
-        destinationPageName,
-        destinationPageType,
-        destinationPathname,
-
-      },
-      pageDetails: {
-        pageName,
-        pageType,
-        pathname: currentPathname,
-      },
-      userDetails: VoterStore.getAnalyticsUserDetails(),
-    };
-    TagManager.dataLayer({ dataLayer: dataLayerObject });
-  }
-
-
   render () {
     renderLog('OrganizationDisplayForList');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('OrganizationDisplayForList render');
@@ -220,20 +186,13 @@ class OrganizationDisplayForList extends Component {
       <OrganizationDisplayForListWrapper>
         <OrganizationDetailsWrapper>
           <OrganizationLogoWrapper>
-            <Link id="organizationDisplayLogo"
-                  to={voterGuideLink}
-                  className="u-no-underline"
-                  onClick={() => this.sendEndorserClickEvent(organizationName)}
-            >
+            <Link id="organizationDisplayLogo" to={voterGuideLink} className="u-no-underline">
               {organizationLogo}
             </Link>
           </OrganizationLogoWrapper>
           <div>
             <NameAndTwitter>
-              <Link id="organizationDisplayName"
-                    to={voterGuideLink}
-                    onClick={() => this.sendEndorserClickEvent(organizationName)}
-              >
+              <Link id="organizationDisplayName" to={voterGuideLink}>
                 <OrganizationName>{organizationName}</OrganizationName>
               </Link>
               {twitterHandle && (
