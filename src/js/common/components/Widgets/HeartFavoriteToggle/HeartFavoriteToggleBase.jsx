@@ -6,12 +6,17 @@ import Popover from '@mui/material/Popover';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 import Typography from '@mui/material/Typography';
+import TagManager from 'react-gtm-module';
 import isMobileScreenSize from '../../../utils/isMobileScreenSize';
 import CampaignActions from '../../../actions/CampaignActions';
 import DesignTokenColors from '../../Style/DesignTokenColors';
 import numberWithCommas from '../../../utils/numberWithCommas';
 import HeartFavoriteToggleIcon from './HeartFavoriteToggleIcon';
 import AppObservableStore from '../../../stores/AppObservableStore';
+// import PoliticianStore from '../../../stores/PoliticianStore';
+import CandidateStore from '../../../../stores/CandidateStore';
+import VoterStore from '../../../../stores/VoterStore';
+import { getPageDetails } from '../../../../utils/lookupPageNameAndPageTypeDict';
 
 // WV-399: Creating popover for sign in prompt using MUI Popover component.
 // Popover text passed into helper functions setting like/dislike text for handleActionClick.
@@ -167,6 +172,7 @@ class HeartFavoriteToggleBase extends Component {
   }
 
   handleActionClick = (event, support = true, oppose = false, stopSupporting = false, stopOpposing = false, popoverText = '') => {
+    // eslint-disable-next-line no-unused-vars
     const { campaignXWeVoteId, organizationWeVoteId, voterIsSignedIn } = this.props;
     const {
       opposersCountLocal: opposersCountLocalPrevious,
@@ -178,13 +184,36 @@ class HeartFavoriteToggleBase extends Component {
     } = this.state;
 
     if (!voterIsSignedIn) {
+      let actionType = '';
+      if (support) {
+        actionType = showSignInPromptSupportsPrevious ? 'favoriteSignedOutUndo' : 'favoriteSignedOut';
+      } else if (oppose) {
+        actionType = showSignInPromptOpposesPrevious ? 'dislikeSignedOutUndo' : 'dislikeSignedOut';
+      }
+
       // Toggle sign in prompt
       this.setState({
         showSignInPromptSupports: support ? !showSignInPromptSupportsPrevious : false,
         showSignInPromptOpposes: oppose ? !showSignInPromptOpposesPrevious : false,
         anchorEl: event ? event.currentTarget : null,
         popoverText,
+      }, () => {
+        if (support || oppose) {
+          const dataLayerObject = {
+            actionDetails: { actionType },
+            event: 'action',
+            pageDetails: getPageDetails(),
+            userDetails: VoterStore.getAnalyticsUserDetails(),
+          };
+
+          if (campaignXWeVoteId) {
+            dataLayerObject.candidateDetails = CandidateStore.getAnalyticsCandidateDetails(campaignXWeVoteId);
+          }
+
+          TagManager.dataLayer({ dataLayer: dataLayerObject });
+        }
       });
+
     } else {
       // console.log('handleActionClick support: ', support, ', oppose: ', oppose, ', stopSupporting: ', stopSupporting, ', stopOpposing: ', stopOpposing);
       this.setState({
@@ -193,106 +222,145 @@ class HeartFavoriteToggleBase extends Component {
       }, () => {
         if (support) {
           if (!voterSupportsLocalPrevious) {
-            this.setState({
+            const newState = {
+              voterSupportsLocal: true,
+              voterOpposesLocal: false,
               supportersCountLocal: supportersCountLocalPrevious + 1,
-            }, () => {
+              opposersCountLocal: voterOpposesLocalPrevious ?
+                Math.max(0, opposersCountLocalPrevious - 1) :
+                opposersCountLocalPrevious,
+            };
+
+            this.setState(newState, () => {
               if (this.props.submitSupport) {
                 this.props.submitSupport();
               }
-              // Local quick update of supporters_count in CampaignX object
-              const { supportersCountLocal } = this.state;
+
+              const dataLayerObject = {
+                actionDetails: {
+                  actionType: 'favorite',
+                },
+                event: 'action',
+                pageDetails: getPageDetails(),
+                userDetails: VoterStore.getAnalyticsUserDetails(),
+              };
+
               if (campaignXWeVoteId) {
-                CampaignActions.campaignLocalAttributesUpdate(campaignXWeVoteId, supportersCountLocal);
-              } else if (organizationWeVoteId) {
-                // Local update if Favoriting an organization
+                dataLayerObject.candidateDetails = CandidateStore.getAnalyticsCandidateDetails(campaignXWeVoteId);
+                CampaignActions.campaignLocalAttributesUpdate(
+                  campaignXWeVoteId,
+                  newState.supportersCountLocal,
+                  newState.opposersCountLocal,
+                );
               }
-            });
-          }
-          if (voterOpposesLocalPrevious) {
-            this.setState({
-              opposersCountLocal: Math.max(0, opposersCountLocalPrevious - 1),
-            }, () => {
-              // Local quick update of opposers_count in CampaignX object
-              const { opposersCountLocal } = this.state;
-              const supportersCountLocal = false;
-              if (campaignXWeVoteId) {
-                CampaignActions.campaignLocalAttributesUpdate(campaignXWeVoteId, supportersCountLocal, opposersCountLocal);
-              } else if (organizationWeVoteId) {
-                // Local update if Favoriting an organization
-              }
+
+              TagManager.dataLayer({ dataLayer: dataLayerObject });
             });
           }
         } else if (stopSupporting) {
-          // console.log('handleActionClick stopSupporting voterSupportsLocalPrevious:', voterSupportsLocalPrevious, ', supportersCountLocalPrevious:', supportersCountLocalPrevious);
           if (voterSupportsLocalPrevious) {
-            this.setState({
+            const newState = {
+              voterSupportsLocal: false,
               supportersCountLocal: Math.max(0, supportersCountLocalPrevious - 1),
-            }, () => {
+            };
+
+            this.setState(newState, () => {
               if (this.props.submitStopSupporting) {
                 this.props.submitStopSupporting();
               }
-              // Local quick update of supporters_count in CampaignX object
-              const { supportersCountLocal } = this.state;
+
+              const dataLayerObject = {
+                actionDetails: {
+                  actionType: 'favoriteUndo',
+                },
+                event: 'action',
+                pageDetails: getPageDetails(),
+                userDetails: VoterStore.getAnalyticsUserDetails(),
+              };
+
               if (campaignXWeVoteId) {
-                CampaignActions.campaignLocalAttributesUpdate(campaignXWeVoteId, supportersCountLocal);
-              } else if (organizationWeVoteId) {
-                // Local update if Favoriting an organization
+                dataLayerObject.candidateDetails = CandidateStore.getAnalyticsCandidateDetails(campaignXWeVoteId);
+                CampaignActions.campaignLocalAttributesUpdate(
+                  campaignXWeVoteId,
+                  newState.supportersCountLocal,
+                );
               }
+
+              TagManager.dataLayer({ dataLayer: dataLayerObject });
             });
           }
         } else if (oppose) {
           if (!voterOpposesLocalPrevious) {
-            this.setState({
+            const newState = {
+              voterSupportsLocal: false,
+              voterOpposesLocal: true,
               opposersCountLocal: opposersCountLocalPrevious + 1,
-            }, () => {
+              supportersCountLocal: voterSupportsLocalPrevious ?
+                Math.max(0, supportersCountLocalPrevious - 1) :
+                supportersCountLocalPrevious,
+            };
+
+            this.setState(newState, () => {
               if (this.props.submitOppose) {
                 this.props.submitOppose();
               }
-              // Local quick update of opposers_count in CampaignX object
-              const { opposersCountLocal } = this.state;
-              const supportersCountLocal = false;
+
+              const dataLayerObject = {
+                actionDetails: {
+                  actionType: 'dislike',
+                },
+                event: 'action',
+                pageDetails: getPageDetails(),
+                userDetails: VoterStore.getAnalyticsUserDetails(),
+              };
+
               if (campaignXWeVoteId) {
-                CampaignActions.campaignLocalAttributesUpdate(campaignXWeVoteId, supportersCountLocal, opposersCountLocal);
-              } else if (organizationWeVoteId) {
-                // Local update if Favoriting an organization
+                dataLayerObject.candidateDetails = CandidateStore.getAnalyticsCandidateDetails(campaignXWeVoteId);
+                CampaignActions.campaignLocalAttributesUpdate(
+                  campaignXWeVoteId,
+                  newState.supportersCountLocal,
+                  newState.opposersCountLocal,
+                );
               }
-            });
-          }
-          if (voterSupportsLocalPrevious) {
-            this.setState({
-              supportersCountLocal: Math.max(0, supportersCountLocalPrevious - 1),
-            }, () => {
-              // Local quick update of supporters_count in CampaignX object
-              const { supportersCountLocal } = this.state;
-              if (campaignXWeVoteId) {
-                CampaignActions.campaignLocalAttributesUpdate(campaignXWeVoteId, supportersCountLocal);
-              } else if (organizationWeVoteId) {
-                // Local update if Favoriting an organization
-              }
+
+              TagManager.dataLayer({ dataLayer: dataLayerObject });
             });
           }
         } else if (stopOpposing) {
           if (voterOpposesLocalPrevious) {
-            this.setState({
+            const newState = {
+              voterOpposesLocal: false,
               opposersCountLocal: Math.max(0, opposersCountLocalPrevious - 1),
-            }, () => {
+            };
+
+            this.setState(newState, () => {
               if (this.props.submitStopOpposing) {
                 this.props.submitStopOpposing();
               }
-              // Local quick update of opposers_count in CampaignX object
-              const { opposersCountLocal } = this.state;
-              const supportersCountLocal = false;
+
+              const dataLayerObject = {
+                actionDetails: {
+                  actionType: 'dislikeUndo',
+                },
+                event: 'action',
+                pageDetails: getPageDetails(),
+                userDetails: VoterStore.getAnalyticsUserDetails(),
+              };
+
               if (campaignXWeVoteId) {
-                CampaignActions.campaignLocalAttributesUpdate(campaignXWeVoteId, supportersCountLocal, opposersCountLocal);
-              } else if (organizationWeVoteId) {
-                // Local update if Favoriting an organization
+                CampaignActions.campaignLocalAttributesUpdate(
+                  campaignXWeVoteId,
+                  this.state.supportersCountLocal,
+                  newState.opposersCountLocal,
+                );
               }
+              TagManager.dataLayer({ dataLayer: dataLayerObject });
             });
           }
         }
       });
     }
-  };
+  }
 
   handlePopoverClose = () => {
     this.setState({

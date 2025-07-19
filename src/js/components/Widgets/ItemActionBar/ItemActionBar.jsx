@@ -641,7 +641,9 @@ class ItemActionBar extends PureComponent {
       this.stopSupportingItem();
       return;
     }
-
+    if (transitioning) {
+      return;
+    }
     // console.log('supportItem setState');
     this.setState({
       isOpposeLocalState: false,
@@ -650,9 +652,28 @@ class ItemActionBar extends PureComponent {
     if (transitioning) {
       return;
     }
-
     // If the logic in this function decides to, show the "Sign in to save your choices" modal
     this.showChooseOrOpposeIntroModalDecision();
+
+    // Add console.log to verify we reach this point
+    console.log('About to push to dataLayer in supportItem');
+
+    const isSignedIn = VoterStore.getVoterIsSignedIn();
+    const dataLayerObject = {
+      actionDetails: {
+        actionType: isSignedIn ? 'favorite' : 'favoriteSignedOut',
+      },
+      event: 'action',
+      userDetails: VoterStore.getAnalyticsUserDetails(),
+      pageDetails: getPageDetails(),
+    };
+    if (ballotItemWeVoteId.includes('cand')) {
+      dataLayerObject.candidateDetails = CandidateStore.getAnalyticsCandidateDetails(ballotItemWeVoteId);
+    }
+    if (politicianWeVoteId) {
+      dataLayerObject.politicianDetails = PoliticianStore.getAnalyticsPoliticianDetails(politicianWeVoteId);
+    }
+    TagManager.dataLayer({ dataLayer: dataLayerObject });
 
     SupportActions.voterSupportingSave(ballotItemWeVoteId, ballotItemType, politicianWeVoteId);
     this.setState({
