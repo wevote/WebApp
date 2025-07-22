@@ -22,6 +22,14 @@ export default class OpenExternalWebSite extends Component {
       const destinationPage = lookupPageNameAndPageTypeDictForExternalUrls(url);
       const destinationPageNameLocalBackup = destinationPage.pageName;
       const destinationPageTypeLocalBackup = destinationPage.pageType;
+
+      let destinationPathname;
+      try {
+        destinationPathname = new URL(url).pathname;
+      } catch (error) {
+        // Fallback to the full URL if parsing fails
+        destinationPathname = url;
+      }
       // console.log('External link clicked:', this.props.url);
       const dataLayerObject = {
         actionDetails: {
@@ -32,7 +40,7 @@ export default class OpenExternalWebSite extends Component {
         destinationDetails: {
           destinationPageName: destinationPageName || destinationPageNameLocalBackup,
           destinationPageType: destinationPageType || destinationPageTypeLocalBackup,
-          destinationPathname: url,
+          destinationPathname,
         },
         pageDetails: {
           pageName: pageName || pageNameLocalBackup,
