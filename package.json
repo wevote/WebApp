@@ -110,7 +110,7 @@
   "dependencies": {
     "@emotion/is-prop-valid": "^1.1.2",
     "@emotion/react": "^11.14.0",
-    "@emotion/styled": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
     "@loadable/component": "^5.16.7",
     "@mui/icons-material": "^5.16.14",
     "@mui/lab": "^5.0.0-alpha.96",
