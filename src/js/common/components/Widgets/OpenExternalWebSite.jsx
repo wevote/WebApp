@@ -11,7 +11,7 @@ import stringContains from '../../utils/stringContains';
 
 export default class OpenExternalWebSite extends Component {
   sendExternalLinkInfoToGTM = () => {
-    const { destinationPageName, destinationPageType, pageName, pageType, trackingOn, url } = this.props;
+    const { destinationPageName, destinationPageType, pageName, pageType, trackingOn, url, linkIdAttribute } = this.props;
     if (trackingOn) {
       const { location: { pathname: currentPathname } } = window;
       const currentPage = lookupPageNameAndPageTypeDict(currentPathname);
@@ -20,33 +20,41 @@ export default class OpenExternalWebSite extends Component {
       const destinationPage = lookupPageNameAndPageTypeDictForExternalUrls(url);
       const destinationPageNameLocalBackup = destinationPage.pageName;
       const destinationPageTypeLocalBackup = destinationPage.pageType;
-      // console.log('External link clicked:', this.props.url);
+
+      
+      // Determine buttonId based on linkIdAttribute
+      const buttonId = linkIdAttribute || 'externalLink';
+      
       const dataLayerObj = {
-        event: 'click',
-        destinationDetails: {
-          destinationPageName: destinationPageName || destinationPageNameLocalBackup,
-          destinationPageType: destinationPageType || destinationPageTypeLocalBackup,
-          destinationPathname: url,
+        event: 'action',
+        userDetails: {
+          stateCode: VoterStore.getVoterStateCode(),
+          userCohort: VoterStore.getAnalyticsUserCohort(),
+          voterWeVoteId: VoterStore.getVoterWeVoteId(),
+        },
+        actionDetails: {
+          actionType: 'externalLink',
+          buttonId,
         },
         pageDetails: {
           pageName: pageName || pageNameLocalBackup,
           pageType: pageType || pageTypeLocalBackup,
           pathname: window.location.pathname,
         },
-        userDetails: {
-          stateCode: VoterStore.getVoterStateCode(),
-          userCohort: VoterStore.getAnalyticsUserCohort(),
-          voterWeVoteId: VoterStore.getVoterWeVoteId(),
+        destinationDetails: {
+          destinationPageName: destinationPageName || destinationPageNameLocalBackup,
+          destinationPageType: destinationPageType || destinationPageTypeLocalBackup,
+          destinationPathname: url,
         },
       };
-      // console.log('Sending dataLayerObj to GTM:', dataLayerObj);
+
       TagManager.dataLayer({ dataLayer: dataLayerObj });
     }
   }
 
   render () {
     renderLog('OpenExternalWebSite');  // Set LOG_RENDER_EVENTS to log all renders
-    // console.log('OpenExternalWebSite props ', this.props);
+
     const { delay, className, linkIdAttribute, url } = this.props;
     const integerDelay = delay && delay >= 0 ? delay : 50;
     const classNameString = className !== undefined ? className : 'open-web-site';

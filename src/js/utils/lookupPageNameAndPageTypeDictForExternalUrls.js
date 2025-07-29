@@ -12,16 +12,42 @@ const pageNameAndTypeSimpleDictForExternalUrls = {
 
 // TODO Update to recognize social sites, and other regular places we send people
 function calculatePageNameAndPageTypeDictForExternalUrls (path) {
-  // console.log("gtmPageNameAndType, path:", path);
   let pageName = 'notSet'; // Per our naming convention for pageName, this would normally be 'NotSet' but I think the value of having pageName being identical to settingsPageType will save us grief in the future.
   let pageType = 'notSet';
 
-  if (path.startsWith('https://instagram.com')) {
+  if (path.startsWith('https://tiktok.com') || path.startsWith('https://www.tiktok.com')) {
+    pageName = 'TikTokProfile';
+    pageType = 'socialMedia';
+  } else if (path.startsWith('https://twitter.com') || path.startsWith('https://x.com')) {
+    pageName = 'TwitterProfile';
+    pageType = 'socialMedia';
+  } else if (path.startsWith('https://www.facebook.com') || path.startsWith('https://facebook.com')) {
+    pageName = 'FacebookProfile';
+    pageType = 'socialMedia';
+  } else if (path.startsWith('https://www.instagram.com') || path.startsWith('https://instagram.com')) {
     pageName = 'InstagramProfile';
     pageType = 'socialMedia';
-  } else if (path.startsWith('https://x.com')) {
-    pageName = 'InstagramProfile';
+  } else if (path.startsWith('https://github.com')) {
+    pageName = 'GitHubProfile';
     pageType = 'socialMedia';
+  } else if (path.startsWith('https://blog.wevote.us')) {
+    pageName = 'WeVoteBlog';
+    pageType = 'blog';
+  } else if (path.startsWith('https://eepurl.com')) {
+    pageName = 'NewsletterSignup';
+    pageType = 'newsletter';
+  } else if (path.startsWith('https://help.wevote.us')) { // FAQ/Help site
+    pageName = 'WeVoteHelp';
+    pageType = 'help';
+  } else if (path.startsWith('https://wevote.applytojob.com')) {
+    pageName = 'WeVoteCareers';
+    pageType = 'careers';
+  } else if (path.startsWith('https://apps.apple.com')) {
+    pageName = 'AppStore';
+    pageType = 'appStore';
+  } else if (path.startsWith('https://play.google.com')) {
+    pageName = 'GooglePlayStore';
+    pageType = 'appStore';
   }
 
   return {
