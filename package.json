@@ -112,7 +112,7 @@
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@loadable/component": "^5.16.7",
-    "@mui/icons-material": "^5.16.14",
+    "@mui/icons-material": "^5.18.0",
     "@mui/lab": "^5.0.0-alpha.96",
     "@mui/material": "^5.16.14",
     "@mui/styled-engine-sc": "^5.10.1",
