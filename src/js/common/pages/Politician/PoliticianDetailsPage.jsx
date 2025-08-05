@@ -52,7 +52,8 @@ import extractPoliticianDetailsFromUrl from '../../utils/extractPoliticianDetail
 import VoterStore from '../../../stores/VoterStore';
 import VoterPositionEntryAndDisplay from '../../../components/PositionItem/VoterPositionEntryAndDisplay';
 // import VoterPositionEntryAndDisplayMook from '../../components/PositionItem/VoterPositionEntryAndDisplay';
-import { getPageDetails } from '../../../utils/lookupPageNameAndPageTypeDict';
+// eslint-disable-next-line import/named
+import lookupPageNameAndPageTypeDict, { getPageDetails } from '../../../utils/lookupPageNameAndPageTypeDict';
 
 const CampaignRetrieveController = React.lazy(() => import(/* webpackChunkName: 'CampaignRetrieveController' */ '../../components/Campaign/CampaignRetrieveController'));
 const CampaignSupportThermometer = React.lazy(() => import(/* webpackChunkName: 'CampaignSupportThermometer' */ '../../components/CampaignSupport/CampaignSupportThermometer'));
@@ -637,6 +638,35 @@ class PoliticianDetailsPage extends Component {
 
   // TagManger from Candidate page on View your full Ballot button-AnujaLawankar
   goToBallot = () => {
+    const { pathname: currentPathname, search: searchString } = window.location;
+
+    const currentPage = lookupPageNameAndPageTypeDict(currentPathname);
+    const destinationPathname = '/ballot';
+    const destinationPage = lookupPageNameAndPageTypeDict(destinationPathname);
+
+    const dataLayerObject = {
+      actionDetails: {
+        actionType: 'navigate',
+        buttonId: 'viewFullBallot',
+      },
+      event: 'action',
+      userDetails: VoterStore.getAnalyticsUserDetails(),
+      pageDetails: {
+        pageType: currentPage.pageType,
+        pageName: currentPage.pageName,
+        pathname: currentPathname,
+      },
+      destinationDetails: {
+        destinationPageName: destinationPage.pageName,
+        destinationPageType: destinationPage.pageType,
+        destinationPathname,
+      },
+      electionDetails: BallotStore.getAnalyticsElectionDetails(),
+
+      searchString,
+    };
+
+    TagManager.dataLayer({ dataLayer: dataLayerObject });
     historyPush('/ballot');
   }
 
