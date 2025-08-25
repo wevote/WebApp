@@ -17,6 +17,7 @@ export default function insertCloudWatchLoggingFork () {
 
   // Override console.log
   console.log = (args) => {
+    window.originalConsoleLog.apply(console, [args]);  // plain old console.log
     const duration = performance.now() - window.logForkTime;
     const device = window.device?.model || '';
     let argsArray;
@@ -31,7 +32,6 @@ export default function insertCloudWatchLoggingFork () {
       argsArray.push = { device };
       cloudArgs = argsArray.join(',');
     }
-    window.originalConsoleLog.apply(console, [args]);
     if (duration < 30000 && !cloudArgs.includes('AJAX URL')) {
       initializejQuery(() => {
         $ajax({
