@@ -1,10 +1,22 @@
 import assign from 'object-assign';
-// import url from 'url';
-import webAppConfig from '../config';
+import { isIOS } from '../common/utils/cordovaUtils';
 import Cookies from '../common/utils/js-cookie/Cookies';
 import { httpLog } from '../common/utils/logging';
+import webAppConfig from '../config';
+
 /* eslint no-param-reassign: 0 */
 
+// Moved here to avoid dependency circular reference
+function removeCloudWatchLoggingFork () {
+  if (isIOS() && window.originalConsoleLog) {
+    const duration = performance.now() - window.logForkTime;
+    if (duration > 30000) {
+      // console.log('LOGGING CLOUD WATCH FORK REMOVED AFTER 30 SECONDS');
+      console.log = window.originalConsoleLog;
+      window.originalConsoleLog = null;
+    }
+  }
+}
 
 const defaults = {
   dataType: 'json',
@@ -105,6 +117,7 @@ function innerAjax (options) {
 }
 
 export default function $ajax (options) {
+  removeCloudWatchLoggingFork();  // trivial after the initial 30 seconds, and only for Cordova
   if (typeof window.$ !== 'undefined') {
     innerAjax(options);
   } else {

@@ -7,6 +7,7 @@ import { httpLog } from './common/utils/logging';
 import TwitterSignIn from './components/Twitter/TwitterSignIn';
 import webAppConfig from './config';
 import VoterStore from './stores/VoterStore';
+import insertCloudWatchLoggingFork from './utils/cloudWatchLogging';
 
 // import { dumpObjProps } from './utils/appleSiliconUtils';
 
@@ -92,6 +93,7 @@ function postLockInitialization (voterDeviceId, startReact) {
 }
 
 export function initializationForCordova (startReact) {
+  insertCloudWatchLoggingFork();
   console.log('Cordova:   startCordova.jsx  initializationForCordova');
   console.log('Cordova:   Startup sequence 1: Wait for deviceready event');
   document.addEventListener('deviceready', (id) => {
