@@ -11,7 +11,7 @@ export default function insertCloudWatchLoggingFork () {
   if (isAndroid() || isWebApp()) {
     return;
   }
-  // Store the original console.log function, so we can restore it later
+  // Store the original console.log function, so we could restore it later
   window.originalConsoleLog = console.log;
   window.logForkTime = performance.now();
 
@@ -19,39 +19,31 @@ export default function insertCloudWatchLoggingFork () {
   console.log = (args) => {
     const duration = performance.now() - window.logForkTime;
     const device = window.device?.model || '';
-    if (duration > 30000) {
-      // console.log('LOGGING CLOUD WATCH FORK REMOVED AFTER 30 SECONDS');
-      console.log = window.originalConsoleLog;
-      window.originalConsoleLog = null;
-      console.log(args);
+    let argsArray;
+    let cloudArgs;
+    if (typeof args === 'string') {
+      cloudArgs = `(${device}): ${args}`;
+      argsArray = {
+        message: `(${device}): ${args}`,
+      };
     } else {
-      let argsArray;
-      let cloudArgs;
-      if (typeof args === 'string') {
-        cloudArgs = `(${device}): ${args}`;
-        argsArray = {
-          message: `(${device}): ${args}`,
-        };
-      } else {
-        argsArray = Array.from(args); // Convert arguments object to an array
-        argsArray.push = { device };
-        cloudArgs = argsArray.join(',');
-      }
-      if (!cloudArgs.includes('AJAX URL')) {
-        window.originalConsoleLog.apply(console, argsArray);
-        initializejQuery(() => {
-          $ajax({
-            endpoint: 'logToCloudWatch',
-            data: {
-              message: cloudArgs,
-              error_level: 'ERROR',         // Error is the lowest level that makes into the Python log, and on to CloudWatch
-            },
-            success: () => {
-            },
-          });
+      argsArray = Array.from(args); // Convert arguments object to an array
+      argsArray.push = { device };
+      cloudArgs = argsArray.join(',');
+    }
+    window.originalConsoleLog.apply(console, [args]);
+    if (duration < 30000 && !cloudArgs.includes('AJAX URL')) {
+      initializejQuery(() => {
+        $ajax({
+          endpoint: 'logToCloudWatch',
+          data: {
+            message: cloudArgs,
+            error_level: 'ERROR',   // Error is the lowest level that makes into the Python log, and on to CloudWatch
+          },
+          success: () => {
+          },
         });
-      }
+      });
     }
   };
 }
-

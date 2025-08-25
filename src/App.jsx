@@ -179,10 +179,8 @@ class App extends Component {
     initializejQuery(() => {
       AppObservableStore.siteConfigurationRetrieve(hostname);
     });
-    if (isCordova()) {
-      console.log('href in App.js componentDidMount: ', window.location.href);
-      console.log('normalizedHrefPage in App.js componentDidMount: ', normalizedHref());
-    }
+    // console.log('href in App.js componentDidMount: ', window.location.href);
+    // console.log('normalizedHrefPage in App.js componentDidMount: ', normalizedHref());
     const onWeVoteUS = (hostname && (hostname.toLowerCase() === 'wevote.us'));
     const onMobileApp = false;
     if ((onWeVoteUS || onMobileApp) && isWebApp()) {
