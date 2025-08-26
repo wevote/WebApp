@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ReactIframeResizer from 'iframe-resizer-react';
 // import useDonorboxScript from '../../hooks/useDonorboxScript';
 // <script src="https://donorbox.org/widget.js" paypalExpress="true"></script>
@@ -6,21 +6,46 @@ import ReactIframeResizer from 'iframe-resizer-react';
 
 
 export default function DonorboxEmbed () {
+  const [isLoading, setIsLoading] = useState(true);
+
+  const handleIframeLoad = () => {
+    setIsLoading(false);
+  };
   // useDonorboxScript('https://donorbox.org/widget.js');
   return (
-    <ReactIframeResizer
-      // frameBorder={0}
-      // log
-      warningTimeout={0}
-      style={{ maxWidth: 500, minWidth: 250, maxHeight: 'none !important' }}
-      id="donorbox-iframe"
-      name="donorbox"
-      allowpaymentrequest="allowpaymentrequest"
-      seamless="seamless"
-      scrolling="no"
-      height="900px"
-      width="375px"
-      src="https://donorbox.org/embed/we-vote-tax-deductible?default_interval=m&amount=10"
-    />
+    <div style={{ position: 'relative', width: '375px', height: '900px' }}>
+      {isLoading && (
+        <div style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'flex-start',
+          backgroundColor: 'white',
+          zIndex: 1,
+        }}
+        >
+          Loading...
+        </div>
+      )}
+      <ReactIframeResizer
+        // frameBorder={0}
+        // log
+        warningTimeout={0}
+        style={{ maxWidth: 500, minWidth: 250, maxHeight: 'none !important' }}
+        id="donorbox-iframe"
+        name="donorbox"
+        allowpaymentrequest="allowpaymentrequest"
+        seamless="seamless"
+        scrolling="no"
+        height="900px"
+        width="375px"
+        src="https://donorbox.org/embed/we-vote-tax-deductible?default_interval=m&amount=10"
+        onLoad={handleIframeLoad}
+      />
+    </div>
   );
 }

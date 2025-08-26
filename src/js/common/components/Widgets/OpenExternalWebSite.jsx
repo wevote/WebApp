@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import TagManager from 'react-gtm-module';
+import CandidateStore from '../../../stores/CandidateStore';
+import PoliticianStore from '../../stores/PoliticianStore';
 import VoterStore from '../../../stores/VoterStore';
 import { cordovaOpenSafariView } from '../../utils/cordovaUtils';
 import { isAndroid, isWebApp } from '../../utils/isCordovaOrWebApp';
@@ -11,7 +13,7 @@ import stringContains from '../../utils/stringContains';
 
 export default class OpenExternalWebSite extends Component {
   sendExternalLinkInfoToGTM = () => {
-    const { destinationPageName, destinationPageType, pageName, pageType, trackingOn, url } = this.props;
+    const { candidateWeVoteId, politicianWeVoteId, destinationPageName, destinationPageType, linkIdAttribute, pageName, pageType, trackingOn, url } = this.props;
     if (trackingOn) {
       const { location: { pathname: currentPathname } } = window;
       const currentPage = lookupPageNameAndPageTypeDict(currentPathname);
@@ -21,7 +23,11 @@ export default class OpenExternalWebSite extends Component {
       const destinationPageNameLocalBackup = destinationPage.pageName;
       const destinationPageTypeLocalBackup = destinationPage.pageType;
       // console.log('External link clicked:', this.props.url);
-      const dataLayerObj = {
+      const dataLayerObject = {
+        actionDetails: {
+          actionType: 'navigate',
+          buttonId: linkIdAttribute || 'externalLink',
+        },
         event: 'click',
         destinationDetails: {
           destinationPageName: destinationPageName || destinationPageNameLocalBackup,
@@ -31,16 +37,18 @@ export default class OpenExternalWebSite extends Component {
         pageDetails: {
           pageName: pageName || pageNameLocalBackup,
           pageType: pageType || pageTypeLocalBackup,
-          pathname: window.location.pathname,
+          pathname: currentPathname,
         },
-        userDetails: {
-          stateCode: VoterStore.getVoterStateCode(),
-          userCohort: VoterStore.getAnalyticsUserCohort(),
-          voterWeVoteId: VoterStore.getVoterWeVoteId(),
-        },
+        userDetails: VoterStore.getAnalyticsUserDetails(),
       };
-      // console.log('Sending dataLayerObj to GTM:', dataLayerObj);
-      TagManager.dataLayer({ dataLayer: dataLayerObj });
+      if (candidateWeVoteId) {
+        dataLayerObject.candidateDetails = CandidateStore.getAnalyticsCandidateDetails(candidateWeVoteId);
+      }
+      if (politicianWeVoteId) {
+        dataLayerObject.politicianDetails = PoliticianStore.getAnalyticsPoliticianDetails(politicianWeVoteId);
+      }
+      // console.log('Sending dataLayerObject to GTM:', dataLayerObject);
+      TagManager.dataLayer({ dataLayer: dataLayerObject });
     }
   }
 
@@ -111,4 +119,6 @@ OpenExternalWebSite.propTypes = {
   title: PropTypes.string,
   trackingOn: PropTypes.bool,
   url: PropTypes.string.isRequired,
+  candidateWeVoteId: PropTypes.string,
+  politicianWeVoteId: PropTypes.string,
 };

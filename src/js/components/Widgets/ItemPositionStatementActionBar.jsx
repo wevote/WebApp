@@ -175,10 +175,10 @@ class ItemPositionStatementActionBar extends Component {
 
   savePositionStatement (e) {
     e.preventDefault();
-    const { ballotItemWeVoteId, ballotItemType } = this.props;
+    const { ballotItemWeVoteId, ballotItemType, politicianWeVoteId } = this.props;
     const { voterTextStatement } = this.state;
     // console.log('ItemPositionStatementActionBar ballotItemWeVoteId:', ballotItemWeVoteId, 'ballotItemType: ', ballotItemType, 'voterTextStatement: ', voterTextStatement);
-    SupportActions.voterPositionCommentSave(ballotItemWeVoteId, ballotItemType, voterTextStatement);
+    SupportActions.voterPositionCommentSave(ballotItemWeVoteId, ballotItemType, politicianWeVoteId, voterTextStatement);
     if (voterTextStatement.length) {
       this.closeEditPositionStatementInput();
     }
@@ -357,12 +357,13 @@ ItemPositionStatementActionBar.propTypes = {
   ballotItemWeVoteId: PropTypes.string.isRequired,
   ballotItemDisplayName: PropTypes.string,
   ballotItemType: PropTypes.string.isRequired,
+  classes: PropTypes.object,
   commentEditModeOn: PropTypes.bool,
   externalUniqueId: PropTypes.string,
-  shownInList: PropTypes.bool,
-  classes: PropTypes.object,
-  mobile: PropTypes.bool,
   // inModal: PropTypes.bool,
+  mobile: PropTypes.bool,
+  politicianWeVoteId: PropTypes.string,
+  shownInList: PropTypes.bool,
 };
 
 const styles = (theme) => ({

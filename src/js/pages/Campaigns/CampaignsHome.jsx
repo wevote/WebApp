@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
+import TagManager from 'react-gtm-module';
 import styled from 'styled-components';
 import ActivityActions from '../../actions/ActivityActions';
 import IssueActions from '../../actions/IssueActions';
@@ -24,6 +25,7 @@ import CandidateStore from '../../stores/CandidateStore';
 import IssueStore from '../../stores/IssueStore';
 import RepresentativeStore from '../../stores/RepresentativeStore';
 import VoterStore from '../../stores/VoterStore';
+import lookupPageNameAndPageTypeDict, { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
 
 const CandidateListRoot = React.lazy(() => import(/* webpackChunkName: 'CandidateListRoot' */ '../../components/CandidateListRoot/CandidateListRoot'));
 const CampaignListRoot = React.lazy(() => import(/* webpackChunkName: 'CampaignListRoot' */ '../../common/components/CampaignListRoot/CampaignListRoot'));
@@ -76,6 +78,7 @@ class CampaignsHome extends Component {
       representativeListTimeStampOfChange: 0,
       searchText: '',
       stateCode: '',
+      dataLayerSent: false,
     };
   }
 
@@ -214,6 +217,28 @@ class CampaignsHome extends Component {
         }
       }
       window.scrollTo(0, 0);
+    }
+
+    if (!this.state.dataLayerSent && VoterStore.getVoterWeVoteId()) {
+      const { location: { pathname: currentPathname } } = window;
+      const currentPage = lookupPageNameAndPageTypeDict(currentPathname);
+
+      let urlStateCode = '';
+      if (stateCandidatesPhrase) {
+        let stateName = stateCandidatesPhrase.replace('-candidates', '').replace('-politicians-list', '');
+        stateName = stateName.replaceAll('-', ' ');
+        urlStateCode = convertStateTextToStateCode(stateName);
+        if (urlStateCode.toLowerCase() === 'na') {
+          urlStateCode = 'all';
+        }
+      }
+      const dataLayerObject = {
+        event: 'landing',
+        pageDetails: getPageDetails(urlStateCode),
+        userDetails: VoterStore.getAnalyticsUserDetails(),
+      };
+      TagManager.dataLayer({ dataLayer: dataLayerObject });
+      this.setState({ dataLayerSent: true });
     }
   }
 

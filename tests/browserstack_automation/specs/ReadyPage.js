@@ -8,8 +8,8 @@ import { createRequire } from 'module';
 import { error } from 'console';
 //const require = createRequire(import.meta.url);
 
-const fs = require('fs');
-const assert = require('assert');
+import fs from 'fs';
+import assert from 'assert';
 const testDataPath = 'tests/browserstack_automation/testDataForScripts/';
 
 
@@ -59,7 +59,7 @@ describe('ReadyPage',  function () {
 
 
  // Ready_002 : In progress - locater issues
- it('Ready_002 :updateBallotAddress', async () => {
+ it('Ready_002 :updateBallotAddress @BVT', async () => {
    console.log('Tcs : Ready_002 : updateBallotAddress');
    await ReadyPage.load();
    const baladd = await ReadyPage.ballotAddress.getText();
@@ -597,7 +597,7 @@ it('Ready_033: Verify followers text and tooltip for every topic', async () => {
 
 // Ready_034
 it('Ready_034: Verify endorsements text and link for every topic', async () => {
-  
+
  console.log('Tcs : Ready_034: Verify endorsements text and link for every topic');
  const popTopics = JSON.parse(fs.readFileSync(`${testDataPath}popularTopics.json`, 'utf8')).topics1;
 

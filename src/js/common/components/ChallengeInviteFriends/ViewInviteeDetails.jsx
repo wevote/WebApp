@@ -49,9 +49,9 @@ const ViewInviteeDetails = ({ inviteeId, show, setShow, setAnchorEl }) => {
         {inviteeData ? 'Invitation History' : 'Invitation History'}
       </StyledDialogTitle>
     </>
-    )
+  );
 
-//   console.log('inviteeData:', inviteeData);
+  //   console.log('inviteeData:', inviteeData);
   const textFieldJSX = (
     <TableContainer components={Paper} sx={{ paddingBottom: '5px' }}>
       <TableWrapper>
@@ -77,7 +77,7 @@ const ViewInviteeDetails = ({ inviteeId, show, setShow, setAnchorEl }) => {
                 {inviteeData ? "Invitation hasn't been viewed" : null}
               </StyledTableBodyCellRight>
               <StyledTableBodyCellRight className="u-show-mobile" align="right">
-                {inviteeData ? "Not viewed" : null}
+                {inviteeData ? 'Not viewed' : null}
               </StyledTableBodyCellRight>
             </TableRow>
             <StyledTableRow>
@@ -88,7 +88,7 @@ const ViewInviteeDetails = ({ inviteeId, show, setShow, setAnchorEl }) => {
                 {inviteeData ? "Invitation hasn't been joined" : null}
               </StyledTableBodyCellRight>
               <StyledTableBodyCellRight className="u-show-mobile" align="right">
-                {inviteeData ? "Not joined" : null}
+                {inviteeData ? 'Not joined' : null}
               </StyledTableBodyCellRight>
             </StyledTableRow>
           </TableBody>
@@ -118,7 +118,7 @@ ViewInviteeDetails.propTypes = {
 const StyledDialogTitle = styled(DialogTitle)`
   padding: 12px 2px;
   padding-right: 55px;
-`
+`;
 
 const StyledTable = styled('table')`
   width: 100%;

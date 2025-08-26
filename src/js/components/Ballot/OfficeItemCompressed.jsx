@@ -59,20 +59,22 @@ class OfficeItemCompressed extends Component {
   onCandidateStoreChange () {
     const { candidateList, officeWeVoteId } = this.props;
     const totalNumberOfCandidates = officeWeVoteId ? CandidateStore.getNumberOfCandidatesRetrievedByOffice(officeWeVoteId) : 0;
-    const sortedCandidateList = sortCandidateList(candidateList || []);
+    // const sortedCandidateList = sortCandidateList(candidateList || []);
     this.setState({
-      candidateListForDisplay: sortedCandidateList,
+      // candidateListForDisplay: sortedCandidateList,
       totalNumberOfCandidates,
     });
   }
 
   getCandidatesToRender () {
-    const { candidateListForDisplay, showAllCandidates } = this.state;
-    const { disableAutoRollUp } = this.props;
+    const { showAllCandidates } = this.state;
+    const { disableAutoRollUp, candidateList } = this.props;
+    // uses candidateList from props of FilterBaseSearch instead of onCandidateStoreChange variable to render list
+    const sortedCandidateList = sortCandidateList(candidateList || []);
     if (showAllCandidates || disableAutoRollUp) {
-      return candidateListForDisplay;
+      return sortedCandidateList;
     }
-    return candidateListForDisplay.slice(0, NUMBER_OF_CANDIDATES_TO_DISPLAY);
+    return sortedCandidateList.slice(0, NUMBER_OF_CANDIDATES_TO_DISPLAY);
   }
 
   showAllCandidates = () => {
@@ -98,7 +100,7 @@ class OfficeItemCompressed extends Component {
     // console.log('OfficeItemCompressed render');
 
     let { ballotItemDisplayName } = this.props;
-    const { isFirstBallotItem, officeWeVoteId, primaryParty } = this.props; // classes
+    const { isFirstBallotItem, officeWeVoteId, primaryParty, useHelpDefeatOrHelpWin } = this.props; // classes
     const { candidateListLength, showAllCandidates, totalNumberOfCandidates } = this.state;
     ballotItemDisplayName = toTitleCase(ballotItemDisplayName).replace('(Unexpired)', '(Remainder)');
     const moreCandidatesToDisplay = candidateListLength > NUMBER_OF_CANDIDATES_TO_DISPLAY;
@@ -130,6 +132,7 @@ class OfficeItemCompressed extends Component {
         <OneOfficeCandidateList
           candidates={this.getCandidatesToRender()}
           goToCandidateLink={(candidateWeVoteId) => this.goToCandidateLink(candidateWeVoteId)}
+          useHelpDefeatOrHelpWin={useHelpDefeatOrHelpWin}
         />
         {moreCandidatesToDisplay && (
           <Suspense fallback={<></>}>
@@ -137,6 +140,7 @@ class OfficeItemCompressed extends Component {
               showMoreId={`officeItemCompressedShowMoreFooter-${officeWeVoteId}`}
               showMoreButtonsLink={showAllCandidates ? this.showLessCandidates : this.showAllCandidates}
               showMoreCustomText={showAllCandidates ? 'show fewer candidates' : `show all ${totalNumberOfCandidates} candidates`}
+              officeWeVoteId={officeWeVoteId}
             />
           </Suspense>
         )}
@@ -152,11 +156,12 @@ OfficeItemCompressed.propTypes = {
   isFirstBallotItem: PropTypes.bool,
   organizationWeVoteId: PropTypes.string,
   primaryParty: PropTypes.string,
+  useHelpDefeatOrHelpWin: PropTypes.bool,
 };
 
 // OneOfficeCandidateList takes the list of candidates from props, renders them.
 // It takes two props: candidates (the list of candidates to render) and goToCandidateLink (a function to navigate to the candidate's page).
-const OneOfficeCandidateList = ({ candidates, goToCandidateLink }) => (
+const OneOfficeCandidateList = ({ candidates, goToCandidateLink, useHelpDefeatOrHelpWin }) => (
   <BallotScrollingOuterWrapper>
     {candidates.map((candidate) => {
       const isSupported = SupportStore.getVoterSupportsByBallotItemWeVoteId(candidate.we_vote_id); // Get support status from SupportStore
@@ -166,6 +171,7 @@ const OneOfficeCandidateList = ({ candidates, goToCandidateLink }) => (
           oneCandidate={candidate}
           goToCandidateLink={goToCandidateLink}
           isSupported={isSupported} // Pass the support status as a prop
+          useHelpDefeatOrHelpWin={useHelpDefeatOrHelpWin}
         />
       );
     })}
@@ -174,6 +180,7 @@ const OneOfficeCandidateList = ({ candidates, goToCandidateLink }) => (
 OneOfficeCandidateList.propTypes = {
   candidates: PropTypes.array.isRequired,
   goToCandidateLink: PropTypes.func.isRequired,
+  useHelpDefeatOrHelpWin: PropTypes.bool,
 };
 
 const styles = (theme) => ({

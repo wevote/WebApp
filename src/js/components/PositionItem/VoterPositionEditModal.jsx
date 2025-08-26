@@ -13,10 +13,7 @@ const VoterPositionEditModal = ({ showVoterEdit, setShowVoterEdit, candidateName
   const [opinionText, setOpinionText] = useState('');
   const [isFormValid, setIsFormValid] = useState(false);
   const [disableToolTip, setDisableToolTip] = useState(false);
-  const {voter_photo_url_medium, first_name, last_name, full_name} = voter;
-
-  const voterPhotoUrlMedium = voter_photo_url_medium;
-  const fullName = full_name;
+  const { voter_photo_url_medium: voterPhotoUrlMedium, first_name, last_name, full_name: fullName } = voter;
 
   useEffect(() => {
     const checkIsFormValid = () => {
@@ -332,15 +329,15 @@ const VoterPostionSubmit = styled('button')`
 
 const TooltipMessage = styled('p')`
   font-size: 13px;
-  color: ${DesignTokenColors.whiteUI},
-  margin: 5px,
-  padding: 5px,
+  color: ${DesignTokenColors.whiteUI};
+  margin: 5px;
+  padding: 5px;
 `;
 
 const ProfileLink = styled('a')`
   font-weight: bold;
   color: ${DesignTokenColors.primary200};
-  
+
   &:hover {
     text-decoration: none;
   }

@@ -62,7 +62,7 @@ export default class OrganizationPositionItem extends Component {
     if (signedInWithThisTwitterAccount || signedInWithThisOrganization) {
       // console.log('OrganizationPositionItem signedInWithThisTwitterAccount');
       // When component first loads, use the value in the incoming position. If there are any supportProps updates, use those.
-      const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(position.ballot_item_we_vote_id);
+      const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(position.ballot_item_we_vote_id, position.politician_we_vote_id);
       if (ballotItemStatSheet) {
         ({ voterOpposesBallotItem, voterPositionIsPublic, voterSupportsBallotItem, voterTextStatement } = ballotItemStatSheet);
       } else {

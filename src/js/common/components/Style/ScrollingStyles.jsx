@@ -2,13 +2,14 @@ import styled from 'styled-components';
 import DesignTokenColors from './DesignTokenColors';
 
 export const BallotHorizontallyScrollingContainer = styled('div', {
-  shouldForwardProp: (prop) => !['isChosen', 'showLeftGradient', 'showRightGradient'].includes(prop),
-})(({ isChosen, showLeftGradient, showRightGradient }) => (`
+  shouldForwardProp: (prop) => !['isChosen', 'showLeftGradient', 'showRightGradient', 'hasEndorsements'].includes(prop),
+})(({ isChosen, showLeftGradient, showRightGradient, hasEndorsements }) => (`
   width: 100%;
   overflow-x: auto;
   white-space: nowrap;
   border-bottom: 1px solid #ddd;
   padding-top: 6px;
+  min-height: ${hasEndorsements ? '235px' : ''};
   transition: box-shadow 0.2s ease, background-color 0.3s ease; /* Smooth transition for shadow and background color */
 
  /* Default styles */

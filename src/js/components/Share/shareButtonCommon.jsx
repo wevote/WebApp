@@ -1,7 +1,8 @@
 import { FileCopyOutlined } from '@mui/icons-material';
 import { Button } from '@mui/material';
 import PropTypes from 'prop-types';
-import React, { Suspense } from 'react';
+import React, { Suspense, useRef } from 'react';
+import TagManager from 'react-gtm-module';
 import { FacebookIcon, FacebookShareButton, TwitterIcon, TwitterShareButton } from 'react-share'; // EmailIcon, EmailShareButton,
 import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
@@ -10,6 +11,8 @@ import { openSnackbar } from '../../common/components/Widgets/SnackNotifier';
 import { cordovaOpenSafariView, hasDynamicIsland, hasIPhoneNotch, isIPhone6p5in } from '../../common/utils/cordovaUtils';
 import { normalizedHref } from '../../common/utils/hrefUtils';
 import { isAndroid, isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
+import AppObservableStore from '../../common/stores/AppObservableStore';
+import { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
 import VoterStore from '../../stores/VoterStore';
 import ShareModalOption from './ShareModalOption';
 
@@ -320,6 +323,30 @@ const ShareWrapper = styled('div')`
   }
 `;
 
+function pushDataLayer (buttonId, destinationPageName, destinationPageType, shareType, linkToBeShared, destinationUrl) {
+  const dataLayerObject = {
+    actionDetails: {
+      actionType: 'share',
+      buttonId,
+    },
+    event: 'click',
+    shareDetails: {
+      shareType,
+      urlShared: linkToBeShared,
+      contentToggle: AppObservableStore.getWhatAndHowMuchToShare(),
+    },
+    pageDetails: getPageDetails(),
+    destinationDetails: {
+      destinationPageName,
+      destinationPageType,
+      destinationUrl,
+    },
+    userDetails: VoterStore.getAnalyticsUserDetails(),
+  };
+  // console.log('DataLayer for Twitter Share:', dataLayerObject);
+  TagManager.dataLayer({ dataLayer: dataLayerObject });
+}
+
 // React functional component example
 export function CopyLink (props) {
   const { saveActionShareButtonCopy, linkToBeSharedCopy } = props;
@@ -371,6 +398,7 @@ export function SharePreviewFriends (props) {
         linkIdAttribute="previewWhatFriendsWillSee"
         url={linkToBeShared}
         target="_blank"
+        trackingOn
         // title={this.props.title}
         className="u-no-underline"
         body={(
@@ -429,6 +457,16 @@ ShareFacebook.propTypes = {
 // React functional component example
 export function ShareTwitter (props) {
   const { titleText, saveActionShareButtonTwitter, linkToBeSharedTwitter } = props;
+  const twitterButtonRef = useRef(null);
+  const handleTwitterClick = () => {
+    if (saveActionShareButtonTwitter) {
+      saveActionShareButtonTwitter();
+    }
+    const twitterRedirectUrl = `https://x.com/intent/post?url=${encodeURIComponent(linkToBeSharedTwitter)}&text=${encodeURIComponent('Please join me and vote.')}`;
+    const buttonId = twitterButtonRef.current.id;
+    pushDataLayer(buttonId, 'TwitterShare', 'share', 'twitter', linkToBeSharedTwitter, twitterRedirectUrl);
+  };
+
   return (
     <>
       <ShareWrapper>
@@ -437,9 +475,10 @@ export function ShareTwitter (props) {
                androidTwitterClickHandler(linkToBeSharedTwitter)}
         >
           <TwitterShareButton
+            ref={twitterButtonRef}
             className="no-decoration"
             id="shareFooterTwitterButton"
-            onClick={saveActionShareButtonTwitter}
+            onClick={handleTwitterClick}
             title={titleText}
             url={`${linkToBeSharedTwitter}`}
             windowWidth={750}

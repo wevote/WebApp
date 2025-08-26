@@ -45,6 +45,11 @@ class ShareModalTitleArea extends Component {
       shareModalTitle,
       whatAndHowMuchToShare,
     });
+    // Initialize a canonical ballotSharingOptions value in the store for analytics
+    const initialBallotSharingOptions = stringContains('AllOpinions', whatAndHowMuchToShare) ? 'ballot_with_my_choices' : 'ballot_only';
+    if (AppObservableStore && typeof AppObservableStore.setBallotSharingOptions === 'function') {
+      AppObservableStore.setBallotSharingOptions(initialBallotSharingOptions);
+    }
   }
 
   componentWillUnmount () {
@@ -66,6 +71,10 @@ class ShareModalTitleArea extends Component {
   handleShareAllOpinionsToggle = (evt) => {
     const { whatAndHowMuchToShare } = this.state;
     const { value } = evt.target;
+    // Persist the selected radio as a canonical value for analytics consumers
+    if (AppObservableStore && typeof AppObservableStore.setBallotSharingOptions === 'function') {
+      AppObservableStore.setBallotSharingOptions(value === 'AllOpinions' ? 'ballot_with_my_choices' : 'ballot_only');
+    }
     // console.log('handleShareAllOpinionsToggle value:', value, ', whatAndHowMuchToShare:', whatAndHowMuchToShare);
     if (value === 'AllOpinions') {
       this.includeOpinions(whatAndHowMuchToShare);
@@ -206,7 +215,7 @@ class ShareModalTitleArea extends Component {
         <IconButton
           aria-label="Close"
           className={classes.closeButtonAbsolute}
-          onClick={handleCloseShareButtonDrawer}
+          onClick={() => handleCloseShareButtonDrawer('closeShareModal')}
           id="closeShareModal"
           size="large"
           style={isIPad() ? { top: 2 } : {}}

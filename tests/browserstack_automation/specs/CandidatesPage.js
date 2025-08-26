@@ -4,8 +4,8 @@ import { driver, browser, expect } from '@wdio/globals';
 import CandidatesPage from '../page_objects/candidates.page';
 
 const testDataPath = 'tests/browserstack_automation/testDataForScripts/';
-const fs = require('fs');
-const assert = require('assert');
+import fs from 'fs';
+import assert from 'assert';
 
 const waitTime = 8000;
 
@@ -295,7 +295,7 @@ describe('Candidates Page', () => {
     await driver.executeScript("arguments[0].scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });", [chooseButton]);
     await driver.pause(waitTime/2);
     await likeIcon.moveTo();
-    const likeIconColorAfter = ((await likeClr.getCSSProperty('fill')).value); 
+    const likeIconColorAfter = ((await likeClr.getCSSProperty('fill')).value);
     await driver.executeScript("arguments[0].dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));", [likeClr]);
     await driver.waitUntil(async () => CandidatesPage.likeTooltip.isDisplayed(), { timeout: 5000, timeoutMsg: 'Like Tooltip did not appear in time' });
     const tooltipTextLike = await CandidatesPage.likeTooltip.getText();

@@ -34,7 +34,7 @@ const EditInviteeDetails = ({ inviteeId, show, setShow, setAnchorEl }) => {
   };
 
   const handleNameChange = (e) => {
-    const value = e.target.value;
+    const { value } = e.target;
     setEditedName(value);
     if (value === '') {
       setNameError('Please enter your friend\'s name');
@@ -44,7 +44,7 @@ const EditInviteeDetails = ({ inviteeId, show, setShow, setAnchorEl }) => {
   };
 
   const handleMessageChange = (e) => {
-    const value = e.target.value;
+    const { value } = e.target;
     setEditedMessage(value);
     if (value === '') {
       setMessageError('Please enter a message');
@@ -59,7 +59,7 @@ const EditInviteeDetails = ({ inviteeId, show, setShow, setAnchorEl }) => {
     handleClose();
   };
 
-  const dialogTitleText = "Edit Friend's Name and Message"
+  const dialogTitleText = "Edit Friend's Name and Message";
 
   const textFieldJSX = (
     <FormContent>
@@ -90,7 +90,9 @@ const EditInviteeDetails = ({ inviteeId, show, setShow, setAnchorEl }) => {
           />
         </FormFieldContainer>
         <UniqueLink>
-          [{editedName || 'your friend'}'s unique link]
+          [
+          {editedName || 'your friend'}
+          's unique link]
         </UniqueLink>
       </FormSection>
       <ButtonContainer>

@@ -26,7 +26,7 @@ const ChallengeParticipantListItem = ({ challengeWeVoteId, participant, isCurren
     if (challengeSEOFriendlyPath) {
       challengeBasePath = `/${challengeSEOFriendlyPath}/+/`;
     } else {
-      challengeBasePath = `/+/${challengeWeVoteId}/`;
+      challengeBasePath = `/++/${challengeWeVoteId}/`;
     }
     return challengeBasePath;
   }

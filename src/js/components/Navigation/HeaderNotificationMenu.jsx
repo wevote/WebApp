@@ -11,14 +11,13 @@ import { isIOSAppOnMac, setIconBadgeMessageCount } from '../../common/utils/cord
 import { timeFromDate } from '../../common/utils/dateFormat';
 import historyPush from '../../common/utils/historyPush';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
-import { isTablet } from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import returnFirstXWords from '../../common/utils/returnFirstXWords';
 import ActivityStore from '../../stores/ActivityStore';
 import VoterStore from '../../stores/VoterStore';
 import { createDescriptionOfFriendPosts } from '../../utils/activityUtils';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
-import lookupPageNameAndPageTypeDict from '../../utils/lookupPageNameAndPageTypeDict';
+import lookupPageNameAndPageTypeDict, { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
 
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
 
@@ -98,45 +97,39 @@ class HeaderNotificationMenu extends Component {
   }
 
 
-onSettingsClick = (currentPathname) => {
-  const currentPage = lookupPageNameAndPageTypeDict(currentPathname);
-  const destinationPage = lookupPageNameAndPageTypeDict('/settings/notifications');
-  TagManager.dataLayer({
-    dataLayer: {
-      event: 'clickSettingsButton', // Added detailed event name
-      pageDetails: {
-        pageName: currentPage.pageName,
-        pageType: currentPage.pageType,
-        pathname: currentPathname,
-      },
-      destinationDetails: {
-        destinationPageName: destinationPage.pageName,
-        destinationPageType: destinationPage.pageType,
-        destinationPathname: '/settings/notifications',
-      },
-      userDetails: {
-        stateCode: VoterStore.getVoterStateCode(),
-        userCohort: VoterStore.getAnalyticsUserCohort(),
-        voterWeVoteId: VoterStore.getVoterWeVoteId(),
-      },
+onSettingsClick = (buttonId) => {
+  const destinationPathname = '/settings/notifications';
+  const destinationPage = lookupPageNameAndPageTypeDict(destinationPathname);
+  const dataLayerObject = {
+    actionDetails: {
+      actionType: 'openModal', // We will be transitioning to a slide-out drawer soon
+      buttonId,
     },
-  });
+    event: 'action',
+    pageDetails: getPageDetails(),
+    destinationDetails: {
+      destinationPageName: destinationPage.pageName,
+      destinationPageType: destinationPage.pageType,
+      destinationPathname,
+    },
+    userDetails: VoterStore.getAnalyticsUserDetails(),
+  };
+  TagManager.dataLayer({ dataLayer: dataLayerObject });
   this.handleClose();
-  historyPush('/settings/notifications');
+  historyPush(destinationPathname);
 }
 
   generateMenuItemList = (allActivityNotices) => {
     const { classes } = this.props;
     const voterWeVoteId = VoterStore.getVoterWeVoteId();
     const menuItemList = [];
-    const { location: { pathname: currentPathname } } = window; // Get path here
     menuItemList.push(
       <MenuItem
         className={classes.menuItemClicked}
         data-toggle="dropdown"
         id="notificationsHeader"
         key="notificationsHeader"
-        onClick={() => this.onSettingsClick(currentPathname)}
+        onClick={() => this.onSettingsClick('notificationsHeader')}
       >
         <NotificationsHeaderWrapper>
           <NotificationsTitle>
@@ -276,26 +269,22 @@ onSettingsClick = (currentPathname) => {
     ActivityActions.activityListRetrieve();
 
     const { location: { pathname: currentPathname } } = window;
-    const page = lookupPageNameAndPageTypeDict(currentPathname);
-
-    TagManager.dataLayer({
-      dataLayer: {
-        event: 'click',
-        userDetails: {
-          voterWeVoteId: VoterStore.getVoterWeVoteId(),
-        },
-        pageDetails: {
-          pageType: page.pageType,
-          pageName: page.pageName,
-          pathname: currentPathname,
-        },
-        destinationDetails: {
-          destinationPageType: page.pageType,
-          destinationPageName: 'NotificationsModal',
-          destinationPathname: currentPathname,
-        },
+    const currentPage = lookupPageNameAndPageTypeDict(currentPathname);
+    const dataLayerObject = {
+      actionDetails: {
+        actionType: 'openModal',
+        buttonId: 'headerNotificationMenuIcon',
       },
-    });
+      event: 'action',
+      pageDetails: getPageDetails(),
+      destinationDetails: {
+        destinationPageName: 'NotificationsModal',
+        destinationPageType: currentPage.pageType,
+        destinationPathname: currentPathname,
+      },
+      userDetails: VoterStore.getAnalyticsUserDetails(),
+    };
+    TagManager.dataLayer({ dataLayer: dataLayerObject });
 
     this.setState({
       anchorEl: event.currentTarget,

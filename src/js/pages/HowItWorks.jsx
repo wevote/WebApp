@@ -2,9 +2,11 @@ import { Button } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
+import TagManager from 'react-gtm-module';
 import { Helmet } from 'react-helmet-async';
 import styled from 'styled-components';
 import VoterActions from '../actions/VoterActions';
+import AppObservableStore from '../common/stores/AppObservableStore';
 import { isCordova } from '../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../common/utils/logging';
 import Header, { Container, Title } from '../components/Welcome/howItWorksHeaderStyles';
@@ -12,9 +14,9 @@ import AnnotatedSlideshow from '../components/Widgets/AnnotatedSlideshow';
 import HeaderSwitch from '../components/Widgets/HeaderSwitch';
 import StepsChips from '../components/Widgets/StepsChips';
 import VoterConstants from '../constants/VoterConstants';
-import AppObservableStore from '../common/stores/AppObservableStore';
 import VoterStore from '../stores/VoterStore';
 import cordovaScrollablePaneTopPadding from '../utils/cordovaScrollablePaneTopPadding';
+import { getPageDetails } from '../utils/lookupPageNameAndPageTypeDict';
 
 const WelcomeAppbar = React.lazy(() => import(/* webpackChunkName: 'WelcomeAppbar' */ '../components/Navigation/WelcomeAppbar'));
 const WelcomeFooter = React.lazy(() => import(/* webpackChunkName: 'WelcomeFooter' */ '../components/Welcome/WelcomeFooter'));
@@ -122,9 +124,9 @@ class HowItWorks extends Component {
         },
         Review: {
           title: '3. See who endorsed each choice on your ballot',
-          titleId:'seeWhoEndorsedEachChoice',
+          titleId: 'seeWhoEndorsedEachChoice',
           description: 'Your personalized score for a candidate is the number of people who support the candidate, from among the people you follow.',
-          descriptionId:'seeWhoEndorsedEachChoiceDescription',
+          descriptionId: 'seeWhoEndorsedEachChoiceDescription',
           imgSrc: '/img/how-it-works/HowItWorksForVoters-Review-20190401.gif?',
           index: 2,
         },
@@ -256,6 +258,7 @@ class HowItWorks extends Component {
   }
 
   handleChangeSlide = (selectedStepIndex) => {
+    this.sendHowItWorksSlideEvent(selectedStepIndex);
     const { howItWorksWatched } = this.state;
     const minimumStepIndexForCompletion = 1; // Was 2, but even opening it should get rid of the tickler
     if (!howItWorksWatched && selectedStepIndex >= minimumStepIndexForCompletion) {
@@ -270,6 +273,31 @@ class HowItWorks extends Component {
     const { selectedStepIndex } = this.state;
     this.setState({ selectedStepIndex: selectedStepIndex - 1 });
   };
+
+  getTitleIdFromIndex (stepIndex) {
+    const {
+      selectedCategoryIndex,
+      forVoterSteps,
+      forOrganizationsSteps,
+      forCampaignsSteps,
+    } = this.state;
+
+    let steps = {};
+    if (selectedCategoryIndex === 0) {
+      steps = forVoterSteps;
+    } else if (selectedCategoryIndex === 1) {
+      steps = forOrganizationsSteps;
+    } else if (selectedCategoryIndex === 2) {
+      steps = forCampaignsSteps;
+    }
+
+    const step = Object.values(steps).find((stepObj) => stepObj.index === stepIndex);
+    if (step && step.titleId) {
+      return step.titleId;
+    } else {
+      return '';
+    }
+  }
 
   switchToDifferentCategoryFunction = (selectedCategoryIndex) => {
     let getStartedMode = 'getStartedForVoters';
@@ -288,6 +316,20 @@ class HowItWorks extends Component {
       selectedStepIndex: 0,
     });
   };
+
+  sendHowItWorksSlideEvent (stepIndex) {
+    const titleId = this.getTitleIdFromIndex(stepIndex);
+    const dataLayerObject = {
+      actionDetails: {
+        actionType: 'slideChange',
+        buttonId: titleId,
+      },
+      event: 'action',
+      pageDetails: getPageDetails(),
+      userDetails: VoterStore.getAnalyticsUserDetails(),
+    };
+    TagManager.dataLayer({ dataLayer: dataLayerObject });
+  }
 
   howItWorksGetStarted () {
     const { getStartedMode, howItWorksWatched, voter } = this.state;

@@ -20,12 +20,14 @@ import { HeadroomWrapper } from '../Style/pageLayoutStyles';
 import IPhoneSpacer from '../Widgets/IPhoneSpacer';
 import HeaderBar from './HeaderBar';
 
+
 const ActivityTidbitDrawer = React.lazy(() => import(/* webpackChunkName: 'ActivityTidbitDrawer' */ '../Activity/ActivityTidbitDrawer'));
 const HeaderBackTo = React.lazy(() => import(/* webpackChunkName: 'HeaderBackTo' */ './HeaderBackTo'));
 const HeaderBackToBallot = React.lazy(() => import(/* webpackChunkName: 'HeaderBackToBallot' */ './HeaderBackToBallot'));
 const HeaderBackToVoterGuides = React.lazy(() => import(/* webpackChunkName: 'HeaderBackToVoterGuides' */ './HeaderBackToVoterGuides'));
 const HeaderBarModals = React.lazy(() => import(/* webpackChunkName: 'HeaderBarModals' */ './HeaderBarModals'));
 const HowItWorksModal = React.lazy(() => import(/* webpackChunkName: 'HowItWorksModal' */ '../CompleteYourProfile/HowItWorksModal'));
+const NotificationBannerAboveHeader = React.lazy(() => import(/* webpackChunkName: 'NotificationBannerAboveHeader' */ './NotificationBannerAboveHeader'));
 const OrganizationModal = React.lazy(() => import(/* webpackChunkName: 'OrganizationModal' */ '../VoterGuide/OrganizationModal'));
 const PositionDrawer = React.lazy(() => import(/* webpackChunkName: 'PositionDrawer' */ '../Ballot/PositionDrawer'));
 const SharedItemModal = React.lazy(() => import(/* webpackChunkName: 'SharedItemModal' */ '../Share/SharedItemModal'));
@@ -42,6 +44,7 @@ export default class Header extends Component {
       organizationModalHidePositions: false,
       sharedItemCode: '',
       showHowItWorksModal: false,
+      showNotificationBannerAboveHeader: AppObservableStore.getShowNotificationBannerAboveHeader(),
       showVoterPlanModal: false,
       showOrganizationModal: false,
       showPositionDrawer: false,
@@ -54,6 +57,7 @@ export default class Header extends Component {
     this.closeSharedItemModal = this.closeSharedItemModal.bind(this);
     this.handleResizeLocal = this.handleResizeLocal.bind(this);
     // this.storeSub = null;
+    this.closeEditBar = this.closeEditBar.bind(this);
   }
 
   componentDidMount () {
@@ -76,37 +80,6 @@ export default class Header extends Component {
       VoterActions.voterRetrieve();
     }
   }
-
-  // Jan 23, 2021: This was blocking updates that we needed, commented out for now
-  // shouldComponentUpdate (nextProps, nextState) {
-  //   // console.log('-----------HEADER shouldComponentUpdate');
-  //   const href = normalizedHref();
-  //   let update = false;
-  //   if (this.state.activityTidbitWeVoteIdForDrawer !== nextState.activityTidbitWeVoteIdForDrawer) {
-  //     update = true;
-  //   } if (this.state.organizationModalBallotItemWeVoteId !== nextState.organizationModalBallotItemWeVoteId) {
-  //     update = true;
-  //   } if (href !== nextProps.pathname) {
-  //     update = true;
-  //   } if (this.state.priorPath === undefined) {
-  //     update = true;
-  //   } if (this.state.sharedItemCode !== nextState.sharedItemCode) {
-  //     update = true;
-  //   } if (this.state.showActivityTidbitDrawer !== nextState.showActivityTidbitDrawer) {
-  //     update = true;
-  //   } if (this.state.showHowItWorksModal !== nextState.showHowItWorksModal) {
-  //     update = true;
-  //   } if (this.state.showVoterPlanModal !== nextState.showVoterPlanModal) {
-  //     update = true;
-  //   } if (this.state.showOrganizationModal !== nextState.showOrganizationModal) {
-  //     update = true;
-  //   } if (this.state.showSharedItemModal !== nextState.showSharedItemModal) {
-  //     update = true;
-  //   } if (this.state.windowWidth !== nextState.windowWidth) {
-  //     update = true;
-  //   }
-  //   return update;
-  // }
 
   componentDidCatch (error, info) {
     // We should get this information to Splunk!
@@ -147,6 +120,7 @@ export default class Header extends Component {
       showOrganizationModal: AppObservableStore.showOrganizationModal(),
       showPositionDrawer: AppObservableStore.showPositionDrawer(),
       showSharedItemModal: AppObservableStore.showSharedItemModal(),
+      showNotificationBannerAboveHeader: AppObservableStore.getShowNotificationBannerAboveHeader(),
     });
   }
 
@@ -203,18 +177,22 @@ export default class Header extends Component {
     );
   }
 
+  closeEditBar () {
+    AppObservableStore.setShowNotificationBannerAboveHeader(false);
+  }
 
   render () {
     renderLog('Header');  // Set LOG_RENDER_EVENTS to log all renders
+    const { showNotificationBannerAboveHeader } = this.state;
 
     if (this.hideHeader()) {
       renderLog('Header hidden');
       return null;
     }
-
+    const pathname = normalizedHref();
+    const isCandidatePage = /^\/[-a-z0-9]+\/-\/?$/.test(pathname);
     const { hideHeader, params } = this.props;
     // console.log('Header global.weVoteGlobalHistory', global.weVoteGlobalHistory);
-    const pathname = normalizedHref();
     const {
       activityTidbitWeVoteIdForDrawer, organizationModalHideBallotItemInfo, organizationModalHidePositions, organizationModalBallotItemWeVoteId,
       positionDrawerBallotItemWeVoteId, positionDrawerOrganizationWeVoteId,
@@ -505,6 +483,13 @@ export default class Header extends Component {
           <IPhoneSpacer />
           <HeadroomWrapper id="hw4">
             <div className={pageHeaderClasses} style={cordovaTopHeaderTopMargin()} id="header-container">
+              {(showNotificationBannerAboveHeader && isCandidatePage) && (
+                <NotificationBannerAboveHeaderWrapper>
+                  <Suspense fallback={<></>}>
+                    <NotificationBannerAboveHeader />
+                  </Suspense>
+                </NotificationBannerAboveHeaderWrapper>
+              )}
               {(headerNotVisible || hideHeader) ? (
                 <>
                   <Suspense fallback={<></>}>
@@ -599,3 +584,8 @@ const BackToSettingsMobileDesktopSpan = styled('span')`
   ${() => (!isMobileScreenSize() || isTablet() ? '' : 'display: none;')};
 `;
 
+const NotificationBannerAboveHeaderWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  padding: 0 16px;
+`;

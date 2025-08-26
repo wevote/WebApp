@@ -210,7 +210,6 @@ class ElectionCountdown extends React.Component {
         <CountdownTitleHeaderWrapper>
           <BallotTitleHeader
             centerText
-            electionDateBelow
             toggleSelectBallotModal={this.toggleSelectBallotModal}
             turnOffVoteByBelow
             allowTextWrap
@@ -234,7 +233,6 @@ class ElectionCountdown extends React.Component {
           <CountdownTitleHeaderWrapper>
             <BallotTitleHeader
               centerText
-              electionDateBelow
               toggleSelectBallotModal={this.toggleSelectBallotModal}
             />
           </CountdownTitleHeaderWrapper>
@@ -275,7 +273,6 @@ class ElectionCountdown extends React.Component {
         <CountdownTitleHeaderWrapper>
           <BallotTitleHeaderNationalPlaceholder
             centerText
-            electionDateBelow
             electionDateMDY={nextNationalElectionDateMDY}
             electionName="General Election"
             // toggleSelectBallotModal={this.toggleSelectBallotModal}

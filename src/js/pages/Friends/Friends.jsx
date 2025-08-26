@@ -48,7 +48,7 @@ const FirstAndLastNameRequiredAlert = React.lazy(() => import(/* webpackChunkNam
 const RemindContactsStart = React.lazy(() => import(/* webpackChunkName: 'RemindContactsStart' */ '../../components/Remind/RemindContactsStart'));
 const SuggestedContacts = React.lazy(() => import(/* webpackChunkName: 'SuggestedContacts' */ '../../components/Friends/SuggestedContacts'));
 
-const testimonialPhoto = '../../../img/global/photos/Dale_McGrew-48x48.jpg';
+const testimonialPhoto = '../../../img/global/photos/Dale_McGrew-48x48.jpg';   // DON'T COPY this pattern, we should be using normalizedImagePath()
 const testimonialAuthor = 'Dale M., Oakland, California';
 const imageUrl = normalizedImagePath(testimonialPhoto);
 const testimonial = 'Instead of searching through emails and social media for recommendations, I can see how my friends are voting on WeVote.';
@@ -525,7 +525,7 @@ class Friends extends Component {
                         <SectionTitle>
                           Invite Friends
                           <>
-                            {isMobileScreenSize() ? (<span />) : (
+                            {isMobileScreenSize() ? (<></>) : (
                               <TooltipIcon title="These friends will see what you support and oppose." />
                             )}
                           </>

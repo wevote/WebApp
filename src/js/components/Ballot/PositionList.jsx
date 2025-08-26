@@ -17,7 +17,8 @@ import FilterBase from '../Filter/FilterBase';
 import VoterGuideOrganizationFilter from '../Filter/VoterGuideOrganizationFilter';
 import NumberOfItemsFound from '../Widgets/NumberOfItemsFound';
 
-const PositionItem = React.lazy(() => import(/* webpackChunkName: 'PositionItem' */ './PositionItem'));
+const PositionForBallotItem = React.lazy(() => import(/* webpackChunkName: 'PositionForBallotItem' */ '../../common/components/Position/PositionForBallotItem'));
+// const PositionItem = React.lazy(() => import(/* webpackChunkName: 'PositionItem' */ './PositionItem'));
 const ShowMoreItems = React.lazy(() => import(/* webpackChunkName: 'ShowMoreItems' */ '../Widgets/ShowMoreItems'));
 
 
@@ -391,8 +392,11 @@ class PositionList extends Component {
               </SearchResultsFoundInExplanation>
             ) : null;
             return (
-              <div key={`${onePosition.position_we_vote_id}-${onePosition.voter_guide_we_vote_id}-${onePosition.speaker_display_name}`}>
+              <PositionListForBallotItemWrapper
+                key={`${onePosition.position_we_vote_id}-${onePosition.voter_guide_we_vote_id}-${onePosition.speaker_display_name}`}
+              >
                 <Suspense fallback={<></>}>
+                  {/*
                   <PositionItem
                     // ballotItemDisplayName={this.props.ballotItemDisplayName}
                     position={onePosition}
@@ -400,8 +404,13 @@ class PositionList extends Component {
                     searchResultsNode={searchResultsNode}
                     params={this.props.params}
                   />
+                  */}
+                  <PositionForBallotItem
+                    linksOpenExternalWebsite={linksOpenExternalWebsite && isWebApp()}
+                    position={onePosition}
+                  />
                 </Suspense>
-              </div>
+              </PositionListForBallotItemWrapper>
             );
           })}
         </UnorderedListWrapper>
@@ -446,6 +455,10 @@ const LoadingItemsWheel = styled('div')`
   align-items: center;
   justify-content: center;
   min-height: 70px;
+`;
+
+const PositionListForBallotItemWrapper = styled('div')`
+  margin: 8px 15px;
 `;
 
 const SearchResultsFoundInExplanation = styled('div')(({ theme }) => (`

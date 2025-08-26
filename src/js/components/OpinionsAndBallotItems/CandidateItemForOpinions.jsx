@@ -30,6 +30,7 @@ class CandidateItemForOpinions extends Component {
       voterSupportsBallotItem: false,
       voterTextStatement: '',
       oneCandidate: {},
+      politicianWeVoteId: '',
       // shouldFocusCommentArea: false,
       showPositionStatement: false,
     };
@@ -46,8 +47,9 @@ class CandidateItemForOpinions extends Component {
       this.setState({
         ballotItemDisplayName: oneCandidate.ballot_item_display_name,
         ballotItemWeVoteId: oneCandidate.we_vote_id,
+        politicianWeVoteId: oneCandidate.politician_we_vote_id,
       });
-      const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(oneCandidate.we_vote_id);
+      const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(oneCandidate.we_vote_id, oneCandidate.politician_we_vote_id);
       if (ballotItemStatSheet) {
         const {
           voterOpposesBallotItem,
@@ -119,8 +121,8 @@ class CandidateItemForOpinions extends Component {
   }
 
   onSupportStoreChange () {
-    const { ballotItemWeVoteId } = this.state;
-    const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(ballotItemWeVoteId);
+    const { ballotItemWeVoteId, politicianWeVoteId } = this.state;
+    const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(ballotItemWeVoteId, politicianWeVoteId);
     if (ballotItemStatSheet) {
       const {
         voterOpposesBallotItem,
@@ -162,8 +164,8 @@ class CandidateItemForOpinions extends Component {
     renderLog('CandidateItemForOpinions');  // Set LOG_RENDER_EVENTS to log all renders
     // const { classes, theme } = this.props;
     const {
-      oneCandidate, showPositionStatement,
-      voterOpposesBallotItem, voterSupportsBallotItem, voterTextStatement,
+      ballotItemDisplayName, ballotItemWeVoteId, oneCandidate, showPositionStatement,
+      transitioning, voterOpposesBallotItem, voterSupportsBallotItem, voterTextStatement,
     } = this.state;
     if (!oneCandidate || !oneCandidate.we_vote_id) {
       return null;
@@ -172,12 +174,12 @@ class CandidateItemForOpinions extends Component {
     const commentDisplayDesktop = voterSupportsBallotItem || voterOpposesBallotItem || voterTextStatement || showPositionStatement ? (
       <ItemPositionStatementActionBarDesktopWrapper className="d-none d-sm-block u-min-50">
         <ItemPositionStatementActionBar
-          ballotItemWeVoteId={this.state.ballotItemWeVoteId}
-          ballotItemDisplayName={this.state.ballotItemDisplayName}
-          commentEditModeOn={this.state.showPositionStatement}
+          ballotItemWeVoteId={ballotItemWeVoteId}
+          ballotItemDisplayName={ballotItemDisplayName}
+          commentEditModeOn={showPositionStatement}
           externalUniqueId="desktopPositionStatement"
-          // shouldFocus={this.state.shouldFocusCommentArea}
-          transitioning={this.state.transitioning}
+          // shouldFocus={shouldFocusCommentArea}
+          transitioning={transitioning}
           ballotItemType="CANDIDATE"
           shownInList
         />
@@ -188,11 +190,11 @@ class CandidateItemForOpinions extends Component {
     const commentDisplayMobile = voterSupportsBallotItem || voterOpposesBallotItem || voterTextStatement || showPositionStatement ? (
       <ItemPositionStatementActionBarMobileWrapper className="d-block d-sm-none u-min-50">
         <ItemPositionStatementActionBar
-          ballotItemWeVoteId={this.state.ballotItemWeVoteId}
-          ballotItemDisplayName={this.state.ballotItemDisplayName}
+          ballotItemWeVoteId={ballotItemWeVoteId}
+          ballotItemDisplayName={ballotItemDisplayName}
           externalUniqueId="mobilePositionStatement"
-          // shouldFocus={this.state.shouldFocusCommentArea}
-          transitioning={this.state.transitioning}
+          // shouldFocus={shouldFocusCommentArea}
+          transitioning={transitioning}
           ballotItemType="CANDIDATE"
           shownInList
           mobile

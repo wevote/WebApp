@@ -62,6 +62,7 @@ export default class ReadyPageValuesList extends Component {
 
   showMoreIssues = () => {
     const { allIssuesCount } = this.state;
+
     this.setState({
       limitNumberOfIssuesShownToThisNumber: allIssuesCount,
     });
@@ -159,7 +160,7 @@ const PopularTopicsH1 = styled('h1')`
   font-size: 22px;
   font-weight: 500;
   margin-bottom: 8px;
-  margin-top: 0px;
+  margin-top: 0;
 `;
 
 const PopularTopicsDescription = styled('p')(({ theme }) => (`

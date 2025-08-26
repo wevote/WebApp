@@ -14,6 +14,6 @@ export default function historyPush (route, removePriorPathname = false, doNotPu
     }
   }
   if (webAppConfig.LOG_ROUTING) {
-    console.log(`historyPush ******** ${route} *******`);
+    console.log(`historyPush '${route}'`);
   }
 }

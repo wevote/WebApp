@@ -133,7 +133,7 @@ class BallotDecisionsTabs extends Component {
           <Tab
             classes={{ root: classes.tabRoot }}
             id="decidedItemsCompletionLevelTab"
-            onClick={() =>this.goToDifferentCompletionLevelTab('filterDecided')}
+            onClick={() => this.goToDifferentCompletionLevelTab('filterDecided')}
             tabIndex={0}
             label={(
               <Badge

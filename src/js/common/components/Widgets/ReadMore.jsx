@@ -1,7 +1,12 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import TagManager from 'react-gtm-module';
 import TruncateMarkup from 'react-truncate-markup';
 import styled from 'styled-components';
+import IssueStore from '../../../stores/IssueStore';
+import VoterStore from '../../../stores/VoterStore';
+import { getPageDetails } from '../../../utils/lookupPageNameAndPageTypeDict';
+import PoliticianStore from '../../stores/PoliticianStore';
 import { renderLog } from '../../utils/logging';
 
 export default class ReadMore extends Component {
@@ -27,6 +32,29 @@ export default class ReadMore extends Component {
   toggleLines (event) {
     event.preventDefault();
     const { readMore } = this.state;
+    const showMoreLabel = readMore ? 'showMore' : 'showLess';
+    const { politicianWeVoteId } = this.props;
+    const { buttonId, issueWeVoteId } = this.props;
+
+    const dataLayerObject = {
+      event: 'action',
+      actionDetails: {
+        actionType: showMoreLabel,
+        buttonId,
+      },
+      pageDetails: getPageDetails(),
+      userDetails: VoterStore.getAnalyticsUserDetails(),
+    };
+    if (politicianWeVoteId) {
+      dataLayerObject.politicianDetails = PoliticianStore.getAnalyticsPoliticianDetails(politicianWeVoteId);
+    }
+    if (issueWeVoteId) {
+      dataLayerObject.topicDetails = IssueStore.getAnalyticsIssueDetails(issueWeVoteId);
+    }
+    // console.log('GTM dataLayer:', dataLayerObject);
+    TagManager.dataLayer({ dataLayer: dataLayerObject });
+    // console.log('GTM dataLayer after push:', window.dataLayer);
+
     if (readMore && this.props.onShowMoreAlternateFunction) {
       this.props.onShowMoreAlternateFunction();
     } else {
@@ -158,10 +186,13 @@ export default class ReadMore extends Component {
 ReadMore.propTypes = {
   className: PropTypes.string,
   collapseText: PropTypes.node,
+  issueWeVoteId: PropTypes.string,
   linkText: PropTypes.node,
   numberOfLines: PropTypes.number,
   onShowMoreAlternateFunction: PropTypes.func,
   textToDisplay: PropTypes.node.isRequired,
+  buttonId: PropTypes.string,
+  politicianWeVoteId: PropTypes.string,
 };
 
 const ReadMoreCollapsedWrapper = styled('span')`

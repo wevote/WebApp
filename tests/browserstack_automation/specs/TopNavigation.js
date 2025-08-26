@@ -1,8 +1,7 @@
 import { driver, expect } from '@wdio/globals';
 import ReadyPage from '../page_objects/ready.page';
 import TopNavigation from '../page_objects/topnavigation';
-
-const { describe, it } = require('mocha');
+import { describe, it } from 'mocha';
 
 const waitTime = 5000;
 

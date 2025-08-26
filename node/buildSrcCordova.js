@@ -138,12 +138,19 @@ function fileRewriterForCordova (path, versions) {
     newValue = newValue.replace(/(?!\/\/>)className="u-show-desktop-tablet"/gim, 'style={uShowDesktopTablet()}');
     newValue = newValue.replace(/(.*?)u-show-mobile(.*?)>/, '$1$2 style={uShowMobile()}>\n');
     newValue = newValue.replace(/(.*?)u-show-desktop-tablet(.*?)>/, '$1$2 style={uShowDesktopTablet()}>\n');
+
+    // Remove OverlayTrigger in Cordova, avoids errors in log
+    newValue = newValue.replace(/import OverlayTrigger from .*?$/gim, '// eslint-disable-next-line import/no-unresolved\nimport CordovaOverlayTrigger from \'js/utils/CordovaOverlayTrigger\';');
+    newValue = newValue.replace(/import { OverlayTrigger } from .*?$/gim, '// eslint-disable-next-line import/no-unresolved\nimport CordovaOverlayTrigger from \'js/utils/CordovaOverlayTrigger\';');
+    newValue = newValue.replace(/<OverlayTrigger/gms, '<CordovaOverlayTrigger');    // Multi-line
+    newValue = newValue.replace(/<\/OverlayTrigger/gms, '</CordovaOverlayTrigger');    // Multi-line
+
     // Remove Donate from Cordova -- Stripe causes problems and is not allowed in the app store
-    if (path.includes('App.js')) {
-      newValue = newValue.replace(/^.*?Donate.*?\n/gim, '');
-      newValue = newValue.replace(/^(\s*).*?\/pay-to-promote.*?\n/gim, '$1{/* Removed /pay-to-promote for Cordova */}\n');
-      newValue = newValue.replace(/^import CampaignSupportPayToPromote.*?\n/gim, '// Removed Import CampaignSupportPayToPromote*\n');
-    }
+    // if (path.includes('App.js')) {
+    //   newValue = newValue.replace(/^.*?Donate.*?\n/gim, '');
+    //   newValue = newValue.replace(/^(\s*).*?\/pay-to-promote.*?\n/gim, '$1{/* Removed /pay-to-promote for Cordova */}\n');
+    //   newValue = newValue.replace(/^import CampaignSupportPayToPromote.*?\n/gim, '// Removed Import CampaignSupportPayToPromote*\n');
+    // }
     // Set is Cordova true in index.jsx
     if (path.endsWith('index.jsx')) {
       newValue = newValue.replace(/isIndexCordova = false;/g, 'isIndexCordova = true;');
@@ -166,7 +173,7 @@ function fileRewriterForCordova (path, versions) {
     ];
     const dummySubstituteFiles = [
       './srcCordova/js/common/components/CampaignSupport/PayToPromoteProcess.jsx',
-      './srcCordova/js/pages/More/Donate.jsx',
+      // './srcCordova/js/pages/More/Donate.jsx',
     ];
 
     if (deleteFiles.includes(path)) {
@@ -183,7 +190,6 @@ function fileRewriterForCordova (path, versions) {
         if (err2) throw err2;
         // console.log('Done! with ', path);
       });
-
     }
   });
 }
@@ -199,7 +205,7 @@ fs.remove('./build').then(() => {
     try {
       fs.copy('./src', './srcCordova', () => {
         console.log('> Cordova: Copied the /src dir to a newly created /srcCordova directory');
-        exec('egrep -rl "React.lazy|BrowserRouter|initializeMoment|Suspense|u-show-desktop-tablet|u-show-mobile|uShowMobile|uShowDesktopTablet|window.weVoteAppVersion" ./srcCordova', (error, stdout, stderr) => {
+        exec('egrep -rl "React.lazy|BrowserRouter|initializeMoment|Suspense|u-show-desktop-tablet|u-show-mobile|uShowMobile|uShowDesktopTablet|window.weVoteAppVersion|OverlayTrigger" ./srcCordova', (error, stdout, stderr) => {
           if (error) {
             console.log(`> Cordova bldSrcCordova error: ${error.message}`);
             return;

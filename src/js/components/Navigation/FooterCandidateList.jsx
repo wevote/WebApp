@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import TagManager from 'react-gtm-module';
 import { convertStateTextToStateCode, stateCodeMap } from '../../common/utils/addressFunctions';
-import lookupPageNameAndPageTypeDict from '../../utils/lookupPageNameAndPageTypeDict';
-
+import lookupPageNameAndPageTypeDict, { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
+import VoterStore from '../../stores/VoterStore';
 // React functional component example
 export default function FooterCandidateList () {
   const stateNameList = Object.values(stateCodeMap);
@@ -12,26 +12,24 @@ export default function FooterCandidateList () {
   let stateNamePhrase;
   let stateNamePhraseLowerCase;
 
-  function handleClick(linkTo) {
-    const { location: { pathname: currentPathname } } = window;
-    const page = lookupPageNameAndPageTypeDict(currentPathname);
+  function handleClick (linkTo, buttonId = '') {
     const destinationPage = lookupPageNameAndPageTypeDict(linkTo);
 
-    TagManager.dataLayer({
-      dataLayer: {
-        event: 'click',
-        pageDetails: {
-          pageType: page.pageType,
-          pageName: page.pageName,
-          pathname: currentPathname,
-        },
-        destinationDetails: {
-          destinationPageType: destinationPage.pageType,
-          destinationPageName: destinationPage.pageName,
-          destinationPathname: linkTo,
-        },
+    const dataLayerObject = {
+      actionDetails: {
+        actionType: 'navigate',
+        buttonId,
       },
-    });
+      event: 'action',
+      pageDetails: getPageDetails(),
+      destinationDetails: {
+        destinationPageName: destinationPage.pageName || 'notSet',
+        destinationPageType: destinationPage.pageType || 'notSet',
+        destinationPathname: linkTo,
+      },
+      userDetails: VoterStore.getAnalyticsUserDetails(),
+    };
+    TagManager.dataLayer({ dataLayer: dataLayerObject });
   }
 
   return (
@@ -42,13 +40,21 @@ export default function FooterCandidateList () {
       {stateNameList.map((stateName) => {
         stateCode = convertStateTextToStateCode(stateName);
         stateNamePhrase = `${stateName}-candidates`;
-        stateNamePhraseLowerCase = stateNamePhrase.replace(/\s+/g, '-').toLowerCase();
+        stateNamePhraseLowerCase = stateNamePhrase
+          .replace(/\s+/g, '-')
+          .toLowerCase();
         // console.log('tempStateCode:', tempStateCode, ', stateAlreadySelected:', stateAlreadySelected);
         const linkTo = `/${stateNamePhraseLowerCase}/cs/`;
+        const buttonId = `footerLink_${stateNamePhraseLowerCase}`;
 
         return (
           <SimpleModeItemWrapper key={stateCode}>
-            <Link id={`${stateNamePhraseLowerCase}_Link`} className="u-link-color" to={linkTo} onClick={() => handleClick(linkTo)}>
+            <Link
+              id={buttonId}
+              className="u-link-color"
+              to={linkTo}
+              onClick={() => handleClick(linkTo, buttonId)}
+            >
               {stateName}
               {' '}
               candidates
@@ -65,13 +71,11 @@ const FooterCandidateListWrapper = styled('span')`
   display: flex;
   flex-flow: column;
   margin-top: 10px; // To match BallotElectionListWithFilters
-
 `;
 
 const SimpleModeItemWrapper = styled('div')`
   cursor: pointer;
   margin-top: 12px;
-
 `;
 
 const SimpleModeTitle = styled('h2')`

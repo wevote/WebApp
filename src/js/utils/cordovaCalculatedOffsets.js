@@ -141,10 +141,10 @@ export function cordovaComplexHeaderPageContainerTopOffset () {
     hrHeight = headroomWrapper.height();
     if (isAndroidSizeMD() || isAndroidSizeXL() || isAndroidSizeWide()) {
       try {
-        const rowBallotBody = $('div[class*=\'row ballot__body\']');
-        if (rowBallotBody.length) {
-          const padDigits = rowBallotBody.css('padding-top').replace('px', '');
-          hrHeight -= parseInt(padDigits);
+        const ballotWrapperBody = $('#BallotWrapperBody');
+        if (ballotWrapperBody.length) {
+          const padDigits = ballotWrapperBody.css('padding-top').replace('px', '');
+          hrHeight -= parseInt(padDigits) + 50;  // 50 to get more payload content between the menus on mobile devices
         }
       } catch (e) {
         console.error('It looks like the layout of the ballot has changed');
@@ -183,12 +183,12 @@ export function headroomWrapperOffset (includePosition, pageNameOverride = null)
     const { $ } = window;
     const headroomWrapper = $('div[class*=\'HeadroomWrapper\']');
     const outerHeight = headroomWrapper.outerHeight();
-    const position = includePosition ? headroomWrapper.position().top : 0;
+    const position = includePosition && headroomWrapper.length > 0 ? headroomWrapper.position().top : 0;
     offset = outerHeight + position;
     const page = pageNameOverride || pageEnumeration();
     if (page === 'PoliticianDetailsPage' && isCordova()) {
       offset = -44;
-    } else if (page === 'candidatelist' || page === 'values') {
+    } else if (page === 'candidatelist' || page === 'politicianpage' || page === 'values') {
       if (isIOS()) {
         if (page === 'values') {
           offset /= 3 / 2;
@@ -200,6 +200,8 @@ export function headroomWrapperOffset (includePosition, pageNameOverride = null)
       } else {
         offset /= 2;
       }
+    } else if (page === 'ballotSmHdrWild' && isCordova()) {
+      offset -= 20;
     }
 
     cordovaOffsetLog(`headroomWrapperOffset HeadroomWrapper outerHeight+top: ${outerHeight + position}, new offset: ${offset}, page: ${getPageKey()}`);

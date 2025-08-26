@@ -1,15 +1,15 @@
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
+import TagManager from 'react-gtm-module';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import TagManager from 'react-gtm-module';
 import OpenExternalWebSite from '../../common/components/Widgets/OpenExternalWebSite';
 import AppObservableStore from '../../common/stores/AppObservableStore';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
-import VoterStore from '../../stores/VoterStore';
 import webAppConfig from '../../config';
-import lookupPageNameAndPageTypeDict from '../../utils/lookupPageNameAndPageTypeDict';
+import VoterStore from '../../stores/VoterStore';
+import lookupPageNameAndPageTypeDict, { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
 
 const BallotElectionListWithFilters = React.lazy(() => import(/* webpackChunkName: 'BallotElectionListWithFilters' */ '../Ballot/BallotElectionListWithFilters'));
 const DeleteAllContactsButton = React.lazy(() => import(/* webpackChunkName: 'DeleteAllContactsButton' */ '../SetUpAccount/DeleteAllContactsButton'));
@@ -44,49 +44,53 @@ class FooterMainWeVote extends Component {
     AppObservableStore.setShowHowItWorksModal(true);
 
     const { location: { pathname: currentPathname } } = window;
-    const page = lookupPageNameAndPageTypeDict(currentPathname);
-    TagManager.dataLayer({
-      dataLayer: {
-        event: 'click',
-        pageDetails: {
-          pageType: page.pageType,
-          pageName: page.pageName,
-          pathname: currentPathname,
-        },
-        destinationDetails: {
-          destinationPageType: page.pageType,
-          destinationPageName: 'HowItWorksModal',
-          destinationPathname: currentPathname,
-        },
+    const currentPageDetails = getPageDetails();
+
+    const dataLayerObject = {
+      actionDetails: {
+        actionType: 'openModal',
+        buttonId: 'footerLinkHowItWorks',
       },
-    });
+      event: 'action',
+      pageDetails: currentPageDetails,
+      destinationDetails: {
+        destinationPageName: 'HowItWorksModal',
+        destinationPageType: currentPageDetails.pageType, // Use current page's pageType for modals
+        destinationPathname: currentPathname, // Use current pathname since modal doesn't navigate
+      },
+      userDetails: VoterStore.getAnalyticsUserDetails(),
+    };
+    TagManager.dataLayer({ dataLayer: dataLayerObject });
   }
 
-  pushDataLayer (destinationPath) {
-    const { location: { pathname: currentPathname } } = window;
-    const page = lookupPageNameAndPageTypeDict(currentPathname);
+  pushDataLayer (destinationPath, buttonId = '') {
+    // For internal links only - external links are handled by OpenExternalWebSite
     const destinationPage = lookupPageNameAndPageTypeDict(destinationPath);
+    const destinationPageName = destinationPage.pageName || 'notSet';
+    const destinationPageType = destinationPage.pageType || 'notSet';
+    const destinationPathname = destinationPath;
 
-    TagManager.dataLayer({
-      dataLayer: {
-        event: 'click',
-        pageDetails: {
-          pageType: page.pageType,
-          pageName: page.pageName,
-          pathname: currentPathname,
-        },
-        destinationDetails: {
-          destinationPageType: destinationPage.pageType,
-          destinationPageName: destinationPage.pageName,
-          destinationPathname: destinationPath,
-        },
+    const dataLayerObject = {
+      actionDetails: {
+        actionType: 'navigate',
+        buttonId,
       },
-    });
+      event: 'action',
+      pageDetails: getPageDetails(),
+      destinationDetails: {
+        destinationPageName,
+        destinationPageType,
+        destinationPathname,
+      },
+      userDetails: VoterStore.getAnalyticsUserDetails(),
+    };
+    TagManager.dataLayer({ dataLayer: dataLayerObject });
   }
 
   render () {
     const { classes } = this.props;
     const { voterContactEmailListCount } = this.state;
+
     return (
       <Wrapper>
         {isWebApp() && (
@@ -126,36 +130,62 @@ class FooterMainWeVote extends Component {
         <TopSectionOuterWrapper>
           <TopSectionInnerWrapper>
             <OneRow>
-              <button type="button" style={{ border: 'none', backgroundColor: 'transparent', padding: '0' }} id="footerLinkHowItWorks" className={classes.onClickDiv} onClick={this.openHowItWorksModal}>How It Works</button>
+              <button
+                type="button"
+                style={{ border: 'none', backgroundColor: 'transparent', padding: '0' }}
+                id="footerLinkHowItWorks"
+                className={classes.onClickDiv}
+                onClick={this.openHowItWorksModal}
+              >
+                How It Works
+              </button>
               <RowSpacer />
               <OpenExternalWebSite
                 linkIdAttribute="footerLinkWeVoteHelp"
                 url="https://help.wevote.us/hc/en-us"
                 target="_blank"
-                body={(
-                  <span>Help</span>
-                )}
                 className={classes.link}
+                trackingOn
+                body={(<span>Help</span>)}
               />
               <RowSpacer />
-              <Link id="footerLinkPrivacy" className={classes.link} to="/privacy" onClick={() => this.pushDataLayer("/privacy")}>Privacy</Link>
+              <Link
+                id="footerLinkPrivacy"
+                className={classes.link}
+                to="/privacy"
+                onClick={() => this.pushDataLayer('/privacy', 'footerLinkPrivacy')}
+              >
+                Privacy
+              </Link>
               <RowSpacer />
-              <Link id="footerLinkTermsOfUse" className={classes.link} to="/more/terms" onClick={() => this.pushDataLayer("/more/terms")}>Terms</Link>
+              <Link
+                id="footerLinkTermsOfUse"
+                className={classes.link}
+                to="/more/terms"
+                onClick={() => this.pushDataLayer('/more/terms', 'footerLinkTermsOfUse')}
+              >
+                Terms
+              </Link>
             </OneRow>
             <OneRow>
               {isWebApp() ? (
                 <>
-                  <Link id="footerLinkAboutFAQ" to="/more/faq" className={classes.link} onClick={() => this.pushDataLayer("/more/faq")}>
+                  <Link
+                    id="footerLinkAboutFAQ"
+                    to="/more/faq"
+                    className={classes.link}
+                    onClick={() => this.pushDataLayer('/more/faq', 'footerLinkAboutFAQ')}
+                  >
                     About &amp; FAQ
                   </Link>
                   <RowSpacer />
+                  {/* Note: Team/Credits links will show 'notSet' in local dev but work correctly in production */}
                   <OpenExternalWebSite
                     linkIdAttribute="footerLinkTeam"
                     url={`${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}/more/about`}
                     target="_blank"
-                    body={(
-                      <span>Team</span>
-                    )}
+                    trackingOn
+                    body={(<span>Team</span>)}
                     className={classes.link}
                   />
                   <RowSpacer />
@@ -163,29 +193,50 @@ class FooterMainWeVote extends Component {
                     linkIdAttribute="footerLinkCredits"
                     url={`${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}/more/credits`}
                     target="_blank"
-                    body={(
-                      <span>Credits &amp; Thanks</span>
-                    )}
+                    trackingOn
+                    body={(<span>Credits &amp; Thanks</span>)}
                     className={classes.link}
                   />
                 </>
               ) : (
                 <>
-                  <Link to="/more/faq" className={classes.link} onClick={() => this.pushDataLayer("/more/faq")}>Frequently Asked Questions</Link>
+                  <Link
+                    id="footerLinkFAQ"
+                    to="/more/faq"
+                    className={classes.link}
+                    onClick={() => this.pushDataLayer('/more/faq', 'footerLinkFAQ')}
+                  >
+                    Frequently Asked Questions
+                  </Link>
                   <RowSpacer />
-                  <Link to="/more/attributions" className={classes.link} onClick={() => this.pushDataLayer("/more/attributions")}>Attributions</Link>
+                  <Link
+                    id="footerLinkAttributions"
+                    to="/more/attributions"
+                    className={classes.link}
+                    onClick={() => this.pushDataLayer('/more/attributions', 'footerLinkAttributions')}
+                  >
+                    Attributions
+                  </Link>
                 </>
               )}
             </OneRow>
             {isWebApp() && (
               <OneRow>
                 <OpenExternalWebSite
+                  linkIdAttribute="footerLinkBlog"
+                  url="https://blog.wevote.us/"
+                  target="_blank"
+                  trackingOn
+                  body={(<span>Blog</span>)}
+                  className={classes.link}
+                />
+                <RowSpacer />
+                <OpenExternalWebSite
                   linkIdAttribute="footerLinkVolunteer"
                   url="https://wevote.applytojob.com/apply"
                   target="_blank"
-                  body={(
-                    <span>Volunteering Opportunities</span>
-                  )}
+                  trackingOn
+                  body={(<span>Volunteering Opportunities</span>)}
                   className={classes.link}
                 />
                 <RowSpacer />
@@ -193,7 +244,7 @@ class FooterMainWeVote extends Component {
                   className={classes.link}
                   id="footerMainLinkDonate"
                   to="/donate"
-                  onClick={() => this.pushDataLayer("/donate")}
+                  onClick={() => this.pushDataLayer('/donate', 'footerMainLinkDonate')}
                 >
                   Donate
                 </Link>
@@ -225,6 +276,7 @@ class FooterMainWeVote extends Component {
     );
   }
 }
+
 FooterMainWeVote.propTypes = {
   classes: PropTypes.object,
 };

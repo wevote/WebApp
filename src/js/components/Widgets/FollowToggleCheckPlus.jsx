@@ -33,7 +33,7 @@ function AlreadyFollowingOrIgnoringButton (params) {
     alreadyFollowingOrIgnoringPopOverText += ` ${speakerDisplayName},`;
   }
   alreadyFollowingOrIgnoringPopOverText += ' their opinion is added to your score. Click to stop following.';
-  const alreadyFollowingOrIgnoringPopOverTooltip = isMobileScreenSize() ? (<span />) : (
+  const alreadyFollowingOrIgnoringPopOverTooltip = isMobileScreenSize() ? (<></>) : (
     <Tooltip className="u-z-index-9020" id={`alreadyFollowingOrIgnoringButtonPopOver-${ballotItemWeVoteId}-${organizationWeVoteId}`}>
       {alreadyFollowingOrIgnoringPopOverText}
     </Tooltip>
@@ -104,7 +104,7 @@ function FollowButton (params) {
     followOrganizationCheckPlusPopOverText += ` ${speakerDisplayName},`;
   }
   followOrganizationCheckPlusPopOverText += ' and add their opinion to your score.';
-  const followOrganizationCheckPlusPopOverTooltip = isMobileScreenSize() ? (<span />) : (
+  const followOrganizationCheckPlusPopOverTooltip = isMobileScreenSize() ? (<></>) : (
     <Tooltip className="u-z-index-9020" id={`followOrganizationCheckPlusPopOver-${ballotItemWeVoteId}-${organizationWeVoteId}`}>
       {followOrganizationCheckPlusPopOverText}
     </Tooltip>
@@ -417,7 +417,7 @@ class FollowToggleCheckPlus extends Component {
       friendOrLinkedToIssuePopOverText += ' Because of this, their opinion is added to your score.';
     }
 
-    const friendOrLinkedToIssuePopOverTooltip = isMobileScreenSize() ? (<span />) : (
+    const friendOrLinkedToIssuePopOverTooltip = isMobileScreenSize() ? (<></>) : (
       <Tooltip className="u-z-index-9020" id={`friendOrLinkedToIssueButtonPopOver-${ballotItemWeVoteId}-${organizationWeVoteId}`}>
         {friendOrLinkedToIssuePopOverText}
       </Tooltip>

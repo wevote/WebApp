@@ -1,4 +1,5 @@
 import { Info } from '@mui/icons-material';
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
@@ -16,7 +17,6 @@ import SettingsWidgetAccountType from './SettingsWidgetAccountType';
 import SettingsWidgetFirstLastName from './SettingsWidgetFirstLastName';
 import SettingsWidgetOrganizationDescription from './SettingsWidgetOrganizationDescription';
 import SettingsWidgetOrganizationWebsite from './SettingsWidgetOrganizationWebsite';
-import AccountBoxIcon from '@mui/icons-material/AccountBox';
 
 class SettingsProfile extends Component {
   constructor (props) {
@@ -113,7 +113,7 @@ const IdIcon = styled(AccountBoxIcon)`
   color: black;
   height: 23px;
   width: 23px;
-  margin: 8px 8px 0px -2px;
+  margin: 8px 8px 0 -2px;
 `;
 
 export default withStyles(styles)(SettingsProfile);

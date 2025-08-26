@@ -47,10 +47,9 @@ module.exports.config = {
     '../specs/HowItWorks.js',
     '../specs/FooterLinks.js',
     '../specs/SignInPage.js',
-
     '../specs/BallotPage.js',
     '../specs/CandidatesPage.js',
-
+    '../specs/VerifyCount.js',
     '../specs/WhosRunningForOffice.js',
 
   ],

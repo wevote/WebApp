@@ -1,0 +1,6 @@
+{
+  "compilerOptions": {
+    "baseUrl": "srcCordova"
+  },
+  "include": ["srcCordova"]
+}

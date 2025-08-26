@@ -23,6 +23,7 @@ const nonFluxState = {
   activityTidbitWeVoteIdForDrawer: '',
   blockCampaignXRedirectOnSignIn: false, // When signing in from the header, don't mark a campaign as supported
   blockChallengeRedirectOnSignIn: false, // When signing in from the header, don't mark a challenge as supported
+  campaignXWeVoteIdBeingViewed: '',
   challengeParticipantNameWithHighestRankByChallengeWeVoteId: {}, // Key is challengeWeVoteId, value is name for voter with the highest rank for that challenge
   challengeParticipantRankOfVoterByChallengeWeVoteId: {}, // Key is challengeWeVoteId, value is rank of voter for that challenge
   chosenDomainTypeIsCampaign: false,
@@ -50,6 +51,7 @@ const nonFluxState = {
   openReplayVoterWeVoteId: '',
   pendingSnackMessage: '',
   pendingSnackSeverity: '',
+  politicianWeVoteIdBeingViewed: '',
   recommendedCampaignListFirstRetrieveInitiated: false,
   scrolledDown: false,
   scrolledDownDrawer: false,
@@ -61,7 +63,10 @@ const nonFluxState = {
   showAdviserIntroModal: false,
   showAskFriendsModal: false,
   showChooseOrOpposeIntroModal: false,
+  showClaimProfileWithEmailModal: false,
+  showClaimProfileWithOtherWaysModal: false,
   showCompleteYourProfileModal: false,
+  showNotificationBannerAboveHeader: false,
   showEditAddressButton: false,
   showElectionsWithOrganizationVoterGuidesModal: false,
   showHeader: 0,
@@ -100,6 +105,10 @@ export default {
 
   getActivityTidbitWeVoteIdForDrawer () {
     return nonFluxState.activityTidbitWeVoteIdForDrawer;
+  },
+
+  getCampaignXWeVoteIdBeingViewed () {
+    return nonFluxState.campaignXWeVoteIdBeingViewed;
   },
 
   getChallengeParticipantNameWithHighestRankByChallengeWeVoteId (challengeWeVoteId) {
@@ -152,6 +161,18 @@ export default {
 
   getChosenWebsiteName () {
     return nonFluxState.chosenWebsiteName || 'WeVote.US'; // Used to be campaigns.WeVote.US on campaigns site
+  },
+
+  getPoliticianWeVoteIdBeingViewed () {
+    return nonFluxState.politicianWeVoteIdBeingViewed;
+  },
+
+  getShowClaimProfileWithEmailModal () {
+    return nonFluxState.showClaimProfileWithEmailModal;
+  },
+
+  getShowClaimProfileWithOtherWaysModal () {
+    return nonFluxState.showClaimProfileWithOtherWaysModal;
   },
 
   getCurrentPathname () {
@@ -249,6 +270,15 @@ export default {
   getShareModalStep () {
     // console.log('AppObservableStore shareModalStep:', nonFluxState.shareModalStep);
     return nonFluxState.shareModalStep;
+  },
+
+  getShowNotificationBannerAboveHeader () {
+    return nonFluxState.showNotificationBannerAboveHeader;
+  },
+
+  setShowNotificationBannerAboveHeader (show) {
+    nonFluxState.showNotificationBannerAboveHeader = show;
+    messageService.sendMessage('state updated showNotificationBannerAboveHeader');
   },
 
   getWeVoteRootURL () {
@@ -392,6 +422,11 @@ export default {
     messageService.sendMessage('state updated blockChallengeRedirectOnSignIn');
   },
 
+  setCampaignXWeVoteIdBeingViewed (campaignXWeVoteId) {
+    nonFluxState.campaignXWeVoteIdBeingViewed = campaignXWeVoteId;
+    messageService.sendMessage('state updated campaignXWeVoteIdBeingViewed');
+  },
+
   setChallengeParticipantRankOfVoter (challengeWeVoteId, rank) {
     // console.log('setChallengeParticipantRankOfVoter: ', challengeWeVoteId, ', rank: ', rank);
     nonFluxState.challengeParticipantRankOfVoterByChallengeWeVoteId[challengeWeVoteId] = rank;
@@ -402,6 +437,21 @@ export default {
     // console.log('setChallengeParticipantNameWithHighestRank: ', challengeWeVoteId, ', voterName: ', voterName);
     nonFluxState.challengeParticipantNameWithHighestRankByChallengeWeVoteId[challengeWeVoteId] = voterName;
     messageService.sendMessage('state updated challengeParticipantNameWithHighestRankByChallengeWeVoteId');
+  },
+
+  setPoliticianWeVoteIdBeingViewed (politicianWeVoteId) {
+    nonFluxState.politicianWeVoteIdBeingViewed = politicianWeVoteId;
+    messageService.sendMessage('state updated politicianWeVoteIdBeingViewed');
+  },
+
+  setShowClaimProfileWithEmailModal (show) {
+    nonFluxState.showClaimProfileWithEmailModal = show;
+    messageService.sendMessage('state updated showClaimProfileWithEmailModal');
+  },
+
+  setShowClaimProfileWithOtherWaysModal (show) {
+    nonFluxState.showClaimProfileWithOtherWaysModal = show;
+    messageService.sendMessage('state updated showClaimProfileWithOtherWaysModal');
   },
 
   setCurrentPathname (currentPathname) {

@@ -44,7 +44,7 @@ class ReadyInformationDisclaimer extends React.Component {
           trigger="click"
           key="top"
           placement="top"
-          overlay={isMobileScreenSize() ? (<span />) : (
+          overlay={isMobileScreenSize() ? (<></>) : (
             <Popover id="popover-positioned-top">
               <Popover.Content>
                 <strong>

@@ -12,7 +12,7 @@
         var safariVersion = safariVersionMatch ? parseFloat(safariVersionMatch[1]) : 0;
         return isSafari && safariVersion > 0 && safariVersion < 6;
       }
-    
+
       if (isOldSafari()) {
         document.write(
           '<style>body { background: #fff; text-align: center; padding: 50px; font-family: sans-serif; }</style>' +
@@ -20,7 +20,7 @@
         );
         window.stop();
       }
-    </script>    
+    </script>
 <!--    <title><%= htmlWebpackPlugin.options.title %></title>-->
     <meta
       name="description"
@@ -40,6 +40,7 @@
     <meta property="og:image"         content="https://WeVote.US/img/global/logos/we-vote-logo-wordmark-vertical-color-on-white-256x256.png" />
     <base href="/">
     <link href="/css/main.css" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"  rel="stylesheet" type="text/css" />
     <link rel="icon" type="image/png" sizes="32x32" href="/img/global/icons/favicon-32x32.png" >
     <link rel="icon" type="image/png" sizes="16x16" href="/img/global/icons/favicon-16x16.png" >
     <link rel="icon" sizes="48x48" href="/img/global/icons/favicon.ico" >

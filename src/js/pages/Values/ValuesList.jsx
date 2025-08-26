@@ -10,6 +10,7 @@ import { renderLog } from '../../common/utils/logging';
 import SearchBar2024 from '../../common/components/Search/SearchBar2024';
 import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import IssueStore from '../../stores/IssueStore';
+import VoterStore from '../../stores/VoterStore';
 
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../../common/components/Widgets/ReadMore'));
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
@@ -18,38 +19,48 @@ const IssueCard = React.lazy(() => import(/* webpackChunkName: 'IssueCard' */ '.
 
 export default class ValuesList extends Component {
   constructor (props) {
+    console.log('ValuesList: Constructor called??');
     super(props);
     this.state = {
       allIssues: [],
       searchQuery: '',
       currentIssue: {},
+      voterDataRetrieved: false,
     };
 
     this.searchFunction = this.searchFunction.bind(this);
     this.clearFunction = this.clearFunction.bind(this);
+    this.onVoterStoreChange = this.onVoterStoreChange.bind(this);
   }
 
   componentDidMount () {
+    console.log('ValuesList: Constructor called222???');
+
     this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange);
+
     if (apiCalming('issueDescriptionsRetrieve', 3600000)) { // Only once per 60 minutes
       IssueActions.issueDescriptionsRetrieve();
     }
     if (apiCalming('issuesFollowedRetrieve', 60000)) { // Only once per minute
       IssueActions.issuesFollowedRetrieve();
     }
+
     const { currentIssue, includedOnAnotherPage } = this.props;
     if (!includedOnAnotherPage) {
       window.scrollTo(0, 0);
     }
     const allIssues = IssueStore.getAllIssues();
+    console.log('is this rendering?');
     this.setState({
       allIssues,
       currentIssue,
     });
   }
 
-  // eslint-disable-next-line camelcase,react/sort-comp
   UNSAFE_componentWillReceiveProps (nextProps) {
+    console.log('is this rendering?');
+
     const { currentIssue } = nextProps;
     const allIssues = IssueStore.getAllIssues();
     this.setState({
@@ -58,8 +69,10 @@ export default class ValuesList extends Component {
     });
   }
 
+
   componentWillUnmount () {
     this.issueStoreListener.remove();
+    this.voterStoreListener.remove();
   }
 
   onIssueStoreChange () {
@@ -67,6 +80,14 @@ export default class ValuesList extends Component {
     this.setState({
       allIssues,
     });
+  }
+
+  onVoterStoreChange () {
+    const voterWeVoteId = VoterStore.getVoterWeVoteId();
+    const voterStateCode = VoterStore.getVoterStateCode();
+    if (voterWeVoteId && !this.state.voterDataRetrieved) {
+      this.setState({ voterDataRetrieved: true });
+    }
   }
 
   searchFunction (searchQuery) {
@@ -78,12 +99,11 @@ export default class ValuesList extends Component {
   }
 
   render () {
-    renderLog('ValuesList');  // Set LOG_RENDER_EVENTS to log all renders
+    renderLog('ValuesList');
     const { displayOnlyIssuesNotFollowedByVoter, hideAdvocatesCount, includedOnAnotherPage } = this.props;
     const { allIssues, searchQuery, currentIssue } = this.state;
     let issuesList = [];
-    // let issuesNotFollowedByVoterList = [];
-    // let issuesNotCurrentIssue = [];
+
     if (allIssues) {
       if (displayOnlyIssuesNotFollowedByVoter) {
         issuesList = allIssues.filter((issue) => issue.issue_we_vote_id !== currentIssue.issue_we_vote_id).filter((issue) => !IssueStore.isVoterFollowingThisIssue(issue.issue_we_vote_id));
@@ -91,8 +111,6 @@ export default class ValuesList extends Component {
         issuesList = allIssues;
       }
     }
-
-    // console.log('ValuesList all issues:', issuesList);
 
     if (searchQuery.length > 0) {
       const searchQueryLowercase = searchQuery.toLowerCase();

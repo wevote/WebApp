@@ -4,12 +4,15 @@ import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
+import TagManager from 'react-gtm-module';
 import styled from 'styled-components';
 import VoterActions from '../../actions/VoterActions';
 import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import VoterConstants from '../../constants/VoterConstants';
+import VoterStore from '../../stores/VoterStore';
+import { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
 
 const HowItWorks = React.lazy(() => import(/* webpackChunkName: 'HowItWorks' */ '../../pages/HowItWorks'));
 
@@ -22,7 +25,8 @@ class HowItWorksModal extends Component {
     this.closeHowItWorksModal = this.closeHowItWorksModal.bind(this);
   }
 
-  closeHowItWorksModal () {
+  closeHowItWorksModal (buttonId) {
+    this.sendHowItWorksCloseEvent(buttonId);
     // const { howItWorksWatched } = this.state;
     // const minimumStepIndexForCompletion = 1; // Was 2, but even opening it should get rid of the tickler
     const alwaysMarkedWatched = true;
@@ -33,6 +37,19 @@ class HowItWorksModal extends Component {
     }
     const { location: { pathname } } = window;
     this.props.toggleFunction(pathname);
+  }
+
+  sendHowItWorksCloseEvent (buttonId) {
+    const dataLayerObject = {
+      actionDetails: {
+        actionType: 'closeModal',
+        buttonId,
+      },
+      event: 'action',
+      pageDetails: getPageDetails(),
+      userDetails: VoterStore.getAnalyticsUserDetails(),
+    };
+    TagManager.dataLayer({ dataLayer: dataLayerObject });
   }
 
   render () {
@@ -49,14 +66,14 @@ class HowItWorksModal extends Component {
       >
         <ModalTitleArea>
           <div>
-            <Title id = "howWeVoteWorksTitleText">
+            <Title id="howWeVoteWorksTitleText">
               How WeVote Works
             </Title>
           </div>
           <IconButton
             aria-label="Close"
             className={classes.closeButton}
-            onClick={this.closeHowItWorksModal}
+            onClick={() => this.closeHowItWorksModal('profileCloseHowItWorksModal')}
             id="profileCloseHowItWorksModal"
             size="large"
           >

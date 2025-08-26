@@ -2,9 +2,7 @@ import { browser, driver, expect } from '@wdio/globals';
 import { Key } from 'webdriverio';
 import ReadyPage from '../page_objects/ready.page';
 import SignIn from '../page_objects/signin.page';
-
-
-const { describe, it } = require('mocha');
+import { describe, it } from 'mocha';
 
 
 // eslint-disable-next-line no-undef

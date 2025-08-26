@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   NAME: 'First Name',
   BROWSERSTACK_USER: '',
   BROWSERSTACK_KEY: '',

@@ -2,6 +2,7 @@ import { Button } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import TagManager from 'react-gtm-module';
 import BallotActions from '../actions/BallotActions';
 import VoterActions from '../actions/VoterActions';
 import DelayedLoad from '../common/components/Widgets/DelayedLoad';
@@ -12,6 +13,7 @@ import Cookies from '../common/utils/js-cookie/Cookies';
 import { renderLog } from '../common/utils/logging';
 import BallotStore from '../stores/BallotStore';
 import VoterStore from '../stores/VoterStore';
+import { getPageDetails } from '../utils/lookupPageNameAndPageTypeDict';
 import GoogleAutoComplete from './Widgets/GoogleAutoComplete';
 
 class AddressBox extends Component {
@@ -75,7 +77,7 @@ class AddressBox extends Component {
   }
 
   onVoterStoreChange () {
-// console.log('AddressBox, onVoterStoreChange, this.state:', this.state);
+    // console.log('AddressBox, onVoterStoreChange, this.state:', this.state);
     const { textForMapSearch, voterSavedAddress } = this.state;
 
     if (textForMapSearch && voterSavedAddress) {
@@ -104,7 +106,28 @@ class AddressBox extends Component {
     }
   }
 
-  voterAddressSaveSubmit = (event) => {
+  voterAddressCancel = (event, buttonId) => {
+    event.preventDefault();
+    const dataLayerObject = {
+      actionDetails: {
+        actionType: 'cancel',
+        buttonId,
+      },
+      event: 'action',
+      pageDetails: getPageDetails(),
+      userDetails: VoterStore.getAnalyticsUserDetails(),
+    };
+    // console.log('dataLayerObject:', dataLayerObject);
+    TagManager.dataLayer({ dataLayer: dataLayerObject });
+
+    if (this.props.toggleEditingAddress) {
+      this.props.toggleEditingAddress();
+    }
+  }
+
+  voterAddressSaveSubmit = (event, buttonId) => {
+    // console.log('Save button clicked');
+    // console.log('Passed buttonId:', buttonId);
     event.preventDefault();
     const { textForMapSearch } = this.state;
     // console.log('AddressBox voterAddressSaveSubmit, textForMapSearch:', textForMapSearch);
@@ -112,6 +135,24 @@ class AddressBox extends Component {
     if (textForMapSearch && textForMapSearch !== '') {
       ballotCaveat = `Saving new address '${textForMapSearch}'...`;
     }
+
+    // console.log('Passed buttonId:', buttonId);
+    const dataLayerObject = {
+      actionDetails: {
+        actionType: 'save',
+        buttonId,
+      },
+      event: 'action',
+      pageDetails: getPageDetails(),
+      userDetails: VoterStore.getAnalyticsUserDetails(),
+    };
+    const electionDetails = BallotStore.getAnalyticsElectionDetails(textForMapSearch);
+    if (electionDetails && electionDetails.electionDate) {
+      dataLayerObject.electionDetails = electionDetails;
+    }
+    // console.log('dataLayerObject:', dataLayerObject);
+    TagManager.dataLayer({ dataLayer: dataLayerObject });
+
     BallotActions.setBallotCaveat(ballotCaveat);
     VoterActions.clearVoterElectionId();
     VoterActions.voterAddressSave(textForMapSearch);
@@ -120,10 +161,11 @@ class AddressBox extends Component {
     this.setState({
       loading: true,
       voterSavedAddress: true,
-    } ,() => {
+    }, () => {
       if (this.props.onAddressSaveSuccess) {
         this.props.onAddressSaveSuccess();
-      }});
+      }
+    });
     // We want to leave the voter in the modal until we get a new ballot
     // this.returnNewTextForMapSearchLocal(textForMapSearch);
     // const { toggleSelectAddressModal } = this.props;
@@ -204,7 +246,7 @@ class AddressBox extends Component {
             <Button
               color="primary"
               id={externalUniqueId ? `addressBoxModalCancelButton-${externalUniqueId}` : 'addressBoxModalCancelButton'}
-              onClick={toggleEditingAddress}
+              onClick={(event) => this.voterAddressCancel(event, externalUniqueId ? `addressBoxModalCancelButton-${externalUniqueId}` : 'addressBoxModalCancelButton')}
               classes={{ root: classes.cancelButton }}
             >
               Cancel
@@ -214,7 +256,7 @@ class AddressBox extends Component {
           <Button
             color="primary"
             id={externalUniqueId ? `addressBoxModalSaveButton-${externalUniqueId}` : 'addressBoxModalSaveButton'}
-            onClick={this.voterAddressSaveSubmit}
+            onClick={(event) => this.voterAddressSaveSubmit(event, externalUniqueId ? `addressBoxModalSaveButton-${externalUniqueId}` : 'addressBoxModalSaveButton')}
             variant="contained"
             classes={showCancelEditAddressButton ? { root: classes.saveButton } : { root: classes.fullWidthSaveButton }}
             fullWidth={!showCancelEditAddressButton}

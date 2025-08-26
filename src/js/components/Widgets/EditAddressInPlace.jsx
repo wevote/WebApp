@@ -53,6 +53,7 @@ class EditAddressInPlace extends Component {
   }
 
   localTextForMapSearchUpdate = (textForMapSearch) => {
+    // console.log('localTextForMapSearchUpdate', textForMapSearch);
     this.setState({
       textForMapSearch,
     });

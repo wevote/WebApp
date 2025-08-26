@@ -1,5 +1,5 @@
 # This suddenly become necessary with XCode 15 and iOS 17, on October 25, 2023
-echo 'copying files and removing symlinks in WeVoteCordova/platforms/ios/www (new in Oct 2023)'
+echo 'copying files and removing symlinks in WeVoteCordova/platforms/ios/www'
 cd ../WeVoteCordova/platforms/ios/www || exit
 rm bundle.js
 cp ../../../../WebApp/build/bundle.js .

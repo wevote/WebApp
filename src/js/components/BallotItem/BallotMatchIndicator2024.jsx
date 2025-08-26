@@ -1,10 +1,10 @@
-import PropTypes from "prop-types";
-import React from "react";
-import { renderLog } from "../../common/utils/logging";
-import styled from "styled-components";
-import DesignTokenColors from "../../common/components/Style/DesignTokenColors";
+import PropTypes from 'prop-types';
+import React from 'react';
+import styled from 'styled-components';
+import { renderLog } from '../../common/utils/logging';
+import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 
-export default function BallotMatchIndicator2024({
+export default function BallotMatchIndicator2024 ({
   isBestMatch,
   isGoodMatch,
   isFairMatch,
@@ -12,8 +12,7 @@ export default function BallotMatchIndicator2024({
   isItAMatch,
   noData,
 }) {
-
-  renderLog("BallotMatchIndicator2024 functional component");
+  renderLog('BallotMatchIndicator2024 functional component');
 
   const getBackgroundColor = () => {
     if (isBestMatch) {
@@ -25,13 +24,13 @@ export default function BallotMatchIndicator2024({
     } else if (isItAMatch || noData) {
       return DesignTokenColors.neutral50; // Light Grey
     } else {
-      return "transparent"; // Default background color
+      return 'transparent'; // Default background color
     }
   };
 
   const getTextColor = () => {
     if (isBestMatch) {
-      return "white"; // White text
+      return 'white'; // White text
     } else if (isGoodMatch || isFairMatch) {
       return DesignTokenColors.confirmation800; // Dark Green
     } else if (isPoorMatch) {
@@ -39,7 +38,7 @@ export default function BallotMatchIndicator2024({
     } else if (isItAMatch || noData) {
       return DesignTokenColors.neutral700; // Black
     } else {
-      return "inherit"; // Default text color
+      return 'inherit'; // Default text color
     }
   };
 
@@ -51,48 +50,56 @@ export default function BallotMatchIndicator2024({
     } else if (isItAMatch || noData) {
       return DesignTokenColors.neutral100; // Medium Grey
     } else {
-      return "transparent"; // Default border color
+      return 'transparent'; // Default border color
     }
   };
 
   const getMatchLabel = () => {
-    if (isBestMatch)
+    if (isBestMatch) {
       return (
         <span>
           <BoldText>Best Match</BoldText>
         </span>
       );
-    if (isGoodMatch)
+    }
+    if (isGoodMatch) {
       return (
         <span>
           <BoldText>Good Match</BoldText>
         </span>
       );
-    if (isFairMatch)
+    }
+    if (isFairMatch) {
       return (
         <span>
           <BoldText>Fair Match</BoldText>
         </span>
       );
-    if (isPoorMatch)
+    }
+    if (isPoorMatch) {
       return (
         <span>
           <BoldText>Poor Match</BoldText>
         </span>
       );
-    if (isItAMatch)
+    }
+    if (isItAMatch) {
       return (
         <span>
-          Is it a <BoldText>Match?</BoldText>
+          Is it a
+          {' '}
+          <BoldText>Match?</BoldText>
         </span>
       );
-    if (noData)
+    }
+    if (noData) {
       return (
         <span>
           <BoldText>No Data</BoldText>
         </span>
       );
-    return "";
+    }
+    return '';
   };
 
   return (
@@ -125,7 +132,7 @@ BallotMatchIndicator2024.defaultProps = {
   noData: false,
 };
 
-const StyledButton = styled("div")`
+const StyledButton = styled('div')`
   background-color: ${({ backgroundColor }) => backgroundColor};
   color: ${({ textColor }) => textColor};
   padding: 3px 6px;

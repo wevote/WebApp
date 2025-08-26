@@ -1,6 +1,6 @@
-const { driver } = require('@wdio/globals');
-const { readFileSync } = require('fs');
-const browserCapabilities = require('../capabilities/browser_bvt.json');
+import { driver } from '@wdio/globals';
+import { readFileSync } from 'fs';
+import browserCapabilities from '../capabilities/browser_bvt.json' with { type: 'json' };
 
 let mobileCapabilities = [];
 
@@ -15,7 +15,7 @@ const buildName = `BVT: ${dateForDisplay}`;
 
 // https://webdriver.io/docs/configurationfile
 
-module.exports.config = {
+export const config = {
   user: process.env.BROWSERSTACK_USERNAME, // Browserstack user name and password are configured in the github secrets (github repository-> settings-> secrets and variables -> actions)
   key: process.env.BROWSERSTACK_ACCESS_KEY,
   injectGlobals: false,
@@ -75,14 +75,13 @@ module.exports.config = {
   },
 };
 
-module.exports.config.capabilities.forEach((capability) => {
-  const device = capability;
+config.capabilities.forEach((device) => {
   const keys = Object.keys(device);
   keys.forEach((key) => {
-    if (key in module.exports.config.commonCapabilities) {
+    if (key in config.commonCapabilities) {
       device[key] = {
         ...device[key],
-        ...module.exports.config.commonCapabilities[key],
+        ...config.commonCapabilities[key],
       };
     }
   });

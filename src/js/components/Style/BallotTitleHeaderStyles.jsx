@@ -1,8 +1,10 @@
 import styled from 'styled-components';
 import colors from '../../common/components/Style/Colors';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
+import { isIOSAppOnMac, isIPadGiantSize } from '../../common/utils/cordovaUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
-import isMobileScreenSize from '../../common/utils/isMobileScreenSize'; // 2024-04-16 Upgrade to using this
+import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
+import showBallotDecisionsTabs from '../../utilsApi/showBallotDecisionsTabs'; // 2024-04-16 Upgrade to using this
 
 export const BallotAddress = styled('button', {
   shouldForwardProp: (prop) => !['centerText', 'allowTextWrap'].includes(prop),
@@ -27,7 +29,7 @@ export const ContentWrapper = styled('div', {
 })(({ spaceBetween }) => (`
   display: flex;
   flex: 1;
-  min-height: 0px;
+  min-height: 110px;
   ${spaceBetween ? 'justify-content: space-between;' : 'justify-content: center;'}
 `));
 
@@ -105,14 +107,14 @@ export const VoteByBelowLabel = styled('div')`
 `;
 
 export const VoteByBelowWrapper = styled('div', {
-  shouldForwardProp: (prop) => !['centerText', 'electionDateBelow'].includes(prop),
-})(({ centerText, electionDateBelow, theme }) => (`
+  shouldForwardProp: (prop) => !['centerText'].includes(prop),
+})(({ centerText, theme }) => (`
   display: flex;
   ${centerText ? 'justify-content: center;' : 'justify-content: start;'}
   margin: -2px 0 0 2px;
-  // ${theme.breakpoints.up('md')} {
-  //   ${electionDateBelow ? '' : 'display: none;'}
-  // }
+  ${theme.breakpoints.up('md')} {
+    display: none;
+  }
 `));
 
 export const VoteByRightLabel = styled('div')`
@@ -122,13 +124,30 @@ export const VoteByRightLabel = styled('div')`
   text-transform: uppercase;
 `;
 
-export const VoteByRightWrapper = styled('div', {
-  shouldForwardProp: (prop) => !['electionDateBelow'].includes(prop),
-})(({ electionDateBelow, theme }) => (`
-  // ${electionDateBelow ? 'display: none;' : 'display: block;'}
+export const VoteByRightWrapper = styled('div')(({ theme }) => (`
   margin-left: 8px;
   margin-top: 4px;
   ${theme.breakpoints.down('md')} {
     display: none;
   }
 `));
+
+export function ballotWrapperBodyStyles () {
+  const twoColumnDisplay = isIOSAppOnMac() || isIPadGiantSize();
+  let styles = {      // initially row from main.css
+    display: 'flex',
+    flexWrap: 'wrap',
+    marginRight: '-15px',
+    marginLeft: '-15px',
+    marginTop: '16px',
+  };
+
+  if (showBallotDecisionsTabs()) {
+    styles.paddingTop = '36px';
+  } else if (isWebApp() || twoColumnDisplay) {
+    styles.paddingTop = '105px';
+  } else {
+    styles = {};
+  }
+  return styles;
+}

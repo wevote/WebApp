@@ -17,15 +17,15 @@ class FAQPage extends Page {
   }
 
   get getTwitterIconElement () {
-    return $('#wevoteTwitter');
+    return $('#weVoteTwitter');
   }
 
   get getFacebookIconElement () {
-    return $('#wevoteFacebook');
+    return $('#weVoteFacebook');
   }
 
   get getInstagramIconElement () {
-    return $('#wevoteInstagram');
+    return $('#weVoteInstagram');
   }
 
   get getWeVoteElementFromInstagram () {
@@ -41,7 +41,7 @@ class FAQPage extends Page {
   }
 
   get getBlogIconElement () {
-    return $('#wevoteBlog');
+    return $('#weVoteBlog');
   }
 
   get getValueLinkElement () {

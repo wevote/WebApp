@@ -167,7 +167,7 @@ class ChallengeInviteFriends extends Component {
     if (challengeSEOFriendlyPath) {
       challengeBasePath = `/${challengeSEOFriendlyPath}/+/`;
     } else {
-      challengeBasePath = `/+/${challengeWeVoteId}/`;
+      challengeBasePath = `/++/${challengeWeVoteId}/`;
     }
     return challengeBasePath;
   }

@@ -10,7 +10,7 @@ class TooltipIcon extends Component {
   render () {
     return (
       <Icon>
-        {isMobileScreenSize() ? (<span />) : (
+        {isMobileScreenSize() ? (<></>) : (
           <Tooltip
             title={this.props.title}
           >

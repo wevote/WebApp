@@ -12,8 +12,9 @@ import DesignTokenColors from '../Style/DesignTokenColors';
 import VoterPositionEditModal from '../../../components/PositionItem/VoterPositionEditModal';
 
 
+// THIS VERSION IS DEPRECATED. Use this instead: src/js/components/PositionItem/VoterPositionEntryAndDisplay.jsx
 function VoterPositionEntryAndDisplay ({ classes }) {
-  const [voterOpinion, setVoterOpinion] = useState(null);
+  const [voterOpinion, setVoterOpinion] = useState(true);
   const [anchorElEdit, setAnchorElEdit] = useState(null);
   const [anchorElLikes, setAnchorElLikes] = useState(null);
   const [anchorElDislikes, setAnchorElDislikes] = useState(null);
@@ -332,7 +333,7 @@ function VoterPositionEntryAndDisplay ({ classes }) {
         ) :
           (
             <LeaveOpinion onClick={voterOpinionClick}>
-              <LeaveOpinionText>What&apos;s your opinion?</LeaveOpinionText>
+              <LeaveOpinionText>What&apos;s your opinion? DEPRECATED</LeaveOpinionText>
             </LeaveOpinion>
           )}
       </VoterOpinionDisplayContainer>

@@ -1,23 +1,24 @@
 import PropTypes from 'prop-types';
 import React, { Suspense, useState } from 'react';
 import styled from 'styled-components';
-import { BlockOutlined, CheckOutlined, Launch, MoreHoriz } from '@mui/icons-material';
+import { Launch, MoreHoriz } from '@mui/icons-material';
 import Popover from '@mui/material/Popover';
 import { Avatar, Typography } from '@mui/material';
 import { withStyles } from '@mui/styles';
-import HeartFavoriteToggleLive from '../Widgets/HeartFavoriteToggle/HeartFavoriteToggleLive';
+import HeartFavoriteToggleLoader from '../Widgets/HeartFavoriteToggle/HeartFavoriteToggleLoader';
 import ThumbsUpDownToggle from '../Widgets/ThumbsUpDownToggle/ThumbsUpDownToggle';
 import DesignTokenColors from '../Style/DesignTokenColors';
+import { SpeakerInfoWrapper, SpeakerName, SpeakerStatement, SpeakerStatementWrapper } from '../Style/PositionDisplayStyles';
 import speakerDisplayNameToInitials from '../../utils/speakerDisplayNameToInitials';
-import {
-  getDateFromUltimateElectionDate, getTodayAsInteger, timeFromDate,
-} from '../../utils/dateFormat';
-import AppObservableStore from "../../stores/AppObservableStore";
+import SpeakerEndorsedOrOpposedSnippet from './SpeakerEndorsedOrOpposedSnippet';
+import AppObservableStore from '../../stores/AppObservableStore';
+import stringContains from '../../utils/stringContains';
+import lookupPageNameAndPageTypeDict from '../../../utils/lookupPageNameAndPageTypeDict';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../Widgets/OpenExternalWebSite'));
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../Widgets/ReadMore'));
 
-function PositionForBallotItem ({ classes, linksOpenExternalWebsite, politicianWeVoteId, position }) {
+function PositionForBallotItem ({ classes, linksOpenExternalWebsite, position }) {
   const [anchorEl, setAnchorEL] = useState(null);
 
   const onDotButtonClick = (e) => {
@@ -32,44 +33,30 @@ function PositionForBallotItem ({ classes, linksOpenExternalWebsite, politicianW
   const id = open ? 'simple-popover' : undefined;
 
   const {
-    is_oppose_or_negative_rating: isOpposeOrNegativeRating,
-    is_support_or_positive_rating: isSupportOrPositiveRating,
     more_info_url: moreInfoUrl,
-    organization_we_vote_id: organizationWeVoteId,
-    position_ultimate_election_date: positionUltimateElectionDateAsInteger,
-    position_we_vote_id: positionWeVoteId,
-    position_year: positionYear,
+    organization_we_vote_id: organizationWeVoteIdRaw,
     statement_text: statementText,
     speaker_display_name: speakerDisplayName,
     speaker_twitter_handle: speakerTwitterHandle,
     speaker_we_vote_id: speakerWeVoteId,
     speaker_image_url_https_medium: speakerImageMedium,
   } = position;
+  // console.log('PositionForBallotItem: ', position);
   const campaignXWeVoteId = ''; // Get this from politicianWeVoteId
   const { sx, children } = speakerDisplayNameToInitials(speakerDisplayName);
   // I think we need a HeartFavoriteToggleLive that accepts an organizationWeVoteId
-  const heartToggleOn = false;
+  const heartToggleOn = true;
   const voterLikesOn = false;
-  let howLongAgoOrThisYear = '';
-  const todayAsInteger = getTodayAsInteger(0);
-  const currentYear = new Date().getFullYear();
-  // console.log('currentYear', currentYear, ', positionYear', positionYear);
-  // console.log('todayAsInteger', todayAsInteger, ', positionUltimateElectionDateAsInteger', positionUltimateElectionDateAsInteger);
-  if (todayAsInteger && currentYear) {
-    if (positionYear === currentYear) {
-      howLongAgoOrThisYear = 'this year';
-    } else if (positionUltimateElectionDateAsInteger && (todayAsInteger <= positionUltimateElectionDateAsInteger)) {
-      howLongAgoOrThisYear = 'this year';
-    } else if (positionUltimateElectionDateAsInteger && (todayAsInteger > positionUltimateElectionDateAsInteger)) {
-      const positionUltimateElectionDate = getDateFromUltimateElectionDate(positionUltimateElectionDateAsInteger);
-      howLongAgoOrThisYear = timeFromDate(positionUltimateElectionDate);
-    }
+  let organizationWeVoteId = organizationWeVoteIdRaw;
+  // Is speakerWeVoteId an organizationWeVoteId?
+  if (!organizationWeVoteId && speakerWeVoteId && stringContains('org', speakerWeVoteId)) {
+    organizationWeVoteId = speakerWeVoteId;
   }
-  const organizationWeVoteIdForDisplay = organizationWeVoteId || speakerWeVoteId;
-  const voterGuideWeVoteIdLink = `/voterguide/${organizationWeVoteIdForDisplay}`;
+  const voterGuideWeVoteIdLink = `/voterguide/${organizationWeVoteId}`;
   const speakerLink = speakerTwitterHandle ? `/${speakerTwitterHandle}` : voterGuideWeVoteIdLink;
   const hostnameAndPort = AppObservableStore.getWeVoteRootURL();
   const speakerLinkExternal = `${hostnameAndPort}${speakerLink}`;
+  // console.log('PositionForBallotItem organizationWeVoteId:', organizationWeVoteId, ', campaignXWeVoteId:', campaignXWeVoteId);
 
   const speakerImageJsx = (
     <SpeakerImageWrapper>
@@ -82,10 +69,13 @@ function PositionForBallotItem ({ classes, linksOpenExternalWebsite, politicianW
   );
   return (
     <PositionForBallotItemWrapper>
-      {(linksOpenExternalWebsite && speakerLinkExternal) ? (
+      {linksOpenExternalWebsite ? (
         <Suspense fallback={<></>}>
           <OpenExternalWebSite
-            body={<>{speakerImageJsx}</>}
+            body={speakerImageJsx}
+            destinationPageName={lookupPageNameAndPageTypeDict(speakerLink).pageName}
+            destinationPageType={lookupPageNameAndPageTypeDict(speakerLink).pageType}
+            linkIdAttribute="positionSpeakerImage"
             target="_blank"
             trackingOn
             url={speakerLinkExternal}
@@ -96,10 +86,13 @@ function PositionForBallotItem ({ classes, linksOpenExternalWebsite, politicianW
       )}
       <SpeakerInfoWrapper>
         <SpeakerInfoNameFavoritesWrapper>
-          {(linksOpenExternalWebsite && speakerLinkExternal) ? (
+          {linksOpenExternalWebsite ? (
             <Suspense fallback={<></>}>
               <OpenExternalWebSite
                 body={<SpeakerName>{speakerDisplayName}</SpeakerName>}
+                destinationPageName={lookupPageNameAndPageTypeDict(speakerLink).pageName}
+                destinationPageType={lookupPageNameAndPageTypeDict(speakerLink).pageType}
+                linkIdAttribute="positionSpeakerDisplayName"
                 target="_blank"
                 trackingOn
                 url={speakerLinkExternal}
@@ -108,9 +101,9 @@ function PositionForBallotItem ({ classes, linksOpenExternalWebsite, politicianW
           ) : (
             <SpeakerName>{speakerDisplayName}</SpeakerName>
           )}
-          {heartToggleOn && (
+          {(heartToggleOn && (campaignXWeVoteId || organizationWeVoteId)) && (
             <HeartFavoriteToggleWrapper>
-              <HeartFavoriteToggleLive campaignXWeVoteId={campaignXWeVoteId} />
+              <HeartFavoriteToggleLoader campaignXWeVoteId={campaignXWeVoteId} organizationWeVoteId={organizationWeVoteId} />
             </HeartFavoriteToggleWrapper>
           )}
         </SpeakerInfoNameFavoritesWrapper>
@@ -127,37 +120,7 @@ function PositionForBallotItem ({ classes, linksOpenExternalWebsite, politicianW
           </SpeakerStatementWrapper>
         )}
         <SpeakerPositionLikesSourceWrapper>
-          <SpeakerPositionWrapper>
-            {isSupportOrPositiveRating && (
-              <SpeakerPosition>
-                <CheckOutlinedStyled />
-                <PositionText>
-                  Endorsed
-                  {' '}
-                  {howLongAgoOrThisYear}
-                </PositionText>
-              </SpeakerPosition>
-            )}
-            {isOpposeOrNegativeRating && (
-              <SpeakerPosition>
-                <BlockOutlinedStyled />
-                <PositionText>
-                  Opposed
-                  {' '}
-                  {howLongAgoOrThisYear}
-                </PositionText>
-              </SpeakerPosition>
-            )}
-            {(!isOpposeOrNegativeRating && !isSupportOrPositiveRating) && (
-              <SpeakerPosition>
-                <PositionText>
-                  Commented
-                  {' '}
-                  {howLongAgoOrThisYear}
-                </PositionText>
-              </SpeakerPosition>
-            )}
-          </SpeakerPositionWrapper>
+          <SpeakerEndorsedOrOpposedSnippet position={position} />
           <ThumbsUpAndSourceWrapper>
             <FlexDiv>
               {voterLikesOn && (
@@ -175,15 +138,18 @@ function PositionForBallotItem ({ classes, linksOpenExternalWebsite, politicianW
               )}
               {moreInfoUrl && (
                 <Popover
-                  id={id}
-                  open={open}
                   anchorEl={anchorEl}
+                  anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'left',
+                  }}
+                  id={id}
+                  // marginThreshold={6}
                   onClose={handlePopoverClose}
-                  anchorReference="anchorPosition"
-                  anchorPosition={{ top: 75, left: 370 }}
+                  open={open}
                   transformOrigin={{
                     vertical: 'top',
-                    horizontal: 'left',
+                    horizontal: 'right',
                   }}
                   classes={{ root: classes.popoverRoot }}
                 >
@@ -198,6 +164,9 @@ function PositionForBallotItem ({ classes, linksOpenExternalWebsite, politicianW
                           </OpinionSource>
                         </Typography>
                       )}
+                      destinationPageName="PositionSourceUrl"
+                      destinationPageType="endorserWebsite"
+                      linkIdAttribute="viewSourceOfPosition"
                       target="_blank"
                       trackingOn
                       url={moreInfoUrl}
@@ -219,101 +188,21 @@ PositionForBallotItem.propTypes = {
   position: PropTypes.object,
 };
 
-const PositionForBallotItemWrapper = styled('div')`
-  display: flex;
-
-  &:not(:last-child) {
-    border-bottom: 1px solid ${DesignTokenColors.neutral100};
-  }
-`;
-
-const SpeakerImageWrapper = styled('div')`
-  width: 42px;
-`;
-
-const SpeakerImage = styled('img')`
-  border-radius: 42px;
-  height: 42px;
-  min-width: 42px;
-  width: 42px;
-`;
-
-const SpeakerInfoWrapper = styled('div')`
-  display: flex;
-  flex-direction: column;
-  width: 500px;
-  margin-left: 15px;
-`;
-
-const SpeakerInfoNameFavoritesWrapper = styled('div')`
-  display: flex;
-  align-items: center;
-`;
-
-const HeartFavoriteToggleWrapper = styled('div')`
-  margin-top: -5px;
-  margin-left: 5px;
-`;
-
-const SpeakerName = styled('h3')`
-  color: ${DesignTokenColors.neutral900};
-`;
-
-const SpeakerStatementWrapper = styled('div')`
-  max-width: 415px;
-`;
-
-const SpeakerStatement = styled('p')`
-  color: ${DesignTokenColors.neutral900};
-`;
-
-const SpeakerPositionLikesSourceWrapper = styled('div')`
-  display: flex;
-  justify-content: space-between;
-`;
-
-const SpeakerPositionWrapper = styled('div')`
-  display: flex;
-`;
-
-const SpeakerPosition = styled('div')`
-  display: flex;
-`;
-
-const CheckOutlinedStyled = styled(CheckOutlined)`
-  color: ${DesignTokenColors.neutral900}
-`;
-
-const BlockOutlinedStyled = styled(BlockOutlined)`
-  color: ${DesignTokenColors.neutral900}
-`;
-
-const PositionText = styled('p')`
-  color: ${DesignTokenColors.neutral700};
-  font-weight: 400;
-  font-size: 14px;
-  margin-left: 5px;
-  white-space: nowrap;
-`;
-
-const ThumbsUpAndSourceWrapper = styled('div')`
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
-  margin-top: -15px;
-`;
+const styles = () => ({
+  popoverRoot: {
+    borderRadius: 2,
+    border: `1px solid ${DesignTokenColors.neutral100}`,
+    marginTop: '4px',
+  },
+});
 
 const FlexDiv = styled('div')`
   display: flex;
 `;
 
-const SourceButton = styled('button')`
-  width: 34px;
-  height: 34px;
-  border: none;
-  border-radius: 30px;
-  margin-left: 25px;
+const HeartFavoriteToggleWrapper = styled('div')`
   margin-top: -5px;
+  margin-left: 5px;
 `;
 
 const LaunchStyled = styled(Launch)`
@@ -335,12 +224,49 @@ const OpinionSource = styled('button')`
   border: none;
 `;
 
-const styles = () => ({
-  popoverRoot: {
-    borderRadius: 2,
-    border: `1px solid ${DesignTokenColors.neutral100}`,
-    marginTop: '3px',
-  },
-});
+const PositionForBallotItemWrapper = styled('div')`
+  display: flex;
+
+  &:not(:last-child) {
+    border-bottom: 1px solid ${DesignTokenColors.neutral100};
+  }
+`;
+
+const SourceButton = styled('button')`
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: 30px;
+  margin-left: 25px;
+  margin-top: -5px;
+`;
+
+const SpeakerImage = styled('img')`
+  border-radius: 42px;
+  height: 42px;
+  min-width: 42px;
+  width: 42px;
+`;
+
+const SpeakerImageWrapper = styled('div')`
+  width: 42px;
+`;
+
+const SpeakerInfoNameFavoritesWrapper = styled('div')`
+  display: flex;
+  align-items: center;
+`;
+
+const SpeakerPositionLikesSourceWrapper = styled('div')`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const ThumbsUpAndSourceWrapper = styled('div')`
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  margin-top: -15px;
+`;
 
 export default withStyles(styles)(PositionForBallotItem);

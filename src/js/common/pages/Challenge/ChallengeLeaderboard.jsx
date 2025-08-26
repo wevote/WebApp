@@ -38,7 +38,7 @@ const ChallengeLeaderboard = ({ classes, challengeWeVoteId, clearSearchFunction,
               You
             </Button>
             <Button
-              classes={{root: classes.buttonDesktop}}
+              classes={{ root: classes.buttonDesktop }}
               color="primary"
               id="challengeLeaderboardTop50Button"
               onClick={() => console.log('Top 50 button clicked')}
@@ -56,7 +56,8 @@ const ChallengeLeaderboard = ({ classes, challengeWeVoteId, clearSearchFunction,
               clearFunction={clearSearchFunction}
               searchUpdateDelayTime={500}
             />
-          </SearchBarWrapper>f
+          </SearchBarWrapper>
+          f
         </ButtonAndSearchWrapper>
         <LeaderboardInfoWrapper>
           {!!(rankOfVoter) && (
@@ -64,11 +65,11 @@ const ChallengeLeaderboard = ({ classes, challengeWeVoteId, clearSearchFunction,
           )}
         </LeaderboardInfoWrapper>
         <LeaderboardTableHeader>
-          <div style={{display: 'flex', gap: '32px'}}>
+          <div style={{ display: 'flex', gap: '32px' }}>
             <p>RANK</p>
             <p>NAME</p>
           </div>
-          <div style={{display: 'flex', gap: '25px'}}>
+          <div style={{ display: 'flex', gap: '25px' }}>
             <p>POINTS</p>
             <p>FRIENDS JOINED</p>
           </div>
@@ -76,7 +77,7 @@ const ChallengeLeaderboard = ({ classes, challengeWeVoteId, clearSearchFunction,
       </TopSection>
       <ChallengeParticipantList
         challengeWeVoteId={challengeWeVoteId}
-        currentVoterWeVoteId={'wv02voter123'}
+        currentVoterWeVoteId="wv02voter123"
       />
     </LeaderboardContainer>
   );

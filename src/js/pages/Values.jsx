@@ -32,7 +32,7 @@ import lazyPreloadPages from '../utils/lazyPreloadPages';
 
 const FirstAndLastNameRequiredAlert = React.lazy(() => import(/* webpackChunkName: 'FirstAndLastNameRequiredAlert' */ '../components/Widgets/FirstAndLastNameRequiredAlert'));
 
-const testimonialPhoto = '../../img/global/photos/Dale_McGrew-48x48.jpg';
+const testimonialPhoto = '../../img/global/photos/Dale_McGrew-48x48.jpg';  // DON'T COPY this pattern, we should be using normalizedImagePath()
 
 // const facebookInfoText = "By signing into Facebook here, you can choose which friends you want to talk politics with, and avoid the trolls (or that guy from work who rambles on)! You control who is in your WeVote network.";
 const testimonialAuthor = 'Dale M., Oakland, California';

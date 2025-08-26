@@ -71,7 +71,7 @@ const ChallengeInviteFriendsTopNavigation = ({ challengeSEOFriendlyPath, challen
       // console.log('Render ChallengeInviteFriendsTopNavigation, initial value set to 3');
       setValue(3);
     }
-  } else if (stringContains('/+/', pathname)) {
+  } else if (stringContains('/+/', pathname) || stringContains('/++/', pathname)) {
     // console.log('Render ChallengeInviteFriendsTopNavigation, initial value set to 0');
     if (hideAboutTab) {
       if (value !== 2) {
@@ -90,9 +90,9 @@ const ChallengeInviteFriendsTopNavigation = ({ challengeSEOFriendlyPath, challen
     leaderboardUrl = `/${challengeSEOFriendlyPath}/+/leaderboard`;
     friendsUrl = `/${challengeSEOFriendlyPath}/+/friends`;
   } else {
-    aboutUrl = `/+/${challengeWeVoteId}`;
-    leaderboardUrl = `/+/${challengeWeVoteId}/leaderboard`;
-    friendsUrl = `/+/${challengeWeVoteId}/friends`;
+    aboutUrl = `/++/${challengeWeVoteId}`;
+    leaderboardUrl = `/++/${challengeWeVoteId}/leaderboard`;
+    friendsUrl = `/++/${challengeWeVoteId}/friends`;
   }
 
   // console.log('ChallengeInviteFriendsTopNavigation, aboutUrl:', aboutUrl);
@@ -135,8 +135,8 @@ const ChallengeInviteFriendsTopNavigation = ({ challengeSEOFriendlyPath, challen
               component={Toolbar}
             >
               <TabsStyled value={value} onChange={handleChange} aria-label="Tab menu">
-                {!hideAboutTab && <TabStyled id="challengeLandingTab-0" label="About" onClick={() => history.push(aboutUrl)} value={1} isSmallScreen={isSmallScreen} />}
-                <TabStyled id="challengeLandingTab-1" label="Leaderboard" onClick={() => history.push(leaderboardUrl)} value={2} isSmallScreen={isSmallScreen} />
+                {!hideAboutTab && <TabStyled id="challengeLandingTab-0" label="About" onClick={() => history.push(aboutUrl)} value={1} $isSmallScreen={isSmallScreen} />}
+                <TabStyled id="challengeLandingTab-1" label="Leaderboard" onClick={() => history.push(leaderboardUrl)} value={2} $isSmallScreen={isSmallScreen} />
                 {voterIsChallengeParticipant && <TabStyled id="challengeLandingTab-2" label={isSmallScreen ? 'Invited' : 'Invited friends'} onClick={() => history.push(friendsUrl)} value={3} />}
               </TabsStyled>
               <MoreInfoIconWrapper

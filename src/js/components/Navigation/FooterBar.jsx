@@ -111,7 +111,7 @@ class FooterBar extends React.Component {
       });
     }
     // In browser mobile, we can offer donate footer link
-    // In Cordova, we cannot currently offer donate footer link
+    // In Cordova Android, we cannot currently offer donate footer link
     // If NOT signed in, turn Discuss off and How It Works on
     // Regardless of whether visible or not the option's numerical position remains the same
     switch (value) {
@@ -144,7 +144,7 @@ class FooterBar extends React.Component {
     if (pathname.toLowerCase().endsWith('/cs/')) return 2;
     if (stringContains('/friends', pathname.toLowerCase())) return 3;
     if (stringContains('/challenges', pathname.toLowerCase())) return 4;
-    if (stringContains('/+/', pathname)) return 4;
+    if (stringContains('/+/', pathname) || stringContains('/++/', pathname)) return 4;
     if (stringContains('/squads', pathname.toLowerCase())) return 4;
     if (stringContains('/news', pathname.toLowerCase())) return 5;
     if (stringContains('/donate', pathname.toLowerCase())) return 6;
@@ -229,17 +229,17 @@ class FooterBar extends React.Component {
     // let howItWorksVisible;
     const howItWorksVisible = false;
     if (isCordova() || inPrivateLabelMode) {
-      discussVisible = false; // 2023-09-04 Dale We are turning off Discuss footer icon for now
-      donateVisible = false;  // Can't have donations in iOS
+      discussVisible = false;    // 2023-09-04 Dale We are turning off Discuss footer icon for now
+      donateVisible  = isIOS();  // 2025-06-17 Enabling donations, we hear it is now permissible for nonprofits in iOS
       // howItWorksVisible = true;
     } else if (voterIsSignedIn) {
       // If signed in, turn Discuss on, and How It Works off
-      discussVisible = false; // 2023-09-04 Dale We are turning off Discuss footer icon for now
-      donateVisible = true;
+      discussVisible = false;    // 2023-09-04 Dale We are turning off Discuss footer icon for now
+      donateVisible  = true;
       // howItWorksVisible = false;
     } else {
       discussVisible = false;
-      donateVisible = true; // 2022-12 Donate not used for now
+      donateVisible  = true;
       // howItWorksVisible = true;
     }
     // console.log('--------- Footer bar donateVisible ', donateVisible, 'squadsVisible', squadsVisible);

@@ -35,6 +35,7 @@ import AppObservableStore, { messageService } from '../../common/stores/AppObser
 import { Candidate, CandidateNameAndPartyWrapper, CandidateNameH4, CandidateParty, CandidateTopRow } from '../Style/BallotStyles';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import CampaignSupportThermometer from '../../common/components/CampaignSupport/CampaignSupportThermometer';
+import VoterPositionEntryAndDisplay from '../PositionItem/VoterPositionEntryAndDisplay';
 // import { handleResize } from '../../common/utils/isMobileScreenSize';
 
 const CampaignRetrieveController = React.lazy(() => import(/* webpackChunkName: 'CampaignRetrieveController' */ '../../common/components/Campaign/CampaignRetrieveController'));
@@ -468,6 +469,12 @@ class OrganizationModal extends Component {
             <ScoreSummaryListControllerBottomSpacer />
           </>
         )}
+        <VoterPositionEntryAndDisplayWrapper>
+          <VoterPositionEntryAndDisplay
+            politicianWeVoteId={politicianWeVoteId}
+            // politicianName={politicianName}
+          />
+        </VoterPositionEntryAndDisplayWrapper>
         { !!(allCachedPositionsForThisBallotItem.length) && (
           <>
             { !hidePositions || unFurlPositions ? (
@@ -620,6 +627,10 @@ const CloseDrawerIconWrapper = styled('div')`
 const CloseDrawerHeaderIconWrapper = styled('div')`
 `;
 
+const HeartToggleAndThermometerWrapper = styled('div')`
+  margin-top: 12px;
+`;
+
 const PoliticianCardForListWrapper = styled('div')`
   margin: 0 15px;
 `;
@@ -628,13 +639,13 @@ const ScoreSummaryListControllerBottomSpacer = styled('div')`
   margin-bottom: 42px;
 `;
 
-const HeartToggleAndThermometerWrapper = styled('div')`
-  margin-top: 12px;
-`;
-
 const ShowMoreWrapper = styled('div')`
   margin-bottom: 32px;
   margin-top: 32px;
+`;
+
+const VoterPositionEntryAndDisplayWrapper = styled('div')`
+  margin: 0 15px;
 `;
 
 export default withTheme(withStyles(styles)(OrganizationModal));

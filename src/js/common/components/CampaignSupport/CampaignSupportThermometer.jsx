@@ -178,6 +178,7 @@ class CampaignSupportThermometer extends React.Component {
     }
     const showEncouragementToSupport = !!(supportersCountNextGoal && !inCompressedMode && !finalElectionDateInPast && !voterOpposesCampaignX);
 
+    // console.log('CampaignSupportThermometer render: campaignXWeVoteId:', campaignXWeVoteId, ', supportersCount:', supportersCount, ', supportersCountNextGoal:', supportersCountNextGoal);
     return (
       <CampaignSupportThermometerWrapper>
         <HeartPlusDetailsWrapper>

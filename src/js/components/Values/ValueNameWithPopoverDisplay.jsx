@@ -60,11 +60,17 @@ class ValueNameWithPopoverDisplay extends Component {
     const allCachedPositionsForThisCandidateLength = allCachedPositionsForThisCandidate.length;
     const allIssuesVoterIsFollowing = IssueStore.getIssuesVoterIsFollowing();
     const allIssuesVoterIsFollowingLength = allIssuesVoterIsFollowing.length;
-    // console.log('allCachedPositionsForThisCandidate: ', allCachedPositionsForThisCandidate);
+    // if (ballotItemWeVoteId === 'wv87cand2313126') {
+    //   console.log('Steve Garvey allCachedPositionsForThisCandidate: ', allCachedPositionsForThisCandidate);
+    // }
     if (allCachedPositionsForThisCandidateLength !== priorAllCachedPositionsForThisCandidateLength || allIssuesVoterIsFollowingLength !== priorAllIssuesVoterIsFollowingLength) {
       const limitToThisIssue = oneIssue.issue_we_vote_id;
-      const showPositionsInVotersNetwork = false;
-      const issueSpecificPositionList = getPositionSummaryListForBallotItem(ballotItemWeVoteId, limitToThisIssue, showPositionsInVotersNetwork);
+      const showPositionsInVotersNetwork = false; // Show all, don't filter by in or out of network
+      const showPositionsOutOfThisVotersNetwork = false; // Show all, don't filter by in or out of network
+      const issueSpecificPositionList = getPositionSummaryListForBallotItem(ballotItemWeVoteId, limitToThisIssue, showPositionsInVotersNetwork, showPositionsOutOfThisVotersNetwork);
+      // if (ballotItemWeVoteId === 'wv87cand2313126') {
+      //   console.log('Steve Garvey limitToThisIssue: ', limitToThisIssue, ', issueSpecificPositionList: ', issueSpecificPositionList);
+      // }
       const organizationsUnderThisIssueCount = issueSpecificPositionList.length;
       this.setState({
         issueSpecificPositionList,

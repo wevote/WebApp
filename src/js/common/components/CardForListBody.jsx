@@ -62,7 +62,7 @@ function CardForListBody (props) {
     politicalPartySvgNameWithPath = '../../img/global/svg-icons/political-party-working-families.svg';
   }
   const politicianDetailsURL = `${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}${politicianBasePath}`;
-  const destinationPage = lookupPageNameAndPageTypeDict(politicianDetailsURL);
+  const destinationPage = lookupPageNameAndPageTypeDict(politicianBasePath);
   // console.log('politicianBasePath:', politicianBasePath);
   // console.log('CardForListBody politicianDetailsURL:', politicianDetailsURL, ', destinationPage: ', destinationPage);
   const location = useLocation();
@@ -94,6 +94,8 @@ function CardForListBody (props) {
                           url={politicianDetailsURL}
                           target="_blank"
                           className="open-web-site open-web-site__no-right-padding"
+                          candidateWeVoteId={candidateWeVoteId}
+                          politicianWeVoteId={politicianWeVoteId}
                           body={(
                             <span>
                               <Launch
@@ -275,12 +277,13 @@ function CardForListBody (props) {
                 <Suspense fallback={<></>}>
                   {(finalElectionDateInPast || usePoliticianWeVoteIdForBallotItem) ? (
                     <ItemActionBar
-                      ballotItemWeVoteId={politicianWeVoteId}
+                      ballotItemWeVoteId={candidateWeVoteId}
                       ballotItemDisplayName={ballotItemDisplayName}
                       commentButtonHide
                       // externalUniqueId={`${idBaseName}ForList-ItemActionBar-${politicianWeVoteId}-${externalUniqueId}`}
                       hidePositionPublicToggle
                       inCard
+                      politicianWeVoteId={politicianWeVoteId}
                       positionPublicToggleWrapAllowed
                       shareButtonHide
                       useHelpDefeatOrHelpWin
@@ -294,6 +297,7 @@ function CardForListBody (props) {
                       // externalUniqueId={`${idBaseName}ForList-ItemActionBar-${politicianWeVoteId}-${externalUniqueId}`}
                       hidePositionPublicToggle
                       inCard
+                      politicianWeVoteId={politicianWeVoteId}
                       positionPublicToggleWrapAllowed
                       shareButtonHide
                       useHelpDefeatOrHelpWin

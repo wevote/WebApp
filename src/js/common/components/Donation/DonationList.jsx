@@ -179,7 +179,7 @@ class DonationList extends Component {
                   <StyledTableCellAll align="right">{`$${row.amount}`}</StyledTableCellAll>
                   <StyledTableCellTablet align="center">{row.lastCharged}</StyledTableCellTablet>
                   <StyledTableCellTablet align="center">
-                    {isMobileScreenSize() ? (<span />) : (
+                    {isMobileScreenSize() ? (<></>) : (
                       <Tooltip title={row.subscriptionId || 'Toolman Taylor'} placement="right"><span>{row.brand}</span></Tooltip>
                     )}
                   </StyledTableCellTablet>

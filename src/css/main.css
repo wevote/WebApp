@@ -1,5 +1,4 @@
 @charset "UTF-8";
-@import "https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap";
 
 /*!
  July 31, 2023: ran https://www.cssportal.com/css-optimize/ to shrink the size of the file
@@ -60,7 +59,6 @@ body {
   font-weight:normal;
   letter-spacing:.15px;
   line-height: 1.4;
-  /* margin:0 auto; Removed 3/19/25 https://wevoteusa.atlassian.net/issues/WV-1028 */
   text-align:left
 }
 

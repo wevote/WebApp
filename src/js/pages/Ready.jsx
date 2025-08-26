@@ -3,6 +3,7 @@ import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
+import TagManager from 'react-gtm-module';
 import { Helmet } from 'react-helmet-async';
 import ActivityActions from '../actions/ActivityActions';
 import AnalyticsActions from '../actions/AnalyticsActions';
@@ -30,6 +31,7 @@ import { cordovaSimplePageContainerTopOffset } from '../utils/cordovaCalculatedO
 // Lint is not smart enough to know that lazyPreloadPages will not attempt to preload/reload this page
 // eslint-disable-next-line import/no-cycle
 import lazyPreloadPages from '../utils/lazyPreloadPages';
+import { getPageDetails } from '../utils/lookupPageNameAndPageTypeDict';
 
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../common/components/Widgets/DelayedLoad'));
 const ElectionCountdown = React.lazy(() => import(/* webpackChunkName: 'ElectionCountdown' */ '../components/Ready/ElectionCountdown'));
@@ -49,6 +51,7 @@ class Ready extends Component {
     this.state = {
       chosenReadyIntroductionText: '',
       chosenReadyIntroductionTitle: '',
+      dataLayerFired: false,
       voterIsSignedIn: false,
     };
   }
@@ -110,11 +113,13 @@ class Ready extends Component {
     this.analyticsTimer = setTimeout(() => {
       AnalyticsActions.saveActionReadyVisit(VoterStore.electionId());
     }, 8000);
+    this.fireGTMDataLayerWhenReady();
     window.scrollTo(0, 0);
   }
 
   componentDidUpdate () {
     if (AppObservableStore.isSnackMessagePending()) openSnackbar({});
+    this.fireGTMDataLayerWhenReady();
   }
 
   componentDidCatch (error, info) {
@@ -162,6 +167,28 @@ class Ready extends Component {
     return {};
   }
 
+  fireGTMDataLayerWhenReady () {
+    const { dataLayerFired } = this.state;
+    if (!dataLayerFired) {
+      if (VoterStore.voterFirstRetrieveCompleted()) {
+        const dataLayerObject = {
+          actionDetails: {
+            actionType: 'landing',
+          },
+          event: 'landing',
+          pageDetails: getPageDetails(),
+          userDetails: VoterStore.getAnalyticsUserDetails(),
+        };
+
+        TagManager.dataLayer({ dataLayer: dataLayerObject });
+
+        this.setState({
+          dataLayerFired: true,
+        });
+      }
+    }
+  }
+
   render () {
     renderLog('Ready');  // Set LOG_RENDER_EVENTS to log all renders
     const {
@@ -188,7 +215,7 @@ class Ready extends Component {
             </ElectionCountdownOuterWrapper>
             <ViewBallotButtonWrapper className="col-12">
               <Suspense fallback={<></>}>
-                <ViewUpcomingBallotButton onClickFunction={this.goToBallot} onlyOfferViewYourBallot />
+                <ViewUpcomingBallotButton goToBallotFunction={this.goToBallot} onlyOfferViewYourBallot />
               </Suspense>
             </ViewBallotButtonWrapper>
 
@@ -235,7 +262,7 @@ class Ready extends Component {
               </ReadyIntroductionMobileWrapper>
               <ViewBallotButtonWrapper className="col-12 u-show-mobile-tablet">
                 <Suspense fallback={<></>}>
-                  <ViewUpcomingBallotButton onClickFunction={this.goToBallot} onlyOfferViewYourBallot />
+                  <ViewUpcomingBallotButton goToBallotFunction={this.goToBallot} onlyOfferViewYourBallot />
                 </Suspense>
               </ViewBallotButtonWrapper>
               {!isAndroid() && (

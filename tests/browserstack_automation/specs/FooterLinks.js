@@ -116,7 +116,7 @@ describe('Footer Links Navigation', () => {
   });
 
   // FooterLinks_009
-  it('verifyDonateLinkRedirected @BVT', async () => {
+  it('verifyDonateLinkRedirected', async () => {
     console.log('Tcs : FooterLinks_009');
     await ReadyPage.load();
     await driver.pause(waitTime + 2000);

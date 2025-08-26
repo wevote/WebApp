@@ -50,6 +50,7 @@ export default class OrganizationVoterGuideTabs extends Component {
 
   componentDidMount () {
     const { activeRoute, organizationWeVoteId } = this.props;
+    const { location: { pathname: currentPathname } } = window;
     // console.log('OrganizationVoterGuideTabs, componentDidMount, organizationWeVoteId: ', this.props.organizationWeVoteId);
     this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
@@ -78,7 +79,7 @@ export default class OrganizationVoterGuideTabs extends Component {
       allOrganizationPositionsLength,
       organizationWeVoteId,
       organization: OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId),
-      pathname: window.location.pathname,
+      pathname: currentPathname,
       showElectionsWithOrganizationVoterGuidesModal: AppObservableStore.showElectionsWithOrganizationVoterGuidesModal(),
       voter: VoterStore.getVoter(),
     });

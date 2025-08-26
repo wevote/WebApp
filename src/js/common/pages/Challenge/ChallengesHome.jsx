@@ -4,12 +4,14 @@ import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import TagManager from 'react-gtm-module';
 import ActivityActions from '../../../actions/ActivityActions';
 import BallotActions from '../../../actions/BallotActions';
 import IssueActions from '../../../actions/IssueActions';
 import OrganizationActions from '../../../actions/OrganizationActions';
 import SupportActions from '../../../actions/SupportActions';
 import ChallengeStore from '../../stores/ChallengeStore';
+import { getPageDetails } from '../../../utils/lookupPageNameAndPageTypeDict';
 import apiCalming from '../../utils/apiCalming';
 import arrayContains from '../../utils/arrayContains';
 import { getTodayAsInteger } from '../../utils/dateFormat';
@@ -36,6 +38,7 @@ class ChallengesHome extends Component {
     this.state = {
       challengeList: [],
       challengeListTimeStampOfChange: 0,
+      dataLayerFired: false,
       isSearching: false,
       listModeShown: 'showUpcomingEndorsements',
       listModeFiltersAvailable: [],
@@ -89,6 +92,11 @@ class ChallengesHome extends Component {
       }
     }, 5000);  // April 19, 2021: Tuned to keep performance above 83.  LCP at 597ms
     // AnalyticsActions.saveActionOffice(VoterStore.electionId(), params.office_we_vote_id);
+    this.fireGTMDataLayerWhenReady();
+  }
+
+  componentDidUpdate () {
+    this.fireGTMDataLayerWhenReady();
   }
 
   componentWillUnmount () {
@@ -296,6 +304,28 @@ class ChallengesHome extends Component {
       numberOfChallengeResults: listResults,
       numberOfChallengeSearchResults: searchResults,
     });
+  }
+
+  fireGTMDataLayerWhenReady () {
+    const { dataLayerFired } = this.state;
+    if (!dataLayerFired) {
+      if (VoterStore.voterFirstRetrieveCompleted()) {
+        const dataLayerObject = {
+          actionDetails: {
+            actionType: 'landing',
+          },
+          event: 'landing',
+          pageDetails: getPageDetails(),
+          userDetails: VoterStore.getAnalyticsUserDetails(),
+        };
+
+        TagManager.dataLayer({ dataLayer: dataLayerObject });
+
+        this.setState({
+          dataLayerFired: true,
+        });
+      }
+    }
   }
 
   render () {

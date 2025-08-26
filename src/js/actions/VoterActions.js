@@ -77,11 +77,12 @@ export default {
 
   // This is for sending a 6 digit code that the voter enters in the same
   // interface where the code is requested
-  sendSignInCodeEmail (voterEmailAddress) {
+  sendSignInCodeEmail (voterEmailAddress, emailAddressWeVoteId = '') {
     Dispatcher.loadEndpoint('voterEmailAddressSave', {
-      text_for_email_address: voterEmailAddress,
-      send_sign_in_code_email: true,
+      email_address_we_vote_id: emailAddressWeVoteId,
       hostname: AppObservableStore.getHostname(),
+      send_sign_in_code_email: true,
+      text_for_email_address: voterEmailAddress,
     });
   },
 

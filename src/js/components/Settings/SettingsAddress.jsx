@@ -125,7 +125,11 @@ export default class SettingsAddress extends Component {
                       Current ballot is shown for:
                     </span>
                     <p className="u-padding-top--sm u-stack--lg">
-                      <span className="u-bold"> {this.state.textForMapSearch} </span>
+                      <span className="u-bold">
+                        {' '}
+                        {this.state.textForMapSearch}
+                        {' '}
+                      </span>
                       <span className="u-gray-mid">(based on your ip address)</span>
                     </p>
                   </div>

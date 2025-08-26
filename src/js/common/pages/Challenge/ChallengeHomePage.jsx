@@ -7,6 +7,7 @@ import React, { Component, Suspense } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import TagManager from 'react-gtm-module';
 import ChallengeInviteFriendsTopNavigation from '../../components/Navigation/ChallengeInviteFriendsTopNavigation';
 import DesignTokenColors from '../../components/Style/DesignTokenColors';
 import { PageContentContainer } from '../../../components/Style/pageLayoutStyles';
@@ -45,6 +46,7 @@ import ChallengeInviteeListRoot from '../../components/ChallengeInviteeListRoot/
 import ThanksForViewingChallenge from '../../components/Challenge/ThanksForViewingChallenge';
 import ShareStore from '../../stores/ShareStore';
 import ChallengeHeaderSimple from '../../components/Navigation/ChallengeHeaderSimple';
+import { getPageDetails } from '../../../utils/lookupPageNameAndPageTypeDict';
 
 const ChallengeCardForList = React.lazy(() => import(/* webpackChunkName: 'ChallengeCardForList' */ '../../components/ChallengeListRoot/ChallengeCardForList'));
 // const ChallengeCommentsList = React.lazy(() => import(/* webpackChunkName: 'ChallengeCommentsList' */ '../../components/Challenge/ChallengeCommentsList'));
@@ -106,6 +108,7 @@ class ChallengeHomePage extends Component {
       challengeTitle: '',
       challengeWeVoteId: '',
       challengeWeVoteIdForDisplay: '', // Value for challenge already received
+      dataLayerFired: false,
       sharingStepCompleted: false,
       step2Completed: false,
       thanksForViewingChallengeOn: false,
@@ -282,6 +285,27 @@ class ChallengeHomePage extends Component {
       // Take the "calculated" identifiers and retrieve if missing
       window.scrollTo(0, 0);
     }
+
+    const { dataLayerFired } = this.state;
+
+    if (!dataLayerFired) {
+      if (VoterStore.voterFirstRetrieveCompleted()) {
+        const dataLayerObject = {
+          actionDetails: {
+            actionType: 'landing',
+          },
+          event: 'landing',
+          pageDetails: getPageDetails(),
+          userDetails: VoterStore.getAnalyticsUserDetails(),
+        };
+
+        TagManager.dataLayer({ dataLayer: dataLayerObject });
+
+        this.setState({
+          dataLayerFired: true,
+        });
+      }
+    }
   }
 
   componentWillUnmount () {
@@ -355,7 +379,7 @@ class ChallengeHomePage extends Component {
       });
       pathToUseWhenProfileComplete = `/${challengeSEOFriendlyPath}/+/why-do-you-support`;
     } else if (challengeWeVoteId) {
-      pathToUseWhenProfileComplete = `/+/${challengeWeVoteId}/why-do-you-support`;
+      pathToUseWhenProfileComplete = `/++/${challengeWeVoteId}/why-do-you-support`;
     }
     if (challengeWeVoteId) {
       const voterCanEditThisChallenge = ChallengeStore.getVoterCanEditThisChallenge(challengeWeVoteId);
@@ -423,7 +447,7 @@ class ChallengeHomePage extends Component {
     if (challengeSEOFriendlyPath) {
       challengeBasePath = `/${challengeSEOFriendlyPath}/+/`;
     } else {
-      challengeBasePath = `/+/${challengeWeVoteId}/`;
+      challengeBasePath = `/++/${challengeWeVoteId}/`;
     }
 
     return challengeBasePath;

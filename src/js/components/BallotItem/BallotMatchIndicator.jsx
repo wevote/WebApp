@@ -21,7 +21,7 @@ class BallotMatchIndicator extends Component {
 
   render () {
     const { oneCandidate } = this.props;
-    const scoreExplanationTooltip = isMobileScreenSize() ? (<span />) : (
+    const scoreExplanationTooltip = isMobileScreenSize() ? (<></>) : (
       <Tooltip className="u-z-index-9020" id={`scoreDescription-${oneCandidate.we_vote_id}`}>
         Your personalized score
         {oneCandidate.ballot_item_display_name && (

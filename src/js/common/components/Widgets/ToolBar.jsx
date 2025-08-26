@@ -27,10 +27,11 @@ function ToolBar (params) {
       <ToolBarContainer>
         <Suspense fallback={<></>}>
           <OpenExternalWebSite
-            linkIdAttribute="wevoteTikTok"
+            linkIdAttribute="weVoteTikTok"
             className="u-no-underline"
             url="https://tiktok.com/@wevoteus"
             target="_blank"
+            trackingOn
             ariaLabel="TikTok"
             body={(
               <Tooltip title="TikTok">
@@ -44,13 +45,14 @@ function ToolBar (params) {
 
         <Suspense fallback={<></>}>
           <OpenExternalWebSite
-            linkIdAttribute="wevoteTwitter"
+            linkIdAttribute="weVoteTwitter"
             className="u-no-underline"
-            url="https://twitter.com/WeVote"
+            url="https://x.com/WeVote"
             target="_blank"
-            ariaLabel="Twitter"
+            trackingOn
+            ariaLabel="X / Twitter"
             body={(
-              <Tooltip title="Twitter">
+              <Tooltip title="X / Twitter">
                 <IconButton size="large">
                   <TwitterStyled />
                 </IconButton>
@@ -61,10 +63,11 @@ function ToolBar (params) {
 
         <Suspense fallback={<></>}>
           <OpenExternalWebSite
-            linkIdAttribute="wevoteFacebook"
+            linkIdAttribute="weVoteFacebook"
             className="u-no-underline"
             url="https://www.facebook.com/WeVoteUSA"
             target="_blank"
+            trackingOn
             ariaLabel="Facebook"
             body={(
               <Tooltip title="Facebook">
@@ -78,10 +81,11 @@ function ToolBar (params) {
 
         <Suspense fallback={<></>}>
           <OpenExternalWebSite
-            linkIdAttribute="wevoteInstagram"
+            linkIdAttribute="weVoteInstagram"
             className="u-no-underline"
             url="https://www.instagram.com/WeVote"
             target="_blank"
+            trackingOn
             ariaLabel="Instagram"
             body={(
               <Tooltip title="Instagram">
@@ -99,6 +103,7 @@ function ToolBar (params) {
             className="u-no-underline"
             url="https://eepurl.com/cx_frP"
             target="_blank"
+            trackingOn
             ariaLabel="Newsletter"
             body={(
               <Tooltip title="Newsletter">
@@ -113,12 +118,13 @@ function ToolBar (params) {
         {!hideGitHub && (
           <Suspense fallback={<></>}>
             <OpenExternalWebSite
-              linkIdAttribute="wevoteGithub"
+              linkIdAttribute="weVoteGithub"
               className="u-no-underline"
               url="https://github.com/WeVote"
               target="_blank"
+              trackingOn
               ariaLabel="Github"
-              body={isMobileScreenSize() ? (<span />) : (
+              body={isMobileScreenSize() ? (<></>) : (
                 <Tooltip title="Github">
                   <IconButton size="large">
                     <GitHubStyled />
@@ -130,10 +136,11 @@ function ToolBar (params) {
         )}
         <Suspense fallback={<></>}>
           <OpenExternalWebSite
-            linkIdAttribute="wevoteBlog"
+            linkIdAttribute="weVoteBlog"
             className="u-no-underline"
             url="https://blog.wevote.us/"
             target="_blank"
+            trackingOn
             ariaLabel="Blog"
             body={(
               <Tooltip title="Blog">
@@ -182,18 +189,16 @@ const FacebookStyled = muiStyled(Facebook)({ color: 'white' });
 const InstagramStyled = muiStyled(Instagram)({ color: 'white' });
 const MailStyled = muiStyled(Mail)({ color: 'white' });
 
-const TikTokStyled = ({ color = 'white' }) => {
-  return (
-    <svg
+const TikTokStyled = ({ color = 'white' }) => (
+  <svg
       fill={color}
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 50 50"
       width="24"
       height="24"
-    >
-      <path d="M41,4H9C6.243,4,4,6.243,4,9v32c0,2.757,2.243,5,5,5h32c2.757,0,5-2.243,5-5V9C46,6.243,43.757,4,41,4z M37.006,22.323 c-0.227,0.021-0.457,0.035-0.69,0.035c-2.623,0-4.928-1.349-6.269-3.388c0,5.349,0,11.435,0,11.537c0,4.709-3.818,8.527-8.527,8.527 s-8.527-3.818-8.527-8.527s3.818-8.527,8.527-8.527c0.178,0,0.352,0.016,0.527,0.027v4.202c-0.175-0.021-0.347-0.053-0.527-0.053 c-2.404,0-4.352,1.948-4.352,4.352s1.948,4.352,4.352,4.352s4.527-1.894,4.527-4.298c0-0.095,0.042-19.594,0.042-19.594h4.016 c0.378,3.591,3.277,6.425,6.901,6.685V22.323z" />
-    </svg>
-  );
-};
+  >
+    <path d="M41,4H9C6.243,4,4,6.243,4,9v32c0,2.757,2.243,5,5,5h32c2.757,0,5-2.243,5-5V9C46,6.243,43.757,4,41,4z M37.006,22.323 c-0.227,0.021-0.457,0.035-0.69,0.035c-2.623,0-4.928-1.349-6.269-3.388c0,5.349,0,11.435,0,11.537c0,4.709-3.818,8.527-8.527,8.527 s-8.527-3.818-8.527-8.527s3.818-8.527,8.527-8.527c0.178,0,0.352,0.016,0.527,0.027v4.202c-0.175-0.021-0.347-0.053-0.527-0.053 c-2.404,0-4.352,1.948-4.352,4.352s1.948,4.352,4.352,4.352s4.527-1.894,4.527-4.298c0-0.095,0.042-19.594,0.042-19.594h4.016 c0.378,3.591,3.277,6.425,6.901,6.685V22.323z" />
+  </svg>
+);
 
 export default withStyles(styles)(ToolBar);

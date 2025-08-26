@@ -2,8 +2,12 @@ import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import TagManager from 'react-gtm-module';
 import { renderLog } from '../../utils/logging';
 import CandidateStore from '../../../stores/CandidateStore';
+import VoterStore from '../../../stores/VoterStore';
+import PoliticianStore from '../../stores/PoliticianStore';
+import { getPageDetails } from '../../../utils/lookupPageNameAndPageTypeDict';
 import {
   limitToShowSupport,
   orderPositionByUltimateDate,
@@ -96,6 +100,22 @@ class PoliticianEndorsementsList extends Component {
     this.setState({
       numberOfPositionsToDisplay,
     });
+
+    const { politicianWeVoteId } = this.props;
+    const dataLayerObject = {
+      event: 'action',
+      actionDetails: {
+        actionType: 'showMore',
+        buttonId: 'LoadMoreItems-PoliticianEndorsementsList',
+        numberOfPositionsToDisplay,
+      },
+      userDetails: VoterStore.getAnalyticsUserDetails(),
+      pageDetails: getPageDetails(),
+    };
+    if (politicianWeVoteId) {
+      dataLayerObject.politicianDetails = PoliticianStore.getAnalyticsPoliticianDetails(politicianWeVoteId);
+    }
+    TagManager.dataLayer({ dataLayer: dataLayerObject });
   }
 
   // When we have "likes" put endorsements with most likes at top

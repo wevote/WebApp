@@ -156,10 +156,14 @@ export function getPositionSummaryListForBallotItem (ballotItemWeVoteId, limitTo
   } else {
     return [];
   }
-  // console.log('getPositionSummaryListForBallotItem:', ballotItemWeVoteId, allCachedPositions);
-  // console.log('organizationWeVoteIdsLinkedToThisIssue: ', organizationWeVoteIdsLinkedToThisIssue);
-  // console.log('showPositionsInVotersNetwork: ', showPositionsInVotersNetwork);
-  // console.log('showPositionsOutOfVotersNetwork: ', showPositionsOutOfVotersNetwork);
+  // if (ballotItemWeVoteId === 'wv87cand2313126' && limitToThisIssue === 'wv02issue68') {
+  //   console.log('*** Steve Garvey getPositionSummaryListForBallotItem');
+  //   console.log('**** limitToThisIssue: ', limitToThisIssue, ', organizationWeVoteIdsLinkedToThisIssue: ', organizationWeVoteIdsLinkedToThisIssue);
+  //   console.log('**** allCachedPositions:', ballotItemWeVoteId, allCachedPositions);
+  //   // console.log('organizationWeVoteIdsLinkedToThisIssue: ', organizationWeVoteIdsLinkedToThisIssue);
+  //   console.log('**** showPositionsInVotersNetwork: ', showPositionsInVotersNetwork, ',  showPositionsOutOfVotersNetwork: ', showPositionsOutOfVotersNetwork);
+  //   console.log('**** isCandidate: ', isCandidate, ',  isMeasure: ', isMeasure);
+  // }
   for (let i = 0; i < allCachedPositionsLength; i++) {
     // Cycle through the positions for this candidate, and see if the organization endorsing is linked to this issue
     organizationInVotersNetwork = false;
@@ -207,6 +211,9 @@ export function getPositionSummaryListForBallotItem (ballotItemWeVoteId, limitTo
     if (allCachedPositions[i].speaker_display_name && stringContains('Voter-', allCachedPositions[i].speaker_display_name)) {
       skipThisOrganization = true;
     }
+    // if (ballotItemWeVoteId === 'wv87cand2313126' && limitToThisIssue === 'wv02issue68' && skipThisOrganization) {
+    //   console.log('**** skipThisOrganization:', organizationWeVoteId);
+    // }
     if (!skipThisOrganization) {
       organizationName = allCachedPositions[i].speaker_display_name;
       organizationOpposes = allCachedPositions[i].is_oppose_or_negative_rating;
@@ -232,7 +239,9 @@ export function getPositionSummaryListForBallotItem (ballotItemWeVoteId, limitTo
       }
     }
   }
-  // console.log('getPositionSummaryListForBallotItem positionSummaryList: ', positionSummaryList);
+  // if (ballotItemWeVoteId === 'wv87cand2313126' && limitToThisIssue === 'wv02issue68') {
+  //   console.log('**** FINAL getPositionSummaryListForBallotItem positionSummaryList: ', positionSummaryList);
+  // }
   return positionSummaryList;
 }
 
@@ -248,7 +257,7 @@ export function sortCandidateList (newCandidateList) {
 
   // Prepare an array of candidate names that are supported by voter
   unsortedCandidateList.forEach((candidate) => {
-    ballotItemStatSheet = SupportStore.getBallotItemStatSheet(candidate.we_vote_id);
+    ballotItemStatSheet = SupportStore.getBallotItemStatSheet(candidate.we_vote_id, candidate.politician_we_vote_id);
     // console.log('ballotItemStatSheet:', ballotItemStatSheet);
     if (ballotItemStatSheet) {
       ({ numberOfOpposePositionsForScore, numberOfSupportPositionsForScore, voterSupportsBallotItem } = ballotItemStatSheet);

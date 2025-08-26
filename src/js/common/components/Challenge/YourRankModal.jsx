@@ -6,10 +6,10 @@ import React from 'react';
 import styled from 'styled-components';
 import ChallengeParticipantListRoot from '../ChallengeParticipantListRoot/ChallengeParticipantListRoot';
 
-const YourRankModal = ({ challengeWeVoteId, classes, show, toggleModal }) => {
+const YourRankModal = ({ challengeWeVoteId, classes, show, toggleModal }) =>
   // Consider including name of the challenge here
   // const challengeName = `Mr. Beast's "Get Out the Vote"`;
-  return (
+  (
     <Dialog
       classes={{ paper: classes.dialogPaper }}
       onClose={() => toggleModal()}
@@ -38,7 +38,6 @@ const YourRankModal = ({ challengeWeVoteId, classes, show, toggleModal }) => {
       </DialogContent>
     </Dialog>
   );
-};
 YourRankModal.propTypes = {
   challengeWeVoteId: PropTypes.string.isRequired,
   classes: PropTypes.object.isRequired,

@@ -41,7 +41,7 @@ class YourRankOutOf extends PureComponent {
   }
 
 
-  render() {
+  render () {
     const { rankOfVoter, participantsCount } = this.props;
     const { pointsExplanationModalOpen, moreInfoIconHovered } = this.state;
 

@@ -64,3 +64,14 @@ export function cordovaOffsetLog (text, res) {
     }
   }
 }
+
+//  Cordova offsets
+export function cordovaKeyboardHidingLog (text, res) {
+  if (webAppConfig.LOG_CORDOVA_KEYBOARD_HIDING || false) {
+    if (res) {
+      console.log('Cordova: ', text, res);
+    } else {
+      console.log('Cordova: ', text);
+    }
+  }
+}

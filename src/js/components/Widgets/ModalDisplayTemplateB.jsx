@@ -229,13 +229,23 @@ export const templateBStyles = (theme) => ({
   },
 });
 
+export const CommentContainer = styled('div')`
+  flex-grow: 1;
+  background-color: ${DesignTokenColors.whiteUI};
+  border: 1px solid ${DesignTokenColors.neutralUI300};
+  border-radius: 16px;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+`;
+
 const DialogContentInnerWrapper = styled('div')`
   display: flex;
   flex-direction: column;
   height: 100%;
   justify-content: space-between;
   margin-top:25px;
-   
+
   @media (max-width: 600px) {
     min-height: 48px;
   }
@@ -246,7 +256,7 @@ const DialogContentInnerWrapper = styled('div')`
 `;
 
 const DialogTitleInnerWrapper = styled('div')`
-  align-items: center;  
+  align-items: center;
   display: flex;
   justify-content: space-between;
   min-height: 56px;
@@ -311,15 +321,11 @@ export const VoterAvatarImg = styled('img')`
   }
 `;
 
-export const UserInfoWrapper = styled('div')`
-  display: flex;
-`;
-
 export const UserInfoText = styled('div')`
   padding-left: 16px;
   `;
 export const UserName = styled('div')`
-  color: DesignTokenColors.neutralUI900;  
+  color: DesignTokenColors.neutralUI900;
   font-size: 18px;
   font-weight: 600;
   line-height: 25px;
@@ -339,7 +345,7 @@ export const OpinionButtonsWrapper = styled('div')`
 `;
 
 export const OpinionButton = styled(Button)`
-  border-radius: 16px;  
+  border-radius: 16px;
   flex: 1;
   font-size: 16px;
   font-weight: 400;
@@ -354,26 +360,11 @@ export const OpinionButton = styled(Button)`
 
   color: ${(props) => (props.selected ? DesignTokenColors.whiteUI : DesignTokenColors.primary600)};
   background-color: ${(props) => (props.selected ? DesignTokenColors.primary600 : 'transparent')};
-  
+
   &:hover {
   background-color: ${(props) => (props.selected ? DesignTokenColors.primary600 : 'transparent')};
     background-color: ${(props) => (props.selected ? DesignTokenColors.primary600 : DesignTokenColors.primary50)};
   }
-`;
-export const OptionBlockWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin: 16px 0;
-`;
-export const CommentContainer = styled.div`
-  flex-grow: 1;
-  background-color: ${DesignTokenColors.whiteUI};
-  border: 1px solid ${DesignTokenColors.neutralUI300};
-  border-radius: 16px;
-  padding: 8px 12px;
-  display: flex;
-  align-items: center;
 `;
 
 export const InputBox = styled.input`

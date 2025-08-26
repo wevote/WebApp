@@ -133,7 +133,7 @@ class ChallengeStartPreview extends Component {
   functionToUseWhenOutOfDraft = () => {
     const { challengeWeVoteId } = this.state;
     if (challengeWeVoteId) {
-      const challengeBasePath = `/+/${challengeWeVoteId}`;
+      const challengeBasePath = `/++/${challengeWeVoteId}`;
       // console.log('ChallengeStartPreview, functionToUseWhenOutOfDraft challengeBasePath: ', challengeBasePath, ', challengeWeVoteId: ', challengeWeVoteId);
       ChallengeParticipantActions.challengeParticipantSave(challengeWeVoteId);
       AppObservableStore.setShowCompleteYourProfileModal(false);

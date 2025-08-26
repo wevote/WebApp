@@ -7,6 +7,8 @@ export default function voterSignOut () { // To discuss - having Store/Actions v
   AppObservableStore.setShowSignInModal(false);
   AppObservableStore.unsetStoreSignInStartFullUrl();
   VoterActions.voterSignOut();   // Eleven stores or more, act on this action
+  Cookies.remove('complete_your_profile_closed');
+  Cookies.remove('complete_your_profile_closed', { path: '/' });
   Cookies.remove('voter_device_id');
   Cookies.remove('voter_device_id', { path: '/' });
   Cookies.remove('voter_device_id', { path: '/', domain: 'wevote.us' });

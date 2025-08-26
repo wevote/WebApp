@@ -3,10 +3,14 @@ import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
+import TagManager from 'react-gtm-module';
 import styled from 'styled-components';
-import { renderLog } from '../../common/utils/logging';
-import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
 import { openSnackbar } from '../../common/components/Widgets/SnackNotifier';
+import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
+import { renderLog } from '../../common/utils/logging';
+import VoterStore from '../../stores/VoterStore';
+import { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
+import stringContains from '../../common/utils/stringContains';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 
@@ -34,22 +38,43 @@ class ShareModalOption extends Component {
     const { whatAndHowMuchToShare } = this.state;
     const newWhatAndHowMuchToShare = AppObservableStore.getWhatAndHowMuchToShare();
     if (newWhatAndHowMuchToShare !== whatAndHowMuchToShare) {
-      // If we change modes, reset the copy link state
-      this.setState({
-        copyLinkCopied: false,
-      });
+      this.setState({ copyLinkCopied: false });
     }
-    this.setState({
-      whatAndHowMuchToShare: newWhatAndHowMuchToShare,
-    });
+    this.setState({ whatAndHowMuchToShare: newWhatAndHowMuchToShare });
   }
 
   onClick = () => {
     // console.log('ShareModalOption onClick function');
+    const { uniqueExternalId } = this.props;
+
     if (this.props.onClickFunction) {
       this.props.onClickFunction();
     }
-  }
+
+    if ((uniqueExternalId || '').toLowerCase().includes('friends')) {
+      // Derive sharing mode from the current step string
+      const whatAndHowMuchToShareNow = AppObservableStore.getWhatAndHowMuchToShare() || this.state.whatAndHowMuchToShare || '';
+      const ballotSharingMode = stringContains('AllOpinions', whatAndHowMuchToShareNow) ?
+        'ballot_with_my_choices' :
+        'ballot_only';
+
+      const dataLayerObject = {
+        event: 'share',
+        actionDetails: {
+          actionType: 'share',
+          buttonId: uniqueExternalId,
+        },
+        pageDetails: getPageDetails(),
+        shareDetails: {
+          shareMethod: 'wevote_friends',
+          ballotSharingMode,
+        },
+        userDetails: VoterStore.getAnalyticsUserDetails(),
+      };
+
+      TagManager.dataLayer({ dataLayer: dataLayerObject });
+    }
+  };
 
   // onCopyToClipboardClick = () => {
   //   openSnackbar({ message: 'Copied!' });
@@ -59,7 +84,7 @@ class ShareModalOption extends Component {
   // }
   //  onClick={this.onCopyToClipboardClick}
 
-  copyLink = () => {
+  copyLink = (buttonId) => {
     // console.log('ShareModalOption copyLink');
     openSnackbar({ message: 'Copied!' });
     this.setState({
@@ -68,6 +93,22 @@ class ShareModalOption extends Component {
     if (this.props.onClickFunction) {
       this.props.onClickFunction();
     }
+    const dataLayerObject = {
+      actionDetails: {
+        actionType: 'share',
+        buttonId,
+      },
+      event: 'ShareModalCopyLinkClick',
+      shareDetails: {
+        shareType: this.props.title || 'Copy link',
+        urlShared: this.props.urlToShare || '',
+        contentToggle: AppObservableStore.getWhatAndHowMuchToShare(),
+      },
+      pageDetails: getPageDetails(),
+      userDetails: VoterStore.getAnalyticsUserDetails(),
+    };
+    // console.log('DataLayer for ShareModal Copy Link:', dataLayerObject);
+    TagManager.dataLayer({ dataLayer: dataLayerObject });
   }
 
   render () {
@@ -83,7 +124,7 @@ class ShareModalOption extends Component {
     return (
       <Wrapper>
         {(copyLink && urlToBeShared) ? (
-          <CopyToClipboard text={urlToBeShared} onCopy={this.copyLink}>
+          <CopyToClipboard text={urlToBeShared} onCopy={() => this.copyLink(`shareModalOption-${uniqueExternalId}`)}>
             <div id={`shareModalOption-${uniqueExternalId}`}>
               <Icon
                 className={copyLinkCopied ? classes.copyLinkIconCopied : classes.copyLinkIcon}
@@ -117,7 +158,7 @@ class ShareModalOption extends Component {
                         url={urlToBeShared}
                         target="_blank"
                         body={(
-                          <div id={`shareModalOption-${uniqueExternalId}`} onClick={() => this.onClick}>
+                          <div id={`shareModalOption-${uniqueExternalId}`} onClick={this.onClick}>
                             <Icon backgroundColor={backgroundColor}>
                               {icon}
                             </Icon>

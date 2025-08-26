@@ -1,5 +1,6 @@
 import { ReduceStore } from 'flux/utils';
 import assign from 'object-assign';
+import parser from 'parse-address';
 import AppObservableStore from '../common/stores/AppObservableStore'; // eslint-disable-line import/no-cycle
 import BallotActions from '../actions/BallotActions';
 import CandidateActions from '../actions/CandidateActions';
@@ -72,6 +73,23 @@ class BallotStore extends ReduceStore {
     } else {
       return this.getState().allBallotItemsFlattened || [];
     }
+  }
+
+  getMaxRaceOfficeLevel (googleCivicElectionId = 0) {
+    const allBallotItemsSnapshot = this.getAllBallotItemsFlattened(googleCivicElectionId);
+    const scopeOrder = ['Federal', 'State', 'Local', 'Measure'];
+    let maxScope = '';
+
+    allBallotItemsSnapshot.forEach((item) => {
+      const currentScope = item.race_office_level;
+      if (scopeOrder.indexOf(currentScope) > -1) {
+        if (maxScope === '' || scopeOrder.indexOf(currentScope) < scopeOrder.indexOf(maxScope)) {
+          maxScope = currentScope;
+        }
+      }
+    });
+
+    return maxScope || '';
   }
 
   get getAllBallotItemsLastStateCodeReceived () {
@@ -149,6 +167,40 @@ class BallotStore extends ReduceStore {
     if (!this.isLoaded()) { return undefined; }
     const civicId = VoterStore.electionId();
     return this.getState().ballots[civicId].polling_location_we_vote_id_source;
+  }
+
+  getAnalyticsElectionDetails (textForMapSearch = '') {
+    const electionGeo = {
+      region: '',
+      city: '',
+      zip: '',
+    };
+    const incomingTextForMapSearch = textForMapSearch || VoterStore.getTextForMapSearch();
+    if (incomingTextForMapSearch) {
+      const parsedAddress = parser.parseLocation(incomingTextForMapSearch);
+      if (parsedAddress) {
+        electionGeo.city = parsedAddress.city || '';
+        electionGeo.region = parsedAddress.state || '';
+        electionGeo.zip = parsedAddress.zip || '';
+      }
+    }
+
+    const electionDate = this.currentBallotElectionDate;
+    let electionYear = '';
+    // Regular expression to match the format YYYY-MM-DD
+    const dateFormatRegex = /^\d{4}-\d{2}-\d{2}$/;
+    if (electionDate && dateFormatRegex.test(electionDate)) {
+      electionYear = electionDate.substring(0, 4);
+    }
+    return {
+      electionDate,
+      electionGeo,
+      electionLevel: this.getMaxRaceOfficeLevel(),
+      electionName: this.currentBallotElectionName,
+      electionType: '',
+      electionYear,
+      politicalOffice: '',
+    };
   }
 
   getBallotCaveat () {

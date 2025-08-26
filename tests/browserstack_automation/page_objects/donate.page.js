@@ -1,4 +1,5 @@
-import { $, driver, expect, path } from '@wdio/globals';
+import { $, driver, expect } from '@wdio/globals';
+import path from 'path';
 import Page from './page';
 
 class DonatePage extends Page {

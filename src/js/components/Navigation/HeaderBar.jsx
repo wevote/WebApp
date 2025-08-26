@@ -4,6 +4,7 @@ import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
+// import TagManager from 'react-gtm-module';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterActions from '../../actions/VoterActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
@@ -31,6 +32,7 @@ import HeaderBarLogo from './HeaderBarLogo';
 import HeaderBarModals from './HeaderBarModals';
 import TabWithPushHistory from './TabWithPushHistory';
 import webAppConfig from '../../config';
+// import lookupPageNameAndPageTypeDict from '../../utils/lookupPageNameAndPageTypeDict';
 
 
 const HeaderNotificationMenu = React.lazy(() => import(/* webpackChunkName: 'HeaderNotificationMenu' */ './HeaderNotificationMenu'));
@@ -131,92 +133,6 @@ class HeaderBar extends Component {
     }
   }
 
-  // shouldComponentUpdate (nextProps, nextState) {
-  //   const pathname = normalizedHref();
-  //   // console.log('HeaderBar shouldComponentUpdate: pathname === ', pathname);
-  //   let update = false;
-  //   if (pathname !== this.state.priorPath) {
-  //     // Re-render the HeaderBar if the path has changed
-  //     // console.log('HeaderBar shouldComponentUpdate: this.state.priorPath === ', this.state.priorPath);
-  //     this.setState({ priorPath: pathname });
-  //     update = true;
-  //   } else if (this.state.componentDidMountFinished === false) {
-  //     // console.log('shouldComponentUpdate: componentDidMountFinished === false');
-  //     update = true;
-  //   } else if (this.state.page !== normalizedHrefPage()) {
-  //     // console.log('shouldComponentUpdate: this.state.page', this.state.page, ', normalizedHrefPage()', normalizedHrefPage());
-  //     update = true;
-  //   } else if (this.state.aboutMenuOpen !== nextState.aboutMenuOpen) {
-  //     // console.log('shouldComponentUpdate: this.state.aboutMenuOpen", this.state.aboutMenuOpen, ', nextState.aboutMenuOpen', nextState.aboutMenuOpen);
-  //     update = true;
-  //   } else if (this.state.chosenSiteLogoUrl !== nextState.chosenSiteLogoUrl) {
-  //     // console.log('shouldComponentUpdate: this.state.chosenSiteLogoUrl', this.state.chosenSiteLogoUrl, ', nextState.chosenSiteLogoUrl', nextState.chosenSiteLogoUrl);
-  //     update = true;
-  //   } else if (this.state.hideWeVoteLogo !== nextState.hideWeVoteLogo) {
-  //     // console.log('shouldComponentUpdate: this.state.hideWeVoteLogo', this.state.hideWeVoteLogo, ', nextState.hideWeVoteLogo', nextState.hideWeVoteLogo);
-  //     update = true;
-  //   } else if (this.state.friendInvitationsSentToMe !== nextState.friendInvitationsSentToMe) {
-  //     // console.log('shouldComponentUpdate: this.state.friendInvitationsSentToMe', this.state.friendInvitationsSentToMe, ', nextState.friendInvitationsSentToMe', nextState.friendInvitationsSentToMe);
-  //     update = true;
-  //   } else if (this.state.scrolledDown !== nextState.scrolledDown) {
-  //     update = true;
-  //   } else if (this.state.whatAndHowMuchToShare !== nextState.whatAndHowMuchToShare) {
-  //     update = true;
-  //   } else if (this.state.organizationModalBallotItemWeVoteId !== nextState.organizationModalBallotItemWeVoteId) {
-  //     update = true;
-  //   // } if (this.state.showEditAddressButton !== nextState.showEditAddressButton) {
-  //   //   update = true;
-  //   } else if (this.state.showOrganizationModal !== nextState.showOrganizationModal) {
-  //     update = true;
-  //   } else if (this.state.showPositionDrawer !== nextState.showPositionDrawer) {
-  //     update = true;
-  //   } else if (this.state.showSignInModal !== nextState.showSignInModal) {
-  //     update = true;
-  //   } else if (this.state.voterFirstName !== nextState.voterFirstName) {
-  //     // console.log('this.state.voterFirstName: ', this.state.voterFirstName, ', nextState.voterFirstName', nextState.voterFirstName);
-  //     update = true;
-  //   } else if (this.state.voterIsSignedIn !== nextState.voterIsSignedIn) {
-  //     // console.log('HeaderBar voter.isSignedIn shouldComponentUpdate true');
-  //     update = true;
-  //   }
-  //   const thisVoterExists = this.state.voter !== undefined;
-  //   const nextVoterExists = nextState.voter !== undefined;
-  //   if (nextVoterExists && !thisVoterExists) {
-  //     // console.log('HeaderBar shouldComponentUpdate: thisVoterExists", thisVoterExists, ", nextVoterExists", nextVoterExists);
-  //     update = true;
-  //   }
-  //   if (thisVoterExists && nextVoterExists) {
-  //     if (this.state.voter.voter_photo_url_medium !== nextState.voter.voter_photo_url_medium) {
-  //       // console.log('HeaderBar shouldComponentUpdate: this.state.voter.voter_photo_url_medium', this.state.voter.voter_photo_url_medium, ', nextState.voter.voter_photo_url_medium', nextState.voter.voter_photo_url_medium);
-  //       update = true;
-  //     }
-  //     if (this.state.voter.signed_in_twitter !== nextState.voter.signed_in_twitter) {
-  //       // console.log('HeaderBar shouldComponentUpdate: this.state.voter.signed_in_twitter", this.state.voter.signed_in_twitter, ", nextState.voter.signed_in_twitter", nextState.voter.signed_in_twitter);
-  //       update = true;
-  //     }
-  //     if (this.state.voter.signed_in_facebook !== nextState.voter.signed_in_facebook) {
-  //       // console.log('HeaderBar shouldComponentUpdate: this.state.voter.signed_in_facebook', this.state.voter.signed_in_facebook, ', nextState.voter.signed_in_facebook', nextState.voter.signed_in_facebook);
-  //       update = true;
-  //     }
-  //     if (this.state.voter.signed_in_with_email !== nextState.voter.signed_in_with_email) {
-  //       update = true;
-  //     }
-  //   }
-  //   // We need to update if the SelectBallotModal is displayed or the BallotList is empty
-  //   const element = document.getElementById('BallotListId');
-  //   if (element) {
-  //     const textForMapSearch = VoterStore.getTextForMapSearch();
-  //     const titleElement = document.getElementById('SelectBallotModalTitleId');
-  //     const isTitleElementDisplayed = (titleElement && !(titleElement.offsetParent === null)) || false;
-  //     if (isTitleElementDisplayed || (element.innerHTML.trim().length < 1 && textForMapSearch)) {
-  //       update = true;
-  //     }
-  //   }
-  //
-  //   // console.log('HeaderBar shouldComponentUpdate: update === ', update);
-  //   return update;
-  // }
-
   componentDidUpdate () {
     // console.log('HeaderBar componentDidUpdate');
     const { page } = this.state;
@@ -242,6 +158,30 @@ class HeaderBar extends Component {
   handleTabChange (newValue) {
     this.customHighlightSelector();
     // console.log('handleTabChange ', newValue);
+    /* if (newValue === 4) {  // Check if the tab change is for challenges
+      const currentPathname = window.location.pathname;
+      const destinationPathname = '/challenges';
+      const currentPage = lookupPageNameAndPageTypeDict(currentPathname);
+      const destinationPage = lookupPageNameAndPageTypeDict(destinationPathname);
+
+      TagManager.dataLayer({
+        dataLayer: {
+          event: 'landing',
+          pageDetails: {
+            pageName: currentPage.pageName,
+            pageType: currentPage.pageType,
+            pathname: currentPathname,
+          },
+          destinationDetails: {
+            pageName: destinationPage.pageName,
+            pageType: destinationPage.pageType,
+            pathname: destinationPathname,
+            stateCode: VoterStore.getVoterStateCode(),
+          },
+          userDetails: VoterStore.getAnalyticsUserDetails(),
+        },
+      });
+    } */
     this.setState({ tabsValue: newValue });
   }
 
@@ -390,15 +330,18 @@ class HeaderBar extends Component {
         case 'challenges':
           challenges.css(highlight);
           break;
+        case 'donate':
+        case 'more/donate':
+          donate.css(highlight);
+          break;
         case 'friends':
           friends.css(highlight);
           break;
         case 'news':
           news.css(highlight);
           break;
-        case 'donate':
-        case 'more/donate':
-          donate.css(highlight);
+        case 'politicianpage':
+          candidates.css(highlight);
           break;
         case 'squads':
           squads.css(highlight);
@@ -482,7 +425,7 @@ class HeaderBar extends Component {
       discussValue = 99; // 4;
       discussVisible = false; // We are turning off Discuss header link for now
       donateValue = 99; // Donate not used in Cordova
-      donateVisible = false;
+      donateVisible = true;
       howItWorksValue = 5;
       // howItWorksVisible = true;
       squadsValue = 4;
@@ -886,7 +829,8 @@ const styles = (theme) => ({
   },
 });
 
-const HeaderBarWrapper = styled('div', {
+const HeaderBarWrapper = styled.div.attrs({
+  className: 'HeaderBarWrapper', // div.attrs and className all added to achieve drop-shadow on Donate page
   shouldForwardProp: (prop) => !['hasNotch', 'scrolledDown', 'hasSubmenu'].includes(prop),
 })(({ hasNotch, scrolledDown, hasSubmenu }) => (`
   margin-top: ${hasNotch ? '9%' : ''};
