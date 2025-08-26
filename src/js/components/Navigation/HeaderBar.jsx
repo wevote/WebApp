@@ -412,31 +412,21 @@ class HeaderBar extends Component {
     // console.log('HeaderBar isMobileScreenSize(), isTablet()', isMobileScreenSize(), isTablet());
     // If NOT signed in, turn Discuss off and How It Works on
     let discussValue;
-    let discussVisible;
+    let discussVisible = false; // We are turning off Discuss header link for now
     let donateValue;
     let donateVisible;
     const friendsVisible = false; // 2023-09-04 Dale We are turning off Friends header link for now
     let howItWorksValue;
     const squadsVisible = nextReleaseFeaturesEnabled && isWebApp();
     let squadsValue;
-    // let howItWorksVisible;
     const howItWorksVisible = false;
     if (isCordova() || inPrivateLabelMode) {
-      discussValue = 99; // 4;
-      discussVisible = false; // We are turning off Discuss header link for now
-      donateValue = 99; // Donate not used in Cordova
-      donateVisible = true;
-      howItWorksValue = 5;
-      // howItWorksVisible = true;
-      squadsValue = 4;
+      donateVisible = isIOS();
+      donateValue = isIOS() ? 3 : 99;
     } else if (voterIsSignedIn) {
       // If not Cordova and signed in, turn Donate & Discuss on, and How It Works off
-      // discussValue = 4;
-      // discussVisible = false; // We are turning off Discuss header link for now
       donateValue = 5;
       donateVisible = true;
-      howItWorksValue = 99;
-      // howItWorksVisible = false;
       squadsValue = 4;
     } else {
       // If not Cordova, and NOT signed in, turn Discuss off & How It Works on
@@ -445,7 +435,6 @@ class HeaderBar extends Component {
       donateValue = 5;
       donateVisible = true;
       howItWorksValue = 99;
-      // howItWorksVisible = true;
       squadsValue = 4;
     }
     // console.log('HeaderBar !isMobileScreenSize()', displayMenu);
