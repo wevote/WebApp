@@ -162,6 +162,12 @@ class HowItWorks extends Page {
   get alertMessage() {
     return $('.MuiAlert-message')
   }
+  get howWeVoteWorksLink() {
+    return $('#step1');
+  }
+  async clickHowWeVoteWorksLink () {
+    await this.howWeVoteWorksLink.click();
+  }
 
   async enterDigit(num){
   if (num === 0) {
