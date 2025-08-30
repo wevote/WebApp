@@ -13,7 +13,7 @@ export default function NotificationBannerAboveHeader () {
   const voterCanEditPoliticianProfile = useVoterCanEditPolitician();
 
   const closeEditBar = () => {
-    AppObservableStore.setShowNotificationBannerAboveHeader(false);
+    AppObservableStore.setShowNotificationBannerAboveHeader(true);
   };
 
   function pushDataLayer (linkTo, buttonId = '') {
@@ -96,6 +96,8 @@ const BannerText = styled.div`
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
+  justify-content: center;
+  text-align: center; 
 `;
 
 const CloseButton = styled.button`
@@ -104,6 +106,7 @@ const CloseButton = styled.button`
   color: ${DesignTokenColors.whiteUI};
   cursor: pointer;
   font-size: 20px;
+  margin-left: 32px;
   position: relative;
 
   @media (max-width: 600px) {
@@ -121,10 +124,11 @@ const NotificationBannerAboveHeaderContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   font-size: 14px;
-  justify-content: space-between;
-  max-width: 960px;
-  padding: 12px 16px;
-  width: 100%;
+  justify-content: center;
+  margin-left: -16px;
+  margin-right: -16px;
+  padding: 8px 16px;
+  width: 100vw;
 `;
 const EditButton = styled.button`
   background: ${DesignTokenColors.whiteUI};
