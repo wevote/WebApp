@@ -1,5 +1,6 @@
-import { AccountCircle } from '@mui/icons-material';
-import { IconButton, Tabs } from '@mui/material';
+import AccountCircle from '@mui/icons-material/AccountCircle';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { IconButton, Tabs, Tab, MenuItem, Menu } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
@@ -33,7 +34,6 @@ import HeaderBarModals from './HeaderBarModals';
 import TabWithPushHistory from './TabWithPushHistory';
 import webAppConfig from '../../config';
 // import lookupPageNameAndPageTypeDict from '../../utils/lookupPageNameAndPageTypeDict';
-
 
 const HeaderNotificationMenu = React.lazy(() => import(/* webpackChunkName: 'HeaderNotificationMenu' */ './HeaderNotificationMenu'));
 const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
@@ -129,6 +129,12 @@ class HeaderBar extends Component {
         if (document.getElementById('profileAvatarHeaderBar')) {
           headerObjects.photo = document.getElementById('profileAvatarHeaderBar').innerHTML;
         }
+        if (document.getElementById('moreTabHeaderBar')) {
+          headerObjects.more = document.getElementById('moreTabHeaderBar').innerHTML;
+        }
+        if (document.getElementById('howItWorksTabHeaderBar')) {
+          headerObjects.howItWorks = document.getElementById('howItWorksTabHeaderBar').innerHTML;
+        }
       }, 1000);
     }
   }
@@ -155,8 +161,8 @@ class HeaderBar extends Component {
     if (this.setStyleTimeout) clearTimeout(this.setStyleTimeout);
   }
 
-  handleTabChange (newValue) {
-    this.customHighlightSelector();
+  handleTabChange = (newValue) => {
+    this.setState({ tabsValue: newValue }, () => {
     // console.log('handleTabChange ', newValue);
     /* if (newValue === 4) {  // Check if the tab change is for challenges
       const currentPathname = window.location.pathname;
@@ -182,7 +188,8 @@ class HeaderBar extends Component {
         },
       });
     } */
-    this.setState({ tabsValue: newValue });
+      this.customHighlightSelector(newValue);
+    });
   }
 
   handleResizeLocal () {
@@ -245,6 +252,7 @@ class HeaderBar extends Component {
     });
   }
 
+
   onAnalyticsStoreChange () {
     // A page reload for iOS in Cordova after facebook login forces the need for a voterRetrieve, after redrawing the page
     // (and without requiring changes to the API server), the first response that indicates 'is signed in' is an Analytics call response
@@ -265,6 +273,12 @@ class HeaderBar extends Component {
     // console.log('Opening modal');
     AppObservableStore.setShowHowItWorksModal(true);
   }
+
+  navTo = (path, highlightValue = 99) => () => {
+    this.setState({ moreAnchorEl: null });
+    this.handleTabChange(highlightValue);
+    historyPush(path);
+  };
 
   transitionToYourVoterGuide () {
     // Positions for this organization, for this voter/election
@@ -290,7 +304,7 @@ class HeaderBar extends Component {
   }
 
   // Highlight the active tab, but don't highlight anything if not on one of the tabs, for example we are on 'friends'
-  customHighlightSelector () {
+  customHighlightSelector (currentValue) {
     const normal = {
       opacity: 0.7,
       fontWeight: 500,
@@ -312,6 +326,7 @@ class HeaderBar extends Component {
       const news = $('#discussTabHeaderBar');
       const donate = $('#donateTabHeaderBar');
       const squads = $('#squadsTabHeaderBar');
+      const more = $('#moreTabHeaderBar');
       ballot.css(normal);
       candidates.css(normal);   // Candidates (not individual candidate page)
       challenges.css(normal);   // Democracy Challenges
@@ -319,6 +334,8 @@ class HeaderBar extends Component {
       news.css(normal);         // Discuss
       donate.css(normal);       // Donate
       squads.css(normal);       // Squads
+      more.css(normal);         // More
+
 
       switch (normalizedHrefPage()) {
         case 'ballot':
@@ -346,15 +363,25 @@ class HeaderBar extends Component {
         case 'squads':
           squads.css(highlight);
           break;
+        case 'more':
+          more.css(highlight);
+          break;
         default:
           break;
+      }
+      if (currentValue === 99) {
+        more.css(highlight);
       }
     } else {
       setTimeout(() => {
         console.log('customHighlightSelector purposefully called recursively');
-        this.customHighlightSelector();
+        this.customHighlightSelector(currentValue);
       }, 500);
     }
+
+    // If user clicked the “More” tab explicitly, force that highlight
+    // if (currentValue === 99) more.css(highlight);
+
     this.setState({ page: normalizedHrefPage() });
   }
 
@@ -417,7 +444,7 @@ class HeaderBar extends Component {
     let donateVisible;
     const friendsVisible = false; // 2023-09-04 Dale We are turning off Friends header link for now
     let howItWorksValue;
-    const squadsVisible = nextReleaseFeaturesEnabled && isWebApp();
+    const squadsVisible = false; // Set nextReleaseFeaturesEnabled && isWebApp();  when we want to turn on the Challenges header link
     let squadsValue;
     // let howItWorksVisible;
     const howItWorksVisible = false;
@@ -448,6 +475,7 @@ class HeaderBar extends Component {
       // howItWorksVisible = true;
       squadsValue = 4;
     }
+
     // console.log('HeaderBar !isMobileScreenSize()', displayMenu);
     return (
       <HeaderBarWrapper
@@ -468,84 +496,130 @@ class HeaderBar extends Component {
             {(showWeVoteLogo || chosenSiteLogoUrl) && (
               <HeaderBarLogo
                 chosenSiteLogoUrl={chosenSiteLogoUrl}
-                // isBeta={showWeVoteLogo && !chosenSiteLogoUrl}
+              // isBeta={showWeVoteLogo && !chosenSiteLogoUrl}
               />
             )}
           </TopRowOneLeftContainer>
           <TopRowOneMiddleContainer>
             <div className="header-nav">
-              { displayMenu && (
-                <StyledHeaderMenuTabs
-                  value={tabsValue}
-                  indicatorColor="primary"
-                  classes={{ indicator: classes.indicator }}
-                >
-                  <TabWithPushHistory
-                    classes={isWebApp() ? { root: classes.tabRootBallotDesktop } : { root: classes.tabRootBallot }}
-                    value={1}
-                    change={this.handleTabChange}
-                    id="ballotTabHeaderBar"
-                    label="Ballot"
-                    to="/ballot"
-                  />
-                  <TabWithPushHistory
-                    classes={isWebApp() ? { root: classes.tabRootCandidatesDesktop } : { root: classes.tabRootCandidates }}
-                    value={2}
-                    change={this.handleTabChange}
-                    id="candidatesTabHeaderBar"
-                    label="Candidates"
-                    to="/cs/"
-                  />
-                  {friendsVisible && (
+              {displayMenu && (
+                <>
+                  <StyledHeaderMenuTabs
+                    value={tabsValue}
+                    // indicatorColor="primary"
+                    textColor="inherit"
+                    classes={{ indicator: classes.indicator }}
+                    onChange={(e, val) => this.handleTabChange(val)}
+                  >
                     <TabWithPushHistory
-                      classes={isWebApp() ? { root: classes.tabRootFriendsDesktop } : { root: classes.tabRootFriends }}
-                      value={3}
+                      classes={isWebApp() ? { root: classes.tabRootBallotDesktop } : { root: classes.tabRootBallot }}
+                      value={1}
                       change={this.handleTabChange}
-                      id="friendsTabHeaderBar"
-                      label="Friends"
-                      to="/friends"
+                      id="ballotTabHeaderBar"
+                      label="Ballot"
+                      to="/ballot"
                     />
-                  )}
-                  {discussVisible && (
                     <TabWithPushHistory
-                      classes={isWebApp() ? { root: classes.tabRootNewsDesktop } : { root: classes.tabRootNews }}
-                      value={discussValue}
+                      classes={isWebApp() ? { root: classes.tabRootCandidatesDesktop } : { root: classes.tabRootCandidates }}
+                      value={2}
                       change={this.handleTabChange}
-                      id="discussTabHeaderBar"
-                      label="Discuss"
-                      to="/news"
+                      id="candidatesTabHeaderBar"
+                      label="Candidates"
+                      to="/cs/"
                     />
-                  )}
-                  {squadsVisible && (
-                    <TabWithPushHistory
-                      classes={isWebApp() ? { root: classes.tabRootDonateDesktop } : { root: classes.tabRootDonate }}
-                      value={squadsValue}
-                      change={this.handleTabChange}
-                      id="challengesTabHeaderBar"
-                      label="Challenges"  // Was Squads
-                      to="/challenges"  // Was "/squads"
+                    {friendsVisible && (
+                      <TabWithPushHistory
+                        classes={isWebApp() ? { root: classes.tabRootFriendsDesktop } : { root: classes.tabRootFriends }}
+                        value={3}
+                        change={this.handleTabChange}
+                        id="friendsTabHeaderBar"
+                        label="Friends"
+                        to="/friends"
+                      />
+                    )}
+                    {discussVisible && (
+                      <TabWithPushHistory
+                        classes={isWebApp() ? { root: classes.tabRootNewsDesktop } : { root: classes.tabRootNews }}
+                        value={discussValue}
+                        change={this.handleTabChange}
+                        id="discussTabHeaderBar"
+                        label="Discuss"
+                        to="/news"
+                      />
+                    )}
+                    {squadsVisible && (
+                      <TabWithPushHistory
+                        classes={isWebApp() ? { root: classes.tabRootDonateDesktop } : { root: classes.tabRootDonate }}
+                        value={squadsValue}
+                        change={this.handleTabChange}
+                        id="challengesTabHeaderBar"
+                        label="Challenges"  // Was Squads
+                        to="/challenges"  // Was "/squads"
+                      />
+                    )}
+                    {donateVisible && (
+                      <TabWithPushHistory
+                        classes={isWebApp() ? { root: classes.tabRootDonateDesktop } : { root: classes.tabRootDonate }}
+                        value={donateValue}
+                        change={this.handleTabChange}
+                        id="donateTabHeaderBar"
+                        label="Donate"
+                        to="/donate"
+                      />
+                    )}
+                    <Tab
+                      value={99}
+                      classes={isWebApp() ? { root: classes.tabRoot, selected: classes.tabSelected } : { root: classes.tabRootMore, selected: classes.tabSelected  }}
+                      id="moreTabHeaderBar"
+                      label={(
+                        <span className={classes.moreLabel}>
+                          More
+                          <ExpandMoreIcon className={classes.tabMoreIcon} />
+                        </span>
+                      )}
+                      onClick={(event) => {
+                        this.setState({ moreAnchorEl: event.currentTarget });
+                        this.handleTabChange(99); // Highlight the tab
+                      }}
+                      aria-controls="more-menu"
+                      aria-haspopup="true"
+                      wrapped
                     />
-                  )}
-                  {donateVisible && (
-                    <TabWithPushHistory
-                      classes={isWebApp() ? { root: classes.tabRootDonateDesktop } : { root: classes.tabRootDonate }}
-                      value={donateValue}
-                      change={this.handleTabChange}
-                      id="donateTabHeaderBar"
-                      label="Donate"
-                      to="/donate"
-                    />
-                  )}
-                  {howItWorksVisible && (
-                    <TabWithPushHistory
-                      classes={isWebApp() ? { root: classes.tabRootHowItWorksDesktop } : { root: classes.tabRootHowItWorks }}
-                      value={howItWorksValue}
-                      change={this.openHowItWorksModal}
-                      id="howItWorksTabHeaderBar"
-                      label="How It Works"
-                    />
-                  )}
-                </StyledHeaderMenuTabs>
+                    {howItWorksVisible && (
+                      <TabWithPushHistory
+                        classes={isWebApp() ? { root: classes.tabRootHowItWorksDesktop } : { root: classes.tabRootHowItWorks }}
+                        value={howItWorksValue}
+                        change={this.openHowItWorksModal}
+                        id="howItWorksTabHeaderBar"
+                        label="How It Works"
+                      />
+                    )}
+                  </StyledHeaderMenuTabs>
+                  <StyledMoreMenu
+                    id="more-menu"
+                    anchorEl={this.state.moreAnchorEl}
+                    open={Boolean(this.state.moreAnchorEl)}
+                    onClose={() => this.setState({ moreAnchorEl: null })}
+                    anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+                    transformOrigin={{ vertical: 'top', horizontal: 'left' }}
+                  >
+                    <StyledMoreMenuItem
+                      selected={normalizedHrefPage() === 'challenges'}
+                      onClick={this.navTo('/challenges', 99)}
+                      disableRipple
+                    >
+                      Challenges
+                    </StyledMoreMenuItem>
+
+                    <StyledMoreMenuItem
+                      selected={normalizedHrefPage() === 'manage'}
+                      onClick={this.navTo('/manage', 99)}
+                      disableRipple
+                    >
+                      Candidates I’m managing
+                    </StyledMoreMenuItem>
+                  </StyledMoreMenu>
+                </>
               )}
             </div>
           </TopRowOneMiddleContainer>
@@ -640,207 +714,264 @@ HeaderBar.propTypes = {
   classes: PropTypes.object,
 };
 
-const styles = (theme) => ({
-  padding: {
-    padding: `0 ${theme.spacing(2)}px`,
-  },
-  addressButtonRoot: {
-    '&:hover': {
-      backgroundColor: 'transparent',
+const styles = (theme) => {
+  const tabBase = {
+    color: 'rgba(51, 51, 51, 0.7)',
+    fontSize: 18,
+    minWidth: 90,
+    opacity: 0.7,
+    paddingTop: 17,
+    '&.Mui-selected': {
+      color: '#2e3c5d',
+      fontWeight: 600,
+      opacity: 1,
     },
-    color: 'rgba(17, 17, 17, .5)',
-    outline: 'none !important',
-    paddingRight: 6,
-    [theme.breakpoints.up('sm')]: {
+  };
+  const tabSelected = {
+    color: '#2e3c5d',
+    fontWeight: 600,
+    opacity: 1,
+  };
+
+  return {
+    tabRoot: { ...tabBase },
+    tabRootMore: { ...tabBase },
+    tabSelected: { ...tabSelected },
+
+    padding: {
+      padding: `0 ${theme.spacing(2)}px`,
+    },
+    moreLabel: {
+      alignItems: 'center',
+      display: 'flex',
+      gap: 4,
+      lineHeight: 1,
+    },
+    tabMoreIcon: {
+      color: 'inherit',
+      fontSize: 22,
+    },
+
+    addressButtonRoot: {
+      '&:hover': {
+        backgroundColor: 'transparent',
+      },
+      color: 'rgba(17, 17, 17, .5)',
+      outline: 'none !important',
+      paddingRight: 6,
+      [theme.breakpoints.up('sm')]: {
+        paddingLeft: 0,
+      },
+      [theme.breakpoints.down('sm')]: {
+        paddingTop: 6,
+        marginLeft: 2,
+        paddingLeft: 0,
+      },
+    },
+    addressIconButtonRoot: {
+      paddingTop: 1,
+      paddingRight: 6,
+      paddingBottom: 3,
       paddingLeft: 0,
+      color: 'rgba(17, 17, 17, .4)',
+      outline: 'none !important',
+      '&:hover': {
+        backgroundColor: 'transparent',
+      },
+      [theme.breakpoints.up('sm')]: {
+        paddingRight: 2,
+      },
     },
-    [theme.breakpoints.down('sm')]: {
-      paddingTop: 6,
-      marginLeft: 2,
+    iconButtonRoot: {
+      paddingTop: 1,
+      paddingRight: 0,
+      paddingBottom: 3,
       paddingLeft: 0,
+      color: 'rgba(17, 17, 17, .4)',
+      outline: 'none !important',
+      '&:hover': {
+        backgroundColor: 'transparent',
+      },
     },
-  },
-  addressIconButtonRoot: {
-    paddingTop: 1,
-    paddingRight: 6,
-    paddingBottom: 3,
-    paddingLeft: 0,
-    color: 'rgba(17, 17, 17, .4)',
-    outline: 'none !important',
-    '&:hover': {
-      backgroundColor: 'transparent',
+    searchButtonRoot: {
+      '&:hover': {
+        backgroundColor: 'transparent',
+      },
+      color: 'rgba(17, 17, 17, .5)',
+      outline: 'none !important',
+      paddingTop: 0,
+      paddingRight: 0,
+      [theme.breakpoints.up('sm')]: {
+        paddingLeft: 0,
+      },
+      [theme.breakpoints.down('sm')]: {
+        marginLeft: 2,
+        paddingLeft: 0,
+      },
     },
-    [theme.breakpoints.up('sm')]: {
-      paddingRight: 2,
+    tooltipPlacementBottom: {
+      marginTop: 0,
     },
-  },
-  iconButtonRoot: {
-    paddingTop: 1,
-    paddingRight: 0,
-    paddingBottom: 3,
-    paddingLeft: 0,
-    color: 'rgba(17, 17, 17, .4)',
-    outline: 'none !important',
-    '&:hover': {
-      backgroundColor: 'transparent',
+    tabRootBallot: {
+      minWidth: 90,
+      [theme.breakpoints.between('tabMin', 'tabMdMin')]: { // Small Tablets
+        minWidth: 0,
+        fontSize: 20,
+        padding: '16px 8px 10px 8px',
+      },
+      [theme.breakpoints.between('tabMdMin', 'tabLgMin')]: { // Medium Tablets
+        fontSize: 20,
+        padding: '16px 16px 10px 16px',
+      },
+      [theme.breakpoints.up('tabLgMin')]: { // Larger Tablets, and desktops
+        fontSize: 24,
+      },
     },
-  },
-  searchButtonRoot: {
-    '&:hover': {
-      backgroundColor: 'transparent',
+    tabRootBallotDesktop: {
+      fontSize: 18,
+      minWidth: 90,
+      paddingTop: 17,
     },
-    color: 'rgba(17, 17, 17, .5)',
-    outline: 'none !important',
-    paddingTop: 0,
-    paddingRight: 0,
-    [theme.breakpoints.up('sm')]: {
-      paddingLeft: 0,
+    tabRootCandidates: {
+      minWidth: 90,
+      [theme.breakpoints.between('tabMin', 'tabMdMin')]: { // Small Tablets
+        minWidth: 0,
+        fontSize: 20,
+        padding: '16px 8px 10px 8px',
+      },
+      [theme.breakpoints.between('tabMdMin', 'tabLgMin')]: { // Medium Tablets
+        fontSize: 20,
+        padding: '16px 16px 10px 16px',
+      },
+      [theme.breakpoints.up('tabLgMin')]: { // Larger Tablets, and desktops
+        fontSize: 24,
+      },
     },
-    [theme.breakpoints.down('sm')]: {
-      marginLeft: 2,
-      paddingLeft: 0,
+    tabRootCandidatesDesktop: {
+      fontSize: 18,
+      minWidth: 90,
+      paddingTop: 17,
     },
-  },
-  tooltipPlacementBottom: {
-    marginTop: 0,
-  },
-  tabRootBallot: {
-    minWidth: 90,
-    [theme.breakpoints.between('tabMin', 'tabMdMin')]: { // Small Tablets
-      minWidth: 0,
-      fontSize: 20,
-      padding: '16px 8px 10px 8px',
+    tabRootDonate: {
+      minWidth: 70,
+      [theme.breakpoints.between('tabMin', 'tabMdMin')]: { // Small Tablets
+        minWidth: 0,
+        fontSize: 20,
+        padding: '16px 8px 10px 8px',
+      },
+      [theme.breakpoints.between('tabMdMin', 'tabLgMin')]: { // Medium Tablets
+        fontSize: 20,
+        padding: '16px 16px 10px 16px',
+      },
+      [theme.breakpoints.up('tabLgMin')]: { // Larger Tablets, and desktop
+        fontSize: 24,
+      },
     },
-    [theme.breakpoints.between('tabMdMin', 'tabLgMin')]: { // Medium Tablets
-      fontSize: 20,
-      padding: '16px 16px 10px 16px',
+    tabRootDonateDesktop: {
+      fontSize: 18,
+      minWidth: 70,
+      paddingTop: 17,
     },
-    [theme.breakpoints.up('tabLgMin')]: { // Larger Tablets, and desktops
-      fontSize: 24,
+    tabRootFriends: {
+      minWidth: 90,
+      [theme.breakpoints.between('tabMin', 'tabMdMin')]: { // Small Tablets
+        minWidth: 0,
+        fontSize: 20,
+        padding: '16px 8px 10px 8px',
+      },
+      [theme.breakpoints.between('tabMdMin', 'tabLgMin')]: { // Medium Tablets
+        fontSize: 20,
+        padding: '16px 16px 10px 16px',
+      },
+      [theme.breakpoints.up('tabLgMin')]: { // Larger Tablets, and desktop
+        fontSize: 24,
+      },
     },
-  },
-  tabRootBallotDesktop: {
-    fontSize: 18,
-    minWidth: 90,
-    paddingTop: 17,
-  },
-  tabRootCandidates: {
-    minWidth: 90,
-    [theme.breakpoints.between('tabMin', 'tabMdMin')]: { // Small Tablets
-      minWidth: 0,
-      fontSize: 20,
-      padding: '16px 8px 10px 8px',
+    tabRootFriendsDesktop: {
+      fontSize: 18,
+      minWidth: 90,
+      paddingTop: 17,
     },
-    [theme.breakpoints.between('tabMdMin', 'tabLgMin')]: { // Medium Tablets
-      fontSize: 20,
-      padding: '16px 16px 10px 16px',
+    tabRootNews: {
+      minWidth: 70,
+      [theme.breakpoints.between('tabMin', 'tabMdMin')]: { // Small Tablets
+        minWidth: 0,
+        fontSize: 20,
+        padding: '16px 8px 10px 8px',
+      },
+      [theme.breakpoints.between('tabMdMin', 'tabLgMin')]: { // Medium Tablets
+        fontSize: 20,
+        padding: '16px 16px 10px 16px',
+      },
+      [theme.breakpoints.up('tabLgMin')]: { // Larger Tablets, and desktop
+        fontSize: 24,
+      },
     },
-    [theme.breakpoints.up('tabLgMin')]: { // Larger Tablets, and desktops
-      fontSize: 24,
+    tabRootNewsDesktop: {
+      fontSize: 18,
+      minWidth: 70,
+      paddingTop: 17,
     },
-  },
-  tabRootCandidatesDesktop: {
-    fontSize: 18,
-    minWidth: 90,
-    paddingTop: 17,
-  },
-  tabRootDonate: {
-    minWidth: 70,
-    [theme.breakpoints.between('tabMin', 'tabMdMin')]: { // Small Tablets
-      minWidth: 0,
-      fontSize: 20,
-      padding: '16px 8px 10px 8px',
+    tabRootHowItWorks: {
+      minWidth: 70,
+      [theme.breakpoints.between('tabMin', 'tabMdMin')]: { // Small Tablets
+        minWidth: 0,
+        fontSize: 20,
+        padding: '16px 8px 10px 8px',
+      },
+      [theme.breakpoints.between('tabMdMin', 'tabLgMin')]: { // Medium Tablets
+        fontSize: 20,
+        padding: '16px 16px 10px 16px',
+      },
+      [theme.breakpoints.up('tabLgMin')]: { // Larger Tablets, and desktop
+        fontSize: 24,
+      },
     },
-    [theme.breakpoints.between('tabMdMin', 'tabLgMin')]: { // Medium Tablets
-      fontSize: 20,
-      padding: '16px 16px 10px 16px',
-    },
-    [theme.breakpoints.up('tabLgMin')]: { // Larger Tablets, and desktop
-      fontSize: 24,
-    },
-  },
-  tabRootDonateDesktop: {
-    fontSize: 18,
-    minWidth: 70,
-    paddingTop: 17,
-  },
-  tabRootFriends: {
-    minWidth: 90,
-    [theme.breakpoints.between('tabMin', 'tabMdMin')]: { // Small Tablets
-      minWidth: 0,
-      fontSize: 20,
-      padding: '16px 8px 10px 8px',
-    },
-    [theme.breakpoints.between('tabMdMin', 'tabLgMin')]: { // Medium Tablets
-      fontSize: 20,
-      padding: '16px 16px 10px 16px',
-    },
-    [theme.breakpoints.up('tabLgMin')]: { // Larger Tablets, and desktop
-      fontSize: 24,
-    },
-  },
-  tabRootFriendsDesktop: {
-    fontSize: 18,
-    minWidth: 90,
-    paddingTop: 17,
-  },
-  tabRootNews: {
-    minWidth: 70,
-    [theme.breakpoints.between('tabMin', 'tabMdMin')]: { // Small Tablets
-      minWidth: 0,
-      fontSize: 20,
-      padding: '16px 8px 10px 8px',
-    },
-    [theme.breakpoints.between('tabMdMin', 'tabLgMin')]: { // Medium Tablets
-      fontSize: 20,
-      padding: '16px 16px 10px 16px',
-    },
-    [theme.breakpoints.up('tabLgMin')]: { // Larger Tablets, and desktop
-      fontSize: 24,
-    },
-  },
-  tabRootNewsDesktop: {
-    fontSize: 18,
-    minWidth: 70,
-    paddingTop: 17,
-  },
-  tabRootHowItWorks: {
-    minWidth: 70,
-    [theme.breakpoints.between('tabMin', 'tabMdMin')]: { // Small Tablets
-      minWidth: 0,
-      fontSize: 20,
-      padding: '16px 8px 10px 8px',
-    },
-    [theme.breakpoints.between('tabMdMin', 'tabLgMin')]: { // Medium Tablets
-      fontSize: 20,
-      padding: '16px 16px 10px 16px',
-    },
-    [theme.breakpoints.up('tabLgMin')]: { // Larger Tablets, and desktop
-      fontSize: 24,
-    },
-  },
-  tabRootHowItWorksDesktop: {
-    fontSize: 18,
-    minWidth: 70,
-    paddingTop: 17,
-  },
-  indicator: {
-    display: 'none',
-  },
-});
+  };
+};
 
 const HeaderBarWrapper = styled.div.attrs({
   className: 'HeaderBarWrapper', // div.attrs and className all added to achieve drop-shadow on Donate page
   shouldForwardProp: (prop) => !['hasNotch', 'scrolledDown', 'hasSubmenu'].includes(prop),
 })(({ hasNotch, scrolledDown, hasSubmenu }) => (`
   margin-top: ${hasNotch ? '9%' : ''};
-  box-shadow: ${(!scrolledDown || !hasSubmenu)  ? '' : standardBoxShadow('wide')};
+  box-shadow: ${(!scrolledDown || !hasSubmenu) ? '' : standardBoxShadow('wide')};
   border-bottom: ${(!scrolledDown || !hasSubmenu) ? '' : '1px solid #aaa'};
   padding-left: calc(100vw - 100%);
 `));
 
 const StyledHeaderMenuTabs = styled(Tabs)`
   // {() => (isIOSAppOnMac() ? '' : displayNoneIfSmallerThanDesktop())};
+`;
+const StyledMoreMenu = styled(Menu)`
+  .MuiPaper-root {
+    border-radius: 8px;
+    box-shadow: ${standardBoxShadow('wide')};
+    margin-top: 8px;
+    min-width: 200px;
+  }
+`;
+
+const StyledMoreMenuItem = styled(MenuItem)`
+  color: rgba(51, 51, 51, 0.7);
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.2;
+  opacity: 1;
+  padding: 12px 16px;
+  position: relative;
+
+  &:hover {
+    background: rgba(46, 60, 93, 0.06);
+  }
+
+  &.Mui-selected,
+  &.Mui-selected:hover {
+    background: transparent;
+    color: #2e3c5d;
+    font-weight: 600;
+    opacity: 1;
+  }
 `;
 
 export default withStyles(styles)(HeaderBar);
