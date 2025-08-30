@@ -6,11 +6,12 @@ import Colors from '../../common/components/Style/Colors';
 import StepIcon from './StepIcon';
 
 const Step = ({ onClick, step, label, completed, width }) => (
-    <HowItWorksStep
-      completed={completed}
-      id={`step${step}`}
-      onClick={onClick}
-      width={width}>
+  <HowItWorksStep
+    completed={completed}
+    id={`step${step}`}
+    onClick={onClick}
+    width={width}
+  >
     <StepIcon
       number={step}
       completed={completed}
