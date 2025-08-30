@@ -13,7 +13,7 @@ export default function NotificationBannerAboveHeader () {
   const voterCanEditPoliticianProfile = useVoterCanEditPolitician();
 
   const closeEditBar = () => {
-    AppObservableStore.setShowNotificationBannerAboveHeader(true);
+    AppObservableStore.setShowNotificationBannerAboveHeader(false);
   };
 
   function pushDataLayer (linkTo, buttonId = '') {
@@ -97,7 +97,7 @@ const BannerText = styled.div`
   gap: 12px;
   flex-wrap: wrap;
   justify-content: center;
-  text-align: center; 
+  text-align: center;
 `;
 
 const CloseButton = styled.button`

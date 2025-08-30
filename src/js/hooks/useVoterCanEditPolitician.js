@@ -14,6 +14,7 @@ export default function useVoterCanEditPolitician () {
   const updateVoterCanEditPoliticianProfile = useCallback(() => {
     const currentCampaignXWeVoteId = campaignXWeVoteIdRef.current;
     const politicianWeVoteId = politicianWeVoteIdRef.current;
+    // console.log('useVoterCanEditPolitician, politicianWeVoteId: ', politicianWeVoteId, ', currentCampaignXWeVoteId: ', currentCampaignXWeVoteId);
     if (voterCanEditPolitician(politicianWeVoteId, currentCampaignXWeVoteId)) {
       setVoterCanEditPoliticianProfile(true);
     } else {
