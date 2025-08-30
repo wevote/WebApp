@@ -201,7 +201,7 @@ export function headroomWrapperOffset (includePosition, pageNameOverride = null)
         offset /= 2;
       }
     } else if (page === 'ballotSmHdrWild' && isCordova()) {
-      offset -= 20;
+      offset -= isIPad() || isAndroidSizeXL() ? 0 : 30;
     }
 
     cordovaOffsetLog(`headroomWrapperOffset HeadroomWrapper outerHeight+top: ${outerHeight + position}, new offset: ${offset}, page: ${getPageKey()}`);
