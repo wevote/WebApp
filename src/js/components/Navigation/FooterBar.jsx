@@ -1,15 +1,17 @@
-import { Groups, Home, HowToVote, Info, People, QuestionAnswer, VerifiedUser, MoreHoriz } from '@mui/icons-material';
+import { Groups, Home, HowToVote, Info, MoreHoriz, People, QuestionAnswer, VerifiedUser } from '@mui/icons-material';
 import { Badge, BottomNavigation, BottomNavigationAction, ClickAwayListener } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
+import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
+import DelayedLoad from '../../common/components/Widgets/DelayedLoad';
 import signInModalGlobalState from '../../common/components/Widgets/signInModalGlobalState';
 import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
 import { isIOS } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
 import { normalizedHref } from '../../common/utils/hrefUtils';
-import { isAndroid, isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
+import { isAndroid, isCordova } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
@@ -17,26 +19,25 @@ import stringContains from '../../common/utils/stringContains';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
 import { cordovaFooterHeight } from '../../utils/cordovaOffsets';
-import webAppConfig from '../../config';
-import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
+import ShareButtonFooter from '../Share/ShareButtonFooter';
 
 // It's not ideal to have two images, but this is a complex svg, and I couldn't figure out how to change the fill color with a variable
 const capitalBuilding = '/img/global/svg-icons/capital-building.svg';
 const capitalBuildingSelected = '/img/global/svg-icons/capital-building-selected.svg';
-const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
+
 function MoreMenuOverlay({ onClose }) {
   return (
     <ClickAwayListener onClickAway={onClose}>
       <Overlay>
-        <MenuItem onClick={() => { window.location.href = '/friends'; }}>
+        <MenuItem onClick={() => { historyPush('/friends'); }}>
           <People />
           Friends
         </MenuItem>
-        <MenuItem onClick={() => { window.location.href = '/challenges'; }}>
+        <MenuItem onClick={() => { historyPush('/challenges'); }}>
           <Groups />
           Challenges
         </MenuItem>
-        <MenuItem onClick={() => { window.location.href = '/manage'; }}>
+        <MenuItem onClick={() => { historyPush('/manage'); }}>
           <img src="/img/global/svg-icons/capital-building.svg" alt="" width={20} />
           Candidates
           <br />
@@ -190,6 +191,8 @@ class FooterBar extends React.Component {
       showActivityTidbitDrawer, showingOneCompleteYourProfileModal, showShareModal,
       showSharedItemModal, showSignInModal, showVoterPlanModal, voterIsSignedIn,
     } = this.state;
+    const pathname = normalizedHref();
+    const showShareButtonFooter = stringContains('/ballot', pathname.toLowerCase());
     const inPrivateLabelMode = AppObservableStore.getHideWeVoteLogo(); // setState onAppObservableStoreChange is not working sometimes for some reason
     // const badgeStyle = {
     //   display: 'inline-block',
@@ -271,6 +274,11 @@ class FooterBar extends React.Component {
     // console.log('--------- Footer bar donateVisible ', donateVisible, 'squadsVisible', squadsVisible);
     return (
       <FooterBarWrapper>
+        {showShareButtonFooter && (
+          <DelayedLoad waitBeforeShow={3000}>
+            <ShareButtonFooter />
+          </DelayedLoad>
+        )}
         <FooterContainer
           className={`u-show-mobile-tablet ${hideFooterBehindModal ? ' u-z-index-1000' : ' u-z-index-9000'}`}
           id="footer-container"
