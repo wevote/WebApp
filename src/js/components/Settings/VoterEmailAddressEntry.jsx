@@ -27,6 +27,7 @@ let shiftTabKeyPressed = false;
 class VoterEmailAddressEntry extends Component {
   constructor (props) {
     super(props);
+    this.emailInputRef = React.createRef();
     this.state = {
       disableEmailVerificationButton: true,
       displayEmailVerificationButton: false,
@@ -67,9 +68,9 @@ class VoterEmailAddressEntry extends Component {
     this.onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     VoterActions.voterEmailAddressRetrieve();
-    const inputFld = $('#enterVoterEmailAddress');
-    // console.log('enterVoterEmailAddress ', $(inputFld));
-    $(inputFld).blur();
+    if (this.emailInputRef && this.emailInputRef.current) {
+      this.emailInputRef.current.blur();
+    };
     this._isMounted = true;
   }
 
@@ -474,6 +475,7 @@ class VoterEmailAddressEntry extends Component {
             onKeyDown={this.onKeyDown}
             placeholder="Type email here..."
             type="email"
+            ref={this.emailInputRef}
             value={voterEmailAddress}
             variant="outlined"
           />
