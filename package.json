@@ -102,11 +102,11 @@
     "unused-webpack-plugin": "^2.4.0",
     "webdriver": "^9.16.2",
     "webdriverio": "^9.16.2",
-    "webpack": "^5.90.3",
-    "webpack-bundle-analyzer": "^4.8.0",
-    "webpack-cli": "^5.1.4",
-    "webpack-dev-server": "^5.0.2",
-    "webpack-shell-plugin-next": "^2.3.1"
+    "webpack": "^5.101.3",
+    "webpack-bundle-analyzer": "^4.10.2",
+    "webpack-cli": "^6.0.1",
+    "webpack-dev-server": "^5.2.2",
+    "webpack-shell-plugin-next": "^2.3.3"
   },
   "dependencies": {
     "@emotion/is-prop-valid": "^1.1.2",

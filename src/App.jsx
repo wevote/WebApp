@@ -419,7 +419,7 @@ class App extends Component {
     if (window.location.href.endsWith('/storybook')) {
       const destinationHref = `${window.location.href}-static/index.html?path=/docs/design-system--docs`;
       console.log('Storybook redirect from: ', window.location.href, ' to: ', destinationHref);
-      window.location.href = destinationHref;
+      window.location.href = destinationHref;      // This would cause big problems in Cordova, but shouldn't happen
     }
 
     return (

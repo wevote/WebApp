@@ -178,7 +178,7 @@ export default class SharedItemLanding extends Component {
         this.localHistoryPush(destinationFullUrl);
         // const destinationFullUrlWithModal = `${destinationFullUrl}/modal/sic/${sharedItemCodeIncoming}`;
         // // console.log('*** WILL Direct to EXTERNAL destinationFullUrlWithModal:', destinationFullUrlWithModal);
-        // window.location.href = destinationFullUrlWithModal;
+        // window.location.href = destinationFullUrlWithModal;   // Don't do this, would cause problems in Cordova
         return LoadingWheel;
       }
     }
