@@ -323,7 +323,7 @@ const ShareWrapper = styled('div')`
   }
 `;
 
-function pushDataLayer (buttonId, destinationPageName, destinationPageType, shareType, linkToBeShared, destinationUrl) {
+function pushDataLayer (buttonId, destinationPageName, destinationPageType, shareType, shareDestination, linkToBeShared, destinationUrl) {
   const dataLayerObject = {
     actionDetails: {
       actionType: 'share',
@@ -332,8 +332,9 @@ function pushDataLayer (buttonId, destinationPageName, destinationPageType, shar
     event: 'click',
     shareDetails: {
       shareType,
+      shareDestination,
       urlShared: linkToBeShared,
-      contentToggle: AppObservableStore.getWhatAndHowMuchToShare(),
+      howMuchToShare: AppObservableStore.getWhatAndHowMuchToShare(),
     },
     pageDetails: getPageDetails(),
     destinationDetails: {
@@ -464,7 +465,7 @@ export function ShareTwitter (props) {
     }
     const twitterRedirectUrl = `https://x.com/intent/post?url=${encodeURIComponent(linkToBeSharedTwitter)}&text=${encodeURIComponent('Please join me and vote.')}`;
     const buttonId = twitterButtonRef.current.id;
-    pushDataLayer(buttonId, 'TwitterShare', 'share', 'twitter', linkToBeSharedTwitter, twitterRedirectUrl);
+    pushDataLayer(buttonId, 'x.com', 'externalShare', 'ballot', 'twitter',linkToBeSharedTwitter, twitterRedirectUrl);
   };
 
   return (
