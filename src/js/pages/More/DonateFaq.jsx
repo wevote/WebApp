@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import styled, { css } from 'styled-components';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet-async';
 import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
+
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 
 // Utility function to create safe IDs from question text
 const slugify = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
@@ -48,7 +50,7 @@ function DonateFaq () {
             WeVote is a nonpartisan, nonprofit organization committed to empowering informed participation in democracy. Through innovative technology, trusted data, and collaborative partnerships, we help people vote their values and engage meaningfully in civic life. We Vote is where you view your ballot, see endorsements from your network for all candidates and measures, and collaborate with folks who share your values.
           </p>
           <p>
-            We Vote is a volunteer-driven movement. We rely on volunteers across the country who use their engineering, design, and other skills to build WeVote. We are over 100 people who have donated 12,000+ volunteer hours, including 90+ contributors on GitHub. We also have a small team of core staff and volunteer board members.
+            We Vote is a volunteer-driven movement. We rely on volunteers across the country who use their engineering, design, and other skills to build WeVote. We are over 800 people who have donated 50,000+ volunteer hours, including 100+ contributors on GitHub.
           </p>
           <p>
             See:
@@ -88,11 +90,11 @@ function DonateFaq () {
             </StyledLink>
 
             {' '}
-            - 501(c)(4) FEIN 81-1052585, both based in Oakland, CA. We do not support or oppose any political candidate or party. We are not affiliated with WeVoteProject.org or WeVoteUSA.com. All donations are tax-deductible to the fullest extent allowed by U.S. law.
+            - 501(c)(4) FEIN 81-1052585, both based in Oakland, CA. We do not support or oppose any political candidate or party. We are not affiliated with WeVoteProject.org or WeVoteUSA.com. All 501(c)(3) donations made on this site are tax-deductible to the fullest extent allowed by U.S. law.
           </p>
         </FaqItem>
 
-        <FaqItem question="What is the difference between a (c)(3) and a (c)(4) nonprofit?">
+        <FaqItem question="What is the difference between a 501(c)(3) and a 501(c)(4) nonprofit?">
           <p>
             A 501(c)(3) nonprofit is organized for charitable, religious, educational, or scientific purposes. Contributions to 501(c)(3) organizations are tax-deductible, which means donors can generally deduct their gifts on their federal tax returns. These organizations are limited in how much lobbying they can do and are prohibited from supporting or opposing political candidates.
           </p>
@@ -153,9 +155,6 @@ function DonateFaq () {
           <p>
             Yes. WeVote will not publicly acknowledge your gift without your consent. If you would like your donation to remain anonymous, or withdraw your consent at any time, please email us.
           </p>
-          <p>
-            Every donation of $600 or more can help cover expenses including: server costs ($600 - $2,500 per month), data fees (~$40,000 per year), collaboration tools, and other hard costs. In the future, we might hire some key staff with donations, for the smooth operation of WeVote. Your support directly powers the tools, outreach, and education needed to strengthen democracy.
-          </p>
         </FaqItem>
 
         <FaqItem question="How can I make a gift?">
@@ -200,7 +199,21 @@ function DonateFaq () {
         </FaqItem>
 
         <FaqItem question="Can I update or cancel my recurring donation?">
-          <p>Yes! You can update the amount of your donation, payment method, or cancel your recurring donation at any time.</p>
+          <p>
+            Yes! You can update the amount of your donation, payment method, or cancel your recurring donation at any time. Please
+            {' '}
+            <Suspense fallback={<></>}>
+              <OpenExternalWebSite
+                linkIdAttribute="weVoteContactUsPage"
+                url="https://help.wevote.us/hc/en-us/requests/new"
+                target="_blank"
+                body="use our Contact Us form"
+                trackingOn
+              />
+            </Suspense>
+            {' '}
+            if you have any questions.
+          </p>
         </FaqItem>
 
         <FaqItem question="Is my online donation secure?">
@@ -251,7 +264,7 @@ function DonateFaq () {
 
         <FaqItem question="Are donations tax-deductible?">
           <p>
-            Yes, all donations to WeVote are directed to the (c)3 nonprofit and are tax-deductible within the limits of U.S. law. Please see below for more details.
+            Yes, all donations to WeVote are directed to the 501(c)(3) nonprofit and are tax-deductible within the limits of U.S. law. Please see below for more details.
           </p>
           <p>
             🟢 Donations to WeVote&apos;s 501(c)(3) fund (
@@ -273,7 +286,7 @@ function DonateFaq () {
             >
               WeVoteUSA.org
             </StyledLink>
-            ) are not tax-deductible, as they support our advocacy and lobbying work. FEIN: 81-1052585
+            ) are not tax-deductible, as they support our non-charitable work. FEIN: 81-1052585
           </p>
         </FaqItem>
 
@@ -454,7 +467,7 @@ const StyledFaq = styled.div`
     font-size: 2rem;
     margin-top: 2.5rem;
     margin-bottom: 1rem;
-    border-bottom: 2px solid ${DesignTokenColors.neutralUI200}; 
+    border-bottom: 2px solid ${DesignTokenColors.neutralUI200};
     padding-bottom: 0.3rem;
   }
   p { font-size: 1.05rem; line-height: 1.6; margin: 1rem 0 0; }
