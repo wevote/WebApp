@@ -205,7 +205,7 @@ class BallotTitleHeader extends Component {
                         {electionName}
                       </ElectionNameH1>
                       {(showBallotCaveat && ballotCaveat) ? (
-                        <BallotAddress
+                        <BallotAddress tabIndex={-1}
                           allowTextWrap={allowTextWrap}
                           centerText={centerText}
                           className={linksOff ? '' : 'u-cursor--pointer'}
@@ -219,7 +219,7 @@ class BallotTitleHeader extends Component {
                       ) : (
                         <>
                           {((textForMapSearch && textForMapSearch !== '' && textForMapSearch.length >= 2) || (originalTextAddress && originalTextAddress !== '' && originalTextAddress.length >= 2)) ? (
-                            <BallotAddress
+                            <BallotAddress tabIndex={-1}
                               allowTextWrap={allowTextWrap}
                               centerText={centerText}
                               className={linksOff ? '' : 'u-cursor--pointer'}
@@ -255,7 +255,7 @@ class BallotTitleHeader extends Component {
                                   {linksOff ? <></> : editIconStyled}
                                 </BallotAddress>
                               ) : (
-                                <BallotAddress
+                                <BallotAddress tabIndex={-1}
                                   allowTextWrap={allowTextWrap}
                                   centerText={centerText}
                                   className={linksOff ? '' : 'u-cursor--pointer'}
