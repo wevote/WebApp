@@ -119,7 +119,11 @@ function DonateFaq () {
             We Vote is a nonprofit technology startup, creating a digital voter guide informed by issues you care about, and people you trust. Through our nonpartisan, open source platform, we&apos;ll help you become a better voter, up and down the ballot.
           </p>
           <p>
-            We have a mobile-ready website, as well as iPhone and Android apps. We are free and open source:
+            We have a mobile-ready website, as well as <OpenExternalWebSite linkIdAttribute="appleStorePage"
+              url="https://apps.apple.com/us/app/we-vote-voter-guide/id1347335726"
+              target="_blank" body="iPhone" trackingOn /> and <OpenExternalWebSite linkIdAttribute="googleStorePage"
+              url="https://play.google.com/store/apps/details?id=org.wevote.cordova&hl=en_US"
+              target="_blank" body="Android" trackingOn /> apps. We are free and open source:
             {' '}
             <StyledLink
               href="https://github.com/WeVote"
@@ -382,7 +386,11 @@ function DonateFaq () {
 
         <FaqItem question="I can’t make a financial donation right now. How else can I support WeVote?">
           <p>
-            There are many ways to help! Share our tools with your network, volunteer, or sign up for our newsletter to stay engaged.
+            There are many ways to help! Share our tools with your network, <OpenExternalWebSite
+            linkIdAttribute="weVoteCareerPage" url="https://wevote.applytojob.com/apply/"
+            target="_blank" body="volunteer" trackingOn />, or <OpenExternalWebSite
+            linkIdAttribute="weVoteNewsletterPage" url="https://eepurl.com/cx_frP"
+            target="_blank" body="sign up for our newsletter" trackingOn /> to stay engaged.
           </p>
         </FaqItem>
 
