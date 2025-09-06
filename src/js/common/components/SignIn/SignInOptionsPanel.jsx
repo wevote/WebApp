@@ -1,6 +1,7 @@
 import { Facebook, X as Twitter } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
+import TagManager from 'react-gtm-module';
 import Button from 'react-bootstrap/Button';
 import styled from 'styled-components';
 import AnalyticsActions from '../../../actions/AnalyticsActions';
@@ -20,7 +21,6 @@ import initializeAppleSDK from '../../../utils/initializeAppleSDK';
 import initializeFacebookSDK from '../../../utils/initializeFacebookSDK';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import { isIPhone4in, isIPhone4p7in, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
-import historyPush from '../../utils/historyPush';
 import { normalizedHref } from '../../utils/hrefUtils';
 import { isAndroid, isCordova, isWebApp } from '../../utils/isCordovaOrWebApp';
 import Cookies from '../../utils/js-cookie/Cookies';
@@ -29,6 +29,7 @@ import stringContains from '../../utils/stringContains';
 import LoadingWheel from '../Widgets/LoadingWheel';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 import SnackNotifier, { openSnackbar } from '../Widgets/SnackNotifier';
+import lookupPageNameAndPageTypeDict, { getPageDetails } from '../../../utils/lookupPageNameAndPageTypeDict';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../Widgets/OpenExternalWebSite'));
 /* global $ */
@@ -349,10 +350,34 @@ export default class SignInOptionsPanel extends Component {
     }
   }
 
-  signOut () {
+  sendGTMDataLayer = ({ buttonId, destinationPath = '', actionType = 'navigate' }) => {
+    const destinationPage = lookupPageNameAndPageTypeDict(destinationPath);
+    const dataLayerObject = {
+      event: 'action',
+      actionDetails: {
+        actionType,
+        buttonId,
+      },
+      userDetails: VoterStore.getAnalyticsUserDetails(),
+      pageDetails: getPageDetails(),
+      destinationDetails: {
+        destinationPageName: destinationPage.pageName || '',
+        destinationPageType: destinationPage.pageType || '',
+        destinationPathname: destinationPath,
+      },
+    };
+    TagManager.dataLayer({ dataLayer: dataLayerObject });
+  };
+
+  signOut (buttonId = 'signOut_securitySignIn') {
     // console.log('SignInOptionsPanel.jsx signOut');
+    this.sendGTMDataLayer({
+      buttonId,
+      actionType: 'signOut',
+    });
+    const drawerOpenGlobalVariableName = 'headerProfileDrawerOpen';
+    AppObservableStore.setDrawerOpen(drawerOpenGlobalVariableName, false);
     VoterSessionActions.voterSignOut();
-    historyPush('/');
   }
 
   render () {
@@ -608,15 +633,15 @@ export default class SignInOptionsPanel extends Component {
               {' '}
               <Suspense fallback={<></>}>
                 <OpenExternalWebSite
-                  linkIdAttribute="openTermsOfService"
-                  url={termsOfServiceURL}
-                  target="_blank"
                   className="open-web-site"
                   body={(
                     <span>
                       Terms of Service
                     </span>
                   )}
+                  linkIdAttribute="openTermsOfService"
+                  target="_blank"
+                  url={termsOfServiceURL}
                 />
               </Suspense>
               {' '}

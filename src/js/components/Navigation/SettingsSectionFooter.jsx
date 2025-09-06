@@ -51,6 +51,13 @@ class SettingsSectionFooter extends Component {
     AppObservableStore.setShowHowItWorksModal(true);
   }
 
+  closeDrawerHandler = () => {
+    const { drawerOpenGlobalVariableName } = this.props;
+    if (drawerOpenGlobalVariableName) {
+      AppObservableStore.setDrawerOpen(drawerOpenGlobalVariableName, false);
+    }
+  }
+
   deviceTableVisibilityOff () {
     const { showDeviceDialog } = this.state;
     if (showDeviceDialog === true) {
@@ -75,7 +82,7 @@ class SettingsSectionFooter extends Component {
         <OneRow centered={centered}>
           <span className="u-cursor--pointer u-link-color-on-hover" onClick={this.openHowItWorksModal}><TermsAndPrivacyText id="footerLinkHowItWorks">How&nbsp;It&nbsp;Works</TermsAndPrivacyText></span>
           <span style={{ paddingLeft: 15 }} />
-          <Link to="/more/faq"><TermsAndPrivacyText id="footerLinkAbout&FAQ">About&nbsp;&amp;&nbsp;FAQ</TermsAndPrivacyText></Link>
+          <Link to="/more/faq" onClick={this.closeDrawerHandler}><TermsAndPrivacyText id="footerLinkAbout&FAQ">About&nbsp;&amp;&nbsp;FAQ</TermsAndPrivacyText></Link>
         </OneRow>
         <OneRow centered={centered}>
           <OpenExternalWebSite
@@ -87,9 +94,9 @@ class SettingsSectionFooter extends Component {
             )}
           />
           <span style={{ paddingLeft: 15 }} />
-          <Link to="/privacy"><TermsAndPrivacyText id="footerLinkPrivacy">Privacy</TermsAndPrivacyText></Link>
+          <Link to="/privacy" onClick={this.closeDrawerHandler}><TermsAndPrivacyText id="footerLinkPrivacy">Privacy</TermsAndPrivacyText></Link>
           <span style={{ paddingLeft: 15 }} />
-          <Link to="/more/terms"><TermsAndPrivacyText id="footerLinkTerms">Terms</TermsAndPrivacyText></Link>
+          <Link to="/more/terms" onClick={this.closeDrawerHandler}><TermsAndPrivacyText id="footerLinkTerms">Terms</TermsAndPrivacyText></Link>
         </OneRow>
         <OneRow centered={centered}>
           {(isWebApp() && !inPrivateLabelMode) && (
@@ -115,9 +122,9 @@ class SettingsSectionFooter extends Component {
           )}
           {isCordova() && (
             <>
-              <Link to="/more/faq"><TermsAndPrivacyText>Frequently Asked Questions</TermsAndPrivacyText></Link>
+              <Link to="/more/faq" onClick={this.closeDrawerHandler}><TermsAndPrivacyText>Frequently Asked Questions</TermsAndPrivacyText></Link>
               <span style={{ paddingLeft: 15 }} />
-              <Link to="/more/attributions"><TermsAndPrivacyText>Attributions</TermsAndPrivacyText></Link>
+              <Link to="/more/attributions" onClick={this.closeDrawerHandler}><TermsAndPrivacyText>Attributions</TermsAndPrivacyText></Link>
             </>
           )}
         </OneRow>
@@ -140,6 +147,7 @@ class SettingsSectionFooter extends Component {
 }
 SettingsSectionFooter.propTypes = {
   centered: PropTypes.bool,
+  drawerOpenGlobalVariableName: PropTypes.string,
 };
 
 const DoesNotSupport = styled('div', {
