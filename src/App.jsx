@@ -64,6 +64,7 @@ const CompleteYourProfileMobile = React.lazy(() => import(/* webpackChunkName: '
 const Credits = React.lazy(() => import(/* webpackChunkName: 'Credits' */ './js/pages/More/Credits'));
 const Donate = React.lazy(() => import(/* webpackChunkName: 'Donate' */ './js/pages/More/Donate'));
 const DonateFaq = React.lazy(() => import(/* webpackChunkName: 'DonateFaq' */ './js/pages/More/DonateFaq'));
+const Drawers = React.lazy(() => import(/* webpackChunkName: 'Drawers' */ './js/components/Drawers/Drawers'));
 const ElectionReminder = React.lazy(() => import(/* webpackChunkName: 'ElectionReminder' */ './js/pages/More/ElectionReminder'));
 const Elections = React.lazy(() => import(/* webpackChunkName: 'Elections' */ './js/pages/More/Elections'));
 const ExtensionSignIn = React.lazy(() => import(/* webpackChunkName: 'ExtensionSignIn' */ './js/pages/More/ExtensionSignIn'));
@@ -432,6 +433,9 @@ class App extends Component {
               {/* DO NOT put SnackNotifier or anything else that is non-essential here (to keep it out of the main chunk). */}
               <Suspense fallback={<HeaderBarSuspense />}>
                 <Header hideHeader={hideHeader} params={{ }} pathname={normalizedHref()} />
+              </Suspense>
+              <Suspense fallback={<></>}>
+                <Drawers />
               </Suspense>
               <Suspense fallback={<LoadingWheelComp />}>
                 <Switch>

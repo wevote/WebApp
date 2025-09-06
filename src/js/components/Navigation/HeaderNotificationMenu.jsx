@@ -18,6 +18,7 @@ import VoterStore from '../../stores/VoterStore';
 import { createDescriptionOfFriendPosts } from '../../utils/activityUtils';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 import lookupPageNameAndPageTypeDict, { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
+import AppObservableStore from '../../common/stores/AppObservableStore';
 
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
 
@@ -96,28 +97,29 @@ class HeaderNotificationMenu extends Component {
     }
   }
 
-
-onSettingsClick = (buttonId) => {
-  const destinationPathname = '/settings/notifications';
-  const destinationPage = lookupPageNameAndPageTypeDict(destinationPathname);
-  const dataLayerObject = {
-    actionDetails: {
-      actionType: 'openModal', // We will be transitioning to a slide-out drawer soon
-      buttonId,
-    },
-    event: 'action',
-    pageDetails: getPageDetails(),
-    destinationDetails: {
-      destinationPageName: destinationPage.pageName,
-      destinationPageType: destinationPage.pageType,
-      destinationPathname,
-    },
-    userDetails: VoterStore.getAnalyticsUserDetails(),
-  };
-  TagManager.dataLayer({ dataLayer: dataLayerObject });
-  this.handleClose();
-  historyPush(destinationPathname);
-}
+  onSettingsClick = (buttonId) => {
+    const destinationPathname = '/settings/notifications';
+    const destinationPage = lookupPageNameAndPageTypeDict(destinationPathname);
+    const dataLayerObject = {
+      actionDetails: {
+        actionType: 'openModal', // We will be transitioning to a slide-out drawer soon
+        buttonId,
+      },
+      event: 'action',
+      pageDetails: getPageDetails(),
+      destinationDetails: {
+        destinationPageName: destinationPage.pageName,
+        destinationPageType: destinationPage.pageType,
+        destinationPathname,
+      },
+      userDetails: VoterStore.getAnalyticsUserDetails(),
+    };
+    TagManager.dataLayer({ dataLayer: dataLayerObject });
+    this.handleClose();
+    const drawerOpenGlobalVariableName = 'headerProfileDrawerOpen';
+    AppObservableStore.setHeaderProfileSection('notifications');
+    AppObservableStore.setDrawerOpen(drawerOpenGlobalVariableName, true);
+  }
 
   generateMenuItemList = (allActivityNotices) => {
     const { classes } = this.props;

@@ -9,6 +9,7 @@ import DeleteYourAccountButton from './DeleteYourAccountButton';
 import DeleteAllContactsButton from '../SetUpAccount/DeleteAllContactsButton';
 import VoterStore from '../../stores/VoterStore';
 import BrowserPushMessage from '../Widgets/BrowserPushMessage';
+import AppObservableStore from "../../common/stores/AppObservableStore";
 
 export default class SettingsYourData extends Component {
   constructor (props) {
@@ -34,6 +35,11 @@ export default class SettingsYourData extends Component {
       voterContactEmailListCount,
     });
   }
+
+  closeDrawer = () => {
+    const drawerOpenGlobalVariableName = 'headerProfileDrawerOpen';
+    AppObservableStore.setDrawerOpen(drawerOpenGlobalVariableName, false);
+  };
 
   render () {
     renderLog('SettingsYourData');  // Set LOG_RENDER_EVENTS to log all renders
@@ -63,7 +69,14 @@ export default class SettingsYourData extends Component {
                   <DataSettingText>
                     WeVote is not storing any of your contact data. If contacts from your address book were previously stored in WeVote, they have been completely removed.
                     {' '}
-                    <Link to="/findfriends/importcontacts" className="u-link-color" id="importContactsLink">Import your contacts to find your friends</Link>
+                    <Link
+                      className="u-link-color"
+                      id="importContactsLink"
+                      onClick={this.closeDrawer}
+                      to="/findfriends/importcontacts"
+                    >
+                      Import your contacts to find your friends
+                    </Link>
                     .
                   </DataSettingText>
                 )}

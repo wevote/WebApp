@@ -59,23 +59,27 @@ const pageNameAndTypeSimpleDict = {
     pageType: 'settings',
   },
   '/settings/account': {
-    pageName: 'Account',
+    pageName: 'SignInOptionsPanel',
     pageType: 'settings',
   },
   '/settings/email': {
-    pageName: 'Email',
+    pageName: 'SettingsProfile',
     pageType: 'settings',
   },
   '/settings/notifications': {
-    pageName: 'Notifications',
+    pageName: 'SettingsNotifications',
     pageType: 'settings',
   },
   '/settings/profile': {
-    pageName: 'Profile',
+    pageName: 'SettingsProfile',
+    pageType: 'settings',
+  },
+  '/settings/securityAndSignIn': {
+    pageName: 'SignInOptionsPanel',
     pageType: 'settings',
   },
   '/settings/yourdata': {
-    pageName: 'Yourdata',
+    pageName: 'SettingsYourData',
     pageType: 'settings',
   },
   '/terms': {
