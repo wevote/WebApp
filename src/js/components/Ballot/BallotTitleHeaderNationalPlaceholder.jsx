@@ -163,7 +163,7 @@ class BallotTitleHeaderNationalPlaceholder extends Component {
                         {electionName}
                       </ElectionNameH1>
                       {(textForMapSearch && textForMapSearch !== '' && textForMapSearch.length > 1) ? (
-                        <BallotAddress
+                        <BallotAddress tabIndex={-1}
                           centerText={centerText}
                           className={linksOff ? '' : 'u-cursor--pointer'}
                           id="ballotTitleBallotAddress"
@@ -183,7 +183,7 @@ class BallotTitleHeaderNationalPlaceholder extends Component {
                           </span>
                         </BallotAddress>
                       ) : (
-                        <BallotAddress
+                        <BallotAddress tabIndex={-1}
                           allowTextWrap={allowTextWrap}
                           centerText={centerText}
                           className={linksOff ? '' : 'u-cursor--pointer'}

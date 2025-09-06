@@ -284,6 +284,7 @@ class FilterBaseSearch extends Component {
           <InputBase
             classes={{ input: inputBaseInputClasses, root: inputBaseRootClasses }}
             id="searchInput"
+            inputProps={{ tabIndex: -1 }}
             inputRef={(input) => { this.searchInput = input; }}
             onChange={(event) => this.handleSearch(event, 'searchInput')}
             value={searchText}
