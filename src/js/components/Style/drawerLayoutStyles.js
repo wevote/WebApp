@@ -1,5 +1,6 @@
 import styled, { css, keyframes } from 'styled-components';
 import standardBoxShadow from '../../common/components/Style/standardBoxShadow';
+import { cordovaBallotFilterTopMargin } from '../../utils/cordovaOffsets';
 
 const slideIn = keyframes`
   from {
@@ -10,7 +11,7 @@ const slideIn = keyframes`
   }
 `;
 
-export const DrawerHeaderOuterContainer = styled.div.attrs(({ scrolledDown }) => ({
+export const DrawerHeaderAnimateDownOuterContainer = styled.div.attrs(({ scrolledDown }) => ({
   style: {
     display: scrolledDown ? 'block' : 'hidden',
   },
@@ -34,9 +35,36 @@ export const DrawerHeaderOuterContainer = styled.div.attrs(({ scrolledDown }) =>
     `}
 `;
 
-export const DrawerHeaderInnerContainer = styled('div')`
+export const DrawerHeaderAnimateDownInnerContainer = styled('div')`
   display: flex;
   flex-direction: column;
   justify-content: center;
   padding: 10px;
+`;
+
+export const DrawerHeaderContentContainer = styled('div')(({ theme }) => (`
+  margin: ${() => cordovaBallotFilterTopMargin()} auto 0 auto;
+  position: relative;
+  max-width: 960px;
+  width: 100%;
+  z-index: 0;
+  ${theme.breakpoints.down('sm')} {
+    min-height: 10px;
+    //margin: 0 10px;
+  }
+`));
+
+export const DrawerTitle = styled('div')`
+  font-weight: bold;
+  margin: 0;
+  text-align: left;
+  padding-left: 16px;
+`;
+
+export const DrawerHeaderWrapper = styled('div')`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-right: 0;
+  min-height: 28px;
 `;

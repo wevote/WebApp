@@ -463,6 +463,12 @@ class TopicsPage extends Page {
   get forAllEndorsersFilter(){
     return $('#allEndorsers')
   }
+  get climateChangeElement(){
+    return $('//*[contains(@id, "Climate")]');
+  }
+  get backButton() {
+    return $('//span[text()="Back"]');
+  }
 
 }
 

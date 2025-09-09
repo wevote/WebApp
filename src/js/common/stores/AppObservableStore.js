@@ -34,6 +34,7 @@ const nonFluxState = {
   chosenSiteLogoUrl: '',
   chosenWebsiteName: '',
   currentPathname: '',
+  drawerOpenDict: {},
   getStartedMode: '',
   getVoterGuideSettingsDashboardEditMode: '',
   googleAnalyticsEnabled: false,
@@ -163,6 +164,15 @@ export default {
     return nonFluxState.chosenWebsiteName || 'WeVote.US'; // Used to be campaigns.WeVote.US on campaigns site
   },
 
+  getDrawerOpen (drawerOpenGlobalVariableName) {
+    if (nonFluxState.drawerOpenDict) {
+      if (drawerOpenGlobalVariableName in nonFluxState.drawerOpenDict) {
+        return nonFluxState.drawerOpenDict[drawerOpenGlobalVariableName];
+      }
+    }
+    return false;
+  },
+
   getPoliticianWeVoteIdBeingViewed () {
     return nonFluxState.politicianWeVoteIdBeingViewed;
   },
@@ -229,6 +239,10 @@ export default {
 
   getHideWeVoteLogo () {
     return nonFluxState.hideWeVoteLogo;
+  },
+
+  getHeaderProfileSection () {
+    return nonFluxState.headerProfileSection;
   },
 
   getHostname () {
@@ -459,6 +473,13 @@ export default {
     messageService.sendMessage('state updated currentPathname');
   },
 
+  setDrawerOpen (drawerOpenGlobalVariableName, drawerOpen = false) {
+    const updatedDrawerOpenDict = nonFluxState.drawerOpenDict || {};
+    updatedDrawerOpenDict[drawerOpenGlobalVariableName] = drawerOpen;
+    nonFluxState.drawerOpenDict = updatedDrawerOpenDict;
+    messageService.sendMessage('state updated drawerOpenDict');
+  },
+
   setEvaluateHeaderDisplay () {
     // Force the Header to evaluate whether it should display
     nonFluxState.showHeader = Date.now();
@@ -468,6 +489,11 @@ export default {
   setGetStartedMode (getStartedMode) {
     nonFluxState.getStartedMode = getStartedMode;
     messageService.sendMessage('state updated getStartedMode');
+  },
+
+  setHeaderProfileSection (headerProfileSection) {
+    nonFluxState.headerProfileSection = headerProfileSection;
+    messageService.sendMessage('state updated headerProfileSection');
   },
 
   setHideOrganizationModalBallotItemInfo (hide) {

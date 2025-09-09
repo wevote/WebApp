@@ -1,5 +1,6 @@
 import initializejQuery from '../common/utils/initializejQuery';
 import { isAndroid, isWebApp } from '../common/utils/isCordovaOrWebApp';
+import webAppConfig from '../config';
 import $ajax from './service';
 
 
@@ -8,7 +9,11 @@ import $ajax from './service';
  * and ends up in CloudWatch /ecs/wevote-api, as well as being logged to the JavaScript console.
  */
 export default function insertCloudWatchLoggingFork () {
-  if (isAndroid() || isWebApp()) {
+  if (
+    isAndroid() ||
+    isWebApp() ||
+    (webAppConfig?.LOG_TO_CLOUD_WATCH === undefined) ||
+    webAppConfig.LOG_TO_CLOUD_WATCH === false) {
     return;
   }
   // Store the original console.log function, so we could restore it later

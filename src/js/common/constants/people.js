@@ -424,7 +424,7 @@ export const teamOfVolunteers = [
   {
     name: 'Antoinette "Nette" Lee',
     title: 'Queens, NY',
-    linkedin: 'https://www.linkedin.com/in/antoinettelee/',
+    linkedin: 'https://www.linkedin.com/in/nyette',
   },
   // 2024-03-12 Commented out upon request
   // {

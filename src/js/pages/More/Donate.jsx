@@ -17,7 +17,7 @@ import standardBoxShadow from '../../common/components/Style/standardBoxShadow';
 import OpenExternalWebSite from '../../common/components/Widgets/OpenExternalWebSite';
 import DonateStore from '../../common/stores/DonateStore';
 import initializejQuery from '../../common/utils/initializejQuery';
-import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
+import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { isTablet } from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
@@ -862,6 +862,7 @@ const DonatePageContentContainer = styled(PageContentContainer)`
   min-width: 100%;
   background-color: #0d5470;
   padding-top: 20px;
+  ${isCordova() ? 'margin-left: 0' : ''};
 `;
 
 const OpenExternalWebSiteWrapper = styled('div')`

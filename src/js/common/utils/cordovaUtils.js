@@ -66,7 +66,7 @@ export function dumpScreenAndDeviceFields () {
 // IMPORTANT:  The HTML5 window.history, is very different from the react-router V5 history, don't use window.history!
 export function historyPush (route) {
   if (webAppConfig.LOG_ROUTING) {
-    console.log(`historyPush '${route}'`);
+    console.log(`historyPush  (cordovaUtils)'${route}'`);
   }
   global.weVoteGlobalHistory.push(route);
 }
@@ -152,7 +152,7 @@ export function getIOSSizeString () {
   const iPhone4inPhones = ['iPhone5,1', 'iPhone5,2', 'iPhone5,3', 'iPhone5,4', 'iPhone6,1', 'iPhone6,2', 'iPhone8,4'];
   //    iPhone:               6            6S           7            7            8             8             SE 2nd Gen    SE 3rd Gen
   const iPhone4p7inPhones = ['iPhone7,2', 'iPhone8,1', 'iPhone9,1', 'iPhone9,3', 'iPhone10,1', 'iPhone10,4', 'iPhone12,8', 'iPhone14,6'];
-  //    iPhone:                 6 Plus       6S Plus      7 Plus       7Plus        8 Plus        8 Plus
+  //    iPhone:                     6 Plus       6S Plus      7 Plus       7Plus        8 Plus        8 Plus
   const isIPhone5p5inEarlyPhones = ['iPhone7,1', 'iPhone8,2', 'iPhone9,2', 'iPhone9,4', 'iPhone10,2', 'iPhone10,5'];
   //    iPhone:                      12 Mini       13 mini
   const isIPhone5p5inMiniPhones = ['iPhone13,1', 'iPhone14,4'];

@@ -188,12 +188,14 @@ class CampaignStore extends ReduceStore {
     // console.log('getAllStaffEmailDicts campaignX:', campaignX, ', campaignXWeVoteId:', campaignXWeVoteId);
     if (campaignX && campaignX.campaignx_owner_list) {
       // console.log('getAllStaffEmailDicts campaignx_owner_list:', campaignX.campaignx_owner_list);
-      return campaignX.campaignx_owner_list.reduce((organizationWeVoteIdList, owner) => {
-        if (owner.organization_we_vote_id) {
-          return [...organizationWeVoteIdList, [owner.organization_we_vote_id]];
+      const organizationWeVoteIdList = [];
+      for (let i = 0; i < campaignX.campaignx_owner_list.length; i++) {
+        const owner = campaignX.campaignx_owner_list[i];
+        if (owner && owner.organization_we_vote_id) {
+          organizationWeVoteIdList.push(owner.organization_we_vote_id);
         }
-        return organizationWeVoteIdList;
-      }, []);
+      }
+      return organizationWeVoteIdList;
     }
     return [];
   }

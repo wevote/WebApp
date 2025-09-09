@@ -24,7 +24,7 @@ import MeasureStore from '../../stores/MeasureStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import {
-  DrawerHeaderInnerContainer, DrawerHeaderOuterContainer,
+  DrawerHeaderAnimateDownInnerContainer, DrawerHeaderAnimateDownOuterContainer,
 } from '../Style/drawerLayoutStyles';
 import { cordovaDrawerTopMargin } from '../../utils/cordovaOffsets';
 import convertToInteger from '../../common/utils/convertToInteger';
@@ -330,7 +330,7 @@ class OrganizationModal extends Component {
     } else if (isCordova()) {
       // Calculated approach Nov 2022
       const offset = `${headroomWrapperOffset(true)}px`;
-      cordovaOffsetLog(`DrawerHeaderOuterContainer HeadroomWrapper offset: ${offset}, page: ${getPageKey()}`);
+      cordovaOffsetLog(`DrawerHeaderAnimateDownOuterContainer HeadroomWrapper offset: ${offset}, page: ${getPageKey()}`);
       return offset;
       // end calculated approach
     }
@@ -380,8 +380,8 @@ class OrganizationModal extends Component {
             </IconButton>
           </div>
         </CloseDrawerIconWrapper>
-        <DrawerHeaderOuterContainer id="organizationModalHeaderContainer" scrolledDown={scrolledDown}>
-          <DrawerHeaderInnerContainer>
+        <DrawerHeaderAnimateDownOuterContainer id="organizationModalHeaderContainer" scrolledDown={scrolledDown}>
+          <DrawerHeaderAnimateDownInnerContainer>
             <CandidateTopRow>
               <Candidate
                 id={`organizationModalCandidateImageAndName-${politicianWeVoteId}`}
@@ -428,8 +428,8 @@ class OrganizationModal extends Component {
                 />
               </Suspense>
             </HeartToggleAndThermometerWrapper>
-          </DrawerHeaderInnerContainer>
-        </DrawerHeaderOuterContainer>
+          </DrawerHeaderAnimateDownInnerContainer>
+        </DrawerHeaderAnimateDownOuterContainer>
         {(isCandidate && !hideBallotItemInfo) && (
           <PoliticianCardForListWrapper>
             <Suspense fallback={<span>&nbsp;</span>}>

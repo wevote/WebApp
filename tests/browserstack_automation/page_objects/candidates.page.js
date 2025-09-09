@@ -57,11 +57,37 @@ class CandidatesPage extends Page {
     return $('input#searchCandidate');
   }
 
+  //Charanya dont change this as this is for product demo
+  async getCandidateByText(name) {
+    const candidateText = await $(`//button[text() = "${name}"]`);
+    return candidateText
+  }
+  //Charanya dont change this as this is for product demo
+  get candidateModalClose() {
+    return $('button#closeOrganizationModal');
+  }
+  //Charanya dont change this as this is for product demo
+  async getCandidateCardHeart () {
+    return $(`div [id*='cardForListBodyWrapper'] [class*='HeartFavoriteToggleContainer'] button[class*='LikeContainer']`);
+  }
+  //Charanya dont change this as this is for product demo
+  async getCandidateChoose() {
+    return $(`//div[contains(@id, 'ballotItemScrollingArea')]//button[contains(@id, 'itemActionBarSupportButton')]`);
+ }
+  //Charanya dont change this as this is for product demo
+  async getCandidateCardUnheart () {
+    return $(`div [id*='cardForListBodyWrapper'] [class*='HeartFavoriteToggleContainer'] button[class*='DislikeContainer']`);
+  }
+  //Charanya dont change this as this is for product demo
+  async getCandidateEndorderes() {
+    return $$(`div [class*= 'CandidateEndorsementText']`);
+  }
+
   async getCandidateCardCandidate(cardId) {
     const candidate = await $(`//div[@id='${cardId}']//a[@id='candidateCardDisplayName' or @id='representativeCardDisplayName']`);
     return candidate;
   }
-  
+
   async getCandidateCardCandidateName(cardId) {
     const candidate = await $(`//div[@id='${cardId}']//a[@id='candidateCardDisplayName' or @id='representativeCardDisplayName']`);
     const candidateName = await candidate.getText();

@@ -17,6 +17,7 @@ import SettingsWidgetAccountType from './SettingsWidgetAccountType';
 import SettingsWidgetFirstLastName from './SettingsWidgetFirstLastName';
 import SettingsWidgetOrganizationDescription from './SettingsWidgetOrganizationDescription';
 import SettingsWidgetOrganizationWebsite from './SettingsWidgetOrganizationWebsite';
+import AppObservableStore from '../../common/stores/AppObservableStore';
 
 class SettingsProfile extends Component {
   constructor (props) {
@@ -42,6 +43,11 @@ class SettingsProfile extends Component {
     });
   };
 
+  closeDrawer = () => {
+    const drawerOpenGlobalVariableName = 'headerProfileDrawerOpen';
+    AppObservableStore.setDrawerOpen(drawerOpenGlobalVariableName, false);
+  };
+
   render () {
     renderLog('SettingsProfile');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes, externalUniqueId } = this.props;
@@ -52,19 +58,19 @@ class SettingsProfile extends Component {
 
     return (
       <HeaderContentContainer>
-        <Helmet title="Name & Photo Settings - WeVote" />
+        <Helmet title="Name & Photo - WeVote" />
         <BrowserPushMessage incomingProps={this.props} />
         <div className="card u-padding-bottom--lg">
           <div className="card-main">
             <HeaderContainer>
               <IdIcon />
-              <h1 className="h2">Name &amp; Photo Settings</h1>
+              <h1 className="h2">Name &amp; Photo</h1>
             </HeaderContainer>
             <IntroductionWrapper>
               <Info classes={{ root: classes.informationIcon }} />
               We are serious about protecting your information. We are a nonprofit, and will never sell your information.
               {' '}
-              <Link id="profileFAQ" to="/more/faq">
+              <Link id="profileFAQ" onClick={this.closeDrawer} to="/more/faq">
                 <span className="u-no-break u-link-color">Frequently Asked Questions</span>
               </Link>
             </IntroductionWrapper>
