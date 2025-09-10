@@ -1,4 +1,4 @@
-import { Groups, Home, HowToVote, Info, MoreHoriz, People, QuestionAnswer, VerifiedUser } from '@mui/icons-material';
+import { Groups, Home, HowToVote, Info, MoreHoriz, People, QuestionAnswer, VerifiedUser, AccountBalance } from '@mui/icons-material';
 import { Badge, BottomNavigation, BottomNavigationAction, ClickAwayListener } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
@@ -25,20 +25,31 @@ import ShareButtonFooter from '../Share/ShareButtonFooter';
 const capitalBuilding = '/img/global/svg-icons/capital-building.svg';
 const capitalBuildingSelected = '/img/global/svg-icons/capital-building-selected.svg';
 
-function MoreMenuOverlay({ onClose }) {
+function MoreMenuOverlay ({ onClose }) {
+  const pathname = normalizedHref();
+  const isFriends = pathname.includes('/friends');
+  const isChallenges = pathname.includes('/challenges');
+  const isManage = pathname.includes('/manage');
+
   return (
     <ClickAwayListener onClickAway={onClose}>
       <Overlay>
-        <MenuItem onClick={() => { historyPush('/friends'); }}>
+        <MenuItem $active={isFriends} onClick={() => { historyPush('/friends'); }}>
           <People />
           Friends
         </MenuItem>
-        <MenuItem onClick={() => { historyPush('/challenges'); }}>
+        <MenuItem $active={isChallenges} onClick={() => { historyPush('/challenges'); }}>
           <Groups />
           Challenges
         </MenuItem>
-        <MenuItem onClick={() => { historyPush('/manage'); }}>
-          <img src="/img/global/svg-icons/capital-building.svg" alt="" width={20} />
+       <MenuItem $active={isManage} onClick={() => { historyPush('/manage'); }}>
+  <img
+    alt=""
+    src={isManage
+      ? '/img/global/svg-icons/capital-building-selected.svg'
+      : '/img/global/svg-icons/capital-building.svg'}
+    style={{ width: 40, height: 40, marginBottom: 6 }}
+  />
           Candidates
           <br />
           I&#39;m managing
@@ -493,9 +504,8 @@ const Overlay = styled.div`
 `;
 
 const MenuItem = styled.div`
-  border: 2px solid transparent;
   border-radius: 10px;
-  color: ${DesignTokenColors.neutralUI600};
+  color: ${({ $active }) => ($active ? 'rgb(32, 109, 179)' : DesignTokenColors.neutralUI600)};
   cursor: pointer;
   align-items: center;
   display: inline-flex;
@@ -507,10 +517,12 @@ const MenuItem = styled.div`
   min-width: 88px;
   padding: 8px 10px;
   text-align: center;
-  svg, img {
-    fill: ${DesignTokenColors.neutralUI600};
+  svg {
     height: 40px;
+    width: 40px;
     margin-bottom: 6px;
+  }
+  img {
     width: 40px;
   }
 `;
