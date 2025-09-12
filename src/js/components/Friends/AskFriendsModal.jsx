@@ -1,6 +1,6 @@
 import { Close } from '@mui/icons-material';
+import { Dialog } from '@base-ui-components/react/dialog';
 import {
-  Dialog,
   DialogContent,
   IconButton,
 } from '@mui/material';

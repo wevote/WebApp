@@ -1,5 +1,6 @@
 import { Close } from '@mui/icons-material';
-import { Dialog, DialogContent, DialogTitle, IconButton } from '@mui/material';
+import { Dialog } from '@base-ui-components/react/dialog';
+import { DialogContent, DialogTitle, IconButton } from '@mui/material';
 import { withStyles } from '@mui/styles';
 import PropTypes from 'prop-types';
 import React from 'react';

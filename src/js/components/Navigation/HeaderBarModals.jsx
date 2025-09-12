@@ -1,4 +1,4 @@
-import { Dialog } from '@mui/material';
+import { Dialog } from '@base-ui-components/react/dialog';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';

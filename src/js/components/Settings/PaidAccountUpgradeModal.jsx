@@ -1,5 +1,6 @@
 import { ArrowBack, ArrowBackIos, Close } from '@mui/icons-material';
-import { Button, Dialog, DialogContent, FormControl, FormControlLabel, IconButton, OutlinedInput, Radio, RadioGroup } from '@mui/material';
+import { Dialog } from '@base-ui-components/react/dialog';
+import { Button, DialogContent, FormControl, FormControlLabel, IconButton, OutlinedInput, Radio, RadioGroup } from '@mui/material';
 // TODO 5/11/21: import { Elements, StripeProvider } from 'react-stripe-elements';
 import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
