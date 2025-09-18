@@ -366,6 +366,9 @@ class HeaderBar extends Component {
         case 'more':
           more.css(highlight);
           break;
+        case 'more/manage':
+                   more.css(highlight);
+          break;
         default:
           break;
       }
@@ -603,7 +606,7 @@ class HeaderBar extends Component {
 
                     <StyledMoreMenuItem
                       selected={normalizedHrefPage() === 'manage'}
-                      onClick={this.navTo('/manage', 99)}
+                      onClick={this.navTo('/more/manage', 99)}
                       disableRipple
                     >
                       Candidates I’m managing
