@@ -175,17 +175,20 @@ class FooterBar extends React.Component {
 
   getSelectedTab = () => {
     const pathname = normalizedHref();
+    const low = pathname.toLowerCase();
     if (pathname === '/') return 0;  // readyLight has no path
-    if (stringContains('/ready', pathname.toLowerCase())) return 0;
-    if (stringContains('/ballot', pathname.toLowerCase())) return 1;
-    if (pathname.toLowerCase().endsWith('/cs/')) return 2;
-    if (stringContains('/friends', pathname.toLowerCase())) return 3;
-    if (stringContains('/challenges', pathname.toLowerCase())) return 4;
-    if (stringContains('/+/', pathname) || stringContains('/++/', pathname)) return 4;
-    if (stringContains('/squads', pathname.toLowerCase())) return 4;
-    if (stringContains('/news', pathname.toLowerCase())) return 5;
-    if (stringContains('/donate', pathname.toLowerCase())) return 6;
-    if (stringContains('/more', pathname.toLowerCase())) return 8;
+    if (stringContains('/ready', low)) return 0;
+    if (stringContains('/ballot', low)) return 1;
+    if (low.endsWith('/cs/')) return 2;
+    // Treat these as "More" so the More tab stays highlighted
+    if (stringContains('/more/manage', low)) return 8;
+    if (stringContains('/friends', low)) return 8;
+    if (stringContains('/challenges', low)) return 8;
+    if (stringContains('/+/', pathname) || stringContains('/++/', pathname)) return 8;
+    if (stringContains('/squads', low)) return 8;
+    if (stringContains('/news', low)) return 5;
+    if (stringContains('/donate', low)) return 6;
+    if (stringContains('/more', low)) return 8;
     return -1;
   };
 
@@ -296,7 +299,7 @@ class FooterBar extends React.Component {
           style={cordovaFooterHeight()}
         >
           <BottomNavigation
-            value={this.getSelectedTab()}
+            value={this.state.showMoreMenu ? 8 : this.getSelectedTab()}
             onChange={this.handleChange}
             showLabels
             style={{ width: `${isIOS() ? '95%' : ''}`, height: `${isAndroid() ? '70px' : ''}`  }}
