@@ -40,7 +40,8 @@ const UpdatePoliticianInformation =  ({ politicianName, politicianWeVoteId }) =>
   const [tooltipOpen, setTooltipOpen] = useState(false);
 
   const handleEditProfile = () => {
-    alert('Edit politician information');
+    AppObservableStore.setDrawerOpen('politicianSelfEditDrawerOpen', true);
+    AppObservableStore.setPoliticianWeVoteIdBeingViewed(politicianWeVoteId);
   };
 
   const handleOpenVerifyWithEmailModal = () => {

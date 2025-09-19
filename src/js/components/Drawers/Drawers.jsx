@@ -1,6 +1,7 @@
 import React from 'react';
 import { renderLog } from '../../common/utils/logging';
 import HeaderProfileDrawer from './HeaderProfileDrawer';
+import PoliticianSelfEditDrawer from './PoliticianSelfEditDrawer';
 
 
 const Drawers = () => {
@@ -9,6 +10,7 @@ const Drawers = () => {
   return (
     <>
       <HeaderProfileDrawer />
+      <PoliticianSelfEditDrawer />
     </>
   );
 };

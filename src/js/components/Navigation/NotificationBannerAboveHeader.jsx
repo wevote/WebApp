@@ -37,7 +37,7 @@ export default function NotificationBannerAboveHeader () {
   }
 
   const handleEditProfile = () => {
-    alert('Edit politician information');
+    AppObservableStore.setDrawerOpen('politicianSelfEditDrawerOpen', true);
   };
 
   const onAppObservableStoreChange = () => {

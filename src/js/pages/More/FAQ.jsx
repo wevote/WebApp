@@ -22,6 +22,10 @@ export default class FAQ extends Component {
     this.checkAndFireDataLayer();
   }
 
+  componentDidUpdate () {
+    this.checkAndFireDataLayer();
+  }
+
   checkAndFireDataLayer = () => {
     const { dataLayerFired } = this.state;
     const voter = VoterStore.getVoter();
