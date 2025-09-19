@@ -29,15 +29,15 @@ function MoreMenuOverlay({ onClose }) {
   return (
     <ClickAwayListener onClickAway={onClose}>
       <Overlay>
-        <MenuItem onClick={() => { historyPush('/friends'); }}>
+        <MenuItem onClick={() => { onClose(); historyPush('/friends'); }}> 
           <People />
           Friends
         </MenuItem>
-        <MenuItem onClick={() => { historyPush('/challenges'); }}>
+        <MenuItem onClick={() => { onClose(); historyPush('/challenges'); }}>
           <Groups />
           Challenges
         </MenuItem>
-        <MenuItem onClick={() => { historyPush('/manage'); }}>
+        <MenuItem onClick={() => { onClose(); historyPush('/more/manage'); }}>
           <img src="/img/global/svg-icons/capital-building.svg" alt="" width={20} />
           Candidates
           <br />
