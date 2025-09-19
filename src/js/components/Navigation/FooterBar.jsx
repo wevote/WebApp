@@ -1,4 +1,4 @@
-import { Groups, Home, HowToVote, Info, MoreHoriz, People, QuestionAnswer, VerifiedUser } from '@mui/icons-material';
+import { Groups, Home, HowToVote, Info, MoreHoriz, People, QuestionAnswer, VerifiedUser, AccountBalance } from '@mui/icons-material';
 import { Badge, BottomNavigation, BottomNavigationAction, ClickAwayListener } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
@@ -25,23 +25,34 @@ import ShareButtonFooter from '../Share/ShareButtonFooter';
 const capitalBuilding = '/img/global/svg-icons/capital-building.svg';
 const capitalBuildingSelected = '/img/global/svg-icons/capital-building-selected.svg';
 
-function MoreMenuOverlay({ onClose }) {
+function MoreMenuOverlay ({ onClose }) {
+  const pathname = normalizedHref();
+  const isFriends = pathname.includes('/friends');
+  const isChallenges = pathname.includes('/challenges');
+  const isManage = pathname.includes('/manage');
+
   return (
     <ClickAwayListener onClickAway={onClose}>
       <Overlay>
-        <MenuItem onClick={() => { onClose(); historyPush('/friends'); }}> 
+        <MenuItem $active={isFriends} onClick={() => { onClose(); historyPush('/friends'); }}>
           <People />
           Friends
         </MenuItem>
-        <MenuItem onClick={() => { onClose(); historyPush('/challenges'); }}>
+        <MenuItem $active={isChallenges} onClick={() => { onClose(); historyPush('/challenges'); }}>
           <Groups />
           Challenges
         </MenuItem>
-        <MenuItem onClick={() => { onClose(); historyPush('/more/manage'); }}>
-          <img src="/img/global/svg-icons/capital-building.svg" alt="" width={20} />
-          Candidates
-          <br />
-          I&#39;m managing
+       <MenuItem $active={isManage} onClick={() => { onClose(); historyPush('/more/manage'); }}>
+         <img
+           alt=""
+           src={isManage
+                ? '/img/global/svg-icons/capital-building-selected.svg'
+                : '/img/global/svg-icons/capital-building.svg'}
+           style={{ width: 40, height: 40, marginBottom: 6 }}
+         />
+           Candidates
+           <br />
+           I&#39;m managing
         </MenuItem>
       </Overlay>
     </ClickAwayListener>
@@ -164,17 +175,20 @@ class FooterBar extends React.Component {
 
   getSelectedTab = () => {
     const pathname = normalizedHref();
+    const low = pathname.toLowerCase();
     if (pathname === '/') return 0;  // readyLight has no path
-    if (stringContains('/ready', pathname.toLowerCase())) return 0;
-    if (stringContains('/ballot', pathname.toLowerCase())) return 1;
-    if (pathname.toLowerCase().endsWith('/cs/')) return 2;
-    if (stringContains('/friends', pathname.toLowerCase())) return 3;
-    if (stringContains('/challenges', pathname.toLowerCase())) return 4;
-    if (stringContains('/+/', pathname) || stringContains('/++/', pathname)) return 4;
-    if (stringContains('/squads', pathname.toLowerCase())) return 4;
-    if (stringContains('/news', pathname.toLowerCase())) return 5;
-    if (stringContains('/donate', pathname.toLowerCase())) return 6;
-    if (stringContains('/more', pathname.toLowerCase())) return 8;
+    if (stringContains('/ready', low)) return 0;
+    if (stringContains('/ballot', low)) return 1;
+    if (low.endsWith('/cs/')) return 2;
+    // Treat these as "More" so the More tab stays highlighted
+    if (stringContains('/more/manage', low)) return 8;
+    if (stringContains('/friends', low)) return 8;
+    if (stringContains('/challenges', low)) return 8;
+    if (stringContains('/+/', pathname) || stringContains('/++/', pathname)) return 8;
+    if (stringContains('/squads', low)) return 8;
+    if (stringContains('/news', low)) return 5;
+    if (stringContains('/donate', low)) return 6;
+    if (stringContains('/more', low)) return 8;
     return -1;
   };
 
@@ -285,7 +299,7 @@ class FooterBar extends React.Component {
           style={cordovaFooterHeight()}
         >
           <BottomNavigation
-            value={this.getSelectedTab()}
+            value={this.state.showMoreMenu ? 8 : this.getSelectedTab()}
             onChange={this.handleChange}
             showLabels
             style={{ width: `${isIOS() ? '95%' : ''}`, height: `${isAndroid() ? '70px' : ''}`  }}
@@ -493,9 +507,8 @@ const Overlay = styled.div`
 `;
 
 const MenuItem = styled.div`
-  border: 2px solid transparent;
   border-radius: 10px;
-  color: ${DesignTokenColors.neutralUI600};
+  color: ${({ $active }) => ($active ? 'rgb(32, 109, 179)' : DesignTokenColors.neutralUI600)};
   cursor: pointer;
   align-items: center;
   display: inline-flex;
@@ -507,10 +520,12 @@ const MenuItem = styled.div`
   min-width: 88px;
   padding: 8px 10px;
   text-align: center;
-  svg, img {
-    fill: ${DesignTokenColors.neutralUI600};
+  svg {
     height: 40px;
+    width: 40px;
     margin-bottom: 6px;
+  }
+  img {
     width: 40px;
   }
 `;
