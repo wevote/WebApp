@@ -1,6 +1,15 @@
 import Dispatcher from '../dispatcher/Dispatcher';
 
 export default {
+  politicianNameSave (politicianWeVoteId, politicianName) {
+    Dispatcher.loadEndpoint('politicianSave',
+      {
+        politician_name: politicianName,
+        politician_name_changed: true,
+        politician_we_vote_id: politicianWeVoteId,
+      });
+  },
+
   politicianRetrieve (politicianWeVoteId) {
     Dispatcher.loadEndpoint('politicianRetrieve',
       {

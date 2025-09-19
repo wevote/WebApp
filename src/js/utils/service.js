@@ -51,6 +51,7 @@ function innerAjax (options) {
       // options.endpoint === 'challengeSave' || // TBD
       options.endpoint === 'challengeStartSave' ||
       options.endpoint === 'organizationPhotosSave' ||
+      options.endpoint === 'politicianSave' ||
       options.endpoint === 'reactionLikeStatusRetrieve' ||
       options.endpoint === 'voterContactListSave' ||
       options.endpoint === 'voterUpdate') {
