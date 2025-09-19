@@ -57,7 +57,7 @@ export default function FriendsOnlyIndicator ({ isFriendsOnlyIncoming }) {
     );
   }
 
-  const tooltip = isMobileScreenSize() ? (<span />) : (
+  const tooltip = isMobileScreenSize() ? (<></>) : (
     <Tooltip id="tooltip">{labelText}</Tooltip>
   );
 

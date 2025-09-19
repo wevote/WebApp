@@ -1,10 +1,10 @@
-import { Facebook, Twitter } from '@mui/icons-material';
+import { Facebook, X as Twitter } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
+import TagManager from 'react-gtm-module';
 import Button from 'react-bootstrap/Button';
 import styled from 'styled-components';
 import AnalyticsActions from '../../../actions/AnalyticsActions';
-import FacebookActions from '../../../actions/FacebookActions';
 import TwitterActions from '../../../actions/TwitterActions';
 import VoterActions from '../../../actions/VoterActions';
 import VoterSessionActions from '../../../actions/VoterSessionActions';
@@ -20,8 +20,7 @@ import VoterStore from '../../../stores/VoterStore';
 import initializeAppleSDK from '../../../utils/initializeAppleSDK';
 import initializeFacebookSDK from '../../../utils/initializeFacebookSDK';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
-import { restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
-import historyPush from '../../utils/historyPush';
+import { isIPhone4in, isIPhone4p7in, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
 import { normalizedHref } from '../../utils/hrefUtils';
 import { isAndroid, isCordova, isWebApp } from '../../utils/isCordovaOrWebApp';
 import Cookies from '../../utils/js-cookie/Cookies';
@@ -30,6 +29,7 @@ import stringContains from '../../utils/stringContains';
 import LoadingWheel from '../Widgets/LoadingWheel';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 import SnackNotifier, { openSnackbar } from '../Widgets/SnackNotifier';
+import lookupPageNameAndPageTypeDict, { getPageDetails } from '../../../utils/lookupPageNameAndPageTypeDict';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../Widgets/OpenExternalWebSite'));
 /* global $ */
@@ -45,7 +45,7 @@ export default class SignInOptionsPanel extends Component {
       hideCurrentlySignedInHeader: false,
       hideDialogForCordova: false,
       hideFacebookSignInButton: !webAppConfig.ENABLE_FACEBOOK,
-      hideTwitterSignInButton: !webAppConfig.ENABLE_TWITTER,
+      hideTwitterSignInButton: !(webAppConfig.ENABLE_TWITTER && webAppConfig.ENABLE_TWITTER_AS_VOTER_SIGN_IN_OPTION),
       hideVoterEmailAddressEntry: false,
       hideVoterPhoneEntry: false,
       isInternetExplorer: document.documentMode || false, // Yes, we are talking about that old Microsoft product
@@ -226,14 +226,6 @@ export default class SignInOptionsPanel extends Component {
     });
   }
 
-  focusedOnSingleInputToggle = (focusedInputName) => {
-    // 2022-09-28 This is only used in SignInModalOriginal, which is no longer in use
-    // console.log('SignInOptionsPanel focusedOnSingleInput');
-    if (this.props.focusedOnSingleInputToggle) {
-      this.props.focusedOnSingleInputToggle(focusedInputName);
-    }
-  };
-
   closeSignInModalLocal = () => {
     // console.log('SignInOptionsPanel closeSignInModalLocal');
     if (this.props.closeSignInModal) {
@@ -262,7 +254,7 @@ export default class SignInOptionsPanel extends Component {
     this.setState({
       hideAppleSignInButton: isInternetExplorer || isAndroid(),
       hideFacebookSignInButton: !webAppConfig.ENABLE_FACEBOOK,  // December 12, 2023: All sorts of problems with sign-in with Facebook on Android
-      hideTwitterSignInButton: !webAppConfig.ENABLE_TWITTER,    // Feb 2024 problems with twitter in all apps and cordova, but ok on api server
+      hideTwitterSignInButton: !(webAppConfig.ENABLE_TWITTER && webAppConfig.ENABLE_TWITTER_AS_VOTER_SIGN_IN_OPTION),    // Feb 2024 problems with twitter in all apps and cordova, but ok on api server
       hideVoterEmailAddressEntry: false,
       hideVoterPhoneEntry: false,
     });
@@ -283,7 +275,9 @@ export default class SignInOptionsPanel extends Component {
       hideTwitterSignInButton: true,
       hideVoterPhoneEntry: true,
     });
-    this.focusedOnSingleInputToggle('email');
+    if (this.props.focusedOnSingleInputToggle) {
+      this.props.focusedOnSingleInputToggle('email');
+    }
     const delayBeforeScrolling = 250;
     if (this.scrollTimer) clearTimeout(this.scrollTimer);
     this.scrollTimer = setTimeout(() => {
@@ -301,7 +295,6 @@ export default class SignInOptionsPanel extends Component {
       hideVoterEmailAddressEntry: true,
       hideVoterPhoneEntry: false,
     });
-    this.focusedOnSingleInputToggle('phone');
     const delayBeforeScrolling = 250;
     if (this.scrollTimer) clearTimeout(this.scrollTimer);
     this.scrollTimer = setTimeout(() => {
@@ -336,12 +329,12 @@ export default class SignInOptionsPanel extends Component {
     }
   }
 
-  facebookLogOutOnKeyDown (event) {
-    const enterAndSpaceKeyCodes = [13, 32];
-    if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
-      FacebookActions.appLogout();
-    }
-  }
+  // facebookLogOutOnKeyDown (event) {
+  //   const enterAndSpaceKeyCodes = [13, 32];
+  //   if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
+  //     FacebookActions.appLogout();
+  //   }
+  // }
 
   hideDialogForCordovaLocal () {
     if (!this.state.hideDialogForCordova) {
@@ -357,10 +350,34 @@ export default class SignInOptionsPanel extends Component {
     }
   }
 
-  signOut () {
+  sendGTMDataLayer = ({ buttonId, destinationPath = '', actionType = 'navigate' }) => {
+    const destinationPage = lookupPageNameAndPageTypeDict(destinationPath);
+    const dataLayerObject = {
+      event: 'action',
+      actionDetails: {
+        actionType,
+        buttonId,
+      },
+      userDetails: VoterStore.getAnalyticsUserDetails(),
+      pageDetails: getPageDetails(),
+      destinationDetails: {
+        destinationPageName: destinationPage.pageName || '',
+        destinationPageType: destinationPage.pageType || '',
+        destinationPathname: destinationPath,
+      },
+    };
+    TagManager.dataLayer({ dataLayer: dataLayerObject });
+  };
+
+  signOut (buttonId = 'signOut_securitySignIn') {
     // console.log('SignInOptionsPanel.jsx signOut');
+    this.sendGTMDataLayer({
+      buttonId,
+      actionType: 'signOut',
+    });
+    const drawerOpenGlobalVariableName = 'headerProfileDrawerOpen';
+    AppObservableStore.setDrawerOpen(drawerOpenGlobalVariableName, false);
     VoterSessionActions.voterSignOut();
-    historyPush('/');
   }
 
   render () {
@@ -397,7 +414,7 @@ export default class SignInOptionsPanel extends Component {
     let yourAccountTitle = 'Security & Sign In';
     let yourAccountExplanation = '';
     if (voterIsSignedIn) {
-      if (webAppConfig.ENABLE_TWITTER && voterIsSignedInFacebook && !voterIsSignedInTwitter && (isOnWeVoteRootUrl || isOnWeVotePartnerSubdomainUrl)) {
+      if ((webAppConfig.ENABLE_TWITTER && webAppConfig.ENABLE_TWITTER_AS_VOTER_SIGN_IN_OPTION) && voterIsSignedInFacebook && !voterIsSignedInTwitter && (isOnWeVoteRootUrl || isOnWeVotePartnerSubdomainUrl)) {
         yourAccountTitle = 'Have Twitter Too?';
         yourAccountExplanation = 'By adding your Twitter account to your WeVote profile, you get access to the voter guides of everyone you follow.';
       } else if (webAppConfig.ENABLE_FACEBOOK && voterIsSignedInTwitter && !voterIsSignedInFacebook && isOnFacebookSupportedDomainUrl) {
@@ -414,6 +431,7 @@ export default class SignInOptionsPanel extends Component {
 
     const termsOfServiceURL = `${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}/more/terms`;
     const privacyPolicyURL = `${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}/privacy`;
+    const isTinyScreen =  isIPhone4in() || isIPhone4p7in() || window.innerWidth <= 375;
 
     return (
       <>
@@ -433,8 +451,8 @@ export default class SignInOptionsPanel extends Component {
                 {voterIsSignedIn ?
                   <div className="u-stack--sm">{yourAccountExplanation}</div> : (
                     <>
-                      <div className="u-f3">{pleaseSignInTitle || pleaseSignInTitleFromState}</div>
-                      <SignInSubtitle className="u-stack--sm" style={{ paddingBottom: `${isCordova() ? '18px' : ''}` }}>{pleaseSignInSubTitle}</SignInSubtitle>
+                      <div className="u-f3" id="pleaseSignInTitle">{pleaseSignInTitle || pleaseSignInTitleFromState}</div>
+                      <SignInSubtitle className="u-stack--sm" id="signInSubtitle" style={{ paddingBottom: `${isCordova() ? '18px' : ''}` }}>{pleaseSignInSubTitle}</SignInSubtitle>
                     </>
                   )}
               </div>
@@ -451,6 +469,7 @@ export default class SignInOptionsPanel extends Component {
                         buttonSubmittedText="Signing in..."
                         inModal={inModal}
                         closeSignInModal={this.closeSignInModalLocal}
+                        sx={isTinyScreen ? { marginTop: '3px' } : {}}
                       />
                     </span>
                   )}
@@ -480,7 +499,8 @@ export default class SignInOptionsPanel extends Component {
                     <span className="account-edit-action" onKeyDown={this.twitterLogOutOnKeyDown.bind(this)}>
                       <span
                         className="pull-right u-link-color u-cursor--pointer"
-                        onClick={this.signOut.bind(this)} id = "signOut_securitySignIn"
+                        onClick={this.signOut.bind(this)}
+                        id="signOut_securitySignIn"
                       >
                         sign out
                       </span>
@@ -549,18 +569,10 @@ export default class SignInOptionsPanel extends Component {
               closeSignInModal={this.closeSignInModalLocalFromEmailOrPhone}
               closeVerifyModal={this.closeVerifyModalLocal}
               doNotRender={hideVoterPhoneEntry}
-              // hideSignInWithPhoneForm={isCordova()}
               showAllSignInOptions={this.showAllSignInOptions}
               showPhoneOnlySignIn={this.showPhoneOnlySignIn}
               showEmailOnlySignIn={this.showEmailOnlySignIn}
             />
-            {/* {isCordova() && ( */}
-            {/*  <VoterPhoneEmailCordovaEntryModal */}
-            {/*    doNotRender={hideVoterPhoneEntry} */}
-            {/*    isPhone */}
-            {/*    hideDialogForCordova={this.hideDialogForCordovaLocal} */}
-            {/*  />* /}
-            {/* )} */}
             {(!hideVoterPhoneEntry && !hideVoterEmailAddressEntry && isWebApp()) && (
               <OrWrapper>
                 &mdash;
@@ -572,18 +584,10 @@ export default class SignInOptionsPanel extends Component {
               closeSignInModal={this.closeSignInModalLocalFromEmailOrPhone}
               closeVerifyModal={this.closeVerifyModalLocal}
               doNotRender={hideVoterEmailAddressEntry}
-              // hideSignInWithEmailForm={isCordova()}
               showAllSignInOptions={this.showAllSignInOptions}
-              // toggleOtherSignInOptions={this.toggleNonEmailSignInOptions}
+              showPhoneOnlySignIn={this.showPhoneOnlySignIn}
               showEmailOnlySignIn={this.showEmailOnlySignIn}
             />
-            {/* {isCordova() && ( */}
-            {/*  <VoterPhoneEmailCordovaEntryModal */}
-            {/*    doNotRender={hideVoterEmailAddressEntry} */}
-            {/*    isPhone={false} */}
-            {/*    hideDialogForCordova={this.hideDialogForCordovaLocal} */}
-            {/*  /> */}
-            {/* )} */}
             {debugMode && (
             <div className="text-center">
               is_signed_in:
@@ -624,20 +628,20 @@ export default class SignInOptionsPanel extends Component {
               <br />
             </div>
             )}
-            <TermsWrapper>
+            <TermsWrapper id="terms_Wrapper">
               By continuing, you accept WeVote.US’s
               {' '}
               <Suspense fallback={<></>}>
                 <OpenExternalWebSite
-                  linkIdAttribute="openTermsOfService"
-                  url={termsOfServiceURL}
-                  target="_blank"
                   className="open-web-site"
                   body={(
                     <span>
                       Terms of Service
                     </span>
                   )}
+                  linkIdAttribute="openTermsOfService"
+                  target="_blank"
+                  url={termsOfServiceURL}
                 />
               </Suspense>
               {' '}

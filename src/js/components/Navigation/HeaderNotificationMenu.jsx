@@ -3,6 +3,7 @@ import { Badge, IconButton, Menu, MenuItem } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
+import TagManager from 'react-gtm-module';
 import styled from 'styled-components';
 import ActivityActions from '../../actions/ActivityActions';
 import apiCalming from '../../common/utils/apiCalming';
@@ -10,13 +11,14 @@ import { isIOSAppOnMac, setIconBadgeMessageCount } from '../../common/utils/cord
 import { timeFromDate } from '../../common/utils/dateFormat';
 import historyPush from '../../common/utils/historyPush';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
-import { isTablet } from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import returnFirstXWords from '../../common/utils/returnFirstXWords';
 import ActivityStore from '../../stores/ActivityStore';
 import VoterStore from '../../stores/VoterStore';
 import { createDescriptionOfFriendPosts } from '../../utils/activityUtils';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
+import lookupPageNameAndPageTypeDict, { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
+import AppObservableStore from '../../common/stores/AppObservableStore';
 
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
 
@@ -95,9 +97,28 @@ class HeaderNotificationMenu extends Component {
     }
   }
 
-  onSettingsClick = () => {
+  onSettingsClick = (buttonId) => {
+    const destinationPathname = '/settings/notifications';
+    const destinationPage = lookupPageNameAndPageTypeDict(destinationPathname);
+    const dataLayerObject = {
+      actionDetails: {
+        actionType: 'openModal', // We will be transitioning to a slide-out drawer soon
+        buttonId,
+      },
+      event: 'action',
+      pageDetails: getPageDetails(),
+      destinationDetails: {
+        destinationPageName: destinationPage.pageName,
+        destinationPageType: destinationPage.pageType,
+        destinationPathname,
+      },
+      userDetails: VoterStore.getAnalyticsUserDetails(),
+    };
+    TagManager.dataLayer({ dataLayer: dataLayerObject });
     this.handleClose();
-    historyPush('/settings/notifications');
+    const drawerOpenGlobalVariableName = 'headerProfileDrawerOpen';
+    AppObservableStore.setHeaderProfileSection('notifications');
+    AppObservableStore.setDrawerOpen(drawerOpenGlobalVariableName, true);
   }
 
   generateMenuItemList = (allActivityNotices) => {
@@ -110,7 +131,7 @@ class HeaderNotificationMenu extends Component {
         data-toggle="dropdown"
         id="notificationsHeader"
         key="notificationsHeader"
-        onClick={this.onSettingsClick}
+        onClick={() => this.onSettingsClick('notificationsHeader')}
       >
         <NotificationsHeaderWrapper>
           <NotificationsTitle>
@@ -248,6 +269,25 @@ class HeaderNotificationMenu extends Component {
     const { activityNoticeIdListNotSeen } = this.state;
     ActivityActions.activityNoticeListRetrieve([], activityNoticeIdListNotSeen);
     ActivityActions.activityListRetrieve();
+
+    const { location: { pathname: currentPathname } } = window;
+    const currentPage = lookupPageNameAndPageTypeDict(currentPathname);
+    const dataLayerObject = {
+      actionDetails: {
+        actionType: 'openModal',
+        buttonId: 'headerNotificationMenuIcon',
+      },
+      event: 'action',
+      pageDetails: getPageDetails(),
+      destinationDetails: {
+        destinationPageName: 'NotificationsModal',
+        destinationPageType: currentPage.pageType,
+        destinationPathname: currentPathname,
+      },
+      userDetails: VoterStore.getAnalyticsUserDetails(),
+    };
+    TagManager.dataLayer({ dataLayer: dataLayerObject });
+
     this.setState({
       anchorEl: event.currentTarget,
       menuOpen: true,
@@ -278,7 +318,8 @@ class HeaderNotificationMenu extends Component {
           id="headerNotificationMenuIcon"
           onClick={this.handleClick}
           size="large"
-          sx={isTablet() ? { marginTop: '5px', marginRight: '12px' } : {}}
+          // 'sx' refactored in the 'iconButtonRoot' and 'iconButtonRootSelected' classes below.
+          // sx={isTablet() ? { marginTop: '5px', marginRight: '12px' } : {}}
         >
           {allActivityNoticesNotSeenCount ? (
             <Badge
@@ -305,7 +346,7 @@ class HeaderNotificationMenu extends Component {
           open={menuOpen}
           onClose={this.handleClose}
           elevation={2}
-           anchorEl={anchorEl}
+          anchorEl={anchorEl}
           anchorOrigin={{
             vertical: 'bottom',
             horizontal: 'right',
@@ -343,6 +384,16 @@ const styles = (theme) => ({
     paddingRight: 0,
     paddingBottom: '9px !important',
     paddingLeft: 6,
+    [theme.breakpoints.down('sm')]: {
+      marginTop: '5px !important',
+    },
+    [theme.breakpoints.between('sm', 'md')]: {
+      marginTop: '4px !important',
+      marginRight: '12px',
+    },
+    [theme.breakpoints.up('md')]: {
+      marginTop: '3px !important',
+    },
     '&:hover': {
       backgroundColor: 'transparent',
     },
@@ -355,6 +406,16 @@ const styles = (theme) => ({
     paddingRight: 0,
     paddingBottom: '9px !important',
     paddingLeft: 6,
+    [theme.breakpoints.down('sm')]: {
+      marginTop: '5px !important',
+    },
+    [theme.breakpoints.between('sm', 'md')]: {
+      marginTop: '4px !important',
+      marginRight: '12px',
+    },
+    [theme.breakpoints.up('md')]: {
+      marginTop: '3px !important',
+    },
     '&:hover': {
       backgroundColor: 'transparent',
     },

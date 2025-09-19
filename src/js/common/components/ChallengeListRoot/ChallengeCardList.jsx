@@ -105,23 +105,6 @@ class ChallengeCardList extends Component {
     });
   }
 
-  increaseNumberToDisplay = () => {
-    let { numberToDisplay } = this.state;
-    numberToDisplay += NUMBER_TO_ADD_WHEN_MORE_CLICKED;
-    this.setState({
-      numberToDisplay,
-    });
-  }
-
-  loadMoreHasBeenClicked = () => {
-    this.increaseNumberToDisplay();
-    // console.log('load more has been clicked');
-    if (this.props.loadMoreScroll) {
-      // console.log('loadMoreScroll exists');
-      this.props.loadMoreScroll();
-    }
-  }
-
   onChallengeClickLink (challengeWeVoteId) {
     const challenge = ChallengeStore.getChallengeByWeVoteId(challengeWeVoteId);
     if (!challenge) {
@@ -153,9 +136,26 @@ class ChallengeCardList extends Component {
     if (challengeSEOFriendlyPath) {
       challengeBasePath = `/${challengeSEOFriendlyPath}/+/`;
     } else {
-      challengeBasePath = `/+/${challengeWeVoteId}/`;
+      challengeBasePath = `/++/${challengeWeVoteId}/`;
     }
     return challengeBasePath;
+  }
+
+  loadMoreHasBeenClicked = () => {
+    this.increaseNumberToDisplay();
+    // console.log('load more has been clicked');
+    if (this.props.loadMoreScroll) {
+      // console.log('loadMoreScroll exists');
+      this.props.loadMoreScroll();
+    }
+  }
+
+  increaseNumberToDisplay = () => {
+    let { numberToDisplay } = this.state;
+    numberToDisplay += NUMBER_TO_ADD_WHEN_MORE_CLICKED;
+    this.setState({
+      numberToDisplay,
+    });
   }
 
   render () {
@@ -168,7 +168,7 @@ class ChallengeCardList extends Component {
       return null;
     }
     let numberDisplayed = 0;
-    const pigsCanFly = false;
+    const inChallengeList = true; // checks if item is in the challenge list
     return (
       <Wrapper>
         <ListWrapper useVerticalCard={useVerticalCard}>
@@ -186,6 +186,7 @@ class ChallengeCardList extends Component {
                     limitCardWidth={useVerticalCard}
                     titleLengthRestricted
                     useVerticalCard={useVerticalCard}
+                    inChallengeList={inChallengeList}
                   />
                   {/* JoinedAndDaysLeft component positioned absolutely */}
                   <JoinedAndDaysForChallengePage>
@@ -198,35 +199,18 @@ class ChallengeCardList extends Component {
                 >
                   <ChallengeAbout challengeWeVoteId={oneChallenge.challenge_we_vote_id} />
                 </Link>
-                {pigsCanFly && (
-                  <JoinedButtonsOuterWrapper>
-                    <JoinedButtonsInnerWrapper>
-                      <JoinChallengeAndLearnMoreButtons />
-                    </JoinedButtonsInnerWrapper>
-                  </JoinedButtonsOuterWrapper>
-                )}
+                <JoinedButtonsOuterWrapper>
+                  <JoinedButtonsInnerWrapper>
+                    <JoinChallengeAndLearnMoreButtons
+                      challengeBasePath={this.getChallengeBasePath(oneChallenge.challenge_we_vote_id)}
+                      challengeWeVoteId={oneChallenge.challenge_we_vote_id}
+                      inChallengeList={inChallengeList}
+                    />
+                  </JoinedButtonsInnerWrapper>
+                </JoinedButtonsOuterWrapper>
               </ChallengeCardForListVerticalWrapper>
             );
           })}
-          {/*
-          {!!(numberDisplayed && (searchText || showAllEndorsements || showThisYear || showUpcomingEndorsements)) && (
-            <StartAChallengeWrapper>
-              <Link className="u-link-color" to="/start-a-challenge">
-                Start a challenge
-                {(searchText && searchText.length > 0) && (
-                  <>
-                    {' '}
-                    related to
-                    {' '}
-                    &quot;
-                    {searchText}
-                    &quot;
-                  </>
-                )}
-              </Link>
-            </StartAChallengeWrapper>
-          )}
-          */}
           {!!(challengeList &&
             challengeList.length > 1 &&
             numberToDisplay < challengeList.length) &&
@@ -245,27 +229,6 @@ class ChallengeCardList extends Component {
               {!(numberDisplayed) && (
                 <ChallengesNotAvailableToShow>
                   No challenges match.
-                  {/*
-                  {!!(searchText || showAllEndorsements || showThisYear || showUpcomingEndorsements) && (
-                    <>
-                      {' '}
-                      <Link className="u-link-color" to="/start-a-challenge">
-                        Start a challenge
-                        {(searchText && searchText.length > 0) && (
-                          <>
-                            {' '}
-                            related to
-                            {' '}
-                            &quot;
-                            {searchText}
-                            &quot;
-                          </>
-                        )}
-                      </Link>
-                      .
-                    </>
-                  )}
-                  */}
                 </ChallengesNotAvailableToShow>
               )}
             </div>
@@ -302,21 +265,26 @@ const ChallengeCardForListVerticalWrapper = styled('div')`
   display: flex;
   flex-direction: column;
   // height: ${isWebApp() ? '100%' : 'unset'};
-  height: 440px;
+  height: auto;
   position: relative;
   width: 80%;
-  max-width: 300px;
+  max-width: 250px;
+  margin-right: 5px;
+  margin-bottom: 20px;
+  @media (max-width: 600px) {
+    margin-bottom: 80px;
+  }
 `;
 
 const JoinedButtonsInnerWrapper = styled('div')`
-  width: 95%;
 `;
 
 const JoinedButtonsOuterWrapper = styled('div')`
   bottom: 0;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   position: absolute;
+  width: 250px;
 `;
 
 const JoinedAndDaysForChallengePage = styled('div')`

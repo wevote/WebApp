@@ -14,7 +14,7 @@ export default {
   },
 };
 
-export const AllButtons = (args) => (
+export const AllButtons = () => (
   <ButtonContainer>
     <Button
         primary

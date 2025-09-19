@@ -55,30 +55,30 @@ class ReadyFinePrint extends Component {
     return (
       <OuterWrapper>
         <InnerWrapper>
-          <IntroHeader titleCentered={titleCentered} titleLarge={titleLarge} tabIndex={0} ref={this.introHeaderRef}>
+          <IntroHeader id="theFinePrintHeaderText" titleCentered={titleCentered} titleLarge={titleLarge} tabIndex={0} ref={this.introHeaderRef}>
             The fine print:
           </IntroHeader>
           <ListWrapper>
             <ListMaxWidth>
               <ListTitleRow onClick={this.contentUnfurledLink}>
-                <Dot><StepNumber>a</StepNumber></Dot>
-                <StepTitle>You cannot cast your vote electronically</StepTitle>
+                <Dot><StepNumber id="finePrintMenuItema">a</StepNumber></Dot>
+                <StepTitle id="finePrintTextMenuHeadera">You cannot cast your vote electronically</StepTitle>
               </ListTitleRow>
               {contentUnfurled && (
                 <ListRow>
                   <Dot><StepNumberPlaceholder>&nbsp;</StepNumberPlaceholder></Dot>
-                  <StepText id="readyFinePrintStepTextA">WeVote will not submit your vote. You will need to vote in person or vote-by-mail to have your vote count.</StepText>
+                  <StepText id="readyFinePrintStepTexta">WeVote will not submit your vote. You will need to vote in person or vote-by-mail to have your vote count.</StepText>
                 </ListRow>
               )}
 
               <ListTitleRow onClick={this.contentUnfurledLink}>
-                <Dot><StepNumber>b</StepNumber></Dot>
-                <StepTitle>WeVote does not represent a government entity</StepTitle>
+                <Dot><StepNumber id="finePrintMenuItemb">b</StepNumber></Dot>
+                <StepTitle id="finePrintTextMenuHeaderb">WeVote does not represent a government entity</StepTitle>
               </ListTitleRow>
               {contentUnfurled && (
                 <ListRow>
                   <Dot><StepNumberPlaceholder>&nbsp;</StepNumberPlaceholder></Dot>
-                  <StepText id="readyFinePrintStepTextB">
+                  <StepText id="readyFinePrintStepTextb">
                     <Suspense fallback={<></>}>
                       <ReadMore
                         textToDisplay="WeVote should not be considered official government information.
@@ -96,14 +96,14 @@ class ReadyFinePrint extends Component {
 
               {(contentUnfurled || showStep3WhenCompressed) && (
                 <ListTitleRow onClick={this.contentUnfurledLink}>
-                  <Dot><StepNumber>c</StepNumber></Dot>
-                  <StepTitle>Please make sure you are registered to vote</StepTitle>
+                  <Dot><StepNumber id="finePrintMenuitemc">c</StepNumber></Dot>
+                  <StepTitle id="finePrintTextMenuHeaderc">Please make sure you are registered to vote</StepTitle>
                 </ListTitleRow>
               )}
               {contentUnfurled && (
                 <ListRow>
                   <Dot><StepNumberPlaceholder>&nbsp;</StepNumberPlaceholder></Dot>
-                  <StepText id="readyFinePrintStepTextC">
+                  <StepText id="readyFinePrintStepTextc">
                     Many states require you to register weeks in advance of each election. Search the web for &quot;voter registration&quot; + your state to learn how to register in time.
                   </StepText>
                 </ListRow>
@@ -111,14 +111,14 @@ class ReadyFinePrint extends Component {
 
               {(contentUnfurled || showStep3WhenCompressed) && (
                 <ListTitleRow onClick={this.contentUnfurledLink}>
-                  <Dot><StepNumber>d</StepNumber></Dot>
-                  <StepTitle>How your data is used &amp; protected</StepTitle>
+                  <Dot><StepNumber id="finePrintStepd">d</StepNumber></Dot>
+                  <StepTitle id="finePrintTextMenuHeaderd">How your data is used  &amp; protected</StepTitle>
                 </ListTitleRow>
               )}
               {contentUnfurled && (
                 <ListRow>
                   <Dot><StepNumberPlaceholder>&nbsp;</StepNumberPlaceholder></Dot>
-                  <StepText id="readyFinePrintStepTextD">
+                  <StepText id="readyFinePrintStepTextd">
                     WeVote will never share or sell your contact information.
                     {' '}
                     <Link to="/privacy" className="u-link-color">See full privacy policy here</Link>

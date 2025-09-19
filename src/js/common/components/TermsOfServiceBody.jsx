@@ -16,7 +16,7 @@ export default class TermsOfServiceBody extends Component {
     return (
       <div>
         <ContentTitle>Terms of Service</ContentTitle>
-        <p><strong>Last updated: October 23rd, 2023</strong></p>
+        <p><strong>Last updated: August 8th, 2025</strong></p>
 
         <h2>Overview</h2>
         <p>This website (also packaged in mobile apps) is operated by We Vote USA. Throughout the site, the terms “WeVote”, “we”, “us” and “our” refer to We Vote USA. We Vote USA offers this website, including all information, tools and services available from this site to you, the user, conditioned upon your acceptance of all terms, conditions, policies and notices stated here.</p>
@@ -72,6 +72,15 @@ export default class TermsOfServiceBody extends Component {
         <p>We undertake no obligation to update, amend or clarify information in the Service or on any related website, except as required by law. No specified update or refresh date applied in the Service or on any related website, should be taken to indicate that all information in the Service or on any related website has been modified or updated.</p>
         <h2>Prohibited Uses</h2>
         <p>In addition to other prohibitions as set forth in the Terms of Service, you are prohibited from using the site or its content: (a) for any unlawful purpose; (b) to solicit others to perform or participate in any unlawful acts; (c) to violate any international, federal, provincial or state regulations, rules, laws, or local ordinances; (d) to infringe upon or violate our intellectual property rights or the intellectual property rights of others; (e) to harass, abuse, insult, harm, defame, slander, disparage, intimidate, or discriminate based on gender, sexual orientation, religion, ethnicity, race, age, national origin, or disability; (f) to submit false or misleading information; (g) to upload or transmit viruses or any other type of malicious code that will or may be used in any way that will affect the functionality or operation of the Service or of any related website, other websites, or the Internet; (h) to collect or track the personal information of others; (i) to spam, phish, pharm, pretext, spider, crawl, or scrape; (j) for any obscene or immoral purpose; or (k) to interfere with or circumvent the security features of the Service or any related website, other websites, or the Internet. We reserve the right to terminate your use of the Service or any related website for violating any of the prohibited uses.</p>
+        <h2>Standards Against Child Sexual Abuse and Exploitation (CSAE)</h2>
+        <p>
+          WeVote is committed to maintaining a safe and secure platform that protects children from exploitation, abuse, and harm. We strictly prohibit any form of Child Sexual Abuse and Exploitation (CSAE) and take all necessary steps to prevent, detect, and report such content and activity on our platform.
+          {' '}
+          Please see our policy regarding
+          {' '}
+          <Link className="u-link-color" to="/standards-against-child-sexual-abuse-and-exploitation-csae/" id="standardsAgainstCSAE">Standards Against Child Sexual Abuse and Exploitation (CSAE)</Link>
+          .
+        </p>
         <h2>Disclaimer of Warranties; Limitation of Liability</h2>
         <p>We do not guarantee, represent or warrant that your use of our service will be uninterrupted, timely, secure or error-free.</p>
         <p>We do not warrant that the results that may be obtained from the use of the service will be accurate or reliable.</p>

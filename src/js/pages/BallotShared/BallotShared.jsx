@@ -6,6 +6,9 @@ import React, { Component, Suspense } from 'react';
 import { Helmet } from 'react-helmet-async';
 import styled from 'styled-components';
 import BallotActions from '../../actions/BallotActions';
+import SnackNotifier, { openSnackbar } from '../../common/components/Widgets/SnackNotifier';
+import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
+import ShareStore from '../../common/stores/ShareStore';
 import apiCalming from '../../common/utils/apiCalming';
 import { chipLabelText } from '../../common/utils/cordovaUtils';
 import getBooleanValue from '../../common/utils/getBooleanValue';
@@ -17,10 +20,7 @@ import SetUpAccountNextButton from '../../components/SetUpAccount/SetUpAccountNe
 import { DesktopNextButtonsInnerWrapper, DesktopStaticNextButtonsOuterWrapper } from '../../components/Style/NextButtonStyles';
 import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import BrowserPushMessage from '../../components/Widgets/BrowserPushMessage';
-import SnackNotifier, { openSnackbar } from '../../common/components/Widgets/SnackNotifier';
-import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
-import ShareStore from '../../common/stores/ShareStore';
 import VoterStore from '../../stores/VoterStore';
 import { cordovaSimplePageContainerTopOffset } from '../../utils/cordovaCalculatedOffsets';
 // Lint is not smart enough to know that lazyPreloadPages will not attempt to preload/reload this page
@@ -104,20 +104,9 @@ class BallotShared extends Component {
   }
 
   onAppObservableStoreChange () {
-    // this.setState({
-    //   chosenReadyIntroductionText: AppObservableStore.getChosenReadyIntroductionText(),
-    //   chosenReadyIntroductionTitle: AppObservableStore.getChosenReadyIntroductionTitle(),
-    // });
   }
 
   onBallotStoreChange () {
-    // console.log('onBallotStoreChange');
-    // const { ballotItemList } = this.state;
-    // const ballotItemListFiltered = this.filterBallotItemList(ballotItemList);
-    // this.setState({
-    //   ballotItemListFiltered,
-    //   electionId: VoterStore.electionId(),
-    // });
   }
 
   onShareStoreChange () {
@@ -283,23 +272,11 @@ class BallotShared extends Component {
                     <BallotTitleHeader
                       allowTextWrap
                       centerText
-                      electionDateBelow
                       toggleSelectBallotModal={this.toggleSelectBallotModal}
                     />
                   </Suspense>
                 )}
               </div>
-              {/* <div className="u-show-desktop-tablet"> */}
-              {/*  <Suspense fallback={<></>}> */}
-              {/*    <BallotTitleHeader */}
-              {/*      allowTextWrap */}
-              {/*      electionDateBelow */}
-              {/*      shareButtonText="Share this voter guide" */}
-              {/*      showShareButton={shareButtonOn} */}
-              {/*      toggleSelectBallotModal={this.toggleSelectBallotModal} */}
-              {/*    /> */}
-              {/*  </Suspense> */}
-              {/* </div> */}
             </BallotTitleHeaderOuterWrapper>
             <PositionListWrapper>
               {ballotItemListFiltered.map((oneBallotItem) => {

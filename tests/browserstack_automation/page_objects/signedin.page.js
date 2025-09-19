@@ -4,11 +4,11 @@ import Page from './page';
 const waitTime = 3000;
 
 class SignedIn extends Page {
-  
+
     get signInButton() {
       return $('//*[contains(@id, "signIn")]');
     }
-    
+
     get signInWithTwitterButton() {
         return $('//*[contains(@id, "twitterSignIn-splitIconButton")]');
     }
@@ -144,20 +144,85 @@ class SignedIn extends Page {
         await $('#saveEditYourPhotoBottom').click();
     }
 
-    async idOfInputFields(id, textToEnter) { 
-        await $(`#${id}`).setValue(textToEnter);
-        const entered = await $(`#${id}`).getValue();
-        await expect(entered).toBe(textToEnter);
-        await $(`#${id}`).clearValue();
+    async enterAndRemoveFirstName() {
+        const elem = await $('//input[@name="firstName"]');
+        await elem.click();
+        console.log(await elem.getValue());
+        await driver.execute((elem) => {
+          elem.value = null;
+        }, elem);
         driver.pause(waitTime);
+        console.log("after Deletion",await elem.getValue());
+        await elem.setValue('Automated');
+        const entered = await elem.getValue();
+        driver.pause(waitTime);
+        await expect(entered).toBe('Automated');
+        console.log("Entered first name");
     }
 
-    async enterAndRemoveTextFromInputFields() { //organizationname commented as it is not getting removed - existing bug
-        const ids = ['first-name-domainDesktop', 'last-name-domainDesktop', /*'organization-name-domainDesktop',*/ 'organizationWebsiteTextArea-domainDesktop', 'organizationDescriptionTextArea-domainDesktop'];
-        const text = 'AutomatedTest';
-        for (const id of ids) {
-            await this.idOfInputFields(id, text);
-        }
+     async enterAndRemoveLastName() {
+        const elem = await $('//input[@name="lastName"]');
+        await elem.click();
+        console.log(await elem.getValue());
+        await driver.execute((elem) => {
+          elem.value = null;
+        }, elem);
+        driver.pause(waitTime);
+        console.log("after deletion",await elem.getValue());
+        await elem.setValue('Test');
+        const entered = await elem.getValue();
+        driver.pause(waitTime);
+        await expect(entered).toBe('Test');
+        console.log("Entered Last name");
+    }
+    async enterAndRemoveOrganisationWebsite() {
+        const elem = await $('//input[@name="organizationWebsite"]');
+        await elem.scrollIntoView();
+        await elem.click();
+        console.log(await elem.getValue());
+        await driver.execute((elem) => {
+          elem.value = null;
+        }, elem);
+        driver.pause(waitTime);
+        console.log("after deletion",await elem.getValue());
+        await elem.setValue('automated');
+        const entered = await elem.getValue();
+        driver.pause(waitTime);
+        await expect(entered).toBe('automated');
+        console.log("Entered Organisation Website");
+     }
+     async enterAndRemoveOrganisationDescription() {
+        const elem = await $('//textarea[@name="organizationDescription"]');
+        await elem.scrollIntoView({block:'center'});
+        await elem.click();
+        console.log(await elem.getValue());
+        await driver.execute((elem) => {
+          elem.value = null;
+        }, elem);
+        driver.pause(waitTime);
+        console.log("after deletion",await elem.getValue());
+        await elem.setValue('automated');
+        driver.pause(waitTime);
+        const entered = await elem.getValue();
+        await expect(entered).toBe('automated');
+        console.log("Entered Organisation Description");
+    }
+
+    async enterAndRemoveOrganisationName() {
+        const elem = await $('//input[@name="organizationName"]');
+        await elem.scrollIntoView({block:'center'});
+        await elem.click();
+        console.log(await elem.getValue());
+        await driver.execute((elem) => {
+          elem.value = null;
+        }, elem);
+        driver.pause(waitTime);
+        console.log("after deletion",await elem.getValue());
+        await elem.setValue('automated');
+        driver.pause(waitTime);
+        const entered = await elem.getValue();
+        await expect(entered).toBe('automated');
+        console.log("Entered Organisation Name");
     }
 
     async clickOnEachOptionInTypeOfProfile() {
@@ -174,7 +239,7 @@ class SignedIn extends Page {
             await $('#edit-domainDesktop').click();
             await $(`#${id}`).click();
             const textToBeDisplayed = await $(`//*[text()="${text}"]`);
-            await expect(textToBeDisplayed).toBeDisplayed(); 
+            await expect(textToBeDisplayed).toBeDisplayed();
         }
     }
 
@@ -207,7 +272,7 @@ class SignedIn extends Page {
             expect (trashIcon).toBeDisplayed();
             expect (emailId).toBeDisplayed();
         } else {
-            await this.addEmailAddressLink();
+            await this.addEmailAddressLink;
         }
     }
 
@@ -216,7 +281,7 @@ class SignedIn extends Page {
     }
 
     async clickOnAboutAndFAQLink() {
-        await $('#footerLinkAbout&FAQ').click();
+        await $('//*[contains(@id, "footerLinkAbout")]').click();
     }
 
     async clickOnHelpLink() {
@@ -226,7 +291,7 @@ class SignedIn extends Page {
     async clickOnPrivacyLink() {
         await $('#footerLinkPrivacy').click();
     }
-    
+
     async clickOnTermsLink() {
         await $('#footerLinkTerms').click();
     }
@@ -242,10 +307,10 @@ class SignedIn extends Page {
     async closeTheHowItWorksDialogBox() {
         await $('[data-testid="CloseIcon"]').click();
     }
-    
+
     async clickOnSignOutFromSideBar() {
         await $('#signOut_Settings').click();
-    } 
+    }
 
     async clickOnSignOutFromSecuritySignIn() {
         await $('#signOut_securitySignIn').click();

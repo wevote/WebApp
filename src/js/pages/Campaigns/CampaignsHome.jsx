@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
+import TagManager from 'react-gtm-module';
 import styled from 'styled-components';
 import ActivityActions from '../../actions/ActivityActions';
 import IssueActions from '../../actions/IssueActions';
@@ -9,12 +10,12 @@ import CampaignStore from '../../common/stores/CampaignStore';
 import { convertStateCodeToStateText, convertStateTextToStateCode } from '../../common/utils/addressFunctions';
 import apiCalming from '../../common/utils/apiCalming';
 import arrayContains from '../../common/utils/arrayContains';
-import { getTodayAsInteger } from '../../common/utils/dateFormat'; // getYearFromUltimateElectionDate
+import convertToInteger from '../../common/utils/convertToInteger';
+import { getTodayAsInteger } from '../../common/utils/dateFormat';
 import extractAttributeValueListFromObjectList from '../../common/utils/extractAttributeValueListFromObjectList';
 import historyPush from '../../common/utils/historyPush';
 import { isAndroid } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
-import { convertToInteger } from '../../common/utils/textFormat';
 import CampaignsHomeFilter from '../../components/CampaignsHome/CampaignsHomeFilter';
 import CandidateListRootPlaceholder from '../../components/CampaignsHome/CandidateListRootPlaceholder';
 import NoSearchResult from '../../components/Search/NoSearchResult';
@@ -24,6 +25,7 @@ import CandidateStore from '../../stores/CandidateStore';
 import IssueStore from '../../stores/IssueStore';
 import RepresentativeStore from '../../stores/RepresentativeStore';
 import VoterStore from '../../stores/VoterStore';
+import lookupPageNameAndPageTypeDict, { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
 
 const CandidateListRoot = React.lazy(() => import(/* webpackChunkName: 'CandidateListRoot' */ '../../components/CandidateListRoot/CandidateListRoot'));
 const CampaignListRoot = React.lazy(() => import(/* webpackChunkName: 'CampaignListRoot' */ '../../common/components/CampaignListRoot/CampaignListRoot'));
@@ -76,6 +78,7 @@ class CampaignsHome extends Component {
       representativeListTimeStampOfChange: 0,
       searchText: '',
       stateCode: '',
+      dataLayerSent: false,
     };
   }
 
@@ -215,6 +218,28 @@ class CampaignsHome extends Component {
       }
       window.scrollTo(0, 0);
     }
+
+    if (!this.state.dataLayerSent && VoterStore.getVoterWeVoteId()) {
+      const { location: { pathname: currentPathname } } = window;
+      const currentPage = lookupPageNameAndPageTypeDict(currentPathname);
+
+      let urlStateCode = '';
+      if (stateCandidatesPhrase) {
+        let stateName = stateCandidatesPhrase.replace('-candidates', '').replace('-politicians-list', '');
+        stateName = stateName.replaceAll('-', ' ');
+        urlStateCode = convertStateTextToStateCode(stateName);
+        if (urlStateCode.toLowerCase() === 'na') {
+          urlStateCode = 'all';
+        }
+      }
+      const dataLayerObject = {
+        event: 'landing',
+        pageDetails: getPageDetails(urlStateCode),
+        userDetails: VoterStore.getAnalyticsUserDetails(),
+      };
+      TagManager.dataLayer({ dataLayer: dataLayerObject });
+      this.setState({ dataLayerSent: true });
+    }
   }
 
   componentWillUnmount () {
@@ -262,6 +287,7 @@ class CampaignsHome extends Component {
   onCandidateStoreChange () {
     const candidateList = CandidateStore.getCandidateList();
     const { battlegroundDataFoundByStateDict } = this.state;
+    // console.log('onCandidateStoreChange candidateList', candidateList);
     // Note: sorting is being done in CandidateListRoot
     const { candidateListOnYourBallot, candidateListIsBattleground, candidateListOther, stateCode } = this.splitUpCandidateList(candidateList);
     const battlegroundDataFound = !!(candidateListIsBattleground && candidateListIsBattleground.length > 0);
@@ -355,6 +381,9 @@ class CampaignsHome extends Component {
     const weVoteIdsIsBattlegroundRace = extractAttributeValueListFromObjectList('we_vote_id', candidateListIsBattleground);
     const candidateMinusBattleground = candidateListRemaining.filter((oneCandidate) => !arrayContains(oneCandidate.we_vote_id, weVoteIdsIsBattlegroundRace));
     const candidateListOther = candidateMinusBattleground.filter((oneCandidate) => !arrayContains(oneCandidate.politician_we_vote_id, politicianWeVoteIdsAlreadyShown));
+
+    // console.log('------ candidateList.length: ', candidateList.length);
+    // console.log('------ candidateListOther.length: ', candidateListOther.length);
 
     // Ok to remove once https://wevoteusa.atlassian.net/jira/software/projects/WV/issues/WV-282 is fixed
     // console.log('------ candidateList biden: ', candidateList.find((x) => x.ballot_item_display_name === 'Joe Biden'));
@@ -450,15 +479,16 @@ class CampaignsHome extends Component {
     // // if (upcomingEndorsementsAvailable) {
     // // We still want to show this filter option
     // filterCount += 1;
-    listModeFiltersAvailable.push({
-      // WV314 Temporary Fix Changed from displayAsChip to true to false to hide the "Upcoming" button on Candidates Page
-      displayAsChip: false,
-      filterDisplayName: 'Upcoming',
-      filterName: 'showUpcomingEndorsements',
-      filterOrder: 1,
-      filterSelected: listModeShown === 'showUpcomingEndorsements',
-      filterType: 'showUpcomingEndorsements',
-    });
+    // This filter prevents candidates from the past from being shown on the Candidates page
+    // listModeFiltersAvailable.push({
+    //   // WV314 Temporary Fix Changed from displayAsChip to true to false to hide the "Upcoming" button on Candidates Page
+    //   displayAsChip: false,
+    //   filterDisplayName: 'Upcoming',
+    //   filterName: 'showUpcomingEndorsements',
+    //   filterOrder: 1,
+    //   filterSelected: listModeShown === 'showUpcomingEndorsements',
+    //   filterType: 'showUpcomingEndorsements',
+    // });
     // // }
     // if (filterCount > 1) {
     if (listModeShown === 'showAllEndorsements') {
@@ -716,6 +746,8 @@ class CampaignsHome extends Component {
     // console.log('CampaignsHomeLoader.jsx render campaignList:', campaignList);
     const pigsCanFly = false;
 
+    // console.log("Actual list: ", representativeListShownAsRepresentatives.length, "number of results: ", numberOfRepresentativeResults)
+
     if (detailsListMode) {
       // console.log('detailsListMode TRUE');
       return (
@@ -724,7 +756,7 @@ class CampaignsHome extends Component {
             changeListModeShown={this.changeListModeShown}
             clearSearchFunction={this.clearSearchFunction}
             handleChooseStateChange={this.handleChooseStateChange}
-            isSearching={isSearching}
+            isSearching={!!(isSearching)}
             listModeFiltersAvailable={listModeFiltersAvailable}
             searchFunction={this.searchFunction}
             searchText={searchText}
@@ -763,7 +795,7 @@ class CampaignsHome extends Component {
           changeListModeShown={this.changeListModeShown}
           clearSearchFunction={this.clearSearchFunction}
           handleChooseStateChange={this.handleChooseStateChange}
-          isSearching={isSearching}
+          isSearching={!!(isSearching)}
           listModeFiltersAvailable={listModeFiltersAvailable}
           searchFunction={this.searchFunction}
           searchText={searchText}
@@ -772,7 +804,7 @@ class CampaignsHome extends Component {
         {(isSearching && numberOfSearchResults === 0) && (
           <NoSearchResult
             title="No Candidates Found"
-            subtitle="Please try a different search term."
+            subtitle={stateCode ? 'Please try a different search term or state.' : 'Please try a different search term.'}
           />
         )}
 
@@ -817,7 +849,7 @@ class CampaignsHome extends Component {
             {displayBattlegroundPlaceholder && <CandidateListRootPlaceholder titleTextForList="Candidates in Close Races" />}
           </>
         )}
-        {(representativeListShownAsRepresentatives && representativeListShownAsRepresentatives.length > 0) ? (
+        {(representativeListShownAsRepresentatives && representativeListShownAsRepresentatives.length > 0) && (
           <WhatIsHappeningSection useMinimumHeight={!isSearching && numberOfRepresentativeResults > 0}>
             <Suspense fallback={<span><CandidateListRootPlaceholder titleTextForList="Current Representatives" /></span>}>
               <RepresentativeListRoot
@@ -833,16 +865,8 @@ class CampaignsHome extends Component {
               />
             </Suspense>
           </WhatIsHappeningSection>
-        ) : (
-          <>
-            {numberOfRepresentativeResults > 0 && (
-              <>
-                <CandidateListRootPlaceholder titleTextForList="Current Representatives" />
-              </>
-            )}
-          </>
         )}
-        {(candidateListOnYourBallot && candidateListOnYourBallot.length > 0) ? (
+        {(candidateListOnYourBallot && candidateListOnYourBallot.length > 0) && (
           <WhatIsHappeningSection useMinimumHeight={!isSearching && numberOfCandidatesOnBallotResults > 0}>
             <Suspense fallback={<span><CandidateListRootPlaceholder titleTextForList="On Your Ballot" /></span>}>
               <CandidateListRoot
@@ -858,14 +882,6 @@ class CampaignsHome extends Component {
               />
             </Suspense>
           </WhatIsHappeningSection>
-        ) : (
-          <>
-            {numberOfCandidatesOnBallotResults > 0 && (
-              <>
-                <CandidateListRootPlaceholder titleTextForList="On Your Ballot" />
-              </>
-            )}
-          </>
         )}
         <WhatIsHappeningSection useMinimumHeight={!isSearching && numberOfMorePoliticiansResults > 0}>
           <Suspense fallback={<span><CandidateListRootPlaceholder /></span>}>

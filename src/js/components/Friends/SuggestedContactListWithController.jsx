@@ -4,7 +4,7 @@ import React, { Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import SuggestedContactList from './SuggestedContactList';
-import SearchBar2024 from '../Search/SearchBar2024';
+import SearchBar2024 from '../../common/components/Search/SearchBar2024';
 import VoterActions from '../../actions/VoterActions';
 import apiCalming from '../../common/utils/apiCalming';
 import { renderLog } from '../../common/utils/logging';

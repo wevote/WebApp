@@ -12,10 +12,41 @@ class DiscussPage extends Page {
     // await super.rerender();
   }
 
+  get signInTitle () {
+    return $('#pleaseSignInTitle');
+  }
+
+  get signInSubtitle () {
+    return $('#signInSubtitle');
+  }
+
+  get textTestAuthor () {
+    return $('#testimonialText');
+  }
+
+  get termsWrapper () {
+    return $('#terms_Wrapper');
+  }
+
+  get testImoniaAuthor () {
+    return $('#testimonial_Author');
+  }
+
+  get openTermsOfService () {
+    return $('#openTermsOfService');
+  }
+
+  get openPrivacyPolicy () {
+    return $('#openPrivacyPolicy');
+  }
+
+  get avatarCard () {
+   return $('#card_main_avatar');//
+  }
+
   get emailAddressSidebarFriendsTextBox () {
     return $('#EmailAddress-sidebar');
   }
-
 
   get voterEmailAddressVerificationButton () {
     return $('#voterEmailAddressEntrySendCode');
@@ -31,6 +62,14 @@ class DiscussPage extends Page {
 
   get enterVoterEmailAddressTextBox () {
     return $('#enterVoterEmailAddress');
+  }
+
+  get voterEmailAddressHelperText () {
+    return $('#enterVoterEmailAddress-helper-text');
+  }
+
+  get voterEmailAddressLabel () {
+    return $('#enterVoterEmailAddress-label');
   }
 
   async toggleEmailVerificationButton () {

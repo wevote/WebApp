@@ -29,7 +29,7 @@ const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenEx
 
 
 /* global $ */
-let shiftTabKeyPressed = false
+let shiftTabKeyPressed = false;
 class VoterPhoneVerificationEntry extends Component {
   constructor (props) {
     super(props);
@@ -280,22 +280,32 @@ class VoterPhoneVerificationEntry extends Component {
       this.setState({
         displayPhoneVerificationButton: false,
       });
-      if(!shiftTabKeyPressed){
+      if (!shiftTabKeyPressed) {
         if (isMobileScreenSize()) {
           if (this.props.showEmailOnlySignIn) {
             this.props.showEmailOnlySignIn();
             setTimeout(() => {
-              const nextField = document.getElementById("enterVoterEmailAddress");   
+              const nextField = document.getElementById('enterVoterEmailAddress');
               if (nextField) {
                 nextField.focus();
               }
             }, 100);
           }
-        } else {  
-            const nextField = document.getElementById("enterVoterEmailAddress") || document.getElementById("openTermsOfService");    
+        } else {
+          const nextField = document.getElementById('enterVoterEmailAddress') || document.getElementById('openTermsOfService');
+          if (nextField) {
+            nextField.focus();
+          }
+        }
+      } else if (isCordova() || isMobileScreenSize()) {
+        if (this.props.showAllSignInOptions) {
+          this.props.showAllSignInOptions();
+          setTimeout(() => {
+            const nextField = document.getElementById('appleSignInButton');
             if (nextField) {
               nextField.focus();
             }
+          }, 50);
         }
       }
     }
@@ -311,36 +321,23 @@ class VoterPhoneVerificationEntry extends Component {
       signInCodeSMSSentAndWaitingForResponse: false,
       voterSMSPhoneNumber: '', // Clearing voterSMSPhoneNumber variable does not always clear number in form
     });
+    this.props.showAllSignInOptions();
     setTimeout(() => {
       // A timer hack to prevent a "React state update on an unmounted component"
       VoterActions.clearSecretCodeVerificationStatusAndPhone();
     }, 1000);
-
-    const { cancelShouldCloseModal } = this.props;
-    // console.log('cancelShouldCloseModal:', cancelShouldCloseModal);
-    if (cancelShouldCloseModal) {
-      this.closeSignInModalLocal();
-    } else if (isCordova()) {
-      // WV-316: seperated Cordovoa and Mobile screen cancel logic, Mobile only shows all sign in options on cancel.
-      // if (this.props.showAllSignInOptions) {
-      //   this.props.showAllSignInOptions();
-      // }  
-    } else if (isMobileScreenSize()) {
-      if (this.props.showEmailOnlySignIn) {
-        this.props.showEmailOnlySignIn();
-        setTimeout(() => {
-          const nextField = document.getElementById("enterVoterEmailAddress");   
-          if (nextField) {
-            nextField.focus();
-          }
-        }, 100);
-      }
-    } else {
-      const nextField = document.getElementById("enterVoterEmailAddress") || document.getElementById("openTermsOfService");    
+    if (this.state.phoneNumberErrorTimeoutId) {
+      clearTimeout(this.state.phoneNumberErrorTimeoutId);
+    }
+    this.setState({ displayIncorrectPhoneNumberError: false });
+    const textField = document.getElementById('enterVoterPhone');
+    textField.innerText = '';
+    setTimeout(() => {
+      const nextField = document.getElementById('enterVoterEmailAddress');
       if (nextField) {
         nextField.focus();
       }
-    }
+    }, 100);
   };
 
   onFocus = () => {
@@ -379,7 +376,7 @@ class VoterPhoneVerificationEntry extends Component {
     const SPACE_KEY_CODE = 32;
     const keyCodesToBlock = [SPACE_KEY_CODE];
     const keyCodesForSubmit = [ENTER_KEY_CODE];
-    if (event.key === "Tab" && event.shiftKey) {
+    if (event.key === 'Tab' && event.shiftKey) {
       shiftTabKeyPressed = true;
     } else {
       shiftTabKeyPressed = false;
@@ -452,7 +449,7 @@ class VoterPhoneVerificationEntry extends Component {
       smsPhoneNumberStatus, smsPhoneNumberList, smsPhoneNumberListCount, voterSMSPhoneNumber,
     } = this.state;
     // console.log('VoterPhoneVerificationEntry render showVerifyModal:', showVerifyModal);
-    
+
     const signInLinkOrCodeSent = (smsPhoneNumberStatus.link_to_sign_in_sms_sent || smsPhoneNumberStatus.sign_in_code_sms_sent);
     const smsPhoneNumberStatusHtml = (
       <span>
@@ -511,21 +508,9 @@ class VoterPhoneVerificationEntry extends Component {
           ) : null}
       </span>
     );
-    // console.log('VoterPhoneVerificationEntry render, smsPhoneNumberStatusHtml: ', smsPhoneNumberStatusHtml, ', smsPhoneNumberStatus:', smsPhoneNumberStatus);
-
-    // "SMS" is techno jargon
-    // let enterSMSPhoneNumberTitle = isWebApp() ? 'SMS Phone Number' : 'Text the sign in code to';
-    // if (this.state.voter && this.state.voter.is_signed_in) {
-    //   enterSMSPhoneNumberTitle = 'Add New Phone Number';
-    // }
 
     const enterSMSPhoneNumberHtml = hideSignInWithPhoneForm ? null : (
       <div>
-        {/*
-        <div className="u-stack--sm u-tl">
-          {enterSMSPhoneNumberTitle}
-        </div>
-        */}
         <form className="form-inline">
           <TextField
             autoComplete="off"
@@ -762,7 +747,6 @@ class VoterPhoneVerificationEntry extends Component {
   }
 }
 VoterPhoneVerificationEntry.propTypes = {
-  cancelShouldCloseModal: PropTypes.bool,
   classes: PropTypes.object,
   closeSignInModal: PropTypes.func,
   closeVerifyModal: PropTypes.func,
@@ -772,7 +756,7 @@ VoterPhoneVerificationEntry.propTypes = {
   lockOpenPhoneVerificationButton: PropTypes.bool,
   showAllSignInOptions: PropTypes.func,
   showPhoneOnlySignIn: PropTypes.func,
-  showEmailOnlySignIn: PropTypes.func
+  showEmailOnlySignIn: PropTypes.func,
 };
 
 const styles = {

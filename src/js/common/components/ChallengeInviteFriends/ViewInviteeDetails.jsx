@@ -1,24 +1,61 @@
+import React, { useState, useEffect } from 'react';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
-import React from 'react';
+import { TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, DialogTitle } from '@mui/material';
 import DesignTokenColors from '../Style/DesignTokenColors';
-import ModalDisplayTemplateA, { templateAStyles, TextFieldWrapper } from '../../../components/Widgets/ModalDisplayTemplateA';
+import ModalDisplayTemplateA, { templateAStyles } from '../../../components/Widgets/ModalDisplayTemplateA';
+import ChallengeInviteeStore from '../../stores/ChallengeInviteeStore';
 
 const ViewInviteeDetails = ({ inviteeId, show, setShow, setAnchorEl }) => {
-  const handleClose = () => {
-    setShow(false);
-    setAnchorEl(null);
+  const [inviteeData, setInviteeData] = useState(null);
+
+  useEffect(() => {
+    const fetchInviteeData = async () => {
+      const data = await ChallengeInviteeStore.getChallengeInviteeById(inviteeId);
+      setInviteeData(data);
+    };
+    if (inviteeId) {
+      fetchInviteeData();
+    }
+  }, [inviteeId]);
+
+  const toggleModal = () => {
+    setShow((prev) => !prev);
+    if (!show) {
+      setAnchorEl(null); // Handle anchor cleanup when closing
+    }
   };
 
-  const dialogTitleText = "Jane's Invitation History";
+  const formatDate = (dateString, customMessage = 'Unavailable') => {
+    if (!dateString) return customMessage;
+    const date = new Date(dateString);
+    const formattedDate = date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: '2-digit',
+      year: 'numeric',
+    });
 
+    return `${formattedDate}`;
+  };
+
+  const dialogTitleJSX = (
+    <>
+      <StyledDialogTitle className="u-show-desktop-tablet">
+        {inviteeData ? `${inviteeData.invitee_name}'s Invitation History` : 'Invitation History'}
+      </StyledDialogTitle>
+      <StyledDialogTitle className="u-show-mobile">
+        {inviteeData ? 'Invitation History' : 'Invitation History'}
+      </StyledDialogTitle>
+    </>
+  );
+
+  //   console.log('inviteeData:', inviteeData);
   const textFieldJSX = (
     <TableContainer components={Paper} sx={{ paddingBottom: '5px' }}>
       <TableWrapper>
-        <Table aria-label="simple table">
+        <StyledTable aria-label="simple table">
           <TableHead>
             <StyledTableRow>
               <StyledTableHeaderCell>STATUS</StyledTableHeaderCell>
@@ -30,43 +67,63 @@ const ViewInviteeDetails = ({ inviteeId, show, setShow, setAnchorEl }) => {
               <StyledTableBodyCellLeft component="th" scope="row">
                 Invitation sent
               </StyledTableBodyCellLeft>
-              <StyledTableBodyCellRight align="right">Oct 1, 2024 - 11:06 AM</StyledTableBodyCellRight>
+              <StyledTableBodyCellRight align="right">{inviteeData ? formatDate(inviteeData.date_invite_sent) : null}</StyledTableBodyCellRight>
             </TableRow>
             <TableRow>
               <StyledTableBodyCellLeft component="th" scope="row">
                 Challenge viewed
               </StyledTableBodyCellLeft>
-              <StyledTableBodyCellRight align="right">Oct 1, 2024 - 11:06 AM</StyledTableBodyCellRight>
+              <StyledTableBodyCellRight className="u-show-desktop-tablet" align="right">
+                {inviteeData ? "Invitation hasn't been viewed" : null}
+              </StyledTableBodyCellRight>
+              <StyledTableBodyCellRight className="u-show-mobile" align="right">
+                {inviteeData ? 'Not viewed' : null}
+              </StyledTableBodyCellRight>
             </TableRow>
             <StyledTableRow>
-              <StyledTableBodyCellLeft component="th" scope="row" styled={{fontFamily: 'inherit'}}>
+              <StyledTableBodyCellLeft component="th" scope="row" styled={{ fontFamily: 'inherit' }}>
                 Challenge joined
               </StyledTableBodyCellLeft>
-              <StyledTableBodyCellRight align="right">Oct 1, 2024 - 11:06 AM</StyledTableBodyCellRight>
+              <StyledTableBodyCellRight className="u-show-desktop-tablet" align="right">
+                {inviteeData ? "Invitation hasn't been joined" : null}
+              </StyledTableBodyCellRight>
+              <StyledTableBodyCellRight className="u-show-mobile" align="right">
+                {inviteeData ? 'Not joined' : null}
+              </StyledTableBodyCellRight>
             </StyledTableRow>
           </TableBody>
-        </Table>
+        </StyledTable>
       </TableWrapper>
     </TableContainer>
   );
 
   return (
     <ModalDisplayTemplateA
-      dialogTitleJSX={<TitleWrapper>{dialogTitleText}</TitleWrapper>}
+      dialogTitleJSX={dialogTitleJSX}
       textFieldJSX={textFieldJSX}
       show={show}
       tallMode
-      toggleModal={handleClose}
+      toggleModal={toggleModal}
     />
   );
 };
 ViewInviteeDetails.propTypes = {
-  inviteeId: PropTypes.string,
+  inviteeId: PropTypes.number,
   setShow: PropTypes.func,
   setAnchorEl: PropTypes.func,
   show: PropTypes.bool,
   uniqueExternalId: PropTypes.string,
 };
+
+const StyledDialogTitle = styled(DialogTitle)`
+  padding: 12px 2px;
+  padding-right: 55px;
+`;
+
+const StyledTable = styled('table')`
+  width: 100%;
+  overflow: hidden;
+`;
 
 const StyledTableHeaderCell = styled(TableCell)`
   color: ${DesignTokenColors.neutral900};
@@ -74,6 +131,10 @@ const StyledTableHeaderCell = styled(TableCell)`
   font-weight: bold;
   font-family: inherit;
   padding: 8px 4px 4px 4px;
+  @media (max-width: 600px) {
+    font-size: 8px; /* Reduce font size for smaller screens */
+    padding: 4px; /* Adjust padding for smaller screens */
+  }
 `;
 
 const StyledTableRow = styled(TableRow)`
@@ -87,8 +148,7 @@ const StyledTableRow = styled(TableRow)`
 const StyledTableBodyCellLeft = styled(TableCell)`
   font-family: inherit;
   padding: 4px;
-  padding-left: none;
-  padding-right: 70px;
+  padding-right: 20px;
 `;
 
 const StyledTableBodyCellRight = styled(TableCell)`
@@ -97,21 +157,11 @@ const StyledTableBodyCellRight = styled(TableCell)`
   padding-right: none;
 `;
 
-const TitleWrapper = styled('div')`
-  font-size: 16px;
-  font-weight: bold;
-  padding-bottom: 4px;
-  padding-left: 4px;
-  text-align: center;
-  font-family: inherit;
-`;
-
 const TableWrapper = styled('div')`
-  border-top: 1px solid ${DesignTokenColors.neutral100};
-  margin-top: 4px; /* Adjust to give space below the title */
   margin-bottom: 4px;
-  min-width: 300px;
-  overflow-x: auto;
+  min-width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
 `;
 
 export default withTheme(withStyles(templateAStyles)(ViewInviteeDetails));

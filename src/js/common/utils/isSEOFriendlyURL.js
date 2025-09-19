@@ -10,9 +10,9 @@ export function isChallengeSEOFriendlyURL (path) {
 }
 
 export function isPoliticianSEOFriendlyURL (path) {
-  // console.log("isSEOFriendlyURL, path:", path);
+  // console.log("isPoliticianSEOFriendlyURL, path:", path);
   if (path) {
-    return stringContains('/-/', path);
+    return path.endsWith('/-/');
   } else {
     return false;
   }
@@ -21,7 +21,7 @@ export function isPoliticianSEOFriendlyURL (path) {
 export function isSEOFriendlyURL (path) {
   // console.log("isSEOFriendlyURL, path:", path);
   if (path) {
-    return stringContains('/+/', path) || stringContains('/-/', path);
+    return isChallengeSEOFriendlyURL(path) || isPoliticianSEOFriendlyURL(path);
   } else {
     return false;
   }

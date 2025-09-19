@@ -22,7 +22,7 @@ import { renderLog } from '../../common/utils/logging';
 import apiCalming from '../../common/utils/apiCalming';
 import { sortCandidateList } from '../../utils/positionFunctions';
 
-const testimonialPhoto = '../../../img/global/photos/Dale_McGrew-48x48.jpg';
+const testimonialPhoto = '../../../img/global/photos/Dale_McGrew-48x48.jpg';   // DON'T COPY this pattern, we should be using normalizedImagePath()
 
 
 // This is related to pages/VoterGuide/OrganizationVoterGuideOffice

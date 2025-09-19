@@ -66,12 +66,14 @@ export const PositionRowListInnerWrapper = styled('div')`
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
+  margin-top: 45px;
 `;
 
 export const PositionRowListEmptyWrapper = styled('div')`
 `;
 
 export const PositionRowListOneWrapper = styled('div')`
+  margin-right: 10px;
 `;
 
 export const PositionRowListOuterWrapper = styled('div')`

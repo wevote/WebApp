@@ -1,6 +1,7 @@
-import { Twitter } from '@mui/icons-material';
+import { X as Twitter } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { withStyles } from '@mui/styles'; // Import withStyles
 import TwitterActions from '../../actions/TwitterActions';
 import SplitIconButton from '../../common/components/Widgets/SplitIconButton';
 import { cordovaOpenSafariView, isIOS } from '../../common/utils/cordovaUtils';
@@ -13,6 +14,19 @@ import webAppConfig from '../../config';
 import $ajax from '../../utils/service';
 
 const returnURL = `${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}/twitter_sign_in`;
+const styles = (theme) => ({
+  splitButton: {
+    [theme.breakpoints.down('md')]: {
+      width: '100%',
+    },
+    [theme.breakpoints.up('md')]: {
+      width: '80%',
+    },
+  },
+  centeredSplitButtonText: {
+    paddingRight: '53px',
+  },
+});
 
 class TwitterSignIn extends Component {
   static handleTwitterOpenURL (url) {
@@ -193,6 +207,7 @@ class TwitterSignIn extends Component {
 
   render () {
     let { buttonText } = this.props;
+    const { classes } = this.props;
     const { buttonSubmittedText, twitterSignInCrash, twitterSignInStartSubmitted } = this.state;
     // fixed for WV-131 disables button for iOS but not for webApp browser
     let twitterSignInButtonDisabled = (isIOS() && twitterSignInStartSubmitted) || twitterSignInCrash;
@@ -212,15 +227,22 @@ class TwitterSignIn extends Component {
     return (
       <>
         <SplitIconButton
-          backgroundColor="#55acee"
-          fontColor={twitterSignInButtonDisabled ? 'gray' : 'white'}
-          buttonText={twitterSignInButtonDisabled ? shortenText(buttonSubmittedText, 32) : shortenText(buttonText, 32)}
+          backgroundColor="#FFFFFF"
+          fontColor={twitterSignInButtonDisabled ? 'gray' : 'black'}
+          buttonText={(
+            <span className={classes.centeredSplitButtonText}>
+              {twitterSignInButtonDisabled ?
+                shortenText(buttonSubmittedText, 32) :
+                shortenText(buttonText, 32)}
+            </span>
+          )}
+          classes={{ splitButton: classes.splitButton }} // Pass custom classes
           disabled={twitterSignInButtonDisabled}
           externalUniqueId="twitterSignIn"
           icon={<Twitter />}
           id="twitterSignIn"
           onClick={isWebApp() ? this.twitterSignInWebApp : this.twitterSignInWebAppCordova}
-          separatorColor="rgba(250, 250, 250, .6)"
+          separatorColor="rgba(255, 255, 255, 1)"
           title="Sign in to find voter guides"
         />
         {twitterSignInCrash && (
@@ -241,7 +263,8 @@ TwitterSignIn.propTypes = {
   buttonSubmittedText: PropTypes.string,
   closeSignInModal: PropTypes.func,
   inModal: PropTypes.bool,
+  classes: PropTypes.object.isRequired, // Add classes to propTypes
 };
 
-export default TwitterSignIn;
+export default withStyles(styles)(TwitterSignIn);
 

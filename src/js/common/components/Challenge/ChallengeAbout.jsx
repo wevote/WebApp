@@ -10,14 +10,12 @@ import ChallengeParticipantStore from '../../stores/ChallengeParticipantStore';
 import ChallengeStore from '../../stores/ChallengeStore';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import normalizedImagePath from '../../utils/normalizedImagePath';
-
 import rocketShipNoThrust from '../../../../img/global/svg-icons/rocket-ship-no-thrust.svg';
 
 function ChallengeAbout ({ challengeWeVoteId, showDaysLeft }) {
   renderLog('ChallengeAbout');
-  const [challengeCreator, setChallengeCreator] = React.useState('');
+  const [challengeOwners, setChallengeOwners] = React.useState([]);
   const [challengeInviteesCount, setChallengeInviteesCount] = React.useState(0);
-  const [challengeIsSupporting, setChallengeIsSupporting] = React.useState('');
   const [challengeParticipantCount, setChallengeParticipantCount] = React.useState(0);
   const [daysLeft, setDaysLeft] = React.useState(0);
   const [participantNameWithHighestRank, setParticipantNameWithHighestRank] = React.useState('');
@@ -34,8 +32,7 @@ function ChallengeAbout ({ challengeWeVoteId, showDaysLeft }) {
       setChallengeParticipantCount(ChallengeStore.getNumberOfParticipantsInChallenge(challengeWeVoteId));
     }
     setDaysLeft(ChallengeStore.getDaysUntilChallengeEnds(challengeWeVoteId));
-    setChallengeCreator('Anusha P.');
-    setChallengeIsSupporting('John Smith');
+    setChallengeOwners(ChallengeStore.getChallengeOwnerList(challengeWeVoteId));
   };
   const onChallengeParticipantStoreChange = () => {
     if (challengeParticipantCount < ChallengeParticipantStore.getNumberOfParticipantsInChallenge(challengeWeVoteId)) {
@@ -69,20 +66,24 @@ function ChallengeAbout ({ challengeWeVoteId, showDaysLeft }) {
             {' '}
             ·
             {' '}
-            {daysLeft}
-            {' '}
-            days left
+            {daysLeft > 0 ? `${daysLeft} days left` : 'Challenge Ended'}
           </ShowDaysLeftText>
         </>
       )}
     </span>
   );
-  const challengeStarted = (
-    <span>
+  const challengeOwnersText = (
+    <ChallengeOwnersText>
       Challenge started by
       {' '}
-      {challengeCreator}
-    </span>
+      {challengeOwners.slice(0, 3).map((owner, index) => (
+        <ChallengeOwnersSpan key={owner.organization_we_vote_id}>
+          {owner.organization_name}
+          {index < challengeOwners.slice(0, 3).length - 1 ? ', ' : ''}
+        </ChallengeOwnersSpan>
+      ))}
+      {challengeOwners.length > 3 && ' and others'}
+    </ChallengeOwnersText>
   );
   const remindFriends = 'Remind as many friends as you can about the date of the election, and let them know you will be voting.';
   const currentLeader = `Current leader: ${participantNameWithHighestRank}`;
@@ -98,7 +99,7 @@ function ChallengeAbout ({ challengeWeVoteId, showDaysLeft }) {
     </span>
   );
 
-  const showStartedBy = false;
+  const showStartedBy = true;
   return (
     <ChallengeAboutWrapper>
       <CardRowsWrapper>
@@ -143,22 +144,16 @@ function ChallengeAbout ({ challengeWeVoteId, showDaysLeft }) {
         {showStartedBy && (
           <CardForListRow>
             <Suspense fallback={<></>}>
-              {challengeStarted && (
+              {challengeOwners && (
                 <FlexDivLeft>
                   <SvgImageWrapper style={{ paddingTop: '3px' }}>
                     <ReactSVG
                       src={normalizedImagePath(rocketShipNoThrust)}
                       alt="Rocket Ship"
-                      beforeInjection={(svg) => {
-                        // Fill property applied to the path element, not SVG element. querySelector to grab the path element and set the attribute.
-                        svg.querySelectorAll('path').forEach((path) => {
-                          path.setAttribute('fill', 'none');
-                          path.setAttribute('stroke', '#606060');
-                        });
-                      }}
+                      beforeInjection={(svg) => svg.setAttribute('style', { padding: '1px 1px 1px 0px' })}
                     />
                   </SvgImageWrapper>
-                  <ChallengeStartedDiv>{challengeStarted}</ChallengeStartedDiv>
+                  <ChallengeOwnersDiv>{challengeOwnersText}</ChallengeOwnersDiv>
                 </FlexDivLeft>
               )}
             </Suspense>
@@ -182,7 +177,7 @@ const styles = () => ({
 });
 
 export const CampaignOutlinedStyled = styled(CampaignOutlined)`
-  font-size: 30px;
+  font-size: 25px;
 `;
 
 export const EmojiEventsOutlinedStyled = styled(EmojiEventsOutlined)`
@@ -190,24 +185,58 @@ export const EmojiEventsOutlinedStyled = styled(EmojiEventsOutlined)`
 `;
 
 export const EventOutlinedStyled = styled(EventOutlined)`
-  font-size: 25px;
+  font-size: 28px;
 `;
 
 export const CardForListRow = styled('div')`
   color: ${DesignTokenColors.neutral500};
   font-size: 16px;
   padding: 3px 0;
+  margin-bottom: 3px;
 `;
 
 export const CardRowsWrapper = styled('div')`
-  margin-top: 2px;
+  margin: 2px 0 0 2px;
+  padding-bottom: 20px;
+  overflow-y: auto;
+  height: 250px;
+
+  @media screen and (min-width: 786px) {
+    height: auto;
+    overflow-y: visible;
+  }
 `;
 
 const ChallengeAboutWrapper = styled('div')`
   white-space: normal;
+  position: relative;
+  height: auto;
+  margin-bottom: 40px;
+
+  @media screen and (min-width: 786px) {
+    margin-bottom: 20px;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 20px;
+    background: linear-gradient(to top, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+    pointer-events: none;
 `;
 
-const ChallengeStartedDiv = styled('div')`
+const ChallengeOwnersDiv = styled('div')`
+`;
+
+const ChallengeOwnersText = styled('p')`
+`;
+
+const ChallengeOwnersSpan = styled('span')`
+  font-weight: 500;
+  color: ${DesignTokenColors.neutral600};
 `;
 
 export const FlexDivLeft = styled('div')`
@@ -217,14 +246,15 @@ export const FlexDivLeft = styled('div')`
 `;
 
 export const SvgImageWrapper = styled('div')`
-  align-items: center;
-  display: flex;
-  justify-content: center;
+  // align-items: center;
+  // display: flex;
+  // justify-content: center;
   max-width: 35px;
-  min-width: 35px;
+  // min-width: 35px;
   width: 35px;
   margin-right: 5px;
   margin-top: -4px;
+  margin-left: -3px
 `;
 
 export const ChallengeDatesDiv = styled('div')`
@@ -244,6 +274,8 @@ export const FriendsInvitedDiv = styled('div')`
 `;
 
 const ShowDaysLeftText = styled('span')`
+  font-weight: 500;
+  color: ${DesignTokenColors.neutral600};
 `;
 
 export default withStyles(styles)(ChallengeAbout);

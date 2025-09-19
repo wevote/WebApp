@@ -1,7 +1,7 @@
 import React from 'react';
 import webAppConfig from '../../config';
 import { isAndroid, isAndroidTablet, isCordova, isWebApp } from './isCordovaOrWebApp';
-import { cordovaOffsetLog, oAuthLog } from './logging';
+import { cordovaKeyboardHidingLog, cordovaOffsetLog, oAuthLog } from './logging';
 
 /* global $  */
 
@@ -66,7 +66,7 @@ export function dumpScreenAndDeviceFields () {
 // IMPORTANT:  The HTML5 window.history, is very different from the react-router V5 history, don't use window.history!
 export function historyPush (route) {
   if (webAppConfig.LOG_ROUTING) {
-    console.log(`historyPush ******** ${route} *******`);
+    console.log(`historyPush  (cordovaUtils)'${route}'`);
   }
   global.weVoteGlobalHistory.push(route);
 }
@@ -152,16 +152,16 @@ export function getIOSSizeString () {
   const iPhone4inPhones = ['iPhone5,1', 'iPhone5,2', 'iPhone5,3', 'iPhone5,4', 'iPhone6,1', 'iPhone6,2', 'iPhone8,4'];
   //    iPhone:               6            6S           7            7            8             8             SE 2nd Gen    SE 3rd Gen
   const iPhone4p7inPhones = ['iPhone7,2', 'iPhone8,1', 'iPhone9,1', 'iPhone9,3', 'iPhone10,1', 'iPhone10,4', 'iPhone12,8', 'iPhone14,6'];
-  //    iPhone:                 6 Plus       6S Plus      7 Plus       7Plus        8 Plus        8 Plus
+  //    iPhone:                     6 Plus       6S Plus      7 Plus       7Plus        8 Plus        8 Plus
   const isIPhone5p5inEarlyPhones = ['iPhone7,1', 'iPhone8,2', 'iPhone9,2', 'iPhone9,4', 'iPhone10,2', 'iPhone10,5'];
   //    iPhone:                      12 Mini       13 mini
   const isIPhone5p5inMiniPhones = ['iPhone13,1', 'iPhone14,4'];
   //    iPhone:               X             X             XS            11 Pro
   const iPhone5p8inPhones = ['iPhone10,3', 'iPhone10,6', 'iPhone11,2', 'iPhone12,3'];
-  //    iPhone:               XR            11            12 Pro         12             13 Pro           13           14       15 Pro        15
-  const iPhone6p1inPhones = ['iPhone11,8', 'iPhone12,1', 'iPhone13,3', 'iPhone13,2', 'iPhone14,2', 'iPhone14,5', 'iPhone14,7', 'iPhone16,1', 'iPhone15,4'];
-  //    iPhone:               XS Max        XS Max        11 Pro Max   12ProMax(6.7) 13ProMax(6.7)   14 Plus         14 Pro     14 Pro Max   15ProMax(6.7) 15 Plus(6.7)
-  const iPhone6p5inPhones = ['iPhone11,4', 'iPhone11,6', 'iPhone12,5', 'iPhone13,4', 'iPhone14,3', 'iPhone14,8', 'iPhone15,2', 'iPhone15,3', 'iPhone16,2', 'iPhone15,5'];
+  //    iPhone:               XR            11            12 Pro         12             13 Pro           13           14       15 Pro        15             16 (6.1)     16 Pro (6.3)
+  const iPhone6p1inPhones = ['iPhone11,8', 'iPhone12,1', 'iPhone13,3', 'iPhone13,2', 'iPhone14,2', 'iPhone14,5', 'iPhone14,7', 'iPhone16,1', 'iPhone15,4', 'iPhone17,3', 'iPhone17,1'];
+  //    iPhone:               XS Max        XS Max        11 Pro Max   12ProMax(6.7) 13ProMax(6.7)   14 Plus         14 Pro     14 Pro Max   15ProMax(6.7) 15 Plus(6.7)  16 Plus(6.7)  16 Pro Max (6.9)
+  const iPhone6p5inPhones = ['iPhone11,4', 'iPhone11,6', 'iPhone12,5', 'iPhone13,4', 'iPhone14,3', 'iPhone14,8', 'iPhone15,2', 'iPhone15,3', 'iPhone16,2', 'iPhone15,5', 'iPhone17,4', 'iPhone17,2'];
   if (iPhone3p5inPhones.includes(window.device.model)) {
     return 'isIPhone3p5in';
   } else if (iPhone4inPhones.includes(window.device.model)) {
@@ -236,7 +236,6 @@ export function isDeviceZoomed () {
   if (['iPhone13,4', 'iPhone14,3'].includes(window.device.model)) return detectIsZoomed(428);
   return false;
 }
-
 
 // 3.5" screen iPhones
 export function isIPhone3p5in () {
@@ -385,8 +384,8 @@ export function isIPadMini () {
 
 export function hasDynamicIsland () {
   if (isIOS() && !isIOSAppOnMac() &&
-    // 14 Pro       14 Pro Max    15           15 Plus        15 Pro        15 Pro Max
-    ['iPhone15,2', 'iPhone15,3', 'iPhone15,4', 'iPhone15,5', 'iPhone16,1', 'iPhone16,2'].includes(window.device.model)) {
+    // 14 Pro       14 Pro Max    15           15 Plus        15 Pro        15 Pro Max    16 Pro (6.3)  16 Pro Max    16 PM (6.9)   16 Plus(6.7)
+    ['iPhone15,2', 'iPhone15,3', 'iPhone15,4', 'iPhone15,5', 'iPhone16,1', 'iPhone16,2', 'iPhone17,1', 'iPhone17,2', 'iPhone17,3', 'iPhone17,4'].includes(window.device.model)) {
     logMatch('iPhone 14 Pro or 14 Pro Max or 15*, Dynamic Island Sized Header', true);
     return true;
   }
@@ -447,13 +446,17 @@ export function getAndroidSize () {
   }
   androidSizeString = 'default';
   const { visualViewport: { height, width, scale } } = window;
-  const diameter = Math.sqrt(((width * scale) ** 2) + ((height * scale) ** 2));
+  const diameter = Math.sqrt(((width * scale) ** 2) + ((height * scale) ** 2)).toFixed(2);
   // console.log('CALCULATED screen diameter: ', diameter);
 
   androidPixels = width * height;
 
   // const ua = navigator.userAgent;
   // console.log('Phone user agent: ', ua);
+  // console.log('Phone device model: ', window.device.model);
+  // console.log('Phone device viewport: ', height, width, scale);
+  // console.log(`scale: ${scale} y: ${height} 'x: ${width} diag/diam ${diameter}`);
+
 
   if (isAndroidTablet()) {
     androidSizeString = '--wide';
@@ -467,7 +470,7 @@ export function getAndroidSize () {
     androidSizeString = '--xl';
   }
 
-  console.log(`Cordova:   getAndroidSize(): ${androidSizeString}, reported diagonal: ${diameter} `);
+  console.log(`Cordova:   getAndroidSize(): ${androidSizeString}, calculated diagonal: ${diameter} `);
 
   return androidSizeString;
 }
@@ -659,7 +662,7 @@ export function prepareForCordovaKeyboard (callerString) {
     } catch (e) {
       console.log('error in prepareForCordovaKeyboard', e);
     }
-    cordovaOffsetLog(`prepareForCordovaKeyboard ^^^^^^^^^^ ${fileName}`);
+    cordovaKeyboardHidingLog(`prepareForCordovaKeyboard ^^^^^^^^^^ ${fileName}`);
 
     $('#app').removeClass('app-wrapper').addClass('app-wrapper__cordova');
     $('body').css('height', '');
@@ -679,7 +682,7 @@ export function restoreStylesAfterCordovaKeyboard (callerString) {
     } catch (e) {
       console.log('error in restoreStylesAfterCordovaKeyboard', e);
     }
-    cordovaOffsetLog(`restoreStylesAfterCordovaKeyboard vvvvvvvvvv ${fileName}`);
+    cordovaKeyboardHidingLog(`restoreStylesAfterCordovaKeyboard vvvvvvvvvv ${fileName}`);
 
     $('#app').removeClass('app-wrapper__cordova').addClass('app-wrapper');
     $('body').css('height', getCordovaScreenHeight());

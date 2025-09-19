@@ -1,11 +1,57 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import TagManager from 'react-gtm-module';
+import CandidateStore from '../../../stores/CandidateStore';
+import PoliticianStore from '../../stores/PoliticianStore';
+import VoterStore from '../../../stores/VoterStore';
 import { cordovaOpenSafariView } from '../../utils/cordovaUtils';
 import { isAndroid, isWebApp } from '../../utils/isCordovaOrWebApp';
+import lookupPageNameAndPageTypeDict from '../../../utils/lookupPageNameAndPageTypeDict';
+import lookupPageNameAndPageTypeDictForExternalUrls from '../../../utils/lookupPageNameAndPageTypeDictForExternalUrls';
 import { renderLog } from '../../utils/logging';
 import stringContains from '../../utils/stringContains';
 
 export default class OpenExternalWebSite extends Component {
+  sendExternalLinkInfoToGTM = () => {
+    const { candidateWeVoteId, politicianWeVoteId, destinationPageName, destinationPageType, linkIdAttribute, pageName, pageType, trackingOn, url } = this.props;
+    if (trackingOn) {
+      const { location: { pathname: currentPathname } } = window;
+      const currentPage = lookupPageNameAndPageTypeDict(currentPathname);
+      const pageNameLocalBackup = currentPage.pageName;
+      const pageTypeLocalBackup = currentPage.pageType;
+      const destinationPage = lookupPageNameAndPageTypeDictForExternalUrls(url);
+      const destinationPageNameLocalBackup = destinationPage.pageName;
+      const destinationPageTypeLocalBackup = destinationPage.pageType;
+      // console.log('External link clicked:', this.props.url);
+      const dataLayerObject = {
+        actionDetails: {
+          actionType: 'navigate',
+          buttonId: linkIdAttribute || 'externalLink',
+        },
+        event: 'click',
+        destinationDetails: {
+          destinationPageName: destinationPageName || destinationPageNameLocalBackup,
+          destinationPageType: destinationPageType || destinationPageTypeLocalBackup,
+          destinationPathname: url,
+        },
+        pageDetails: {
+          pageName: pageName || pageNameLocalBackup,
+          pageType: pageType || pageTypeLocalBackup,
+          pathname: currentPathname,
+        },
+        userDetails: VoterStore.getAnalyticsUserDetails(),
+      };
+      if (candidateWeVoteId) {
+        dataLayerObject.candidateDetails = CandidateStore.getAnalyticsCandidateDetails(candidateWeVoteId);
+      }
+      if (politicianWeVoteId) {
+        dataLayerObject.politicianDetails = PoliticianStore.getAnalyticsPoliticianDetails(politicianWeVoteId);
+      }
+      // console.log('Sending dataLayerObject to GTM:', dataLayerObject);
+      TagManager.dataLayer({ dataLayer: dataLayerObject });
+    }
+  }
+
   render () {
     renderLog('OpenExternalWebSite');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('OpenExternalWebSite props ', this.props);
@@ -27,13 +73,14 @@ export default class OpenExternalWebSite extends Component {
     if (isWebApp()) {
       return (
         <a
-          id={linkIdAttribute || ''}
-          href={externalUrl}
-          className={classNameString}
-          target={this.props.target || ''}
-          rel="noopener noreferrer"
-          title={this.props.title || ''}
           aria-label={this.props.ariaLabel || this.props.title || ''}
+          className={classNameString}
+          href={externalUrl}
+          id={linkIdAttribute || ''}
+          onClick={this.sendExternalLinkInfoToGTM}
+          rel="noopener noreferrer"
+          target={this.props.target || ''}
+          title={this.props.title || ''}
         >
           {this.props.body ? this.props.body : ''}
         </a>
@@ -41,10 +88,13 @@ export default class OpenExternalWebSite extends Component {
     } else {
       return (
         <span
-          id={linkIdAttribute || ''}
           className={classNameString}
+          id={linkIdAttribute || ''}
+          onClick={() => {
+            this.sendExternalLinkInfoToGTM();
+            cordovaOpenSafariView(externalUrl, null, integerDelay);
+          }}
           title={this.props.title || ''}
-          onClick={() => cordovaOpenSafariView(externalUrl, null, integerDelay)}
         >
           {this.props.body || ''}
         </span>
@@ -53,15 +103,22 @@ export default class OpenExternalWebSite extends Component {
   }
 }
 OpenExternalWebSite.propTypes = {
-  url: PropTypes.string.isRequired,
-  className: PropTypes.string,
-  linkIdAttribute: PropTypes.string,
-  target: PropTypes.string,
-  title: PropTypes.string,
   ariaLabel: PropTypes.string,
+  className: PropTypes.string,
   body: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.object,
   ]),
   delay: PropTypes.number,
+  destinationPageName: PropTypes.string,
+  destinationPageType: PropTypes.string,
+  linkIdAttribute: PropTypes.string,
+  pageName: PropTypes.string,
+  pageType: PropTypes.string,
+  target: PropTypes.string,
+  title: PropTypes.string,
+  trackingOn: PropTypes.bool,
+  url: PropTypes.string.isRequired,
+  candidateWeVoteId: PropTypes.string,
+  politicianWeVoteId: PropTypes.string,
 };

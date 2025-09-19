@@ -22,6 +22,13 @@ class PoliticianStore extends ReduceStore {
       allCachedPositionsAboutPoliticians: {}, // Dictionary with politician_we_vote_id as one key, organization_we_vote_id as the second key, and the position as value
       allCachedRepresentativeListsByPolitician: {}, // Dictionary with politician_we_vote_id as key and list of representatives under politician
       politicianDataNotFoundForSEOFriendlyPathList: [], // List of seo_friendly_paths for which a politician could not be found on API server
+      politicianEmailQueuedToSave: '',
+      politicianEmailQueuedToSaveSet: false,
+      politicianNameQueuedToSave: '',
+      politicianNameQueuedToSaveSet: false,
+      politicianPhotoQueuedToSave: '',
+      politicianPhotoQueuedToSaveSet: false,
+      politicianPhotoTooBig: false,
       voterCanSendUpdatesPoliticianWeVoteIds: [], // These are the politician_we_vote_id's of the politicians this voter can send updates to
       voterCanVoteForPoliticianWeVoteIds: [], // These are the politician_we_vote_id's this voter can vote for
       voterOwnedPoliticianWeVoteIds: [], // These are the politician_we_vote_id's of the politicians this voter can edit
@@ -52,6 +59,17 @@ class PoliticianStore extends ReduceStore {
     return Object.values(allCachedPositionsForThisPoliticianDict);
   }
 
+  getAnalyticsPoliticianDetails (politicianWeVoteId) {
+    const politician = this.getPoliticianByWeVoteId(politicianWeVoteId);
+    return {
+      image: politician ? politician.we_vote_hosted_profile_image_url_medium : '',
+      politicalParty: politician ? politician.political_party : '',
+      politicianName: politician ? this.getPoliticianName(politicianWeVoteId) : '',
+      politicianWeVoteId,
+      stateCode: politician ? (politician.state_code || 'na').toUpperCase() : '',
+    };
+  }
+
   getPoliticianListByOfficeWeVoteId (officeWeVoteId) {
     // console.log('officeWeVoteId:', officeWeVoteId, ', this.getState().politicianListsByOfficeWeVoteId:', this.getState().politicianListsByOfficeWeVoteId);
     const politicianListsDict = this.getState().politicianListsByOfficeWeVoteId;
@@ -69,14 +87,17 @@ class PoliticianStore extends ReduceStore {
 
   getPoliticianName (politicianWeVoteId) {
     const politician = this.getState().allCachedPoliticians[politicianWeVoteId] || {};
-    if (politician && politician.ballot_item_display_name) {
-      return politician.ballot_item_display_name;
+    if (politician) {
+      return politician.ballot_item_display_name ||
+        politician.politician_name ||
+        politician.display_name ||
+        '';
     }
     return '';
   }
 
   getMostLikelyOfficeDictFromPoliticianWeVoteId (politicianWeVoteId) {
-    const politician = this.getState().allCachedPoliticians[politicianWeVoteId] || {};
+    const politician = this.getPoliticianByWeVoteId(politicianWeVoteId);
     // console.log('getMostLikelyOfficeDictFromPoliticianWeVoteId politician:', politician)
     if (politician && politician.contest_office_list && politician.contest_office_list[0]) {
       return mostLikelyOfficeDictFromList(politician.contest_office_list);
@@ -100,6 +121,34 @@ class PoliticianStore extends ReduceStore {
       return {};
     }
     return politician;
+  }
+
+  getPoliticianEmailQueuedToSave () {
+    return this.getState().politicianEmailQueuedToSave;
+  }
+
+  getPoliticianEmailQueuedToSaveSet () {
+    return this.getState().politicianEmailQueuedToSaveSet;
+  }
+
+  getPoliticianNameQueuedToSave () {
+    return this.getState().politicianNameQueuedToSave;
+  }
+
+  getPoliticianNameQueuedToSaveSet () {
+    return this.getState().politicianNameQueuedToSaveSet;
+  }
+
+  getPoliticianPhotoQueuedToSave () {
+    return this.getState().politicianPhotoQueuedToSave;
+  }
+
+  getPoliticianPhotoQueuedToSaveSet () {
+    return this.getState().politicianPhotoQueuedToSaveSet;
+  }
+
+  getPoliticianPhotoTooBig () {
+    return this.getState().politicianPhotoTooBig || false;
   }
 
   getPoliticianWeVoteIdFromPoliticianSEOFriendlyPath (politicianSEOFriendlyPath) {
@@ -127,6 +176,15 @@ class PoliticianStore extends ReduceStore {
       return {};
     }
     return politician;
+  }
+
+  getPoliticianAllEmails (politicianWeVoteId) {
+    const politician = this.getPoliticianByWeVoteId(politicianWeVoteId);
+    // console.log('getPoliticianAllEmails politician:', politician, ', politicianWeVoteId:', politicianWeVoteId);
+    if (politician && (politician.politician_email || politician.politician_email2 || politician.politician_email3)) {
+      return [politician.politician_email, politician.politician_email2, politician.politician_email3].filter(Boolean);
+    }
+    return [];
   }
 
   getPositionAboutPoliticianFromOrganization (politicianWeVoteId, orgWeVoteId) {
@@ -328,8 +386,57 @@ class PoliticianStore extends ReduceStore {
     let revisedState;
     let voterSpecificData;
     switch (action.type) {
+      case 'politicianEmailQueuedToSave':
+        // console.log('PoliticianStore politicianEmailQueuedToSave: ', action.payload);
+        if (action.payload === undefined) {
+          return {
+            ...state,
+            politicianEmailQueuedToSave: '',
+            politicianEmailQueuedToSaveSet: false,
+          };
+        } else {
+          return {
+            ...state,
+            politicianEmailQueuedToSave: action.payload,
+            politicianEmailQueuedToSaveSet: true,
+          };
+        }
+
+      case 'politicianNameQueuedToSave':
+        // console.log('VoterStore politicianNameQueuedToSave: ', action.payload);
+        if (action.payload === undefined) {
+          return {
+            ...state,
+            politicianNameQueuedToSave: '',
+            politicianNameQueuedToSaveSet: false,
+          };
+        } else {
+          return {
+            ...state,
+            politicianNameQueuedToSave: action.payload,
+            politicianNameQueuedToSaveSet: true,
+          };
+        }
+
+      case 'politicianPhotoQueuedToSave':
+        // console.log('VoterStore politicianPhotoQueuedToSave: ', action.payload);
+        if (action.payload === undefined) {
+          return {
+            ...state,
+            politicianPhotoQueuedToSave: '',
+            politicianPhotoQueuedToSaveSet: false,
+          };
+        } else {
+          return {
+            ...state,
+            politicianPhotoQueuedToSave: action.payload,
+            politicianPhotoQueuedToSaveSet: true,
+          };
+        }
+
       case 'politicianRetrieve':
       case 'politicianRetrieveAsOwner':
+      case 'politicianSave':
         // See CampaignSupporterStore for code to take in the following politician values:
         // - latest_politician_supporter_endorsement_list
         // - latest_politician_supporter_list

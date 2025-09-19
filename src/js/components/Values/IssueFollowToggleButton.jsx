@@ -108,7 +108,7 @@ class IssueFollowToggleButton extends Component {
     if (this.props.onIssueFollowFunction) {
       this.props.onIssueFollowFunction(issueWeVoteId);
     }
-    openSnackbar({ message: `Now following ${this.props.issueName}!` });
+    openSnackbar({ id: `${this.props.issueName}_follow`, message: `Now following ${this.props.issueName}!` });
 
     this.setState({
       isFollowing: true,
@@ -133,7 +133,13 @@ class IssueFollowToggleButton extends Component {
     if (this.props.onIssueStopFollowingFunction) {
       this.props.onIssueStopFollowingFunction(issueWeVoteId);
     }
-    openSnackbar({ message: `You've stopped following ${issueName}.`, severity: 'success' });
+    // openSnackbar({id: `${issueName}_unfollow, message: `You've stopped following ${issueName}.`, severity: 'success' });
+    openSnackbar({
+      id: `${issueName}_unfollow`,
+      message: `You've stopped following ${issueName}.`,
+      severity: 'success',
+    });
+
     if (currentBallotIdInUrl !== ballotItemWeVoteId) {
       historyPush(`${urlWithoutHash}#${ballotItemWeVoteId}`);
     }
@@ -171,6 +177,7 @@ class IssueFollowToggleButton extends Component {
         {isFollowing ? (
           <>
             <Button
+              id="checkCircleIconFollowTopic"
               type="button"
               className="issues-follow-btn issues-follow-btn__main issues-follow-btn__icon issues-follow-btn--white issues-followed-btn--disabled"
               disabled
@@ -191,7 +198,7 @@ class IssueFollowToggleButton extends Component {
               id={`toggleFollowMenuButton-${issueWeVoteId}`}
             >
               <ArrowDropDown />
-              <span className="sr-only">Toggle Dropdown</span>
+              <span id="arrowIconFollowTopic" className="sr-only">Toggle Dropdown</span>
             </Button>
             <Menu
               id="follow-menu"

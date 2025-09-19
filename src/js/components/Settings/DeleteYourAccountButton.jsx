@@ -37,10 +37,17 @@ class DeleteYourAccountButton extends React.Component {
     if (this.updateMessage) clearInterval(this.updateMessage);
   }
 
-  onVoterStoreChange () {
+  onVoterStoreChange = () => {
     const voterSignedIn = VoterStore.getVoterIsSignedIn();
     if (!voterSignedIn) {
       const { history } = this.props;
+      console.log(history);
+      if (!history || typeof history.replace !== 'function') {
+        console.error('History object is undefined or invalid:', history);
+        return;
+      } else {
+        console.log('History object is valid, replacing with:', history.location);
+      }
       const location = {
         pathname: '/ready',
         state: {

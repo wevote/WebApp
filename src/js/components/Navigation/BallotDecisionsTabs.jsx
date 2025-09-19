@@ -84,6 +84,7 @@ class BallotDecisionsTabs extends Component {
           classes={{ root: classes.tabRootAllChoice }}
           id="allItemsCompletionLevelTab"
           onClick={() => this.goToDifferentCompletionLevelTab('filterAllBallotItems')}
+          tabIndex={0}
           label={(
             <Badge
               classes={{ badge: classes.badge, colorPrimary: this.getSelectedTab() === 0 ? null : classes.badgeColorPrimary }}
@@ -107,6 +108,7 @@ class BallotDecisionsTabs extends Component {
             classes={{ root: classes.tabRoot }}
             id="remainingChoicesCompletionLevelTab"
             onClick={() => this.goToDifferentCompletionLevelTab('filterRemaining')}
+            tabIndex={0}
             style={{ paddingRight: '26px' }}
             label={(
               <Badge
@@ -132,6 +134,7 @@ class BallotDecisionsTabs extends Component {
             classes={{ root: classes.tabRoot }}
             id="decidedItemsCompletionLevelTab"
             onClick={() => this.goToDifferentCompletionLevelTab('filterDecided')}
+            tabIndex={0}
             label={(
               <Badge
                 classes={{ badge: classes.badge, colorPrimary: this.getSelectedTab() === 2 ? null : classes.badgeColorPrimary }}

@@ -3,16 +3,44 @@ import { Button } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import TagManager from 'react-gtm-module';
 import styled from 'styled-components';
 import historyPush from '../../common/utils/historyPush';
 import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import shortenText from '../../common/utils/shortenText';
+import lookupPageNameAndPageTypeDict, { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
+import VoterStore from '../../stores/VoterStore';
 
 class HeaderBackToButton extends Component {
+  handleClick = () => {
+    const { backToLink } = this.props;
+    // Get destination page details
+    const destinationPage = lookupPageNameAndPageTypeDict(backToLink);
+
+    const dataLayerObject = {
+      actionDetails: {
+        actionType: 'navigate',
+        buttonId: 'backToLinkTabHeaderBackToButton',
+      },
+      event: 'action',
+      destinationDetails: {
+        destinationPageName: destinationPage.pageName,
+        destinationPageType: destinationPage.pageType,
+        destinationPathname: backToLink,
+      },
+      pageDetails: getPageDetails(),
+      userDetails: VoterStore.getAnalyticsUserDetails(),
+    };
+    TagManager.dataLayer({ dataLayer: dataLayerObject });
+
+    // Navigate after tracking
+    historyPush(backToLink);
+  }
+
   render () {
     renderLog('HeaderBackToButton');  // Set LOG_RENDER_EVENTS to log all renders
-    const { classes, className, backToLink, backToLinkText, leftAligned } = this.props;
+    const { classes, className, backToLinkText, leftAligned } = this.props;
 
     return (
       <StyledButton
@@ -21,7 +49,7 @@ class HeaderBackToButton extends Component {
         classes={{ root: classes.root }}
         className={`${className}`}
         id="backToLinkTabHeaderBackToButton"
-        onClick={() => historyPush(backToLink)}
+        onClick={this.handleClick}
         style={leftAligned ? { marginLeft: '0 !important', minWidth: 24, width: 24 } : {}}
       >
         <ArrowBack className="button-icon" />

@@ -5,6 +5,7 @@ import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
+import TagManager from 'react-gtm-module';
 import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import FriendActions from '../../actions/FriendActions';
@@ -22,10 +23,12 @@ import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
 import createMessageToFriendDefaults from '../../utils/createMessageToFriendDefaults';
 import sortFriendListByMutualFriends from '../../utils/friendFunctions';
+import lookupPageNameAndPageTypeDict from '../../utils/lookupPageNameAndPageTypeDict';
 import MessageCard from '../Widgets/MessageCard';
 import { CopyLink, getKindOfShareFromURL, saveActionShareAnalytics, ShareFacebook, SharePreviewFriends, shareStyles, ShareTwitter, ShareWeVoteFriends } from './shareButtonCommon'; // cordovaSocialSharingByEmail
 import { generateShareLinks } from './ShareModalText';
 import ShareModalTitleArea from './ShareModalTitleArea';
+import BallotStore from '../../stores/BallotStore';
 
 const ShareWithFriendsModalBodyWithController = React.lazy(() => import(/* webpackChunkName: 'ShareWithFriendsModalBodyWithController' */ '../Friends/ShareWithFriendsModalBodyWithController'));
 const ShareWithFriendsModalTitleWithController = React.lazy(() => import(/* webpackChunkName: 'ShareWithFriendsModalTitleWithController' */ '../Friends/ShareWithFriendsModalTitleWithController'));
@@ -182,14 +185,42 @@ class ShareModal extends Component {
     AnalyticsActions.saveActionShareButtonTwitter(VoterStore.electionId());
   }
 
-  closeShareModal = () => {
-    const { location: { pathname } } = window;
-    this.props.closeShareModal(pathname);
+  closeShareModal = (buttonId = '') => {
+    const { location: { pathname: currentPathname } } = window;
+    const currentPage = lookupPageNameAndPageTypeDict(currentPathname);
+    const dataLayerObject = {
+      actionDetails: {
+        actionType: 'closeModal',
+        buttonId,
+      },
+      event: 'action',
+      pageDetails: {
+        pageName: 'ShareModal',
+        pageType: currentPage.pageType,
+        pathname: currentPathname,
+      },
+      userDetails: VoterStore.getAnalyticsUserDetails(),
+    };
+    TagManager.dataLayer({ dataLayer: dataLayerObject });
+
+    const electionDetails = BallotStore.getAnalyticsElectionDetails();
+    if (electionDetails) {
+      dataLayerObject.electionDetails = electionDetails;
+    }
+    this.props.closeShareModal(currentPathname);
   }
 
   render () {
     renderLog('ShareModal');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('ShareModal render');
+
+    // 3/20/25 we need to upgrade from '@mui/material';
+    // "@mui/base has been deprecated and has been replaced by Base UI. We strongly recommend using the new package instead."
+    // import Dialog from '@base-ui-components/react/dialog' instead of '@mui/material';
+    // In the meantime, the following hack mostly undoes problem caused by
+    // node_modules/@mui/base/legacy/unstable_useModal/ModalManager.js handleContainer()
+    //    container.style.paddingRight = "".concat(getPaddingRight(container) + scrollbarSize, "px");
+    const bodyElement = document.querySelector('body');
     const { location: { pathname } } = window;
     const { classes } = this.props;
     const {
@@ -222,6 +253,7 @@ class ShareModal extends Component {
           classes={{ paper: classes.dialogPaper }}
           open={this.props.show}
           onClose={() => { this.props.closeShareModal(pathname); }}
+          ModalProps={{ disableScrollLock: true }}
           sx={isIPad() ? { top: 24 } : {}}
         >
           <ModalTitleAreaMini>
@@ -233,7 +265,7 @@ class ShareModal extends Component {
               <IconButton
                 aria-label="Close"
                 className={classes.closeButtonAbsolute}
-                onClick={this.closeShareModal}
+                onClick={() => this.closeShareModal('profileCloseShareModal')}
                 id="profileCloseShareModal"
                 size="large"
               >
@@ -274,6 +306,7 @@ class ShareModal extends Component {
           classes={{ paper: classes.dialogPaper }}
           open={this.props.show}
           onClose={() => { this.props.closeShareModal(pathname); }}
+          ModalProps={{ disableScrollLock: true }}
         >
           <ShareModalTitleArea
             firstSlide
@@ -313,6 +346,7 @@ class ShareModal extends Component {
           classes={{ paper: classes.dialogPaper }}
           open={this.props.show}
           onClose={() => { this.props.closeShareModal(pathname); }}
+          ModalProps={{ disableScrollLock: true }}
         >
           <ModalTitleAreaMini>
             <Button className={classes.backButton} color="primary">
@@ -322,7 +356,7 @@ class ShareModal extends Component {
             <IconButton
               aria-label="Close"
               className={classes.closeButton}
-              onClick={this.closeShareModal}
+              onClick={() => this.closeShareModal('profileCloseShareModal')}
               id="profileCloseShareModal"
               size="large"
             >

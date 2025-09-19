@@ -1,4 +1,4 @@
-import { MailOutline, Notifications, Settings } from '@mui/icons-material';
+import { MailOutline, Notifications, Settings, CampaignRounded } from '@mui/icons-material';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
@@ -172,7 +172,8 @@ class SettingsNotifications extends Component {
           <div className="card-main">
             <NotificationsTableWrapper>
               <HeaderWrapper>
-                <div className="h2" id = "notificationTitleText">Notification Settings</div>
+                <NotificationsIcon />
+                <h1 className="h2" id="notificationTitleText">Notification Settings</h1>
                 <div className="u-gray-mid">{notificationsSavedStatus}</div>
               </HeaderWrapper>
               <TableContainer>
@@ -212,7 +213,7 @@ class SettingsNotifications extends Component {
                         <span className="u-show-mobile">
                           <span className="u-no-break">Friend requests</span>
                         </span>
-                        <span className="u-show-desktop-tablet" id = "newFriendRequest_notification">
+                        <span className="u-show-desktop-tablet" id="newFriendRequest_notification">
                           New friend requests, and responses to your requests
                         </span>
                       </TableCell>
@@ -314,7 +315,7 @@ class SettingsNotifications extends Component {
                             {' '}
                             <span className="u-no-break">(your ballot)</span>
                           </span>
-                          <span className="u-show-desktop-tablet" id = "friendsOpinion_yourBallot_notification">
+                          <span className="u-show-desktop-tablet" id="friendsOpinion_yourBallot_notification">
                             <span className="u-no-break">Friends&apos; opinions</span>
                             {' '}
                             <span className="u-no-break">(on your ballot)</span>
@@ -363,7 +364,7 @@ class SettingsNotifications extends Component {
                         classes={{ root: classes.tableCellDescription }}
                         component="th"
                         scope="row"
-                        id = "friendsOpinion_allRegions_notification"
+                        id="friendsOpinion_allRegions_notification"
                       >
                         <span className="u-no-break">Friends&apos; opinions</span>
                         {' '}
@@ -415,7 +416,7 @@ class SettingsNotifications extends Component {
                         classes={{ root: classes.tableCellDescription }}
                         component="th"
                         scope="row"
-                        id = "friendsActivity_notification"
+                        id="friendsActivity_notification"
                       >
                         <span className="u-no-break">Friends&apos; activity,</span>
                         {' '}
@@ -459,7 +460,7 @@ class SettingsNotifications extends Component {
                           classes={{ root: classes.tableCellDescription }}
                           component="th"
                           scope="row"
-                          id = "weVote_newsletter_notification"
+                          id="weVote_newsletter_notification"
                         >
                           WeVote newsletter
                         </TableCell>
@@ -492,7 +493,7 @@ class SettingsNotifications extends Component {
             <VoterEmailAddressEntry hideSignInWithEmailForm={!addEmailInterfaceOpen} />
             {!addEmailInterfaceOpen && (
               <AddNewEmailWrapper>
-                <div className="u-cursor--pointer u-link-color" onClick={this.openAddEmailInterface} id = "addEmailLink">
+                <div className="u-cursor--pointer u-link-color" onClick={this.openAddEmailInterface} id="addEmailLink">
                   Add Email Address
                 </div>
               </AddNewEmailWrapper>
@@ -554,7 +555,6 @@ const ColumnLabel = styled('div')`
 const HeaderWrapper = styled('div')`
   display: flex;
   align-items: center;
-  justify-content: space-between;
   width: 100%;
 `;
 
@@ -565,6 +565,13 @@ const NotificationsTableWrapper = styled('div')`
 const SettingsIconWrapper = styled('div')`
   margin-left: 15px;
   margin-right: 15px;
+`;
+
+const NotificationsIcon = styled(CampaignRounded)`
+  color: black;
+  height: 25px;
+  width: 25px;
+  margin: 6px 8px 0 0;
 `;
 
 export default withStyles(styles)(SettingsNotifications);

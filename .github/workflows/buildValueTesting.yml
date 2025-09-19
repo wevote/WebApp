@@ -1,0 +1,21 @@
+name: Build Value Testing
+on:
+  push:
+    branches:
+      - develop
+jobs:
+  windows_test:
+    name: Execute Tests on Windows
+    runs-on: windows-latest
+    steps:
+      - name: 'Checkout the repository'
+        uses: actions/checkout@v2
+      - name: 'Building web application to be tested'
+        run: npm install
+      - name: 'Copying browserstack config file'
+        run: cp tests/browserstack_automation/config/browserstack.config.template.js tests/browserstack_automation/config/browserstack.config.js
+      - name: 'Executing the tests on browserstack'
+        env:
+          BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
+          BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
+        run: npm run wdio-BVT

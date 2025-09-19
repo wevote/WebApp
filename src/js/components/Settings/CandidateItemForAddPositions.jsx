@@ -41,7 +41,7 @@ class CandidateItemForAddPositions extends Component {
         ballotItemDisplayName: oneCandidate.ballot_item_display_name,
         ballotItemWeVoteId: oneCandidate.we_vote_id,
       });
-      const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(oneCandidate.we_vote_id);
+      const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(oneCandidate.we_vote_id, oneCandidate.politician_we_vote_id);
       if (ballotItemStatSheet) {
         const {
           voterOpposesBallotItem,

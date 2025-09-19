@@ -27,7 +27,7 @@ export default class InviteByEmail extends Component {
         <SectionTitle>
           Invite Friends
           <span className="u-show-desktop-tablet">
-            {isMobileScreenSize() ? (<span />) : (
+            {isMobileScreenSize() ? (<></>) : (
               <TooltipIcon title="These friends will see what you support and oppose." />
             )}
           </span>

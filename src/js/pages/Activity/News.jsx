@@ -326,7 +326,9 @@ class News extends Component {
                   <>
                     {voterIsSignedIn && (
                       <ActivityPostAddWrapper style={reduceConstraintsIfCordova}>
-                        <ActivityPostAdd />
+                        <ActivityPostAdd
+                          activityTidbitWeVoteId={activityTidbitWeVoteId}
+                        />
                       </ActivityPostAddWrapper>
                     )}
                     {voterIsSignedIn && (

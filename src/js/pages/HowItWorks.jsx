@@ -2,9 +2,11 @@ import { Button } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
+import TagManager from 'react-gtm-module';
 import { Helmet } from 'react-helmet-async';
 import styled from 'styled-components';
 import VoterActions from '../actions/VoterActions';
+import AppObservableStore from '../common/stores/AppObservableStore';
 import { isCordova } from '../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../common/utils/logging';
 import Header, { Container, Title } from '../components/Welcome/howItWorksHeaderStyles';
@@ -12,9 +14,9 @@ import AnnotatedSlideshow from '../components/Widgets/AnnotatedSlideshow';
 import HeaderSwitch from '../components/Widgets/HeaderSwitch';
 import StepsChips from '../components/Widgets/StepsChips';
 import VoterConstants from '../constants/VoterConstants';
-import AppObservableStore from '../common/stores/AppObservableStore';
 import VoterStore from '../stores/VoterStore';
 import cordovaScrollablePaneTopPadding from '../utils/cordovaScrollablePaneTopPadding';
+import { getPageDetails } from '../utils/lookupPageNameAndPageTypeDict';
 
 const WelcomeAppbar = React.lazy(() => import(/* webpackChunkName: 'WelcomeAppbar' */ '../components/Navigation/WelcomeAppbar'));
 const WelcomeFooter = React.lazy(() => import(/* webpackChunkName: 'WelcomeFooter' */ '../components/Welcome/WelcomeFooter'));
@@ -28,31 +30,41 @@ class HowItWorks extends Component {
       forCampaignsSteps: {
         Claim: {
           title: '1. Claim your campaign profile',
+          titleId: 'claimYourCampaignProfile',
           description: 'Sign in & verify your account using your official X account or other secure method. WeVote takes verification very seriously. (No trolls allowed!)',
+          descriptionId: 'claimYourCampaignProfileDescription',
           imgSrc: '/img/how-it-works/HowItWorksForCampaigns-Claim-20190516.gif?',
           index: 0,
         },
         Import: {
           title: '2. Import your endorsements',
+          titleId: 'importEndorsements',
           description: 'We are here to help you get your opinions in front of voters, whether you have 5 endorsements, or 1,005. WeVote\'s unique tech instamagically captures endorsement data from your website, spreadsheets, or text lists of candidates. No formatting overhauls required.',
+          descriptionId: 'importEndorsementsDescription',
           imgSrc: '/img/how-it-works/HowItWorksForCampaigns-Import-20190425.gif?',
           index: 1,
         },
         Customize: {
           title: '3. Add more customizations for your supporters',
+          titleId: 'addMoreCustomizations',
           description: 'Want all the bells and whistles?  WeVote offers a lot for free, but has paid premium features that include the endorsements from your chapters and partners, and give you deeper analytics.',
+          descriptionId: 'addMoreCustomizationsDescription',
           imgSrc: '/img/how-it-works/HowItWorksForCampaigns-Customize-20190425.gif?',
           index: 2,
         },
         Launch: {
           title: '4. Launch to your people',
+          titleId: 'launchToYourPeople',
           description: 'Promote your unique url over your email, text, and social media channels. Add the WeVote widget directly to your campaign website.',
+          descriptionId: 'launchToYourPeopleDescription',
           imgSrc: '/img/how-it-works/HowItWorksForCampaigns-Launch-20190506.gif?',
           index: 3,
         },
         SocialLift: {
           title: '5. Social lift',
+          titleId: 'socialLift',
           description: 'Let your people share with their friends. Watch your social lift in real time.',
+          descriptionId: 'socialLiftDescription',
           imgSrc: '/img/how-it-works/HowItWorksForCampaigns-SocialLift-20190506.gif?',
           index: 4,
         },
@@ -61,25 +73,33 @@ class HowItWorks extends Component {
       forOrganizationsSteps: {
         Claim: {
           title: '1. Claim your organization profile',
+          titleId: 'claimYourOrganizationProfile',
           description: 'Sign in & verify your organization using your official X account or other secure method. WeVote takes verification very seriously. (No trolls allowed!)',
+          descriptionId: 'claimYourOrganizationProfileDescription',
           imgSrc: '/img/how-it-works/HowItWorksForOrgs-Claim-20190506.gif?',
           index: 0,
         },
         Customize: {
           title: '2. Customize your Election Center',
+          titleId: 'customizeYourElectionCenter',
           description: 'Want all the bells and whistles?  WeVote offers a lot for free, but has paid premium features to help you further customize branding and messaging, and give you deeper analytics.',
+          descriptionId: 'customizeYourElectionCenterDescription',
           imgSrc: '/img/how-it-works/HowItWorksForOrgs-Customize-20190507.gif?',
           index: 1,
         },
         Launch: {
           title: '3. Launch',
+          titleId: 'launch',
           description: 'Share your unique url over your email, text, and social media channels. Add the WeVote widget directly to your website.',
+          descriptionId: 'launchDescription',
           imgSrc: '/img/how-it-works/HowItWorksForOrgs-Launch-20190506.gif?',
           index: 2,
         },
         SocialLift: {
           title: '4. Social lift',
+          titleId: 'socialLift',
           description: 'Let your people share with their friends. Watch your social lift in real time.',
+          descriptionId: 'socialLiftDescription',
           imgSrc: '/img/how-it-works/HowItWorksForOrgs-SocialLift-20190506.gif?',
           index: 3,
         },
@@ -88,31 +108,41 @@ class HowItWorks extends Component {
       forVoterSteps: {
         Choose: {
           title: '1. Choose your interests',
+          titleId: 'chooseYourInterests',
           description: 'Follow topics that interest you. We will suggest endorsements based on your interests.',
+          descriptionId: 'chooseYourInterestsDescription',
           imgSrc: '/img/how-it-works/HowItWorksForVoters-Choose-20190507.gif?',
           index: 0,
         },
         Follow: {
           title: '2. Follow organizations and people you trust',
+          titleId: 'followOrganizationsAndPeople',
           description: 'Learn from the people you trust. Their recommendations are highlighted on your ballot.',
+          descriptionId: 'followOrganizationsAndPeopleDescription',
           imgSrc: '/img/how-it-works/HowItWorksForVoters-Follow-20190507.gif?',
           index: 1,
         },
         Review: {
           title: '3. See who endorsed each choice on your ballot',
+          titleId: 'seeWhoEndorsedEachChoice',
           description: 'Your personalized score for a candidate is the number of people who support the candidate, from among the people you follow.',
+          descriptionId: 'seeWhoEndorsedEachChoiceDescription',
           imgSrc: '/img/how-it-works/HowItWorksForVoters-Review-20190401.gif?',
           index: 2,
         },
         Decide: {
           title: '4. Complete your ballot with confidence',
+          titleId: 'completeYourBallotWithConfidence',
           description: 'WeVote is fast, mobile, and helps you decide on the go. Vote with confidence!',
+          descriptionId: 'completeYourBallotWithConfidenceDescription',
           imgSrc: '/img/how-it-works/HowItWorksForVoters-Decide-20190401.gif?',
           index: 3,
         },
         Friends: {
           title: '5. Share with friends who could use a guide',
+          titleId: 'friends',
           description: 'Are your family and friends feeling lost when it\'s time to vote? Be their hero, no matter which state they vote in.',
+          descriptionId: 'friendsDescription',
           imgSrc: '/img/how-it-works/HowItWorksForVoters-Friends-20190401.gif?',
           index: 4,
         },
@@ -228,6 +258,7 @@ class HowItWorks extends Component {
   }
 
   handleChangeSlide = (selectedStepIndex) => {
+    this.sendHowItWorksSlideEvent(selectedStepIndex);
     const { howItWorksWatched } = this.state;
     const minimumStepIndexForCompletion = 1; // Was 2, but even opening it should get rid of the tickler
     if (!howItWorksWatched && selectedStepIndex >= minimumStepIndexForCompletion) {
@@ -242,6 +273,31 @@ class HowItWorks extends Component {
     const { selectedStepIndex } = this.state;
     this.setState({ selectedStepIndex: selectedStepIndex - 1 });
   };
+
+  getTitleIdFromIndex (stepIndex) {
+    const {
+      selectedCategoryIndex,
+      forVoterSteps,
+      forOrganizationsSteps,
+      forCampaignsSteps,
+    } = this.state;
+
+    let steps = {};
+    if (selectedCategoryIndex === 0) {
+      steps = forVoterSteps;
+    } else if (selectedCategoryIndex === 1) {
+      steps = forOrganizationsSteps;
+    } else if (selectedCategoryIndex === 2) {
+      steps = forCampaignsSteps;
+    }
+
+    const step = Object.values(steps).find((stepObj) => stepObj.index === stepIndex);
+    if (step && step.titleId) {
+      return step.titleId;
+    } else {
+      return '';
+    }
+  }
 
   switchToDifferentCategoryFunction = (selectedCategoryIndex) => {
     let getStartedMode = 'getStartedForVoters';
@@ -260,6 +316,20 @@ class HowItWorks extends Component {
       selectedStepIndex: 0,
     });
   };
+
+  sendHowItWorksSlideEvent (stepIndex) {
+    const titleId = this.getTitleIdFromIndex(stepIndex);
+    const dataLayerObject = {
+      actionDetails: {
+        actionType: 'slideChange',
+        buttonId: titleId,
+      },
+      event: 'action',
+      pageDetails: getPageDetails(),
+      userDetails: VoterStore.getAnalyticsUserDetails(),
+    };
+    TagManager.dataLayer({ dataLayer: dataLayerObject });
+  }
 
   howItWorksGetStarted () {
     const { getStartedMode, howItWorksWatched, voter } = this.state;

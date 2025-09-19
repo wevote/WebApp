@@ -1,5 +1,4 @@
 import { driver, $ } from '@wdio/globals';
-import { VOTER_DEVICE_ID as voterDeviceId } from '../config/browserstack.config';
 
 export default class Page {
   constructor () {
@@ -44,6 +43,7 @@ export default class Page {
   }
 
   async signIn () {
+    const voterDeviceId = await this.getVoterDeviceId();
     if (voterDeviceId) {
       const path = await driver.getUrl();
       const query = `?cid=${voterDeviceId}`;

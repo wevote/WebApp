@@ -74,7 +74,7 @@ class ActivityStore extends ReduceStore {
     let oneActivityCommentModified = {};
     let parentComments = [];
     let parentCommentsWithChildren = [];
-    let parentCommentsUpdated = [];
+    const parentCommentsUpdated = [];
     let priorPostFound = false;
     let results = {};
     switch (action.type) {
@@ -90,8 +90,7 @@ class ActivityStore extends ReduceStore {
         // console.log('allCachedActivityCommentsInTreeByTidbitWeVoteId:', allCachedActivityCommentsInTreeByTidbitWeVoteId);
         // Traverse the tree and add it
         commentListUpdated = [];
-        parentComments = allCachedActivityCommentsInTreeByTidbitWeVoteId[activityComment.parent_we_vote_id];
-        parentCommentsUpdated = [];
+        parentComments = allCachedActivityCommentsInTreeByTidbitWeVoteId[activityComment.parent_we_vote_id] || [];
         if (activityComment.activity_comment_created) {
           // Add it to the tree
           if (activityComment.parent_comment_we_vote_id) {

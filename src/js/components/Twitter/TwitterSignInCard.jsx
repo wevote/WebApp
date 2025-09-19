@@ -14,7 +14,7 @@ class TwitterSignInCard extends Component {
   render () {
     renderLog('TwitterSignInCard');  // Set LOG_RENDER_EVENTS to log all renders
 
-    if (!webAppConfig.ENABLE_TWITTER) {
+    if (!(webAppConfig.ENABLE_TWITTER && webAppConfig.ENABLE_TWITTER_AS_VOTER_SIGN_IN_OPTION)) {
       return '';
     }
     return (

@@ -81,7 +81,7 @@ class ChallengeInviteCustomizeMessage extends Component {
     retrieveChallengeFromIdentifiersIfNeeded(challengeSEOFriendlyPath, challengeWeVoteId);
     window.scrollTo(0, 0);
     // When testing the ThanksForJoiningChallenge component, turn this on
-    // AppObservableStore.setShowChallengeThanksForJoining(true);
+    AppObservableStore.setShowChallengeThanksForJoining(true);
   }
 
   componentWillUnmount () {
@@ -140,7 +140,7 @@ class ChallengeInviteCustomizeMessage extends Component {
     if (challengeSEOFriendlyPath) {
       challengeBasePath = `/${challengeSEOFriendlyPath}/+/`;
     } else {
-      challengeBasePath = `/+/${challengeWeVoteId}/`;
+      challengeBasePath = `/++/${challengeWeVoteId}/`;
     }
     return challengeBasePath;
   }
@@ -188,6 +188,7 @@ class ChallengeInviteCustomizeMessage extends Component {
           <ThanksForJoiningChallenge
             voterFirstName={VoterStore.getFirstName()}
             challengeTitle={challengeTitle}
+            challengeWeVoteId={challengeWeVoteId}
             onClose={() => AppObservableStore.setShowChallengeThanksForJoining(false)}
           />
         )}

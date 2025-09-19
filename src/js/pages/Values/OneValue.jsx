@@ -3,25 +3,29 @@ import withStyles from '@mui/styles/withStyles';
 import { filter } from 'lodash-es';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
+import TagManager from 'react-gtm-module';
 import { Helmet } from 'react-helmet-async';
 import styled from 'styled-components';
 import IssueActions from '../../actions/IssueActions';
 import OrganizationActions from '../../actions/OrganizationActions';
+import SearchBar2024 from '../../common/components/Search/SearchBar2024';
 import apiCalming from '../../common/utils/apiCalming';
 import { renderLog } from '../../common/utils/logging';
-import SearchBar2024 from '../../components/Search/SearchBar2024';
+import { convertNameToSlug } from '../../common/utils/textFormat';
+import NoSearchResult from '../../components/Search/NoSearchResult';
 import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import GuideList from '../../components/VoterGuide/GuideList';
+import EndorsementCard from '../../components/Widgets/EndorsementCard';
 import IssueStore from '../../stores/IssueStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
+import VoterStore from '../../stores/VoterStore';
+import { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
 import ValuesList from './ValuesList';
-import { convertNameToSlug } from '../../common/utils/textFormat';
-import NoSearchResult from '../../components/Search/NoSearchResult';
-import EndorsementCard from '../../components/Widgets/EndorsementCard';
+
 
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
-const IssueCard = React.lazy(() => import(/* webpackChunkName: 'IssueCard' */ '../../components/Values/IssueCard'));
+const IssueCard = React.lazy(() => import(/* webpackChunk: 'IssueCard' */ '../../components/Values/IssueCard'));
 const OrganizationList = React.lazy(() => import(/* webpackChunkName: 'OrganizationList' */ '../../components/Organization/OrganizationList'));
 
 class OneValue extends Component {
@@ -37,29 +41,30 @@ class OneValue extends Component {
       searchText: '',
       voterGuidesForValue: [],
       voterGuidesForValueLength: 0,
+      isDataLayerFired: false,
     };
   }
 
   componentDidMount () {
+    this.fireAnalyticsEvent();
     const { match: { params: { value_slug: valueSlug } } } = this.props;
     const issue = IssueStore.getIssueBySlug(valueSlug);
     const issueWeVoteId = issue.issue_we_vote_id;
     this.onIssueStoreChange();
     this.onOrganizationStoreChange();
-    // this.onVoterGuideStoreChange(); // Updated by componentDidUpdate
     this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
-    if (apiCalming('issueDescriptionsRetrieve', 3600000)) { // Only once per 60 minutes
+    if (apiCalming('issueDescriptionsRetrieve', 3600000)) {
       IssueActions.issueDescriptionsRetrieve();
     }
-    if (apiCalming('issuesFollowedRetrieve', 60000)) { // Only once per minute
+    if (apiCalming('issuesFollowedRetrieve', 60000)) {
       IssueActions.issuesFollowedRetrieve();
     }
     OrganizationActions.organizationsFollowedRetrieve();
     window.scrollTo(0, 0);
     if (issueWeVoteId) {
-      if (apiCalming(`issueOrganizationsRetrieve${issueWeVoteId}`, 3600000)) { // Only once per 60 minutes
+      if (apiCalming(`issueOrganizationsRetrieve${issueWeVoteId}`, 3600000)) {
         IssueActions.issueOrganizationsRetrieve(issueWeVoteId);
       }
       this.setState({
@@ -70,19 +75,18 @@ class OneValue extends Component {
   }
 
   componentDidUpdate (prevProps) {
+    this.fireAnalyticsEvent();
     const { match: { params: prevParams } } = prevProps;
     const { match: { params: nextParams } } = this.props;
-    // console.log('prevParams:', prevParams, 'nextParams:', nextParams);
     const issue = IssueStore.getIssueBySlug(nextParams.value_slug);
     const issueWeVoteId = issue.issue_we_vote_id;
     if (issueWeVoteId) {
-      if (apiCalming(`issueOrganizationsRetrieve${issueWeVoteId}`, 3600000)) { // Only once per 60 minutes
+      if (apiCalming(`issueOrganizationsRetrieve${issueWeVoteId}`, 3600000)) {
         IssueActions.issueOrganizationsRetrieve(issueWeVoteId);
       }
     }
     if (prevParams.value_slug !== nextParams.value_slug) {
       this.onIssueStoreChange();
-      // this.onOrganizationStoreChange();
       window.scrollTo(0, 0);
     }
   }
@@ -94,11 +98,9 @@ class OneValue extends Component {
   }
 
   onIssueStoreChange () {
-    // console.log('oneIssueStoreChange');
     const { match: { params: { value_slug: valueSlug } } } = this.props;
     const issue = IssueStore.getIssueBySlug(valueSlug);
     const { organizationsForValueLength } = this.state;
-    // console.log('onIssueStoreChange, valueSlug', valueSlug, ', issue:', issue);
     if (issue && issue.issue_we_vote_id) {
       const voterGuidesForValue = VoterGuideStore.getVoterGuidesForValue(issue.issue_we_vote_id);
       const voterGuidesForValueLength = voterGuidesForValue.length || 0;
@@ -117,15 +119,11 @@ class OneValue extends Component {
   }
 
   onOrganizationStoreChange () {
-    // console.log('oneOrganizationStoreChange');
     const { match: { params: { value_slug: valueSlug } } } = this.props;
     const issue = IssueStore.getIssueBySlug(valueSlug);
-    // console.log('onOrganizationStoreChange, valueSlug', valueSlug, ', issue:', issue);
     const organizationsForValue = IssueStore.getOrganizationsForOneIssue(issue.issue_we_vote_id);
     const organizationsForValueLength = organizationsForValue.length || 0;
-    // If either the issue changes, or the number of organizations, we change the identifier so the OrganizationList will update
     const organizationListIdentifier = `${valueSlug}${organizationsForValueLength}`;
-    // console.log('onOrganizationStoreChange, organizationListIdentifier: ', organizationListIdentifier);
     this.setState({
       organizationsForValue,
       organizationsForValueLength,
@@ -142,16 +140,44 @@ class OneValue extends Component {
         listModeShown: 'voterGuidesForThisElection',
       });
     }
-    // console.log('onVoterGuideStoreChange, voterGuidesForValue: ', voterGuidesForValue);
     this.setState({
       voterGuidesForValue,
       voterGuidesForValueLength,
     });
   }
 
-  changeListModeShown = (newListModeShown) => {
+fireAnalyticsEvent = () => {
+  if (!this.state.isDataLayerFired && VoterStore.voterFirstRetrieveCompleted()) {
+    const dataLayerObject = {
+      actionDetails: {
+        actionType: 'landing',
+      },
+      event: 'landing',
+      pageDetails: getPageDetails(),
+      userDetails: VoterStore.getAnalyticsUserDetails(),
+    };
+    TagManager.dataLayer({ dataLayer: dataLayerObject });
+    this.setState({ isDataLayerFired: true });
+  }
+}
+
+  changeListModeShown = (buttonId) => {
+    const { issue } = this.state;
+    const dataLayerObject = {
+      actionDetails: {
+        actionType: 'filter',
+        buttonId,
+      },
+      event: 'action',
+      pageDetails: getPageDetails(),
+      userDetails: VoterStore.getAnalyticsUserDetails(),
+    };
+    if (issue.issue_we_vote_id) {
+      dataLayerObject.topicDetails = IssueStore.getAnalyticsIssueDetails(issue.issue_we_vote_id);
+    }
+    TagManager.dataLayer({ dataLayer: dataLayerObject });
     this.setState({
-      listModeShown: newListModeShown,
+      listModeShown: buttonId,
     });
   }
 
@@ -164,7 +190,7 @@ class OneValue extends Component {
   }
 
   render () {
-    renderLog('OneValue');  // Set LOG_RENDER_EVENTS to log all renders
+    renderLog('OneValue');
     const {
       issue, listModeShown,
       searchText, voterGuidesForValueLength,
@@ -260,10 +286,11 @@ class OneValue extends Component {
             {' '}
             {issue.issue_name}
           </Title>
-          {voterGuidesForValueLength > 0 && (
+          {organizationsForValueLength > 0 && (
             <FilterChoices>
               <Chip
                 key="forThisElectionKey"
+                id="forThisElection"
                 label={<span style={showEndorsersForThisElection ? { fontWeight: 600 } : {}}>For This Election</span>}
                 className={showEndorsersForThisElection ? classes.selectedChip : classes.notSelectedChip}
                 component="div"
@@ -272,6 +299,7 @@ class OneValue extends Component {
               />
               <Chip
                 key="allOrganizationsKey"
+                id="allEndorsers"
                 label={<span style={showAllEndorsers ? { fontWeight: 600 } : {}}>All Endorsers</span>}
                 className={showAllEndorsers ? classes.selectedChip : classes.notSelectedChip}
                 component="div"
@@ -282,8 +310,6 @@ class OneValue extends Component {
           )}
           <SearchBarWrapper>
             <SearchBar2024
-              clearButton
-              searchButton
               placeholder="Search by name, X handle or description"
               searchFunction={this.searchFunction}
               clearFunction={this.clearFunction}
@@ -293,7 +319,6 @@ class OneValue extends Component {
           <Suspense fallback={<></>}>
             <OrganizationList
               incomingOrganizationList={showAllEndorsers ? organizationsForValue : []}
-              // incomingOrganizationList={showEndorsersForThisElection ? voterGuidesForValue : []}  // Causes double-display of orgs. Needs another look.
               increaseNumberOfItemsOnScroll
               organizationListIdentifier={showAllEndorsers ? organizationListIdentifier : 'noOrganizations'}
             />

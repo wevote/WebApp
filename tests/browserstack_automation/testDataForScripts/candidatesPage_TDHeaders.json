@@ -1,0 +1,18 @@
+[
+    {
+        "HeaderText":"Candidates in Close Races",
+        "Mandatory":"N"
+    },
+    {
+        "HeaderText":"On Your Ballot",
+        "Mandatory":"N"
+    },
+    {
+        "HeaderText":"More Politicians",
+        "Mandatory":"N"
+    },
+    {
+        "HeaderText":"Current Representatives",
+        "Mandatory":"N"
+    }
+]

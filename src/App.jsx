@@ -58,10 +58,13 @@ const ChallengeStartPreview = React.lazy(() => import(/* webpackChunkName: 'Chal
 const ChallengeInviteFriendsJoin = React.lazy(() => import(/* webpackChunkName: 'ChallengeInviteFriendsJoin' */ './js/common/pages/ChallengeInviteFriends/ChallengeInviteFriendsJoin'));
 const ChallengeInviteCustomizeMessage = React.lazy(() => import(/* webpackChunkName: 'ChallengeInviteCustomizeMessage' */ './js/common/pages/ChallengeInviteFriends/ChallengeInviteCustomizeMessage'));
 const ChallengeInviteFriends = React.lazy(() => import(/* webpackChunkName: 'ChallengeInviteFriends' */ './js/common/pages/ChallengeInviteFriends/ChallengeInviteFriends'));
+const ChildSafety = React.lazy(() => import(/* webpackChunkName: 'ChildSafety' */ './js/pages/More/ChildSafety'));
 const ClaimYourPage = React.lazy(() => import(/* webpackChunkName: 'ClaimYourPage' */ './js/pages/Settings/ClaimYourPage'));
 const CompleteYourProfileMobile = React.lazy(() => import(/* webpackChunkName: 'CompleteYourProfileMobile' */ './js/common/pages/Settings/CompleteYourProfileMobile'));
 const Credits = React.lazy(() => import(/* webpackChunkName: 'Credits' */ './js/pages/More/Credits'));
 const Donate = React.lazy(() => import(/* webpackChunkName: 'Donate' */ './js/pages/More/Donate'));
+const DonateFaq = React.lazy(() => import(/* webpackChunkName: 'DonateFaq' */ './js/pages/More/DonateFaq'));
+const Drawers = React.lazy(() => import(/* webpackChunkName: 'Drawers' */ './js/components/Drawers/Drawers'));
 const ElectionReminder = React.lazy(() => import(/* webpackChunkName: 'ElectionReminder' */ './js/pages/More/ElectionReminder'));
 const Elections = React.lazy(() => import(/* webpackChunkName: 'Elections' */ './js/pages/More/Elections'));
 const ExtensionSignIn = React.lazy(() => import(/* webpackChunkName: 'ExtensionSignIn' */ './js/pages/More/ExtensionSignIn'));
@@ -82,6 +85,7 @@ const HowWeVoteHelps = React.lazy(() => import(/* webpackChunkName: 'HowWeVoteHe
 const Intro = React.lazy(() => import(/* webpackChunkName: 'Intro' */ './js/pages/Intro/Intro'));
 const IntroNetwork = React.lazy(() => import(/* webpackChunkName: 'IntroNetwork' */ './js/pages/Intro/IntroNetwork'));
 const Location = React.lazy(() => import(/* webpackChunkName: 'Location' */ './js/pages/Settings/Location'));
+const ManageMyCandidates = React.lazy(() => import(/* webpackChunkName: 'ManageMyCandidates' */ './js/pages/More/ManageMyCandidates'));
 const Measure = React.lazy(() => import(/* webpackChunkName: 'Measure' */ './js/pages/Ballot/Measure'));
 const News = React.lazy(() => import(/* webpackChunkName: 'News' */ './js/pages/Activity/News'));
 const Office = React.lazy(() => import(/* webpackChunkName: 'Office' */ './js/pages/Ballot/Office'));
@@ -158,6 +162,7 @@ class App extends Component {
     this.setShowReadyHeavy = this.setShowReadyHeavy.bind(this);
     this.bypass2FA = this.bypass2FA.bind(this);
     this.localIsCordova();
+    this.localIsAndroid = this.localIsAndroid.bind(this);
   }
 
   // See https://reactjs.org/docs/error-boundaries.html
@@ -191,6 +196,13 @@ class App extends Component {
     if (isAndroid()) {         // December 12, 2023: All sorts of problems with sign-in with Facebook on Android, so disabling it here
       webAppConfig.ENABLE_FACEBOOK = false;   // This overrides the config setting for the entire Android app
     }
+    if (isWebApp()) {
+      // July 2025, Android "backbutton" is not handled since pushHistory is only keeping the previous location, so pressing "backbutton" twice would be a mess
+      // Also it was originally noted as a bug in the How it Works dialog, which would be a special case that would not use pushHistory
+      // This listener is for Chrome on an Android device while browsing wevote.us
+      document.addEventListener("backbutton", () => {}, false);
+      // if isCordova(), then this is handled in startCordova, after the deviceready event
+    }
 
     if (webAppConfig.ENABLE_FACEBOOK) {
       setTimeout(() => {
@@ -202,6 +214,9 @@ class App extends Component {
     if (!webAppConfig.ENABLE_TWITTER) {
       webAppConfig.ENABLE_TWITTER = false;  // Avoid crashes in Feb/March 2024 in case not in config.js
     }
+    if (!webAppConfig.ENABLE_TWITTER_AS_VOTER_SIGN_IN_OPTION) {
+      webAppConfig.ENABLE_TWITTER_AS_VOTER_SIGN_IN_OPTION = false;  // Avoid crashes in Feb/March 2024 in case not in config.js
+    }
 
     if (isCordova()) {
       const size = isIOS() ?  getIOSSizeString() : getAndroidSize();
@@ -209,11 +224,13 @@ class App extends Component {
       console.log('Cordova:   Header, hasDynamicIsland', hasDynamicIsland());
     }
 
+    this.acceptURLVariables();
     this.bypass2FA();
   }
 
   componentDidUpdate (prevProps) {
     if (prevProps.location.search !== this.props.location.search) {
+      this.acceptURLVariables();
       this.bypass2FA();
     }
   }
@@ -343,8 +360,19 @@ class App extends Component {
     this.setState({ showReadyLight: false });
   }
 
+  acceptURLVariables () {
+    const { location: { search: queryString } } = this.props;
+    const { showEditPoliticianNoticeSet  } = this.state;
+    const query = new URLSearchParams(queryString);
+    const showEditPoliticianNotice = query.get('show_edit_politician_notice');
+    if (showEditPoliticianNotice === '1' && !showEditPoliticianNoticeSet) {
+      this.setState({ showEditPoliticianNoticeSet: true });
+      AppObservableStore.setShowNotificationBannerAboveHeader(true);
+    }
+  }
+
   bypass2FA () {
-    const queryString = this.props.location.search;
+    const { location: { search: queryString } } = this.props;
     const query = new URLSearchParams(queryString);
     const cid = query.get('cid');
     const voterDeviceId = VoterStore.voterDeviceId();
@@ -358,6 +386,11 @@ class App extends Component {
     const { cordova } = window;
     window.isCordovaGlobal = cordova !== undefined;    // So now we set a global
     return cordova !== undefined;
+  }
+
+  localIsAndroid () {
+    const { platform } = window.device || '';
+    return this.localIsCordova() && platform !== 'iOS';
   }
 
   render () {
@@ -388,7 +421,7 @@ class App extends Component {
     if (window.location.href.endsWith('/storybook')) {
       const destinationHref = `${window.location.href}-static/index.html?path=/docs/design-system--docs`;
       console.log('Storybook redirect from: ', window.location.href, ' to: ', destinationHref);
-      window.location.href = destinationHref;
+      window.location.href = destinationHref;      // This would cause big problems in Cordova, but shouldn't happen
     }
 
     return (
@@ -401,6 +434,9 @@ class App extends Component {
               {/* DO NOT put SnackNotifier or anything else that is non-essential here (to keep it out of the main chunk). */}
               <Suspense fallback={<HeaderBarSuspense />}>
                 <Header hideHeader={hideHeader} params={{ }} pathname={normalizedHref()} />
+              </Suspense>
+              <Suspense fallback={<></>}>
+                <Drawers />
               </Suspense>
               <Suspense fallback={<LoadingWheelComp />}>
                 <Switch>
@@ -417,8 +453,8 @@ class App extends Component {
                   <Route path="/-:shared_item_code/modal/share" exact component={SharedItemLanding} />
                   <Route path="/-:shared_item_code" exact component={SharedItemLanding} />
                   <Route path="/-" exact><Ready /></Route>
-                  <Route exact path="/+/:challengeWeVoteId/" render={(props) => <ChallengeHomePage match={props.match} />} />
-                  <Route exact path="/+/:challengeWeVoteId/edit" render={(props) => <ChallengeStartEditAll match={props.match} editExistingChallenge setShowHeaderFooter={this.setShowHeaderFooter} />} />
+                  <Route exact path="/++/:challengeWeVoteId/" render={(props) => <ChallengeHomePage match={props.match} />} />
+                  <Route exact path="/++/:challengeWeVoteId/edit" render={(props) => <ChallengeStartEditAll match={props.match} editExistingChallenge setShowHeaderFooter={this.setShowHeaderFooter} />} />
                   <Route exact path="/:challengeSEOFriendlyPath/+/-:shared_item_code" render={(props) => <ChallengeHomePage match={props.match} />} />
                   <Route exact path="/:challengeSEOFriendlyPath/+/" render={(props) => <ChallengeHomePage match={props.match} />} />
                   <Route exact path="/:challengeSEOFriendlyPath/+/edit" render={(props) => <ChallengeStartEditAll match={props.match} editExistingChallenge setShowHeaderFooter={this.setShowHeaderFooter} />} />
@@ -489,7 +525,8 @@ class App extends Component {
                   <Route path="/candidate/:candidate_we_vote_id/:organization_we_vote_id" exact component={OrganizationVoterGuideCandidate} />
                   <Route path="/candidate/:candidate_we_vote_id" exact component={Candidate} />
                   <Route path="/challenges/" exact component={ChallengesHomeLoader} />
-                  <Route path="/donate" component={(isNotWeVoteMarketingSite || this.localIsCordova()) ? ReadyRedirect : Donate} />
+                  <Route path="/donate" component={(isNotWeVoteMarketingSite || this.localIsAndroid()) ? ReadyRedirect : Donate} />
+                  <Route path="/donatefaq" component={(isNotWeVoteMarketingSite || this.localIsAndroid()) ? ReadyRedirect : DonateFaq} />
                   <Route path="/facebook_invitable_friends" component={FacebookInvitableFriends} />
                   <Route path="/findfriends/:set_up_page" exact component={FindFriendsRoot} />
                   <Route path="/findfriends" exact><FindFriendsRoot /></Route>
@@ -529,7 +566,8 @@ class App extends Component {
                   <Route path="/more/alerts" component={ElectionReminder} />
                   <Route path="/more/attributions" component={Attributions} />
                   <Route path="/more/credits" component={Credits} />
-                  <Route path="/more/donate" component={(isNotWeVoteMarketingSite || this.localIsCordova()) ? ReadyRedirect : Donate} />
+                  <Route path="/more/donate" component={(isNotWeVoteMarketingSite || this.localIsAndroid()) ? ReadyRedirect : Donate} />
+                  <Route path="/more/donatefaq" component={(isNotWeVoteMarketingSite || this.localIsAndroid()) ? ReadyRedirect : DonateFaq} />
                   <Route path="/more/elections" component={Elections} />
                   <Route path="/more/extensionsignin" component={ExtensionSignIn} />
                   <Route path="/more/facebooklandingprocess" component={FacebookLandingProcess} />
@@ -537,6 +575,7 @@ class App extends Component {
                   <Route path="/more/faq" component={FAQ} />
                   <Route path="/more/howwevotehelps" component={HowWeVoteHelps} />
                   <Route path="/more/jump" component={SignInJumpProcess} />
+                  <Route path="/more/manage" component={ManageMyCandidates} />
                   <Route path="/more/myballot" component={WeVoteBallotEmbed} />
                   <Route path="/more/network/friends" component={Friends} />
                   <Route path="/more/network/key/:invitation_secret_key/ignore" component={FriendInvitationByEmailVerifyProcess} />
@@ -591,6 +630,7 @@ class App extends Component {
                   <Route path="/setupaccount/:set_up_page" exact component={SetUpAccountRoot} />
                   <Route path="/setupaccount" exact><SetUpAccountRoot /></Route>
                   <Route path="/squads" exact><Squads /></Route>
+                  <Route path="/standards-against-child-sexual-abuse-and-exploitation-csae" component={ChildSafety} />
                   <Route exact path="/start-a-campaign"><CampaignStartIntro /></Route>
                   <Route exact path="/start-a-challenge"><ChallengeStartIntro /></Route>
                   <Route exact path="/start-a-challenge-why-winning-matters"><ChallengeStartAddDescription /></Route>
@@ -752,8 +792,8 @@ const WeVoteBody = styled('div')`
   //font-family: "Poppins", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
   //line-height: 1.4;
   // margin: 0 auto;
-
   display: block;
+  min-height: 100vh;
   position: relative;
   z-index: 0;
   // this debug technique works!  ${() => console.log('-----------------------------')}

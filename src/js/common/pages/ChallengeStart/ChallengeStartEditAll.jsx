@@ -164,7 +164,7 @@ class ChallengeStartEditAll extends Component {
       if (challengeSEOFriendlyPath) {
         historyPush(`/${challengeSEOFriendlyPath}/+/`);
       } else {
-        historyPush(`/+/${challengeWeVoteId}`);
+        historyPush(`/++/${challengeWeVoteId}`);
       }
     } else {
       historyPush('/start-a-challenge-preview');
@@ -211,7 +211,7 @@ class ChallengeStartEditAll extends Component {
         if (challengeSEOFriendlyPath) {
           historyPush(`/${challengeSEOFriendlyPath}/+/`);
         } else {
-          historyPush(`/+/${challengeWeVoteId}`);
+          historyPush(`/++/${challengeWeVoteId}`);
         }
       } else {
         historyPush('/start-a-challenge-preview');

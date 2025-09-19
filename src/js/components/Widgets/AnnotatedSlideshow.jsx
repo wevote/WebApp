@@ -28,13 +28,13 @@ class AnnotatedSlideshow extends PureComponent {
     const { slides, selectedStepIndex, classes, inModal = false } = this.props;
     const data = Object.values(slides);
     const { length } = data;
-    const { title, description, imgSrc } = data.find((slide) => slide.index === selectedStepIndex);
+    const { title, titleId, description, descriptionId, imgSrc } = data.find((slide) => slide.index === selectedStepIndex);
     // console.log('AnnotatedSlideshow selectedStepIndex:', selectedStepIndex, 'length:', length);
     return (
       <Wrapper inModal={inModal}>
         <InnerWrapperAboveButtons>
-          <SlideShowTitle inModal={inModal}>{title}</SlideShowTitle>
-          <Description>{description}</Description>
+          <SlideShowTitle id={titleId} inModal={inModal}>{title}</SlideShowTitle>
+          <Description id={descriptionId}>{description}</Description>
           <Slide>
             {!inModal && (
               <Nav disabled={selectedStepIndex === 0} id="howItWorksLeftArrow" onClick={() => this.handleChangeSlide(false)}>

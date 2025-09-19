@@ -1,46 +1,24 @@
-import withStyles from '@mui/styles/withStyles';
 import { HowToVote, Launch } from '@mui/icons-material';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Suspense } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import TruncateMarkup from 'react-truncate-markup';
 import styled from 'styled-components';
-import { renderLog } from '../utils/logging';
-import {
-  // BottomActionButtonEmptyWrapper,
-  // BottomActionButtonWrapper,
-  CampaignActionButtonsWrapper,
-  CampaignImageDesktop,
-  CampaignImageDesktopPlaceholder,
-  CampaignImageMobile,
-  CampaignImageMobilePlaceholder,
-  CampaignImagePlaceholderText,
-  CandidateCardForListWrapper,
-  CardForListRow, CardRowsWrapper,
-  ElectionYear,
-  OneCampaignDescription,
-  OneCampaignInnerWrapper,
-  OneCampaignOuterWrapper,
-  OneCampaignPhotoDesktopColumn,
-  OneCampaignPhotoWrapperMobile,
-  OneCampaignTextColumn,
-  OneCampaignTitle,
-  OneCampaignTitleLink,
-  StateName,
-  // SupportersActionLink,
-  // SupportersCount,
-  // SupportersWrapper,
-  TitleAndTextWrapper,
-} from './Style/CampaignCardStyles';
-// import CampaignStore from '../stores/CampaignStore';
+import webAppConfig from '../../config';
+import AppObservableStore from '../stores/AppObservableStore';
 import { convertStateCodeToStateText } from '../utils/addressFunctions';
 import { getYearFromUltimateElectionDate } from '../utils/dateFormat';
 import historyPush from '../utils/historyPush';
+import { isCordova, isWebApp } from '../utils/isCordovaOrWebApp';
 import isMobileScreenSize from '../utils/isMobileScreenSize';
+import { renderLog } from '../utils/logging';
+import { CampaignActionButtonsWrapper, CampaignImageDesktop, CampaignImageDesktopPlaceholder, CampaignImageMobile, CampaignImageMobilePlaceholder, CampaignImagePlaceholderText, CandidateCardForListWrapper, CardForListRow, CardRowsWrapper, ElectionYear, OneCampaignDescription, OneCampaignInnerWrapper, OneCampaignOuterWrapper, OneCampaignPhotoDesktopColumn, OneCampaignPhotoWrapperMobile, OneCampaignTextColumn, OneCampaignTitle, OneCampaignTitleLink, StateName, TitleAndTextWrapper } from './Style/CampaignCardStyles';
 import DesignTokenColors from './Style/DesignTokenColors';
 import HeartFavoriteToggleLoader from './Widgets/HeartFavoriteToggle/HeartFavoriteToggleLoader';
 import SvgImage from './Widgets/SvgImage';
-import webAppConfig from '../../config';
+import extractPoliticianDetailsFromUrl from '../utils/extractPoliticianDetailsFromUrl';
+import lookupPageNameAndPageTypeDict from '../../utils/lookupPageNameAndPageTypeDict';
 
 const CampaignSupportThermometer = React.lazy(() => import(/* webpackChunkName: 'CampaignSupportThermometer' */ './CampaignSupport/CampaignSupportThermometer'));
 const ItemActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemActionBar' */ '../../components/Widgets/ItemActionBar/ItemActionBar'));
@@ -52,12 +30,12 @@ const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenEx
 function CardForListBody (props) {
   renderLog('CardForListBody');  // Set LOG_RENDER_EVENTS to log all renders
   const {
-    ballotItemDisplayName, // campaignSupported,
+    ballotItemDisplayName,
     candidateWeVoteId, classes, districtName, finalElectionDateInPast, hideCardMargins,
     hideItemActionBar, limitCardWidth, linkedCampaignXWeVoteId, officeName,
-    photoLargeUrl, politicalParty, politicianBaseBath,  // pathToUseToKeepHelping
+    photoLargeUrl, politicalParty, politicianBasePath,
     politicianDescription, politicianWeVoteId, profileImageBackgroundColor,
-    showPoliticianOpenInNewWindow, stateCode, tagIdBaseName, // supportersCount, supportersCountNextGoalRaw,
+    showPoliticianOpenInNewWindow, stateCode, tagIdBaseName,
     ultimateElectionDate,
     useCampaignSupportThermometer, useOfficeHeld,
     usePoliticianWeVoteIdForBallotItem, useVerticalCard,
@@ -83,11 +61,16 @@ function CardForListBody (props) {
   } else if (['Working Families', 'Working Families Party'].includes(politicalParty)) {
     politicalPartySvgNameWithPath = '../../img/global/svg-icons/political-party-working-families.svg';
   }
-  const politicianDetailsURL = `${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}${politicianBaseBath}`;
+  const politicianDetailsURL = `${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}${politicianBasePath}`;
+  const destinationPage = lookupPageNameAndPageTypeDict(politicianBasePath);
+  // console.log('politicianBasePath:', politicianBasePath);
+  // console.log('CardForListBody politicianDetailsURL:', politicianDetailsURL, ', destinationPage: ', destinationPage);
+  const location = useLocation();
+  const { state: stateFromUrl, name: nameFromUrl } = extractPoliticianDetailsFromUrl(location.pathname);
 
   // /////////////////////// START OF DISPLAY
   return (
-    <CandidateCardForListWrapper limitCardWidth={limitCardWidth}>
+    <CandidateCardForListWrapper id={`cardForListBodyWrapper-${candidateWeVoteId || politicianWeVoteId}`} limitCardWidth={limitCardWidth}>
       <OneCampaignOuterWrapper limitCardWidth={limitCardWidth}>
         <OneCampaignInnerWrapper
           hideCardMargins={hideCardMargins}
@@ -96,11 +79,11 @@ function CardForListBody (props) {
           <OneCampaignTextColumn hideCardMargins={hideCardMargins}>
             <TitleAndTextWrapper hideCardMargins={hideCardMargins}>
               {stateName && (
-                <StateName>
-                  {stateName}
+                <StateName id={`stateName-${stateCode}-${candidateWeVoteId}`}>
+                  {stateName || stateFromUrl}
                 </StateName>
               )}
-              {hideCardMargins ? (
+              {hideCardMargins && isWebApp() ? (
                 <OneCampaignTitle>
                   {ballotItemDisplayName}
                   {showPoliticianOpenInNewWindow && (
@@ -111,6 +94,8 @@ function CardForListBody (props) {
                           url={politicianDetailsURL}
                           target="_blank"
                           className="open-web-site open-web-site__no-right-padding"
+                          candidateWeVoteId={candidateWeVoteId}
+                          politicianWeVoteId={politicianWeVoteId}
                           body={(
                             <span>
                               <Launch
@@ -123,6 +108,9 @@ function CardForListBody (props) {
                               />
                             </span>
                           )}
+                          destinationPageName={destinationPage.pageName}
+                          destinationPageType={destinationPage.pageType}
+                          trackingOn
                         />
                       </Suspense>
                     </LaunchIconWrapper>
@@ -131,11 +119,12 @@ function CardForListBody (props) {
               ) : (
                 <OneCampaignTitleLink>
                   <Link
-                    // className="u-link-color u-link-underline"
+                    className={isCordova() ? 'u-link-color u-link-underline' : ''}
                     id={`${tagIdBaseName}DisplayName`}
-                    to={politicianBaseBath}
+                    to={politicianBasePath}
+                    onClick={() => (isCordova() ? AppObservableStore.setShowOrganizationModal(false) : null)}
                   >
-                    {ballotItemDisplayName}
+                    {ballotItemDisplayName || nameFromUrl}
                   </Link>
                 </OneCampaignTitleLink>
               )}
@@ -248,7 +237,7 @@ function CardForListBody (props) {
                       <SupportersActionLink
                         className="u-link-color u-link-underline u-cursor--pointer"
                         id={`${tagIdBaseName}LetsGetTo`}
-                        onClick={hideCardMargins ? null : () => historyPush(politicianBaseBath)}
+                        onClick={hideCardMargins ? null : () => historyPush(politicianBasePath)}
                       >
                         Let&apos;s get to
                         {' '}
@@ -264,7 +253,7 @@ function CardForListBody (props) {
                 <OneCampaignDescription
                   className="u-cursor--pointer"
                   id={`${tagIdBaseName}Description`}
-                  onClick={hideCardMargins ? null : () => historyPush(politicianBaseBath)}
+                  onClick={hideCardMargins ? null : () => historyPush(politicianBasePath)}
                 >
                   <TruncateMarkup
                     ellipsis="..."
@@ -288,12 +277,13 @@ function CardForListBody (props) {
                 <Suspense fallback={<></>}>
                   {(finalElectionDateInPast || usePoliticianWeVoteIdForBallotItem) ? (
                     <ItemActionBar
-                      ballotItemWeVoteId={politicianWeVoteId}
+                      ballotItemWeVoteId={candidateWeVoteId}
                       ballotItemDisplayName={ballotItemDisplayName}
                       commentButtonHide
                       // externalUniqueId={`${idBaseName}ForList-ItemActionBar-${politicianWeVoteId}-${externalUniqueId}`}
                       hidePositionPublicToggle
                       inCard
+                      politicianWeVoteId={politicianWeVoteId}
                       positionPublicToggleWrapAllowed
                       shareButtonHide
                       useHelpDefeatOrHelpWin
@@ -307,6 +297,7 @@ function CardForListBody (props) {
                       // externalUniqueId={`${idBaseName}ForList-ItemActionBar-${politicianWeVoteId}-${externalUniqueId}`}
                       hidePositionPublicToggle
                       inCard
+                      politicianWeVoteId={politicianWeVoteId}
                       positionPublicToggleWrapAllowed
                       shareButtonHide
                       useHelpDefeatOrHelpWin
@@ -320,7 +311,7 @@ function CardForListBody (props) {
           <OneCampaignPhotoWrapperMobile
             className={`${hideCardMargins ? '' : 'u-cursor--pointer'} u-show-mobile`}
             id={`${tagIdBaseName}PhotoMobile`}
-            onClick={hideCardMargins ? null : () => historyPush(politicianBaseBath)}
+            onClick={hideCardMargins ? null : () => historyPush(politicianBasePath)}
           >
             {photoLargeUrl ? (
               <CampaignImageMobilePlaceholder
@@ -364,7 +355,7 @@ function CardForListBody (props) {
             hideCardMargins={hideCardMargins}
             id={`${tagIdBaseName}PhotoDesktop`}
             limitCardWidth={limitCardWidth}
-            onClick={hideCardMargins ? null : () => historyPush(politicianBaseBath)}
+            onClick={hideCardMargins ? null : () => historyPush(politicianBasePath)}
             profileImageBackgroundColor={profileImageBackgroundColor}
             useVerticalCard={useVerticalCard}
           >
@@ -431,7 +422,7 @@ CardForListBody.propTypes = {
   officeName: PropTypes.string,
   photoLargeUrl: PropTypes.string,
   politicalParty: PropTypes.string,
-  politicianBaseBath: PropTypes.string.isRequired,
+  politicianBasePath: PropTypes.string.isRequired,
   politicianDescription: PropTypes.string,
   politicianWeVoteId: PropTypes.string,
   profileImageBackgroundColor: PropTypes.string,

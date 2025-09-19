@@ -1,0 +1,13 @@
+[
+    {
+        "SupportAdd":"Click to choose <Candidate>. Only your WeVote friends will see your choice.",
+        "SupportRemove":"Click to remove your choice for <Candidate>.",
+        "OpposeAdd":"Click to oppose <Candidate>. Only your WeVote friends will see your opposition.",
+        "OpposeRemove":"Click to remove your opposition for <Candidate>.",
+        "HelpWinText":"Help Win with $1",
+        "HelpDefeatText":"$1 to Help Defeat",
+        "LikeCandidate":"Favoriting helps us show you what other candidates match your values.",
+        "DislikeCandidate":"^Disliked by \\d+ people\\. Disliking helps us show you what other candidates match your values\\.$",
+        "LikeDislikeIconColor":"rgb(239,7,22)"
+    }
+]

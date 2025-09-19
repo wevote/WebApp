@@ -25,8 +25,8 @@ class HelpWinOrDefeatModal extends Component {
     // this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
     this.measureStoreListener = MeasureStore.addListener(this.onMeasureStoreChange.bind(this));
-    const { ballotItemWeVoteId } = this.props;
-    const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(ballotItemWeVoteId);
+    const { ballotItemWeVoteId, politicianWeVoteId } = this.props;
+    const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(ballotItemWeVoteId, politicianWeVoteId);
     if (ballotItemStatSheet) {
       const { voterOpposesBallotItem, voterSupportsBallotItem } = ballotItemStatSheet;
       this.setState({
@@ -115,8 +115,8 @@ class HelpWinOrDefeatModal extends Component {
   }
 
   onSupportStoreChange () {
-    const { ballotItemWeVoteId } = this.props;
-    const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(ballotItemWeVoteId);
+    const { ballotItemWeVoteId, politicianWeVoteId } = this.props;
+    const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(ballotItemWeVoteId, politicianWeVoteId);
     let voterOpposesBallotItem = '';
     let voterSupportsBallotItem = '';
     // let voterTextStatement = '';
@@ -204,7 +204,8 @@ class HelpWinOrDefeatModal extends Component {
   }
 }
 HelpWinOrDefeatModal.propTypes = {
-  ballotItemWeVoteId: PropTypes.string.isRequired,
+  ballotItemWeVoteId: PropTypes.string,
+  politicianWeVoteId: PropTypes.string,
   show: PropTypes.bool,
   toggleModal: PropTypes.func.isRequired,
 };

@@ -1,11 +1,13 @@
 import VoterActions from './actions/VoterActions';
 import { getCordovaScreenHeight, isIOS, isIOSAppOnMac, isIPad, isSimulator, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from './common/utils/cordovaUtils';
-import { isCordova } from './common/utils/isCordovaOrWebApp';
+import initializejQuery from './common/utils/initializejQuery';
+import { isAndroid, isCordova } from './common/utils/isCordovaOrWebApp';
 import Cookies from './common/utils/js-cookie/Cookies';
 import { httpLog } from './common/utils/logging';
 import TwitterSignIn from './components/Twitter/TwitterSignIn';
 import webAppConfig from './config';
 import VoterStore from './stores/VoterStore';
+import insertCloudWatchLoggingFork from './utils/cloudWatchLogging';
 
 // import { dumpObjProps } from './utils/appleSiliconUtils';
 
@@ -91,6 +93,7 @@ function postLockInitialization (voterDeviceId, startReact) {
 }
 
 export function initializationForCordova (startReact) {
+  insertCloudWatchLoggingFork();
   console.log('Cordova:   startCordova.jsx  initializationForCordova');
   console.log('Cordova:   Startup sequence 1: Wait for deviceready event');
   document.addEventListener('deviceready', (id) => {
@@ -105,14 +108,22 @@ export function initializationForCordova (startReact) {
     //   window.pbakondyScreenSize = result;
     if (isIPad()) {
       document.querySelector('body').style.height = getCordovaScreenHeight();
-      console.log('Cordova: Initial "body" height for iPad = calcualation disabled '); // , result.height / result.scale);
+      console.log('Cordova: Initial "body" height for iPad = calculation disabled '); // , result.height / result.scale);
     }
-    const { $ } = window;
-    console.log('Cordova:   Startup sequence 3: Wait for an initial voterRetrieve');
+    if (isAndroid()) {
+      // July 2025, Android "backbutton" is not handled since pushHistory is only keeping the previous location, so pressing "backbutton" twice would be a mess
+      // Also it was originally noted as a bug in the How it Works dialog, which would be a special case that would not use pushHistory
+      document.addEventListener('backbutton', () => {}, false);
+    }
+    initializejQuery(() => {
+      const { $ } = window;
+      console.log('Cordova:   Startup sequence 3: Wait for an initial voterRetrieve, found jQuery $.fn.jquery = ', $.fn.jquery);
+    });
     const cookie = Cookies.get('voter_device_id');
     const idPathComponent = (cookie && cookie.length > 10) ? `/?voter_device_id=${cookie}` : '';
     const initialAjaxUrl = `${webAppConfig.WE_VOTE_SERVER_API_ROOT_URL}voterRetrieve${idPathComponent}`;
     httpLog(`AJAX URL (Initial): ${initialAjaxUrl}`);
+    const { $ } = window;
     $.ajax({
       url: initialAjaxUrl,
       context: document.body,

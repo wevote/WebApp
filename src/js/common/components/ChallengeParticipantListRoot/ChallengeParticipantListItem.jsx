@@ -5,9 +5,10 @@ import styled from 'styled-components';
 import { Avatar } from '@mui/material';
 import DesignTokenColors from '../Style/DesignTokenColors';
 import speakerDisplayNameToInitials from '../../utils/speakerDisplayNameToInitials';
+import formatParticipantNameForSimpleList from '../../utils/formatParticipantNameForSimpleList';
 import { getChallengeValuesFromIdentifiers } from '../../utils/challengeUtils';
 
-const ChallengeParticipantListItem = ({ challengeWeVoteId, participant, isCurrentUser }) => {
+const ChallengeParticipantListItem = ({ challengeWeVoteId, participant, isCurrentUser, showSimpleList }) => {
   let avatarJsx;
   if (participant && participant.we_vote_hosted_profile_image_url_medium) {
     avatarJsx = <AvatarStyled src={participant.we_vote_hosted_profile_image_url_medium} alt={participant.participant_name} />;
@@ -16,6 +17,7 @@ const ChallengeParticipantListItem = ({ challengeWeVoteId, participant, isCurren
     avatarJsx = <AvatarStyled sx={sx}>{children}</AvatarStyled>;
   }
 
+  const formattedName = React.useMemo(() => formatParticipantNameForSimpleList(participant.participant_name), [participant.participant_name]);
   function getChallengeBasePath () {
     const {
       challengeSEOFriendlyPath,
@@ -24,22 +26,26 @@ const ChallengeParticipantListItem = ({ challengeWeVoteId, participant, isCurren
     if (challengeSEOFriendlyPath) {
       challengeBasePath = `/${challengeSEOFriendlyPath}/+/`;
     } else {
-      challengeBasePath = `/+/${challengeWeVoteId}/`;
+      challengeBasePath = `/++/${challengeWeVoteId}/`;
     }
     return challengeBasePath;
   }
 
   return (
-    <ParticipantItem isCurrentUser={isCurrentUser}>
-      <ParticipantRow>
-        <Rank>{`#${participant.rank}`}</Rank>
-        <ParticipantName>
+    <ParticipantItem showSimpleList={showSimpleList} isCurrentUser={isCurrentUser}>
+      <ParticipantRow showSimpleList={showSimpleList}>
+        <Rank showSimpleList={showSimpleList} isCurrentUser={isCurrentUser}>{`#${participant.rank}`}</Rank>
+        <Name showSimpleList={showSimpleList} isCurrentUser={isCurrentUser}>
           {avatarJsx}
-          {participant.participant_name}
-        </ParticipantName>
-        <Points>{participant.points}</Points>
-        <FriendsJoined makeBold={participant.invitees_who_joined > 0}>{participant.invitees_who_joined}</FriendsJoined>
+          {formattedName}
+        </Name>
+        <Points showSimpleList={showSimpleList} isCurrentUser={isCurrentUser}>
+          <span>{participant.points}</span>
+          {showSimpleList && <span>Points</span>}
+        </Points>
+        {!showSimpleList && <FriendsJoined makeBold={participant.invitees_who_joined > 0}>{participant.invitees_who_joined}</FriendsJoined>}
       </ParticipantRow>
+      {!showSimpleList && (
       <Details>
         {participant.invitees_count > 0 && `${participant.invitees_count} invited`}
         {(participant.invitees_count > 0 && participant.invitees_who_viewed > 0) ? ', ' : ''}
@@ -63,6 +69,7 @@ const ChallengeParticipantListItem = ({ challengeWeVoteId, participant, isCurren
           </>
         )}
       </Details>
+      )}
     </ParticipantItem>
   );
 };
@@ -70,10 +77,39 @@ ChallengeParticipantListItem.propTypes = {
   challengeWeVoteId: PropTypes.string,
   isCurrentUser: PropTypes.bool,
   participant: PropTypes.object,
+  showSimpleList: PropTypes.bool,
 };
 
 const AvatarStyled = styled(Avatar)`
 `;
+
+const Rank = styled('div', {
+  shouldForwardProp: (prop) => !['showSimpleList, isCurrentUser'].includes(prop),
+})(({ showSimpleList, isCurrentUser }) => `
+  font-weight: ${isCurrentUser ? 'bold' : 'normal'};
+  width: ${showSimpleList ? 'fit-content' : '35px'};
+`);
+
+const Name = styled('div', {
+  shouldForwardProp: (prop) => !['isCurrentUser'].includes(prop),
+})(({ isCurrentUser }) => `
+  align-items: center;
+  display: flex;
+  width: 200px;
+  font-weight: ${isCurrentUser ? 'bold' : 'normal'};
+  gap: 10px;
+`);
+
+const Points = styled('div', {
+  shouldForwardProp: (prop) => !['showSimpleList, isCurrentUser'].includes(prop),
+})(({ showSimpleList, isCurrentUser }) => `
+  font-size: ${showSimpleList ? '18px' : '14px'};
+  font-weight: ${isCurrentUser ? 'bold' : 'normal'};
+  text-align: center;
+  width: 80px;
+  display: ${showSimpleList && 'flex'};
+  justify-content: ${showSimpleList && 'space-around;'};
+`);
 
 const Details = styled('div')`
   color: ${DesignTokenColors.neutral900};
@@ -87,47 +123,26 @@ const FriendsJoined = styled('div', {
 })(({ makeBold }) => (`
   color: ${DesignTokenColors.neutral900};
   font-size: 14px;
-  ${makeBold ? 'font-weight: bold;' : ''}
+  font-weight: bold;
   text-align: center;
   width: 76px;
 `));
 
 const ParticipantItem = styled('div', {
-  shouldForwardProp: (prop) => !['isCurrentUser'].includes(prop),
-})(({ isCurrentUser }) => (`
+  shouldForwardProp: (prop) => !['isCurrentUser, showSimpleList'].includes(prop),
+})(({ isCurrentUser, showSimpleList }) => (`
   background-color: ${isCurrentUser ? '#f9e79f' : '#fff'};
   padding: 15px 0 15px 7px;
-  border-bottom: 1px solid ${DesignTokenColors.neutral100};
+  width: 100%;
+  ${!showSimpleList && `border-bottom: 1px solid ${DesignTokenColors.neutral100};`}
 `));
 
-const ParticipantName = styled('div')`
-  align-items: center;
-  color: ${DesignTokenColors.neutral900};
-  display: flex;
-  flex: 1;
-  font-weight: bold;
-  gap: 10px;
-  margin-left: 10px;
-`;
-
-const ParticipantRow = styled('div')`
+const ParticipantRow = styled('div', {
+  shouldForwardProp: (prop) => !['showSimpleList'].includes(prop),
+})(({ showSimpleList }) => (`
   display: flex;
   justify-content: space-between;
   align-items: center;
-`;
-
-const Points = styled('div')`
-  color: ${DesignTokenColors.neutral900};
-  font-size: 14px;
-  font-weight: bold;
-  text-align: center;
-  width: 80px;
-`;
-
-const Rank = styled('div')`
-  font-weight: bold;
-  color: ${DesignTokenColors.neutral900};
-  width: 35px; /* Adjust width as needed */
-`;
-
+  height: ${showSimpleList ? '25px;' : ''}
+`));
 export default ChallengeParticipantListItem;

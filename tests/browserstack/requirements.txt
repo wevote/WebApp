@@ -1,4 +1,0 @@
-selenium
-pyperclip
-pyautogui
-pynput

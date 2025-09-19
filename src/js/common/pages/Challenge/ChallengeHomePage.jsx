@@ -7,6 +7,7 @@ import React, { Component, Suspense } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import TagManager from 'react-gtm-module';
 import ChallengeInviteFriendsTopNavigation from '../../components/Navigation/ChallengeInviteFriendsTopNavigation';
 import DesignTokenColors from '../../components/Style/DesignTokenColors';
 import { PageContentContainer } from '../../../components/Style/pageLayoutStyles';
@@ -45,6 +46,7 @@ import ChallengeInviteeListRoot from '../../components/ChallengeInviteeListRoot/
 import ThanksForViewingChallenge from '../../components/Challenge/ThanksForViewingChallenge';
 import ShareStore from '../../stores/ShareStore';
 import ChallengeHeaderSimple from '../../components/Navigation/ChallengeHeaderSimple';
+import { getPageDetails } from '../../../utils/lookupPageNameAndPageTypeDict';
 
 const ChallengeCardForList = React.lazy(() => import(/* webpackChunkName: 'ChallengeCardForList' */ '../../components/ChallengeListRoot/ChallengeCardForList'));
 // const ChallengeCommentsList = React.lazy(() => import(/* webpackChunkName: 'ChallengeCommentsList' */ '../../components/Challenge/ChallengeCommentsList'));
@@ -106,6 +108,7 @@ class ChallengeHomePage extends Component {
       challengeTitle: '',
       challengeWeVoteId: '',
       challengeWeVoteIdForDisplay: '', // Value for challenge already received
+      dataLayerFired: false,
       sharingStepCompleted: false,
       step2Completed: false,
       thanksForViewingChallengeOn: false,
@@ -282,6 +285,27 @@ class ChallengeHomePage extends Component {
       // Take the "calculated" identifiers and retrieve if missing
       window.scrollTo(0, 0);
     }
+
+    const { dataLayerFired } = this.state;
+
+    if (!dataLayerFired) {
+      if (VoterStore.voterFirstRetrieveCompleted()) {
+        const dataLayerObject = {
+          actionDetails: {
+            actionType: 'landing',
+          },
+          event: 'landing',
+          pageDetails: getPageDetails(),
+          userDetails: VoterStore.getAnalyticsUserDetails(),
+        };
+
+        TagManager.dataLayer({ dataLayer: dataLayerObject });
+
+        this.setState({
+          dataLayerFired: true,
+        });
+      }
+    }
   }
 
   componentWillUnmount () {
@@ -355,7 +379,7 @@ class ChallengeHomePage extends Component {
       });
       pathToUseWhenProfileComplete = `/${challengeSEOFriendlyPath}/+/why-do-you-support`;
     } else if (challengeWeVoteId) {
-      pathToUseWhenProfileComplete = `/+/${challengeWeVoteId}/why-do-you-support`;
+      pathToUseWhenProfileComplete = `/++/${challengeWeVoteId}/why-do-you-support`;
     }
     if (challengeWeVoteId) {
       const voterCanEditThisChallenge = ChallengeStore.getVoterCanEditThisChallenge(challengeWeVoteId);
@@ -423,7 +447,7 @@ class ChallengeHomePage extends Component {
     if (challengeSEOFriendlyPath) {
       challengeBasePath = `/${challengeSEOFriendlyPath}/+/`;
     } else {
-      challengeBasePath = `/+/${challengeWeVoteId}/`;
+      challengeBasePath = `/++/${challengeWeVoteId}/`;
     }
 
     return challengeBasePath;
@@ -629,6 +653,7 @@ class ChallengeHomePage extends Component {
                   titleLinkOff
                   useVerticalCard
                   voterWeVoteId={voterWeVoteId}
+                  limitCardWidth={false}
                 />
                 <ChallengeAbout challengeWeVoteId={challengeWeVoteIdForDisplay} showDaysLeft />
                 <JoinChallengeButtonWrapper>
@@ -787,7 +812,7 @@ const CenteredDiv = styled('div')`
 const ColumnOneThird = styled('div')`
   flex: 1;
   flex-direction: column;
-  flex-basis: 40%;
+  flex-basis: 30%;
 `;
 
 const ColumnsWrapper = styled('div')`
@@ -801,7 +826,7 @@ const ColumnsWrapper = styled('div')`
 const ColumnTwoThirds = styled('div')`
   flex: 2;
   flex-direction: column;
-  flex-basis: 60%;
+  flex-basis: 70%;
   margin: 0 0 0 25px;
 `;
 
@@ -852,14 +877,16 @@ const MobileHeaderContentContainer = styled('div')(({ theme }) => (`
 const MobileHeaderOuterContainer = styled('div', {
   shouldForwardProp: (prop) => !['scrolledDown'].includes(prop),
 })(({ scrolledDown }) => (`
-  animation: ${slideDown} 300ms ease-in;  // Not currently working -- needs debugging
+  // animation: ${slideDown} 300ms ease-in;  // Not currently working -- needs debugging
   // transition: visibility 1s linear;  // Not currently working -- needs debugging
   margin-top: ${marginTopOffset(scrolledDown)};
   width: 100%;
   background-color: #fff;
   ${scrolledDown ? 'border-bottom: 1px solid #aaa' : ''};
   ${scrolledDown ? `box_shadow: ${standardBoxShadow('wide')}` : ''};
-  ${scrolledDown ? 'display: block' : 'display: none'};
+  // ${scrolledDown ? 'display: block' : 'display: none'};
+  transform: translateY(${scrolledDown ? 0 : '-150%'});
+  transition: transform .3s ease-in-out;
   overflow: hidden;
   position: fixed;
   z-index: 1;
@@ -878,7 +905,7 @@ const NoInformationProvided = styled('div')`
 `;
 
 const JoinChallengeButtonWrapper = styled('div')`
-  display: flex;
+  // display: flex;
   height: 50px;
   justify-content: center;
   margin-top: 30px;

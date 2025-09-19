@@ -10,7 +10,7 @@ import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../common/utils/logging';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
-import SearchBar2024 from '../Search/SearchBar2024';
+import SearchBar2024 from '../../common/components/Search/SearchBar2024';
 import { PageContentContainer } from '../Style/pageLayoutStyles';
 import GuideList from './GuideList';
 

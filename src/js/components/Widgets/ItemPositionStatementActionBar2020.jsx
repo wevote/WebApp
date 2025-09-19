@@ -152,17 +152,17 @@ class ItemPositionStatementActionBar2020 extends Component {
 
   savePositionStatement (e) {
     e.preventDefault();
-    const { ballotItemWeVoteId, ballotItemType } = this.props;
+    const { ballotItemWeVoteId, ballotItemType, politicianWeVoteId } = this.props;
     const { voterTextStatement } = this.state;
     // console.log('ItemPositionStatementActionBar2020 ballotItemWeVoteId:', ballotItemWeVoteId, 'ballotItemType: ', ballotItemType, 'voterTextStatement: ', voterTextStatement);
-    SupportActions.voterPositionCommentSave(ballotItemWeVoteId, ballotItemType, voterTextStatement);
+    SupportActions.voterPositionCommentSave(ballotItemWeVoteId, ballotItemType, politicianWeVoteId, voterTextStatement);
   }
 
   render () {
     renderLog('ItemPositionStatementActionBar2020');  // Set LOG_RENDER_EVENTS to log all renders
     const {
       classes, ballotItemDisplayName, ballotItemWeVoteId, externalUniqueId,
-      mobile,
+      mobile, politicianWeVoteId,
       /* inModal, showPositionStatementActionBar, */
     } = this.props;
     const {
@@ -277,6 +277,7 @@ class ItemPositionStatementActionBar2020 extends Component {
           <PositionStatementModal
             ballotItemWeVoteId={ballotItemWeVoteId}
             externalUniqueId={externalUniqueId}
+            politicianWeVoteId={politicianWeVoteId}
             show={showPositionStatementModal}
             toggleModal={this.togglePositionStatementModal}
           />
@@ -289,12 +290,13 @@ ItemPositionStatementActionBar2020.propTypes = {
   ballotItemWeVoteId: PropTypes.string.isRequired,
   ballotItemDisplayName: PropTypes.string,
   ballotItemType: PropTypes.string.isRequired,
+  classes: PropTypes.object,
   commentEditModeOn: PropTypes.bool,
   externalUniqueId: PropTypes.string,
-  shownInList: PropTypes.bool,
-  classes: PropTypes.object,
-  mobile: PropTypes.bool,
   // inModal: PropTypes.bool,
+  mobile: PropTypes.bool,
+  politicianWeVoteId: PropTypes.string,
+  shownInList: PropTypes.bool,
 };
 
 const styles = (theme) => ({

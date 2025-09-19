@@ -6,16 +6,16 @@ import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 import styled from 'styled-components';
 import MeasureActions from '../../actions/MeasureActions';
+import AppObservableStore from '../../common/stores/AppObservableStore';
 import extractNumber from '../../common/utils/extractNumber';
 import historyPush from '../../common/utils/historyPush';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import shortenText from '../../common/utils/shortenText';
+import { stripHtmlFromString } from '../../common/utils/textFormat';
 import toTitleCase from '../../common/utils/toTitleCase';
-import AppObservableStore from '../../common/stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
 import MeasureStore from '../../stores/MeasureStore';
-import { stripHtmlFromString } from '../../common/utils/textFormat';
 import { constrainedTextMobileStyles } from '../Style/BallotStyles';
 import { PositionRowListEmptyWrapper, PositionRowListInnerWrapper, PositionRowListOneWrapper, PositionRowListOuterWrapper, PositionRowListScoreColumn, PositionRowListScoreHeader, PositionRowListScoreSpacer } from '../Style/PositionRowListStyles';
 import InfoCircleIcon from '../Widgets/InfoCircleIcon';
@@ -219,7 +219,7 @@ class MeasureItemCompressed extends Component {
     }
     const measureSubtitleCapitalized = toTitleCase(measureSubtitle);
     ballotItemDisplayName = toTitleCase(ballotItemDisplayName);
-    const scoreExplanationTooltip = isMobileScreenSize() ? (<span />) : (
+    const scoreExplanationTooltip = isMobileScreenSize() ? (<></>) : (
       <Tooltip className="u-z-index-9020" id={`scoreDescription-${measureWeVoteId}`}>
         A positive personalized score
         {ballotDisplay[0] && (

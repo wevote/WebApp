@@ -84,12 +84,13 @@ class ChooseOrOpposeIntroModal extends Component {
             <Row>
               <BoldText>Test the toggle here:</BoldText>
               <PositionPublicToggle
-                inModal={this.props.inModal}
+                ballotItemType={ballotItemType}
                 ballotItemWeVoteId="null"
                 className="null"
                 externalUniqueId={`practiceToggle-${this.props.externalUniqueId}`}
-                ballotItemType={ballotItemType}
+                inModal={this.props.inModal}
                 inTestMode
+                politicianWeVoteId=""
               />
             </Row>
             <Options buttons="2">

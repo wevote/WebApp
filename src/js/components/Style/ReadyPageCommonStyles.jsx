@@ -50,12 +50,15 @@ export const ReadyIntroductionDesktopWrapper = styled('div')`
 export const ReadyPageContainer = styled('div')`
 `;
 
-export const ViewBallotButtonWrapper = styled('div')`
+export const ViewBallotButtonWrapper = styled('div')(({ theme }) => (`
   display: flex;
   height: 40px;
   justify-content: center;
   margin-bottom: 32px;
-`;
+  ${theme.breakpoints.down('sm')} {
+    padding-top: 10px;
+  }
+`));
 
 export const ReadyTitle = styled('h2')(({ theme }) => (`
   font-size: 26px;

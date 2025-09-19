@@ -1,15 +1,17 @@
-import { Groups, Home, HowToVote, Info, People, QuestionAnswer, VerifiedUser } from '@mui/icons-material';
-import { Badge, BottomNavigation, BottomNavigationAction } from '@mui/material';
+import { Groups, Home, HowToVote, Info, MoreHoriz, People, QuestionAnswer, VerifiedUser, AccountBalance } from '@mui/icons-material';
+import { Badge, BottomNavigation, BottomNavigationAction, ClickAwayListener } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
+import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
+import DelayedLoad from '../../common/components/Widgets/DelayedLoad';
 import signInModalGlobalState from '../../common/components/Widgets/signInModalGlobalState';
 import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
 import { isIOS } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
 import { normalizedHref } from '../../common/utils/hrefUtils';
-import { isAndroid, isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
+import { isAndroid, isCordova } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
@@ -17,12 +19,45 @@ import stringContains from '../../common/utils/stringContains';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
 import { cordovaFooterHeight } from '../../utils/cordovaOffsets';
-// import webAppConfig from '../../config';
+import ShareButtonFooter from '../Share/ShareButtonFooter';
 
 // It's not ideal to have two images, but this is a complex svg, and I couldn't figure out how to change the fill color with a variable
 const capitalBuilding = '/img/global/svg-icons/capital-building.svg';
 const capitalBuildingSelected = '/img/global/svg-icons/capital-building-selected.svg';
-// const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
+
+function MoreMenuOverlay ({ onClose }) {
+  const pathname = normalizedHref();
+  const isFriends = pathname.includes('/friends');
+  const isChallenges = pathname.includes('/challenges');
+  const isManage = pathname.includes('/manage');
+
+  return (
+    <ClickAwayListener onClickAway={onClose}>
+      <Overlay>
+        <MenuItem $active={isFriends} onClick={() => { onClose(); historyPush('/friends'); }}>
+          <People />
+          Friends
+        </MenuItem>
+        <MenuItem $active={isChallenges} onClick={() => { onClose(); historyPush('/challenges'); }}>
+          <Groups />
+          Challenges
+        </MenuItem>
+       <MenuItem $active={isManage} onClick={() => { onClose(); historyPush('/more/manage'); }}>
+         <img
+           alt=""
+           src={isManage
+                ? '/img/global/svg-icons/capital-building-selected.svg'
+                : '/img/global/svg-icons/capital-building.svg'}
+           style={{ width: 40, height: 40, marginBottom: 6 }}
+         />
+           Candidates
+           <br />
+           I&#39;m managing
+        </MenuItem>
+      </Overlay>
+    </ClickAwayListener>
+  );
+}
 
 class FooterBar extends React.Component {
   constructor (props) {
@@ -111,7 +146,7 @@ class FooterBar extends React.Component {
       });
     }
     // In browser mobile, we can offer donate footer link
-    // In Cordova, we cannot currently offer donate footer link
+    // In Cordova Android, we cannot currently offer donate footer link
     // If NOT signed in, turn Discuss off and How It Works on
     // Regardless of whether visible or not the option's numerical position remains the same
     switch (value) {
@@ -131,6 +166,8 @@ class FooterBar extends React.Component {
         return historyPush('/donate');
       case 7:
         return this.openHowItWorksModal();
+      case 8:
+        return this.setState({ showMoreMenu: true });
       default:
         return null;
     }
@@ -138,16 +175,20 @@ class FooterBar extends React.Component {
 
   getSelectedTab = () => {
     const pathname = normalizedHref();
+    const low = pathname.toLowerCase();
     if (pathname === '/') return 0;  // readyLight has no path
-    if (stringContains('/ready', pathname.toLowerCase())) return 0;
-    if (stringContains('/ballot', pathname.toLowerCase())) return 1;
-    if (pathname.toLowerCase().endsWith('/cs/')) return 2;
-    if (stringContains('/friends', pathname.toLowerCase())) return 3;
-    if (stringContains('/challenges', pathname.toLowerCase())) return 4;
-    if (stringContains('/+/', pathname)) return 4;
-    if (stringContains('/squads', pathname.toLowerCase())) return 4;
-    if (stringContains('/news', pathname.toLowerCase())) return 5;
-    if (stringContains('/donate', pathname.toLowerCase())) return 6;
+    if (stringContains('/ready', low)) return 0;
+    if (stringContains('/ballot', low)) return 1;
+    if (low.endsWith('/cs/')) return 2;
+    // Treat these as "More" so the More tab stays highlighted
+    if (stringContains('/more/manage', low)) return 8;
+    if (stringContains('/friends', low)) return 8;
+    if (stringContains('/challenges', low)) return 8;
+    if (stringContains('/+/', pathname) || stringContains('/++/', pathname)) return 8;
+    if (stringContains('/squads', low)) return 8;
+    if (stringContains('/news', low)) return 5;
+    if (stringContains('/donate', low)) return 6;
+    if (stringContains('/more', low)) return 8;
     return -1;
   };
 
@@ -164,6 +205,8 @@ class FooterBar extends React.Component {
       showActivityTidbitDrawer, showingOneCompleteYourProfileModal, showShareModal,
       showSharedItemModal, showSignInModal, showVoterPlanModal, voterIsSignedIn,
     } = this.state;
+    const pathname = normalizedHref();
+    const showShareButtonFooter = stringContains('/ballot', pathname.toLowerCase());
     const inPrivateLabelMode = AppObservableStore.getHideWeVoteLogo(); // setState onAppObservableStoreChange is not working sometimes for some reason
     // const badgeStyle = {
     //   display: 'inline-block',
@@ -225,33 +268,38 @@ class FooterBar extends React.Component {
     let discussVisible;
     let donateVisible;
     const friendsVisible = false; // 2023-09-04 Dale We are turning off Friends footer icon for now
-    const squadsVisible = isWebApp();
-    // const squadsVisible = false;
+    const squadsVisible = false; // Set nextReleaseFeaturesEnabled && isWebApp();  when we want to turn on the Challenges footer icon
     // let howItWorksVisible;
     const howItWorksVisible = false;
     if (isCordova() || inPrivateLabelMode) {
-      discussVisible = false; // 2023-09-04 Dale We are turning off Discuss footer icon for now
-      donateVisible = false;  // Can't have donations in iOS
+      discussVisible = false;    // 2023-09-04 Dale We are turning off Discuss footer icon for now
+      donateVisible  = isIOS();  // 2025-06-17 Enabling donations, we hear it is now permissible for nonprofits in iOS
       // howItWorksVisible = true;
     } else if (voterIsSignedIn) {
       // If signed in, turn Discuss on, and How It Works off
-      discussVisible = false; // 2023-09-04 Dale We are turning off Discuss footer icon for now
-      donateVisible = true;
+      discussVisible = false;    // 2023-09-04 Dale We are turning off Discuss footer icon for now
+      donateVisible  = true;
       // howItWorksVisible = false;
     } else {
       discussVisible = false;
-      donateVisible = true; // 2022-12 Donate not used for now
+      donateVisible  = true;
       // howItWorksVisible = true;
     }
+    // console.log('--------- Footer bar donateVisible ', donateVisible, 'squadsVisible', squadsVisible);
     return (
       <FooterBarWrapper>
+        {showShareButtonFooter && (
+          <DelayedLoad waitBeforeShow={3000}>
+            <ShareButtonFooter />
+          </DelayedLoad>
+        )}
         <FooterContainer
           className={`u-show-mobile-tablet ${hideFooterBehindModal ? ' u-z-index-1000' : ' u-z-index-9000'}`}
           id="footer-container"
           style={cordovaFooterHeight()}
         >
           <BottomNavigation
-            value={this.getSelectedTab()}
+            value={this.state.showMoreMenu ? 8 : this.getSelectedTab()}
             onChange={this.handleChange}
             showLabels
             style={{ width: `${isIOS() ? '95%' : ''}`, height: `${isAndroid() ? '70px' : ''}`  }}
@@ -381,7 +429,18 @@ class FooterBar extends React.Component {
                 sx={defaultIconStyles}
               />
             )}
+            <BottomNavigationAction
+              className="no-outline"
+              id="moreTabFooterBar"
+              label="More"
+              showLabel
+              icon={<MoreHoriz />}
+              sx={defaultIconStyles}
+            />
           </BottomNavigation>
+          {this.state.showMoreMenu && (
+            <MoreMenuOverlay onClose={() => this.setState({ showMoreMenu: false })} />
+          )}
         </FooterContainer>
       </FooterBarWrapper>
     );
@@ -393,7 +452,7 @@ FooterBar.propTypes = {
 
 const styles = () => ({
   footerFriendsNotificationBadge: {
-    backgroundColor: 'rgba(250, 62, 62)',
+    backgroundColor: DesignTokenColors.alert400,
     fontSize: 10,
     height: 15,
     marginRight: 0,
@@ -420,8 +479,8 @@ const FooterBarWrapper = styled('div')`
 `;
 
 const FooterContainer = styled('div')`
-  background: #fff;
-  border-top: 1px solid #eee;
+  background: ${DesignTokenColors.whiteUI}; ;
+  border-top: 1px solid ${DesignTokenColors.neutralUI50};
   bottom: 0;
   box-shadow: 0 -4px 4px -1px rgba(0, 0, 0, 0.2), 0 -4px 5px 0 rgba(0, 0, 0, 0.14), 0 -1px 10px 0 rgba(0, 0, 0, 0.12);
   padding-bottom: env(safe-area-inset-bottom);
@@ -429,6 +488,46 @@ const FooterContainer = styled('div')`
   position: fixed;
   width: 100%;
   left: 0;
+`;
+const Overlay = styled.div`
+  align-items: stretch;
+  background: ${DesignTokenColors.whiteUI};
+  border: 1px solid ${DesignTokenColors.neutralUI100};
+  border-radius: 10px;
+  bottom: 76px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.1);
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  position: fixed;
+  right: 8px;
+  transform: translateY(10px);
+  transition: transform .2s ease, opacity .2s ease;
+  z-index: 9999;
+`;
+
+const MenuItem = styled.div`
+  border-radius: 10px;
+  color: ${({ $active }) => ($active ? 'rgb(32, 109, 179)' : DesignTokenColors.neutralUI600)};
+  cursor: pointer;
+  align-items: center;
+  display: inline-flex;
+  flex-direction: column;
+  font-size: 16px;
+  justify-content: center;
+  line-height: 1.2;
+  min-height: 84px;
+  min-width: 88px;
+  padding: 8px 10px;
+  text-align: center;
+  svg {
+    height: 40px;
+    width: 40px;
+    margin-bottom: 6px;
+  }
+  img {
+    width: 40px;
+  }
 `;
 
 export default withStyles(styles)(FooterBar);

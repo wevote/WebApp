@@ -6,7 +6,20 @@ import Colors from '../../common/components/Style/Colors';
 import StepIcon from './StepIcon';
 
 const Step = ({ onClick, step, label, completed, width }) => (
-  <HowItWorksStep completed={completed} onClick={onClick} width={width}>
+  <HowItWorksStep
+    completed={completed}
+    id={`step${step}`}
+    onClick={onClick}
+    onKeyDown={(e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        onClick();
+      }
+    }}
+    role="button"
+    tabIndex={0}
+    width={width}
+  >
     <StepIcon
       number={step}
       completed={completed}

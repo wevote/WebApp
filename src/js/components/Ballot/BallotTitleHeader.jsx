@@ -1,20 +1,23 @@
 import { Edit } from '@mui/icons-material';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
+import parser from 'parse-address';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
+import TagManager from 'react-gtm-module';
 import styled from 'styled-components';
 import AppObservableStore from '../../common/stores/AppObservableStore';
 import { isAndroidSizeWide, isIPad } from '../../common/utils/cordovaUtils';
 import { formatDateToMonthDayYear } from '../../common/utils/dateFormat';
 import daysUntil from '../../common/utils/daysUntil';
 import initializeMoment from '../../common/utils/initializeMoment';
+import { isAndroid } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import stringContains from '../../common/utils/stringContains';
 import BallotStore from '../../stores/BallotStore';
 import VoterStore from '../../stores/VoterStore';
-import { BallotAddress, ClickBlockWrapper, ContentWrapper, ElectionDateBelow, ElectionDateRight, ElectionNameBlock, ElectionNameH1, ElectionNameScrollContent,
-  ElectionStateLabel, OverflowContainer, OverflowContent, VoteByBelowLabel, VoteByBelowWrapper, VoteByRightLabel, VoteByRightWrapper } from '../Style/BallotTitleHeaderStyles';
+import { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
+import { BallotAddress, ClickBlockWrapper, ContentWrapper, ElectionDateBelow, ElectionDateRight, ElectionNameBlock, ElectionNameH1, ElectionNameScrollContent, ElectionStateLabel, OverflowContainer, OverflowContent, VoteByBelowLabel, VoteByBelowWrapper, VoteByRightLabel, VoteByRightWrapper } from '../Style/BallotTitleHeaderStyles';
 import BallotTitleHeaderNationalPlaceholder from './BallotTitleHeaderNationalPlaceholder';
 
 const ShareButtonDesktopTablet = React.lazy(() => import(/* webpackChunkName: 'ShareButtonDesktopTablet' */ '../Share/ShareButtonDesktopTablet'));
@@ -37,6 +40,7 @@ class BallotTitleHeader extends Component {
   }
 
   componentDidMount () {
+    this._mounted = true;
     this.onBallotStoreChange();
     this.onVoterStoreChange();
     this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
@@ -44,6 +48,7 @@ class BallotTitleHeader extends Component {
   }
 
   componentWillUnmount () {
+    this._mounted = false;
     this.ballotStoreListener.remove();
     this.voterStoreListener.remove();
   }
@@ -52,7 +57,7 @@ class BallotTitleHeader extends Component {
     const electionDayText = BallotStore.currentBallotElectionDate;
     const electionDayTextFormatted = electionDayText && window.moment ? window.moment(electionDayText).format('MMM Do, YYYY') : '';
     const electionDayTextObject = electionDayText && window.moment ? <span>{electionDayTextFormatted}</span> : null;
-    const nextNationalElectionDayText = `${BallotStore.nextNationalElectionDayText || '2024-11-05'}`;
+    const nextNationalElectionDayText = `${BallotStore.nextNationalElectionDayText || '2026-11-03'}`;
     // console.log('nextNationalElectionDayText:', nextNationalElectionDayText);
     initializeMoment(() => {
       const { moment } = window;
@@ -60,9 +65,12 @@ class BallotTitleHeader extends Component {
       const nextNationalElectionDayMDYSlash = moment(nextNationalElectionDayText, 'YYYY-MM-DD').format('MM/DD/YYYY');
       const nextNationalElectionDate = new Date(nextNationalElectionDayMDYSlash);
       const nextNationalElectionDateMDY = formatDateToMonthDayYear(nextNationalElectionDate);
-      this.setState({
-        nextNationalElectionDateMDY,
-      });
+      if (this._mounted) {
+        // Only set the state if the component is still mounted to avoid "Can't perform a React state update on an unmounted component"
+        this.setState({
+          nextNationalElectionDateMDY,
+        });
+      }
     });
     this.setState({
       ballotCaveat: BallotStore.getBallotCaveat(),
@@ -97,26 +105,43 @@ class BallotTitleHeader extends Component {
     }
   }
 
-  showSelectBallotModalEditAddress = () => {
+  showSelectBallotModalEditAddress = (buttonId) => {
+    // console.log('Passed buttonId:', buttonId);
     const { linksOff } = this.props;
     // console.log('BallotTitleHeader showSelectBallotModalEditAddress linksOff:', linksOff);
     if (!linksOff) {
       const showEditAddress = true;
       const showSelectBallotModal = true;
       // this.props.toggleSelectBallotModal('', showEditAddress, false);
+      const dataLayerObject = {
+        actionDetails: {
+          actionType: 'openModal',
+          buttonId,
+        },
+        event: 'action',
+        pageDetails: getPageDetails(),
+        userDetails: VoterStore.getAnalyticsUserDetails(),
+      };
+      const electionDetails = BallotStore.getAnalyticsElectionDetails();
+      if (electionDetails && electionDetails.electionDate) {
+        dataLayerObject.electionDetails = electionDetails;
+      }
+      // console.log('dataLayerObject:', dataLayerObject);
+      TagManager.dataLayer({ dataLayer: dataLayerObject });
+
       AppObservableStore.setShowSelectBallotModal(showSelectBallotModal, showEditAddress);
     }
   }
 
   render () {
     renderLog('BallotTitleHeader');  // Set LOG_RENDER_EVENTS to log all renders
-    const { allowTextWrap, centerText, electionDateBelow, linksOff, shareButtonText, showBallotCaveat, showShareButton, turnOffVoteByBelow } = this.props;
+    const { allowTextWrap, centerText, linksOff, shareButtonText, showBallotCaveat, showShareButton, turnOffVoteByBelow } = this.props;
     const {
       ballotCaveat, daysUntilElection, electionDayTextObject,
       electionName, nextNationalElectionDateMDY, originalTextAddress, originalTextState,
       substitutedAddress, substitutedState, textForMapSearch,
     } = this.state;
-
+    // console.log('BallotTitleHeader daysUntilElection:', daysUntilElection);
     const electionNameContainsWordElection = stringContains('election', electionName.toLowerCase());
     const stateTextUsed = substitutedState || originalTextState || '';
     const electionNameContainsState = stringContains(stateTextUsed.toLowerCase(), electionName.toLowerCase());
@@ -180,12 +205,12 @@ class BallotTitleHeader extends Component {
                         {electionName}
                       </ElectionNameH1>
                       {(showBallotCaveat && ballotCaveat) ? (
-                        <BallotAddress
+                        <BallotAddress tabIndex={-1}
                           allowTextWrap={allowTextWrap}
                           centerText={centerText}
                           className={linksOff ? '' : 'u-cursor--pointer'}
                           id="ballotTitleBallotAddress"
-                          onClick={this.showSelectBallotModalEditAddress}
+                          onClick={() => this.showSelectBallotModalEditAddress('ballotTitleBallotAddress')}
                         >
                           {ballotCaveat && (
                             <div>{ballotCaveat}</div>
@@ -194,16 +219,16 @@ class BallotTitleHeader extends Component {
                       ) : (
                         <>
                           {((textForMapSearch && textForMapSearch !== '' && textForMapSearch.length >= 2) || (originalTextAddress && originalTextAddress !== '' && originalTextAddress.length >= 2)) ? (
-                            <BallotAddress
+                            <BallotAddress tabIndex={-1}
                               allowTextWrap={allowTextWrap}
                               centerText={centerText}
                               className={linksOff ? '' : 'u-cursor--pointer'}
                               id="ballotTitleBallotAddress"
-                              onClick={this.showSelectBallotModalEditAddress}
+                              onClick={() => this.showSelectBallotModalEditAddress('ballotTitleBallotAddress')}
                             >
                               Ballot for
                               {' '}
-                              <span
+                              <span tabIndex={0}
                                 className={linksOff ? '' : 'u-link-color u-link-underline-on-hover'}
                               >
                                 <span>
@@ -220,24 +245,24 @@ class BallotTitleHeader extends Component {
                                   centerText={centerText}
                                   className={linksOff ? '' : 'u-cursor--pointer'}
                                   id="ballotTitleBallotAddressSubstituted"
-                                  onClick={this.showSelectBallotModalEditAddress}
+                                  onClick={() => this.showSelectBallotModalEditAddress('ballotTitleBallotAddressSubstituted')}
                                 >
                                   Ballot for
                                   {' '}
-                                  <span className={linksOff ? '' : 'u-link-color u-link-underline-on-hover'}>
+                                  <span tabIndex={0} className={linksOff ? '' : 'u-link-color u-link-underline-on-hover'}>
                                     {substitutedAddress}
                                   </span>
                                   {linksOff ? <></> : editIconStyled}
                                 </BallotAddress>
                               ) : (
-                                <BallotAddress
+                                <BallotAddress tabIndex={-1}
                                   allowTextWrap={allowTextWrap}
                                   centerText={centerText}
                                   className={linksOff ? '' : 'u-cursor--pointer'}
                                   id="ballotTitleBallotAddress"
-                                  onClick={this.showSelectBallotModalEditAddress}
+                                  onClick={() => this.showSelectBallotModalEditAddress('ballotTitleBallotAddress')}
                                 >
-                                  <span className={linksOff ? '' : 'u-link-color u-link-underline-on-hover'}>
+                                  <span tabIndex={0} className={linksOff ? '' : 'u-link-color u-link-underline-on-hover'}>
                                     Click to enter your address
                                   </span>
                                   {linksOff ? <></> : editIconStyled}
@@ -248,7 +273,7 @@ class BallotTitleHeader extends Component {
                         </>
                       )}
                       {(!turnOffVoteByBelow && electionDayTextObject) && (
-                        <VoteByBelowWrapper centerText={centerText} electionDateBelow={electionDateBelow}>
+                        <VoteByBelowWrapper centerText={centerText}>
                           <VoteByBelowLabel>
                             {daysUntilElection > 0 ? (
                               <>Vote by</>
@@ -273,7 +298,7 @@ class BallotTitleHeader extends Component {
               </OverflowContent>
             </OverflowContainer>
             {(!turnOffVoteByBelow && electionDayTextObject) && (
-              <VoteByRightWrapper electionDateBelow={electionDateBelow}>
+              <VoteByRightWrapper>
                 <VoteByRightLabel>
                   {daysUntilElection > 0 ? (
                     <>Vote by</>
@@ -315,7 +340,6 @@ class BallotTitleHeader extends Component {
           ) : (
             <BallotTitleHeaderNationalPlaceholder
               centerText
-              electionDateBelow
               electionDateMDY={nextNationalElectionDateMDY}
               electionName="General Election"
             />
@@ -328,7 +352,6 @@ class BallotTitleHeader extends Component {
 BallotTitleHeader.propTypes = {
   allowTextWrap: PropTypes.bool,
   centerText: PropTypes.bool,
-  electionDateBelow: PropTypes.bool,
   linksOff: PropTypes.bool,
   shareButtonText: PropTypes.string,
   showBallotCaveat: PropTypes.bool,
@@ -358,6 +381,7 @@ const BallotShareWrapper = styled('div')`
 `;
 
 const BallotTitleHeaderWrapper = styled('div')`
+  height: ${isAndroid() ? '110px' : '90px'};
 `;
 
 export default withTheme(withStyles(styles)(BallotTitleHeader));

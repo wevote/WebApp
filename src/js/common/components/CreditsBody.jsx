@@ -31,7 +31,7 @@ class Credits extends Component {
             {' '}
             Please also see the
             {' '}
-            <Link to="/more/attributions" id="attributions" class="u-link-color">
+            <Link to="/more/attributions" id="attributions" className="u-link-color">
               summary of open source software
             </Link>
             {' '}
@@ -110,7 +110,7 @@ class Credits extends Component {
             <span>
               , or by
               {' '}
-              <Link class="u-link-color" to="/donate">
+              <Link className="u-link-color" to="/donate">
                 donating now
               </Link>
             </span>

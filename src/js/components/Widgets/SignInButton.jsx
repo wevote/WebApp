@@ -1,20 +1,48 @@
 import { Button } from '@mui/material';
 import PropTypes from 'prop-types';
 import React from 'react';
+import TagManager from 'react-gtm-module';
 import styled from 'styled-components';
 import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
+import VoterStore from '../../stores/VoterStore';
+import lookupPageNameAndPageTypeDict, { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
 
 
 // A function component
 export default function SignInButton (props) {
   renderLog('SignInButton');  // Set LOG_RENDER_EVENTS to log all renders
 
+  const { location: { pathname: currentPathname } } = window;
+  const { pageType } = lookupPageNameAndPageTypeDict(currentPathname);
+  const handleClick = () => {
+    const dataLayerObject = {
+      actionDetails: {
+        actionType: 'openModal',
+        buttonId: 'SignIn',
+      },
+      event: 'action',
+      userDetails: VoterStore.getAnalyticsUserDetails(),
+      destinationDetails: {
+        destinationPageName: 'SignInModal',
+        destinationPageType: pageType,
+        destinationPathname: currentPathname,
+      },
+      pageDetails: getPageDetails(),
+    };
+    TagManager.dataLayer({ dataLayer: dataLayerObject });
+    // Trigger the actual sign-in modal
+    if (props.toggleSignInModal) {
+      props.toggleSignInModal();
+    }
+  };
+
   return (
     <StyledButton
+      id="SignIn"
       className="header-sign-in"
       color="primary"
-      onClick={props.toggleSignInModal}
+      onClick={handleClick}
       variant="text"
     >
       <SignInButtonInnerWrapper className="u-no-break">

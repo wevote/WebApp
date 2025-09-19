@@ -25,7 +25,7 @@ import {
 } from '../Style/ReadyIntroductionStyles';
 import ShowMoreButtons from '../Widgets/ShowMoreButtons';
 
-const twitterEnabled = webAppConfig.ENABLE_TWITTER === undefined ? false : webAppConfig.ENABLE_TWITTER;
+const twitterEnabled = (webAppConfig.ENABLE_TWITTER && webAppConfig.ENABLE_TWITTER_AS_VOTER_SIGN_IN_OPTION);
 const facebookEnabled =  webAppConfig.ENABLE_FACEBOOK === undefined ? false : webAppConfig.ENABLE_FACEBOOK;
 
 class ReadyIntroduction extends Component {
@@ -95,31 +95,31 @@ class ReadyIntroduction extends Component {
     return (
       <OuterWrapper>
         <InnerWrapper>
-          <IntroHeader titleCentered={titleCentered} titleLarge={titleLarge} tabIndex={0} ref={this.introHeaderRef}>
+          <IntroHeader id="weVoteHelpsYouHeaderText" titleCentered={titleCentered} titleLarge={titleLarge} tabIndex={0} ref={this.introHeaderRef}>
             WeVote helps you:
           </IntroHeader>
           <ListWrapper>
             <ListMaxWidth>
               <ListTitleRow onClick={this.contentUnfurledLink}>
-                <Dot><StepNumber>1</StepNumber></Dot>
-                <StepTitle>Be ready to vote</StepTitle>
+                <Dot><StepNumber id="weVoteHelpsYouMenuItem1">1</StepNumber></Dot>
+                <StepTitle id="weVoteHelpsYouMenuHeader1">Be ready to vote</StepTitle>
               </ListTitleRow>
               {contentUnfurled && (
                 <ListRow>
                   <Dot><StepNumberPlaceholder>&nbsp;</StepNumberPlaceholder></Dot>
                   <StepText id="readyIntroductionStepText1">
                     <button style={{ backgroundColor: 'transparent', border: 'none', padding: '0' }} onClick={this.showSelectBallotModalEditAddress} type="button">
-                      <span className="u-link-color u-link-color-on-hover u-link-underline-on-hover">Enter your address</span>
+                      <span id="enterAddressText" className="u-link-color u-link-color-on-hover u-link-underline-on-hover">Enter your address</span>
                     </button>
                     {' '}
                     to find out when your next election is, and
                     {' '}
-                    <Link to="/ballot" className="u-link-color">preview your ballot</Link>
+                    <Link to="/ballot" id="previewYourBallotLink" className="u-link-color">preview your ballot</Link>
                     .
                     {' '}
                     How are
                     {' '}
-                    <Link to="/findfriends/importcontacts" className="u-link-color">your friends</Link>
+                    <Link to="/findfriends/importcontacts" id="yourFriendsLink" className="u-link-color">your friends</Link>
                     {' '}
                     planning to vote?
                   </StepText>
@@ -127,8 +127,8 @@ class ReadyIntroduction extends Component {
               )}
 
               <ListTitleRow onClick={this.contentUnfurledLink}>
-                <Dot><StepNumber>2</StepNumber></Dot>
-                <StepTitle>Be confident in your choices</StepTitle>
+                <Dot><StepNumber id="weVoteHelpsYouMenuItem2">2</StepNumber></Dot>
+                <StepTitle id="weVoteHelpsYouMenuHeader2">Be confident in your choices</StepTitle>
               </ListTitleRow>
               {contentUnfurled && (
                 <ListRow>
@@ -154,8 +154,8 @@ class ReadyIntroduction extends Component {
               )}
               {(contentUnfurled || showStep3WhenCompressed) && (
                 <ListTitleRow onClick={this.contentUnfurledLink}>
-                  <Dot><StepNumber>3</StepNumber></Dot>
-                  <StepTitle>Help friends &amp; amplify your impact</StepTitle>
+                  <Dot><StepNumber id="weVoteHelpsYouMenuItem3">3</StepNumber></Dot>
+                  <StepTitle id="weVoteHelpsYouMenuHeader3">Help friends &amp; amplify your impact</StepTitle>
                 </ListTitleRow>
               )}
               {contentUnfurled && (
@@ -163,7 +163,7 @@ class ReadyIntroduction extends Component {
                   <Dot><StepNumberPlaceholder>&nbsp;</StepNumberPlaceholder></Dot>
                   <StepText id="readyIntroductionStepText3">
                     {isWebApp() || isCordova() ? (
-                      <Link to="/findfriends/importcontacts" className="u-link-color">Invite your friends</Link>
+                      <Link to="/findfriends/importcontacts" id="inviteYourFriendsLink" className="u-link-color">Invite your friends</Link>
                     ) : (
                       <>Invite your friends</>
                     )}

@@ -1,0 +1,35 @@
+version: 0.2
+
+env:
+  shell: bash
+phases:
+  pre_build:
+    on-failure: ABORT
+    commands:
+      - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+      - IMAGE_TAG=${COMMIT_HASH:=build}
+      - ECR_LOGIN_HOST=$(echo $REPO_URI | sed 's#/.*##')
+      - IMAGE_NAME="wevote-www:latest"
+      - echo Logging into ECR
+      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $ECR_LOGIN_HOST
+  build:
+    on-failure: ABORT
+    commands:
+      - echo Getting config from secrets manager
+      - aws secretsmanager get-secret-value --secret-id $CONFIG_SECRET_ARN --query SecretString --output text > src/js/config.js
+      - echo Build started at $(date)
+      - docker build -f docker/Dockerfile.prod -t $IMAGE_NAME .
+  post_build:
+    on-failure: ABORT
+    commands:
+      - echo Tagging docker images
+      - docker tag $IMAGE_NAME $REPO_URI:$IMAGE_TAG
+      - docker tag $IMAGE_NAME $REPO_URI:latest
+      - echo Pushing docker images to ECR
+      - docker push $REPO_URI:$IMAGE_TAG
+      - docker push $REPO_URI:latest
+      - echo Writing image definitions
+      - printf "[{\"name\":\"$ECS_CONTAINER_NAME\",\"imageUri\":\"$REPO_URI:$IMAGE_TAG\"}]" > imagedefinitions.json
+artifacts:
+  files:
+    - imagedefinitions.json

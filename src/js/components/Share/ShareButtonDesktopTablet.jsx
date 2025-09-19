@@ -3,6 +3,7 @@ import { Button } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import TagManager from 'react-gtm-module';
 import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import ShareActions from '../../common/actions/ShareActions';
@@ -11,7 +12,9 @@ import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import stringContains from '../../common/utils/stringContains';
 import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
+import BallotStore from '../../stores/BallotStore';
 import VoterStore from '../../stores/VoterStore';
+import lookupPageNameAndPageTypeDict, { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
 
 class ShareButtonDesktopTablet extends Component {
   constructor (props) {
@@ -52,6 +55,12 @@ class ShareButtonDesktopTablet extends Component {
     const googleCivicElectionId = 0;
     let kindOfShare = 'BALLOT';
     let whatAndHowMuchToShare;
+
+    // Add debug logging
+    // console.log('Share button clicked');
+    // console.log('Current pathname:', window.location.pathname);
+    // console.log('VoterWeVoteId:', VoterStore.getVoterWeVoteId());
+
     if (candidateShare) {
       kindOfShare = 'CANDIDATE';
       if (withOpinionsModified) {
@@ -106,12 +115,68 @@ class ShareButtonDesktopTablet extends Component {
       AnalyticsActions.saveActionShareBallot(VoterStore.electionId());
     }
 
+    // Calculate pathnameWithModalShare for dataLayer tracking
+    const { pathname } = window.location;
+    let pathnameWithModalShare = pathname;
+    if (!stringContains('/modal/share', pathname) && isWebApp()) {
+      pathnameWithModalShare = `${pathname}${pathname.endsWith('/') ? '' : '/'}modal/share`;
+    }
+
+    // Add dataLayer tracking after kindOfShare and whatAndHowMuchToShare are calculated
+    const destinationPage = lookupPageNameAndPageTypeDict(pathnameWithModalShare);
+
+    // Determine buttonId based on kindOfShare
+    let buttonId;
+    switch (kindOfShare) {
+      case 'CANDIDATE':
+        buttonId = 'candidateShareButtonDesktopTablet';
+        break;
+      case 'MEASURE':
+        buttonId = 'measureShareButtonDesktopTablet';
+        break;
+      case 'OFFICE':
+        buttonId = 'officeShareButtonDesktopTablet';
+        break;
+      case 'ORGANIZATION':
+        buttonId = 'organizationShareButtonDesktopTablet';
+        break;
+      case 'READY':
+        buttonId = 'readyShareButtonDesktopTablet';
+        break;
+      default:
+        buttonId = 'ballotShareButtonDesktopTablet';
+    }
+
+    const dataLayerObject = {
+      event: 'action',
+      userDetails: VoterStore.getAnalyticsUserDetails(),
+      actionDetails: {
+        actionType: 'openModal',
+        buttonId,
+      },
+      shareDetails: {
+        kindOfShare,
+        withOpinions: withOpinionsModified,
+        whatAndHowMuchToShare,
+      },
+      pageDetails: getPageDetails(),
+      destinationDetails: {
+        destinationPageName: destinationPage.pageName,
+        destinationPageType: destinationPage.pageType,
+        destinationPathname: pathnameWithModalShare,
+      },
+    };
+    const electionDetails = BallotStore.getAnalyticsElectionDetails();
+    if (electionDetails && electionDetails.electionDate) {
+      dataLayerObject.electionDetails = electionDetails;
+    }
+    // console.log('Pushing to dataLayer:', dataLayerObject);
+    TagManager.dataLayer({ dataLayer: dataLayerObject });
+
     ShareActions.sharedItemSave(destinationFullUrl, kindOfShare, ballotItemWeVoteId, googleCivicElectionId, organizationWeVoteId);
     AppObservableStore.setShowShareModal(true);
     AppObservableStore.setWhatAndHowMuchToShare(whatAndHowMuchToShare);
-    const { pathname } = window.location;
     if (!stringContains('/modal/share', pathname) && isWebApp()) {
-      const pathnameWithModalShare = `${pathname}${pathname.endsWith('/') ? '' : '/'}modal/share`;
       // console.log('Navigation ShareButtonDesktopTablet openShareModal ', pathnameWithModalShare)
       historyPush(pathnameWithModalShare, false, true);
     }

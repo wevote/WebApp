@@ -9,7 +9,7 @@ import CandidateStore from '../../stores/CandidateStore';
 import MeasureStore from '../../stores/MeasureStore';
 
 const ItemActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemActionBar' */ './ItemActionBar/ItemActionBar'));
-const ItemPositionStatementActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemPositionStatementActionBar' */ './ItemPositionStatementActionBar2020'));
+const ItemPositionStatementActionBar2020 = React.lazy(() => import(/* webpackChunkName: 'ItemPositionStatementActionBar' */ './ItemPositionStatementActionBar2020'));
 
 
 class BallotItemSupportOpposeComment extends PureComponent {
@@ -23,6 +23,7 @@ class BallotItemSupportOpposeComment extends PureComponent {
       ballotItemType: '',
       ballotItemWeVoteId: '',
       // componentDidMountFinished: false,
+      politicianWeVoteId: '',
       showPositionStatement: false,
       // shouldFocusCommentArea: false,
     };
@@ -38,9 +39,11 @@ class BallotItemSupportOpposeComment extends PureComponent {
     let ballotItemType;
     let isCandidate = false;
     let isMeasure = false;
+    let politicianWeVoteId = '';
     if (stringContains('cand', this.props.ballotItemWeVoteId)) {
       const candidate = CandidateStore.getCandidateByWeVoteId(this.props.ballotItemWeVoteId);
       ballotItemDisplayName = candidate.ballot_item_display_name || '';
+      politicianWeVoteId = candidate.politician_we_vote_id || '';
       ballotItemType = 'CANDIDATE';
       isCandidate = true;
     } else if (stringContains('meas', this.props.ballotItemWeVoteId)) {
@@ -56,6 +59,7 @@ class BallotItemSupportOpposeComment extends PureComponent {
       // componentDidMountFinished: true,
       isCandidate,
       isMeasure,
+      politicianWeVoteId,
     });
   }
 
@@ -110,6 +114,12 @@ class BallotItemSupportOpposeComment extends PureComponent {
       this.setState({
         ballotItemDisplayName,
       });
+      const politicianWeVoteId = candidate.politician_we_vote_id || '';
+      if (politicianWeVoteId) {
+        this.setState({
+          politicianWeVoteId,
+        });
+      }
     }
   }
 
@@ -144,7 +154,7 @@ class BallotItemSupportOpposeComment extends PureComponent {
     const inModal2 = inModal || false;
     const {
       ballotItemDisplayName, ballotItemType, ballotItemWeVoteId,
-      showPositionStatement, transitioning,
+      politicianWeVoteId, showPositionStatement, transitioning,
       voterOpposesBallotItem, voterSupportsBallotItem,
       voterTextStatement,
     } = this.state;
@@ -168,6 +178,7 @@ class BallotItemSupportOpposeComment extends PureComponent {
         externalUniqueId={`${externalUniqueId}-ballotItemSupportOpposeComment-${ballotItemWeVoteId}`}
         shareButtonHide
         hidePositionPublicToggle={hidePositionPublicToggle}
+        politicianWeVoteId={politicianWeVoteId}
         supportOrOpposeHasBeenClicked={this.passDataBetweenItemActionToItemPosition}
         togglePositionStatementFunction={this.togglePositionStatement}
         transitioning={transitioning}
@@ -179,7 +190,7 @@ class BallotItemSupportOpposeComment extends PureComponent {
     const commentDisplayDesktop = showPositionStatementActionBar || voterSupportsBallotItem || voterOpposesBallotItem || voterTextStatement || showPositionStatement ? (
       <div className="d-none d-sm-block">
         <Suspense fallback={<></>}>
-          <ItemPositionStatementActionBar
+          <ItemPositionStatementActionBar2020
             showPositionPublicToggle={showPositionPublicToggle}
             inModal={inModal2}
             showPositionStatementActionBar={showPositionStatementActionBar}
@@ -200,7 +211,7 @@ class BallotItemSupportOpposeComment extends PureComponent {
     const commentDisplayMobile = showPositionStatementActionBar || voterSupportsBallotItem || voterOpposesBallotItem || voterTextStatement ? (
       <div className="d-block d-sm-none">
         <Suspense fallback={<></>}>
-          <ItemPositionStatementActionBar
+          <ItemPositionStatementActionBar2020
             showPositionPublicToggle={showPositionPublicToggle}
             inModal={inModal2}
             showPositionStatementActionBar={showPositionStatementActionBar}

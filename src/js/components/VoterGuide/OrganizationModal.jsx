@@ -14,7 +14,6 @@ import PoliticianActions from '../../common/actions/PoliticianActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import apiCalming from '../../common/utils/apiCalming';
 import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
-import { normalizedHref } from '../../common/utils/hrefUtils';
 import { cordovaOffsetLog, renderLog } from '../../common/utils/logging';
 import stringContains from '../../common/utils/stringContains';
 import ShowMoreButtons from '../Widgets/ShowMoreButtons';
@@ -25,10 +24,10 @@ import MeasureStore from '../../stores/MeasureStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import {
-  DrawerHeaderInnerContainer, DrawerHeaderOuterContainer,
+  DrawerHeaderAnimateDownInnerContainer, DrawerHeaderAnimateDownOuterContainer,
 } from '../Style/drawerLayoutStyles';
 import { cordovaDrawerTopMargin } from '../../utils/cordovaOffsets';
-import { convertToInteger } from '../../common/utils/textFormat';
+import convertToInteger from '../../common/utils/convertToInteger';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { headroomWrapperOffset } from '../../utils/cordovaCalculatedOffsets';
 import { getPageKey } from '../../utils/cordovaPageUtils';
@@ -36,6 +35,7 @@ import AppObservableStore, { messageService } from '../../common/stores/AppObser
 import { Candidate, CandidateNameAndPartyWrapper, CandidateNameH4, CandidateParty, CandidateTopRow } from '../Style/BallotStyles';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import CampaignSupportThermometer from '../../common/components/CampaignSupport/CampaignSupportThermometer';
+import VoterPositionEntryAndDisplay from '../PositionItem/VoterPositionEntryAndDisplay';
 // import { handleResize } from '../../common/utils/isMobileScreenSize';
 
 const CampaignRetrieveController = React.lazy(() => import(/* webpackChunkName: 'CampaignRetrieveController' */ '../../common/components/Campaign/CampaignRetrieveController'));
@@ -199,6 +199,7 @@ class OrganizationModal extends Component {
   componentWillUnmount () {
     this.candidateStoreListener.remove();
     this.measureStoreListener.remove();
+    this.appStateSubscription.unsubscribe();
     AppObservableStore.setScrolledDownDrawer(false);
   }
 
@@ -329,7 +330,7 @@ class OrganizationModal extends Component {
     } else if (isCordova()) {
       // Calculated approach Nov 2022
       const offset = `${headroomWrapperOffset(true)}px`;
-      cordovaOffsetLog(`DrawerHeaderOuterContainer HeadroomWrapper offset: ${offset}, page: ${getPageKey()}`);
+      cordovaOffsetLog(`DrawerHeaderAnimateDownOuterContainer HeadroomWrapper offset: ${offset}, page: ${getPageKey()}`);
       return offset;
       // end calculated approach
     }
@@ -339,7 +340,8 @@ class OrganizationModal extends Component {
   closeOrganizationModal () {
     this.setState({ modalOpen: false });
     setTimeout(() => {
-      this.props.toggleFunction(normalizedHref());
+      // console.log('In OrganizationModal, toggleFunction fired');
+      this.props.toggleFunction();
     }, 500);
   }
 
@@ -378,8 +380,8 @@ class OrganizationModal extends Component {
             </IconButton>
           </div>
         </CloseDrawerIconWrapper>
-        <DrawerHeaderOuterContainer id="politicianHeaderContainer" scrolledDown={scrolledDown}>
-          <DrawerHeaderInnerContainer>
+        <DrawerHeaderAnimateDownOuterContainer id="organizationModalHeaderContainer" scrolledDown={scrolledDown}>
+          <DrawerHeaderAnimateDownInnerContainer>
             <CandidateTopRow>
               <Candidate
                 id={`organizationModalCandidateImageAndName-${politicianWeVoteId}`}
@@ -426,8 +428,8 @@ class OrganizationModal extends Component {
                 />
               </Suspense>
             </HeartToggleAndThermometerWrapper>
-          </DrawerHeaderInnerContainer>
-        </DrawerHeaderOuterContainer>
+          </DrawerHeaderAnimateDownInnerContainer>
+        </DrawerHeaderAnimateDownOuterContainer>
         {(isCandidate && !hideBallotItemInfo) && (
           <PoliticianCardForListWrapper>
             <Suspense fallback={<span>&nbsp;</span>}>
@@ -467,6 +469,12 @@ class OrganizationModal extends Component {
             <ScoreSummaryListControllerBottomSpacer />
           </>
         )}
+        <VoterPositionEntryAndDisplayWrapper>
+          <VoterPositionEntryAndDisplay
+            politicianWeVoteId={politicianWeVoteId}
+            // politicianName={politicianName}
+          />
+        </VoterPositionEntryAndDisplayWrapper>
         { !!(allCachedPositionsForThisBallotItem.length) && (
           <>
             { !hidePositions || unFurlPositions ? (
@@ -619,6 +627,10 @@ const CloseDrawerIconWrapper = styled('div')`
 const CloseDrawerHeaderIconWrapper = styled('div')`
 `;
 
+const HeartToggleAndThermometerWrapper = styled('div')`
+  margin-top: 12px;
+`;
+
 const PoliticianCardForListWrapper = styled('div')`
   margin: 0 15px;
 `;
@@ -627,13 +639,13 @@ const ScoreSummaryListControllerBottomSpacer = styled('div')`
   margin-bottom: 42px;
 `;
 
-const HeartToggleAndThermometerWrapper = styled('div')`
-  margin-top: 12px;
-`;
-
 const ShowMoreWrapper = styled('div')`
   margin-bottom: 32px;
   margin-top: 32px;
+`;
+
+const VoterPositionEntryAndDisplayWrapper = styled('div')`
+  margin: 0 15px;
 `;
 
 export default withTheme(withStyles(styles)(OrganizationModal));

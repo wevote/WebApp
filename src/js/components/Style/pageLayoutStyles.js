@@ -44,6 +44,12 @@ export const IOSNoNotchSpacer = styled('div')`
 `;
 
 function getPaddingTop () {
+  if ((normalizedHrefPage() === 'politicianpage') && AppObservableStore.getShowNotificationBannerAboveHeader() === true) {
+    // In this case we want to start the page content below the NotificationBannerAboveHeader and the top menu
+    // Applies to both WebApp and Cordova
+    // Example page: http://localhost:3000/ted-lieu-politician-from-california/-/?show_edit_politician_notice=1
+    return '102px !important';
+  }
   if (isCordova()) {
     if ((normalizedHrefPage() === 'ballot') ||
         (normalizedHrefPage() === 'friends' && VoterStore.getVoterIsSignedIn())) {
@@ -54,7 +60,7 @@ function getPaddingTop () {
       return '';
     }
   }
-  return cordovaScrollablePaneTopPadding();  // 5/14/22 TODO: Refactor this...  Funny that this is no longer used for Cordova, only for the WebApp
+  return cordovaScrollablePaneTopPadding();  // 7/19/25 This is called elsewhere for cordova.  5/14/22 TODO: Refactor this...  Funny that this is no longer used for Cordova, only for the WebApp
 }
 
 function getPaddingBottom () {
@@ -78,7 +84,7 @@ export const PageContentContainer = styled('div')(({ theme }) => (`
   z-index: 0;
   ${theme.breakpoints.down('sm')} {
     min-height: ${isWebApp() ? '10px' : `${window.innerHeight}px`};
-    margin: ${isWebApp() ? '0 !important' : '24px 10px'};  // From Dale: Let's discuss this
+    margin: ${isWebApp() ? '0 !important' : '35px 10px'};  // Note from 2023: From Dale: Let's discuss this
   }
 `));
 
@@ -105,6 +111,7 @@ export const HeaderContentOuterContainer = styled('div')`
   display: flex;
   justify-content: center;
   width: 100%;
+  padding-left: calc(-100% + 100vw);
 `;
 
 export const DualHeaderContainer = styled('div', {

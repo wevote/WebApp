@@ -1,8 +1,11 @@
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import TagManager from 'react-gtm-module';
 import { TwitterShareButton } from 'react-share';
 import styled from 'styled-components';
+import VoterStore from '../../../stores/VoterStore';
+import { getPageDetails } from '../../../utils/lookupPageNameAndPageTypeDict';
 import CampaignSupporterActions from '../../actions/CampaignSupporterActions';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import CampaignStore from '../../stores/CampaignStore';
@@ -84,7 +87,23 @@ class ShareOnTwitterButton extends Component {
 
   saveActionShareButton = () => {
     CampaignSupporterActions.shareButtonClicked(true);
-  }
+
+    // datalayer for Twitter
+    const { shareType, campaignXWeVoteId } = this.props;
+
+    const dataLayerObject = {
+      event: 'ShareBallotTwitterClick',
+      shareDetails: {
+        platform: 'Twitter',
+        shareType: shareType || 'ballotWithChoices',
+        campaignXWeVoteId: campaignXWeVoteId || null,
+      },
+      pageDetails: getPageDetails(),
+      userDetails: VoterStore.getAnalyticsUserDetails(),
+    };
+    // console.log('DataLayer for Twitter share:', dataLayerObject);
+    TagManager.dataLayer({ dataLayer: dataLayerObject });
+  };
 
   render () {
     renderLog('ShareOnTwitterButton');  // Set LOG_RENDER_EVENTS to log all renders
@@ -135,6 +154,7 @@ class ShareOnTwitterButton extends Component {
 ShareOnTwitterButton.propTypes = {
   campaignXNewsItemWeVoteId: PropTypes.string,
   campaignXWeVoteId: PropTypes.string,
+  shareType: PropTypes.string,
   mobileMode: PropTypes.bool,
 };
 

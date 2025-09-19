@@ -3,6 +3,7 @@ import { Button } from '@mui/material';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
+import TagManager from 'react-gtm-module';
 import historyPush from '../../utils/historyPush';
 import { renderLog } from '../../utils/logging';
 import AppObservableStore from '../../stores/AppObservableStore';
@@ -11,6 +12,7 @@ import ChallengeParticipantActions from '../../actions/ChallengeParticipantActio
 import ReadyStore from '../../../stores/ReadyStore';
 import VoterStore from '../../../stores/VoterStore';
 import { getChallengeValuesFromIdentifiers } from '../../utils/challengeUtils';
+import lookupPageNameAndPageTypeDict, { getPageDetails } from '../../../utils/lookupPageNameAndPageTypeDict';
 
 class JoinChallengeButton extends React.Component {
   constructor (props) {
@@ -112,7 +114,7 @@ class JoinChallengeButton extends React.Component {
     if (challengeSEOFriendlyPath) {
       challengeBasePath = `/${challengeSEOFriendlyPath}/+/`;
     } else {
-      challengeBasePath = `/+/${challengeWeVoteId}/`;
+      challengeBasePath = `/++/${challengeWeVoteId}/`;
     }
     return challengeBasePath;
   }
@@ -122,6 +124,30 @@ class JoinChallengeButton extends React.Component {
     const challengeBasePath = this.getChallengeBasePath();
     const inviteFriendsPath = `${challengeBasePath}invite-friends`;
     const { location: { pathname: currentPathname } } = window;
+    const { challengeWeVoteId } = this.state;
+    // console.log('goToInviteFriends currentPathname: ', currentPathname);
+
+    // Adding event data to dataLayer for Google Tag Manager to fire the inviteFriendsToChallenge tag
+    const destinationPage = lookupPageNameAndPageTypeDict(inviteFriendsPath);
+    const dataLayerObject = {
+      actionDetails: {
+        actionType: 'invite',
+        buttonId: 'joinChallengeButton',
+      },
+      event: 'action',
+      userDetails: VoterStore.getAnalyticsUserDetails(),
+      challengeDetails: {
+        challengeWeVoteId,
+      },
+      pageDetails: getPageDetails(),
+      destinationDetails: {
+        destinationPageName: destinationPage.pageName,
+        destinationPageType: destinationPage.pageType,
+        destinationPathname: inviteFriendsPath,
+      },
+    };
+    TagManager.dataLayer({ dataLayer: dataLayerObject });
+
     AppObservableStore.setSetUpAccountBackLinkPath(currentPathname);
     AppObservableStore.setSetUpAccountEntryPath(inviteFriendsPath);
     historyPush(inviteFriendsPath);
@@ -145,6 +171,28 @@ class JoinChallengeButton extends React.Component {
       const { location: { pathname: currentPathname } } = window;
       AppObservableStore.setSetUpAccountBackLinkPath(currentPathname);
       AppObservableStore.setSetUpAccountEntryPath(joinChallengeNextStepPath);
+      // console.log('goToJoinChallenge currentPathname: ', currentPathname);
+      // Adding event data to dataLayer for Google Tag Manager to fire the inviteFriendsToChallenge tag
+      const destinationPage = lookupPageNameAndPageTypeDict(joinChallengeNextStepPath);
+      const dataLayerObject = {
+        actionDetails: {
+          actionType: 'join',
+          buttonId: 'joinChallengeButton',
+        },
+        event: 'action',
+        userDetails: VoterStore.getAnalyticsUserDetails(),
+        challengeDetails: {
+          challengeWeVoteId,
+        },
+        pageDetails: getPageDetails(),
+        destinationDetails: {
+          destinationPageName: destinationPage.pageName,
+          destinationPageType: destinationPage.pageType,
+          destinationPathname: joinChallengeNextStepPath,
+        },
+      };
+      TagManager.dataLayer({ dataLayer: dataLayerObject });
+
       if (itemsAreMissing) {
         historyPush(joinChallengeNextStepPath);
       } else {
@@ -167,11 +215,18 @@ class JoinChallengeButton extends React.Component {
     renderLog('JoinChallengeButton');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
     const { voterIsChallengeParticipant } = this.state;
+    // console.log('JoinChallengeButton render voterIsChallengeParticipant: ', voterIsChallengeParticipant);
     // const { challengeSEOFriendlyPath, challengeWeVoteId } = this.state;
     // console.log('JoinChallengeButton render challengeSEOFriendlyPath: ', challengeSEOFriendlyPath, ', challengeWeVoteId: ', challengeWeVoteId);
     let buttonText;
     if (voterIsChallengeParticipant) {
-      buttonText = 'Invite more friends';
+      if (this.props.inChallengeList) {
+        buttonText = 'Invite';
+      } else {
+        buttonText = 'Invite more friends';
+      }
+    } else if (this.props.inChallengeList) {
+      buttonText = 'Join';
     } else {
       buttonText = 'Join Challenge';
     }
@@ -198,20 +253,24 @@ JoinChallengeButton.propTypes = {
   classes: PropTypes.object,
   challengeSEOFriendlyPath: PropTypes.string,
   challengeWeVoteId: PropTypes.string,
+  inChallengeList: PropTypes.bool,
 };
 
 const styles = () => ({
   buttonDesktop: {
-    borderRadius: 45,
-    minWidth: '300px',
     width: '100%',
+    borderRadius: 45,
+    minWidth: 110,
+    //    background: 'var(--Primary-600, #0858A1)',
+    //    border: '1px solid var(--Primary-400, #4187C6)',
+    //    color: 'var(--WhiteUI, #FFFFFF)',
+    marginRight: 5,
+    marginTop: 0,
+    fontSize: 14,
   },
 });
 
 const JoinChallengeButtonWrapper = styled('div')`
-  align-items: center;
-  flex-direction: row;
-  justify-content: center;
 `;
 
 export default withStyles(styles)(JoinChallengeButton);

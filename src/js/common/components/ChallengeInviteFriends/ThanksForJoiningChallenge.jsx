@@ -4,12 +4,16 @@ import PropTypes from 'prop-types';
 import Confetti from 'react-confetti';
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { useParams } from 'react-router-dom/cjs/react-router-dom';
+import YourRank from '../Challenge/YourRank';
+import ChallengeParticipantSimpleListRoot from '../ChallengeParticipantListRoot/ChallengeParticipantSimpleListRoot';
+// import { getChallengeValuesFromIdentifiers } from '../../utils/challengeUtils';
 
 
-const ThanksForJoiningChallenge = ({ voterFirstName, challengeTitle, onClose }) => {
+const ThanksForJoiningChallenge = ({ voterFirstName, challengeTitle, onClose, challengeWeVoteId }) => {
   const [isClosing, setIsClosing] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
-
+  const { challengeSEOFriendlyPath } = useParams();
   useEffect(() => {
     if (isClosing) {
       const timer = setTimeout(() => {
@@ -29,6 +33,10 @@ const ThanksForJoiningChallenge = ({ voterFirstName, challengeTitle, onClose }) 
     return () => clearTimeout(timer);
   }, []);
 
+  // const {
+  //   challengeSEOFriendlyPath,
+  // } = getChallengeValuesFromIdentifiers(challengeSEOFriendlyPathFromParams, challengeWeVoteIdFromParams);
+
   return (
     <ThanksForJoiningOuterWrapper isClosing={isClosing}>
       <ThanksForJoiningInnerWrapper isClosing={isClosing}>
@@ -47,6 +55,9 @@ const ThanksForJoiningChallenge = ({ voterFirstName, challengeTitle, onClose }) 
               </>
             )}
             !
+
+            <YourRank hasBackgroundColor={false} challengeSEOFriendlyPath={challengeSEOFriendlyPath} challengeWeVoteId={challengeWeVoteId} />
+            <ChallengeParticipantSimpleListRoot challengeWeVoteId={challengeWeVoteId} showSimpleList />
           </ThankYouMessage>
           <CloseMessageIconWrapper>
             <IconButton
@@ -72,6 +83,7 @@ ThanksForJoiningChallenge.propTypes = {
   voterFirstName: PropTypes.string.isRequired,
   challengeTitle: PropTypes.string.isRequired,
   onClose: PropTypes.func.isRequired,
+  challengeWeVoteId: PropTypes.string.isRequired,
 };
 
 const CloseMessageIconWrapper = styled.div`
@@ -81,19 +93,9 @@ const CloseMessageIconWrapper = styled.div`
   justify-content: flex-end;
 `;
 
-const RankListOuterWrapper = styled.div`
-  display: flex;
-  margin-bottom: 10px;
-`;
-
-const RankMessageWrapper = styled.div`
-  display: flex;
-  margin-bottom: 10px;
-`;
-
 const ThanksForJoiningInnerWrapper = styled.div`
   width: 500px;
-  max-height: ${(props) => (props.isClosing ? '0' : '300px')};
+  max-height: ${(props) => (props.isClosing ? '0' : '360px')};
   border-radius: 20px;
   filter: drop-shadow(4px 4px 10px rgba(222,222,222,2));
   display: flex;
@@ -110,7 +112,7 @@ const ThanksForJoiningInnerWrapper = styled.div`
 `;
 
 const ThanksForJoiningOuterWrapper = styled.div`
-  max-height: ${(props) => (props.isClosing ? '0' : '400px')};
+  max-height: ${(props) => (props.isClosing ? '0' : '450px')};
   overflow: hidden;
   display: flex;
   justify-content: center;

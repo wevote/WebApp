@@ -403,7 +403,7 @@ class RepresentativeListRoot extends Component {
               titleTextForList.length &&
               representativeList) &&
           (
-            <WhatIsHappeningTitle>
+            <WhatIsHappeningTitle id="whatIsHappeningTitle">
               {titleTextForList}
             </WhatIsHappeningTitle>
           )}

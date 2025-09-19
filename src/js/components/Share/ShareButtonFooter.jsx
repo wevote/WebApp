@@ -178,7 +178,7 @@ class ShareButtonFooter extends Component {
     }, () => this.openShareOptions()); // openShareOptions advances directly to share
   }
 
-  handleCloseShareButtonDrawer = () => {
+  handleCloseShareButtonDrawer = (buttonId = '') => {
     this.setState({
       openShareButtonDrawer: false,
       showShareButton: true,
@@ -559,8 +559,9 @@ const ShareButtonFooterWrapper = styled('div', {
   shouldForwardProp: (prop) => !['shareBottomValue'].includes(prop),
 })(({ shareBottomValue }) => (`
   position: fixed;
+  left: 0;
   width: 100%;
-  ${shareBottomValue ? `bottom: ${shareBottomValue}` : ''};
+  bottom: ${shareBottomValue || '57px'};
   display: block;
   background-color: white;
   @media (min-width: 576px) {

@@ -1,15 +1,29 @@
+import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { withStyles } from '@mui/styles';
 import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined';
+import CloseIcon from '@mui/icons-material/Close';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { ThumbDownAltRounded } from '@mui/icons-material';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
-import { Popover } from '@mui/material';
+import { Popover, Tooltip } from '@mui/material';
 import DesignTokenColors from '../Style/DesignTokenColors';
+import VoterPositionEditModal from '../../../components/PositionItem/VoterPositionEditModal';
 
-function VoterPositionEntryAndDisplay () {
-  const [voterOpinion, setVoterOpinion] = useState(null);
-  const [anchorEl, setAnchorEL] = useState(null);
+
+// THIS VERSION IS DEPRECATED. Use this instead: src/js/components/PositionItem/VoterPositionEntryAndDisplay.jsx
+function VoterPositionEntryAndDisplay ({ classes }) {
+  const [voterOpinion, setVoterOpinion] = useState(true);
+  const [anchorElEdit, setAnchorElEdit] = useState(null);
+  const [anchorElLikes, setAnchorElLikes] = useState(null);
+  const [anchorElDislikes, setAnchorElDislikes] = useState(null);
+  const [showVoterEdit, setShowVoterEdit] = useState(false);
+
+  // Still to take care of:
+  // 1. hooking up the component to live data
+  // 2. hooking up the edit feature
+  // 3. format dislikes could be refactored with helper functions
 
   const voter = {
     first_name: 'David',
@@ -18,37 +32,84 @@ function VoterPositionEntryAndDisplay () {
     voter_photo_url_medium: '',
   };
 
+  const candidateName = 'Holly Mitchell';
+
   const opinion = {
     opinion_body: 'Holly can get the job done',
     opinion_time_created: new Date(),
-    opinion_likes: ['Blair H', 'Malena H', 'Anusha K', 'Ayobami B', 'Blair H', 'Blair H', 'Blair H', 'Blair H', 'Blair H', 'Blair H', 'Blair H', 'Blair H', 'Blair H', 'Blair H', 'Blair H', 'Blair H', 'Blair H', 'Blair H'],
-    opinion_dislikes: ['Enrique C'],
+    opinion_likes: [
+      { first_name: 'Blair', last_name: 'H', full_name: 'Blair H' },
+      { first_name: 'Malenia', last_name: 'H', full_name: 'Malena H' },
+      { first_name: 'Anusha', last_name: 'K', full_name: 'Anusha K' },
+      { first_name: 'Ayobami', last_name: 'B', full_name: 'Ayobami B' },
+      { first_name: 'Blair', last_name: 'H', full_name: 'Blair H' },
+      { first_name: 'Blair', last_name: 'H', full_name: 'Blair H' },
+      { first_name: 'Blair', last_name: 'H', full_name: 'Blair H' },
+      { first_name: 'Blair', last_name: 'H', full_name: 'Blair H' },
+      { first_name: 'Blair', last_name: 'H', full_name: 'Blair H' },
+      { first_name: 'Blair', last_name: 'H', full_name: 'Blair H' },
+      { first_name: 'Blair', last_name: 'H', full_name: 'Blair H' },
+      { first_name: 'Blair', last_name: 'H', full_name: 'Blair H' },
+      { first_name: 'Blair', last_name: 'H', full_name: 'Blair H' },
+      { first_name: 'Blair', last_name: 'H', full_name: 'Blair H' },
+      { first_name: 'Blair', last_name: 'H', full_name: 'Blair H' },
+      { first_name: 'Blair', last_name: 'H', full_name: 'Blair H' },
+      { first_name: 'Blair', last_name: 'H', full_name: 'Blair H' },
+    ],
+    opinion_dislikes: [
+      { first_name: 'Enrique', last_name: 'C', full_name: 'Enrique C' },
+    ],
   };
 
-  const handleVoterEditClick = () => {
-    console.log('Edit voter logic will go here');
+  // const handleVoterEditClick = () => {
+  //   console.log('Edit voter logic will go here');
+  // };
+
+  const handleSetOpinionClick = () => {
+    setVoterOpinion(opinion);
   };
 
   const formatNewDate = (date) => new Intl.DateTimeFormat('en-US', { month: '2-digit', day: 'numeric', year: '2-digit' }).format(date);
 
   const voterOpinionClick = () => {
-    setVoterOpinion(opinion);
+    setShowVoterEdit(!showVoterEdit);
   };
 
   const handleEditCommentClick = (e) => {
-    setAnchorEL(e.currentTarget);
+    setAnchorElEdit(e.currentTarget);
+  };
+
+  const handleViewLikesClick = (e) => {
+    setAnchorElLikes(e.currentTarget);
+  };
+
+  const handleViewDislikesClick = (e) => {
+    setAnchorElDislikes(e.currentTarget);
   };
 
   const handleEditCommentClose = () => {
-    setAnchorEL(null);
+    setAnchorElEdit(null);
   };
 
-  const open = Boolean(anchorEl);
-  const id = open ? 'simple-popover' : undefined;
+  const handleViewLikesClose = () => {
+    setAnchorElLikes(null);
+  };
+
+  const handleViewDislikesClose = () => {
+    setAnchorElDislikes(null);
+  };
+
+  const openEdit = Boolean(anchorElEdit);
+  const openLikes = Boolean(anchorElLikes);
+  const openDislikes = Boolean(anchorElDislikes);
+
+  const idEdit = openEdit ? 'simple-popover' : undefined;
+  const idLikes = openLikes ? 'simple-popover' : undefined;
+  const idDislikes = openDislikes ? 'simple-popover' : undefined;
 
   const formatLikesDislikes = (arr) => {
     if (arr.length > 4) {
-      const firstFourNames = arr.slice(0, 4).join(', ');
+      const firstFourNames = arr.slice(0, 4).map((nameObj) => nameObj.full_name).join(', ');
       const remainder = arr.length - 4;
       return (
         <p>
@@ -62,9 +123,25 @@ function VoterPositionEntryAndDisplay () {
         </p>
       );
     } else {
-      return <p>{arr.join(', ')}</p>;
+      return <p>{arr.map((nameObj) => nameObj.full_name).join(', ')}</p>;
     }
   };
+
+  const toolTipMessage = (arr) => (
+    <p>
+      See
+      {' '}
+      {arr.length > 1 ? 'reactions ' : 'reaction '}
+      from
+      {' '}
+      {arr.length}
+      {' '}
+      {arr.length > 1 ? 'users, ' : 'user, '}
+      like:
+      {' '}
+      {arr.map((nameObj) => nameObj.full_name).join(' ')}
+    </p>
+  );
 
   return (
     <VoterPositionContainer>
@@ -83,11 +160,17 @@ function VoterPositionEntryAndDisplay () {
               </>
             )}
         </VoterAvatar>
-        <VoterEdit onClick={handleVoterEditClick}>
+        <VoterEdit onClick={handleSetOpinionClick}>
           <EditIcon />
         </VoterEdit>
       </VoterAvatarDisplayContainer>
       <VoterOpinionDisplayContainer>
+        <VoterPositionEditModal
+          showVoterEdit={showVoterEdit}
+          setShowVoterEdit={setShowVoterEdit}
+          candidateName={candidateName}
+          voter={voter}
+        />
         {voterOpinion ? (
           <VoterOpinionContainer>
             <VoterTitle>
@@ -105,9 +188,9 @@ function VoterPositionEntryAndDisplay () {
                 <ThreeDotsIcon />
               </EditCommentPopoverClick>
               <Popover
-                open={open}
-                id={id}
-                anchorEl={anchorEl}
+                open={openEdit}
+                id={idEdit}
+                anchorEl={anchorElEdit}
                 onClose={handleEditCommentClose}
                 anchorReference="anchorPosition"
                 anchorPosition={{ top: 0, left: 220 }}
@@ -129,30 +212,138 @@ function VoterPositionEntryAndDisplay () {
                 <CommentLikeIconContainer>
                   <CommentLikeIcon />
                 </CommentLikeIconContainer>
-                <CommentLikesDislikesNamesContainer>
-                  {formatLikesDislikes(opinion.opinion_likes)}
-                </CommentLikesDislikesNamesContainer>
+                <Tooltip
+                  arrow
+                  placement="top"
+                  title={toolTipMessage(opinion.opinion_likes)}
+                  classes={{ tooltip: classes.toolTip, arrow: classes.arrow }}
+                >
+                  <CommentLikesDislikesNamesContainer onClick={handleViewLikesClick}>
+                    {formatLikesDislikes(opinion.opinion_likes)}
+                  </CommentLikesDislikesNamesContainer>
+                </Tooltip>
+                <Popover
+                    open={openLikes}
+                    id={idLikes}
+                    anchorEl={anchorElLikes}
+                    onClose={handleViewLikesClose}
+                    classes={{ paper: classes.popoverRoot }}
+                >
+                  <CommentLikesDislikesPopoverContainer>
+                    <CommentLikesDislikesPopoverHeaderContainer>
+                      <CommentLikesDislikesPopoverHeaderMessage>
+                        {opinion.opinion_likes.length}
+                        {' '}
+                        {opinion.opinion_likes.length > 1 ? 'people ' : 'person'}
+                        liked your comment
+                      </CommentLikesDislikesPopoverHeaderMessage>
+                      <ClosePopover aria-label="close-icon" type="button">
+                        <CloseIcon
+                          sx={{ stroke: 'white', strokeWidth: 0.5 }}
+                          onClick={handleViewLikesClose}
+                        />
+                      </ClosePopover>
+                    </CommentLikesDislikesPopoverHeaderContainer>
+                    <CommentLikesDislikesPopoverBodyContainer>
+                      {opinion.opinion_likes.map((nameObj) => (
+                        <CommentLikesDislikesAuthorContainer>
+                          <CommentLikesDislikesAuthorAvatarContainer>
+                            <CommentLikesDislikesAuthorAvatar>
+                              <CommentLikesDislikesAuthorFirstName>
+                                {nameObj.first_name[0]}
+                              </CommentLikesDislikesAuthorFirstName>
+                              <CommentLikesDislikesAuthorLastName>
+                                {nameObj.last_name[0]}
+                              </CommentLikesDislikesAuthorLastName>
+                            </CommentLikesDislikesAuthorAvatar>
+                          </CommentLikesDislikesAuthorAvatarContainer>
+                          <CommentLikesDislikesAuthorFullNameContainer>
+                            <CommentLikesDislikesAuthorFullName>
+                              {nameObj.full_name}
+                            </CommentLikesDislikesAuthorFullName>
+                          </CommentLikesDislikesAuthorFullNameContainer>
+                        </CommentLikesDislikesAuthorContainer>
+                      ))}
+                    </CommentLikesDislikesPopoverBodyContainer>
+                  </CommentLikesDislikesPopoverContainer>
+                </Popover>
               </CommentLikeContainer>
               <CommentDislikeContainer>
                 <CommentDislikeIconContainer>
                   <CommentDislikeIcon />
                 </CommentDislikeIconContainer>
-                <CommentLikesDislikesNamesContainer>
-                  {formatLikesDislikes(opinion.opinion_dislikes)}
-                </CommentLikesDislikesNamesContainer>
+                <Tooltip
+                  arrow
+                  placement="top"
+                  title={toolTipMessage(opinion.opinion_dislikes)}
+                  classes={{ tooltip: classes.toolTip, arrow: classes.arrow }}
+                >
+                  <CommentLikesDislikesNamesContainer onClick={handleViewDislikesClick}>
+                    {formatLikesDislikes(opinion.opinion_dislikes)}
+                  </CommentLikesDislikesNamesContainer>
+                </Tooltip>
+                <Popover
+                    open={openDislikes}
+                    id={idDislikes}
+                    anchorEl={anchorElDislikes}
+                    onClose={handleViewDislikesClose}
+                    classes={{ paper: classes.popoverRoot }}
+                >
+                  <CommentLikesDislikesPopoverContainer>
+                    <CommentLikesDislikesPopoverHeaderContainer>
+                      <CommentLikesDislikesPopoverHeaderMessage>
+                        {opinion.opinion_dislikes.length}
+                        {' '}
+                        {opinion.opinion_dislikes.length > 1 ? 'people ' : 'person '}
+                        disliked your comment
+                      </CommentLikesDislikesPopoverHeaderMessage>
+                      <ClosePopover aria-label="close-icon" type="button">
+                        <CloseIcon
+                          sx={{ stroke: 'white', strokeWidth: 0.5 }}
+                          onClick={handleViewDislikesClose}
+                        />
+                      </ClosePopover>
+                    </CommentLikesDislikesPopoverHeaderContainer>
+                    <CommentLikesDislikesPopoverBodyContainer>
+                      {opinion.opinion_dislikes.map((nameObj) => (
+                        <CommentLikesDislikesAuthorContainer>
+                          <CommentLikesDislikesAuthorAvatarContainer>
+                            <CommentLikesDislikesAuthorAvatar>
+                              <CommentLikesDislikesAuthorFirstName>
+                                {nameObj.first_name[0]}
+                              </CommentLikesDislikesAuthorFirstName>
+                              <CommentLikesDislikesAuthorLastName>
+                                {nameObj.last_name[0]}
+                              </CommentLikesDislikesAuthorLastName>
+                            </CommentLikesDislikesAuthorAvatar>
+                          </CommentLikesDislikesAuthorAvatarContainer>
+                          <CommentLikesDislikesAuthorFullNameContainer>
+                            <CommentLikesDislikesAuthorFullName>
+                              {nameObj.full_name}
+                            </CommentLikesDislikesAuthorFullName>
+                          </CommentLikesDislikesAuthorFullNameContainer>
+                        </CommentLikesDislikesAuthorContainer>
+                      ))}
+                    </CommentLikesDislikesPopoverBodyContainer>
+                  </CommentLikesDislikesPopoverContainer>
+                </Popover>
               </CommentDislikeContainer>
             </CommentLikeDislikeContainer>
           </VoterOpinionContainer>
         ) :
           (
             <LeaveOpinion onClick={voterOpinionClick}>
-              <LeaveOpinionText>What&apos;s your opinion?</LeaveOpinionText>
+              <LeaveOpinionText>What&apos;s your opinion? DEPRECATED</LeaveOpinionText>
             </LeaveOpinion>
           )}
       </VoterOpinionDisplayContainer>
     </VoterPositionContainer>
   );
 }
+
+VoterPositionEntryAndDisplay.propTypes = {
+  classes: PropTypes.object,
+};
 
 const VoterPositionContainer = styled('div')`
   display: flex;
@@ -185,14 +376,14 @@ const VoterImage = styled('img')`
 `;
 
 const VoterFirstName = styled('p')`
-  color: white;
+  color: ${DesignTokenColors.whiteUI};
   margin: 0;
   padding: 0;
   font-size: 16px;
 `;
 
 const VoterLastName = styled('p')`
-  color: white;
+  color: ${DesignTokenColors.whiteUI};
   margin-bottom: -4px;
   padding: 0;
   font-size: 11px;
@@ -376,6 +567,77 @@ const CommentLikesDislikesNamesContainer = styled('div')`
   margin-left: 5px;
 `;
 
+const CommentLikesDislikesPopoverContainer = styled('div')`
+  display: flex;
+  flex-direction: column;
+`;
+
+const CommentLikesDislikesPopoverHeaderContainer = styled('div')`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 1px solid ${DesignTokenColors.neutral100};
+  width: 100%;
+  padding: 15px 20px 15px 30px;
+`;
+
+const CommentLikesDislikesPopoverHeaderMessage = styled('h4')`
+  font-size: 18px;
+  margin: 0;
+`;
+
+const ClosePopover = styled('button')`
+  border: none;
+  background-color: transparent;
+`;
+
+const CommentLikesDislikesPopoverBodyContainer = styled('div')`
+  display: flex;
+  flex-direction: column;
+`;
+
+const CommentLikesDislikesAuthorContainer = styled('div')`
+  display: flex;
+  align-items: center;
+  padding: 10px;
+`;
+
+const CommentLikesDislikesAuthorAvatarContainer = styled('div')`
+  display: flex;
+  align-items: center;
+`;
+
+const CommentLikesDislikesAuthorAvatar = styled('div')`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 43px;
+  width: 43px;
+  border-radius: 50%;
+  background-color: ${DesignTokenColors.alert300};
+  color: ${DesignTokenColors.whiteUI}
+`;
+
+const CommentLikesDislikesAuthorFirstName = styled('p')`
+  font-size: 16px;
+  margin: 0;
+`;
+
+const CommentLikesDislikesAuthorLastName = styled('p')`
+  font-size: 11px;
+  margin: 2px 0 0 0;
+`;
+
+const CommentLikesDislikesAuthorFullNameContainer = styled('div')`
+  display: flex;
+  align-items: center;
+  margin: 0 0 0 10px;
+`;
+
+const CommentLikesDislikesAuthorFullName = styled('p')`
+  margin: 0;
+`;
+
 const CommentDislikeIconContainer = styled('div')`
   display: flex;
   justify-content: center;
@@ -392,4 +654,19 @@ const CommentDislikeIcon = styled(ThumbDownAltRounded)`
   color: white;
 `;
 
-export default VoterPositionEntryAndDisplay;
+const styles = () => ({
+  toolTip: {
+    backgroundColor: `${DesignTokenColors.neutral900}`,
+    width: '180px',
+  },
+  arrow: {
+    color: `${DesignTokenColors.neutral900}`,
+  },
+  popoverRoot: {
+    width: '304px',
+    height: '420px',
+    borderRadius: '30px',
+    border: `1px solid ${DesignTokenColors.neutral100}`,
+  },
+});
+export default withStyles(styles)(VoterPositionEntryAndDisplay);

@@ -2,6 +2,7 @@ import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
+import TagManager from 'react-gtm-module';
 import { Helmet } from 'react-helmet-async';
 import ActivityActions from '../actions/ActivityActions';
 import AnalyticsActions from '../actions/AnalyticsActions';
@@ -23,6 +24,7 @@ import webAppConfig from '../config';
 import VoterStore from '../stores/VoterStore';
 import { cordovaSimplePageContainerTopOffset } from '../utils/cordovaCalculatedOffsets';
 import lazyPreloadPages from '../utils/lazyPreloadPages';
+import { getPageDetails } from '../utils/lookupPageNameAndPageTypeDict';
 
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../common/components/Widgets/DelayedLoad'));
 const ElectionCountdown = React.lazy(() => import(/* webpackChunkName: 'ElectionCountdown' */ '../components/Ready/ElectionCountdown'));
@@ -40,6 +42,7 @@ class ReadyLight extends Component {
     this.state = {
       chosenReadyIntroductionText: '',
       chosenReadyIntroductionTitle: '',
+      dataLayerFired: false,
       voterIsSignedIn: false,
     };
   }
@@ -48,6 +51,7 @@ class ReadyLight extends Component {
     this.appStateSubscription = messageService.getMessage().subscribe((msg) => this.onAppObservableStoreChange(msg));
     this.onAppObservableStoreChange();
     AppObservableStore.setEvaluateHeaderDisplay();
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
 
     this.preloadTimer = setTimeout(() => {
       if (apiCalming('activityNoticeListRetrieve', 10000)) {
@@ -63,8 +67,14 @@ class ReadyLight extends Component {
     this.analyticsTimer = setTimeout(() => {
       AnalyticsActions.saveActionReadyVisit(VoterStore.electionId());
     }, 8000);
+    this.fireGTMDataLayerWhenReady();
     window.scrollTo(0, 0);
   }
+
+  componentDidUpdate () {
+    this.fireGTMDataLayerWhenReady();
+  }
+
 
   componentDidCatch (error, info) {
     console.log('ReadyLight.jsx caught: ', error, info.componentStack);
@@ -72,6 +82,7 @@ class ReadyLight extends Component {
 
   componentWillUnmount () {
     this.appStateSubscription.unsubscribe();
+    this.voterStoreListener.remove();
     clearTimeout(this.analyticsTimer);
     clearTimeout(this.preloadTimer);
     clearTimeout(this.voterPlansTimer);
@@ -92,6 +103,13 @@ class ReadyLight extends Component {
     });
   }
 
+  onVoterStoreChange () {
+    // console.log('Ready, onVoterStoreChange voter: ', VoterStore.getVoter());
+    this.setState({
+      voterIsSignedIn: VoterStore.getVoterIsSignedIn(), // Just to trigger update
+    });
+  }
+
   goToBallot = () => {
     historyPush('/ballot');
   }
@@ -102,6 +120,28 @@ class ReadyLight extends Component {
     }
     cordovaSimplePageContainerTopOffset(VoterStore.getVoterIsSignedIn());
     return {};
+  }
+
+  fireGTMDataLayerWhenReady () {
+    const { dataLayerFired } = this.state;
+    if (!dataLayerFired) {
+      if (VoterStore.voterFirstRetrieveCompleted()) {
+        const dataLayerObject = {
+          actionDetails: {
+            actionType: 'landing',
+          },
+          event: 'landing',
+          pageDetails: getPageDetails(),
+          userDetails: VoterStore.getAnalyticsUserDetails(),
+        };
+
+        TagManager.dataLayer({ dataLayer: dataLayerObject });
+
+        this.setState({
+          dataLayerFired: true,
+        });
+      }
+    }
   }
 
   render () {
@@ -126,9 +166,9 @@ class ReadyLight extends Component {
                 </Suspense>
               </ElectionCountdownInnerWrapper>
             </ElectionCountdownOuterWrapper>
-            <ViewBallotButtonWrapper className="col-12">
+            <ViewBallotButtonWrapper className="col-12" style={{ paddingTop: '18px' }}>
               <Suspense fallback={<></>}>
-                <ViewUpcomingBallotButton onClickFunction={this.goToBallot} onlyOfferViewYourBallot />
+                <ViewUpcomingBallotButton goToBallotFunction={this.goToBallot} onlyOfferViewYourBallot />
               </Suspense>
             </ViewBallotButtonWrapper>
 
@@ -175,7 +215,7 @@ class ReadyLight extends Component {
               </ReadyIntroductionMobileWrapper>
               <ViewBallotButtonWrapper className="col-12 u-show-mobile-tablet">
                 <Suspense fallback={<></>}>
-                  <ViewUpcomingBallotButton onClickFunction={this.goToBallot} />
+                  <ViewUpcomingBallotButton goToBallotFunction={this.goToBallot} />
                 </Suspense>
               </ViewBallotButtonWrapper>
               {!isAndroid() && (

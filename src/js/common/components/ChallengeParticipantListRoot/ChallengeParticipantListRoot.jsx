@@ -5,12 +5,12 @@ import { Button } from '@mui/material';
 import { withStyles } from '@mui/styles';
 import DesignTokenColors from '../Style/DesignTokenColors';
 import ChallengeParticipantList from './ChallengeParticipantList';
-import SearchBar2024 from '../../../components/Search/SearchBar2024';
+import SearchBar2024 from '../Search/SearchBar2024';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import ChallengeParticipantStore from '../../stores/ChallengeParticipantStore';
 import FirstChallengeParticipantListController from './FirstChallengeParticipantListController';
 import YourRankOutOf from '../Challenge/YourRankOutOf';
-import ChallengeStore from "../../stores/ChallengeStore";
+import ChallengeStore from '../../stores/ChallengeStore';
 
 // const FirstChallengeParticipantListController = React.lazy(() => import(/* webpackChunkName: 'FirstChallengeParticipantListController' */ './FirstChallengeParticipantListController'));
 const participantListDummyData = [
@@ -130,11 +130,11 @@ const ChallengeParticipantListRoot = ({ challengeWeVoteId, classes, uniqueExtern
           )}
         </LeaderboardInfoWrapper>
         <LeaderboardTableHeader>
-          <HeaderGroup gap="32px">
+          <HeaderGroup gap="70px">
             <HeaderItem>RANK</HeaderItem>
             <HeaderItem>NAME</HeaderItem>
           </HeaderGroup>
-          <HeaderGroup gap="10px">
+          <HeaderGroup gap="75px">
             <HeaderItem>POINTS</HeaderItem>
             <HeaderItem>FRIENDS JOINED</HeaderItem>
           </HeaderGroup>

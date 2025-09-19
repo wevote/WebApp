@@ -40,6 +40,16 @@ const muiStyleOverrides = {
       },
     },
   },
+  MuiDrawer: {
+    styleOverrides: {
+      root: {
+        fontFamily: '"Poppins", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif',
+        fontSize: 16,
+        outline: 'none !important',
+        textTransform: 'none',
+      },
+    },
+  },
   MuiFormControlLabel: {
     styleOverrides: {
       root: {

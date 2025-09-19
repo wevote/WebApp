@@ -51,6 +51,7 @@ function innerAjax (options) {
       // options.endpoint === 'challengeSave' || // TBD
       options.endpoint === 'challengeStartSave' ||
       options.endpoint === 'organizationPhotosSave' ||
+      options.endpoint === 'politicianSave' ||
       options.endpoint === 'reactionLikeStatusRetrieve' ||
       options.endpoint === 'voterContactListSave' ||
       options.endpoint === 'voterUpdate') {
@@ -115,7 +116,7 @@ export default function $ajax (options) {
         clearInterval(waitForJQuery);
         innerAjax(options);
       }
-      if (loop++ > 400) {
+      if (loop++ > 400 && loop < 405) {
         throw new Error('$ajax could not load jQuery within 20 seconds');
       }
     }, 10);

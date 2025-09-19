@@ -16,7 +16,7 @@ function JoinedAndDaysLeft ({ challengeWeVoteId, borderSwitcher, padding }) {
   const onChallengeStoreChange = () => {
     const daysToChallengeEnds = ChallengeStore.getDaysUntilChallengeEnds(challengeWeVoteId);
     // console.log('Days to challenge ends:', daysToChallengeEnds);
-    setDaysLeft(daysToChallengeEnds);
+    setDaysLeft(Math.max(daysToChallengeEnds, 0));
     setVoterIsChallengeParticipant(ChallengeStore.getVoterIsChallengeParticipant(challengeWeVoteId));
   };
 
@@ -42,9 +42,7 @@ function JoinedAndDaysLeft ({ challengeWeVoteId, borderSwitcher, padding }) {
           <InfoIcon src={InfoOutlineIcon} alt="Info" />
         )}
         <DaysLeftText>
-          {daysLeft}
-          {' '}
-          Days Left
+          {daysLeft === 0 ? 'Challenge Ended' : `${daysLeft} Days Left`}
         </DaysLeftText>
       </JoinedInfoWrapper>
       <Suspense fallback={<span>&nbsp;</span>}>

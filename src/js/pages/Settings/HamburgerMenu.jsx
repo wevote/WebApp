@@ -139,6 +139,7 @@ export default class HamburgerMenu extends Component {
     const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
     console.log(`Hamburger menu this.state.showDeviceDialog ${this.state.showDeviceDialog}`);
     const version = getCordovaBuildVersion();
+    const pigsCanFly = false;
 
     return (
       <PageContentContainer>
@@ -170,6 +171,16 @@ export default class HamburgerMenu extends Component {
               />
             )}
 
+            {(isSignedIn && pigsCanFly) && (
+              <HamburgerMenuRow
+                icon="fa fa-address-card"
+                iconStyle={{ fontSize: 28, color: '#1c2f4b' }}
+                linkText="Ballot Address"
+                onClickAction={null}
+                to="/settings/address"
+              />
+            )}
+
             {isSignedIn && (
               <HamburgerMenuRow
                 fullIcon={this.yourAccountIcon(voterPhotoUrlMedium)}
@@ -182,7 +193,7 @@ export default class HamburgerMenu extends Component {
             {isSignedIn && (
               <HamburgerMenuRow
                 fullIcon={this.yourAccountIcon(voterPhotoUrlMedium)}
-                linkText="Your Privacy & Data"
+                linkText="Privacy & Data"
                 onClickAction={null}
                 to="/settings/yourdata"
               />

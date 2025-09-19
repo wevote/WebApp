@@ -35,10 +35,11 @@ class Testimonial extends React.Component {
             kind_of_ballot_item="CANDIDATE"
           />
         </Suspense>
-        <TestimonialAuthor>
+        <TestimonialAuthor id="testimonial_Author">
           {testimonialAuthor}
         </TestimonialAuthor>
         <TextStyled
+          id="testimonialText"
           style={textStyle}
         >
           <FormatQuote style={{

@@ -14,7 +14,6 @@ import ReactionStore from '../../stores/ReactionStore';
 import VoterStore from '../../stores/VoterStore';
 import ActivityCommentAdd from './ActivityCommentAdd';
 import ChildCommentList from './ChildCommentList';
-import speakerDisplayNameToAvatarColor from '../../common/utils/speakerDisplayNameToAvatarColor';
 import speakerDisplayNameToInitials from '../../common/utils/speakerDisplayNameToInitials';
 
 
@@ -229,6 +228,7 @@ class ActivityTidbitComments extends Component {
           numberOfCommentsDisplayed += 1;
           likeButtonSelected = !!(voterLikesThisItemByWeVoteId[parentComment.we_vote_id]);
           commenterIsVoter = (voterWeVoteId === parentComment.commenter_voter_we_vote_id);
+          const { sx, children } = speakerDisplayNameToInitials(parentComment.commenter_name);
           // console.log('parentComment.comment_list:', parentComment.comment_list);
           return (
             <CommentWrapper key={`comment-${parentComment.we_vote_id}`}>
@@ -239,8 +239,8 @@ class ActivityTidbitComments extends Component {
                   </SpeakerAvatar>
                 ) : (
                   <SpeakerAvatar>
-                    <Avatar sx={speakerDisplayNameToAvatarColor(parentComment.commenter_name)}>
-                      {speakerDisplayNameToInitials(parentComment.commenter_name)}
+                    <Avatar sx={sx}>
+                      {children}
                     </Avatar>
                   </SpeakerAvatar>
                 )}

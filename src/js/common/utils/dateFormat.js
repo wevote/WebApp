@@ -1,6 +1,6 @@
 // dateFormat.js
 import initializeMoment from './initializeMoment';
-import { convertToInteger } from './textFormat';
+import convertToInteger from './convertToInteger';
 
 // eslint-disable-next-line consistent-return
 export function formatDateToMonthDayYear (dateString) {

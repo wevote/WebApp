@@ -50,7 +50,7 @@ class OfficeItemReadyToVote extends Component {
 
     this.props.candidateList.forEach((candidate) => {
       if (candidate.we_vote_id) {
-        (ballotItemStatSheet = SupportStore.getBallotItemStatSheet(candidate.we_vote_id));
+        (ballotItemStatSheet = SupportStore.getBallotItemStatSheet(candidate.we_vote_id, candidate.politician_we_vote_id));
         if (ballotItemStatSheet) {
           ({ voterSupportsBallotItem } = ballotItemStatSheet);
           if (voterSupportsBallotItem) {
@@ -70,7 +70,7 @@ class OfficeItemReadyToVote extends Component {
 
       this.props.candidateList.forEach((candidate) => {
         if (candidate.we_vote_id) {
-          (ballotItemStatSheet = SupportStore.getBallotItemStatSheet(candidate.we_vote_id));
+          (ballotItemStatSheet = SupportStore.getBallotItemStatSheet(candidate.we_vote_id, candidate.politician_we_vote_id));
           if (ballotItemStatSheet) {
             ({ numberOfOpposePositionsForScore, numberOfSupportPositionsForScore } = ballotItemStatSheet);
             if (numberOfSupportPositionsForScore > numberOfOpposePositionsForScore) {

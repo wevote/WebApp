@@ -58,7 +58,7 @@ class FriendDetails extends Component {
     let mutualFriendImageHtmlArray = <></>;
     if (mutualFriendPreviewList) {
       const mutualFriendPreviewListSorted = mutualFriendPreviewList.sort(this.orderByPhotoExists);
-      mutualFriendsTooltip = isMobileScreenSize() ? (<span />) : (
+      mutualFriendsTooltip = isMobileScreenSize() ? (<></>) : (
         <Tooltip className="u-z-index-9020" id="mutualFriendsTooltip">
           <div>
             {mutualFriendPreviewListSorted.map((mutualFriend) => {

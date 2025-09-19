@@ -1,6 +1,6 @@
 import { Close } from '@mui/icons-material';
 import { Dialog } from '@base-ui-components/react/dialog';
-import { DialogContent, DialogTitle, IconButton } from '@mui/material';
+import { DialogContent, DialogTitle, Divider, IconButton } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
@@ -25,8 +25,12 @@ class ModalDisplayTemplateA extends Component {
     } = this.props;
     let dialogPaperCombined;
     if (tallMode) {
-      dialogPaperCombined = { ...classes.dialogPaper, ...classes.dialogPaperAdditionTall };
-    } else {
+      dialogPaperCombined = `${classes.dialogPaper} ${classes.dialogPaperAdditionTall}`;
+    }
+    // if (tallMode) {
+    //   dialogPaperCombined = { ...classes.dialogPaper, ...classes.dialogPaperAdditionTall };
+    // }
+    else {
       dialogPaperCombined = classes.dialogPaper;
     }
     // This template is used by other components like ActivityPostModal, and PositionStatementModal
@@ -80,12 +84,12 @@ export const templateAStyles = (theme) => ({
   dialogPaper: {
     marginTop: hasIPhoneNotch() ? 68 : 48,
     minHeight: isAndroid() ? '257px' : '200px',
-    maxHeight: '350px',
-    height: '80%',
+    // maxHeight: '350px',
+    // height: '80%',
     width: '90%',
     maxWidth: '600px',
-    top: '0',
-    transform: isAndroid() ? 'translate(0%, -18%)' : 'translate(0%, -20%)',
+    // top: '0',
+    // transform: isAndroid() ? 'translate(0%, -18%)' : 'translate(0%, -20%)',
     [theme.breakpoints.down('xs')]: {
       minWidth: '95%',
       maxWidth: '95%',
@@ -98,7 +102,7 @@ export const templateAStyles = (theme) => ({
     },
   },
   dialogPaperAdditionTall: {
-    maxHeight: '550px',
+    maxHeight: '750px',
     [theme.breakpoints.down('xs')]: {
       maxHeight: '530px',
     },
@@ -113,7 +117,7 @@ export const templateAStyles = (theme) => ({
   closeButton: {
     position: 'absolute',
     right: theme.spacing(1),
-    top: isAndroid() ? '-4px' : theme.spacing(1),
+    top: 0,
   },
   saveButtonRoot: {
     width: '100%',
@@ -158,6 +162,7 @@ const DialogContentInnerWrapper = styled('div')`
 const DialogTitleInnerWrapper = styled('div')`
   display: flex;
   justify-content: space-between;
+  align-items: flex-start;
   min-height: 28px;
 `;
 
@@ -194,7 +199,6 @@ const Title = styled('div')`
   font-size: 16px;
   font-weight: bold;
   margin: 0;
-  margin-top: 2px;
   text-align: left;
   padding-left: 16px;
 `;

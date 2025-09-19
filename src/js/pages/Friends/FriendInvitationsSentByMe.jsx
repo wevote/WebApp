@@ -9,7 +9,7 @@ import { renderLog } from '../../common/utils/logging';
 import FriendInvitationList from '../../components/Friends/FriendInvitationList';
 import MessageCard from '../../components/Widgets/MessageCard';
 import FriendStore from '../../stores/FriendStore';
-import SearchBar2024 from '../../components/Search/SearchBar2024';
+import SearchBar2024 from '../../common/components/Search/SearchBar2024';
 
 export default class FriendInvitationsSentByMe extends Component {
   constructor (props) {

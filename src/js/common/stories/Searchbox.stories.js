@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import BaseSearchbox from '../../components/Search/BaseSearchbox';
+import SearchBase from '../components/Search/SearchBase';
 
 export default {
   title: 'Design System/Inputs',
-  component: BaseSearchbox,
+  component: SearchBase,
   parameters: {
     layout: 'centered',
   },
@@ -20,6 +20,6 @@ const Container = styled.div`
 
 export const Searchbox = () => (
   <Container>
-    <BaseSearchbox placeholder="Search by name, office or state" />
+    <SearchBase placeholder="Search by name or office" />
   </Container>
 );

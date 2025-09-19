@@ -262,7 +262,7 @@ class ContactFriendsByMessageType extends Component {
                     multiline
                     name="incomingEmailsOrPhonesString"
                     onChange={this.cacheIncomingEmailsOrPhones}
-                    onFocus={focusTextFieldAndroid}
+                    onFocus={() => focusTextFieldAndroid('ContactFriendsByMessageType')}
                     onBlur={blurTextFieldAndroid}
                     placeholder="For example: name@domain.com"
                     type="text"

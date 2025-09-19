@@ -4,8 +4,8 @@ import SupportActions from '../actions/SupportActions';
 import VoterGuideActions from '../actions/VoterGuideActions';
 import Dispatcher from '../common/dispatcher/Dispatcher';
 import apiCalming from '../common/utils/apiCalming';
+import convertToInteger from '../common/utils/convertToInteger';
 import { isSpeakerTypeOrganization, isSpeakerTypePublicFigure } from '../utils/organization-functions';
-import { convertToInteger } from '../common/utils/textFormat';
 import convertVoterGuideToElection from '../utils/voterGuideFunctions';
 import OrganizationStore from './OrganizationStore'; // eslint-disable-line import/no-cycle
 import VoterStore from './VoterStore'; // eslint-disable-line import/no-cycle
@@ -264,7 +264,8 @@ class VoterGuideStore extends ReduceStore {
     // Exit if we don't have a successful response (since we expect certain variables in a successful response below)
     if (!action.res || !action.res.success) return state;
     const {
-      allCachedVoterGuides, allCachedVoterGuidesByElection, organizationWeVoteIdsByIssueWeVoteId,
+      allCachedVoterGuides, allCachedVoterGuidesByElection,
+      organizationWeVoteIdsByIssueWeVoteId,
       organizationWeVoteIdsToFollowOrganizationRecommendationDict, organizationWeVoteIdsToFollowBallotItemsDict,
     } = state;
     let {

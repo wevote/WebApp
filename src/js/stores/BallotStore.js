@@ -1,5 +1,6 @@
 import { ReduceStore } from 'flux/utils';
 import assign from 'object-assign';
+import parser from 'parse-address';
 import AppObservableStore from '../common/stores/AppObservableStore'; // eslint-disable-line import/no-cycle
 import BallotActions from '../actions/BallotActions';
 import CandidateActions from '../actions/CandidateActions';
@@ -74,6 +75,23 @@ class BallotStore extends ReduceStore {
     }
   }
 
+  getMaxRaceOfficeLevel (googleCivicElectionId = 0) {
+    const allBallotItemsSnapshot = this.getAllBallotItemsFlattened(googleCivicElectionId);
+    const scopeOrder = ['Federal', 'State', 'Local', 'Measure'];
+    let maxScope = '';
+
+    allBallotItemsSnapshot.forEach((item) => {
+      const currentScope = item.race_office_level;
+      if (scopeOrder.indexOf(currentScope) > -1) {
+        if (maxScope === '' || scopeOrder.indexOf(currentScope) < scopeOrder.indexOf(maxScope)) {
+          maxScope = currentScope;
+        }
+      }
+    });
+
+    return maxScope || '';
+  }
+
   get getAllBallotItemsLastStateCodeReceived () {
     return this.getState().allBallotItemsLastStateCodeReceived;
   }
@@ -137,7 +155,7 @@ class BallotStore extends ReduceStore {
   }
 
   get nextNationalElectionDayText () {
-    return this.getState().nextNationalElectionDayText || '2024-11-05';
+    return this.getState().nextNationalElectionDayText || '2026-11-03';
   }
 
   get currentBallotGoogleCivicElectionId () {
@@ -149,6 +167,40 @@ class BallotStore extends ReduceStore {
     if (!this.isLoaded()) { return undefined; }
     const civicId = VoterStore.electionId();
     return this.getState().ballots[civicId].polling_location_we_vote_id_source;
+  }
+
+  getAnalyticsElectionDetails (textForMapSearch = '') {
+    const electionGeo = {
+      region: '',
+      city: '',
+      zip: '',
+    };
+    const incomingTextForMapSearch = textForMapSearch || VoterStore.getTextForMapSearch();
+    if (incomingTextForMapSearch) {
+      const parsedAddress = parser.parseLocation(incomingTextForMapSearch);
+      if (parsedAddress) {
+        electionGeo.city = parsedAddress.city || '';
+        electionGeo.region = parsedAddress.state || '';
+        electionGeo.zip = parsedAddress.zip || '';
+      }
+    }
+
+    const electionDate = this.currentBallotElectionDate;
+    let electionYear = '';
+    // Regular expression to match the format YYYY-MM-DD
+    const dateFormatRegex = /^\d{4}-\d{2}-\d{2}$/;
+    if (electionDate && dateFormatRegex.test(electionDate)) {
+      electionYear = electionDate.substring(0, 4);
+    }
+    return {
+      electionDate,
+      electionGeo,
+      electionLevel: this.getMaxRaceOfficeLevel(),
+      electionName: this.currentBallotElectionName,
+      electionType: '',
+      electionYear,
+      politicalOffice: '',
+    };
   }
 
   getBallotCaveat () {
@@ -503,6 +555,7 @@ class BallotStore extends ReduceStore {
     let voterBallotList = [];
     let voterGuides;
     let voterGuideElectionListByElectionId;
+    let yearMonthDayArray = [];
     const { ballotItemListCandidatesDict, ballotItemUnfurledTracker: newBallotItemUnfurledTracker } = state;
 
     switch (action.type) {
@@ -700,9 +753,14 @@ class BallotStore extends ReduceStore {
         revisedState = { ...revisedState, ballotCaveat };
         googleCivicElectionId = action.res.google_civic_election_id || 0;
         googleCivicElectionId = parseInt(googleCivicElectionId, 10);
-        nextNationalElectionDayText = action.res.next_national_election_day_text;
-        if (nextNationalElectionDayText && nextNationalElectionDayText !== '') {
-          revisedState = { ...revisedState, nextNationalElectionDayText };
+        if (action.res.next_national_election_day_text) {
+          yearMonthDayArray = action.res.next_national_election_day_text.split('-');
+          if (yearMonthDayArray[0] > '2024' && yearMonthDayArray[1] > '11' && yearMonthDayArray[2] > '11') {
+            nextNationalElectionDayText = action.res.next_national_election_day_text;
+            if (nextNationalElectionDayText && nextNationalElectionDayText !== '') {
+              revisedState = { ...revisedState, nextNationalElectionDayText };
+            }
+          }
         }
         textForMapSearch = action.res.text_for_map_search;
         revisedState = { ...revisedState, textForMapSearch };

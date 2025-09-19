@@ -1,0 +1,13 @@
+[
+  {
+    "browserName": "Chrome",
+    "bstack:options": {
+      "os": "Windows",
+      "osVersion": "10",
+      "browserVersion": "latest",
+      "seleniumLogs": "false",
+      "seleniumVersion": "4.11.0",
+      "autoWait": 10
+    }
+  }
+]

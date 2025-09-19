@@ -22,7 +22,7 @@ export const CampaignDescriptionDesktop = styled('div')`
 export const CampaignDescriptionWrapper = styled('div', {
   shouldForwardProp: (prop) => !['hideCardMargins'].includes(prop),
 })(({ hideCardMargins }) => (`
-  ${hideCardMargins ? 'padding: 10px 0 10px 0;' : 'margin: 10px;'}
+  ${hideCardMargins ? 'padding:  0;' : 'margin: 10px;'}
 `));
 
 export const CampaignDescriptionDesktopWrapper = styled('div')(({ theme }) => (`
@@ -229,6 +229,7 @@ export const OneCampaignInnerWrapper = styled('div')(({ theme }) => (`
     justify-content: space-between;
     margin: 15px;
   }
+  ${isCordova() ? 'padding-top: 44px;' : ''}
 `));
 
 export const OneCampaignOuterWrapper = styled('div')(({ theme }) => (`

@@ -10,7 +10,7 @@ import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import SearchBar2024 from '../Search/SearchBar2024';
+import SearchBar2024 from '../../common/components/Search/SearchBar2024';
 import FriendList from './FriendList';
 import FriendActions from '../../actions/FriendActions';
 import apiCalming from '../../common/utils/apiCalming';

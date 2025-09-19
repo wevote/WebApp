@@ -12,7 +12,6 @@ import { getApplicationViewBooleans } from '../../utils/applicationUtils';
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
 const FooterBar = React.lazy(() => import(/* webpackChunkName: 'FooterBar' */ './FooterBar'));
 const FooterMain = React.lazy(() => import(/* webpackChunkName: 'FooterMain' */ './FooterMain'));
-const ShareButtonFooter = React.lazy(() => import(/* webpackChunkName: 'ShareButtonFooter' */ '../Share/ShareButtonFooter'));
 
 
 
@@ -83,6 +82,7 @@ class Footer extends Component {
       showFooterMain: previousShowFooterMain,
       showShareButtonFooter: previousShowShareButtonFooter,
     } = this.state;
+    // console.log('Footer onAppObservableStoreChange state after update: ', this.state);
     if (previousPathname !== pathname) {
       this.setState({
         previousPathname: pathname,
@@ -135,13 +135,6 @@ class Footer extends Component {
               </DelayedLoad>
             </Suspense>
           </FooterMainWrapper>
-        )}
-        {showShareButtonFooter && (
-          <Suspense fallback={<span>&nbsp;</span>}>
-            <DelayedLoad waitBeforeShow={3000}>
-              <ShareButtonFooter />
-            </DelayedLoad>
-          </Suspense>
         )}
         {showFooterBar && (
           <FooterBarWrapper className={isWebApp() ? 'footroom-wrapper' : 'footroom-wrapper-cordova'}>

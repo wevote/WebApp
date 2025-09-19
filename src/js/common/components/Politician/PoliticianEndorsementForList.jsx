@@ -22,7 +22,7 @@ import PoliticianStore from '../../stores/PoliticianStore';
 import VoterStore from '../../../stores/VoterStore';
 import speakerDisplayNameToInitials from '../../utils/speakerDisplayNameToInitials';
 
-
+// DALE NOTE: I believe we can deprecate and delete this file: May 2025
 class PoliticianEndorsementForList extends Component {
   constructor (props) {
     super(props);

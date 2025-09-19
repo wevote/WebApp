@@ -69,7 +69,7 @@ export default class PositionInformationOnlySnippet extends Component {
     }
 
     const labelText = 'This position is information-only, as opposed to “support” or “oppose”';
-    const tooltip = isMobileScreenSize() ? (<span />) : (
+    const tooltip = isMobileScreenSize() ? (<></>) : (
       <Tooltip id="tooltip">{labelText}</Tooltip>
     );
 

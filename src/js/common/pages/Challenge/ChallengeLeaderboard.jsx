@@ -3,11 +3,10 @@ import styled from 'styled-components';
 import { Button } from '@mui/material';
 import PropTypes from 'prop-types';
 import { withStyles } from '@mui/styles';
-import SearchBar2024 from '../../../components/Search/SearchBar2024';
-import DesignTokenColors from '../../components/Style/DesignTokenColors';
+import SearchBar2024 from '../../components/Search/SearchBar2024';
 import ChallengeParticipantList from '../../components/ChallengeParticipantListRoot/ChallengeParticipantList';
 import AppObservableStore from '../../stores/AppObservableStore';
-import YourRankOutOf from '../Challenge/YourRankOutOf';
+import YourRankOutOf from '../../components/Challenge/YourRankOutOf';
 
 
 const ChallengeLeaderboard = ({ classes, challengeWeVoteId, clearSearchFunction, searchFunction }) => {
@@ -30,7 +29,7 @@ const ChallengeLeaderboard = ({ classes, challengeWeVoteId, clearSearchFunction,
         <ButtonAndSearchWrapper>
           <ButtonWrapper>
             <Button
-              classes={{root: classes.buttonDesktop}}
+              classes={{ root: classes.buttonDesktop }}
               color="primary"
               id="challengeLeaderboardYouButton"
               onClick={() => console.log('You button clicked')}
@@ -39,7 +38,7 @@ const ChallengeLeaderboard = ({ classes, challengeWeVoteId, clearSearchFunction,
               You
             </Button>
             <Button
-              classes={{root: classes.buttonDesktop}}
+              classes={{ root: classes.buttonDesktop }}
               color="primary"
               id="challengeLeaderboardTop50Button"
               onClick={() => console.log('Top 50 button clicked')}
@@ -57,19 +56,20 @@ const ChallengeLeaderboard = ({ classes, challengeWeVoteId, clearSearchFunction,
               clearFunction={clearSearchFunction}
               searchUpdateDelayTime={500}
             />
-          </SearchBarWrapper>f
+          </SearchBarWrapper>
+          f
         </ButtonAndSearchWrapper>
         <LeaderboardInfoWrapper>
           {!!(rankOfVoter) && (
-              <YourRankOutOf rankOfVoter={rankOfVoter} participantsCount={participantsCount} />
-            )}
+            <YourRankOutOf rankOfVoter={rankOfVoter} participantsCount={participantsCount} />
+          )}
         </LeaderboardInfoWrapper>
         <LeaderboardTableHeader>
-          <div style={{display: 'flex', gap: '32px'}}>
+          <div style={{ display: 'flex', gap: '32px' }}>
             <p>RANK</p>
             <p>NAME</p>
           </div>
-          <div style={{display: 'flex', gap: '25px'}}>
+          <div style={{ display: 'flex', gap: '25px' }}>
             <p>POINTS</p>
             <p>FRIENDS JOINED</p>
           </div>
@@ -77,7 +77,7 @@ const ChallengeLeaderboard = ({ classes, challengeWeVoteId, clearSearchFunction,
       </TopSection>
       <ChallengeParticipantList
         challengeWeVoteId={challengeWeVoteId}
-        currentVoterWeVoteId={'wv02voter123'}
+        currentVoterWeVoteId="wv02voter123"
       />
     </LeaderboardContainer>
   );

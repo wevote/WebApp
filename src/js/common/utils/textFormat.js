@@ -33,6 +33,7 @@ export function calculateBallotBaseUrl (incomingBallotBaseUrl, incomingPathname)
     ballotBaseUrl = `${temp4}/ballot`;
     // console.log("ballotBaseUrl:", ballotBaseUrl);
   } else {
+    // ballotBaseUrl = incomingPathname || '/ballot';  // Changed for WV-676 but needs review
     ballotBaseUrl = incomingBallotBaseUrl || '/ballot';
   }
   return ballotBaseUrl;
@@ -71,10 +72,6 @@ export function cleanArray (actual) {
     }
   }
   return newArray;
-}
-
-export function convertToInteger (incomingNumber) {
-  return parseInt(incomingNumber, 10) || 0;
 }
 
 export function extractTwitterHandleFromTextString (incomingString) {

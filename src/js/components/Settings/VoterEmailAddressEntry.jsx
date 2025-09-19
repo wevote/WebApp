@@ -23,10 +23,11 @@ import { validateEmail } from '../../utils/regex-checks';
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 
 /* global $ */
-let shiftTabKeyPressed = false
+let shiftTabKeyPressed = false;
 class VoterEmailAddressEntry extends Component {
   constructor (props) {
     super(props);
+    this.emailInputRef = React.createRef();
     this.state = {
       disableEmailVerificationButton: true,
       displayEmailVerificationButton: false,
@@ -67,9 +68,9 @@ class VoterEmailAddressEntry extends Component {
     this.onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     VoterActions.voterEmailAddressRetrieve();
-    const inputFld = $('#enterVoterEmailAddress');
-    // console.log('enterVoterEmailAddress ', $(inputFld));
-    $(inputFld).blur();
+    if (this.emailInputRef && this.emailInputRef.current) {
+      this.emailInputRef.current.blur();
+    };
     this._isMounted = true;
   }
 
@@ -203,9 +204,6 @@ class VoterEmailAddressEntry extends Component {
     setTimeout(() => {
       // A timer hack to prevent a "React state update on an unmounted component"
       VoterActions.clearSecretCodeVerificationStatusAndEmail();
-      // if (isCordova()) {
-      //   this.closeSignInModalLocal();
-      // }
     }, 1000);
     if (this.props.closeVerifyModal) {
       this.props.closeVerifyModal();
@@ -239,13 +237,25 @@ class VoterEmailAddressEntry extends Component {
     const { voterEmailAddress } = this.state;
     if (!voterEmailAddress) {
       // Only hide the phone verification button if the user has not "unlocked" the button used to send the message.
+      this.props.showAllSignInOptions();
       this.setState({
         displayEmailVerificationButton: false,
       });
-      if(!shiftTabKeyPressed){
-        const TermsOfServiceLink = document.getElementById("openTermsOfService");
+      if (!shiftTabKeyPressed) {
+        const TermsOfServiceLink = document.getElementById('openTermsOfService');
         if (TermsOfServiceLink) {
-          TermsOfServiceLink.focus(); 
+          TermsOfServiceLink.focus();
+        }
+      } else if (isCordova() || isMobileScreenSize()) {
+        if (this.props.showPhoneOnlySignIn) {
+          this.props.showPhoneOnlySignIn();
+          setTimeout(() => {
+            // console.log('VoterEmailAddress focus to enterVoterPhone');
+            const nextField = document.getElementById('enterVoterPhone');
+            if (nextField) {
+              nextField.focus();
+            }
+          }, 100);
         }
       }
       blurTextFieldAndroid();
@@ -264,17 +274,21 @@ class VoterEmailAddressEntry extends Component {
 
     // console.log('before clearSecretCodeVerificationStatusAndEmail in onCancel');
     VoterActions.clearSecretCodeVerificationStatusAndEmail();
+    this.props.showAllSignInOptions();
+    if (this.state.emailErrorTimeoutId) {
+      clearTimeout(this.state.emailErrorTimeoutId);
+    }
+    this.setState({ displayIncorrectEmailError: false });
+    const textField = document.getElementById('enterVoterEmailAddress');
+    textField.innerText = '';
     const { cancelShouldCloseModal } = this.props;
     // console.log('cancelShouldCloseModal:', cancelShouldCloseModal);
     if (cancelShouldCloseModal) {
       this.closeSignInModalLocal();
-    } else if (isCordova() || isMobileScreenSize()) {
-      if (this.props.showAllSignInOptions) {
-        this.props.showAllSignInOptions();
-      }
     }
     const TermsOfServiceLink = document.getElementById('openTermsOfService');
     if (TermsOfServiceLink) {
+      // console.log('VoterEmailAddress focus to TermsOfServiceLink');
       TermsOfServiceLink.focus();
     }
   };
@@ -310,7 +324,7 @@ class VoterEmailAddressEntry extends Component {
     const ENTER_KEY_CODE = 13;
     const SPACE_KEY_CODE = 32;
     const keyCodesToBlock = [ENTER_KEY_CODE, SPACE_KEY_CODE];
-    if (event.key === "Tab" && event.shiftKey) {
+    if (event.key === 'Tab' && event.shiftKey) {
       shiftTabKeyPressed = true;
     } else {
       shiftTabKeyPressed = false;
@@ -437,22 +451,8 @@ class VoterEmailAddressEntry extends Component {
       </span>
     );
 
-    // let enterEmailTitle = isWebApp() ? 'Email' : 'Email the Sign In code to';
-    // // let enterEmailExplanation = isWebApp() ? "You'll receive a magic link in your email. Click that link to be signed into your WeVote account." :
-    // //   "You'll receive a magic link in the email on this phone. Click that link to be signed into your WeVote account.";
-    // if (voter && voter.is_signed_in) {
-    //   enterEmailTitle = 'Add New Email';
-    //   // enterEmailExplanation = isWebApp() ? "You'll receive a magic link in your email. Click that link to verify this new email." :
-    //   //   "You'll receive a magic link in the email on this phone. Click that link to verify this new email.";
-    // }
-
     const enterEmailHtml = hideSignInWithEmailForm ? null : (
       <div style={{ paddingTop: 10 }}>
-        {/*
-        <SignInSectionText>
-          {enterEmailTitle}
-        </SignInSectionText>
-        */}
         <form className="form-inline">
           <TextField
             autoComplete="off"
@@ -475,6 +475,7 @@ class VoterEmailAddressEntry extends Component {
             onKeyDown={this.onKeyDown}
             placeholder="Type email here..."
             type="email"
+            ref={this.emailInputRef}
             value={voterEmailAddress}
             variant="outlined"
           />
@@ -484,7 +485,6 @@ class VoterEmailAddressEntry extends Component {
                 <Button
                   id="cancelEmailButton"
                   color="primary"
-                  // disabled={signInCodeEmailSentAndWaitingForResponse} // Never disable Cancel
                   fullWidth
                   onClick={this.onCancel}
                   onAnimationEnd={this.onAnimationEndCancel}
@@ -620,7 +620,7 @@ class VoterEmailAddressEntry extends Component {
                       <span
                         className="u-link-color u-cursor--pointer u-no-break"
                         onClick={() => this.reSendSignInCodeEmail(voterEmailAddressFromList.normalized_email_address)}
-                        id = "sendVerificationCodeAgain"
+                        id="sendVerificationCodeAgain"
                       >
                         Send verification again
                       </span>
@@ -669,7 +669,7 @@ class VoterEmailAddressEntry extends Component {
             )}
             {unverifiedEmailsFound && (
               <EmailSection isWeb={isWebApp()}>
-                <span className="h3" id = "emailVerifyTitle">Emails to Verify</span>
+                <span className="h3" id="emailVerifyTitle">Emails to Verify</span>
                 {toVerifyEmailListHtml}
               </EmailSection>
             )}
@@ -702,6 +702,7 @@ VoterEmailAddressEntry.propTypes = {
   hideSignInWithEmailForm: PropTypes.bool,
   lockOpenEmailVerificationButton: PropTypes.bool,
   showAllSignInOptions: PropTypes.func,
+  showPhoneOnlySignIn: PropTypes.func,
   showEmailOnlySignIn: PropTypes.func,
 };
 
@@ -743,13 +744,6 @@ const EmailSection = styled('div', {
 })(({ isWeb }) => (`
   margin-top: ${isWeb ? '0' : '0'};
 `));
-
-// const SignInSectionText = styled('div')`
-//   display: block;
-//   text-align: left;
-//   font-weight: 500;
-//   margin-bottom: 6px;
-// `;
 
 const Wrapper = styled('div', {
   shouldForwardProp: (prop) => !['isWeb'].includes(prop),

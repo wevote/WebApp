@@ -1,11 +1,12 @@
+import React, { Component } from 'react';
 import { LockOutlined } from '@mui/icons-material';
+import TagManager from 'react-gtm-module';
 import { Button, InputAdornment, TextField } from '@mui/material';
 import { styled as muiStyled } from '@mui/styles';
 import withStyles from '@mui/styles/withStyles';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
 import styled from 'styled-components';
 import DonationListForm from '../Donation/DonationListForm';
 import InjectedCheckoutForm from '../Donation/InjectedCheckoutForm';
@@ -23,12 +24,14 @@ import CampaignStore from '../../stores/CampaignStore';
 import { getCampaignXValuesFromIdentifiers, retrieveCampaignXFromIdentifiersIfNeeded } from '../../utils/campaignUtils';
 import initializejQuery from '../../utils/initializejQuery';
 import SplitIconButton from '../Widgets/SplitIconButton';
+import lookupPageNameAndPageTypeDict, { getPageDetails } from '../../../utils/lookupPageNameAndPageTypeDict';
+import VoterStore from '../../../stores/VoterStore';
 
 const stripePromise = loadStripe(webAppConfig.STRIPE_API_KEY);
 
 const futureFeaturesDisabled = true;
 const iconButtonStyles = {
-  width: window.innerWidth < 1280 ? 250 : 300,
+  width: 250,
   margin: '16px',
 };
 
@@ -67,11 +70,11 @@ class PayToPromoteProcess extends Component {
       if (chipInPaymentValueDefault) {
         this.setState({ chipInPaymentValue: chipInPaymentValueDefault });
       }
-      const {
-        campaignSEOFriendlyPath,
-        campaignTitle,
-      } = getCampaignXValuesFromIdentifiers('', campaignXWeVoteId);
       if (campaignXWeVoteId) {
+        const {
+          campaignSEOFriendlyPath,
+          campaignTitle,
+        } = getCampaignXValuesFromIdentifiers('', campaignXWeVoteId);
         this.setState({
           campaignTitle,
         });
@@ -112,19 +115,19 @@ class PayToPromoteProcess extends Component {
 
   onCampaignStoreChange () {
     const { campaignXWeVoteId } = this.props;
-    const {
-      campaignSEOFriendlyPath,
-      campaignTitle,
-    } = getCampaignXValuesFromIdentifiers('', campaignXWeVoteId);
-    this.setState({
-      campaignTitle,
-    });
-    if (campaignSEOFriendlyPath) {
-      this.setState({
-        campaignSEOFriendlyPath,
-      });
-    }
     if (campaignXWeVoteId) {
+      const {
+        campaignSEOFriendlyPath,
+        campaignTitle,
+      } = getCampaignXValuesFromIdentifiers('', campaignXWeVoteId);
+      this.setState({
+        campaignTitle,
+      });
+      if (campaignSEOFriendlyPath) {
+        this.setState({
+          campaignSEOFriendlyPath,
+        });
+      }
       this.setState({
         campaignXWeVoteId,
       });
@@ -170,11 +173,24 @@ class PayToPromoteProcess extends Component {
     });
   }
 
-  onDonationTempSubmit = () => {
+  onDonationTempSubmit = (buttonId) => {
+    const { chipInPaymentValue } = this.state;
     this.setState({
       preDonation: false,
     });
-  }
+    const dataLayerObject = {
+      actionDetails: {
+        actionType: 'chipIn',
+        buttonId,
+        chipInPaymentValue,
+      },
+      event: 'action',
+      userDetails: VoterStore.getAnalyticsUserDetails(),
+      pageDetails: getPageDetails(),
+    };
+    // Push to Google Tag Manager
+    TagManager.dataLayer({ dataLayer: dataLayerObject });
+  };
 
   goToIWillShare = () => {
     const pathForNextStep = `${this.getCampaignXBasePath()}share-campaign`;
@@ -193,6 +209,7 @@ class PayToPromoteProcess extends Component {
   }
 
   changeValueFromButton (newValue) {
+    // console.log("this is the donation modal:", window.location.href)
     this.setState({
       chipInPaymentValue: newValue,
       chipInPaymentOtherValue: '',
@@ -212,12 +229,13 @@ class PayToPromoteProcess extends Component {
       campaignTitle, chipInPaymentValue, chipInPaymentOtherValue,
       loaded, showWaiting, campaignXWeVoteId, preDonation,
     } = this.state;
-    if (campaignXWeVoteId === undefined || campaignXWeVoteId === '') {
-      // console.error('Must have a campaignXWeVoteId defined in PayToPromoteProcess to make a "chip in"');
-      return (
-        <LoadingWheelComp />
-      );
-    }
+    // Commented out for now, since we aren't actually completing the chip-in process yet
+    // if (campaignXWeVoteId === undefined || campaignXWeVoteId === '') {
+    //   // console.error('Must have a campaignXWeVoteId defined in PayToPromoteProcess to make a "chip in"');
+    //   return (
+    //     <LoadingWheelComp />
+    //   );
+    // }
     if (!loaded) {
       return (
         <LoadingWheelComp message="Waiting..." />
@@ -368,7 +386,7 @@ class PayToPromoteProcess extends Component {
                     externalUniqueId="becomeAMember"
                     icon={<LockStyled />}
                     id="stripeCheckOutForm"
-                    onClick={this.onDonationTempSubmit}
+                    onClick={() => this.onDonationTempSubmit('stripeCheckOutForm')}
                   />
                 ) : (
                   <div>
@@ -419,7 +437,11 @@ PayToPromoteProcess.propTypes = {
 };
 
 const ButtonContainer = styled('div')`
-  margin-top: 10px;
+  width: 100%;
+  max-width: 500px; // Limiting the max-width to avoid it expanding too far
+  @media (max-width: 600px) {
+    max-width: 300px; // Adjust max-width for small screens
+  }
 `;
 
 const ButtonInsideWrapper = styled('div')`
@@ -495,6 +517,8 @@ const PaymentCenteredWrapper = styled('div', {
 `));
 
 const PaymentToPromoteWrapper  = styled('div')`
+  display: grid;
+  justify-content: center;
   margin-bottom: 15px;
 `;
 

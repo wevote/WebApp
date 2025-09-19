@@ -5,6 +5,7 @@ import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import TagManager from 'react-gtm-module';
 import numberAbbreviate from '../../common/utils/numberAbbreviate';
 import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
@@ -13,9 +14,11 @@ import { renderLog } from '../../common/utils/logging';
 import IssueStore from '../../stores/IssueStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
-import { convertNameToSlug, convertToInteger } from '../../common/utils/textFormat';
+import convertToInteger from '../../common/utils/convertToInteger';
+import { convertNameToSlug } from '../../common/utils/textFormat';
 import IssueFollowToggleButton from './IssueFollowToggleButton';
 import IssueImageDisplay from './IssueImageDisplay';
+import lookupPageNameAndPageTypeDict, { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
 
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../../common/components/Widgets/ReadMore'));
 const SignInModal = React.lazy(() => import(/* webpackChunkName: 'SignInModal' */ '../../common/components/SignIn/SignInModal'));
@@ -33,6 +36,9 @@ class IssueCard extends Component {
       issue: {},
       issueImageSize: 'SMALL', // We support SMALL, MEDIUM, LARGE
       issueWeVoteId: '',
+      // Temporary adjustment to issueFollowersCount that reflects whether
+      // the user clicked "follow" or "unfollow" button in this session.
+      issueFollowersAdjustment: 0,
     };
     this.getIssueLink = this.getIssueLink.bind(this);
     this.toggleShowSignInModal = this.toggleShowSignInModal.bind(this);
@@ -130,6 +136,42 @@ class IssueCard extends Component {
       Cookies.set('sign_in_opened_from_issue_follow', '1', { expires: 1, path: '/' });
       this.toggleShowSignInModal();
     }
+    this.addToIssueFollowersAdjustment(1);
+  }
+
+  onIssueStopFollowingClick = () => {
+    this.addToIssueFollowersAdjustment(-1);
+  }
+
+  handleIssueClick = (buttonId) => {
+    const { issue } = this.state;
+    const destinationPathname = this.getIssueLink();
+    const { pageName: destinationPageName, pageType: destinationPageType } = lookupPageNameAndPageTypeDict(destinationPathname);
+    const dataLayerObject = {
+      actionDetails: {
+        actionType: 'navigate',
+        buttonId,
+      },
+      event: 'action',
+      pageDetails: getPageDetails(),
+      userDetails: VoterStore.getAnalyticsUserDetails(),
+      destinationDetails: {
+        destinationPageName,
+        destinationPageType,
+        destinationPathname,
+      },
+    };
+    if (issue.issue_we_vote_id) {
+      dataLayerObject.topicDetails = IssueStore.getAnalyticsIssueDetails(issue.issue_we_vote_id);
+    }
+    TagManager.dataLayer({ dataLayer: dataLayerObject });
+  };
+
+  addToIssueFollowersAdjustment (value) {
+    let { issueFollowersAdjustment } = this.state;
+    issueFollowersAdjustment =
+      Math.max(-1, Math.min(1, issueFollowersAdjustment + value));
+    this.setState({ issueFollowersAdjustment });
   }
 
   toggleShowSignInModal () {
@@ -151,8 +193,10 @@ class IssueCard extends Component {
       ballotItemWeVoteId, countOfVoterGuidesUnderThisIssue,
       issue, issueFollowersCount, issueImageSize, issueWeVoteId,
       linkedOrganizationCount, linkedOrganizationPreviewList,
-      showSignInModal,
+      showSignInModal, issueFollowersAdjustment,
     } = this.state;
+    const adjustedFollowersCount =
+      Math.max(0, issueFollowersCount + issueFollowersAdjustment);
 
     if (!issueWeVoteId) {
       return null;
@@ -195,9 +239,9 @@ class IssueCard extends Component {
       );
     }
 
-    const issueTooltip = isMobileScreenSize() ? (<span />) : (
+    const issueTooltip = isMobileScreenSize() ? (<></>) : (
       <Tooltip className="u-z-index-9020" id="issueTooltip">
-        <div>
+        <div id="topicToolTipMsg">
           Follow
           {' '}
           {issueDisplayName}
@@ -209,7 +253,7 @@ class IssueCard extends Component {
     let linkedOrganizationsTooltip = <></>;
     let linkedOrganizationNameCount = 0;
     if (linkedOrganizationPreviewList) {
-      linkedOrganizationsTooltip = isMobileScreenSize() ? (<span />) : (
+      linkedOrganizationsTooltip = isMobileScreenSize() ? (<></>) : (
         <Tooltip className="u-z-index-9020" id="linkedOrganizationsTooltip">
           <div>
             See endorsements from
@@ -252,10 +296,10 @@ class IssueCard extends Component {
       );
     }
 
-    const followersTooltip = isMobileScreenSize() ? (<span />) : (
-      <Tooltip className="u-z-index-9020" id="followersTooltip">
+    const followersTooltip = isMobileScreenSize() ? (<></>) : (
+      <Tooltip className="u-z-index-9020" id="followersToolTip">
         <div>
-          {numberAbbreviate(issueFollowersCount)}
+          {numberAbbreviate(adjustedFollowersCount)}
           {' '}
           people have followed
           {' '}
@@ -267,7 +311,7 @@ class IssueCard extends Component {
     );
 
     const issueNameAndCount = (
-      <IssueName>
+      <IssueName id={`${issueDisplayName}_topicName`}>
         {`${issueDisplayName} `}
         {!hideAdvocatesCount && (
           <IssueAdvocatesCount>
@@ -305,7 +349,7 @@ class IssueCard extends Component {
           </IssueAdvocatesImages>
         )}
         {!!(linkedOrganizationCount) && (
-          <LinkedOrganizationCountWrapper>
+          <LinkedOrganizationCountWrapper id="numberOfEndorsements">
             {numberAbbreviate(linkedOrganizationCount)}
             <CheckWrapper>
               <Check />
@@ -342,9 +386,12 @@ class IssueCard extends Component {
                   {!turnOffIssueImage && (
                     <span>
                       {includeLinkToIssue ? (
-                        <Link to={this.getIssueLink}
-                              className="u-no-underline"
-                              tabIndex={-1}
+                        <Link
+                          id={`issueIconClick-${issueWeVoteId}`}
+                          to={this.getIssueLink}
+                          className="u-no-underline"
+                          tabIndex={-1}
+                          onClick={() => this.handleIssueClick(`issueIconClick-${issueWeVoteId}`)}
                         >
                           {issueImage}
                         </Link>
@@ -358,9 +405,11 @@ class IssueCard extends Component {
                 </IssueImage>
                 <>
                   {includeLinkToIssue ? (
-                    <Link id="valueListLink"
-                          to={this.getIssueLink}
-                          className="u-link-color"
+                    <Link
+                      id="issueNameClick"
+                      to={this.getIssueLink}
+                      className="u-link-color"
+                      onClick={() => this.handleIssueClick(`issueNameClick-${issueWeVoteId}`)}
                     >
                       {issueNameAndCount}
                     </Link>
@@ -383,6 +432,7 @@ class IssueCard extends Component {
                 issueWeVoteId={issueWeVoteId}
                 lightModeOn
                 onIssueFollowFunction={this.onIssueFollowClick}
+                onIssueStopFollowingFunction={this.onIssueStopFollowingClick}
                 urlWithoutHash={urlWithoutHash}
               />
             </FollowIssueCardToggleContainer>
@@ -392,6 +442,8 @@ class IssueCard extends Component {
           <IssueCardDescription>
             <Suspense fallback={<></>}>
               <ReadMore
+                buttonId="clickShowMoreAboutIssue"
+                issueWeVoteId={issueWeVoteId}
                 textToDisplay={issueDescription}
                 numberOfLines={numberOfLines}
               />
@@ -402,8 +454,10 @@ class IssueCard extends Component {
           <OverlayTrigger overlay={linkedOrganizationsTooltip} placement="top">
             <span>
               {includeLinkToIssue ? (
-                <Link id="issueAdvocatesLink"
-                      to={this.getIssueLink}
+                <Link
+                  id="issueAdvocatesLink"
+                  to={this.getIssueLink}
+                  onClick={() => this.handleIssueClick(`issueAdvocatesLink-${issueWeVoteId}`)}
                 >
                   {issueAdvocates}
                 </Link>
@@ -416,10 +470,10 @@ class IssueCard extends Component {
           </OverlayTrigger>
           <OverlayTrigger overlay={followersTooltip} placement="top">
             <span>
-              <FollowersWrapper>
-                {!!(issueFollowersCount) && (
+              <FollowersWrapper id="followers">
+                {!!(adjustedFollowersCount) && (
                   <>
-                    {numberAbbreviate(issueFollowersCount)}
+                    {numberAbbreviate(adjustedFollowersCount)}
                     {' '}
                     followers
                   </>

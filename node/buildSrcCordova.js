@@ -2,7 +2,6 @@ const fs = require('fs-extra');
 const { exec } = require('child_process');
 
 // DEBUG:   WebApp % node --inspect-brk ./node/buildSrcCordova.js
-
 function addUShowStylesImport (fileTxt, path) {
   // Don't add import to exporting file
   if (path.includes('cordovaFriendlyUShowStyles')) return fileTxt;
@@ -92,7 +91,7 @@ function fileRewriterForCordova (path, versions) {
     // Remove stripe
     let newValue = data.replace(/const stripePromise.*?$/gim, '// loadStripe removed for Cordova');
     // Remove all lazy loading
-    newValue = newValue.replace(/(?:const )(.*?)\s(?:.*?\*\/)(.*?)\)\);$/gim,
+    newValue = newValue.replace(/(?:const )(.*?) = React\.lazy.*?import\((?:\/\*.*?\*\/ )*(.*?)\).*?$/gim,
       'import $1 from $2;  // rewritten from lazy');
     // Crash  out on multi-line Suspense
     const regex = /.*?<Suspense fallback={\(\n/;
@@ -113,7 +112,7 @@ function fileRewriterForCordova (path, versions) {
     newValue = newValue.replace(/^(\s*)(<Suspense.*?)(\n)/gim, '$1<>$3');
     newValue = newValue.replace(/^(\s*)(<\/Suspense>)(\n)/gim, '$1</>$3');
     // Remove all DelayedLoad mark up
-    newValue = newValue.replace(/(<[/]?DelayedLoad.*?>)/gim, '');
+    newValue = newValue.replace(/<(\/)?DelayedLoad.*?>/gim, '<$1>');
     // Replace "initializeMoment" everywhere
     newValue = newValue.replace(/initializeMoment/gim, 'initializeMomentCordova');
     // Inject cordova startup in index.jsx, replace "importStartCordovaToken" etc
@@ -139,12 +138,19 @@ function fileRewriterForCordova (path, versions) {
     newValue = newValue.replace(/(?!\/\/>)className="u-show-desktop-tablet"/gim, 'style={uShowDesktopTablet()}');
     newValue = newValue.replace(/(.*?)u-show-mobile(.*?)>/, '$1$2 style={uShowMobile()}>\n');
     newValue = newValue.replace(/(.*?)u-show-desktop-tablet(.*?)>/, '$1$2 style={uShowDesktopTablet()}>\n');
+
+    // Remove OverlayTrigger in Cordova, avoids errors in log
+    newValue = newValue.replace(/import OverlayTrigger from .*?$/gim, '// eslint-disable-next-line import/no-unresolved\nimport CordovaOverlayTrigger from \'js/utils/CordovaOverlayTrigger\';');
+    newValue = newValue.replace(/import { OverlayTrigger } from .*?$/gim, '// eslint-disable-next-line import/no-unresolved\nimport CordovaOverlayTrigger from \'js/utils/CordovaOverlayTrigger\';');
+    newValue = newValue.replace(/<OverlayTrigger/gms, '<CordovaOverlayTrigger');    // Multi-line
+    newValue = newValue.replace(/<\/OverlayTrigger/gms, '</CordovaOverlayTrigger');    // Multi-line
+
     // Remove Donate from Cordova -- Stripe causes problems and is not allowed in the app store
-    if (path.includes('App.js')) {
-      newValue = newValue.replace(/^.*?Donate.*?\n/gim, '');
-      newValue = newValue.replace(/^(\s*).*?\/pay-to-promote.*?\n/gim, '$1{/* Removed /pay-to-promote for Cordova */}\n');
-      newValue = newValue.replace(/^import CampaignSupportPayToPromote.*?\n/gim, '// Removed Import CampaignSupportPayToPromote*\n');
-    }
+    // if (path.includes('App.js')) {
+    //   newValue = newValue.replace(/^.*?Donate.*?\n/gim, '');
+    //   newValue = newValue.replace(/^(\s*).*?\/pay-to-promote.*?\n/gim, '$1{/* Removed /pay-to-promote for Cordova */}\n');
+    //   newValue = newValue.replace(/^import CampaignSupportPayToPromote.*?\n/gim, '// Removed Import CampaignSupportPayToPromote*\n');
+    // }
     // Set is Cordova true in index.jsx
     if (path.endsWith('index.jsx')) {
       newValue = newValue.replace(/isIndexCordova = false;/g, 'isIndexCordova = true;');
@@ -161,10 +167,30 @@ function fileRewriterForCordova (path, versions) {
     newValue = newValue.replace(/window\.iosBundleVersion/, versions.iosBundleVersion);
     newValue = newValue.replace(/window\.androidBundleVersion/, versions.androidBundleVersion);
 
-    fs.writeFile(path, newValue, 'utf-8', (err2) => {
-      if (err2) throw err2;
-      // console.log('Done! with ', path);
-    });
+    const deleteFiles = [
+      './srcCordova/js/common/components/Donation/InjectedCheckoutForm.jsx',
+      './srcCordova/js/common/components/Donation/CheckoutForm.jsx',
+    ];
+    const dummySubstituteFiles = [
+      './srcCordova/js/common/components/CampaignSupport/PayToPromoteProcess.jsx',
+      // './srcCordova/js/pages/More/Donate.jsx',
+    ];
+
+    if (deleteFiles.includes(path)) {
+      fs.remove(path);
+      console.log(`rm file ${path}`);
+    } else if (dummySubstituteFiles.includes(path)) {
+      const cordovaPath = path.replace('.jsx', 'Cordova.jsx');
+      fs.rename(cordovaPath, path, (err2) => {
+        if (err2) console.log(`rename file ERROR: ${err}`);
+      });
+      fs.remove(cordovaPath);
+    } else {
+      fs.writeFile(path, newValue, 'utf-8', (err2) => {
+        if (err2) throw err2;
+        // console.log('Done! with ', path);
+      });
+    }
   });
 }
 
@@ -179,7 +205,7 @@ fs.remove('./build').then(() => {
     try {
       fs.copy('./src', './srcCordova', () => {
         console.log('> Cordova: Copied the /src dir to a newly created /srcCordova directory');
-        exec('egrep -rl "React.lazy|BrowserRouter|initializeMoment|Suspense|u-show-desktop-tablet|u-show-mobile|uShowMobile|uShowDesktopTablet|window.weVoteAppVersion" ./srcCordova', (error, stdout, stderr) => {
+        exec('egrep -rl "React.lazy|BrowserRouter|initializeMoment|Suspense|u-show-desktop-tablet|u-show-mobile|uShowMobile|uShowDesktopTablet|window.weVoteAppVersion|OverlayTrigger" ./srcCordova', (error, stdout, stderr) => {
           if (error) {
             console.log(`> Cordova bldSrcCordova error: ${error.message}`);
             return;
@@ -224,7 +250,7 @@ Debugging command line node, See https://nodejs.org/en/docs/inspector
  1) In Chrome, chrome://inspect/#devices
  2) Click on "Open dedicated DevTools for Node"
  3) in the terminal:
-      stevepodell@Steves-MacBook-Pro-32GB-Oct-2109 src % node --inspect-brk ./buildSrcCordova.js
+      stevepodell@Steves-MacBook-Pro-32GB-Oct-2109 src % node --inspect-brk ./node/buildSrcCordova.js
  4) and it opens in the chrome debugger
 
  To lint the srcCordova dir

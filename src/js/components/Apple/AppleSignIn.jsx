@@ -177,6 +177,7 @@ class AppleSignIn extends Component {
       return (
         <AppleSignInContainer enabled={enabled}>
           <AppleSignInButton type="submit"
+                             id="appleSignInButton"
                              isWeb={isWeb}
                              tinyScreen={tinyScreen}
                              onClick={() => this.signInClicked(enabled)}
@@ -236,9 +237,9 @@ const AppleLogoSvg = styled('svg', {
   shouldForwardProp: (prop) => !['signedIn', 'enabled'].includes(prop),
 })(({ signedIn, enabled }) => (`
   position: absolute;
-  left: ${signedIn ? '29%' : '5%'};
+  left: ${signedIn ? '29%' : '13.3px'};
   top: 11px;
-  height: 20px;
+  width: 24px;
   color: ${enabled ? '#fff' : 'grey'};
 `));
 
@@ -262,9 +263,10 @@ https://developer.apple.com/design/resources/ or we risk getting rejected by App
 const AppleSignInButton = styled('button', {
   shouldForwardProp: (prop) => !['isWeb', 'tinyScreen'].includes(prop),
 })(({ isWeb, tinyScreen }) => (`
-  margin-top: ${isWeb ? '8px' : '10px'};
+  margin-top: ${isWeb ? '11px' : '13px'};
   border: none;
-  padding-left: ${tinyScreen ? '20px' : '40px'};
+  margin-left: ${tinyScreen ? '20px' : '0px'};
+  text-align: center;
   background-color: #000;
   color: #fff;
 `));
@@ -275,22 +277,27 @@ https://developer.apple.com/design/resources/ or we risk getting rejected by App
 */
 const AppleSignInContainer  = styled('div', {
   shouldForwardProp: (prop) => !['enabled'].includes(prop),
-})(({ enabled }) => (`
+})(({ enabled, theme }) => (`
   font-family: -apple-system, BlinkMacSystemFont, sans-serif;
   background-color: #000;
   border-color: #000;
   color: ${enabled ? '#fff' : 'grey'};
   display: block;
-  margin: 0 auto 11px;
+  margin: 0 auto 0;
   ${isCordova() ? 'margin-bottom: 8px' : ''};
-  height: 46px;
-  border-radius: 4px;
+  height: 49.5px;
+  border-radius: 8px;
   overflow: hidden;
-  padding: 0 40px;
+  padding-left: 0px;
   position: relative;
   text-overflow: ellipsis;
   white-space: nowrap;
-  width: 100%;
+  ${theme.breakpoints.up('md')} {
+    width: 80%;
+  }
+  ${theme.breakpoints.down('md')} {
+    width: 100%;
+  }
 `));
 
 /*

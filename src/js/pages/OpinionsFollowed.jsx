@@ -8,7 +8,7 @@ import apiCalming from '../common/utils/apiCalming';
 import { renderLog } from '../common/utils/logging';
 
 import OpinionsFollowedList from '../components/Organization/OpinionsFollowedList';
-import SearchBar2024 from '../components/Search/SearchBar2024';
+import SearchBar2024 from '../common/components/Search/SearchBar2024';
 
 export default class OpinionsFollowed extends Component {
   constructor (props) {

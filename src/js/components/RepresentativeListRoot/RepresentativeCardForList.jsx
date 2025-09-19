@@ -205,7 +205,7 @@ class RepresentativeCardForList extends Component {
           pathToUseToKeepHelping={pathToUseToKeepHelping}
           photoLargeUrl={representativePhotoLargeUrl}
           politicalParty={politicalParty}
-          politicianBaseBath={this.getPoliticianBasePath()}
+          politicianBasePath={this.getPoliticianBasePath()}
           // politicianDescription={twitterDescription}
           politicianWeVoteId={politicianWeVoteId}
           profileImageBackgroundColor={profileImageBackgroundColor}

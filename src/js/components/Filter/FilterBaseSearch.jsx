@@ -1,20 +1,23 @@
 import { Close, Search } from '@mui/icons-material';
 import { IconButton, InputBase } from '@mui/material';
-import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
-import sortBy from 'lodash-es/sortBy';
+import TagManager from 'react-gtm-module';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import styled from 'styled-components';
 import BallotActions from '../../actions/BallotActions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import { blurTextFieldAndroid, focusTextFieldAndroid, isAndroidSizeWide } from '../../common/utils/cordovaUtils';
+import { isAndroid } from '../../common/utils/isCordovaOrWebApp';
 import BallotStore from '../../stores/BallotStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import ballotSearchPriority from '../../utils/ballotSearchPriority';
 import opinionsAndBallotItemsSearchPriority from '../../utils/opinionsAndBallotItemsSearchPriority';
 import positionSearchPriority from '../../utils/positionSearchPriority';
 import voterGuidePositionSearchPriority from '../../utils/voterGuidePositionSearchPriority';
+import { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
+import VoterStore from '../../stores/VoterStore';
 
 const delayBeforeSearchExecution = 600;
 
@@ -67,7 +70,7 @@ class FilterBaseSearch extends Component {
     this.organizationStoreListener.remove();
   }
 
-  handleSearch (event) { // eslint-disable-line consistent-return
+  handleSearch (event, buttonId) {
     // if search bar always open, isSearching is toggled only when input is given text is cleared with 'x' button
     if (this.props.alwaysOpen && event.target.value && !this.props.isSearching) {
       this.toggleSearch();
@@ -93,13 +96,14 @@ class FilterBaseSearch extends Component {
       // If search value one character or less, exit
       if (searchText.length <= 1) return [];
 
-      this.searchNewItems(searchText);
+      this.searchNewItems(searchText, buttonId);
       // Filter out items without the search terms, and put the most likely search result at the top
       // Only return results if they get past the filter
-      const sortedFiltered = sortBy(this.filterItems(searchText), ['searchPriority']).reverse().filter((item) => item.searchPriority > 0);
+      const sortedFiltered = this.filterItems(searchText);
       // console.log('sortedFiltered:', sortedFiltered);
       return this.props.onFilterBaseSearch(searchText, sortedFiltered.length ? sortedFiltered : []);
     }, delayBeforeSearchExecution);
+    return [];
   }
 
   onBallotStoreChange () {
@@ -118,39 +122,59 @@ class FilterBaseSearch extends Component {
     }
   }
 
-  filterItems = (search) => this.props.allItems.map((item) => {
+  filterItems = (search) => {
     // console.log('FilterBaseSearch filterItems allItems:', this.props.allItems);
-    const { opinionsAndBallotItemsSearchMode, positionSearchMode, voterGuidePositionSearchMode } = this.props;
-    let candidatesToShowForSearchResults = [];
-    let foundInArray;
-    let searchPriority;
-    if (opinionsAndBallotItemsSearchMode) {
-      // console.log('FilterBaseSearch filterItems opinionsAndBallotItemsSearchMode');
-      const opinionsAndBallotItemsResults = opinionsAndBallotItemsSearchPriority(search, item);
-      ({ searchPriority } = opinionsAndBallotItemsResults);
-      ({ foundInArray } = opinionsAndBallotItemsResults);
-      ({ candidatesToShowForSearchResults } = opinionsAndBallotItemsResults);
-      return { ...item, searchPriority, foundInArray, candidatesToShowForSearchResults };
-    } else if (positionSearchMode) {
-      const positionResults = positionSearchPriority(search, item);
-      ({ searchPriority } = positionResults);
-      ({ foundInArray } = positionResults);
-      return { ...item, searchPriority, foundInArray, candidatesToShowForSearchResults };
-    } else if (voterGuidePositionSearchMode) {
-      const voterGuidePositionResults = voterGuidePositionSearchPriority(search, item);
-      ({ searchPriority } = voterGuidePositionResults);
-      ({ foundInArray } = voterGuidePositionResults);
-      return { ...item, searchPriority, foundInArray, candidatesToShowForSearchResults };
-    } else {
-      // console.log('FilterBaseSearch ballotSearchPriority');
-      const ignoreDescriptionFields = (this.props.addVoterGuideMode);
-      const results = ballotSearchPriority(search, item, ignoreDescriptionFields);
-      ({ searchPriority } = results);
-      ({ foundInArray } = results);
-      ({ candidatesToShowForSearchResults } = results);
-      return { ...item, searchPriority, foundInArray, candidatesToShowForSearchResults };
-    }
-  });
+    const {
+      opinionsAndBallotItemsSearchMode,
+      positionSearchMode,
+      voterGuidePositionSearchMode,
+      addVoterGuideMode,
+    } = this.props;
+
+    const searchWords = search.toLowerCase().match(/\b(\w+)\b/g) || [];
+
+    return this.props.allItems.map((item) => {
+      // If no candidate list, return item as-is. If removed creates filter error
+      if (!item.candidate_list || item.candidate_list.length === 0) {
+        return item;
+      }
+      const filteredCandidates = item.candidate_list.filter(
+        (candidate) => searchWords.every(
+          (searchWord) => candidate.ballot_item_display_name.toLowerCase().includes(searchWord),
+        ),
+      );
+      const candidateMatchFound = filteredCandidates.length > 0;
+      const ballotItemNameMatch = searchWords.every(
+        (searchWord) => item.ballot_item_display_name.toLowerCase().includes(searchWord),
+      );
+
+      let searchResults;
+      if (opinionsAndBallotItemsSearchMode) {
+        searchResults = opinionsAndBallotItemsSearchPriority(search, item);
+      } else if (positionSearchMode) {
+        searchResults = positionSearchPriority(search, item);
+      } else if (voterGuidePositionSearchMode) {
+        searchResults = voterGuidePositionSearchPriority(search, item);
+      } else {
+        const ignoreDescriptionFields = addVoterGuideMode;
+        searchResults = ballotSearchPriority(search, item, ignoreDescriptionFields);
+      }
+      return {
+        ...item,
+        ...searchResults,
+        candidate_list: filteredCandidates,
+        candidateMatchFound,
+        foundInSearchWords: candidateMatchFound || ballotItemNameMatch,
+      };
+    }).filter(
+      // Keep items that have matching candidates or match ballot item name and have a search priority
+      (item) => (item.foundInSearchWords && item.searchPriority > 0) ||
+          (item.candidate_list && item.candidate_list.length > 0),
+    ).sort(
+      // Sort by priority level, descending order
+      (a, b) => b.searchPriority - a.searchPriority,
+    );
+  };
 
   toggleSearch = () => {
     const { isSearching } = this.props;
@@ -164,7 +188,7 @@ class FilterBaseSearch extends Component {
     this.props.onToggleSearch(isSearching);
   };
 
-  handleSearchAllItemsRefresh = () => { // eslint-disable-line consistent-return
+  handleSearchAllItemsRefresh = (buttonId = 'searchInput') => { // eslint-disable-line consistent-return
     // console.log('handleSearchAllItemsRefresh');
     let { searchText } = this.state;
     searchText = searchText.trimStart();
@@ -176,27 +200,52 @@ class FilterBaseSearch extends Component {
 
     // Filter out items without the search terms, and put the most likely search result at the top
     // Only return results if they get past the filter
-    this.searchNewItems(searchText);
-    const sortedFiltered = sortBy(this.filterItems(searchText), ['searchPriority']).reverse().filter((item) => item.searchPriority > 0);
+    this.searchNewItems(searchText, buttonId);
+    const sortedFiltered = this.filterItems(searchText);
     // console.log('sortedFiltered:', sortedFiltered);
     return this.props.onFilterBaseSearch(searchText, sortedFiltered.length ? sortedFiltered : []);
   }
 
-  searchNewItems = (searchText) => {
-    const { opinionsAndBallotItemsSearchMode } = this.props;
+  searchNewItems = (searchText, buttonId) => {
+    // const { opinionsAndBallotItemsSearchMode } = this.props;
     const { searchTextAlreadyRetrieved } = this.state;
     // console.log('searchNewItems searchText:', searchText, ', searchTextAlreadyRetrieved:', searchTextAlreadyRetrieved);
-    if (opinionsAndBallotItemsSearchMode) {
-      // Reach out to API server to get more Organizations or Ballot items.
-      if (!searchTextAlreadyRetrieved.includes(searchText)) {
-        OrganizationActions.organizationSearch(searchText);
-        BallotActions.ballotItemOptionsRetrieve('', searchText);
-        searchTextAlreadyRetrieved.push(searchText);
-        this.setState({ searchTextAlreadyRetrieved });
-      }
+    // if (opinionsAndBallotItemsSearchMode) {
+    // Reach out to API server to get more Organizations or Ballot items.
+    if (!searchTextAlreadyRetrieved.includes(searchText)) {
+      this.sendSearchDataLayer(searchText, buttonId);
+      OrganizationActions.organizationSearch(searchText);
+      BallotActions.ballotItemOptionsRetrieve('', searchText);
+      searchTextAlreadyRetrieved.push(searchText);
+      this.setState({ searchTextAlreadyRetrieved });
+    }
+    // }
+  }
+
+  bigAndroidClick = (isSearching, alwaysOpen) => {
+    // console.log('bigAndroidClick ------------------');
+    if (isAndroid() && !isSearching && !alwaysOpen) {
+      this.toggleSearch();
     }
   }
 
+  sendSearchDataLayer (searchText, buttonId) {
+    const dataLayerObject = {
+      actionDetails: {
+        actionType: 'search',
+        buttonId,
+        searchKeyword: searchText,
+      },
+      event: 'action',
+      pageDetails: getPageDetails(),
+      userDetails: VoterStore.getAnalyticsUserDetails(),
+    };
+    const electionDetails = BallotStore.getAnalyticsElectionDetails();
+    if (electionDetails && electionDetails.electionDate) {
+      dataLayerObject.electionDetails = electionDetails;
+    }
+    TagManager.dataLayer({ dataLayer: dataLayerObject });
+  }
 
   render () {
     const { alwaysOpen, classes, isSearching, searchTextLarge, theme } = this.props;
@@ -214,40 +263,49 @@ class FilterBaseSearch extends Component {
     }
     // console.log('FilterBaseSearch render');
     return (
-      <SearchWrapper
-        brandBlue={theme.palette.primary.main}
-        isSearching={isSearching}
-        searchTextLarge={searchTextLarge}
-        // searchOpen={isSearching || alwaysOpen}
-      >
-        <IconButton
-          classes={{ root: classes.iconButtonRoot }}
-          onClick={!alwaysOpen ? this.toggleSearch : undefined}
-          size="large"
-          aria-label="Search Button"
-        >
-          <Search classes={{ root: searchIconClasses }} />
-        </IconButton>
-        <Separator isSearching={isSearching} alwaysOpen={alwaysOpen} />
-        <InputBase
-          classes={{ input: inputBaseInputClasses, root: inputBaseRootClasses }}
-          inputRef={(input) => { this.searchInput = input; }}
-          onChange={this.handleSearch}
-          value={searchText}
-          onFocus={focusTextFieldAndroid}
-          onBlur={blurTextFieldAndroid}
-          placeholder="Search"
-        />
-        <Closer
+      <BigAndroidClickableTarget id="androidClickableTarget" onClick={() => this.bigAndroidClick(isSearching, alwaysOpen)}>
+        <SearchWrapper
+          brandBlue={theme.palette.primary.main}
           isSearching={isSearching}
-          onClick={(isSearching || !alwaysOpen) ? this.toggleSearch : undefined}
-          showCloser={isSearching}
+          searchTextLarge={searchTextLarge}
+          // searchOpen={isSearching || alwaysOpen}
         >
-          <IconButton classes={{ root: classes.iconButtonRoot }} size="large">
-            <Close classes={{ root: classes.closeIconRoot }} />
+          <IconButton
+            classes={{ root: classes.iconButtonRoot }}
+            id="searchIcon"
+            onClick={(!isAndroid() && !alwaysOpen) ? this.toggleSearch : undefined}
+            size="large"
+            aria-label="Search Button"
+            tabIndex={0}
+          >
+            <Search classes={{ root: searchIconClasses }} />
           </IconButton>
-        </Closer>
-      </SearchWrapper>
+          <Separator isSearching={isSearching} alwaysOpen={alwaysOpen} />
+          <InputBase
+            classes={{ input: inputBaseInputClasses, root: inputBaseRootClasses }}
+            id="searchInput"
+            inputProps={{ tabIndex: -1 }}
+            inputRef={(input) => { this.searchInput = input; }}
+            onChange={(event) => this.handleSearch(event, 'searchInput')}
+            value={searchText}
+            onFocus={() => focusTextFieldAndroid('FilterBaseSearch')}
+            onBlur={blurTextFieldAndroid}
+            placeholder="Search"
+            tabIndex={isSearching ? 0 : -1}
+          />
+          <Closer
+            id="searchCloseButton"
+            isSearching={isSearching}
+            onClick={(isSearching || !alwaysOpen) ? this.toggleSearch : undefined}
+            showCloser={isSearching}
+            tabIndex={isSearching ? 0 : -1}
+          >
+            <IconButton classes={{ root: classes.iconButtonRoot }} size="large">
+              <Close classes={{ root: classes.closeIconRoot }} />
+            </IconButton>
+          </Closer>
+        </SearchWrapper>
+      </BigAndroidClickableTarget>
     );
   }
 }
@@ -371,6 +429,13 @@ const Separator = styled('div', {
   // width: 1px;
   // background: rgba(0, 0, 0, .3);
 `));
+
+const BigAndroidClickableTarget = styled.div`
+  padding: ${() => (isAndroid() ? '10px' : '')};
+  position: ${() => (isAndroid() ? 'relative' : '')};
+  top: ${() => (isAndroid() ? '-10px' : '')};
+`;
+/* For diagnosis: background-color: ${() => (isAndroid() ? 'lightgoldenrodyellow' : '')}; */
 
 const SearchWrapper = styled('div', {
   shouldForwardProp: (prop) => !['isSearching', 'brandBlue', 'searchTextLarge'].includes(prop),

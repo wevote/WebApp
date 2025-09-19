@@ -87,6 +87,23 @@ class VoterStore extends ReduceStore {
     return this.getState().address || {};
   }
 
+  getAnalyticsUserCohort () {
+    return 'organic'; // TODO: Add more options
+  }
+
+  getAnalyticsUserDetails () {
+    return {
+      linkedPoliticianWeVoteId: this.getLinkedPoliticianWeVoteId(),
+      // signedInWithApple
+      signedInEmail: this.getVoterIsSignedInWithEmail(),
+      signedInPhone: this.getVoterIsSignedInWithPhone(),
+      stateCode: this.getVoterStateCode(),
+      userCohort: this.getAnalyticsUserCohort(),
+      userStatus: this.getVoterSignInStatus(),
+      voterWeVoteId: this.getVoterWeVoteId(),
+    };
+  }
+
   getBallotLocationForVoter () {
     // console.log('getBallotLocationForVoter this.getState().address:', this.getState().address);
     if (this.getState().address) {
@@ -108,6 +125,20 @@ class VoterStore extends ReduceStore {
   getEmailAddressList () {
     const { emailAddressList } = this.getState();
     return emailAddressList;
+  }
+
+  getEmailAddressesVerifiedList () {
+    const { emailAddressList } = this.getState();
+    // console.log('getEmailAddressVerifiedList emailAddressList:', emailAddressList);
+    const emailList = [];
+    let oneEmail = {};
+    for (let i = 0; i < emailAddressList.length; ++i) {
+      oneEmail = emailAddressList[i];
+      if (oneEmail.normalized_email_address && oneEmail.email_ownership_is_verified === true) {
+        emailList.push(oneEmail.normalized_email_address);
+      }
+    }
+    return emailList;
   }
 
   getEmailAddressesVerifiedCount () {
@@ -175,6 +206,11 @@ class VoterStore extends ReduceStore {
     return this.getState().voter.linked_organization_we_vote_id || '';
   }
 
+  getLinkedPoliticianWeVoteId () {
+    // To be created
+    return '';
+  }
+
   getPrimaryEmailAddressDict () {
     const { emailAddressList } = this.getState();
     let oneEmail = {};
@@ -218,13 +254,23 @@ class VoterStore extends ReduceStore {
     return verifiedCount;
   }
 
+  // See also getVoterStateCode
   getStateCode () {
     // This defaults to state_code_from_ip_address but is overridden by the address the voter defaults to, or enters in text_for_map_search
-    return this.getState().voter.state_code || '';
+    if (this.getState().voter) {
+      return this.getState().voter.state_code || '';
+    } else {
+      return '';
+    }
   }
 
+  // See also getVoterStateCode
   getStateCodeFromIPAddress () {
-    return this.getState().voter.state_code_from_ip_address || '';
+    if (this.getState().voter) {
+      return this.getState().voter.state_code_from_ip_address || '';
+    } else {
+      return '';
+    }
   }
 
   getTextForMapSearch () {
@@ -306,6 +352,10 @@ class VoterStore extends ReduceStore {
     return this.getState().voter.signed_in_facebook || false;
   }
 
+  getVoterIsSignedInWithPhone () {
+    return this.getState().voter.signed_in_with_sms_phone_number || false;
+  }
+
   getVoterIsSignedInWithTwitter () {
     return this.getState().voter.signed_in_twitter || false;
   }
@@ -358,6 +408,7 @@ class VoterStore extends ReduceStore {
     return this.getState().address.voter_entered_address || false;
   }
 
+  // See also getStateCode & getStateCodeFromIPAddress
   getVoterStateCode () {
     // TODO in getVoterStateCode we check for normalized_state in the address object. We should be
     //  capturing the state when we call Google address Auto Complete (search for _placeChanged)
@@ -369,11 +420,11 @@ class VoterStore extends ReduceStore {
       // console.log('normalized_state:', this.getState().address.normalized_state);
       return this.getState().address.normalized_state;
     }
-    if (this.getState().voter && this.getState().voter.state_code_from_ip_address) {
-      // console.log('state_code_from_ip_address:', this.getState().voter.state_code_from_ip_address);
-      return this.getState().voter.state_code_from_ip_address;
-    }
-    return '';
+    return this.getStateCode() || this.getStateCodeFromIPAddress() || '';
+  }
+
+  getVoterSignInStatus () {
+    return this.getVoterIsSignedIn() ? 'signedIn' : 'notSignedIn';
   }
 
   getVoterWeVoteId () {

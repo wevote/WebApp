@@ -82,7 +82,7 @@ export default class IssueImageDisplay extends Component {
       );
     }
 
-    return <span className="issue__image-modal"><Suspense fallback={<></>}>{issueImage}</Suspense></span>;
+    return <span id={oneIssue.issue_name} className="issue__image-modal"><Suspense fallback={<></>}>{issueImage}</Suspense></span>;
   }
 }
 IssueImageDisplay.propTypes = {

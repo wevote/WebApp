@@ -9,7 +9,7 @@ import { formatDateToMonthDayYear } from '../../common/utils/dateFormat';
 import { renderLog } from '../../common/utils/logging';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import BallotStore from '../../stores/BallotStore';
-import { convertToInteger } from '../../common/utils/textFormat';
+import convertToInteger from '../../common/utils/convertToInteger';
 import HeaderLogoImage from '../Navigation/HeaderLogoImage';
 
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
@@ -153,7 +153,7 @@ class FriendInvitationOnboardingIntro extends Component {
             </>
           )}
         </FriendInvitationTopHeader>
-        <FriendInvitationIntroHeader className="FriendInvitationIntroHeader">
+        <FriendInvitationIntroHeader id="weVoteHelpsYouListHeaderText" className="FriendInvitationIntroHeader">
           WeVote helps you:
         </FriendInvitationIntroHeader>
         <FriendInvitationListWrapper>
@@ -184,7 +184,7 @@ class FriendInvitationOnboardingIntro extends Component {
                   Make a plan for casting your vote. See your entire ballot. Find your polling location.
                 </StepText>
               ) : (
-                <StepText onClick={this.onClickShowAllStepOne}>
+                <StepText id="beConfidentInYourChoicesHeader" onClick={this.onClickShowAllStepOne}>
                   {showCountDownDays ? (
                     <>
                       There are

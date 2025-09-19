@@ -19,7 +19,6 @@ import CampaignStore from '../../stores/CampaignStore';
 import CampaignSupporterStore from '../../stores/CampaignSupporterStore';
 import VoterStore from '../../../stores/VoterStore';
 import speakerDisplayNameToInitials from '../../utils/speakerDisplayNameToInitials';
-import speakerDisplayNameToAvatarColor from '../../utils/speakerDisplayNameToAvatarColor';
 
 class MostRecentCampaignSupport extends React.Component {
   constructor (props) {
@@ -268,67 +267,70 @@ class MostRecentCampaignSupport extends React.Component {
             ref={this.commentsWrapperDiv}
             onScroll={() => this.handleScroll()}
           >
-            {supportersOnStageNow.map((comment) =>  (
-              <CommentWrapper className="comment" key={comment.id}>
-                <CommentVoterPhotoWrapper>
-                  {comment.we_vote_hosted_profile_image_url_medium ? (
-                    <LazyImage
-                      src={comment.we_vote_hosted_profile_image_url_medium}
-                      placeholder={avatarGeneric()}
-                      className="profile-photo"
-                      height={48}
-                      width={48}
-                      alt="Your Settings"
-                    />
-                  ) : (
-                    <Avatar sx={speakerDisplayNameToAvatarColor(comment.supporter_name)}>
-                      {speakerDisplayNameToInitials(comment.supporter_name)}
-                    </Avatar>
-                  )}
-                </CommentVoterPhotoWrapper>
-                <CommentTextWrapper>
-                  {comment.supporter_endorsement && (
-                    <Comment>{returnFirstXWords(comment.supporter_endorsement, 18, true)}</Comment>
-                  )}
-                  <CommentNameWrapper>
-                    {comment.voter_we_vote_id === voterWeVoteId ? (
-                      <>
-                        You supported
-                        {' '}
-                        {timeFromDate(comment.date_supported)}
-                        {comment.visible_to_public === false && (
-                          <>
-                            {' '}
-                            (not visible to public)
-                          </>
-                        )}
-                        &nbsp;&nbsp;&nbsp;
-                        <Link to={`/id/${comment.campaignx_we_vote_id}/why-do-you-support`}>
-                          Edit
-                        </Link>
-                      </>
+            {supportersOnStageNow.map((comment) => {
+              const { sx, children } = speakerDisplayNameToInitials(comment.supporter_name);
+              return (
+                <CommentWrapper className="comment" key={comment.id}>
+                  <CommentVoterPhotoWrapper>
+                    {comment.we_vote_hosted_profile_image_url_medium ? (
+                      <LazyImage
+                        src={comment.we_vote_hosted_profile_image_url_medium}
+                        placeholder={avatarGeneric()}
+                        className="profile-photo"
+                        height={48}
+                        width={48}
+                        alt="Your Settings"
+                      />
                     ) : (
-                      <>
-                        {!stringContains('Voter-', comment.supporter_name) ? (
-                          <CommentName>
-                            {comment.supporter_name}
-                            {' '}
-                          </CommentName>
-                        ) : (
-                          <CommentName>
-                            Anonymous
-                            {' '}
-                          </CommentName>
-                        )}
-                        supported
-                        {' '}
-                        {timeFromDate(comment.date_supported)}
-                      </>
+                      <Avatar sx={sx}>
+                        {children}
+                      </Avatar>
                     )}
-                  </CommentNameWrapper>
-                </CommentTextWrapper>
-              </CommentWrapper>
-            ))}
+                  </CommentVoterPhotoWrapper>
+                  <CommentTextWrapper>
+                    {comment.supporter_endorsement && (
+                      <Comment>{returnFirstXWords(comment.supporter_endorsement, 18, true)}</Comment>
+                    )}
+                    <CommentNameWrapper>
+                      {comment.voter_we_vote_id === voterWeVoteId ? (
+                        <>
+                          You supported
+                          {' '}
+                          {timeFromDate(comment.date_supported)}
+                          {comment.visible_to_public === false && (
+                            <>
+                              {' '}
+                              (not visible to public)
+                            </>
+                          )}
+                          &nbsp;&nbsp;&nbsp;
+                          <Link to={`/id/${comment.campaignx_we_vote_id}/why-do-you-support`}>
+                            Edit
+                          </Link>
+                        </>
+                      ) : (
+                        <>
+                          {!stringContains('Voter-', comment.supporter_name) ? (
+                            <CommentName>
+                              {comment.supporter_name}
+                              {' '}
+                            </CommentName>
+                          ) : (
+                            <CommentName>
+                              Anonymous
+                              {' '}
+                            </CommentName>
+                          )}
+                          supported
+                          {' '}
+                          {timeFromDate(comment.date_supported)}
+                        </>
+                      )}
+                    </CommentNameWrapper>
+                  </CommentTextWrapper>
+                </CommentWrapper>
+              );
+            })}
           </CommentsWrapper>
         )}
       </MostRecentCampaignSupportWrapper>

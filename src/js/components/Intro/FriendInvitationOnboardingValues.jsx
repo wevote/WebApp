@@ -62,7 +62,7 @@ class FriendInvitationOnboardingValues extends Component {
               Opinions will be highlighted on your ballot based on what you follow. Follow as many values/issues...
               {' '}
               (
-              <span className="u-cursor--pointer u-link-color">
+              <span id="showMoreLink" className="u-cursor--pointer u-link-color">
                 show more
               </span>
               )

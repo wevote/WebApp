@@ -1,4 +1,5 @@
-import { $, driver } from '@wdio/globals';
+import { $, driver, expect } from '@wdio/globals';
+import path from 'path';
 import Page from './page';
 
 class DonatePage extends Page {
@@ -11,13 +12,13 @@ class DonatePage extends Page {
   }
 
   async checkLinkAndTite () {
-    await expect(driver).toHaveUrl(path + '/donate');
+    await expect(driver).toHaveUrl(`${path}/donate`);
     await expect(driver).toHaveTitle('Donate - WeVote');
   }
 
   getDonateHeader () {
     return $('#want_to_vote');
-  } 
+  }
 
   getFirstParagraph () {
     return $('(//*[@id="first_paragraph"])[2]');
@@ -36,7 +37,7 @@ class DonatePage extends Page {
   }
 
   getDonateAmountButton (amount) {
-    return $('//span[(text()=' + amount + ')]');
+    return $(`//span[text()="${amount}"]`);
   }
 
   getDonorBoxIFrame () {
@@ -115,6 +116,10 @@ class DonatePage extends Page {
     return $('label[for="donation_donation_honor_attributes_honor_type_memory"]');
   }
 
+  getPostalMailRadioButton () {
+    return $('label[for="donation_donation_honor_attributes_notify_type_postal"]');
+  }
+
   getFirstName () {
     return $('#donation_first_name');
   }
@@ -141,15 +146,15 @@ class DonatePage extends Page {
 
   getMonthlyAmount () {
     return $('(//span[@class="donation-amt"])[3]');
-  } 
+  }
 
   getQuarterlyAmount () {
     return $('(//span[@class="donation-amt"])[4]');
-  } 
+  }
 
   getAnnuallyAmount () {
     return $('(//span[@class="donation-amt"])[5]');
-  } 
+  }
 
   getQuarterlyButton () {
     return $('#plan_duration_quarterly');
@@ -175,6 +180,17 @@ class DonatePage extends Page {
     return $('#donation_donation_honor_attributes_recipient_message');
   }
 
+  getCustomAmountError () {
+    return $('.desc.invalid');
+  }
+
+  getFieldRequiredError (number) {
+    return $(`(//div[@class="dwm-error"])[${number}]`);
+  }
+
+  getFixErrors () {
+    return $('#info-error');
+  }
 }
 
 export default new DonatePage();

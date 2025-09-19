@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../common/utils/logging';
-import SearchBar2024 from './SearchBar2024';
+import SearchBar2024 from '../../common/components/Search/SearchBar2024';
 
 export default class SearchGuidesToFollowBox extends Component {
   constructor (props) {

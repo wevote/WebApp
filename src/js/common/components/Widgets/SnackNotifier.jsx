@@ -34,12 +34,15 @@ class SnackNotifier extends Component {
     });
   };
 
-  openSnackbar = ({ message, severity, duration }) => {
+  openSnackbar = ({ id, message, severity, duration }) => {
     const autoHideDuration = duration || 3000;
     if (!message) {
       // eslint-disable-next-line no-param-reassign
       message = AppObservableStore.getPendingSnackMessage();
       if (message && message.length === 0) {
+        return;
+      }
+      if (id) {
         return;
       }
     }

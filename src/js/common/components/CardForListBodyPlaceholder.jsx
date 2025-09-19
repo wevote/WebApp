@@ -3,6 +3,7 @@ import withStyles from '@mui/styles/withStyles';
 import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import { useLocation } from 'react-router-dom';
 import isMobileScreenSize from '../utils/isMobileScreenSize';
 import {
   ElectionYear,
@@ -23,10 +24,13 @@ import {
 } from './Style/CampaignCardStyles';
 import DesignTokenColors from './Style/DesignTokenColors';
 import { renderLog } from '../utils/logging';
+import extractPoliticianDetailsFromUrl from '../utils/extractPoliticianDetailsFromUrl';
 
 function CardForListBodyPlaceholder (props) {
   renderLog('CardForListBodyPlaceholder functional component');
   const { hideCardMargins, limitCardWidth, useVerticalCard } = props;
+  const location = useLocation();
+  const { state: stateFromUrl, name: nameFromUrl } = extractPoliticianDetailsFromUrl(location.pathname);
   return (
     <CardForListBodyPlaceholderWrapper>
       <CandidateCardForListWrapper>
@@ -38,9 +42,11 @@ function CardForListBodyPlaceholder (props) {
             <OneCampaignTextColumn hideCardMargins={hideCardMargins}>
               <TitleAndTextWrapper hideCardMargins={hideCardMargins}>
                 <StateName>
+                  {stateFromUrl}
                   &nbsp;
                 </StateName>
                 <OneCampaignTitle>
+                  {nameFromUrl}
                   &nbsp;
                 </OneCampaignTitle>
                 <YearAndHeartDiv>

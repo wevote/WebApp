@@ -13,10 +13,10 @@ import VoterGuideActions from '../../actions/VoterGuideActions';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
 import apiCalming from '../../common/utils/apiCalming';
+import convertToInteger from '../../common/utils/convertToInteger';
 import { isAndroidSizeWide } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
-import { convertToInteger } from '../../common/utils/textFormat';
 import toTitleCase from '../../common/utils/toTitleCase';
 import CandidateStickyHeader from '../../components/Ballot/CandidateStickyHeader';
 import LinkToAdminTools from '../../common/components/Widgets/LinkToAdminTools';
@@ -394,7 +394,7 @@ class Candidate extends Component {
           {(allCachedPositionsForThisCandidate.length < 3) && (
             <PromoteFurtherAction>
               <Suspense fallback={<></>}>
-                <ViewUpcomingBallotButton onClickFunction={this.goToBallot} onlyOfferViewYourBallot />
+                <ViewUpcomingBallotButton goToBallotFunction={this.goToBallot} onlyOfferViewYourBallot />
               </Suspense>
               <HowItWorksLink onClick={this.openHowItWorksModal}>
                 How It Works

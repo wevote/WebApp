@@ -3,6 +3,7 @@ import withStyles from '@mui/styles/withStyles';
 import React, { Suspense, useEffect, useState } from 'react';
 import { useReward } from 'react-rewards'; // react-rewards is a library for rewarding users with confetti
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 import DesignTokenColors from '../Style/DesignTokenColors';
 import arrow from '../../../../img/global/icons/ph_arrow-up-bold.png';
 import arrow1 from '../../../../img/global/icons/ph_arrow-up-bold_1.png';
@@ -11,7 +12,7 @@ import AppObservableStore, { messageService } from '../../stores/AppObservableSt
 import ChallengeParticipantStore from '../../stores/ChallengeParticipantStore';
 import FirstChallengeParticipantListController from '../ChallengeParticipantListRoot/FirstChallengeParticipantListController';
 
-const YourRank = ({ classes, challengeWeVoteId }) => {
+const YourRank = ({ classes, challengeWeVoteId, hasBackgroundColor }) => {
   const [clicked, setClicked] = useState(false);
   const [participantsCount, setParticipantsCount] = useState(0);
   const [points, setPoints] = useState(0);
@@ -84,7 +85,7 @@ const YourRank = ({ classes, challengeWeVoteId }) => {
   }, []);
 
   return (
-    <YourRankOuterWrapper>
+    <YourRankOuterWrapper hasBackgroundColor={hasBackgroundColor}>
       <YourRankInnerWrapper>
         <YourRankText>
           Your rank in the challenge:
@@ -121,7 +122,13 @@ const YourRank = ({ classes, challengeWeVoteId }) => {
     </YourRankOuterWrapper>
   );
 };
-const styles = (theme) => ({
+YourRank.propTypes = {
+  classes: PropTypes.object.isRequired,
+  challengeWeVoteId: PropTypes.string,
+  hasBackgroundColor: PropTypes.bool,
+};
+
+const styles = () => ({
   buttonDesktop: {
     boxShadow: 'none !important',
     border: `1px solid ${DesignTokenColors.accent500}`,
@@ -162,14 +169,23 @@ const YourRankInnerWrapper = styled('div')`
   justify-content: center;
 `;
 
-const YourRankOuterWrapper = styled('div')`
-  background-color: ${DesignTokenColors.neutralUI50};
+const YourRankOuterWrapper = styled('div', {
+  shouldForwardProp: (prop) => !['hasBackgroundColor'].includes(prop),
+})(({ hasBackgroundColor }) => `
+  background-color: ${hasBackgroundColor ? DesignTokenColors.neutralUI50 : DesignTokenColors.white};
   z-index: 100;
-`;
+`);
 
 const YourRankButtonWrapper = styled('div', {
   shouldForwardProp: (prop) => !['clicked'].includes(prop),
 })(({ clicked }) => `
+  background-color: ${clicked ? DesignTokenColors.orange500 : DesignTokenColors.white};
+  width: 105px;
+  height: 34px;
+  gap: 0;
+  border-radius: 20px;
+  border: 1px solid #AC5204;
+  display: flex;
   align-items: center;
   background-color: ${clicked ? DesignTokenColors.accent500 : DesignTokenColors.whiteUI};
   border: 1px solid ${DesignTokenColors.accent500};
@@ -198,5 +214,4 @@ const ArrowImg = styled('img')`
   margin-top: -2px;
   width: 10px;
 `;
-
 export default withStyles(styles)(YourRank);

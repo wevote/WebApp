@@ -15,7 +15,7 @@ import { renderLog } from '../../common/utils/logging';
 import FriendStore from '../../stores/FriendStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import NumberOfItemsFound from '../Widgets/NumberOfItemsFound';
-import SearchBar2024 from '../Search/SearchBar2024';
+import SearchBar2024 from '../../common/components/Search/SearchBar2024';
 
 const ShowMoreItems = React.lazy(() => import(/* webpackChunkName: 'ShowMoreItems' */ '../Widgets/ShowMoreItems'));
 const VoterGuidePositionItem = React.lazy(() => import(/* webpackChunkName: 'VoterGuidePositionItem' */ './VoterGuidePositionItem'));
