@@ -34,25 +34,25 @@ function MoreMenuOverlay ({ onClose }) {
   return (
     <ClickAwayListener onClickAway={onClose}>
       <Overlay>
-        <MenuItem $active={isFriends} onClick={() => { historyPush('/friends'); }}>
+        <MenuItem $active={isFriends} onClick={() => { onClose(); historyPush('/friends'); }}>
           <People />
           Friends
         </MenuItem>
-        <MenuItem $active={isChallenges} onClick={() => { historyPush('/challenges'); }}>
+        <MenuItem $active={isChallenges} onClick={() => { onClose(); historyPush('/challenges'); }}>
           <Groups />
           Challenges
         </MenuItem>
-       <MenuItem $active={isManage} onClick={() => { historyPush('/manage'); }}>
-  <img
-    alt=""
-    src={isManage
-      ? '/img/global/svg-icons/capital-building-selected.svg'
-      : '/img/global/svg-icons/capital-building.svg'}
-    style={{ width: 40, height: 40, marginBottom: 6 }}
-  />
-          Candidates
-          <br />
-          I&#39;m managing
+       <MenuItem $active={isManage} onClick={() => { onClose(); historyPush('/more/manage'); }}>
+         <img
+           alt=""
+           src={isManage
+                ? '/img/global/svg-icons/capital-building-selected.svg'
+                : '/img/global/svg-icons/capital-building.svg'}
+           style={{ width: 40, height: 40, marginBottom: 6 }}
+         />
+           Candidates
+           <br />
+           I&#39;m managing
         </MenuItem>
       </Overlay>
     </ClickAwayListener>
