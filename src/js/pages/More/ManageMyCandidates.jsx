@@ -655,6 +655,7 @@ const Section = styled.section`
 const H3 = styled.h3`
   color: ${DesignTokenColors.neutralUI900};
   font-size: 14px;
+  font-weight: 600;
   margin: 0 0 8px;
 `;
 
