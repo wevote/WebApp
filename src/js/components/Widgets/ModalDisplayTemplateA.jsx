@@ -1,6 +1,5 @@
 import { Close } from '@mui/icons-material';
-import { Dialog } from '@base-ui-components/react/dialog';
-import { DialogContent, DialogTitle, Divider, IconButton } from '@mui/material';
+import { Dialog, DialogContent, DialogTitle, Divider, IconButton } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
@@ -56,6 +55,7 @@ class ModalDisplayTemplateA extends Component {
               <Close />
             </IconButton>
           </DialogTitleInnerWrapper>
+          <Divider />
         </DialogTitle>
         <DialogContent classes={{ root: classes.dialogContent }}>
           <DialogContentInnerWrapper>
