@@ -1,11 +1,17 @@
-import { Button, FormControlLabel, Radio, RadioGroup } from '@mui/material';
+import { Button, FormControlLabel, Radio } from '@mui/material';
 import styled from 'styled-components';
 import TagManager from 'react-gtm-module';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import VoterActions from '../../actions/VoterActions';
+import {
+  ColumnWrapper, CustomColumns, ProfilePicture, ProfilePictureOption,
+  ProfilePictureWrapper, RadioWrapper, SaveInnerWrapper, SaveOuterWrapper,
+  Separator,
+} from '../Style/ProfilePictureStyles';
+import PoliticianActions from '../../common/actions/PoliticianActions';
 import VoterPhotoUpload from '../../common/components/Settings/VoterPhotoUpload';
+import PoliticianStore from '../../common/stores/PoliticianStore';
 import VoterStore from '../../stores/VoterStore';
 import { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
 
@@ -13,6 +19,13 @@ class SettingsPoliticianPicture extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      politicianBallotpediaImageUrlLarge: '',
+      politicianFacebookImageUrlLarge: '',
+      politicianLinkedInImageUrlLarge: '',
+      politicianPhotoQueuedToSaveSet: false,
+      politicianTwitterImageUrlLarge: '',
+      politicianVoteUSAImageUrlLarge: '',
+      politicianWikipediaImageUrlLarge: '',
       profileImageTypeCurrentlyActive: 'UPLOADED',
       uploadedFileStaged: false,
     };
@@ -21,45 +34,56 @@ class SettingsPoliticianPicture extends Component {
   }
 
   componentDidMount () {
-    this.onVoterStoreChange();
-    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+    // console.log('SettingsPoliticianPicture componentDidMount');
+    this.onPoliticianStoreChange();
+    this.politicianStoreListener = PoliticianStore.addListener(this.onPoliticianStoreChange.bind(this));
   }
 
   componentWillUnmount () {
-    this.voterStoreListener.remove();
+    // console.log('SettingsPoliticianPicture componentWillUnmount');
+    this.politicianStoreListener.remove();
   }
 
   onPoliticianStoreChange = () => {
-    //
-    this.setState({
-      politicianName: 'Ted Lieu',
-    });
-  };
-
-  onVoterStoreChange = () => {
+    const { politicianWeVoteId } = this.props;
     const { uploadedFileStaged } = this.state;
-    const voter = VoterStore.getVoter();
+    const politician = PoliticianStore.getPoliticianByWeVoteId(politicianWeVoteId);
     let profileImageTypeCurrentlyActive = 'UPLOADED';
-    if (voter.profile_image_type_currently_active && !uploadedFileStaged) {
-      if (voter.profile_image_type_currently_active !== 'UNKNOWN') {
-        profileImageTypeCurrentlyActive = voter.profile_image_type_currently_active;
+    if (politician.profile_image_type_currently_active && !uploadedFileStaged) {
+      if (politician.profile_image_type_currently_active !== 'UNKNOWN') {
+        profileImageTypeCurrentlyActive = politician.profile_image_type_currently_active;
       }
     }
     this.setState({
       profileImageTypeCurrentlyActive,
-      voterFacebookImageUrlLarge: voter.we_vote_hosted_profile_facebook_image_url_large,
-      voterPhotoQueuedToSaveSet: VoterStore.getVoterPhotoQueuedToSaveSet(),
-      voterTwitterImageUrlLarge: voter.we_vote_hosted_profile_twitter_image_url_large,
+      politicianBallotpediaImageUrlLarge: politician.we_vote_hosted_profile_ballotpedia_image_url_large,
+      politicianFacebookImageUrlLarge: politician.we_vote_hosted_profile_facebook_image_url_large,
+      politicianLinkedInImageUrlLarge: politician.we_vote_hosted_profile_linkedin_image_url_large,
+      politicianTwitterImageUrlLarge: politician.we_vote_hosted_profile_twitter_image_url_large,
+      politicianVoteUSAImageUrlLarge: politician.we_vote_hosted_profile_vote_usa_image_url_large,
+      politicianWikipediaImageUrlLarge: politician.we_vote_hosted_profile_wikipedia_image_url_large,
     });
   };
 
-  submitVoterPhotoSave = (buttonId) => {
+  setProfileImageTypeCurrentlyActive (type) {
+    const { uploadedFileStaged } = this.state;
+    console.log('SettingsPoliticianPicture setProfileImageTypeCurrentlyActive:', type);
+    const isStaged = type === 'UPLOADED' ? 'true' : uploadedFileStaged;
+    this.setState({
+      profileImageTypeCurrentlyActive: type,
+      profileImageTypeCurrentlyActiveSet: true,
+      uploadedFileStaged: isStaged,
+    });
+  }
+
+  submitPoliticianPhotoSave = (buttonId) => {
+    const { politicianWeVoteId } = this.props;
     const { profileImageTypeCurrentlyActive } = this.state;
-    const voterPhotoQueuedToSave = VoterStore.getVoterPhotoQueuedToSave();
-    const voterPhotoQueuedToSaveSet = VoterStore.getVoterPhotoQueuedToSaveSet();
-    if (voterPhotoQueuedToSaveSet || profileImageTypeCurrentlyActive) {
-      VoterActions.voterPhotoSave(voterPhotoQueuedToSave, voterPhotoQueuedToSaveSet, profileImageTypeCurrentlyActive);
-      VoterActions.voterPhotoQueuedToSave(undefined);
+    const politicianPhotoQueuedToSave = PoliticianStore.getPoliticianPhotoQueuedToSave();
+    const politicianPhotoQueuedToSaveSet = PoliticianStore.getPoliticianPhotoQueuedToSaveSet();
+    if (politicianPhotoQueuedToSaveSet || profileImageTypeCurrentlyActive) {
+      PoliticianActions.politicianPhotoSave(politicianWeVoteId, politicianPhotoQueuedToSave, politicianPhotoQueuedToSaveSet, profileImageTypeCurrentlyActive);
+      PoliticianActions.politicianPhotoQueuedToSave(undefined);
 
       // Adding event data to dataLayer for Google Tag Manager
       const dataLayerObject = {
@@ -75,7 +99,7 @@ class SettingsPoliticianPicture extends Component {
     }
 
     this.setState({
-      voterPhotoQueuedToSaveSet: false,
+      politicianPhotoQueuedToSaveSet: false,
       profileImageTypeCurrentlyActiveSet: false,
       uploadedFileStaged: false,
     });
@@ -89,35 +113,22 @@ class SettingsPoliticianPicture extends Component {
     });
   }
 
-  setProfileImageTypeCurrentlyActive (type) {
-    const { uploadedFileStaged } = this.state;
-    const isStaged = type === 'UPLOADED' ? 'true' : uploadedFileStaged;
-    this.setState({
-      profileImageTypeCurrentlyActive: type,
-      profileImageTypeCurrentlyActiveSet: true,
-      uploadedFileStaged: isStaged,
-    });
-  }
-
-  facebookClicked () {
-    this.setState({
-      profileImageTypeCurrentlyActive: 'FACEBOOK',
-      profileImageTypeCurrentlyActiveSet: true,
-      uploadedFileStaged: false,
-    });
-  }
-
   render () {
     const {
-      profileImageTypeCurrentlyActive, profileImageTypeCurrentlyActiveSet,
-      voterFacebookImageUrlLarge, voterPhotoQueuedToSaveSet, voterTwitterImageUrlLarge,
+      politicianBallotpediaImageUrlLarge, profileImageTypeCurrentlyActive, profileImageTypeCurrentlyActiveSet,
+      politicianFacebookImageUrlLarge, politicianLinkedInImageUrlLarge, politicianPhotoQueuedToSaveSet, politicianTwitterImageUrlLarge,
+      politicianVoteUSAImageUrlLarge, politicianWikipediaImageUrlLarge,
     } = this.state;
-    const { classes } = this.props;
-    const onlyOneOption = !(voterFacebookImageUrlLarge || voterTwitterImageUrlLarge);
+    const { classes, politicianWeVoteId } = this.props;
+    const onlyOneOption = !(politicianFacebookImageUrlLarge || politicianTwitterImageUrlLarge);
 
     return (
       <Wrapper>
-        <RadioWrapper value={profileImageTypeCurrentlyActive} onChange={this.changeProfileImageTypeCurrentlyActive} name="profile-option">
+        <RadioWrapper
+          value={profileImageTypeCurrentlyActive}
+          onChange={this.changeProfileImageTypeCurrentlyActive}
+          name="profile-option"
+        >
           <ColumnWrapper>
             <CustomColumns onlyOneOption={onlyOneOption}>
               <ProfilePictureOption>
@@ -128,36 +139,101 @@ class SettingsPoliticianPicture extends Component {
                   checked={profileImageTypeCurrentlyActive === 'UPLOADED'}
                 />
                 <Separator />
-                <VoterPhotoUpload limitPhotoHeight maxWidth={100} onUpload={this.setProfileImageTypeCurrentlyActive} />
+                <VoterPhotoUpload
+                  limitPhotoHeight
+                  maxWidth={100}
+                  onUpload={this.setProfileImageTypeCurrentlyActive}
+                  politicianWeVoteId={politicianWeVoteId}
+                />
               </ProfilePictureOption>
             </CustomColumns>
-            {voterFacebookImageUrlLarge && (
+            {politicianVoteUSAImageUrlLarge && (
               <CustomColumns>
                 <ProfilePictureOption>
                   <FormControlLabel
-                    value="FACEBOOK"
-                    control={<Radio color="primary" checked={profileImageTypeCurrentlyActive === 'FACEBOOK'} onClick={this.facebookClicked} />}
-                    label="Facebook photo"
+                    value="VOTE_USA"
+                    control={<Radio color="primary" checked={profileImageTypeCurrentlyActive === 'VOTE_USA'} />}
+                    label="Vote-USA photo"
                   />
                   <Separator />
                   <ProfilePictureWrapper>
-                    <ProfilePicture src={voterFacebookImageUrlLarge} />
+                    <ProfilePicture src={politicianVoteUSAImageUrlLarge} />
                   </ProfilePictureWrapper>
                 </ProfilePictureOption>
               </CustomColumns>
             )}
-            {voterTwitterImageUrlLarge && (
+            {politicianBallotpediaImageUrlLarge && (
+              <CustomColumns>
+                <ProfilePictureOption>
+                  <FormControlLabel
+                    value="BALLOTPEDIA"
+                    control={<Radio color="primary" checked={profileImageTypeCurrentlyActive === 'BALLOTPEDIA'} />}
+                    label="Ballotpedia photo"
+                  />
+                  <Separator />
+                  <ProfilePictureWrapper>
+                    <ProfilePicture src={politicianBallotpediaImageUrlLarge} />
+                  </ProfilePictureWrapper>
+                </ProfilePictureOption>
+              </CustomColumns>
+            )}
+            {politicianWikipediaImageUrlLarge && (
+              <CustomColumns>
+                <ProfilePictureOption>
+                  <FormControlLabel
+                    value="WIKIPEDIA"
+                    control={<Radio color="primary" checked={profileImageTypeCurrentlyActive === 'WIKIPEDIA'} />}
+                    label="Wikipedia photo"
+                  />
+                  <Separator />
+                  <ProfilePictureWrapper>
+                    <ProfilePicture src={politicianWikipediaImageUrlLarge} />
+                  </ProfilePictureWrapper>
+                </ProfilePictureOption>
+              </CustomColumns>
+            )}
+            {politicianLinkedInImageUrlLarge && (
+              <CustomColumns>
+                <ProfilePictureOption>
+                  <FormControlLabel
+                    value="LINKEDIN"
+                    control={<Radio color="primary" checked={profileImageTypeCurrentlyActive === 'LINKEDIN'} />}
+                    label="LinkedIn photo"
+                  />
+                  <Separator />
+                  <ProfilePictureWrapper>
+                    <ProfilePicture src={politicianLinkedInImageUrlLarge} />
+                  </ProfilePictureWrapper>
+                </ProfilePictureOption>
+              </CustomColumns>
+            )}
+            {politicianFacebookImageUrlLarge && (
+              <CustomColumns>
+                <ProfilePictureOption>
+                  <FormControlLabel
+                    value="FACEBOOK"
+                    control={<Radio color="primary" checked={profileImageTypeCurrentlyActive === 'FACEBOOK'} />}
+                    label="Facebook photo"
+                  />
+                  <Separator />
+                  <ProfilePictureWrapper>
+                    <ProfilePicture src={politicianFacebookImageUrlLarge} />
+                  </ProfilePictureWrapper>
+                </ProfilePictureOption>
+              </CustomColumns>
+            )}
+            {politicianTwitterImageUrlLarge && (
               <CustomColumns>
                 <ProfilePictureOption>
                   <FormControlLabel
                     value="TWITTER"
                     control={<Radio color="primary" />}
-                    label="Twitter photo"
+                    label="X photo"
                     checked={profileImageTypeCurrentlyActive === 'TWITTER'}
                   />
                   <Separator />
                   <ProfilePictureWrapper>
-                    <ProfilePicture src={voterTwitterImageUrlLarge} />
+                    <ProfilePicture src={politicianTwitterImageUrlLarge} />
                   </ProfilePictureWrapper>
                 </ProfilePictureOption>
               </CustomColumns>
@@ -169,12 +245,12 @@ class SettingsPoliticianPicture extends Component {
             <Button
               classes={{ root: classes.buttonSave }}
               color="primary"
-              disabled={!voterPhotoQueuedToSaveSet && !profileImageTypeCurrentlyActiveSet}
+              disabled={!politicianPhotoQueuedToSaveSet && !profileImageTypeCurrentlyActiveSet}
               id="saveEditYourPhotoBottom"
-              onClick={() => this.submitVoterPhotoSave('saveEditYourPhotoBottom')}
+              onClick={() => this.submitPoliticianPhotoSave('saveEditYourPhotoBottom')}
               variant="contained"
             >
-              {(!voterPhotoQueuedToSaveSet && !profileImageTypeCurrentlyActiveSet) ? 'Photo saved' : 'Save photo'}
+              {(!politicianPhotoQueuedToSaveSet && !profileImageTypeCurrentlyActiveSet) ? 'Photo saved' : 'Save photo'}
             </Button>
           </SaveInnerWrapper>
         </SaveOuterWrapper>
@@ -184,6 +260,7 @@ class SettingsPoliticianPicture extends Component {
 }
 SettingsPoliticianPicture.propTypes = {
   classes: PropTypes.object,
+  politicianWeVoteId: PropTypes.string,
 };
 
 const styles = () => ({
@@ -201,67 +278,6 @@ const styles = () => ({
     // width: 150,
   },
 });
-
-const ColumnWrapper = styled('div')`
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: space-between;
-`;
-
-const CustomColumns = styled('div', {
-  shouldForwardProp: (prop) => !['onlyOneOption'].includes(prop),
-})(({ onlyOneOption }) => (`
-  ${onlyOneOption ? 'width: 100% !important;' : 'width: 49% !important;'}
-`));
-
-const ProfilePictureOption = styled('div')`
-  align-items: flex-start;
-  border: 2px solid #e8e8e8;
-  border-radius: 3px;
-  display: flex !important;
-  flex-direction: column;
-  min-height: 250px;
-  padding: 4px 12px 12px 12px;
-  width: 100%;
-  margin-bottom: 3px;
-`;
-
-const ProfilePicture = styled('img')`
-  border-radius: 100px;
-  margin: 0 auto;
-  max-height: 100px;
-  max-width: 100px;
-`;
-
-const ProfilePictureWrapper = styled('div')`
-  display: flex;
-  justify-content: center;
-  margin-top: 9px;
-  margin-bottom: 26px;
-  width: 100%;
-`;
-
-const RadioWrapper = styled(RadioGroup)`
-`;
-
-const SaveInnerWrapper = styled('div')`
-  display: flex;
-`;
-
-const SaveOuterWrapper = styled('div')`
-  align-items: center;
-  display: flex;
-  justify-content: flex-end;
-  padding: 0 0 8px 0;
-`;
-
-const Separator = styled('div')`
-  width: 100%;
-  margin: 12px 0;
-  background: #e8e8e8;
-  height: 1px;
-`;
 
 const Wrapper = styled('div')`
 `;

@@ -1,152 +1,154 @@
 import { FormControl, TextField } from '@mui/material';
-import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import OrganizationActions from '../../actions/OrganizationActions';
+import styled from 'styled-components';
+import PoliticianActions from '../../common/actions/PoliticianActions';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import { prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../common/utils/cordovaUtils';
 import { renderLog } from '../../common/utils/logging';
-import OrganizationStore from '../../stores/OrganizationStore';
-import VoterStore from '../../stores/VoterStore';
-import { isSpeakerTypeOrganization } from '../../utils/organization-functions';
-// import Textarea from 'react-textarea-autosize';
+import PoliticianStore from '../../common/stores/PoliticianStore';
 
-const delayBeforeApiUpdateCall = 1200;
+const delayBeforeApiUpdateCall = 2000;
 const delayBeforeRemovingSavedStatus = 4000;
 
-class SettingsWidgetOrganizationDescription extends Component {
+class SettingsWidgetPoliticianStatement extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      isOrganization: false,
-      linkedOrganizationWeVoteId: '',
-      organizationDescriptionSavedStatus: '',
-      organizationDescription: '',
+      initialPoliticianStatementLoaded: false,
+      politicianStatement: '',
+      politicianStatementSavedStatus: '',
     };
 
-    this.handleKeyPress = this.handleKeyPress.bind(this);
-    this.updateOrganizationDescription = this.updateOrganizationDescription.bind(this);
-  }
-
-  // eslint-disable-next-line camelcase,react/sort-comp
-  UNSAFE_componentWillMount () {
-    prepareForCordovaKeyboard('SettingsWidgetOrganizationDescription');
+    this.handleKeyPressPoliticianStatement = this.handleKeyPressPoliticianStatement.bind(this);
+    this.updatePoliticianStatement = this.updatePoliticianStatement.bind(this);
   }
 
   componentDidMount () {
-    this.onVoterStoreChange();
-    this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
-    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+    this.onPoliticianStoreChange();
+    this.politicianStoreListener = PoliticianStore.addListener(
+      this.onPoliticianStoreChange.bind(this),
+    );
+    const { displayOnly = false } = this.props;
+    if (!displayOnly) {
+      prepareForCordovaKeyboard('SettingsWidgetPoliticianStatement');
+    }
   }
 
   componentWillUnmount () {
-    this.organizationStoreListener.remove();
-    this.voterStoreListener.remove();
+    this.politicianStoreListener.remove();
     if (this.clearStatusTimer) clearTimeout(this.clearStatusTimer);
-    if (this.timer) clearTimeout(this.timer);
-    restoreStylesAfterCordovaKeyboard('SettingsWidgetOrganizationDescription');
+    if (this.politicianStatementTimer) clearTimeout(this.politicianStatementTimer);
+    const { displayOnly = false } = this.props;
+    if (!displayOnly) {
+      restoreStylesAfterCordovaKeyboard('SettingsWidgetPoliticianStatement');
+    }
   }
 
-  handleKeyPress () {
-    if (this.timer) clearTimeout(this.timer);
+  handleKeyPressPoliticianStatement () {
+    const { politicianWeVoteId } = this.props;
+    if (this.politicianStatementTimer) clearTimeout(this.politicianStatementTimer);
     if (this.props.voterHasMadeChangesFunction) {
       this.props.voterHasMadeChangesFunction();
     }
-    this.timer = setTimeout(() => {
-      OrganizationActions.organizationDescriptionSave(this.state.linkedOrganizationWeVoteId, this.state.organizationDescription);
-      this.setState({ organizationDescriptionSavedStatus: 'Saved' });
+
+    if (this.politicianStatementTimer) clearTimeout(this.politicianStatementTimer);
+    this.politicianStatementTimer = setTimeout(() => {
+      const { politicianStatement } = this.state;
+      // console.log('SettingsWidgetPoliticianStatement handleKeyPressPoliticianStatement politicianStatement:', politicianStatement, ', politicianWeVoteId:', politicianWeVoteId);
+      PoliticianActions.politicianStatementSave(politicianWeVoteId, politicianStatement);
+      this.setState({ politicianStatementSavedStatus: 'Saved' });
     }, delayBeforeApiUpdateCall);
   }
 
-  onOrganizationStoreChange () {
-    const organization = OrganizationStore.getOrganizationByWeVoteId(this.state.linkedOrganizationWeVoteId);
-    if (organization && organization.organization_we_vote_id) {
+  onPoliticianStoreChange () {
+    const { politicianWeVoteId } = this.props;
+    const { initialPoliticianStatementLoaded } = this.state;
+    const politician = PoliticianStore.getPoliticianByWeVoteId(politicianWeVoteId);
+    // console.log('SettingsWidgetPoliticianStatement onPoliticianStoreChange politician:', politician, ', politicianWeVoteId:', politicianWeVoteId);
+    if (politician && politician.politician_we_vote_id) {
       this.setState({
-        organizationDescription: organization.organization_description,
-        isOrganization: isSpeakerTypeOrganization(organization.organization_type),
+        politician,
       });
-    }
-  }
-
-  onVoterStoreChange () {
-    if (VoterStore.isVoterFound()) {
-      const voter = VoterStore.getVoter();
-      this.setState({
-        voter,
-      });
-      if (voter && voter.linked_organization_we_vote_id) {
+      if (!initialPoliticianStatementLoaded) {
         this.setState({
-          linkedOrganizationWeVoteId: voter.linked_organization_we_vote_id,
+          politicianStatement: politician.ballot_guide_official_statement,
+          initialPoliticianStatementLoaded: true,
         });
-        if (voter.linked_organization_we_vote_id !== this.state.linkedOrganizationWeVoteId) {
-          const organization = OrganizationStore.getOrganizationByWeVoteId(voter.linked_organization_we_vote_id);
-          if (organization && organization.organization_we_vote_id) {
-            this.setState({
-              organizationDescription: organization.organization_description,
-              isOrganization: isSpeakerTypeOrganization(organization.organization_type),
-            });
-          }
-        }
       }
     }
   }
 
-  updateOrganizationDescription (event) {
-    if (event.target.name === 'organizationDescription') {
+  updatePoliticianStatement (event) {
+    // console.log('SettingsWidgetPoliticianStatement updatePoliticianStatement event.target.name:', event.target.name, ', event.target.value:', event.target.value);
+    if (event.target.name === 'politicianStatement') {
       this.setState({
-        organizationDescription: event.target.value,
-        organizationDescriptionSavedStatus: 'Saving description...',
+        politicianStatement: event.target.value,
+        politicianStatementSavedStatus: 'Saving Candidate Name...',
       });
     }
     // After some time, clear saved message
     if (this.clearStatusTimer) clearTimeout(this.clearStatusTimer);
     this.clearStatusTimer = setTimeout(() => {
-      this.setState({ organizationDescriptionSavedStatus: '' });
+      this.setState({ politicianStatementSavedStatus: '' });
     }, delayBeforeRemovingSavedStatus);
   }
 
   render () {
-    renderLog('SettingsWidgetOrganizationDescription');  // Set LOG_RENDER_EVENTS to log all renders
-    if (!this.state.voter) {
+    renderLog('SettingsWidgetPoliticianStatement'); // Set LOG_RENDER_EVENTS to log all renders
+    const {
+      politicianStatement,
+      politician,
+      politicianStatementSavedStatus,
+    } = this.state;
+    const { classes, externalUniqueId } = this.props;
+
+    if (!politician) {
       return LoadingWheel;
     }
 
-    const { classes, externalUniqueId } = this.props;
-    const { isOrganization, organizationDescription, organizationDescriptionSavedStatus } = this.state;
-
     return (
-      <div className="">
-        <form onSubmit={(e) => { e.preventDefault(); }}>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+        }}
+      >
+        <span>
           <Row>
-            <Column>
+            <ColumnFullWidth>
               <FormControl classes={{ root: classes.formControl }}>
-                <TextField
-                  id={`organizationDescriptionTextArea-${externalUniqueId}`}
-                  label={isOrganization ? 'Description Shown with Endorsements' : 'Description Shown with Endorsements'}
-                  name="organizationDescription"
-                  rows={4}
-                  multiline
+                <StyledTextField
+                  autoComplete="given-name"
+                  // className={classes.input}
                   fullWidth
+                  id={`official-statement-${externalUniqueId}`}
+                  label="Official Statement"
                   margin="dense"
+                  multiline
+                  name="politicianStatement"
+                  placeholder="Your official statement as a candidate, including your platform and what you believe."
+                  onKeyDown={this.handleKeyPressPoliticianStatement}
+                  onChange={this.updatePoliticianStatement}
+                  rows={4}
+                  type="text"
+                  value={politicianStatement}
                   variant="outlined"
-                  placeholder={isOrganization ? 'Type Organization Description...' : 'Type Description of Yourself...'}
-                  value={organizationDescription}
-                  onKeyDown={this.handleKeyPress}
-                  onChange={this.updateOrganizationDescription}
                 />
               </FormControl>
-            </Column>
+            </ColumnFullWidth>
           </Row>
-        </form>
-        <div className="u-gray-mid">{organizationDescriptionSavedStatus}</div>
-      </div>
+          <div className="u-gray-mid">{politicianStatementSavedStatus}</div>
+        </span>
+      </form>
     );
   }
 }
-SettingsWidgetOrganizationDescription.propTypes = {
+SettingsWidgetPoliticianStatement.propTypes = {
   classes: PropTypes.object,
+  displayOnly: PropTypes.bool,
   externalUniqueId: PropTypes.string,
+  politicianWeVoteId: PropTypes.string,
   voterHasMadeChangesFunction: PropTypes.func,
 };
 
@@ -169,10 +171,16 @@ const Row = styled('div')`
   justify-content: space-between;
 `;
 
-const Column = styled('div')`
-  padding: 8px 12px;
+const ColumnFullWidth = styled('div')`
+  padding: 6px 12px;
   width: 100%;
 `;
 
-export default withStyles(styles)(SettingsWidgetOrganizationDescription);
+const StyledTextField = styled(TextField)`
+  * {
+    margin: 0 !important;
+  }
+  margin: 0 !important;
+`;
 
+export default withStyles(styles)(SettingsWidgetPoliticianStatement);

@@ -1121,8 +1121,8 @@ class VoterStore extends ReduceStore {
           voter: { ...state.voter, facebook_profile_image_url_https: action.res.facebook_profile_image_url_https },
         };
 
-      case 'voterPhotoTooBigReset':
-        // console.log('VoterStore, voterPhotoTooBigReset');
+      case 'profilePhotoTooBigReset':
+        // console.log('VoterStore, profilePhotoTooBigReset');
         return {
           ...state,
           voterPhotoTooBig: false,

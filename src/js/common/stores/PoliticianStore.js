@@ -139,6 +139,15 @@ class PoliticianStore extends ReduceStore {
     return this.getState().politicianNameQueuedToSaveSet;
   }
 
+  getPoliticianProfileUploadedImageUrlLarge (politicianWeVoteId) {
+    const politician = this.getPoliticianByWeVoteId(politicianWeVoteId);
+    if (politician) {
+      return politician.we_vote_hosted_profile_uploaded_image_url_large || '';
+    } else {
+      return '';
+    }
+  }
+
   getPoliticianPhotoQueuedToSave () {
     return this.getState().politicianPhotoQueuedToSave;
   }

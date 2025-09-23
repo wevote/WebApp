@@ -56,7 +56,7 @@ class SettingsWidgetPoliticianName extends Component {
     if (this.politicianNameTimer) clearTimeout(this.politicianNameTimer);
     this.politicianNameTimer = setTimeout(() => {
       const { politicianName } = this.state;
-      console.log('SettingsWidgetPoliticianName handleKeyPressPoliticianName politicianName:', politicianName, ', politicianWeVoteId:', politicianWeVoteId);
+      // console.log('SettingsWidgetPoliticianName handleKeyPressPoliticianName politicianName:', politicianName, ', politicianWeVoteId:', politicianWeVoteId);
       PoliticianActions.politicianNameSave(politicianWeVoteId, politicianName);
       this.setState({ politicianNameSavedStatus: 'Saved' });
     }, delayBeforeApiUpdateCall);
@@ -66,7 +66,7 @@ class SettingsWidgetPoliticianName extends Component {
     const { politicianWeVoteId } = this.props;
     const { initialNameLoaded } = this.state;
     const politician = PoliticianStore.getPoliticianByWeVoteId(politicianWeVoteId);
-    console.log('SettingsWidgetPoliticianName onPoliticianStoreChange politician:', politician, ', politicianWeVoteId:', politicianWeVoteId);
+    // console.log('SettingsWidgetPoliticianName onPoliticianStoreChange politician:', politician, ', politicianWeVoteId:', politicianWeVoteId);
     if (politician && politician.politician_we_vote_id) {
       this.setState({
         politician,
@@ -81,7 +81,7 @@ class SettingsWidgetPoliticianName extends Component {
   }
 
   updatePoliticianName (event) {
-    console.log('SettingsWidgetPoliticianName updatePoliticianName event.target.name:', event.target.name, ', event.target.value:', event.target.value);
+    // console.log('SettingsWidgetPoliticianName updatePoliticianName event.target.name:', event.target.name, ', event.target.value:', event.target.value);
     if (event.target.name === 'politicianName') {
       this.setState({
         politicianName: event.target.value,

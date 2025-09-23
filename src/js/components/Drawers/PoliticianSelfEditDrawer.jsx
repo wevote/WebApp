@@ -1,27 +1,25 @@
-import {
-  AccountCircle, CampaignRounded,
-  ContentCopy, ImportContactsOutlined, Launch, Lock,
-  Menu, SecurityRounded,
-} from '@mui/icons-material';
+import { AccountCircle, Description, Menu } from '@mui/icons-material';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import TagManager from 'react-gtm-module';
 import { ReactSVG } from 'react-svg';
 import styled from 'styled-components';
 import DrawerTemplateHeaderProfile from './DrawerTemplateHeaderProfile';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
-import SettingsNameAndPhoto from '../PoliticianSelfEdit/SettingsNameAndPhoto';
 import lookupPageNameAndPageTypeDict, { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
 import PoliticianStore from '../../common/stores/PoliticianStore';
 import VoterStore from '../../stores/VoterStore';
 import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
+import SettingsNameAndPhoto from '../PoliticianSelfEdit/SettingsNameAndPhoto';
 import SettingsNotifications from '../Settings/SettingsNotifications';
+import SettingsOfficialStatement from '../PoliticianSelfEdit/SettingsOfficialStatement';
 import SettingsSectionFooter from '../Navigation/SettingsSectionFooter';
+import webAppConfig from '../../config';
 import historyPush from '../../common/utils/historyPush';
 import manageCandidates from '../../../img/global/svg-icons/manage-candidates.svg';
 import viewCandidate from '../../../img/global/svg-icons/view-candidate.svg';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 
-// const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
+const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
 const PoliticianSelfEditDrawer = () => {
   const [headerFixedJsx] = useState(<></>);
@@ -31,10 +29,9 @@ const PoliticianSelfEditDrawer = () => {
   const [isOnManagePage, setIsOnManagePage] = useState(true);
   const [politician, setPolitician] = useState({});
   const [politicianWeVoteId, setPoliticianWeVoteId] = useState('');
+  const politicianWeVoteIdRef = useRef(politicianWeVoteId);
   const [showLinksToProfilePages, setShowLinksToProfilePages] = useState(true);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-
-  const politicianWeVoteIdRef = useRef(politicianWeVoteId);
 
   // checks window width for responsiveness
   useEffect(() => {
@@ -42,12 +39,10 @@ const PoliticianSelfEditDrawer = () => {
       setWindowWidth(window.innerWidth);
     };
     window.addEventListener('resize', handleWindowWidth);
-    return () => window.removeEventListener('resize', handleWindowWidth);
+    return () => {
+      window.removeEventListener('resize', handleWindowWidth);
+    };
   }, []);
-
-  // useEffect(() => {
-  //   setViewerIsThisAuthenticatedPerson(authenticatedPerson && getAppContextValue('profileDrawerPersonId') === authenticatedPerson.personId);
-  // }, [getAppContextValue, authenticatedPerson]);
 
   const profileNavOptions = [
     {
@@ -56,9 +51,9 @@ const PoliticianSelfEditDrawer = () => {
       linkTextJsx: <LinkSpan $isActive={String(displayProfileOption) === 'nameAndPhoto'}>Name & Photo</LinkSpan>,
     },
     {
-      icon: <SecurityIcon $isActive={String(displayProfileOption) === 'securityAndSignIn'} />,
-      linkName: 'securityAndSignIn',
-      linkTextJsx: <LinkSpan $isActive={String(displayProfileOption) === 'securityAndSignIn'}>Official&nbsp;Statement</LinkSpan>,
+      icon: <DescriptionStyled $isActive={String(displayProfileOption) === 'officialStatement'} />,
+      linkName: 'officialStatement',
+      linkTextJsx: <LinkSpan $isActive={String(displayProfileOption) === 'officialStatement'}>Official&nbsp;Statement</LinkSpan>,
     },
   ];
 
@@ -82,13 +77,24 @@ const PoliticianSelfEditDrawer = () => {
           </>
         );
         break;
+      case 'officialStatement':
+        component = (
+          <>
+            {/* <ProfileComponentTitle>Availability</ProfileComponentTitle> */}
+            <SettingsOfficialStatement externalUniqueId="politicianSelfEditDrawer" politicianWeVoteId={politicianWeVoteId} />
+          </>
+        );
+        break;
       default:
         // console.log('In PoliticianSelfEditDrawer useEffect default case');
-        if (displayProfileOption !== 'nameAndPhoto') {
+        if (!displayProfileOption) {
           setDisplayProfileOption('nameAndPhoto');
         }
     }
-    setDisplayProfileComponent(component);
+    // console.log('About to setDisplayProfileComponent: ', displayProfileOption);
+    if (displayProfileOption && component) {
+      setDisplayProfileComponent(component);
+    }
   }, [displayProfileOption, politicianWeVoteId]);
 
   const onCloseDrawer = () => {
@@ -119,7 +125,8 @@ const PoliticianSelfEditDrawer = () => {
   };
 
   const jumpToManagePage = (buttonId) => {
-    const destinationPath = '/ted-lieu-politician-from-california/-/';
+    // const destinationPath = '/more/manage/ted-lieu-politician-from-california/';
+    const destinationPath = '/more/manage/';
     sendGTMDataLayer({
       buttonId,
       destinationPath,
@@ -129,7 +136,7 @@ const PoliticianSelfEditDrawer = () => {
   };
 
   const jumpToPublicPage = (buttonId) => {
-    const destinationPath = '/ted-lieu-politician-from-california/-/';
+    const destinationPath = `/${politician.seo_friendly_path}/-/`;
     sendGTMDataLayer({
       buttonId,
       destinationPath,
@@ -140,6 +147,7 @@ const PoliticianSelfEditDrawer = () => {
 
   const linkNameToPathMap = {
     nameAndPhoto: '/settings/profile',
+    officialStatement: '/settings/officialStatement',
     securityAndSignIn: '/settings/securityAndSignIn',
     yourData: '/settings/yourdata',
     notifications: '/settings/notifications',
@@ -163,15 +171,15 @@ const PoliticianSelfEditDrawer = () => {
       setPoliticianWeVoteId(AppObservableStore.getPoliticianWeVoteIdBeingViewed());
       // console.log('PoliticianSelfEditDrawer onAppObservableStoreChange politicianWeVoteId:', AppObservableStore.getPoliticianWeVoteIdBeingViewed());
     }
-  }, [setDisplayProfileOption, setHeaderProfileSectionSetFromAppContext]);
+  }, [setDisplayProfileOption, setHeaderProfileSectionSetFromAppContext, setPoliticianWeVoteId]);
 
   const onPoliticianStoreChange = useCallback(() => {
     const currentPoliticianWeVoteId = politicianWeVoteIdRef.current;
-    if (politicianWeVoteId) {
-      setPolitician(PoliticianStore.getPoliticianByWeVoteId(politicianWeVoteId));
-      console.log('PoliticianSelfEditDrawer onAppObservableStoreChange politician:', PoliticianStore.getPoliticianByWeVoteId(politicianWeVoteId));
+    if (currentPoliticianWeVoteId) {
+      setPolitician(PoliticianStore.getPoliticianByWeVoteId(currentPoliticianWeVoteId));
+      // console.log('PoliticianSelfEditDrawer onPoliticianStoreChange politician:', PoliticianStore.getPoliticianByWeVoteId(currentPoliticianWeVoteId));
     }
-  }, [setPolitician]);
+  }, []);
 
   useEffect(() => {
     const appStateSubscription = messageService.getMessage().subscribe(onAppObservableStoreChange);
@@ -181,6 +189,23 @@ const PoliticianSelfEditDrawer = () => {
       appStateSubscription.unsubscribe();
     };
   }, [onAppObservableStoreChange]);
+
+  useEffect(() => {
+    // console.log('VoterPositionEntryAndDisplay useEffect, politicianWeVoteId: ', politicianWeVoteId);
+    politicianWeVoteIdRef.current = politicianWeVoteId;
+    if (politicianWeVoteId) {
+      onPoliticianStoreChange();
+    }
+  }, [onPoliticianStoreChange, politicianWeVoteId]);
+
+  useEffect(() => {
+    const { location: { pathname } } = window;
+    if (pathname.startsWith('/more/')) {
+      setIsOnManagePage(true);
+    } else {
+      setIsOnManagePage(false);
+    }
+  }, [setIsOnManagePage]);
 
   const linksToProfilePages = profileNavOptions.map((option) => (
     <NavLinkContainer
@@ -208,7 +233,7 @@ const PoliticianSelfEditDrawer = () => {
         />
       </ManageCandidatesSvgImageWrapper>
       <NavLink>
-        Manage&nbsp;Candidate
+        Manage&nbsp;Candidates
       </NavLink>
     </NavLinkContainer>
   );
@@ -241,7 +266,7 @@ const PoliticianSelfEditDrawer = () => {
       <YourAccountWrapper>
         <AccountCircleStyled />
         <div>
-          Edit Profile
+          {politician ? `${politician.politician_name}` : 'Edit Profile'}
         </div>
       </YourAccountWrapper>
     </>
@@ -255,13 +280,17 @@ const PoliticianSelfEditDrawer = () => {
           {showLinksToProfilePages ? (
             <NavLinksContainer>
               {linksToProfilePages}
-              {isOnManagePage ? (
+              {nextReleaseFeaturesEnabled && (
                 <>
-                  {JumpToPublicPageJsx}
-                </>
-              ) : (
-                <>
-                  {JumpToManagePageJsx}
+                  {isOnManagePage ? (
+                    <>
+                      {JumpToPublicPageJsx}
+                    </>
+                  ) : (
+                    <>
+                      {JumpToManagePageJsx}
+                    </>
+                  )}
                 </>
               )}
               <SettingsSectionFooterWrapper>
@@ -278,13 +307,17 @@ const PoliticianSelfEditDrawer = () => {
         <>
           <NavLinksContainer>
             {linksToProfilePages}
-            {isOnManagePage ? (
+            {nextReleaseFeaturesEnabled && (
               <>
-                {JumpToPublicPageJsx}
-              </>
-            ) : (
-              <>
-                {JumpToManagePageJsx}
+                {isOnManagePage ? (
+                  <>
+                    {JumpToPublicPageJsx}
+                  </>
+                ) : (
+                  <>
+                    {JumpToManagePageJsx}
+                  </>
+                )}
               </>
             )}
             <SettingsSectionFooterWrapper>
@@ -315,29 +348,8 @@ const AccountCircleStyled = styled(AccountCircle)`
   margin-right: 8px;
 `;
 
-const ContentCopyStyled = styled(ContentCopy)`
-  height: 16px;
-  margin: 0 4px;
-  width: 16px;
-`;
-
-const ContentCopyText = styled('p')`
-`;
-
-const CopyToClipboardContainer = styled('div')`
-  align-items: center;
-  display: flex;
-  height: 18px;
-  justify-content: flex-start;
-`;
-
-const HeaderProfileLink = styled('div')`
-  color: ${DesignTokenColors.whiteUI};
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 300;
-  margin-left: 24px;
-  white-space: nowrap;
+const DescriptionStyled = styled(Description)`
+  color: ${DesignTokenColors.neutralUI600};
 `;
 
 const MenuIconWrapper = styled.button`
@@ -419,32 +431,6 @@ const NavLinksContainer = styled('div')`
   flex-direction: column;
   margin-left: -16px;
   position: fixed;
-`;
-
-const ProfileComponentTitle = styled('div')`
-  font-size: 20px;
-  font-weight: 600;
-  margin-bottom: 16px;
-`;
-
-const ImportContactsIcon = styled(ImportContactsOutlined)`
-  color: ${(props) => (props.$isActive ? DesignTokenColors.primary600 : DesignTokenColors.neutralUI600)};
-`;
-
-const SecurityIcon = styled(Lock)`
-  color: ${(props) => (props.$isActive ? DesignTokenColors.primary600 : DesignTokenColors.neutralUI600)};
-`;
-
-const PrivacyIcon = styled(SecurityRounded)`
-  color: ${(props) => (props.$isActive ? DesignTokenColors.primary600 : DesignTokenColors.neutralUI600)};
-`;
-
-const NotificationsIcon = styled(CampaignRounded)`
-  color: ${(props) => (props.$isActive ? DesignTokenColors.primary600 : DesignTokenColors.neutralUI600)};
-`;
-
-const LaunchStyled = styled(Launch)`
-  color: ${DesignTokenColors.neutralUI600};
 `;
 
 const SettingsSectionFooterWrapper = styled('div')`

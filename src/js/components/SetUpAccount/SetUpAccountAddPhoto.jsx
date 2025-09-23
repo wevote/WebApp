@@ -87,7 +87,7 @@ class SetUpAccountAddPhoto extends React.Component {
     VoterActions.voterFirstNameQueuedToSave(undefined);
     VoterActions.voterLastNameQueuedToSave(undefined);
     VoterActions.voterPhotoQueuedToSave(undefined);
-    VoterActions.voterPhotoTooBigReset();
+    VoterActions.profilePhotoTooBigReset();
 
     if (!voterPhotoQueuedToSave && !VoterStore.getVoterProfileUploadedImageUrlLarge()) {
       voterPhotoMissing = true;
