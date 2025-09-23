@@ -604,13 +604,15 @@ class HeaderBar extends Component {
                       Challenges
                     </StyledMoreMenuItem>
 
-                    <StyledMoreMenuItem
-                      selected={normalizedHrefPage() === 'manage'}
-                      onClick={this.navTo('/more/manage', 99)}
-                      disableRipple
-                    >
-                      Candidates I’m managing
-                    </StyledMoreMenuItem>
+                    {nextReleaseFeaturesEnabled && (
+                      <StyledMoreMenuItem
+                        selected={normalizedHrefPage() === 'manage'}
+                        onClick={this.navTo('/more/manage', 99)}
+                        disableRipple
+                      >
+                        Candidates I&apos;m managing
+                      </StyledMoreMenuItem>
+                    )}
                   </StyledMoreMenu>
                 </>
               )}

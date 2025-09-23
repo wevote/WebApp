@@ -10,9 +10,7 @@ import { renderLog } from '../../common/utils/logging';
 import VoterStore from '../../stores/VoterStore';
 import { HeaderContentContainer } from '../Style/pageLayoutStyles';
 import BrowserPushMessage from '../Widgets/BrowserPushMessage';
-import SettingsPoliticianPicture from './SettingsPoliticianPicture';
-import SettingsWidgetPoliticianName from './SettingsWidgetPoliticianName';
-// import AppObservableStore from '../../common/stores/AppObservableStore';
+import SettingsWidgetPoliticianStatement from './SettingsWidgetPoliticianStatement';
 import PoliticianStore from '../../common/stores/PoliticianStore';
 
 
@@ -26,7 +24,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const SettingsNameAndPhoto = ({ externalUniqueId, politicianWeVoteId }) => {
+const SettingsOfficialStatement = ({ externalUniqueId, politicianWeVoteId }) => {
   const classes = useStyles();
   const [politician, setPolitician] = useState(null);
   const politicianWeVoteIdRef = useRef(politicianWeVoteId);
@@ -56,7 +54,7 @@ const SettingsNameAndPhoto = ({ externalUniqueId, politicianWeVoteId }) => {
     AnalyticsActions.saveActionAccountPage(VoterStore.electionId());
   }, []);
 
-  renderLog('SettingsNameAndPhoto');  // Set LOG_RENDER_EVENTS to log all renders
+  renderLog('SettingsOfficialStatement');  // Set LOG_RENDER_EVENTS to log all renders
   return (
     <HeaderContentContainer>
       <Helmet title="Name & Photo - WeVote" />
@@ -65,36 +63,34 @@ const SettingsNameAndPhoto = ({ externalUniqueId, politicianWeVoteId }) => {
         <div className="card-main">
           <HeaderContainer>
             <IdIcon />
-            <h1 className="h2">Name &amp; Photo</h1>
+            <h1 className="h2">Official Statement</h1>
           </HeaderContainer>
-          <SettingsWidgetPoliticianName
-            externalUniqueId={externalUniqueId}
-            politicianWeVoteId={politicianWeVoteId}
-          />
           <IntroductionWrapper>
             <Info classes={{ root: classes.informationIcon }} />
-            Please upload a square photo of
+            Please share with voters an official statement from
             {' '}
             {politician ? politician.politician_name : 'this politician'}
             {' '}
-            to show to voters.
+            about why they are running for office.
           </IntroductionWrapper>
           <div>
-            <SettingsPoliticianPicture politicianWeVoteId={politicianWeVoteId} />
+            <SettingsWidgetPoliticianStatement
+              externalUniqueId={externalUniqueId}
+              politicianWeVoteId={politicianWeVoteId}
+            />
           </div>
         </div>
       </div>
     </HeaderContentContainer>
   );
 };
-SettingsNameAndPhoto.propTypes = {
+SettingsOfficialStatement.propTypes = {
   externalUniqueId: PropTypes.string,
   politicianWeVoteId: PropTypes.string,
 };
 
 const IntroductionWrapper = styled('div')`
   margin-bottom: 12px;
-  margin-top: 24px;
 `;
 
 const HeaderContainer = styled('div')`
@@ -109,4 +105,4 @@ const IdIcon = styled(AccountBoxIcon)`
   margin: 8px 8px 0 -2px;
 `;
 
-export default SettingsNameAndPhoto;
+export default SettingsOfficialStatement;

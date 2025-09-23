@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { useState, Suspense } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Close, EditOutlined, ExpandMoreRounded } from '@mui/icons-material';
 import { Button, IconButton } from '@mui/material';
@@ -9,15 +9,8 @@ import DesignTokenColors from '../../Style/DesignTokenColors';
 import VerifyOtherWaysModal from './VerifyOtherWaysModal';
 import VerifyWithEmailModal from './VerifyWithEmailModal';
 import AppObservableStore from '../../../stores/AppObservableStore';
-import webAppConfig from '../../../../config';
 import useVoterCanEditPolitician from '../../../../hooks/useVoterCanEditPolitician';
 
-const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
-
-
-const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../Widgets/OpenExternalWebSite'));
-
-const updateCandidateInformationLink = 'https://docs.google.com/forms/d/e/1FAIpQLSePdeW32PClaSO1pUWBJnQ75wFGPOtviNaqOABBYps7NIH3hA/viewform?usp=sf_link';
 const CustomTooltip = muiStyled(({ className, ...props }) => (
   <Tooltip {...props} classes={{ popper: className }} />
 ))(() => ({
@@ -52,78 +45,50 @@ const UpdatePoliticianInformation =  ({ politicianName, politicianWeVoteId }) =>
     <UpdateInformationWrapper>
       {!!(politicianName) && (
         <>
-          {nextReleaseFeaturesEnabled ? (
-            <>
-              {voterCanEditPoliticianProfile ? (
-                <CustomTooltip
-                  interactive
-                  arrow
-                  placement="right"
-                  open={tooltipOpen}
-                  onOpen={() => setTooltipOpen(true)}
-                  onClose={() => setTooltipOpen(false)}
-                  title={(
-                    <TooltipContent>
-                      <CloseButton size="small" onClick={() => setTooltipOpen(false)}>
-                        <Close fontSize="small" />
-                      </CloseButton>
-                      Edit your candidate’s profile here
-                      <GotItButton onClick={() => setTooltipOpen(false)}>
-                        GOT IT
-                      </GotItButton>
-                    </TooltipContent>
-                  )}
-                >
-                  <EditProfileWrapper
-                    onMouseEnter={() => setTooltipOpen(true)}
-                    onClick={handleEditProfile}
-                  >
-                    <EditOutlined fontSize="small" style={{ marginRight: 4 }} />
-                    Edit profile
-                  </EditProfileWrapper>
-                </CustomTooltip>
-              ) : (
-                <CandidateStaffAccessButton
-                  onClick={handleOpenVerifyWithEmailModal}
-                >
-                  Candidate staff access
-                  <ExpandMoreRounded />
-                </CandidateStaffAccessButton>
+          {voterCanEditPoliticianProfile ? (
+            <CustomTooltip
+              interactive
+              arrow
+              placement="right"
+              open={tooltipOpen}
+              onOpen={() => setTooltipOpen(true)}
+              onClose={() => setTooltipOpen(false)}
+              title={(
+                <TooltipContent>
+                  <CloseButton size="small" onClick={() => setTooltipOpen(false)}>
+                    <Close fontSize="small" />
+                  </CloseButton>
+                  Edit your candidate’s profile here
+                  <GotItButton onClick={() => setTooltipOpen(false)}>
+                    GOT IT
+                  </GotItButton>
+                </TooltipContent>
               )}
-              <VerifyOtherWaysModal
-                politicianName={politicianName}
-                politicianWeVoteId={politicianWeVoteId}
-              />
-              <VerifyWithEmailModal
-                politicianName={politicianName}
-                politicianWeVoteId={politicianWeVoteId}
-              />
-            </>
+            >
+              <EditProfileWrapper
+                onMouseEnter={() => setTooltipOpen(true)}
+                onClick={handleEditProfile}
+              >
+                <EditOutlined fontSize="small" style={{ marginRight: 4 }} />
+                Edit profile
+              </EditProfileWrapper>
+            </CustomTooltip>
           ) : (
-            <Suspense fallback={<></>}>
-              <FlexLayoutDiv>
-                <CandidateStaffText>
-                  For candidate staff:&nbsp;
-                </CandidateStaffText>
-                <AddInfoLink>
-                  <OpenExternalWebSite
-                    linkIdAttribute="updateCandidateInformation"
-                    url={updateCandidateInformationLink}
-                    target="_blank"
-                    className="u-link-color"
-                    body={(
-                      <div>
-                        Add info
-                      </div>
-                    )}
-                    destinationPageName="PoliticianEditForm"
-                    destinationPageType="politician"
-                    trackingOn
-                  />
-                </AddInfoLink>
-              </FlexLayoutDiv>
-            </Suspense>
+            <CandidateStaffAccessButton
+              onClick={handleOpenVerifyWithEmailModal}
+            >
+              Candidate staff access
+              <ExpandMoreRounded />
+            </CandidateStaffAccessButton>
           )}
+          <VerifyOtherWaysModal
+            politicianName={politicianName}
+            politicianWeVoteId={politicianWeVoteId}
+          />
+          <VerifyWithEmailModal
+            politicianName={politicianName}
+            politicianWeVoteId={politicianWeVoteId}
+          />
         </>
       )}
     </UpdateInformationWrapper>
@@ -135,10 +100,6 @@ UpdatePoliticianInformation.propTypes = {
   politicianWeVoteId: PropTypes.string,
 };
 
-const AddInfoLink = styled('div')`
-  font-size: 12px;
-`;
-
 const CandidateStaffAccessButton = styled('button')`
   background: transparent;
   border: none;
@@ -147,20 +108,10 @@ const CandidateStaffAccessButton = styled('button')`
   margin-top: -3px;
 `;
 
-const CandidateStaffText = styled('div')`
-  color:${DesignTokenColors.neutralUI100};
-  font-size: 10px;
-`;
-
 const EditProfileWrapper = styled('div')`
   color: ${DesignTokenColors.primary500};
   cursor: pointer;
   font-size: 12px;
-`;
-
-const FlexLayoutDiv = styled('div')`
-  display: flex;
-  align-items: flex-end;
 `;
 
 const UpdateInformationWrapper = styled('div')`

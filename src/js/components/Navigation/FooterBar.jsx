@@ -1,4 +1,4 @@
-import { Groups, Home, HowToVote, Info, MoreHoriz, People, QuestionAnswer, VerifiedUser, AccountBalance } from '@mui/icons-material';
+import { Groups, Home, HowToVote, Info, MoreHoriz, People, QuestionAnswer, VerifiedUser } from '@mui/icons-material';
 import { Badge, BottomNavigation, BottomNavigationAction, ClickAwayListener } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
@@ -20,6 +20,9 @@ import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
 import { cordovaFooterHeight } from '../../utils/cordovaOffsets';
 import ShareButtonFooter from '../Share/ShareButtonFooter';
+import webAppConfig from '../../config';
+
+const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
 // It's not ideal to have two images, but this is a complex svg, and I couldn't figure out how to change the fill color with a variable
 const capitalBuilding = '/img/global/svg-icons/capital-building.svg';
@@ -42,18 +45,18 @@ function MoreMenuOverlay ({ onClose }) {
           <Groups />
           Challenges
         </MenuItem>
-       <MenuItem $active={isManage} onClick={() => { onClose(); historyPush('/more/manage'); }}>
-         <img
-           alt=""
-           src={isManage
-                ? '/img/global/svg-icons/capital-building-selected.svg'
-                : '/img/global/svg-icons/capital-building.svg'}
-           style={{ width: 40, height: 40, marginBottom: 6 }}
-         />
-           Candidates
-           <br />
-           I&#39;m managing
-        </MenuItem>
+        {nextReleaseFeaturesEnabled && (
+          <MenuItem $active={isManage} onClick={() => { onClose(); historyPush('/more/manage'); }}>
+            <img
+              alt=""
+              src={isManage ? '/img/global/svg-icons/capital-building-selected.svg' : '/img/global/svg-icons/capital-building.svg'}
+              style={{ width: 40, height: 40, marginBottom: 6 }}
+            />
+            Candidates
+            <br />
+            I&apos;m managing
+          </MenuItem>
+        )}
       </Overlay>
     </ClickAwayListener>
   );

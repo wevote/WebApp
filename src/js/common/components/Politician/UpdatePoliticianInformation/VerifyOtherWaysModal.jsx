@@ -99,11 +99,11 @@ const VerifyOtherWaysModal = ({ politicianName }) => {
         <VerifyStepLetter>
           a
         </VerifyStepLetter>
-        <VerifyStepLabelSmall
+        <VerifyStepLabel
           htmlFor="candidate-campaign-related-email"
         >
           Your candidate/campaign related email?
-        </VerifyStepLabelSmall>
+        </VerifyStepLabel>
       </VerifyStepFlexTopMarginContainer>
       <VerifyFullInput
         id="candidate-campaign-related-email"
@@ -151,11 +151,11 @@ const VerifyOtherWaysModal = ({ politicianName }) => {
         <VerifyStepLetter>
           c
         </VerifyStepLetter>
-        <VerifyStepLabelSmall
+        <VerifyStepLabel
           htmlFor="candidate-additional-information"
         >
           Additional information to help us verify you
-        </VerifyStepLabelSmall>
+        </VerifyStepLabel>
       </VerifyStepFlexTopMarginContainer>
       <AdditionalInformationTextArea
         id="candidate-additional-information"

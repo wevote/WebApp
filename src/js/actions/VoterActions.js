@@ -393,8 +393,8 @@ export default {
       });
   },
 
-  voterPhotoTooBigReset () {
-    Dispatcher.dispatch({ type: 'voterPhotoTooBigReset', payload: true });
+  profilePhotoTooBigReset () {
+    Dispatcher.dispatch({ type: 'profilePhotoTooBigReset', payload: true });
   },
 
   voterRetrieve (mergeFromVoterWeVoteId = '', mergeToVoterWeVoteId = '') {
