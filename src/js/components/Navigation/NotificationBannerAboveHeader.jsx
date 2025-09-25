@@ -37,7 +37,7 @@ export default function NotificationBannerAboveHeader () {
   }
 
   const handleEditProfile = () => {
-    alert('Edit politician information');
+    AppObservableStore.setDrawerOpen('politicianSelfEditDrawerOpen', true);
   };
 
   const onAppObservableStoreChange = () => {
@@ -58,10 +58,11 @@ export default function NotificationBannerAboveHeader () {
         <BannerText>
           <BannerIntroTextMobile className="u-show-mobile">Review for accuracy.</BannerIntroTextMobile>
           <BannerIntroTextDesktop className="u-show-desktop-tablet">Review your candidate’s profile for accuracy or add more info.</BannerIntroTextDesktop>
+          {/* TODO link for Tips for strong profiles
           <TipsLink className="u-show-desktop-tablet" href="tips-for-strong-profiles" target="_blank" rel="noopener noreferrer">
-            {/* TODO link for Tips for strong profiles */}
             Tips for strong profiles
           </TipsLink>
+          */}
           <EditButton onClick={handleEditProfile}>
             <EditStyled />
             {' '}

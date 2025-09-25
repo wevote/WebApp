@@ -10,6 +10,14 @@ const Step = ({ onClick, step, label, completed, width }) => (
     completed={completed}
     id={`step${step}`}
     onClick={onClick}
+    onKeyDown={(e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        onClick();
+      }
+    }}
+    role="button"
+    tabIndex={0}
     width={width}
   >
     <StepIcon

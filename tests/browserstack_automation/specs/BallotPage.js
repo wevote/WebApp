@@ -1,13 +1,8 @@
 
 
 import { driver, expect, browser } from '@wdio/globals';
-
-
-
 import ReadyPage from '../page_objects/ready.page';
 import BallotPage from '../page_objects/ballot.page';
-
-
 
 const { describe, it } = require('mocha');
 
@@ -19,6 +14,7 @@ const verifyAddressModal = async () => {
   await expect(BallotPage.getBallotModalTitleElement).toHaveText('Enter Your Address');
 };
 beforeEach(async function () {
+  // @ts-ignore
   if (this.currentTest.title !== 'verifyBallotPageLinksNavigations') {
     // Skip for the specific test case
     await ReadyPage.load();
@@ -27,9 +23,18 @@ beforeEach(async function () {
   }
 });
 
-describe('Ballot Page', async () => {
+async function getTextsfromElements(elements) {
+  const text = [];
+  for (const element of elements) {
+    const elementText = await element.getText();
+    text.push(elementText);
+    console.log('text:', text);
+  }
+  return text;
+}
 
-  //BallotLocation_001// WV-971 .
+describe('Ballot Page', async () => {
+  // BallotLocation_001// WV-971 .
   it('verifyBallotPageLinksNavigations', async () => {
     await ReadyPage.load();
     await driver.maximizeWindow();
@@ -57,7 +62,6 @@ describe('Ballot Page', async () => {
     await expect(await BallotPage.getBallotModalInputElement.getAttribute('placeholder')).toBe('Street number, full address and ZIP...');
     await expect(BallotPage.getBallotModalSaveElement).toBeClickable();
     await expect(await BallotPage.getBallotModalCancelElement).toBeClickable();
-
   });
 
 
@@ -65,120 +69,84 @@ describe('Ballot Page', async () => {
   const addressData = {
     validAddress: {
       input: '345 Park Avenue, San Jose, CA, USA',
-      expectSuggestion: true
+      expectSuggestion: true,
     },
     partialAddress: {
       input: '345 Park Avenue',
-      expectSuggestion: true
+      expectSuggestion: true,
     },
     genericAddress: {
       input: 'Park Avenue',
-      expectSuggestion: true
+      expectSuggestion: true,
     },
 
     emptyAddress: {
       input: '',
-      expectSuggestion: false
+      expectSuggestion: false,
     },
 
     invalidAddress: {
       input: 'xyz123',
-      expectSuggestion: false
-    }
+      expectSuggestion: false,
+    },
   };
 
-  //BallotLocation_007 ,BallotLocation_008 ,BallotLocation_009 ,BallotLocation_010 ,BallotLocation_011 
-  for (let [label, data] of Object.entries(addressData)) {
+  // BallotLocation_007 ,BallotLocation_008 ,BallotLocation_009 ,BallotLocation_010 ,BallotLocation_011
+
+  Object.entries(addressData).forEach(([label, data]) => {
     it(`verifyAddressFromAutocompleteDropdown  ${label}`, async () => {
-
       await BallotPage.getBallotAddressElement.click();
-
-
-
-      const addressInput = await BallotPage.getBallotModalInputElement.addValue(data.input);;
-      await browser.pause(1000);
-      browser.waitUntil(async () => {
-        let suggestions = await BallotPage.getAutoCompleteAddressElements;//.map(element => element);//The issue arises because BallotPage.getAutoCompleteAddressElements returns an ElementArray, which is not directly assignable to a standard array. To fix this, you can use the .map() method to convert the ElementArray into a standard array.The issue arises because BallotPage.getAutoCompleteAddressElements returns an ElementArray, which is not directly assignable to a standard array. To fix this, you can use the .map() method to convert the ElementArray into a standard array.
-        return (await suggestions.length) > 0;
-      }, {
-        timeout: 5000,
-        timeoutMsg: 'Autocomplete suggestions did not appear',
-      })
-
-      let allSuggestions = await BallotPage.getAutoCompleteAddressElements;
-
-
+      await BallotPage.getBallotModalInputElement.addValue(data.input);
+      await browser.pause(3000);
+      let allSuggestions = [];
       if (data.expectSuggestion) {
+        await browser.waitUntil(async () => {
+          // @ts-ignore
+          allSuggestions = await BallotPage.getAutoCompleteAddressElements;
+          return (allSuggestions.length) > 0;
+        }, {
+          timeout: 5000,
+          timeoutMsg: 'Autocomplete suggestions did not appear',
+        });
 
-        await browser.pause(3000);
-
-        await expect(allSuggestions.length).toBeGreaterThan(0);
-
-        for (let suggestion of allSuggestions) {
+        await browser.pause(1000);
+        const inputValue = await BallotPage.getBallotModalInputElement.getValue();
+        const promises = await allSuggestions.map(async (suggestion) => {
           console.log('allSuggestions:', await suggestion.getText());
-          // const suggestionText = (await suggestion.getText()).trim().toLowerCase();
-          const inputValue = await BallotPage.getBallotModalInputElement.getValue();
-          await expect(suggestion).toHaveText(expect.stringContaining(inputValue.split(',')[0].trim()));
-          break;
-          //await expect( allSuggestions[0]).toHaveText(expect.stringContaining(inputValue.split(',')[0].trim()));
-
-        }//
+          await expect(suggestion).toHaveText(expect.stringContaining(inputValue.split(' ')[0].trim()));
+        });
+        await Promise.all(promises).then(() => console.log('All suggestions contain the input value'));
       } else {
-        await expect(allSuggestions.length).toBe(0);
+        const suggestions = await BallotPage.getAutoCompleteAddressElements;
+        await expect(suggestions.length).toEqual(0);
       }
 
       await browser.keys('Tab');
       await expect(await BallotPage.getBallotModalInputElement).toHaveValue(expect.stringContaining(data.input));
-
-
-
     });
-
-  };
-  //BallotLocation_012
+  });
+  // BallotLocation_012
   it('verifyAddressLocationFromAutocompleteDropdown', async () => {
-
-
     const validAdd = addressData.partialAddress;
     await BallotPage.getBallotAddressElement.click();
     await BallotPage.getBallotModalInputElement.addValue(validAdd.input);
 
     await browser.pause(1000);
-    await browser.waitUntil(async () => {
-
-      let suggestionsT = await BallotPage.getAutoCompleteAddressElements;
-      return (suggestionsT.length) > 0;
-    },
+    const suggestionsT = await BallotPage.getAutoCompleteAddressElements;
+    await browser.waitUntil(async () => (suggestionsT.length) > 0,
       {
         timeout: 5000,
         timeoutMsg: 'Autocomplete suggestions did not appear',
 
-      })
-
-    let suggestionElements = await BallotPage.getAutoCompleteAddressElements;
-
-    const suggestions = await getTextsfromElements(suggestionElements);
-
+      });
+    const suggestions = await getTextsfromElements(suggestionsT);
+    await browser.pause(3000);
     const locations = await BallotPage.getBallotAddressLocation;
 
     const locationTexts = await getTextsfromElements(locations);
     await browser.keys('Tab');
-
-    const allContainExpectedLocation = suggestions.every(text =>
-      locationTexts.some(location => text.includes(location))
-    );
+    const allContainExpectedLocation = suggestions.every((text) => locationTexts.some((location) => text.includes(location)));
     expect(allContainExpectedLocation).toBe(true);
-  })
+  });
+});
 
-})
-
-async function getTextsfromElements(elements) {
-  const text = [];
-  for (let element of elements) {
-    text.push(await element.getText());
-
-  }
-  console.log('text:', text);
-  return text;
-
-}

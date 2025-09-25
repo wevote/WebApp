@@ -266,6 +266,12 @@ export const organizationalDonors = [{
   link: 'https://www.dlapiper.com/en-us',
   logo: `${logoPath}dla-piper-logo.png`,
 }, {
+  alt: 'Eleven Labs',
+  name: '',
+  title: 'AI Voices for Educational Videos',
+  link: 'https://elevenlabs.io/',
+  logo: `${logoPath}elevenlabs-logo.svg`,
+}, {
   alt: 'Facebook',
   name: '',
   title: 'Authentication & Data',
