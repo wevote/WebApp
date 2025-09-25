@@ -18,7 +18,7 @@ import AppObservableStore, { messageService } from '../../common/stores/AppObser
 import SettingsYourData from '../Settings/SettingsYourData';
 import SettingsNotifications from '../Settings/SettingsNotifications';
 import SettingsSectionFooter from '../Navigation/SettingsSectionFooter';
-import historyPush from "../../common/utils/historyPush";
+import historyPush from '../../common/utils/historyPush';
 
 // const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 const SignInOptionsPanel = React.lazy(() => import(/* webpackChunkName: 'SignInOptionsPanel' */ '../../common/components/SignIn/SignInOptionsPanel'));

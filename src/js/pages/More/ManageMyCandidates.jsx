@@ -26,11 +26,11 @@ export default function ManageMyCandidates () {
 
   // Selected candidate
   const [selectedId, setSelectedId] = useState(effectiveCandidates[0]?.id || '');
-  const selected = effectiveCandidates.find(c => c.id === selectedId) || null;
+  const selected = effectiveCandidates.find((c) => c.id === selectedId) || null;
 
   // If the list ever changes (unlikely in demo), keep selection valid
   useEffect(() => {
-    if (!effectiveCandidates.find(c => c.id === selectedId)) {
+    if (!effectiveCandidates.find((c) => c.id === selectedId)) {
       setSelectedId(effectiveCandidates[0]?.id || '');
     }
   }, [effectiveCandidates, selectedId]);
@@ -112,18 +112,18 @@ Thanks for your help!`;
     }
     const text = await file.text();
     const [headerLine, ...lines] = text.split(/\r?\n/).filter(Boolean);
-    const headers = headerLine.split(',').map(h => h.trim().toLowerCase());
+    const headers = headerLine.split(',').map((h) => h.trim().toLowerCase());
     const nameIdx = headers.indexOf('name');
     const emailIdx = headers.indexOf('email');
     const phoneIdx = headers.indexOf('phone');
-    const rows = lines.map(line => {
-      const cols = line.split(',').map(c => c.trim());
+    const rows = lines.map((line) => {
+      const cols = line.split(',').map((c) => c.trim());
       return {
         name: nameIdx > -1 ? cols[nameIdx] : '',
         email: emailIdx > -1 ? cols[emailIdx] : '',
         phone: phoneIdx > -1 ? cols[phoneIdx] : '',
       };
-    }).filter(r => r.name || r.email || r.phone);
+    }).filter((r) => r.name || r.email || r.phone);
     setImportedVoters(rows);
     alert(`Imported ${rows.length} voter(s) from CSV.`);
     e.target.value = '';
@@ -132,11 +132,12 @@ Thanks for your help!`;
   const handlePasteList = () => setShowPaste(true);
   const closePaste = () => setShowPaste(false);
   const handlePasteImport = () => {
-    const rows = pasteText.split(/\r?\n/).map(l => l.trim()).filter(Boolean).map(line => {
-      const parts = line.split(',').map(s => s.trim());
+    const rows = pasteText.split(/\r?\n/).map((l) => l.trim()).filter(Boolean).map((line) => {
+      const parts = line.split(',').map((s) => s.trim());
       return { name: parts[0] || '', email: parts[1] || '', phone: parts[2] || '' };
-    }).filter(r => r.name || r.email || r.phone);
-    setImportedVoters(prev => [...prev, ...rows]);
+    })
+      .filter((r) => r.name || r.email || r.phone);
+    setImportedVoters((prev) => [...prev, ...rows]);
     alert(`Imported ${rows.length} voter(s) from pasted list.`);
     setPasteText(''); setShowPaste(false);
   };
@@ -199,7 +200,9 @@ Thanks for your help!`;
           <SideDivider />
 
           <EditProfileLink type="button" onClick={handleClaimEdit}>
-            <EditIcon fontSize="small" /> Edit candidate profile
+            <EditIcon fontSize="small" />
+            {' '}
+            Edit candidate profile
           </EditProfileLink>
         </LeftNav>
 
@@ -281,10 +284,14 @@ Thanks for your help!`;
               <ModalTitle id="invite-title">Preview invitation</ModalTitle>
               <HeaderActions>
                 <HeaderLink type="button" onClick={handleCopyInviteBody}>
-                  <CopyIcon fontSize="small" /> <span>Copy</span>
+                  <CopyIcon fontSize="small" />
+                  {' '}
+                  <span>Copy</span>
                 </HeaderLink>
                 <HeaderLink type="button" onClick={handleEditInvite}>
-                  <EditIcon fontSize="small" /> <span>Edit</span>
+                  <EditIcon fontSize="small" />
+                  {' '}
+                  <span>Edit</span>
                 </HeaderLink>
                 <CloseX type="button" aria-label="Close" onClick={handlePreviewClose}>×</CloseX>
               </HeaderActions>
@@ -321,7 +328,9 @@ Thanks for your help!`;
                 <span>Link will appear below text</span>
               </InfoRow>
               <HeaderLink type="button" onClick={handleEditCopy}>
-                <CopyIcon fontSize="small" /> <span>Copy</span>
+                <CopyIcon fontSize="small" />
+                {' '}
+                <span>Copy</span>
               </HeaderLink>
             </BarBetween>
 
@@ -356,7 +365,12 @@ Thanks for your help!`;
 
             <InfoRow>
               <InfoDot aria-hidden>i</InfoDot>
-              <span>One person per line. Format: <i>Name, Email, Phone</i> (fields optional)</span>
+              <span>
+                One person per line. Format:
+                <i>Name, Email, Phone</i>
+                {' '}
+                (fields optional)
+              </span>
             </InfoRow>
 
             <EditAreaWrapper>

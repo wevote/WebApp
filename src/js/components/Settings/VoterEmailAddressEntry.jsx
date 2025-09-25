@@ -70,7 +70,7 @@ class VoterEmailAddressEntry extends Component {
     VoterActions.voterEmailAddressRetrieve();
     if (this.emailInputRef && this.emailInputRef.current) {
       this.emailInputRef.current.blur();
-    };
+    }
     this._isMounted = true;
   }
 

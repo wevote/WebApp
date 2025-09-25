@@ -9,7 +9,7 @@ import DeleteYourAccountButton from './DeleteYourAccountButton';
 import DeleteAllContactsButton from '../SetUpAccount/DeleteAllContactsButton';
 import VoterStore from '../../stores/VoterStore';
 import BrowserPushMessage from '../Widgets/BrowserPushMessage';
-import AppObservableStore from "../../common/stores/AppObservableStore";
+import AppObservableStore from '../../common/stores/AppObservableStore';
 
 export default class SettingsYourData extends Component {
   constructor (props) {

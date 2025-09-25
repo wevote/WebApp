@@ -465,7 +465,7 @@ export function ShareTwitter (props) {
     }
     const twitterRedirectUrl = `https://x.com/intent/post?url=${encodeURIComponent(linkToBeSharedTwitter)}&text=${encodeURIComponent('Please join me and vote.')}`;
     const buttonId = twitterButtonRef.current.id;
-    pushDataLayer(buttonId, 'x.com', 'externalShare', 'ballot', 'twitter',linkToBeSharedTwitter, twitterRedirectUrl);
+    pushDataLayer(buttonId, 'x.com', 'externalShare', 'ballot', 'twitter', linkToBeSharedTwitter, twitterRedirectUrl);
   };
 
   return (
