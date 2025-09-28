@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import initializejQuery from '../../utils/initializejQuery';
 import { renderLog } from '../../utils/logging';
-import { retrievePoliticianFromIdentifiers } from '../../utils/politicianUtils';
+import { politicianRetrieveFromIdentifiers } from '../../utils/politicianUtils';
+// import PoliticianActions from '../../actions/PoliticianActions';
+import PoliticianStore from '../../stores/PoliticianStore';
 import VoterStore from '../../../stores/VoterStore';
 
 
@@ -11,11 +13,13 @@ class PoliticianRetrieveController extends Component {
     super(props);
     this.state = {
       politicianRetrieveInitiated: false,
+      politicianRetrieveAsOwnerInitiated: false, // If the voter is the owner of the politician, use different API call that doesn't run through the CDN
     };
   }
 
   componentDidMount () {
     // console.log('PoliticianRetrieveController componentDidMount');
+    this.politicianStoreListener = PoliticianStore.addListener(this.onPoliticianStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     this.politicianFirstRetrieve();
   }
@@ -38,7 +42,12 @@ class PoliticianRetrieveController extends Component {
   }
 
   componentWillUnmount () {
+    this.politicianStoreListener.remove();
     this.voterStoreListener.remove();
+  }
+
+  onPoliticianStoreChange () {
+    this.politicianFirstRetrieve();
   }
 
   onVoterStoreChange () {
@@ -47,17 +56,20 @@ class PoliticianRetrieveController extends Component {
 
   politicianFirstRetrieve = (politicianRetrieveOverride = false) => {
     const { politicianSEOFriendlyPath, politicianWeVoteId } = this.props;
-    // console.log('PoliticianRetrieveController politicianSEOFriendlyPath: ', politicianSEOFriendlyPath, ', politicianWeVoteId: ', politicianWeVoteId);
+    // console.log('PoliticianRetrieveController politicianFirstRetrieve politicianSEOFriendlyPath: ', politicianSEOFriendlyPath, ', politicianWeVoteId: ', politicianWeVoteId);
     if (politicianSEOFriendlyPath || politicianWeVoteId) {
-      const { politicianRetrieveInitiated } = this.state;
+      const { politicianRetrieveAsOwnerInitiated, politicianRetrieveInitiated } = this.state;
       initializejQuery(() => {
+        const voterIsOwner = PoliticianStore.getVoterCanEditThisPolitician(politicianWeVoteId);
         // console.log('PoliticianRetrieveController politicianRetrieveInitiated: ', politicianRetrieveInitiated, ', voterFirstRetrieveCompleted: ', voterFirstRetrieveCompleted);
-        const triggerRetrieve = politicianRetrieveOverride || !politicianRetrieveInitiated;
+        const triggerRetrieve = politicianRetrieveOverride || !politicianRetrieveInitiated || (voterIsOwner && !politicianRetrieveAsOwnerInitiated);
         if (triggerRetrieve) {
+          // console.log('PoliticianRetrieveController politicianFirstRetrieve triggerRetrieve politicianSEOFriendlyPath: ', politicianSEOFriendlyPath, ', politicianWeVoteId: ', politicianWeVoteId, ', voterIsOwner: ', voterIsOwner);
           // console.log('politicianRetrieveInitiated:', politicianRetrieveInitiated, 'updatedPoliticianRetrieveInitiated:', updatedPoliticianRetrieveInitiated);
           this.setState({
             politicianRetrieveInitiated: true,
-          }, () => retrievePoliticianFromIdentifiers(politicianSEOFriendlyPath, politicianWeVoteId));
+            politicianRetrieveAsOwnerInitiated: voterIsOwner,
+          }, () => politicianRetrieveFromIdentifiers(politicianSEOFriendlyPath, politicianWeVoteId));
         }
       });
     }

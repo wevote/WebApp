@@ -45,7 +45,7 @@ import { isCordova, isWebApp } from '../../utils/isCordovaOrWebApp';
 import keepHelpingDestination from '../../utils/keepHelpingDestination';
 import { cordovaOffsetLog, renderLog } from '../../utils/logging';
 import normalizedImagePath from '../../utils/normalizedImagePath';
-import { getPoliticianValuesFromIdentifiers, retrievePoliticianFromIdentifiersIfNeeded } from '../../utils/politicianUtils';
+import { getPoliticianValuesFromIdentifiers, politicianRetrieveFromIdentifiersIfNeeded } from '../../utils/politicianUtils';
 import returnFirstXWords from '../../utils/returnFirstXWords';
 import saveCampaignSupportAndGoToNextPage from '../../utils/saveCampaignSupportAndGoToNextPage';
 import extractPoliticianDetailsFromUrl from '../../utils/extractPoliticianDetailsFromUrl';
@@ -187,7 +187,7 @@ class PoliticianDetailsPage extends Component {
       }, () => this.onFirstRetrievalOfPoliticianWeVoteId());
     }
     // Take the "calculated" identifiers and retrieve if missing
-    retrievePoliticianFromIdentifiersIfNeeded(politicianSEOFriendlyPathFromUrl, politicianWeVoteId);
+    politicianRetrieveFromIdentifiersIfNeeded(politicianSEOFriendlyPathFromUrl, politicianWeVoteId);
 
     if (apiCalming('organizationsFollowedRetrieve', 60000)) {
       OrganizationActions.organizationsFollowedRetrieve();
@@ -311,7 +311,7 @@ class PoliticianDetailsPage extends Component {
     if (triggerFreshRetrieve) {
       // Take the "calculated" identifiers and retrieve if missing
       // console.log('componentDidUpdate triggerFreshRetrieve: ', triggerFreshRetrieve, ', politicianWeVoteId: ', politicianWeVoteId);
-      retrievePoliticianFromIdentifiersIfNeeded(politicianSEOFriendlyPathFromUrl, politicianWeVoteId);
+      politicianRetrieveFromIdentifiersIfNeeded(politicianSEOFriendlyPathFromUrl, politicianWeVoteId);
     }
     if (triggerFreshRetrieve || triggerSEOPathRedirect) {
       // Take the "calculated" identifiers and retrieve if missing
@@ -367,6 +367,7 @@ class PoliticianDetailsPage extends Component {
     // window.removeEventListener('scroll', this.onScroll);
     AppObservableStore.setCampaignXWeVoteIdBeingViewed('');
     AppObservableStore.setPoliticianWeVoteIdBeingViewed('');
+    AppObservableStore.setShowNotificationBannerAboveHeader(false);
   }
 
   onFirstRetrievalOfPoliticianWeVoteId () {
@@ -486,6 +487,9 @@ class PoliticianDetailsPage extends Component {
         voterSupportsThisPolitician,
       }, () => this.onFirstRetrievalOfPoliticianWeVoteId());
       AppObservableStore.setPoliticianWeVoteIdBeingViewed(politicianWeVoteId);
+      if (!AppObservableStore.getShowNotificationBannerAboveHeader() && PoliticianStore.getVoterCanEditThisPolitician(politicianWeVoteId)) {
+        AppObservableStore.setShowNotificationBannerAboveHeader(true);
+      }
     }
     const politicianDescriptionLimited = returnFirstXWords(politicianDescription, 200);
     const filteredCandidateCampaignList = candidateCampaignList.sort(this.orderCandidatesByUltimateDate);
@@ -700,60 +704,63 @@ class PoliticianDetailsPage extends Component {
         externalLinkUrl: politicianUrl,
       });
     }
-    if (instagramHandle) {
-      const instagramHandleCleaned = instagramHandle.trim();
-      politicianLinksList.push({
-        linkText: `instagram.com/${instagramHandleCleaned}`,
-        externalLinkUrl: `https://instagram.com/${instagramHandleCleaned}`,
-      });
-    }
-    if (youtubeUrl) {
-      politicianLinksList.push({
-        linkText: 'youtube.com',
-        externalLinkUrl: youtubeUrl,
-      });
-    }
-    if (wikipediaUrl) {
-      politicianLinksList.push({
-        linkText: 'wikipedia.org',
-        externalLinkUrl: wikipediaUrl,
-      });
-    }
-    if (ballotpediaPoliticianUrl) {
-      politicianLinksList.push({
-        linkText: 'ballotpedia.org',
-        externalLinkUrl: ballotpediaPoliticianUrl,
-      });
-    }
-    if (politicianName || officeHeldNameForSearch) {
-      const googleQuery = `${politicianName} ${stateText} ${officeHeldNameForSearch}`;
-      const googleQueryUrlFriendly = googleQuery.replace(/ /g, '+');
-      const googleSearchUrl = `https://www.google.com/search?q=${googleQueryUrlFriendly}&oq=${googleQueryUrlFriendly}`;
-      politicianLinksList.push({
-        linkText: 'Google search',
-        externalLinkUrl: googleSearchUrl,
-      });
-      const bingQuery = `${politicianName} ${stateText} ${officeHeldNameForSearch}`;
-      const bingQueryUrlFriendly = bingQuery.replace(/ /g, '+');
-      const bingSearchUrl = `https://www.bing.com/search?q=${bingQueryUrlFriendly}&pq=${bingQueryUrlFriendly}`;
-      politicianLinksList.push({
-        linkText: 'Bing AI',
-        externalLinkUrl: bingSearchUrl,
-      });
-    }
-    if (twitterHandle) {
-      const twitterHandleCleaned = twitterHandle.trim();
-      politicianLinksList.push({
-        linkText: `X.com/${twitterHandleCleaned}`,
-        externalLinkUrl: `https://x.com/${twitterHandleCleaned}`,
-      });
-    }
-    if (twitterHandle2 && (twitterHandle2 !== twitterHandle)) {
-      const twitterHandle2Cleaned = twitterHandle2.trim();
-      politicianLinksList.push({
-        linkText: `X.com/${twitterHandle2Cleaned}`,
-        externalLinkUrl: `https://x.com/${twitterHandle2Cleaned}`,
-      });
+    if (nextReleaseFeaturesEnabled) {
+      // For the November 2025 trial, we are turning off other social media links.
+      if (instagramHandle) {
+        const instagramHandleCleaned = instagramHandle.trim();
+        politicianLinksList.push({
+          linkText: `instagram.com/${instagramHandleCleaned}`,
+          externalLinkUrl: `https://instagram.com/${instagramHandleCleaned}`,
+        });
+      }
+      if (youtubeUrl) {
+        politicianLinksList.push({
+          linkText: 'youtube.com',
+          externalLinkUrl: youtubeUrl,
+        });
+      }
+      if (wikipediaUrl) {
+        politicianLinksList.push({
+          linkText: 'wikipedia.org',
+          externalLinkUrl: wikipediaUrl,
+        });
+      }
+      if (ballotpediaPoliticianUrl) {
+        politicianLinksList.push({
+          linkText: 'ballotpedia.org',
+          externalLinkUrl: ballotpediaPoliticianUrl,
+        });
+      }
+      if (politicianName || officeHeldNameForSearch) {
+        const googleQuery = `${politicianName} ${stateText} ${officeHeldNameForSearch}`;
+        const googleQueryUrlFriendly = googleQuery.replace(/ /g, '+');
+        const googleSearchUrl = `https://www.google.com/search?q=${googleQueryUrlFriendly}&oq=${googleQueryUrlFriendly}`;
+        politicianLinksList.push({
+          linkText: 'Google search',
+          externalLinkUrl: googleSearchUrl,
+        });
+        const bingQuery = `${politicianName} ${stateText} ${officeHeldNameForSearch}`;
+        const bingQueryUrlFriendly = bingQuery.replace(/ /g, '+');
+        const bingSearchUrl = `https://www.bing.com/search?q=${bingQueryUrlFriendly}&pq=${bingQueryUrlFriendly}`;
+        politicianLinksList.push({
+          linkText: 'Bing AI',
+          externalLinkUrl: bingSearchUrl,
+        });
+      }
+      if (twitterHandle) {
+        const twitterHandleCleaned = twitterHandle.trim();
+        politicianLinksList.push({
+          linkText: `X.com/${twitterHandleCleaned}`,
+          externalLinkUrl: `https://x.com/${twitterHandleCleaned}`,
+        });
+      }
+      if (twitterHandle2 && (twitterHandle2 !== twitterHandle)) {
+        const twitterHandle2Cleaned = twitterHandle2.trim();
+        politicianLinksList.push({
+          linkText: `X.com/${twitterHandle2Cleaned}`,
+          externalLinkUrl: `https://x.com/${twitterHandle2Cleaned}`,
+        });
+      }
     }
 
     const campaignAdminEditUrl = `${webAppConfig.WE_VOTE_SERVER_ROOT_URL}campaign/${linkedCampaignXWeVoteId}/summary`;
@@ -809,7 +816,8 @@ class PoliticianDetailsPage extends Component {
     ) : <PoliticianLinksWrapper />;
 
     let opponentCandidatesHtml = '';
-    const opponentsSubtitle = finalElectionDateInPast ? 'Candidates who ran for same office' : 'Candidates running for same office';
+    // const opponentsSubtitle = finalElectionDateInPast ? 'Candidates who ran for same office' : 'Candidates running for same office';
+    const opponentsSubtitle = 'Other candidates, same office';
     let priorCandidateCampaignsHtml = '';
     const currentYear = 2023;
     let nextYearElectionExists = false;
@@ -1094,13 +1102,6 @@ class PoliticianDetailsPage extends Component {
               {/* )} */}
               {!!(voterCanEditThisPolitician || voterSupportsThisPolitician) && (
                 <IndicatorRow>
-                  {voterCanEditThisPolitician && (
-                    <IndicatorButtonWrapper>
-                      <EditIndicator onClick={this.onPoliticianCampaignEditClick}>
-                        Edit Politician
-                      </EditIndicator>
-                    </IndicatorButtonWrapper>
-                  )}
                   {voterSupportsThisPolitician && (
                     <IndicatorButtonWrapper>
                       <EditIndicator onClick={this.onPoliticianCampaignShareClick}>
@@ -1276,15 +1277,6 @@ class PoliticianDetailsPage extends Component {
                   {/*    </IndicatorButtonWrapper> */}
                   {/*  </IndicatorRow> */}
                   {/* )} */}
-                  {voterCanEditThisPolitician && (
-                    <IndicatorRow>
-                      <IndicatorButtonWrapper>
-                        <EditIndicator onClick={this.onPoliticianCampaignEditClick}>
-                          Edit This Politician
-                        </EditIndicator>
-                      </IndicatorButtonWrapper>
-                    </IndicatorRow>
-                  )}
                 </CampaignDescriptionDesktopWrapper>
                 {/* Show links to this campaign in the admin tools */}
                 <LinkToAdminTools
