@@ -12,12 +12,15 @@
   },
   "commentMay2021": "'production' forces minified libraries (especially react), and 'MINIFIED' passes all our code through the Terser minifier/mangler/compressor tool.",
   "scripts": {
+    "wdio-browser-desktop": "RUN_TYPE=browser-desktop wdio run tests/browserstack_automation/config/wdio.config.js",
+    "wdio-browser-mobile": "RUN_TYPE=browser-mobile wdio run tests/browserstack_automation/config/wdio.config.js",
+    "wdio-cordova": "RUN_TYPE=cordova wdio run tests/browserstack_automation/config/wdio.config.js",
+    "wdio-all": "RUN_TYPE=all wdio run tests/browserstack_automation/config/wdio.config.js",
     "wdio:setup": "node tests/browserstack_automation/buildMobileCapabilities.js",
-    "wdio": "wdio ./tests/browserstack_automation/config/wdio.config.js",
+    "wdio": "RUN_TYPE=browser-desktop wdio run tests/browserstack_automation/config/wdio.config.js",
     "wdio-local-bs": "wdio ./tests/browserstack_automation/config/wdio.config.local.js",
     "wdio-local": "wdio ./tests/browserstack_automation/config/wdio.local.config.js",
     "wdio-BVT": "wdio ./tests/browserstack_automation/config/wdio.config.BVT.js --mochaOpts.grep @BVT",
-    "wdio-demo": "wdio ./tests/browserstack_automation/config/wdio.config.productdemo.js",
     "build": "node node/initialSteps && npm run build-storybook && PRODUCTION=1 && MINIMIZED=1 webpack --mode production",
     "buildCordova": "CORDOVA=1 && node node/initialSteps && node node/buildSrcCordova && webpack --mode development && node node/logCompileDate.js",
     "buildCordovaAndLinks": "CORDOVA=1 && node node/initialSteps.js && node node/buildSrcCordova && webpack --mode development && node node/buildSymLinksRemote.js && bash ./node/unSymLinkIOS.sh && node node/logCompileDate.js",
@@ -62,7 +65,7 @@
     "@storybook/react": "^7.6.7",
     "@storybook/react-webpack5": "^7.6.7",
     "@storybook/test": "^7.6.7",
-    "@wdio/browserstack-service": "^9.16.2",
+    "@wdio/browserstack-service": "^9.19.2",
     "@wdio/cli": "^9.16.2",
     "@wdio/config": "^9.16.2",
     "@wdio/globals": "^9.16.2",
@@ -101,12 +104,12 @@
     "terser-webpack-plugin": "^5.1.2",
     "unused-webpack-plugin": "^2.4.0",
     "webdriver": "^9.16.2",
-    "webdriverio": "^9.16.2",
-    "webpack": "^5.101.3",
-    "webpack-bundle-analyzer": "^4.10.2",
-    "webpack-cli": "^6.0.1",
-    "webpack-dev-server": "^5.2.2",
-    "webpack-shell-plugin-next": "^2.3.3"
+    "webdriverio": "^9.19.2",
+    "webpack": "^5.90.3",
+    "webpack-bundle-analyzer": "^4.8.0",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^5.0.2",
+    "webpack-shell-plugin-next": "^2.3.1"
   },
   "dependencies": {
     "@emotion/is-prop-valid": "^1.1.2",
@@ -180,5 +183,6 @@
   },
   "readme": "ERROR: No README data found!",
   "homepage": "https://github.com/wevote/WebApp#readme",
-  "_id": "wevoteusa@1.0.0"
+  "_id": "wevoteusa@1.0.0",
+  "type": "commonjs"
 }
