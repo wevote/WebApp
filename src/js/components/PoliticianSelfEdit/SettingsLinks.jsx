@@ -32,7 +32,7 @@ const SettingsLinks = ({ externalUniqueId, politicianWeVoteId }) => {
     const currentPoliticianWeVoteId = politicianWeVoteIdRef.current;
     if (currentPoliticianWeVoteId) {
       // setPolitician(PoliticianStore.getPoliticianByWeVoteId(currentPoliticianWeVoteId));
-      // console.log('PoliticianSelfEditDrawer onAppObservableStoreChange politician:', PoliticianStore.getPoliticianByWeVoteId(currentPoliticianWeVoteId));
+      // console.log('SettingsLinks onPoliticianStoreChange politician:', PoliticianStore.getPoliticianByWeVoteId(currentPoliticianWeVoteId));
     }
   }, []);
 
