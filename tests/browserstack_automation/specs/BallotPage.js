@@ -1,10 +1,7 @@
 
-
 import { driver, expect, browser } from '@wdio/globals';
 import ReadyPage from '../page_objects/ready.page';
 import BallotPage from '../page_objects/ballot.page';
-
-const { describe, it } = require('mocha');
 
 const waitTime = 5000;
 const verifyAddressModal = async () => {
@@ -23,7 +20,8 @@ beforeEach(async function () {
   }
 });
 
-async function getTextsfromElements(elements) {
+
+async function getTextsfromElements (elements) {
   const text = [];
   for (const element of elements) {
     const elementText = await element.getText();
@@ -32,6 +30,8 @@ async function getTextsfromElements(elements) {
   }
   return text;
 }
+
+
 
 describe('Ballot Page', async () => {
   // BallotLocation_001// WV-971 .
@@ -49,7 +49,7 @@ describe('Ballot Page', async () => {
   it('verifyBallotAddressLinks', async () => {
     await verifyAddressModal();
     await (BallotPage.getBallotModalCloseElement).click();
-    await (await BallotPage.getBallotTopElement).click();
+    await BallotPage.getBallotTopElement.click();
     await verifyAddressModal();
   });
 
@@ -61,7 +61,7 @@ describe('Ballot Page', async () => {
     await BallotPage.getBallotModalInputElement.click();
     await expect(await BallotPage.getBallotModalInputElement.getAttribute('placeholder')).toBe('Street number, full address and ZIP...');
     await expect(BallotPage.getBallotModalSaveElement).toBeClickable();
-    await expect(await BallotPage.getBallotModalCancelElement).toBeClickable();
+    await expect(BallotPage.getBallotModalCancelElement).toBeClickable();
   });
 
 
@@ -102,8 +102,8 @@ describe('Ballot Page', async () => {
       if (data.expectSuggestion) {
         await browser.waitUntil(async () => {
           // @ts-ignore
-          allSuggestions = await BallotPage.getAutoCompleteAddressElements;
-          return (allSuggestions.length) > 0;
+          allSuggestions = BallotPage.getAutoCompleteAddressElements;
+          return await allSuggestions.length > 0;
         }, {
           timeout: 5000,
           timeoutMsg: 'Autocomplete suggestions did not appear',
@@ -117,14 +117,15 @@ describe('Ballot Page', async () => {
         });
         await Promise.all(promises).then(() => console.log('All suggestions contain the input value'));
       } else {
-        const suggestions = await BallotPage.getAutoCompleteAddressElements;
-        await expect(suggestions.length).toEqual(0);
+        const suggestions = BallotPage.getAutoCompleteAddressElements;
+        await expect(await suggestions.length).toEqual(0);
       }
 
       await browser.keys('Tab');
-      await expect(await BallotPage.getBallotModalInputElement).toHaveValue(expect.stringContaining(data.input));
+      await expect(BallotPage.getBallotModalInputElement).toHaveValue(expect.stringContaining(data.input));
     });
   });
+
   // BallotLocation_012
   it('verifyAddressLocationFromAutocompleteDropdown', async () => {
     const validAdd = addressData.partialAddress;
@@ -148,5 +149,61 @@ describe('Ballot Page', async () => {
     const allContainExpectedLocation = suggestions.every((text) => locationTexts.some((location) => text.includes(location)));
     expect(allContainExpectedLocation).toBe(true);
   });
-});
 
+  // BallotLocation_015 //BallotLocation_017
+
+  it('verifyKeyboardAccessibilityInAddressSuggestionsAndSelectedAddressInAddressInput', async () => {
+    const validAdd = addressData.partialAddress;
+    await BallotPage.getBallotAddressElement.click();
+    await BallotPage.getBallotModalInputElement.addValue(validAdd.input);
+
+    await browser.waitUntil(async () => {
+      const suggestions = await BallotPage.getAutoCompleteAddressElements;
+      return await suggestions.length > 0;
+    }, {
+      timeout: 10000,
+      timeoutMsg: 'Autocomplete suggestions did not appear',
+    });
+
+    const suggestionsLen = await BallotPage.getAutoCompleteAddressElements.length;
+
+    for (let i = 0; i < suggestionsLen; i++) {
+      await browser.keys('ArrowDown');
+      const activeElement = await BallotPage.getHighlightedAutoCompleteAddressElement;
+      console.log('activeElement:', await activeElement.getText());
+      const activeElementText = await activeElement.getText();
+      await BallotPage.getBallotAddressElement.waitForDisplayed({ timeout: 5000 });
+      const inputValue = await BallotPage.getBallotModalInputElement.getValue();
+      await expect(activeElementText.slice(0, 15)).toBe(inputValue.slice(0, 15));
+    }
+    const firstSuggestion = await BallotPage.getAutoCompleteAddressElements[0];
+    await firstSuggestion.click();
+    const inputValue = await BallotPage.getBallotModalInputElement.getValue();
+    await browser.pause(3000);
+    await BallotPage.getBallotModalSaveElement.click();
+    await BallotPage.getBallotTitleAddress.waitForDisplayed({
+      timeout: 10000,
+      timeoutMsg: 'Ballot title did not appear after save',
+    });
+    await browser.pause(6000);
+    const selectedAddress = await BallotPage.getBallotTitleAddress.getText();
+    await expect(selectedAddress.slice(0, 12)).toEqual(inputValue.slice(0, 12));
+  });
+
+  // BallotLocation_016
+  it('verifyTabFunctionalityOfAddressModal', async () => {
+    await BallotPage.getBallotAddressElement.click();
+    // Press Tab repeatedly and check focus dynamically
+    for (let i = 0; i < 5; i++) { // adjust count as per number of elements
+      await browser.keys('Tab');
+      const activeElementRef = await browser.getActiveElement();
+      // Wrap it as a WebdriverIO element
+      const activeElement = await browser.$(activeElementRef);
+      // Now you can call element commands
+      const tagName = await activeElement.getTagName();
+      const isVisible = await activeElement.isDisplayed();
+      console.log(`Tab ${i + 1}: tag=${tagName}, visible=${isVisible}`);
+      await expect(isVisible).toBe(true);
+    }
+  });
+});
