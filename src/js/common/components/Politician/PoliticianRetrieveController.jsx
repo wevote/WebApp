@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import initializejQuery from '../../utils/initializejQuery';
 import { renderLog } from '../../utils/logging';
 import { politicianRetrieveFromIdentifiers } from '../../utils/politicianUtils';
-// import PoliticianActions from '../../actions/PoliticianActions';
 import PoliticianStore from '../../stores/PoliticianStore';
 import VoterStore from '../../../stores/VoterStore';
 
