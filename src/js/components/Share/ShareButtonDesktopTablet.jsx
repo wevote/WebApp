@@ -146,7 +146,7 @@ class ShareButtonDesktopTablet extends Component {
       default:
         buttonId = 'ballotShareButtonDesktopTablet';
     }
-
+    const pageDetails = getPageDetails()
     const dataLayerObject = {
       event: 'action',
       userDetails: VoterStore.getAnalyticsUserDetails(),
@@ -159,11 +159,11 @@ class ShareButtonDesktopTablet extends Component {
         withOpinions: withOpinionsModified,
         whatAndHowMuchToShare,
       },
-      pageDetails: getPageDetails(),
+      pageDetails,
       destinationDetails: {
-        destinationPageName: destinationPage.pageName,
-        destinationPageType: destinationPage.pageType,
-        destinationPathname: pathnameWithModalShare,
+        destinationPageName: 'ShareModal',
+        destinationPageType: pageDetails.pageType,
+        destinationPathname: pageDetails.pathname,
       },
     };
     const electionDetails = BallotStore.getAnalyticsElectionDetails();
