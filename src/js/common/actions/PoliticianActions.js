@@ -2,6 +2,15 @@ import Dispatcher from '../dispatcher/Dispatcher';
 import arrayContains from '../utils/arrayContains';
 
 export default {
+  politicianCampaignWebsiteSave (politicianWeVoteId, campaignWebsite) {
+    Dispatcher.loadEndpoint('politicianSave',
+      {
+        campaign_website: campaignWebsite,
+        campaign_website_changed: true,
+        politician_we_vote_id: politicianWeVoteId,
+      });
+  },
+
   politicianNameSave (politicianWeVoteId, politicianName) {
     Dispatcher.loadEndpoint('politicianSave',
       {

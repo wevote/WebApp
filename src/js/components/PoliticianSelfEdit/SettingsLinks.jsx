@@ -2,7 +2,7 @@ import { Info } from '@mui/icons-material';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import { makeStyles } from '@mui/styles';
 import PropTypes from 'prop-types';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
 import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
@@ -10,8 +10,8 @@ import { renderLog } from '../../common/utils/logging';
 import VoterStore from '../../stores/VoterStore';
 import { HeaderContentContainer } from '../Style/pageLayoutStyles';
 import BrowserPushMessage from '../Widgets/BrowserPushMessage';
-import SettingsWidgetPoliticianStatement from './SettingsWidgetPoliticianStatement';
-import PoliticianStore from '../../common/stores/PoliticianStore';
+import SettingsWidgetLinkCampaignWebsite from './SettingsWidgetLinkCampaignWebsite';
+// import PoliticianStore from '../../common/stores/PoliticianStore';
 
 
 const useStyles = makeStyles(() => ({
@@ -24,15 +24,14 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const SettingsOfficialStatement = ({ externalUniqueId, politicianWeVoteId }) => {
+const SettingsLinks = ({ externalUniqueId, politicianWeVoteId }) => {
   const classes = useStyles();
-  const [politician, setPolitician] = useState(null);
   const politicianWeVoteIdRef = useRef(politicianWeVoteId);
 
   const onPoliticianStoreChange = useCallback(() => {
     const currentPoliticianWeVoteId = politicianWeVoteIdRef.current;
     if (currentPoliticianWeVoteId) {
-      setPolitician(PoliticianStore.getPoliticianByWeVoteId(currentPoliticianWeVoteId));
+      // setPolitician(PoliticianStore.getPoliticianByWeVoteId(currentPoliticianWeVoteId));
       // console.log('PoliticianSelfEditDrawer onAppObservableStoreChange politician:', PoliticianStore.getPoliticianByWeVoteId(currentPoliticianWeVoteId));
     }
   }, []);
@@ -49,7 +48,7 @@ const SettingsOfficialStatement = ({ externalUniqueId, politicianWeVoteId }) => 
     AnalyticsActions.saveActionAccountPage(VoterStore.electionId());
   }, []);
 
-  renderLog('SettingsOfficialStatement');  // Set LOG_RENDER_EVENTS to log all renders
+  renderLog('SettingsLinks');  // Set LOG_RENDER_EVENTS to log all renders
   return (
     <HeaderContentContainer>
       <Helmet title="Name & Photo - WeVote" />
@@ -58,18 +57,14 @@ const SettingsOfficialStatement = ({ externalUniqueId, politicianWeVoteId }) => 
         <div className="card-main">
           <HeaderContainer>
             <IdIcon />
-            <h1 className="h2">Official Statement</h1>
+            <h1 className="h2">Your Website</h1>
           </HeaderContainer>
           <IntroductionWrapper>
             <Info classes={{ root: classes.informationIcon }} />
-            Please share with voters an official statement from
-            {' '}
-            {politician ? politician.politician_name : 'this politician'}
-            {' '}
-            about why they are running for office.
+            Please share with voters the web link to your campaign website.
           </IntroductionWrapper>
           <div>
-            <SettingsWidgetPoliticianStatement
+            <SettingsWidgetLinkCampaignWebsite
               externalUniqueId={externalUniqueId}
               politicianWeVoteId={politicianWeVoteId}
             />
@@ -79,7 +74,7 @@ const SettingsOfficialStatement = ({ externalUniqueId, politicianWeVoteId }) => 
     </HeaderContentContainer>
   );
 };
-SettingsOfficialStatement.propTypes = {
+SettingsLinks.propTypes = {
   externalUniqueId: PropTypes.string,
   politicianWeVoteId: PropTypes.string,
 };
@@ -100,4 +95,4 @@ const IdIcon = styled(AccountBoxIcon)`
   margin: 8px 8px 0 -2px;
 `;
 
-export default SettingsOfficialStatement;
+export default SettingsLinks;

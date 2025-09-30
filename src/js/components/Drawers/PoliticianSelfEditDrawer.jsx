@@ -1,4 +1,4 @@
-import { AccountCircle, Description, Menu } from '@mui/icons-material';
+import { AccountCircle, Description, Link, Menu } from '@mui/icons-material';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import TagManager from 'react-gtm-module';
 import { ReactSVG } from 'react-svg';
@@ -9,6 +9,7 @@ import lookupPageNameAndPageTypeDict, { getPageDetails } from '../../utils/looku
 import PoliticianStore from '../../common/stores/PoliticianStore';
 import VoterStore from '../../stores/VoterStore';
 import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
+import SettingsLinks from '../PoliticianSelfEdit/SettingsLinks';
 import SettingsNameAndPhoto from '../PoliticianSelfEdit/SettingsNameAndPhoto';
 import SettingsNotifications from '../Settings/SettingsNotifications';
 import SettingsOfficialStatement from '../PoliticianSelfEdit/SettingsOfficialStatement';
@@ -55,12 +56,25 @@ const PoliticianSelfEditDrawer = () => {
       linkName: 'officialStatement',
       linkTextJsx: <LinkSpan $isActive={String(displayProfileOption) === 'officialStatement'}>Official&nbsp;Statement</LinkSpan>,
     },
+    {
+      icon: <LinkStyled $isActive={String(displayProfileOption) === 'links'} />,
+      linkName: 'links',
+      linkTextJsx: <LinkSpan $isActive={String(displayProfileOption) === 'links'}>Your Website</LinkSpan>,
+    },
   ];
 
   // useEffect to handle which component to display from nav
   useEffect(() => {
     let component = <></>;
     switch (displayProfileOption) {
+      case 'links':
+        component = (
+          <>
+            {/* <ProfileComponentTitle>Links</ProfileComponentTitle> */}
+            <SettingsLinks externalUniqueId="politicianSelfEditDrawer" politicianWeVoteId={politicianWeVoteId} />
+          </>
+        );
+        break;
       case 'nameAndPhoto':
         component = (
           <>
@@ -146,6 +160,7 @@ const PoliticianSelfEditDrawer = () => {
   };
 
   const linkNameToPathMap = {
+    links: '/settings/links',
     nameAndPhoto: '/settings/profile',
     officialStatement: '/settings/officialStatement',
     securityAndSignIn: '/settings/securityAndSignIn',
@@ -175,6 +190,7 @@ const PoliticianSelfEditDrawer = () => {
 
   const onPoliticianStoreChange = useCallback(() => {
     const currentPoliticianWeVoteId = politicianWeVoteIdRef.current;
+    // console.log('PoliticianSelfEditDrawer onPoliticianStoreChange currentPoliticianWeVoteId:', currentPoliticianWeVoteId);
     if (currentPoliticianWeVoteId) {
       setPolitician(PoliticianStore.getPoliticianByWeVoteId(currentPoliticianWeVoteId));
       // console.log('PoliticianSelfEditDrawer onPoliticianStoreChange politician:', PoliticianStore.getPoliticianByWeVoteId(currentPoliticianWeVoteId));
@@ -197,6 +213,14 @@ const PoliticianSelfEditDrawer = () => {
       onPoliticianStoreChange();
     }
   }, [onPoliticianStoreChange, politicianWeVoteId]);
+
+  useEffect(() => {
+    const politicianStoreListener = PoliticianStore.addListener(onPoliticianStoreChange);
+    onPoliticianStoreChange();
+    return () => {
+      politicianStoreListener.remove();
+    };
+  }, []);
 
   useEffect(() => {
     const { location: { pathname } } = window;
@@ -349,6 +373,10 @@ const AccountCircleStyled = styled(AccountCircle)`
 `;
 
 const DescriptionStyled = styled(Description)`
+  color: ${DesignTokenColors.neutralUI600};
+`;
+
+const LinkStyled = styled(Link)`
   color: ${DesignTokenColors.neutralUI600};
 `;
 
