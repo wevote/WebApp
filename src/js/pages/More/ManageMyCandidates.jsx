@@ -9,7 +9,6 @@ import {
   Visibility as EyeIcon,
   Facebook as FacebookIcon,
   X as XIcon,
-  ContentPaste as PasteIcon,
   FileUpload as UploadIcon,
 } from '@mui/icons-material';
 import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
@@ -198,9 +197,10 @@ Thanks for your help!`;
 
           <SideDivider />
 
-          <EditProfileLink type="button" onClick={handleClaimEdit}>
-            <EditIcon fontSize="small" /> Edit candidate profile
-          </EditProfileLink>
+          <NavPill as="button" $active={false} onClick={handleClaimEdit}>
+            <PillIcon><EditIcon fontSize="small" /></PillIcon>
+            Edit candidate profile
+          </NavPill>
         </LeftNav>
 
         {/* Right content */}
@@ -251,7 +251,7 @@ Thanks for your help!`;
                   </PillButton>
                   <Or>OR</Or>
                   <PillButton type="button" onClick={handlePasteList}>
-                    <PasteIcon fontSize="small" />
+                    <PasteListIcon size={22} />
                     Paste list
                   </PillButton>
                 </Row>
@@ -455,6 +455,26 @@ const ImportInviteIcon = ({ size = 22, title = 'Import & invite', ...props }) =>
   </svg>
 );
 
+// Paste-list icon
+const PasteListIcon = ({ size = 22, title = 'Paste list', ...props }) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 22 22"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    role="img"
+    aria-hidden={title ? undefined : true}
+    {...props}
+  >
+    {title ? <title>{title}</title> : null}
+    <path
+      d="M18.8125 3C19.1922 3 19.5 3.3078 19.5 3.6875V18.8125C19.5 19.1922 19.1922 19.5 18.8125 19.5H3.6875C3.3078 19.5 3 19.1922 3 18.8125V3.6875C3 3.3078 3.3078 3 3.6875 3H18.8125ZM4.375 18.125H18.125V4.375H4.375V18.125ZM14 14V15.375H5.75V14H14ZM16.75 14V15.375H15.375V14H16.75ZM14 10.5625V11.9375H5.75V10.5625H14ZM16.75 10.5625V11.9375H15.375V10.5625H16.75ZM14 7.125V8.5H5.75V7.125H14ZM16.75 7.125V8.5H15.375V7.125H16.75Z"
+      fill="currentColor"
+    />
+  </svg>
+);
+
 const HeaderRow = styled.div`
   margin: 6px 0 12px;
 `;
@@ -572,18 +592,6 @@ const PillIcon = styled.span`
 const SideDivider = styled.div`
   border-bottom: 1px solid ${DesignTokenColors.neutralUI200};
   margin: 16px 0;
-`;
-
-const EditProfileLink = styled.button`
-  background: none;
-  border: none;
-  color: ${DesignTokenColors.success700};
-  cursor: pointer;
-  display: inline-flex;
-  gap: 6px;
-  padding: 0;
-  text-align: left;
-  &:hover { text-decoration: underline; }
 `;
 
 const RightPanel = styled.section`
