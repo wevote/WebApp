@@ -11,11 +11,24 @@ const cordovaSpecs = [
 
 ];
 const mobileBrowserSpecs = [
-  '../specs/ReadyPage.js'
+  '../specs/ReadyPage.browser.js'
 ];
 const desktopBrowserSpecs = [
-  //'../specs/PrivacyPage.js',
-  '../specs/ReadyPage.js'
+    '../specs/DiscussPage.js',
+    '../specs/FAQPage.js',
+    '../specs/PrivacyPage.js',
+    '../specs/ReadyPage.browser.js',
+    '../specs/TermsPage.js',
+    '../specs/TopNavigation.js',
+    '../specs/TopicsPage.js',
+    '../specs/HowItWorks.js',
+    '../specs/FooterLinks.js',
+    '../specs/SignInPage.js',
+    '../specs/BallotPage.js',
+    '../specs/CandidatesPage.js',
+    '../specs/VerifyCount.js',
+    '../specs/WhosRunningForOffice.js',
+
 ];
 
 
@@ -23,7 +36,7 @@ const desktopBrowserSpecs = [
 //cordova capabilities
 let cordovaCapabilities = [];
 try {
-  const data = readFileSync(path.join(__dirname, '../capabilities/mobiledevices_apptesting.json'), { encoding: 'utf8' });
+  const data = readFileSync(path.join(__dirname, '../capabilities/cordova_mobile_devices.json'), { encoding: 'utf8' });
   cordovaCapabilities = JSON.parse(data);
   cordovaCapabilities.forEach(cap => {
     // read app urls from browserstack.config, Check the platform and assign the correct URL
@@ -41,7 +54,7 @@ try {
 //mobileBrowser  capabilities
 let mobileBrowserCapabilities = [];
 try {
-  const data = readFileSync(path.join(__dirname, '../capabilities/mobiledevices_browsertesting.json'), { encoding: 'utf8' });
+  const data = readFileSync(path.join(__dirname, '../capabilities/browser_mobile_devices.json'), { encoding: 'utf8' });
   mobileBrowserCapabilities = JSON.parse(data);
  // console.log('Loaded Mobile Browser Capabilities:', mobileBrowserCapabilities);
 } catch (error) {
@@ -51,7 +64,7 @@ try {
 //desktopBrowser capabilities
 let desktopBrowserCapabilities = [];
 try {
-  desktopBrowserCapabilities = require('../capabilities/browser.json');
+  desktopBrowserCapabilities = require('../capabilities/browser_desktop.json');
 } catch (error) {
   console.error("Failed to read desktop browser capabilities.json:", error);
 }
