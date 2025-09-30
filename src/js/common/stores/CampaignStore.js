@@ -701,6 +701,8 @@ class CampaignStore extends ReduceStore {
         return revisedState;
 
       case 'politicianRetrieve':
+      case 'politicianRetrieveAsOwner':
+      case 'politicianSave':
         // For the candidate-related data attached to the Politician, create a pseudo-CampaignX object
         //  which is needed for objects like HeartFavoriteToggle
         candidateList = action.res.candidate_list;

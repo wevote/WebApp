@@ -437,6 +437,7 @@ class CandidateStore extends ReduceStore {
         };
 
       case 'politicianRetrieve':
+      case 'politicianRetrieveAsOwner':
         incomingCandidateCount = 0;
         candidateList = action.res.candidate_list;
         opponentCandidateList = action.res.opponent_candidate_list;

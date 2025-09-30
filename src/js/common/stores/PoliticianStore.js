@@ -204,8 +204,8 @@ class PoliticianStore extends ReduceStore {
   }
 
   getVoterCanEditThisPolitician (politicianWeVoteId = '') {
-    console.log('getVoterCanEditThisPolitician:', politicianWeVoteId);
-    return false;
+    // console.log('getVoterCanEditThisPolitician:', politicianWeVoteId, ', YES: ', arrayContains(politicianWeVoteId, this.getState().voterOwnedPoliticianWeVoteIds), 'voterOwnedPoliticianWeVoteIds: ', this.getState().voterOwnedPoliticianWeVoteIds);
+    return arrayContains(politicianWeVoteId, this.getState().voterOwnedPoliticianWeVoteIds);
   }
 
   getVoterSupportsThisPolitician (politicianWeVoteId) {
@@ -464,6 +464,7 @@ class PoliticianStore extends ReduceStore {
         }
         revisedState = state;
         politician = action.res;
+        // console.log('PoliticianStore ', action.type, ', politician:', politician);
         opponentCandidateList = action.res.opponent_candidate_list;
         // console.log('PoliticianStore politicianRetrieve, politician:', politician);
         if (allCachedPoliticians === undefined) {
@@ -595,6 +596,20 @@ class PoliticianStore extends ReduceStore {
           allCachedPoliticians,
           politicianListsByOfficeWeVoteId,
         };
+
+      case 'voterCanEditPolitician':
+        // console.log('PoliticianStore voterCanEditPolitician: ', action.payload);
+        if (action.payload === undefined) {
+          return state;
+        } else {
+          revisedState = state;
+          const politicianWeVoteId = action.payload;
+          if (!arrayContains(politicianWeVoteId, voterOwnedPoliticianWeVoteIds)) {
+            voterOwnedPoliticianWeVoteIds.push(politicianWeVoteId);
+            revisedState = { ...revisedState, voterOwnedPoliticianWeVoteIds };
+          }
+          return revisedState;
+        }
 
       case 'voterSignOut':
         // console.log('PoliticianStore voterSignOut, state:', state);
