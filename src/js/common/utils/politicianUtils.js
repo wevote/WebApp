@@ -121,18 +121,23 @@ export function getPoliticianValuesFromIdentifiers (politicianSEOFriendlyPath, p
   };
 }
 
-export function retrievePoliticianFromIdentifiers (politicianSEOFriendlyPath, politicianWeVoteId) {
-  // console.log('retrievePoliticianFromIdentifiersIfNeeded politicianSEOFriendlyPath: ', politicianSEOFriendlyPath, ', politicianWeVoteId: ', politicianWeVoteId);
+export function politicianRetrieveFromIdentifiers (politicianSEOFriendlyPath, politicianWeVoteId) {
+  // console.log('politicianRetrieveFromIdentifiersIfNeeded politicianSEOFriendlyPath: ', politicianSEOFriendlyPath, ', politicianWeVoteId: ', politicianWeVoteId);
+  const asOwner = PoliticianStore.getVoterCanEditThisPolitician(politicianWeVoteId);
   if (politicianSEOFriendlyPath) {
     initializejQuery(() => {
-      if (apiCalming(`politicianRetrieve-${politicianSEOFriendlyPath}`, 2000)) {
-        PoliticianActions.politicianRetrieveBySEOFriendlyPath(politicianSEOFriendlyPath);
+      if (asOwner) {
+        PoliticianActions.politicianRetrieveBySEOFriendlyPath(politicianSEOFriendlyPath, asOwner);
+      } else if (apiCalming(`politicianRetrieve-${politicianSEOFriendlyPath}`, 2000)) {
+        PoliticianActions.politicianRetrieveBySEOFriendlyPath(politicianSEOFriendlyPath, asOwner);
       }
     });
     return true;
   } else if (politicianWeVoteId) {
     initializejQuery(() => {
-      if (apiCalming(`politicianRetrieve-${politicianWeVoteId}`, 2000)) {
+      if (asOwner) {
+        PoliticianActions.politicianRetrieve(politicianWeVoteId, asOwner);
+      } else if (apiCalming(`politicianRetrieve-${politicianWeVoteId}`, 2000)) {
         PoliticianActions.politicianRetrieve(politicianWeVoteId);
       }
     });
@@ -142,15 +147,16 @@ export function retrievePoliticianFromIdentifiers (politicianSEOFriendlyPath, po
   }
 }
 
-export function retrievePoliticianFromIdentifiersIfNeeded (politicianSEOFriendlyPath, politicianWeVoteId) {
-  // console.log('retrievePoliticianFromIdentifiersIfNeeded politicianSEOFriendlyPath: ', politicianSEOFriendlyPath, ', politicianWeVoteId: ', politicianWeVoteId);
+export function politicianRetrieveFromIdentifiersIfNeeded (politicianSEOFriendlyPath, politicianWeVoteId) {
+  // console.log('politicianRetrieveFromIdentifiersIfNeeded politicianSEOFriendlyPath: ', politicianSEOFriendlyPath, ', politicianWeVoteId: ', politicianWeVoteId);
   let politician = {};
   let mustRetrieveCampaign = false;
 
-  // console.log('retrievePoliticianFromIdentifiersIfNeeded voter:', voter);
+  // console.log('politicianRetrieveFromIdentifiersIfNeeded voter:', voter);
+  const asOwner = PoliticianStore.getVoterCanEditThisPolitician(politicianWeVoteId);
   if (politicianSEOFriendlyPath) {
     politician = PoliticianStore.getPoliticianBySEOFriendlyPath(politicianSEOFriendlyPath);
-    // console.log('retrievePoliticianFromIdentifiersIfNeeded politician:', politician);
+    // console.log('politicianRetrieveFromIdentifiersIfNeeded politician:', politician);
     if (politician.constructor === Object) {
       if (!politician.politician_we_vote_id) {
         mustRetrieveCampaign = true;
@@ -158,10 +164,12 @@ export function retrievePoliticianFromIdentifiersIfNeeded (politicianSEOFriendly
     } else {
       mustRetrieveCampaign = true;
     }
-    // console.log('retrievePoliticianFromIdentifiersIfNeeded mustRetrieveCampaign:', mustRetrieveCampaign, ', politicianSEOFriendlyPath:', politicianSEOFriendlyPath);
+    // console.log('politicianRetrieveFromIdentifiersIfNeeded mustRetrieveCampaign:', mustRetrieveCampaign, ', politicianSEOFriendlyPath:', politicianSEOFriendlyPath);
     if (mustRetrieveCampaign) {
       initializejQuery(() => {
-        if (apiCalming(`politicianRetrieve-${politicianSEOFriendlyPath}`, 2000)) {
+        if (asOwner) {
+          PoliticianActions.politicianRetrieveBySEOFriendlyPath(politicianSEOFriendlyPath, asOwner);
+        } else if (apiCalming(`politicianRetrieve-${politicianSEOFriendlyPath}`, 2000)) {
           PoliticianActions.politicianRetrieveBySEOFriendlyPath(politicianSEOFriendlyPath);
         }
       });
@@ -175,10 +183,12 @@ export function retrievePoliticianFromIdentifiersIfNeeded (politicianSEOFriendly
     } else {
       mustRetrieveCampaign = true;
     }
-    // console.log('retrievePoliticianFromIdentifiersIfNeeded mustRetrieveCampaign:', mustRetrieveCampaign, ', politicianWeVoteId:', politicianWeVoteId);
+    // console.log('politicianRetrieveFromIdentifiersIfNeeded mustRetrieveCampaign:', mustRetrieveCampaign, ', politicianWeVoteId:', politicianWeVoteId);
     if (mustRetrieveCampaign) {
       initializejQuery(() => {
-        if (apiCalming(`politicianRetrieve-${politicianWeVoteId}`, 2000)) {
+        if (asOwner) {
+          PoliticianActions.politicianRetrieve(politicianWeVoteId, asOwner);
+        } else if (apiCalming(`politicianRetrieve-${politicianWeVoteId}`, 2000)) {
           PoliticianActions.politicianRetrieve(politicianWeVoteId);
         }
       });
@@ -187,12 +197,12 @@ export function retrievePoliticianFromIdentifiersIfNeeded (politicianSEOFriendly
   return true;
 }
 
-export function retrievePoliticianFromIdentifiersIfNotAlreadyRetrieved (politicianSEOFriendlyPath, politicianWeVoteId) {
+export function politicianRetrieveFromIdentifiersIfNotAlreadyRetrieved (politicianSEOFriendlyPath, politicianWeVoteId) {
   if (
     (politicianSEOFriendlyPath && PoliticianStore.getPoliticianBySEOFriendlyPath() !== {}) &&
     (politicianWeVoteId && PoliticianStore.getPoliticianByWeVoteId(politicianWeVoteId) !== {})
   ) {
     return false;
   }
-  return retrievePoliticianFromIdentifiersIfNeeded(politicianSEOFriendlyPath, politicianWeVoteId);
+  return politicianRetrieveFromIdentifiersIfNeeded(politicianSEOFriendlyPath, politicianWeVoteId);
 }
