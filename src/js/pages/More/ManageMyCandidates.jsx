@@ -60,7 +60,8 @@ Thanks for your help!`;
       setInitialInvite(invitationBody);
     }
   }, [invitationBody, showEdit]);
-
+  const [copiedMsg, setCopiedMsg] = useState('');
+  const toastTimerRef = useRef(null);
   const openEditModal = () => { setInitialInvite(draftInvite); setShowEdit(true); };
   const handleEditInvite = () => {
     setDraftInvite(invitationBody);
@@ -72,18 +73,26 @@ Thanks for your help!`;
   const handleCopyInviteBody = async () => {
     try {
       await navigator.clipboard.writeText(`${invitationBody}\n\nhttps://wevote.us/join/${selectedId}`);
-      alert('Invitation copied.');
+      if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
+      setCopiedMsg('Invitation copied to clipboard. Press ⌘V / Ctrl+V to paste.');
+      toastTimerRef.current = setTimeout(() => setCopiedMsg(''), 2200);
     } catch {
-      alert('Copy failed. You can select the text and copy manually.');
+      setCopiedMsg('Copy failed. Select the text and copy manually.');
+      if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
+      toastTimerRef.current = setTimeout(() => setCopiedMsg(''), 3000);
     }
   };
 
   const handleEditCopy = async () => {
     try {
       await navigator.clipboard.writeText(`${draftInvite}\n\nhttps://wevote.us/join/${selectedId}`);
-      alert('Invitation copied.');
+      if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
+      setCopiedMsg('Invitation copied to clipboard. Press ⌘V / Ctrl+V to paste.');
+      toastTimerRef.current = setTimeout(() => setCopiedMsg(''), 2200);
     } catch {
-      alert('Copy failed. You can select the text and copy manually.');
+      setCopiedMsg('Copy failed. Select the text and copy manually.');
+      if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
+      toastTimerRef.current = setTimeout(() => setCopiedMsg(''), 3000);
     }
   };
 
@@ -389,6 +398,11 @@ Thanks for your help!`;
         style={{ display: 'none' }}
         onChange={handleCSVSelected}
       />
+      {copiedMsg && (
+        <Toast role="status" aria-live="polite">
+          {copiedMsg}
+        </Toast>
+      )}
     </PageContentContainer>
   );
 }
@@ -882,5 +896,20 @@ const PrimarySaveBtn = styled.button`
     background: ${({ disabled }) => (disabled ? DesignTokenColors.neutralUI200 : DesignTokenColors.primary800)};
     border-color: ${({ disabled }) => (disabled ? DesignTokenColors.neutralUI200 : DesignTokenColors.primary800)};
   }
+`;
+const Toast = styled.div`
+  position: fixed;
+  left: 50%;
+  top: 10%;
+  transform: translateX(-50%);
+  z-index: 10000;
+  background: ${DesignTokenColors.neutralUI900};
+  color: ${DesignTokenColors.whiteUI};
+  border-radius: 10px;
+  padding: 10px 14px;
+  box-shadow: 0 8px 24px rgba(16,24,40,0.18);
+  font-size: 14px;
+  text-align: center;
+  max-width: 90vw;
 `;
 
