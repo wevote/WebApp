@@ -55,7 +55,7 @@ import lazyPreloadPages from '../../utils/lazyPreloadPages';
 import mapCategoryFilterType from '../../utils/map-category-filter-type';
 import showBallotDecisionsTabs from '../../utilsApi/showBallotDecisionsTabs';
 import { checkShouldUpdate, formatVoterBallotList } from './utils/ballotUtils';
-import { getPageDetails} from '../../utils/lookupPageNameAndPageTypeDict';
+import { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
 
 
 
@@ -1153,26 +1153,23 @@ class Ballot extends Component {
     });
   }
 
-    checkAndFireDataLayer = () => {                             // Google Tag Manager dataLayer AnujaL
+    checkAndFireDataLayer = () => {
       const { dataLayerFired } = this.state;
       const voter = VoterStore.getVoter();
 
-      if (!dataLayerFired && voter && voter.we_vote_id) {
+      if (!dataLayerFired && voter && voter.we_voter_id) {
         const dataLayerObject = {
           event: 'landing',
           pageDetails: getPageDetails(),
-          userDetails: VoterStore.getAnalyticsUserDetails(),
+          userDetalis: VoterStore.getAnalyticsUserDetails(),
         };
-
-        // Add election details if available
         const electionDetails = BallotStore.getAnalyticsElectionDetails();
         if (electionDetails && electionDetails.electionDate) {
           dataLayerObject.electionDetails = electionDetails;
         }
 
-        // Push to GTM
         TagManager.dataLayer({ dataLayer: dataLayerObject });
-        this.setState({ dataLayerFired: true });
+        this.setState({ dataLayerFired: true});
       }
     };
 
