@@ -55,7 +55,8 @@ import lazyPreloadPages from '../../utils/lazyPreloadPages';
 import mapCategoryFilterType from '../../utils/map-category-filter-type';
 import showBallotDecisionsTabs from '../../utilsApi/showBallotDecisionsTabs';
 import { checkShouldUpdate, formatVoterBallotList } from './utils/ballotUtils';
-import { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
+import { getPageDetails} from '../../utils/lookupPageNameAndPageTypeDict';
+
 
 
 const CompleteYourProfileOnBallot = React.lazy(() => import(/* webpackChunkName: 'CompleteYourProfile' */ '../../components/CompleteYourProfile/CompleteYourProfileOnBallot'));
@@ -1152,7 +1153,7 @@ class Ballot extends Component {
     });
   }
 
-    checkAndFireDataLayer = () => {
+    checkAndFireDataLayer = () => {                             // Google Tag Manager dataLayer AnujaL
       const { dataLayerFired } = this.state;
       const voter = VoterStore.getVoter();
 
