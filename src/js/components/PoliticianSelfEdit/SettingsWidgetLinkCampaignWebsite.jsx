@@ -12,17 +12,17 @@ import PoliticianStore from '../../common/stores/PoliticianStore';
 const delayBeforeApiUpdateCall = 2000;
 const delayBeforeRemovingSavedStatus = 4000;
 
-class SettingsWidgetPoliticianStatement extends Component {
+class SettingsWidgetLinkCampaignWebsite extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      initialPoliticianStatementLoaded: false,
-      politicianStatement: '',
-      politicianStatementSavedStatus: '',
+      initialCampaignWebsiteLoaded: false,
+      campaignWebsite: '',
+      campaignWebsiteSavedStatus: '',
     };
 
-    this.handleKeyPressPoliticianStatement = this.handleKeyPressPoliticianStatement.bind(this);
-    this.updatePoliticianStatement = this.updatePoliticianStatement.bind(this);
+    this.handleKeyPressCampaignWebsite = this.handleKeyPressCampaignWebsite.bind(this);
+    this.updateCampaignWebsite = this.updateCampaignWebsite.bind(this);
   }
 
   componentDidMount () {
@@ -32,75 +32,75 @@ class SettingsWidgetPoliticianStatement extends Component {
     );
     const { displayOnly = false } = this.props;
     if (!displayOnly) {
-      prepareForCordovaKeyboard('SettingsWidgetPoliticianStatement');
+      prepareForCordovaKeyboard('SettingsWidgetLinkCampaignWebsite');
     }
   }
 
   componentWillUnmount () {
     this.politicianStoreListener.remove();
     if (this.clearStatusTimer) clearTimeout(this.clearStatusTimer);
-    if (this.politicianStatementTimer) clearTimeout(this.politicianStatementTimer);
+    if (this.campaignWebsiteTimer) clearTimeout(this.campaignWebsiteTimer);
     const { displayOnly = false } = this.props;
     if (!displayOnly) {
-      restoreStylesAfterCordovaKeyboard('SettingsWidgetPoliticianStatement');
+      restoreStylesAfterCordovaKeyboard('SettingsWidgetLinkCampaignWebsite');
     }
   }
 
-  handleKeyPressPoliticianStatement () {
+  handleKeyPressCampaignWebsite () {
     const { politicianWeVoteId } = this.props;
-    if (this.politicianStatementTimer) clearTimeout(this.politicianStatementTimer);
+    if (this.campaignWebsiteTimer) clearTimeout(this.campaignWebsiteTimer);
     if (this.props.voterHasMadeChangesFunction) {
       this.props.voterHasMadeChangesFunction();
     }
 
-    if (this.politicianStatementTimer) clearTimeout(this.politicianStatementTimer);
-    this.politicianStatementTimer = setTimeout(() => {
-      const { politicianStatement } = this.state;
-      // console.log('SettingsWidgetPoliticianStatement handleKeyPressPoliticianStatement politicianStatement:', politicianStatement, ', politicianWeVoteId:', politicianWeVoteId);
-      PoliticianActions.politicianStatementSave(politicianWeVoteId, politicianStatement);
-      this.setState({ politicianStatementSavedStatus: 'Saved' });
+    if (this.campaignWebsiteTimer) clearTimeout(this.campaignWebsiteTimer);
+    this.campaignWebsiteTimer = setTimeout(() => {
+      const { campaignWebsite } = this.state;
+      // console.log('SettingsWidgetLinkCampaignWebsite handleKeyPressCampaignWebsite campaignWebsite:', campaignWebsite, ', politicianWeVoteId:', politicianWeVoteId);
+      PoliticianActions.politicianCampaignWebsiteSave(politicianWeVoteId, campaignWebsite);
+      this.setState({ campaignWebsiteSavedStatus: 'Saved' });
     }, delayBeforeApiUpdateCall);
   }
 
   onPoliticianStoreChange () {
     const { politicianWeVoteId } = this.props;
-    const { initialPoliticianStatementLoaded } = this.state;
+    const { initialCampaignWebsiteLoaded } = this.state;
     const politician = PoliticianStore.getPoliticianByWeVoteId(politicianWeVoteId);
-    // console.log('SettingsWidgetPoliticianStatement onPoliticianStoreChange politician:', politician, ', politicianWeVoteId:', politicianWeVoteId);
+    // console.log('SettingsWidgetLinkCampaignWebsite onPoliticianStoreChange politician:', politician, ', politicianWeVoteId:', politicianWeVoteId);
     if (politician && politician.politician_we_vote_id) {
       this.setState({
         politician,
       });
-      if (!initialPoliticianStatementLoaded) {
+      if (!initialCampaignWebsiteLoaded) {
         this.setState({
-          politicianStatement: politician.ballot_guide_official_statement,
-          initialPoliticianStatementLoaded: true,
+          campaignWebsite: politician.politician_url,
+          initialCampaignWebsiteLoaded: true,
         });
       }
     }
   }
 
-  updatePoliticianStatement (event) {
-    // console.log('SettingsWidgetPoliticianStatement updatePoliticianStatement event.target.name:', event.target.name, ', event.target.value:', event.target.value);
-    if (event.target.name === 'politicianStatement') {
+  updateCampaignWebsite (event) {
+    // console.log('SettingsWidgetLinkCampaignWebsite updateCampaignWebsite event.target.name:', event.target.name, ', event.target.value:', event.target.value);
+    if (event.target.name === 'campaignWebsite') {
       this.setState({
-        politicianStatement: event.target.value,
-        politicianStatementSavedStatus: 'Saving Official Statement...',
+        campaignWebsite: event.target.value,
+        campaignWebsiteSavedStatus: 'Saving Campaign Website...',
       });
     }
     // After some time, clear saved message
     if (this.clearStatusTimer) clearTimeout(this.clearStatusTimer);
     this.clearStatusTimer = setTimeout(() => {
-      this.setState({ politicianStatementSavedStatus: '' });
+      this.setState({ campaignWebsiteSavedStatus: '' });
     }, delayBeforeRemovingSavedStatus);
   }
 
   render () {
-    renderLog('SettingsWidgetPoliticianStatement'); // Set LOG_RENDER_EVENTS to log all renders
+    renderLog('SettingsWidgetLinkCampaignWebsite'); // Set LOG_RENDER_EVENTS to log all renders
     const {
-      politicianStatement,
+      campaignWebsite,
       politician,
-      politicianStatementSavedStatus,
+      campaignWebsiteSavedStatus,
     } = this.state;
     const { classes, externalUniqueId } = this.props;
 
@@ -119,32 +119,28 @@ class SettingsWidgetPoliticianStatement extends Component {
             <ColumnFullWidth>
               <FormControl classes={{ root: classes.formControl }}>
                 <StyledTextField
-                  autoComplete="given-name"
-                  // className={classes.input}
-                  fullWidth
-                  id={`official-statement-${externalUniqueId}`}
-                  label="Official Statement"
-                  margin="dense"
-                  multiline
-                  name="politicianStatement"
-                  placeholder="Your official statement as a candidate, including your platform and what you believe."
-                  onKeyDown={this.handleKeyPressPoliticianStatement}
-                  onChange={this.updatePoliticianStatement}
-                  rows={4}
                   type="text"
-                  value={politicianStatement}
+                  // className={classes.input}
+                  label="Campaign Website"
+                  margin="dense"
                   variant="outlined"
+                  id={`linkCampaignWebsite-${externalUniqueId}`}
+                  name="campaignWebsite"
+                  placeholder="Campaign Website"
+                  onKeyDown={this.handleKeyPressCampaignWebsite}
+                  onChange={this.updateCampaignWebsite}
+                  value={campaignWebsite}
                 />
               </FormControl>
             </ColumnFullWidth>
           </Row>
-          <div className="u-gray-mid">{politicianStatementSavedStatus}</div>
+          <div className="u-gray-mid">{campaignWebsiteSavedStatus}</div>
         </span>
       </form>
     );
   }
 }
-SettingsWidgetPoliticianStatement.propTypes = {
+SettingsWidgetLinkCampaignWebsite.propTypes = {
   classes: PropTypes.object,
   displayOnly: PropTypes.bool,
   externalUniqueId: PropTypes.string,
@@ -183,4 +179,4 @@ const StyledTextField = styled(TextField)`
   margin: 0 !important;
 `;
 
-export default withStyles(styles)(SettingsWidgetPoliticianStatement);
+export default withStyles(styles)(SettingsWidgetLinkCampaignWebsite);
