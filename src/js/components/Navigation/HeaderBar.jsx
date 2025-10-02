@@ -606,7 +606,7 @@ class HeaderBar extends Component {
 
                     {nextReleaseFeaturesEnabled && (
                       <StyledMoreMenuItem
-                        selected={normalizedHrefPage() === 'manage'}
+                        selected={['manage', 'more/manage'].includes(normalizedHrefPage())}
                         onClick={this.navTo('/more/manage', 99)}
                         disableRipple
                       >
