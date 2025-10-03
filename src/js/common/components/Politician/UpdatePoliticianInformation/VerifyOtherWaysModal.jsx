@@ -1,17 +1,26 @@
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
 import DesignTokenColors from '../../Style/DesignTokenColors';
 import ModalDisplayTemplateA from '../../../../components/Widgets/ModalDisplayTemplateA';
 import { StepTitle } from '../../../../components/Style/ReadyIntroductionStyles';
 import AppObservableStore from '../../../stores/AppObservableStore';
+import VoterActions from "../../../../actions/VoterActions";
 
-const VerifyOtherWaysModal = ({ politicianName }) => {
+const VerifyOtherWaysModal = ({ politicianName, politicianWeVoteId }) => {
   const [relationshipOption, setRelationshipOption] = useState(null);
   const [otherOptionText, setOtherOptionText] = useState(null);
+  const [campaignEmail, setCampaignEmail] = useState('');
+  const [emailNotVisibleCheckbox, setEmailNotVisibleCheckbox] = useState(false);
+  const [webAddressContact, setWebAddressContact] = useState('');
+  const [socialAddressContact, setSocialAddressContact] = useState('');
+  const [additionalInfo, setAdditionalInfo] = useState('');
+  const [verifyFormSavedStatus, setVerifyFormSavedStatus] = useState('');
+  const [formSubmitted, setFormSubmitted] = useState(false);
 
   const handleCloseVerifyOtherWaysModal = () => {
     AppObservableStore.setShowClaimProfileWithOtherWaysModal(false);
+    setFormSubmitted(false);
   };
 
   const handleRelationshipOption = (option) => {
@@ -23,14 +32,56 @@ const VerifyOtherWaysModal = ({ politicianName }) => {
     setOtherOptionText(e.target.value);
   };
 
+  // build the text message (otherWaysToVerify) from Verify Other Ways Form
+  const buildVerifyOtherWays = (
+    relationshipOptionParam,
+    otherOptionTextParam,
+    campaignEmailParam,
+    emailNotVisibleCheckboxParam,
+    webAddressContactParam,
+    socialAddressContactParam,
+    additionalInfoParam,
+  ) => {
+    const lines = [];
+
+    const option = relationshipOptionParam && relationshipOptionParam === 'Other'
+      ? `${relationshipOptionParam} - ${otherOptionTextParam.trim()}` : relationshipOptionParam;
+
+    lines.push(`Relationship to Candidate: ${option}`);
+
+    if (campaignEmailParam) lines.push(`Candidate/campaign related email: ${campaignEmailParam.trim()}`);
+    if (campaignEmailParam) lines.push(`Is email visible on public websites: ${emailNotVisibleCheckboxParam}`);
+    if (webAddressContactParam) lines.push(`Candidate contact form web address: ${webAddressContactParam.trim()}`);
+    if (socialAddressContactParam) lines.push(`Candidate social media address: ${socialAddressContactParam.trim()}`);
+    if (additionalInfoParam) lines.push(`Additional information:\n${additionalInfoParam.trim()}`);
+
+    return lines.join('\n');
+  };
+
+  // handle submit button click
+  const handleVerifyOtherWaysSubmit = () => {
+    const otherWaysToVerify = buildVerifyOtherWays(relationshipOption, otherOptionText, campaignEmail, emailNotVisibleCheckbox, webAddressContact, socialAddressContact, additionalInfo);
+    const currentUrl = window.location.href;
+
+    setVerifyFormSavedStatus('Saving...');
+    VoterActions.voterUpdateVerifyOtherWaysSubmit(politicianWeVoteId, otherWaysToVerify, currentUrl);
+
+    setTimeout(() => {
+      setVerifyFormSavedStatus('Saved');
+      setFormSubmitted(true);
+    }, 2000);
+
+    setTimeout(() => {
+      setVerifyFormSavedStatus('');
+    }, 4000);
+  };
+
   const relationshipOptions = ["I'm the candidate", 'Staff member', 'Volunteer', 'Other'];
 
   const dialogTitleJsx = (
     <VerifyOtherWaysModalHeader>
-      Verify that you are authorized to edit
-      {' '}
-      {politicianName}
-      &apos;s profile
+      {formSubmitted ? `Verification form submitted` :
+        `Verify that you are authorized to edit ${politicianName}'s profile`}
     </VerifyOtherWaysModalHeader>
   );
 
@@ -109,6 +160,8 @@ const VerifyOtherWaysModal = ({ politicianName }) => {
         id="candidate-campaign-related-email"
         placeholder="Email"
         type="email"
+        value={campaignEmail}
+        onChange={(e) => setCampaignEmail(e.target.value)}
       />
       <VerifyCheckboxContainer>
         <VerifyStepLabelSmall
@@ -117,6 +170,8 @@ const VerifyOtherWaysModal = ({ politicianName }) => {
           <VerifyStepCheckbox
             type="checkbox"
             id="not-public-visible-email-checkbox"
+            checked={emailNotVisibleCheckbox}
+            onChange={(e) => setEmailNotVisibleCheckbox(e.target.checked)}
           />
           My email is not visible on any public websites, and can&apos;t be confirmed that way
         </VerifyStepLabelSmall>
@@ -137,6 +192,8 @@ const VerifyOtherWaysModal = ({ politicianName }) => {
       <VerifyFullInput
         id="candidate-contact-web-address"
         placeholder="Web address"
+        value={webAddressContact}
+        onChange={(e) => setWebAddressContact(e.target.value)}
       />
       <VerifyStepLabelSmallTopMargin
         htmlFor="candidate-contact-social-media-page"
@@ -146,6 +203,8 @@ const VerifyOtherWaysModal = ({ politicianName }) => {
       <VerifyFullInput
         placeholder="Social media page address"
         id="candidate-contact-social-media-page"
+        value={socialAddressContact}
+        onChange={(e) => setSocialAddressContact(e.target.value)}
       />
       <VerifyStepFlexTopMarginContainer>
         <VerifyStepLetter>
@@ -160,6 +219,8 @@ const VerifyOtherWaysModal = ({ politicianName }) => {
       <AdditionalInformationTextArea
         id="candidate-additional-information"
         placeholder="Additional information"
+        value={additionalInfo}
+        onChange={(e) => setAdditionalInfo(e.target.value)}
       />
       <VerifyButtonsContainer>
         <CancelButton
@@ -170,10 +231,14 @@ const VerifyOtherWaysModal = ({ politicianName }) => {
         </CancelButton>
         <SubmitButton
           type="button"
+          onClick={handleVerifyOtherWaysSubmit}
         >
           Submit
         </SubmitButton>
       </VerifyButtonsContainer>
+      <VerifyFormSavedStatusContainer className="u-gray-mid">
+        {verifyFormSavedStatus}
+      </VerifyFormSavedStatusContainer>
     </VerifyOtherWaysContainer>
   );
 
@@ -182,7 +247,13 @@ const VerifyOtherWaysModal = ({ politicianName }) => {
       dialogTitleJSX={dialogTitleJsx}
       toggleModal={handleCloseVerifyOtherWaysModal}
       show={AppObservableStore.getShowClaimProfileWithOtherWaysModal()}
-      textFieldJSX={textFieldJsx}
+      textFieldJSX={formSubmitted ?
+        (
+          <SubmissionMessageContainer>
+            Thank you for sharing with us other ways we can verify that you should have the right to edit this page. We will strive to get back to within 24 hours.
+            Please also feel free to email us at support@wevote.us if you have any questions.
+          </SubmissionMessageContainer>
+        ) : (textFieldJsx)}
       tallMode
     />
   );
@@ -255,6 +326,11 @@ const VerifySubtitleContainer = styled('div')`
   margin-left: 35px;
 `;
 
+const SubmissionMessageContainer = styled('div')`
+  margin: 28px 0 24px 0;
+  font-size: 14px;
+`;
+
 const VerifyStepLetter = styled(VerifyStepNumber)`
   background-color: ${DesignTokenColors.neutralUI400};
   font-size: 12px;
@@ -310,6 +386,13 @@ const AdditionalInformationTextArea = styled('textarea')`
 `;
 
 const VerifyButtonsContainer = styled('div')`
+  align-items: center;
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+`;
+
+const VerifyFormSavedStatusContainer = styled('div')`
   align-items: center;
   display: flex;
   justify-content: flex-end;
