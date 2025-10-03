@@ -9,7 +9,6 @@ import {
   Visibility as EyeIcon,
   Facebook as FacebookIcon,
   X as XIcon,
-  ContentPaste as PasteIcon,
   FileUpload as UploadIcon,
 } from '@mui/icons-material';
 import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
@@ -61,7 +60,8 @@ Thanks for your help!`;
       setInitialInvite(invitationBody);
     }
   }, [invitationBody, showEdit]);
-
+  const [copiedMsg, setCopiedMsg] = useState('');
+  const toastTimerRef = useRef(null);
   const openEditModal = () => { setInitialInvite(draftInvite); setShowEdit(true); };
   const handleEditInvite = () => {
     setDraftInvite(invitationBody);
@@ -73,18 +73,26 @@ Thanks for your help!`;
   const handleCopyInviteBody = async () => {
     try {
       await navigator.clipboard.writeText(`${invitationBody}\n\nhttps://wevote.us/join/${selectedId}`);
-      alert('Invitation copied.');
+      if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
+      setCopiedMsg('Invitation copied to clipboard. Press ⌘V / Ctrl+V to paste.');
+      toastTimerRef.current = setTimeout(() => setCopiedMsg(''), 2200);
     } catch {
-      alert('Copy failed. You can select the text and copy manually.');
+      setCopiedMsg('Copy failed. Select the text and copy manually.');
+      if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
+      toastTimerRef.current = setTimeout(() => setCopiedMsg(''), 3000);
     }
   };
 
   const handleEditCopy = async () => {
     try {
       await navigator.clipboard.writeText(`${draftInvite}\n\nhttps://wevote.us/join/${selectedId}`);
-      alert('Invitation copied.');
+      if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
+      setCopiedMsg('Invitation copied to clipboard. Press ⌘V / Ctrl+V to paste.');
+      toastTimerRef.current = setTimeout(() => setCopiedMsg(''), 2200);
     } catch {
-      alert('Copy failed. You can select the text and copy manually.');
+      setCopiedMsg('Copy failed. Select the text and copy manually.');
+      if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
+      toastTimerRef.current = setTimeout(() => setCopiedMsg(''), 3000);
     }
   };
 
@@ -198,9 +206,10 @@ Thanks for your help!`;
 
           <SideDivider />
 
-          <EditProfileLink type="button" onClick={handleClaimEdit}>
-            <EditIcon fontSize="small" /> Edit candidate profile
-          </EditProfileLink>
+          <NavPill as="button" $active={false} onClick={handleClaimEdit}>
+            <PillIcon><EditIcon fontSize="small" /></PillIcon>
+            Edit candidate profile
+          </NavPill>
         </LeftNav>
 
         {/* Right content */}
@@ -251,7 +260,7 @@ Thanks for your help!`;
                   </PillButton>
                   <Or>OR</Or>
                   <PillButton type="button" onClick={handlePasteList}>
-                    <PasteIcon fontSize="small" />
+                    <PasteListIcon size={22} />
                     Paste list
                   </PillButton>
                 </Row>
@@ -389,6 +398,11 @@ Thanks for your help!`;
         style={{ display: 'none' }}
         onChange={handleCSVSelected}
       />
+      {copiedMsg && (
+        <Toast role="status" aria-live="polite">
+          {copiedMsg}
+        </Toast>
+      )}
     </PageContentContainer>
   );
 }
@@ -450,6 +464,26 @@ const ImportInviteIcon = ({ size = 22, title = 'Import & invite', ...props }) =>
     {title ? <title>{title}</title> : null}
     <path
       d="M16.8333 15V16.6667H6.83333V15C6.83333 15 6.83333 11.6667 11.8333 11.6667C16.8333 11.6667 16.8333 15 16.8333 15ZM14.3333 7.5C14.3333 7.00555 14.1867 6.5222 13.912 6.11108C13.6373 5.69995 13.2469 5.37952 12.79 5.1903C12.3332 5.00108 11.8306 4.95157 11.3456 5.04804C10.8607 5.1445 10.4152 5.3826 10.0656 5.73223C9.71593 6.08187 9.47783 6.52732 9.38137 7.01228C9.28491 7.49723 9.33441 7.99989 9.52363 8.45671C9.71285 8.91352 10.0333 9.30397 10.4444 9.57867C10.8555 9.85338 11.3389 10 11.8333 10C12.4964 10 13.1323 9.73661 13.6011 9.26777C14.0699 8.79893 14.3333 8.16304 14.3333 7.5ZM17 11.7167C17.4555 12.1369 17.8228 12.6437 18.0803 13.2074C18.3379 13.7712 18.4805 14.3805 18.5 15V16.6667H21V15C21 15 21 12.125 17 11.7167ZM16 5C15.7482 5.00002 15.498 5.03938 15.2583 5.11667C15.7459 5.81581 16.0073 6.64765 16.0073 7.5C16.0073 8.35235 15.7459 9.18419 15.2583 9.88333C15.498 9.96062 15.7482 9.99999 16 10C16.663 10 17.2989 9.73661 17.7678 9.26777C18.2366 8.79893 18.5 8.16304 18.5 7.5C18.5 6.83696 18.2366 6.20107 17.7678 5.73223C17.2989 5.26339 16.663 5 16 5ZM7.66667 9.16667H5.16667V6.66667H3.5V9.16667H1V10.8333H3.5V13.3333H5.16667V10.8333H7.66667V9.16667Z"
+      fill="currentColor"
+    />
+  </svg>
+);
+
+// Paste-list icon
+const PasteListIcon = ({ size = 22, title = 'Paste list', ...props }) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 22 22"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    role="img"
+    aria-hidden={title ? undefined : true}
+    {...props}
+  >
+    {title ? <title>{title}</title> : null}
+    <path
+      d="M18.8125 3C19.1922 3 19.5 3.3078 19.5 3.6875V18.8125C19.5 19.1922 19.1922 19.5 18.8125 19.5H3.6875C3.3078 19.5 3 19.1922 3 18.8125V3.6875C3 3.3078 3.3078 3 3.6875 3H18.8125ZM4.375 18.125H18.125V4.375H4.375V18.125ZM14 14V15.375H5.75V14H14ZM16.75 14V15.375H15.375V14H16.75ZM14 10.5625V11.9375H5.75V10.5625H14ZM16.75 10.5625V11.9375H15.375V10.5625H16.75ZM14 7.125V8.5H5.75V7.125H14ZM16.75 7.125V8.5H15.375V7.125H16.75Z"
       fill="currentColor"
     />
   </svg>
@@ -572,18 +606,6 @@ const PillIcon = styled.span`
 const SideDivider = styled.div`
   border-bottom: 1px solid ${DesignTokenColors.neutralUI200};
   margin: 16px 0;
-`;
-
-const EditProfileLink = styled.button`
-  background: none;
-  border: none;
-  color: ${DesignTokenColors.success700};
-  cursor: pointer;
-  display: inline-flex;
-  gap: 6px;
-  padding: 0;
-  text-align: left;
-  &:hover { text-decoration: underline; }
 `;
 
 const RightPanel = styled.section`
@@ -874,5 +896,20 @@ const PrimarySaveBtn = styled.button`
     background: ${({ disabled }) => (disabled ? DesignTokenColors.neutralUI200 : DesignTokenColors.primary800)};
     border-color: ${({ disabled }) => (disabled ? DesignTokenColors.neutralUI200 : DesignTokenColors.primary800)};
   }
+`;
+const Toast = styled.div`
+  position: fixed;
+  left: 50%;
+  top: 10%;
+  transform: translateX(-50%);
+  z-index: 10000;
+  background: ${DesignTokenColors.neutralUI900};
+  color: ${DesignTokenColors.whiteUI};
+  border-radius: 10px;
+  padding: 10px 14px;
+  box-shadow: 0 8px 24px rgba(16,24,40,0.18);
+  font-size: 14px;
+  text-align: center;
+  max-width: 90vw;
 `;
 
