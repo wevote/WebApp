@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Helmet } from 'react-helmet-async';
 import styled from 'styled-components';
+import TagManager from 'react-gtm-module';
 import FriendActions from '../../actions/FriendActions';
 import VoterActions from '../../actions/VoterActions';
 import apiCalming from '../../common/utils/apiCalming';
@@ -19,6 +20,7 @@ import NextStepButtons from '../../components/FriendIntro/NextStepButtons';
 import AppObservableStore from '../../common/stores/AppObservableStore';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
+import { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
 
 
 const WhatIsWeVote = React.lazy(() => import(/* webpackChunkName: 'WhatIsWeVote' */ '../../components/FriendIntro/WhatIsWeVote'));
@@ -27,6 +29,7 @@ class FriendIntroLanding extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      dataLayerFired: false,
       friendInvitationInformationCalled: false,
       friendInvitationInformationCalledCount: 0,
       showWhatIsWeVote: false,
@@ -59,6 +62,11 @@ class FriendIntroLanding extends Component {
       });
     }
     this.onVoterStoreChange();
+    this.fireGTMDataLayerWhenReady();
+  }
+
+  componentDidUpdate () {
+    this.fireGTMDataLayerWhenReady();
   }
 
   componentWillUnmount () {
@@ -208,6 +216,29 @@ class FriendIntroLanding extends Component {
     this.setState({
       showWhatIsWeVote: !showWhatIsWeVote,
     });
+  }
+
+  fireGTMDataLayerWhenReady () {
+    const { dataLayerFired } = this.state;
+    if (!dataLayerFired) {
+      if (VoterStore.voterFirstRetrieveCompleted()) {
+        const dataLayerObject = {
+          actionDetails: {
+            actionType: 'acceptFriendInvite',
+          },
+          event: 'landing',
+          pageDetails: getPageDetails(),
+          userDetails: VoterStore.getAnalyticsUserDetails(),
+          friendDetails: FriendStore.getFriendInvitationInformation(),
+        };
+
+        TagManager.dataLayer({ dataLayer: dataLayerObject });
+
+        this.setState({
+          dataLayerFired: true,
+        });
+      }
+    }
   }
 
   render () {
