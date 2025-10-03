@@ -446,6 +446,15 @@ export default {
       });
   },
 
+  voterUpdateVerifyOtherWaysSubmit (politicianWeVoteId = '', otherWaysToVerify = '', politicianPageUrl = '') {
+    Dispatcher.loadEndpoint('voterUpdate',
+      {
+        politician_we_vote_id: politicianWeVoteId,
+        other_ways_to_verify: otherWaysToVerify,
+        politician_page_url: politicianPageUrl,
+      });
+  },
+
   voterUpdateNotificationSettingsFlags (flagIntegerToSet, flagIntegerToUnset = '') {
     Dispatcher.loadEndpoint('voterUpdate',
       {
