@@ -20,6 +20,7 @@ import NextStepButtons from '../../components/FriendIntro/NextStepButtons';
 import AppObservableStore from '../../common/stores/AppObservableStore';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
+import { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
 
 
 const WhatIsWeVote = React.lazy(() => import(/* webpackChunkName: 'WhatIsWeVote' */ '../../components/FriendIntro/WhatIsWeVote'));
@@ -61,7 +62,7 @@ class FriendIntroLanding extends Component {
       });
     }
     this.onVoterStoreChange();
-    this.fireGTMDataLayerWhenReady
+    this.fireGTMDataLayerWhenReady();
   }
 
   componentDidUpdate () {
