@@ -10,11 +10,11 @@ import VoterStore from '../../stores/VoterStore';
 import VoterActions from '../../actions/VoterActions';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
-import AddressBox from '../AddressBox';
+import SettingsAddressBox from '../SettingsAddressBox';
 import BrowserPushMessage from '../Widgets/BrowserPushMessage';
 import AppObservableStore from '../../common/stores/AppObservableStore';
 
-export default class SettingsAddress extends Component {
+export default class SettingsAddressForDrawer extends Component {
   constructor (props, context) {
     super(props, context);
     this.state = {
@@ -69,7 +69,7 @@ export default class SettingsAddress extends Component {
   }
 
   render () {
-    renderLog('SettingsAddress');  // Set LOG_RENDER_EVENTS to log all renders
+    renderLog('SettingsAddressForDrawer');  // Set LOG_RENDER_EVENTS to log all renders
     const { addressSaved, originalTextAddress } = this.state;
     return (
       <div className="u-stack--md u-f4">
@@ -130,13 +130,14 @@ export default class SettingsAddress extends Component {
                         {this.state.textForMapSearch}
                         {' '}
                       </span>
-                      <span className="u-gray-mid">(based on your ip address)</span>
+                      <span className="u-gray-mid"><br/>(approximate location from your internet provider)</span>
                     </p>
                   </div>
-                  <AddressBox
+                  <SettingsAddressBox
                     introductionHtml={(
                       <h3 className="h4 row u-gray-darker">
-                        Address where you are registered to vote
+                        <strong>Ballot address</strong>
+                        <span className="u-gray-mid">&nbsp;(where you are registered to vote)</span>
                       </h3>
                     )}
                     saveUrl="/settings/address"

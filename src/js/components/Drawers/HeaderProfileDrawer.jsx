@@ -1,7 +1,7 @@
 import {
   AccountCircle, CampaignRounded,
   ContentCopy, ExitToAppRounded, ImportContactsOutlined, Lock,
-  Menu, SecurityRounded,
+  LocationOn, Menu, SecurityRounded,
 } from '@mui/icons-material';
 import React, { useCallback, useEffect, useState } from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
@@ -11,6 +11,7 @@ import DrawerTemplateHeaderProfile from './DrawerTemplateHeaderProfile';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 import webAppConfig from '../../config';
 import SettingsProfile from '../Settings/SettingsProfile';
+import SettingsAddress from '../Settings/SettingsAddress';
 import lookupPageNameAndPageTypeDict, { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
 import VoterStore from '../../stores/VoterStore';
 import VoterSessionActions from '../../actions/VoterSessionActions';
@@ -66,6 +67,7 @@ const HeaderProfileDrawer = () => {
 
   const profileNavOptions = [
     { icon: <AccountCircle $isActive={String(displayProfileOption) === 'nameAndPhoto'} />, linkName: 'nameAndPhoto', linkTextJsx: <LinkSpan $isActive={String(displayProfileOption) === 'nameAndPhoto'}>Name & Photo</LinkSpan> },
+    { icon: <AddressIcon $isActive={String(displayProfileOption) === 'address'} />, linkName: 'address', linkTextJsx: <LinkSpan $isActive={String(displayProfileOption) === 'address'}>Ballot Address</LinkSpan> },
     { icon: <SecurityIcon $isActive={String(displayProfileOption) === 'securityAndSignIn'} />, linkName: 'securityAndSignIn', linkTextJsx: <LinkSpan $isActive={String(displayProfileOption) === 'securityAndSignIn'}>Security &amp; Sign In</LinkSpan> },
     { icon: <PrivacyIcon $isActive={String(displayProfileOption) === 'yourData'} />, linkName: 'yourData', linkTextJsx: <LinkSpan $isActive={String(displayProfileOption) === 'yourData'}>Privacy &amp; Data</LinkSpan> },
     { icon: <NotificationsIcon $isActive={String(displayProfileOption) === 'notifications'} />, linkName: 'notifications', linkTextJsx: <LinkSpan $isActive={String(displayProfileOption) === 'notifications'}>Notifications</LinkSpan> },
@@ -80,6 +82,13 @@ const HeaderProfileDrawer = () => {
           <>
             {/* <ProfileComponentTitle>Name &amp; Photo</ProfileComponentTitle> */}
             <SettingsProfile externalUniqueId="headerProfileDrawer" />
+          </>
+        );
+        break;
+      case 'address':
+        component = (
+          <>
+            <SettingsAddress externalUniqueId="headerProfileDrawer" />
           </>
         );
         break;
@@ -153,6 +162,7 @@ const HeaderProfileDrawer = () => {
 
   const linkNameToPathMap = {
     nameAndPhoto: '/settings/profile',
+    address: '/settings/address',
     securityAndSignIn: '/settings/securityAndSignIn',
     yourData: '/settings/yourdata',
     notifications: '/settings/notifications',
@@ -426,6 +436,10 @@ const NavLinksContainer = styled('div')`
 // `;
 
 const ImportContactsIcon = styled(ImportContactsOutlined)`
+  color: ${(props) => (props.$isActive ? DesignTokenColors.primary600 : DesignTokenColors.neutralUI600)};
+`;
+
+const AddressIcon = styled(LocationOn)`
   color: ${(props) => (props.$isActive ? DesignTokenColors.primary600 : DesignTokenColors.neutralUI600)};
 `;
 
