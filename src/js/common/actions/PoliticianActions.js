@@ -73,12 +73,11 @@ export default {
       });
   },
 
-  politiciansQuery (electionDay = '', raceOfficeLevelList = '', stateCode = '', searchText = '') {
+  politiciansQuery (raceOfficeLevelList = '', stateCode = '', searchText = '') {
     Dispatcher.loadEndpoint('politiciansQuery',
       {
-        electionDay,
-        raceOfficeLevelList,
-        searchText,
+        race_office_level_list: raceOfficeLevelList,
+        search_text: searchText,
         state: stateCode,
         useWeVoteFormat: 1,
       });

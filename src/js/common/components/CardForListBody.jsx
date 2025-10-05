@@ -162,9 +162,11 @@ function CardForListBody (props) {
                   <Suspense fallback={<></>}>
                     {useOfficeHeld ? (
                       <FlexDivLeft>
-                        <SvgImageWrapper>
-                          <HowToVote classes={{ root: classes.howToVoteRoot }} />
-                        </SvgImageWrapper>
+                        {(districtName || officeName) && (
+                          <SvgImageWrapper>
+                            <HowToVote classes={{ root: classes.howToVoteRoot }} />
+                          </SvgImageWrapper>
+                        )}
                         <OfficeNameWrapper>
                           <OfficeHeldNameText
                             inCard
@@ -175,9 +177,11 @@ function CardForListBody (props) {
                       </FlexDivLeft>
                     ) : (
                       <FlexDivLeft>
-                        <SvgImageWrapper>
-                          <HowToVote classes={{ root: classes.howToVoteRoot }} />
-                        </SvgImageWrapper>
+                        {(districtName || officeName) && (
+                          <SvgImageWrapper>
+                            <HowToVote classes={{ root: classes.howToVoteRoot }} />
+                          </SvgImageWrapper>
+                        )}
                         <OfficeNameWrapper>
                           <OfficeNameText
                             districtName={districtName}
@@ -251,7 +255,7 @@ function CardForListBody (props) {
               */}
               {politicianDescription && (
                 <OneCampaignDescription
-                  className="u-cursor--pointer"
+                  className={`${!hideCardMargins && 'u-cursor--pointer '}`}
                   id={`${tagIdBaseName}Description`}
                   onClick={hideCardMargins ? null : () => historyPush(politicianBasePath)}
                 >
@@ -351,7 +355,7 @@ function CardForListBody (props) {
             )}
           </OneCampaignPhotoWrapperMobile>
           <OneCampaignPhotoDesktopColumn
-            className="u-cursor--pointer u-show-desktop-tablet"
+            className={`${!hideCardMargins && 'u-cursor--pointer '}u-show-desktop-tablet`}
             hideCardMargins={hideCardMargins}
             id={`${tagIdBaseName}PhotoDesktop`}
             limitCardWidth={limitCardWidth}

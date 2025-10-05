@@ -38,7 +38,6 @@ export const CampaignsNotAvailableToShow = styled('div')(({ theme }) => (`
 `));
 
 export const CampaignImageDesktopSharedStyles = css`
-  cursor: pointer;
   margin: 0;
 `;
 
