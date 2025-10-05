@@ -53,6 +53,10 @@ class SearchBar2024 extends Component {
   }
 
   componentWillUnmount () {
+    if (this.dataLayerTimer) {
+      clearTimeout(this.dataLayerTimer);
+      this.dataLayerTimer = null;
+    }
     if (this.timer) {
       clearTimeout(this.timer);
       this.timer = null;
@@ -60,8 +64,12 @@ class SearchBar2024 extends Component {
   }
 
   handleSearchBarKeyPress = (buttonId) => {
+    const { searchUpdateDelayTime } = this.props;
     if (this.timer) {
       clearTimeout(this.timer);
+    }
+    if (this.dataLayerTimer) {
+      clearTimeout(this.dataLayerTimer);
     }
     this.timer = setTimeout(() => {
       const { searchString } = this.state;
@@ -69,7 +77,14 @@ class SearchBar2024 extends Component {
         return;
       }
       this.props.searchFunction(searchString);
-      // if(this.props.trackSearch){
+    }, searchUpdateDelayTime);
+
+    // Before sending the dataLayer, wait 2 seconds after typing stops
+    this.dataLayerTimer = setTimeout(() => {
+      const { searchString } = this.state;
+      if (searchString.length === 0) {
+        return;
+      }
       const dataLayerObject = {
         actionDetails: {
           actionType: 'search',
@@ -82,9 +97,7 @@ class SearchBar2024 extends Component {
       };
       // console.log(dataLayerObject)
       TagManager.dataLayer({ dataLayer: dataLayerObject });
-    }, this.props.searchUpdateDelayTime);
-    const { searchString } = this.state;
-    this.props.searchFunction(searchString);
+    }, 2000);
   };
 
   clearQuery () {

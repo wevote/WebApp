@@ -439,8 +439,8 @@ class CandidateStore extends ReduceStore {
       case 'politicianRetrieve':
       case 'politicianRetrieveAsOwner':
         incomingCandidateCount = 0;
-        candidateList = action.res.candidate_list;
-        opponentCandidateList = action.res.opponent_candidate_list;
+        candidateList = action.res.candidate_list || [];
+        opponentCandidateList = action.res.opponent_candidate_list || [];
         politicianWeVoteId = action.res.politician_we_vote_id;
         // console.log('CandidateStore candidatesRetrieve contestOfficeWeVoteId:', contestOfficeWeVoteId, ', candidateList:', candidateList);
         if (!candidateListsByPoliticianWeVoteId) {
@@ -505,7 +505,7 @@ class CandidateStore extends ReduceStore {
 
       case 'representativesQuery':
         // incomingRepresentativeCount = 0;
-        // candidateList = action.res.candidates;
+        // candidateList = action.res.candidates || [];
         // // console.log('CandidateStore candidatesRetrieve contestOfficeWeVoteId:', contestOfficeWeVoteId, ', candidateList:', candidateList);
         // candidateList.forEach((one) => {
         //   // allCachedCandidates[one.we_vote_id] = one;
@@ -534,7 +534,7 @@ class CandidateStore extends ReduceStore {
           action.res.ballot_item_list.forEach((ballotItem) => {
             if (ballotItem.kind_of_ballot_item === 'OFFICE' && ballotItem.candidate_list) {
               contestOfficeWeVoteId = ballotItem.we_vote_id;
-              candidateList = ballotItem.candidate_list;
+              candidateList = ballotItem.candidate_list || [];
               incomingCandidateCount = 0;
               candidateList.forEach((one) => {
                 allCachedCandidates[one.we_vote_id] = one;
@@ -566,7 +566,7 @@ class CandidateStore extends ReduceStore {
         if (action.res.count === 0) return state;
 
         if (action.res.kind_of_ballot_item === 'CANDIDATE') {
-          newPositionList = action.res.position_list;
+          newPositionList = action.res.position_list || [];
           newPositionList.forEach((oneIncomingPosition) => {
             ballotItemWeVoteId = oneIncomingPosition.ballot_item_we_vote_id;
             organizationWeVoteId = oneIncomingPosition.speaker_we_vote_id;
@@ -588,7 +588,7 @@ class CandidateStore extends ReduceStore {
             allCachedPositionsAboutCandidates,
           };
         } else if (action.res.kind_of_ballot_item === 'OFFICE') {
-          officePositionList = action.res.position_list;
+          officePositionList = action.res.position_list || [];
 
           officePositionList.forEach((oneIncomingPosition) => {
             ballotItemWeVoteId = oneIncomingPosition.ballot_item_we_vote_id;
@@ -643,7 +643,7 @@ class CandidateStore extends ReduceStore {
         //  voterGuidesToFollowRetrieve does not include the position data
 
         // console.log('CandidateStore voterGuidesToFollowRetrieve');
-        voterGuides = action.res.voter_guides;
+        voterGuides = action.res.voter_guides || [];
         ballotItemWeVoteId = action.res.ballot_item_we_vote_id || '';
 
         if (isEmpty || searchTermExists) {
@@ -824,7 +824,7 @@ class CandidateStore extends ReduceStore {
         // This code harvests the support/oppose positions that are passed in along with voter guides
 
         // console.log('CandidateStore voterGuidesUpcomingRetrieve');
-        voterGuides = action.res.voter_guides;
+        voterGuides = action.res.voter_guides || [];
         ballotItemWeVoteId = action.res.ballot_item_we_vote_id || '';
 
         voterGuides.forEach((oneVoterGuide) => {

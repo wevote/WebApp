@@ -1056,6 +1056,8 @@ class PoliticianDetailsPage extends Component {
             </MobileHeaderOuterContainer>
             <Suspense fallback={<span>&nbsp;</span>}>
               <PoliticianCardForList
+                hideCardMargins
+                hideItemActionBar
                 politicianWeVoteId={politicianWeVoteIdForDisplay}
                 useCampaignSupportThermometer
                 useVerticalCard
@@ -1225,6 +1227,8 @@ class PoliticianDetailsPage extends Component {
               <ColumnOneThird>
                 <Suspense fallback={<span>&nbsp;</span>}>
                   <PoliticianCardForList
+                    hideCardMargins
+                    hideItemActionBar
                     politicianWeVoteId={politicianWeVoteIdForDisplay}
                     useCampaignSupportThermometer
                     useVerticalCard
