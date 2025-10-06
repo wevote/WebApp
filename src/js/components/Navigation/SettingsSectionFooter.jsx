@@ -133,7 +133,7 @@ class SettingsSectionFooter extends Component {
             WeVote does not support or oppose any political candidate or party.
           </DoesNotSupport>
         )}
-        { isCordova() && (isTablet() || isAndroidSizeWide()) && (
+        { isCordova() && (
           <DoesNotSupport centered={centered}>
             <DeviceInformationSpan onClick={() => this.deviceTableVisibilityOn()}>
               Device Information
