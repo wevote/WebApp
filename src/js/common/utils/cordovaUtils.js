@@ -700,11 +700,10 @@ export function setGlobalScreenSize (result) {
 // eslint-disable-next-line no-unused-vars
 export function focusTextFieldAndroid (clue) {
   // https://stackoverflow.com/questions/79783205/javascript-webview-on-android-need-to-be-able-to-detect-the-virtual-keyboard-be
-  // Changed android:windowSoftInputMode from adjustResize to adjustPan to allow Android to cover the window with the virtual keyboard
+  // 10/9/25:  Changed android:windowSoftInputMode from adjustResize to adjustPan to allow Android to cover the window with the virtual keyboard
   // instead of reducing the size of the DOM area when the virtual menu appears and the navigation bar down arrow
   // (remove virtual keyboard) button is pressed
-
-  // 10/9/25 so this prepareForCordovaKeyboard() is not needed anymore;
+  // so this prepareForCordovaKeyboard() is not needed anymore;
 
   // if (isAndroid()) {
   //   prepareForCordovaKeyboard(clue);
