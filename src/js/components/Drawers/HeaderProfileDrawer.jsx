@@ -409,7 +409,7 @@ const NavLinkContainer = styled('div')`
   }
 `;
 
-// Please do not copy styles -- centralize them somewhere, so that same named styles don't diverge,
+// Please do not copy styles -- centralize them somewhere, so that same-named styles don't diverge,
 // and so that we don't have to maintain them twice
 // const NavLinksContainer = styled('div')`
 //   display: flex;
