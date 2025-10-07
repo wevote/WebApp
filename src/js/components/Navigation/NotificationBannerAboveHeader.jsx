@@ -1,5 +1,5 @@
 import { Edit } from '@mui/icons-material';
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import TagManager from 'react-gtm-module';
 import styled from 'styled-components';
 import lookupPageNameAndPageTypeDict, { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
@@ -7,50 +7,78 @@ import VoterStore from '../../stores/VoterStore';
 import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 import useVoterCanEditPolitician from '../../hooks/useVoterCanEditPolitician';
+import PoliticianStore from '../../common/stores/PoliticianStore';
 
 // React functional component example
 export default function NotificationBannerAboveHeader () {
   const voterCanEditPoliticianProfile = useVoterCanEditPolitician();
+  const [politicianWeVoteId, setPoliticianWeVoteId] = useState(AppObservableStore.getPoliticianWeVoteIdBeingViewed());
 
-  const closeEditBar = () => {
+  const onAppObservableStoreChange = useCallback(() => {
+    if (AppObservableStore.getPoliticianWeVoteIdBeingViewed()) {
+      setPoliticianWeVoteId(AppObservableStore.getPoliticianWeVoteIdBeingViewed());
+      // console.log('PoliticianSelfEditDrawer onAppObservableStoreChange politicianWeVoteId:', AppObservableStore.getPoliticianWeVoteIdBeingViewed());
+    }
+  }, [setPoliticianWeVoteId]);
+
+  const closeEditBar = (buttonId) => {
     AppObservableStore.setShowNotificationBannerAboveHeader(false);
-  };
-
-  function pushDataLayer (linkTo, buttonId = '') {
-    const destinationPage = lookupPageNameAndPageTypeDict(linkTo);
-
     const dataLayerObject = {
       actionDetails: {
-        actionType: 'navigate',
+        actionType: 'closeModal',
         buttonId,
       },
       event: 'action',
       pageDetails: getPageDetails(),
-      destinationDetails: {
-        destinationPageName: destinationPage.pageName || 'notSet',
-        destinationPageType: destinationPage.pageType || 'notSet',
-        destinationPathname: linkTo,
-      },
       userDetails: VoterStore.getAnalyticsUserDetails(),
     };
+    if (politicianWeVoteId) {
+      dataLayerObject.politicianDetails = PoliticianStore.getAnalyticsPoliticianDetails(politicianWeVoteId);
+    }
+    TagManager.dataLayer({ dataLayer: dataLayerObject });
+  };
+
+  function sendGTMDataLayer (actionType = 'openModal', buttonId = '', destinationPageName = '') {
+    const { location: { pathname: currentPathname } } = window;
+    const destinationPage = lookupPageNameAndPageTypeDict(currentPathname);
+    const dataLayerObject = {
+      actionDetails: {
+        actionType,
+        buttonId,
+      },
+      event: 'action',
+      pageDetails: getPageDetails(),
+      userDetails: VoterStore.getAnalyticsUserDetails(),
+      destinationDetails: {
+        destinationPageName: destinationPageName || 'notSet',
+        destinationPageType: destinationPage.pageType || 'notSet',
+        destinationPathname: currentPathname,
+      },
+    };
+    if (politicianWeVoteId) {
+      dataLayerObject.politicianDetails = PoliticianStore.getAnalyticsPoliticianDetails(politicianWeVoteId);
+    }
     TagManager.dataLayer({ dataLayer: dataLayerObject });
   }
 
-  const handleEditProfile = () => {
-    AppObservableStore.setDrawerOpen('politicianSelfEditDrawerOpen', true);
+  const handleOpenClaimProfileModal = (buttonId) => {
+    AppObservableStore.setShowClaimProfileWithEmailModal(true);
+    sendGTMDataLayer('openModal', buttonId, 'ClaimProfileWithEmailModal');
   };
 
-  const onAppObservableStoreChange = () => {
-    //
+  const handleOpenEditProfileDrawer = (buttonId) => {
+    AppObservableStore.setDrawerOpen('politicianSelfEditDrawerOpen', true);
+    sendGTMDataLayer('openModal', buttonId, 'PoliticianSelfEditDrawer');
   };
 
   useEffect(() => {
-    const appStateSubscription = messageService.getMessage().subscribe(() => onAppObservableStoreChange());
+    const appStateSubscription = messageService.getMessage().subscribe(onAppObservableStoreChange);
     onAppObservableStoreChange();
     return () => {
+      setPoliticianWeVoteId('');
       appStateSubscription.unsubscribe();
     };
-  }, []);
+  }, [onAppObservableStoreChange]);
 
   return (
     <NotificationBannerAboveHeaderContainer>
@@ -63,7 +91,7 @@ export default function NotificationBannerAboveHeader () {
             Tips for strong profiles
           </TipsLink>
           */}
-          <EditButton onClick={handleEditProfile}>
+          <EditButton id="editThisProfileNotificationBanner" onClick={() => handleOpenEditProfileDrawer('editThisProfileNotificationBanner')}>
             <EditStyled />
             {' '}
             <BannerIntroTextMobile className="u-show-mobile">Edit</BannerIntroTextMobile>
@@ -74,14 +102,18 @@ export default function NotificationBannerAboveHeader () {
         <BannerText>
           <BannerIntroTextMobile className="u-show-mobile">Claim and edit.</BannerIntroTextMobile>
           <BannerIntroTextDesktop className="u-show-desktop-tablet">Claim this candidate’s profile and make edits.</BannerIntroTextDesktop>
-          <EditButton onClick={() => AppObservableStore.setShowClaimProfileWithEmailModal(true)}>
+          <EditButton id="claimThisProfileNotificationBanner" onClick={() => handleOpenClaimProfileModal('claimThisProfileNotificationBanner')}>
             <EditStyled />
             {' '}
             Claim this profile
           </EditButton>
         </BannerText>
       )}
-      <CloseButton onClick={closeEditBar}>✕</CloseButton>
+      {voterCanEditPoliticianProfile ? (
+        <CloseButton id="closePoliticianSelfEditBanner" onClick={() => closeEditBar('closePoliticianSelfEditBanner')}>✕</CloseButton>
+      ) : (
+        <CloseButton id="closePoliticianClaimProfileBanner" onClick={() => closeEditBar('closePoliticianClaimProfileBanner')}>✕</CloseButton>
+      )}
     </NotificationBannerAboveHeaderContainer>
   );
 }
@@ -155,12 +187,12 @@ const EditStyled = styled(Edit)`
   width: 16px;
 `;
 
-const TipsLink = styled.a`
-  color: #b0d9ff;
-  margin-left: 6px;
-  text-decoration: underline;
-
-  &:hover {
-    text-decoration: none;
-  }
-`;
+// const TipsLink = styled.a`
+//   color: #b0d9ff;
+//   margin-left: 6px;
+//   text-decoration: underline;
+//
+//   &:hover {
+//     text-decoration: none;
+//   }
+// `;

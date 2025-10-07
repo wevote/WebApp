@@ -24,6 +24,7 @@ import webAppConfig from './js/config';
 import VoterStore from './js/stores/VoterStore';
 import initializeFacebookSDK from './js/utils/initializeFacebookSDK';
 import RouterV5SendMatch from './js/utils/RouterV5SendMatch';
+import Cookies from './js/common/utils/js-cookie/Cookies';
 // importRemoveCordovaListenersToken1  -- Do not remove this line!
 
 // Root URL pages
@@ -362,12 +363,18 @@ class App extends Component {
 
   acceptURLVariables () {
     const { location: { search: queryString } } = this.props;
-    const { showEditPoliticianNoticeSet  } = this.state;
+    const { fromAdSet, showEditPoliticianNoticeSet  } = this.state;
     const query = new URLSearchParams(queryString);
+    const fromAd = query.get('ad');
     const showEditPoliticianNotice = query.get('show_edit_politician_notice');
+    if (fromAd === '1' && !fromAdSet) {
+      this.setState({ fromAdSet: true });
+      Cookies.set('ad_url_variable_used', '1', { expires: 15, path: '/' });
+    }
     if (showEditPoliticianNotice === '1' && !showEditPoliticianNoticeSet) {
       this.setState({ showEditPoliticianNoticeSet: true });
       AppObservableStore.setShowNotificationBannerAboveHeader(true);
+      Cookies.set('politician_url_variable_used', '1', { expires: 15, path: '/' });
     }
   }
 

@@ -128,6 +128,13 @@ export default {
     Dispatcher.loadEndpoint('twitterRetrieveIdsIFollow', {});
   },
 
+  verifyPoliticianPasskey (passkey, politicianWeVoteId) {
+    Dispatcher.loadEndpoint('voterUpdate', {
+      passkey,
+      politician_we_vote_id: politicianWeVoteId,
+    });
+  },
+
   voterAccountDelete (deleteVoterAccount = false) {
     Dispatcher.loadEndpoint('voterUpdate', {
       delete_voter_account: deleteVoterAccount,

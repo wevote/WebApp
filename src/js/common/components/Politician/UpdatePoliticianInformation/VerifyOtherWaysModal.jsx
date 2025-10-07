@@ -1,11 +1,15 @@
 import PropTypes from 'prop-types';
-import React, {useState} from 'react';
+import React, { useState } from 'react';
+import TagManager from 'react-gtm-module';
 import styled from 'styled-components';
 import DesignTokenColors from '../../Style/DesignTokenColors';
 import ModalDisplayTemplateA from '../../../../components/Widgets/ModalDisplayTemplateA';
 import { StepTitle } from '../../../../components/Style/ReadyIntroductionStyles';
 import AppObservableStore from '../../../stores/AppObservableStore';
-import VoterActions from "../../../../actions/VoterActions";
+import VoterActions from '../../../../actions/VoterActions';
+import { getPageDetails } from '../../../../utils/lookupPageNameAndPageTypeDict';
+import VoterStore from '../../../../stores/VoterStore';
+import PoliticianStore from '../../../stores/PoliticianStore';
 
 const VerifyOtherWaysModal = ({ politicianName, politicianWeVoteId }) => {
   const [relationshipOption, setRelationshipOption] = useState(null);
@@ -18,9 +22,26 @@ const VerifyOtherWaysModal = ({ politicianName, politicianWeVoteId }) => {
   const [verifyFormSavedStatus, setVerifyFormSavedStatus] = useState('');
   const [formSubmitted, setFormSubmitted] = useState(false);
 
-  const handleCloseVerifyOtherWaysModal = () => {
+  function sendGTMDataLayer (actionType = '', buttonId = '') {
+    const dataLayerObject = {
+      actionDetails: {
+        actionType,
+        buttonId,
+      },
+      event: 'action',
+      pageDetails: getPageDetails(),
+      userDetails: VoterStore.getAnalyticsUserDetails(),
+    };
+    if (politicianWeVoteId) {
+      dataLayerObject.politicianDetails = PoliticianStore.getAnalyticsPoliticianDetails(politicianWeVoteId);
+    }
+    TagManager.dataLayer({ dataLayer: dataLayerObject });
+  }
+
+  const handleCloseVerifyOtherWaysModal = (buttonId) => {
     AppObservableStore.setShowClaimProfileWithOtherWaysModal(false);
     setFormSubmitted(false);
+    sendGTMDataLayer('closeModal', buttonId);
   };
 
   const handleRelationshipOption = (option) => {
@@ -59,7 +80,7 @@ const VerifyOtherWaysModal = ({ politicianName, politicianWeVoteId }) => {
   };
 
   // handle submit button click
-  const handleVerifyOtherWaysSubmit = () => {
+  const handleVerifyOtherWaysSubmit = (buttonId) => {
     const otherWaysToVerify = buildVerifyOtherWays(relationshipOption, otherOptionText, campaignEmail, emailNotVisibleCheckbox, webAddressContact, socialAddressContact, additionalInfo);
     const currentUrl = window.location.href;
 
@@ -74,6 +95,8 @@ const VerifyOtherWaysModal = ({ politicianName, politicianWeVoteId }) => {
     setTimeout(() => {
       setVerifyFormSavedStatus('');
     }, 4000);
+
+    sendGTMDataLayer('save', buttonId);
   };
 
   const relationshipOptions = ["I'm the candidate", 'Staff member', 'Volunteer', 'Other'];
@@ -81,7 +104,7 @@ const VerifyOtherWaysModal = ({ politicianName, politicianWeVoteId }) => {
   const dialogTitleJsx = (
     <VerifyOtherWaysModalHeader>
       {formSubmitted ? `Verification form submitted` :
-        `Verify that you are authorized to edit ${politicianName}'s profile`}
+        `Verify you're authorized to edit ${politicianName}'s profile`}
     </VerifyOtherWaysModalHeader>
   );
 
@@ -224,14 +247,16 @@ const VerifyOtherWaysModal = ({ politicianName, politicianWeVoteId }) => {
       />
       <VerifyButtonsContainer>
         <CancelButton
+          id="cancelVerifyOtherWaysModal"
+          onClick={() => handleCloseVerifyOtherWaysModal('cancelVerifyOtherWaysModal')}
           type="button"
-          onClick={handleCloseVerifyOtherWaysModal}
         >
           Cancel
         </CancelButton>
         <SubmitButton
+          id="submitVerifyOtherWaysModal"
+          onClick={() => handleVerifyOtherWaysSubmit('submitVerifyOtherWaysModal')}
           type="button"
-          onClick={handleVerifyOtherWaysSubmit}
         >
           Submit
         </SubmitButton>
@@ -245,7 +270,7 @@ const VerifyOtherWaysModal = ({ politicianName, politicianWeVoteId }) => {
   return (
     <ModalDisplayTemplateA
       dialogTitleJSX={dialogTitleJsx}
-      toggleModal={handleCloseVerifyOtherWaysModal}
+      toggleModal={() => handleCloseVerifyOtherWaysModal('cancelVerifyOtherWaysModal')}
       show={AppObservableStore.getShowClaimProfileWithOtherWaysModal()}
       textFieldJSX={formSubmitted ?
         (
@@ -261,6 +286,7 @@ const VerifyOtherWaysModal = ({ politicianName, politicianWeVoteId }) => {
 
 VerifyOtherWaysModal.propTypes = {
   politicianName: PropTypes.string,
+  politicianWeVoteId: PropTypes.string,
 };
 
 const VerifyOtherWaysModalHeader = styled('h1')`
