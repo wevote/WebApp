@@ -12,7 +12,7 @@ import VoterSessionActions from './js/actions/VoterSessionActions';
 import muiTheme from './js/common/components/Style/muiTheme';
 import LoadingWheelComp from './js/common/components/Widgets/LoadingWheelComp';
 import AppObservableStore, { messageService } from './js/common/stores/AppObservableStore';
-import { getAndroidSize, getIOSSizeString, hasDynamicIsland, isIOS } from './js/common/utils/cordovaUtils';
+import { hasDynamicIsland, hasIPhoneNotch } from './js/common/utils/cordovaUtils';
 import historyPush from './js/common/utils/historyPush';
 import { isWeVoteMarketingSite, normalizedHref } from './js/common/utils/hrefUtils';
 import initializejQuery from './js/common/utils/initializejQuery';
@@ -219,9 +219,8 @@ class App extends Component {
     }
 
     if (isCordova()) {
-      const size = isIOS() ?  getIOSSizeString() : getAndroidSize();
-      console.log('Cordova:   device model', window.device.model, '  size: ', size);
-      console.log('Cordova:   Header, hasDynamicIsland', hasDynamicIsland());
+      console.log(`Cordova:   window.device ${JSON.stringify(window.device)}`);
+      console.log(`Cordova:   Header, hasDynamicIsland ${hasDynamicIsland()}, hasIPhoneNotch (or AndroidNotch) ${hasIPhoneNotch()}`);
     }
 
     this.acceptURLVariables();
