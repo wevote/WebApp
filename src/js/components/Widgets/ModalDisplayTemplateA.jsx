@@ -25,11 +25,7 @@ class ModalDisplayTemplateA extends Component {
     let dialogPaperCombined;
     if (tallMode) {
       dialogPaperCombined = `${classes.dialogPaper} ${classes.dialogPaperAdditionTall}`;
-    }
-    // if (tallMode) {
-    //   dialogPaperCombined = { ...classes.dialogPaper, ...classes.dialogPaperAdditionTall };
-    // }
-    else {
+    } else {
       dialogPaperCombined = classes.dialogPaper;
     }
     // This template is used by other components like ActivityPostModal, and PositionStatementModal
@@ -165,8 +161,6 @@ const DialogTitleInnerWrapper = styled('div')`
   align-items: flex-start;
   min-height: 28px;
 `;
-
-export const horizontalEllipsis = '\u2026';
 
 export const PostSaveButton = styled('div')`
   width: 100%;

@@ -88,7 +88,20 @@ class VoterStore extends ReduceStore {
   }
 
   getAnalyticsUserCohort () {
-    return 'organic'; // TODO: Add more options
+    const { voter } = this.getState();
+    const visitedSiteWithPoliticianCookie = Cookies.get('politician_url_variable_used');
+    if (voter && voter.we_vote_id) {
+      if (voter.linked_politician_we_vote_id || visitedSiteWithPoliticianCookie) {
+        return 'politician';
+      } else if (this.getVoterIsWeVoteStaff()) {
+        return 'weVoteStaff';
+      }
+    }
+    const visitedSiteWithAdCookie = Cookies.get('ad_url_variable_used');
+    if (visitedSiteWithAdCookie) {
+      return 'googleAd';
+    }
+    return 'organic';
   }
 
   getAnalyticsUserDetails () {
@@ -358,6 +371,19 @@ class VoterStore extends ReduceStore {
 
   getVoterIsSignedInWithTwitter () {
     return this.getState().voter.signed_in_twitter || false;
+  }
+
+  getVoterIsWeVoteStaff () {
+    const { voter } = this.getState();
+    if (voter && voter.we_vote_id) {
+      if (voter.is_admin === true ||
+          voter.is_analytics_admin === true ||
+          voter.is_political_data_manager === true ||
+          voter.is_verified_volunteer === true) {
+        return true;
+      }
+    }
+    return false;
   }
 
   getVoterLastNameQueuedToSave () {
