@@ -3,22 +3,23 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import TagManager from 'react-gtm-module';
 import { ReactSVG } from 'react-svg';
 import styled from 'styled-components';
-import DrawerTemplateHeaderProfile from './DrawerTemplateHeaderProfile';
-import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
-import lookupPageNameAndPageTypeDict, { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
-import PoliticianStore from '../../common/stores/PoliticianStore';
-import VoterStore from '../../stores/VoterStore';
-import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
-import SettingsLinks from '../PoliticianSelfEdit/SettingsLinks';
-import SettingsNameAndPhoto from '../PoliticianSelfEdit/SettingsNameAndPhoto';
-import SettingsNotifications from '../Settings/SettingsNotifications';
-import SettingsOfficialStatement from '../PoliticianSelfEdit/SettingsOfficialStatement';
-import SettingsSectionFooter from '../Navigation/SettingsSectionFooter';
-import webAppConfig from '../../config';
-import historyPush from '../../common/utils/historyPush';
 import manageCandidates from '../../../img/global/svg-icons/manage-candidates.svg';
 import viewCandidate from '../../../img/global/svg-icons/view-candidate.svg';
+import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
+import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
+import PoliticianStore from '../../common/stores/PoliticianStore';
+import historyPush from '../../common/utils/historyPush';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
+import webAppConfig from '../../config';
+import VoterStore from '../../stores/VoterStore';
+import lookupPageNameAndPageTypeDict, { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
+import SettingsSectionFooter from '../Navigation/SettingsSectionFooter';
+import SettingsLinks from '../PoliticianSelfEdit/SettingsLinks';
+import SettingsNameAndPhoto from '../PoliticianSelfEdit/SettingsNameAndPhoto';
+import SettingsOfficialStatement from '../PoliticianSelfEdit/SettingsOfficialStatement';
+import SettingsNotifications from '../Settings/SettingsNotifications';
+import { NavLinksContainer } from '../Style/drawerLayoutStyles';
+import DrawerTemplateHeaderProfile from './DrawerTemplateHeaderProfile';
 
 const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
@@ -454,12 +455,14 @@ const NavLinkContainer = styled('div')`
   }
 `;
 
-const NavLinksContainer = styled('div')`
-  display: flex;
-  flex-direction: column;
-  margin-left: -16px;
-  position: fixed;
-`;
+// Please do not copy styles -- centralize them somewhere, so that same-named styles don't diverge,
+// and so that we don't have to maintain them twice
+// const NavLinksContainer = styled('div')`
+//   display: flex;
+//   flex-direction: column;
+//   margin-left: -16px;
+//   position: fixed;
+// `;
 
 const SettingsSectionFooterWrapper = styled('div')`
   margin-top: 35px;

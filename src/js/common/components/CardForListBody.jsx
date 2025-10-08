@@ -313,7 +313,7 @@ function CardForListBody (props) {
             )}
           </OneCampaignTextColumn>
           <OneCampaignPhotoWrapperMobile
-            className={`${hideCardMargins ? '' : 'u-cursor--pointer'} u-show-mobile`}
+            className={`${hideCardMargins ? 'u-show-mobile' : 'u-cursor--pointer u-show-mobile'}`}
             id={`${tagIdBaseName}PhotoMobile`}
             onClick={hideCardMargins ? null : () => historyPush(politicianBasePath)}
           >
@@ -355,7 +355,7 @@ function CardForListBody (props) {
             )}
           </OneCampaignPhotoWrapperMobile>
           <OneCampaignPhotoDesktopColumn
-            className={`${!hideCardMargins && 'u-cursor--pointer '}u-show-desktop-tablet`}
+            className={`${!hideCardMargins && 'u-cursor--pointer '} u-show-desktop-tablet`}
             hideCardMargins={hideCardMargins}
             id={`${tagIdBaseName}PhotoDesktop`}
             limitCardWidth={limitCardWidth}
