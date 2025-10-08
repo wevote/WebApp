@@ -1,7 +1,7 @@
 import { $, $$, expect, driver, browser } from '@wdio/globals';
-import Page from './page';
+import PageBrowser from './page.browser';
 
-class ReadyPage extends Page {
+class ReadyPage extends PageBrowser {
  constructor () {
    super().title = 'Ready to Vote? - WeVote';
  }
@@ -388,7 +388,7 @@ async waitAboutLinkAndClick() {
  get unfollowAlertMsg(){
    return $('//div[@class="sc-dtInlm dBSTL MuiAlert-message"]');
  }
- 
+
  get weVoteHelpsYouMenuItem1()
  {
    return $('#weVoteHelpsYouMenuItem1');

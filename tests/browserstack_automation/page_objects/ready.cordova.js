@@ -1,8 +1,8 @@
 import { $, $$, expect, driver, browser } from '@wdio/globals';
-import Page from './page';
+import PageBrowser from './page.browser';
 
 
-class ReadyCordova extends Page {
+class ReadyCordova extends PageBrowser {
     constructor() {
         super().title = 'Ready to Vote? - WeVote';
     }

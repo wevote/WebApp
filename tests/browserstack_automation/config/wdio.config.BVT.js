@@ -29,12 +29,12 @@ export const config = {
     ],
   ],
   specs: [
-    '../specs/FAQPage.js',
-    '../specs/FooterLinks.js',
-    '../specs/TopNavigation.js',
-    '../specs/CandidatesPage.js',
-    '../specs/ReadyPage.js',
-    '../specs/SignInPage.js',
+    '../specs/FAQPage.browser.js',
+    '../specs/FooterLinks.browser.js',
+    '../specs/TopNavigation.browser.js',
+    '../specs/CandidatesPage.browser.js',
+    '../specs/ReadyPage.browser.js',
+    '../specs/SignInPage.browser.js',
   ],
 
   capabilities,

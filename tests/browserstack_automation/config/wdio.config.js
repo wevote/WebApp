@@ -11,23 +11,36 @@ const cordovaSpecs = [
 
 ];
 const mobileBrowserSpecs = [
-  '../specs/ReadyPage.browser.js'
+  '../specs/DiscussPage.browser.js',
+    '../specs/FAQPage.browser.js',
+    '../specs/PrivacyPage.browser.js',
+    '../specs/ReadyPage.browser.js',
+    '../specs/TermsPage.browser.js',
+    '../specs/TopNavigation.browser.js',
+    '../specs/TopicsPage.browser.js',
+    '../specs/HowItWorks.browser.js',
+    '../specs/FooterLinks.browser.js',
+    '../specs/SignInPage.browser.js',
+    '../specs/BallotPage.browser.js',
+    '../specs/CandidatesPage.browser.js',
+    '../specs/VerifyCount.browser.js',
+    '../specs/WhosRunningForOffice.browser.js',
 ];
 const desktopBrowserSpecs = [
-    '../specs/DiscussPage.js',
-    '../specs/FAQPage.js',
-    '../specs/PrivacyPage.js',
+    '../specs/DiscussPage.browser.js',
+    '../specs/FAQPage.browser.js',
+    '../specs/PrivacyPage.browser.js',
     '../specs/ReadyPage.browser.js',
-    '../specs/TermsPage.js',
-    '../specs/TopNavigation.js',
-    '../specs/TopicsPage.js',
-    '../specs/HowItWorks.js',
-    '../specs/FooterLinks.js',
-    '../specs/SignInPage.js',
-    '../specs/BallotPage.js',
-    '../specs/CandidatesPage.js',
-    '../specs/VerifyCount.js',
-    '../specs/WhosRunningForOffice.js',
+    '../specs/TermsPage.browser.js',
+    '../specs/TopNavigation.browser.js',
+    '../specs/TopicsPage.browser.js',
+    '../specs/HowItWorks.browser.js',
+    '../specs/FooterLinks.browser.js',
+    '../specs/SignInPage.browser.js',
+    '../specs/BallotPage.browser.js',
+    '../specs/CandidatesPage.browser.js',
+    '../specs/VerifyCount.browser.js',
+    '../specs/WhosRunningForOffice.browser.js',
 
 ];
 
