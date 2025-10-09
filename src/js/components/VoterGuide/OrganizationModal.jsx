@@ -434,6 +434,8 @@ class OrganizationModal extends Component {
           <PoliticianCardForListWrapper>
             <Suspense fallback={<span>&nbsp;</span>}>
               <PoliticianCardForList
+                hideCardMargins
+                hideItemActionBar
                 politicianWeVoteId={politicianWeVoteId}
                 showPoliticianOpenInNewWindow
                 useCampaignSupportThermometer

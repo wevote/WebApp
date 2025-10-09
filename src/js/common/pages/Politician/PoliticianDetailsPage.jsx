@@ -808,7 +808,9 @@ class PoliticianDetailsPage extends Component {
 
     const politicianLinksContainer = (politicianLinksList) ? (
       <PoliticianLinksWrapper>
-        <SectionTitleSimple>More candidate information</SectionTitleSimple>
+        {(politicianLinksList && politicianLinksList.length > 0) && (
+          <SectionTitleSimple>More candidate information</SectionTitleSimple>
+        )}
         <Suspense fallback={<span>&nbsp;</span>}>
           <PoliticianLinks links={politicianLinksList} />
         </Suspense>
@@ -1056,6 +1058,8 @@ class PoliticianDetailsPage extends Component {
             </MobileHeaderOuterContainer>
             <Suspense fallback={<span>&nbsp;</span>}>
               <PoliticianCardForList
+                hideCardMargins
+                hideItemActionBar
                 politicianWeVoteId={politicianWeVoteIdForDisplay}
                 useCampaignSupportThermometer
                 useVerticalCard
@@ -1225,6 +1229,8 @@ class PoliticianDetailsPage extends Component {
               <ColumnOneThird>
                 <Suspense fallback={<span>&nbsp;</span>}>
                   <PoliticianCardForList
+                    hideCardMargins
+                    hideItemActionBar
                     politicianWeVoteId={politicianWeVoteIdForDisplay}
                     useCampaignSupportThermometer
                     useVerticalCard

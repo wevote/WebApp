@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import TagManager from 'react-gtm-module';
 import styled from 'styled-components';
 import DesignTokenColors from '../../Style/DesignTokenColors';
 import ModalDisplayTemplateA from '../../../../components/Widgets/ModalDisplayTemplateA';
@@ -11,6 +12,7 @@ import CampaignStore from '../../../stores/CampaignStore';
 import VoterActions from '../../../../actions/VoterActions';
 import VoterStore from '../../../../stores/VoterStore';
 import SettingsVerifySecretCode from '../../Settings/SettingsVerifySecretCode';
+import lookupPageNameAndPageTypeDict, { getPageDetails } from '../../../../utils/lookupPageNameAndPageTypeDict';
 
 const VerifyWithEmailModal = ({ politicianName, politicianWeVoteId }) => {
   const campaignXWeVoteIdRef = useRef('');
@@ -22,8 +24,34 @@ const VerifyWithEmailModal = ({ politicianName, politicianWeVoteId }) => {
   const [showVerifyModal, setShowVerifyModal] = useState(false);
   const [verificationEmails, setVerificationEmails] = useState([]);
 
-  const handleCloseVerifyWithEmailModal = () => {
+  function sendGTMDataLayer (actionType = 'openModal', buttonId = '', destinationPageName = '') {
+    const { location: { pathname: currentPathname } } = window;
+    const destinationPage = lookupPageNameAndPageTypeDict(currentPathname);
+    const dataLayerObject = {
+      actionDetails: {
+        actionType,
+        buttonId,
+      },
+      event: 'action',
+      pageDetails: getPageDetails(),
+      userDetails: VoterStore.getAnalyticsUserDetails(),
+    };
+    if (destinationPageName) {
+      dataLayerObject.destinationDetails = {
+        destinationPageName: destinationPageName || 'notSet',
+        destinationPageType: destinationPage.pageType || 'notSet',
+        destinationPathname: currentPathname,
+      };
+    }
+    if (politicianWeVoteId) {
+      dataLayerObject.politicianDetails = PoliticianStore.getAnalyticsPoliticianDetails(politicianWeVoteId);
+    }
+    TagManager.dataLayer({ dataLayer: dataLayerObject });
+  }
+
+  const handleCloseVerifyWithEmailModal = (buttonId) => {
     AppObservableStore.setShowClaimProfileWithEmailModal(false);
+    sendGTMDataLayer('closeModal', buttonId);
   };
 
   const handleEmailOptionClick = (value, displayEmail) => {
@@ -35,9 +63,10 @@ const VerifyWithEmailModal = ({ politicianName, politicianWeVoteId }) => {
     setPasskey(e.target.value);
   };
 
-  const handleOpenVerifyOtherWaysModal = () => {
+  const handleOpenVerifyOtherWaysModal = (buttonId) => {
     AppObservableStore.setShowClaimProfileWithEmailModal(false);
     AppObservableStore.setShowClaimProfileWithOtherWaysModal(true);
+    sendGTMDataLayer('openModal', buttonId, 'VerifyOtherWaysModal');
   };
 
   const extractEmailsForVerification = () => {
@@ -94,7 +123,7 @@ const VerifyWithEmailModal = ({ politicianName, politicianWeVoteId }) => {
     //
   };
 
-  const submitEmailForVerification = () => {
+  const submitEmailForVerification = (buttonId) => {
     // if setShowVerifyModal is an email address, send it
     if (emailOptionSelectedValue.includes('@')) { // Is valid email address
       VoterActions.sendSignInCodeEmail(emailOptionSelectedValue);
@@ -103,6 +132,12 @@ const VerifyWithEmailModal = ({ politicianName, politicianWeVoteId }) => {
     }
     // verificationKey is an emailWeVoteId, make different call
     setShowVerifyModal(true);
+    sendGTMDataLayer('navigate', buttonId, 'SettingsVerifySecretCode');
+  };
+
+  const submitPasskeyForVerification = (buttonId) => {
+    VoterActions.verifyPoliticianPasskey(passkey, politicianWeVoteId);
+    sendGTMDataLayer('save', buttonId, 'PasskeyVerification');
   };
 
   const closeSignInModalLocal = () => {
@@ -218,7 +253,8 @@ const VerifyWithEmailModal = ({ politicianName, politicianWeVoteId }) => {
           })}
           <VerificationButton
             disabled={emailOptionSelectedValue === null}
-            onClick={submitEmailForVerification}
+            id="sendVerificationCode"
+            onClick={() => submitEmailForVerification('sendVerificationCode')}
           >
             Send verification code
           </VerificationButton>
@@ -234,9 +270,16 @@ const VerifyWithEmailModal = ({ politicianName, politicianWeVoteId }) => {
         value={passkey}
         onChange={handlePasskeyChange}
       />
+      <VerificationButton
+        disabled={!passkey}
+        id="submitPasskey"
+        onClick={() => submitPasskeyForVerification('submitPasskey')}
+      >
+        Verify with passkey
+      </VerificationButton>
       <SectionDivider />
       <OtherWaysVerifyButtonFull
-        onClick={handleOpenVerifyOtherWaysModal}
+        onClick={() => handleOpenVerifyOtherWaysModal('openVerifyOtherWaysModal')}
       >
         See other ways to verify
       </OtherWaysVerifyButtonFull>
@@ -259,7 +302,7 @@ const VerifyWithEmailModal = ({ politicianName, politicianWeVoteId }) => {
   return (
     <ModalDisplayTemplateA
       dialogTitleJSX={dialogTitleJsx}
-      toggleModal={handleCloseVerifyWithEmailModal}
+      toggleModal={() => handleCloseVerifyWithEmailModal('cancelVerifyWithEmailModal')}
       show={AppObservableStore.getShowClaimProfileWithEmailModal()}
       textFieldJSX={textFieldJsx}
       tallMode

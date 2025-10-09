@@ -465,7 +465,7 @@ class PoliticianStore extends ReduceStore {
         revisedState = state;
         politician = action.res;
         // console.log('PoliticianStore ', action.type, ', politician:', politician);
-        opponentCandidateList = action.res.opponent_candidate_list;
+        opponentCandidateList = action.res.opponent_candidate_list || [];
         // console.log('PoliticianStore politicianRetrieve, politician:', politician);
         if (allCachedPoliticians === undefined) {
           allCachedPoliticians = {};
@@ -577,9 +577,9 @@ class PoliticianStore extends ReduceStore {
         }
 
         if (action.type === 'politiciansQuery') {
-          politicianList = action.res.politicians;
+          politicianList = action.res.politicians || [];
         } else {
-          politicianList = action.res.politician_list;
+          politicianList = action.res.politician_list || [];
         }
         // console.log('PoliticianStore politiciansRetrieve politicianList:', politicianList);
         if (!politicianListsByOfficeWeVoteId) {
@@ -587,7 +587,16 @@ class PoliticianStore extends ReduceStore {
         }
         localPoliticianList = [];
         politicianList.forEach((one) => {
-          allCachedPoliticians[one.we_vote_id] = one;
+          if (action.type === 'politiciansQuery') {
+            // Since the politiciansQuery doesn't return all of the
+            // attached lists that we get from politicianRetrieve,
+            // don't replace a politician if it has already been retrieved
+            if (!(one.politician_we_vote_id in allCachedPoliticians)) {
+              allCachedPoliticians[one.politician_we_vote_id] = one;
+            }
+          } else {
+            allCachedPoliticians[one.we_vote_id] = one;
+          }
           localPoliticianList.push(one);
         });
 

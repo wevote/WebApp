@@ -89,6 +89,10 @@ class DeviceDialog extends Component {
                 <StyledTableCell>{window.device.model}</StyledTableCell>
               </TableRow>
               <TableRow>
+                <StyledTableCell>window.device.uuid</StyledTableCell>
+                <StyledTableCell>{window.device.uuid}</StyledTableCell>
+              </TableRow>
+              <TableRow>
                 <StyledTableCell>device OS version</StyledTableCell>
                 <StyledTableCell>{`${window.device.platform} ${window.device.version}`}</StyledTableCell>
               </TableRow>
@@ -151,21 +155,22 @@ class DeviceDialog extends Component {
             </TableBody>
           </Table>
           {/* Show the developer options if on the simulator in iOS, or the SHOW_TEST_OPTIONS is on, or Cordova offset logging is turned on -- should not show in release builds */}
-          { isSimulator() &&
-            (
-              <div style={{ marginTop: 20 }}>
-                <div style={{ marginTop: 5 }}>
-                  <span className="card-main__candidate-name-link">
-                    <Link onClick={DeviceDialog.clearLocationGuessClosedCookie} to="/">Clear Location Guess Cookie</Link>
-                  </span>
-                </div>
-                <div style={{ marginTop: 5 }}>
-                  <span className="card-main__candidate-name-link">
-                    <Link onClick={DeviceDialog.clearAllCookies} to="/">Clear Cookies</Link>
-                  </span>
-                </div>
-              </div>
-            )}
+          {/* Removed Oct 2025, don't think this is valuable anymore */}
+          {/* { isSimulator() && */ }
+          {/*  ( */}
+          {/*    <div style={{ marginTop: 20 }}> */}
+          {/*      <div style={{ marginTop: 5 }}> */}
+          {/*        <span className="card-main__candidate-name-link"> */}
+          {/*          <Link onClick={DeviceDialog.clearLocationGuessClosedCookie} to="/">Clear Location Guess Cookie</Link> */}
+          {/*        </span> */}
+          {/*      </div> */}
+          {/*      <div style={{ marginTop: 5 }}> */}
+          {/*        <span className="card-main__candidate-name-link"> */}
+          {/*          <Link onClick={DeviceDialog.clearAllCookies} to="/">Clear Cookies</Link> */}
+          {/*        </span> */}
+          {/*      </div> */}
+          {/*    </div> */}
+          {/*  )} */}
           <DeviceFinePrint>
             <span style={{ padding: '10px 25px 10px 0px' }}>Attributions:</span>
             <Link to="/more/attributions" style={{ color: 'blue', textDecoration: 'underline' }}>Attributions</Link>

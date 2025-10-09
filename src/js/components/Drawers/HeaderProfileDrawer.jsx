@@ -7,19 +7,22 @@ import React, { useCallback, useEffect, useState } from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import TagManager from 'react-gtm-module';
 import styled from 'styled-components';
-import DrawerTemplateHeaderProfile from './DrawerTemplateHeaderProfile';
+import VoterSessionActions from '../../actions/VoterSessionActions';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
+import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
+import historyPush from '../../common/utils/historyPush';
 import webAppConfig from '../../config';
 import SettingsProfile from '../Settings/SettingsProfile';
 import SettingsAddress from '../Settings/SettingsAddress';
 import lookupPageNameAndPageTypeDict, { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
 import VoterStore from '../../stores/VoterStore';
-import VoterSessionActions from '../../actions/VoterSessionActions';
-import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
-import SettingsYourData from '../Settings/SettingsYourData';
-import SettingsNotifications from '../Settings/SettingsNotifications';
+import lookupPageNameAndPageTypeDict, { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
 import SettingsSectionFooter from '../Navigation/SettingsSectionFooter';
-import historyPush from "../../common/utils/historyPush";
+import SettingsNotifications from '../Settings/SettingsNotifications';
+import SettingsProfile from '../Settings/SettingsProfile';
+import SettingsYourData from '../Settings/SettingsYourData';
+import { NavLinksContainer } from '../Style/drawerLayoutStyles';
+import DrawerTemplateHeaderProfile from './DrawerTemplateHeaderProfile';
 
 // const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 const SignInOptionsPanel = React.lazy(() => import(/* webpackChunkName: 'SignInOptionsPanel' */ '../../common/components/SignIn/SignInOptionsPanel'));
@@ -422,12 +425,14 @@ const NavLinkContainer = styled('div')`
   }
 `;
 
-const NavLinksContainer = styled('div')`
-  display: flex;
-  flex-direction: column;
-  margin-left: -16px;
-  position: fixed;
-`;
+// Please do not copy styles -- centralize them somewhere, so that same-named styles don't diverge,
+// and so that we don't have to maintain them twice
+// const NavLinksContainer = styled('div')`
+//   display: flex;
+//   flex-direction: column;
+//   margin-left: -16px;
+//   position: fixed;
+// `;
 
 // const ProfileComponentTitle = styled('div')`
 //   font-size: 20px;

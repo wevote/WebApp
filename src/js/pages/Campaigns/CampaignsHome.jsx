@@ -23,15 +23,18 @@ import webAppConfig from '../../config';
 import BallotStore from '../../stores/BallotStore';
 import CandidateStore from '../../stores/CandidateStore';
 import IssueStore from '../../stores/IssueStore';
+import PoliticianStore from '../../common/stores/PoliticianStore';
 import RepresentativeStore from '../../stores/RepresentativeStore';
 import VoterStore from '../../stores/VoterStore';
-import lookupPageNameAndPageTypeDict, { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
+import { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
 
 const CandidateListRoot = React.lazy(() => import(/* webpackChunkName: 'CandidateListRoot' */ '../../components/CandidateListRoot/CandidateListRoot'));
 const CampaignListRoot = React.lazy(() => import(/* webpackChunkName: 'CampaignListRoot' */ '../../common/components/CampaignListRoot/CampaignListRoot'));
 const FirstCampaignListController = React.lazy(() => import(/* webpackChunkName: 'FirstCampaignListController' */ '../../common/components/CampaignListRoot/FirstCampaignListController'));
 const FirstCandidateListController = React.lazy(() => import(/* webpackChunkName: 'FirstCandidateListController' */ '../../components/CandidateListRoot/FirstCandidateListController'));
+const FirstPoliticianListController = React.lazy(() => import(/* webpackChunkName: 'FirstPoliticianListController' */ '../../components/PoliticianListRoot/FirstPoliticianListController'));
 const FirstRepresentativeListController = React.lazy(() => import(/* webpackChunkName: 'FirstRepresentativeListController' */ '../../components/RepresentativeListRoot/FirstRepresentativeListController'));
+const PoliticianListRoot = React.lazy(() => import(/* webpackChunkName: 'PoliticianListRoot' */ '../../components/PoliticianListRoot/PoliticianListRoot'));
 const RepresentativeListRoot = React.lazy(() => import(/* webpackChunkName: 'RepresentativeListRoot' */ '../../components/RepresentativeListRoot/RepresentativeListRoot'));
 
 // const representativeDataExistsYears = [2023];
@@ -70,6 +73,8 @@ class CampaignsHome extends Component {
       numberOfCloseRacesSearchResults: 0,
       numberOfMorePoliticiansResults: 99,
       numberOfMorePoliticiansSearchResults: 0,
+      numberOfPoliticiansResults: 99,
+      numberOfPoliticiansSearchResults: 0,
       numberOfRepresentativeResults: 99,
       numberOfRepresentativeSearchResults: 0,
       politicianWeVoteIdsAlreadyShown: [],
@@ -91,6 +96,7 @@ class CampaignsHome extends Component {
     this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
     this.campaignStoreListener = CampaignStore.addListener(this.onCampaignStoreChange.bind(this));
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
+    this.politicianStoreListener = PoliticianStore.addListener(this.onPoliticianStoreChange.bind(this));
     this.representativeStoreListener = RepresentativeStore.addListener(this.onRepresentativeStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
 
@@ -220,9 +226,6 @@ class CampaignsHome extends Component {
     }
 
     if (!this.state.dataLayerSent && VoterStore.getVoterWeVoteId()) {
-      const { location: { pathname: currentPathname } } = window;
-      const currentPage = lookupPageNameAndPageTypeDict(currentPathname);
-
       let urlStateCode = '';
       if (stateCandidatesPhrase) {
         let stateName = stateCandidatesPhrase.replace('-candidates', '').replace('-politicians-list', '');
@@ -246,6 +249,7 @@ class CampaignsHome extends Component {
     this.ballotStoreListener.remove();
     this.campaignStoreListener.remove();
     this.candidateStoreListener.remove();
+    this.politicianStoreListener.remove();
     this.representativeStoreListener.remove();
     this.voterStoreListener.remove();
     if (this.timer) {
@@ -309,6 +313,16 @@ class CampaignsHome extends Component {
     }, () => this.onIncomingCandidateListChange());
   }
 
+  onPoliticianStoreChange () {
+    const politicianList = PoliticianStore.getPoliticianList();
+    // Note: sorting is being done in PoliticianListRoot
+    const { politicianListToShow } = this.splitUpPoliticianList(politicianList);  // representativeListIsBattleground
+    this.setState({
+      politicianListToShow,
+      politicianListTimeStampOfChange: Date.now(),
+    }, () => this.onIncomingPoliticianListChange());
+  }
+
   onRepresentativeStoreChange () {
     const representativeList = RepresentativeStore.getRepresentativeList();
     // Note: sorting is being done in RepresentativeListRoot
@@ -360,6 +374,12 @@ class CampaignsHome extends Component {
     }, () => this.updateActiveFilters(setDefaultListMode));
   }
 
+  onIncomingPoliticianListChange (setDefaultListMode = false) {
+    this.setState({
+      //
+    }, () => this.updateActiveFilters(setDefaultListMode));
+  }
+
   onIncomingRepresentativeListChange (setDefaultListMode = false) {
     const { representativeList } = this.state;
     // console.log('CampaignsHome onIncomingRepresentativeListChange, representativeList:', representativeList);
@@ -403,6 +423,15 @@ class CampaignsHome extends Component {
       candidateListOnYourBallot,
       candidateListIsBattleground,
       candidateListOther,
+    };
+  }
+
+  splitUpPoliticianList = (politicianList) => {
+    // console.log('politicianList = ', politicianList);
+    const { politicianWeVoteIdsAlreadyShown } = this.state;
+    const politicianListToShow = politicianList.filter((onePolitician) => !arrayContains(onePolitician.politician_we_vote_id, politicianWeVoteIdsAlreadyShown));
+    return {
+      politicianListToShow,
     };
   }
 
@@ -716,6 +745,13 @@ class CampaignsHome extends Component {
     });
   }
 
+  handleNumberOfPoliticiansResults = (listResults, searchResults) => {
+    this.setState({
+      numberOfPoliticiansResults: listResults,
+      numberOfPoliticiansSearchResults: searchResults,
+    });
+  }
+
   handleNumberOfRepresentativeResults = (listResults, searchResults) => {
     this.setState({
       numberOfRepresentativeResults: listResults,
@@ -736,18 +772,19 @@ class CampaignsHome extends Component {
       numberOfCandidatesOnBallotResults, numberOfCandidatesOnBallotSearchResults,
       numberOfCloseRacesResults, numberOfCloseRacesSearchResults,
       numberOfMorePoliticiansResults, numberOfMorePoliticiansSearchResults,
+      numberOfPoliticiansResults, numberOfPoliticiansSearchResults,
       numberOfRepresentativeResults, numberOfRepresentativeSearchResults,
+      politicianListToShow, politicianListTimeStampOfChange,
       representativeListOnYourBallot, representativeListShownAsRepresentatives, representativeListTimeStampOfChange,
       searchText, stateCode,
     } = this.state;
     // const numberOfAnyResults = numberOfCampaignResults + numberOfCandidatesOnBallotResults + numberOfCloseRacesResults + numberOfMorePoliticiansResults + numberOfRepresentativeResults;
-    const numberOfSearchResults = numberOfCampaignSearchResults + numberOfCandidatesOnBallotSearchResults + numberOfCloseRacesSearchResults + numberOfMorePoliticiansSearchResults + numberOfRepresentativeSearchResults;
+    const numberOfSearchResults = numberOfCampaignSearchResults + numberOfCandidatesOnBallotSearchResults + numberOfCloseRacesSearchResults + numberOfMorePoliticiansSearchResults + numberOfPoliticiansSearchResults + numberOfRepresentativeSearchResults;
     // console.log('CampaignsHome render numberOfAnyResults:', numberOfAnyResults, ', numberOfSearchResults:', numberOfSearchResults);
     // console.log('CampaignsHomeLoader.jsx render campaignList:', campaignList);
     const pigsCanFly = false;
 
     // console.log("Actual list: ", representativeListShownAsRepresentatives.length, "number of results: ", numberOfRepresentativeResults)
-
     if (detailsListMode) {
       // console.log('detailsListMode TRUE');
       return (
@@ -788,7 +825,10 @@ class CampaignsHome extends Component {
     const otherTitlesShown = (campaignsShowing && nextReleaseFeaturesEnabled) || (candidateListOnYourBallot && candidateListOnYourBallot.length > 0) || (candidateListIsBattleground && candidateListIsBattleground.length > 0) || representativesShowing;
     // const useMinimumBattlegroundHeight = this.useMinimumBattlegroundHeightForState(stateCode);
     const displayBattlegroundPlaceholder = this.displayBattlegroundPlaceholderForState(stateCode);
-    // console.log('CampaignsHome, isSearching: ', isSearching, 'numberOfRepresentativeResults:', numberOfRepresentativeResults);
+    // console.log('CampaignsHome render politicianListToShow:', politicianListToShow);
+    // const politicianListToShowLength = politicianListToShow ? politicianListToShow.length : 0;
+    // console.log('CampaignsHome render politicianListToShow.length:', politicianListToShowLength, ', numberOfPoliticiansResults:', numberOfPoliticiansResults, ', politicianListTimeStampOfChange: ', politicianListTimeStampOfChange);
+    // console.log('CampaignsHome, isSearching: ', isSearching, ', numberOfCandidatesOnBallotResults:', numberOfCandidatesOnBallotResults, 'numberOfRepresentativeResults:', numberOfRepresentativeResults);
     return (
       <CampaignsHomeWrapper>
         <CampaignsHomeFilter
@@ -898,6 +938,23 @@ class CampaignsHome extends Component {
             />
           </Suspense>
         </WhatIsHappeningSection>
+        {(politicianListToShow && politicianListToShow.length > 0) && (
+          <WhatIsHappeningSection useMinimumHeight={!isSearching && numberOfPoliticiansResults > 0}>
+            <Suspense fallback={<span><CandidateListRootPlaceholder titleTextForList="Politicians" /></span>}>
+              <PoliticianListRoot
+                hideIfNoResults
+                handleNumberOfResults={this.handleNumberOfPoliticiansResults}
+                incomingList={politicianListToShow}
+                incomingListTimeStampOfChange={politicianListTimeStampOfChange}
+                listModeFilters={listModeFiltersAvailable}
+                listModeFiltersTimeStampOfChange={listModeFiltersTimeStampOfChange}
+                searchText={searchText}
+                stateCode={stateCode}
+                titleTextForList=""
+              />
+            </Suspense>
+          </WhatIsHappeningSection>
+        )}
 
         {/* <WhatIsHappeningSection useMinimumHeight={!isSearching} /> */}
 
@@ -919,6 +976,10 @@ class CampaignsHome extends Component {
         {/* */}
         <Suspense fallback={<></>}>
           <FirstRepresentativeListController searchText={searchText} stateCode={stateCode} year={filterYear} />
+        </Suspense>
+        {/* */}
+        <Suspense fallback={<></>}>
+          <FirstPoliticianListController searchText={searchText} stateCode={stateCode} />
         </Suspense>
       </CampaignsHomeWrapper>
     );

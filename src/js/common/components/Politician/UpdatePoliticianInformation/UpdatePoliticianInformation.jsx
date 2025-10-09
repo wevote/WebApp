@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
+import TagManager from 'react-gtm-module';
 import styled from 'styled-components';
 import { Close, EditOutlined, ExpandMoreRounded } from '@mui/icons-material';
 import { Button, IconButton } from '@mui/material';
@@ -10,6 +11,9 @@ import VerifyOtherWaysModal from './VerifyOtherWaysModal';
 import VerifyWithEmailModal from './VerifyWithEmailModal';
 import AppObservableStore from '../../../stores/AppObservableStore';
 import useVoterCanEditPolitician from '../../../../hooks/useVoterCanEditPolitician';
+import lookupPageNameAndPageTypeDict, { getPageDetails } from '../../../../utils/lookupPageNameAndPageTypeDict';
+import VoterStore from '../../../../stores/VoterStore';
+import PoliticianStore from '../../../stores/PoliticianStore';
 
 const CustomTooltip = muiStyled(({ className, ...props }) => (
   <Tooltip {...props} classes={{ popper: className }} />
@@ -32,13 +36,38 @@ const UpdatePoliticianInformation =  ({ politicianName, politicianWeVoteId }) =>
   // console.log('updatePoliticianInformation politicianName: ', politicianName, ', voterCanEditPoliticianProfile: ', voterCanEditPoliticianProfile);
   const [tooltipOpen, setTooltipOpen] = useState(false);
 
-  const handleEditProfile = () => {
-    AppObservableStore.setDrawerOpen('politicianSelfEditDrawerOpen', true);
-    AppObservableStore.setPoliticianWeVoteIdBeingViewed(politicianWeVoteId);
+  function sendGTMDataLayer (actionType = 'openModal', buttonId = '', destinationPageName = '') {
+    const { location: { pathname: currentPathname } } = window;
+    const destinationPage = lookupPageNameAndPageTypeDict(currentPathname);
+    const dataLayerObject = {
+      actionDetails: {
+        actionType,
+        buttonId,
+      },
+      event: 'action',
+      pageDetails: getPageDetails(),
+      userDetails: VoterStore.getAnalyticsUserDetails(),
+      destinationDetails: {
+        destinationPageName: destinationPageName || 'notSet',
+        destinationPageType: destinationPage.pageType || 'notSet',
+        destinationPathname: currentPathname,
+      },
+    };
+    if (politicianWeVoteId) {
+      dataLayerObject.politicianDetails = PoliticianStore.getAnalyticsPoliticianDetails(politicianWeVoteId);
+    }
+    TagManager.dataLayer({ dataLayer: dataLayerObject });
+  }
+
+  const handleOpenClaimProfileModal = (buttonId) => {
+    AppObservableStore.setShowClaimProfileWithEmailModal(true);
+    sendGTMDataLayer('openModal', buttonId, 'ClaimProfileWithEmailModal');
   };
 
-  const handleOpenVerifyWithEmailModal = () => {
-    AppObservableStore.setShowClaimProfileWithEmailModal(true);
+  const handleOpenEditProfileDrawer = (buttonId) => {
+    AppObservableStore.setDrawerOpen('politicianSelfEditDrawerOpen', true);
+    AppObservableStore.setPoliticianWeVoteIdBeingViewed(politicianWeVoteId);
+    sendGTMDataLayer('openModal', buttonId, 'PoliticianSelfEditDrawer');
   };
 
   return (
@@ -66,8 +95,9 @@ const UpdatePoliticianInformation =  ({ politicianName, politicianWeVoteId }) =>
               )}
             >
               <EditProfileWrapper
+                id="editThisProfile"
                 onMouseEnter={() => setTooltipOpen(true)}
-                onClick={handleEditProfile}
+                onClick={() => handleOpenEditProfileDrawer('editThisProfile')}
               >
                 <EditOutlined fontSize="small" style={{ marginRight: 4 }} />
                 Edit profile
@@ -75,7 +105,8 @@ const UpdatePoliticianInformation =  ({ politicianName, politicianWeVoteId }) =>
             </CustomTooltip>
           ) : (
             <CandidateStaffAccessButton
-              onClick={handleOpenVerifyWithEmailModal}
+              id="claimThisProfile"
+              onClick={() => handleOpenClaimProfileModal('claimThisProfile')}
             >
               Candidate staff access
               <ExpandMoreRounded />

@@ -2,15 +2,13 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { isAndroidSizeWide } from '../../common/utils/cordovaUtils';
 import OpenExternalWebSite from '../../common/components/Widgets/OpenExternalWebSite';
 import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
-import { isTablet } from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
+import webAppConfig from '../../config';
 import { DeviceInformationSpan, TermsAndPrivacyText } from '../Style/pageLayoutStyles';
 import DeviceDialog from '../Widgets/DeviceDialog';
-import webAppConfig from '../../config';
 
 
 class SettingsSectionFooter extends Component {
@@ -133,7 +131,7 @@ class SettingsSectionFooter extends Component {
             WeVote does not support or oppose any political candidate or party.
           </DoesNotSupport>
         )}
-        { isCordova() && (isTablet() || isAndroidSizeWide()) && (
+        { isCordova() && (
           <DoesNotSupport centered={centered}>
             <DeviceInformationSpan onClick={() => this.deviceTableVisibilityOn()}>
               Device Information

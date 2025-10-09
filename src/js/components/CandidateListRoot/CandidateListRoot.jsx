@@ -366,10 +366,6 @@ class CandidateListRoot extends Component {
     });
   }
 
-  // callbackToParentHideIfNoResults = (newValue) => {
-  //   this.props.onHideIfNoResultsChange(newValue);
-  // }
-
   render () {
     renderLog('CandidateListRoot');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes, hideIfNoResults, hideTitle, searchText, titleTextForList } = this.props;

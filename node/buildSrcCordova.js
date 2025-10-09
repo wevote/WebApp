@@ -171,20 +171,23 @@ function fileRewriterForCordova (path, versions) {
       './srcCordova/js/common/components/Donation/InjectedCheckoutForm.jsx',
       './srcCordova/js/common/components/Donation/CheckoutForm.jsx',
     ];
-    const dummySubstituteFiles = [
-      './srcCordova/js/common/components/CampaignSupport/PayToPromoteProcess.jsx',
-      // './srcCordova/js/pages/More/Donate.jsx',
-    ];
+    // const dummySubstituteFiles = [
+    //   './srcCordova/js/common/components/CampaignSupport/PayToPromoteProcess.jsx',
+    //   // './srcCordova/js/pages/More/Donate.jsx',
+    // ];
 
     if (deleteFiles.includes(path)) {
       fs.remove(path);
       console.log(`rm file ${path}`);
-    } else if (dummySubstituteFiles.includes(path)) {
-      const cordovaPath = path.replace('.jsx', 'Cordova.jsx');
-      fs.rename(cordovaPath, path, (err2) => {
-        if (err2) console.log(`rename file ERROR: ${err}`);
-      });
-      fs.remove(cordovaPath);
+    // } else if (dummySubstituteFiles.includes(path)) {
+    // Removes files that have includes that cause problems in cordova -- these were Stripe related,
+    // but the stripe problem no longer manifested in Oct 2025, and Dale wanted the non-functional
+    // "Help Win" dialog restored so that they could see how many people went down that path in Google Analytics
+    //   const cordovaPath = path.replace('.jsx', 'Cordova.jsx');
+    //   fs.rename(cordovaPath, path, (err2) => {
+    //     if (err2) console.log(`rename file ERROR: ${err}`);
+    //   });
+    //   fs.remove(cordovaPath);
     } else {
       fs.writeFile(path, newValue, 'utf-8', (err2) => {
         if (err2) throw err2;
