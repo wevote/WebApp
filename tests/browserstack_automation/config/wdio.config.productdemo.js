@@ -39,7 +39,7 @@ module.exports.config = {
     ],
   ],
   specs: [
-    '../specs/ProductDemo.js',
+    '../specs/ProductDemo.browser.js',
 
 
 
@@ -81,7 +81,7 @@ module.exports.config = {
   console.log('AFTER HOOK TRIGGERED');
   const sessionId = driver.sessionId;
   console.log('Running fetchAndUploadVideo for session:', sessionId);
-  const scriptPath = require('path').resolve('./tests/browserstack_automation/specs/', 'downloadVideo.js');
+  const scriptPath = require('path').resolve('./tests/browserstack_automation/specs/', 'downloadVideo.browser.js');
   const cmd = `node ${scriptPath} ${sessionId}`;
   try {
       const { stdout, stderr } = await execAsync(cmd);

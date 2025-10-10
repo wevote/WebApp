@@ -1,7 +1,7 @@
 import {$, driver, expect, browser } from '@wdio/globals';
 import ReadyPage from '../page_objects/ready.page';
 // import DonatePage from '../page_objects/donate.page';
-import SignIn from '../page_objects/signin.page';
+import SignIn from '../page_objects/signin.browser';
 //import signinPage from '../page_objects/signin.page';
 // import webAppConfig from '../../../src/js/config';
 import { createRequire } from 'module';
