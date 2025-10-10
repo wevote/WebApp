@@ -420,26 +420,29 @@ export function isIPadGiantSize () {
 }
 
 export function isAndroidNotch () {
-  const { device: { model, uuid } } = window;
-  // There is an edge-to-edge setting for android, but it will go away in Android 16 in 2025, we have to do this
-  // https://stackoverflow.com/questions/79382767/prevent-edge-to-edge-behaviour-after-android-sdk-35
-  const notchedModels = [
-    'Pixel 7',          // From Browserstack Cordova app device dialog
-    'Pixel 9',          // From Browserstack logcat
-    'Pixel 9',          // From Browserstack logcat
-    'Pixel 9 Pro',      // From Browserstack logcat
-    'Pixel 9 Pro XL',   // From Browserstack logcat
-    'Pixel 10',         // From Browserstack logcat
-    'Pixel 10 Pro',     // From Browserstack logcat
-    'Pixel 10 Pro XL',  // From Browserstack logcat
-  ];
-  const simulatorUUIDs = [    // These change when you update Android Studio
-    'ba09ecb05c77f653',
-    '6d9df9c89e647862',
-  ];
-  if (notchedModels.includes(model) || simulatorUUIDs.includes(uuid)) {
-    logMatch('isAndroidNotch === true for ', model, uuid);
-    return true;
+  const { device } = window;
+  if (device) {
+    const { model, uuid } = device;
+    // There is an edge-to-edge setting for android, but it will go away in Android 16 in 2025, we have to do this
+    // https://stackoverflow.com/questions/79382767/prevent-edge-to-edge-behaviour-after-android-sdk-35
+    const notchedModels = [
+      'Pixel 7',          // From Browserstack Cordova app device dialog
+      'Pixel 9',          // From Browserstack logcat
+      'Pixel 9',          // From Browserstack logcat
+      'Pixel 9 Pro',      // From Browserstack logcat
+      'Pixel 9 Pro XL',   // From Browserstack logcat
+      'Pixel 10',         // From Browserstack logcat
+      'Pixel 10 Pro',     // From Browserstack logcat
+      'Pixel 10 Pro XL',  // From Browserstack logcat
+    ];
+    const simulatorUUIDs = [    // These change when you update Android Studio
+      'ba09ecb05c77f653',
+      '6d9df9c89e647862',
+    ];
+    if (notchedModels.includes(model) || simulatorUUIDs.includes(uuid)) {
+      logMatch('isAndroidNotch === true for ', model, uuid);
+      return true;
+    }
   }
   return false;
 }
