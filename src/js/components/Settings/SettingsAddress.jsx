@@ -3,6 +3,8 @@ import { Helmet } from 'react-helmet-async';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { Button, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
@@ -13,6 +15,9 @@ import { renderLog } from '../../common/utils/logging';
 import SettingsAddressBox from '../SettingsAddressBox';
 import BrowserPushMessage from '../Widgets/BrowserPushMessage';
 import AppObservableStore from '../../common/stores/AppObservableStore';
+import webAppConfig from '../../config';
+
+const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
 export default class SettingsAddressForDrawer extends Component {
   constructor (props, context) {
@@ -21,6 +26,7 @@ export default class SettingsAddressForDrawer extends Component {
       textForMapSearch: '',
       originalTextAddress: false,
       addressSaved: false,
+      showWarningDialoge: false,
     };
     this.handleAddressSaveSuccess = this.handleAddressSaveSuccess.bind(this);
     this.removeAddress = this.removeAddress.bind(this);
@@ -68,10 +74,24 @@ export default class SettingsAddressForDrawer extends Component {
     this.setState({ addressSaved: false });
   }
 
+  openWarningDialog = () => {
+  this.setState({ showWarningDialog: true });
+  };
+
+  closeWarningDialog = () => {
+    this.setState({ showWarningDialog: false });
+  };
+
+  confirmRemoveAddress = () => {
+    VoterActions.voterAddressSave('');
+    this.setState({ addressSaved: false, showWarningDialog: false });
+  };
+
   render () {
     renderLog('SettingsAddressForDrawer');  // Set LOG_RENDER_EVENTS to log all renders
     const { addressSaved, originalTextAddress } = this.state;
     return (
+      nextReleaseFeaturesEnabled && (
       <div className="u-stack--md u-f4">
         <Helmet title="Enter Address - WeVote" />
         <BrowserPushMessage incomingProps={this.props} />
@@ -105,7 +125,7 @@ export default class SettingsAddressForDrawer extends Component {
                   <div>
                     <CurrentBallotText className="u-gray-darker">We will never share your address or send you any mail.</CurrentBallotText>
                     <div className="u-margin-top--md u-flex u-cursor--pointer"
-                      onClick={this.removeAddress}
+                      onClick={this.openWarningDialog}
                     >
                       <DeleteIcon className="u-gray-mid" />
                       <span className="u-gray-darker u-margin-left--xs">Remove address</span>
@@ -130,7 +150,9 @@ export default class SettingsAddressForDrawer extends Component {
                         {this.state.textForMapSearch}
                         {' '}
                       </span>
-                      <span className="u-gray-mid"><br/>(approximate location from your internet provider)</span>
+                      {!this.state.addressSaved && (
+                        <span className="u-gray-mid"><br />(approximate location from your internet provider)</span>
+                      )}
                     </p>
                   </div>
                   <SettingsAddressBox
@@ -151,7 +173,26 @@ export default class SettingsAddressForDrawer extends Component {
             </div>
           </div>
         </div>
+        <Dialog
+          open={this.state.showWarningDialog}
+          onClose={this.closeWarningDialog}
+        >
+          <DialogTitle>
+            <WarningAmberIcon color="warning" style={{ marginRight: 8, verticalAlign: 'middle' }} />
+            Warning
+          </DialogTitle>
+          <DialogContent>
+            Not entering an address may result in an inaccurate ballot.
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.closeWarningDialog}>Cancel</Button>
+            <Button onClick={this.confirmRemoveAddress} color="error" variant="contained">
+              Remove Address
+            </Button>
+          </DialogActions>
+        </Dialog>
       </div>
+      )
     );
   }
 }
