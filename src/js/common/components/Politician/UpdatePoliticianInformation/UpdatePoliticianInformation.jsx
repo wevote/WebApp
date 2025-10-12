@@ -65,9 +65,14 @@ const UpdatePoliticianInformation =  ({ politicianName, politicianWeVoteId }) =>
   };
 
   const handleOpenEditProfileDrawer = (buttonId) => {
-    AppObservableStore.setDrawerOpen('politicianSelfEditDrawerOpen', true);
-    AppObservableStore.setPoliticianWeVoteIdBeingViewed(politicianWeVoteId);
-    sendGTMDataLayer('openModal', buttonId, 'PoliticianSelfEditDrawer');
+    if (VoterStore.getVoterIsSignedIn()) {
+      AppObservableStore.setDrawerOpen('politicianSelfEditDrawerOpen', true);
+      AppObservableStore.setPoliticianWeVoteIdBeingViewed(politicianWeVoteId);
+      sendGTMDataLayer('openModal', buttonId, 'PoliticianSelfEditDrawer');
+    } else {
+      AppObservableStore.setShowSignInModal(true);
+      sendGTMDataLayer('openModal', buttonId, 'PoliticianSelfEditDrawer');
+    }
   };
 
   return (

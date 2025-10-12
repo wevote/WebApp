@@ -1,12 +1,42 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useState } from 'react';
+import TagManager from 'react-gtm-module';
 import styled from 'styled-components';
 import ModalDisplayTemplateB from '../../../../components/Widgets/ModalDisplayTemplateB';
 import { SubmitButton } from './VerifyOtherWaysModal';
+import AppObservableStore from '../../../stores/AppObservableStore';
+import PoliticianStore from '../../../stores/PoliticianStore';
+import VoterStore from '../../../../stores/VoterStore';
+import { getPageDetails } from '../../../../utils/lookupPageNameAndPageTypeDict';
 
-const PasskeyVerifiedModal = ({ politicianName, passkeyVerified, setPasskeyVerified }) => {
-  const usersEditingPermissions = ['Add profile content', 'Invite supporters', 'Grow awareness'];
-  const otherEditors = [`john@${politicianName.toLowerCase().replaceAll(/[. ]/g, '')}.com`, `jane@${politicianName.toLowerCase().replaceAll(/[. ]/g, '')}.com`];
+const PasskeyVerifiedModal = ({ closePasskeyVerifiedModal, passkeyVerified, politicianName, politicianWeVoteId, verificationEmails }) => {
+  const [passkeyVerifiedModalClosed, setPasskeyVerifiedModalClosed] = useState(false); // switch to toggle PasskeyVerifiedModal
+  const usersEditingPermissions = ['Add profile content']; // , 'Invite supporters', 'Grow awareness'
+
+  function sendGTMDataLayer (actionType = '', buttonId = '') {
+    const dataLayerObject = {
+      actionDetails: {
+        actionType,
+        buttonId,
+      },
+      event: 'action',
+      pageDetails: getPageDetails(),
+      userDetails: VoterStore.getAnalyticsUserDetails(),
+    };
+    if (politicianWeVoteId) {
+      dataLayerObject.politicianDetails = PoliticianStore.getAnalyticsPoliticianDetails(politicianWeVoteId);
+    }
+    TagManager.dataLayer({ dataLayer: dataLayerObject });
+  }
+
+  const handleClosePasskeyVerifiedModal = (buttonId) => {
+    // console.log('PasskeyVerifiedModal handleClosePasskeyVerifiedModal clicked');
+    setPasskeyVerifiedModalClosed(true);
+    AppObservableStore.setShowClaimProfileWithEmailModal(false);
+    AppObservableStore.setShowClaimProfileWithOtherWaysModal(false);
+    sendGTMDataLayer('closeModal', buttonId);
+  };
+
   const dialogTitleJSX = (
     <>
       <PasskeyVerifiedHeader>
@@ -30,22 +60,22 @@ const PasskeyVerifiedModal = ({ politicianName, passkeyVerified, setPasskeyVerif
           ))
         }
       </ul>
-      {otherEditors.length > 0 && (
+      {(verificationEmails && verificationEmails.length > 0) && (
         <>
           <OtherEditorsHeader>
-            Other editors
+            All editors
           </OtherEditorsHeader>
           <ul>
             {
-              otherEditors.map((editor) => (
-                <li key={editor}>{editor}</li>
+              verificationEmails.map((emailThatCanEdit, index) => (
+                <li key={`${emailThatCanEdit}-${index}`}>{emailThatCanEdit}</li>
               ))
             }
           </ul>
         </>
       )}
       <SubmitButtonContainer>
-        <SubmitButton>
+        <SubmitButton id="closePasskeyVerifiedModal" onClick={() => handleClosePasskeyVerifiedModal('closePasskeyVerifiedModal')}>
           Get started
         </SubmitButton>
       </SubmitButtonContainer>
@@ -54,17 +84,19 @@ const PasskeyVerifiedModal = ({ politicianName, passkeyVerified, setPasskeyVerif
   return (
     <ModalDisplayTemplateB
       dialogTitleJSX={dialogTitleJSX}
-      show={passkeyVerified}
-      toggleModal={setPasskeyVerified}
+      show={passkeyVerified && !passkeyVerifiedModalClosed}
+      toggleModal={closePasskeyVerifiedModal}
       textFieldJSX={textFieldJSX}
     />
   );
 };
 
 PasskeyVerifiedModal.propTypes = {
-  politicianName: PropTypes.string,
-  setPasskeyVerified: PropTypes.func,
+  closePasskeyVerifiedModal: PropTypes.func,
   passkeyVerified: PropTypes.bool,
+  politicianName: PropTypes.string,
+  politicianWeVoteId: PropTypes.string,
+  verificationEmails: PropTypes.array,
 };
 
 const PasskeyVerifiedHeader = styled('h1')`

@@ -7,6 +7,7 @@ import { extractNumberOfPositionsFromPositionList } from '../../utils/positionFu
 import OfficeStore from '../../stores/OfficeStore';
 import VoterStore from '../../stores/VoterStore';
 import arrayContains from '../utils/arrayContains';
+// import useVoterCanEditPolitician from '../../hooks/useVoterCanEditPolitician';
 
 class PoliticianStore extends ReduceStore {
   getInitialState () {
@@ -62,11 +63,13 @@ class PoliticianStore extends ReduceStore {
   getAnalyticsPoliticianDetails (politicianWeVoteId) {
     const politician = this.getPoliticianByWeVoteId(politicianWeVoteId);
     return {
+      isClaimedProfile: politician ? politician.is_claimed_profile : false,
       image: politician ? politician.we_vote_hosted_profile_image_url_medium : '',
       politicalParty: politician ? politician.political_party : '',
       politicianName: politician ? this.getPoliticianName(politicianWeVoteId) : '',
       politicianWeVoteId,
       stateCode: politician ? (politician.state_code || 'na').toUpperCase() : '',
+      // voterCanEdit: useVoterCanEditPolitician(),
     };
   }
 
