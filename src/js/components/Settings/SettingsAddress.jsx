@@ -25,7 +25,7 @@ export default class SettingsAddressForDrawer extends Component {
     this.state = {
       textForMapSearch: '',
       originalTextAddress: false,
-      addressSaved: false,
+      addressSaved: VoterStore.getVoterSavedAddress(),
       showWarningDialoge: false,
       editingAddress: false
     };
