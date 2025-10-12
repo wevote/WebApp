@@ -273,7 +273,7 @@ class SettingsAddressBox extends Component {
             classes={{root: classes.fullWidthSaveButton}}
             // fullWidth={!showCancelEditAddressButton}
             fullWidth
-            // disabled={!this.state.isAddressVerified}
+            disabled={!this.state.isAddressVerified}
           >
             Update ballot
           </Button>

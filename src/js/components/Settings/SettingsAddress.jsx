@@ -27,6 +27,7 @@ export default class SettingsAddressForDrawer extends Component {
       originalTextAddress: false,
       addressSaved: false,
       showWarningDialoge: false,
+      editingAddress: false
     };
     this.handleAddressSaveSuccess = this.handleAddressSaveSuccess.bind(this);
     this.removeAddress = this.removeAddress.bind(this);
@@ -40,7 +41,7 @@ export default class SettingsAddressForDrawer extends Component {
 
   handleAddressSaveSuccess () {
     setTimeout(() => {
-      this.setState({ addressSaved: true });
+      this.setState({ addressSaved: true, editingAddress: false });
     }, 2000);
   }
 
@@ -63,12 +64,6 @@ export default class SettingsAddressForDrawer extends Component {
     }
   }
 
-  showSelectBallotModalEditAddress = () => {
-    const showEditAddress = true;
-    const showSelectBallotModal = true;
-    AppObservableStore.setShowSelectBallotModal(showSelectBallotModal, showEditAddress);
-  }
-
   removeAddress () {
     VoterActions.voterAddressSave('');
     this.setState({ addressSaved: false });
@@ -89,7 +84,7 @@ export default class SettingsAddressForDrawer extends Component {
 
   render () {
     renderLog('SettingsAddressForDrawer');  // Set LOG_RENDER_EVENTS to log all renders
-    const { addressSaved, originalTextAddress } = this.state;
+    const { addressSaved, editingAddress } = this.state;
     return (
       nextReleaseFeaturesEnabled && (
       <div className="u-stack--md u-f4">
@@ -109,14 +104,14 @@ export default class SettingsAddressForDrawer extends Component {
                   </Link>
                 </Disclaimer>
               </Header>
-              {addressSaved ? (
+              {addressSaved && !editingAddress ? (
                 <div className="u-margin-top--lg">
                   <span>Address where you are registered to vote</span>
                   <div className="u-padding-top--sm u-flex">
                     <BallotAddressText className="u-bold">{this.state.textForMapSearch}</BallotAddressText>
                     <div className="u-cursor--pointer"
                       id="editAddress"
-                      onClick={this.showSelectBallotModalEditAddress}
+                      onClick={() => this.setState({ editingAddress: true })}
                     >
                       <EditOutlinedIcon className="u-link-color u-f3 u-margin-left--sm" />
                       <span className="u-no-break u-link-color u-f3 u-margin-left--xs">Edit</span>
