@@ -1,4 +1,4 @@
-import {Button, FormControl, TextField} from '@mui/material';
+import { Button, FormControl, TextField } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
@@ -9,8 +9,6 @@ import { prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '..
 import { renderLog } from '../../common/utils/logging';
 import PoliticianStore from '../../common/stores/PoliticianStore';
 
-
-const delayBeforeApiUpdateCall = 2000;
 const delayBeforeRemovingSavedStatus = 4000;
 
 class SettingsWidgetPoliticianStatement extends Component {
@@ -22,7 +20,6 @@ class SettingsWidgetPoliticianStatement extends Component {
       politicianStatementSavedStatus: '',
     };
 
-    //this.handleKeyPressPoliticianStatement = this.handleKeyPressPoliticianStatement.bind(this);
     this.handleSavePoliticianStatement = this.handleSavePoliticianStatement.bind(this);
     this.updatePoliticianStatement = this.updatePoliticianStatement.bind(this);
   }
@@ -41,7 +38,6 @@ class SettingsWidgetPoliticianStatement extends Component {
   componentWillUnmount () {
     this.politicianStoreListener.remove();
     if (this.clearStatusTimer) clearTimeout(this.clearStatusTimer);
-    if (this.politicianStatementTimer) clearTimeout(this.politicianStatementTimer);
     const { displayOnly = false } = this.props;
     if (!displayOnly) {
       restoreStylesAfterCordovaKeyboard('SettingsWidgetPoliticianStatement');
@@ -53,9 +49,6 @@ class SettingsWidgetPoliticianStatement extends Component {
     const { politicianWeVoteId } = this.props;
     const { politicianStatement } = this.state;
 
-    this.setState({
-      politicianStatementSavedStatus: 'Saving...',
-    });
     // console.log('SettingsWidgetPoliticianStatement handleSavePoliticianStatement politicianStatement:', politicianStatement, ', politicianWeVoteId:', politicianWeVoteId);
     PoliticianActions.politicianStatementSave(politicianWeVoteId, politicianStatement);
 
@@ -68,7 +61,7 @@ class SettingsWidgetPoliticianStatement extends Component {
     if (this.clearStatusTimer) clearTimeout(this.clearStatusTimer);
     this.clearStatusTimer = setTimeout(() => {
       this.setState({ politicianStatementSavedStatus: '' });
-    }, 3000);
+    }, delayBeforeRemovingSavedStatus);
   }
 
   onPoliticianStoreChange () {
@@ -95,21 +88,15 @@ class SettingsWidgetPoliticianStatement extends Component {
       this.setState({
         politicianStatement: event.target.value,
         hasUnsavedChanges: true,
-
       });
     }
-    // After some time, clear saved message
-    if (this.clearStatusTimer) clearTimeout(this.clearStatusTimer);
-    this.clearStatusTimer = setTimeout(() => {
-      this.setState({ politicianStatementSavedStatus: '' });
-    }, delayBeforeRemovingSavedStatus);
   }
 
   render () {
     renderLog('SettingsWidgetPoliticianStatement'); // Set LOG_RENDER_EVENTS to log all renders
     const {
-      politicianStatement,
       politician,
+      politicianStatement,
       politicianStatementSavedStatus,
       hasUnsavedChanges,
     } = this.state;
@@ -154,7 +141,7 @@ class SettingsWidgetPoliticianStatement extends Component {
                   disabled={!hasUnsavedChanges}
                   className={classes.saveButton}
                 >
-                  Save Statement
+                  Save
                 </Button>
                 {politicianStatementSavedStatus && (
                   <StatusMessage className="u-gray-mid">
@@ -175,14 +162,10 @@ SettingsWidgetPoliticianStatement.propTypes = {
   displayOnly: PropTypes.bool,
   externalUniqueId: PropTypes.string,
   politicianWeVoteId: PropTypes.string,
-  voterHasMadeChangesFunction: PropTypes.func,
 };
 
 const styles = () => ({
   formControl: {
-    // width: '50%',
-    // margin: '12px',
-    // marginBottom: '12px',
     width: '100%',
   },
   input: {

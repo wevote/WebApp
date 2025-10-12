@@ -12,13 +12,13 @@ import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
 import historyPush from '../../common/utils/historyPush';
 import webAppConfig from '../../config';
-import SettingsProfile from '../Settings/SettingsProfile';
 import SettingsAddress from '../Settings/SettingsAddress';
-import lookupPageNameAndPageTypeDict, { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
+import SettingsProfile from '../Settings/SettingsProfile';
+import SettingsYourData from '../Settings/SettingsYourData';
 import VoterStore from '../../stores/VoterStore';
+import lookupPageNameAndPageTypeDict, { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
 import SettingsSectionFooter from '../Navigation/SettingsSectionFooter';
 import SettingsNotifications from '../Settings/SettingsNotifications';
-import SettingsYourData from '../Settings/SettingsYourData';
 import { NavLinksContainer } from '../Style/drawerLayoutStyles';
 import DrawerTemplateHeaderProfile from './DrawerTemplateHeaderProfile';
 

@@ -224,6 +224,14 @@ class VoterStore extends ReduceStore {
     return '';
   }
 
+  getPasskeyVerified () {
+    return this.getState().voter.passkey_verified || false;
+  }
+
+  getPasskeyReceivedButNotAccepted () {
+    return this.getState().voter.passkey_received_but_not_accepted || false;
+  }
+
   getPrimaryEmailAddressDict () {
     const { emailAddressList } = this.getState();
     let oneEmail = {};
@@ -1370,6 +1378,8 @@ class VoterStore extends ReduceStore {
               notification_settings_flags: notificationSettingsFlags,
               profile_image_type_currently_active: action.res.profile_image_type_currently_active || '',
               voter_donation_history_list: action.res.voter_donation_history_list || state.voter.voter_donation_history_list,
+              passkey_received_but_not_accepted: action.res.passkey_received_but_not_accepted || false,
+              passkey_verified: action.res.passkey_verified || false,
               voter_photo_url_large: action.res.we_vote_hosted_profile_image_url_large || '',
               voter_photo_url_medium: action.res.we_vote_hosted_profile_image_url_medium || '',
               voter_photo_url_tiny: action.res.we_vote_hosted_profile_image_url_tiny || '',
