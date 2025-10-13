@@ -1,4 +1,4 @@
-import { Button } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
@@ -23,13 +23,14 @@ class SettingsAddressBox extends Component {
       loading: false,
       textForMapSearch: '',
       ballotCaveat: '',
+      isAddressVerified: false,
       voterSavedAddress: false,
     };
   }
 
   // eslint-disable-next-line camelcase,react/sort-comp
   UNSAFE_componentWillMount () {
-    prepareForCordovaKeyboard('AddressBox');
+    prepareForCordovaKeyboard('SettingsAddressBox');
   }
 
   componentDidMount () {
@@ -59,20 +60,20 @@ class SettingsAddressBox extends Component {
 
   componentDidCatch (error, info) {
     // We should get this information to Splunk!
-    console.error('!!!AddressBox caught error: ', `${error} with info: `, info);
+    console.error('!!!SettingsAddressBox caught error: ', `${error} with info: `, info);
   }
 
   componentWillUnmount () {
     this.voterStoreListener.remove();
     this.ballotStoreListener.remove();
     clearTimeout(this.closeModalTimer);
-    restoreStylesAfterCordovaKeyboard('AddressBox');
+    restoreStylesAfterCordovaKeyboard('SettingsAddressBox');
   }
 
   // See https://reactjs.org/docs/error-boundaries.html
   static getDerivedStateFromError (error) { // eslint-disable-line no-unused-vars
     // Update state so the next render will show the fallback UI, We should have a "Oh snap" page
-    console.log('!!!AddressBox error', error);
+    console.log('!!!SettingsAddressBox error', error);
     return { hasError: true };
   }
 
@@ -182,13 +183,13 @@ class SettingsAddressBox extends Component {
 
   updateTextForMapSearch = (textForMapSearch) => {
     // console.log('AddressBox updateTextForMapSearch textForMapSearch:', textForMapSearch);
-    this.setState({ textForMapSearch });
+    this.setState({ textForMapSearch, isAddressVerified: false });
   }
 
   updateTextForMapSearchFromGoogle = (textForMapSearch) => {
     // console.log('AddressBox updateTextForMapSearchFromGoogle textForMapSearch:', textForMapSearch);
     if (textForMapSearch) {
-      this.setState({ textForMapSearch });
+      this.setState({ textForMapSearch, isAddressVerified: true });
     }
   }
 
@@ -200,7 +201,7 @@ class SettingsAddressBox extends Component {
   }
 
   render () {
-    renderLog('AddressBox');  // Set LOG_RENDER_EVENTS to log all renders
+    renderLog('SettingsAddressBox');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('AddressBox render');
     let { waitingMessage } = this.props;
     const { classes, externalUniqueId, introductionHtml, showCancelEditAddressButton, toggleEditingAddress } = this.props;
@@ -233,14 +234,24 @@ class SettingsAddressBox extends Component {
 
     return (
       <div className="container">
-        {introductionHtml}
-        <div className="row" style={{ paddingTop: 10 }}>
-          <GoogleAutoComplete
-            id="entryBox"
-            updateTextForMapSearchInParent={this.updateTextForMapSearch}
-            updateTextForMapSearchInParentFromGoogle={this.updateTextForMapSearchFromGoogle}
-          />
-        </div>
+        <Box sx={{
+            backgroundColor: 'grey.200',
+            pl: 6,
+            pr: 6,
+            pt: 2,
+            pb: 2,
+            borderRadius: 8,
+          }}
+        >
+          {introductionHtml}
+          <div className="row" style={{ paddingTop: 10 }}>
+            <GoogleAutoComplete
+              id="entryBox"
+              updateTextForMapSearchInParent={this.updateTextForMapSearch}
+              updateTextForMapSearchInParentFromGoogle={this.updateTextForMapSearchFromGoogle}
+            />
+          </div>
+        </Box>
         <div className="row" style={{ paddingTop: 10 }}>
           {/* {showCancelEditAddressButton ? (
             <Button
@@ -262,6 +273,7 @@ class SettingsAddressBox extends Component {
             classes={{root: classes.fullWidthSaveButton}}
             // fullWidth={!showCancelEditAddressButton}
             fullWidth
+            disabled={!this.state.isAddressVerified}
           >
             Update ballot
           </Button>
@@ -304,7 +316,7 @@ const styles = {
     left: 16,
   },
   fullWidthSaveButton: {
-    borderRadius: '4px',
+    borderRadius: '32px',
     height: 'fit-content',
     margin: 0,
   },
