@@ -1,11 +1,11 @@
 import AppObservableStore from '../common/stores/AppObservableStore';
 import { hasIPhoneNotch, isAndroidSizeMD, isAndroidSizeWide, isAndroidSizeXL, isIOS, isIOSAppOnMac, isIPad } from '../common/utils/cordovaUtils';
+import decorativeSpacing from '../common/utils/decorativeSpacing';
 import { normalizedHrefPage } from '../common/utils/hrefUtils';
 import { isAndroid, isCordova, isWebApp } from '../common/utils/isCordovaOrWebApp';
 import { cordovaOffsetLog } from '../common/utils/logging';
 import CordovaPageConstants from '../constants/CordovaPageConstants';
 import { getPageKey } from './cordovaPageUtils';
-import { decorativeSpacing } from './cordovaTopHeaderTopMargin';
 import { pageEnumeration } from './cordovaUtilsPageEnumeration';
 
 /* global $ */
@@ -187,7 +187,7 @@ export function headroomWrapperOffset (includePosition, pageNameOverride = null)
     offset = outerHeight + position;
     const page = pageNameOverride || pageEnumeration();
     if (page === 'PoliticianDetailsPage' && isCordova()) {
-      offset = -44;
+      offset = -50;
     } else if (page === 'candidatelist' || page === 'politicianpage' || page === 'values') {
       if (isIOS()) {
         if (page === 'values') {

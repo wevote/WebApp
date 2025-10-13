@@ -2,7 +2,7 @@ import { AppBar } from '@mui/material';
 import styled from 'styled-components';
 import standardBoxShadow from '../../common/components/Style/standardBoxShadow';
 import AppObservableStore from '../../common/stores/AppObservableStore';
-import { hasDynamicIsland, hasIPhoneNotch, isAndroidSizeMD, isAndroidSizeWide, isAndroidSizeXL, isIOS, isIOSAppOnMac, isIPad, isIPad11in, isIPadMini, isIPhone14Pro, isIPhone4p7in, isIPhone5p5inEarly, isIPhone5p5inMini, isIPhone6p1in, isIPhone6p5in } from '../../common/utils/cordovaUtils';
+import { hasDynamicIsland, hasIPhoneNotch, isAndroidSizeMD, isAndroidSizeWide, isAndroidSizeXL, isIOS, isIOSAppOnMac, isIOsSmallerThanPlus, isIPad, isIPhone4p7in, isIPhone5p5inEarly, isIPhone5p5inMini, isIPhone6p1in, isIPhone6p5in, isIPhoneMiniOrSmaller } from '../../common/utils/cordovaUtils';
 import { normalizedHrefPage } from '../../common/utils/hrefUtils';
 import { isAndroid, isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize, { isTablet } from '../../common/utils/isMobileScreenSize';
@@ -14,11 +14,12 @@ import { cordovaBallotFilterTopMargin } from '../../utils/cordovaOffsets';
 import cordovaScrollablePaneTopPadding from '../../utils/cordovaScrollablePaneTopPadding';
 import { pageEnumeration } from '../../utils/cordovaUtilsPageEnumeration';
 
+/* global $ */
 
 export const IOSNotchedSpacer = styled('div')`
   height: ${() => {
+    // if (hasDynamicIsland())       return '0';
     if (isIPhone5p5inMini())      return '40px';
-    if (hasDynamicIsland())       return '52px';
     return                        '36px';
   }};
   top: 0;
@@ -32,7 +33,9 @@ export const IOSNotchedSpacer = styled('div')`
 export const IOSNoNotchSpacer = styled('div')`
   height: ${() => {
     if (isIPad())                                   return '26px';
-    if (isIPhone4p7in() || isIPhone5p5inEarly())    return '22px';
+    if (isIPhoneMiniOrSmaller())                    return '22px';
+    if (hasDynamicIsland())                         return '52px';
+    if (isIOsSmallerThanPlus())                     return '24px';
     return                                                 '36px';
   }};
   top: ${() => ((isIPhone4p7in() ? '-1px' : '0px'))};
@@ -114,6 +117,16 @@ export const HeaderContentOuterContainer = styled('div')`
   padding-left: calc(-100% + 100vw);
 `;
 
+export function heightOfIOSSpacer () {
+  if (isIOS()) {
+    const iOSNotchedSpacer = $('div[class*=\'IOSNotchedSpacer\']');
+    const iOSNoNotchSpacer = $('div[class*=\'IOSNoNotchSpacer\']');
+    const height = iOSNotchedSpacer.length ? iOSNotchedSpacer.outerHeight() : iOSNoNotchSpacer.outerHeight();
+    return height;
+  }
+  return '';
+}
+
 export const DualHeaderContainer = styled('div', {
   shouldForwardProp: (prop) => !['scrolledDown'].includes(prop),
 })(({ scrolledDown }) => (`
@@ -128,10 +141,11 @@ export const DualHeaderContainer = styled('div', {
   left: 0;
 `));
 
-/* eslint-disable no-nested-ternary */
+// Sits on top of the iOS screen, on top of the IOSSpacer to prevent the scrolling main app from showing on top around the dynamic island
 export const HeadroomWrapper = styled('div')`
   position: fixed;
-  top: ${() => (hasDynamicIsland() ? (isIPhone14Pro() ? '22px' : '12px') : '0px')};
+  top: 0;
+  height: ${() => heightOfIOSSpacer()};
   left: 0;
   width: 100%;
   background: white;
@@ -150,10 +164,7 @@ export const TopOfPageHeader = styled('div')(({ theme }) => (`
     padding-left: 15px;
     padding-right: 15px;
   }
-  ${() => ((isIPad11in() || isIPadMini()) ? {
-    paddingLeft: '15px',
-    paddingRight: '15px',
-  } : {})
+  height: ${() => heightOfIOSSpacer()};
   }
 `));
 
@@ -234,11 +245,9 @@ function getBackToPaddingTop () {
   }
   const headerBack = $('#headerBackToBallotAppBar');
   if (isIOS() && headerBack.length) {
-    const iOSNotchedSpacer = $('div[class*=\'IOSNotchedSpacer\']');
-    const iOSNoNotchSpacer = $('div[class*=\'IOSNoNotchSpacer\']');
-    const height = iOSNotchedSpacer.length ? iOSNotchedSpacer.outerHeight() : iOSNoNotchSpacer.outerHeight();
+    const height = heightOfIOSSpacer();
     cordovaOffsetLog(`getBackToPaddingTop #headerBackToBallotAppBar iOS[No]NotchedSpacer.outerHeight(): ${height}, page: ${pageEnumeration()}`);
-    return `${height}px`;
+    return height.length ? `${height}px` : '';
   }
   // end calculated approach
 

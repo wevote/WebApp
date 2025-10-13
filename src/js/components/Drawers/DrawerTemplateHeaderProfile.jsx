@@ -130,7 +130,6 @@ const styles = () => ({
   },
   dialogPaper: {
     display: 'block',
-    marginTop: hasIPhoneNotch() ? 68 : 48,
     minWidth: '100%',
     maxWidth: '100%',
     width: '100%',
@@ -138,6 +137,7 @@ const styles = () => ({
     maxHeight: '100%',
     height: '100%',
     margin: '0 auto',
+    marginTop: hasIPhoneNotch() ? 68 : 48,
     '@media (min-width: 577px)': {
       maxWidth: '550px',
       width: '90%',

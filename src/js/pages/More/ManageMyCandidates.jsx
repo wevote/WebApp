@@ -299,10 +299,10 @@ Thanks for your help!`;
               </HeaderActions>
             </ModalHeader>
 
-            <InfoRow>
+            <ManageInfoRow>
               <InfoDot aria-hidden>i</InfoDot>
               <span>Link will appear below text</span>
-            </InfoRow>
+            </ManageInfoRow>
 
             <ModalBody>
               <pre>{invitationBody}</pre>
@@ -325,12 +325,13 @@ Thanks for your help!`;
             </ModalHeader>
 
             <BarBetween>
-              <InfoRow>
+              <ManageInfoRow>
                 <InfoDot aria-hidden>i</InfoDot>
                 <span>Link will appear below text</span>
-              </InfoRow>
+              </ManageInfoRow>
               <HeaderLink type="button" onClick={handleEditCopy}>
-                <CopyIcon fontSize="small" /> <span>Copy</span>
+                <CopyIcon fontSize="small" />
+                <span>Copy</span>
               </HeaderLink>
             </BarBetween>
 
@@ -363,10 +364,14 @@ Thanks for your help!`;
               <CloseX type="button" aria-label="Close" onClick={closePaste}>×</CloseX>
             </ModalHeader>
 
-            <InfoRow>
+            <ManageInfoRow>
               <InfoDot aria-hidden>i</InfoDot>
-              <span>One person per line. Format: <i>Name, Email, Phone</i> (fields optional)</span>
-            </InfoRow>
+              <span>
+                One person per line. Format:
+                <i>Name, Email, Phone</i>
+                (fields optional)
+              </span>
+            </ManageInfoRow>
 
             <EditAreaWrapper>
               <EditTextArea
@@ -800,7 +805,7 @@ const CloseX = styled.button`
   padding: 2px 6px;
 `;
 
-const InfoRow = styled.div`
+const ManageInfoRow = styled.div`
   color: ${DesignTokenColors.neutralUI600};
   display: flex;
   align-items: center;

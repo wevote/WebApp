@@ -61,7 +61,7 @@ function startMessaging (voterDeviceId) {
     console.log('Cordova: Firebase FCM - Push messaging is allowed');
   });
 
-  // getInstanceId seems to have dissapeared, 10/22/21
+  // getInstanceId seems to have disappeared, 10/22/21
   // messaging.getInstanceId().then((instanceId) => {
   //   console.log('Cordova: Firebase FCM - Got instanceId: ', instanceId);
   // });
@@ -98,17 +98,12 @@ export function initializationForCordova (startReact) {
   console.log('Cordova:   Startup sequence 1: Wait for deviceready event');
   document.addEventListener('deviceready', (id) => {
     window.isDeviceReady = true;
-    console.log('Cordova:   window.isDeviceReady', window.isDeviceReady, 'Event: ', id.type);
-    console.log(`Cordova:   Running cordova-${window.cordova.platformId}@${window.cordova.version}`);
-    // const { plugins: { screensize } } = window;
+    console.log(`Cordova:   window.isDeviceReady: ${window?.isDeviceReady}, Event: ${id?.type}`);
+    console.log(`Cordova:   Running cordova-${window?.cordova?.platformId}@${window?.cordova?.version}`);
     console.log('Cordova:   Startup sequence 2: Wait for pbakondy screensize');
-    // screensize.get((result) => {
-    //   console.log('Cordova:   screensize.get: ', JSON.stringify(result));
-    //   // dumpObjProps('window.device', window.device);
-    //   window.pbakondyScreenSize = result;
     if (isIPad()) {
       document.querySelector('body').style.height = getCordovaScreenHeight();
-      console.log('Cordova: Initial "body" height for iPad = calculation disabled '); // , result.height / result.scale);
+      console.log('Cordova:   Initial "body" height for iPad = calculation disabled '); // , result.height / result.scale);
     }
     if (isAndroid()) {
       // July 2025, Android "backbutton" is not handled since pushHistory is only keeping the previous location, so pressing "backbutton" twice would be a mess
@@ -175,7 +170,7 @@ export function initializationForCordova (startReact) {
               });
             } catch (errLockFinal) {
               // Aug 2023:  Often works the second time, if not wait for https://github.com/apache/cordova-plugin-screen-orientation/pull/116 to be resolved for iOS 1.4
-              console.log('Cordova:   screen lock FAILED the 2nd try, giving up: ', errLock);
+              console.log(`Cordova:   screen lock FAILED the 2nd try, giving up: ${errLock}`);
               postLockInitialization(voterDeviceId, startReact);
             }
           }
@@ -186,7 +181,7 @@ export function initializationForCordova (startReact) {
       }
     });
 
-    // 9/28/23 TODO HACK TO AVOID PKUGIN THAT MIGHT NOT BE LOADING
+    // 9/28/23 TODO HACK TO AVOID PLUGIN THAT MIGHT NOT BE LOADING
     if (isIOS() && window.Keyboard) {
       window.Keyboard.disableScroll(false);  // Aug 2022, need to set the initial state
     }

@@ -452,6 +452,8 @@ class SettingsVerifySecretCode extends Component {
       document.getElementById('digit4').blur(); // prevents change from firing on chrome
       document.getElementById('digit5').blur(); // prevents change from firing on chrome
       document.getElementById('digit6').blur(); // prevents change from firing on chrome
+      // If all digits were pasted in, do not require a 'Verify' button keystroke
+      this.voterVerifySecretCode();
     } else {
       this.setState({
         digit1: '',

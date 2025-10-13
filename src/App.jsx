@@ -17,6 +17,7 @@ import historyPush from './js/common/utils/historyPush';
 import { isWeVoteMarketingSite, normalizedHref } from './js/common/utils/hrefUtils';
 import initializejQuery from './js/common/utils/initializejQuery';
 import { isAndroid, isCordova, isWebApp } from './js/common/utils/isCordovaOrWebApp';
+import Cookies from './js/common/utils/js-cookie/Cookies';
 import { renderLog } from './js/common/utils/logging';
 import Header from './js/components/Navigation/Header';
 import HeaderBarSuspense from './js/components/Navigation/HeaderBarSuspense';
@@ -24,7 +25,6 @@ import webAppConfig from './js/config';
 import VoterStore from './js/stores/VoterStore';
 import initializeFacebookSDK from './js/utils/initializeFacebookSDK';
 import RouterV5SendMatch from './js/utils/RouterV5SendMatch';
-import Cookies from './js/common/utils/js-cookie/Cookies';
 // importRemoveCordovaListenersToken1  -- Do not remove this line!
 
 // Root URL pages
@@ -201,7 +201,7 @@ class App extends Component {
       // July 2025, Android "backbutton" is not handled since pushHistory is only keeping the previous location, so pressing "backbutton" twice would be a mess
       // Also it was originally noted as a bug in the How it Works dialog, which would be a special case that would not use pushHistory
       // This listener is for Chrome on an Android device while browsing wevote.us
-      document.addEventListener("backbutton", () => {}, false);
+      document.addEventListener('backbutton', () => {}, false);
       // if isCordova(), then this is handled in startCordova, after the deviceready event
     }
 
@@ -288,7 +288,7 @@ class App extends Component {
             },
           };
 
-          console.log('Initializing Google Tag Manager with GTM ID:', weVoteGTMId);
+          console.log(`Initializing Google Tag Manager with GTM ID: ${weVoteGTMId}`);
           TagManager.initialize(tagManagerArgs);
         } else {
           console.log('Google Tag Manager did not receive a valid GTM ID, NOT ENABLED');
