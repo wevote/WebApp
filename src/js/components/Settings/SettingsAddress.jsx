@@ -71,6 +71,7 @@ export default class SettingsAddressForDrawer extends Component {
   render () {
     renderLog('SettingsAddressForDrawer');  // Set LOG_RENDER_EVENTS to log all renders
     const { addressSaved, originalTextAddress } = this.state;
+    const pigsCanFly = false;
     return (
       <div className="u-stack--md u-f4">
         <Helmet title="Enter Address - WeVote" />
@@ -82,12 +83,14 @@ export default class SettingsAddressForDrawer extends Component {
                 <div className="h1 u-padding-top--xs">
                   Ballot address
                 </div>
-                <Disclaimer>
-                  <InfoOutlinedIcon className="u-gray-mid" />
-                  <Link id="ballotDisclaimer" to="/more/faq">
-                    <span className="u-no-break u-link-color u-margin-left--xs">Ballot Disclaimer</span>
-                  </Link>
-                </Disclaimer>
+                {pigsCanFly && (
+                  <Disclaimer>
+                    <InfoOutlinedIcon className="u-gray-mid" />
+                    <Link id="ballotDisclaimer" to="/more/faq">
+                      <span className="u-no-break u-link-color u-margin-left--xs">Ballot Disclaimer</span>
+                    </Link>
+                  </Disclaimer>
+                )}
               </Header>
               {addressSaved ? (
                 <div className="u-margin-top--lg">
@@ -115,23 +118,12 @@ export default class SettingsAddressForDrawer extends Component {
               ) : (
                 <div>
                   <div className="u-margin-top--lg">
-                    <h3 className="h3">
-                      Enter your address to see your acurate ballot
-                    </h3>
+                    <div>
+                      Enter your address to see your accurate ballot
+                    </div>
                     <DataSettingText>
                       We will never share your address or send you any mail.
                     </DataSettingText>
-                    <span>
-                      Current ballot is shown for:
-                    </span>
-                    <p className="u-padding-top--sm u-stack--lg">
-                      <span className="u-bold">
-                        {' '}
-                        {this.state.textForMapSearch}
-                        {' '}
-                      </span>
-                      <span className="u-gray-mid"><br/>(approximate location from your internet provider)</span>
-                    </p>
                   </div>
                   <SettingsAddressBox
                     introductionHtml={(
@@ -146,6 +138,20 @@ export default class SettingsAddressForDrawer extends Component {
                     toggleEditingAddress={this.toggleEditingAddress}
                     onAddressSaveSuccess={this.handleAddressSaveSuccess}
                   />
+                  <span>
+                    Current ballot is shown for:
+                  </span>
+                  <p className="u-padding-top--sm u-stack--lg">
+                    <span className="u-bold">
+                      {' '}
+                      {this.state.textForMapSearch}
+                      {' '}
+                    </span>
+                    <span className="u-gray-mid">
+                      <br/>
+                      (approximate location from your internet provider)
+                    </span>
+                  </p>
                 </div>
               )}
             </div>
@@ -174,7 +180,7 @@ const DataSettingText = styled('div')`
 
 const CurrentBallotText = styled('span')`
   font-style: italic;
-  font-size: 20px;
+  // font-size: 20px;
 `;
 
 const BallotAddressText = styled('p')`

@@ -22,6 +22,8 @@ import SettingsNotifications from '../Settings/SettingsNotifications';
 import { NavLinksContainer } from '../Style/drawerLayoutStyles';
 import DrawerTemplateHeaderProfile from './DrawerTemplateHeaderProfile';
 
+const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
+
 // const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 const SignInOptionsPanel = React.lazy(() => import(/* webpackChunkName: 'SignInOptionsPanel' */ '../../common/components/SignIn/SignInOptionsPanel'));
 
@@ -66,13 +68,18 @@ const HeaderProfileDrawer = () => {
   //   setViewerIsThisAuthenticatedPerson(authenticatedPerson && getAppContextValue('profileDrawerPersonId') === authenticatedPerson.personId);
   // }, [getAppContextValue, authenticatedPerson]);
 
-  const profileNavOptions = [
+  let profileNavOptions = [
     { icon: <AccountCircle $isActive={String(displayProfileOption) === 'nameAndPhoto'} />, linkName: 'nameAndPhoto', linkTextJsx: <LinkSpan $isActive={String(displayProfileOption) === 'nameAndPhoto'}>Name & Photo</LinkSpan> },
-    { icon: <AddressIcon $isActive={String(displayProfileOption) === 'address'} />, linkName: 'address', linkTextJsx: <LinkSpan $isActive={String(displayProfileOption) === 'address'}>Ballot Address</LinkSpan> },
+  ];
+  if (nextReleaseFeaturesEnabled) {
+    profileNavOptions.append({ icon: <AddressIcon $isActive={String(displayProfileOption) === 'address'} />, linkName: 'address', linkTextJsx: <LinkSpan $isActive={String(displayProfileOption) === 'address'}>Ballot Address</LinkSpan> });
+  }
+  const profileNavOptions2 = [
     { icon: <SecurityIcon $isActive={String(displayProfileOption) === 'securityAndSignIn'} />, linkName: 'securityAndSignIn', linkTextJsx: <LinkSpan $isActive={String(displayProfileOption) === 'securityAndSignIn'}>Security &amp; Sign In</LinkSpan> },
     { icon: <PrivacyIcon $isActive={String(displayProfileOption) === 'yourData'} />, linkName: 'yourData', linkTextJsx: <LinkSpan $isActive={String(displayProfileOption) === 'yourData'}>Privacy &amp; Data</LinkSpan> },
     { icon: <NotificationsIcon $isActive={String(displayProfileOption) === 'notifications'} />, linkName: 'notifications', linkTextJsx: <LinkSpan $isActive={String(displayProfileOption) === 'notifications'}>Notifications</LinkSpan> },
   ];
+  profileNavOptions = profileNavOptions.concat(profileNavOptions2);
 
   // useEffect to handle which component to display from nav
   useEffect(() => {
