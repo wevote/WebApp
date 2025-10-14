@@ -72,7 +72,7 @@ const HeaderProfileDrawer = () => {
     { icon: <AccountCircle $isActive={String(displayProfileOption) === 'nameAndPhoto'} />, linkName: 'nameAndPhoto', linkTextJsx: <LinkSpan $isActive={String(displayProfileOption) === 'nameAndPhoto'}>Name & Photo</LinkSpan> },
   ];
   if (nextReleaseFeaturesEnabled) {
-    profileNavOptions.append({ icon: <AddressIcon $isActive={String(displayProfileOption) === 'address'} />, linkName: 'address', linkTextJsx: <LinkSpan $isActive={String(displayProfileOption) === 'address'}>Ballot Address</LinkSpan> });
+    profileNavOptions.push({ icon: <AddressIcon $isActive={String(displayProfileOption) === 'address'} />, linkName: 'address', linkTextJsx: <LinkSpan $isActive={String(displayProfileOption) === 'address'}>Ballot Address</LinkSpan> });
   }
   const profileNavOptions2 = [
     { icon: <SecurityIcon $isActive={String(displayProfileOption) === 'securityAndSignIn'} />, linkName: 'securityAndSignIn', linkTextJsx: <LinkSpan $isActive={String(displayProfileOption) === 'securityAndSignIn'}>Security &amp; Sign In</LinkSpan> },
