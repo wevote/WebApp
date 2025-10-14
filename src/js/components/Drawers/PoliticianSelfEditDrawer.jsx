@@ -27,7 +27,6 @@ const PoliticianSelfEditDrawer = () => {
   const [headerFixedJsx] = useState(<></>);
   const [displayProfileOption, setDisplayProfileOption] = useState('nameAndPhoto');
   const [displayProfileComponent, setDisplayProfileComponent] = useState();
-  const [headerProfileSectionSetFromAppContext, setHeaderProfileSectionSetFromAppContext] = useState(false);
   const [isOnManagePage, setIsOnManagePage] = useState(true);
   const [politician, setPolitician] = useState({});
   const [politicianWeVoteId, setPoliticianWeVoteId] = useState('');
@@ -115,7 +114,6 @@ const PoliticianSelfEditDrawer = () => {
   const onCloseDrawer = () => {
     // console.log('PoliticianSelfEditDrawer onCloseDrawer');
     AppObservableStore.setHeaderProfileSection('nameAndPhoto');
-    setHeaderProfileSectionSetFromAppContext('unset');
     const drawerOpenGlobalVariableName = 'politicianSelfEditDrawerOpen';
     AppObservableStore.setDrawerOpen(drawerOpenGlobalVariableName, false);
   };
@@ -179,15 +177,11 @@ const PoliticianSelfEditDrawer = () => {
   };
 
   const onAppObservableStoreChange = useCallback(() => {
-    if (displayProfileOption && displayProfileOption !== headerProfileSectionSetFromAppContext) {
-      setHeaderProfileSectionSetFromAppContext(AppObservableStore.getHeaderProfileSection());
-      setDisplayProfileOption(AppObservableStore.getHeaderProfileSection());
-    }
     if (AppObservableStore.getPoliticianWeVoteIdBeingViewed()) {
       setPoliticianWeVoteId(AppObservableStore.getPoliticianWeVoteIdBeingViewed());
       // console.log('PoliticianSelfEditDrawer onAppObservableStoreChange politicianWeVoteId:', AppObservableStore.getPoliticianWeVoteIdBeingViewed());
     }
-  }, [setDisplayProfileOption, setHeaderProfileSectionSetFromAppContext, setPoliticianWeVoteId]);
+  }, [setDisplayProfileOption, setPoliticianWeVoteId]);
 
   const onPoliticianStoreChange = useCallback(() => {
     const currentPoliticianWeVoteId = politicianWeVoteIdRef.current;
@@ -216,6 +210,7 @@ const PoliticianSelfEditDrawer = () => {
   }, [onPoliticianStoreChange, politicianWeVoteId]);
 
   useEffect(() => {
+    // console.log('PoliticianSelfEditDrawer OnLoad: ', displayProfileOption);
     const politicianStoreListener = PoliticianStore.addListener(onPoliticianStoreChange);
     onPoliticianStoreChange();
     return () => {

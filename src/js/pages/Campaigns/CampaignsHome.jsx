@@ -18,6 +18,7 @@ import { isAndroid } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import CampaignsHomeFilter from '../../components/CampaignsHome/CampaignsHomeFilter';
 import CandidateListRootPlaceholder from '../../components/CampaignsHome/CandidateListRootPlaceholder';
+import DelayedLoad from '../../common/components/Widgets/DelayedLoad';
 import NoSearchResult from '../../components/Search/NoSearchResult';
 import webAppConfig from '../../config';
 import BallotStore from '../../stores/BallotStore';
@@ -842,10 +843,12 @@ class CampaignsHome extends Component {
           stateCode={stateCode}
         />
         {(isSearching && numberOfSearchResults === 0) && (
-          <NoSearchResult
-            title="No Candidates Found"
-            subtitle={stateCode ? 'Please try a different search term or state.' : 'Please try a different search term.'}
-          />
+          <DelayedLoad showLoadingText waitBeforeShow={3000}>
+            <NoSearchResult
+              title="No candidates found"
+              subtitle={stateCode ? 'Please try a different search term or state.' : 'Please try a different search term.'}
+            />
+          </DelayedLoad>
         )}
 
         {(nextReleaseFeaturesEnabled && pigsCanFly) && (
