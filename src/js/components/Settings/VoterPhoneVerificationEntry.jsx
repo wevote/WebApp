@@ -11,6 +11,7 @@ import React, { Component, Suspense } from 'react';
 import { isValidPhoneNumber } from 'react-phone-number-input';
 import styled from 'styled-components';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import TagManager from 'react-gtm-module';
 import Tooltip from 'react-bootstrap/Tooltip';
 import VoterActions from '../../actions/VoterActions';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
@@ -23,6 +24,7 @@ import VoterStore from '../../stores/VoterStore';
 import { FirstRowPhoneOrEmail, SecondRowPhoneOrEmail, SecondRowPhoneOrEmailDiv, AllPhoneOrEmailTypes } from '../Style/pageLayoutStyles';
 import { ButtonContainerHorizontal } from '../Welcome/sectionStyles';
 import SettingsVerifySecretCode from '../../common/components/Settings/SettingsVerifySecretCode';
+import { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
 // import { validatePhoneOrEmail } from '../../utils/regex-checks';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
@@ -430,6 +432,22 @@ class VoterPhoneVerificationEntry extends Component {
     }
   };
 
+  pushDataLayer = (buttonId, actionType) => {
+    const dataLayerObject = {
+      actionDetails: {
+        actionType,
+        buttonId,
+      },
+      event: 'click',
+      verifyDetails: {
+        verifyMethod: 'SMS',
+      },
+      pageDetails: getPageDetails(),
+      userDetails: VoterStore.getAnalyticsUserDetails(),
+    };
+    TagManager.dataLayer({ dataLayer: dataLayerObject });
+  };
+
   render () {
     renderLog('VoterPhoneVerificationEntry');  // Set LOG_RENDER_EVENTS to log all renders
     const { doNotRender } = this.props;
@@ -559,7 +577,11 @@ class VoterPhoneVerificationEntry extends Component {
                   color="primary"
                   disabled={disablePhoneVerificationButton || signInCodeSMSSentAndWaitingForResponse}
                   id="voterPhoneSendSMS"
-                  onClick={this.sendSignInCodeSMS}
+                  onClick={(e) => {
+                    const buttonId = e.target.id;
+                    this.sendSignInCodeSMS();
+                    this.pushDataLayer(buttonId, 'sendVerification');
+                  }}
                   onAnimationEnd={() => this.onAnimationEndSend()}
                   variant="contained"
                 >
