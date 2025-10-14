@@ -385,7 +385,7 @@ const VoterPositionEntryAndDisplay = ({ classes, externalUniqueId, politicianWeV
           <FormControlLabel
             value="INFO_ONLY"
             control={<Radio color="primary" />}
-            label="Info only"
+            label="Not sure yet"
             classes={{ root: classes.radioLabel }}
           />
         </RadioGroup>
