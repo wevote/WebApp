@@ -23,7 +23,6 @@ import VoterStore from '../../../stores/VoterStore';
 import { headroomWrapperOffset } from '../../../utils/cordovaCalculatedOffsets';
 import { cordovaBallotFilterTopMargin } from '../../../utils/cordovaOffsets';
 import { getPageKey } from '../../../utils/cordovaPageUtils';
-// import VoterPositionEntryAndDisplayMook from '../../components/PositionItem/VoterPositionEntryAndDisplay';
 import { getPageDetails } from '../../../utils/lookupPageNameAndPageTypeDict';
 import CampaignChipInLink from '../../components/Campaign/CampaignChipInLink';
 import CampaignOwnersList from '../../components/CampaignSupport/CampaignOwnersList';

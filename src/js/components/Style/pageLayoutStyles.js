@@ -18,7 +18,7 @@ import { pageEnumeration } from '../../utils/cordovaUtilsPageEnumeration';
 
 export const IOSNotchedSpacer = styled('div')`
   height: ${() => {
-    // if (hasDynamicIsland())       return '0';
+    if (hasDynamicIsland())       return '0';
     if (isIPhone5p5inMini())      return '40px';
     return                        '36px';
   }};

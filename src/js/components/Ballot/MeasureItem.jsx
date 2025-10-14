@@ -306,7 +306,7 @@ const MeasureItemSubTitle = styled('h3')(({ theme }) => (`
   ${theme.breakpoints.down('lg')} {
     font-size: 13px;
   }
-  ${isCordova() && 'font-weight: 600'}
+  ${isCordova() ? 'font-weight: 600' : ''}
 `));
 
 export default withTheme(withStyles(styles)(MeasureItem));

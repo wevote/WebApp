@@ -1,13 +1,12 @@
 class;size;type;marketingNumber;name;modelId
 
-
 iPhone4in;4.0;phone;5;iPhone 5;iPhone5,1
 iPhone4in;4.0;phone;5;iPhone 5;iPhone5,2
 iPhone4in;4.0;phone;5C;iPhone 5C;iPhone5,3
 iPhone4in;4.0;phone;5C;iPhone 5C;iPhone5,4
 iPhone4in;4.0;phone;5S;iPhone 5S;iPhone6,1
 iPhone4in;4.0;phone;5S;iPhone 5S;iPhone6,2
-iPhone4in;4.0;phone;SE;iPhone SE;iPhone8,4
+iPhone4in;4.0;phone;SE;iPhone SE 1st Gen;iPhone8,4
 
 
 iPhone4p7in;4.7;phone;6;iPhone 6;iPhone7,2
@@ -30,14 +29,14 @@ iPhone5p5inEarly;5.5;phone;8;iPhone 8 Plus;iPhone10,5
 iPhone5p5inMini;5.5;phone;12;iPhone 12 Mini;iPhone13,1
 iPhone5p5inMini;5.5;phone;13;iPhone 13 Mini;iPhone14,4
 
-iPhone5p8in;5.8;phone;12;iPhone 12 Pro Max;iPhone12,3
+
 iPhone5p8in;5.8;phone;X;iPhone X;iPhone10,3
 iPhone5p8in;5.8;phone;X;iPhone X;iPhone10,6
 iPhone5p8in;5.8;phone;XS;iPhone XS;iPhone11,2
+iPhone5p8in;5.8;phone;11;iPhone 11 Pro;iPhone12,3
 
 iPhone6p1in;6.1;phone;11;iPhone 11;iPhone12,1
 iPhone6p1in;6.1;phone;12;iPhone 12 Pro;iPhone13,3
-iPhone6p1in;6.1;phone;12;iPhone 12;iPhone13,2
 iPhone6p1in;6.1;phone;12;iPhone 12;iPhone13,2
 iPhone6p1in;6.1;phone;13;iPhone 13 Pro;iPhone14,2
 iPhone6p1in;6.1;phone;13;iPhone 13;iPhone14,5
@@ -45,6 +44,7 @@ iPhone6p1in;6.1;phone;14;iPhone 14;iPhone14,7
 iPhone6p1in;6.1;phone;15;iPhone 15 Pro;iPhone16,1
 iPhone6p1in;6.1;phone;15;iPhone 15;iPhone15,4
 iPhone6p1in;6.1;phone;XR;iPhone XR;iPhone11,8
+iPhone6p1in;6.1;phone;16;iPhone 16;iPhone17,3
 iPhone6p1in;6.1;phone;16E;iPhone 16e;iPhone17,5
 iPhone6p1in;6.3;phone;16;iPhone 16 Pro;iPhone17,1
 iPhone6p1in;6.3;phone;17;iPhone 17 Pro;iPhone18,1
@@ -58,19 +58,18 @@ iPhone6p5in;6.5;phone;14;iPhone 14 Pro;iPhone15,2
 iPhone6p5in;6.5;phone;Air;iPhone Air;iPhone18,4
 iPhone6p5in;6.5;phone;XS;iPhone XS Max;iPhone11,4
 iPhone6p5in;6.5;phone;XS;iPhone XS Max;iPhone11,6
-iPhone6p5in;6.7;phone;12;iPhone 12 Pro Max;iPhone12,5
+iPhone6p5in;6.7;phone;12;iPhone 12 Pro Max;iPhone13,4
 iPhone6p5in;6.7;phone;15;iPhone 15 Plus;iPhone15,5
-iPhone6p5in;6.7;phone;15;iPhone 15 Pro Max;iPhone16,1
+iPhone6p5in;6.7;phone;15;iPhone 15 Pro Max;iPhone16,2
 iPhone6p5in;6.7;phone;16;iPhone 16 Plus;iPhone17,4
 iPhone6p5in;6.9;phone;16;iPhone 16 Pro Max;iPhone17,2
 iPhone6p5in;6.9;phone;17;iPhone 17 Pro Max;iPhone18,2
 
-
-iPad11in;10.5;ipad;1;iPad Air 1st Gen;iPad4,1
-iPad11in;10.5;ipad;1;iPad Air 1st Gen;iPad4,2
-iPad11in;10.5;ipad;1;iPad Air 1st Gen;iPad4,3
-iPad11in;10.5;ipad;2;iPad Air 2nd Gen;iPad5,3
-iPad11in;10.5;ipad;2;iPad Air 2nd Gen;iPad5,4
+iPad11in;9.7;ipad;1;iPad Air 1st Gen;iPad4,1
+iPad11in;9.7;ipad;1;iPad Air 1st Gen;iPad4,2
+iPad11in;9.7;ipad;1;iPad Air 1st Gen;iPad4,3
+iPad11in;9.7;ipad;2;iPad Air 2nd Gen;iPad5,3
+iPad11in;9.7;ipad;2;iPad Air 2nd Gen;iPad5,4
 iPad11in;10.5;ipad;3;iPad Air 3rd Gen;iPad11,3
 iPad11in;10.9;ipad;3;iPad Air 3th Gen;iPad11,4
 iPad11in;10.9;ipad;4;iPad Air 4th Gen;iPad13,1
@@ -130,23 +129,22 @@ iPad11in;10.9;ipad;10;iPad 10th Gen;iPad13,19
 iPad11in;10.9;ipad;A16;iPad A16;iPad15,7
 iPad11in;10.9;ipad;A16;iPad A16;iPad15,8
 
-
 iPad13in;12.9;ipad;1;iPad Pro 1st Gen;iPad6,7
 iPad13in;12.9;ipad;1;iPad Pro 1st Gen;iPad6,8
 iPad11in;9.7;ipad;1;iPad Pro 1st Gen;iPad6,3
 iPad11in;9.7;ipad;1;iPad Pro 1st Gen;iPad6,4
-iPad11in;12.0;ipad;2;iPad Pro 2nd Gen;iPad7,1
-iPad11in;12.0;ipad;2;iPad Pro 2nd Gen;iPad7,2
+iPad11in;12.9;ipad;2;iPad Pro 2017 Gen;iPad7,1
+iPad11in;12.9;ipad;2;iPad Pro 2017 Gen;iPad7,2
 iPad11in;10.5;ipad;5;iPad Pro 5th Gen;iPad7,3
 iPad11in;10.5;ipad;5;iPad Pro 5th Gen;iPad7,4
 iPad11in;11.0;ipad;3;iPad Pro 3rd Gen;iPad8,1
 iPad11in;11.0;ipad;3;iPad Pro 3rd Gen;iPad8,2
 iPad11in;11.0;ipad;3;iPad Pro 3rd Gen;iPad8,3
 iPad11in;11.0;ipad;3;iPad Pro 3rd Gen;iPad8,4
-iPad11in;12.0;ipad;3;iPad Pro 3rd Gen;iPad8,5
-iPad11in;12.0;ipad;3;iPad Pro 3rd Gen;iPad8,6
-iPad11in;12.0;ipad;3;iPad Pro 3rd Gen;iPad8,7
-iPad11in;12.0;ipad;3;iPad Pro 3rd Gen;iPad8,8
+iPad11in;12.9;ipad;3;iPad Pro 3rd Gen;iPad8,5
+iPad11in;12.9;ipad;3;iPad Pro 3rd Gen;iPad8,6
+iPad11in;12.9;ipad;3;iPad Pro 3rd Gen;iPad8,7
+iPad11in;12.9;ipad;3;iPad Pro 3rd Gen;iPad8,8
 iPad11in;11.0;ipad;2;iPad Pro 2nd Gen;iPad8,9
 iPad11in;11.0;ipad;2;iPad Pro 2nd Gen;iPad8,10
 iPad13in;12.9;ipad;4;iPad Pro 4th Gen;iPad8,11
@@ -155,13 +153,16 @@ iPad11in;11.0;ipad;3;iPad Pro 3rd Gen;iPad13,4
 iPad11in;11.0;ipad;3;iPad Pro 3rd Gen;iPad13,5
 iPad11in;11.0;ipad;3;iPad Pro 3rd Gen;iPad13,6
 iPad11in;11.0;ipad;3;iPad Pro 3rd Gen;iPad13,7
+iPad11in;12.9;ipad;5;iPad Pro 5th Gen;iPad13,8
+iPad11in;12.9;ipad;5;iPad Pro 5th Gen;iPad13,9
+iPad11in;12.9;ipad;5;iPad Pro 5th Gen;iPad13,10
+iPad11in;12.9;ipad;5;iPad Pro 5th Gen;iPad13,11
 iPad11in;11.0;ipad;4;iPad Pro 4th Gen;iPad14,3
 iPad11in;11.0;ipad;4;iPad Pro 4th Gen;iPad14,4
 iPad13in;12.9;ipad;6;iPad Pro 6th Gen;iPad14,5
 iPad13in;12.9;ipad;6;iPad Pro 6th Gen;iPad14,6
 iPad11in;11.0;ipad;M4;iPad Pro M4;iPad16,3
 iPad11in;11.0;ipad;M4;iPad Pro M4;iPad16,4
-iPad13in;13.0;ipad;M4;iPad Pro M4;iPad16,5
 iPad13in;13.0;ipad;M4;iPad Pro M4;iPad16,5
 iPad13in;13.0;ipad;M4;iPad Pro M4;iPad16,6
 

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import colors from '../../common/components/Style/Colors';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
-import { isIOs6p1OSmaller, isIOSAppOnMac, isIPadGiantSize } from '../../common/utils/cordovaUtils';
+import { isIOs6p1OrSmaller, isIOSAppOnMac, isIPadGiantSize } from '../../common/utils/cordovaUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import showBallotDecisionsTabs from '../../utilsApi/showBallotDecisionsTabs'; // 2024-04-16 Upgrade to using this
@@ -50,7 +50,7 @@ export const ElectionNameBlock = styled('div', {
 
 function electionNameH1Width () {
   let size = window.screen.width > 576 ? '30px' : '26px';
-  if (isCordova() && isIOs6p1OSmaller()) {
+  if (isCordova() && isIOs6p1OrSmaller()) {
     size = '20px';
   }
   return size;
@@ -66,7 +66,7 @@ export const ElectionNameH1 = styled('h1', {
     padding-top: 5px;
     padding-bottom: 12px;
   }
-  ${() => (isIOs6p1OSmaller() ? 'font-weight: 600;' : '')}
+  ${() => (isIOs6p1OrSmaller() ? 'font-weight: 600;' : '')}
   line-height: 1;
   margin: 0px;
   ${centerText ? 'text-align: center;' : ''}

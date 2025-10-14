@@ -52,7 +52,7 @@
     "size": 4,
     "type": "phone",
     "marketingNumber": "SE",
-    "name": "iPhone SE",
+    "name": "iPhone SE 1st Gen",
     "modelId": "iPhone8,4"
   },
   {
@@ -187,14 +187,6 @@
     "class": "iPhone5p8in",
     "size": 5.8,
     "type": "phone",
-    "marketingNumber": "12",
-    "name": "iPhone 12 Pro Max",
-    "modelId": "iPhone12,3"
-  },
-  {
-    "class": "iPhone5p8in",
-    "size": 5.8,
-    "type": "phone",
     "marketingNumber": "X",
     "name": "iPhone X",
     "modelId": "iPhone10,3"
@@ -216,6 +208,14 @@
     "modelId": "iPhone11,2"
   },
   {
+    "class": "iPhone5p8in",
+    "size": 5.8,
+    "type": "phone",
+    "marketingNumber": "11",
+    "name": "iPhone 11 Pro",
+    "modelId": "iPhone12,3"
+  },
+  {
     "class": "iPhone6p1in",
     "size": 6.1,
     "type": "phone",
@@ -230,14 +230,6 @@
     "marketingNumber": "12",
     "name": "iPhone 12 Pro",
     "modelId": "iPhone13,3"
-  },
-  {
-    "class": "iPhone6p1in",
-    "size": 6.1,
-    "type": "phone",
-    "marketingNumber": "12",
-    "name": "iPhone 12",
-    "modelId": "iPhone13,2"
   },
   {
     "class": "iPhone6p1in",
@@ -294,6 +286,14 @@
     "marketingNumber": "XR",
     "name": "iPhone XR",
     "modelId": "iPhone11,8"
+  },
+  {
+    "class": "iPhone6p1in",
+    "size": 6.1,
+    "type": "phone",
+    "marketingNumber": "16",
+    "name": "iPhone 16",
+    "modelId": "iPhone17,3"
   },
   {
     "class": "iPhone6p1in",
@@ -397,7 +397,7 @@
     "type": "phone",
     "marketingNumber": "12",
     "name": "iPhone 12 Pro Max",
-    "modelId": "iPhone12,5"
+    "modelId": "iPhone13,4"
   },
   {
     "class": "iPhone6p5in",
@@ -413,7 +413,7 @@
     "type": "phone",
     "marketingNumber": "15",
     "name": "iPhone 15 Pro Max",
-    "modelId": "iPhone16,1"
+    "modelId": "iPhone16,2"
   },
   {
     "class": "iPhone6p5in",
@@ -441,7 +441,7 @@
   },
   {
     "class": "iPad11in",
-    "size": 10.5,
+    "size": 9.7,
     "type": "ipad",
     "marketingNumber": "1",
     "name": "iPad Air 1st Gen",
@@ -449,7 +449,7 @@
   },
   {
     "class": "iPad11in",
-    "size": 10.5,
+    "size": 9.7,
     "type": "ipad",
     "marketingNumber": "1",
     "name": "iPad Air 1st Gen",
@@ -457,7 +457,7 @@
   },
   {
     "class": "iPad11in",
-    "size": 10.5,
+    "size": 9.7,
     "type": "ipad",
     "marketingNumber": "1",
     "name": "iPad Air 1st Gen",
@@ -465,7 +465,7 @@
   },
   {
     "class": "iPad11in",
-    "size": 10.5,
+    "size": 9.7,
     "type": "ipad",
     "marketingNumber": "2",
     "name": "iPad Air 2nd Gen",
@@ -473,7 +473,7 @@
   },
   {
     "class": "iPad11in",
-    "size": 10.5,
+    "size": 9.7,
     "type": "ipad",
     "marketingNumber": "2",
     "name": "iPad Air 2nd Gen",
@@ -961,18 +961,18 @@
   },
   {
     "class": "iPad11in",
-    "size": 12,
+    "size": 12.9,
     "type": "ipad",
     "marketingNumber": "2",
-    "name": "iPad Pro 2nd Gen",
+    "name": "iPad Pro 2017 Gen",
     "modelId": "iPad7,1"
   },
   {
     "class": "iPad11in",
-    "size": 12,
+    "size": 12.9,
     "type": "ipad",
     "marketingNumber": "2",
-    "name": "iPad Pro 2nd Gen",
+    "name": "iPad Pro 2017 Gen",
     "modelId": "iPad7,2"
   },
   {
@@ -1025,7 +1025,7 @@
   },
   {
     "class": "iPad11in",
-    "size": 12,
+    "size": 12.9,
     "type": "ipad",
     "marketingNumber": "3",
     "name": "iPad Pro 3rd Gen",
@@ -1033,7 +1033,7 @@
   },
   {
     "class": "iPad11in",
-    "size": 12,
+    "size": 12.9,
     "type": "ipad",
     "marketingNumber": "3",
     "name": "iPad Pro 3rd Gen",
@@ -1041,7 +1041,7 @@
   },
   {
     "class": "iPad11in",
-    "size": 12,
+    "size": 12.9,
     "type": "ipad",
     "marketingNumber": "3",
     "name": "iPad Pro 3rd Gen",
@@ -1049,7 +1049,7 @@
   },
   {
     "class": "iPad11in",
-    "size": 12,
+    "size": 12.9,
     "type": "ipad",
     "marketingNumber": "3",
     "name": "iPad Pro 3rd Gen",
@@ -1121,6 +1121,38 @@
   },
   {
     "class": "iPad11in",
+    "size": 12.9,
+    "type": "ipad",
+    "marketingNumber": "5",
+    "name": "iPad Pro 5th Gen",
+    "modelId": "iPad13,8"
+  },
+  {
+    "class": "iPad11in",
+    "size": 12.9,
+    "type": "ipad",
+    "marketingNumber": "5",
+    "name": "iPad Pro 5th Gen",
+    "modelId": "iPad13,9"
+  },
+  {
+    "class": "iPad11in",
+    "size": 12.9,
+    "type": "ipad",
+    "marketingNumber": "5",
+    "name": "iPad Pro 5th Gen",
+    "modelId": "iPad13,10"
+  },
+  {
+    "class": "iPad11in",
+    "size": 12.9,
+    "type": "ipad",
+    "marketingNumber": "5",
+    "name": "iPad Pro 5th Gen",
+    "modelId": "iPad13,11"
+  },
+  {
+    "class": "iPad11in",
     "size": 11,
     "type": "ipad",
     "marketingNumber": "4",
@@ -1166,14 +1198,6 @@
     "marketingNumber": "M4",
     "name": "iPad Pro M4",
     "modelId": "iPad16,4"
-  },
-  {
-    "class": "iPad13in",
-    "size": 13,
-    "type": "ipad",
-    "marketingNumber": "M4",
-    "name": "iPad Pro M4",
-    "modelId": "iPad16,5"
   },
   {
     "class": "iPad13in",

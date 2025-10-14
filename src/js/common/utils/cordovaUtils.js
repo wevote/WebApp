@@ -129,20 +129,22 @@ export function logMatch (device, byModel) {
   }
 }
 
+// https://theapplewiki.com/wiki/List_of_iPhones
 // https://theapplewiki.com/wiki/List_of_iPads
 // https://theapplewiki.com/wiki/List_of_iPad_minis
 // https://theapplewiki.com/wiki/List_of_iPad_Airs
 // https://theapplewiki.com/wiki/List_of_iPad_Pros
 // alternate source: https://deviceatlas.com/resources/clientside/ios-hardware-identification
 // https://www.convertcsv.com/csv-to-json.htm
+// NOTE: use convertcsv.com to convert iPhoneModels.txt to iPhoneModels.json
 let thisAppleDeviceParameters;
 export function getThisAppleDeviceParameters () {
   if (thisAppleDeviceParameters) {
     return thisAppleDeviceParameters;
   }
-  // console.log('at thisAppleDeviceParameters window.device: ', window.device);
-  // console.log('at thisAppleDeviceParameters window.device?.model: ', window.device?.model);
-  if (window?.device?.model) {
+  console.log('at thisAppleDeviceParameters window.device: ', JSON.stringify(window.device));
+  console.log('at thisAppleDeviceParameters window.device?.model: ', window.device?.model);
+  if (window.device?.model) {
     thisAppleDeviceParameters = jsonModelsData.find((leaf) => leaf.modelId === window.device.model);
     logMatch('Cordova:   getThisAppleDeviceParameters: ', JSON.stringify(thisAppleDeviceParameters));
     console.log('Cordova:   getThisAppleDeviceParameters: ', JSON.stringify(thisAppleDeviceParameters));
@@ -399,10 +401,18 @@ export function isIPhoneMiniOrSmaller () {
   return isIPhone3p5in() || isIPhone4in() || isIPhone4p7in() || isIPhone5p5inMini() || isIPhone5p5inEarly();
 }
 
-export function isIOs6p1OSmaller () {
+export function isIOs6p1OrSmaller () {
   if (isIOS() && !isIOSAppOnMac()) {
-    const { params: { size } = {} } = getThisAppleDeviceParameters();  // conditional destructuring, if no 'size' it will resolve as undefined
+    const { size } = getThisAppleDeviceParameters();
     return size <= 6.1;
+  }
+  return false;
+}
+
+export function isIPadSmallerThan13 () {
+  if (isIPad() && !isIOSAppOnMac()) {
+    const { size } = getThisAppleDeviceParameters();
+    return size < 13.0;
   }
   return false;
 }
