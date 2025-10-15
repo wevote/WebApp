@@ -14,6 +14,7 @@ import AppObservableStore, { messageService } from '../../common/stores/AppObser
 
 const AdviserIntroModal = React.lazy(() => import(/* webpackChunkName: 'AdviserIntroModal' */ '../CompleteYourProfile/AdviserIntroModal'));
 const AskFriendsModal = React.lazy(() => import(/* webpackChunkName: 'AskFriendsModal' */ '../Friends/AskFriendsModal'));
+const BallotChoicesAndSettingsModal = React.lazy(() => import(/* webpackChunkName: 'BallotChoicesAndSettingsModal' */ '../CompleteYourProfile/BallotChoicesAndSettingsModal'));
 const ChooseOrOpposeIntroModal = React.lazy(() => import(/* webpackChunkName: 'ChooseOrOpposeIntroModal' */ '../Widgets/ItemActionBar/ChooseOrOpposeIntroModal'));
 const FirstPositionIntroModal = React.lazy(() => import(/* webpackChunkName: 'FirstPositionIntroModal' */ '../CompleteYourProfile/FirstPositionIntroModal'));
 const ImageUploadModal = React.lazy(() => import(/* webpackChunkName: 'ImageUploadModal' */ '../Settings/ImageUploadModal'));
@@ -31,6 +32,7 @@ class HeaderBarModals extends Component {
     this.state = {
       showAdviserIntroModal: false,
       showChooseOrOpposeIntroModal: false,
+      showBallotChoicesAndSettingsModal: false,
       showFirstPositionIntroModal: false,
       showSelectBallotModal: false,
       showSelectBallotModalEditAddress: false,
@@ -71,6 +73,7 @@ class HeaderBarModals extends Component {
       // paidAccountUpgradeMode,
       showAdviserIntroModal: AppObservableStore.showAdviserIntroModal(),
       showAskFriendsModal: AppObservableStore.showAskFriendsModal(),
+      showBallotChoicesAndSettingsModal: AppObservableStore.showBallotChoicesAndSettingsModal(),
       showChooseOrOpposeIntroModal: AppObservableStore.showChooseOrOpposeIntroModal(),
       showFirstPositionIntroModal: AppObservableStore.showFirstPositionIntroModal(),
       showPaidAccountUpgradeModal,
@@ -91,7 +94,11 @@ class HeaderBarModals extends Component {
   closeAskFriendsModal = () => {
     AppObservableStore.setShowAskFriendsModal(false);
   }
-
+  
+  closeBallotChoicesAndSettingsModal = () => {
+    AppObservableStore.setShowBallotChoicesAndSettingsModal(false);
+    // this.setState({ showBallotChoicesAndSettingsModal: false });
+  }
   closeChooseOrOpposeIntroModal = () => {
     AppObservableStore.setShowChooseOrOpposeIntroModal(false);
   }
@@ -174,7 +181,7 @@ class HeaderBarModals extends Component {
 
     const { classes } = this.props;
     const {
-      showAdviserIntroModal, showAskFriendsModal, showChooseOrOpposeIntroModal,
+      showAdviserIntroModal, showAskFriendsModal, showBallotChoicesAndSettingsModal, showChooseOrOpposeIntroModal,
       showFirstPositionIntroModal,
       showPaidAccountUpgradeModal, showPersonalizedScoreIntroModal,
       showSelectBallotModal, showSelectBallotModalEditAddress,
@@ -203,6 +210,17 @@ class HeaderBarModals extends Component {
           <AskFriendsModal
             show={showAskFriendsModal}
             toggleFunction={this.closeAskFriendsModal}
+          />
+        </Suspense>
+      );
+    }
+    let ballotChoicesAndSettingsModal = <></>;
+    if (showBallotChoicesAndSettingsModal) {
+      ballotChoicesAndSettingsModal = (
+        <Suspense fallback={<></>}>
+          <BallotChoicesAndSettingsModal
+            show={showBallotChoicesAndSettingsModal}
+            toggleFunction={this.closeBallotChoicesAndSettingsModal}
           />
         </Suspense>
       );
@@ -322,6 +340,7 @@ class HeaderBarModals extends Component {
       <>
         {advisorIntroModalHtml}
         {askFriendsModal}
+        {ballotChoicesAndSettingsModal} 
         {chooseOrOpposeIntroModal}
         {firstPositionIntroModal}
         {imageUploadModal}
