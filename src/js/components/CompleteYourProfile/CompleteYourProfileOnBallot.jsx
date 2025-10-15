@@ -176,7 +176,7 @@ class CompleteYourProfileOnBallot extends Component {
           buttonText: voterIsSignedIn ? '' : 'Sign up to save choices',
           completed: false,
           description: '',
-          onClick: this.toggleShowSignInModal,
+          onClick: this.openBallotChoicesAndSettingsModal,
           titleCanBeClicked: !voterIsSignedIn,
           width: '33.33%',
         },
@@ -214,7 +214,7 @@ class CompleteYourProfileOnBallot extends Component {
   }
 
   openPersonalizedScoreIntroModal = () => {
-    // console.log('openPersonalizedScoreIntroModal called');
+    console.log('openPersonalizedScoreIntroModal called');
     AppObservableStore.setShowPersonalizedScoreIntroModal(true);
     // Add dataLayer tracking
     const { location: { pathname: currentPathname } } = window;
@@ -234,7 +234,32 @@ class CompleteYourProfileOnBallot extends Component {
       pageDetails: getPageDetails(),
       userDetails: VoterStore.getAnalyticsUserDetails(),
     };
-    // console.log('openPersonalizedScoreIntroModal dataLayer:', dataLayerObject);
+    console.log('openPersonalizedScoreIntroModal dataLayer:', dataLayerObject);
+    TagManager.dataLayer({ dataLayer: dataLayerObject });
+  }
+
+    openBallotChoicesAndSettingsModal = () => {
+     console.log('BallotChoicesAndSettingsModal called');
+    AppObservableStore.setShowBallotChoicesAndSettingsModal(true);
+    // Add dataLayer tracking
+    const { location: { pathname: currentPathname } } = window;
+    const currentPage = lookupPageNameAndPageTypeDict(currentPathname);
+
+    const dataLayerObject = {
+      actionDetails: {
+        actionType: 'openModal',
+        buttonId: 'yourBallotChoicesAndSettingsStep',
+      },
+      event: 'action',
+      destinationDetails: {
+        destinationPageName: 'BallotChoicesAndSettingsModal',
+        destinationPageType: currentPage.pageType,
+        destinationPathname: currentPathname,
+      },
+      pageDetails: getPageDetails(),
+      userDetails: VoterStore.getAnalyticsUserDetails(),
+    };
+     console.log('BallotChoicesAndSettingsModal dataLayer:', dataLayerObject);
     TagManager.dataLayer({ dataLayer: dataLayerObject });
   }
 
