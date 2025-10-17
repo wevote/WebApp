@@ -101,7 +101,6 @@ export default class SettingsIssueLinks extends Component {
     const issuesLinkedTo = IssueStore.getIssuesLinkedToByOrganization(this.props.organizationWeVoteId);
     const currentIncompatibleIssues = {}; // issue -> issue that it is causing the incompatibility
 
-    // TODO: Steve remove the error suppression on the next line 12/1/18, a temporary hack
     issuesLinkedTo.map((linkedIssue) => { // eslint-disable-line array-callback-return
       if (INCOMPATIBLE_ISSUES[linkedIssue.issue_we_vote_id]) { // We only want the issues that been linked.
         // Iterate over incompatible issues caused by the linkedIssue.

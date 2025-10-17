@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import TagManager from 'react-gtm-module';
 import Tooltip from 'react-bootstrap/Tooltip';
 import VoterActions from '../../actions/VoterActions';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
@@ -19,6 +20,7 @@ import { FirstRowPhoneOrEmail, SecondRowPhoneOrEmail, SecondRowPhoneOrEmailDiv, 
 import { ButtonContainerHorizontal } from '../Welcome/sectionStyles';
 import SettingsVerifySecretCode from '../../common/components/Settings/SettingsVerifySecretCode';
 import { validateEmail } from '../../utils/regex-checks';
+import { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 
@@ -70,7 +72,7 @@ class VoterEmailAddressEntry extends Component {
     VoterActions.voterEmailAddressRetrieve();
     if (this.emailInputRef && this.emailInputRef.current) {
       this.emailInputRef.current.blur();
-    };
+    }
     this._isMounted = true;
   }
 
@@ -373,6 +375,22 @@ class VoterEmailAddressEntry extends Component {
     }
   };
 
+  pushDataLayer = (buttonId, actionType) => {
+    const dataLayerObject = {
+      actionDetails: {
+        actionType,
+        buttonId,
+      },
+      event: 'click',
+      verifyDetails: {
+        verifyMethod: 'email',
+      },
+      pageDetails: getPageDetails(),
+      userDetails: VoterStore.getAnalyticsUserDetails(),
+    };
+    TagManager.dataLayer({ dataLayer: dataLayerObject });
+  };
+
   render () {
     renderLog('VoterEmailAddressEntry');  // Set LOG_RENDER_EVENTS true to log all renders
     const { doNotRender } = this.props;
@@ -498,7 +516,11 @@ class VoterEmailAddressEntry extends Component {
                   color="primary"
                   disabled={disableEmailVerificationButton || signInCodeEmailSentAndWaitingForResponse}
                   id="voterEmailAddressEntrySendCode"
-                  onClick={this.sendSignInCodeEmail}
+                  onClick={(e) => {
+                    const buttonId = e.target.id;
+                    this.sendSignInCodeEmail();
+                    this.pushDataLayer(buttonId, 'sendVerification');
+                  }}
                   onAnimationEnd={this.onAnimationEndSend}
                   variant="contained"
                 >

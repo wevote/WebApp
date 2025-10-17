@@ -336,7 +336,7 @@ class Candidate extends Component {
         }
         {/* The following style adjustment prevents horizontal scrolling from the .card style */}
         {/* <div className="card" style={isWebApp() ? {} : { marginRight: 0, marginLeft: 0 }}> */}
-        <PageWrapper className="container-fluid">
+        <CandidatePageWrapper className="container-fluid">
           <TwoColumns>
             <ColumnTwoThirds>
               <Suspense fallback={<></>}>
@@ -429,7 +429,7 @@ class Candidate extends Component {
               </span>
             )}
           />
-        </PageWrapper>
+        </CandidatePageWrapper>
       </PageContentContainer>
     );
   }
@@ -476,7 +476,10 @@ const HowItWorksLink = styled('div')`
     color: #4371cc;
   }
 `;
-const PageWrapper = styled('div')`
+
+// Please do not copy styles -- centralize them somewhere, so that same-named styles don't diverge,
+// Same-named styles results in lengthy debugging in Cordova
+const CandidatePageWrapper = styled('div')`
   // margin: 0 auto;
   // @media (max-width: 1005px) {
   //   // Switch to 15px left/right margin when auto is too small

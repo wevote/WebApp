@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import DesignTokenColors from './DesignTokenColors';
-import { isAndroidSizeWide, isIPad, isIPadMini, isIPhoneMiniOrSmaller } from '../../utils/cordovaUtils';
+import { isAndroidSizeWide, isIOsSmallerThanPlus, isIPad, isIPadMini, isIPhoneMiniOrSmaller } from '../../utils/cordovaUtils';
 import { isAndroid, isCordova, isWebApp } from '../../utils/isCordovaOrWebApp';
+import DesignTokenColors from './DesignTokenColors';
 
 export const CampaignDescription = styled('div')`
   font-size: 16px;
@@ -287,18 +287,20 @@ export const SupportButtonFooterWrapper = styled('div')`
   display: block;
 `;
 
-/* eslint-disable no-nested-ternary */
+function supportButtonBottom () {
+  if (isWebApp()) return '55px';
+  if (isIPad() || isAndroidSizeWide()) return '0px';
+  if (isAndroid()) return '68px';
+  if (isIPhoneMiniOrSmaller()) return '54px';
+  if (isIOsSmallerThanPlus()) return '57px';
+  return '88px';
+}
+
 export const SupportButtonFooterWrapperAboveFooterButtons = styled('div')`
   position: fixed;
   width: ${() => (isCordova() && !isIPadMini() ? '95%' : '100%')};
   left: ${() => (isCordova() && !isIPadMini() ? '2.5%' : '')};
-  bottom: ${() => {
-    if (isWebApp()) return '55px';
-    if (isIPad() || isAndroidSizeWide()) return '0px';
-    if (isAndroid()) return '68px';
-    if (isIPhoneMiniOrSmaller()) return '54px';
-    return '88px';
-  }};
+  bottom: ${() => supportButtonBottom()};
 `;
 
 export const SupportButtonPanel = styled('div')`

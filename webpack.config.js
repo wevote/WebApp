@@ -162,6 +162,7 @@ module.exports = (env, argv) => ({
         // especially for React itself.
         // PRODUCTION: JSON.stringify(true),
         'process.env.NODE_ENV': JSON.stringify('production'),
+        'REACT.FILE': JSON.stringify(path.basename(__filename)), // Injects the current file's basename
       }),
     ] : [
       new SourceMapDevToolPlugin({

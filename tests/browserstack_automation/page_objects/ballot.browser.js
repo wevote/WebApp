@@ -73,5 +73,61 @@ class BallotBrowser extends PageBrowser {
     }
     return null;
   }
+
+ //Added page object for tests in product demo
+  async getCandidateByText(name) {
+    const candidateText = await $(`//button[text() = "${name}"]`);
+    return candidateText
+  }
+  //Added page object for tests in product demo
+  async clickAnyCandidate() {
+    await browser.pause(2000);
+    await browser.execute(() => {
+    const wrappers = Array.from(
+      document.querySelectorAll(`div[class*="BallotScrollingOuterWrapper"]`)
+    );
+    const allCandidates = wrappers.flatMap(wrapper =>
+      Array.from(wrapper.querySelectorAll(`div [class*="CandidateContainer"]`))
+    );
+    if (allCandidates.length === 0) {
+      console.log('No candidates found on the ballot.');
+      return;
+    }
+    const candidateNames = allCandidates.map(c =>
+      c.innerText.trim().split('\n')[0]
+    );
+    console.log('Candidates currently visible:', candidateNames);
+    // Pick the first (or random) candidate dynamically
+    const chosenIndex = Math.floor(Math.random() * allCandidates.length);
+    const chosenCandidate = allCandidates[chosenIndex];
+    chosenCandidate.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    chosenCandidate.click();
+    console.log(`✅ Clicked candidate dynamically: "${candidateNames[chosenIndex]}"`);
+   });
+  }
+
+  //Added page object for tests in product demo
+  get candidateModalClose() {
+    return $('button#closeOrganizationModal');
+  }
+  //Added page object for tests in product demo
+  async getCandidateCardHeart () {
+    return $(`div [id*='cardForListBodyWrapper'] [class*='HeartFavoriteToggleContainer'] button[class*='LikeContainer']`);
+  }
+  //Added page object for tests in product demo
+  async getCandidateChoose() {
+    return $(`//div[contains(@id, 'ballotItemScrollingArea')]//button[contains(@id, 'itemActionBarSupportButton')]`);
+ }
+  //Added page object for tests in product demo
+  async getCandidateCardUnheart () {
+    return $(`div [id*='cardForListBodyWrapper'] [class*='HeartFavoriteToggleContainer'] button[class*='DislikeContainer']`);
+  }
+
+  //Added page object for tests in product demo
+  get endorsementText() {
+    return $('div[id^="candidateEndorsementText"]');
+  }
+
+
 }
 export default new BallotBrowser();

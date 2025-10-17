@@ -420,240 +420,240 @@ Thanks for your help!`;
 
       {/* Preview modal */}
       {showPreview && (
-      <ModalBackdrop role="dialog" aria-modal="true" aria-labelledby="invite-title">
-        <ModalCard>
-          <ModalHeader>
-            <ModalTitle id="invite-title">Preview invitation</ModalTitle>
-            <HeaderActions>
-              <HeaderLink type="button" onClick={handleCopyInviteBody}>
-                <CopyIcon fontSize="small" />
-                {' '}
-                <span>Copy</span>
-              </HeaderLink>
-              <HeaderLink type="button" onClick={handleEditInvite}>
-                <EditIcon fontSize="small" />
-                {' '}
-                <span>Edit</span>
-              </HeaderLink>
-              <CloseX type="button" aria-label="Close" onClick={handlePreviewClose}>×</CloseX>
-            </HeaderActions>
-          </ModalHeader>
+        <ModalBackdrop role="dialog" aria-modal="true" aria-labelledby="invite-title">
+          <ModalCard>
+            <ModalHeader>
+              <ModalTitle id="invite-title">Preview invitation</ModalTitle>
+              <HeaderActions>
+                <HeaderLink type="button" onClick={handleCopyInviteBody}>
+                  <CopyIcon fontSize="small" />
+                  {' '}
+                  <span>Copy</span>
+                </HeaderLink>
+                <HeaderLink type="button" onClick={handleEditInvite}>
+                  <EditIcon fontSize="small" />
+                  {' '}
+                  <span>Edit</span>
+                </HeaderLink>
+                <CloseX type="button" aria-label="Close" onClick={handlePreviewClose}>×</CloseX>
+              </HeaderActions>
+            </ModalHeader>
 
-          <InfoRow>
-            <InfoDot aria-hidden>i</InfoDot>
-            <span>Link will appear below text</span>
-          </InfoRow>
-
-          <ModalBody>
-            <pre>{invitationBody}</pre>
-          </ModalBody>
-
-          <ModalFooter>
-            <PreviewCloseButton type="button" onClick={handlePreviewClose}>Close</PreviewCloseButton>
-          </ModalFooter>
-        </ModalCard>
-      </ModalBackdrop>
-      )}
-
-      {/* Edit modal */}
-      {showEdit && (
-      <ModalBackdrop role="dialog" aria-modal="true" aria-labelledby="edit-title">
-        <ModalCard>
-          <ModalHeader>
-            <ModalTitle id="edit-title">Edit invitation</ModalTitle>
-            <CloseX type="button" aria-label="Close" onClick={() => setShowEdit(false)}>×</CloseX>
-          </ModalHeader>
-
-          <BarBetween>
             <InfoRow>
               <InfoDot aria-hidden>i</InfoDot>
               <span>Link will appear below text</span>
             </InfoRow>
-            <HeaderLink type="button" onClick={handleEditCopy}>
-              <CopyIcon fontSize="small" />
-              {' '}
-              <span>Copy</span>
-            </HeaderLink>
-          </BarBetween>
 
-          <EditAreaWrapper>
-            <EditTextArea
-              value={draftInvite}
-              onChange={(e) => setDraftInvite(e.target.value)}
-              aria-label="Invitation text"
-            />
-          </EditAreaWrapper>
+            <ModalBody>
+              <pre>{invitationBody}</pre>
+            </ModalBody>
 
-          <ModalFooter style={{ justifyContent: 'space-between' }}>
-            <EditCloseButton type="button" onClick={() => setShowEdit(false)}>Close</EditCloseButton>
-            <PrimarySaveBtn
-              type="button"
-              onClick={handlePasteImport}
-              disabled={!pasteText.trim()}
-            >
-              {prospectiveCount ? `Import ${prospectiveCount} voters` : 'Import voters'}
-            </PrimarySaveBtn>
-          </ModalFooter>
-        </ModalCard>
-      </ModalBackdrop>
+            <ModalFooter>
+              <PreviewCloseButton type="button" onClick={handlePreviewClose}>Close</PreviewCloseButton>
+            </ModalFooter>
+          </ModalCard>
+        </ModalBackdrop>
+      )}
+
+      {/* Edit modal */}
+      {showEdit && (
+        <ModalBackdrop role="dialog" aria-modal="true" aria-labelledby="edit-title">
+          <ModalCard>
+            <ModalHeader>
+              <ModalTitle id="edit-title">Edit invitation</ModalTitle>
+              <CloseX type="button" aria-label="Close" onClick={() => setShowEdit(false)}>×</CloseX>
+            </ModalHeader>
+
+            <BarBetween>
+              <ManageInfoRow>
+                <InfoDot aria-hidden>i</InfoDot>
+                <span>Link will appear below text</span>
+              </ManageInfoRow>
+              <HeaderLink type="button" onClick={handleEditCopy}>
+                <CopyIcon fontSize="small" />
+                {' '}
+                <span>Copy</span>
+              </HeaderLink>
+            </BarBetween>
+
+            <EditAreaWrapper>
+              <EditTextArea
+                value={draftInvite}
+                onChange={(e) => setDraftInvite(e.target.value)}
+                aria-label="Invitation text"
+              />
+            </EditAreaWrapper>
+
+            <ModalFooter style={{ justifyContent: 'space-between' }}>
+              <EditCloseButton type="button" onClick={() => setShowEdit(false)}>Close</EditCloseButton>
+              <PrimarySaveBtn
+                type="button"
+                onClick={handleSaveInvite}
+                disabled={draftInvite.trim() === initialInvite.trim()}
+              >
+                {prospectiveCount ? `Import ${prospectiveCount} voters` : 'Import voters'}
+              </PrimarySaveBtn>
+            </ModalFooter>
+          </ModalCard>
+        </ModalBackdrop>
       )}
       {showPaste && (
-      <ModalBackdrop role="dialog" aria-modal="true" aria-labelledby="paste-title">
-        <ModalCard>
-          <ModalHeader>
-            <ModalTitle id="paste-title">Paste &amp; import a list of voters</ModalTitle>
-            <CloseX type="button" aria-label="Close" onClick={closePaste}>×</CloseX>
-          </ModalHeader>
+        <ModalBackdrop role="dialog" aria-modal="true" aria-labelledby="paste-title">
+          <ModalCard>
+            <ModalHeader>
+              <ModalTitle id="paste-title">Paste voters</ModalTitle>
+              <CloseX type="button" aria-label="Close" onClick={closePaste}>×</CloseX>
+            </ModalHeader>
 
-          <ModalIntro>
-            <BulletList>
-              <li>Paste a list of voters and their info, separated by line breaks</li>
-              <BulletNoWrap>
-                The content of each info section can be with or without brackets, i.e.
-                <code> name@email.com</code>
-                {' '}
-                or
-                <code>&lt;name@email.com&gt;</code>
-              </BulletNoWrap>
-            </BulletList>
+            <ModalIntro>
+              <BulletList>
+                <li>Paste a list of voters and their info, separated by line breaks</li>
+                <BulletNoWrap>
+                  The content of each info section can be with or without brackets, i.e.
+                  <code> name@email.com</code>
+                  {' '}
+                  or
+                  <code>&lt;name@email.com&gt;</code>
+                </BulletNoWrap>
+              </BulletList>
 
-            <ExampleBox>
-              <b>Example:</b>
-              <pre>
-                {`Jane Dough, jd@email.com, (212)-123-4567
+              <ExampleBox>
+                <b>Example:</b>
+                <pre>
+                  {`Jane Dough, jd@email.com, (212)-123-4567
 John Dough, jd@email.com, (213)-123-4567`}
-              </pre>
-            </ExampleBox>
-          </ModalIntro>
+                </pre>
+              </ExampleBox>
+            </ModalIntro>
 
-          {pasteErrors.length > 0 && (
-            <ErrorBanner role="alert" aria-live="polite">
-              <ErrorIconWrap><WarningIcon fontSize="small" /></ErrorIconWrap>
-              <div>
-                <strong>Whoops! We’re having trouble importing your list of voters.</strong>
-                <div>Please check the highlighted lines and make sure that:</div>
-                <ul>
-                  <li>
-                    There’s a
-                    <b>line break</b>
+            {pasteErrors.length > 0 && (
+              <ErrorBanner role="alert" aria-live="polite">
+                <ErrorIconWrap><WarningIcon fontSize="small" /></ErrorIconWrap>
+                <div>
+                  <strong>Whoops! We’re having trouble importing your list of voters.</strong>
+                  <div>Please check the highlighted lines and make sure that:</div>
+                  <ul>
+                    <li>
+                      There’s a
+                      <b>line break</b>
+                      {' '}
+                      after each voter (using the Enter or Return key)
+                    </li>
+                    <li>
+                      There’s a
+                      <b>single comma</b>
+                      {' '}
+                      separating each piece of information
+                    </li>
+                  </ul>
+                  <small>
+                    Problem
                     {' '}
-                    after each voter (using the Enter or Return key)
-                  </li>
-                  <li>
-                    There’s a
-                    <b>single comma</b>
+                    {pasteErrors.length > 1 ? 'lines' : 'line'}
+                    :
                     {' '}
-                    separating each piece of information
-                  </li>
-                </ul>
-                <small>
-                  Problem
-                  {' '}
-                  {pasteErrors.length > 1 ? 'lines' : 'line'}
-                  :
-                  {' '}
-                  {pasteErrors.map((e) => e.line + 1).join(', ')}
-                </small>
-              </div>
-            </ErrorBanner>
-          )}
-          <EditAreaWrapper>
-            <HighlightLayer
-              aria-hidden="true"
-              dangerouslySetInnerHTML={{ __html: mirrorHTML || escapeHTML(pasteText || '') }}
-            />
-            <EditTextArea
-              value={pasteText}
-              onChange={onPasteTextChange}
-              aria-label="Paste voters list"
-            />
-          </EditAreaWrapper>
+                    {pasteErrors.map((e) => e.line + 1).join(', ')}
+                  </small>
+                </div>
+              </ErrorBanner>
+            )}
+            <EditAreaWrapper>
+              <HighlightLayer
+                aria-hidden="true"
+                dangerouslySetInnerHTML={{ __html: mirrorHTML || escapeHTML(pasteText || '') }}
+              />
+              <EditTextArea
+                value={pasteText}
+                onChange={onPasteTextChange}
+                aria-label="Paste voters list"
+              />
+            </EditAreaWrapper>
 
-          <ModalFooter style={{ justifyContent: 'space-between' }}>
-            <EditCloseButton type="button" onClick={closePaste}>Cancel</EditCloseButton>
-            <PrimarySaveBtn
-              type="button"
-              onClick={handlePasteImport}
-              disabled={!pasteText.trim() || pasteErrors.length > 0}
-            >
-              {prospectiveCount ? `Import ${prospectiveCount} voter${prospectiveCount > 1 ? 's' : ''}` : 'Import'}
-            </PrimarySaveBtn>
-          </ModalFooter>
-        </ModalCard>
-      </ModalBackdrop>
+            <ModalFooter style={{ justifyContent: 'space-between' }}>
+              <EditCloseButton type="button" onClick={closePaste}>Cancel</EditCloseButton>
+              <PrimarySaveBtn
+                type="button"
+                onClick={handlePasteImport}
+                disabled={!pasteText.trim()}
+              >
+                {prospectiveCount ? `Import ${prospectiveCount} voter${prospectiveCount > 1 ? 's' : ''}` : 'Import'}
+              </PrimarySaveBtn>
+            </ModalFooter>
+          </ModalCard>
+        </ModalBackdrop>
       )}
       {showUpload && (
-      <ModalBackdrop role="dialog" aria-modal="true" aria-labelledby="upload-title">
-        <ModalCard>
-          <UploadHeaderRow>
-            <UploadHeaderLeft>
-              <ModalTitle id="upload-title">Upload CSV file</ModalTitle>
-              <HeaderDivider aria-hidden />
-              <HeaderLink type="button" onClick={handleDownloadSample}>
-                <DownloadIcon fontSize="small" />
-                <span>Download sample file</span>
-              </HeaderLink>
-            </UploadHeaderLeft>
+        <ModalBackdrop role="dialog" aria-modal="true" aria-labelledby="upload-title">
+          <ModalCard>
+            <UploadHeaderRow>
+              <UploadHeaderLeft>
+                <ModalTitle id="upload-title">Upload CSV file</ModalTitle>
+                <HeaderDivider aria-hidden />
+                <HeaderLink type="button" onClick={handleDownloadSample}>
+                  <DownloadIcon fontSize="small" />
+                  <span>Download sample file</span>
+                </HeaderLink>
+              </UploadHeaderLeft>
 
-            <CloseX type="button" aria-label="Close" onClick={closeUploadModal}>×</CloseX>
-          </UploadHeaderRow>
+              <CloseX type="button" aria-label="Close" onClick={closeUploadModal}>×</CloseX>
+            </UploadHeaderRow>
 
-          <UploadIntroList>
-            <li>WeVote supports the data column structure below.</li>
-            <li>
-              If your document has info in separate columns (e.g., first and last name),
-              please combine them into one column to ensure accurate importing.
-            </li>
-            <li>You’ll be able to change your column names to ours after uploading your file.</li>
-          </UploadIntroList>
+            <UploadIntroList>
+              <li>WeVote supports the data column structure below.</li>
+              <li>
+                If your document has info in separate columns (e.g., first and last name),
+                please combine them into one column to ensure accurate importing.
+              </li>
+              <li>You’ll be able to change your column names to ours after uploading your file.</li>
+            </UploadIntroList>
 
-          <UploadStructureTitle>WeVote’s data column structure</UploadStructureTitle>
-          {allColumnsOK && (
-            <SuccessBanner role="status" aria-live="polite">
-              <SuccessIcon><CheckIcon fontSize="small" /></SuccessIcon>
-              <span>All of your columns will be imported.</span>
-            </SuccessBanner>
-          )}
-          <UploadGrid aria-label="WeVote data column structure">
-            <UploadGridHead>Name</UploadGridHead>
-            <UploadGridHead>Email</UploadGridHead>
-            <UploadGridHead>Mobile</UploadGridHead>
-            <UploadGridHead>Address</UploadGridHead>
+            <UploadStructureTitle>WeVote’s data column structure</UploadStructureTitle>
+            {allColumnsOK && (
+              <SuccessBanner role="status" aria-live="polite">
+                <SuccessIcon><CheckIcon fontSize="small" /></SuccessIcon>
+                <span>All of your columns will be imported.</span>
+              </SuccessBanner>
+            )}
+            <UploadGrid aria-label="WeVote data column structure">
+              <UploadGridHead>Name</UploadGridHead>
+              <UploadGridHead>Email</UploadGridHead>
+              <UploadGridHead>Mobile</UploadGridHead>
+              <UploadGridHead>Address</UploadGridHead>
 
-            <UploadGridCell>John Smith</UploadGridCell>
-            <UploadGridCell>js@gmail.com</UploadGridCell>
-            <UploadGridCell>(123) 456-7890</UploadGridCell>
-            <UploadGridCell>
-              123 State St
-              <br />
-              Anytown, CA 94117
-            </UploadGridCell>
-          </UploadGrid>
+              <UploadGridCell>John Smith</UploadGridCell>
+              <UploadGridCell>js@gmail.com</UploadGridCell>
+              <UploadGridCell>(123) 456-7890</UploadGridCell>
+              <UploadGridCell>
+                123 State St
+                <br />
+                Anytown, CA 94117
+              </UploadGridCell>
+            </UploadGrid>
 
-          <ModalFooter style={{ justifyContent: 'space-between' }}>
-            <EditCloseButton type="button" onClick={closeUploadModal}>Cancel</EditCloseButton>
-            <PrimarySaveBtn type="button" onClick={handleSelectCSV}>Select file</PrimarySaveBtn>
-          </ModalFooter>
-        </ModalCard>
-      </ModalBackdrop>
+            <ModalFooter style={{ justifyContent: 'space-between' }}>
+              <EditCloseButton type="button" onClick={closeUploadModal}>Cancel</EditCloseButton>
+              <PrimarySaveBtn type="button" onClick={handleSelectCSV}>Select file</PrimarySaveBtn>
+            </ModalFooter>
+          </ModalCard>
+        </ModalBackdrop>
       )}
       <input
-      ref={fileInputRef}
-      type="file"
-      accept=".csv"
-      style={{ display: 'none' }}
-      onChange={handleCSVSelected}
+        ref={fileInputRef}
+        type="file"
+        accept=".csv"
+        style={{ display: 'none' }}
+        onChange={handleCSVSelected}
       />
       {copiedMsg && (
-      <Toast role="status" aria-live="polite" $success={isSuccessToast}>
-        {isSuccessToast && (
-          <SuccessIcon><CheckIcon fontSize="small" /></SuccessIcon>
+        <Toast role="status" aria-live="polite" $success={isSuccessToast}>
+          {isSuccessToast && (
+            <SuccessIcon><CheckIcon fontSize="small" /></SuccessIcon>
+          )}
+          <span>{copiedMsg}</span>
+        </Toast>
         )}
-        <span>{copiedMsg}</span>
-      </Toast>
-      )}
-    </PageContentContainer>
-  );
+      </PageContentContainer>
+    );
 }
 
 // Analytics icon
@@ -1136,8 +1136,7 @@ const CloseX = styled.button`
   padding: 2px 6px;
 `;
 
-const InfoRow = styled.div`
-  align-items: center;
+const ManageInfoRow = styled.div`
   color: ${DesignTokenColors.neutralUI600};
   display: flex;
   gap: 8px;

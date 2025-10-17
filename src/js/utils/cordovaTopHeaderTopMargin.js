@@ -1,50 +1,10 @@
-import CordovaPageConstants from '../constants/CordovaPageConstants';
-import { hasIPhoneNotch, isAndroidSimulator, isIOS, isIOSAppOnMac, isIPad, isIPhone4p7in, isIPhone5p5inEarly, isIPhone5p5inMini, isSimulator } from '../common/utils/cordovaUtils';
+import { getThisAppleDeviceParameters, hasIPhoneNotch, isAndroidSimulator, isIOS, isIOSAppOnMac, isIOsSmallerThanPlus, isIPad, isIPhone4p7in, isIPhone5p5inEarly, isIPhone5p5inMini, isSimulator } from '../common/utils/cordovaUtils';
 import { isCordova } from '../common/utils/isCordovaOrWebApp';
 import { cordovaOffsetLog } from '../common/utils/logging';
+import { heightOfIOSSpacer } from '../components/Style/pageLayoutStyles';
+import CordovaPageConstants from '../constants/CordovaPageConstants';
 import { getPageKey } from './cordovaPageUtils';
 import { pageEnumeration } from './cordovaUtilsPageEnumeration';
-
-export function decorativeSpacing () {
-  // Please don't change these unless you are testing your change in a Cordova simulator
-  const page = pageEnumeration();
-  switch (page) {
-    case CordovaPageConstants.ballotLgHdrWild:       return 8;
-    case CordovaPageConstants.ballotSmHdrWild:       return 8;
-    case CordovaPageConstants.ballotVote:            return 0;
-    case CordovaPageConstants.candidate:             return 0;
-    case CordovaPageConstants.candidateWild:         return 0;
-    case CordovaPageConstants.friends:               return 0;
-    case CordovaPageConstants.friendsCurrent:        return 0;
-    case CordovaPageConstants.friendsSentRequest:    return 0;
-    case CordovaPageConstants.measureWild:           return 0;
-    case CordovaPageConstants.moreAbout:             return 0;
-    case CordovaPageConstants.moreElections:         return 0;
-    case CordovaPageConstants.moreFaq:               return 0;
-    case CordovaPageConstants.moreTerms:             return 0;
-    case CordovaPageConstants.news:                  return 0;
-    case CordovaPageConstants.officeWild:            return 0;
-    case CordovaPageConstants.opinions:              return 0;
-    case CordovaPageConstants.opinionsFiltered:      return 0;
-    case CordovaPageConstants.ready:                 return 8;
-    case CordovaPageConstants.settingsAccount:       return 0;
-    case CordovaPageConstants.settingsHamburger:     return 0;
-    case CordovaPageConstants.settingsNotifications: return 0;
-    case CordovaPageConstants.settingsProfile:       return 0;
-    case CordovaPageConstants.settingsSubscription:  return 0;
-    case CordovaPageConstants.settingsWild:          return 0;
-    case CordovaPageConstants.twitterHandleLanding:  return 0;
-    case CordovaPageConstants.twitterIdMFollowers:   return 0; // /*/m/friends, /*/m/following, /*/m/followers
-    case CordovaPageConstants.twitterInfoPage:       return 0; // A twitter page guess, that ends with 'btcand' 'btmeas' or'btdb'
-    case CordovaPageConstants.valuesWild:            return 0;
-    case CordovaPageConstants.values:                return 0;
-    case CordovaPageConstants.valuesList:            return 0;
-    case CordovaPageConstants.voterGuideCreatorWild: return 0; // $headroom-wrapper-webapp__voter-guide-creator
-    case CordovaPageConstants.voterGuideWild:        return 0; // Any voter page with btcand or btmeas
-    default:                                         return 0;
-  }
-}
-
 
 
 // <div className={pageHeaderStyle} style={cordovaTopHeaderTopMargin()} id="header-container">
@@ -72,12 +32,21 @@ export default function cordovaTopHeaderTopMargin () {
     const { $ } = window;
     if (isIOS()) {
       const headerBackToAppBar = $('#headerBackToAppBar');
-      // Calculated approach Nov 2022
+      const iOsSpacerHeight = heightOfIOSSpacer();
+      // Calculated approach Nov 2022 and October 2025
       if (headerBackToAppBar.length) {
         const marginTop = headerBackToAppBar.outerHeight();
         const paddingTop = headerBackToAppBar.css('padding').split(' ')[0];
         style.marginTop = `${marginTop + paddingTop}px`;
         cordovaOffsetLog(`cordovaTopHeaderTopMargin new way, headerBackToAppBar marginTop: ${marginTop}, page: ${getPageKey()}`);
+        return style;
+      } else if (iOsSpacerHeight) {
+        if (isIOsSmallerThanPlus()) {
+          style.marginTop = iOsSpacerHeight - 11;   // Save space on tiny screens
+        } else {
+          style.marginTop = iOsSpacerHeight;
+        }
+        cordovaOffsetLog(`cordovaTopHeaderTopMargin new way, based on iOsSpacer height marginTop: ${style.marginTop}, page: ${getPageKey()}`);
         return style;
       }
       // end calculated approach
@@ -180,7 +149,12 @@ export default function cordovaTopHeaderTopMargin () {
           default:                                         style.marginTop = '24px'; break;  // ballotSmHdrWild, settingsHamburger
         }
       } else {
-        style.marginTop = '20px';
+        const isIphoneAir = getThisAppleDeviceParameters().marketingNumber === 'Air';
+        if (isIphoneAir) {
+          style.marginTop = heightOfIOSSpacer();
+        } else {
+          style.marginTop = '20px';
+        }
       }
     } else {  // Android
       style.marginTop = '0px';

@@ -569,7 +569,7 @@ class ChallengeHomePage extends Component {
           <DetailsSectionMobile className="u-show-mobile">
             <MobileHeaderOuterContainer id="challengeHeaderContainer" scrolledDown={scrolledDown}>
               <MobileHeaderInnerContainer>
-                <MobileHeaderContentContainer>
+                <ChallengeMobileHeaderContentContainer>
                   <ChallengeHeaderSimple
                     challengeBasePath={this.getChallengeBasePath()}
                     challengePhotoLargeUrl={challengePhotoLargeUrl}
@@ -578,7 +578,7 @@ class ChallengeHomePage extends Component {
                     // goToChallengeHome={this.goToChallengeHome}
                     hideCloseIcon
                   />
-                </MobileHeaderContentContainer>
+                </ChallengeMobileHeaderContentContainer>
               </MobileHeaderInnerContainer>
             </MobileHeaderOuterContainer>
             <ChallengeCardForList
@@ -861,7 +861,9 @@ const slideDown = keyframes`
   }
 `;
 
-const MobileHeaderContentContainer = styled('div')(({ theme }) => (`
+// Please do not copy styles -- centralize them somewhere, so that same-named styles don't diverge,
+// Same-named styles results in lengthy debugging in Cordova
+const ChallengeMobileHeaderContentContainer = styled('div')(({ theme }) => (`
   // padding: 15px 15px 0 15px;
   margin: ${() => cordovaBallotFilterTopMargin()} auto 0 auto;
   position: relative;
