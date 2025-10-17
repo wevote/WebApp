@@ -733,7 +733,7 @@ class SettingsVerifySecretCode extends Component {
               onClick={(e) => {
                 const buttonId = e.target.id;
                 this.closeVerifyModalLocal();
-                this.pushDataLayer(false, buttonId, 'tryDifferent');
+                this.pushDataLayer(false, buttonId, 'navigate');
               }}
               variant={voterMustRequestNewCode ? 'contained' : 'outlined'}
             >
