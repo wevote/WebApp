@@ -2,6 +2,7 @@ import { ArrowBack, ArrowBackIos } from '@mui/icons-material';
 import { Button, Dialog, OutlinedInput } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
+import TagManager from 'react-gtm-module';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
@@ -11,6 +12,7 @@ import { hasIPhoneNotch, isIOS, isIPhone4in } from '../../utils/cordovaUtils';
 import { isCordova, isWebApp } from '../../utils/isCordovaOrWebApp';
 import { renderLog } from '../../utils/logging';
 import VoterStore from '../../../stores/VoterStore';
+import { getPageDetails } from '../../../utils/lookupPageNameAndPageTypeDict';
 
 /* global $ */
 
@@ -20,6 +22,7 @@ class SettingsVerifySecretCode extends Component {
     this.state = {
       cancelingVerifyModal: false,
       condensed: false,
+      dataLayerFired: false,
       digit1: '',
       digit2: '',
       digit3: '',
@@ -77,6 +80,16 @@ class SettingsVerifySecretCode extends Component {
     }, delayBeforeClearingVerificationStatus);
 
     window.addEventListener('paste', this.onPaste);
+
+    const { dataLayerFired } = this.state;
+    if (!dataLayerFired) {
+      if (VoterStore.voterFirstRetrieveCompleted()) {
+        this.pushDataLayer(true, null, 'landing');
+        this.setState({
+          dataLayerFired: true,
+        });
+      }
+    }
   }
 
   shouldComponentUpdate (nextProps, nextState) {
@@ -98,6 +111,18 @@ class SettingsVerifySecretCode extends Component {
     if (this.state.digit6 !== nextState.digit6) return true;
     // console.log('shouldComponentUpdate return false');
     return false;
+  }
+
+  componentDidUpdate () {
+    const { dataLayerFired } = this.state;
+    if (!dataLayerFired) {
+      if (VoterStore.voterFirstRetrieveCompleted()) {
+        this.pushDataLayer(true, null, 'landing');
+        this.setState({
+          dataLayerFired: true,
+        });
+      }
+    }
   }
 
   componentWillUnmount () {
@@ -494,6 +519,22 @@ class SettingsVerifySecretCode extends Component {
     }
   };
 
+  pushDataLayer = (landing, buttonId, actionType) => {
+    const dataLayerObject = {
+      actionDetails: {
+        actionType,
+        ...(buttonId && { buttonId }),
+      },
+      event: landing ? 'landing' : 'click',
+      verifyDetails: {
+        verifyMethod: this.voterPhoneNumber ? 'SMS' : 'email',
+      },
+      pageDetails: getPageDetails(),
+      userDetails: VoterStore.getAnalyticsUserDetails(),
+    };
+    TagManager.dataLayer({ dataLayer: dataLayerObject });
+  };
+
   render () {
     renderLog('SettingsVerifySecretCode');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('SettingsVerifySecretCode render');
@@ -534,7 +575,14 @@ class SettingsVerifySecretCode extends Component {
       >
         <ModalTitleArea condensed={condensed}>
           {isWebApp() && (
-            <Button onClick={this.closeVerifyModalLocal} id="emailVerificationBackButton">
+            <Button
+              id={voterPhoneNumber ? 'phoneVerificationBackButton' : 'emailVerificationBackButton'}
+              onClick={(e) => {
+                const buttonId = e.target.id;
+                this.closeVerifyModalLocal();
+                this.pushDataLayer(false, buttonId, 'back');
+              }}
+            >
               {isIOS() ? <ArrowBackIos /> : <ArrowBack />}
               {' '}
               Back
@@ -657,11 +705,15 @@ class SettingsVerifySecretCode extends Component {
           <ButtonsContainer condensed={condensed}>
             <Button
               classes={{ root: classes.verifyButton }}
-              id="emailVerifyButton"
+              id={voterPhoneNumber ? 'phoneVerifyButton' : 'emailVerifyButton'}
               color="primary"
               disabled={this.state.digit1 === '' || this.state.digit2 === '' || this.state.digit3 === '' || this.state.digit4 === '' || this.state.digit5 === '' || this.state.digit6 === '' || voterMustRequestNewCode || voterSecretCodeRequestsLocked || voterVerifySecretCodeSubmitted}
               fullWidth
-              onClick={this.voterVerifySecretCode}
+              onClick={(e) => {
+                const buttonId = e.target.id;
+                this.voterVerifySecretCode();
+                this.pushDataLayer(false, buttonId, 'verify');
+              }}
               variant="contained"
             >
               {voterVerifySecretCodeSubmitted ? 'Verifying...' : 'Verify'}
@@ -676,11 +728,15 @@ class SettingsVerifySecretCode extends Component {
             </Button>
             */}
             <Button
-              id="tryADifferentEmailOrNumber"
+              id={voterPhoneNumber ? 'tryADifferentNumber' : 'tryADifferentEmail'}
               classes={{ root: classes.button }}
               color="primary"
               disabled={voterVerifySecretCodeSubmitted}
-              onClick={this.closeVerifyModalLocal}
+              onClick={(e) => {
+                const buttonId = e.target.id;
+                this.closeVerifyModalLocal();
+                this.pushDataLayer(false, buttonId, 'navigate');
+              }}
               variant={voterMustRequestNewCode ? 'contained' : 'outlined'}
             >
               {voterPhoneNumber ? 'Try a different number' : 'Try a different email'}
