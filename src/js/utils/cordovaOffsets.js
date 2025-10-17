@@ -60,8 +60,6 @@ export function cordovaBallotFilterTopMargin () {
     } else if (isIOSAppOnMac()) {
       if (page === CordovaPageConstants.news) {
         return '69px';
-      // } else if (pageEnumeration === CordovaPageConstants.friends) {
-      //   return '0px'; // test hack
       }
       return '3px';
     } else if (isIPad()) {
@@ -468,6 +466,8 @@ export function cordovaDrawerTopMargin () {
       return '40px';
     } else if (isIPad()) {
       return '26px';
+    } else {
+      return '52px';
     }
   } else if (isAndroid()) {
     return '0px';
