@@ -11,30 +11,32 @@ import { normalizedHref } from '../../common/utils/hrefUtils';
 import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import VoterConstants from '../../constants/VoterConstants';
-import Confetti from 'react-confetti/dist/types/Confetti';
+import Confetti from 'react-confetti';
 
 const BallotChoicesAndSettingsBody = React.lazy(() => import(/* webpackChunkName: 'BallotChoicesAndSettingsBody' */ './BallotChoicesAndSettingsBody'));
+
+
 
 class BallotChoicesAndSettingsModal extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      showConfetti: true,
+      showConfetti: false,
     };
   }
 
-  componentDidUpdate(prevProps) {
-    if (!prevProps.show && this.props.show) {
+  componentDidMount() {
+    // Show confetti when modal first mounts
+    if (this.props.show) {
       this.setState({ showConfetti: true });
-      console.log('BallotChoicesAndSettingsModal: Showing confetti');
       setTimeout(() => {
         this.setState({ showConfetti: false });
-      }, 3000);
+      }, 5000);
     }
   }
 
   closeThisModal = () => {
-    VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.PERSONALIZED_SCORE_INTRO_COMPLETED);
+    VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.BALLOT_CHOICES_AND_SETTING_COMPLETED);
     this.props.toggleFunction(normalizedHref());
   };
 
@@ -59,7 +61,33 @@ class BallotChoicesAndSettingsModal extends Component {
         open={show}
         onClose={this.closeThisModal}
       >
-        {this.state.showConfetti && <Confetti />}
+      <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+        {this.state.showConfetti && (
+          <div style={{ 
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            zIndex: 0,
+            pointerEvents: 'none'
+          }}>
+            <Confetti
+              width={window.innerWidth}
+              height={window.innerHeight}
+              numberOfPieces={150}
+              recycle={false}
+              confettiSource={{x: 0, y: 0, w: window.innerWidth, h: 0}}
+              colors={['#FF69B4', '#87CEEB', '#98FB98', '#DDA0DD', '#F0E68C', '#FF7F50']}
+              style={{
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                zIndex: -1
+              }}
+            />
+          </div>
+        )}
         <ModalTitleArea>
           <Title>
             Your ballot choices and settings are saved
@@ -86,6 +114,7 @@ class BallotChoicesAndSettingsModal extends Component {
             />
           </Suspense>
         </DialogContent>
+      </div>
       </Dialog>
     );
   }
@@ -144,6 +173,7 @@ const Title = styled('div')`
     font-size: 16px;
   }
 `;
+
 
 
 export default withTheme(withStyles(styles)(BallotChoicesAndSettingsModal));

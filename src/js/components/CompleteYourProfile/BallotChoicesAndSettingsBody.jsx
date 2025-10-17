@@ -9,7 +9,7 @@ import VoterConstants from '../../constants/VoterConstants';
 import { normalizedHref } from '../../common/utils/hrefUtils';
 import { renderLog } from '../../common/utils/logging';
 
-//const CandidateItem = React.lazy(() => import(/* webpackChunkName: 'CandidateItem' */ '../Ballot/CandidateItem'));
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 
 class BallotChoicesAndSettingsBody extends Component {
   constructor (props) {
@@ -24,26 +24,26 @@ class BallotChoicesAndSettingsBody extends Component {
       <div className={classes.root}>
         <div className={classes.settingsSection}>
           <h3>1. Do you want to know how your personal data is being stored?</h3>
-          <Button
-            variant="text"
-            color="primary"
-            href="https://help.wevote.us/hc/en-us/articles/360034759253-How-are-you-using-my-personal-data-What-protections-do-you-guarantee-me"
-            className={classes.settingsLink}
-          >
-            How are you using my personal data? What protections do you guarantee me?
-          </Button>
+          <Suspense fallback={<></>}>
+            <OpenExternalWebSite
+              linkIdAttribute="wevotePrivacy"
+              url="https://help.wevote.us/hc/en-us/articles/360034759253-How-are-you-using-my-personal-data-What-protections-do-you-guarantee-me"
+              target="_blank"
+              body={<span>How are you using my personal data? What protections do you guarantee me?</span>}
+            />
+          </Suspense>
         </div>
 
         <div className={classes.settingsSection}>
           <h3>2. Do you want to remove all your data and voting references?</h3>
-          <Button
-            variant="text"
-            color="primary"
-            href="https://help.wevote.us/hc/en-us/articles/360041733393-How-do-I-remove-all-of-my-data-and-voting-preferences"
-            className={classes.settingsLink}
-          >
-            How do I remove all of my data and voting preferences?
-          </Button>
+          <Suspense fallback={<></>}>
+            <OpenExternalWebSite
+              linkIdAttribute="wevotePrivacy"
+              url="https://help.wevote.us/hc/en-us/articles/360041733393-How-do-I-remove-all-of-my-data-and-voting-preferences"
+              target="_blank"
+              body={<span>How do I remove all of my data and voting preferences?</span>}
+            />
+          </Suspense>
         </div>
 
         <div className={classes.settingsSection}>
