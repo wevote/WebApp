@@ -57,32 +57,6 @@ class CandidatesBrowser extends PageBrowser {
     return $('input#searchCandidate');
   }
 
-  //Charanya dont change this as this is for product demo
-  async getCandidateByText(name) {
-    const candidateText = await $(`//button[text() = "${name}"]`);
-    return candidateText
-  }
-  //Charanya dont change this as this is for product demo
-  get candidateModalClose() {
-    return $('button#closeOrganizationModal');
-  }
-  //Charanya dont change this as this is for product demo
-  async getCandidateCardHeart () {
-    return $(`div [id*='cardForListBodyWrapper'] [class*='HeartFavoriteToggleContainer'] button[class*='LikeContainer']`);
-  }
-  //Charanya dont change this as this is for product demo
-  async getCandidateChoose() {
-    return $(`//div[contains(@id, 'ballotItemScrollingArea')]//button[contains(@id, 'itemActionBarSupportButton')]`);
- }
-  //Charanya dont change this as this is for product demo
-  async getCandidateCardUnheart () {
-    return $(`div [id*='cardForListBodyWrapper'] [class*='HeartFavoriteToggleContainer'] button[class*='DislikeContainer']`);
-  }
-  //Charanya dont change this as this is for product demo
-  async getCandidateEndorderes() {
-    return $$(`div [class*= 'CandidateEndorsementText']`);
-  }
-
   async getCandidateCardCandidate(cardId) {
     const candidate = await $(`//div[@id='${cardId}']//a[@id='candidateCardDisplayName' or @id='representativeCardDisplayName']`);
     return candidate;
@@ -99,6 +73,69 @@ class CandidatesBrowser extends PageBrowser {
     const stateText = await candidate.getText();
     return stateText;
   }
+   //Added page object for tests in product demo
+  async clickOpinionPlaceholderAndType() {
+    await browser.execute(() => {
+    const el = document.querySelector('div [class*=CommentContainerWrapper] input[readonly][placeholder*="opinion"]');
+    if (el) {
+      el.click();  // This triggers the React event attached to the wrapper
+    } else {
+      console.log('pinion placeholder not found');
+    }
+    });
+  }
+  //Added page object for tests in product demo
+  async getSelectRadioOptions(value){
+   const radioButton = await $(`input[type="radio"][value="${value}"]`);
+   return radioButton.click()
+  }
+
+  //Added page object for tests in product demo
+  async getLikeButtonForEndorsement(endorsement) {
+    await browser.pause(2000);
+    await browser.execute((name) => {
+       const wrappers = Array.from(
+          document.querySelectorAll('div[class*=PositionForBallotItemWrapper]')
+       );
+      const targetWrapper = wrappers.find(wrapper =>
+          wrapper.innerText.trim().includes(name)
+      );
+      if (targetWrapper) {
+        const likeButton = targetWrapper.querySelector('button[class*="LikeContainer"]:not([style*="display:none"])');
+        if (likeButton) {
+          likeButton.click();
+          console.log(`Clicked Like for "${name}"`);
+        } else {
+          console.log(`Like button not found inside wrapper for "${name}"`);
+        }
+      } else {
+         console.log(`Endorsement "${name}" not found`);
+     }
+    }, endorsement);
+  }
+ //Added page object for tests in product demo
+  async getDislikeButtonForEndorsement(endorsement) {
+    await browser.pause(2000);
+    await browser.execute((name) => {
+    const wrappers = Array.from(
+      document.querySelectorAll('div[class*=PositionForBallotItemWrapper]')
+    );
+    const targetWrapper = wrappers.find(wrapper =>
+      wrapper.innerText.trim().includes(name)
+    );
+    if (targetWrapper) {
+      const dislikeButton = targetWrapper.querySelector('button[class*="DislikeContainer"]:not([style*="display:none"])');
+      if (dislikeButton) {
+        dislikeButton.click();
+        console.log(`Clicked Dislike for "${name}"`);
+      } else {
+        console.log(`Dislike button not found inside wrapper for "${name}"`);
+      }
+    } else {
+      console.log(`Endorsement "${name}" not found`);
+    }
+  }, endorsement);
+ }
 
   async getCandidateCardPartyName (cardId) {
     const candidateParty = await $(`//div[@id='${cardId}']//div[contains(@class,'PoliticalParty')]`);

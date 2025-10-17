@@ -1,9 +1,10 @@
 import { driver, expect, browser } from '@wdio/globals';
-import ReadyPage from '../page_objects/ready.page';
+import ReadyPage from '../page_objects/ready.browser';
 import BallotPage from '../page_objects/ballot.browser';
 import HowItWorks from '../page_objects/howitworks.browser';
 import TopicsPage from '../page_objects/topics.browser';
 import CandidatesPage from '../page_objects/candidates.browser';
+import TopNavigation from '../page_objects/topnavigation.browser';
 import testData from '../capabilities/testData.js';
 import path from 'path';
 import { spawn } from 'child_process';
@@ -22,10 +23,10 @@ describe('Product Demo', () => {
     await browser.pause(waitTime);
   };
   it('HomePage', async () => {
-    await ReadyPage.viewUpcomingBallotButton;
+    await ReadyPage.viewUpcomingBallotButton.findAndClick();
     await HowItWorks.clickHowWeVoteWorksLink();
     for (let i = 1; i < 5; i++) {
-      await moveAndClick(await HowItWorks.clickNextButton(i));
+      await HowItWorks.clickNextButton(i);
     }
     const getStarted = await HowItWorks.getStartedButton;
     await moveAndClick(getStarted);
@@ -42,7 +43,7 @@ describe('Product Demo', () => {
   });
 
   it('updateBallotAddress', async () => {
-    await ReadyPage.updateBallotAddress('800 Saratoga Avenue, San Jose, CA, USA');
+    await ReadyPage.updateBallotAddress('Virginia');
   });
 
   it('climateChangeTopic', async () => {
@@ -52,60 +53,75 @@ describe('Product Demo', () => {
     await moveAndClick(await TopicsPage.backButton);
   });
 
-  it('verifySigninUsingMobile', async () => {
-    const howItWorksLink = await HowItWorks.howItWorksLink;
-    await moveAndClick(howItWorksLink);
-    await HowItWorks.clickNextButtonFourTimes();
-    const getStarted = await HowItWorks.getStartedButton;
-    await moveAndClick(getStarted);
-    const mobilePhoneNumber = await HowItWorks.enterMobilePhoneNumber;
-    await mobilePhoneNumber.addValue(testData.MOBILE_NUMBER);
-    const sendCode = await HowItWorks.enterSendVerificationCode;
-    await moveAndClick(sendCode);
-    for (let i = 0; i < 6; i++) {
-      const digitValue = await HowItWorks.enterDigit(i);
-      await digitValue.addValue(testData.MOBILE_VERIFICATION[i]);
-    }
-    const verifyButton = await HowItWorks.enterVerifyButton;
-    await moveAndClick(verifyButton);
-  });
-
   it('candidateHeartAndUnheart', async () => {
     await ReadyPage.viewUpcomingBallotButton.findAndClick();
     await browser.execute(() => window.scrollBy(0, 600));
-    const candidate01 = await CandidatesPage.getCandidateByText('Adam Schiff');
-    await candidate01.click();
-    const heartIcon = await CandidatesPage.getCandidateCardHeart()
-    await driver.executeScript("arguments[0].scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });", [heartIcon]);
+    await BallotPage.clickAnyCandidate();
+    const heartIcon = await BallotPage.getCandidateCardHeart()
+    await heartIcon.scrollIntoView({ block: 'center' });
     await heartIcon.click();
-    const unheartIcon = await CandidatesPage.getCandidateCardUnheart()
-    await driver.executeScript("arguments[0].scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });", [unheartIcon]);
+    const unheartIcon = await BallotPage.getCandidateCardUnheart()
+    await unheartIcon.scrollIntoView({ block: 'center' });
     await unheartIcon.click();
-    await CandidatesPage.candidateModalClose.click();
-
+    await BallotPage.candidateModalClose.click();
    });
 
   it('candidateEndorsements', async () => {
     await ReadyPage.viewUpcomingBallotButton.findAndClick();
     await browser.execute(() => window.scrollBy(0, 600));
-    const candidate02 = await CandidatesPage.getCandidateByText('Donald Trump');
-    await candidate02.scrollIntoView();
-    const endorsers =  await CandidatesPage.getCandidateEndorderes()
-    const endorserTarget = endorsers[2]
-    await endorserTarget.scrollIntoView({ block: "center", inline: "center" });
-    await moveAndClick(endorserTarget)
-    await CandidatesPage.candidateModalClose.click();
+    const endorsement =  await BallotPage.endorsementText;
+    await endorsement.waitForExist({ timeout: 5000 });
+    await endorsement.scrollIntoView({ block: 'center' });
+    await endorsement.moveTo();
+    await browser.pause(waitTime); // small hover delay for visual cue
+    await endorsement.click();
+    await BallotPage.candidateModalClose.click();
   });
 
   it('candidateChooseAndUnchoose', async () => {
     await moveAndClick(await ReadyPage.viewUpcomingBallotButton);
-    const candidate03 = await CandidatesPage.getCandidateByText('Donald Trump');
+    const candidate03 = await BallotPage.getCandidateByText('Donald Trump');
     await candidate03.scrollIntoView();
-    const choose = await CandidatesPage.getCandidateChoose();
+    const choose = await BallotPage.getCandidateChoose();
     await moveAndClick(choose);
   // Unchoose
     await moveAndClick(choose);
   });
+
+  it('clickCandidate and click endorsements ', async () =>{
+   await TopNavigation.toggleCandidatesTab();
+   await driver.pause(waitTime);
+   const cardId = await getCandidateCardId();
+   const candidateName = await CandidatesPage.getCandidateCardCandidate(cardId);
+   await candidateName.waitForDisplayed({timeout: 10000,});
+   await candidateName.click();
+   await driver.pause(waitTime);
+   const likeButton = await CandidatesPage.getLikeButtonForEndorsement("Barack Obama");
+   const dislikeButton = await CandidatesPage.getDislikeButtonForEndorsement("Barack Obama");
+   //Adding to cleanup the data
+   const undislikeButton = await BallotPage.getDislikeButtonForEndorsement("Barack Obama");
+   await CandidatesPage.clickOpinionPlaceholderAndType();
+   await CandidatesPage.getSelectRadioOptions("SUPPORT")
+   await driver.pause(waitTime);
+   await CandidatesPage.getSelectRadioOptions("OPPOSE")
+   await driver.pause(waitTime);
+   await CandidatesPage.getSelectRadioOptions("INFO_ONLY")
+   await driver.pause(waitTime);
+  });
+
+  async function getCandidateCardId () {
+    const candidateCards = await CandidatesPage.candidateCardList;
+    let selCard =  0;
+    if (candidateCards.length >= 3) {
+      selCard =  1;
+    } else {
+      selCard = candidateCards.length - 1;
+    }
+    const candidateCardRandom = candidateCards[selCard];
+    await driver.waitUntil(async () =>  !(await candidateCardRandom.getAttribute('id')).includes('Loading'), { timeout: 4000, timeoutMsg: 'Card Data not Loaded within expected duration of 4 seconds.' });
+    const candidateCardId = await candidateCardRandom.getAttribute('id');
+    return candidateCardId;
+  }
 
   after(async function () {
     const sessionId = driver.sessionId;

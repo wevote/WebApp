@@ -23,8 +23,6 @@ const dateForDisplay = date.toDateString();
 
 const buildName = `${browserStackConfig.NAME}: ${dateForDisplay}`;
 
-// https://webdriver.io/docs/configurationfile
-
 module.exports.config = {
   user: browserStackConfig.BROWSERSTACK_USER,
   key: browserStackConfig.BROWSERSTACK_KEY,
@@ -40,9 +38,6 @@ module.exports.config = {
   ],
   specs: [
     '../specs/ProductDemo.browser.js',
-
-
-
   ],
   capabilities,
   commonCapabilities: {
@@ -52,7 +47,11 @@ module.exports.config = {
       gpsLocation: '37.804363,-122.271111',
       maskCommands: 'setValues, getValues, setCookies, getCookies',
       video: 'true',
+      resolution: '1920x1080'
     },
+    'goog:chromeOptions': {
+    args: ['--window-size=1920,1080']
+   },
   },
   maxInstances: 1,
   exclude: [],
@@ -76,35 +75,28 @@ module.exports.config = {
       await this.click();
     }, true);
   },
-
- after: async function (result, capabilities, specs) {
+  after: async function (result, capabilities, specs) {
   console.log('AFTER HOOK TRIGGERED');
-  const sessionId = driver.sessionId;
-  console.log('Running fetchAndUploadVideo for session:', sessionId);
-  const scriptPath = require('path').resolve('./tests/browserstack_automation/specs/', 'downloadVideo.browser.js');
-  const cmd = `node ${scriptPath} ${sessionId}`;
+  console.log('capabilities:', capabilities);
+  console.log('browser.sessionId:', browser.sessionId);
+  console.log('driver.sessionId:', driver.sessionId);
+
+  const sessionId = browser.sessionId || (capabilities && capabilities.sessionId);
+  if (!sessionId) {
+    console.warn('No session ID found, skipping video upload');
+    return;
+  }
+  const scriptPath = require('path').resolve('./tests/browserstack_automation/specs/', 'DownloadVideo.browser.js');
+  console.log('Running helper script:', scriptPath);
   try {
-      const { stdout, stderr } = await execAsync(cmd);
-      if (stdout) console.log('Fetch & Upload Output (stdout):\n', stdout);
-      if (stderr) console.warn('Fetch & Upload Output (stderr):\n', stderr);
-    } catch (err) {
-      console.error('Error during fetchAndUploadVideo:', err);
-    }
-
-//  exec(cmd)
-//  .then(({ stdout, stderr }) => {
-//    if (stdout) console.log('Fetch & Upload Output (stdout):\n', stdout);
-//    if (stderr) console.warn('Fetch & Upload Output (stderr):\n', stderr);
-//  })
-//  .catch((err) => {
-//    console.error('Error running fetch/upload script:', err.message);
-//  });
-
- },
-
-
+    const { stdout, stderr } = await execAsync(`node ${scriptPath} ${sessionId}`);
+    console.log('stdout:', stdout);
+    console.log('stderr:', stderr);
+  } catch (e) {
+    console.error('Error running helper script:', e);
+  }
+}
 };
-
 module.exports.config.capabilities.forEach((capability) => {
   const device = capability;
   const keys = Object.keys(device);
