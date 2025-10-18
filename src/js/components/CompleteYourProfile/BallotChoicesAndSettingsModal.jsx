@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import React, { Component, Suspense } from 'react';
+import Confetti from 'react-confetti';
 import { normalizedHref } from '../../common/utils/hrefUtils';
 import { renderLog } from '../../common/utils/logging';
-import Confetti from 'react-confetti';
 import ModalDisplayTemplateA from '../Widgets/ModalDisplayTemplateA';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
@@ -16,7 +16,7 @@ class BallotChoicesAndSettingsModal extends Component {
     };
   }
 
-  componentDidMount() {
+  componentDidMount () {
     // Show confetti when modal first mounts
     if (this.props.show) {
       this.setState({ showConfetti: true });
@@ -32,42 +32,40 @@ class BallotChoicesAndSettingsModal extends Component {
 
   BallotChoicesAndSettingsBody () {
     return (
-       <BallotChoiceWrapper>
-              <Settingssection>
-                <BallotChoiceTitle>1. Do you want to know how your personal data is being stored?</BallotChoiceTitle>
-                <Suspense fallback={<></>}>
-                  <OpenExternalWebSite
-                    linkIdAttribute="wevotePrivacy_data"
-                    url="https://help.wevote.us/hc/en-us/articles/360034759253-How-are-you-using-my-personal-data-What-protections-do-you-guarantee-me"
-                    target="_blank"
-                    body={<span>How are you using my personal data? What protections do you guarantee me?</span>}
-                  />
-                </Suspense>
-              </Settingssection>
-      
-              <Settingssection>
-                <BallotChoiceTitle>2. Do you want to remove all your data and voting references?</BallotChoiceTitle>
-                <Suspense fallback={<></>}>
-                  <OpenExternalWebSite
-                    linkIdAttribute="wevotePrivacy_removeData"
-                    url="https://help.wevote.us/hc/en-us/articles/360041733393-How-do-I-remove-all-of-my-data-and-voting-preferences"
-                    target="_blank"
-                    body={<span>How do I remove all of my data and voting preferences?</span>}
-                  />
-                </Suspense>
-              </Settingssection>
-      
-              <Settingssection>
-                <BallotChoiceTitle>3. Do you want to edit your profile?</BallotChoiceTitle>
-                <BallotChoicetext>Click on the head icon/your profile photo on the top</BallotChoicetext>
-              </Settingssection>
-            </BallotChoiceWrapper>
+      <BallotChoiceWrapper>
+        <Settingssection>
+          <BallotChoiceTitle>1. Do you want to know how your personal data is being stored?</BallotChoiceTitle>
+          <Suspense fallback={<></>}>
+            <OpenExternalWebSite
+                linkIdAttribute="wevotePrivacy_data"
+                url="https://help.wevote.us/hc/en-us/articles/360034759253-How-are-you-using-my-personal-data-What-protections-do-you-guarantee-me"
+                target="_blank"
+                body={<span>How are you using my personal data? What protections do you guarantee me?</span>}
+            />
+          </Suspense>
+        </Settingssection>
+        <Settingssection>
+          <BallotChoiceTitle>2. Do you want to remove all your data and voting references?</BallotChoiceTitle>
+          <Suspense fallback={<></>}>
+            <OpenExternalWebSite
+                  linkIdAttribute="wevotePrivacy_removeData"
+                  url="https://help.wevote.us/hc/en-us/articles/360041733393-How-do-I-remove-all-of-my-data-and-voting-preferences"
+                  target="_blank"
+                  body={<span>How do I remove all of my data and voting preferences?</span>}
+            />
+          </Suspense>
+        </Settingssection>
+        <Settingssection>
+          <BallotChoiceTitle>3. Do you want to edit your profile?</BallotChoiceTitle>
+          <BallotChoicetext>Click on the head icon/your profile photo on the top</BallotChoicetext>
+        </Settingssection>
+      </BallotChoiceWrapper>
     );
   }
 
 
 
-  renderConfetti() {
+  renderConfetti () {
     if (!this.state.showConfetti) return null;
     return (
       <Renderconfetti>
@@ -76,7 +74,7 @@ class BallotChoicesAndSettingsModal extends Component {
           height={window.innerHeight}
           numberOfPieces={500}
           recycle={false}
-          confettiSource={{x: 0, y: 0, w: window.innerWidth, h: 0}}
+          confettiSource={{ x: 0, y: 0, w: window.innerWidth, h: 0 }}
           colors={['#FF69B4', '#87CEEB', '#98FB98', '#DDA0DD', '#F0E68C', '#FF7F50']}
         />
       </Renderconfetti>
@@ -98,7 +96,7 @@ class BallotChoicesAndSettingsModal extends Component {
           dialogTitleJSX={<Title>Your ballot choices and settings are saved</Title>}
           show={show}
           toggleModal={this.toggleModal}
-          textFieldJSX={this.BallotChoicesAndSettingsBody() }
+          textFieldJSX={this.BallotChoicesAndSettingsBody()}
         />
       </>
     );
@@ -111,13 +109,13 @@ BallotChoicesAndSettingsModal.propTypes = {
 };
 
 
-const BallotChoiceWrapper= styled('div')`
+const BallotChoiceWrapper = styled('div')`
     padding-top: 20px;
     padding-right: 24px;
     padding-bottom: 20px;
     padding-left: 24px
 `;
-const Settingssection= styled('div')`
+const Settingssection = styled('div')`
     margin-bottom: 24px,
 `;
 const BallotChoiceTitle = styled('h3')`

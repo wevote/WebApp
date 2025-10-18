@@ -234,34 +234,34 @@ class CompleteYourProfileOnBallot extends Component {
       pageDetails: getPageDetails(),
       userDetails: VoterStore.getAnalyticsUserDetails(),
     };
-    //console.log('openPersonalizedScoreIntroModal dataLayer:', dataLayerObject);
+    // console.log('openPersonalizedScoreIntroModal dataLayer:', dataLayerObject);
     TagManager.dataLayer({ dataLayer: dataLayerObject });
   }
 
-    openBallotChoicesAndSettingsModal = () => {
-    // console.log('BallotChoicesAndSettingsModal called');
-    AppObservableStore.setShowBallotChoicesAndSettingsModal(true);
-    // Add dataLayer tracking
-    const { location: { pathname: currentPathname } } = window;
-    const currentPage = lookupPageNameAndPageTypeDict(currentPathname);
+      openBallotChoicesAndSettingsModal = () => {
+        // console.log('BallotChoicesAndSettingsModal called');
+        AppObservableStore.setShowBallotChoicesAndSettingsModal(true);
+        // Add dataLayer tracking
+        const { location: { pathname: currentPathname } } = window;
+        const currentPage = lookupPageNameAndPageTypeDict(currentPathname);
 
-    const dataLayerObject = {
-      actionDetails: {
-        actionType: 'openModal',
-        buttonId: 'yourBallotChoicesAndSettingsStep',
-      },
-      event: 'action',
-      destinationDetails: {
-        destinationPageName: 'BallotChoicesAndSettingsModal',
-        destinationPageType: currentPage.pageType,
-        destinationPathname: currentPathname,
-      },
-      pageDetails: getPageDetails(),
-      userDetails: VoterStore.getAnalyticsUserDetails(),
-    };
-    // console.log('BallotChoicesAndSettingsModal dataLayer:', dataLayerObject);
-    TagManager.dataLayer({ dataLayer: dataLayerObject });
-  }
+        const dataLayerObject = {
+          actionDetails: {
+            actionType: 'openModal',
+            buttonId: 'yourBallotChoicesAndSettingsStep',
+          },
+          event: 'action',
+          destinationDetails: {
+            destinationPageName: 'BallotChoicesAndSettingsModal',
+            destinationPageType: currentPage.pageType,
+            destinationPathname: currentPathname,
+          },
+          pageDetails: getPageDetails(),
+          userDetails: VoterStore.getAnalyticsUserDetails(),
+        };
+        // console.log('BallotChoicesAndSettingsModal dataLayer:', dataLayerObject);
+        TagManager.dataLayer({ dataLayer: dataLayerObject });
+      }
 
   goToNextIncompleteStep = () => {
     const { steps } = this.state;

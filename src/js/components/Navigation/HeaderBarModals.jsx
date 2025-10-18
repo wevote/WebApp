@@ -94,11 +94,12 @@ class HeaderBarModals extends Component {
   closeAskFriendsModal = () => {
     AppObservableStore.setShowAskFriendsModal(false);
   }
-  
+
   closeBallotChoicesAndSettingsModal = () => {
     AppObservableStore.setShowBallotChoicesAndSettingsModal(false);
     // this.setState({ showBallotChoicesAndSettingsModal: false });
   }
+
   closeChooseOrOpposeIntroModal = () => {
     AppObservableStore.setShowChooseOrOpposeIntroModal(false);
   }
@@ -340,7 +341,7 @@ class HeaderBarModals extends Component {
       <>
         {advisorIntroModalHtml}
         {askFriendsModal}
-        {ballotChoicesAndSettingsModal} 
+        {ballotChoicesAndSettingsModal}
         {chooseOrOpposeIntroModal}
         {firstPositionIntroModal}
         {imageUploadModal}
