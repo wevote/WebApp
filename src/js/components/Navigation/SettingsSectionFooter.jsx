@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import OpenExternalWebSite from '../../common/components/Widgets/OpenExternalWebSite';
 import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
+import { isIPad } from '../../common/utils/cordovaUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import webAppConfig from '../../config';
@@ -156,6 +157,7 @@ const DoesNotSupport = styled('div', {
   font-weight: 400;
   margin-top: 24px;
   ${centered ? 'text-align: center;' : ''}
+  ${isIPad ? 'width: 210px;' : ''}
 `));
 
 const OneRow = styled('div', {
@@ -164,6 +166,7 @@ const OneRow = styled('div', {
   ${centered ? 'display: flex;' : ''}
   ${centered ? 'justify-content: center;' : ''}
   margin-bottom: 8px;
+  ${isIPad ? 'width: 210px;' : ''}
 `));
 
 const Wrapper = styled('div')`

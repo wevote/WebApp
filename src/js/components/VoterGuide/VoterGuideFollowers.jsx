@@ -5,12 +5,13 @@ import { Helmet } from 'react-helmet-async';
 import styled from 'styled-components';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
+import SearchBar2024 from '../../common/components/Search/SearchBar2024';
+import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
+import { isCordova } from '../../common/utils/isCordovaOrWebApp';
+import { renderLog } from '../../common/utils/logging';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
-import { renderLog } from '../../common/utils/logging';
-import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
-import SearchBar2024 from '../../common/components/Search/SearchBar2024';
 import { PageContentContainer } from '../Style/pageLayoutStyles';
 import GuideList from './GuideList';
 
@@ -158,7 +159,7 @@ class VoterGuideFollowers extends Component {
 
     return (
       <PageContentContainer>
-        <Wrapper>
+        <FollowersWrapper>
           {/* Since VoterGuidePositions, VoterGuideFollowing, and VoterGuideFollowers are in tabs the title seems to use the Helmet values from the last tab */}
           <Helmet title={`${organizationName} - WeVote`} />
           <div className="card">
@@ -225,7 +226,7 @@ class VoterGuideFollowers extends Component {
               </span>
             </ul>
           </div>
-        </Wrapper>
+        </FollowersWrapper>
       </PageContentContainer>
     );
   }
@@ -249,7 +250,8 @@ const TitleWrapper = styled('div')`
   margin: 15px;
 `;
 
-const Wrapper = styled('div')(({ theme }) => (`
+const FollowersWrapper = styled('div')(({ theme }) => (`
+  ${isCordova() ? 'margin-bottom: 30%' : ''};
   ${theme.breakpoints.down('md')} {
     // margin-left: 15px;
     // margin-right: 15px;

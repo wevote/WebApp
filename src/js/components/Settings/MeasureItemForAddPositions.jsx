@@ -208,7 +208,7 @@ class MeasureItemForAddPositions extends Component {
 
     return (
       <Card classes={{ root: classes.cardRoot }}>
-        <InfoRow>
+        <MeasureInfoRow>
           <MeasureInfoWrapper onClick={() => { this.openMeasureLinkModal(ballotItemWeVoteId); }}>
             <Title>
               {ballotDisplay[0]}
@@ -229,7 +229,7 @@ class MeasureItemForAddPositions extends Component {
               // transitioning={this.state.transitioning}
             />
           </Suspense>
-        </InfoRow>
+        </MeasureInfoRow>
         {commentDisplayDesktop}
         {commentDisplayMobile}
       </Card>
@@ -268,7 +268,7 @@ const styles = (theme) => ({
   },
 });
 
-const InfoRow = styled('div')`
+const MeasureInfoRow = styled('div')`
   display: flex;
   flex-flow: row wrap;
   justify-content: space-between;

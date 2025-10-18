@@ -119,7 +119,7 @@
 //     if (isCordova()) {
 //       // console.log('closeFunction in SignInModalOriginal doing restoreStylesAfterCordovaKeyboard and historyPush');
 //       restoreStylesAfterCordovaKeyboard('SignInModalOriginal');
-//       if (webAppConfig.SHOW_CORDOVA_URL_FIELD) {   // TODO This is a hack, need to pass back the new path from DeviceURLField
+//       if (webAppConfig.SHOW_CORDOVA_URL_FIELD) {
 //         historyPush('/start');
 //       } else {
 //         historyPush('/ballot');
