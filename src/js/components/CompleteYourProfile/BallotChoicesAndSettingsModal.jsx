@@ -1,21 +1,12 @@
-import { Close } from '@mui/icons-material';
-import { Dialog, DialogContent, IconButton } from '@mui/material';
-import styled from 'styled-components';
-import withStyles from '@mui/styles/withStyles';
-import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import React, { Component, Suspense } from 'react';
-import VoterActions from '../../actions/VoterActions';
-import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
 import { normalizedHref } from '../../common/utils/hrefUtils';
-import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
-import VoterConstants from '../../constants/VoterConstants';
 import Confetti from 'react-confetti';
+import ModalDisplayTemplateA from '../Widgets/ModalDisplayTemplateA';
 
-const BallotChoicesAndSettingsBody = React.lazy(() => import(/* webpackChunkName: 'BallotChoicesAndSettingsBody' */ './BallotChoicesAndSettingsBody'));
-
-
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 
 class BallotChoicesAndSettingsModal extends Component {
   constructor (props) {
@@ -35,145 +26,127 @@ class BallotChoicesAndSettingsModal extends Component {
     }
   }
 
-  closeThisModal = () => {
-    VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.BALLOT_CHOICES_AND_SETTING_COMPLETED);
+  toggleModal = () => {
     this.props.toggleFunction(normalizedHref());
   };
 
-//  BallotChoicesAndSettingsCompleted = () => {
-    // Mark this, so we know to show 'Personalized Score Modal' as completed
-//    VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.PERSONALIZED_SCORE_INTRO_COMPLETED);
-//   this.props.toggleFunction(normalizedHref());
-//  };
+  BallotChoicesAndSettingsBody () {
+    return (
+       <BallotChoiceWrapper>
+              <Settingssection>
+                <BallotChoiceTitle>1. Do you want to know how your personal data is being stored?</BallotChoiceTitle>
+                <Suspense fallback={<></>}>
+                  <OpenExternalWebSite
+                    linkIdAttribute="wevotePrivacy_data"
+                    url="https://help.wevote.us/hc/en-us/articles/360034759253-How-are-you-using-my-personal-data-What-protections-do-you-guarantee-me"
+                    target="_blank"
+                    body={<span>How are you using my personal data? What protections do you guarantee me?</span>}
+                  />
+                </Suspense>
+              </Settingssection>
+      
+              <Settingssection>
+                <BallotChoiceTitle>2. Do you want to remove all your data and voting references?</BallotChoiceTitle>
+                <Suspense fallback={<></>}>
+                  <OpenExternalWebSite
+                    linkIdAttribute="wevotePrivacy_removeData"
+                    url="https://help.wevote.us/hc/en-us/articles/360041733393-How-do-I-remove-all-of-my-data-and-voting-preferences"
+                    target="_blank"
+                    body={<span>How do I remove all of my data and voting preferences?</span>}
+                  />
+                </Suspense>
+              </Settingssection>
+      
+              <Settingssection>
+                <BallotChoiceTitle>3. Do you want to edit your profile?</BallotChoiceTitle>
+                <BallotChoicetext>Click on the head icon/your profile photo on the top</BallotChoicetext>
+              </Settingssection>
+            </BallotChoiceWrapper>
+    );
+  }
+
+
+
+  renderConfetti() {
+    if (!this.state.showConfetti) return null;
+    return (
+      <Renderconfetti>
+        <Confetti
+          width={window.innerWidth}
+          height={window.innerHeight}
+          numberOfPieces={500}
+          recycle={false}
+          confettiSource={{x: 0, y: 0, w: window.innerWidth, h: 0}}
+          colors={['#FF69B4', '#87CEEB', '#98FB98', '#DDA0DD', '#F0E68C', '#FF7F50']}
+        />
+      </Renderconfetti>
+    );
+  }
 
   render () {
-    renderLog('BallotChoicesAndSettingsModal');  // Set LOG_RENDER_EVENTS to log all renders
-    const { classes, show } = this.props;
-    //console.log('Rendering with props from balloitchoice:', this.props);
-    //console.log('Rendering with state balloitchoice:', this.state);
+    renderLog('BallotChoicesAndSettingsModal');
+    const { show } = this.props;
 
     if (!show) {
       return null;
     }
+
     return (
-      <Dialog
-        classes={{ paper: classes.dialogPaper }}
-        open={show}
-        onClose={this.closeThisModal}
-      >
-      <div style={{ position: 'relative', width: '100%', height: '100%' }}>
-        {this.state.showConfetti && (
-          <div style={{ 
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            zIndex: 0,
-            pointerEvents: 'none'
-          }}>
-            <Confetti
-              width={window.innerWidth}
-              height={window.innerHeight}
-              numberOfPieces={150}
-              recycle={false}
-              confettiSource={{x: 0, y: 0, w: window.innerWidth, h: 0}}
-              colors={['#FF69B4', '#87CEEB', '#98FB98', '#DDA0DD', '#F0E68C', '#FF7F50']}
-              style={{
-                position: 'fixed',
-                top: 0,
-                left: 0,
-                zIndex: -1
-              }}
-            />
-          </div>
-        )}
-        <ModalTitleArea>
-          <Title>
-            Your ballot choices and settings are saved
-          </Title>
-          <IconButtonWrapper>
-            <IconButton
-              aria-label="Close"
-              className={classes.closeButton}
-              onClick={this.closeThisModal}
-              id="closeBallotChoicesAndSettingsModal"
-              size="large"
-            >
-              <Close />
-            </IconButton>
-          </IconButtonWrapper>
-        </ModalTitleArea>
-        <DialogContent classes={{ root: classes.dialogContent }}>
-          <Suspense fallback={<></>}>
-            <BallotChoicesAndSettingsBody
-              inModal
-              // markBallotChoicesAndSettingsCompleted={this.markBallotChoicesAndSettingsCompleted} // Not needed here
-              show={show}
-              toggleFunction={this.props.toggleFunction}
-            />
-          </Suspense>
-        </DialogContent>
-      </div>
-      </Dialog>
+      <>
+        {this.renderConfetti()}
+        <ModalDisplayTemplateA
+          dialogTitleJSX={<Title>Your ballot choices and settings are saved</Title>}
+          show={show}
+          toggleModal={this.toggleModal}
+          textFieldJSX={this.BallotChoicesAndSettingsBody() }
+        />
+      </>
     );
   }
 }
+
 BallotChoicesAndSettingsModal.propTypes = {
-  classes: PropTypes.object,
   show: PropTypes.bool,
   toggleFunction: PropTypes.func.isRequired,
 };
 
-const styles = () => ({
-  dialogPaper: {
-    width: '100%',
-    height: isCordova() ? '83%' : '90%',
-    margin: '0 auto',
-    padding: '0 !important',
-    marginTop: hasIPhoneNotch() ? 68 : 48,
-    transitionDuration: '.25s',
-    '@media (min-width: 400px)': {   // Doesn't work in cordova
-      width: '90%',
-      height: '83%',
-    },
-    '@media (min-width: 576px)': {
-      width: '90%',
-      height: '600px',
-    },
-  },
-  dialogContent: {
-    background: 'white',
-  },
-  closeButton: {
-  },
-});
 
-const IconButtonWrapper = styled('div')`
-  margin: 4px 0 12px 0;
+const BallotChoiceWrapper= styled('div')`
+    padding-top: 20px;
+    padding-right: 24px;
+    padding-bottom: 20px;
+    padding-left: 24px
+`;
+const Settingssection= styled('div')`
+    margin-bottom: 24px,
+`;
+const BallotChoiceTitle = styled('h3')`
+    font-size: 18px;
+    margin-top: 12px;
+    margin-bottom: 12px;
+    font-weight: 500;
+`;
+const BallotChoicetext = styled('p')`
+      margin-top: 8px,
+      color: #555,
+`;
+const Renderconfetti = styled('div')`
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        zIndex: 1000,
+        pointerEvents: 'none'
 `;
 
-const ModalTitleArea = styled('div')`
-  align-items: center;
-  display: flex;
-  flex-wrap: nowrap;
-  justify-content: space-between;
-  @media (min-width: 769px) {
-    border-bottom: 2px solid #f7f7f7;
-  }
-`;
-
-const Title = styled('div')`
+const Title = styled('h3')`
+  font-size: 24px;;
   color: black;
-  font-size: 24px;
+  margin-top: 6px;
+  margin-bottom: 6px;
   font-weight: bold;
-  margin: 0 12px;
-  width: 100%;
-  @media (max-width: 769px) {
-    font-size: 16px;
-  }
 `;
 
 
-
-export default withTheme(withStyles(styles)(BallotChoicesAndSettingsModal));
+export default BallotChoicesAndSettingsModal;
