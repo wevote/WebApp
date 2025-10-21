@@ -4,7 +4,6 @@ const { readFileSync } = require('fs');
 const path = require('path');
 const browserStackConfig = require('./browserstack.config');
 
-
 // --- Define Spec file sets
 const cordovaSpecs = [
   '../specs/ReadyPage.cordova.js'
