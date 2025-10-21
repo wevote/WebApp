@@ -165,6 +165,7 @@ module.exports.config = {
 
   maxInstances: 1,
   exclude: [],
+  outputDir: path.join(__dirname, '../qalogs'),
   logLevel: 'error',
   coloredLogs: true,
   baseUrl: browserStackConfig.WEB_APP_ROOT_URL,
