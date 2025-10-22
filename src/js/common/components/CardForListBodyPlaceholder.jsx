@@ -71,7 +71,7 @@ function CardForListBodyPlaceholder (props) {
               </TitleAndTextWrapper>
             </OneCampaignTextColumn>
             <OneCampaignPhotoWrapperMobile
-            className={`${hideCardMargins ? '' : 'u-cursor--pointer'} u-show-mobile`}
+              className={`${hideCardMargins ? '' : 'u-cursor--pointer'} u-show-mobile`}
             >
               <CampaignImageMobilePlaceholder
                 id="cimp2"
@@ -84,10 +84,10 @@ function CardForListBodyPlaceholder (props) {
               </CampaignImageMobilePlaceholder>
             </OneCampaignPhotoWrapperMobile>
             <OneCampaignPhotoDesktopColumn
-            className="u-cursor--pointer u-show-desktop-tablet"
-            hideCardMargins={hideCardMargins}
-            profileImageBackgroundColor={DesignTokenColors.neutralUI50}
-            useVerticalCard={useVerticalCard}
+              className="u-cursor--pointer u-show-desktop-tablet"
+              hideCardMargins={hideCardMargins}
+              profileImageBackgroundColor={DesignTokenColors.neutralUI50}
+              useVerticalCard={useVerticalCard}
             >
               <CampaignImageDesktopPlaceholder
                 id="cidp5"

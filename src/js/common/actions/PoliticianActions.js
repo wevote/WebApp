@@ -2,6 +2,15 @@ import Dispatcher from '../dispatcher/Dispatcher';
 import arrayContains from '../utils/arrayContains';
 
 export default {
+  politicianCampaignWebsiteSave (politicianWeVoteId, campaignWebsite) {
+    Dispatcher.loadEndpoint('politicianSave',
+      {
+        campaign_website: campaignWebsite,
+        campaign_website_changed: true,
+        politician_we_vote_id: politicianWeVoteId,
+      });
+  },
+
   politicianNameSave (politicianWeVoteId, politicianName) {
     Dispatcher.loadEndpoint('politicianSave',
       {
@@ -64,12 +73,11 @@ export default {
       });
   },
 
-  politiciansQuery (electionDay = '', raceOfficeLevelList = '', stateCode = '', searchText = '') {
+  politiciansQuery (raceOfficeLevelList = '', stateCode = '', searchText = '') {
     Dispatcher.loadEndpoint('politiciansQuery',
       {
-        electionDay,
-        raceOfficeLevelList,
-        searchText,
+        race_office_level_list: raceOfficeLevelList,
+        search_text: searchText,
         state: stateCode,
         useWeVoteFormat: 1,
       });

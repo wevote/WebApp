@@ -5,9 +5,8 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { getAndroidSize, getCordovaBuildVersion, getIOSSizeString, hasIPhoneNotch, isIOS, isSimulator } from '../../common/utils/cordovaUtils';
+import { getAndroidSize, getCordovaBuildVersion, getIOSDiagonalValue, getIOSNameString, getIOSSizeString, hasIPhoneNotch, isIOS, isSimulator } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
-import { isAndroid } from '../../common/utils/isCordovaOrWebApp';
 import { getTabletSize } from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import compileDate from '../../compileDate';
@@ -62,8 +61,7 @@ class DeviceDialog extends Component {
     if (!this.props.show) {
       return null;
     }
-    // HACK 10/2/23 const { diameter } = window.pbakondyScreenSize;
-    const diameter = 'unknown';
+    const diameter = getIOSDiagonalValue() || 'unknown';
     const version = getCordovaBuildVersion();
 
     return (
@@ -84,34 +82,58 @@ class DeviceDialog extends Component {
               </TableRow>
             </TableHead>
             <TableBody>
+              {isIOS() ? (
+                <>
+                  <TableRow>
+                    <StyledTableCell>iPhone Model</StyledTableCell>
+                    <StyledTableCell>{getIOSNameString()}</StyledTableCell>
+                  </TableRow>
+                  <TableRow>
+                    <StyledTableCell>Screen Size</StyledTableCell>
+                    <StyledTableCell>{diameter}</StyledTableCell>
+                  </TableRow>
+                  <TableRow>
+                    <StyledTableCell>iPhone Layout Code</StyledTableCell>
+                    <StyledTableCell>{getIOSSizeString()}</StyledTableCell>
+                  </TableRow>
+                </>
+              ) : (
+                <>
+                  <TableRow>
+                    <StyledTableCell>Android Size Code</StyledTableCell>
+                    <StyledTableCell>{getAndroidSize()}</StyledTableCell>
+                  </TableRow>
+                  <TableRow>
+                    <StyledTableCell>Screen Size</StyledTableCell>
+                    <StyledTableCell>{diameter}</StyledTableCell>
+                  </TableRow>
+                </>
+              )}
+
               <TableRow>
                 <StyledTableCell>window.device.model</StyledTableCell>
                 <StyledTableCell>{window.device.model}</StyledTableCell>
+              </TableRow>
+              <TableRow>
+                <StyledTableCell>WeVote App Version</StyledTableCell>
+                <StyledTableCell>{version}</StyledTableCell>
+              </TableRow>
+              <TableRow>
+                <StyledTableCell>Compile date</StyledTableCell>
+                <StyledTableCell>{compileDate}</StyledTableCell>
+              </TableRow>
+              <TableRow>
+                <StyledTableCell>window.device.uuid</StyledTableCell>
+                <StyledTableCell>{window.device.uuid}</StyledTableCell>
               </TableRow>
               <TableRow>
                 <StyledTableCell>device OS version</StyledTableCell>
                 <StyledTableCell>{`${window.device.platform} ${window.device.version}`}</StyledTableCell>
               </TableRow>
               <TableRow>
-                <StyledTableCell>Diagonal Screen Size</StyledTableCell>
-                <StyledTableCell>{diameter || 'n/a'}</StyledTableCell>
-              </TableRow>
-              {isAndroid() && (
-                <TableRow>
-                  <StyledTableCell>Android Size Code</StyledTableCell>
-                  <StyledTableCell>{getAndroidSize()}</StyledTableCell>
-                </TableRow>
-              )}
-              <TableRow>
                 <StyledTableCell>User Agent</StyledTableCell>
                 <StyledTableCell>{navigator.userAgent}</StyledTableCell>
               </TableRow>
-              {isIOS() && (
-                <TableRow>
-                  <StyledTableCell>iPhone Size Code</StyledTableCell>
-                  <StyledTableCell>{getIOSSizeString()}</StyledTableCell>
-                </TableRow>
-              )}
               <TableRow>
                 <StyledTableCell>Cordova Tablet Size</StyledTableCell>
                 <StyledTableCell>{getTabletSize()}</StyledTableCell>
@@ -137,35 +159,28 @@ class DeviceDialog extends Component {
                 <StyledTableCell>{window.screen.height * window.devicePixelRatio}</StyledTableCell>
               </TableRow>
               <TableRow>
-                <StyledTableCell>Version</StyledTableCell>
-                <StyledTableCell>{version}</StyledTableCell>
-              </TableRow>
-              <TableRow>
-                <StyledTableCell>Compile date</StyledTableCell>
-                <StyledTableCell>{compileDate}</StyledTableCell>
-              </TableRow>
-              <TableRow>
                 <StyledTableCell>Your internal WeVote id</StyledTableCell>
                 <StyledTableCell>{VoterStore.getVoter().we_vote_id}</StyledTableCell>
               </TableRow>
             </TableBody>
           </Table>
           {/* Show the developer options if on the simulator in iOS, or the SHOW_TEST_OPTIONS is on, or Cordova offset logging is turned on -- should not show in release builds */}
-          { isSimulator() &&
-            (
-              <div style={{ marginTop: 20 }}>
-                <div style={{ marginTop: 5 }}>
-                  <span className="card-main__candidate-name-link">
-                    <Link onClick={DeviceDialog.clearLocationGuessClosedCookie} to="/">Clear Location Guess Cookie</Link>
-                  </span>
-                </div>
-                <div style={{ marginTop: 5 }}>
-                  <span className="card-main__candidate-name-link">
-                    <Link onClick={DeviceDialog.clearAllCookies} to="/">Clear Cookies</Link>
-                  </span>
-                </div>
-              </div>
-            )}
+          {/* Removed Oct 2025, don't think this is valuable anymore */}
+          {/* { isSimulator() && */ }
+          {/*  ( */}
+          {/*    <div style={{ marginTop: 20 }}> */}
+          {/*      <div style={{ marginTop: 5 }}> */}
+          {/*        <span className="card-main__candidate-name-link"> */}
+          {/*          <Link onClick={DeviceDialog.clearLocationGuessClosedCookie} to="/">Clear Location Guess Cookie</Link> */}
+          {/*        </span> */}
+          {/*      </div> */}
+          {/*      <div style={{ marginTop: 5 }}> */}
+          {/*        <span className="card-main__candidate-name-link"> */}
+          {/*          <Link onClick={DeviceDialog.clearAllCookies} to="/">Clear Cookies</Link> */}
+          {/*        </span> */}
+          {/*      </div> */}
+          {/*    </div> */}
+          {/*  )} */}
           <DeviceFinePrint>
             <span style={{ padding: '10px 25px 10px 0px' }}>Attributions:</span>
             <Link to="/more/attributions" style={{ color: 'blue', textDecoration: 'underline' }}>Attributions</Link>
@@ -178,7 +193,6 @@ class DeviceDialog extends Component {
                 defaultValue={window.location.hash.replace('#', '')}
                 variant="outlined"
                 className={classes.root}
-                autoFocus
               />
               <Button
                 classes={{ root: classes.saveButton }}

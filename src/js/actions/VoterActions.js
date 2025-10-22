@@ -128,6 +128,13 @@ export default {
     Dispatcher.loadEndpoint('twitterRetrieveIdsIFollow', {});
   },
 
+  verifyPoliticianPasskey (passkey, politicianWeVoteId) {
+    Dispatcher.loadEndpoint('voterUpdate', {
+      passkey,
+      politician_we_vote_id: politicianWeVoteId,
+    });
+  },
+
   voterAccountDelete (deleteVoterAccount = false) {
     Dispatcher.loadEndpoint('voterUpdate', {
       delete_voter_account: deleteVoterAccount,
@@ -443,6 +450,15 @@ export default {
     Dispatcher.loadEndpoint('voterUpdate',
       {
         flag_integer_to_set: flagIntegerToSet,
+      });
+  },
+
+  voterUpdateVerifyOtherWaysSubmit (politicianWeVoteId = '', otherWaysToVerify = '', politicianPageUrl = '') {
+    Dispatcher.loadEndpoint('voterUpdate',
+      {
+        politician_we_vote_id: politicianWeVoteId,
+        other_ways_to_verify: otherWaysToVerify,
+        politician_page_url: politicianPageUrl,
       });
   },
 

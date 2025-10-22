@@ -37,11 +37,6 @@ const SettingsOfficialStatement = ({ externalUniqueId, politicianWeVoteId }) => 
     }
   }, []);
 
-  // const closeDrawer = () => {
-  //   const drawerOpenGlobalVariableName = 'headerProfileDrawerOpen';
-  //   AppObservableStore.setDrawerOpen(drawerOpenGlobalVariableName, false);
-  // };
-
   useEffect(() => {
     // console.log('VoterPositionEntryAndDisplay useEffect, politicianWeVoteId: ', politicianWeVoteId);
     politicianWeVoteIdRef.current = politicianWeVoteId;

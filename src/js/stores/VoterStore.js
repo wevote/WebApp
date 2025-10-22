@@ -88,7 +88,20 @@ class VoterStore extends ReduceStore {
   }
 
   getAnalyticsUserCohort () {
-    return 'organic'; // TODO: Add more options
+    const { voter } = this.getState();
+    const visitedSiteWithPoliticianCookie = Cookies.get('politician_url_variable_used');
+    if (voter && voter.we_vote_id) {
+      if (voter.linked_politician_we_vote_id || visitedSiteWithPoliticianCookie) {
+        return 'politician';
+      } else if (this.getVoterIsWeVoteStaff()) {
+        return 'weVoteStaff';
+      }
+    }
+    const visitedSiteWithAdCookie = Cookies.get('ad_url_variable_used');
+    if (visitedSiteWithAdCookie) {
+      return 'googleAd';
+    }
+    return 'organic';
   }
 
   getAnalyticsUserDetails () {
@@ -209,6 +222,14 @@ class VoterStore extends ReduceStore {
   getLinkedPoliticianWeVoteId () {
     // To be created
     return '';
+  }
+
+  getPasskeyVerified () {
+    return this.getState().voter.passkey_verified || false;
+  }
+
+  getPasskeyReceivedButNotAccepted () {
+    return this.getState().voter.passkey_received_but_not_accepted || false;
   }
 
   getPrimaryEmailAddressDict () {
@@ -358,6 +379,19 @@ class VoterStore extends ReduceStore {
 
   getVoterIsSignedInWithTwitter () {
     return this.getState().voter.signed_in_twitter || false;
+  }
+
+  getVoterIsWeVoteStaff () {
+    const { voter } = this.getState();
+    if (voter && voter.we_vote_id) {
+      if (voter.is_admin === true ||
+          voter.is_analytics_admin === true ||
+          voter.is_political_data_manager === true ||
+          voter.is_verified_volunteer === true) {
+        return true;
+      }
+    }
+    return false;
   }
 
   getVoterLastNameQueuedToSave () {
@@ -1344,6 +1378,8 @@ class VoterStore extends ReduceStore {
               notification_settings_flags: notificationSettingsFlags,
               profile_image_type_currently_active: action.res.profile_image_type_currently_active || '',
               voter_donation_history_list: action.res.voter_donation_history_list || state.voter.voter_donation_history_list,
+              passkey_received_but_not_accepted: action.res.passkey_received_but_not_accepted || false,
+              passkey_verified: action.res.passkey_verified || false,
               voter_photo_url_large: action.res.we_vote_hosted_profile_image_url_large || '',
               voter_photo_url_medium: action.res.we_vote_hosted_profile_image_url_medium || '',
               voter_photo_url_tiny: action.res.we_vote_hosted_profile_image_url_tiny || '',

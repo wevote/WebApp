@@ -1,0 +1,273 @@
+
+[
+  {
+    "platformName": "ios",
+    "appium:options": {
+      "app": "bs://594269826a367783be072e2fe9cc0896bc0e01cd",
+      "platformVersion": "16",
+      "deviceName": "iPhone 14 Pro Max",
+      "autoWebview": false
+    },
+    "bstack:options": {
+      "appiumLogs": "false",
+      "appiumVersion": "2.0.1",
+      "automationVersion": "latest"
+    }
+  },
+
+  {
+    "platformName": "ios",
+    "appium:options": {
+      "app": "bs://594269826a367783be072e2fe9cc0896bc0e01cd",
+      "platformVersion": "17",
+      "deviceName": "iPhone 15",
+      "autoWebview": false
+    },
+    "bstack:options": {
+      "appiumLogs": "false",
+      "appiumVersion": "2.0.1",
+      "automationVersion": "latest"
+    }
+  },
+  {
+    "platformName": "ios",
+    "appium:options": {
+      "app": "bs://594269826a367783be072e2fe9cc0896bc0e01cd",
+      "platformVersion": "17",
+      "deviceName": "iPhone 15 Pro Max",
+      "autoWebview": false
+    },
+    "bstack:options": {
+      "appiumLogs": "false",
+      "appiumVersion": "2.0.1",
+      "automationVersion": "latest"
+    }
+  },
+  {
+    "platformName": "ios",
+    "appium:options": {
+      "app": "bs://594269826a367783be072e2fe9cc0896bc0e01cd",
+      "platformVersion": "17",
+      "deviceName": "iPhone 15 Pro",
+      "autoWebview": false
+    },
+    "bstack:options": {
+      "appiumLogs": "false",
+      "appiumVersion": "2.0.1",
+      "automationVersion": "latest"
+    }
+  },
+  {
+    "platformName": "ios",
+    "appium:options": {
+      "app": "bs://594269826a367783be072e2fe9cc0896bc0e01cd",
+      "platformVersion": "18",
+      "deviceName": "iPhone 14",
+      "autoWebview": false
+    },
+    "bstack:options": {
+      "appiumLogs": "false",
+      "appiumVersion": "2.0.1",
+      "automationVersion": "latest"
+    }
+  },
+  {
+    "platformName": "ios",
+    "appium:options": {
+      "app": "bs://594269826a367783be072e2fe9cc0896bc0e01cd",
+      "platformVersion": "18",
+      "deviceName": "iPhone 13",
+      "autoWebview": false
+    },
+    "bstack:options": {
+      "appiumLogs": "false",
+      "appiumVersion": "2.0.1",
+      "automationVersion": "latest"
+    }
+  },
+
+  {
+    "platformName": "ios",
+    "appium:options": {
+      "app": "bs://594269826a367783be072e2fe9cc0896bc0e01cd",
+      "platformVersion": "18",
+      "deviceName": "iPhone 16e",
+      "autoWebview": false
+    },
+    "bstack:options": {
+      "appiumLogs": "false",
+      "appiumVersion": "2.0.1",
+      "automationVersion": "latest"
+    }
+  },
+  {
+    "platformName": "ios",
+    "appium:options": {
+      "app": "bs://594269826a367783be072e2fe9cc0896bc0e01cd",
+      "platformVersion": "18",
+      "deviceName": "iPhone 16 Pro Max",
+      "autoWebview": false
+    },
+    "bstack:options": {
+      "appiumLogs": "false",
+      "appiumVersion": "2.0.1",
+      "automationVersion": "latest"
+    }
+  },
+  {
+    "platformName": "ios",
+    "appium:options": {
+      "app": "bs://594269826a367783be072e2fe9cc0896bc0e01cd",
+      "platformVersion": "18",
+      "deviceName": "iPhone 16 Pro",
+      "autoWebview": false
+    },
+    "bstack:options": {
+      "appiumLogs": "false",
+      "appiumVersion": "2.0.1",
+      "automationVersion": "latest"
+    }
+  },
+  {
+    "platformName": "ios",
+    "appium:options": {
+      "app": "bs://594269826a367783be072e2fe9cc0896bc0e01cd",
+      "platformVersion": "18",
+      "deviceName": "iPhone 16",
+      "autoWebview": false
+    },
+    "bstack:options": {
+      "appiumLogs": "false",
+      "appiumVersion": "2.0.1",
+      "automationVersion": "latest"
+    }
+  },
+  {
+    "platformName": "ios",
+    "appium:options": {
+      "app": "bs://594269826a367783be072e2fe9cc0896bc0e01cd",
+      "platformVersion": "17",
+      "deviceName": "iPad Pro 13 2024",
+      "autoWebview": false
+    },
+    "bstack:options": {
+      "appiumLogs": "false",
+      "appiumVersion": "2.0.1",
+      "automationVersion": "latest"
+    }
+  },
+  {
+    "platformName": "ios",
+    "appium:options": {
+      "app": "bs://594269826a367783be072e2fe9cc0896bc0e01cd",
+      "platformVersion": "17",
+      "deviceName": "iPad Pro 13 2024",
+      "autoWebview": false
+    },
+    "bstack:options": {
+      "appiumLogs": "false",
+      "appiumVersion": "2.0.1",
+      "automationVersion": "latest"
+    }
+  },
+
+{
+    "platformName": "android",
+    "appium:options": {
+      "app": "bs://9dcb02d84da3df01a1a5585416defa66718741b7",
+      "platformVersion": "15.0",
+      "deviceName": "Samsung Galaxy S25 Ultra",
+      "autoWebview": false
+    },
+    "bstack:options": {
+      "appiumLogs": "false",
+      "appiumVersion": "2.0.1",
+      "automationVersion": "latest"
+    }
+  },
+  {
+    "platformName": "android",
+    "appium:options": {
+      "app": "bs://9dcb02d84da3df01a1a5585416defa66718741b7",
+      "platformVersion": "16.0",
+      "deviceName": "Google Pixel 9",
+      "autoWebview": false
+    },
+    "bstack:options": {
+      "appiumLogs": "false",
+      "appiumVersion": "2.0.1",
+      "automationVersion": "latest"
+    }
+  },
+  {
+    "platformName": "android",
+    "appium:options": {
+      "app": "bs://9dcb02d84da3df01a1a5585416defa66718741b7",
+      "platformVersion": "16.0",
+      "deviceName": "Google Pixel 10 Pro XL",
+      "autoWebview": false
+    },
+    "bstack:options": {
+      "appiumLogs": "false",
+      "appiumVersion": "2.0.1",
+      "automationVersion": "latest"
+    }
+  },
+  {
+    "platformName": "android",
+    "appium:options": {
+      "app": "bs://9dcb02d84da3df01a1a5585416defa66718741b7",
+      "platformVersion": "16.0",
+      "deviceName": "Google Pixel 10 Pro",
+      "autoWebview": false
+    },
+    "bstack:options": {
+      "appiumLogs": "false",
+      "appiumVersion": "2.0.1",
+      "automationVersion": "latest"
+    }
+  },
+  {
+    "platformName": "android",
+    "appium:options": {
+      "app": "bs://9dcb02d84da3df01a1a5585416defa66718741b7",
+      "platformVersion": "16.0",
+      "deviceName": "Google Pixel 10",
+      "autoWebview": false
+    },
+    "bstack:options": {
+      "appiumLogs": "false",
+      "appiumVersion": "2.0.1",
+      "automationVersion": "latest"
+    }
+  },
+  {
+    "platformName": "android",
+    "appium:options": {
+      "app": "bs://9dcb02d84da3df01a1a5585416defa66718741b7",
+      "platformVersion": "15.0",
+      "deviceName": "Google Pixel 9 Pro",
+      "autoWebview": false
+    },
+    "bstack:options": {
+      "appiumLogs": "false",
+      "appiumVersion": "2.0.1",
+      "automationVersion": "latest"
+    }
+  },
+  {
+    "platformName": "android",
+    "appium:options": {
+      "app": "bs://9dcb02d84da3df01a1a5585416defa66718741b7",
+      "platformVersion": "15.0",
+      "deviceName": "OnePlus 13R",
+      "autoWebview": false
+    },
+    "bstack:options": {
+      "appiumLogs": "false",
+      "appiumVersion": "2.0.1",
+      "automationVersion": "latest"
+    }
+  }
+
+]

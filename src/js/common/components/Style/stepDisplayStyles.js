@@ -37,13 +37,24 @@ export const OuterWrapperStepsOff = styled('div')(({ theme }) => (`
   }
 `));
 
+const pageWrapperTop = (() => {
+  if (isCordova()) {
+    if (window.location && window.location.hash && window.location.hash.charAt(1) === '#') { // candidate detail page
+      return 'padding-top: 20px';
+    }
+    return 'padding-top: 14px';
+  }
+  return '';
+});
+
 export const PageWrapper = styled('div')`
   margin: 0 auto;
   max-width: 960px;
-  ${isCordova() ? 'padding-top: 14px' : ''};
+  ${pageWrapperTop()};
   @media (max-width: 1005px) {
     // Switch to 15px left/right margin when auto is too small
-    margin: 0 15px;
+    margin-left: 15px;
+    margin-right: 15px;
   }
 `;
 

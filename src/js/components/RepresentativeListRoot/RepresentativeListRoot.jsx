@@ -25,9 +25,9 @@ const HORIZONTAL_SCROLL_DISTANCE_ON_LEFT_ARROW_CLICK = -630;
 const HORIZONTAL_SCROLL_DISTANCE_ON_RIGHT_ARROW_CLICK = 630;
 const HORIZONTAL_SCROLL_DISTANCE_MOBILE_LEFT_ARROW_CLICK = -315;
 const HORIZONTAL_SCROLL_DISTANCE_MOBILE_RIGHT_ARROW_CLICK = 315;
+// const HORIZONTAL_SCROLL_DISTANCE_ON_SHOW_MORE = 315;
 const RIGHT_MARGIN_SIZE = 24;
 // const HORIZONTAL_SCROLL_SPEED = 2;
-// const HORIZONTAL_SCROLL_DISTANCE_ON_SHOW_MORE = 315;
 // const HORIZONTAL_SCROLL_STEP_LEFT = -20;
 // const HORIZONTAL_SCROLL_STEP_RIGHT = 20;
 
@@ -293,11 +293,12 @@ class RepresentativeListRoot extends Component {
           searchWordArray.forEach((oneSearchWordLowerCase) => {
             thisWordFound = (
               oneEntry.ballot_item_display_name.toLowerCase().includes(oneSearchWordLowerCase) ||
-              oneEntry.state_code.toLowerCase().includes(oneSearchWordLowerCase) ||
-              oneEntry.representative_state_name.toLowerCase().includes(oneSearchWordLowerCase) ||
-              oneEntry.contest_office_name.toLowerCase().includes(oneSearchWordLowerCase) ||
-              oneEntry.twitter_description.toLowerCase().includes(oneSearchWordLowerCase) ||
-              oneEntry.twitter_handle.toLowerCase().includes(oneSearchWordLowerCase)
+              // NOTE: WV-1084 We decided to search on fewer fields
+              // oneEntry.state_code.toLowerCase().includes(oneSearchWordLowerCase) ||
+              // oneEntry.representative_state_name.toLowerCase().includes(oneSearchWordLowerCase) ||
+              // oneEntry.twitter_description.toLowerCase().includes(oneSearchWordLowerCase) ||
+              // oneEntry.twitter_handle.toLowerCase().includes(oneSearchWordLowerCase) ||
+              oneEntry.contest_office_name.toLowerCase().includes(oneSearchWordLowerCase)
             );
             if (isFirstWord) {
               foundInThisEntry = thisWordFound;
@@ -368,7 +369,7 @@ class RepresentativeListRoot extends Component {
   shouldLoadMoreSetState = (el) => {
     const element = el;
     this.setState({
-      callShowMoreCards: checkDivPositionForLoadMore(element),
+      callShowMoreCards: checkDivPositionForLoadMore(element, isMobileScreenSize()),
     });
   }
 
@@ -377,6 +378,7 @@ class RepresentativeListRoot extends Component {
     const { classes, hideIfNoResults, hideTitle, searchText, titleTextForList } = this.props;
     const isSearching = searchText && searchText.length > 0;
     const { filteredList, hideDisplayBecauseNoSearchResults, representativeList, representativeSearchResults, timeStampOfChange } = this.state;
+    const filteredListLength = (filteredList) ? filteredList.length : 0;
 
     if (!representativeList) {
       return null;
@@ -387,7 +389,7 @@ class RepresentativeListRoot extends Component {
         if (representativeSearchResults && representativeSearchResults.length === 0) {
           hideDisplayBecauseNoResults = true;
         }
-      } else if (filteredList && filteredList.length === 0) {
+      } else if (filteredListLength === 0) {
         hideDisplayBecauseNoResults = true;
       }
       if (hideDisplayBecauseNoResults) {

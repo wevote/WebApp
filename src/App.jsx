@@ -12,11 +12,12 @@ import VoterSessionActions from './js/actions/VoterSessionActions';
 import muiTheme from './js/common/components/Style/muiTheme';
 import LoadingWheelComp from './js/common/components/Widgets/LoadingWheelComp';
 import AppObservableStore, { messageService } from './js/common/stores/AppObservableStore';
-import { getAndroidSize, getIOSSizeString, hasDynamicIsland, isIOS } from './js/common/utils/cordovaUtils';
+import { hasDynamicIsland, hasIPhoneNotch } from './js/common/utils/cordovaUtils';
 import historyPush from './js/common/utils/historyPush';
 import { isWeVoteMarketingSite, normalizedHref } from './js/common/utils/hrefUtils';
 import initializejQuery from './js/common/utils/initializejQuery';
 import { isAndroid, isCordova, isWebApp } from './js/common/utils/isCordovaOrWebApp';
+import Cookies from './js/common/utils/js-cookie/Cookies';
 import { renderLog } from './js/common/utils/logging';
 import Header from './js/components/Navigation/Header';
 import HeaderBarSuspense from './js/components/Navigation/HeaderBarSuspense';
@@ -200,7 +201,7 @@ class App extends Component {
       // July 2025, Android "backbutton" is not handled since pushHistory is only keeping the previous location, so pressing "backbutton" twice would be a mess
       // Also it was originally noted as a bug in the How it Works dialog, which would be a special case that would not use pushHistory
       // This listener is for Chrome on an Android device while browsing wevote.us
-      document.addEventListener("backbutton", () => {}, false);
+      document.addEventListener('backbutton', () => {}, false);
       // if isCordova(), then this is handled in startCordova, after the deviceready event
     }
 
@@ -219,9 +220,8 @@ class App extends Component {
     }
 
     if (isCordova()) {
-      const size = isIOS() ?  getIOSSizeString() : getAndroidSize();
-      console.log('Cordova:   device model', window.device.model, '  size: ', size);
-      console.log('Cordova:   Header, hasDynamicIsland', hasDynamicIsland());
+      console.log(`Cordova:   window.device ${JSON.stringify(window.device)}`);
+      console.log(`Cordova:   Header, hasDynamicIsland ${hasDynamicIsland()}, hasIPhoneNotch (or AndroidNotch) ${hasIPhoneNotch()}`);
     }
 
     this.acceptURLVariables();
@@ -288,7 +288,7 @@ class App extends Component {
             },
           };
 
-          console.log('Initializing Google Tag Manager with GTM ID:', weVoteGTMId);
+          console.log(`Initializing Google Tag Manager with GTM ID: ${weVoteGTMId}`);
           TagManager.initialize(tagManagerArgs);
         } else {
           console.log('Google Tag Manager did not receive a valid GTM ID, NOT ENABLED');
@@ -362,12 +362,18 @@ class App extends Component {
 
   acceptURLVariables () {
     const { location: { search: queryString } } = this.props;
-    const { showEditPoliticianNoticeSet  } = this.state;
+    const { fromAdSet, showEditPoliticianNoticeSet  } = this.state;
     const query = new URLSearchParams(queryString);
+    const fromAd = query.get('ad');
     const showEditPoliticianNotice = query.get('show_edit_politician_notice');
+    if (fromAd === '1' && !fromAdSet) {
+      this.setState({ fromAdSet: true });
+      Cookies.set('ad_url_variable_used', '1', { expires: 15, path: '/' });
+    }
     if (showEditPoliticianNotice === '1' && !showEditPoliticianNoticeSet) {
       this.setState({ showEditPoliticianNoticeSet: true });
       AppObservableStore.setShowNotificationBannerAboveHeader(true);
+      Cookies.set('politician_url_variable_used', '1', { expires: 15, path: '/' });
     }
   }
 

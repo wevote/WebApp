@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { Helmet } from 'react-helmet-async';
@@ -9,28 +9,87 @@ import {
   Visibility as EyeIcon,
   Facebook as FacebookIcon,
   X as XIcon,
-  ContentPaste as PasteIcon,
   FileUpload as UploadIcon,
+  WarningAmber as WarningIcon,
+  FileDownloadOutlined as DownloadIcon,
+  CheckCircle as CheckIcon,
 } from '@mui/icons-material';
+import PropTypes from 'prop-types';
 import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 
 export default function ManageMyCandidates () {
-  // Demo candidates only (replace later)
+  const fileInputRef = useRef(null);
+  const [allColumnsOK, setAllColumnsOK] = useState(false);
   const demoCandidates = useMemo(() => ([
     { id: 'cand_1', name: 'John Dough' },
     { id: 'cand_2', name: 'Jane Dough' },
     { id: 'cand_3', name: 'Kateryna Dough' },
   ]), []);
-  const effectiveCandidates = demoCandidates; // no fetch yet
+
+  const emailRE = /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i;
+
+  const escapeHTML = (s) => s.replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+
+  function parsePastedList (text) {
+    const lines = text.split(/\r?\n/);
+    const rows = [];
+    const errors = [];
+
+    lines.forEach((raw, idx) => {
+      const line = raw.trim();
+      if (!line) return;
+
+      const parts = line.split(',').map((s) => s.trim()).filter(Boolean);
+      const emailCount = (line.match(emailRE) || []).length;
+
+      if (parts.length > 3) {
+        errors.push({ line: idx, reason: 'Too many commas' });
+        return;
+      }
+      if (emailCount > 1) {
+        errors.push({ line: idx, reason: 'Two emails on one line (missing line break?)' });
+        return;
+      }
+      // Must have at least "Name, Email"
+      if (parts.length < 2) {
+        errors.push({ line: idx, reason: 'Missing email (format: Name, email[, phone])' });
+        return;
+      }
+      // Validate email (strip < > to allow brackets)
+      const emailPart = parts[1].replace(/[<>]/g, '');
+      if (!emailRE.test(emailPart)) {
+        errors.push({ line: idx, reason: 'Invalid email' });
+        return;
+      }
+
+      rows.push({
+        name: parts[0] || '',
+        email: emailPart || '',
+        phone: parts[2] || '',
+      });
+    });
+
+    return { rows, errors };
+  }
+
+  function buildMirrorHTML (text, errors) {
+    const errSet = new Set(errors.map((e) => e.line));
+    return text.split(/\r?\n/).map((line, i) => {
+      const isError = errSet.has(i) && line.trim().length > 0;
+      const safe = escapeHTML(line);
+      return isError ? `<span class="err">${safe}</span>` : safe;
+    }).join('\n');
+  }
+
+  const effectiveCandidates = demoCandidates;
 
   // Selected candidate
   const [selectedId, setSelectedId] = useState(effectiveCandidates[0]?.id || '');
-  const selected = effectiveCandidates.find(c => c.id === selectedId) || null;
+  const selected = effectiveCandidates.find((c) => c.id === selectedId) || null;
 
-  // If the list ever changes (unlikely in demo), keep selection valid
   useEffect(() => {
-    if (!effectiveCandidates.find(c => c.id === selectedId)) {
+    if (!effectiveCandidates.find((c) => c.id === selectedId)) {
       setSelectedId(effectiveCandidates[0]?.id || '');
     }
   }, [effectiveCandidates, selectedId]);
@@ -60,8 +119,10 @@ Thanks for your help!`;
       setDraftInvite(invitationBody);
       setInitialInvite(invitationBody);
     }
-  }, [invitationBody, showEdit]);
-
+  }, [invitationBody, showEdit, setDraftInvite, setInitialInvite]);
+  const [copiedMsg, setCopiedMsg] = useState('');
+  const [isSuccessToast, setIsSuccessToast] = useState(false);
+  const toastTimerRef = useRef(null);
   const openEditModal = () => { setInitialInvite(draftInvite); setShowEdit(true); };
   const handleEditInvite = () => {
     setDraftInvite(invitationBody);
@@ -73,73 +134,156 @@ Thanks for your help!`;
   const handleCopyInviteBody = async () => {
     try {
       await navigator.clipboard.writeText(`${invitationBody}\n\nhttps://wevote.us/join/${selectedId}`);
-      alert('Invitation copied.');
+      if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
+      setCopiedMsg('Invitation copied to clipboard. Press ⌘V / Ctrl+V to paste.');
+      toastTimerRef.current = setTimeout(() => setCopiedMsg(''), 2200);
     } catch {
-      alert('Copy failed. You can select the text and copy manually.');
+      setCopiedMsg('Copy failed. Select the text and copy manually.');
+      if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
+      toastTimerRef.current = setTimeout(() => setCopiedMsg(''), 3000);
     }
   };
 
   const handleEditCopy = async () => {
     try {
       await navigator.clipboard.writeText(`${draftInvite}\n\nhttps://wevote.us/join/${selectedId}`);
-      alert('Invitation copied.');
+      if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
+      setCopiedMsg('Invitation copied to clipboard. Press ⌘V / Ctrl+V to paste.');
+      toastTimerRef.current = setTimeout(() => setCopiedMsg(''), 2200);
     } catch {
-      alert('Copy failed. You can select the text and copy manually.');
+      setCopiedMsg('Copy failed. Select the text and copy manually.');
+      if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
+      toastTimerRef.current = setTimeout(() => setCopiedMsg(''), 3000);
     }
   };
 
-  const handleSaveInvite = () => {
-    // TODO: persist to backend
-    setInitialInvite(draftInvite);
-    setShowEdit(false);
+  // Upload CSV modal
+  const [showUpload, setShowUpload] = useState(false);
+  const openUploadModal = () => { setAllColumnsOK(false); setShowUpload(true); };
+  const closeUploadModal = () => { setAllColumnsOK(false); setShowUpload(false); };
+  const handleSelectCSV = () => fileInputRef.current?.click();
+
+  const handleDownloadSample = () => {
+    const csv =
+      'Name,Email,Mobile,Address\n' +
+      'John Smith,js@gmail.com,"(123) 456-7890","123 State St, Anytown, CA 94117"\n';
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'wevote_sample.csv';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
   };
 
   // CSV upload and paste
-  const fileInputRef = useRef(null);
   const [showPaste, setShowPaste] = useState(false);
   const [pasteText, setPasteText] = useState('');
-  const [importedVoters, setImportedVoters] = useState([]); // define this since you use it
-
-  const handleUploadCSV = () => fileInputRef.current?.click();
+  const [pasteErrors, setPasteErrors] = useState([]);
+  const [mirrorHTML, setMirrorHTML] = useState('');
+  const [importedVoters, setImportedVoters] = useState([]);
 
   const handleCSVSelected = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    if (!file.name.toLowerCase().endsWith('.csv')) {
-      alert('Please choose a .csv file.');
+
+    if (!/\.csv$/i.test(file.name)) {
+      if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
+      setIsSuccessToast(false);
+      setCopiedMsg('Please choose a .csv file.');
+      toastTimerRef.current = setTimeout(() => setCopiedMsg(''), 2500);
       e.target.value = '';
       return;
     }
+    setShowUpload(true);
+
     const text = await file.text();
-    const [headerLine, ...lines] = text.split(/\r?\n/).filter(Boolean);
-    const headers = headerLine.split(',').map(h => h.trim().toLowerCase());
+    const lines = text.replace(/\r/g, '').split('\n').filter((l) => l.trim().length > 0);
+    const [headerLine, ...dataLines] = lines;
+    const headers = headerLine.split(',').map((h) => h.trim().toLowerCase());
+
     const nameIdx = headers.indexOf('name');
     const emailIdx = headers.indexOf('email');
+    const mobileIdx = headers.indexOf('mobile');
     const phoneIdx = headers.indexOf('phone');
-    const rows = lines.map(line => {
-      const cols = line.split(',').map(c => c.trim());
+    const phoneCol = mobileIdx > -1 ? mobileIdx : phoneIdx;
+    const addressIdx = headers.indexOf('address');
+
+    const ok = nameIdx > -1 && emailIdx > -1 && phoneCol > -1 && addressIdx > -1;
+
+    const rows = dataLines.map((line) => {
+      const cols = line.split(',').map((c) => c.trim());
       return {
         name: nameIdx > -1 ? cols[nameIdx] : '',
         email: emailIdx > -1 ? cols[emailIdx] : '',
-        phone: phoneIdx > -1 ? cols[phoneIdx] : '',
+        phone: phoneCol > -1 ? cols[phoneCol] : '',
+        address: addressIdx > -1 ? cols[addressIdx] : '',
       };
-    }).filter(r => r.name || r.email || r.phone);
-    setImportedVoters(rows);
-    alert(`Imported ${rows.length} voter(s) from CSV.`);
+    }).filter((r) => r.name || r.email || r.phone || r.address);
+
+    if (ok && rows.length > 0) {
+      setImportedVoters(rows);
+      closeUploadModal();
+      if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
+      setIsSuccessToast(true);
+      setCopiedMsg('All of your columns will be imported.');
+      toastTimerRef.current = setTimeout(() => {
+        setCopiedMsg('');
+        setIsSuccessToast(false);
+      }, 2200);
+    } else {
+      setAllColumnsOK(ok);
+      if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
+      setIsSuccessToast(false);
+      if (!ok) {
+        setCopiedMsg('We could not find all required columns (Name, Email, Mobile/Phone, Address). Please adjust and re-upload.');
+      } else if (rows.length === 0) {
+        setCopiedMsg('No rows found in this CSV.');
+      }
+      toastTimerRef.current = setTimeout(() => setCopiedMsg(''), 3000);
+    }
+
     e.target.value = '';
   };
-
-  const handlePasteList = () => setShowPaste(true);
-  const closePaste = () => setShowPaste(false);
-  const handlePasteImport = () => {
-    const rows = pasteText.split(/\r?\n/).map(l => l.trim()).filter(Boolean).map(line => {
-      const parts = line.split(',').map(s => s.trim());
-      return { name: parts[0] || '', email: parts[1] || '', phone: parts[2] || '' };
-    }).filter(r => r.name || r.email || r.phone);
-    setImportedVoters(prev => [...prev, ...rows]);
-    alert(`Imported ${rows.length} voter(s) from pasted list.`);
-    setPasteText(''); setShowPaste(false);
+  const handlePasteList = () => {
+    setShowPaste(true);
+    setPasteErrors([]);
+    setMirrorHTML('');
   };
+
+  const closePaste = () => {
+    setShowPaste(false);
+    setPasteErrors([]);
+    setMirrorHTML('');
+  };
+
+  const onPasteTextChange = (e) => {
+    const { value } = e.target;
+    setPasteText(value);
+    const { errors } = parsePastedList(value);
+    setPasteErrors(errors);
+    setMirrorHTML(buildMirrorHTML(value, errors));
+  };
+
+  const handlePasteImport = () => {
+    const { rows, errors } = parsePastedList(pasteText);
+    if (errors.length) {
+      setPasteErrors(errors);
+      setMirrorHTML(buildMirrorHTML(pasteText, errors));
+      return; // block import until fixed
+    }
+    setImportedVoters((prev) => [...prev, ...rows]);
+    if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
+    setCopiedMsg(`Imported ${rows.length} voter${rows.length !== 1 ? 's' : ''} from pasted list.`);
+    toastTimerRef.current = setTimeout(() => setCopiedMsg(''), 2200);
+  };
+
+  const prospectiveCount = useMemo(
+    () => parsePastedList(pasteText).rows.length,
+    [pasteText, parsePastedList],
+  );
 
   // Main render
   const history = useHistory();
@@ -155,19 +299,19 @@ Thanks for your help!`;
           <TitleRow>
             <Title>{selected?.name || 'Select candidate'}</Title>
             <CandidatePicker
-              type="button"
-              aria-haspopup="listbox"
-              aria-expanded="false"
-              title="Select candidate"
+            type="button"
+            aria-haspopup="listbox"
+            aria-expanded="false"
+            title="Select candidate"
             >
               <ArrowDownIcon fontSize="small" />
               <PickerMenu role="listbox">
                 {effectiveCandidates.map((c) => (
                   <PickerItem
-                    key={c.id}
-                    role="option"
-                    aria-selected={c.id === selectedId}
-                    onClick={() => setSelectedId(c.id)}
+                  key={c.id}
+                  role="option"
+                  aria-selected={c.id === selectedId}
+                  onClick={() => setSelectedId(c.id)}
                   >
                     {c.name}
                   </PickerItem>
@@ -198,77 +342,78 @@ Thanks for your help!`;
 
           <SideDivider />
 
-          <EditProfileLink type="button" onClick={handleClaimEdit}>
-            <EditIcon fontSize="small" /> Edit candidate profile
-          </EditProfileLink>
+          <NavPill as="button" $active={false} onClick={handleClaimEdit}>
+            <PillIcon><EditIcon fontSize="small" /></PillIcon>
+            Edit candidate profile
+          </NavPill>
         </LeftNav>
 
         {/* Right content */}
         <RightPanel>
           {active === 'import' && (
-            <>
-              <H2>Import &amp; invite voters</H2>
+          <>
+            <H2>Import &amp; invite voters</H2>
 
-              {/* Invitation action strip */}
-              <InviteRow>
-                <InviteText>Import voters, then invite them to join WeVote.</InviteText>
-                <InviteDivider />
-                <InviteLabel>Invitation:</InviteLabel>
-                <IconButton type="button" title="Copy invitation" onClick={handleCopyInviteBody}>
-                  <CopyIcon fontSize="small" />
-                </IconButton>
-                <IconButton type="button" title="Preview invitation" onClick={handlePreviewOpen}>
-                  <EyeIcon fontSize="small" />
-                </IconButton>
-                <IconButton type="button" title="Edit invitation" onClick={openEditModal}>
-                  <EditIcon fontSize="small" />
-                </IconButton>
-                <InviteLabel>Post to:</InviteLabel>
-                <SocialIconButton type="button" aria-label="Post to Facebook">
-                  <FacebookIcon fontSize="small" />
-                </SocialIconButton>
-                <SocialIconButton type="button" aria-label="Post to X">
-                  <XIcon fontSize="small" />
-                </SocialIconButton>
-              </InviteRow>
+            {/* Invitation action strip */}
+            <InviteRow>
+              <InviteText>Import voters, then invite them to join WeVote.</InviteText>
+              <InviteDivider />
+              <InviteLabel>Invitation:</InviteLabel>
+              <IconButton type="button" title="Copy invitation" onClick={handleCopyInviteBody}>
+                <CopyIcon fontSize="small" />
+              </IconButton>
+              <IconButton type="button" title="Preview invitation" onClick={handlePreviewOpen}>
+                <EyeIcon fontSize="small" />
+              </IconButton>
+              <IconButton type="button" title="Edit invitation" onClick={openEditModal}>
+                <EditIcon fontSize="small" />
+              </IconButton>
+              <InviteLabel>Post to:</InviteLabel>
+              <SocialIconButton type="button" aria-label="Post to Facebook">
+                <FacebookIcon fontSize="small" />
+              </SocialIconButton>
+              <SocialIconButton type="button" aria-label="Post to X">
+                <XIcon fontSize="small" />
+              </SocialIconButton>
+            </InviteRow>
 
-              <Section>
-                <H3>Enter voters one-by-one</H3>
-                <Row>
-                  <Input placeholder="First and last name" aria-label="First and last name" />
-                  <Input placeholder="Email" aria-label="Email address" />
-                  <Input placeholder="Mobile phone" aria-label="Mobile phone" />
-                  <PrimaryButton type="button">Import voter</PrimaryButton>
-                </Row>
-              </Section>
+            <Section>
+              <H3>Enter voters one-by-one</H3>
+              <Row>
+                <Input placeholder="First and last name" aria-label="First and last name" />
+                <Input placeholder="Email" aria-label="Email address" />
+                <Input placeholder="Mobile phone" aria-label="Mobile phone" />
+                <PrimaryButton type="button">Import voter</PrimaryButton>
+              </Row>
+            </Section>
 
-              <Section>
-                <H3>Upload voters from a file or paste a list</H3>
-                <Row>
-                  <PillButton type="button" onClick={handleUploadCSV}>
-                    <UploadIcon fontSize="small" />
-                    Upload CSV file
-                  </PillButton>
-                  <Or>OR</Or>
-                  <PillButton type="button" onClick={handlePasteList}>
-                    <PasteIcon fontSize="small" />
-                    Paste list
-                  </PillButton>
-                </Row>
-              </Section>
+            <Section>
+              <H3>Upload voters from a file or paste a list</H3>
+              <Row>
+                <PillButton type="button" onClick={openUploadModal}>
+                  <UploadIcon fontSize="small" />
+                  Upload CSV file
+                </PillButton>
+                <Or>OR</Or>
+                <PillButton type="button" onClick={handlePasteList}>
+                  <PasteListIcon size={22} />
+                  Paste list
+                </PillButton>
+              </Row>
+            </Section>
 
-              <MutedNote>
-                You don’t have any voters to invite. Import some using the options above.
-              </MutedNote>
-            </>
+            <MutedNote>
+              You don’t have any voters to invite. Import some using the options above.
+            </MutedNote>
+          </>
           )}
 
           {active === 'tracking' && (
-            <Placeholder>Tracking (coming soon)</Placeholder>
+          <Placeholder>Tracking (coming soon)</Placeholder>
           )}
 
           {active === 'analytics' && (
-            <Placeholder>Analytics (coming soon)</Placeholder>
+          <Placeholder>Analytics (coming soon)</Placeholder>
           )}
         </RightPanel>
       </Layout>
@@ -281,10 +426,14 @@ Thanks for your help!`;
               <ModalTitle id="invite-title">Preview invitation</ModalTitle>
               <HeaderActions>
                 <HeaderLink type="button" onClick={handleCopyInviteBody}>
-                  <CopyIcon fontSize="small" /> <span>Copy</span>
+                  <CopyIcon fontSize="small" />
+                  {' '}
+                  <span>Copy</span>
                 </HeaderLink>
                 <HeaderLink type="button" onClick={handleEditInvite}>
-                  <EditIcon fontSize="small" /> <span>Edit</span>
+                  <EditIcon fontSize="small" />
+                  {' '}
+                  <span>Edit</span>
                 </HeaderLink>
                 <CloseX type="button" aria-label="Close" onClick={handlePreviewClose}>×</CloseX>
               </HeaderActions>
@@ -316,12 +465,14 @@ Thanks for your help!`;
             </ModalHeader>
 
             <BarBetween>
-              <InfoRow>
+              <ManageInfoRow>
                 <InfoDot aria-hidden>i</InfoDot>
                 <span>Link will appear below text</span>
-              </InfoRow>
+              </ManageInfoRow>
               <HeaderLink type="button" onClick={handleEditCopy}>
-                <CopyIcon fontSize="small" /> <span>Copy</span>
+                <CopyIcon fontSize="small" />
+                {' '}
+                <span>Copy</span>
               </HeaderLink>
             </BarBetween>
 
@@ -340,7 +491,7 @@ Thanks for your help!`;
                 onClick={handleSaveInvite}
                 disabled={draftInvite.trim() === initialInvite.trim()}
               >
-                Save
+                {prospectiveCount ? `Import ${prospectiveCount} voters` : 'Import voters'}
               </PrimarySaveBtn>
             </ModalFooter>
           </ModalCard>
@@ -354,17 +505,66 @@ Thanks for your help!`;
               <CloseX type="button" aria-label="Close" onClick={closePaste}>×</CloseX>
             </ModalHeader>
 
-            <InfoRow>
-              <InfoDot aria-hidden>i</InfoDot>
-              <span>One person per line. Format: <i>Name, Email, Phone</i> (fields optional)</span>
-            </InfoRow>
+            <ModalIntro>
+              <BulletList>
+                <li>Paste a list of voters and their info, separated by line breaks</li>
+                <BulletNoWrap>
+                  The content of each info section can be with or without brackets, i.e.
+                  <code> name@email.com</code>
+                  {' '}
+                  or
+                  <code>&lt;name@email.com&gt;</code>
+                </BulletNoWrap>
+              </BulletList>
 
+              <ExampleBox>
+                <b>Example:</b>
+                <pre>
+                  {`Jane Dough, jd@email.com, (212)-123-4567
+John Dough, jd@email.com, (213)-123-4567`}
+                </pre>
+              </ExampleBox>
+            </ModalIntro>
+
+            {pasteErrors.length > 0 && (
+              <ErrorBanner role="alert" aria-live="polite">
+                <ErrorIconWrap><WarningIcon fontSize="small" /></ErrorIconWrap>
+                <div>
+                  <strong>Whoops! We’re having trouble importing your list of voters.</strong>
+                  <div>Please check the highlighted lines and make sure that:</div>
+                  <ul>
+                    <li>
+                      There’s a
+                      <b>line break</b>
+                      {' '}
+                      after each voter (using the Enter or Return key)
+                    </li>
+                    <li>
+                      There’s a
+                      <b>single comma</b>
+                      {' '}
+                      separating each piece of information
+                    </li>
+                  </ul>
+                  <small>
+                    Problem
+                    {' '}
+                    {pasteErrors.length > 1 ? 'lines' : 'line'}
+                    :
+                    {' '}
+                    {pasteErrors.map((e) => e.line + 1).join(', ')}
+                  </small>
+                </div>
+              </ErrorBanner>
+            )}
             <EditAreaWrapper>
+              <HighlightLayer
+                aria-hidden="true"
+                dangerouslySetInnerHTML={{ __html: mirrorHTML || escapeHTML(pasteText || '') }}
+              />
               <EditTextArea
                 value={pasteText}
-                onChange={(e) => setPasteText(e.target.value)}
-                placeholder={`Jane Example, jane@example.com, 555-555-5555
-                John Dough, john@sample.org`}
+                onChange={onPasteTextChange}
                 aria-label="Paste voters list"
               />
             </EditAreaWrapper>
@@ -376,8 +576,63 @@ Thanks for your help!`;
                 onClick={handlePasteImport}
                 disabled={!pasteText.trim()}
               >
-                Import
+                {prospectiveCount ? `Import ${prospectiveCount} voter${prospectiveCount > 1 ? 's' : ''}` : 'Import'}
               </PrimarySaveBtn>
+            </ModalFooter>
+          </ModalCard>
+        </ModalBackdrop>
+      )}
+      {showUpload && (
+        <ModalBackdrop role="dialog" aria-modal="true" aria-labelledby="upload-title">
+          <ModalCard>
+            <UploadHeaderRow>
+              <UploadHeaderLeft>
+                <ModalTitle id="upload-title">Upload CSV file</ModalTitle>
+                <HeaderDivider aria-hidden />
+                <HeaderLink type="button" onClick={handleDownloadSample}>
+                  <DownloadIcon fontSize="small" />
+                  <span>Download sample file</span>
+                </HeaderLink>
+              </UploadHeaderLeft>
+
+              <CloseX type="button" aria-label="Close" onClick={closeUploadModal}>×</CloseX>
+            </UploadHeaderRow>
+
+            <UploadIntroList>
+              <li>WeVote supports the data column structure below.</li>
+              <li>
+                If your document has info in separate columns (e.g., first and last name),
+                please combine them into one column to ensure accurate importing.
+              </li>
+              <li>You’ll be able to change your column names to ours after uploading your file.</li>
+            </UploadIntroList>
+
+            <UploadStructureTitle>WeVote’s data column structure</UploadStructureTitle>
+            {allColumnsOK && (
+              <SuccessBanner role="status" aria-live="polite">
+                <SuccessIcon><CheckIcon fontSize="small" /></SuccessIcon>
+                <span>All of your columns will be imported.</span>
+              </SuccessBanner>
+            )}
+            <UploadGrid aria-label="WeVote data column structure">
+              <UploadGridHead>Name</UploadGridHead>
+              <UploadGridHead>Email</UploadGridHead>
+              <UploadGridHead>Mobile</UploadGridHead>
+              <UploadGridHead>Address</UploadGridHead>
+
+              <UploadGridCell>John Smith</UploadGridCell>
+              <UploadGridCell>js@gmail.com</UploadGridCell>
+              <UploadGridCell>(123) 456-7890</UploadGridCell>
+              <UploadGridCell>
+                123 State St
+                <br />
+                Anytown, CA 94117
+              </UploadGridCell>
+            </UploadGrid>
+
+            <ModalFooter style={{ justifyContent: 'space-between' }}>
+              <EditCloseButton type="button" onClick={closeUploadModal}>Cancel</EditCloseButton>
+              <PrimarySaveBtn type="button" onClick={handleSelectCSV}>Select file</PrimarySaveBtn>
             </ModalFooter>
           </ModalCard>
         </ModalBackdrop>
@@ -389,12 +644,20 @@ Thanks for your help!`;
         style={{ display: 'none' }}
         onChange={handleCSVSelected}
       />
-    </PageContentContainer>
-  );
+      {copiedMsg && (
+        <Toast role="status" aria-live="polite" $success={isSuccessToast}>
+          {isSuccessToast && (
+            <SuccessIcon><CheckIcon fontSize="small" /></SuccessIcon>
+          )}
+          <span>{copiedMsg}</span>
+        </Toast>
+        )}
+      </PageContentContainer>
+    );
 }
 
 // Analytics icon
-const AnalyticsIcon = ({ size = 22, title = 'Analytics', ...props }) => (
+const AnalyticsIcon = ({ size = 22, title = 'Analytics' }) => (
   <svg
     width={size}
     height={size}
@@ -403,7 +666,6 @@ const AnalyticsIcon = ({ size = 22, title = 'Analytics', ...props }) => (
     xmlns="http://www.w3.org/2000/svg"
     role="img"
     aria-hidden={title ? undefined : true}
-    {...props}
   >
     {title ? <title>{title}</title> : null}
     <path
@@ -412,6 +674,10 @@ const AnalyticsIcon = ({ size = 22, title = 'Analytics', ...props }) => (
     />
   </svg>
 );
+AnalyticsIcon.propTypes = {
+  size: PropTypes.number,
+  title: PropTypes.string,
+};
 
 //  Tracking icon
 const TrackingIcon = ({ size = 22, title = 'Tracking', ...props }) => (
@@ -455,8 +721,104 @@ const ImportInviteIcon = ({ size = 22, title = 'Import & invite', ...props }) =>
   </svg>
 );
 
+// Paste-list icon
+const PasteListIcon = ({ size = 22, title = 'Paste list', ...props }) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 22 22"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    role="img"
+    aria-hidden={title ? undefined : true}
+    {...props}
+  >
+    {title ? <title>{title}</title> : null}
+    <path
+      d="M18.8125 3C19.1922 3 19.5 3.3078 19.5 3.6875V18.8125C19.5 19.1922 19.1922 19.5 18.8125 19.5H3.6875C3.3078 19.5 3 19.1922 3 18.8125V3.6875C3 3.3078 3.3078 3 3.6875 3H18.8125ZM4.375 18.125H18.125V4.375H4.375V18.125ZM14 14V15.375H5.75V14H14ZM16.75 14V15.375H15.375V14H16.75ZM14 10.5625V11.9375H5.75V10.5625H14ZM16.75 10.5625V11.9375H15.375V10.5625H16.75ZM14 7.125V8.5H5.75V7.125H14ZM16.75 7.125V8.5H15.375V7.125H16.75Z"
+      fill="currentColor"
+    />
+  </svg>
+);
+
+// bullets
+const BulletList = styled.ul`
+  font-size: 13px;        /* smaller bullets */
+  line-height: 1.35;
+  padding: 0 18px;
+
+  code { font-size: 12.5px; white-space: nowrap; } /* keep emails on one line & a touch smaller */
+`;
+
+const BulletNoWrap = styled.li`
+  @media (min-width: 900px) { white-space: nowrap; }
+  code { white-space: nowrap; }
+`;
+
 const HeaderRow = styled.div`
   margin: 6px 0 12px;
+`;
+
+const ErrorBanner = styled.div`
+  align-items: flex-start;
+  background: ${DesignTokenColors.alert50};
+  border: 1px solid ${DesignTokenColors.alert200};
+  border-radius: 12px;
+  color: ${DesignTokenColors.neutralUI800};
+  display: grid;
+  font-size: 12px;
+  gap: 10px;
+  grid-template-columns: 22px 1fr;
+  margin: 8px 0 12px;
+  padding: 12px 14px;
+
+  strong { display: block; margin-bottom: 6px; }
+  ul { margin: 6px 0 0 18px; }
+`;
+
+const ErrorIconWrap = styled.span`
+  color: ${DesignTokenColors.warning600};
+  display: inline-flex;
+  font-size: inherit;
+  line-height: 1;
+  margin-top: 2px;
+`;
+
+const ExampleBox = styled.div`
+  margin: 0 0 6px;
+
+  pre {
+    font-family: inherit;
+    font-size: 13px;
+    line-height: 1.35;
+    margin: 0;
+    white-space: pre-wrap;
+  }
+`;
+
+const HighlightLayer = styled.pre`
+  color: transparent;
+  font: inherit;
+  inset: 0;
+  line-height: inherit;
+  margin: 0;
+  padding: 14px;
+  pointer-events: none;
+  position: absolute;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  z-index: 0;
+
+  .err {
+    background: ${DesignTokenColors.alert50};
+    border-radius: 6px;
+    display: inline-block;
+    line-height: inherit;
+    margin: 0;
+    padding: 0 4px;
+    vertical-align: top;
+    width: 100%;
+  }
 `;
 
 const PageKicker = styled.h2`
@@ -491,6 +853,7 @@ const CandidatePicker = styled.button`
   gap: 2px;
   padding: 2px 4px;
   position: relative;
+
   &:focus-visible { outline: 2px solid ${DesignTokenColors.primary500}; outline-offset: 2px; }
   &:hover > ul, &:focus-within > ul { display: block; }
 `;
@@ -501,13 +864,13 @@ const PickerMenu = styled.ul`
   border-radius: 10px;
   box-shadow: 0 8px 24px rgba(16,24,40,0.08);
   display: none;
+  left: 0;
   list-style: none;
   margin: 8px 0 0;
   max-height: 260px;
   overflow: auto;
   padding: 6px;
   position: absolute;
-  left: 0;
   top: 100%;
   width: 260px;
   z-index: 2;
@@ -517,14 +880,15 @@ const PickerItem = styled.li`
   border-radius: 8px;
   cursor: pointer;
   padding: 10px 12px;
+
   &:hover { background: ${DesignTokenColors.neutralUI50}; }
   &[aria-selected="true"] { font-weight: 600; }
 `;
 
 const Layout = styled.div`
   display: grid;
-  grid-template-columns: 260px 1fr;
   gap: 24px;
+  grid-template-columns: 260px 1fr;
 
   @media (max-width: 900px) {
     grid-template-columns: 1fr;
@@ -536,8 +900,8 @@ const LeftNav = styled.nav`
   padding-right: 18px;
 
   @media (max-width: 900px) {
-    border-right: none;
     border-bottom: 1px solid ${DesignTokenColors.neutralUI200};
+    border-right: none;
     padding: 0 0 12px 0;
   }
 `;
@@ -574,18 +938,6 @@ const SideDivider = styled.div`
   margin: 16px 0;
 `;
 
-const EditProfileLink = styled.button`
-  background: none;
-  border: none;
-  color: ${DesignTokenColors.success700};
-  cursor: pointer;
-  display: inline-flex;
-  gap: 6px;
-  padding: 0;
-  text-align: left;
-  &:hover { text-decoration: underline; }
-`;
-
 const RightPanel = styled.section`
   padding-top: 6px;
 `;
@@ -608,8 +960,8 @@ const InviteRow = styled.div`
 
 const InviteText = styled.span`
   color: ${DesignTokenColors.neutralUI700};
-  margin: 0;
   flex: 0 0 auto;
+  margin: 0;
 `;
 
 const InviteLabel = styled.span`
@@ -627,11 +979,11 @@ const IconButton = styled.button`
   align-items: center;
   background: none;
   border: none;
+  border-radius: 8px;
   color: ${DesignTokenColors.neutralUI700};
   cursor: pointer;
   display: inline-flex;
   padding: 6px;
-  border-radius: 8px;
 
   &:hover {
     background: ${DesignTokenColors.neutralUI50};
@@ -641,11 +993,6 @@ const IconButton = styled.button`
 
 const SocialIconButton = styled(IconButton)`
   color: ${DesignTokenColors.neutralUI800};
-`;
-
-const Sub = styled.p`
-  color: ${DesignTokenColors.neutralUI700};
-  margin: 0 0 18px;
 `;
 
 const Section = styled.section`
@@ -664,6 +1011,7 @@ const Row = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
+
   @media (min-width: 1024px) {
     flex-wrap: nowrap;
   }
@@ -673,12 +1021,14 @@ const Input = styled.input`
   background: ${DesignTokenColors.whiteUI};
   border: 1px solid ${DesignTokenColors.neutralUI300};
   border-radius: 10px;
-  padding: 12px 14px;
-  min-width: 220px;
   flex: 1 1 220px;
+  min-width: 220px;
+  padding: 12px 14px;
+
   @media (min-width: 1024px) {
     flex: 0 0 260px;
   }
+
   &:focus-visible { outline: 2px solid ${DesignTokenColors.primary500}; outline-offset: 2px; }
 `;
 
@@ -690,13 +1040,14 @@ const PrimaryButton = styled.button`
   cursor: pointer;
   padding: 10px 18px;
   white-space: nowrap;
+
   &:hover { background: ${DesignTokenColors.primary50}; }
 `;
 
 const PillButton = styled(PrimaryButton)`
   align-items: center;
-  font-weight: 500;
   display: inline-flex;
+  font-weight: 500;
   gap: 8px;
 `;
 
@@ -713,18 +1064,20 @@ const Placeholder = styled.div`
   background: ${DesignTokenColors.neutralUI50};
   border: 1px dashed ${DesignTokenColors.neutralUI300};
   border-radius: 12px;
-  padding: 24px;
   color: ${DesignTokenColors.neutralUI600};
+  padding: 24px;
 `;
 
-// Modal styles move to separate file later?
 const ModalBackdrop = styled.div`
   align-items: center;
   background: rgba(16,24,40,0.4);
-  bottom: 0; left: 0; right: 0; top: 0;
+  bottom: 0;
   display: flex;
   justify-content: center;
+  left: 0;
   position: fixed;
+  right: 0;
+  top: 0;
   z-index: 9999;
 `;
 
@@ -732,16 +1085,20 @@ const ModalCard = styled.div`
   background: ${DesignTokenColors.whiteUI};
   border-radius: 14px;
   box-shadow: 0 10px 30px rgba(16,24,40,0.18);
-  max-width: 720px;
-  width: calc(100% - 28px);
+  max-width: 860px;
   padding: 18px 18px 14px;
+  width: calc(100% - 28px);
 `;
 
 const ModalHeader = styled.div`
   align-items: start;
   display: flex;
-  justify-content: space-between;
   gap: 8px;
+  justify-content: space-between;
+`;
+
+const ModalIntro = styled.div`
+  margin: 0 0 8px;
 `;
 
 const ModalTitle = styled.h3`
@@ -759,12 +1116,13 @@ const HeaderLink = styled.button`
   align-items: center;
   background: none;
   border: none;
+  border-radius: 8px;
   color: ${DesignTokenColors.primary700};
   cursor: pointer;
   display: inline-flex;
   gap: 6px;
   padding: 6px 8px;
-  border-radius: 8px;
+
   &:hover { background: ${DesignTokenColors.primary50}; }
 `;
 
@@ -778,10 +1136,9 @@ const CloseX = styled.button`
   padding: 2px 6px;
 `;
 
-const InfoRow = styled.div`
+const ManageInfoRow = styled.div`
   color: ${DesignTokenColors.neutralUI600};
   display: flex;
-  align-items: center;
   gap: 8px;
   margin: 4px 0 10px;
 `;
@@ -804,10 +1161,11 @@ const ModalBody = styled.div`
   border-radius: 10px;
   min-height: 240px;
   padding: 14px;
+
   pre {
-    white-space: pre-wrap;
     font: inherit;
     margin: 0;
+    white-space: pre-wrap;
   }
 `;
 
@@ -824,40 +1182,48 @@ const PreviewCloseButton = styled.button`
   color: ${DesignTokenColors.whiteUI};
   cursor: pointer;
   padding: 10px 18px;
+
   &:hover { background: ${DesignTokenColors.primary800}; border-color: ${DesignTokenColors.primary800}; }
 `;
+
 const BarBetween = styled.div`
   align-items: center;
   display: flex;
-  justify-content: space-between;
   gap: 12px;
+  justify-content: space-between;
   margin: 6px 0 10px;
 `;
 
 const EditAreaWrapper = styled.div`
+  background: ${DesignTokenColors.whiteUI};
   border: 1px solid ${DesignTokenColors.neutralUI300};
   border-radius: 10px;
+  min-height: 260px;
   overflow: hidden;
+  position: relative;
 `;
 
 const EditTextArea = styled.textarea`
+  background: transparent;
   border: none;
-  width: 100%;
-  min-height: 260px;
-  padding: 14px;
-  font: inherit;
   color: ${DesignTokenColors.neutralUI900};
-  resize: vertical;
+  font: inherit;
+  min-height: 300px;
   outline: none;
+  padding: 14px;
+  position: relative;
+  resize: vertical;
+  width: 100%;
+  z-index: 1;
 `;
 
 const EditCloseButton = styled.button`
   background: ${DesignTokenColors.whiteUI};
   border: none;
+  border-radius: 9999px;
   color: ${DesignTokenColors.neutralUI800};
   cursor: pointer;
   padding: 10px 18px;
-  border-radius: 9999px;
 
   &:hover { background: ${DesignTokenColors.neutralUI50}; }
 `;
@@ -865,14 +1231,104 @@ const EditCloseButton = styled.button`
 const PrimarySaveBtn = styled.button`
   background: ${({ disabled }) => (disabled ? DesignTokenColors.neutralUI200 : DesignTokenColors.primary700)};
   border: 1px solid ${({ disabled }) => (disabled ? DesignTokenColors.neutralUI200 : DesignTokenColors.primary700)};
+  border-radius: 9999px;
   color: ${DesignTokenColors.whiteUI};
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
-  padding: 10px 18px;
-  border-radius: 9999px;
   opacity: ${({ disabled }) => (disabled ? 0.7 : 1)};
+  padding: 10px 18px;
+
   &:hover {
     background: ${({ disabled }) => (disabled ? DesignTokenColors.neutralUI200 : DesignTokenColors.primary800)};
     border-color: ${({ disabled }) => (disabled ? DesignTokenColors.neutralUI200 : DesignTokenColors.primary800)};
   }
 `;
 
+const Toast = styled.div`
+  align-items: center;
+  background: ${({ $success }) => ($success ? DesignTokenColors.neutralUI50 : DesignTokenColors.neutralUI900)};
+  border: ${({ $success }) => ($success ? `1px solid ${DesignTokenColors.neutralUI200}` : 'none')};
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(16,24,40,0.18);
+  color: ${({ $success }) => ($success ? DesignTokenColors.neutralUI900 : DesignTokenColors.whiteUI)};
+  display: inline-flex;
+  font-size: 14px;
+  gap: 10px;
+  left: 50%;
+  max-width: 90vw;
+  position: fixed;
+  text-align: left;
+  top: 10%;
+  transform: translateX(-50%);
+  z-index: 10000;
+  padding: 10px 12px;
+`;
+
+const SuccessBanner = styled.div`
+  align-items: center;
+  background: ${DesignTokenColors.neutralUI50};
+  border: 1px solid ${DesignTokenColors.neutralUI200};
+  border-radius: 10px;
+  color: ${DesignTokenColors.neutralUI900};
+  display: flex;
+  gap: 10px;
+  margin: 8px 0 12px;
+  padding: 10px 12px;
+`;
+
+const SuccessIcon = styled.span`
+  color: ${DesignTokenColors.confirmation500};
+  display: inline-flex;
+  line-height: 1;
+`;
+
+const UploadHeaderRow = styled.div`
+  align-items: center;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+`;
+
+const UploadHeaderLeft = styled.div`
+  align-items: center;
+  display: flex;
+  gap: 12px;
+`;
+
+const HeaderDivider = styled.span`
+  border-left: 1px solid ${DesignTokenColors.neutralUI200};
+  height: 22px;
+  margin: 0 4px;
+`;
+
+const UploadIntroList = styled.ul`
+  color: ${DesignTokenColors.neutralUI700};
+  line-height: 1.45;
+  margin: 8px 0 10px;
+  padding-left: 18px;
+`;
+
+const UploadStructureTitle = styled.div`
+  color: ${DesignTokenColors.neutralUI900};
+  font-weight: 600;
+  margin: 10px 0 6px;
+`;
+
+const UploadGrid = styled.div`
+  background: ${DesignTokenColors.whiteUI};
+  border: 1px solid ${DesignTokenColors.neutralUI200};
+  border-radius: 10px;
+  display: grid;
+  gap: 12px 18px;
+  grid-template-columns: repeat(4, 1fr);
+  padding: 14px;
+`;
+
+const UploadGridHead = styled.div`
+  color: ${DesignTokenColors.neutralUI600};
+  font-size: 13px;
+`;
+
+const UploadGridCell = styled.div`
+  color: ${DesignTokenColors.neutralUI900};
+  font-size: 14px;
+`;

@@ -4,9 +4,9 @@ import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
+import TagManager from 'react-gtm-module';
 import { Helmet } from 'react-helmet-async';
 import styled from 'styled-components';
-import TagManager from 'react-gtm-module';
 import ActivityActions from '../../actions/ActivityActions';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import BallotActions from '../../actions/BallotActions';
@@ -21,7 +21,7 @@ import SnackNotifier, { openSnackbar } from '../../common/components/Widgets/Sna
 import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
 import CampaignStore from '../../common/stores/CampaignStore';
 import apiCalming from '../../common/utils/apiCalming';
-import { chipLabelText, isAndroidSizeWide, isIOSAppOnMac, isIPad11in, isIPadGiantSize, isIPadMini, isIPhone6p1in } from '../../common/utils/cordovaUtils';
+import { chipLabelText, isAndroidSizeWide, isIOSAppOnMac, isIPad, isIPad11in, isIPadGiantSize, isIPadMini, isIPhone6p1in } from '../../common/utils/cordovaUtils';
 import getBooleanValue from '../../common/utils/getBooleanValue';
 import historyPush from '../../common/utils/historyPush';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
@@ -52,6 +52,7 @@ import isMobile from '../../utils/isMobile';
 // Lint is not smart enough to know that lazyPreloadPages will not attempt to preload/reload this page
 // eslint-disable-next-line import/no-cycle
 import lazyPreloadPages from '../../utils/lazyPreloadPages';
+import lookupPageNameAndPageTypeDict from '../../utils/lookupPageNameAndPageTypeDict';
 import mapCategoryFilterType from '../../utils/map-category-filter-type';
 import showBallotDecisionsTabs from '../../utilsApi/showBallotDecisionsTabs';
 import { checkShouldUpdate, formatVoterBallotList } from './utils/ballotUtils';
@@ -440,7 +441,7 @@ class Ballot extends Component {
   shouldComponentUpdate (nextProps, nextState) {
     // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
     if (window) {
-      return true;   // TODO: remove this hack
+      return true;
     }
     return checkShouldUpdate(this.state, nextState);
   }
@@ -1364,10 +1365,10 @@ class Ballot extends Component {
     let showLoadingText = true;
     let searchTextString = '';
     let paddingTop = '';
-    if (isIPadMini()) {
-      paddingTop = '18%';
-    } else if (isIPad11in()) {
-      paddingTop = '12%';
+    if (isIPadMini() || isIPad11in()) {
+      paddingTop = '22%';
+    } else if (isIPad()) {
+      paddingTop = '5%';
     }
 
     return (

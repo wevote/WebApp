@@ -12,8 +12,12 @@
   },
   "commentMay2021": "'production' forces minified libraries (especially react), and 'MINIFIED' passes all our code through the Terser minifier/mangler/compressor tool.",
   "scripts": {
+    "wdio-browser-desktop": "RUN_TYPE=browser-desktop wdio run tests/browserstack_automation/config/wdio.config.js",
+    "wdio-browser-mobile": "RUN_TYPE=browser-mobile wdio run tests/browserstack_automation/config/wdio.config.js",
+    "wdio-cordova": "RUN_TYPE=cordova wdio run tests/browserstack_automation/config/wdio.config.js",
+    "wdio-all": "RUN_TYPE=all wdio run tests/browserstack_automation/config/wdio.config.js",
     "wdio:setup": "node tests/browserstack_automation/buildMobileCapabilities.js",
-    "wdio": "wdio ./tests/browserstack_automation/config/wdio.config.js",
+    "wdio": "RUN_TYPE=browser-desktop wdio run tests/browserstack_automation/config/wdio.config.js",
     "wdio-local-bs": "wdio ./tests/browserstack_automation/config/wdio.config.local.js",
     "wdio-local": "wdio ./tests/browserstack_automation/config/wdio.local.config.js",
     "wdio-BVT": "wdio ./tests/browserstack_automation/config/wdio.config.BVT.js --mochaOpts.grep @BVT",

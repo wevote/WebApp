@@ -45,7 +45,7 @@ function CampaignsHomeFilter (props) {
           placeholder="Search by name or office"
           searchFunction={props.searchFunction}
           clearFunction={props.clearSearchFunction}
-          searchUpdateDelayTime={500}
+          searchUpdateDelayTime={1500}
         />
       </SearchBarWrapper>
     </CampaignsHomeFilterWrapper>

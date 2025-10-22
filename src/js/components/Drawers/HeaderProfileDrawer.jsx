@@ -1,24 +1,28 @@
 import {
   AccountCircle, CampaignRounded,
   ContentCopy, ExitToAppRounded, ImportContactsOutlined, Lock,
-  Menu, SecurityRounded,
+  LocationOn, Menu, SecurityRounded,
 } from '@mui/icons-material';
 import React, { useCallback, useEffect, useState } from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import TagManager from 'react-gtm-module';
 import styled from 'styled-components';
-import DrawerTemplateHeaderProfile from './DrawerTemplateHeaderProfile';
-import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
-import webAppConfig from '../../config';
-import SettingsProfile from '../Settings/SettingsProfile';
-import lookupPageNameAndPageTypeDict, { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
-import VoterStore from '../../stores/VoterStore';
 import VoterSessionActions from '../../actions/VoterSessionActions';
+import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
+import historyPush from '../../common/utils/historyPush';
+import webAppConfig from '../../config';
+import SettingsAddress from '../Settings/SettingsAddress';
+import SettingsProfile from '../Settings/SettingsProfile';
 import SettingsYourData from '../Settings/SettingsYourData';
-import SettingsNotifications from '../Settings/SettingsNotifications';
+import VoterStore from '../../stores/VoterStore';
+import lookupPageNameAndPageTypeDict, { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
 import SettingsSectionFooter from '../Navigation/SettingsSectionFooter';
-import historyPush from "../../common/utils/historyPush";
+import SettingsNotifications from '../Settings/SettingsNotifications';
+import { NavLinksContainer } from '../Style/drawerLayoutStyles';
+import DrawerTemplateHeaderProfile from './DrawerTemplateHeaderProfile';
+
+const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
 // const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 const SignInOptionsPanel = React.lazy(() => import(/* webpackChunkName: 'SignInOptionsPanel' */ '../../common/components/SignIn/SignInOptionsPanel'));
@@ -64,12 +68,18 @@ const HeaderProfileDrawer = () => {
   //   setViewerIsThisAuthenticatedPerson(authenticatedPerson && getAppContextValue('profileDrawerPersonId') === authenticatedPerson.personId);
   // }, [getAppContextValue, authenticatedPerson]);
 
-  const profileNavOptions = [
+  let profileNavOptions = [
     { icon: <AccountCircle $isActive={String(displayProfileOption) === 'nameAndPhoto'} />, linkName: 'nameAndPhoto', linkTextJsx: <LinkSpan $isActive={String(displayProfileOption) === 'nameAndPhoto'}>Name & Photo</LinkSpan> },
+  ];
+  if (nextReleaseFeaturesEnabled) {
+    profileNavOptions.push({ icon: <AddressIcon $isActive={String(displayProfileOption) === 'address'} />, linkName: 'address', linkTextJsx: <LinkSpan $isActive={String(displayProfileOption) === 'address'}>Ballot Address</LinkSpan> });
+  }
+  const profileNavOptions2 = [
     { icon: <SecurityIcon $isActive={String(displayProfileOption) === 'securityAndSignIn'} />, linkName: 'securityAndSignIn', linkTextJsx: <LinkSpan $isActive={String(displayProfileOption) === 'securityAndSignIn'}>Security &amp; Sign In</LinkSpan> },
     { icon: <PrivacyIcon $isActive={String(displayProfileOption) === 'yourData'} />, linkName: 'yourData', linkTextJsx: <LinkSpan $isActive={String(displayProfileOption) === 'yourData'}>Privacy &amp; Data</LinkSpan> },
     { icon: <NotificationsIcon $isActive={String(displayProfileOption) === 'notifications'} />, linkName: 'notifications', linkTextJsx: <LinkSpan $isActive={String(displayProfileOption) === 'notifications'}>Notifications</LinkSpan> },
   ];
+  profileNavOptions = profileNavOptions.concat(profileNavOptions2);
 
   // useEffect to handle which component to display from nav
   useEffect(() => {
@@ -80,6 +90,13 @@ const HeaderProfileDrawer = () => {
           <>
             {/* <ProfileComponentTitle>Name &amp; Photo</ProfileComponentTitle> */}
             <SettingsProfile externalUniqueId="headerProfileDrawer" />
+          </>
+        );
+        break;
+      case 'address':
+        component = (
+          <>
+            <SettingsAddress externalUniqueId="headerProfileDrawer" />
           </>
         );
         break;
@@ -153,6 +170,7 @@ const HeaderProfileDrawer = () => {
 
   const linkNameToPathMap = {
     nameAndPhoto: '/settings/profile',
+    address: '/settings/address',
     securityAndSignIn: '/settings/securityAndSignIn',
     yourData: '/settings/yourdata',
     notifications: '/settings/notifications',
@@ -412,12 +430,14 @@ const NavLinkContainer = styled('div')`
   }
 `;
 
-const NavLinksContainer = styled('div')`
-  display: flex;
-  flex-direction: column;
-  margin-left: -16px;
-  position: fixed;
-`;
+// Please do not copy styles -- centralize them somewhere, so that same-named styles don't diverge,
+// and so that we don't have to maintain them twice
+// const NavLinksContainer = styled('div')`
+//   display: flex;
+//   flex-direction: column;
+//   margin-left: -16px;
+//   position: fixed;
+// `;
 
 // const ProfileComponentTitle = styled('div')`
 //   font-size: 20px;
@@ -426,6 +446,10 @@ const NavLinksContainer = styled('div')`
 // `;
 
 const ImportContactsIcon = styled(ImportContactsOutlined)`
+  color: ${(props) => (props.$isActive ? DesignTokenColors.primary600 : DesignTokenColors.neutralUI600)};
+`;
+
+const AddressIcon = styled(LocationOn)`
   color: ${(props) => (props.$isActive ? DesignTokenColors.primary600 : DesignTokenColors.neutralUI600)};
 `;
 

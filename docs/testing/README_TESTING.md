@@ -49,14 +49,42 @@ With this `BROWSERSTACK_APK_URL` variable set now, we just need to specify the c
 ```
 (WebAppEnv) $ npm run wdio:setup
 ```
+The above command adds capabilities for all available mobile devices that can be used for testing in mobile.json.
+A subset of the capabilities from 'mobile.json' is added to 'cordova_mobile_devices.json'. This is based on the updated
+device list that wevote supports. it's documented in 'https://docs.google.com/spreadsheets/d/1gJtgI6fTtpdNuwaX-gzNaTihpQ4BSIL8j5AQfu79QU4/edit?gid=415646806#gid=415646806'.
+Look for the latest device list. 
+This list is also used to update devices in 'browser_mobile_devices.json'.
 
-Any capabilities will be stored in [the `capabilities` directory](../../tests/browserstack_automation/capabilities/).
+All capabilities will be stored in [the `capabilities` directory](../../tests/browserstack_automation/capabilities/).
+ 
+Run scenarios for mobiles:
+1.To run wevote mobile browser tests:
+-update the capabilities in 'browser_mobile_devices.json' [see above steps]
+-update 'WEB_APP_ROOT_URL' in 'config ->browserstack.config.js' to the wevote testing site as 'https://quality.wevote.us/ready'
+-update the specs in wdio.config under 'mobileBrowserSpecs'
+-use : (WebAppEnv) $ npm run wdio-browser-mobile
+When the run finishes, results can be seen on browserstack dashboard under 'web->Automate'
 
-To run any tests in [the `specs` directory](../../tests/browserstack_automation/specs/), run:
+2.To run wevote cordova tests:
+-update the capabilities in 'cordova_mobile_devices.json' [see above steps]
+-update 'BROWSERSTACK_APK_URL', 'BROWSERSTACK_IPA_URL' in 'config ->browserstack.config.js' [ see above on how to generate the app urls ]
+-update the specs in wdio.config under 'cordovaSpecs'
+-use : (WebAppEnv) $ npm run wdio-cordova
+When the run finishes, results can be seen on browserstack dashboard under 'App->App Automate'
 
-    (WebAppEnv) $ npm run wdio
-    
-When the test finishes, you should be able to see the video of browser tests on the BrowserStack Automate dashboard and video of the mobile apps on BrowserStack App Automate.
+Run scenarios for desktop:
+1. To run wevote desktop browser tests:
+-update the capabilities in 'browser_desktop.json' 
+-update 'WEB_APP_ROOT_URL' in 'config ->browserstack.config.js' to the wevote testing site as 'https://quality.wevote.us/ready'
+-update the specs in wdio.config under 'desktopBrowserSpecs'
+-use : (WebAppEnv) $ npm run wdio-browser-desktop
+or
+-use : (WebAppEnv) $ npm run wdio
+
+When the run finishes, results can be seen on browserstack dashboard under 'web->Automate'
+
+p.s: In the above, specs for desktop browser and mobile browser will be same.
+They use the same page files.
 
 
 **Local Testing:**

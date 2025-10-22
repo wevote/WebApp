@@ -125,7 +125,7 @@ class SettingsWidgetPoliticianName extends Component {
                   margin="dense"
                   variant="outlined"
                   autoComplete="given-name"
-                  id={`first-name-${externalUniqueId}`}
+                  id={`politicianName-${externalUniqueId}`}
                   name="politicianName"
                   placeholder="Candidate Name for Ballot"
                   onKeyDown={this.handleKeyPressPoliticianName}

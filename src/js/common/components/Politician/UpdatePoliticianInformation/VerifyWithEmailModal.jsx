@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import TagManager from 'react-gtm-module';
 import styled from 'styled-components';
 import DesignTokenColors from '../../Style/DesignTokenColors';
 import ModalDisplayTemplateA from '../../../../components/Widgets/ModalDisplayTemplateA';
@@ -11,19 +12,48 @@ import CampaignStore from '../../../stores/CampaignStore';
 import VoterActions from '../../../../actions/VoterActions';
 import VoterStore from '../../../../stores/VoterStore';
 import SettingsVerifySecretCode from '../../Settings/SettingsVerifySecretCode';
+import lookupPageNameAndPageTypeDict, { getPageDetails } from '../../../../utils/lookupPageNameAndPageTypeDict';
 
-const VerifyWithEmailModal = ({ politicianName, politicianWeVoteId }) => {
+const VerifyWithEmailModal = ({ closeVerifyWithEmailModal, politicianName, politicianWeVoteId }) => {
   const campaignXWeVoteIdRef = useRef('');
   const [emailDisplayed, setEmailDisplayed] = useState('');
   const [emailOptionSelectedValue, setEmailOptionSelectedValue] = useState(null);
   const [passkey, setPasskey] = useState('');
+  const [passkeyReceivedButNotAccepted, setPasskeyReceivedButNotAccepted] = useState(false);
   const [passkeyVerified, setPasskeyVerified] = useState(false); // switch to toggle PasskeyVerifiedModal
   const politicianWeVoteIdRef = useRef(politicianWeVoteId);
   const [showVerifyModal, setShowVerifyModal] = useState(false);
   const [verificationEmails, setVerificationEmails] = useState([]);
+  const [verificationEmailsDictionary, setVerificationEmailsDictionary] = useState([]);
 
-  const handleCloseVerifyWithEmailModal = () => {
+  function sendGTMDataLayer (actionType = 'openModal', buttonId = '', destinationPageName = '') {
+    const { location: { pathname: currentPathname } } = window;
+    const destinationPage = lookupPageNameAndPageTypeDict(currentPathname);
+    const dataLayerObject = {
+      actionDetails: {
+        actionType,
+        buttonId,
+      },
+      event: 'action',
+      pageDetails: getPageDetails(),
+      userDetails: VoterStore.getAnalyticsUserDetails(),
+    };
+    if (destinationPageName) {
+      dataLayerObject.destinationDetails = {
+        destinationPageName: destinationPageName || 'notSet',
+        destinationPageType: destinationPage.pageType || 'notSet',
+        destinationPathname: currentPathname,
+      };
+    }
+    if (politicianWeVoteId) {
+      dataLayerObject.politicianDetails = PoliticianStore.getAnalyticsPoliticianDetails(politicianWeVoteId);
+    }
+    TagManager.dataLayer({ dataLayer: dataLayerObject });
+  }
+
+  const handleCloseVerifyWithEmailModal = (buttonId) => {
     AppObservableStore.setShowClaimProfileWithEmailModal(false);
+    sendGTMDataLayer('closeModal', buttonId);
   };
 
   const handleEmailOptionClick = (value, displayEmail) => {
@@ -33,11 +63,13 @@ const VerifyWithEmailModal = ({ politicianName, politicianWeVoteId }) => {
 
   const handlePasskeyChange = (e) => {
     setPasskey(e.target.value);
+    setPasskeyReceivedButNotAccepted(false);
   };
 
-  const handleOpenVerifyOtherWaysModal = () => {
+  const handleOpenVerifyOtherWaysModal = (buttonId) => {
     AppObservableStore.setShowClaimProfileWithEmailModal(false);
     AppObservableStore.setShowClaimProfileWithOtherWaysModal(true);
+    sendGTMDataLayer('openModal', buttonId, 'VerifyOtherWaysModal');
   };
 
   const extractEmailsForVerification = () => {
@@ -53,8 +85,9 @@ const VerifyWithEmailModal = ({ politicianName, politicianWeVoteId }) => {
     // We protect hidden emails on the API server now instead of here in WebApp
     // const staffEmailsFromCampaignForDisplay = protectEmailsInList(staffEmailsFromCampaign);
     const newPublicEmailsDictionary = [...new Set([...publicEmailDicts, ...staffEmailsFromCampaign])];
-    // console.log('extractEmailsForVerification, newPublicEmailsDictionary: ', newPublicEmailsDictionary);
-    setVerificationEmails(newPublicEmailsDictionary);
+    const emailValuesArray = newPublicEmailsDictionary.map((obj) => Object.values(obj)[0]);
+    setVerificationEmailsDictionary(newPublicEmailsDictionary);
+    setVerificationEmails(emailValuesArray);
   };
 
   const onCampaignStoreChange = useCallback(() => {
@@ -78,14 +111,24 @@ const VerifyWithEmailModal = ({ politicianName, politicianWeVoteId }) => {
 
   const onVoterStoreChange = useCallback(() => {
     const emailAddressStatus = VoterStore.getEmailAddressStatus();
-    if (emailAddressStatus.sign_in_code_email_sent) {
-      // Object.assign(newState, {
-      //   displayEmailVerificationButton: false,
-      //   emailAddressStatus: {
-      //     sign_in_code_email_sent: false,
-      //   },
-      //   showVerifyModal: true,
-      // });
+    const passkeyVerifiedTemp = VoterStore.getPasskeyVerified();
+    const passkeyReceivedButNotAcceptedTemp = VoterStore.getPasskeyReceivedButNotAccepted();
+    // console.log('onVoterStoreChange, passkeyReceivedButNotAccepted:', passkeyReceivedButNotAccepted);
+    if (passkeyReceivedButNotAcceptedTemp) {
+      setPasskeyReceivedButNotAccepted(true);
+      // Set a timer to change the value back to false after 5 seconds
+      setTimeout(() => {
+        setPasskeyReceivedButNotAccepted(false);
+      }, 5000); // 5000 milliseconds = 5 seconds
+    } else if (passkeyVerifiedTemp) {
+      if (VoterStore.getVoterIsSignedIn()) {
+        // console.log('--------- onVoterStoreChange in VerifyWithEmailModal, Voter is signed in and passkeyVerified -----------');
+        setPasskeyVerified(true);
+      } else {
+        // console.log('--------- onVoterStoreChange in VerifyWithEmailModal, passkeyVerified sign in needed -----------');
+        AppObservableStore.setShowSignInModal(true);
+      }
+    } else if (emailAddressStatus.sign_in_code_email_sent) {
       setShowVerifyModal(true);
     }
   }, []);
@@ -94,7 +137,7 @@ const VerifyWithEmailModal = ({ politicianName, politicianWeVoteId }) => {
     //
   };
 
-  const submitEmailForVerification = () => {
+  const submitEmailForVerification = (buttonId) => {
     // if setShowVerifyModal is an email address, send it
     if (emailOptionSelectedValue.includes('@')) { // Is valid email address
       VoterActions.sendSignInCodeEmail(emailOptionSelectedValue);
@@ -103,14 +146,21 @@ const VerifyWithEmailModal = ({ politicianName, politicianWeVoteId }) => {
     }
     // verificationKey is an emailWeVoteId, make different call
     setShowVerifyModal(true);
+    sendGTMDataLayer('navigate', buttonId, 'SettingsVerifySecretCode');
   };
 
-  const closeSignInModalLocal = () => {
-    // console.log('VoterEmailAddressEntry closeSignInModalLocal');
-    // if (this.props.closeSignInModal) {
-    //   this.props.closeSignInModal();
-    // }
-    setShowVerifyModal(false);
+  const submitPasskeyForVerification = (buttonId) => {
+    VoterActions.verifyPoliticianPasskey(passkey, politicianWeVoteId);
+    sendGTMDataLayer('save', buttonId, 'PasskeyVerification');
+  };
+
+  const closeFromPasskeyVerifiedModal = (buttonId) => {
+    if (closeVerifyWithEmailModal) {
+      closeVerifyWithEmailModal(true);
+    }
+    setPasskeyVerified(false);
+    AppObservableStore.setShowClaimProfileWithEmailModal(false);
+    sendGTMDataLayer('closeModal', buttonId);
   };
 
   const closeSignInModalFromVerifySecretCode = () => {
@@ -118,28 +168,17 @@ const VerifyWithEmailModal = ({ politicianName, politicianWeVoteId }) => {
     setTimeout(() => {
       VoterActions.clearSecretCodeVerificationStatusAndEmail();
     }, 1000);
-    closeSignInModalLocal();
+    setShowVerifyModal(false);
   };
 
   const closeVerifyModalFromVerifySecretCode = () => {
     // console.log('VoterEmailAddressEntry closeVerifyModalFromVerifySecretCode');
-    // this.setState({
-    //   displayEmailVerificationButton: false,
-    //   emailAddressStatus: {
-    //     sign_in_code_email_sent: false,
-    //   },
-    //   showVerifyModal: false,
-    //   signInCodeEmailSentAndWaitingForResponse: false,
-    // });
     setTimeout(() => {
       // A timer hack to prevent a "React state update on an unmounted component"
       VoterActions.clearSecretCodeVerificationStatusAndEmail();
       AppObservableStore.setShowClaimProfileWithEmailModal(false);
     }, 1000);
-    // if (this.props.closeVerifyModal) {
-    //   this.props.closeVerifyModal();
-    // }
-    closeSignInModalLocal();
+    setShowVerifyModal(false);
   };
 
   useEffect(() => {
@@ -182,7 +221,7 @@ const VerifyWithEmailModal = ({ politicianName, politicianWeVoteId }) => {
 
   const textFieldJsx = (
     <VerifyWithEmailModalContainer>
-      {verificationEmails.length > 0 && (
+      {(verificationEmailsDictionary && verificationEmailsDictionary.length > 0) && (
         <>
           <VerifyWithEmailSubheader>
             Verify with email
@@ -195,8 +234,8 @@ const VerifyWithEmailModal = ({ politicianName, politicianWeVoteId }) => {
             {' '}
             Some emails partially hidden for your safety.
           </VerifyWithEmailModalSubtitle>
-          {verificationEmails.map((emailDict) => {
-            // console.log('verificationEmails.map emailDict: ', emailDict);
+          {verificationEmailsDictionary.map((emailDict) => {
+            // console.log('verificationEmailsDictionary.map emailDict: ', emailDict);
             const [submitValue, displayEmail] = Object.entries(emailDict)[0];
             return (
               <EmailSelection
@@ -218,7 +257,8 @@ const VerifyWithEmailModal = ({ politicianName, politicianWeVoteId }) => {
           })}
           <VerificationButton
             disabled={emailOptionSelectedValue === null}
-            onClick={submitEmailForVerification}
+            id="sendVerificationCode"
+            onClick={() => submitEmailForVerification('sendVerificationCode')}
           >
             Send verification code
           </VerificationButton>
@@ -234,16 +274,30 @@ const VerifyWithEmailModal = ({ politicianName, politicianWeVoteId }) => {
         value={passkey}
         onChange={handlePasskeyChange}
       />
+      <VerificationButton
+        disabled={!passkey}
+        id="submitPasskey"
+        onClick={() => submitPasskeyForVerification('submitPasskey')}
+      >
+        Verify with passkey
+      </VerificationButton>
+      {passkeyReceivedButNotAccepted && (
+        <PasskeyReceivedButNotAcceptedMessage>
+          Passkey was not accepted. Please double-check the passkey and try again. If it still doesn&apos;t work, please email us at support@wevote.us.
+        </PasskeyReceivedButNotAcceptedMessage>
+      )}
       <SectionDivider />
       <OtherWaysVerifyButtonFull
-        onClick={handleOpenVerifyOtherWaysModal}
+        onClick={() => handleOpenVerifyOtherWaysModal('openVerifyOtherWaysModal')}
       >
         See other ways to verify
       </OtherWaysVerifyButtonFull>
       <PasskeyVerifiedModal
+        closePasskeyVerifiedModal={closeFromPasskeyVerifiedModal}
         passkeyVerified={passkeyVerified}
-        setPasskeyVerified={setPasskeyVerified}
         politicianName={politicianName}
+        politicianWeVoteId={politicianWeVoteId}
+        verificationEmails={verificationEmails}
       />
       {showVerifyModal && (
         <SettingsVerifySecretCode
@@ -259,7 +313,7 @@ const VerifyWithEmailModal = ({ politicianName, politicianWeVoteId }) => {
   return (
     <ModalDisplayTemplateA
       dialogTitleJSX={dialogTitleJsx}
-      toggleModal={handleCloseVerifyWithEmailModal}
+      toggleModal={() => handleCloseVerifyWithEmailModal('cancelVerifyWithEmailModal')}
       show={AppObservableStore.getShowClaimProfileWithEmailModal()}
       textFieldJSX={textFieldJsx}
       tallMode
@@ -355,6 +409,14 @@ const PasskeyVerificationInput = styled('input')`
   margin: 8px 0 2px 0;
   padding: 0 8px;
   width: 100%;
+`;
+
+const PasskeyReceivedButNotAcceptedMessage = styled('div')`
+  color: ${DesignTokenColors.alert900};
+  font-size: 14px;
+  font-weight: 600;
+  margin: 8px 0 0 0;
+  text-align: center;
 `;
 
 const OtherWaysVerifyButtonFull = styled(OtherWaysVerifyButtonAnchor)`

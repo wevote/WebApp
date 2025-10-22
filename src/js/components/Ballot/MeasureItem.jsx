@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import historyPush from '../../common/utils/historyPush';
+import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import { displayNoneIfSmallerThanDesktop } from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import toTitleCase from '../../common/utils/toTitleCase';
@@ -112,11 +113,11 @@ class MeasureItem extends Component {
 
     return (
       <MeasureItemWrapper className="card-main">
-        <InfoRow>
+        <MeasureItemInfoRow>
           <MeasureInfoWrapper onClick={() => { this.goToMeasureLink(measureWeVoteId); }}>
-            <Title>
+            <MeasureItemTitle>
               {ballotItemDisplayName}
-            </Title>
+            </MeasureItemTitle>
             {measureUrl && (
               <div className="noClickZone" style={{ padding: '5px 0' }}>
                 <ExternalWebSiteWrapper>
@@ -154,21 +155,21 @@ class MeasureItem extends Component {
               />
             </Suspense>
           </BallotItemSupportOpposeCountDisplayWrapper>
-        </InfoRow>
-        <InfoDetailsRow>
+        </MeasureItemInfoRow>
+        <MeasureItemInfoDetailRow>
           { electionDisplayName || regionalDisplayName || stateDisplayName ?
             (
-              <SubTitle>
+              <MeasureItemSubTitle>
                 { electionDisplayName || 'Appearing on the ballot in ' }
                 { electionDisplayName ? <span> &middot; </span> : null }
                 { regionalDisplayName || null }
                 { regionalDisplayName && stateDisplayName ? ', ' : null }
                 { stateDisplayName }
-              </SubTitle>
+              </MeasureItemSubTitle>
             ) :
             null}
-          <SubTitle>{measureSubtitleCapitalized}</SubTitle>
-        </InfoDetailsRow>
+          <MeasureItemSubTitle>{measureSubtitleCapitalized}</MeasureItemSubTitle>
+        </MeasureItemInfoDetailRow>
         { measureText && (
           <MeasureTextWrapper>
             <Suspense fallback={<></>}>
@@ -254,13 +255,13 @@ const ForMoreInformationInfoText = styled('div')`
   margin-bottom: 4px;
 `;
 
-const InfoRow = styled('div')`
+const MeasureItemInfoRow = styled('div')`
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-between;
 `;
 
-const InfoDetailsRow = styled('div')`
+const MeasureItemInfoDetailRow = styled('div')`
 `;
 
 const MeasureInfoWrapper = styled('div')(({ theme }) => (`
@@ -286,7 +287,7 @@ const MeasureTextWrapper = styled('div')`
   padding-bottom: 8px;
 `;
 
-const Title = styled('h1')(({ theme }) => (`
+const MeasureItemTitle = styled('h1')(({ theme }) => (`
   font-size: 18px;
   font-weight: bold;
   margin: .1rem 0;
@@ -295,7 +296,7 @@ const Title = styled('h1')(({ theme }) => (`
   }
 `));
 
-const SubTitle = styled('h3')(({ theme }) => (`
+const MeasureItemSubTitle = styled('h3')(({ theme }) => (`
   font-size: 16px;
   font-weight: 300;
   color: #555;
@@ -305,6 +306,7 @@ const SubTitle = styled('h3')(({ theme }) => (`
   ${theme.breakpoints.down('lg')} {
     font-size: 13px;
   }
+  ${isCordova() ? 'font-weight: 600' : ''}
 `));
 
 export default withTheme(withStyles(styles)(MeasureItem));

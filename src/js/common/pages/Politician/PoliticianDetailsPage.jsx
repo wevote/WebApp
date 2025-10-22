@@ -1,10 +1,10 @@
-import TagManager from 'react-gtm-module';
 import { keyframes } from '@emotion/react';
 import { PersonSearch } from '@mui/icons-material';
 import { Button } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
+import TagManager from 'react-gtm-module';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
@@ -12,15 +12,18 @@ import AnalyticsActions from '../../../actions/AnalyticsActions';
 import BallotActions from '../../../actions/BallotActions';
 import OrganizationActions from '../../../actions/OrganizationActions';
 import SupportActions from '../../../actions/SupportActions';
+import VoterPositionEntryAndDisplay from '../../../components/PositionItem/VoterPositionEntryAndDisplay';
 import { Candidate, CandidateNameAndPartyWrapper, CandidateNameH4, CandidateParty, CandidateTopRow } from '../../../components/Style/BallotStyles';
 import { PageContentContainer } from '../../../components/Style/pageLayoutStyles';
 import webAppConfig from '../../../config';
 import BallotStore from '../../../stores/BallotStore';
 import CandidateStore from '../../../stores/CandidateStore';
 import RepresentativeStore from '../../../stores/RepresentativeStore';
+import VoterStore from '../../../stores/VoterStore';
 import { headroomWrapperOffset } from '../../../utils/cordovaCalculatedOffsets';
 import { cordovaBallotFilterTopMargin } from '../../../utils/cordovaOffsets';
 import { getPageKey } from '../../../utils/cordovaPageUtils';
+import { getPageDetails } from '../../../utils/lookupPageNameAndPageTypeDict';
 import CampaignChipInLink from '../../components/Campaign/CampaignChipInLink';
 import CampaignOwnersList from '../../components/CampaignSupport/CampaignOwnersList';
 import CompleteYourProfileModalController from '../../components/Settings/CompleteYourProfileModalController';
@@ -40,6 +43,7 @@ import PoliticianStore from '../../stores/PoliticianStore';
 import { convertStateCodeToStateText } from '../../utils/addressFunctions';
 import apiCalming from '../../utils/apiCalming';
 import { getYearFromUltimateElectionDate } from '../../utils/dateFormat';
+import extractPoliticianDetailsFromUrl from '../../utils/extractPoliticianDetailsFromUrl';
 import historyPush from '../../utils/historyPush';
 import { isCordova, isWebApp } from '../../utils/isCordovaOrWebApp';
 import keepHelpingDestination from '../../utils/keepHelpingDestination';
@@ -48,11 +52,6 @@ import normalizedImagePath from '../../utils/normalizedImagePath';
 import { getPoliticianValuesFromIdentifiers, politicianRetrieveFromIdentifiersIfNeeded } from '../../utils/politicianUtils';
 import returnFirstXWords from '../../utils/returnFirstXWords';
 import saveCampaignSupportAndGoToNextPage from '../../utils/saveCampaignSupportAndGoToNextPage';
-import extractPoliticianDetailsFromUrl from '../../utils/extractPoliticianDetailsFromUrl';
-import VoterStore from '../../../stores/VoterStore';
-import VoterPositionEntryAndDisplay from '../../../components/PositionItem/VoterPositionEntryAndDisplay';
-// import VoterPositionEntryAndDisplayMook from '../../components/PositionItem/VoterPositionEntryAndDisplay';
-import { getPageDetails } from '../../../utils/lookupPageNameAndPageTypeDict';
 
 const CampaignRetrieveController = React.lazy(() => import(/* webpackChunkName: 'CampaignRetrieveController' */ '../../components/Campaign/CampaignRetrieveController'));
 const CampaignSupportThermometer = React.lazy(() => import(/* webpackChunkName: 'CampaignSupportThermometer' */ '../../components/CampaignSupport/CampaignSupportThermometer'));
@@ -808,7 +807,9 @@ class PoliticianDetailsPage extends Component {
 
     const politicianLinksContainer = (politicianLinksList) ? (
       <PoliticianLinksWrapper>
-        <SectionTitleSimple>More candidate information</SectionTitleSimple>
+        {(politicianLinksList && politicianLinksList.length > 0) && (
+          <SectionTitleSimple>More candidate information</SectionTitleSimple>
+        )}
         <Suspense fallback={<span>&nbsp;</span>}>
           <PoliticianLinks links={politicianLinksList} />
         </Suspense>
@@ -1016,7 +1017,7 @@ class PoliticianDetailsPage extends Component {
           <DetailsSectionMobile className="u-show-mobile">
             <MobileHeaderOuterContainer id="politicianDetailsHeaderContainer" scrolledDown={scrolledDown}>
               <MobileHeaderInnerContainer>
-                <MobileHeaderContentContainer>
+                <PoliticianMobileHeaderContentContainer>
                   <CandidateTopRow>
                     <Candidate
                       id={`politicianDetailsImageAndName-${politicianWeVoteId}`}
@@ -1051,11 +1052,13 @@ class PoliticianDetailsPage extends Component {
                       />
                     </Suspense>
                   </HeartToggleAndThermometerWrapper>
-                </MobileHeaderContentContainer>
+                </PoliticianMobileHeaderContentContainer>
               </MobileHeaderInnerContainer>
             </MobileHeaderOuterContainer>
             <Suspense fallback={<span>&nbsp;</span>}>
               <PoliticianCardForList
+                hideCardMargins
+                hideItemActionBar
                 politicianWeVoteId={politicianWeVoteIdForDisplay}
                 useCampaignSupportThermometer
                 useVerticalCard
@@ -1225,6 +1228,8 @@ class PoliticianDetailsPage extends Component {
               <ColumnOneThird>
                 <Suspense fallback={<span>&nbsp;</span>}>
                   <PoliticianCardForList
+                    hideCardMargins
+                    hideItemActionBar
                     politicianWeVoteId={politicianWeVoteIdForDisplay}
                     useCampaignSupportThermometer
                     useVerticalCard
@@ -1521,7 +1526,9 @@ const slideIn = keyframes`
   }
 `;
 
-const MobileHeaderContentContainer = styled('div')(({ theme }) => (`
+// Please do not copy styles -- centralize them somewhere, so that same-named styles don't diverge,
+// Same-named styles results in lengthy debugging in Cordova
+const PoliticianMobileHeaderContentContainer = styled('div')(({ theme }) => (`
   padding: 15px 15px 0 15px;
   margin: ${() => cordovaBallotFilterTopMargin()} auto 0 auto;
   position: relative;
@@ -1533,6 +1540,13 @@ const MobileHeaderContentContainer = styled('div')(({ theme }) => (`
     //margin: 0 10px;
   }
 `));
+
+function TranslateYOnScroll (scrolledDown) {
+  if (scrolledDown) {
+    return '0 px';
+  }
+  return isWebApp() ? '-120%' : '-150%';
+}
 
 const MobileHeaderOuterContainer = styled('div', {
   shouldForwardProp: (prop) => !['scrolledDown'].includes(prop),
@@ -1546,7 +1560,7 @@ const MobileHeaderOuterContainer = styled('div', {
   position: fixed;
   z-index: 1;
   right: 0;
-  transform: translateY(${scrolledDown ? 0 : '-120%'});
+  transform: translateY(${TranslateYOnScroll(scrolledDown)});
   transition: transform .3s ease-in-out;
   // visibility: ${scrolledDown ? 'visible' : 'hidden'};
   // opacity: ${scrolledDown ? 1 : 0};

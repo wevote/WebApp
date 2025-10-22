@@ -2,15 +2,14 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { isAndroidSizeWide } from '../../common/utils/cordovaUtils';
 import OpenExternalWebSite from '../../common/components/Widgets/OpenExternalWebSite';
 import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
+import { isIPad } from '../../common/utils/cordovaUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
-import { isTablet } from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
+import webAppConfig from '../../config';
 import { DeviceInformationSpan, TermsAndPrivacyText } from '../Style/pageLayoutStyles';
 import DeviceDialog from '../Widgets/DeviceDialog';
-import webAppConfig from '../../config';
 
 
 class SettingsSectionFooter extends Component {
@@ -133,7 +132,7 @@ class SettingsSectionFooter extends Component {
             WeVote does not support or oppose any political candidate or party.
           </DoesNotSupport>
         )}
-        { isCordova() && (isTablet() || isAndroidSizeWide()) && (
+        { isCordova() && (
           <DoesNotSupport centered={centered}>
             <DeviceInformationSpan onClick={() => this.deviceTableVisibilityOn()}>
               Device Information
@@ -158,6 +157,7 @@ const DoesNotSupport = styled('div', {
   font-weight: 400;
   margin-top: 24px;
   ${centered ? 'text-align: center;' : ''}
+  ${isIPad ? 'width: 210px;' : ''}
 `));
 
 const OneRow = styled('div', {
@@ -166,6 +166,7 @@ const OneRow = styled('div', {
   ${centered ? 'display: flex;' : ''}
   ${centered ? 'justify-content: center;' : ''}
   margin-bottom: 8px;
+  ${isIPad ? 'width: 210px;' : ''}
 `));
 
 const Wrapper = styled('div')`

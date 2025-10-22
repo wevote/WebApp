@@ -12,6 +12,7 @@ class CampaignRetrieveController extends Component {
     super(props);
     this.state = {
       campaignRetrieveInitiated: false,
+      voterIsSignedIn: false,
     };
   }
 
@@ -20,7 +21,9 @@ class CampaignRetrieveController extends Component {
     this.politicianStoreListener = PoliticianStore.addListener(this.onPoliticianStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     // this.campaignFirstRetrieve();
-    this.setState({});  // Trigger componentDidUpdate
+    this.setState({
+      voterIsSignedIn: VoterStore.getVoterIsSignedIn(),
+    });
   }
 
   componentDidUpdate (prevProps) {
@@ -59,8 +62,21 @@ class CampaignRetrieveController extends Component {
   }
 
   onVoterStoreChange () {
-    // this.campaignFirstRetrieve();
-    this.setState({});  // Trigger componentDidUpdate
+    const { voterIsSignedIn } = this.state;
+    const passkeyVerified = VoterStore.getPasskeyVerified();
+    const voterIsSignedInNow = VoterStore.getVoterIsSignedIn();
+    const voterSignedInChange = voterIsSignedIn !== voterIsSignedInNow;
+    if (voterSignedInChange) {
+      // console.log('CampaignRetrieveController voterIsSignedIn has changed, voterIsSignedInNow:', voterIsSignedInNow, ', voterIsSignedIn:', voterIsSignedIn);
+      this.setState({
+        voterIsSignedIn: VoterStore.getVoterIsSignedIn(),
+      });
+      this.campaignFirstRetrieve(true);
+    } else if (passkeyVerified) {
+      this.campaignFirstRetrieve(true);
+    } else {
+      this.setState({});  // Trigger componentDidUpdate
+    }
   }
 
   campaignFirstRetrieve = (campaignRetrieveOverride = false, retrieveAsOwner = false) => {
