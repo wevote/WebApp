@@ -63,6 +63,7 @@ const nonFluxState = {
   showActivityTidbitDrawer: false,
   showAdviserIntroModal: false,
   showAskFriendsModal: false,
+  showBallotChoicesAndSettingsModal: false,
   showChooseOrOpposeIntroModal: false,
   showClaimProfileWithEmailModal: false,
   showClaimProfileWithOtherWaysModal: false,
@@ -678,6 +679,11 @@ export default {
     messageService.sendMessage('state updated showPersonalizedScoreIntroModal');
   },
 
+  setShowBallotChoicesAndSettingsModal (show) {
+    nonFluxState.showBallotChoicesAndSettingsModal = show;
+    messageService.sendMessage('state updated showBallotChoicesAndSettingsModal');
+  },
+
   setShowPositionDrawer (show) {
     nonFluxState.showPositionDrawer = show;
     messageService.sendMessage('state updated showPositionDrawer');
@@ -780,6 +786,9 @@ export default {
   showAskFriendsModal () {
     return nonFluxState.showAskFriendsModal;
   },
+  showBallotChoicesAndSettingsModal () {
+    return nonFluxState.showBallotChoicesAndSettingsModal;
+  },
 
   showChallengeThanksForJoining () {
     return nonFluxState.showChallengeThanksForJoining;
@@ -814,6 +823,7 @@ export default {
       nonFluxState.showFirstPositionIntroModal ||
       nonFluxState.showHowItWorksModal ||
       nonFluxState.showPersonalizedScoreIntroModal ||
+      nonFluxState.showBallotChoicesAndSettingsModal ||
       nonFluxState.showSelectBallotModal ||
       nonFluxState.showSharedItemModal ||
       nonFluxState.showValuesIntroModal;
