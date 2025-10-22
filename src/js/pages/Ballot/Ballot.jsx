@@ -56,8 +56,7 @@ import lookupPageNameAndPageTypeDict from '../../utils/lookupPageNameAndPageType
 import mapCategoryFilterType from '../../utils/map-category-filter-type';
 import showBallotDecisionsTabs from '../../utilsApi/showBallotDecisionsTabs';
 import { checkShouldUpdate, formatVoterBallotList } from './utils/ballotUtils';
-import lookupPageNameAndPageTypeDict from '../../utils/lookupPageNameAndPageTypeDict';
-import VoterConstants from "../../constants/VoterConstants";
+import VoterConstants from '../../constants/VoterConstants';
 
 const CompleteYourProfileOnBallot = React.lazy(() => import(/* webpackChunkName: 'CompleteYourProfile' */ '../../components/CompleteYourProfile/CompleteYourProfileOnBallot'));
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));

@@ -216,7 +216,9 @@ export default class FAQBody extends Component {
         <br />
         WeVote
         <br />
-        1423 Broadway PMB 158
+        1440 Broadway Ste 200
+        <br />
+        #158
         <br />
         Oakland, CA 94612
         <br />

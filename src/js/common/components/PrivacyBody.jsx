@@ -15,7 +15,7 @@ export default class PrivacyBody extends Component {
     return (
       <div>
         <ContentTitle>WeVote.US Privacy Policy</ContentTitle>
-        <p><strong>Last updated: August 12th, 2022</strong></p>
+        <p><strong>Last updated: October 22nd, 2025</strong></p>
         <p>
           <span>We Vote USA has created this privacy policy to explain how WeVote (or “we”) uses information that we collect from you while you visit WeVote, currently located at </span>
           <span>
@@ -332,7 +332,9 @@ export default class PrivacyBody extends Component {
           We Vote USA
           <br />
           {' '}
-          1423 Broadway PMB 158
+          1440 Broadway Ste 200
+          <br />
+          #158
           <br />
           {' '}
           Oakland, CA 94612

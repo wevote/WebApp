@@ -70,7 +70,7 @@ export default class SettingsAddressForDrawer extends Component {
   }
 
   openWarningDialog = () => {
-  this.setState({ showWarningDialog: true });
+    this.setState({ showWarningDialog: true });
   };
 
   closeWarningDialog = () => {
@@ -149,7 +149,10 @@ export default class SettingsAddressForDrawer extends Component {
                         {' '}
                       </span>
                       {!this.state.addressSaved && (
-                        <span className="u-gray-mid"><br />(approximate location from your internet provider)</span>
+                        <span className="u-gray-mid">
+                          <br />
+                          (approximate location from your internet provider)
+                        </span>
                       )}
                     </p>
                   </div>

@@ -16,7 +16,7 @@ export default class TermsOfServiceBody extends Component {
     return (
       <div>
         <ContentTitle>Terms of Service</ContentTitle>
-        <p><strong>Last updated: August 8th, 2025</strong></p>
+        <p><strong>Last updated: October 22nd, 2025</strong></p>
 
         <h2>Overview</h2>
         <p>This website (also packaged in mobile apps) is operated by We Vote USA. Throughout the site, the terms “WeVote”, “we”, “us” and “our” refer to We Vote USA. We Vote USA offers this website, including all information, tools and services available from this site to you, the user, conditioned upon your acceptance of all terms, conditions, policies and notices stated here.</p>
@@ -122,7 +122,9 @@ export default class TermsOfServiceBody extends Component {
           We Vote USA
           <br />
           {' '}
-          1423 Broadway PMB 158
+          1440 Broadway Ste 200
+          <br />
+          #158
           <br />
           {' '}
           Oakland, CA 94612
