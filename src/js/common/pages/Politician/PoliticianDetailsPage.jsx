@@ -820,7 +820,7 @@ class PoliticianDetailsPage extends Component {
     // const opponentsSubtitle = finalElectionDateInPast ? 'Candidates who ran for same office' : 'Candidates running for same office';
     const opponentsSubtitle = 'Other candidates, same office';
     let priorCandidateCampaignsHtml = '';
-    const currentYear = 2023;
+    const currentYear = 2025;
     let nextYearElectionExists = false;
     let priorYearElectionExists = false;
     let thisYearElectionExists = false;

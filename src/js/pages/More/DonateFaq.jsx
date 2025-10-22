@@ -198,7 +198,7 @@ function DonateFaq () {
             <li>
               By Mail: Send a check to:
               <br />
-              WeVote, 1423 Broadway PMB 158, Oakland, CA 94612
+              WeVote, 1440 Broadway Ste 200, #158, Oakland, CA 94612
             </li>
             <li>By Phone: Not available at this time</li>
             <li>

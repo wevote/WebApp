@@ -14,7 +14,7 @@ export default class ChildSafetyBody extends Component {
     return (
       <div>
         <ContentTitle>Standards Against Child Sexual Abuse and Exploitation (CSAE)</ContentTitle>
-        <p><strong>Last updated: August 8th, 2025</strong></p>
+        <p><strong>Last updated: October 22nd, 2025</strong></p>
 
         <h2>Introduction</h2>
         <p>WeVote is committed to maintaining a safe and secure platform that protects children from exploitation, abuse, and harm. We strictly prohibit any form of Child Sexual Abuse and Exploitation (CSAE) and take all necessary steps to prevent, detect, and report such content and activity on our platform.</p>
@@ -75,7 +75,9 @@ export default class ChildSafetyBody extends Component {
           We Vote USA
           <br />
           {' '}
-          1423 Broadway PMB 158
+          1440 Broadway Ste 200
+          <br />
+          #158
           <br />
           {' '}
           Oakland, CA 94612
