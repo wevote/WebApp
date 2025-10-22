@@ -56,6 +56,8 @@ import lookupPageNameAndPageTypeDict from '../../utils/lookupPageNameAndPageType
 import mapCategoryFilterType from '../../utils/map-category-filter-type';
 import showBallotDecisionsTabs from '../../utilsApi/showBallotDecisionsTabs';
 import { checkShouldUpdate, formatVoterBallotList } from './utils/ballotUtils';
+import lookupPageNameAndPageTypeDict from '../../utils/lookupPageNameAndPageTypeDict';
+import VoterConstants from "../../constants/VoterConstants";
 
 const CompleteYourProfileOnBallot = React.lazy(() => import(/* webpackChunkName: 'CompleteYourProfile' */ '../../components/CompleteYourProfile/CompleteYourProfileOnBallot'));
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
@@ -1352,11 +1354,16 @@ class Ballot extends Component {
       widthOverride = { width: 'unset' };
     }
 
+    const howItWorksWatched = VoterStore.getInterfaceFlagState(VoterConstants.HOW_IT_WORKS_WATCHED);
+    const personalizedScoreIntroCompleted = VoterStore.getInterfaceFlagState(VoterConstants.PERSONALIZED_SCORE_INTRO_COMPLETED);
+    const voterIsSignedIn = VoterStore.getVoterIsSignedIn();
+    const profileStepsCompleted = (howItWorksWatched && personalizedScoreIntroCompleted && voterIsSignedIn);
+    const showCompleteYourProfile = isWebApp() && !profileStepsCompleted;
+
     let isFirstBallotItem = false;
     let numberOfBallotItemsDisplayed = 0;
     let showLoadingText = true;
     let searchTextString = '';
-    const showCompleteYourProfile = isWebApp();
     let paddingTop = '';
     if (isIPadMini() || isIPad11in()) {
       paddingTop = '22%';

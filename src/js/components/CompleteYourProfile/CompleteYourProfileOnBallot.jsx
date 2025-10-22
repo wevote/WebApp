@@ -8,6 +8,7 @@ import SupportStore from '../../stores/SupportStore';
 import VoterStore from '../../stores/VoterStore';
 import CompleteYourProfileWizard from './CompleteYourProfileWizard';
 import lookupPageNameAndPageTypeDict, { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
+import Cookies from '../../common/utils/js-cookie/Cookies';
 
 const SignInModal = React.lazy(() => import(/* webpackChunkName: 'SignInModal' */ '../../common/components/SignIn/SignInModal'));
 
@@ -106,6 +107,10 @@ class CompleteYourProfileOnBallot extends Component {
       this.setItemComplete(stepIdSignInToSave);
     } else {
       this.setItemNotComplete(stepIdSignInToSave);
+    }
+    if (howItWorksWatched && personalizedScoreIntroCompleted && voterIsSignedIn) {
+      const expirationDate = new Date(new Date().getTime() + 18 * 60 * 60 * 1000);
+      Cookies.set('complete_your_profile_closed', '1', { expires: expirationDate, path: '/' });
     }
   }
 
