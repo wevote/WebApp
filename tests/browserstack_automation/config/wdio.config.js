@@ -4,7 +4,6 @@ const { readFileSync } = require('fs');
 const path = require('path');
 const browserStackConfig = require('./browserstack.config');
 
-
 // --- Define Spec file sets
 const cordovaSpecs = [
   '../specs/ReadyPage.cordova.js'
@@ -166,6 +165,7 @@ module.exports.config = {
 
   maxInstances: 1,
   exclude: [],
+  outputDir: path.join(__dirname, '../qalogs'),
   logLevel: 'error',
   coloredLogs: true,
   baseUrl: browserStackConfig.WEB_APP_ROOT_URL,

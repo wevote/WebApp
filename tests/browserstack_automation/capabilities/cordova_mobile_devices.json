@@ -9,9 +9,13 @@
       "autoWebview": false
     },
     "bstack:options": {
-      "appiumLogs": "false",
       "appiumVersion": "2.0.1",
-      "automationVersion": "latest"
+      "automationVersion": "latest",
+      "appiumLogs": "true",
+      "networkLogs": "true",
+       "seleniumLogs": "true",
+       "consoleLogs": "info",
+       "deviceLogs" : "true"
     }
   },
 
@@ -24,9 +28,14 @@
       "autoWebview": false
     },
     "bstack:options": {
-      "appiumLogs": "false",
       "appiumVersion": "2.0.1",
-      "automationVersion": "latest"
+      "automationVersion": "latest",
+      "appiumLogs": "true",
+      "networkLogs": "true",
+       "seleniumLogs": "true",
+       "consoleLogs": "info",
+       "deviceLogs" : "true"
+
     }
   },
   {
@@ -38,9 +47,14 @@
       "autoWebview": false
     },
     "bstack:options": {
-      "appiumLogs": "false",
       "appiumVersion": "2.0.1",
-      "automationVersion": "latest"
+      "automationVersion": "latest",
+      "appiumLogs": "true",
+      "networkLogs": "true",
+       "seleniumLogs": "true",
+       "consoleLogs": "info",
+       "deviceLogs" : "true"
+
     }
   },
   {
@@ -52,9 +66,14 @@
       "autoWebview": false
     },
     "bstack:options": {
-      "appiumLogs": "false",
       "appiumVersion": "2.0.1",
-      "automationVersion": "latest"
+      "automationVersion": "latest",
+      "appiumLogs": "true",
+      "networkLogs": "true",
+       "seleniumLogs": "true",
+       "consoleLogs": "info",
+       "deviceLogs" : "true"
+
     }
   },
   {
@@ -66,9 +85,13 @@
       "autoWebview": false
     },
     "bstack:options": {
-      "appiumLogs": "false",
       "appiumVersion": "2.0.1",
-      "automationVersion": "latest"
+      "automationVersion": "latest",
+      "appiumLogs": "true",
+      "networkLogs": "true",
+       "seleniumLogs": "true",
+       "consoleLogs": "info",
+       "deviceLogs" : "true"
     }
   },
   {
@@ -80,9 +103,13 @@
       "autoWebview": false
     },
     "bstack:options": {
-      "appiumLogs": "false",
       "appiumVersion": "2.0.1",
-      "automationVersion": "latest"
+      "automationVersion": "latest",
+      "appiumLogs": "true",
+      "networkLogs": "true",
+       "seleniumLogs": "true",
+       "consoleLogs": "info",
+       "deviceLogs" : "true"
     }
   },
 
@@ -95,9 +122,13 @@
       "autoWebview": false
     },
     "bstack:options": {
-      "appiumLogs": "false",
       "appiumVersion": "2.0.1",
-      "automationVersion": "latest"
+      "automationVersion": "latest",
+      "appiumLogs": "true",
+      "networkLogs": "true",
+       "seleniumLogs": "true",
+       "consoleLogs": "info",
+       "deviceLogs" : "true"
     }
   },
   {
@@ -109,9 +140,13 @@
       "autoWebview": false
     },
     "bstack:options": {
-      "appiumLogs": "false",
       "appiumVersion": "2.0.1",
-      "automationVersion": "latest"
+      "automationVersion": "latest",
+      "appiumLogs": "true",
+      "networkLogs": "true",
+       "seleniumLogs": "true",
+       "consoleLogs": "info",
+       "deviceLogs" : "true"
     }
   },
   {
@@ -123,9 +158,14 @@
       "autoWebview": false
     },
     "bstack:options": {
-      "appiumLogs": "false",
       "appiumVersion": "2.0.1",
-      "automationVersion": "latest"
+      "automationVersion": "latest",
+      "appiumLogs": "true",
+      "networkLogs": "true",
+       "seleniumLogs": "true",
+       "consoleLogs": "info",
+       "deviceLogs" : "true"
+
     }
   },
   {
@@ -137,9 +177,13 @@
       "autoWebview": false
     },
     "bstack:options": {
-      "appiumLogs": "false",
       "appiumVersion": "2.0.1",
-      "automationVersion": "latest"
+      "automationVersion": "latest",
+      "appiumLogs": "true",
+      "networkLogs": "true",
+       "seleniumLogs": "true",
+       "consoleLogs": "info",
+       "deviceLogs" : "true"
     }
   },
   {
@@ -151,9 +195,13 @@
       "autoWebview": false
     },
     "bstack:options": {
-      "appiumLogs": "false",
       "appiumVersion": "2.0.1",
-      "automationVersion": "latest"
+      "automationVersion": "latest",
+      "appiumLogs": "true",
+      "networkLogs": "true",
+       "seleniumLogs": "true",
+       "consoleLogs": "info",
+       "deviceLogs" : "true"
     }
   },
   {
@@ -165,9 +213,13 @@
       "autoWebview": false
     },
     "bstack:options": {
-      "appiumLogs": "false",
       "appiumVersion": "2.0.1",
-      "automationVersion": "latest"
+      "automationVersion": "latest",
+      "appiumLogs": "true",
+      "networkLogs": "true",
+       "seleniumLogs": "true",
+       "consoleLogs": "info",
+       "deviceLogs" : "true"
     }
   },
 
@@ -180,9 +232,13 @@
       "autoWebview": false
     },
     "bstack:options": {
-      "appiumLogs": "false",
       "appiumVersion": "2.0.1",
-      "automationVersion": "latest"
+      "automationVersion": "latest",
+      "appiumLogs": "true",
+      "networkLogs": "true",
+       "seleniumLogs": "true",
+       "consoleLogs": "info",
+       "deviceLogs" : "true"
     }
   },
   {
@@ -194,9 +250,13 @@
       "autoWebview": false
     },
     "bstack:options": {
-      "appiumLogs": "false",
       "appiumVersion": "2.0.1",
-      "automationVersion": "latest"
+      "automationVersion": "latest",
+      "appiumLogs": "true",
+      "networkLogs": "true",
+       "seleniumLogs": "true",
+       "consoleLogs": "info",
+       "deviceLogs" : "true"
     }
   },
   {
@@ -208,9 +268,13 @@
       "autoWebview": false
     },
     "bstack:options": {
-      "appiumLogs": "false",
       "appiumVersion": "2.0.1",
-      "automationVersion": "latest"
+      "automationVersion": "latest",
+      "appiumLogs": "true",
+      "networkLogs": "true",
+       "seleniumLogs": "true",
+       "consoleLogs": "info",
+       "deviceLogs" : "true"
     }
   },
   {
@@ -222,9 +286,13 @@
       "autoWebview": false
     },
     "bstack:options": {
-      "appiumLogs": "false",
       "appiumVersion": "2.0.1",
-      "automationVersion": "latest"
+      "automationVersion": "latest",
+      "appiumLogs": "true",
+      "networkLogs": "true",
+       "seleniumLogs": "true",
+       "consoleLogs": "info",
+       "deviceLogs" : "true"
     }
   },
   {
@@ -236,9 +304,13 @@
       "autoWebview": false
     },
     "bstack:options": {
-      "appiumLogs": "false",
       "appiumVersion": "2.0.1",
-      "automationVersion": "latest"
+      "automationVersion": "latest",
+      "appiumLogs": "true",
+      "networkLogs": "true",
+       "seleniumLogs": "true",
+       "consoleLogs": "info",
+       "deviceLogs" : "true"
     }
   },
   {
@@ -250,9 +322,13 @@
       "autoWebview": false
     },
     "bstack:options": {
-      "appiumLogs": "false",
       "appiumVersion": "2.0.1",
-      "automationVersion": "latest"
+      "automationVersion": "latest",
+      "appiumLogs": "true",
+      "networkLogs": "true",
+       "seleniumLogs": "true",
+       "consoleLogs": "info",
+       "deviceLogs" : "true"
     }
   },
   {
@@ -264,9 +340,13 @@
       "autoWebview": false
     },
     "bstack:options": {
-      "appiumLogs": "false",
       "appiumVersion": "2.0.1",
-      "automationVersion": "latest"
+      "automationVersion": "latest",
+      "appiumLogs": "true",
+      "networkLogs": "true",
+       "seleniumLogs": "true",
+       "consoleLogs": "info",
+       "deviceLogs" : "true"
     }
   }
 

@@ -1,15 +1,18 @@
 [
   {
-    "browserName": "Chrome",
-    "bstack:options": {
-      "os": "Windows",
-      "osVersion": "10",
-      "browserVersion": "latest",
-      "seleniumLogs": "false",
-      "seleniumVersion": "4.11.0",
-      "autoWait": 10
-    }
-  },
+  "browserName": "Chrome",
+  "bstack:options": {
+    "os": "Windows",
+    "osVersion": "10",
+    "browserVersion": "latest",
+    "seleniumLogs": "false",
+    "seleniumVersion": "4.11.0",
+    "autoWait": 10,
+     "networkLogs": "true",
+    "seleniumLogs": "true",
+    "consoleLogs": "info"
+  }
+},
   {
     "browserName": "Safari",
     "bstack:options": {
@@ -18,9 +21,11 @@
       "browserVersion": "16.5",
       "seleniumLogs": "false",
       "seleniumVersion": "4.11.0",
-      "autoWait": 10
+      "autoWait": 10,
+       "networkLogs": "true",
+       "seleniumLogs": "true",
+       "consoleLogs": "info"
     }
   }
-   
- 
+
 ]

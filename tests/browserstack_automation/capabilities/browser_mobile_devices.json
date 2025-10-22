@@ -6,7 +6,10 @@
         "deviceName": "iPhone 15",
         "osVersion": "17",
         "platformName": "ios",
-        "interactiveDebugging": "true"
+        "interactiveDebugging": "true",
+        "consoleLogs": "info",
+        "networkLogs": "true",
+        "seleniumLogs": "true"
       }
     },
   {
@@ -15,7 +18,10 @@
         "deviceName": "iPhone 15 Pro Max",
         "osVersion": "17",
         "platformName": "ios",
-        "interactiveDebugging": "true"
+        "interactiveDebugging": "true",
+        "consoleLogs": "info",
+        "networkLogs": "true",
+        "seleniumLogs": "true"
       }
     },
   {
@@ -24,7 +30,10 @@
         "deviceName": "iPhone 15 Pro",
         "osVersion": "17",
         "platformName": "ios",
-        "interactiveDebugging": "true"
+        "interactiveDebugging": "true",
+        "networkLogs": "true",
+       "seleniumLogs": "true",
+       "consoleLogs": "info"
       }
     },
   {
@@ -33,7 +42,10 @@
         "deviceName": "iPhone 14",
         "osVersion": "18",
         "platformName": "ios",
-        "interactiveDebugging": "true"
+        "interactiveDebugging": "true",
+        "networkLogs": "true",
+        "seleniumLogs": "true",
+        "consoleLogs": "info"
       }
     },
   {
@@ -42,7 +54,11 @@
         "deviceName": "iPhone 13",
         "osVersion": "18",
         "platformName": "ios",
-        "interactiveDebugging": "true"
+        "interactiveDebugging": "true",
+        "networkLogs": "true",
+        "seleniumLogs": "true",
+        "consoleLogs": "info",
+
       }
     },
   {
@@ -51,7 +67,10 @@
         "deviceName": "iPhone 16e",
         "osVersion": "18",
         "platformName": "ios",
-        "interactiveDebugging": "true"
+        "interactiveDebugging": "true",
+        "networkLogs": "true",
+        "seleniumLogs": "true",
+        "consoleLogs": "info"
       }
     },
   {
@@ -60,7 +79,10 @@
         "deviceName": "iPhone 16 Pro Max",
         "osVersion": "18",
         "platformName": "ios",
-        "interactiveDebugging": "true"
+        "interactiveDebugging": "true",
+        "networkLogs": "true",
+        "seleniumLogs": "true",
+        "consoleLogs": "info"
       }
     },
   {
@@ -69,7 +91,10 @@
         "deviceName": "iPhone 16 Pro",
         "osVersion": "18",
         "platformName": "ios",
-        "interactiveDebugging": "true"
+        "interactiveDebugging": "true",
+        "networkLogs": "true",
+        "seleniumLogs": "true",
+        "consoleLogs": "info"
       }
     },
   {
@@ -78,7 +103,10 @@
         "deviceName": "iPhone 16",
         "osVersion": "18",
         "platformName": "ios",
-        "interactiveDebugging": "true"
+        "interactiveDebugging": "true",
+        "networkLogs": "true",
+        "seleniumLogs": "true",
+        "consoleLogs": "info"
       }
     },
   {
@@ -87,7 +115,10 @@
         "deviceName": "iPad Pro 13 2024",
         "osVersion": "17",
         "platformName": "ios",
-        "interactiveDebugging": "true"
+        "interactiveDebugging": "true",
+        "networkLogs": "true",
+       "seleniumLogs": "true",
+       "consoleLogs": "info"
       }
     },
 {
@@ -96,7 +127,10 @@
         "deviceName": "iPad Pro 13 2024",
         "osVersion": "18",
         "platformName": "ios",
-        "interactiveDebugging": "true"
+        "interactiveDebugging": "true",
+        "networkLogs": "true",
+        "seleniumLogs": "true",
+        "consoleLogs": "info"
       }
     },
   {
@@ -105,7 +139,10 @@
         "deviceName": "Samsung Galaxy S25 Ultra",
         "osVersion": "15.0",
         "platformName": "android",
-        "interactiveDebugging": "true"
+        "interactiveDebugging": "true",
+        "networkLogs": "true",
+        "seleniumLogs": "true",
+        "consoleLogs": "info"
       }
     },
   {
@@ -114,7 +151,10 @@
         "deviceName": "Google Pixel 9",
         "osVersion": "16.0",
         "platformName": "android",
-        "interactiveDebugging": "true"
+        "interactiveDebugging": "true",
+        "networkLogs": "true",
+        "seleniumLogs": "true",
+        "consoleLogs": "info"
       }
     },
 {
@@ -123,7 +163,10 @@
         "deviceName": "Google Pixel 9 Pro",
         "osVersion": "15.0",
         "platformName": "android",
-        "interactiveDebugging": "true"
+        "interactiveDebugging": "true",
+        "networkLogs": "true",
+        "seleniumLogs": "true",
+        "consoleLogs": "info"
       }
     },
   {
@@ -132,7 +175,10 @@
         "deviceName": "Google Pixel 10 Pro XL",
         "osVersion": "16.0",
         "platformName": "android",
-        "interactiveDebugging": "true"
+        "interactiveDebugging": "true",
+        "networkLogs": "true",
+        "seleniumLogs": "true",
+        "consoleLogs": "info"
       }
     },
   {
@@ -141,7 +187,10 @@
         "deviceName": "Google Pixel 10 Pro",
         "osVersion": "16.0",
         "platformName": "android",
-        "interactiveDebugging": "true"
+        "interactiveDebugging": "true",
+        "networkLogs": "true",
+        "seleniumLogs": "true",
+        "consoleLogs": "info"
       }
     },
   {
@@ -150,7 +199,10 @@
         "deviceName": "Google Pixel 10",
         "osVersion": "16.0",
         "platformName": "android",
-        "interactiveDebugging": "true"
+        "interactiveDebugging": "true",
+        "networkLogs": "true",
+        "seleniumLogs": "true",
+        "consoleLogs": "info"
       }
     },
   {
@@ -159,7 +211,10 @@
         "deviceName": "OnePlus 13R,",
         "osVersion": "15.0",
         "platformName": "android",
-        "interactiveDebugging": "true"
+        "interactiveDebugging": "true",
+        "networkLogs": "true",
+        "seleniumLogs": "true",
+        "consoleLogs": "info"
       }
     }
 
