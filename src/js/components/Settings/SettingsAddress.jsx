@@ -88,80 +88,80 @@ export default class SettingsAddressForDrawer extends Component {
     const pigsCanFly = false;
     return (
       nextReleaseFeaturesEnabled && (
-      <div className="u-stack--md u-f4">
+      <OuterWrapper>
         <Helmet title="Enter Address - WeVote" />
         <BrowserPushMessage incomingProps={this.props} />
-        <div className="card">
-          <div className="card-main">
-            <div className={isWebApp() ? 'u-padding-bottom--md' : 'SettingsCardBottomCordova'}>
+        <CardWrapper className="card">
+          <CardMainWrapper className="card-main">
+            <CardContentWrapper className={isWebApp() ? 'u-padding-bottom--md' : 'SettingsCardBottomCordova'}>
               <Header>
-                <div className="h1 u-padding-top--xs">
+                <Title>
                   Ballot address
-                </div>
+                </Title>
                 {pigsCanFly && (
                   <Disclaimer>
                     <InfoOutlinedIcon className="u-gray-mid" />
                     <Link id="ballotDisclaimer" to="/more/faq">
-                      <span className="u-no-break u-link-color u-margin-left--xs">Ballot Disclaimer</span>
+                      <DisclaimerLinkText>Ballot Disclaimer</DisclaimerLinkText>
                     </Link>
                   </Disclaimer>
                 )}
               </Header>
               {addressSaved && !editingAddress ? (
-                <div className="u-margin-top--lg">
-                  <span>Address where you are registered to vote</span>
-                  <div className="u-padding-top--sm u-flex">
-                    <BallotAddressText className="u-bold">{this.state.textForMapSearch}</BallotAddressText>
-                    <div className="u-cursor--pointer"
+                <AddressSavedSection>
+                  <AddressLabel>Address where you are registered to vote</AddressLabel>
+                  <AddressDisplayWrapper>
+                    <BallotAddressText>{this.state.textForMapSearch}</BallotAddressText>
+                    <EditAddressButton
                       id="editAddress"
                       onClick={() => this.setState({ editingAddress: true })}
                     >
                       <EditOutlinedIcon className="u-link-color u-f3 u-margin-left--sm" />
-                      <span className="u-no-break u-link-color u-f3 u-margin-left--xs">Edit</span>
-                    </div>
-                  </div>
-                  <div>
-                    <CurrentBallotText className="u-gray-darker">We will never share your address or send you any mail.</CurrentBallotText>
-                    <div className="u-margin-top--md u-flex u-cursor--pointer"
+                      <EditText>Edit</EditText>
+                    </EditAddressButton>
+                  </AddressDisplayWrapper>
+                  <PrivacyAndActionsWrapper>
+                    <CurrentBallotText>We will never share your address or send you any mail.</CurrentBallotText>
+                    <RemoveAddressButton
                       onClick={this.openWarningDialog}
                     >
                       <DeleteIcon className="u-gray-mid" />
-                      <span className="u-gray-darker u-margin-left--xs">Remove address</span>
-                    </div>
-                  </div>
-                </div>
+                      <RemoveAddressText>Remove address</RemoveAddressText>
+                    </RemoveAddressButton>
+                  </PrivacyAndActionsWrapper>
+                </AddressSavedSection>
               ) : (
-                <div>
-                  <div className="u-margin-top--lg">
-                    <div>
+                <AddressEntrySection>
+                  <AddressEntryTopSection>
+                    <AddressEntryInstruction>
                       Enter your address to see your accurate ballot
-                    </div>
+                    </AddressEntryInstruction>
                     <DataSettingText>
                       We will never share your address or send you any mail.
                     </DataSettingText>
-                    <span>
+                    <CurrentBallotLabel>
                       Current ballot is shown for:
-                    </span>
-                    <p className="u-padding-top--sm u-stack--lg">
-                      <span className="u-bold">
+                    </CurrentBallotLabel>
+                    <CurrentBallotLocationWrapper>
+                      <BoldText>
                         {' '}
                         {this.state.textForMapSearch}
                         {' '}
-                      </span>
+                      </BoldText>
                       {!this.state.addressSaved && (
-                        <span className="u-gray-mid">
+                        <ApproximateLocationText>
                           <br />
                           (approximate location from your internet provider)
-                        </span>
+                        </ApproximateLocationText>
                       )}
-                    </p>
-                  </div>
+                    </CurrentBallotLocationWrapper>
+                  </AddressEntryTopSection>
                   <SettingsAddressBox
                     introductionHtml={(
-                      <h3 className="h4 row u-gray-darker">
+                      <IntroductionHeading>
                         <strong>Ballot address</strong>
-                        <span className="u-gray-mid">&nbsp;(where you are registered to vote)</span>
-                      </h3>
+                        <SubHeadingText>&nbsp;(where you are registered to vote)</SubHeadingText>
+                      </IntroductionHeading>
                     )}
                     saveUrl="/settings/address"
                     showCancelEditAddressButton
@@ -169,25 +169,25 @@ export default class SettingsAddressForDrawer extends Component {
                     toggleEditingAddress={this.toggleEditingAddress}
                     onAddressSaveSuccess={this.handleAddressSaveSuccess}
                   />
-                  <span>
+                  <CurrentBallotLabelBottom>
                     Current ballot is shown for:
-                  </span>
-                  <p className="u-padding-top--sm u-stack--lg">
-                    <span className="u-bold">
+                  </CurrentBallotLabelBottom>
+                  <CurrentBallotLocationWrapperBottom>
+                    <BoldTextBottom>
                       {' '}
                       {this.state.textForMapSearch}
                       {' '}
-                    </span>
-                    <span className="u-gray-mid">
+                    </BoldTextBottom>
+                    <ApproximateLocationTextBottom>
                       <br/>
                       (approximate location from your internet provider)
-                    </span>
-                  </p>
-                </div>
+                    </ApproximateLocationTextBottom>
+                  </CurrentBallotLocationWrapperBottom>
+                </AddressEntrySection>
               )}
-            </div>
-          </div>
-        </div>
+            </CardContentWrapper>
+          </CardMainWrapper>
+        </CardWrapper>
         <Dialog
           open={this.state.showWarningDialog}
           onClose={this.closeWarningDialog}
@@ -206,20 +206,105 @@ export default class SettingsAddressForDrawer extends Component {
             </Button>
           </DialogActions>
         </Dialog>
-      </div>
+      </OuterWrapper>
       )
     );
   }
 }
+
+const OuterWrapper = styled('div')`
+  font-size: 18px;
+  margin-bottom: 32px;
+`;
+
+const CardWrapper = styled('div')`
+`;
+
+const CardMainWrapper = styled('div')`
+`;
+
+const CardContentWrapper = styled('div')`
+`;
 
 const Header = styled('div')`
   display: flex;
   justify-content: space-between;
 `;
 
+const Title = styled('div')`
+  font-size: 28px;
+  font-weight: 600;
+  padding-top: 4px;
+`;
+
 const Disclaimer = styled('div')`
   display: flex;
   align-items: center;
+`;
+
+const DisclaimerLinkText = styled('span')`
+  white-space: nowrap;
+  color: var(--link-color);
+  margin-left: 4px;
+`;
+
+const AddressSavedSection = styled('div')`
+  margin-top: 32px;
+`;
+
+const AddressLabel = styled('span')`
+`;
+
+const AddressDisplayWrapper = styled('div')`
+  padding-top: 8px;
+  display: flex;
+`;
+
+const BallotAddressText = styled('p')`
+  font-weight: 600;
+  margin-bottom: 30px;
+  border-right: solid 1px;
+  padding-right: 8px;
+`;
+
+const EditAddressButton = styled('div')`
+  cursor: pointer;
+`;
+
+const EditText = styled('span')`
+  white-space: nowrap;
+  color: var(--link-color);
+  font-size: 20px;
+  margin-left: 4px;
+`;
+
+const PrivacyAndActionsWrapper = styled('div')`
+`;
+
+const CurrentBallotText = styled('span')`
+  color: #555;
+  font-style: italic;
+`;
+
+const RemoveAddressButton = styled('div')`
+  margin-top: 24px;
+  display: flex;
+  cursor: pointer;
+`;
+
+const RemoveAddressText = styled('span')`
+  color: #555;
+  margin-left: 4px;
+`;
+
+const AddressEntrySection = styled('div')`
+`;
+
+const AddressEntryTopSection = styled('div')`
+  margin-top: 32px;
+`;
+
+const AddressEntryInstruction = styled('div')`
 `;
 
 const DataSettingText = styled('div')`
@@ -228,13 +313,44 @@ const DataSettingText = styled('div')`
   margin-bottom: 30px;
 `;
 
-const CurrentBallotText = styled('span')`
-  font-style: italic;
-  // font-size: 20px;
+const CurrentBallotLabel = styled('span')`
 `;
 
-const BallotAddressText = styled('p')`
-  margin-bottom: 30px;
-  border-right: solid 1px;
-  padding-right: 8px;
+const CurrentBallotLocationWrapper = styled('p')`
+  padding-top: 8px;
+  margin-bottom: 32px;
+`;
+
+const BoldText = styled('span')`
+  font-weight: 600;
+`;
+
+const ApproximateLocationText = styled('span')`
+  color: #999;
+`;
+
+const IntroductionHeading = styled('h3')`
+  font-size: 20px;
+  display: flex;
+  color: #555;
+`;
+
+const SubHeadingText = styled('span')`
+  color: #999;
+`;
+
+const CurrentBallotLabelBottom = styled('span')`
+`;
+
+const CurrentBallotLocationWrapperBottom = styled('p')`
+  padding-top: 8px;
+  margin-bottom: 32px;
+`;
+
+const BoldTextBottom = styled('span')`
+  font-weight: 600;
+`;
+
+const ApproximateLocationTextBottom = styled('span')`
+  color: #999;
 `;
