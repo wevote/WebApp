@@ -72,29 +72,29 @@ class HeaderBar extends Component {
   }
 
   getTabsValueFromPage = () => {
-  const page = normalizedHrefPage();
-  switch (page) {
-    case 'ballot': return 1;
-    case 'candidatelist':
-    case 'politicianpage': return 2;
-    case 'friends': return 3;
-    case 'news': return 99;
-    case 'challenges': return 4;
-    case 'donate':
-    case 'more/donate': return 5;
-    case 'more':
-    case 'more/manage': return 99;
-    default: return false;
-  }
-};
+    const page = normalizedHrefPage();
+    switch (page) {
+      case 'ballot': return 1;
+      case 'candidatelist':
+      case 'politicianpage': return 2;
+      case 'friends': return 3;
+      case 'news': return 99;
+      case 'challenges': return 4;
+      case 'donate':
+      case 'more/donate': return 5;
+      case 'more':
+      case 'more/manage': return 99;
+      default: return false;
+    }
+  };
 
-syncTabsToRoute = () => {
-  const nextPage = normalizedHrefPage();
-  const nextValue = this.getTabsValueFromPage();
-  this.setState({ tabsValue: nextValue, page: nextPage }, () => {
-    this.customHighlightSelector(nextValue);
-  });
-};
+  syncTabsToRoute = () => {
+    const nextPage = normalizedHrefPage();
+    const nextValue = this.getTabsValueFromPage();
+    this.setState({ tabsValue: nextValue, page: nextPage }, () => {
+      this.customHighlightSelector(nextValue);
+    });
+  };
 
 
   componentDidMount () {
@@ -391,7 +391,7 @@ syncTabsToRoute = () => {
           more.css(highlight);
           break;
         case 'more/manage':
-                   more.css(highlight);
+          more.css(highlight);
           break;
         default:
           break;
