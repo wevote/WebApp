@@ -19,6 +19,10 @@ import HeartFavoriteToggleLoader from './Widgets/HeartFavoriteToggle/HeartFavori
 import SvgImage from './Widgets/SvgImage';
 import extractPoliticianDetailsFromUrl from '../utils/extractPoliticianDetailsFromUrl';
 import lookupPageNameAndPageTypeDict from '../../utils/lookupPageNameAndPageTypeDict';
+import InfoOutlineIcon from '../../../img/global/svg-icons/material-symbols-info-outline.svg';
+import claimedProfileIcon from '../../../img/global/svg-icons/claimed-profile-icon.svg';
+import normalizedImagePath from '../utils/normalizedImagePath';
+// /Users/almee/MyProjects/WebApp/src/img/global/svg-icons/claimed-profile-icon.svg
 
 const CampaignSupportThermometer = React.lazy(() => import(/* webpackChunkName: 'CampaignSupportThermometer' */ './CampaignSupport/CampaignSupportThermometer'));
 const ItemActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemActionBar' */ '../../components/Widgets/ItemActionBar/ItemActionBar'));
@@ -66,6 +70,7 @@ function CardForListBody (props) {
   // console.log('politicianBasePath:', politicianBasePath);
   // console.log('CardForListBody politicianDetailsURL:', politicianDetailsURL, ', destinationPage: ', destinationPage);
   const location = useLocation();
+  const claimedProfile = true; // TODO: Replace with actual claimed profile check
   const { state: stateFromUrl, name: nameFromUrl } = extractPoliticianDetailsFromUrl(location.pathname);
 
   // /////////////////////// START OF DISPLAY
@@ -318,21 +323,33 @@ function CardForListBody (props) {
             onClick={hideCardMargins ? null : () => historyPush(politicianBasePath)}
           >
             {photoLargeUrl ? (
-              <CampaignImageMobilePlaceholder
-                id="cimp4"
-                profileImageBackgroundColor={profileImageBackgroundColor}
-                useVerticalCard={useVerticalCard}
-              >
-                <CampaignImageMobile
-                  alt=""
-                  src={photoLargeUrl}
-                  style={useVerticalCard ? {
-                    borderBottom: `1px solid ${DesignTokenColors.neutralUI100}`,
-                    borderTop: `1px solid ${DesignTokenColors.neutralUI100}`,
-                  } : {}}
-                />
-              </CampaignImageMobilePlaceholder>
+              <PoliticianImageContainer>
+                <CampaignImageMobilePlaceholder
+                      id="cimp4"
+                      profileImageBackgroundColor={profileImageBackgroundColor}
+                      useVerticalCard={useVerticalCard}
+                    >
+                    <CampaignImageMobile
+                      alt=""
+                      src={photoLargeUrl}
+                      style={useVerticalCard ? {
+                        borderBottom: `1px solid ${DesignTokenColors.neutralUI100}`,
+                        borderTop: `1px solid ${DesignTokenColors.neutralUI100}`,
+                      } : {}}
+                    />
+                </CampaignImageMobilePlaceholder>
+                  {claimedProfile && (
+                    <ClaimedProfileOverlay>
+                      <SvgImage
+                        color={DesignTokenColors.neutral500}
+                        imageName={normalizedImagePath(claimedProfileIcon)}
+                        opacity="1.0"
+                      />
+                    </ClaimedProfileOverlay>
+                  )}
+              </PoliticianImageContainer>
             ) : (
+              <PoliticianImageContainer>
               <CampaignImageMobilePlaceholder
                 id="cimp2"
                 profileImageBackgroundColor={profileImageBackgroundColor}
@@ -352,6 +369,16 @@ function CardForListBody (props) {
                   </CampaignImagePlaceholderText>
                 </SvgWatermarkWrapper>
               </CampaignImageMobilePlaceholder>
+              {claimedProfile && (
+                  <ClaimedProfileOverlay>
+                    <SvgImage
+                    color={DesignTokenColors.neutral500}
+                    imageName={normalizedImagePath(claimedProfileIcon)}
+                    opacity="1.0"
+                  />
+                  </ClaimedProfileOverlay>
+                  )}
+              </PoliticianImageContainer>
             )}
           </OneCampaignPhotoWrapperMobile>
           <OneCampaignPhotoDesktopColumn
@@ -364,6 +391,7 @@ function CardForListBody (props) {
             useVerticalCard={useVerticalCard}
           >
             {photoLargeUrl ? (
+              <PoliticianImageContainer>
               <>
                 {useVerticalCard ? (
                   <CampaignImageDesktopPlaceholder
@@ -386,8 +414,19 @@ function CardForListBody (props) {
                 ) : (
                   <CampaignImageDesktop src={photoLargeUrl} alt="" width="117px" height="117px" />
                 )}
-              </>
+                </>
+                {claimedProfile && (
+                  <ClaimedProfileOverlay>
+                    <SvgImage
+                    color={DesignTokenColors.neutral500}
+                    imageName={normalizedImagePath(claimedProfileIcon)}
+                    opacity="1.0"
+                  />
+                  </ClaimedProfileOverlay>
+                  )}
+              </PoliticianImageContainer>
             ) : (
+            <PoliticianImageContainer>
               <CampaignImageDesktopPlaceholder
                 id="cidp5"
                 limitCardWidth={limitCardWidth}
@@ -405,7 +444,17 @@ function CardForListBody (props) {
                   />
                   No candidate image available.
                 </CampaignImagePlaceholderText>
+                {claimedProfile && (
+                  <ClaimedProfileOverlay>
+                    <SvgImage
+                    color={DesignTokenColors.neutral500}
+                    imageName={normalizedImagePath(claimedProfileIcon)}
+                    opacity="1.0"
+                  />
+                  </ClaimedProfileOverlay>
+                  )}
               </CampaignImageDesktopPlaceholder>
+            </PoliticianImageContainer>
             )}
           </OneCampaignPhotoDesktopColumn>
         </OneCampaignInnerWrapper>
@@ -482,6 +531,24 @@ export const SvgWatermarkWrapper = styled('div')`
 export const YearAndHeartDiv = styled('div')`
   display: flex;
   justify-content: space-between;
+`;
+
+const PoliticianImageContainer = styled('div')`
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+`;
+
+const ClaimedProfileOverlay = styled('div')`
+  position: absolute;
+  bottom: -14px;
+  right: 5%;
+  background-color: rgba(255, 255, 255, 1);
+  border-radius: 50%;
+  padding: 3px;
+  z-index: 2;
 `;
 
 export default withStyles(styles)(CardForListBody);
