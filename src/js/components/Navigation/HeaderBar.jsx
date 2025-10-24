@@ -42,8 +42,6 @@ const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES ===
 
 // TODO: Backport "@stripe/react-stripe-js" use from Campaigns
 // import PaidAccountUpgradeModal from '../Settings/PaidAccountUpgradeModal';
-
-
 class HeaderBar extends Component {
   constructor (props) {
     super(props);
@@ -70,9 +68,34 @@ class HeaderBar extends Component {
     this.debugLogging = this.debugLogging.bind(this);
     this.toggleSignInModal = this.toggleSignInModal.bind(this);
     this.transitionToYourVoterGuide = this.transitionToYourVoterGuide.bind(this);
-    this.handleTabChange = this.handleTabChange.bind(this);
     this.handleResizeLocal = this.handleResizeLocal.bind(this);
   }
+
+  getTabsValueFromPage = () => {
+    const page = normalizedHrefPage();
+    switch (page) {
+      case 'ballot': return 1;
+      case 'candidatelist':
+      case 'politicianpage': return 2;
+      case 'friends': return 3;
+      case 'news': return 99;
+      case 'challenges': return 4;
+      case 'donate':
+      case 'more/donate': return 5;
+      case 'more':
+      case 'more/manage': return 99;
+      default: return false;
+    }
+  };
+
+  syncTabsToRoute = () => {
+    const nextPage = normalizedHrefPage();
+    const nextValue = this.getTabsValueFromPage();
+    this.setState({ tabsValue: nextValue, page: nextPage }, () => {
+      this.customHighlightSelector(nextValue);
+    });
+  };
+
 
   componentDidMount () {
     this.appStateSubscription = messageService.getMessage().subscribe((msg) => this.onAppObservableStoreChange(msg));
@@ -137,13 +160,14 @@ class HeaderBar extends Component {
         }
       }, 1000);
     }
+    this.syncTabsToRoute();
   }
 
   componentDidUpdate () {
     // console.log('HeaderBar componentDidUpdate');
     const { page } = this.state;
     if (page !== normalizedHrefPage()) {
-      this.customHighlightSelector();
+      this.syncTabsToRoute();
     }
   }
 
@@ -367,7 +391,7 @@ class HeaderBar extends Component {
           more.css(highlight);
           break;
         case 'more/manage':
-                   more.css(highlight);
+          more.css(highlight);
           break;
         default:
           break;
