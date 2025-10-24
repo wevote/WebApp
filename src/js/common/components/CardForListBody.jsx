@@ -19,10 +19,8 @@ import HeartFavoriteToggleLoader from './Widgets/HeartFavoriteToggle/HeartFavori
 import SvgImage from './Widgets/SvgImage';
 import extractPoliticianDetailsFromUrl from '../utils/extractPoliticianDetailsFromUrl';
 import lookupPageNameAndPageTypeDict from '../../utils/lookupPageNameAndPageTypeDict';
-import InfoOutlineIcon from '../../../img/global/svg-icons/material-symbols-info-outline.svg';
 import claimedProfileIcon from '../../../img/global/svg-icons/claimed-profile-icon.svg';
 import normalizedImagePath from '../utils/normalizedImagePath';
-// /Users/almee/MyProjects/WebApp/src/img/global/svg-icons/claimed-profile-icon.svg
 
 const CampaignSupportThermometer = React.lazy(() => import(/* webpackChunkName: 'CampaignSupportThermometer' */ './CampaignSupport/CampaignSupportThermometer'));
 const ItemActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemActionBar' */ '../../components/Widgets/ItemActionBar/ItemActionBar'));
