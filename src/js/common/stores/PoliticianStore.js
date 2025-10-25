@@ -163,6 +163,20 @@ class PoliticianStore extends ReduceStore {
     return this.getState().politicianPhotoTooBig || false;
   }
 
+  getPoliticianListVoterCanEdit () {
+    const politiciansVoterCanEdit = [];
+    const { allCachedPoliticians, voterOwnedPoliticianWeVoteIds } = this.getState();
+
+    if (voterOwnedPoliticianWeVoteIds && voterOwnedPoliticianWeVoteIds.length > 0) {
+      voterOwnedPoliticianWeVoteIds.forEach((politicianWeVoteId) => {
+        if (allCachedPoliticians[politicianWeVoteId]) {
+          politiciansVoterCanEdit.push(allCachedPoliticians[politicianWeVoteId]);
+        }
+      });
+    }
+    return politiciansVoterCanEdit;
+  }
+
   getPoliticianWeVoteIdFromPoliticianSEOFriendlyPath (politicianSEOFriendlyPath) {
     return this.getState().allCachedPoliticianWeVoteIdsBySEOFriendlyPath[politicianSEOFriendlyPath] || '';
   }
@@ -395,6 +409,7 @@ class PoliticianStore extends ReduceStore {
     let politicianList;
     let politicianNewsItem = {};
     let politicianNewsItemWeVoteIds = [];
+    let politicianManaged = {};
     let revisedState;
     let voterSpecificData;
     switch (action.type) {
@@ -565,6 +580,27 @@ class PoliticianStore extends ReduceStore {
         revisedState = { ...revisedState, allCachedPoliticianWeVoteIdsBySEOFriendlyPath };
         revisedState = { ...revisedState, allCachedNewsItemWeVoteIdsByPolitician };
         revisedState = { ...revisedState, voterCanSendUpdatesPoliticianWeVoteIds };
+        revisedState = { ...revisedState, voterOwnedPoliticianWeVoteIds };
+        return revisedState;
+
+      case 'politiciansManagedRetrieve':
+        if (!action.res || !action.res.success) return state;
+        revisedState = state;
+        if (action.res.politicians_managed_list) {
+          voterOwnedPoliticianWeVoteIds = []; // Reset the whole list
+          for (let i = 0; i < action.res.politicians_managed_list.length; ++i) {
+            politicianManaged = action.res.politicians_managed_list[i];
+            if (!(politicianManaged.politician_we_vote_id in voterOwnedPoliticianWeVoteIds)) {
+              voterOwnedPoliticianWeVoteIds.push(politicianManaged.politician_we_vote_id);
+            }
+            if (!(politicianManaged.politician_we_vote_id in allCachedPoliticians)) {
+              // Temporarily store a stub of politician data so we can access politician name
+              allCachedPoliticians[politicianManaged.politician_we_vote_id] = politicianManaged;
+            }
+          }
+        } else {
+          voterOwnedPoliticianWeVoteIds = [];
+        }
         revisedState = { ...revisedState, voterOwnedPoliticianWeVoteIds };
         return revisedState;
 

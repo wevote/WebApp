@@ -581,7 +581,7 @@ class App extends Component {
                   <Route path="/more/faq" component={FAQ} />
                   <Route path="/more/howwevotehelps" component={HowWeVoteHelps} />
                   <Route path="/more/jump" component={SignInJumpProcess} />
-                  <Route path="/more/manage" component={ManageMyCandidates} />
+                  <Route path="/managecandidates" component={ManageMyCandidates} />
                   <Route path="/more/myballot" component={WeVoteBallotEmbed} />
                   <Route path="/more/network/friends" component={Friends} />
                   <Route path="/more/network/key/:invitation_secret_key/ignore" component={FriendInvitationByEmailVerifyProcess} />

@@ -138,8 +138,8 @@ const PoliticianSelfEditDrawer = () => {
   };
 
   const jumpToManagePage = (buttonId) => {
-    // const destinationPath = '/more/manage/ted-lieu-politician-from-california/';
-    const destinationPath = '/more/manage/';
+    // const destinationPath = '/managecandidates/ted-lieu-politician-from-california/';
+    const destinationPath = '/managecandidates/';
     sendGTMDataLayer({
       buttonId,
       destinationPath,

@@ -153,6 +153,7 @@ class RepresentativeCardForList extends Component {
     const {
       // ballot_guide_official_statement: ballotGuideOfficialStatement, // Consider using this
       ballot_item_display_name: ballotItemDisplayName,
+      is_claimed_profile: isClaimedProfile,
       linked_campaignx_we_vote_id: linkedCampaignXWeVoteId,
       office_held_name: officeHeldName,
       office_held_district_name: districtName,
@@ -199,6 +200,7 @@ class RepresentativeCardForList extends Component {
           // candidateWeVoteId={candidateWeVoteId}
           districtName={districtName}
           finalElectionDateInPast={finalElectionDateInPast}
+          isClaimedProfile={isClaimedProfile}
           limitCardWidth={limitCardWidth}
           linkedCampaignXWeVoteId={linkedCampaignXWeVoteId}
           officeName={officeHeldName}

@@ -185,9 +185,9 @@ const HeaderProfileDrawer = () => {
     setShowLinksToProfilePages(false);
   };
 
-  const signOutApi = () => {
+  const signOutApi = (buttonId) => {
     sendGTMDataLayer({
-      buttonId: 'signOutProfileDrawer',
+      buttonId,
       actionType: 'signOut',
     });
     const drawerOpenGlobalVariableName = 'headerProfileDrawerOpen';
@@ -237,8 +237,8 @@ const HeaderProfileDrawer = () => {
 
   const SignOutJsx = (
     <NavLinkContainer
-      id="signOutButton"
-      onClick={() => signOutApi()}
+      id="signOutProfileDrawer"
+      onClick={() => signOutApi('signOutProfileDrawer')}
     >
       <SignOutIcon />
       <NavLink>

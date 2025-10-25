@@ -64,6 +64,12 @@ export default {
     }
   },
 
+  politiciansManagedRetrieve () {
+    Dispatcher.loadEndpoint('politiciansManagedRetrieve',
+      {
+      });
+  },
+
   politicianStatementSave (politicianWeVoteId, politicianStatement) {
     Dispatcher.loadEndpoint('politicianSave',
       {

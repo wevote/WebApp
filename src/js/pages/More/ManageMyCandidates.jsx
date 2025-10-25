@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { Helmet } from 'react-helmet-async';
@@ -15,21 +15,36 @@ import {
   CheckCircle as CheckIcon,
 } from '@mui/icons-material';
 import PropTypes from 'prop-types';
+import PoliticianStore from '../../common/stores/PoliticianStore';
+import VoterStore from '../../stores/VoterStore';
 import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 
+const PoliticiansManagedController = React.lazy(() => import(/* webpackChunkName: 'PoliticiansManagedController' */ '../../components/PoliticiansManaged/PoliticiansManagedController'));
+
 export default function ManageMyCandidates () {
+  const demoPoliticians = useMemo(() => ([
+    { we_vote_id: 'cand_1', politician_name: 'John Dough' },
+    { we_vote_id: 'cand_2', politician_name: 'Jane Dough' },
+    { we_vote_id: 'cand_3', politician_name: 'Kateryna Dough' },
+  ]), []);
+
   const fileInputRef = useRef(null);
   const [allColumnsOK, setAllColumnsOK] = useState(false);
-  const demoCandidates = useMemo(() => ([
-    { id: 'cand_1', name: 'John Dough' },
-    { id: 'cand_2', name: 'Jane Dough' },
-    { id: 'cand_3', name: 'Kateryna Dough' },
-  ]), []);
+  const [politiciansToManage, setPoliticiansToManage] = useState(demoPoliticians); // Place demoPoliticians in useState to use dummy data, otherwise place: []
+  const [selectedPoliticianWeVoteId, setSelectedPoliticianWeVoteId] = useState('');
+
+  useEffect(() => {
+    if (!selectedPoliticianWeVoteId && politiciansToManage.length > 0) {
+      setSelectedPoliticianWeVoteId(politiciansToManage[0].we_vote_id);
+    }
+  }, [politiciansToManage, selectedPoliticianWeVoteId]);
+
+  const selectedPolitician = politiciansToManage.find((politician) => politician.we_vote_id === selectedPoliticianWeVoteId) || null;
 
   const emailRE = /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i;
 
-  const escapeHTML = (s) => s.replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+  const escapeHTML = (s) => s.replace(/[&<>]/g, (element) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[element]));
 
   function parsePastedList (text) {
     const lines = text.split(/\r?\n/);
@@ -82,18 +97,6 @@ export default function ManageMyCandidates () {
     }).join('\n');
   }
 
-  const effectiveCandidates = demoCandidates;
-
-  // Selected candidate
-  const [selectedId, setSelectedId] = useState(effectiveCandidates[0]?.id || '');
-  const selected = effectiveCandidates.find((c) => c.id === selectedId) || null;
-
-  useEffect(() => {
-    if (!effectiveCandidates.find((c) => c.id === selectedId)) {
-      setSelectedId(effectiveCandidates[0]?.id || '');
-    }
-  }, [effectiveCandidates, selectedId]);
-
   // Left nav active tab
   const [active, setActive] = useState('import');
 
@@ -105,7 +108,7 @@ export default function ManageMyCandidates () {
   // Invitation text
   const invitationBody = `Hello friend,
 
-We’d like to invite you to join WeVote to help support ${selected?.name || 'our campaign'}.
+We’d like to invite you to join WeVote to help support ${selectedPolitician?.politician_name || 'our campaign'}.
 Thanks for your help!`;
 
   // Edit modal
@@ -133,7 +136,7 @@ Thanks for your help!`;
 
   const handleCopyInviteBody = async () => {
     try {
-      await navigator.clipboard.writeText(`${invitationBody}\n\nhttps://wevote.us/join/${selectedId}`);
+      await navigator.clipboard.writeText(`${invitationBody}\n\nhttps://wevote.us/join/${selectedPoliticianWeVoteId}`);
       if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
       setCopiedMsg('Invitation copied to clipboard. Press ⌘V / Ctrl+V to paste.');
       toastTimerRef.current = setTimeout(() => setCopiedMsg(''), 2200);
@@ -146,7 +149,7 @@ Thanks for your help!`;
 
   const handleEditCopy = async () => {
     try {
-      await navigator.clipboard.writeText(`${draftInvite}\n\nhttps://wevote.us/join/${selectedId}`);
+      await navigator.clipboard.writeText(`${draftInvite}\n\nhttps://wevote.us/join/${selectedPoliticianWeVoteId}`);
       if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
       setCopiedMsg('Invitation copied to clipboard. Press ⌘V / Ctrl+V to paste.');
       toastTimerRef.current = setTimeout(() => setCopiedMsg(''), 2200);
@@ -189,7 +192,7 @@ Thanks for your help!`;
     const file = e.target.files?.[0];
     if (!file) return;
 
-    if (!/\.csv$/i.test(file.name)) {
+    if (!/\.csv$/i.test(file.politician_name)) {
       if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
       setIsSuccessToast(false);
       setCopiedMsg('Please choose a .csv file.');
@@ -214,7 +217,7 @@ Thanks for your help!`;
     const ok = nameIdx > -1 && emailIdx > -1 && phoneCol > -1 && addressIdx > -1;
 
     const rows = dataLines.map((line) => {
-      const cols = line.split(',').map((c) => c.trim());
+      const cols = line.split(',').map((supporter) => supporter.trim());
       return {
         name: nameIdx > -1 ? cols[nameIdx] : '',
         email: emailIdx > -1 ? cols[emailIdx] : '',
@@ -285,35 +288,70 @@ Thanks for your help!`;
     [pasteText, parsePastedList],
   );
 
+  const updatePoliticiansToManage = () => {
+    const test = true;
+    if (test) {
+      // setPoliticiansToManage(PoliticianStore.getPoliticianListVoterCanEdit());
+    }
+  };
+
+  const onPoliticianStoreChange = useCallback(() => {
+    updatePoliticiansToManage();
+  }, []);
+
+  const onVoterStoreChange = useCallback(() => {
+    updatePoliticiansToManage();
+  }, []);
+
+  useEffect(() => {
+    updatePoliticiansToManage();
+  }, []);
+
+  useEffect(() => {
+    const politicianStoreListener = PoliticianStore.addListener(onPoliticianStoreChange);
+    onPoliticianStoreChange();
+    return () => {
+      politicianStoreListener.remove();
+    };
+  }, []);
+
+  useEffect(() => {
+    const voterStoreListener = VoterStore.addListener(onVoterStoreChange);
+    onVoterStoreChange();
+    return () => {
+      voterStoreListener.remove();
+    };
+  }, []);
+
   // Main render
   const history = useHistory();
-  const handleClaimEdit = () => history.push(`/candidate/${selectedId}/edit`);
+  const handleClaimEdit = () => history.push(`/candidate/${selectedPoliticianWeVoteId}/edit`);
 
   return (
     <PageContentContainer>
-      <Helmet><title>Manage My Candidates</title></Helmet>
+      <Helmet><title>Manage My Candidates - WeVote</title></Helmet>
 
       <HeaderRow>
         <div>
           <PageKicker>Manage my candidates</PageKicker>
           <TitleRow>
-            <Title>{selected?.name || 'Select candidate'}</Title>
+            <Title>{selectedPolitician?.politician_name || 'Select candidate'}</Title>
             <CandidatePicker
-            type="button"
-            aria-haspopup="listbox"
-            aria-expanded="false"
-            title="Select candidate"
+              type="button"
+              aria-haspopup="listbox"
+              aria-expanded="false"
+              title="Select candidate"
             >
               <ArrowDownIcon fontSize="small" />
               <PickerMenu role="listbox">
-                {effectiveCandidates.map((c) => (
+                {politiciansToManage.map((politician) => (
                   <PickerItem
-                  key={c.id}
-                  role="option"
-                  aria-selected={c.id === selectedId}
-                  onClick={() => setSelectedId(c.id)}
+                    key={`choosePolitician-${politician.we_vote_id}`}
+                    role="option"
+                    aria-selected={politician.we_vote_id === selectedPoliticianWeVoteId}
+                    onClick={() => setSelectedPoliticianWeVoteId(politician.we_vote_id)}
                   >
-                    {c.name}
+                    {politician.politician_name}
                   </PickerItem>
                 ))}
               </PickerMenu>
@@ -651,9 +689,12 @@ John Dough, jd@email.com, (213)-123-4567`}
           )}
           <span>{copiedMsg}</span>
         </Toast>
-        )}
-      </PageContentContainer>
-    );
+      )}
+      <Suspense fallback={<></>}>
+        <PoliticiansManagedController />
+      </Suspense>
+    </PageContentContainer>
+  );
 }
 
 // Analytics icon
