@@ -175,6 +175,7 @@ class CandidateCardForList extends Component {
       candidate_ultimate_election_date: candidateUltimateElectionDate,
       contest_office_name: contestOfficeName,
       contest_office_list: contestOfficeList,
+      is_claimed_profile: isClaimedProfile,
       // in_draft_mode: inDraftMode,
       // is_blocked_by_we_vote: isBlockedByWeVote,
       // is_in_team_review_mode: isInTeamReviewMode,
@@ -226,6 +227,7 @@ class CandidateCardForList extends Component {
           candidateWeVoteId={candidateWeVoteId}
           districtName={districtName}
           finalElectionDateInPast={finalElectionDateInPast}
+          isClaimedProfile={isClaimedProfile}
           limitCardWidth={limitCardWidth}
           linkedCampaignXWeVoteId={linkedCampaignXWeVoteId}
           officeName={contestOfficeName}

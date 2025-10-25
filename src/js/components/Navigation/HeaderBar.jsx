@@ -83,7 +83,7 @@ class HeaderBar extends Component {
       case 'donate':
       case 'more/donate': return 5;
       case 'more':
-      case 'more/manage': return 99;
+      case 'managecandidates': return 99;
       default: return false;
     }
   };
@@ -390,7 +390,7 @@ class HeaderBar extends Component {
         case 'more':
           more.css(highlight);
           break;
-        case 'more/manage':
+        case 'managecandidates':
           more.css(highlight);
           break;
         default:
@@ -621,17 +621,30 @@ class HeaderBar extends Component {
                     transformOrigin={{ vertical: 'top', horizontal: 'left' }}
                   >
                     <StyledMoreMenuItem
-                      selected={normalizedHrefPage() === 'challenges'}
-                      onClick={this.navTo('/challenges', 99)}
+                      id="HeaderBarFriends"
+                      selected={normalizedHrefPage() === 'friends'}
+                      onClick={this.navTo('/friends', 99)}
                       disableRipple
                     >
-                      Challenges
+                      Friends
                     </StyledMoreMenuItem>
 
                     {nextReleaseFeaturesEnabled && (
                       <StyledMoreMenuItem
-                        selected={['manage', 'more/manage'].includes(normalizedHrefPage())}
-                        onClick={this.navTo('/more/manage', 99)}
+                        id="HeaderBarChallenges"
+                        selected={normalizedHrefPage() === 'challenges'}
+                        onClick={this.navTo('/challenges', 99)}
+                        disableRipple
+                      >
+                        Challenges
+                      </StyledMoreMenuItem>
+                    )}
+
+                    {nextReleaseFeaturesEnabled && (
+                      <StyledMoreMenuItem
+                        id="HeaderBarCandidatesManaging"
+                        selected={['manage', 'managecandidates'].includes(normalizedHrefPage())}
+                        onClick={this.navTo('/managecandidates', 99)}
                         disableRipple
                       >
                         Candidates I&apos;m managing

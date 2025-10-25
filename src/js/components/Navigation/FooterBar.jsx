@@ -37,16 +37,18 @@ function MoreMenuOverlay ({ onClose }) {
   return (
     <ClickAwayListener onClickAway={onClose}>
       <Overlay>
-        <MenuItem $active={isFriends} onClick={() => { onClose(); historyPush('/friends'); }}>
+        <MenuItem id="FooterBarFriends" $active={isFriends} onClick={() => { onClose(); historyPush('/friends'); }}>
           <People />
           Friends
         </MenuItem>
-        <MenuItem $active={isChallenges} onClick={() => { onClose(); historyPush('/challenges'); }}>
-          <Groups />
-          Challenges
-        </MenuItem>
         {nextReleaseFeaturesEnabled && (
-          <MenuItem $active={isManage} onClick={() => { onClose(); historyPush('/more/manage'); }}>
+          <MenuItem id="FooterBarChallenges" $active={isChallenges} onClick={() => { onClose(); historyPush('/challenges'); }}>
+            <Groups />
+            Challenges
+          </MenuItem>
+        )}
+        {nextReleaseFeaturesEnabled && (
+          <MenuItem id="FooterBarCandidatesManaging" $active={isManage} onClick={() => { onClose(); historyPush('/managecandidates'); }}>
             <img
               alt=""
               src={isManage ? '/img/global/svg-icons/capital-building-selected.svg' : '/img/global/svg-icons/capital-building.svg'}
@@ -184,7 +186,7 @@ class FooterBar extends React.Component {
     if (stringContains('/ballot', low)) return 1;
     if (low.endsWith('/cs/')) return 2;
     // Treat these as "More" so the More tab stays highlighted
-    if (stringContains('/more/manage', low)) return 8;
+    if (stringContains('/managecandidates', low)) return 8;
     if (stringContains('/friends', low)) return 8;
     if (stringContains('/challenges', low)) return 8;
     if (stringContains('/+/', pathname) || stringContains('/++/', pathname)) return 8;

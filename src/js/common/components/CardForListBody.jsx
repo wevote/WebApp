@@ -34,7 +34,7 @@ function CardForListBody (props) {
   const {
     ballotItemDisplayName,
     candidateWeVoteId, classes, districtName, finalElectionDateInPast, hideCardMargins,
-    hideItemActionBar, limitCardWidth, linkedCampaignXWeVoteId, officeName,
+    hideItemActionBar, isClaimedProfile, limitCardWidth, linkedCampaignXWeVoteId, officeName,
     photoLargeUrl, politicalParty, politicianBasePath,
     politicianDescription, politicianWeVoteId, profileImageBackgroundColor,
     showPoliticianOpenInNewWindow, stateCode, tagIdBaseName,
@@ -68,7 +68,6 @@ function CardForListBody (props) {
   // console.log('politicianBasePath:', politicianBasePath);
   // console.log('CardForListBody politicianDetailsURL:', politicianDetailsURL, ', destinationPage: ', destinationPage);
   const location = useLocation();
-  const claimedProfile = true; // TODO: Replace with actual claimed profile check
   const { state: stateFromUrl, name: nameFromUrl } = extractPoliticianDetailsFromUrl(location.pathname);
 
   // /////////////////////// START OF DISPLAY
@@ -336,7 +335,7 @@ function CardForListBody (props) {
                       } : {}}
                     />
                 </CampaignImageMobilePlaceholder>
-                  {claimedProfile && (
+                  {isClaimedProfile && (
                     <ClaimedProfileOverlay>
                       <SvgImage
                         color={DesignTokenColors.neutral500}
@@ -367,7 +366,7 @@ function CardForListBody (props) {
                   </CampaignImagePlaceholderText>
                 </SvgWatermarkWrapper>
               </CampaignImageMobilePlaceholder>
-              {claimedProfile && (
+              {isClaimedProfile && (
                   <ClaimedProfileOverlay>
                     <SvgImage
                     color={DesignTokenColors.neutral500}
@@ -413,7 +412,7 @@ function CardForListBody (props) {
                   <CampaignImageDesktop src={photoLargeUrl} alt="" width="117px" height="117px" />
                 )}
                 </>
-                {claimedProfile && (
+                {isClaimedProfile && (
                   <ClaimedProfileOverlay>
                     <SvgImage
                     color={DesignTokenColors.neutral500}
@@ -442,7 +441,7 @@ function CardForListBody (props) {
                   />
                   No candidate image available.
                 </CampaignImagePlaceholderText>
-                {claimedProfile && (
+                {isClaimedProfile && (
                   <ClaimedProfileOverlay>
                     <SvgImage
                     color={DesignTokenColors.neutral500}
@@ -468,6 +467,7 @@ CardForListBody.propTypes = {
   finalElectionDateInPast: PropTypes.bool,
   hideCardMargins: PropTypes.bool,
   hideItemActionBar: PropTypes.bool,
+  isClaimedProfile: PropTypes.bool,
   limitCardWidth: PropTypes.bool,
   linkedCampaignXWeVoteId: PropTypes.string,
   officeName: PropTypes.string,

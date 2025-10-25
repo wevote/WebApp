@@ -47,6 +47,8 @@ const DrawerTemplateHeaderProfile = (props) => {
           }
         }
       }, 100);
+    } else {
+      setDrawerOpen(false);
     }
   }, [setDrawerOpen]);
 

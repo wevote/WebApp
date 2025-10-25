@@ -203,16 +203,17 @@ class PoliticianCardForList extends Component {
       // twitter_description: twitterDescription,
     } = candidate;
     const {
+      is_claimed_profile: isClaimedProfile,
+      political_party: politicalParty,
       politician_description: politicianDescription,
       politician_name: ballotItemDisplayName,
-      we_vote_hosted_profile_image_url_large: politicianPhotoLargeUrl,
-      political_party: politicalParty,
       profile_image_background_color: profileImageBackgroundColor,
       state_code: stateCode,
       supporters_count: supportersCount,
       supporters_count_next_goal: supportersCountNextGoalRaw, // Not provided in every return
       twitter_description: twitterDescription,
       // visible_on_this_site: visibleOnThisSite,
+      we_vote_hosted_profile_image_url_large: politicianPhotoLargeUrl,
     } = politician;
     // console.log('candidate:', candidate);
     // console.log('politician:', politician);
@@ -256,6 +257,7 @@ class PoliticianCardForList extends Component {
           finalElectionDateInPast={finalElectionDateInPast}
           hideCardMargins={hideCardMargins}
           hideItemActionBar={hideItemActionBar}
+          isClaimedProfile={isClaimedProfile}
           limitCardWidth={limitCardWidth}
           linkedCampaignXWeVoteId={linkedCampaignXWeVoteId}
           officeName={contestOfficeName}
