@@ -1151,28 +1151,28 @@ const styles = (theme) => ({
     },
   },
   buttonIconDone: {
-    /* color: `${DesignTokenColors.primary700}`, *//* change to green */
+    color: `${DesignTokenColors.confirmation300}`, /* green color before selection */
     fontSize: 22,
     fontWeight: 'bold',
     marginRight: '.3rem',
     marginTop: '-2px',
   },
   buttonIconDoneSelected: {
-    color: `${DesignTokenColors.confirmation300}`, /* change to green */
+    color: `${DesignTokenColors.confirmation300}`, 
     fontSize: 22,
     fontWeight: 'bold',
     marginRight: '.3rem',
     marginTop: '-2px',
   },
   buttonIconNotInterested: {
-    /* color: `${DesignTokenColors.alert500}`, *//* change to red */
+    color: `${DesignTokenColors.alert500}`, /* red color before selection */
     fontSize: 18,
     fontWeight: 'bold',
     marginRight: '.3rem',
     marginTop: '-2px',
   },
   buttonIconNotInterestedSelected: {
-    color: `${DesignTokenColors.alert500}`, /* change to red */
+    color: `${DesignTokenColors.alert500}`,
     fontSize: 18,
     fontWeight: 'bold',
     marginRight: '.3rem',
