@@ -24,7 +24,6 @@ import { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 
-/* global $ */
 let shiftTabKeyPressed = false;
 class VoterEmailAddressEntry extends Component {
   constructor (props) {
@@ -470,7 +469,7 @@ class VoterEmailAddressEntry extends Component {
     );
 
     const enterEmailHtml = hideSignInWithEmailForm ? null : (
-      <div style={{ paddingTop: 10 }}>
+      <div style={isWebApp() ? { paddingTop: 10 } : { paddingTop: 10 }}>
         <form className="form-inline">
           <TextField
             autoComplete="off"

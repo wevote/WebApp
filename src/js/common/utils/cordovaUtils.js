@@ -142,12 +142,12 @@ export function getThisAppleDeviceParameters () {
   if (thisAppleDeviceParameters) {
     return thisAppleDeviceParameters;
   }
-  console.log('at thisAppleDeviceParameters window.device: ', JSON.stringify(window.device));
-  console.log('at thisAppleDeviceParameters window.device?.model: ', window.device?.model);
+  // console.log('at thisAppleDeviceParameters window.device: ', JSON.stringify(window.device));
+  // console.log('at thisAppleDeviceParameters window.device?.model: ', window.device?.model);
   if (window.device?.model) {
     thisAppleDeviceParameters = jsonModelsData.find((leaf) => leaf.modelId === window.device.model);
     logMatch('Cordova:   getThisAppleDeviceParameters: ', JSON.stringify(thisAppleDeviceParameters));
-    console.log('Cordova:   getThisAppleDeviceParameters: ', JSON.stringify(thisAppleDeviceParameters));
+    console.log('Cordova:   getThisAppleDeviceParameters: ', thisAppleDeviceParameters.name);
     if (thisAppleDeviceParameters) return thisAppleDeviceParameters;
   }
   console.log('Cordova:  Possible first-day device model -- Default (and wrong) values used.');
@@ -155,8 +155,8 @@ export function getThisAppleDeviceParameters () {
     class: 'iPhone6p5in',
     size: 6.9,
     type: 'phone',
-    marketingNumber: '17',
-    name: 'iPhone 17 Pro Max',
+    marketingNumber: 'unknown',
+    name: 'Unknown device, or if Cordova, deviceready has not fired',
     modelId: 'iPhone18,2',
   };
 }
@@ -214,7 +214,7 @@ export function isDeviceZoomed () {
 // 3.5" screen iPhones
 export function isIPhone3p5in () {
   if (isIOS()) {
-    if (getIOSSizeString() === 'isIPhone3p5in') {
+    if (getIOSSizeString() === 'iPhone3p5in') {
       logMatch('isIPhone3p5in: iPhone 5s SE (3.5")', true);
       return true;
     }
@@ -291,8 +291,19 @@ export function isIPhone6p1in () {
 // 6.5" screen iPhones, 458 ppi pixel density
 export function isIPhone6p5in () {
   if (isIOS()) {
-    if (getIOSSizeString() === 'isIPhone6p5in') {
+    if (getIOSSizeString() === 'iPhone6p5in') {
       logMatch('isIPhone6p5in: iPhone XsMax or 11/12/13/14 Pro Max (6.7"),', true);
+      return true;
+    }
+  }
+  return false;
+}
+
+// iPhone Air
+export function isIPhoneAir () {
+  if (isIOS()) {
+    if (getIOSNameString() === 'iPhone Air') {
+      logMatch('isIPhoneAir: isIPhoneAir,', true);
       return true;
     }
   }
@@ -329,15 +340,12 @@ export function isIPadMini () {
   return false;
 }
 
-export function hasDynamicIsland () {
+export function isCordovaPhone () {
   if (isIOS() && !isIOSAppOnMac()) {
     const params = getThisAppleDeviceParameters();
-    const marketingInt = parseInt(params.marketingNumber) || 0;
-    const isAir = params.marketingNumber === 'Air';
-    const isPro = params.name.includes('Pro');
-    const hasDynamic = params.type === 'phone' && (isAir || marketingInt > 15 || (marketingInt === 14 && isPro));
-    logMatch('iPhone 14 Pro or 14 Pro Max or 15*, Dynamic Island Sized Header', hasDynamic);
-    return hasDynamic;
+    return params.class.startsWith('iPhone');
+  } else if (isAndroid()) {
+    return !isAndroidTablet();
   }
   return false;
 }
@@ -389,8 +397,32 @@ export function isAndroidNotch () {
   return false;
 }
 
+export function hasDynamicIsland () {
+  if (isIOS() && !isIOSAppOnMac()) {
+    const params = getThisAppleDeviceParameters();
+    const marketingInt = parseInt(params.marketingNumber) || 0;
+    const isAir = params.marketingNumber === 'Air';
+    const isPro = params.name.includes('Pro');
+    const hasDynamic = params.type === 'phone' && (isAir || marketingInt > 15 || (marketingInt === 14 && isPro));
+    logMatch('iPhone 14 Pro or 14 Pro Max or 15*, Dynamic Island Sized Header', hasDynamic);
+    return hasDynamic;
+  }
+  return false;
+}
+
 export function hasIPhoneNotch () {
-  return isIPhone5p5inMini() || isIPhone5p8in() || isIPhone6p1in() || isIPhone6p5in() || isAndroidNotch();
+  if (isWebApp()) return false;
+  // Notched models === from the iPhone X up to the iPhone 14 and iPhone SE (2022).
+  // Specifically, this includes the iPhone X, XR, XS, 11, 12, 13 series, iPhone 14 and 14 Plus, and the iPhone SE (2022).
+  const params = getThisAppleDeviceParameters();
+  const marketingInt = parseInt(params.marketingNumber) || 0;
+  const isPro = params.name.includes('Pro');
+  const lettered = ['X', 'XR', 'XS', 'SE'];       // Too simple of a test to handle old SE versions, but those are mostly gone
+  return !hasDynamicIsland() && (
+    lettered.includes(params.marketingNumber) ||
+    (marketingInt === 14 && !isPro) ||
+    (marketingInt >= 11 && marketingInt <= 13)
+  );
 }
 
 export function isIOsSmallerThanPlus () {

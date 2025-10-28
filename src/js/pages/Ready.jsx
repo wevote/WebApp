@@ -213,7 +213,7 @@ class Ready extends Component {
                 </Suspense>
               </ElectionCountdownInnerWrapper>
             </ElectionCountdownOuterWrapper>
-            <ViewBallotButtonWrapper className="col-12">
+            <ViewBallotButtonWrapper>
               <Suspense fallback={<></>}>
                 <ViewUpcomingBallotButton goToBallotFunction={this.goToBallot} onlyOfferViewYourBallot />
               </Suspense>
@@ -260,7 +260,7 @@ class Ready extends Component {
                   </DelayedLoad>
                 </Suspense>
               </ReadyIntroductionMobileWrapper>
-              <ViewBallotButtonWrapper className="col-12 u-show-mobile-tablet">
+              <ViewBallotButtonWrapper className="u-show-mobile-tablet">
                 <Suspense fallback={<></>}>
                   <ViewUpcomingBallotButton goToBallotFunction={this.goToBallot} onlyOfferViewYourBallot />
                 </Suspense>

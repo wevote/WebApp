@@ -1,21 +1,20 @@
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import WarningAmberIcon from '@mui/icons-material/WarningAmber';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import React, { Component } from 'react';
 import { Helmet } from 'react-helmet-async';
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
-import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
-import DeleteIcon from '@mui/icons-material/Delete';
-import { Button, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
-import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
-import VoterStore from '../../stores/VoterStore';
 import VoterActions from '../../actions/VoterActions';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
+import webAppConfig from '../../config';
+import VoterStore from '../../stores/VoterStore';
 import SettingsAddressBox from '../SettingsAddressBox';
 import BrowserPushMessage from '../Widgets/BrowserPushMessage';
-import AppObservableStore from '../../common/stores/AppObservableStore';
-import webAppConfig from '../../config';
 
 const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
@@ -24,10 +23,9 @@ export default class SettingsAddressForDrawer extends Component {
     super(props, context);
     this.state = {
       textForMapSearch: '',
-      originalTextAddress: false,
+      // originalTextAddress: false,
       addressSaved: VoterStore.getVoterSavedAddress(),
-      showWarningDialoge: false,
-      editingAddress: false
+      editingAddress: false,
     };
     this.handleAddressSaveSuccess = this.handleAddressSaveSuccess.bind(this);
     this.removeAddress = this.removeAddress.bind(this);
@@ -47,13 +45,13 @@ export default class SettingsAddressForDrawer extends Component {
 
   onVoterStoreChange () {
     let text = VoterStore.getTextForMapSearch();
-    const ballotLocation = VoterStore.getVoterSavedAddress();
+    // const ballotLocation = VoterStore.getVoterSavedAddress();
     if (text && text.length > 0) {
       text = text.replace(', USA', '');
     }
     this.setState({
       textForMapSearch: text,
-      originalTextAddress: ballotLocation,
+      // originalTextAddress: ballotLocation,
     });
   }
 
@@ -62,11 +60,6 @@ export default class SettingsAddressForDrawer extends Component {
     if (entryBox) {
       entryBox.value = '';
     }
-  }
-
-  removeAddress () {
-    VoterActions.voterAddressSave('');
-    this.setState({ addressSaved: false });
   }
 
   openWarningDialog = () => {
@@ -82,9 +75,14 @@ export default class SettingsAddressForDrawer extends Component {
     this.setState({ addressSaved: false, showWarningDialog: false });
   };
 
+  removeAddress () {
+    VoterActions.voterAddressSave('');
+    this.setState({ addressSaved: false });
+  }
+
   render () {
     renderLog('SettingsAddressForDrawer');  // Set LOG_RENDER_EVENTS to log all renders
-    const { addressSaved, editingAddress, originalTextAddress } = this.state;
+    const { addressSaved, editingAddress } = this.state;
     const pigsCanFly = false;
     return (
       nextReleaseFeaturesEnabled && (

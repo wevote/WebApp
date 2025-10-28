@@ -290,7 +290,7 @@ export function getApplicationViewBooleans (pathname) {
     (voterGuideMode && !onFollowSubPage)) {
     showShareButtonFooter = isWebApp() || (!isIOSAppOnMac() && isSmallScreen);
   }
-  // console.log('getApplicationViewBooleans, showBackToBallotHeader: ', showBackToBallotHeader, ' showFooterBar: ', showFooterBar, ', pathnameLowerCase:', pathnameLowerCase, ', showBackToSettingsMobile:', showBackToSettingsMobile);
+  // console.log('getApplicationViewBooleans, showFooterBar, showFooterMain: ', showFooterBar, showFooterMain);
 
   return {
     headerNotVisible,

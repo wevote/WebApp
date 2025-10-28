@@ -8,7 +8,7 @@ import OrganizationActions from '../../actions/OrganizationActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import LazyImage from '../../common/components/LazyImage';
 import apiCalming from '../../common/utils/apiCalming';
-import { isIOSAppOnMac, isIPadGiantSize } from '../../common/utils/cordovaUtils';
+import { isIOSAppOnMac, isIPad, isIPadGiantSize } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
 import { normalizedHref, normalizedHrefPage } from '../../common/utils/hrefUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
@@ -860,12 +860,17 @@ const styles = (theme) => ({
   },
 });
 
+function officeMeasureMarginLeft () {
+  if (isIPadGiantSize()) return '16px';
+  if (isIPad()) return '26px';
+  return '';
+}
 
 const OfficeOrMeasureTitle = styled('div')`
   font-size: 16px;
   font-weight: 500;
   height: 19px;
-  margin-left: ${() => (isIPadGiantSize() ? '42px' : '')};
+  margin-left: ${() => officeMeasureMarginLeft()};
 `;
 
 export default withStyles(styles)(HeaderBackToBallot);

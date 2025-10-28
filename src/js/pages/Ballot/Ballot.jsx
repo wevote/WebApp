@@ -27,7 +27,7 @@ import historyPush from '../../common/utils/historyPush';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import Cookies from '../../common/utils/js-cookie/Cookies';
-import { cordovaOffsetLog, renderLog } from '../../common/utils/logging';
+import { renderLog } from '../../common/utils/logging';
 import BallotItemCompressed from '../../components/Ballot/BallotItemCompressed';
 import BallotStatusMessage from '../../components/Ballot/BallotStatusMessage';
 import BallotTitleHeader from '../../components/Ballot/BallotTitleHeader';
@@ -45,8 +45,7 @@ import TwitterStore from '../../stores/TwitterStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import { dumpCssFromId } from '../../utils/appleSiliconUtils';
-import { headroomWrapperOffset, setBallotDualHeaderContentContainerTopOffset } from '../../utils/cordovaCalculatedOffsets';
-import { getPageKey } from '../../utils/cordovaPageUtils';
+import { setBallotDualHeaderContentContainerTopOffset } from '../../utils/cordovaCalculatedOffsets';
 import { pageEnumeration } from '../../utils/cordovaUtilsPageEnumeration';
 import isMobile from '../../utils/isMobile';
 // Lint is not smart enough to know that lazyPreloadPages will not attempt to preload/reload this page
@@ -1126,19 +1125,6 @@ class Ballot extends Component {
     }
   }
 
-  marginTopOffset () {
-    if (isWebApp()) {
-      return '50px';
-    } else if (isCordova()) {
-      // Calculated approach Nov 2022
-      const offset = `${headroomWrapperOffset(true)}px`;
-      cordovaOffsetLog(`BallotTitleHeaderContainer HeadroomWrapper offset: ${offset}, page: ${getPageKey()}`);
-      return offset;
-      // end calculated approach
-    }
-    return 0;
-  }
-
   updateOfficeDisplayUnfurledTracker (weVoteId, status) {
     const { ballotItemUnfurledTracker } = this.state;
     const newBallotItemUnfurledTracker = { ...ballotItemUnfurledTracker, [weVoteId]: status };
@@ -1401,7 +1387,7 @@ class Ballot extends Component {
                         )}
                       </Helmet>
                       <header className="ballot__header__group">
-                        <BallotTitleHeaderContainer marginTopOffset={this.marginTopOffset()}>
+                        <BallotTitleHeaderContainer>
                           <BallotTitleHeader
                             showShareButton
                             toggleSelectBallotModal={this.toggleSelectBallotModal}
@@ -1848,12 +1834,10 @@ const BallotFilterRow = styled('div')`
   // margin-left: {() => (isWebApp() && !isMobileScreenSize() ? 'calc((100vw - 975px)/2)' : '')};
 `;
 
-const BallotTitleHeaderContainer = styled('div', {
-  shouldForwardProp: (prop) => !['marginTopOffset'].includes(prop),
-})(({ marginTopOffset }) => (`
-  margin-top: ${marginTopOffset};
+const BallotTitleHeaderContainer = styled('div')`
+  margin-top: 50px;
   transition: ${isWebApp() ? 'all 150ms ease-in' : ''};
-`));
+`;
 
 const CompleteYourProfileWrapper = styled('div')`
   margin-top: 60px;

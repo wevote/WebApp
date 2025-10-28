@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 
+/* global $ */
+
 export const ReadyCard = styled('div')`
   padding-bottom: 4px;
 `;
@@ -50,13 +52,26 @@ export const ReadyIntroductionDesktopWrapper = styled('div')`
 export const ReadyPageContainer = styled('div')`
 `;
 
+// "November 4, 2025 California Off-Year Election" takes three lines on mobile devices
+// One line is 43px, two is 69, three is 95
+function isLongElectionName () {
+  if (window.$) {
+    const $H1 = $('h1[class*=\'ElectionNameH1\']');
+    return $H1.length && $H1.outerHeight() > 69;
+  }
+  return false;
+}
+
 export const ViewBallotButtonWrapper = styled('div')(({ theme }) => (`
+  flex: 0 0 100%;
+  max-width: 100%;
   display: flex;
   height: 40px;
   justify-content: center;
   margin-bottom: 32px;
+  padding-top: 18px;
   ${theme.breakpoints.down('sm')} {
-    padding-top: 10px;
+    padding: ${isLongElectionName() ? '25px 10px !important' : '10px'};
   }
 `));
 

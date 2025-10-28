@@ -1,4 +1,4 @@
-import { getAndroidSize, hasIPhoneNotch, isIOS, isIOSAppOnMac, isIPad, isIPadGiantSize, isIPhone4in, isIPhone4p7in, isIPhone5p5inEarly, isIPhone5p5inMini, isIPhone5p8in, isIPhone6p1in, isIPhone6p5in, isSimulator } from '../common/utils/cordovaUtils';
+import { getAndroidSize, hasIPhoneNotch, isIOS, isIOSAppOnMac, isIPad, isIPadGiantSize, isIPhone4in, isIPhone4p7in, isIPhone5p5inEarly, isIPhone5p5inMini, isIPhone5p8in, isIPhone6p1in, isIPhone6p5in, isIPhoneMiniOrSmaller, isSimulator } from '../common/utils/cordovaUtils';
 import { normalizedHref } from '../common/utils/hrefUtils';
 import { isAndroid, isCordova, isWebApp } from '../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize from '../common/utils/isMobileScreenSize';
@@ -6,7 +6,6 @@ import { cordovaOffsetLog } from '../common/utils/logging';
 import CordovaPageConstants from '../constants/CordovaPageConstants';
 import { getApplicationViewBooleans } from './applicationUtils';
 import { pageEnumeration } from './cordovaUtilsPageEnumeration';
-
 
 //  <PageContentContainer>
 // This determines where the top of the "All", "Choices" and "Decided" tabs should start.
@@ -162,6 +161,12 @@ export function cordovaContainerMainOverride () {
 // <div className="footer-container u-show-mobile-tablet" style={cordovaFooterHeight()}>
 export function cordovaFooterHeight () {
   if (isIOS()) {
+    if (isIPhoneMiniOrSmaller()) {
+      return {
+        height: '63px',
+        paddingTop: '4px',
+      };
+    }
     if (hasIPhoneNotch()) {
       return {
         height: '95px',
@@ -390,15 +395,13 @@ export function shareBottomOffset (pinToBottom) {
 
 export function cordovaFriendsWrapper () {
   if (isIOS()) {
-    if (isIPhone5p8in()) {
+    if (isIPhoneMiniOrSmaller()) {
       return {
-        paddingTop: '69px',
         paddingBottom: '90px',
       };
     }
     if (isIPhone6p1in()) {
       return {
-        // paddingTop: '69px',
         paddingBottom: '90px',
       };
     }
@@ -409,7 +412,7 @@ export function cordovaFriendsWrapper () {
         };
       }
       return {
-        paddingTop: '30px',
+        // paddingTop: '30px',
         paddingBottom: '90px',
       };
     }
