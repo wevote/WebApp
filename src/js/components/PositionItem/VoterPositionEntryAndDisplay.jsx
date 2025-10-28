@@ -87,7 +87,7 @@ const VoterPositionEntryAndDisplay = ({ classes, externalUniqueId, politicianWeV
 
   const openEditModal = () => {
     if (VoterStore.getVoterIsSignedIn()) {
-      toggleEditModalLocal();
+       toggleEditModalLocal();
     } else {
       AppObservableStore.setShowSignInModal(true);
     }
@@ -161,16 +161,32 @@ const VoterPositionEntryAndDisplay = ({ classes, externalUniqueId, politicianWeV
       onSupportStoreChange();
     }
   }, [politicianWeVoteId]);
+ useEffect(() => {
+  if (!showEditModal) return;
 
-  useEffect(() => {
-    if (activityPostInputRef.current && !initialFocusSet) {
-      const input = activityPostInputRef.current;
-      const { length } = input.value;
+  const focusInput = () => {
+    const input = activityPostInputRef.current;
+    if (input) {
       input.focus();
-      input.setSelectionRange(length, length);
-      setInitialFocusSet(true);
+      input.setSelectionRange(input.value.length, input.value.length);
     }
-  }, [initialFocusSet]);
+  };
+
+  // Use requestAnimationFrame to wait for modal render
+  const raf = requestAnimationFrame(focusInput);
+
+  // Android/Cordova keyboard handling
+  if (isAndroid()) {
+    prepareForCordovaKeyboard('VoterPositionEntryAndDisplay');
+  }
+
+  return () => {
+    cancelAnimationFrame(raf);
+    if (isAndroid()) {
+      restoreStylesAfterCordovaKeyboard('VoterPositionEntryAndDisplay');
+    }
+  };
+}, [showEditModal]);
 
   useEffect(() => {
     const supportStoreListener = SupportStore.addListener(onSupportStoreChange);
