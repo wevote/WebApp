@@ -87,7 +87,7 @@ const VoterPositionEntryAndDisplay = ({ classes, externalUniqueId, politicianWeV
 
   const openEditModal = () => {
     if (VoterStore.getVoterIsSignedIn()) {
-       toggleEditModalLocal();
+      toggleEditModalLocal();
     } else {
       AppObservableStore.setShowSignInModal(true);
     }
@@ -161,32 +161,25 @@ const VoterPositionEntryAndDisplay = ({ classes, externalUniqueId, politicianWeV
       onSupportStoreChange();
     }
   }, [politicianWeVoteId]);
- useEffect(() => {
-  if (!showEditModal) return;
 
-  const focusInput = () => {
-    const input = activityPostInputRef.current;
-    if (input) {
-      input.focus();
-      input.setSelectionRange(input.value.length, input.value.length);
-    }
-  };
+  useEffect(() => {
+    if (!showEditModal) return;
 
-  // Use requestAnimationFrame to wait for modal render
-  const raf = requestAnimationFrame(focusInput);
-
-  // Android/Cordova keyboard handling
-  if (isAndroid()) {
-    prepareForCordovaKeyboard('VoterPositionEntryAndDisplay');
-  }
-
-  return () => {
-    cancelAnimationFrame(raf);
-    if (isAndroid()) {
-      restoreStylesAfterCordovaKeyboard('VoterPositionEntryAndDisplay');
-    }
-  };
-}, [showEditModal]);
+    const focusInput = () => {
+      const input = activityPostInputRef.current;
+      if (input) {
+        input.focus();
+        input.setSelectionRange(input.value.length, input.value.length);
+      }
+    };
+    const raf = requestAnimationFrame(focusInput);
+    return () => {
+      cancelAnimationFrame(raf);
+      if (isAndroid()) {
+        restoreStylesAfterCordovaKeyboard('VoterPositionEntryAndDisplay');
+      }
+    };
+  }, [showEditModal]);
 
   useEffect(() => {
     const supportStoreListener = SupportStore.addListener(onSupportStoreChange);
@@ -427,7 +420,7 @@ const VoterPositionEntryAndDisplay = ({ classes, externalUniqueId, politicianWeV
           // disabled={!statementText} // Commented out to allow saving without statement
           disabled={selectedStance === 'INFO_ONLY' && (!statementText || statementText.trim() === '')} // Disable if Neutral and no text
         >
-          {positionExists ? 'Save Changes' : 'Add opinion' }
+          {positionExists ? 'Save Changes' : 'Add opinion'}
         </Button>
       </TextFieldForm>
     </TextFieldWrapper>
