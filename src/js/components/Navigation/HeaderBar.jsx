@@ -391,7 +391,7 @@ class HeaderBar extends Component {
         case 'more':
           more.css(highlight);
           break;
-        case 'more/manage':
+        case 'managecandidates':
           more.css(highlight);
           break;
         default:

@@ -22,7 +22,7 @@ import RepresentativeStore from '../../../stores/RepresentativeStore';
 import VoterStore from '../../../stores/VoterStore';
 import { cordovaBallotFilterTopMargin } from '../../../utils/cordovaOffsets';
 import { getPageDetails } from '../../../utils/lookupPageNameAndPageTypeDict';
-import { marginTopOffset } from '../../../utils/MobileHeaderStyles';
+// import { marginTopOffset } from '../../../utils/MobileHeaderStyles'; // 2025-10-30 This file is missing
 import CampaignChipInLink from '../../components/Campaign/CampaignChipInLink';
 import CampaignOwnersList from '../../components/CampaignSupport/CampaignOwnersList';
 import CompleteYourProfileModalController from '../../components/Settings/CompleteYourProfileModalController';
@@ -69,6 +69,18 @@ const ViewUpcomingBallotButton = React.lazy(() => import(/* webpackChunkName: 'V
 
 const futureFeaturesDisabled = true;
 const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
+
+function marginTopOffsetPolitician (scrolledDown) {
+  if (isWebApp()) {
+    if (scrolledDown) {
+      return '-6px';
+    } else {
+      return '39px';
+    }
+  }
+  // return marginTopOffset('ChallengeHomePage'); // 2025-10-30 This file/function is missing
+  return '';
+}
 
 class PoliticianDetailsPage extends Component {
   constructor (props) {
@@ -1541,7 +1553,7 @@ const MobileHeaderOuterContainer = styled('div', {
     box-shadow: ${standardBoxShadow('wide')};
  `}
 
-  margin-top: ${marginTopOffset(scrolledDown)};
+  margin-top: ${marginTopOffsetPolitician(scrolledDown)};
 `));
 
 const MobileHeaderInnerContainer = styled('div')`
