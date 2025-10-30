@@ -14,7 +14,7 @@ import webAppConfig from '../../../config';
 import VoterStore from '../../../stores/VoterStore';
 import { cordovaBallotFilterTopMargin } from '../../../utils/cordovaOffsets';
 import { getPageDetails } from '../../../utils/lookupPageNameAndPageTypeDict';
-import { cordovaMarginTopOffset } from '../../../utils/MobileHeaderStyles';
+// import { cordovaMarginTopOffset } from '../../../utils/MobileHeaderStyles'; // 2025-10-30 This file is missing
 import ChallengeAbout from '../../components/Challenge/ChallengeAbout';
 import ThanksForViewingChallenge from '../../components/Challenge/ThanksForViewingChallenge';
 import ChallengeInviteeListRoot from '../../components/ChallengeInviteeListRoot/ChallengeInviteeListRoot';
@@ -62,7 +62,8 @@ function marginTopOffsetChallenge (scrolledDown) {
       return '39px';
     }
   }
-  return cordovaMarginTopOffset('ChallengeHomePage');
+  // return cordovaMarginTopOffset('ChallengeHomePage'); // 2025-10-30 This function is missing
+  return '';
 }
 
 
