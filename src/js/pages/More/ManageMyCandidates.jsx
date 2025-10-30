@@ -12,16 +12,15 @@ import {
   FileUpload as UploadIcon,
   WarningAmber as WarningIcon,
   FileDownloadOutlined as DownloadIcon,
-  CheckCircle as CheckIcon,
-} from '@mui/icons-material';
+  CheckCircle as CheckIcon } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import PoliticianStore from '../../common/stores/PoliticianStore';
 import VoterStore from '../../stores/VoterStore';
 import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 
+const ImportedVotersList = React.lazy(() => import(/* webpackChunkName: 'ImportedVotersList' */ '../../components/PoliticiansManaged/ImportedVotersList'));
 const PoliticiansManagedController = React.lazy(() => import(/* webpackChunkName: 'PoliticiansManagedController' */ '../../components/PoliticiansManaged/PoliticiansManagedController'));
-
 export default function ManageMyCandidates () {
   const demoPoliticians = useMemo(() => ([
     { we_vote_id: 'cand_1', politician_name: 'John Dough' },
@@ -29,6 +28,52 @@ export default function ManageMyCandidates () {
     { we_vote_id: 'cand_3', politician_name: 'Kateryna Dough' },
   ]), []);
 
+  // Edit modal
+  const [showEdit, setShowEdit] = useState(false);
+  const [draftInvite, setDraftInvite] = useState(invitationBody);
+  const [initialInvite, setInitialInvite] = useState(invitationBody);
+
+  // Reset draft when invitationBody or showEdit changes
+  useEffect(() => {
+    if (!showEdit) {
+      setDraftInvite(invitationBody);
+      setInitialInvite(invitationBody);
+    }
+  }, [invitationBody, showEdit, setDraftInvite, setInitialInvite]);
+  const [copiedMsg, setCopiedMsg] = useState('');
+  const [isSuccessToast, setIsSuccessToast] = useState(false);
+  const openEditModal = () => { setInitialInvite(draftInvite); setShowEdit(true); };
+  const handleEditInvite = () => {
+    setDraftInvite(invitationBody);
+    setInitialInvite(invitationBody);
+    setShowPreview(false);
+    setShowEdit(true);
+  };
+
+  const toastTimerRef = useRef(null);
+  const idRef = useRef(1);
+  const makeVoterRecord = useCallback((partial, source = 'Paste list') => ({
+    id: `v_${Date.now()}_${idRef.current++}`,
+    addedAt: new Date().toISOString(),
+    addedBy: 'You',
+    source,
+    ...partial,
+  }), []);
+  const notify = useCallback((msg, success = true) => {
+    if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
+    setIsSuccessToast(success);
+    setCopiedMsg(msg);
+    toastTimerRef.current = setTimeout(() => { setCopiedMsg(''); setIsSuccessToast(false); }, 2200);
+  }, []);
+  const handleInviteSelected = useCallback((rows) => { notify(`Invited ${rows.length} voter${rows.length === 1 ? '' : 's'} by email.`); }, [notify]);
+  const handleInviteEmailOneOrMany = useCallback((rows) => { notify(`Email invite sent to ${rows.length} voter${rows.length === 1 ? '' : 's'}.`); }, [notify]);
+  const handleInviteTextOneOrMany = useCallback((rows) => { notify(`Text invite sent to ${rows.length} voter${rows.length === 1 ? '' : 's'}.`); }, [notify]);
+  const handleHideOne = useCallback((row) => { setImportedVoters((p) => p.filter((r) => (r.id || r._idx) !== (row.id || row._idx))); notify('Hidden from list.', true); }, [notify]);
+  const handleHideMany = useCallback((rows) => { const ids = new Set(rows.map((r) => r.id || r._idx)); setImportedVoters((p) => p.filter((r) => !ids.has(r.id || r._idx))); notify(`Hidden ${rows.length} item${rows.length === 1 ? '' : 's'}.`, true); }, [notify]);
+  const handleSaveInvite = () => {
+    setShowEdit(false);
+    notify('Invitation updated.', true);
+  };
   const fileInputRef = useRef(null);
   const [allColumnsOK, setAllColumnsOK] = useState(false);
   const [politiciansToManage, setPoliticiansToManage] = useState(demoPoliticians); // Place demoPoliticians in useState to use dummy data, otherwise place: []
@@ -71,7 +116,7 @@ export default function ManageMyCandidates () {
         errors.push({ line: idx, reason: 'Missing email (format: Name, email[, phone])' });
         return;
       }
-      // Validate email (strip < > to allow brackets)
+      // Validate email
       const emailPart = parts[1].replace(/[<>]/g, '');
       if (!emailRE.test(emailPart)) {
         errors.push({ line: idx, reason: 'Invalid email' });
@@ -111,28 +156,6 @@ export default function ManageMyCandidates () {
 We’d like to invite you to join WeVote to help support ${selectedPolitician?.politician_name || 'our campaign'}.
 Thanks for your help!`;
 
-  // Edit modal
-  const [showEdit, setShowEdit] = useState(false);
-  const [draftInvite, setDraftInvite] = useState(invitationBody);
-  const [initialInvite, setInitialInvite] = useState(invitationBody);
-
-  // Reset draft when invitationBody or showEdit changes
-  useEffect(() => {
-    if (!showEdit) {
-      setDraftInvite(invitationBody);
-      setInitialInvite(invitationBody);
-    }
-  }, [invitationBody, showEdit, setDraftInvite, setInitialInvite]);
-  const [copiedMsg, setCopiedMsg] = useState('');
-  const [isSuccessToast, setIsSuccessToast] = useState(false);
-  const toastTimerRef = useRef(null);
-  const openEditModal = () => { setInitialInvite(draftInvite); setShowEdit(true); };
-  const handleEditInvite = () => {
-    setDraftInvite(invitationBody);
-    setInitialInvite(invitationBody);
-    setShowPreview(false);
-    setShowEdit(true);
-  };
 
   const handleCopyInviteBody = async () => {
     try {
@@ -187,12 +210,32 @@ Thanks for your help!`;
   const [pasteErrors, setPasteErrors] = useState([]);
   const [mirrorHTML, setMirrorHTML] = useState('');
   const [importedVoters, setImportedVoters] = useState([]);
+  // One-by-one inputs
+  const [oneName, setOneName] = useState('');
+  const [oneEmail, setOneEmail] = useState('');
+  const [onePhone, setOnePhone] = useState('');
+
+  const handleImportOne = useCallback(() => {
+    const name = oneName.trim();
+    const email = oneEmail.trim();
+    const phone = onePhone.trim();
+
+    if (!emailRE.test(email)) { notify('Enter a valid email.', false); return; }
+
+    setImportedVoters((prev) => [
+      ...prev,
+      makeVoterRecord({ name, email, phone }, 'Manual entry'),
+    ]);
+
+    setOneName(''); setOneEmail(''); setOnePhone('');
+    notify('Voter added. Ready to invite.', true);
+  }, [oneName, oneEmail, onePhone, notify, makeVoterRecord, setImportedVoters]);
 
   const handleCSVSelected = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    if (!/\.csv$/i.test(file.politician_name)) {
+    if (!/\.csv$/i.test(file.name)) {
       if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
       setIsSuccessToast(false);
       setCopiedMsg('Please choose a .csv file.');
@@ -227,7 +270,7 @@ Thanks for your help!`;
     }).filter((r) => r.name || r.email || r.phone || r.address);
 
     if (ok && rows.length > 0) {
-      setImportedVoters(rows);
+      setImportedVoters(rows.map((r) => makeVoterRecord(r, 'CSV upload')));
       closeUploadModal();
       if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
       setIsSuccessToast(true);
@@ -277,16 +320,13 @@ Thanks for your help!`;
       setMirrorHTML(buildMirrorHTML(pasteText, errors));
       return; // block import until fixed
     }
-    setImportedVoters((prev) => [...prev, ...rows]);
+    setImportedVoters((prev) => [...prev, ...rows.map((r) => makeVoterRecord(r, 'Paste list'))]);
     if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
     setCopiedMsg(`Imported ${rows.length} voter${rows.length !== 1 ? 's' : ''} from pasted list.`);
     toastTimerRef.current = setTimeout(() => setCopiedMsg(''), 2200);
   };
 
-  const prospectiveCount = useMemo(
-    () => parsePastedList(pasteText).rows.length,
-    [pasteText, parsePastedList],
-  );
+  const prospectiveCount = useMemo(() => parsePastedList(pasteText).rows.length, [pasteText]);
 
   const updatePoliticiansToManage = () => {
     const test = true;
@@ -418,10 +458,16 @@ Thanks for your help!`;
             <Section>
               <H3>Enter voters one-by-one</H3>
               <Row>
-                <Input placeholder="First and last name" aria-label="First and last name" />
-                <Input placeholder="Email" aria-label="Email address" />
-                <Input placeholder="Mobile phone" aria-label="Mobile phone" />
-                <PrimaryButton type="button">Import voter</PrimaryButton>
+                <Input placeholder="First and last name" value={oneName} onChange={(e) => setOneName(e.target.value)} />
+                <Input placeholder="Email" value={oneEmail} onChange={(e) => setOneEmail(e.target.value)} />
+                <Input placeholder="Mobile phone" value={onePhone} onChange={(e) => setOnePhone(e.target.value)} />
+                <PrimaryButton
+                    type="button"
+                    onClick={handleImportOne}
+                    disabled={!oneName.trim() || !emailRE.test(oneEmail)}
+                >
+                  Import voter
+                </PrimaryButton>
               </Row>
             </Section>
 
@@ -440,9 +486,22 @@ Thanks for your help!`;
               </Row>
             </Section>
 
-            <MutedNote>
-              You don’t have any voters to invite. Import some using the options above.
-            </MutedNote>
+              {importedVoters.length === 0 ? (
+                <MutedNote>
+                  You don’t have any voters to invite. Import some using the options above.
+                </MutedNote>
+              ) : (
+                <Suspense fallback={<></>}>
+                  <ImportedVotersList
+                    voters={importedVoters.map((v, _idx) => ({ _idx, ...v }))} // ensure stable key if no id
+                    onInviteSelected={handleInviteSelected}
+                    onInviteEmail={handleInviteEmailOneOrMany}
+                    onInviteText={handleInviteTextOneOrMany}
+                    onHide={handleHideOne}
+                    onHideSelected={handleHideMany}
+                  />
+                </Suspense>
+              )}
           </>
           )}
 
@@ -477,10 +536,10 @@ Thanks for your help!`;
               </HeaderActions>
             </ModalHeader>
 
-            <InfoRow>
+            <ManageInfoRow>
               <InfoDot aria-hidden>i</InfoDot>
               <span>Link will appear below text</span>
-            </InfoRow>
+            </ManageInfoRow>
 
             <ModalBody>
               <pre>{invitationBody}</pre>
@@ -529,7 +588,7 @@ Thanks for your help!`;
                 onClick={handleSaveInvite}
                 disabled={draftInvite.trim() === initialInvite.trim()}
               >
-                {prospectiveCount ? `Import ${prospectiveCount} voters` : 'Import voters'}
+                Save invitation
               </PrimarySaveBtn>
             </ModalFooter>
           </ModalCard>
