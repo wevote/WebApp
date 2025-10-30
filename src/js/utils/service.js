@@ -92,7 +92,11 @@ function innerAjax (options) {
     if (options.endpoint && !options.endpoint.endsWith('/')) {
       options.endpoint += '/';
     }
-    options.url = new URL(options.endpoint, defaults.baseUrl); // `${URL.resolve(defaults.baseUrl, options.endpoint)}/`;
+    let { baseUrl } = defaults;
+    if (options.baseUrl && options.baseUrl.length > 1) {
+      baseUrl = options.baseUrl;
+    }
+    options.url = new URL(options.endpoint, baseUrl); // `${URL.resolve(defaults.baseUrl, options.endpoint)}/`;
   }
 
   httpLog(`AJAX URL: ${options.url} -- voter_device_id: ${Cookies.get('voter_device_id')}`);

@@ -135,7 +135,7 @@ class SelectBallotModal extends Component {
               </MapChartWrapperDesktop>
             )}
             <SidebarWrapper>
-              <EditContainer>
+              <EditContainer id="SelectBallotModal">
                 <EditAddressInPlace
                   ballotBaseUrl={ballotBaseUrl}
                   defaultIsEditingAddress={editingAddress}

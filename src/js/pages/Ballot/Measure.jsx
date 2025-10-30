@@ -319,7 +319,7 @@ class Measure extends Component {
             }}
           >
             {/* The following style adjustment prevents horizontal scrolling from the .card style */}
-            <div className="card" style={{ marginRight: 0, marginLeft: 0 }}>
+            <div id="measureOuter" className="card" style={{ marginRight: 0, marginLeft: 0 }}>
               <TwoColumns>
                 <LeftColumnWrapper>
                   <Suspense fallback={<></>}>

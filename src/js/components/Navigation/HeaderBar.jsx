@@ -1,25 +1,26 @@
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { IconButton, Tabs, Tab, MenuItem, Menu } from '@mui/material';
+import { IconButton, Menu, MenuItem, Tab, Tabs } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
-// import TagManager from 'react-gtm-module';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterActions from '../../actions/VoterActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import LazyImage from '../../common/components/LazyImage';
+import standardBoxShadow from '../../common/components/Style/standardBoxShadow';
+import signInModalGlobalState from '../../common/components/Widgets/signInModalGlobalState';
+import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
 import apiCalming from '../../common/utils/apiCalming';
-import { hasIPhoneNotch, historyPush, isDeviceZoomed, isIOS } from '../../common/utils/cordovaUtils';
+import { hasIPhoneNotch, historyPush, isDeviceZoomed, isIOS, isIPhoneMiniOrSmaller } from '../../common/utils/cordovaUtils';
 import { normalizedHrefPage } from '../../common/utils/hrefUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize, { handleResize, isSmallTablet, isTablet } from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
-import standardBoxShadow from '../../common/components/Style/standardBoxShadow';
 import voterPhoto from '../../common/utils/voterPhoto';
+import webAppConfig from '../../config';
 import AnalyticsStore from '../../stores/AnalyticsStore';
-import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
 import FacebookStore from '../../stores/FacebookStore';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
@@ -27,13 +28,10 @@ import { avatarGeneric, displayTopMenuShadow, weVoteBrandingOff } from '../../ut
 import getHeaderObjects from '../../utils/getHeaderObjects';
 import { TopOfPageHeader, TopRowOneLeftContainer, TopRowOneMiddleContainer, TopRowOneRightContainer, TopRowTwoLeftContainer } from '../Style/pageLayoutStyles';
 import SignInButton from '../Widgets/SignInButton';
-import signInModalGlobalState from '../../common/components/Widgets/signInModalGlobalState';
 import FriendsTabs from './FriendsTabs';
 import HeaderBarLogo from './HeaderBarLogo';
 import HeaderBarModals from './HeaderBarModals';
 import TabWithPushHistory from './TabWithPushHistory';
-import webAppConfig from '../../config';
-// import lookupPageNameAndPageTypeDict from '../../utils/lookupPageNameAndPageTypeDict';
 
 const HeaderNotificationMenu = React.lazy(() => import(/* webpackChunkName: 'HeaderNotificationMenu' */ './HeaderNotificationMenu'));
 const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
@@ -42,6 +40,8 @@ const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES ===
 
 // TODO: Backport "@stripe/react-stripe-js" use from Campaigns
 // import PaidAccountUpgradeModal from '../Settings/PaidAccountUpgradeModal';
+
+
 class HeaderBar extends Component {
   constructor (props) {
     super(props);
@@ -68,6 +68,7 @@ class HeaderBar extends Component {
     this.debugLogging = this.debugLogging.bind(this);
     this.toggleSignInModal = this.toggleSignInModal.bind(this);
     this.transitionToYourVoterGuide = this.transitionToYourVoterGuide.bind(this);
+    this.handleTabChange = this.handleTabChange.bind(this);
     this.handleResizeLocal = this.handleResizeLocal.bind(this);
   }
 
@@ -390,7 +391,7 @@ class HeaderBar extends Component {
         case 'more':
           more.css(highlight);
           break;
-        case 'managecandidates':
+        case 'more/manage':
           more.css(highlight);
           break;
         default:
@@ -966,7 +967,7 @@ const HeaderBarWrapper = styled.div.attrs({
   className: 'HeaderBarWrapper', // div.attrs and className all added to achieve drop-shadow on Donate page
   shouldForwardProp: (prop) => !['hasNotch', 'scrolledDown', 'hasSubmenu'].includes(prop),
 })(({ hasNotch, scrolledDown, hasSubmenu }) => (`
-  margin-top: ${hasNotch ? '9%' : ''};
+  margin-top: ${hasNotch && !isIPhoneMiniOrSmaller() ? '9%' : ''};
   box-shadow: ${(!scrolledDown || !hasSubmenu) ? '' : standardBoxShadow('wide')};
   border-bottom: ${(!scrolledDown || !hasSubmenu) ? '' : '1px solid #aaa'};
   padding-left: calc(100vw - 100%);

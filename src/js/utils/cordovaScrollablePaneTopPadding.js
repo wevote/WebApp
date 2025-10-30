@@ -570,7 +570,7 @@ export default function cordovaScrollablePaneTopPadding (pageEnumerationOverride
       }
     }
   } else if (isMobileScreenSize()) {
-    cordovaOffsetLog(`cordovaScrollablePaneTopPadding: WebApp mobile screen size, page: ${page}`);
+    cordovaOffsetLog(`cordovaScrollablePaneTopPadding: WebApp mobile screen size, page: '${page}'`);
     switch (page) {
       case CordovaPageConstants.ballotLgHdrWild:          return showBallotDecisionsTabs() ? '0px' : '0px';
       case CordovaPageConstants.ballotSmHdrWild:          return '64px';

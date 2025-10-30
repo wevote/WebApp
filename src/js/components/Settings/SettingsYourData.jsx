@@ -1,15 +1,15 @@
+import { SecurityRounded } from '@mui/icons-material';
 import React, { Component } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { SecurityRounded } from '@mui/icons-material';
 import VoterActions from '../../actions/VoterActions';
+import AppObservableStore from '../../common/stores/AppObservableStore';
 import { renderLog } from '../../common/utils/logging';
-import DeleteYourAccountButton from './DeleteYourAccountButton';
-import DeleteAllContactsButton from '../SetUpAccount/DeleteAllContactsButton';
 import VoterStore from '../../stores/VoterStore';
+import DeleteAllContactsButton from '../SetUpAccount/DeleteAllContactsButton';
 import BrowserPushMessage from '../Widgets/BrowserPushMessage';
-import AppObservableStore from "../../common/stores/AppObservableStore";
+import DeleteYourAccountButton from './DeleteYourAccountButton';
 
 export default class SettingsYourData extends Component {
   constructor (props) {

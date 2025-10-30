@@ -6,8 +6,9 @@ import React, { Component, Suspense } from 'react';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import LazyImage from '../../common/components/LazyImage';
+import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
 import apiCalming from '../../common/utils/apiCalming';
-import { hasDynamicIsland, isIOS, isIOSAppOnMac, isIPad } from '../../common/utils/cordovaUtils';
+import { isIOSAppOnMac, isIPad } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
 import { normalizedHref } from '../../common/utils/hrefUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
@@ -15,11 +16,10 @@ import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import stringContains from '../../common/utils/stringContains';
 import voterPhoto from '../../common/utils/voterPhoto';
-import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
 import { dumpCssFromId } from '../../utils/appleSiliconUtils';
 import { avatarGeneric } from '../../utils/applicationUtils';
-import { AppBarForBackTo, TopRowOneRightContainer } from '../Style/pageLayoutStyles';
+import { AppBarForBackTo, getIOSDynamicIslandSpacerHeight, TopRowOneRightContainer } from '../Style/pageLayoutStyles';
 import SignInButton from '../Widgets/SignInButton';
 import HeaderBackToButton from './HeaderBackToButton';
 
@@ -199,10 +199,7 @@ class HeaderBackTo extends Component {
     const voterPhotoUrlMedium = voterPhoto(voter);
     const pathname = normalizedHref();
     const shareButtonInHeader = pathname && stringContains('/office', pathname.toLowerCase());
-    let pad = isIOS() ? '34px 15px 0 0' : '0 15px 0 0';
-    if (hasDynamicIsland()) {
-      pad = '56px 15px 0 0';
-    }
+    const pad = `${getIOSDynamicIslandSpacerHeight()} 15px 0 0`;
     const cordovaStyles = {
       marginLeft: 0,
       padding: pad,

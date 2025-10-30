@@ -63,6 +63,9 @@ function MoreMenuOverlay ({ onClose }) {
     </ClickAwayListener>
   );
 }
+MoreMenuOverlay.propTypes = {
+  onClose: PropTypes.func.isRequired,
+};
 
 class FooterBar extends React.Component {
   constructor (props) {
@@ -494,6 +497,7 @@ const FooterContainer = styled('div')`
   width: 100%;
   left: 0;
 `;
+
 const Overlay = styled.div`
   align-items: stretch;
   background: ${DesignTokenColors.whiteUI};

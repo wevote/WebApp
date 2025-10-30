@@ -204,7 +204,7 @@ class SettingsAddressBox extends Component {
     renderLog('SettingsAddressBox');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('AddressBox render');
     let { waitingMessage } = this.props;
-    const { classes, externalUniqueId, introductionHtml, showCancelEditAddressButton, toggleEditingAddress } = this.props;
+    const { classes, externalUniqueId, introductionHtml, toggleEditingAddress } = this.props;
 
     const { ballotCaveat, loading } = this.state;
     if (loading) {
@@ -235,13 +235,13 @@ class SettingsAddressBox extends Component {
     return (
       <div className="container">
         <Box sx={{
-            backgroundColor: 'grey.200',
-            pl: 6,
-            pr: 6,
-            pt: 2,
-            pb: 2,
-            borderRadius: 8,
-          }}
+          backgroundColor: 'grey.200',
+          pl: 6,
+          pr: 6,
+          pt: 2,
+          pb: 2,
+          borderRadius: 8,
+        }}
         >
           {introductionHtml}
           <div className="row" style={{ paddingTop: 10 }}>
@@ -270,7 +270,7 @@ class SettingsAddressBox extends Component {
             onClick={(event) => this.voterAddressSaveSubmit(event, externalUniqueId ? `addressBoxModalSaveButton-${externalUniqueId}` : 'addressBoxModalSaveButton')}
             variant="contained"
             // classes={showCancelEditAddressButton ? { root: classes.saveButton } : { root: classes.fullWidthSaveButton }}
-            classes={{root: classes.fullWidthSaveButton}}
+            classes={{ root: classes.fullWidthSaveButton }}
             // fullWidth={!showCancelEditAddressButton}
             fullWidth
             disabled={!this.state.isAddressVerified}
@@ -291,11 +291,11 @@ SettingsAddressBox.propTypes = {
   returnNewTextForMapSearch: PropTypes.func,
   saveUrl: PropTypes.string.isRequired,
   showCancelEditAddressButton: PropTypes.bool,
-  shouldClearOnCancel: PropTypes.bool,
   toggleEditingAddress: PropTypes.func,
   onAddressSaveSuccess: PropTypes.func,
   toggleSelectAddressModal: PropTypes.func,
   waitingMessage: PropTypes.string,
+  // shouldClearOnCancel: PropTypes.bool,
   // disableAutoFocus: PropTypes.bool,
   // manualFocus: PropTypes.bool,
 };

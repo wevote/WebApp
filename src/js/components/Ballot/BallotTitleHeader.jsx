@@ -1,7 +1,6 @@
 import { Edit } from '@mui/icons-material';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
-import parser from 'parse-address';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import TagManager from 'react-gtm-module';
