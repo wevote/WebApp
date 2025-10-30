@@ -33,7 +33,6 @@ const VoterPositionEntryAndDisplay = ({ classes, externalUniqueId, politicianWeV
   // console.log('VoterPositionEntryAndDisplay, politicianWeVoteId:', politicianWeVoteId, ', politicianWeVoteIdRef.current:', politicianWeVoteIdRef.current);
   const { allCachedPoliticians } = PoliticianStore.getState();
 
-  const [initialFocusSet, setInitialFocusSet] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [politicianName, setPoliticianName] = useState('');
   const [position, setPosition] = useState({});
@@ -164,20 +163,17 @@ const VoterPositionEntryAndDisplay = ({ classes, externalUniqueId, politicianWeV
 
   useEffect(() => {
     if (!showEditModal) return;
-
     const focusInput = () => {
-      const input = activityPostInputRef.current;
+      const input = activityPostInputRef.current; 
       if (input) {
         input.focus();
-        input.setSelectionRange(input.value.length, input.value.length);
+        const value = input.value
+        input.setSelectionRange(value.length, value.length);
       }
     };
-    const raf = requestAnimationFrame(focusInput);
+    const raf = requestAnimationFrame(focusInput); 
     return () => {
       cancelAnimationFrame(raf);
-      if (isAndroid()) {
-        restoreStylesAfterCordovaKeyboard('VoterPositionEntryAndDisplay');
-      }
     };
   }, [showEditModal]);
 
