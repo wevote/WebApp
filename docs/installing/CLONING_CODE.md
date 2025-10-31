@@ -8,7 +8,7 @@ Make sure you have created a place to put all of the code from Github, for examp
     $ mkdir /Users/<YOUR NAME HERE>/MyProjects/
 
   ####
-   $ mkdir ~/MyProjects/
+     $ mkdir ~/MyProjects/
 
 ## Setting up your repository for work
 
