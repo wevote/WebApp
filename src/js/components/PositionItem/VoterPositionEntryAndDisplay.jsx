@@ -33,7 +33,6 @@ const VoterPositionEntryAndDisplay = ({ classes, externalUniqueId, politicianWeV
   // console.log('VoterPositionEntryAndDisplay, politicianWeVoteId:', politicianWeVoteId, ', politicianWeVoteIdRef.current:', politicianWeVoteIdRef.current);
   const { allCachedPoliticians } = PoliticianStore.getState();
 
-  const [initialFocusSet, setInitialFocusSet] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [politicianName, setPoliticianName] = useState('');
   const [position, setPosition] = useState({});
@@ -163,14 +162,20 @@ const VoterPositionEntryAndDisplay = ({ classes, externalUniqueId, politicianWeV
   }, [politicianWeVoteId]);
 
   useEffect(() => {
-    if (activityPostInputRef.current && !initialFocusSet) {
-      const input = activityPostInputRef.current;
-      const { length } = input.value;
-      input.focus();
-      input.setSelectionRange(length, length);
-      setInitialFocusSet(true);
-    }
-  }, [initialFocusSet]);
+    if (!showEditModal) return;
+    const focusInput = () => {
+      const input = activityPostInputRef.current; 
+      if (input) {
+        input.focus();
+        const { length } = input.value;
+        input.setSelectionRange(length, length);
+      }
+    };
+    const raf = requestAnimationFrame(focusInput); 
+    return () => {
+      cancelAnimationFrame(raf);
+    };
+  }, [showEditModal]);
 
   useEffect(() => {
     const supportStoreListener = SupportStore.addListener(onSupportStoreChange);
@@ -411,7 +416,7 @@ const VoterPositionEntryAndDisplay = ({ classes, externalUniqueId, politicianWeV
           // disabled={!statementText} // Commented out to allow saving without statement
           disabled={selectedStance === 'INFO_ONLY' && (!statementText || statementText.trim() === '')} // Disable if Neutral and no text
         >
-          {positionExists ? 'Save Changes' : 'Add opinion' }
+          {positionExists ? 'Save Changes' : 'Add opinion'}
         </Button>
       </TextFieldForm>
     </TextFieldWrapper>
