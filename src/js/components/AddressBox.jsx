@@ -7,7 +7,7 @@ import BallotActions from '../actions/BallotActions';
 import VoterActions from '../actions/VoterActions';
 import DelayedLoad from '../common/components/Widgets/DelayedLoad';
 import LoadingWheel from '../common/components/Widgets/LoadingWheel';
-import { prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../common/utils/cordovaUtils';
+import { isCordovaPhone, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../common/utils/cordovaUtils';
 import historyPush from '../common/utils/historyPush';
 import Cookies from '../common/utils/js-cookie/Cookies';
 import { renderLog } from '../common/utils/logging';
@@ -136,7 +136,7 @@ class AddressBox extends Component {
       ballotCaveat = `Saving new address '${textForMapSearch}'...`;
     }
 
-    // console.log('Passed buttonId:', buttonId);
+    // console.log('AddressBox Passed buttonId:', buttonId);
     const dataLayerObject = {
       actionDetails: {
         actionType: 'save',
@@ -234,14 +234,14 @@ class AddressBox extends Component {
     return (
       <div className="container">
         {introductionHtml}
-        <div className="row" style={{ paddingTop: 10 }}>
+        <div className="row" style={!isCordovaPhone() ? { paddingTop: 10 } : { paddingTop: 10, marginLeft: '-30px' }}>
           <GoogleAutoComplete
             id="entryBox"
             updateTextForMapSearchInParent={this.updateTextForMapSearch}
             updateTextForMapSearchInParentFromGoogle={this.updateTextForMapSearchFromGoogle}
           />
         </div>
-        <div className="row" style={{ paddingTop: 10 }}>
+        <div className="row" style={!isCordovaPhone() ? { paddingTop: 10 } : { paddingTop: 10, marginRight: '-37px' }}>
           {showCancelEditAddressButton ? (
             <Button
               color="primary"
@@ -277,7 +277,6 @@ AddressBox.propTypes = {
   returnNewTextForMapSearch: PropTypes.func,
   saveUrl: PropTypes.string.isRequired,
   showCancelEditAddressButton: PropTypes.bool,
-  shouldClearOnCancel: PropTypes.bool,
   toggleEditingAddress: PropTypes.func,
   onAddressSaveSuccess: PropTypes.func,
   toggleSelectAddressModal: PropTypes.func,

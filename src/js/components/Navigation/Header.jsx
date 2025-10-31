@@ -15,7 +15,6 @@ import stringContains from '../../common/utils/stringContains';
 import VoterStore from '../../stores/VoterStore';
 import { dumpCssFromId } from '../../utils/appleSiliconUtils';
 import { getApplicationViewBooleans, weVoteBrandingOff } from '../../utils/applicationUtils';
-import cordovaTopHeaderTopMargin from '../../utils/cordovaTopHeaderTopMargin';
 import { HeadroomWrapper } from '../Style/pageLayoutStyles';
 import IPhoneSpacer from '../Widgets/IPhoneSpacer';
 import HeaderBar from './HeaderBar';
@@ -250,7 +249,7 @@ export default class Header extends Component {
         <div id="app-header">
           <IPhoneSpacer />
           <HeadroomWrapper id="hw1">
-            <div className={pageHeaderClasses} style={cordovaTopHeaderTopMargin()} id="header-container">
+            <div className={pageHeaderClasses} id="header-container">
               <Suspense fallback={<></>}>
                 {headerBarObject}
               </Suspense>
@@ -309,7 +308,7 @@ export default class Header extends Component {
         <div id="app-header">
           <IPhoneSpacer />
           <HeadroomWrapper id="hw2">
-            <div className={pageHeaderClasses} style={cordovaTopHeaderTopMargin()} id="header-container">
+            <div className={pageHeaderClasses} id="header-container">
               { showBackToSettingsDesktop && (
                 <span id="inner_for_showBackToSettingsDesktop">
                   { (!isAndroidSizeWide() && displayNoneIfSmallerThanDesktop().length > 0) && (
@@ -416,7 +415,7 @@ export default class Header extends Component {
           <IPhoneSpacer />
           <HeadroomWrapper id="hw3">
             {/* <div className={isWebApp ? 'headroom-wrapper-webapp__default' : ''} id="headroom-wrapper"> */}
-            <div className={pageHeaderClasses} style={cordovaTopHeaderTopMargin()} id="header-container">
+            <div className={pageHeaderClasses} id="header-container">
               <Suspense fallback={<></>}>
                 { showBackToValues ?
                   <HeaderBackTo backToLink={backToValuesLink} backToLinkText={backToValuesLinkText} /> :
@@ -482,7 +481,7 @@ export default class Header extends Component {
         <div id="app-header">
           <IPhoneSpacer />
           <HeadroomWrapper id="hw4">
-            <div className={pageHeaderClasses} style={cordovaTopHeaderTopMargin()} id="header-container">
+            <div className={pageHeaderClasses} id="header-container">
               {(showNotificationBannerAboveHeader && isCandidatePage) && (
                 <NotificationBannerAboveHeaderWrapper>
                   <Suspense fallback={<></>}>

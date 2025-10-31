@@ -21,6 +21,7 @@ import Cookies from './js/common/utils/js-cookie/Cookies';
 import { renderLog } from './js/common/utils/logging';
 import Header from './js/components/Navigation/Header';
 import HeaderBarSuspense from './js/components/Navigation/HeaderBarSuspense';
+import { getIOSDynamicIslandSpacerHeight } from './js/components/Style/pageLayoutStyles';
 import webAppConfig from './js/config';
 import VoterStore from './js/stores/VoterStore';
 import initializeFacebookSDK from './js/utils/initializeFacebookSDK';
@@ -221,7 +222,7 @@ class App extends Component {
 
     if (isCordova()) {
       console.log(`Cordova:   window.device ${JSON.stringify(window.device)}`);
-      console.log(`Cordova:   Header, hasDynamicIsland ${hasDynamicIsland()}, hasIPhoneNotch (or AndroidNotch) ${hasIPhoneNotch()}`);
+      console.log(`Cordova:   Header, hasDynamicIsland ${hasDynamicIsland()} (${getIOSDynamicIslandSpacerHeight()}), hasIPhoneNotch (or AndroidNotch) ${hasIPhoneNotch()}`);
     }
 
     this.acceptURLVariables();

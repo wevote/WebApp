@@ -20,10 +20,9 @@ import BallotStore from '../../../stores/BallotStore';
 import CandidateStore from '../../../stores/CandidateStore';
 import RepresentativeStore from '../../../stores/RepresentativeStore';
 import VoterStore from '../../../stores/VoterStore';
-import { headroomWrapperOffset } from '../../../utils/cordovaCalculatedOffsets';
 import { cordovaBallotFilterTopMargin } from '../../../utils/cordovaOffsets';
-import { getPageKey } from '../../../utils/cordovaPageUtils';
 import { getPageDetails } from '../../../utils/lookupPageNameAndPageTypeDict';
+// import { marginTopOffset } from '../../../utils/MobileHeaderStyles'; // 2025-10-30 This file is missing
 import CampaignChipInLink from '../../components/Campaign/CampaignChipInLink';
 import CampaignOwnersList from '../../components/CampaignSupport/CampaignOwnersList';
 import CompleteYourProfileModalController from '../../components/Settings/CompleteYourProfileModalController';
@@ -45,9 +44,9 @@ import apiCalming from '../../utils/apiCalming';
 import { getYearFromUltimateElectionDate } from '../../utils/dateFormat';
 import extractPoliticianDetailsFromUrl from '../../utils/extractPoliticianDetailsFromUrl';
 import historyPush from '../../utils/historyPush';
-import { isCordova, isWebApp } from '../../utils/isCordovaOrWebApp';
+import { isWebApp } from '../../utils/isCordovaOrWebApp';
 import keepHelpingDestination from '../../utils/keepHelpingDestination';
-import { cordovaOffsetLog, renderLog } from '../../utils/logging';
+import { renderLog } from '../../utils/logging';
 import normalizedImagePath from '../../utils/normalizedImagePath';
 import { getPoliticianValuesFromIdentifiers, politicianRetrieveFromIdentifiersIfNeeded } from '../../utils/politicianUtils';
 import returnFirstXWords from '../../utils/returnFirstXWords';
@@ -71,33 +70,16 @@ const ViewUpcomingBallotButton = React.lazy(() => import(/* webpackChunkName: 'V
 const futureFeaturesDisabled = true;
 const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
-function marginTopOffset (scrolledDown) {
-  // if (isIOSAppOnMac()) {
-  //   return '44px';
-  // } else if (isIPad()) {
-  //   return '12px';
-  // } else if (isIOS()) {
-  //   return '85px';
-  // } else if (isWebApp() && isMobileScreenSize()) {
-  //   if (scrolledDown) {
-  //     return '54px';
-  //   } else {
-  //     return '64px';
-  //   }
+function marginTopOffsetPolitician (scrolledDown) {
   if (isWebApp()) {
     if (scrolledDown) {
-      return '-11px';
+      return '-6px';
     } else {
       return '39px';
     }
-  } else if (isCordova()) {
-    // Calculated approach Nov 2022
-    const offset = `${headroomWrapperOffset(true, 'PoliticianDetailsPage')}px`;
-    cordovaOffsetLog(`PoliticianDetailsPage HeadroomWrapper offset: ${offset}, page: ${getPageKey()}`);
-    return offset;
-    // end calculated approach
   }
-  return 0;
+  // return marginTopOffset('ChallengeHomePage'); // 2025-10-30 This file/function is missing
+  return '';
 }
 
 class PoliticianDetailsPage extends Component {
@@ -1332,11 +1314,11 @@ class PoliticianDetailsPage extends Component {
                     )}
                   </CandidateCampaignListDesktop>
                 )}
-                <ViewBallotButtonWrapper>
+                <ViewPoliticianBallotButtonWrapper>
                   <Suspense fallback={<span>&nbsp;</span>}>
                     <ViewUpcomingBallotButton buttonText="View Your Full Ballot" goToBallotFunction={this.goToBallot} onlyOfferViewYourBallot />
                   </Suspense>
-                </ViewBallotButtonWrapper>
+                </ViewPoliticianBallotButtonWrapper>
                 {/* {commentListTeaserHtml} */}
                 {(!futureFeaturesDisabled && nextReleaseFeaturesEnabled) && (
                   <CommentsListWrapper>
@@ -1571,7 +1553,7 @@ const MobileHeaderOuterContainer = styled('div', {
     box-shadow: ${standardBoxShadow('wide')};
  `}
 
-  margin-top: ${marginTopOffset(scrolledDown)};
+  margin-top: ${marginTopOffsetPolitician(scrolledDown)};
 `));
 
 const MobileHeaderInnerContainer = styled('div')`
@@ -1601,7 +1583,7 @@ const SpacerAfterPositions = styled('div')`
   margin-bottom: 60px;
 `;
 
-const ViewBallotButtonWrapper = styled('div')`
+const ViewPoliticianBallotButtonWrapper = styled('div')`
   display: flex;
   height: 50px;
   justify-content: center;

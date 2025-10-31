@@ -655,14 +655,14 @@ class VoterPhoneVerificationEntry extends Component {
                 <SecondRowPhoneOrEmailDiv key={`${voterSMSPhoneNumberFromList.sms_we_vote_id}-internal`}>
                   <span
                      className="u-link-color u-cursor--pointer"
-                     onClick={() => this.setAsPrimarySMSPhoneNumber.bind(this, voterSMSPhoneNumberFromList.sms_we_vote_id)}
+                     onClick={() => this.setAsPrimarySMSPhoneNumber(voterSMSPhoneNumberFromList.sms_we_vote_id)}
                   >
                     Make Primary
                   </span>
                   {allowRemoveSMSPhoneNumber && (
                     <div
                       className="u-link-color u-cursor--pointer"
-                      onClick={() => this.removeVoterSMSPhoneNumber.bind(this, voterSMSPhoneNumberFromList.sms_we_vote_id)}
+                      onClick={() => this.removeVoterSMSPhoneNumber(voterSMSPhoneNumberFromList.sms_we_vote_id)}
                     >
                       <Delete />
                     </div>
@@ -705,7 +705,7 @@ class VoterPhoneVerificationEntry extends Component {
                       {allowRemoveSMSPhoneNumber && (
                         <div
                           className="u-link-color u-cursor--pointer"
-                          onClick={() => this.removeVoterSMSPhoneNumber.bind(this, voterSMSPhoneNumberFromList.sms_we_vote_id)}
+                          onClick={() => this.removeVoterSMSPhoneNumber(voterSMSPhoneNumberFromList.sms_we_vote_id)}
                         >
                           <Delete />
                         </div>

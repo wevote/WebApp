@@ -5,14 +5,16 @@ export default function decorativeSpacing () {
   // Please don't change these unless you are testing your change in a Cordova simulator
   const page = pageEnumeration();
   switch (page) {
-    case CordovaPageConstants.ballotLgHdrWild:       return 8;
-    case CordovaPageConstants.ballotSmHdrWild:       return 8;
+    case CordovaPageConstants.ballotLgHdrWild:       return 16;
+    case CordovaPageConstants.ballotSmHdrWild:       return 16;
     case CordovaPageConstants.ballotVote:            return 0;
     case CordovaPageConstants.candidate:             return 0;
     case CordovaPageConstants.candidateWild:         return 0;
-    case CordovaPageConstants.friends:               return 0;
-    case CordovaPageConstants.friendsCurrent:        return 0;
-    case CordovaPageConstants.friendsSentRequest:    return 0;
+    case CordovaPageConstants.friends:               return 30;
+    case CordovaPageConstants.friendsCurrent:        return 30;
+    case CordovaPageConstants.friendsRemind:         return 30;
+    case CordovaPageConstants.friendsSentRequest:    return 30;
+    case CordovaPageConstants.friendsSuggested:      return 30;
     case CordovaPageConstants.measureWild:           return 0;
     case CordovaPageConstants.moreAbout:             return 0;
     case CordovaPageConstants.moreElections:         return 0;

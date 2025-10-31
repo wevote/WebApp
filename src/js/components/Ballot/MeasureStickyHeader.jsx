@@ -97,9 +97,7 @@ const slideDown = keyframes`
     transform: translateY(0);
   }
 `;
-const MeasureStickyHeaderWrapper = styled('div', {
-  shouldForwardProp: (prop) => !['ipad'].includes(prop),
-})(({ ipad, theme }) => (`
+const MeasureStickyHeaderWrapper = styled('div')(({ theme }) => (`
   animation: ${slideDown} 150ms ease-in;
   background: white;
   box-shadow: ${standardBoxShadow('wide')};
@@ -110,11 +108,11 @@ const MeasureStickyHeaderWrapper = styled('div', {
   padding-right: 16px;
   padding-bottom: 8px;
   padding-left: 16px;
-  top: ${() => cordovaStickyHeaderPaddingTop()};
+  top: ${cordovaStickyHeaderPaddingTop()};
   width: 100vw;
   z-index: 2;
   ${theme.breakpoints.up('sm')} {
-    padding-top: ${ipad ? '' : '0'};
+    padding-top: ${isIPad() || isIOSAppOnMac() ? '' : '0'};
   }
   ${theme.breakpoints.down('sm')} {
     ${isWebApp() ? 'margin-top: 46px;' : ''}

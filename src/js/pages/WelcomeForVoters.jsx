@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import VoterActions from '../actions/VoterActions';
 import { PlayerContainer, Video } from '../common/components/Style/VideoStyles';
+import { isIPad } from '../common/utils/cordovaUtils';
 import historyPush from '../common/utils/historyPush';
 import { renderLog } from '../common/utils/logging';
 import normalizedImagePath from '../common/utils/normalizedImagePath';
@@ -114,11 +115,6 @@ class WelcomeForVoters extends PureComponent {
         showVerifyModal: true,
       });
     }
-  };
-
-  handleToPageFromMobileNav = (destination) => {
-    this.handleShowMobileNavigation(false);
-    historyPush(destination);
   };
 
   render () {
@@ -321,6 +317,10 @@ WelcomeForVoters.propTypes = {
   classes: PropTypes.object,
 };
 
+function iPadTranslateX () {
+  return isIPad() ? 'translateX(-38px)' : '';
+}
+
 const styles = (theme) => ({
   buttonContained: {
     borderRadius: 32,
@@ -349,6 +349,7 @@ const styles = (theme) => ({
     marginTop: 15,
   },
   locationIcon: {
+    transform: iPadTranslateX(),
     color: '#2e3c5d',
   },
 });

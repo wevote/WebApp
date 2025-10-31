@@ -1,3 +1,4 @@
+import { isCordovaPhone } from './cordovaUtils';
 import { isAndroidTablet, isWebApp } from './isCordovaOrWebApp';
 
 function isCordova () {
@@ -10,7 +11,7 @@ export default function isMobileScreenSize () {
   const tabMin = window?.muiThemeGlobal?.breakpoints?.values?.tabMin ?? 786;
   const width = isCordova() ? window.screen.availWidth : window.innerWidth;
   // console.log('isMobileScreenSize isCordova, width, maxWidth, return value:', isCordova(), width, tabMin,  width < tabMin);
-  return  width < tabMin;
+  return  width < tabMin || isCordovaPhone();
 }
 
 // iPad Mini is 744px wide, iPad 9.7" is 768, iPad 11" is 834, iPad 12.9" is 1024

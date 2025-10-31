@@ -123,8 +123,9 @@ class Footer extends Component {
   }
 
   render () {
-    const { /* doShowHeader, doShowFooter, */ showFooterBar, showFooterMain, showShareButtonFooter } = this.state;
-    // console.log('Footer render showFooterMain:', showFooterMain);
+    const { showFooterBar, showFooterMain } = getApplicationViewBooleans(normalizedHref());
+    // console.log('Footer before render  showFooterBar, showFooterMain:', showFooterBar, showFooterMain);
+
     return (
       <FooterWrapper id="footer">
         {(showFooterMain) && (

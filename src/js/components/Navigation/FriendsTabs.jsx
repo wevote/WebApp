@@ -182,6 +182,7 @@ class FriendsTabs extends Component {
               onClick={() => {
                 this.handleNavigation('/friends/requests');
               }}
+              sx={isIPhoneMiniOrSmaller() && { fontSize: '14.5px', padding: '8px' }}
             />
             <FriendsNavTab
               value="suggested"
@@ -189,6 +190,7 @@ class FriendsTabs extends Component {
               onClick={() => {
                 this.handleNavigation('/friends/suggested');
               }}
+              sx={isIPhoneMiniOrSmaller() && { fontSize: '14.5px', padding: '8px' }}
             />
             {this.getSelectedTab() === 'invite' && (
               <FriendsNavTab
@@ -205,6 +207,7 @@ class FriendsTabs extends Component {
                 onClick={() => {
                   this.handleNavigation('/friends/invite');
                 }}
+                sx={isIPhoneMiniOrSmaller() && { fontSize: '14.5px', padding: '8px' }}
               />
             )}
             <FriendsNavTab
@@ -221,6 +224,7 @@ class FriendsTabs extends Component {
               onClick={() => {
                 this.handleNavigation('/friends/current');
               }}
+              sx={isIPhoneMiniOrSmaller() && { fontSize: '14.5px', padding: '8px' }}
             />
             <FriendsNavTab
               value="remind"
@@ -236,6 +240,7 @@ class FriendsTabs extends Component {
               onClick={() => {
                 this.handleNavigation('/friends/remind');
               }}
+              sx={isIPhoneMiniOrSmaller() && { fontSize: '14.5px', padding: '8px' }}
             />
           </Tabs>
         </div>
@@ -289,6 +294,10 @@ const RequestsNavTab = muiStyled(Tab)({
   width: 'fit-content !important',
   height: '40px !important',
   maxHeight: '40px !important',
+  // ...(isIPhoneMiniOrSmaller()  && {
+  //   fontSize: '14.5px',
+  //   padding: '8px',
+  // }),
 });
 
 export default withStyles(styles)(FriendsTabs);

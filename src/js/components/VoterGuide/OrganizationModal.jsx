@@ -319,24 +319,6 @@ class OrganizationModal extends Component {
     return false;
   }
 
-  marginTopOffset () {
-    const { scrolledDown } = this.state;
-    if (isWebApp()) {
-      if (scrolledDown) {
-        return '64px';
-      } else {
-        return '110px';
-      }
-    } else if (isCordova()) {
-      // Calculated approach Nov 2022
-      const offset = `${headroomWrapperOffset(true)}px`;
-      cordovaOffsetLog(`DrawerHeaderAnimateDownOuterContainer HeadroomWrapper offset: ${offset}, page: ${getPageKey()}`);
-      return offset;
-      // end calculated approach
-    }
-    return 0;
-  }
-
   closeOrganizationModal () {
     this.setState({ modalOpen: false });
     setTimeout(() => {

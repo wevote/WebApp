@@ -17,6 +17,8 @@ export function pageEnumeration () {
   } else if ((path.startsWith('/about') && !isSEOFriendlyURL(path)) ||
              path.startsWith('/more/about')) {
     return CordovaPageConstants.moreAbout;
+  } else if (path.startsWith('/challenges')) {
+    return CordovaPageConstants.challenges;
   } else if ((path.startsWith('/credits') && !isSEOFriendlyURL(path)) ||
              path.startsWith('/more/credits')) {
     return CordovaPageConstants.moreCredits;
@@ -58,6 +60,8 @@ export function pageEnumeration () {
   // then wildcarded second level paths
   } else if ((path.startsWith('/candidate/') && !isSEOFriendlyURL(path)) || path.startsWith('/verifythisisme/')) {
     return CordovaPageConstants.candidateWild;  // /candidate/ == one candidate vs. /cs/ == candidates by state
+  } else if (path.match(/\/.*?\/cs\//)) {       // Oct 2025: Non-hierarchical URL, with /cs/ at end, could mean candidate list or measure list
+    return CordovaPageConstants.measureWild;
   } else if (path.startsWith('/office/')) {
     return CordovaPageConstants.officeWild;
   } else if (path.startsWith('/settings/') || path.includes('facebook_sign_in')) {

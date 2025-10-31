@@ -176,7 +176,7 @@ class Squads extends Component {
                 </ComingSoon>
               </ElectionCountdownInnerWrapper>
             </ElectionCountdownOuterWrapper>
-            <ViewBallotButtonWrapper className="col-12">
+            <ViewBallotButtonWrapper>
               <Suspense fallback={<></>}>
                 <ViewUpcomingBallotButton goToBallotFunction={this.goToBallot} />
               </Suspense>
