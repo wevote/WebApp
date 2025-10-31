@@ -193,6 +193,10 @@ Create a place to put all of the code from Github:
 
     $ mkdir /Users/<YOUR NAME HERE>/MyProjects/
 
+For Linux/WSL
+####
+    $ mkdir ~/MyProjects/
+
 ---
 
 Next: [Bringing Code to Your Machine](CLONING_CODE.md)
