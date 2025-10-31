@@ -132,10 +132,10 @@ Now activate this new virtual environment:
 Just to be safe, rebuild node-sass:
 
     (WebAppEnv) $ npm rebuild node-sass
-    (WebAppEnv) $ /home/vgoru1/NodeEnvironments/WebAppEnv/bin/node -v
+    (WebAppEnv) $ /home/<YOUR NAME HERE>/NodeEnvironments/WebAppEnv/bin/node -v
     v25.1.0
     
-Export your path to the local environment (append the `/home/vgoru1/NodeEnvironments/WebAppEnv/bin/` path segment to the path that is used when in the WebAppEnv):
+Export your path to the local environment (append the `/home/<YOUR NAME HERE>/NodeEnvironments/WebAppEnv/bin/` path segment to the path that is used when in the WebAppEnv):
     
     (WebAppEnv) $ export PATH="/usr/local/bin:$PATH"
 
