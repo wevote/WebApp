@@ -167,8 +167,8 @@ const VoterPositionEntryAndDisplay = ({ classes, externalUniqueId, politicianWeV
       const input = activityPostInputRef.current; 
       if (input) {
         input.focus();
-        const inputValue = input.value
-        input.setSelectionRange(inputValue.length, inputValue.length);
+        const { length } = input.value;
+        input.setSelectionRange(length, length);
       }
     };
     const raf = requestAnimationFrame(focusInput); 
