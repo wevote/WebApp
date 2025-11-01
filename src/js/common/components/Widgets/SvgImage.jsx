@@ -10,7 +10,7 @@ import { renderLog } from '../../utils/logging';
 export default function SvgImage (props) {
   const {
     alt, applyFillColor, color, height,
-    imageName, width: localWidth, marginBottom, opacity,
+    imageName, width: localWidth, marginBottom, opacity, padding,
     stylesTextIncoming,
   } = props;
   const passedAlt = (typeof alt === 'string') ? alt : '';
@@ -26,7 +26,7 @@ export default function SvgImage (props) {
     ${localWidth ? `width: ${localWidth};` : ''}
     ${marginBottom ? `margin-bottom: ${marginBottom};` : ''}
     ${opacity ? `opacity: ${opacity};` : ''}
-    padding: 1px 1px 1px 0px;
+    ${padding ? `padding: ${padding};` : 'padding: 1px 1px 1px 0px;'}
   `;
   if (stylesTextIncoming) {
     stylesText = stylesTextIncoming;
@@ -69,6 +69,7 @@ SvgImage.propTypes = {
   imageName: PropTypes.string,
   marginBottom: PropTypes.string,
   opacity: PropTypes.string,
+  padding: PropTypes.string,
   stylesTextIncoming: PropTypes.string,
   width: PropTypes.string,
 };

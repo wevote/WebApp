@@ -322,59 +322,61 @@ function CardForListBody (props) {
             {photoLargeUrl ? (
               <PoliticianImageContainer>
                 <CampaignImageMobilePlaceholder
-                      id="cimp4"
-                      profileImageBackgroundColor={profileImageBackgroundColor}
-                      useVerticalCard={useVerticalCard}
-                    >
-                    <CampaignImageMobile
-                      alt=""
-                      src={photoLargeUrl}
-                      style={useVerticalCard ? {
-                        borderBottom: `1px solid ${DesignTokenColors.neutralUI100}`,
-                        borderTop: `1px solid ${DesignTokenColors.neutralUI100}`,
-                      } : {}}
-                    />
+                  id="cimp4"
+                  profileImageBackgroundColor={profileImageBackgroundColor}
+                  useVerticalCard={useVerticalCard}
+                >
+                  <CampaignImageMobile
+                    alt=""
+                    src={photoLargeUrl}
+                    style={useVerticalCard ? {
+                      borderBottom: `1px solid ${DesignTokenColors.neutralUI100}`,
+                      borderTop: `1px solid ${DesignTokenColors.neutralUI100}`,
+                    } : {}}
+                  />
                 </CampaignImageMobilePlaceholder>
-                  {isClaimedProfile && (
-                    <ClaimedProfileOverlay>
-                      <SvgImage
-                        color={DesignTokenColors.neutral500}
-                        imageName={normalizedImagePath(claimedProfileIcon)}
-                        opacity="1.0"
-                      />
-                    </ClaimedProfileOverlay>
-                  )}
+                {isClaimedProfile && (
+                  <ClaimedProfileOverlay>
+                    <SvgImage
+                      color={DesignTokenColors.neutral500}
+                      imageName={normalizedImagePath(claimedProfileIcon)}
+                      opacity="1.0"
+                      padding="0"
+                    />
+                  </ClaimedProfileOverlay>
+                )}
               </PoliticianImageContainer>
             ) : (
               <PoliticianImageContainer>
-              <CampaignImageMobilePlaceholder
-                id="cimp2"
-                profileImageBackgroundColor={profileImageBackgroundColor}
-                useVerticalCard={useVerticalCard}
-              >
-                <SvgWatermarkWrapper>
-                  <SvgImage
-                    applyFillColor
-                    color={DesignTokenColors.neutralUI300}
-                    height="100px"
-                    imageName={politicalPartySvgNameWithPath}
-                    marginBottom="-10px"
-                    opacity="0.33"
-                  />
-                  <CampaignImagePlaceholderText>
-                    No candidate image available.
-                  </CampaignImagePlaceholderText>
-                </SvgWatermarkWrapper>
-              </CampaignImageMobilePlaceholder>
-              {isClaimedProfile && (
+                <CampaignImageMobilePlaceholder
+                  id="cimp2"
+                  profileImageBackgroundColor={profileImageBackgroundColor}
+                  useVerticalCard={useVerticalCard}
+                >
+                  <SvgWatermarkWrapper>
+                    <SvgImage
+                      applyFillColor
+                      color={DesignTokenColors.neutralUI300}
+                      height="100px"
+                      imageName={politicalPartySvgNameWithPath}
+                      marginBottom="-10px"
+                      opacity="0.33"
+                    />
+                    <CampaignImagePlaceholderText>
+                      No candidate image available.
+                    </CampaignImagePlaceholderText>
+                  </SvgWatermarkWrapper>
+                </CampaignImageMobilePlaceholder>
+                {isClaimedProfile && (
                   <ClaimedProfileOverlay>
                     <SvgImage
-                    color={DesignTokenColors.neutral500}
-                    imageName={normalizedImagePath(claimedProfileIcon)}
-                    opacity="1.0"
-                  />
+                      color={DesignTokenColors.neutral500}
+                      imageName={normalizedImagePath(claimedProfileIcon)}
+                      opacity="1.0"
+                      padding="0"
+                    />
                   </ClaimedProfileOverlay>
-                  )}
+                )}
               </PoliticianImageContainer>
             )}
           </OneCampaignPhotoWrapperMobile>
@@ -389,69 +391,71 @@ function CardForListBody (props) {
           >
             {photoLargeUrl ? (
               <PoliticianImageContainer>
-              <>
-                {useVerticalCard ? (
-                  <CampaignImageDesktopPlaceholder
-                    id="cidp4"
-                    limitCardWidth={limitCardWidth}
-                    profileImageBackgroundColor={profileImageBackgroundColor}
-                    useVerticalCard={useVerticalCard}
-                  >
-                    <CampaignImageDesktop
-                      src={photoLargeUrl}
-                      alt=""
-                      style={useVerticalCard ? {
-                        borderBottom: `1px solid ${DesignTokenColors.neutralUI100}`,
-                        borderTop: `1px solid ${DesignTokenColors.neutralUI100}`,
-                      } : {}}
-                      width={limitCardWidth ? '157px' : '200px'}
-                      height={limitCardWidth ? '157px' : '200px'}
-                    />
-                  </CampaignImageDesktopPlaceholder>
-                ) : (
-                  <CampaignImageDesktop src={photoLargeUrl} alt="" width="117px" height="117px" />
-                )}
+                <>
+                  {useVerticalCard ? (
+                    <CampaignImageDesktopPlaceholder
+                      id="cidp4"
+                      limitCardWidth={limitCardWidth}
+                      profileImageBackgroundColor={profileImageBackgroundColor}
+                      useVerticalCard={useVerticalCard}
+                    >
+                      <CampaignImageDesktop
+                        src={photoLargeUrl}
+                        alt=""
+                        style={useVerticalCard ? {
+                          borderBottom: `1px solid ${DesignTokenColors.neutralUI100}`,
+                          borderTop: `1px solid ${DesignTokenColors.neutralUI100}`,
+                        } : {}}
+                        width={limitCardWidth ? '157px' : '200px'}
+                        height={limitCardWidth ? '157px' : '200px'}
+                      />
+                    </CampaignImageDesktopPlaceholder>
+                  ) : (
+                    <CampaignImageDesktop src={photoLargeUrl} alt="" width="117px" height="117px" />
+                  )}
                 </>
                 {isClaimedProfile && (
                   <ClaimedProfileOverlay>
                     <SvgImage
-                    color={DesignTokenColors.neutral500}
-                    imageName={normalizedImagePath(claimedProfileIcon)}
-                    opacity="1.0"
-                  />
+                      color={DesignTokenColors.neutral500}
+                      imageName={normalizedImagePath(claimedProfileIcon)}
+                      opacity="1.0"
+                      padding="0"
+                    />
                   </ClaimedProfileOverlay>
-                  )}
+                )}
               </PoliticianImageContainer>
             ) : (
-            <PoliticianImageContainer>
-              <CampaignImageDesktopPlaceholder
-                id="cidp5"
-                limitCardWidth={limitCardWidth}
-                profileImageBackgroundColor={profileImageBackgroundColor}
-                useVerticalCard={useVerticalCard}
-              >
-                <CampaignImagePlaceholderText>
-                  <SvgImage
-                    applyFillColor
-                    color={DesignTokenColors.neutralUI300}
-                    height="140px"
-                    imageName={politicalPartySvgNameWithPath}
-                    marginBottom="-10px"
-                    opacity="0.33"
-                  />
-                  No candidate image available.
-                </CampaignImagePlaceholderText>
-                {isClaimedProfile && (
-                  <ClaimedProfileOverlay>
+              <PoliticianImageContainer>
+                <CampaignImageDesktopPlaceholder
+                  id="cidp5"
+                  limitCardWidth={limitCardWidth}
+                  profileImageBackgroundColor={profileImageBackgroundColor}
+                  useVerticalCard={useVerticalCard}
+                >
+                  <CampaignImagePlaceholderText>
                     <SvgImage
-                    color={DesignTokenColors.neutral500}
-                    imageName={normalizedImagePath(claimedProfileIcon)}
-                    opacity="1.0"
-                  />
-                  </ClaimedProfileOverlay>
+                      applyFillColor
+                      color={DesignTokenColors.neutralUI300}
+                      height="140px"
+                      imageName={politicalPartySvgNameWithPath}
+                      marginBottom="-10px"
+                      opacity="0.33"
+                    />
+                    No candidate image available.
+                  </CampaignImagePlaceholderText>
+                  {isClaimedProfile && (
+                    <ClaimedProfileOverlay>
+                      <SvgImage
+                        color={DesignTokenColors.neutral500}
+                        imageName={normalizedImagePath(claimedProfileIcon)}
+                        opacity="1.0"
+                        padding="0"
+                      />
+                    </ClaimedProfileOverlay>
                   )}
-              </CampaignImageDesktopPlaceholder>
-            </PoliticianImageContainer>
+                </CampaignImageDesktopPlaceholder>
+              </PoliticianImageContainer>
             )}
           </OneCampaignPhotoDesktopColumn>
         </OneCampaignInnerWrapper>
