@@ -12,7 +12,7 @@ Note that for the following steps, you must have activated the `WebAppEnv` Node 
     $ cd /Users/<YOUR NAME HERE>/NodeEnvironments/WebAppEnv/
     $ . bin/activate
 
-For WSL/Linux:
+For Linux/WSL:
 ####
     $ cd ~/NodeEnvironments/WebAppEnv/
     $ . bin/activate
@@ -27,7 +27,7 @@ Copy `WebApp/src/js/config-template.js` into `WebApp/src/js/config.js`:
     (WebAppEnv) $ cp src/js/config-template.js src/js/config.js
     (WebAppEnv) $ cp tests/browserstack/browserstack.config-template.js tests/browserstack/browserstack.config.js
 
-For WSL/Linux:
+For Linux/WSL:
 ####
     (WebAppEnv) $ cd ~/MyProjects/WebApp
     (WebAppEnv) $ cp src/js/config-template.js src/js/config.js
