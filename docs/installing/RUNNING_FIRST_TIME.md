@@ -45,7 +45,7 @@ For Linux/WSL:
     (WebAppEnv) $ npm install      // try sudo if it does not work
     (WebAppEnv) $ npm start
 
-For WSL/Linux:
+For Linux/WSL:
 ####
     (WebAppEnv) $ cd ~/MyProjects/WebApp
     (WebAppEnv) $ npm install      // try sudo if it does not work
