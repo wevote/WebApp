@@ -20,9 +20,21 @@ Activate the virtual environment:
     $ cd /Users/<YOUR NAME HERE>/NodeEnvironments/WebAppEnv/
     $ . bin/activate
 
+For Linux/WSL:
+####
+    $ cd ~/NodeEnvironments/WebAppEnv/
+    $ . bin/activate
+
+
 Install changes and start web application
 
     (WebAppEnv) $ cd /Users/<YOUR NAME HERE>/MyProjects/WebApp
+    (WebAppEnv) $ npm install
+    (WebAppEnv) $ npm start
+
+For Linux/WSL:
+####
+    (WebAppEnv) $ cd ~/MyProjects/WebApp
     (WebAppEnv) $ npm install
     (WebAppEnv) $ npm start
 

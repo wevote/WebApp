@@ -91,6 +91,56 @@ Export your path to the local environment (append the `/usr/local/bin` path segm
 
 **Mac users are now done with this page,** go on to the next section: [Bringing Code to Your Machine](CLONING_CODE.md)
 
+## Install nodeenv ("Node Env") - Linux/WSL 
+
+Install nodeenv globally with following
+####
+    $ sudo apt install nodejs
+    
+If you are already using Node and npm, confirm that your installation is at least at these minimum
+versions:
+####
+    $ node -v
+    v18.19.1
+
+    $ npm -v
+    10.9.4
+    
+If you find that your linux/WSL, does not have Node installed, installwith sudo apt install nodejs.  A fresh or initial install of Node,
+will automatically install the latest version of npm.
+####
+    $ sudo apt install nodejs
+    $ node -v
+    $ npm -v
+
+Create a place for your WebApp virtual environment to live on your hard drive. We recommend installing it away from the WebApp source code:
+
+    $ mkdir ~/NodeEnvironments/
+    $ cd ~/NodeEnvironments/
+
+Now create a new virtual environment in that 'NodeEnvironments' folder. This can take many minutes.
+
+    $ nodeenv WebAppEnv
+
+Now activate this new virtual environment:
+
+    $ cd ~/NodeEnvironments/WebAppEnv/
+    $ . bin/activate
+
+**Note** that you will need to do the step above every time before you start local development. Once you have activated this virtual Node environment, it will persist in the current Terminal tab even as you navigate to different folders (e.g., the WeVote WebApp folder). You'll see that each line on the Terminal starts with `(WebAppEnv)` while the virtual environment is in effect. You can read more about nodeenv [here](https://github.com/ekalinin/nodeenv).
+
+Just to be safe, rebuild node-sass:
+
+    (WebAppEnv) $ npm rebuild node-sass
+    (WebAppEnv) $ /home/<YOUR NAME HERE>/NodeEnvironments/WebAppEnv/bin/node -v
+    v25.1.0
+    
+Export your path to the local environment (append the `/home/<YOUR NAME HERE>/NodeEnvironments/WebAppEnv/bin/` path segment to the path that is used when in the WebAppEnv):
+    
+    (WebAppEnv) $ export PATH="/usr/local/bin:$PATH"
+
+**users are now done with this page,** go on to the next section: [Bringing Code to Your Machine](CLONING_CODE.md)
+
 <!--
 ## Install Node.js - Windows
 
@@ -142,6 +192,10 @@ If you are still getting errors with gulp this is a [helpful link](https://stack
 Create a place to put all of the code from Github:
 
     $ mkdir /Users/<YOUR NAME HERE>/MyProjects/
+
+For Linux/WSL
+####
+    $ mkdir ~/MyProjects/
 
 ---
 

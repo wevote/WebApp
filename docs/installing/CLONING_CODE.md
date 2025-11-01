@@ -7,6 +7,9 @@ Make sure you have created a place to put all of the code from Github, for examp
 
     $ mkdir /Users/<YOUR NAME HERE>/MyProjects/
 
+  ####
+     $ mkdir ~/MyProjects/
+
 ## Setting up your repository for work
 
 1. Install and configure git on your local machine if it is not already installed. See instructions [here](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git).
@@ -15,13 +18,17 @@ Make sure you have created a place to put all of the code from Github, for examp
 
 1. Using your terminal program, change directory into the local folder on your computer where you want the WebApp repository to be downloaded (replacing "<YOUR NAME HERE>" with your login name, and <YOUR GITHUB USERNAME HERE> with your github username) and clone your fork:  
   
-    `cd /Users/<YOUR NAME HERE>/MyProjects/`
+    MAC:`cd /Users/<YOUR NAME HERE>/MyProjects/` 
+
+    Linux/WSL:`cd ~/MyProjects/` 
 
     `git clone https://github.com/<YOUR GITHUB USERNAME HERE>/WebApp.git`
 
 1. Change into your local WebApp repository folder, and set up a remote for upstream:
 
-    `cd /Users/<YOUR NAME HERE>/MyProjects/WebApp`
+    MAC:`cd /Users/<YOUR NAME HERE>/MyProjects/WebApp`
+
+   Linux/WSL:`cd ~/MyProjects/WebApp`
 
     `$ git remote add upstream git@github.com:wevote/WebApp.git`  
 

@@ -12,6 +12,11 @@ Note that for the following steps, you must have activated the `WebAppEnv` Node 
     $ cd /Users/<YOUR NAME HERE>/NodeEnvironments/WebAppEnv/
     $ . bin/activate
 
+For Linux/WSL:
+####
+    $ cd ~/NodeEnvironments/WebAppEnv/
+    $ . bin/activate
+
 ## Local config.js file
 
 Every developer needs to maintain their own `WebApp/src/js/config.js` file, which can be copied from `WebApp/src/js/config-template.js`. The default configuration, copied from `config-template.js`, should work as-is for new developers.
@@ -22,6 +27,13 @@ Copy `WebApp/src/js/config-template.js` into `WebApp/src/js/config.js`:
     (WebAppEnv) $ cp src/js/config-template.js src/js/config.js
     (WebAppEnv) $ cp tests/browserstack/browserstack.config-template.js tests/browserstack/browserstack.config.js
 
+For Linux/WSL:
+####
+    (WebAppEnv) $ cd ~/MyProjects/WebApp
+    (WebAppEnv) $ cp src/js/config-template.js src/js/config.js
+    (WebAppEnv) $ cp tests/browserstack/browserstack.config-template.js tests/browserstack/browserstack.config.js
+
+
 ## Mac users will need to install fsevents ("Native access to OS X FSEvents in Node.js"): 
 
     (WebAppEnv) $ cd /Users/<YOUR NAME HERE>/MyProjects/WebApp
@@ -30,6 +42,12 @@ Copy `WebApp/src/js/config-template.js` into `WebApp/src/js/config.js`:
 ## Install and start web application
 
     (WebAppEnv) $ cd /Users/<YOUR NAME HERE>/MyProjects/WebApp
+    (WebAppEnv) $ npm install      // try sudo if it does not work
+    (WebAppEnv) $ npm start
+
+For Linux/WSL:
+####
+    (WebAppEnv) $ cd ~/MyProjects/WebApp
     (WebAppEnv) $ npm install      // try sudo if it does not work
     (WebAppEnv) $ npm start
 
