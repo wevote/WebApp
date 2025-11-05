@@ -580,7 +580,7 @@ class SettingsVerifySecretCode extends Component {
               onClick={(e) => {
                 const buttonId = e.target.id;
                 this.closeVerifyModalLocal();
-                this.pushDataLayer(false, buttonId, 'back');
+                this.pushDataLayer(false, buttonId, 'navigate');
               }}
             >
               {isIOS() ? <ArrowBackIos /> : <ArrowBack />}
@@ -712,7 +712,7 @@ class SettingsVerifySecretCode extends Component {
               onClick={(e) => {
                 const buttonId = e.target.id;
                 this.voterVerifySecretCode();
-                this.pushDataLayer(false, buttonId, 'verify');
+                this.pushDataLayer(false, buttonId, 'navigate');
               }}
               variant="contained"
             >
