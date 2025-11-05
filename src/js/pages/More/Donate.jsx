@@ -253,9 +253,8 @@ class Donate extends Component {
   donationDescriptionReadMore = (readMore, isC4Donation) => (
     <DonationDescriptionContainer>
       <DonationDescription id="donation_copy">
-        When people feel prepared to vote, they’re more likely to cast a ballot — especially in local elections, where participation is lowest.
-        {' '}
-        At WeVote, our mission is to close the confidence gap so more voters bring their voices into our democracy.
+        Become a sustainer of WeVote! Supporting 150+ active volunteers, and 100,000+ voters has hard costs (~$4,000 per month).
+        Your donations go toward servers, data fees, collaboration tools, and other critical paid services we can&apos;t get for free.
       </DonationDescription>
       {readMore && (
         <>
@@ -284,7 +283,7 @@ class Donate extends Component {
         </>
       )}
       <DonationDescription>
-        Give now to help more Americans feel confident and prepared to vote.
+        With your help, we make more Americans feel confident and prepared to vote.
         <br />
         {!readMore && (
           <ReadMoreButton
