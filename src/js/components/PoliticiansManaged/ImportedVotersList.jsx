@@ -211,7 +211,6 @@ export default function ImportedVotersList ({
       </Toolbar>
 
       <Table role="table" aria-label="Imported voters table">
-        {/* header row INSIDE the table, uses the same grid */}
         <TrHead role="row">
           <ThCenter role="columnheader" aria-label="Select" />
           <ThCenter role="columnheader" aria-label="Expand" />
