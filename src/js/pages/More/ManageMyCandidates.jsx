@@ -18,7 +18,7 @@ import PoliticianStore from '../../common/stores/PoliticianStore';
 import VoterStore from '../../stores/VoterStore';
 import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
-import PreviewInvitation from '../../pages/More/PreviewInvitation';
+import PreviewInvitation from './PreviewInvitation';
 
 const ImportedVotersList = React.lazy(() => import(/* webpackChunkName: 'ImportedVotersList' */ '../../components/PoliticiansManaged/ImportedVotersList'));
 const PoliticiansManagedController = React.lazy(() => import(/* webpackChunkName: 'PoliticiansManagedController' */ '../../components/PoliticiansManaged/PoliticiansManagedController'));
