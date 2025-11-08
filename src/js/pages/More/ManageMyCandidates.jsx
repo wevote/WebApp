@@ -18,6 +18,7 @@ import PoliticianStore from '../../common/stores/PoliticianStore';
 import VoterStore from '../../stores/VoterStore';
 import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
+import PreviewInvitation from '../../pages/More/PreviewInvitation';
 
 const ImportedVotersList = React.lazy(() => import(/* webpackChunkName: 'ImportedVotersList' */ '../../components/PoliticiansManaged/ImportedVotersList'));
 const PoliticiansManagedController = React.lazy(() => import(/* webpackChunkName: 'PoliticiansManagedController' */ '../../components/PoliticiansManaged/PoliticiansManagedController'));
@@ -516,41 +517,13 @@ Thanks for your help!`;
       </Layout>
 
       {/* Preview modal */}
-      {showPreview && (
-        <ModalBackdrop role="dialog" aria-modal="true" aria-labelledby="invite-title">
-          <ModalCard>
-            <ModalHeader>
-              <ModalTitle id="invite-title">Preview invitation</ModalTitle>
-              <HeaderActions>
-                <HeaderLink type="button" onClick={handleCopyInviteBody}>
-                  <CopyIcon fontSize="small" />
-                  {' '}
-                  <span>Copy</span>
-                </HeaderLink>
-                <HeaderLink type="button" onClick={handleEditInvite}>
-                  <EditIcon fontSize="small" />
-                  {' '}
-                  <span>Edit</span>
-                </HeaderLink>
-                <CloseX type="button" aria-label="Close" onClick={handlePreviewClose}>×</CloseX>
-              </HeaderActions>
-            </ModalHeader>
-
-            <ManageInfoRow>
-              <InfoDot aria-hidden>i</InfoDot>
-              <span>Link will appear below text</span>
-            </ManageInfoRow>
-
-            <ModalBody>
-              <pre>{invitationBody}</pre>
-            </ModalBody>
-
-            <ModalFooter>
-              <PreviewCloseButton type="button" onClick={handlePreviewClose}>Close</PreviewCloseButton>
-            </ModalFooter>
-          </ModalCard>
-        </ModalBackdrop>
-      )}
+      <PreviewInvitation
+        isOpen={showPreview}
+        onClose={handlePreviewClose}
+        invitationBody={invitationBody}
+        selectedPoliticianId={selectedPoliticianWeVoteId}
+        onEdit={handleEditInvite}
+      />
 
       {/* Edit modal */}
       {showEdit && (
@@ -1273,17 +1246,6 @@ const ModalFooter = styled.div`
   display: flex;
   justify-content: flex-end;
   margin-top: 12px;
-`;
-
-const PreviewCloseButton = styled.button`
-  background: ${DesignTokenColors.primary700};
-  border: 1px solid ${DesignTokenColors.primary700};
-  border-radius: 9999px;
-  color: ${DesignTokenColors.whiteUI};
-  cursor: pointer;
-  padding: 10px 18px;
-
-  &:hover { background: ${DesignTokenColors.primary800}; border-color: ${DesignTokenColors.primary800}; }
 `;
 
 const BarBetween = styled.div`
