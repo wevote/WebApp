@@ -177,7 +177,7 @@ export default class SettingsAddressForDrawer extends Component {
                       {' '}
                     </BoldTextBottom>
                     <ApproximateLocationTextBottom>
-                      <br/>
+                      <br />
                       (approximate location from your internet provider)
                     </ApproximateLocationTextBottom>
                   </CurrentBallotLocationWrapperBottom>

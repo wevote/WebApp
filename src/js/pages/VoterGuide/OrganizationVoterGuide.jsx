@@ -13,6 +13,7 @@ import apiCalming from '../../common/utils/apiCalming';
 import { isIPad } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
+import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import FriendToggle from '../../components/Friends/FriendToggle';
 import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
@@ -502,7 +503,7 @@ export default class OrganizationVoterGuide extends Component {
                 </CardContainer>
                 <ExtraActionsWrapper>
                   <EndorsementCard
-                    buttonText="Endorsements missing?"
+                    buttonText={isMobileScreenSize() ? 'Endorsements?' : 'Endorsements missing?'}
                     narrowColumnDisplay
                     organizationWeVoteId={organizationWeVoteId}
                     // text={`Are there endorsements from ${organization.organization_name} that you expected to see?`}

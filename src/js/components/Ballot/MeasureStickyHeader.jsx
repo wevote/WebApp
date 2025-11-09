@@ -2,12 +2,13 @@ import { keyframes } from '@emotion/react';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
+import standardBoxShadow from '../../common/components/Style/standardBoxShadow';
 import { isIOSAppOnMac, isIPad } from '../../common/utils/cordovaUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
-import standardBoxShadow from '../../common/components/Style/standardBoxShadow';
 import MeasureStore from '../../stores/MeasureStore';
 import { cordovaStickyHeaderPaddingTop } from '../../utils/cordovaOffsets';
+import { getTopOffsetDueToHeadroomWrapper } from '../Style/pageLayoutStyles';
 
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../../common/components/Widgets/ReadMore'));
 const BallotItemSupportOpposeComment = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeComment' */ '../Widgets/BallotItemSupportOpposeComment'));
@@ -97,6 +98,7 @@ const slideDown = keyframes`
     transform: translateY(0);
   }
 `;
+
 const MeasureStickyHeaderWrapper = styled('div')(({ theme }) => (`
   animation: ${slideDown} 150ms ease-in;
   background: white;
@@ -108,6 +110,8 @@ const MeasureStickyHeaderWrapper = styled('div')(({ theme }) => (`
   padding-right: 16px;
   padding-bottom: 8px;
   padding-left: 16px;
+  padding-bottom: ${getTopOffsetDueToHeadroomWrapper()}
+  padding-top: ${getTopOffsetDueToHeadroomWrapper()}
   top: ${cordovaStickyHeaderPaddingTop()};
   width: 100vw;
   z-index: 2;

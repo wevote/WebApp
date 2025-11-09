@@ -250,6 +250,7 @@ class Donate extends Component {
     </span>
   );
 
+  // eslint-disable-next-line no-unused-vars
   donationDescriptionReadMore = (readMore, isC4Donation) => (
     <DonationDescriptionContainer>
       <DonationDescription id="donation_copy">

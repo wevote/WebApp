@@ -11,7 +11,7 @@ import VoterGuideActions from '../../actions/VoterGuideActions';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import apiCalming from '../../common/utils/apiCalming';
 import historyPush from '../../common/utils/historyPush';
-import { displayNoneIfSmallerThanDesktop } from '../../common/utils/isMobileScreenSize';
+import isMobileScreenSize, { displayNoneIfSmallerThanDesktop } from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import toTitleCase from '../../common/utils/toTitleCase';
 import OrganizationVoterGuideCandidateItem from '../../components/VoterGuide/OrganizationVoterGuideCandidateItem';
@@ -223,7 +223,7 @@ class OrganizationVoterGuideCandidate extends Component {
           <EndorsementCard
             bsPrefix="u-margin-top--sm u-stack--xs"
             variant="primary"
-            buttonText="Endorsements missing?"
+            buttonText={isMobileScreenSize() ? 'Endorsements?' : 'Endorsements missing?'}
             text={`Are there endorsements for ${candidateName} that you expected to see?`}
           />
           <ThisIsMeAction

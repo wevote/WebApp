@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import colors from '../../common/components/Style/Colors';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
-import { isIOs6p1OrSmaller, isIOSAppOnMac, isIPadGiantSize } from '../../common/utils/cordovaUtils';
+import { isIOs6p1OrSmaller, isIOSAppOnMac, isIPadGiantSize, isIPhoneSmall } from '../../common/utils/cordovaUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import showBallotDecisionsTabs from '../../utilsApi/showBallotDecisionsTabs'; // 2024-04-16 Upgrade to using this
@@ -29,7 +29,7 @@ export const ContentWrapper = styled('div', {
 })(({ spaceBetween }) => (`
   display: flex;
   flex: 1;
-  min-height: 110px;
+  min-height: ${() => (isIPhoneSmall() ? '66px' : '110px')};
   ${spaceBetween ? 'justify-content: space-between;' : 'justify-content: center;'}
 `));
 

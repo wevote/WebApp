@@ -406,7 +406,7 @@ class Candidate extends Component {
             <EndorsementCard
               bsPrefix="u-margin-top--sm u-stack--xs"
               variant="primary"
-              buttonText="Endorsements missing?"
+              buttonText={isMobileScreenSize() ? 'Endorsements?' : 'Endorsements missing?'}
               text={`Are there endorsements for ${candidateName} that you expected to see?`}
             />
             <ThisIsMeAction

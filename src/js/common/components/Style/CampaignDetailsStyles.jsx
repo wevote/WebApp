@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { isAndroidSizeWide, isIOsSmallerThanPlus, isIPad, isIPadMini, isIPhoneMiniOrSmaller } from '../../utils/cordovaUtils';
+import { isAndroidSizeWide, isIOs6p1OrSmaller, isIOsSmallerThanPlus, isIPad, isIPadMini, isIPhoneMiniOrSmaller } from '../../utils/cordovaUtils';
 import { isAndroid, isCordova, isWebApp } from '../../utils/isCordovaOrWebApp';
 import DesignTokenColors from './DesignTokenColors';
 
@@ -306,7 +306,7 @@ export const SupportButtonFooterWrapperAboveFooterButtons = styled('div')`
 export const SupportButtonPanel = styled('div')`
   background-color: ${DesignTokenColors.neutralUI50};
   border-top: 1px solid #ddd;
-  padding: 10px;
+  ${() => (isIOs6p1OrSmaller() ? 'padding: 0 10px 10px 10px;' : 'padding: 10px;')}
 `;
 
 export const CampaignTitleWrapper = styled('div')(({ theme }) => (`

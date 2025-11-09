@@ -1,8 +1,7 @@
-import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import React, { Suspense } from 'react';
 import { Helmet } from 'react-helmet-async';
-import cordovaScrollablePaneTopPadding from '../../utils/cordovaScrollablePaneTopPadding';
+import styled from 'styled-components';
 import CodeCopier from '../Widgets/CodeCopier';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
@@ -10,7 +9,7 @@ const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenEx
 
 export default function ToolsToShareOnOtherWebsites (props) {
   return (
-    <Wrapper padTop={cordovaScrollablePaneTopPadding()}>
+    <Wrapper>
       <Helmet title="Free civic engagement tools - WeVote" />
       <div className="card container-fluid well">
         <div className="card-main">
@@ -121,11 +120,8 @@ ToolsToShareOnOtherWebsites.propTypes = {
   externalUniqueId: PropTypes.string,
 };
 
-const Wrapper = styled('div', {
-  shouldForwardProp: (prop) => !['padTop'].includes(prop),
-})(({ padTop }) => (`
-  padding-top: ${padTop};
-`));
+const Wrapper = styled('div')`
+`;
 
 const SectionTitle = styled('h4')`
   font-size: 14px;

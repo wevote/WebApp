@@ -13,7 +13,7 @@ import standardBoxShadow from '../../common/components/Style/standardBoxShadow';
 import signInModalGlobalState from '../../common/components/Widgets/signInModalGlobalState';
 import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
 import apiCalming from '../../common/utils/apiCalming';
-import { hasIPhoneNotch, historyPush, isDeviceZoomed, isIOS, isIPhoneMiniOrSmaller } from '../../common/utils/cordovaUtils';
+import { historyPush, isDeviceZoomed, isIOS } from '../../common/utils/cordovaUtils';
 import { normalizedHrefPage } from '../../common/utils/hrefUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize, { handleResize, isSmallTablet, isTablet } from '../../common/utils/isMobileScreenSize';
@@ -71,32 +71,6 @@ class HeaderBar extends Component {
     this.handleTabChange = this.handleTabChange.bind(this);
     this.handleResizeLocal = this.handleResizeLocal.bind(this);
   }
-
-  getTabsValueFromPage = () => {
-    const page = normalizedHrefPage();
-    switch (page) {
-      case 'ballot': return 1;
-      case 'candidatelist':
-      case 'politicianpage': return 2;
-      case 'friends': return 3;
-      case 'news': return 99;
-      case 'challenges': return 4;
-      case 'donate':
-      case 'more/donate': return 5;
-      case 'more':
-      case 'managecandidates': return 99;
-      default: return false;
-    }
-  };
-
-  syncTabsToRoute = () => {
-    const nextPage = normalizedHrefPage();
-    const nextValue = this.getTabsValueFromPage();
-    this.setState({ tabsValue: nextValue, page: nextPage }, () => {
-      this.customHighlightSelector(nextValue);
-    });
-  };
-
 
   componentDidMount () {
     this.appStateSubscription = messageService.getMessage().subscribe((msg) => this.onAppObservableStoreChange(msg));
@@ -277,7 +251,6 @@ class HeaderBar extends Component {
     });
   }
 
-
   onAnalyticsStoreChange () {
     // A page reload for iOS in Cordova after facebook login forces the need for a voterRetrieve, after redrawing the page
     // (and without requiring changes to the API server), the first response that indicates 'is signed in' is an Analytics call response
@@ -289,6 +262,31 @@ class HeaderBar extends Component {
       }
     }
   }
+
+  syncTabsToRoute = () => {
+    const nextPage = normalizedHrefPage();
+    const nextValue = this.getTabsValueFromPage();
+    this.setState({ tabsValue: nextValue, page: nextPage }, () => {
+      this.customHighlightSelector(nextValue);
+    });
+  };
+
+  getTabsValueFromPage = () => {
+    const page = normalizedHrefPage();
+    switch (page) {
+      case 'ballot': return 1;
+      case 'candidatelist':
+      case 'politicianpage': return 2;
+      case 'friends': return 3;
+      case 'news': return 99;
+      case 'challenges': return 4;
+      case 'donate':
+      case 'more/donate': return 5;
+      case 'more':
+      case 'managecandidates': return 99;
+      default: return false;
+    }
+  };
 
   // goToSearch = () => {
   //   historyPush('/opinions');
@@ -497,7 +495,6 @@ class HeaderBar extends Component {
     // console.log('HeaderBar !isMobileScreenSize()', displayMenu);
     return (
       <HeaderBarWrapper
-        hasNotch={hasIPhoneNotch()}
         scrolledDown={scrolledDown}
         hasSubmenu={displayTopMenuShadow()}
       >
@@ -965,9 +962,8 @@ const styles = (theme) => {
 
 const HeaderBarWrapper = styled.div.attrs({
   className: 'HeaderBarWrapper', // div.attrs and className all added to achieve drop-shadow on Donate page
-  shouldForwardProp: (prop) => !['hasNotch', 'scrolledDown', 'hasSubmenu'].includes(prop),
-})(({ hasNotch, scrolledDown, hasSubmenu }) => (`
-  margin-top: ${hasNotch && !isIPhoneMiniOrSmaller() ? '9%' : ''};
+  shouldForwardProp: (prop) => !['scrolledDown', 'hasSubmenu'].includes(prop),
+})(({ scrolledDown, hasSubmenu }) => (`
   box-shadow: ${(!scrolledDown || !hasSubmenu) ? '' : standardBoxShadow('wide')};
   border-bottom: ${(!scrolledDown || !hasSubmenu) ? '' : '1px solid #aaa'};
   padding-left: calc(100vw - 100%);

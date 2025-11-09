@@ -34,9 +34,10 @@ import BallotTitleHeader from '../../components/Ballot/BallotTitleHeader';
 import BallotDecisionsTabs from '../../components/Navigation/BallotDecisionsTabs';
 import BallotShowAllItemsFooter from '../../components/Navigation/BallotShowAllItemsFooter';
 import { ballotWrapperBodyStyles } from '../../components/Style/BallotTitleHeaderStyles';
-import { DualHeaderContainer, HeaderContentContainer, HeaderContentOuterContainer, PageContentContainer } from '../../components/Style/pageLayoutStyles';
+import { DualHeaderContainer, getTopOffsetDueToHeadroomWrapper, HeaderContentContainer, HeaderContentOuterContainer, PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import webAppConfig from '../../config';
 import CordovaPageConstants from '../../constants/CordovaPageConstants';
+import VoterConstants from '../../constants/VoterConstants';
 import BallotStore from '../../stores/BallotStore';
 import ElectionStore from '../../stores/ElectionStore';
 import IssueStore from '../../stores/IssueStore';
@@ -45,7 +46,6 @@ import TwitterStore from '../../stores/TwitterStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import { dumpCssFromId } from '../../utils/appleSiliconUtils';
-import { setBallotDualHeaderContentContainerTopOffset } from '../../utils/cordovaCalculatedOffsets';
 import { pageEnumeration } from '../../utils/cordovaUtilsPageEnumeration';
 import isMobile from '../../utils/isMobile';
 // Lint is not smart enough to know that lazyPreloadPages will not attempt to preload/reload this page
@@ -55,7 +55,6 @@ import lookupPageNameAndPageTypeDict from '../../utils/lookupPageNameAndPageType
 import mapCategoryFilterType from '../../utils/map-category-filter-type';
 import showBallotDecisionsTabs from '../../utilsApi/showBallotDecisionsTabs';
 import { checkShouldUpdate, formatVoterBallotList } from './utils/ballotUtils';
-import VoterConstants from '../../constants/VoterConstants';
 
 const CompleteYourProfileOnBallot = React.lazy(() => import(/* webpackChunkName: 'CompleteYourProfile' */ '../../components/CompleteYourProfile/CompleteYourProfileOnBallot'));
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
@@ -125,7 +124,6 @@ class Ballot extends Component {
   }
 
   componentDidMount () {
-    setBallotDualHeaderContentContainerTopOffset(VoterStore.getVoterIsSignedIn());
     const { location: { pathname: currentPathname } } = window;
     // console.log('Ballot componentDidMount, Current pathname:', currentPathname);
     const ballotBaseUrl = '/ballot';
@@ -1360,7 +1358,7 @@ class Ballot extends Component {
       <div className="ballot_root">
         <Suspense fallback={<LoadingWheelComp />}>
           <SnackNotifier />
-          <DualHeaderContainer id="ballot" scrolledDown={scrolledDown}>
+          <DualHeaderContainer id="ballot" scrolledDown={scrolledDown} topOffset={getTopOffsetDueToHeadroomWrapper()}>
             <HeaderContentOuterContainer>
               <HeaderContentContainer>
                 <div className="container-fluid">

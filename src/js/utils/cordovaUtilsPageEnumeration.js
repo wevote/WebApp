@@ -1,9 +1,9 @@
-import CordovaPageConstants from '../constants/CordovaPageConstants';
 import AppObservableStore from '../common/stores/AppObservableStore';
-import showBallotDecisionsTabs from '../utilsApi/showBallotDecisionsTabs';
 import { normalizedHref } from '../common/utils/hrefUtils';
 import { isSEOFriendlyURL } from '../common/utils/isSEOFriendlyURL';
 import stringContains from '../common/utils/stringContains';
+import CordovaPageConstants from '../constants/CordovaPageConstants';
+import showBallotDecisionsTabs from '../utilsApi/showBallotDecisionsTabs';
 
 // eslint-disable-next-line import/prefer-default-export
 export function pageEnumeration () {
@@ -58,7 +58,9 @@ export function pageEnumeration () {
     return CordovaPageConstants.valuesList;
 
   // then wildcarded second level paths
-  } else if ((path.startsWith('/candidate/') && !isSEOFriendlyURL(path)) || path.startsWith('/verifythisisme/')) {
+  } else if ((path.startsWith('/candidate/') && !isSEOFriendlyURL(path)) ||
+    path.startsWith('/verifythisisme/') ||
+    path.match(/\/.*?\/-\//)) {                 // /bryan-do-politician-from-california/-/
     return CordovaPageConstants.candidateWild;  // /candidate/ == one candidate vs. /cs/ == candidates by state
   } else if (path.match(/\/.*?\/cs\//)) {       // Oct 2025: Non-hierarchical URL, with /cs/ at end, could mean candidate list or measure list
     return CordovaPageConstants.measureWild;

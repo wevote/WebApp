@@ -22,13 +22,12 @@ import RepresentativeStore from '../../../stores/RepresentativeStore';
 import VoterStore from '../../../stores/VoterStore';
 import { cordovaBallotFilterTopMargin } from '../../../utils/cordovaOffsets';
 import { getPageDetails } from '../../../utils/lookupPageNameAndPageTypeDict';
-// import { marginTopOffset } from '../../../utils/MobileHeaderStyles'; // 2025-10-30 This file is missing
+import { marginTopOffset, MobileHeaderInnerContainer, NoInformationProvided } from '../../../utils/MobileHeaderStyles';
 import CampaignChipInLink from '../../components/Campaign/CampaignChipInLink';
 import CampaignOwnersList from '../../components/CampaignSupport/CampaignOwnersList';
 import CompleteYourProfileModalController from '../../components/Settings/CompleteYourProfileModalController';
 import { CampaignDescription, CampaignDescriptionDesktop, CampaignDescriptionDesktopWrapper, CampaignDescriptionWrapper, CampaignOwnersDesktopWrapper, CampaignSubSectionSeeAll, CampaignSubSectionTitle, CampaignSubSectionTitleWrapper, CommentsListWrapper, DetailsSectionDesktopTablet, DetailsSectionMobile, OtherElectionsWrapper, SupportButtonFooterWrapperAboveFooterButtons, SupportButtonPanel } from '../../components/Style/CampaignDetailsStyles';
 import { EditIndicator, IndicatorButtonWrapper, IndicatorRow } from '../../components/Style/CampaignIndicatorStyles';
-import DesignTokenColors from '../../components/Style/DesignTokenColors';
 import { CandidateCampaignListDesktop, CandidateCampaignListMobile, CandidateCampaignWrapper, SectionTitleSimple } from '../../components/Style/PoliticianDetailsStyles';
 import standardBoxShadow from '../../components/Style/standardBoxShadow';
 import { PageWrapper } from '../../components/Style/stepDisplayStyles';
@@ -44,7 +43,7 @@ import apiCalming from '../../utils/apiCalming';
 import { getYearFromUltimateElectionDate } from '../../utils/dateFormat';
 import extractPoliticianDetailsFromUrl from '../../utils/extractPoliticianDetailsFromUrl';
 import historyPush from '../../utils/historyPush';
-import { isWebApp } from '../../utils/isCordovaOrWebApp';
+import { isCordova, isWebApp } from '../../utils/isCordovaOrWebApp';
 import keepHelpingDestination from '../../utils/keepHelpingDestination';
 import { renderLog } from '../../utils/logging';
 import normalizedImagePath from '../../utils/normalizedImagePath';
@@ -70,17 +69,6 @@ const ViewUpcomingBallotButton = React.lazy(() => import(/* webpackChunkName: 'V
 const futureFeaturesDisabled = true;
 const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
-function marginTopOffsetPolitician (scrolledDown) {
-  if (isWebApp()) {
-    if (scrolledDown) {
-      return '-6px';
-    } else {
-      return '39px';
-    }
-  }
-  // return marginTopOffset('ChallengeHomePage'); // 2025-10-30 This file/function is missing
-  return '';
-}
 
 class PoliticianDetailsPage extends Component {
   constructor (props) {
@@ -997,7 +985,7 @@ class PoliticianDetailsPage extends Component {
         </Helmet>
         <PageWrapper>
           <DetailsSectionMobile className="u-show-mobile">
-            <MobileHeaderOuterContainer id="politicianDetailsHeaderContainer" scrolledDown={scrolledDown}>
+            <PoliticianMobileHeaderOuterContainer id="politicianDetailsHeaderContainer" scrolledDown={scrolledDown}>
               <MobileHeaderInnerContainer>
                 <PoliticianMobileHeaderContentContainer>
                   <CandidateTopRow>
@@ -1036,7 +1024,7 @@ class PoliticianDetailsPage extends Component {
                   </HeartToggleAndThermometerWrapper>
                 </PoliticianMobileHeaderContentContainer>
               </MobileHeaderInnerContainer>
-            </MobileHeaderOuterContainer>
+            </PoliticianMobileHeaderOuterContainer>
             <Suspense fallback={<span>&nbsp;</span>}>
               <PoliticianCardForList
                 hideCardMargins
@@ -1530,22 +1518,22 @@ function TranslateYOnScroll (scrolledDown) {
   return isWebApp() ? '-120%' : '-150%';
 }
 
-const MobileHeaderOuterContainer = styled('div', {
+// ${scrolledDown ? 'border-bottom: 1px solid #aaa' : ''};
+// ${scrolledDown ? `box_shadow: ${standardBoxShadow('wide')}` : ''};
+// ${scrolledDown ? 'display: block' : 'display: none'};
+// visibility: ${scrolledDown ? 'visible' : 'hidden'};
+// opacity: ${scrolledDown ? 1 : 0};
+const PoliticianMobileHeaderOuterContainer = styled('div', {
   shouldForwardProp: (prop) => !['scrolledDown'].includes(prop),
 })(({ scrolledDown }) => (`
   width: 100%;
   background-color: #fff;
-  // ${scrolledDown ? 'border-bottom: 1px solid #aaa' : ''};
-  // ${scrolledDown ? `box_shadow: ${standardBoxShadow('wide')}` : ''};
-  // ${scrolledDown ? 'display: block' : 'display: none'};
   overflow: hidden;
   position: fixed;
   z-index: 1;
   right: 0;
   transform: translateY(${TranslateYOnScroll(scrolledDown)});
   transition: transform .3s ease-in-out;
-  // visibility: ${scrolledDown ? 'visible' : 'hidden'};
-  // opacity: ${scrolledDown ? 1 : 0};
 
   ${scrolledDown && `
     animation: ${slideIn} 2s ease-in;
@@ -1553,19 +1541,9 @@ const MobileHeaderOuterContainer = styled('div', {
     box-shadow: ${standardBoxShadow('wide')};
  `}
 
-  margin-top: ${marginTopOffsetPolitician(scrolledDown)};
+  margin-top: ${marginTopOffset(scrolledDown)};
+  top: ${isCordova() ? '0px' : ''}
 `));
-
-const MobileHeaderInnerContainer = styled('div')`
-  display: flex;
-  justify-content: center;
-  width: 100%;
-`;
-
-const NoInformationProvided = styled('div')`
-  color: 1px solid ${DesignTokenColors.neutralUI100};
-  font-size: 12px;
-`;
 
 const PoliticianLinksWrapper = styled('div')`
   display: flex;

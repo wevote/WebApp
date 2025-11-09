@@ -7,6 +7,7 @@ import { Edit as EditIcon } from '@mui/icons-material';
 import SupportActions from '../../actions/SupportActions';
 import { prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../common/utils/cordovaUtils';
 import { isAndroid } from '../../common/utils/isCordovaOrWebApp';
+import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import AppObservableStore from '../../common/stores/AppObservableStore';
 import PoliticianStore from '../../common/stores/PoliticianStore';
@@ -284,6 +285,7 @@ const VoterPositionEntryAndDisplay = ({ classes, externalUniqueId, politicianWeV
               placeholder="What's your opinion?"
               onClick={onClick}
               readOnly
+              style={{ overflow: 'hidden' }}
             />
           </CommentContainer>
         )}
@@ -489,7 +491,7 @@ VoterPositionEntryAndDisplay.propTypes = {
 };
 
 const CommentContainerWrapper = styled('div')`
-  width: 100%;
+  width: ${isMobileScreenSize() ? '80%' : '100%'};
 `;
 
 const ItemActionBarContainer = styled('div')`

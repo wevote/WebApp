@@ -11,7 +11,6 @@ import { Section } from '../../components/Welcome/sectionStyles';
 import PricingSwitch from '../../components/Widgets/PricingSwitch';
 import AppObservableStore from '../../common/stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
-import cordovaScrollablePaneTopPadding from '../../utils/cordovaScrollablePaneTopPadding';
 
 const WelcomeAppbar = React.lazy(() => import(/* webpackChunkName: 'WelcomeAppbar' */ '../../components/Navigation/WelcomeAppbar'));
 const WelcomeFooter = React.lazy(() => import(/* webpackChunkName: 'WelcomeFooter' */ '../../components/Welcome/WelcomeFooter'));
@@ -512,7 +511,7 @@ class Pricing extends Component {
     );
 
     return (
-      <Wrapper padTop={cordovaScrollablePaneTopPadding()}>
+      <Wrapper>
         <Helmet title="Pricing - WeVote" />
         {this.props.modalDisplayMode ? null : <Suspense fallback={<></>}><WelcomeAppbar pathname="/more/pricing" /></Suspense>}
         {this.props.modalDisplayMode ? htmlForModalHeader : htmlForStandaloneHeader}
@@ -671,16 +670,13 @@ const styles = (theme) => ({
   },
 });
 
-const Wrapper = styled('div', {
-  shouldForwardProp: (prop) => !['padTop'].includes(prop),
-})(({ padTop }) => (`
+const Wrapper = styled('div')`
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
   background: white;
   overflow-x: hidden;
-  padding-top: ${padTop};
-`));
+`;
 
 const HeaderForPricing = styled('div')(({ theme }) => (`
   position: relative;

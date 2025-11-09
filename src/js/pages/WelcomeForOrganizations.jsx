@@ -14,7 +14,6 @@ import { Bold, Description, DescriptionContainer, DescriptionImageColumn, Descri
 import Testimonial from '../components/Widgets/Testimonial';
 import AppObservableStore from '../common/stores/AppObservableStore';
 import VoterStore from '../stores/VoterStore';
-import cordovaScrollablePaneTopPadding from '../utils/cordovaScrollablePaneTopPadding';
 
 const WelcomeAppbar = React.lazy(() => import(/* webpackChunkName: 'WelcomeAppbar' */ '../components/Navigation/WelcomeAppbar'));
 const WelcomeFooter = React.lazy(() => import(/* webpackChunkName: 'WelcomeFooter' */ '../components/Welcome/WelcomeFooter'));
@@ -307,7 +306,6 @@ const WelcomeForOrganizationsWrapper = styled('div')`
   align-items: center;
   background: white;
   overflow-x: hidden;
-  padding-top: ${cordovaScrollablePaneTopPadding()};
 `;
 
 const HeaderForOrganizations = styled('div')(({ theme }) => (`

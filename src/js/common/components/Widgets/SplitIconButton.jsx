@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import { getTextColorFromBackground } from '../../utils/color';
+import { isIPhoneSmall } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 
 class SplitIconButton extends PureComponent {
@@ -46,7 +47,7 @@ class SplitIconButton extends PureComponent {
     if (compressedSize) {
       buttonStyles.border = '1px solid rgba(46, 60, 93, .5)';
       buttonStyles.padding = 4;
-      buttonStyles.width = 160;
+      buttonStyles.width = isIPhoneSmall() ? 131 : 160;
       buttonStyles.height = 32;
     }
 
@@ -82,7 +83,7 @@ class SplitIconButton extends PureComponent {
               }
           />
         )}
-        <SplitButtonText>{buttonText}</SplitButtonText>
+        <SplitButtonText compressedsize={compressedSize}>{buttonText}</SplitButtonText>
       </Button>
     );
   }
@@ -136,6 +137,7 @@ const SplitButtonSeparatorLeft = styled('div')`
   z-index: 1;
   position: absolute;
   left: 44px;
+  ${isIPhoneSmall() ? 'display: none;' : ''}
 `;
 
 const SplitButtonSeparatorRight = styled('div')`
@@ -156,16 +158,18 @@ const SplitButtonIcon = styled('span', {
   display: flex;
   align-items: center;
   height: 100%;
-  padding: 0 13.3px;
+  padding: ${isIPhoneSmall() ? '0' : '0 13.3px'};
   width: ${adjustedIconWidth ? `${adjustedIconWidth}px;` : 'width: 44px;'}
 `));
 
-const SplitButtonText = styled('span')`
+const SplitButtonText = styled('span', {
+  shouldForwardProp: (prop) => !['compressedsize'].includes(prop),
+})(({ compressedsize }) => (`
   padding: 8px 8px 8px;
   text-align: center;
   flex: 1 1 0;
-  font-size: 18px;
+  ${compressedsize ? 'font-size: 11px;' : 'font-size: 18px;'}
   font-weight: 500;
-`;
+`));
 
 export default withStyles(styles)(SplitIconButton);

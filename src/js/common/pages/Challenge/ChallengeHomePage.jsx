@@ -14,7 +14,7 @@ import webAppConfig from '../../../config';
 import VoterStore from '../../../stores/VoterStore';
 import { cordovaBallotFilterTopMargin } from '../../../utils/cordovaOffsets';
 import { getPageDetails } from '../../../utils/lookupPageNameAndPageTypeDict';
-// import { cordovaMarginTopOffset } from '../../../utils/MobileHeaderStyles'; // 2025-10-30 This file is missing
+import { cordovaMarginTopOffset, MobileHeaderInnerContainer, NoInformationProvided } from '../../../utils/MobileHeaderStyles';
 import ChallengeAbout from '../../components/Challenge/ChallengeAbout';
 import ThanksForViewingChallenge from '../../components/Challenge/ThanksForViewingChallenge';
 import ChallengeInviteeListRoot from '../../components/ChallengeInviteeListRoot/ChallengeInviteeListRoot';
@@ -22,10 +22,9 @@ import ChallengeParticipantListRoot from '../../components/ChallengeParticipantL
 import ChallengeHeaderSimple from '../../components/Navigation/ChallengeHeaderSimple';
 import ChallengeInviteFriendsTopNavigation from '../../components/Navigation/ChallengeInviteFriendsTopNavigation';
 import CompleteYourProfileModalController from '../../components/Settings/CompleteYourProfileModalController';
-import { CampaignDescriptionDesktop, CampaignDescriptionDesktopWrapper, CampaignDescriptionWrapper, CampaignSubSectionSeeAll, CampaignSubSectionTitle, CampaignSubSectionTitleWrapper, CommentsListWrapper, DetailsSectionDesktopTablet, DetailsSectionMobile, SupportButtonFooterWrapperAboveFooterButtons, SupportButtonPanel, } from '../../components/Style/CampaignDetailsStyles';
+import { CampaignDescriptionDesktop, CampaignDescriptionDesktopWrapper, CampaignDescriptionWrapper, CampaignSubSectionSeeAll, CampaignSubSectionTitle, CampaignSubSectionTitleWrapper, CommentsListWrapper, DetailsSectionDesktopTablet, DetailsSectionMobile, SupportButtonFooterWrapperAboveFooterButtons, SupportButtonPanel } from '../../components/Style/CampaignDetailsStyles';
 import { EditIndicator, IndicatorButtonWrapper, IndicatorRow } from '../../components/Style/CampaignIndicatorStyles';
 import { ChallengeDescription } from '../../components/Style/ChallengeCardStyles';
-import DesignTokenColors from '../../components/Style/DesignTokenColors';
 import standardBoxShadow from '../../components/Style/standardBoxShadow';
 import { PageWrapper } from '../../components/Style/stepDisplayStyles';
 import DelayedLoad from '../../components/Widgets/DelayedLoad';
@@ -62,8 +61,7 @@ function marginTopOffsetChallenge (scrolledDown) {
       return '39px';
     }
   }
-  // return cordovaMarginTopOffset('ChallengeHomePage'); // 2025-10-30 This function is missing
-  return '';
+  return cordovaMarginTopOffset('ChallengeHomePage');
 }
 
 
@@ -339,15 +337,15 @@ class ChallengeHomePage extends Component {
     const {
       challengeDescription,
       challengePhotoLargeUrl,
-      challengePhotoMediumUrl,
+      // challengePhotoMediumUrl,
       challengeSEOFriendlyPath,
       challengeTitle,
       challengeWeVoteId,
       finalElectionDateInPast,
-      isBlockedByWeVote,
-      isBlockedByWeVoteReason,
-      isSupportersCountMinimumExceeded,
-      weVoteHostedProfileImageUrlLarge,
+      // isBlockedByWeVote,
+      // isBlockedByWeVoteReason,
+      // isSupportersCountMinimumExceeded,
+      // weVoteHostedProfileImageUrlLarge,
     } = getChallengeValuesFromIdentifiers(challengeSEOFriendlyPathFromParams, challengeWeVoteIdFromParams);
     // console.log('onChallengeStoreChange AFTER getChallengeValuesFromIdentifiers challengeWeVoteId: ', challengeWeVoteId);
     let pathToUseWhenProfileComplete;
@@ -357,6 +355,7 @@ class ChallengeHomePage extends Component {
       });
       pathToUseWhenProfileComplete = `/${challengeSEOFriendlyPath}/+/why-do-you-support`;
     } else if (challengeWeVoteId) {
+      // eslint-disable-next-line no-unused-vars
       pathToUseWhenProfileComplete = `/++/${challengeWeVoteId}/why-do-you-support`;
     }
     if (challengeWeVoteId) {
@@ -374,14 +373,14 @@ class ChallengeHomePage extends Component {
       challengeDescription,
       challengeDescriptionLimited,
       challengePhotoLargeUrl,
-      challengePhotoMediumUrl,
+      // challengePhotoMediumUrl,
       challengeTitle,
       finalElectionDateInPast,
-      isBlockedByWeVote,
-      isBlockedByWeVoteReason,
-      isSupportersCountMinimumExceeded,
-      pathToUseWhenProfileComplete,
-      weVoteHostedProfileImageUrlLarge,
+      // isBlockedByWeVote,
+      // isBlockedByWeVoteReason,
+      // isSupportersCountMinimumExceeded,
+      // pathToUseWhenProfileComplete,
+      // weVoteHostedProfileImageUrlLarge,
     });
   }
 
@@ -545,7 +544,7 @@ class ChallengeHomePage extends Component {
         </Helmet>
         <PageWrapper>
           <DetailsSectionMobile className="u-show-mobile">
-            <MobileHeaderOuterContainer id="challengeHeaderContainer" scrolledDown={scrolledDown}>
+            <ChallengeMobileHeaderOuterContainer id="challengeHeaderContainer" scrolledDown={scrolledDown}>
               <MobileHeaderInnerContainer>
                 <ChallengeMobileHeaderContentContainer>
                   <ChallengeHeaderSimple
@@ -558,7 +557,7 @@ class ChallengeHomePage extends Component {
                   />
                 </ChallengeMobileHeaderContentContainer>
               </MobileHeaderInnerContainer>
-            </MobileHeaderOuterContainer>
+            </ChallengeMobileHeaderOuterContainer>
             <ChallengeCardForList
               challengeWeVoteId={challengeWeVoteIdForDisplay}
               titleLinkOff
@@ -854,7 +853,7 @@ const ChallengeMobileHeaderContentContainer = styled('div')(({ theme }) => (`
   }
 `));
 
-const MobileHeaderOuterContainer = styled('div', {
+const ChallengeMobileHeaderOuterContainer = styled('div', {
   shouldForwardProp: (prop) => !['scrolledDown'].includes(prop),
 })(({ scrolledDown }) => (`
   // animation: ${slideDown} 300ms ease-in;  // Not currently working -- needs debugging
@@ -873,16 +872,6 @@ const MobileHeaderOuterContainer = styled('div', {
   right: 0;
 `));
 
-const MobileHeaderInnerContainer = styled('div')`
-  display: flex;
-  justify-content: center;
-  width: 100%;
-`;
-
-const NoInformationProvided = styled('div')`
-  color: 1px solid ${DesignTokenColors.neutralUI100};
-  font-size: 12px;
-`;
 
 const JoinChallengeButtonWrapper = styled('div')`
   // display: flex;

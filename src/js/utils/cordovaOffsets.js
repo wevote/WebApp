@@ -1,11 +1,13 @@
-import { getAndroidSize, hasIPhoneNotch, isIOS, isIOSAppOnMac, isIPad, isIPadGiantSize, isIPhone4in, isIPhone4p7in, isIPhone5p5inEarly, isIPhone5p5inMini, isIPhone5p8in, isIPhone6p1in, isIPhone6p5in, isIPhoneMiniOrSmaller, isSimulator } from '../common/utils/cordovaUtils';
+import { getAndroidSize, hasIPhoneNotch, heightOfIOSSpacer, isIOS, isIOSAppOnMac, isIPad, isIPadGiantSize, isIPhone4in, isIPhone4p7in, isIPhone5p5inEarly, isIPhone5p5inMini, isIPhone5p8in, isIPhone6p1in, isIPhone6p5in, isIPhoneMiniOrSmaller, isSimulator } from '../common/utils/cordovaUtils';
 import { normalizedHref } from '../common/utils/hrefUtils';
-import { isAndroid, isCordova, isWebApp } from '../common/utils/isCordovaOrWebApp';
+import { isAndroid, isWebApp } from '../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize from '../common/utils/isMobileScreenSize';
 import { cordovaOffsetLog } from '../common/utils/logging';
 import CordovaPageConstants from '../constants/CordovaPageConstants';
 import { getApplicationViewBooleans } from './applicationUtils';
 import { pageEnumeration } from './cordovaUtilsPageEnumeration';
+
+/* global $ */
 
 //  <PageContentContainer>
 // This determines where the top of the "All", "Choices" and "Decided" tabs should start.
@@ -131,33 +133,6 @@ export function cordovaNetworkNextButtonTop () {
   return undefined;
 }
 
-// <div className="container-main">
-export function cordovaContainerMainOverride () {
-  if (isIOS()) {
-    if (isIPhone6p5in()) {
-      return '34px';
-    }
-  } else if (isAndroid()) {
-    const sizeString = getAndroidSize();
-    if (sizeString === '--fold') {
-      return '0px';
-    }
-    if (sizeString === '--xl') {
-      return '0px';
-    }
-    if (sizeString === '--lg') {
-      return '0px';
-    }
-    if (sizeString === '--md') {
-      return '0px';
-    }
-    if (sizeString === '--sm') {
-      return '16px';
-    }
-  }
-  return undefined;
-}
-
 // <div className="footer-container u-show-mobile-tablet" style={cordovaFooterHeight()}>
 export function cordovaFooterHeight () {
   if (isIOS()) {
@@ -182,29 +157,29 @@ export function cordovaFooterHeight () {
 // <div id="the styled div that follows is the wrapper for voter guide mode">
 //   <Wrapper padTop={cordovaVoterGuideTopPadding()}>
 // This pushes down the voter guide organization Twitter banner - parallel to voterGuideWild
-export function cordovaVoterGuideTopPadding () {
-  if (isIOS()) {
-    const page = pageEnumeration();
-    if (isIPhone5p5inEarly()) {
-      return '11px';
-    } else if (isIPhone5p5inMini()) {
-      return '11px';
-    } else if (isIPhone4p7in()) {
-      return '0px';
-    } else if (hasIPhoneNotch()) {
-      return '28px';
-    } else if (isIPad()) {
-      switch (page) {
-        case CordovaPageConstants.news:             return '19px';
-        case CordovaPageConstants.voterGuideWild:   return '26px';
-        default:                                    return '0px';
-      }
-    }
-  } else if (isAndroid()) {
-    return '0px';
-  }
-  return '12px';
-}
+// export function cordovaVoterGuideTopPadding () {
+//   if (isIOS()) {
+//     const page = pageEnumeration();
+//     if (isIPhone5p5inEarly()) {
+//       return '11px';
+//     } else if (isIPhone5p5inMini()) {
+//       return '11px';
+//     } else if (isIPhone4p7in()) {
+//       return '0px';
+//     } else if (hasIPhoneNotch()) {
+//       return '28px';
+//     } else if (isIPad()) {
+//       switch (page) {
+//         case CordovaPageConstants.news:             return '19px';
+//         case CordovaPageConstants.voterGuideWild:   return '26px';
+//         default:                                    return '0px';
+//       }
+//     }
+//   } else if (isAndroid()) {
+//     return '0px';
+//   }
+//   return '12px';
+// }
 
 // <Toolbar classes={{ root: classes.toolbar }} disableGutters style={{ top: cordovaWelcomeAppToolbarTop() }}>
 export function cordovaWelcomeAppToolbarTop () {
@@ -291,26 +266,18 @@ export function cordovaVoteMiniHeader () {
   return undefined;
 }
 
-
-// <MeasureStickyHeaderWrapper styled>
+// November 2nd, 2025:  This is an irregular measurement, since the HeadroomWrapper has a zero height
+// Easier to calculate the size, than keep working on removing the Top attribute from an AppBar
 export function cordovaStickyHeaderPaddingTop () {
   if (isIOS()) {
-    if (isIPhone4p7in()) {
-      return '68px';
-    } else if (isIPhone5p5inEarly()) {
-      return '68px';
-    } else if (isIPhone5p5inMini()) {
-      return '83px';
-    } else if (isIPhone5p8in()) {
-      return '100px';
-    } else if (isIPhone6p1in()) {
-      return '81px';
-    } else if (isIPhone6p5in()) {
-      return '100px';
-    } else if (hasIPhoneNotch()) {
-      return '76px';
-    } else if (isIPad() || isIOSAppOnMac()) {
-      return '72px';
+    const headerBack = $('#headerBackToBallotAppBar');
+    if (isIOS() && headerBack.length) {
+      const height = heightOfIOSSpacer();
+      const heightAppBar = headerBack.outerHeight();
+      const total = height + heightAppBar;
+      const ret = total > 0 ? `${total}px` : '';
+      cordovaOffsetLog(`cordovaStickyHeaderPaddingTop : ${total}, ret: '${ret}', page: ${pageEnumeration()}`);
+      return ret;
     }
   } else if (isAndroid()) {
     const sizeString = getAndroidSize();
@@ -479,12 +446,12 @@ export function cordovaDrawerTopMargin () {
 }
 
 
-export function cordovaDualHeaderContainerPadding () {
-  if (isIPhone5p5inMini()) return '18px';
-  if (hasIPhoneNotch()) return '0px';
-  if (isCordova()) return '80px';
-  return '8px';
-}
+// export function cordovaDualHeaderContainerPadding () {
+//   if (isIPhone5p5inMini()) return '18px';
+//   if (hasIPhoneNotch()) return '0px';
+//   if (isCordova()) return '80px';
+//   return '8px';
+// }
 
 export function welcomeAppBarPaddingTop () {
   const page = pageEnumeration();
@@ -503,4 +470,11 @@ export function welcomeAppBarPaddingTop () {
       return '0';
     default:                    return '0';
   }
+}
+
+export function cordovaDualHeaderContainerTopOffset () {
+  if (isWebApp()) return '';
+  const heightIOSSpacer = heightOfIOSSpacer();
+  cordovaOffsetLog(`cordovaDualHeaderContainerTopOffset heightIOSSpacer: ${heightIOSSpacer} returned ${heightIOSSpacer}px`);
+  return  `${heightIOSSpacer}px`;
 }
