@@ -22,7 +22,11 @@ class CandidatesBrowser extends PageBrowser {
   }
 
   get candidateCardList () {
-    return $$("//div[contains(@id,'cardForListBodyWrapper')]");
+    return $$("div[class*='CandidateCardListWrapper'] div[id*='cardForListBodyWrapper']");
+  }
+
+   get candidateSearchList () {
+    return $$("div[class*='CandidateCardListWrapper'] div[id*='cardForListBodyWrapper'] , div[class*='PoliticianCardListWrapper'] div[id*='cardForListBodyWrapper']");
   }
 
   get candidateSupportButtonList () {
@@ -58,12 +62,12 @@ class CandidatesBrowser extends PageBrowser {
   }
 
   async getCandidateCardCandidate(cardId) {
-    const candidate = await $(`//div[@id='${cardId}']//a[@id='candidateCardDisplayName' or @id='representativeCardDisplayName']`);
+    const candidate = await $(`//div[@id='${cardId}']//a[@id='candidateCardDisplayName' or @id='representativeCardDisplayName'or @id='politicianCardDisplayName']`);
     return candidate;
   }
 
   async getCandidateCardCandidateName(cardId) {
-    const candidate = await $(`//div[@id='${cardId}']//a[@id='candidateCardDisplayName' or @id='representativeCardDisplayName']`);
+    const candidate = await $(`//div[@id='${cardId}']//a[@id='candidateCardDisplayName' or @id='representativeCardDisplayName' or @id='politicianCardDisplayName']`);
     const candidateName = await candidate.getText();
     return candidateName;
   }

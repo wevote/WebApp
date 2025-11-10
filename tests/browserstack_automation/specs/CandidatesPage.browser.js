@@ -14,10 +14,10 @@ const waitTime = 8000;
 
 beforeEach(async () => {
   await CandidatesPage.load();
-  await driver.pause(waitTime);
+  //await driver.pause(waitTime);
   // Below line to be commented out once defect #WV-943 is fixed.
-  await CandidatesPage.stateSelect.selectByVisibleText('Hawaii');
-  await driver.pause(waitTime);
+ // await CandidatesPage.stateSelect.selectByVisibleText('Hawaii');
+  //await driver.pause(waitTime);
 });
 
 afterEach(async () => {
@@ -401,6 +401,70 @@ describe('Candidates PageBrowser', () => {
   });
 
 
+  // Candidates_022
+  it('verifyCandidateSearch_default text @WV-1073', async () => {
+    const stateNameRandomTC10 = readTestDataStates('random', 1)[0];
+    console.log(`Running verifySearchText using state ${stateNameRandomTC10}`);
+    await CandidatesPage.stateSelect.selectByVisibleText(stateNameRandomTC10);
+    await driver.pause(waitTime);
+    const searchDefaultText = await CandidatesPage.searchBar.getAttribute("placeholder");
+    const expectedSearchText="Search by name or office";
+    await expect(searchDefaultText).toMatch(expectedSearchText);
+  });
+
+  // Candidates_023-Candidates_030
+  const searchText=readSearchText();
+  searchText.forEach(({ text, runType }) => {
+    it(`verifyCandidateSearchByNameOrOffice for ${text} with ${runType}`, async () => {
+      console.log(` *** ***** Running verifySearchText using name: ${text}, state: ${runType}`);
+      const stateNameRandomTC23 = readTestDataStates('random', 1)[0];
+      await CandidatesPage.searchBar.click();
+      await CandidatesPage.searchBar.setValue(''); // overwrite manually
+      await CandidatesPage.searchBar.setValue(text);
+      await driver.keys('Enter');
+      await driver.pause(waitTime);
+      if (runType === 'stateSelected') {
+        await CandidatesPage.stateSelect.selectByVisibleText(stateNameRandomTC23);
+        await driver.pause(waitTime);
+      }
+      const candidateCards = await CandidatesPage.candidateSearchList;
+      console.log(`Total cards: ${candidateCards.length}`)
+      for (let i = 0; i < candidateCards.length; i++) {
+        const card = candidateCards[i];
+        await driver.waitUntil(async () => !(await card.getAttribute('id')).includes('Loading'), {
+          timeout: 4000,
+          timeoutMsg: 'Card Data not Loaded within expected duration of 4 seconds.'
+        });
+        const cardId = await card.getAttribute('id');
+        const candidateNameDisplayed = (await CandidatesPage.getCandidateCardCandidateName(cardId));
+        const officeNameDisplayed = (await CandidatesPage.getCandidateCardOffice(cardId));
+
+        console.log(`Candidate Name: ${candidateNameDisplayed}`);
+        console.log(`Candidate Office: ${officeNameDisplayed}`);
+        if (runType === 'stateSelected'){
+          const expectedStateValue=['National'.toUpperCase(),stateNameRandomTC23.toUpperCase()];
+          const stateNameDisplayed= (await CandidatesPage.getCandidateCardState(cardId)).toUpperCase();
+          console.log(`Candidate State: ${stateNameDisplayed}`);
+          await` expect(expectedStateValue).toContain(stateNameDisplayed);`
+        }
+        try {
+          await expect(candidateNameDisplayed.toLowerCase()).toContain(text.toLowerCase());
+        } catch {
+          await console.log(`Candidate Name did not match the searched text: << ${text} >>, checking Office Name instead...`);
+          try {
+            await expect(officeNameDisplayed.toLowerCase()).toContain(text.toLowerCase());
+          } catch {
+            throw new Error(`Neither candidateName nor officeName matched searched text: "${text}" for Candidate: ${candidateNameDisplayed}`);
+          }
+        }
+      }
+    });
+  });
+
+
+
+
+
 
   // read All Possible Headers from candidatesPage_TC001.json
   function readTestDataAllPossibleHeaders () {
@@ -436,6 +500,30 @@ describe('Candidates PageBrowser', () => {
     const jsonObjH = JSON.parse(fs.readFileSync(`${testDataPath}candidatesPage_TDTooltips.json`));
     const text = jsonObjH[0][type];
     return text;
+  }
+
+    // read searchText text from candidatesPage_TDSearch.json
+  function readSearchText () {
+    const jsonObjH = JSON.parse(fs.readFileSync(`${testDataPath}candidatesPage_TDSearch.json`));
+    const text = jsonObjH[0].SearchText;
+    const allSearch = [];
+    for (const searchText of text)
+    {
+      allSearch.push(searchText.toLowerCase());
+      allSearch.push(searchText.toUpperCase());
+      allSearch.push(searchText[0].toUpperCase()+searchText.slice(1));
+      }
+    const states = ['stateNotSelected', 'stateSelected'];
+    const combinations = [];
+    for (const text of allSearch) {
+      for (const runType of states) {
+          combinations.push({ text, runType });
+      }
+      }
+
+    console.log("Running tests for test data combinations:");
+    console.log(combinations);
+    return combinations;
   }
 
   async function getCandidateCardId () {
