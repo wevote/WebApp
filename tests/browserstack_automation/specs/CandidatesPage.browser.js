@@ -14,7 +14,7 @@ const waitTime = 8000;
 
 beforeEach(async () => {
   await CandidatesPage.load();
-  //await driver.pause(waitTime);
+  await driver.pause(waitTime);
   // Below line to be commented out once defect #WV-943 is fixed.
  // await CandidatesPage.stateSelect.selectByVisibleText('Hawaii');
   //await driver.pause(waitTime);
