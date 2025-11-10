@@ -22,7 +22,7 @@ class CandidatesBrowser extends PageBrowser {
   }
 
   get candidateCardList () {
-    return $$("div[class*='CandidateCardListWrapper'] div[id*='cardForListBodyWrapper']");
+    return $$("//div[contains(@id,'cardForListBodyWrapper')]");
   }
 
    get candidateSearchList () {
