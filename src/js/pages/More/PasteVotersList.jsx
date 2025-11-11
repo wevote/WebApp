@@ -41,7 +41,7 @@ export default function PasteVotersList({
   );
 
   const textFieldJSX = (
-    <div style={{ padding: '18px 18px 28px' }}>
+    <div style={{ padding: '0px 18px 28px' }}>
       <Intro>
         <BulletList>
           <li>Paste a list of voters and their info, separated by line breaks</li>

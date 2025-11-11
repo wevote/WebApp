@@ -1,4 +1,5 @@
 import React, { Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { Helmet } from 'react-helmet-async';
@@ -10,14 +11,13 @@ import {
   Facebook as FacebookIcon,
   X as XIcon,
   FileUpload as UploadIcon,
-  WarningAmber as WarningIcon,
-  FileDownloadOutlined as DownloadIcon,
   CheckCircle as CheckIcon } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import PoliticianStore from '../../common/stores/PoliticianStore';
 import VoterStore from '../../stores/VoterStore';
 import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
+import EditInvitation from './EditInvitation';
 import PasteVotersList from './PasteVotersList';
 import PreviewInvitation from './PreviewInvitation';
 import UploadCSV from './UploadCSV';
@@ -31,6 +31,23 @@ export default function ManageMyCandidates () {
     { we_vote_id: 'cand_2', politician_name: 'Jane Dough' },
     { we_vote_id: 'cand_3', politician_name: 'Kateryna Dough' },
   ]), []);
+
+  const [politiciansToManage, setPoliticiansToManage] = useState(demoPoliticians); // Place demoPoliticians in useState to use dummy data, otherwise place: []
+  const [selectedPoliticianWeVoteId, setSelectedPoliticianWeVoteId] = useState('');
+
+  useEffect(() => {
+    if (!selectedPoliticianWeVoteId && politiciansToManage.length > 0) {
+      setSelectedPoliticianWeVoteId(politiciansToManage[0].we_vote_id);
+    }
+  }, [politiciansToManage, selectedPoliticianWeVoteId]);
+
+  const selectedPolitician = politiciansToManage.find((politician) => politician.we_vote_id === selectedPoliticianWeVoteId) || null;
+
+  // Invitation text
+  const [invitationBody, setInvitationBody] = useState(`Hello friend,
+
+We’d like to invite you to join WeVote to help support ${selectedPolitician?.politician_name || 'our campaign'}.
+Thanks for your help!`);
 
   // Edit modal
   const [showEdit, setShowEdit] = useState(false);
@@ -48,10 +65,8 @@ export default function ManageMyCandidates () {
   const [isSuccessToast, setIsSuccessToast] = useState(false);
   const openEditModal = () => { setInitialInvite(draftInvite); setShowEdit(true); };
   const handleEditInvite = () => {
-    setDraftInvite(invitationBody);
-    setInitialInvite(invitationBody);
     setShowPreview(false);
-    setShowEdit(true);
+    openEditModal();
   };
 
   const toastTimerRef = useRef(null);
@@ -75,21 +90,12 @@ export default function ManageMyCandidates () {
   const handleHideOne = useCallback((row) => { setImportedVoters((p) => p.filter((r) => (r.id || r._idx) !== (row.id || row._idx))); notify('Hidden from list.', true); }, [notify]);
   const handleHideMany = useCallback((rows) => { const ids = new Set(rows.map((r) => r.id || r._idx)); setImportedVoters((p) => p.filter((r) => !ids.has(r.id || r._idx))); notify(`Hidden ${rows.length} item${rows.length === 1 ? '' : 's'}.`, true); }, [notify]);
   const handleSaveInvite = () => {
+    setInvitationBody(draftInvite);
     setShowEdit(false);
     notify('Invitation updated.', true);
   };
   const fileInputRef = useRef(null);
   const [allColumnsOK, setAllColumnsOK] = useState(false);
-  const [politiciansToManage, setPoliticiansToManage] = useState(demoPoliticians); // Place demoPoliticians in useState to use dummy data, otherwise place: []
-  const [selectedPoliticianWeVoteId, setSelectedPoliticianWeVoteId] = useState('');
-
-  useEffect(() => {
-    if (!selectedPoliticianWeVoteId && politiciansToManage.length > 0) {
-      setSelectedPoliticianWeVoteId(politiciansToManage[0].we_vote_id);
-    }
-  }, [politiciansToManage, selectedPoliticianWeVoteId]);
-
-  const selectedPolitician = politiciansToManage.find((politician) => politician.we_vote_id === selectedPoliticianWeVoteId) || null;
 
   const emailRE = /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i;
 
@@ -154,36 +160,13 @@ export default function ManageMyCandidates () {
   const handlePreviewOpen = () => setShowPreview(true);
   const handlePreviewClose = () => setShowPreview(false);
 
-  // Invitation text
-  const invitationBody = `Hello friend,
-
-We’d like to invite you to join WeVote to help support ${selectedPolitician?.politician_name || 'our campaign'}.
-Thanks for your help!`;
-
 
   const handleCopyInviteBody = async () => {
     try {
       await navigator.clipboard.writeText(`${invitationBody}\n\nhttps://wevote.us/join/${selectedPoliticianWeVoteId}`);
-      if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
-      setCopiedMsg('Invitation copied to clipboard. Press ⌘V / Ctrl+V to paste.');
-      toastTimerRef.current = setTimeout(() => setCopiedMsg(''), 2200);
+      notify('Invitation copied to clipboard. Press ⌘V / Ctrl+V to paste.', true);
     } catch {
-      setCopiedMsg('Copy failed. Select the text and copy manually.');
-      if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
-      toastTimerRef.current = setTimeout(() => setCopiedMsg(''), 3000);
-    }
-  };
-
-  const handleEditCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(`${draftInvite}\n\nhttps://wevote.us/join/${selectedPoliticianWeVoteId}`);
-      if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
-      setCopiedMsg('Invitation copied to clipboard. Press ⌘V / Ctrl+V to paste.');
-      toastTimerRef.current = setTimeout(() => setCopiedMsg(''), 2200);
-    } catch {
-      setCopiedMsg('Copy failed. Select the text and copy manually.');
-      if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
-      toastTimerRef.current = setTimeout(() => setCopiedMsg(''), 3000);
+      notify('Copy failed. Select the text and copy manually.', false, 3000);
     }
   };
 
@@ -526,49 +509,19 @@ Thanks for your help!`;
         invitationBody={invitationBody}
         selectedPoliticianId={selectedPoliticianWeVoteId}
         onEdit={handleEditInvite}
+        notify={notify}
       />
       {/* Edit modal */}
-      {showEdit && (
-        <ModalBackdrop role="dialog" aria-modal="true" aria-labelledby="edit-title">
-          <ModalCard>
-            <ModalHeader>
-              <ModalTitle id="edit-title">Edit invitation</ModalTitle>
-              <CloseX type="button" aria-label="Close" onClick={() => setShowEdit(false)}>×</CloseX>
-            </ModalHeader>
-
-            <BarBetween>
-              <ManageInfoRow>
-                <InfoDot aria-hidden>i</InfoDot>
-                <span>Link will appear below text</span>
-              </ManageInfoRow>
-              <HeaderLink type="button" onClick={handleEditCopy}>
-                <CopyIcon fontSize="small" />
-                {' '}
-                <span>Copy</span>
-              </HeaderLink>
-            </BarBetween>
-
-            <EditAreaWrapper>
-              <EditTextArea
-                value={draftInvite}
-                onChange={(e) => setDraftInvite(e.target.value)}
-                aria-label="Invitation text"
-              />
-            </EditAreaWrapper>
-
-            <ModalFooter style={{ justifyContent: 'space-between' }}>
-              <EditCloseButton type="button" onClick={() => setShowEdit(false)}>Close</EditCloseButton>
-              <PrimarySaveBtn
-                type="button"
-                onClick={handleSaveInvite}
-                disabled={draftInvite.trim() === initialInvite.trim()}
-              >
-                Save invitation
-              </PrimarySaveBtn>
-            </ModalFooter>
-          </ModalCard>
-        </ModalBackdrop>
-      )}
+      <EditInvitation
+        isOpen={showEdit}
+        onClose={() => setShowEdit(false)}
+        draftInvite={draftInvite}
+        setDraftInvite={setDraftInvite}
+        initialInvite={initialInvite}
+        onSave={handleSaveInvite}
+        notify={notify}
+        selectedPoliticianId={selectedPoliticianWeVoteId}
+      />
       {/* Paste list modal */}
       <PasteVotersList
         isOpen={showPaste}
@@ -595,13 +548,14 @@ Thanks for your help!`;
         style={{ display: 'none' }}
         onChange={handleCSVSelected}
       />
-      {copiedMsg && (
+      {copiedMsg && createPortal(
         <Toast role="status" aria-live="polite" $success={isSuccessToast}>
           {isSuccessToast && (
             <SuccessIcon><CheckIcon fontSize="small" /></SuccessIcon>
           )}
           <span>{copiedMsg}</span>
-        </Toast>
+        </Toast>,
+        document.body
       )}
       <Suspense fallback={<></>}>
         <PoliticiansManagedController />
@@ -711,68 +665,6 @@ const BulletNoWrap = styled.li`
 
 const HeaderRow = styled.div`
   margin: 6px 0 12px;
-`;
-
-const ErrorBanner = styled.div`
-  align-items: flex-start;
-  background: ${DesignTokenColors.alert50};
-  border: 1px solid ${DesignTokenColors.alert200};
-  border-radius: 12px;
-  color: ${DesignTokenColors.neutralUI800};
-  display: grid;
-  font-size: 12px;
-  gap: 10px;
-  grid-template-columns: 22px 1fr;
-  margin: 8px 0 12px;
-  padding: 12px 14px;
-
-  strong { display: block; margin-bottom: 6px; }
-  ul { margin: 6px 0 0 18px; }
-`;
-
-const ErrorIconWrap = styled.span`
-  color: ${DesignTokenColors.warning600};
-  display: inline-flex;
-  font-size: inherit;
-  line-height: 1;
-  margin-top: 2px;
-`;
-
-const ExampleBox = styled.div`
-  margin: 0 0 6px;
-
-  pre {
-    font-family: inherit;
-    font-size: 13px;
-    line-height: 1.35;
-    margin: 0;
-    white-space: pre-wrap;
-  }
-`;
-
-const HighlightLayer = styled.pre`
-  color: transparent;
-  font: inherit;
-  inset: 0;
-  line-height: inherit;
-  margin: 0;
-  padding: 14px;
-  pointer-events: none;
-  position: absolute;
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  z-index: 0;
-
-  .err {
-    background: ${DesignTokenColors.alert50};
-    border-radius: 6px;
-    display: inline-block;
-    line-height: inherit;
-    margin: 0;
-    padding: 0 4px;
-    vertical-align: top;
-    width: 100%;
-  }
 `;
 
 const PageKicker = styled.h2`
@@ -1022,50 +914,6 @@ const Placeholder = styled.div`
   padding: 24px;
 `;
 
-const ModalBackdrop = styled.div`
-  align-items: center;
-  background: rgba(16,24,40,0.4);
-  bottom: 0;
-  display: flex;
-  justify-content: center;
-  left: 0;
-  position: fixed;
-  right: 0;
-  top: 0;
-  z-index: 9999;
-`;
-
-const ModalCard = styled.div`
-  background: ${DesignTokenColors.whiteUI};
-  border-radius: 14px;
-  box-shadow: 0 10px 30px rgba(16,24,40,0.18);
-  max-width: 860px;
-  padding: 18px 18px 14px;
-  width: calc(100% - 28px);
-`;
-
-const ModalHeader = styled.div`
-  align-items: start;
-  display: flex;
-  gap: 8px;
-  justify-content: space-between;
-`;
-
-const ModalIntro = styled.div`
-  margin: 0 0 8px;
-`;
-
-const ModalTitle = styled.h3`
-  font-size: 22px;
-  margin: 4px 0 8px;
-`;
-
-const HeaderActions = styled.div`
-  align-items: center;
-  display: inline-flex;
-  gap: 14px;
-`;
-
 const HeaderLink = styled.button`
   align-items: center;
   background: none;
@@ -1078,63 +926,6 @@ const HeaderLink = styled.button`
   padding: 6px 8px;
 
   &:hover { background: ${DesignTokenColors.primary50}; }
-`;
-
-const CloseX = styled.button`
-  background: none;
-  border: none;
-  color: ${DesignTokenColors.neutralUI800};
-  cursor: pointer;
-  font-size: 24px;
-  line-height: 1;
-  padding: 2px 6px;
-`;
-
-const ManageInfoRow = styled.div`
-  color: ${DesignTokenColors.neutralUI600};
-  display: flex;
-  gap: 8px;
-  margin: 4px 0 10px;
-`;
-
-const InfoDot = styled.span`
-  align-items: center;
-  border: 1px solid ${DesignTokenColors.neutralUI300};
-  border-radius: 50%;
-  color: ${DesignTokenColors.neutralUI600};
-  display: inline-flex;
-  font-size: 12px;
-  height: 18px;
-  justify-content: center;
-  width: 18px;
-`;
-
-const ModalBody = styled.div`
-  background: ${DesignTokenColors.whiteUI};
-  border: 1px solid ${DesignTokenColors.neutralUI200};
-  border-radius: 10px;
-  min-height: 240px;
-  padding: 14px;
-
-  pre {
-    font: inherit;
-    margin: 0;
-    white-space: pre-wrap;
-  }
-`;
-
-const ModalFooter = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 12px;
-`;
-
-const BarBetween = styled.div`
-  align-items: center;
-  display: flex;
-  gap: 12px;
-  justify-content: space-between;
-  margin: 6px 0 10px;
 `;
 
 const EditAreaWrapper = styled.div`

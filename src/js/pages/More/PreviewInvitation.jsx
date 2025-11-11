@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import styled, { createGlobalStyle } from 'styled-components';
 import { ContentCopy as CopyIcon, Edit as EditIcon } from '@mui/icons-material';
@@ -30,20 +30,17 @@ const PreviewInvitation = ({
   invitationBody,
   selectedPoliticianId,
   onEdit,
+  notify,
 }) => {
-  const toastTimerRef = useRef(null);
-  const [toast, setToast] = useState({ message: '', success: true, visible: false });
 
   const handleCopyInviteBody = async () => {
     try {
-      await navigator.clipboard.writeText(`${invitationBody}\n\nhttps://wevote.us/join/${selectedPoliticianId}`);
-      if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
-      setToast({ message: 'Invitation copied to clipboard. Press ⌘V / Ctrl+V to paste.', success: true, visible: true });
-      toastTimerRef.current = setTimeout(() => setToast(prev => ({ ...prev, visible: false })), 2200);
+      await navigator.clipboard.writeText(
+        `${invitationBody}\n\nhttps://wevote.us/join/${selectedPoliticianId}`
+      );
+      notify('Invitation copied to clipboard. Press ⌘V / Ctrl+V to paste.', true);
     } catch {
-      if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
-      setToast({ message: 'Copy failed. Select the text and copy manually.', success: false, visible: true });
-      toastTimerRef.current = setTimeout(() => setToast(prev => ({ ...prev, visible: false })), 3000);
+      notify('Copy failed. Select the text and copy manually.', false, 3000);
     }
   };
 
@@ -83,10 +80,6 @@ const PreviewInvitation = ({
       <ModalFooter>
         <PreviewCloseButton type="button" onClick={onClose}>Close</PreviewCloseButton>
       </ModalFooter>
-
-      {toast.visible && (
-        <Toast $success={toast.success}>{toast.message}</Toast>
-      )}
     </div>
   );
 
@@ -113,6 +106,7 @@ PreviewInvitation.propTypes = {
   invitationBody: PropTypes.string.isRequired,
   selectedPoliticianId: PropTypes.string.isRequired,
   onEdit: PropTypes.func.isRequired,
+  notify: PropTypes.func.isRequired,
 };
 
 const BarBetween = styled.div`
@@ -203,26 +197,6 @@ const PreviewCloseButton = styled.button`
     background: ${DesignTokenColors.primary800};
     border-color: ${DesignTokenColors.primary800};
   }
-`;
-
-const Toast = styled.div`
-  align-items: center;
-  background: ${({ $success }) => ($success ? DesignTokenColors.neutralUI50 : DesignTokenColors.neutralUI900)};
-  border: ${({ $success }) => ($success ? `1px solid ${DesignTokenColors.neutralUI200}` : 'none')};
-  border-radius: 10px;
-  box-shadow: 0 8px 24px rgba(16,24,40,0.18);
-  color: ${({ $success }) => ($success ? DesignTokenColors.neutralUI900 : DesignTokenColors.whiteUI)};
-  display: inline-flex;
-  font-size: 14px;
-  gap: 10px;
-  left: 50%;
-  max-width: 90vw;
-  position: fixed;
-  text-align: left;
-  top: 10%;
-  transform: translateX(-50%);
-  z-index: 10000;
-  padding: 10px 12px;
 `;
 
 export default PreviewInvitation;
