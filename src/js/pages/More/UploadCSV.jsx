@@ -34,6 +34,7 @@ export default function UploadCSV({
   const dialogTitleJSX = (
     <HeaderRow>
       <Title>Upload CSV file</Title>
+      <HeaderDivider />
       <HeaderLink type="button" onClick={onDownloadSample}>
         <DownloadIcon fontSize="small" />
         <span>Download sample file</span>
@@ -49,7 +50,7 @@ export default function UploadCSV({
           If your document has info in separate columns (e.g., first and last name),
           please combine them into one column to ensure accurate importing.
         </li>
-        <li>You’ll be able to change your column names after uploading.</li>
+        <li>You’ll be able to change your column names to ours after uploading your file.</li>
       </IntroList>
 
       <StructureLabel>WeVote’s data column structure</StructureLabel>
@@ -111,7 +112,7 @@ const HeaderRow = styled.div`
   align-items: center;
   display: flex;
   justify-content: space-between;
-  padding: 18px 12px 0 18px;
+  padding: 0px 12px 0 18px;
 `;
 
 const Title = styled.h3`
@@ -129,6 +130,8 @@ const HeaderLink = styled.button`
   display: inline-flex;
   gap: 6px;
   padding: 6px 8px;
+  font-weight: 400;
+  font-size: 17px;
   &:hover { background: ${DesignTokenColors.primary50}; }
 `;
 
@@ -158,6 +161,14 @@ const Grid = styled.div`
 const Head = styled.div`
   color: ${DesignTokenColors.neutralUI600};
   font-size: 13px;
+`;
+
+const HeaderDivider = styled.div`
+  width: 1px;
+  height: 20px;
+  background: ${DesignTokenColors.neutralUI100};
+  margin: 0 12px;
+  align-self: center;
 `;
 
 const Cell = styled.div`

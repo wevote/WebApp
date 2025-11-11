@@ -11,15 +11,9 @@ const HideTemplateADivider = createGlobalStyle`
   }
 `;
 
-const WideDialogOverride = styled.div`
-  .MuiDialog-paper {
-    max-width: 860px !important;
-    width: calc(100% - 28px) !important;
-  }
-`;
-
 const WidenPreviewModal = createGlobalStyle`
   .MuiDialog-paper:has(#closeModalDisplayTemplateApreviewInvitationModal) {
+    max-width: 860px !important;
     width: 96% !important;
   }
 `;
@@ -54,9 +48,9 @@ const PreviewInvitation = ({
   };
 
   const dialogTitleJSX = (
-    <TitleBar>
-      <TitleText id="invite-title">Preview invitation</TitleText>
-    </TitleBar>
+    <HeaderRow>
+      <Title id="invite-title">Preview invitation</Title>
+    </HeaderRow>
   );
 
   const textFieldJSX = (
@@ -97,7 +91,7 @@ const PreviewInvitation = ({
   );
 
   return (
-    <WideDialogOverride>
+    <>
       <HideTemplateADivider />
       <WidenPreviewModal />
       <SoftenCorners />
@@ -109,7 +103,7 @@ const PreviewInvitation = ({
         tallMode={false}
         textFieldJSX={textFieldJSX}
       />
-    </WideDialogOverride>
+    </>
   );
 };
 
@@ -128,14 +122,14 @@ const BarBetween = styled.div`
   margin-bottom: 12px;
 `;
 
-const TitleBar = styled.div`
-  display: flex;
+const HeaderRow = styled.div`
   align-items: center;
+  display: flex;
   justify-content: space-between;
-  padding: 18px 12px 0 18px;
+  padding: 0px 12px 0 18px;
 `;
 
-const TitleText = styled.h3`
+const Title = styled.h3`
   font-size: 28px;
   font-weight: 400;
 `;
