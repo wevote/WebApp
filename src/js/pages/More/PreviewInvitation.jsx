@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { ContentCopy as CopyIcon, Edit as EditIcon} from '@mui/icons-material';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
+import ModalDisplayTemplateA from '../../components/Widgets/ModalDisplayTemplateA';
 
 const PreviewInvitation = ({
   isOpen,
@@ -28,49 +29,118 @@ const PreviewInvitation = ({
     }
   };
 
-  if (!isOpen) return null;
+  const dialogTitleJSX = <div>Preview Invitation</div>;
+
+  const textFieldJSX = (
+    <div style={{ padding: '8px' }}>
+      <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '8px' }}>
+        <button
+          type="button"
+          onClick={handleCopyInviteBody}
+          style={{ color: DesignTokenColors.neutral600 }}
+        >
+          <CopyIcon fontSize="small" /> Copy
+        </button>
+        <button
+          type="button"
+          onClick={onEdit}
+          style={{ color: DesignTokenColors.neutral600 }}
+        >
+          <EditIcon fontSize="small" /> Edit
+        </button>
+      </div>
+
+      <div
+        style={{
+          whiteSpace: 'pre-wrap',
+          color: DesignTokenColors.neutral900,
+          marginTop: '12px',
+          fontSize: '15px',
+        }}
+      >
+        {invitationBody}
+        <br />
+        <br />
+        https://wevote.us/join/{selectedPoliticianId}
+      </div>
+
+      {toast.visible && (
+        <div
+          style={{
+            marginTop: '12px',
+            color: toast.success ? 'green' : 'red',
+            fontSize: '13px',
+          }}
+        >
+          {toast.message}
+        </div>
+      )}
+    </div>
+  );
+
+  const toggleModal = () => {
+    onClose();
+  };
 
   return (
-    <ModalBackdrop role="dialog" aria-modal="true" aria-labelledby="invite-title">
-      <ModalCard>
-        <ModalHeader>
-          <ModalTitle id="invite-title">Preview invitation</ModalTitle>
-          <HeaderActions>
-            <HeaderLink type="button" onClick={handleCopyInviteBody}>
-              <CopyIcon fontSize="small" />
-              {' '}
-              <span>Copy</span>
-            </HeaderLink>
-            <HeaderLink type="button" onClick={onEdit}>
-              <EditIcon fontSize="small" />
-              {' '}
-              <span>Edit</span>
-            </HeaderLink>
-            <CloseX type="button" aria-label="Close" onClick={onClose}>×</CloseX>
-          </HeaderActions>
-        </ModalHeader>
-
-        <ManageInfoRow>
-          <InfoDot aria-hidden="true">i</InfoDot>
-          <span>Link will appear below text</span>
-        </ManageInfoRow>
-
-        <ModalBody>
-          <pre>{invitationBody}</pre>
-        </ModalBody>
-
-        {copiedMsg && (
-          <ManageInfoRow style={{ color: DesignTokenColors.primary700 }}>
-            {copiedMsg}
-          </ManageInfoRow>
+    <WideDialogOverride>
+      <ModalDisplayTemplateA
+        show={isOpen}
+        toggleModal={onClose}
+        externalUniqueId="previewInvitation"
+        dialogTitleJSX={(
+          <ModalHeader>
+            <ModalTitle id="invite-title">Preview invitation</ModalTitle>
+            <HeaderActions>
+              <HeaderLink type="button" onClick={handleCopyInviteBody}>
+                <CopyIcon fontSize="small" />
+                {' '}
+                <span>Copy</span>
+              </HeaderLink>
+              <HeaderLink type="button" onClick={onEdit}>
+                <EditIcon fontSize="small" />
+                {' '}
+                <span>Edit</span>
+              </HeaderLink>
+              <CloseX
+                type="button"
+                aria-label="Close"
+                onClick={onClose}
+              >
+                ×
+              </CloseX>
+            </HeaderActions>
+          </ModalHeader>
         )}
+        textFieldJSX={(
+          <ModalCard>
+            <ManageInfoRow>
+              …
+            </ManageInfoRow>
 
-        <ModalFooter>
-          <PreviewCloseButton type="button" onClick={onClose}>Close</PreviewCloseButton>
-        </ModalFooter>
-      </ModalCard>
-      {toast.visible && <Toast>{toast.message}</Toast>}
-    </ModalBackdrop>
+            <ModalBody>
+              <pre>{invitationBody}</pre>
+            </ModalBody>
+
+            {copiedMsg && (
+              <ManageInfoRow style={{ color: DesignTokenColors.primary700 }}>
+                {copiedMsg}
+              </ManageInfoRow>
+            )}
+
+            <ModalFooter>
+              <PreviewCloseButton type="button" onClick={onClose}>
+                Close
+              </PreviewCloseButton>
+            </ModalFooter>
+
+            {toast.visible && (
+              <Toast $success={toast.success}>{toast.message}</Toast>
+            )}
+          </ModalCard>
+        )}
+      />
+    </WideDialogOverride>
   );
 };
 
@@ -81,6 +151,15 @@ PreviewInvitation.propTypes = {
   selectedPoliticianId: PropTypes.string.isRequired,
   onEdit: PropTypes.func.isRequired,
 };
+
+const WideDialogOverride = styled.div`
+  .MuiDialog-paper {
+    max-width: 860px !important;
+    width: calc(100% - 28px) !important;
+    border-radius: 14px !important;
+  }
+`;
+
 
 export default PreviewInvitation;
 
