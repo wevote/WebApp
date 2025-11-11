@@ -19,6 +19,8 @@ import VoterStore from '../../stores/VoterStore';
 import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 import PreviewInvitation from './PreviewInvitation';
+import UploadCSV from './UploadCSV';
+
 
 const ImportedVotersList = React.lazy(() => import(/* webpackChunkName: 'ImportedVotersList' */ '../../components/PoliticiansManaged/ImportedVotersList'));
 const PoliticiansManagedController = React.lazy(() => import(/* webpackChunkName: 'PoliticiansManagedController' */ '../../components/PoliticiansManaged/PoliticiansManagedController'));
@@ -524,7 +526,6 @@ Thanks for your help!`;
         selectedPoliticianId={selectedPoliticianWeVoteId}
         onEdit={handleEditInvite}
       />
-
       {/* Edit modal */}
       {showEdit && (
         <ModalBackdrop role="dialog" aria-modal="true" aria-labelledby="edit-title">
@@ -652,61 +653,14 @@ John Dough, jd@email.com, (213)-123-4567`}
           </ModalCard>
         </ModalBackdrop>
       )}
-      {showUpload && (
-        <ModalBackdrop role="dialog" aria-modal="true" aria-labelledby="upload-title">
-          <ModalCard>
-            <UploadHeaderRow>
-              <UploadHeaderLeft>
-                <ModalTitle id="upload-title">Upload CSV file</ModalTitle>
-                <HeaderDivider aria-hidden />
-                <HeaderLink type="button" onClick={handleDownloadSample}>
-                  <DownloadIcon fontSize="small" />
-                  <span>Download sample file</span>
-                </HeaderLink>
-              </UploadHeaderLeft>
-
-              <CloseX type="button" aria-label="Close" onClick={closeUploadModal}>×</CloseX>
-            </UploadHeaderRow>
-
-            <UploadIntroList>
-              <li>WeVote supports the data column structure below.</li>
-              <li>
-                If your document has info in separate columns (e.g., first and last name),
-                please combine them into one column to ensure accurate importing.
-              </li>
-              <li>You’ll be able to change your column names to ours after uploading your file.</li>
-            </UploadIntroList>
-
-            <UploadStructureTitle>WeVote’s data column structure</UploadStructureTitle>
-            {allColumnsOK && (
-              <SuccessBanner role="status" aria-live="polite">
-                <SuccessIcon><CheckIcon fontSize="small" /></SuccessIcon>
-                <span>All of your columns will be imported.</span>
-              </SuccessBanner>
-            )}
-            <UploadGrid aria-label="WeVote data column structure">
-              <UploadGridHead>Name</UploadGridHead>
-              <UploadGridHead>Email</UploadGridHead>
-              <UploadGridHead>Mobile</UploadGridHead>
-              <UploadGridHead>Address</UploadGridHead>
-
-              <UploadGridCell>John Smith</UploadGridCell>
-              <UploadGridCell>js@gmail.com</UploadGridCell>
-              <UploadGridCell>(123) 456-7890</UploadGridCell>
-              <UploadGridCell>
-                123 State St
-                <br />
-                Anytown, CA 94117
-              </UploadGridCell>
-            </UploadGrid>
-
-            <ModalFooter style={{ justifyContent: 'space-between' }}>
-              <EditCloseButton type="button" onClick={closeUploadModal}>Cancel</EditCloseButton>
-              <PrimarySaveBtn type="button" onClick={handleSelectCSV}>Select file</PrimarySaveBtn>
-            </ModalFooter>
-          </ModalCard>
-        </ModalBackdrop>
-      )}
+      {/* Upload CSV modal */}
+      <UploadCSV
+        isOpen={showUpload}
+        onClose={closeUploadModal}
+        onDownloadSample={handleDownloadSample}
+        onSelectFile={handleSelectCSV}
+        allColumnsOK={allColumnsOK}
+      />
       <input
         ref={fileInputRef}
         type="file"

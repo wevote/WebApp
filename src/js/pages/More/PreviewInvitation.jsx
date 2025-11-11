@@ -1,9 +1,34 @@
 import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import { ContentCopy as CopyIcon, Edit as EditIcon} from '@mui/icons-material';
+import styled, { createGlobalStyle } from 'styled-components';
+import { ContentCopy as CopyIcon, Edit as EditIcon } from '@mui/icons-material';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 import ModalDisplayTemplateA from '../../components/Widgets/ModalDisplayTemplateA';
+
+const HideTemplateADivider = createGlobalStyle`
+  .MuiDialogTitle-root:has(#closeModalDisplayTemplateApreviewInvitationModal) > hr {
+    display: none !important;
+  }
+`;
+
+const WideDialogOverride = styled.div`
+  .MuiDialog-paper {
+    max-width: 860px !important;
+    width: calc(100% - 28px) !important;
+  }
+`;
+
+const WidenPreviewModal = createGlobalStyle`
+  .MuiDialog-paper:has(#closeModalDisplayTemplateApreviewInvitationModal) {
+    width: 96% !important;
+  }
+`;
+
+const SoftenCorners = createGlobalStyle`
+  .MuiDialog-paper:has(#closeModalDisplayTemplateApreviewInvitationModal) {
+    border-radius: 14px !important;
+  }
+`;
 
 const PreviewInvitation = ({
   isOpen,
@@ -12,7 +37,6 @@ const PreviewInvitation = ({
   selectedPoliticianId,
   onEdit,
 }) => {
-  const [copiedMsg, setCopiedMsg] = useState('');
   const toastTimerRef = useRef(null);
   const [toast, setToast] = useState({ message: '', success: true, visible: false });
 
@@ -29,116 +53,61 @@ const PreviewInvitation = ({
     }
   };
 
-  const dialogTitleJSX = <div>Preview Invitation</div>;
+  const dialogTitleJSX = (
+    <TitleBar>
+      <TitleText id="invite-title">Preview invitation</TitleText>
+    </TitleBar>
+  );
 
   const textFieldJSX = (
-    <div style={{ padding: '8px' }}>
-      <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '8px' }}>
-        <button
-          type="button"
-          onClick={handleCopyInviteBody}
-          style={{ color: DesignTokenColors.neutral600 }}
-        >
-          <CopyIcon fontSize="small" /> Copy
-        </button>
-        <button
-          type="button"
-          onClick={onEdit}
-          style={{ color: DesignTokenColors.neutral600 }}
-        >
-          <EditIcon fontSize="small" /> Edit
-        </button>
-      </div>
+    <div style={{ padding: "18px 18px 28px" }}>
+      <BarBetween>
+        <ManageInfoRow>
+          <InfoDot aria-hidden>i</InfoDot>
+          <span>Link will appear below text</span>
+        </ManageInfoRow>
 
-      <div
-        style={{
-          whiteSpace: 'pre-wrap',
-          color: DesignTokenColors.neutral900,
-          marginTop: '12px',
-          fontSize: '15px',
-        }}
-      >
-        {invitationBody}
+        <HeaderActions>
+          <HeaderLink type="button" onClick={handleCopyInviteBody}>
+            <CopyIcon fontSize="small" />
+            <span>Copy</span>
+          </HeaderLink>
+
+          <HeaderLink type="button" onClick={onEdit}>
+            <EditIcon fontSize="small" />
+            <span>Edit</span>
+          </HeaderLink>
+        </HeaderActions>
+      </BarBetween>
+
+      <ModalBody>
+        <pre>{invitationBody}</pre>
         <br />
-        <br />
-        https://wevote.us/join/{selectedPoliticianId}
-      </div>
+        <pre>https://wevote.us/join/{selectedPoliticianId}</pre>
+      </ModalBody>
+
+      <ModalFooter>
+        <PreviewCloseButton type="button" onClick={onClose}>Close</PreviewCloseButton>
+      </ModalFooter>
 
       {toast.visible && (
-        <div
-          style={{
-            marginTop: '12px',
-            color: toast.success ? 'green' : 'red',
-            fontSize: '13px',
-          }}
-        >
-          {toast.message}
-        </div>
+        <Toast $success={toast.success}>{toast.message}</Toast>
       )}
     </div>
   );
 
-  const toggleModal = () => {
-    onClose();
-  };
-
   return (
     <WideDialogOverride>
+      <HideTemplateADivider />
+      <WidenPreviewModal />
+      <SoftenCorners />
       <ModalDisplayTemplateA
         show={isOpen}
         toggleModal={onClose}
-        externalUniqueId="previewInvitation"
-        dialogTitleJSX={(
-          <ModalHeader>
-            <ModalTitle id="invite-title">Preview invitation</ModalTitle>
-            <HeaderActions>
-              <HeaderLink type="button" onClick={handleCopyInviteBody}>
-                <CopyIcon fontSize="small" />
-                {' '}
-                <span>Copy</span>
-              </HeaderLink>
-              <HeaderLink type="button" onClick={onEdit}>
-                <EditIcon fontSize="small" />
-                {' '}
-                <span>Edit</span>
-              </HeaderLink>
-              <CloseX
-                type="button"
-                aria-label="Close"
-                onClick={onClose}
-              >
-                ×
-              </CloseX>
-            </HeaderActions>
-          </ModalHeader>
-        )}
-        textFieldJSX={(
-          <ModalCard>
-            <ManageInfoRow>
-              …
-            </ManageInfoRow>
-
-            <ModalBody>
-              <pre>{invitationBody}</pre>
-            </ModalBody>
-
-            {copiedMsg && (
-              <ManageInfoRow style={{ color: DesignTokenColors.primary700 }}>
-                {copiedMsg}
-              </ManageInfoRow>
-            )}
-
-            <ModalFooter>
-              <PreviewCloseButton type="button" onClick={onClose}>
-                Close
-              </PreviewCloseButton>
-            </ModalFooter>
-
-            {toast.visible && (
-              <Toast $success={toast.success}>{toast.message}</Toast>
-            )}
-          </ModalCard>
-        )}
+        externalUniqueId="previewInvitationModal"
+        dialogTitleJSX={dialogTitleJSX}
+        tallMode={false}
+        textFieldJSX={textFieldJSX}
       />
     </WideDialogOverride>
   );
@@ -152,54 +121,28 @@ PreviewInvitation.propTypes = {
   onEdit: PropTypes.func.isRequired,
 };
 
-const WideDialogOverride = styled.div`
-  .MuiDialog-paper {
-    max-width: 860px !important;
-    width: calc(100% - 28px) !important;
-    border-radius: 14px !important;
-  }
-`;
-
-
-export default PreviewInvitation;
-
-const ModalBackdrop = styled.div`
-  align-items: center;
-  background: rgba(16,24,40,0.4);
-  bottom: 0;
+const BarBetween = styled.div`
   display: flex;
-  justify-content: center;
-  left: 0;
-  position: fixed;
-  right: 0;
-  top: 0;
-  z-index: 9999;
-`;
-
-const ModalCard = styled.div`
-  background: ${DesignTokenColors.whiteUI};
-  border-radius: 14px;
-  box-shadow: 0 10px 30px rgba(16,24,40,0.18);
-  max-width: 860px;
-  padding: 18px 18px 14px;
-  width: calc(100% - 28px);
-`;
-
-const ModalHeader = styled.div`
-  align-items: start;
-  display: flex;
-  gap: 8px;
   justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
 `;
 
-const ModalTitle = styled.h3`
-  font-size: 22px;
-  margin: 4px 0 8px;
+const TitleBar = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 12px 0 18px;
+`;
+
+const TitleText = styled.h3`
+  font-size: 28px;
+  font-weight: 400;
 `;
 
 const HeaderActions = styled.div`
+  display: flex;
   align-items: center;
-  display: inline-flex;
   gap: 14px;
 `;
 
@@ -215,16 +158,6 @@ const HeaderLink = styled.button`
   padding: 6px 8px;
 
   &:hover { background: ${DesignTokenColors.primary50}; }
-`;
-
-const CloseX = styled.button`
-  background: none;
-  border: none;
-  color: ${DesignTokenColors.neutralUI800};
-  cursor: pointer;
-  font-size: 24px;
-  line-height: 1;
-  padding: 2px 6px;
 `;
 
 const ManageInfoRow = styled.div`
@@ -246,12 +179,10 @@ const InfoDot = styled.span`
   width: 18px;
 `;
 
-
 const ModalBody = styled.div`
   background: ${DesignTokenColors.whiteUI};
   border: 1px solid ${DesignTokenColors.neutralUI200};
   border-radius: 10px;
-  min-height: 240px;
   padding: 14px;
 
   pre {
@@ -274,8 +205,10 @@ const PreviewCloseButton = styled.button`
   color: ${DesignTokenColors.whiteUI};
   cursor: pointer;
   padding: 10px 18px;
-
-  &:hover { background: ${DesignTokenColors.primary800}; border-color: ${DesignTokenColors.primary800}; }
+  &:hover {
+    background: ${DesignTokenColors.primary800};
+    border-color: ${DesignTokenColors.primary800};
+  }
 `;
 
 const Toast = styled.div`
@@ -297,3 +230,5 @@ const Toast = styled.div`
   z-index: 10000;
   padding: 10px 12px;
 `;
+
+export default PreviewInvitation;
