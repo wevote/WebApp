@@ -396,7 +396,7 @@ class PositionRowListCompressed extends Component {
     let filteredPositionListTooltip = <></>;
     let onePositionNameCount = 1;
     const displayedSpeakerNames = new Set();
-    if (filteredPositionList) {
+    if (filteredPositionList && filteredPositionList.length > 0) {
       filteredPositionListTooltip = isMobileScreenSize() ? (<></>) : (
         <Tooltipstyle className="u-z-index-9020" id="filteredPositionListTooltip">
           <div>
