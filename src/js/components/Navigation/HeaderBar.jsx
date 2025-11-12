@@ -32,6 +32,8 @@ import FriendsTabs from './FriendsTabs';
 import HeaderBarLogo from './HeaderBarLogo';
 import HeaderBarModals from './HeaderBarModals';
 import TabWithPushHistory from './TabWithPushHistory';
+import OpenExternalWebSite from '../../common/components/Widgets/OpenExternalWebSite';
+// import lookupPageNameAndPageTypeDict from '../../utils/lookupPageNameAndPageTypeDict';
 
 const HeaderNotificationMenu = React.lazy(() => import(/* webpackChunkName: 'HeaderNotificationMenu' */ './HeaderNotificationMenu'));
 const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
@@ -46,23 +48,14 @@ class HeaderBar extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      // aboutMenuOpen: false,
       chosenSiteLogoUrl: '',
       componentDidMountFinished: false,
-      // friendInvitationsSentToMe: 0,
       hideWeVoteLogo: false,
-      // inPrivateLabelMode: false,
-      // priorPath: '',
       scrolledDown: false,
-      // showOrganizationModal: false,
       showSignInModal: false,
-      // showPositionDrawer: false,
-      // whatAndHowMuchToShare: '',
       tabsValue: 1,
-      // organizationModalBallotItemWeVoteId: '',
       page: 'non-blank-default-value',
       voter: {},
-      // voterFirstName: '',
       voterIsSignedIn: false,
     };
     this.debugLogging = this.debugLogging.bind(this);
@@ -106,11 +99,7 @@ class HeaderBar extends Component {
     window.addEventListener('resize', this.handleResizeLocal);
 
     const voter = VoterStore.getVoter();
-    // const voterFirstName = VoterStore.getFirstName();
     const voterIsSignedIn = voter && voter.is_signed_in;
-    // if (voterIsSignedIn === undefined) {
-    //   VoterActions.voterRetrieve();
-    // }
     this.setState({
       componentDidMountFinished: true,
       chosenSiteLogoUrl: AppObservableStore.getChosenSiteLogoUrl(),
@@ -188,31 +177,31 @@ class HeaderBar extends Component {
 
   handleTabChange = (newValue) => {
     this.setState({ tabsValue: newValue }, () => {
-    // console.log('handleTabChange ', newValue);
-    /* if (newValue === 4) {  // Check if the tab change is for challenges
-      const currentPathname = window.location.pathname;
-      const destinationPathname = '/challenges';
-      const currentPage = lookupPageNameAndPageTypeDict(currentPathname);
-      const destinationPage = lookupPageNameAndPageTypeDict(destinationPathname);
-
-      TagManager.dataLayer({
-        dataLayer: {
-          event: 'landing',
-          pageDetails: {
-            pageName: currentPage.pageName,
-            pageType: currentPage.pageType,
-            pathname: currentPathname,
+      // console.log('handleTabChange ', newValue);
+      /* if (newValue === 4) {  // Check if the tab change is for challenges
+        const currentPathname = window.location.pathname;
+        const destinationPathname = '/challenges';
+        const currentPage = lookupPageNameAndPageTypeDict(currentPathname);
+        const destinationPage = lookupPageNameAndPageTypeDict(destinationPathname);
+  
+        TagManager.dataLayer({
+          dataLayer: {
+            event: 'landing',
+            pageDetails: {
+              pageName: currentPage.pageName,
+              pageType: currentPage.pageType,
+              pathname: currentPathname,
+            },
+            destinationDetails: {
+              pageName: destinationPage.pageName,
+              pageType: destinationPage.pageType,
+              pathname: destinationPathname,
+              stateCode: VoterStore.getVoterStateCode(),
+            },
+            userDetails: VoterStore.getAnalyticsUserDetails(),
           },
-          destinationDetails: {
-            pageName: destinationPage.pageName,
-            pageType: destinationPage.pageType,
-            pathname: destinationPathname,
-            stateCode: VoterStore.getVoterStateCode(),
-          },
-          userDetails: VoterStore.getAnalyticsUserDetails(),
-        },
-      });
-    } */
+        });
+      } */
       this.customHighlightSelector(newValue);
     });
   }
@@ -224,78 +213,50 @@ class HeaderBar extends Component {
   }
 
   onFriendStoreChange () {
-    // console.log('HeaderBar, onFriendStoreChange textOrEmailSignInInProcess: ' + signInModalGlobalState.get('textOrEmailSignInInProcess'));
     if (!signInModalGlobalState.get('textOrEmailSignInInProcess')) {
-      // console.log('HeaderBar, onFriendStoreChange');
       this.setState({
-        // friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(),
       });
     }
   }
 
   onVoterStoreChange () {
-    // console.log('HeaderBar, onVoterStoreChange textOrEmailSignInInProcess: ' + signInModalGlobalState.get('textOrEmailSignInInProcess'));
-    // console.log('HeaderBar, onVoterStoreChange voter: ', VoterStore.getVoter());
-
     if (isIOS()) {
       if (isDeviceZoomed()) {
-        // October 20, 2021: in iOS, at the Facebook site, within the facebook sign-in dialog, when you tab between the username and the password, our
-        // HeaderBar and FooterBar expand off of the screen -- i.e. the screen zooms in.
-        // Rotating (forcing a redraw) fixes it, so for new we just detect the condition in isDeviceZoomed and force a full DOM reload to clear the zoom.
         window.localStorage.setItem('window.location.reloaded', 'true');
         window.location.reload(true);
       }
     }
 
     if (!signInModalGlobalState.get('textOrEmailSignInInProcess')) {
-      // console.log('HeaderBar, onVoterStoreChange ', VoterStore.getFirstName(), VoterStore.getFullName());
       const voter = VoterStore.getVoter();
-      // const voterFirstName = VoterStore.getFirstName();
       const voterIsSignedIn = voter.is_signed_in || false;
       this.setState({
         voter,
-        // voterFirstName,
         voterIsSignedIn,
         showSignInModal: AppObservableStore.showSignInModal(),
-        // showOrganizationModal: AppObservableStore.showOrganizationModal(),
-        // showPositionDrawer: AppObservableStore.showPositionDrawer(),
       });
     }
   }
 
   // eslint-disable-next-line no-unused-vars
   onAppObservableStoreChange (msg) {
-    // console.log('------ HeaderBar, onAppObservableStoreChange received: ', msg);
     this.setState({
       chosenSiteLogoUrl: AppObservableStore.getChosenSiteLogoUrl(),
       hideWeVoteLogo: AppObservableStore.getHideWeVoteLogo(),
-      // inPrivateLabelMode: AppObservableStore.getHideWeVoteLogo(), // Using this setting temporarily // setState onAppObservableStoreChange is not working for some reason
-      // organizationModalBallotItemWeVoteId: AppObservableStore.getOrganizationModalBallotItemWeVoteId(),
       scrolledDown: AppObservableStore.getScrolledDown(),
-      // whatAndHowMuchToShare: AppObservableStore.getWhatAndHowMuchToShare(),
       showSignInModal: AppObservableStore.showSignInModal(),
     });
   }
 
-
   onAnalyticsStoreChange () {
-    // A page reload for iOS in Cordova after facebook login forces the need for a voterRetrieve, after redrawing the page
-    // (and without requiring changes to the API server), the first response that indicates 'is signed in' is an Analytics call response
-    // console.log('onAnalyticsStoreChange VoterStore.getVoterIsSignedIn(): ', VoterStore.getVoterIsSignedIn(), ' AnalyticsStore.getIsSignedIn(): ', AnalyticsStore.getIsSignedIn(), 'FacebookStore.loggedIn: ', FacebookStore.loggedIn, 'VoterStore.voterDeviceId(): ', VoterStore.voterDeviceId());
     if (isCordova() && VoterStore.getVoterIsSignedIn() === false && (AnalyticsStore.getIsSignedIn() || FacebookStore.loggedIn)) {
       if (apiCalming('voterRetrieve', 500)) {
-        // console.log('Cordova:   HeaderBar onAnalyticsStoreChange, firing voterRetrieve --------------');  // Do not comment out or delete
         VoterActions.voterRetrieve();
       }
     }
   }
 
-  // goToSearch = () => {
-  //   historyPush('/opinions');
-  // }
-
   openHowItWorksModal = () => {
-    // console.log('Opening modal');
     AppObservableStore.setShowHowItWorksModal(true);
   }
 
@@ -308,10 +269,7 @@ class HeaderBar extends Component {
   transitionToYourVoterGuide () {
     // Positions for this organization, for this voter/election
     OrganizationActions.positionListForOpinionMaker(this.state.voter.linked_organization_we_vote_id, true);
-
     // Positions for this organization, NOT including for this voter / election
-    // const googleCivicElectionId = 0;
-    // if (!OrganizationStore.positionListForOpinionMakerHasBeenRetrievedOnce(googleCivicElectionId, this.state.voter.linked_organization_we_vote_id)) {
     OrganizationActions.positionListForOpinionMaker(this.state.voter.linked_organization_we_vote_id, false, true);
     // }
     if (apiCalming('organizationsFollowedRetrieve', 60000)) {
@@ -343,7 +301,6 @@ class HeaderBar extends Component {
     };
 
     if (window.$) {
-      // console.log('customHighlightSelector called for page: ', normalizedHrefPage());
       const ballot = $('#ballotTabHeaderBar');
       const candidates = $('#candidatesTabHeaderBar');
       const challenges = $('#challengesTabHeaderBar');
@@ -408,23 +365,16 @@ class HeaderBar extends Component {
     }
 
     // If user clicked the “More” tab explicitly, force that highlight
-    // if (currentValue === 99) more.css(highlight);
 
     this.setState({ page: normalizedHrefPage() });
   }
 
   goToSettings () {
     AppObservableStore.setDrawerOpen('headerProfileDrawerOpen', true);
-    // if (isMobileScreenSize()) {
-    //   historyPush('/settings/hamburger');
-    // } else {
-    //   historyPush('/settings/profile');
-    // }
   }
 
   toggleSignInModal () {
     const { showSignInModal } = this.state;
-    // console.log('HeaderBar toggleSignInModal showSignInModal:', showSignInModal);
     AppObservableStore.setShowSignInModal(!showSignInModal);
     this.setState({
       showSignInModal: !showSignInModal,
@@ -434,12 +384,10 @@ class HeaderBar extends Component {
   render () {
     renderLog('HeaderBar');  // Set LOG_RENDER_EVENTS to log all renders
     if (!this.state.componentDidMountFinished) {
-      // console.log('HeaderBar suppressed for !componentDidMountFinished');
       return null;
     }
 
     if (window.leanLoadForChromeExtension) {
-      // console.log('HeaderBar suppressed for Chrome Extension');
       return null;    // No header on the iFramed pages for the Chrome Extension
     }
 
@@ -449,7 +397,6 @@ class HeaderBar extends Component {
       voter, voterIsSignedIn, tabsValue,
     } = this.state;
     const inPrivateLabelMode = AppObservableStore.getHideWeVoteLogo();  // setState onAppObservableStoreChange is not working for some reason
-    // console.log('HeaderBar inPrivateLabelMode:', inPrivateLabelMode);
     const voterPhotoUrlMedium = voterPhoto(voter);
 
     const doNotShowWeVoteLogo = weVoteBrandingOff() || hideWeVoteLogo;
@@ -463,9 +410,7 @@ class HeaderBar extends Component {
     if (isSmallTablet()) {
       avatarStyle = { ...avatarStyle, paddingRight: 10 };
     }
-    // console.log('HeaderBar hasNotch, scrolledDown, hasSubmenu', hasIPhoneNotch(), scrolledDown, displayTopMenuShadow());
     const displayMenu = !isMobileScreenSize() || isTablet();
-    // console.log('HeaderBar isMobileScreenSize(), isTablet()', isMobileScreenSize(), isTablet());
     // If NOT signed in, turn Discuss off and How It Works on
     let discussValue;
     let discussVisible = false; // We are turning off Discuss header link for now
@@ -494,7 +439,6 @@ class HeaderBar extends Component {
       squadsValue = 4;
     }
 
-    // console.log('HeaderBar !isMobileScreenSize()', displayMenu);
     return (
       <HeaderBarWrapper
         hasNotch={hasIPhoneNotch()}
@@ -502,14 +446,6 @@ class HeaderBar extends Component {
         hasSubmenu={displayTopMenuShadow()}
       >
         <TopOfPageHeader>
-          {/* <AppBar position="relative" */}
-          {/*        id="headerBarAppBar" */}
-          {/*        color="default" */}
-          {/*        className={`${appBarCname} ${showingBallot || showingFriendsTabs ? ' page-header__ballot' : ''}`} */}
-          {/*        style={pageLayoutStyles()} */}
-          {/*        elevation={0} */}
-          {/* > */}
-          {/* <Toolbar style={headerToolbarStyles()} disableGutters elevation={0}> */}
           <TopRowOneLeftContainer>
             {(showWeVoteLogo || chosenSiteLogoUrl) && (
               <HeaderBarLogo
@@ -587,7 +523,7 @@ class HeaderBar extends Component {
                     )}
                     <Tab
                       value={99}
-                      classes={isWebApp() ? { root: classes.tabRoot, selected: classes.tabSelected } : { root: classes.tabRootMore, selected: classes.tabSelected  }}
+                      classes={isWebApp() ? { root: classes.tabRoot, selected: classes.tabSelected } : { root: classes.tabRootMore, selected: classes.tabSelected }}
                       id="moreTabHeaderBar"
                       label={(
                         <span className={classes.moreLabel}>
@@ -651,6 +587,17 @@ class HeaderBar extends Component {
                         Candidates I&apos;m managing
                       </StyledMoreMenuItem>
                     )}
+                    <StyledMoreMenuItem>
+                      <OpenExternalWebSite
+                        linkIdAttribute="footerLinkBlog"
+                        url="https://blog.wevote.us/"
+                        target="_blank"
+                        body={(
+                          <span>Blog</span>
+                        )}
+                        className={classes.link}
+                      />
+                    </StyledMoreMenuItem>
                   </StyledMoreMenu>
                 </>
               )}
@@ -659,16 +606,6 @@ class HeaderBar extends Component {
           <TopRowOneRightContainer className="u-cursor--pointer">
             {voterIsSignedIn && voterPhotoUrlMedium ? (
               <>
-                {/*
-                <div>
-                  {showEditAddressButton && editAddressButtonHtml}
-                </div>
-                */}
-                {/*
-                <div>
-                  {searchButtonHtml}
-                </div>
-                */}
                 <Suspense fallback={<></>}>
                   <HeaderNotificationMenu />
                 </Suspense>
@@ -692,16 +629,6 @@ class HeaderBar extends Component {
               </>
             ) : (voterIsSignedIn && (
               <>
-                {/*
-                <div>
-                  {showEditAddressButton && editAddressButtonHtml}
-                </div>
-                */}
-                {/*
-                <div>
-                  {searchButtonHtml}
-                </div>
-                */}
                 <Suspense fallback={<></>}>
                   <HeaderNotificationMenu />
                 </Suspense>
@@ -718,16 +645,6 @@ class HeaderBar extends Component {
             ))}
             {!voterIsSignedIn && (
               <>
-                {/*
-                <div>
-                  {showEditAddressButton && editAddressButtonHtml}
-                </div>
-                */}
-                {/*
-                <div>
-                  {searchButtonHtml}
-                </div>
-                */}
                 <SignInButton toggleSignInModal={this.toggleSignInModal} />
               </>
             )}
