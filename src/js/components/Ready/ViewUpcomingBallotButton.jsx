@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import TagManager from 'react-gtm-module';
 import styled from 'styled-components';
+import { isIOs6p1OrSmaller } from '../../common/utils/cordovaUtils';
 import BaseButton from '../Buttons/BaseButton';
 import daysUntil from '../../common/utils/daysUntil';
 import historyPush from '../../common/utils/historyPush';
@@ -128,6 +129,7 @@ class ViewUpcomingBallotButton extends React.Component {
           onClick={(electionDataExistsForUpcomingElection || onlyOfferViewYourBallot) ? () => this.goToBallotLocal(buttonId) : this.goToFindFriends}
           primary
           label={(electionDataExistsForUpcomingElection || onlyOfferViewYourBallot) ? buttonText || 'View Your Ballot' : 'Find Your Friends'}
+          size={isIOs6p1OrSmaller() ? 'small' : 'medium'}
         />
       </ViewUpcomingBallotButtonWrapper>
     );

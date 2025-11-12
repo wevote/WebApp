@@ -1,12 +1,13 @@
 import { AccountCircle } from '@mui/icons-material';
 import { IconButton } from '@mui/material';
-import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
+import styled from 'styled-components';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import LazyImage from '../../common/components/LazyImage';
+import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
 import apiCalming from '../../common/utils/apiCalming';
 import { isIOSAppOnMac, isIPad, isIPadGiantSize } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
@@ -17,7 +18,6 @@ import { renderLog } from '../../common/utils/logging';
 import stringContains from '../../common/utils/stringContains';
 import voterPhoto from '../../common/utils/voterPhoto';
 import webAppConfig from '../../config';
-import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
 import CandidateStore from '../../stores/CandidateStore';
 import MeasureStore from '../../stores/MeasureStore';
 import OfficeStore from '../../stores/OfficeStore';
@@ -733,9 +733,7 @@ class HeaderBackToBallot extends Component {
     return (
       <AppBarForBackTo
         id="headerBackToBallotAppBar"
-        // className={headerClassName}
         color="default"
-        // classes={appBarClasses}
         elevation={0}
       >
         <TopOfPageHeader>

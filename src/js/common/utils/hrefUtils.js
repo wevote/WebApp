@@ -9,7 +9,9 @@ export function normalizedHref () {
 
 export function normalizedHrefPage () {
   const [, page, second] = normalizedHref().split('/');
-  if (second && page === 'more') {
+  if (page === '') {   // app://localhost/index.html#/   root path
+    return 'ready';
+  } else if (second && page === 'more') {
     return `${page}/${second}`;
   } else if (page && page === 'cs') { // Does the pathname start with '/cs/', i.e., candidates for state?
     return 'candidatelist';

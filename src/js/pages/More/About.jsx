@@ -10,11 +10,10 @@ import { weVoteBoard, weVoteFounders, weVoteStaff } from '../../common/constants
 import { renderLog } from '../../common/utils/logging';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import TeamMemberDisplayForList from '../../components/More/TeamMemberDisplayForList';
-import ShowMoreButtons from '../../components/Widgets/ShowMoreButtons';
 import { Title } from '../../components/Welcome/headerWelcomeStyles';
 import { Bold, DescriptionContainer, MemberListContainer, Section, SectionTitle } from '../../components/Welcome/sectionStyles';
+import ShowMoreButtons from '../../components/Widgets/ShowMoreButtons';
 import VoterStore from '../../stores/VoterStore';
-import cordovaScrollablePaneTopPadding from '../../utils/cordovaScrollablePaneTopPadding';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 const WelcomeAppbar = React.lazy(() => import(/* webpackChunkName: 'WelcomeAppbar' */ '../../components/Navigation/WelcomeAppbar'));
@@ -28,10 +27,10 @@ class About extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      showAllFounders: false,
+      // showAllFounders: false,
       showAllBoard: false,
       showAllStaff: false,
-      showMoreButtonWasClickedFounders: false,
+      // showMoreButtonWasClickedFounders: false,
       showMoreButtonWasClickedBoard: false,
       showMoreButtonWasClickedStaff: false,
     };
@@ -42,13 +41,13 @@ class About extends Component {
     window.scrollTo(0, 0);
   }
 
-  showMoreButtonsLinkFounders = () => {
-    const { showMoreButtonWasClickedFounders, showAllFounders } = this.state;
-    this.setState({
-      showMoreButtonWasClickedFounders: !showMoreButtonWasClickedFounders,
-      showAllFounders: !showAllFounders,
-    });
-  }
+  // showMoreButtonsLinkFounders = () => {
+  //   const { showMoreButtonWasClickedFounders, showAllFounders } = this.state;
+  //   this.setState({
+  //     showMoreButtonWasClickedFounders: !showMoreButtonWasClickedFounders,
+  //     showAllFounders: !showAllFounders,
+  //   });
+  // }
 
   showMoreButtonsLinkBoard = () => {
     const { showMoreButtonWasClickedBoard, showAllBoard } = this.state;
@@ -356,7 +355,6 @@ const AboutWrapper = styled('div')`
   align-items: center;
   background: white;
   overflow-x: hidden;
-  padding-top: ${cordovaScrollablePaneTopPadding()};
 `;
 
 const HeaderForAbout = styled('div')(({ theme }) => (`

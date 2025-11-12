@@ -1,9 +1,11 @@
 import { Recommend } from '@mui/icons-material';
-import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { PureComponent, Suspense } from 'react';
+import styled from 'styled-components';
 import SplitIconButton from '../../common/components/Widgets/SplitIconButton';
+import { isIPhoneSmall } from '../../common/utils/cordovaUtils';
+import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import VoterStore from '../../stores/VoterStore';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
@@ -60,6 +62,7 @@ class EndorsementCard extends PureComponent {
               target="_blank"
               title={this.props.title}
               className="u-no-underline"
+              padRight="2px"
               body={(
                 <SplitIconButton
                   backgroundColor={backgroundColor}
@@ -69,6 +72,7 @@ class EndorsementCard extends PureComponent {
                   icon={recommendIcon}
                   id="endorsementCardAddEndorsementsToWeVote"
                   title="Add endorsements to WeVote"
+                  compressedSize={isMobileScreenSize()}
                 />
               )}
             />
@@ -102,7 +106,7 @@ const styles = () => ({
 });
 
 const EndorsementCardOuterWrapper = styled('div')`
-  padding: 16px;
+  padding: ${isIPhoneSmall() ? '16px 16px 16px 4px' : '16px'};
 `;
 
 const EndorsementCardFlexWrapper = styled('div', {

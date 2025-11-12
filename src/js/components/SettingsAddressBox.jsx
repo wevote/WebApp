@@ -290,7 +290,7 @@ SettingsAddressBox.propTypes = {
   introductionHtml: PropTypes.node,
   returnNewTextForMapSearch: PropTypes.func,
   saveUrl: PropTypes.string.isRequired,
-  showCancelEditAddressButton: PropTypes.bool,
+  // showCancelEditAddressButton: PropTypes.bool,
   toggleEditingAddress: PropTypes.func,
   onAddressSaveSuccess: PropTypes.func,
   toggleSelectAddressModal: PropTypes.func,

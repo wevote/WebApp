@@ -15,7 +15,6 @@ import HeaderSwitch from '../components/Widgets/HeaderSwitch';
 import StepsChips from '../components/Widgets/StepsChips';
 import VoterConstants from '../constants/VoterConstants';
 import VoterStore from '../stores/VoterStore';
-import cordovaScrollablePaneTopPadding from '../utils/cordovaScrollablePaneTopPadding';
 import { getPageDetails } from '../utils/lookupPageNameAndPageTypeDict';
 
 const WelcomeAppbar = React.lazy(() => import(/* webpackChunkName: 'WelcomeAppbar' */ '../components/Navigation/WelcomeAppbar'));
@@ -506,7 +505,6 @@ const Wrapper = styled('div')`
   align-items: center;
   background: white;
   overflow-x: hidden;
-  padding-top: ${cordovaScrollablePaneTopPadding()};
 `;
 
 const Section = styled('div')`
