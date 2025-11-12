@@ -54,15 +54,14 @@ class OrganizationList extends Component {
 
   onScroll () {
     const { increaseNumberOfItemsOnScroll } = this.props;
-        if (increaseNumberOfItemsOnScroll) {
+      if (increaseNumberOfItemsOnScroll) {
       const showMoreItemsElement = document.querySelector('#showMoreItemsId');
       // console.log('showMoreItemsElement: ', showMoreItemsElement);
       // console.log('loadingMoreItems: ', this.state.loadingMoreItems);
       if (showMoreItemsElement) {
         const {
           numberOfItemsToDisplay, organizationListToDisplayCount,
-        } = this.state;
-          
+        } = this.state;   
         // console.log('window.height: ', window.innerHeight);
         // console.log('Bottom: ', showMoreItemsElement.getBoundingClientRect().bottom);
         // console.log('numberOfItemsToDisplay: ', numberOfItemsToDisplay);

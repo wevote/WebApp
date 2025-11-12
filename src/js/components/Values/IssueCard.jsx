@@ -195,7 +195,7 @@ class IssueCard extends Component {
       linkedOrganizationCount, linkedOrganizationPreviewList,
       showSignInModal, issueFollowersAdjustment,
     } = this.state;
-        const adjustedFollowersCount =
+    const adjustedFollowersCount =
       Math.max(0, issueFollowersCount + issueFollowersAdjustment);
 
     if (!issueWeVoteId) {
@@ -208,7 +208,7 @@ class IssueCard extends Component {
     issueDescription = issueDescription || '';
 
     const advocatesCount = incomingAdvocatesCount || countOfVoterGuidesUnderThisIssue;
-        let issueImage;
+    let issueImage;
     const numberOfLines = 5;
     if (issueImageSize === 'SMALL') {
       issueImage = (
