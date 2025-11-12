@@ -11,7 +11,7 @@ class OrganizationList extends Component {
     super(props);
     this.state = {
       loadingMoreItems: false,
-      numberOfItemsToDisplay: 10,
+      numberOfItemsToDisplay: 30,
       organizationListToDisplay: [],
       organizationListToDisplayCount: 0,
     };
@@ -62,7 +62,7 @@ class OrganizationList extends Component {
         const {
           numberOfItemsToDisplay, organizationListToDisplayCount,
         } = this.state;
-
+        
         // console.log('window.height: ', window.innerHeight);
         // console.log('Bottom: ', showMoreItemsElement.getBoundingClientRect().bottom);
         // console.log('numberOfItemsToDisplay: ', numberOfItemsToDisplay);
@@ -83,7 +83,7 @@ class OrganizationList extends Component {
     let { numberOfItemsToDisplay } = this.state;
     // console.log('Number of ballot items before increment: ', numberOfItemsToDisplay);
 
-    numberOfItemsToDisplay += 10;
+    numberOfItemsToDisplay += 30;
     // console.log('Number of ballot items after increment: ', numberOfItemsToDisplay);
 
     if (this.numberOfItemsTimer) clearTimeout(this.numberOfItemsTimer);
