@@ -177,31 +177,6 @@ class HeaderBar extends Component {
 
   handleTabChange = (newValue) => {
     this.setState({ tabsValue: newValue }, () => {
-      // console.log('handleTabChange ', newValue);
-      /* if (newValue === 4) {  // Check if the tab change is for challenges
-        const currentPathname = window.location.pathname;
-        const destinationPathname = '/challenges';
-        const currentPage = lookupPageNameAndPageTypeDict(currentPathname);
-        const destinationPage = lookupPageNameAndPageTypeDict(destinationPathname);
-  
-        TagManager.dataLayer({
-          dataLayer: {
-            event: 'landing',
-            pageDetails: {
-              pageName: currentPage.pageName,
-              pageType: currentPage.pageType,
-              pathname: currentPathname,
-            },
-            destinationDetails: {
-              pageName: destinationPage.pageName,
-              pageType: destinationPage.pageType,
-              pathname: destinationPathname,
-              stateCode: VoterStore.getVoterStateCode(),
-            },
-            userDetails: VoterStore.getAnalyticsUserDetails(),
-          },
-        });
-      } */
       this.customHighlightSelector(newValue);
     });
   }
