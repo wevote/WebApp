@@ -21,6 +21,8 @@ import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 
 const ImportedVotersList = React.lazy(() => import(/* webpackChunkName: 'ImportedVotersList' */ '../../components/PoliticiansManaged/ImportedVotersList'));
 const PoliticiansManagedController = React.lazy(() => import(/* webpackChunkName: 'PoliticiansManagedController' */ '../../components/PoliticiansManaged/PoliticiansManagedController'));
+const PasteListModal = React.lazy(() => import(/* webpackChunkName: 'PasteListModal' */ '../../pages/More/PasteListModal'));
+
 export default function ManageMyCandidates () {
   const demoPoliticians = useMemo(() => ([
     { we_vote_id: 'cand_1', politician_name: 'John Dough' },
@@ -594,91 +596,17 @@ Thanks for your help!`;
           </ModalCard>
         </ModalBackdrop>
       )}
-      {showPaste && (
-        <ModalBackdrop role="dialog" aria-modal="true" aria-labelledby="paste-title">
-          <ModalCard>
-            <ModalHeader>
-              <ModalTitle id="paste-title">Paste voters</ModalTitle>
-              <CloseX type="button" aria-label="Close" onClick={closePaste}>×</CloseX>
-            </ModalHeader>
-
-            <ModalIntro>
-              <BulletList>
-                <li>Paste a list of voters and their info, separated by line breaks</li>
-                <BulletNoWrap>
-                  The content of each info section can be with or without brackets, i.e.
-                  <code> name@email.com</code>
-                  {' '}
-                  or
-                  <code>&lt;name@email.com&gt;</code>
-                </BulletNoWrap>
-              </BulletList>
-
-              <ExampleBox>
-                <b>Example:</b>
-                <pre>
-                  {`Jane Dough, jd@email.com, (212)-123-4567
-John Dough, jd@email.com, (213)-123-4567`}
-                </pre>
-              </ExampleBox>
-            </ModalIntro>
-
-            {pasteErrors.length > 0 && (
-              <ErrorBanner role="alert" aria-live="polite">
-                <ErrorIconWrap><WarningIcon fontSize="small" /></ErrorIconWrap>
-                <div>
-                  <strong>Whoops! We’re having trouble importing your list of voters.</strong>
-                  <div>Please check the highlighted lines and make sure that:</div>
-                  <ul>
-                    <li>
-                      There’s a
-                      <b>line break</b>
-                      {' '}
-                      after each voter (using the Enter or Return key)
-                    </li>
-                    <li>
-                      There’s a
-                      <b>single comma</b>
-                      {' '}
-                      separating each piece of information
-                    </li>
-                  </ul>
-                  <small>
-                    Problem
-                    {' '}
-                    {pasteErrors.length > 1 ? 'lines' : 'line'}
-                    :
-                    {' '}
-                    {pasteErrors.map((e) => e.line + 1).join(', ')}
-                  </small>
-                </div>
-              </ErrorBanner>
-            )}
-            <EditAreaWrapper>
-              <HighlightLayer
-                aria-hidden="true"
-                dangerouslySetInnerHTML={{ __html: mirrorHTML || escapeHTML(pasteText || '') }}
-              />
-              <EditTextArea
-                value={pasteText}
-                onChange={onPasteTextChange}
-                aria-label="Paste voters list"
-              />
-            </EditAreaWrapper>
-
-            <ModalFooter style={{ justifyContent: 'space-between' }}>
-              <EditCloseButton type="button" onClick={closePaste}>Cancel</EditCloseButton>
-              <PrimarySaveBtn
-                type="button"
-                onClick={handlePasteImport}
-                disabled={!pasteText.trim()}
-              >
-                {prospectiveCount ? `Import ${prospectiveCount} voter${prospectiveCount > 1 ? 's' : ''}` : 'Import'}
-              </PrimarySaveBtn>
-            </ModalFooter>
-          </ModalCard>
-        </ModalBackdrop>
-      )}
+      {showPaste&&(
+        <PasteListModal 
+        showPaste={showPaste}
+        closePaste={closePaste}
+        pasteText={pasteText}
+        onPasteTextChange={onPasteTextChange}
+        handlePasteImport={handlePasteImport}
+        pasteErrors={pasteErrors}
+        mirrorHTML={mirrorHTML}
+        escapeHTML={escapeHTML}
+        prospectiveCount={prospectiveCount} />)}
       {showUpload && (
         <ModalBackdrop role="dialog" aria-modal="true" aria-labelledby="upload-title">
           <ModalCard>
