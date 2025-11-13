@@ -10,7 +10,6 @@ import {
   Facebook as FacebookIcon,
   X as XIcon,
   FileUpload as UploadIcon,
-  WarningAmber as WarningIcon,
   FileDownloadOutlined as DownloadIcon,
   CheckCircle as CheckIcon } from '@mui/icons-material';
 import PropTypes from 'prop-types';
@@ -21,7 +20,7 @@ import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 
 const ImportedVotersList = React.lazy(() => import(/* webpackChunkName: 'ImportedVotersList' */ '../../components/PoliticiansManaged/ImportedVotersList'));
 const PoliticiansManagedController = React.lazy(() => import(/* webpackChunkName: 'PoliticiansManagedController' */ '../../components/PoliticiansManaged/PoliticiansManagedController'));
-const PasteListModal = React.lazy(() => import(/* webpackChunkName: 'PasteListModal' */ '../../pages/More/PasteListModal'));
+const PasteListModal = React.lazy(() => import(/* webpackChunkName: 'PasteListModal' */ './PasteListModal'));
 
 export default function ManageMyCandidates () {
   const demoPoliticians = useMemo(() => ([
@@ -596,8 +595,8 @@ Thanks for your help!`;
           </ModalCard>
         </ModalBackdrop>
       )}
-      {showPaste&&(
-        <PasteListModal 
+      {showPaste && (
+        <PasteListModal
         showPaste={showPaste}
         closePaste={closePaste}
         pasteText={pasteText}
@@ -606,7 +605,9 @@ Thanks for your help!`;
         pasteErrors={pasteErrors}
         mirrorHTML={mirrorHTML}
         escapeHTML={escapeHTML}
-        prospectiveCount={prospectiveCount} />)}
+        prospectiveCount={prospectiveCount}
+        />
+      )}
       {showUpload && (
         <ModalBackdrop role="dialog" aria-modal="true" aria-labelledby="upload-title">
           <ModalCard>
