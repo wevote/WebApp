@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import React from 'react';
 import {WarningAmber as WarningIcon} from '@mui/icons-material';
 import { renderLog } from '../../common/utils/logging';
-import ModalDisplayTemplateA from '../../components/Widgets/ModalDisplayTemplateA';
+import ModalDisplayTemplateA from '../Widgets/ModalDisplayTemplateA';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 
 
@@ -143,6 +143,50 @@ const BulletNoWrap = styled.li`
   code { white-space: nowrap; }
 `;
 
+const CloseX = styled.button`
+  background: none;
+  border: none;
+  color: ${DesignTokenColors.neutralUI800};
+  cursor: pointer;
+  font-size: 24px;
+  line-height: 1;
+  padding: 2px 6px;
+`;
+
+const EditAreaWrapper = styled.div`
+  background: ${DesignTokenColors.whiteUI};
+  border: 1px solid ${DesignTokenColors.neutralUI300};
+  border-radius: 10px;
+  min-height: 260px;
+  overflow: hidden;
+  position: relative;
+`;
+
+const EditTextArea = styled.textarea`
+  background: transparent;
+  border: none;
+  color: ${DesignTokenColors.neutralUI900};
+  font: inherit;
+  min-height: 300px;
+  outline: none;
+  padding: 14px;
+  position: relative;
+  resize: vertical;
+  width: 100%;
+  z-index: 1;
+`;
+
+const EditCloseButton = styled.button`
+  background: ${DesignTokenColors.whiteUI};
+  border: none;
+  border-radius: 9999px;
+  color: ${DesignTokenColors.neutralUI800};
+  cursor: pointer;
+  padding: 10px 18px;
+
+  &:hover { background: ${DesignTokenColors.neutralUI50}; }
+`;
+
 const ErrorBanner = styled.div`
   align-items: flex-start;
   background: ${DesignTokenColors.alert50};
@@ -243,55 +287,10 @@ const ModalTitle = styled.h3`
   margin: 4px 0 8px;
 `;
 
-const CloseX = styled.button`
-  background: none;
-  border: none;
-  color: ${DesignTokenColors.neutralUI800};
-  cursor: pointer;
-  font-size: 24px;
-  line-height: 1;
-  padding: 2px 6px;
-`;
-
-
 const ModalFooter = styled.div`
   display: flex;
   justify-content: flex-end;
   margin-top: 12px;
-`;
-
-const EditAreaWrapper = styled.div`
-  background: ${DesignTokenColors.whiteUI};
-  border: 1px solid ${DesignTokenColors.neutralUI300};
-  border-radius: 10px;
-  min-height: 260px;
-  overflow: hidden;
-  position: relative;
-`;
-
-const EditTextArea = styled.textarea`
-  background: transparent;
-  border: none;
-  color: ${DesignTokenColors.neutralUI900};
-  font: inherit;
-  min-height: 300px;
-  outline: none;
-  padding: 14px;
-  position: relative;
-  resize: vertical;
-  width: 100%;
-  z-index: 1;
-`;
-
-const EditCloseButton = styled.button`
-  background: ${DesignTokenColors.whiteUI};
-  border: none;
-  border-radius: 9999px;
-  color: ${DesignTokenColors.neutralUI800};
-  cursor: pointer;
-  padding: 10px 18px;
-
-  &:hover { background: ${DesignTokenColors.neutralUI50}; }
 `;
 
 const PrimarySaveBtn = styled.button`

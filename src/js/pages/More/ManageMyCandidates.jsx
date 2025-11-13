@@ -20,7 +20,7 @@ import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 
 const ImportedVotersList = React.lazy(() => import(/* webpackChunkName: 'ImportedVotersList' */ '../../components/PoliticiansManaged/ImportedVotersList'));
 const PoliticiansManagedController = React.lazy(() => import(/* webpackChunkName: 'PoliticiansManagedController' */ '../../components/PoliticiansManaged/PoliticiansManagedController'));
-const PasteListModal = React.lazy(() => import(/* webpackChunkName: 'PasteListModal' */ './PasteListModal'));
+const PasteListModal = React.lazy(() => import(/* webpackChunkName: 'PasteListModal' */ '../../components/More/PasteListModal'));
 
 export default function ManageMyCandidates () {
   const demoPoliticians = useMemo(() => ([
@@ -597,15 +597,15 @@ Thanks for your help!`;
       )}
       {showPaste && (
         <PasteListModal
-        showPaste={showPaste}
-        closePaste={closePaste}
-        pasteText={pasteText}
-        onPasteTextChange={onPasteTextChange}
-        handlePasteImport={handlePasteImport}
-        pasteErrors={pasteErrors}
-        mirrorHTML={mirrorHTML}
-        escapeHTML={escapeHTML}
-        prospectiveCount={prospectiveCount}
+          showPaste={showPaste}
+          closePaste={closePaste}
+          pasteText={pasteText}
+          onPasteTextChange={onPasteTextChange}
+          handlePasteImport={handlePasteImport}
+          pasteErrors={pasteErrors}
+          mirrorHTML={mirrorHTML}
+          escapeHTML={escapeHTML}
+          prospectiveCount={prospectiveCount}
         />
       )}
       {showUpload && (
@@ -770,84 +770,8 @@ const PasteListIcon = ({ size = 22, title = 'Paste list', ...props }) => (
   </svg>
 );
 
-// bullets
-const BulletList = styled.ul`
-  font-size: 13px;        /* smaller bullets */
-  line-height: 1.35;
-  padding: 0 18px;
-
-  code { font-size: 12.5px; white-space: nowrap; } /* keep emails on one line & a touch smaller */
-`;
-
-const BulletNoWrap = styled.li`
-  @media (min-width: 900px) { white-space: nowrap; }
-  code { white-space: nowrap; }
-`;
-
 const HeaderRow = styled.div`
   margin: 6px 0 12px;
-`;
-
-const ErrorBanner = styled.div`
-  align-items: flex-start;
-  background: ${DesignTokenColors.alert50};
-  border: 1px solid ${DesignTokenColors.alert200};
-  border-radius: 12px;
-  color: ${DesignTokenColors.neutralUI800};
-  display: grid;
-  font-size: 12px;
-  gap: 10px;
-  grid-template-columns: 22px 1fr;
-  margin: 8px 0 12px;
-  padding: 12px 14px;
-
-  strong { display: block; margin-bottom: 6px; }
-  ul { margin: 6px 0 0 18px; }
-`;
-
-const ErrorIconWrap = styled.span`
-  color: ${DesignTokenColors.warning600};
-  display: inline-flex;
-  font-size: inherit;
-  line-height: 1;
-  margin-top: 2px;
-`;
-
-const ExampleBox = styled.div`
-  margin: 0 0 6px;
-
-  pre {
-    font-family: inherit;
-    font-size: 13px;
-    line-height: 1.35;
-    margin: 0;
-    white-space: pre-wrap;
-  }
-`;
-
-const HighlightLayer = styled.pre`
-  color: transparent;
-  font: inherit;
-  inset: 0;
-  line-height: inherit;
-  margin: 0;
-  padding: 14px;
-  pointer-events: none;
-  position: absolute;
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  z-index: 0;
-
-  .err {
-    background: ${DesignTokenColors.alert50};
-    border-radius: 6px;
-    display: inline-block;
-    line-height: inherit;
-    margin: 0;
-    padding: 0 4px;
-    vertical-align: top;
-    width: 100%;
-  }
 `;
 
 const PageKicker = styled.h2`
@@ -1124,10 +1048,6 @@ const ModalHeader = styled.div`
   display: flex;
   gap: 8px;
   justify-content: space-between;
-`;
-
-const ModalIntro = styled.div`
-  margin: 0 0 8px;
 `;
 
 const ModalTitle = styled.h3`
