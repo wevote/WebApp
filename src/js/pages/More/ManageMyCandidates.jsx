@@ -10,7 +10,7 @@ import {
   Facebook as FacebookIcon,
   X as XIcon,
   FileUpload as UploadIcon,
-  WarningAmber as WarningIcon,
+  FileDownloadOutlined as DownloadIcon,
   CheckCircle as CheckIcon } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import PoliticianStore from '../../common/stores/PoliticianStore';
@@ -21,6 +21,8 @@ import UploadCSVModal from '../../components/More/UploadCSVModal';
 
 const ImportedVotersList = React.lazy(() => import(/* webpackChunkName: 'ImportedVotersList' */ '../../components/PoliticiansManaged/ImportedVotersList'));
 const PoliticiansManagedController = React.lazy(() => import(/* webpackChunkName: 'PoliticiansManagedController' */ '../../components/PoliticiansManaged/PoliticiansManagedController'));
+const PasteListModal = React.lazy(() => import(/* webpackChunkName: 'PasteListModal' */ '../../components/More/PasteListModal'));
+
 export default function ManageMyCandidates () {
   const demoPoliticians = useMemo(() => ([
     { we_vote_id: 'cand_1', politician_name: 'John Dough' },
@@ -595,89 +597,17 @@ Thanks for your help!`;
         </ModalBackdrop>
       )}
       {showPaste && (
-        <ModalBackdrop role="dialog" aria-modal="true" aria-labelledby="paste-title">
-          <ModalCard>
-            <ModalHeader>
-              <ModalTitle id="paste-title">Paste voters</ModalTitle>
-              <CloseX type="button" aria-label="Close" onClick={closePaste}>×</CloseX>
-            </ModalHeader>
-
-            <ModalIntro>
-              <BulletList>
-                <li>Paste a list of voters and their info, separated by line breaks</li>
-                <BulletNoWrap>
-                  The content of each info section can be with or without brackets, i.e.
-                  <code> name@email.com</code>
-                  {' '}
-                  or
-                  <code>&lt;name@email.com&gt;</code>
-                </BulletNoWrap>
-              </BulletList>
-
-              <ExampleBox>
-                <b>Example:</b>
-                <pre>
-                  {`Jane Dough, jd@email.com, (212)-123-4567
-John Dough, jd@email.com, (213)-123-4567`}
-                </pre>
-              </ExampleBox>
-            </ModalIntro>
-
-            {pasteErrors.length > 0 && (
-              <ErrorBanner role="alert" aria-live="polite">
-                <ErrorIconWrap><WarningIcon fontSize="small" /></ErrorIconWrap>
-                <div>
-                  <strong>Whoops! We’re having trouble importing your list of voters.</strong>
-                  <div>Please check the highlighted lines and make sure that:</div>
-                  <ul>
-                    <li>
-                      There’s a
-                      <b>line break</b>
-                      {' '}
-                      after each voter (using the Enter or Return key)
-                    </li>
-                    <li>
-                      There’s a
-                      <b>single comma</b>
-                      {' '}
-                      separating each piece of information
-                    </li>
-                  </ul>
-                  <small>
-                    Problem
-                    {' '}
-                    {pasteErrors.length > 1 ? 'lines' : 'line'}
-                    :
-                    {' '}
-                    {pasteErrors.map((e) => e.line + 1).join(', ')}
-                  </small>
-                </div>
-              </ErrorBanner>
-            )}
-            <EditAreaWrapper>
-              <HighlightLayer
-                aria-hidden="true"
-                dangerouslySetInnerHTML={{ __html: mirrorHTML || escapeHTML(pasteText || '') }}
-              />
-              <EditTextArea
-                value={pasteText}
-                onChange={onPasteTextChange}
-                aria-label="Paste voters list"
-              />
-            </EditAreaWrapper>
-
-            <ModalFooter style={{ justifyContent: 'space-between' }}>
-              <EditCloseButton type="button" onClick={closePaste}>Cancel</EditCloseButton>
-              <PrimarySaveBtn
-                type="button"
-                onClick={handlePasteImport}
-                disabled={!pasteText.trim()}
-              >
-                {prospectiveCount ? `Import ${prospectiveCount} voter${prospectiveCount > 1 ? 's' : ''}` : 'Import'}
-              </PrimarySaveBtn>
-            </ModalFooter>
-          </ModalCard>
-        </ModalBackdrop>
+        <PasteListModal
+          showPaste={showPaste}
+          closePaste={closePaste}
+          pasteText={pasteText}
+          onPasteTextChange={onPasteTextChange}
+          handlePasteImport={handlePasteImport}
+          pasteErrors={pasteErrors}
+          mirrorHTML={mirrorHTML}
+          escapeHTML={escapeHTML}
+          prospectiveCount={prospectiveCount}
+        />
       )}
       <UploadCSVModal
         isOpen={showUpload}
@@ -793,84 +723,8 @@ const PasteListIcon = ({ size = 22, title = 'Paste list', ...props }) => (
   </svg>
 );
 
-// bullets
-const BulletList = styled.ul`
-  font-size: 13px;        /* smaller bullets */
-  line-height: 1.35;
-  padding: 0 18px;
-
-  code { font-size: 12.5px; white-space: nowrap; } /* keep emails on one line & a touch smaller */
-`;
-
-const BulletNoWrap = styled.li`
-  @media (min-width: 900px) { white-space: nowrap; }
-  code { white-space: nowrap; }
-`;
-
 const HeaderRow = styled.div`
   margin: 6px 0 12px;
-`;
-
-const ErrorBanner = styled.div`
-  align-items: flex-start;
-  background: ${DesignTokenColors.alert50};
-  border: 1px solid ${DesignTokenColors.alert200};
-  border-radius: 12px;
-  color: ${DesignTokenColors.neutralUI800};
-  display: grid;
-  font-size: 12px;
-  gap: 10px;
-  grid-template-columns: 22px 1fr;
-  margin: 8px 0 12px;
-  padding: 12px 14px;
-
-  strong { display: block; margin-bottom: 6px; }
-  ul { margin: 6px 0 0 18px; }
-`;
-
-const ErrorIconWrap = styled.span`
-  color: ${DesignTokenColors.warning600};
-  display: inline-flex;
-  font-size: inherit;
-  line-height: 1;
-  margin-top: 2px;
-`;
-
-const ExampleBox = styled.div`
-  margin: 0 0 6px;
-
-  pre {
-    font-family: inherit;
-    font-size: 13px;
-    line-height: 1.35;
-    margin: 0;
-    white-space: pre-wrap;
-  }
-`;
-
-const HighlightLayer = styled.pre`
-  color: transparent;
-  font: inherit;
-  inset: 0;
-  line-height: inherit;
-  margin: 0;
-  padding: 14px;
-  pointer-events: none;
-  position: absolute;
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  z-index: 0;
-
-  .err {
-    background: ${DesignTokenColors.alert50};
-    border-radius: 6px;
-    display: inline-block;
-    line-height: inherit;
-    margin: 0;
-    padding: 0 4px;
-    vertical-align: top;
-    width: 100%;
-  }
 `;
 
 const PageKicker = styled.h2`
@@ -1147,10 +1001,6 @@ const ModalHeader = styled.div`
   display: flex;
   gap: 8px;
   justify-content: space-between;
-`;
-
-const ModalIntro = styled.div`
-  margin: 0 0 8px;
 `;
 
 const ModalTitle = styled.h3`
