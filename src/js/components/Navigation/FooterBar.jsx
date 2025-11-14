@@ -12,7 +12,6 @@ import { isIOS } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
 import { normalizedHref } from '../../common/utils/hrefUtils';
 import { isAndroid, isCordova } from '../../common/utils/isCordovaOrWebApp';
-import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import stringContains from '../../common/utils/stringContains';
@@ -28,23 +27,46 @@ const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES ===
 const capitalBuilding = '/img/global/svg-icons/capital-building.svg';
 const capitalBuildingSelected = '/img/global/svg-icons/capital-building-selected.svg';
 
-function MoreMenuOverlay ({ onClose }) {
+function MoreMenuOverlay ({ classes, friendInvitationsSentToMeCount, onClose }) {
   const pathname = normalizedHref();
-  const isFriends = pathname.includes('/friends');
   const isChallenges = pathname.includes('/challenges');
+  const isDiscuss = pathname.includes('/news');
+  const isFriends = pathname.includes('/friends');
   const isManage = pathname.includes('/manage');
 
   return (
     <ClickAwayListener onClickAway={onClose}>
       <Overlay>
+        <MenuItem id="FooterBarHowItWorks" onClick={() => { AppObservableStore.setShowHowItWorksModal(true); }}>
+          <Info />
+          How it works
+        </MenuItem>
         <MenuItem id="FooterBarFriends" $active={isFriends} onClick={() => { onClose(); historyPush('/friends'); }}>
-          <People />
+          {friendInvitationsSentToMeCount > 0 ? (
+            <Badge
+              badgeContent={<BadgeCountWrapper>{friendInvitationsSentToMeCount}</BadgeCountWrapper>}
+              classes={{
+                badge: classes.footerFriendsNotificationBadge,
+              }}
+              color="primary"
+              max={9}
+              style={{
+                fontSize: 10,
+                right: 0,
+                top: 4,
+              }}
+            >
+              <People />
+            </Badge>
+          ) : (
+            <People />
+          )}
           Friends
         </MenuItem>
         {nextReleaseFeaturesEnabled && (
-          <MenuItem id="FooterBarChallenges" $active={isChallenges} onClick={() => { onClose(); historyPush('/challenges'); }}>
-            <Groups />
-            Challenges
+          <MenuItem id="FooterBarDiscuss" $active={isDiscuss} onClick={() => { onClose(); historyPush('/news'); }}>
+            <QuestionAnswer />
+            Discuss
           </MenuItem>
         )}
         {nextReleaseFeaturesEnabled && (
@@ -59,11 +81,19 @@ function MoreMenuOverlay ({ onClose }) {
             I&apos;m managing
           </MenuItem>
         )}
+        {nextReleaseFeaturesEnabled && (
+          <MenuItem id="FooterBarChallenges" $active={isChallenges} onClick={() => { onClose(); historyPush('/challenges'); }}>
+            <Groups />
+            Challenges
+          </MenuItem>
+        )}
       </Overlay>
     </ClickAwayListener>
   );
 }
 MoreMenuOverlay.propTypes = {
+  classes: PropTypes.object.isRequired,
+  friendInvitationsSentToMeCount: PropTypes.number.isRequired,
   onClose: PropTypes.func.isRequired,
 };
 
@@ -154,9 +184,9 @@ class FooterBar extends React.Component {
       });
     }
     // In browser mobile, we can offer donate footer link
-    // In Cordova Android, we cannot currently offer donate footer link
     // If NOT signed in, turn Discuss off and How It Works on
     // Regardless of whether visible or not the option's numerical position remains the same
+    // console.log('FooterBar, handleChange value:', value);
     switch (value) {
       case 0:
         return historyPush('/ready');
@@ -165,16 +195,8 @@ class FooterBar extends React.Component {
       case 2:
         return historyPush('/cs/');
       case 3:
-        return historyPush('/friends');
-      case 4:
-        return historyPush('/challenges');  // was "/squads"
-      case 5:
-        return historyPush('/news');
-      case 6:
         return historyPush('/donate');
-      case 7:
-        return this.openHowItWorksModal();
-      case 8:
+      case 4:
         return this.setState({ showMoreMenu: true });
       default:
         return null;
@@ -183,35 +205,31 @@ class FooterBar extends React.Component {
 
   getSelectedTab = () => {
     const pathname = normalizedHref();
-    const low = pathname.toLowerCase();
+    const pathnameLowerCase = pathname.toLowerCase();
     if (pathname === '/') return 0;  // readyLight has no path
-    if (stringContains('/ready', low)) return 0;
-    if (stringContains('/ballot', low)) return 1;
-    if (low.endsWith('/cs/')) return 2;
+    if (stringContains('/ready', pathnameLowerCase)) return 0;
+    if (stringContains('/ballot', pathnameLowerCase)) return 1;
+    if (pathnameLowerCase.endsWith('/cs/')) return 2;
+    if (stringContains('/donate', pathnameLowerCase)) return 3;
     // Treat these as "More" so the More tab stays highlighted
-    if (stringContains('/managecandidates', low)) return 8;
-    if (stringContains('/friends', low)) return 8;
-    if (stringContains('/challenges', low)) return 8;
-    if (stringContains('/+/', pathname) || stringContains('/++/', pathname)) return 8;
-    if (stringContains('/squads', low)) return 8;
-    if (stringContains('/news', low)) return 5;
-    if (stringContains('/donate', low)) return 6;
-    if (stringContains('/more', low)) return 8;
+    if (stringContains('/managecandidates', pathnameLowerCase)) return 4;
+    if (stringContains('/friends', pathnameLowerCase)) return 4;
+    if (stringContains('/challenges', pathnameLowerCase)) return 4;
+    if (stringContains('/+/', pathname) || stringContains('/++/', pathname)) return 4;
+    if (stringContains('/squads', pathnameLowerCase)) return 4;
+    if (stringContains('/news', pathnameLowerCase)) return 4;
+    if (stringContains('/more', pathnameLowerCase)) return 4;
     return -1;
   };
-
-  openHowItWorksModal = () => {
-    // console.log('Opening modal');
-    AppObservableStore.setShowHowItWorksModal(true);
-  }
 
   render () {
     renderLog('FooterBar');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
     const {
       friendInvitationsSentToMeCount,
-      showActivityTidbitDrawer, showingOneCompleteYourProfileModal, showShareModal,
-      showSharedItemModal, showSignInModal, showVoterPlanModal, voterIsSignedIn,
+      showActivityTidbitDrawer, showingOneCompleteYourProfileModal,
+      showMoreMenu, showShareModal,
+      showSharedItemModal, showSignInModal, showVoterPlanModal,
     } = this.state;
     const pathname = normalizedHref();
     const showShareButtonFooter = stringContains('/ballot', pathname.toLowerCase());
@@ -251,47 +269,14 @@ class FooterBar extends React.Component {
         marginBottom: '-4px',
       },
     };
-    const groupsIconStyles = {
-      '& .MuiBottomNavigationAction-root.Mui-selected, svg': {
-        fontSize: 44,
-      },
-      '& .MuiBottomNavigationAction-label.Mui-selected': {
-        fontSize: 16,
-        fontWeight: 600,
-        marginBottom: '4px',
-        marginTop: '-5px',
-      },
-      '& .MuiBottomNavigationAction-root, svg': {
-        fontSize: 42,
-      },
-      '& .MuiBottomNavigationAction-label': {
-        fontSize: 16,
-        marginBottom: '3px',
-        marginTop: '-5px',
-      },
-    };
 
     // console.log('friendInvitationsSentToMeCount:', friendInvitationsSentToMeCount);
     // If NOT signed in, turn Discuss off and How It Works on
-    let discussVisible;
     let donateVisible;
-    const friendsVisible = false; // 2023-09-04 Dale We are turning off Friends footer icon for now
-    const squadsVisible = false; // Set nextReleaseFeaturesEnabled && isWebApp();  when we want to turn on the Challenges footer icon
-    // let howItWorksVisible;
-    const howItWorksVisible = false;
     if (isCordova() || inPrivateLabelMode) {
-      discussVisible = false;    // 2023-09-04 Dale We are turning off Discuss footer icon for now
-      donateVisible  = isIOS();  // 2025-06-17 Enabling donations, we hear it is now permissible for nonprofits in iOS
-      // howItWorksVisible = true;
-    } else if (voterIsSignedIn) {
-      // If signed in, turn Discuss on, and How It Works off
-      discussVisible = false;    // 2023-09-04 Dale We are turning off Discuss footer icon for now
-      donateVisible  = true;
-      // howItWorksVisible = false;
+      donateVisible  = true;  // 2025-06-17 Enabling donations, we hear it is now permissible for nonprofits in iOS & Android
     } else {
-      discussVisible = false;
       donateVisible  = true;
-      // howItWorksVisible = true;
     }
     // console.log('--------- Footer bar donateVisible ', donateVisible, 'squadsVisible', squadsVisible);
     return (
@@ -307,7 +292,7 @@ class FooterBar extends React.Component {
           style={cordovaFooterHeight()}
         >
           <BottomNavigation
-            value={this.state.showMoreMenu ? 8 : this.getSelectedTab()}
+            value={showMoreMenu ? 4 : this.getSelectedTab()}
             onChange={this.handleChange}
             showLabels
             style={{ width: `${isIOS() ? '95%' : ''}`, height: `${isAndroid() ? '70px' : ''}`  }}
@@ -363,60 +348,6 @@ class FooterBar extends React.Component {
               showLabel
               sx={defaultIconStyles}
             />
-            {friendsVisible && (
-              <BottomNavigationAction
-                className="no-outline"
-                icon={friendInvitationsSentToMeCount > 0 ? (
-                  <Badge
-                    badgeContent={<BadgeCountWrapper>{friendInvitationsSentToMeCount}</BadgeCountWrapper>}
-                    classes={{
-                      badge: classes.footerFriendsNotificationBadge,
-                    }}
-                    color="primary"
-                    max={9}
-                    style={{
-                      fontSize: 10,
-                      right: 0,
-                      top: 4,
-                    }}
-                  >
-                    <People />
-                  </Badge>
-                ) : (
-                  <People />
-                )}
-                id="friendsTabFooterBar"
-                label="Friends"
-                showLabel
-                sx={defaultIconStyles}
-              />
-            )}
-            {squadsVisible && (
-              <BottomNavigationAction
-                className="no-outline"
-                icon={<Groups />}
-                id="squadTabFooterBar"
-                label="Challenges"
-                showLabel
-                style={{
-                  marginLeft: '4px',
-                }}
-                sx={groupsIconStyles}
-              />
-            )}
-            {discussVisible && (
-              <BottomNavigationAction
-                className="no-outline"
-                icon={<QuestionAnswer />}
-                id="newsTabFooterBar"
-                label="Discuss"
-                showLabel
-                style={{
-                  paddingLeft: '0px',
-                }}
-                sx={defaultIconStyles}
-              />
-            )}
             {donateVisible && (
               <BottomNavigationAction
                 className="no-outline"
@@ -425,16 +356,6 @@ class FooterBar extends React.Component {
                 showLabel
                 icon={<VerifiedUser />}
                 sx={donateIconStyles}
-              />
-            )}
-            {howItWorksVisible && (
-              <BottomNavigationAction
-                className="no-outline u-no-break"
-                id="howItWorksFooterBar"
-                label={isMobileScreenSize() ? 'Intro' : 'How It Works'}
-                showLabel
-                icon={<Info />}
-                sx={defaultIconStyles}
               />
             )}
             <BottomNavigationAction
@@ -446,8 +367,8 @@ class FooterBar extends React.Component {
               sx={defaultIconStyles}
             />
           </BottomNavigation>
-          {this.state.showMoreMenu && (
-            <MoreMenuOverlay onClose={() => this.setState({ showMoreMenu: false })} />
+          {showMoreMenu && (
+            <MoreMenuOverlay classes={classes} friendInvitationsSentToMeCount={friendInvitationsSentToMeCount} onClose={() => this.setState({ showMoreMenu: false })} />
           )}
         </FooterContainer>
       </FooterBarWrapper>
@@ -506,6 +427,7 @@ const Overlay = styled.div`
   bottom: 76px;
   box-shadow: 0 8px 24px rgba(0,0,0,.1);
   display: flex;
+  flex-wrap: wrap;
   gap: 12px;
   justify-content: center;
   position: fixed;

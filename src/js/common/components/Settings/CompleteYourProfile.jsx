@@ -8,7 +8,6 @@ import SupportActions from '../../../actions/SupportActions';
 import VoterActions from '../../../actions/VoterActions';
 import VoterPhotoUpload from './VoterPhotoUpload';
 import DelayedLoad from '../Widgets/DelayedLoad';
-import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 import { renderLog } from '../../utils/logging';
 import AppObservableStore from '../../stores/AppObservableStore';
 import CampaignStore from '../../stores/CampaignStore';
@@ -23,6 +22,7 @@ import CandidateStore from '../../../stores/CandidateStore';
 import RepresentativeStore from '../../../stores/RepresentativeStore';
 import { validateEmail } from '../../../utils/regex-checks';
 
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../Widgets/OpenExternalWebSite'));
 const SignInButton = React.lazy(() => import(/* webpackChunkName: 'SignInButton' */ '../Navigation/SignInButton'));
 // const SignInModalController = React.lazy(() => import(/* webpackChunkName: 'SignInModalController' */ './SignInModalController'));
 // const SignInModal = React.lazy(() => import(/* webpackChunkName: 'SignInModal' */ '../SignIn/SignInModal'));
@@ -353,33 +353,35 @@ class CompleteYourProfile extends Component {
               {buttonText}
             </Button>
           </CompleteYourProfileButtonWrapper>
-          <FinePrint outerMarginsOff={outerMarginsOff}>
-            By continuing, you accept WeVote.US&apos;s
-            {' '}
-            <OpenExternalWebSite
-              linkIdAttribute="termsOfService"
-              url="/terms"
-              target="_blank"
-              body={(
-                <span>Terms of Service</span>
-              )}
-              className={classes.link}
-            />
-            {' '}
-            and
-            {' '}
-            <OpenExternalWebSite
-              linkIdAttribute="privacyPolicy"
-              url="/privacy"
-              target="_blank"
-              body={(
-                <span>Privacy Policy</span>
-              )}
-              className={classes.link}
-            />
-            {' '}
-            and agree to receive occasional emails about this campaign and upcoming elections. You can unsubscribe at any time. We will never sell your email address.
-          </FinePrint>
+          <Suspense fallback={<></>}>
+            <FinePrint outerMarginsOff={outerMarginsOff}>
+              By continuing, you accept WeVote.US&apos;s
+              {' '}
+              <OpenExternalWebSite
+                linkIdAttribute="termsOfService"
+                url="/terms"
+                target="_blank"
+                body={(
+                  <span>Terms of Service</span>
+                )}
+                className={classes.link}
+              />
+              {' '}
+              and
+              {' '}
+              <OpenExternalWebSite
+                linkIdAttribute="privacyPolicy"
+                url="/privacy"
+                target="_blank"
+                body={(
+                  <span>Privacy Policy</span>
+                )}
+                className={classes.link}
+              />
+              {' '}
+              and agree to receive occasional emails about this campaign and upcoming elections. You can unsubscribe at any time. We will never sell your email address.
+            </FinePrint>
+          </Suspense>
         </section>
         {showVerifyModal && (
           <SettingsVerifySecretCode
