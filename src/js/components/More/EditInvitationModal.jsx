@@ -24,7 +24,7 @@ const SoftenCorners = createGlobalStyle`
   }
 `;
 
-const EditInvitation = ({
+const EditInvitationModal = ({
   isOpen,
   onClose,
   draftInvite,
@@ -104,7 +104,7 @@ const EditInvitation = ({
   );
 };
 
-EditInvitation.propTypes = {
+EditInvitationModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   draftInvite: PropTypes.string.isRequired,
@@ -217,4 +217,4 @@ const PrimarySaveBtn = styled.button`
   }
 `;
 
-export default EditInvitation;
+export default EditInvitationModal;

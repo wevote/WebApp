@@ -17,10 +17,10 @@ import PoliticianStore from '../../common/stores/PoliticianStore';
 import VoterStore from '../../stores/VoterStore';
 import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
-import EditInvitation from './EditInvitation';
-import PasteVotersList from './PasteVotersList';
-import PreviewInvitation from './PreviewInvitation';
-import UploadCSV from './UploadCSV';
+import EditInvitationModal from '../../components/More/EditInvitationModal';
+import PasteListModal from '../../components/More/PasteListModal';
+import PreviewInvitationModal from '../../components/More/PreviewInvitationModal';
+import UploadCSVModal from '../../components/More/UploadCSVModal';
 
 
 const ImportedVotersList = React.lazy(() => import(/* webpackChunkName: 'ImportedVotersList' */ '../../components/PoliticiansManaged/ImportedVotersList'));
@@ -503,7 +503,7 @@ Thanks for your help!`);
       </Layout>
 
       {/* Preview modal */}
-      <PreviewInvitation
+      <PreviewInvitationModal
         isOpen={showPreview}
         onClose={handlePreviewClose}
         invitationBody={invitationBody}
@@ -512,7 +512,7 @@ Thanks for your help!`);
         notify={notify}
       />
       {/* Edit modal */}
-      <EditInvitation
+      <EditInvitationModal
         isOpen={showEdit}
         onClose={() => setShowEdit(false)}
         draftInvite={draftInvite}
@@ -523,7 +523,7 @@ Thanks for your help!`);
         selectedPoliticianId={selectedPoliticianWeVoteId}
       />
       {/* Paste list modal */}
-      <PasteVotersList
+      <PasteListModal
         isOpen={showPaste}
         onClose={closePaste}
         pasteText={pasteText}
@@ -534,7 +534,7 @@ Thanks for your help!`);
         prospectiveCount={prospectiveCount}
       />
       {/* Upload CSV modal */}
-      <UploadCSV
+      <UploadCSVModal
         isOpen={showUpload}
         onClose={closeUploadModal}
         onDownloadSample={handleDownloadSample}

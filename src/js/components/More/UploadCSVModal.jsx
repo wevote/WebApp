@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled, { createGlobalStyle } from 'styled-components';
 import { FileDownloadOutlined as DownloadIcon, CheckCircle as CheckIcon } from '@mui/icons-material';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
-import ModalDisplayTemplateA from '../../components/Widgets/ModalDisplayTemplateA';
+import ModalDisplayTemplateA from '../Widgets/ModalDisplayTemplateA';
 
 const HideTemplateADivider = createGlobalStyle`
   .MuiDialogTitle-root:has(#closeModalDisplayTemplateAuploadCSVModal) > hr {
@@ -24,7 +24,7 @@ const SoftenCorners = createGlobalStyle`
   }
 `;
 
-export default function UploadCSV({
+export default function UploadCSVModal({
   isOpen,
   onClose,
   onDownloadSample,
@@ -100,7 +100,7 @@ export default function UploadCSV({
   );
 }
 
-UploadCSV.propTypes = {
+UploadCSVModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   onDownloadSample: PropTypes.func.isRequired,

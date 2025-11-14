@@ -3,28 +3,28 @@ import PropTypes from 'prop-types';
 import styled, { createGlobalStyle } from 'styled-components';
 import { WarningAmber as WarningIcon } from '@mui/icons-material';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
-import ModalDisplayTemplateA from '../../components/Widgets/ModalDisplayTemplateA';
+import ModalDisplayTemplateA from '../Widgets/ModalDisplayTemplateA';
 
 const HideTemplateADivider = createGlobalStyle`
-  .MuiDialogTitle-root:has(#closeModalDisplayTemplateApasteVotersModal) > hr {
+  .MuiDialogTitle-root:has(#closeModalDisplayTemplateApasteListModal) > hr {
     display: none !important;
   }
 `;
 
 const WidenPasteModal = createGlobalStyle`
-  .MuiDialog-paper:has(#closeModalDisplayTemplateApasteVotersModal) {
+  .MuiDialog-paper:has(#closeModalDisplayTemplateApasteListModal) {
     width: 96% !important;
     max-width: 860px !important;
   }
 `;
 
 const SoftenCorners = createGlobalStyle`
-  .MuiDialog-paper:has(#closeModalDisplayTemplateApasteVotersModal) {
+  .MuiDialog-paper:has(#closeModalDisplayTemplateApasteListModal) {
     border-radius: 14px !important;
   }
 `;
 
-export default function PasteVotersList({
+export default function PasteListModal({
   isOpen,
   onClose,
   pasteText,
@@ -113,7 +113,7 @@ John Dough, jd@email.com, (213)-123-4567`}
       <ModalDisplayTemplateA
         show={isOpen}
         toggleModal={onClose}
-        externalUniqueId="pasteVotersModal"
+        externalUniqueId="pasteListModal"
         dialogTitleJSX={dialogTitleJSX}
         tallMode={false}
         textFieldJSX={textFieldJSX}
@@ -122,7 +122,7 @@ John Dough, jd@email.com, (213)-123-4567`}
   );
 }
 
-PasteVotersList.propTypes = {
+PasteListModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   pasteText: PropTypes.string.isRequired,

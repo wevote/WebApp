@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled, { createGlobalStyle } from 'styled-components';
 import { ContentCopy as CopyIcon, Edit as EditIcon } from '@mui/icons-material';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
-import ModalDisplayTemplateA from '../../components/Widgets/ModalDisplayTemplateA';
+import ModalDisplayTemplateA from '../Widgets/ModalDisplayTemplateA';
 
 const HideTemplateADivider = createGlobalStyle`
   .MuiDialogTitle-root:has(#closeModalDisplayTemplateApreviewInvitationModal) > hr {
@@ -24,7 +24,7 @@ const SoftenCorners = createGlobalStyle`
   }
 `;
 
-const PreviewInvitation = ({
+const PreviewInvitationModal = ({
   isOpen,
   onClose,
   invitationBody,
@@ -100,7 +100,7 @@ const PreviewInvitation = ({
   );
 };
 
-PreviewInvitation.propTypes = {
+PreviewInvitationModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   invitationBody: PropTypes.string.isRequired,
@@ -199,4 +199,4 @@ const PreviewCloseButton = styled.button`
   }
 `;
 
-export default PreviewInvitation;
+export default PreviewInvitationModal;
