@@ -255,11 +255,10 @@ class FooterMainWeVote extends Component {
               <OneRow>
                 <div
                   style={{
-                    backgroundColor: '#b4c6ebff',
                     paddingTop: 20,
                   }}
                 >
-                  <ToolBar />
+                  <ToolBar color="#716e6eff" showBlog={false}/>
                 </div>
               </OneRow>
             )}
