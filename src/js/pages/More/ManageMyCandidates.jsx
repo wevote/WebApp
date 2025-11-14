@@ -11,13 +11,13 @@ import {
   X as XIcon,
   FileUpload as UploadIcon,
   WarningAmber as WarningIcon,
-  FileDownloadOutlined as DownloadIcon,
   CheckCircle as CheckIcon } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import PoliticianStore from '../../common/stores/PoliticianStore';
 import VoterStore from '../../stores/VoterStore';
 import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
+import UploadCSVModal from '../../components/More/UploadCSVModal';
 
 const ImportedVotersList = React.lazy(() => import(/* webpackChunkName: 'ImportedVotersList' */ '../../components/PoliticiansManaged/ImportedVotersList'));
 const PoliticiansManagedController = React.lazy(() => import(/* webpackChunkName: 'PoliticiansManagedController' */ '../../components/PoliticiansManaged/PoliticiansManagedController'));
@@ -679,61 +679,13 @@ John Dough, jd@email.com, (213)-123-4567`}
           </ModalCard>
         </ModalBackdrop>
       )}
-      {showUpload && (
-        <ModalBackdrop role="dialog" aria-modal="true" aria-labelledby="upload-title">
-          <ModalCard>
-            <UploadHeaderRow>
-              <UploadHeaderLeft>
-                <ModalTitle id="upload-title">Upload CSV file</ModalTitle>
-                <HeaderDivider aria-hidden />
-                <HeaderLink type="button" onClick={handleDownloadSample}>
-                  <DownloadIcon fontSize="small" />
-                  <span>Download sample file</span>
-                </HeaderLink>
-              </UploadHeaderLeft>
-
-              <CloseX type="button" aria-label="Close" onClick={closeUploadModal}>×</CloseX>
-            </UploadHeaderRow>
-
-            <UploadIntroList>
-              <li>WeVote supports the data column structure below.</li>
-              <li>
-                If your document has info in separate columns (e.g., first and last name),
-                please combine them into one column to ensure accurate importing.
-              </li>
-              <li>You’ll be able to change your column names to ours after uploading your file.</li>
-            </UploadIntroList>
-
-            <UploadStructureTitle>WeVote’s data column structure</UploadStructureTitle>
-            {allColumnsOK && (
-              <SuccessBanner role="status" aria-live="polite">
-                <SuccessIcon><CheckIcon fontSize="small" /></SuccessIcon>
-                <span>All of your columns will be imported.</span>
-              </SuccessBanner>
-            )}
-            <UploadGrid aria-label="WeVote data column structure">
-              <UploadGridHead>Name</UploadGridHead>
-              <UploadGridHead>Email</UploadGridHead>
-              <UploadGridHead>Mobile</UploadGridHead>
-              <UploadGridHead>Address</UploadGridHead>
-
-              <UploadGridCell>John Smith</UploadGridCell>
-              <UploadGridCell>js@gmail.com</UploadGridCell>
-              <UploadGridCell>(123) 456-7890</UploadGridCell>
-              <UploadGridCell>
-                123 State St
-                <br />
-                Anytown, CA 94117
-              </UploadGridCell>
-            </UploadGrid>
-
-            <ModalFooter style={{ justifyContent: 'space-between' }}>
-              <EditCloseButton type="button" onClick={closeUploadModal}>Cancel</EditCloseButton>
-              <PrimarySaveBtn type="button" onClick={handleSelectCSV}>Select file</PrimarySaveBtn>
-            </ModalFooter>
-          </ModalCard>
-        </ModalBackdrop>
-      )}
+      <UploadCSVModal
+        isOpen={showUpload}
+        columnsOK={allColumnsOK}
+        selectCsvFunc={handleSelectCSV}
+        closeModalFunc={closeUploadModal}
+        downloadSampleFunc={handleDownloadSample}
+      />
       <input
         ref={fileInputRef}
         type="file"
@@ -1363,72 +1315,8 @@ const Toast = styled.div`
   padding: 10px 12px;
 `;
 
-const SuccessBanner = styled.div`
-  align-items: center;
-  background: ${DesignTokenColors.neutralUI50};
-  border: 1px solid ${DesignTokenColors.neutralUI200};
-  border-radius: 10px;
-  color: ${DesignTokenColors.neutralUI900};
-  display: flex;
-  gap: 10px;
-  margin: 8px 0 12px;
-  padding: 10px 12px;
-`;
-
 const SuccessIcon = styled.span`
   color: ${DesignTokenColors.confirmation500};
   display: inline-flex;
   line-height: 1;
-`;
-
-const UploadHeaderRow = styled.div`
-  align-items: center;
-  display: flex;
-  gap: 12px;
-  justify-content: space-between;
-`;
-
-const UploadHeaderLeft = styled.div`
-  align-items: center;
-  display: flex;
-  gap: 12px;
-`;
-
-const HeaderDivider = styled.span`
-  border-left: 1px solid ${DesignTokenColors.neutralUI200};
-  height: 22px;
-  margin: 0 4px;
-`;
-
-const UploadIntroList = styled.ul`
-  color: ${DesignTokenColors.neutralUI700};
-  line-height: 1.45;
-  margin: 8px 0 10px;
-  padding-left: 18px;
-`;
-
-const UploadStructureTitle = styled.div`
-  color: ${DesignTokenColors.neutralUI900};
-  font-weight: 600;
-  margin: 10px 0 6px;
-`;
-
-const UploadGrid = styled.div`
-  background: ${DesignTokenColors.whiteUI};
-  border: 1px solid ${DesignTokenColors.neutralUI200};
-  border-radius: 10px;
-  display: grid;
-  gap: 12px 18px;
-  grid-template-columns: repeat(4, 1fr);
-  padding: 14px;
-`;
-
-const UploadGridHead = styled.div`
-  color: ${DesignTokenColors.neutralUI600};
-  font-size: 13px;
-`;
-
-const UploadGridCell = styled.div`
-  color: ${DesignTokenColors.neutralUI900};
-  font-size: 14px;
 `;
