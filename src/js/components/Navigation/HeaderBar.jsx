@@ -35,6 +35,7 @@ import TabWithPushHistory from './TabWithPushHistory';
 
 const HeaderNotificationMenu = React.lazy(() => import(/* webpackChunkName: 'HeaderNotificationMenu' */ './HeaderNotificationMenu'));
 const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 
 /* global $ */
 
@@ -277,9 +278,9 @@ class HeaderBar extends Component {
       case 'ballot': return 1;
       case 'candidatelist':
       case 'politicianpage': return 2;
-      case 'friends': return 3;
+      case 'friends': return 99;
       case 'news': return 99;
-      case 'challenges': return 4;
+      case 'challenges': return 99;
       case 'donate':
       case 'more/donate': return 5;
       case 'more':
@@ -368,28 +369,28 @@ class HeaderBar extends Component {
           candidates.css(highlight);
           break;
         case 'challenges':
-          challenges.css(highlight);
+          more.css(highlight);
           break;
         case 'donate':
         case 'more/donate':
           donate.css(highlight);
           break;
         case 'friends':
-          friends.css(highlight);
+          more.css(highlight);
+          break;
+        case 'managecandidates':
+          more.css(highlight);
+          break;
+        case 'more':
+          more.css(highlight);
           break;
         case 'news':
-          news.css(highlight);
+          more.css(highlight);
           break;
         case 'politicianpage':
           candidates.css(highlight);
           break;
         case 'squads':
-          squads.css(highlight);
-          break;
-        case 'more':
-          more.css(highlight);
-          break;
-        case 'managecandidates':
           more.css(highlight);
           break;
         default:
@@ -464,32 +465,14 @@ class HeaderBar extends Component {
     // console.log('HeaderBar hasNotch, scrolledDown, hasSubmenu', hasIPhoneNotch(), scrolledDown, displayTopMenuShadow());
     const displayMenu = !isMobileScreenSize() || isTablet();
     // console.log('HeaderBar isMobileScreenSize(), isTablet()', isMobileScreenSize(), isTablet());
-    // If NOT signed in, turn Discuss off and How It Works on
-    let discussValue;
-    let discussVisible = false; // We are turning off Discuss header link for now
     let donateValue;
     let donateVisible;
-    const friendsVisible = false; // 2023-09-04 Dale We are turning off Friends header link for now
-    let howItWorksValue;
-    const squadsVisible = false; // Set nextReleaseFeaturesEnabled && isWebApp();  when we want to turn on the Challenges header link
-    let squadsValue;
-    const howItWorksVisible = false;
     if (isCordova() || inPrivateLabelMode) {
-      donateVisible = isIOS();
-      donateValue = isIOS() ? 3 : 99;
-    } else if (voterIsSignedIn) {
-      // If not Cordova and signed in, turn Donate & Discuss on, and How It Works off
-      donateValue = 5;
+      donateValue = 3;
       donateVisible = true;
-      squadsValue = 4;
     } else {
-      // If not Cordova, and NOT signed in, turn Discuss off & How It Works on
-      discussValue = 99; // Not offered prior to sign in
-      discussVisible = false;
-      donateValue = 5;
+      donateValue = 3;
       donateVisible = true;
-      howItWorksValue = 99;
-      squadsValue = 4;
     }
 
     // console.log('HeaderBar !isMobileScreenSize()', displayMenu);
@@ -542,36 +525,6 @@ class HeaderBar extends Component {
                       label="Candidates"
                       to="/cs/"
                     />
-                    {friendsVisible && (
-                      <TabWithPushHistory
-                        classes={isWebApp() ? { root: classes.tabRootFriendsDesktop } : { root: classes.tabRootFriends }}
-                        value={3}
-                        change={this.handleTabChange}
-                        id="friendsTabHeaderBar"
-                        label="Friends"
-                        to="/friends"
-                      />
-                    )}
-                    {discussVisible && (
-                      <TabWithPushHistory
-                        classes={isWebApp() ? { root: classes.tabRootNewsDesktop } : { root: classes.tabRootNews }}
-                        value={discussValue}
-                        change={this.handleTabChange}
-                        id="discussTabHeaderBar"
-                        label="Discuss"
-                        to="/news"
-                      />
-                    )}
-                    {squadsVisible && (
-                      <TabWithPushHistory
-                        classes={isWebApp() ? { root: classes.tabRootDonateDesktop } : { root: classes.tabRootDonate }}
-                        value={squadsValue}
-                        change={this.handleTabChange}
-                        id="challengesTabHeaderBar"
-                        label="Challenges"  // Was Squads
-                        to="/challenges"  // Was "/squads"
-                      />
-                    )}
                     {donateVisible && (
                       <TabWithPushHistory
                         classes={isWebApp() ? { root: classes.tabRootDonateDesktop } : { root: classes.tabRootDonate }}
@@ -584,7 +537,7 @@ class HeaderBar extends Component {
                     )}
                     <Tab
                       value={99}
-                      classes={isWebApp() ? { root: classes.tabRoot, selected: classes.tabSelected } : { root: classes.tabRootMore, selected: classes.tabSelected  }}
+                      classes={isWebApp() ? { root: classes.tabRoot, selected: classes.tabSelected } : { root: classes.tabRootMore, selected: classes.tabSelected }}
                       id="moreTabHeaderBar"
                       label={(
                         <span className={classes.moreLabel}>
@@ -600,15 +553,6 @@ class HeaderBar extends Component {
                       aria-haspopup="true"
                       wrapped
                     />
-                    {howItWorksVisible && (
-                      <TabWithPushHistory
-                        classes={isWebApp() ? { root: classes.tabRootHowItWorksDesktop } : { root: classes.tabRootHowItWorks }}
-                        value={howItWorksValue}
-                        change={this.openHowItWorksModal}
-                        id="howItWorksTabHeaderBar"
-                        label="How It Works"
-                      />
-                    )}
                   </StyledHeaderMenuTabs>
                   <StyledMoreMenu
                     id="more-menu"
@@ -619,6 +563,14 @@ class HeaderBar extends Component {
                     transformOrigin={{ vertical: 'top', horizontal: 'left' }}
                   >
                     <StyledMoreMenuItem
+                      id="howItWorksTabHeaderBar"
+                      onClick={this.openHowItWorksModal}
+                      disableRipple
+                    >
+                      How it works
+                    </StyledMoreMenuItem>
+
+                    <StyledMoreMenuItem
                       id="HeaderBarFriends"
                       selected={normalizedHrefPage() === 'friends'}
                       onClick={this.navTo('/friends', 99)}
@@ -626,6 +578,26 @@ class HeaderBar extends Component {
                     >
                       Friends
                     </StyledMoreMenuItem>
+
+                    <StyledMoreMenuItem
+                      id="discussTabHeaderBar"
+                      selected={normalizedHrefPage() === 'news'}
+                      onClick={this.navTo('/news', 99)}
+                      disableRipple
+                    >
+                      Discuss
+                    </StyledMoreMenuItem>
+
+                    {nextReleaseFeaturesEnabled && (
+                      <StyledMoreMenuItem
+                        id="HeaderBarCandidatesManaging"
+                        selected={['manage', 'managecandidates'].includes(normalizedHrefPage())}
+                        onClick={this.navTo('/managecandidates', 99)}
+                        disableRipple
+                      >
+                        Candidates I&apos;m managing
+                      </StyledMoreMenuItem>
+                    )}
 
                     {nextReleaseFeaturesEnabled && (
                       <StyledMoreMenuItem
@@ -638,16 +610,19 @@ class HeaderBar extends Component {
                       </StyledMoreMenuItem>
                     )}
 
-                    {nextReleaseFeaturesEnabled && (
-                      <StyledMoreMenuItem
-                        id="HeaderBarCandidatesManaging"
-                        selected={['manage', 'managecandidates'].includes(normalizedHrefPage())}
-                        onClick={this.navTo('/managecandidates', 99)}
-                        disableRipple
-                      >
-                        Candidates I&apos;m managing
+                    <Suspense fallback={<></>}>
+                      <StyledMoreMenuItem>
+                        <OpenExternalWebSite
+                          linkIdAttribute="footerLinkBlog"
+                          url="https://blog.wevote.us/"
+                          target="_blank"
+                          body={(
+                            <span>Blog</span>
+                          )}
+                          className={classes.tabRootBlog}
+                        />
                       </StyledMoreMenuItem>
-                    )}
+                    </Suspense>
                   </StyledMoreMenu>
                 </>
               )}
@@ -861,6 +836,9 @@ const styles = (theme) => {
       fontSize: 18,
       minWidth: 90,
       paddingTop: 17,
+    },
+    tabRootBlog: {
+      color: '#9E9E9E',
     },
     tabRootCandidates: {
       minWidth: 90,
