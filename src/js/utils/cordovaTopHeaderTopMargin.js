@@ -1,7 +1,6 @@
-import { getThisAppleDeviceParameters, hasIPhoneNotch, isAndroidSimulator, isIOS, isIOSAppOnMac, isIOsSmallerThanPlus, isIPad, isIPhone4p7in, isIPhone5p5inEarly, isIPhone5p5inMini, isSimulator } from '../common/utils/cordovaUtils';
+import { getThisAppleDeviceParameters, hasIPhoneNotch, heightOfIOSSpacer, isAndroidSimulator, isIOS, isIOSAppOnMac, isIOsSmallerThanPlus, isIPad, isIPhone4p7in, isIPhone5p5inEarly, isIPhone5p5inMini, isSimulator } from '../common/utils/cordovaUtils';
 import { isCordova } from '../common/utils/isCordovaOrWebApp';
 import { cordovaOffsetLog } from '../common/utils/logging';
-import heightOfIOSSpacer from '../components/Style/heightOfIOSSpacer';
 import CordovaPageConstants from '../constants/CordovaPageConstants';
 import { getPageKey } from './cordovaPageUtils';
 import { pageEnumeration } from './cordovaUtilsPageEnumeration';

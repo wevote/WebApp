@@ -6,6 +6,7 @@ import { cordovaKeyboardHidingLog, cordovaOffsetLog, oAuthLog } from './logging'
 const jsonModelsData = require('./iPhoneModels.json');
 
 /* global $  */
+/* eslint-disable no-unused-vars */
 
 let androidPixels = 0;
 let androidSizeString;
@@ -147,7 +148,7 @@ export function getThisAppleDeviceParameters () {
   if (window.device?.model) {
     thisAppleDeviceParameters = jsonModelsData.find((leaf) => leaf.modelId === window.device.model);
     logMatch('Cordova:   getThisAppleDeviceParameters: ', JSON.stringify(thisAppleDeviceParameters));
-    console.log('Cordova:   getThisAppleDeviceParameters: ', thisAppleDeviceParameters.name);
+    console.log(`Cordova:   getThisAppleDeviceParameters (%c${thisAppleDeviceParameters.name}%c): ${JSON.stringify(thisAppleDeviceParameters)}`, 'font-weight: bold;', 'font-weight: 400;');
     if (thisAppleDeviceParameters) return thisAppleDeviceParameters;
   }
   console.log('Cordova:  Possible first-day device model -- Default (and wrong) values used.');
@@ -310,6 +311,20 @@ export function isIPhoneAir () {
   return false;
 }
 
+export function isIPhone17 () {
+  if (isIOS()) {
+    if (getIOSNameString() === 'iPhone 17') {
+      logMatch('isIPhone17: isIPhone17,', true);
+      return true;
+    }
+  }
+  return false;
+}
+
+export function isIPhoneSmall () {
+  return getIOSDiagonalValue() <= 5.8;
+}
+
 export function isIPad () {
   if (isIOS() && !isIOSAppOnMac()) {
     if (window.device.model.substring(0, 4) === 'iPad') {
@@ -338,6 +353,16 @@ export function isIPadMini () {
     return match;
   }
   return false;
+}
+
+export function heightOfIOSSpacer (asString = false) {
+  if (isIOS()) {
+    if (isIOS() && !isIOSAppOnMac()) {
+      const params = getThisAppleDeviceParameters();
+      return asString ? `${params.iOSSpacer}px` : params.iOSSpacer;
+    }
+  }
+  return 0;
 }
 
 export function isCordovaPhone () {
@@ -411,7 +436,7 @@ export function hasDynamicIsland () {
 }
 
 export function hasIPhoneNotch () {
-  if (isWebApp()) return false;
+  if (!isIOS()) return false;
   // Notched models === from the iPhone X up to the iPhone 14 and iPhone SE (2022).
   // Specifically, this includes the iPhone X, XR, XS, 11, 12, 13 series, iPhone 14 and 14 Plus, and the iPhone SE (2022).
   const params = getThisAppleDeviceParameters();
@@ -746,7 +771,7 @@ export function chipLabelText (fullLabel) {
     } else if (fullLabel === 'Local') {
       return 'Loc';
     }
-  } else if (window.innerWidth < 400) { // iPhone 6/7/8 in Web Browser AND  iPhone SE/SE2/5 and 12/13 mini in Cordova
+  } else if (window.innerWidth < 400 || getIOSDiagonalValue() <= 6.3) { // iPhone 6/7/8 in Web Browser AND any iPhone smaller than or equal to 6.3" in Cordova
     if (fullLabel === 'Federal') {
       return 'Fed';
     } else if (fullLabel === 'Measure') {
@@ -861,25 +886,6 @@ export function getCordovaBuildVersion () {
   const androidBundleVersion = 'window.androidBundleVersion';
   return `${version} (${isIOS() ? iosBundleVersion : androidBundleVersion})`;
 }
-
-// ////////////////////////
-// this was used in ShareButtonFooter before I started using cordovaLinkToBeSharedFixes above
-// getCurrentFullUrl () {
-//   const { location: { href } } = window;
-//   let currentFullUrl = href || ''; // We intentionally don't use normalizedHref() here
-//   // Handles localhost and Cordova, always builds url to wevote.us
-//   if (currentFullUrl.startsWith('https://localhost')) {
-//     currentFullUrl = currentFullUrl.replace(/https:\/\/localhost.*?\//, 'https://wevote.us/');
-//     // console.log(`currentFullUrl adjusted for localhost: ${currentFullUrl}`);
-//   } else if (currentFullUrl.startsWith('file:///')) {
-//     currentFullUrl = currentFullUrl.replace(/file:.*?android_asset\/www\/index.html#\//, 'https://wevote.us/');
-//     // console.log(`currentFullUrl adjusted for Cordova android: ${currentFullUrl}`);
-//   } else if (currentFullUrl.startsWith('file://')) {
-//     currentFullUrl = currentFullUrl.replace(/file:\/\/.*?Vote.app\/www\/index.html#\//, 'https://wevote.us/');
-//     // console.log(`currentFullUrl adjusted for Cordova ios: ${currentFullUrl}`);
-//   }
-//   return currentFullUrl;
-// }
 
 // In-line
 polyfillFixes('cordovaUtils.js'); // Possibly redundant, but its need was confirmed in the debugger.  This has to run, before any polyfill is needed.

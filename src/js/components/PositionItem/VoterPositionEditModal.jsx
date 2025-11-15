@@ -1,9 +1,9 @@
+import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined';
+import { Tooltip } from '@mui/material';
+import { withStyles } from '@mui/styles';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { Tooltip } from '@mui/material';
-import { withStyles } from '@mui/styles';
-import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 import ModalDisplayTemplateA from '../Widgets/ModalDisplayTemplateA';
 
@@ -12,7 +12,7 @@ const VoterPositionEditModal = ({ showVoterEdit, setShowVoterEdit, candidateName
   const [endorseOption, setEndorseOption] = useState('Neutral');
   const [opinionText, setOpinionText] = useState('');
   const [isFormValid, setIsFormValid] = useState(false);
-  const [disableToolTip, setDisableToolTip] = useState(false);
+  // const [disableToolTip, setDisableToolTip] = useState(false);
   const { voter_photo_url_medium: voterPhotoUrlMedium, first_name, last_name, full_name: fullName } = voter;
 
   useEffect(() => {
@@ -46,7 +46,7 @@ const VoterPositionEditModal = ({ showVoterEdit, setShowVoterEdit, candidateName
   };
 
   const handleDisableToolTipClick = () => {
-    setDisableToolTip(true);
+    // setDisableToolTip(true);
   };
 
   const visibilityOptionsMap = visibilityOptions.map((option) => <OptionSelect key={option} value={option}>{option}</OptionSelect>);

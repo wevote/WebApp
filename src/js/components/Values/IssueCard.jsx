@@ -350,7 +350,7 @@ class IssueCard extends Component {
         )}
         {!!(linkedOrganizationCount) && (
           <LinkedOrganizationCountWrapper id="numberOfEndorsements">
-            {numberAbbreviate(linkedOrganizationCount)}
+            {numberAbbreviate(advocatesCount)}
             <CheckWrapper>
               <Check />
             </CheckWrapper>

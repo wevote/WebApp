@@ -28,7 +28,6 @@ import SupportStore from '../stores/SupportStore';
 import VoterGuideStore from '../stores/VoterGuideStore';
 import VoterStore from '../stores/VoterStore';
 import { cordovaVoteMiniHeader } from '../utils/cordovaOffsets';
-import cordovaScrollablePaneTopPadding from '../utils/cordovaScrollablePaneTopPadding';
 import BallotTitleHeader from '../components/Ballot/BallotTitleHeader';
 
 const FilterBaseSearch = React.lazy(() => import(/* webpackChunkName: 'FilterBaseSearch' */ '../components/Filter/FilterBaseSearch'));
@@ -535,7 +534,6 @@ Vote.propTypes = {
 };
 
 const VoteContainer = styled('div')(({ theme }) => (`
-  padding-top: ${cordovaScrollablePaneTopPadding()};
   ${theme.breakpoints.down('sm')} {
     overflow-x: hidden;
   }

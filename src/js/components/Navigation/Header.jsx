@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import VoterActions from '../../actions/VoterActions';
 import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
 import apiCalming from '../../common/utils/apiCalming';
-import { isAndroidSizeWide, isCordovaWide, isIOSAppOnMac, isIPad } from '../../common/utils/cordovaUtils';
+import { isAndroidSizeWide, isCordovaWide, isIOS, isIOSAppOnMac, isIPad } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
 import { normalizedHref } from '../../common/utils/hrefUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
@@ -15,8 +15,7 @@ import stringContains from '../../common/utils/stringContains';
 import VoterStore from '../../stores/VoterStore';
 import { dumpCssFromId } from '../../utils/appleSiliconUtils';
 import { getApplicationViewBooleans, weVoteBrandingOff } from '../../utils/applicationUtils';
-import { HeadroomWrapper } from '../Style/pageLayoutStyles';
-import IPhoneSpacer from '../Widgets/IPhoneSpacer';
+import { HeadroomWrapper, IOSTopOfScreenSpacer } from '../Style/pageLayoutStyles';
 import HeaderBar from './HeaderBar';
 
 
@@ -247,7 +246,7 @@ export default class Header extends Component {
       }
       return (
         <div id="app-header">
-          <IPhoneSpacer />
+          {isIOS() ? <IOSTopOfScreenSpacer /> : ''}
           <HeadroomWrapper id="hw1">
             <div className={pageHeaderClasses} id="header-container">
               <Suspense fallback={<></>}>
@@ -306,7 +305,7 @@ export default class Header extends Component {
       // console.log('isCordovaWide()', isCordovaWide(), 'innerWidth', innerWidth, 'tabMin', tabMin, 'isTablet()', isTablet());
       return (
         <div id="app-header">
-          <IPhoneSpacer />
+          {isIOS() ? <IOSTopOfScreenSpacer /> : ''}
           <HeadroomWrapper id="hw2">
             <div className={pageHeaderClasses} id="header-container">
               { showBackToSettingsDesktop && (
@@ -412,7 +411,7 @@ export default class Header extends Component {
 
       return (
         <div id="app-header">
-          <IPhoneSpacer />
+          {isIOS() ? <IOSTopOfScreenSpacer /> : ''}
           <HeadroomWrapper id="hw3">
             {/* <div className={isWebApp ? 'headroom-wrapper-webapp__default' : ''} id="headroom-wrapper"> */}
             <div className={pageHeaderClasses} id="header-container">
@@ -479,7 +478,7 @@ export default class Header extends Component {
       // console.log('Header not in any mode, headerNotVisible:', headerNotVisible);
       return (
         <div id="app-header">
-          <IPhoneSpacer />
+          {isIOS() ? <IOSTopOfScreenSpacer /> : ''}
           <HeadroomWrapper id="hw4">
             <div className={pageHeaderClasses} id="header-container">
               {(showNotificationBannerAboveHeader && isCandidatePage) && (

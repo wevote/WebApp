@@ -9,6 +9,7 @@ import OrganizationActions from '../../actions/OrganizationActions';
 import SupportActions from '../../actions/SupportActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import historyPush from '../../common/utils/historyPush';
+import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import toTitleCase from '../../common/utils/toTitleCase';
 import BallotStore from '../../stores/BallotStore';
@@ -335,7 +336,7 @@ class VoterGuideEndorsements extends Component {
           ) : null}
           <ExtraActionsWrapper className="u-show-mobile">
             <EndorsementCard
-              buttonText="Endorsements missing?"
+              buttonText={isMobileScreenSize() ? 'Endorsements?' : "Endorsements missing?"}
               narrowColumnDisplay
               organizationWeVoteId={organizationWeVoteId}
               // text={`Are there endorsements from ${organizationName} that you expected to see?`}

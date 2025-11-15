@@ -10,6 +10,7 @@ import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import webAppConfig from '../../config';
 import VoterStore from '../../stores/VoterStore';
 import lookupPageNameAndPageTypeDict, { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
+import ToolBar from '../../common/components/Widgets/ToolBar';
 
 const BallotElectionListWithFilters = React.lazy(() => import(/* webpackChunkName: 'BallotElectionListWithFilters' */ '../Ballot/BallotElectionListWithFilters'));
 const DeleteAllContactsButton = React.lazy(() => import(/* webpackChunkName: 'DeleteAllContactsButton' */ '../SetUpAccount/DeleteAllContactsButton'));
@@ -248,6 +249,18 @@ class FooterMainWeVote extends Component {
                 >
                   Donate
                 </Link>
+              </OneRow>
+            )}
+            {isWebApp() && (
+              <OneRow>
+                <div
+                  style={{
+                    backgroundColor: '#b4c6ebff',
+                    paddingTop: 20,
+                  }}
+                >
+                  <ToolBar />
+                </div>
               </OneRow>
             )}
           </TopSectionInnerWrapper>

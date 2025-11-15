@@ -66,7 +66,7 @@ export default class OpenExternalWebSite extends Component {
       // Rendered message:
       // "Webpage not available"
       // "The webpage at http://www.sos.ca.gov/elections/ballot-measures/qualified-ballot-measures could not be loaded because: net::ERR_CLEARTEXT_NOT_PERMITTED"
-      // Cordova Android 8 and higher will not open a http link, and if the site doesn't handle SSL, tough luck
+      // Cordova Android 8 and higher will not open an http link, and if the site doesn't handle SSL, tough luck
       externalUrl = externalUrl.replace('http://', 'https://');
     }
 
@@ -81,6 +81,7 @@ export default class OpenExternalWebSite extends Component {
           rel="noopener noreferrer"
           target={this.props.target || ''}
           title={this.props.title || ''}
+          style={this.props.padRight ? { paddingRight: `${this.props.padRight}` } : undefined}
         >
           {this.props.body ? this.props.body : ''}
         </a>
@@ -95,6 +96,7 @@ export default class OpenExternalWebSite extends Component {
             cordovaOpenSafariView(externalUrl, null, integerDelay);
           }}
           title={this.props.title || ''}
+          style={this.props.padRight ? { paddingRight: `${this.props.padRight}` } : undefined}
         >
           {this.props.body || ''}
         </span>
@@ -121,4 +123,5 @@ OpenExternalWebSite.propTypes = {
   url: PropTypes.string.isRequired,
   candidateWeVoteId: PropTypes.string,
   politicianWeVoteId: PropTypes.string,
+  padRight: PropTypes.string,
 };

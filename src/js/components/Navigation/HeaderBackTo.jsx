@@ -8,7 +8,7 @@ import VoterGuideActions from '../../actions/VoterGuideActions';
 import LazyImage from '../../common/components/LazyImage';
 import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
 import apiCalming from '../../common/utils/apiCalming';
-import { isIOSAppOnMac, isIPad } from '../../common/utils/cordovaUtils';
+import { heightOfIOSSpacer, isIOSAppOnMac, isIPad } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
 import { normalizedHref } from '../../common/utils/hrefUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
@@ -19,7 +19,7 @@ import voterPhoto from '../../common/utils/voterPhoto';
 import VoterStore from '../../stores/VoterStore';
 import { dumpCssFromId } from '../../utils/appleSiliconUtils';
 import { avatarGeneric } from '../../utils/applicationUtils';
-import { AppBarForBackTo, getIOSDynamicIslandSpacerHeight, TopRowOneRightContainer } from '../Style/pageLayoutStyles';
+import { AppBarForBackTo, TopRowOneRightContainer } from '../Style/pageLayoutStyles';
 import SignInButton from '../Widgets/SignInButton';
 import HeaderBackToButton from './HeaderBackToButton';
 
@@ -199,7 +199,7 @@ class HeaderBackTo extends Component {
     const voterPhotoUrlMedium = voterPhoto(voter);
     const pathname = normalizedHref();
     const shareButtonInHeader = pathname && stringContains('/office', pathname.toLowerCase());
-    const pad = `${getIOSDynamicIslandSpacerHeight()} 15px 0 0`;
+    const pad = `${heightOfIOSSpacer(true)} 15px 0 0`;
     const cordovaStyles = {
       marginLeft: 0,
       padding: pad,

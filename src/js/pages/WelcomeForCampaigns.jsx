@@ -6,6 +6,7 @@ import { Helmet } from 'react-helmet-async';
 import styled from 'styled-components';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import VoterActions from '../actions/VoterActions';
+import AppObservableStore from '../common/stores/AppObservableStore';
 import historyPush from '../common/utils/historyPush';
 import { renderLog } from '../common/utils/logging';
 import normalizedImagePath from '../common/utils/normalizedImagePath';
@@ -13,10 +14,7 @@ import { BlueTitle, SubTitle, Title } from '../components/Welcome/headerWelcomeS
 import { Description, DescriptionContainer, DescriptionImageColumn, DescriptionLeftColumn, Image, NetworkContainer, NetworkImage, Section, SectionTitle, SectionTitleBold } from '../components/Welcome/sectionStyles';
 import Testimonial from '../components/Widgets/Testimonial';
 import VoterConstants from '../constants/VoterConstants';
-import AppObservableStore from '../common/stores/AppObservableStore';
 import VoterStore from '../stores/VoterStore';
-import cordovaScrollablePaneTopPadding from '../utils/cordovaScrollablePaneTopPadding';
-import { validateEmail } from '../utils/regex-checks';
 
 const WelcomeAppbar = React.lazy(() => import(/* webpackChunkName: 'WelcomeAppbar' */ '../components/Navigation/WelcomeAppbar'));
 const WelcomeFooter = React.lazy(() => import(/* webpackChunkName: 'WelcomeFooter' */ '../components/Welcome/WelcomeFooter'));
@@ -303,7 +301,6 @@ const WelcomeForCampaignsWrapper = styled('div')`
   align-items: center;
   background: white;
   overflow-x: hidden;
-  padding-top: ${cordovaScrollablePaneTopPadding()};
 `;
 
 const HeaderSection = styled('div')`

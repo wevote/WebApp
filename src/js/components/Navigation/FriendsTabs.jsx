@@ -123,6 +123,16 @@ class FriendsTabs extends Component {
     return href.replace('/friends/', '');
   }
 
+  friendsTabSx = () => {
+    if (isIPhoneMiniOrSmaller()) {
+      return {
+        fontSize: '14.5px',
+        padding: '8px',
+      };
+    }
+    return {};
+  }
+
   resetDefaultTabForMobile () {
     const tabItem = this.getPageFromUrl();
 
@@ -182,7 +192,7 @@ class FriendsTabs extends Component {
               onClick={() => {
                 this.handleNavigation('/friends/requests');
               }}
-              sx={isIPhoneMiniOrSmaller() && { fontSize: '14.5px', padding: '8px' }}
+              sx={this.friendsTabSx()}
             />
             <FriendsNavTab
               value="suggested"
@@ -190,7 +200,7 @@ class FriendsTabs extends Component {
               onClick={() => {
                 this.handleNavigation('/friends/suggested');
               }}
-              sx={isIPhoneMiniOrSmaller() && { fontSize: '14.5px', padding: '8px' }}
+              sx={this.friendsTabSx()}
             />
             {this.getSelectedTab() === 'invite' && (
               <FriendsNavTab
@@ -207,7 +217,7 @@ class FriendsTabs extends Component {
                 onClick={() => {
                   this.handleNavigation('/friends/invite');
                 }}
-                sx={isIPhoneMiniOrSmaller() && { fontSize: '14.5px', padding: '8px' }}
+                sx={this.friendsTabSx()}
               />
             )}
             <FriendsNavTab
@@ -224,7 +234,7 @@ class FriendsTabs extends Component {
               onClick={() => {
                 this.handleNavigation('/friends/current');
               }}
-              sx={isIPhoneMiniOrSmaller() && { fontSize: '14.5px', padding: '8px' }}
+              sx={this.friendsTabSx()}
             />
             <FriendsNavTab
               value="remind"
@@ -240,7 +250,7 @@ class FriendsTabs extends Component {
               onClick={() => {
                 this.handleNavigation('/friends/remind');
               }}
-              sx={isIPhoneMiniOrSmaller() && { fontSize: '14.5px', padding: '8px' }}
+              sx={this.friendsTabSx()}
             />
           </Tabs>
         </div>

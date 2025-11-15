@@ -21,7 +21,6 @@ import Testimonial from '../components/Widgets/Testimonial';
 import VoterConstants from '../constants/VoterConstants';
 import AppObservableStore from '../common/stores/AppObservableStore';
 import VoterStore from '../stores/VoterStore';
-import cordovaScrollablePaneTopPadding from '../utils/cordovaScrollablePaneTopPadding';
 import { validateEmail } from '../utils/regex-checks';
 
 const WelcomeFooter = React.lazy(() => import(/* webpackChunkName: 'WelcomeFooter' */ '../components/Welcome/WelcomeFooter'));
@@ -371,7 +370,6 @@ const WelcomeForVotersWrapper = styled('div')`
   align-items: center;
   background: white;
   overflow-x: hidden;
-  padding-top: ${cordovaScrollablePaneTopPadding()};
 `;
 
 export default withStyles(styles)(WelcomeForVoters);

@@ -322,9 +322,8 @@ class VoterEmailAddressEntry extends Component {
 
   onKeyDown = (event) => {
     // console.log('onKeyDown, event.keyCode:', event.keyCode);
-    const ENTER_KEY_CODE = 13;
     const SPACE_KEY_CODE = 32;
-    const keyCodesToBlock = [ENTER_KEY_CODE, SPACE_KEY_CODE];
+    const keyCodesToBlock = [SPACE_KEY_CODE];
     if (event.key === 'Tab' && event.shiftKey) {
       shiftTabKeyPressed = true;
     } else {
@@ -512,6 +511,7 @@ class VoterEmailAddressEntry extends Component {
               </CancelButtonContainer>
               <ButtonContainerHorizontal>
                 <Button
+                  type="submit"
                   color="primary"
                   disabled={disableEmailVerificationButton || signInCodeEmailSentAndWaitingForResponse}
                   id="voterEmailAddressEntrySendCode"

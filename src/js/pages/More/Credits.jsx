@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import CreditsBody from '../../common/components/CreditsBody';
 import { renderLog } from '../../common/utils/logging';
 import { Section } from '../../components/Welcome/sectionStyles';
-import cordovaScrollablePaneTopPadding from '../../utils/cordovaScrollablePaneTopPadding';
 import webAppConfig from '../../config';
 
 const WelcomeAppbar = React.lazy(() => import(/* webpackChunkName: 'WelcomeAppbar' */ '../../components/Navigation/WelcomeAppbar'));
@@ -62,7 +61,6 @@ const Wrapper = styled('div')`
   align-items: center;
   background: white;
   overflow-x: hidden;
-  padding-top: ${cordovaScrollablePaneTopPadding()}
 `;
 
 const HeaderForCredits = styled('div')(({ theme }) => (`
