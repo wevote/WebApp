@@ -1,8 +1,9 @@
-//loading required files
-const { driver } = require('@wdio/globals');
-const { readFileSync } = require('fs');
-const path = require('path');
-const browserStackConfig = require('./browserstack.config');
+
+import { driver } from '@wdio/globals';
+import { readFileSync } from 'fs';
+import path from 'path';
+import { browserStackConfig } from './browserstack.config.js';
+import { uploadAppsToBrowserStack } from '../utils/uploadAndConfigureApps.js';
 
 // --- Define Spec file sets
 const cordovaSpecs = [
@@ -10,7 +11,7 @@ const cordovaSpecs = [
 
 ];
 const mobileBrowserSpecs = [
-  '../specs/DiscussPage.browser.js',
+    '../specs/DiscussPage.browser.js',
     '../specs/FAQPage.browser.js',
     '../specs/PrivacyPage.browser.js',
     '../specs/ReadyPage.browser.js',
@@ -23,8 +24,9 @@ const mobileBrowserSpecs = [
     '../specs/BallotPage.browser.js',
     '../specs/CandidatesPage.browser.js',
     '../specs/VerifyCount.browser.js',
-    '../specs/WhosRunningForOffice.browser.js',
+    '../specs/WhosRunningForOffice.browser.js'
 ];
+
 const desktopBrowserSpecs = [
     '../specs/DiscussPage.browser.js',
     '../specs/FAQPage.browser.js',
@@ -39,7 +41,7 @@ const desktopBrowserSpecs = [
     '../specs/BallotPage.browser.js',
     '../specs/CandidatesPage.browser.js',
     '../specs/VerifyCount.browser.js',
-    '../specs/WhosRunningForOffice.browser.js',
+    '../specs/WhosRunningForOffice.browser.js'
 
 ];
 
@@ -48,7 +50,7 @@ const desktopBrowserSpecs = [
 //cordova capabilities
 let cordovaCapabilities = [];
 try {
-  const data = readFileSync(path.join(__dirname, '../capabilities/cordova_mobile_devices.json'), { encoding: 'utf8' });
+  const data = readFileSync(path.join(__dirname, '../capabilities/cordova_mobile_devices1.json'), { encoding: 'utf8' });
   cordovaCapabilities = JSON.parse(data);
   cordovaCapabilities.forEach(cap => {
     // read app urls from browserstack.config, Check the platform and assign the correct URL
@@ -63,15 +65,19 @@ try {
   console.error("Failed to read mobile app testing capabilities.json:", error);
 }
 
-//mobileBrowser  capabilities
+// mobileBrowser capabilities
 let mobileBrowserCapabilities = [];
 try {
-  const data = readFileSync(path.join(__dirname, '../capabilities/browser_mobile_devices.json'), { encoding: 'utf8' });
+  const data = readFileSync(
+    path.join(__dirname, '../capabilities/browser_mobile_devices1.json'),
+    { encoding: 'utf8' }
+  );
   mobileBrowserCapabilities = JSON.parse(data);
- // console.log('Loaded Mobile Browser Capabilities:', mobileBrowserCapabilities);
+  // console.log('Loaded Mobile Browser Capabilities:', mobileBrowserCapabilities);
 } catch (error) {
-  console.error("Failed to read mobile browser testing capabilities.json:", error);
+  console.error('Failed to read mobile browser testing capabilities.json:', error);
 }
+
 
 //desktopBrowser capabilities
 let desktopBrowserCapabilities = [];
@@ -149,18 +155,51 @@ module.exports.config = {
   specs: [],
   capabilities: selectedCapabilities,
   // onPrepare hook to display all the capabilities selected
-  onPrepare: function (config, capabilities) {
-    console.log('Final Selected Capabilities for Test Run:');
+  onPrepare: async function (config, capabilities) {
+    console.log('========== onPrepare - Starting setup for BrowserStack ==========');
+
+    //  Step 1: Upload apps only if required
+    if (process.env.RUN_TYPE !== 'cordova' && process.env.RUN_TYPE !== 'all') {
+      console.log(`Skipping app upload (RUN_TYPE = ${process.env.RUN_TYPE})`);
+    } else {
+      try {
+        const { apkUrl, ipaUrl } = await uploadAppsToBrowserStack();
+        console.log('Apps uploaded successfully:');
+        if (apkUrl) console.log('  APK URL:', apkUrl);
+        if (ipaUrl) console.log('  IPA URL:', ipaUrl);
+
+        // Step 2: Update cordova capabilities with new URLs & BrowserStack credentials
+        cordovaCapabilities.forEach(cap => {
+          if (!cap['appium:options']) cap['appium:options'] = {};
+          if (cap.platformName.toLowerCase() === 'android') cap['appium:options'].app = apkUrl;
+          if (cap.platformName.toLowerCase() === 'ios') cap['appium:options'].app = ipaUrl;
+
+          cap['bstack:options'] = {
+            ...cap['bstack:options'],
+            userName: browserStackConfig.BROWSERSTACK_USER,
+            accessKey: browserStackConfig.BROWSERSTACK_KEY,
+            appiumVersion: '2.0.1',
+            ...commonOptions,
+          };
+        });
+      } catch (err) {
+        console.error(' Error during app upload in onPrepare:', err.message);
+      }
+    }
+
+    // Step 3: Print final selected capabilities after any modifications
+    console.log('\n========== Final Selected Capabilities for Test Run ==========');
     if (Array.isArray(capabilities)) {
       capabilities.forEach((cap, index) => {
         console.log(`--- Capability ${index + 1} ---`);
-        // Use JSON.stringify for a formatted view of the object
         console.log(JSON.stringify(cap, null, 2));
-        console.log(`-----------------------`);
+        console.log('-----------------------------');
       });
     } else {
       console.log('Capabilities object is not an array:', capabilities);
     }
+
+    console.log('========== onPrepare Completed ==========');
   },
 
   maxInstances: 1,
