@@ -1,109 +1,123 @@
 import React from 'react';
-import {
-  CheckCircle as CheckIcon,
-  FileDownloadOutlined as DownloadIcon,
-} from '@mui/icons-material';
-import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import ModalDisplayTemplateA from '../Widgets/ModalDisplayTemplateA';
+import styled, { createGlobalStyle } from 'styled-components';
+import { FileDownloadOutlined as DownloadIcon, CheckCircle as CheckIcon } from '@mui/icons-material';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
+import ModalDisplayTemplateA from '../Widgets/ModalDisplayTemplateA';
 
-export default function UploadCSVModal ({
-  isOpen, // if modal is open
-  columnsOK, // check if upload is successful
-  selectCsvFunc, // handle choosing a csv file
-  closeModalFunc, // handle closing modal
-  downloadSampleFunc, // optional href for "Download sample CSV"
+const HideTemplateADivider = createGlobalStyle`
+  .MuiDialogTitle-root:has(#closeModalDisplayTemplateAuploadCSVModal) > hr {
+    display: none !important;
+  }
+`;
+
+const WidenUploadModal = createGlobalStyle`
+  .MuiDialog-paper:has(#closeModalDisplayTemplateAuploadCSVModal) {
+    width: 96% !important;
+    max-width: 860px !important;
+  }
+`;
+
+const SoftenCorners = createGlobalStyle`
+  .MuiDialog-paper:has(#closeModalDisplayTemplateAuploadCSVModal) {
+    border-radius: 14px !important;
+  }
+`;
+
+export default function UploadCSVModal({
+  isOpen,
+  onClose,
+  onDownloadSample,
+  onSelectFile,
+  allColumnsOK,
 }) {
-  const csvUploadDialogTitleJsx = (
-    <UploadHeaderRow>
-      <UploadHeaderLeft>
-        <ModalTitle id="upload-title">Upload CSV file</ModalTitle>
-        <HeaderDivider aria-hidden />
-        <HeaderLink type="button" onClick={downloadSampleFunc}>
-          <DownloadIcon fontSize="small" />
-          <span>Download sample file</span>
-        </HeaderLink>
-      </UploadHeaderLeft>
-    </UploadHeaderRow>
+  const dialogTitleJSX = (
+    <HeaderRow>
+      <Title>Upload CSV file</Title>
+      <HeaderDivider />
+      <HeaderLink type="button" onClick={onDownloadSample}>
+        <DownloadIcon fontSize="small" />
+        <span>Download sample file</span>
+      </HeaderLink>
+    </HeaderRow>
   );
 
-  const csvUploadTextFieldJsx = (
-    <>
-      <UploadIntroList>
+  const textFieldJSX = (
+    <div style={{ padding: '18px 18px 28px' }}>
+      <IntroList>
         <li>WeVote supports the data column structure below.</li>
         <li>
           If your document has info in separate columns (e.g., first and last name),
           please combine them into one column to ensure accurate importing.
         </li>
         <li>You’ll be able to change your column names to ours after uploading your file.</li>
-      </UploadIntroList>
+      </IntroList>
 
-      <UploadStructureTitle>WeVote’s data column structure</UploadStructureTitle>
-      {columnsOK && (
-        <SuccessBanner role="status" aria-live="polite">
+      <StructureLabel>WeVote’s data column structure</StructureLabel>
+
+      {allColumnsOK && (
+        <SuccessBanner>
           <SuccessIcon><CheckIcon fontSize="small" /></SuccessIcon>
           <span>All of your columns will be imported.</span>
         </SuccessBanner>
       )}
-      <UploadGrid aria-label="WeVote data column structure">
-        <UploadGridHead>Name</UploadGridHead>
-        <UploadGridHead>Email</UploadGridHead>
-        <UploadGridHead>Mobile</UploadGridHead>
-        <UploadGridHead>Address</UploadGridHead>
 
-        <UploadGridCell>John Smith</UploadGridCell>
-        <UploadGridCell>js@gmail.com</UploadGridCell>
-        <UploadGridCell>(123) 456-7890</UploadGridCell>
-        <UploadGridCell>
-          123 State St
-          <br />
-          Anytown, CA 94117
-        </UploadGridCell>
-      </UploadGrid>
+      <Grid>
+        <Head>Name</Head>
+        <Head>Email</Head>
+        <Head>Mobile</Head>
+        <Head>Address</Head>
 
-      <ModalFooter style={{ justifyContent: 'space-between' }}>
-        <EditCloseButton type="button" onClick={closeModalFunc}>Cancel</EditCloseButton>
-        <PrimarySaveBtn type="button" onClick={selectCsvFunc}>Select file</PrimarySaveBtn>
-      </ModalFooter>
-    </>
+        <Cell>John Smith</Cell>
+        <Cell>js@gmail.com</Cell>
+        <Cell>(123) 456-7890</Cell>
+        <Cell>
+          123 State St<br />Anytown, CA 94117
+        </Cell>
+      </Grid>
+
+      <Footer>
+        <CancelButton type="button" onClick={onClose}>Cancel</CancelButton>
+        <SelectButton type="button" onClick={onSelectFile}>Select file</SelectButton>
+      </Footer>
+    </div>
   );
 
   return (
-    <ModalDisplayTemplateA
-      dialogTitleJSX={csvUploadDialogTitleJsx}
-      toggleModal={closeModalFunc}
-      show={isOpen}
-      textFieldJSX={csvUploadTextFieldJsx}
-      tallMode
-    />
+    <>
+      <HideTemplateADivider />
+      <WidenUploadModal />
+      <SoftenCorners />
+      <ModalDisplayTemplateA
+        show={isOpen}
+        toggleModal={onClose}
+        externalUniqueId="uploadCSVModal"
+        dialogTitleJSX={dialogTitleJSX}
+        tallMode={false}
+        textFieldJSX={textFieldJSX}
+      />
+    </>
   );
 }
 
 UploadCSVModal.propTypes = {
-  isOpen: PropTypes.bool, // if modal is open
-  columnsOK: PropTypes.bool, // check if upload is successful
-  selectCsvFunc: PropTypes.func, // handle choosing a csv file
-  closeModalFunc: PropTypes.func, // handle closing modal
-  downloadSampleFunc: PropTypes.func, // optional href for "Download sample CSV"
+  isOpen: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  onDownloadSample: PropTypes.func.isRequired,
+  onSelectFile: PropTypes.func.isRequired,
+  allColumnsOK: PropTypes.bool.isRequired,
 };
 
-const EditCloseButton = styled.button`
-  background: ${DesignTokenColors.whiteUI};
-  border: none;
-  border-radius: 9999px;
-  color: ${DesignTokenColors.neutralUI800};
-  cursor: pointer;
-  padding: 10px 18px;
-
-  &:hover { background: ${DesignTokenColors.neutralUI50}; }
+const HeaderRow = styled.div`
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  padding: 0px 12px 0 18px;
 `;
 
-
-const HeaderDivider = styled.span`
-  border-left: 1px solid ${DesignTokenColors.neutralUI200};
-  height: 22px;
-  margin: 0 4px;
+const Title = styled.h3`
+  font-size: 28px;
+  font-weight: 400;
 `;
 
 const HeaderLink = styled.button`
@@ -116,34 +130,50 @@ const HeaderLink = styled.button`
   display: inline-flex;
   gap: 6px;
   padding: 6px 8px;
-
+  font-weight: 400;
+  font-size: 17px;
   &:hover { background: ${DesignTokenColors.primary50}; }
 `;
 
-const ModalFooter = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  margin: 16px;
+const IntroList = styled.ul`
+  color: ${DesignTokenColors.neutralUI700};
+  line-height: 1.45;
+  margin: 8px 0 16px;
+  padding-left: 18px;
 `;
 
-const ModalTitle = styled.h3`
-  font-size: 22px;
-  margin: 4px 0 8px;
+const StructureLabel = styled.div`
+  color: ${DesignTokenColors.neutralUI900};
+  font-weight: 600;
+  margin: 10px 0 6px;
 `;
 
-const PrimarySaveBtn = styled.button`
-  background: ${({ disabled }) => (disabled ? DesignTokenColors.neutralUI200 : DesignTokenColors.primary700)};
-  border: 1px solid ${({ disabled }) => (disabled ? DesignTokenColors.neutralUI200 : DesignTokenColors.primary700)};
-  border-radius: 9999px;
-  color: ${DesignTokenColors.whiteUI};
-  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
-  opacity: ${({ disabled }) => (disabled ? 0.7 : 1)};
-  padding: 10px 18px;
+const Grid = styled.div`
+  background: ${DesignTokenColors.whiteUI};
+  border: 1px solid ${DesignTokenColors.neutralUI200};
+  border-radius: 10px;
+  display: grid;
+  gap: 12px 18px;
+  grid-template-columns: repeat(4, 1fr);
+  padding: 14px;
+`;
 
-  &:hover {
-    background: ${({ disabled }) => (disabled ? DesignTokenColors.neutralUI200 : DesignTokenColors.primary800)};
-    border-color: ${({ disabled }) => (disabled ? DesignTokenColors.neutralUI200 : DesignTokenColors.primary800)};
-  }
+const Head = styled.div`
+  color: ${DesignTokenColors.neutralUI600};
+  font-size: 13px;
+`;
+
+const HeaderDivider = styled.div`
+  width: 1px;
+  height: 20px;
+  background: ${DesignTokenColors.neutralUI100};
+  margin: 0 12px;
+  align-self: center;
+`;
+
+const Cell = styled.div`
+  color: ${DesignTokenColors.neutralUI900};
+  font-size: 14px;
 `;
 
 const SuccessBanner = styled.div`
@@ -151,7 +181,6 @@ const SuccessBanner = styled.div`
   background: ${DesignTokenColors.neutralUI50};
   border: 1px solid ${DesignTokenColors.neutralUI200};
   border-radius: 10px;
-  color: ${DesignTokenColors.neutralUI900};
   display: flex;
   gap: 10px;
   margin: 8px 0 12px;
@@ -164,49 +193,31 @@ const SuccessIcon = styled.span`
   line-height: 1;
 `;
 
-const UploadGrid = styled.div`
-  background: ${DesignTokenColors.whiteUI};
-  border: 1px solid ${DesignTokenColors.neutralUI200};
-  border-radius: 10px;
-  display: grid;
-  gap: 12px 18px;
-  grid-template-columns: repeat(4, 1fr);
-  padding: 14px;
-`;
-
-const UploadGridCell = styled.div`
-  color: ${DesignTokenColors.neutralUI900};
-  font-size: 14px;
-`;
-
-const UploadGridHead = styled.div`
-  color: ${DesignTokenColors.neutralUI600};
-  font-size: 13px;
-`;
-
-const UploadHeaderLeft = styled.div`
-  align-items: center;
+const Footer = styled.div`
   display: flex;
-  gap: 12px;
-`;
-
-const UploadHeaderRow = styled.div`
-  align-items: center;
-  display: flex;
-  gap: 12px;
   justify-content: space-between;
-  margin-bottom: 8px;
+  margin-top: 14px;
 `;
 
-const UploadIntroList = styled.ul`
-  color: ${DesignTokenColors.neutralUI700};
-  line-height: 1.45;
-  margin: 8px 0 10px;
-  padding-left: 18px;
+const CancelButton = styled.button`
+  background: ${DesignTokenColors.whiteUI};
+  border: none;
+  border-radius: 9999px;
+  color: ${DesignTokenColors.neutralUI800};
+  cursor: pointer;
+  padding: 10px 18px;
+  &:hover { background: ${DesignTokenColors.neutralUI50}; }
 `;
 
-const UploadStructureTitle = styled.div`
-  color: ${DesignTokenColors.neutralUI900};
-  font-weight: 600;
-  margin: 10px 0 6px;
+const SelectButton = styled.button`
+  background: ${DesignTokenColors.primary700};
+  border: 1px solid ${DesignTokenColors.primary700};
+  border-radius: 9999px;
+  color: ${DesignTokenColors.whiteUI};
+  cursor: pointer;
+  padding: 10px 18px;
+  &:hover {
+    background: ${DesignTokenColors.primary800};
+    border-color: ${DesignTokenColors.primary800};
+  }
 `;
