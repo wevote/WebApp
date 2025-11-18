@@ -13,8 +13,6 @@ import $ajax from '../../utils/service';
 import GoogleSelectMenuReplica from './GoogleSelectMenuReplica';
 
 /*
-GoogleAutoComplete does not work on the iOS simulators, but does work on a usb tethered physical phone
-
 Google cloud console http referrers (Website)
 https://console.cloud.google.com/apis/credentials/key/db...45?inv=1&invt=Ab27OA&project=wevoteapps
 (If you turn them off temporarily, the list is erased, so here it is...)
@@ -24,20 +22,12 @@ https://console.cloud.google.com/apis/credentials/key/db...45?inv=1&invt=Ab27OA&
 // https://*.wevote.us/
 // https://wevotedeveloper.com:3000
 
-/*
-August 24, 2025: Google Places/Maps disabled in Cordova by not setting a value for GOOGLE_MAPS_API_KEY in config.js
-July 2025: http referrers are not going to work for Cordova anymore
-   https://github.com/apache/cordova/discussions/560
-   And setting
-       <preference name="hostname" value="wevote.us" />
-       <preference name="scheme" value="https" />
-   in Cordova, had no effect. Google still replied with a console error:
-       ERROR: Google Maps JavaScript API error: RefererNotAllowedMapError
-       https://developers.google.com/maps/documentation/javascript/error-messages#referer-not-allowed-map-error
-       Your site URL to be authorized: app://localhost/index.html
-*/
 
-
+// November 2025:  WebApp uses AutoComplete (react-google-autocomplete) which in turn uses the deprecated
+// "google.maps.places.AutocompleteService" -- Google says "As of March 1st, 2025, google.maps.places.AutocompleteService is not available to new customers."
+// See  https://github.com/ErrorPro/react-google-autocomplete/issues/246
+// Our Cordova uses <GoogleSelectMenuReplica>, a "roll your own" implementation that does the search from the Python server, this
+// allows us to use and API key that is hidden from the world which was not possible in a WebView within Cordova.
 function GoogleAutoComplete (props) {
   renderLog('GoogleAutoComplete  functional component');
   const { id, classes, updateTextForMapSearchInParentFromGoogle, updateTextForMapSearchInParent } = props;
