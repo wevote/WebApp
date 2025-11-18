@@ -579,14 +579,16 @@ class HeaderBar extends Component {
                       Friends
                     </StyledMoreMenuItem>
 
-                    <StyledMoreMenuItem
-                      id="discussTabHeaderBar"
-                      selected={normalizedHrefPage() === 'news'}
-                      onClick={this.navTo('/news', 99)}
-                      disableRipple
-                    >
-                      Discuss
-                    </StyledMoreMenuItem>
+                    {isWebApp() && (  // Not in Cordova release 2.7.4 phones or tablets
+                      <StyledMoreMenuItem
+                        id="discussTabHeaderBar"
+                        selected={normalizedHrefPage() === 'news'}
+                        onClick={this.navTo('/news', 99)}
+                        disableRipple
+                      >
+                        Discuss
+                      </StyledMoreMenuItem>
+                    )}
 
                     {nextReleaseFeaturesEnabled && (
                       <StyledMoreMenuItem
@@ -610,19 +612,21 @@ class HeaderBar extends Component {
                       </StyledMoreMenuItem>
                     )}
 
-                    <Suspense fallback={<></>}>
-                      <StyledMoreMenuItem>
-                        <OpenExternalWebSite
-                          linkIdAttribute="footerLinkBlog"
-                          url="https://blog.wevote.us/"
-                          target="_blank"
-                          body={(
-                            <span>Blog</span>
-                          )}
-                          className={classes.tabRootBlog}
-                        />
-                      </StyledMoreMenuItem>
-                    </Suspense>
+                    {isWebApp() && (      // Not in Cordova release 2.7.4 phones or tablets
+                      <Suspense fallback={<></>}>
+                        <StyledMoreMenuItem>
+                          <OpenExternalWebSite
+                            linkIdAttribute="footerLinkBlog"
+                            url="https://blog.wevote.us/"
+                            target="_blank"
+                            body={(
+                              <span>Blog</span>
+                            )}
+                            className={classes.tabRootBlog}
+                          />
+                        </StyledMoreMenuItem>
+                      </Suspense>
+                    )}
                   </StyledMoreMenu>
                 </>
               )}
