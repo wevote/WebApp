@@ -5,25 +5,6 @@ import { ContentCopy as CopyIcon, Edit as EditIcon } from '@mui/icons-material';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 import ModalDisplayTemplateA from '../Widgets/ModalDisplayTemplateA';
 
-const HideTemplateADivider = createGlobalStyle`
-  .MuiDialogTitle-root:has(#closeModalDisplayTemplateApreviewInvitationModal) > hr {
-    display: none !important;
-  }
-`;
-
-const WidenPreviewModal = createGlobalStyle`
-  .MuiDialog-paper:has(#closeModalDisplayTemplateApreviewInvitationModal) {
-    max-width: 860px !important;
-    width: 96% !important;
-  }
-`;
-
-const SoftenCorners = createGlobalStyle`
-  .MuiDialog-paper:has(#closeModalDisplayTemplateApreviewInvitationModal) {
-    border-radius: 14px !important;
-  }
-`;
-
 const PreviewInvitationModal = ({
   isOpen,
   onClose,
@@ -109,23 +90,34 @@ PreviewInvitationModal.propTypes = {
   notify: PropTypes.func.isRequired,
 };
 
+{/* Global Styles */}
+
+const HideTemplateADivider = createGlobalStyle`
+  .MuiDialogTitle-root:has(#closeModalDisplayTemplateApreviewInvitationModal) > hr {
+    display: none !important;
+  }
+`;
+
+const SoftenCorners = createGlobalStyle`
+  .MuiDialog-paper:has(#closeModalDisplayTemplateApreviewInvitationModal) {
+    border-radius: 14px !important;
+  }
+`;
+
+const WidenPreviewModal = createGlobalStyle`
+  .MuiDialog-paper:has(#closeModalDisplayTemplateApreviewInvitationModal) {
+    max-width: 860px !important;
+    width: 96% !important;
+  }
+`;
+
+{/* Styles */}
+
 const BarBetween = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 12px;
-`;
-
-const HeaderRow = styled.div`
-  align-items: center;
-  display: flex;
-  justify-content: space-between;
-  padding: 0px 12px 0 18px;
-`;
-
-const Title = styled.h3`
-  font-size: 28px;
-  font-weight: 400;
 `;
 
 const HeaderActions = styled.div`
@@ -148,11 +140,11 @@ const HeaderLink = styled.button`
   &:hover { background: ${DesignTokenColors.primary50}; }
 `;
 
-const ManageInfoRow = styled.div`
-  color: ${DesignTokenColors.neutralUI600};
+const HeaderRow = styled.div`
+  align-items: center;
   display: flex;
-  gap: 8px;
-  margin: 4px 0 10px;
+  justify-content: space-between;
+  padding: 0px 12px 0 18px;
 `;
 
 const InfoDot = styled.span`
@@ -165,6 +157,13 @@ const InfoDot = styled.span`
   height: 18px;
   justify-content: center;
   width: 18px;
+`;
+
+const ManageInfoRow = styled.div`
+  color: ${DesignTokenColors.neutralUI600};
+  display: flex;
+  gap: 8px;
+  margin: 4px 0 10px;
 `;
 
 const ModalBody = styled.div`
@@ -197,6 +196,11 @@ const PreviewCloseButton = styled.button`
     background: ${DesignTokenColors.primary800};
     border-color: ${DesignTokenColors.primary800};
   }
+`;
+
+const Title = styled.h3`
+  font-size: 28px;
+  font-weight: 400;
 `;
 
 export default PreviewInvitationModal;

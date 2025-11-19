@@ -5,25 +5,6 @@ import { ContentCopy as CopyIcon } from '@mui/icons-material';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 import ModalDisplayTemplateA from '../../components/Widgets/ModalDisplayTemplateA';
 
-const HideTemplateADivider = createGlobalStyle`
-  .MuiDialogTitle-root:has(#closeModalDisplayTemplateAeditInvitationModal) > hr {
-    display: none !important;
-  }
-`;
-
-const WidenEditModal = createGlobalStyle`
-  .MuiDialog-paper:has(#closeModalDisplayTemplateAeditInvitationModal) {
-    max-width: 860px !important;
-    width: 96% !important;
-  }
-`;
-
-const SoftenCorners = createGlobalStyle`
-  .MuiDialog-paper:has(#closeModalDisplayTemplateAeditInvitationModal) {
-    border-radius: 14px !important;
-  }
-`;
-
 const EditInvitationModal = ({
   isOpen,
   onClose,
@@ -115,49 +96,28 @@ EditInvitationModal.propTypes = {
   selectedPoliticianId: PropTypes.string.isRequired,
 };
 
-const HeaderRow = styled.div`
-  align-items: center;
-  display: flex;
-  justify-content: space-between;
-  padding: 0px 12px 0 18px;
+{/* Global Styles */}
+
+const HideTemplateADivider = createGlobalStyle`
+  .MuiDialogTitle-root:has(#closeModalDisplayTemplateAeditInvitationModal) > hr {
+    display: none !important;
+  }
 `;
 
-const Title = styled.h3`
-  font-size: 28px;
-  font-weight: 400;
+const SoftenCorners = createGlobalStyle`
+  .MuiDialog-paper:has(#closeModalDisplayTemplateAeditInvitationModal) {
+    border-radius: 14px !important;
+  }
 `;
 
-const ManageInfoRow = styled.div`
-  color: ${DesignTokenColors.neutralUI600};
-  display: flex;
-  gap: 8px;
-  margin: 4px 0 10px;
+const WidenEditModal = createGlobalStyle`
+  .MuiDialog-paper:has(#closeModalDisplayTemplateAeditInvitationModal) {
+    max-width: 860px !important;
+    width: 96% !important;
+  }
 `;
 
-const InfoDot = styled.span`
-  align-items: center;
-  border: 1px solid ${DesignTokenColors.neutralUI300};
-  border-radius: 50%;
-  color: ${DesignTokenColors.neutralUI600};
-  display: inline-flex;
-  font-size: 12px;
-  height: 18px;
-  justify-content: center;
-  width: 18px;
-`;
-
-const HeaderLink = styled.button`
-  align-items: center;
-  background: none;
-  border: none;
-  border-radius: 8px;
-  color: ${DesignTokenColors.primary700};
-  cursor: pointer;
-  display: inline-flex;
-  gap: 6px;
-  padding: 6px 8px;
-  &:hover { background: ${DesignTokenColors.primary50}; }
-`;
+{/* Styles */}
 
 const BarBetween = styled.div`
   display: flex;
@@ -175,6 +135,16 @@ const EditAreaWrapper = styled.div`
   margin-bottom: 18px;
 `;
 
+const EditCloseButton = styled.button`
+  background: ${DesignTokenColors.whiteUI};
+  border: none;
+  border-radius: 9999px;
+  color: ${DesignTokenColors.neutralUI800};
+  cursor: pointer;
+  padding: 10px 18px;
+  &:hover { background: ${DesignTokenColors.neutralUI50}; }
+`;
+
 const EditTextArea = styled.textarea`
   background: transparent;
   border: none;
@@ -187,20 +157,49 @@ const EditTextArea = styled.textarea`
   width: 100%;
 `;
 
+const HeaderLink = styled.button`
+  align-items: center;
+  background: none;
+  border: none;
+  border-radius: 8px;
+  color: ${DesignTokenColors.primary700};
+  cursor: pointer;
+  display: inline-flex;
+  gap: 6px;
+  padding: 6px 8px;
+  &:hover { background: ${DesignTokenColors.primary50}; }
+`;
+
+const HeaderRow = styled.div`
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  padding: 0px 12px 0 18px;
+`;
+
+const InfoDot = styled.span`
+  align-items: center;
+  border: 1px solid ${DesignTokenColors.neutralUI300};
+  border-radius: 50%;
+  color: ${DesignTokenColors.neutralUI600};
+  display: inline-flex;
+  font-size: 12px;
+  height: 18px;
+  justify-content: center;
+  width: 18px;
+`;
+
+const ManageInfoRow = styled.div`
+  color: ${DesignTokenColors.neutralUI600};
+  display: flex;
+  gap: 8px;
+  margin: 4px 0 10px;
+`;
+
 const ModalFooter = styled.div`
   display: flex;
   justify-content: space-between;
   margin-top: 12px;
-`;
-
-const EditCloseButton = styled.button`
-  background: ${DesignTokenColors.whiteUI};
-  border: none;
-  border-radius: 9999px;
-  color: ${DesignTokenColors.neutralUI800};
-  cursor: pointer;
-  padding: 10px 18px;
-  &:hover { background: ${DesignTokenColors.neutralUI50}; }
 `;
 
 const PrimarySaveBtn = styled.button`
@@ -215,6 +214,11 @@ const PrimarySaveBtn = styled.button`
     background: ${({ disabled }) => (disabled ? DesignTokenColors.neutralUI200 : DesignTokenColors.primary800)};
     border-color: ${({ disabled }) => (disabled ? DesignTokenColors.neutralUI200 : DesignTokenColors.primary800)};
   }
+`;
+
+const Title = styled.h3`
+  font-size: 28px;
+  font-weight: 400;
 `;
 
 export default EditInvitationModal;

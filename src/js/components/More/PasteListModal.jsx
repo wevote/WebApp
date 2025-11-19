@@ -5,25 +5,6 @@ import { WarningAmber as WarningIcon } from '@mui/icons-material';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 import ModalDisplayTemplateA from '../Widgets/ModalDisplayTemplateA';
 
-const HideTemplateADivider = createGlobalStyle`
-  .MuiDialogTitle-root:has(#closeModalDisplayTemplateApasteListModal) > hr {
-    display: none !important;
-  }
-`;
-
-const WidenPasteModal = createGlobalStyle`
-  .MuiDialog-paper:has(#closeModalDisplayTemplateApasteListModal) {
-    width: 96% !important;
-    max-width: 860px !important;
-  }
-`;
-
-const SoftenCorners = createGlobalStyle`
-  .MuiDialog-paper:has(#closeModalDisplayTemplateApasteListModal) {
-    border-radius: 14px !important;
-  }
-`;
-
 export default function PasteListModal({
   isOpen,
   onClose,
@@ -138,29 +119,36 @@ PasteListModal.propTypes = {
 
 const escapeHTML = (s) => s.replace(/[&<>]/g, (element) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', }[element]));
 
-const HeaderRow = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0px 12px 0 18px;
+{/* Global Styles */}
+
+const HideTemplateADivider = createGlobalStyle`
+  .MuiDialogTitle-root:has(#closeModalDisplayTemplateApasteListModal) > hr {
+    display: none !important;
+  }
 `;
 
-const Title = styled.h3`
-  font-size: 28px;
-  font-weight: 400;
+const SoftenCorners = createGlobalStyle`
+  .MuiDialog-paper:has(#closeModalDisplayTemplateApasteListModal) {
+    border-radius: 14px !important;
+  }
 `;
 
-const Intro = styled.div`
-  margin: 0 0 8px;
+const WidenPasteModal = createGlobalStyle`
+  .MuiDialog-paper:has(#closeModalDisplayTemplateApasteListModal) {
+    width: 96% !important;
+    max-width: 860px !important;
+  }
 `;
+
+{/* Styles */}
 
 const BulletList = styled.ul`
-  font-size: 13px;
+  font-size: 13px;        /* smaller bullets */
   line-height: 1.35;
   padding: 0 18px;
   margin: 0 0 8px;
 
-  code { font-size: 12.5px; white-space: nowrap; }
+  code { font-size: 12.5px; white-space: nowrap; } /* keep emails on one line & a touch smaller */
 `;
 
 const BulletNoWrap = styled.li`
@@ -168,16 +156,27 @@ const BulletNoWrap = styled.li`
   code { white-space: nowrap; }
 `;
 
-const ExampleBox = styled.div`
-  margin: 0 0 6px;
+const EditAreaWrapper = styled.div`
+  background: ${DesignTokenColors.whiteUI};
+  border: 1px solid ${DesignTokenColors.neutralUI300};
+  border-radius: 10px;
+  min-height: 260px;
+  overflow: hidden;
+  position: relative;
+`;
 
-  pre {
-    font-family: inherit;
-    font-size: 13px;
-    line-height: 1.35;
-    margin: 0;
-    white-space: pre-wrap;
-  }
+const EditTextArea = styled.textarea`
+  background: transparent;
+  border: none;
+  color: ${DesignTokenColors.neutralUI900};
+  font: inherit;
+  min-height: 300px;
+  outline: none;
+  padding: 14px;
+  position: relative;
+  resize: vertical;
+  width: 100%;
+  z-index: 1;
 `;
 
 const ErrorBanner = styled.div`
@@ -204,13 +203,28 @@ const ErrorIconWrap = styled.span`
   margin-top: 2px;
 `;
 
-const EditAreaWrapper = styled.div`
-  background: ${DesignTokenColors.whiteUI};
-  border: 1px solid ${DesignTokenColors.neutralUI300};
-  border-radius: 10px;
-  min-height: 260px;
-  overflow: hidden;
-  position: relative;
+const ExampleBox = styled.div`
+  margin: 0 0 6px;
+
+  pre {
+    font-family: inherit;
+    font-size: 13px;
+    line-height: 1.35;
+    margin: 0;
+    white-space: pre-wrap;
+  }
+`;
+
+const Footer = styled.div`
+  display: flex;
+  margin-top: 12px;
+`;
+
+const HeaderRow = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0px 12px 0 18px;
 `;
 
 const HighlightLayer = styled.pre`
@@ -237,23 +251,8 @@ const HighlightLayer = styled.pre`
   }
 `;
 
-const EditTextArea = styled.textarea`
-  background: transparent;
-  border: none;
-  color: ${DesignTokenColors.neutralUI900};
-  font: inherit;
-  min-height: 300px;
-  outline: none;
-  padding: 14px;
-  position: relative;
-  resize: vertical;
-  width: 100%;
-  z-index: 1;
-`;
-
-const Footer = styled.div`
-  display: flex;
-  margin-top: 12px;
+const Intro = styled.div`
+  margin: 0 0 8px;
 `;
 
 const PlainButton = styled.button`
@@ -281,4 +280,9 @@ const PrimaryButton = styled.button`
     background: ${({ disabled }) => (disabled ? DesignTokenColors.neutralUI200 : DesignTokenColors.primary800)};
     border-color: ${({ disabled }) => (disabled ? DesignTokenColors.neutralUI200 : DesignTokenColors.primary800)};
   }
+`;
+
+const Title = styled.h3`
+  font-size: 28px;
+  font-weight: 400;
 `;
