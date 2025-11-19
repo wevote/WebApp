@@ -13,11 +13,10 @@ const PreviewInvitationModal = ({
   onEdit,
   notify,
 }) => {
-
   const handleCopyInviteBody = async () => {
     try {
       await navigator.clipboard.writeText(
-        `${invitationBody}\n\nhttps://wevote.us/join/${selectedPoliticianId}`
+        `${invitationBody}\n\nhttps://wevote.us/join/${selectedPoliticianId}`,
       );
       notify('Invitation copied to clipboard. Press ⌘V / Ctrl+V to paste.', true);
     } catch {
@@ -32,7 +31,7 @@ const PreviewInvitationModal = ({
   );
 
   const textFieldJSX = (
-    <div style={{ padding: "18px 18px 28px" }}>
+    <div style={{ padding: '18px 18px 28px' }}>
       <BarBetween>
         <ManageInfoRow>
           <InfoDot aria-hidden>i</InfoDot>
@@ -55,7 +54,10 @@ const PreviewInvitationModal = ({
       <ModalBody>
         <pre>{invitationBody}</pre>
         <br />
-        <pre>https://wevote.us/join/{selectedPoliticianId}</pre>
+        <pre>
+          https://wevote.us/join/
+          {selectedPoliticianId}
+        </pre>
       </ModalBody>
 
       <ModalFooter>
@@ -90,7 +92,7 @@ PreviewInvitationModal.propTypes = {
   notify: PropTypes.func.isRequired,
 };
 
-{/* Global Styles */}
+// Global Styles
 
 const HideTemplateADivider = createGlobalStyle`
   .MuiDialogTitle-root:has(#closeModalDisplayTemplateApreviewInvitationModal) > hr {
@@ -111,7 +113,7 @@ const WidenPreviewModal = createGlobalStyle`
   }
 `;
 
-{/* Styles */}
+// Styles
 
 const BarBetween = styled.div`
   display: flex;

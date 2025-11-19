@@ -28,14 +28,18 @@ export default function PasteListModal({
           <li>Paste a list of voters and their info, separated by line breaks</li>
           <BulletNoWrap>
             The content of each info section can be with or without brackets, i.e.&nbsp;
-            <code>name@email.com</code> or <code>&lt;name@email.com&gt;</code>
+            <code>name@email.com</code>
+            {' '}
+            or
+            {' '}
+            <code>&lt;name@email.com&gt;</code>
           </BulletNoWrap>
         </BulletList>
 
         <ExampleBox aria-label="Example">
           <b>Example:</b>
           <pre>
-{`Jane Dough, jd@email.com, (212)-123-4567
+            {`Jane Dough, jd@email.com, (212)-123-4567
 John Dough, jd@email.com, (213)-123-4567`}
           </pre>
         </ExampleBox>
@@ -48,8 +52,12 @@ John Dough, jd@email.com, (213)-123-4567`}
             <strong>Whoops! We’re having trouble importing your list of voters.</strong>
             <div>Please check the highlighted lines and make sure that:</div>
             <ul>
-              <li>There’s a <b>line break</b> after each voter (use Enter/Return)</li>
-              <li>There’s a <b>single comma</b> separating each piece of information</li>
+              <li>
+                There&apos;s a <b>line break</b> after each voter (use Enter/Return)
+              </li>
+              <li>
+                There&apos;s a <b>single comma</b> separating each piece of information
+              </li>
             </ul>
             <small>
               Problem {pasteErrors.length > 1 ? 'lines' : 'line'}:&nbsp;
@@ -79,8 +87,7 @@ John Dough, jd@email.com, (213)-123-4567`}
           disabled={!pasteText.trim()}
         >
           {prospectiveCount
-            ? `Import ${prospectiveCount} voter${prospectiveCount > 1 ? 's' : ''}`
-            : 'Import'}
+            ? `Import ${prospectiveCount} voter${prospectiveCount > 1 ? 's' : ''}` : 'Import'}
         </PrimaryButton>
       </Footer>
     </div>
@@ -119,7 +126,7 @@ PasteListModal.propTypes = {
 
 const escapeHTML = (s) => s.replace(/[&<>]/g, (element) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', }[element]));
 
-{/* Global Styles */}
+// Global Styles
 
 const HideTemplateADivider = createGlobalStyle`
   .MuiDialogTitle-root:has(#closeModalDisplayTemplateApasteListModal) > hr {
@@ -140,7 +147,7 @@ const WidenPasteModal = createGlobalStyle`
   }
 `;
 
-{/* Styles */}
+// Styles
 
 const BulletList = styled.ul`
   font-size: 13px;        /* smaller bullets */

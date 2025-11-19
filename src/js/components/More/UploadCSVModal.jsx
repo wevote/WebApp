@@ -5,7 +5,7 @@ import { FileDownloadOutlined as DownloadIcon, CheckCircle as CheckIcon } from '
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 import ModalDisplayTemplateA from '../Widgets/ModalDisplayTemplateA';
 
-export default function UploadCSVModal({
+export default function UploadCSVModal ({
   isOpen,
   onClose,
   onDownloadSample,
@@ -53,7 +53,9 @@ export default function UploadCSVModal({
         <Cell>js@gmail.com</Cell>
         <Cell>(123) 456-7890</Cell>
         <Cell>
-          123 State St<br />Anytown, CA 94117
+          123 State St
+          <br />
+          Anytown, CA 94117
         </Cell>
       </Grid>
 
@@ -89,7 +91,7 @@ UploadCSVModal.propTypes = {
   allColumnsOK: PropTypes.bool.isRequired,
 };
 
-{/* Global Styles */}
+// Global Styles
 
 const HideTemplateADivider = createGlobalStyle`
   .MuiDialogTitle-root:has(#closeModalDisplayTemplateAuploadCSVModal) > hr {
@@ -110,7 +112,7 @@ const WidenUploadModal = createGlobalStyle`
   }
 `;
 
-{/* Styles */}
+// Styles
 
 const CancelButton = styled.button`
   background: ${DesignTokenColors.whiteUI};
@@ -175,7 +177,7 @@ const HeaderRow = styled.div`
   align-items: center;
   display: flex;
   justify-content: space-between;
-  padding: 0px 12px 0 18px;
+  padding: 0 12px 0 18px;
 `;
 
 const IntroList = styled.ul`

@@ -71,7 +71,7 @@ const VerifyOtherWaysModal = ({ politicianName, politicianWeVoteId }) => {
     lines.push(`Relationship to Candidate: ${option}`);
 
     if (campaignEmailParam) lines.push(`Candidate/campaign related email: ${campaignEmailParam.trim()}`);
-    if (campaignEmailParam) lines.push(`Is email visible on public websites: ${emailNotVisibleCheckboxParam}`);
+    if (campaignEmailParam) lines.push(`Is email NOT visible on public websites: ${emailNotVisibleCheckboxParam}`);
     if (webAddressContactParam) lines.push(`Candidate contact form web address: ${webAddressContactParam.trim()}`);
     if (socialAddressContactParam) lines.push(`Candidate social media address: ${socialAddressContactParam.trim()}`);
     if (additionalInfoParam) lines.push(`Additional information:\n${additionalInfoParam.trim()}`);
