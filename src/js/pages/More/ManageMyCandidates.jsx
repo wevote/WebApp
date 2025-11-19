@@ -34,25 +34,46 @@ export default function ManageMyCandidates () {
 
   const [politiciansToManage, setPoliticiansToManage] = useState(demoPoliticians); // Place demoPoliticians in useState to use dummy data, otherwise place: []
   const [selectedPoliticianWeVoteId, setSelectedPoliticianWeVoteId] = useState('');
+  // Left nav active tab
+  const [active, setActive] = useState('import');
+  // Invitation text
+  const selectedPolitician = politiciansToManage.find((politician) => politician.we_vote_id === selectedPoliticianWeVoteId) || null;
+  const [invitationBody, setInvitationBody] = useState(`Hello friend,
+
+We’d like to invite you to join WeVote to help support ${selectedPolitician?.politician_name || 'our campaign'}.
+Thanks for your help!`);
+  // Edit modal
+  const [showEdit, setShowEdit] = useState(false);
+  const [draftInvite, setDraftInvite] = useState(invitationBody);
+  const [initialInvite, setInitialInvite] = useState(invitationBody);
+  // Preview modal
+  const [showPreview, setShowPreview] = useState(false);
+  const handlePreviewOpen = () => setShowPreview(true);
+  const handlePreviewClose = () => setShowPreview(false);
+  // Upload CSV modal
+  const [showUpload, setShowUpload] = useState(false);
+  // CSV upload and paste
+  const [showPaste, setShowPaste] = useState(false);
+  const [pasteText, setPasteText] = useState('');
+  const [pasteErrors, setPasteErrors] = useState([]);
+  const [mirrorHTML, setMirrorHTML] = useState('');
+  const [importedVoters, setImportedVoters] = useState([]);
+  // One-by-one inputs
+  const [oneName, setOneName] = useState('');
+  const [oneEmail, setOneEmail] = useState('');
+  const [onePhone, setOnePhone] = useState('');
+  const fileInputRef = useRef(null);
+  const [allColumnsOK, setAllColumnsOK] = useState(false);
+
+  const openUploadModal = () => { setAllColumnsOK(false); setShowUpload(true); };
+  const closeUploadModal = () => { setAllColumnsOK(false); setShowUpload(false); };
+  const handleSelectCSV = () => fileInputRef.current?.click();
 
   useEffect(() => {
     if (!selectedPoliticianWeVoteId && politiciansToManage.length > 0) {
       setSelectedPoliticianWeVoteId(politiciansToManage[0].we_vote_id);
     }
   }, [politiciansToManage, selectedPoliticianWeVoteId]);
-
-  const selectedPolitician = politiciansToManage.find((politician) => politician.we_vote_id === selectedPoliticianWeVoteId) || null;
-
-  // Invitation text
-  const [invitationBody, setInvitationBody] = useState(`Hello friend,
-
-We’d like to invite you to join WeVote to help support ${selectedPolitician?.politician_name || 'our campaign'}.
-Thanks for your help!`);
-
-  // Edit modal
-  const [showEdit, setShowEdit] = useState(false);
-  const [draftInvite, setDraftInvite] = useState(invitationBody);
-  const [initialInvite, setInitialInvite] = useState(invitationBody);
 
   // Reset draft when invitationBody or showEdit changes
   useEffect(() => {
@@ -94,8 +115,6 @@ Thanks for your help!`);
     setShowEdit(false);
     notify('Invitation updated.', true);
   };
-  const fileInputRef = useRef(null);
-  const [allColumnsOK, setAllColumnsOK] = useState(false);
 
   const emailRE = /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i;
 
@@ -152,15 +171,6 @@ Thanks for your help!`);
     }).join('\n');
   }
 
-  // Left nav active tab
-  const [active, setActive] = useState('import');
-
-  // Preview modal
-  const [showPreview, setShowPreview] = useState(false);
-  const handlePreviewOpen = () => setShowPreview(true);
-  const handlePreviewClose = () => setShowPreview(false);
-
-
   const handleCopyInviteBody = async () => {
     try {
       await navigator.clipboard.writeText(`${invitationBody}\n\nhttps://wevote.us/join/${selectedPoliticianWeVoteId}`);
@@ -169,12 +179,6 @@ Thanks for your help!`);
       notify('Copy failed. Select the text and copy manually.', false, 3000);
     }
   };
-
-  // Upload CSV modal
-  const [showUpload, setShowUpload] = useState(false);
-  const openUploadModal = () => { setAllColumnsOK(false); setShowUpload(true); };
-  const closeUploadModal = () => { setAllColumnsOK(false); setShowUpload(false); };
-  const handleSelectCSV = () => fileInputRef.current?.click();
 
   const handleDownloadSample = () => {
     const csv =
@@ -190,17 +194,6 @@ Thanks for your help!`);
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
   };
-
-  // CSV upload and paste
-  const [showPaste, setShowPaste] = useState(false);
-  const [pasteText, setPasteText] = useState('');
-  const [pasteErrors, setPasteErrors] = useState([]);
-  const [mirrorHTML, setMirrorHTML] = useState('');
-  const [importedVoters, setImportedVoters] = useState([]);
-  // One-by-one inputs
-  const [oneName, setOneName] = useState('');
-  const [oneEmail, setOneEmail] = useState('');
-  const [onePhone, setOnePhone] = useState('');
 
   const handleImportOne = useCallback(() => {
     const name = oneName.trim();
@@ -555,7 +548,7 @@ Thanks for your help!`);
           )}
           <span>{copiedMsg}</span>
         </Toast>,
-        document.body
+        document.body,
       )}
       <Suspense fallback={<></>}>
         <PoliticiansManagedController />

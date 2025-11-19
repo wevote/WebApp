@@ -843,7 +843,7 @@ const styles = (theme) => {
       paddingTop: 17,
     },
     tabRootBlog: {
-      color: '#9E9E9E',
+      color: 'rgba(51, 51, 51, 0.7)',
     },
     tabRootCandidates: {
       minWidth: 90,

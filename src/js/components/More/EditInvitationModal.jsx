@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled, { createGlobalStyle } from 'styled-components';
 import { ContentCopy as CopyIcon } from '@mui/icons-material';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
-import ModalDisplayTemplateA from '../../components/Widgets/ModalDisplayTemplateA';
+import ModalDisplayTemplateA from '../Widgets/ModalDisplayTemplateA';
 
 const EditInvitationModal = ({
   isOpen,
@@ -18,7 +18,7 @@ const EditInvitationModal = ({
   const handleCopyInviteBody = async () => {
     try {
       await navigator.clipboard.writeText(
-        `${draftInvite}\n\nhttps://wevote.us/join/${selectedPoliticianId}`
+        `${draftInvite}\n\nhttps://wevote.us/join/${selectedPoliticianId}`,
       );
       notify('Invitation copied to clipboard. Press ⌘V / Ctrl+V to paste.', true);
     } catch {
@@ -96,7 +96,7 @@ EditInvitationModal.propTypes = {
   selectedPoliticianId: PropTypes.string.isRequired,
 };
 
-{/* Global Styles */}
+// Global Styles
 
 const HideTemplateADivider = createGlobalStyle`
   .MuiDialogTitle-root:has(#closeModalDisplayTemplateAeditInvitationModal) > hr {
@@ -117,7 +117,7 @@ const WidenEditModal = createGlobalStyle`
   }
 `;
 
-{/* Styles */}
+// Styles
 
 const BarBetween = styled.div`
   display: flex;
@@ -174,7 +174,7 @@ const HeaderRow = styled.div`
   align-items: center;
   display: flex;
   justify-content: space-between;
-  padding: 0px 12px 0 18px;
+  padding: 0 12px 0 18px;
 `;
 
 const InfoDot = styled.span`
