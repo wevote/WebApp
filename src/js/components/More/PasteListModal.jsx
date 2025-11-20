@@ -5,7 +5,9 @@ import { WarningAmber as WarningIcon } from '@mui/icons-material';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 import ModalDisplayTemplateA from '../Widgets/ModalDisplayTemplateA';
 
-export default function PasteListModal({
+const escapeHTML = (s) => s.replace(/[&<>]/g, (element) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[element]));
+
+export default function PasteListModal ({
   isOpen,
   onClose,
   pasteText,
@@ -53,14 +55,25 @@ John Dough, jd@email.com, (213)-123-4567`}
             <div>Please check the highlighted lines and make sure that:</div>
             <ul>
               <li>
-                There&apos;s a <b>line break</b> after each voter (use Enter/Return)
+                There&apos;s a
+                {' '}
+                <b>line break</b>
+                {' '}
+                after each voter (use Enter/Return)
               </li>
               <li>
-                There&apos;s a <b>single comma</b> separating each piece of information
+                There&apos;s a
+                {' '}
+                <b>single comma</b>
+                {' '}
+                separating each piece of information
               </li>
             </ul>
             <small>
-              Problem {pasteErrors.length > 1 ? 'lines' : 'line'}:&nbsp;
+              Problem
+              {' '}
+              {pasteErrors.length > 1 ? 'lines' : 'line'}
+              :&nbsp;
               {pasteErrors.map((e) => e.line + 1).join(', ')}
             </small>
           </div>
@@ -86,8 +99,8 @@ John Dough, jd@email.com, (213)-123-4567`}
           onClick={onImport}
           disabled={!pasteText.trim()}
         >
-          {prospectiveCount
-            ? `Import ${prospectiveCount} voter${prospectiveCount > 1 ? 's' : ''}` : 'Import'}
+          {prospectiveCount ?
+            `Import ${prospectiveCount} voter${prospectiveCount > 1 ? 's' : ''}` : 'Import'}
         </PrimaryButton>
       </Footer>
     </div>
@@ -123,8 +136,6 @@ PasteListModal.propTypes = {
   onImport: PropTypes.func.isRequired,
   prospectiveCount: PropTypes.number.isRequired,
 };
-
-const escapeHTML = (s) => s.replace(/[&<>]/g, (element) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', }[element]));
 
 // Global Styles
 
