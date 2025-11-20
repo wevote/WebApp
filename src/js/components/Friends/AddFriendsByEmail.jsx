@@ -38,6 +38,7 @@ class AddFriendsByEmail extends Component {
       senderEmailAddressError: false,
       voterIsSignedIn: false,
     };
+    this.emailInputRef = React.createRef();
   }
 
   componentDidMount () {
@@ -52,6 +53,9 @@ class AddFriendsByEmail extends Component {
     if (apiCalming('friendListsAll', 30000)) {
       FriendActions.friendListsAll();
       FriendActions.friendListInvitationsWaitingForVerification();
+    }
+    if (this.emailInputRef.current) {
+      this.emailInputRef.current.focus();
     }
   }
 
@@ -318,6 +322,7 @@ class AddFriendsByEmail extends Component {
                       <TextField
                         classes={{ root: classes.textField }}
                         id={uniqueExternalId ? `EmailAddress-${uniqueExternalId}` : 'EmailAddress'}
+                        inputRef={this.emailInputRef}
                         label="Enter email addresses of friends"
                         margin="dense"
                         maxRows={3}
