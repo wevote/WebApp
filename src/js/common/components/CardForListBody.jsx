@@ -1,7 +1,7 @@
 import { HowToVote, Launch } from '@mui/icons-material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
-import React, { Suspense } from 'react';
+import React, { Suspense, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import TruncateMarkup from 'react-truncate-markup';
 import styled from 'styled-components';
@@ -19,8 +19,7 @@ import HeartFavoriteToggleLoader from './Widgets/HeartFavoriteToggle/HeartFavori
 import SvgImage from './Widgets/SvgImage';
 import extractPoliticianDetailsFromUrl from '../utils/extractPoliticianDetailsFromUrl';
 import lookupPageNameAndPageTypeDict from '../../utils/lookupPageNameAndPageTypeDict';
-import claimedProfileIcon from '../../../img/global/svg-icons/claimed-profile-icon.svg';
-import normalizedImagePath from '../utils/normalizedImagePath';
+import ClaimedProfileIcon from './Widgets/ClaimedProfileIcon';
 
 const CampaignSupportThermometer = React.lazy(() => import(/* webpackChunkName: 'CampaignSupportThermometer' */ './CampaignSupport/CampaignSupportThermometer'));
 const ItemActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemActionBar' */ '../../components/Widgets/ItemActionBar/ItemActionBar'));
@@ -34,7 +33,7 @@ function CardForListBody (props) {
   const {
     ballotItemDisplayName,
     candidateWeVoteId, classes, districtName, finalElectionDateInPast, hideCardMargins,
-    hideItemActionBar, isClaimedProfile, limitCardWidth, linkedCampaignXWeVoteId, officeName,
+    hideItemActionBar, isClaimedProfile: originalIsClaimedProfile, limitCardWidth, linkedCampaignXWeVoteId, officeName,
     photoLargeUrl, politicalParty, politicianBasePath,
     politicianDescription, politicianWeVoteId, profileImageBackgroundColor,
     showPoliticianOpenInNewWindow, stateCode, tagIdBaseName,
@@ -42,6 +41,8 @@ function CardForListBody (props) {
     useCampaignSupportThermometer, useOfficeHeld,
     usePoliticianWeVoteIdForBallotItem, useVerticalCard,
   } = props;
+
+  const isClaimedProfile = true;
   // const supportersCountNextGoal = supportersCountNextGoalRaw || 0;
   // let supportersCountNextGoalWithFloor = supportersCountNextGoal || CampaignStore.getCampaignXSupportersCountNextGoalDefault();
   // console.log('supportersCount:', supportersCount, 'supportersCountNextGoal:', supportersCountNextGoal, 'supportersCountNextGoalWithFloor:', supportersCountNextGoalWithFloor);
@@ -69,6 +70,7 @@ function CardForListBody (props) {
   // console.log('CardForListBody politicianDetailsURL:', politicianDetailsURL, ', destinationPage: ', destinationPage);
   const location = useLocation();
   const { state: stateFromUrl, name: nameFromUrl } = extractPoliticianDetailsFromUrl(location.pathname);
+
 
   // /////////////////////// START OF DISPLAY
   return (
@@ -336,13 +338,8 @@ function CardForListBody (props) {
                   />
                 </CampaignImageMobilePlaceholder>
                 {isClaimedProfile && (
-                  <ClaimedProfileOverlay>
-                    <SvgImage
-                      color={DesignTokenColors.neutral500}
-                      imageName={normalizedImagePath(claimedProfileIcon)}
-                      opacity="1.0"
-                      padding="0"
-                    />
+                  <ClaimedProfileOverlay onClick={(e) => e.stopPropagation()}>
+                    <ClaimedProfileIcon />
                   </ClaimedProfileOverlay>
                 )}
               </PoliticianImageContainer>
@@ -368,13 +365,8 @@ function CardForListBody (props) {
                   </SvgWatermarkWrapper>
                 </CampaignImageMobilePlaceholder>
                 {isClaimedProfile && (
-                  <ClaimedProfileOverlay>
-                    <SvgImage
-                      color={DesignTokenColors.neutral500}
-                      imageName={normalizedImagePath(claimedProfileIcon)}
-                      opacity="1.0"
-                      padding="0"
-                    />
+                  <ClaimedProfileOverlay onClick={(e) => e.stopPropagation()}>
+                    <ClaimedProfileIcon />
                   </ClaimedProfileOverlay>
                 )}
               </PoliticianImageContainer>
@@ -415,13 +407,8 @@ function CardForListBody (props) {
                   )}
                 </>
                 {isClaimedProfile && (
-                  <ClaimedProfileOverlay>
-                    <SvgImage
-                      color={DesignTokenColors.neutral500}
-                      imageName={normalizedImagePath(claimedProfileIcon)}
-                      opacity="1.0"
-                      padding="0"
-                    />
+                  <ClaimedProfileOverlay onClick={(e) => e.stopPropagation()}>
+                    <ClaimedProfileIcon />
                   </ClaimedProfileOverlay>
                 )}
               </PoliticianImageContainer>
@@ -446,12 +433,7 @@ function CardForListBody (props) {
                   </CampaignImagePlaceholderText>
                   {isClaimedProfile && (
                     <ClaimedProfileOverlay>
-                      <SvgImage
-                        color={DesignTokenColors.neutral500}
-                        imageName={normalizedImagePath(claimedProfileIcon)}
-                        opacity="1.0"
-                        padding="0"
-                      />
+                      <ClaimedProfileIcon />
                     </ClaimedProfileOverlay>
                   )}
                 </CampaignImageDesktopPlaceholder>
@@ -551,6 +533,8 @@ const ClaimedProfileOverlay = styled('div')`
   border-radius: 50%;
   padding: 3px;
   z-index: 2;
+  cursor: default;
+  pointer-events: auto;
 `;
 
 export default withStyles(styles)(CardForListBody);
