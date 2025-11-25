@@ -1,7 +1,7 @@
 import { HowToVote, Launch } from '@mui/icons-material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
-import React, { Suspense, useState } from 'react';
+import React, { Suspense } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import TruncateMarkup from 'react-truncate-markup';
 import styled from 'styled-components';
@@ -33,7 +33,7 @@ function CardForListBody (props) {
   const {
     ballotItemDisplayName,
     candidateWeVoteId, classes, districtName, finalElectionDateInPast, hideCardMargins,
-    hideItemActionBar, isClaimedProfile: originalIsClaimedProfile, limitCardWidth, linkedCampaignXWeVoteId, officeName,
+    hideItemActionBar, isClaimedProfile, limitCardWidth, linkedCampaignXWeVoteId, officeName,
     photoLargeUrl, politicalParty, politicianBasePath,
     politicianDescription, politicianWeVoteId, profileImageBackgroundColor,
     showPoliticianOpenInNewWindow, stateCode, tagIdBaseName,
@@ -42,7 +42,6 @@ function CardForListBody (props) {
     usePoliticianWeVoteIdForBallotItem, useVerticalCard,
   } = props;
 
-  const isClaimedProfile = true;
   // const supportersCountNextGoal = supportersCountNextGoalRaw || 0;
   // let supportersCountNextGoalWithFloor = supportersCountNextGoal || CampaignStore.getCampaignXSupportersCountNextGoalDefault();
   // console.log('supportersCount:', supportersCount, 'supportersCountNextGoal:', supportersCountNextGoal, 'supportersCountNextGoalWithFloor:', supportersCountNextGoalWithFloor);
@@ -70,7 +69,6 @@ function CardForListBody (props) {
   // console.log('CardForListBody politicianDetailsURL:', politicianDetailsURL, ', destinationPage: ', destinationPage);
   const location = useLocation();
   const { state: stateFromUrl, name: nameFromUrl } = extractPoliticianDetailsFromUrl(location.pathname);
-
 
   // /////////////////////// START OF DISPLAY
   return (
@@ -432,7 +430,7 @@ function CardForListBody (props) {
                     No candidate image available.
                   </CampaignImagePlaceholderText>
                   {isClaimedProfile && (
-                    <ClaimedProfileOverlay>
+                    <ClaimedProfileOverlay onClick={(e) => e.stopPropagation()}>
                       <ClaimedProfileIcon />
                     </ClaimedProfileOverlay>
                   )}
