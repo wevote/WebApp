@@ -54,7 +54,7 @@ class AddFriendsByEmail extends Component {
       FriendActions.friendListsAll();
       FriendActions.friendListInvitationsWaitingForVerification();
     }
-    if (this.emailInputRef.current) {
+    if (this.emailInputRef && this.emailInputRef.current) {
       this.emailInputRef.current.focus();
     }
   }
