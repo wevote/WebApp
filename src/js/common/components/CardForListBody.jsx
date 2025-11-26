@@ -29,6 +29,7 @@ const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenEx
 
 // React functional component example
 function CardForListBody (props) {
+
   renderLog('CardForListBody');  // Set LOG_RENDER_EVENTS to log all renders
   const {
     ballotItemDisplayName,
@@ -41,7 +42,7 @@ function CardForListBody (props) {
     useCampaignSupportThermometer, useOfficeHeld,
     usePoliticianWeVoteIdForBallotItem, useVerticalCard,
   } = props;
-
+  
   // const supportersCountNextGoal = supportersCountNextGoalRaw || 0;
   // let supportersCountNextGoalWithFloor = supportersCountNextGoal || CampaignStore.getCampaignXSupportersCountNextGoalDefault();
   // console.log('supportersCount:', supportersCount, 'supportersCountNextGoal:', supportersCountNextGoal, 'supportersCountNextGoalWithFloor:', supportersCountNextGoalWithFloor);
