@@ -35,6 +35,7 @@ import AppObservableStore from '../../common/stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';
+import webAppConfig from '../../config';
 import { cordovaSimplePageContainerTopOffset } from '../../utils/cordovaCalculatedOffsets';
 // Lint is not smart enough to know that lazyPreloadPages will not attempt to preload/reload this page
 // eslint-disable-next-line import/no-cycle
@@ -50,6 +51,8 @@ const SignInOptionsPanel = React.lazy(() => import(/* webpackChunkName: 'SignInO
 const ShowMoreItems = React.lazy(() => import(/* webpackChunkName: 'ShowMoreItems' */ '../../components/Widgets/ShowMoreItems'));
 
 const STARTING_NUMBER_OF_ACTIVITY_TIDBITS_TO_DISPLAY = 10;
+const facebookEnabled =  webAppConfig.ENABLE_FACEBOOK === undefined ? false : webAppConfig.ENABLE_FACEBOOK;
+const twitterEnabled = (webAppConfig.ENABLE_TWITTER && webAppConfig.ENABLE_TWITTER_AS_VOTER_SIGN_IN_OPTION);
 
 
 class News extends Component {
@@ -483,7 +486,7 @@ class News extends Component {
                   </div>
                   {voterIsSignedIn && (
                     <SignInSmallOptionsWrapper>
-                      {!voterSignedInTwitter && (
+                      {(twitterEnabled && !voterSignedInTwitter) && (
                         <div className="card">
                           <div className="card-main">
                             <TwitterSignInWrapper>
@@ -492,7 +495,7 @@ class News extends Component {
                           </div>
                         </div>
                       )}
-                      {!voterSignedInFacebook && (
+                      {(facebookEnabled && !voterSignedInFacebook) && (
                         <div className="card">
                           <div className="card-main">
                             <FacebookSignInWrapper>

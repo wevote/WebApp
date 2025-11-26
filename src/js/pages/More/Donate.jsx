@@ -254,7 +254,7 @@ class Donate extends Component {
   donationDescriptionReadMore = (readMore, isC4Donation) => (
     <DonationDescriptionContainer>
       <DonationDescription id="donation_copy">
-        Become a sustainer of WeVote! With 150+ active volunteers and 100,000+ voters, our hard costs are ~$4,000 per month.
+        Become a sustainer of WeVote! With 150+ active volunteers and 150,000+ voters, our hard costs are ~$4,000 per month.
         Your donations go toward servers, data fees, collaboration tools, and other critical paid services we can&apos;t get for free.
       </DonationDescription>
       {readMore && (

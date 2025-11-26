@@ -40,6 +40,7 @@ import { cordovaFriendsWrapper } from '../../utils/cordovaOffsets';
 import displayFriendsTabs from '../../utils/displayFriendsTabs';
 import sortFriendListByMutualFriends from '../../utils/friendFunctions';
 import { SectionDescription } from '../../components/Style/friendStyles';
+import webAppConfig from '../../config';
 
 const AddContactsFromGoogleButton = React.lazy(() => import(/* webpackChunkName: 'AddContactsFromGoogleButton' */ '../../components/SetUpAccount/AddContactsFromGoogleButton'));
 const ContactsImportedPreview = React.lazy(() => import(/* webpackChunkName: 'ContactsImportedPreview' */ '../../components/Friends/ContactsImportedPreview'));
@@ -48,8 +49,10 @@ const FirstAndLastNameRequiredAlert = React.lazy(() => import(/* webpackChunkNam
 const RemindContactsStart = React.lazy(() => import(/* webpackChunkName: 'RemindContactsStart' */ '../../components/Remind/RemindContactsStart'));
 const SuggestedContacts = React.lazy(() => import(/* webpackChunkName: 'SuggestedContacts' */ '../../components/Friends/SuggestedContacts'));
 
+const facebookEnabled =  webAppConfig.ENABLE_FACEBOOK === undefined ? false : webAppConfig.ENABLE_FACEBOOK;
 const testimonialPhoto = '../../../img/global/photos/Dale_McGrew-48x48.jpg';   // DON'T COPY this pattern, we should be using normalizedImagePath()
 const testimonialAuthor = 'Dale M., Oakland, California';
+const twitterEnabled = (webAppConfig.ENABLE_TWITTER && webAppConfig.ENABLE_TWITTER_AS_VOTER_SIGN_IN_OPTION);
 const imageUrl = normalizedImagePath(testimonialPhoto);
 const testimonial = 'Instead of searching through emails and social media for recommendations, I can see how my friends are voting on WeVote.';
 
@@ -323,12 +326,12 @@ class Friends extends Component {
               </div>
               <div className="col-sm-12 col-md-4">
                 <SignInOptionsWrapper>
-                  {voter.signed_in_twitter ? null : (
+                  {(twitterEnabled && !voter.signed_in_twitter) && (
                     <TwitterSignInWrapper>
                       <TwitterSignInCard />
                     </TwitterSignInWrapper>
                   )}
-                  {voter.signed_in_facebook ? null : (
+                  {(facebookEnabled && !voter.signed_in_facebook) && (
                     <FacebookSignInWrapper>
                       <FacebookSignInCard />
                     </FacebookSignInWrapper>
@@ -365,12 +368,12 @@ class Friends extends Component {
               </FindYourContactsWrapper>
               <InviteByEmail />
               <SignInOptionsWrapper>
-                {voter.signed_in_twitter ? null : (
+                {(twitterEnabled && !voter.signed_in_twitter) && (
                   <TwitterSignInWrapper>
                     <TwitterSignInCard />
                   </TwitterSignInWrapper>
                 )}
-                {voter.signed_in_facebook ? null : (
+                {(facebookEnabled && !voter.signed_in_facebook) && (
                   <FacebookSignInWrapper>
                     <FacebookSignInCard />
                   </FacebookSignInWrapper>
@@ -535,12 +538,12 @@ class Friends extends Component {
                     </div>
                   )}
                   <SignInOptionsWrapper>
-                    {voter.signed_in_twitter ? null : (
+                    {(twitterEnabled && !voter.signed_in_twitter) && (
                       <TwitterSignInWrapper>
                         <TwitterSignInCard />
                       </TwitterSignInWrapper>
                     )}
-                    {voter.signed_in_facebook ? null : (
+                    {(facebookEnabled && !voter.signed_in_facebook) && (
                       <FacebookSignInWrapper>
                         <FacebookSignInCard />
                       </FacebookSignInWrapper>
@@ -596,12 +599,12 @@ class Friends extends Component {
                 </InviteFriendsMobileWrapper>
               </>
               <SignInOptionsWrapper>
-                {voter.signed_in_twitter ? null : (
+                {(twitterEnabled && !voter.signed_in_twitter) && (
                   <TwitterSignInWrapper>
                     <TwitterSignInCard />
                   </TwitterSignInWrapper>
                 )}
-                {voter.signed_in_facebook ? null : (
+                {(facebookEnabled && !voter.signed_in_facebook) && (
                   <FacebookSignInWrapper>
                     <FacebookSignInCard />
                   </FacebookSignInWrapper>
