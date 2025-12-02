@@ -203,10 +203,17 @@ CampaignsHomeLoader.propTypes = {
 const CampaignsHomeContainer = styled('div')`
 `;
 
-const WhatIsHappeningSectionLoading = styled('div')`
-  height: 460px;
-  min-height: 460px;
-`;
+const WhatIsHappeningSectionLoading = styled('div', {
+  shouldForwardProp: (prop) => !['useMinimumHeight'].includes(prop),
+})(({ useMinimumHeight }) => (`
+  // background: linear-gradient(180deg, rgba(2,0,36,1) 0%, rgba(46,55,77,0) 52%);
+  // background: linear-gradient(0deg, rgba(2,0,36,1) 0%, rgba(46,55,77,0) 52%);
+  // background-color: #f5f5f5;
+  // box-shadow: 0 0 80px 0px rgba(46,55,77,.3);
+  min-height: ${useMinimumHeight ? '460px;' :  '120px'};
+  // padding: 0 0 25px 0;
+`));
+
 
 export default CampaignsHomeLoader;
 

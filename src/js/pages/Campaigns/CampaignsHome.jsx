@@ -311,7 +311,7 @@ class CampaignsHome extends Component {
       candidateListOnYourBallot,
       candidateListOther,
       candidateListTimeStampOfChange: Date.now(),
-    }, () => this.onIncomingCandidateListChange());
+    }, () =>  this.onIncomingCandidateListChange());
   }
 
   onPoliticianStoreChange () {
@@ -334,7 +334,7 @@ class CampaignsHome extends Component {
       representativeListOnYourBallot,
       representativeListShownAsRepresentatives,
       representativeListTimeStampOfChange: Date.now(),
-    }, () => this.onIncomingRepresentativeListChange());
+    }, () => () => this.onIncomingRepresentativeListChange(true));
   }
 
   onVoterStoreChange () {
@@ -832,7 +832,7 @@ class CampaignsHome extends Component {
     // console.log('CampaignsHome, isSearching: ', isSearching, ', numberOfCandidatesOnBallotResults:', numberOfCandidatesOnBallotResults, 'numberOfRepresentativeResults:', numberOfRepresentativeResults);
     return (
       <CampaignsHomeWrapper>
-        <CampaignsHomeFilter
+          <CampaignsHomeFilter
           changeListModeShown={this.changeListModeShown}
           clearSearchFunction={this.clearSearchFunction}
           handleChooseStateChange={this.handleChooseStateChange}
@@ -850,7 +850,6 @@ class CampaignsHome extends Component {
             />
           </DelayedLoad>
         )}
-
         {(nextReleaseFeaturesEnabled && pigsCanFly) && (
           <WhatIsHappeningSection>
             <Suspense fallback={<span><CandidateListRootPlaceholder titleTextForList="Campaigns" /></span>}>
@@ -870,28 +869,6 @@ class CampaignsHome extends Component {
             </Suspense>
           </WhatIsHappeningSection>
         )}
-        {(candidateListIsBattleground && candidateListIsBattleground.length > 0) ? (
-          <WhatIsHappeningSection useMinimumHeight={!isSearching && numberOfCloseRacesResults > 0}>
-            {/* Was useMinimumBattlegroundHeight */}
-            <Suspense fallback={<span><CandidateListRootPlaceholder titleTextForList="Candidates in Close Races" /></span>}>
-              <CandidateListRoot
-                hideIfNoResults
-                handleNumberOfResults={this.handleNumberOfCloseRacesResults}
-                incomingList={candidateListIsBattleground}
-                incomingListTimeStampOfChange={candidateListTimeStampOfChange}
-                listModeFilters={listModeFiltersAvailable}
-                listModeFiltersTimeStampOfChange={listModeFiltersTimeStampOfChange}
-                searchText={searchText}
-                stateCode={stateCode}
-                titleTextForList="Candidates in Close Races"
-              />
-            </Suspense>
-          </WhatIsHappeningSection>
-        ) : (
-          <>
-            {displayBattlegroundPlaceholder && <CandidateListRootPlaceholder titleTextForList="Candidates in Close Races" />}
-          </>
-        )}
         {(representativeListShownAsRepresentatives && representativeListShownAsRepresentatives.length > 0) && (
           <WhatIsHappeningSection useMinimumHeight={!isSearching && numberOfRepresentativeResults > 0}>
             <Suspense fallback={<span><CandidateListRootPlaceholder titleTextForList="Current Representatives" /></span>}>
@@ -905,23 +882,6 @@ class CampaignsHome extends Component {
                 searchText={searchText}
                 stateCode={stateCode}
                 titleTextForList="Current Representatives"
-              />
-            </Suspense>
-          </WhatIsHappeningSection>
-        )}
-        {(candidateListOnYourBallot && candidateListOnYourBallot.length > 0) && (
-          <WhatIsHappeningSection useMinimumHeight={!isSearching && numberOfCandidatesOnBallotResults > 0}>
-            <Suspense fallback={<span><CandidateListRootPlaceholder titleTextForList="On Your Ballot" /></span>}>
-              <CandidateListRoot
-                hideIfNoResults
-                handleNumberOfResults={this.handleNumberOfCandidatesOnBallotResults}
-                incomingList={candidateListOnYourBallot}
-                incomingListTimeStampOfChange={candidateListTimeStampOfChange}
-                listModeFilters={listModeFiltersAvailable}
-                listModeFiltersTimeStampOfChange={listModeFiltersTimeStampOfChange}
-                searchText={searchText}
-                stateCode={stateCode}
-                titleTextForList="On Your Ballot"
               />
             </Suspense>
           </WhatIsHappeningSection>
@@ -954,6 +914,41 @@ class CampaignsHome extends Component {
                 searchText={searchText}
                 stateCode={stateCode}
                 titleTextForList=""
+              />
+            </Suspense>
+          </WhatIsHappeningSection>
+        )}
+        {(candidateListOnYourBallot && candidateListOnYourBallot.length > 0) && (
+          <WhatIsHappeningSection useMinimumHeight={!isSearching && numberOfCandidatesOnBallotResults > 0}>
+            <Suspense fallback={<span><CandidateListRootPlaceholder titleTextForList="On Your Ballot" /></span>}>
+              <CandidateListRoot
+                hideIfNoResults
+                handleNumberOfResults={this.handleNumberOfCandidatesOnBallotResults}
+                incomingList={candidateListOnYourBallot}
+                incomingListTimeStampOfChange={candidateListTimeStampOfChange}
+                listModeFilters={listModeFiltersAvailable}
+                listModeFiltersTimeStampOfChange={listModeFiltersTimeStampOfChange}
+                searchText={searchText}
+                stateCode={stateCode}
+                titleTextForList="On Your Ballot"
+              />
+            </Suspense>
+          </WhatIsHappeningSection>
+        )}
+        {(candidateListIsBattleground && candidateListIsBattleground.length > 0) && (
+          <WhatIsHappeningSection useMinimumHeight={!isSearching && numberOfCloseRacesResults > 0}>
+            {/* Was useMinimumBattlegroundHeight */}
+            <Suspense fallback={<span><CandidateListRootPlaceholder titleTextForList="Candidates in Close Races" /></span>}>
+              <CandidateListRoot
+                hideIfNoResults
+                handleNumberOfResults={this.handleNumberOfCloseRacesResults}
+                incomingList={candidateListIsBattleground}
+                incomingListTimeStampOfChange={candidateListTimeStampOfChange}
+                listModeFilters={listModeFiltersAvailable}
+                listModeFiltersTimeStampOfChange={listModeFiltersTimeStampOfChange}
+                searchText={searchText}
+                stateCode={stateCode}
+                titleTextForList="Candidates in Close Races"
               />
             </Suspense>
           </WhatIsHappeningSection>
@@ -1003,8 +998,7 @@ const WhatIsHappeningSection = styled('div', {
   // background: linear-gradient(0deg, rgba(2,0,36,1) 0%, rgba(46,55,77,0) 52%);
   // background-color: #f5f5f5;
   // box-shadow: 0 0 80px 0px rgba(46,55,77,.3);
-  ${useMinimumHeight ? 'height: 460px;' : ''};
-  ${useMinimumHeight ? 'min-height: 460px;' : ''};
+  min-height: ${useMinimumHeight ? '460px;' :  '120px'};
   // padding: 0 0 25px 0;
 `));
 
