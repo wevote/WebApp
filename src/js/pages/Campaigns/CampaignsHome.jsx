@@ -334,7 +334,7 @@ class CampaignsHome extends Component {
       representativeListOnYourBallot,
       representativeListShownAsRepresentatives,
       representativeListTimeStampOfChange: Date.now(),
-    }, () => this.onIncomingRepresentativeListChange(true));
+    }, () => this.onIncomingRepresentativeListChange());
   }
 
   onVoterStoreChange () {
