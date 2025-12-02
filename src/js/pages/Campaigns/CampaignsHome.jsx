@@ -311,7 +311,7 @@ class CampaignsHome extends Component {
       candidateListOnYourBallot,
       candidateListOther,
       candidateListTimeStampOfChange: Date.now(),
-    }, () =>  this.onIncomingCandidateListChange());
+    }, () => this.onIncomingCandidateListChange());
   }
 
   onPoliticianStoreChange () {
@@ -334,7 +334,7 @@ class CampaignsHome extends Component {
       representativeListOnYourBallot,
       representativeListShownAsRepresentatives,
       representativeListTimeStampOfChange: Date.now(),
-    }, () => () => this.onIncomingRepresentativeListChange(true));
+    }, () => this.onIncomingRepresentativeListChange(true));
   }
 
   onVoterStoreChange () {
@@ -832,7 +832,7 @@ class CampaignsHome extends Component {
     // console.log('CampaignsHome, isSearching: ', isSearching, ', numberOfCandidatesOnBallotResults:', numberOfCandidatesOnBallotResults, 'numberOfRepresentativeResults:', numberOfRepresentativeResults);
     return (
       <CampaignsHomeWrapper>
-          <CampaignsHomeFilter
+        <CampaignsHomeFilter
           changeListModeShown={this.changeListModeShown}
           clearSearchFunction={this.clearSearchFunction}
           handleChooseStateChange={this.handleChooseStateChange}
