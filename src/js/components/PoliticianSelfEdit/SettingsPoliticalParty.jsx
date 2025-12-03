@@ -19,26 +19,31 @@ const SettingsPoliticalParty = () => {
     <Wrapper>
       <SectionTitle>Political Party</SectionTitle>
 
-      <Label>Select your political party:</Label>
+      <Label htmlFor="politicalPartySelect">Select from common political parties or enter your own</Label>
 
       <Select
+        id="politicalPartySelect"
         value={selectedParty}
         onChange={(e) => setSelectedParty(e.target.value)}
       >
-        <option value="">-- Please choose an option --</option>
-
+        <option value="">Select party</option>
         {partyOptions.map((party) => (
-          <option key={party} value={party}>{party}</option>
+          <option key={party} value={party}>
+            {party}
+          </option>
         ))}
       </Select>
 
+      {/* Only show the custom input when “Enter your own” is selected */}
       {selectedParty === "Enter your own" && (
         <CustomWrapper>
-          <Label>Type your party name:</Label>
+          <Label htmlFor="customPartyInput"></Label>
+
           <Input
+            id="customPartyInput"
             type="text"
             value={customParty}
-            placeholder="Enter your party name"
+            placeholder="Type your party name..."
             onChange={(e) => setCustomParty(e.target.value)}
           />
         </CustomWrapper>
@@ -72,13 +77,25 @@ const Select = styled('select')`
   width: 100%;
   padding: 12px;
   font-size: 16px;
+
   border-radius: 8px;
   border: 1px solid ${DesignTokenColors.neutralUI400};
-  background: ${DesignTokenColors.whiteUI};
+  background-color: ${DesignTokenColors.whiteUI};
+  color: ${DesignTokenColors.neutralUI900};
+
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  background-image: url("data:image/svg+xml;utf8,<svg fill='%23666' height='24' width='24' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+  background-position: right 12px center;
+  background-repeat: no-repeat;
+
   outline: none;
 
   &:focus {
     border-color: ${DesignTokenColors.primary600};
+    box-shadow: 0 0 0 2px ${DesignTokenColors.primary200};
   }
 `;
 
