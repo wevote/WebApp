@@ -17,6 +17,7 @@ import SettingsSectionFooter from '../Navigation/SettingsSectionFooter';
 import SettingsLinks from '../PoliticianSelfEdit/SettingsLinks';
 import SettingsNameAndPhoto from '../PoliticianSelfEdit/SettingsNameAndPhoto';
 import SettingsOfficialStatement from '../PoliticianSelfEdit/SettingsOfficialStatement';
+import SettingsPoliticalParty from '../PoliticianSelfEdit/SettingsPoliticalParty';
 import SettingsNotifications from '../Settings/SettingsNotifications';
 import { NavLinksContainer } from '../Style/drawerLayoutStyles';
 import DrawerTemplateHeaderProfile from './DrawerTemplateHeaderProfile';
@@ -66,6 +67,16 @@ const PoliticianSelfEditDrawer = () => {
       linkName: 'teamAccess',
       linkTextJsx: <LinkSpan $isActive={String(displayProfileOption) === 'teamAccess'}>Team Access</LinkSpan>,
     },
+    {
+      icon: <AccountCircle $isActive={String(displayProfileOption) === 'party'} />,
+      linkName: 'party',
+      linkTextJsx: (
+        <LinkSpan $isActive={String(displayProfileOption) === 'party'}>
+          Political Party
+        </LinkSpan>
+      ),
+    },
+
   ];
 
   // useEffect to handle which component to display from nav
@@ -104,6 +115,15 @@ const PoliticianSelfEditDrawer = () => {
           </>
         );
         break;
+      case 'party':
+        component = (
+          <SettingsPoliticalParty
+            externalUniqueId="politicianSelfEditDrawer"
+            politicianWeVoteId={politicianWeVoteId}
+          />
+        );
+        break;
+
       default:
         // console.log('In PoliticianSelfEditDrawer useEffect default case');
         if (!displayProfileOption) {
