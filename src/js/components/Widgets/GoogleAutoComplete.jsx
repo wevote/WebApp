@@ -1,8 +1,8 @@
 import { LocationOn } from '@mui/icons-material';
-import { Paper, TextField } from '@mui/material';
+import { Paper, styled, TextField } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import AutoComplete from 'react-google-autocomplete';
 import { isCordovaPhone, isIPad } from '../../common/utils/cordovaUtils';
 import initializejQuery from '../../common/utils/initializejQuery';
@@ -12,15 +12,19 @@ import webAppConfig from '../../config';
 import $ajax from '../../utils/service';
 import GoogleSelectMenuReplica from './GoogleSelectMenuReplica';
 
+/* global $ */
+
 /*
 Google cloud console http referrers (Website)
 https://console.cloud.google.com/apis/credentials/key/db...45?inv=1&invt=Ab27OA&project=wevoteapps
 (If you turn them off temporarily, the list is erased, so here it is...)
+  http://localhost:3000/
+  https://wevotedeveloper.com:3000
+  https://*.wevote.us/
+  https://api.wevoteusa.org
+  app://localhost/index.html                (Might not work anymore November 2025)
+  file_url//android_asset/www/index.html#/  (Might not work anymore November 2025)
 */
-// app://localhost/index.html
-// file_url//android_asset/www/index.html#/
-// https://*.wevote.us/
-// https://wevotedeveloper.com:3000
 
 
 // November 2025:  WebApp uses AutoComplete (react-google-autocomplete) which in turn uses the deprecated
@@ -34,6 +38,13 @@ function GoogleAutoComplete (props) {
   const [showCordovaSuggestions, setShowCordovaSuggestions] = useState(false);
   const [cordovaSuggestions, setCordovaSuggestions] = useState([]);
   const [cordovaMatchText, setCordovaMatchText] = useState('');
+
+  useEffect(() => () => {
+    // console.log('Component unmounted! Hiding google address choices');
+    $('.pac-container').css({
+      display: 'none',
+    });
+  }, []);
 
   const optionClickedCordova = (value) => {
     const txtFld = document.getElementById('cordovaTextField');
@@ -72,19 +83,41 @@ function GoogleAutoComplete (props) {
           setShowCordovaSuggestions(true);
           setCordovaSuggestions(resp.matches);
           setCordovaMatchText(event.target.value);
+          $('.ion-input-icon').css('display', 'none');
         },
       });
     });
   };
 
+  const paperSx = { boxShadow: 'none'};
+  if (isCordovaPhone) {
+    paperSx.paddingLeft = '33px';
+  }
+
+  const handleAddressChangeWebApp = (place) => {
+    $('.pac-container').css({
+      display: 'block',
+      zIndex: 1400,
+    });
+    updateTextForMapSearchInParent((place && place.target && place.target.value) || '');
+  };
+
+  const handleAddressSelectionWebApp = (place) => {
+    $('.pac-container').css({
+      display: 'none',
+    });
+    updateTextForMapSearchInParentFromGoogle((place && place.formatted_address) || '');
+  };
+
+
   return (
-    <Paper id="GAC-Paper" classes={{ root: classes.addressBoxPaperStyles }} elevation={2} sx={isCordovaPhone() ? { paddingLeft: '33px', boxShadow: 'none' } : {}}>
+    <Paper id="GAC-Paper" classes={{ root: classes.addressBoxPaperStyles }} elevation={2} sx={paperSx}>
       <LocationOn className="ion-input-icon" sx={isCordova() ? { display: 'none' } : {}} />
       {isWebApp() ? (
         <AutoComplete
           apiKey={webAppConfig.GOOGLE_MAPS_API_KEY}
-          onChange={(place) => updateTextForMapSearchInParent((place && place.target && place.target.value) || '')}
-          onPlaceSelected={(place) => updateTextForMapSearchInParentFromGoogle((place && place.formatted_address) || '')}
+          onChange={(place) => handleAddressChangeWebApp(place)}
+          onPlaceSelected={(place) => handleAddressSelectionWebApp(place)}
           defaultValue="" // {textForMapSearch}
           style={{
             width: '100%',
@@ -101,7 +134,7 @@ function GoogleAutoComplete (props) {
           inputAutocompleteValue="off"
         />
       ) : (
-        <div style={{ display: 'grid', width: '100%', transform: 'translateX(-33px)' }}>
+        <AddressEntryBox>
           <TextField
             fullWidth
             placeholder="Street number, full address and ZIP..."
@@ -124,7 +157,7 @@ function GoogleAutoComplete (props) {
             inputText={cordovaMatchText}
             clickHandler={optionClickedCordova}
           />
-        </div>
+        </AddressEntryBox>
       )}
     </Paper>
   );
@@ -156,5 +189,11 @@ const styles = (theme) => ({
     paddingLeft: getPadLeft(),
     boxShadow: getBoxShadow(),
   } });
+
+const AddressEntryBox = styled('div')`
+  display: grid;
+  width: 100%;
+  ${isCordova() ? 'transform: translateX(-33px)' : ''};
+`;
 
 export default withStyles(styles)(GoogleAutoComplete);
