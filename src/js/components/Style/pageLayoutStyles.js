@@ -10,8 +10,8 @@ import { cordovaOffsetLog } from '../../common/utils/logging';
 import CordovaPageConstants from '../../constants/CordovaPageConstants';
 import { cordovaFullyCalculatedHeaderContainerTopOffset, offsetToBottomOfHeadroomWrapper } from '../../utils/cordovaCalculatedOffsets';
 import { cordovaBallotFilterTopMargin } from '../../utils/cordovaOffsets';
-import scrollablePaneTopPaddingWebApp from '../../utils/scrollablePaneTopPaddingWebApp';
 import { pageEnumeration } from '../../utils/cordovaUtilsPageEnumeration';
+import scrollablePaneTopPaddingWebApp from '../../utils/scrollablePaneTopPaddingWebApp';
 
 /* global $ */
 
@@ -40,12 +40,12 @@ function getPaddingTop () {
       } else {
         const dualHeaderContainer = $(`div[class*="${'DualHeaderContainer'}"]`);
         const offs = dualHeaderContainer.length > 0 ? dualHeaderContainer.height() : 0;
-        // console.log(`paddingTop PageContentContainer Android ballot: '${offs}px !important'   for page: ${normalizedHref}`);
+        cordovaOffsetLog(`PageContentContainer paddingTop Android ballot: '${offs}px !important'   for page: ${normalizedHref}`);
         return `${offs}px !important`;
       }
     } else {
       const offs = offsetToBottomOfHeadroomWrapper('getPaddingTop', 'HeadroomWrapper');
-      // console.log(`paddingTop PageContentContainer: '${offs}px !important'   for page: ${normalizedHref}`);
+      cordovaOffsetLog(`PageContentContainer paddingTop iOS: '${offs}px !important' for page: ${normalizedHref}`);
       return `${offs}px !important`;
     }
   }

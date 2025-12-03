@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import colors from '../../common/components/Style/Colors';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
-import { isIOs6p1OrSmaller, isIOSAppOnMac, isIPadGiantSize, isIPhoneSmall } from '../../common/utils/cordovaUtils';
+import { isIOs6p1OrSmaller, isIOSAppOnMac, isIPad, isIPadGiantSize, isIPhoneSmall } from '../../common/utils/cordovaUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import showBallotDecisionsTabs from '../../utilsApi/showBallotDecisionsTabs'; // 2024-04-16 Upgrade to using this
@@ -152,6 +152,8 @@ export function ballotWrapperBodyStyles () {
 
   if (showBallotDecisionsTabs()) {
     styles.paddingTop = '36px';
+  } else if (isIPad()) {
+    styles.paddingTop = '10px';
   } else if (isWebApp() || twoColumnDisplay) {
     styles.paddingTop = '105px';
   } else {

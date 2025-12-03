@@ -89,7 +89,7 @@ function GoogleAutoComplete (props) {
     });
   };
 
-  const paperSx = { boxShadow: 'none'};
+  const paperSx = { boxShadow: 'none' };
   if (isCordovaPhone) {
     paperSx.paddingLeft = '33px';
   }

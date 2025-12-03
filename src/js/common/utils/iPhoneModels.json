@@ -1366,5 +1366,23 @@
     "marketingNumber": "M4",
     "name": "iPad Pro M4",
     "modelId": "iPad16,6"
+  },
+  {
+    "class": "iPad13in",
+    "size": 13,
+    "iOSSpacer": 26,
+    "type": "ipad",
+    "marketingNumber": "M5",
+    "name": "iPad Pro M5",
+    "modelId": "iPad17,3"
+  },
+  {
+    "class": "iPad13in",
+    "size": 13,
+    "iOSSpacer": 26,
+    "type": "ipad",
+    "marketingNumber": "M5",
+    "name": "iPad Pro M5",
+    "modelId": "iPad17,4"
   }
 ]
