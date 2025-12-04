@@ -107,15 +107,19 @@ function calcOffset (wrapper, wrapperContainer, type, pageHref, heightOfHW) {
   return offset;
 }
 
+export function outerHeightOfDualHeaderContainer () {
+  const dualHeaderContainer = $(`div[class*="${'DualHeaderContainer'}"]`);
+  return dualHeaderContainer.length > 0 ? dualHeaderContainer.outerHeight() : 0;
+}
 
 // eslint-disable-next-line no-unused-vars
 export function offsetToBottomOfHeadroomWrapper (type, override = false) {
   const headroomWrapper = $(`div[class*="${'HeadroomWrapper'}"]`);
   const heightOfHW = headroomWrapper.length > 0 ? headroomWrapper.height() : 0;
-  const dualHeaderContainer = $(`div[class*="${'DualHeaderContainer'}"]`);
-  const outerHeightOfDHC = dualHeaderContainer.length > 0 ? dualHeaderContainer.outerHeight() : 0;
+  const outerHeightOfDHC = outerHeightOfDualHeaderContainer();
   const pageHref = normalizedHrefPage();
   // console.log('offsetToBottomOfHeadroomWrapper heightOfHW', heightOfHW);
+  const dualHeaderContainer = $(`div[class*="${'DualHeaderContainer'}"]`);
   if (isAndroid() && dualHeaderContainer.length && outerHeightOfDHC > 0) {
     return heightOfHW;
   } else if (headroomWrapper.length > 0) {

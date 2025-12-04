@@ -588,11 +588,8 @@ class HeaderBackToBallot extends Component {
   }
 
   goToSettings () {
-    if (isMobileScreenSize()) {
-      historyPush('/settings/hamburger');
-    } else {
-      historyPush('/settings/profile');
-    }
+    console.log('goToSettings IN HeaderBackToBallot historyPush');
+    AppObservableStore.setDrawerOpen('headerProfileDrawerOpen', true);
   }
 
   toggleSignInModal () {

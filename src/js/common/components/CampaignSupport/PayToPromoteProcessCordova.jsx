@@ -12,9 +12,9 @@ class PayToPromoteProcess extends Component {
   }
 }
 PayToPromoteProcess.propTypes = {
-  campaignXWeVoteId: PropTypes.string,
-  chipInPaymentValueDefault: PropTypes.string,
-  classes: PropTypes.object,
-  lowerDonations: PropTypes.bool,
+  // campaignXWeVoteId: PropTypes.string,
+  // chipInPaymentValueDefault: PropTypes.string,
+  // classes: PropTypes.object,
+  // lowerDonations: PropTypes.bool,
 };
 export default PayToPromoteProcess;

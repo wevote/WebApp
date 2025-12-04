@@ -270,10 +270,11 @@ export function cordovaVoteMiniHeader () {
 // Easier to calculate the size, than keep working on removing the Top attribute from an AppBar
 export function cordovaStickyHeaderPaddingTop () {
   if (isIOS()) {
-    const headerBack = $('#headerBackToBallotAppBar');
-    if (isIOS() && headerBack.length) {
+    // 11/20/25, we want to cover the Measure title (on TopRowTwo), so it does not appear twice
+    const rowOneLeft = $("div[class^='TopRowOneLeftContainer']");
+    if (isIOS() && rowOneLeft.length) {
       const height = heightOfIOSSpacer();
-      const heightAppBar = headerBack.outerHeight();
+      const heightAppBar = rowOneLeft.outerHeight();
       const total = height + heightAppBar;
       const ret = total > 0 ? `${total}px` : '';
       cordovaOffsetLog(`cordovaStickyHeaderPaddingTop : ${total}, ret: '${ret}', page: ${pageEnumeration()}`);
@@ -299,32 +300,32 @@ export function cordovaStickyHeaderPaddingTop () {
   return '';
 }
 
-export function cordovaSignInModalTopPosition (collapsed) {
-  if (isIOS()) {
-    if (isIPhone6p5in()) {                    //  11 Pro Max and XS Max
-      return collapsed ? '01%' : '-25%';
-    } else if (isIPhone6p1in()) {             // XR and 11
-      return collapsed ? '01%' : '-25%';
-    } else if (isIPhone5p8in()) {             //  X and 11 Pro
-      return collapsed ? '300px' : '-206px';
-    } else if (isIPhone5p5inEarly()) {        //  6 Plus, 7 Plus and 8 Plus
-      return collapsed ? '-3%' : '-170px';
-    } else if (isIPhone5p5inMini()) {        //  12 Mini, 13 Mini
-      return collapsed ? '-3%' : '-170px';
-    } else if (isIPhone4p7in()) {             // 6, 7, 8
-      return collapsed ? 'unset' : '-24%';
-    } else if (isIPhone4in()) {               // SE
-      return collapsed ? '30px' : '-18%';
-    } else if (isIPad()) {
-      return collapsed ? '-5%' : '-22%';
-    } else {
-      return collapsed ? '-30%' : '-15%';
-    }
-  } else if (isAndroid()) {
-    return collapsed ? '-30%' : '-25%';
-  }
-  return '';
-}
+// export function cordovaSignInModalTopPosition (collapsed) {
+//   if (isIOS()) {
+//     if (isIPhone6p5in()) {                    //  11 Pro Max and XS Max
+//       return collapsed ? '01%' : '-25%';
+//     } else if (isIPhone6p1in()) {             // XR and 11
+//       return collapsed ? '01%' : '-25%';
+//     } else if (isIPhone5p8in()) {             //  X and 11 Pro
+//       return collapsed ? '300px' : '-206px';
+//     } else if (isIPhone5p5inEarly()) {        //  6 Plus, 7 Plus and 8 Plus
+//       return collapsed ? '-3%' : '-170px';
+//     } else if (isIPhone5p5inMini()) {        //  12 Mini, 13 Mini
+//       return collapsed ? '-3%' : '-170px';
+//     } else if (isIPhone4p7in()) {             // 6, 7, 8
+//       return collapsed ? 'unset' : '-24%';
+//     } else if (isIPhone4in()) {               // SE
+//       return collapsed ? '30px' : '-18%';
+//     } else if (isIPad()) {
+//       return collapsed ? '-5%' : '-22%';
+//     } else {
+//       return collapsed ? '-30%' : '-15%';
+//     }
+//   } else if (isAndroid()) {
+//     return collapsed ? '-30%' : '-25%';
+//   }
+//   return '';
+// }
 
 function measureFooterContainer () {
   try {
@@ -385,7 +386,7 @@ export function cordovaFriendsWrapper () {
     }
     if (isIPad()) {
       return {
-        paddingTop: '145px',
+        paddingTop: `${heightOfIOSSpacer(false) + 10}px`,
         paddingBottom: '90px',
       };
     }

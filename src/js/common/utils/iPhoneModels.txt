@@ -162,5 +162,7 @@ iPad11in;11.0;26;ipad;M4;iPad Pro M4;iPad16,3
 iPad11in;11.0;26;ipad;M4;iPad Pro M4;iPad16,4
 iPad13in;13.0;26;ipad;M4;iPad Pro M4;iPad16,5
 iPad13in;13.0;26;ipad;M4;iPad Pro M4;iPad16,6
+iPad13in;13.0;26;ipad;M5;iPad Pro M5;iPad17,3
+iPad13in;13.0;26;ipad;M5;iPad Pro M5;iPad17,4
 
 

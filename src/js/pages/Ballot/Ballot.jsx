@@ -21,7 +21,7 @@ import SnackNotifier, { openSnackbar } from '../../common/components/Widgets/Sna
 import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
 import CampaignStore from '../../common/stores/CampaignStore';
 import apiCalming from '../../common/utils/apiCalming';
-import { chipLabelText, isAndroidSizeWide, isIOSAppOnMac, isIPad, isIPad11in, isIPadGiantSize, isIPadMini, isIPhone6p1in } from '../../common/utils/cordovaUtils';
+import { chipLabelText, isAndroidSizeWide, isIOSAppOnMac, isIPad, isIPadGiantSize, isIPhone6p1in } from '../../common/utils/cordovaUtils';
 import getBooleanValue from '../../common/utils/getBooleanValue';
 import historyPush from '../../common/utils/historyPush';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
@@ -46,6 +46,7 @@ import TwitterStore from '../../stores/TwitterStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import { dumpCssFromId } from '../../utils/appleSiliconUtils';
+import { outerHeightOfDualHeaderContainer } from '../../utils/cordovaCalculatedOffsets';
 import { pageEnumeration } from '../../utils/cordovaUtilsPageEnumeration';
 import isMobile from '../../utils/isMobile';
 // Lint is not smart enough to know that lazyPreloadPages will not attempt to preload/reload this page
@@ -1348,10 +1349,8 @@ class Ballot extends Component {
     let showLoadingText = true;
     let searchTextString = '';
     let paddingTop = '';
-    if (isIPadMini() || isIPad11in()) {
-      paddingTop = '22%';
-    } else if (isIPad()) {
-      paddingTop = '5%';
+    if (isIPad()) {
+      paddingTop = `${outerHeightOfDualHeaderContainer()}px`;
     }
 
     return (

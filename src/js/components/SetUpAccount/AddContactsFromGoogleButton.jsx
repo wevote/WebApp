@@ -117,6 +117,8 @@ class AddContactsFromGoogleButton extends Component {
     const { gapi } = window;
     // 2022-06-23 We always want to give the voter a chance to choose another account to import from
     try {
+      const gapiTest = gapi.auth2.getAuthInstance();
+      console.log('after gapiTest', gapiTest);
       const isSignedIn = gapi.auth2.getAuthInstance().isSignedIn.get();
       // console.log('onButtonClickWebApp isSignedIn:', isSignedIn);
       if (isSignedIn) {
