@@ -21,10 +21,12 @@ const SettingsPoliticalParty = () => {
         <h1 className="h2">Political Party</h1>
       </HeaderContainer>
 
-      <IntroductionText>
+      {/* Accessible label + same spacing as Official Statement intro text */}
+      <Label htmlFor="politicalPartySelect">
         Select your political party or enter your own below.
-      </IntroductionText>
+      </Label>
 
+      {/* Select input with proper accessible name */}
       <Select
         id="politicalPartySelect"
         value={selectedParty}
@@ -38,6 +40,7 @@ const SettingsPoliticalParty = () => {
         ))}
       </Select>
 
+      {/* Custom input only visible if needed */}
       {selectedParty === "Enter your own" && (
         <CustomWrapper>
           <Input
@@ -60,17 +63,23 @@ const Wrapper = styled('div')`
   color: ${DesignTokenColors.neutralUI900};
 `;
 
+/* Matches Official Statement header container */
 const HeaderContainer = styled('div')`
   display: flex;
   align-items: center;
+  margin-bottom: 4px;
 `;
 
-const IntroductionText = styled('div')`
-  margin-top: 8px;     /* SAME gap as Official Statement */
-  margin-bottom: 12px; /* same bottom spacing as IntroductionWrapper */
+/* Uses the same spacing behavior as IntroductionWrapper in Official Statement */
+const Label = styled('label')`
+  display: block;
+  margin-top: 8px;      /* Spacing between title and intro text */
+  margin-bottom: 12px;  /* Same spacing as Official Statement intro text */
   font-size: 15px;
   color: ${DesignTokenColors.neutralUI700};
+  font-weight: 600;
 `;
+
 const Select = styled('select')`
   width: 100%;
   padding: 12px;
