@@ -21,17 +21,17 @@ const SettingsPoliticalParty = () => {
         <h1 className="h2">Political Party</h1>
       </HeaderContainer>
 
-      {/* Accessible label + same spacing as Official Statement intro text */}
-      <Label htmlFor="politicalPartySelect">
+      <Label id="partyLabel" htmlFor="politicalPartySelect">
         Select your political party or enter your own below.
       </Label>
 
-      {/* Select input with proper accessible name */}
       <Select
         id="politicalPartySelect"
+        aria-labelledby="partyLabel"
         value={selectedParty}
         onChange={(e) => setSelectedParty(e.target.value)}
       >
+
         <option value="">Select party</option>
         {partyOptions.map((party) => (
           <option key={party} value={party}>
