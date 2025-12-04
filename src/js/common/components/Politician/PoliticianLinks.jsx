@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import DesignTokenColors from '../Style/DesignTokenColors';
-import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
+
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../Widgets/OpenExternalWebSite'));
 
 const PoliticianLinks = ({ links }) => (
   <PoliticianLinksContainerOverflow>
@@ -15,16 +16,18 @@ const PoliticianLinks = ({ links }) => (
 
           return (
             <LinkContainer key={linkText} isFirst={index !== 0}>
-              <OpenExternalWebSite
-                body={linkText}
-                key={linkText}
-                linkIdAttribute={linkIdAttribute}
-                rel="noopener noreferrer"
-                url={externalLinkUrl}
-                target="_blank"
-                title={linkText}
-                trackingOn
-              />
+              <Suspense fallback={<></>}>
+                <OpenExternalWebSite
+                  body={linkText}
+                  key={linkText}
+                  linkIdAttribute={linkIdAttribute}
+                  rel="noopener noreferrer"
+                  url={externalLinkUrl}
+                  target="_blank"
+                  title={linkText}
+                  trackingOn
+                />
+              </Suspense>
             </LinkContainer>
           );
         })}

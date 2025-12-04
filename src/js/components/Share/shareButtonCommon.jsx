@@ -6,7 +6,6 @@ import TagManager from 'react-gtm-module';
 import { FacebookIcon, FacebookShareButton, TwitterIcon, TwitterShareButton } from 'react-share'; // EmailIcon, EmailShareButton,
 import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
-import OpenExternalWebSite from '../../common/components/Widgets/OpenExternalWebSite';
 import { openSnackbar } from '../../common/components/Widgets/SnackNotifier';
 import { cordovaOpenSafariView, hasDynamicIsland, hasIPhoneNotch, isIPhone6p5in } from '../../common/utils/cordovaUtils';
 import { normalizedHref } from '../../common/utils/hrefUtils';
@@ -16,6 +15,7 @@ import { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
 import VoterStore from '../../stores/VoterStore';
 import ShareModalOption from './ShareModalOption';
 
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 
 export const shareStyles = () => ({
   dialogPaper: {

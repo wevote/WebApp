@@ -7,7 +7,6 @@ import { Helmet } from 'react-helmet-async';
 import ChallengeStartActions from '../../actions/ChallengeStartActions';
 import commonMuiStyles from '../../components/Style/commonMuiStyles';
 import { OuterWrapper, PageWrapper } from '../../components/Style/stepDisplayStyles';
-import OpenExternalWebSite from '../../components/Widgets/OpenExternalWebSite';
 import historyPush from '../../utils/historyPush';
 import { renderLog } from '../../utils/logging';
 import ChallengeDescriptionInputField from '../../components/ChallengeStart/ChallengeDescriptionInputField';
@@ -21,9 +20,8 @@ import ChallengeStore from '../../stores/ChallengeStore';
 import { getChallengeValuesFromIdentifiers, retrieveChallengeFromIdentifiersIfNeeded } from '../../utils/challengeUtils';
 import initializejQuery from '../../utils/initializejQuery';
 
-
 const ChallengeRetrieveController = React.lazy(() => import(/* webpackChunkName: 'ChallengeRetrieveController' */ '../../components/Challenge/ChallengeRetrieveController'));
-
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../components/Widgets/OpenExternalWebSite'));
 
 class ChallengeStartEditAll extends Component {
   constructor (props) {
@@ -272,12 +270,14 @@ class ChallengeStartEditAll extends Component {
                       <BlockedReason>
                         Your challenge has been blocked by moderators from We Vote. Please make any requested modifications so you are in compliance with our terms of service and
                         {' '}
-                        <OpenExternalWebSite
-                          linkIdAttribute="weVoteSupport"
-                          url="https://help.wevote.us/hc/en-us/requests/new"
-                          target="_blank"
-                          body={<span>contact We Vote support for help.</span>}
-                        />
+                        <Suspense fallback={<></>}>
+                          <OpenExternalWebSite
+                            linkIdAttribute="weVoteSupport"
+                            url="https://help.wevote.us/hc/en-us/requests/new"
+                            target="_blank"
+                            body={<span>contact We Vote support for help.</span>}
+                          />
+                        </Suspense>
                         {isBlockedByWeVoteReason && (
                           <>
                             <br />
