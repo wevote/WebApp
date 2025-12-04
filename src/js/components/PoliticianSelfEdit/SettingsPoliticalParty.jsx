@@ -17,9 +17,13 @@ const SettingsPoliticalParty = () => {
 
   return (
     <Wrapper>
-      <SectionTitle>Political Party</SectionTitle>
+      <HeaderContainer>
+        <h1 className="h2">Political Party</h1>
+      </HeaderContainer>
 
-      <Label htmlFor="politicalPartySelect">Select from common political parties or enter your own</Label>
+      <IntroductionText>
+        Select your political party or enter your own below.
+      </IntroductionText>
 
       <Select
         id="politicalPartySelect"
@@ -34,16 +38,14 @@ const SettingsPoliticalParty = () => {
         ))}
       </Select>
 
-      {/* Only show the custom input when “Enter your own” is selected */}
       {selectedParty === "Enter your own" && (
         <CustomWrapper>
-          <Label htmlFor="customPartyInput"></Label>
-
           <Input
             id="customPartyInput"
             type="text"
             value={customParty}
             placeholder="Type your party name..."
+            aria-label="Type your political party name"
             onChange={(e) => setCustomParty(e.target.value)}
           />
         </CustomWrapper>
@@ -58,21 +60,17 @@ const Wrapper = styled('div')`
   color: ${DesignTokenColors.neutralUI900};
 `;
 
-const SectionTitle = styled('h2')`
-  font-size: 22px;
-  font-weight: 700;
-  margin-bottom: 24px;
-  color: ${DesignTokenColors.neutralUI900};
+const HeaderContainer = styled('div')`
+  display: flex;
+  align-items: center;
 `;
 
-const Label = styled('label')`
-  display: block;
-  margin-top: 16px;
-  margin-bottom: 8px;
-  font-size: 16px;
-  font-weight: 600;
+const IntroductionText = styled('div')`
+  margin-top: 8px;     /* SAME gap as Official Statement */
+  margin-bottom: 12px; /* same bottom spacing as IntroductionWrapper */
+  font-size: 15px;
+  color: ${DesignTokenColors.neutralUI700};
 `;
-
 const Select = styled('select')`
   width: 100%;
   padding: 12px;
@@ -84,14 +82,9 @@ const Select = styled('select')`
   color: ${DesignTokenColors.neutralUI900};
 
   appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-
   background-image: url("data:image/svg+xml;utf8,<svg fill='%23666' height='24' width='24' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
   background-position: right 12px center;
   background-repeat: no-repeat;
-
-  outline: none;
 
   &:focus {
     border-color: ${DesignTokenColors.primary600};
