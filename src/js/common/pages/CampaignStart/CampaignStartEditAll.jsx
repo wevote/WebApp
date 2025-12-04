@@ -7,7 +7,6 @@ import { Helmet } from 'react-helmet-async';
 import CampaignStartActions from '../../actions/CampaignStartActions';
 import commonMuiStyles from '../../components/Style/commonMuiStyles';
 import { OuterWrapper, PageWrapper } from '../../components/Style/stepDisplayStyles';
-import OpenExternalWebSite from '../../components/Widgets/OpenExternalWebSite';
 import historyPush from '../../utils/historyPush';
 import { renderLog } from '../../utils/logging';
 import AddCandidateInputField from '../../components/CampaignStart/AddPoliticianInputField';
@@ -22,9 +21,8 @@ import CampaignStore from '../../stores/CampaignStore';
 import { getCampaignXValuesFromIdentifiers, retrieveCampaignXFromIdentifiersIfNeeded } from '../../utils/campaignUtils';
 import initializejQuery from '../../utils/initializejQuery';
 
-
 const CampaignRetrieveController = React.lazy(() => import(/* webpackChunkName: 'CampaignRetrieveController' */ '../../components/Campaign/CampaignRetrieveController'));
-
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../components/Widgets/OpenExternalWebSite'));
 
 class CampaignStartEditAll extends Component {
   constructor (props) {
@@ -266,12 +264,14 @@ class CampaignStartEditAll extends Component {
                       <BlockedReason>
                         Your campaign has been blocked by moderators from We Vote. Please make any requested modifications so you are in compliance with our terms of service and
                         {' '}
-                        <OpenExternalWebSite
-                          linkIdAttribute="weVoteSupport"
-                          url="https://help.wevote.us/hc/en-us/requests/new"
-                          target="_blank"
-                          body={<span>contact We Vote support for help.</span>}
-                        />
+                        <Suspense fallback={<></>}>
+                          <OpenExternalWebSite
+                            linkIdAttribute="weVoteSupport"
+                            url="https://help.wevote.us/hc/en-us/requests/new"
+                            target="_blank"
+                            body={<span>contact We Vote support for help.</span>}
+                          />
+                        </Suspense>
                         {isBlockedByWeVoteReason && (
                           <>
                             <br />

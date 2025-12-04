@@ -14,7 +14,6 @@ import DonationListForm from '../../common/components/Donation/DonationListForm'
 import DonorboxCordova from '../../common/components/Donation/DonorboxCordova';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 import standardBoxShadow from '../../common/components/Style/standardBoxShadow';
-import OpenExternalWebSite from '../../common/components/Widgets/OpenExternalWebSite';
 import DonateStore from '../../common/stores/DonateStore';
 import initializejQuery from '../../common/utils/initializejQuery';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
@@ -28,6 +27,7 @@ import VoterStore from '../../stores/VoterStore';
 import { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
 
 const DonorboxEmbed = React.lazy(() => import(/* webpackChunkName: 'DonorboxEmbed' */ '../../common/components/Donation/DonorboxEmbed'));
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 
 /* global $ */
 
@@ -222,24 +222,26 @@ class Donate extends Component {
 
   preDonateDescriptionBottom = (isC4Donation) => (
     <span id="second_paragraph">
-      <OpenExternalWebSite
-        linkIdAttribute="annualBudget"
-        url={isC4Donation ? 'https://projects.propublica.org/nonprofits/organizations/811052585' : 'https://projects.propublica.org/nonprofits/organizations/472691544'}
-        target="_blank"
-        body={(
-          <span id="budgets_small">
-            Our budgets are small,
-            <Launch
-              style={{
-                height: 14,
-                marginLeft: 2,
-                marginTop: '-3px',
-                width: 14,
-              }}
-            />
-          </span>
-        )}
-      />
+      <Suspense fallback={<></>}>
+        <OpenExternalWebSite
+          linkIdAttribute="annualBudget"
+          url={isC4Donation ? 'https://projects.propublica.org/nonprofits/organizations/811052585' : 'https://projects.propublica.org/nonprofits/organizations/472691544'}
+          target="_blank"
+          body={(
+            <span id="budgets_small">
+              Our budgets are small,
+              <Launch
+                style={{
+                  height: 14,
+                  marginLeft: 2,
+                  marginTop: '-3px',
+                  width: 14,
+                }}
+              />
+            </span>
+          )}
+        />
+      </Suspense>
       so every
       {' '}
       {isC4Donation ? '' : 'tax-deductible '}
