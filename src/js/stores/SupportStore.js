@@ -459,6 +459,23 @@ class SupportStore extends ReduceStore {
               voter_statement_text: assign({}, revisedState.voter_statement_text, { [politicianWeVoteId]: action.res.statement_text }),
             };
           }
+        } else if (action.res.statement_text === '') { // Handle case where the voter deletes their opinion
+          // Make a shallow copy of the existing dictionary
+          const updatedVoterStatementText = { ...revisedState.voter_statement_text };
+
+          // If a ballot item ID exists and there’s an entry for it, delete the voter’s opinion for that ballot item
+          if (ballotItemWeVoteId && updatedVoterStatementText[ballotItemWeVoteId]) {
+            delete updatedVoterStatementText[ballotItemWeVoteId];
+          }
+          // If a politician ID exists and there’s an entry for it, delete the voter’s opinion for that politician
+          if (politicianWeVoteId && updatedVoterStatementText[politicianWeVoteId]) {
+            delete updatedVoterStatementText[politicianWeVoteId];
+          }
+          // Update the state with the modified voter_statement_text dictionary
+          revisedState = {
+            ...revisedState,
+            voter_statement_text: updatedVoterStatementText,
+          };
         }
         revisedState = { ...revisedState,
           voter_opposes: voterOpposes,
