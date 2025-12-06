@@ -1,8 +1,7 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import OpenExternalWebSite from '../../common/components/Widgets/OpenExternalWebSite';
 import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
 import { isIPad } from '../../common/utils/cordovaUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
@@ -11,6 +10,7 @@ import webAppConfig from '../../config';
 import { DeviceInformationSpan, TermsAndPrivacyText } from '../Style/pageLayoutStyles';
 import DeviceDialog from '../Widgets/DeviceDialog';
 
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 
 class SettingsSectionFooter extends Component {
   constructor (props) {
@@ -84,14 +84,16 @@ class SettingsSectionFooter extends Component {
           <Link to="/more/faq" onClick={this.closeDrawerHandler}><TermsAndPrivacyText id="footerLinkAbout&FAQ">About&nbsp;&amp;&nbsp;FAQ</TermsAndPrivacyText></Link>
         </OneRow>
         <OneRow centered={centered}>
-          <OpenExternalWebSite
-            linkIdAttribute="footerLinkWeVoteHelp"
-            url="https://help.wevote.us/hc/en-us"
-            target="_blank"
-            body={(
-              <TermsAndPrivacyText>Help</TermsAndPrivacyText>
-            )}
-          />
+          <Suspense fallback={<></>}>
+            <OpenExternalWebSite
+              linkIdAttribute="footerLinkWeVoteHelp"
+              url="https://help.wevote.us/hc/en-us"
+              target="_blank"
+              body={(
+                <TermsAndPrivacyText>Help</TermsAndPrivacyText>
+              )}
+            />
+          </Suspense>
           <span style={{ paddingLeft: 15 }} />
           <Link to="/privacy" onClick={this.closeDrawerHandler}><TermsAndPrivacyText id="footerLinkPrivacy">Privacy</TermsAndPrivacyText></Link>
           <span style={{ paddingLeft: 15 }} />
@@ -100,23 +102,27 @@ class SettingsSectionFooter extends Component {
         <OneRow centered={centered}>
           {(isWebApp() && !inPrivateLabelMode) && (
             <>
-              <OpenExternalWebSite
-                linkIdAttribute="footerLinkTeam"
-                url={`${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}/more/about`}
-                target="_blank"
-                body={(
-                  <TermsAndPrivacyText>Team</TermsAndPrivacyText>
-                )}
-              />
+              <Suspense fallback={<></>}>
+                <OpenExternalWebSite
+                  linkIdAttribute="footerLinkTeam"
+                  url={`${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}/more/about`}
+                  target="_blank"
+                  body={(
+                    <TermsAndPrivacyText>Team</TermsAndPrivacyText>
+                  )}
+                />
+              </Suspense>
               <span style={{ paddingLeft: 15 }} />
-              <OpenExternalWebSite
-                linkIdAttribute="footerLinkCredit"
-                url={`${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}/more/credits`}
-                target="_blank"
-                body={(
-                  <TermsAndPrivacyText className="u-no-break">Credits &amp; Thanks</TermsAndPrivacyText>
-                )}
-              />
+              <Suspense fallback={<></>}>
+                <OpenExternalWebSite
+                  linkIdAttribute="footerLinkCredit"
+                  url={`${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}/more/credits`}
+                  target="_blank"
+                  body={(
+                    <TermsAndPrivacyText className="u-no-break">Credits &amp; Thanks</TermsAndPrivacyText>
+                  )}
+                />
+              </Suspense>
             </>
           )}
           {isCordova() && (

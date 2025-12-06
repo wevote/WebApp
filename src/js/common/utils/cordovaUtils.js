@@ -147,19 +147,20 @@ export function getThisAppleDeviceParameters () {
   // console.log('at thisAppleDeviceParameters window.device?.model: ', window.device?.model);
   if (window.device?.model) {
     thisAppleDeviceParameters = jsonModelsData.find((leaf) => leaf.modelId === window.device.model);
-    logMatch('Cordova:   getThisAppleDeviceParameters: ', JSON.stringify(thisAppleDeviceParameters));
-    console.log(`Cordova:   getThisAppleDeviceParameters (%c${thisAppleDeviceParameters.name}%c): ${JSON.stringify(thisAppleDeviceParameters)}`, 'font-weight: bold;', 'font-weight: 400;');
-    if (thisAppleDeviceParameters) return thisAppleDeviceParameters;
+    if (thisAppleDeviceParameters) {
+      logMatch('Cordova:   getThisAppleDeviceParameters: ', JSON.stringify(thisAppleDeviceParameters));
+      console.log(`Cordova:   getThisAppleDeviceParameters (%c${thisAppleDeviceParameters.name}%c): ${JSON.stringify(thisAppleDeviceParameters)}`, 'font-weight: bold;', 'font-weight: 400;');
+      return thisAppleDeviceParameters;
+    }
   }
-  console.log('Cordova:  Possible first-day device model -- Default (and wrong) values used.');
-  return {   // Default, usually wrong data, to avoid crash before device ready in Cordova, or to handle unknown new device
-    class: 'iPhone6p5in',
-    size: 6.9,
-    type: 'phone',
-    marketingNumber: 'unknown',
-    name: 'Unknown device, or if Cordova, deviceready has not fired',
-    modelId: 'iPhone18,2',
-  };
+  console.error('Cordova:  Possible first-day device model -- Default (and wrong) values used.');
+  // Default, usually wrong data, to avoid crash before device ready in Cordova, or to handle unknown new device
+  if (window.device?.model && window.device.model.startsWith('iPad')) {
+    thisAppleDeviceParameters = jsonModelsData.find((leaf) => leaf.modelId === 'iPad16,4');
+  } else {
+    thisAppleDeviceParameters = jsonModelsData.find((leaf) => leaf.modelId === 'iPhone18,4');
+  }
+  return thisAppleDeviceParameters;
 }
 
 export function getIOSSizeString () {

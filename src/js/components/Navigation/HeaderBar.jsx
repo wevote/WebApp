@@ -414,12 +414,8 @@ class HeaderBar extends Component {
   }
 
   goToSettings () {
+    console.log('goToSettings IN HeaderBar setDrawerOpen');
     AppObservableStore.setDrawerOpen('headerProfileDrawerOpen', true);
-    // if (isMobileScreenSize()) {
-    //   historyPush('/settings/hamburger');
-    // } else {
-    //   historyPush('/settings/profile');
-    // }
   }
 
   toggleSignInModal () {

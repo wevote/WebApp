@@ -4,7 +4,6 @@ import React, { Component, Suspense } from 'react';
 import TagManager from 'react-gtm-module';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import OpenExternalWebSite from '../../common/components/Widgets/OpenExternalWebSite';
 import AppObservableStore from '../../common/stores/AppObservableStore';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import webAppConfig from '../../config';
@@ -15,6 +14,7 @@ import ToolBar from '../../common/components/Widgets/ToolBar';
 const BallotElectionListWithFilters = React.lazy(() => import(/* webpackChunkName: 'BallotElectionListWithFilters' */ '../Ballot/BallotElectionListWithFilters'));
 const DeleteAllContactsButton = React.lazy(() => import(/* webpackChunkName: 'DeleteAllContactsButton' */ '../SetUpAccount/DeleteAllContactsButton'));
 const FooterCandidateList = React.lazy(() => import(/* webpackChunkName: 'FooterCandidateList' */ './FooterCandidateList'));
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 
 class FooterMainWeVote extends Component {
   constructor (props) {
@@ -141,14 +141,16 @@ class FooterMainWeVote extends Component {
                 How It Works
               </button>
               <RowSpacer />
-              <OpenExternalWebSite
-                linkIdAttribute="footerLinkWeVoteHelp"
-                url="https://help.wevote.us/hc/en-us"
-                target="_blank"
-                className={classes.link}
-                trackingOn
-                body={(<span>Help</span>)}
-              />
+              <Suspense fallback={<></>}>
+                <OpenExternalWebSite
+                  linkIdAttribute="footerLinkWeVoteHelp"
+                  url="https://help.wevote.us/hc/en-us"
+                  target="_blank"
+                  className={classes.link}
+                  trackingOn
+                  body={(<span>Help</span>)}
+                />
+              </Suspense>
               <RowSpacer />
               <Link
                 id="footerLinkPrivacy"
@@ -181,23 +183,27 @@ class FooterMainWeVote extends Component {
                   </Link>
                   <RowSpacer />
                   {/* Note: Team/Credits links will show 'notSet' in local dev but work correctly in production */}
-                  <OpenExternalWebSite
-                    linkIdAttribute="footerLinkTeam"
-                    url={`${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}/more/about`}
-                    target="_blank"
-                    trackingOn
-                    body={(<span>Team</span>)}
-                    className={classes.link}
-                  />
+                  <Suspense fallback={<></>}>
+                    <OpenExternalWebSite
+                      linkIdAttribute="footerLinkTeam"
+                      url={`${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}/more/about`}
+                      target="_blank"
+                      trackingOn
+                      body={(<span>Team</span>)}
+                      className={classes.link}
+                    />
+                  </Suspense>
                   <RowSpacer />
-                  <OpenExternalWebSite
-                    linkIdAttribute="footerLinkCredits"
-                    url={`${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}/more/credits`}
-                    target="_blank"
-                    trackingOn
-                    body={(<span>Credits &amp; Thanks</span>)}
-                    className={classes.link}
-                  />
+                  <Suspense fallback={<></>}>
+                    <OpenExternalWebSite
+                      linkIdAttribute="footerLinkCredits"
+                      url={`${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}/more/credits`}
+                      target="_blank"
+                      trackingOn
+                      body={(<span>Credits &amp; Thanks</span>)}
+                      className={classes.link}
+                    />
+                  </Suspense>
                 </>
               ) : (
                 <>
@@ -223,23 +229,27 @@ class FooterMainWeVote extends Component {
             </OneRow>
             {isWebApp() && (
               <OneRow>
-                <OpenExternalWebSite
-                  linkIdAttribute="footerLinkBlog"
-                  url="https://blog.wevote.us/"
-                  target="_blank"
-                  trackingOn
-                  body={(<span>Blog</span>)}
-                  className={classes.link}
-                />
+                <Suspense fallback={<></>}>
+                  <OpenExternalWebSite
+                    linkIdAttribute="footerLinkBlog"
+                    url="https://blog.wevote.us/"
+                    target="_blank"
+                    trackingOn
+                    body={(<span>Blog</span>)}
+                    className={classes.link}
+                  />
+                </Suspense>
                 <RowSpacer />
-                <OpenExternalWebSite
-                  linkIdAttribute="footerLinkVolunteer"
-                  url="https://wevote.applytojob.com/apply"
-                  target="_blank"
-                  trackingOn
-                  body={(<span>Volunteering Opportunities</span>)}
-                  className={classes.link}
-                />
+                <Suspense fallback={<></>}>
+                  <OpenExternalWebSite
+                    linkIdAttribute="footerLinkVolunteer"
+                    url="https://wevote.applytojob.com/apply"
+                    target="_blank"
+                    trackingOn
+                    body={(<span>Volunteering Opportunities</span>)}
+                    className={classes.link}
+                  />
+                </Suspense>
                 <RowSpacer />
                 <Link
                   className={classes.link}

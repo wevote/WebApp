@@ -17,7 +17,6 @@ import { CampaignDescription, CampaignDescriptionDesktop, CampaignDescriptionDes
 import { BlockedIndicator, BlockedReason, DraftModeIndicator, EditIndicator, ElectionInPast, IndicatorButtonWrapper, IndicatorRow } from '../../components/Style/CampaignIndicatorStyles';
 import { PageWrapper } from '../../components/Style/stepDisplayStyles';
 import DelayedLoad from '../../components/Widgets/DelayedLoad';
-import OpenExternalWebSite from '../../components/Widgets/OpenExternalWebSite';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import CampaignStore from '../../stores/CampaignStore';
 import CampaignSupporterStore from '../../stores/CampaignSupporterStore';
@@ -36,7 +35,7 @@ const CampaignDetailsActionSideBox = React.lazy(() => import(/* webpackChunkName
 const CampaignRetrieveController = React.lazy(() => import(/* webpackChunkName: 'CampaignRetrieveController' */ '../../components/Campaign/CampaignRetrieveController'));
 const CampaignSupportThermometer = React.lazy(() => import(/* webpackChunkName: 'CampaignSupportThermometer' */ '../../components/CampaignSupport/CampaignSupportThermometer'));
 const SupportButtonBeforeCompletionScreen = React.lazy(() => import(/* webpackChunkName: 'SupportButtonBeforeCompletionScreen' */ '../../components/CampaignSupport/SupportButtonBeforeCompletionScreen'));
-
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../components/Widgets/OpenExternalWebSite'));
 
 class CampaignNewsItemDetailsPage extends Component {
   constructor (props) {
@@ -338,12 +337,14 @@ class CampaignNewsItemDetailsPage extends Component {
             <BlockedReason>
               This campaign has been blocked by moderators from WeVote because it is currently violating our terms of service. If you have any questions,
               {' '}
-              <OpenExternalWebSite
-                linkIdAttribute="weVoteSupport"
-                url="https://help.wevote.us/hc/en-us/requests/new"
-                target="_blank"
-                body={<span>please contact WeVote support.</span>}
-              />
+              <Suspense fallback={<></>}>
+                <OpenExternalWebSite
+                  linkIdAttribute="weVoteSupport"
+                  url="https://help.wevote.us/hc/en-us/requests/new"
+                  target="_blank"
+                  body={<span>please contact WeVote support.</span>}
+                />
+              </Suspense>
               {isBlockedByWeVoteReason && (
                 <>
                   <br />
@@ -458,12 +459,14 @@ class CampaignNewsItemDetailsPage extends Component {
             <BlockedReason>
               Your campaign has been blocked by moderators from WeVote. It is only visible campaign owners. Please make any requested modifications so you are in compliance with our terms of service and
               {' '}
-              <OpenExternalWebSite
-                linkIdAttribute="weVoteSupport"
-                url="https://help.wevote.us/hc/en-us/requests/new"
-                target="_blank"
-                body={<span>contact WeVote support for help.</span>}
-              />
+              <Suspense fallback={<></>}>
+                <OpenExternalWebSite
+                  linkIdAttribute="weVoteSupport"
+                  url="https://help.wevote.us/hc/en-us/requests/new"
+                  target="_blank"
+                  body={<span>contact WeVote support for help.</span>}
+                />
+              </Suspense>
               {isBlockedByWeVoteReason && (
                 <>
                   <br />

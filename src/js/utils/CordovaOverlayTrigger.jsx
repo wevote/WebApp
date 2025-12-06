@@ -1,6 +1,6 @@
 import React from 'react';
 
-/* Replace CordovaOverlayTrigger with CordovaOverlayTrigger to disable
+/* Replace OverlayTrigger with CordovaOverlayTrigger to disable
  We need to add...
      {
       "compilerOptions": {

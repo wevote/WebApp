@@ -172,11 +172,13 @@ class HeaderBackTo extends Component {
   }
 
   goToSettings () {
-    if (isMobileScreenSize()) {
-      historyPush('/settings/hamburger');
-    } else {
-      historyPush('/settings/profile');
-    }
+    console.log('goToSettings IN HeaderBackTo historyPush');
+    AppObservableStore.setDrawerOpen('headerProfileDrawerOpen', true);   // 11/20/25 Strongly suspect that this is right, and what follows is wrong
+    // if (isMobileScreenSize()) {
+    //   historyPush('/settings/hamburger');
+    // } else {
+    //   historyPush('/settings/profile');
+    // }
   }
 
   closeSignInModal () {
