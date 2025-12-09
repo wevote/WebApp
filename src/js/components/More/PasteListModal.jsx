@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled, { createGlobalStyle } from 'styled-components';
 import { WarningAmber as WarningIcon } from '@mui/icons-material';
@@ -7,16 +7,96 @@ import ModalDisplayTemplateA from '../Widgets/ModalDisplayTemplateA';
 
 const escapeHTML = (s) => s.replace(/[&<>]/g, (element) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[element]));
 
+const emailRE = /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i;
+
+function parsePastedList (text) {
+  const lines = text.split(/\r?\n/);
+  const rows = [];
+  const errors = [];
+
+  lines.forEach((raw, idx) => {
+    const line = raw.trim();
+    if (!line) return;
+
+    const parts = line.split(',').map((s) => s.trim()).filter(Boolean);
+    const emailCount = (line.match(emailRE) || []).length;
+
+    if (parts.length > 3) {
+      errors.push({ line: idx, reason: 'Too many commas' });
+      return;
+    }
+    if (emailCount > 1) {
+      errors.push({ line: idx, reason: 'Two emails on one line (missing line break?)' });
+      return;
+    }
+    // Must have at least "Name, Email"
+    if (parts.length < 2) {
+      errors.push({ line: idx, reason: 'Missing email (format: Name, email[, phone])' });
+      return;
+    }
+    // Validate email
+    const emailPart = parts[1].replace(/[<>]/g, '');
+    if (!emailRE.test(emailPart)) {
+      errors.push({ line: idx, reason: 'Invalid email' });
+      return;
+    }
+
+    rows.push({
+      name: parts[0] || '',
+      email: emailPart || '',
+      phone: parts[2] || '',
+    });
+  });
+
+  return { rows, errors };
+}
+
+function buildMirrorHTML (text, errors) {
+  const errSet = new Set(errors.map((e) => e.line));
+  return text.split(/\r?\n/).map((line, i) => {
+    const isError = errSet.has(i) && line.trim().length > 0;
+    const safe = escapeHTML(line);
+    return isError ? `<span class="err">${safe}</span>` : safe;
+  }).join('\n');
+}
+
 export default function PasteListModal ({
   isOpen,
   onClose,
-  pasteText,
-  onPasteTextChange,
-  mirrorHTML,
-  pasteErrors,
   onImport,
-  prospectiveCount,
 }) {
+  const [pasteText, setPasteText] = useState('');
+  const [pasteErrors, setPasteErrors] = useState([]);
+  const [mirrorHTML, setMirrorHTML] = useState('');
+
+  const onPasteTextChange = (e) => {
+    const { value } = e.target;
+    setPasteText(value);
+    const { errors } = parsePastedList(value);
+    setPasteErrors(errors);
+    setMirrorHTML(buildMirrorHTML(value, errors));
+  };
+
+  const prospectiveCount = useMemo(() => parsePastedList(pasteText).rows.length, [pasteText]);
+
+  const handlePasteImport = () => {
+    const { rows, errors } = parsePastedList(pasteText);
+    if (errors.length) {
+      setPasteErrors(errors);
+      setMirrorHTML(buildMirrorHTML(pasteText, errors));
+      return; // block import until fixed
+    }
+    onImport(rows);
+  };
+
+  const handleClose = () => {
+    // Reset state on close
+    setPasteText('');
+    setPasteErrors([]);
+    setMirrorHTML('');
+    onClose();
+  };
+
   const dialogTitleJSX = (
     <HeaderRow>
       <Title>Paste voters</Title>
@@ -93,10 +173,10 @@ John Dough, jd@email.com, (213)-123-4567`}
       </EditAreaWrapper>
 
       <Footer style={{ justifyContent: 'space-between' }}>
-        <PlainButton type="button" onClick={onClose}>Cancel</PlainButton>
+        <PlainButton type="button" onClick={handleClose}>Cancel</PlainButton>
         <PrimaryButton
           type="button"
-          onClick={onImport}
+          onClick={handlePasteImport}
           disabled={!pasteText.trim()}
         >
           {prospectiveCount ?
@@ -113,7 +193,7 @@ John Dough, jd@email.com, (213)-123-4567`}
       <SoftenCorners />
       <ModalDisplayTemplateA
         show={isOpen}
-        toggleModal={onClose}
+        toggleModal={handleClose}
         externalUniqueId="pasteListModal"
         dialogTitleJSX={dialogTitleJSX}
         tallMode={false}
@@ -126,15 +206,7 @@ John Dough, jd@email.com, (213)-123-4567`}
 PasteListModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
-  pasteText: PropTypes.string.isRequired,
-  onPasteTextChange: PropTypes.func.isRequired,
-  mirrorHTML: PropTypes.string.isRequired,
-  pasteErrors: PropTypes.arrayOf(PropTypes.shape({
-    line: PropTypes.number.isRequired,
-    reason: PropTypes.string.isRequired,
-  })).isRequired,
   onImport: PropTypes.func.isRequired,
-  prospectiveCount: PropTypes.number.isRequired,
 };
 
 // Global Styles

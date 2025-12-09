@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled, { createGlobalStyle } from 'styled-components';
 import { ContentCopy as CopyIcon } from '@mui/icons-material';
@@ -8,13 +8,22 @@ import ModalDisplayTemplateA from '../Widgets/ModalDisplayTemplateA';
 const EditInvitationModal = ({
   isOpen,
   onClose,
-  draftInvite,
-  setDraftInvite,
-  initialInvite,
+  invitationBody,
   onSave,
   notify,
   selectedPoliticianId,
 }) => {
+  const [draftInvite, setDraftInvite] = useState(invitationBody);
+  const [initialInvite, setInitialInvite] = useState(invitationBody);
+
+  // Reset draft when invitationBody or showEdit changes
+  useEffect(() => {
+    if (isOpen) {
+      setDraftInvite(invitationBody);
+      setInitialInvite(invitationBody);
+    }
+  }, [invitationBody, isOpen]);
+
   const handleCopyInviteBody = async () => {
     try {
       await navigator.clipboard.writeText(
@@ -24,6 +33,10 @@ const EditInvitationModal = ({
     } catch {
       notify('Copy failed. Select the text and copy manually.', false, 3000);
     }
+  };
+
+  const handleSave = () => {
+    onSave(draftInvite);
   };
 
   if (!isOpen) return null;
@@ -59,7 +72,7 @@ const EditInvitationModal = ({
         <EditCloseButton type="button" onClick={onClose}>Close</EditCloseButton>
         <PrimarySaveBtn
           type="button"
-          onClick={onSave}
+          onClick={handleSave}
           disabled={draftInvite.trim() === initialInvite.trim()}
         >
           Save invitation
@@ -88,9 +101,7 @@ const EditInvitationModal = ({
 EditInvitationModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
-  draftInvite: PropTypes.string.isRequired,
-  setDraftInvite: PropTypes.func.isRequired,
-  initialInvite: PropTypes.string.isRequired,
+  invitationBody: PropTypes.string.isRequired,
   onSave: PropTypes.func.isRequired,
   notify: PropTypes.func.isRequired,
   selectedPoliticianId: PropTypes.string.isRequired,

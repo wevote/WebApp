@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled, { createGlobalStyle } from 'styled-components';
 import { FileDownloadOutlined as DownloadIcon, CheckCircle as CheckIcon } from '@mui/icons-material';
@@ -8,15 +8,88 @@ import ModalDisplayTemplateA from '../Widgets/ModalDisplayTemplateA';
 export default function UploadCSVModal ({
   isOpen,
   onClose,
-  onDownloadSample,
-  onSelectFile,
-  allColumnsOK,
+  onImport,
+  notify,
 }) {
+  const fileInputRef = useRef(null);
+  const [allColumnsOK, setAllColumnsOK] = useState(false);
+
+  const handleDownloadSample = () => {
+    const csv =
+      'Name,Email,Mobile,Address\n' +
+      'John Smith,js@gmail.com,"(123) 456-7890","123 State St, Anytown, CA 94117"\n';
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'wevote_sample.csv';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
+  const handleSelectCSV = () => fileInputRef.current?.click();
+
+  const handleCSVSelected = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!/\.csv$/i.test(file.name)) {
+      notify('Please choose a .csv file.', false);
+      e.target.value = '';
+      return;
+    }
+
+    const text = await file.text();
+    const lines = text.replace(/\r/g, '').split('\n').filter((l) => l.trim().length > 0);
+    const [headerLine, ...dataLines] = lines;
+    const headers = headerLine.split(',').map((h) => h.trim().toLowerCase());
+
+    const nameIdx = headers.indexOf('name');
+    const emailIdx = headers.indexOf('email');
+    const mobileIdx = headers.indexOf('mobile');
+    const phoneIdx = headers.indexOf('phone');
+    const phoneCol = mobileIdx > -1 ? mobileIdx : phoneIdx;
+    const addressIdx = headers.indexOf('address');
+
+    const ok = nameIdx > -1 && emailIdx > -1 && phoneCol > -1 && addressIdx > -1;
+
+    const rows = dataLines.map((line) => {
+      const cols = line.split(',').map((supporter) => supporter.trim());
+      return {
+        name: nameIdx > -1 ? cols[nameIdx] : '',
+        email: emailIdx > -1 ? cols[emailIdx] : '',
+        phone: phoneCol > -1 ? cols[phoneCol] : '',
+        address: addressIdx > -1 ? cols[addressIdx] : '',
+      };
+    }).filter((r) => r.name || r.email || r.phone || r.address);
+
+    if (ok && rows.length > 0) {
+      onImport(rows);
+      setAllColumnsOK(false);
+    } else {
+      setAllColumnsOK(ok);
+      if (!ok) {
+        notify('We could not find all required columns (Name, Email, Mobile/Phone, Address). Please adjust and re-upload.', false);
+      } else if (rows.length === 0) {
+        notify('No rows found in this CSV.', false);
+      }
+    }
+
+    e.target.value = '';
+  };
+
+  const handleClose = () => {
+    setAllColumnsOK(false);
+    onClose();
+  };
+
   const dialogTitleJSX = (
     <HeaderRow>
       <Title>Upload CSV file</Title>
       <HeaderDivider />
-      <HeaderLink type="button" onClick={onDownloadSample}>
+      <HeaderLink type="button" onClick={handleDownloadSample}>
         <DownloadIcon fontSize="small" />
         <span>Download sample file</span>
       </HeaderLink>
@@ -60,9 +133,17 @@ export default function UploadCSVModal ({
       </Grid>
 
       <Footer>
-        <CancelButton type="button" onClick={onClose}>Cancel</CancelButton>
-        <SelectButton type="button" onClick={onSelectFile}>Select file</SelectButton>
+        <CancelButton type="button" onClick={handleClose}>Cancel</CancelButton>
+        <SelectButton type="button" onClick={handleSelectCSV}>Select file</SelectButton>
       </Footer>
+
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept=".csv"
+        style={{ display: 'none' }}
+        onChange={handleCSVSelected}
+      />
     </div>
   );
 
@@ -73,7 +154,7 @@ export default function UploadCSVModal ({
       <SoftenCorners />
       <ModalDisplayTemplateA
         show={isOpen}
-        toggleModal={onClose}
+        toggleModal={handleClose}
         externalUniqueId="uploadCSVModal"
         dialogTitleJSX={dialogTitleJSX}
         tallMode={false}
@@ -86,9 +167,8 @@ export default function UploadCSVModal ({
 UploadCSVModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
-  onDownloadSample: PropTypes.func.isRequired,
-  onSelectFile: PropTypes.func.isRequired,
-  allColumnsOK: PropTypes.bool.isRequired,
+  onImport: PropTypes.func.isRequired,
+  notify: PropTypes.func.isRequired,
 };
 
 // Global Styles
