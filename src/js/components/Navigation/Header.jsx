@@ -26,6 +26,7 @@ const HeaderBackToVoterGuides = React.lazy(() => import(/* webpackChunkName: 'He
 const HeaderBarModals = React.lazy(() => import(/* webpackChunkName: 'HeaderBarModals' */ './HeaderBarModals'));
 const HowItWorksModal = React.lazy(() => import(/* webpackChunkName: 'HowItWorksModal' */ '../CompleteYourProfile/HowItWorksModal'));
 const NotificationBannerAboveHeader = React.lazy(() => import(/* webpackChunkName: 'NotificationBannerAboveHeader' */ './NotificationBannerAboveHeader'));
+const OfficeBannerAboveHeader = React.lazy(() => import(/* webpackChunkName: 'OfficeBannerAboveHeader' */ './OfficeBannerAboveHeader'));
 const OrganizationModal = React.lazy(() => import(/* webpackChunkName: 'OrganizationModal' */ '../VoterGuide/OrganizationModal'));
 const PositionDrawer = React.lazy(() => import(/* webpackChunkName: 'PositionDrawer' */ '../Ballot/PositionDrawer'));
 const SharedItemModal = React.lazy(() => import(/* webpackChunkName: 'SharedItemModal' */ '../Share/SharedItemModal'));
@@ -43,6 +44,7 @@ export default class Header extends Component {
       sharedItemCode: '',
       showHowItWorksModal: false,
       showNotificationBannerAboveHeader: AppObservableStore.getShowNotificationBannerAboveHeader(),
+      showOfficeBannerAboveHeader: AppObservableStore.getShowOfficeBannerAboveHeader(),
       showVoterPlanModal: false,
       showOrganizationModal: false,
       showPositionDrawer: false,
@@ -119,6 +121,7 @@ export default class Header extends Component {
       showPositionDrawer: AppObservableStore.showPositionDrawer(),
       showSharedItemModal: AppObservableStore.showSharedItemModal(),
       showNotificationBannerAboveHeader: AppObservableStore.getShowNotificationBannerAboveHeader(),
+      showOfficeBannerAboveHeader: AppObservableStore.getShowOfficeBannerAboveHeader(),
     });
   }
 
@@ -182,6 +185,7 @@ export default class Header extends Component {
   render () {
     renderLog('Header');  // Set LOG_RENDER_EVENTS to log all renders
     const { showNotificationBannerAboveHeader } = this.state;
+    const { showOfficeBannerAboveHeader } = this.state;
 
     if (this.hideHeader()) {
       renderLog('Header hidden');
@@ -189,6 +193,7 @@ export default class Header extends Component {
     }
     const pathname = normalizedHref();
     const isCandidatePage = /^\/[-a-z0-9]+\/-\/?$/.test(pathname);
+    const isOfficePage = /^\/office\/[a-z0-9]+\/?$/.test(pathname);
     const { hideHeader, params } = this.props;
     // console.log('Header global.weVoteGlobalHistory', global.weVoteGlobalHistory);
     const {
@@ -488,6 +493,13 @@ export default class Header extends Component {
                   </Suspense>
                 </NotificationBannerAboveHeaderWrapper>
               )}
+              {(showOfficeBannerAboveHeader && isOfficePage) && (
+                <OfficeBannerAboveHeaderWrapper>
+                  <Suspense fallback={<></>}>
+                    <OfficeBannerAboveHeader />
+                  </Suspense>
+                </OfficeBannerAboveHeaderWrapper>
+              )}
               {(headerNotVisible || hideHeader) ? (
                 <>
                   <Suspense fallback={<></>}>
@@ -583,6 +595,11 @@ const BackToSettingsMobileDesktopSpan = styled('span')`
 `;
 
 const NotificationBannerAboveHeaderWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  padding: 0 16px;
+`;
+const OfficeBannerAboveHeaderWrapper = styled.div`
   display: flex;
   justify-content: center;
   padding: 0 16px;
