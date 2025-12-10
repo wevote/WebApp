@@ -69,6 +69,7 @@ const nonFluxState = {
   showClaimProfileWithOtherWaysModal: false,
   showCompleteYourProfileModal: false,
   showNotificationBannerAboveHeader: false,
+  showOfficeBannerAboveHeader: false,
   showEditAddressButton: false,
   showElectionsWithOrganizationVoterGuidesModal: false,
   showHeader: 0,
@@ -294,6 +295,15 @@ export default {
   setShowNotificationBannerAboveHeader (show) {
     nonFluxState.showNotificationBannerAboveHeader = show;
     messageService.sendMessage('state updated showNotificationBannerAboveHeader');
+  },
+
+  getShowOfficeBannerAboveHeader () {
+    return nonFluxState.showOfficeBannerAboveHeader;
+  },
+
+  setShowOfficeBannerAboveHeader (show) {
+    nonFluxState.showOfficeBannerAboveHeader = show;
+    messageService.sendMessage('state updated showOfficeBannerAboveHeader');
   },
 
   getWeVoteRootURL () {
