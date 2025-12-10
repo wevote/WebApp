@@ -210,6 +210,8 @@ function CampaignCardForListBody (props) {
                     borderBottom: `1px solid ${DesignTokenColors.neutralUI100}`,
                     borderTop: `1px solid ${DesignTokenColors.neutralUI100}`,
                   } : {}}
+                  loading="eager"
+                  fetchpriority="high"                  
                 />
               </CampaignImageMobilePlaceholder>
             ) : (
@@ -261,6 +263,8 @@ function CampaignCardForListBody (props) {
                       } : {}}
                       width={limitCardWidth ? '157px' : '200px'}
                       height={limitCardWidth ? '157px' : '200px'}
+                      loading="eager"
+                      fetchpriority="high"
                     />
                   </CampaignImageDesktopPlaceholder>
                 ) : (

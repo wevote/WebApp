@@ -850,7 +850,6 @@ class CampaignsHome extends Component {
             />
           </DelayedLoad>
         )}
-
         {(nextReleaseFeaturesEnabled && pigsCanFly) && (
           <WhatIsHappeningSection>
             <Suspense fallback={<span><CandidateListRootPlaceholder titleTextForList="Campaigns" /></span>}>
@@ -870,41 +869,36 @@ class CampaignsHome extends Component {
             </Suspense>
           </WhatIsHappeningSection>
         )}
-        {(candidateListIsBattleground && candidateListIsBattleground.length > 0) ? (
-          <WhatIsHappeningSection useMinimumHeight={!isSearching && numberOfCloseRacesResults > 0}>
-            {/* Was useMinimumBattlegroundHeight */}
-            <Suspense fallback={<span><CandidateListRootPlaceholder titleTextForList="Candidates in Close Races" /></span>}>
+        <WhatIsHappeningSection useMinimumHeight={!isSearching && numberOfMorePoliticiansResults > 0}>
+          <Suspense fallback={<span><CandidateListRootPlaceholder /></span>}>
+            {(candidateListOther && candidateListOther.length > 0) && (
               <CandidateListRoot
                 hideIfNoResults
-                handleNumberOfResults={this.handleNumberOfCloseRacesResults}
-                incomingList={candidateListIsBattleground}
+                handleNumberOfResults={this.handleNumberOfMorePoliticiansResults}
+                incomingList={candidateListOther}
                 incomingListTimeStampOfChange={candidateListTimeStampOfChange}
                 listModeFilters={listModeFiltersAvailable}
                 listModeFiltersTimeStampOfChange={listModeFiltersTimeStampOfChange}
                 searchText={searchText}
                 stateCode={stateCode}
-                titleTextForList="Candidates in Close Races"
+                titleTextForList={otherTitlesShown ? 'More Politicians' : 'Candidates'}
               />
-            </Suspense>
-          </WhatIsHappeningSection>
-        ) : (
-          <>
-            {displayBattlegroundPlaceholder && <CandidateListRootPlaceholder titleTextForList="Candidates in Close Races" />}
-          </>
-        )}
-        {(representativeListShownAsRepresentatives && representativeListShownAsRepresentatives.length > 0) && (
-          <WhatIsHappeningSection useMinimumHeight={!isSearching && numberOfRepresentativeResults > 0}>
-            <Suspense fallback={<span><CandidateListRootPlaceholder titleTextForList="Current Representatives" /></span>}>
-              <RepresentativeListRoot
+            )}
+          </Suspense>
+        </WhatIsHappeningSection>
+        {(politicianListToShow && politicianListToShow.length > 0) && (
+          <WhatIsHappeningSection useMinimumHeight={!isSearching && numberOfPoliticiansResults > 0}>
+            <Suspense fallback={<span><CandidateListRootPlaceholder titleTextForList="Politicians" /></span>}>
+              <PoliticianListRoot
                 hideIfNoResults
-                handleNumberOfResults={this.handleNumberOfRepresentativeResults}
-                incomingList={representativeListShownAsRepresentatives}
-                incomingListTimeStampOfChange={representativeListTimeStampOfChange}
+                handleNumberOfResults={this.handleNumberOfPoliticiansResults}
+                incomingList={politicianListToShow}
+                incomingListTimeStampOfChange={politicianListTimeStampOfChange}
                 listModeFilters={listModeFiltersAvailable}
                 listModeFiltersTimeStampOfChange={listModeFiltersTimeStampOfChange}
                 searchText={searchText}
                 stateCode={stateCode}
-                titleTextForList="Current Representatives"
+                titleTextForList=""
               />
             </Suspense>
           </WhatIsHappeningSection>
@@ -926,39 +920,41 @@ class CampaignsHome extends Component {
             </Suspense>
           </WhatIsHappeningSection>
         )}
-        <WhatIsHappeningSection useMinimumHeight={!isSearching && numberOfMorePoliticiansResults > 0}>
-          <Suspense fallback={<span><CandidateListRootPlaceholder /></span>}>
-            <CandidateListRoot
-              hideIfNoResults
-              handleNumberOfResults={this.handleNumberOfMorePoliticiansResults}
-              incomingList={candidateListOther}
-              incomingListTimeStampOfChange={candidateListTimeStampOfChange}
-              listModeFilters={listModeFiltersAvailable}
-              listModeFiltersTimeStampOfChange={listModeFiltersTimeStampOfChange}
-              searchText={searchText}
-              stateCode={stateCode}
-              titleTextForList={otherTitlesShown ? 'More Politicians' : 'Candidates'}
-            />
-          </Suspense>
-        </WhatIsHappeningSection>
-        {(politicianListToShow && politicianListToShow.length > 0) && (
-          <WhatIsHappeningSection useMinimumHeight={!isSearching && numberOfPoliticiansResults > 0}>
-            <Suspense fallback={<span><CandidateListRootPlaceholder titleTextForList="Politicians" /></span>}>
-              <PoliticianListRoot
+        {(candidateListIsBattleground && candidateListIsBattleground.length > 0) && (
+          <WhatIsHappeningSection useMinimumHeight={!isSearching && numberOfCloseRacesResults > 0}>
+            {/* Was useMinimumBattlegroundHeight */}
+            <Suspense fallback={<span><CandidateListRootPlaceholder titleTextForList="Candidates in Close Races" /></span>}>
+              <CandidateListRoot
                 hideIfNoResults
-                handleNumberOfResults={this.handleNumberOfPoliticiansResults}
-                incomingList={politicianListToShow}
-                incomingListTimeStampOfChange={politicianListTimeStampOfChange}
+                handleNumberOfResults={this.handleNumberOfCloseRacesResults}
+                incomingList={candidateListIsBattleground}
+                incomingListTimeStampOfChange={candidateListTimeStampOfChange}
                 listModeFilters={listModeFiltersAvailable}
                 listModeFiltersTimeStampOfChange={listModeFiltersTimeStampOfChange}
                 searchText={searchText}
                 stateCode={stateCode}
-                titleTextForList=""
+                titleTextForList="Candidates in Close Races"
               />
             </Suspense>
           </WhatIsHappeningSection>
         )}
-
+        {(representativeListShownAsRepresentatives && representativeListShownAsRepresentatives.length > 0) && (
+          <WhatIsHappeningSection useMinimumHeight={!isSearching && numberOfRepresentativeResults > 0}>
+            <Suspense fallback={<span><CandidateListRootPlaceholder titleTextForList="Current Representatives" /></span>}>
+              <RepresentativeListRoot
+                hideIfNoResults
+                handleNumberOfResults={this.handleNumberOfRepresentativeResults}
+                incomingList={representativeListShownAsRepresentatives}
+                incomingListTimeStampOfChange={representativeListTimeStampOfChange}
+                listModeFilters={listModeFiltersAvailable}
+                listModeFiltersTimeStampOfChange={listModeFiltersTimeStampOfChange}
+                searchText={searchText}
+                stateCode={stateCode}
+                titleTextForList="Current Representatives"
+              />
+            </Suspense>
+          </WhatIsHappeningSection>
+        )}
         {/* <WhatIsHappeningSection useMinimumHeight={!isSearching} /> */}
 
         {/* */}
@@ -1003,6 +999,7 @@ const WhatIsHappeningSection = styled('div', {
   // background: linear-gradient(0deg, rgba(2,0,36,1) 0%, rgba(46,55,77,0) 52%);
   // background-color: #f5f5f5;
   // box-shadow: 0 0 80px 0px rgba(46,55,77,.3);
+  //min-height: ${useMinimumHeight ? '460px;' :  '120px'};
   ${useMinimumHeight ? 'height: 460px;' : ''};
   ${useMinimumHeight ? 'min-height: 460px;' : ''};
   // padding: 0 0 25px 0;
