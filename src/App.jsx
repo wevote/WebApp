@@ -86,7 +86,7 @@ const HowWeVoteHelps = React.lazy(() => import(/* webpackChunkName: 'HowWeVoteHe
 const Intro = React.lazy(() => import(/* webpackChunkName: 'Intro' */ './js/pages/Intro/Intro'));
 const IntroNetwork = React.lazy(() => import(/* webpackChunkName: 'IntroNetwork' */ './js/pages/Intro/IntroNetwork'));
 const Location = React.lazy(() => import(/* webpackChunkName: 'Location' */ './js/pages/Settings/Location'));
-const ManageMyCandidates = React.lazy(() => import(/* webpackChunkName: 'ManageMyCandidates' */ './js/pages/More/ManageMyCandidates'));
+const ManageMyCandidatesLanding = React.lazy(() => import(/* webpackChunkName: 'ManageMyCandidatesLanding' */ './js/pages/ManageMyCandidates/ManageMyCandidatesLanding'));
 const Measure = React.lazy(() => import(/* webpackChunkName: 'Measure' */ './js/pages/Ballot/Measure'));
 const News = React.lazy(() => import(/* webpackChunkName: 'News' */ './js/pages/Activity/News'));
 const Office = React.lazy(() => import(/* webpackChunkName: 'Office' */ './js/pages/Ballot/Office'));
@@ -581,7 +581,8 @@ class App extends Component {
                   <Route path="/more/faq" component={FAQ} />
                   <Route path="/more/howwevotehelps" component={HowWeVoteHelps} />
                   <Route path="/more/jump" component={SignInJumpProcess} />
-                  <Route path="/managecandidates" component={ManageMyCandidates} />
+                  <Route path="/managecandidates/:subtab" exact component={ManageMyCandidatesLanding} />
+                  <Route path="/managecandidates" exact component={ManageMyCandidatesLanding} />
                   <Route path="/more/myballot" component={WeVoteBallotEmbed} />
                   <Route path="/more/network/friends" component={Friends} />
                   <Route path="/more/network/key/:invitation_secret_key/ignore" component={FriendInvitationByEmailVerifyProcess} />
