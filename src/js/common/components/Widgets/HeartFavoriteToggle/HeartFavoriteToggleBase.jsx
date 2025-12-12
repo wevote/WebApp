@@ -63,6 +63,20 @@ class HeartFavoriteToggleBase extends Component {
 
   componentDidUpdate (prevProps) {
     // console.log('SupportButton componentDidUpdate');
+    const propsChanged =
+      prevProps.voterSupports !== this.props.voterSupports ||
+      prevProps.voterOpposes !== this.props.voterOpposes ||
+      prevProps.supportersCount !== this.props.supportersCount ||
+      prevProps.opposersCount !== this.props.opposersCount;
+
+    if (propsChanged) {
+      this.setState({
+        voterSupportsLocal: this.props.voterSupports,
+        voterOpposesLocal: this.props.voterOpposes,
+        supportersCountLocal: this.props.supportersCount,
+        opposersCountLocal: this.props.opposersCount,
+      });
+    }
     const {
       campaignXWeVoteId: campaignXWeVoteIdPrevious,
       opposersCount: opposersCountPrevious,

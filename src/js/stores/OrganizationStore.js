@@ -1328,6 +1328,13 @@ class OrganizationStore extends ReduceStore {
         OrganizationActions.organizationsFollowedRetrieve();
         return this.resetState();
 
+      case 'voterUpdate':
+        if (action.res && action.res.voter_deleted) {
+          // Same as voterSignOut for this store
+          return this.resetState();
+        }
+        return state;
+
       case 'voterOpposingSave':
       case 'voterPositionCommentSave':
       case 'voterPositionVisibilitySave':
