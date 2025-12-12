@@ -99,6 +99,14 @@ class PoliticianStore extends ReduceStore {
     return '';
   }
 
+  getPoliticalParty (politicianWeVoteId) {
+    const politician = this.getState().allCachedPoliticians[politicianWeVoteId] || {};
+    if (politician) {
+      return politician.political_party || '';
+    }
+    return '';
+  }
+
   getMostLikelyOfficeDictFromPoliticianWeVoteId (politicianWeVoteId) {
     const politician = this.getPoliticianByWeVoteId(politicianWeVoteId);
     // console.log('getMostLikelyOfficeDictFromPoliticianWeVoteId politician:', politician)
