@@ -1,38 +1,116 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
+import PoliticianActions from '../../common/actions/PoliticianActions';
+import PoliticianStore from '../../common/stores/PoliticianStore';
 
-const SettingsPoliticalParty = () => {
+const delayBeforeSavingToAPI = 1500;
+const delayBeforeShowingSavedStatus = 3000;
+const enterYourOwnPartyText = '-- Enter your own --';
+
+const SettingsPoliticalParty = ({ politicianWeVoteId }) => {
+  // The master list of political party options are in WeVoteServer/wevote_functions/functions.py - candidate_party_display
   const partyOptions = [
-    "Democratic Party",
-    "Republican Party",
-    "Green Party",
-    "Libertarian Party",
-    "Independent",
-    "Enter your own"
+    'Democrat',
+    'Republican',
+    'Green',
+    'Libertarian',
+    'Independent',
+    'Nonpartisan',
+    'No Party Preference',
+    'Peace and Freedom',
+    'Working Families',
+    'Constitution',
+    'No Labels',
+    enterYourOwnPartyText,
   ];
 
-  const [selectedParty, setSelectedParty] = useState("");
-  const [customParty, setCustomParty] = useState("");
+  const [customParty, setCustomParty] = useState('');
+  const [savedStatus, setSavedStatus] = useState('');
+  const [selectedParty, setSelectedParty] = useState('');
+
+  const clearStatusTimer = useRef(null);
+  const savingStatusTimer = useRef(null);
+
+  const updatePoliticalPartyCustom = (event) => {
+    const politicalPartyValue = event.target.value;
+    if (event.target.name === 'politicalPartyCustom') {
+      setSelectedParty(enterYourOwnPartyText);
+      setCustomParty(politicalPartyValue);
+      if (savingStatusTimer.current) clearTimeout(savingStatusTimer.current);
+      savingStatusTimer.current = setTimeout(() => {
+        // After some time, save to the API server
+        setSavedStatus('Saving Political Party...');
+        PoliticianActions.politicianPoliticalPartySave(politicianWeVoteId, politicalPartyValue);
+      }, delayBeforeSavingToAPI);
+
+      if (clearStatusTimer.current) clearTimeout(clearStatusTimer.current);
+      clearStatusTimer.current = setTimeout(() => {
+        // After some time, show that the data was saved
+        setSavedStatus('Saved');
+      }, delayBeforeShowingSavedStatus);
+    }
+  };
+
+  const updatePoliticalPartyFromDropdown = (event) => {
+    const politicalPartyValue = event.target.value;
+    if (event.target.name === 'politicalParty') {
+      if (politicalPartyValue === enterYourOwnPartyText) {
+        setSelectedParty(politicalPartyValue);
+      } else {
+        setSavedStatus('Saving Political Party...');
+        setSelectedParty(politicalPartyValue);
+        PoliticianActions.politicianPoliticalPartySave(politicianWeVoteId, politicalPartyValue);
+        // Clear any existing timeout
+        if (clearStatusTimer.current) clearTimeout(clearStatusTimer.current);
+        // After some time, show that the data was saved
+        clearStatusTimer.current = setTimeout(() => {
+          setSavedStatus('Saved');
+        }, delayBeforeShowingSavedStatus);
+      }
+    }
+  };
+
+  // Cleanup timeout on component unmount
+  useEffect(() => {
+    if (politicianWeVoteId && partyOptions) {
+      const politicalPartyFromAPIServer = PoliticianStore.getPoliticalParty(politicianWeVoteId);
+      // If politicalPartyFromAPIServer is in the array of partyOptions, update the dropdown with it
+      if (politicalPartyFromAPIServer && partyOptions.some((option) => option.toLowerCase() === politicalPartyFromAPIServer.toLowerCase())) {
+        setSelectedParty(politicalPartyFromAPIServer);
+      } else {
+        setSelectedParty(enterYourOwnPartyText);
+        setCustomParty(politicalPartyFromAPIServer);
+      }
+    }
+
+    // Clear the timer when the component is unmounted to prevent memory leaks
+    return () => {
+      if (clearStatusTimer.current) clearTimeout(clearStatusTimer.current);
+      if (savingStatusTimer.current) clearTimeout(savingStatusTimer.current);
+    };
+  }, []);
 
   return (
-    <Wrapper>
+    <SettingsPoliticalPartyWrapper>
       <HeaderContainer>
         <h1 className="h2">Political Party</h1>
       </HeaderContainer>
 
-      <Label id="partyLabel" htmlFor="politicalPartySelect">
-        Select your political party or enter your own below.
-      </Label>
+      <IntroductionText id="partyLabel" htmlFor="politicalPartySelect">
+        Select from common political parties or choose the &quot;Enter your own&quot; option.
+      </IntroductionText>
 
       <Select
         id="politicalPartySelect"
+        name="politicalParty"
         aria-labelledby="partyLabel"
         value={selectedParty}
-        onChange={(e) => setSelectedParty(e.target.value)}
+        onChange={updatePoliticalPartyFromDropdown}
       >
 
-        <option value="">Select party</option>
+        <option value="">-- Select party --</option>
         {partyOptions.map((party) => (
           <option key={party} value={party}>
             {party}
@@ -41,26 +119,29 @@ const SettingsPoliticalParty = () => {
       </Select>
 
       {/* Custom input only visible if needed */}
-      {selectedParty === "Enter your own" && (
+      {selectedParty === enterYourOwnPartyText && (
         <CustomWrapper>
           <Input
             id="customPartyInput"
+            name="politicalPartyCustom"
             type="text"
             value={customParty}
             placeholder="Type your party name..."
             aria-label="Type your political party name"
-            onChange={(e) => setCustomParty(e.target.value)}
+            onChange={updatePoliticalPartyCustom}
           />
         </CustomWrapper>
       )}
-    </Wrapper>
+      <SavedStatus>{savedStatus}</SavedStatus>
+    </SettingsPoliticalPartyWrapper>
   );
 };
+SettingsPoliticalParty.propTypes = {
+  politicianWeVoteId: PropTypes.string,
+};
 
-const Wrapper = styled('div')`
-  padding: 16px;
-  max-width: 700px;
-  color: ${DesignTokenColors.neutralUI900};
+const CustomWrapper = styled('div')`
+  margin-top: 3px;
 `;
 
 /* Matches Official Statement header container */
@@ -70,14 +151,35 @@ const HeaderContainer = styled('div')`
   margin-bottom: 4px;
 `;
 
-/* Uses the same spacing behavior as IntroductionWrapper in Official Statement */
-const Label = styled('label')`
+const Input = styled('input')`
+  width: 100%;
+  padding: 12px;
+  margin-top: 8px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 1px solid ${DesignTokenColors.neutralUI400};
+  outline: none;
+
+  &:focus {
+    border-color: ${DesignTokenColors.primary600};
+  }
+`;
+
+const IntroductionText = styled('div')`
   display: block;
-  margin-top: 8px;      /* Spacing between title and intro text */
+  margin-top: 0px;      /* Spacing between title and intro text */
   margin-bottom: 12px;  /* Same spacing as Official Statement intro text */
   font-size: 15px;
   color: ${DesignTokenColors.neutralUI700};
-  font-weight: 600;
+  font-weight: 300;
+`;
+
+const SavedStatus = styled('div')`
+  display: block;
+  margin-top: 12px;
+  font-size: 15px;
+  color: ${DesignTokenColors.neutralUI700};
+  font-weight: 300;
 `;
 
 const Select = styled('select')`
@@ -101,22 +203,10 @@ const Select = styled('select')`
   }
 `;
 
-const Input = styled('input')`
-  width: 100%;
-  padding: 12px;
-  margin-top: 8px;
-  font-size: 16px;
-  border-radius: 8px;
-  border: 1px solid ${DesignTokenColors.neutralUI400};
-  outline: none;
-
-  &:focus {
-    border-color: ${DesignTokenColors.primary600};
-  }
-`;
-
-const CustomWrapper = styled('div')`
-  margin-top: 20px;
+const SettingsPoliticalPartyWrapper = styled('div')`
+  padding: 16px;
+  max-width: 700px;
+  color: ${DesignTokenColors.neutralUI900};
 `;
 
 export default SettingsPoliticalParty;

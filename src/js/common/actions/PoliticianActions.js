@@ -50,6 +50,15 @@ export default {
     Dispatcher.dispatch({ type: 'profilePhotoTooBigReset', payload: true });
   },
 
+  politicianPoliticalPartySave (politicianWeVoteId, politicalParty) {
+    Dispatcher.loadEndpoint('politicianSave',
+      {
+        political_party: politicalParty,
+        political_party_changed: true,
+        politician_we_vote_id: politicianWeVoteId,
+      });
+  },
+
   politicianRetrieve (politicianWeVoteId, asOwner = false) {
     if (asOwner) {
       Dispatcher.loadEndpoint('politicianRetrieveAsOwner',
