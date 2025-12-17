@@ -362,9 +362,10 @@ class App extends Component {
 
   acceptURLVariables () {
     const { location: { search: queryString } } = this.props;
-    const { fromAdSet, showEditPoliticianNoticeSet  } = this.state;
+    const { fromAdSet, showEditPoliticianNoticeSet, showOfficeBannerAboveHeaderSet  } = this.state;
     const query = new URLSearchParams(queryString);
     const fromAd = query.get('ad');
+    const showOfficeBannerAboveHeader = query.get('office_intro');
     const showEditPoliticianNotice = query.get('show_edit_politician_notice');
     if (fromAd === '1' && !fromAdSet) {
       this.setState({ fromAdSet: true });
@@ -374,6 +375,10 @@ class App extends Component {
       this.setState({ showEditPoliticianNoticeSet: true });
       AppObservableStore.setShowNotificationBannerAboveHeader(true);
       Cookies.set('politician_url_variable_used', '1', { expires: 15, path: '/' });
+    }
+    if (showOfficeBannerAboveHeader === '1' && !showOfficeBannerAboveHeaderSet) {
+      this.setState({ showOfficeBannerAboveHeaderSet: true });
+      AppObservableStore.setShowOfficeBannerAboveHeader(true);
     }
   }
 

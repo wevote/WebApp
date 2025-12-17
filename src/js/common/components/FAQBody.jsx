@@ -157,7 +157,44 @@ export default class FAQBody extends Component {
         candidate or party.
         We are not affiliated with WeVoteProject.org or WeVoteUSA.com.
         <br />
-        <br />
+        {isWebApp() && (
+          <>
+            <br/>
+            <strong>Official Formation Documents?</strong>
+            <br/>
+            <Suspense fallback={<></>}>
+              <OpenExternalWebSite
+                linkIdAttribute="c3IRSApproval"
+                url="https://wevote.us/img/pdf/We-Vote-c3-irsApproval-20151105.pdf"
+                target="_blank"
+                body="We-Vote-c3-irsApproval-20151105.pdf"
+                trackingOn
+              />
+            </Suspense>
+            <br/>
+            <Suspense fallback={<></>}>
+              <OpenExternalWebSite
+                linkIdAttribute="c3EIN"
+                url="https://wevote.us/img/pdf/We-Vote-c3-EIN-CP575-20150106.pdf"
+                target="_blank"
+                body="We-Vote-c3-EIN-CP575-20150106.pdf"
+                trackingOn
+              />
+            </Suspense>
+            <br/>
+            <Suspense fallback={<></>}>
+              <OpenExternalWebSite
+                linkIdAttribute="c4EIN"
+                url="https://wevote.us/img/pdf/We-Vote-USA-c4-EIN-CP575-20160111.pdf"
+                target="_blank"
+                body="We-Vote-USA-c4-EIN-CP575-20160111.pdf"
+                trackingOn
+              />
+            </Suspense>
+          </>
+        )}
+        <br/>
+        <br/>
 
         <strong>No really, who are you?</strong>
         <br />
@@ -174,7 +211,7 @@ export default class FAQBody extends Component {
         </Suspense>
         , and join us! We use our engineering, design, marketing, and other
         skills to build
-        WeVote. We are over 900 people (120+ active every week) who have donated 75,000+
+        WeVote. We are over 1,000 people (160+ active every week) who have donated 75,000+
         volunteer hours, including
         {' '}
         <Suspense fallback={<></>}>
@@ -216,11 +253,11 @@ export default class FAQBody extends Component {
         <br />
         WeVote
         <br />
-        1440 Broadway Ste 200
-        <br />
-        #158
+        1440 Broadway Ste 200, #158
         <br />
         Oakland, CA 94612
+        <br />
+        707-506-6441
         <br />
         <br />
 
@@ -334,8 +371,7 @@ export default class FAQBody extends Component {
         <br />
         Expenses include server costs ($600 - $2,500 per month), data fees
         (~$40,000 per year), collaboration tools and other hard costs.
-        In the future, we might hire some key staff with donations, for the
-        smooth operation of WeVote.
+        We are 100% volunteer, and don&apos;t have any paid staff.
         <br />
         <br />
 
