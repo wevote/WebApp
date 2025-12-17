@@ -68,6 +68,7 @@ const PreviewInvitationModal = ({
 
   return (
     <>
+      <ChangeTitleFont />
       <HideTemplateADivider />
       <WidenPreviewModal />
       <SoftenCorners />
@@ -93,6 +94,12 @@ PreviewInvitationModal.propTypes = {
 };
 
 // Global Styles
+
+const ChangeTitleFont = createGlobalStyle`
+  .MuiDialogTitle-root:has(#closeModalDisplayTemplateApreviewInvitationModal) * {
+    font-family: "Poppins", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif !important;
+  }
+`;
 
 const HideTemplateADivider = createGlobalStyle`
   .MuiDialogTitle-root:has(#closeModalDisplayTemplateApreviewInvitationModal) > hr {
@@ -146,7 +153,7 @@ const HeaderRow = styled.div`
   align-items: center;
   display: flex;
   justify-content: space-between;
-  padding: 0px 12px 0 18px;
+  padding: 0 12px 0 18px;
 `;
 
 const InfoDot = styled.span`

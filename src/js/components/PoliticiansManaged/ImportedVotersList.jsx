@@ -15,6 +15,8 @@ import {
 } from '@mui/icons-material';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 
+import InviteSelectedModal from '../More/InviteSelectedModal';
+
 function formatWhen (iso) {
   try {
     const d = iso ? new Date(iso) : new Date();
@@ -26,11 +28,11 @@ function formatWhen (iso) {
 
 export default function ImportedVotersList ({
   voters,
-  onInviteSelected,
   onInviteEmail,
   onInviteText,
   onHide,
   onHideSelected,
+  onOpenPreview,
   onShowHidden,
   onViewHistory,
   onDeleteSelected,
@@ -40,6 +42,9 @@ export default function ImportedVotersList ({
   const [selected, setSelected] = useState(() => new Set());
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef(null);
+
+  const [inviteModalOpen, setInviteModalOpen] = useState(false);
+  const [inviteList, setInviteList] = useState([]);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -79,241 +84,261 @@ export default function ImportedVotersList ({
   };
 
   return (
-    <Card aria-label="Imported voters (not invited)">
-      <ListTopBar>
-        <TopBarLeft>
-          <ListHeading>Imported voters (not invited)</ListHeading>
-          <TopDivider aria-hidden />
-          <SearchField aria-label="Search imported voters">
-            <SearchIcon aria-hidden />
-            <SearchInput
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-            />
-          </SearchField>
-        </TopBarLeft>
+    <>
+      <Card aria-label="Imported voters (not invited)">
+        <ListTopBar>
+          <TopBarLeft>
+            <ListHeading>Imported voters (not invited)</ListHeading>
+            <TopDivider aria-hidden />
+            <SearchField aria-label="Search imported voters">
+              <SearchIcon aria-hidden />
+              <SearchInput
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+              />
+            </SearchField>
+          </TopBarLeft>
 
-        <TopBarRight>
-          <InviteButton
-            type="button"
-            disabled={selectedList.length === 0}
-            onClick={() => onInviteSelected(selectedList)}
-            aria-label={`Invite selected (${selectedList.length})`}
-            title={
-              selectedList.length ?
-                `Invite selected (${selectedList.length})` :
-                'Invite selected'
-            }
-          >
-            Invite selected (
-            {selectedList.length}
-            )
-          </InviteButton>
-
-          <OverflowWrap>
-            <OverflowBtn
+          <TopBarRight>
+            <InviteButton
               type="button"
-              aria-label="More options"
-              aria-haspopup="menu"
-              aria-expanded={menuOpen}
-              onClick={() => setMenuOpen((o) => !o)}
-              title="More options"
+              disabled={selectedList.length === 0}
+              onClick={() => {
+                setInviteList(selectedList);
+                setInviteModalOpen(true);
+              }}
+              aria-label={`Invite selected (${selectedList.length})`}
+              title={
+                selectedList.length ?
+                  `Invite selected (${selectedList.length})` :
+                  'Invite selected'
+              }
             >
-              <OverflowIcon fontSize="small" />
-            </OverflowBtn>
-            {menuOpen && (
-              <MenuCard role="menu" ref={menuRef}>
-                <MenuItem
-                  role="menuitem"
-                  onClick={() => {
-                    onShowHidden?.();
-                    setMenuOpen(false);
-                  }}
-                >
-                  <ShowIcon fontSize="small" />
-                  <span>Show hidden</span>
-                </MenuItem>
+              Invite selected (
+              {selectedList.length}
+              )
+            </InviteButton>
 
-                <MenuItem
-                  role="menuitem"
-                  onClick={() => {
-                    onViewHistory?.();
-                    setMenuOpen(false);
-                  }}
-                >
-                  <HistoryIcon fontSize="small" />
-                  <span>View history of imports</span>
-                </MenuItem>
-                <MenuDivider />
+            <OverflowWrap>
+              <OverflowBtn
+                type="button"
+                aria-label="More options"
+                aria-haspopup="menu"
+                aria-expanded={menuOpen}
+                onClick={() => setMenuOpen((o) => !o)}
+                title="More options"
+              >
+                <OverflowIcon fontSize="small" />
+              </OverflowBtn>
+              {menuOpen && (
+                <MenuCard role="menu" ref={menuRef}>
+                  <MenuItem
+                    role="menuitem"
+                    onClick={() => {
+                      onShowHidden?.();
+                      setMenuOpen(false);
+                    }}
+                  >
+                    <ShowIcon fontSize="small" />
+                    <span>Show hidden</span>
+                  </MenuItem>
 
-                {selectedList.length > 0 ? (
-                  <>
-                    <MenuItem
-                      role="menuitem"
-                      onClick={() => {
-                        onHideSelected?.(selectedList);
-                        setMenuOpen(false);
-                      }}
-                    >
-                      <HideIcon fontSize="small" />
-                      <span>Hide</span>
-                    </MenuItem>
+                  <MenuItem
+                    role="menuitem"
+                    onClick={() => {
+                      onViewHistory?.();
+                      setMenuOpen(false);
+                    }}
+                  >
+                    <HistoryIcon fontSize="small" />
+                    <span>View history of imports</span>
+                  </MenuItem>
+                  <MenuDivider />
 
-                    <MenuItem
-                      role="menuitem"
-                      onClick={() => {
-                        onDeleteSelected?.(selectedList);
-                        setMenuOpen(false);
-                      }}
-                    >
-                      <DeleteIcon fontSize="small" />
-                      <span>Delete</span>
-                    </MenuItem>
-                  </>
-                ) : (
-                  <>
-                    <TooltipWrap>
-                      <MenuItem role="menuitem" disabled>
+                  {selectedList.length > 0 ? (
+                    <>
+                      <MenuItem
+                        role="menuitem"
+                        onClick={() => {
+                          onHideSelected?.(selectedList);
+                          setMenuOpen(false);
+                        }}
+                      >
                         <HideIcon fontSize="small" />
                         <span>Hide</span>
                       </MenuItem>
-                      <TooltipBubble>
-                        Select voters to allow hiding or deleting.
-                      </TooltipBubble>
-                    </TooltipWrap>
 
-                    <TooltipWrap>
-                      <MenuItem role="menuitem" disabled>
+                      <MenuItem
+                        role="menuitem"
+                        onClick={() => {
+                          onDeleteSelected?.(selectedList);
+                          setMenuOpen(false);
+                        }}
+                      >
                         <DeleteIcon fontSize="small" />
                         <span>Delete</span>
                       </MenuItem>
-                      <TooltipBubble>
-                        Select voters to allow hiding or deleting.
-                      </TooltipBubble>
-                    </TooltipWrap>
-                  </>
-                )}
-              </MenuCard>
-            )}
-          </OverflowWrap>
-        </TopBarRight>
-      </ListTopBar>
+                    </>
+                  ) : (
+                    <>
+                      <TooltipWrap>
+                        <MenuItem role="menuitem" disabled>
+                          <HideIcon fontSize="small" />
+                          <span>Hide</span>
+                        </MenuItem>
+                        <TooltipBubble>
+                          Select voters to allow hiding or deleting.
+                        </TooltipBubble>
+                      </TooltipWrap>
 
-      <Toolbar>
-        <label>
-          <input
-            type="checkbox"
-            checked={allVisibleSelected}
-            onChange={toggleAllVisible}
-          />
-          <span>Select all</span>
-        </label>
-      </Toolbar>
+                      <TooltipWrap>
+                        <MenuItem role="menuitem" disabled>
+                          <DeleteIcon fontSize="small" />
+                          <span>Delete</span>
+                        </MenuItem>
+                        <TooltipBubble>
+                          Select voters to allow hiding or deleting.
+                        </TooltipBubble>
+                      </TooltipWrap>
+                    </>
+                  )}
+                </MenuCard>
+              )}
+            </OverflowWrap>
+          </TopBarRight>
+        </ListTopBar>
 
-      <Table role="table" aria-label="Imported voters table">
-        <TrHead role="row">
-          <ThCenter role="columnheader" aria-label="Select" />
-          <ThCenter role="columnheader" aria-label="Expand" />
-          <Th role="columnheader">Name</Th>
-          <Th role="columnheader">Email</Th>
-          <Th role="columnheader">Phone</Th>
-          <ThRight role="columnheader" aria-label="Actions" />
-        </TrHead>
+        <Toolbar>
+          <label>
+            <input
+              type="checkbox"
+              checked={allVisibleSelected}
+              onChange={toggleAllVisible}
+            />
+            <span>Select all</span>
+          </label>
+        </Toolbar>
 
-        <Tbody role="rowgroup">
-          {filtered.map((v, idx) => {
-            const id = v.id || v._idx || `row_${idx}`;
-            const isOpen = expandedId === id;
-            const isChecked = selected.has(id);
-            const showDetails = isOpen || isChecked; // no hover reveal
+        <Table role="table" aria-label="Imported voters table">
+          <TrHead role="row">
+            <ThCenter role="columnheader" aria-label="Select" />
+            <ThCenter role="columnheader" aria-label="Expand" />
+            <Th role="columnheader">Name</Th>
+            <Th role="columnheader">Email</Th>
+            <Th role="columnheader">Phone</Th>
+            <ThRight role="columnheader" aria-label="Actions" />
+          </TrHead>
 
-            return (
-              <React.Fragment key={id}>
-                <Tr role="row" className={isChecked ? 'selected' : undefined}>
-                  <TdCheck role="cell">
-                    <Checkbox
-                      type="checkbox"
-                      checked={isChecked}
-                      onChange={() => toggleOne(id)}
-                      aria-label={`Select ${v.name || 'voter'}`}
-                    />
-                  </TdCheck>
+          <Tbody role="rowgroup">
+            {filtered.map((v, idx) => {
+              const id = v.id || v._idx || `row_${idx}`;
+              const isOpen = expandedId === id;
+              const isChecked = selected.has(id);
+              const showDetails = isOpen || isChecked; // no hover reveal
 
-                  <TdExpand role="cell">
-                    <ExpandBtn
-                      type="button"
-                      aria-expanded={isOpen}
-                      aria-label={isOpen ? 'Collapse row' : 'Expand row'}
-                      onClick={() => toggleRow(id)}
-                    >
-                      {isOpen ? (
-                        <CollapseIcon fontSize="small" />
-                      ) : (
-                        <ExpandIcon fontSize="small" />
-                      )}
-                    </ExpandBtn>
-                  </TdExpand>
+              return (
+                <React.Fragment key={id}>
+                  <Tr role="row" className={isChecked ? 'selected' : undefined}>
+                    <TdCheck role="cell">
+                      <Checkbox
+                        type="checkbox"
+                        checked={isChecked}
+                        onChange={() => toggleOne(id)}
+                        aria-label={`Select ${v.name || 'voter'}`}
+                      />
+                    </TdCheck>
 
-                  <Td role="cell" title={v.name || '—'}>
-                    {v.name || '—'}
-                  </Td>
-                  <Td role="cell" title={v.email || '—'}>
-                    {v.email || '—'}
-                  </Td>
-                  <Td role="cell" title={v.phone || '—'}>
-                    {v.phone || '—'}
-                  </Td>
-
-                  <TdActions role="cell">
-                    <ActionsInline className="row-actions">
-                      <ActionPill
+                    <TdExpand role="cell">
+                      <ExpandBtn
                         type="button"
-                        onClick={() => onInviteEmail([v])}
+                        aria-expanded={isOpen}
+                        aria-label={isOpen ? 'Collapse row' : 'Expand row'}
+                        onClick={() => toggleRow(id)}
                       >
-                        <MailIcon fontSize="small" />
-                        <span>Send email invite</span>
-                      </ActionPill>
-                      <ActionPill
-                        type="button"
-                        onClick={() => onInviteText([v])}
-                      >
-                        <SmsIcon fontSize="small" />
-                        <span>Send text invite</span>
-                      </ActionPill>
-                      <ActionPill type="button" onClick={() => onHide(v)}>
-                        <HideIcon fontSize="small" />
-                        <span>Hide</span>
-                      </ActionPill>
-                    </ActionsInline>
-                  </TdActions>
-                </Tr>
+                        {isOpen ? (
+                          <CollapseIcon fontSize="small" />
+                        ) : (
+                          <ExpandIcon fontSize="small" />
+                        )}
+                      </ExpandBtn>
+                    </TdExpand>
 
-                {showDetails && (
-                  <TrDetails role="row">
-                    <TdFull>
-                      <DetailsGrid>
-                        <DetailBlock>
-                          <DetailLabel>Added via</DetailLabel>
-                          <div>{v.source || 'Manual entry'}</div>
-                        </DetailBlock>
-                        <DetailBlock>
-                          <DetailLabel>Added by</DetailLabel>
-                          <div>{v.addedBy || 'You'}</div>
-                        </DetailBlock>
-                        <DetailBlock>
-                          <DetailLabel>Added on</DetailLabel>
-                          <div>{formatWhen(v.addedAt)}</div>
-                        </DetailBlock>
-                      </DetailsGrid>
-                    </TdFull>
-                  </TrDetails>
-                )}
-              </React.Fragment>
-            );
-          })}
-        </Tbody>
-      </Table>
-    </Card>
+                    <Td role="cell" title={v.name || '—'}>
+                      {v.name || '—'}
+                    </Td>
+                    <Td role="cell" title={v.email || '—'}>
+                      {v.email || '—'}
+                    </Td>
+                    <Td role="cell" title={v.phone || '—'}>
+                      {v.phone || '—'}
+                    </Td>
+
+                    <TdActions role="cell">
+                      <ActionsInline className="row-actions">
+                        <ActionPill
+                          type="button"
+                          onClick={() => onInviteEmail([v])}
+                        >
+                          <MailIcon fontSize="small" />
+                          <span>Send email invite</span>
+                        </ActionPill>
+                        <ActionPill
+                          type="button"
+                          onClick={() => onInviteText([v])}
+                        >
+                          <SmsIcon fontSize="small" />
+                          <span>Send text invite</span>
+                        </ActionPill>
+                        <ActionPill type="button" onClick={() => onHide(v)}>
+                          <HideIcon fontSize="small" />
+                          <span>Hide</span>
+                        </ActionPill>
+                      </ActionsInline>
+                    </TdActions>
+                  </Tr>
+
+                  {showDetails && (
+                    <TrDetails role="row">
+                      <TdFull>
+                        <DetailsGrid>
+                          <DetailBlock>
+                            <DetailLabel>Added via</DetailLabel>
+                            <div>{v.source || 'Manual entry'}</div>
+                          </DetailBlock>
+                          <DetailBlock>
+                            <DetailLabel>Added by</DetailLabel>
+                            <div>{v.addedBy || 'You'}</div>
+                          </DetailBlock>
+                          <DetailBlock>
+                            <DetailLabel>Added on</DetailLabel>
+                            <div>{formatWhen(v.addedAt)}</div>
+                          </DetailBlock>
+                        </DetailsGrid>
+                      </TdFull>
+                    </TrDetails>
+                  )}
+                </React.Fragment>
+              );
+            })}
+          </Tbody>
+        </Table>
+      </Card>
+
+      {/* Invite selected modal */}
+      <InviteSelectedModal
+        isOpen={inviteModalOpen}
+        toggleModal={() => setInviteModalOpen(false)}
+        voters={inviteList}
+        onInviteEmail={onInviteEmail}
+        onInviteText={onInviteText}
+        onOpenPreview={onOpenPreview}
+        onRemove={(v) =>
+          setInviteList(prev =>
+            prev.filter(p => (p.id || p._idx) !== (v.id || v._idx))
+          )
+        }
+      />
+    </>
   );
 }
 
@@ -329,12 +354,12 @@ ImportedVotersList.propTypes = {
       addedAt: PropTypes.string,
     }),
   ).isRequired,
-  onInviteSelected: PropTypes.func.isRequired,
   onInviteEmail: PropTypes.func.isRequired,
   onInviteText: PropTypes.func.isRequired,
   onHide: PropTypes.func.isRequired,
   onHideSelected: PropTypes.func.isRequired,
   onShowHidden: PropTypes.func,
+  onOpenPreview: PropTypes.func,
   onViewHistory: PropTypes.func,
   onDeleteSelected: PropTypes.func,
 };

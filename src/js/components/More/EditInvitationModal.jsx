@@ -83,6 +83,7 @@ const EditInvitationModal = ({
 
   return (
     <>
+      <ChangeTitleFont />
       <HideTemplateADivider />
       <WidenEditModal />
       <SoftenCorners />
@@ -108,6 +109,12 @@ EditInvitationModal.propTypes = {
 };
 
 // Global Styles
+
+const ChangeTitleFont = createGlobalStyle`
+  .MuiDialogTitle-root:has(#closeModalDisplayTemplateAeditInvitationModal) * {
+    font-family: "Poppins", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif !important;
+  }
+`;
 
 const HideTemplateADivider = createGlobalStyle`
   .MuiDialogTitle-root:has(#closeModalDisplayTemplateAeditInvitationModal) > hr {

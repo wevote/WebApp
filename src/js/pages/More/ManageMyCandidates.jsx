@@ -72,9 +72,9 @@ Thanks for your help!`);
 
   const emailRE = /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i;
 
-  const handleInviteSelected = useCallback((rows) => {
-    notify(`Invited ${rows.length} voter${rows.length === 1 ? '' : 's'} by email.`);
-  }, [notify]);
+  // const handleInviteSelected = useCallback((rows) => {
+  //   notify(`Invited ${rows.length} voter${rows.length === 1 ? '' : 's'} by email.`);
+  // }, [notify]);
 
   const handleInviteEmailOneOrMany = useCallback((rows) => {
     notify(`Email invite sent to ${rows.length} voter${rows.length === 1 ? '' : 's'}.`);
@@ -198,11 +198,12 @@ Thanks for your help!`);
         <Suspense fallback={<></>}>
           <ImportedVotersList
             voters={importedVoters.map((v, _idx) => ({ _idx, ...v }))} // ensure stable key if no id
-            onInviteSelected={handleInviteSelected}
+            // onInviteSelected={handleInviteSelected}
             onInviteEmail={handleInviteEmailOneOrMany}
             onInviteText={handleInviteTextOneOrMany}
             onHide={handleHideOne}
             onHideSelected={handleHideMany}
+            onOpenPreview={handlePreviewOpen}
           />
         </Suspense>
       )}
