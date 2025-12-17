@@ -149,6 +149,7 @@ export default function UploadCSVModal ({
 
   return (
     <>
+      <ChangeTitleFont />
       <HideTemplateADivider />
       <WidenUploadModal />
       <SoftenCorners />
@@ -172,6 +173,12 @@ UploadCSVModal.propTypes = {
 };
 
 // Global Styles
+
+const ChangeTitleFont = createGlobalStyle`
+  .MuiDialogTitle-root:has(#closeModalDisplayTemplateAuploadCSVModal) * {
+    font-family: "Poppins", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif !important;
+  }
+`;
 
 const HideTemplateADivider = createGlobalStyle`
   .MuiDialogTitle-root:has(#closeModalDisplayTemplateAuploadCSVModal) > hr {
