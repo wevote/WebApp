@@ -334,7 +334,7 @@ const InviteRow = styled.div`
 
 const InviteText = styled.span`
   color: ${DesignTokenColors.neutralUI700};
-  flex: 0 0 auto;
+  flex: 0 1 auto;
   margin: 0;
 `;
 

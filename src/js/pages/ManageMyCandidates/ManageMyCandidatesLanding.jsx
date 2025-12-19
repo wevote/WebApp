@@ -71,7 +71,7 @@ export default function ManageMyCandidatesLanding () {
     return () => {
       politicianStoreListener.remove();
     };
-  }, []);
+  }, [onPoliticianStoreChange]);
 
   useEffect(() => {
     const voterStoreListener = VoterStore.addListener(onVoterStoreChange);
@@ -79,7 +79,7 @@ export default function ManageMyCandidatesLanding () {
     return () => {
       voterStoreListener.remove();
     };
-  }, []);
+  }, [onVoterStoreChange]);
 
   // Main render
   const handleClaimEdit = () => history.push(`/candidate/${selectedPoliticianWeVoteId}/edit`);
@@ -121,8 +121,31 @@ export default function ManageMyCandidatesLanding () {
       </HeaderRow>
 
       <Layout>
-        {/* Left nav */}
-        <LeftNav aria-label="Manage navigation">
+        {/* Mobile navigation bar */}
+        <NavBarMobile className="u-show-mobile" aria-label="Manage navigation">
+          <NavPill $mobile $active={active === 'import'} onClick={handleClaimImport}>
+            <PillIcon><ImportInviteIcon fontSize="small" /></PillIcon>
+            Import &amp; invite voters
+          </NavPill>
+
+          <NavPill $mobile $active={active === 'tracking'} onClick={handleClaimTracking}>
+            <PillIcon><TrackingIcon fontSize="small" /></PillIcon>
+            Tracking
+          </NavPill>
+
+          <NavPill $mobile $active={active === 'analytics'} onClick={handleClaimAnalytics}>
+            <PillIcon><AnalyticsIcon fontSize="small" /></PillIcon>
+            Analytics
+          </NavPill>
+
+          <NavPill $mobile as="button" $active={false} onClick={handleClaimEdit}>
+            <PillIcon><EditIcon fontSize="small" /></PillIcon>
+            Edit candidate profile
+          </NavPill>
+        </NavBarMobile>
+
+        {/* Desktop and tablet navigation bar */}
+        <NavBar aria-label="Manage navigation">
           <NavPill $active={active === 'import'} onClick={handleClaimImport}>
             <PillIcon><ImportInviteIcon fontSize="small" /></PillIcon>
             Import &amp; invite voters
@@ -144,7 +167,7 @@ export default function ManageMyCandidatesLanding () {
             <PillIcon><EditIcon fontSize="small" /></PillIcon>
             Edit candidate profile
           </NavPill>
-        </LeftNav>
+        </NavBar>
 
         {/* Right content */}
         <RightPanel>
@@ -303,21 +326,38 @@ const PickerItem = styled.li`
 const Layout = styled.div`
   display: grid;
   gap: 24px;
-  grid-template-columns: 260px 1fr;
+  grid-template-columns: 1fr;
 
-  @media (max-width: 900px) {
-    grid-template-columns: 1fr;
+  @media (min-width: 576px) {
+    grid-template-columns: 260px 1fr;
   }
 `;
 
-const LeftNav = styled.nav`
-  border-right: 1px solid ${DesignTokenColors.neutralUI200};
-  padding-right: 18px;
+const NavBar = styled.nav`
+  display: none;
 
-  @media (max-width: 900px) {
-    border-bottom: 1px solid ${DesignTokenColors.neutralUI200};
-    border-right: none;
-    padding: 0 0 12px 0;
+  @media (min-width: 576px) {
+    display: block;
+    border-right: 1px solid ${DesignTokenColors.neutralUI200};
+    padding-right: 18px;
+  }
+`;
+
+const NavBarMobile = styled.nav`
+  padding: 0 0 12px 0;
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 8px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  position: relative;
+  grid-column: 1 / -1;
+
+  /* Make the scrollbar not be visible */
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+  &::-webkit-scrollbar {  /* Chrome, Safari and Opera */
+    display: none;
   }
 `;
 
@@ -337,6 +377,27 @@ const NavPill = styled.button`
   width: 100%;
 
   &:hover { background: ${DesignTokenColors.neutralUI50}; }
+
+  // Button uses mobile styles when $mobile prop is true
+  ${({ $mobile, $active }) => $mobile && `
+    background: ${$active ? DesignTokenColors.primary50 : DesignTokenColors.whiteUI};
+    border: 1px solid ${$active ? DesignTokenColors.primary700 : DesignTokenColors.neutralUI300};
+    border-radius: 12px;
+    color: ${$active ? DesignTokenColors.primary700 : DesignTokenColors.neutralUI700};
+    font-size: 14px;
+    font-weight: ${$active ? 600 : 400};
+    gap: 6px;
+    margin: 0;
+    padding: 2px 12px;
+    white-space: nowrap;
+    width: auto;
+    flex-shrink: 0;
+
+    &:hover {
+      background: ${$active ? DesignTokenColors.primary100 : DesignTokenColors.neutralUI50};
+      border-color: ${$active ? DesignTokenColors.primary700 : DesignTokenColors.neutralUI400};
+    }
+  `}
 `;
 
 const PillIcon = styled.span`
