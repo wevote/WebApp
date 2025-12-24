@@ -13,7 +13,7 @@ import standardBoxShadow from '../../common/components/Style/standardBoxShadow';
 import signInModalGlobalState from '../../common/components/Widgets/signInModalGlobalState';
 import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
 import apiCalming from '../../common/utils/apiCalming';
-import { historyPush, isDeviceZoomed, isIOS } from '../../common/utils/cordovaUtils';
+import { historyPush } from '../../common/utils/cordovaUtils';
 import { normalizedHrefPage } from '../../common/utils/hrefUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize, { handleResize, isSmallTablet, isTablet } from '../../common/utils/isMobileScreenSize';
@@ -444,7 +444,7 @@ class HeaderBar extends Component {
       chosenSiteLogoUrl, hideWeVoteLogo, scrolledDown,
       voter, voterIsSignedIn, tabsValue,
     } = this.state;
-    const inPrivateLabelMode = AppObservableStore.getHideWeVoteLogo();  // setState onAppObservableStoreChange is not working for some reason
+    // const inPrivateLabelMode = AppObservableStore.getHideWeVoteLogo();  // setState onAppObservableStoreChange is not working for some reason
     // console.log('HeaderBar inPrivateLabelMode:', inPrivateLabelMode);
     const voterPhotoUrlMedium = voterPhoto(voter);
 
@@ -459,18 +459,11 @@ class HeaderBar extends Component {
     if (isSmallTablet()) {
       avatarStyle = { ...avatarStyle, paddingRight: 10 };
     }
-    // console.log('HeaderBar hasNotch, scrolledDown, hasSubmenu', hasIPhoneNotch(), scrolledDown, displayTopMenuShadow());
+    // console.log('HeaderBar hasNotch, scrolledDown, hasSubmenu', hasCordovaNotch(), scrolledDown, displayTopMenuShadow());
     const displayMenu = !isMobileScreenSize() || isTablet();
     // console.log('HeaderBar isMobileScreenSize(), isTablet()', isMobileScreenSize(), isTablet());
-    let donateValue;
-    let donateVisible;
-    if (isCordova() || inPrivateLabelMode) {
-      donateValue = 3;
-      donateVisible = true;
-    } else {
-      donateValue = 3;
-      donateVisible = true;
-    }
+    const donateValue = 3;        // 2025-06-17 Enabling donations, we hear it is now permissible for nonprofits in iOS & Android
+    const donateVisible = true;
 
     // console.log('HeaderBar !isMobileScreenSize()', displayMenu);
     return (

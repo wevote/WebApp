@@ -6,10 +6,9 @@ import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
-import { hasIPhoneNotch, isIPadSmallerThan13 } from '../../common/utils/cordovaUtils';
+import { hasCordovaNotch, heightOfCordovaSpacer, isIPadSmallerThan13 } from '../../common/utils/cordovaUtils';
 import { renderLog } from '../../common/utils/logging';
-import { cordovaDrawerTopMargin } from '../../utils/cordovaOffsets';
-import { DrawerHeaderAnimateDownInnerContainer, DrawerHeaderAnimateDownOuterContainer, DrawerHeaderWrapper, DrawerTitle } from '../Style/drawerLayoutStyles';
+import { CloseDrawerIconWrapper, DrawerHeaderAnimateDownInnerContainer, DrawerHeaderAnimateDownOuterContainer, DrawerHeaderWrapper, DrawerTitle } from '../Style/drawerLayoutStyles';
 
 const DrawerTemplateHeaderProfile = (props) => {
   const { classes, drawerId, drawerOpenGlobalVariableName, headerFixedJsx, headerTitleJsx, mainContentJsx, onDrawerClose } = props;
@@ -133,7 +132,7 @@ DrawerTemplateHeaderProfile.propTypes = {
 
 const styles = () => ({
   drawer: {
-    marginTop: cordovaDrawerTopMargin(),
+    marginTop: `${heightOfCordovaSpacer(true)} !important`,
     width: '80%',
   },
   dialogPaper: {
@@ -145,7 +144,7 @@ const styles = () => ({
     maxHeight: '100%',
     height: '100%',
     margin: '0 auto',
-    marginTop: hasIPhoneNotch() ? 68 : 48,
+    marginTop: hasCordovaNotch() ? 68 : 48,
     '@media (min-width: 577px)': {
       maxWidth: '550px',
       width: '90%',
@@ -224,11 +223,6 @@ const styles = () => ({
 const DrawerTemplateHeaderProfileWrapper = styled('div')`
   margin: 0 15px;
   min-width: 300px;
-`;
-
-const CloseDrawerIconWrapper = styled('div')`
-  display: flex;
-  justify-content: flex-end;
 `;
 
 export default withStyles(styles)(DrawerTemplateHeaderProfile);

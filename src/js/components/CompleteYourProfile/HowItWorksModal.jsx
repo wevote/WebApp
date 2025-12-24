@@ -7,7 +7,7 @@ import React, { Component, Suspense } from 'react';
 import TagManager from 'react-gtm-module';
 import styled from 'styled-components';
 import VoterActions from '../../actions/VoterActions';
-import { heightOfIOSSpacer } from '../../common/utils/cordovaUtils';
+import { heightOfCordovaSpacer } from '../../common/utils/cordovaUtils';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import VoterConstants from '../../constants/VoterConstants';
@@ -99,7 +99,7 @@ HowItWorksModal.propTypes = {
 
 const styles = () => ({
   dialogPaper: {
-    marginTop: heightOfIOSSpacer() ? heightOfIOSSpacer() : 48,
+    marginTop: heightOfCordovaSpacer() ? heightOfCordovaSpacer() : 48,
     '@media (min-width: 576px)': {
       maxWidth: '600px',
       width: '90%',

@@ -6,7 +6,7 @@ import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import VoterActions from '../../actions/VoterActions';
-import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
+import { hasCordovaNotch } from '../../common/utils/cordovaUtils';
 import { normalizedHref } from '../../common/utils/hrefUtils';
 import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
@@ -86,7 +86,7 @@ const styles = () => ({
     height: isCordova() ? '83%' : '90%',
     margin: '0 auto',
     padding: '0 !important',
-    marginTop: hasIPhoneNotch() ? 68 : 48,
+    marginTop: hasCordovaNotch() ? 68 : 48,
     transitionDuration: '.25s',
     '@media (min-width: 400px)': {   // Doesn't work in cordova
       width: '90%',

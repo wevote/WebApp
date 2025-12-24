@@ -8,7 +8,7 @@ import OrganizationActions from '../../actions/OrganizationActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import LazyImage from '../../common/components/LazyImage';
 import apiCalming from '../../common/utils/apiCalming';
-import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
+import { hasCordovaNotch } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
 import { normalizedHref } from '../../common/utils/hrefUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
@@ -285,7 +285,7 @@ class HeaderBackToVoterGuides extends Component {
     );
 
     let appBarCname = 'page-header page-header__voter-guide-creator';
-    if (hasIPhoneNotch()) {
+    if (hasCordovaNotch()) {
       appBarCname = 'page-header page-header__cordova-iphonex page-header__voter-guide-creator';
     } else if (isCordova()) {
       appBarCname = 'page-header page-header__cordova page-header__voter-guide-creator';

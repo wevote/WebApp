@@ -1,4 +1,4 @@
-import { getThisAppleDeviceParameters, hasIPhoneNotch, heightOfIOSSpacer, isAndroidSimulator, isIOS, isIOSAppOnMac, isIOsSmallerThanPlus, isIPad, isIPhone4p7in, isIPhone5p5inEarly, isIPhone5p5inMini, isSimulator } from '../common/utils/cordovaUtils';
+import { getThisAppleDeviceParameters, hasCordovaNotch, heightOfCordovaSpacer, isAndroidSimulator, isIOS, isIOSAppOnMac, isIOsSmallerThanPlus, isIPad, isIPhone4p7in, isIPhone5p5inEarly, isIPhone5p5inMini, isSimulator } from '../common/utils/cordovaUtils';
 import { isCordova } from '../common/utils/isCordovaOrWebApp';
 import { cordovaOffsetLog } from '../common/utils/logging';
 import CordovaPageConstants from '../constants/CordovaPageConstants';
@@ -31,7 +31,7 @@ export default function cordovaTopHeaderTopMargin () {
     const { $ } = window;
     if (isIOS()) {
       const headerBackToAppBar = $('#headerBackToAppBar');
-      const iOsSpacerHeight = heightOfIOSSpacer();
+      const iOsSpacerHeight = heightOfCordovaSpacer();
       // Calculated approach Nov 2022 and October 2025
       if (headerBackToAppBar.length) {
         const marginTop = headerBackToAppBar.outerHeight();
@@ -105,7 +105,7 @@ export default function cordovaTopHeaderTopMargin () {
           case CordovaPageConstants.voterGuideWild:        style.marginTop = '38px'; break; // Any voter page with btcand or btmeas
           default:                                         style.marginTop = '16px'; break;
         }
-      } else if (hasIPhoneNotch()) {
+      } else if (hasCordovaNotch()) {
         switch (page) {
           case CordovaPageConstants.ballotLgHdrWild:       style.marginTop = '16px'; break;
           case CordovaPageConstants.ballotSmHdrWild:       style.marginTop = '34px'; break;
@@ -150,7 +150,7 @@ export default function cordovaTopHeaderTopMargin () {
       } else {
         const isIphoneAir = getThisAppleDeviceParameters().marketingNumber === 'Air';
         if (isIphoneAir) {
-          style.marginTop = heightOfIOSSpacer(true);
+          style.marginTop = heightOfCordovaSpacer(true);
         } else {
           style.marginTop = '20px';
         }

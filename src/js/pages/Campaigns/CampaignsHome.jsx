@@ -6,7 +6,9 @@ import ActivityActions from '../../actions/ActivityActions';
 import IssueActions from '../../actions/IssueActions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import SupportActions from '../../actions/SupportActions';
+import DelayedLoad from '../../common/components/Widgets/DelayedLoad';
 import CampaignStore from '../../common/stores/CampaignStore';
+import PoliticianStore from '../../common/stores/PoliticianStore';
 import { convertStateCodeToStateText, convertStateTextToStateCode } from '../../common/utils/addressFunctions';
 import apiCalming from '../../common/utils/apiCalming';
 import arrayContains from '../../common/utils/arrayContains';
@@ -18,13 +20,11 @@ import { isAndroid } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import CampaignsHomeFilter from '../../components/CampaignsHome/CampaignsHomeFilter';
 import CandidateListRootPlaceholder from '../../components/CampaignsHome/CandidateListRootPlaceholder';
-import DelayedLoad from '../../common/components/Widgets/DelayedLoad';
 import NoSearchResult from '../../components/Search/NoSearchResult';
 import webAppConfig from '../../config';
 import BallotStore from '../../stores/BallotStore';
 import CandidateStore from '../../stores/CandidateStore';
 import IssueStore from '../../stores/IssueStore';
-import PoliticianStore from '../../common/stores/PoliticianStore';
 import RepresentativeStore from '../../stores/RepresentativeStore';
 import VoterStore from '../../stores/VoterStore';
 import { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
@@ -49,9 +49,9 @@ class CampaignsHome extends Component {
     super(props);
     this.state = {
       battlegroundDataFoundByStateDict: {},
-      battlegroundDataNotReturnedInTime: false,
+      // battlegroundDataNotReturnedInTime: false,
       battlegroundDataNotReturnedInTimeByStateDict: {},
-      battlegroundWaitingForData: false,
+      // battlegroundWaitingForData: false,
       campaignList: [],
       campaignListTimeStampOfChange: 0,
       candidateList: [],
@@ -198,8 +198,8 @@ class CampaignsHome extends Component {
       const campaignsHomeMode = (stateCandidatesPhrase.includes('-candidates'));
       const detailsListMode = (stateCandidatesPhrase.includes('-politicians-list'));
       this.setState({
-        battlegroundDataNotReturnedInTime: false,
-        battlegroundWaitingForData: false,
+        // battlegroundDataNotReturnedInTime: false,
+        // battlegroundWaitingForData: false,
         detailsListMode,
       });
       let stateName;
@@ -269,7 +269,7 @@ class CampaignsHome extends Component {
       //  set battlegroundWaitingForData to false, but if found, we can set battlegroundWaitingForData to false
       this.setState({
         battlegroundDataFoundByStateDict,
-        battlegroundWaitingForData: false,
+        // battlegroundWaitingForData: false,
       });
     }
     this.setState({
@@ -302,7 +302,7 @@ class CampaignsHome extends Component {
       //  set battlegroundWaitingForData to false, but if found, we can set battlegroundWaitingForData to false
       this.setState({
         battlegroundDataFoundByStateDict,
-        battlegroundWaitingForData: false,
+        // battlegroundWaitingForData: false,
       });
     }
     this.setState({
@@ -554,23 +554,23 @@ class CampaignsHome extends Component {
     // This gets fired after a state-specific request happens in FirstCandidateListController
     // console.log('CampaignsHome.candidatesQueryInitiatedLocal reset battlegroundWaitingForData to true');
     this.setState({
-      battlegroundWaitingForData: true,
+      // battlegroundWaitingForData: true,
     });
     const howLongWeWaitForData = 1000;
     this.timer = setTimeout(() => {
       const { battlegroundDataFoundByStateDict, battlegroundDataNotReturnedInTimeByStateDict, candidateListIsBattleground, stateCode } = this.state;
       const battlegroundDataFound = !!(candidateListIsBattleground && candidateListIsBattleground.length > 0);
       // console.log('CampaignsHome.candidatesQueryInitiatedLocal after 1 second battlegroundDataFound:', battlegroundDataFound, ', and reset battlegroundWaitingForData to false');
-      this.setState({
-        battlegroundWaitingForData: false,
-      });
+      // this.setState({
+      //   battlegroundWaitingForData: false,
+      // });
       if (!battlegroundDataFound) {
         battlegroundDataFoundByStateDict[stateCode] = false;
         battlegroundDataNotReturnedInTimeByStateDict[stateCode] = true;
         this.setState({
           battlegroundDataFoundByStateDict,
           battlegroundDataNotReturnedInTimeByStateDict,
-          battlegroundDataNotReturnedInTime: true,
+          // battlegroundDataNotReturnedInTime: true,
         });
       }
     }, howLongWeWaitForData);
@@ -698,25 +698,25 @@ class CampaignsHome extends Component {
     }, () => this.updateActiveFilters());
   }
 
-  displayBattlegroundPlaceholderForState = (stateCode) => {
-    // For one state, should we display a placeholder for the "Candidates in Close Races" horizontal section as the data is loaded?
-    const { battlegroundDataNotReturnedInTimeByStateDict, battlegroundDataNotReturnedInTime, isSearching } = this.state;
-    if (battlegroundDataNotReturnedInTimeByStateDict && stateCode && (stateCode in battlegroundDataNotReturnedInTimeByStateDict)) {
-      return !battlegroundDataNotReturnedInTimeByStateDict[stateCode] && !isSearching;
-    } else {
-      return !battlegroundDataNotReturnedInTime && !isSearching;
-    }
-  }
+  // displayBattlegroundPlaceholderForState = (stateCode) => {
+  //   // For one state, should we display a placeholder for the "Candidates in Close Races" horizontal section as the data is loaded?
+  //   const { battlegroundDataNotReturnedInTimeByStateDict, battlegroundDataNotReturnedInTime, isSearching } = this.state;
+  //   if (battlegroundDataNotReturnedInTimeByStateDict && stateCode && (stateCode in battlegroundDataNotReturnedInTimeByStateDict)) {
+  //     return !battlegroundDataNotReturnedInTimeByStateDict[stateCode] && !isSearching;
+  //   } else {
+  //     return !battlegroundDataNotReturnedInTime && !isSearching;
+  //   }
+  // }
 
-  useMinimumBattlegroundHeightForState = (stateCode) => {
-    // For one state, should we block out space for the "Candidates in Close Races" horizontal section as the data is loaded?
-    const { battlegroundDataFoundByStateDict, battlegroundDataFound, battlegroundWaitingForData, isSearching } = this.state;
-    if (battlegroundDataFoundByStateDict && battlegroundDataFoundByStateDict[stateCode]) {
-      return !isSearching && battlegroundDataFoundByStateDict[stateCode];
-    } else {
-      return !isSearching && (battlegroundWaitingForData || battlegroundDataFound);
-    }
-  }
+  // useMinimumBattlegroundHeightForState = (stateCode) => {
+  //   // For one state, should we block out space for the "Candidates in Close Races" horizontal section as the data is loaded?
+  //   const { battlegroundDataFoundByStateDict, battlegroundDataFound, battlegroundWaitingForData, isSearching } = this.state;
+  //   if (battlegroundDataFoundByStateDict && battlegroundDataFoundByStateDict[stateCode]) {
+  //     return !isSearching && battlegroundDataFoundByStateDict[stateCode];
+  //   } else {
+  //     return !isSearching && (battlegroundWaitingForData || battlegroundDataFound);
+  //   }
+  // }
 
   handleNumberOfCampaignResults = (listResults, searchResults) => {
     this.setState({
@@ -825,7 +825,7 @@ class CampaignsHome extends Component {
     const representativesShowing = (representativeListOnYourBallot && representativeListOnYourBallot.length > 0) || (representativeListShownAsRepresentatives && representativeListShownAsRepresentatives.length > 0);
     const otherTitlesShown = (campaignsShowing && nextReleaseFeaturesEnabled) || (candidateListOnYourBallot && candidateListOnYourBallot.length > 0) || (candidateListIsBattleground && candidateListIsBattleground.length > 0) || representativesShowing;
     // const useMinimumBattlegroundHeight = this.useMinimumBattlegroundHeightForState(stateCode);
-    const displayBattlegroundPlaceholder = this.displayBattlegroundPlaceholderForState(stateCode);
+    // const displayBattlegroundPlaceholder = this.displayBattlegroundPlaceholderForState(stateCode);
     // console.log('CampaignsHome render politicianListToShow:', politicianListToShow);
     // const politicianListToShowLength = politicianListToShow ? politicianListToShow.length : 0;
     // console.log('CampaignsHome render politicianListToShow.length:', politicianListToShowLength, ', numberOfPoliticiansResults:', numberOfPoliticiansResults, ', politicianListTimeStampOfChange: ', politicianListTimeStampOfChange);
@@ -989,7 +989,7 @@ CampaignsHome.propTypes = {
 };
 
 const CampaignsHomeWrapper = styled('div')`
-  padding-top: ${isAndroid() ? '30px' : ''};
+  // padding-top: ${isAndroid() ? '30px' : ''};
 `;
 
 const WhatIsHappeningSection = styled('div', {

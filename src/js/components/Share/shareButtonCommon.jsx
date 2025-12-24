@@ -7,19 +7,19 @@ import { FacebookIcon, FacebookShareButton, TwitterIcon, TwitterShareButton } fr
 import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import { openSnackbar } from '../../common/components/Widgets/SnackNotifier';
-import { cordovaOpenSafariView, hasDynamicIsland, hasIPhoneNotch, isIPhone6p5in } from '../../common/utils/cordovaUtils';
-import { normalizedHref } from '../../common/utils/hrefUtils';
-import { isAndroid, isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import AppObservableStore from '../../common/stores/AppObservableStore';
-import { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
+import { cordovaOpenSafariView, hasCordovaNotch, hasDynamicIsland, isIPhone6p5in } from '../../common/utils/cordovaUtils';
+import { isAndroid, isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import VoterStore from '../../stores/VoterStore';
+import { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
+import { getKindOfShareFromURL } from './getKindOfShareFromURL';
 import ShareModalOption from './ShareModalOption';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 
 export const shareStyles = () => ({
   dialogPaper: {
-    // marginTop: hasIPhoneNotch() ? 68 : 48,
+    // marginTop: hasCordovaNotch() ? 68 : 48,
     '@media (min-width: 576px)': {
       maxWidth: '600px',
       width: '90%',
@@ -82,7 +82,7 @@ export const shareStyles = () => ({
   closeButtonAbsolute: {
     position: 'absolute',
     right: 5,
-    top: hasIPhoneNotch() || hasDynamicIsland() ? 30 : 3,
+    top: hasCordovaNotch() || hasDynamicIsland() ? 30 : 3,
   },
   informationIcon: {
     color: '#999',
@@ -135,76 +135,6 @@ export function androidTwitterClickHandler (linkToBeShared) {
   const twitURL = `https://twitter.com/share?url=${linkToBeShared}&text=This%20is%20a%20website%20I%20am%20using%20to%20get%20ready%20to%20vote.`;
   // console.log(`androidTwitterClickHandler clicked ~~~~~~~~~~~~~~~~ url : ${twitURL}`);
   cordovaOpenSafariView(twitURL, null, 50);
-}
-
-export function getKindOfShareFromURL () {
-  const pathname = normalizedHref();
-
-  const ballotShare = typeof pathname !== 'undefined' && pathname && pathname.startsWith('/ballot');
-  const candidateShare = typeof pathname !== 'undefined' && pathname && pathname.startsWith('/candidate');
-  const measureShare = typeof pathname !== 'undefined' && pathname && pathname.startsWith('/measure');
-  const officeShare = typeof pathname !== 'undefined' && pathname && pathname.startsWith('/office');
-  const readyShare = typeof pathname !== 'undefined' && pathname && pathname.startsWith('/ready');
-  const organizationShare = !ballotShare && !candidateShare && !measureShare && !officeShare && !readyShare;
-
-  let kindOfShare;
-  if (candidateShare) {
-    kindOfShare = 'CANDIDATE';
-  } else if (measureShare) {
-    kindOfShare = 'MEASURE';
-  } else if (officeShare) {
-    kindOfShare = 'OFFICE';
-  } else if (organizationShare) {
-    kindOfShare = 'ORGANIZATION';
-  } else if (readyShare) {
-    kindOfShare = 'READY';
-  } else {
-    kindOfShare = 'BALLOT';
-  }
-  return kindOfShare;
-}
-
-export function getWhatAndHowMuchToShareDefault () {
-  const kindOfShare = getKindOfShareFromURL();
-  const voterIsSignedIn = VoterStore.getVoterIsSignedIn();
-  let whatAndHowMuchToShare;
-  if (kindOfShare === 'CANDIDATE') {
-    if (voterIsSignedIn) {
-      whatAndHowMuchToShare = 'candidateShareOptionsAllOpinions';
-    } else {
-      whatAndHowMuchToShare = 'candidateShareOptions';
-    }
-  } else if (kindOfShare === 'MEASURE') {
-    if (voterIsSignedIn) {
-      whatAndHowMuchToShare = 'measureShareOptionsAllOpinions';
-    } else {
-      whatAndHowMuchToShare = 'measureShareOptions';
-    }
-  } else if (kindOfShare === 'OFFICE') {
-    if (voterIsSignedIn) {
-      whatAndHowMuchToShare = 'officeShareOptionsAllOpinions';
-    } else {
-      whatAndHowMuchToShare = 'officeShareOptions';
-    }
-  } else if (kindOfShare === 'ORGANIZATION') {
-    if (voterIsSignedIn) {
-      whatAndHowMuchToShare = 'organizationShareOptionsAllOpinions';
-    } else {
-      whatAndHowMuchToShare = 'organizationShareOptions';
-    }
-  } else if (kindOfShare === 'READY') {
-    if (voterIsSignedIn) {
-      whatAndHowMuchToShare = 'readyShareOptionsAllOpinions';
-    } else {
-      whatAndHowMuchToShare = 'readyShareOptions';
-    }
-    // Default to ballot
-  } else if (voterIsSignedIn) {
-    whatAndHowMuchToShare = 'ballotShareOptionsAllOpinions';
-  } else {
-    whatAndHowMuchToShare = 'ballotShareOptions';
-  }
-  return whatAndHowMuchToShare;
 }
 
 export function saveActionShareAnalytics () {
@@ -268,6 +198,7 @@ function onEmailSendError (error) {
   }
 }
 
+// Do not remove, this is used by code that only is generated in Cordova
 export function cordovaSocialSharingByEmail (subject, linkToBeShared, handleClose) {
   this.closeFunc = handleClose;
   const body = `This is a website I am using to get ready to vote. ${linkToBeShared}`;
@@ -465,7 +396,7 @@ export function ShareTwitter (props) {
     }
     const twitterRedirectUrl = `https://x.com/intent/post?url=${encodeURIComponent(linkToBeSharedTwitter)}&text=${encodeURIComponent('Please join me and vote.')}`;
     const buttonId = twitterButtonRef.current.id;
-    pushDataLayer(buttonId, 'x.com', 'externalShare', 'ballot', 'twitter',linkToBeSharedTwitter, twitterRedirectUrl);
+    pushDataLayer(buttonId, 'x.com', 'externalShare', 'ballot', 'twitter', linkToBeSharedTwitter, twitterRedirectUrl);
   };
 
   return (
