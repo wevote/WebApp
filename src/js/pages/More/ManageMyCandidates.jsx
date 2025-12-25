@@ -8,13 +8,17 @@ import {
   Facebook as FacebookIcon,
   X as XIcon,
   FileUpload as UploadIcon,
-  CheckCircle as CheckIcon } from '@mui/icons-material';
+  CheckCircle as CheckIcon,
+  Close as CloseIcon,
+  PersonOutline as PersonIcon } from '@mui/icons-material';
+import { ImportInviteIcon } from '../ManageMyCandidates/ManageMyCandidatesLanding';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 
 import EditInvitationModal from '../../components/More/EditInvitationModal';
 import PasteListModal from '../../components/More/PasteListModal';
 import PreviewInvitationModal from '../../components/More/PreviewInvitationModal';
 import UploadCSVModal from '../../components/More/UploadCSVModal';
+import EnterOneByOneModal from '../../components/More/EnterOneByOneModal';
 
 const ImportedVotersList = React.lazy(() => import('../../components/PoliticiansManaged/ImportedVotersList'));
 
@@ -29,6 +33,10 @@ Thanks for your help!`);
   const [showPreview, setShowPreview] = useState(false);
   const [showUpload, setShowUpload] = useState(false);
   const [showPaste, setShowPaste] = useState(false);
+  const [showEnterOne, setShowEnterOne] = useState(false);
+
+  // Mobile import dropdown toggle
+  const [mobileImportDropdown, setMobileImportDropdown] = useState(true);
 
   const [importedVoters, setImportedVoters] = useState([]);
 
@@ -98,7 +106,10 @@ Thanks for your help!`);
   const handleCopyInviteBody = async () => {
     try {
       await navigator.clipboard.writeText(`${invitationBody}\n\nhttps://wevote.us/join/${selectedPoliticianWeVoteId}`);
-      notify('Invitation copied to clipboard. Press ⌘V / Ctrl+V to paste.', true);
+      const message = window.innerWidth >= 576
+        ? 'Invitation copied to clipboard. Press ⌘V / Ctrl+V to paste.'
+        : 'Invitation copied to clipboard.';
+      notify(message, true);
     } catch {
       notify('Copy failed. Select the text and copy manually.', false, 3000);
     }
@@ -132,12 +143,17 @@ Thanks for your help!`);
     notify('All of your columns will be imported.', true);
   };
 
+  const handleImportFromEnterOne = (rows) => {
+    setImportedVoters((prev) => [...prev, ...rows.map((r) => makeVoterRecord(r, 'Manual entry'))]);
+    notify(`Imported ${rows.length} voter${rows.length !== 1 ? 's' : ''}.`, true);
+  };
+
   return (
     <>
-      <H2>Import &amp; invite voters</H2>
+      <H2 className="u-show-desktop-tablet">Import &amp; invite voters</H2>
 
-      {/* Invitation action strip */}
-      <InviteRow>
+      {/* Desktop and tablet invitation action strip */}
+      <InviteRow className="u-show-desktop-tablet">
         <InviteText>Import voters, then invite them to join WeVote.</InviteText>
         <InviteDivider />
         <InviteLabel>Invitation:</InviteLabel>
@@ -159,7 +175,93 @@ Thanks for your help!`);
         </SocialIconButton>
       </InviteRow>
 
-      <Section>
+      {/* Mobile invitation action strip */}
+      <MobileInviteContainer className="u-show-mobile">
+        <MobileInviteText>Import voters, then invite them to join WeVote.</MobileInviteText>
+        <MobileInviteActions>
+          <LeftGroup>
+            <InviteLabel>Invitation:</InviteLabel>
+            <IconButton type="button" title="Copy invitation" onClick={handleCopyInviteBody}>
+              <CopyIcon fontSize="small" />
+            </IconButton>
+            <IconButton type="button" title="Preview invitation" onClick={handlePreviewOpen}>
+              <EyeIcon fontSize="small" />
+            </IconButton>
+            <IconButton type="button" title="Edit invitation" onClick={openEditModal}>
+              <EditIcon fontSize="small" />
+            </IconButton>
+          </LeftGroup>
+
+          <InviteDivider />
+
+          <RightGroup>
+            <InviteLabel>Post to:</InviteLabel>
+            <SocialIconButton type="button" aria-label="Post to Facebook">
+              <FacebookIcon fontSize="small" />
+            </SocialIconButton>
+            <SocialIconButton type="button" aria-label="Post to X">
+              <XIcon fontSize="small" />
+            </SocialIconButton>
+          </RightGroup>
+        </MobileInviteActions>
+      </MobileInviteContainer>
+
+      <HorizontalDivider className="u-show-mobile"/>
+
+      {/* Mobile import section */}
+      <MobileImportSection className="u-show-mobile">
+        {importedVoters.length === 0 && (
+          <EmptyVotersText>
+            <span>You don't have any voters to invite yet.</span>
+            <span>Import your voter list using an option below to get started.</span>
+          </EmptyVotersText>
+        )}
+
+        {!mobileImportDropdown ? (
+          <CollapsedButton type="button" onClick={() => setMobileImportDropdown(true)}>
+            <StyledImportInviteIcon />
+            Import voters
+          </CollapsedButton>
+        ) : (
+          <ImportVotersCard>
+            <ImportVotersHeader>
+              <ImportVotersTitle>
+                <StyledImportInviteIcon />
+                Import voters
+              </ImportVotersTitle>
+              <CloseButton type="button" onClick={() => setMobileImportDropdown(false)}>
+                <CloseIcon fontSize="small" />
+              </CloseButton>
+            </ImportVotersHeader>
+
+            <ImportOptionsGrid>
+              <ImportOptionWrapper>
+                <ImportOptionButton type="button" onClick={() => setShowUpload(true)}>
+                  <UploadIcon />
+                </ImportOptionButton>
+                <ImportOptionLabel>Upload CSV file</ImportOptionLabel>
+              </ImportOptionWrapper>
+              <ImportOptionWrapper>
+                <ImportOptionButton type="button" onClick={() => setShowPaste(true)}>
+                  <PasteListIcon />
+                </ImportOptionButton>
+                <ImportOptionLabel>Paste list</ImportOptionLabel>
+              </ImportOptionWrapper>
+              <ImportOptionWrapper>
+                <ImportOptionButton type="button" onClick={() => {
+                  setShowEnterOne(true);
+                  setMobileImportDropdown(false);
+                }}>
+                  <PersonIcon />
+                </ImportOptionButton>
+                <ImportOptionLabel>Enter one-by-one</ImportOptionLabel>
+              </ImportOptionWrapper>
+            </ImportOptionsGrid>
+          </ImportVotersCard>
+        )}
+      </MobileImportSection>
+
+      <Section className="u-show-desktop-tablet">
         <H3>Enter voters one-by-one</H3>
         <Row>
           <Input placeholder="First and last name" value={oneName} onChange={(e) => setOneName(e.target.value)} />
@@ -175,7 +277,7 @@ Thanks for your help!`);
         </Row>
       </Section>
 
-      <Section>
+      <Section className="u-show-desktop-tablet">
         <H3>Upload voters from a file or paste a list</H3>
         <Row>
           <PillButton type="button" onClick={() => setShowUpload(true)}>
@@ -191,7 +293,7 @@ Thanks for your help!`);
       </Section>
 
       {importedVoters.length === 0 ? (
-        <MutedNote>
+        <MutedNote className="u-show-desktop-tablet">
           You don’t have any voters to invite. Import some using the options above.
         </MutedNote>
       ) : (
@@ -237,6 +339,13 @@ Thanks for your help!`);
         isOpen={showUpload}
         onClose={() => setShowUpload(false)}
         onImport={handleImportFromCSV}
+        notify={notify}
+      />
+      {/* Enter one-by-one modal */}
+      <EnterOneByOneModal
+        isOpen={showEnterOne}
+        onClose={() => setShowEnterOne(false)}
+        onImport={handleImportFromEnterOne}
         notify={notify}
       />
       {copiedMsg && createPortal(
@@ -318,9 +427,16 @@ const Input = styled.input`
 `;
 
 const InviteDivider = styled.span`
-  border-left: 1px solid ${DesignTokenColors.neutralUI200};
-  height: 16px;
-  margin: 0 2px 0 4px;
+  border-left: 1.5px solid ${DesignTokenColors.neutralUI100};
+  height: 30px;
+  margin: 0 4px;
+
+  @media (min-width: 576px) {
+    border-left-width: 1px;
+    border-left-color: ${DesignTokenColors.neutralUI200};
+    height: 16px;
+    margin: 0 2px 0 4px;
+  }
 `;
 
 const InviteRow = styled.div`
@@ -339,8 +455,15 @@ const InviteText = styled.span`
 `;
 
 const InviteLabel = styled.span`
-  color: ${DesignTokenColors.neutralUI700};
-  font-weight: 500;
+  color: ${DesignTokenColors.neutralUI600};
+  font-weight: 400;
+  font-size: 14px;
+
+  @media (min-width: 576px) {
+    color: ${DesignTokenColors.neutralUI700};
+    font-weight: 500;
+    font-size: 16px;
+  }
 `;
 
 const MutedNote = styled.p`
@@ -362,6 +485,11 @@ const PrimaryButton = styled.button`
   white-space: nowrap;
 
   &:hover { background: ${DesignTokenColors.primary50}; }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
 `;
 
 const PillButton = styled(PrimaryButton)`
@@ -414,4 +542,173 @@ const Toast = styled.div`
   transform: translateX(-50%);
   z-index: 10000;
   padding: 10px 12px;
+`;
+
+// Mobile-only styles
+
+const CloseButton = styled.button`
+  align-items: center;
+  background: none;
+  border: none;
+  color: ${DesignTokenColors.neutralUI900};
+  cursor: pointer;
+  display: flex;
+  padding: 0;
+  flex-shrink: 0;
+
+  &:hover {
+    color: black;
+  }
+`;
+
+const CollapsedButton = styled.button`
+  align-items: center;
+  background: ${DesignTokenColors.whiteUI};
+  border: 1px solid ${DesignTokenColors.primary600};
+  border-radius: 9999px;
+  color: ${DesignTokenColors.primary700};
+  cursor: pointer;
+  display: flex;
+  font-size: 14px;
+  font-weight: 500;
+  gap: 8px;
+  justify-content: center;
+  padding: 4px 16px;
+  margin: 0 auto;
+
+  &:hover {
+    background: ${DesignTokenColors.primary50};
+  }
+`;
+
+const EmptyVotersText = styled.div`
+  color: ${DesignTokenColors.neutralUI600};
+  font-size: 14px;
+  margin: 0 0 24px;
+  text-align: center;
+  span {
+    display: block;
+    &:first-child {
+      margin-bottom: 4px;
+    }
+  }
+`;
+
+const HorizontalDivider = styled.div`
+  border-bottom: 1.5px solid ${DesignTokenColors.neutralUI100};
+  margin: 0 12px;
+`;
+
+const ImportOptionButton = styled.button`
+  align-items: center;
+  background: ${DesignTokenColors.whiteUI};
+  border: 1.5px solid ${DesignTokenColors.primary600};
+  border-radius: 50%;
+  color: ${DesignTokenColors.primary600};
+  cursor: pointer;
+  display: flex;
+  height: 64px;
+  justify-content: center;
+  width: 64px;
+  transition: all 0.2s ease;
+
+  svg {
+    width: 60%;
+    height: 60%;
+  }
+
+  &:hover {
+    background: ${DesignTokenColors.primary50};
+    border-color: ${DesignTokenColors.primary700};
+  }
+`;
+
+const ImportOptionLabel = styled.span`
+  color: ${DesignTokenColors.primary700};
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+`;
+
+const ImportOptionsGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  padding-bottom: 10px;
+`;
+
+const ImportOptionWrapper = styled.div`
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+`;
+
+const ImportVotersCard = styled.div`
+  background: ${DesignTokenColors.neutralUI50};
+  border-radius: 20px;
+  padding: 12px 16px 16px;
+`;
+
+const ImportVotersHeader = styled.div`
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 25px;
+`;
+
+const ImportVotersTitle = styled.h3`
+  color: ${DesignTokenColors.neutralUI900};
+  font-size: 14px;
+  margin: 0;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  justify-content: center;
+`;
+
+const LeftGroup = styled.div`
+  align-items: center;
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+`;
+
+const MobileImportSection = styled.div`
+  margin: 24px 0;
+`;
+
+const MobileInviteActions = styled.div`
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 8px;
+`;
+
+const MobileInviteContainer = styled.div`
+  margin: 0 0 16px;
+`;
+
+const MobileInviteText = styled.p`
+  color: ${DesignTokenColors.neutralUI600};
+  font-size: 14px;
+  margin: 0 0 16px;
+  text-align: center;
+`;
+
+const RightGroup = styled.div`
+  align-items: center;
+  display: flex;
+  gap: 8px;
+  justify-content: flex-start;
+`;
+
+const StyledImportInviteIcon = styled(ImportInviteIcon)`
+  align-items: center;
+  color: inherit;
+  display: inline-flex;
+  height: 24px;
+  justify-content: center;
+  width: 24px;
 `;

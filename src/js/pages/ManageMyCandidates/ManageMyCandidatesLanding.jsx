@@ -236,7 +236,7 @@ const TrackingIcon = ({ size = 22, title = 'Tracking', ...props }) => (
 );
 
 // Import & invite icon
-const ImportInviteIcon = ({ size = 22, title = 'Import & invite', ...props }) => (
+export const ImportInviteIcon = ({ size = 22, title = 'Import & invite', ...props }) => (
   <svg
     width={size}
     height={size}
@@ -344,7 +344,6 @@ const NavBar = styled.nav`
 `;
 
 const NavBarMobile = styled.nav`
-  padding: 0 0 12px 0;
   display: flex;
   flex-wrap: nowrap;
   gap: 8px;
@@ -415,5 +414,9 @@ const SideDivider = styled.div`
 `;
 
 const RightPanel = styled.section`
-  padding-top: 6px;
+  padding-top: 0;
+
+  @media (min-width: 576px) {
+    padding-top: 6px;
+  }
 `;
