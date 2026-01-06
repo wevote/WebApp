@@ -444,7 +444,7 @@ class HeaderBar extends Component {
       chosenSiteLogoUrl, hideWeVoteLogo, scrolledDown,
       voter, voterIsSignedIn, tabsValue,
     } = this.state;
-    // const inPrivateLabelMode = AppObservableStore.getHideWeVoteLogo();  // setState onAppObservableStoreChange is not working for some reason
+    const inPrivateLabelMode = AppObservableStore.getHideWeVoteLogo();  // setState onAppObservableStoreChange is not working for some reason
     // console.log('HeaderBar inPrivateLabelMode:', inPrivateLabelMode);
     const voterPhotoUrlMedium = voterPhoto(voter);
 
@@ -462,8 +462,15 @@ class HeaderBar extends Component {
     // console.log('HeaderBar hasNotch, scrolledDown, hasSubmenu', hasCordovaNotch(), scrolledDown, displayTopMenuShadow());
     const displayMenu = !isMobileScreenSize() || isTablet();
     // console.log('HeaderBar isMobileScreenSize(), isTablet()', isMobileScreenSize(), isTablet());
-    const donateValue = 3;        // 2025-06-17 Enabling donations, we hear it is now permissible for nonprofits in iOS & Android
-    const donateVisible = true;
+    let donateValue;
+    let donateVisible;
+    if (inPrivateLabelMode) {
+      donateValue = 3;
+      donateVisible = false;
+    } else {
+      donateValue = 3;
+      donateVisible = true;
+    }
 
     // console.log('HeaderBar !isMobileScreenSize()', displayMenu);
     return (
