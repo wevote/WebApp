@@ -233,7 +233,7 @@ class FooterBar extends React.Component {
     } = this.state;
     const pathname = normalizedHref();
     const showShareButtonFooter = stringContains('/ballot', pathname.toLowerCase());
-    // const inPrivateLabelMode = AppObservableStore.getHideWeVoteLogo(); // setState onAppObservableStoreChange is not working sometimes for some reason
+    const inPrivateLabelMode = AppObservableStore.getHideWeVoteLogo(); // setState onAppObservableStoreChange is not working sometimes for some reason
     // const badgeStyle = {
     //   display: 'inline-block',
     // };
@@ -272,8 +272,13 @@ class FooterBar extends React.Component {
 
     // console.log('friendInvitationsSentToMeCount:', friendInvitationsSentToMeCount);
     // If NOT signed in, turn Discuss off and How It Works on
-    const donateVisible = true;  // 2025-06-17 Enabling donations, we hear it is now permissible for nonprofits in iOS & Android
-    // console.log('--------- Footer bar donateVisible ', donateVisible, 'squadsVisible', squadsVisible);
+    let donateVisible;
+    if (inPrivateLableMode) {
+      donateVisible = false; // Turn off donate link if an org has private labeled WeVote
+    } else {
+      donateVisible = true; // 2025-06-17 Enabling donations, we hear it is now permissible for nonprofits in iOS & Android
+      // console.log('--------- Footer bar donateVisible ', donateVisible, 'squadsVisible', squadsVisible);
+    }
     return (
       <FooterBarWrapper>
         {showShareButtonFooter && (
