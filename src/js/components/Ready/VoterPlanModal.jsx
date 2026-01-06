@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import VoterPlan from './VoterPlan';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import ReadyActions from '../../actions/ReadyActions';
-import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
+import { hasCordovaNotch } from '../../common/utils/cordovaUtils';
 import { formatDateToMonthDayYear } from '../../common/utils/dateFormat';
 import { renderLog } from '../../common/utils/logging';
 import BallotStore from '../../stores/BallotStore';
@@ -288,7 +288,7 @@ VoterPlanModal.propTypes = {
 
 const styles = () => ({
   dialogPaper: {
-    marginTop: hasIPhoneNotch() ? 68 : 48,
+    marginTop: hasCordovaNotch() ? 68 : 48,
     '@media (min-width: 576px)': {
       maxWidth: '600px',
       width: '90%',
@@ -301,9 +301,9 @@ const styles = () => ({
     minWidth: '100%',
     maxWidth: '100%',
     width: '100%',
-    minHeight: hasIPhoneNotch() ? '84%' : '90%',
-    maxHeight: hasIPhoneNotch() ? '84%' : '90%',
-    height: hasIPhoneNotch() ? '84%' : '90%',
+    minHeight: hasCordovaNotch() ? '84%' : '90%',
+    maxHeight: hasCordovaNotch() ? '84%' : '90%',
+    height: hasCordovaNotch() ? '84%' : '90%',
     margin: '0 auto',
   },
   dialogContent: {

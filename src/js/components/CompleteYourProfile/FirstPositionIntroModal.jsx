@@ -6,7 +6,7 @@ import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import VoterActions from '../../actions/VoterActions';
-import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
+import { hasCordovaNotch } from '../../common/utils/cordovaUtils';
 import { normalizedHref } from '../../common/utils/hrefUtils';
 import { renderLog } from '../../common/utils/logging';
 import { ContinueButtonType1Wrapper, ModalTitleType1, ModalTitleAreaType1 } from '../Style/ModalType1Styles';
@@ -155,7 +155,7 @@ FirstPositionIntroModal.propTypes = {
 
 const styles = () => ({
   dialogPaper: {
-    marginTop: hasIPhoneNotch() ? 68 : 48,
+    marginTop: hasCordovaNotch() ? 68 : 48,
     '@media (min-width: 576px)': {
       maxWidth: '600px',
       width: '90%',

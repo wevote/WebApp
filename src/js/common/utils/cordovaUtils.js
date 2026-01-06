@@ -356,14 +356,18 @@ export function isIPadMini () {
   return false;
 }
 
-export function heightOfIOSSpacer (asString = false) {
-  if (isIOS()) {
+export function heightOfCordovaSpacer (asString = false) {
+  let height = 0;
+  if (isCordova()) {
     if (isIOS() && !isIOSAppOnMac()) {
-      const params = getThisAppleDeviceParameters();
-      return asString ? `${params.iOSSpacer}px` : params.iOSSpacer;
+      const { iOSSpacer } = getThisAppleDeviceParameters();
+      height = iOSSpacer;
+    } else if (isAndroid()) {
+      height = window.androidNotchCutout ? window.androidNotchInset : 0;
     }
   }
-  return 0;
+  // console.log(`heightOfCordovaSpacer '${asString ? `${height}px` : height}'`);
+  return asString ? `${height}px` : height;
 }
 
 export function isCordovaPhone () {
@@ -395,32 +399,8 @@ export function isIPadGiantSize () {
   return false;
 }
 
-export function isAndroidNotch () {
-  if (window.device === undefined) {
-    return false;
-  }
-  const { device: { model, uuid } } = window;
-  // There is an edge-to-edge setting for android, but it will go away in Android 16 in 2025, we have to do this
-  // https://stackoverflow.com/questions/79382767/prevent-edge-to-edge-behaviour-after-android-sdk-35
-  const notchedModels = [
-    'Pixel 7',          // From Browserstack Cordova app device dialog
-    'Pixel 9',          // From Browserstack logcat
-    'Pixel 9',          // From Browserstack logcat
-    'Pixel 9 Pro',      // From Browserstack logcat
-    'Pixel 9 Pro XL',   // From Browserstack logcat
-    'Pixel 10',         // From Browserstack logcat
-    'Pixel 10 Pro',     // From Browserstack logcat
-    'Pixel 10 Pro XL',  // From Browserstack logcat
-  ];
-  const simulatorUUIDs = [    // These change when you update Android Studio
-    'ba09ecb05c77f653',
-    '6d9df9c89e647862',
-  ];
-  if (notchedModels.includes(model) || simulatorUUIDs.includes(uuid)) {
-    logMatch('isAndroidNotch === true for ', model, uuid);
-    return true;
-  }
-  return false;
+export function hasAndroidNotch () {
+  return window.androidNotchCutout;
 }
 
 export function hasDynamicIsland () {
@@ -436,19 +416,23 @@ export function hasDynamicIsland () {
   return false;
 }
 
-export function hasIPhoneNotch () {
-  if (!isIOS()) return false;
-  // Notched models === from the iPhone X up to the iPhone 14 and iPhone SE (2022).
-  // Specifically, this includes the iPhone X, XR, XS, 11, 12, 13 series, iPhone 14 and 14 Plus, and the iPhone SE (2022).
-  const params = getThisAppleDeviceParameters();
-  const marketingInt = parseInt(params.marketingNumber) || 0;
-  const isPro = params.name.includes('Pro');
-  const lettered = ['X', 'XR', 'XS', 'SE'];       // Too simple of a test to handle old SE versions, but those are mostly gone
-  return !hasDynamicIsland() && (
-    lettered.includes(params.marketingNumber) ||
-    (marketingInt === 14 && !isPro) ||
-    (marketingInt >= 11 && marketingInt <= 13)
-  );
+export function hasCordovaNotch () {
+  if (isAndroid()) {
+    return hasAndroidNotch();
+  } else if (isIOS()) {
+    // Notched models === from the iPhone X up to the iPhone 14 and iPhone SE (2022).
+    // Specifically, this includes the iPhone X, XR, XS, 11, 12, 13 series, iPhone 14 and 14 Plus, and the iPhone SE (2022).
+    const params = getThisAppleDeviceParameters();
+    const marketingInt = parseInt(params.marketingNumber) || 0;
+    const isPro = params.name.includes('Pro');
+    const lettered = ['X', 'XR', 'XS', 'SE'];       // Too simple of a test to handle old SE versions, but those are mostly gone
+    return !hasDynamicIsland() && (
+      lettered.includes(params.marketingNumber) ||
+      (marketingInt === 14 && !isPro) ||
+      (marketingInt >= 11 && marketingInt <= 13)
+    );
+  }
+  return false;
 }
 
 export function isIOsSmallerThanPlus () {
@@ -517,39 +501,6 @@ export function getAndroidSize () {
   console.log(`Cordova:   getAndroidSize(): ${androidSizeString}, calculated diagonal: ${diameter} `);
 
   return androidSizeString;
-}
-
-export function hasAndroidNotch () {
-  // https://deviceatlas.com/blog/list-of-user-agent-strings  (last letter U, like SM-G988U, is a country code ... USA)
-  const ua = navigator.userAgent.toLowerCase();
-  if (ua.includes('SM-S908') ||       // Samsung Galaxy S22 Ultra
-      ua.includes('SM-S906') ||       // Samsung Galaxy S22+
-      ua.includes('SM-S901') ||       // Samsung Galaxy S22
-      ua.includes('SM-G996') ||       // Samsung Galaxy S21
-      ua.includes('SM-G980') ||       // Samsung Galaxy S20
-      ua.includes('SM-G973')) {       // Samsung Galaxy S10
-    return true;
-  }
-
-  // window.device.model: "sdk_gphone64_arm64"
-
-  if (androidPixels === 4446720) {
-    logMatch('Android Samsung Galaxy S22 Ultra (or S22+) detected by pixel size');
-    return true;
-  } else if (androidPixels === 2527200) {
-    logMatch('Android Samsung Galaxy S22 detected by pixel size');  // 1440 x 3040
-    return true;
-  } else if (androidPixels === 2562000) {
-    logMatch('Android Samsung Galaxy S21 detected by pixel size');  // 1080 x 2400
-    return true;
-  } else if (androidPixels === 4608000) {
-    logMatch('Android Samsung Galaxy S20 Ultra detected by pixel size');
-    return true;
-  } else if (androidPixels === 4377600) {
-    logMatch('Android Samsung Galaxy S10 detected by pixel size');  // 1080x2340
-    return true;
-  }
-  return false;
 }
 
 export function isAndroidSizeSM () {
@@ -680,7 +631,7 @@ if (isSimulator()) {
 
 export function getToastClass () {
   let toastClass = '';
-  if (hasIPhoneNotch()) {
+  if (hasCordovaNotch()) {
     toastClass = 'app-toast-cordova__iphone-notch';
   } else if (isIOS()) {
     toastClass = 'app-toast-cordova__iphone';

@@ -1,4 +1,4 @@
-import { getAndroidSize, hasIPhoneNotch, heightOfIOSSpacer, isIOS, isIOSAppOnMac, isIPad, isIPadGiantSize, isIPhone4in, isIPhone4p7in, isIPhone5p5inEarly, isIPhone5p5inMini, isIPhone5p8in, isIPhone6p1in, isIPhone6p5in, isIPhoneMiniOrSmaller, isSimulator } from '../common/utils/cordovaUtils';
+import { getAndroidSize, hasCordovaNotch, heightOfCordovaSpacer, isIOS, isIOSAppOnMac, isIPad, isIPadGiantSize, isIPhone4in, isIPhone4p7in, isIPhone5p5inEarly, isIPhone5p5inMini, isIPhone5p8in, isIPhone6p1in, isIPhone6p5in, isIPhoneMiniOrSmaller, isSimulator } from '../common/utils/cordovaUtils';
 import { normalizedHref } from '../common/utils/hrefUtils';
 import { isAndroid, isWebApp } from '../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize from '../common/utils/isMobileScreenSize';
@@ -54,7 +54,7 @@ export function cordovaBallotFilterTopMargin () {
         return '79px';
       }
       return '89px';
-    } else if (hasIPhoneNotch()) {
+    } else if (hasCordovaNotch()) {
       if (page === CordovaPageConstants.candidateWild) {
         return '65px';
       }
@@ -117,7 +117,7 @@ export function cordovaNetworkNextButtonTop () {
       return '85vh';
     } else if (isIPhone4p7in()) {
       return '89vh';
-    } else if (hasIPhoneNotch()) {
+    } else if (hasCordovaNotch()) {
       return '88vh';
     } else if (isIPad()) {
       return '89vh';
@@ -142,7 +142,7 @@ export function cordovaFooterHeight () {
         paddingTop: '4px',
       };
     }
-    if (hasIPhoneNotch()) {
+    if (hasCordovaNotch()) {
       return {
         height: '95px',
         paddingTop: '10px',
@@ -153,34 +153,6 @@ export function cordovaFooterHeight () {
   return undefined;
 }
 
-// URLs that end with a twitter handle...
-// <div id="the styled div that follows is the wrapper for voter guide mode">
-//   <Wrapper padTop={cordovaVoterGuideTopPadding()}>
-// This pushes down the voter guide organization Twitter banner - parallel to voterGuideWild
-// export function cordovaVoterGuideTopPadding () {
-//   if (isIOS()) {
-//     const page = pageEnumeration();
-//     if (isIPhone5p5inEarly()) {
-//       return '11px';
-//     } else if (isIPhone5p5inMini()) {
-//       return '11px';
-//     } else if (isIPhone4p7in()) {
-//       return '0px';
-//     } else if (hasIPhoneNotch()) {
-//       return '28px';
-//     } else if (isIPad()) {
-//       switch (page) {
-//         case CordovaPageConstants.news:             return '19px';
-//         case CordovaPageConstants.voterGuideWild:   return '26px';
-//         default:                                    return '0px';
-//       }
-//     }
-//   } else if (isAndroid()) {
-//     return '0px';
-//   }
-//   return '12px';
-// }
-
 // <Toolbar classes={{ root: classes.toolbar }} disableGutters style={{ top: cordovaWelcomeAppToolbarTop() }}>
 export function cordovaWelcomeAppToolbarTop () {
   if (isIOS()) {
@@ -190,7 +162,7 @@ export function cordovaWelcomeAppToolbarTop () {
       return '10px';
     } else if (isIPhone4p7in()) {
       return '10px';
-    } else if (hasIPhoneNotch()) {
+    } else if (hasCordovaNotch()) {
       return '14px';
     } else if (isIPad()) {
       return '10px';
@@ -239,7 +211,7 @@ export function cordovaVoteMiniHeader () {
         top: '91px',
         height: '118px',
       };
-    } else if (hasIPhoneNotch()) {
+    } else if (hasCordovaNotch()) {
       return {
         top: '82px',
         height: '125px',
@@ -273,7 +245,7 @@ export function cordovaStickyHeaderPaddingTop () {
     // 11/20/25, we want to cover the Measure title (on TopRowTwo), so it does not appear twice
     const rowOneLeft = $("div[class^='TopRowOneLeftContainer']");
     if (isIOS() && rowOneLeft.length) {
-      const height = heightOfIOSSpacer();
+      const height = heightOfCordovaSpacer();
       const heightAppBar = rowOneLeft.outerHeight();
       const total = height + heightAppBar;
       const ret = total > 0 ? `${total}px` : '';
@@ -346,7 +318,7 @@ export function shareBottomOffset (pinToBottom) {
   const { showFooterBar } = getApplicationViewBooleans(normalizedHref());
 
   if (isIOS()) {
-    if (hasIPhoneNotch()) {
+    if (hasCordovaNotch()) {
       return showFooterBar ? `${measureFooterContainer()}px` : '18px';
     } else if (isIPhone4p7in() || isIPhone5p5inEarly()) {
       return showFooterBar ? `${measureFooterContainer()}px` : '0px';
@@ -386,7 +358,7 @@ export function cordovaFriendsWrapper () {
     }
     if (isIPad()) {
       return {
-        paddingTop: `${heightOfIOSSpacer(false) + 10}px`,
+        paddingTop: `${heightOfCordovaSpacer(false) + 10}px`,
         paddingBottom: '90px',
       };
     }
@@ -433,7 +405,7 @@ export function cordovaDrawerTopMargin () {
   if (isIOS()) {
     if (isIPhone4in() || isIPhone4p7in() || isIPhone5p5inEarly()) {
       return '22px';
-    } else if (hasIPhoneNotch()) {
+    } else if (hasCordovaNotch()) {
       return '40px';
     } else if (isIPad()) {
       return '26px';
@@ -445,14 +417,6 @@ export function cordovaDrawerTopMargin () {
   }
   return '0px';
 }
-
-
-// export function cordovaDualHeaderContainerPadding () {
-//   if (isIPhone5p5inMini()) return '18px';
-//   if (hasIPhoneNotch()) return '0px';
-//   if (isCordova()) return '80px';
-//   return '8px';
-// }
 
 export function welcomeAppBarPaddingTop () {
   const page = pageEnumeration();
@@ -475,7 +439,7 @@ export function welcomeAppBarPaddingTop () {
 
 export function cordovaDualHeaderContainerTopOffset () {
   if (isWebApp()) return '';
-  const heightIOSSpacer = heightOfIOSSpacer();
+  const heightIOSSpacer = heightOfCordovaSpacer();
   cordovaOffsetLog(`cordovaDualHeaderContainerTopOffset heightIOSSpacer: ${heightIOSSpacer} returned ${heightIOSSpacer}px`);
   return  `${heightIOSSpacer}px`;
 }

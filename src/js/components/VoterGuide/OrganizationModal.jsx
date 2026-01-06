@@ -1,42 +1,35 @@
 import { Close } from '@mui/icons-material'; // Info
 import { Drawer, IconButton } from '@mui/material';
-import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
+import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import CandidateActions from '../../actions/CandidateActions';
 import IssueActions from '../../actions/IssueActions';
 import MeasureActions from '../../actions/MeasureActions';
 import OrganizationActions from '../../actions/OrganizationActions';
-import PoliticianActions from '../../common/actions/PoliticianActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
+import PoliticianActions from '../../common/actions/PoliticianActions';
+import CampaignSupportThermometer from '../../common/components/CampaignSupport/CampaignSupportThermometer';
+import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
 import apiCalming from '../../common/utils/apiCalming';
-import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
-import { cordovaOffsetLog, renderLog } from '../../common/utils/logging';
+import convertToInteger from '../../common/utils/convertToInteger';
+import { hasCordovaNotch, heightOfCordovaSpacer } from '../../common/utils/cordovaUtils';
+import { renderLog } from '../../common/utils/logging';
+import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import stringContains from '../../common/utils/stringContains';
-import ShowMoreButtons from '../Widgets/ShowMoreButtons';
 import BallotStore from '../../stores/BallotStore';
 import CandidateStore from '../../stores/CandidateStore';
 import IssueStore from '../../stores/IssueStore';
 import MeasureStore from '../../stores/MeasureStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
-import {
-  DrawerHeaderAnimateDownInnerContainer, DrawerHeaderAnimateDownOuterContainer,
-} from '../Style/drawerLayoutStyles';
-import { cordovaDrawerTopMargin } from '../../utils/cordovaOffsets';
-import convertToInteger from '../../common/utils/convertToInteger';
-import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
-import { headroomWrapperOffset } from '../../utils/cordovaCalculatedOffsets';
-import { getPageKey } from '../../utils/cordovaPageUtils';
-import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
-import { Candidate, CandidateNameAndPartyWrapper, CandidateNameH4, CandidateParty, CandidateTopRow } from '../Style/BallotStyles';
-import normalizedImagePath from '../../common/utils/normalizedImagePath';
-import CampaignSupportThermometer from '../../common/components/CampaignSupport/CampaignSupportThermometer';
 import VoterPositionEntryAndDisplay from '../PositionItem/VoterPositionEntryAndDisplay';
-// import { handleResize } from '../../common/utils/isMobileScreenSize';
+import { Candidate, CandidateNameAndPartyWrapper, CandidateNameH4, CandidateParty, CandidateTopRow } from '../Style/BallotStyles';
+import { DrawerHeaderAnimateDownInnerContainer, DrawerHeaderAnimateDownOuterContainer } from '../Style/drawerLayoutStyles';
+import ShowMoreButtons from '../Widgets/ShowMoreButtons';
 
 const CampaignRetrieveController = React.lazy(() => import(/* webpackChunkName: 'CampaignRetrieveController' */ '../../common/components/Campaign/CampaignRetrieveController'));
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
@@ -59,7 +52,7 @@ class OrganizationModal extends Component {
       positionListHasBeenRetrievedOnce: {},
       scrolledDown: false,
       unFurlPositions: false,
-      finalElectionDateInPast: false,
+      // finalElectionDateInPast: false,
       voterGuidesFromFriendsUpcomingHasBeenRetrievedOnce: {},
     };
 
@@ -343,11 +336,11 @@ class OrganizationModal extends Component {
         anchor="right"
         classes={{ paper: classes.drawer }}
         direction="left"
-        id="share-menu"
+        id="organization-modal"
         onClose={this.closeOrganizationModal}
         open={modalOpen}
       >
-        <CloseDrawerIconWrapper>
+        <CloseDrawerIconWrapperOrganization>
           <div>
             <IconButton
               aria-label="Close"
@@ -361,7 +354,7 @@ class OrganizationModal extends Component {
               </span>
             </IconButton>
           </div>
-        </CloseDrawerIconWrapper>
+        </CloseDrawerIconWrapperOrganization>
         <DrawerHeaderAnimateDownOuterContainer id="organizationModalHeaderContainer" scrolledDown={scrolledDown}>
           <DrawerHeaderAnimateDownInnerContainer>
             <CandidateTopRow>
@@ -511,14 +504,14 @@ OrganizationModal.propTypes = {
   hideBallotItemInfo: PropTypes.bool,
   hidePositions: PropTypes.bool,
   modalOpen: PropTypes.bool,
-  organizationWeVoteId: PropTypes.string,
+  // organizationWeVoteId: PropTypes.string,
   toggleFunction: PropTypes.func.isRequired,
   params: PropTypes.object,
 };
 
 const styles = () => ({
   drawer: {
-    marginTop: cordovaDrawerTopMargin(),
+    marginTop: `${heightOfCordovaSpacer(true)} !important`,
     maxWidth: '550px !important',
     '& *': {
       maxWidth: '550px !important',
@@ -532,7 +525,7 @@ const styles = () => ({
   },
   dialogPaper: {
     display: 'block',
-    marginTop: hasIPhoneNotch() ? 68 : 48,
+    marginTop: hasCordovaNotch() ? 68 : 48,
     minWidth: '100%',
     maxWidth: '100%',
     width: '100%',
@@ -602,7 +595,7 @@ const BallotItemBottomSpacer = styled('div')`
   margin-bottom: 32px;
 `;
 
-const CloseDrawerIconWrapper = styled('div')`
+const CloseDrawerIconWrapperOrganization = styled('div')`
   display: flex;
   justify-content: flex-end;
   margin-right: 12px;

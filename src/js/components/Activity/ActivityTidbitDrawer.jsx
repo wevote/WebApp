@@ -77,7 +77,7 @@ class ActivityTidbitDrawer extends Component {
         anchor="right"
         classes={{ paper: classes.drawerClasses }}
         direction="left"
-        id="share-menu"
+        id="activityTidbit"
         onClose={this.closeActivityTidbitDrawer}
         open={modalOpen}
       >

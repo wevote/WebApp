@@ -13,7 +13,6 @@ import { isIOSAppOnMac, isIPad, isIPadGiantSize } from '../../common/utils/cordo
 import historyPush from '../../common/utils/historyPush';
 import { normalizedHref, normalizedHrefPage } from '../../common/utils/hrefUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
-import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import stringContains from '../../common/utils/stringContains';
 import voterPhoto from '../../common/utils/voterPhoto';
@@ -709,7 +708,7 @@ class HeaderBackToBallot extends Component {
     //   if (['candidate', 'office', 'measure'].includes(page)) {
     //     if (isWebApp()) {
     //       cname = `page-header ${!isMobileScreenSize() ? 'page-header__back-to-ballot' : ''}`;
-    //     } else if (hasIPhoneNotch()) {
+    //     } else if (hasCordovaNotch()) {
     //       cname = 'page-header page-header__back-to-ballot-cordova  page-header__cordova-iphonex';
     //     } else {
     //       cname = 'page-header page-header__back-to-ballot-cordova  page-header__cordova';

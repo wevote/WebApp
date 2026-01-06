@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import IssueActions from '../../actions/IssueActions';
 import VoterActions from '../../actions/VoterActions';
-import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
+import { hasCordovaNotch } from '../../common/utils/cordovaUtils';
 import { renderLog } from '../../common/utils/logging';
 import { ContinueButtonType1Wrapper, ExplanationTextType1, ExplanationTextLighterType1, ModalTitleType1, ModalTitleAreaType1 } from '../Style/ModalType1Styles';
 import VoterConstants from '../../constants/VoterConstants';
@@ -121,7 +121,7 @@ ValuesIntroModal.propTypes = {
 
 const styles = () => ({
   dialogPaper: {
-    marginTop: hasIPhoneNotch() ? 68 : 48,
+    marginTop: hasCordovaNotch() ? 68 : 48,
     '@media (min-width: 576px)': {
       maxWidth: '600px',
       width: '90%',

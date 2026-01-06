@@ -12,7 +12,7 @@ import VoterSessionActions from './js/actions/VoterSessionActions';
 import muiTheme from './js/common/components/Style/muiTheme';
 import LoadingWheelComp from './js/common/components/Widgets/LoadingWheelComp';
 import AppObservableStore, { messageService } from './js/common/stores/AppObservableStore';
-import { hasDynamicIsland, hasIPhoneNotch, heightOfIOSSpacer } from './js/common/utils/cordovaUtils';
+import { hasDynamicIsland, hasCordovaNotch, heightOfCordovaSpacer } from './js/common/utils/cordovaUtils';
 import historyPush from './js/common/utils/historyPush';
 import { isWeVoteMarketingSite, normalizedHref } from './js/common/utils/hrefUtils';
 import initializejQuery from './js/common/utils/initializejQuery';
@@ -221,7 +221,7 @@ class App extends Component {
 
     if (isCordova()) {
       console.log(`Cordova:   window.device ${JSON.stringify(window.device)}`);
-      console.log(`Cordova:   Header, isIOS ${hasDynamicIsland()} (${heightOfIOSSpacer()}), hasIPhoneNotch (or AndroidNotch) ${hasIPhoneNotch()}`);
+      console.log(`Cordova:   Header, isIOS ${hasDynamicIsland()}, heightOfCordovaSpacer ${heightOfCordovaSpacer()}), hasCordovaNotch ${hasCordovaNotch()}`);
     }
 
     this.acceptURLVariables();
@@ -536,8 +536,8 @@ class App extends Component {
                   <Route path="/candidate/:candidate_we_vote_id/:organization_we_vote_id" exact component={OrganizationVoterGuideCandidate} />
                   <Route path="/candidate/:candidate_we_vote_id" exact component={Candidate} />
                   <Route path="/challenges/" exact component={ChallengesHomeLoader} />
-                  <Route path="/donate" component={(isNotWeVoteMarketingSite || this.localIsAndroid()) ? ReadyRedirect : Donate} />
-                  <Route path="/donatefaq" component={(isNotWeVoteMarketingSite || this.localIsAndroid()) ? ReadyRedirect : DonateFaq} />
+                  <Route path="/donate" component={(isNotWeVoteMarketingSite) ? ReadyRedirect : Donate} />
+                  <Route path="/donatefaq" component={(isNotWeVoteMarketingSite) ? ReadyRedirect : DonateFaq} />
                   <Route path="/facebook_invitable_friends" component={FacebookInvitableFriends} />
                   <Route path="/findfriends/:set_up_page" exact component={FindFriendsRoot} />
                   <Route path="/findfriends" exact><FindFriendsRoot /></Route>

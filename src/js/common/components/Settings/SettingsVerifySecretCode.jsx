@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import VoterActions from '../../../actions/VoterActions';
-import { hasIPhoneNotch, isIOS, isIPhone4in } from '../../utils/cordovaUtils';
+import { hasCordovaNotch, isIOS, isIPhone4in } from '../../utils/cordovaUtils';
 import { isCordova, isWebApp } from '../../utils/isCordovaOrWebApp';
 import { renderLog } from '../../utils/logging';
 import VoterStore from '../../../stores/VoterStore';
@@ -758,7 +758,7 @@ SettingsVerifySecretCode.propTypes = {
 
 const styles = (theme) => ({
   dialogPaper: {
-    marginTop: hasIPhoneNotch() ? 68 : 48,
+    marginTop: hasCordovaNotch() ? 68 : 48,
     [theme.breakpoints.up('sm')]: {
       maxWidth: '720px',
       width: '85%',

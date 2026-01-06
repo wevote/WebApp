@@ -9,7 +9,7 @@ import React, { Component, Suspense } from 'react';
 import DonateActions from '../../common/actions/DonateActions';
 // TODO 5/11/21: import webAppConfig from '../../config';
 import DonateStore from '../../common/stores/DonateStore';
-import { hasIPhoneNotch, isIOS } from '../../common/utils/cordovaUtils';
+import { hasCordovaNotch, isIOS } from '../../common/utils/cordovaUtils';
 import extractNumber from '../../common/utils/extractNumber';
 import { normalizedHref } from '../../common/utils/hrefUtils';
 import { renderLog } from '../../common/utils/logging';
@@ -1061,7 +1061,7 @@ const styles = () => ({
     marginRight: 8,
   },
   dialogPaper: {
-    marginTop: hasIPhoneNotch() ? 68 : 48,
+    marginTop: hasCordovaNotch() ? 68 : 48,
     '@media (min-width: 769px)': {
       maxWidth: '600px',
       width: '85%',

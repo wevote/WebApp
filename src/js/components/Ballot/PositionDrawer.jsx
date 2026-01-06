@@ -11,7 +11,8 @@ import MeasureActions from '../../actions/MeasureActions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import apiCalming from '../../common/utils/apiCalming';
-import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
+import convertToInteger from '../../common/utils/convertToInteger';
+import { hasCordovaNotch, heightOfCordovaSpacer } from '../../common/utils/cordovaUtils';
 import { normalizedHref } from '../../common/utils/hrefUtils';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
@@ -20,11 +21,8 @@ import BallotStore from '../../stores/BallotStore';
 import CandidateStore from '../../stores/CandidateStore';
 import IssueStore from '../../stores/IssueStore';
 import MeasureStore from '../../stores/MeasureStore';
-// import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
-import { cordovaDrawerTopMargin } from '../../utils/cordovaOffsets';
-import convertToInteger from '../../common/utils/convertToInteger';
 
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
 const PositionItem = React.lazy(() => import(/* webpackChunkName: 'PositionItem' */ './PositionItem'));
@@ -291,7 +289,7 @@ PositionDrawer.propTypes = {
 
 const styles = () => ({
   drawer: {
-    marginTop: cordovaDrawerTopMargin(),
+    marginTop: `${heightOfCordovaSpacer(true)} !important`,
     maxWidth: '550px !important',
     '& *': {
       maxWidth: '550px !important',
@@ -305,7 +303,7 @@ const styles = () => ({
   },
   dialogPaper: {
     display: 'block',
-    marginTop: hasIPhoneNotch() ? 68 : 48,
+    marginTop: hasCordovaNotch() ? 68 : 48,
     minWidth: '100%',
     maxWidth: '100%',
     width: '100%',
