@@ -1,18 +1,98 @@
 /* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable react/jsx-closing-tag-location */
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled, { createGlobalStyle } from 'styled-components';
+import indefinite from 'indefinite';
+import { MoreHoriz, LaunchOutlined, ContentCopy } from '@mui/icons-material';
+import Popover from '@mui/material/Popover';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 import ModalDisplayTemplateA from '../Widgets/ModalDisplayTemplateA';
+import { openSnackbar } from '../../common/components/Widgets/SnackNotifier';
 
 const OfficeInfoModal = ({ isOpen, onClose, officeName }) => {
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const id = open ? 'office-info-popover' : undefined;
+
+  const handleMenuClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handlePopoverClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleOpenNewTab = () => {
+    window.open(window.location.href, '_blank');
+    handlePopoverClose();
+  };
+
+  const handleCopyLink = () => {
+    navigator.clipboard.writeText(window.location.href).then(() => {
+      openSnackbar({ message: 'Link copied!', severity: 'success' });
+      handlePopoverClose();
+    })
+      .catch((err) => {
+        console.error('Failed to copy link:', err);
+        openSnackbar({ message: 'Failed to copy link', severity: 'error' });
+        handlePopoverClose();
+      });
+  };
+
+  const PlayButton = () => (
+    <svg width="32" height="24" viewBox="0 0 32 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="32" height="24" rx="4" fill="#0858A1" />
+      <path d="M12 6 L12 18 L22 12 Z" fill="#ebebeb" />
+    </svg>
+  );
+
   const dialogTitleJSX = (
     <HeaderRow>
       <Title id="office-info-title">
-        About the office of <strong>{officeName}</strong>
+        About the office of
+        {' '}
+        <br className="mobile-break" />
+        <strong>{officeName}</strong>
       </Title>
+      <HeaderActions>
+        <TripleDotWrapper>
+          <TripleDotButton
+            type="button"
+            aria-label="more options"
+            onClick={handleMenuClick}
+          >
+            <MoreHoriz />
+          </TripleDotButton>
+          <Popover
+            id={id}
+            open={open}
+            anchorEl={anchorEl}
+            onClose={handlePopoverClose}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'right',
+            }}
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'right',
+            }}
+          >
+            <PopoverWrapper>
+              <PopoverOption onClick={handleOpenNewTab}>
+                <LaunchOutlined style={{ fontSize: '14px', cursor: 'pointer', marginRight: '4px' }} />
+                View this ballot section in new tab
+              </PopoverOption>
+              <PopoverOption onClick={handleCopyLink}>
+                <ContentCopy style={{ fontSize: '14px', cursor: 'pointer', marginRight: '4px' }} />
+                Copy ballot section page link
+              </PopoverOption>
+            </PopoverWrapper>
+          </Popover>
+        </TripleDotWrapper>
+        <VerticalLine />
+      </HeaderActions>
     </HeaderRow>
   );
 
@@ -21,15 +101,24 @@ const OfficeInfoModal = ({ isOpen, onClose, officeName }) => {
       <ModalBody>
         <FlexContainer>
           <LeftColumn>
-            <VideoPlaceholder>
-              <PlayIcon>▶</PlayIcon>
-              <p>Watch video<br />(25 seconds)</p>
-            </VideoPlaceholder>
+            <VideoContainer>
+              <VideoPlaceholder />
+              <VideoControls>
+                <PlayButtonWrapper>
+                  <PlayButton />
+                </PlayButtonWrapper>
+                <VideoTextWrapper>
+                  <WatchText>Watch video</WatchText>
+                  <DurationText>(25 seconds)</DurationText>
+                </VideoTextWrapper>
+              </VideoControls>
+            </VideoContainer>
           </LeftColumn>
 
           <RightColumn>
             <p>
-              An <strong>{officeName}</strong> is the chief legal officer of a state,
+              {indefinite(officeName, { articleOnly: true, capitalize: true })}{' '}
+              <strong>{officeName}</strong> is the chief legal officer of a state,
               responsible for enforcing laws, protecting citizens' rights, and representing
               the public interest in legal matters.
             </p>
@@ -40,7 +129,7 @@ const OfficeInfoModal = ({ isOpen, onClose, officeName }) => {
             {/* eslint-disable react/jsx-indent */}
             <p>
               Because they influence everything from consumer protections to civil rights
-              and election integrity, <strong>choosing an {officeName} in an election is
+              and election integrity, <strong>choosing {indefinite(officeName)} in an election is
               crucial</strong>—it determines who will uphold justice, safeguard democratic
               processes, and hold powerful entities accountable on behalf of the public.
             </p>
@@ -48,26 +137,21 @@ const OfficeInfoModal = ({ isOpen, onClose, officeName }) => {
           </RightColumn>
         </FlexContainer>
       </ModalBody>
-
-      <ModalFooter>
-        <CloseButton type="button" onClick={onClose}>
-          Close
-        </CloseButton>
-      </ModalFooter>
     </div>
   );
 
   return (
     <>
-      <WidenPreviewModal />
+      <WidenOfficeInfoModal />
       <SoftenCorners />
+      <RemoveTitlePadding />
       <ModalDisplayTemplateA
-          show={isOpen}
-          toggleModal={onClose}
-          externalUniqueId="officeInfoModal"
-          dialogTitleJSX={dialogTitleJSX}
-          tallMode={false}
-          textFieldJSX={textFieldJSX}
+        show={isOpen}
+        toggleModal={onClose}
+        externalUniqueId="officeInfoModal"
+        dialogTitleJSX={dialogTitleJSX}
+        tallMode={false}
+        textFieldJSX={textFieldJSX}
       />
     </>
   );
@@ -80,9 +164,9 @@ OfficeInfoModal.propTypes = {
 };
 
 // Global Styles
-const WidenPreviewModal = createGlobalStyle`
+const WidenOfficeInfoModal = createGlobalStyle`
   .MuiDialog-paper:has(#closeModalDisplayTemplateAofficeInfoModal) {
-    max-width: 860px !important;
+    max-width: 750px !important;
     width: 96% !important;
   }
 `;
@@ -93,37 +177,137 @@ const SoftenCorners = createGlobalStyle`
   }
 `;
 
-// Styles
+const RemoveTitlePadding = createGlobalStyle`
+  .MuiDialogTitle-root:has(#closeModalDisplayTemplateAofficeInfoModal) > div > div {
+    padding-left: 0 !important;
+    width: 100% !important;
+  }
+`;
+
+// Styled Components
 const HeaderRow = styled.div`
-    padding: 0px 12px 0 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+  padding-left: 16px;
+  padding-bottom: 8px;
 `;
 
 const Title = styled.h3`
-    font-size: 28px;
-    font-weight: 400;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.3;
+  margin: 0;
+  flex: 1;
+  min-width: 0;
+
+  strong {
+    font-weight: 600;
+  }
+
+  .mobile-break {
+    display: none;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 16px;
+
+    .mobile-break {
+      display: inline;
+    }
+  }
+`;
+
+const HeaderActions = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  margin-right: 52px !important;
+  margin-top: -4px;
+
+  @media (max-width: 768px) {
+    margin-right: 52px !important;
+    margin-top: -4px;
+  }
+`;
+
+const VerticalLine = styled.div`
+  border-left: 1px solid ${DesignTokenColors.neutral200};
+  height: 24px;
+  align-self: center;
+
+  @media (max-width: 768px) {
+    height: 20px;
+  }
+`;
+
+const TripleDotWrapper = styled.div`
+  color: ${DesignTokenColors.neutral600};
+  display: flex;
+  align-items: center;
+
+  &:hover {
+    color: ${DesignTokenColors.neutral400};
+    cursor: pointer;
+  }
+`;
+
+const TripleDotButton = styled.button`
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  color: inherit;
+  outline: none;
+
+  &:focus {
+    outline: none;
+  }
+
+  svg {
+    font-size: 20px;
+  }
+`;
+
+const PopoverWrapper = styled.div`
+  padding: 8px 0;
+  min-width: 220px;
+`;
+
+const PopoverOption = styled.div`
+  padding: 10px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  color: ${DesignTokenColors.neutral900};
+  white-space: nowrap;
+
+  &:hover {
+    background: ${DesignTokenColors.neutral100};
+  }
 `;
 
 const ModalBody = styled.div`
-    background: ${DesignTokenColors.whiteUI};
-    border: 1px solid ${DesignTokenColors.neutralUI200};
-    border-radius: 10px;
-    padding: 14px;
+  background: ${DesignTokenColors.whiteUI};
+  padding: 20px;
 `;
 
-// FLEXBOX LAYOUT
 const FlexContainer = styled.div`
   display: flex;
-  gap: 20px;
+  gap: 24px;
   align-items: flex-start;
-  
-  /* Stack vertically on mobile */
+
   @media (max-width: 768px) {
     flex-direction: column;
+    gap: 20px;
   }
 `;
 
 const LeftColumn = styled.div`
-  flex: 0 0 180px;
+  flex: 0 0 200px;
 
   @media (max-width: 768px) {
     flex: 1;
@@ -135,58 +319,98 @@ const RightColumn = styled.div`
   flex: 1;
 
   p {
-    margin-bottom: 12px;
+    margin-bottom: 16px;
     line-height: 1.6;
+    font-size: 15px;
+    color: ${DesignTokenColors.neutral900};
+
+    &:last-child {
+      margin-bottom: 0;
+    }
   }
 `;
 
-// Video placeholder
+const VideoContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  @media (max-width: 768px) {
+    background: #ebebeb;
+    border-radius: 6px;
+    padding: 12px;
+    flex-direction: row;
+    align-items: center;
+    gap: 14px;
+  }
+`;
+
 const VideoPlaceholder = styled.div`
   width: 100%;
-  aspect-ratio: 4/3;
-  background: ${DesignTokenColors.neutral200};
-  border-radius: 8px;
+  aspect-ratio: 1 / 1;
+  background: #a0a0a0;
+  border-radius: 4px;
+
+  @media (max-width: 768px) {
+    width: 90px;
+    height: 90px;
+    flex-shrink: 0;
+  }
+`;
+
+const VideoControls = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
-  color: ${DesignTokenColors.neutral700};
-  text-align: center;
+  gap: 10px;
+  margin-top: 10px;
   cursor: pointer;
 
-  &:hover {
-    background: ${DesignTokenColors.neutral300};
+  @media (max-width: 768px) {
+    margin-top: 0;
+    flex: 1;
   }
+`;
 
-  p {
-    margin: 8px 0 0 0;
+const PlayButtonWrapper = styled.div`
+  cursor: pointer;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+
+  &:hover svg rect {
+    fill: #06437D;
+  }
+`;
+
+const VideoTextWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  flex: 1;
+`;
+
+const WatchText = styled.span`
+  font-size: 16px;
+  color: #0858A1;
+  font-weight: 400;
+  line-height: 1.2;
+  white-space: nowrap;
+
+  @media (max-width: 768px) {
     font-size: 14px;
   }
 `;
 
-const PlayIcon = styled.div`
-  font-size: 32px;
-  color: ${DesignTokenColors.primary700}
-`;
+const DurationText = styled.span`
+  font-size: 13px;
+  color: #666666;
+  font-weight: 400;
+  line-height: 1.2;
+  white-space: nowrap;
 
-const ModalFooter = styled.div`
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 12px;
-`;
-
-const CloseButton = styled.button`
-    background: ${DesignTokenColors.primary700};
-    border: 1px solid ${DesignTokenColors.primary700};
-    border-radius: 9999px;
-    color: ${DesignTokenColors.whiteUI};
-    cursor: pointer;
-    padding: 10px 18px;
-
-    &:hover{
-    background: ${DesignTokenColors.primary800};
-    border-color: ${DesignTokenColors.primary800};
-    }
+  @media (max-width: 768px) {
+    font-size: 12px;
+  }
 `;
 
 export default OfficeInfoModal;
-
