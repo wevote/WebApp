@@ -273,7 +273,7 @@ class FooterBar extends React.Component {
     // console.log('friendInvitationsSentToMeCount:', friendInvitationsSentToMeCount);
     // If NOT signed in, turn Discuss off and How It Works on
     let donateVisible;
-    if (inPrivateLableMode) {
+    if (inPrivateLabelMode) {
       donateVisible = false; // Turn off donate link if an org has private labeled WeVote
     } else {
       donateVisible = true; // 2025-06-17 Enabling donations, we hear it is now permissible for nonprofits in iOS & Android

@@ -382,7 +382,7 @@ class ShareButtonFooter extends Component {
               handleCloseShareButtonDrawer={this.handleCloseShareButtonDrawer}
             />
             <>
-              <Flex>
+              <ShareButtonFooterFlex>
                 <CopyLink
                   titleText={titleText}
                   saveActionShareButtonCopy={this.saveActionShareButtonCopy}
@@ -407,7 +407,7 @@ class ShareButtonFooter extends Component {
                     <ShareTwitter titleText={titleText} saveActionShareButtonTwitter={this.saveActionShareButtonTwitter} saveActionShareButtonCopy={this.saveActionShareButtonCopy} linkToBeSharedTwitter={linkToBeSharedUrlEncoded} linkToBeSharedCopy={linkToBeShared} />
                   </>
                 )}
-              </Flex>
+              </ShareButtonFooterFlex>
             </>
             {(isWebApp() && voterIsSignedIn) && (
               <>
@@ -528,7 +528,7 @@ const ContainerShareFooter = styled('div', {
   width: 100%;
 `));
 
-const Flex = styled('div')`
+const ShareButtonFooterFlex = styled('div')`
   display: flex;
   flex-wrap: wrap;
   padding: 10px 0 0 0;
