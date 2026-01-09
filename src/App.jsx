@@ -25,6 +25,7 @@ import webAppConfig from './js/config';
 import VoterStore from './js/stores/VoterStore';
 import initializeFacebookSDK from './js/utils/initializeFacebookSDK';
 import RouterV5SendMatch from './js/utils/RouterV5SendMatch';
+import flashCursorClickListener from './js/common/utils/flashCursorClickListener';
 // importRemoveCordovaListenersToken1  -- Do not remove this line!
 
 // Root URL pages
@@ -226,6 +227,10 @@ class App extends Component {
 
     this.acceptURLVariables();
     this.bypass2FA();
+
+    if (AppObservableStore.getFlashCursorEnabled()) {
+      this.detatchCursorListener = flashCursorClickListener();
+    }
   }
 
   componentDidUpdate (prevProps) {
@@ -243,6 +248,9 @@ class App extends Component {
   componentWillUnmount () {
     this.appStateSubscription.unsubscribe();
     this.voterStoreListener.remove();
+    if (this.detatchCursorListener) {
+      this.detatchCursorListener();
+    }
     // removeCordovaListenersToken -- Do not remove this line!
   }
 
@@ -367,6 +375,8 @@ class App extends Component {
     const fromAd = query.get('ad');
     const showOfficeBannerAboveHeader = query.get('office_intro');
     const showEditPoliticianNotice = query.get('show_edit_politician_notice');
+    const normalizedQuery = new URLSearchParams(queryString.toLowerCase());
+    const flashCursor = normalizedQuery.get('flashcursor');
     if (fromAd === '1' && !fromAdSet) {
       this.setState({ fromAdSet: true });
       Cookies.set('ad_url_variable_used', '1', { expires: 15, path: '/' });
@@ -379,6 +389,10 @@ class App extends Component {
     if (showOfficeBannerAboveHeader === '1' && !showOfficeBannerAboveHeaderSet) {
       this.setState({ showOfficeBannerAboveHeaderSet: true });
       AppObservableStore.setShowOfficeBannerAboveHeader(true);
+    }
+    if (flashCursor === '1') {
+      this.setState({ flashCursor: true });
+      AppObservableStore.setFlashCursorEnabled(true);
     }
   }
 

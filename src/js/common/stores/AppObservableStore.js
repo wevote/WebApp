@@ -35,6 +35,7 @@ const nonFluxState = {
   chosenWebsiteName: '',
   currentPathname: '',
   drawerOpenDict: {},
+  flashCursorEnabled: false,
   getStartedMode: '',
   getVoterGuideSettingsDashboardEditMode: '',
   googleAnalyticsEnabled: false,
@@ -173,6 +174,9 @@ export default {
       }
     }
     return false;
+  },
+  getFlashCursorEnabled () {
+    return nonFluxState.flashCursorEnabled;
   },
 
   getPoliticianWeVoteIdBeingViewed () {
@@ -489,6 +493,9 @@ export default {
     updatedDrawerOpenDict[drawerOpenGlobalVariableName] = drawerOpen;
     nonFluxState.drawerOpenDict = updatedDrawerOpenDict;
     messageService.sendMessage('state updated drawerOpenDict');
+  },
+  setFlashCursorEnabled (flashCursorEnabled) {
+    nonFluxState.flashCursorEnabled = flashCursorEnabled;
   },
 
   setEvaluateHeaderDisplay () {
