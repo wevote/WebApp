@@ -600,6 +600,7 @@ const NotificationBannerAboveHeaderWrapper = styled.div`
   padding: 0 16px;
 `;
 const OfficeBannerAboveHeaderWrapper = styled.div`
+  background: rgb(31, 58, 83);
   display: flex;
   justify-content: center;
   padding: 0 16px;
