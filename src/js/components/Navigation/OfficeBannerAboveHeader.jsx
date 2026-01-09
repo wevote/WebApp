@@ -4,6 +4,7 @@ import TagManager from 'react-gtm-module';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import lookupPageNameAndPageTypeDict, { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
+import isMobileScreenSize, { isTablet } from '../../common/utils/isMobileScreenSize';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import VoterStore from '../../stores/VoterStore';
 import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
@@ -56,7 +57,7 @@ export default function OfficeBannerAboveHeader() {
     <OfficeBannerAboveHeaderContainer>
       <BannerTextContainer>
         <div style={{display: "flex", gap: "10px"}}>
-            <WeVoteLogo src={normalizedImagePath(chosenSiteLogoUrl)} className="u-show-desktop-tablet" height="36" width="36" />
+          <WeVoteLogo src={normalizedImagePath(chosenSiteLogoUrl)} className="u-show-desktop-tablet" height="36" width="36" />
           <BannerIntroTextMobile className="u-show-mobile">Welcome to WeVote, your personalized voter guide!</BannerIntroTextMobile>
           <BannerIntroTextDesktop className="u-show-desktop-tablet">Welcome to WeVote, your personalized voter guide:</BannerIntroTextDesktop>
         </div>
@@ -77,78 +78,16 @@ export default function OfficeBannerAboveHeader() {
       <VerticalCenter className="u-show-desktop-tablet"><VerticalLine/></VerticalCenter>
       <ButtonHolder>
         <BallotButton onClick={handleBallotButtonClick}>
-          <BannerIntroTextMobile className="u-show-mobile">View your full ballot to get started</BannerIntroTextMobile>
+          <BannerIntroTextMobile className="u-show-mobile">View your full ballot</BannerIntroTextMobile>
           <BannerIntroTextDesktop className="u-show-desktop-tablet">View your full ballot to get started</BannerIntroTextDesktop>
         </BallotButton>
       </ButtonHolder>
-        <ButtonHolder>
-      <CloseButton id="closeOfficeBanner" className="u-show-desktop-tablet" onClick={() => closeEditBar('closeOfficeBanner')}>✕</CloseButton>
+      <ButtonHolder>
+        <CloseButton id="closeOfficeBanner" onClick={() => closeEditBar('closeOfficeBanner')}>✕</CloseButton>
       </ButtonHolder>
     </OfficeBannerAboveHeaderContainer>
   );
 }
-
-const VerticalCenter = styled.div`
-  margin-inline: 2%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-`;
-
-const OfficeBannerAboveHeaderContainer = styled.div`
-  background: ${DesignTokenColors.secondary800};
-  color: ${DesignTokenColors.whiteUI};
-  display: flex;
-  font-size: 14px;
-//   flex-direction: column; // only on mobile!
-//   align-items: center;  // only on mobile!
-  margin-left: -16px;
-  margin-right: -16px;
-  padding: 8px 16px;
-  width: 100vw;
-`;
-
-const BannerTextContainer = styled.div`
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-  flex-direction: column;
-  align-items: flex-start;
-  padding-bottom: 12px;
-`;
-
-const BannerIntroTextDesktop = styled('span')`
-  font-size: 18px;
-  font-weight: 500;
-  margin-bottom: 8px;
-  margin-top: 8px;
-`;
-
-const BannerIntroTextMobile = styled('span')`
-`;
-
-const BannerElementTitle = styled.div`
-  font-weight: 500;
-  margin-bottom: 2px;
-  margin-left: 1em;
-`;
-
-const BannerElementText = styled.div`
-  margin-left: 2.5em;
-`;
-
-const BannerElement = styled('div')`
-`;
-
-const VerticalLine = styled('div')`
-  border-left: 1px solid rgba(105, 105, 105, 0.6);
-  height: 90%;
-  margin-inline: 5%;
-  margin: 5px;
-`;
-
-const ButtonHolder = styled.div`
-`;
 
 const BallotButton = styled.button`
   background: ${DesignTokenColors.whiteUI};
@@ -169,6 +108,41 @@ const BallotButton = styled.button`
   }
 `;
 
+const BannerElement = styled('div')`
+`;
+
+const BannerElementText = styled.div`
+  margin-left: 2.5em;
+`;
+
+const BannerElementTitle = styled.div`
+  font-weight: 500;
+  margin-bottom: 2px;
+  margin-left: 1em;
+`;
+
+const BannerIntroTextDesktop = styled('span')`
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 8px;
+  margin-top: 8px;
+`;
+
+const BannerIntroTextMobile = styled('span')`
+`;
+
+const BannerTextContainer = styled.div`
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-bottom: 12px;
+`;
+
+const ButtonHolder = styled.div`
+`;
+
 const CloseButton = styled.button`
   background: transparent;
   border: none;
@@ -185,5 +159,33 @@ const CloseButton = styled.button`
     order: 2;
     margin-left: 8px;
   }
+`;
+
+const OfficeBannerAboveHeaderContainer = styled.div`
+  ${() => (!isMobileScreenSize() || isTablet() ? '' : 'flex-direction: column;')};
+  ${() => (!isMobileScreenSize() || isTablet() ? '' : 'align-items: center;')};
+  background: ${DesignTokenColors.secondary800};
+  color: ${DesignTokenColors.whiteUI};
+  display: flex;
+  font-size: 14px;
+  max-width: 960px;
+  margin-left: -16px;
+  margin-right: -16px;
+  padding: 8px 16px;
+  width: 100vw;
+`;
+
+const VerticalCenter = styled.div`
+  margin-inline: 2%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`;
+
+const VerticalLine = styled('div')`
+  border-left: 1px solid rgba(105, 105, 105, 0.6);
+  height: 90%;
+  margin-inline: 5%;
+  margin: 5px;
 `;
 
