@@ -114,6 +114,18 @@ export function initializationForCordova (startReact) {
       const { $ } = window;
       console.log('Cordova:   Startup sequence 3: Wait for an initial voterRetrieve, found jQuery $.fn.jquery = ', $.fn.jquery);
     });
+
+    window.AndroidNotch.hasCutout((cutout) => {
+      console.log(`Cordova:   Android Cutout: ${cutout}`);
+      window.androidNotchCutout  = cutout;
+    });
+
+    window.AndroidNotch.getInsetTop((insetSize) => {
+      const offset = Math.trunc(insetSize);
+      console.log(`Cordova:   Android Top Inset: ${offset}`);
+      window.androidNotchInset  = offset || 0;
+    });
+
     const cookie = Cookies.get('voter_device_id');
     const idPathComponent = (cookie && cookie.length > 10) ? `/?voter_device_id=${cookie}` : '';
     const initialAjaxUrl = `${webAppConfig.WE_VOTE_SERVER_API_ROOT_URL}voterRetrieve${idPathComponent}`;
@@ -129,7 +141,6 @@ export function initializationForCordova (startReact) {
         console.log('Cordova:   voterRetrieve returned voter_device_id', voterDeviceId);
         VoterStore.setVoterDeviceIdCookie(voterDeviceId);
         window.voterDeviceId = voterDeviceId;
-        // --
 
         // Initialize incoming URL handler for oAuth and wevotetwitterscheme
         window.handleOpenURL = (url) => {
@@ -174,7 +185,6 @@ export function initializationForCordova (startReact) {
               postLockInitialization(voterDeviceId, startReact);
             }
           }
-          // });
         } catch (err) {
           console.log('Cordova: ERROR ', err);
         }

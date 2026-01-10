@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import SupportActions from '../../actions/SupportActions';
-import { isAndroidSizeMD } from '../../common/utils/cordovaUtils'; // hasIPhoneNotch,
+import { isAndroidSizeMD } from '../../common/utils/cordovaUtils'; // hasCordovaNotch,
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import SupportStore from '../../stores/SupportStore';

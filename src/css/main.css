@@ -4833,3 +4833,36 @@ a {
   min-width:100%!important;
   width:100%!important
 }
+
+/* ripple click overlay */
+.flashCursorOverlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2147483647;
+}
+
+/* ripple element from click */
+.clickRipple {
+  position: fixed;
+  width: 18px; /* initial size */
+  height: 18px;
+  border-radius: 9999px;
+  border: 2px solid rgba(0, 154, 250, 0.9); /* ripple color */
+  transform: translate(-50%, -50%) scale(0.2);
+  opacity: 0.9;
+  will-change: transform, opacity; /* change scale and opacity */
+  animation: clickRippleOut 0.5s ease-out forwards; /* ripple and fade */
+}
+
+/* Expanding + fading ripple */
+@keyframes clickRippleOut {
+  0% {
+    transform: translate(-50%, -50%) scale(0.2);
+    opacity: 0.9;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(3);
+    opacity: 0;
+  }
+}

@@ -2,7 +2,7 @@ import { AppBar } from '@mui/material';
 import styled from 'styled-components';
 import standardBoxShadow from '../../common/components/Style/standardBoxShadow';
 import AppObservableStore from '../../common/stores/AppObservableStore';
-import { heightOfIOSSpacer, isAndroidSizeMD, isAndroidSizeWide, isAndroidSizeXL, isIOS, isIOSAppOnMac, isIPad } from '../../common/utils/cordovaUtils';
+import { heightOfCordovaSpacer, isAndroidSizeMD, isAndroidSizeWide, isAndroidSizeXL, isIOS, isIOSAppOnMac, isIPad } from '../../common/utils/cordovaUtils';
 import { normalizedHrefPage } from '../../common/utils/hrefUtils';
 import { isAndroid, isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize, { isTablet } from '../../common/utils/isMobileScreenSize';
@@ -15,8 +15,8 @@ import scrollablePaneTopPaddingWebApp from '../../utils/scrollablePaneTopPadding
 
 /* global $ */
 
-export const IOSTopOfScreenSpacer = styled('div')`
-  height: ${() => heightOfIOSSpacer(true)};
+export const CordovaTopOfScreenSpacer = styled('div')`
+  height: ${() => heightOfCordovaSpacer(true)};
   top: 0;
   position: fixed;
   background: white;
@@ -34,18 +34,11 @@ function getPaddingTop () {
   }
   const normalizedHref = normalizedHrefPage();
   if (isCordova()) {
-    if (normalizedHref === 'ballot') {
-      if (isIOS()) {
-        return '';
-      } else {
-        const dualHeaderContainer = $(`div[class*="${'DualHeaderContainer'}"]`);
-        const offs = dualHeaderContainer.length > 0 ? dualHeaderContainer.height() : 0;
-        cordovaOffsetLog(`PageContentContainer paddingTop Android ballot: '${offs}px !important'   for page: ${normalizedHref}`);
-        return `${offs}px !important`;
-      }
+    if (normalizedHref === 'ballot' && isIOS()) {
+      return '';
     } else {
       const offs = offsetToBottomOfHeadroomWrapper('getPaddingTop', 'HeadroomWrapper');
-      cordovaOffsetLog(`PageContentContainer paddingTop iOS: '${offs}px !important' for page: ${normalizedHref}`);
+      cordovaOffsetLog(`PageContentContainer paddingTop Cordova: '${offs}px !important' for page: ${normalizedHref}`);
       return `${offs}px !important`;
     }
   }
@@ -63,23 +56,27 @@ function getPaddingBottom () {
   return '';
 }
 
-function getDHCMargins () {
+// this is for DualHeaderContainer or PageContentContainer
+function getOuterContainerMargins () {
   if (isWebApp()) return '0 !important';
   const page = normalizedHrefPage();
-  let dhcHeight = 0;
+  let outerContainerHeight = 0;
   let marginBottom = 35;
   if (page === 'ballot') {
     // Ballot is an unusual page, where part of the header is defined within the ballot_root, not the Headroom wrapper
     // this requires unusual processing.
     const dualHeaderContainer = $('div[class*=\'DualHeaderContainer\']');
     if (dualHeaderContainer.length > 0) {        // If it has rendered yet for the ballot page
-      dhcHeight = dualHeaderContainer.outerHeight() + dualHeaderContainer.position().top;
+      outerContainerHeight = dualHeaderContainer.outerHeight() + dualHeaderContainer.position().top;
     }
+  } else if (isAndroid() && window.androidNotchCutout) {
+    outerContainerHeight = window.androidNotchInset;
   }
+
   if (page === 'challenges') {
     marginBottom = 60;
   }
-  const marginStr = `${dhcHeight}px 10px ${marginBottom}px 10px`;
+  const marginStr = `${outerContainerHeight}px 10px ${marginBottom}px 10px`;
   cordovaOffsetLog(`PageContentContainer ${page} page offset for DualHeaderContainer : ${marginStr}`);
   return marginStr;    // all other Cordova pages
 }
@@ -94,7 +91,7 @@ export const PageContentContainer = styled('div')(({ theme }) => (`
   z-index: 0;
   ${theme.breakpoints.down('sm')} {
     min-height: ${isWebApp() ? '10px' : `${window.innerHeight}px`};
-    margin: ${getDHCMargins()};
+    margin: ${getOuterContainerMargins()};
   }
 `));
 
@@ -145,7 +142,7 @@ export const DualHeaderContainer = styled('div', {
 export const HeadroomWrapper = styled('div')`
   position: fixed;
   top: ${() => {
-    return heightOfIOSSpacer(true);
+    return heightOfCordovaSpacer(true);
   }};
   left: 0;
   width: 100%;
@@ -165,7 +162,7 @@ export const TopOfPageHeader = styled('div')(({ theme }) => (`
     padding-left: 15px;
     padding-right: 15px;
   }
-  paddingTop: ${heightOfIOSSpacer(true)};
+  paddingTop: ${heightOfCordovaSpacer(true)};
 `));
 
 export const TopRowOneLeftContainer = styled('div')`
@@ -236,7 +233,7 @@ function getBackToPaddingTop () {
   }
   const headerBack = $('#headerBackToBallotAppBar');
   if (isIOS() && headerBack.length) {
-    const height = heightOfIOSSpacer();
+    const height = heightOfCordovaSpacer();
     const heightAppBar = headerBack.outerHeight();
     const total = height + heightAppBar;
     const ret = total > 0 ? `${total}px` : '';

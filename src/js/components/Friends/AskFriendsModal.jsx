@@ -15,7 +15,7 @@ import FriendList from './FriendList';
 import FriendActions from '../../actions/FriendActions';
 import apiCalming from '../../common/utils/apiCalming';
 import { formatDateMMMDoYYYY } from '../../common/utils/dateFormat';
-import { hasIPhoneNotch } from '../../common/utils/cordovaUtils';
+import { hasCordovaNotch } from '../../common/utils/cordovaUtils';
 import daysUntil from '../../common/utils/daysUntil';
 import { renderLog } from '../../common/utils/logging';
 import { ModalTitleType1 } from '../Style/ModalType1Styles';
@@ -38,7 +38,7 @@ class AskFriendsModal extends Component {
       numberOfIncreases: 0,
       numberOfItemsToDisplay: 20,
       searchFilterOn: false,
-      searchTerm: '',
+      // searchTerm: '',
     };
   }
 
@@ -144,7 +144,7 @@ class AskFriendsModal extends Component {
       this.setState({
         currentFriendListFilteredBySearch: [],
         searchFilterOn: false,
-        searchTerm: '',
+        // searchTerm: '',
       });
     } else {
       const searchTermLowercase = searchTerm.toLowerCase();
@@ -155,7 +155,7 @@ class AskFriendsModal extends Component {
       this.setState({
         currentFriendListFilteredBySearch: searchedFriendList,
         searchFilterOn: true,
-        searchTerm,
+        // searchTerm,
       });
     }
   }
@@ -163,7 +163,7 @@ class AskFriendsModal extends Component {
   clearSearch = () => {
     this.setState({
       searchFilterOn: false,
-      searchTerm: '',
+      // searchTerm: '',
       currentFriendListFilteredBySearch: [],
     });
   }
@@ -276,7 +276,7 @@ AskFriendsModal.propTypes = {
 
 const styles = () => ({
   dialogPaper: {
-    marginTop: hasIPhoneNotch() ? 68 : 48,
+    marginTop: hasCordovaNotch() ? 68 : 48,
     '@media (min-width: 576px)': {
       maxWidth: '600px',
       width: '90%',

@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { getAndroidSize, getCordovaBuildVersion, getIOSDiagonalValue, getIOSNameString, getIOSSizeString, hasIPhoneNotch, isIOS, isSimulator } from '../../common/utils/cordovaUtils';
+import { getAndroidSize, getCordovaBuildVersion, getIOSDiagonalValue, getIOSNameString, getIOSSizeString, hasCordovaNotch, isIOS, isSimulator } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
 import { getTabletSize } from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
@@ -224,7 +224,7 @@ DeviceDialog.propTypes = {
 
 const styles = (theme) => ({
   dialogPaper: {
-    marginTop: hasIPhoneNotch() ? 68 : 48,
+    marginTop: hasCordovaNotch() ? 68 : 48,
     [theme.breakpoints.down('sm')]: {
       minWidth: '95%',
       maxWidth: '95%',
