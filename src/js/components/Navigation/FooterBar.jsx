@@ -11,15 +11,15 @@ import AppObservableStore, { messageService } from '../../common/stores/AppObser
 import { isIOS } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
 import { normalizedHref } from '../../common/utils/hrefUtils';
-import { isAndroid, isCordova } from '../../common/utils/isCordovaOrWebApp';
+import { isAndroid } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import stringContains from '../../common/utils/stringContains';
+import webAppConfig from '../../config';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
 import { cordovaFooterHeight } from '../../utils/cordovaOffsets';
 import ShareButtonFooter from '../Share/ShareButtonFooter';
-import webAppConfig from '../../config';
 
 const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
@@ -105,7 +105,7 @@ class FooterBar extends React.Component {
       // inPrivateLabelMode: false, // setState onAppObservableStoreChange is not working sometimes for some reason
       showingOneCompleteYourProfileModal: false,
       showSignInModal: false,
-      voterIsSignedIn: false,
+      // voterIsSignedIn: false,
     };
   }
 
@@ -169,15 +169,15 @@ class FooterBar extends React.Component {
   }
 
   onVoterStoreChange () {
-    const voter = VoterStore.getVoter();
-    const voterIsSignedIn = voter.is_signed_in || false;
-    this.setState({
-      voterIsSignedIn,
-    });
+    // const voter = VoterStore.getVoter();
+    // const voterIsSignedIn = voter.is_signed_in || false;
+    // this.setState({
+    //   voterIsSignedIn,
+    // });
   }
 
   handleChange = (event, value) => {
-    if (isCordova()) {
+    if (isIOS()) {
       const { impact } = window.TapticEngine;
       impact({
         style: 'heavy', // light | medium | heavy
@@ -273,12 +273,12 @@ class FooterBar extends React.Component {
     // console.log('friendInvitationsSentToMeCount:', friendInvitationsSentToMeCount);
     // If NOT signed in, turn Discuss off and How It Works on
     let donateVisible;
-    if (isCordova() || inPrivateLabelMode) {
-      donateVisible  = true;  // 2025-06-17 Enabling donations, we hear it is now permissible for nonprofits in iOS & Android
+    if (inPrivateLabelMode) {
+      donateVisible = false; // Turn off donate link if an org has private labeled WeVote
     } else {
-      donateVisible  = true;
+      donateVisible = true; // 2025-06-17 Enabling donations, we hear it is now permissible for nonprofits in iOS & Android
+      // console.log('--------- Footer bar donateVisible ', donateVisible, 'squadsVisible', squadsVisible);
     }
-    // console.log('--------- Footer bar donateVisible ', donateVisible, 'squadsVisible', squadsVisible);
     return (
       <FooterBarWrapper>
         {showShareButtonFooter && (

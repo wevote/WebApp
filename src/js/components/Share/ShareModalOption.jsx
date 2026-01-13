@@ -10,7 +10,8 @@ import AppObservableStore, { messageService } from '../../common/stores/AppObser
 import { renderLog } from '../../common/utils/logging';
 import VoterStore from '../../stores/VoterStore';
 import { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
-import { generateShareLinks } from './ShareModalText';
+import { generateShareLinks } from './sharedLinks';
+
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 

@@ -45,7 +45,7 @@ function ChallengeHeaderSimple (props) {
               </ChallengeTitleAndDaysLeftWrapper>
             </ChallengePhotoAndTitle>
             {!hideCloseIcon && (
-              <CloseDrawerIconWrapper>
+              <CloseDrawerIconWrapperChallenger>
                 <div>
                   <IconButton
                     aria-label="Close"
@@ -59,7 +59,7 @@ function ChallengeHeaderSimple (props) {
                     </span>
                   </IconButton>
                 </div>
-              </CloseDrawerIconWrapper>
+              </CloseDrawerIconWrapperChallenger>
             )}
           </ChallengeTitleRow>
         </ChallengeHeaderSimpleContentContainer>
@@ -157,7 +157,7 @@ const ChallengeTitleRow = styled('div')`
   margin-bottom: 16px;
 `;
 
-const CloseDrawerIconWrapper = styled('div')`
+const CloseDrawerIconWrapperChallenger = styled('div')`
   display: flex;
   justify-content: flex-end;
 `;

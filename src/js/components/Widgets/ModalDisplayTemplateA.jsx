@@ -5,7 +5,7 @@ import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { hasIPhoneNotch, isAndroidSizeWide } from '../../common/utils/cordovaUtils';
+import { hasCordovaNotch, isAndroidSizeWide } from '../../common/utils/cordovaUtils';
 import { isAndroid, isCordova } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 
@@ -78,7 +78,7 @@ export const templateAStyles = (theme) => ({
     paddingTop: !isAndroid() ? 16 : 'inherit',
   },
   dialogPaper: {
-    marginTop: hasIPhoneNotch() ? 68 : 48,
+    marginTop: hasCordovaNotch() ? 68 : 48,
     minHeight: isAndroid() ? '257px' : '200px',
     // maxHeight: '350px',
     // height: '80%',

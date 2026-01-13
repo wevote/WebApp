@@ -5,7 +5,7 @@ import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { hasIPhoneNotch, isAndroidSizeWide } from '../../common/utils/cordovaUtils';
+import { hasCordovaNotch, isAndroidSizeWide } from '../../common/utils/cordovaUtils';
 import { isAndroid, isCordova } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
@@ -97,7 +97,7 @@ export const templateBStyles = (theme) => ({
     border: `1px solid ${DesignTokenColors.neutral100}`,
     borderRadius: '30px',
     boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
-    marginTop: hasIPhoneNotch() ? 68 : 48,
+    marginTop: hasCordovaNotch() ? 68 : 48,
     minHeight: isAndroid() ? '257px' : '200px',
     maxWidth: '600px',
     top: '50px',

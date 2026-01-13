@@ -1,6 +1,6 @@
 import styled, { css, keyframes } from 'styled-components';
 import standardBoxShadow from '../../common/components/Style/standardBoxShadow';
-import { isAndroidNotch } from '../../common/utils/cordovaUtils';
+import { hasAndroidNotch } from '../../common/utils/cordovaUtils';
 
 const slideIn = keyframes`
   from {
@@ -67,7 +67,7 @@ export const DrawerHeaderWrapper = styled('div')`
   align-items: center;
   margin-right: 0;
   min-height: 28px;
-  padding-top: ${isAndroidNotch() ? '40px' : ''};
+  padding-top: ${hasAndroidNotch() ? '40px' : ''};
 `;
 
 export const NavLinksContainer = styled('div')`
@@ -75,6 +75,10 @@ export const NavLinksContainer = styled('div')`
   flex-direction: column;
   margin-left: -16px;
   position: fixed;
-  padding-top: ${isAndroidNotch() ? '40px' : ''};
+  padding-top: ${hasAndroidNotch() ? '40px' : ''};
 `;
 
+export const CloseDrawerIconWrapper = styled('div')`
+  display: flex;
+  justify-content: flex-end;
+`;
