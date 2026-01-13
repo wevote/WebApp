@@ -1,4 +1,4 @@
-import React, { Suspense, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { Suspense, useCallback, useEffect, useMemo, useState, useRef } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { Helmet } from 'react-helmet-async';
@@ -37,6 +37,11 @@ export default function ManageMyCandidatesLanding () {
 
   const [politiciansToManage, setPoliticiansToManage] = useState(demoPoliticians); // Place demoPoliticians in useState to use dummy data, otherwise place: []
   const [selectedPoliticianWeVoteId, setSelectedPoliticianWeVoteId] = useState('');
+
+  // Scroll gradient state for mobile navbar
+  const [showLeftGradient, setShowLeftGradient] = useState(false);
+  const [showRightGradient, setShowRightGradient] = useState(true);
+  const navScrollRef = useRef(null);
 
   const selectedPolitician = politiciansToManage.find((politician) => politician.we_vote_id === selectedPoliticianWeVoteId) || null;
 
@@ -81,6 +86,21 @@ export default function ManageMyCandidatesLanding () {
     };
   }, [onVoterStoreChange]);
 
+  const handleNavScroll = () => {
+    const el = navScrollRef.current;
+    if (!el) return;
+
+    const isAtStart = el.scrollLeft === 0;
+    const isAtEnd = el.scrollLeft + el.clientWidth >= el.scrollWidth - 1;
+
+    setShowLeftGradient(!isAtStart);
+    setShowRightGradient(!isAtEnd);
+  };
+
+  useEffect(() => {
+    handleNavScroll();
+  }, []);
+
   // Main render
   const handleClaimEdit = () => history.push(`/candidate/${selectedPoliticianWeVoteId}/edit`);
   const handleClaimImport = () => history.push('/managecandidates');
@@ -122,10 +142,17 @@ export default function ManageMyCandidatesLanding () {
 
       <Layout>
         {/* Mobile navigation bar */}
-        <NavBarMobile className="u-show-mobile" aria-label="Manage navigation">
+        <NavBarMobile
+          className="u-show-mobile"
+          aria-label="Manage navigation"
+          ref={navScrollRef}
+          onScroll={handleNavScroll}
+          showLeftGradient={showLeftGradient}
+          showRightGradient={showRightGradient}
+        >
           <NavPill $mobile $active={active === 'import'} onClick={handleClaimImport}>
             <PillIcon><ImportInviteIcon fontSize="small" /></PillIcon>
-            Import &amp; invite voters
+            Import &amp; invite
           </NavPill>
 
           <NavPill $mobile $active={active === 'tracking'} onClick={handleClaimTracking}>
@@ -140,7 +167,7 @@ export default function ManageMyCandidatesLanding () {
 
           <NavPill $mobile as="button" $active={false} onClick={handleClaimEdit}>
             <PillIcon><EditIcon fontSize="small" /></PillIcon>
-            Edit candidate profile
+            Edit
           </NavPill>
         </NavBarMobile>
 
@@ -343,7 +370,9 @@ const NavBar = styled.nav`
   }
 `;
 
-const NavBarMobile = styled.nav`
+const NavBarMobile = styled('nav', {
+  shouldForwardProp: (prop) => !['showLeftGradient', 'showRightGradient'].includes(prop),
+})(({ showLeftGradient, showRightGradient }) => (`
   display: flex;
   flex-wrap: nowrap;
   gap: 8px;
@@ -352,13 +381,25 @@ const NavBarMobile = styled.nav`
   position: relative;
   grid-column: 1 / -1;
 
+  /* Fade out, right side */
+  ${showRightGradient ? '-webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 88%, rgba(0, 0, 0, 0));' : ''}
+  ${showRightGradient ? 'mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 88%, rgba(0, 0, 0, 0));' : ''}
+
+  /* Fade out, left side */
+  ${showLeftGradient ? '-webkit-mask-image: linear-gradient(to left, rgba(0, 0, 0, 1) 88%, rgba(0, 0, 0, 0));' : ''}
+  ${showLeftGradient ? 'mask-image: linear-gradient(to left, rgba(0, 0, 0, 1) 88%, rgba(0, 0, 0, 0));' : ''}
+
+  /* Fade out, both sides */
+  ${showLeftGradient && showRightGradient ? '-webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1) 6%, rgba(0, 0, 0, 1) 94%, rgba(0, 0, 0, 0));' : ''}
+  ${showLeftGradient && showRightGradient ? 'mask-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1) 6%, rgba(0, 0, 0, 1) 94%, rgba(0, 0, 0, 0));' : ''}
+
   /* Make the scrollbar not be visible */
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
-  &::-webkit-scrollbar {  /* Chrome, Safari and Opera */
+  ::-webkit-scrollbar {  /* Chrome, Safari and Opera */
     display: none;
   }
-`;
+`));
 
 const NavPill = styled.button`
   align-items: center;

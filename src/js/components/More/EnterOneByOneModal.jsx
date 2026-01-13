@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Dialog } from '@mui/material';
 import { Close as CloseIcon } from '@mui/icons-material';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
-import ModalDisplayTemplateA from '../../components/Widgets/ModalDisplayTemplateA';
+import ModalDisplayTemplateC from '../Widgets/ModalDisplayTemplateC';
 
-export default function EnterOneByOneModal({
+export default function EnterOneByOneModal ({
   isOpen,
   onClose,
   onImport,
@@ -38,10 +37,10 @@ export default function EnterOneByOneModal({
       return;
     }
 
-    const votersToImport = validVoters.map(v => ({
+    const votersToImport = validVoters.map((v) => ({
       name: v.name.trim(),
       email: v.email.trim(),
-      phone: v.phone.trim()
+      phone: v.phone.trim(),
     }));
 
     setVoters([{ name: '', email: '', phone: '' }]);
@@ -57,64 +56,72 @@ export default function EnterOneByOneModal({
   const isImportDisabled = !voters.some((v) => v.name.trim() && emailRE.test(v.email));
   const validVoterCount = voters.filter((v) => v.name.trim() && emailRE.test(v.email)).length;
 
+  const headerJSX = (
+    <>
+      <ModalTitle>Enter voters one-by-one</ModalTitle>
+      <AddAnotherButton type="button" onClick={handleAddAnother}>
+        + Add another
+      </AddAnotherButton>
+      <CloseButton type="button" onClick={onClose}>
+        <CloseIcon fontSize="medium" />
+      </CloseButton>
+    </>
+  );
+
+  const bodyJSX = (
+    <InputsScrollContainer>
+      {voters.map((voter, index) => (
+        <React.Fragment key={index}>
+          <InputGroup>
+            <StyledInput
+              type="text"
+              placeholder="First and last name"
+              value={voter.name}
+              onChange={(e) => handleInputChange(index, 'name', e.target.value)}
+            />
+            <StyledInput
+              type="email"
+              placeholder="Email"
+              value={voter.email}
+              onChange={(e) => handleInputChange(index, 'email', e.target.value)}
+            />
+            <StyledInput
+              type="tel"
+              placeholder="Mobile phone"
+              value={voter.phone}
+              onChange={(e) => handleInputChange(index, 'phone', e.target.value)}
+            />
+          </InputGroup>
+          {index < voters.length - 1 && <Divider />}
+        </React.Fragment>
+      ))}
+    </InputsScrollContainer>
+  );
+
+  const footerJSX = (
+    <>
+      <CancelButton onClick={handleCancel}>
+        Cancel
+      </CancelButton>
+      <ImportButton
+        onClick={handleImport}
+        disabled={isImportDisabled}
+      >
+        Import
+        {' '}
+        {validVoterCount > 1 ? `${validVoterCount} voters` : 'voter'}
+      </ImportButton>
+    </>
+  );
+
   return (
-    <StyledDialog
-      open={isOpen}
-      onClose={onClose}
-      fullScreen
-    >
-      <ModalHeader>
-        <ModalTitle>Enter voters one-by-one</ModalTitle>
-        <AddAnotherButton type="button" onClick={handleAddAnother}>
-          + Add another
-        </AddAnotherButton>
-        <CloseButton type="button" onClick={onClose}>
-          <CloseIcon fontSize="medium" />
-        </CloseButton>
-      </ModalHeader>
-
-      <ModalBody>
-        <InputsScrollContainer>
-          {voters.map((voter, index) => (
-            <React.Fragment key={index}>
-              <InputGroup>
-                <StyledInput
-                  type="text"
-                  placeholder="First and last name"
-                  value={voter.name}
-                  onChange={(e) => handleInputChange(index, 'name', e.target.value)}
-                />
-                <StyledInput
-                  type="email"
-                  placeholder="Email"
-                  value={voter.email}
-                  onChange={(e) => handleInputChange(index, 'email', e.target.value)}
-                />
-                <StyledInput
-                  type="tel"
-                  placeholder="Mobile phone"
-                  value={voter.phone}
-                  onChange={(e) => handleInputChange(index, 'phone', e.target.value)}
-                />
-              </InputGroup>
-              {index < voters.length - 1 && <Divider />}
-            </React.Fragment>
-          ))}
-        </InputsScrollContainer>
-      </ModalBody>
-
-      <ModalFooter>
-        <CancelButton onClick={handleCancel}>
-          Cancel
-        </CancelButton>
-        <ImportButton
-          onClick={handleImport}
-          disabled={isImportDisabled}
-        >
-          Import {validVoterCount > 1 ? `${validVoterCount} voters` : 'voter'}
-        </ImportButton>
-      </ModalFooter>
-    </StyledDialog>
+    <ModalDisplayTemplateC
+      show={isOpen}
+      toggleModal={onClose}
+      headerJSX={headerJSX}
+      bodyJSX={bodyJSX}
+      footerJSX={footerJSX}
+    />
   );
 }
 
@@ -217,54 +224,12 @@ const InputsScrollContainer = styled.div`
   gap: 12px;
 `;
 
-const ModalBody = styled.div`
-  flex: 1;
-  overflow-y: auto;
-  padding: 0;
-  background: ${DesignTokenColors.neutralUI50};
-`;
-
-const ModalFooter = styled.div`
-  background: ${DesignTokenColors.whiteUI};
-  padding: 12px 20px;
-  display: flex;
-  gap: 20px;
-  align-items: center;
-`;
-
-const ModalHeader = styled.div`
-  background: ${DesignTokenColors.whiteUI};
-  padding: 10px 12px 8px 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  position: relative;
-`;
-
 const ModalTitle = styled.h2`
   color: ${DesignTokenColors.neutralUI900};
   font-size: 17px;
   font-weight: 500;
   margin: 0;
   flex: 1;
-`;
-
-const StyledDialog = styled(Dialog)`
-  && {
-    .MuiDialog-paper {
-      max-width: calc(100% - 14px);
-      max-height: calc(100% - 14px);
-      background: ${DesignTokenColors.whiteUI};
-      display: flex;
-      flex-direction: column;
-      box-shadow: none;
-      border: 1px solid ${DesignTokenColors.neutralUI300};
-    }
-    .MuiBackdrop-root {
-      background-color: ${DesignTokenColors.whiteUI};
-    }
-  }
 `;
 
 const StyledInput = styled.input`
