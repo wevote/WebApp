@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable react/jsx-closing-tag-location */
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import styled, { createGlobalStyle } from 'styled-components';
 import indefinite from 'indefinite';
@@ -13,8 +13,16 @@ import { openSnackbar } from '../../common/components/Widgets/SnackNotifier';
 
 const OfficeInfoModal = ({ isOpen, onClose, officeName }) => {
   const [anchorEl, setAnchorEl] = useState(null);
+  const [copyLinkText, setCopyLinkText] = useState('Copy ballot section page link');
+  const copyLinkTimeoutRef = useRef(null);
   const open = Boolean(anchorEl);
   const id = open ? 'office-info-popover' : undefined;
+
+  useEffect(() => () => {
+    if (copyLinkTimeoutRef.current) {
+      clearTimeout(copyLinkTimeoutRef.current);
+    }
+  }, []);
 
   const handleMenuClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -32,7 +40,10 @@ const OfficeInfoModal = ({ isOpen, onClose, officeName }) => {
   const handleCopyLink = () => {
     navigator.clipboard.writeText(window.location.href).then(() => {
       openSnackbar({ message: 'Link copied!', severity: 'success' });
-      handlePopoverClose();
+      setCopyLinkText('Copied!');
+      copyLinkTimeoutRef.current = setTimeout(() => {
+        setCopyLinkText('Copy ballot section page link');
+      }, 3000);
     })
       .catch((err) => {
         console.error('Failed to copy link:', err);
@@ -86,7 +97,7 @@ const OfficeInfoModal = ({ isOpen, onClose, officeName }) => {
               </PopoverOption>
               <PopoverOption onClick={handleCopyLink}>
                 <ContentCopy style={{ fontSize: '14px', cursor: 'pointer', marginRight: '4px' }} />
-                Copy ballot section page link
+                {copyLinkText}
               </PopoverOption>
             </PopoverWrapper>
           </Popover>
@@ -97,7 +108,7 @@ const OfficeInfoModal = ({ isOpen, onClose, officeName }) => {
   );
 
   const textFieldJSX = (
-    <div style={{ padding: '18px 18px 28px' }}>
+    <div style={{ padding: '8px 16px 16px' }}>
       <ModalBody>
         <FlexContainer>
           <LeftColumn>
@@ -145,6 +156,7 @@ const OfficeInfoModal = ({ isOpen, onClose, officeName }) => {
       <WidenOfficeInfoModal />
       <SoftenCorners />
       <RemoveTitlePadding />
+      <RemoveDialogContentPadding />
       <ModalDisplayTemplateA
         show={isOpen}
         toggleModal={onClose}
@@ -164,6 +176,7 @@ OfficeInfoModal.propTypes = {
 };
 
 // Global Styles
+
 const WidenOfficeInfoModal = createGlobalStyle`
   .MuiDialog-paper:has(#closeModalDisplayTemplateAofficeInfoModal) {
     max-width: 750px !important;
@@ -184,7 +197,14 @@ const RemoveTitlePadding = createGlobalStyle`
   }
 `;
 
+const RemoveDialogContentPadding = createGlobalStyle`
+  .MuiDialogContent-root:has(#closeModalDisplayTemplateAofficeInfoModal) {
+    padding: 0 !important;
+  }
+`;
+
 // Styled Components
+
 const HeaderRow = styled.div`
   display: flex;
   justify-content: space-between;
@@ -292,7 +312,7 @@ const PopoverOption = styled.div`
 
 const ModalBody = styled.div`
   background: ${DesignTokenColors.whiteUI};
-  padding: 20px;
+  padding: 12px;
 `;
 
 const FlexContainer = styled.div`
