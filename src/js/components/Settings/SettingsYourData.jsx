@@ -10,6 +10,7 @@ import VoterStore from '../../stores/VoterStore';
 import DeleteAllContactsButton from '../SetUpAccount/DeleteAllContactsButton';
 import BrowserPushMessage from '../Widgets/BrowserPushMessage';
 import DeleteYourAccountButton from './DeleteYourAccountButton';
+import DefaultVisibility from './DefaultVisibility';
 
 export default class SettingsYourData extends Component {
   constructor (props) {
@@ -57,6 +58,7 @@ export default class SettingsYourData extends Component {
                   Privacy &amp; Data
                 </h1>
               </HeaderContainer>
+              <DefaultVisibility />
               <DataSettingSection>
                 <h4 className="h4" id="yourAddressBookText">
                   Your Address Book Contact Data
