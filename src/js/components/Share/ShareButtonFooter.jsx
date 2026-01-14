@@ -12,7 +12,7 @@ import { openSnackbar } from '../../common/components/Widgets/SnackNotifier';
 import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
 import ShareStore from '../../common/stores/ShareStore';
 import apiCalming from '../../common/utils/apiCalming';
-import { hasDynamicIsland, hasIPhoneNotch } from '../../common/utils/cordovaUtils';
+import { hasCordovaNotch, hasDynamicIsland } from '../../common/utils/cordovaUtils';
 import { isAndroid, isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import stringContains from '../../common/utils/stringContains';
@@ -24,9 +24,11 @@ import { shareBottomOffset } from '../../utils/cordovaOffsets';
 import createMessageToFriendDefaults from '../../utils/createMessageToFriendDefaults';
 import sortFriendListByMutualFriends from '../../utils/friendFunctions';
 import isMobile from '../../utils/isMobile';
-import { CopyLink, getKindOfShareFromURL, getWhatAndHowMuchToShareDefault, saveActionShareAnalytics, ShareFacebook, SharePreviewFriends, shareStyles, ShareTwitter, ShareWeVoteFriends } from './shareButtonCommon'; // cordovaSocialSharingByEmail // cordovaSocialSharingByEmail
+import { getKindOfShareFromURL } from './getKindOfShareFromURL';
+import { getWhatAndHowMuchToShareDefault } from './getWhatAndHowMuchToShareDefault';
+import { CopyLink, saveActionShareAnalytics, ShareFacebook, SharePreviewFriends, shareStyles, ShareTwitter, ShareWeVoteFriends } from './shareButtonCommon'; // cordovaSocialSharingByEmail // cordovaSocialSharingByEmail
+import { generateShareLinks } from './sharedLinks';
 import ShareModalOption from './ShareModalOption';
-import { generateShareLinks } from './ShareModalText';
 import ShareModalTitleArea from './ShareModalTitleArea';
 
 
@@ -178,6 +180,7 @@ class ShareButtonFooter extends Component {
     }, () => this.openShareOptions()); // openShareOptions advances directly to share
   }
 
+  // eslint-disable-next-line no-unused-vars
   handleCloseShareButtonDrawer = (buttonId = '') => {
     this.setState({
       openShareButtonDrawer: false,
@@ -305,7 +308,7 @@ class ShareButtonFooter extends Component {
           onClose={this.handleCloseShareButtonDrawer}
           open={openShareButtonDrawer}
         >
-          <ModalTitleAreaFixed notchOrIsland={hasIPhoneNotch() || hasDynamicIsland()}>
+          <ModalTitleAreaFixed notchOrIsland={hasCordovaNotch() || hasDynamicIsland()}>
             <ModalTitleAreaFixedInnerWrapper>
               <Button
                 className={classes.backButton}
@@ -379,7 +382,7 @@ class ShareButtonFooter extends Component {
               handleCloseShareButtonDrawer={this.handleCloseShareButtonDrawer}
             />
             <>
-              <Flex>
+              <ShareButtonFooterFlex>
                 <CopyLink
                   titleText={titleText}
                   saveActionShareButtonCopy={this.saveActionShareButtonCopy}
@@ -404,7 +407,7 @@ class ShareButtonFooter extends Component {
                     <ShareTwitter titleText={titleText} saveActionShareButtonTwitter={this.saveActionShareButtonTwitter} saveActionShareButtonCopy={this.saveActionShareButtonCopy} linkToBeSharedTwitter={linkToBeSharedUrlEncoded} linkToBeSharedCopy={linkToBeShared} />
                   </>
                 )}
-              </Flex>
+              </ShareButtonFooterFlex>
             </>
             {(isWebApp() && voterIsSignedIn) && (
               <>
@@ -525,7 +528,7 @@ const ContainerShareFooter = styled('div', {
   width: 100%;
 `));
 
-const Flex = styled('div')`
+const ShareButtonFooterFlex = styled('div')`
   display: flex;
   flex-wrap: wrap;
   padding: 10px 0 0 0;

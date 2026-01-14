@@ -18,7 +18,10 @@ const PreviewInvitationModal = ({
       await navigator.clipboard.writeText(
         `${invitationBody}\n\nhttps://wevote.us/join/${selectedPoliticianId}`,
       );
-      notify('Invitation copied to clipboard. Press ⌘V / Ctrl+V to paste.', true);
+      const message = window.innerWidth >= 576
+        ? 'Invitation copied to clipboard. Press ⌘V / Ctrl+V to paste.'
+        : 'Invitation copied to clipboard.';
+      notify(message, true);
     } catch {
       notify('Copy failed. Select the text and copy manually.', false, 3000);
     }

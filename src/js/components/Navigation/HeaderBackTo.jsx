@@ -8,11 +8,10 @@ import VoterGuideActions from '../../actions/VoterGuideActions';
 import LazyImage from '../../common/components/LazyImage';
 import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
 import apiCalming from '../../common/utils/apiCalming';
-import { heightOfIOSSpacer, isIOSAppOnMac, isIPad } from '../../common/utils/cordovaUtils';
+import { heightOfCordovaSpacer, isIOSAppOnMac, isIPad } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
 import { normalizedHref } from '../../common/utils/hrefUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
-import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import stringContains from '../../common/utils/stringContains';
 import voterPhoto from '../../common/utils/voterPhoto';
@@ -201,7 +200,7 @@ class HeaderBackTo extends Component {
     const voterPhotoUrlMedium = voterPhoto(voter);
     const pathname = normalizedHref();
     const shareButtonInHeader = pathname && stringContains('/office', pathname.toLowerCase());
-    const pad = `${heightOfIOSSpacer(true)} 15px 0 0`;
+    const pad = `${heightOfCordovaSpacer(true)} 15px 0 0`;
     const cordovaStyles = {
       marginLeft: 0,
       padding: pad,

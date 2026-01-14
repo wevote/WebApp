@@ -2,7 +2,7 @@ const fs = require('fs');
 const { promises: fsPromises } = require('fs');
 
 const isWebApp = !process.env.npm_lifecycle_script.includes('CORDOVA=1');
-console.log(isWebApp ? 'initialSteps -- WebApp compilation' : '> Cordova: Cordova compilation');
+console.log(isWebApp ? 'Info.plist initialSteps -- WebApp compilation' : '> Cordova: Cordova compilation');
 
 // Creates the compileDate.js file that contains the compile date as a string, so it can be displayed where wanted in the app.
 const d = new Date();

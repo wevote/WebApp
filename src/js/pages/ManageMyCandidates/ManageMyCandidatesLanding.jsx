@@ -1,4 +1,4 @@
-import React, { Suspense, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { Suspense, useCallback, useEffect, useMemo, useState, useRef } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { Helmet } from 'react-helmet-async';
@@ -38,6 +38,11 @@ export default function ManageMyCandidatesLanding () {
   const [politiciansToManage, setPoliticiansToManage] = useState(demoPoliticians); // Place demoPoliticians in useState to use dummy data, otherwise place: []
   const [selectedPoliticianWeVoteId, setSelectedPoliticianWeVoteId] = useState('');
 
+  // Scroll gradient state for mobile navbar
+  const [showLeftGradient, setShowLeftGradient] = useState(false);
+  const [showRightGradient, setShowRightGradient] = useState(true);
+  const navScrollRef = useRef(null);
+
   const selectedPolitician = politiciansToManage.find((politician) => politician.we_vote_id === selectedPoliticianWeVoteId) || null;
 
   useEffect(() => {
@@ -71,7 +76,7 @@ export default function ManageMyCandidatesLanding () {
     return () => {
       politicianStoreListener.remove();
     };
-  }, []);
+  }, [onPoliticianStoreChange]);
 
   useEffect(() => {
     const voterStoreListener = VoterStore.addListener(onVoterStoreChange);
@@ -79,6 +84,21 @@ export default function ManageMyCandidatesLanding () {
     return () => {
       voterStoreListener.remove();
     };
+  }, [onVoterStoreChange]);
+
+  const handleNavScroll = () => {
+    const el = navScrollRef.current;
+    if (!el) return;
+
+    const isAtStart = el.scrollLeft === 0;
+    const isAtEnd = el.scrollLeft + el.clientWidth >= el.scrollWidth - 1;
+
+    setShowLeftGradient(!isAtStart);
+    setShowRightGradient(!isAtEnd);
+  };
+
+  useEffect(() => {
+    handleNavScroll();
   }, []);
 
   // Main render
@@ -121,8 +141,38 @@ export default function ManageMyCandidatesLanding () {
       </HeaderRow>
 
       <Layout>
-        {/* Left nav */}
-        <LeftNav aria-label="Manage navigation">
+        {/* Mobile navigation bar */}
+        <NavBarMobile
+          className="u-show-mobile"
+          aria-label="Manage navigation"
+          ref={navScrollRef}
+          onScroll={handleNavScroll}
+          showLeftGradient={showLeftGradient}
+          showRightGradient={showRightGradient}
+        >
+          <NavPill $mobile $active={active === 'import'} onClick={handleClaimImport}>
+            <PillIcon><ImportInviteIcon fontSize="small" /></PillIcon>
+            Import &amp; invite
+          </NavPill>
+
+          <NavPill $mobile $active={active === 'tracking'} onClick={handleClaimTracking}>
+            <PillIcon><TrackingIcon fontSize="small" /></PillIcon>
+            Tracking
+          </NavPill>
+
+          <NavPill $mobile $active={active === 'analytics'} onClick={handleClaimAnalytics}>
+            <PillIcon><AnalyticsIcon fontSize="small" /></PillIcon>
+            Analytics
+          </NavPill>
+
+          <NavPill $mobile as="button" $active={false} onClick={handleClaimEdit}>
+            <PillIcon><EditIcon fontSize="small" /></PillIcon>
+            Edit
+          </NavPill>
+        </NavBarMobile>
+
+        {/* Desktop and tablet navigation bar */}
+        <NavBar aria-label="Manage navigation">
           <NavPill $active={active === 'import'} onClick={handleClaimImport}>
             <PillIcon><ImportInviteIcon fontSize="small" /></PillIcon>
             Import &amp; invite voters
@@ -144,7 +194,7 @@ export default function ManageMyCandidatesLanding () {
             <PillIcon><EditIcon fontSize="small" /></PillIcon>
             Edit candidate profile
           </NavPill>
-        </LeftNav>
+        </NavBar>
 
         {/* Right content */}
         <RightPanel>
@@ -213,7 +263,7 @@ const TrackingIcon = ({ size = 22, title = 'Tracking', ...props }) => (
 );
 
 // Import & invite icon
-const ImportInviteIcon = ({ size = 22, title = 'Import & invite', ...props }) => (
+export const ImportInviteIcon = ({ size = 22, title = 'Import & invite', ...props }) => (
   <svg
     width={size}
     height={size}
@@ -303,23 +353,53 @@ const PickerItem = styled.li`
 const Layout = styled.div`
   display: grid;
   gap: 24px;
-  grid-template-columns: 260px 1fr;
+  grid-template-columns: 1fr;
 
-  @media (max-width: 900px) {
-    grid-template-columns: 1fr;
+  @media (min-width: 576px) {
+    grid-template-columns: 260px 1fr;
   }
 `;
 
-const LeftNav = styled.nav`
-  border-right: 1px solid ${DesignTokenColors.neutralUI200};
-  padding-right: 18px;
+const NavBar = styled.nav`
+  display: none;
 
-  @media (max-width: 900px) {
-    border-bottom: 1px solid ${DesignTokenColors.neutralUI200};
-    border-right: none;
-    padding: 0 0 12px 0;
+  @media (min-width: 576px) {
+    display: block;
+    border-right: 1px solid ${DesignTokenColors.neutralUI200};
+    padding-right: 18px;
   }
 `;
+
+const NavBarMobile = styled('nav', {
+  shouldForwardProp: (prop) => !['showLeftGradient', 'showRightGradient'].includes(prop),
+})(({ showLeftGradient, showRightGradient }) => (`
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 8px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  position: relative;
+  grid-column: 1 / -1;
+
+  /* Fade out, right side */
+  ${showRightGradient ? '-webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 88%, rgba(0, 0, 0, 0));' : ''}
+  ${showRightGradient ? 'mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 88%, rgba(0, 0, 0, 0));' : ''}
+
+  /* Fade out, left side */
+  ${showLeftGradient ? '-webkit-mask-image: linear-gradient(to left, rgba(0, 0, 0, 1) 88%, rgba(0, 0, 0, 0));' : ''}
+  ${showLeftGradient ? 'mask-image: linear-gradient(to left, rgba(0, 0, 0, 1) 88%, rgba(0, 0, 0, 0));' : ''}
+
+  /* Fade out, both sides */
+  ${showLeftGradient && showRightGradient ? '-webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1) 6%, rgba(0, 0, 0, 1) 94%, rgba(0, 0, 0, 0));' : ''}
+  ${showLeftGradient && showRightGradient ? 'mask-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1) 6%, rgba(0, 0, 0, 1) 94%, rgba(0, 0, 0, 0));' : ''}
+
+  /* Make the scrollbar not be visible */
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+  ::-webkit-scrollbar {  /* Chrome, Safari and Opera */
+    display: none;
+  }
+`));
 
 const NavPill = styled.button`
   align-items: center;
@@ -337,6 +417,27 @@ const NavPill = styled.button`
   width: 100%;
 
   &:hover { background: ${DesignTokenColors.neutralUI50}; }
+
+  // Button uses mobile styles when $mobile prop is true
+  ${({ $mobile, $active }) => $mobile && `
+    background: ${$active ? DesignTokenColors.primary50 : DesignTokenColors.whiteUI};
+    border: 1px solid ${$active ? DesignTokenColors.primary700 : DesignTokenColors.neutralUI300};
+    border-radius: 12px;
+    color: ${$active ? DesignTokenColors.primary700 : DesignTokenColors.neutralUI700};
+    font-size: 14px;
+    font-weight: ${$active ? 600 : 400};
+    gap: 6px;
+    margin: 0;
+    padding: 2px 12px;
+    white-space: nowrap;
+    width: auto;
+    flex-shrink: 0;
+
+    &:hover {
+      background: ${$active ? DesignTokenColors.primary100 : DesignTokenColors.neutralUI50};
+      border-color: ${$active ? DesignTokenColors.primary700 : DesignTokenColors.neutralUI400};
+    }
+  `}
 `;
 
 const PillIcon = styled.span`
@@ -354,5 +455,9 @@ const SideDivider = styled.div`
 `;
 
 const RightPanel = styled.section`
-  padding-top: 6px;
+  padding-top: 0;
+
+  @media (min-width: 576px) {
+    padding-top: 6px;
+  }
 `;
