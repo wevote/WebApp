@@ -1,8 +1,10 @@
+import { InfoOutlined } from '@mui/icons-material';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
+import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 import OfficeActions from '../../actions/OfficeActions';
 import BallotScrollingContainer from './BallotScrollingContainer';
 import { BallotScrollingOuterWrapper } from '../../common/components/Style/ScrollingStyles';
@@ -16,6 +18,7 @@ import { sortCandidateList } from '../../utils/positionFunctions';
 import { OfficeItemCompressedWrapper, OfficeNameH2 } from '../Style/BallotStyles';
 
 const ShowMoreButtons = React.lazy(() => import(/* webpackChunkName: 'ShowMoreButtons' */ '../Widgets/ShowMoreButtons'));
+const OfficeInfoModal = React.lazy(() => import(/* webpackChunkName: 'OfficeInfoModal' */ './OfficeInfoModal'));
 const NUMBER_OF_CANDIDATES_TO_DISPLAY = 5;
 
 // This is related to components/VoterGuide/VoterGuideOfficeItemCompressed
@@ -29,6 +32,8 @@ class OfficeItemCompressed extends Component {
       candidateListForDisplay: [],
       showAllCandidates: false,
       totalNumberOfCandidates: 0,
+      officeInfoModalOpen: false,
+      moreInfoIconHovered: false,
     };
   }
 
@@ -87,6 +92,22 @@ class OfficeItemCompressed extends Component {
     });
   };
 
+  openOfficeInfoModal = () => {
+    this.setState({ officeInfoModalOpen: true });
+  };
+
+  closeOfficeInfoModal = () => {
+    this.setState({ officeInfoModalOpen: false });
+  };
+
+  handleMoreInfoIconHover = () => {
+    this.setState({ moreInfoIconHovered: true });
+  }
+
+  handleMoreInfoIconLeave = () => {
+    this.setState({ moreInfoIconHovered: false });
+  }
+
   goToCandidateLink (candidateWeVoteId) {
     const { organizationWeVoteId } = this.props;
     const candidateLink = organizationWeVoteId ?
@@ -101,9 +122,10 @@ class OfficeItemCompressed extends Component {
 
     let { ballotItemDisplayName } = this.props;
     const { isFirstBallotItem, officeWeVoteId, primaryParty, useHelpDefeatOrHelpWin } = this.props; // classes
-    const { candidateListLength, showAllCandidates, totalNumberOfCandidates } = this.state;
+    const { candidateListLength, showAllCandidates, totalNumberOfCandidates, moreInfoIconHovered } = this.state;
     ballotItemDisplayName = toTitleCase(ballotItemDisplayName).replace('(Unexpired)', '(Remainder)');
     const moreCandidatesToDisplay = candidateListLength > NUMBER_OF_CANDIDATES_TO_DISPLAY;
+
 
     return (
       <OfficeItemCompressedWrapper>
@@ -116,6 +138,12 @@ class OfficeItemCompressed extends Component {
         />
         <OfficeNameH2>
           {ballotItemDisplayName}
+          <InfoOutlined
+            style={{ color: moreInfoIconHovered ? DesignTokenColors.primary500 : DesignTokenColors.neutral600, cursor: 'pointer', marginLeft: '8px' }}
+            onMouseEnter={this.handleMoreInfoIconHover}
+            onMouseLeave={this.handleMoreInfoIconLeave}
+            onClick={this.openOfficeInfoModal}
+          />
           {!!primaryParty && (
             <PrimaryPartyWrapper>
               {' '}
@@ -141,6 +169,15 @@ class OfficeItemCompressed extends Component {
               showMoreButtonsLink={showAllCandidates ? this.showLessCandidates : this.showAllCandidates}
               showMoreCustomText={showAllCandidates ? 'show fewer candidates' : `show all ${totalNumberOfCandidates} candidates`}
               officeWeVoteId={officeWeVoteId}
+            />
+          </Suspense>
+        )}
+        {this.state.officeInfoModalOpen && (
+          <Suspense fallback={<div>Loading...</div>}>
+            <OfficeInfoModal
+              isOpen={this.state.officeInfoModalOpen}
+              onClose={this.closeOfficeInfoModal}
+              officeName={ballotItemDisplayName}
             />
           </Suspense>
         )}

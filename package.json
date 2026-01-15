@@ -140,6 +140,7 @@
     "googleapis": "^163.0.0",
     "heic-to": "^1.1.14",
     "iframe-resizer-react": "1.1.0",
+    "indefinite": "^2.5.2",
     "jquery": "^3.7.1",
     "keymirror": "~0.1.1",
     "lodash-es": "^4.17.21",
