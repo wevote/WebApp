@@ -60,7 +60,12 @@ class CompleteYourProfileModal extends Component {
   render () {
     renderLog('CompleteYourProfileModal');  // Set LOG_RENDER_EVENTS to log all renders
     const {
-      becomeMember, campaignXWeVoteId, classes, startCampaign, supportCampaign,
+      becomeMember,
+      campaignXWeVoteId,
+      classes,
+      startCampaign,
+      supportCampaign,
+      supportPolitician,
     } = this.props;
 
     const { voter } = this.state;
@@ -74,7 +79,7 @@ class CompleteYourProfileModal extends Component {
       completeProfileTitle = <span>becomeMember</span>;
     } else if (startCampaign) {
       completeProfileTitle = <span>Complete your profile</span>;
-    } else if (supportCampaign) {
+    } else if (supportCampaign || supportPolitician) {
       completeProfileTitle = <span>Complete your support</span>;
     }
     return (
@@ -135,7 +140,6 @@ const styles = () => ({
   },
   dialogRoot: {
     height: '100%',
-    top: '-15%',
     left: '0% !important',
     right: 'unset !important',
     bottom: 'unset !important',
