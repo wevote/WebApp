@@ -52,7 +52,7 @@ import isMobile from '../../utils/isMobile';
 // Lint is not smart enough to know that lazyPreloadPages will not attempt to preload/reload this page
 // eslint-disable-next-line import/no-cycle
 import lazyPreloadPages from '../../utils/lazyPreloadPages';
-import lookupPageNameAndPageTypeDict from '../../utils/lookupPageNameAndPageTypeDict';
+import lookupPageNameAndPageTypeDict, { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
 import mapCategoryFilterType from '../../utils/map-category-filter-type';
 import showBallotDecisionsTabs from '../../utilsApi/showBallotDecisionsTabs';
 import { checkShouldUpdate, formatVoterBallotList } from './utils/ballotUtils';
@@ -362,14 +362,13 @@ class Ballot extends Component {
       navigator.serviceWorker.register('/sw.js');
       window.serviceWorkerLoaded = true;
     }
-    const currentPage = lookupPageNameAndPageTypeDict(currentPathname);
+
     const dataLayerObject = {
-      event: 'landing',
-      pageDetails: {
-        pageName: currentPage.pageName,
-        pageType: currentPage.pageType,
-        pathname: currentPathname,
+      actionDetails: {
+        actionType: 'landing',
       },
+      event: 'landing',
+      pageDetails: getPageDetails(),
       userDetails: VoterStore.getAnalyticsUserDetails(),
     };
     TagManager.dataLayer({ dataLayer: dataLayerObject });
