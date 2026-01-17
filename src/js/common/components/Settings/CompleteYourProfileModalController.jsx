@@ -39,7 +39,7 @@ class CompleteYourProfileModalController extends Component {
   render () {
     renderLog('CompleteYourProfileModalController');  // Set LOG_RENDER_EVENTS to log all renders
 
-    const { becomeMember, campaignXWeVoteId, startCampaign, supportCampaign } = this.props;
+    const { becomeMember, campaignXWeVoteId, startCampaign, supportCampaign, supportPolitician } = this.props;
     const { showCompleteYourProfileModal } = this.state;
     return (
       <div>
@@ -52,6 +52,7 @@ class CompleteYourProfileModalController extends Component {
             show={showCompleteYourProfileModal}
             startCampaign={startCampaign}
             supportCampaign={supportCampaign}
+            supportPolitician={supportPolitician}
           />
         )}
       </div>
