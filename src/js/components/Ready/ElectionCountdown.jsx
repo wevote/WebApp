@@ -14,6 +14,7 @@ import initializeMoment from '../../common/utils/initializeMoment';
 import { renderLog } from '../../common/utils/logging';
 import BallotStore from '../../stores/BallotStore';
 import AppObservableStore from '../../common/stores/AppObservableStore';
+import { pointer } from 'd3-selection';
 
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
 
@@ -169,11 +170,16 @@ class ElectionCountdown extends React.Component {
             onClick={() => this.onClickFunctionLocal()}
           >
             {daysUntilNextElection ? (
-              <>
-                {daysUntilNextElection}
-                <SpaceBetweenNumberAndWord />
-                {daysUntilNextElection === 1 ? 'day' : 'days'}
-              </>
+              <div
+                onClick={() => historyPush('/ballot')}
+                style={{cursor: 'pointer'}}
+                >
+                <>
+                  {daysUntilNextElection}
+                  <SpaceBetweenNumberAndWord />
+                  {daysUntilNextElection === 1 ? 'day' : 'days'}
+                </>
+              </div>
             ) : (
               <div style={{ margin: 26 }}>
                 { showButton ? (
@@ -222,7 +228,12 @@ class ElectionCountdown extends React.Component {
         <div>
           <div>
             <CardTitleToday className="u-cursor--pointer" id="electionCountDownTitle" onClick={() => this.onClickFunctionLocal()}>
-              Voting ends today!
+              <div
+                onClick={() => historyPush('/ballot')}
+                style={{cursor: 'pointer'}}
+              >
+                Voting ends today!
+              </div>
             </CardTitleToday>
           </div>
           <div>
@@ -244,11 +255,16 @@ class ElectionCountdown extends React.Component {
         <div>
           <CardTitleUpcoming id="electionCountDownTitle">
             {daysUntilNextNationalElection ? (
-              <>
-                {daysUntilNextNationalElection}
-                <SpaceBetweenNumberAndWord />
-                {daysUntilNextNationalElection === 1 ? 'day' : 'days'}
-              </>
+              <div
+                onClick={() => historyPush('/ballot')}
+                style={{cursor: 'pointer'}}
+                >
+                <>
+                  {daysUntilNextNationalElection}
+                  <SpaceBetweenNumberAndWord />
+                  {daysUntilNextNationalElection === 1 ? 'day' : 'days'}
+                </>
+              </div>
             ) : (
               <div style={{ margin: 26 }}>
                 <DaysFindingText>
