@@ -14,7 +14,6 @@ import initializeMoment from '../../common/utils/initializeMoment';
 import { renderLog } from '../../common/utils/logging';
 import BallotStore from '../../stores/BallotStore';
 import AppObservableStore from '../../common/stores/AppObservableStore';
-import { pointer } from 'd3-selection';
 
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
 
