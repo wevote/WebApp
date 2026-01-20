@@ -26,9 +26,14 @@ export const CordovaTopOfScreenSpacer = styled('div')`
 `;
 
 function getPaddingTop () {
-  if ((normalizedHrefPage() === 'politicianpage') && AppObservableStore.getShowNotificationBannerAboveHeader() === true) {
-    // In this case we want to start the page content below the NotificationBannerAboveHeader and the top menu
-    // Applies to both WebApp and Cordova
+  // console.log('getPaddingTop AppObservableStore.getShowOfficeBannerAboveHeader()', AppObservableStore.getShowOfficeBannerAboveHeader());
+  // Applies to both WebApp and Cordova
+  if ((normalizedHrefPage() === 'office') && AppObservableStore.getShowOfficeBannerAboveHeader() === true) {
+    // Start the page content below the OfficeBannerAboveHeader and the top menu
+    // Example page: http://localhost:3000/office/wv87off87798?office_intro=1
+    return '400px !important'; // TODO deal with mobile spacing - would be ideal to match mobile & desktop
+  } else if ((normalizedHrefPage() === 'politicianpage') && AppObservableStore.getShowNotificationBannerAboveHeader() === true) {
+    // Start the page content below the NotificationBannerAboveHeader and the top menu
     // Example page: http://localhost:3000/ted-lieu-politician-from-california/-/?show_edit_politician_notice=1
     return '102px !important';
   }
@@ -42,6 +47,7 @@ function getPaddingTop () {
       return `${offs}px !important`;
     }
   }
+  // console.log('getPaddingTop scrollablePaneTopPaddingWebApp:', scrollablePaneTopPaddingWebApp());
   return scrollablePaneTopPaddingWebApp();  // 7/19/25 This is called elsewhere for cordova.  5/14/22 TODO: Refactor this...  Funny that this is no longer used for Cordova, only for the WebApp
 }
 

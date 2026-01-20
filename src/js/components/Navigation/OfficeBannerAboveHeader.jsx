@@ -1,34 +1,19 @@
-import { Edit } from '@mui/icons-material';
-import React, { useCallback, useEffect, useState } from 'react';
+import React from 'react';
 import TagManager from 'react-gtm-module';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
-import lookupPageNameAndPageTypeDict, { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
-import isMobileScreenSize, { isTablet } from '../../common/utils/isMobileScreenSize';
+import { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import VoterStore from '../../stores/VoterStore';
-import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
+import AppObservableStore from '../../common/stores/AppObservableStore';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
-import useVoterCanEditPolitician from '../../hooks/useVoterCanEditPolitician';
-import PoliticianStore from '../../common/stores/PoliticianStore';
-import HeaderLogoImage from './HeaderLogoImage';
-import {WeVoteLogo} from '../Style/SimpleProcessStyles';
+import { WeVoteLogo } from '../Style/SimpleProcessStyles';
 
 const chosenSiteLogoUrl = '../../../img/global/svg-icons/we-vote-icon-square-color.svg';
 
-export default function OfficeBannerAboveHeader() {
-  const voterCanEditPoliticianProfile = useVoterCanEditPolitician();
-  const [politicianWeVoteId, setPoliticianWeVoteId] = useState(AppObservableStore.getPoliticianWeVoteIdBeingViewed());
-
+export default function OfficeBannerAboveHeader () {
   const history = useHistory();
-  const handleBallotButtonClick = () => history.push('/ballot')
-
-  const onAppObservableStoreChange = useCallback(() => {
-    if (AppObservableStore.getPoliticianWeVoteIdBeingViewed()) {
-      setPoliticianWeVoteId(AppObservableStore.getPoliticianWeVoteIdBeingViewed());
-      // console.log('PoliticianSelfEditDrawer onAppObservableStoreChange politicianWeVoteId:', AppObservableStore.getPoliticianWeVoteIdBeingViewed());
-    }
-  }, [setPoliticianWeVoteId]);
+  const handleBallotButtonClick = () => history.push('/ballot');
 
   const closeEditBar = (buttonId) => {
     AppObservableStore.setShowOfficeBannerAboveHeader(false);
@@ -44,47 +29,49 @@ export default function OfficeBannerAboveHeader() {
     TagManager.dataLayer({ dataLayer: dataLayerObject });
   };
 
-  useEffect(() => {
-    const appStateSubscription = messageService.getMessage().subscribe(onAppObservableStoreChange);
-    onAppObservableStoreChange();
-    return () => {
-      setPoliticianWeVoteId('');
-      appStateSubscription.unsubscribe();
-    };
-  }, [onAppObservableStoreChange]);
-
   return (
     <OfficeBannerAboveHeaderContainer>
-      <BannerTextContainer>
-        <div style={{display: "flex", gap: "10px"}}>
-          <WeVoteLogo src={normalizedImagePath(chosenSiteLogoUrl)} className="u-show-desktop-tablet" height="36" width="36" />
-          <BannerIntroTextMobile className="u-show-mobile">Welcome to WeVote, your personalized voter guide!</BannerIntroTextMobile>
-          <BannerIntroTextDesktop className="u-show-desktop-tablet">Welcome to WeVote, your personalized voter guide:</BannerIntroTextDesktop>
-        </div>
-        <BannerElement>
-        {/*{' '}*/}
-          <BannerElementTitle>&#x1F5F3;&ensp; VOTE YOUR VALUES</BannerElementTitle>
-          <BannerElementText>Get personalized ballot recommendations based on your interests and trusted connections.</BannerElementText>
-        </BannerElement>
-        <BannerElement>
-          <BannerElementTitle>&#x1F91D;&ensp; SHARE & MOBILIZE</BannerElementTitle>
-          <BannerElementText>Choose the candidates you support or oppose, and tell your friends.</BannerElementText>
-        </BannerElement>
-        <BannerElement>
-          <BannerElementTitle>&#x1F50D;&ensp; SIMPLIFY VOTING</BannerElementTitle>
-          <BannerElementText>Use clear, nonpartisan tools to understand your ballot and take action confidently.</BannerElementText>
-        </BannerElement>
-      </BannerTextContainer>
-      <VerticalCenter className="u-show-desktop-tablet"><VerticalLine/></VerticalCenter>
+      <OfficeBannerMainColumn>
+        <BannerTextContainer>
+          <div style={{ display: 'flex', gap: '10px' }}>
+            <WeVoteLogo src={normalizedImagePath(chosenSiteLogoUrl)} className="u-show-desktop-tablet" height="36" width="36" />
+            <BannerIntroTextMobile className="u-show-mobile">Welcome to WeVote!</BannerIntroTextMobile>
+            <BannerIntroTextDesktop className="u-show-desktop-tablet">Welcome to WeVote, your personalized voter guide:</BannerIntroTextDesktop>
+          </div>
+          <BannerElement>
+            <BannerElementTitle>
+              <BannerEmoji>&#x1F5F3;&ensp;</BannerEmoji>
+              VOTE YOUR VALUES
+            </BannerElementTitle>
+            <BannerElementText className="u-show-mobile">Get personalized ballot recommendations.</BannerElementText>
+            <BannerElementText className="u-show-desktop-tablet">Get personalized ballot recommendations based on your interests and trusted connections.</BannerElementText>
+          </BannerElement>
+          <BannerElement>
+            <BannerElementTitle>
+              <BannerEmoji>&#x1F91D;&ensp;</BannerEmoji>
+              SHARE & MOBILIZE
+            </BannerElementTitle>
+            <BannerElementText className="u-show-mobile">Choose the candidates you support or oppose, and tell your friends.</BannerElementText>
+            <BannerElementText className="u-show-desktop-tablet">Choose the candidates you support or oppose, and tell your friends.</BannerElementText>
+          </BannerElement>
+          <BannerElement>
+            <BannerElementTitle>
+              <BannerEmoji>&#x1F50D;&ensp;</BannerEmoji>
+              SIMPLIFY VOTING
+            </BannerElementTitle>
+            <BannerElementText className="u-show-mobile">Uunderstand your ballot and take action confidently.</BannerElementText>
+            <BannerElementText className="u-show-desktop-tablet">Use clear, nonpartisan tools to understand your ballot and take action confidently.</BannerElementText>
+          </BannerElement>
+        </BannerTextContainer>
+      </OfficeBannerMainColumn>
+      <VerticalCenter className="u-show-desktop-tablet"><VerticalLine /></VerticalCenter>
       <ButtonHolder>
         <BallotButton onClick={handleBallotButtonClick}>
-          <BannerIntroTextMobile className="u-show-mobile">View your full ballot</BannerIntroTextMobile>
+          <BannerIntroTextMobile className="u-show-mobile">View full ballot</BannerIntroTextMobile>
           <BannerIntroTextDesktop className="u-show-desktop-tablet">View your full ballot to get started</BannerIntroTextDesktop>
         </BallotButton>
       </ButtonHolder>
-      <ButtonHolder>
-        <CloseButton id="closeOfficeBanner" onClick={() => closeEditBar('closeOfficeBanner')}>✕</CloseButton>
-      </ButtonHolder>
+      <CloseButton id="closeOfficeBanner" onClick={() => closeEditBar('closeOfficeBanner')}>✕</CloseButton>
     </OfficeBannerAboveHeaderContainer>
   );
 }
@@ -116,11 +103,14 @@ const BannerElementText = styled.div`
 `;
 
 const BannerElementTitle = styled.div`
-  font-weight: 500;
-  margin-bottom: 2px;
-  margin-left: 1em;
+  display: flex;
+  align-items: center;
+  font-weight: 600;
 `;
 
+const BannerEmoji = styled.div`
+  font-size: 22px;
+`;
 const BannerIntroTextDesktop = styled('span')`
   font-size: 18px;
   font-weight: 500;
@@ -129,11 +119,13 @@ const BannerIntroTextDesktop = styled('span')`
 `;
 
 const BannerIntroTextMobile = styled('span')`
+  font-size: 16px;
+  font-weight: 500;
 `;
 
 const BannerTextContainer = styled.div`
   display: flex;
-  gap: 12px;
+  gap: 4px;
   flex-wrap: wrap;
   flex-direction: column;
   align-items: flex-start;
@@ -141,6 +133,8 @@ const BannerTextContainer = styled.div`
 `;
 
 const ButtonHolder = styled.div`
+  display: flex;
+  align-items: center;
 `;
 
 const CloseButton = styled.button`
@@ -149,30 +143,27 @@ const CloseButton = styled.button`
   color: ${DesignTokenColors.whiteUI};
   cursor: pointer;
   font-size: 20px;
-  margin-left: 16px;
+  padding: 8px 0;
 
   display: flex;
   flex-direction: row;
   justify-content: center;
-
-  @media (max-width: 600px) {
-    order: 2;
-    margin-left: 8px;
-  }
 `;
 
 const OfficeBannerAboveHeaderContainer = styled.div`
-  ${() => (!isMobileScreenSize() || isTablet() ? '' : 'flex-direction: column;')};
-  ${() => (!isMobileScreenSize() || isTablet() ? '' : 'align-items: center;')};
   background: ${DesignTokenColors.secondary800};
   color: ${DesignTokenColors.whiteUI};
   display: flex;
+  max-width: 960px;
+`;
+
+const OfficeBannerMainColumn = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
   font-size: 14px;
   max-width: 960px;
-  margin-left: -16px;
-  margin-right: -16px;
-  padding: 8px 16px;
-  width: 100vw;
+  padding: 8px 8px;
 `;
 
 const VerticalCenter = styled.div`
