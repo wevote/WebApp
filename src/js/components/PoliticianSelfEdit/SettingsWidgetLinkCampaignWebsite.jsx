@@ -2,12 +2,15 @@ import { FormControl, TextField } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import TagManager from 'react-gtm-module';
 import styled from 'styled-components';
 import PoliticianActions from '../../common/actions/PoliticianActions';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import { prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../common/utils/cordovaUtils';
 import { renderLog } from '../../common/utils/logging';
 import PoliticianStore from '../../common/stores/PoliticianStore';
+import { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
+import VoterStore from '../../stores/VoterStore';
 
 const delayBeforeApiUpdateCall = 2000;
 const delayBeforeRemovingSavedStatus = 4000;
@@ -58,7 +61,18 @@ class SettingsWidgetLinkCampaignWebsite extends Component {
       const { campaignWebsite } = this.state;
       // console.log('SettingsWidgetLinkCampaignWebsite handleKeyPressCampaignWebsite campaignWebsite:', campaignWebsite, ', politicianWeVoteId:', politicianWeVoteId);
       PoliticianActions.politicianCampaignWebsiteSave(politicianWeVoteId, campaignWebsite);
-      this.setState({ campaignWebsiteSavedStatus: 'Saved' });
+      this.setState({ campaignWebsiteSavedStatus: 'Saved' }, () => {
+        const dataLayerObject = {
+          event: 'action',
+          actionDetails: {
+            actionType: 'save',
+            buttonId: 'SaveCampaignWebsite',
+          },
+          userDetails: VoterStore.getAnalyticsUserDetails(),
+          pageDetails: getPageDetails(),
+        };
+        TagManager.dataLayer({ dataLayer: dataLayerObject });
+      });
     }, delayBeforeApiUpdateCall);
   }
 
