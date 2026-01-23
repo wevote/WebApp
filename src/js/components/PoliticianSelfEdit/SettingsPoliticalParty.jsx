@@ -48,6 +48,9 @@ const SettingsPoliticalParty = ({ politicianWeVoteId }) => {
       pageDetails: getPageDetails(),
 
     };
+    if (politicianWeVoteId) {
+      dataLayerObject.politicianDetails = PoliticianStore.getAnalyticsPoliticianDetails(politicianWeVoteId);
+    }
     TagManager.dataLayer({ dataLayer: dataLayerObject });
   };
 
