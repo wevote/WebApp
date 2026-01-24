@@ -43,7 +43,7 @@ const desktopBrowserSpecs = [
     '../specs/CandidatesPage.browser.js',
     '../specs/VerifyCount.browser.js',
     '../specs/WhosRunningForOffice.browser.js',
-     '../specs/CandidateDetailsPage.browser.js',
+     '../specs/CandidateDetailsPage.browser.js'
 
 ];
 
