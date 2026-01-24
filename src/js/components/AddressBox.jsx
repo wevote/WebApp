@@ -141,6 +141,7 @@ class AddressBox extends Component {
       actionDetails: {
         actionType: 'save',
         buttonId,
+        searchKeyword: textForMapSearch,
       },
       event: 'action',
       pageDetails: getPageDetails(),
