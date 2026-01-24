@@ -24,25 +24,25 @@ const mobileBrowserSpecs = [
     '../specs/BallotPage.browser.js',
     '../specs/CandidatesPage.browser.js',
     '../specs/VerifyCount.browser.js',
-    '../specs/WhosRunningForOffice.browser.js'
+    '../specs/WhosRunningForOffice.browser.js',
+    '../specs/CandidateDetailsPage.browser.js'
 ];
 
 const desktopBrowserSpecs = [
-     '../specs/DiscussPage.browser.js',
-     '../specs/FAQPage.browser.js',
-     '../specs/PrivacyPage.browser.js',
-     '../specs/ReadyPage.browser.js',
-     '../specs/TermsPage.browser.js',
-     '../specs/TopNavigation.browser.js',
-     '../specs/TopicsPage.browser.js',
-     '../specs/HowItWorks.browser.js',
-     '../specs/FooterLinks.browser.js',
-     '../specs/SignInPage.browser.js',
-     '../specs/BallotPage.browser.js',
-     '../specs/CandidatesPage.browser.js',
-     '../specs/CandidateDetailsPage.browser.js',
-     '../specs/VerifyCount.browser.js',
-     '../specs/WhosRunningForOffice.browser.js'
+    '../specs/DiscussPage.browser.js',
+    '../specs/FAQPage.browser.js',
+    '../specs/PrivacyPage.browser.js',
+    '../specs/ReadyPage.browser.js',
+    '../specs/TermsPage.browser.js',
+    '../specs/TopNavigation.browser.js',
+    '../specs/TopicsPage.browser.js',
+    '../specs/HowItWorks.browser.js',
+    '../specs/FooterLinks.browser.js',
+    '../specs/SignInPage.browser.js',
+    '../specs/BallotPage.browser.js',
+    '../specs/CandidatesPage.browser.js',
+    '../specs/VerifyCount.browser.js',
+    '../specs/WhosRunningForOffice.browser.js'
 
 ];
 
