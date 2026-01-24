@@ -28,20 +28,21 @@ const mobileBrowserSpecs = [
 ];
 
 const desktopBrowserSpecs = [
-    '../specs/DiscussPage.browser.js',
-    '../specs/FAQPage.browser.js',
-    '../specs/PrivacyPage.browser.js',
-    '../specs/ReadyPage.browser.js',
-    '../specs/TermsPage.browser.js',
-    '../specs/TopNavigation.browser.js',
-    '../specs/TopicsPage.browser.js',
-    '../specs/HowItWorks.browser.js',
-    '../specs/FooterLinks.browser.js',
-    '../specs/SignInPage.browser.js',
-    '../specs/BallotPage.browser.js',
-    '../specs/CandidatesPage.browser.js',
-    '../specs/VerifyCount.browser.js',
-    '../specs/WhosRunningForOffice.browser.js'
+     '../specs/DiscussPage.browser.js',
+     '../specs/FAQPage.browser.js',
+     '../specs/PrivacyPage.browser.js',
+     '../specs/ReadyPage.browser.js',
+     '../specs/TermsPage.browser.js',
+     '../specs/TopNavigation.browser.js',
+     '../specs/TopicsPage.browser.js',
+     '../specs/HowItWorks.browser.js',
+     '../specs/FooterLinks.browser.js',
+     '../specs/SignInPage.browser.js',
+     '../specs/BallotPage.browser.js',
+     '../specs/CandidatesPage.browser.js',
+     '../specs/CandidateDetailsPage.browser.js',
+     '../specs/VerifyCount.browser.js',
+     '../specs/WhosRunningForOffice.browser.js'
 
 ];
 
@@ -50,7 +51,7 @@ const desktopBrowserSpecs = [
 //cordova capabilities
 let cordovaCapabilities = [];
 try {
-  const data = readFileSync(path.join(__dirname, '../capabilities/cordova_mobile_devices1.json'), { encoding: 'utf8' });
+  const data = readFileSync(path.join(__dirname, '../capabilities/cordova_mobile_devices.json'), { encoding: 'utf8' });
   cordovaCapabilities = JSON.parse(data);
   cordovaCapabilities.forEach(cap => {
     // read app urls from browserstack.config, Check the platform and assign the correct URL
@@ -69,7 +70,7 @@ try {
 let mobileBrowserCapabilities = [];
 try {
   const data = readFileSync(
-    path.join(__dirname, '../capabilities/browser_mobile_devices1.json'),
+    path.join(__dirname, '../capabilities/browser_mobile_devices.json'),
     { encoding: 'utf8' }
   );
   mobileBrowserCapabilities = JSON.parse(data);
