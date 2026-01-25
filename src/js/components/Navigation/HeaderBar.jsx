@@ -286,6 +286,7 @@ class HeaderBar extends Component {
       case 'more/donate': return 5;
       case 'more':
       case 'managecandidates': return 99;
+      case 'no-candidates-claimed': return 99;
       default: return false;
     }
   };
@@ -380,6 +381,9 @@ class HeaderBar extends Component {
           more.css(highlight);
           break;
         case 'managecandidates':
+          more.css(highlight);
+          break;
+        case 'no-candidates-claimed':
           more.css(highlight);
           break;
         case 'more':
@@ -590,8 +594,8 @@ class HeaderBar extends Component {
                     {nextReleaseFeaturesEnabled && (
                       <StyledMoreMenuItem
                         id="HeaderBarCandidatesManaging"
-                        selected={['manage', 'managecandidates'].includes(normalizedHrefPage())}
-                        onClick={this.navTo('/managecandidates', 99)}
+                        selected={['manage', 'managecandidates', 'no-candidates-claimed'].includes(normalizedHrefPage())}
+                        onClick={this.navTo('/no-candidates-claimed', 99)}
                         disableRipple
                       >
                         Candidates I&apos;m managing
