@@ -127,16 +127,6 @@ class AddFriendsByEmail extends Component {
     });
   };
 
-  possibleAppReview () {
-    if (window?.AppRate) {
-      const doReview = checkForAppReview('ADDFRIEND');
-      const { AppRate: { promptForRating } } = window;
-      if (doReview) {
-        promptForRating();
-      }
-    }
-  }
-
   addFriendsByEmailSubmit = (event) => {
     // This function is called when the next button is submitted;
     // console.log('Entering function addFriendsByEmailSubmit');
@@ -215,6 +205,16 @@ class AddFriendsByEmail extends Component {
     this.setState({
       friendLastName,
     });
+  }
+
+  possibleAppReview () {
+    if (window?.AppRate) {
+      const doReview = checkForAppReview('ADDFRIEND');
+      const { AppRate: { promptForRating } } = window;
+      if (doReview) {
+        promptForRating();
+      }
+    }
   }
 
   friendInvitationByEmailSend (e) {
