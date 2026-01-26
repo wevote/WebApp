@@ -222,7 +222,7 @@ class App extends Component {
     }
 
     if (isCordova()) {
-      console.log(`Cordova:   window.device ${JSON.stringify(window.device)}`);
+      // console.log(`Cordova:   window.device ${JSON.stringify(window.device)}`);
       console.log(`Cordova:   Header, isIOS ${hasDynamicIsland()}, heightOfCordovaSpacer ${heightOfCordovaSpacer()}), hasCordovaNotch ${hasCordovaNotch()}`);
     }
 
