@@ -11,7 +11,7 @@ import AppObservableStore, { messageService } from '../../common/stores/AppObser
 import { isIOS } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
 import { normalizedHref } from '../../common/utils/hrefUtils';
-import { isAndroid } from '../../common/utils/isCordovaOrWebApp';
+import { isAndroid, isCordova } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import stringContains from '../../common/utils/stringContains';
@@ -177,7 +177,7 @@ class FooterBar extends React.Component {
   }
 
   handleChange = (event, value) => {
-    if (isIOS()) {
+    if (isCordova()) {
       const { impact } = window.TapticEngine;
       impact({
         style: 'heavy', // light | medium | heavy

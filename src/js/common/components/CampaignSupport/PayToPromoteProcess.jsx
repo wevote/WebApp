@@ -236,6 +236,12 @@ class PayToPromoteProcess extends Component {
     //     <LoadingWheelComp />
     //   );
     // }
+    /*
+    TODO:  Jan 16, 2026 -- Add in the ReviewAppModal.jsx (see ItemActionBar.js as an example)
+      https://wevoteusa.atlassian.net/browse/WV-887
+      We want this to be invoked AFTER they make the donation, so it is not practical to stub this in today.
+    */
+
     if (!loaded) {
       return (
         <LoadingWheelComp message="Waiting..." />

@@ -1,16 +1,19 @@
 import { Alert, Box, Button, CircularProgress, TextField } from '@mui/material';
-import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
+import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
+import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
 import apiCalming from '../../common/utils/apiCalming';
 import { blurTextFieldAndroid, focusTextFieldAndroid } from '../../common/utils/cordovaUtils';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
+import { checkForAppReview } from '../../utils/appReviewFunctions';
 import { validatePhoneOrEmail } from '../../utils/regex-checks';
+import ReviewAppModal from '../ReviewApps/ReviewAppModal';
 
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
 const SignInOptionsPanel = React.lazy(() => import(/* webpackChunkName: 'SignInOptionsPanel' */ '../../common/components/SignIn/SignInOptionsPanel'));
@@ -36,6 +39,7 @@ class AddFriendsByEmail extends Component {
       onFriendInvitationsSentStep: false,
       senderEmailAddress: '',
       senderEmailAddressError: false,
+      showNegativeModal: false,
       voterIsSignedIn: false,
     };
     this.emailInputRef = React.createRef();
@@ -50,6 +54,7 @@ class AddFriendsByEmail extends Component {
     });
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+    this.appStateSubscription = messageService.getMessage().subscribe((token) => this.onAppObservableStoreChange(token));
     if (apiCalming('friendListsAll', 30000)) {
       FriendActions.friendListsAll();
       FriendActions.friendListInvitationsWaitingForVerification();
@@ -62,6 +67,7 @@ class AddFriendsByEmail extends Component {
   componentWillUnmount () {
     this.friendStoreListener.remove();
     this.voterStoreListener.remove();
+    this.appStateSubscription.unsubscribe();
   }
 
   onKeyDown = (event) => {
@@ -103,11 +109,31 @@ class AddFriendsByEmail extends Component {
     });
   }
 
+  onAppObservableStoreChange (token) {
+    const tokenText = token ? token.text : '';
+    const showNegativeModalFromMessage = tokenText.includes('showNegativeFeedbackModal') && tokenText.includes('ADDFRIEND');
+    const showingNegativeFeedbackModal = AppObservableStore.getShowingNegativeFeedbackModal();
+    const { showNegativeModal } = this.state;
+    if (!showNegativeModal && !showingNegativeFeedbackModal && showNegativeModalFromMessage) {
+      this.setState({
+        showNegativeModal: true,
+      });
+    }
+  }
+
   cacheAddFriendsByEmailMessage = (e) => {
     this.setState({
       messageToFriend: e.target.value,
     });
   };
+
+  possibleAppReview () {
+    const doReview = checkForAppReview('ADDFRIEND');
+    const { AppRate: { promptForRating } } = window;
+    if (doReview) {
+      promptForRating();
+    }
+  }
 
   addFriendsByEmailSubmit = (event) => {
     // This function is called when the next button is submitted;
@@ -131,6 +157,7 @@ class AddFriendsByEmail extends Component {
       });
       this.friendInvitationByEmailSend(event);
     }
+    this.possibleAppReview();
   };
 
   cacheIncomingEmailsOrPhones = (event) => {
@@ -243,8 +270,10 @@ class AddFriendsByEmail extends Component {
       incomingEmailsOrPhonesString, invitationEmailsAlreadyScheduledStepFromApi, loading,
       messageToFriend,
       numberOfMessagesSent, onEnterEmailAddressesStep, onFriendInvitationsSentStep,
-      senderEmailAddressError, successMessageToShowVoter, voterIsSignedIn,
+      senderEmailAddressError, showNegativeModal, successMessageToShowVoter, voterIsSignedIn,
     } = this.state;
+    const initialEmail = VoterStore.getVoterEmail();
+    const showingNegativeFeedbackModal = AppObservableStore.getShowingNegativeFeedbackModal();
 
     if (loading) {
       return (
@@ -269,6 +298,10 @@ class AddFriendsByEmail extends Component {
             {successMessageToShowVoter}
           </Alert>
         )}
+        {showNegativeModal && !showingNegativeFeedbackModal && (
+          <ReviewAppModal initialEmail={initialEmail} />
+        )}
+
         {((onFriendInvitationsSentStep || (numberOfMessagesSent > 0)) && voterIsSignedIn) && (
           <Alert severity="success">
             {numberOfMessagesSent ? (
@@ -407,7 +440,7 @@ class AddFriendsByEmail extends Component {
                         <Button
                           color="primary"
                           classes={{ root: classes.sendButton }}
-                          disabled={emailsOrPhonesBrokenString || friendContactInfoArray.length === 0}
+                          disabled={emailsOrPhonesBrokenString.length > 0 || friendContactInfoArray.length === 0}
                           id={uniqueExternalId ? `friendsNextButton-${uniqueExternalId}` : 'friendsNextButton'}
                           onClick={this.addFriendsByEmailSubmit}
                           onKeyDown={this.onKeyDown}

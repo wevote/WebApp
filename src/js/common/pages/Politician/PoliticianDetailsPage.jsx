@@ -77,9 +77,7 @@ class PoliticianDetailsPage extends Component {
       ballotpediaPoliticianUrl: '',
       chosenWebsiteName: '',
       finalElectionDateInPast: false,
-      // inPrivateLabelMode: false,
       loadSlow: false,
-      // officeHeldList: [],
       opponentCandidateList: [],
       opponentCandidatesToShowCount: 5,
       payToPromoteStepCompleted: false,
@@ -95,7 +93,6 @@ class PoliticianDetailsPage extends Component {
       showMobileViewUpcomingBallot: false,
       stateText: '',
       step2Completed: false,
-      // supporterEndorsementsWithText: [],
       voterCanEditThisPolitician: false,
       wikipediaUrl: '',
       politicianStateParsedFromURLBeforeLoad: '',
@@ -116,8 +113,8 @@ class PoliticianDetailsPage extends Component {
       politicianNameParsedFromURLBeforeLoad: name,
     });
     // console.log('componentDidMount politicianSEOFriendlyPathFromUrl: ', politicianSEOFriendlyPathFromUrl, ', politicianWeVoteId: ', politicianWeVoteId);
-    this.onAppObservableStoreChange();
-    this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
+    this.onAppObservableStoreChange('');    // Jan 2025, is this line necessary?
+    this.appStateSubscription = messageService.getMessage().subscribe((token) => this.onAppObservableStoreChange(token));
     this.campaignSupporterStoreListener = CampaignSupporterStore.addListener(this.onCampaignSupporterStoreChange.bind(this));
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
     this.officeHeldStoreListener = OfficeHeldStore.addListener(this.onOfficeHeldStoreChange.bind(this));

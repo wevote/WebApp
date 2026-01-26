@@ -15,7 +15,7 @@ import SupportActions from '../../../actions/SupportActions';
 import VoterActions from '../../../actions/VoterActions';
 import DesignTokenColors from '../../../common/components/Style/DesignTokenColors';
 import { openSnackbar } from '../../../common/components/Widgets/SnackNotifier';
-import AppObservableStore from '../../../common/stores/AppObservableStore';
+import AppObservableStore, { messageService } from '../../../common/stores/AppObservableStore';
 import PoliticianStore from '../../../common/stores/PoliticianStore';
 import convertToInteger from '../../../common/utils/convertToInteger';
 import isMobileScreenSize from '../../../common/utils/isMobileScreenSize';
@@ -28,8 +28,10 @@ import VoterConstants from '../../../constants/VoterConstants';
 import CandidateStore from '../../../stores/CandidateStore';
 import SupportStore from '../../../stores/SupportStore';
 import VoterStore from '../../../stores/VoterStore';
+import { checkForAppReview } from '../../../utils/appReviewFunctions';
 import lookupPageNameAndPageTypeDict, { getPageDetails } from '../../../utils/lookupPageNameAndPageTypeDict';
 import PositionPublicToggle from '../../PositionItem/PositionPublicToggle';
+import ReviewAppModal from '../../ReviewApps/ReviewAppModal';
 import PositionStatementModal from '../PositionStatementModal'; // eslint-disable-line import/no-cycle
 import ShareButtonDropDown from '../ShareButtonDropdown';
 
@@ -51,6 +53,7 @@ class ItemActionBar extends PureComponent {
       isSupportLocalState: undefined,
       numberOfOpposePositionsForScore: 0,
       numberOfSupportPositionsForScore: 0,
+      showNegativeModal: false,
       transitioning: false,
       voterTextStatement: undefined,
       voterTextStatementOpened: false, // TODO Setting this to true crashes the app
@@ -61,6 +64,7 @@ class ItemActionBar extends PureComponent {
     this.isOpposeCalculated = this.isOpposeCalculated.bind(this);
     this.isSupportCalculated = this.isSupportCalculated.bind(this);
     // this.onScroll = this.onScroll.bind(this);
+    this.possibleAppReview = this.possibleAppReview.bind(this);
     this.opposeButton = this.opposeButton.bind(this);
     this.opposeItem = this.opposeItem.bind(this);
     this.supportButton = this.supportButton.bind(this);
@@ -71,6 +75,7 @@ class ItemActionBar extends PureComponent {
   componentDidMount () {
     // console.log('ItemActionBar, NEW componentDidMount');
     const { ballotItemWeVoteId, politicianWeVoteId } = this.props;
+    this.appStateSubscription = messageService.getMessage().subscribe((token) => this.onAppObservableStoreChange(token));
     // console.log('ItemActionBar, NEW componentDidMount ballotItemWeVoteId:', ballotItemWeVoteId);
     if (ballotItemWeVoteId || politicianWeVoteId) {
       const isCandidate = stringContains('cand', ballotItemWeVoteId); // isCandidate = the default
@@ -152,6 +157,7 @@ class ItemActionBar extends PureComponent {
   componentWillUnmount () {
     // window.removeEventListener('scroll', this.onScroll);
     this.supportStoreListener.remove();
+    this.appStateSubscription.unsubscribe();
   }
 
   onNewBallotItemWeVoteId () {
@@ -260,6 +266,18 @@ class ItemActionBar extends PureComponent {
           voterPositionIsPublic,
         });
       }
+    }
+  }
+
+  onAppObservableStoreChange (token) {
+    const tokenText = token ? token.text : '';
+    const showNegativeModalFromMessage = tokenText.includes('showNegativeFeedbackModal') && tokenText.includes('ITEM');
+    const showingNegativeFeedbackModal = AppObservableStore.getShowingNegativeFeedbackModal();
+    const { showNegativeModal } = this.state;
+    if (!showNegativeModal && !showingNegativeFeedbackModal && showNegativeModalFromMessage) {
+      this.setState({
+        showNegativeModal: true,
+      });
     }
   }
 
@@ -621,6 +639,14 @@ class ItemActionBar extends PureComponent {
     return this.isOpposeCalculated() || this.isSupportCalculated() || this.state.voterTextStatement || this.state.voterTextStatementOpened;
   }
 
+  possibleAppReview () {
+    const doReview = checkForAppReview('ITEM');
+    const { AppRate: { promptForRating } } = window;
+    if (doReview) {
+      promptForRating();
+    }
+  }
+
   supportItem () {
     const { politicianWeVoteId } = this.props;
     const { ballotItemType, ballotItemWeVoteId, transitioning } = this.state;
@@ -645,10 +671,8 @@ class ItemActionBar extends PureComponent {
     }
     // If the logic in this function decides to, show the "Sign in to save your choices" modal
     this.showChooseOrOpposeIntroModalDecision();
-
-    // Add console.log to verify we reach this point
+    this.possibleAppReview();
     console.log('About to push to dataLayer in supportItem');
-
     const isSignedIn = VoterStore.getVoterIsSignedIn();
     const dataLayerObject = {
       actionDetails: {
@@ -684,6 +708,7 @@ class ItemActionBar extends PureComponent {
       return;
     }
 
+    this.possibleAppReview();
     SupportActions.voterStopSupportingSave(ballotItemWeVoteId, ballotItemType, politicianWeVoteId);
     this.setState({
       transitioning: true,
@@ -716,6 +741,7 @@ class ItemActionBar extends PureComponent {
     // If the logic in this function decides to, show the "Sign in to save your choices" modal
     this.showChooseOrOpposeIntroModalDecision();
 
+    this.possibleAppReview();
     SupportActions.voterOpposingSave(ballotItemWeVoteId, ballotItemType, politicianWeVoteId);
     this.setState({
       transitioning: true,
@@ -735,6 +761,7 @@ class ItemActionBar extends PureComponent {
       return;
     }
 
+    this.possibleAppReview();
     SupportActions.voterStopOpposingSave(ballotItemWeVoteId, ballotItemType, politicianWeVoteId);
     this.setState({
       transitioning: true,
@@ -760,13 +787,12 @@ class ItemActionBar extends PureComponent {
     renderLog('ItemActionBar ItemActionBar.jsx');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('ItemActionBar render');
     const {
-      buttonsOnly, commentButtonHide, commentButtonHideInMobile,
-      hideSupportYes, hideOpposeNo, politicianWeVoteId, useHelpDefeatOrHelpWin, useSupportWording,
+      buttonsOnly, commentButtonHide, commentButtonHideInMobile, hideSupportYes, hideOpposeNo,
+      politicianWeVoteId, useHelpDefeatOrHelpWin, useSupportWording,
     } = this.props;
     const {
-      ballotItemType, ballotItemWeVoteId, helpWinOrDefeatModalOpen,
-      isOpposeAPIState, isSupportAPIState,
-      numberOfOpposePositionsForScore, numberOfSupportPositionsForScore,
+      ballotItemType, ballotItemWeVoteId, helpWinOrDefeatModalOpen, isOpposeAPIState, isSupportAPIState,
+      numberOfOpposePositionsForScore, numberOfSupportPositionsForScore, showNegativeModal,
       voterPositionIsPublic, voterTextStatementOpened,
     } = this.state;
 
@@ -914,6 +940,9 @@ class ItemActionBar extends PureComponent {
     // console.log('ItemActionBar buttonsOnly:', buttonsOnly);
     const showPositionPublicToggle = !this.props.hidePositionPublicToggle && this.isAnyEndorsementCalculated();
     // console.log('showPositionPublicToggle:', showPositionPublicToggle);
+    const initialEmail = VoterStore.getVoterEmail();
+    const showingNegativeFeedbackModal = AppObservableStore.getShowingNegativeFeedbackModal();
+
     return (
       <>
         <ItemActionBarWrapper
@@ -925,6 +954,9 @@ class ItemActionBar extends PureComponent {
           onBlur={handleLeaveHoverLocalArea}
           positionPublicToggleWrapAllowed={this.props.positionPublicToggleWrapAllowed}
         >
+          {showNegativeModal && !showingNegativeFeedbackModal && (
+            <ReviewAppModal initialEmail={initialEmail} />
+          )}
           <ButtonGroup
             className={`${!this.props.shareButtonHide ? ' u-push--sm' : ''}`}
             positionPublicToggleWrapAllowed={this.props.positionPublicToggleWrapAllowed}
@@ -1158,7 +1190,7 @@ const styles = (theme) => ({
     marginTop: '-2px',
   },
   buttonIconDoneSelected: {
-    color: `${DesignTokenColors.confirmation300}`, 
+    color: `${DesignTokenColors.confirmation300}`,
     fontSize: 22,
     fontWeight: 'bold',
     marginRight: '.3rem',

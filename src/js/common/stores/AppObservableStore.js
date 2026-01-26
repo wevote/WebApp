@@ -95,8 +95,15 @@ const nonFluxState = {
   voterBallotItemsRetrieveHasBeenCalled: false,
   voterExternalIdHasBeenSavedOnce: {}, // Dict with externalVoterId and membershipOrganizationWeVoteId as keys, and true/false as value
   voterFirstRetrieveInitiated: false,
+
+  // Asynchronous negative feedback modal state:
+  askedVoterToReviewApp: false,
+  negativeFeedbackPage: 'NONE',
+  showingNegativeFeedbackModal: false,
+  showNegativeFeedbackModal: 'NONE',
 };
 
+const negativeFeedbackPages = ['CAMPAIGN', 'POLITICAL', 'POSITION', 'ADDFRIEND', 'ITEM', 'NONE'];
 
 export default {
   blockCampaignXRedirectOnSignIn () {
@@ -109,6 +116,10 @@ export default {
 
   getActivityTidbitWeVoteIdForDrawer () {
     return nonFluxState.activityTidbitWeVoteIdForDrawer;
+  },
+
+  getAskedVoterToReviewApp () {
+    return nonFluxState.askedVoterToReviewApp;
   },
 
   getCampaignXWeVoteIdBeingViewed () {
@@ -183,6 +194,10 @@ export default {
     return nonFluxState.politicianWeVoteIdBeingViewed;
   },
 
+  getShowingNegativeFeedbackModal () {
+    return nonFluxState.showingNegativeFeedbackModal;
+  },
+
   getShowClaimProfileWithEmailModal () {
     return nonFluxState.showClaimProfileWithEmailModal;
   },
@@ -253,6 +268,10 @@ export default {
 
   getHostname () {
     return nonFluxState.hostname || '';
+  },
+
+  getNegativeFeedbackPage () {
+    return nonFluxState.negativeFeedbackPage;
   },
 
   getOrganizationModalBallotItemWeVoteId () {
@@ -385,7 +404,6 @@ export default {
     const { hostname } = window.location;
     const hostnameLowerCase = (hostname) ? hostname.toLowerCase() : '';
     const hostnameFiltered = hostnameLowerCase.replace('www.', '');
-    // console.log('----------------------', hostname);
     return hostnameFiltered === 'wevote.us' ||
       hostnameFiltered === 'quality.wevote.us' ||
       hostnameFiltered === 'localhost' ||
@@ -436,6 +454,11 @@ export default {
     messageService.sendMessage('state updated activityTidbitWeVoteIdForDrawerAndOpen');
   },
 
+  setAskedVoterToReviewApp (ask) {
+    nonFluxState.askedVoterToReviewApp = ask;
+    messageService.sendMessage('state updated askedVoterToReviewApp');
+  },
+
   setGlobalVariableState (globalVariableName, newState) {
     nonFluxState[globalVariableName] = newState;
     messageService.sendMessage(`state updated ${globalVariableName}`);
@@ -471,6 +494,11 @@ export default {
   setPoliticianWeVoteIdBeingViewed (politicianWeVoteId) {
     nonFluxState.politicianWeVoteIdBeingViewed = politicianWeVoteId;
     messageService.sendMessage('state updated politicianWeVoteIdBeingViewed');
+  },
+
+  setShowingNegativeFeedbackModal (show) {
+    nonFluxState.showingNegativeFeedbackModal = show;
+    // messageService.sendMessage('state updated showingNegativeFeedbackModal');
   },
 
   setShowClaimProfileWithEmailModal (show) {
@@ -629,6 +657,19 @@ export default {
   setShowAskFriendsModal (show) {
     nonFluxState.showAskFriendsModal = show;
     messageService.sendMessage('state updated showAskFriendsModal');
+  },
+
+  setShowNegativeFeedbackModal (show) {
+    nonFluxState.showNegativeFeedbackModal = show;
+    messageService.sendMessage(`state updated showNegativeFeedbackModal on ${show}`);
+  },
+
+  setNegativeFeedbackPage (source) {
+    if (!negativeFeedbackPages.includes(source)) {
+      throw new TypeError('Invalid value for negativeFeedbackPage');
+    }
+    nonFluxState.negativeFeedbackPage = source;
+    // to stop a message cascade, removed: messageService.sendMessage(`state updated negativeFeedbackPage for page ${source}`);
   },
 
   setShowChallengeThanksForJoining (show) {
@@ -803,6 +844,12 @@ export default {
   showAskFriendsModal () {
     return nonFluxState.showAskFriendsModal;
   },
+
+  // returns one of the page enumerations
+  showNegativeFeedbackModal () {
+    return nonFluxState.showNegativeFeedbackModal;
+  },
+
   showBallotChoicesAndSettingsModal () {
     return nonFluxState.showBallotChoicesAndSettingsModal;
   },
