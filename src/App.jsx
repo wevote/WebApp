@@ -90,6 +90,7 @@ const Location = React.lazy(() => import(/* webpackChunkName: 'Location' */ './j
 const ManageMyCandidatesLanding = React.lazy(() => import(/* webpackChunkName: 'ManageMyCandidatesLanding' */ './js/pages/ManageMyCandidates/ManageMyCandidatesLanding'));
 const Measure = React.lazy(() => import(/* webpackChunkName: 'Measure' */ './js/pages/Ballot/Measure'));
 const News = React.lazy(() => import(/* webpackChunkName: 'News' */ './js/pages/Activity/News'));
+const NoCandidatesClaimed = React.lazy(() => import(/* webpackChunkName: 'NoClaimedCandidates' */ './js/pages/ManageMyCandidates/NoCandidatesClaimed'));
 const Office = React.lazy(() => import(/* webpackChunkName: 'Office' */ './js/pages/Ballot/Office'));
 const Opinions2020 = React.lazy(() => import(/* webpackChunkName: 'Opinions2020' */ './js/pages/Opinions2020'));
 const OpinionsFollowed = React.lazy(() => import(/* webpackChunkName: 'OpinionsFollowed' */ './js/pages/OpinionsFollowed'));
@@ -745,6 +746,7 @@ class App extends Component {
                   <Route path="/wevoteintro/network" component={IntroNetwork} />
                   <Route path="/wevoteintro/newfriend/:invitationSecretKey" component={FriendIntroLanding} />
                   <Route path="/yourpage" component={YourPage} />
+                  <Route path="/no-candidates-claimed" component={NoCandidatesClaimed} />
                   <Route path="/:twitter_handle/ballot/election/:google_civic_election_id" component={TwitterHandleLanding} />
                   <Route path="/:twitter_handle/ballot/election/:google_civic_election_id/:view_mode" component={TwitterHandleLanding} />
                   <Route path="/:twitter_handle/ballot/empty" component={TwitterHandleLanding} />
