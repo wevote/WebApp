@@ -640,10 +640,12 @@ class ItemActionBar extends PureComponent {
   }
 
   possibleAppReview () {
-    const doReview = checkForAppReview('ITEM');
-    const { AppRate: { promptForRating } } = window;
-    if (doReview) {
-      promptForRating();
+    if (window?.AppRate) {
+      const doReview = checkForAppReview('ITEM');
+      const { AppRate: { promptForRating } } = window;
+      if (doReview) {
+        promptForRating();
+      }
     }
   }
 

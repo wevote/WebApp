@@ -128,10 +128,12 @@ class AddFriendsByEmail extends Component {
   };
 
   possibleAppReview () {
-    const doReview = checkForAppReview('ADDFRIEND');
-    const { AppRate: { promptForRating } } = window;
-    if (doReview) {
-      promptForRating();
+    if (window?.AppRate) {
+      const doReview = checkForAppReview('ADDFRIEND');
+      const { AppRate: { promptForRating } } = window;
+      if (doReview) {
+        promptForRating();
+      }
     }
   }
 

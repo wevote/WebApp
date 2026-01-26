@@ -130,10 +130,12 @@ const VoterPositionEntryAndDisplay = ({ classes, externalUniqueId, politicianWeV
   }, [onAppObservableStoreChange]);
 
   const possibleAppReview = () => {
-    const doReview = checkForAppReview('POSITION');
-    const { AppRate: { promptForRating } } = window;
-    if (doReview) {
-      promptForRating();
+    if (window?.AppRate) {
+      const doReview = checkForAppReview('POSITION');
+      const { AppRate: { promptForRating } } = window;
+      if (doReview) {
+        promptForRating();
+      }
     }
   };
 
