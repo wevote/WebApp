@@ -2,12 +2,15 @@ import { FormControl, TextField } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import TagManager from 'react-gtm-module';
 import styled from 'styled-components';
 import PoliticianActions from '../../common/actions/PoliticianActions';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import { prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../common/utils/cordovaUtils';
 import { renderLog } from '../../common/utils/logging';
+import { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
 import PoliticianStore from '../../common/stores/PoliticianStore';
+import VoterStore from '../../stores/VoterStore';
 
 const delayBeforeApiUpdateCall = 2000;
 const delayBeforeRemovingSavedStatus = 4000;
@@ -58,7 +61,21 @@ class SettingsWidgetPoliticianName extends Component {
       const { politicianName } = this.state;
       // console.log('SettingsWidgetPoliticianName handleKeyPressPoliticianName politicianName:', politicianName, ', politicianWeVoteId:', politicianWeVoteId);
       PoliticianActions.politicianNameSave(politicianWeVoteId, politicianName);
-      this.setState({ politicianNameSavedStatus: 'Saved' });
+      this.setState({ politicianNameSavedStatus: 'Saved' }, () => {
+        const dataLayerObject = {
+          event: 'action',
+          actionDetails: {
+            actionType: 'save',
+            buttonId: 'SavePoliticianName',
+          },
+          userDetails: VoterStore.getAnalyticsUserDetails(),
+          pageDetails: getPageDetails(),
+        };
+        if (politicianWeVoteId) {
+          dataLayerObject.politicianDetails = PoliticianStore.getAnalyticsPoliticianDetails(politicianWeVoteId);
+        }
+        TagManager.dataLayer({ dataLayer: dataLayerObject });
+      });
     }, delayBeforeApiUpdateCall);
   }
 

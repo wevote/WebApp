@@ -1,9 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import TagManager from 'react-gtm-module';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 import PoliticianActions from '../../common/actions/PoliticianActions';
 import PoliticianStore from '../../common/stores/PoliticianStore';
+import VoterStore from '../../stores/VoterStore';
+import { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
 
 const delayBeforeSavingToAPI = 1500;
 const delayBeforeShowingSavedStatus = 3000;
@@ -33,6 +36,25 @@ const SettingsPoliticalParty = ({ politicianWeVoteId }) => {
   const clearStatusTimer = useRef(null);
   const savingStatusTimer = useRef(null);
 
+  const sendGTMDataLayer = ({ buttonId, actionType = 'save' }) => {
+    // const destinationPage = lookupPageNameAndPageTypeDict(destinationPath);
+    const dataLayerObject = {
+      event: 'action',
+      actionDetails: {
+        actionType,
+        buttonId,
+      },
+      userDetails: VoterStore.getAnalyticsUserDetails(),
+      pageDetails: getPageDetails(),
+
+    };
+    if (politicianWeVoteId) {
+      dataLayerObject.politicianDetails = PoliticianStore.getAnalyticsPoliticianDetails(politicianWeVoteId);
+    }
+    TagManager.dataLayer({ dataLayer: dataLayerObject });
+  };
+
+
   const updatePoliticalPartyCustom = (event) => {
     const politicalPartyValue = event.target.value;
     if (event.target.name === 'politicalPartyCustom') {
@@ -49,6 +71,7 @@ const SettingsPoliticalParty = ({ politicianWeVoteId }) => {
       clearStatusTimer.current = setTimeout(() => {
         // After some time, show that the data was saved
         setSavedStatus('Saved');
+        sendGTMDataLayer({ buttonId: 'politicalPartyCustom' });
       }, delayBeforeShowingSavedStatus);
     }
   };
@@ -67,6 +90,7 @@ const SettingsPoliticalParty = ({ politicianWeVoteId }) => {
         // After some time, show that the data was saved
         clearStatusTimer.current = setTimeout(() => {
           setSavedStatus('Saved');
+          sendGTMDataLayer({ buttonId: 'politicalPartySelect' });
         }, delayBeforeShowingSavedStatus);
       }
     }
