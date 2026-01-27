@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 import EditInvitationModal from '../../components/More/EditInvitationModal';
 import EnterOneByOneModal from '../../components/More/EnterOneByOneModal';
-import { ImportInviteIcon } from '../../components/More/ImportInviteIcon';
+import { StyledImportInviteIcon } from '../../components/More/ImportInviteIcon';
 import PasteListModal from '../../components/More/PasteListModal';
 import PreviewInvitationModal from '../../components/More/PreviewInvitationModal';
 import UploadCSVModal from '../../components/More/UploadCSVModal';
@@ -196,13 +196,13 @@ Thanks for your help!`);
         </MobileInviteActions>
       </MobileInviteContainer>
 
-      <HorizontalDivider className="u-show-mobile"/>
+      <HorizontalDivider className="u-show-mobile" />
 
       {/* Mobile import section */}
       <MobileImportSection className="u-show-mobile">
         {importedVoters.length === 0 && (
           <EmptyVotersText>
-            <span>You don't have any voters to invite yet.</span>
+            <span>You don&apos;t have any voters to invite yet.</span>
             <span>Import your voter list using an option below to get started.</span>
           </EmptyVotersText>
         )}
@@ -238,10 +238,12 @@ Thanks for your help!`);
                 <ImportOptionLabel>Paste list</ImportOptionLabel>
               </ImportOptionWrapper>
               <ImportOptionWrapper>
-                <ImportOptionButton type="button" onClick={() => {
-                  setShowEnterOne(true);
-                  setMobileImportDropdown(false);
-                }}>
+                <ImportOptionButton type="button"
+                  onClick={() => {
+                    setShowEnterOne(true);
+                    setMobileImportDropdown(false);
+                  }}
+                >
                   <PersonIcon />
                 </ImportOptionButton>
                 <ImportOptionLabel>Enter one-by-one</ImportOptionLabel>
@@ -692,13 +694,4 @@ const RightGroup = styled.div`
   display: flex;
   gap: 8px;
   justify-content: flex-start;
-`;
-
-const StyledImportInviteIcon = styled(ImportInviteIcon)`
-  align-items: center;
-  color: inherit;
-  display: inline-flex;
-  height: 24px;
-  justify-content: center;
-  width: 24px;
 `;

@@ -6,9 +6,9 @@ import { useHistory, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 import PoliticianStore from '../../common/stores/PoliticianStore';
+import { ImportInviteIcon } from '../../components/More/ImportInviteIcon';
 import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import VoterStore from '../../stores/VoterStore';
-import ImportInviteIcon from '../../components/More/ImportInviteIcon';
 
 
 const PoliticiansManagedController = React.lazy(() => import('../../components/PoliticiansManaged/PoliticiansManagedController'));
@@ -36,6 +36,7 @@ export default function ManageMyCandidatesLanding () {
     { we_vote_id: 'cand_3', politician_name: 'Kateryna Dough' },
   ]), []);
 
+  // eslint-disable-next-line no-unused-vars
   const [politiciansToManage, setPoliticiansToManage] = useState(demoPoliticians); // Place demoPoliticians in useState to use dummy data, otherwise place: []
   const [selectedPoliticianWeVoteId, setSelectedPoliticianWeVoteId] = useState('');
 

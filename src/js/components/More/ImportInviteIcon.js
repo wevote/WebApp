@@ -1,11 +1,11 @@
 import React from 'react';
+import styled from 'styled-components';
 
 // Import & invite icon
 
 /* eslint-disable  react/prop-types */
 /* eslint-disable   react/jsx-props-no-spreading */
-// eslint-disable-next-line import/prefer-default-export
-export const ImportInviteIcon = ({ size = 22, title = 'Import & invite', ...props }) => (
+const ImportInviteIcon = ({ size = 22, title = 'Import & invite', ...props }) => (
   <svg
     width={size}
     height={size}
@@ -23,3 +23,14 @@ export const ImportInviteIcon = ({ size = 22, title = 'Import & invite', ...prop
     />
   </svg>
 );
+
+const StyledImportInviteIcon = styled(ImportInviteIcon)`
+  align-items: center;
+  color: inherit;
+  display: inline-flex;
+  height: 24px;
+  justify-content: center;
+  width: 24px;
+`;
+
+export { StyledImportInviteIcon, ImportInviteIcon };
