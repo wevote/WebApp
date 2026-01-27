@@ -2,6 +2,8 @@ import React from 'react';
 
 // Import & invite icon
 
+/* eslint-disable  react/prop-types */
+/* eslint-disable   react/jsx-props-no-spreading */
 // eslint-disable-next-line import/prefer-default-export
 export const ImportInviteIcon = ({ size = 22, title = 'Import & invite', ...props }) => (
   <svg
