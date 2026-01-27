@@ -146,8 +146,8 @@ const SettingsPoliticalParty = ({ politicianWeVoteId }) => {
       {selectedParty === enterYourOwnPartyText && (
         <CustomWrapper>
           <Input
-            id="customPartyInput"
-            name="politicalPartyCustom"
+            id="politicalPartyCustom"
+            name="customPartyInput"
             type="text"
             value={customParty}
             placeholder="Type your party name..."

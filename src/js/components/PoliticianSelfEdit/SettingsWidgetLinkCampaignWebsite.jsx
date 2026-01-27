@@ -49,7 +49,7 @@ class SettingsWidgetLinkCampaignWebsite extends Component {
     }
   }
 
-  handleKeyPressCampaignWebsite () {
+  handleKeyPressCampaignWebsite (buttonId) {
     const { politicianWeVoteId } = this.props;
     if (this.campaignWebsiteTimer) clearTimeout(this.campaignWebsiteTimer);
     if (this.props.voterHasMadeChangesFunction) {
@@ -66,7 +66,7 @@ class SettingsWidgetLinkCampaignWebsite extends Component {
           event: 'action',
           actionDetails: {
             actionType: 'save',
-            buttonId: 'SaveCampaignWebsite',
+            buttonId,
           },
           userDetails: VoterStore.getAnalyticsUserDetails(),
           pageDetails: getPageDetails(),
@@ -124,13 +124,14 @@ class SettingsWidgetLinkCampaignWebsite extends Component {
     if (!politician) {
       return LoadingWheel;
     }
-
+    const campaignWebsiteID = `linkCampaignWebsite-${externalUniqueId}`;
     return (
       <form
         onSubmit={(e) => {
           e.preventDefault();
         }}
       >
+
         <span>
           <Row>
             <ColumnFullWidth>
@@ -141,10 +142,10 @@ class SettingsWidgetLinkCampaignWebsite extends Component {
                   label="Campaign Website"
                   margin="dense"
                   variant="outlined"
-                  id={`linkCampaignWebsite-${externalUniqueId}`}
+                  id={campaignWebsiteID}
                   name="campaignWebsite"
                   placeholder="Campaign Website"
-                  onKeyDown={this.handleKeyPressCampaignWebsite}
+                  onKeyDown={this.handleKeyPressCampaignWebsite(campaignWebsiteID)}
                   onChange={this.updateCampaignWebsite}
                   value={campaignWebsite}
                 />

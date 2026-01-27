@@ -47,8 +47,7 @@ class SettingsWidgetPoliticianStatement extends Component {
     }
   }
 
-  handleSavePoliticianStatement (e) {
-    e.preventDefault();
+  handleSavePoliticianStatement (buttonId) {
     const { politicianWeVoteId } = this.props;
     const { politicianStatement } = this.state;
 
@@ -63,7 +62,7 @@ class SettingsWidgetPoliticianStatement extends Component {
         event: 'action',
         actionDetails: {
           actionType: 'save',
-          buttonId: 'SavePoliticianStatement',
+          buttonId,
         },
         userDetails: VoterStore.getAnalyticsUserDetails(),
         pageDetails: getPageDetails(),
@@ -122,9 +121,13 @@ class SettingsWidgetPoliticianStatement extends Component {
     if (!politician) {
       return LoadingWheel;
     }
-
+    const politicianStatementID = `official-statement-${externalUniqueId}`;
     return (
-      <form onSubmit={this.handleSavePoliticianStatement}>
+      <form
+      onSubmit={(e) => {
+        e.preventDefault();
+      }}
+      >
         <span>
           <Row>
             <ColumnFullWidth>
@@ -133,7 +136,7 @@ class SettingsWidgetPoliticianStatement extends Component {
                   autoComplete="given-name"
                   // className={classes.input}
                   fullWidth
-                  id={`official-statement-${externalUniqueId}`}
+                  id={politicianStatementID}
                   label="Official Statement"
                   margin="dense"
                   multiline
@@ -155,6 +158,7 @@ class SettingsWidgetPoliticianStatement extends Component {
                   variant="contained"
                   color="primary"
                   type="submit"
+                  onClick={() => this.handleSavePoliticianStatement(politicianStatementID)}
                   disabled={!hasUnsavedChanges}
                   className={classes.saveButton}
                 >
