@@ -1,24 +1,14 @@
+import { CheckCircle as CheckIcon, Close as CloseIcon, ContentCopy as CopyIcon, Edit as EditIcon, Facebook as FacebookIcon, FileUpload as UploadIcon, PersonOutline as PersonIcon, Visibility as EyeIcon, X as XIcon } from '@mui/icons-material';
 import React, { Suspense, useCallback, useRef, useState } from 'react';
-import {createPortal} from 'react-dom';
+import { createPortal } from 'react-dom';
 import styled from 'styled-components';
-import {
-  Edit as EditIcon,
-  ContentCopy as CopyIcon,
-  Visibility as EyeIcon,
-  Facebook as FacebookIcon,
-  X as XIcon,
-  FileUpload as UploadIcon,
-  CheckCircle as CheckIcon,
-  Close as CloseIcon,
-  PersonOutline as PersonIcon } from '@mui/icons-material';
-import { ImportInviteIcon } from '../ManageMyCandidates/ManageMyCandidatesLanding';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
-
 import EditInvitationModal from '../../components/More/EditInvitationModal';
+import EnterOneByOneModal from '../../components/More/EnterOneByOneModal';
+import { ImportInviteIcon } from '../../components/More/ImportInviteIcon';
 import PasteListModal from '../../components/More/PasteListModal';
 import PreviewInvitationModal from '../../components/More/PreviewInvitationModal';
 import UploadCSVModal from '../../components/More/UploadCSVModal';
-import EnterOneByOneModal from '../../components/More/EnterOneByOneModal';
 
 const ImportedVotersList = React.lazy(() => import('../../components/PoliticiansManaged/ImportedVotersList'));
 
