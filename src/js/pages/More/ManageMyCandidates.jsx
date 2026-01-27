@@ -68,6 +68,7 @@ Thanks for your help!`);
     notify('Invitation updated.', true);
   };
 
+  // TODO:  This is defined in 3 places in the Web App, it should be moved to a common utility location and wrapped in a function that does the test
   const emailRE = /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i;
 
   // const handleInviteSelected = useCallback((rows) => {
