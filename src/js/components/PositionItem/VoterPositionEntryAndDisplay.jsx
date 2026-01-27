@@ -74,24 +74,20 @@ const VoterPositionEntryAndDisplay = ({ classes, externalUniqueId, politicianWeV
     // Track modal close event only when user closes without submitting (e.g., clicking X button)
     // When closing after successful submission, pass false to avoid duplicate tracking
     if (showEditModal && isClosedWithoutSubmitting) {
-      let stanceLabel = 'Not sure yet';
-      if (selectedStance === 'SUPPORT') {
-        stanceLabel = 'Supporting';
-      } else if (selectedStance === 'OPPOSE') {
-        stanceLabel = 'Opposing';
-      }
-
+      const closeButtonId = `closeModalDisplayTemplateBeditPosition-${politicianWeVoteId}-${externalUniqueId}`;
       const dataLayerObject = {
-        event: 'opinion_modal_closed',
+        event: 'action',
         pageDetails: getPageDetails(),
         userDetails: VoterStore.getAnalyticsUserDetails(),
         actionDetails: {
-          stance: stanceLabel,
-          hasOpinionText: statementText.trim() !== '',
-          politicianName,
+          action: 'close',
+          componentName: 'VoterPositionEntryAndDisplay',
+          buttonId: closeButtonId,
         },
       };
-
+      if (politicianWeVoteId) {
+        dataLayerObject.politicianDetails = PoliticianStore.getAnalyticsPoliticianDetails(politicianWeVoteId);
+      }
       TagManager.dataLayer({ dataLayer: dataLayerObject });
     }
 
@@ -282,16 +278,24 @@ const VoterPositionEntryAndDisplay = ({ classes, externalUniqueId, politicianWeV
     }
 
     const dataLayerObject = {
-      event: 'opinion_submitted',
+      event: 'action',
       pageDetails: getPageDetails(),
       userDetails: VoterStore.getAnalyticsUserDetails(),
       actionDetails: {
-        stance: stanceLabel,
-        hasOpinionText: statementText.trim() !== '',
-        politicianName,
+        actionType: 'save',
+        buttonId: 'positionEntrySave',
+        componentName: 'VoterPositionEntryAndDisplay',
+      },
+      positionDetails: {
+        positionStance: stanceLabel,
+        hasPositionStatement: statementText.trim() !== '',
+        isPublic: visibilityIsPublic,
+        positionWeVoteId: position.position_we_vote_id || null, // null for new positions; TODO: capture after API save
       },
     };
-
+    if (politicianWeVoteId) {
+      dataLayerObject.politicianDetails = PoliticianStore.getAnalyticsPoliticianDetails(politicianWeVoteId);
+    }
     TagManager.dataLayer({ dataLayer: dataLayerObject });
 
     SupportActions.voterPositionCommentSave(ballotItemWeVoteId, kindOfBallotItem, politicianWeVoteId, statementText, selectedStance, visibilitySetting);
@@ -548,6 +552,7 @@ const VoterPositionEntryAndDisplay = ({ classes, externalUniqueId, politicianWeV
         show={showEditModal}
         textFieldJSX={editPositionModalJSX}
         toggleModal={toggleEditModalLocal}
+        externalUniqueId={`editPosition-${politicianWeVoteId}-${externalUniqueId}`}
       />
       <ModalDisplayTemplateB
         dialogTitleJSX={<>{deleteConfirmationModalTitleText}</>}
