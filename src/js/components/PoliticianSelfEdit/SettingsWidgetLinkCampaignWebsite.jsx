@@ -145,7 +145,7 @@ class SettingsWidgetLinkCampaignWebsite extends Component {
                   id={campaignWebsiteID}
                   name="campaignWebsite"
                   placeholder="Campaign Website"
-                  onKeyDown={this.handleKeyPressCampaignWebsite(campaignWebsiteID)}
+                  onKeyDown={() => this.handleKeyPressCampaignWebsite(campaignWebsiteID)}
                   onChange={this.updateCampaignWebsite}
                   value={campaignWebsite}
                 />

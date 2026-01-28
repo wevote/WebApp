@@ -145,7 +145,7 @@ class SettingsWidgetPoliticianName extends Component {
                   id={politicianNameID}
                   name="politicianName"
                   placeholder="Candidate Name for Ballot"
-                  onKeyDown={this.handleKeyPressPoliticianName(politicianNameID)}
+                  onKeyDown={() => this.handleKeyPressPoliticianName(politicianNameID)}
                   onChange={this.updatePoliticianName}
                   value={politicianName}
                 />
