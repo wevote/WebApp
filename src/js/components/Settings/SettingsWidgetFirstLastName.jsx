@@ -2,6 +2,7 @@ import { FormControl, TextField } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import TagManager from 'react-gtm-module';
 import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
 import OrganizationActions from '../../actions/OrganizationActions';
@@ -13,6 +14,7 @@ import { renderLog } from '../../common/utils/logging';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';
 import { isSpeakerTypeOrganization } from '../../utils/organization-functions';
+import { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
 
 const delayBeforeApiUpdateCall = 2000;
 const delayBeforeRemovingSavedStatus = 4000;
@@ -84,7 +86,7 @@ class SettingsWidgetFirstLastName extends Component {
     }, delayBeforeApiUpdateCall);
   }
 
-  handleKeyPressVoterName () {
+  handleKeyPressVoterName (buttonID) {
     if (this.voterNameTimer) clearTimeout(this.voterNameTimer);
     if (this.props.voterHasMadeChangesFunction) {
       this.props.voterHasMadeChangesFunction();
@@ -93,7 +95,18 @@ class SettingsWidgetFirstLastName extends Component {
     if (this.voterNameTimer) clearTimeout(this.voterNameTimer);
     this.voterNameTimer = setTimeout(() => {
       VoterActions.voterNameSave(this.state.firstName, this.state.lastName);
-      this.setState({ voterNameSavedStatus: 'Saved' });
+      this.setState({ voterNameSavedStatus: 'Saved' }, () => {
+        const dataLayerObject = {
+          event: 'action',
+          actionDetails: {
+            actionType: 'save',
+            buttonID,
+          },
+          userDetails: VoterStore.getAnalyticsUserDetails(),
+          pageDetails: getPageDetails(),
+        };
+        TagManager.dataLayer({ dataLayer: dataLayerObject });
+      });
     }, delayBeforeApiUpdateCall);
   }
 
@@ -216,6 +229,8 @@ class SettingsWidgetFirstLastName extends Component {
       voterNameSavedStatus,
     } = this.state;
     const { classes, displayOnly = false, externalUniqueId } = this.props;
+    const fistNameID = `first-name-${externalUniqueId}`;
+    const lastNameID = `last-name-${externalUniqueId}`;
 
     return (
       <div className="">
@@ -283,10 +298,10 @@ class SettingsWidgetFirstLastName extends Component {
                               margin="dense"
                               variant="outlined"
                               autoComplete="given-name"
-                              id={`first-name-${externalUniqueId}`}
+                              id={fistNameID}
                               name="firstName"
                               placeholder="First Name"
-                              onKeyDown={this.handleKeyPressVoterName}
+                              onKeyDown={() => this.handleKeyPressVoterName(fistNameID)}
                               onChange={this.updateVoterName}
                               value={firstName}
                             />
@@ -300,10 +315,10 @@ class SettingsWidgetFirstLastName extends Component {
                               margin="dense"
                               variant="outlined"
                               autoComplete="family-name"
-                              id={`last-name-${externalUniqueId}`}
+                              id={lastNameID}
                               name="lastName"
                               placeholder="Last Name"
-                              onKeyDown={this.handleKeyPressVoterName}
+                              onKeyDown={() => this.handleKeyPressVoterName(lastNameID)}
                               onChange={this.updateVoterName}
                               value={lastName}
                             />
