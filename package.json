@@ -93,7 +93,7 @@
     "eslint-plugin-storybook": "^0.6.15",
     "eslint-plugin-wdio": "^8.24.12",
     "eslint-webpack-plugin": "^2.4.3",
-    "express": "^5.0.0-beta.3",
+    "express": "^5.2.1",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.6.0",
     "jsdom": "^23.0.1",
@@ -110,7 +110,7 @@
     "webpack": "^5.101.3",
     "webpack-bundle-analyzer": "^4.10.2",
     "webpack-cli": "^6.0.1",
-    "webpack-dev-server": "^5.2.2",
+    "webpack-dev-server": "^5.2.3",
     "webpack-shell-plugin-next": "^2.3.3"
   },
   "dependencies": {
@@ -137,7 +137,7 @@
     "fs-extra": "^10.0.0",
     "gapi-script": "github:wevote/gapi-script",
     "glob": "^9.0.0",
-    "googleapis": "^163.0.0",
+    "googleapis": "^170.1.0",
     "heic-to": "^1.1.14",
     "iframe-resizer-react": "1.1.0",
     "indefinite": "^2.5.2",
