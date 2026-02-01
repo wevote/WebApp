@@ -229,7 +229,7 @@ class SettingsWidgetFirstLastName extends Component {
       voterNameSavedStatus,
     } = this.state;
     const { classes, displayOnly = false, externalUniqueId } = this.props;
-    const fistNameID = `first-name-${externalUniqueId}`;
+    const firstNameID = `first-name-${externalUniqueId}`;
     const lastNameID = `last-name-${externalUniqueId}`;
 
     return (
@@ -298,10 +298,10 @@ class SettingsWidgetFirstLastName extends Component {
                               margin="dense"
                               variant="outlined"
                               autoComplete="given-name"
-                              id={fistNameID}
+                              id={firstNameID}
                               name="firstName"
                               placeholder="First Name"
-                              onKeyDown={() => this.handleKeyPressVoterName(fistNameID)}
+                              onKeyDown={() => this.handleKeyPressVoterName(firstNameID)}
                               onChange={this.updateVoterName}
                               value={firstName}
                             />
