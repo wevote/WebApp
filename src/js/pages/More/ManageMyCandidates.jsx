@@ -1,24 +1,14 @@
+import { CheckCircle as CheckIcon, Close as CloseIcon, ContentCopy as CopyIcon, Edit as EditIcon, Facebook as FacebookIcon, FileUpload as UploadIcon, PersonOutline as PersonIcon, Visibility as EyeIcon, X as XIcon } from '@mui/icons-material';
 import React, { Suspense, useCallback, useRef, useState } from 'react';
-import {createPortal} from 'react-dom';
+import { createPortal } from 'react-dom';
 import styled from 'styled-components';
-import {
-  Edit as EditIcon,
-  ContentCopy as CopyIcon,
-  Visibility as EyeIcon,
-  Facebook as FacebookIcon,
-  X as XIcon,
-  FileUpload as UploadIcon,
-  CheckCircle as CheckIcon,
-  Close as CloseIcon,
-  PersonOutline as PersonIcon } from '@mui/icons-material';
-import { ImportInviteIcon } from '../ManageMyCandidates/ManageMyCandidatesLanding';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
-
 import EditInvitationModal from '../../components/More/EditInvitationModal';
+import EnterOneByOneModal from '../../components/More/EnterOneByOneModal';
+import { StyledImportInviteIcon } from '../../components/More/ImportInviteIcon';
 import PasteListModal from '../../components/More/PasteListModal';
 import PreviewInvitationModal from '../../components/More/PreviewInvitationModal';
 import UploadCSVModal from '../../components/More/UploadCSVModal';
-import EnterOneByOneModal from '../../components/More/EnterOneByOneModal';
 
 const ImportedVotersList = React.lazy(() => import('../../components/PoliticiansManaged/ImportedVotersList'));
 
@@ -78,6 +68,7 @@ Thanks for your help!`);
     notify('Invitation updated.', true);
   };
 
+  // TODO:  This is defined in 3 places in the Web App, it should be moved to a common utility location and wrapped in a function that does the test
   const emailRE = /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i;
 
   // const handleInviteSelected = useCallback((rows) => {
@@ -206,13 +197,13 @@ Thanks for your help!`);
         </MobileInviteActions>
       </MobileInviteContainer>
 
-      <HorizontalDivider className="u-show-mobile"/>
+      <HorizontalDivider className="u-show-mobile" />
 
       {/* Mobile import section */}
       <MobileImportSection className="u-show-mobile">
         {importedVoters.length === 0 && (
           <EmptyVotersText>
-            <span>You don't have any voters to invite yet.</span>
+            <span>You don&apos;t have any voters to invite yet.</span>
             <span>Import your voter list using an option below to get started.</span>
           </EmptyVotersText>
         )}
@@ -248,10 +239,12 @@ Thanks for your help!`);
                 <ImportOptionLabel>Paste list</ImportOptionLabel>
               </ImportOptionWrapper>
               <ImportOptionWrapper>
-                <ImportOptionButton type="button" onClick={() => {
-                  setShowEnterOne(true);
-                  setMobileImportDropdown(false);
-                }}>
+                <ImportOptionButton type="button"
+                  onClick={() => {
+                    setShowEnterOne(true);
+                    setMobileImportDropdown(false);
+                  }}
+                >
                   <PersonIcon />
                 </ImportOptionButton>
                 <ImportOptionLabel>Enter one-by-one</ImportOptionLabel>
@@ -702,13 +695,4 @@ const RightGroup = styled.div`
   display: flex;
   gap: 8px;
   justify-content: flex-start;
-`;
-
-const StyledImportInviteIcon = styled(ImportInviteIcon)`
-  align-items: center;
-  color: inherit;
-  display: inline-flex;
-  height: 24px;
-  justify-content: center;
-  width: 24px;
 `;

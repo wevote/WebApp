@@ -195,7 +195,7 @@ export function getApplicationViewBooleans (pathname) {
     showFooterBar = false;
   // ///////// EXCLUDE: The following are URLS we want to specifically exclude (because otherwise they will be picked up in a broader pattern in the next branch
   } else if (pathnameLowerCase.startsWith('/-') || // Shared item
-      stringContains('/b/btdb', pathnameLowerCase) ||
+      (stringContains('/b/btdb', pathnameLowerCase) && !pathnameLowerCase.startsWith('/measure')) ||
       ((pathnameLowerCase === '/about') && !isSEOFriendlyURL(pathnameLowerCase)) ||
       (pathnameLowerCase === '/for-campaigns') ||
       (pathnameLowerCase === '/for-organizations') ||
