@@ -147,7 +147,7 @@ const SettingsPoliticalParty = ({ politicianWeVoteId }) => {
         <CustomWrapper>
           <Input
             id="politicalPartyCustom"
-            name="customPartyInput"
+            name="politicalPartyCustom"
             type="text"
             value={customParty}
             placeholder="Type your party name..."
