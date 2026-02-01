@@ -49,7 +49,7 @@ class SettingsWidgetPoliticianName extends Component {
     }
   }
 
-  handleKeyPressPoliticianName () {
+  handleKeyPressPoliticianName (buttonId) {
     const { politicianWeVoteId } = this.props;
     if (this.politicianNameTimer) clearTimeout(this.politicianNameTimer);
     if (this.props.voterHasMadeChangesFunction) {
@@ -66,7 +66,7 @@ class SettingsWidgetPoliticianName extends Component {
           event: 'action',
           actionDetails: {
             actionType: 'save',
-            buttonId: 'SavePoliticianName',
+            buttonId,
           },
           userDetails: VoterStore.getAnalyticsUserDetails(),
           pageDetails: getPageDetails(),
@@ -124,7 +124,7 @@ class SettingsWidgetPoliticianName extends Component {
     if (!politician) {
       return LoadingWheel;
     }
-
+    const politicianNameID = `politicianName-${externalUniqueId}`;
     return (
       <form
         onSubmit={(e) => {
@@ -142,10 +142,10 @@ class SettingsWidgetPoliticianName extends Component {
                   margin="dense"
                   variant="outlined"
                   autoComplete="given-name"
-                  id={`politicianName-${externalUniqueId}`}
+                  id={politicianNameID}
                   name="politicianName"
                   placeholder="Candidate Name for Ballot"
-                  onKeyDown={this.handleKeyPressPoliticianName}
+                  onKeyDown={() => this.handleKeyPressPoliticianName(politicianNameID)}
                   onChange={this.updatePoliticianName}
                   value={politicianName}
                 />
