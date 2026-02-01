@@ -26,6 +26,7 @@ import VoterStore from './js/stores/VoterStore';
 import initializeFacebookSDK from './js/utils/initializeFacebookSDK';
 import RouterV5SendMatch from './js/utils/RouterV5SendMatch';
 import flashCursorClickListener from './js/common/utils/flashCursorClickListener';
+import patchHistoryForFlashCursor from './js/common/utils/patchHistoryForFlashCursor';
 // importRemoveCordovaListenersToken1  -- Do not remove this line!
 
 // Root URL pages
@@ -230,6 +231,7 @@ class App extends Component {
     this.bypass2FA();
 
     if (AppObservableStore.getFlashCursorEnabled()) {
+      patchHistoryForFlashCursor(global.weVoteGlobalHistory, { isEnabled: true, delayMs: 500 });
       this.detatchCursorListener = flashCursorClickListener();
     }
   }
