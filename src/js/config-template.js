@@ -37,9 +37,11 @@ module.exports = {
   LOG_ONLY_FIRST_RENDER_EVENTS: false,
   LOG_HTTP_REQUESTS: false,
   LOG_ROUTING: false,
-  LOG_SIGNIN_STEPS: false,  // oAuthLog function prints to console
+  LOG_SIGNIN_STEPS: false,           // oAuthLog function prints to console
   LOG_CORDOVA_OFFSETS: false,
-  SHOW_CORDOVA_URL_FIELD: false,  // Only needed for debugging in Cordova
+  LOG_CORDOVA_KEYBOARD_HIDING: false,
+  LOG_TO_CLOUD_WATCH: false,
+  SHOW_CORDOVA_URL_FIELD: false,
 
   // Use 1 or 0 as opposed to true or false
   test: {
@@ -68,4 +70,9 @@ module.exports = {
   OPEN_REPLAY_PROJECT_KEY: '',
   OPEN_REPLAY_INGEST_POINT: 'https://openreplay.wevote.us/ingest',
   STRIPE_API_KEY: 'pk_test_bWuWGC3jrMIFH3wvRvHR6Z5H',  // This is the publishable key (not secret)
+
+  // Reviews in Cordova to the App Store or Play Store
+  REVIEW_USES_UNTIL_PROMPT: 3,           // Use the app n times before prompting for a review
+  REVIEW_DELAY_BEFORE_CHECK: 120000,     // Wait at least 2 minutes after the start of a session before prompting for a review
+  REVIEW_MIN_NUMBER_SUPPORT_OPPOSE: 7,   // Don't present a review option for Support/Oppose until they have done this 7 times
 };

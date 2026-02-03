@@ -15,7 +15,7 @@ import SupportActions from '../../../actions/SupportActions';
 import VoterActions from '../../../actions/VoterActions';
 import DesignTokenColors from '../../../common/components/Style/DesignTokenColors';
 import { openSnackbar } from '../../../common/components/Widgets/SnackNotifier';
-import AppObservableStore from '../../../common/stores/AppObservableStore';
+import AppObservableStore, { messageService } from '../../../common/stores/AppObservableStore';
 import PoliticianStore from '../../../common/stores/PoliticianStore';
 import convertToInteger from '../../../common/utils/convertToInteger';
 import isMobileScreenSize from '../../../common/utils/isMobileScreenSize';
@@ -28,8 +28,10 @@ import VoterConstants from '../../../constants/VoterConstants';
 import CandidateStore from '../../../stores/CandidateStore';
 import SupportStore from '../../../stores/SupportStore';
 import VoterStore from '../../../stores/VoterStore';
+import { checkForAppReview } from '../../../utils/appReviewFunctions';
 import lookupPageNameAndPageTypeDict, { getPageDetails } from '../../../utils/lookupPageNameAndPageTypeDict';
 import PositionPublicToggle from '../../PositionItem/PositionPublicToggle';
+import ReviewAppModal from '../../ReviewApps/ReviewAppModal';
 import PositionStatementModal from '../PositionStatementModal'; // eslint-disable-line import/no-cycle
 import ShareButtonDropDown from '../ShareButtonDropdown';
 
@@ -51,6 +53,7 @@ class ItemActionBar extends PureComponent {
       isSupportLocalState: undefined,
       numberOfOpposePositionsForScore: 0,
       numberOfSupportPositionsForScore: 0,
+      showNegativeModal: false,
       transitioning: false,
       voterTextStatement: undefined,
       voterTextStatementOpened: false, // TODO Setting this to true crashes the app
@@ -61,6 +64,7 @@ class ItemActionBar extends PureComponent {
     this.isOpposeCalculated = this.isOpposeCalculated.bind(this);
     this.isSupportCalculated = this.isSupportCalculated.bind(this);
     // this.onScroll = this.onScroll.bind(this);
+    this.possibleAppReview = this.possibleAppReview.bind(this);
     this.opposeButton = this.opposeButton.bind(this);
     this.opposeItem = this.opposeItem.bind(this);
     this.supportButton = this.supportButton.bind(this);
@@ -71,6 +75,7 @@ class ItemActionBar extends PureComponent {
   componentDidMount () {
     // console.log('ItemActionBar, NEW componentDidMount');
     const { ballotItemWeVoteId, politicianWeVoteId } = this.props;
+    this.appStateSubscription = messageService.getMessage().subscribe((token) => this.onAppObservableStoreChange(token));
     // console.log('ItemActionBar, NEW componentDidMount ballotItemWeVoteId:', ballotItemWeVoteId);
     if (ballotItemWeVoteId || politicianWeVoteId) {
       const isCandidate = stringContains('cand', ballotItemWeVoteId); // isCandidate = the default
@@ -152,6 +157,7 @@ class ItemActionBar extends PureComponent {
   componentWillUnmount () {
     // window.removeEventListener('scroll', this.onScroll);
     this.supportStoreListener.remove();
+    this.appStateSubscription.unsubscribe();
   }
 
   onNewBallotItemWeVoteId () {
@@ -263,6 +269,18 @@ class ItemActionBar extends PureComponent {
     }
   }
 
+  onAppObservableStoreChange (token) {
+    const tokenText = token ? token.text : '';
+    const showNegativeModalFromMessage = tokenText.includes('showNegativeFeedbackModal') && tokenText.includes('ITEM');
+    const showingNegativeFeedbackModal = AppObservableStore.getShowingNegativeFeedbackModal();
+    const { showNegativeModal } = this.state;
+    if (!showNegativeModal && !showingNegativeFeedbackModal && showNegativeModalFromMessage) {
+      this.setState({
+        showNegativeModal: true,
+      });
+    }
+  }
+
   openHelpWinOrDefeatModal = (isHelpWinOrHelpDefeat, buttonId = '') => {
     const { politicianWeVoteId } = this.props;
     const { ballotItemWeVoteId } = this.state;
@@ -283,8 +301,10 @@ class ItemActionBar extends PureComponent {
         destinationPathname: currentPathname,
       },
     };
-    if (ballotItemWeVoteId.includes('cand')) {
-      dataLayerObject.candidateDetails = CandidateStore.getAnalyticsCandidateDetails(ballotItemWeVoteId);
+    if (ballotItemWeVoteId) {
+      if (ballotItemWeVoteId.includes('cand')) {
+        dataLayerObject.candidateDetails = CandidateStore.getAnalyticsCandidateDetails(ballotItemWeVoteId);
+      }
     }
     if (politicianWeVoteId) {
       dataLayerObject.politicianDetails = PoliticianStore.getAnalyticsPoliticianDetails(politicianWeVoteId);
@@ -301,6 +321,26 @@ class ItemActionBar extends PureComponent {
       voterTextStatementOpened: true,
     });
   };
+
+  sendGTMDataLayer = ({ buttonId = '', actionType = 'click' }) => {
+    // console.log('sendGTMDataLayer called with buttonId:', buttonId, ', actionType:', actionType);
+    const { politicianWeVoteId } = this.props;
+    const dataLayerObject = {
+      event: 'action',
+      actionDetails: {
+        actionType,
+        buttonId,
+      },
+      userDetails: VoterStore.getAnalyticsUserDetails(),
+      pageDetails: getPageDetails(),
+
+    };
+    if (politicianWeVoteId) {
+      dataLayerObject.politicianDetails = PoliticianStore.getAnalyticsPoliticianDetails(politicianWeVoteId);
+    }
+    TagManager.dataLayer({ dataLayer: dataLayerObject });
+  };
+
 
   toggleHelpWinOrDefeatFunction = () => {
     const { helpWinOrDefeatModalOpen } = this.state;
@@ -375,13 +415,14 @@ class ItemActionBar extends PureComponent {
     } else {
       buttonRootClass = classes.buttonRoot;
     }
+    const itemActionBarOpposeButtonId = this.isOpposeCalculated() ? `itemActionBarStopOpposeButton-${externalUniqueId}-${localUniqueId}` : `itemActionBarOpposeButton-${externalUniqueId}-${localUniqueId}`;
     return (
       <Button
         classes={{ root: buttonRootClass, outlinedPrimary: classes.buttonOutlinedPrimary }}
         className={`${opposeHideInMobile ? 'd-none d-sm-block ' : ''}`}
         color={this.isOpposeCalculated() ? 'opposed' : 'primary'}
-        id={`itemActionBarOpposeButton-${externalUniqueId}-${localUniqueId}`}
-        onClick={() => this.opposeItem()}
+        id={itemActionBarOpposeButtonId}
+        onClick={() => this.opposeItem(itemActionBarOpposeButtonId)}
         variant={this.isOpposeCalculated() ? 'contained' : 'outlined'}
         // variant="outlined"
       >
@@ -417,6 +458,7 @@ class ItemActionBar extends PureComponent {
 
   supportButton = (localUniqueId) => {
     const { classes, externalUniqueId, inCard, shareButtonHide, useSupportWording } = this.props;
+    const itemActionBarSupportButtonId = this.isSupportCalculated() ? `itemActionBarStopSupportButton-${externalUniqueId}-${localUniqueId}` : `itemActionBarSupportButton-${externalUniqueId}-${localUniqueId}`;
     let buttonRootClass = null;
     if (inCard) {
       buttonRootClass = this.isSupportCalculated() ? classes.buttonRootForCardAfterChoice : classes.buttonRootForCard;
@@ -427,8 +469,8 @@ class ItemActionBar extends PureComponent {
       <Button
         classes={{ root: buttonRootClass, outlinedPrimary: classes.buttonOutlinedPrimary }}
         color={this.isSupportCalculated() ? 'chosen' : 'primary'}
-        id={`itemActionBarSupportButton-${externalUniqueId}-${localUniqueId}`}
-        onClick={() => this.supportItem()}
+        id={itemActionBarSupportButtonId}
+        onClick={() => this.supportItem(itemActionBarSupportButtonId)}
         variant={this.isSupportCalculated() ? 'contained' : 'outlined'}
         // variant="outlined"
       >
@@ -621,7 +663,17 @@ class ItemActionBar extends PureComponent {
     return this.isOpposeCalculated() || this.isSupportCalculated() || this.state.voterTextStatement || this.state.voterTextStatementOpened;
   }
 
-  supportItem () {
+  possibleAppReview () {
+    if (window?.AppRate) {
+      const doReview = checkForAppReview('ITEM');
+      const { AppRate: { promptForRating } } = window;
+      if (doReview) {
+        promptForRating();
+      }
+    }
+  }
+
+  supportItem (buttonId) {
     const { politicianWeVoteId } = this.props;
     const { ballotItemType, ballotItemWeVoteId, transitioning } = this.state;
     if (this.props.supportOrOpposeHasBeenClicked) {
@@ -629,7 +681,7 @@ class ItemActionBar extends PureComponent {
     }
     if (this.isSupportCalculated()) {
       // console.log('supportItem about to call stopSupportingItem after isSupportCalculated');
-      this.stopSupportingItem();
+      this.stopSupportingItem(buttonId);
       return;
     }
     if (transitioning) {
@@ -645,10 +697,9 @@ class ItemActionBar extends PureComponent {
     }
     // If the logic in this function decides to, show the "Sign in to save your choices" modal
     this.showChooseOrOpposeIntroModalDecision();
-
-    // Add console.log to verify we reach this point
-    console.log('About to push to dataLayer in supportItem');
-
+    this.possibleAppReview();
+    // console.log('About to push to dataLayer in supportItem:', buttonId);
+    this.sendGTMDataLayer({ buttonId });
     const isSignedIn = VoterStore.getVoterIsSignedIn();
     const dataLayerObject = {
       actionDetails: {
@@ -658,8 +709,11 @@ class ItemActionBar extends PureComponent {
       userDetails: VoterStore.getAnalyticsUserDetails(),
       pageDetails: getPageDetails(),
     };
-    if (ballotItemWeVoteId.includes('cand')) {
-      dataLayerObject.candidateDetails = CandidateStore.getAnalyticsCandidateDetails(ballotItemWeVoteId);
+
+    if (ballotItemWeVoteId) {
+      if (ballotItemWeVoteId.includes('cand')) {
+        dataLayerObject.candidateDetails = CandidateStore.getAnalyticsCandidateDetails(ballotItemWeVoteId);
+      }
     }
     if (politicianWeVoteId) {
       dataLayerObject.politicianDetails = PoliticianStore.getAnalyticsPoliticianDetails(politicianWeVoteId);
@@ -673,7 +727,7 @@ class ItemActionBar extends PureComponent {
     openSnackbar({ message: 'Support added!' });
   }
 
-  stopSupportingItem () {
+  stopSupportingItem (buttonId) {
     const { politicianWeVoteId } = this.props;
     const { ballotItemType, ballotItemWeVoteId, transitioning } = this.state;
     this.setState({
@@ -684,6 +738,8 @@ class ItemActionBar extends PureComponent {
       return;
     }
 
+    this.sendGTMDataLayer({ buttonId });
+    this.possibleAppReview();
     SupportActions.voterStopSupportingSave(ballotItemWeVoteId, ballotItemType, politicianWeVoteId);
     this.setState({
       transitioning: true,
@@ -691,7 +747,7 @@ class ItemActionBar extends PureComponent {
     openSnackbar({ message: 'Support removed!' });
   }
 
-  opposeItem () {
+  opposeItem (buttonId) {
     const { politicianWeVoteId } = this.props;
     const { ballotItemType, ballotItemWeVoteId, transitioning } = this.state;
     if (this.props.supportOrOpposeHasBeenClicked) {
@@ -700,7 +756,7 @@ class ItemActionBar extends PureComponent {
 
     if (this.isOpposeCalculated()) {
       // console.log('opposeItem about to call stopOpposingItem after isOpposeCalculated');
-      this.stopOpposingItem();
+      this.stopOpposingItem(buttonId);
       return;
     }
 
@@ -715,7 +771,9 @@ class ItemActionBar extends PureComponent {
 
     // If the logic in this function decides to, show the "Sign in to save your choices" modal
     this.showChooseOrOpposeIntroModalDecision();
+    this.sendGTMDataLayer({ buttonId });
 
+    this.possibleAppReview();
     SupportActions.voterOpposingSave(ballotItemWeVoteId, ballotItemType, politicianWeVoteId);
     this.setState({
       transitioning: true,
@@ -723,7 +781,7 @@ class ItemActionBar extends PureComponent {
     openSnackbar({ message: 'Opposition added!', severity: 'error' });
   }
 
-  stopOpposingItem () {
+  stopOpposingItem (buttonId) {
     const { politicianWeVoteId } = this.props;
     const { ballotItemType, ballotItemWeVoteId, transitioning } = this.state;
     // console.log('ItemActionBar, stopOpposingItem, transitioning:', this.state.transitioning);
@@ -734,7 +792,8 @@ class ItemActionBar extends PureComponent {
     if (transitioning) {
       return;
     }
-
+    this.sendGTMDataLayer({ buttonId });
+    this.possibleAppReview();
     SupportActions.voterStopOpposingSave(ballotItemWeVoteId, ballotItemType, politicianWeVoteId);
     this.setState({
       transitioning: true,
@@ -760,13 +819,12 @@ class ItemActionBar extends PureComponent {
     renderLog('ItemActionBar ItemActionBar.jsx');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('ItemActionBar render');
     const {
-      buttonsOnly, commentButtonHide, commentButtonHideInMobile,
-      hideSupportYes, hideOpposeNo, politicianWeVoteId, useHelpDefeatOrHelpWin, useSupportWording,
+      buttonsOnly, commentButtonHide, commentButtonHideInMobile, hideSupportYes, hideOpposeNo,
+      politicianWeVoteId, useHelpDefeatOrHelpWin, useSupportWording,
     } = this.props;
     const {
-      ballotItemType, ballotItemWeVoteId, helpWinOrDefeatModalOpen,
-      isOpposeAPIState, isSupportAPIState,
-      numberOfOpposePositionsForScore, numberOfSupportPositionsForScore,
+      ballotItemType, ballotItemWeVoteId, helpWinOrDefeatModalOpen, isOpposeAPIState, isSupportAPIState,
+      numberOfOpposePositionsForScore, numberOfSupportPositionsForScore, showNegativeModal,
       voterPositionIsPublic, voterTextStatementOpened,
     } = this.state;
 
@@ -914,6 +972,9 @@ class ItemActionBar extends PureComponent {
     // console.log('ItemActionBar buttonsOnly:', buttonsOnly);
     const showPositionPublicToggle = !this.props.hidePositionPublicToggle && this.isAnyEndorsementCalculated();
     // console.log('showPositionPublicToggle:', showPositionPublicToggle);
+    const initialEmail = VoterStore.getVoterEmail();
+    const showingNegativeFeedbackModal = AppObservableStore.getShowingNegativeFeedbackModal();
+
     return (
       <>
         <ItemActionBarWrapper
@@ -925,6 +986,9 @@ class ItemActionBar extends PureComponent {
           onBlur={handleLeaveHoverLocalArea}
           positionPublicToggleWrapAllowed={this.props.positionPublicToggleWrapAllowed}
         >
+          {showNegativeModal && !showingNegativeFeedbackModal && (
+            <ReviewAppModal initialEmail={initialEmail} />
+          )}
           <ButtonGroup
             className={`${!this.props.shareButtonHide ? ' u-push--sm' : ''}`}
             positionPublicToggleWrapAllowed={this.props.positionPublicToggleWrapAllowed}
@@ -1158,7 +1222,7 @@ const styles = (theme) => ({
     marginTop: '-2px',
   },
   buttonIconDoneSelected: {
-    color: `${DesignTokenColors.confirmation300}`, 
+    color: `${DesignTokenColors.confirmation300}`,
     fontSize: 22,
     fontWeight: 'bold',
     marginRight: '.3rem',

@@ -196,10 +196,17 @@ class BallotTitleHeader extends Component {
                         </ElectionStateLabel>
                       )}
                       <ElectionNameH1
+                        tabIndex={0}
                         centerText={centerText}
                         className={linksOff ? '' : 'u-cursor--pointer'}
                         id="ballotTitleHeaderElectionName"
                         onClick={this.showSelectBallotModalChooseElection}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            this.showSelectBallotModalChooseElection();
+                          }
+                        }}
                       >
                         {electionName}
                       </ElectionNameH1>

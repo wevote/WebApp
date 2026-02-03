@@ -11,7 +11,7 @@ import AppObservableStore, { messageService } from '../../common/stores/AppObser
 import { isIOS } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
 import { normalizedHref } from '../../common/utils/hrefUtils';
-import { isAndroid } from '../../common/utils/isCordovaOrWebApp';
+import { isAndroid, isCordova } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import stringContains from '../../common/utils/stringContains';
@@ -32,7 +32,7 @@ function MoreMenuOverlay ({ classes, friendInvitationsSentToMeCount, onClose }) 
   const isChallenges = pathname.includes('/challenges');
   const isDiscuss = pathname.includes('/news');
   const isFriends = pathname.includes('/friends');
-  const isManage = pathname.includes('/manage');
+  const isManage = pathname.includes('/manage') || pathname.includes('/no-candidates-claimed');
 
   return (
     <ClickAwayListener onClickAway={onClose}>
@@ -70,7 +70,7 @@ function MoreMenuOverlay ({ classes, friendInvitationsSentToMeCount, onClose }) 
           </MenuItem>
         )}
         {nextReleaseFeaturesEnabled && (
-          <MenuItem id="FooterBarCandidatesManaging" $active={isManage} onClick={() => { onClose(); historyPush('/managecandidates'); }}>
+          <MenuItem id="FooterBarCandidatesManaging" $active={isManage} onClick={() => { onClose(); historyPush('/no-candidates-claimed'); }}>
             <img
               alt=""
               src={isManage ? '/img/global/svg-icons/capital-building-selected.svg' : '/img/global/svg-icons/capital-building.svg'}
@@ -177,7 +177,7 @@ class FooterBar extends React.Component {
   }
 
   handleChange = (event, value) => {
-    if (isIOS()) {
+    if (isCordova()) {
       const { impact } = window.TapticEngine;
       impact({
         style: 'heavy', // light | medium | heavy
@@ -213,6 +213,7 @@ class FooterBar extends React.Component {
     if (stringContains('/donate', pathnameLowerCase)) return 3;
     // Treat these as "More" so the More tab stays highlighted
     if (stringContains('/managecandidates', pathnameLowerCase)) return 4;
+    if (stringContains('/no-candidates-claimed', pathnameLowerCase)) return 4;
     if (stringContains('/friends', pathnameLowerCase)) return 4;
     if (stringContains('/challenges', pathnameLowerCase)) return 4;
     if (stringContains('/+/', pathname) || stringContains('/++/', pathname)) return 4;

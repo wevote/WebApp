@@ -1,10 +1,11 @@
-import PropTypes from 'prop-types';
-import withTheme from '@mui/styles/withTheme';
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import { withStyles } from '@mui/styles';
 import { DeleteOutlined, EditOutlined, MoreHoriz } from '@mui/icons-material';
 import Popover from '@mui/material/Popover';
+import { withStyles } from '@mui/styles';
+import withTheme from '@mui/styles/withTheme';
+import PropTypes from 'prop-types';
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import DesignTokenColors from '../Style/DesignTokenColors';
 
 
@@ -56,13 +57,13 @@ const VoterPositionEditTripleDot = ({ triggerDeleteOpinion, triggerEditOpinion }
           <PopoverWrapper>
             <PopoverNameAndMessageText>
               <StyledTypography onClick={triggerEditOpinionModeLocal}>
-                <EditOutlined style={{ fontSize: '14px', cursor: 'pointer', marginRight: '4px' }} />
+                <EditOutlined style={{ cursor: 'pointer', marginRight: '4px' }} />
                 Edit opinion
               </StyledTypography>
             </PopoverNameAndMessageText>
             <PopoverViewDetailsText>
               <StyledTypography onClick={triggerDeleteOpinionModeLocal}>
-                <DeleteOutlined style={{ fontSize: '14px', cursor: 'pointer', marginRight: '4px' }} />
+                <DeleteOutlined style={{ cursor: 'pointer', marginRight: '4px' }} />
                 Delete opinion
               </StyledTypography>
             </PopoverViewDetailsText>
@@ -114,7 +115,7 @@ const PopoverViewDetailsText = styled('div')`
 `;
 
 const StyledTypography = styled('div')`
-  font-size: 12px;
+  font-size: ${isMobileScreenSize() ? '15px' : '14px'};
   font-family: inherit;
   cursor: pointer;
 `;

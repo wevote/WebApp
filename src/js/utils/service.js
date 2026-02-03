@@ -54,6 +54,7 @@ function innerAjax (options) {
       options.endpoint === 'politicianSave' ||
       options.endpoint === 'reactionLikeStatusRetrieve' ||
       options.endpoint === 'voterContactListSave' ||
+      options.endpoint === 'voterReviewedApp' ||
       options.endpoint === 'voterUpdate') {
     options.method = 'POST';
   } else {

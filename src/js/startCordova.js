@@ -1,4 +1,5 @@
 import VoterActions from './actions/VoterActions';
+import AppObservableStore from './common/stores/AppObservableStore';
 import { getCordovaScreenHeight, isIOS, isIOSAppOnMac, isIPad, isSimulator, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from './common/utils/cordovaUtils';
 import initializejQuery from './common/utils/initializejQuery';
 import { isAndroid, isCordova } from './common/utils/isCordovaOrWebApp';
@@ -7,7 +8,9 @@ import { httpLog } from './common/utils/logging';
 import TwitterSignIn from './components/Twitter/TwitterSignIn';
 import webAppConfig from './config';
 import VoterStore from './stores/VoterStore';
+import { handlePositiveAppReview } from './utils/appReviewFunctions';
 import insertCloudWatchLoggingFork from './utils/cloudWatchLogging';
+
 
 // import { dumpObjProps } from './utils/appleSiliconUtils';
 
@@ -39,14 +42,14 @@ function startMessaging (voterDeviceId) {
         () => console.log('Cordova: WeVote FCM Message navigator.notification.alert dismissed'),
         'WeVote');
 
-      // Save until Android badge count is working, or we gave up on it
+      // Save until Android badge count is working, or we give up on it
       // for (const [key, value] of Object.entries(payload)) {
       //   console.log(`'Firebase FCM - FCM element ${key}: ${value}`);
       //   console.log('key = \'' + key + '\'');
       //   if (key === 'aps') {
       //     console.log('key === aps');
       //     for (const [key2, value2] of Object.entries(value)) {
-      //       console.log(`'Firebase FCM - FCM aps element ${key2}: ${value2}`);
+      //       console.log(`Firebase FCM - FCM aps element ${key2}: ${value2}`);
       //     }
       //   }
       // }
@@ -90,6 +93,89 @@ function postLockInitialization (voterDeviceId, startReact) {
   }
   console.log('Cordova:   startReact()');
   startReact();
+}
+
+function initializeCordovaPluginAppRate () {
+  const { AppRate: { setPreferences }, SafariViewController, open } = window;
+  console.log('Cordova:   Initializing cordova-plugin-apprate');
+  window.cordovaAppStartTime = Date.now();
+
+  setPreferences({
+    displayAppName: 'WeVote Ballot Guide',
+    storeAppURL: {
+      ios: '1347335726',
+      android: 'market://details?id=org.wevote.cordova',
+    },
+    reviewType: {
+      ios: 'AppStoreReview',
+      android: 'InAppBrowser',
+    },
+    usesUntilPrompt: webAppConfig.REVIEW_USES_UNTIL_PROMPT,
+    promptAgainForEachNewVersion: false,
+    openUrl: (url) => {
+      let safariAvailable = false;
+
+      if (SafariViewController) {
+        SafariViewController.isAvailable((available) => {
+          safariAvailable = available;
+        });
+      }
+
+      if (!safariAvailable) {
+        open(url, '_blank', 'location=yes');
+      } else {
+        SafariViewController.show({
+          url,
+          barColor: '#0000ff',          // on iOS 10+ you can change the background color as well
+          controlTintColor: '#00ffff',  // on iOS 10+ you can override the default tintColor
+          tintColor: '#00ffff',         // should be set to same value as controlTintColor and will be a fallback on older ios
+        },
+        // this success handler will be invoked for the lifecycle events 'opened', 'loaded' and 'closed'
+        (result) => {
+          console.log(`Cordova:   CordovaPluginAppRate opened, loaded, or closed ${result.event}`);
+        },
+        (err) => {
+          console.log(`Cordova:   CordovaPluginAppRate Error: ${err}`);
+        });
+      }
+    },
+    customLocale: {
+      title: 'Would you mind rating %@?',
+      message: 'It won’t take more than a minute and helps to promote our app. Thanks for your support!',
+      cancelButtonLabel: 'Not Now',
+      laterButtonLabel: 'Maybe Later',
+      rateButtonLabel: 'Rate It Now',
+      yesButtonLabel: 'Yes!',
+      noButtonLabel: 'No',
+      appRatePromptTitle: 'Enjoying %@? \nYour feedback helps us grow!',
+      feedbackPromptTitle: 'Would you consider giving us some feedback?',   // on why you don't like the app
+    },
+    callbacks: {
+      handleNegativeFeedback: () => {
+        const page = AppObservableStore.getNegativeFeedbackPage();
+        AppObservableStore.setShowNegativeFeedbackModal(page);
+        console.log(`Cordova:   handleNegativeFeedback callback entry, AppObservableStore.setShowNegativeFeedbackModal(${page})`);
+      },
+      onRateDialogShow: (callback) => {
+        console.log('Cordova:   CordovaPluginAppRate onRateDialogShow callback');
+        callback(1); // cause immediate click on 'Rate Now' button
+      },
+      onButtonClicked: (buttonIndex) => {
+        console.log(`Cordova:   CordovaPluginAppRate onButtonClicked -> ${buttonIndex}`);
+        if (buttonIndex === 3) {
+          // buttonIndex === 3, means "cordova-plugin-apprate" has invoked AppRate.navigateToAppStore()
+          const appReviewVersion = 'window.weVoteAppVersion';       // modified by buildSrcCordova.js
+          const appReviewPlatform = isIOS() ? 'iOS' : 'Android';
+          console.log(`Cordova:   AppRate.navigateToAppStore() has been called, saving update with handlePositiveAppReview(${appReviewVersion}, ${appReviewPlatform})`);
+          handlePositiveAppReview(appReviewVersion, appReviewPlatform);
+        }
+      },
+    },
+  });
+
+  // setTimeout(() => {
+  //   promptForRating();
+  // }, 5000); // DELAY_BEFORE_PROMPTING_FOR_RATING);
 }
 
 export function initializationForCordova (startReact) {
@@ -191,11 +277,12 @@ export function initializationForCordova (startReact) {
       }
     });
 
+    initializeCordovaPluginAppRate();
+
     // 9/28/23 TODO HACK TO AVOID PLUGIN THAT MIGHT NOT BE LOADING
     if (isIOS() && window.Keyboard) {
       window.Keyboard.disableScroll(false);  // Aug 2022, need to set the initial state
     }
-    // });
   });
 }
 

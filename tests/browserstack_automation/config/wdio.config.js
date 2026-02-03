@@ -24,7 +24,8 @@ const mobileBrowserSpecs = [
     '../specs/BallotPage.browser.js',
     '../specs/CandidatesPage.browser.js',
     '../specs/VerifyCount.browser.js',
-    '../specs/WhosRunningForOffice.browser.js'
+    '../specs/WhosRunningForOffice.browser.js',
+    '../specs/CandidateDetailsPage.browser.js'
 ];
 
 const desktopBrowserSpecs = [
@@ -41,7 +42,8 @@ const desktopBrowserSpecs = [
     '../specs/BallotPage.browser.js',
     '../specs/CandidatesPage.browser.js',
     '../specs/VerifyCount.browser.js',
-    '../specs/WhosRunningForOffice.browser.js'
+    '../specs/WhosRunningForOffice.browser.js',
+     '../specs/CandidateDetailsPage.browser.js'
 
 ];
 
@@ -50,7 +52,7 @@ const desktopBrowserSpecs = [
 //cordova capabilities
 let cordovaCapabilities = [];
 try {
-  const data = readFileSync(path.join(__dirname, '../capabilities/cordova_mobile_devices1.json'), { encoding: 'utf8' });
+  const data = readFileSync(path.join(__dirname, '../capabilities/cordova_mobile_devices.json'), { encoding: 'utf8' });
   cordovaCapabilities = JSON.parse(data);
   cordovaCapabilities.forEach(cap => {
     // read app urls from browserstack.config, Check the platform and assign the correct URL
@@ -69,7 +71,7 @@ try {
 let mobileBrowserCapabilities = [];
 try {
   const data = readFileSync(
-    path.join(__dirname, '../capabilities/browser_mobile_devices1.json'),
+    path.join(__dirname, '../capabilities/browser_mobile_devices.json'),
     { encoding: 'utf8' }
   );
   mobileBrowserCapabilities = JSON.parse(data);

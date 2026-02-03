@@ -164,6 +164,18 @@ export default {
     });
   },
 
+  updateReviewedAppFields (appReviewState, appReviewVersion, appReviewPlatform,
+    appReviewBodyNegativeBypass, appReviewEmail) {
+    Dispatcher.loadEndpoint('voterReviewedApp',
+      {
+        app_review_state: appReviewState,
+        app_review_version: appReviewVersion,
+        app_review_platform: appReviewPlatform,
+        app_review_body_negative_bypass: appReviewBodyNegativeBypass,  // not a database field
+        app_review_email: appReviewEmail,                             // not a database field
+      });
+  },
+
   voterCompleteYourProfileSave (firstName = '', firstNameChanged = false, lastName = '', lastNameChanged = false, voterPhotoQueuedToSave = '', voterPhotoQueuedToSaveSet = false) {
     Dispatcher.loadEndpoint('voterUpdate',
       {
