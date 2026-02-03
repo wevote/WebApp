@@ -143,7 +143,7 @@ Thanks for your help!`);
   };
 
   const handleImportFromEnterOne = (rows) => {
-    setImportedVoters((prev) => [...prev, ...rows.map((r) => makeVoterRecord(r, 'Manual entry'))]);
+    setImportedVoters((prev) => [...prev, ...rows.map((r) => makeVoterRecord(r, 'One-by-one'))]);
     notify(`Imported ${rows.length} voter${rows.length !== 1 ? 's' : ''}.`, true);
   };
 
