@@ -107,6 +107,13 @@ class ElectionCountdown extends React.Component {
     }
   }
 
+  onClickFunctionAndBallotForward = () => {
+    if (this.props.onClickFunction) {
+      this.props.onClickFunction();
+    }
+    historyPush('/ballot');
+  }
+
   setNextElectionDateFromDayText = (nextElectionDayText) => {
     const daysUntilNextElection = daysUntil(nextElectionDayText);
     // console.log('setNextElectionDateFromDayText nextElectionDayText:', nextElectionDayText, ', daysUntilNextElection:', daysUntilNextElection);
@@ -166,14 +173,15 @@ class ElectionCountdown extends React.Component {
           <CardTitleUpcoming
             className="u-cursor--pointer"
             id="electionCountDownTitle"
-            onClick={() => this.onClickFunctionLocal()}
+            onClick={() => this.onClickFunctionAndBallotForward}
+            style={{cursor: 'pointer'}}
           >
             {daysUntilNextElection ? (
-              <>
-                {daysUntilNextElection}
-                <SpaceBetweenNumberAndWord />
-                {daysUntilNextElection === 1 ? 'day' : 'days'}
-              </>
+                <>
+                  {daysUntilNextElection}
+                  <SpaceBetweenNumberAndWord />
+                  {daysUntilNextElection === 1 ? 'day' : 'days'}
+                </>
             ) : (
               <div style={{ margin: 26 }}>
                 { showButton ? (
@@ -221,8 +229,8 @@ class ElectionCountdown extends React.Component {
       <CardCountdownInternalWrapper>
         <div>
           <div>
-            <CardTitleToday className="u-cursor--pointer" id="electionCountDownTitle" onClick={() => this.onClickFunctionLocal()}>
-              Voting ends today!
+            <CardTitleToday className="u-cursor--pointer" id="electionCountDownTitle" onClick={() => this.onClickFunctionAndBallotForward()} style={{cursor: 'pointer'}}>
+                Voting ends today!
             </CardTitleToday>
           </div>
           <div>
@@ -244,11 +252,16 @@ class ElectionCountdown extends React.Component {
         <div>
           <CardTitleUpcoming id="electionCountDownTitle">
             {daysUntilNextNationalElection ? (
-              <>
-                {daysUntilNextNationalElection}
-                <SpaceBetweenNumberAndWord />
-                {daysUntilNextNationalElection === 1 ? 'day' : 'days'}
-              </>
+              <div
+                onClick={() => historyPush('/ballot')}
+                style={{cursor: 'pointer'}}
+              >
+                <>
+                  {daysUntilNextNationalElection}
+                  <SpaceBetweenNumberAndWord />
+                  {daysUntilNextNationalElection === 1 ? 'day' : 'days'}
+                </>
+              </div>
             ) : (
               <div style={{ margin: 26 }}>
                 <DaysFindingText>

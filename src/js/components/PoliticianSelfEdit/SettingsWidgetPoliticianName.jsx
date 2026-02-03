@@ -2,12 +2,15 @@ import { FormControl, TextField } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import TagManager from 'react-gtm-module';
 import styled from 'styled-components';
 import PoliticianActions from '../../common/actions/PoliticianActions';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import { prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../common/utils/cordovaUtils';
 import { renderLog } from '../../common/utils/logging';
+import { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
 import PoliticianStore from '../../common/stores/PoliticianStore';
+import VoterStore from '../../stores/VoterStore';
 
 const delayBeforeApiUpdateCall = 2000;
 const delayBeforeRemovingSavedStatus = 4000;
@@ -46,7 +49,7 @@ class SettingsWidgetPoliticianName extends Component {
     }
   }
 
-  handleKeyPressPoliticianName () {
+  handleKeyPressPoliticianName (buttonId) {
     const { politicianWeVoteId } = this.props;
     if (this.politicianNameTimer) clearTimeout(this.politicianNameTimer);
     if (this.props.voterHasMadeChangesFunction) {
@@ -58,7 +61,21 @@ class SettingsWidgetPoliticianName extends Component {
       const { politicianName } = this.state;
       // console.log('SettingsWidgetPoliticianName handleKeyPressPoliticianName politicianName:', politicianName, ', politicianWeVoteId:', politicianWeVoteId);
       PoliticianActions.politicianNameSave(politicianWeVoteId, politicianName);
-      this.setState({ politicianNameSavedStatus: 'Saved' });
+      this.setState({ politicianNameSavedStatus: 'Saved' }, () => {
+        const dataLayerObject = {
+          event: 'action',
+          actionDetails: {
+            actionType: 'save',
+            buttonId,
+          },
+          userDetails: VoterStore.getAnalyticsUserDetails(),
+          pageDetails: getPageDetails(),
+        };
+        if (politicianWeVoteId) {
+          dataLayerObject.politicianDetails = PoliticianStore.getAnalyticsPoliticianDetails(politicianWeVoteId);
+        }
+        TagManager.dataLayer({ dataLayer: dataLayerObject });
+      });
     }, delayBeforeApiUpdateCall);
   }
 
@@ -107,7 +124,7 @@ class SettingsWidgetPoliticianName extends Component {
     if (!politician) {
       return LoadingWheel;
     }
-
+    const politicianNameID = `politicianName-${externalUniqueId}`;
     return (
       <form
         onSubmit={(e) => {
@@ -125,10 +142,10 @@ class SettingsWidgetPoliticianName extends Component {
                   margin="dense"
                   variant="outlined"
                   autoComplete="given-name"
-                  id={`politicianName-${externalUniqueId}`}
+                  id={politicianNameID}
                   name="politicianName"
                   placeholder="Candidate Name for Ballot"
-                  onKeyDown={this.handleKeyPressPoliticianName}
+                  onKeyDown={() => this.handleKeyPressPoliticianName(politicianNameID)}
                   onChange={this.updatePoliticianName}
                   value={politicianName}
                 />

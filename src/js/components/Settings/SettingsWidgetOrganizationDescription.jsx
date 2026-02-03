@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import TagManager from 'react-gtm-module';
 import OrganizationActions from '../../actions/OrganizationActions';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import { prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../common/utils/cordovaUtils';
@@ -10,6 +11,7 @@ import { renderLog } from '../../common/utils/logging';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';
 import { isSpeakerTypeOrganization } from '../../utils/organization-functions';
+import { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
 // import Textarea from 'react-textarea-autosize';
 
 const delayBeforeApiUpdateCall = 1200;
@@ -48,14 +50,25 @@ class SettingsWidgetOrganizationDescription extends Component {
     restoreStylesAfterCordovaKeyboard('SettingsWidgetOrganizationDescription');
   }
 
-  handleKeyPress () {
+  handleKeyPress (buttonId) {
     if (this.timer) clearTimeout(this.timer);
     if (this.props.voterHasMadeChangesFunction) {
       this.props.voterHasMadeChangesFunction();
     }
     this.timer = setTimeout(() => {
       OrganizationActions.organizationDescriptionSave(this.state.linkedOrganizationWeVoteId, this.state.organizationDescription);
-      this.setState({ organizationDescriptionSavedStatus: 'Saved' });
+      this.setState({ organizationDescriptionSavedStatus: 'Saved' }, () => {
+        const dataLayerObject = {
+          event: 'action',
+          actionDetails: {
+            actionType: 'save',
+            buttonId,
+          },
+          userDetails: VoterStore.getAnalyticsUserDetails(),
+          pageDetails: getPageDetails(),
+        };
+        TagManager.dataLayer({ dataLayer: dataLayerObject });
+      });
     }, delayBeforeApiUpdateCall);
   }
 
@@ -114,7 +127,7 @@ class SettingsWidgetOrganizationDescription extends Component {
 
     const { classes, externalUniqueId } = this.props;
     const { isOrganization, organizationDescription, organizationDescriptionSavedStatus } = this.state;
-
+    const organizationDescriptionID = `organizationDescriptionTextArea-${externalUniqueId}`;
     return (
       <div className="">
         <form onSubmit={(e) => { e.preventDefault(); }}>
@@ -122,7 +135,7 @@ class SettingsWidgetOrganizationDescription extends Component {
             <Column>
               <FormControl classes={{ root: classes.formControl }}>
                 <TextField
-                  id={`organizationDescriptionTextArea-${externalUniqueId}`}
+                  id={organizationDescriptionID}
                   label={isOrganization ? 'Description Shown with Endorsements' : 'Description Shown with Endorsements'}
                   name="organizationDescription"
                   rows={4}
@@ -132,7 +145,7 @@ class SettingsWidgetOrganizationDescription extends Component {
                   variant="outlined"
                   placeholder={isOrganization ? 'Type Organization Description...' : 'Type Description of Yourself...'}
                   value={organizationDescription}
-                  onKeyDown={this.handleKeyPress}
+                  onKeyDown={() => this.handleKeyPress(organizationDescriptionID)}
                   onChange={this.updateOrganizationDescription}
                 />
               </FormControl>

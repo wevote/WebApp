@@ -1,164 +1,73 @@
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { useState, useEffect, Suspense, useCallback } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
 import ActivityActions from '../../actions/ActivityActions';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import CandidateActions from '../../actions/CandidateActions';
 import IssueActions from '../../actions/IssueActions';
 import OfficeActions from '../../actions/OfficeActions';
-import CandidateList from '../../components/Ballot/CandidateList';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import toTitleCase from '../../common/utils/toTitleCase';
 import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
-import Testimonial from '../../components/Widgets/Testimonial';
-import AppObservableStore from '../../common/stores/AppObservableStore';
+import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
 import CandidateStore from '../../stores/CandidateStore';
 import IssueStore from '../../stores/IssueStore';
 import OfficeStore from '../../stores/OfficeStore';
 import VoterStore from '../../stores/VoterStore';
-import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import { renderLog } from '../../common/utils/logging';
 import apiCalming from '../../common/utils/apiCalming';
 import { sortCandidateList } from '../../utils/positionFunctions';
-
-const testimonialPhoto = '../../../img/global/photos/Dale_McGrew-48x48.jpg';   // DON'T COPY this pattern, we should be using normalizedImagePath()
+import BallotItemCompressed from '../../components/Ballot/BallotItemCompressed';
 
 
 // This is related to pages/VoterGuide/OrganizationVoterGuideOffice
-class Office extends Component {
-  constructor (props) {
-    super(props);
-    this.state = {
-      candidateList: [],
-      office: {},
-      officeWeVoteId: '',
-      positionListFromFriendsHasBeenRetrievedOnce: {},
-      positionListHasBeenRetrievedOnce: {},
-    };
-  }
+const Office = () => {
+  const params = useParams();
+  const [candidateList, setCandidateList] = useState([]);
+  const [office, setOffice] = useState({});
+  // eslint-disable-next-line no-unused-vars
+  const [dummyVariable, setDummyVariable] = useState('');
+  const [officeWeVoteId, setOfficeWeVoteId] = useState('');
+  const [positionListFromFriendsHasBeenRetrievedOnce, setPositionListFromFriendsHasBeenRetrievedOnce] = useState({});
+  const [positionListHasBeenRetrievedOnce, setPositionListHasBeenRetrievedOnce] = useState({});
 
-  componentDidMount () {
-    window.scrollTo(0, 0);
-    const { match: { params } } = this.props;
-    this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
-    this.officeStoreListener = OfficeStore.addListener(this.onOfficeStoreChange.bind(this));
-    const officeWeVoteId = params.office_we_vote_id;
-    const office = OfficeStore.getOffice(officeWeVoteId);
-    // console.log('officeWeVoteId:', officeWeVoteId, ', office:', office);
-    if (office && office.ballot_item_display_name && office.candidate_list) {
-      let { candidate_list: candidateList } = office;
-      // console.log('componentDidMount office:', office);
-      if (candidateList && candidateList.length && officeWeVoteId) {
-        candidateList = sortCandidateList(candidateList);
-        if (officeWeVoteId &&
-          !this.localPositionListHasBeenRetrievedOnce(officeWeVoteId) &&
-          !BallotStore.positionListHasBeenRetrievedOnce(officeWeVoteId)
-        ) {
-          OfficeActions.positionListForBallotItemPublic(officeWeVoteId);
-          const { positionListHasBeenRetrievedOnce } = this.state;
-          positionListHasBeenRetrievedOnce[officeWeVoteId] = true;
-          this.setState({
-            positionListHasBeenRetrievedOnce,
-          });
-        }
-        if (officeWeVoteId &&
-          !this.localPositionListFromFriendsHasBeenRetrievedOnce(officeWeVoteId) &&
-          !BallotStore.positionListFromFriendsHasBeenRetrievedOnce(officeWeVoteId)
-        ) {
-          OfficeActions.positionListForBallotItemFromFriends(officeWeVoteId);
-          const { positionListFromFriendsHasBeenRetrievedOnce } = this.state;
-          positionListFromFriendsHasBeenRetrievedOnce[officeWeVoteId] = true;
-          this.setState({
-            positionListFromFriendsHasBeenRetrievedOnce,
-          });
-        }
-      } else {
-        // console.log('Calling candidatesRetrieve, officeWeVoteId:', officeWeVoteId);
-        CandidateActions.candidatesRetrieve(officeWeVoteId);
-      }
-      this.setState({
-        candidateList,
-        office,
-      });
-    } else if (officeWeVoteId) {
-      OfficeActions.officeRetrieve(officeWeVoteId);
-      CandidateActions.candidatesRetrieve(officeWeVoteId);
-      // console.log('componentDidMount officeRetrieve, officeWeVoteId:', officeWeVoteId);
-    } else {
-      // console.log('componentDidMount Missing officeWeVoteId');
+  const localPositionListHasBeenRetrievedOnce = (weVoteId) => {
+    if (weVoteId) {
+      return positionListHasBeenRetrievedOnce[weVoteId];
     }
+    return false;
+  };
 
-    if (officeWeVoteId) {
-      this.setState({
-        officeWeVoteId,
-      });
+  const localPositionListFromFriendsHasBeenRetrievedOnce = (weVoteId) => {
+    if (weVoteId) {
+      return positionListFromFriendsHasBeenRetrievedOnce[weVoteId];
     }
+    return false;
+  };
 
-    if (apiCalming('issueDescriptionsRetrieve', 3600000)) { // Only once per 60 minutes
-      IssueActions.issueDescriptionsRetrieve();
-    }
-    if (apiCalming('issuesFollowedRetrieve', 60000)) { // Only once per minute
-      IssueActions.issuesFollowedRetrieve();
-    }
-    if (VoterStore.electionId() && !IssueStore.issuesUnderBallotItemsRetrieveCalled(VoterStore.electionId())) {
-      IssueActions.issuesUnderBallotItemsRetrieve(VoterStore.electionId());
-    }
-    const modalToOpen = params.modal_to_show || '';
-    if (modalToOpen === 'share') {
-      this.modalOpenTimer = setTimeout(() => {
-        AppObservableStore.setShowShareModal(true);
-      }, 1000);
-    } else if (modalToOpen === 'sic') { // sic = Shared Item Code
-      const sharedItemCode = params.shared_item_code || '';
-      if (sharedItemCode) {
-        this.modalOpenTimer = setTimeout(() => {
-          AppObservableStore.setShowSharedItemModal(sharedItemCode);
-        }, 1000);
-      }
-    }
-    if (apiCalming('activityNoticeListRetrieve', 10000)) {
-      ActivityActions.activityNoticeListRetrieve();
-    }
-    AnalyticsActions.saveActionOffice(VoterStore.electionId(), params.office_we_vote_id);
-  }
+  const onAppObservableStoreChange = useCallback(() => {
+    // We update dummyVariable so we can force a re-render of the component,
+    //  which is necessary to pick up an AppObservableStore update that changes
+    //  getPaddingTop in PageContentContainer
+    const now = new Date();
+    const hours = now.getHours().toString().padStart(2, '0');
+    const minutes = now.getMinutes().toString().padStart(2, '0');
+    const seconds = now.getSeconds().toString().padStart(2, '0');
+    const formattedTime = `${hours}:${minutes}:${seconds}`;
+    setDummyVariable(formattedTime);
+  }, []);
 
-  // eslint-disable-next-line camelcase,react/sort-comp
-  UNSAFE_componentWillReceiveProps (nextProps) {
-    // console.log('Office componentWillReceiveProps');
-    const { match: { params: nextParams } } = nextProps;
-    const modalToOpen = nextParams.modal_to_show || '';
-    if (modalToOpen === 'share') {
-      this.modalOpenTimer = setTimeout(() => {
-        AppObservableStore.setShowShareModal(true);
-      }, 1000);
-    } else if (modalToOpen === 'sic') { // sic = Shared Item Code
-      const sharedItemCode = nextParams.shared_item_code || '';
-      if (sharedItemCode) {
-        this.modalOpenTimer = setTimeout(() => {
-          AppObservableStore.setShowSharedItemModal(sharedItemCode);
-        }, 1000);
-      }
+  const onCandidateStoreChange = () => {
+    let currentOfficeWeVoteId = officeWeVoteId;
+    if (!currentOfficeWeVoteId) {
+      currentOfficeWeVoteId = params.office_we_vote_id;
     }
-  }
-
-  componentWillUnmount () {
-    this.candidateStoreListener.remove();
-    this.officeStoreListener.remove();
-    if (this.modalOpenTimer) clearTimeout(this.modalOpenTimer);
-  }
-
-  onCandidateStoreChange () {
-    const { match: { params } } = this.props;
-    let { candidateList } = this.state;
-    let { officeWeVoteId } = this.state;
-    if (!officeWeVoteId) {
-      officeWeVoteId = params.office_we_vote_id;
-    }
-    // console.log('onCandidateStoreChange officeWeVoteId:', officeWeVoteId, ', candidateList:', candidateList);
+    // console.log('onCandidateStoreChange officeWeVoteId:', currentOfficeWeVoteId, ', candidateList:', candidateList);
     let newCandidate;
     let newCandidateList = [];
-    if (candidateList && candidateList.length > 0 && officeWeVoteId) {
+    if (candidateList && candidateList.length > 0 && currentOfficeWeVoteId) {
       // console.log('In candidateList loop');
       candidateList.forEach((candidate) => {
         if (candidate && candidate.we_vote_id) {
@@ -170,59 +79,52 @@ class Office extends Component {
           }
         }
       });
-      candidateList = sortCandidateList(newCandidateList);
-      // console.log('onCandidateStoreChange from state, candidateList:', candidateList);
-      this.setState({
-        candidateList,
-      });
-      if (officeWeVoteId &&
-        !this.localPositionListHasBeenRetrievedOnce(officeWeVoteId) &&
-        !BallotStore.positionListHasBeenRetrievedOnce(officeWeVoteId)
+      const sortedList = sortCandidateList(newCandidateList);
+      // console.log('onCandidateStoreChange from state, candidateList:', sortedList);
+      setCandidateList(sortedList);
+      if (currentOfficeWeVoteId &&
+        !localPositionListHasBeenRetrievedOnce(currentOfficeWeVoteId) &&
+        !BallotStore.positionListHasBeenRetrievedOnce(currentOfficeWeVoteId)
       ) {
-        OfficeActions.positionListForBallotItemPublic(officeWeVoteId);
-        const { positionListHasBeenRetrievedOnce } = this.state;
-        positionListHasBeenRetrievedOnce[officeWeVoteId] = true;
-        this.setState({
-          positionListHasBeenRetrievedOnce,
-        });
+        OfficeActions.positionListForBallotItemPublic(currentOfficeWeVoteId);
+        setPositionListHasBeenRetrievedOnce((prev) => ({
+          ...prev,
+          [currentOfficeWeVoteId]: true,
+        }));
       }
-      if (officeWeVoteId &&
-        !this.localPositionListFromFriendsHasBeenRetrievedOnce(officeWeVoteId) &&
-        !BallotStore.positionListFromFriendsHasBeenRetrievedOnce(officeWeVoteId)
+      if (currentOfficeWeVoteId &&
+        !localPositionListFromFriendsHasBeenRetrievedOnce(currentOfficeWeVoteId) &&
+        !BallotStore.positionListFromFriendsHasBeenRetrievedOnce(currentOfficeWeVoteId)
       ) {
-        OfficeActions.positionListForBallotItemFromFriends(officeWeVoteId);
-        const { positionListFromFriendsHasBeenRetrievedOnce } = this.state;
-        positionListFromFriendsHasBeenRetrievedOnce[officeWeVoteId] = true;
-        this.setState({
-          positionListFromFriendsHasBeenRetrievedOnce,
-        });
+        OfficeActions.positionListForBallotItemFromFriends(currentOfficeWeVoteId);
+        setPositionListFromFriendsHasBeenRetrievedOnce((prev) => ({
+          ...prev,
+          [currentOfficeWeVoteId]: true,
+        }));
       }
     } else {
-      // console.log('getCandidateListByOfficeWeVoteId, officeWeVoteId:', officeWeVoteId);
-      const rawCandidateList = CandidateStore.getCandidateListByOfficeWeVoteId(officeWeVoteId);
+      // console.log('getCandidateListByOfficeWeVoteId, officeWeVoteId:', currentOfficeWeVoteId);
+      const rawCandidateList = CandidateStore.getCandidateListByOfficeWeVoteId(currentOfficeWeVoteId);
       // console.log('getCandidateListByOfficeWeVoteId, rawCandidateList:', rawCandidateList);
       newCandidateList = sortCandidateList(rawCandidateList);
-      this.setState({
-        candidateList: newCandidateList,
-      });
+      setCandidateList(newCandidateList);
     }
-  }
+  };
 
-  onOfficeStoreChange () {
-    const { match: { params } } = this.props;
-    let { officeWeVoteId } = this.state;
-    if (!officeWeVoteId) {
-      officeWeVoteId = params.office_we_vote_id;
+  const onOfficeStoreChange = () => {
+    let currentOfficeWeVoteId = officeWeVoteId;
+    if (!currentOfficeWeVoteId) {
+      currentOfficeWeVoteId = params.office_we_vote_id;
     }
-    const office = OfficeStore.getOffice(officeWeVoteId);
-    // console.log('Office.jsx onOfficeStoreChange:', officeWeVoteId, ', office:', office);
+    const currentOffice = OfficeStore.getOffice(currentOfficeWeVoteId);
+    // console.log('Office.jsx onOfficeStoreChange:', currentOfficeWeVoteId, ', office:', currentOffice);
     let newCandidate;
     const newCandidateList = [];
-    if (office && office.ballot_item_display_name) {
-      let { candidate_list: candidateList } = office;
-      if (candidateList && candidateList.length > 0 && officeWeVoteId) {
+    if (currentOffice && currentOffice.ballot_item_display_name) {
+      let { candidate_list: currentCandidateList } = currentOffice;
+      if (currentCandidateList && currentCandidateList.length > 0 && currentOfficeWeVoteId) {
         // console.log('In Office candidateList loop');
-        candidateList.forEach((candidate) => {
+        currentCandidateList.forEach((candidate) => {
           if (candidate && candidate.we_vote_id) {
             newCandidate = CandidateStore.getCandidateByWeVoteId(candidate.we_vote_id);
             if (newCandidate && newCandidate.we_vote_id) {
@@ -232,123 +134,188 @@ class Office extends Component {
             }
           }
         });
-        candidateList = sortCandidateList(newCandidateList);
-        this.setState({
-          candidateList,
-        });
+        currentCandidateList = sortCandidateList(newCandidateList);
+        setCandidateList(currentCandidateList);
 
-        if (officeWeVoteId &&
-          !this.localPositionListHasBeenRetrievedOnce(officeWeVoteId) &&
-          !BallotStore.positionListHasBeenRetrievedOnce(officeWeVoteId)
+        if (currentOfficeWeVoteId &&
+          !localPositionListHasBeenRetrievedOnce(currentOfficeWeVoteId) &&
+          !BallotStore.positionListHasBeenRetrievedOnce(currentOfficeWeVoteId)
         ) {
-          OfficeActions.positionListForBallotItemPublic(officeWeVoteId);
-          const { positionListHasBeenRetrievedOnce } = this.state;
-          positionListHasBeenRetrievedOnce[officeWeVoteId] = true;
-          this.setState({
-            positionListHasBeenRetrievedOnce,
-          });
+          OfficeActions.positionListForBallotItemPublic(currentOfficeWeVoteId);
+          setPositionListHasBeenRetrievedOnce((prev) => ({
+            ...prev,
+            [currentOfficeWeVoteId]: true,
+          }));
         }
       }
-      if (officeWeVoteId &&
-        !this.localPositionListFromFriendsHasBeenRetrievedOnce(officeWeVoteId) &&
-        !BallotStore.positionListFromFriendsHasBeenRetrievedOnce(officeWeVoteId)
+      if (currentOfficeWeVoteId &&
+        !localPositionListFromFriendsHasBeenRetrievedOnce(currentOfficeWeVoteId) &&
+        !BallotStore.positionListFromFriendsHasBeenRetrievedOnce(currentOfficeWeVoteId)
       ) {
-        OfficeActions.positionListForBallotItemFromFriends(officeWeVoteId);
-        const { positionListFromFriendsHasBeenRetrievedOnce } = this.state;
-        positionListFromFriendsHasBeenRetrievedOnce[officeWeVoteId] = true;
-        this.setState({
-          positionListFromFriendsHasBeenRetrievedOnce,
-        });
+        OfficeActions.positionListForBallotItemFromFriends(currentOfficeWeVoteId);
+        setPositionListFromFriendsHasBeenRetrievedOnce((prev) => ({
+          ...prev,
+          [currentOfficeWeVoteId]: true,
+        }));
       }
-      this.setState({
-        office,
-        officeWeVoteId,
-      });
+      setOffice(currentOffice);
+      setOfficeWeVoteId(currentOfficeWeVoteId);
     }
-  }
+  };
 
-  localPositionListHasBeenRetrievedOnce (officeWeVoteId) {
-    if (officeWeVoteId) {
-      const { positionListHasBeenRetrievedOnce } = this.state;
-      return positionListHasBeenRetrievedOnce[officeWeVoteId];
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    const currentOfficeWeVoteId = params.office_we_vote_id;
+    const currentOffice = OfficeStore.getOffice(currentOfficeWeVoteId);
+    // console.log('officeWeVoteId:', currentOfficeWeVoteId, ', office:', currentOffice);
+    if (currentOffice && currentOffice.ballot_item_display_name && currentOffice.candidate_list) {
+      let { candidate_list: currentCandidateList } = currentOffice;
+      // console.log('componentDidMount office:', currentOffice);
+      if (currentCandidateList && currentCandidateList.length && currentOfficeWeVoteId) {
+        currentCandidateList = sortCandidateList(currentCandidateList);
+        if (currentOfficeWeVoteId &&
+          !localPositionListHasBeenRetrievedOnce(currentOfficeWeVoteId) &&
+          !BallotStore.positionListHasBeenRetrievedOnce(currentOfficeWeVoteId)
+        ) {
+          OfficeActions.positionListForBallotItemPublic(currentOfficeWeVoteId);
+          setPositionListHasBeenRetrievedOnce((prev) => ({
+            ...prev,
+            [currentOfficeWeVoteId]: true,
+          }));
+        }
+        if (currentOfficeWeVoteId &&
+          !localPositionListFromFriendsHasBeenRetrievedOnce(currentOfficeWeVoteId) &&
+          !BallotStore.positionListFromFriendsHasBeenRetrievedOnce(currentOfficeWeVoteId)
+        ) {
+          OfficeActions.positionListForBallotItemFromFriends(currentOfficeWeVoteId);
+          setPositionListFromFriendsHasBeenRetrievedOnce((prev) => ({
+            ...prev,
+            [currentOfficeWeVoteId]: true,
+          }));
+        }
+      } else {
+        // console.log('Calling candidatesRetrieve, officeWeVoteId:', currentOfficeWeVoteId);
+        CandidateActions.candidatesRetrieve(currentOfficeWeVoteId);
+      }
+      setCandidateList(currentCandidateList);
+      setOffice(currentOffice);
+    } else if (currentOfficeWeVoteId) {
+      OfficeActions.officeRetrieve(currentOfficeWeVoteId);
+      CandidateActions.candidatesRetrieve(currentOfficeWeVoteId);
+      // console.log('componentDidMount officeRetrieve, officeWeVoteId:', currentOfficeWeVoteId);
+    } else {
+      // console.log('componentDidMount Missing officeWeVoteId');
     }
-    return false;
-  }
 
-  localPositionListFromFriendsHasBeenRetrievedOnce (officeWeVoteId) {
-    if (officeWeVoteId) {
-      const { positionListFromFriendsHasBeenRetrievedOnce } = this.state;
-      return positionListFromFriendsHasBeenRetrievedOnce[officeWeVoteId];
-    }
-    return false;
-  }
-
-  render () {
-    renderLog('Office');  // Set LOG_RENDER_EVENTS to log all renders
-    const { candidateList, office } = this.state;
-    // console.log('Office.jsx office:', office, ', candidateList:', candidateList);
-
-    if (!office || !office.ballot_item_display_name) {
-      // TODO DALE If the officeWeVoteId is not valid, we need to update this with a notice
-      return (
-        <div className="container-fluid well u-stack--md u-inset--md">
-          <div>{LoadingWheel}</div>
-          <br />
-        </div>
-      );
+    if (currentOfficeWeVoteId) {
+      setOfficeWeVoteId(currentOfficeWeVoteId);
     }
 
-    const officeName = toTitleCase(office.ballot_item_display_name);
-    const titleText = `${officeName} - WeVote`;
-    const descriptionText = `Choose who you support for ${officeName} in this election`;
+    if (apiCalming('issueDescriptionsRetrieve', 3600000)) { // Only once per 60 minutes
+      IssueActions.issueDescriptionsRetrieve();
+    }
+    if (apiCalming('issuesFollowedRetrieve', 60000)) { // Only once per minute
+      IssueActions.issuesFollowedRetrieve();
+    }
+    if (VoterStore.electionId() && !IssueStore.issuesUnderBallotItemsRetrieveCalled(VoterStore.electionId())) {
+      IssueActions.issuesUnderBallotItemsRetrieve(VoterStore.electionId());
+    }
 
-    // =========== Testimonial variables ============================
+    if (apiCalming('activityNoticeListRetrieve', 10000)) {
+      ActivityActions.activityNoticeListRetrieve();
+    }
+    AnalyticsActions.saveActionOffice(VoterStore.electionId(), params.office_we_vote_id);
 
-    const testimonialAuthor = 'Dale M., Oakland, California';
-    const imageUrl = normalizedImagePath(testimonialPhoto);
-    const testimonial = 'I like seeing the opinions of people who share my values.';
+    const candidateStoreListener = CandidateStore.addListener(onCandidateStoreChange);
+    const officeStoreListener = OfficeStore.addListener(onOfficeStoreChange);
 
-    // ==============================================================
+    return () => {
+      candidateStoreListener.remove();
+      officeStoreListener.remove();
+    };
+  }, []); // Empty dependency array for mount/unmount only
 
+  useEffect(() => {
+    const modalToOpen = params.modal_to_show || '';
+    let modalOpenTimer;
 
+    if (modalToOpen === 'share') {
+      modalOpenTimer = setTimeout(() => {
+        AppObservableStore.setShowShareModal(true);
+      }, 1000);
+    } else if (modalToOpen === 'sic') { // sic = Shared Item Code
+      const sharedItemCode = params.shared_item_code || '';
+      if (sharedItemCode) {
+        modalOpenTimer = setTimeout(() => {
+          AppObservableStore.setShowSharedItemModal(sharedItemCode);
+        }, 1000);
+      }
+    }
+
+    return () => {
+      if (modalOpenTimer) clearTimeout(modalOpenTimer);
+    };
+  }, [params.modal_to_show, params.shared_item_code]);
+
+  useEffect(() => {
+    const appStateSubscription = messageService.getMessage().subscribe(onAppObservableStoreChange);
+    onAppObservableStoreChange();
+    return () => {
+      appStateSubscription.unsubscribe();
+    };
+  }, [onAppObservableStoreChange]);
+
+  renderLog('Office');  // Set LOG_RENDER_EVENTS to log all renders
+  // console.log('Office.jsx office:', office, ', candidateList:', candidateList);
+
+  if (!office || !office.ballot_item_display_name) {
+    // TODO DALE If the officeWeVoteId is not valid, we need to update this with a notice
     return (
-      <PageContentContainer>
-        <Helmet
-          title={titleText}
-          meta={[{ name: 'description', content: descriptionText }]}
-        />
-        <div className="col-sm-12 col-lg-9">
-          { candidateList && candidateList.length ? (
-            <div>
-              <CandidateList
-                contest_office_name={office.ballot_item_display_name}
-                forMoreInformationTextOff
-              >
-                {candidateList}
-              </CandidateList>
-            </div>
-          ) :
-            <span>Loading candidates...</span>}
-        </div>
-        <div className="col-lg-3 d-none d-lg-block">
-          <div className="card">
-            <div className="card-main">
-              <Testimonial
-                imageUrl={imageUrl}
-                testimonialAuthor={testimonialAuthor}
-                testimonial={testimonial}
-              />
-            </div>
-          </div>
-
-        </div>
-      </PageContentContainer>
+      <div className="container-fluid well u-stack--md u-inset--md">
+        <div>{LoadingWheel}</div>
+        <br />
+      </div>
     );
   }
-}
-Office.propTypes = {
-  match: PropTypes.object.isRequired,
+
+  const officeName = toTitleCase(office.ballot_item_display_name);
+  const titleText = `${officeName} - WeVote`;
+  const descriptionText = `Choose who you support for ${officeName} in this election`;
+
+  return (
+    <PageContentContainer>
+      <Helmet
+        title={titleText}
+        meta={[{ name: 'description', content: descriptionText }]}
+      />
+      <OfficeWrapper>
+        <Suspense fallback={<></>}>
+          <BallotItemCompressed
+            ballotItemDisplayName={office.ballot_item_display_name}
+            candidateList={candidateList}
+            // candidatesToShowForSearchResults={item.candidatesToShowForSearchResults}
+            // foundInSearchWords={item.foundInSearchWords}
+            // id={chipLabelText(item.ballot_item_display_name)}
+            // isFirstBallotItem={isFirstBallotItem}
+            // isMeasure={item.kind_of_ballot_item === TYPES.MEASURE}
+            // primaryParty={item.primary_party}
+            // totalNumberOfBallotItems={totalNumberOfBallotItems}
+            useHelpDefeatOrHelpWin
+            weVoteId={office.we_vote_id}
+            // key={key}
+          />
+        </Suspense>
+      </OfficeWrapper>
+    </PageContentContainer>
+  );
 };
+Office.propTypes = {
+  // match: PropTypes.object.isRequired,
+};
+
+const OfficeWrapper = styled('div')`
+  margin: 0 15px;
+`;
 
 export default Office;
 

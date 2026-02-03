@@ -2,12 +2,15 @@ import { Button, FormControl, TextField } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import TagManager from 'react-gtm-module';
 import styled from 'styled-components';
 import PoliticianActions from '../../common/actions/PoliticianActions';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import { prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../common/utils/cordovaUtils';
 import { renderLog } from '../../common/utils/logging';
 import PoliticianStore from '../../common/stores/PoliticianStore';
+import { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
+import VoterStore from '../../stores/VoterStore';
 
 const delayBeforeRemovingSavedStatus = 4000;
 
@@ -44,8 +47,7 @@ class SettingsWidgetPoliticianStatement extends Component {
     }
   }
 
-  handleSavePoliticianStatement (e) {
-    e.preventDefault();
+  handleSavePoliticianStatement (buttonId) {
     const { politicianWeVoteId } = this.props;
     const { politicianStatement } = this.state;
 
@@ -55,6 +57,20 @@ class SettingsWidgetPoliticianStatement extends Component {
     this.setState({
       politicianStatementSavedStatus: 'Saved',
       hasUnsavedChanges: false,
+    }, () => {
+      const dataLayerObject = {
+        event: 'action',
+        actionDetails: {
+          actionType: 'save',
+          buttonId,
+        },
+        userDetails: VoterStore.getAnalyticsUserDetails(),
+        pageDetails: getPageDetails(),
+      };
+      if (politicianWeVoteId) {
+        dataLayerObject.politicianDetails = PoliticianStore.getAnalyticsPoliticianDetails(politicianWeVoteId);
+      }
+      TagManager.dataLayer({ dataLayer: dataLayerObject });
     });
 
     // Clear saved message after delay
@@ -105,9 +121,13 @@ class SettingsWidgetPoliticianStatement extends Component {
     if (!politician) {
       return LoadingWheel;
     }
-
+    const politicianStatementID = `official-statement-${externalUniqueId}`;
     return (
-      <form onSubmit={this.handleSavePoliticianStatement}>
+      <form
+      onSubmit={(e) => {
+        e.preventDefault();
+      }}
+      >
         <span>
           <Row>
             <ColumnFullWidth>
@@ -116,7 +136,7 @@ class SettingsWidgetPoliticianStatement extends Component {
                   autoComplete="given-name"
                   // className={classes.input}
                   fullWidth
-                  id={`official-statement-${externalUniqueId}`}
+                  id={politicianStatementID}
                   label="Official Statement"
                   margin="dense"
                   multiline
@@ -138,6 +158,7 @@ class SettingsWidgetPoliticianStatement extends Component {
                   variant="contained"
                   color="primary"
                   type="submit"
+                  onClick={() => this.handleSavePoliticianStatement(politicianStatementID)}
                   disabled={!hasUnsavedChanges}
                   className={classes.saveButton}
                 >

@@ -95,6 +95,9 @@ class SettingsPoliticianPicture extends Component {
         userDetails: VoterStore.getAnalyticsUserDetails(),
         pageDetails: getPageDetails(),
       };
+      if (politicianWeVoteId) {
+        dataLayerObject.politicianDetails = PoliticianStore.getAnalyticsPoliticianDetails(politicianWeVoteId);
+      }
       TagManager.dataLayer({ dataLayer: dataLayerObject });
     }
 
