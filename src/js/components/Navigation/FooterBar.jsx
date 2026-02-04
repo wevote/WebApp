@@ -35,7 +35,7 @@ function MoreMenuOverlay ({ classes, friendInvitationsSentToMeCount, onClose }) 
   const isManage = pathname.includes('/manage') || pathname.includes('/no-candidates-claimed');
 
   return (
-    <ClickAwayListener onClickAway={onClose}>
+    <ClickAwayListener disableReactTree onClickAway={onClose}>
       <Overlay>
         <MenuItem id="FooterBarHowItWorks" onClick={() => { AppObservableStore.setShowHowItWorksModal(true); }}>
           <Info />
@@ -100,6 +100,7 @@ MoreMenuOverlay.propTypes = {
 class FooterBar extends React.Component {
   constructor (props) {
     super(props);
+    this.anchorRef = React.createRef();
     this.state = {
       friendInvitationsSentToMeCount: 0,
       // inPrivateLabelMode: false, // setState onAppObservableStoreChange is not working sometimes for some reason
@@ -197,7 +198,8 @@ class FooterBar extends React.Component {
       case 3:
         return historyPush('/donate');
       case 4:
-        return this.setState({ showMoreMenu: true });
+        const showMoreMenuCurrentState = this.state.showMoreMenu || false;
+        return this.setState({ showMoreMenu: !showMoreMenuCurrentState });
       default:
         return null;
     }
@@ -280,6 +282,7 @@ class FooterBar extends React.Component {
       donateVisible = true; // 2025-06-17 Enabling donations, we hear it is now permissible for nonprofits in iOS & Android
       // console.log('--------- Footer bar donateVisible ', donateVisible, 'squadsVisible', squadsVisible);
     }
+
     return (
       <FooterBarWrapper>
         {showShareButtonFooter && (
@@ -293,7 +296,7 @@ class FooterBar extends React.Component {
           style={cordovaFooterHeight()}
         >
           <BottomNavigation
-            value={showMoreMenu ? 4 : this.getSelectedTab()}
+            value={this.getSelectedTab()}
             onChange={this.handleChange}
             showLabels
             style={{ width: `${isIOS() ? '95%' : ''}`, height: `${isAndroid() ? '70px' : ''}`  }}
@@ -363,13 +366,19 @@ class FooterBar extends React.Component {
               className="no-outline"
               id="moreTabFooterBar"
               label="More"
+              ref={this.anchorRef}
               showLabel
               icon={<MoreHoriz />}
               sx={defaultIconStyles}
             />
           </BottomNavigation>
           {showMoreMenu && (
-            <MoreMenuOverlay classes={classes} friendInvitationsSentToMeCount={friendInvitationsSentToMeCount} onClose={() => this.setState({ showMoreMenu: false })} />
+            <MoreMenuOverlay classes={classes} friendInvitationsSentToMeCount={friendInvitationsSentToMeCount}
+              onClose={(e) => {
+                if (this.anchorRef.current?.contains(e.target)) return;
+                this.setState({ showMoreMenu: false });
+              }}
+            />
           )}
         </FooterContainer>
       </FooterBarWrapper>

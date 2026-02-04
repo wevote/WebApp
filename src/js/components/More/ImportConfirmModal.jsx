@@ -626,7 +626,7 @@ const MappingRow = styled.div`
   border-radius: 8px;
 
   @media (max-width: 575px) {
-    grid-template-columns: 90px 1fr 24px;
+    grid-template-columns: 90px 140px 24px;
     gap: 0 10px;
     padding: 6px 0 4px 0;
   }
@@ -757,7 +757,7 @@ const StyledSelect = styled.select`
   }
 
   @media (max-width: 575px) {
-    flex: 1;
+    flex: 0 0 120px;
     min-width: 0;
     padding: 8px 24px 8px 6px;
     background-position: right 4px center;
