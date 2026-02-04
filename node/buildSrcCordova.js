@@ -235,6 +235,8 @@ fs.remove('./build').then(() => {
                 console.log('> Cordova: Files that (incorrectly) still contain React.lazy: ');
                 console.log(out);
                 console.error('> Cordova: The files listed above, need to be fixed before proceeding!');  // Or the regex needs adjustment
+              } else {
+                console.log('> Cordova: Begin WebApp compile ---------------------');
               }
             });
         });

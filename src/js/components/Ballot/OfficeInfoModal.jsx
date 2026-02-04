@@ -1,15 +1,16 @@
 /* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable react/no-unescaped-entities */
-/* eslint-disable react/jsx-closing-tag-location */
-import React, { useState, useEffect, useRef } from 'react';
-import PropTypes from 'prop-types';
-import styled, { createGlobalStyle } from 'styled-components';
-import indefinite from 'indefinite';
-import { MoreHoriz, LaunchOutlined, ContentCopy } from '@mui/icons-material';
+/* eslint-disable react/jsx-closing-tag-location */import { ContentCopy, LaunchOutlined, MoreHoriz } from '@mui/icons-material';
 import Popover from '@mui/material/Popover';
+import indefinite from 'indefinite';
+import PropTypes from 'prop-types';
+
+import React, { useEffect, useRef, useState } from 'react';
+import styled, { createGlobalStyle } from 'styled-components';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
-import ModalDisplayTemplateA from '../Widgets/ModalDisplayTemplateA';
 import { openSnackbar } from '../../common/components/Widgets/SnackNotifier';
+import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
+import ModalDisplayTemplateA from '../Widgets/ModalDisplayTemplateA';
 
 const OfficeInfoModal = ({ isOpen, onClose, officeName }) => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -67,7 +68,7 @@ const OfficeInfoModal = ({ isOpen, onClose, officeName }) => {
         <br className="mobile-break" />
         <strong>{officeName}</strong>
       </Title>
-      <HeaderActions>
+      <HeaderActionsOfficeInfo>
         <TripleDotWrapper>
           <TripleDotButton
             type="button"
@@ -103,7 +104,7 @@ const OfficeInfoModal = ({ isOpen, onClose, officeName }) => {
           </Popover>
         </TripleDotWrapper>
         <VerticalLine />
-      </HeaderActions>
+      </HeaderActionsOfficeInfo>
     </HeaderRow>
   );
 
@@ -194,6 +195,7 @@ const RemoveTitlePadding = createGlobalStyle`
   .MuiDialogTitle-root:has(#closeModalDisplayTemplateAofficeInfoModal) > div > div {
     padding-left: 0 !important;
     width: 100% !important;
+    ${isMobileScreenSize() ? 'padding-top: 10px' : ''}
   }
 `;
 
@@ -239,13 +241,14 @@ const Title = styled.h3`
   }
 `;
 
-const HeaderActions = styled.div`
+const HeaderActionsOfficeInfo = styled.div`
   display: flex;
   align-items: center;
   gap: 6px;
   flex-shrink: 0;
   margin-right: 52px !important;
   margin-top: -4px;
+  ${isMobileScreenSize() ? '' : 'margin-top: -4px'};
 
   @media (max-width: 768px) {
     margin-right: 52px !important;
@@ -257,6 +260,7 @@ const VerticalLine = styled.div`
   border-left: 1px solid ${DesignTokenColors.neutral200};
   height: 24px;
   align-self: center;
+  ${isMobileScreenSize() ? 'margin-top: 2px' : ''};
 
   @media (max-width: 768px) {
     height: 20px;
@@ -267,6 +271,7 @@ const TripleDotWrapper = styled.div`
   color: ${DesignTokenColors.neutral600};
   display: flex;
   align-items: center;
+  ${isMobileScreenSize() ? 'margin-top: 5px' : ''};
 
   &:hover {
     color: ${DesignTokenColors.neutral400};

@@ -39,7 +39,7 @@ function getPaddingTop () {
   }
   const normalizedHref = normalizedHrefPage();
   if (isCordova()) {
-    if (normalizedHref === 'ballot' && isIOS()) {
+    if (normalizedHref === 'ballot') {
       return '';
     } else {
       const offs = offsetToBottomOfHeadroomWrapper('getPaddingTop', 'HeadroomWrapper');

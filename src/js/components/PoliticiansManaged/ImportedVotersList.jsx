@@ -12,11 +12,12 @@ import {
   Visibility as ShowIcon,
   History as HistoryIcon,
   DeleteOutline as DeleteIcon,
+  Edit as EditIcon,
 } from '@mui/icons-material';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
-
 import InviteSelectedModal from '../More/InviteSelectedModal';
-import ImportHistoryModal from './ImportHistoryModal';
+import ImportHistoryModal from '../More/ImportHistoryModal';
+import VoterActionModal from '../More/VoterActionModal';
 
 function formatWhen (iso) {
   try {
@@ -35,8 +36,8 @@ export default function ImportedVotersList ({
   onHideSelected,
   onOpenPreview,
   onShowHidden,
-  onViewHistory,
   onDeleteSelected,
+  onUpdateVoter,
 }) {
   const [query, setQuery] = useState('');
   const [expandedId, setExpandedId] = useState(null);
@@ -46,6 +47,17 @@ export default function ImportedVotersList ({
   const [importHistoryOpen, setImportHistoryOpen] = useState(false);
   const [inviteModalOpen, setInviteModalOpen] = useState(false);
   const [inviteList, setInviteList] = useState([]);
+
+  const [voterActionModalOpen, setVoterActionModalOpen] = useState(false);
+  const [selectedVoter, setSelectedVoter] = useState(null);
+  const [voterModalTab, setVoterModalTab] = useState('details');
+
+  const [historyModalOpen, setHistoryModalOpen] = useState(false);
+
+  const [rowMenuAnchor, setRowMenuAnchor] = useState(null);
+  const [rowMenuVoter, setRowMenuVoter] = useState(null);
+  const [rowMenuPosition, setRowMenuPosition] = useState({ top: 0, left: 0 });
+  const [hoveredRowId, setHoveredRowId] = useState(null);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -82,6 +94,48 @@ export default function ImportedVotersList ({
       }
       return next;
     });
+  };
+
+  const handleRowMenuOpen = (event, voter) => {
+    event.stopPropagation();
+    console.log('Opening menu for voter:', voter.name);
+    const rect = event.currentTarget.getBoundingClientRect();
+    const menuWidth = 180;
+    const position = {
+      top: rect.bottom + 6,
+      left: rect.right - menuWidth,
+    };
+    console.log('Menu position:', position, 'Button rect:', rect);
+    setRowMenuPosition(position);
+    setRowMenuAnchor(event.currentTarget);
+    setRowMenuVoter(voter);
+  };
+
+  const handleRowMenuClose = () => {
+    setRowMenuAnchor(null);
+    setRowMenuVoter(null);
+  };
+
+  const handleEditVoter = () => {
+    setSelectedVoter(rowMenuVoter);
+    setVoterModalTab('details');
+    setVoterActionModalOpen(true);
+    handleRowMenuClose();
+  };
+
+  const handleShowVoterHistory = () => {
+    setSelectedVoter(rowMenuVoter);
+    setVoterModalTab('history');
+    setVoterActionModalOpen(true);
+    handleRowMenuClose();
+  };
+
+  const handleSaveVoter = (updatedVoter) => {
+    if (onUpdateVoter) {
+      onUpdateVoter(updatedVoter);
+    }
+    // Update selectedVoter so modal shows updated data if reopened
+    setSelectedVoter(updatedVoter);
   };
 
   return (
@@ -147,8 +201,7 @@ export default function ImportedVotersList ({
                   <MenuItem
                     role="menuitem"
                     onClick={() => {
-                      onViewHistory?.();
-                      setImportHistoryOpen(true);
+                      setHistoryModalOpen(true);
                       setMenuOpen(false);
                     }}
                   >
@@ -236,11 +289,18 @@ export default function ImportedVotersList ({
               const id = v.id || v._idx || `row_${idx}`;
               const isOpen = expandedId === id;
               const isChecked = selected.has(id);
-              const showDetails = isOpen || isChecked; // no hover reveal
+              const showDetails = isOpen || isChecked;
+              const isHovered = hoveredRowId === id;
+              const isMenuOpen = rowMenuVoter && (rowMenuVoter.id || rowMenuVoter._idx) === id;
 
               return (
                 <React.Fragment key={id}>
-                  <Tr role="row" className={isChecked ? 'selected' : undefined}>
+                  <Tr
+                    role="row"
+                    className={`${isChecked ? 'selected' : ''} ${isMenuOpen ? 'menu-open' : ''}`.trim()}
+                    onMouseEnter={() => setHoveredRowId(id)}
+                    onMouseLeave={() => setHoveredRowId(null)}
+                  >
                     <TdCheck role="cell">
                       <Checkbox
                         type="checkbox"
@@ -295,6 +355,17 @@ export default function ImportedVotersList ({
                           <HideIcon fontSize="small" />
                           <span>Hide</span>
                         </ActionPill>
+
+                        {/* Triple dot menu, only visible on hover or when menu is open */}
+                        {(isHovered || isChecked || isMenuOpen) && (
+                          <RowMenuButton
+                            type="button"
+                            onClick={(e) => handleRowMenuOpen(e, v)}
+                            aria-label="More options for voter"
+                          >
+                            <OverflowIcon fontSize="small" />
+                          </RowMenuButton>
+                        )}
                       </ActionsInline>
                     </TdActions>
                   </Tr>
@@ -326,6 +397,35 @@ export default function ImportedVotersList ({
         </Table>
       </Card>
 
+      {/* Row menu dropdown */}
+      {rowMenuAnchor && (
+        <>
+          <ClickAwayOverlay onClick={handleRowMenuClose} />
+          <RowMenuCard
+            role="menu"
+            style={{
+              top: `${rowMenuPosition.top}px`,
+              left: `${rowMenuPosition.left}px`,
+            }}
+          >
+            <MenuItem
+              role="menuitem"
+              onClick={handleEditVoter}
+            >
+              <EditIcon fontSize="small" />
+              <span>Edit voter</span>
+            </MenuItem>
+            <MenuItem
+              role="menuitem"
+              onClick={handleShowVoterHistory}
+            >
+              <HistoryIcon fontSize="small" />
+              <span>Show history</span>
+            </MenuItem>
+          </RowMenuCard>
+        </>
+      )}
+
       {/* Invite selected modal */}
       <InviteSelectedModal
         isOpen={inviteModalOpen}
@@ -336,9 +436,20 @@ export default function ImportedVotersList ({
         onOpenPreview={onOpenPreview}
         onRemove={(v) => setInviteList((prev) => prev.filter((p) => (p.id || p._idx) !== (v.id || v._idx)))}
       />
+
+      {/* Voter action modal */}
+      <VoterActionModal
+        show={voterActionModalOpen}
+        toggleModal={() => setVoterActionModalOpen(false)}
+        voter={selectedVoter}
+        initialTab={voterModalTab}
+        onSave={handleSaveVoter}
+      />
+
+      {/* Import history modal */}
       <ImportHistoryModal
-        open={importHistoryOpen}
-        onClose={() => setImportHistoryOpen(false)}
+        isOpen={historyModalOpen}
+        onClose={() => setHistoryModalOpen(false)}
         voters={voters}
       />
     </>
@@ -363,8 +474,8 @@ ImportedVotersList.propTypes = {
   onHideSelected: PropTypes.func.isRequired,
   onShowHidden: PropTypes.func,
   onOpenPreview: PropTypes.func,
-  onViewHistory: PropTypes.func,
   onDeleteSelected: PropTypes.func,
+  onUpdateVoter: PropTypes.func,
 };
 
 /* styles */
@@ -444,6 +555,7 @@ const InviteButton = styled.button`
 const OverflowWrap = styled.div`
   position: relative;
 `;
+
 const OverflowBtn = styled.button`
   background: transparent;
   border: 0;
@@ -456,6 +568,13 @@ const OverflowBtn = styled.button`
     color: ${DesignTokenColors.neutralUI900};
   }
 `;
+
+const RowMenuButton = styled(OverflowBtn)`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 const MenuCard = styled.div`
   position: absolute;
   right: 0;
@@ -547,6 +666,11 @@ const Tr = styled.div`
     opacity: 1;
     visibility: visible;
   }
+
+  &.menu-open .row-actions {
+    opacity: 1;
+    visibility: visible;
+  }
 `;
 
 const TrHead = styled(Tr)`
@@ -602,6 +726,7 @@ const ActionsInline = styled.div`
   display: inline-flex;
   gap: 10px;
   justify-content: flex-end;
+  align-items: center;
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.12s ease-in-out;
@@ -617,6 +742,16 @@ const ActionPill = styled.button`
   color: ${DesignTokenColors.neutralUI800};
   cursor: pointer;
   white-space: nowrap;
+`;
+
+const ClickAwayOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 999;
+  background: transparent;
 `;
 
 const DetailsGrid = styled.div`
@@ -635,6 +770,17 @@ const DetailBlock = styled.div`
 const DetailLabel = styled.div`
   color: ${DesignTokenColors.neutralUI600};
   font-size: 12px;
+`;
+
+const RowMenuCard = styled.div`
+  position: fixed;
+  background: ${DesignTokenColors.whiteUI};
+  border: 1px solid ${DesignTokenColors.neutralUI200};
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(16, 24, 40, 0.08);
+  min-width: 180px;
+  padding: 6px;
+  z-index: 1000;
 `;
 
 const TdFull = styled(Td)`
