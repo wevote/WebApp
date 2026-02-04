@@ -1,5 +1,5 @@
 import { driver, expect } from '@wdio/globals';
-import ReadyPage from '../page_objects/ready.page';
+import ReadyPage from '../page_objects/ready.browser';
 import TopNavigation from '../page_objects/topnavigation.browser';
 import { describe, it } from 'mocha';
 

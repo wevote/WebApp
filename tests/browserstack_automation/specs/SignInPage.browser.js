@@ -1,6 +1,6 @@
 import { browser, driver, expect } from '@wdio/globals';
 import { Key } from 'webdriverio';
-import ReadyPage from '../page_objects/ready.page';
+import ReadyPage from '../page_objects/ready.browser';
 import SignIn from '../page_objects/signin.browser';
 import { describe, it } from 'mocha';
 
