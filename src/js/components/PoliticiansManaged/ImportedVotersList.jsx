@@ -15,7 +15,6 @@ import {
   Edit as EditIcon,
 } from '@mui/icons-material';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
-
 import InviteSelectedModal from '../More/InviteSelectedModal';
 import ImportHistoryModal from '../More/ImportHistoryModal';
 import VoterActionModal from '../More/VoterActionModal';
@@ -45,7 +44,7 @@ export default function ImportedVotersList ({
   const [selected, setSelected] = useState(() => new Set());
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef(null);
-
+  const [importHistoryOpen, setImportHistoryOpen] = useState(false);
   const [inviteModalOpen, setInviteModalOpen] = useState(false);
   const [inviteList, setInviteList] = useState([]);
 
@@ -584,7 +583,7 @@ const MenuCard = styled.div`
   border: 1px solid ${DesignTokenColors.neutralUI200};
   border-radius: 10px;
   box-shadow: 0 8px 24px rgba(16, 24, 40, 0.08);
-  min-width: 220px;
+  min-width: 250px;
   padding: 6px;
   z-index: 10;
 `;
