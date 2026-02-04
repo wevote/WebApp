@@ -97,9 +97,9 @@ Thanks for your help!`);
   const handleCopyInviteBody = async () => {
     try {
       await navigator.clipboard.writeText(`${invitationBody}\n\nhttps://wevote.us/join/${selectedPoliticianWeVoteId}`);
-      const message = window.innerWidth >= 576
-        ? 'Invitation copied to clipboard. Press ⌘V / Ctrl+V to paste.'
-        : 'Invitation copied to clipboard.';
+      const message = window.innerWidth >= 576 ?
+        'Invitation copied to clipboard. Press ⌘V / Ctrl+V to paste.' :
+        'Invitation copied to clipboard.';
       notify(message, true);
     } catch {
       notify('Copy failed. Select the text and copy manually.', false, 3000);
@@ -135,7 +135,7 @@ Thanks for your help!`);
   };
 
   const handleImportFromEnterOne = (rows) => {
-    setImportedVoters((prev) => [...prev, ...rows.map((r) => makeVoterRecord(r, 'Manual entry'))]);
+    setImportedVoters((prev) => [...prev, ...rows.map((r) => makeVoterRecord(r, 'One-by-one'))]);
     notify(`Imported ${rows.length} voter${rows.length !== 1 ? 's' : ''}.`, true);
   };
 
