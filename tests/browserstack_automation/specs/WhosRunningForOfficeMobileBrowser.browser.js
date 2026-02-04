@@ -1,5 +1,5 @@
 import { $, driver, expect, browser } from '@wdio/globals';
-import ReadyPage from '../page_objects/ready.page.browser.js';
+import ReadyPage from '../page_objects/ready.browser';
 import PopulateData from '../testDataForScripts/populateStateandCandidateData.js';
 
 const assert = require('assert');

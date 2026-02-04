@@ -1,5 +1,5 @@
 import { driver, expect } from '@wdio/globals';
-import ReadyPage from '../page_objects/ready.page';
+import ReadyPage from '../page_objects/ready.browser';
 import DonatePage from '../page_objects/donate.browser';
 
 /* eslint-disable no-undef */

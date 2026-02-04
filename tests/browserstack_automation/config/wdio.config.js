@@ -5,6 +5,11 @@ import path from 'path';
 import { browserStackConfig } from './browserstack.config.js';
 import { uploadAppsToBrowserStack } from '../utils/uploadAndConfigureApps.js';
 
+//import data files
+import cordovaData from '../capabilities/cordova_mobile_devices.json' with { type: 'json' };
+import mobileBrowserData from '../capabilities/browser_mobile_devices.json' with { type: 'json' };
+import desktopBrowserData from '../capabilities/browser_desktop.json' with { type: 'json' };
+
 // --- Define Spec file sets
 const cordovaSpecs = [
   '../specs/ReadyPage.cordova.js'
@@ -44,59 +49,39 @@ const desktopBrowserSpecs = [
     '../specs/VerifyCount.browser.js',
     '../specs/WhosRunningForOffice.browser.js',
      '../specs/CandidateDetailsPage.browser.js'
-
 ];
 
+//Process Capabilities for each platform and assign specs
+// Process Cordova Capabilities (Inject App URLs)
+const cordovaCapabilities = cordovaData.map(cap => {
+    const platform = cap.platformName?.toLowerCase();
+    return {
+        ...cap,
+        'appium:options': {
+            ...cap['appium:options'],
+            app: platform === 'android'
+                ? browserStackConfig.BROWSERSTACK_APK_URL
+                : browserStackConfig.BROWSERSTACK_IPA_URL
+        },
+        specs: cordovaSpecs
+    };
+});
 
-// --- Read capabilities from separate JSON files ---
-//cordova capabilities
-let cordovaCapabilities = [];
-try {
-  const data = readFileSync(path.join(__dirname, '../capabilities/cordova_mobile_devices.json'), { encoding: 'utf8' });
-  cordovaCapabilities = JSON.parse(data);
-  cordovaCapabilities.forEach(cap => {
-    // read app urls from browserstack.config, Check the platform and assign the correct URL
-    // inside the appium:options object in the above file
-    if (cap.platformName && cap.platformName.toLowerCase() === 'android') {
-      cap['appium:options'].app = browserStackConfig.BROWSERSTACK_APK_URL;
-    } else if (cap.platformName && cap.platformName.toLowerCase() === 'ios') {
-      cap['appium:options'].app = browserStackConfig.BROWSERSTACK_IPA_URL;
-    }
-  });
-} catch (error) {
-  console.error("Failed to read mobile app testing capabilities.json:", error);
-}
+//Process mobile Browser Capabilities
+const mobileBrowserCapabilities = mobileBrowserData.map(cap => ({
+    ...cap,
+    specs: mobileBrowserSpecs
+}));
 
-// mobileBrowser capabilities
-let mobileBrowserCapabilities = [];
-try {
-  const data = readFileSync(
-    path.join(__dirname, '../capabilities/browser_mobile_devices.json'),
-    { encoding: 'utf8' }
-  );
-  mobileBrowserCapabilities = JSON.parse(data);
-  // console.log('Loaded Mobile Browser Capabilities:', mobileBrowserCapabilities);
-} catch (error) {
-  console.error('Failed to read mobile browser testing capabilities.json:', error);
-}
-
-
-//desktopBrowser capabilities
-let desktopBrowserCapabilities = [];
-try {
-  desktopBrowserCapabilities = require('../capabilities/browser_desktop.json');
-} catch (error) {
-  console.error("Failed to read desktop browser capabilities.json:", error);
-}
-
+//Process desktop Capabilities
+const desktopBrowserCapabilities = desktopBrowserData.map(cap => ({
+    ...cap,
+    specs: desktopBrowserSpecs
+}));
 
 // --- Select capabilities and assign specs based on RUN_TYPE ---
 let selectedCapabilities = [];
 console.log('RUN_TYPE:', process.env.RUN_TYPE);
-
-cordovaCapabilities.forEach(cap => cap.specs = cordovaSpecs);
-mobileBrowserCapabilities.forEach(cap => cap.specs = mobileBrowserSpecs);
-desktopBrowserCapabilities.forEach(cap => cap.specs = desktopBrowserSpecs);
 
 switch (process.env.RUN_TYPE) {
   case 'cordova':
@@ -138,7 +123,7 @@ selectedCapabilities.forEach((capability) => {
 
 
 // --- WebdriverIO Configuration Object ---
-module.exports.config = {
+export const config = {
   user: browserStackConfig.BROWSERSTACK_USER,
   key: browserStackConfig.BROWSERSTACK_KEY,
   injectGlobals: false,

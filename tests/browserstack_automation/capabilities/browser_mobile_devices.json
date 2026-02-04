@@ -57,7 +57,7 @@
         "interactiveDebugging": "true",
         "networkLogs": "true",
         "seleniumLogs": "true",
-        "consoleLogs": "info",
+        "consoleLogs": "info"
 
       }
     },
