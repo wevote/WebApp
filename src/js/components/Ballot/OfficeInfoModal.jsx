@@ -1,58 +1,16 @@
 /* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable react/no-unescaped-entities */
-/* eslint-disable react/jsx-closing-tag-location */import { ContentCopy, LaunchOutlined, MoreHoriz } from '@mui/icons-material';
-import Popover from '@mui/material/Popover';
+/* eslint-disable react/jsx-closing-tag-location */
 import indefinite from 'indefinite';
 import PropTypes from 'prop-types';
-
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
-import { openSnackbar } from '../../common/components/Widgets/SnackNotifier';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import ModalDisplayTemplateA from '../Widgets/ModalDisplayTemplateA';
+import TripleDotMenu from '../Widgets/TripleDotMenu';
 
 const OfficeInfoModal = ({ isOpen, onClose, officeName }) => {
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [copyLinkText, setCopyLinkText] = useState('Copy ballot section page link');
-  const copyLinkTimeoutRef = useRef(null);
-  const open = Boolean(anchorEl);
-  const id = open ? 'office-info-popover' : undefined;
-
-  useEffect(() => () => {
-    if (copyLinkTimeoutRef.current) {
-      clearTimeout(copyLinkTimeoutRef.current);
-    }
-  }, []);
-
-  const handleMenuClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handlePopoverClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleOpenNewTab = () => {
-    window.open(window.location.href, '_blank');
-    handlePopoverClose();
-  };
-
-  const handleCopyLink = () => {
-    navigator.clipboard.writeText(window.location.href).then(() => {
-      openSnackbar({ message: 'Link copied!', severity: 'success' });
-      setCopyLinkText('Copied!');
-      copyLinkTimeoutRef.current = setTimeout(() => {
-        setCopyLinkText('Copy ballot section page link');
-      }, 3000);
-    })
-      .catch((err) => {
-        console.error('Failed to copy link:', err);
-        openSnackbar({ message: 'Failed to copy link', severity: 'error' });
-        handlePopoverClose();
-      });
-  };
-
   const PlayButton = () => (
     <svg width="32" height="24" viewBox="0 0 32 24" fill="none" xmlns="http://www.w3.org/2000/svg">
       <rect width="32" height="24" rx="4" fill="#0858A1" />
@@ -69,40 +27,7 @@ const OfficeInfoModal = ({ isOpen, onClose, officeName }) => {
         <strong>{officeName}</strong>
       </Title>
       <HeaderActionsOfficeInfo>
-        <TripleDotWrapper>
-          <TripleDotButton
-            type="button"
-            aria-label="more options"
-            onClick={handleMenuClick}
-          >
-            <MoreHoriz />
-          </TripleDotButton>
-          <Popover
-            id={id}
-            open={open}
-            anchorEl={anchorEl}
-            onClose={handlePopoverClose}
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'right',
-            }}
-            transformOrigin={{
-              vertical: 'top',
-              horizontal: 'right',
-            }}
-          >
-            <PopoverWrapper>
-              <PopoverOption onClick={handleOpenNewTab}>
-                <LaunchOutlined style={{ fontSize: '14px', cursor: 'pointer', marginRight: '4px' }} />
-                View this ballot section in new tab
-              </PopoverOption>
-              <PopoverOption onClick={handleCopyLink}>
-                <ContentCopy style={{ fontSize: '14px', cursor: 'pointer', marginRight: '4px' }} />
-                {copyLinkText}
-              </PopoverOption>
-            </PopoverWrapper>
-          </Popover>
-        </TripleDotWrapper>
+        <TripleDotMenu />
         <VerticalLine />
       </HeaderActionsOfficeInfo>
     </HeaderRow>
@@ -264,54 +189,6 @@ const VerticalLine = styled.div`
 
   @media (max-width: 768px) {
     height: 20px;
-  }
-`;
-
-const TripleDotWrapper = styled.div`
-  color: ${DesignTokenColors.neutral600};
-  display: flex;
-  align-items: center;
-  ${isMobileScreenSize() ? 'margin-top: 5px' : ''};
-
-  &:hover {
-    color: ${DesignTokenColors.neutral400};
-    cursor: pointer;
-  }
-`;
-
-const TripleDotButton = styled.button`
-  background: transparent;
-  border: 0;
-  cursor: pointer;
-  padding: 4px;
-  display: flex;
-  align-items: center;
-  color: inherit;
-  outline: none;
-
-  &:focus {
-    outline: none;
-  }
-
-  svg {
-    font-size: 20px;
-  }
-`;
-
-const PopoverWrapper = styled.div`
-  padding: 8px 0;
-  min-width: 220px;
-`;
-
-const PopoverOption = styled.div`
-  padding: 10px 16px;
-  font-size: 14px;
-  cursor: pointer;
-  color: ${DesignTokenColors.neutral900};
-  white-space: nowrap;
-
-  &:hover {
-    background: ${DesignTokenColors.neutral100};
   }
 `;
 
