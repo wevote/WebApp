@@ -1,6 +1,7 @@
 import { Button } from '@mui/material';
 import React from 'react';
 import styled from 'styled-components';
+import { isWebApp } from '../../utils/isCordovaOrWebApp';
 
 /* global $  */
 
@@ -51,7 +52,8 @@ const DonateButtonContainer = styled('div')`
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding-top: 30px;
+  padding-top: ${isWebApp() ? '30px' : ''};
+  padding-bottom: ${isWebApp() ? '' : '35px'};
 `;
 
 export default DonorboxCordova;

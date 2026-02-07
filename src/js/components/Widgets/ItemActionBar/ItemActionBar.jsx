@@ -28,7 +28,7 @@ import VoterConstants from '../../../constants/VoterConstants';
 import CandidateStore from '../../../stores/CandidateStore';
 import SupportStore from '../../../stores/SupportStore';
 import VoterStore from '../../../stores/VoterStore';
-import { checkForAppReview } from '../../../utils/appReviewFunctions';
+import { possibleAppReview } from '../../../utils/appReviewFunctions';
 import lookupPageNameAndPageTypeDict, { getPageDetails } from '../../../utils/lookupPageNameAndPageTypeDict';
 import PositionPublicToggle from '../../PositionItem/PositionPublicToggle';
 import ReviewAppModal from '../../ReviewApps/ReviewAppModal';
@@ -64,7 +64,6 @@ class ItemActionBar extends PureComponent {
     this.isOpposeCalculated = this.isOpposeCalculated.bind(this);
     this.isSupportCalculated = this.isSupportCalculated.bind(this);
     // this.onScroll = this.onScroll.bind(this);
-    this.possibleAppReview = this.possibleAppReview.bind(this);
     this.opposeButton = this.opposeButton.bind(this);
     this.opposeItem = this.opposeItem.bind(this);
     this.supportButton = this.supportButton.bind(this);
@@ -663,16 +662,6 @@ class ItemActionBar extends PureComponent {
     return this.isOpposeCalculated() || this.isSupportCalculated() || this.state.voterTextStatement || this.state.voterTextStatementOpened;
   }
 
-  possibleAppReview () {
-    if (window?.AppRate) {
-      const doReview = checkForAppReview('ITEM');
-      const { AppRate: { promptForRating } } = window;
-      if (doReview) {
-        promptForRating();
-      }
-    }
-  }
-
   supportItem (buttonId) {
     const { politicianWeVoteId } = this.props;
     const { ballotItemType, ballotItemWeVoteId, transitioning } = this.state;
@@ -697,8 +686,8 @@ class ItemActionBar extends PureComponent {
     }
     // If the logic in this function decides to, show the "Sign in to save your choices" modal
     this.showChooseOrOpposeIntroModalDecision();
-    this.possibleAppReview();
-    // console.log('About to push to dataLayer in supportItem:', buttonId);
+    possibleAppReview('ITEM');
+    // console.log('About to push to dataLayer in supportItem');
     this.sendGTMDataLayer({ buttonId });
     const isSignedIn = VoterStore.getVoterIsSignedIn();
     const dataLayerObject = {
@@ -739,7 +728,7 @@ class ItemActionBar extends PureComponent {
     }
 
     this.sendGTMDataLayer({ buttonId });
-    this.possibleAppReview();
+    possibleAppReview('ITEM');
     SupportActions.voterStopSupportingSave(ballotItemWeVoteId, ballotItemType, politicianWeVoteId);
     this.setState({
       transitioning: true,
@@ -773,7 +762,7 @@ class ItemActionBar extends PureComponent {
     this.showChooseOrOpposeIntroModalDecision();
     this.sendGTMDataLayer({ buttonId });
 
-    this.possibleAppReview();
+    possibleAppReview('ITEM');
     SupportActions.voterOpposingSave(ballotItemWeVoteId, ballotItemType, politicianWeVoteId);
     this.setState({
       transitioning: true,
@@ -793,7 +782,7 @@ class ItemActionBar extends PureComponent {
       return;
     }
     this.sendGTMDataLayer({ buttonId });
-    this.possibleAppReview();
+    possibleAppReview('ITEM');
     SupportActions.voterStopOpposingSave(ballotItemWeVoteId, ballotItemType, politicianWeVoteId);
     this.setState({
       transitioning: true,

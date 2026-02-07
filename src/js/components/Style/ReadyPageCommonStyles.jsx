@@ -2,8 +2,6 @@ import styled from 'styled-components';
 import { isIOS, isIPhoneSmall } from '../../common/utils/cordovaUtils';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 
-/* global $ */
-
 export const ReadyCard = styled('div')`
   padding-bottom: 4px;
 `;

@@ -211,7 +211,7 @@ function CampaignCardForListBody (props) {
                     borderTop: `1px solid ${DesignTokenColors.neutralUI100}`,
                   } : {}}
                   loading="eager"
-                  fetchpriority="high"                  
+                  fetchpriority="high"
                 />
               </CampaignImageMobilePlaceholder>
             ) : (
