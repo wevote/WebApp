@@ -9,6 +9,7 @@ import webAppConfig from '../../config';
 import AppObservableStore from '../stores/AppObservableStore';
 import { convertStateCodeToStateText } from '../utils/addressFunctions';
 import { getYearFromUltimateElectionDate } from '../utils/dateFormat';
+import highlightSearchText from '../utils/highlightSearchText';
 import historyPush from '../utils/historyPush';
 import { isCordova, isWebApp } from '../utils/isCordovaOrWebApp';
 import isMobileScreenSize from '../utils/isMobileScreenSize';
@@ -29,7 +30,6 @@ const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenEx
 
 // React functional component example
 function CardForListBody (props) {
-
   renderLog('CardForListBody');  // Set LOG_RENDER_EVENTS to log all renders
   const {
     ballotItemDisplayName,
@@ -37,12 +37,12 @@ function CardForListBody (props) {
     hideItemActionBar, isClaimedProfile, limitCardWidth, linkedCampaignXWeVoteId, officeName,
     photoLargeUrl, politicalParty, politicianBasePath,
     politicianDescription, politicianWeVoteId, profileImageBackgroundColor,
-    showPoliticianOpenInNewWindow, stateCode, tagIdBaseName,
+    searchText, showPoliticianOpenInNewWindow, stateCode, tagIdBaseName,
     ultimateElectionDate,
     useCampaignSupportThermometer, useOfficeHeld,
     usePoliticianWeVoteIdForBallotItem, useVerticalCard,
   } = props;
-  
+
   // const supportersCountNextGoal = supportersCountNextGoalRaw || 0;
   // let supportersCountNextGoalWithFloor = supportersCountNextGoal || CampaignStore.getCampaignXSupportersCountNextGoalDefault();
   // console.log('supportersCount:', supportersCount, 'supportersCountNextGoal:', supportersCountNextGoal, 'supportersCountNextGoalWithFloor:', supportersCountNextGoalWithFloor);
@@ -88,7 +88,7 @@ function CardForListBody (props) {
               )}
               {hideCardMargins && isWebApp() ? (
                 <OneCampaignTitle>
-                  {ballotItemDisplayName}
+                  {highlightSearchText(ballotItemDisplayName, searchText)}
                   {showPoliticianOpenInNewWindow && (
                     <LaunchIconWrapper>
                       <Suspense fallback={<></>}>
@@ -127,7 +127,7 @@ function CardForListBody (props) {
                     to={politicianBasePath}
                     onClick={() => (isCordova() ? AppObservableStore.setShowOrganizationModal(false) : null)}
                   >
-                    {ballotItemDisplayName || nameFromUrl}
+                    {highlightSearchText(ballotItemDisplayName || nameFromUrl, searchText)}
                   </Link>
                 </OneCampaignTitleLink>
               )}
@@ -175,6 +175,7 @@ function CardForListBody (props) {
                             inCard
                             districtName={districtName}
                             officeName={officeName}
+                            searchText={searchText}
                           />
                         </OfficeNameWrapper>
                       </FlexDivLeft>
@@ -190,6 +191,7 @@ function CardForListBody (props) {
                             districtName={districtName}
                             inCard
                             officeName={officeName}
+                            searchText={searchText}
                             showOfficeName
                           />
                         </OfficeNameWrapper>
@@ -466,6 +468,7 @@ CardForListBody.propTypes = {
   politicianDescription: PropTypes.string,
   politicianWeVoteId: PropTypes.string,
   profileImageBackgroundColor: PropTypes.string,
+  searchText: PropTypes.string,
   showPoliticianOpenInNewWindow: PropTypes.bool,
   stateCode: PropTypes.string,
   // supportersCount: PropTypes.number.isRequired,

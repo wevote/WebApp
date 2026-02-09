@@ -369,6 +369,7 @@ class PoliticianListRoot extends Component {
               >
                 <PoliticianCardList
                   incomingPoliticianList={(isSearching ? politicianSearchResults : filteredList)}
+                  searchText={searchText}
                   timeStampOfChange={timeStampOfChange}
                   useVerticalCard
                   loadMoreScroll={isMobileScreenSize() ? () => { handleHorizontalScroll(this.scrollElement.current, HORIZONTAL_SCROLL_DISTANCE_MOBILE_RIGHT_ARROW_CLICK, this.leftAndRightArrowSetState, RIGHT_MARGIN_SIZE); } : () => { handleHorizontalScroll(this.scrollElement.current, HORIZONTAL_SCROLL_DISTANCE_ON_RIGHT_ARROW_CLICK, this.leftAndRightArrowSetState, RIGHT_MARGIN_SIZE); }}
