@@ -167,7 +167,7 @@
     "react-player": "^2.16.0",
     "react-rewards": "^2.1.0",
     "react-router-dom": "^5.3.4",
-    "react-router-dom-v5-compat": "^6.30.1",
+    "react-router-dom-v5-compat": "^6.30.3",
     "react-share": "^4.4.1",
     "react-slick": "^0.30.3",
     "react-svg": "^14.1.9",
