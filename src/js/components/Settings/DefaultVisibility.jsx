@@ -23,7 +23,7 @@ const PrivacyData = () => {
     }
 
     // Trigger checkmark animation after saving
-    setAnimKey(k => k + 1);
+    setAnimKey((k) => k + 1);
   };
 
   if (!nextReleaseFeaturesEnabled) {
@@ -32,57 +32,57 @@ const PrivacyData = () => {
 
   return (
     <div className="u-stack--md">
-        <h4 className="h4" id="defaultVisibilityText">
-          Default visibility for your future ballot choices &amp; opinions
-        </h4>
+      <h4 className="h4" id="defaultVisibilityText">
+        Default visibility for your future ballot choices &amp; opinions
+      </h4>
 
-        <PrivacyToggleButtonGroupContainer>
-          <PrivacyToggleButtonGroup
-            exclusive
-            value={alignment}
-            onChange={handleAlignment}
-            aria-label="Privacy visibility"
-            size="small"
-          >
-            <PrivacyToggleButton value="public">Public</PrivacyToggleButton>
-            <PrivacyToggleButton value="friends">WeVote Friends</PrivacyToggleButton>
-            <PrivacyToggleButton value="private">Private</PrivacyToggleButton>
-            
-          </PrivacyToggleButtonGroup>
+      <PrivacyToggleButtonGroupContainer>
+        <PrivacyToggleButtonGroup
+          exclusive
+          value={alignment}
+          onChange={handleAlignment}
+          aria-label="Privacy visibility"
+          size="small"
+        >
+          <PrivacyToggleButton value="public">Public</PrivacyToggleButton>
+          <PrivacyToggleButton value="friends">WeVote Friends</PrivacyToggleButton>
+          <PrivacyToggleButton value="private">Private</PrivacyToggleButton>
 
-          {animKey > 0 && (
+        </PrivacyToggleButtonGroup>
+
+        {animKey > 0 && (
           <CheckmarkContainer key={animKey}>
             ✓ SAVED
           </CheckmarkContainer>
-          )}
-        </PrivacyToggleButtonGroupContainer>
+        )}
+      </PrivacyToggleButtonGroupContainer>
 
-        <DataSettingText>
+      <DataSettingText>
         <font style={{ fontStyle: 'italic' }}>
-        Changing your default visibility won't affect past choices or opinions.
-        You can still adjust the visibility for each new choice or opinion individually.
+          Changing your default visibility won&apos;t affect past choices or opinions.
+          You can still adjust the visibility for each new choice or opinion individually.
         </font>
-          <ul
-            style={{
-              fontStyle: 'normal',
-              paddingInlineStart: '20px',
-              marginTop: '10px',
-            }}
-          >
-            <li>
-            <font style={{ fontWeight: 'bold', color: DesignTokenColors.neutralUI900 }}>Public (recommended): </font> 
+        <ul
+          style={{
+            fontStyle: 'normal',
+            paddingInlineStart: '20px',
+            marginTop: '10px',
+          }}
+        >
+          <li>
+            <font style={{ fontWeight: 'bold', color: DesignTokenColors.neutralUI900 }}>Public (recommended): </font>
             Expand your reach and influence beyond just your friends.
-            </li>
-            <li>
+          </li>
+          <li>
             <font style={{ fontWeight: 'bold', color: DesignTokenColors.neutralUI900 }}>Your WeVote friends: </font>
-            People on the platform you've added as friends-so you can see and share opinions more easily.
-            </li>
-            <li>
+            People on the platform you&apos;ve added as friends-so you can see and share opinions more easily.
+          </li>
+          <li>
             <font style={{ fontWeight: 'bold', color: DesignTokenColors.neutralUI900 }}>Private: </font>
-            Ideal for personal reflection or when you're not ready to share publicly.
-            </li>
-          </ul>
-        </DataSettingText>
+            Ideal for personal reflection or when you&apos;re not ready to share publicly.
+          </li>
+        </ul>
+      </DataSettingText>
     </div>
   );
 };

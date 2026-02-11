@@ -53,7 +53,7 @@ const NoCandidateClaimed = () => {
   }, [searchText]);
 
   const handleSearchChange = (e) => {
-    const value = e.target.value;
+    const { value } = e.target;
     setSearchText(value);
   };
 
@@ -66,26 +66,26 @@ const NoCandidateClaimed = () => {
 
   return (
     <Container>
-        <PageKicker>for candidate staff:</PageKicker>
+      <PageKicker>for candidate staff:</PageKicker>
       <Header>
-        <Title>Improve your candidate's presence on WeVote & build support</Title>
+        <Title>Improve your candidate&apos;s presence on WeVote & build support</Title>
         <Subtitle>
-            {subtitleText}
+          {subtitleText}
         </Subtitle>
         <List>
-          <li>Improve and edit your candidate's presence and rally support</li>
+          <li>Improve and edit your candidate&apos;s presence and rally support</li>
           <li>Import your supporters and potential voters to build your base</li>
           <li>Ask people to publicly support your candidate on WeVote</li>
           <li>Encourage people to share opinions and personal stories about your candidate</li>
           <li>Help supporters spread the word by inviting their friends</li>
         </List>
         <p>
-            Together, we can build momentum and get your candidate elected.
+          Together, we can build momentum and get your candidate elected.
         </p>
       </Header>
 
       <SearchBox>
-        <p className="search-header">Claim your candidate's profile to get started</p>
+        <p className="search-header">Claim your candidate&apos;s profile to get started</p>
         <SearchBarWrapper>
           <SearchIconStyled src={searchIcon} alt="" aria-hidden="true" />
           <SearchBar

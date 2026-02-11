@@ -268,7 +268,7 @@ class FooterMainWeVote extends Component {
                     paddingTop: 20,
                   }}
                 >
-                  <ToolBar color="#716e6eff" showBlog={false}/>
+                  <ToolBar color="#716e6eff" showBlog={false} />
                 </div>
               </OneRow>
             )}

@@ -11,7 +11,7 @@ import normalizedImagePath from '../../utils/normalizedImagePath';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ './OpenExternalWebSite'));
 
-function ToolBar(params) {
+function ToolBar (params) {
   renderLog('ToolBar');
 
   const color = params.color || 'white';

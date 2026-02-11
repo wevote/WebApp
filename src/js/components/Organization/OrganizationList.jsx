@@ -62,7 +62,7 @@ class OrganizationList extends Component {
         const {
           numberOfItemsToDisplay, organizationListToDisplayCount,
         } = this.state;
-        
+
         // console.log('window.height: ', window.innerHeight);
         // console.log('Bottom: ', showMoreItemsElement.getBoundingClientRect().bottom);
         // console.log('numberOfItemsToDisplay: ', numberOfItemsToDisplay);

@@ -29,9 +29,9 @@ const EditInvitationModal = ({
       await navigator.clipboard.writeText(
         `${draftInvite}\n\nhttps://wevote.us/join/${selectedPoliticianId}`,
       );
-      const message = window.innerWidth >= 576
-        ? 'Invitation copied to clipboard. Press ⌘V / Ctrl+V to paste.'
-        : 'Invitation copied to clipboard.';
+      const message = window.innerWidth >= 576 ?
+        'Invitation copied to clipboard. Press ⌘V / Ctrl+V to paste.' :
+        'Invitation copied to clipboard.';
       notify(message, true);
     } catch {
       notify('Copy failed. Select the text and copy manually.', false, 3000);
