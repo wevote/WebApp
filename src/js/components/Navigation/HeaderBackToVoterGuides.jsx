@@ -1,12 +1,13 @@
 import { AccountCircle, Place } from '@mui/icons-material';
 import { AppBar, Button, IconButton, Toolbar, Tooltip } from '@mui/material';
-import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
+import styled from 'styled-components';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import LazyImage from '../../common/components/LazyImage';
+import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
 import apiCalming from '../../common/utils/apiCalming';
 import { hasCordovaNotch } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
@@ -15,15 +16,13 @@ import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import stringContains from '../../common/utils/stringContains';
+import { isProperlyFormattedVoterGuideWeVoteId } from '../../common/utils/textFormat';
 import voterPhoto from '../../common/utils/voterPhoto';
-import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import { avatarGeneric } from '../../utils/applicationUtils';
-import isMobile from '../../utils/isMobile';
-import { isProperlyFormattedVoterGuideWeVoteId } from '../../common/utils/textFormat';
 import VoterGuideChooseElectionModal from '../VoterGuide/VoterGuideChooseElectionModal';
 import SignInButton from '../Widgets/SignInButton';
 import EndorsementModeTabs from './EndorsementModeTabs';
@@ -241,7 +240,7 @@ class HeaderBackToVoterGuides extends Component {
     if (stringContains('/settings/menu', pathname)) {
       backToOrganizationLinkText = ''; // Back to 'Your Endorsements'
       if (isWebApp()) {
-        backToLink = isMobile() ? '/settings/voterguidesmenu' : '/settings/voterguidelist';
+        backToLink = isMobileScreenSize() ? '/settings/voterguidesmenu' : '/settings/voterguidelist';
       } else {
         backToLink = '/settings/voterguidesmenu';
       }

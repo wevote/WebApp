@@ -5,15 +5,14 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import BallotActions from '../../actions/BallotActions';
 import VoterActions from '../../actions/VoterActions';
+import AppObservableStore from '../../common/stores/AppObservableStore';
 import { isIPhoneMiniOrSmaller, restoreStylesAfterCordovaKeyboard } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
-import { displayNoneIfSmallerThanDesktop } from '../../common/utils/isMobileScreenSize';
+import isMobileScreenSize, { displayNoneIfSmallerThanDesktop } from '../../common/utils/isMobileScreenSize';
 import Cookies from '../../common/utils/js-cookie/Cookies';
 import { renderLog } from '../../common/utils/logging';
-import AppObservableStore from '../../common/stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
 import VoterStore from '../../stores/VoterStore';
-import isMobile from '../../utils/isMobile';
 import GoogleAutoComplete from '../Widgets/GoogleAutoComplete';
 import InfoCircleIcon from '../Widgets/InfoCircleIcon';
 
@@ -167,7 +166,7 @@ class EditAddressOneHorizontalRow extends Component {
                 <Button
                   classes={{ root: classes.saveButton }}
                   color="primary"
-                  fullWidth={!isMobile()}
+                  fullWidth={!isMobileScreenSize()}
                   id="editAddressOneHorizontalRowSaveButton"
                   onClick={this.voterAddressSaveSubmit}
                   variant="contained"
@@ -253,7 +252,7 @@ const AddressLabelMobile = styled('div')`
 
 const SubmitFormWrapper = styled('div')`
   ${() => (isIPhoneMiniOrSmaller() ? { display: 'flex' } : {})}
-  ${() => (isMobile() ? { width: '100%' } : {})}
+  ${() => (isMobileScreenSize() ? { width: '100%' } : {})}
 `;
 
 const InternalFormWrapper = styled('div')`
@@ -261,7 +260,7 @@ const InternalFormWrapper = styled('div')`
   @media (max-width: 490px) {
     flex-wrap: wrap;
   }
-  ${() => (isMobile() ? { flexWrap: 'wrap' } : {})}
+  ${() => (isMobileScreenSize() ? { flexWrap: 'wrap' } : {})}
   justify-content: center;
   width: 100%;
 `;

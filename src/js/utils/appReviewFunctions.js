@@ -35,7 +35,7 @@ function checkForAppReview (source) {
         }
       }
     } else {
-      console.log(`Cordova:  checkForNeedToReviewApp checkForNeedToReviewApp ignored for the first ${webAppConfig.REVIEW_DELAY_BEFORE_CHECK} ms`);
+      console.log(`Cordova:   checkForNeedToReviewApp checkForNeedToReviewApp ignored for the first ${webAppConfig.REVIEW_DELAY_BEFORE_CHECK} ms`);
       return false;
     }
   }
@@ -70,4 +70,15 @@ function handlePositiveAppReview (appReviewVersion, appReviewPlatform) {
   VoterActions.updateReviewedAppFields('POSITIVE', appReviewVersion, appReviewPlatform, '');
 }
 
-export { checkForAppReview, handleNegativeAppReview, handlePositiveAppReview };
+function possibleAppReview (tag) {
+  if (window?.AppRate) {
+    const doReview = checkForAppReview(tag);
+    const { AppRate: { promptForRating } } = window;
+    if (doReview) {
+      console.log(`promptForRatings appReviewFunctions with tag ${tag}`);
+      promptForRating();
+    }
+  }
+}
+
+export { checkForAppReview, handleNegativeAppReview, handlePositiveAppReview, possibleAppReview };

@@ -188,6 +188,7 @@ class FooterBar extends React.Component {
     // If NOT signed in, turn Discuss off and How It Works on
     // Regardless of whether visible or not the option's numerical position remains the same
     // console.log('FooterBar, handleChange value:', value);
+    const showMoreMenuCurrentState = this.state.showMoreMenu || false;
     switch (value) {
       case 0:
         return historyPush('/ready');
@@ -198,7 +199,6 @@ class FooterBar extends React.Component {
       case 3:
         return historyPush('/donate');
       case 4:
-        const showMoreMenuCurrentState = this.state.showMoreMenu || false;
         return this.setState({ showMoreMenu: !showMoreMenuCurrentState });
       default:
         return null;
@@ -373,9 +373,10 @@ class FooterBar extends React.Component {
             />
           </BottomNavigation>
           {showMoreMenu && (
-            <MoreMenuOverlay classes={classes} friendInvitationsSentToMeCount={friendInvitationsSentToMeCount}
-              onClose={(e) => {
-                if (this.anchorRef.current?.contains(e.target)) return;
+            <MoreMenuOverlay
+              classes={classes}
+              friendInvitationsSentToMeCount={friendInvitationsSentToMeCount}
+              onClose={() => {
                 this.setState({ showMoreMenu: false });
               }}
             />

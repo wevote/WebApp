@@ -11,7 +11,7 @@ import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
-import { checkForAppReview } from '../../utils/appReviewFunctions';
+import { possibleAppReview } from '../../utils/appReviewFunctions';
 import { validatePhoneOrEmail } from '../../utils/regex-checks';
 import ReviewAppModal from '../ReviewApps/ReviewAppModal';
 
@@ -149,7 +149,7 @@ class AddFriendsByEmail extends Component {
       });
       this.friendInvitationByEmailSend(event);
     }
-    this.possibleAppReview();
+    possibleAppReview('ADDFRIEND');
   };
 
   cacheIncomingEmailsOrPhones = (event) => {
@@ -205,16 +205,6 @@ class AddFriendsByEmail extends Component {
     this.setState({
       friendLastName,
     });
-  }
-
-  possibleAppReview () {
-    if (window?.AppRate) {
-      const doReview = checkForAppReview('ADDFRIEND');
-      const { AppRate: { promptForRating } } = window;
-      if (doReview) {
-        promptForRating();
-      }
-    }
   }
 
   friendInvitationByEmailSend (e) {

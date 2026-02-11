@@ -13,6 +13,7 @@ import AppObservableStore from '../../common/stores/AppObservableStore';
 import { isIOS } from '../../common/utils/cordovaUtils';
 import { renderLog } from '../../common/utils/logging';
 import { handleNegativeAppReview } from '../../utils/appReviewFunctions';
+import { isAndroid } from '../../common/utils/isCordovaOrWebApp';
 
 /* global $ */
 
@@ -27,22 +28,24 @@ export default function ReviewAppModal (props) {
   useEffect(() => {
     emailInputRef.current = props.initialEmail;
     const isShowing = AppObservableStore.getShowingNegativeFeedbackModal();
-    const nfp = AppObservableStore.getNegativeFeedbackPage();
     if (isShowing) {
       return <></>;
     }
-    const timeout = (['POSITION', 'ITEM'].includes(nfp)) ? 200 : 0;
-    setTimeout(() => {
-      AppObservableStore.setShowingNegativeFeedbackModal(true);
-      console.log(`Cordova:    ReviewAppModal useEffect setShowingNegativeFeedbackModal: true, initialEmail: ${props.initialEmail}`);
-    }, timeout);
+    AppObservableStore.setShowingNegativeFeedbackModal(true);
   }, []);
+
+  const closeAnyOtherInstancesOfDialog = () => {
+    $('#cancelReview').each((index, element) => {
+      $(element).trigger('click');
+    });
+  };
 
   const handleClose = () => {
     // console.log('--- zzzz ----- ReviewAppModal handleClose()');
     AppObservableStore.setNegativeFeedbackPage('NONE');
     AppObservableStore.setShowingNegativeFeedbackModal(false);
     AppObservableStore.setShowNegativeFeedbackModal('NONE');
+    closeAnyOtherInstancesOfDialog();
     setOpen(false);
   };
 
@@ -54,25 +57,24 @@ export default function ReviewAppModal (props) {
     const appReviewEmail = okToSend ?  emailInputRef.current : '';
     handleClose();
     handleNegativeAppReview(appReviewVersion, appReviewPlatform, appReviewBodyNegativeBypass, appReviewEmail);
-    setTimeout(() => {
-      $(".cancelReview").each((index, element) => {
-        $(element).trigger('click');
-      });
-    }, 1000);
   };
 
   renderLog('ReviewAppModal');  // Set LOG_RENDER_EVENTS to log all renders
   return (
     <>
       {open && (
-        <Dialog open={open} onClose={handleClose}>
-          <DialogTitle>Send feedback to WeVote</DialogTitle>
+        <Dialog
+          open={open}
+          onClose={handleClose}
+          sx={{ '& .MuiDialog-paperScrollPaper': { margin: '2px' /* , maxWidth: '300px', maxHeight: '400px' */ } }}
+        >
+          <DialogTitle sx={{ '& .MuiDialogTitle-root': { padding: '16px 10px' } }}>
+            Send feedback to WeVote
+          </DialogTitle>
           <DialogContent>
             <DialogContentText>
               <span>
                 We would appreciate your feedback
-                {/* -- */}
-                {/* {AppObservableStore.getNegativeFeedbackPage()} */}
               </span>
             </DialogContentText>
             <div id="feedback-form" style={{ paddingTop: '10px' }}>
@@ -83,14 +85,17 @@ export default function ReviewAppModal (props) {
                 name="FormText"
                 fullWidth
                 multiline
-                rows={2}  // increasing this to four caused the dialog to exceed page constraints on the VoterPositionEntryAndDisplay
+                // increasing this to four caused the dialog to exceed page constraints on the VoterPositionEntryAndDisplay page
+                rows={2}
                 variant="outlined"
-                sx={{ '& .MuiOutlinedInput-input': { fontSize: '12px' } }}
+                // You can't have fontSize less than 16 on text fields in iOS or else it will auto-zoom for accessibility (and will stay zoomed)
+                sx={isAndroid() && { '& .MuiOutlinedInput-input': { fontSize: '12px' } }}
                 inputRef={bodyInputRef}
               />
               <FormControlLabel
                 control={(
                   <Checkbox
+                    checked={initialEmail && initialEmail.length > 0}
                     color="primary"
                     id="statusOfferApprovedToBeSaved"
                     inputRef={checkBoxInputRef}
@@ -98,19 +103,20 @@ export default function ReviewAppModal (props) {
                   />
                 )}
                 label="WeVote can send me a reply at"
+                sx={{ '& .MuiFormControlLabel-label': { fontSize: isAndroid() ? '12px' : '14px', paddingBottom: '4px' } }}
               />
               <TextField id="outlined-basic"
                  name="EmailText"
                  type="email"
                  variant="outlined"
                  defaultValue={initialEmail}
-                 sx={{ '& .MuiOutlinedInput-input': { fontSize: '12px' } }}
+                 sx={isAndroid() && { '& .MuiOutlinedInput-input': { fontSize: '12px' } }}
               />
             </div>
           </DialogContent>
           <DialogActions>
-            <Button class="cancelReview" onClick={handleClose}>Cancel</Button>
-            <Button onClick={clickedSend}>Send</Button>
+            <Button variant="text" color="primary" id="cancelReview" onClick={handleClose}>Cancel</Button>
+            <Button variant="contained" onClick={clickedSend}>Send</Button>
           </DialogActions>
         </Dialog>
       )}
