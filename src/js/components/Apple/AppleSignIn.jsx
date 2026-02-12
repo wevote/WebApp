@@ -61,6 +61,22 @@ class AppleSignIn extends Component {
     });
   }
 
+  pushDataLayer = () => {
+    const dataLayerObject = {
+      actionDetails: {
+        actionType: 'sendVerification',
+        buttonId: 'appleSignInButton',
+      },
+      event: 'click',
+      verifyDetails: {
+        verifyMethod: 'apple',
+      },
+      pageDetails: getPageDetails(),
+      userDetails: VoterStore.getAnalyticsUserDetails(),
+    };
+    TagManager.dataLayer({ dataLayer: dataLayerObject });
+  }
+
   localInitializeSDK (signInAfterInit) {
     const { AppleID } = window;
     const state = JSON.stringify({
@@ -88,10 +104,10 @@ class AppleSignIn extends Component {
 
   signInToAppleIOS () {
     console.log('SignInWithApple signInToAppleIOS: Button clicked');
-    
+
     // Push dataLayer BEFORE the sign-in flow starts
     this.pushDataLayer();
-    
+
     const { SignInWithApple: { signin } } = window.cordova.plugins;
 
     signin(
@@ -140,10 +156,10 @@ class AppleSignIn extends Component {
 
   signInToAppleWebApp () {  // https://i.stack.imgur.com/Le6Jf.png  https://stackoverflow.com/questions/61071848/sign-in-with-apple-js-returns-invalid-request-in
     oAuthLog('AppleSignIn signInToAppleWebApp button pressed');
-    
+
     // Push dataLayer BEFORE the sign-in flow starts
     this.pushDataLayer();
-    
+
     try {
       const { auth } = window.AppleID;
       auth.signIn();
@@ -163,22 +179,6 @@ class AppleSignIn extends Component {
     } else {
       this.signInToAppleIOS();
     }
-  }
-
-  pushDataLayer = () => {
-    const dataLayerObject = {
-      actionDetails: {
-        actionType: 'sendVerification',
-        buttonId: 'appleSignInButton',
-      },
-      event: 'click',
-      verifyDetails: {
-        verifyMethod: 'apple',
-      },
-      pageDetails: getPageDetails(),
-      userDetails: VoterStore.getAnalyticsUserDetails(),
-    };
-    TagManager.dataLayer({ dataLayer: dataLayerObject });
   }
 
   render () {

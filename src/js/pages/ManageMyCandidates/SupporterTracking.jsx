@@ -48,21 +48,30 @@ export default function SupporterTracking () {
           onClick={() => setActiveTab('joined')}
           data-hidden-bold-text={`Joined WeVote (${joinedCount})`}
         >
-          Joined WeVote ({joinedCount})
+          Joined WeVote
+          (
+          {joinedCount}
+          )
         </Tab>
         <Tab
           active={activeTab === 'invited'}
           onClick={() => setActiveTab('invited')}
           data-hidden-bold-text={`Invited (${invitedCount})`}
         >
-          Invited ({invitedCount})
+          Invited
+          (
+          {invitedCount}
+          )
         </Tab>
         <Tab
           active={activeTab === 'remind'}
           onClick={() => setActiveTab('remind')}
           data-hidden-bold-text={`Reminder needed (${remindCount})`}
         >
-          Reminder needed ({remindCount})
+          Reminder needed
+          (
+          {remindCount}
+          )
         </Tab>
       </TabRow>
       <TabContent>
@@ -114,9 +123,9 @@ const Tab = styled.button`
   border: none;
   padding: 12px 16px 4px 16px;
   font-size: 15px;
-  font-weight: ${props => props.active ? '600' : '500'};
-  color: ${props => props.active ? DesignTokenColors.primary600 : DesignTokenColors.neutralUI700};
-  border-bottom: 2px solid ${props => props.active ? DesignTokenColors.primary600 : 'transparent'};
+  font-weight: ${(props) => (props.active ? '600' : '500')};
+  color: ${(props) => (props.active ? DesignTokenColors.primary600 : DesignTokenColors.neutralUI700)};
+  border-bottom: 2px solid ${(props) => (props.active ? DesignTokenColors.primary600 : 'transparent')};
   cursor: pointer;
   position: relative;
   bottom: -1px;

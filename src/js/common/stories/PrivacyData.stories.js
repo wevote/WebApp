@@ -3,7 +3,7 @@ import { ToggleButtonGroup as MuiToggleButtonGroup, ToggleButton as MuiToggleBut
 import { SecurityRounded } from '@mui/icons-material';
 import styled from 'styled-components';
 import { styled as muiStyled } from '@mui/material/styles';
-import {grey as muiGrey, blue as muiBlue} from '@mui/material/colors';
+import { grey as muiGrey, blue as muiBlue } from '@mui/material/colors';
 import DefaultVisibility from '../../components/Settings/DefaultVisibility';
 
 const HeaderContainer = styled('div')`
@@ -23,7 +23,6 @@ const DataSettingSection = styled('div')`
 `;
 
 const PrivacyDataComponent = () => {
-
   return (
     <div>
       <div className="u-stack--md">
@@ -34,16 +33,14 @@ const PrivacyDataComponent = () => {
           </h1>
         </HeaderContainer>
         <DataSettingSection>
-          
           <DefaultVisibility />
-
         </DataSettingSection>
       </div>
     </div>
   );
 };
 
-export default { 
+export default {
   title: 'Design System/Privacy Data',
   component: PrivacyDataComponent,
   parameters: {
