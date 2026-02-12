@@ -4,7 +4,7 @@ import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
-const SmartTooltip = ({ title, placement, triggerType, children, tooltipId }) => {
+const SmartTooltip = ({ title, placement, triggerType, children, tooltipId, fillContainer }) => {
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
 
@@ -52,8 +52,14 @@ const SmartTooltip = ({ title, placement, triggerType, children, tooltipId }) =>
     return undefined;
   }, [effectiveMode, showTooltip, isDesktop]);
 
+  const wrappedChildren = fillContainer ? (
+    <span className="smart-tooltip__fill" style={{ display: 'flex', width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
+      {children}
+    </span>
+  ) : children;
+
   if (effectiveMode === 'none') {
-    return children;
+    return wrappedChildren;
   }
   const trigger = effectiveMode === 'hover' ? ['hover', 'focus'] : ['click'];
 
@@ -71,7 +77,7 @@ const SmartTooltip = ({ title, placement, triggerType, children, tooltipId }) =>
         overlay={tooltipOverlay}
         trigger={trigger}
       >
-        {children}
+        {wrappedChildren}
       </OverlayTrigger>
     );
   }
@@ -86,8 +92,20 @@ const SmartTooltip = ({ title, placement, triggerType, children, tooltipId }) =>
 
   return (
     <OverlayTrigger overlay={tooltipOverlay} placement={placement} show={!isDesktop ? showTooltip : undefined}>
-      <span ref={wrapperRef} className="smart-tooltip" onClick={!isDesktop ? handleClick : undefined} style={{ cursor: 'pointer', display: 'inline-block' }}>
-        {children}
+      <span
+        ref={wrapperRef}
+        className="smart-tooltip"
+        onClick={!isDesktop ? handleClick : undefined}
+        style={{
+          cursor: 'pointer',
+          display: fillContainer ? 'flex' : 'inline-block',
+          width: fillContainer ? '100%' : undefined,
+          height: fillContainer ? '100%' : undefined,
+          alignItems: fillContainer ? 'center' : undefined,
+          justifyContent: fillContainer ? 'center' : undefined,
+        }}
+      >
+        {wrappedChildren}
       </span>
     </OverlayTrigger>
   );
@@ -99,12 +117,14 @@ SmartTooltip.propTypes = {
   triggerType: PropTypes.oneOf(['hover', 'click', 'both']),
   children: PropTypes.node.isRequired,
   tooltipId: PropTypes.string,
+  fillContainer: PropTypes.bool,
 };
 
 SmartTooltip.defaultProps = {
   placement: 'top',
   triggerType: 'hover',
   tooltipId: undefined,
+  fillContainer: false,
 };
 
 export default SmartTooltip;
