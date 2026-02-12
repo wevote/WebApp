@@ -104,6 +104,7 @@ class PoliticianCardList extends Component {
                 <PoliticianCardForList
                   politicianWeVoteId={onePolitician.politician_we_vote_id}
                   limitCardWidth={useVerticalCard}
+                  searchText={this.props.searchText}
                   useVerticalCard={useVerticalCard}
                 />
               </div>
@@ -141,6 +142,7 @@ PoliticianCardList.propTypes = {
   useVerticalCard: PropTypes.bool,
   loadMoreScroll: PropTypes.func,
   shouldLoadMore: PropTypes.bool,
+  searchText: PropTypes.string,
 };
 
 const styles = () => ({
