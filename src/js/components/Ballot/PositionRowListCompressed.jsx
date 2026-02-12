@@ -445,7 +445,13 @@ class PositionRowListCompressed extends Component {
                 {showOppose && (
                   <ShowOpposeSpan
                     id="candidateEndorsementCountOppose"
+                    tabIndex={0}
                     onClick={() => this.onClickShowOrganizationModalWithPositions('candidateEndorsementCountOppose')}
+                    onKeyDown={(e) => {
+                      if(e.key === "Enter" || e.key === " ") {
+                        this.onClickShowOrganizationModalWithPositions('candidateEndorsementCountOppose');
+                      }
+                    }}
                   >
                     {endorsementCount}
                     {' '}
@@ -455,7 +461,13 @@ class PositionRowListCompressed extends Component {
                 {showSupport && (
                   <ShowSupportSpan
                     id="candidateEndorsementCountSupport"
+                    tabIndex={0}
                     onClick={() => this.onClickShowOrganizationModalWithPositions('candidateEndorsementCountSupport')}
+                    onKeyDown={(e) => {
+                      if(e.key === "Enter" || e.key === " ") {
+                        this.onClickShowOrganizationModalWithPositions('candidateEndorsementCountSupport');
+                      }
+                    }}
                   >
                     {endorsementCount}
                     {' '}

@@ -32,6 +32,7 @@ import FriendsTabs from './FriendsTabs';
 import HeaderBarLogo from './HeaderBarLogo';
 import HeaderBarModals from './HeaderBarModals';
 import TabWithPushHistory from './TabWithPushHistory';
+import TabWithoutPushHistory from './TabWithoutPushHistory';
 
 const HeaderNotificationMenu = React.lazy(() => import(/* webpackChunkName: 'HeaderNotificationMenu' */ './HeaderNotificationMenu'));
 const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
@@ -536,8 +537,8 @@ class HeaderBar extends Component {
                         to="/donate"
                       />
                     )}
-                    <Tab
-                      value={99}
+                    <TabWithoutPushHistory
+                      value={3}
                       classes={isWebApp() ? { root: classes.tabRoot, selected: classes.tabSelected } : { root: classes.tabRootMore, selected: classes.tabSelected }}
                       id="moreTabHeaderBar"
                       label={(
@@ -548,7 +549,14 @@ class HeaderBar extends Component {
                       )}
                       onClick={(event) => {
                         this.setState({ moreAnchorEl: event.currentTarget });
-                        this.handleTabChange(99); // Highlight the tab
+                        this.handleTabChange(3); // Highlight the tab
+                      }}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          this.setState({ moreAnchorEl: e.currentTarget });
+                          this.handleTabChange(3); // Highlight the tab
+                        }
                       }}
                       aria-controls="more-menu"
                       aria-haspopup="true"
