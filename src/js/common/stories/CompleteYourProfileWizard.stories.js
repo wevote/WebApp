@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { action } from '@storybook/addon-actions';
+import { action } from 'storybook/actions';
+import { fn } from 'storybook/test';
 import styled from 'styled-components';
 import CompleteYourProfileWizard from '../../components/CompleteYourProfile/CompleteYourProfileWizard';
 
@@ -45,6 +46,9 @@ export default {
   component: CompleteYourProfileWizard,
   parameters: {
     layout: 'centered',
+  },
+  args: {
+    onClick: fn(), // Explicitly mock the action
   },
   argTypes: {
     activeStep: {
