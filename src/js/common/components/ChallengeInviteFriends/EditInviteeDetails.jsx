@@ -92,7 +92,7 @@ const EditInviteeDetails = ({ inviteeId, show, setShow, setAnchorEl }) => {
         <UniqueLink>
           [
           {editedName || 'your friend'}
-          's unique link]
+          &apos;s unique link]
         </UniqueLink>
       </FormSection>
       <ButtonContainer>

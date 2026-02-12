@@ -1,8 +1,8 @@
 import { driver, expect } from '@wdio/globals';
-import ReadyPage from '../page_objects/ready.page';
+import ReadyPage from '../page_objects/ready.browser';
 import TopNavigation from '../page_objects/topnavigation.browser';
 import HowItWorks from '../page_objects/howitworks.browser';
-const testData = require('../capabilities/testData.js');
+import testData from '../capabilities/testData.js';
 const waitTime = 5000;
 
 describe('HowItWorks', () => {

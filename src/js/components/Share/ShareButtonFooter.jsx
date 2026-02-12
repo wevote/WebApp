@@ -23,7 +23,7 @@ import { getApplicationViewBooleans } from '../../utils/applicationUtils';
 import { shareBottomOffset } from '../../utils/cordovaOffsets';
 import createMessageToFriendDefaults from '../../utils/createMessageToFriendDefaults';
 import sortFriendListByMutualFriends from '../../utils/friendFunctions';
-import isMobile from '../../utils/isMobile';
+import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { getKindOfShareFromURL } from './getKindOfShareFromURL';
 import { getWhatAndHowMuchToShareDefault } from './getWhatAndHowMuchToShareDefault';
 import { CopyLink, saveActionShareAnalytics, ShareFacebook, SharePreviewFriends, shareStyles, ShareTwitter, ShareWeVoteFriends } from './shareButtonCommon'; // cordovaSocialSharingByEmail // cordovaSocialSharingByEmail
@@ -399,7 +399,7 @@ class ShareButtonFooter extends Component {
                   />
                 )}
                 <ShareWeVoteFriends onClickFunction={() => this.saveActionShareButtonFriends()} />
-                {(!(isMobile() && navigator.share) || isCordova()) && (
+                {(!(isMobileScreenSize() && navigator.share) || isCordova()) && (
                   <>
                     {webAppConfig.ENABLE_FACEBOOK && (
                       <ShareFacebook titleText={titleText} saveActionShareButtonFacebook={this.saveActionShareButtonFacebook} linkToBeShared={linkToBeShared} />

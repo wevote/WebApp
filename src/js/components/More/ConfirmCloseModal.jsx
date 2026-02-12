@@ -5,10 +5,10 @@ import { Info } from '@mui/icons-material';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 import ModalDisplayTemplateB from '../Widgets/ModalDisplayTemplateB';
 
-export default function ConfirmCloseModal({
+export default function ConfirmCloseModal ({
   isOpen,
   onConfirm,
-  onCancel
+  onCancel,
 }) {
   return (
     <>
@@ -19,12 +19,13 @@ export default function ConfirmCloseModal({
         show={isOpen}
         toggleModal={onCancel}
         externalUniqueId="confirmCloseModal"
-        textFieldJSX={
+        textFieldJSX={(
           <Content>
             <MessageRow>
               <StyledInfoIcon />
               <Message>
-                You have not sent any invites.<br/>
+                You have not sent any invites.
+                <br />
                 Are you sure you want to close?
               </Message>
             </MessageRow>
@@ -37,7 +38,7 @@ export default function ConfirmCloseModal({
               </CloseButton>
             </ButtonRow>
           </Content>
-        }
+        )}
         tallMode={false}
       />
     </>

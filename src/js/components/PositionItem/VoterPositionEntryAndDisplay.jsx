@@ -19,7 +19,7 @@ import { renderLog } from '../../common/utils/logging';
 import SupportStore from '../../stores/SupportStore';
 import VoterStore from '../../stores/VoterStore';
 import { avatarGeneric } from '../../utils/applicationUtils';
-import { checkForAppReview } from '../../utils/appReviewFunctions';
+import { possibleAppReview } from '../../utils/appReviewFunctions';
 import { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
 import ActivityPostPublicDropdown from '../Activity/ActivityPostPublicDropdown';
 import ReviewAppModal from '../ReviewApps/ReviewAppModal';
@@ -124,16 +124,6 @@ const VoterPositionEntryAndDisplay = ({ classes, externalUniqueId, politicianWeV
       appStateSubscription.unsubscribe();
     };
   }, [onAppObservableStoreChange]);
-
-  const possibleAppReview = () => {
-    if (window?.AppRate) {
-      const doReview = checkForAppReview('POSITION');
-      const { AppRate: { promptForRating } } = window;
-      if (doReview) {
-        promptForRating();
-      }
-    }
-  };
 
   const openEditModal = () => {
     if (VoterStore.getVoterIsSignedIn()) {
@@ -299,7 +289,7 @@ const VoterPositionEntryAndDisplay = ({ classes, externalUniqueId, politicianWeV
     TagManager.dataLayer({ dataLayer: dataLayerObject });
 
     SupportActions.voterPositionCommentSave(ballotItemWeVoteId, kindOfBallotItem, politicianWeVoteId, statementText, selectedStance, visibilitySetting);
-    possibleAppReview();
+    possibleAppReview('POSITION');
     toggleEditModalLocal(false);
   };
 

@@ -140,12 +140,7 @@ class VoterPlan extends Component {
     this.readyStoreListener.remove();
   }
 
-  saveNowIfTriggered = (triggeredToSaveNow = false) => {
-    if (triggeredToSaveNow) {
-      // console.log('saveNowIfTriggered');
-      this.onSaveVoterPlanButton();
-    }
-  }
+
 
   handleVotingLocationAddressChange = (event) => {
     this.setState({ votingLocationAddress: event.target.value });
@@ -212,6 +207,13 @@ class VoterPlan extends Component {
       return 'On the day my ballot arrives';
     }
     return '';
+  }
+
+  saveNowIfTriggered = (triggeredToSaveNow = false) => {
+    if (triggeredToSaveNow) {
+      // console.log('saveNowIfTriggered');
+      this.onSaveVoterPlanButton();
+    }
   }
 
   onSaveVoterPlanButton = (event) => {

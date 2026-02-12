@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import TagManager from 'react-gtm-module';
 import OrganizationActions from '../../actions/OrganizationActions';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import { prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../common/utils/cordovaUtils';
@@ -10,6 +11,7 @@ import { renderLog } from '../../common/utils/logging';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';
 import { isSpeakerTypeOrganization } from '../../utils/organization-functions';
+import { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
 
 const delayBeforeApiUpdateCall = 1200;
 const delayBeforeRemovingSavedStatus = 4000;
@@ -47,14 +49,25 @@ class SettingsWidgetOrganizationWebsite extends Component {
     restoreStylesAfterCordovaKeyboard('SettingsWidgetOrganizationWebsite');
   }
 
-  handleKeyPress () {
+  handleKeyPress (buttonId) {
     clearTimeout(this.timer);
     if (this.props.voterHasMadeChangesFunction) {
       this.props.voterHasMadeChangesFunction();
     }
     this.timer = setTimeout(() => {
       OrganizationActions.organizationWebsiteSave(this.state.linkedOrganizationWeVoteId, this.state.organizationWebsite);
-      this.setState({ organizationWebsiteSavedStatus: 'Saved' });
+      this.setState({ organizationWebsiteSavedStatus: 'Saved' }, () => {
+        const dataLayerObject = {
+          event: 'action',
+          actionDetails: {
+            actionType: 'save',
+            buttonId,
+          },
+          userDetails: VoterStore.getAnalyticsUserDetails(),
+          pageDetails: getPageDetails(),
+        };
+        TagManager.dataLayer({ dataLayer: dataLayerObject });
+      });
     }, delayBeforeApiUpdateCall);
   }
 
@@ -114,7 +127,7 @@ class SettingsWidgetOrganizationWebsite extends Component {
 
     const { classes, externalUniqueId } = this.props;
     const { isOrganization, organizationWebsite, organizationWebsiteSavedStatus } = this.state;
-
+    const organizationWebsiteID = `organizationWebsiteTextArea-${externalUniqueId}`;
     return (
       <div className="">
         <form onSubmit={(e) => { e.preventDefault(); }}>
@@ -122,14 +135,14 @@ class SettingsWidgetOrganizationWebsite extends Component {
             <ColumnFullWidth>
               <FormControl classes={{ root: classes.formControl }}>
                 <TextField
-                  id={`organizationWebsiteTextArea-${externalUniqueId}`}
+                  id={organizationWebsiteID}
                   label={isOrganization ? 'Organization Website' : 'Your Website'}
                   name="organizationWebsite"
                   margin="dense"
                   variant="outlined"
                   placeholder={isOrganization ? 'Type Organization\'s Website, www...' : 'Type Your Website Address, www...'}
                   value={organizationWebsite}
-                  onKeyDown={this.handleKeyPress}
+                  onKeyDown={() => this.handleKeyPress(organizationWebsiteID)}
                   onChange={this.updateOrganizationWebsite}
                 />
               </FormControl>

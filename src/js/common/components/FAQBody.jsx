@@ -159,9 +159,9 @@ export default class FAQBody extends Component {
         <br />
         {isWebApp() && (
           <>
-            <br/>
+            <br />
             <strong>Official Formation Documents?</strong>
-            <br/>
+            <br />
             <Suspense fallback={<></>}>
               <OpenExternalWebSite
                 linkIdAttribute="c3IRSApproval"
@@ -171,7 +171,7 @@ export default class FAQBody extends Component {
                 trackingOn
               />
             </Suspense>
-            <br/>
+            <br />
             <Suspense fallback={<></>}>
               <OpenExternalWebSite
                 linkIdAttribute="c3EIN"
@@ -181,7 +181,7 @@ export default class FAQBody extends Component {
                 trackingOn
               />
             </Suspense>
-            <br/>
+            <br />
             <Suspense fallback={<></>}>
               <OpenExternalWebSite
                 linkIdAttribute="c4EIN"
@@ -193,8 +193,8 @@ export default class FAQBody extends Component {
             </Suspense>
           </>
         )}
-        <br/>
-        <br/>
+        <br />
+        <br />
 
         <strong>No really, who are you?</strong>
         <br />

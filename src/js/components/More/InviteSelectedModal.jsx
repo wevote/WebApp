@@ -7,7 +7,7 @@ import ModalDisplayTemplateA from '../Widgets/ModalDisplayTemplateA';
 
 import ConfirmCloseModal from './ConfirmCloseModal';
 
-export default function InviteSelectedModal({
+export default function InviteSelectedModal ({
   isOpen,
   toggleModal,
   voters,
@@ -16,7 +16,6 @@ export default function InviteSelectedModal({
   onOpenPreview,
   onRemove,
 }) {
-
   // Set to true to use hard-coded test data
   const TEST_MODE = false;
 
@@ -37,10 +36,10 @@ export default function InviteSelectedModal({
   const count = voters.length;
 
   // Categorizing voters with missing contact info
-  const missingEmail = voters.filter(v => !v.email);
-  const missingEmailOnly = voters.filter(v => !v.email && v.phone);
-  const missingPhoneOnly = voters.filter(v => v.email && !v.phone);
-  const missingBoth = voters.filter(v => !v.email && !v.phone);
+  const missingEmail = voters.filter((v) => !v.email);
+  const missingEmailOnly = voters.filter((v) => !v.email && v.phone);
+  const missingPhoneOnly = voters.filter((v) => v.email && !v.phone);
+  const missingBoth = voters.filter((v) => !v.email && !v.phone);
 
   const missingEmailCount = missingEmail.length;
   const missingEmailOnlyCount = missingEmailOnly.length;
@@ -68,7 +67,7 @@ export default function InviteSelectedModal({
     if (onInviteText) {
       onInviteText([voter]);
     }
-    setTextSentIds(prev => new Set(prev).add(voter.id || voter._idx));
+    setTextSentIds((prev) => new Set(prev).add(voter.id || voter._idx));
   };
 
   const handleClose = () => {
@@ -89,7 +88,7 @@ export default function InviteSelectedModal({
       <React.Fragment key={v.id || v._idx || index}>
         {index > 0 && ', '}
         <ClickableName onClick={() => console.log('TODO: implement voter edit', v.name)}>
-          {v.name || "Unknown"}
+          {v.name || 'Unknown'}
         </ClickableName>
       </React.Fragment>
     ));
@@ -98,7 +97,14 @@ export default function InviteSelectedModal({
   const dialogTitleJSX = (
     <HeaderRow>
       <Title>Invite by email and/or text&nbsp;</Title>
-      <Count>({count} voter{count > 1 ? 's' : ''} selected)</Count>
+      <Count>
+        (
+        {count}
+        voter
+        {count > 1 ? 's' : ''}
+        selected
+        )
+      </Count>
     </HeaderRow>
   );
 
@@ -116,7 +122,7 @@ export default function InviteSelectedModal({
             onOpenPreview();
           }}
         >
-          <Visibility/>
+          <Visibility />
           <span>Preview invitation</span>
         </PreviewButton>
       </TopRow>
@@ -127,13 +133,23 @@ export default function InviteSelectedModal({
           <WarningList>
             {missingEmailOnlyCount > 0 && (
               <li>
-                Email not entered for {missingEmailOnlyCount} voter{missingEmailOnlyCount > 1 && 's'}:{' '}
+                Email not entered for
+                {missingEmailOnlyCount}
+                voter
+                {missingEmailOnlyCount > 1 && 's'}
+                :
+                {' '}
                 {renderClickableNames(missingEmailOnly)}
               </li>
             )}
             {missingPhoneOnlyCount > 0 && (
               <li>
-                Mobile phone not entered for {missingPhoneOnlyCount} voter{missingPhoneOnlyCount > 1 && 's'}:{' '}
+                Mobile phone not entered for
+                {missingPhoneOnlyCount}
+                voter
+                {missingPhoneOnlyCount > 1 && 's'}
+                :
+                {' '}
                 {renderClickableNames(missingPhoneOnly)}
               </li>
             )}
@@ -141,11 +157,15 @@ export default function InviteSelectedModal({
               <>
                 <li>
                   <span style={{ color: DesignTokenColors.neutralUI400 }}>
-                    {missingBothCount} voter{missingBothCount > 1 && 's'} cannot be invited (no email or mobile phone entered) -
+                    {missingBothCount}
+                    voter
+                    {missingBothCount > 1 && 's'}
+                    cannot be invited (no email or mobile phone entered) -
                   </span>
                 </li>
                 <div>
-                  not selectable: {renderClickableNames(missingBoth)}
+                  not selectable:
+                  {renderClickableNames(missingBoth)}
                 </div>
               </>
             )}
@@ -162,13 +182,17 @@ export default function InviteSelectedModal({
       ) : (
         <>
           <SendButton onClick={handleSendBatchEmail}>
-            Send email invite to {count} supporter{count > 1 && 's'}
+            Send email invite to
+            {count}
+            supporter
+            {count > 1 && 's'}
           </SendButton>
           {missingEmailCount > 0 && (
             <WarningBox style={{ marginTop: '8px', marginBottom: '30px', paddingLeft: '0' }}>
               <Warning size={18} style={{ flexShrink: 0 }} />
               <span>
-                No email entered for: {renderClickableNames(missingEmail)}
+                No email entered for:
+                {renderClickableNames(missingEmail)}
               </span>
             </WarningBox>
           )}
@@ -178,11 +202,11 @@ export default function InviteSelectedModal({
       <SectionTitleRow>
         <SectionTitle>Invite by text</SectionTitle>
         <SmallDivider />
-        <SmallActionLink onClick={() => console.log("TODO: send list to phone")}>
+        <SmallActionLink onClick={() => console.log('TODO: send list to phone')}>
           Send list to phone
         </SmallActionLink>
       </SectionTitleRow>
-      {voters.map(v => {
+      {voters.map((v) => {
         const id = v.id || v._idx;
         return (
           <VoterRow key={id}>
@@ -199,7 +223,7 @@ export default function InviteSelectedModal({
                 </SendTextButton>
               )
             ) : (
-              <MissingPhone onClick={() => console.log("TODO: implement add phone number")}>
+              <MissingPhone onClick={() => console.log('TODO: implement add phone number')}>
                 <Warning size={18} />
                 <span>Enter mobile phone</span>
               </MissingPhone>
@@ -393,13 +417,13 @@ const PreviewButton = styled.button`
 
 const Remove = styled.span`
   justify-self: end;
-  color: ${props => (props.disabled ? DesignTokenColors.neutralUI300 : DesignTokenColors.primary700)};
-  cursor: ${props => (props.disabled ? 'not-allowed' : 'pointer')};
-  pointer-events: ${props => (props.disabled ? 'none' : 'auto')};
+  color: ${(props) => (props.disabled ? DesignTokenColors.neutralUI300 : DesignTokenColors.primary700)};
+  cursor: ${(props) => (props.disabled ? 'not-allowed' : 'pointer')};
+  pointer-events: ${(props) => (props.disabled ? 'none' : 'auto')};
   text-align: right;
   padding-right: 10px;
   &:hover {
-    text-decoration: ${props => (props.disabled ? 'none' : 'underline')};
+    text-decoration: ${(props) => (props.disabled ? 'none' : 'underline')};
   }
 `;
 

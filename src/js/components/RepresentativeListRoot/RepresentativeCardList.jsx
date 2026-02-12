@@ -101,6 +101,7 @@ class RepresentativeCardList extends Component {
                 <RepresentativeCardForList
                   representativeWeVoteId={oneRepresentative.we_vote_id}
                   limitCardWidth={useVerticalCard}
+                  searchText={this.props.searchText}
                   useVerticalCard
                 />
               </div>
@@ -138,6 +139,7 @@ RepresentativeCardList.propTypes = {
   useVerticalCard: PropTypes.bool,
   loadMoreScroll: PropTypes.func,
   shouldLoadMore: PropTypes.bool,
+  searchText: PropTypes.string,
 };
 
 const styles = () => ({

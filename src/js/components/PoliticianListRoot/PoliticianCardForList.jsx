@@ -155,7 +155,7 @@ class PoliticianCardForList extends Component {
     renderLog('PoliticianCardForList');  // Set LOG_RENDER_EVENTS to log all renders
     const {
       hideCardMargins, hideItemActionBar,
-      limitCardWidth, politicianWeVoteId, showPoliticianOpenInNewWindow,
+      limitCardWidth, politicianWeVoteId, searchText, showPoliticianOpenInNewWindow,
       useCampaignSupportThermometer, useVerticalCard,
     } = this.props;
     const { campaignSupported, candidate, candidateWeVoteId, linkedCampaignXWeVoteId, politician } = this.state;
@@ -268,6 +268,7 @@ class PoliticianCardForList extends Component {
           // politicianDescription={politicianDescriptionToDisplay}
           politicianWeVoteId={politicianWeVoteId}
           profileImageBackgroundColor={profileImageBackgroundColor}
+          searchText={searchText}
           showPoliticianOpenInNewWindow={showPoliticianOpenInNewWindow}
           stateCode={stateCode}
           supportersCount={supportersCount}
@@ -287,6 +288,7 @@ PoliticianCardForList.propTypes = {
   hideItemActionBar: PropTypes.bool,
   limitCardWidth: PropTypes.bool,
   politicianWeVoteId: PropTypes.string,
+  searchText: PropTypes.string,
   showPoliticianOpenInNewWindow: PropTypes.bool,
   useCampaignSupportThermometer: PropTypes.bool,
   useVerticalCard: PropTypes.bool,

@@ -16,6 +16,7 @@ import CandidateStore from '../../stores/CandidateStore';
 import SupportStore from '../../stores/SupportStore';
 import { sortCandidateList } from '../../utils/positionFunctions';
 import { OfficeItemCompressedWrapper, OfficeNameH2 } from '../Style/BallotStyles';
+import TripleDotMenu from '../Widgets/TripleDotMenu';
 
 const ShowMoreButtons = React.lazy(() => import(/* webpackChunkName: 'ShowMoreButtons' */ '../Widgets/ShowMoreButtons'));
 const OfficeInfoModal = React.lazy(() => import(/* webpackChunkName: 'OfficeInfoModal' */ './OfficeInfoModal'));
@@ -138,12 +139,16 @@ class OfficeItemCompressed extends Component {
         />
         <OfficeNameH2>
           {ballotItemDisplayName}
-          <InfoOutlined
-            style={{ color: moreInfoIconHovered ? DesignTokenColors.primary500 : DesignTokenColors.neutral600, cursor: 'pointer', marginLeft: '8px' }}
-            onMouseEnter={this.handleMoreInfoIconHover}
-            onMouseLeave={this.handleMoreInfoIconLeave}
-            onClick={this.openOfficeInfoModal}
-          />
+          <OfficeHeaderIcons>
+            <InfoOutlined
+              style={{ color: moreInfoIconHovered ? DesignTokenColors.primary500 : DesignTokenColors.neutral600, cursor: 'pointer', marginLeft: '8px', marginRight: '6px' }}
+              onMouseEnter={this.handleMoreInfoIconHover}
+              onMouseLeave={this.handleMoreInfoIconLeave}
+              onClick={this.openOfficeInfoModal}
+            />
+            <VerticalLine />
+            <TripleDotMenu makeVertical />
+          </OfficeHeaderIcons>
           {!!primaryParty && (
             <PrimaryPartyWrapper>
               {' '}
@@ -242,6 +247,18 @@ const styles = (theme) => ({
 
 const PrimaryPartyWrapper = styled('span')`
   font-size: 18px;
+`;
+
+const OfficeHeaderIcons = styled.div`
+  display: inline-flex;
+  align-items: center;
+`;
+
+const VerticalLine = styled.div`
+  border-left: 1px solid ${DesignTokenColors.neutral200};
+  height: 24px;
+  align-self: center;
+  margin: 0 4px;
 `;
 
 export default withTheme(withStyles(styles)(OfficeItemCompressed));

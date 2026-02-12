@@ -4,6 +4,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import YearState from './YearState';
 import adjustDistrictNameAndOfficeName from '../../utils/adjustDistrictNameAndOfficeName';
+import highlightSearchText from '../../utils/highlightSearchText';
 import { renderLog } from '../../utils/logging';
 import toTitleCase from '../../utils/toTitleCase';
 
@@ -23,7 +24,7 @@ export default function OfficeHeldNameText (props) {
   let officeNameFiltered;
   const {
     centeredText, districtName: incomingDistrictName, inCard, officeName: incomingOfficeName,
-    politicalParty, stateName,
+    politicalParty, searchText, stateName,
   } = props; // Mar 2023: Turning off officeLink until we can do design review
   if (isAllUpperCase(incomingDistrictName)) {
     districtNameFiltered = toTitleCase(incomingDistrictName);
@@ -58,7 +59,7 @@ export default function OfficeHeldNameText (props) {
       nameHtml = (
         <PartyAndOfficeHeldWrapper>
           <span className="u-gray-darker">
-            {officeName}
+            {highlightSearchText(officeName, searchText)}
             {' '}
           </span>
           <span>for </span>
@@ -77,7 +78,7 @@ export default function OfficeHeldNameText (props) {
     nameHtml = (
       <PartyAndYearWrapper>
         <span className="u-gray-darker">
-          {officeName}
+          {highlightSearchText(officeName, searchText)}
         </span>
         <YearStateWrapper inCard={inCard}>
           <YearState centeredText={centeredText} politicalParty={politicalParty} stateName={stateName} />
@@ -95,6 +96,7 @@ OfficeHeldNameText.propTypes = {
   officeName: PropTypes.string,
   // officeLink: PropTypes.string,
   politicalParty: PropTypes.string,
+  searchText: PropTypes.string,
 };
 
 const DistrictNameSpan = styled('span')`

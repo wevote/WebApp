@@ -1,57 +1,16 @@
 /* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable react/jsx-closing-tag-location */
-import React, { useState, useEffect, useRef } from 'react';
-import PropTypes from 'prop-types';
-import styled, { createGlobalStyle } from 'styled-components';
 import indefinite from 'indefinite';
-import { MoreHoriz, LaunchOutlined, ContentCopy } from '@mui/icons-material';
-import Popover from '@mui/material/Popover';
+import PropTypes from 'prop-types';
+import React from 'react';
+import styled, { createGlobalStyle } from 'styled-components';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
+import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import ModalDisplayTemplateA from '../Widgets/ModalDisplayTemplateA';
-import { openSnackbar } from '../../common/components/Widgets/SnackNotifier';
+import TripleDotMenu from '../Widgets/TripleDotMenu';
 
 const OfficeInfoModal = ({ isOpen, onClose, officeName }) => {
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [copyLinkText, setCopyLinkText] = useState('Copy ballot section page link');
-  const copyLinkTimeoutRef = useRef(null);
-  const open = Boolean(anchorEl);
-  const id = open ? 'office-info-popover' : undefined;
-
-  useEffect(() => () => {
-    if (copyLinkTimeoutRef.current) {
-      clearTimeout(copyLinkTimeoutRef.current);
-    }
-  }, []);
-
-  const handleMenuClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handlePopoverClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleOpenNewTab = () => {
-    window.open(window.location.href, '_blank');
-    handlePopoverClose();
-  };
-
-  const handleCopyLink = () => {
-    navigator.clipboard.writeText(window.location.href).then(() => {
-      openSnackbar({ message: 'Link copied!', severity: 'success' });
-      setCopyLinkText('Copied!');
-      copyLinkTimeoutRef.current = setTimeout(() => {
-        setCopyLinkText('Copy ballot section page link');
-      }, 3000);
-    })
-      .catch((err) => {
-        console.error('Failed to copy link:', err);
-        openSnackbar({ message: 'Failed to copy link', severity: 'error' });
-        handlePopoverClose();
-      });
-  };
-
   const PlayButton = () => (
     <svg width="32" height="24" viewBox="0 0 32 24" fill="none" xmlns="http://www.w3.org/2000/svg">
       <rect width="32" height="24" rx="4" fill="#0858A1" />
@@ -67,43 +26,10 @@ const OfficeInfoModal = ({ isOpen, onClose, officeName }) => {
         <br className="mobile-break" />
         <strong>{officeName}</strong>
       </Title>
-      <HeaderActions>
-        <TripleDotWrapper>
-          <TripleDotButton
-            type="button"
-            aria-label="more options"
-            onClick={handleMenuClick}
-          >
-            <MoreHoriz />
-          </TripleDotButton>
-          <Popover
-            id={id}
-            open={open}
-            anchorEl={anchorEl}
-            onClose={handlePopoverClose}
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'right',
-            }}
-            transformOrigin={{
-              vertical: 'top',
-              horizontal: 'right',
-            }}
-          >
-            <PopoverWrapper>
-              <PopoverOption onClick={handleOpenNewTab}>
-                <LaunchOutlined style={{ fontSize: '14px', cursor: 'pointer', marginRight: '4px' }} />
-                View this ballot section in new tab
-              </PopoverOption>
-              <PopoverOption onClick={handleCopyLink}>
-                <ContentCopy style={{ fontSize: '14px', cursor: 'pointer', marginRight: '4px' }} />
-                {copyLinkText}
-              </PopoverOption>
-            </PopoverWrapper>
-          </Popover>
-        </TripleDotWrapper>
+      <HeaderActionsOfficeInfo>
+        <TripleDotMenu />
         <VerticalLine />
-      </HeaderActions>
+      </HeaderActionsOfficeInfo>
     </HeaderRow>
   );
 
@@ -194,6 +120,7 @@ const RemoveTitlePadding = createGlobalStyle`
   .MuiDialogTitle-root:has(#closeModalDisplayTemplateAofficeInfoModal) > div > div {
     padding-left: 0 !important;
     width: 100% !important;
+    ${isMobileScreenSize() ? 'padding-top: 10px' : ''}
   }
 `;
 
@@ -239,13 +166,14 @@ const Title = styled.h3`
   }
 `;
 
-const HeaderActions = styled.div`
+const HeaderActionsOfficeInfo = styled.div`
   display: flex;
   align-items: center;
   gap: 6px;
   flex-shrink: 0;
   margin-right: 52px !important;
   margin-top: -4px;
+  ${isMobileScreenSize() ? '' : 'margin-top: -4px'};
 
   @media (max-width: 768px) {
     margin-right: 52px !important;
@@ -257,56 +185,10 @@ const VerticalLine = styled.div`
   border-left: 1px solid ${DesignTokenColors.neutral200};
   height: 24px;
   align-self: center;
+  ${isMobileScreenSize() ? 'margin-top: 2px' : ''};
 
   @media (max-width: 768px) {
     height: 20px;
-  }
-`;
-
-const TripleDotWrapper = styled.div`
-  color: ${DesignTokenColors.neutral600};
-  display: flex;
-  align-items: center;
-
-  &:hover {
-    color: ${DesignTokenColors.neutral400};
-    cursor: pointer;
-  }
-`;
-
-const TripleDotButton = styled.button`
-  background: transparent;
-  border: 0;
-  cursor: pointer;
-  padding: 4px;
-  display: flex;
-  align-items: center;
-  color: inherit;
-  outline: none;
-
-  &:focus {
-    outline: none;
-  }
-
-  svg {
-    font-size: 20px;
-  }
-`;
-
-const PopoverWrapper = styled.div`
-  padding: 8px 0;
-  min-width: 220px;
-`;
-
-const PopoverOption = styled.div`
-  padding: 10px 16px;
-  font-size: 14px;
-  cursor: pointer;
-  color: ${DesignTokenColors.neutral900};
-  white-space: nowrap;
-
-  &:hover {
-    background: ${DesignTokenColors.neutral100};
   }
 `;
 

@@ -1,5 +1,4 @@
 import { Launch } from '@mui/icons-material';
-import { Link } from 'react-router-dom';
 import { Button, FormControl, FormControlLabel, InputAdornment, Radio, RadioGroup, TextField } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
@@ -7,6 +6,7 @@ import React, { Component, Suspense } from 'react';
 import { GoogleReCaptcha, GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
 import TagManager from 'react-gtm-module';
 import { Helmet } from 'react-helmet-async';
+import { Link } from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import DonateActions from '../../common/actions/DonateActions';
@@ -17,7 +17,7 @@ import standardBoxShadow from '../../common/components/Style/standardBoxShadow';
 import DonateStore from '../../common/stores/DonateStore';
 import initializejQuery from '../../common/utils/initializejQuery';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
-import { isTablet } from '../../common/utils/isMobileScreenSize';
+import isMobileScreenSize, { isTablet } from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
@@ -261,28 +261,28 @@ class Donate extends Component {
       </DonationDescription>
       {readMore && (
         <>
-          <p>
+          <DonateParagraph>
             We don’t take sides. Instead, we help people feel informed and ready to vote.
             Because WeVote is 100% volunteer-run, your donation directly powers
             our work.
             Our tools are free for voters, but not free to build and maintain.
-          </p>
-          <p>
+          </DonateParagraph>
+          <DonateParagraph>
             $1 equips 1 voter with personalized, nonpartisan ballot
             information
-          </p>
-          <p>
+          </DonateParagraph>
+          <DonateParagraph>
             $50 brings WeVote to 500 new voters
-          </p>
-          <p>
+          </DonateParagraph>
+          <DonateParagraph>
             $100 educates 1 college intern
-          </p>
-          <p>
+          </DonateParagraph>
+          <DonateParagraph>
             $250 brings in top volunteers by fueling recruiting systems for 1 month
-          </p>
-          <p>
+          </DonateParagraph>
+          <DonateParagraph>
             $500 powers our digital infrastructure for 1 week
-          </p>
+          </DonateParagraph>
         </>
       )}
       <DonationDescription>
@@ -710,7 +710,7 @@ const InnerWrapper = styled('div')`
 `;
 
 const DonateDescriptionContainer = styled('div')`
-  margin: 1.5em auto .25em;
+  margin: ${isMobileScreenSize() ? '' : '1.5em auto .25em'};
   width: 960px;
   max-width: 90vw;
   text-align: left;
@@ -829,10 +829,10 @@ const DonationImage = styled('img')`
 
 const DonationDescriptionContainer = styled('div')`
   padding: 0 20px;
-  margin-top: 50px;
+  margin-top: ${isMobileScreenSize() ? '' : '50px'};
 
   @media (max-width: 532px) {
-    margin-top: 30px;
+    //margin-top: 30px;
     padding: 0;
   }
 `;
@@ -885,6 +885,10 @@ const AddShadowToHeader = createGlobalStyle`
     box-shadow: ${standardBoxShadow('wide')};
     border-bottom: 1px solid rgb(170, 170, 170);
   }
+`;
+
+const DonateParagraph = styled('p')`
+    margin-bottom: ${isMobileScreenSize() ? '6px' : ''};
 `;
 
 const StyledLink = styled(Link)`

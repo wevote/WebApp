@@ -48,11 +48,10 @@ import VoterStore from '../../stores/VoterStore';
 import { dumpCssFromId } from '../../utils/appleSiliconUtils';
 import { outerHeightOfDualHeaderContainer } from '../../utils/cordovaCalculatedOffsets';
 import { pageEnumeration } from '../../utils/cordovaUtilsPageEnumeration';
-import isMobile from '../../utils/isMobile';
 // Lint is not smart enough to know that lazyPreloadPages will not attempt to preload/reload this page
 // eslint-disable-next-line import/no-cycle
 import lazyPreloadPages from '../../utils/lazyPreloadPages';
-import lookupPageNameAndPageTypeDict, { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
+import { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
 import mapCategoryFilterType from '../../utils/map-category-filter-type';
 import showBallotDecisionsTabs from '../../utilsApi/showBallotDecisionsTabs';
 import { checkShouldUpdate, formatVoterBallotList } from './utils/ballotUtils';
@@ -1078,7 +1077,7 @@ class Ballot extends Component {
 
         if (element) {
           const positionY = element.offsetTop;
-          if (isMobile()) {
+          if (isMobileScreenSize()) {
             window.scrollTo(0, positionY + 250);
           } else {
             window.scrollTo(0, positionY + 196);

@@ -4,6 +4,7 @@ import styled, { createGlobalStyle } from 'styled-components';
 import { FileDownloadOutlined as DownloadIcon, CheckCircle as CheckIcon } from '@mui/icons-material';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 import ModalDisplayTemplateA from '../Widgets/ModalDisplayTemplateA';
+import ImportConfirmModal from './ImportConfirmModal';
 
 export default function UploadCSVModal ({
   isOpen,
@@ -13,6 +14,9 @@ export default function UploadCSVModal ({
 }) {
   const fileInputRef = useRef(null);
   const [allColumnsOK, setAllColumnsOK] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [uploadedFile, setUploadedFile] = useState(null);
+  const [parsedData, setParsedData] = useState(null);
 
   const handleDownloadSample = () => {
     const csv =
@@ -44,51 +48,73 @@ export default function UploadCSVModal ({
     const text = await file.text();
     const lines = text.replace(/\r/g, '').split('\n').filter((l) => l.trim().length > 0);
     const [headerLine, ...dataLines] = lines;
-    const headers = headerLine.split(',').map((h) => h.trim().toLowerCase());
 
-    const nameIdx = headers.indexOf('name');
-    const emailIdx = headers.indexOf('email');
-    const mobileIdx = headers.indexOf('mobile');
-    const phoneIdx = headers.indexOf('phone');
-    const phoneCol = mobileIdx > -1 ? mobileIdx : phoneIdx;
-    const addressIdx = headers.indexOf('address');
+    // Helper function to properly split CSV line that has quotes (e.g. for addresses w/ commas)
+    const splitCSVLine = (line) => {
+      const result = [];
+      let current = '';
+      let inQuotes = false;
 
-    const ok = nameIdx > -1 && emailIdx > -1 && phoneCol > -1 && addressIdx > -1;
+      for (let i = 0; i < line.length; i++) {
+        const char = line[i];
 
-    const rows = dataLines.map((line) => {
-      const cols = line.split(',').map((supporter) => supporter.trim());
-      return {
-        name: nameIdx > -1 ? cols[nameIdx] : '',
-        email: emailIdx > -1 ? cols[emailIdx] : '',
-        phone: phoneCol > -1 ? cols[phoneCol] : '',
-        address: addressIdx > -1 ? cols[addressIdx] : '',
-      };
-    }).filter((r) => r.name || r.email || r.phone || r.address);
-
-    if (ok && rows.length > 0) {
-      onImport(rows);
-      setAllColumnsOK(false);
-    } else {
-      setAllColumnsOK(ok);
-      if (!ok) {
-        notify('We could not find all required columns (Name, Email, Mobile/Phone, Address). Please adjust and re-upload.', false);
-      } else if (rows.length === 0) {
-        notify('No rows found in this CSV.', false);
+        if (char === '"') {
+          inQuotes = !inQuotes;
+        } else if (char === ',' && !inQuotes) {
+          result.push(current.trim());
+          current = '';
+        } else {
+          current += char;
+        }
       }
+      result.push(current.trim());
+      return result;
+    };
+
+    const userHeaders = splitCSVLine(headerLine);
+    const rows = dataLines.map((line) => {
+      const cols = splitCSVLine(line);
+      const row = {};
+      userHeaders.forEach((header, idx) => {
+        row[header] = cols[idx] || '';
+      });
+      return row;
+    }).filter((r) => Object.values(r).some((v) => v));
+
+    if (rows.length === 0) {
+      notify('No rows found in this CSV.', false);
+      e.target.value = '';
+      return;
     }
+
+    setUploadedFile(file);
+    setParsedData({ userHeaders, rows });
+    setShowConfirmModal(true);
 
     e.target.value = '';
   };
 
   const handleClose = () => {
     setAllColumnsOK(false);
+    setShowConfirmModal(false);
+    setUploadedFile(null);
+    setParsedData(null);
     onClose();
+  };
+
+  const handleConfirmImport = (mappedData) => {
+    onImport(mappedData);
+    setShowConfirmModal(false);
+    setUploadedFile(null);
+    setParsedData(null);
+    setAllColumnsOK(false);
+    handleClose();
   };
 
   const dialogTitleJSX = (
     <HeaderRow>
       <Title>Upload CSV file</Title>
-      <HeaderDivider />
+      <HeaderDivider className="u-show-desktop-tablet" />
       <HeaderLink type="button" onClick={handleDownloadSample}>
         <DownloadIcon fontSize="small" />
         <span>Download sample file</span>
@@ -97,17 +123,17 @@ export default function UploadCSVModal ({
   );
 
   const textFieldJSX = (
-    <div style={{ padding: '18px 18px 28px' }}>
+    <TextFieldWrapper>
       <IntroList>
         <li>WeVote supports the data column structure below.</li>
         <li>
           If your document has info in separate columns (e.g., first and last name),
           please combine them into one column to ensure accurate importing.
         </li>
-        <li>You’ll be able to change your column names to ours after uploading your file.</li>
+        <li>You&#39;ll be able to change your column names to ours after uploading your file.</li>
       </IntroList>
 
-      <StructureLabel>WeVote’s data column structure</StructureLabel>
+      <StructureLabel>WeVote&#39;s data column structure</StructureLabel>
 
       {allColumnsOK && (
         <SuccessBanner>
@@ -116,7 +142,8 @@ export default function UploadCSVModal ({
         </SuccessBanner>
       )}
 
-      <Grid>
+      {/* Desktop and tablet grid */}
+      <Grid className="u-show-desktop-tablet">
         <Head>Name</Head>
         <Head>Email</Head>
         <Head>Mobile</Head>
@@ -132,6 +159,30 @@ export default function UploadCSVModal ({
         </Cell>
       </Grid>
 
+      {/* Mobile grid */}
+      <MobileGrid className="u-show-mobile">
+        <MobileRow>
+          <Head>Name</Head>
+          <Cell>John Smith</Cell>
+        </MobileRow>
+        <MobileRow>
+          <Head>Email</Head>
+          <Cell>js@gmail.com</Cell>
+        </MobileRow>
+        <MobileRow>
+          <Head>Mobile</Head>
+          <Cell>(123) 456-7890</Cell>
+        </MobileRow>
+        <MobileRow>
+          <Head>Address</Head>
+          <Cell>
+            123 State St
+            <br />
+            Anytown, CA 94117
+          </Cell>
+        </MobileRow>
+      </MobileGrid>
+
       <Footer>
         <CancelButton type="button" onClick={handleClose}>Cancel</CancelButton>
         <SelectButton type="button" onClick={handleSelectCSV}>Select file</SelectButton>
@@ -144,7 +195,7 @@ export default function UploadCSVModal ({
         style={{ display: 'none' }}
         onChange={handleCSVSelected}
       />
-    </div>
+    </TextFieldWrapper>
   );
 
   return (
@@ -154,13 +205,24 @@ export default function UploadCSVModal ({
       <WidenUploadModal />
       <SoftenCorners />
       <ModalDisplayTemplateA
-        show={isOpen}
+        show={isOpen && !showConfirmModal}
         toggleModal={handleClose}
         externalUniqueId="uploadCSVModal"
         dialogTitleJSX={dialogTitleJSX}
         tallMode={false}
         textFieldJSX={textFieldJSX}
       />
+      {showConfirmModal && parsedData && (
+        <ImportConfirmModal
+          isOpen={showConfirmModal}
+          onClose={() => setShowConfirmModal(false)}
+          fileName={uploadedFile?.name}
+          userHeaders={parsedData.userHeaders}
+          rows={parsedData.rows}
+          onConfirm={handleConfirmImport}
+          notify={notify}
+        />
+      )}
     </>
   );
 }
@@ -214,6 +276,10 @@ const CancelButton = styled.button`
 const Cell = styled.div`
   color: ${DesignTokenColors.neutralUI900};
   font-size: 14px;
+
+  @media (max-width: 575px) {
+    font-size: 13px;
+  }
 `;
 
 const Footer = styled.div`
@@ -258,6 +324,12 @@ const HeaderLink = styled.button`
   font-weight: 400;
   font-size: 17px;
   &:hover { background: ${DesignTokenColors.primary50}; }
+
+  @media (max-width: 575px) {
+    font-size: 14px;
+    padding: 4px 6px;
+    margin-left: 10px;
+  }
 `;
 
 const HeaderRow = styled.div`
@@ -265,6 +337,12 @@ const HeaderRow = styled.div`
   display: flex;
   justify-content: space-between;
   padding: 0 12px 0 18px;
+
+  @media (max-width: 575px) {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0 8px 0 0;
+  }
 `;
 
 const IntroList = styled.ul`
@@ -272,6 +350,29 @@ const IntroList = styled.ul`
   line-height: 1.45;
   margin: 8px 0 18px;
   padding-left: 18px;
+
+  @media (max-width: 575px) {
+    font-size: 14px;
+    margin: 0 0 18px;
+  }
+`;
+
+const MobileGrid = styled.div`
+  background: ${DesignTokenColors.whiteUI};
+  border: 1px solid ${DesignTokenColors.neutralUI200};
+  border-radius: 10px;
+  padding: 4px 14px;
+`;
+
+const MobileRow = styled.div`
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 12px;
+  padding: 8px 0;
+
+  &:not(:last-child) {
+    border-bottom: 1px solid ${DesignTokenColors.neutralUI100};
+  }
 `;
 
 const SelectButton = styled.button`
@@ -291,6 +392,10 @@ const StructureLabel = styled.div`
   color: ${DesignTokenColors.neutralUI900};
   font-weight: 600;
   margin: 10px 0 6px;
+
+  @media (max-width: 575px) {
+    font-size: 14px;
+  }
 `;
 
 const SuccessBanner = styled.div`
@@ -303,6 +408,10 @@ const SuccessBanner = styled.div`
   gap: 10px;
   margin: 8px 0 12px;
   padding: 10px 12px;
+
+  @media (max-width: 575px) {
+    font-size: 14px;
+  }
 `;
 
 const SuccessIcon = styled.span`
@@ -311,7 +420,20 @@ const SuccessIcon = styled.span`
   line-height: 1;
 `;
 
+const TextFieldWrapper = styled.div`
+  padding: 18px 18px 28px;
+
+  @media (max-width: 575px) {
+    padding: 9px 18px 28px;
+  }
+`;
+
 const Title = styled.h3`
   font-size: 28px;
   font-weight: 400;
+
+  @media (max-width: 575px) {
+    font-size: 22px;
+    margin-left: 20px;
+  }
 `;

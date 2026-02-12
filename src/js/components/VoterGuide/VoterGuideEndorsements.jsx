@@ -336,7 +336,7 @@ class VoterGuideEndorsements extends Component {
           ) : null}
           <ExtraActionsWrapper className="u-show-mobile">
             <EndorsementCard
-              buttonText={isMobileScreenSize() ? 'Endorsements?' : "Endorsements missing?"}
+              buttonText={isMobileScreenSize() ? 'Endorsements?' : 'Endorsements missing?'}
               narrowColumnDisplay
               organizationWeVoteId={organizationWeVoteId}
               // text={`Are there endorsements from ${organizationName} that you expected to see?`}

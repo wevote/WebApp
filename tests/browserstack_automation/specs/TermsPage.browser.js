@@ -1,9 +1,7 @@
 import { driver, expect } from '@wdio/globals';
-import ReadyPage from '../page_objects/ready.page';
+import ReadyPage from '../page_objects/ready.browser';
 import PrivacyPage from '../page_objects/privacy.browser';
 import TermsPage from '../page_objects/terms.browser';
-
-const { describe, it } = require('mocha');
 
 const waitTime = 10000;
 

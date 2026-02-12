@@ -1,5 +1,5 @@
 import { $, $$ } from '@wdio/globals';
-git s/page.browser';
+import PageBrowser from './page.browser';
 
 
 class BallotBrowser extends PageBrowser {

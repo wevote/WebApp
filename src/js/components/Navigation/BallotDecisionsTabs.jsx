@@ -91,23 +91,21 @@ class BallotDecisionsTabs extends Component {
           onClick={() => this.goToDifferentCompletionLevelTab('filterAllBallotItems')}
           tabIndex={0}
           label={(
-            <SmartTooltip title={allTooltipText} triggerType="hover">
-              <span style={{ display: 'inline-block' }}>
-                <Badge
-                  classes={{ badge: classes.badge, colorPrimary: this.getSelectedTab() === 0 ? null : classes.badgeColorPrimary }}
-                  color="primary"
-                  badgeContent={<BadgeCountWrapper>{ballotLength}</BadgeCountWrapper>}
-                  id="ballotDecisionsTabsAllItems"
-                  invisible={ballotLength === 0}
-                >
-                  <span className="u-show-mobile">
-                    All
-                  </span>
-                  <span className="u-show-desktop-tablet">
-                    All
-                  </span>
-                </Badge>
-              </span>
+            <SmartTooltip title={allTooltipText} triggerType="hover" fillContainer>
+              <Badge
+                classes={{ badge: classes.badge, colorPrimary: this.getSelectedTab() === 0 ? null : classes.badgeColorPrimary }}
+                color="primary"
+                badgeContent={<BadgeCountWrapper>{ballotLength}</BadgeCountWrapper>}
+                id="ballotDecisionsTabsAllItems"
+                invisible={ballotLength === 0}
+              >
+                <span className="u-show-mobile">
+                  All
+                </span>
+                <span className="u-show-desktop-tablet">
+                  All
+                </span>
+              </Badge>
             </SmartTooltip>
           )}
         />
@@ -120,23 +118,21 @@ class BallotDecisionsTabs extends Component {
             tabIndex={0}
             style={{ paddingRight: '26px' }}
             label={(
-              <SmartTooltip title={remainingTooltipText} triggerType="hover">
-                <span style={{ display: 'inline-block' }}>
-                  <Badge
-                    classes={{ badge: classes.badge, colorPrimary: this.getSelectedTab() === 1 ? null : classes.badgeColorPrimary }}
-                    color="primary"
-                    badgeContent={<BadgeCountWrapper>{ballotLengthRemaining}</BadgeCountWrapper>}
-                    id="ballotDecisionTabsRemainingChoices"
-                    invisible={ballotLengthRemaining === 0}
-                  >
-                    <span className="u-show-mobile">
-                      Choices
-                    </span>
-                    <span className="u-show-desktop-tablet">
-                      Remaining Choices
-                    </span>
-                  </Badge>
-                </span>
+              <SmartTooltip title={remainingTooltipText} triggerType="hover" fillContainer>
+                <Badge
+                  classes={{ badge: classes.badge, colorPrimary: this.getSelectedTab() === 1 ? null : classes.badgeColorPrimary }}
+                  color="primary"
+                  badgeContent={<BadgeCountWrapper>{ballotLengthRemaining}</BadgeCountWrapper>}
+                  id="ballotDecisionTabsRemainingChoices"
+                  invisible={ballotLengthRemaining === 0}
+                >
+                  <span className="u-show-mobile">
+                    Choices
+                  </span>
+                  <span className="u-show-desktop-tablet">
+                    Remaining Choices
+                  </span>
+                </Badge>
               </SmartTooltip>
             )}
           />
@@ -149,18 +145,16 @@ class BallotDecisionsTabs extends Component {
             onClick={() => this.goToDifferentCompletionLevelTab('filterDecided')}
             tabIndex={0}
             label={(
-              <SmartTooltip title={chosenTooltipText} triggerType="hover">
-                <span style={{ display: 'inline-block' }}>
-                  <Badge
-                    classes={{ badge: classes.badge, colorPrimary: this.getSelectedTab() === 2 ? null : classes.badgeColorPrimary }}
-                    color="primary"
-                    badgeContent={<BadgeCountWrapper>{itemsDecidedCount}</BadgeCountWrapper>}
-                    id="ballotDecisionsTabsItemsDecided"
-                    invisible={itemsDecidedCount === 0}
-                  >
-                    Chosen
-                  </Badge>
-                </span>
+              <SmartTooltip title={chosenTooltipText} triggerType="hover" fillContainer>
+                <Badge
+                  classes={{ badge: classes.badge, colorPrimary: this.getSelectedTab() === 2 ? null : classes.badgeColorPrimary }}
+                  color="primary"
+                  badgeContent={<BadgeCountWrapper>{itemsDecidedCount}</BadgeCountWrapper>}
+                  id="ballotDecisionsTabsItemsDecided"
+                  invisible={itemsDecidedCount === 0}
+                >
+                  Chosen
+                </Badge>
               </SmartTooltip>
             )}
           />
