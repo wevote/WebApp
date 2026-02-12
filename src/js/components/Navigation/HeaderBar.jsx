@@ -32,7 +32,6 @@ import FriendsTabs from './FriendsTabs';
 import HeaderBarLogo from './HeaderBarLogo';
 import HeaderBarModals from './HeaderBarModals';
 import TabWithPushHistory from './TabWithPushHistory';
-import TabWithoutPushHistory from './TabWithoutPushHistory';
 
 const HeaderNotificationMenu = React.lazy(() => import(/* webpackChunkName: 'HeaderNotificationMenu' */ './HeaderNotificationMenu'));
 const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
@@ -537,8 +536,9 @@ class HeaderBar extends Component {
                         to="/donate"
                       />
                     )}
-                    <TabWithoutPushHistory
+                    <Tab
                       value={3}
+                      tabIndex={0}
                       classes={isWebApp() ? { root: classes.tabRoot, selected: classes.tabSelected } : { root: classes.tabRootMore, selected: classes.tabSelected }}
                       id="moreTabHeaderBar"
                       label={(
