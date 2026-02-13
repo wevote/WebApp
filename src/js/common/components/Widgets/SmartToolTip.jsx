@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
+import styled from 'styled-components';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
@@ -52,14 +53,28 @@ const SmartTooltip = ({ title, placement, triggerType, children, tooltipId, fill
     return undefined;
   }, [effectiveMode, showTooltip, isDesktop]);
 
-  const wrappedChildren = fillContainer ? (
-    <span className="smart-tooltip__fill" style={{ display: 'flex', width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
+  // Render for click trigger using OverlayTrigger controlled via `show` (mobile)
+  const handleClick = () => {
+    if (!showTooltip) {
+      window.dispatchEvent(new CustomEvent('smartTooltipOpened', { detail: wrapperRef.current }));
+    }
+    setShowTooltip((prev) => !prev);
+  };
+
+  const triggerChild = (
+    <TooltipTriggerWrapper
+      ref={wrapperRef}
+      className="smart-tooltip"
+      $fillContainer={fillContainer}
+      $clickable={effectiveMode === 'click'}
+      onClick={effectiveMode === 'click' && !isDesktop ? handleClick : undefined}
+    >
       {children}
-    </span>
-  ) : children;
+    </TooltipTriggerWrapper>
+  );
 
   if (effectiveMode === 'none') {
-    return wrappedChildren;
+    return triggerChild;
   }
   const trigger = effectiveMode === 'hover' ? ['hover', 'focus'] : ['click'];
 
@@ -77,36 +92,14 @@ const SmartTooltip = ({ title, placement, triggerType, children, tooltipId, fill
         overlay={tooltipOverlay}
         trigger={trigger}
       >
-        {wrappedChildren}
+        {triggerChild}
       </OverlayTrigger>
     );
   }
 
-  // Render for click trigger using OverlayTrigger controlled via `show` (mobile)
-  const handleClick = () => {
-    if (!showTooltip) {
-      window.dispatchEvent(new CustomEvent('smartTooltipOpened', { detail: wrapperRef.current }));
-    }
-    setShowTooltip((prev) => !prev);
-  };
-
   return (
     <OverlayTrigger overlay={tooltipOverlay} placement={placement} show={!isDesktop ? showTooltip : undefined}>
-      <span
-        ref={wrapperRef}
-        className="smart-tooltip"
-        onClick={!isDesktop ? handleClick : undefined}
-        style={{
-          cursor: 'pointer',
-          display: fillContainer ? 'flex' : 'inline-block',
-          width: fillContainer ? '100%' : undefined,
-          height: fillContainer ? '100%' : undefined,
-          alignItems: fillContainer ? 'center' : undefined,
-          justifyContent: fillContainer ? 'center' : undefined,
-        }}
-      >
-        {wrappedChildren}
-      </span>
+      {triggerChild}
     </OverlayTrigger>
   );
 };
@@ -126,5 +119,14 @@ SmartTooltip.defaultProps = {
   tooltipId: undefined,
   fillContainer: false,
 };
+
+const TooltipTriggerWrapper = styled('div')(({ $fillContainer, $clickable }) => ({
+  cursor: $clickable ? 'pointer' : undefined,
+  display: $fillContainer ? 'flex' : 'inline-block',
+  width: $fillContainer ? '100%' : 'auto',
+  height: $fillContainer ? '100%' : 'auto',
+  alignItems: $fillContainer ? 'center' : 'normal',
+  justifyContent: $fillContainer ? 'center' : 'normal',
+}));
 
 export default SmartTooltip;
