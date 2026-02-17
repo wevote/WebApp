@@ -145,7 +145,7 @@ export default function ManageMyCandidatesLanding () {
       <Layout>
         {/* Mobile navigation bar */}
         <NavBarMobile
-          className="u-show-mobile"
+          className="u-show-mobile-tablet"
           aria-label="Manage navigation"
           ref={navScrollRef}
           onScroll={handleNavScroll}
@@ -174,7 +174,7 @@ export default function ManageMyCandidatesLanding () {
         </NavBarMobile>
 
         {/* Desktop and tablet navigation bar */}
-        <NavBar aria-label="Manage navigation">
+        <NavBar className="u-show-desktop" aria-label="Manage navigation">
           <NavPill $active={active === 'import'} onClick={handleClaimImport}>
             <PillIcon><ImportInviteIcon fontSize="small" /></PillIcon>
             Import &amp; invite voters
@@ -337,7 +337,7 @@ const Layout = styled.div`
   gap: 24px;
   grid-template-columns: 1fr;
 
-  @media (min-width: 576px) {
+  @media (min-width: 992px) {
     grid-template-columns: 260px 1fr;
   }
 `;
@@ -438,7 +438,7 @@ const SideDivider = styled.div`
 
 const RightPanel = styled.section`
   padding-top: 0;
-
+  overflow: auto;
   @media (min-width: 576px) {
     padding-top: 6px;
   }
