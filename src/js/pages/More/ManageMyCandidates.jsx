@@ -146,24 +146,26 @@ Thanks for your help!`);
       {/* Desktop and tablet invitation action strip */}
       <InviteRow className="u-show-desktop-tablet">
         <InviteText>Import voters, then invite them to join WeVote.</InviteText>
-        <InviteDivider />
-        <InviteLabel>Invitation:</InviteLabel>
-        <IconButton type="button" title="Copy invitation" onClick={handleCopyInviteBody}>
-          <CopyIcon fontSize="small" />
-        </IconButton>
-        <IconButton type="button" title="Preview invitation" onClick={handlePreviewOpen}>
-          <EyeIcon fontSize="small" />
-        </IconButton>
-        <IconButton type="button" title="Edit invitation" onClick={openEditModal}>
-          <EditIcon fontSize="small" />
-        </IconButton>
-        <InviteLabel>Post to:</InviteLabel>
-        <SocialIconButton type="button" aria-label="Post to Facebook">
-          <FacebookIcon fontSize="small" />
-        </SocialIconButton>
-        <SocialIconButton type="button" aria-label="Post to X">
-          <XIcon fontSize="small" />
-        </SocialIconButton>
+        <InviteDivider className="u-show-desktop"/>
+        <InviteQuickLinks>
+          <InviteLabel>Invitation:</InviteLabel>
+          <IconButton type="button" title="Copy invitation" onClick={handleCopyInviteBody}>
+            <CopyIcon fontSize="small" />
+          </IconButton>
+          <IconButton type="button" title="Preview invitation" onClick={handlePreviewOpen}>
+            <EyeIcon fontSize="small" />
+          </IconButton>
+          <IconButton type="button" title="Edit invitation" onClick={openEditModal}>
+            <EditIcon fontSize="small" />
+          </IconButton>
+          <InviteLabel>Post to:</InviteLabel>
+          <SocialIconButton type="button" aria-label="Post to Facebook">
+            <FacebookIcon fontSize="small" />
+          </SocialIconButton>
+          <SocialIconButton type="button" aria-label="Post to X">
+            <XIcon fontSize="small" />
+          </SocialIconButton>
+        </InviteQuickLinks>
       </InviteRow>
 
       {/* Mobile invitation action strip */}
@@ -239,12 +241,7 @@ Thanks for your help!`);
                 <ImportOptionLabel>Paste list</ImportOptionLabel>
               </ImportOptionWrapper>
               <ImportOptionWrapper>
-                <ImportOptionButton type="button"
-                  onClick={() => {
-                    setShowEnterOne(true);
-                    setMobileImportDropdown(false);
-                  }}
-                >
+                <ImportOptionButton type="button" onClick={() => setShowEnterOne(true)}>
                   <PersonIcon />
                 </ImportOptionButton>
                 <ImportOptionLabel>Enter one-by-one</ImportOptionLabel>
@@ -257,7 +254,7 @@ Thanks for your help!`);
       <Section className="u-show-desktop-tablet">
         <H3>Enter voters one-by-one</H3>
         <Row>
-          <Input placeholder="First and last name" value={oneName} onChange={(e) => setOneName(e.target.value)} />
+          <Input placeholder="First & last name" value={oneName} onChange={(e) => setOneName(e.target.value)} />
           <Input placeholder="Email" value={oneEmail} onChange={(e) => setOneEmail(e.target.value)} />
           <Input placeholder="Mobile phone" value={onePhone} onChange={(e) => setOnePhone(e.target.value)} />
           <PrimaryButton
@@ -409,11 +406,11 @@ const Input = styled.input`
   border: 1px solid ${DesignTokenColors.neutralUI300};
   border-radius: 10px;
   flex: 1 1 220px;
-  min-width: 220px;
+  min-width: 120px;
   padding: 12px 14px;
 
   @media (min-width: 1024px) {
-    flex: 0 0 260px;
+    flex: 1 0 160px;
   }
 
   &:focus-visible { outline: 2px solid ${DesignTokenColors.primary500}; outline-offset: 2px; }
@@ -459,6 +456,12 @@ const InviteLabel = styled.span`
   }
 `;
 
+const InviteQuickLinks = styled.span`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+`;
+
 const MutedNote = styled.p`
   color: ${DesignTokenColors.neutralUI600};
   margin: 40px 0 0;
@@ -495,12 +498,8 @@ const PillButton = styled(PrimaryButton)`
 const Row = styled.div`
   align-items: center;
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 12px;
-
-  @media (min-width: 1024px) {
-    flex-wrap: nowrap;
-  }
 `;
 
 const Section = styled.section`

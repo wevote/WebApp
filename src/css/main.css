@@ -1827,6 +1827,12 @@ h1,h2,h3,h4,h5,h6 {
   }
 }
 
+@media all and (max-width: 992px) {
+  .u-show-desktop {
+    display:none!important
+  }
+}
+
 @media all and (min-width: 992px) {
   .u-show-tablet {
     display:none!important
