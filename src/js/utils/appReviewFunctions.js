@@ -54,8 +54,13 @@ function handleNegativeAppReview (appReviewVersion, appReviewPlatform, appReview
     throw new Error(`handleNegativeAppReview received invalid reviewEmail ${appReviewEmail}`);
   }
   AppObservableStore.setAskedVoterToReviewApp(true);   // So we only ask once peer session
-  VoterActions.updateReviewedAppFields('Negative', appReviewVersion, appReviewPlatform,
-    appReviewBodyNegativeBypass, appReviewEmail);
+  VoterActions.updateReviewedAppFields(
+    'Negative',
+    appReviewVersion,
+    appReviewPlatform,
+    appReviewBodyNegativeBypass,
+    appReviewEmail,
+  );
 }
 
 // eslint-disable-next-line no-unused-vars

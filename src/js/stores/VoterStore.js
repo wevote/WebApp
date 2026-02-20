@@ -796,8 +796,10 @@ class VoterStore extends ReduceStore {
       case 'twitterRetrieveIdsIFollow':
         // console.log('VoterStore twitterRetrieveIdsIFollow');
         if (action.res.success) {
-          VoterActions.organizationSuggestionTasks('UPDATE_SUGGESTIONS_FROM_TWITTER_IDS_I_FOLLOW',
-            'FOLLOW_SUGGESTIONS_FROM_TWITTER_IDS_I_FOLLOW');
+          VoterActions.organizationSuggestionTasks(
+            'UPDATE_SUGGESTIONS_FROM_TWITTER_IDS_I_FOLLOW',
+            'FOLLOW_SUGGESTIONS_FROM_TWITTER_IDS_I_FOLLOW',
+          );
         }
 
         return state;
