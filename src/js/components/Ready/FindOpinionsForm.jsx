@@ -76,7 +76,7 @@ class FindOpinionsForm extends Component {
       event.preventDefault();
       this.goToSearchPage();
     }
-  }
+  };
 
   handleSearchTextChange = (event) => {
     const { searchText: priorSearchText } = this.state;
@@ -86,7 +86,7 @@ class FindOpinionsForm extends Component {
     if (priorSearchText !== searchText) {
       this.setState({ searchText });
     }
-  }
+  };
 
   inputFieldReceivesFocus = () => {
     if (isAndroid()) {
@@ -96,7 +96,7 @@ class FindOpinionsForm extends Component {
       $("div[class^='Ready__EditAddressWrapper']").hide();
       $("div[class^='ReadyTaskStyles__ReadyCard']").hide();
     }
-  }
+  };
 
   textFieldWillBlur = () => {
     if (isAndroid()) {
@@ -106,7 +106,7 @@ class FindOpinionsForm extends Component {
       $("div[class^='Ready__EditAddressWrapper']").show();
       $("div[class^='ReadyTaskStyles__ReadyCard']").show();
     }
-  }
+  };
 
   goToSearchPage = () => {
     const { searchText } = this.state;
@@ -115,7 +115,7 @@ class FindOpinionsForm extends Component {
     } else {
       historyPush('/opinions');
     }
-  }
+  };
 
   render () {
     renderLog('FindOpinionsForm');  // Set LOG_RENDER_EVENTS to log all renders

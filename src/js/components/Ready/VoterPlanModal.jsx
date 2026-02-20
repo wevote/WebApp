@@ -176,7 +176,7 @@ class VoterPlanModal extends Component {
     });
     event.preventDefault();
     this.props.toggleFunction(pathname);
-  }
+  };
 
   setVoterPlanSavedStates = (voterPlan, firstTime = false) => {
     // console.log('setVoterPlanSavedStates: ', voterPlan);
@@ -203,7 +203,7 @@ class VoterPlanModal extends Component {
         }
       }
     }
-  }
+  };
 
   generateVoterPlanText () {
     const {

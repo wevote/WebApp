@@ -10,7 +10,7 @@ import { hasCordovaNotch, heightOfCordovaSpacer, isIPadSmallerThan13 } from '../
 import { renderLog } from '../../common/utils/logging';
 import { CloseDrawerIconWrapper, DrawerHeaderAnimateDownInnerContainer, DrawerHeaderAnimateDownOuterContainer, DrawerHeaderWrapper, DrawerTitle } from '../Style/drawerLayoutStyles';
 
-const DrawerTemplateHeaderProfile = (props) => {
+function DrawerTemplateHeaderProfile (props) {
   const { classes, drawerId, drawerOpenGlobalVariableName, headerFixedJsx, headerTitleJsx, mainContentJsx, onDrawerClose } = props;
   renderLog(`DrawerTemplateHeaderProfile (${drawerId})`);  // Set LOG_RENDER_EVENTS to log all renders
 
@@ -119,7 +119,7 @@ const DrawerTemplateHeaderProfile = (props) => {
       </DrawerTemplateHeaderProfileWrapper>
     </Drawer>
   );
-};
+}
 DrawerTemplateHeaderProfile.propTypes = {
   classes: PropTypes.object.isRequired,
   drawerId: PropTypes.string,

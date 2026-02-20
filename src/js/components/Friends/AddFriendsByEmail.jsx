@@ -189,7 +189,7 @@ class AddFriendsByEmail extends Component {
       emailsOrPhonesBrokenErrorTimeoutId,
       friendContactInfoArray,
     });
-  }
+  };
 
   cacheFirstName = (event) => {
     const friendFirstName = event.target.value;
@@ -197,7 +197,7 @@ class AddFriendsByEmail extends Component {
     this.setState({
       friendFirstName,
     });
-  }
+  };
 
   cacheLastName = (event) => {
     const friendLastName = event.target.value;
@@ -205,7 +205,7 @@ class AddFriendsByEmail extends Component {
     this.setState({
       friendLastName,
     });
-  }
+  };
 
   friendInvitationByEmailSend (e) {
     e.preventDefault();
@@ -235,9 +235,14 @@ class AddFriendsByEmail extends Component {
     // console.log('firstNameArray: ', firstNameArray);
     // console.log('lastNameArray: ', lastNameArray);
     FriendActions.clearErrorMessageToShowVoter();
-    FriendActions.friendInvitationByEmailSend(emailAddressArray, firstNameArray,
-      lastNameArray, '', messageToFriend,
-      senderEmailAddress);
+    FriendActions.friendInvitationByEmailSend(
+      emailAddressArray,
+      firstNameArray,
+      lastNameArray,
+      '',
+      messageToFriend,
+      senderEmailAddress,
+    );
     // After calling the API, reset the form
     this.setState({
       loading: true,
@@ -340,11 +345,10 @@ class AddFriendsByEmail extends Component {
         ) : (
           <>
             {onEnterEmailAddressesStep && (
-              <>
-                <FormWrapper>
-                  <div>
-                    <form>
-                      <TextField
+              <FormWrapper>
+                <div>
+                  <form>
+                    <TextField
                         classes={{ root: classes.textField }}
                         id={uniqueExternalId ? `EmailAddress-${uniqueExternalId}` : 'EmailAddress'}
                         inputRef={this.emailInputRef}
@@ -360,20 +364,20 @@ class AddFriendsByEmail extends Component {
                         type="text"
                         value={incomingEmailsOrPhonesString}
                         variant="outlined"
-                      />
-                      {displayEmailsOrPhonesBrokenError && (
-                        <EmailsOrPhonesBrokenStringAlertWrapper>
-                          <Alert severity="error">
-                            Incomplete:
-                            {' '}
-                            {emailsOrPhonesBrokenString}
-                          </Alert>
-                        </EmailsOrPhonesBrokenStringAlertWrapper>
-                      )}
-                      {(friendContactInfoArray.length === 1) && (
-                        <div className="row">
-                          <div className={inSideColumn ? 'col col-12' : 'col col-6'}>
-                            <TextField
+                    />
+                    {displayEmailsOrPhonesBrokenError && (
+                    <EmailsOrPhonesBrokenStringAlertWrapper>
+                      <Alert severity="error">
+                        Incomplete:
+                        {' '}
+                        {emailsOrPhonesBrokenString}
+                      </Alert>
+                    </EmailsOrPhonesBrokenStringAlertWrapper>
+                    )}
+                    {(friendContactInfoArray.length === 1) && (
+                    <div className="row">
+                      <div className={inSideColumn ? 'col col-12' : 'col col-6'}>
+                        <TextField
                               variant="outlined"
                               margin="dense"
                               classes={{ root: classes.textField }}
@@ -386,10 +390,10 @@ class AddFriendsByEmail extends Component {
                               onFocus={() => focusTextFieldAndroid('AddFriendsByEmail')}
                               onBlur={blurTextFieldAndroid}
                               placeholder={isMobileScreenSize() || inSideColumn ? 'Optional' : 'Optional, but helpful!'}
-                            />
-                          </div>
-                          <div className={inSideColumn ? 'col col-12' : 'col col-6'}>
-                            <TextField
+                        />
+                      </div>
+                      <div className={inSideColumn ? 'col col-12' : 'col col-6'}>
+                        <TextField
                               variant="outlined"
                               margin="dense"
                               classes={{ root: classes.textField }}
@@ -402,13 +406,12 @@ class AddFriendsByEmail extends Component {
                               onFocus={() => focusTextFieldAndroid('AddFriendsByEmail')}
                               onBlur={blurTextFieldAndroid}
                               placeholder="Optional"
-                            />
-                          </div>
-                        </div>
-                      )}
-                      {(friendContactInfoArray.length > 0) ? (
-                        <>
-                          <TextField
+                        />
+                      </div>
+                    </div>
+                    )}
+                    {(friendContactInfoArray.length > 0) ? (
+                      <TextField
                             classes={{ root: classes.textField }}
                             fullWidth
                             id={uniqueExternalId ? `addFriendsMessage-${uniqueExternalId}` : 'addFriendsMessage'}
@@ -425,11 +428,10 @@ class AddFriendsByEmail extends Component {
                             type="text"
                             value={messageToFriend}
                             variant="outlined"
-                          />
-                        </>
-                      ) : null}
-                      <ButtonContainer>
-                        <Button
+                      />
+                    ) : null}
+                    <ButtonContainer>
+                      <Button
                           color="primary"
                           classes={{ root: classes.sendButton }}
                           disabled={emailsOrPhonesBrokenString.length > 0 || friendContactInfoArray.length === 0}
@@ -437,14 +439,13 @@ class AddFriendsByEmail extends Component {
                           onClick={this.addFriendsByEmailSubmit}
                           onKeyDown={this.onKeyDown}
                           variant="contained"
-                        >
-                          Invite
-                        </Button>
-                      </ButtonContainer>
-                    </form>
-                  </div>
-                </FormWrapper>
-              </>
+                      >
+                        Invite
+                      </Button>
+                    </ButtonContainer>
+                  </form>
+                </div>
+              </FormWrapper>
             )}
           </>
         )}

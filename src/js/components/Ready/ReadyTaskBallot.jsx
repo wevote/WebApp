@@ -121,47 +121,47 @@ class ReadyTaskBallot extends React.Component {
     } else {
       this.goToBallot();
     }
-  }
+  };
 
   goToFederalRaces = () => {
     BallotActions.completionLevelFilterTypeSave('All');
     BallotActions.raceLevelFilterTypeSave('Federal');
     historyPush('/ballot');
-  }
+  };
 
   goToLocalRaces = () => {
     BallotActions.completionLevelFilterTypeSave('All');
     BallotActions.raceLevelFilterTypeSave('Local');
     historyPush('/ballot');
-  }
+  };
 
   goToMeasureRaces = () => {
     BallotActions.completionLevelFilterTypeSave('All');
     BallotActions.raceLevelFilterTypeSave('Measure');
     historyPush('/ballot');
-  }
+  };
 
   goToStateRaces = () => {
     BallotActions.completionLevelFilterTypeSave('All');
     BallotActions.raceLevelFilterTypeSave('State');
     historyPush('/ballot');
-  }
+  };
 
   goToBallot = () => {
     BallotActions.completionLevelFilterTypeSave('All');
     BallotActions.raceLevelFilterTypeSave('All');
     historyPush('/ballot');
-  }
+  };
 
   openHowItWorksModal = () => {
     // console.log('Opening modal');
     AppObservableStore.setShowHowItWorksModal(true);
-  }
+  };
 
   openPersonalizedScoreIntroModal = () => {
     // console.log('Opening modal');
     AppObservableStore.setShowPersonalizedScoreIntroModal(true);
-  }
+  };
 
   calculateScore = (ballotItemsStatusCounts) => {
     let percentCompleted = 0;
@@ -190,7 +190,7 @@ class ReadyTaskBallot extends React.Component {
         percentCompleted,
       });
     }
-  }
+  };
 
   calculateShowButtonStates = (ballotItemsStatusCounts, showMoreButtonWasClicked = false) => {
     const {
@@ -359,7 +359,7 @@ class ReadyTaskBallot extends React.Component {
       stateShowButton,
       stateTotalNumber,
     });
-  }
+  };
 
   setCompletedStatus = () => {
     const howItWorksCompleted = VoterStore.getInterfaceFlagState(VoterConstants.HOW_IT_WORKS_WATCHED);
@@ -368,7 +368,7 @@ class ReadyTaskBallot extends React.Component {
       howItWorksCompleted,
       personalizedScoreIntroCompleted,
     });
-  }
+  };
 
   showMoreButtonsLink = () => {
     const { showMoreButtonWasClicked } = this.state;
@@ -377,7 +377,7 @@ class ReadyTaskBallot extends React.Component {
     });
     const ballotItemsStatusCounts = BallotStore.getBallotItemsStatusCounts();
     this.calculateShowButtonStates(ballotItemsStatusCounts, !showMoreButtonWasClicked);
-  }
+  };
 
   render () {
     renderLog('ReadyTaskBallot');  // Set LOG_RENDER_EVENTS to log all renders
@@ -454,12 +454,10 @@ class ReadyTaskBallot extends React.Component {
               {percentCompleted}
               %
               {!!(percentCompleted) && (
-                <>
-                  <span className="u-show-desktop-tablet">
+                <span className="u-show-desktop-tablet">
                     {' '}
-                    Complete
-                  </span>
-                </>
+                  Complete
+                </span>
               )}
             </PercentComplete>
           </TitleRowWrapper>

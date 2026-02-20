@@ -29,37 +29,41 @@ const Container = styled.div`
   width: 340px;
 `;
 
-export const AllStates = (args) => (
-  <Container>
-    <HeartFavoriteToggleBase
+export function AllStates (args) {
+  return (
+    <Container>
+      <HeartFavoriteToggleBase
       {...args}
       voterSupports={false}
-    />
-    <HeartFavoriteToggleBase
+      />
+      <HeartFavoriteToggleBase
       {...args}
       voterSupports
-    />
-    <HeartFavoriteToggleBase
+      />
+      <HeartFavoriteToggleBase
       {...args}
       voterOpposes
       voterSupports={false}
-    />
-    <HeartFavoriteToggleBase
+      />
+      <HeartFavoriteToggleBase
       voterSignedIn={false}
       showSignInPromptSupports
-    />
+      />
 
-  </Container>
-);
+    </Container>
+  );
+}
 
-const Template = (args) => (
-  <Container>
-    <HeartFavoriteToggleBase
+function Template (args) {
+  return (
+    <Container>
+      <HeartFavoriteToggleBase
         {...args}
         voterSupports={args.voterSupports}
-    />
-  </Container>
-);
+      />
+    </Container>
+  );
+}
 
 export const Default =  {
   args: {

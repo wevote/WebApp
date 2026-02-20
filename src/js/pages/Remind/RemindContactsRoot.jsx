@@ -289,13 +289,13 @@ class RemindContactsRoot extends React.Component {
         break;
     }
     return displayStep;
-  }
+  };
 
   onClickNextButton = () => {
     this.setState({
       nextButtonClicked: true,
     });
-  }
+  };
 
   goToNextStep = () => {
     this.resetNextButtonClicked();
@@ -304,7 +304,7 @@ class RemindContactsRoot extends React.Component {
     if (nextStepPath) {
       historyPush(nextStepPath);
     }
-  }
+  };
 
   goToSkipForNow = () => {
     const { skipForNowPath } = this.state;
@@ -312,13 +312,13 @@ class RemindContactsRoot extends React.Component {
     if (skipForNowPath) {
       historyPush(skipForNowPath);
     }
-  }
+  };
 
   resetNextButtonClicked = () => {
     this.setState({
       nextButtonClicked: false,
     });
-  }
+  };
 
   setNextStepVariables = () => {
     const {
@@ -691,7 +691,7 @@ class RemindContactsRoot extends React.Component {
       skipForNowOff,
       skipForNowPath,
     });
-  }
+  };
 
   shouldNextButtonBeDisabled = () => {
     let voterEmailMissing = false;
@@ -715,23 +715,23 @@ class RemindContactsRoot extends React.Component {
       addPhotoNextButtonDisabled: voterPhotoMissing,
       editNameNextButtonDisabled: voterEmailMissing || voterFirstNameMissing,
     });
-  }
+  };
 
   goToAddContactsManually = () => {
     historyPush('/remind/addcontacts');
-  }
+  };
 
   goToAddEditMessage = () => {
     historyPush('/remind/message');
-  }
+  };
 
   goToDownloadApp = () => {
     historyPush('/remind/downloadapp');
-  }
+  };
 
   goToImportContacts = () => {
     historyPush('/remind/importcontacts');
-  }
+  };
 
   render () {
     renderLog('RemindContactsRoot');  // Set LOG_RENDER_EVENTS to log all renders
@@ -947,12 +947,10 @@ class RemindContactsRoot extends React.Component {
       case 1: // importcontacts
         if (voterContactEmailListCount > 0) {
           desktopNextButtonHtml = (
-            <>
-              <SetUpAccountNextButton
+            <SetUpAccountNextButton
                 nextButtonText={nextButtonText}
                 onClickNextButton={this.onClickNextButton}
-              />
-            </>
+            />
           );
           mobileNextButtonHtml = (
             <SetUpAccountNextButton

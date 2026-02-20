@@ -203,7 +203,8 @@ class CampaignListRoot extends Component {
       let isFirstWord;
       let politicianStateName;
       let thisWordFound;
-      campaignSearchResults = filter(filteredList,
+      campaignSearchResults = filter(
+        filteredList,
         (oneEntry) => {
           foundInThisEntry = false;
           isFirstWord = true;
@@ -246,7 +247,8 @@ class CampaignListRoot extends Component {
           } else {
             return foundInThisEntry;
           }
-        });
+        },
+      );
     }
     // console.log('onFilterOrListChange, campaignSearchResults:', campaignSearchResults);
     // console.log('onFilterOrListChange, filteredList:', filteredList);
@@ -274,7 +276,7 @@ class CampaignListRoot extends Component {
       filteredList,
       timeStampOfChange: Date.now(),
     });
-  }
+  };
 
   leftAndRightArrowSetState = (el) => {
     // set state here
@@ -283,14 +285,14 @@ class CampaignListRoot extends Component {
       hideLeftArrow: leftRightStateDict[0],
       hideRightArrow: leftRightStateDict[1],
     });
-  }
+  };
 
   shouldLoadMoreSetState = (el) => {
     const element = el;
     this.setState({
       callShowMoreCards: checkDivPositionForLoadMore(element),
     });
-  }
+  };
 
   render () {
     renderLog('CampaignListRoot');  // Set LOG_RENDER_EVENTS to log all renders

@@ -154,7 +154,7 @@ class CampaignSupportPayToPromote extends Component {
       campaignBasePath = `/id/${campaignXWeVoteId}/`;
     }
     return campaignBasePath;
-  }
+  };
 
   getPoliticianBasePath = () => {
     const { politicianSEOFriendlyPath, linkedPoliticianWeVoteId } = this.state;
@@ -168,22 +168,22 @@ class CampaignSupportPayToPromote extends Component {
       politicianBasePath = this.getCampaignXBasePath();
     }
     return politicianBasePath;
-  }
+  };
 
   goToIWillChipIn = () => {
     const pathForNextStep = `${this.getCampaignXBasePath()}pay-to-promote-process`;
     historyPush(pathForNextStep);
-  }
+  };
 
   goToIWillShare = () => {
     const pathForNextStep = `${this.getCampaignXBasePath()}i-will-share-campaign`;
     historyPush(pathForNextStep);
-  }
+  };
 
   submitSkipForNow = () => {
     const pathForNextStep = `${this.getCampaignXBasePath()}share-campaign-with-one-friend`;
     historyPush(pathForNextStep);
-  }
+  };
 
   render () {
     renderLog('CampaignSupportPayToPromote');  // Set LOG_RENDER_EVENTS to log all renders

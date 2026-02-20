@@ -10,7 +10,7 @@ import ChallengeStore from '../../stores/ChallengeStore';
 
 // const FirstChallengeParticipantListController = React.lazy(() => import(/* webpackChunkName: 'FirstChallengeParticipantListController' */ './FirstChallengeParticipantListController'));
 
-const ChallengeParticipantSimpleListRoot = ({ challengeWeVoteId, classes, uniqueExternalId, showSimpleList }) => {
+function ChallengeParticipantSimpleListRoot ({ challengeWeVoteId, classes, uniqueExternalId, showSimpleList }) {
   // eslint-disable-next-line no-unused-vars
   const [participantList, setParticipantList] = React.useState([]);
   const [participantsCount, setParticipantsCount] = useState(0);
@@ -64,7 +64,7 @@ const ChallengeParticipantSimpleListRoot = ({ challengeWeVoteId, classes, unique
       </Suspense>
     </ChallengeParticipantListRootContainer>
   );
-};
+}
 ChallengeParticipantSimpleListRoot.propTypes = {
   classes: PropTypes.object.isRequired,
   // clearSearchFunction: PropTypes.func.isRequired,

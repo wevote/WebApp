@@ -71,7 +71,7 @@ class RemindContactsStart extends Component {
 
   goToAddContactsManually = () => {
     historyPush('/remind/addcontacts');
-  }
+  };
 
   goToImportContacts = () => {
     const { location: { pathname: currentPathname } } = window;
@@ -79,7 +79,7 @@ class RemindContactsStart extends Component {
     const setUpAccountEntryPath = '/remind/importcontacts';
     AppObservableStore.setSetUpAccountEntryPath(setUpAccountEntryPath);
     historyPush(setUpAccountEntryPath);
-  }
+  };
 
   goToEditMessage = () => {
     const { location: { pathname: currentPathname } } = window;
@@ -87,7 +87,7 @@ class RemindContactsStart extends Component {
     const setUpAccountEntryPath = '/remind/message';
     AppObservableStore.setSetUpAccountEntryPath(setUpAccountEntryPath);
     historyPush(setUpAccountEntryPath);
-  }
+  };
 
   render () {
     renderLog('RemindContactsStart');  // Set LOG_RENDER_EVENTS to log all renders

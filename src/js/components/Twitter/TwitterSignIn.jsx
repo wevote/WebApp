@@ -197,13 +197,13 @@ class TwitterSignIn extends Component {
         this.reloadApp();
       },
     });
-  }
+  };
 
   reloadApp = () => {
     // When we visit this page and delete the voter_device_id cookie, we can get an error that requires
     // reloading the browser page. This is how we do it:
     window.location.assign('');
-  }
+  };
 
   render () {
     let { buttonText } = this.props;

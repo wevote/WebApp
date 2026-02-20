@@ -412,7 +412,7 @@ class VoterGuideSettingsAddPositions extends Component {
       voterGuideDisplay = `/voterguide/${this.state.voterGuide.organization_we_vote_id}/ballot/election/${this.state.voterGuide.google_civic_election_id}/positions`;
     }
     historyPush(voterGuideDisplay);
-  }
+  };
 
   onFilteredItemsChangeFromBallotItemsFilterBase = (filteredBallotItems, currentSelectedBallotFilters) => {
     // console.log('onFilteredItemsChangeFromBallotItemsFilterBase, filteredBallotItems: ', filteredBallotItems);
@@ -421,12 +421,12 @@ class VoterGuideSettingsAddPositions extends Component {
       filteredBallotItems,
       isSearching: false,
     });
-  }
+  };
 
   onFilteredItemsChangeFromPositionItemsFilterBase = (filteredPositionListForOneElection, currentSelectedPositionFilters) => {
     // console.log('onFilteredItemsChangeFromPositionItemsFilterBase, currentSelectedPositionFilters: ', currentSelectedPositionFilters);
     this.setState({ currentSelectedPositionFilters, filteredPositionListForOneElection });
-  }
+  };
 
   onBallotSearch = (searchText, filteredItems) => {
     window.scrollTo(0, 0);
@@ -470,7 +470,7 @@ class VoterGuideSettingsAddPositions extends Component {
         numberOfBallotItemsToDisplay,
       });
     }, 500);
-  }
+  };
 
   increaseNumberOfPositionItemsToDisplay = () => {
     let { numberOfPositionItemsToDisplay } = this.state;
@@ -485,7 +485,7 @@ class VoterGuideSettingsAddPositions extends Component {
         numberOfPositionItemsToDisplay,
       });
     }, 500);
-  }
+  };
 
   goToDifferentVoterGuideSettingsDashboardTab (dashboardEditMode = '') {
     AppObservableStore.setVoterGuideSettingsDashboardEditMode(dashboardEditMode);

@@ -8,7 +8,7 @@ import ChallengeInviteeStore from '../../stores/ChallengeInviteeStore';
 import ChallengeInviteeActions from '../../actions/ChallengeInviteeActions';
 
 
-const ConfirmYouSentInviteButton = ({ classes, challengeWeVoteId, challengeInviteeId }) => {
+function ConfirmYouSentInviteButton ({ classes, challengeWeVoteId, challengeInviteeId }) {
   renderLog('ConfirmYouSentInviteButtonBox');  // Set LOG_RENDER_EVENTS to log all renders
   const [inviteSent, setInviteSent] = React.useState(false);
   const [inviteTextVarsChangedCount, setInviteTextVarsChangedCount] = React.useState(0);
@@ -54,7 +54,7 @@ const ConfirmYouSentInviteButton = ({ classes, challengeWeVoteId, challengeInvit
       )}
     </ConfirmYouSentInviteButtonWrapper>
   );
-};
+}
 ConfirmYouSentInviteButton.propTypes = {
   challengeWeVoteId: PropTypes.string,
   classes: PropTypes.object,

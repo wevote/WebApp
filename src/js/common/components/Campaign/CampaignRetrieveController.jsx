@@ -101,7 +101,7 @@ class CampaignRetrieveController extends Component {
         }
       });
     }
-  }
+  };
 
   render () {
     renderLog('CampaignRetrieveController');  // Set LOG_RENDER_EVENTS to log all renders

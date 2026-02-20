@@ -60,7 +60,7 @@ export default function InviteSelectedModal ({
       onInviteEmail(voters);
     }
     setBatchEmailSent(true);
-    setEmailSentIds(new Set(voters.map(v => v.id || v._idx)));
+    setEmailSentIds(new Set(voters.map((v) => v.id || v._idx)));
   };
 
   const handleSendText = (voter) => {
@@ -83,16 +83,14 @@ export default function InviteSelectedModal ({
     setShowConfirmClose(false);
   };
 
-  const renderClickableNames = (voters) => {
-    return voters.map((v, index) => (
-      <React.Fragment key={v.id || v._idx || index}>
-        {index > 0 && ', '}
-        <ClickableName onClick={() => console.log('TODO: implement voter edit', v.name)}>
-          {v.name || 'Unknown'}
-        </ClickableName>
-      </React.Fragment>
-    ));
-  };
+  const renderClickableNames = (voters) => voters.map((v, index) => (
+    <React.Fragment key={v.id || v._idx || index}>
+      {index > 0 && ', '}
+      <ClickableName onClick={() => console.log('TODO: implement voter edit', v.name)}>
+        {v.name || 'Unknown'}
+      </ClickableName>
+    </React.Fragment>
+  ));
 
   const dialogTitleJSX = (
     <HeaderRow>

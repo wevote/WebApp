@@ -50,7 +50,7 @@ class AddContactsFromGoogle extends Component {
     } else if (addContactsState === AddContactConsts.uninitialized) {
       this.setState({ addContactsState: signedIn ? AddContactConsts.initializedSignedIn : AddContactConsts.initializedSignedOut });
     }
-  }
+  };
 
   onVoterStoreChange () {
     const { googleContactsStored } = VoterStore.getState();
@@ -95,7 +95,7 @@ class AddContactsFromGoogle extends Component {
         addContactsState: AddContactConsts.sendingContacts,
       });
     }
-  }
+  };
 
   getOtherConnections = () => {
     const { gapi } = window;
@@ -157,7 +157,7 @@ class AddContactsFromGoogle extends Component {
       this.setState({ setOfContacts: contacts });
       this.setState({ addContactsState: AddContactConsts.receivedContacts  });
     });
-  }
+  };
 
   initClient () {
     const { gapi } = window;

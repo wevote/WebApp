@@ -562,14 +562,14 @@ class PoliticianDetailsPage extends Component {
     });
     AppObservableStore.setCampaignXWeVoteIdBeingViewed('');
     AppObservableStore.setPoliticianWeVoteIdBeingViewed('');
-  }
+  };
 
   showMoreOpponentCandidates = () => {
     const { opponentCandidatesToShowCount } = this.state;
     this.setState({
       opponentCandidatesToShowCount: opponentCandidatesToShowCount + 10,
     });
-  }
+  };
 
   orderByTwitterFollowers = (firstEntry, secondEntry) => secondEntry.twitter_followers_count - firstEntry.twitter_followers_count;
 
@@ -585,7 +585,7 @@ class PoliticianDetailsPage extends Component {
     // }
     // return campaignXBasePath;
     return `/id/${linkedCampaignXWeVoteId}/`;
-  }
+  };
 
   // getPoliticianBasePath = () => {
   //   const { politicianSEOFriendlyPath, politicianWeVoteId } = this.state;
@@ -604,7 +604,7 @@ class PoliticianDetailsPage extends Component {
     // console.log('functionToUseToKeepHelping sharingStepCompleted:', sharingStepCompleted, ', payToPromoteStepCompleted:', payToPromoteStepCompleted, ', step2Completed:', step2Completed);
     const keepHelpingDestinationString = keepHelpingDestination(step2Completed, payToPromoteStepCompleted, payToPromoteStepTurnedOn, sharingStepCompleted, finalElectionDateInPast);
     historyPush(`${this.getCampaignXBasePath()}${keepHelpingDestinationString}`);
-  }
+  };
 
   functionToUseWhenProfileComplete = () => {
     const { linkedCampaignXWeVoteId } = this.state;
@@ -615,22 +615,22 @@ class PoliticianDetailsPage extends Component {
     } else {
       console.log('PoliticianDetailsPage functionToUseWhenProfileComplete linkedCampaignXWeVoteId not found');
     }
-  }
+  };
 
   // TagManger from Candidate page on View your full Ballot button-AnujaLawankar
   goToBallot = () => {
     historyPush('/ballot');
-  }
+  };
 
   onPoliticianCampaignEditClick = () => {
     historyPush(`${this.getCampaignXBasePath()}edit`);
     return null;
-  }
+  };
 
   onPoliticianCampaignShareClick = () => {
     historyPush(`${this.getCampaignXBasePath()}share-politician`);
     return null;
-  }
+  };
 
   render () {
     renderLog('PoliticianDetailsPage');  // Set LOG_RENDER_EVENTS to log all renders

@@ -198,7 +198,7 @@ class SuperSharingAddContacts extends Component {
     }
 
     return campaignBasePath;
-  }
+  };
 
   goToNextStep = () => {
     const { campaignXNewsItemWeVoteId } = this.state;
@@ -207,15 +207,15 @@ class SuperSharingAddContacts extends Component {
     } else {
       historyPush(`${this.getCampaignXBasePath()}super-sharing-choose-email-recipients`);
     }
-  }
+  };
 
   returnToOtherSharingOptions = () => {
     historyPush(`${this.getCampaignXBasePath()}share-campaign`);
-  }
+  };
 
   submitSkipForNow = () => {
     this.goToNextStep();
-  }
+  };
 
   render () {
     renderLog('SuperSharingAddContacts');  // Set LOG_RENDER_EVENTS to log all renders

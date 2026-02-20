@@ -12,8 +12,10 @@ export default function toTitleCase (incomingString) {
   const lowers = ['A', 'An', 'The', 'And', 'But', 'Or', 'For', 'Nor', 'As', 'At',
     'By', 'For', 'From', 'In', 'Into', 'Near', 'Of', 'On', 'Onto', 'To', 'With'];
   for (count = 0, arrayLength = lowers.length; count < arrayLength; count++) {
-    str = str.replace(new RegExp(`\\s${lowers[count]}\\s`, 'g'),
-      (txt) => txt.toLowerCase());
+    str = str.replace(
+      new RegExp(`\\s${lowers[count]}\\s`, 'g'),
+      (txt) => txt.toLowerCase(),
+    );
   }
 
   // Leave state codes, measure names and 'VP' upper case
@@ -27,8 +29,10 @@ export default function toTitleCase (incomingString) {
     'Qq', 'Rr', 'Ss', 'Tt', 'Uu', 'Vv', 'Ww', 'Xx', 'Yy', 'Zz',
     'Vp'];
   for (count = 0, arrayLength = uppers.length; count < arrayLength; count++) {
-    str = str.replace(new RegExp(`\\b${uppers[count]}\\b`, 'g'),
-      uppers[count].toUpperCase());
+    str = str.replace(
+      new RegExp(`\\b${uppers[count]}\\b`, 'g'),
+      uppers[count].toUpperCase(),
+    );
   }
 
   // Finally, search and replace for pesky abbreviations

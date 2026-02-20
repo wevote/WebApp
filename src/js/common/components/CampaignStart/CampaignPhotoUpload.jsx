@@ -84,7 +84,7 @@ class CampaignPhotoUpload extends Component {
 
   markCampaignImageForDelete = () => {
     CampaignStartActions.campaignPhotoQueuedToDelete(true);
-  }
+  };
 
   render () {
     renderLog('CampaignPhotoUpload');  // Set LOG_RENDER_EVENTS to log all renders

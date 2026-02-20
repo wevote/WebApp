@@ -7,12 +7,14 @@ export default {
 
   challengeDescriptionSave (challengeWeVoteId, challengeDescription) {
     // console.log('challengeDescriptionSave: ', challengeDescription);
-    Dispatcher.loadEndpoint('challengeStartSave',
+    Dispatcher.loadEndpoint(
+      'challengeStartSave',
       {
         challenge_description: challengeDescription,
         challenge_description_changed: true,
         challenge_we_vote_id: challengeWeVoteId,
-      });
+      },
+    );
   },
 
   challengeEditAllReset () {
@@ -21,15 +23,22 @@ export default {
 
   challengeEditAllSave (
     challengeWeVoteId,
-    challengeDescriptionQueuedToSave, challengeDescriptionQueuedToSaveSet,
-    challengeInviteTextDefaultQueuedToSave, challengeInviteTextDefaultQueuedToSaveSet,
-    challengePhotoQueuedToDelete, challengePhotoQueuedToDeleteSet,
-    challengePhotoQueuedToSave, challengePhotoQueuedToSaveSet,
+    challengeDescriptionQueuedToSave,
+    challengeDescriptionQueuedToSaveSet,
+    challengeInviteTextDefaultQueuedToSave,
+    challengeInviteTextDefaultQueuedToSaveSet,
+    challengePhotoQueuedToDelete,
+    challengePhotoQueuedToDeleteSet,
+    challengePhotoQueuedToSave,
+    challengePhotoQueuedToSaveSet,
     challengePoliticianDeleteListJson,
-    challengePoliticianStarterListQueuedToSave, challengePoliticianStarterListQueuedToSaveSet,
-    challengeTitleQueuedToSave, challengeTitleQueuedToSaveSet,
+    challengePoliticianStarterListQueuedToSave,
+    challengePoliticianStarterListQueuedToSaveSet,
+    challengeTitleQueuedToSave,
+    challengeTitleQueuedToSaveSet,
   ) {
-    Dispatcher.loadEndpoint('challengeStartSave',
+    Dispatcher.loadEndpoint(
+      'challengeStartSave',
       {
         challenge_description: challengeDescriptionQueuedToSave,
         challenge_description_changed: challengeDescriptionQueuedToSaveSet,
@@ -45,7 +54,8 @@ export default {
         politician_delete_list: challengePoliticianDeleteListJson,
         politician_starter_list: challengePoliticianStarterListQueuedToSave,
         politician_starter_list_changed: challengePoliticianStarterListQueuedToSaveSet,
-      });
+      },
+    );
   },
 
   challengeInviteTextDefaultQueuedToSave (challengeInviteTextDefault) {
@@ -54,12 +64,14 @@ export default {
 
   challengeInviteTextDefaultSave (challengeWeVoteId, challengeInviteTextDefault) {
     // console.log('challengeInviteTextDefaultSave: ', challengeInviteTextDefault);
-    Dispatcher.loadEndpoint('challengeStartSave',
+    Dispatcher.loadEndpoint(
+      'challengeStartSave',
       {
         challenge_invite_text_default: challengeInviteTextDefault,
         challenge_invite_text_default_changed: true,
         challenge_we_vote_id: challengeWeVoteId,
-      });
+      },
+    );
   },
 
   challengePhotoQueuedToDelete (deleteChallengePhoto = true) {
@@ -71,12 +83,14 @@ export default {
   },
 
   challengePhotoSave (challengeWeVoteId, challengePhotoFromFileReader) {
-    Dispatcher.loadEndpoint('challengeStartSave',
+    Dispatcher.loadEndpoint(
+      'challengeStartSave',
       {
         challenge_photo_from_file_reader: challengePhotoFromFileReader,
         challenge_photo_changed: true,
         challenge_we_vote_id: challengeWeVoteId,
-      });
+      },
+    );
   },
 
   challengePoliticianDeleteAddQueuedToSave (challengePoliticianId) {
@@ -93,23 +107,27 @@ export default {
 
   challengePoliticianStarterListSave (challengeWeVoteId, challengePoliticianStarterListQueuedToSaveJson, challengePoliticianDeleteListJson) {
     // console.log('challengePoliticianStarterListQueuedToSaveJson: ', challengePoliticianStarterListQueuedToSaveJson);
-    Dispatcher.loadEndpoint('challengeStartSave',
+    Dispatcher.loadEndpoint(
+      'challengeStartSave',
       {
         politician_delete_list: challengePoliticianDeleteListJson,
         politician_starter_list: challengePoliticianStarterListQueuedToSaveJson,
         politician_starter_list_changed: true,
         challenge_we_vote_id: challengeWeVoteId,
-      });
+      },
+    );
   },
 
   challengeRetrieveAsOwner (challengeWeVoteId) {
     let { hostname } = window.location;
     hostname = hostname || '';
-    Dispatcher.loadEndpoint('challengeRetrieveAsOwner',
+    Dispatcher.loadEndpoint(
+      'challengeRetrieveAsOwner',
       {
         challenge_we_vote_id: challengeWeVoteId,
         hostname,
-      });
+      },
+    );
   },
 
   challengeTitleQueuedToSave (challengeTitle) {
@@ -118,21 +136,25 @@ export default {
 
   challengeTitleSave (challengeWeVoteId, challengeTitle) {
     console.log('challengeTitleSave: ', challengeTitle, ', challengeWeVoteId: ', challengeWeVoteId);
-    Dispatcher.loadEndpoint('challengeStartSave',
+    Dispatcher.loadEndpoint(
+      'challengeStartSave',
       {
         challenge_title: challengeTitle,
         challenge_title_changed: true,
         challenge_we_vote_id: challengeWeVoteId,
-      });
+      },
+    );
   },
 
   inDraftModeSave (challengeWeVoteId, inDraftMode) {
     // console.log('challengeDescriptionSave: ', challengeDescription);
-    Dispatcher.loadEndpoint('challengeStartSave',
+    Dispatcher.loadEndpoint(
+      'challengeStartSave',
       {
         in_draft_mode: inDraftMode,
         in_draft_mode_changed: true,
         challenge_we_vote_id: challengeWeVoteId,
-      });
+      },
+    );
   },
 };

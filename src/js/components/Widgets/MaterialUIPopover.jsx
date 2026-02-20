@@ -64,7 +64,7 @@ class MaterialUIPopover extends Component {
         showPopover: false,
       });
     }
-  }
+  };
 
   handleClick = (event) => {
     // setAnchorEl(event.currentTarget);

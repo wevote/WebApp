@@ -38,7 +38,7 @@ export default class FriendsCurrentPreview extends Component {
 
   goToCurrentFriends = () => {
     historyPush('/friends/current');
-  }
+  };
 
   render () {
     renderLog('FriendsCurrentPreview');  // Set LOG_RENDER_EVENTS to log all renders

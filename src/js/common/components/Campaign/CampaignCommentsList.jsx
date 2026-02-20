@@ -106,7 +106,7 @@ class CampaignCommentsList extends Component {
     this.setState({
       campaignXSupportersWithText,
     });
-  }
+  };
 
   increaseNumberOfCampaignsToDisplay = () => {
     let { numberOfCommentsToDisplay } = this.state;
@@ -114,7 +114,7 @@ class CampaignCommentsList extends Component {
     this.setState({
       numberOfCommentsToDisplay,
     });
-  }
+  };
 
   // When we have "likes" put comments with most likes at top
   orderByCommentDate = (firstCampaign, secondCampaign) => secondCampaign.id - firstCampaign.id;

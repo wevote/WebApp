@@ -199,7 +199,7 @@ class CampaignDetailsPage extends Component {
       campaignBasePath = `/id/${campaignXWeVoteId}/`;
     }
     return campaignBasePath;
-  }
+  };
 
   goToNextPage = () => {
     const { pathToUseWhenProfileComplete } = this.state;
@@ -207,14 +207,14 @@ class CampaignDetailsPage extends Component {
       historyPush(pathToUseWhenProfileComplete);
     }, 500);
     return null;
-  }
+  };
 
   functionToUseToKeepHelping = () => {
     const { finalElectionDateInPast, payToPromoteStepCompleted, payToPromoteStepTurnedOn, sharingStepCompleted, step2Completed } = this.state;
     // console.log('functionToUseToKeepHelping sharingStepCompleted:', sharingStepCompleted, ', payToPromoteStepCompleted:', payToPromoteStepCompleted, ', step2Completed:', step2Completed);
     const keepHelpingDestinationString = keepHelpingDestination(step2Completed, payToPromoteStepCompleted, payToPromoteStepTurnedOn, sharingStepCompleted, finalElectionDateInPast);
     historyPush(`${this.getCampaignXBasePath()}${keepHelpingDestinationString}`);
-  }
+  };
 
   functionToUseWhenProfileComplete = () => {
     const { campaignXWeVoteId } = this.state;
@@ -234,12 +234,12 @@ class CampaignDetailsPage extends Component {
         CampaignSupporterActions.supportCampaignSave(campaignXWeVoteId, campaignSupported, campaignSupportedChanged, visibleToPublic, saveVisibleToPublic); // campaignSupporterSave
       }, this.goToNextPage());
     }
-  }
+  };
 
   onCampaignEditClick = () => {
     historyPush(`${this.getCampaignXBasePath()}edit`);
     return null;
-  }
+  };
 
   onCampaignShareClick = () => {
     const { campaignSEOFriendlyPath, campaignXWeVoteId } = this.state;
@@ -249,7 +249,7 @@ class CampaignDetailsPage extends Component {
       historyPush(`/id/${campaignXWeVoteId}/share-campaign`);
     }
     return null;
-  }
+  };
 
   render () {
     renderLog('CampaignDetailsPage');  // Set LOG_RENDER_EVENTS to log all renders

@@ -312,13 +312,12 @@ class PersonalizedScoreIntroBody extends Component {
     } = this.state;
 
     return (
-      <>
-        <PersonalizedScoreIntroBodyWrapper>
-          <div className="full-width">
-            <ScrollableContentWrapper>
-              <CandidateItemOuterWrapper>
-                <Suspense fallback={<></>}>
-                  <CandidateItem
+      <PersonalizedScoreIntroBodyWrapper>
+        <div className="full-width">
+          <ScrollableContentWrapper>
+            <CandidateItemOuterWrapper>
+              <Suspense fallback={<></>}>
+                <CandidateItem
                     candidateWeVoteId="candidateAlexanderHamilton"
                     closeSupportOpposeCountDisplayModal={closeSupportOpposeCountDisplayModal}
                     controlAdviserMaterialUIPopoverFromProp={controlAdviserMaterialUIPopoverFromProp}
@@ -336,64 +335,64 @@ class PersonalizedScoreIntroBody extends Component {
                     showUpArrow={showPersonalizedScoreUpArrow}
                     showLargeImage
                     showOfficeName
-                  />
-                </Suspense>
-              </CandidateItemOuterWrapper>
-              <ExplanationTextTop>
-                {explanationTextTopBlue && (
-                  <div
+                />
+              </Suspense>
+            </CandidateItemOuterWrapper>
+            <ExplanationTextTop>
+              {explanationTextTopBlue && (
+              <div
                     style={{
                       color: '#2e3c5d',
                       fontSize: '18px',
                       fontWeight: 600,
                       margin: '6px 0 0 0',
                     }}
-                  >
-                    {explanationTextTopBlue}
-                  </div>
-                )}
-                {explanationTextTopPlain && (
-                  <div
+              >
+                {explanationTextTopBlue}
+              </div>
+              )}
+              {explanationTextTopPlain && (
+              <div
                     style={{
                       fontSize: '16px',
                       fontWeight: 200,
                       margin: '6px 0 0 0',
                     }}
-                  >
-                    {explanationTextTopPlain}
-                  </div>
-                )}
-              </ExplanationTextTop>
-              <ExplanationTextBottom>
-                {explanationTextBottomBlue && (
-                  <div
+              >
+                {explanationTextTopPlain}
+              </div>
+              )}
+            </ExplanationTextTop>
+            <ExplanationTextBottom>
+              {explanationTextBottomBlue && (
+              <div
                     style={{
                       color: '#2e3c5d',
                       fontSize: '18px',
                       fontWeight: 600,
                       margin: '6px 0 0 0',
                     }}
-                  >
-                    {explanationTextBottomBlue}
-                  </div>
-                )}
-                {explanationTextBottomPlain && (
-                  <div
+              >
+                {explanationTextBottomBlue}
+              </div>
+              )}
+              {explanationTextBottomPlain && (
+              <div
                     style={{
                       fontSize: '16px',
                       fontWeight: 200,
                       margin: '6px 0 0 0',
                     }}
-                  >
-                    {explanationTextBottomPlain}
-                  </div>
-                )}
-              </ExplanationTextBottom>
-            </ScrollableContentWrapper>
-            <ContinueButtonWrapper inModal={inModal}>
-              <TwoButtonsWrapper inModal={inModal}>
-                <OneButtonWrapper inModal={inModal}>
-                  <Button
+              >
+                {explanationTextBottomPlain}
+              </div>
+              )}
+            </ExplanationTextBottom>
+          </ScrollableContentWrapper>
+          <ContinueButtonWrapper inModal={inModal}>
+            <TwoButtonsWrapper inModal={inModal}>
+              <OneButtonWrapper inModal={inModal}>
+                <Button
                     classes={{ root: classes.backButtonRoot }}
                     color="primary"
                     disabled={!(previousStep)}
@@ -401,27 +400,26 @@ class PersonalizedScoreIntroBody extends Component {
                     id="personalizedScoreIntroModalBackButton"
                     onClick={this.clickPreviousStepButton}
                     variant="outlined"
-                  >
-                    Back
-                  </Button>
-                </OneButtonWrapper>
-                <OneButtonWrapper inModal={inModal}>
-                  <Button
+                >
+                  Back
+                </Button>
+              </OneButtonWrapper>
+              <OneButtonWrapper inModal={inModal}>
+                <Button
                     classes={{ root: classes.nextButtonRoot }}
                     color="primary"
                     id="personalizedScoreIntroModalNextButton"
                     disabled={!(nextStep || (showPersonalizedScoreIntroCompletedButton && inModal))}
                     variant="contained"
                     onClick={nextStep ? this.clickNextStepButton : this.closeThisModal}
-                  >
-                    <span className="u-no-break">{actionButtonText}</span>
-                  </Button>
-                </OneButtonWrapper>
-              </TwoButtonsWrapper>
-            </ContinueButtonWrapper>
-          </div>
-        </PersonalizedScoreIntroBodyWrapper>
-      </>
+                >
+                  <span className="u-no-break">{actionButtonText}</span>
+                </Button>
+              </OneButtonWrapper>
+            </TwoButtonsWrapper>
+          </ContinueButtonWrapper>
+        </div>
+      </PersonalizedScoreIntroBodyWrapper>
     );
   }
 }

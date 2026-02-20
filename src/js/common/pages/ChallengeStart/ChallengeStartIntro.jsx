@@ -52,7 +52,7 @@ class ChallengeStartIntro extends Component {
 
   nextStep = () => {
     historyPush('/start-a-challenge-add-title');
-  }
+  };
 
   render () {
     renderLog('ChallengeStartIntro');  // Set LOG_RENDER_EVENTS to log all renders

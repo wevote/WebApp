@@ -8,7 +8,7 @@ import DesignTokenColors from '../Style/DesignTokenColors';
 import ModalDisplayTemplateA, { templateAStyles } from '../../../components/Widgets/ModalDisplayTemplateA';
 import ChallengeInviteeStore from '../../stores/ChallengeInviteeStore';
 
-const EditInviteeDetails = ({ inviteeId, show, setShow, setAnchorEl }) => {
+function EditInviteeDetails ({ inviteeId, show, setShow, setAnchorEl }) {
   const [inviteeData, setInviteeData] = useState(null);
   const [editedName, setEditedName] = useState('');
   const [editedMessage, setEditedMessage] = useState('');
@@ -111,7 +111,7 @@ const EditInviteeDetails = ({ inviteeId, show, setShow, setAnchorEl }) => {
       toggleModal={handleClose}
     />
   );
-};
+}
 
 EditInviteeDetails.propTypes = {
   inviteeId: PropTypes.number.isRequired,

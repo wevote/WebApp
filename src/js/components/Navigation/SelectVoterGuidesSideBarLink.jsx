@@ -30,14 +30,14 @@ export default class SelectVoterGuidesSideBarLink extends Component {
     const { voterGuideWeVoteId } = this.props;
     const editLink = `/vg/${voterGuideWeVoteId}/settings/positions`;
     historyPush(editLink);
-  }
+  };
 
   goToPreviewLink = () => {
     const { electionId } = this.props;
     const { linkedOrganizationWeVoteId } = this.state;
     const previewLink = `/voterguide/${linkedOrganizationWeVoteId}/ballot/election/${electionId}/positions`;
     historyPush(previewLink);
-  }
+  };
 
   render () {
     // console.log('voterGuideWeVoteId:', this.props.voterGuideWeVoteId);

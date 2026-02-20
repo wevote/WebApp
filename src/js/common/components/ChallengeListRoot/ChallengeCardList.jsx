@@ -103,7 +103,7 @@ class ChallengeCardList extends Component {
       showThisYear,
       showUpcomingEndorsements,
     });
-  }
+  };
 
   onChallengeClickLink (challengeWeVoteId) {
     const challenge = ChallengeStore.getChallengeByWeVoteId(challengeWeVoteId);
@@ -148,7 +148,7 @@ class ChallengeCardList extends Component {
       // console.log('loadMoreScroll exists');
       this.props.loadMoreScroll();
     }
-  }
+  };
 
   increaseNumberToDisplay = () => {
     let { numberToDisplay } = this.state;
@@ -156,7 +156,7 @@ class ChallengeCardList extends Component {
     this.setState({
       numberToDisplay,
     });
-  }
+  };
 
   render () {
     renderLog('ChallengeCardList');  // Set LOG_RENDER_EVENTS to log all renders

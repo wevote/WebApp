@@ -32,7 +32,7 @@ class ReadyTaskFriends extends React.Component {
 
   goToNextStep = () => {
     historyPush('/register');
-  }
+  };
 
   render () {
     renderLog('ReadyTaskFriends');  // Set LOG_RENDER_EVENTS to log all renders

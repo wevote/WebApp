@@ -119,7 +119,7 @@ class HeaderNotificationMenu extends Component {
     const drawerOpenGlobalVariableName = 'headerProfileDrawerOpen';
     AppObservableStore.setHeaderProfileSection('notifications');
     AppObservableStore.setDrawerOpen(drawerOpenGlobalVariableName, true);
-  }
+  };
 
   generateMenuItemList = (allActivityNotices) => {
     const { classes } = this.props;
@@ -263,7 +263,7 @@ class HeaderNotificationMenu extends Component {
       }
     });
     return menuItemList.concat(menuItemListActivities);
-  }
+  };
 
   handleClick = (event) => {
     const { activityNoticeIdListNotSeen } = this.state;
@@ -292,14 +292,14 @@ class HeaderNotificationMenu extends Component {
       anchorEl: event.currentTarget,
       menuOpen: true,
     });
-  }
+  };
 
   handleClose = () => {
     this.setState({
       anchorEl: null,
       menuOpen: false,
     });
-  }
+  };
 
 
   render () {

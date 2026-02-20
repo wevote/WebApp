@@ -183,7 +183,7 @@ class HeaderBackToVoterGuides extends Component {
       voterGuideDisplay = `/voterguide/${this.state.voterGuide.organization_we_vote_id}/ballot/election/${this.state.voterGuide.google_civic_election_id}/positions`;
     }
     historyPush(voterGuideDisplay);
-  }
+  };
 
   goToSettings () {
     console.log('goToSettings IN HeaderBackToVoterGuides historyPush');

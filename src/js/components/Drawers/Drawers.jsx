@@ -4,7 +4,7 @@ import HeaderProfileDrawer from './HeaderProfileDrawer';
 import PoliticianSelfEditDrawer from './PoliticianSelfEditDrawer';
 
 
-const Drawers = () => {
+function Drawers () {
   renderLog('Drawers');
 
   return (
@@ -13,6 +13,6 @@ const Drawers = () => {
       <PoliticianSelfEditDrawer />
     </>
   );
-};
+}
 
 export default Drawers;

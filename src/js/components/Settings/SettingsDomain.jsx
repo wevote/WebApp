@@ -245,7 +245,7 @@ class SettingsDomain extends Component {
         organizationChosenSubdomainNotValid: false,
       });
     }
-  }
+  };
 
   handleOrganizationChosenDomainNameChange = (event) => {
     const { organizationChosenDomainName } = this.state;
@@ -259,7 +259,7 @@ class SettingsDomain extends Component {
         organizationChosenDomainNameNotValid: false,
       });
     }
-  }
+  };
 
   handleRadioGroupChange = (event) => {
     // console.log('handleRadioGroupChange');
@@ -269,7 +269,7 @@ class SettingsDomain extends Component {
         radioGroupValue: event.target.value || '',
       });
     }
-  }
+  };
 
   handleRadioGroupChoiceSubdomain = () => {
     // console.log('handleRadioGroupChoiceSubdomain');
@@ -279,7 +279,7 @@ class SettingsDomain extends Component {
         radioGroupValue: 'subdomainRadioButtonSelected',
       });
     }
-  }
+  };
 
   handleRadioGroupChoiceDomainName = () => {
     // console.log('handleRadioGroupChoiceDomainName');
@@ -289,7 +289,7 @@ class SettingsDomain extends Component {
         radioGroupValue: 'domainNameRadioButtonSelected',
       });
     }
-  }
+  };
 
   onCancelDomainNameButton = () => {
     // console.log('onCancelDomainNameButton');
@@ -298,7 +298,7 @@ class SettingsDomain extends Component {
       organizationChosenDomainName: organizationChosenDomainNameSavedValue || '',
       organizationChosenDomainNameChangedLocally: false,
     });
-  }
+  };
 
   onCancelSubdomainButton = () => {
     // console.log('onCancelSubdomainButton');
@@ -307,7 +307,7 @@ class SettingsDomain extends Component {
       organizationChosenSubdomain: organizationChosenSubdomainSavedValue || '',
       organizationChosenSubdomainChangedLocally: false,
     });
-  }
+  };
 
   onSaveDomainNameButton = (event) => {
     // console.log('onSaveDomainNameButton');
@@ -318,7 +318,7 @@ class SettingsDomain extends Component {
       chosenDomainNameBeforeErrorCheck: organizationChosenDomainName,
     });
     event.preventDefault();
-  }
+  };
 
   onSaveSubdomainButton = (event) => {
     // console.log('onSaveSubdomainButton');
@@ -329,7 +329,7 @@ class SettingsDomain extends Component {
       chosenSubdomainBeforeErrorCheck: organizationChosenSubdomain,
     });
     event.preventDefault();
-  }
+  };
 
   openPaidAccountUpgradeModal (paidAccountUpgradeMode) {
     // console.log('SettingsDomain openPaidAccountUpgradeModal');

@@ -114,9 +114,11 @@ export default class ValuesList extends Component {
 
     if (searchQuery.length > 0) {
       const searchQueryLowercase = searchQuery.toLowerCase();
-      issuesList = filter(issuesList,
+      issuesList = filter(
+        issuesList,
         (oneIssue) => oneIssue.issue_name.toLowerCase().includes(searchQueryLowercase) ||
-            oneIssue.issue_description.toLowerCase().includes(searchQueryLowercase));
+            oneIssue.issue_description.toLowerCase().includes(searchQueryLowercase),
+      );
     }
 
     const issuesToShowBeforeDelayedLoad = 6;
@@ -193,14 +195,12 @@ export default class ValuesList extends Component {
                   searchUpdateDelayTime={250}
                 />
                 <br />
-                <>
-                  {allIssues && allIssues.length ? (
-                    <Row className="row">
-                      {issuesListForDisplay}
-                    </Row>
-                  ) :
-                    null}
-                </>
+                {allIssues && allIssues.length ? (
+                  <Row className="row">
+                    {issuesListForDisplay}
+                  </Row>
+                ) :
+                  null}
               </div>
             </section>
           </div>

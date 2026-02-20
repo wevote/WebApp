@@ -113,7 +113,7 @@ class ShareModalOption extends Component {
     };
     // console.log('DataLayer for ShareModal Copy Link:', dataLayerObject);
     TagManager.dataLayer({ dataLayer: dataLayerObject });
-  }
+  };
 
   render () {
     renderLog('ShareModalOption');  // Set LOG_RENDER_EVENTS to log all renders
@@ -154,9 +154,8 @@ class ShareModalOption extends Component {
             ) : (
               <>
                 {(urlToBeShared) && (
-                  <>
-                    <Suspense fallback={<></>}>
-                      <OpenExternalWebSite
+                  <Suspense fallback={<></>}>
+                    <OpenExternalWebSite
                         linkIdAttribute="linkToShare"
                         className="no-decoration"
                         url={urlToBeShared}
@@ -171,9 +170,8 @@ class ShareModalOption extends Component {
                             </Text>
                           </div>
                         )}
-                      />
-                    </Suspense>
-                  </>
+                    />
+                  </Suspense>
                 )}
               </>
             )}

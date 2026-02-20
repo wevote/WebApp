@@ -19,7 +19,7 @@ class VoterFirstRetrieveController extends Component {
         VoterActions.voterRetrieve();
       }
     });
-  }
+  };
 
   render () {
     renderLog('VoterFirstRetrieveController');  // Set LOG_RENDER_EVENTS to log all renders

@@ -18,8 +18,10 @@ const Container = styled.div`
   width: 340px;
 `;
 
-export const Searchbox = () => (
-  <Container>
-    <SearchBase placeholder="Search by name, office or party" />
-  </Container>
-);
+export function Searchbox () {
+  return (
+    <Container>
+      <SearchBase placeholder="Search by name, office or party" />
+    </Container>
+  );
+}

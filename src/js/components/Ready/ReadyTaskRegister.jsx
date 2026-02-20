@@ -21,7 +21,7 @@ class ReadyTaskRegister extends React.Component {
 
   goToNextStep = () => {
     historyPush('/register');
-  }
+  };
 
   render () {
     renderLog('ReadyTaskRegister');  // Set LOG_RENDER_EVENTS to log all renders

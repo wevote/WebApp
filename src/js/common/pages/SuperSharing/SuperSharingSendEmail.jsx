@@ -213,7 +213,7 @@ class SuperSharingSendEmail extends Component {
     }
 
     return campaignBasePath;
-  }
+  };
 
   onStep1Click = () => {
     const { campaignXNewsItemWeVoteId } = this.state;
@@ -222,7 +222,7 @@ class SuperSharingSendEmail extends Component {
     if (step1ClickPath) {
       historyPush(step1ClickPath);
     }
-  }
+  };
 
   onStep2Click = () => {
     const { campaignXNewsItemWeVoteId } = this.state;
@@ -231,7 +231,7 @@ class SuperSharingSendEmail extends Component {
     if (step2ClickPath) {
       historyPush(step2ClickPath);
     }
-  }
+  };
 
   onStep3Click = () => {
     const { campaignXNewsItemWeVoteId } = this.state;
@@ -240,11 +240,11 @@ class SuperSharingSendEmail extends Component {
     if (step3ClickPath) {
       historyPush(step3ClickPath);
     }
-  }
+  };
 
   returnToOtherSharingOptions = () => {
     historyPush(`${this.getCampaignXBasePath()}share-campaign`);
-  }
+  };
 
   submitSendEmail = () => {
     const { campaignXWeVoteId } = this.state;
@@ -262,7 +262,7 @@ class SuperSharingSendEmail extends Component {
         }
       }
     }
-  }
+  };
 
   render () {
     renderLog('SuperSharingSendEmail');  // Set LOG_RENDER_EVENTS to log all renders

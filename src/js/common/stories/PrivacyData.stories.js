@@ -22,7 +22,7 @@ const DataSettingSection = styled('div')`
   margin-top: 24px;
 `;
 
-const PrivacyDataComponent = () => {
+function PrivacyDataComponent () {
   return (
     <div>
       <div className="u-stack--md">
@@ -38,7 +38,7 @@ const PrivacyDataComponent = () => {
       </div>
     </div>
   );
-};
+}
 
 export default {
   title: 'Design System/Privacy Data',
@@ -48,4 +48,6 @@ export default {
   },
 };
 
-export const ButtonsTest = () => <PrivacyDataComponent />;
+export function ButtonsTest () {
+  return <PrivacyDataComponent />;
+}

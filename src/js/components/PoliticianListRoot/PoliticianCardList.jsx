@@ -69,7 +69,7 @@ class PoliticianCardList extends Component {
     this.setState({
       numberToDisplay,
     });
-  }
+  };
 
   loadMoreHasBeenClicked = () => {
     this.increaseNumberToDisplay();
@@ -78,7 +78,7 @@ class PoliticianCardList extends Component {
       // console.log('loadMoreScroll exists');
       this.props.loadMoreScroll();
     }
-  }
+  };
 
   render () {
     renderLog('PoliticianCardList');  // Set LOG_RENDER_EVENTS to log all renders

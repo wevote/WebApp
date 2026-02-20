@@ -59,7 +59,7 @@ class ActivityTidbitReactionsSummary extends Component {
     // console.log('onClickShowActivityTidbitDrawer activityTidbitWeVoteId:', activityTidbitWeVoteId);
     AppObservableStore.setActivityTidbitWeVoteIdForDrawer(activityTidbitWeVoteId);
     AppObservableStore.setShowActivityTidbitDrawer(true);
-  }
+  };
 
   render () {
     renderLog('ActivityTidbitReactionsSummary');  // Set LOG_RENDER_EVENTS to log all renders

@@ -566,7 +566,7 @@ class HeaderBackToBallot extends Component {
       // console.log('navigation closeShareModal ', pathnameWithoutModalShare);
       historyPush(pathnameWithoutModalShare);
     }
-  }
+  };
 
   closeSignInModal () {
     AppObservableStore.setShowSignInModal(false);

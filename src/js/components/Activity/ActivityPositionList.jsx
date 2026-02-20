@@ -46,7 +46,7 @@ class ActivityPositionList extends Component {
         numberOfPositionItemsToDisplay,
       });
     }, 500);
-  }
+  };
 
   render () {
     const { incomingPositionList, organizationWeVoteId } = this.props;

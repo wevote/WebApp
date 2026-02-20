@@ -256,7 +256,7 @@ export default class OrganizationVoterGuide extends Component {
     this.setState({
       activeRoute: newActiveRoute,
     });
-  }
+  };
 
   fireGTMDataLayerIfReady () {
     let organization = {};

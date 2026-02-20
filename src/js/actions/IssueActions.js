@@ -100,21 +100,25 @@ export default {
   },
 
   issueLinkForOrganization (organizationWeVoteId, issueWeVoteId) {
-    Dispatcher.loadEndpoint('organizationLinkToIssue',
+    Dispatcher.loadEndpoint(
+      'organizationLinkToIssue',
       {
         organization_we_vote_id: organizationWeVoteId,
         issue_we_vote_id: issueWeVoteId,
         organization_linked_to_issue: true,
-      });
+      },
+    );
   },
 
   issueUnLinkForOrganization (organizationWeVoteId, issueWeVoteId) {
-    Dispatcher.loadEndpoint('organizationLinkToIssue',
+    Dispatcher.loadEndpoint(
+      'organizationLinkToIssue',
       {
         organization_we_vote_id: organizationWeVoteId,
         issue_we_vote_id: issueWeVoteId,
         organization_linked_to_issue: false,
-      });
+      },
+    );
   },
 
   removeBallotItemIssueScoreFromCache: (ballotItemWeVoteId) => {
@@ -128,16 +132,20 @@ export default {
   },
 
   retrieveIssuesToLinkForOrganization (organizationWeVoteId) {
-    Dispatcher.loadEndpoint('issuesToLinkToForOrganization',
+    Dispatcher.loadEndpoint(
+      'issuesToLinkToForOrganization',
       {
         organization_we_vote_id: organizationWeVoteId,
-      });
+      },
+    );
   },
 
   retrieveIssuesLinkedForOrganization (organizationWeVoteId) {
-    Dispatcher.loadEndpoint('issuesLinkedToOrganization',
+    Dispatcher.loadEndpoint(
+      'issuesLinkedToOrganization',
       {
         organization_we_vote_id: organizationWeVoteId,
-      });
+      },
+    );
   },
 };

@@ -5,7 +5,7 @@ import { withStyles } from '@mui/styles';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 
-const ActivityPostPublicDropdown = (props) => {
+function ActivityPostPublicDropdown (props) {
   const { visibilityIsPublic, onVisibilityChange, classes } = props;
   // console.log('ActivityPostPublicDropdown visibilityIsPublic:', visibilityIsPublic);
 
@@ -45,7 +45,7 @@ const ActivityPostPublicDropdown = (props) => {
       </div>
     </FormControl>
   );
-};
+}
 
 ActivityPostPublicDropdown.propTypes = {
   classes: PropTypes.object.isRequired,

@@ -80,7 +80,7 @@ class MessageToFriendInputField extends Component {
       messageToFriend,
       messageToFriendDefault,
     }, () => this.setMessageToFriendQueuedToSave());
-  }
+  };
 
   setMessageToFriendQueuedToSave = () => {
     const { messageToFriendType } = this.props;
@@ -97,7 +97,7 @@ class MessageToFriendInputField extends Component {
         }
       }, 500);
     }
-  }
+  };
 
   updateMessageToFriend (event) {
     let { messageToFriendType } = this.props;

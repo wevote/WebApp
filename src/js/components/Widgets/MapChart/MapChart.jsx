@@ -25,18 +25,19 @@ const positions = {
 };
 
 /* eslint-disable react/prop-types */
-const MapChart = (props) => (
-  <ComposableMap className="map-svg" projection="geoAlbersUsa">
-    <Geographies className="map-svg" geography={geoUrl}>
-      {({ geographies }) => (
-        <>
-          {/* eslint-disable-next-line arrow-body-style */}
-          {geographies.map((geo) => {
-            const cur = allStates.find((s) => s.val === geo.id);
-            // console.log(cur);
+function MapChart (props) {
+  return (
+    <ComposableMap className="map-svg" projection="geoAlbersUsa">
+      <Geographies className="map-svg" geography={geoUrl}>
+        {({ geographies }) => (
+          <>
+            {/* eslint-disable-next-line arrow-body-style */}
+            {geographies.map((geo) => {
+              const cur = allStates.find((s) => s.val === geo.id);
+              // console.log(cur);
 
-            return (
-              <StyledGeography
+              return (
+                <StyledGeography
                 className="map-svg"
                 onClick={() => props.onClickFunction(cur.id)}
                 onMouseDown={() => props.onClickFunction(cur.id)}
@@ -44,57 +45,52 @@ const MapChart = (props) => (
                 stroke="#FFF"
                 geography={geo}
                 fill="#DDD"
-              />
-            );
-          })}
-          {geographies.map((geo) => {
-            const centroid = geoCentroid(geo);
-            const cur = allStates.find((s) => s.val === geo.id);
-            return (
-              <StyledG
+                />
+              );
+            })}
+            {geographies.map((geo) => {
+              const centroid = geoCentroid(geo);
+              const cur = allStates.find((s) => s.val === geo.id);
+              return (
+                <StyledG
                 dx={positions[cur.id] ? positions[cur.id][0] : 0}
                 dy={positions[cur.id] ? positions[cur.id][1] : 0}
                 style={{ cursor: 'pointer' }}
                 onClick={() => props.onClickFunction(cur.id)}
                 onMouseDown={() => props.onClickFunction(cur.id)}
                 key={`${geo.rsmKey}-name`}
-              >
-                {cur &&
+                >
+                  {cur &&
                     centroid[0] > -160 &&
                     centroid[0] < -67 &&
                     (Object.keys(offsets).indexOf(cur.id) === -1 ? (
-                      <>
-                        <StyledMarker onClick={() => props.onClickFunction(cur.id)} onMouseDown={() => props.onClickFunction(cur.id)} coordinates={centroid}>
-                          <text onClick={props.onClickFunction} onMouseDown={props.onClickFunction} stroke={cur.color} y="2" fontSize={14} textAnchor="middle">
-                            {cur.id}
-                          </text>
-                        </StyledMarker>
-
-                      </>
+                      <StyledMarker onClick={() => props.onClickFunction(cur.id)} onMouseDown={() => props.onClickFunction(cur.id)} coordinates={centroid}>
+                        <text onClick={props.onClickFunction} onMouseDown={props.onClickFunction} stroke={cur.color} y="2" fontSize={14} textAnchor="middle">
+                          {cur.id}
+                        </text>
+                      </StyledMarker>
                     ) : (
-                      <>
-                        <StyledAnnotation
+                      <StyledAnnotation
                           onClick={props.onClickFunction}
                           onMouseDown={props.onClickFunction}
                           subject={centroid}
                           dx={offsets[cur.id][0]}
                           dy={offsets[cur.id][1]}
-                        >
-                          <text onClick={props.onClickFunction} onMouseDown={props.onClickFunction} stroke={cur.color} x={4} fontSize={14} alignmentBaseline="middle">
-                            {cur.id}
-                          </text>
-                        </StyledAnnotation>
-
-                      </>
+                      >
+                        <text onClick={props.onClickFunction} onMouseDown={props.onClickFunction} stroke={cur.color} x={4} fontSize={14} alignmentBaseline="middle">
+                          {cur.id}
+                        </text>
+                      </StyledAnnotation>
                     ))}
-              </StyledG>
-            );
-          })}
-        </>
-      )}
-    </Geographies>
-  </ComposableMap>
-);
+                </StyledG>
+              );
+            })}
+          </>
+        )}
+      </Geographies>
+    </ComposableMap>
+  );
+}
 
 const StyledGeography = styled(Geography)`
   outline: none !important;

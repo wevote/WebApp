@@ -167,11 +167,11 @@ class FriendIntroLanding extends Component {
     const { setUpAccountEntryPath } = this.state;
     AppObservableStore.setSetUpAccountEntryPath(setUpAccountEntryPath);
     historyPush(setUpAccountEntryPath);
-  }
+  };
 
   goToSkipForNow = () => {
     historyPush('/ballot');
-  }
+  };
 
   setNextStepVariables = () => {
     const {
@@ -209,14 +209,14 @@ class FriendIntroLanding extends Component {
       skipForNowOff,
       socialSignInOffered,
     });
-  }
+  };
 
   toggleWhatIsWeVote = () => {
     const { showWhatIsWeVote } = this.state;
     this.setState({
       showWhatIsWeVote: !showWhatIsWeVote,
     });
-  }
+  };
 
   fireGTMDataLayerWhenReady () {
     const { dataLayerFired } = this.state;
@@ -274,22 +274,20 @@ class FriendIntroLanding extends Component {
                     .
                     {' '}
                     {friendFirstName ? (
-                      <>
-                        <div>
-                          {friendFirstName ? (
-                            <>
-                              You are
-                              {' '}
-                              {friendFirstName}
-                              &apos;s friend!
-                            </>
-                          ) : (
-                            <>
-                              Invitation accepted!
-                            </>
-                          )}
-                        </div>
-                      </>
+                      <div>
+                        {friendFirstName ? (
+                          <>
+                            You are
+                            {' '}
+                            {friendFirstName}
+                            &apos;s friend!
+                          </>
+                        ) : (
+                          <>
+                            Invitation accepted!
+                          </>
+                        )}
+                      </div>
                     ) : (
                       <>
                         Invitation accepted!
@@ -332,20 +330,18 @@ class FriendIntroLanding extends Component {
                         </Button>
                       </EnterInfoManuallyWrapper>
                     ) : (
-                      <>
-                        <DesktopNextButtonsOuterWrapperUShowDesktopTablet breakValue={isCordovaWide() ? 1000 : 'sm'}>
-                          <DesktopNextButtonsInnerWrapper>
-                            <NextStepButtons
+                      <DesktopNextButtonsOuterWrapperUShowDesktopTablet breakValue={isCordovaWide() ? 1000 : 'sm'}>
+                        <DesktopNextButtonsInnerWrapper>
+                          <NextStepButtons
                               classes={classes}
                               desktopMode
                               goToSkipForNow={this.goToSkipForNow}
                               nextStepButtonText={nextStepButtonText}
                               onClickNextButton={this.goToNextStep}
                               skipForNowOff={skipForNowOff}
-                            />
-                          </DesktopNextButtonsInnerWrapper>
-                        </DesktopNextButtonsOuterWrapperUShowDesktopTablet>
-                      </>
+                          />
+                        </DesktopNextButtonsInnerWrapper>
+                      </DesktopNextButtonsOuterWrapperUShowDesktopTablet>
                     )}
                   </ActionButtonsWrapper>
                   <WhatIsWeVoteLinkWrapper>

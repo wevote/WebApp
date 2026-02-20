@@ -31,7 +31,7 @@ const CustomTooltip = muiStyled(({ className, ...props }) => (
   },
 }));
 
-const UpdatePoliticianInformation =  ({ politicianName, politicianWeVoteId }) => {
+function UpdatePoliticianInformation ({ politicianName, politicianWeVoteId }) {
   const voterCanEditPoliticianProfile = useVoterCanEditPolitician();
   // console.log('updatePoliticianInformation politicianName: ', politicianName, ', voterCanEditPoliticianProfile: ', voterCanEditPoliticianProfile);
   const [tooltipOpen, setTooltipOpen] = useState(false);
@@ -129,7 +129,7 @@ const UpdatePoliticianInformation =  ({ politicianName, politicianWeVoteId }) =>
       )}
     </UpdateInformationWrapper>
   );
-};
+}
 
 UpdatePoliticianInformation.propTypes = {
   politicianName: PropTypes.string,

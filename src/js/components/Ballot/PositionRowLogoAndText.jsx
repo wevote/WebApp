@@ -96,7 +96,7 @@ class PositionRowLogoAndText extends Component {
       speaker_we_vote_id: organizationWeVoteId,
     } = position;
     this.onClickShowPositionDrawer(ballotItemWeVoteId, organizationWeVoteId);
-  }
+  };
 
   render () {
     renderLog('PositionRowLogoAndText');  // Set LOG_RENDER_EVENTS to log all renders

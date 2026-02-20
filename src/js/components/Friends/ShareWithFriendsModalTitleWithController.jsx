@@ -67,7 +67,7 @@ class ShareWithFriendsModalTitleWithController extends Component {
         copyLinkCopied: false,
       });
     }, 4000);
-  }
+  };
 
   createMessageToFriendDefault = () => {
     const { whatAndHowMuchToShare } = this.props;
@@ -120,7 +120,7 @@ class ShareWithFriendsModalTitleWithController extends Component {
       messageToFriendDefault,
       messageToFriendType,
     }, () => this.setMessageToFriendQueuedToSave());
-  }
+  };
 
   setMessageToFriendQueuedToSave = () => {
     const { messageToFriendType } = this.state;
@@ -137,7 +137,7 @@ class ShareWithFriendsModalTitleWithController extends Component {
         }
       }, 500);
     }
-  }
+  };
 
   setElectionDateInformation = () => {
     // const electionDayText = ElectionStore.getElectionDayText(VoterStore.electionId());
@@ -156,7 +156,7 @@ class ShareWithFriendsModalTitleWithController extends Component {
     this.setState({
       electionDateInFutureFormatted,
     }, () => this.createMessageToFriendDefault());
-  }
+  };
 
   render () {
     renderLog('ShareWithFriendsModalTitleWithController');  // Set LOG_RENDER_EVENTS to log all renders

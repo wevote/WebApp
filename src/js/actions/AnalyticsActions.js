@@ -87,29 +87,35 @@ import AppObservableStore from '../common/stores/AppObservableStore';
 export default {
 
   saveActionWrapper (actionConstant, googleCivicElectionId = '') {
-    Dispatcher.loadEndpoint('saveAnalyticsAction',
+    Dispatcher.loadEndpoint(
+      'saveAnalyticsAction',
       {
         action_constant: actionConstant,
         google_civic_election_id: googleCivicElectionId,
-      });
+      },
+    );
   },
 
   saveActionWrapperWithOrganization (actionConstant, googleCivicElectionId, organizationWeVoteId) {
-    Dispatcher.loadEndpoint('saveAnalyticsAction',
+    Dispatcher.loadEndpoint(
+      'saveAnalyticsAction',
       {
         action_constant: actionConstant,
         google_civic_election_id: googleCivicElectionId,
         organization_we_vote_id: organizationWeVoteId,
-      });
+      },
+    );
   },
 
   saveActionWrapperWithBallotItem (actionConstant, googleCivicElectionId, ballotItemWeVoteId) {
-    Dispatcher.loadEndpoint('saveAnalyticsAction',
+    Dispatcher.loadEndpoint(
+      'saveAnalyticsAction',
       {
         action_constant: actionConstant,
         google_civic_election_id: googleCivicElectionId,
         ballot_item_we_vote_id: ballotItemWeVoteId,
-      });
+      },
+    );
   },
 
   saveActionAboutGettingStarted (googleCivicElectionId) {
@@ -234,12 +240,14 @@ export default {
 
   saveActionPoliticianPageVisit (politicianSEOFriendlyPathFromUrl, politicianWeVoteId) {
     const actionConstant = 81; // ACTION_POLITICIAN_PAGE_VISIT
-    Dispatcher.loadEndpoint('saveAnalyticsAction',
+    Dispatcher.loadEndpoint(
+      'saveAnalyticsAction',
       {
         action_constant: actionConstant,
         seo_friendly_path: politicianSEOFriendlyPathFromUrl,
         politician_we_vote_id: politicianWeVoteId,
-      });
+      },
+    );
   },
 
   saveActionReadyVisit (googleCivicElectionId) {

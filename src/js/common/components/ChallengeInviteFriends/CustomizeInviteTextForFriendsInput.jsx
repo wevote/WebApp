@@ -11,7 +11,7 @@ import { CampaignProcessStepIntroductionText } from '../Style/CampaignProcessSty
 
 const ChallengeParticipantFirstRetrieveController = React.lazy(() => import(/* webpackChunkName: 'ChallengeParticipantFirstRetrieveController' */ '../ChallengeParticipant/ChallengeParticipantFirstRetrieveController'));
 
-const CustomizeInviteTextForFriendsInput = ({ classes, challengeWeVoteId, externalUniqueId, goToNextStep }) => {
+function CustomizeInviteTextForFriendsInput ({ classes, challengeWeVoteId, externalUniqueId, goToNextStep }) {
   renderLog('CustomizeInviteTextForFriendsInputBox');  // Set LOG_RENDER_EVENTS to log all renders
   const [inviteTextForFriends, setInviteTextForFriends] = React.useState('');
   const [inviteTextForFriendsOriginal, setInviteTextForFriendsOriginal] = React.useState('');
@@ -117,7 +117,7 @@ const CustomizeInviteTextForFriendsInput = ({ classes, challengeWeVoteId, extern
       </Suspense>
     </CustomizeInviteTextForFriendsInputWrapper>
   );
-};
+}
 CustomizeInviteTextForFriendsInput.propTypes = {
   challengeWeVoteId: PropTypes.string,
   classes: PropTypes.object,

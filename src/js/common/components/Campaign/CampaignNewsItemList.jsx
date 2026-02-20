@@ -72,7 +72,7 @@ class CampaignNewsItemList extends Component {
     this.setState({
       numberOfNewsItemsToDisplay,
     });
-  }
+  };
 
   orderByNewsItemUpdateDate = (firstCampaign, secondCampaign) => new Date(secondCampaign.date_posted) - new Date(firstCampaign.date_posted);
 

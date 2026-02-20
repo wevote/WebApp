@@ -81,13 +81,13 @@ class ShareByCopyLink extends Component {
     if (this.props.onClickFunction) {
       this.props.onClickFunction();
     }
-  }
+  };
 
   generateFullCampaignLink = () => {
     const { campaignXNewsItemWeVoteId } = this.props;
     const { campaignX } = this.state;
     return generateSharingLink(campaignX, campaignXNewsItemWeVoteId);
-  }
+  };
 
   copyLink () {
     // console.log('ShareByCopyLink copyLink');

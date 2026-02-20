@@ -178,7 +178,7 @@ class ShareButtonFooter extends Component {
       openShareButtonDrawer: true,
       showShareButton: false,
     }, () => this.openShareOptions()); // openShareOptions advances directly to share
-  }
+  };
 
   // eslint-disable-next-line no-unused-vars
   handleCloseShareButtonDrawer = (buttonId = '') => {
@@ -186,13 +186,13 @@ class ShareButtonFooter extends Component {
       openShareButtonDrawer: false,
       showShareButton: true,
     });
-  }
+  };
 
   onClickGoBack = () => {
     this.setState({
       shareWithFriendsNow: false,
     });
-  }
+  };
 
   openShareOptions = () => {
     // console.log('ShareButtonFooter openShareOptions');
@@ -213,12 +213,12 @@ class ShareButtonFooter extends Component {
     if (apiCalming('voterContactListSave', 60000)) {
       VoterActions.voterContactListAugmentWithWeVoteData(true);
     }
-  }
+  };
 
   saveActionShareButtonCopy = () => {      // Save Analytics
     openSnackbar({ message: 'Copied!' });
     AnalyticsActions.saveActionShareButtonCopy(VoterStore.electionId());
-  }
+  };
 
   // saveActionShareButtonEmail = () => {     // Save Analytics
   //   AnalyticsActions.saveActionShareButtonEmail(VoterStore.electionId());
@@ -226,7 +226,7 @@ class ShareButtonFooter extends Component {
 
   saveActionShareButtonFacebook = () => {  // Save Analytics
     AnalyticsActions.saveActionShareButtonFacebook(VoterStore.electionId());
-  }
+  };
 
   saveActionShareButtonFriends = () => {
     const voterIsSignedIn = VoterStore.getVoterIsSignedIn();
@@ -238,11 +238,11 @@ class ShareButtonFooter extends Component {
       AppObservableStore.setShowSignInModal(true);
     }
     AnalyticsActions.saveActionShareButtonFriends(VoterStore.electionId());
-  }
+  };
 
   saveActionShareButtonTwitter = () => {    // Save Analytics
     AnalyticsActions.saveActionShareButtonTwitter(VoterStore.electionId());
-  }
+  };
 
   openNativeShare (linkToBeShared, shareTitle = '') {
     // console.log('openNativeShare linkToBeShared:', linkToBeShared, 'shareTitle:', shareTitle);

@@ -59,7 +59,7 @@ class FirstChallengeListController extends Component {
         }
       }
     });
-  }
+  };
 
   ChallengeSearchRetrieve = () => {
     const { searchText } = this.props;
@@ -69,7 +69,7 @@ class FirstChallengeListController extends Component {
         ChallengeActions.challengeListRetrieve(searchText);
       }
     });
-  }
+  };
 
   ChallengesForStateRetrieve = () => {
     const { stateCode } = this.props;
@@ -84,7 +84,7 @@ class FirstChallengeListController extends Component {
         ChallengeActions.challengeListRetrieve('', filteredStateCode);
       }
     });
-  }
+  };
 
   render () {
     renderLog('FirstChallengeListController');  // Set LOG_RENDER_EVENTS to log all renders

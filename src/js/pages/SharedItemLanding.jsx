@@ -121,7 +121,7 @@ export default class SharedItemLanding extends Component {
     if (!waitForVoterDeviceId) {
       historyPush(routePath);
     }
-  }
+  };
 
   render () {
     renderLog('SharedItemLanding');  // Set LOG_RENDER_EVENTS to log all renders

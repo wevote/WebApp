@@ -15,10 +15,12 @@ export default {
   },
 
   friendListCurrentFriends () {
-    Dispatcher.loadEndpoint('friendList',
+    Dispatcher.loadEndpoint(
+      'friendList',
       {
         kind_of_list: 'CURRENT_FRIENDS',
-      });
+      },
+    );
   },
 
   // July 2021: These 6 api queries were being fired simultaneously, and prior to this, without apiCalming it was much worse.
@@ -26,8 +28,10 @@ export default {
   // 'CURRENT_FRIENDS' 'FRIEND_INVITATIONS_PROCESSED' 'FRIEND_INVITATIONS_WAITING_FOR_VERIFICATION'
   // 'FRIEND_INVITATIONS_SENT_BY_ME' 'FRIEND_INVITATIONS_SENT_TO_ME' 'SUGGESTED_FRIEND_LIST'
   friendListsAll () {
-    Dispatcher.loadEndpoint('friendListsAll',
-      {});
+    Dispatcher.loadEndpoint(
+      'friendListsAll',
+      {},
+    );
   },
 
   cancelFriendInviteVoter (otherVoterWeVoteId) {
@@ -46,9 +50,19 @@ export default {
     });
   },
 
-  emailBallotData (emailAddressArray, firstNameArray, lastNameArray, emailAddresses,
-    invitationMessage, ballotLink, senderEmailAddress, verificationEmailSent, deviceType) {
-    Dispatcher.loadEndpoint('emailBallotData',
+  emailBallotData (
+    emailAddressArray,
+    firstNameArray,
+    lastNameArray,
+    emailAddresses,
+    invitationMessage,
+    ballotLink,
+    senderEmailAddress,
+    verificationEmailSent,
+    deviceType,
+  ) {
+    Dispatcher.loadEndpoint(
+      'emailBallotData',
       {
         email_address_array: emailAddressArray,
         first_name_array: firstNameArray,
@@ -60,12 +74,14 @@ export default {
         verification_email_sent: verificationEmailSent,
         device_type: deviceType,
         hostname: AppObservableStore.getHostname(),
-      });
+      },
+    );
   },
 
   friendInvitationByEmailSend (emailAddressArray, firstNameArray, lastNameArray, emailAddresses, invitationMessage, senderEmailAddress) {
     // console.log('friendInvitationByEmailSend emailAddressArray:', emailAddressArray);
-    Dispatcher.loadEndpoint('friendInvitationByEmailSend',
+    Dispatcher.loadEndpoint(
+      'friendInvitationByEmailSend',
       {
         email_address_array: emailAddressArray,
         first_name_array: firstNameArray,
@@ -74,7 +90,8 @@ export default {
         invitation_message: invitationMessage,
         sender_email_address: senderEmailAddress,
         hostname: AppObservableStore.getHostname(),
-      });
+      },
+    );
   },
 
   friendInvitationByFacebookSend (data) {
@@ -87,49 +104,61 @@ export default {
   },
 
   friendInvitationByWeVoteIdSend (otherVoterWeVoteId, invitationMessage) {
-    Dispatcher.loadEndpoint('friendInvitationByWeVoteIdSend',
+    Dispatcher.loadEndpoint(
+      'friendInvitationByWeVoteIdSend',
       {
         other_voter_we_vote_id: otherVoterWeVoteId,
         hostname: AppObservableStore.getHostname(),
         invitation_message: invitationMessage,
-      });
+      },
+    );
   },
 
   // TODO DALE To be built on API server
   friendInvitationByTwitterHandleSend (twitterHandles, invitationMessage) {
-    Dispatcher.loadEndpoint('friendInvitationByTwitterHandleSend',
+    Dispatcher.loadEndpoint(
+      'friendInvitationByTwitterHandleSend',
       {
         twitter_handles_raw: twitterHandles,
         invitation_message: invitationMessage,
-      });
+      },
+    );
   },
 
   friendListInvitationsProcessed () {
-    Dispatcher.loadEndpoint('friendList',
+    Dispatcher.loadEndpoint(
+      'friendList',
       {
         kind_of_list: 'FRIEND_INVITATIONS_PROCESSED',
-      });
+      },
+    );
   },
 
   friendListInvitationsWaitingForVerification () {
-    Dispatcher.loadEndpoint('friendList',
+    Dispatcher.loadEndpoint(
+      'friendList',
       {
         kind_of_list: 'FRIEND_INVITATIONS_WAITING_FOR_VERIFICATION',
-      });
+      },
+    );
   },
 
   friendListInvitationsSentByMe () {
-    Dispatcher.loadEndpoint('friendList',
+    Dispatcher.loadEndpoint(
+      'friendList',
       {
         kind_of_list: 'FRIEND_INVITATIONS_SENT_BY_ME',
-      });
+      },
+    );
   },
 
   friendListInvitationsSentToMe () {
-    Dispatcher.loadEndpoint('friendList',
+    Dispatcher.loadEndpoint(
+      'friendList',
       {
         kind_of_list: 'FRIEND_INVITATIONS_SENT_TO_ME',
-      });
+      },
+    );
   },
 
   friendInvitationInformation (invitationSecretKey) {
@@ -176,21 +205,25 @@ export default {
   },
 
   messageToFriendSend (otherVoterWeVoteId, messageToFriend, electionDateInFutureFormatted, electionDateIsToday) {
-    Dispatcher.loadEndpoint('messageToFriendSend',
+    Dispatcher.loadEndpoint(
+      'messageToFriendSend',
       {
         election_date_in_future_formatted: electionDateInFutureFormatted,
         election_date_is_today: electionDateIsToday,
         hostname: AppObservableStore.getHostname(),
         message_to_friend: messageToFriend,
         other_voter_we_vote_id: otherVoterWeVoteId,
-      });
+      },
+    );
   },
 
   friendListSuggested () {
-    Dispatcher.loadEndpoint('friendList',
+    Dispatcher.loadEndpoint(
+      'friendList',
       {
         kind_of_list: 'SUGGESTED_FRIEND_LIST',
-      });
+      },
+    );
   },
 
   unFriend (otherVoterWeVoteId) {

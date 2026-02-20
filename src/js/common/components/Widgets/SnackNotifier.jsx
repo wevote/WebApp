@@ -84,7 +84,7 @@ class SnackNotifier extends Component {
           backgroundColor: '#313131',
         };
     }
-  }
+  };
 
   render () {
     renderLog('SnackNotifier');  // Set LOG_RENDER_EVENTS to log all renders

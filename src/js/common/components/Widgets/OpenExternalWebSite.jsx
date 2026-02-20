@@ -50,7 +50,7 @@ export default class OpenExternalWebSite extends Component {
       // console.log('Sending dataLayerObject to GTM:', dataLayerObject);
       TagManager.dataLayer({ dataLayer: dataLayerObject });
     }
-  }
+  };
 
   render () {
     renderLog('OpenExternalWebSite');  // Set LOG_RENDER_EVENTS to log all renders

@@ -62,7 +62,7 @@ class RecommendedCampaignListRetrieveController extends Component {
         }
       });
     }
-  }
+  };
 
   render () {
     renderLog('RecommendedCampaignListRetrieveController');  // Set LOG_RENDER_EVENTS to log all renders

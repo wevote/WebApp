@@ -326,7 +326,7 @@ class PositionRowListCompressed extends Component {
     if (filteredPositionList.length > 0) {
       checkCandidateHasEndorsements(true);
     }
-  }
+  };
 
   orderByCurrentFriendsFirst = (firstGuide, secondGuide) => {
     const secondGuideIsFromFriend = secondGuide && secondGuide.currentFriend === true ? 1 : 0;
@@ -448,7 +448,7 @@ class PositionRowListCompressed extends Component {
                     tabIndex={0}
                     onClick={() => this.onClickShowOrganizationModalWithPositions('candidateEndorsementCountOppose')}
                     onKeyDown={(e) => {
-                      if(e.key === "Enter" || e.key === " ") {
+                      if (e.key === 'Enter' || e.key === ' ') {
                         this.onClickShowOrganizationModalWithPositions('candidateEndorsementCountOppose');
                       }
                     }}
@@ -464,7 +464,7 @@ class PositionRowListCompressed extends Component {
                     tabIndex={0}
                     onClick={() => this.onClickShowOrganizationModalWithPositions('candidateEndorsementCountSupport')}
                     onKeyDown={(e) => {
-                      if(e.key === "Enter" || e.key === " ") {
+                      if (e.key === 'Enter' || e.key === ' ') {
                         this.onClickShowOrganizationModalWithPositions('candidateEndorsementCountSupport');
                       }
                     }}

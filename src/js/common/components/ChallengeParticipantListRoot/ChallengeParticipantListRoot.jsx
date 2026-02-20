@@ -51,7 +51,7 @@ function searchFunction () {
 }
 
 
-const ChallengeParticipantListRoot = ({ challengeWeVoteId, classes, uniqueExternalId }) => {
+function ChallengeParticipantListRoot ({ challengeWeVoteId, classes, uniqueExternalId }) {
   // eslint-disable-next-line no-unused-vars
   const [participantList, setParticipantList] = React.useState([]);
   const [participantsCount, setParticipantsCount] = useState(0);
@@ -151,7 +151,7 @@ const ChallengeParticipantListRoot = ({ challengeWeVoteId, classes, uniqueExtern
       </Suspense>
     </ChallengeParticipantListRootContainer>
   );
-};
+}
 ChallengeParticipantListRoot.propTypes = {
   classes: PropTypes.object.isRequired,
   // clearSearchFunction: PropTypes.func.isRequired,

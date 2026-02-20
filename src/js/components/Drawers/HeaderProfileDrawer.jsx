@@ -27,7 +27,7 @@ const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES ===
 // const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 const SignInOptionsPanel = React.lazy(() => import(/* webpackChunkName: 'SignInOptionsPanel' */ '../../common/components/SignIn/SignInOptionsPanel'));
 
-const HeaderProfileDrawer = () => {
+function HeaderProfileDrawer () {
   const [headerFixedJsx] = useState(<></>);
   const [displayProfileOption, setDisplayProfileOption] = useState('nameAndPhoto');
   const [displayProfileComponent, setDisplayProfileComponent] = useState();
@@ -95,9 +95,7 @@ const HeaderProfileDrawer = () => {
         break;
       case 'address':
         component = (
-          <>
-            <SettingsAddress externalUniqueId="headerProfileDrawer" />
-          </>
+          <SettingsAddress externalUniqueId="headerProfileDrawer" />
         );
         break;
       case 'notifications':
@@ -118,9 +116,7 @@ const HeaderProfileDrawer = () => {
         break;
       case 'yourData':
         component = (
-          <>
-            <SettingsYourData externalUniqueId="headerProfileDrawer" />
-          </>
+          <SettingsYourData externalUniqueId="headerProfileDrawer" />
         );
         break;
       default:
@@ -300,9 +296,7 @@ const HeaderProfileDrawer = () => {
               </SettingsSectionFooterWrapper>
             </NavLinksContainer>
           ) : (
-            <>
-              <LinkComponentContainer>{displayProfileComponent}</LinkComponentContainer>
-            </>
+            <LinkComponentContainer>{displayProfileComponent}</LinkComponentContainer>
           )}
         </>
       ) : (
@@ -333,7 +327,7 @@ const HeaderProfileDrawer = () => {
       onDrawerClose={onCloseDrawer}
     />
   );
-};
+}
 
 const AccountCircleStyled = styled(AccountCircle)`
   margin-right: 8px;

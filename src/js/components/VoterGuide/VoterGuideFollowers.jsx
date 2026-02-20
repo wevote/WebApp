@@ -112,22 +112,24 @@ class VoterGuideFollowers extends Component {
     } else {
       const searchTermLowerCase = searchTerm.toLowerCase();
       const { voterGuideFollowersList } = this.state;
-      const searchedFollowersList = filter(voterGuideFollowersList,
-        (oneVoterGuide) => oneVoterGuide.voter_guide_display_name.toLowerCase().includes(searchTermLowerCase));
+      const searchedFollowersList = filter(
+        voterGuideFollowersList,
+        (oneVoterGuide) => oneVoterGuide.voter_guide_display_name.toLowerCase().includes(searchTermLowerCase),
+      );
 
       this.setState({
         searchTerm,
         voterGuideFollowersListFilteredBySearch: searchedFollowersList,
       });
     }
-  }
+  };
 
   clearSearchBarFunction = () => {
     this.setState({
       searchTerm: '',
       voterGuideFollowersListFilteredBySearch: [],
     });
-  }
+  };
 
   render () {
     renderLog('VoterGuideFollowers');  // Set LOG_RENDER_EVENTS to log all renders

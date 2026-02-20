@@ -72,7 +72,7 @@ export default class MessageToFriendButton extends Component {
     this.setState({
       messageToFriendDefault,
     }, () => this.setMessageToFriendQueuedToSave());
-  }
+  };
 
   setMessageToFriendQueuedToSave = () => {
     const { messageToFriendType } = this.props;
@@ -89,7 +89,7 @@ export default class MessageToFriendButton extends Component {
         }
       }, 500);
     }
-  }
+  };
 
   sendMessageToFriend = () => {
     const { electionDateInFutureFormatted, electionDateIsToday, messageToFriendIncoming, otherVoterWeVoteId } = this.props;
@@ -116,7 +116,7 @@ export default class MessageToFriendButton extends Component {
     } else {
       AppObservableStore.setShowSignInModal(true);
     }
-  }
+  };
 
   render () {
     renderLog('MessageToFriendButton');  // Set LOG_RENDER_EVENTS to log all renders

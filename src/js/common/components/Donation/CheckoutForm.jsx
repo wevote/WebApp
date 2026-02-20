@@ -171,9 +171,19 @@ class CheckoutForm extends React.Component {
 
         this.setPreDonationCounts();
         DonateActions.clearStripeErrorState();
-        DonateActions.donationWithStripe(token.id, email, donationPennies,
-          isChipIn, isMonthlyDonation, isPremiumPlan, token.client_ip, campaignXWeVoteId,
-          paymentMethodId, couponCode, premiumPlanType);
+        DonateActions.donationWithStripe(
+          token.id,
+          email,
+          donationPennies,
+          isChipIn,
+          isMonthlyDonation,
+          isPremiumPlan,
+          token.client_ip,
+          campaignXWeVoteId,
+          paymentMethodId,
+          couponCode,
+          premiumPlanType,
+        );
 
         this.pollForWebhookCompletionAtList(20);
 
@@ -192,7 +202,7 @@ class CheckoutForm extends React.Component {
         });
       }
     }
-  }
+  };
 
   pollForWebhookCompletionAtList = (maxPolls) => {
     let pollCount = maxPolls;
@@ -219,7 +229,7 @@ class CheckoutForm extends React.Component {
       console.log(`pollForWebhookCompletion isPolling set false ===== ${pollCount}`);
       this.setState({ isPolling: false });
     }
-  }
+  };
 
   emailChange = (event) => {
     const currentEmail = event.target.value;
@@ -241,7 +251,7 @@ class CheckoutForm extends React.Component {
         emailValidationErrorText: '',
       });
     }
-  }
+  };
 
   clearPreDonationCounts () {
     this.preDonationCounts = {

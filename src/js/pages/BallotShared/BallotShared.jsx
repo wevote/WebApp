@@ -176,7 +176,7 @@ class BallotShared extends Component {
       ballotItemListFiltered = filter(ballotItemListFiltered, (ballotItem) => ballotItem.google_civic_election_id === electionId);
     }
     return ballotItemListFiltered;
-  }
+  };
 
   candidateListForThisBallotItem = (oneBallotItem, candidatePositionList) => {
     const candidatePositionListFiltered = [];
@@ -197,11 +197,11 @@ class BallotShared extends Component {
       }
     }
     return candidatePositionListFiltered;
-  }
+  };
 
   goToBallot = () => {
     historyPush('/ballot');
-  }
+  };
 
   getTopPadding = () => {
     if (isWebApp()) {
@@ -209,7 +209,7 @@ class BallotShared extends Component {
     }
     cordovaSimplePageContainerTopOffset(VoterStore.getVoterIsSignedIn());
     return {};
-  }
+  };
 
   toggleSelectBallotModal (showSelectBallotModal, showEditAddress = true) {
     AppObservableStore.setShowSelectBallotModal(!showSelectBallotModal, getBooleanValue(showEditAddress));

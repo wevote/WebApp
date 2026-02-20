@@ -965,8 +965,7 @@ class ItemActionBar extends PureComponent {
     const showingNegativeFeedbackModal = AppObservableStore.getShowingNegativeFeedbackModal();
 
     return (
-      <>
-        <ItemActionBarWrapper
+      <ItemActionBarWrapper
           // inModal={this.props.inModal}
           displayInline={buttonsOnly || this.props.shareButtonHide}
           onMouseOver={handleEnterHoverLocalArea}
@@ -974,7 +973,7 @@ class ItemActionBar extends PureComponent {
           onMouseOut={handleLeaveHoverLocalArea}
           onBlur={handleLeaveHoverLocalArea}
           positionPublicToggleWrapAllowed={this.props.positionPublicToggleWrapAllowed}
-        >
+      >
           {showNegativeModal && !showingNegativeFeedbackModal && (
             <ReviewAppModal initialEmail={initialEmail} />
           )}
@@ -1142,8 +1141,7 @@ class ItemActionBar extends PureComponent {
               toggleModal={this.togglePositionStatementFunction}
             />
           )}
-        </ItemActionBarWrapper>
-      </>
+      </ItemActionBarWrapper>
     );
   }
 }

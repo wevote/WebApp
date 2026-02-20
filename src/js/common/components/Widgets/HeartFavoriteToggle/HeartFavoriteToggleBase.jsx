@@ -159,7 +159,7 @@ class HeartFavoriteToggleBase extends Component {
     const stopOpposing = false;
     const stopSupporting = false;
     this.handleActionClick(event, support, oppose, stopSupporting, stopOpposing, 'Don’t like this politician?');
-  }
+  };
 
   handleStopOpposingClick = (event) => {
     const oppose = false;
@@ -167,7 +167,7 @@ class HeartFavoriteToggleBase extends Component {
     const stopOpposing = true;
     const stopSupporting = false;
     this.handleActionClick(event, support, oppose, stopSupporting, stopOpposing, 'Don’t like this politician?');
-  }
+  };
 
   handleStopSupportingClick = (event) => {
     const oppose = false;
@@ -175,7 +175,7 @@ class HeartFavoriteToggleBase extends Component {
     const stopOpposing = false;
     const stopSupporting = true;
     this.handleActionClick(event, support, oppose, stopSupporting, stopOpposing, 'Like this politician?');
-  }
+  };
 
   handleSupportClick = (event) => {
     const oppose = false;
@@ -183,7 +183,7 @@ class HeartFavoriteToggleBase extends Component {
     const stopOpposing = false;
     const stopSupporting = false;
     this.handleActionClick(event, support, oppose, stopSupporting, stopOpposing, 'Like this politician?');
-  }
+  };
 
   handleActionClick = (event, support = true, oppose = false, stopSupporting = false, stopOpposing = false, popoverText = '') => {
     // eslint-disable-next-line no-unused-vars
@@ -373,14 +373,14 @@ class HeartFavoriteToggleBase extends Component {
         }
       });
     }
-  }
+  };
 
   handlePopoverClose = () => {
     this.setState({
       anchorEl: null,
       popoverText: '',
     });
-  }
+  };
 
   supportHoverText = () => {
     const { campaignXWeVoteId, organizationWeVoteId } = this.props;
@@ -409,7 +409,7 @@ class HeartFavoriteToggleBase extends Component {
     } else {
       return 'Remove Favorite';
     }
-  }
+  };
 
   opposeHoverText = () => {
     const { campaignXWeVoteId, organizationWeVoteId } = this.props;
@@ -438,7 +438,7 @@ class HeartFavoriteToggleBase extends Component {
     } else {
       return 'Remove Dislike';
     }
-  }
+  };
 
   render () {
     const {

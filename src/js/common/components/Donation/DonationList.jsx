@@ -43,7 +43,7 @@ class DonationList extends Component {
     this.cancelMembershipTimer = setTimeout(() => {
       DonateActions.donationRefreshDonationList();
     }, 1000);
-  }
+  };
 
   isMobile = () => $(window).width() < 1280;
 
@@ -106,7 +106,7 @@ class DonationList extends Component {
       });
     });
     return rows;
-  }
+  };
 
   subscriptionRows = () => {
     const { displayMembershipTab, showPremiumPlan } = this.props;
@@ -148,7 +148,7 @@ class DonationList extends Component {
       });
     });
     return rows;
-  }
+  };
 
   render () {
     renderLog('DonationList');  // Set LOG_RENDER_EVENTS to log all renders

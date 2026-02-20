@@ -103,11 +103,11 @@ class OfficeItemCompressed extends Component {
 
   handleMoreInfoIconHover = () => {
     this.setState({ moreInfoIconHovered: true });
-  }
+  };
 
   handleMoreInfoIconLeave = () => {
     this.setState({ moreInfoIconHovered: false });
-  }
+  };
 
   goToCandidateLink (candidateWeVoteId) {
     const { organizationWeVoteId } = this.props;
@@ -203,22 +203,24 @@ OfficeItemCompressed.propTypes = {
 
 // OneOfficeCandidateList takes the list of candidates from props, renders them.
 // It takes two props: candidates (the list of candidates to render) and goToCandidateLink (a function to navigate to the candidate's page).
-const OneOfficeCandidateList = ({ candidates, goToCandidateLink, useHelpDefeatOrHelpWin }) => (
-  <BallotScrollingOuterWrapper>
-    {candidates.map((candidate) => {
-      const isSupported = SupportStore.getVoterSupportsByBallotItemWeVoteId(candidate.we_vote_id); // Get support status from SupportStore
-      return (
-        <BallotScrollingContainer
+function OneOfficeCandidateList ({ candidates, goToCandidateLink, useHelpDefeatOrHelpWin }) {
+  return (
+    <BallotScrollingOuterWrapper>
+      {candidates.map((candidate) => {
+        const isSupported = SupportStore.getVoterSupportsByBallotItemWeVoteId(candidate.we_vote_id); // Get support status from SupportStore
+        return (
+          <BallotScrollingContainer
           key={`candidatePreview-${candidate.we_vote_id}`}
           oneCandidate={candidate}
           goToCandidateLink={goToCandidateLink}
           isSupported={isSupported} // Pass the support status as a prop
           useHelpDefeatOrHelpWin={useHelpDefeatOrHelpWin}
-        />
-      );
-    })}
-  </BallotScrollingOuterWrapper>
-);
+          />
+        );
+      })}
+    </BallotScrollingOuterWrapper>
+  );
+}
 OneOfficeCandidateList.propTypes = {
   candidates: PropTypes.array.isRequired,
   goToCandidateLink: PropTypes.func.isRequired,

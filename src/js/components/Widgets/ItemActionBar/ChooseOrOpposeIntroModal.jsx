@@ -139,14 +139,14 @@ class ChooseOrOpposeIntroModal extends Component {
       );
     }
     return slides;
-  }
+  };
 
   changeCurrentSlideIndex = (newSlideIndex) => {
     this.setState({
       currentSlideKey: newSlideIndex,
     });
     return null;
-  }
+  };
 
   render () {
     const { classes } = this.props;

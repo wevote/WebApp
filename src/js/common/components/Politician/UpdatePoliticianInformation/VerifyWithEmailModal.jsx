@@ -14,7 +14,7 @@ import VoterStore from '../../../../stores/VoterStore';
 import SettingsVerifySecretCode from '../../Settings/SettingsVerifySecretCode';
 import lookupPageNameAndPageTypeDict, { getPageDetails } from '../../../../utils/lookupPageNameAndPageTypeDict';
 
-const VerifyWithEmailModal = ({ closeVerifyWithEmailModal, politicianName, politicianWeVoteId }) => {
+function VerifyWithEmailModal ({ closeVerifyWithEmailModal, politicianName, politicianWeVoteId }) {
   const campaignXWeVoteIdRef = useRef('');
   const [emailDisplayed, setEmailDisplayed] = useState('');
   const [emailOptionSelectedValue, setEmailOptionSelectedValue] = useState(null);
@@ -319,7 +319,7 @@ const VerifyWithEmailModal = ({ closeVerifyWithEmailModal, politicianName, polit
       tallMode
     />
   );
-};
+}
 
 VerifyWithEmailModal.propTypes = {
   closeVerifyWithEmailModal: PropTypes.func,

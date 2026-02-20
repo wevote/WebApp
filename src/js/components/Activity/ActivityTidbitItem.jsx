@@ -88,7 +88,7 @@ class ActivityTidbitItem extends Component {
     // console.log('onClickShowActivityTidbitDrawer activityTidbitWeVoteId:', activityTidbitWeVoteId);
     AppObservableStore.setActivityTidbitWeVoteIdForDrawer(activityTidbitWeVoteId);
     AppObservableStore.setShowActivityTidbitDrawer(true);
-  }
+  };
 
   updatePositionsEnteredState = (positionWeVoteIdList) => {
     const newPositionsEntered = [];
@@ -109,7 +109,7 @@ class ActivityTidbitItem extends Component {
     this.setState({
       newPositionsEntered,
     });
-  }
+  };
 
   toggleActivityPostModal = () => {
     const { showActivityPostModal } = this.state;
@@ -117,7 +117,7 @@ class ActivityTidbitItem extends Component {
     this.setState({
       showActivityPostModal: !showActivityPostModal,
     });
-  }
+  };
 
   render () {
     renderLog('ActivityTidbitItem');  // Set LOG_RENDER_EVENTS to log all renders

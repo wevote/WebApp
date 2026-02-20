@@ -214,7 +214,7 @@ class VoterPlan extends Component {
       // console.log('saveNowIfTriggered');
       this.onSaveVoterPlanButton();
     }
-  }
+  };
 
   onSaveVoterPlanButton = (event) => {
     // console.log('onSaveVoterPlanButton');
@@ -235,7 +235,7 @@ class VoterPlan extends Component {
       // console.log('VoterPlan calling votingPlanSaved');
       this.props.votingPlanSaved();
     }
-  }
+  };
 
   setVoterPlanSavedStates = (voterPlan, firstTime = false) => {
     // console.log('setVoterPlanSavedStates: ', voterPlan);
@@ -262,7 +262,7 @@ class VoterPlan extends Component {
         }
       }
     }
-  }
+  };
 
   generateVoterPlanText () {
     const {

@@ -536,7 +536,7 @@ class Opinions2020 extends Component {
       currentSelectedBallotFilters,
       filteredOpinionsAndBallotItems,
     });
-  }
+  };
 
   onSearchLocal = (searchText, filteredItems) => {
     window.scrollTo(0, 0);
@@ -574,7 +574,7 @@ class Opinions2020 extends Component {
         numberOfBallotItemsToDisplay,
       });
     }, 500);
-  }
+  };
 
   render () {
     renderLog('Opinions2020');  // Set LOG_RENDER_EVENTS to log all renders
@@ -712,19 +712,16 @@ class Opinions2020 extends Component {
                       </SearchResultsFoundInExplanation>
                     )}
                     {(isCandidate) && (
-                      <>
-                        <CandidateSearchItemForOpinions
+                      <CandidateSearchItemForOpinions
                           candidateWeVoteId={oneBallotItemOrOrganization.we_vote_id}
                           contestOfficeName={oneBallotItemOrOrganization.contest_office_name}
                           contestOfficeWeVoteId={oneBallotItemOrOrganization.contest_office_we_vote_id}
                           oneCandidate={oneBallotItemOrOrganization}
                           numberOfCandidatesInList={1}
-                        />
-                      </>
+                      />
                     )}
                     {(isOffice || isMeasure) && (
-                      <>
-                        <BallotItemForOpinions
+                      <BallotItemForOpinions
                           externalUniqueId={`addNewPositionKey-${oneBallotItemOrOrganization.we_vote_id}`}
                           allBallotItemsCount={2}
                           ballotItemDisplayName={oneBallotItemOrOrganization.ballot_item_display_name}
@@ -732,8 +729,7 @@ class Opinions2020 extends Component {
                           candidatesToShowForSearchResults={oneBallotItemOrOrganization.candidatesToShowForSearchResults}
                           kindOfBallotItem={oneBallotItemOrOrganization.kind_of_ballot_item}
                           ballotItemWeVoteId={oneBallotItemOrOrganization.we_vote_id}
-                        />
-                      </>
+                      />
                     )}
                     {isVoterGuide && (
                       // <>&nbsp;</>

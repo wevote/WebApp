@@ -32,13 +32,13 @@ class YourRankOutOf extends PureComponent {
     this.setState({
       moreInfoIconHovered: true,
     });
-  }
+  };
 
   handleMoreInfoIconLeave = () => {
     this.setState({
       moreInfoIconHovered: false,
     });
-  }
+  };
 
 
   render () {

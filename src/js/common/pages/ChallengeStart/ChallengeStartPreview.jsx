@@ -110,7 +110,7 @@ class ChallengeStartPreview extends Component {
 
   challengeEditAll = () => {
     historyPush('/start-a-challenge-edit-all');
-  }
+  };
 
   submitPublishNow = () => {
     const { challengeWeVoteId, voterSignedIn } = this.state;
@@ -128,7 +128,7 @@ class ChallengeStartPreview extends Component {
         publishWhenOutOfDraft: true,
       });
     }
-  }
+  };
 
   functionToUseWhenOutOfDraft = () => {
     const { challengeWeVoteId } = this.state;
@@ -149,7 +149,7 @@ class ChallengeStartPreview extends Component {
       console.log('ChallengeStartPreview functionToUseWhenOutOfDraft challengeWeVoteId not found');
       return null;
     }
-  }
+  };
 
   functionToUseWhenSignedIn = () => {
     const { challengeWeVoteId } = this.state;
@@ -161,14 +161,14 @@ class ChallengeStartPreview extends Component {
       console.log('ChallengeStartPreview functionToUseWhenSignedIn challengeWeVoteId not found');
       return null;
     }
-  }
+  };
 
   toggleShowSignInModal = () => {
     const { showSignInModal } = this.state;
     this.setState({
       showSignInModal: !showSignInModal,
     });
-  }
+  };
 
   render () {
     renderLog('ChallengeStartPreview');  // Set LOG_RENDER_EVENTS to log all renders

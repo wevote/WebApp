@@ -5,8 +5,9 @@ import Colors from '../../common/components/Style/Colors';
 // import DesignTokenColors from '../../common/components/Style/DesignTokenColors';  // 2024-04-16 Upgrade to using this
 import StepIcon from './StepIcon';
 
-const Step = ({ onClick, step, label, completed, width }) => (
-  <HowItWorksStep
+function Step ({ onClick, step, label, completed, width }) {
+  return (
+    <HowItWorksStep
     completed={completed}
     id={`step${step}`}
     onClick={onClick}
@@ -19,14 +20,15 @@ const Step = ({ onClick, step, label, completed, width }) => (
     role="button"
     tabIndex={0}
     width={width}
-  >
-    <StepIcon
+    >
+      <StepIcon
       number={step}
       completed={completed}
-    />
-    <p>{label}</p>
-  </HowItWorksStep>
-);
+      />
+      <p>{label}</p>
+    </HowItWorksStep>
+  );
+}
 
 
 Step.propTypes = {

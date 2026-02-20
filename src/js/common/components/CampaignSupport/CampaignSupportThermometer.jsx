@@ -147,7 +147,7 @@ class CampaignSupportThermometer extends React.Component {
       supportersCount: 0,
       supportersCountNextGoal: 0,
     });
-  }
+  };
 
   render () {
     renderLog('CampaignSupportThermometer');  // Set LOG_RENDER_EVENTS to log all renders

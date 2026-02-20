@@ -55,7 +55,7 @@ class About extends Component {
       showMoreButtonWasClickedBoard: !showMoreButtonWasClickedBoard,
       showAllBoard: !showAllBoard,
     });
-  }
+  };
 
   showMoreButtonsLinkStaff = () => {
     const { showMoreButtonWasClickedStaff, showAllStaff } = this.state;
@@ -63,7 +63,7 @@ class About extends Component {
       showMoreButtonWasClickedStaff: !showMoreButtonWasClickedStaff,
       showAllStaff: !showAllStaff,
     });
-  }
+  };
 
 
   render () {

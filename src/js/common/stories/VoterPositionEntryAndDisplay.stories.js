@@ -10,8 +10,10 @@ export default {
   component: VoterPositionEntryAndDisplay,
 };
 
-export const Default = () => (
-  <ThemeProvider theme={muiTheme}>
-    <VoterPositionEntryAndDisplay />
-  </ThemeProvider>
-);
+export function Default () {
+  return (
+    <ThemeProvider theme={muiTheme}>
+      <VoterPositionEntryAndDisplay />
+    </ThemeProvider>
+  );
+}

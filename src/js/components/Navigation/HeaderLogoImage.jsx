@@ -4,9 +4,9 @@ import styled from 'styled-components';
 import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { isLargerThanTablet, isTablet } from '../../common/utils/isMobileScreenSize';
 
-const HeaderLogoImage = ({ src }) => (
-  <LogoImg id="HeaderLogoImage" alt="WeVote Logo" src={src} />
-);
+function HeaderLogoImage ({ src }) {
+  return <LogoImg id="HeaderLogoImage" alt="WeVote Logo" src={src} />;
+}
 
 HeaderLogoImage.propTypes = {
   src: PropTypes.string,

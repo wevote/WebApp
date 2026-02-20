@@ -259,12 +259,12 @@ class Candidate extends Component {
 
   goToBallot = () => {
     historyPush('/ballot');
-  }
+  };
 
   openHowItWorksModal = () => {
     // console.log('Opening modal');
     AppObservableStore.setShowHowItWorksModal(true);
-  }
+  };
 
   localPositionListHasBeenRetrievedOnce (candidateWeVoteId) {
     if (candidateWeVoteId) {

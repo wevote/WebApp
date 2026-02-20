@@ -7,4 +7,6 @@ export default {
 };
 
 
-export const Default = () => <PositionForBallotItem />;
+export function Default () {
+  return <PositionForBallotItem />;
+}

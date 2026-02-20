@@ -7,7 +7,9 @@ export default {
 };
 
 // eslint-disable-next-line react/jsx-props-no-spreading
-const BallotMatchIndicatorTemplate = (args) => <BallotMatchIndicator2024 {...args} />;
+function BallotMatchIndicatorTemplate (args) {
+  return <BallotMatchIndicator2024 {...args} />;
+}
 
 export const BestMatch = BallotMatchIndicatorTemplate.bind({});
 BestMatch.args = {

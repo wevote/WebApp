@@ -244,13 +244,13 @@ class FindFriendsRoot extends React.Component {
         break;
     }
     return displayStep;
-  }
+  };
 
   onClickNextButton = () => {
     this.setState({
       nextButtonClicked: true,
     });
-  }
+  };
 
   goToNextStep = () => {
     this.resetNextButtonClicked();
@@ -259,7 +259,7 @@ class FindFriendsRoot extends React.Component {
     if (nextStepPath) {
       historyPush(nextStepPath);
     }
-  }
+  };
 
   goToSkipForNow = () => {
     const { skipForNowPath } = this.state;
@@ -269,13 +269,13 @@ class FindFriendsRoot extends React.Component {
     } else {
       historyPush('/ready');
     }
-  }
+  };
 
   resetNextButtonClicked = () => {
     this.setState({
       nextButtonClicked: false,
     });
-  }
+  };
 
   setNextStepVariables = () => {
     const {
@@ -533,7 +533,7 @@ class FindFriendsRoot extends React.Component {
       skipForNowOff,
       skipForNowPath,
     });
-  }
+  };
 
   shouldNextButtonBeDisabled = () => {
     let voterEmailMissing = false;
@@ -558,7 +558,7 @@ class FindFriendsRoot extends React.Component {
       editNameNextButtonDisabled: voterEmailMissing || voterFirstNameMissing,
       signInNextButtonDisabled: !voterIsSignedIn,
     });
-  }
+  };
 
   render () {
     renderLog('FindFriendsRoot');  // Set LOG_RENDER_EVENTS to log all renders
@@ -650,12 +650,10 @@ class FindFriendsRoot extends React.Component {
       case 1: // importcontacts
         if (voterContactEmailListCount > 0) {
           desktopNextButtonHtml = (
-            <>
-              <SetUpAccountNextButton
+            <SetUpAccountNextButton
                 nextButtonText={nextButtonText}
                 onClickNextButton={this.onClickNextButton}
-              />
-            </>
+            />
           );
           mobileNextButtonHtml = (
             <SetUpAccountNextButton

@@ -299,15 +299,13 @@ class VoterPhotoUpload extends Component {
                   onChange={this.handleWebAppDrop}
                 />
               ) : (
-                <>
-                  <ChooseLink
+                <ChooseLink
                     id="choosePhotoLink"
                     className="u-link-color u-link-underline u-cursor--pointer"
                     onClick={this.handleCordovaDrop}
-                  >
-                    Choose Photo
-                  </ChooseLink>
-                </>
+                >
+                  Choose Photo
+                </ChooseLink>
               )}
               <img src="" id="chosenImage" alt="" />
             </ColumnFullWidth>

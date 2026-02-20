@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import Confetti from 'react-confetti';
 import React, { useState, useEffect } from 'react';
 
-const ThanksForViewingChallenge = ({ sharedByDisplayName }) => {
+function ThanksForViewingChallenge ({ sharedByDisplayName }) {
   const [isClosing, setIsClosing] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
 
@@ -59,7 +59,7 @@ const ThanksForViewingChallenge = ({ sharedByDisplayName }) => {
       </ThanksForViewingInnerWrapper>
     </ThanksForViewingOuterWrapper>
   );
-};
+}
 ThanksForViewingChallenge.propTypes = {
   sharedByDisplayName: PropTypes.string,
 };

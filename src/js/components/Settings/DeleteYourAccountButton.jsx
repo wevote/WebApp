@@ -58,7 +58,7 @@ class DeleteYourAccountButton extends React.Component {
       history.replace(location);
       // There is a SnackNotifier in Friends or Values
     }
-  }
+  };
 
   deleteAllData = () => {
     this.setState({
@@ -74,14 +74,14 @@ class DeleteYourAccountButton extends React.Component {
     const deleteVoterAccount = true;
     VoterActions.voterAccountDelete(deleteVoterAccount);
     VoterSessionActions.voterSignOut();
-  }
+  };
 
   deleteAllDataConfirmToggle = () => {
     const { deleteAllDataConfirm } = this.state;
     this.setState({
       deleteAllDataConfirm: !deleteAllDataConfirm,
     });
-  }
+  };
 
   render () {
     renderLog('DeleteYourAccountButton');  // Set LOG_RENDER_EVENTS to log all renders

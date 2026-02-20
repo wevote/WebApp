@@ -60,7 +60,7 @@ class CampaignStartIntro extends Component {
       // If here, then we know we are the WebApp ballot guide on Cordova
       cordovaOpenSafariView('https://campaigns.wevote.us/start-a-campaign-add-title', null, 50);
     }
-  }
+  };
 
   render () {
     renderLog('CampaignStartIntro');  // Set LOG_RENDER_EVENTS to log all renders

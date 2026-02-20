@@ -155,13 +155,13 @@ class BallotScrollingContainer extends Component {
     if (target.hasAttribute('data-modal-trigger')) {
       this.onClickShowOrganizationModalWithBallotItemInfoAndPositions(weVoteId, buttonId);
     }
-  }
+  };
 
   checkCandidateHasEndorsements = (value) => {
     this.setState({
       hasEndorsements: value,
     });
-  }
+  };
 
   render () {
     const {

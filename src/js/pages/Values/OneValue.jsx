@@ -146,20 +146,20 @@ class OneValue extends Component {
     });
   }
 
-fireAnalyticsEvent = () => {
-  if (!this.state.isDataLayerFired && VoterStore.voterFirstRetrieveCompleted()) {
-    const dataLayerObject = {
-      actionDetails: {
-        actionType: 'landing',
-      },
-      event: 'landing',
-      pageDetails: getPageDetails(),
-      userDetails: VoterStore.getAnalyticsUserDetails(),
-    };
-    TagManager.dataLayer({ dataLayer: dataLayerObject });
-    this.setState({ isDataLayerFired: true });
-  }
-}
+  fireAnalyticsEvent = () => {
+    if (!this.state.isDataLayerFired && VoterStore.voterFirstRetrieveCompleted()) {
+      const dataLayerObject = {
+        actionDetails: {
+          actionType: 'landing',
+        },
+        event: 'landing',
+        pageDetails: getPageDetails(),
+        userDetails: VoterStore.getAnalyticsUserDetails(),
+      };
+      TagManager.dataLayer({ dataLayer: dataLayerObject });
+      this.setState({ isDataLayerFired: true });
+    }
+  };
 
   changeListModeShown = (buttonId) => {
     const { issue } = this.state;
@@ -179,15 +179,15 @@ fireAnalyticsEvent = () => {
     this.setState({
       listModeShown: buttonId,
     });
-  }
+  };
 
   searchFunction = (searchText) => {
     this.setState({ searchText });
-  }
+  };
 
   clearFunction = () => {
     this.searchFunction('');
-  }
+  };
 
   render () {
     renderLog('OneValue');
@@ -233,20 +233,24 @@ fireAnalyticsEvent = () => {
             organizationsForValueModified.push(oneOrganization);
           }
         });
-        organizationsForValue = filter(organizationsForValueModified,
+        organizationsForValue = filter(
+          organizationsForValueModified,
           (organization) => (
             organization.organization_name?.toLowerCase().includes(searchTextLowercase) ||
             organization.twitter_description?.toLowerCase().includes(searchTextLowercase) ||
             organization.organization_twitter_handle?.toLowerCase().includes(searchTextLowercase)
-          ));
+          ),
+        );
         organizationsForValueLength = organizationsForValue.length;
         organizationListIdentifier = `${valueSlug}${organizationsForValueLength}`;
       }
       if (showEndorsersForThisElection) {
-        voterGuidesForValue = filter(voterGuidesForValue,
+        voterGuidesForValue = filter(
+          voterGuidesForValue,
           (guide) => guide.voter_guide_display_name?.toLowerCase().includes(searchTextLowercase) ||
               guide.twitter_description?.toLowerCase().includes(searchTextLowercase) ||
-              guide.twitter_handle?.toLowerCase().includes(searchTextLowercase));
+              guide.twitter_handle?.toLowerCase().includes(searchTextLowercase),
+        );
       }
     }
 

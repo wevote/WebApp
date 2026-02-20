@@ -15,7 +15,7 @@ import VoterStore from '../../../stores/VoterStore';
 
 const ChallengeParticipantFirstRetrieveController = React.lazy(() => import(/* webpackChunkName: 'ChallengeParticipantFirstRetrieveController' */ '../ChallengeParticipant/ChallengeParticipantFirstRetrieveController'));
 
-const InviteFriendToChallengeInput = ({ classes, challengeWeVoteId, externalUniqueId }) => {
+function InviteFriendToChallengeInput ({ classes, challengeWeVoteId, externalUniqueId }) {
   renderLog('InviteFriendToChallengeInputBox');  // Set LOG_RENDER_EVENTS to log all renders
   const [challengeInviteTextDefault, setChallengeInviteTextDefault] = React.useState('');
   const [challengeTitle, setChallengeTitle] = React.useState('');
@@ -64,9 +64,12 @@ const InviteFriendToChallengeInput = ({ classes, challengeWeVoteId, externalUniq
       destinationFullURL,
       googleCivicElectionId,
       0,
-      inviteeName, true,
-      inviteTextToSend, true,
-      inviteeUrlCode, true,
+      inviteeName,
+      true,
+      inviteTextToSend,
+      true,
+      inviteeUrlCode,
+      true,
     );
     setInviteCopiedMessageOn(true);
     setTimeout(() => {
@@ -209,7 +212,7 @@ const InviteFriendToChallengeInput = ({ classes, challengeWeVoteId, externalUniq
       </Suspense>
     </InviteFriendToChallengeInputWrapper>
   );
-};
+}
 InviteFriendToChallengeInput.propTypes = {
   challengeWeVoteId: PropTypes.string,
   classes: PropTypes.object,

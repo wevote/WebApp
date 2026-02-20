@@ -3,21 +3,23 @@ import React from 'react';
 import styled from 'styled-components';
 import ChallengeInviteeListItem from './ChallengeInviteeListItem';
 
-const ChallengeInviteeList = ({ inviteeList }) => (
-  <ChallengeInviteeListContainer>
-    {inviteeList.length === 0 && (
+function ChallengeInviteeList ({ inviteeList }) {
+  return (
+    <ChallengeInviteeListContainer>
+      {inviteeList.length === 0 && (
       <NoInviteesOuterWrapper>
         <NoInviteesInnerWrapper>No friends invited yet.</NoInviteesInnerWrapper>
       </NoInviteesOuterWrapper>
-    )}
-    {inviteeList.map((invitee) => (
-      <ChallengeInviteeListItem
+      )}
+      {inviteeList.map((invitee) => (
+        <ChallengeInviteeListItem
         key={`inviteeKey-${invitee.invitee_id}`}
         invitee={invitee}
-      />
-    ))}
-  </ChallengeInviteeListContainer>
-);
+        />
+      ))}
+    </ChallengeInviteeListContainer>
+  );
+}
 ChallengeInviteeList.propTypes = {
   inviteeList: PropTypes.array,
 };

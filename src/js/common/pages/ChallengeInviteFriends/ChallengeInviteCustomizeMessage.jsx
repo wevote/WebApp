@@ -143,15 +143,15 @@ class ChallengeInviteCustomizeMessage extends Component {
       challengeBasePath = `/++/${challengeWeVoteId}/`;
     }
     return challengeBasePath;
-  }
+  };
 
   goToNextStep = () => {
     historyPush(`${this.getChallengeBasePath()}invite-friends`);
-  }
+  };
 
   goToChallengeHome = () => {
     historyPush(`${this.getChallengeBasePath()}leaderboard`);
-  }
+  };
 
   saveInviteTextForFriendsAndGoToNextStep = () => {
     const { challengeWeVoteId } = this.state;
@@ -160,7 +160,7 @@ class ChallengeInviteCustomizeMessage extends Component {
       // ChallengeParticipantActions.challengeParticipantSave(challengeWeVoteId, inviteTextForFriends, inviteTextForFriendsChanged);
       this.goToNextStep();
     }
-  }
+  };
 
   render () {
     renderLog('ChallengeInviteCustomizeMessage');  // Set LOG_RENDER_EVENTS to log all renders

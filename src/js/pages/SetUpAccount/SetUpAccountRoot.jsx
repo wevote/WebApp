@@ -229,13 +229,13 @@ class SetUpAccountRoot extends React.Component {
         break;
     }
     return displayStep;
-  }
+  };
 
   onClickNextButton = () => {
     this.setState({
       nextButtonClicked: true,
     });
-  }
+  };
 
   goToNextStep = () => {
     this.resetNextButtonClicked();
@@ -247,7 +247,7 @@ class SetUpAccountRoot extends React.Component {
     if (nextStepPath) {
       historyPush(nextStepPath);
     }
-  }
+  };
 
   goToSkipForNow = () => {
     const { skipForNowPath } = this.state;
@@ -255,13 +255,13 @@ class SetUpAccountRoot extends React.Component {
     if (skipForNowPath) {
       historyPush(skipForNowPath);
     }
-  }
+  };
 
   resetNextButtonClicked = () => {
     this.setState({
       nextButtonClicked: false,
     });
-  }
+  };
 
   setNextStepVariables = () => {
     const {
@@ -454,7 +454,7 @@ class SetUpAccountRoot extends React.Component {
       skipForNowOff,
       skipForNowPath,
     });
-  }
+  };
 
   shouldNextButtonBeDisabled = () => {
     let voterEmailMissing = false;
@@ -477,7 +477,7 @@ class SetUpAccountRoot extends React.Component {
       addPhotoNextButtonDisabled: voterPhotoMissing,
       editNameNextButtonDisabled: voterEmailMissing || voterFirstNameMissing,
     });
-  }
+  };
 
   render () {
     renderLog('SetUpAccountRoot');  // Set LOG_RENDER_EVENTS to log all renders

@@ -53,7 +53,7 @@ class FirstChallengeParticipantListController extends Component {
         }
       }
     });
-  }
+  };
 
   ChallengeParticipantSearchRetrieve = () => {
     const { challengeWeVoteId, searchText } = this.props;
@@ -65,7 +65,7 @@ class FirstChallengeParticipantListController extends Component {
         }
       }
     });
-  }
+  };
 
   render () {
     renderLog('FirstChallengeParticipantListController');  // Set LOG_RENDER_EVENTS to log all renders

@@ -431,7 +431,7 @@ class Pricing extends Component {
     if (this.props.pricingPlanChosenFunction) {
       this.props.pricingPlanChosenFunction(pricingPlanChosen);
     }
-  }
+  };
 
   getStartedForOrganizations = (pricingPlanChosen) => {
     const { modalDisplayMode } = this.props;
@@ -451,7 +451,7 @@ class Pricing extends Component {
       AppObservableStore.setGetStartedMode('getStartedForOrganizations');
       AppObservableStore.setShowSignInModal(true);
     }
-  }
+  };
 
   convertPricingPlanToIndex (pricingPlanStringIdentifier) {
     if (pricingPlanStringIdentifier === 'free') {

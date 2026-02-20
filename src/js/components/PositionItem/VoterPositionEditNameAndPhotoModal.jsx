@@ -11,7 +11,7 @@ import SettingsWidgetOrganizationDescription from '../Settings/SettingsWidgetOrg
 import SettingsWidgetAccountType from '../Settings/SettingsWidgetAccountType';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 
-const VoterPositionEditNameAndPhotoModal = ({ show, toggleModal, classes }) => {
+function VoterPositionEditNameAndPhotoModal ({ show, toggleModal, classes }) {
   const [voter, setVoter] = useState(null);
 
   useEffect(() => {
@@ -88,7 +88,7 @@ const VoterPositionEditNameAndPhotoModal = ({ show, toggleModal, classes }) => {
       </DialogContent>
     </Dialog>
   );
-};
+}
 
 VoterPositionEditNameAndPhotoModal.propTypes = {
   show: PropTypes.bool.isRequired,

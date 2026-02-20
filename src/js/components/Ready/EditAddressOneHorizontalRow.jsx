@@ -86,19 +86,19 @@ class EditAddressOneHorizontalRow extends Component {
     this.setState({
       showAddressExplanation: !showAddressExplanation,
     });
-  }
+  };
 
   updateTextForMapSearch = (textForMapSearch) => {
     // console.log('EditAddressHorizontalRow updateTextForMapSearch textForMapSearch:', textForMapSearch);
     this.setState({ textForMapSearch });
-  }
+  };
 
   updateTextForMapSearchFromGoogle = (textForMapSearch) => {
     // console.log('EditAddressHorizontalRow updateTextForMapSearchFromGoogle, textForMapSearch:', textForMapSearch);
     if (textForMapSearch) {
       this.setState({ textForMapSearch });
     }
-  }
+  };
 
   voterAddressSaveSubmit = (event) => {
     event.preventDefault();
@@ -119,7 +119,7 @@ class EditAddressOneHorizontalRow extends Component {
     });
     const { onSave } = this.props;
     if (onSave) onSave();
-  }
+  };
 
   render () {
     renderLog('EditAddressOneHorizontalRow');  // Set LOG_RENDER_EVENTS to log all renders

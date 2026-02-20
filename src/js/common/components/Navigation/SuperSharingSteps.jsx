@@ -107,7 +107,7 @@ class SuperSharingSteps extends Component {
     if (step1ClickPath) {
       historyPush(step1ClickPath);
     }
-  }
+  };
 
   onStep2Click = () => {
     const { campaignBasePath, campaignXNewsItemWeVoteId, sms } = this.props;
@@ -115,7 +115,7 @@ class SuperSharingSteps extends Component {
     if (step2ClickPath) {
       historyPush(step2ClickPath);
     }
-  }
+  };
 
   onStep3Click = () => {
     const { campaignBasePath, campaignXNewsItemWeVoteId, sms } = this.props;
@@ -123,7 +123,7 @@ class SuperSharingSteps extends Component {
     if (step3ClickPath) {
       historyPush(step3ClickPath);
     }
-  }
+  };
 
   onStep4Click = () => {
     const { campaignBasePath, campaignXNewsItemWeVoteId, sms } = this.props;
@@ -131,7 +131,7 @@ class SuperSharingSteps extends Component {
     if (step4ClickPath) {
       historyPush(step4ClickPath);
     }
-  }
+  };
 
   render () {
     renderLog('SuperSharingSteps');  // Set LOG_RENDER_EVENTS to log all renders

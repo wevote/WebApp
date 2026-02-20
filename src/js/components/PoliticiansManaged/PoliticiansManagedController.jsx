@@ -6,7 +6,7 @@ import apiCalming from '../../common/utils/apiCalming';
 import initializejQuery from '../../common/utils/initializejQuery';
 import { renderLog } from '../../common/utils/logging';
 
-const PoliticiansManagedController = () => {
+function PoliticiansManagedController () {
   renderLog('PoliticiansManagedController');  // Set LOG_RENDER_EVENTS to log all renders
 
   const politiciansManagedRetrieve = () => {
@@ -49,6 +49,6 @@ const PoliticiansManagedController = () => {
   return (
     <span />
   );
-};
+}
 
 export default PoliticiansManagedController;

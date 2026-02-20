@@ -1004,8 +1004,7 @@ class BallotItemSupportOpposeScoreDisplay extends Component {
         ) : null}
         {/* Your Score: Where you aren't supporting or opposing yet */}
         {(!showVoterPersonalScore && !voterSupportsBallotItem && !voterOpposesBallotItem) && (
-          <>
-            <StickyPopover
+          <StickyPopover
               delay={{ show: 700, hide: 100 }}
               popoverComponent={endorsementsOverviewPopover}
               placement="auto"
@@ -1013,19 +1012,18 @@ class BallotItemSupportOpposeScoreDisplay extends Component {
               onMouseEnterMobileOff
               openOnClick={!this.props.onClickFunction}
               showCloseIcon
-            >
-              <NetworkScore
+          >
+            <NetworkScore
                 hideNumbersOfAllPositions
                 onClick={this.onClickFunctionLinkLocal}
                 voterPersonalNetworkScoreIsNegative={voterPersonalNetworkScoreIsNegative}
                 voterPersonalNetworkScoreIsPositive={voterPersonalNetworkScoreIsPositive}
-              >
-                <YourScoreWrapper>
-                  Your Score
-                </YourScoreWrapper>
-              </NetworkScore>
-            </StickyPopover>
-          </>
+            >
+              <YourScoreWrapper>
+                Your Score
+              </YourScoreWrapper>
+            </NetworkScore>
+          </StickyPopover>
         )}
         <span className="sr-only">
           {voterPersonalNetworkScore > 0 ? `${voterPersonalNetworkScore} Support` : null }

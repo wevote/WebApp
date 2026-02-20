@@ -89,41 +89,41 @@ class HeaderBarModals extends Component {
 
   closeAdviserIntroModal = () => {
     AppObservableStore.setShowAdviserIntroModal(false);
-  }
+  };
 
   closeAskFriendsModal = () => {
     AppObservableStore.setShowAskFriendsModal(false);
-  }
+  };
 
   closeBallotChoicesAndSettingsModal = () => {
     AppObservableStore.setShowBallotChoicesAndSettingsModal(false);
     // this.setState({ showBallotChoicesAndSettingsModal: false });
-  }
+  };
 
   closeChooseOrOpposeIntroModal = () => {
     AppObservableStore.setShowChooseOrOpposeIntroModal(false);
-  }
+  };
 
   closeFirstPositionIntroModal = () => {
     AppObservableStore.setShowFirstPositionIntroModal(false);
-  }
+  };
 
   openHowItWorksModal = () => {
     // console.log('Opening modal');
     AppObservableStore.setShowHowItWorksModal(true);
-  }
+  };
 
   closeImageUploadModal = () => {
     AppObservableStore.setShowImageUploadModal(false);
-  }
+  };
 
   closeValuesIntroModal = () => {
     AppObservableStore.setShowValuesIntroModal(false);
-  }
+  };
 
   closePersonalizedScoreIntroModal = () => {
     AppObservableStore.setShowPersonalizedScoreIntroModal(false);
-  }
+  };
 
   closePaidAccountUpgradeModal () {
     AppObservableStore.setShowPaidAccountUpgradeModal(false);

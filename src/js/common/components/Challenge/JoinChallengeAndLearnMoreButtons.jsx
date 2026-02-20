@@ -7,26 +7,28 @@ import styled from 'styled-components';
 
 const JoinChallengeButton = React.lazy(() => import(/* webpackChunkName: 'JoinChallengeButton' */ './JoinChallengeButton'));
 
-const JoinChallengeAndLearnMoreButtons = ({ challengeBasePath, challengeWeVoteId, classes, inChallengeList }) => (
-  <JoinChallengeButtonWrapper>
-    <Suspense fallback={<></>}>
-      <JoinChallengeButton
+function JoinChallengeAndLearnMoreButtons ({ challengeBasePath, challengeWeVoteId, classes, inChallengeList }) {
+  return (
+    <JoinChallengeButtonWrapper>
+      <Suspense fallback={<></>}>
+        <JoinChallengeButton
         challengeWeVoteId={challengeWeVoteId}
         inChallengeList={inChallengeList}
-      />
-    </Suspense>
-    <Link to={challengeBasePath}>
-      <Button
+        />
+      </Suspense>
+      <Link to={challengeBasePath}>
+        <Button
         classes={{ root: classes.learnMoreButton }}
         color="secondary"
         id={`challengeLearnMore-${challengeWeVoteId}`}
         variant="outlined"
-      >
-        Learn More
-      </Button>
-    </Link>
-  </JoinChallengeButtonWrapper>
-);
+        >
+          Learn More
+        </Button>
+      </Link>
+    </JoinChallengeButtonWrapper>
+  );
+}
 
 const styles = () => ({
   joinChallengeButton: {

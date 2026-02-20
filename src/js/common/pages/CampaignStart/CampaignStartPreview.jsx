@@ -92,7 +92,7 @@ class CampaignStartPreview extends Component {
 
   campaignEditAll = () => {
     historyPush('/start-a-campaign-edit-all');
-  }
+  };
 
   submitPublishNowDesktop = () => {
     const { voterFirstName, voterLastName, voterSignedInWithEmail } = this.state;
@@ -105,7 +105,7 @@ class CampaignStartPreview extends Component {
       CampaignStartActions.inDraftModeSave(campaignWeVoteId, false);
       historyPush('/profile/started');
     }
-  }
+  };
 
   submitPublishNowMobile = () => {
     const { voterFirstName, voterLastName, voterSignedInWithEmail } = this.state;
@@ -116,14 +116,14 @@ class CampaignStartPreview extends Component {
     } else {
       this.functionToUseWhenProfileComplete();
     }
-  }
+  };
 
   functionToUseWhenProfileComplete = () => {
     // Mark the campaign as published
     const campaignWeVoteId = '';
     CampaignStartActions.inDraftModeSave(campaignWeVoteId, false);
     historyPush('/profile/started');
-  }
+  };
 
   render () {
     renderLog('CampaignStartPreview');  // Set LOG_RENDER_EVENTS to log all renders

@@ -87,7 +87,7 @@ class SettingsProfilePicture extends Component {
       profileImageTypeCurrentlyActiveSet: false,
       uploadedFileStaged: false,
     });
-  }
+  };
 
   changeProfileImageTypeCurrentlyActive (e) {
     // console.log('changeProfileImageTypeCurrentlyActive:', e);

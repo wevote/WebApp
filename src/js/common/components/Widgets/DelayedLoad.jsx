@@ -25,11 +25,9 @@ class DelayedLoad extends Component {
     return hidden ? (
       <DelayedLoadingWrapper>
         {!!(showLoadingText) && (
-          <>
-            <LoadingText leftAlign={loadingTextLeftAlign}>
-              Loading...
-            </LoadingText>
-          </>
+          <LoadingText leftAlign={loadingTextLeftAlign}>
+            Loading...
+          </LoadingText>
         )}
       </DelayedLoadingWrapper>
     ) : this.props.children;

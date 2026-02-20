@@ -220,7 +220,7 @@ class CompleteYourProfile extends Component {
       // Should not be able to get here
       console.log('CompleteYourProfile did not sendSignInCodeEmail -- should not be able to get here');
     }
-  }
+  };
 
   sendSignInCodeEmail = (event, voterEmailQueuedToSaveLocal) => {
     if (event) {
@@ -250,7 +250,7 @@ class CompleteYourProfile extends Component {
         SupportActions.voterSupportingSave(ballotItemWeVoteId, ballotItemType);
       }
     }
-  }
+  };
 
   voterFirstRetrieve = () => {
     initializejQuery(() => {
@@ -261,7 +261,7 @@ class CompleteYourProfile extends Component {
         VoterActions.voterRetrieve();
       }
     });
-  }
+  };
 
   render () {
     renderLog('CompleteYourProfile');  // Set LOG_RENDER_EVENTS to log all renders

@@ -64,19 +64,19 @@ class SetUpAccountAddPhoto extends React.Component {
     if (this.props.functionToUseWhenProfileComplete) {
       this.props.functionToUseWhenProfileComplete();
     }
-  }
+  };
 
   functionToUseWhenProfileNotCompleteLocal = () => {
     if (this.props.functionToUseWhenProfileNotComplete) {
       this.props.functionToUseWhenProfileNotComplete();
     }
-  }
+  };
 
   goToNextStepLocal = () => {
     if (this.props.goToNextStep) {
       this.props.goToNextStep();
     }
-  }
+  };
 
   submitSavePhoto = () => {
     // console.log('SetUpAccountAddPhoto submitSavePhoto');
@@ -105,7 +105,7 @@ class SetUpAccountAddPhoto extends React.Component {
         this.goToNextStepLocal();
       }, 500);
     }
-  }
+  };
 
   render () {
     renderLog('SetUpAccountAddPhoto');  // Set LOG_RENDER_EVENTS to log all renders

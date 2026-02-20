@@ -19,7 +19,7 @@ class AdviserIntroModal extends Component {
   closeThisModal = () => {
     const { location: { pathname } } = window;
     this.props.toggleFunction(pathname);
-  }
+  };
 
   render () {
     renderLog('AdviserIntroModal');  // Set LOG_RENDER_EVENTS to log all renders

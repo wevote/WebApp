@@ -345,7 +345,7 @@ export default class FollowToggle extends Component {
     this.setState({
       showSignInModal: !showSignInModal,
     });
-  }
+  };
 
   startFollowingLocalState () {
     this.setState({

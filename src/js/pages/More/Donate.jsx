@@ -430,20 +430,19 @@ class Donate extends Component {
                 </CenteredText>
               ) : this.postDonationDescription()}
               {preDonation ? (
-                <>
-                  <GoogleReCaptchaProvider
+                <GoogleReCaptchaProvider
                     reCaptchaKey={webAppConfig.GOOGLE_RECAPTCHA_KEY}
                     container={{ element: 'CaptchaSpot' }}
-                  >
-                    {okToDonateWithoutAuth || isSignedin ? (
-                      <>
-                        <ContributeGridWrapper>
-                          <ContributeMonthlyText>
-                            <FormControl component="fieldset"
+                >
+                  {okToDonateWithoutAuth || isSignedin ? (
+                    <>
+                      <ContributeGridWrapper>
+                        <ContributeMonthlyText>
+                          <FormControl component="fieldset"
                                          className={classes.formControl}
-                            >
-                              <RadioGroup row>
-                                <FormControlLabel
+                          >
+                            <RadioGroup row>
+                              <FormControlLabel
                                   control={(
                                     <Radio
                                       checked={isMonthly}
@@ -454,8 +453,8 @@ class Donate extends Component {
                                   )}
                                   label="Donate monthly"
                                   id="donateMonthlyRadio"
-                                />
-                                <FormControlLabel
+                              />
+                              <FormControlLabel
                                   control={(
                                     <Radio
                                       checked={!isMonthly}
@@ -466,14 +465,14 @@ class Donate extends Component {
                                   )}
                                   label="One time donation"
                                   id="oneTimeDonationRadio"
-                                />
-                              </RadioGroup>
-                            </FormControl>
-                          </ContributeMonthlyText>
-                          <ContributeGridSection>
-                            {['7', '12', '36', '150'].map((price) => (
-                              <ContributeGridItem key={`gridItem-${price}`}>
-                                <Button
+                              />
+                            </RadioGroup>
+                          </FormControl>
+                        </ContributeMonthlyText>
+                        <ContributeGridSection>
+                          {['7', '12', '36', '150'].map((price) => (
+                            <ContributeGridItem key={`gridItem-${price}`}>
+                              <Button
                                   classes={{ root: classes.buttonRoot }}
                                   variant="contained"
                                   sx={{
@@ -482,14 +481,14 @@ class Donate extends Component {
                                     },
                                   }}
                                   onClick={() => this.changeValue(`${price}.00`)}
-                                >
-                                  {`$${price}`}
-                                </Button>
-                              </ContributeGridItem>
-                            ))}
-                            <ContributeGridItemJoin joining={joining}>
-                              {!joining ? (
-                                <Button
+                              >
+                                {`$${price}`}
+                              </Button>
+                            </ContributeGridItem>
+                          ))}
+                          <ContributeGridItemJoin joining={joining}>
+                            {!joining ? (
+                              <Button
                                   classes={{ root: classes.buttonRoot }}
                                   color="primary"
                                   variant="contained"
@@ -499,11 +498,11 @@ class Donate extends Component {
                                     color: 'white',
                                   }}
                                   onClick={() => this.changeValue('5.00')}
-                                >
-                                  Join
-                                </Button>
-                              ) : (
-                                <TextField
+                              >
+                                Join
+                              </Button>
+                            ) : (
+                              <TextField
                                   id="currency-input"
                                   label="Amount"
                                   variant="outlined"
@@ -528,12 +527,12 @@ class Donate extends Component {
                                     textAlign: 'center',
                                     width: 150,
                                   }}
-                                />
-                              )}
-                            </ContributeGridItemJoin>
-                          </ContributeGridSection>
-                        </ContributeGridWrapper>
-                        {/* <PaymentWrapper joining={joining}>
+                              />
+                            )}
+                          </ContributeGridItemJoin>
+                        </ContributeGridSection>
+                      </ContributeGridWrapper>
+                      {/* <PaymentWrapper joining={joining}>
                           <PaymentCenteredWrapper>
                             <Elements stripe={stripePromise}>
                               <InjectedCheckoutForm
@@ -545,15 +544,14 @@ class Donate extends Component {
                             </Elements>
                           </PaymentCenteredWrapper>
                         </PaymentWrapper> */}
-                      </>
-                    ) : (
-                      <ReCaptchaFailed>
-                        Please sign in to donate
-                      </ReCaptchaFailed>
-                    )}
-                    <GoogleReCaptcha onVerify={this.onVerifyCaptcha} style={{ margin: '0 auto', width: '40%' }} />
-                  </GoogleReCaptchaProvider>
-                </>
+                    </>
+                  ) : (
+                    <ReCaptchaFailed>
+                      Please sign in to donate
+                    </ReCaptchaFailed>
+                  )}
+                  <GoogleReCaptcha onVerify={this.onVerifyCaptcha} style={{ margin: '0 auto', width: '40%' }} />
+                </GoogleReCaptchaProvider>
               ) : null}
               {preDonation && (
                 <Section noTopMargin>

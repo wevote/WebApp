@@ -172,13 +172,13 @@ class PositionStatementModal extends Component {
     SupportActions.voterPositionCommentSave(ballotItemWeVoteId, ballotItemType, politicianWeVoteId, voterTextStatement);
     restoreStylesAfterCordovaKeyboard('PositionStatementModal');
     this.props.toggleModal();
-  }
+  };
 
   updateStatementTextToBeSaved = (e) => {
     this.setState({
       voterTextStatement: e.target.value,
     });
-  }
+  };
 
   render () {
     renderLog('PositionStatementModal');  // Set LOG_RENDER_EVENTS to log all renders

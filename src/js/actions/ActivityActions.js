@@ -10,37 +10,45 @@ import Dispatcher from '../common/dispatcher/Dispatcher';
 export default {
   activityCommentSave (activityCommentWeVoteId = '', parentWeVoteId = '', statementText = null, visibilitySetting = 'FRIENDS_ONLY', parentCommentWeVoteId = '') {
     // console.log('activityNoticeListRetrieve');
-    Dispatcher.loadEndpoint('activityCommentSave',
+    Dispatcher.loadEndpoint(
+      'activityCommentSave',
       {
         activity_comment_we_vote_id: activityCommentWeVoteId,
         parent_we_vote_id: parentWeVoteId,
         parent_comment_we_vote_id: parentCommentWeVoteId,
         statement_text: statementText,
         visibility_setting: visibilitySetting,
-      });
+      },
+    );
   },
   activityListRetrieve (activityTidbitWeVoteIdList = []) {
     // console.log('activityNoticeListRetrieve');
-    Dispatcher.loadEndpoint('activityListRetrieve',
+    Dispatcher.loadEndpoint(
+      'activityListRetrieve',
       {
         activity_tidbit_we_vote_id_list: activityTidbitWeVoteIdList,
-      });
+      },
+    );
   },
   activityNoticeListRetrieve (activityNoticeIdListClicked = [], activityNoticeIdListSeen = []) {
     // console.log('activityNoticeListRetrieve');
-    Dispatcher.loadEndpoint('activityNoticeListRetrieve',
+    Dispatcher.loadEndpoint(
+      'activityNoticeListRetrieve',
       {
         activity_notice_id_list_clicked: activityNoticeIdListClicked,
         activity_notice_id_list_seen: activityNoticeIdListSeen,
-      });
+      },
+    );
   },
   activityPostSave (activityPostWeVoteId = '', statementText = null, visibilitySetting = 'FRIENDS_ONLY') {
     // console.log('activityNoticeListRetrieve');
-    Dispatcher.loadEndpoint('activityPostSave',
+    Dispatcher.loadEndpoint(
+      'activityPostSave',
       {
         activity_post_we_vote_id: activityPostWeVoteId,
         statement_text: statementText,
         visibility_setting: visibilitySetting,
-      });
+      },
+    );
   },
 };

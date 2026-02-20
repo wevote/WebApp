@@ -10,7 +10,7 @@ import apiCalming from '../../../utils/apiCalming';
 const HeartFavoriteToggleLive = React.lazy(() => import(/* webpackChunkName: 'HeartFavoriteToggleLive' */ './HeartFavoriteToggleLive'));
 const HeartFavoriteToggleBase = React.lazy(() => import(/* webpackChunkName: 'HeartFavoriteToggleBase' */ './HeartFavoriteToggleBase'));
 
-const HeartFavoriteToggleLoader = ({ campaignXWeVoteId, organizationWeVoteId }) => {
+function HeartFavoriteToggleLoader ({ campaignXWeVoteId, organizationWeVoteId }) {
   renderLog('HeartFavoriteToggleLoader');  // Set LOG_RENDER_EVENTS to log all renders
 
   // console.log('HeartFavoriteToggleLoader render campaignXWeVoteId:', campaignXWeVoteId);
@@ -45,7 +45,7 @@ const HeartFavoriteToggleLoader = ({ campaignXWeVoteId, organizationWeVoteId }) 
       </Suspense>
     </HeartFavoriteToggleLoaderContainer>
   );
-};
+}
 HeartFavoriteToggleLoader.propTypes = {
   campaignXWeVoteId: PropTypes.string,
   organizationWeVoteId: PropTypes.string,

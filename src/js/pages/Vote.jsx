@@ -428,17 +428,15 @@ class Vote extends Component {
                     <BallotFilterRow>
                       <div className="ballot__item-filter-tabs">
                         { ballotWithItemsFromCompletionFilterType && ballotWithItemsFromCompletionFilterType.length ? (
-                          <>
-                            <Suspense fallback={<></>}>
-                              <FilterBaseSearch
+                          <Suspense fallback={<></>}>
+                            <FilterBaseSearch
                                 allItems={ballotWithItemsFromCompletionFilterType}
                                 alwaysOpen={!showFilterTabs}
                                 isSearching={isSearching}
                                 onFilterBaseSearch={this.handleSearch}
                                 onToggleSearch={this.handleToggleSearchBallot}
-                              />
-                            </Suspense>
-                          </>
+                            />
+                          </Suspense>
                         ) : null}
                       </div>
                     </BallotFilterRow>

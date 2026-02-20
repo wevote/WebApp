@@ -38,9 +38,11 @@ function startMessaging (voterDeviceId) {
     if (isIOS()) {
       const { aps: { alert } } = payload;
       console.log('Cordova: Firebase FCM - New foreground FCM decomposed alert message:', alert);
-      navigator.notification.alert(alert,
+      navigator.notification.alert(
+        alert,
         () => console.log('Cordova: WeVote FCM Message navigator.notification.alert dismissed'),
-        'WeVote');
+        'WeVote',
+      );
 
       // Save until Android badge count is working, or we give up on it
       // for (const [key, value] of Object.entries(payload)) {
@@ -124,19 +126,21 @@ function initializeCordovaPluginAppRate () {
       if (!safariAvailable) {
         open(url, '_blank', 'location=yes');
       } else {
-        SafariViewController.show({
-          url,
-          barColor: '#0000ff',          // on iOS 10+ you can change the background color as well
-          controlTintColor: '#00ffff',  // on iOS 10+ you can override the default tintColor
-          tintColor: '#00ffff',         // should be set to same value as controlTintColor and will be a fallback on older ios
-        },
-        // this success handler will be invoked for the lifecycle events 'opened', 'loaded' and 'closed'
-        (result) => {
-          console.log(`Cordova:   CordovaPluginAppRate opened, loaded, or closed ${result.event}`);
-        },
-        (err) => {
-          console.log(`Cordova:   CordovaPluginAppRate Error: ${err}`);
-        });
+        SafariViewController.show(
+          {
+            url,
+            barColor: '#0000ff',          // on iOS 10+ you can change the background color as well
+            controlTintColor: '#00ffff',  // on iOS 10+ you can override the default tintColor
+            tintColor: '#00ffff',         // should be set to same value as controlTintColor and will be a fallback on older ios
+          },
+          // this success handler will be invoked for the lifecycle events 'opened', 'loaded' and 'closed'
+          (result) => {
+            console.log(`Cordova:   CordovaPluginAppRate opened, loaded, or closed ${result.event}`);
+          },
+          (err) => {
+            console.log(`Cordova:   CordovaPluginAppRate Error: ${err}`);
+          },
+        );
       }
     },
     customLocale: {

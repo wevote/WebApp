@@ -26,7 +26,7 @@ class FriendInvitationOnboardingValues extends Component {
     this.setState({
       showAllTopHeaderExplanation: !showAllTopHeaderExplanation,
     });
-  }
+  };
 
   render () {
     renderLog('FriendInvitationOnboardingValues');  // Set LOG_RENDER_EVENTS to log all renders

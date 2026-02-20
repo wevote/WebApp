@@ -117,7 +117,7 @@ class JoinChallengeButton extends React.Component {
       challengeBasePath = `/++/${challengeWeVoteId}/`;
     }
     return challengeBasePath;
-  }
+  };
 
   goToInviteFriends = () => {
     // DALE 2024-09-13 Soon we will evolve this to have a mode where the Invite friends page is shown in a drawer
@@ -151,7 +151,7 @@ class JoinChallengeButton extends React.Component {
     AppObservableStore.setSetUpAccountBackLinkPath(currentPathname);
     AppObservableStore.setSetUpAccountEntryPath(inviteFriendsPath);
     historyPush(inviteFriendsPath);
-  }
+  };
 
   goToJoinChallenge = () => {
     const challengeBasePath = this.getChallengeBasePath();
@@ -209,7 +209,7 @@ class JoinChallengeButton extends React.Component {
       });
       AppObservableStore.setShowSignInModal(true);
     }
-  }
+  };
 
   render () {
     renderLog('JoinChallengeButton');  // Set LOG_RENDER_EVENTS to log all renders

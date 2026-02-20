@@ -151,7 +151,7 @@ class ContactFriendsByMessageType extends Component {
       emailsOrPhonesBrokenString,
       friendContactInfoArray,
     });
-  }
+  };
 
   friendInvitationByEmailSend (e) {
     e.preventDefault();
@@ -249,11 +249,10 @@ class ContactFriendsByMessageType extends Component {
           </Alert>
         )}
         {onEnterEmailAddressesStep && (
-          <>
-            <FormWrapper>
-              <div>
-                <form>
-                  <TextField
+          <FormWrapper>
+            <div>
+              <form>
+                <TextField
                     classes={{ root: classes.textField }}
                     id={uniqueExternalId ? `EmailAddress-${uniqueExternalId}` : 'EmailAddress'}
                     label="Enter email addresses of friends"
@@ -268,18 +267,18 @@ class ContactFriendsByMessageType extends Component {
                     type="text"
                     value={incomingEmailsOrPhonesString}
                     variant="outlined"
-                  />
-                  {(emailsOrPhonesBrokenString.length > 0) && (
-                    <EmailsOrPhonesBrokenStringAlertWrapper>
-                      <Alert severity="error">
-                        Incomplete:
-                        {' '}
-                        {emailsOrPhonesBrokenString}
-                      </Alert>
-                    </EmailsOrPhonesBrokenStringAlertWrapper>
-                  )}
-                  <ButtonContainer>
-                    <Button
+                />
+                {(emailsOrPhonesBrokenString.length > 0) && (
+                <EmailsOrPhonesBrokenStringAlertWrapper>
+                  <Alert severity="error">
+                    Incomplete:
+                    {' '}
+                    {emailsOrPhonesBrokenString}
+                  </Alert>
+                </EmailsOrPhonesBrokenStringAlertWrapper>
+                )}
+                <ButtonContainer>
+                  <Button
                       color="primary"
                       classes={{ root: classes.sendButton }}
                       disabled={friendContactInfoArray.length === 0}
@@ -287,39 +286,38 @@ class ContactFriendsByMessageType extends Component {
                       onClick={this.addFriendsByEmailSubmit}
                       onKeyDown={this.onKeyDown}
                       variant="contained"
-                    >
-                      {messageToFriendType === 'remindContacts' ? (
+                  >
+                    {messageToFriendType === 'remindContacts' ? (
+                      <>
+                        Send my
+                        {' '}
+                        friend
+                        {friendContactInfoArray.length === 1 ? '' : 's'}
+                        {' '}
+                        reminder
+                        {friendContactInfoArray.length === 1 ? '' : 's'}
+                        {' '}
+                        to vote
+                      </>
+                    ) : (
+                      <>
+                        Send
+                        {' '}
+                        {(friendContactInfoArray.length > 0) && (
                         <>
-                          Send my
+                          {friendContactInfoArray.length}
                           {' '}
-                          friend
-                          {friendContactInfoArray.length === 1 ? '' : 's'}
-                          {' '}
-                          reminder
-                          {friendContactInfoArray.length === 1 ? '' : 's'}
-                          {' '}
-                          to vote
                         </>
-                      ) : (
-                        <>
-                          Send
-                          {' '}
-                          {(friendContactInfoArray.length > 0) && (
-                            <>
-                              {friendContactInfoArray.length}
-                              {' '}
-                            </>
-                          )}
-                          Invitation
-                          {friendContactInfoArray.length === 1 ? '' : 's'}
-                        </>
-                      )}
-                    </Button>
-                  </ButtonContainer>
-                </form>
-              </div>
-            </FormWrapper>
-          </>
+                        )}
+                        Invitation
+                        {friendContactInfoArray.length === 1 ? '' : 's'}
+                      </>
+                    )}
+                  </Button>
+                </ButtonContainer>
+              </form>
+            </div>
+          </FormWrapper>
         )}
       </div>
     );
