@@ -69,7 +69,7 @@ class CandidateCardList extends Component {
     this.setState({
       numberToDisplay,
     });
-  }
+  };
 
   loadMoreHasBeenClicked = () => {
     this.increaseNumberToDisplay();
@@ -78,7 +78,7 @@ class CandidateCardList extends Component {
       // console.log('loadMoreScroll exists');
       this.props.loadMoreScroll();
     }
-  }
+  };
 
   render () {
     renderLog('CandidateCardList');  // Set LOG_RENDER_EVENTS to log all renders

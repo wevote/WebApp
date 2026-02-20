@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
-const SmartTooltip = ({ title, placement, triggerType, children, tooltipId, fillContainer }) => {
+function SmartTooltip ({ title, placement, triggerType, children, tooltipId, fillContainer }) {
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
 
@@ -102,7 +102,7 @@ const SmartTooltip = ({ title, placement, triggerType, children, tooltipId, fill
       {triggerChild}
     </OverlayTrigger>
   );
-};
+}
 
 SmartTooltip.propTypes = {
   title: PropTypes.node.isRequired,

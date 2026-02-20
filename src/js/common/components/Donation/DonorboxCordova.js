@@ -14,7 +14,7 @@ import { isWebApp } from '../../utils/isCordovaOrWebApp';
 </iframe>
 */
 
-const DonorboxCordova = () => {
+function DonorboxCordova () {
   const OpenInAppBrowser = () => {
     const footerContainerSelector = $('#footer-container');
     footerContainerSelector.css('opacity', '0');
@@ -46,7 +46,7 @@ const DonorboxCordova = () => {
       <Button variant="contained" onClick={OpenInAppBrowser}>Donate</Button>
     </DonateButtonContainer>
   );
-};
+}
 
 const DonateButtonContainer = styled('div')`
   display: flex;

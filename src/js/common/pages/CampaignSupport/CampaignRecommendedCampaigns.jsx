@@ -197,7 +197,7 @@ class CampaignRecommendedCampaigns extends Component {
       campaignBasePath = `/id/${campaignXWeVoteId}/`;
     }
     return campaignBasePath;
-  }
+  };
 
   getPoliticianBasePath = () => {
     const { politicianSEOFriendlyPath, linkedPoliticianWeVoteId } = this.state;
@@ -211,15 +211,15 @@ class CampaignRecommendedCampaigns extends Component {
       politicianBasePath = this.getCampaignXBasePath();
     }
     return politicianBasePath;
-  }
+  };
 
   goToDetailsPage = () => {
     historyPush(`${this.getPoliticianBasePath()}`);
-  }
+  };
 
   goToUpdatesPage = () => {
     historyPush(`${this.getCampaignXBasePath()}updates`);
-  }
+  };
 
   oneClickSupportActionComplete = (campaignXWeVoteId) => {
     // console.log('oneClickSupportActionComplete campaignXWeVoteId:', campaignXWeVoteId);
@@ -237,7 +237,7 @@ class CampaignRecommendedCampaigns extends Component {
       supportedCampaignXWeVoteIdList,
     }, () => this.setNextRecommendedCampaignX());
     return null;
-  }
+  };
 
   skipRecommendedCampaign = (campaignXWeVoteId) => {
     // console.log('skipRecommendedCampaign campaignXWeVoteId:', campaignXWeVoteId);
@@ -252,13 +252,13 @@ class CampaignRecommendedCampaigns extends Component {
       }, () => this.setNextRecommendedCampaignX());
     }
     return null;
-  }
+  };
 
   setDescriptionUnfurled = () => {
     this.setState({
       descriptionUnfurledMode: true,
     });
-  }
+  };
 
   setNextRecommendedCampaignX = () => {
     const {
@@ -339,12 +339,12 @@ class CampaignRecommendedCampaigns extends Component {
       descriptionUnfurledMode: false,
     });
     return null;
-  }
+  };
 
   showHeaderFooter = () => {
     const { setShowHeaderFooter } = this.props;
     setShowHeaderFooter(true);
-  }
+  };
 
   render () {
     renderLog('CampaignRecommendedCampaigns');  // Set LOG_RENDER_EVENTS to log all renders

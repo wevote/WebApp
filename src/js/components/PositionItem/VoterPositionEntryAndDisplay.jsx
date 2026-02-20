@@ -30,7 +30,7 @@ import VoterPositionEditNameAndPhotoModal from './VoterPositionEditNameAndPhotoM
 
 const ItemActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemActionBar' */ '../Widgets/ItemActionBar/ItemActionBar'));
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../../common/components/Widgets/ReadMore'));
-const VoterPositionEntryAndDisplay = ({ classes, externalUniqueId, politicianWeVoteId }) => {
+function VoterPositionEntryAndDisplay ({ classes, externalUniqueId, politicianWeVoteId }) {
   const politicianWeVoteIdRef = useRef(politicianWeVoteId);
   // console.log('VoterPositionEntryAndDisplay, politicianWeVoteId:', politicianWeVoteId, ', politicianWeVoteIdRef.current:', politicianWeVoteIdRef.current);
   const { allCachedPoliticians } = PoliticianStore.getState();
@@ -304,65 +304,68 @@ const VoterPositionEntryAndDisplay = ({ classes, externalUniqueId, politicianWeV
   const statementPlaceholderText = 'What\'s on your mind?';
   const rowsToShow = isAndroid() ? 4 : 6;
 
-  const VoterAvatarBlock = () => (
-    <VoterAvatar>
-      {voterPhotoUrlMedium ? (
-        <VoterImage
+  function VoterAvatarBlock () {
+    return (
+      <VoterAvatar>
+        {voterPhotoUrlMedium ? (
+          <VoterImage
           alt="Voter"
           src={voterPhotoUrlMedium || avatarGeneric()}
-        />
-      ) : (
-        <>
-          <VoterFirstName>
-            {voterFirstName[0]}
-          </VoterFirstName>
-          <VoterLastName>
-            {voterLastName[0]}
-          </VoterLastName>
-        </>
-      )}
-    </VoterAvatar>
-  );
+          />
+        ) : (
+          <>
+            <VoterFirstName>
+              {voterFirstName[0]}
+            </VoterFirstName>
+            <VoterLastName>
+              {voterLastName[0]}
+            </VoterLastName>
+          </>
+        )}
+      </VoterAvatar>
+    );
+  }
 
-  const VoterPositionBlock = ({ onClick }) => (
-    <VoterPositionContainer>
-      <VoterAvatarDisplayContainer>
-        <VoterAvatarBlock />
-        <EditIcon
+  function VoterPositionBlock ({ onClick }) {
+    return (
+      <VoterPositionContainer>
+        <VoterAvatarDisplayContainer>
+          <VoterAvatarBlock />
+          <EditIcon
           onClick={handleEditModalOpen}
           className={classes.styledEditIcon}
-        />
-      </VoterAvatarDisplayContainer>
-      <CommentContainerWrapper>
-        {statementText ? (
-          <SpeakerInfoWrapperB>
-            <SpeakerName>
-              {voterName}
-            </SpeakerName>
-            <SpeakerStatementWrapper>
-              <SpeakerStatement>
-                <Suspense fallback={<></>}>
-                  <ReadMore
+          />
+        </VoterAvatarDisplayContainer>
+        <CommentContainerWrapper>
+          {statementText ? (
+            <SpeakerInfoWrapperB>
+              <SpeakerName>
+                {voterName}
+              </SpeakerName>
+              <SpeakerStatementWrapper>
+                <SpeakerStatement>
+                  <Suspense fallback={<></>}>
+                    <ReadMore
                     textToDisplay={statementText}
                     numberOfLines={6}
-                  />
-                </Suspense>
-              </SpeakerStatement>
-            </SpeakerStatementWrapper>
-          </SpeakerInfoWrapperB>
-        ) : (
-          <CommentContainer>
-            {/* Open modal when input is clicked */}
-            <InputBox
+                    />
+                  </Suspense>
+                </SpeakerStatement>
+              </SpeakerStatementWrapper>
+            </SpeakerInfoWrapperB>
+          ) : (
+            <CommentContainer>
+              {/* Open modal when input is clicked */}
+              <InputBox
               type="text"
               placeholder="What's your opinion?"
               onClick={onClick}
               readOnly
               style={{ overflow: 'hidden' }}
-            />
-          </CommentContainer>
-        )}
-        {!supportOrOpposeStanceExists && (
+              />
+            </CommentContainer>
+          )}
+          {!supportOrOpposeStanceExists && (
           <ItemActionBarContainer>
             <Suspense fallback={<></>}>
               <ItemActionBar
@@ -381,16 +384,17 @@ const VoterPositionEntryAndDisplay = ({ classes, externalUniqueId, politicianWeV
               />
             </Suspense>
           </ItemActionBarContainer>
-        )}
-        {positionExists && (
+          )}
+          {positionExists && (
           <SpeakerPositionLikesSourceWrapper>
             <SpeakerEndorsedOrOpposedSnippet position={position} viewerIsPositionOwner />
             <VoterPositionEditTripleDot triggerDeleteOpinion={openDeleteConfirmationModal} triggerEditOpinion={openEditModal} />
           </SpeakerPositionLikesSourceWrapper>
-        )}
-      </CommentContainerWrapper>
-    </VoterPositionContainer>
-  );
+          )}
+        </CommentContainerWrapper>
+      </VoterPositionContainer>
+    );
+  }
   VoterPositionBlock.propTypes = {
     onClick: PropTypes.func.isRequired,
   };
@@ -533,9 +537,7 @@ const VoterPositionEntryAndDisplay = ({ classes, externalUniqueId, politicianWeV
   return (
     <>
       {showNegativeModal && !showingNegativeFeedbackModal && (
-        <>
-          <ReviewAppModal initialEmail={initialEmail} />
-        </>
+        <ReviewAppModal initialEmail={initialEmail} />
       )}
       <ModalDisplayTemplateB
         dialogTitleJSX={<>{editPositionModalTitleText}</>}
@@ -564,7 +566,7 @@ const VoterPositionEntryAndDisplay = ({ classes, externalUniqueId, politicianWeV
       />
     </>
   );
-};
+}
 VoterPositionEntryAndDisplay.propTypes = {
   classes: PropTypes.object,
   externalUniqueId: PropTypes.string,

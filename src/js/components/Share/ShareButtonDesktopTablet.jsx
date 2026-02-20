@@ -207,22 +207,20 @@ class ShareButtonDesktopTablet extends Component {
       shareButtonClasses = classes.buttonDefault;
     }
     return (
-      <>
-        <Button
+      <Button
           classes={{ root: shareButtonClasses }}
           color="primary"
           id="shareButtonDesktopTablet"
           onClick={() => this.openShareModal(withOpinions)}
           variant="contained"
-        >
-          <Icon>
-            <Reply
+      >
+        <Icon>
+          <Reply
               classes={{ root: classes.shareIcon }}
-            />
-          </Icon>
-          <span className="u-no-break">{shareButtonText || 'Share'}</span>
-        </Button>
-      </>
+          />
+        </Icon>
+        <span className="u-no-break">{shareButtonText || 'Share'}</span>
+      </Button>
     );
   }
 }

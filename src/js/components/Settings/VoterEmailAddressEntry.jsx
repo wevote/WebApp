@@ -190,7 +190,7 @@ class VoterEmailAddressEntry extends Component {
       VoterActions.clearSecretCodeVerificationStatusAndEmail();
     }, 1000);
     this.closeSignInModalLocal();
-  }
+  };
 
   closeVerifyModalFromVerifySecretCode = () => {
     // console.log('VoterEmailAddressEntry closeVerifyModalFromVerifySecretCode');

@@ -2,14 +2,17 @@ import Dispatcher from '../common/dispatcher/Dispatcher';
 
 export default {
   candidateRetrieve (candidateWeVoteId) {
-    Dispatcher.loadEndpoint('candidateRetrieve',
+    Dispatcher.loadEndpoint(
+      'candidateRetrieve',
       {
         candidate_we_vote_id: candidateWeVoteId,
-      });
+      },
+    );
   },
 
   candidatesQuery (electionDay = '', raceOfficeLevelList = '', stateCode = '', searchText = '') {
-    Dispatcher.loadEndpoint('candidatesQuery',
+    Dispatcher.loadEndpoint(
+      'candidatesQuery',
       {
         numberRequested: 24,
         electionDay,
@@ -17,40 +20,49 @@ export default {
         searchText,
         state: stateCode,
         useWeVoteFormat: 1,
-      });
+      },
+    );
   },
 
   candidatesRetrieve (officeWeVoteId) {
-    Dispatcher.loadEndpoint('candidatesRetrieve',
+    Dispatcher.loadEndpoint(
+      'candidatesRetrieve',
       {
         office_we_vote_id: officeWeVoteId,
-      });
+      },
+    );
   },
 
   positionListForBallotItemPublic (ballotItemWeVoteId) {
     // This API is always retrieved from our CDN per: WebApp/src/js/utils/service.js
-    Dispatcher.loadEndpoint('positionListForBallotItem',
+    Dispatcher.loadEndpoint(
+      'positionListForBallotItem',
       {
         ballot_item_we_vote_id: ballotItemWeVoteId,
         kind_of_ballot_item: 'CANDIDATE',
-      });
+      },
+    );
   },
 
   positionListForBallotItemPrivateIndividualsOnly (ballotItemWeVoteId) {
     // This API is always retrieved from our CDN per: WebApp/src/js/utils/service.js
-    Dispatcher.loadEndpoint('positionListForBallotItem',
+    Dispatcher.loadEndpoint(
+      'positionListForBallotItem',
       {
         ballot_item_we_vote_id: ballotItemWeVoteId,
         kind_of_ballot_item: 'CANDIDATE',
         private_citizens_only: true,
-      });
+      },
+    );
   },
 
   positionListForBallotItemFromFriends (ballotItemWeVoteId) {
-    Dispatcher.loadEndpoint('positionListForBallotItemFromFriends',
+    Dispatcher.loadEndpoint(
+      'positionListForBallotItemFromFriends',
       {
         ballot_item_we_vote_id: ballotItemWeVoteId,
         kind_of_ballot_item: 'CANDIDATE',
-      });
+      },
+    );
   },
 };

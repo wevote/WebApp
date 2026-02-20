@@ -9,7 +9,7 @@ import VoterStore from '../../stores/VoterStore';
 
 const FirstPoliticianListController = React.lazy(() => import('../../components/PoliticianListRoot/FirstPoliticianListController'));
 
-const NoCandidateClaimed = () => {
+function NoCandidateClaimed () {
   const [searchText, setSearchText] = useState('');
   const [politicianListToShow, setPoliticianListToShow] = useState([]);
   const [politicianListTimeStampOfChange, setPoliticianListTimeStampOfChange] = useState(0);
@@ -18,7 +18,7 @@ const NoCandidateClaimed = () => {
   const listModeFiltersTimeStampOfChange = 0;
   const [stateCode, setStateCode] = useState(VoterStore.getStateCode() || VoterStore.getStateCodeFromIPAddress());
 
-  let subtitleText = 'Are you part of a candidate\'s team or managing your own campaign?\nHere\'s what you can do to help them win:';
+  const subtitleText = 'Are you part of a candidate\'s team or managing your own campaign?\nHere\'s what you can do to help them win:';
 
   useEffect(() => {
     const onPoliticianStoreChange = () => {
@@ -123,7 +123,7 @@ const NoCandidateClaimed = () => {
       </ManageCandidatesLink>
     </Container>
   );
-};
+}
 
 export default NoCandidateClaimed;
 

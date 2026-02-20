@@ -75,7 +75,7 @@ class AppleSignIn extends Component {
       userDetails: VoterStore.getAnalyticsUserDetails(),
     };
     TagManager.dataLayer({ dataLayer: dataLayerObject });
-  }
+  };
 
   localInitializeSDK (signInAfterInit) {
     const { AppleID } = window;

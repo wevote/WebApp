@@ -50,7 +50,7 @@ class EndorsementModeTabs extends Component {
       case 'addpositions':
         return 1;
     }
-  }
+  };
 
   goToDifferentVoterGuideSettingsDashboardTab (dashboardEditMode = '') {
     AppObservableStore.setVoterGuideSettingsDashboardEditMode(dashboardEditMode);

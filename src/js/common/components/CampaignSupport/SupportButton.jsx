@@ -82,7 +82,7 @@ class SupportButton extends Component {
       AppObservableStore.setBlockCampaignXRedirectOnSignIn(false);
       this.props.functionToUseWhenProfileComplete();
     }
-  }
+  };
 
   render () {
     renderLog('SupportButton');  // Set LOG_RENDER_EVENTS to log all renders

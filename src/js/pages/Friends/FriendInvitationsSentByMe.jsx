@@ -55,8 +55,10 @@ export default class FriendInvitationsSentByMe extends Component {
     } else {
       const searchTermLowercase = searchTerm.toLowerCase();
       const { friendInvitationsSentByMe } = this.state;
-      const searchedFriendList = filter(friendInvitationsSentByMe,
-        (voter) => voter.voter_display_name.toLowerCase().includes(searchTermLowercase));
+      const searchedFriendList = filter(
+        friendInvitationsSentByMe,
+        (voter) => voter.voter_display_name.toLowerCase().includes(searchTermLowercase),
+      );
 
       this.setState({
         friendInvitationsSentByMeFilteredBySearch: searchedFriendList,

@@ -57,7 +57,7 @@ class ChallengeStartAddDescription extends Component {
       ChallengeStartActions.challengeDescriptionQueuedToSave(undefined);
     }
     historyPush('/start-a-challenge-add-photo');
-  }
+  };
 
   render () {
     renderLog('ChallengeStartAddDescription');  // Set LOG_RENDER_EVENTS to log all renders

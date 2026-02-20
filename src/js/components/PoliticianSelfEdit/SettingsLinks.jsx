@@ -24,7 +24,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const SettingsLinks = ({ externalUniqueId, politicianWeVoteId }) => {
+function SettingsLinks ({ externalUniqueId, politicianWeVoteId }) {
   const classes = useStyles();
   const politicianWeVoteIdRef = useRef(politicianWeVoteId);
 
@@ -73,7 +73,7 @@ const SettingsLinks = ({ externalUniqueId, politicianWeVoteId }) => {
       </div>
     </HeaderContentContainer>
   );
-};
+}
 SettingsLinks.propTypes = {
   externalUniqueId: PropTypes.string,
   politicianWeVoteId: PropTypes.string,

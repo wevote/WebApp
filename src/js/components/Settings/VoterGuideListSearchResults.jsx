@@ -105,7 +105,7 @@ class VoterGuideListSearchResults extends Component {
         numberOfItemsToDisplay,
       });
     }, 500);
-  }
+  };
 
   searchFunction (searchString) {
     if (searchString && searchString !== '') {

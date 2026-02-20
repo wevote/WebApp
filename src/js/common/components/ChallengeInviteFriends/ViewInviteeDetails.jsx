@@ -8,7 +8,7 @@ import DesignTokenColors from '../Style/DesignTokenColors';
 import ModalDisplayTemplateA, { templateAStyles } from '../../../components/Widgets/ModalDisplayTemplateA';
 import ChallengeInviteeStore from '../../stores/ChallengeInviteeStore';
 
-const ViewInviteeDetails = ({ inviteeId, show, setShow, setAnchorEl }) => {
+function ViewInviteeDetails ({ inviteeId, show, setShow, setAnchorEl }) {
   const [inviteeData, setInviteeData] = useState(null);
 
   useEffect(() => {
@@ -106,7 +106,7 @@ const ViewInviteeDetails = ({ inviteeId, show, setShow, setAnchorEl }) => {
       toggleModal={toggleModal}
     />
   );
-};
+}
 ViewInviteeDetails.propTypes = {
   inviteeId: PropTypes.number,
   setShow: PropTypes.func,

@@ -9,7 +9,7 @@ import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import DesignTokenColors from '../Style/DesignTokenColors';
 
 
-const VoterPositionEditTripleDot = ({ triggerDeleteOpinion, triggerEditOpinion }) => {
+function VoterPositionEditTripleDot ({ triggerDeleteOpinion, triggerEditOpinion }) {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const onDotButtonClick = (e) => {
@@ -72,7 +72,7 @@ const VoterPositionEditTripleDot = ({ triggerDeleteOpinion, triggerEditOpinion }
       </EditInviteeTripleDotWrapper>
     </PrimaryDetails>
   );
-};
+}
 
 VoterPositionEditTripleDot.propTypes = {
   triggerDeleteOpinion: PropTypes.func,

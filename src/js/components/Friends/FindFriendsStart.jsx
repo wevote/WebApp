@@ -75,7 +75,7 @@ class FindFriendsStart extends Component {
     const setUpAccountEntryPath = '/findfriends/signin';
     AppObservableStore.setSetUpAccountEntryPath(setUpAccountEntryPath);
     historyPush(setUpAccountEntryPath);
-  }
+  };
 
   render () {
     renderLog('FindFriendsStart');  // Set LOG_RENDER_EVENTS to log all renders

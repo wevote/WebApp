@@ -122,19 +122,19 @@ class SetUpAccountEditName extends React.Component {
     if (this.props.functionToUseWhenProfileComplete) {
       this.props.functionToUseWhenProfileComplete();
     }
-  }
+  };
 
   functionToUseWhenProfileNotCompleteLocal = () => {
     if (this.props.functionToUseWhenProfileNotComplete) {
       this.props.functionToUseWhenProfileNotComplete();
     }
-  }
+  };
 
   goToNextStepLocal = () => {
     if (this.props.goToNextStep) {
       this.props.goToNextStep();
     }
-  }
+  };
 
   submitSaveNameAndEmail = () => {
     // console.log('SetUpAccountEditName submitSaveNameAndEmail');
@@ -183,7 +183,7 @@ class SetUpAccountEditName extends React.Component {
         this.goToNextStepLocal();
       }, 500);
     }
-  }
+  };
 
   render () {
     renderLog('SetUpAccountEditName');  // Set LOG_RENDER_EVENTS to log all renders

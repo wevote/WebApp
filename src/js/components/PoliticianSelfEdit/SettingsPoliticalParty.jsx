@@ -12,7 +12,7 @@ const delayBeforeSavingToAPI = 1500;
 const delayBeforeShowingSavedStatus = 3000;
 const enterYourOwnPartyText = '-- Enter your own --';
 
-const SettingsPoliticalParty = ({ politicianWeVoteId }) => {
+function SettingsPoliticalParty ({ politicianWeVoteId }) {
   // The master list of political party options are in WeVoteServer/wevote_functions/functions.py - candidate_party_display
   const partyOptions = [
     'Democrat',
@@ -159,7 +159,7 @@ const SettingsPoliticalParty = ({ politicianWeVoteId }) => {
       <SavedStatus>{savedStatus}</SavedStatus>
     </SettingsPoliticalPartyWrapper>
   );
-};
+}
 SettingsPoliticalParty.propTypes = {
   politicianWeVoteId: PropTypes.string,
 };

@@ -141,7 +141,7 @@ class ItemPositionStatementActionBar2020 extends Component {
     this.setState({
       showPositionStatementModal: !showPositionStatementModal,
     });
-  }
+  };
 
   updateStatementTextToBeSaved (e) {
     this.setState({

@@ -847,7 +847,7 @@ class Ballot extends Component {
     const { ballotWithItemsFromCompletionFilterType } = this.state;
     const ballotWithItemsFromCompletionFilterTypeLength = (ballotWithItemsFromCompletionFilterType) ? ballotWithItemsFromCompletionFilterType.length : 0;
     this.setBallotItemFilterType('All', ballotWithItemsFromCompletionFilterTypeLength);
-  }
+  };
 
   setBallotItemFilterType (raceLevelFilterType, doubleFilteredBallotItemsLength) {
     window.scrollTo(0, 0);
@@ -897,7 +897,7 @@ class Ballot extends Component {
     BallotActions.completionLevelFilterTypeSave('filterAllBallotItems');
     BallotActions.raceLevelFilterTypeSave('All');
     this.setState({ raceLevelFilterType: 'All' });
-  }
+  };
 
   memberViewedBallotHasBeenSavedOnce = (membershipOrganizationWeVoteId, googleCivicElectionId) => {
     if (!membershipOrganizationWeVoteId || !googleCivicElectionId) {
@@ -1048,7 +1048,7 @@ class Ballot extends Component {
         numberOfBallotItemsToDisplay,
       });
     }, 500);
-  }
+  };
 
   toggleSelectBallotModal (destinationUrlForHistoryPush = '', showEditAddress = false) {
     console.log('Ballot toggleSelectBallotModal');

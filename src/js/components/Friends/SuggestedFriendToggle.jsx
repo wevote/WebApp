@@ -66,7 +66,7 @@ export default class SuggestedFriendToggle extends Component {
     } else {
       AppObservableStore.setShowSignInModal(true);
     }
-  }
+  };
 
   render () {
     renderLog('SuggestedFriendToggle');  // Set LOG_RENDER_EVENTS to log all renders

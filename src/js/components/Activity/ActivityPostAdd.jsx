@@ -68,7 +68,7 @@ class ActivityPostAdd extends Component {
     this.setState({
       showActivityPostModal: !showActivityPostModal,
     });
-  }
+  };
 
   updateStatementTextToBeSaved (e) {
     this.setState({

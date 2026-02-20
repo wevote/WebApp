@@ -202,7 +202,7 @@ class PositionRowList extends Component {
       filteredPositionList,
       filteredPositionListLength: filteredPositionList.length,
     });
-  }
+  };
 
   // increaseNumberOfPositionItemsToDisplay = () => {
   //   let { numberOfPositionItemsToDisplay } = this.state;

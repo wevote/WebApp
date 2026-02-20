@@ -13,7 +13,7 @@ const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES ===
 
 /* ---------- Component ---------- */
 
-const PrivacyData = () => {
+function PrivacyData () {
   const [alignment, setAlignment] = React.useState('public');
   const [animKey, setAnimKey] = React.useState(0);
 
@@ -85,7 +85,7 @@ const PrivacyData = () => {
       </DataSettingText>
     </div>
   );
-};
+}
 
 /* ---------- Styled Components ---------- */
 

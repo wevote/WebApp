@@ -218,7 +218,7 @@ class OrganizationModal extends Component {
     this.setState({
       scrolledDown: AppObservableStore.getScrolledDownDrawer(),
     });
-  }
+  };
 
   onCandidateStoreChange () {
     const { ballotItemWeVoteId } = this.props;
@@ -285,7 +285,7 @@ class OrganizationModal extends Component {
 
   showHiddenPositions = () => {
     this.setState({ unFurlPositions: true });
-  }
+  };
 
   localPositionListHasBeenRetrievedOnce (ballotItemWeVoteId) {
     if (ballotItemWeVoteId) {

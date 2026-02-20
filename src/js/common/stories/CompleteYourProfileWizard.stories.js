@@ -79,7 +79,7 @@ const Container = styled.div`
   height: 100vh;
 `;
 
-export const CompleteYourProfileWizardStory = (args) => {
+export function CompleteYourProfileWizardStory (args) {
   const [steps, setSteps] = useState(args.steps);
   useEffect(() => {
     setSteps((prevSteps) => prevSteps.map((step) => ({
@@ -108,7 +108,7 @@ export const CompleteYourProfileWizardStory = (args) => {
       />
     </Container>
   );
-};
+}
 
 CompleteYourProfileWizardStory.args = {
   steps: initialSteps,

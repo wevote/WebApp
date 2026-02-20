@@ -24,7 +24,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const SettingsOfficialStatement = ({ externalUniqueId, politicianWeVoteId }) => {
+function SettingsOfficialStatement ({ externalUniqueId, politicianWeVoteId }) {
   const classes = useStyles();
   const [politician, setPolitician] = useState(null);
   const politicianWeVoteIdRef = useRef(politicianWeVoteId);
@@ -78,7 +78,7 @@ const SettingsOfficialStatement = ({ externalUniqueId, politicianWeVoteId }) => 
       </div>
     </HeaderContentContainer>
   );
-};
+}
 SettingsOfficialStatement.propTypes = {
   externalUniqueId: PropTypes.string,
   politicianWeVoteId: PropTypes.string,

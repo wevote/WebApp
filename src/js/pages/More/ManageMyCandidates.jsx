@@ -146,7 +146,7 @@ Thanks for your help!`);
       {/* Desktop and tablet invitation action strip */}
       <InviteRow className="u-show-desktop-tablet">
         <InviteText>Import voters, then invite them to join WeVote.</InviteText>
-        <InviteDivider className="u-show-desktop"/>
+        <InviteDivider className="u-show-desktop" />
         <InviteQuickLinks>
           <InviteLabel>Invitation:</InviteLabel>
           <IconButton type="button" title="Copy invitation" onClick={handleCopyInviteBody}>
@@ -352,8 +352,9 @@ Thanks for your help!`);
 }
 
 // Paste-list icon
-const PasteListIcon = ({ size = 22, title = 'Paste list', ...props }) => (
-  <svg
+function PasteListIcon ({ size = 22, title = 'Paste list', ...props }) {
+  return (
+    <svg
     width={size}
     height={size}
     viewBox="0 0 22 22"
@@ -362,14 +363,15 @@ const PasteListIcon = ({ size = 22, title = 'Paste list', ...props }) => (
     role="img"
     aria-hidden={title ? undefined : true}
     {...props}
-  >
-    {title ? <title>{title}</title> : null}
-    <path
+    >
+      {title ? <title>{title}</title> : null}
+      <path
       d="M18.8125 3C19.1922 3 19.5 3.3078 19.5 3.6875V18.8125C19.5 19.1922 19.1922 19.5 18.8125 19.5H3.6875C3.3078 19.5 3 19.1922 3 18.8125V3.6875C3 3.3078 3.3078 3 3.6875 3H18.8125ZM4.375 18.125H18.125V4.375H4.375V18.125ZM14 14V15.375H5.75V14H14ZM16.75 14V15.375H15.375V14H16.75ZM14 10.5625V11.9375H5.75V10.5625H14ZM16.75 10.5625V11.9375H15.375V10.5625H16.75ZM14 7.125V8.5H5.75V7.125H14ZM16.75 7.125V8.5H15.375V7.125H16.75Z"
       fill="currentColor"
-    />
-  </svg>
-);
+      />
+    </svg>
+  );
+}
 
 const H2 = styled.h2`
   color: ${DesignTokenColors.neutralUI900};

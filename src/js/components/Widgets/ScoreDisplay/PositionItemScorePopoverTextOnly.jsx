@@ -237,31 +237,29 @@ class PositionItemScorePopoverTextOnly extends Component {
             ))}
           </>
         ) : (
-          <>
-            <FollowOrganizationText>
-              Follow
-              {' '}
-              <strong>
-                {speakerDisplayName}
-              </strong>
-              {' '}
-              {organizationSupports && (
-                <span>
-                  to add +1 to your personalized score.
-                </span>
-              )}
-              {organizationOpposes && (
-                <span>
-                  to subtract -1 from your personalized score.
-                </span>
-              )}
-              {organizationProvidingInformationOnly && (
-                <span>
-                  to see more of their opinions.
-                </span>
-              )}
-            </FollowOrganizationText>
-          </>
+          <FollowOrganizationText>
+            Follow
+            {' '}
+            <strong>
+              {speakerDisplayName}
+            </strong>
+            {' '}
+            {organizationSupports && (
+            <span>
+              to add +1 to your personalized score.
+            </span>
+            )}
+            {organizationOpposes && (
+            <span>
+              to subtract -1 from your personalized score.
+            </span>
+            )}
+            {organizationProvidingInformationOnly && (
+            <span>
+              to see more of their opinions.
+            </span>
+            )}
+          </FollowOrganizationText>
         )}
       </PopoverDescriptionText>
     );

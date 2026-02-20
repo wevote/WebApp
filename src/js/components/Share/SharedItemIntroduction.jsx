@@ -18,19 +18,19 @@ class SharedItemIntroduction extends Component {
     this.setState({
       showAllStepOne: true,
     });
-  }
+  };
 
   onClickShowAllStepTwo = () => {
     this.setState({
       showAllStepTwo: true,
     });
-  }
+  };
 
   onClickShowAllStepThree = () => {
     this.setState({
       showAllStepThree: true,
     });
-  }
+  };
 
   render () {
     renderLog('SharedItemIntroduction');  // Set LOG_RENDER_EVENTS to log all renders

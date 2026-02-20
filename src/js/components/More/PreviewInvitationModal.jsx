@@ -5,14 +5,14 @@ import { ContentCopy as CopyIcon, Edit as EditIcon } from '@mui/icons-material';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 import ModalDisplayTemplateA from '../Widgets/ModalDisplayTemplateA';
 
-const PreviewInvitationModal = ({
+function PreviewInvitationModal ({
   isOpen,
   onClose,
   invitationBody,
   selectedPoliticianId,
   onEdit,
   notify,
-}) => {
+}) {
   const handleCopyInviteBody = async () => {
     try {
       await navigator.clipboard.writeText(
@@ -83,7 +83,7 @@ const PreviewInvitationModal = ({
       />
     </>
   );
-};
+}
 
 PreviewInvitationModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,

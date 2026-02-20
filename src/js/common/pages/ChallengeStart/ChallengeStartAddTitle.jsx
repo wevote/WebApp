@@ -58,7 +58,7 @@ class ChallengeStartAddTitle extends Component {
       ChallengeStartActions.challengeTitleQueuedToSave('');
     }
     historyPush('/start-a-challenge-why-winning-matters');
-  }
+  };
 
   render () {
     renderLog('ChallengeStartAddTitle');  // Set LOG_RENDER_EVENTS to log all renders

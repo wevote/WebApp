@@ -42,7 +42,7 @@ class FirstRepresentativeListController extends Component {
         RepresentativeActions.representativesQuery('', [], '', searchText);
       }
     });
-  }
+  };
 
   RepresentativesForStateRetrieve = () => {
     const { stateCode, year } = this.props;
@@ -73,7 +73,7 @@ class FirstRepresentativeListController extends Component {
         }
       }
     });
-  }
+  };
 
   RepresentativesForYearRetrieve = () => {
     const { stateCode, year: thisYearInteger } = this.props;
@@ -87,7 +87,7 @@ class FirstRepresentativeListController extends Component {
         RepresentativeActions.representativesQuery(`${thisYearInteger}`, [], filteredStateCode);
       }
     });
-  }
+  };
 
   render () {
     renderLog('FirstRepresentativeListController');  // Set LOG_RENDER_EVENTS to log all renders

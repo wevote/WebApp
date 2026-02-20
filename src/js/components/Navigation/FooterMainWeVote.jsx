@@ -62,7 +62,7 @@ class FooterMainWeVote extends Component {
       userDetails: VoterStore.getAnalyticsUserDetails(),
     };
     TagManager.dataLayer({ dataLayer: dataLayerObject });
-  }
+  };
 
   pushDataLayer (destinationPath, buttonId = '') {
     // For internal links only - external links are handled by OpenExternalWebSite

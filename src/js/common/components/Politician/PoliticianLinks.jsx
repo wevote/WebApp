@@ -5,19 +5,20 @@ import DesignTokenColors from '../Style/DesignTokenColors';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../Widgets/OpenExternalWebSite'));
 
-const PoliticianLinks = ({ links }) => (
-  <PoliticianLinksContainerOverflow>
-    <PoliticianLinksContainerLeft16>
-      <PoliticianLinksContainer>
-        {links.map((link, index) => {
-          const { linkText, externalLinkUrl } = link;
-          if (!externalLinkUrl || !linkText) return null;
-          const linkIdAttribute = `politicianLink-${linkText.replace(/[\s./]+/g, '-').toLowerCase()}`;
+function PoliticianLinks ({ links }) {
+  return (
+    <PoliticianLinksContainerOverflow>
+      <PoliticianLinksContainerLeft16>
+        <PoliticianLinksContainer>
+          {links.map((link, index) => {
+            const { linkText, externalLinkUrl } = link;
+            if (!externalLinkUrl || !linkText) return null;
+            const linkIdAttribute = `politicianLink-${linkText.replace(/[\s./]+/g, '-').toLowerCase()}`;
 
-          return (
-            <LinkContainer key={linkText} isFirst={index !== 0}>
-              <Suspense fallback={<></>}>
-                <OpenExternalWebSite
+            return (
+              <LinkContainer key={linkText} isFirst={index !== 0}>
+                <Suspense fallback={<></>}>
+                  <OpenExternalWebSite
                   body={linkText}
                   key={linkText}
                   linkIdAttribute={linkIdAttribute}
@@ -26,15 +27,16 @@ const PoliticianLinks = ({ links }) => (
                   target="_blank"
                   title={linkText}
                   trackingOn
-                />
-              </Suspense>
-            </LinkContainer>
-          );
-        })}
-      </PoliticianLinksContainer>
-    </PoliticianLinksContainerLeft16>
-  </PoliticianLinksContainerOverflow>
-);
+                  />
+                </Suspense>
+              </LinkContainer>
+            );
+          })}
+        </PoliticianLinksContainer>
+      </PoliticianLinksContainerLeft16>
+    </PoliticianLinksContainerOverflow>
+  );
+}
 
 PoliticianLinks.propTypes = {
   links: PropTypes.array,

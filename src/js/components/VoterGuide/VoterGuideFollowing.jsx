@@ -120,7 +120,7 @@ class VoterGuideFollowing extends Component {
 
   followAllOrganizations = () => {
     VoterGuideActions.voterFollowAllOrganizationsFollowedByOrganization(this.state.organization.organization_we_vote_id);
-  }
+  };
 
   searchFollowingVoterGuides = (searchTerm) => {
     if (searchTerm.length === 0) {
@@ -131,22 +131,24 @@ class VoterGuideFollowing extends Component {
     } else {
       const searchTermLowerCase = searchTerm.toLowerCase();
       const { voterGuideFollowedList } = this.state;
-      const searchedFollowedList = filter(voterGuideFollowedList,
-        (user) => user.voter_guide_display_name.toLowerCase().includes(searchTermLowerCase));
+      const searchedFollowedList = filter(
+        voterGuideFollowedList,
+        (user) => user.voter_guide_display_name.toLowerCase().includes(searchTermLowerCase),
+      );
 
       this.setState({
         searchTerm,
         voterGuideFollowedListFilteredBySearch: searchedFollowedList,
       });
     }
-  }
+  };
 
   clearSearchBarFunction = () => {
     this.setState({
       searchTerm: '',
       voterGuideFollowedListFilteredBySearch: [],
     });
-  }
+  };
 
   toggleEditMode () {
     const { editMode } = this.state;

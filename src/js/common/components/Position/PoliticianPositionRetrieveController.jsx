@@ -69,7 +69,7 @@ class PoliticianPositionRetrieveController extends Component {
     const m = (`0${t.getMonth() + 1}`).slice(-2);
     const d = (`0${t.getDate()}`).slice(-2);
     return y + m + d;
-  }
+  };
 
   positionsFirstRetrieve = () => {
     const { politicianWeVoteId } = this.props;
@@ -108,7 +108,7 @@ class PoliticianPositionRetrieveController extends Component {
         }
       });
     }
-  }
+  };
 
   retrievePositionListsForOneCandidate (candidateWeVoteId) {
     // console.log('retrievePositionListsForOneCandidate candidateWeVoteId: ', candidateWeVoteId);

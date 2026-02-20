@@ -71,17 +71,19 @@ ${(props) => !props.primary && `
   `}
 `;
 
-const Button = ({ primary, size, label, onClick, ...props }) => (
-  <StyledButton
+function Button ({ primary, size, label, onClick, ...props }) {
+  return (
+    <StyledButton
     primary={primary === true}
     size={size}
     aria-label={label}
     onClick={onClick}
     {...props}
-  >
-    {label}
-  </StyledButton>
-);
+    >
+      {label}
+    </StyledButton>
+  );
+}
 
 export default Button;
 

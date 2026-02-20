@@ -57,15 +57,17 @@ function GoogleAutoComplete (props) {
   const handleAddressChangeCordova = (event) => {
     let lat = '';
     let lon = '';
-    navigator.geolocation.getCurrentPosition((position) => {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
       // console.log('handleAddressChangeCordova', JSON.stringify(position));
-      lat = position.coords.latitude;
-      lon = position.coords.longitude;
-    },
-    (error) => {
-      console.log('ERROR handleAddressChangeCordova', JSON.stringify(error));
-    },
-    { timeout: 5000 });
+        lat = position.coords.latitude;
+        lon = position.coords.longitude;
+      },
+      (error) => {
+        console.log('ERROR handleAddressChangeCordova', JSON.stringify(error));
+      },
+      { timeout: 5000 },
+    );
 
     initializejQuery(() => {
       // console.log('handleAddressChangeCordova before ajax');

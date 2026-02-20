@@ -9,7 +9,7 @@ import PoliticianStore from '../../../stores/PoliticianStore';
 import VoterStore from '../../../../stores/VoterStore';
 import { getPageDetails } from '../../../../utils/lookupPageNameAndPageTypeDict';
 
-const PasskeyVerifiedModal = ({ closePasskeyVerifiedModal, passkeyVerified, politicianName, politicianWeVoteId, verificationEmails }) => {
+function PasskeyVerifiedModal ({ closePasskeyVerifiedModal, passkeyVerified, politicianName, politicianWeVoteId, verificationEmails }) {
   const [passkeyVerifiedModalClosed, setPasskeyVerifiedModalClosed] = useState(false); // switch to toggle PasskeyVerifiedModal
   const usersEditingPermissions = ['Add profile content']; // , 'Invite supporters', 'Grow awareness'
 
@@ -89,7 +89,7 @@ const PasskeyVerifiedModal = ({ closePasskeyVerifiedModal, passkeyVerified, poli
       textFieldJSX={textFieldJSX}
     />
   );
-};
+}
 
 PasskeyVerifiedModal.propTypes = {
   closePasskeyVerifiedModal: PropTypes.func,

@@ -128,12 +128,12 @@ class OrganizationVoterGuideCandidate extends Component {
 
   goToBallot = () => {
     historyPush('/ballot');
-  }
+  };
 
   openHowItWorksModal = () => {
     // console.log('Opening modal');
     AppObservableStore.setShowHowItWorksModal(true);
-  }
+  };
 
   render () {
     renderLog('OrganizationVoterGuideCandidate');  // Set LOG_RENDER_EVENTS to log all renders

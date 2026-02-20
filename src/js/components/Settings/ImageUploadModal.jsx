@@ -30,7 +30,7 @@ class ImageUploadModal extends Component {
   closeThisModal = () => {
     const { location: { pathname } } = window;
     this.props.toggleFunction(pathname);
-  }
+  };
 
   render () {
     renderLog('ImageUploadModal');  // Set LOG_RENDER_EVENTS to log all renders

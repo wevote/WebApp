@@ -112,7 +112,7 @@ class CompleteYourProfileOnBallot extends Component {
       const expirationDate = new Date(new Date().getTime() + 18 * 60 * 60 * 1000);
       Cookies.set('complete_your_profile_closed', '1', { expires: expirationDate, path: '/' });
     }
-  }
+  };
 
   setItemComplete (stepItemIdToMarkComplete) {
     const { steps } = this.state;
@@ -189,7 +189,7 @@ class CompleteYourProfileOnBallot extends Component {
     }, () => {
       this.setCompletedStatus();
     });
-  }
+  };
 
   openHowItWorksModal = () => {
     // console.log('openHowItWorksModal called');
@@ -216,7 +216,7 @@ class CompleteYourProfileOnBallot extends Component {
     };
     // console.log('openHowItWorksModal dataLayer:', dataLayerObject);
     TagManager.dataLayer({ dataLayer: dataLayerObject });
-  }
+  };
 
   openPersonalizedScoreIntroModal = () => {
     // console.log('openPersonalizedScoreIntroModal called');
@@ -241,32 +241,32 @@ class CompleteYourProfileOnBallot extends Component {
     };
     // console.log('openPersonalizedScoreIntroModal dataLayer:', dataLayerObject);
     TagManager.dataLayer({ dataLayer: dataLayerObject });
-  }
+  };
 
-      openBallotChoicesAndSettingsModal = () => {
-        // console.log('BallotChoicesAndSettingsModal called');
-        AppObservableStore.setShowBallotChoicesAndSettingsModal(true);
-        // Add dataLayer tracking
-        const { location: { pathname: currentPathname } } = window;
-        const currentPage = lookupPageNameAndPageTypeDict(currentPathname);
+  openBallotChoicesAndSettingsModal = () => {
+    // console.log('BallotChoicesAndSettingsModal called');
+    AppObservableStore.setShowBallotChoicesAndSettingsModal(true);
+    // Add dataLayer tracking
+    const { location: { pathname: currentPathname } } = window;
+    const currentPage = lookupPageNameAndPageTypeDict(currentPathname);
 
-        const dataLayerObject = {
-          actionDetails: {
-            actionType: 'openModal',
-            buttonId: 'yourBallotChoicesAndSettingsStep',
-          },
-          event: 'action',
-          destinationDetails: {
-            destinationPageName: 'BallotChoicesAndSettingsModal',
-            destinationPageType: currentPage.pageType,
-            destinationPathname: currentPathname,
-          },
-          pageDetails: getPageDetails(),
-          userDetails: VoterStore.getAnalyticsUserDetails(),
-        };
-        // console.log('BallotChoicesAndSettingsModal dataLayer:', dataLayerObject);
-        TagManager.dataLayer({ dataLayer: dataLayerObject });
-      }
+    const dataLayerObject = {
+      actionDetails: {
+        actionType: 'openModal',
+        buttonId: 'yourBallotChoicesAndSettingsStep',
+      },
+      event: 'action',
+      destinationDetails: {
+        destinationPageName: 'BallotChoicesAndSettingsModal',
+        destinationPageType: currentPage.pageType,
+        destinationPathname: currentPathname,
+      },
+      pageDetails: getPageDetails(),
+      userDetails: VoterStore.getAnalyticsUserDetails(),
+    };
+    // console.log('BallotChoicesAndSettingsModal dataLayer:', dataLayerObject);
+    TagManager.dataLayer({ dataLayer: dataLayerObject });
+  };
 
   goToNextIncompleteStep = () => {
     const { steps } = this.state;
@@ -276,7 +276,7 @@ class CompleteYourProfileOnBallot extends Component {
         activeStep: notCompletedSteps[0].id,
       });
     }
-  }
+  };
 
   goToNextIncompleteStepIfForced = () => {
     const { goToNextIncompleteStepForced } = this.state;
@@ -284,13 +284,13 @@ class CompleteYourProfileOnBallot extends Component {
     if (goToNextIncompleteStepForced) {
       this.goToNextIncompleteStep();
     }
-  }
+  };
 
   goToStep = (stepId) => {
     this.setState({
       activeStep: stepId,
     });
-  }
+  };
 
   toggleShowSignInModal = () => {
     // Refactor to use:
@@ -332,7 +332,7 @@ class CompleteYourProfileOnBallot extends Component {
     this.setState({
       showSignInModal: !showSignInModal,
     });
-  }
+  };
 
   previousStep () {
     const { steps } = this.state;

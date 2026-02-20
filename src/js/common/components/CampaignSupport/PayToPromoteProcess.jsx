@@ -195,7 +195,7 @@ class PayToPromoteProcess extends Component {
   goToIWillShare = () => {
     const pathForNextStep = `${this.getCampaignXBasePath()}share-campaign`;
     historyPush(pathForNextStep);
-  }
+  };
 
   getCampaignXBasePath = () => {
     const { campaignSEOFriendlyPath, campaignXWeVoteId } = this.state;
@@ -206,7 +206,7 @@ class PayToPromoteProcess extends Component {
       campaignBasePath = `/id/${campaignXWeVoteId}/`;
     }
     return campaignBasePath;
-  }
+  };
 
   changeValueFromButton (newValue) {
     // console.log("this is the donation modal:", window.location.href)

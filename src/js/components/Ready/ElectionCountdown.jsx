@@ -105,14 +105,14 @@ class ElectionCountdown extends React.Component {
     if (this.props.onClickFunction) {
       this.props.onClickFunction();
     }
-  }
+  };
 
   onClickFunctionAndBallotForward = () => {
     if (this.props.onClickFunction) {
       this.props.onClickFunction();
     }
     historyPush('/ballot');
-  }
+  };
 
   setNextElectionDateFromDayText = (nextElectionDayText) => {
     const daysUntilNextElection = daysUntil(nextElectionDayText);
@@ -138,7 +138,7 @@ class ElectionCountdown extends React.Component {
         daysUntilNextElection: 0,
       });
     }
-  }
+  };
 
   setNextNationalElectionDateFromDayText = (nextNationalElectionDayText) => {
     const daysUntilNextNationalElection = daysUntil(nextNationalElectionDayText);
@@ -153,7 +153,7 @@ class ElectionCountdown extends React.Component {
         daysUntilNextNationalElection: 0,
       });
     }
-  }
+  };
 
   // eslint-disable-next-line no-unused-vars
   toggleSelectBallotModal (showSelectBallotModal, showEditAddress = true) {
@@ -256,11 +256,9 @@ class ElectionCountdown extends React.Component {
                 onClick={() => historyPush('/ballot')}
                 style={{ cursor: 'pointer' }}
               >
-                <>
-                  {daysUntilNextNationalElection}
-                  <SpaceBetweenNumberAndWord />
-                  {daysUntilNextNationalElection === 1 ? 'day' : 'days'}
-                </>
+                {daysUntilNextNationalElection}
+                <SpaceBetweenNumberAndWord />
+                {daysUntilNextNationalElection === 1 ? 'day' : 'days'}
               </div>
             ) : (
               <div style={{ margin: 26 }}>

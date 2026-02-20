@@ -58,7 +58,8 @@ export default {
           this.setFacebookAuthStatus(response, saveAuthToServer, doMergeOnServer, hasFacebookAuth, signInFunc);
         });
       } else {
-        facebookApi().getLoginStatus(true,
+        facebookApi().getLoginStatus(
+          true,
           (responseInner) => {
             response = responseInner;
             oAuthLog('setConnectedStatus facebookApi().getLoginStatus response:', response);
@@ -67,7 +68,8 @@ export default {
           (responseInner) => {
             response = responseInner;
             oAuthLog('setConnectedStatus facebookApi().getLoginStatus FAILURE response:', response);
-          });
+          },
+        );
       }
     } catch (error) {
       console.log('initializeFacebookSDK facebookApi().getLoginStatus error:', error);
@@ -90,15 +92,15 @@ export default {
       if (!hasFacebookAuth || saveAuthToServer) {
         oAuthLog('setConnectedStatus authResponse has connect data and voter is NOT signed in on WeVote -- fbData', fbData);
         if (isWebApp()) {
-          facebookApi().api(
-            '/me?fields=id,email,first_name,middle_name,last_name,cover', (responseName) => {
-              // console logging in this callback at this line does not work, but putting a native log line in FacebookConnectPlugin.m at about line 705 after the "// If we have permissions to request" comment will get you the data
-              this.setFacebookUserData(responseName, saveAuthToServer, doMergeOnServer, signInFunc);
-            },
-          );
+          facebookApi().api('/me?fields=id,email,first_name,middle_name,last_name,cover', (responseName) => {
+            // console logging in this callback at this line does not work, but putting a native log line in FacebookConnectPlugin.m at about line 705 after the "// If we have permissions to request" comment will get you the data
+            this.setFacebookUserData(responseName, saveAuthToServer, doMergeOnServer, signInFunc);
+          });
         } else {
           facebookApi().api(
-            '/me?fields=id,email,first_name,middle_name,last_name,cover', ['public_profile', 'email'], (responseName) => {
+            '/me?fields=id,email,first_name,middle_name,last_name,cover',
+            ['public_profile', 'email'],
+            (responseName) => {
               // console logging in this callback at this line does not work, but putting a native log line in FacebookConnectPlugin.m at about line 705 after the "// If we have permissions to request" comment will get you the data
               this.setFacebookUserData(responseName, saveAuthToServer, doMergeOnServer, signInFunc);
             },
@@ -135,7 +137,8 @@ export default {
         );
       } else {
         facebookApi().api(
-          '/me?fields=picture.type(large)&redirect=false', ['public_profile', 'email'],
+          '/me?fields=picture.type(large)&redirect=false',
+          ['public_profile', 'email'],
           (responsePhoto) => {
             oAuthLog('setConnectedStatus -> setFacebookUserData -> setFacebookPhotoData response', responsePhoto);
             this.setFacebookPhotoData(responsePhoto, saveAuthToServer, doMergeOnServer, signInFunc);
@@ -195,12 +198,15 @@ export default {
           this.login2022Response(resolve, response);
         });
       } else {
-        facebookApi().login(['public_profile', 'email'], (response) => {
-          this.login2022Response(resolve, response);
-        },
-        (responseFail) => {
-          console.log('Failure to sign in to Facebook', JSON.stringify(responseFail));
-        });
+        facebookApi().login(
+          ['public_profile', 'email'],
+          (response) => {
+            this.login2022Response(resolve, response);
+          },
+          (responseFail) => {
+            console.log('Failure to sign in to Facebook', JSON.stringify(responseFail));
+          },
+        );
       }
     });
   },

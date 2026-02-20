@@ -167,7 +167,7 @@ class ChallengeStartEditAll extends Component {
     } else {
       historyPush('/start-a-challenge-preview');
     }
-  }
+  };
 
   submitChallengeEditAll = () => {
     const { editExistingChallenge } = this.props;
@@ -192,13 +192,19 @@ class ChallengeStartEditAll extends Component {
       // console.log('ChallengeStartEditAll challengePoliticianStarterListQueuedToSaveJson:', challengePoliticianStarterListQueuedToSaveJson);
       ChallengeStartActions.challengeEditAllSave(
         challengeWeVoteId,
-        challengeDescriptionQueuedToSave, challengeDescriptionQueuedToSaveSet,
-        challengeInviteTextDefaultQueuedToSave, challengeInviteTextDefaultQueuedToSaveSet,
-        challengePhotoQueuedToDelete, challengePhotoQueuedToDeleteSet,
-        challengePhotoQueuedToSave, challengePhotoQueuedToSaveSet,
+        challengeDescriptionQueuedToSave,
+        challengeDescriptionQueuedToSaveSet,
+        challengeInviteTextDefaultQueuedToSave,
+        challengeInviteTextDefaultQueuedToSaveSet,
+        challengePhotoQueuedToDelete,
+        challengePhotoQueuedToDeleteSet,
+        challengePhotoQueuedToSave,
+        challengePhotoQueuedToSaveSet,
         challengePoliticianDeleteListJson,
-        challengePoliticianStarterListQueuedToSaveJson, challengePoliticianStarterListQueuedToSaveSet,
-        challengeTitleQueuedToSave, challengeTitleQueuedToSaveSet,
+        challengePoliticianStarterListQueuedToSaveJson,
+        challengePoliticianStarterListQueuedToSaveSet,
+        challengeTitleQueuedToSave,
+        challengeTitleQueuedToSaveSet,
       );
       ChallengeStartActions.challengeEditAllReset();
     }
@@ -215,7 +221,7 @@ class ChallengeStartEditAll extends Component {
         historyPush('/start-a-challenge-preview');
       }
     }, 750);
-  }
+  };
 
   render () {
     renderLog('ChallengeStartEditAll');  // Set LOG_RENDER_EVENTS to log all renders

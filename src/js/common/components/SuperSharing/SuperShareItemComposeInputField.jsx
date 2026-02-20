@@ -165,7 +165,7 @@ class SuperShareItemComposeInputField extends Component {
         });
       }
     }
-  }
+  };
 
   updatePersonalizedSubject (event) {
     if (event.target.name === 'personalizedSubject') {

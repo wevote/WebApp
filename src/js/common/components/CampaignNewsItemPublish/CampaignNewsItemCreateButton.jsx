@@ -76,7 +76,7 @@ class CampaignNewsItemCreateButton extends Component {
     } else {
       historyPush(`/id/${campaignXWeVoteId}/add-update`);
     }
-  }
+  };
 
   onKeyDown = (event) => {
     event.preventDefault();

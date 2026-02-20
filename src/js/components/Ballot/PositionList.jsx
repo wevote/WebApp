@@ -221,7 +221,7 @@ class PositionList extends Component {
       filteredPositionListLength: filteredOrganizations.length,
       isSearching: false,
     });
-  }
+  };
 
   onScroll () {
     const showMoreItemsElement =  document.querySelector('#showMoreItemsId');
@@ -286,7 +286,7 @@ class PositionList extends Component {
         numberOfPositionItemsToDisplay,
       });
     }, 500);
-  }
+  };
 
   render () {
     const { positionList } = this.state;

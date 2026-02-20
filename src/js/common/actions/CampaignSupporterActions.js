@@ -2,22 +2,26 @@ import Dispatcher from '../dispatcher/Dispatcher';
 
 export default {
   campaignSupporterRetrieve (campaignXWeVoteId) {
-    Dispatcher.loadEndpoint('campaignSupporterRetrieve',
+    Dispatcher.loadEndpoint(
+      'campaignSupporterRetrieve',
       {
         campaignx_we_vote_id: campaignXWeVoteId,
-      });
+      },
+    );
   },
 
   supportCampaignSave (campaignXWeVoteId, campaignSupported, campaignSupportedChanged, visibleToPublic, visibleToPublicChanged) { // campaignSupporterSave
     // console.log('supportCampaignSave');
-    Dispatcher.loadEndpoint('campaignSupporterSave',
+    Dispatcher.loadEndpoint(
+      'campaignSupporterSave',
       {
         campaign_supported: campaignSupported,
         campaign_supported_changed: campaignSupportedChanged,
         campaignx_we_vote_id: campaignXWeVoteId,
         visible_to_public: visibleToPublic,
         visible_to_public_changed: visibleToPublicChanged,
-      });
+      },
+    );
   },
 
   shareButtonClicked (value) {
@@ -34,13 +38,15 @@ export default {
 
   supporterEndorsementSave (campaignWeVoteId, supporterEndorsement, visibleToPublic, visibleToPublicChanged) { // campaignSupporterSave
     // console.log('supporterEndorsementSave: ', supporterEndorsement);
-    Dispatcher.loadEndpoint('campaignSupporterSave',
+    Dispatcher.loadEndpoint(
+      'campaignSupporterSave',
       {
         campaignx_we_vote_id: campaignWeVoteId,
         supporter_endorsement: supporterEndorsement,
         supporter_endorsement_changed: true,
         visible_to_public: visibleToPublic,
         visible_to_public_changed: visibleToPublicChanged,
-      });
+      },
+    );
   },
 };

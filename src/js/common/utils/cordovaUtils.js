@@ -67,26 +67,28 @@ export function cordovaOpenSafariViewSub (requestURL, onExit) {
     console.log(`cordovaOpenSafariView -1- requestURL: ${requestURL}`);
     SafariViewController.isAvailable(() => { // eslint-disable-line no-undef
       oAuthLog(`cordovaOpenSafariView requestURL: ${requestURL}`);
-      SafariViewController.show({ // eslint-disable-line no-undef
-        url: requestURL,
-        dismissButton: 1,
-      },
-      (result) => {
-        if (result.event === 'opened') {
-          oAuthLog(`cordovaOpenSafariView opened url: ${requestURL}`);
-        } else if (result.event === 'loaded') {
-          oAuthLog(`cordovaOpenSafariView URL result from loading: ${JSON.stringify(result)}`);
-        } else if (result.event === 'closed') {
-          oAuthLog(`cordovaOpenSafariView closed: ${JSON.stringify(result)}`);
-          if (onExit) {
-            onExit();
+      SafariViewController.show(
+        { // eslint-disable-line no-undef
+          url: requestURL,
+          dismissButton: 1,
+        },
+        (result) => {
+          if (result.event === 'opened') {
+            oAuthLog(`cordovaOpenSafariView opened url: ${requestURL}`);
+          } else if (result.event === 'loaded') {
+            oAuthLog(`cordovaOpenSafariView URL result from loading: ${JSON.stringify(result)}`);
+          } else if (result.event === 'closed') {
+            oAuthLog(`cordovaOpenSafariView closed: ${JSON.stringify(result)}`);
+            if (onExit) {
+              onExit();
+            }
           }
-        }
-      },
+        },
 
-      (msg) => {
-        oAuthLog(`cordovaOpenSafariView KO: ${JSON.stringify(msg)}`);
-      });
+        (msg) => {
+          oAuthLog(`cordovaOpenSafariView KO: ${JSON.stringify(msg)}`);
+        },
+      );
     });
   } else {
     // Prior to Sept 2020, we used SafariViewController for iOS and Android, but subsequently some upgrade of

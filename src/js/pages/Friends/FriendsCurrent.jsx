@@ -59,8 +59,10 @@ export default class FriendsCurrent extends Component {
     } else {
       const searchTermLowercase = searchTerm.toLowerCase();
       const { currentFriendList } = this.state;
-      const searchedFriendList = filter(currentFriendList,
-        (voter) => voter.voter_display_name.toLowerCase().includes(searchTermLowercase));
+      const searchedFriendList = filter(
+        currentFriendList,
+        (voter) => voter.voter_display_name.toLowerCase().includes(searchTermLowercase),
+      );
 
       this.setState({
         currentFriendListFilteredBySearch: searchedFriendList,

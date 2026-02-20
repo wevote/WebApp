@@ -51,14 +51,14 @@ class ActivityTidbitAddReaction extends Component {
         voterLikesThisItem: true,
       });
     }
-  }
+  };
 
   onClickShowActivityTidbitDrawer = () => {
     const { activityTidbitWeVoteId } = this.props;
     // console.log('onClickShowActivityTidbitDrawer activityTidbitWeVoteId:', activityTidbitWeVoteId);
     AppObservableStore.setActivityTidbitWeVoteIdForDrawer(activityTidbitWeVoteId);
     AppObservableStore.setShowActivityTidbitDrawer(true);
-  }
+  };
 
   render () {
     renderLog('ActivityTidbitAddReaction');  // Set LOG_RENDER_EVENTS to log all renders

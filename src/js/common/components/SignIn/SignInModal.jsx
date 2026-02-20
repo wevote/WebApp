@@ -66,7 +66,7 @@ class SignInModal extends Component {
       //   showSignInModalSimple: false,
       // });
     }
-  }
+  };
 
   toggleSignInModalSimple () {
     // console.log('SignInModal  toggleSignInModalSimple');

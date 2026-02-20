@@ -68,12 +68,17 @@ export default {
     // console.log('FacebookActions.getFacebookData invocation');
     if (facebookApi()) {
       if (isWebApp()) {
-        facebookApi().api('/me?fields=id,email,first_name,middle_name,last_name,cover',
-          (response) => this.getFBDataResponse(response, false));
-      } else {
-        facebookApi().api('/me?fields=id,email,first_name,middle_name,last_name,cover', ['public_profile', 'email'],
+        facebookApi().api(
+          '/me?fields=id,email,first_name,middle_name,last_name,cover',
           (response) => this.getFBDataResponse(response, false),
-          (response) => this.getFBDataResponse(response, true));
+        );
+      } else {
+        facebookApi().api(
+          '/me?fields=id,email,first_name,middle_name,last_name,cover',
+          ['public_profile', 'email'],
+          (response) => this.getFBDataResponse(response, false),
+          (response) => this.getFBDataResponse(response, true),
+        );
       }
     } else {
       console.log('FacebookActions.getFacebookProfilePicture was not invoked, facebookApi() undefined');
@@ -157,12 +162,17 @@ export default {
 
   getPicture () {
     if (isWebApp()) {
-      facebookApi().api('/me?fields=picture.type(large)&redirect=false',
-        (response) => this.getPictureResponse(response, false));
-    } else {
-      facebookApi().api('/me?fields=picture.type(large)&redirect=false', ['public_profile', 'email'],
+      facebookApi().api(
+        '/me?fields=picture.type(large)&redirect=false',
         (response) => this.getPictureResponse(response, false),
-        (response) => this.getPictureResponse(response, true));
+      );
+    } else {
+      facebookApi().api(
+        '/me?fields=picture.type(large)&redirect=false',
+        ['public_profile', 'email'],
+        (response) => this.getPictureResponse(response, false),
+        (response) => this.getPictureResponse(response, true),
+      );
     }
   },
 
@@ -207,12 +217,17 @@ export default {
     if (facebookApi()) {
       const fbApiForInvitableFriends = `/me?fields=invitable_friends.limit(1000){name,id,picture.width(${pictureWidthVerified}).height(${pictureHeightVerified})`;
       if (isWebApp()) {
-        facebookApi().api(fbApiForInvitableFriends,
-          (response) => this.getInvitableFriendsListResponse(response, false));
-      } else {
-        facebookApi().api(fbApiForInvitableFriends, ['public_profile', 'email'],
+        facebookApi().api(
+          fbApiForInvitableFriends,
           (response) => this.getInvitableFriendsListResponse(response, false),
-          (response) => this.getInvitableFriendsListResponse(response, true));
+        );
+      } else {
+        facebookApi().api(
+          fbApiForInvitableFriends,
+          ['public_profile', 'email'],
+          (response) => this.getInvitableFriendsListResponse(response, false),
+          (response) => this.getInvitableFriendsListResponse(response, true),
+        );
       }
     } else {
       console.log('FacebookActions.getFacebookInvitableFriendsList was not invoked, facebookApi() undefined');
@@ -243,7 +258,8 @@ export default {
         );
       } else {
         facebookApi().api(
-          fbApiForReadingAppRequests, ['public_profile', 'email'],
+          fbApiForReadingAppRequests,
+          ['public_profile', 'email'],
           (response) => this.readFBAppRequestsResponse(response, false),
           (response) => this.readFBAppRequestsResponse(response, true),
         );
@@ -271,12 +287,19 @@ export default {
     if (facebookApi()) {
       console.log('deleteFacebookAppRequest requestId: ', requestId);
       if (isWebApp()) {
-        facebookApi().api(requestId, 'delete',
-          (response) => this.deleteFBAppRequestsResponse(response, false));
-      } else {
-        facebookApi().api(requestId, ['public_profile', 'email'], 'delete',
+        facebookApi().api(
+          requestId,
+          'delete',
           (response) => this.deleteFBAppRequestsResponse(response, false),
-          (response) => this.deleteFBAppRequestsResponse(response, true));
+        );
+      } else {
+        facebookApi().api(
+          requestId,
+          ['public_profile', 'email'],
+          'delete',
+          (response) => this.deleteFBAppRequestsResponse(response, false),
+          (response) => this.deleteFBAppRequestsResponse(response, true),
+        );
       }
     } else {
       console.log('FacebookActions.deleteFacebookAppRequest was not invoked, facebookApi() undefined');
@@ -378,9 +401,11 @@ export default {
             (response) => this.loginResponse(response, innerThis, false),
           );
         } else {
-          facebookApi().getLoginStatus(true,
+          facebookApi().getLoginStatus(
+            true,
             (response) => this.loginResponse(response, innerThis, false),
-            (response) => this.loginResponse(response, innerThis, true));
+            (response) => this.loginResponse(response, innerThis, true),
+          );
         }
       } catch (error) {
         console.log('FacebookActions.login() try/catch error: ', error);

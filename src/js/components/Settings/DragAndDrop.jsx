@@ -32,7 +32,7 @@ class DragAndDrop extends Component {
   handleDrag = (e) => {
     e.preventDefault();
     e.stopPropagation();
-  }
+  };
 
   handleDragIn = (e) => {
     e.preventDefault();
@@ -41,7 +41,7 @@ class DragAndDrop extends Component {
     if (e.dataTransfer.items && e.dataTransfer.items.length > 0) {
       this.setState({ drag: true });
     }
-  }
+  };
 
   handleDragOut = (e) => {
     e.preventDefault();
@@ -50,7 +50,7 @@ class DragAndDrop extends Component {
     if (this.dragCounter === 0) {
       this.setState({ drag: false });
     }
-  }
+  };
 
   handleDropLocal = (e) => {
     e.preventDefault();
@@ -62,7 +62,7 @@ class DragAndDrop extends Component {
       e.dataTransfer.clearData();
       this.dragCounter = 0;
     }
-  }
+  };
 
   render () {
     return (

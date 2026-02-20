@@ -48,14 +48,14 @@ class SettingsSectionFooter extends Component {
   openHowItWorksModal = () => {
     // console.log('Opening modal');
     AppObservableStore.setShowHowItWorksModal(true);
-  }
+  };
 
   closeDrawerHandler = () => {
     const { drawerOpenGlobalVariableName } = this.props;
     if (drawerOpenGlobalVariableName) {
       AppObservableStore.setDrawerOpen(drawerOpenGlobalVariableName, false);
     }
-  }
+  };
 
   deviceTableVisibilityOff () {
     const { showDeviceDialog } = this.state;

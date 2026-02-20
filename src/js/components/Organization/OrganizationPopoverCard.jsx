@@ -77,7 +77,7 @@ class OrganizationPopoverCard extends Component {
   onEdit = () => {
     const { organizationWeVoteId } = this.props;
     historyPush(`/voterguideedit/${organizationWeVoteId}`);
-  }
+  };
 
   render () {
     renderLog('OrganizationPopoverCard');  // Set LOG_RENDER_EVENTS to log all renders

@@ -238,11 +238,9 @@ class Friends extends Component {
             </RemindOuterWrapper>
           );
           mobileContentToDisplay = (
-            <>
-              <Suspense fallback={<></>}>
-                <RemindContactsStart />
-              </Suspense>
-            </>
+            <Suspense fallback={<></>}>
+              <RemindContactsStart />
+            </Suspense>
           );
           break;
         case 'suggested':
@@ -267,9 +265,7 @@ class Friends extends Component {
                 </Suspense>
               )}
               {suggestedFriendList.length > 0 ? (
-                <>
-                  <SuggestedFriends />
-                </>
+                <SuggestedFriends />
               ) : (
                 <>
                   {friendInvitationsSentToMe.length > 0 ? (
@@ -301,28 +297,26 @@ class Friends extends Component {
           desktopContentToDisplay = (
             <div className="row">
               <div className="col-sm-12 col-md-8">
-                <>
-                  {voterIsSignedIn && (
+                {voterIsSignedIn && (
+                <Suspense fallback={<></>}>
+                  <FirstAndLastNameRequiredAlert />
+                </Suspense>
+                )}
+                <FindYourContactsWrapper>
+                  <SectionTitle>
+                    Find Your Friends on WeVote
+                  </SectionTitle>
+                  <SectionDescription>
+                    Importing your contacts helps you find your friends on We
+                    Vote. You can delete your contact information at any time.
+                  </SectionDescription>
+                  <div>
                     <Suspense fallback={<></>}>
-                      <FirstAndLastNameRequiredAlert />
+                      <AddContactsFromGoogleButton darkButton />
                     </Suspense>
-                  )}
-                  <FindYourContactsWrapper>
-                    <SectionTitle>
-                      Find Your Friends on WeVote
-                    </SectionTitle>
-                    <SectionDescription>
-                      Importing your contacts helps you find your friends on We
-                      Vote. You can delete your contact information at any time.
-                    </SectionDescription>
-                    <div>
-                      <Suspense fallback={<></>}>
-                        <AddContactsFromGoogleButton darkButton />
-                      </Suspense>
-                    </div>
-                  </FindYourContactsWrapper>
-                  <InviteByEmail />
-                </>
+                  </div>
+                </FindYourContactsWrapper>
+                <InviteByEmail />
               </div>
               <div className="col-sm-12 col-md-4">
                 <SignInOptionsWrapper>
@@ -403,13 +397,11 @@ class Friends extends Component {
               ) : (
                 <>
                   {(voterContactEmailListCount > 0) && (
-                    <>
-                      <MessageCard
+                    <MessageCard
                         mainText="Add friends from your contacts"
                         buttonText="Choose friends to add"
                         buttonURL="/friends/suggested"
-                      />
-                    </>
+                    />
                   )}
                 </>
               )}
@@ -476,50 +468,46 @@ class Friends extends Component {
               <BrowserPushMessage incomingProps={this.props} />
               <div className="row">
                 <div className="col-sm-12 col-md-8">
-                  <>
-                    {(!friendActivityExists && contactsWithAccountCount) ? (
-                      <ContactsImportedPreviewOuterWrapper>
-                        <SetUpAccountTitle>
-                          {contactsWithAccountCount}
-                          {' '}
-                          of your friends
-                          {' '}
-                          {contactsWithAccountCount === 1 ? 'is' : 'are'}
-                          {' '}
-                          already on WeVote
-                          {' '}
-                        </SetUpAccountTitle>
-                        <Suspense fallback={<></>}>
-                          <ContactsImportedPreview showOnlyContactsWithAccounts />
-                        </Suspense>
-                        <MessageCard
+                  {(!friendActivityExists && contactsWithAccountCount) ? (
+                    <ContactsImportedPreviewOuterWrapper>
+                      <SetUpAccountTitle>
+                        {contactsWithAccountCount}
+                        {' '}
+                        of your friends
+                        {' '}
+                        {contactsWithAccountCount === 1 ? 'is' : 'are'}
+                        {' '}
+                        already on WeVote
+                        {' '}
+                      </SetUpAccountTitle>
+                      <Suspense fallback={<></>}>
+                        <ContactsImportedPreview showOnlyContactsWithAccounts />
+                      </Suspense>
+                      <MessageCard
                           inShareModal
                           mainText=""
                           buttonText="Choose friends to add"
                           buttonURL="/friends/suggested"
-                        />
-                      </ContactsImportedPreviewOuterWrapper>
-                    ) : null}
-                    {voterIsSignedIn && (
-                      <Suspense fallback={<></>}>
-                        <FirstAndLastNameRequiredAlert />
-                      </Suspense>
-                    )}
-                    {!!(!voterIsSignedIn || !friendActivityExists) && (
-                      <InviteByEmail />
-                    )}
-                    <FriendInvitationsSentToMe />
-                    <SuggestedFriendsPreview />
-                    {((voterContactEmailListCount > 0) && !(!friendActivityExists && contactsWithAccountCount)) && (
-                      <>
-                        <MessageCard
+                      />
+                    </ContactsImportedPreviewOuterWrapper>
+                  ) : null}
+                  {voterIsSignedIn && (
+                  <Suspense fallback={<></>}>
+                    <FirstAndLastNameRequiredAlert />
+                  </Suspense>
+                  )}
+                  {!!(!voterIsSignedIn || !friendActivityExists) && (
+                  <InviteByEmail />
+                  )}
+                  <FriendInvitationsSentToMe />
+                  <SuggestedFriendsPreview />
+                  {((voterContactEmailListCount > 0) && !(!friendActivityExists && contactsWithAccountCount)) && (
+                  <MessageCard
                           mainText="Add friends from your contacts"
                           buttonText="Choose friends to add"
                           buttonURL="/friends/suggested"
-                        />
-                      </>
-                    )}
-                  </>
+                  />
+                  )}
                 </div>
                 <div className="col-sm-12 col-md-4">
                   {!!(voterIsSignedIn && friendActivityExists) && (

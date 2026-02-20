@@ -155,11 +155,11 @@ class ShareModal extends Component {
     this.setState({
       shareWithFriendsNow: false,
     });
-  }
+  };
 
   saveActionShareButtonCopy = () => {
     AnalyticsActions.saveActionShareButtonCopy(VoterStore.electionId());
-  }
+  };
 
   // saveActionShareButtonEmail = () => {
   //   AnalyticsActions.saveActionShareButtonEmail(VoterStore.electionId());
@@ -167,7 +167,7 @@ class ShareModal extends Component {
 
   saveActionShareButtonFacebook = () => {
     AnalyticsActions.saveActionShareButtonFacebook(VoterStore.electionId());
-  }
+  };
 
   saveActionShareButtonFriends = () => {
     const voterIsSignedIn = VoterStore.getVoterIsSignedIn();
@@ -179,11 +179,11 @@ class ShareModal extends Component {
       AppObservableStore.setShowSignInModal(true);
     }
     AnalyticsActions.saveActionShareButtonFriends(VoterStore.electionId());
-  }
+  };
 
   saveActionShareButtonTwitter = () => {
     AnalyticsActions.saveActionShareButtonTwitter(VoterStore.electionId());
-  }
+  };
 
   closeShareModal = (buttonId = '') => {
     const { location: { pathname: currentPathname } } = window;
@@ -208,7 +208,7 @@ class ShareModal extends Component {
       dataLayerObject.electionDetails = electionDetails;
     }
     this.props.closeShareModal(currentPathname);
-  }
+  };
 
   render () {
     renderLog('ShareModal');  // Set LOG_RENDER_EVENTS to log all renders

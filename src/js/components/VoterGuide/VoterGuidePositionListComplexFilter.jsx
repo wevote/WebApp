@@ -292,7 +292,7 @@ class VoterGuidePositionListComplexFilter extends Component {
       filteredPositionListLength: filteredPositions.length,
       isSearching: false,
     });
-  }
+  };
 
   onScroll () {
     if (this.props.turnOffOnScroll) {
@@ -364,7 +364,7 @@ class VoterGuidePositionListComplexFilter extends Component {
         numberOfPositionItemsToDisplay,
       });
     }, 500);
-  }
+  };
 
   render () {
     const { positionList, stateCodesToDisplay } = this.state;

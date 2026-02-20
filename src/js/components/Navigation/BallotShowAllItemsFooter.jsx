@@ -36,7 +36,7 @@ class BallotShowAllItemsFooter extends Component {
       this.props.setActiveRaceItem();
     }
     window.scrollTo(0, 0);
-  }
+  };
 
   render () {
     renderLog('BallotShowAllItemsFooter');  // Set LOG_RENDER_EVENTS to log all renders

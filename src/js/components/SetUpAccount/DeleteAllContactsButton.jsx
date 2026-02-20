@@ -23,14 +23,14 @@ class DeleteAllContactsButton extends React.Component {
   deleteAllContacts = () => {
     const deleteAllVoterContactEmails = true;
     VoterActions.voterContactListDelete(deleteAllVoterContactEmails);
-  }
+  };
 
   deleteAllContactsConfirmToggle = () => {
     const { deleteAllContactsConfirm } = this.state;
     this.setState({
       deleteAllContactsConfirm: !deleteAllContactsConfirm,
     });
-  }
+  };
 
   render () {
     renderLog('DeleteAllContactsButton');  // Set LOG_RENDER_EVENTS to log all renders

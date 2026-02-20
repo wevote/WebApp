@@ -83,7 +83,7 @@ class ShareOnTwitterButton extends Component {
     const { campaignXNewsItemWeVoteId } = this.props;
     const { campaignX } = this.state;
     return generateSharingLink(campaignX, campaignXNewsItemWeVoteId);
-  }
+  };
 
   saveActionShareButton = () => {
     CampaignSupporterActions.shareButtonClicked(true);

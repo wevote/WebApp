@@ -139,12 +139,12 @@ class MeasureItemForOpinions extends Component {
   getMeasureLink = () => {
     const { ballotItemWeVoteId } = this.props;
     return `/measure/${ballotItemWeVoteId}/b/btdb`; // back-to-default-ballot
-  }
+  };
 
   goToMeasureLink = () => {
     const measureLink = this.getMeasureLink();
     historyPush(measureLink);
-  }
+  };
 
   togglePositionStatement () {
     const { showPositionStatement } = this.state;

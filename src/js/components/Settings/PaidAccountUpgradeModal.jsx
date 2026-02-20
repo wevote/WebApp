@@ -296,7 +296,7 @@ class PaidAccountUpgradeModal extends Component {
 
   backToApplyCoupon = () => {
     this.setState({ paidAccountProcessStep: 'selectPlanDetailsMobile' });
-  }
+  };
 
   moveToPayForPlanStep = () => {
     if (window.innerWidth > 768) {
@@ -308,7 +308,7 @@ class PaidAccountUpgradeModal extends Component {
         paidAccountProcessStep: 'payForPlanMobile',
       });
     }
-  }
+  };
 
   pricingPlanChosenFunction = (pricingPlanChosen) => {
     const pathname = normalizedHref();
@@ -431,7 +431,7 @@ class PaidAccountUpgradeModal extends Component {
           planPriceForDisplayBilledYearly: this.convertPriceFromPenniesToDollars(proPlanPriceForDisplayBilledYearly),
         });
     }
-  }
+  };
 
   handleRadioGroupChange = (event) => {
     const { radioGroupValue, planPriceForDisplayBilledMonthly, planPriceForDisplayBilledYearly } = this.state;
@@ -464,7 +464,7 @@ class PaidAccountUpgradeModal extends Component {
         payByYearCostPerYear,
       });
     }
-  }
+  };
 
   paymentProcessedFunction () {
     this.setState({

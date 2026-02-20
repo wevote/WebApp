@@ -62,7 +62,7 @@ class FirstCandidateListController extends Component {
         }
       }
     });
-  }
+  };
 
   CandidateSearchRetrieve = () => {
     const { searchText } = this.props;
@@ -72,7 +72,7 @@ class FirstCandidateListController extends Component {
         CandidateActions.candidatesQuery('', [], '', searchText);
       }
     });
-  }
+  };
 
   CandidatesForStateRetrieve = () => {
     const { stateCode } = this.props; // year
@@ -121,7 +121,7 @@ class FirstCandidateListController extends Component {
         }
       }
     });
-  }
+  };
 
   CandidatesForYearRetrieve = () => {
     const { stateCode, year: thisYearInteger } = this.props;
@@ -135,7 +135,7 @@ class FirstCandidateListController extends Component {
         CandidateActions.candidatesQuery(`${thisYearInteger}`, [], filteredStateCode);
       }
     });
-  }
+  };
 
   render () {
     renderLog('FirstCandidateListController');  // Set LOG_RENDER_EVENTS to log all renders

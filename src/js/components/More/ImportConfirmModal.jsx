@@ -110,41 +110,43 @@ export default function ImportConfirmModal ({
   const previewRow = getPreviewRow();
   const notMappedCount = userHeaders.filter((h) => !columnMapping[h]).length;
 
-  const MappingRowContent = ({ userHeader }) => (
-    <MappingRow>
-      <UserColumnName>{userHeader}</UserColumnName>
-      <DropdownWrapper>
-        <MobileStatusIcon $isWarning={!columnMapping[userHeader]}>
-          <WarningIcon fontSize="small" />
-        </MobileStatusIcon>
-        <StyledSelect
+  function MappingRowContent ({ userHeader }) {
+    return (
+      <MappingRow>
+        <UserColumnName>{userHeader}</UserColumnName>
+        <DropdownWrapper>
+          <MobileStatusIcon $isWarning={!columnMapping[userHeader]}>
+            <WarningIcon fontSize="small" />
+          </MobileStatusIcon>
+          <StyledSelect
           value={columnMapping[userHeader] || 'Select column'}
           onChange={(e) => handleColumnChange(userHeader, e.target.value)}
           $hasValue={columnMapping[userHeader] !== null}
-        >
-          <option value="Select column" disabled hidden>
-            Select column
-          </option>
-          {weVoteColumns.map((col) => (
-            <option key={col} value={col}>{col}</option>
-          ))}
-        </StyledSelect>
-        {autoMatched[userHeader] && columnMapping[userHeader] && (
+          >
+            <option value="Select column" disabled hidden>
+              Select column
+            </option>
+            {weVoteColumns.map((col) => (
+              <option key={col} value={col}>{col}</option>
+            ))}
+          </StyledSelect>
+          {autoMatched[userHeader] && columnMapping[userHeader] && (
           <AutoMatchedLabel>Auto-matched</AutoMatchedLabel>
-        )}
-        {columnMapping[userHeader] && (
+          )}
+          {columnMapping[userHeader] && (
           <CheckIconWrapper>
             <CheckIcon fontSize="small" />
           </CheckIconWrapper>
-        )}
-      </DropdownWrapper>
-      {columnMapping[userHeader] && (
+          )}
+        </DropdownWrapper>
+        {columnMapping[userHeader] && (
         <CheckIconWrapper className="u-show-mobile">
           <CheckIcon fontSize="small" />
         </CheckIconWrapper>
-      )}
-    </MappingRow>
-  );
+        )}
+      </MappingRow>
+    );
+  }
 
   MappingRowContent.propTypes = {
     userHeader: PropTypes.string.isRequired,

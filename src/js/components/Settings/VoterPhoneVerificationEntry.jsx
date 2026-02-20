@@ -217,7 +217,7 @@ class VoterPhoneVerificationEntry extends Component {
       VoterActions.clearSecretCodeVerificationStatusAndPhone();
     }, delayBeforeClearingPhoneStatus);
     this.closeSignInModalLocal();
-  }
+  };
 
   closeVerifyModalFromVerifySecretCode = () => {
     // console.log('VoterPhoneVerificationEntry closeVerifyModalFromVerifySecretCode');
@@ -415,7 +415,7 @@ class VoterPhoneVerificationEntry extends Component {
     } else {
       this.setState({ displayIncorrectPhoneNumberError: true });
     }
-  }
+  };
 
   reSendSignInCodeSMS = (voterSMSPhoneNumber) => {
     // console.log('reSendSignInCodeSMS');

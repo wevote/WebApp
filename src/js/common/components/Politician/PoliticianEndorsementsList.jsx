@@ -92,7 +92,7 @@ class PoliticianEndorsementsList extends Component {
       filteredPositionList: [],
       numberOfPositionsToDisplay: 0,
     });
-  }
+  };
 
   increaseNumberOfEndorsementsToDisplay = () => {
     let { numberOfPositionsToDisplay } = this.state;
@@ -116,7 +116,7 @@ class PoliticianEndorsementsList extends Component {
       dataLayerObject.politicianDetails = PoliticianStore.getAnalyticsPoliticianDetails(politicianWeVoteId);
     }
     TagManager.dataLayer({ dataLayer: dataLayerObject });
-  }
+  };
 
   // When we have "likes" put endorsements with most likes at top
 
@@ -128,15 +128,13 @@ class PoliticianEndorsementsList extends Component {
 
     if ((!filteredPositionList || filteredPositionList.length === 0) && !hideEncouragementToEndorse) {
       return (
-        <>
-          <PoliticianEndorsementsListWrapper>
-            {!hideEncouragementToEndorse && (
-              <NoPositionsFound>
-                Be the first to add an endorsement!
-              </NoPositionsFound>
-            )}
-          </PoliticianEndorsementsListWrapper>
-        </>
+        <PoliticianEndorsementsListWrapper>
+          {!hideEncouragementToEndorse && (
+          <NoPositionsFound>
+            Be the first to add an endorsement!
+          </NoPositionsFound>
+          )}
+        </PoliticianEndorsementsListWrapper>
       );
     }
     let numberOfCampaignsDisplayed = 0;

@@ -112,7 +112,7 @@ class ReadyLight extends Component {
 
   goToBallot = () => {
     historyPush('/ballot');
-  }
+  };
 
   getTopPadding = () => {
     if (isWebApp()) {
@@ -120,7 +120,7 @@ class ReadyLight extends Component {
     }
     cordovaSimplePageContainerTopOffset(VoterStore.getVoterIsSignedIn());
     return {};
-  }
+  };
 
   fireGTMDataLayerWhenReady () {
     const { dataLayerFired } = this.state;

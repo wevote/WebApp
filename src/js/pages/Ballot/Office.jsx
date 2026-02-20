@@ -23,7 +23,7 @@ import BallotItemCompressed from '../../components/Ballot/BallotItemCompressed';
 
 
 // This is related to pages/VoterGuide/OrganizationVoterGuideOffice
-const Office = () => {
+function Office () {
   const params = useParams();
   const [candidateList, setCandidateList] = useState([]);
   const [office, setOffice] = useState({});
@@ -308,7 +308,7 @@ const Office = () => {
       </OfficeWrapper>
     </PageContentContainer>
   );
-};
+}
 Office.propTypes = {
   // match: PropTypes.object.isRequired,
 };

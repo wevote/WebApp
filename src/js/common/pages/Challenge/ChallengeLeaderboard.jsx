@@ -9,7 +9,7 @@ import AppObservableStore from '../../stores/AppObservableStore';
 import YourRankOutOf from '../../components/Challenge/YourRankOutOf';
 
 
-const ChallengeLeaderboard = ({ classes, challengeWeVoteId, clearSearchFunction, searchFunction }) => {
+function ChallengeLeaderboard ({ classes, challengeWeVoteId, clearSearchFunction, searchFunction }) {
   const [participantList, setParticipantList] = React.useState([]);
   const [rankOfVoter, setRankOfVoter] = React.useState(0);
   const [participantsCount, setParticipantsCount] = useState(0);
@@ -81,7 +81,7 @@ const ChallengeLeaderboard = ({ classes, challengeWeVoteId, clearSearchFunction,
       />
     </LeaderboardContainer>
   );
-};
+}
 ChallengeLeaderboard.propTypes = {
   classes: PropTypes.object.isRequired,
   clearSearchFunction: PropTypes.func.isRequired,

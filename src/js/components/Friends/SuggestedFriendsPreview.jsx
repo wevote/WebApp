@@ -50,7 +50,7 @@ export default class SuggestedFriendsPreview extends Component {
 
   goToSuggestedFriends = () => {
     historyPush('/friends/suggested');
-  }
+  };
 
   render () {
     renderLog('SuggestedFriendsPreview');  // Set LOG_RENDER_EVENTS to log all renders

@@ -10,7 +10,7 @@ import ChallengeParticipantSimpleListRoot from '../ChallengeParticipantListRoot/
 // import { getChallengeValuesFromIdentifiers } from '../../utils/challengeUtils';
 
 
-const ThanksForJoiningChallenge = ({ voterFirstName, challengeTitle, onClose, challengeWeVoteId }) => {
+function ThanksForJoiningChallenge ({ voterFirstName, challengeTitle, onClose, challengeWeVoteId }) {
   const [isClosing, setIsClosing] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
   const { challengeSEOFriendlyPath } = useParams();
@@ -78,7 +78,7 @@ const ThanksForJoiningChallenge = ({ voterFirstName, challengeTitle, onClose, ch
       </ThanksForJoiningInnerWrapper>
     </ThanksForJoiningOuterWrapper>
   );
-};
+}
 ThanksForJoiningChallenge.propTypes = {
   voterFirstName: PropTypes.string.isRequired,
   challengeTitle: PropTypes.string.isRequired,

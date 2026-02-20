@@ -36,7 +36,7 @@ class CampaignShareChunk extends Component {
       campaignBasePath = `/id/${campaignXWeVoteId}/`;
     }
     return campaignBasePath;
-  }
+  };
 
   superSharingIntro = (sms = false) => {
     if (sms) {
@@ -44,7 +44,7 @@ class CampaignShareChunk extends Component {
     } else {
       historyPush(`${this.getCampaignXBasePath()}super-sharing-campaign-email`);
     }
-  }
+  };
 
   render () {
     renderLog('CampaignShareChunk');  // Set LOG_RENDER_EVENTS to log all renders

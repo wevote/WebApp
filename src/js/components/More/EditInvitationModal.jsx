@@ -5,14 +5,14 @@ import { ContentCopy as CopyIcon } from '@mui/icons-material';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 import ModalDisplayTemplateA from '../Widgets/ModalDisplayTemplateA';
 
-const EditInvitationModal = ({
+function EditInvitationModal ({
   isOpen,
   onClose,
   invitationBody,
   onSave,
   notify,
   selectedPoliticianId,
-}) => {
+}) {
   const [draftInvite, setDraftInvite] = useState(invitationBody);
   const [initialInvite, setInitialInvite] = useState(invitationBody);
 
@@ -100,7 +100,7 @@ const EditInvitationModal = ({
       />
     </>
   );
-};
+}
 
 EditInvitationModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,

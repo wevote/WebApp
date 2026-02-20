@@ -169,7 +169,7 @@ class CampaignSupportEndorsement extends Component {
       campaignBasePath = `/id/${campaignXWeVoteId}/`;
     }
     return campaignBasePath;
-  }
+  };
 
   getPoliticianBasePath = () => {
     const { politicianSEOFriendlyPath, linkedPoliticianWeVoteId } = this.state;
@@ -183,7 +183,7 @@ class CampaignSupportEndorsement extends Component {
       politicianBasePath = this.getCampaignXBasePath();
     }
     return politicianBasePath;
-  }
+  };
 
   goToNextStep = () => {
     const { payToPromoteStepTurnedOn } = this.state;
@@ -192,14 +192,14 @@ class CampaignSupportEndorsement extends Component {
     } else {
       historyPush(`${this.getCampaignXBasePath()}share-campaign`);
     }
-  }
+  };
 
   submitSkipForNow = () => {
     initializejQuery(() => {
       CampaignSupporterActions.supporterEndorsementQueuedToSave(undefined);
     });
     this.goToNextStep();
-  }
+  };
 
   submitSupporterEndorsement = () => {
     const { campaignXWeVoteId } = this.state;
@@ -230,7 +230,7 @@ class CampaignSupportEndorsement extends Component {
       }
       this.goToNextStep();
     }
-  }
+  };
 
   render () {
     renderLog('CampaignSupportEndorsement');  // Set LOG_RENDER_EVENTS to log all renders

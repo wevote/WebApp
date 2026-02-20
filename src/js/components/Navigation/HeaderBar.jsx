@@ -190,7 +190,7 @@ class HeaderBar extends Component {
     } */
       this.customHighlightSelector(newValue);
     });
-  }
+  };
 
   handleResizeLocal () {
     if (handleResize('HeaderBar')) {
@@ -298,7 +298,7 @@ class HeaderBar extends Component {
   openHowItWorksModal = () => {
     // console.log('Opening modal');
     AppObservableStore.setShowHowItWorksModal(true);
-  }
+  };
 
   navTo = (path, highlightValue = 99) => () => {
     this.setState({ moreAnchorEl: null });

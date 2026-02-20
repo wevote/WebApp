@@ -214,7 +214,8 @@ class PoliticianListRoot extends Component {
       let foundInThisEntry;
       let isFirstWord;
       let thisWordFound;
-      searchResults = filter(filteredList,
+      searchResults = filter(
+        filteredList,
         (oneEntry) => {
           foundInThisEntry = false;
           isFirstWord = true;
@@ -237,7 +238,8 @@ class PoliticianListRoot extends Component {
             }
           });
           return foundInThisEntry;
-        });
+        },
+      );
       if (searchResults.length === 0) {
         hideDisplayBecauseNoSearchResults = true;
         // this.callbackToParentHideIfNoResults(true);
@@ -283,7 +285,7 @@ class PoliticianListRoot extends Component {
       hideDisplayBecauseNoSearchResults,
       timeStampOfChange: Date.now(),
     }, () => { this.handleNumberOfResults(filteredList.length, searchResults.length); });
-  }
+  };
 
   leftAndRightArrowSetState = (el) => {
     // set state here
@@ -292,19 +294,19 @@ class PoliticianListRoot extends Component {
       hideLeftArrow: leftRightStateDict[0],
       hideRightArrow: leftRightStateDict[1],
     });
-  }
+  };
 
   loadMoreScrollLocal = (el) => {
     handleHorizontalScroll(el, 29, this.leftAndRightArrowSetState, RIGHT_MARGIN_SIZE);
     // handleHorizontalScroll(this.scrollElement.current, distance, this.leftAndRightArrowSetState, RIGHT_MARGIN_SIZE);
-  }
+  };
 
   shouldLoadMoreSetState = (el) => {
     const element = el;
     this.setState({
       callShowMoreCards: checkDivPositionForLoadMore(element, isMobileScreenSize()),
     });
-  }
+  };
 
   render () {
     renderLog('PoliticianListRoot');  // Set LOG_RENDER_EVENTS to log all renders

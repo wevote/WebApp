@@ -137,11 +137,11 @@ class IssueCard extends Component {
       this.toggleShowSignInModal();
     }
     this.addToIssueFollowersAdjustment(1);
-  }
+  };
 
   onIssueStopFollowingClick = () => {
     this.addToIssueFollowersAdjustment(-1);
-  }
+  };
 
   handleIssueClick = (buttonId) => {
     const { issue } = this.state;

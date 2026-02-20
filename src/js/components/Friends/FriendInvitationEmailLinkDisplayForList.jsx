@@ -155,11 +155,9 @@ class FriendInvitationEmailLinkDisplayForList extends Component {
                 </Suspense>
               </Link>
             ) : (
-              <>
-                <Suspense fallback={<></>}>
-                  <ImageHandler sizeClassName="icon-lg " imageUrl={voterPhotoUrlLarge} kind_of_ballot_item="CANDIDATE" />
-                </Suspense>
-              </>
+              <Suspense fallback={<></>}>
+                <ImageHandler sizeClassName="icon-lg " imageUrl={voterPhotoUrlLarge} kind_of_ballot_item="CANDIDATE" />
+              </Suspense>
             )}
           </Avatar>
           <ToRightOfPhotoWrapper>

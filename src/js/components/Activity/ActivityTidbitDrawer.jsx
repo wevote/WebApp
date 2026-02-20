@@ -64,7 +64,7 @@ class ActivityTidbitDrawer extends Component {
     if (typeof pathname !== 'undefined' && pathname && pathname.startsWith('/news/a/')) {
       historyPush(`/news#${activityTidbitWeVoteId}`);
     }
-  }
+  };
 
   render () {
     // console.log(this.props.candidate_we_vote_id);

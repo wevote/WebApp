@@ -100,14 +100,14 @@ class ShareModalTitleArea extends Component {
       whatAndHowMuchToShare,
     });
     AppObservableStore.setWhatAndHowMuchToShare(whatAndHowMuchToShare);
-  }
+  };
 
   toggleShowSignInModal = () => {
     const { showSignInModal } = this.state;
     this.setState({
       showSignInModal: !showSignInModal,
     });
-  }
+  };
 
   doNotIncludeOpinions (whatAndHowMuchToShare) {
     // console.log('doNotIncludeOpinions whatAndHowMuchToShare:', whatAndHowMuchToShare);
@@ -186,11 +186,9 @@ class ShareModalTitleArea extends Component {
                   id="shareModalAllOpinionsRadioButton"
                   value="AllOpinions"
                   label={(
-                    <>
-                      <div>
-                        {allOpinionsRadioButtonText}
-                      </div>
-                    </>
+                    <div>
+                      {allOpinionsRadioButtonText}
+                    </div>
                     )}
                   // label="Share my voter guide (coming in 2023)"
                   labelPlacement="end"

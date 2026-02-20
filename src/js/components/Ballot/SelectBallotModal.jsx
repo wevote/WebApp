@@ -71,7 +71,7 @@ class SelectBallotModal extends Component {
     this.setState({
       editingAddress: !editingAddress,
     });
-  }
+  };
 
   render () {
     renderLog('SelectBallotModal');  // Set LOG_RENDER_EVENTS to log all renders

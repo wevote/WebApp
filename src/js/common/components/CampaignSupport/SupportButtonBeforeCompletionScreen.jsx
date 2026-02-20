@@ -166,7 +166,7 @@ class SupportButtonBeforeCompletionScreen extends Component {
         voterCanVoteForPoliticianInCampaign: false,
       });
     }
-  }
+  };
 
   submitSupportButtonMobile = () => {
     const { campaignXWeVoteId } = this.props;
@@ -188,7 +188,7 @@ class SupportButtonBeforeCompletionScreen extends Component {
       AppObservableStore.setBlockCampaignXRedirectOnSignIn(false);
       this.props.functionToUseWhenProfileComplete();
     }
-  }
+  };
 
   onKeyDown = (event) => {
     event.preventDefault();
@@ -244,24 +244,22 @@ class SupportButtonBeforeCompletionScreen extends Component {
           ) : (
             <>
               {voterOpposesBallotItem ? (
-                <>
-                  <Button
+                <Button
                     classes={{ root: supportButtonClasses }}
                     color="primary"
                     disabled={futureFeaturesDisabled || !nextReleaseFeaturesEnabled}
                     id="helpDefeatThemButton"
                     onClick={(!futureFeaturesDisabled && nextReleaseFeaturesEnabled) ? this.submitSupportButtonMobile : null}
                     variant={inButtonFullWidthMode || !inCompressedMode ? 'contained' : 'outline'}
-                  >
+                >
+                  <span>
+                    {(!futureFeaturesDisabled && nextReleaseFeaturesEnabled) && (
                     <span>
-                      {(!futureFeaturesDisabled && nextReleaseFeaturesEnabled) && (
-                        <span>
-                          Help defeat them
-                        </span>
-                      )}
+                      Help defeat them
                     </span>
-                  </Button>
-                </>
+                    )}
+                  </span>
+                </Button>
               ) : (
                 <Button
                   classes={{ root: supportButtonClasses }}

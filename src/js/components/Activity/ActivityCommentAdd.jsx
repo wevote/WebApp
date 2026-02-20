@@ -79,20 +79,20 @@ class ActivityCommentAdd extends Component {
     if (this.props.commentEditSavedFunction) {
       this.props.commentEditSavedFunction();
     }
-  }
+  };
 
   updateStatementTextToBeSaved = (e) => {
     this.setState({
       statementText: e.target.value,
     });
-  }
+  };
 
   onClickShowActivityTidbitDrawer = () => {
     const { activityTidbitWeVoteId } = this.props;
     // console.log('onClickShowActivityTidbitDrawer activityTidbitWeVoteId:', activityTidbitWeVoteId);
     AppObservableStore.setActivityTidbitWeVoteIdForDrawer(activityTidbitWeVoteId);
     AppObservableStore.setShowActivityTidbitDrawer(true);
-  }
+  };
 
   render () {
     renderLog('ActivityCommentAdd');  // Set LOG_RENDER_EVENTS to log all renders

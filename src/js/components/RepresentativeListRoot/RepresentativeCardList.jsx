@@ -69,14 +69,14 @@ class RepresentativeCardList extends Component {
     this.setState({
       numberToDisplay,
     });
-  }
+  };
 
   loadMoreHasBeenClicked = () => {
     this.increaseNumberToDisplay();
     if (this.props.loadMoreScroll) {
       this.props.loadMoreScroll();
     }
-  }
+  };
 
   render () {
     renderLog('RepresentativeCardList');  // Set LOG_RENDER_EVENTS to log all renders

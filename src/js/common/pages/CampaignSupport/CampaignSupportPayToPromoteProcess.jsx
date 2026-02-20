@@ -172,7 +172,7 @@ class CampaignSupportPayToPromoteProcess extends Component {
   goToIWillShare = () => {
     const pathForNextStep = `${this.getCampaignXBasePath()}share-campaign`;
     historyPush(pathForNextStep);
-  }
+  };
 
   getCampaignXBasePath = () => {
     const { campaignSEOFriendlyPath, campaignXWeVoteId } = this.state;
@@ -183,7 +183,7 @@ class CampaignSupportPayToPromoteProcess extends Component {
       campaignBasePath = `/id/${campaignXWeVoteId}/`;
     }
     return campaignBasePath;
-  }
+  };
 
   render () {
     renderLog('CampaignSupportPayToPromoteProcess');  // Set LOG_RENDER_EVENTS to log all renders

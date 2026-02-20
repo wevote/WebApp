@@ -45,7 +45,7 @@ class ChallengesHomeLoader extends Component {
     }
     cordovaSimplePageContainerTopOffset(VoterStore.getVoterIsSignedIn());
     return {};
-  }
+  };
 
   // In Cordova a Suspen[d] fallback must be on one line (or else) this makes it one line
   fallbackMarkup = () => {    // eslint-disable-line arrow-body-style
@@ -57,7 +57,7 @@ class ChallengesHomeLoader extends Component {
         </WhatIsHappeningSectionLoading>
       </>
     );
-  }
+  };
 
   render () {
     renderLog('ChallengesHomeLoader');  // Set LOG_RENDER_EVENTS to log all renders

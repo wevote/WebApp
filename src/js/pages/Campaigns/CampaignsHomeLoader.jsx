@@ -129,7 +129,7 @@ class CampaignsHomeLoader extends Component {
     } else {
       return '/cs';
     }
-  }
+  };
 
   getTopPadding = () => {
     if (isWebApp()) {
@@ -137,7 +137,7 @@ class CampaignsHomeLoader extends Component {
     }
     cordovaSimplePageContainerTopOffset(VoterStore.getVoterIsSignedIn());
     return {};
-  }
+  };
 
   // In Cordova a Suspen[d] fallback must be on one line (or else) this makes it one line
   fallbackMarkup = (stateCode) => {    // eslint-disable-line arrow-body-style
@@ -155,7 +155,7 @@ class CampaignsHomeLoader extends Component {
         </WhatIsHappeningSectionLoading>
       </>
     );
-  }
+  };
 
   render () {
     renderLog('CampaignsHomeLoader');  // Set LOG_RENDER_EVENTS to log all renders

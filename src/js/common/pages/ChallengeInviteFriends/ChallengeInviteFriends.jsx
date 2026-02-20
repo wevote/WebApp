@@ -170,11 +170,11 @@ class ChallengeInviteFriends extends Component {
       challengeBasePath = `/++/${challengeWeVoteId}/`;
     }
     return challengeBasePath;
-  }
+  };
 
   goToChallengeHome = () => {
     historyPush(`${this.getChallengeBasePath()}leaderboard`);
-  }
+  };
 
   render () {
     renderLog('ChallengeInviteFriends');  // Set LOG_RENDER_EVENTS to log all renders

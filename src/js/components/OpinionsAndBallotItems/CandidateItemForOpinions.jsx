@@ -150,7 +150,7 @@ class CandidateItemForOpinions extends Component {
   goToCandidateLink = () => {
     // If here, we assume the voter is on the Office page
     historyPush(this.getCandidateLink());
-  }
+  };
 
   togglePositionStatement () {
     const { showPositionStatement } = this.state;

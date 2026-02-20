@@ -89,7 +89,7 @@ class ShareWithFriendsModalBodyWithController extends Component {
         // this.setState({ loadingMoreItems: false });
       }
     }
-  }
+  };
 
   increaseNumberOfItemsToDisplay = () => {
     let { numberOfIncreases, numberOfItemsToDisplay } = this.state;
@@ -105,7 +105,7 @@ class ShareWithFriendsModalBodyWithController extends Component {
         numberOfItemsToDisplay,
       });
     }, 250);
-  }
+  };
 
   setElectionDateInformation = () => {
     // const electionDayText = ElectionStore.getElectionDayText(VoterStore.electionId());
@@ -126,7 +126,7 @@ class ShareWithFriendsModalBodyWithController extends Component {
       electionDateInFutureFormatted,
       electionDateIsToday,
     });
-  }
+  };
 
   searchFriends = (searchTerm) => {
     if (searchTerm.length === 0) {
@@ -138,8 +138,10 @@ class ShareWithFriendsModalBodyWithController extends Component {
     } else {
       const searchTermLowercase = searchTerm.toLowerCase();
       const { currentFriendList } = this.state;
-      const searchedFriendList = filter(currentFriendList,
-        (voter) => voter.voter_display_name.toLowerCase().includes(searchTermLowercase));
+      const searchedFriendList = filter(
+        currentFriendList,
+        (voter) => voter.voter_display_name.toLowerCase().includes(searchTermLowercase),
+      );
 
       this.setState({
         currentFriendListFilteredBySearch: searchedFriendList,
@@ -147,7 +149,7 @@ class ShareWithFriendsModalBodyWithController extends Component {
         searchTerm,
       });
     }
-  }
+  };
 
   clearSearch = () => {
     this.setState({
@@ -155,7 +157,7 @@ class ShareWithFriendsModalBodyWithController extends Component {
       searchTerm: '',
       currentFriendListFilteredBySearch: [],
     });
-  }
+  };
 
   render () {
     renderLog('ShareWithFriendsModalBodyWithController');  // Set LOG_RENDER_EVENTS to log all renders

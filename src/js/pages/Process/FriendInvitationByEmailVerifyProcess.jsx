@@ -141,7 +141,7 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
 
   setYesPleaseMergeAccounts = () => {
     this.setState({ yesPleaseMergeAccounts: true });
-  }
+  };
 
   voterMergeTwoAccountsByInvitationKey = (invitationSecretKey) => {
     VoterActions.voterMergeTwoAccountsByInvitationKey(invitationSecretKey);

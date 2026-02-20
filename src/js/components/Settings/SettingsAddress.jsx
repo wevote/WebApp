@@ -60,7 +60,7 @@ export default class SettingsAddressForDrawer extends Component {
     if (entryBox) {
       entryBox.value = '';
     }
-  }
+  };
 
   openWarningDialog = () => {
     this.setState({ showWarningDialog: true });

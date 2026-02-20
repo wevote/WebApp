@@ -80,11 +80,11 @@ class ShareOnFacebookButton extends Component {
     const { campaignXNewsItemWeVoteId } = this.props;
     const { campaignX } = this.state;
     return generateSharingLink(campaignX, campaignXNewsItemWeVoteId);
-  }
+  };
 
   saveActionShareButton = () => {
     CampaignSupporterActions.shareButtonClicked(true);
-  }
+  };
 
   render () {
     renderLog('ShareOnFacebookButton');  // Set LOG_RENDER_EVENTS to log all renders

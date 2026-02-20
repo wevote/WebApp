@@ -201,7 +201,7 @@ class BallotSharedOfficeItem extends Component {
     // candidatesToShowForSearchResults = candidatesToShowForSearchResults || [];
     const { candidateListForDisplay } = this.state;
     return candidateListForDisplay.length;
-  }
+  };
 
   generateCandidates = () => {
     const { externalUniqueId } = this.props; // candidateList
@@ -310,7 +310,7 @@ class BallotSharedOfficeItem extends Component {
         })}
       </BallotSharedCandidatesOuterWrapper>
     );
-  }
+  };
 
   goToCandidateLink (candidateWeVoteId) {
     const candidateLink = this.getCandidateLink(candidateWeVoteId);

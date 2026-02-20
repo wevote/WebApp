@@ -79,40 +79,44 @@ const TableHeaderTitle = styled.div`
   color: ${colors.darkGrey};
 `;
 
-const TableColorHeader = () => (
-  <ColorRowContainer style={{ backgroundColor: colors.ultraLightGrey }}>
-    <PrimitiveSemanticName>
-      <TableHeaderTitle>Primitive Name</TableHeaderTitle>
-    </PrimitiveSemanticName>
-
-    <PrimitiveSemanticName>
-      <TableHeaderTitle>Semantic Name</TableHeaderTitle>
-    </PrimitiveSemanticName>
-
-    <Hex>
-      <Circle color="#fffff" />
+function TableColorHeader () {
+  return (
+    <ColorRowContainer style={{ backgroundColor: colors.ultraLightGrey }}>
       <PrimitiveSemanticName>
-        <TableHeaderTitle>Hex</TableHeaderTitle>
+        <TableHeaderTitle>Primitive Name</TableHeaderTitle>
       </PrimitiveSemanticName>
-    </Hex>
 
-    <ColorValue color="#fffff">
-      <TableHeaderTitle>Value</TableHeaderTitle>
-    </ColorValue>
-  </ColorRowContainer>
-);
+      <PrimitiveSemanticName>
+        <TableHeaderTitle>Semantic Name</TableHeaderTitle>
+      </PrimitiveSemanticName>
 
-const ColorRow = ({ color, SemanticLabel, PrimitiveLabel, value }) => (
-  <ColorRowContainer>
-    <PrimitiveSemanticName>{PrimitiveLabel}</PrimitiveSemanticName>
-    <PrimitiveSemanticName>{SemanticLabel}</PrimitiveSemanticName>
-    <Hex>
-      <Circle color={color} />
-      <PrimitiveSemanticName>{color}</PrimitiveSemanticName>
-    </Hex>
-    <ColorValue color={color}>{value}</ColorValue>
-  </ColorRowContainer>
-);
+      <Hex>
+        <Circle color="#fffff" />
+        <PrimitiveSemanticName>
+          <TableHeaderTitle>Hex</TableHeaderTitle>
+        </PrimitiveSemanticName>
+      </Hex>
+
+      <ColorValue color="#fffff">
+        <TableHeaderTitle>Value</TableHeaderTitle>
+      </ColorValue>
+    </ColorRowContainer>
+  );
+}
+
+function ColorRow ({ color, SemanticLabel, PrimitiveLabel, value }) {
+  return (
+    <ColorRowContainer>
+      <PrimitiveSemanticName>{PrimitiveLabel}</PrimitiveSemanticName>
+      <PrimitiveSemanticName>{SemanticLabel}</PrimitiveSemanticName>
+      <Hex>
+        <Circle color={color} />
+        <PrimitiveSemanticName>{color}</PrimitiveSemanticName>
+      </Hex>
+      <ColorValue color={color}>{value}</ColorValue>
+    </ColorRowContainer>
+  );
+}
 
 ColorRow.propTypes = {
   color: PropTypes.string.isRequired,
@@ -121,13 +125,14 @@ ColorRow.propTypes = {
   value: PropTypes.string.isRequired,
 };
 
-const Colors = ({ palette, title }) => (
-  <div style={{  justifyContent: 'center', paddingLeft: '50px', paddingRight: '50px' }}>
-    <h2 style={{ color: colors.darkGrey, fontFamily: 'SF Pro Text', fontSize: '24px', fontStyle: 'normal', fontWeight: 600 }}>{ title }</h2>
+function Colors ({ palette, title }) {
+  return (
+    <div style={{  justifyContent: 'center', paddingLeft: '50px', paddingRight: '50px' }}>
+      <h2 style={{ color: colors.darkGrey, fontFamily: 'SF Pro Text', fontSize: '24px', fontStyle: 'normal', fontWeight: 600 }}>{ title }</h2>
 
-    <TableColorHeader />
-    <div>
-      {
+      <TableColorHeader />
+      <div>
+        {
         palette?.map((color, index) => (
           <ColorRow
             key={`${title}-${color}`}
@@ -138,49 +143,52 @@ const Colors = ({ palette, title }) => (
           />
         ))
       }
+      </div>
     </div>
-  </div>
-);
+  );
+}
 
 Colors.propTypes = {
   palette: PropTypes.arrayOf(PropTypes.string).isRequired,
   title: PropTypes.string.isRequired,
 };
 
-export const AllColors = () => (
-  <>
-    <h1 style={{
-      color: colors.darkGrey,
-      fontFamily: 'SF Pro Text',
-      fontSize: '38px',
-      fontWeight: 600,
-      paddingBottom: '36px',
-      paddingTop: '26px',
-      paddingLeft: '50px',
-    }}
-    >
-      Colors - Product Brand
-    </h1>
+export function AllColors () {
+  return (
+    <>
+      <h1 style={{
+        color: colors.darkGrey,
+        fontFamily: 'SF Pro Text',
+        fontSize: '38px',
+        fontWeight: 600,
+        paddingBottom: '36px',
+        paddingTop: '26px',
+        paddingLeft: '50px',
+      }}
+      >
+        Colors - Product Brand
+      </h1>
 
-    <Colors palette={bluePalette} title="Blue/Primary" />
-    <Colors palette={steelSecondary} title="Steel/Secondary" />
-    <Colors palette={redTertiary} title="Red/Tertiary" />
-    <Colors palette={orangeAccent} title="Orange/Accent" />
-  </>
-);
+      <Colors palette={bluePalette} title="Blue/Primary" />
+      <Colors palette={steelSecondary} title="Steel/Secondary" />
+      <Colors palette={redTertiary} title="Red/Tertiary" />
+      <Colors palette={orangeAccent} title="Orange/Accent" />
+    </>
+  );
+}
 
-export const BluePrimary = () => (
-  <Colors palette={bluePalette} title="Blue/Primary" />
-);
+export function BluePrimary () {
+  return <Colors palette={bluePalette} title="Blue/Primary" />;
+}
 
-export const SteelSecondary = () => (
-  <Colors palette={steelSecondary} title="Steel/Secondary" />
-);
+export function SteelSecondary () {
+  return <Colors palette={steelSecondary} title="Steel/Secondary" />;
+}
 
-export const RedTertiary = () => (
-  <Colors palette={redTertiary} title="Red/Tertiary" />
-);
+export function RedTertiary () {
+  return <Colors palette={redTertiary} title="Red/Tertiary" />;
+}
 
-export const OrangeAccent = () => (
-  <Colors palette={orangeAccent} title="Orange/Accent" />
-);
+export function OrangeAccent () {
+  return <Colors palette={orangeAccent} title="Orange/Accent" />;
+}

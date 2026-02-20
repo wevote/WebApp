@@ -121,13 +121,13 @@ class VerifyThisIsMe extends Component {
       voterGuideDisplay = `/${this.state.twitterHandle}`;
     }
     historyPush(voterGuideDisplay);
-  }
+  };
 
   voterSignOut = () => {
     const { match: { params } } = this.props;
     VoterSessionActions.voterSignOut();
     TwitterActions.twitterIdentityRetrieve(params.twitter_handle);
-  }
+  };
 
   render () {
     renderLog('VerifyThisIsMe');  // Set LOG_RENDER_EVENTS to log all renders

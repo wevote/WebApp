@@ -7,12 +7,14 @@ export default {
 
   campaignDescriptionSave (campaignWeVoteId, campaignDescription) {
     // console.log('campaignDescriptionSave: ', campaignDescription);
-    Dispatcher.loadEndpoint('campaignStartSave',
+    Dispatcher.loadEndpoint(
+      'campaignStartSave',
       {
         campaign_description: campaignDescription,
         campaign_description_changed: true,
         campaignx_we_vote_id: campaignWeVoteId,
-      });
+      },
+    );
   },
 
   campaignEditAllReset () {
@@ -21,14 +23,20 @@ export default {
 
   campaignEditAllSave (
     campaignXWeVoteId,
-    campaignDescriptionQueuedToSave, campaignDescriptionQueuedToSaveSet,
-    campaignPhotoQueuedToDelete, campaignPhotoQueuedToDeleteSet,
-    campaignPhotoQueuedToSave, campaignPhotoQueuedToSaveSet,
+    campaignDescriptionQueuedToSave,
+    campaignDescriptionQueuedToSaveSet,
+    campaignPhotoQueuedToDelete,
+    campaignPhotoQueuedToDeleteSet,
+    campaignPhotoQueuedToSave,
+    campaignPhotoQueuedToSaveSet,
     campaignPoliticianDeleteListJson,
-    campaignPoliticianStarterListQueuedToSave, campaignPoliticianStarterListQueuedToSaveSet,
-    campaignTitleQueuedToSave, campaignTitleQueuedToSaveSet,
+    campaignPoliticianStarterListQueuedToSave,
+    campaignPoliticianStarterListQueuedToSaveSet,
+    campaignTitleQueuedToSave,
+    campaignTitleQueuedToSaveSet,
   ) {
-    Dispatcher.loadEndpoint('campaignStartSave',
+    Dispatcher.loadEndpoint(
+      'campaignStartSave',
       {
         campaign_description: campaignDescriptionQueuedToSave,
         campaign_description_changed: campaignDescriptionQueuedToSaveSet,
@@ -42,7 +50,8 @@ export default {
         politician_delete_list: campaignPoliticianDeleteListJson,
         politician_starter_list: campaignPoliticianStarterListQueuedToSave,
         politician_starter_list_changed: campaignPoliticianStarterListQueuedToSaveSet,
-      });
+      },
+    );
   },
 
   campaignPhotoQueuedToDelete (deleteCampaignPhoto = true) {
@@ -54,12 +63,14 @@ export default {
   },
 
   campaignPhotoSave (campaignWeVoteId, campaignPhotoFromFileReader) {
-    Dispatcher.loadEndpoint('campaignStartSave',
+    Dispatcher.loadEndpoint(
+      'campaignStartSave',
       {
         campaign_photo_from_file_reader: campaignPhotoFromFileReader,
         campaign_photo_changed: true,
         campaignx_we_vote_id: campaignWeVoteId,
-      });
+      },
+    );
   },
 
   campaignPoliticianDeleteAddQueuedToSave (campaignXPoliticianId) {
@@ -76,23 +87,27 @@ export default {
 
   campaignPoliticianStarterListSave (campaignWeVoteId, campaignPoliticianStarterListQueuedToSaveJson, campaignPoliticianDeleteListJson) {
     // console.log('campaignPoliticianStarterListQueuedToSaveJson: ', campaignPoliticianStarterListQueuedToSaveJson);
-    Dispatcher.loadEndpoint('campaignStartSave',
+    Dispatcher.loadEndpoint(
+      'campaignStartSave',
       {
         politician_delete_list: campaignPoliticianDeleteListJson,
         politician_starter_list: campaignPoliticianStarterListQueuedToSaveJson,
         politician_starter_list_changed: true,
         campaignx_we_vote_id: campaignWeVoteId,
-      });
+      },
+    );
   },
 
   campaignRetrieveAsOwner (campaignWeVoteId) {
     let { hostname } = window.location;
     hostname = hostname || '';
-    Dispatcher.loadEndpoint('campaignRetrieveAsOwner',
+    Dispatcher.loadEndpoint(
+      'campaignRetrieveAsOwner',
       {
         campaignx_we_vote_id: campaignWeVoteId,
         hostname,
-      });
+      },
+    );
   },
 
   campaignTitleQueuedToSave (campaignTitle) {
@@ -101,21 +116,25 @@ export default {
 
   campaignTitleSave (campaignWeVoteId, campaignTitle) {
     // console.log('campaignTitleSave: ', campaignTitle);
-    Dispatcher.loadEndpoint('campaignStartSave',
+    Dispatcher.loadEndpoint(
+      'campaignStartSave',
       {
         campaign_title: campaignTitle,
         campaign_title_changed: true,
         campaignx_we_vote_id: campaignWeVoteId,
-      });
+      },
+    );
   },
 
   inDraftModeSave (campaignWeVoteId, inDraftMode) {
     // console.log('campaignDescriptionSave: ', campaignDescription);
-    Dispatcher.loadEndpoint('campaignStartSave',
+    Dispatcher.loadEndpoint(
+      'campaignStartSave',
       {
         in_draft_mode: inDraftMode,
         in_draft_mode_changed: true,
         campaignx_we_vote_id: campaignWeVoteId,
-      });
+      },
+    );
   },
 };

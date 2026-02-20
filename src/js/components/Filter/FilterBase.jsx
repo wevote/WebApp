@@ -242,7 +242,7 @@ class FilterBase extends React.Component {
 
   onStateDropDownChange = (stateCode) => {
     this.changeToDifferentStateCodeFilter(`stateCode${stateCode}`);
-  }
+  };
 
   render () {
     renderLog('FilterBase');  // Set LOG_RENDER_EVENTS to log all renders

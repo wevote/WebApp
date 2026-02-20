@@ -50,7 +50,7 @@ class OrganizationList extends Component {
       organizationListToDisplay,
       organizationListToDisplayCount,
     });
-  }
+  };
 
   onScroll () {
     const { increaseNumberOfItemsOnScroll } = this.props;
@@ -92,7 +92,7 @@ class OrganizationList extends Component {
         numberOfItemsToDisplay,
       });
     }, 500);
-  }
+  };
 
   orderByTwitterFollowers = (firstGuide, secondGuide) => secondGuide.twitter_followers_count - firstGuide.twitter_followers_count;
 

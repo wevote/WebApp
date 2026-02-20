@@ -7,7 +7,7 @@ import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 import { openSnackbar } from '../../common/components/Widgets/SnackNotifier';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 
-const TripleDotMenu = ({ makeVertical = false }) => {
+function TripleDotMenu ({ makeVertical = false }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [copyLinkText, setCopyLinkText] = useState('Copy ballot section page link');
   const copyLinkTimeoutRef = useRef(null);
@@ -84,7 +84,7 @@ const TripleDotMenu = ({ makeVertical = false }) => {
       </Popover>
     </TripleDotWrapper>
   );
-};
+}
 
 TripleDotMenu.propTypes = {
   makeVertical: PropTypes.bool,

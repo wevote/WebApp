@@ -157,7 +157,7 @@ class Ready extends Component {
 
   goToBallot = () => {
     historyPush('/ballot');
-  }
+  };
 
   getTopPadding = () => {
     if (isWebApp()) {
@@ -165,7 +165,7 @@ class Ready extends Component {
     }
     cordovaSimplePageContainerTopOffset(VoterStore.getVoterIsSignedIn());
     return {};
-  }
+  };
 
   fireGTMDataLayerWhenReady () {
     const { dataLayerFired } = this.state;

@@ -95,11 +95,13 @@ export default {
   ) {
     // If there is still a SuperShareItem in draft mode for this campaign, return the superShareItemId, and if not generate a new SuperShareItem
     // console.log('superShareItemRetrieve: ', campaignXWeVoteId, superShareItemId);
-    Dispatcher.loadEndpoint('superShareItemSave',
+    Dispatcher.loadEndpoint(
+      'superShareItemSave',
       {
         campaignx_we_vote_id: campaignXWeVoteId,
         super_share_item_id: superShareItemId,
-      });
+      },
+    );
   },
 
   superShareItemSave (
@@ -112,7 +114,8 @@ export default {
     superShareItemId,
   ) {
     // console.log('superShareItemSave: ', personalizedMessage);
-    Dispatcher.loadEndpoint('superShareItemSave',
+    Dispatcher.loadEndpoint(
+      'superShareItemSave',
       {
         campaignx_we_vote_id: campaignXWeVoteId,
         campaignx_news_item_we_vote_id: campaignXNewsItemWeVoteId,
@@ -121,7 +124,8 @@ export default {
         personalized_message: personalizedMessage,
         personalized_message_changed: personalizedMessageSet,
         super_share_item_id: superShareItemId,
-      });
+      },
+    );
   },
 
   superShareItemEmailRecipientListSave (
@@ -132,24 +136,28 @@ export default {
     superShareItemId,
   ) {
     // console.log('superShareItemEmailRecipientListSave: ', emailRecipientListSerialized);
-    Dispatcher.loadEndpoint('superShareItemSave',
+    Dispatcher.loadEndpoint(
+      'superShareItemSave',
       {
         campaignx_we_vote_id: campaignXWeVoteId,
         campaignx_news_item_we_vote_id: campaignXNewsItemWeVoteId,
         email_recipient_list: emailRecipientListSerialized,
         email_recipient_list_changed: emailRecipientListSet,
         super_share_item_id: superShareItemId,
-      });
+      },
+    );
   },
 
   superSharingSendEmail (
     superShareItemId,
   ) {
     // console.log('superShareItemSend');
-    Dispatcher.loadEndpoint('superShareItemSave',
+    Dispatcher.loadEndpoint(
+      'superShareItemSave',
       {
         send_now: true,
         super_share_item_id: superShareItemId,
-      });
+      },
+    );
   },
 };

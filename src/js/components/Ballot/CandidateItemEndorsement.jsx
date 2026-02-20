@@ -285,8 +285,11 @@ class CandidateItemEndorsement extends Component {
       ballot_item_name: ballotItemDisplayName,
       candidate_we_vote_id: candidateWeVoteId,
     };
-    VoterGuidePossibilityActions.voterGuidePossibilityPositionSave(voterGuidePossibilityId,
-      voterGuidePossibilityPositionIdPythonStyle, dictionaryToSave);
+    VoterGuidePossibilityActions.voterGuidePossibilityPositionSave(
+      voterGuidePossibilityId,
+      voterGuidePossibilityPositionIdPythonStyle,
+      dictionaryToSave,
+    );
     this.doneDisplay('The endorsement has been saved', 1500);
     return true;
   };
@@ -299,8 +302,11 @@ class CandidateItemEndorsement extends Component {
     if (!voterGuidePossibilityPositionId || !Number.isInteger(voterGuidePossibilityPositionId)) {
       voterGuidePossibilityPositionIdPythonStyle = '';
     }
-    VoterGuidePossibilityActions.voterGuidePossibilityPositionSave(voterGuidePossibilityId,
-      voterGuidePossibilityPositionIdPythonStyle, { possibility_should_be_deleted: true });
+    VoterGuidePossibilityActions.voterGuidePossibilityPositionSave(
+      voterGuidePossibilityId,
+      voterGuidePossibilityPositionIdPythonStyle,
+      { possibility_should_be_deleted: true },
+    );
     this.doneDisplay('This possible endorsement has been removed', 1500);
     return true;
   };
@@ -311,7 +317,7 @@ class CandidateItemEndorsement extends Component {
     // I spent many hours trying to send a message to the parent, asking it to close the iFrame, but was not successful
     // TODO: fix mismatched position ... hidden
     $('#app').replaceWith(`<div style="position: hidden; text-align: center; top: 40%; margin: 50px"><span style="display: inline-block">${msg}</span></div>`);
-  }
+  };
 
   goToCandidateLink () {
     // If here, we assume the voter is on the Office page

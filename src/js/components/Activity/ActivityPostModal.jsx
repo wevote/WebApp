@@ -15,7 +15,7 @@ import ModalDisplayTemplateA, {
 } from '../Widgets/ModalDisplayTemplateA';
 import ActivityPostPublicToggle from './ActivityPostPublicToggle';
 
-const ActivityPostModal = (props) => {
+function ActivityPostModal (props) {
   const { activityTidbitWeVoteId, classes, externalUniqueId, show, toggleModal } = props;
 
   // useState used for state variables
@@ -151,7 +151,7 @@ const ActivityPostModal = (props) => {
       toggleModal={toggleModal}
     />
   );
-};
+}
 
 ActivityPostModal.propTypes = {
   activityTidbitWeVoteId: PropTypes.string,

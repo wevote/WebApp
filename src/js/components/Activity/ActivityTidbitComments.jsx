@@ -96,14 +96,14 @@ class ActivityTidbitComments extends Component {
       });
     }
     // console.log('addChildSavedFunction addChildCommentOpenByParentCommentWeVoteId:', addChildCommentOpenByParentCommentWeVoteId);
-  }
+  };
 
   commentEditSavedFunction = () => {
     // console.log('commentEditSavedFunction');
     this.setState({
       commentWeVoteIdBeingEditedNow: '',
     });
-  }
+  };
 
   onClickEditComment = (commentWeVoteId) => {
     // const { commentWeVoteIdBeingEditedNow } = this.state;
@@ -111,14 +111,14 @@ class ActivityTidbitComments extends Component {
     this.setState({
       commentWeVoteIdBeingEditedNow: commentWeVoteId,
     });
-  }
+  };
 
   onClickEditCommentCancel = () => {
     // console.log('onClickEditCommentCancel');
     this.setState({
       commentWeVoteIdBeingEditedNow: '',
     });
-  }
+  };
 
   onClickReactionLikeToggle = (likedItemWeVoteId) => {
     // console.log('onClickReactionLikeToggle likedItemWeVoteId:', likedItemWeVoteId);
@@ -134,7 +134,7 @@ class ActivityTidbitComments extends Component {
     this.setState({
       voterLikesThisItemByWeVoteId,
     });
-  }
+  };
 
   onClickToggleReplyToComment = (parentCommentWeVoteId) => {
     const { addChildCommentOpenByParentCommentWeVoteId } = this.state;
@@ -154,14 +154,14 @@ class ActivityTidbitComments extends Component {
       });
     }
     // console.log('onClickReactionLikeToggle parentCommentWeVoteId:', parentCommentWeVoteId, ', addChildCommentOpenByParentCommentWeVoteId[parentCommentWeVoteId]', addChildCommentOpenByParentCommentWeVoteId[parentCommentWeVoteId]);
-  }
+  };
 
   onClickShowActivityTidbitDrawer = () => {
     const { activityTidbitWeVoteId } = this.props;
     // console.log('onClickShowActivityTidbitDrawer activityTidbitWeVoteId:', activityTidbitWeVoteId);
     AppObservableStore.setActivityTidbitWeVoteIdForDrawer(activityTidbitWeVoteId);
     AppObservableStore.setShowActivityTidbitDrawer(true);
-  }
+  };
 
   increaseNumberOfActivityTidbitsToDisplay = () => {
     // console.log('increaseNumberOfActivityTidbitsToDisplay');
@@ -173,7 +173,7 @@ class ActivityTidbitComments extends Component {
         numberOfParentCommentsToDisplay,
       });
     }, 500);
-  }
+  };
 
   render () {
     renderLog('ActivityTidbitComments');  // Set LOG_RENDER_EVENTS to log all renders
