@@ -1,7 +1,7 @@
-const { driver } = require('@wdio/globals');
-const { readFileSync } = require('fs');
-const browserStackConfig = require('./browserstack.config');
-const browserCapabilities = require('../capabilities/browser.json');
+import { driver } from '@wdio/globals';
+import { readFileSync } from 'fs';
+import { browserStackConfig } from './browserstack.config.js';
+import browserCapabilities from '../capabilities/browser.json' with { type: 'json' };
 
 let mobileCapabilities = [];
 
@@ -22,7 +22,7 @@ const buildName = `${browserStackConfig.NAME}: ${dateForDisplay}`;
 
 // https://webdriver.io/docs/configurationfile
 
-module.exports.config = {
+export const config = {
   user: browserStackConfig.BROWSERSTACK_USER,
   key: browserStackConfig.BROWSERSTACK_KEY,
   injectGlobals: false,
@@ -81,14 +81,14 @@ module.exports.config = {
   },
 };
 
-module.exports.config.capabilities.forEach((capability) => {
+config.capabilities.forEach((capability) => {
   const device = capability;
   const keys = Object.keys(device);
   keys.forEach((key) => {
-    if (key in module.exports.config.commonCapabilities) {
+    if (key in config.commonCapabilities) {
       device[key] = {
         ...device[key],
-        ...module.exports.config.commonCapabilities[key],
+        ...config.commonCapabilities[key],
       };
     }
   });

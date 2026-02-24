@@ -2,8 +2,14 @@
 import { driver } from '@wdio/globals';
 import { readFileSync } from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 import { browserStackConfig } from './browserstack.config.js';
 import { uploadAppsToBrowserStack } from '../utils/uploadAndConfigureApps.js';
+
+// ESM equivalent
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 //import data files
 import cordovaData from '../capabilities/cordova_mobile_devices.json' with { type: 'json' };

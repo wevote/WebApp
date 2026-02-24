@@ -1,9 +1,9 @@
-const fs = require('fs');
-const path = require('path');
-const axios = require('axios');
-const readline = require('readline');
-const { google } = require('googleapis');
-const browserStackConfig = require('../config/browserstack.config');
+import fs from 'fs';
+import path from 'path';
+import axios from 'axios';
+import readline from 'readline';
+import { google } from 'googleapis';
+import { browserStackConfig } from '../config/browserstack.config.js';
 
 const BROWSERSTACK_USERNAME = browserStackConfig.BROWSERSTACK_USER;
 const BROWSERSTACK_ACCESS_KEY = browserStackConfig.BROWSERSTACK_KEY;
