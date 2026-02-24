@@ -611,17 +611,18 @@ const CandidateEndorsementText = styled('div')`
   cursor: pointer;
   font-family: "Poppins", sans-serif;
   font-size: 14px;
-  height: 54px;
   letter-spacing: 0.5%;
   line-height: 17.92px;
   margin-top: 12px;
+  overflow: hidden;
   overflow-wrap: break-word;
-  // text-decoration: underline;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
   width: 100%;
 `;
 
 const CandidateEndorsementsWrapper = styled('div')`
-  height: 102px;
   max-width: 100%;
   white-space: wrap;
   width: 275px;

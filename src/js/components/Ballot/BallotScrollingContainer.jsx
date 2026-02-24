@@ -93,10 +93,7 @@ class BallotScrollingContainer extends Component {
     const { oneCandidate } = this.props;
     const politicianWeVoteId = oneCandidate ? oneCandidate.politician_we_vote_id : null;
     const dataLayerObject = {
-      actionDetails: {
-        actionType: 'openModal',
-        buttonId,
-      },
+      actionDetails: { actionType: 'openModal', buttonId },
       event: 'action',
       pageDetails: getPageDetails(),
       destinationDetails: {
@@ -158,9 +155,7 @@ class BallotScrollingContainer extends Component {
   };
 
   checkCandidateHasEndorsements = (value) => {
-    this.setState({
-      hasEndorsements: value,
-    });
+    this.setState({ hasEndorsements: value });
   };
 
   render () {
@@ -198,6 +193,7 @@ class BallotScrollingContainer extends Component {
           showRightGradient={!this.state.hideRightArrow}
           hasEndorsements={this.state.hasEndorsements}
           onClick={(e) => this.handleContainerClick(e, oneCandidate.we_vote_id, `ballotItemScrollingArea-${oneCandidate.we_vote_id}`)}
+          style={{ flexDirection: 'column' }}
         >
           <CandidateContainer
             data-modal-trigger
@@ -221,9 +217,7 @@ class BallotScrollingContainer extends Component {
                         />
                       </Suspense>
                       {pigsCanFly && (
-                        <BallotMatchIndicator
-                          oneCandidate={oneCandidate}
-                        />
+                        <BallotMatchIndicator oneCandidate={oneCandidate} />
                       )}
                     </CandidateImageAndMatchWrapper>
                     {/* Candidate Name */}
@@ -258,24 +252,6 @@ class BallotScrollingContainer extends Component {
                       />
                     </Suspense>
                   )}
-                  {!hideItemActionBar && (
-                    <ItemActionBarOutsideWrapper data-modal-trigger>
-                      <Suspense fallback={<></>}>
-                        <ItemActionBar
-                          ballotItemWeVoteId={oneCandidate.we_vote_id}
-                          ballotItemDisplayName={oneCandidate.ballot_item_display_name}
-                          commentButtonHide
-                          // commentButtonHide={!futureFeaturesDisabled && nextReleaseFeaturesEnabled}
-                          externalUniqueId={`OfficeItemCompressed-ItemActionBar-${oneCandidate.we_vote_id}-${externalUniqueId}`}
-                          hidePositionPublicToggle={!futureFeaturesDisabled && nextReleaseFeaturesEnabled}
-                          politicianWeVoteId={oneCandidate.politician_we_vote_id}
-                          positionPublicToggleWrapAllowed
-                          shareButtonHide
-                          useHelpDefeatOrHelpWin={useHelpDefeatOrHelpWin}
-                        />
-                      </Suspense>
-                    </ItemActionBarOutsideWrapper>
-                  )}
                 </CandidateBottomRow>
               </CandidateInfo>
             </CandidateWrapper>
@@ -305,6 +281,26 @@ class BallotScrollingContainer extends Component {
               </PositionRowListInnerWrapper>
             </PositionRowListOuterWrapper>
           </CandidateContainer>
+
+          {/* ItemActionBar, last child in the column, always below everything */}
+          {!hideItemActionBar && (
+            <ItemActionBarOutsideWrapper>
+              <Suspense fallback={<></>}>
+                <ItemActionBar
+                  ballotItemWeVoteId={oneCandidate.we_vote_id}
+                  ballotItemDisplayName={oneCandidate.ballot_item_display_name}
+                  commentButtonHide
+                  externalUniqueId={`OfficeItemCompressed-ItemActionBar-${oneCandidate.we_vote_id}-${externalUniqueId}`}
+                  hidePositionPublicToggle={!futureFeaturesDisabled && nextReleaseFeaturesEnabled}
+                  politicianWeVoteId={oneCandidate.politician_we_vote_id}
+                  positionPublicToggleWrapAllowed
+                  shareButtonHide
+                  showCandidateStaffAndChat
+                  useHelpDefeatOrHelpWin={useHelpDefeatOrHelpWin}
+                />
+              </Suspense>
+            </ItemActionBarOutsideWrapper>
+          )}
         </BallotHorizontallyScrollingContainer>
         {/* {((candidateCount < candidatesToRenderLength) && (candidateCount < limitNumberOfCandidatesShownToThisNumber)) && ( */}
         {(candidateCount < limitNumberOfCandidatesShownToThisNumber) && (
@@ -321,6 +317,7 @@ class BallotScrollingContainer extends Component {
     );
   }
 }
+
 BallotScrollingContainer.propTypes = {
   externalUniqueId: PropTypes.string,
   isFirstBallotItem: PropTypes.bool,
@@ -342,11 +339,13 @@ const HrSeparator = styled('hr')`
 
 const ItemActionBarOutsideWrapper = styled('div')`
   display: flex;
-  cursor: pointer;
   flex-direction: row;
-  justify-content: flex-start;
-  margin-top: 12px;
+  align-items: center;
   width: 100%;
+  margin-top: 12px;
+  padding-left: 8px;
+  padding-bottom: 12px;
+  box-sizing: border-box;
 `;
 
 export default BallotScrollingContainer;

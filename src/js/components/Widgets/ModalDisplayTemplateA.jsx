@@ -14,7 +14,16 @@ class ModalDisplayTemplateA extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      isContentScrolled: false,
     };
+    this.handleContentScroll = this.handleContentScroll.bind(this);
+  }
+
+  handleContentScroll (e) {
+    const scrolled = e.target.scrollTop > 0;
+    if (scrolled !== this.state.isContentScrolled) {
+      this.setState({ isContentScrolled: scrolled });
+    }
   }
 
   render () {
@@ -22,6 +31,7 @@ class ModalDisplayTemplateA extends Component {
     const {
       classes, dialogTitleJSX, externalUniqueId, show, tallMode, textFieldJSX,
     } = this.props;
+    const { isContentScrolled } = this.state;
     let dialogPaperCombined;
     if (tallMode) {
       dialogPaperCombined = `${classes.dialogPaper} ${classes.dialogPaperAdditionTall}`;
@@ -36,7 +46,14 @@ class ModalDisplayTemplateA extends Component {
         open={show}
         style={{ paddingTop: `${isCordova() ? '75px' : 'undefined'}` }}
       >
-        <DialogTitle classes={{ root: classes.dialogTitle }}>
+        <DialogTitle
+          classes={{ root: classes.dialogTitle }}
+          style={{
+            borderBottom: isContentScrolled ? '1.5px solid #e8e8e8' : '1.5px solid transparent',
+            transition: 'border-bottom-color 0.2s ease',
+            zIndex: 1,
+          }}
+        >
           <DialogTitleInnerWrapper>
             <Title>
               {dialogTitleJSX || <>&nbsp;</>}
@@ -53,7 +70,10 @@ class ModalDisplayTemplateA extends Component {
           </DialogTitleInnerWrapper>
           <Divider />
         </DialogTitle>
-        <DialogContent classes={{ root: classes.dialogContent }}>
+        <DialogContent
+          classes={{ root: classes.dialogContent }}
+          onScroll={this.handleContentScroll}
+        >
           <DialogContentInnerWrapper>
             {textFieldJSX}
           </DialogContentInnerWrapper>
