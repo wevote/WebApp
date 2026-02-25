@@ -2,8 +2,6 @@
 import { browser, driver, expect } from '@wdio/globals';
 import DiscussPage from '../page_objects/discuss.browser';
 
-const { describe, it } = require('mocha');
-
 const waitTime = 5000;
 const email = 'wevote@wevote.us';
 const errorMessage = 'Enter valid email 6 to 254 characters long';

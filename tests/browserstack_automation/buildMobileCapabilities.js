@@ -1,7 +1,6 @@
-const axios = require('axios');
-const { writeFileSync } = require('fs');
-const browserStackConfig = require('./config/browserstack.config');
-
+import axios from 'axios';
+import { writeFileSync } from 'fs';
+import { browserStackConfig } from './config/browserstack.config.js';
 /*
 
 https://www.browserstack.com/test-on-the-right-mobile-devices

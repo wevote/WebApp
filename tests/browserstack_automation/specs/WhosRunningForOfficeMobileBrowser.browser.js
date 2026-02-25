@@ -1,9 +1,7 @@
 import { $, driver, expect, browser } from '@wdio/globals';
 import ReadyPage from '../page_objects/ready.browser';
 import PopulateData from '../testDataForScripts/populateStateandCandidateData.js';
-
-const assert = require('assert');
-const { describe, it } = require('mocha');
+import assert from 'node:assert';
 
 const waitTime = 8000;
 
