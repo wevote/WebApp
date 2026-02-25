@@ -269,7 +269,7 @@ class HeaderBar extends Component {
     const nextPage = normalizedHrefPage();
     const nextValue = this.getTabsValueFromPage();
     this.setState({ tabsValue: nextValue, page: nextPage }, () => {
-      this.customHighlightSelector(nextValue);
+      this.customHighlightSelector(nextValue || false);
     });
   };
 
@@ -279,14 +279,14 @@ class HeaderBar extends Component {
       case 'ballot': return 1;
       case 'candidatelist':
       case 'politicianpage': return 2;
-      case 'friends': return 99;
-      case 'news': return 99;
-      case 'challenges': return 99;
+      case 'friends':
+      case 'news':
+      case 'challenges':
       case 'donate':
       case 'more/donate': return 5;
       case 'more':
-      case 'managecandidates': return 99;
-      case 'no-candidates-claimed': return 99;
+      case 'managecandidates':
+      case 'no-candidates-claimed':
       default: return false;
     }
   };

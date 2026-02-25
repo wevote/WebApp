@@ -1,6 +1,10 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { Search as SearchIcon } from '@mui/icons-material';
+import IconButton from "@mui/material/IconButton";
+import Popover from "@mui/material/Popover";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import CloseIcon from "@mui/icons-material/Close";
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 
 import SupportersJoined from './SupportersJoined';
@@ -10,27 +14,115 @@ import SupportersToRemind from './SupportersToRemind';
 export default function SupporterTracking () {
   const [activeTab, setActiveTab] = useState('joined');
 
-  // TO DO: Replace these placeholders with actual logic
-  const joinedCount = 3;
-  const invitedCount = 3;
-  const remindCount = 1;
+  /**
+   * Spoofed records (replace later with DB-backed rows)
+   * status: "joined" | "invited" | "reminder"
+   */
+  const SPOOF = [
+    {
+      id: "v_1",
+      status: "joined",
+      name: "Steve Smith",
+      endorsed: false,
+      friendsInvited: 0,
+      messageSentCount: 0,
+      publicOpinion:
+        "",
+    },
+    {
+      id: "v_2",
+      status: "joined",
+      name: "Jane Smith",
+      endorsed: true,
+      friendsInvited: 0,
+      messageSentCount: 0,
+      publicOpinion: "",
+    },
+    {
+      id: "v_3",
+      status: "joined",
+      name: "Steve Smith",
+      endorsed: true,
+      friendsInvited: 0,
+      messageSentCount: 0,
+      publicOpinion:
+        "Lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet...",
+    },
+    {
+      id: "v_4",
+      status: "joined",
+      name: "Jen Smith",
+      endorsed: true,
+      friendsInvited: 2,
+      messageSentCount: 0,
+      publicOpinion:
+        "Lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet...",
+    },
+    {
+      id: "v_5",
+      status: "joined",
+      name: "Mary Smith",
+      endorsed: true,
+      friendsInvited: 2,
+      messageSentCount: 1,
+      publicOpinion:
+        "Lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet...",
+    },
+
+    // A couple non-joined for tabs
+    {
+      id: "v_6",
+      status: "invited",
+      name: "Alex Doe",
+      endorsed: false,
+      friendsInvited: 0,
+      messageSentCount: 0,
+      publicOpinion: "",
+    },
+    {
+      id: "v_7",
+      status: "remind",
+      name: "Morgan Lee",
+      endorsed: false,
+      friendsInvited: 0,
+      messageSentCount: 0,
+      publicOpinion: "",
+    },
+  ];
+
+  const counts = useMemo(() => {
+    const c = { joined: 0, invited: 0, remind: 0 };
+    for (const r of SPOOF) c[r.status] += 1;
+    return c;
+  }, []);
 
   const renderTabContent = () => {
     switch (activeTab) {
       case 'joined':
-        return <SupportersJoined />;
+        return <SupportersJoined supporters={SPOOF.filter((r) => r.status === 'joined')}/>;
       case 'invited':
-        return <SupportersInvited />;
+        return <SupportersInvited supporters={SPOOF.filter((r) => r.status === 'invited')}/>;
       case 'remind':
-        return <SupportersToRemind />;
+        return <SupportersToRemind supporters={SPOOF.filter((r) => r.status === 'remind')}/>;
       default:
-        return <SupportersJoined />;
+        return <SupportersJoined supporters={SPOOF.filter((r) => r.status === 'joined')}/>;
     }
   };
 
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [buttonEl, setButtonEl] = React.useState(null);
+
+  const open = Boolean(anchorEl);
+
+  const handleToggle = (e) => {
+    setAnchorEl((prev) => (prev ? null : e.currentTarget));
+  };
+
+  const handleClose = () => setAnchorEl(null);
+
   return (
     <>
-      <HeaderRow>
+      <HeaderRow className="u-show-desktop-tablet">
         <H2>Tracking</H2>
         <HeaderDivider />
         <SearchIconButton
@@ -41,36 +133,72 @@ export default function SupporterTracking () {
           <SearchIcon fontSize="medium" />
         </SearchIconButton>
       </HeaderRow>
-      <TrackingText>Follow up on your invitees and those who joined.</TrackingText>
+      <SubHeaderRow>
+        <TrackingText>Follow up on your invitees and those who joined.</TrackingText>
+        <InfoIconButton onClick={handleToggle} aria-label="Info">
+          <InfoOutlinedIcon fontSize="small" />
+        </InfoIconButton>
+      </SubHeaderRow>
+
+      <Popover
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+        transformOrigin={{ vertical: "top", horizontal: "left" }}
+        PaperProps={{
+          style: {
+            background: "transparent",
+            boxShadow: "none",
+          },
+        }}
+      >
+        <PopoverContainer>
+          <PopoverArrow />
+
+          <PopoverHeader>
+            <PopoverTitle>Sentiments and opinions</PopoverTitle>
+            <PopoverCloseButton onClick={handleClose} aria-label="Close">
+              <CloseIcon fontSize="small" />
+            </PopoverCloseButton>
+          </PopoverHeader>
+
+          <PopoverBody>
+            Sentiments and opinions posted by WeVote members are private by
+            default. You can view them only if the member chooses to make them
+            public.
+          </PopoverBody>
+        </PopoverContainer>
+      </Popover>
       <TabRow>
         <Tab
           active={activeTab === 'joined'}
           onClick={() => setActiveTab('joined')}
-          data-hidden-bold-text={`Joined WeVote (${joinedCount})`}
+          data-hidden-bold-text={`Joined WeVote (${counts['joined']})`}
         >
           Joined WeVote
           (
-          {joinedCount}
+          {counts['joined']}
           )
         </Tab>
         <Tab
           active={activeTab === 'invited'}
           onClick={() => setActiveTab('invited')}
-          data-hidden-bold-text={`Invited (${invitedCount})`}
+          data-hidden-bold-text={`Invited (${counts['invited']})`}
         >
           Invited
           (
-          {invitedCount}
+          {counts['invited']}
           )
         </Tab>
         <Tab
           active={activeTab === 'remind'}
           onClick={() => setActiveTab('remind')}
-          data-hidden-bold-text={`Reminder needed (${remindCount})`}
+          data-hidden-bold-text={`Reminder needed (${counts['remind']})`}
         >
           Reminder needed
           (
-          {remindCount}
+          {counts['remind']}
           )
         </Tab>
       </TabRow>
@@ -103,6 +231,70 @@ const HeaderRow = styled.div`
   margin: -6px 0 8px;
 `;
 
+const InfoIconButton = styled.button`
+  align-items: center;
+  background: none;
+  border: none;
+  border-radius: 8px;
+  color: ${DesignTokenColors.neutralUI700};
+  cursor: pointer;
+  display: inline-flex;
+  padding: 4px;
+
+  &:hover {
+    background: ${DesignTokenColors.neutralUI50};
+    color: ${DesignTokenColors.neutralUI900};
+  }
+`;
+
+const PopoverArrow = styled.div`
+  position: absolute;
+  top: -8px;
+  left: 16px;
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 8px solid ${DesignTokenColors.neutralUI900};
+`;
+
+const PopoverBody = styled.div`
+  font-size: 12px;
+  line-height: 1.4;
+  color: ${DesignTokenColors.neutralUI200};
+`;
+
+const PopoverCloseButton = styled.button`
+  align-items: center;
+  background: none;
+  border: none;
+  color: ${DesignTokenColors.neutralUI50};
+  cursor: pointer;
+  display: inline-flex;
+  padding: 2px;
+`;
+
+const PopoverContainer = styled.div`
+  background: ${DesignTokenColors.neutralUI900};
+  color: ${DesignTokenColors.neutralUI50};
+  border-radius: 12px;
+  padding: 12px;
+  width: 320px;
+  position: relative;
+`;
+
+const PopoverHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+`;
+
+const PopoverTitle = styled.div`
+  font-size: 13px;
+  font-weight: 700;
+`;
+
 const SearchIconButton = styled.button`
   align-items: center;
   background: none;
@@ -118,6 +310,13 @@ const SearchIconButton = styled.button`
   }
 `;
 
+const SubHeaderRow = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 6px;
+`;
+
 const Tab = styled.button`
   background: none;
   border: none;
@@ -129,6 +328,9 @@ const Tab = styled.button`
   cursor: pointer;
   position: relative;
   bottom: -1px;
+  white-space: nowrap;
+  overflow:hidden;
+  text-overflow: ellipsis;
 
   // We use data-hidden-bold-text to render an invisible bolded duplicate of the tab's text
   // so there's no awkward shiftiness in the layout when switching between tabs.
@@ -145,6 +347,11 @@ const Tab = styled.button`
     @media speech {
       display: none;
     }
+
+    max-width: 100%;
+    overflow: hidden;
+    white-space: nowrap;      /* avoid multi-line affecting layout */
+    text-overflow: clip;      /* optional */
   }
   &:hover {
     color: ${DesignTokenColors.primary600};
@@ -159,10 +366,10 @@ const TabRow = styled.div`
   display: flex;
   gap: 0;
   border-bottom: 1px solid ${DesignTokenColors.neutralUI200};
-  margin-bottom: 24px;
+  margin-bottom: 4px;
 `;
 
 const TrackingText = styled.p`
   color: ${DesignTokenColors.neutralUI700};
-  margin: 0 0 6px;
+  margin: 0;
 `;
