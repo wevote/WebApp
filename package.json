@@ -96,7 +96,7 @@
     "express": "^5.2.1",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.6.0",
-    "jsdom": "^23.0.1",
+    "jsdom": "^28.1.0",
     "mini-css-extract-plugin": "^2.7.1",
     "mocha": "^10.2.0",
     "moment-locales-webpack-plugin": "^1.2.0",
@@ -176,6 +176,7 @@
     "react-truncate-markup": "~5.1.0",
     "rxjs": "^6.6.7",
     "styled-components": "~5.3.11",
+    "tiff-to-png-client": "^1.0.2",
     "topojson-client": "^3.1.0"
   },
   "eslintConfig": {

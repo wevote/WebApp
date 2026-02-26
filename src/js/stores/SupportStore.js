@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 import { ReduceStore } from 'flux/utils';
 import assign from 'object-assign';
 import CandidateActions from '../actions/CandidateActions';
