@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 import Dispatcher from '../common/dispatcher/Dispatcher';
 import { isCordova } from '../common/utils/isCordovaOrWebApp'; // eslint-disable-line import/no-cycle
 import AppObservableStore from '../common/stores/AppObservableStore'; // eslint-disable-line import/no-cycle

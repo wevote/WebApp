@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 import Dispatcher from '../common/dispatcher/Dispatcher';
 // import Cookies from '../common/utils/js-cookie/Cookies';
 

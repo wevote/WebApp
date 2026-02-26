@@ -1,6 +1,7 @@
 import { AccountCircle } from '@mui/icons-material';
 import withStyles from '@mui/styles/withStyles';
 import { heicTo, isHeic } from 'heic-to';
+import { getPNGfromFile } from 'tiff-to-png-client';
 import { DropzoneArea } from 'mui-file-dropzone';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
@@ -10,7 +11,7 @@ import PoliticianActions from '../../actions/PoliticianActions';
 import PoliticianStore from '../../stores/PoliticianStore';
 import VoterActions from '../../../actions/VoterActions';
 import VoterStore from '../../../stores/VoterStore';
-import { isCordova, isWebApp } from '../../utils/isCordovaOrWebApp';
+import { isCordova } from '../../utils/isCordovaOrWebApp';
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import { renderLog } from '../../utils/logging';
 import { getPageDetails } from '../../../utils/lookupPageNameAndPageTypeDict';
@@ -19,13 +20,16 @@ class VoterPhotoUpload extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      dataUrl: '',
+      isWebApp: !isCordova(),
       showDropzoneIcon: true,
       politicianProfileUploadedImageUrlLarge: '',
       voterProfileUploadedImageUrlLarge: '',
     };
-
+    this.canvas = null;
     this.handleWebAppDrop = this.handleWebAppDrop.bind(this);
     this.handleCordovaDrop = this.handleCordovaDrop.bind(this);
+    this.read = this.read.bind(this);
   }
 
   componentDidMount () {
@@ -34,6 +38,9 @@ class VoterPhotoUpload extends Component {
     this.onPoliticianStoreChange();
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     this.onVoterStoreChange();
+    if (!this.canvas) {
+      this.canvas = document.createElement('canvas');
+    }
 
     let politicianProfileUploadedImageUrlLarge;
     let voterProfileUploadedImageUrlLarge;
@@ -65,35 +72,49 @@ class VoterPhotoUpload extends Component {
   async handleWebAppDrop (files) {
     const { politicianWeVoteId } = this.props;
     const { politicianProfileUploadedImageUrlLarge, voterProfileUploadedImageUrlLarge } = this.state;
-    // console.log('handleWebAppDrop, files:', files);
     if (files && files[0]) {
-      this.props.onUpload('UPLOADED');
-      const fileFromDropzone = files[0];
+      let converted = false;
+      let dataUrl;
+      let fileFromDropzone = files[0];
       if (!fileFromDropzone) return;
       if (await isHeic(fileFromDropzone)) {
-        const blobJpegFromDropzone = await heicTo({
+        converted = true;
+        const convertedBlob = await heicTo({
           blob: fileFromDropzone,
           type: 'image/jpeg',
           quality: 0.5,
         });
-        this.insertBlobInDom(blobJpegFromDropzone);   // Hack only needed for HEIC
-        await this.saveTheBlob(blobJpegFromDropzone);
-      } else {
-        const fileReader = new FileReader();
-        fileReader.addEventListener('load', () => {
-          const photoFromFileReader = fileReader.result;
-          // data:image/jpeg;base64,9j/4Qo2RXhpZgAATU0AKgAAAAgADQEPAAIAAAAGAAAAqgEQAAIAAAASAAAAsAESAAMAAAABAAEAAAEaAAUAAAABAAAAwgEbAAUAAAABAAAAygEoAAMAAAABAAIAAAExAAIAAAAFAAAA0gEyAAIAAAAUAAAA2AE8AAIAAAASAAAA7AFCAAQAAAABAA
-          if (politicianWeVoteId) {
-            PoliticianActions.politicianPhotoQueuedToSave(photoFromFileReader);
-          } else {
-            VoterActions.voterPhotoQueuedToSave(photoFromFileReader);
-          }
-        });
-        fileReader.readAsDataURL(fileFromDropzone);
+        fileFromDropzone = convertedBlob;
       }
-      // console.log('fileFromDropzone:', fileFromDropzone);
+
+      if (fileFromDropzone.type === 'image/svg+xml') {
+        converted = true;
+        dataUrl = await this.convert();
+      }
+
+      if (fileFromDropzone.type === 'image/tiff') {
+        converted = true;
+        const pngUrls = await getPNGfromFile(fileFromDropzone);
+        const [pngUrl] = pngUrls;
+        dataUrl = pngUrl;
+      }
+
+      if (!converted) {
+        try {
+          dataUrl = await this.read(fileFromDropzone);
+        } catch (err) {
+          console.log(err);
+        }
+      }
+
+      await this.save(dataUrl);
+
+      const { path: filePath } = fileFromDropzone;
+      console.log({ converted, dataUrl, filePath });
+
       const dropzoneText = isMobileScreenSize() ? 'A small preview of your photo is shown below. You can: 1) Click button below to continue, or 2) click here to upload different photo.' : 'A small preview of your photo is shown below. You can: 1) click button below to continue, 2) delete it (hover over photo to see trash can), or 3) drag a NEW version here (or click here to find file).';
       this.setState({
+        dataUrl,
         dropzoneText,
         showDropzoneIcon: false,
       });
@@ -116,7 +137,9 @@ class VoterPhotoUpload extends Component {
     console.log('files:', files);
     const { camera: { getPicture, DestinationType: { FILE_URI }, PictureSourceType: { PHOTOLIBRARY }, PopoverArrowDirection: { ARROW_ANY } } } = navigator;
     const { CameraPopoverOptions } = window;
-    getPicture(async (pictureUrl) => this.cameraCallback(pictureUrl), (err) => console.log(err), {
+    getPicture(async (pictureUrl) => {
+      await this.cameraCallback(pictureUrl);
+    }, (err) => console.log(err), {
       destinationType: FILE_URI,
       sourceType: PHOTOLIBRARY,
       popoverOptions: new CameraPopoverOptions(300, 300, 100, 100, ARROW_ANY, 300, 600),
@@ -125,6 +148,7 @@ class VoterPhotoUpload extends Component {
 
   onPoliticianStoreChange () {
     const { politicianWeVoteId } = this.props;
+    const { isWebApp } = this.state;
     if (politicianWeVoteId) {
       const { politicianProfileUploadedImageUrlLarge: politicianProfileUploadedImageUrlLargePrior } = this.state;
       const politicianProfileUploadedImageUrlLarge = PoliticianStore.getPoliticianProfileUploadedImageUrlLarge(politicianWeVoteId);
@@ -133,10 +157,13 @@ class VoterPhotoUpload extends Component {
         this.setState({
           politicianProfileUploadedImageUrlLarge,
         });
-        if (politicianProfileUploadedImageUrlLarge && politicianProfileUploadedImageUrlLarge.length > 0) {
-          const image = document.getElementById('chosenImage');
-          image.style.display = 'none';
-          image.src = '';   // Clear the substitute image for Cordova
+        // Clear the substitute image for Cordova
+        if (!isWebApp) {
+          if (politicianProfileUploadedImageUrlLarge && politicianProfileUploadedImageUrlLarge.length > 0) {
+            const thumbnail = document.getElementById('cordova');
+            thumbnail.style.display = 'none';
+            thumbnail.src = '';
+          }
         }
       }
     }
@@ -144,21 +171,77 @@ class VoterPhotoUpload extends Component {
 
   onVoterStoreChange () {
     const { politicianWeVoteId } = this.props;
+    const { isWebApp } = this.state;
     if (!politicianWeVoteId) {
       const voterProfileUploadedImageUrlLarge = VoterStore.getVoterProfileUploadedImageUrlLarge();
       // console.log('onVoterStoreChange, voterProfileUploadedImageUrlLarge:', voterProfileUploadedImageUrlLarge);
       this.setState({
         voterProfileUploadedImageUrlLarge,
       });
-      if (voterProfileUploadedImageUrlLarge && voterProfileUploadedImageUrlLarge.length > 0) {
-        const image = document.getElementById('chosenImage');
-        image.style.display = 'none';
-        image.src = '';   // Clear the substitute image for Cordova
+      // Clear the substitute image for Cordova
+      if (!isWebApp) {
+        if (voterProfileUploadedImageUrlLarge && voterProfileUploadedImageUrlLarge.length > 0) {
+          const thumbnail = document.getElementById('cordova');
+          thumbnail.style.display = 'none';
+          thumbnail.src = '';
+        }
       }
     }
   }
 
-  submitDeleteYourPhoto = (buttonId) => {
+  convert = async (type = 'image/png') => {
+    // If the given type is not supported, convert the image to a PNG
+    const img = document.querySelector('img[role="presentation"]');
+    await img.decode();
+    const w = img.width;
+    const h = img.height;
+    this.canvas.width = w;
+    this.canvas.height = h;
+    const ctx = this.canvas.getContext('2d');
+    ctx.drawImage(img, 0, 0, w, h);
+    const dataUrl = this.canvas.toDataURL(type);
+    ctx.clearRect(0, 0, w, h);
+    return dataUrl;
+  };
+
+  clearThumbnail = () => {
+    const { isWebApp } = this.state;
+    if (!isWebApp) {
+      const thumbnail = document.querySelector('img#cordova');
+      thumbnail.style.display = 'none';
+      thumbnail.src = '';
+    }
+  };
+
+  save = async (url) => {
+    let dataUrl;
+    const isDataUrl = url.startsWith('data:');
+    if (!isDataUrl) {
+      const res = await fetch(url);
+      const blob = await res.blob();
+      dataUrl = await this.read(blob);
+    } else {
+      dataUrl = url;
+    }
+    let thumbnail;
+    const { isWebApp } = this.state;
+    if (isWebApp) {
+      thumbnail = document.querySelector('img[role="presentation"]');
+    } else {
+      thumbnail = document.querySelector('img#cordova');
+    }
+    thumbnail.style.display = 'inline';
+    thumbnail.src = dataUrl;
+    const { politicianWeVoteId } = this.props;
+    if (politicianWeVoteId) {
+      PoliticianActions.politicianPhotoQueuedToSave(dataUrl);
+    } else {
+      VoterActions.voterPhotoQueuedToSave(dataUrl);
+    }
+    this.props.onUpload('UPLOADED');
+  };
+
+  deleteYourPhoto = (buttonId) => {
     const { politicianWeVoteId } = this.props;
     if (politicianWeVoteId) {
       PoliticianActions.politicianPhotoDelete(politicianWeVoteId);
@@ -178,67 +261,24 @@ class VoterPhotoUpload extends Component {
       pageDetails: getPageDetails(),
     };
     TagManager.dataLayer({ dataLayer: dataLayerObject });
-
-    const image = document.getElementById('chosenImage');
-    image.style.display = 'none';
-    image.src = '';   // Clear the substitute image for Cordova
+    this.clearThumbnail();
   };
 
-  insertBlobInDom (blobJpeg) {
-    const fileReader = new FileReader();
-    fileReader.addEventListener('load', () => {
-      // The result will be a Data URL string
-      const base64String = fileReader.result;
-      const elem = document.querySelectorAll('img[role="presentation"]');
-      if (elem && elem.length > 0) {
-        elem[0].display = 'inline';
-        elem[0].src = base64String;
-      }
+  read (file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.addEventListener('load', () => resolve(reader.result));
+      reader.addEventListener('error', (error) => reject(error));
+      reader.readAsDataURL(file);
     });
-    fileReader.readAsDataURL(blobJpeg);
   }
 
   async cameraCallback (uri) {
     const { resolveLocalFileSystemURL } = window;
-    resolveLocalFileSystemURL(uri, (fileEntry) => {
-      const image = document.getElementById('chosenImage');
-      // app://localhost/_app_file_/Users/stevepodell/Library/Developer/CoreSimulator/Devices/42B70AFF-9963-4BA1-81A7-807966BC22E3/data/Containers/Data/Application/FD844A5A-D4AD-4E38-80B6-7C1345F8486B/tmp/cdv_photo_1750440590.jpg
-      const entryURL = fileEntry.toURL();
-      image.style.display = 'inline';
-      image.src = entryURL;
-      this.saveTheFile(entryURL);
+    resolveLocalFileSystemURL(uri, async (fileEntry) => {
+      const entryUrl = fileEntry.toURL();
+      await this.save(entryUrl);
     }, (err) => console.error('camera resolveLocalFileSystemURL error', err));
-  }
-
-  async saveTheBlob (imageBlob) {
-    const { politicianWeVoteId } = this.props;
-    const reader = new FileReader();   // HTML5 FileReader
-    this.props.onUpload('UPLOADED');
-    reader.onload = (evt) => {
-      const fileString = evt.target.result;
-      // data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAASABIA...
-      // console.log('photoFromFileReader cordova:', fileString);
-      const image = document.getElementById('chosenImage');
-      if (isCordova()) {
-        image.style.display = 'inline';
-        image.src = fileString;
-      }
-      if (politicianWeVoteId) {
-        PoliticianActions.politicianPhotoQueuedToSave(fileString);
-      } else {
-        VoterActions.voterPhotoQueuedToSave(fileString);
-      }
-    };
-    reader.readAsDataURL(imageBlob);
-  }
-
-  // pictureURL:  file:///Users/stevepodell/Library/Developer/CoreSimulator/Devices/42B70AFF-9963-4BA1-81A7-807966BC22E3/data/Containers/Data/Application/F5C07F62-181E-467D-9200-E5B2F2248C90/tmp/cdv_photo_1750439639.jpg
-  async saveTheFile (pictureUrl) {
-    // console.log('saveTheFile: ', pictureUrl);   // URL
-    const response = await fetch(pictureUrl);   // Response stream
-    const imageBlob = await response.blob();    // Get the blob
-    await this.saveTheBlob(imageBlob);
-    this.props.onUpload('UPLOADED');
   }
 
   render () {
@@ -246,7 +286,7 @@ class VoterPhotoUpload extends Component {
 
     const { classes, limitPhotoHeight, maxWidth, politicianWeVoteId } = this.props;
     const {
-      dropzoneText, politicianProfileUploadedImageUrlLarge, showDropzoneIcon,
+      dataUrl, dropzoneText, isWebApp, politicianProfileUploadedImageUrlLarge, showDropzoneIcon,
       voterProfileUploadedImageUrlLarge,
     } = this.state;
     let imageToDisplay = '';
@@ -264,22 +304,22 @@ class VoterPhotoUpload extends Component {
     }
     return (
       <OuterWrapper>
-        <form onSubmit={(e) => { e.preventDefault(); }}>
+        <form onSubmit={(e) => e.preventDefault()}>
           <Wrapper>
             <ColumnFullWidth>
-              {/* eslint-disable-next-line no-nested-ternary */}
-              {imageToDisplay ? (
+              {imageToDisplay && (
                 <VoterPhotoWrapper limitPhotoHeight={limitPhotoHeight}>
                   <VoterPhotoImage maxWidth={maxWidth} src={imageToDisplay} alt="Profile Photo" />
                   <DeleteLink
                     id="removePhotoLink"
                     className="u-link-color u-link-underline u-cursor--pointer"
-                    onClick={() => this.submitDeleteYourPhoto('removePhotoLink')}
+                    onClick={this.deleteYourPhoto('removePhotoLink')}
                   >
                     remove photo
                   </DeleteLink>
                 </VoterPhotoWrapper>
-              ) : isWebApp() ? (
+              )}
+              {isWebApp ? (
                 <DropzoneArea
                   acceptedFiles={['image/*']}
                   classes={showDropzoneIcon ? {
@@ -299,15 +339,17 @@ class VoterPhotoUpload extends Component {
                   onChange={this.handleWebAppDrop}
                 />
               ) : (
-                <ChooseLink
+                <>
+                  <ChooseLink
                     id="choosePhotoLink"
                     className="u-link-color u-link-underline u-cursor--pointer"
                     onClick={this.handleCordovaDrop}
-                >
-                  Choose Photo
-                </ChooseLink>
+                  >
+                    Choose Photo
+                  </ChooseLink>
+                  <img src={dataUrl} id="cordova" alt="" />
+                </>
               )}
-              <img src="" id="chosenImage" alt="" />
             </ColumnFullWidth>
           </Wrapper>
         </form>
