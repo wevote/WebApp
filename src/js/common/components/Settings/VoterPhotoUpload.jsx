@@ -1,6 +1,7 @@
 import { AccountCircle } from '@mui/icons-material';
 import withStyles from '@mui/styles/withStyles';
 import { heicTo, isHeic } from 'heic-to';
+import { getPNGfromFile } from "tiff-to-png-client";
 import { DropzoneArea } from 'mui-file-dropzone';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
@@ -78,6 +79,23 @@ class VoterPhotoUpload extends Component {
         });
         this.insertBlobInDom(blobJpegFromDropzone);   // Hack only needed for HEIC
         await this.saveTheBlob(blobJpegFromDropzone);
+      } else if (fileFromDropzone.type === "image/svg+xml") {
+        console.log(fileFromDropzone.name);
+        // Convert to PNG
+      } else if (fileFromDropzone.type === "image/tiff") {
+        const pngUrls = await getPNGfromFile(fileFromDropzone);
+        const pngUrl = pngUrls[0];
+        // console.log(pngUrl);
+        const elem = document.querySelectorAll('img[role="presentation"]');
+        if (elem && elem.length > 0) {
+          elem[0].display = 'inline';
+          elem[0].src = pngUrl;
+        }
+        if (politicianWeVoteId) {
+          PoliticianActions.politicianPhotoQueuedToSave(pngUrl);
+        } else {
+          VoterActions.voterPhotoQueuedToSave(pngUrl);
+        }
       } else {
         const fileReader = new FileReader();
         fileReader.addEventListener('load', () => {
