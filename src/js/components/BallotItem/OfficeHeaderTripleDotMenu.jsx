@@ -6,19 +6,27 @@ import { ContentCopy, LaunchOutlined, MoreHoriz, MoreVert } from '@mui/icons-mat
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 import { openSnackbar } from '../../common/components/Widgets/SnackNotifier';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
+import webAppConfig from '../../config';
 
-function TripleDotMenu ({ makeVertical = false }) {
+function OfficeHeaderTripleDotMenu ({ makeVertical = false, officeWeVoteId = '' }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [copyLinkText, setCopyLinkText] = useState('Copy ballot section page link');
+  const [officeUrl, setOfficeUrl] = useState('');
   const copyLinkTimeoutRef = useRef(null);
   const open = Boolean(anchorEl);
   const id = open ? 'triple-dot-popover' : undefined;
 
   useEffect(() => () => {
+    // Clear timeout when component unmounts
     if (copyLinkTimeoutRef.current) {
       clearTimeout(copyLinkTimeoutRef.current);
     }
   }, []);
+
+  useEffect(() => {
+    const officeUrlTemp = `${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}/office/${officeWeVoteId}`;
+    setOfficeUrl(officeUrlTemp);
+  }, [officeWeVoteId]);
 
   const handleMenuClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -29,16 +37,16 @@ function TripleDotMenu ({ makeVertical = false }) {
   };
 
   const handleOpenNewTab = () => {
-    window.open(window.location.href, '_blank');
+    window.open(officeUrl, '_blank');
     handlePopoverClose();
   };
 
   const handleCopyLink = () => {
-    navigator.clipboard.writeText(window.location.href).then(() => {
+    navigator.clipboard.writeText(officeUrl).then(() => {
       openSnackbar({ message: 'Link copied!', severity: 'success' });
       setCopyLinkText('Copied!');
       copyLinkTimeoutRef.current = setTimeout(() => {
-        setCopyLinkText('Copy ballot section page link');
+        setCopyLinkText('Copy office page link');
       }, 3000);
     })
       .catch((err) => {
@@ -48,6 +56,9 @@ function TripleDotMenu ({ makeVertical = false }) {
       });
   };
 
+  if (!officeWeVoteId) {
+    return null;
+  }
   return (
     <TripleDotWrapper>
       <TripleDotButton
@@ -86,8 +97,9 @@ function TripleDotMenu ({ makeVertical = false }) {
   );
 }
 
-TripleDotMenu.propTypes = {
+OfficeHeaderTripleDotMenu.propTypes = {
   makeVertical: PropTypes.bool,
+  officeWeVoteId: PropTypes.string,
 };
 
 // Styled Components
@@ -140,4 +152,4 @@ const PopoverOption = styled.div`
   }
 `;
 
-export default TripleDotMenu;
+export default OfficeHeaderTripleDotMenu;
