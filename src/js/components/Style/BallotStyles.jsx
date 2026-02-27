@@ -151,8 +151,10 @@ export const CandidateWrapper = styled('div')(({ theme }) => (`
 
 export const OfficeNameH2 = styled('div')(({ theme }) => (`
   // For some reason if styled('h2') it breaks down
+  align-items: center;
+  display: flex;
   font-size: 32px;
-  margin-bottom: 6px;
+  justify-content: flex-start;
   width: fit-content;
   ${theme.breakpoints.down('sm')} {
     font-size: 28px;

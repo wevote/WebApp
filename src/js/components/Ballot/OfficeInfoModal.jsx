@@ -8,7 +8,7 @@ import styled, { createGlobalStyle } from 'styled-components';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import ModalDisplayTemplateA from '../Widgets/ModalDisplayTemplateA';
-import TripleDotMenu from '../Widgets/TripleDotMenu';
+import OfficeHeaderTripleDotMenu from '../BallotItem/OfficeHeaderTripleDotMenu';
 
 function OfficeInfoModal ({ isOpen, onClose, officeName }) {
   function PlayButton () {
@@ -29,7 +29,7 @@ function OfficeInfoModal ({ isOpen, onClose, officeName }) {
         <strong>{officeName}</strong>
       </Title>
       <HeaderActionsOfficeInfo>
-        <TripleDotMenu />
+        <OfficeHeaderTripleDotMenu />
         <VerticalLine />
       </HeaderActionsOfficeInfo>
     </HeaderRow>
