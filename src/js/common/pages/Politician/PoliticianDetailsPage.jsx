@@ -1107,12 +1107,9 @@ class PoliticianDetailsPage extends Component {
                     <Suspense fallback={<span>&nbsp;</span>}>
                       <OfficeItemCompressed
                         officeWeVoteId={officeWeVoteId}
-                        ballotItemDisplayName=""  // {contestOfficeNameFromOpponentList}
+                        ballotItemDisplayName=""
                         candidateList={opponentCandidateList}
-                        // candidatesToShowForSearchResults={candidatesToShowForSearchResults}
-                        // disableAutoRollUp
-                        // isFirstBallotItem={isFirstBallotItem}
-                        // primaryParty={primaryParty}
+                        hideOfficeHeader
                       />
                     </Suspense>
                   </BallotOverflowWrapper>
@@ -1283,12 +1280,9 @@ class PoliticianDetailsPage extends Component {
                         <Suspense fallback={<span>&nbsp;</span>}>
                           <OfficeItemCompressed
                             officeWeVoteId={officeWeVoteId}
-                            ballotItemDisplayName=""  // {contestOfficeNameFromOpponentList}
+                            ballotItemDisplayName=""
                             candidateList={opponentCandidateList}
-                            // candidatesToShowForSearchResults={candidatesToShowForSearchResults}
-                            // disableAutoRollUp
-                            // isFirstBallotItem={isFirstBallotItem}
-                            // primaryParty={primaryParty}
+                            hideOfficeHeader
                           />
                         </Suspense>
                       </BallotOverflowWrapper>
