@@ -10,16 +10,16 @@ import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import ModalDisplayTemplateA from '../Widgets/ModalDisplayTemplateA';
 import OfficeHeaderTripleDotMenu from '../BallotItem/OfficeHeaderTripleDotMenu';
 
-function OfficeInfoModal ({ isOpen, onClose, officeName }) {
-  function PlayButton () {
-    return (
-      <svg width="32" height="24" viewBox="0 0 32 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect width="32" height="24" rx="4" fill="#0858A1" />
-        <path d="M12 6 L12 18 L22 12 Z" fill="#ebebeb" />
-      </svg>
-    );
-  }
+function PlayButton () {
+  return (
+    <svg width="32" height="24" viewBox="0 0 32 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="32" height="24" rx="4" fill="#0858A1" />
+      <path d="M12 6 L12 18 L22 12 Z" fill="#ebebeb" />
+    </svg>
+  );
+}
 
+function OfficeInfoModal ({ isOpen, onClose, officeName, officeWeVoteId }) {
   const dialogTitleJSX = (
     <HeaderRow>
       <Title id="office-info-title">
@@ -28,10 +28,12 @@ function OfficeInfoModal ({ isOpen, onClose, officeName }) {
         <br className="mobile-break" />
         <strong>{officeName}</strong>
       </Title>
-      <HeaderActionsOfficeInfo>
-        <OfficeHeaderTripleDotMenu />
-        <VerticalLine />
-      </HeaderActionsOfficeInfo>
+      {officeWeVoteId && (
+        <HeaderActionsOfficeInfo>
+          <OfficeHeaderTripleDotMenu officeWeVoteId={officeWeVoteId} />
+          <VerticalLine />
+        </HeaderActionsOfficeInfo>
+      )}
     </HeaderRow>
   );
 
@@ -101,6 +103,7 @@ OfficeInfoModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   officeName: PropTypes.string.isRequired,
+  officeWeVoteId: PropTypes.string,
 };
 
 // Global Styles
