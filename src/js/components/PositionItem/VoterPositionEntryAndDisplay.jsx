@@ -80,7 +80,7 @@ function VoterPositionEntryAndDisplay ({ classes, externalUniqueId, politicianWe
         pageDetails: getPageDetails(),
         userDetails: VoterStore.getAnalyticsUserDetails(),
         actionDetails: {
-          action: 'close',
+          actionType: 'close',
           componentName: 'VoterPositionEntryAndDisplay',
           buttonId: closeButtonId,
         },

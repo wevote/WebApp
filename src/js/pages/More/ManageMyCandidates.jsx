@@ -2,6 +2,7 @@ import { CheckCircle as CheckIcon, Close as CloseIcon, ContentCopy as CopyIcon, 
 import React, { Suspense, useCallback, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import styled from 'styled-components';
+import TagManager from 'react-gtm-module';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 import EditInvitationModal from '../../components/More/EditInvitationModal';
 import EnterOneByOneModal from '../../components/More/EnterOneByOneModal';
@@ -9,8 +10,30 @@ import { StyledImportInviteIcon } from '../../components/More/ImportInviteIcon';
 import PasteListModal from '../../components/More/PasteListModal';
 import PreviewInvitationModal from '../../components/More/PreviewInvitationModal';
 import UploadCSVModal from '../../components/More/UploadCSVModal';
+import VoterStore from '../../stores/VoterStore';
+import lookupPageNameAndPageTypeDict, { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
 
 const ImportedVotersList = React.lazy(() => import('../../components/PoliticiansManaged/ImportedVotersList'));
+
+function pushDataLayer (event, actionType, buttonId = '', destinationPath = null) {
+  const destinationPage = destinationPath && lookupPageNameAndPageTypeDict(destinationPath);
+  const dataLayerObject = {
+    actionDetails: {
+      actionType,
+      buttonId,
+    },
+    event,
+    pageDetails: getPageDetails(),
+    userDetails: VoterStore.getAnalyticsUserDetails(),
+    ...(destinationPage && { destinationDetails: {
+      destinationPageName: destinationPage.pageName,
+      destinationPageType: destinationPage.pageType,
+      destinationPathname: destinationPath,
+    },
+    }),
+  };
+  TagManager.dataLayer({ dataLayer: dataLayerObject });
+}
 
 export default function ManageMyCandidates ({ selectedPolitician, selectedPoliticianWeVoteId }) {
   const [invitationBody, setInvitationBody] = useState(`Hello friend,
@@ -149,20 +172,20 @@ Thanks for your help!`);
         <InviteDivider className="u-show-desktop" />
         <InviteQuickLinks>
           <InviteLabel>Invitation:</InviteLabel>
-          <IconButton type="button" title="Copy invitation" onClick={handleCopyInviteBody}>
+          <IconButton id="copyInvitationButton-desktop" type="button" title="Copy invitation" onClick={() => { pushDataLayer('action', 'share', 'copyInvitationButton-desktop'); handleCopyInviteBody(); }}>
             <CopyIcon fontSize="small" />
           </IconButton>
-          <IconButton type="button" title="Preview invitation" onClick={handlePreviewOpen}>
+          <IconButton id="previewInvitationButton-desktop" type="button" title="Preview invitation" onClick={() => { pushDataLayer('action', 'openModal', 'previewInvitationButton-desktop'); handlePreviewOpen(); }}>
             <EyeIcon fontSize="small" />
           </IconButton>
-          <IconButton type="button" title="Edit invitation" onClick={openEditModal}>
+          <IconButton id="editInvitationButton-desktop" type="button" title="Edit invitation" onClick={() => { pushDataLayer('action', 'openModal', 'editInvitationButton-desktop'); openEditModal(); }}>
             <EditIcon fontSize="small" />
           </IconButton>
           <InviteLabel>Post to:</InviteLabel>
-          <SocialIconButton type="button" aria-label="Post to Facebook">
+          <SocialIconButton id="postToFacebookButton-desktop" type="button" aria-label="Post to Facebook" onClick={() => pushDataLayer('click', 'share', 'postToFacebookButton-desktop')}>
             <FacebookIcon fontSize="small" />
           </SocialIconButton>
-          <SocialIconButton type="button" aria-label="Post to X">
+          <SocialIconButton id="postToXButton-desktop" type="button" aria-label="Post to X" onClick={() => pushDataLayer('click', 'share', 'postToXButton-desktop')}>
             <XIcon fontSize="small" />
           </SocialIconButton>
         </InviteQuickLinks>
@@ -174,13 +197,13 @@ Thanks for your help!`);
         <MobileInviteActions>
           <LeftGroup>
             <InviteLabel>Invitation:</InviteLabel>
-            <IconButton type="button" title="Copy invitation" onClick={handleCopyInviteBody}>
+            <IconButton id="copyInvitationButton-mobile" type="button" title="Copy invitation" onClick={() => { pushDataLayer('action', 'share', 'copyInvitationButton-mobile'); handleCopyInviteBody(); }}>
               <CopyIcon fontSize="small" />
             </IconButton>
-            <IconButton type="button" title="Preview invitation" onClick={handlePreviewOpen}>
+            <IconButton id="previewInvitationButton-mobile" type="button" title="Preview invitation" onClick={() => { pushDataLayer('action', 'openModal', 'previewInvitationButton-mobile'); handlePreviewOpen(); }}>
               <EyeIcon fontSize="small" />
             </IconButton>
-            <IconButton type="button" title="Edit invitation" onClick={openEditModal}>
+            <IconButton id="editInvitationButton-mobile" type="button" title="Edit invitation" onClick={() => { pushDataLayer('action', 'openModal', 'editInvitationButton-mobile'); openEditModal(); }}>
               <EditIcon fontSize="small" />
             </IconButton>
           </LeftGroup>
@@ -189,10 +212,10 @@ Thanks for your help!`);
 
           <RightGroup>
             <InviteLabel>Post to:</InviteLabel>
-            <SocialIconButton type="button" aria-label="Post to Facebook">
+            <SocialIconButton id="postToFacebookButton-mobile" type="button" aria-label="Post to Facebook" onClick={() => pushDataLayer('click', 'share', 'postToFacebookButton-mobile')}>
               <FacebookIcon fontSize="small" />
             </SocialIconButton>
-            <SocialIconButton type="button" aria-label="Post to X">
+            <SocialIconButton id="postToXButton-mobile" type="button" aria-label="Post to X" onClick={() => pushDataLayer('click', 'share', 'postToXButton-mobile')}>
               <XIcon fontSize="small" />
             </SocialIconButton>
           </RightGroup>
@@ -211,7 +234,7 @@ Thanks for your help!`);
         )}
 
         {!mobileImportDropdown ? (
-          <CollapsedButton type="button" onClick={() => setMobileImportDropdown(true)}>
+          <CollapsedButton id="importVotersExpandButton" type="button" onClick={() => { pushDataLayer('action', 'showMore', 'importVotersExpandButton'); setMobileImportDropdown(true); }}>
             <StyledImportInviteIcon />
             Import voters
           </CollapsedButton>
@@ -222,26 +245,34 @@ Thanks for your help!`);
                 <StyledImportInviteIcon />
                 Import voters
               </ImportVotersTitle>
-              <CloseButton type="button" onClick={() => setMobileImportDropdown(false)}>
+              <CloseButton id="importVotersCloseButton" type="button" onClick={() => { pushDataLayer('action', 'showLess', 'importVotersCloseButton'); setMobileImportDropdown(false); }}>
                 <CloseIcon fontSize="small" />
               </CloseButton>
             </ImportVotersHeader>
 
             <ImportOptionsGrid>
               <ImportOptionWrapper>
-                <ImportOptionButton type="button" onClick={() => setShowUpload(true)}>
+                <ImportOptionButton id="uploadCSVFileButton-mobile" type="button" onClick={() => { pushDataLayer('action', 'openModal', 'uploadCSVFileButton-mobile'); setShowUpload(true); }}>
                   <UploadIcon />
                 </ImportOptionButton>
                 <ImportOptionLabel>Upload CSV file</ImportOptionLabel>
               </ImportOptionWrapper>
               <ImportOptionWrapper>
-                <ImportOptionButton type="button" onClick={() => setShowPaste(true)}>
+                <ImportOptionButton id="pasteListButton-mobile" type="button" onClick={() => { pushDataLayer('action', 'openModal', 'pasteListButton-mobile'); setShowPaste(true); }}>
                   <PasteListIcon />
                 </ImportOptionButton>
                 <ImportOptionLabel>Paste list</ImportOptionLabel>
               </ImportOptionWrapper>
               <ImportOptionWrapper>
-                <ImportOptionButton type="button" onClick={() => setShowEnterOne(true)}>
+                <ImportOptionButton
+                  id="enterOneByOneButton"
+                  type="button"
+                  onClick={() => {
+                    pushDataLayer('action', 'openModal', 'enterOneByOneButton');
+                    setShowEnterOne(true);
+                    setMobileImportDropdown(false);
+                  }}
+                >
                   <PersonIcon />
                 </ImportOptionButton>
                 <ImportOptionLabel>Enter one-by-one</ImportOptionLabel>
@@ -258,8 +289,9 @@ Thanks for your help!`);
           <Input placeholder="Email" value={oneEmail} onChange={(e) => setOneEmail(e.target.value)} />
           <Input placeholder="Mobile phone" value={onePhone} onChange={(e) => setOnePhone(e.target.value)} />
           <PrimaryButton
+            id="importVoterButton"
             type="button"
-            onClick={handleImportOne}
+            onClick={() => { pushDataLayer('action', 'save', 'importVoterButton'); handleImportOne(); }}
             disabled={!oneName.trim() || !emailRE.test(oneEmail)}
           >
             Import voter
@@ -270,12 +302,12 @@ Thanks for your help!`);
       <Section className="u-show-desktop-tablet">
         <H3>Upload voters from a file or paste a list</H3>
         <Row>
-          <PillButton type="button" onClick={() => setShowUpload(true)}>
+          <PillButton id="uploadCSVFileButton-desktop" type="button" onClick={() => { pushDataLayer('action', 'openModal', 'uploadCSVFileButton-desktop'); setShowUpload(true); }}>
             <UploadIcon fontSize="small" />
             Upload CSV file
           </PillButton>
           <Or>OR</Or>
-          <PillButton type="button" onClick={() => setShowPaste(true)}>
+          <PillButton id="pasteListButton-desktop" type="button" onClick={() => { pushDataLayer('action', 'openModal', 'pasteListButton-desktop'); setShowPaste(true); }}>
             <PasteListIcon size={22} />
             Paste list
           </PillButton>

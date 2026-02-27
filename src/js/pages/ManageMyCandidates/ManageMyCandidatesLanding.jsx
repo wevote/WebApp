@@ -4,17 +4,31 @@ import React, { Suspense, useCallback, useEffect, useMemo, useRef, useState } fr
 import { Helmet } from 'react-helmet-async';
 import { useHistory, useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import TagManager from 'react-gtm-module';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 import PoliticianStore from '../../common/stores/PoliticianStore';
 import { ImportInviteIcon } from '../../components/More/ImportInviteIcon';
 import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import VoterStore from '../../stores/VoterStore';
-
+import lookupPageNameAndPageTypeDict, { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
 
 const PoliticiansManagedController = React.lazy(() => import('../../components/PoliticiansManaged/PoliticiansManagedController'));
 const ImportAndInvitePage = React.lazy(() => import('../More/ManageMyCandidates'));
 const TrackingPage = React.lazy(() => import('./SupporterTracking'));
 const AnalyticsPage = React.lazy(() => import('./SupporterAnalytics'));
+
+function pushDataLayer (buttonId = '') {
+  const dataLayerObject = {
+    actionDetails: {
+      actionType: 'navigate',
+      buttonId,
+    },
+    event: 'action',
+    pageDetails: getPageDetails(),
+    userDetails: VoterStore.getAnalyticsUserDetails(),
+  };
+  TagManager.dataLayer({ dataLayer: dataLayerObject });
+}
 
 export default function ManageMyCandidatesLanding () {
   // Left nav active tab
@@ -152,22 +166,22 @@ export default function ManageMyCandidatesLanding () {
           showLeftGradient={showLeftGradient}
           showRightGradient={showRightGradient}
         >
-          <NavPill $mobile $active={active === 'import'} onClick={handleClaimImport}>
+          <NavPill id="importInviteNavButton-mobile" $mobile $active={active === 'import'} onClick={() => { pushDataLayer('importInviteNavButton-mobile'); handleClaimImport(); }}>
             <PillIcon><ImportInviteIcon fontSize="small" /></PillIcon>
             Import &amp; invite
           </NavPill>
 
-          <NavPill $mobile $active={active === 'tracking'} onClick={handleClaimTracking}>
+          <NavPill id="trackingNavButton-mobile" $mobile $active={active === 'tracking'} onClick={() => { pushDataLayer('trackingNavButton-mobile'); handleClaimTracking(); }}>
             <PillIcon><TrackingIcon fontSize="small" /></PillIcon>
             Tracking
           </NavPill>
 
-          <NavPill $mobile $active={active === 'analytics'} onClick={handleClaimAnalytics}>
+          <NavPill id="analyticsNavButton-mobile" $mobile $active={active === 'analytics'} onClick={() => { pushDataLayer('analyticsNavButton-mobile'); handleClaimAnalytics(); }}>
             <PillIcon><AnalyticsIcon fontSize="small" /></PillIcon>
             Analytics
           </NavPill>
 
-          <NavPill $mobile as="button" $active={false} onClick={handleClaimEdit}>
+          <NavPill id="editCandidateProfileNavButton-mobile" $mobile as="button" $active={false} onClick={() => { pushDataLayer('editCandidateProfileNavButton-mobile'); handleClaimEdit(); }}>
             <PillIcon><EditIcon fontSize="small" /></PillIcon>
             Edit
           </NavPill>
@@ -175,24 +189,24 @@ export default function ManageMyCandidatesLanding () {
 
         {/* Desktop and tablet navigation bar */}
         <NavBar className="u-show-desktop" aria-label="Manage navigation">
-          <NavPill $active={active === 'import'} onClick={handleClaimImport}>
+          <NavPill id="importInviteNavButton-desktop" $active={active === 'import'} onClick={() => { pushDataLayer('importInviteNavButton-desktop'); handleClaimImport(); }}>
             <PillIcon><ImportInviteIcon fontSize="small" /></PillIcon>
             Import &amp; invite voters
           </NavPill>
 
-          <NavPill $active={active === 'tracking'} onClick={handleClaimTracking}>
+          <NavPill id="trackingNavButton-desktop" $active={active === 'tracking'} onClick={() => { pushDataLayer('trackingNavButton-desktop'); handleClaimTracking(); }}>
             <PillIcon><TrackingIcon fontSize="small" /></PillIcon>
             Tracking
           </NavPill>
 
-          <NavPill $active={active === 'analytics'} onClick={handleClaimAnalytics}>
+          <NavPill id="analyticsNavButton-desktop" $active={active === 'analytics'} onClick={() => { pushDataLayer('analyticsNavButton-desktop'); handleClaimAnalytics(); }}>
             <PillIcon><AnalyticsIcon fontSize="small" /></PillIcon>
             Analytics
           </NavPill>
 
           <SideDivider />
 
-          <NavPill as="button" $active={false} onClick={handleClaimEdit}>
+          <NavPill id="editCandidateProfileNavButton-desktop" as="button" $active={false} onClick={() => { pushDataLayer('editCandidateProfileNavButton-desktop'); handleClaimEdit(); }}>
             <PillIcon><EditIcon fontSize="small" /></PillIcon>
             Edit candidate profile
           </NavPill>
