@@ -6,6 +6,8 @@ import VoterStore from '../../stores/VoterStore'; // eslint-disable-line import/
 import { dumpObjProps } from '../../utils/appleSiliconUtils';
 import $ajax from '../../utils/service';
 
+/* eslint-disable camelcase */
+
 const subject = new Subject();
 
 function isCordovaLocal () {

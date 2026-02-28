@@ -9,6 +9,8 @@ import { extractScoreFromNetworkFromPositionList } from '../utils/positionFuncti
 import CandidateStore from './CandidateStore'; // eslint-disable-line import/no-cycle
 import MeasureStore from './MeasureStore'; // eslint-disable-line import/no-cycle
 
+/* eslint-disable camelcase */
+
 class SupportStore extends ReduceStore {
   getInitialState () {
     return {

@@ -1,5 +1,7 @@
 import Dispatcher from '../common/dispatcher/Dispatcher';
 
+/* eslint-disable camelcase */
+
 export default {
   organizationDislike (organizationWeVoteId = '', politicianWeVoteId = '', organization_twitter_handle = '', organization_follow_based_on_issue = false) {
     // console.log('OrganizationActions.organizationFollow, organizationWeVoteId: ', organizationWeVoteId);

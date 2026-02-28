@@ -113,6 +113,7 @@ export function pageEnumeration () {
     return CordovaPageConstants.friends;
   } else if (path.startsWith('/opinions') && !isSEOFriendlyURL(path)) {
     return CordovaPageConstants.opinions;
+    // eslint-disable-next-line no-dupe-else-if
   } else if (path.startsWith('/ready') && !isSEOFriendlyURL(path)) {
     return CordovaPageConstants.values; // Use /value setting
   } else if (path.startsWith('/values') && !isSEOFriendlyURL(path)) {

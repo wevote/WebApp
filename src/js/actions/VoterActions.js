@@ -1,7 +1,9 @@
 import Dispatcher from '../common/dispatcher/Dispatcher';
-import { isCordova } from '../common/utils/isCordovaOrWebApp'; // eslint-disable-line import/no-cycle
+import { isCordova } from '../common/utils/isCordovaOrWebApp';
 import AppObservableStore from '../common/stores/AppObservableStore'; // eslint-disable-line import/no-cycle
 import arrayContains from '../common/utils/arrayContains';
+
+/* eslint-disable camelcase */
 
 export default {
   clearEmailAddressStatus () {

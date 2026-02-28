@@ -106,6 +106,7 @@ export function getApplicationViewBooleans (pathname) {
     // Don't even load Stripe, Google Analytics, Google Maps, and Zen, they make startup very slow and are not needed for the Chrome Extension
     window.leanLoadForChromeExtension = true;
     console.log('applicationUtils for Chrome Extension window.leanLoadForChromeExtension set to true');
+    // eslint-disable-next-line no-dupe-else-if
   } else if (pathnameLowerCase.startsWith('/-') && !isSEOFriendlyURL(pathnameLowerCase)) {
     sharedItemLandingPage = true;
   } else if (pathnameLowerCase.startsWith('/twitter_sign_in')) {
