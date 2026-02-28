@@ -77,7 +77,9 @@ export const PositionRowListOneWrapper = styled('div')`
 `;
 
 export const PositionRowListOuterWrapper = styled('div')`
+  flex-shrink: 0;
   margin-top: 10px;
+  width: 60px;
 `;
 
 export const PositionRowListScoreColumn = styled('div')`

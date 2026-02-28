@@ -325,6 +325,7 @@ const IssueListWrapper = styled('div')`
   margin-bottom: 8px;
   padding-inline-start: 0;
   width: 100%;
+  max-width: 320px;
 `;
 
 const MoreWrapper = styled('button')`

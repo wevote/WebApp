@@ -1087,13 +1087,24 @@ class ItemActionBar extends PureComponent {
               )}
 
               {!this.props.inModal && (
-                <CandidateStaffWrapper visibilityRowOpen={visibilityRowOpen}>
-                  <CandidateStaffText>For candidate staff:</CandidateStaffText>
-                  <CandidateStaffLink href="#">
-                    <EditOutlined style={{ fontSize: 14, verticalAlign: 'middle', marginRight: 2 }} />
-                    Claim &amp; edit profile
-                  </CandidateStaffLink>
-                </CandidateStaffWrapper>
+                <>
+                  {/* Desktop/tablet: show with left border divider */}
+                  <CandidateStaffWrapper className="u-show-desktop-tablet" visibilityRowOpen={visibilityRowOpen}>
+                    <CandidateStaffText>For candidate staff:</CandidateStaffText>
+                    <CandidateStaffLink href="#">
+                      <EditOutlined style={{ fontSize: 14, verticalAlign: 'middle', marginRight: 2 }} />
+                      Claim &amp; edit profile
+                    </CandidateStaffLink>
+                  </CandidateStaffWrapper>
+                  {/* Mobile: show without left border divider */}
+                  <CandidateStaffWrapperMobile className="u-show-mobile" visibilityRowOpen={visibilityRowOpen}>
+                    <CandidateStaffText>For candidate staff:</CandidateStaffText>
+                    <CandidateStaffLink href="#">
+                      <EditOutlined style={{ fontSize: 14, verticalAlign: 'middle', marginRight: 2 }} />
+                      Claim &amp; edit profile
+                    </CandidateStaffLink>
+                  </CandidateStaffWrapperMobile>
+                </>
               )}
 
               {/* Mobile: full-width visibility row wraps below buttons + candidate staff */}
@@ -1274,7 +1285,8 @@ const ButtonGroup = styled('div', {
 })(({ positionPublicToggleWrapAllowed }) => (`
   display: flex;
   flex-wrap: nowrap;
-  height: 40px;
+  height: auto;
+  align-items: center;
   justify-content: flex-start;
   margin-left: 0;
   margin-right: 0;
@@ -1397,6 +1409,19 @@ const CandidateStaffWrapper = styled('div', {
   @media (max-width: 991px) {
     margin-left: ${visibilityRowOpen ? '16px' : '0'};
   }
+`));
+
+const CandidateStaffWrapperMobile = styled('div', {
+  shouldForwardProp: (prop) => prop !== 'visibilityRowOpen',
+})(({ visibilityRowOpen }) => (`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-size: 13px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  width: 100%;
+  margin-top: 8px;
 `));
 
 const CandidateStaffText = styled('span')`

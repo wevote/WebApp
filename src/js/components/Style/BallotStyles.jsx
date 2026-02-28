@@ -51,7 +51,9 @@ export const BallotSharedOfficeItemWrapper = styled('div')`
 
 export const Candidate = styled('div')`
   display: flex;
+  flex-flow: row nowrap;
   flex-grow: 8;
+  min-width: 0;
 `;
 
 export const CandidateBottomRow = styled('div')`
@@ -60,7 +62,10 @@ export const CandidateBottomRow = styled('div')`
 
 export const CandidateContainer = styled('div')`
   display: flex;
+  flex-direction: row;
   justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
 `;
 
 export const CandidateInfo = styled('div')(({ theme }) => (`
@@ -112,6 +117,7 @@ export const CandidateImageAndMatchWrapper = styled('div')`
   flex-flow: column nowrap;
   align-items: flex-start;
   justify-content: flex-start;
+  flex-shrink: 0;
 `;
 
 export const CandidateNameAndPartyWrapper = styled('div')`
@@ -119,10 +125,11 @@ export const CandidateNameAndPartyWrapper = styled('div')`
   flex-flow: column nowrap;
   align-items: flex-start;
   justify-content: flex-start;
+  min-width: 0;
   max-width: 225px;
 
   @media (width < 450px) {
-    max-width: 150px;
+    max-width: 100%;
   }
 `;
 
@@ -139,12 +146,10 @@ export const CandidateTopRow = styled('div')`
 `;
 
 export const CandidateWrapper = styled('div')(({ theme }) => (`
-  width: 320px;
-  ${theme.breakpoints.down('sm')} {
-    width: 100%;
-  }
+  flex: 0 0 auto;
+  min-width: 0;
+  max-width: calc(100% - 60px);
   ${theme.breakpoints.up('sm')} {
-//     margin-left: 48px;
     min-width: 320px;
   }
 `));
