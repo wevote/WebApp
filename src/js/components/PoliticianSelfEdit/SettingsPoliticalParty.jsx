@@ -46,6 +46,7 @@ function SettingsPoliticalParty ({ politicianWeVoteId }) {
       },
       userDetails: VoterStore.getAnalyticsUserDetails(),
       pageDetails: getPageDetails(),
+      timeStampOfChange: Date.now(),
 
     };
     if (politicianWeVoteId) {

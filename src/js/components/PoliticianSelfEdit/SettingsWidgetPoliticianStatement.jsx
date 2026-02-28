@@ -66,6 +66,7 @@ class SettingsWidgetPoliticianStatement extends Component {
         },
         userDetails: VoterStore.getAnalyticsUserDetails(),
         pageDetails: getPageDetails(),
+        timeStampOfChange: Date.now(),
       };
       if (politicianWeVoteId) {
         dataLayerObject.politicianDetails = PoliticianStore.getAnalyticsPoliticianDetails(politicianWeVoteId);
