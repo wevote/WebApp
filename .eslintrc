@@ -66,6 +66,7 @@
     "react/no-did-update-set-state": 0,
     "react/no-string-refs": 1,
     "react/no-unused-prop-types": 1,
+    "react/jsx-no-useless-fragment": 0,
     "react/no-unused-state": 1,
     "react/prefer-stateless-function": 0,
     "react/prop-types": 1,
