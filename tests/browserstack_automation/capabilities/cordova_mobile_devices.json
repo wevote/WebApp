@@ -1,9 +1,8 @@
-
 [
   {
     "platformName": "ios",
     "appium:options": {
-      "app": "bs://594269826a367783be072e2fe9cc0896bc0e01cd",
+      "app": "bs://42e1e5477a85102f49e5191c4528dd69734e35e0",
       "platformVersion": "16",
       "deviceName": "iPhone 14 Pro Max",
       "autoWebview": false
@@ -13,16 +12,15 @@
       "automationVersion": "latest",
       "appiumLogs": "true",
       "networkLogs": "true",
-       "seleniumLogs": "true",
-       "consoleLogs": "info",
-       "deviceLogs" : "true"
+      "seleniumLogs": "true",
+      "consoleLogs": "info",
+      "deviceLogs": "true"
     }
   },
-
   {
     "platformName": "ios",
     "appium:options": {
-      "app": "bs://594269826a367783be072e2fe9cc0896bc0e01cd",
+      "app": "bs://42e1e5477a85102f49e5191c4528dd69734e35e0",
       "platformVersion": "17",
       "deviceName": "iPhone 15",
       "autoWebview": false
@@ -32,16 +30,15 @@
       "automationVersion": "latest",
       "appiumLogs": "true",
       "networkLogs": "true",
-       "seleniumLogs": "true",
-       "consoleLogs": "info",
-       "deviceLogs" : "true"
-
+      "seleniumLogs": "true",
+      "consoleLogs": "info",
+      "deviceLogs": "true"
     }
   },
   {
     "platformName": "ios",
     "appium:options": {
-      "app": "bs://594269826a367783be072e2fe9cc0896bc0e01cd",
+      "app": "bs://42e1e5477a85102f49e5191c4528dd69734e35e0",
       "platformVersion": "17",
       "deviceName": "iPhone 15 Pro Max",
       "autoWebview": false
@@ -51,16 +48,15 @@
       "automationVersion": "latest",
       "appiumLogs": "true",
       "networkLogs": "true",
-       "seleniumLogs": "true",
-       "consoleLogs": "info",
-       "deviceLogs" : "true"
-
+      "seleniumLogs": "true",
+      "consoleLogs": "info",
+      "deviceLogs": "true"
     }
   },
   {
     "platformName": "ios",
     "appium:options": {
-      "app": "bs://594269826a367783be072e2fe9cc0896bc0e01cd",
+      "app": "bs://42e1e5477a85102f49e5191c4528dd69734e35e0",
       "platformVersion": "17",
       "deviceName": "iPhone 15 Pro",
       "autoWebview": false
@@ -70,16 +66,15 @@
       "automationVersion": "latest",
       "appiumLogs": "true",
       "networkLogs": "true",
-       "seleniumLogs": "true",
-       "consoleLogs": "info",
-       "deviceLogs" : "true"
-
+      "seleniumLogs": "true",
+      "consoleLogs": "info",
+      "deviceLogs": "true"
     }
   },
   {
     "platformName": "ios",
     "appium:options": {
-      "app": "bs://594269826a367783be072e2fe9cc0896bc0e01cd",
+      "app": "bs://42e1e5477a85102f49e5191c4528dd69734e35e0",
       "platformVersion": "18",
       "deviceName": "iPhone 14",
       "autoWebview": false
@@ -89,15 +84,15 @@
       "automationVersion": "latest",
       "appiumLogs": "true",
       "networkLogs": "true",
-       "seleniumLogs": "true",
-       "consoleLogs": "info",
-       "deviceLogs" : "true"
+      "seleniumLogs": "true",
+      "consoleLogs": "info",
+      "deviceLogs": "true"
     }
   },
   {
     "platformName": "ios",
     "appium:options": {
-      "app": "bs://594269826a367783be072e2fe9cc0896bc0e01cd",
+      "app": "bs://42e1e5477a85102f49e5191c4528dd69734e35e0",
       "platformVersion": "18",
       "deviceName": "iPhone 13",
       "autoWebview": false
@@ -107,16 +102,15 @@
       "automationVersion": "latest",
       "appiumLogs": "true",
       "networkLogs": "true",
-       "seleniumLogs": "true",
-       "consoleLogs": "info",
-       "deviceLogs" : "true"
+      "seleniumLogs": "true",
+      "consoleLogs": "info",
+      "deviceLogs": "true"
     }
   },
-
   {
     "platformName": "ios",
     "appium:options": {
-      "app": "bs://594269826a367783be072e2fe9cc0896bc0e01cd",
+      "app": "bs://42e1e5477a85102f49e5191c4528dd69734e35e0",
       "platformVersion": "18",
       "deviceName": "iPhone 16e",
       "autoWebview": false
@@ -126,15 +120,15 @@
       "automationVersion": "latest",
       "appiumLogs": "true",
       "networkLogs": "true",
-       "seleniumLogs": "true",
-       "consoleLogs": "info",
-       "deviceLogs" : "true"
+      "seleniumLogs": "true",
+      "consoleLogs": "info",
+      "deviceLogs": "true"
     }
   },
   {
     "platformName": "ios",
     "appium:options": {
-      "app": "bs://594269826a367783be072e2fe9cc0896bc0e01cd",
+      "app": "bs://42e1e5477a85102f49e5191c4528dd69734e35e0",
       "platformVersion": "18",
       "deviceName": "iPhone 16 Pro Max",
       "autoWebview": false
@@ -144,15 +138,15 @@
       "automationVersion": "latest",
       "appiumLogs": "true",
       "networkLogs": "true",
-       "seleniumLogs": "true",
-       "consoleLogs": "info",
-       "deviceLogs" : "true"
+      "seleniumLogs": "true",
+      "consoleLogs": "info",
+      "deviceLogs": "true"
     }
   },
   {
     "platformName": "ios",
     "appium:options": {
-      "app": "bs://594269826a367783be072e2fe9cc0896bc0e01cd",
+      "app": "bs://42e1e5477a85102f49e5191c4528dd69734e35e0",
       "platformVersion": "18",
       "deviceName": "iPhone 16 Pro",
       "autoWebview": false
@@ -162,16 +156,15 @@
       "automationVersion": "latest",
       "appiumLogs": "true",
       "networkLogs": "true",
-       "seleniumLogs": "true",
-       "consoleLogs": "info",
-       "deviceLogs" : "true"
-
+      "seleniumLogs": "true",
+      "consoleLogs": "info",
+      "deviceLogs": "true"
     }
   },
   {
     "platformName": "ios",
     "appium:options": {
-      "app": "bs://594269826a367783be072e2fe9cc0896bc0e01cd",
+      "app": "bs://42e1e5477a85102f49e5191c4528dd69734e35e0",
       "platformVersion": "18",
       "deviceName": "iPhone 16",
       "autoWebview": false
@@ -181,15 +174,15 @@
       "automationVersion": "latest",
       "appiumLogs": "true",
       "networkLogs": "true",
-       "seleniumLogs": "true",
-       "consoleLogs": "info",
-       "deviceLogs" : "true"
+      "seleniumLogs": "true",
+      "consoleLogs": "info",
+      "deviceLogs": "true"
     }
   },
   {
     "platformName": "ios",
     "appium:options": {
-      "app": "bs://594269826a367783be072e2fe9cc0896bc0e01cd",
+      "app": "bs://42e1e5477a85102f49e5191c4528dd69734e35e0",
       "platformVersion": "17",
       "deviceName": "iPad Pro 13 2024",
       "autoWebview": false
@@ -199,15 +192,15 @@
       "automationVersion": "latest",
       "appiumLogs": "true",
       "networkLogs": "true",
-       "seleniumLogs": "true",
-       "consoleLogs": "info",
-       "deviceLogs" : "true"
+      "seleniumLogs": "true",
+      "consoleLogs": "info",
+      "deviceLogs": "true"
     }
   },
   {
     "platformName": "ios",
     "appium:options": {
-      "app": "bs://594269826a367783be072e2fe9cc0896bc0e01cd",
+      "app": "bs://42e1e5477a85102f49e5191c4528dd69734e35e0",
       "platformVersion": "17",
       "deviceName": "iPad Pro 13 2024",
       "autoWebview": false
@@ -217,16 +210,15 @@
       "automationVersion": "latest",
       "appiumLogs": "true",
       "networkLogs": "true",
-       "seleniumLogs": "true",
-       "consoleLogs": "info",
-       "deviceLogs" : "true"
+      "seleniumLogs": "true",
+      "consoleLogs": "info",
+      "deviceLogs": "true"
     }
   },
-
-{
+  {
     "platformName": "android",
     "appium:options": {
-      "app": "bs://9dcb02d84da3df01a1a5585416defa66718741b7",
+      "app": "bs://a71f1867c2643ee4b68ebaf9f0e8f66efdccf3fa",
       "platformVersion": "15.0",
       "deviceName": "Samsung Galaxy S25 Ultra",
       "autoWebview": false
@@ -236,15 +228,15 @@
       "automationVersion": "latest",
       "appiumLogs": "true",
       "networkLogs": "true",
-       "seleniumLogs": "true",
-       "consoleLogs": "info",
-       "deviceLogs" : "true"
+      "seleniumLogs": "true",
+      "consoleLogs": "info",
+      "deviceLogs": "true"
     }
   },
   {
     "platformName": "android",
     "appium:options": {
-      "app": "bs://9dcb02d84da3df01a1a5585416defa66718741b7",
+      "app": "bs://a71f1867c2643ee4b68ebaf9f0e8f66efdccf3fa",
       "platformVersion": "16.0",
       "deviceName": "Google Pixel 9",
       "autoWebview": false
@@ -254,15 +246,15 @@
       "automationVersion": "latest",
       "appiumLogs": "true",
       "networkLogs": "true",
-       "seleniumLogs": "true",
-       "consoleLogs": "info",
-       "deviceLogs" : "true"
+      "seleniumLogs": "true",
+      "consoleLogs": "info",
+      "deviceLogs": "true"
     }
   },
   {
     "platformName": "android",
     "appium:options": {
-      "app": "bs://9dcb02d84da3df01a1a5585416defa66718741b7",
+      "app": "bs://a71f1867c2643ee4b68ebaf9f0e8f66efdccf3fa",
       "platformVersion": "16.0",
       "deviceName": "Google Pixel 10 Pro XL",
       "autoWebview": false
@@ -272,15 +264,15 @@
       "automationVersion": "latest",
       "appiumLogs": "true",
       "networkLogs": "true",
-       "seleniumLogs": "true",
-       "consoleLogs": "info",
-       "deviceLogs" : "true"
+      "seleniumLogs": "true",
+      "consoleLogs": "info",
+      "deviceLogs": "true"
     }
   },
   {
     "platformName": "android",
     "appium:options": {
-      "app": "bs://9dcb02d84da3df01a1a5585416defa66718741b7",
+      "app": "bs://a71f1867c2643ee4b68ebaf9f0e8f66efdccf3fa",
       "platformVersion": "16.0",
       "deviceName": "Google Pixel 10 Pro",
       "autoWebview": false
@@ -290,15 +282,15 @@
       "automationVersion": "latest",
       "appiumLogs": "true",
       "networkLogs": "true",
-       "seleniumLogs": "true",
-       "consoleLogs": "info",
-       "deviceLogs" : "true"
+      "seleniumLogs": "true",
+      "consoleLogs": "info",
+      "deviceLogs": "true"
     }
   },
   {
     "platformName": "android",
     "appium:options": {
-      "app": "bs://9dcb02d84da3df01a1a5585416defa66718741b7",
+      "app": "bs://a71f1867c2643ee4b68ebaf9f0e8f66efdccf3fa",
       "platformVersion": "16.0",
       "deviceName": "Google Pixel 10",
       "autoWebview": false
@@ -308,15 +300,15 @@
       "automationVersion": "latest",
       "appiumLogs": "true",
       "networkLogs": "true",
-       "seleniumLogs": "true",
-       "consoleLogs": "info",
-       "deviceLogs" : "true"
+      "seleniumLogs": "true",
+      "consoleLogs": "info",
+      "deviceLogs": "true"
     }
   },
   {
     "platformName": "android",
     "appium:options": {
-      "app": "bs://9dcb02d84da3df01a1a5585416defa66718741b7",
+      "app": "bs://a71f1867c2643ee4b68ebaf9f0e8f66efdccf3fa",
       "platformVersion": "15.0",
       "deviceName": "Google Pixel 9 Pro",
       "autoWebview": false
@@ -326,15 +318,15 @@
       "automationVersion": "latest",
       "appiumLogs": "true",
       "networkLogs": "true",
-       "seleniumLogs": "true",
-       "consoleLogs": "info",
-       "deviceLogs" : "true"
+      "seleniumLogs": "true",
+      "consoleLogs": "info",
+      "deviceLogs": "true"
     }
   },
   {
     "platformName": "android",
     "appium:options": {
-      "app": "bs://9dcb02d84da3df01a1a5585416defa66718741b7",
+      "app": "bs://a71f1867c2643ee4b68ebaf9f0e8f66efdccf3fa",
       "platformVersion": "15.0",
       "deviceName": "OnePlus 13R",
       "autoWebview": false
@@ -344,10 +336,9 @@
       "automationVersion": "latest",
       "appiumLogs": "true",
       "networkLogs": "true",
-       "seleniumLogs": "true",
-       "consoleLogs": "info",
-       "deviceLogs" : "true"
+      "seleniumLogs": "true",
+      "consoleLogs": "info",
+      "deviceLogs": "true"
     }
   }
-
 ]
