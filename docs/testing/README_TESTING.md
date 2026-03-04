@@ -22,7 +22,45 @@ Copy `WebApp/tests/browserstack_automation/config/browserstack.config.template.j
 
 You'll need to add your credentials to `browserstack.config.js`. Sign into Browserstack and navigate to the [BrowserStack Automate dashboard](https://automate.browserstack.com/). Press the down arrow next to where it says "Access Key" in the header. You should see your username ("YOUR-USERNAME" below) and access key ("ACCESS-KEY-HERE" below). You will need both of these values to upload the compiled App.
 
-You will also need the URL for the android app .apk file. You can get this by asking someone else or by uploading the file with Browserstack's REST API as described [here](https://www.browserstack.com/app-automate/rest-api?framework=appium).
+#### Preferred: automated app upload
+
+We now have a utility that downloads the latest apps from Google Drive, uploads them to BrowserStack, and updates the config files.
+
+1. Create your local BrowserStack config from the template:
+
+       cp tests/browserstack_automation/config/browserstack.config.template.js tests/browserstack_automation/config/browserstack.config.js
+
+   Then put your `BROWSERSTACK_USER` and `BROWSERSTACK_KEY` values into `browserstack.config.js`.
+
+2. Create your local Google Drive config from the template:
+
+       cp tests/browserstack_automation/config/googleDrive.config.template.js tests/browserstack_automation/config/googleDrive.config.js
+
+   - Set `FOLDER_URL` to the shared Drive folder that contains the latest APK and IPA.
+   - Optionally adjust `LIST_TIMEOUT_MS` and `LIST_PAGE_SIZE` if needed.
+
+3. Create your local Google Drive service account key file from the template:
+
+       cp tests/browserstack_automation/config/googleDriveServiceAccountKey.template.json tests/browserstack_automation/config/googleDriveServiceAccountKey.json
+
+   - Ask your admin or project owner for the real service account JSON key and paste its contents into `googleDriveServiceAccountKey.json`.
+   - Make sure the Drive folder is shared (Viewer access is enough) with that service account.
+
+4. To download the latest APK/IPA from Drive into the apps folder and upload them to BrowserStack, run:
+
+       npm run browserstack:sync-apps
+
+   This will:
+   - Download the latest `.apk` and `.ipa` from the Drive folder into `tests/browserstack_automation/apps/`.
+   - Upload the newest `.apk` and `.ipa` in that folder to BrowserStack.
+   - Update `BROWSERSTACK_APK_URL` and `BROWSERSTACK_IPA_URL` in `browserstack.config.js`.
+   - Update the app URLs in `tests/browserstack_automation/capabilities/cordova_mobile_devices.json`.
+
+#### Legacy: manual app upload with curl
+
+If you cannot use the automated script above, you can still upload apps manually.
+
+You will need the URL for the android app .apk file. You can get this by asking someone else or by uploading the file with Browserstack's REST API as described [here](https://www.browserstack.com/app-automate/rest-api?framework=appium).
 Visit this page when you are signed into Browserstack, and they will customize the command that you need to run from your terminal window:
 
     curl -u "YOUR-USERNAME:ACCESS-KEY-HERE" -X POST https://api-cloud.browserstack.com/app-automate/upload -F "file=@/path/to/app/file/Application-debug.apk" -F 'data={"custom_id": "MyApp"}'

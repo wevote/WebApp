@@ -189,3 +189,6 @@ tests/browserstack*/capabilities/mobile.json
 tests/browserstack*/screenshots/
 storybook-static/
 compileDate.js.backup
+tests/browserstack_automation/config/googleDriveServiceAccountKey.json
+tests/browserstack_automation/config/googleDrive.config.js
+tests/browserstack_automation/apps/*
