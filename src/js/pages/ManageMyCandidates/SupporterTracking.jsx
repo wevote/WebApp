@@ -9,25 +9,29 @@ import TagManager from 'react-gtm-module';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 import VoterStore from '../../stores/VoterStore';
 import { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
+import PoliticianStore from '../../common/stores/PoliticianStore';
 
 import SupportersJoined from './SupportersJoined';
 import SupportersInvited from './SupportersInvited';
 import SupportersToRemind from './SupportersToRemind';
 
-function pushDataLayer (buttonId = '') {
+function pushDataLayer (buttonId = '', politicianWeVoteId = null) {
   const dataLayerObject = {
     actionDetails: {
-      actionType: 'filter',
+      actionType: 'navigate',
       buttonId,
     },
     event: 'action',
     pageDetails: getPageDetails(),
     userDetails: VoterStore.getAnalyticsUserDetails(),
   };
+  if (politicianWeVoteId) {
+    dataLayerObject.politicianDetails = PoliticianStore.getAnalyticsPoliticianDetails(politicianWeVoteId);
+  }
   TagManager.dataLayer({ dataLayer: dataLayerObject });
 }
 
-export default function SupporterTracking () {
+export default function SupporterTracking ({ selectedPoliticianWeVoteId = null }) {
   const [activeTab, setActiveTab] = useState('joined');
 
   /**
@@ -190,7 +194,7 @@ export default function SupporterTracking () {
         <Tab
           id="trackingJoinedWeVoteTab"
           active={activeTab === 'joined'}
-          onClick={() => { pushDataLayer('trackingJoinedWeVoteTab'); setActiveTab('joined'); }}
+          onClick={() => { pushDataLayer('trackingJoinedWeVoteTab', selectedPoliticianWeVoteId); setActiveTab('joined'); }}
           data-hidden-bold-text={`Joined WeVote (${counts['joined']})`}
         >
           Joined WeVote
@@ -201,7 +205,7 @@ export default function SupporterTracking () {
         <Tab
           id="trackingInvitedTab"
           active={activeTab === 'invited'}
-          onClick={() => { pushDataLayer('trackingInvitedTab'); setActiveTab('invited'); }}
+          onClick={() => { pushDataLayer('trackingInvitedTab', selectedPoliticianWeVoteId); setActiveTab('invited'); }}
           data-hidden-bold-text={`Invited (${counts['invited']})`}
         >
           Invited
@@ -212,7 +216,7 @@ export default function SupporterTracking () {
         <Tab
           id="trackingReminderNeededTab"
           active={activeTab === 'remind'}
-          onClick={() => { pushDataLayer('trackingReminderNeededTab'); setActiveTab('remind'); }}
+          onClick={() => { pushDataLayer('trackingReminderNeededTab', selectedPoliticianWeVoteId); setActiveTab('remind'); }}
           data-hidden-bold-text={`Reminder needed (${counts['remind']})`}
         >
           Reminder needed

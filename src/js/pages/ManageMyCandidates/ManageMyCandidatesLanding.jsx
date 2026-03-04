@@ -10,14 +10,14 @@ import PoliticianStore from '../../common/stores/PoliticianStore';
 import { ImportInviteIcon } from '../../components/More/ImportInviteIcon';
 import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import VoterStore from '../../stores/VoterStore';
-import lookupPageNameAndPageTypeDict, { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
+import { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
 
 const PoliticiansManagedController = React.lazy(() => import('../../components/PoliticiansManaged/PoliticiansManagedController'));
 const ImportAndInvitePage = React.lazy(() => import('../More/ManageMyCandidates'));
 const TrackingPage = React.lazy(() => import('./SupporterTracking'));
 const AnalyticsPage = React.lazy(() => import('./SupporterAnalytics'));
 
-function pushDataLayer (buttonId = '') {
+function pushDataLayer (buttonId = '', politicianWeVoteId = null) {
   const dataLayerObject = {
     actionDetails: {
       actionType: 'navigate',
@@ -27,6 +27,9 @@ function pushDataLayer (buttonId = '') {
     pageDetails: getPageDetails(),
     userDetails: VoterStore.getAnalyticsUserDetails(),
   };
+  if (politicianWeVoteId) {
+    dataLayerObject.politicianDetails = PoliticianStore.getAnalyticsPoliticianDetails(politicianWeVoteId);
+  }
   TagManager.dataLayer({ dataLayer: dataLayerObject });
 }
 
@@ -166,22 +169,22 @@ export default function ManageMyCandidatesLanding () {
           showLeftGradient={showLeftGradient}
           showRightGradient={showRightGradient}
         >
-          <NavPill id="importInviteNavButton-mobile" $mobile $active={active === 'import'} onClick={() => { pushDataLayer('importInviteNavButton-mobile'); handleClaimImport(); }}>
+          <NavPill id="importInviteNavButton-mobile" $mobile $active={active === 'import'} onClick={() => { pushDataLayer('importInviteNavButton-mobile', selectedPoliticianWeVoteId); handleClaimImport(); }}>
             <PillIcon><ImportInviteIcon fontSize="small" /></PillIcon>
             Import &amp; invite
           </NavPill>
 
-          <NavPill id="trackingNavButton-mobile" $mobile $active={active === 'tracking'} onClick={() => { pushDataLayer('trackingNavButton-mobile'); handleClaimTracking(); }}>
+          <NavPill id="trackingNavButton-mobile" $mobile $active={active === 'tracking'} onClick={() => { pushDataLayer('trackingNavButton-mobile', selectedPoliticianWeVoteId); handleClaimTracking(); }}>
             <PillIcon><TrackingIcon fontSize="small" /></PillIcon>
             Tracking
           </NavPill>
 
-          <NavPill id="analyticsNavButton-mobile" $mobile $active={active === 'analytics'} onClick={() => { pushDataLayer('analyticsNavButton-mobile'); handleClaimAnalytics(); }}>
+          <NavPill id="analyticsNavButton-mobile" $mobile $active={active === 'analytics'} onClick={() => { pushDataLayer('analyticsNavButton-mobile', selectedPoliticianWeVoteId); handleClaimAnalytics(); }}>
             <PillIcon><AnalyticsIcon fontSize="small" /></PillIcon>
             Analytics
           </NavPill>
 
-          <NavPill id="editCandidateProfileNavButton-mobile" $mobile as="button" $active={false} onClick={() => { pushDataLayer('editCandidateProfileNavButton-mobile'); handleClaimEdit(); }}>
+          <NavPill id="editCandidateProfileNavButton-mobile" $mobile as="button" $active={false} onClick={() => { pushDataLayer('editCandidateProfileNavButton-mobile', selectedPoliticianWeVoteId); handleClaimEdit(); }}>
             <PillIcon><EditIcon fontSize="small" /></PillIcon>
             Edit
           </NavPill>
@@ -189,24 +192,24 @@ export default function ManageMyCandidatesLanding () {
 
         {/* Desktop and tablet navigation bar */}
         <NavBar className="u-show-desktop" aria-label="Manage navigation">
-          <NavPill id="importInviteNavButton-desktop" $active={active === 'import'} onClick={() => { pushDataLayer('importInviteNavButton-desktop'); handleClaimImport(); }}>
+          <NavPill id="importInviteNavButton-desktop" $active={active === 'import'} onClick={() => { pushDataLayer('importInviteNavButton-desktop', selectedPoliticianWeVoteId); handleClaimImport(); }}>
             <PillIcon><ImportInviteIcon fontSize="small" /></PillIcon>
             Import &amp; invite voters
           </NavPill>
 
-          <NavPill id="trackingNavButton-desktop" $active={active === 'tracking'} onClick={() => { pushDataLayer('trackingNavButton-desktop'); handleClaimTracking(); }}>
+          <NavPill id="trackingNavButton-desktop" $active={active === 'tracking'} onClick={() => { pushDataLayer('trackingNavButton-desktop', selectedPoliticianWeVoteId); handleClaimTracking(); }}>
             <PillIcon><TrackingIcon fontSize="small" /></PillIcon>
             Tracking
           </NavPill>
 
-          <NavPill id="analyticsNavButton-desktop" $active={active === 'analytics'} onClick={() => { pushDataLayer('analyticsNavButton-desktop'); handleClaimAnalytics(); }}>
+          <NavPill id="analyticsNavButton-desktop" $active={active === 'analytics'} onClick={() => { pushDataLayer('analyticsNavButton-desktop', selectedPoliticianWeVoteId); handleClaimAnalytics(); }}>
             <PillIcon><AnalyticsIcon fontSize="small" /></PillIcon>
             Analytics
           </NavPill>
 
           <SideDivider />
 
-          <NavPill id="editCandidateProfileNavButton-desktop" as="button" $active={false} onClick={() => { pushDataLayer('editCandidateProfileNavButton-desktop'); handleClaimEdit(); }}>
+          <NavPill id="editCandidateProfileNavButton-desktop" as="button" $active={false} onClick={() => { pushDataLayer('editCandidateProfileNavButton-desktop', selectedPoliticianWeVoteId); handleClaimEdit(); }}>
             <PillIcon><EditIcon fontSize="small" /></PillIcon>
             Edit candidate profile
           </NavPill>
@@ -221,7 +224,7 @@ export default function ManageMyCandidatesLanding () {
                 selectedPoliticianWeVoteId={selectedPoliticianWeVoteId}
               />
             )}
-            {active === 'tracking' && <TrackingPage />}
+            {active === 'tracking' && <TrackingPage selectedPoliticianWeVoteId={selectedPoliticianWeVoteId} />}
             {active === 'analytics' && <AnalyticsPage />}
           </Suspense>
         </RightPanel>
