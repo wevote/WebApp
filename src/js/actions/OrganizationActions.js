@@ -1,24 +1,22 @@
 import Dispatcher from '../common/dispatcher/Dispatcher';
 
-/* eslint-disable camelcase */
-
 export default {
-  organizationDislike (organizationWeVoteId = '', politicianWeVoteId = '', organization_twitter_handle = '', organization_follow_based_on_issue = false) {
+  organizationDislike (organizationWeVoteId = '', politicianWeVoteId = '', organizationTwitterHandle = '', organizationFollowBasedOnIssue = false) {
     // console.log('OrganizationActions.organizationFollow, organizationWeVoteId: ', organizationWeVoteId);
     Dispatcher.loadEndpoint('organizationDislike', {
       organization_we_vote_id: organizationWeVoteId,
-      organization_twitter_handle,
-      organization_follow_based_on_issue,
+      organization_twitter_handle: organizationTwitterHandle,
+      organization_follow_based_on_issue: organizationFollowBasedOnIssue,
       politician_we_vote_id: politicianWeVoteId,
     });
   },
 
-  organizationFollow (organizationWeVoteId = '', politicianWeVoteId = '', organization_twitter_handle = '', organization_follow_based_on_issue = false) {
+  organizationFollow (organizationWeVoteId = '', politicianWeVoteId = '', organizationTwitterHandle = '', organizationFollowBasedOnIssue = false) {
     // console.log('OrganizationActions.organizationFollow, organizationWeVoteId: ', organizationWeVoteId);
     Dispatcher.loadEndpoint('organizationFollow', {
       organization_we_vote_id: organizationWeVoteId,
-      organization_twitter_handle,
-      organization_follow_based_on_issue,
+      organization_twitter_handle: organizationTwitterHandle,
+      organization_follow_based_on_issue: organizationFollowBasedOnIssue,
       politician_we_vote_id: politicianWeVoteId,
     });
   },
@@ -231,12 +229,12 @@ export default {
     );
   },
 
-  organizationSearch (organizationSearchTerm, organization_twitter_handle = '', exact_match = false) {
+  organizationSearch (organizationSearchTerm, organizationTwitterHandle = '', exactMatch = false) {
     // console.log('OrganizationActions.organizationSearch, organizationSearchTerm: ', organizationSearchTerm);
     Dispatcher.loadEndpoint('organizationSearch', {
-      exact_match,
+      exact_match: exactMatch,
       organization_search_term: organizationSearchTerm,
-      organization_twitter_handle,
+      organization_twitter_handle: organizationTwitterHandle,
     });
   },
 
@@ -260,14 +258,14 @@ export default {
     );
   },
 
-  positionListForOpinionMaker (organizationWeVoteId, filterForVoter, filterOutVoter, google_civic_election_id = 0) { // Calls positionListForOpinionMaker endpoint
+  positionListForOpinionMaker (organizationWeVoteId, filterForVoter, filterOutVoter, googleCivicElectionId = 0) { // Calls positionListForOpinionMaker endpoint
     Dispatcher.loadEndpoint(
       'positionListForOpinionMaker',
       {
         opinion_maker_we_vote_id: organizationWeVoteId,
         filter_for_voter: filterForVoter,
         filter_out_voter: filterOutVoter,
-        google_civic_election_id,
+        google_civic_election_id: googleCivicElectionId,
         kind_of_opinion_maker: 'ORGANIZATION',
       },
     );

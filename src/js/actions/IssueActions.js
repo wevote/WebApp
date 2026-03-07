@@ -1,7 +1,5 @@
 import Dispatcher from '../common/dispatcher/Dispatcher';
 
-/* eslint-disable camelcase */
-
 // let uniqueKeyIssuesDescriptionRetrieve = '';
 // let uniqueKeyIssuesFollowedRetrieve = '';
 
@@ -74,10 +72,10 @@ export default {
     Dispatcher.loadEndpoint('issuesFollowedRetrieve', {});
   },
 
-  issuesUnderBallotItemsRetrieve (googleCivicElectionId, ballot_location_shortcut = '', ballot_returned_we_vote_id = '') {
+  issuesUnderBallotItemsRetrieve (googleCivicElectionId, ballotLocationShortcut = '', ballotReturnedWeVoteId = '') {
     Dispatcher.loadEndpoint('issuesUnderBallotItemsRetrieve', {
-      ballot_location_shortcut,
-      ballot_returned_we_vote_id,
+      ballot_location_shortcut: ballotLocationShortcut,
+      ballot_returned_we_vote_id: ballotReturnedWeVoteId,
       google_civic_election_id: googleCivicElectionId,
     });
   },

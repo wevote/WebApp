@@ -3,8 +3,6 @@ import Dispatcher from '../common/dispatcher/Dispatcher';
 
 // let voterBallotItemRetrievedWithZeroCivicId = false;
 
-/* eslint-disable camelcase */
-
 export default {
   allBallotItemsRetrieve (googleCivicElectionId, stateCode = '') {
     // This API is always retrieved from our CDN per: WebApp/src/js/utils/service.js
@@ -27,11 +25,11 @@ export default {
     });
   },
 
-  ballotItemOptionsRetrieve (googleCivicElectionId = 0, search_string = '', state_code = '') {
+  ballotItemOptionsRetrieve (googleCivicElectionId = 0, searchString = '', stateCode = '') {
     Dispatcher.loadEndpoint('ballotItemOptionsRetrieve', {
       google_civic_election_id: googleCivicElectionId,
-      search_string,
-      state_code,
+      search_string: searchString,
+      state_code: stateCode,
     });
   },
 
@@ -59,7 +57,7 @@ export default {
     });
   },
 
-  voterBallotItemsRetrieve (googleCivicElectionId = 0, ballot_returned_we_vote_id = '', ballot_location_shortcut = '') {
+  voterBallotItemsRetrieve (googleCivicElectionId = 0, ballotReturnedWeVoteId = '', ballotLocationShortcut = '') {
     // 2022-04-30 We want to allow this API to be called more than once per session
     // if (googleCivicElectionId === 0 && voterBallotItemRetrievedWithZeroCivicId) {
     //   // console.log('We only allow voterBallotItemsRetrieve with googleCivicElectionId === 0, once per session');
@@ -78,8 +76,8 @@ export default {
     Dispatcher.loadEndpoint('voterBallotItemsRetrieve', {
       use_test_election: false,
       google_civic_election_id: googleCivicElectionId,
-      ballot_returned_we_vote_id,
-      ballot_location_shortcut,
+      ballot_returned_we_vote_id: ballotReturnedWeVoteId,
+      ballot_location_shortcut: ballotLocationShortcut,
     });
   },
 

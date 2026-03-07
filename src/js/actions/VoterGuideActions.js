@@ -1,13 +1,11 @@
 import Dispatcher from '../common/dispatcher/Dispatcher';
 
-/* eslint-disable camelcase */
-
 export default {
 
-  pledgeToVoteWithVoterGuide (voterGuideWeVoteId, delete_pledge = false) {
+  pledgeToVoteWithVoterGuide (voterGuideWeVoteId, deletePledge = false) {
     Dispatcher.loadEndpoint('pledgeToVoteWithVoterGuide', {
       voter_guide_we_vote_id: voterGuideWeVoteId,
-      delete_pledge,
+      delete_pledge: deletePledge,
     });
   },
 
