@@ -1,6 +1,6 @@
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
 import TagManager from 'react-gtm-module';
+import styled from 'styled-components';
 import { isIOS } from '../utils/cordovaUtils';
 import { isAndroid, isCordova, isWebApp } from '../utils/isCordovaOrWebApp';
 import { renderLog } from '../utils/logging';
@@ -8,7 +8,14 @@ import ToolBar from './Widgets/ToolBar';
 import { Video, PlayerContainer } from './Style/VideoStyles';
 import lookupPageNameAndPageTypeDict, { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
 import VoterStore from '../../stores/VoterStore';
+import lookupPageNameAndPageTypeDict, { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
 import historyPush from '../utils/historyPush';
+import { isAndroid, isCordova, isWebApp } from '../utils/isCordovaOrWebApp';
+import { renderLog } from '../utils/logging';
+import { PlayerContainer, Video } from './Style/VideoStyles';
+import ToolBar from './Widgets/ToolBar';
+
+/* eslint-disable react/jsx-no-useless-fragment */
 
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ './Widgets/OpenExternalWebSite'));
@@ -57,6 +64,20 @@ export default class FAQBody extends Component {
   routeToHome () {
     this.pushDataLayer('/', 'faq-home');
     historyPush('/');
+  }
+
+  navigateToAndroidMarket () {
+    console.log('navigateToAndroidMarket clicked');
+    // Feb 3, 2026:  Unfortunately there is no 'x' to return when you use '_system', but '_blank'
+    // fails with an "unknown scheme" or "unknown intent" error
+    // There is the same problem with Android when you go to the review page (which is basically the
+    // same destination.)
+    window.cordova.InAppBrowser.open(
+      // 'market://details?id=org.wevote.cordova',
+      'https://play.google.com/store/apps/details?id=org.wevote.cordova',
+      '_system',
+      'toolbar=no,location=yes,hardwareback=no',
+    );
   }
 
   render () {
@@ -452,6 +473,11 @@ export default class FAQBody extends Component {
     );
   }
 }
+
+const LinkSpan = styled('span')`
+  color: #206DB3;
+  padding: 0 4px 0 4px;
+`;
 
 const ContentTitle = styled('h1')(({ theme }) => (`
   font-size: 22px;
