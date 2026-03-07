@@ -14,6 +14,8 @@ import signInModalGlobalState from '../common/components/Widgets/signInModalGlob
 import VoterConstants from '../constants/VoterConstants';
 import { dumpObjProps } from '../utils/appleSiliconUtils';
 
+/* eslint-disable camelcase */
+
 class VoterStore extends ReduceStore {
   getInitialState () {
     return {

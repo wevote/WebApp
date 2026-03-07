@@ -4,7 +4,7 @@ import TagManager from 'react-gtm-module';
 import CandidateStore from '../../../stores/CandidateStore';
 import PoliticianStore from '../../stores/PoliticianStore';
 import VoterStore from '../../../stores/VoterStore';
-import { cordovaOpenSafariView } from '../../utils/cordovaUtils';
+import { isIOS, cordovaOpenSafariView } from '../../utils/cordovaUtils';
 import { isAndroid, isWebApp } from '../../utils/isCordovaOrWebApp';
 import lookupPageNameAndPageTypeDict from '../../../utils/lookupPageNameAndPageTypeDict';
 import lookupPageNameAndPageTypeDictForExternalUrls from '../../../utils/lookupPageNameAndPageTypeDictForExternalUrls';
@@ -93,7 +93,12 @@ export default class OpenExternalWebSite extends Component {
           id={linkIdAttribute || ''}
           onClick={() => {
             this.sendExternalLinkInfoToGTM();
-            cordovaOpenSafariView(externalUrl, null, integerDelay);
+            // console.log('---------- Open External Web site info --- externalUrl: ', externalUrl);
+            if (isIOS()) {
+              cordovaOpenSafariView(externalUrl, null, integerDelay);
+            } else {
+              window.cordova.InAppBrowser.open(externalUrl, '_blank', 'location=yes');
+            }
           }}
           title={this.props.title || ''}
           style={this.props.padRight ? { paddingRight: `${this.props.padRight}` } : undefined}

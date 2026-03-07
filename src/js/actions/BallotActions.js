@@ -3,6 +3,8 @@ import Dispatcher from '../common/dispatcher/Dispatcher';
 
 // let voterBallotItemRetrievedWithZeroCivicId = false;
 
+/* eslint-disable camelcase */
+
 export default {
   allBallotItemsRetrieve (googleCivicElectionId, stateCode = '') {
     // This API is always retrieved from our CDN per: WebApp/src/js/utils/service.js

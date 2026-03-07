@@ -67,6 +67,7 @@ export function cordovaOpenSafariViewSub (requestURL, onExit) {
     console.log(`cordovaOpenSafariView -1- requestURL: ${requestURL}`);
     SafariViewController.isAvailable(() => { // eslint-disable-line no-undef
       oAuthLog(`cordovaOpenSafariView requestURL: ${requestURL}`);
+      // eslint-disable-next-line no-undef
       SafariViewController.show(
         { // eslint-disable-line no-undef
           url: requestURL,

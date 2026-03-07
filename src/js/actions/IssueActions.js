@@ -1,5 +1,6 @@
 import Dispatcher from '../common/dispatcher/Dispatcher';
-// import Cookies from '../common/utils/js-cookie/Cookies';
+
+/* eslint-disable camelcase */
 
 // let uniqueKeyIssuesDescriptionRetrieve = '';
 // let uniqueKeyIssuesFollowedRetrieve = '';
