@@ -1,6 +1,12 @@
 import React, { Component, Suspense } from 'react';
 import TagManager from 'react-gtm-module';
 import styled from 'styled-components';
+import { isIOS } from '../utils/cordovaUtils';
+import { isAndroid, isCordova, isWebApp } from '../utils/isCordovaOrWebApp';
+import { renderLog } from '../utils/logging';
+import ToolBar from './Widgets/ToolBar';
+import { Video, PlayerContainer } from './Style/VideoStyles';
+import lookupPageNameAndPageTypeDict, { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
 import VoterStore from '../../stores/VoterStore';
 import lookupPageNameAndPageTypeDict, { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
 import historyPush from '../utils/historyPush';
@@ -288,24 +294,26 @@ export default class FAQBody extends Component {
 
         <strong>Is this an app or a website?</strong>
         <br />
-        <span>
-          We have a mobile-ready website, as well as
-          <LinkSpan>
-            <OpenExternalWebSite
-              linkIdAttribute="weVoteIPhone"
-              url="https://apps.apple.com/us/app/we-vote-voter-guide/id1347335726"
-              target="_blank"
-              body="iPhone"
-              trackingOn
-            />
-          </LinkSpan>
-          and
-          {isAndroid() ? (
-            <LinkSpan onClick={() => this.navigateToAndroidMarket()}>
-              Android
-            </LinkSpan>
-          ) :  (
-            <LinkSpan>
+        {isIOS() && (
+          <span>You are using our iOS App from the Apple App Store!</span>
+        )}
+        {isAndroid() && (
+          <span>You are using our Android App from the Google Play Store!</span>
+        )}
+        {isWebApp() && (
+          <span>
+            We have a mobile-ready website, as well as
+            <Suspense fallback={<></>}>
+              <OpenExternalWebSite
+                linkIdAttribute="weVoteIPhone"
+                url="https://apps.apple.com/us/app/we-vote-voter-guide/id1347335726"
+                target="_blank"
+                body="iPhone"
+                trackingOn
+              />
+            </Suspense>
+            and
+            <Suspense fallback={<></>}>
               <OpenExternalWebSite
                 linkIdAttribute="weVoteAndroid"
                 url="https://play.google.com/store/apps/details?id=org.wevote.cordova&hl=en_US"
@@ -313,10 +321,10 @@ export default class FAQBody extends Component {
                 body="Android"
                 trackingOn
               />
-            </LinkSpan>
-          )}
-          apps.
-        </span>
+            </Suspense>
+            apps.
+          </span>
+        )}
         <span style={{ padding: '0 6px 0 6px' }}>We are free and open source:</span>
         <Suspense fallback={<></>}>
           <OpenExternalWebSite

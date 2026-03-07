@@ -1,5 +1,7 @@
 import Dispatcher from '../common/dispatcher/Dispatcher';
 
+/* eslint-disable camelcase */
+
 export default {
 
   pledgeToVoteWithVoterGuide (voterGuideWeVoteId, delete_pledge = false) {
