@@ -90,6 +90,18 @@ const pageNameAndTypeSimpleDict = {
     pageName: 'Credits',
     pageType: 'credits',
   },
+  '/managecandidates': {
+    pageName: 'ManageMyCandidates',
+    pageType: 'account',
+  },
+  '/managecandidates/tracking': {
+    pageName: 'SupporterTracking',
+    pageType: 'account',
+  },
+  '/managecandidates/analytics': {
+    pageName: 'SupporterAnalytics',
+    pageType: 'account',
+  },
 };
 
 function calculatePageNameAndPageTypeDict (path) {
