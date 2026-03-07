@@ -3,8 +3,6 @@ import { isCordova } from '../common/utils/isCordovaOrWebApp';
 import AppObservableStore from '../common/stores/AppObservableStore'; // eslint-disable-line import/no-cycle
 import arrayContains from '../common/utils/arrayContains';
 
-/* eslint-disable camelcase */
-
 export default {
   clearEmailAddressStatus () {
     Dispatcher.dispatch({ type: 'clearEmailAddressStatus', payload: true });
@@ -159,9 +157,13 @@ export default {
     Dispatcher.loadEndpoint('voterAddressOnlyRetrieve', { voter_device_id: id });
   },
 
-  voterAddressSave (text, simple_save = false, google_civic_election_id = 0) {
+  voterAddressSave (text, simpleSave = false, googleCivicElectionId = 0) {
     // console.log('VoterActions voterAddressSave, text:', text);
-    Dispatcher.loadEndpoint('voterAddressSave', { text_for_map_search: text, simple_save, google_civic_election_id });
+    Dispatcher.loadEndpoint('voterAddressSave', {
+      text_for_map_search: text,
+      simple_save: simpleSave,
+      google_civic_election_id: googleCivicElectionId,
+    });
   },
 
   voterAnalysisForJumpProcess (incomingVoterDeviceId) {
@@ -255,10 +257,10 @@ export default {
     Dispatcher.loadEndpoint('voterEmailAddressRetrieve', {});
   },
 
-  voterEmailAddressSave (voterEmailAddress, send_link_to_sign_in = false) {
+  voterEmailAddressSave (voterEmailAddress, sendLinkToSignIn = false) {
     Dispatcher.loadEndpoint('voterEmailAddressSave', {
       text_for_email_address: voterEmailAddress,
-      send_link_to_sign_in,
+      send_link_to_sign_in: sendLinkToSignIn,
       make_primary_email: true,
       is_cordova: isCordova(),
       hostname: AppObservableStore.getHostname(),
@@ -549,16 +551,16 @@ export default {
 
   voterAppleSignInSave (email, givenName, middleName, familyName, user, identityToken) {
     // eslint-disable-next-line camelcase
-    const { device: { platform: apple_platform, version: apple_os_version, model: apple_model } } = window;
+    const { device: { platform: applePlatform, version: appleOSVersion, model: appleModel } } = window;
     Dispatcher.loadEndpoint('appleSignInSave', {
       email,
       first_name: givenName,
       middle_name: middleName,
       last_name: familyName,
       user_code: user,
-      apple_platform,
-      apple_os_version,
-      apple_model,
+      apple_platform: applePlatform,
+      apple_os_version: appleOSVersion,
+      apple_model: appleModel,
       identity_token: identityToken,
     });
   },

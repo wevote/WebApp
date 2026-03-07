@@ -14,8 +14,6 @@ import signInModalGlobalState from '../common/components/Widgets/signInModalGlob
 import VoterConstants from '../constants/VoterConstants';
 import { dumpObjProps } from '../utils/appleSiliconUtils';
 
-/* eslint-disable camelcase */
-
 class VoterStore extends ReduceStore {
   getInitialState () {
     return {
@@ -1444,14 +1442,14 @@ class VoterStore extends ReduceStore {
       case 'appleSignInSave':
         if (action.res.success) {
           // eslint-disable-next-line camelcase
-          const { first_name, middle_name, last_name, email, user_code: appleUserCode } = action.res;
+          const { first_name: firstName, middle_name: middleName, last_name: lastName, email, user_code: appleUserCode } = action.res;
           VoterActions.voterRetrieve();
           return {
             ...state,
             voter: {
-              first_name,
-              middle_name,
-              last_name,
+              first_name: firstName,
+              middle_name: middleName,
+              last_name: lastName,
               email,
               appleUserCode,
               signed_in_with_apple: true,
