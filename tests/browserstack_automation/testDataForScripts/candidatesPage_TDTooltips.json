@@ -8,6 +8,6 @@
         "HelpDefeatText":"Help Defeat",
         "LikeCandidate":"Favoriting helps us match you to other candidates who share your values.",
         "DislikeCandidate":"^Disliked by \\d+ people\\. Disliking helps us match you to other candidates who share your values\\.$",
-        "LikeDislikeIconColor":"rgb(239,7,22)"
+        "LikeDislikeIconColor":"#F3363D"
     }
 ]

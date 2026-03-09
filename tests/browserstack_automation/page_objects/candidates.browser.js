@@ -211,6 +211,15 @@ class CandidatesBrowser extends PageBrowser {
     return $(`div#${cardId} button[class*='DislikeContainer'] svg path`);
   }
 
+   async getCandidateCardLikeCount (cardId) {
+    return $(`div#${cardId} button[class*='LikeContainer'] span`);
+  }
+
+   async getCandidateCardDisLikeCount (cardId) {
+    return $(`div#${cardId} button[class*='DislikeContainer'] span`);
+  }
+
+
   async selectCandidate (selCandidateName) {
     await this.load();
     await driver.pause(waitTime);
