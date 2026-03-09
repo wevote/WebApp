@@ -324,7 +324,6 @@ describe('Candidates PageBrowser', () => {
     await driver.executeScript("arguments[0].dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));", [likeClr]);
     await driver.waitUntil(async () => CandidatesPage.likeTooltip.isDisplayed(), { timeout: 5000, timeoutMsg: 'Like Tooltip did not appear in time' });
     const tooltipTextLike = await CandidatesPage.likeTooltip.getText();
-    //console.log(`**** Displayed Like Tooltiptext: ${tooltipTextLike}`);
     if (tooltipTextLike !== expectedTooltipTextLike) {
       errors.push(errMsgIncorrectLike);
     }
@@ -338,7 +337,6 @@ describe('Candidates PageBrowser', () => {
     await driver.executeScript("arguments[0].dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));", [dislikeClr]);
     await driver.waitUntil(async () => CandidatesPage.dislikeTooltip.isDisplayed(), { timeout: 5000, timeoutMsg: 'Dislike Tooltip did not appear in time' });
     const tooltipTextDislike = await CandidatesPage.dislikeTooltip.getText();
-    //console.log(`**** Displayed DisLike Tooltiptext: ${tooltipTextDislike}`);
     if (!tooltipTextDislike.match(expectedTooltipTextDislike)) {
       errors.push(errMsgIncorrectUnlike);
     }
