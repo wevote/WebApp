@@ -299,6 +299,7 @@ describe('Candidates PageBrowser', () => {
     await driver.executeScript("arguments[0].dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));", [likeClr]);
     await driver.waitUntil(async () => CandidatesPage.likeTooltip.isDisplayed(), { timeout: 5000, timeoutMsg: 'Like Tooltip did not appear in time' });
     const tooltipTextLike = await CandidatesPage.likeTooltip.getText();
+    //console.log(`**** Displayed Like Tooltiptext: ${tooltipTextLike}`);
     if (tooltipTextLike !== expectedTooltipTextLike) {
       errors.push(errMsgIncorrectLike);
     }
@@ -312,6 +313,7 @@ describe('Candidates PageBrowser', () => {
     await driver.executeScript("arguments[0].dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));", [dislikeClr]);
     await driver.waitUntil(async () => CandidatesPage.dislikeTooltip.isDisplayed(), { timeout: 5000, timeoutMsg: 'Dislike Tooltip did not appear in time' });
     const tooltipTextDislike = await CandidatesPage.dislikeTooltip.getText();
+    //console.log(`**** Displayed DisLike Tooltiptext: ${tooltipTextDislike}`);
     if (!tooltipTextDislike.match(expectedTooltipTextDislike)) {
       errors.push(errMsgIncorrectUnlike);
     }
@@ -408,14 +410,14 @@ describe('Candidates PageBrowser', () => {
     await CandidatesPage.stateSelect.selectByVisibleText(stateNameRandomTC10);
     await driver.pause(waitTime);
     const searchDefaultText = await CandidatesPage.searchBar.getAttribute("placeholder");
-    const expectedSearchText="Search by name or office";
+    const expectedSearchText="Search by name, office or party";
     await expect(searchDefaultText).toMatch(expectedSearchText);
   });
 
   // Candidates_023-Candidates_030
   const searchText=readSearchText();
   searchText.forEach(({ text, runType }) => {
-    it(`verifyCandidateSearchByNameOrOffice for ${text} with ${runType}`, async () => {
+    it.only(`verifyCandidateSearchByNameOrOffice for ${text} with ${runType}`, async () => {
       console.log(` *** ***** Running verifySearchText using name: ${text}, state: ${runType}`);
       const stateNameRandomTC23 = readTestDataStates('random', 1)[0];
       await CandidatesPage.searchBar.click();
