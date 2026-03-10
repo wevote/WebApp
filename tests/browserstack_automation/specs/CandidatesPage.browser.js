@@ -215,7 +215,7 @@ describe('Candidates PageBrowser', () => {
   });
 
   // Candidates_013
-  it.only('verifyOpposeCandidateButtonClick', async () => {
+  it('verifyOpposeCandidateButtonClick', async () => {
     const stateNameRandomTC10 = readTestDataStates('random', 1)[0];
     console.log(`Running verifyOpposeCandidateButtonClick using state ${stateNameRandomTC10}`);
     await CandidatesPage.stateSelect.selectByVisibleText(stateNameRandomTC10);
@@ -312,7 +312,7 @@ describe('Candidates PageBrowser', () => {
     const chooseButton = await CandidatesPage.getCandidateCardChoose(cardId);
     const expectedTooltipTextLike = readTooltipsText('LikeCandidate');
     const expectedTooltipTextDislike = new RegExp(readTooltipsText('DislikeCandidate'));
-    const expectedColor = readTooltipsText('LikeDislikeIconColor');
+    const expectedColor = readTooltipsText('LikeDislikeIconHoverColor');
     const errMsgIncorrectLike = `Like tooltip does not match expected tooltip:\n${expectedTooltipTextLike}`;
     const errMsgIncorrectUnlike = `Unlike tooltip does not match expected tooltip:\n${expectedTooltipTextDislike.source.replace('/', '').replace(/\\/g, '').replace('^', '').replace('$', '')
       .replace('d+', '<N>')}`;
@@ -371,7 +371,7 @@ describe('Candidates PageBrowser', () => {
     await expect(signInButton).toBeDisplayed();
   });
 
-    // Candidates_019
+  // Candidates_019
   it('verifyDislikeCandidateClick @WV-1073', async () => {
     const stateNameRandomTC10 = readTestDataStates('random', 1)[0];
     console.log(`Running verifyDislikeCandidateClick using state ${stateNameRandomTC10}`);
@@ -389,7 +389,7 @@ describe('Candidates PageBrowser', () => {
     await expect(signInButton).toBeDisplayed();
   });
 
-    // Candidates_020
+  // Candidates_020
   it('verifyCandidateNameClick @WV-1073', async () => {
     const stateNameRandomTC10 = readTestDataStates('random', 1)[0];
     console.log(`Running verifyCandidateNameClick using state ${stateNameRandomTC10}`);
@@ -407,7 +407,7 @@ describe('Candidates PageBrowser', () => {
     await expect(newTitle).toMatch(expectedTitle);
   });
 
-    // Candidates_021
+  // Candidates_021
   it('verifyCandidateImageClick @WV-1073', async () => {
     const stateNameRandomTC10 = readTestDataStates('random', 1)[0];
     console.log(`Running verifyCandidateImageClick using state ${stateNameRandomTC10}`);
@@ -486,11 +486,6 @@ describe('Candidates PageBrowser', () => {
     });
   });
 
-
-
-
-
-
   // read All Possible Headers from candidatesPage_TC001.json
   function readTestDataAllPossibleHeaders () {
     const jsonObjH = JSON.parse(fs.readFileSync(`${testDataPath}candidatesPage_TDHeaders.json`));
@@ -527,7 +522,7 @@ describe('Candidates PageBrowser', () => {
     return text;
   }
 
-    // read searchText text from candidatesPage_TDSearch.json
+  // read searchText text from candidatesPage_TDSearch.json
   function readSearchText () {
     const jsonObjH = JSON.parse(fs.readFileSync(`${testDataPath}candidatesPage_TDSearch.json`));
     const text = jsonObjH[0].SearchText;
