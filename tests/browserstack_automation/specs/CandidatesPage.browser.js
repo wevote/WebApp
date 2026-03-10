@@ -189,9 +189,15 @@ describe('Candidates PageBrowser', () => {
     const cardId = await getCandidateCardId();
     const chooseButton = await CandidatesPage.getCandidateCardChoose(cardId);
     const opposeButton = await CandidatesPage.getCandidateCardOppose(cardId);
+    const likeIcon = await CandidatesPage.getCandidateCardLikeIcon(cardId);
+    const likeCounter = await CandidatesPage.getCandidateCardLikeCount(cardId);
+    await driver.executeScript("arguments[0].scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });", [chooseButton]);
+    const likeCountBeforeClick = await likeCounter.getText();
+    console.log(`Like count before click: ${likeCountBeforeClick}`);
     await driver.executeScript("arguments[0].scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });", [chooseButton]);
     await chooseButton.click();
     await driver.pause(waitTime);
+    const likeIconColor = await likeIcon.getAttribute('fill');
     await expect(chooseButton).not.toHaveText('Choose');
     await expect(opposeButton).not.toBePresent();
     await expect(chooseButton).toHaveText('Chosen');
@@ -199,6 +205,13 @@ describe('Candidates PageBrowser', () => {
     await expect(helpWinButton).toBeDisplayed();
     const expectedHelpWinText = readTooltipsText('HelpWinText');
     await expect(helpWinButton).toHaveText(expectedHelpWinText);
+    const likeCountAfterClick = await likeCounter.getText();
+    console.log(`Like count after click: ${likeCountAfterClick}`);
+    const expectedLikeIconColor = readTooltipsText('LikeDislikeIconColor');
+    // latest design changes, the like icon gets selected when we choose a Candidate. 
+    // The total count should get incremented as well (open by defect #2603), hence keeping this test commented for now.
+    await expect(likeIconColor).toBe(expectedLikeIconColor);
+    //await expect(parseInt(likeCountAfterClick)).toBe(parseInt(likeCountBeforeClick) + 1);
   });
 
   // Candidates_013
@@ -210,8 +223,13 @@ describe('Candidates PageBrowser', () => {
     const cardId = await getCandidateCardId();
     const chooseButton = await CandidatesPage.getCandidateCardChoose(cardId);
     const opposeButton = await CandidatesPage.getCandidateCardOppose(cardId);
+    const disLikeIcon = await CandidatesPage.getCandidateCardDislikeIcon(cardId);
+    //const disLikeCounter = await CandidatesPage.getCandidateCardDisLikeCount(cardId);
     await driver.executeScript("arguments[0].scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });", [chooseButton]);
+    //const disLikeCountBeforeClick = await disLikeCounter.getText();
     await opposeButton.click();
+    await driver.pause(waitTime);
+    const disLikeIconColor = await disLikeIcon.getAttribute('fill');
     await expect(chooseButton).not.toBePresent();
     await expect(opposeButton).not.toHaveText('Oppose');
     await expect(opposeButton).toHaveText('Opposed');
@@ -219,6 +237,13 @@ describe('Candidates PageBrowser', () => {
     await expect(helpDefeatButton).toBeDisplayed();
     const expectedHelpDefeatText = readTooltipsText('HelpDefeatText');
     await expect(helpDefeatButton).toHaveText(expectedHelpDefeatText);
+    //const disLikeCountAfterClick = await disLikeCounter.getText();
+    //console.log(`Dislike count after click: ${disLikeCountAfterClick}`);
+    const expectedDisLikeIconColor = readTooltipsText('LikeDislikeIconColor');
+    // latest design changes, the dislike icon gets selected when we oppose a Candidate. 
+    // The total count should get incremented as well (open by defect #2603), hence keeping this test commented for now.
+    await expect(disLikeIconColor).toBe(expectedDisLikeIconColor);
+    //await expect(parseInt(disLikeCountAfterClick)).toBe(parseInt(disLikeCountBeforeClick) + 1);
   });
 
   // Candidates_014
@@ -287,7 +312,7 @@ describe('Candidates PageBrowser', () => {
     const chooseButton = await CandidatesPage.getCandidateCardChoose(cardId);
     const expectedTooltipTextLike = readTooltipsText('LikeCandidate');
     const expectedTooltipTextDislike = new RegExp(readTooltipsText('DislikeCandidate'));
-    const expectedColor = readTooltipsText('LikeDislikeIconColor');
+    const expectedColor = readTooltipsText('LikeDislikeIconHoverColor');
     const errMsgIncorrectLike = `Like tooltip does not match expected tooltip:\n${expectedTooltipTextLike}`;
     const errMsgIncorrectUnlike = `Unlike tooltip does not match expected tooltip:\n${expectedTooltipTextDislike.source.replace('/', '').replace(/\\/g, '').replace('^', '').replace('$', '')
       .replace('d+', '<N>')}`;
@@ -346,7 +371,7 @@ describe('Candidates PageBrowser', () => {
     await expect(signInButton).toBeDisplayed();
   });
 
-    // Candidates_019
+  // Candidates_019
   it('verifyDislikeCandidateClick @WV-1073', async () => {
     const stateNameRandomTC10 = readTestDataStates('random', 1)[0];
     console.log(`Running verifyDislikeCandidateClick using state ${stateNameRandomTC10}`);
@@ -364,7 +389,7 @@ describe('Candidates PageBrowser', () => {
     await expect(signInButton).toBeDisplayed();
   });
 
-    // Candidates_020
+  // Candidates_020
   it('verifyCandidateNameClick @WV-1073', async () => {
     const stateNameRandomTC10 = readTestDataStates('random', 1)[0];
     console.log(`Running verifyCandidateNameClick using state ${stateNameRandomTC10}`);
@@ -382,7 +407,7 @@ describe('Candidates PageBrowser', () => {
     await expect(newTitle).toMatch(expectedTitle);
   });
 
-    // Candidates_021
+  // Candidates_021
   it('verifyCandidateImageClick @WV-1073', async () => {
     const stateNameRandomTC10 = readTestDataStates('random', 1)[0];
     console.log(`Running verifyCandidateImageClick using state ${stateNameRandomTC10}`);
@@ -408,7 +433,7 @@ describe('Candidates PageBrowser', () => {
     await CandidatesPage.stateSelect.selectByVisibleText(stateNameRandomTC10);
     await driver.pause(waitTime);
     const searchDefaultText = await CandidatesPage.searchBar.getAttribute("placeholder");
-    const expectedSearchText="Search by name or office";
+    const expectedSearchText="Search by name, office or party";
     await expect(searchDefaultText).toMatch(expectedSearchText);
   });
 
@@ -461,11 +486,6 @@ describe('Candidates PageBrowser', () => {
     });
   });
 
-
-
-
-
-
   // read All Possible Headers from candidatesPage_TC001.json
   function readTestDataAllPossibleHeaders () {
     const jsonObjH = JSON.parse(fs.readFileSync(`${testDataPath}candidatesPage_TDHeaders.json`));
@@ -502,7 +522,7 @@ describe('Candidates PageBrowser', () => {
     return text;
   }
 
-    // read searchText text from candidatesPage_TDSearch.json
+  // read searchText text from candidatesPage_TDSearch.json
   function readSearchText () {
     const jsonObjH = JSON.parse(fs.readFileSync(`${testDataPath}candidatesPage_TDSearch.json`));
     const text = jsonObjH[0].SearchText;
