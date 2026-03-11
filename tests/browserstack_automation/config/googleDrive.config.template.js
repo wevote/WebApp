@@ -1,7 +1,7 @@
 export const googleDriveConfig = {
   // URL of the Google Drive folder containing the APK/IPA app files
   // e.g. https://drive.google.com/drive/folders/YOUR_FOLDER_ID
-  "FOLDER_URL": "-",
+  "FOLDER_URL": "",
 
   // Local directory where downloaded app files will be saved
   // e.g. tests/browserstack_automation/apps
