@@ -22,7 +22,8 @@ function loadSavedToken() {
 }
 
 function saveToken(token) {
-  fs.writeFileSync(TOKEN_PATH, JSON.stringify(token, null, 2), 'utf8');
+  fs.writeFileSync(TOKEN_PATH, JSON.stringify(token, null, 2), 'utf8', { mode: 0o600 });
+  fs.chmodSync(TOKEN_PATH, 0o600);
   console.log(`OAuth token cached at: ${TOKEN_PATH}`);
 }
 
@@ -94,6 +95,13 @@ export async function getAuthenticatedDriveClient() {
     throw new Error(
       'CLIENT_ID and CLIENT_SECRET must be set in googleDriveOAuth.config.js. ' +
       'Copy googleDriveOAuth.config.template.js to googleDriveOAuth.config.js and fill in your credentials.',
+    );
+  }
+
+  if (!REDIRECT_URI) {
+    throw new Error(
+      'REDIRECT_URI must be set in googleDriveOAuth.config.js. ' +
+      'It must match a redirect URI registered in Google Cloud Console (e.g., http://localhost:3000/oauth2callback).',
     );
   }
 

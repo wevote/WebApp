@@ -135,13 +135,13 @@ export async function downloadAppsFromDriveFolder(options = {}) {
   const result = {};
 
   if (apkCandidates.length) {
-    const apkFile = apkCandidates[0];
+    const apkFile = apkCandidates.sort((a, b) => new Date(b.modifiedTime) - new Date(a.modifiedTime))[0];
     console.log(`\nDownloading APK: ${apkFile.name}`);
     result.apkPath = await downloadDriveFile(drive, apkFile, appsDir);
   }
 
   if (ipaCandidates.length) {
-    const ipaFile = ipaCandidates[0];
+    const ipaFile = ipaCandidates.sort((a, b) => new Date(b.modifiedTime) - new Date(a.modifiedTime))[0];
     console.log(`\nDownloading IPA: ${ipaFile.name}`);
     result.ipaPath = await downloadDriveFile(drive, ipaFile, appsDir);
   }
