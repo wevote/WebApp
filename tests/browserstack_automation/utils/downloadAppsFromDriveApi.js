@@ -43,6 +43,8 @@ async function listFolderFiles(drive, folderId) {
         q: `'${folderId}' in parents and trashed = false`,
         fields: 'files(id, name, mimeType, size, modifiedTime)',
         pageSize,
+        includeItemsFromAllDrives: true,
+        supportsAllDrives: true,
       },
       {
         timeout: timeoutMs,
@@ -67,7 +69,7 @@ async function downloadDriveFile(drive, file, targetDir) {
 
   return new Promise((resolve, reject) => {
     drive.files
-      .get({ fileId: file.id, alt: 'media' }, { responseType: 'stream' })
+      .get({ fileId: file.id, alt: 'media', supportsAllDrives: true }, { responseType: 'stream' })
       .then((res) => {
         const dest = fs.createWriteStream(targetPath);
         res.data
