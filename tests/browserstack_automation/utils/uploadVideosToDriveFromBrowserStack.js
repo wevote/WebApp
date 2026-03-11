@@ -122,7 +122,6 @@ export async function uploadVideoToDrive(sessionId) {
   return uploadedFile;
 }
 
-// CLI support: node uploadVideosToDriveFromBrowserStack.js <SESSION_ID>
 if (process.argv[1] && path.resolve(process.argv[1]) === __filename) {
   const sessionId = process.argv[2];
   if (!sessionId) {

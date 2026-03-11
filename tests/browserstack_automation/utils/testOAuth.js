@@ -1,8 +1,5 @@
-// Quick smoke-test for the OAuth helper.
+// Smoke-test for the OAuth helper.
 // Run with: node tests/browserstack_automation/utils/testOAuth.js
-//
-// First run: opens browser auth, writes token to googleDriveOAuthToken.json
-// Subsequent runs: uses cached token, lists Drive root to confirm access.
 
 import { getAuthenticatedDriveClient } from './googleDriveOAuth.js';
 
