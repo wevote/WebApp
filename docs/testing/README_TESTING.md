@@ -20,47 +20,45 @@ Copy `WebApp/tests/browserstack_automation/config/browserstack.config.template.j
 
 ### Automated installation start here
 
-You'll need to add your credentials to `browserstack.config.js`. Sign into Browserstack and navigate to the [BrowserStack Automate dashboard](https://automate.browserstack.com/). Press the down arrow next to where it says "Access Key" in the header. You should see your username ("YOUR-USERNAME" below) and access key ("ACCESS-KEY-HERE" below). You will need both of these values to upload the compiled App.
+You'll need to add your credentials to `browserstack.config.js`. Sign into Browserstack and navigate to the [BrowserStack Automate dashboard](https://automate.browserstack.com/). Press the down arrow next to where it says "Access Key" in the header. You should see your username ("YOUR-USERNAME" below) and access key ("ACCESS-KEY-HERE" below). You will need both of these values.
 
-#### Preferred: automated app upload
+#### Preferred: Automated app download and upload workflow
 
-We now have a utility that downloads the latest apps from Google Drive, uploads them to BrowserStack, and updates the config files.
+We have a utility that automatically downloads apps from Google Drive. App upload to BrowserStack and URL injection happen at test runtime via wdio.config.js.
 
-1. Create your local BrowserStack config from the template:
+1. Set up your BrowserStack config:
 
        cp tests/browserstack_automation/config/browserstack.config.template.js tests/browserstack_automation/config/browserstack.config.js
 
-   Then put your `BROWSERSTACK_USER` and `BROWSERSTACK_KEY` values into `browserstack.config.js`.
+   Add your `BROWSERSTACK_USER` and `BROWSERSTACK_KEY` to `browserstack.config.js`.
 
-2. Create your local Google Drive config from the template:
+2. Set up your Google Drive config:
 
        cp tests/browserstack_automation/config/googleDrive.config.template.js tests/browserstack_automation/config/googleDrive.config.js
 
-   - Set `FOLDER_URL` to the shared Drive folder that contains the latest APK and IPA.
-   - Optionally adjust `LIST_TIMEOUT_MS` and `LIST_PAGE_SIZE` if needed.
+   Add the `FOLDER_URL` to your shared Drive folder containing the APK and IPA files.
 
-3. Create your local Google Drive service account key file from the template:
+3. Set up your Google Drive service account key:
 
        cp tests/browserstack_automation/config/googleDriveServiceAccountKey.template.json tests/browserstack_automation/config/googleDriveServiceAccountKey.json
 
-   - Ask your admin or project owner for the real service account JSON key and paste its contents into `googleDriveServiceAccountKey.json`.
-   - Make sure the Drive folder is shared (Viewer access is enough) with that service account.
+   Add your service account JSON key (ask in slack channel for this).
 
-4. To download the latest APK/IPA from Drive into the apps folder and upload them to BrowserStack, run:
+4. Download the latest apps:
 
-       npm run browserstack:sync-apps
+       npm run drive:download
 
-   This will:
-   - Download the latest `.apk` and `.ipa` from the Drive folder into `tests/browserstack_automation/apps/`.
-   - Upload the newest `.apk` and `.ipa` in that folder to BrowserStack.
-   - Update `BROWSERSTACK_APK_URL` and `BROWSERSTACK_IPA_URL` in `browserstack.config.js`.
-   - Update the app URLs in `tests/browserstack_automation/capabilities/cordova_mobile_devices.json`.
+   This downloads the latest `.apk` and `.ipa` into `tests/browserstack_automation/apps/`.
 
-#### Legacy: manual app upload with curl
+5. Run cordova tests - URL upload and injection happen automatically:
 
-If you cannot use the automated script above, you can still upload apps manually.
+       npm run wdio-cordova
 
-You will need the URL for the android app .apk file. You can get this by asking someone else or by uploading the file with Browserstack's REST API as described [here](https://www.browserstack.com/app-automate/rest-api?framework=appium).
+   The wdio.config.js onPrepare hook will upload apps to BrowserStack and inject URLs into capabilities at runtime.
+
+#### Legacy: Manual app upload with curl
+
+Alternatively, you can get the URL for the android app .apk file by uploading the file with Browserstack's REST API as described [here](https://www.browserstack.com/app-automate/rest-api?framework=appium).
 Visit this page when you are signed into Browserstack, and they will customize the command that you need to run from your terminal window:
 
     curl -u "YOUR-USERNAME:ACCESS-KEY-HERE" -X POST https://api-cloud.browserstack.com/app-automate/upload -F "file=@/path/to/app/file/Application-debug.apk" -F 'data={"custom_id": "MyApp"}'
@@ -112,11 +110,13 @@ Run scenarios for mobiles:
 When the run finishes, results can be seen on browserstack dashboard under 'web->Automate'
 
 2.To run wevote cordova tests:
--update the capabilities in 'cordova_mobile_devices.json' [see above steps]
--update 'BROWSERSTACK_APK_URL', 'BROWSERSTACK_IPA_URL' in 'config ->browserstack.config.js' [ see above on how to generate the app urls ]
--update the specs in wdio.config under 'cordovaSpecs'
+-download latest apps: (WebAppEnv) $ npm run drive:download
+-update the capabilities in 'cordova_mobile_devices.json' if needed [see above steps]
+-update the specs in wdio.config under 'cordovaSpecs' if needed
 -use : (WebAppEnv) $ npm run wdio-cordova
 When the run finishes, results can be seen on browserstack dashboard under 'App->App Automate'
+
+Note: BROWSERSTACK_APK_URL and BROWSERSTACK_IPA_URL are automatically injected at runtime by wdio.config.js, so no manual config updates are needed.
 
 Run scenarios for desktop:
 
