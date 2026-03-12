@@ -339,21 +339,27 @@ export default function ImportedVotersList ({
                       <ActionsInline className="row-actions">
                         <ActionPill
                           type="button"
+                          title="Send email invite"
+                          aria-label="Send email invite"
                           onClick={() => onInviteEmail([v])}
                         >
-                          <MailIcon fontSize="small" />
-                          <span>Send email invite</span>
+                          <MailIcon fontSize="inherit" />
                         </ActionPill>
                         <ActionPill
                           type="button"
+                          title="Send text invite"
+                          aria-label="Send text invite"
                           onClick={() => onInviteText([v])}
                         >
-                          <SmsIcon fontSize="small" />
-                          <span>Send text invite</span>
+                          <SmsIcon fontSize="inherit" />
                         </ActionPill>
-                        <ActionPill type="button" onClick={() => onHide(v)}>
-                          <HideIcon fontSize="small" />
-                          <span>Hide</span>
+                        <ActionPill
+                          type="button"
+                          title="Hide voter"
+                          aria-label="Hide voter"
+                          onClick={() => onHide(v)}
+                        >
+                          <HideIcon fontSize="inherit" />
                         </ActionPill>
 
                         {/* Triple dot menu, only visible on hover or when menu is open */}
@@ -626,18 +632,20 @@ const Table = styled.div`
 `;
 
 const Tbody = styled.div``;
-const gridCols = '34px 34px 1.2fr 1.2fr 0.9fr auto';
+const gridCols = '24px 24px 1.2fr 1.2fr 0.9fr 120px';
 
 const Th = styled.div`
-  padding: 10px 14px;
+  padding: 10px 0;
   font-size: 12px;
   font-weight: 600;
   color: ${DesignTokenColors.neutralUI600};
   min-width: 0;
+  text-align: left;
 `;
 
 const ThCenter = styled(Th)`
   text-align: center;
+  padding: 10px 0;
 `;
 const ThRight = styled(Th)`
   text-align: right;
@@ -682,30 +690,34 @@ const TrDetails = styled(Tr)`
 `;
 
 const Td = styled.div`
-  padding: 10px 14px;
+  padding: 10px 0;
   font-size: 14px;
   color: ${DesignTokenColors.neutralUI900};
   min-width: 0; /* key: allow shrinking inside CSS grid */
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  text-align: left;
 `;
 
 const TdCheck = styled(Td)`
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 10px 0;
 `;
 
 const TdExpand = styled(Td)`
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 10px 0;
 `;
 
 const TdActions = styled(Td)`
   display: flex;
   justify-content: flex-end;
+  padding: 10px 4px;
 `;
 
 const Checkbox = styled.input``;
@@ -724,7 +736,7 @@ const ExpandBtn = styled.button`
 
 const ActionsInline = styled.div`
   display: inline-flex;
-  gap: 10px;
+  gap: 6px;
   justify-content: flex-end;
   align-items: center;
   opacity: 0;
@@ -738,10 +750,10 @@ const ActionPill = styled.button`
   align-items: center;
   background: transparent;
   border: none;
-  padding: 6px 10px;
+  padding: 4px 2px;
+  font-size: 16px;
   color: ${DesignTokenColors.neutralUI800};
   cursor: pointer;
-  white-space: nowrap;
 `;
 
 const ClickAwayOverlay = styled.div`
