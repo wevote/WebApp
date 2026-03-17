@@ -67,6 +67,8 @@ const nonFluxState = {
   showBallotChoicesAndSettingsModal: false,
   showChooseOrOpposeIntroModal: false,
   showClaimProfileWithEmailModal: false,
+  showEditPositionModal: false,
+  editPositionModalPoliticianWeVoteId: '',
   showClaimProfileWithOtherWaysModal: false,
   showCompleteYourProfileModal: false,
   showNotificationBannerAboveHeader: false,
@@ -200,6 +202,14 @@ export default {
 
   getShowClaimProfileWithEmailModal () {
     return nonFluxState.showClaimProfileWithEmailModal;
+  },
+
+  getShowEditPositionModal () {
+    return nonFluxState.showEditPositionModal;
+  },
+
+  getEditPositionModalPoliticianWeVoteId () {
+    return nonFluxState.editPositionModalPoliticianWeVoteId;
   },
 
   getShowClaimProfileWithOtherWaysModal () {
@@ -504,6 +514,12 @@ export default {
   setShowClaimProfileWithEmailModal (show) {
     nonFluxState.showClaimProfileWithEmailModal = show;
     messageService.sendMessage('state updated showClaimProfileWithEmailModal');
+  },
+
+  setShowEditPositionModal (show, politicianWeVoteId = '') {
+    nonFluxState.showEditPositionModal = show;
+    nonFluxState.editPositionModalPoliticianWeVoteId = show ? politicianWeVoteId : '';
+    messageService.sendMessage('state updated showEditPositionModal');
   },
 
   setShowClaimProfileWithOtherWaysModal (show) {
