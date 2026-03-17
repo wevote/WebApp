@@ -440,7 +440,7 @@ describe('Candidates PageBrowser', () => {
   // Candidates_023-Candidates_030
   const searchText = readSearchText();
   searchText.forEach(({ text, runType }) => {
-    it.only(`verifyCandidateSearchByNameOrOffice for ${text} with ${runType}`, async () => {
+    it(`verifyCandidateSearchByNameOrOffice for ${text} with ${runType}`, async () => {
       console.log(` *** ***** Running verifySearchText using name: ${text}, state: ${runType}`);
       const stateNameRandomTC23 = readTestDataStates('random', 1)[0];
       await CandidatesPage.searchBar.click();
@@ -458,7 +458,7 @@ describe('Candidates PageBrowser', () => {
         const card = candidateCards[i];
         await driver.waitUntil(async () => !(await card.getAttribute('id')).includes('Loading'), {
           timeout: 4000,
-          timeoutMsg: 'Card Data not Loaded within expected duration of 4 seconds.',
+          timeoutMsg: 'Card Data not Loaded within expected duration of 4 seconds.'
         });
         const cardId = await card.getAttribute('id');
         const candidateNameDisplayed = (await CandidatesPage.getCandidateCardCandidateName(cardId));
