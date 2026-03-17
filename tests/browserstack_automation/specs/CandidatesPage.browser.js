@@ -440,7 +440,7 @@ describe('Candidates PageBrowser', () => {
   // Candidates_023-Candidates_030
   const searchText = readSearchText();
   searchText.forEach(({ text, runType }) => {
-    it(`verifyCandidateSearchByNameOrOffice for ${text} with ${runType}`, async () => {
+    it(`verifyCandidateSearchByNameOrOfficeOrParty for ${text} with ${runType}`, async () => {
       console.log(` *** ***** Running verifySearchText using name: ${text}, state: ${runType}`);
       const stateNameRandomTC23 = readTestDataStates('random', 1)[0];
       await CandidatesPage.searchBar.click();
