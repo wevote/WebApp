@@ -1057,10 +1057,22 @@ class ItemActionBar extends PureComponent {
             {/* Comment Button */}
             {this.props.commentButtonHide || this.props.inModal ? null : (
               <span>
-                {buttonsOnly ? (
-                  <CommentFlex>{this.commentButtonNoText(`${ballotItemWeVoteId}${politicianWeVoteId}`)}</CommentFlex>
+                {ballotItemType === 'MEASURE' ? (
+                  <ChatBubbleButton
+                    aria-label="Comments"
+                    onClick={this.togglePositionStatementFunction}
+                    type="button"
+                  >
+                    <ChatBubbleOutline style={{ fontSize: 22, color: '#1976d2' }} />
+                  </ChatBubbleButton>
                 ) : (
-                  <CommentFlex>{this.commentButton(`${ballotItemWeVoteId}${politicianWeVoteId}`)}</CommentFlex>
+                  <>
+                    {buttonsOnly ? (
+                      <CommentFlex>{this.commentButtonNoText(`${ballotItemWeVoteId}${politicianWeVoteId}`)}</CommentFlex>
+                    ) : (
+                      <CommentFlex>{this.commentButton(`${ballotItemWeVoteId}${politicianWeVoteId}`)}</CommentFlex>
+                    )}
+                  </>
                 )}
               </span>
             )}
@@ -1228,9 +1240,11 @@ const styles = (theme) => ({
   },
   dialogPaper: { minHeight: 282, margin: '0 8px' },
   buttonMeasureRoot: {
+    borderRadius: '15px',
     padding: 4,
-    width: 130,
+    width: 120,
     height: 32,
+    [theme.breakpoints.down('md')]: { width: 100, height: 30 },
     [theme.breakpoints.down('sm')]: { width: 'fit-content', minWidth: 80, height: 28, padding: '0 8px' },
   },
   buttonRoot: {
@@ -1334,7 +1348,7 @@ const ChooseButtonLabel = styled('span', {
 const ChooseButtonLabelSelected = styled('span', {
   shouldForwardProp: (prop) => !['isAtState'].includes(prop),
 })(({ isAtState }) => (`
-  color: #1976d2;
+  color: #fff;
 `));
 
 const CommentFlex = styled('div')`

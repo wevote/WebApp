@@ -603,6 +603,9 @@ const CandidateEndorsementPhotos = styled('div')`
   align-items: center;
   cursor: pointer;
   display: flex;
+  flex-wrap: wrap;
+  max-height: 90px;
+  overflow: hidden;
   width: 100%;
 `;
 

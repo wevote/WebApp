@@ -2,14 +2,11 @@ import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
-import Tooltip from 'react-bootstrap/Tooltip';
 import styled from 'styled-components';
 import MeasureActions from '../../actions/MeasureActions';
 import AppObservableStore from '../../common/stores/AppObservableStore';
-import extractNumber from '../../common/utils/extractNumber';
+import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 import historyPush from '../../common/utils/historyPush';
-import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import shortenText from '../../common/utils/shortenText';
 import { stripHtmlFromString } from '../../common/utils/textFormat';
@@ -17,32 +14,31 @@ import toTitleCase from '../../common/utils/toTitleCase';
 import BallotStore from '../../stores/BallotStore';
 import MeasureStore from '../../stores/MeasureStore';
 import { constrainedTextMobileStyles } from '../Style/BallotStyles';
-import { PositionRowListEmptyWrapper, PositionRowListInnerWrapper, PositionRowListOneWrapper, PositionRowListOuterWrapper, PositionRowListScoreColumn, PositionRowListScoreHeader, PositionRowListScoreSpacer } from '../Style/PositionRowListStyles';
-import InfoCircleIcon from '../Widgets/InfoCircleIcon';
-import PositionRowEmpty from './PositionRowEmpty';
-import PositionRowList from './PositionRowList';
+import MeasureDescriptionModal from './MeasureDescriptionModal';
+import MeasureOpinionsColumn from './MeasureOpinionsColumn';
+import MeasureYesNoModal from './MeasureYesNoModal';
+import PositionRowListCompressed from './PositionRowListCompressed';
 
-const BallotItemSupportOpposeScoreDisplay = React.lazy(() => import(/* webpackChunkName: 'BallotItemSupportOpposeScoreDisplay' */ '../Widgets/ScoreDisplay/BallotItemSupportOpposeScoreDisplay'));
-const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
 const ItemActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemActionBar' */ '../Widgets/ItemActionBar/ItemActionBar'));
-const TopCommentByBallotItem = React.lazy(() => import(/* webpackChunkName: 'TopCommentByBallotItem' */ '../Widgets/TopCommentByBallotItem'));
+const PositionStatementModal = React.lazy(() => import(/* webpackChunkName: 'PositionStatementModal' */ '../Widgets/PositionStatementModal'));
 
 class MeasureItemCompressed extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      // componentDidMountFinished: false,
       externalUniqueId: '',
       measureSubtitle: '',
       measureText: '',
+      measureUrl: '',
       measureWeVoteId: '',
       noVoteDescription: '',
       organizationWeVoteId: '',
       positionListFromFriendsHasBeenRetrievedOnce: {},
       positionListHasBeenRetrievedOnce: {},
-      showPositionStatement: false,
-      // numberOfOpposePositionsForScore: 0,
-      // numberOfSupportPositionsForScore: 0,
+      showDescriptionModal: false,
+      showPositionStatementModal: false,
+      showYesNoModal: false,
+      yesNoActiveTab: 0,
       yesVoteDescription: '',
     };
     this.getMeasureLink = this.getMeasureLink.bind(this);
@@ -50,7 +46,6 @@ class MeasureItemCompressed extends Component {
     this.onClickShowOrganizationModalWithBallotItemInfo = this.onClickShowOrganizationModalWithBallotItemInfo.bind(this);
     this.onClickShowOrganizationModalWithPositions = this.onClickShowOrganizationModalWithPositions.bind(this);
     this.onClickShowOrganizationModalWithBallotItemInfoAndPositions = this.onClickShowOrganizationModalWithBallotItemInfoAndPositions.bind(this);
-    this.togglePositionStatement = this.togglePositionStatement.bind(this);
   }
 
   componentDidMount () {
@@ -94,6 +89,7 @@ class MeasureItemCompressed extends Component {
       // measure,
       measureSubtitle: measure.measure_subtitle,
       measureText: stripHtmlFromString(measure.measure_text),
+      measureUrl: measure.measure_url || '',
       measureWeVoteId,
       noVoteDescription: stripHtmlFromString(measure.no_vote_description),
       yesVoteDescription: stripHtmlFromString(measure.yes_vote_description),
@@ -139,6 +135,7 @@ class MeasureItemCompressed extends Component {
       // measure,
       measureSubtitle: measure.measure_subtitle,
       measureText: stripHtmlFromString(measure.measure_text),
+      measureUrl: measure.measure_url || '',
       noVoteDescription: stripHtmlFromString(measure.no_vote_description),
       yesVoteDescription: stripHtmlFromString(measure.yes_vote_description),
     });
@@ -179,12 +176,32 @@ class MeasureItemCompressed extends Component {
     historyPush(measureLink);
   }
 
-  togglePositionStatement () {
-    const { showPositionStatement } = this.state;
-    this.setState({
-      showPositionStatement: !showPositionStatement,
-    });
-  }
+  checkMeasureHasEndorsements = () => {
+    // Callback for PositionRowListCompressed
+  };
+
+  toggleDescriptionModal = () => {
+    const { showDescriptionModal } = this.state;
+    this.setState({ showDescriptionModal: !showDescriptionModal });
+  };
+
+  togglePositionStatementModal = () => {
+    const { showPositionStatementModal } = this.state;
+    this.setState({ showPositionStatementModal: !showPositionStatementModal });
+  };
+
+  toggleYesNoModal = () => {
+    const { showYesNoModal } = this.state;
+    this.setState({ showYesNoModal: !showYesNoModal });
+  };
+
+  openYesNoModal = (tabIndex) => {
+    this.setState({ showYesNoModal: true, yesNoActiveTab: tabIndex });
+  };
+
+  handleYesNoTabChange = (newTabIndex) => {
+    this.setState({ yesNoActiveTab: newTabIndex });
+  };
 
   localPositionListHasBeenRetrievedOnce (measureWeVoteId) {
     if (measureWeVoteId) {
@@ -206,7 +223,8 @@ class MeasureItemCompressed extends Component {
     renderLog('MeasureItemCompressed');  // Set LOG_RENDER_EVENTS to log all renders
     const {
       externalUniqueId, localUniqueId, measureSubtitle, measureText,
-      measureWeVoteId, noVoteDescription,
+      measureUrl, measureWeVoteId, noVoteDescription,
+      showDescriptionModal, showPositionStatementModal, showYesNoModal, yesNoActiveTab,
       yesVoteDescription,
     } = this.state;
     let { ballotItemDisplayName } = this.state;
@@ -219,21 +237,6 @@ class MeasureItemCompressed extends Component {
     }
     const measureSubtitleCapitalized = toTitleCase(measureSubtitle);
     ballotItemDisplayName = toTitleCase(ballotItemDisplayName);
-    const scoreExplanationTooltip = isMobileScreenSize() ? (<></>) : (
-      <Tooltip className="u-z-index-9020" id={`scoreDescription-${measureWeVoteId}`}>
-        A positive personalized score
-        {ballotDisplay[0] && (
-          <>
-            {' '}
-            for
-            {' '}
-            {ballotDisplay[0]}
-          </>
-        )}
-        {' '}
-        from the people you trust = vote Yes. Negative = vote No. Trust by clicking the plus sign.
-      </Tooltip>
-    );
 
     return (
       <MeasureItemCompressedWrapper>
@@ -241,158 +244,141 @@ class MeasureItemCompressed extends Component {
           {ballotDisplay[0]}
         </MeasureTitleItem>
         <SubTitle>{measureSubtitleCapitalized}</SubTitle>
-        <MeasureContainer>
-          <MeasureWrapper>
-            <InfoDetailsRow className="u-cursor--pointer" onClick={this.onClickShowOrganizationModalWithBallotItemInfoAndPositions}>
-              <MeasureText>
-                {shortenText(measureText, 200)}
-                &nbsp;
-                <span className="u-link-color">
-                  more
-                </span>
-              </MeasureText>
-            </InfoDetailsRow>
-          </MeasureWrapper>
-        </MeasureContainer>
-        <MeasureContainer>
-          <MeasureScrollingContainer>
-            <PositionRowListOuterWrapper>
-              <PositionRowListInnerWrapper>
-                <PositionRowListOneWrapper>
-                  <PositionRowList
-                    ballotItemWeVoteId={measureWeVoteId}
-                    showSupport
-                    firstInstance={false}
-                  />
-                </PositionRowListOneWrapper>
-                <PositionRowListOneWrapper>
-                  <PositionRowList
-                    ballotItemWeVoteId={measureWeVoteId}
-                    showOppose
-                    firstInstance={false}
-                  />
-                </PositionRowListOneWrapper>
-                <PositionRowListOneWrapper>
-                  <PositionRowList
-                    ballotItemWeVoteId={measureWeVoteId}
-                    showInfoOnly
-                    firstInstance={false}
-                  />
-                </PositionRowListOneWrapper>
-                <PositionRowListEmptyWrapper>
-                  <PositionRowEmpty
-                    ballotItemWeVoteId={measureWeVoteId}
-                  />
-                </PositionRowListEmptyWrapper>
-                <PositionRowListScoreColumn>
-                  <PositionRowListScoreHeader>
-                    <OverlayTrigger
-                      placement="bottom"
-                      overlay={scoreExplanationTooltip}
-                    >
-                      <ScoreWrapper>
-                        <div>Score</div>
-                        <InfoCircleIconWrapper>
-                          <InfoCircleIcon />
-                        </InfoCircleIconWrapper>
-                      </ScoreWrapper>
-                    </OverlayTrigger>
-                  </PositionRowListScoreHeader>
-                  <PositionRowListScoreSpacer>
-                    <Suspense fallback={<></>}>
-                      <BallotItemSupportOpposeScoreDisplay
-                        ballotItemWeVoteId={measureWeVoteId}
-                        onClickFunction={this.onClickShowOrganizationModalWithPositions}
-                        hideEndorsementsOverview
-                        hideNumbersOfAllPositions
-                      />
-                    </Suspense>
-                  </PositionRowListScoreSpacer>
-                </PositionRowListScoreColumn>
-              </PositionRowListInnerWrapper>
-            </PositionRowListOuterWrapper>
-          </MeasureScrollingContainer>
-        </MeasureContainer>
-        <MeasureContainer>
-          <ChoiceSpecificsColumns>
-            <ChoiceSpecifics
-              id={`measureItemCompressedChoiceYes-${measureWeVoteId}`}
-            >
-              <ChoiceTitle onClick={this.onClickShowOrganizationModalWithBallotItemInfoAndPositions}>
-                {`Yes On ${extractNumber(ballotItemDisplayName)}`}
-              </ChoiceTitle>
-              <ChoiceInfo>
-                {/* If there is a "yes vote" quote about the measure, show that. If not, show the yesVoteDescription */}
-                <Suspense fallback={<></>}>
-                  <DelayedLoad showLoadingText waitBeforeShow={500}>
-                    <>
-                      <Suspense fallback={<></>}>
-                        <ItemActionBar
-                          ballotItemDisplayName={ballotItemDisplayName}
-                          ballotItemWeVoteId={measureWeVoteId}
-                          commentButtonHide
-                          commentButtonHideInMobile
-                          externalUniqueId={`${externalUniqueId}-${localUniqueId}-MeasureItemCompressedVoteYes-${measureWeVoteId}`}
-                          hideOpposeNo
-                          shareButtonHide
-                          hidePositionPublicToggle
-                        />
-                      </Suspense>
-                      <TopCommentByBallotItem
-                        ballotItemWeVoteId={measureWeVoteId}
-                        childChangeIndicator={yesVoteDescription}
-                        // learnMoreUrl={this.getMeasureLink(measureWeVoteId)}
-                        limitToYes
-                      >
-                        <span>
-                          {shortenText(yesVoteDescription, 200)}
-                        </span>
-                      </TopCommentByBallotItem>
-                    </>
-                  </DelayedLoad>
-                </Suspense>
-              </ChoiceInfo>
-            </ChoiceSpecifics>
-            <ChoiceSpecifics
-              id={`measureItemCompressedChoiceNo-${measureWeVoteId}`}
-            >
-              <ChoiceTitle onClick={this.onClickShowOrganizationModalWithBallotItemInfoAndPositions}>
-                {`No On ${extractNumber(ballotItemDisplayName)}`}
-              </ChoiceTitle>
-              <ChoiceInfo>
-                {/* If there is a "no vote" quote about the measure, show that. If not, show the noVoteDescription */}
-                <Suspense fallback={<></>}>
-                  <DelayedLoad showLoadingText waitBeforeShow={500}>
-                    <>
-                      <Suspense fallback={<></>}>
-                        <ItemActionBar
-                          ballotItemDisplayName={ballotItemDisplayName}
-                          ballotItemWeVoteId={measureWeVoteId}
-                          commentButtonHide
-                          commentButtonHideInMobile
-                          externalUniqueId={`${externalUniqueId}-${localUniqueId}-MeasureItemCompressedVoteNo-${measureWeVoteId}`}
-                          hideSupportYes
-                          shareButtonHide
-                          hidePositionPublicToggle
-                        />
-                      </Suspense>
-                      <TopCommentByBallotItem
-                        ballotItemWeVoteId={measureWeVoteId}
-                        childChangeIndicator={noVoteDescription}
-                        // learnMoreUrl={this.getMeasureLink(measureWeVoteId)}
-                        limitToNo
-                      >
-                        <span>
-                          {shortenText(noVoteDescription, 200)}
-                        </span>
-                      </TopCommentByBallotItem>
-                    </>
-                  </DelayedLoad>
-                </Suspense>
-              </ChoiceInfo>
-            </ChoiceSpecifics>
-          </ChoiceSpecificsColumns>
-        </MeasureContainer>
+
+        {/* Main content row: measure text | endorsements + sources | opinions */}
+        <MeasureContentRow>
+          {/* Left column: Measure description */}
+          <MeasureDescriptionColumn
+            className="u-cursor--pointer"
+            onClick={this.toggleDescriptionModal}
+          >
+            <MeasureText>
+              {shortenText(measureText, 200)}
+              &nbsp;
+              <span className="u-link-color">more</span>
+            </MeasureText>
+          </MeasureDescriptionColumn>
+
+          {/* Middle column: endorsements + FROM INDEPENDENT SOURCES */}
+          <EndorsementsAndSourcesColumn>
+            {/* Support and Oppose endorsements side by side */}
+            <EndorsementRow>
+              <EndorsementColumn>
+                <PositionRowListCompressed
+                  ballotItemWeVoteId={measureWeVoteId}
+                  showSupport
+                  firstInstance={false}
+                  checkCandidateHasEndorsements={this.checkMeasureHasEndorsements}
+                />
+              </EndorsementColumn>
+              <EndorsementColumn>
+                <PositionRowListCompressed
+                  ballotItemWeVoteId={measureWeVoteId}
+                  showOppose
+                  firstInstance={false}
+                  checkCandidateHasEndorsements={this.checkMeasureHasEndorsements}
+                />
+              </EndorsementColumn>
+            </EndorsementRow>
+
+            {/* FROM INDEPENDENT SOURCES section */}
+            <IndependentSourcesSection>
+              <IndependentSourcesHeader>FROM INDEPENDENT SOURCES</IndependentSourcesHeader>
+              <IndependentSourcesColumns>
+                <YesMeansColumn>
+                  <YesMeansTitle>
+                    <GreenBold>YES</GreenBold>
+                    {' means:'}
+                  </YesMeansTitle>
+                  {yesVoteDescription ? (
+                    <SourceDescription>
+                      {shortenText(yesVoteDescription, 200)}
+                    </SourceDescription>
+                  ) : (
+                    <SourceDescription>No description available.</SourceDescription>
+                  )}
+                  {!!(yesVoteDescription) && (
+                    <SeeMoreLink onClick={() => this.openYesNoModal(0)}>
+                      See more
+                    </SeeMoreLink>
+                  )}
+                </YesMeansColumn>
+                <NoMeansColumn>
+                  <NoMeansTitle>
+                    <RedBold>NO</RedBold>
+                    {' means:'}
+                  </NoMeansTitle>
+                  {noVoteDescription ? (
+                    <SourceDescription>
+                      {shortenText(noVoteDescription, 200)}
+                    </SourceDescription>
+                  ) : (
+                    <SourceDescription>No description available.</SourceDescription>
+                  )}
+                  {!!(noVoteDescription) && (
+                    <SeeMoreLink onClick={() => this.openYesNoModal(1)}>
+                      See more
+                    </SeeMoreLink>
+                  )}
+                </NoMeansColumn>
+              </IndependentSourcesColumns>
+            </IndependentSourcesSection>
+          </EndorsementsAndSourcesColumn>
+
+          {/* Opinions column */}
+          <OpinionsColumn>
+            <MeasureOpinionsColumn
+              measureWeVoteId={measureWeVoteId}
+              onClickCommentInput={this.togglePositionStatementModal}
+            />
+          </OpinionsColumn>
+        </MeasureContentRow>
+
+        {/* Bottom action bar: Vote Yes / Vote No / Comment */}
+        <ItemActionBarOutsideWrapper>
+          <Suspense fallback={<span />}>
+            <ItemActionBar
+              ballotItemDisplayName={ballotItemDisplayName}
+              ballotItemWeVoteId={measureWeVoteId}
+              externalUniqueId={`${externalUniqueId}-${localUniqueId}-MeasureItemCompressed-${measureWeVoteId}`}
+              shareButtonHide
+              hidePositionPublicToggle
+            />
+          </Suspense>
+        </ItemActionBarOutsideWrapper>
+        {/* Modal: Full measure description */}
+        <MeasureDescriptionModal
+          isOpen={showDescriptionModal}
+          measureText={measureText}
+          measureSubtitle={measureSubtitleCapitalized}
+          measureTitle={ballotDisplay[0]}
+          measureUrl={measureUrl}
+          measureWeVoteId={measureWeVoteId}
+          onClose={this.toggleDescriptionModal}
+        />
+
+        {/* Modal: Position statement / opinion */}
+        {showPositionStatementModal && (
+          <Suspense fallback={<span />}>
+            <PositionStatementModal
+              ballotItemWeVoteId={measureWeVoteId}
+              externalUniqueId={`MeasureItemCompressed-${measureWeVoteId}`}
+              show={showPositionStatementModal}
+              toggleModal={this.togglePositionStatementModal}
+            />
+          </Suspense>
+        )}
+
+        {/* Modal: YES/NO means tabbed */}
+        <MeasureYesNoModal
+          initialTab={yesNoActiveTab}
+          isOpen={showYesNoModal}
+          measureWeVoteId={measureWeVoteId}
+          noVoteDescription={noVoteDescription}
+          onClose={this.toggleYesNoModal}
+          onTabChange={this.handleYesNoTabChange}
+          yesVoteDescription={yesVoteDescription}
+        />
       </MeasureItemCompressedWrapper>
     );
   }
@@ -425,124 +411,186 @@ const styles = (theme) => ({
   buttonOutlinedPrimary: {
     background: 'white',
   },
-  cardRoot: {
-    padding: '16px 16px 8px 16px',
-    [theme.breakpoints.down('lg')]: {
-      padding: '16px 16px 0 16px',
-    },
-  },
-  endorsementIconRoot: {
-    fontSize: 14,
-    margin: '.3rem .3rem 0 .5rem',
-  },
-  cardHeaderIconRoot: {
-    marginTop: '-.3rem',
-    fontSize: 20,
-  },
-  cardFooterIconRoot: {
-    fontSize: 14,
-    margin: '0 0 .1rem .4rem',
-  },
 });
 
-const InfoDetailsRow = styled('div')`
+// Styled Components
+
+const EndorsementColumn = styled('div')`
+  flex: 1 1 0;
+  min-width: 0;
 `;
 
-const ChoiceSpecificsColumns = styled('div')`
+const EndorsementRow = styled('div')`
   display: flex;
-  flex-flow: row nowrap;
-  justify-content: flex-start;
-`;
-
-const ChoiceSpecifics = styled('div')(({ theme }) => (`
-  display: flex;
-  flex-flow: column;
-  padding-right: 8px;
-  ${theme.breakpoints.up('md')} {
-    max-width: 47%;
-    min-width: 47%;
+  flex-direction: row;
+  gap: 16px;
+  &:has(span, img) {
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 12px;
   }
-`));
+`;
 
-const ChoiceTitle = styled('h1')`
-  color: #4371cc;
-  cursor: pointer;
+const EndorsementsAndSourcesColumn = styled('div')`
+  display: flex;
+  flex: 2 1 0;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+`;
+
+const GreenBold = styled('span')`
+  color: ${DesignTokenColors.confirmation700};
   font-weight: bold;
 `;
 
-const ChoiceInfo = styled('span')(({ theme }) => (`
-  font-size: 12px;
-  color: #777;
+const IndependentSourcesColumns = styled('div')(({ theme }) => (`
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
   ${theme.breakpoints.down('md')} {
-    max-width: 140%;
+    flex-direction: column;
+    gap: 16px;
   }
 `));
 
-const InfoCircleIconWrapper = styled('div')`
-  margin-bottom: -4px;
-  margin-left: 3px;
+const IndependentSourcesHeader = styled('div')`
+  color: #999;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+  text-transform: uppercase;
 `;
 
-const MeasureContainer = styled('div')`
-  display: flex;
-  justify-content: flex-start;
-  // padding: 10px 5px 0 10px;
+const IndependentSourcesSection = styled('div')`
 `;
+
+const ItemActionBarOutsideWrapper = styled('div')`
+  align-items: center;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  margin-top: 12px;
+  padding-bottom: 12px;
+  padding-left: 8px;
+  width: 100%;
+`;
+
+const MeasureContentRow = styled('div')(({ theme }) => (`
+  align-items: stretch;
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  width: 100%;
+  ${theme.breakpoints.down('md')} {
+    flex-direction: column;
+  }
+`));
+
+const MeasureDescriptionColumn = styled('div')(({ theme }) => (`
+  border-right: 1px solid #ddd;
+  flex: 0 0 250px;
+  max-width: 280px;
+  padding-right: 16px;
+  ${theme.breakpoints.down('md')} {
+    border-bottom: 1px solid #ddd;
+    border-right: none;
+    flex: 1 1 auto;
+    max-width: 100%;
+    padding-bottom: 12px;
+    padding-right: 0;
+  }
+`));
 
 const MeasureItemCompressedWrapper = styled('div')`
-  display: flex;
   border: 1px solid #fff;
+  display: flex;
   flex-direction: column;
   margin-bottom: 60px;
   position: relative;
 `;
 
-
-const MeasureScrollingContainer = styled('div')`
-  overflow-x: auto;
-  white-space: nowrap;
-  /* Make the scrollbar not be visible */
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
-  ::-webkit-scrollbar {  /* Chrome, Safari and Opera */
-    display: none;
-  }
-`;
-
 const MeasureText = styled('div')`
-  font-weight: 300;
   color: #777;
-  min-width: 320px;
-  width: 100%;
+  font-weight: 300;
+  white-space: normal;
   ${constrainedTextMobileStyles}
 `;
 
 const MeasureTitleItem = styled('h1')`
   color: #4371cc;
   cursor: pointer;
-  font-weight: 400;
   font-size: 32px;
+  font-weight: 400;
   margin-bottom: 0;
   margin-top: 0;
-  //white-space: nowrap;  Removed 2-21-24, for long measures in WebApp, Mobile, and Cordova
   width: 100%;
 `;
-// ${() => (isCordova() ? {
-//   marginLeft: '80px',
-//   marginRight: '80px',
-// } : {})};
-// `;
-const MeasureWrapper = styled('div')`
+
+const NoMeansColumn = styled('div')`
+  flex: 1 1 0;
+  min-width: 0;
 `;
 
-const ScoreWrapper = styled('div')`
-  display: flex;
+const NoMeansTitle = styled('div')`
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 4px;
+`;
+
+const OpinionsColumn = styled('div')(({ theme }) => (`
+  border-left: 1px solid #ddd;
+  flex: 1 1 0;
+  min-width: 200px;
+  padding-left: 16px;
+  ${theme.breakpoints.down('md')} {
+    border-left: none;
+    border-top: 1px solid #ddd;
+    padding-left: 0;
+    padding-top: 12px;
+  }
+`));
+
+const RedBold = styled('span')`
+  color: ${DesignTokenColors.alert700};
+  font-weight: bold;
+`;
+
+const SeeMoreLink = styled('div')`
+  color: #1073d4;
+  cursor: pointer;
+  font-size: 14px;
+  margin-top: 4px;
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
+const SourceDescription = styled('div')`
+  color: #555;
+  font-size: 14px;
+  line-height: 1.4;
+  white-space: normal;
 `;
 
 const SubTitle = styled('h3')`
+  color: #4371cc;
   font-size: 20px;
-  margin-top: 9px;
+  font-weight: bold;
+  margin-bottom: 8px;
+  margin-top: 4px;
   ${constrainedTextMobileStyles}
+`;
+
+const YesMeansColumn = styled('div')`
+  flex: 1 1 0;
+  min-width: 0;
+`;
+
+const YesMeansTitle = styled('div')`
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 4px;
 `;
 
 export default withTheme(withStyles(styles)(MeasureItemCompressed));
