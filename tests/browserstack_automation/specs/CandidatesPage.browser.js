@@ -16,7 +16,7 @@ beforeEach(async () => {
   await CandidatesPage.load();
   await driver.pause(waitTime);
   // Below line to be commented out once defect #WV-943 is fixed.
- // await CandidatesPage.stateSelect.selectByVisibleText('Hawaii');
+  // await CandidatesPage.stateSelect.selectByVisibleText('Hawaii');
   //await driver.pause(waitTime);
 });
 
@@ -353,7 +353,7 @@ describe('Candidates PageBrowser', () => {
     }
   });
 
-    // Candidates_018
+  // Candidates_018
   it('verifyLikeCandidateClick @WV-1073', async () => {
     const stateNameRandomTC10 = readTestDataStates('random', 1)[0];
     console.log(`Running verifyLikeCandidateClick using state ${stateNameRandomTC10}`);
@@ -438,9 +438,9 @@ describe('Candidates PageBrowser', () => {
   });
 
   // Candidates_023-Candidates_030
-  const searchText=readSearchText();
+  const searchText = readSearchText();
   searchText.forEach(({ text, runType }) => {
-    it(`verifyCandidateSearchByNameOrOffice for ${text} with ${runType}`, async () => {
+    it(`verifyCandidateSearchByNameOrOfficeOrParty for ${text} with ${runType}`, async () => {
       console.log(` *** ***** Running verifySearchText using name: ${text}, state: ${runType}`);
       const stateNameRandomTC23 = readTestDataStates('random', 1)[0];
       await CandidatesPage.searchBar.click();
@@ -453,7 +453,7 @@ describe('Candidates PageBrowser', () => {
         await driver.pause(waitTime);
       }
       const candidateCards = await CandidatesPage.candidateSearchList;
-      console.log(`Total cards: ${candidateCards.length}`)
+      console.log(`Total cards: ${candidateCards.length}`);
       for (let i = 0; i < candidateCards.length; i++) {
         const card = candidateCards[i];
         await driver.waitUntil(async () => !(await card.getAttribute('id')).includes('Loading'), {
@@ -463,23 +463,33 @@ describe('Candidates PageBrowser', () => {
         const cardId = await card.getAttribute('id');
         const candidateNameDisplayed = (await CandidatesPage.getCandidateCardCandidateName(cardId));
         const officeNameDisplayed = (await CandidatesPage.getCandidateCardOffice(cardId));
+        const partyNameDisplayed = (await CandidatesPage.getCandidateCardPartyName(cardId));
 
         console.log(`Candidate Name: ${candidateNameDisplayed}`);
         console.log(`Candidate Office: ${officeNameDisplayed}`);
-        if (runType === 'stateSelected'){
-          const expectedStateValue=['National'.toUpperCase(),stateNameRandomTC23.toUpperCase()];
-          const stateNameDisplayed= (await CandidatesPage.getCandidateCardState(cardId)).toUpperCase();
+        console.log(`Candidate Party: ${partyNameDisplayed}`);
+        if (runType === 'stateSelected') {
+          const expectedStateValue = ['National'.toUpperCase(), stateNameRandomTC23.toUpperCase()];
+          const stateNameDisplayed = (await CandidatesPage.getCandidateCardState(cardId)).toUpperCase();
           console.log(`Candidate State: ${stateNameDisplayed}`);
-          await` expect(expectedStateValue).toContain(stateNameDisplayed);`
+          await expect(expectedStateValue).toContain(stateNameDisplayed);
         }
         try {
           await expect(candidateNameDisplayed.toLowerCase()).toContain(text.toLowerCase());
+          console.log(`Candidate Name contains searched text: "${text}" for Candidate: ${candidateNameDisplayed}`);
         } catch {
-          await console.log(`Candidate Name did not match the searched text: << ${text} >>, checking Office Name instead...`);
+          console.log(`Candidate Name did not match the searched text: << ${text} >>, checking Office Name instead...`);
           try {
             await expect(officeNameDisplayed.toLowerCase()).toContain(text.toLowerCase());
+            console.log(`Office Name contains searched text: "${text}" for Candidate: ${candidateNameDisplayed}`);
           } catch {
-            throw new Error(`Neither candidateName nor officeName matched searched text: "${text}" for Candidate: ${candidateNameDisplayed}`);
+            console.log(`Office Name did not match the searched text: << ${text} >>, checking Party Name instead...`);
+            try {
+              await expect(partyNameDisplayed.toLowerCase()).toContain(text.toLowerCase());
+              console.log(`Party Name contains searched text: "${text}" for Candidate: ${candidateNameDisplayed}`);
+            } catch {
+              throw new Error(`Neither candidateName nor officeName nor partyName matched searched text: "${text}" for Candidate: ${candidateNameDisplayed}`);
+            }
           }
         }
       }
@@ -532,14 +542,14 @@ describe('Candidates PageBrowser', () => {
       allSearch.push(searchText.toLowerCase());
       allSearch.push(searchText.toUpperCase());
       allSearch.push(searchText[0].toUpperCase()+searchText.slice(1));
-      }
+    }
     const states = ['stateNotSelected', 'stateSelected'];
     const combinations = [];
     for (const text of allSearch) {
       for (const runType of states) {
-          combinations.push({ text, runType });
+        combinations.push({ text, runType });
       }
-      }
+    }
 
     console.log("Running tests for test data combinations:");
     console.log(combinations);
