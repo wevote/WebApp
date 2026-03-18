@@ -98,14 +98,14 @@ export default function ImportedVotersList ({
 
   const handleRowMenuOpen = (event, voter) => {
     event.stopPropagation();
-    console.log('Opening menu for voter:', voter.name);
     const rect = event.currentTarget.getBoundingClientRect();
     const menuWidth = 180;
+    const menuHeight = 180; // approx: 4 items + divider + padding
+    const spaceBelow = window.innerHeight - rect.bottom;
     const position = {
-      top: rect.bottom + 6,
+      top: spaceBelow < menuHeight ? rect.top - menuHeight - 6 : rect.bottom + 6,
       left: rect.right - menuWidth,
     };
-    console.log('Menu position:', position, 'Button rect:', rect);
     setRowMenuPosition(position);
     setRowMenuAnchor(event.currentTarget);
     setRowMenuVoter(voter);
@@ -208,55 +208,7 @@ export default function ImportedVotersList ({
                     <HistoryIcon fontSize="small" />
                     <span>View history of imports</span>
                   </MenuItem>
-                  <MenuDivider />
 
-                  {selectedList.length > 0 ? (
-                    <>
-                      <MenuItem
-                        role="menuitem"
-                        onClick={() => {
-                          onHideSelected?.(selectedList);
-                          setMenuOpen(false);
-                        }}
-                      >
-                        <HideIcon fontSize="small" />
-                        <span>Hide</span>
-                      </MenuItem>
-
-                      <MenuItem
-                        role="menuitem"
-                        onClick={() => {
-                          onDeleteSelected?.(selectedList);
-                          setMenuOpen(false);
-                        }}
-                      >
-                        <DeleteIcon fontSize="small" />
-                        <span>Delete</span>
-                      </MenuItem>
-                    </>
-                  ) : (
-                    <>
-                      <TooltipWrap>
-                        <MenuItem role="menuitem" disabled>
-                          <HideIcon fontSize="small" />
-                          <span>Hide</span>
-                        </MenuItem>
-                        <TooltipBubble>
-                          Select voters to allow hiding or deleting.
-                        </TooltipBubble>
-                      </TooltipWrap>
-
-                      <TooltipWrap>
-                        <MenuItem role="menuitem" disabled>
-                          <DeleteIcon fontSize="small" />
-                          <span>Delete</span>
-                        </MenuItem>
-                        <TooltipBubble>
-                          Select voters to allow hiding or deleting.
-                        </TooltipBubble>
-                      </TooltipWrap>
-                    </>
-                  )}
                 </MenuCard>
               )}
             </OverflowWrap>
@@ -427,6 +379,27 @@ export default function ImportedVotersList ({
             >
               <HistoryIcon fontSize="small" />
               <span>Show history</span>
+            </MenuItem>
+            <MenuDivider />
+            <MenuItem
+              role="menuitem"
+              onClick={() => {
+                onHide(rowMenuVoter);
+                handleRowMenuClose();
+              }}
+            >
+              <HideIcon fontSize="small" />
+              <span>Hide</span>
+            </MenuItem>
+            <MenuItem
+              role="menuitem"
+              onClick={() => {
+                onDeleteSelected?.([rowMenuVoter]);
+                handleRowMenuClose();
+              }}
+            >
+              <DeleteIcon fontSize="small" />
+              <span>Delete</span>
             </MenuItem>
           </RowMenuCard>
         </>
