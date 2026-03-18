@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { action } from 'storybook/actions';
-import { fn } from 'storybook/test';
 import styled from 'styled-components';
 import CompleteYourProfileWizard from '../../components/CompleteYourProfile/CompleteYourProfileWizard';
+
+const action = (name) => () => {
+  // eslint-disable-next-line no-console
+  console.log(`Story action: ${name}`);
+};
 
 // WV-380: Created controls for the CompleteYourProfileWizard component allowing steps object to be modified,
 // multi-check on activeSteps,
@@ -48,7 +51,7 @@ export default {
     layout: 'centered',
   },
   args: {
-    onClick: fn(), // Explicitly mock the action
+    onClick: action('onClick'), // Explicitly mock the action
   },
   argTypes: {
     activeStep: {

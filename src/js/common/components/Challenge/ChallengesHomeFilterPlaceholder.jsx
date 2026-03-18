@@ -14,9 +14,8 @@ function searchFunction () {
 }
 
 // React functional component example
-export default function ChallengesHomeFilterPlaceholder (props) {
+export default function ChallengesHomeFilterPlaceholder () {
   renderLog('ChallengesHomeFilterPlaceholder functional component');
-  // console.log('ChallengesHomeFilterPlaceholder props.stateCode:', props.stateCode);
   return (
     <span id="ChallengesHomeFilterPlaceholder">
       <ChallengesHomeFilter

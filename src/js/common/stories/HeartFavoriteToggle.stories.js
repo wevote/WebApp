@@ -54,17 +54,6 @@ export function AllStates (args) {
   );
 }
 
-function Template (args) {
-  return (
-    <Container>
-      <HeartFavoriteToggleBase
-        {...args}
-        voterSupports={args.voterSupports}
-      />
-    </Container>
-  );
-}
-
 export const Default =  {
   args: {
     voterSupports: false,

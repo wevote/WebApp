@@ -147,9 +147,6 @@ class CompleteYourProfileOnBallot extends Component {
 
   updateStepsArray = () => {
     const voterIsSignedIn = VoterStore.getVoterIsSignedIn();
-    const voterOpposesListLength = SupportStore.getVoterOpposesListLength();
-    const voterSupportsListLength = SupportStore.getVoterSupportsListLength();
-    const ballotItemChoicesCount = voterOpposesListLength + voterSupportsListLength;
     this.setState({
       stepIdHowItWorks: 1,
       stepIdPersonalizedScore: 2,

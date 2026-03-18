@@ -396,20 +396,12 @@ class PositionList extends Component {
                 key={`${onePosition.position_we_vote_id}-${onePosition.voter_guide_we_vote_id}-${onePosition.speaker_display_name}`}
               >
                 <Suspense fallback={<></>}>
-                  {/*
-                  <PositionItem
-                    // ballotItemDisplayName={this.props.ballotItemDisplayName}
-                    position={onePosition}
-                    linksOpenExternalWebsite={linksOpenExternalWebsite && isWebApp()}
-                    searchResultsNode={searchResultsNode}
-                    params={this.props.params}
-                  />
-                  */}
                   <PositionForBallotItem
                     linksOpenExternalWebsite={linksOpenExternalWebsite && isWebApp()}
                     position={onePosition}
                   />
                 </Suspense>
+                {searchResultsNode}
               </PositionListForBallotItemWrapper>
             );
           })}

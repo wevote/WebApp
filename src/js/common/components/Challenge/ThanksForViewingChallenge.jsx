@@ -10,11 +10,12 @@ function ThanksForViewingChallenge ({ sharedByDisplayName }) {
   const [showConfetti, setShowConfetti] = useState(false);
 
   useEffect(() => {
-    if (isClosing) {
-      const timer = setTimeout(() => {
-      }, 500);
-      return () => clearTimeout(timer);
+    if (!isClosing) {
+      return undefined;
     }
+    const timer = setTimeout(() => {
+    }, 500);
+    return () => clearTimeout(timer);
   }, [isClosing]);
 
   useEffect(() => {

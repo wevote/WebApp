@@ -44,7 +44,6 @@ export default function ImportedVotersList ({
   const [selected, setSelected] = useState(() => new Set());
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef(null);
-  const [importHistoryOpen, setImportHistoryOpen] = useState(false);
   const [inviteModalOpen, setInviteModalOpen] = useState(false);
   const [inviteList, setInviteList] = useState([]);
 

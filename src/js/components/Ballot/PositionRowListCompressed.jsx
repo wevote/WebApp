@@ -363,7 +363,6 @@ class PositionRowListCompressed extends Component {
       return LoadingWheel;
     }
     // console.log('TRYING TO RENDER, filteredPositionListLength: ', filteredPositionListLength);
-    let candidateName = '';
     let numberOfImagesDisplayed = 0;
     let numberOfNamesDisplayed = 0;
     let speakerDisplayNameInitials = '';
@@ -372,7 +371,6 @@ class PositionRowListCompressed extends Component {
     let isFirstPosition = true;
     if (filteredPositionList.length > 0) {
       filteredPositionList.forEach((onePosition) => {
-        candidateName = onePosition.ballot_item_display_name; // Same for all positions
         if ((onePosition.speaker_display_name && !onePosition.speaker_display_name.includes('Voter-')) &&
             (numberOfNamesDisplayed < numberOfNamesToDisplay)) {
           if (!isFirstPosition) {

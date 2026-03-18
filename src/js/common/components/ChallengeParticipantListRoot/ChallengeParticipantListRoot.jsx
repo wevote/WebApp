@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { Button } from '@mui/material';
 import { withStyles } from '@mui/styles';
-import DesignTokenColors from '../Style/DesignTokenColors';
 import ChallengeParticipantList from './ChallengeParticipantList';
 import SearchBar2024 from '../Search/SearchBar2024';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
@@ -13,32 +12,6 @@ import YourRankOutOf from '../Challenge/YourRankOutOf';
 import ChallengeStore from '../../stores/ChallengeStore';
 
 // const FirstChallengeParticipantListController = React.lazy(() => import(/* webpackChunkName: 'FirstChallengeParticipantListController' */ './FirstChallengeParticipantListController'));
-const participantListDummyData = [
-  { rank: 5340, participant_name: 'Melina H.', points: 142, invitees_who_joined: 3, invitees_count: 10, invitees_who_viewed: 8, invitees_who_viewed_plus: 21, voter_we_vote_id: 'wv02voter1238' },
-  { rank: 5341, participant_name: 'David N.', points: 121, invitees_who_joined: 1, invitees_count: 7, invitees_who_viewed: 3, invitees_who_viewed_plus: 18, voter_we_vote_id: 'wv02voter1237' },
-  { rank: 5342, participant_name: 'Anusha G.', points: 118, invitees_who_joined: 1, invitees_count: 5, invitees_who_viewed: 2, invitees_who_viewed_plus: 15, voter_we_vote_id: 'wv02voter1236' },
-  { rank: 5340, participant_name: 'Melina H.', points: 142, invitees_who_joined: 3, invitees_count: 10, invitees_who_viewed: 8, invitees_who_viewed_plus: 21, voter_we_vote_id: 'wv02voter1235' },
-  { rank: 5341, participant_name: 'David B.', points: 121, invitees_who_joined: 1, invitees_count: 7, invitees_who_viewed: 3, invitees_who_viewed_plus: 18, voter_we_vote_id: 'wv02voter1234' },
-  { rank: 5342, participant_name: 'Anusha G.', points: 118, invitees_who_joined: 1, invitees_count: 5, invitees_who_viewed: 2, invitees_who_viewed_plus: 15, voter_we_vote_id: 'wv02voter123' },
-  { rank: 5340, participant_name: 'Melina H.', points: 142, invitees_who_joined: 3, invitees_count: 10, invitees_who_viewed: 8, invitees_who_viewed_plus: 21, voter_we_vote_id: 'wv02voter12333' },
-  { rank: 5341, participant_name: 'David A.', points: 121, invitees_who_joined: 1, invitees_count: 7, invitees_who_viewed: 3, invitees_who_viewed_plus: 18, voter_we_vote_id: 'wv02voter12344' },
-  { rank: 5342, participant_name: 'Anusha G.', points: 118, invitees_who_joined: 1, invitees_count: 5, invitees_who_viewed: 2, invitees_who_viewed_plus: 15, voter_we_vote_id: 'wv02voter12355' },
-  { rank: 5341, participant_name: 'David B.', points: 121, invitees_who_joined: 1, invitees_count: 7, invitees_who_viewed: 3, invitees_who_viewed_plus: 18, voter_we_vote_id: 'wv02voter12366' },
-  { rank: 5342, participant_name: 'Anusha G.', points: 118, invitees_who_joined: 1, invitees_count: 5, invitees_who_viewed: 2, invitees_who_viewed_plus: 15, voter_we_vote_id: 'wv02voter12377' },
-  { rank: 5340, participant_name: 'Melina H.', points: 142, invitees_who_joined: 3, invitees_count: 10, invitees_who_viewed: 8, invitees_who_viewed_plus: 21, voter_we_vote_id: 'wv02voter12388' },
-  { rank: 5341, participant_name: 'David A.', points: 121, invitees_who_joined: 1, invitees_count: 7, invitees_who_viewed: 3, invitees_who_viewed_plus: 18, voter_we_vote_id: 'wv02voter12399' },
-  { rank: 5342, participant_name: 'Anusha G.', points: 118, invitees_who_joined: 1, invitees_count: 5, invitees_who_viewed: 2, invitees_who_viewed_plus: 15, voter_we_vote_id: 'wv02voter12390' },
-  { rank: 5341, participant_name: 'David B.', points: 121, invitees_who_joined: 1, invitees_count: 7, invitees_who_viewed: 3, invitees_who_viewed_plus: 18, voter_we_vote_id: 'wv02voter12312' },
-  { rank: 5342, participant_name: 'Anusha G.', points: 118, invitees_who_joined: 1, invitees_count: 5, invitees_who_viewed: 2, invitees_who_viewed_plus: 15, voter_we_vote_id: 'wv02voter12314' },
-  { rank: 5340, participant_name: 'Melina H.', points: 142, invitees_who_joined: 3, invitees_count: 10, invitees_who_viewed: 8, invitees_who_viewed_plus: 21, voter_we_vote_id: 'wv02voter12315' },
-  { rank: 5341, participant_name: 'David A.', points: 121, invitees_who_joined: 1, invitees_count: 7, invitees_who_viewed: 3, invitees_who_viewed_plus: 18, voter_we_vote_id: 'wv02voter12316' },
-  { rank: 5342, participant_name: 'Anusha G.', points: 118, invitees_who_joined: 1, invitees_count: 5, invitees_who_viewed: 2, invitees_who_viewed_plus: 15, voter_we_vote_id: 'wv02voter12317' },
-  { rank: 5341, participant_name: 'David B.', points: 121, invitees_who_joined: 1, invitees_count: 7, invitees_who_viewed: 3, invitees_who_viewed_plus: 18, voter_we_vote_id: 'wv02voter12318' },
-  { rank: 5342, participant_name: 'Anusha G.', points: 118, invitees_who_joined: 1, invitees_count: 5, invitees_who_viewed: 2, invitees_who_viewed_plus: 15, voter_we_vote_id: 'wv02voter12319' },
-  { rank: 5340, participant_name: 'Melina H.', points: 142, invitees_who_joined: 3, invitees_count: 10, invitees_who_viewed: 8, invitees_who_viewed_plus: 21, voter_we_vote_id: 'wv02voter12323' },
-  { rank: 5341, participant_name: 'David A.', points: 121, invitees_who_joined: 1, invitees_count: 7, invitees_who_viewed: 3, invitees_who_viewed_plus: 18, voter_we_vote_id: 'wv02voter12324' },
-  { rank: 5342, participant_name: 'Anusha G.', points: 118, invitees_who_joined: 1, invitees_count: 5, invitees_who_viewed: 2, invitees_who_viewed_plus: 15, voter_we_vote_id: 'wv02voter12325' },
-];
 
 function clearSearchFunction () {
   // This is just a stub
@@ -52,7 +25,6 @@ function searchFunction () {
 
 
 function ChallengeParticipantListRoot ({ challengeWeVoteId, classes, uniqueExternalId }) {
-  // eslint-disable-next-line no-unused-vars
   const [participantList, setParticipantList] = React.useState([]);
   const [participantsCount, setParticipantsCount] = useState(0);
   const [rankOfVoter, setRankOfVoter] = React.useState(0);

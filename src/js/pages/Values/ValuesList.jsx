@@ -84,7 +84,6 @@ export default class ValuesList extends Component {
 
   onVoterStoreChange () {
     const voterWeVoteId = VoterStore.getVoterWeVoteId();
-    const voterStateCode = VoterStore.getVoterStateCode();
     if (voterWeVoteId && !this.state.voterDataRetrieved) {
       this.setState({ voterDataRetrieved: true });
     }

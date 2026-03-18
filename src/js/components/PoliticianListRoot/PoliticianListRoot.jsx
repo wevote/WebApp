@@ -17,7 +17,6 @@ import {
 } from '../../common/components/Style/ScrollingStyles';
 import { convertStateCodeToStateText } from '../../common/utils/addressFunctions';
 import { handleHorizontalScroll, leftAndRightArrowStateCalculation, checkDivPositionForLoadMore } from '../../common/utils/leftRightArrowCalculation';
-import { getTodayAsInteger, getYearFromUltimateElectionDate } from '../../common/utils/dateFormat';
 import filterListToRemoveEntriesWithDuplicateValue from '../../common/utils/filterListToRemoveEntriesWithDuplicateValue';
 import { renderLog } from '../../common/utils/logging';
 import PoliticianStore from '../../common/stores/PoliticianStore';
@@ -153,7 +152,7 @@ class PoliticianListRoot extends Component {
 
   onFilterOrListChange = () => {
     // Start over with full list, and apply all active filters
-    const { listModeFilters, searchText, stateCode } = this.props;
+    const { searchText, stateCode } = this.props;
     const { politicianList } = this.state;
     let filteredList = politicianList;
     // console.log('onFilterOrListChange at START filteredList:', filteredList);

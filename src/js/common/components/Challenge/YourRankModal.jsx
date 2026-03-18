@@ -44,7 +44,7 @@ YourRankModal.propTypes = {
   toggleModal: PropTypes.func.isRequired,
 };
 
-const styles = (theme) => ({
+const styles = () => ({
   dialogPaper: {
     borderRadius: '16px',
   },

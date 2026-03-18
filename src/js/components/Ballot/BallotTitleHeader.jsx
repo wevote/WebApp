@@ -234,7 +234,7 @@ class BallotTitleHeader extends Component {
                             >
                               Ballot for
                               {' '}
-                              <span tabIndex={0}
+                              <span
                                 className={linksOff ? '' : 'u-link-color u-link-underline-on-hover'}
                               >
                                 <span>
@@ -255,7 +255,7 @@ class BallotTitleHeader extends Component {
                                 >
                                   Ballot for
                                   {' '}
-                                  <span tabIndex={0} className={linksOff ? '' : 'u-link-color u-link-underline-on-hover'}>
+                                  <span className={linksOff ? '' : 'u-link-color u-link-underline-on-hover'}>
                                     {substitutedAddress}
                                   </span>
                                   {linksOff ? <></> : editIconStyled}
@@ -268,7 +268,7 @@ class BallotTitleHeader extends Component {
                                   id="ballotTitleBallotAddress"
                                   onClick={() => this.showSelectBallotModalEditAddress('ballotTitleBallotAddress')}
                                 >
-                                  <span tabIndex={0} className={linksOff ? '' : 'u-link-color u-link-underline-on-hover'}>
+                                  <span className={linksOff ? '' : 'u-link-color u-link-underline-on-hover'}>
                                     Click to enter your address
                                   </span>
                                   {linksOff ? <></> : editIconStyled}

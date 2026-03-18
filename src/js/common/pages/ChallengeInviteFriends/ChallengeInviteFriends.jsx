@@ -180,7 +180,7 @@ class ChallengeInviteFriends extends Component {
     renderLog('ChallengeInviteFriends');  // Set LOG_RENDER_EVENTS to log all renders
     const {
       challengePhotoLargeUrl, challengeSEOFriendlyPath, challengeTitle,
-      challengeWeVoteId, chosenWebsiteName, inviteeList,
+      challengeWeVoteId, chosenWebsiteName,
     } = this.state;
     const htmlTitle = `Invite your friends - ${chosenWebsiteName}`;
     return (

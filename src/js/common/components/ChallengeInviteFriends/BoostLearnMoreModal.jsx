@@ -24,10 +24,10 @@ class BoostLearnMoreModal extends Component {
     const { ballotItemWeVoteId } = this.props;
     const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(ballotItemWeVoteId);
     if (ballotItemStatSheet) {
-      const { voterOpposesBallotItem, voterSupportsBallotItem } = ballotItemStatSheet;
+      // const { voterOpposesBallotItem, voterSupportsBallotItem } = ballotItemStatSheet;
       this.setState({
-        voterOpposesBallotItem,
-        voterSupportsBallotItem,
+        // voterOpposesBallotItem,
+        // voterSupportsBallotItem,
       });
     }
 
@@ -35,29 +35,29 @@ class BoostLearnMoreModal extends Component {
     // const voterIsSignedIn = VoterStore.getVoterIsSignedIn();
     // const { voter_photo_url_medium: voterPhotoUrlMedium } = voter;
 
-    let ballotItemDisplayName = '';
+    // let ballotItemDisplayName = '';
     // let ballotItemType;
-    let campaignXWeVoteId;
     let isCandidate = false;
     let isMeasure = false;
+    // let campaignXWeVoteId = ''; // local mutable for this method
     if (stringContains('cand', this.props.ballotItemWeVoteId)) {
-      const candidate = CandidateStore.getCandidateByWeVoteId(this.props.ballotItemWeVoteId);
-      ballotItemDisplayName = candidate.ballot_item_display_name || '';
+      // const candidate = CandidateStore.getCandidateByWeVoteId(this.props.ballotItemWeVoteId);
+      // ballotItemDisplayName = candidate.ballot_item_display_name || '';
       // ballotItemType = 'CANDIDATE';
-      campaignXWeVoteId = candidate.linked_campaignx_we_vote_id || '';
+      // campaignXWeVoteId = candidate.linked_campaignx_we_vote_id || '';
       isCandidate = true;
     } else if (stringContains('meas', this.props.ballotItemWeVoteId)) {
-      const measure = MeasureStore.getMeasure(this.props.ballotItemWeVoteId);
-      ballotItemDisplayName = measure.ballot_item_display_name || '';
+      // const measure = MeasureStore.getMeasure(this.props.ballotItemWeVoteId);
+      // ballotItemDisplayName = measure.ballot_item_display_name || '';
       // ballotItemType = 'MEASURE';
       isMeasure = true;
     }
     this.setState({
-      ballotItemDisplayName,
+      // ballotItemDisplayName,
       // ballotItemType,
-      campaignXWeVoteId,
       isCandidate,
       isMeasure,
+      // campaignXWeVoteId,
       // voterIsSignedIn,
       // voterPhotoUrlMedium,
     });
@@ -88,24 +88,24 @@ class BoostLearnMoreModal extends Component {
 
   onCandidateStoreChange () {
     if (this.state.isCandidate) {
-      const { ballotItemWeVoteId } = this.props;
-      const candidate = CandidateStore.getCandidateByWeVoteId(ballotItemWeVoteId);
-      const ballotItemDisplayName = candidate.ballot_item_display_name || '';
-      const campaignXWeVoteId = candidate.linked_campaignx_we_vote_id || '';
+      // const { ballotItemWeVoteId } = this.props;
+      // const candidate = CandidateStore.getCandidateByWeVoteId(ballotItemWeVoteId);
+      // const ballotItemDisplayName = candidate.ballot_item_display_name || '';
+      // const campaignXWeVoteId = candidate.linked_campaignx_we_vote_id || '';
       this.setState({
-        ballotItemDisplayName,
-        campaignXWeVoteId,
+        // ballotItemDisplayName,
+        // campaignXWeVoteId,
       });
     }
   }
 
   onMeasureStoreChange () {
     if (this.state.isMeasure) {
-      const { ballotItemWeVoteId } = this.props;
-      const measure = MeasureStore.getMeasure(ballotItemWeVoteId);
-      const ballotItemDisplayName = measure.ballot_item_display_name || '';
+      // const { ballotItemWeVoteId } = this.props;
+      // const measure = MeasureStore.getMeasure(ballotItemWeVoteId);
+      // const ballotItemDisplayName = measure.ballot_item_display_name || '';
       this.setState({
-        ballotItemDisplayName,
+        // ballotItemDisplayName,
       });
     }
   }
@@ -113,16 +113,16 @@ class BoostLearnMoreModal extends Component {
   onSupportStoreChange () {
     const { ballotItemWeVoteId } = this.props;
     const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(ballotItemWeVoteId);
-    let voterOpposesBallotItem = '';
-    let voterSupportsBallotItem = '';
+    // let voterOpposesBallotItem = '';
+    // let voterSupportsBallotItem = '';
     // let voterTextStatement = '';
     // let voterPositionIsPublic = '';
     if (ballotItemStatSheet) {
-      ({ voterOpposesBallotItem, voterSupportsBallotItem } = ballotItemStatSheet);
+      // ({ voterOpposesBallotItem, voterSupportsBallotItem } = ballotItemStatSheet);
     }
     this.setState({
-      voterOpposesBallotItem,
-      voterSupportsBallotItem,
+      // voterOpposesBallotItem,
+      // voterSupportsBallotItem,
     });
 
     // if (ballotItemStatSheet) {
@@ -149,12 +149,6 @@ class BoostLearnMoreModal extends Component {
     // const { ballotItemWeVoteId } = this.props;
     const { show } = this.props;
     // console.log('BoostLearnMoreModal render, ballotItemWeVoteId: ', ballotItemWeVoteId, ', show: ', show);
-    const {
-      // ballotItemDisplayName,
-      campaignXWeVoteId,
-      // voterOpposesBallotItem, voterSupportsBallotItem,
-    } = this.state;
-
     // const horizontalEllipsis = '\u2026';
     let dialogTitleText = '';
 

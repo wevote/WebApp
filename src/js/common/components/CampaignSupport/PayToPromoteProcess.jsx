@@ -20,11 +20,10 @@ import { payToPromoteProcessStyles } from '../Style/CampaignSupportStyles';
 import webAppConfig from '../../../config';
 // import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import CampaignStore from '../../stores/CampaignStore';
-// import VoterStore from '../../../stores/VoterStore';
+import { getPageDetails } from '../../../utils/lookupPageNameAndPageTypeDict'; // import VoterStore from '../../../stores/VoterStore';
 import { getCampaignXValuesFromIdentifiers, retrieveCampaignXFromIdentifiersIfNeeded } from '../../utils/campaignUtils';
 import initializejQuery from '../../utils/initializejQuery';
 import SplitIconButton from '../Widgets/SplitIconButton';
-import lookupPageNameAndPageTypeDict, { getPageDetails } from '../../../utils/lookupPageNameAndPageTypeDict';
 import VoterStore from '../../../stores/VoterStore';
 
 const stripePromise = loadStripe(webAppConfig.STRIPE_API_KEY);

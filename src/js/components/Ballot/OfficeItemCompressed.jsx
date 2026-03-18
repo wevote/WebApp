@@ -63,11 +63,9 @@ class OfficeItemCompressed extends Component {
   }
 
   onCandidateStoreChange () {
-    const { candidateList, officeWeVoteId } = this.props;
+    const { officeWeVoteId } = this.props;
     const totalNumberOfCandidates = officeWeVoteId ? CandidateStore.getNumberOfCandidatesRetrievedByOffice(officeWeVoteId) : 0;
-    // const sortedCandidateList = sortCandidateList(candidateList || []);
     this.setState({
-      // candidateListForDisplay: sortedCandidateList,
       totalNumberOfCandidates,
     });
   }

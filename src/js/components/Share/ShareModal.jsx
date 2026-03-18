@@ -220,7 +220,6 @@ class ShareModal extends Component {
     // In the meantime, the following hack mostly undoes problem caused by
     // node_modules/@mui/base/legacy/unstable_useModal/ModalManager.js handleContainer()
     //    container.style.paddingRight = "".concat(getPaddingRight(container) + scrollbarSize, "px");
-    const bodyElement = document.querySelector('body');
     const { location: { pathname } } = window;
     const { classes } = this.props;
     const {

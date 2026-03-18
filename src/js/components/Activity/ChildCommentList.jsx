@@ -13,7 +13,6 @@ import AppObservableStore from '../../common/stores/AppObservableStore';
 import ReactionStore from '../../stores/ReactionStore';
 import VoterStore from '../../stores/VoterStore';
 import ActivityCommentAdd from './ActivityCommentAdd';
-import speakerDisplayNameToAvatarColor from '../../common/utils/speakerDisplayNameToAvatarColor';
 import speakerDisplayNameToInitials from '../../common/utils/speakerDisplayNameToInitials';
 
 

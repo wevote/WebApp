@@ -25,39 +25,39 @@ class HelpWinOrDefeatModal extends Component {
     // this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
     this.measureStoreListener = MeasureStore.addListener(this.onMeasureStoreChange.bind(this));
-    const { ballotItemWeVoteId, politicianWeVoteId } = this.props;
-    const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(ballotItemWeVoteId, politicianWeVoteId);
-    if (ballotItemStatSheet) {
-      const { voterOpposesBallotItem, voterSupportsBallotItem } = ballotItemStatSheet;
-      this.setState({
-        voterOpposesBallotItem,
-        voterSupportsBallotItem,
-      });
-    }
+    // const { ballotItemWeVoteId, politicianWeVoteId } = this.props;
+    // const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(ballotItemWeVoteId, politicianWeVoteId);
+    // if (ballotItemStatSheet) {
+    //   const { voterOpposesBallotItem, voterSupportsBallotItem } = ballotItemStatSheet;
+    //   // this.setState({
+    //   //   voterOpposesBallotItem,
+    //   //   voterSupportsBallotItem,
+    //   // });
+    // }
 
     // const voter = VoterStore.getVoter();
     // const voterIsSignedIn = VoterStore.getVoterIsSignedIn();
     // const { voter_photo_url_medium: voterPhotoUrlMedium } = voter;
 
-    let ballotItemDisplayName = '';
+    // let ballotItemDisplayName = '';
     // let ballotItemType;
     let campaignXWeVoteId;
     let isCandidate = false;
     let isMeasure = false;
     if (stringContains('cand', this.props.ballotItemWeVoteId)) {
       const candidate = CandidateStore.getCandidateByWeVoteId(this.props.ballotItemWeVoteId);
-      ballotItemDisplayName = candidate.ballot_item_display_name || '';
+      // ballotItemDisplayName = candidate.ballot_item_display_name || '';
       // ballotItemType = 'CANDIDATE';
       campaignXWeVoteId = candidate.linked_campaignx_we_vote_id || '';
       isCandidate = true;
     } else if (stringContains('meas', this.props.ballotItemWeVoteId)) {
-      const measure = MeasureStore.getMeasure(this.props.ballotItemWeVoteId);
-      ballotItemDisplayName = measure.ballot_item_display_name || '';
+      // const measure = MeasureStore.getMeasure(this.props.ballotItemWeVoteId);
+      // ballotItemDisplayName = measure.ballot_item_display_name || '';
       // ballotItemType = 'MEASURE';
       isMeasure = true;
     }
     this.setState({
-      ballotItemDisplayName,
+      // ballotItemDisplayName,
       // ballotItemType,
       campaignXWeVoteId,
       isCandidate,
@@ -94,10 +94,10 @@ class HelpWinOrDefeatModal extends Component {
     if (this.state.isCandidate) {
       const { ballotItemWeVoteId } = this.props;
       const candidate = CandidateStore.getCandidateByWeVoteId(ballotItemWeVoteId);
-      const ballotItemDisplayName = candidate.ballot_item_display_name || '';
+      // const ballotItemDisplayName = candidate.ballot_item_display_name || '';
       const campaignXWeVoteId = candidate.linked_campaignx_we_vote_id || '';
       this.setState({
-        ballotItemDisplayName,
+        // ballotItemDisplayName,
         campaignXWeVoteId,
       });
     }
@@ -105,11 +105,11 @@ class HelpWinOrDefeatModal extends Component {
 
   onMeasureStoreChange () {
     if (this.state.isMeasure) {
-      const { ballotItemWeVoteId } = this.props;
-      const measure = MeasureStore.getMeasure(ballotItemWeVoteId);
-      const ballotItemDisplayName = measure.ballot_item_display_name || '';
+      // const { ballotItemWeVoteId } = this.props;
+      // const measure = MeasureStore.getMeasure(ballotItemWeVoteId);
+      // const ballotItemDisplayName = measure.ballot_item_display_name || '';
       this.setState({
-        ballotItemDisplayName,
+        // ballotItemDisplayName,
       });
     }
   }
@@ -117,16 +117,16 @@ class HelpWinOrDefeatModal extends Component {
   onSupportStoreChange () {
     const { ballotItemWeVoteId, politicianWeVoteId } = this.props;
     const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(ballotItemWeVoteId, politicianWeVoteId);
-    let voterOpposesBallotItem = '';
-    let voterSupportsBallotItem = '';
+    // let voterOpposesBallotItem = '';
+    // let voterSupportsBallotItem = '';
     // let voterTextStatement = '';
     // let voterPositionIsPublic = '';
     if (ballotItemStatSheet) {
-      ({ voterOpposesBallotItem, voterSupportsBallotItem } = ballotItemStatSheet);
+      // ({ voterOpposesBallotItem, voterSupportsBallotItem } = ballotItemStatSheet);
     }
     this.setState({
-      voterOpposesBallotItem,
-      voterSupportsBallotItem,
+      // voterOpposesBallotItem,
+      // voterSupportsBallotItem,
     });
 
     // if (ballotItemStatSheet) {

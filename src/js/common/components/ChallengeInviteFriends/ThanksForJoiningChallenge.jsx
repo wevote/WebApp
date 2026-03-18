@@ -15,12 +15,13 @@ function ThanksForJoiningChallenge ({ voterFirstName, challengeTitle, onClose, c
   const [showConfetti, setShowConfetti] = useState(false);
   const { challengeSEOFriendlyPath } = useParams();
   useEffect(() => {
-    if (isClosing) {
-      const timer = setTimeout(() => {
-        onClose();
-      }, 500);
-      return () => clearTimeout(timer);
+    if (!isClosing) {
+      return undefined;
     }
+    const timer = setTimeout(() => {
+      onClose();
+    }, 500);
+    return () => clearTimeout(timer);
   }, [isClosing, onClose]);
 
   useEffect(() => {

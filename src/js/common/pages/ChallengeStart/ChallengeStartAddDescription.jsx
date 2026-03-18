@@ -12,7 +12,7 @@ import historyPush from '../../utils/historyPush';
 import { renderLog } from '../../utils/logging';
 import ChallengeDescriptionInputField from '../../components/ChallengeStart/ChallengeDescriptionInputField';
 import ChallengeStartSteps from '../../components/Navigation/ChallengeStartSteps';
-import { CampaignProcessStepIntroductionText, CampaignProcessStepTitle } from '../../components/Style/CampaignProcessStyles';
+import { CampaignProcessStepTitle } from '../../components/Style/CampaignProcessStyles';
 import { CampaignStartDesktopButtonPanel, CampaignStartDesktopButtonWrapper, CampaignStartMobileButtonPanel, CampaignStartMobileButtonWrapper, CampaignStartSection, CampaignStartSectionWrapper } from '../../components/Style/CampaignStartStyles';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import ChallengeStartStore from '../../stores/ChallengeStartStore';

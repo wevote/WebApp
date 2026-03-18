@@ -1,10 +1,9 @@
 import React, { useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { Search as SearchIcon } from '@mui/icons-material';
-import IconButton from "@mui/material/IconButton";
-import Popover from "@mui/material/Popover";
-import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import CloseIcon from "@mui/icons-material/Close";
+import Popover from '@mui/material/Popover';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import CloseIcon from '@mui/icons-material/Close';
 import TagManager from 'react-gtm-module';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 import VoterStore from '../../stores/VoterStore';
@@ -40,97 +39,98 @@ export default function SupporterTracking ({ selectedPoliticianWeVoteId = null }
    */
   const SPOOF = [
     {
-      id: "v_1",
-      status: "joined",
-      name: "Steve Smith",
+      id: 'v_1',
+      status: 'joined',
+      name: 'Steve Smith',
       endorsed: false,
       friendsInvited: 0,
       messageSentCount: 0,
       publicOpinion:
-        "",
+        '',
     },
     {
-      id: "v_2",
-      status: "joined",
-      name: "Jane Smith",
+      id: 'v_2',
+      status: 'joined',
+      name: 'Jane Smith',
       endorsed: true,
       friendsInvited: 0,
       messageSentCount: 0,
-      publicOpinion: "",
+      publicOpinion: '',
     },
     {
-      id: "v_3",
-      status: "joined",
-      name: "Steve Smith",
+      id: 'v_3',
+      status: 'joined',
+      name: 'Steve Smith',
       endorsed: true,
       friendsInvited: 0,
       messageSentCount: 0,
       publicOpinion:
-        "Lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet...",
+        'Lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet...',
     },
     {
-      id: "v_4",
-      status: "joined",
-      name: "Jen Smith",
+      id: 'v_4',
+      status: 'joined',
+      name: 'Jen Smith',
       endorsed: true,
       friendsInvited: 2,
       messageSentCount: 0,
       publicOpinion:
-        "Lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet...",
+        'Lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet...',
     },
     {
-      id: "v_5",
-      status: "joined",
-      name: "Mary Smith",
+      id: 'v_5',
+      status: 'joined',
+      name: 'Mary Smith',
       endorsed: true,
       friendsInvited: 2,
       messageSentCount: 1,
       publicOpinion:
-        "Lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet...",
+        'Lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet...',
     },
 
     // A couple non-joined for tabs
     {
-      id: "v_6",
-      status: "invited",
-      name: "Alex Doe",
+      id: 'v_6',
+      status: 'invited',
+      name: 'Alex Doe',
       endorsed: false,
       friendsInvited: 0,
       messageSentCount: 0,
-      publicOpinion: "",
+      publicOpinion: '',
     },
     {
-      id: "v_7",
-      status: "remind",
-      name: "Morgan Lee",
+      id: 'v_7',
+      status: 'remind',
+      name: 'Morgan Lee',
       endorsed: false,
       friendsInvited: 0,
       messageSentCount: 0,
-      publicOpinion: "",
+      publicOpinion: '',
     },
   ];
 
   const counts = useMemo(() => {
     const c = { joined: 0, invited: 0, remind: 0 };
-    for (const r of SPOOF) c[r.status] += 1;
+    SPOOF.forEach((r) => {
+      c[r.status] += 1;
+    });
     return c;
   }, []);
 
   const renderTabContent = () => {
     switch (activeTab) {
       case 'joined':
-        return <SupportersJoined supporters={SPOOF.filter((r) => r.status === 'joined')}/>;
+        return <SupportersJoined supporters={SPOOF.filter((r) => r.status === 'joined')} />;
       case 'invited':
-        return <SupportersInvited supporters={SPOOF.filter((r) => r.status === 'invited')}/>;
+        return <SupportersInvited supporters={SPOOF.filter((r) => r.status === 'invited')} />;
       case 'remind':
-        return <SupportersToRemind supporters={SPOOF.filter((r) => r.status === 'remind')}/>;
+        return <SupportersToRemind supporters={SPOOF.filter((r) => r.status === 'remind')} />;
       default:
-        return <SupportersJoined supporters={SPOOF.filter((r) => r.status === 'joined')}/>;
+        return <SupportersJoined supporters={SPOOF.filter((r) => r.status === 'joined')} />;
     }
   };
 
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [buttonEl, setButtonEl] = React.useState(null);
 
   const open = Boolean(anchorEl);
 
@@ -164,12 +164,12 @@ export default function SupporterTracking ({ selectedPoliticianWeVoteId = null }
         open={open}
         anchorEl={anchorEl}
         onClose={handleClose}
-        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-        transformOrigin={{ vertical: "top", horizontal: "left" }}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'left' }}
         PaperProps={{
           style: {
-            background: "transparent",
-            boxShadow: "none",
+            background: 'transparent',
+            boxShadow: 'none',
           },
         }}
       >
@@ -195,33 +195,33 @@ export default function SupporterTracking ({ selectedPoliticianWeVoteId = null }
           id="trackingJoinedWeVoteTab"
           active={activeTab === 'joined'}
           onClick={() => { pushDataLayer('trackingJoinedWeVoteTab', selectedPoliticianWeVoteId); setActiveTab('joined'); }}
-          data-hidden-bold-text={`Joined WeVote (${counts['joined']})`}
+          data-hidden-bold-text={`Joined WeVote (${counts.joined})`}
         >
           Joined WeVote
           (
-          {counts['joined']}
+          {counts.joined}
           )
         </Tab>
         <Tab
           id="trackingInvitedTab"
           active={activeTab === 'invited'}
           onClick={() => { pushDataLayer('trackingInvitedTab', selectedPoliticianWeVoteId); setActiveTab('invited'); }}
-          data-hidden-bold-text={`Invited (${counts['invited']})`}
+          data-hidden-bold-text={`Invited (${counts.invited})`}
         >
           Invited
           (
-          {counts['invited']}
+          {counts.invited}
           )
         </Tab>
         <Tab
           id="trackingReminderNeededTab"
           active={activeTab === 'remind'}
           onClick={() => { pushDataLayer('trackingReminderNeededTab', selectedPoliticianWeVoteId); setActiveTab('remind'); }}
-          data-hidden-bold-text={`Reminder needed (${counts['remind']})`}
+          data-hidden-bold-text={`Reminder needed (${counts.remind})`}
         >
           Reminder needed
           (
-          {counts['remind']}
+          {counts.remind}
           )
         </Tab>
       </TabRow>

@@ -221,6 +221,7 @@ class AppleSignIn extends Component {
                              tinyScreen={tinyScreen}
                              onClick={(e) => {
                                const buttonId = e.currentTarget.id;
+                               console.log('Apple sign-in button clicked:', buttonId);
                                this.signInClicked(enabled);
                              }}
           >

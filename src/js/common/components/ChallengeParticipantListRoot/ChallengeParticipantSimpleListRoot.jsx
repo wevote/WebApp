@@ -1,50 +1,28 @@
-import React, { Suspense, useState, useEffect } from 'react';
+import React, { Suspense, useState } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { withStyles } from '@mui/styles';
 import ChallengeParticipantList from './ChallengeParticipantList';
-import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import ChallengeParticipantStore from '../../stores/ChallengeParticipantStore';
 import FirstChallengeParticipantListController from './FirstChallengeParticipantListController';
-import ChallengeStore from '../../stores/ChallengeStore';
 
 // const FirstChallengeParticipantListController = React.lazy(() => import(/* webpackChunkName: 'FirstChallengeParticipantListController' */ './FirstChallengeParticipantListController'));
 
-function ChallengeParticipantSimpleListRoot ({ challengeWeVoteId, classes, uniqueExternalId, showSimpleList }) {
-  // eslint-disable-next-line no-unused-vars
-  const [participantList, setParticipantList] = React.useState([]);
-  const [participantsCount, setParticipantsCount] = useState(0);
-  const [rankOfVoter, setRankOfVoter] = React.useState(0);
-  const [voterIsChallengeParticipant, setVoterIsChallengeParticipant] = React.useState(false);
-
-  const onAppObservableStoreChange = () => {
-    setRankOfVoter(AppObservableStore.getChallengeParticipantRankOfVoterByChallengeWeVoteId(challengeWeVoteId));
-  };
+function ChallengeParticipantSimpleListRoot ({ challengeWeVoteId, uniqueExternalId, showSimpleList }) {
+  const [participantList, setParticipantList] = useState([]);
 
   const onChallengeParticipantStoreChange = () => {
     const sortedParticipantsWithRank = ChallengeParticipantStore.getChallengeParticipantList(challengeWeVoteId);
     setParticipantList(sortedParticipantsWithRank);
-    setParticipantsCount(sortedParticipantsWithRank.length);
-  };
-
-  const onChallengeStoreChange = () => {
-    setVoterIsChallengeParticipant(ChallengeStore.getVoterIsChallengeParticipant(challengeWeVoteId));
   };
 
   React.useEffect(() => {
     // console.log('Fetching participants for:', challengeWeVoteId);
-    const appStateSubscription = messageService.getMessage().subscribe(() => onAppObservableStoreChange());
-    onAppObservableStoreChange();
     const challengeParticipantStoreListener = ChallengeParticipantStore.addListener(onChallengeParticipantStoreChange);
     onChallengeParticipantStoreChange();
-    const challengeStoreListener = ChallengeStore.addListener(onChallengeStoreChange);
-    onChallengeStoreChange();
-    console.log(participantList);
 
     return () => {
-      appStateSubscription.unsubscribe();
       challengeParticipantStoreListener.remove();
-      challengeStoreListener.remove();
     };
   }, [challengeWeVoteId]);
 

@@ -3,7 +3,7 @@ import { Button, InputBase } from '@mui/material';
 import { withStyles } from '@mui/styles';
 import PropTypes from 'prop-types';
 import ActivityActions from '../../actions/ActivityActions';
-import { prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../common/utils/cordovaUtils';
+import { prepareForCordovaKeyboard } from '../../common/utils/cordovaUtils';
 import { isAndroid } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import ActivityStore from '../../stores/ActivityStore';
@@ -64,11 +64,6 @@ function ActivityPostModal (props) {
       setInitialFocusSet(true);
     }
   }, [initialFocusSet]);
-
-  const onBlurInput = () => {
-    restoreStylesAfterCordovaKeyboard('ActivityPostModal');
-  };
-
 
   const onFocusInput = () => {
     prepareForCordovaKeyboard('ActivityPostModal');

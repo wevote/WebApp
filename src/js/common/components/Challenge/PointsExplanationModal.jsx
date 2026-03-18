@@ -13,7 +13,7 @@ class PointsExplanationModal extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      showTerms: false,
+      // showTerms: false,
     };
   }
 

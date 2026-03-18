@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Button } from '@mui/material';
 import PropTypes from 'prop-types';
 import { withStyles } from '@mui/styles';
 import SearchBar2024 from '../../components/Search/SearchBar2024';
 import ChallengeParticipantList from '../../components/ChallengeParticipantListRoot/ChallengeParticipantList';
-import AppObservableStore from '../../stores/AppObservableStore';
+import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
+import ChallengeParticipantStore from '../../stores/ChallengeParticipantStore';
 import YourRankOutOf from '../../components/Challenge/YourRankOutOf';
 
 
@@ -23,6 +24,20 @@ function ChallengeLeaderboard ({ classes, challengeWeVoteId, clearSearchFunction
     setParticipantList(sortedParticipantsWithRank);
     setParticipantsCount(sortedParticipantsWithRank.length);
   };
+
+  React.useEffect(() => {
+    const appStateSubscription = messageService.getMessage().subscribe(() => onAppObservableStoreChange());
+    const challengeParticipantStoreListener = ChallengeParticipantStore.addListener(onChallengeParticipantStoreChange);
+
+    onAppObservableStoreChange();
+    onChallengeParticipantStoreChange();
+
+    return () => {
+      appStateSubscription.unsubscribe();
+      challengeParticipantStoreListener.remove();
+    };
+  }, [challengeWeVoteId]);
+
   return (
     <LeaderboardContainer>
       <TopSection>
@@ -57,7 +72,6 @@ function ChallengeLeaderboard ({ classes, challengeWeVoteId, clearSearchFunction
               searchUpdateDelayTime={500}
             />
           </SearchBarWrapper>
-          f
         </ButtonAndSearchWrapper>
         <LeaderboardInfoWrapper>
           {!!(rankOfVoter) && (
@@ -78,6 +92,7 @@ function ChallengeLeaderboard ({ classes, challengeWeVoteId, clearSearchFunction
       <ChallengeParticipantList
         challengeWeVoteId={challengeWeVoteId}
         currentVoterWeVoteId="wv02voter123"
+        participantList={participantList}
       />
     </LeaderboardContainer>
   );

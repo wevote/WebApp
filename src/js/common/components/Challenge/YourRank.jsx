@@ -14,9 +14,6 @@ import FirstChallengeParticipantListController from '../ChallengeParticipantList
 
 function YourRank ({ classes, challengeWeVoteId, hasBackgroundColor }) {
   const [clicked, setClicked] = useState(false);
-  const [participantsCount, setParticipantsCount] = useState(0);
-  const [points, setPoints] = useState(0);
-  // const [note, setNote] = useState("");
   const [arrowImage, setArrowImage] = useState(arrow);
   const [openYourRankModal, setOpenYourRankModal] = useState(false);
   const [rankOfVoter, setRankOfVoter] = React.useState(0);
@@ -38,34 +35,28 @@ function YourRank ({ classes, challengeWeVoteId, hasBackgroundColor }) {
     angle: 90, // Confetti moves straight up
   });
 
-  const onAppObservableStoreChange = () => {
-    setRankOfVoter(AppObservableStore.getChallengeParticipantRankOfVoterByChallengeWeVoteId(challengeWeVoteId));
-  };
-
-  const onChallengeParticipantStoreChange = () => {
-    const sortedParticipantsWithRank = ChallengeParticipantStore.getChallengeParticipantList(challengeWeVoteId);
-    setParticipantsCount(sortedParticipantsWithRank.length);
-    setRankOfVoter(AppObservableStore.getChallengeParticipantRankOfVoterByChallengeWeVoteId(challengeWeVoteId));
-  };
-
   const handleClick = () => {
-    setPoints((prevPoints) => {
-      const newPoints = prevPoints + 1;
-      setClicked(true);
-      setArrowImage(arrow1);
+    setClicked(true);
+    setArrowImage(arrow1);
 
-      // triggerConfetti(); // Show confetti when the button is clicked (uncomment this line to show confetti when the button rank is clicked)
+    // triggerConfetti(); // Show confetti when the button is clicked (uncomment this line to show confetti when the button rank is clicked)
 
-      setTimeout(() => {
-        setClicked(false);
-        setArrowImage(arrow);
-      }, 3000);
-      return newPoints;
-    });
+    setTimeout(() => {
+      setClicked(false);
+      setArrowImage(arrow);
+    }, 3000);
     setOpenYourRankModal(!openYourRankModal);
   };
 
   React.useEffect(() => {
+    const onAppObservableStoreChange = () => {
+      setRankOfVoter(AppObservableStore.getChallengeParticipantRankOfVoterByChallengeWeVoteId(challengeWeVoteId));
+    };
+
+    const onChallengeParticipantStoreChange = () => {
+      // const sortedParticipantsWithRank = ChallengeParticipantStore.getChallengeParticipantList(challengeWeVoteId);
+      setRankOfVoter(AppObservableStore.getChallengeParticipantRankOfVoterByChallengeWeVoteId(challengeWeVoteId));
+    };
     // console.log('Fetching participants for:', challengeWeVoteId);
     const appStateSubscription = messageService.getMessage().subscribe(() => onAppObservableStoreChange());
     onAppObservableStoreChange();

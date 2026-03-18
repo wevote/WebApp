@@ -1,9 +1,6 @@
 import * as React from 'react';
-import { ToggleButtonGroup as MuiToggleButtonGroup, ToggleButton as MuiToggleButton } from '@mui/material';
 import { SecurityRounded } from '@mui/icons-material';
 import styled from 'styled-components';
-import { styled as muiStyled } from '@mui/material/styles';
-import { grey as muiGrey, blue as muiBlue } from '@mui/material/colors';
 import DefaultVisibility from '../../components/Settings/DefaultVisibility';
 
 const HeaderContainer = styled('div')`

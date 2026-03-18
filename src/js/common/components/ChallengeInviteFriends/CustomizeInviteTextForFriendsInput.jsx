@@ -44,7 +44,7 @@ function CustomizeInviteTextForFriendsInput ({ classes, challengeWeVoteId, exter
     };
   }, [challengeWeVoteId]);
 
-  function saveAndGoToNextStep () {
+  const saveAndGoToNextStep = React.useCallback(() => {
     let inviteTextForFriendsNormalized = inviteTextForFriends;
     if (inviteTextForFriends === '' || inviteTextForFriends === undefined) {
       inviteTextForFriendsNormalized = null;
@@ -72,7 +72,7 @@ function CustomizeInviteTextForFriendsInput ({ classes, challengeWeVoteId, exter
       ChallengeParticipantActions.challengeParticipantSave(challengeWeVoteId, inviteTextForFriends, inviteTextForFriendsChanged);
     }
     goToNextStep();
-  }
+  }, [challengeInviteTextDefault, challengeWeVoteId, goToNextStep, inviteTextForFriends, inviteTextForFriendsOriginal]);
 
   return (
     <CustomizeInviteTextForFriendsInputWrapper>

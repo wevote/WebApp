@@ -18,28 +18,25 @@ export default function InviteSelectedModal ({
 }) {
   // Set to true to use hard-coded test data
   const TEST_MODE = false;
+  const votersList = TEST_MODE ? [
+    { id: 1, name: 'John Smith', email: 'jd@email.com', phone: '(212)-123-4567' },
+    { id: 2, name: 'Jane Smith', email: 'jd@email.com', phone: '(213)-123-4567' },
+    { id: 3, name: 'Kate Smith', email: null, phone: null },
+    { id: 4, name: 'John Doooooooooooough', email: 'jd@email.com', phone: '(213)-123-4567' },
+    { id: 5, name: 'Jane Dough', email: 'jd@email.com', phone: null },
+    { id: 6, name: 'Belcalis Almanzar', email: null, phone: '(213)-123-4567' },
+    { id: 7, name: 'Ricardo Reynoso', email: 'rr@email.com', phone: null },
+    { id: 8, name: 'Jalen Richardson', email: 'jr@email.com', phone: '(213)-123-4567' },
+    { id: 9, name: 'Michael Montgomery', email: null, phone: null },
+  ] : voters;
 
-  if (TEST_MODE) {
-    voters = [
-      { id: 1, name: 'John Smith', email: 'jd@email.com', phone: '(212)-123-4567' },
-      { id: 2, name: 'Jane Smith', email: 'jd@email.com', phone: '(213)-123-4567' },
-      { id: 3, name: 'Kate Smith', email: null, phone: null },
-      { id: 4, name: 'John Doooooooooooough', email: 'jd@email.com', phone: '(213)-123-4567' },
-      { id: 5, name: 'Jane Dough', email: 'jd@email.com', phone: null },
-      { id: 6, name: 'Belcalis Almanzar', email: null, phone: '(213)-123-4567' },
-      { id: 7, name: 'Ricardo Reynoso', email: 'rr@email.com', phone: null },
-      { id: 8, name: 'Jalen Richardson', email: 'jr@email.com', phone: '(213)-123-4567' },
-      { id: 9, name: 'Michael Montgomery', email: null, phone: null },
-    ];
-  }
-
-  const count = voters.length;
+  const count = votersList.length;
 
   // Categorizing voters with missing contact info
-  const missingEmail = voters.filter((v) => !v.email);
-  const missingEmailOnly = voters.filter((v) => !v.email && v.phone);
-  const missingPhoneOnly = voters.filter((v) => v.email && !v.phone);
-  const missingBoth = voters.filter((v) => !v.email && !v.phone);
+  const missingEmail = votersList.filter((v) => !v.email);
+  const missingEmailOnly = votersList.filter((v) => !v.email && v.phone);
+  const missingPhoneOnly = votersList.filter((v) => v.email && !v.phone);
+  const missingBoth = votersList.filter((v) => !v.email && !v.phone);
 
   const missingEmailCount = missingEmail.length;
   const missingEmailOnlyCount = missingEmailOnly.length;
@@ -57,10 +54,10 @@ export default function InviteSelectedModal ({
   // Event handlers
   const handleSendBatchEmail = () => {
     if (onInviteEmail) {
-      onInviteEmail(voters);
+      onInviteEmail(votersList);
     }
     setBatchEmailSent(true);
-    setEmailSentIds(new Set(voters.map((v) => v.id || v._idx)));
+    setEmailSentIds(new Set(votersList.map((v) => v.id || v._idx)));
   };
 
   const handleSendText = (voter) => {
@@ -83,7 +80,31 @@ export default function InviteSelectedModal ({
     setShowConfirmClose(false);
   };
 
-  const renderClickableNames = (voters) => voters.map((v, index) => (
+  const renderTextInviteButton = (v, id) => {
+    if (!v.phone) {
+      return (
+        <MissingPhone onClick={() => console.log('TODO: implement add phone number')}>
+          <Warning size={18} />
+          <span>Enter mobile phone</span>
+        </MissingPhone>
+      );
+    }
+    if (textSentIds.has(id)) {
+      return (
+        <SentButton>
+          <SuccessIcon />
+          Text invite sent
+        </SentButton>
+      );
+    }
+    return (
+      <SendTextButton onClick={() => handleSendText(v)}>
+        Send text invite
+      </SendTextButton>
+    );
+  };
+
+  const renderClickableNames = (selectedVoters) => selectedVoters.map((v, index) => (
     <React.Fragment key={v.id || v._idx || index}>
       {index > 0 && ', '}
       <ClickableName onClick={() => console.log('TODO: implement voter edit', v.name)}>
@@ -204,28 +225,12 @@ export default function InviteSelectedModal ({
           Send list to phone
         </SmallActionLink>
       </SectionTitleRow>
-      {voters.map((v) => {
+      {votersList.map((v) => {
         const id = v.id || v._idx;
         return (
           <VoterRow key={id}>
             <VoterName>{v.name}</VoterName>
-            {v.phone ? (
-              textSentIds.has(id) ? (
-                <SentButton>
-                  <SuccessIcon />
-                  Text invite sent
-                </SentButton>
-              ) : (
-                <SendTextButton onClick={() => handleSendText(v)}>
-                  Send text invite
-                </SendTextButton>
-              )
-            ) : (
-              <MissingPhone onClick={() => console.log('TODO: implement add phone number')}>
-                <Warning size={18} />
-                <span>Enter mobile phone</span>
-              </MissingPhone>
-            )}
+            {renderTextInviteButton(v, id)}
 
             <EmailStatus>
               {emailSentIds.has(id) && (

@@ -9,7 +9,6 @@ import ModalDisplayTemplateA, { templateAStyles } from '../../../components/Widg
 import ChallengeInviteeStore from '../../stores/ChallengeInviteeStore';
 
 function EditInviteeDetails ({ inviteeId, show, setShow, setAnchorEl }) {
-  const [inviteeData, setInviteeData] = useState(null);
   const [editedName, setEditedName] = useState('');
   const [editedMessage, setEditedMessage] = useState('');
   const [nameError, setNameError] = useState('');
@@ -19,7 +18,6 @@ function EditInviteeDetails ({ inviteeId, show, setShow, setAnchorEl }) {
     const fetchInviteeData = async () => {
       // need to do the same for the inviter
       const data = await ChallengeInviteeStore.getChallengeInviteeById(inviteeId);
-      setInviteeData(data);
       setEditedName(data?.invitee_name || '');
       setEditedMessage(data?.message || '');
     };

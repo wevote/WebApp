@@ -20,27 +20,26 @@ function ChallengeAbout ({ challengeWeVoteId, showDaysLeft }) {
   const [daysLeft, setDaysLeft] = React.useState(0);
   const [participantNameWithHighestRank, setParticipantNameWithHighestRank] = React.useState('');
 
-  const onAppObservableStoreChange = () => {
-    setParticipantNameWithHighestRank(AppObservableStore.getChallengeParticipantNameWithHighestRankByChallengeWeVoteId(challengeWeVoteId));
-  };
-
-  const onChallengeStoreChange = () => {
-    if (challengeInviteesCount < ChallengeStore.getNumberOfInviteesInChallenge(challengeWeVoteId)) {
-      setChallengeInviteesCount(ChallengeStore.getNumberOfInviteesInChallenge(challengeWeVoteId));
-    }
-    if (challengeParticipantCount < ChallengeStore.getNumberOfParticipantsInChallenge(challengeWeVoteId)) {
-      setChallengeParticipantCount(ChallengeStore.getNumberOfParticipantsInChallenge(challengeWeVoteId));
-    }
-    setDaysLeft(ChallengeStore.getDaysUntilChallengeEnds(challengeWeVoteId));
-    setChallengeOwners(ChallengeStore.getChallengeOwnerList(challengeWeVoteId));
-  };
-  const onChallengeParticipantStoreChange = () => {
-    if (challengeParticipantCount < ChallengeParticipantStore.getNumberOfParticipantsInChallenge(challengeWeVoteId)) {
-      setChallengeParticipantCount(ChallengeParticipantStore.getNumberOfParticipantsInChallenge(challengeWeVoteId));
-    }
-  };
-
   React.useEffect(() => {
+    const onAppObservableStoreChange = () => {
+      setParticipantNameWithHighestRank(AppObservableStore.getChallengeParticipantNameWithHighestRankByChallengeWeVoteId(challengeWeVoteId));
+    };
+
+    const onChallengeStoreChange = () => {
+      if (challengeInviteesCount < ChallengeStore.getNumberOfInviteesInChallenge(challengeWeVoteId)) {
+        setChallengeInviteesCount(ChallengeStore.getNumberOfInviteesInChallenge(challengeWeVoteId));
+      }
+      if (challengeParticipantCount < ChallengeStore.getNumberOfParticipantsInChallenge(challengeWeVoteId)) {
+        setChallengeParticipantCount(ChallengeStore.getNumberOfParticipantsInChallenge(challengeWeVoteId));
+      }
+      setDaysLeft(ChallengeStore.getDaysUntilChallengeEnds(challengeWeVoteId));
+      setChallengeOwners(ChallengeStore.getChallengeOwnerList(challengeWeVoteId));
+    };
+    const onChallengeParticipantStoreChange = () => {
+      if (challengeParticipantCount < ChallengeParticipantStore.getNumberOfParticipantsInChallenge(challengeWeVoteId)) {
+        setChallengeParticipantCount(ChallengeParticipantStore.getNumberOfParticipantsInChallenge(challengeWeVoteId));
+      }
+    };
     const appStateSubscription = messageService.getMessage().subscribe(() => onAppObservableStoreChange());
     onAppObservableStoreChange();
     const challengeParticipantStoreListener = ChallengeParticipantStore.addListener(onChallengeParticipantStoreChange);
@@ -53,7 +52,7 @@ function ChallengeAbout ({ challengeWeVoteId, showDaysLeft }) {
       challengeParticipantStoreListener.remove();
       challengeStoreListener.remove();
     };
-  }, [challengeWeVoteId]);
+  }, [challengeWeVoteId, challengeInviteesCount, challengeParticipantCount]);
 
   // Variables to hold dummy data
   const challengeDates = (

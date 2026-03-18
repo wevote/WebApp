@@ -11,26 +11,9 @@ import ChallengeParticipantStore from '../../stores/ChallengeParticipantStore';
 
 const ChallengeParticipantFirstRetrieveController = React.lazy(() => import(/* webpackChunkName: 'ChallengeParticipantFirstRetrieveController' */ '../ChallengeParticipant/ChallengeParticipantFirstRetrieveController'));
 
-const inviteeListDummyData = [
-  { invitee_id: 1, invitee_name: 'Jane', invite_sent: false, invite_viewed: false, challenge_joined: false, messageStatus: '' },
-  { invitee_id: 2, invitee_name: 'Unnamed friend1', invite_sent: true, invite_viewed: false, challenge_joined: false, messageStatus: 'Message Sent' },
-  { invitee_id: 3, invitee_name: 'John', invite_sent: true, invite_viewed: true, challenge_joined: false, messageStatus: 'Message Viewed' },
-  { invitee_id: 4, invitee_name: 'Melina H.', invite_sent: true, invite_viewed: true, challenge_joined: true, messageStatus: 'Challenge Joined' },
-  { invitee_id: 5, invitee_name: 'Melina H.', invite_sent: true, invite_viewed: true, challenge_joined: true, messageStatus: 'Challenge Joined' },
-  { invitee_id: 6, invitee_name: 'Melina H.', invite_sent: true, invite_viewed: true, challenge_joined: true, messageStatus: 'Challenge Joined' },
-  { invitee_id: 7, invitee_name: 'Melina H.', invite_sent: false, invite_viewed: false, challenge_joined: false, messageStatus: '' },
-  { invitee_id: 8, invitee_name: 'Melina H.', invite_sent: true, invite_viewed: true, challenge_joined: false, messageStatus: 'Message Viewed' },
-  { invitee_id: 9, invitee_name: 'Melina H.', invite_sent: true, invite_viewed: true, challenge_joined: true, messageStatus: 'Challenge Joined' },
-  { invitee_id: 10, invitee_name: 'Melina H.', invite_sent: true, invite_viewed: true, challenge_joined: true, messageStatus: 'Challenge Joined' },
-  { invitee_id: 11, invitee_name: 'Melina H.', invite_sent: true, invite_viewed: false, challenge_joined: false, messageStatus: 'Message Sent' },
-  { invitee_id: 12, invitee_name: 'Melina H.', invite_sent: true, invite_viewed: false, challenge_joined: false, messageStatus: 'Message Sent' },
-  { invitee_id: 13, invitee_name: 'Melina H.', invite_sent: true, invite_viewed: true, challenge_joined: true, messageStatus: 'Challenge Joined' },
-  { invitee_id: 14, invitee_name: 'Melina H.', invite_sent: true, invite_viewed: false, challenge_joined: false, messageStatus: 'Message Sent' },
-  { invitee_id: 15, invitee_name: 'Melina H.', invite_sent: true, invite_viewed: false, challenge_joined: false, messageStatus: 'Message Sent' },
-];
+
 
 function ChallengeInviteeListRoot ({ challengeWeVoteId, hideRank }) {
-  // eslint-disable-next-line no-unused-vars
   const [inviteeList, setInviteeList] = React.useState([]);
   const [participantsCount, setParticipantsCount] = useState(0);
   const [rankOfVoter, setRankOfVoter] = React.useState(0);

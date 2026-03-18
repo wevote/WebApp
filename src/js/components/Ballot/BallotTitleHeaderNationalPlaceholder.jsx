@@ -1,5 +1,4 @@
 import { Edit } from '@mui/icons-material';
-import parser from 'parse-address';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import TagManager from 'react-gtm-module';

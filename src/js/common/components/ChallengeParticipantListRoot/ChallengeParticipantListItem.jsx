@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Avatar } from '@mui/material';
@@ -123,7 +123,7 @@ const FriendsJoined = styled('div', {
 })(({ makeBold }) => (`
   color: ${DesignTokenColors.neutral900};
   font-size: 14px;
-  font-weight: bold;
+  font-weight: ${makeBold ? 'bold' : 'normal'};
   text-align: center;
   width: 76px;
 `));

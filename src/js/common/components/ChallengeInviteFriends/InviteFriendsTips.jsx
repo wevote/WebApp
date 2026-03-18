@@ -120,6 +120,13 @@ function InviteFriendsTips ({ challengeWeVoteId, startingTipName }) {
   }
   return (
     <InviteFriendsTipsWrapper>
+      {participantNameWithHighestRank && (
+        <div>
+          Top participant:
+          {' '}
+          {participantNameWithHighestRank}
+        </div>
+      )}
       {tipJsx}
     </InviteFriendsTipsWrapper>
   );

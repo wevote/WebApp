@@ -315,7 +315,7 @@ class IssueCard extends Component {
         {`${issueDisplayName} `}
         {!hideAdvocatesCount && (
           <IssueAdvocatesCount>
-            {`(${linkedOrganizationCount}${linkedOrganizationCount === 1 ? ' Advocate' : ''}${linkedOrganizationCount > 1 ? ' Advocates' : ''})`}
+            {`(${advocatesCount}${advocatesCount === 1 ? ' Advocate' : ''}${advocatesCount > 1 ? ' Advocates' : ''})`}
           </IssueAdvocatesCount>
         )}
       </IssueName>
