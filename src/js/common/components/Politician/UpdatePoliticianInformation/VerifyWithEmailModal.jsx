@@ -262,7 +262,11 @@ function VerifyWithEmailModal ({ closeVerifyWithEmailModal, politicianName, poli
           >
             Send verification code
           </VerificationButton>
-          <SectionDivider />
+          <OrDivider>
+            <OrDividerLine />
+            <OrDividerText>or</OrDividerText>
+            <OrDividerLine />
+          </OrDivider>
         </>
       )}
       <VerifyWithEmailSubheader>
@@ -399,6 +403,24 @@ const VerificationButton = styled('button')`
 const SectionDivider = styled('hr')`
   border-top: 1px solid ${DesignTokenColors.neutralUI100};
   width: 100%;
+`;
+
+const OrDivider = styled('div')`
+  align-items: center;
+  display: flex;
+  margin: 16px 0;
+  width: 100%;
+`;
+
+const OrDividerLine = styled('div')`
+  border-top: 1px solid ${DesignTokenColors.neutralUI100};
+  flex: 1;
+`;
+
+const OrDividerText = styled('span')`
+  color: ${DesignTokenColors.neutralUI600};
+  font-size: 14px;
+  padding: 0 12px;
 `;
 
 const PasskeyVerificationInput = styled('input')`
