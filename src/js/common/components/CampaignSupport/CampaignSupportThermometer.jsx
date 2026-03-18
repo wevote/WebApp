@@ -1,3 +1,5 @@
+import { Box } from '@mui/material';
+import Skeleton from '@mui/material/Skeleton';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -178,6 +180,11 @@ class CampaignSupportThermometer extends React.Component {
     }
     const showEncouragementToSupport = !!(supportersCountNextGoal && !inCompressedMode && !finalElectionDateInPast && !voterOpposesCampaignX);
 
+    // Reserve full layout space while campaign data loads to avoid downward layout shift
+    const campaignX = campaignXWeVoteId ? CampaignStore.getCampaignXByWeVoteId(campaignXWeVoteId) : null;
+    const campaignDataLoaded = !!(campaignX?.campaignx_we_vote_id);
+    const showLoadingSkeleton = campaignXWeVoteId && !campaignDataLoaded && !inCompressedMode;
+
     // console.log('CampaignSupportThermometer render: campaignXWeVoteId:', campaignXWeVoteId, ', supportersCount:', supportersCount, ', supportersCountNextGoal:', supportersCountNextGoal);
     return (
       <CampaignSupportThermometerWrapper>
@@ -186,24 +193,31 @@ class CampaignSupportThermometer extends React.Component {
             <HeartFavoriteToggleLoader campaignXWeVoteId={campaignXWeVoteId} />
           </HeartWrapper>
           <HeartDetailsWrapper>
-            {showEncouragementToSupport && (
-            <SupportersText inCompressedMode={inCompressedMode}>
-              {supportersText}
-            </SupportersText>
-            )}
-            {showEncouragementToSupport && (
-              <GoalText>
-                {' '}
-                Help them get to
-                {' '}
-                {numberWithCommas(supportersCountNextGoal)}
-                !
-              </GoalText>
+            {showLoadingSkeleton ? (
+              <Box flex={1}>
+                <Skeleton variant="text" width="70%" height={18} sx={{ mb: 0.5 }} />
+                <Skeleton variant="text" width="50%" height={18} />
+              </Box>
+            ) : showEncouragementToSupport && (
+              <>
+                <SupportersText inCompressedMode={inCompressedMode}>
+                  {supportersText}
+                </SupportersText>
+                <GoalText>
+                  {' '}
+                  Help them get to
+                  {' '}
+                  {numberWithCommas(supportersCountNextGoal)}
+                  !
+                </GoalText>
+              </>
             )}
           </HeartDetailsWrapper>
         </HeartPlusDetailsWrapper>
         <ProgressBarWrapper>
-          {showEncouragementToSupport && (
+          {showLoadingSkeleton ? (
+            <Skeleton variant="rounded" width="100%" height={12} sx={{ borderRadius: 6, mb: 1.5 }} />
+          ) : showEncouragementToSupport && (
             <ProgressBar percentage={percentageForDisplay}>
               <span id="progress-bar" />
               <span id="right-arrow" />
@@ -283,6 +297,8 @@ const HeartPlusDetailsWrapper = styled('div')`
 `;
 
 const HeartDetailsWrapper = styled('div')`
+  flex: 1;
+  min-width: 0;
 `;
 
 const HeartWrapper = styled('div')`

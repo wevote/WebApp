@@ -1,4 +1,6 @@
 import { HowToVote, Launch } from '@mui/icons-material';
+import { Box } from '@mui/material';
+import Skeleton from '@mui/material/Skeleton';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Suspense } from 'react';
@@ -91,7 +93,7 @@ function CardForListBody (props) {
                   {highlightSearchText(ballotItemDisplayName, searchText)}
                   {showPoliticianOpenInNewWindow && (
                     <LaunchIconWrapper>
-                      <Suspense fallback={<></>}>
+                      <Suspense fallback={<Skeleton variant="rounded" width={16} height={14} sx={{ display: 'inline-block', borderRadius: 0.5 }} />}>
                         <OpenExternalWebSite
                           linkIdAttribute="openPoliticianPage"
                           url={politicianDetailsURL}
@@ -143,7 +145,18 @@ function CardForListBody (props) {
               </YearAndHeartDiv>
               <SpaceBeforeThermometer />
               {useCampaignSupportThermometer && (
-                <Suspense fallback={<span>&nbsp;</span>}>
+                <Suspense fallback={(
+                  <Box>
+                    <Box display="flex" gap={1} sx={{ mb: 1 }}>
+                      <Skeleton variant="rounded" width={60} height={36} sx={{ borderRadius: 2 }} />
+                      <Box flex={1} sx={{ minWidth: 0 }}>
+                        <Skeleton variant="text" width="70%" height={18} sx={{ mb: 0.5 }} />
+                        <Skeleton variant="text" width="50%" height={18} />
+                      </Box>
+                    </Box>
+                    <Skeleton variant="rounded" width="100%" height={12} sx={{ borderRadius: 6 }} />
+                  </Box>
+                )}>
                   <CampaignSupportThermometer
                     campaignXWeVoteId={linkedCampaignXWeVoteId}
                     finalElectionDateInPast={finalElectionDateInPast}
@@ -151,18 +164,31 @@ function CardForListBody (props) {
                 </Suspense>
               )}
               <CardRowsWrapper>
-                {politicalParty && (
-                  <CardForListRow>
+                <CardForListRow>
+                  <FlexDivLeft>
+                    <SvgImageWrapper>
+                      {politicalParty ? (
+                        <SvgImage imageName={politicalPartySvgNameWithPath} stylesTextIncoming="width: 18px;" />
+                      ) : (
+                        <Skeleton variant="rounded" width={18} height={18} sx={{ borderRadius: 0.5 }} />
+                      )}
+                    </SvgImageWrapper>
+                    {politicalParty ? (
+                      <PoliticalPartyDiv>{politicalParty}</PoliticalPartyDiv>
+                    ) : (
+                      <Skeleton variant="text" width={80} height={14} />
+                    )}
+                  </FlexDivLeft>
+                </CardForListRow>
+                <CardForListRow>
+                  <Suspense fallback={(
                     <FlexDivLeft>
                       <SvgImageWrapper>
-                        <SvgImage imageName={politicalPartySvgNameWithPath} stylesTextIncoming="width: 18px;" />
+                        <Skeleton variant="rounded" width={18} height={18} sx={{ borderRadius: 0.5 }} />
                       </SvgImageWrapper>
-                      <PoliticalPartyDiv>{politicalParty}</PoliticalPartyDiv>
+                      <Skeleton variant="text" width="80%" height={14} />
                     </FlexDivLeft>
-                  </CardForListRow>
-                )}
-                <CardForListRow>
-                  <Suspense fallback={<></>}>
+                  )}>
                     {useOfficeHeld ? (
                       <FlexDivLeft>
                         {(districtName || officeName) && (
@@ -283,7 +309,12 @@ function CardForListBody (props) {
             </TitleAndTextWrapper>
             {!hideItemActionBar && (
               <CampaignActionButtonsWrapper>
-                <Suspense fallback={<></>}>
+                <Suspense fallback={(
+                  <Box display="flex" gap={1} justifyContent="center">
+                    <Skeleton variant="rounded" width={100} height={36} sx={{ borderRadius: 2 }} />
+                    <Skeleton variant="rounded" width={100} height={36} sx={{ borderRadius: 2 }} />
+                  </Box>
+                )}>
                   {(finalElectionDateInPast || usePoliticianWeVoteIdForBallotItem) ? (
                     <ItemActionBar
                       ballotItemWeVoteId={candidateWeVoteId}
