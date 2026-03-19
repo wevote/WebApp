@@ -51,6 +51,7 @@ class BallotScrollingContainer extends Component {
       hideLeftArrow: true,
       hideRightArrow: true,
       hasEndorsements: false,
+      isChosen: SupportStore.getVoterSupportsByBallotItemWeVoteId(props.oneCandidate.we_vote_id),
     };
 
     this.onClickShowOrganizationModalWithBallotItemInfo = this.onClickShowOrganizationModalWithBallotItemInfo.bind(this);
@@ -59,6 +60,7 @@ class BallotScrollingContainer extends Component {
   }
 
   componentDidMount () {
+    this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange);
     //  calls function when horizontal scrolling container size changes
     this.resizeObserver = new ResizeObserver(() => {
       this.checkArrowVisibility();
@@ -70,10 +72,20 @@ class BallotScrollingContainer extends Component {
   }
 
   componentWillUnmount () {
+    if (this.supportStoreListener) {
+      this.supportStoreListener.remove();
+    }
     if (this.resizeObserver) {
       this.resizeObserver.disconnect();
     }
   }
+
+  onSupportStoreChange = () => {
+    const { oneCandidate } = this.props;
+    this.setState({
+      isChosen: SupportStore.getVoterSupportsByBallotItemWeVoteId(oneCandidate.we_vote_id),
+    });
+  };
 
   onClickShowOrganizationModalWithBallotItemInfo (candidateWeVoteId) {
     AppObservableStore.setOrganizationModalBallotItemWeVoteId(candidateWeVoteId);
@@ -187,7 +199,7 @@ class BallotScrollingContainer extends Component {
         <BallotHorizontallyScrollingContainer
           ref={this.scrollElement}
           id={`ballotItemScrollingArea-${oneCandidate.we_vote_id}`}
-          isChosen={SupportStore.getVoterSupportsByBallotItemWeVoteId(oneCandidate.we_vote_id)}
+          isChosen={this.state.isChosen}
           onScroll={this.checkArrowVisibility}
           showLeftGradient={!this.state.hideLeftArrow}
           showRightGradient={!this.state.hideRightArrow}

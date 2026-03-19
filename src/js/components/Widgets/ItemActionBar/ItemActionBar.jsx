@@ -496,6 +496,7 @@ class ItemActionBar extends PureComponent {
         color={this.isSupportCalculated() ? 'chosen' : 'primary'}
         id={itemActionBarSupportButtonId}
         onClick={() => this.supportItem(itemActionBarSupportButtonId)}
+        style={this.isSupportCalculated() ? { border: '1px solid #1976d2' } : {}}
         variant={this.isSupportCalculated() ? 'contained' : 'outlined'}
         // variant="outlined"
       >
@@ -533,14 +534,15 @@ class ItemActionBar extends PureComponent {
     return (
       <Button
         classes={{ root: classes.buttonMeasureRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
-        color={this.isSupportCalculated() ? 'secondary' : 'primary'}
+        color={this.isSupportCalculated() ? 'chosen' : 'primary'}
         id={`itemActionBarYesButton-${externalUniqueId}-${localUniqueId}`}
         onClick={() => this.supportItem()}
+        style={this.isSupportCalculated() ? { backgroundColor: DesignTokenColors.confirmation200, color: '#fff' } : {}}
         variant={this.isSupportCalculated() ? 'contained' : 'outlined'}
       >
-        <Done classes={{ root: classes.buttonIconDone }} />
+        <Done classes={this.isSupportCalculated() ? { root: classes.buttonIconDoneSelected } : { root: classes.buttonIconDone }} />
         {this.isSupportCalculated() ? (
-          <ChooseButtonLabelSelected className="u-no-break">Voting Yes</ChooseButtonLabelSelected>
+          <OpposeButtonLabelSelected className="u-no-break">Voting Yes</OpposeButtonLabelSelected>
         ) : (
           <ChooseButtonLabel isAtState={!shareButtonHide} className="u-no-break">Vote Yes</ChooseButtonLabel>
         )}
@@ -569,13 +571,13 @@ class ItemActionBar extends PureComponent {
       <Button
         id={`itemActionBarNoButton-${externalUniqueId}-${localUniqueId}`}
         variant={this.isOpposeCalculated() ? 'contained' : 'outlined'}
-        color={this.isOpposeCalculated() ? 'secondary' : 'primary'}
+        color={this.isOpposeCalculated() ? 'opposed' : 'primary'}
         onClick={() => this.opposeItem()}
         classes={{ root: classes.buttonMeasureRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
       >
-        <NotInterested classes={{ root: classes.buttonIconNotInterested }} />
+        <NotInterested classes={this.isOpposeCalculated() ? { root: classes.buttonIconNotInterestedSelected } : { root: classes.buttonIconNotInterested }} />
         {this.isOpposeCalculated() ? (
-          <ChooseButtonLabelSelected className="u-no-break">Voting No</ChooseButtonLabelSelected>
+          <OpposeButtonLabelSelected className="u-no-break">Voting No</OpposeButtonLabelSelected>
         ) : (
           <ChooseButtonLabel isAtState={!shareButtonHide} className="u-no-break">Vote No</ChooseButtonLabel>
         )}
@@ -777,8 +779,9 @@ class ItemActionBar extends PureComponent {
     const {
       ballotItemType, ballotItemWeVoteId, helpWinOrDefeatModalOpen, isOpposeAPIState, isSupportAPIState,
       numberOfOpposePositionsForScore, numberOfSupportPositionsForScore, showNegativeModal,
-      voterPositionIsPublic, voterTextStatementOpened, visibilityRowOpen,
+      voterPositionIsPublic, voterTextStatement, voterTextStatementOpened, visibilityRowOpen,
     } = this.state;
+    const measureHasOpinion = ballotItemType === 'MEASURE' && !!voterTextStatement;
 
     if (
       (ballotItemWeVoteId === undefined || ballotItemWeVoteId === '') && (politicianWeVoteId === undefined || politicianWeVoteId === '')
@@ -1054,25 +1057,13 @@ class ItemActionBar extends PureComponent {
               </>
             )}
 
-            {/* Comment Button */}
-            {this.props.commentButtonHide || this.props.inModal ? null : (
+            {/* Comment Button (candidates/politicians) */}
+            {!this.props.commentButtonHide && !this.props.inModal && ballotItemType !== 'MEASURE' && (
               <span>
-                {ballotItemType === 'MEASURE' ? (
-                  <ChatBubbleButton
-                    aria-label="Comments"
-                    onClick={this.togglePositionStatementFunction}
-                    type="button"
-                  >
-                    <ChatBubbleOutline style={{ fontSize: 22, color: '#1976d2' }} />
-                  </ChatBubbleButton>
+                {buttonsOnly ? (
+                  <CommentFlex>{this.commentButtonNoText(`${ballotItemWeVoteId}${politicianWeVoteId}`)}</CommentFlex>
                 ) : (
-                  <>
-                    {buttonsOnly ? (
-                      <CommentFlex>{this.commentButtonNoText(`${ballotItemWeVoteId}${politicianWeVoteId}`)}</CommentFlex>
-                    ) : (
-                      <CommentFlex>{this.commentButton(`${ballotItemWeVoteId}${politicianWeVoteId}`)}</CommentFlex>
-                    )}
-                  </>
+                  <CommentFlex>{this.commentButton(`${ballotItemWeVoteId}${politicianWeVoteId}`)}</CommentFlex>
                 )}
               </span>
             )}
@@ -1082,6 +1073,40 @@ class ItemActionBar extends PureComponent {
               <ShareButtonDropDown showMoreId="itemActionBarShowMoreFooter" urlBeingShared={urlBeingShared} shareIcon={shareIcon} shareText="Share" />
             )}
           </ButtonGroup>
+
+          {/* Chat bubble + visibility row for measures.
+              When voter has typed an opinion, replace bubble with divider + visibility text. */}
+          {ballotItemType === 'MEASURE' && !this.props.commentButtonHide && !this.props.inModal && (
+            <>
+              {measureHasOpinion ? (
+                <VisibilityInlineWrapperDesktop className="u-show-desktop">
+                  <VisibilityDivider />
+                  <MakePublicVisibilityRow
+                    isPublic
+                    onDotsClick={this.togglePositionStatementFunction}
+                  />
+                </VisibilityInlineWrapperDesktop>
+              ) : (
+                <ChatBubbleButton
+                  aria-label="Comments"
+                  onClick={this.togglePositionStatementFunction}
+                  type="button"
+                >
+                  <ChatBubbleOutline style={{ fontSize: 22, color: '#1976d2' }} />
+                </ChatBubbleButton>
+              )}
+
+              {/* Mobile: full-width visibility row wraps below buttons */}
+              {measureHasOpinion && (
+                <VisibilityInlineWrapperMobile className="u-show-mobile-tablet">
+                  <MakePublicVisibilityRow
+                    isPublic
+                    onDotsClick={this.togglePositionStatementFunction}
+                  />
+                </VisibilityInlineWrapperMobile>
+              )}
+            </>
+          )}
 
           {/* Chat bubble + "For candidate staff", candidates/politicians only.
               Pass showCandidateStaffAndChat prop to enable (e.g. in BallotScrollingContainer). */}
@@ -1241,18 +1266,18 @@ const styles = (theme) => ({
   dialogPaper: { minHeight: 282, margin: '0 8px' },
   buttonMeasureRoot: {
     borderRadius: '15px',
-    padding: 4,
-    width: 120,
+    padding: '0 10px',
+    width: 'fit-content',
+    minWidth: 'auto',
     height: 32,
-    [theme.breakpoints.down('md')]: { width: 100, height: 30 },
-    [theme.breakpoints.down('sm')]: { width: 'fit-content', minWidth: 80, height: 28, padding: '0 8px' },
+    [theme.breakpoints.down('sm')]: { height: 28, padding: '0 8px' },
   },
   buttonRoot: {
     borderRadius: '15px',
     padding: 4,
     width: 120,
     height: 32,
-    [theme.breakpoints.down('md')]: { width: 100, height: 30 },
+    [theme.breakpoints.down('md')]: { width: 'fit-content', minWidth: 100, height: 30, padding: '0 8px' },
     [theme.breakpoints.down('sm')]: { width: 'fit-content', minWidth: 80, height: 28, padding: '0 8px' },
   },
   buttonRootForCard: { borderRadius: '15px', padding: 4, width: 138, height: 32 },
@@ -1334,6 +1359,7 @@ const ButtonWrapperFarRight = styled('div')`
 `;
 
 const ButtonWrapperRight = styled('div')`
+  margin-left: 4px;
   margin-right: 0;
   display: flex;
   align-items: center;
@@ -1348,7 +1374,7 @@ const ChooseButtonLabel = styled('span', {
 const ChooseButtonLabelSelected = styled('span', {
   shouldForwardProp: (prop) => !['isAtState'].includes(prop),
 })(({ isAtState }) => (`
-  color: #fff;
+   color: ${isAtState ? '#fff' : '#1976d2'};
 `));
 
 const CommentFlex = styled('div')`

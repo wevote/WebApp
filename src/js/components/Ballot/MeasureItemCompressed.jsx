@@ -1,3 +1,4 @@
+import { ArrowBackIos, ArrowForwardIos } from '@mui/icons-material';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
@@ -6,6 +7,8 @@ import styled from 'styled-components';
 import MeasureActions from '../../actions/MeasureActions';
 import AppObservableStore from '../../common/stores/AppObservableStore';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
+import { BallotHorizontallyScrollingContainer, BallotScrollingInnerWrapper, LeftArrowInnerWrapper, LeftArrowOuterWrapper, RightArrowInnerWrapper, RightArrowOuterWrapper } from '../../common/components/Style/ScrollingStyles';
+import { handleHorizontalScroll } from '../../common/utils/leftRightArrowCalculation';
 import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
 import shortenText from '../../common/utils/shortenText';
@@ -25,8 +28,12 @@ const PositionStatementModal = React.lazy(() => import(/* webpackChunkName: 'Pos
 class MeasureItemCompressed extends Component {
   constructor (props) {
     super(props);
+    this.scrollElement = React.createRef();
+    this.resizeObserver = null;
     this.state = {
       externalUniqueId: '',
+      hideLeftArrow: true,
+      hideRightArrow: true,
       measureSubtitle: '',
       measureText: '',
       measureUrl: '',
@@ -96,10 +103,28 @@ class MeasureItemCompressed extends Component {
       organizationWeVoteId,
     });
     this.measureStoreListener = MeasureStore.addListener(this.onMeasureStoreChange.bind(this));
+    this.resizeObserver = new ResizeObserver(() => {
+      this.checkArrowVisibility();
+    });
+    if (this.scrollElement.current) {
+      this.resizeObserver.observe(this.scrollElement.current);
+    }
+  }
+
+  componentDidUpdate () {
+    // The scroll element may not exist on first render (measureWeVoteId starts empty, render returns null).
+    // Once state populates and the component actually renders, attach the ResizeObserver.
+    if (this.scrollElement.current && this.resizeObserver && !this.observingScrollElement) {
+      this.observingScrollElement = true;
+      this.resizeObserver.observe(this.scrollElement.current);
+    }
   }
 
   componentWillUnmount () {
     this.measureStoreListener.remove();
+    if (this.resizeObserver) {
+      this.resizeObserver.disconnect();
+    }
   }
 
   onMeasureStoreChange () {
@@ -176,6 +201,23 @@ class MeasureItemCompressed extends Component {
     historyPush(measureLink);
   }
 
+  checkArrowVisibility = () => {
+    const el = this.scrollElement.current;
+    if (el) {
+      if (el.scrollWidth > el.clientWidth) {
+        this.setState({
+          hideLeftArrow: el.scrollLeft <= 0,
+          hideRightArrow: el.scrollLeft + el.clientWidth >= el.scrollWidth - 1,
+        });
+      } else {
+        this.setState({
+          hideLeftArrow: true,
+          hideRightArrow: true,
+        });
+      }
+    }
+  };
+
   checkMeasureHasEndorsements = () => {
     // Callback for PositionRowListCompressed
   };
@@ -243,96 +285,114 @@ class MeasureItemCompressed extends Component {
         <MeasureTitleItem onClick={this.onClickShowOrganizationModalWithBallotItemInfoAndPositions}>
           {ballotDisplay[0]}
         </MeasureTitleItem>
-        <SubTitle>{measureSubtitleCapitalized}</SubTitle>
 
         {/* Main content row: measure text | endorsements + sources | opinions */}
-        <MeasureContentRow>
-          {/* Left column: Measure description */}
-          <MeasureDescriptionColumn
-            className="u-cursor--pointer"
-            onClick={this.toggleDescriptionModal}
+        <BallotScrollingInnerWrapper>
+          <LeftArrowOuterWrapper className="u-show-desktop-tablet">
+            <LeftArrowInnerWrapper id="measureLeftArrowDesktop" onClick={() => { handleHorizontalScroll(this.scrollElement.current, -640, this.checkArrowVisibility, 24); }}>
+              {this.state.hideLeftArrow ? null : <ArrowBackIos classes={{ fontSize: 'medium' }} />}
+            </LeftArrowInnerWrapper>
+          </LeftArrowOuterWrapper>
+          <BallotHorizontallyScrollingContainer
+            ref={this.scrollElement}
+            onScroll={this.checkArrowVisibility}
+            showLeftGradient={!this.state.hideLeftArrow}
+            showRightGradient={!this.state.hideRightArrow}
+            style={{ display: 'flex', flexDirection: 'row', gap: '16px', alignItems: 'stretch', whiteSpace: 'normal', borderBottom: 'none' }}
           >
-            <MeasureText>
-              {shortenText(measureText, 200)}
-              &nbsp;
-              <span className="u-link-color">more</span>
-            </MeasureText>
-          </MeasureDescriptionColumn>
+            {/* Left column: Measure description */}
+            <MeasureDescriptionColumn
+              className="u-cursor--pointer"
+              onClick={this.toggleDescriptionModal}
+            >
+              <SubTitle>{measureSubtitleCapitalized}</SubTitle>
+              <MeasureText>
+                {shortenText(measureText, 200)}
+                &nbsp;
+                <span className="u-link-color">more</span>
+              </MeasureText>
+            </MeasureDescriptionColumn>
 
-          {/* Middle column: endorsements + FROM INDEPENDENT SOURCES */}
-          <EndorsementsAndSourcesColumn>
-            {/* Support and Oppose endorsements side by side */}
-            <EndorsementRow>
-              <EndorsementColumn>
-                <PositionRowListCompressed
-                  ballotItemWeVoteId={measureWeVoteId}
-                  showSupport
-                  firstInstance={false}
-                  checkCandidateHasEndorsements={this.checkMeasureHasEndorsements}
-                />
-              </EndorsementColumn>
-              <EndorsementColumn>
-                <PositionRowListCompressed
-                  ballotItemWeVoteId={measureWeVoteId}
-                  showOppose
-                  firstInstance={false}
-                  checkCandidateHasEndorsements={this.checkMeasureHasEndorsements}
-                />
-              </EndorsementColumn>
-            </EndorsementRow>
+            {/* Middle column: endorsements + FROM INDEPENDENT SOURCES */}
+            <EndorsementsAndSourcesColumn>
+              {/* Support and Oppose endorsements side by side */}
+              <EndorsementRow>
+                <EndorsementColumn>
+                  <PositionRowListCompressed
+                    ballotItemWeVoteId={measureWeVoteId}
+                    showSupport
+                    firstInstance={false}
+                    checkCandidateHasEndorsements={this.checkMeasureHasEndorsements}
+                  />
+                </EndorsementColumn>
+                <EndorsementColumn>
+                  <PositionRowListCompressed
+                    ballotItemWeVoteId={measureWeVoteId}
+                    showOppose
+                    firstInstance={false}
+                    checkCandidateHasEndorsements={this.checkMeasureHasEndorsements}
+                  />
+                </EndorsementColumn>
+              </EndorsementRow>
 
-            {/* FROM INDEPENDENT SOURCES section */}
-            <IndependentSourcesSection>
-              <IndependentSourcesHeader>FROM INDEPENDENT SOURCES</IndependentSourcesHeader>
-              <IndependentSourcesColumns>
-                <YesMeansColumn>
-                  <YesMeansTitle>
-                    <GreenBold>YES</GreenBold>
-                    {' means:'}
-                  </YesMeansTitle>
-                  {yesVoteDescription ? (
-                    <SourceDescription>
-                      {shortenText(yesVoteDescription, 200)}
-                    </SourceDescription>
-                  ) : (
-                    <SourceDescription>No description available.</SourceDescription>
-                  )}
-                  {!!(yesVoteDescription) && (
-                    <SeeMoreLink onClick={() => this.openYesNoModal(0)}>
-                      See more
-                    </SeeMoreLink>
-                  )}
-                </YesMeansColumn>
-                <NoMeansColumn>
-                  <NoMeansTitle>
-                    <RedBold>NO</RedBold>
-                    {' means:'}
-                  </NoMeansTitle>
-                  {noVoteDescription ? (
-                    <SourceDescription>
-                      {shortenText(noVoteDescription, 200)}
-                    </SourceDescription>
-                  ) : (
-                    <SourceDescription>No description available.</SourceDescription>
-                  )}
-                  {!!(noVoteDescription) && (
-                    <SeeMoreLink onClick={() => this.openYesNoModal(1)}>
-                      See more
-                    </SeeMoreLink>
-                  )}
-                </NoMeansColumn>
-              </IndependentSourcesColumns>
-            </IndependentSourcesSection>
-          </EndorsementsAndSourcesColumn>
+              {/* FROM INDEPENDENT SOURCES section */}
+              <IndependentSourcesSection>
+                <IndependentSourcesHeader>FROM INDEPENDENT SOURCES</IndependentSourcesHeader>
+                <IndependentSourcesColumns>
+                  <YesMeansColumn>
+                    <YesMeansTitle>
+                      <GreenBold>YES</GreenBold>
+                      {' means:'}
+                    </YesMeansTitle>
+                    {yesVoteDescription ? (
+                      <SourceDescription>
+                        {shortenText(yesVoteDescription, 200)}
+                      </SourceDescription>
+                    ) : (
+                      <SourceDescription>No description available.</SourceDescription>
+                    )}
+                    {!!(yesVoteDescription) && (
+                      <SeeMoreLink onClick={() => this.openYesNoModal(0)}>
+                        See more
+                      </SeeMoreLink>
+                    )}
+                  </YesMeansColumn>
+                  <NoMeansColumn>
+                    <NoMeansTitle>
+                      <RedBold>NO</RedBold>
+                      {' means:'}
+                    </NoMeansTitle>
+                    {noVoteDescription ? (
+                      <SourceDescription>
+                        {shortenText(noVoteDescription, 200)}
+                      </SourceDescription>
+                    ) : (
+                      <SourceDescription>No description available.</SourceDescription>
+                    )}
+                    {!!(noVoteDescription) && (
+                      <SeeMoreLink onClick={() => this.openYesNoModal(1)}>
+                        See more
+                      </SeeMoreLink>
+                    )}
+                  </NoMeansColumn>
+                </IndependentSourcesColumns>
+              </IndependentSourcesSection>
+            </EndorsementsAndSourcesColumn>
 
-          {/* Opinions column */}
-          <OpinionsColumn>
-            <MeasureOpinionsColumn
-              measureWeVoteId={measureWeVoteId}
-              onClickCommentInput={this.togglePositionStatementModal}
-            />
-          </OpinionsColumn>
-        </MeasureContentRow>
+            {/* Opinions column */}
+            <OpinionsColumn>
+              <MeasureOpinionsColumn
+                measureWeVoteId={measureWeVoteId}
+                onClickCommentInput={this.togglePositionStatementModal}
+              />
+            </OpinionsColumn>
+          </BallotHorizontallyScrollingContainer>
+          <RightArrowOuterWrapper className="u-show-desktop-tablet">
+            <RightArrowInnerWrapper id="measureRightArrowDesktop" onClick={() => { handleHorizontalScroll(this.scrollElement.current, 640, this.checkArrowVisibility, 24); }}>
+              {this.state.hideRightArrow ? null : <ArrowForwardIos classes={{ fontSize: 'medium' }} />}
+            </RightArrowInnerWrapper>
+          </RightArrowOuterWrapper>
+        </BallotScrollingInnerWrapper>
 
         {/* Bottom action bar: Vote Yes / Vote No / Comment */}
         <ItemActionBarOutsideWrapper>
@@ -432,7 +492,7 @@ const EndorsementRow = styled('div')`
 
 const EndorsementsAndSourcesColumn = styled('div')`
   display: flex;
-  flex: 2 1 0;
+  flex: 1 0 350px;
   flex-direction: column;
   gap: 12px;
   min-width: 0;
@@ -443,15 +503,11 @@ const GreenBold = styled('span')`
   font-weight: bold;
 `;
 
-const IndependentSourcesColumns = styled('div')(({ theme }) => (`
+const IndependentSourcesColumns = styled('div')`
   display: flex;
   flex-direction: row;
   gap: 24px;
-  ${theme.breakpoints.down('md')} {
-    flex-direction: column;
-    gap: 16px;
-  }
-`));
+`;
 
 const IndependentSourcesHeader = styled('div')`
   color: #999;
@@ -476,31 +532,11 @@ const ItemActionBarOutsideWrapper = styled('div')`
   width: 100%;
 `;
 
-const MeasureContentRow = styled('div')(({ theme }) => (`
-  align-items: stretch;
-  display: flex;
-  flex-direction: row;
-  gap: 16px;
-  width: 100%;
-  ${theme.breakpoints.down('md')} {
-    flex-direction: column;
-  }
-`));
-
-const MeasureDescriptionColumn = styled('div')(({ theme }) => (`
+const MeasureDescriptionColumn = styled('div')`
   border-right: 1px solid #ddd;
-  flex: 0 0 250px;
-  max-width: 280px;
+  flex: 0 0 200px;
   padding-right: 16px;
-  ${theme.breakpoints.down('md')} {
-    border-bottom: 1px solid #ddd;
-    border-right: none;
-    flex: 1 1 auto;
-    max-width: 100%;
-    padding-bottom: 12px;
-    padding-right: 0;
-  }
-`));
+`;
 
 const MeasureItemCompressedWrapper = styled('div')`
   border: 1px solid #fff;
@@ -538,18 +574,11 @@ const NoMeansTitle = styled('div')`
   margin-bottom: 4px;
 `;
 
-const OpinionsColumn = styled('div')(({ theme }) => (`
+const OpinionsColumn = styled('div')`
   border-left: 1px solid #ddd;
-  flex: 1 1 0;
-  min-width: 200px;
+  flex: 0 0 200px;
   padding-left: 16px;
-  ${theme.breakpoints.down('md')} {
-    border-left: none;
-    border-top: 1px solid #ddd;
-    padding-left: 0;
-    padding-top: 12px;
-  }
-`));
+`;
 
 const RedBold = styled('span')`
   color: ${DesignTokenColors.alert700};
@@ -575,10 +604,10 @@ const SourceDescription = styled('div')`
 
 const SubTitle = styled('h3')`
   color: #4371cc;
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 8px;
-  margin-top: 4px;
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 6px;
+  margin-top: 0;
   ${constrainedTextMobileStyles}
 `;
 
