@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useRef } from 'react';
+import React, { useEffect, useMemo, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import {
@@ -9,12 +9,15 @@ import {
   VisibilityOff as HideIcon,
   Search as SearchIcon,
   MoreVert as OverflowIcon,
+  MoreHoriz as MoreHorizIcon,
   Visibility as ShowIcon,
   History as HistoryIcon,
   DeleteOutline as DeleteIcon,
   Edit as EditIcon,
+  PersonAddAlt as AddVoterIcon,
 } from '@mui/icons-material';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
+import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import InviteSelectedModal from '../More/InviteSelectedModal';
 import ImportHistoryModal from '../More/ImportHistoryModal';
 import VoterActionModal from '../More/VoterActionModal';
@@ -22,7 +25,9 @@ import VoterActionModal from '../More/VoterActionModal';
 function formatWhen (iso) {
   try {
     const d = iso ? new Date(iso) : new Date();
-    return d.toLocaleString();
+    const date = d.toLocaleDateString(undefined, { year: 'numeric', month: 'numeric', day: 'numeric' });
+    const time = d.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
+    return `${date} ${time}`;
   } catch {
     return '—';
   }
@@ -39,6 +44,14 @@ export default function ImportedVotersList ({
   onDeleteSelected,
   onUpdateVoter,
 }) {
+  const [isMobile, setIsMobile] = useState(isMobileScreenSize);
+
+  useEffect(() => {
+    const onResize = () => setIsMobile(isMobileScreenSize());
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
+
   const [query, setQuery] = useState('');
   const [expandedId, setExpandedId] = useState(null);
   const [selected, setSelected] = useState(() => new Set());
@@ -142,90 +155,137 @@ export default function ImportedVotersList ({
     <>
       <Card aria-label="Imported voters (not invited)">
         <ListTopBar>
-          <TopBarLeft>
-            <ListHeading>Imported voters (not invited)</ListHeading>
-            <TopDivider aria-hidden />
-            <SearchField aria-label="Search imported voters">
-              <SearchIcon aria-hidden />
-              <SearchInput
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-              />
-            </SearchField>
-          </TopBarLeft>
+          {!isMobile && (
+            <TopBarLeft>
+              <ListHeading>
+                <HeadingBold>
+                  {voters.length}
+                  {' '}
+                  imported voters
+                </HeadingBold>
+                {' '}
+                <HeadingLight>(not invited)</HeadingLight>
+              </ListHeading>
+              <TopDivider aria-hidden />
+              <SearchField aria-label="Search imported voters">
+                <SearchIcon aria-hidden />
+                <SearchInput
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                />
+              </SearchField>
+            </TopBarLeft>
+          )}
 
-          <TopBarRight>
-            <InviteButton
-              type="button"
-              disabled={selectedList.length === 0}
-              onClick={() => {
-                setInviteList(selectedList);
-                setInviteModalOpen(true);
-              }}
-              aria-label={`Invite selected (${selectedList.length})`}
-              title={
-                selectedList.length ?
-                  `Invite selected (${selectedList.length})` :
-                  'Invite selected'
-              }
-            >
-              Invite selected (
-              {selectedList.length}
-              )
-            </InviteButton>
+          {isMobile && (
+            <MobileTopBarRow>
+              <MobileHeading>
+                <HeadingBold>
+                  {voters.length}
+                  {' '}
+                  imported voters
+                </HeadingBold>
+                {' '}
+                <HeadingLight>(not invited)</HeadingLight>
+              </MobileHeading>
+              <MobileTopBarIcons>
+                <OverflowBtn
+                  type="button"
+                  aria-label="More options"
+                  aria-haspopup="menu"
+                  aria-expanded={menuOpen}
+                  onClick={() => setMenuOpen((o) => !o)}
+                  title="More options"
+                >
+                  <MoreHorizIcon fontSize="small" />
+                </OverflowBtn>
+                <OverflowBtn type="button" aria-label="Search" title="Search">
+                  <SearchIcon fontSize="small" />
+                </OverflowBtn>
+                <OverflowBtn type="button" aria-label="Add voter" title="Add voter">
+                  <AddVoterIcon fontSize="small" />
+                </OverflowBtn>
+              </MobileTopBarIcons>
+            </MobileTopBarRow>
+          )}
 
-            <OverflowWrap>
-              <OverflowBtn
+          {!isMobile && (
+            <TopBarRight>
+              <InviteButton
                 type="button"
-                aria-label="More options"
-                aria-haspopup="menu"
-                aria-expanded={menuOpen}
-                onClick={() => setMenuOpen((o) => !o)}
-                title="More options"
+                disabled={selectedList.length === 0}
+                onClick={() => {
+                  setInviteList(selectedList);
+                  setInviteModalOpen(true);
+                }}
+                aria-label={`Invite selected (${selectedList.length})`}
+                title={
+                  selectedList.length ?
+                    `Invite selected (${selectedList.length})` :
+                    'Invite selected'
+                }
               >
-                <OverflowIcon fontSize="small" />
-              </OverflowBtn>
-              {menuOpen && (
-                <MenuCard role="menu" ref={menuRef}>
-                  <MenuItem
-                    role="menuitem"
-                    onClick={() => {
-                      onShowHidden?.();
-                      setMenuOpen(false);
-                    }}
-                  >
-                    <ShowIcon fontSize="small" />
-                    <span>Show hidden</span>
-                  </MenuItem>
+                Invite selected (
+                {selectedList.length}
+                )
+              </InviteButton>
 
-                  <MenuItem
-                    role="menuitem"
-                    onClick={() => {
-                      setHistoryModalOpen(true);
-                      setMenuOpen(false);
-                    }}
-                  >
-                    <HistoryIcon fontSize="small" />
-                    <span>View history of imports</span>
-                  </MenuItem>
+              <OverflowWrap>
+                <OverflowBtn
+                  type="button"
+                  aria-label="More options"
+                  aria-haspopup="menu"
+                  aria-expanded={menuOpen}
+                  onClick={() => setMenuOpen((o) => !o)}
+                  title="More options"
+                >
+                  <OverflowIcon fontSize="small" />
+                </OverflowBtn>
+                {menuOpen && (
+                  <MenuCard role="menu" ref={menuRef}>
+                    <MenuItem
+                      role="menuitem"
+                      onClick={() => {
+                        onShowHidden?.();
+                        setMenuOpen(false);
+                      }}
+                    >
+                      <ShowIcon fontSize="small" />
+                      <span>Show hidden</span>
+                    </MenuItem>
 
-                </MenuCard>
-              )}
-            </OverflowWrap>
-          </TopBarRight>
+                    <MenuItem
+                      role="menuitem"
+                      onClick={() => {
+                        setHistoryModalOpen(true);
+                        setMenuOpen(false);
+                      }}
+                    >
+                      <HistoryIcon fontSize="small" />
+                      <span>View history of imports</span>
+                    </MenuItem>
+
+                  </MenuCard>
+                )}
+              </OverflowWrap>
+            </TopBarRight>
+          )}
         </ListTopBar>
 
-        <Toolbar>
-          <label>
-            <input
-              type="checkbox"
-              checked={allVisibleSelected}
-              onChange={toggleAllVisible}
-            />
-            <span>Select all</span>
-          </label>
-        </Toolbar>
+        {!isMobile && (
+          <Toolbar>
+            <label>
+              <input
+                type="checkbox"
+                checked={allVisibleSelected}
+                onChange={toggleAllVisible}
+              />
+              <span>Select all</span>
+            </label>
+          </Toolbar>
+        )}
 
+        {!isMobile && (
         <Table role="table" aria-label="Imported voters table">
           <TrHead role="row">
             <ThCenter role="columnheader" aria-label="Select" />
@@ -353,7 +413,133 @@ export default function ImportedVotersList ({
             })}
           </Tbody>
         </Table>
+        )}
+
+        {isMobile && (
+        <MobileCardList>
+          {filtered.map((v, idx) => {
+            const id = v.id || v._idx || `row_${idx}`;
+            const isOpen = expandedId === id;
+            const isChecked = selected.has(id);
+
+            return (
+              <VoterCard key={id} $selected={isChecked}>
+                <MobileCardTopRow>
+                  <Checkbox
+                    type="checkbox"
+                    checked={isChecked}
+                    onChange={() => toggleOne(id)}
+                    aria-label={`Select ${v.name || 'voter'}`}
+                  />
+                  <MobileCardName>{v.name || '—'}</MobileCardName>
+                  <RowMenuButton
+                    type="button"
+                    onClick={(e) => handleRowMenuOpen(e, v)}
+                    aria-label="More options for voter"
+                    title="More options"
+                  >
+                    <MoreHorizIcon fontSize="small" />
+                  </RowMenuButton>
+                  <TopDivider aria-hidden />
+                  <ExpandBtn
+                    type="button"
+                    aria-expanded={isOpen}
+                    aria-label={isOpen ? 'Collapse' : 'Expand'}
+                    onClick={() => toggleRow(id)}
+                  >
+                    {isOpen ? <CollapseIcon fontSize="small" /> : <ExpandIcon fontSize="small" />}
+                  </ExpandBtn>
+                </MobileCardTopRow>
+
+                <MobileCardPillRow>
+                  <MobileCardPill type="button" onClick={() => onInviteEmail([v])}>
+                    <MailIcon sx={{ fontSize: 16 }} />
+                    Send email invite
+                  </MobileCardPill>
+                  <MobileCardPill type="button" onClick={() => onInviteText([v])}>
+                    <SmsIcon sx={{ fontSize: 16 }} />
+                    Send text invite
+                  </MobileCardPill>
+                </MobileCardPillRow>
+
+                {isOpen && (
+                  <MobileCardDetails>
+                    <DetailBlock>
+                      <DetailLabel>Added via</DetailLabel>
+                      <div>{v.source || 'Manual entry'}</div>
+                    </DetailBlock>
+                    <CardDetailDivider aria-hidden />
+                    <DetailBlock>
+                      <DetailLabel>Added by</DetailLabel>
+                      <div>{v.addedBy || 'You'}</div>
+                    </DetailBlock>
+                    <CardDetailDivider aria-hidden />
+                    <DetailBlock>
+                      <DetailLabel>Added on</DetailLabel>
+                      <div>{formatWhen(v.addedAt)}</div>
+                    </DetailBlock>
+                  </MobileCardDetails>
+                )}
+              </VoterCard>
+            );
+          })}
+        </MobileCardList>
+        )}
       </Card>
+
+      {isMobile && (
+      <MobileFooter>
+        <MobileInviteButton
+          type="button"
+          disabled={selectedList.length === 0}
+          onClick={() => {
+            setInviteList(selectedList);
+            setInviteModalOpen(true);
+          }}
+          aria-label={`Invite selected (${selectedList.length})`}
+        >
+          Invite selected (
+          {selectedList.length}
+          )
+        </MobileInviteButton>
+        <OverflowWrap>
+          <OverflowBtn
+            type="button"
+            aria-label="More options"
+            aria-haspopup="menu"
+            aria-expanded={menuOpen}
+            onClick={() => setMenuOpen((o) => !o)}
+            title="More options"
+          >
+            <MoreHorizIcon fontSize="small" />
+          </OverflowBtn>
+          {menuOpen && (
+            <MenuCard role="menu" ref={menuRef}>
+              <MenuItem
+                role="menuitem"
+                onClick={() => {
+                  onShowHidden?.();
+                  setMenuOpen(false);
+                }}
+              >
+                <ShowIcon fontSize="small" />
+                <span>Show hidden</span>
+              </MenuItem>
+              <MenuItem
+                role="menuitem"
+                onClick={() => {
+                  setHistoryModalOpen(true);
+                  setMenuOpen(false);
+                }}
+              >
+                <HistoryIcon fontSize="small" />
+                <span>View history of imports</span>
+              </MenuItem>
+            </MenuCard>
+          )}
+        </OverflowWrap>
+      </MobileFooter>
+      )}
 
       {/* Row menu dropdown */}
       {rowMenuAnchor && (
@@ -460,9 +646,11 @@ ImportedVotersList.propTypes = {
 /* styles */
 const Card = styled.div`
   margin-top: 14px;
-  border: 1px solid ${DesignTokenColors.neutralUI200};
   border-radius: 12px;
   background: ${DesignTokenColors.whiteUI};
+  @media (min-width: 992px) {
+    border: 1px solid ${DesignTokenColors.neutralUI200};
+  }
 `;
 
 const ListTopBar = styled.div`
@@ -474,9 +662,17 @@ const ListTopBar = styled.div`
 `;
 
 const ListHeading = styled.div`
-  font-weight: 600;
-  font-size: 14px;
+  font-size: 13px;
   color: ${DesignTokenColors.neutralUI900};
+  white-space: nowrap;
+`;
+
+const HeadingBold = styled.span`
+  font-weight: 600;
+`;
+
+const HeadingLight = styled.span`
+  font-weight: 400;
 `;
 
 const TopBarRight = styled.div`
@@ -489,7 +685,7 @@ const SearchField = styled.label`
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  min-width: 320px;
+  min-width: 180px;
   height: 36px;
   padding: 0 10px;
   border: none;
@@ -521,7 +717,7 @@ const InviteButton = styled.button`
   color: ${DesignTokenColors.whiteUI};
   border: 1px solid ${DesignTokenColors.primary700};
   border-radius: 999px;
-  padding: 8px 14px;
+  padding: 8px 24px;
   cursor: pointer;
   white-space: nowrap;
   &:disabled {
@@ -529,6 +725,10 @@ const InviteButton = styled.button`
     border-color: ${DesignTokenColors.neutralUI200};
     cursor: not-allowed;
   }
+`;
+
+const MobileInviteButton = styled(InviteButton)`
+  padding: 8px 48px;
 `;
 
 const OverflowWrap = styled.div`
@@ -749,12 +949,17 @@ const DetailsGrid = styled.div`
 
 const DetailBlock = styled.div`
   color: ${DesignTokenColors.neutralUI800};
-  font-size: 14px;
+  font-size: 10px;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 const DetailLabel = styled.div`
   color: ${DesignTokenColors.neutralUI600};
-  font-size: 12px;
+  font-size: 9px;
+  white-space: nowrap;
 `;
 
 const RowMenuCard = styled.div`
@@ -814,4 +1019,108 @@ const TopDivider = styled.span`
   height: 20px;
   background: ${DesignTokenColors.neutralUI200};
   display: inline-block;
+`;
+
+const MobileCardList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  padding-bottom: 128px;
+`;
+
+const VoterCard = styled.div`
+  border: 1px solid ${DesignTokenColors.neutralUI200};
+  border-radius: 16px;
+  background: ${DesignTokenColors.neutralUI50};
+  padding: 12px;
+  ${({ $selected }) => $selected && `
+    background: ${DesignTokenColors.primary50 || DesignTokenColors.neutralUI50};
+    border-left: 3px solid ${DesignTokenColors.primary700};
+  `}
+`;
+
+const MobileCardTopRow = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+`;
+
+const MobileCardName = styled.div`
+  flex: 1;
+  font-size: 14px;
+  font-weight: 700;
+  color: ${DesignTokenColors.neutralUI900};
+`;
+
+const MobileCardPillRow = styled.div`
+  display: flex;
+  gap: 12px;
+  padding-left: 4px;
+`;
+
+const MobileCardPill = styled.button`
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  border: 1px solid #1976d2;
+  border-radius: 999px;
+  background: ${DesignTokenColors.whiteUI};
+  padding: 4px 10px;
+  font-size: 12px;
+  color: #1976d2;
+  cursor: pointer;
+  white-space: nowrap;
+`;
+
+const MobileCardDetails = styled.div`
+  display: grid;
+  grid-template-columns: max-content 1px max-content 1px 1fr;
+  column-gap: 22px;
+  row-gap: 10px;
+  padding-top: 10px;
+  border-top: 1px solid ${DesignTokenColors.neutralUI100};
+  margin-top: 10px;
+`;
+
+const CardDetailDivider = styled.span`
+  width: 1px;
+  background: ${DesignTokenColors.neutralUI200};
+  display: block;
+  align-self: stretch;
+`;
+
+const MobileTopBarRow = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+`;
+
+const MobileHeading = styled.div`
+  font-size: 13px;
+  color: ${DesignTokenColors.neutralUI900};
+  white-space: nowrap;
+`;
+
+const MobileTopBarIcons = styled.div`
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+`;
+
+const MobileFooter = styled.div`
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 56px;
+  z-index: 1300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px 16px;
+  padding-bottom: calc(10px + env(safe-area-inset-bottom));
+  background: ${DesignTokenColors.primary50};
 `;
