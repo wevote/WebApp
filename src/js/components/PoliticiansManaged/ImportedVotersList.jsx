@@ -949,7 +949,7 @@ const DetailsGrid = styled.div`
 
 const DetailBlock = styled.div`
   color: ${DesignTokenColors.neutralUI800};
-  font-size: 10px;
+  font-size: 11px;
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -958,7 +958,7 @@ const DetailBlock = styled.div`
 
 const DetailLabel = styled.div`
   color: ${DesignTokenColors.neutralUI600};
-  font-size: 9px;
+  font-size: 10px;
   white-space: nowrap;
 `;
 
@@ -1077,10 +1077,9 @@ const MobileCardPill = styled.button`
 const MobileCardDetails = styled.div`
   display: grid;
   grid-template-columns: max-content 1px max-content 1px 1fr;
-  column-gap: 22px;
+  column-gap: 12px;
   row-gap: 10px;
   padding-top: 10px;
-  border-top: 1px solid ${DesignTokenColors.neutralUI100};
   margin-top: 10px;
 `;
 
