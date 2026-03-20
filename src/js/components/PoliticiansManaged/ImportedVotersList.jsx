@@ -153,7 +153,7 @@ export default function ImportedVotersList ({
 
   return (
     <>
-      <Card aria-label="Imported voters (not invited)">
+      <ImportedVotersPanel aria-label="Imported voters (not invited)">
         <ListTopBar>
           {!isMobile && (
             <TopBarLeft>
@@ -163,7 +163,6 @@ export default function ImportedVotersList ({
                   {' '}
                   imported voters
                 </HeadingBold>
-                {' '}
                 <HeadingLight>(not invited)</HeadingLight>
               </ListHeading>
               <TopDivider aria-hidden />
@@ -485,10 +484,11 @@ export default function ImportedVotersList ({
           })}
         </MobileCardList>
         )}
-      </Card>
+      </ImportedVotersPanel>
 
       {isMobile && (
       <MobileFooter>
+        <span aria-hidden />
         <MobileInviteButton
           type="button"
           disabled={selectedList.length === 0}
@@ -502,42 +502,44 @@ export default function ImportedVotersList ({
           {selectedList.length}
           )
         </MobileInviteButton>
-        <OverflowWrap>
-          <OverflowBtn
-            type="button"
-            aria-label="More options"
-            aria-haspopup="menu"
-            aria-expanded={menuOpen}
-            onClick={() => setMenuOpen((o) => !o)}
-            title="More options"
-          >
-            <MoreHorizIcon fontSize="small" />
-          </OverflowBtn>
-          {menuOpen && (
-            <MenuCard role="menu" ref={menuRef}>
-              <MenuItem
-                role="menuitem"
-                onClick={() => {
-                  onShowHidden?.();
-                  setMenuOpen(false);
-                }}
-              >
-                <ShowIcon fontSize="small" />
-                <span>Show hidden</span>
-              </MenuItem>
-              <MenuItem
-                role="menuitem"
-                onClick={() => {
-                  setHistoryModalOpen(true);
-                  setMenuOpen(false);
-                }}
-              >
-                <HistoryIcon fontSize="small" />
-                <span>View history of imports</span>
-              </MenuItem>
-            </MenuCard>
-          )}
-        </OverflowWrap>
+        <MobileFooterDot>
+          <OverflowWrap>
+            <OverflowBtn
+              type="button"
+              aria-label="More options"
+              aria-haspopup="menu"
+              aria-expanded={menuOpen}
+              onClick={() => setMenuOpen((o) => !o)}
+              title="More options"
+            >
+              <MoreHorizIcon fontSize="small" />
+            </OverflowBtn>
+            {menuOpen && (
+              <MenuCard role="menu" ref={menuRef}>
+                <MenuItem
+                  role="menuitem"
+                  onClick={() => {
+                    onShowHidden?.();
+                    setMenuOpen(false);
+                  }}
+                >
+                  <ShowIcon fontSize="small" />
+                  <span>Show hidden</span>
+                </MenuItem>
+                <MenuItem
+                  role="menuitem"
+                  onClick={() => {
+                    setHistoryModalOpen(true);
+                    setMenuOpen(false);
+                  }}
+                >
+                  <HistoryIcon fontSize="small" />
+                  <span>View history of imports</span>
+                </MenuItem>
+              </MenuCard>
+            )}
+          </OverflowWrap>
+        </MobileFooterDot>
       </MobileFooter>
       )}
 
@@ -644,7 +646,7 @@ ImportedVotersList.propTypes = {
 };
 
 /* styles */
-const Card = styled.div`
+const ImportedVotersPanel = styled.div`
   margin-top: 14px;
   border-radius: 12px;
   background: ${DesignTokenColors.whiteUI};
@@ -657,21 +659,24 @@ const ListTopBar = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 8px 12px;
+  padding: 8px 16px 8px 12px;
   border-bottom: 1px solid ${DesignTokenColors.neutralUI200};
 `;
 
 const ListHeading = styled.div`
-  font-size: 13px;
+  display: flex;
+  flex-direction: column;
   color: ${DesignTokenColors.neutralUI900};
   white-space: nowrap;
 `;
 
 const HeadingBold = styled.span`
+  font-size: 15px;
   font-weight: 600;
 `;
 
 const HeadingLight = styled.span`
+  font-size: 12px;
   font-weight: 400;
 `;
 
@@ -728,7 +733,19 @@ const InviteButton = styled.button`
 `;
 
 const MobileInviteButton = styled(InviteButton)`
-  padding: 8px 48px;
+  padding: 4px 40px;
+  font-size: 13px;
+`;
+
+const MobileFooterDot = styled.div`
+  display: flex;
+  align-items: center;
+  button {
+    background: ${DesignTokenColors.primary50};
+    &:hover {
+      background: ${DesignTokenColors.primary100 || DesignTokenColors.neutralUI100};
+    }
+  }
 `;
 
 const OverflowWrap = styled.div`
@@ -1009,9 +1026,11 @@ const TooltipBubble = styled.div`
 `;
 
 const TopBarLeft = styled.div`
-  display: inline-flex;
+  display: flex;
   align-items: center;
   gap: 12px;
+  flex: 1;
+  min-width: 0;
 `;
 
 const TopDivider = styled.span`
@@ -1115,10 +1134,9 @@ const MobileFooter = styled.div`
   right: 0;
   bottom: 56px;
   z-index: 1300;
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  justify-content: center;
-  gap: 10px;
   padding: 10px 16px;
   padding-bottom: calc(10px + env(safe-area-inset-bottom));
   background: ${DesignTokenColors.primary50};
