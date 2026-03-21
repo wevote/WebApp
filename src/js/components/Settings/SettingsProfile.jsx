@@ -6,7 +6,7 @@ import React, { Component } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import AnalyticsActions from '../../actions/AnalyticsActions';
+// import AnalyticsActions from '../../actions/AnalyticsActions';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import { renderLog } from '../../common/utils/logging';
 import VoterStore from '../../stores/VoterStore';
@@ -23,25 +23,27 @@ class SettingsProfile extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      voter: {},
     };
   }
 
   componentDidMount () {
-    this.onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-    AnalyticsActions.saveActionAccountPage(VoterStore.electionId());
+    this.onVoterStoreChange();
+    // Actions should be dispatched during event handlers
+    // AnalyticsActions.saveActionAccountPage(VoterStore.electionId());
   }
 
   componentWillUnmount () {
     this.voterStoreListener.remove();
   }
 
-  onVoterStoreChange = () => {
+  onVoterStoreChange () {
     const voter = VoterStore.getVoter();
     this.setState({
       voter,
     });
-  };
+  }
 
   closeDrawer = () => {
     const drawerOpenGlobalVariableName = 'headerProfileDrawerOpen';
