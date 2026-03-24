@@ -5,43 +5,43 @@ import { driver, expect } from '@wdio/globals';
 class HowitworksBrowser extends PageBrowser {
 
   get howItWorksTitle1() {
-    return $('#claimYourCampaignProfile')
+    return $('#chooseYourInterests')
   }
 
   get howItWorksTitle2() {
-    return $('#importEndorsements')
+    return $('#followOrganizationsAndPeople')
   }
 
   get howItWorksTitle3() {
-    return $('#addMoreCustomizations')
+    return $('#seeWhoEndorsedEachChoice')
   }
 
   get howItWorksTitle4() {
-    return $('#launchToYourPeople')
+    return $('#completeYourBallotWithConfidence')
   }
 
   get howItWorksTitle5() {
-    return $('#socialLift')
+    return $('#friends')
   }
 
   get howItWorksDescription1() {
-    return $('#claimYourCampaignProfileDescription');
+    return $('#chooseYourInterestsDescription');
   }
 
   get howItWorksDescription2() {
-    return $('#importEndorsementsDescription');
+    return $('#followOrganizationsAndPeopleDescription');
   }
 
   get howItWorksDescription3() {
-    return $('#addMoreCustomizationsDescription');
+    return $('#seeWhoEndorsedEachChoiceDescription');
   }
 
   get howItWorksDescription4() {
-    return $('#launchToYourPeopleDescription');
+    return $('#completeYourBallotWithConfidenceDescription');
   }
 
   get howItWorksDescription5() {
-    return $('#socialLiftDescription');
+    return $('#friendsDescription');
   }
 
   get howItWorksImage () {
@@ -131,7 +131,11 @@ class HowitworksBrowser extends PageBrowser {
     return $('#voterEmailAddressEntrySendCode')
   }
 
-  get enterVerifyButton(){
+  get enterPhoneVerifyButton(){
+    return $('#phoneVerifyButton')
+  }
+
+   get enterEmailVerifyButton(){
     return $('#emailVerifyButton')
   }
 
@@ -140,7 +144,7 @@ class HowitworksBrowser extends PageBrowser {
   }
 
   get signOut() {
-    return $('#signOut_Settings')
+    return $('#signOutProfileDrawer')
   }
 
   get phoneNumberHelperText(){
@@ -149,6 +153,10 @@ class HowitworksBrowser extends PageBrowser {
 
   get emailAddressHelperText() {
     return $('#enterVoterEmailAddress-helper-text')
+  }
+  //Charanya
+  get backArrowPhoneVerification() {
+    return $('#phoneVerificationBackButton')
   }
 
   get backArrow() {
@@ -230,7 +238,7 @@ class HowitworksBrowser extends PageBrowser {
     } else if (num === 4) {
       return this.howItWorksDescription4;
     } else {
-      return howItWorksDescription5;
+      return this.howItWorksDescription5; //Charanya
     }
   }
 
