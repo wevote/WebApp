@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 import { ReduceStore } from 'flux/utils';
 import BallotActions from '../actions/BallotActions'; // eslint-disable-line import/no-cycle
 import FacebookActions from '../actions/FacebookActions'; // eslint-disable-line import/no-cycle
