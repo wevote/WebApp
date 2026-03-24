@@ -214,26 +214,28 @@ function VerifyWithEmailModal ({ closeVerifyWithEmailModal, politicianName, poli
   }, []);
 
   const dialogTitleJsx = (
-    <VerifyWithEmailModalHeader>
-      To edit this profile, verify as a candidate
-    </VerifyWithEmailModalHeader>
+    <VerifyWithEmailHeaderContainer>
+      <VerifyWithEmailModalHeader>
+        To edit this profile, verify as a candidate
+      </VerifyWithEmailModalHeader>
+      <VerifyWithEmailModalBody>
+        Verify  with the email you have access to <VerifyWithEmailModalStrong>OR</VerifyWithEmailModalStrong> enter the passkey you received
+      </VerifyWithEmailModalBody>
+      <OtherWaysVerifyButtonFull
+          onClick={() => handleOpenVerifyOtherWaysModal('openVerifyOtherWaysModal')}
+      >
+        See other ways to verify
+      </OtherWaysVerifyButtonFull>
+    </VerifyWithEmailHeaderContainer>
   );
 
   const textFieldJsx = (
     <VerifyWithEmailModalContainer>
       {(verificationEmailsDictionary && verificationEmailsDictionary.length > 0) && (
-        <>
+        <BubbleSection>
           <VerifyWithEmailSubheader>
             Verify with email
           </VerifyWithEmailSubheader>
-          <VerifyWithEmailModalSubtitle>
-            We found these emails associated with
-            {' '}
-            {politicianName}
-            . Select one where you can receive a verification email.
-            {' '}
-            Some emails partially hidden for your safety.
-          </VerifyWithEmailModalSubtitle>
           {verificationEmailsDictionary.map((emailDict) => {
             // console.log('verificationEmailsDictionary.map emailDict: ', emailDict);
             const [submitValue, displayEmail] = Object.entries(emailDict)[0];
@@ -262,40 +264,36 @@ function VerifyWithEmailModal ({ closeVerifyWithEmailModal, politicianName, poli
           >
             Send verification code
           </VerificationButton>
-          <OrDivider>
-            <OrDividerLine />
-            <OrDividerText>or</OrDividerText>
-            <OrDividerLine />
-          </OrDivider>
-        </>
+        </BubbleSection>
       )}
-      <VerifyWithEmailSubheader>
-        Verify with passkey received through candidate contact form or social media
-      </VerifyWithEmailSubheader>
-      <PasskeyVerificationInput
-        type="text"
-        placeholder="Passkey"
-        value={passkey}
-        onChange={handlePasskeyChange}
-      />
-      <VerificationButton
-        disabled={!passkey}
-        id="submitPasskey"
-        onClick={() => submitPasskeyForVerification('submitPasskey')}
-      >
-        Verify with passkey
-      </VerificationButton>
-      {passkeyReceivedButNotAccepted && (
-        <PasskeyReceivedButNotAcceptedMessage>
-          Passkey was not accepted. Please double-check the passkey and try again. If it still doesn&apos;t work, please email us at support@wevote.us.
-        </PasskeyReceivedButNotAcceptedMessage>
-      )}
-      <SectionDivider />
-      <OtherWaysVerifyButtonFull
-        onClick={() => handleOpenVerifyOtherWaysModal('openVerifyOtherWaysModal')}
-      >
-        See other ways to verify
-      </OtherWaysVerifyButtonFull>
+      <OrDivider>
+        <OrDividerLine />
+        <OrDividerText>OR</OrDividerText>
+        <OrDividerLine />
+      </OrDivider>
+      <BubbleSection>
+        <VerifyWithEmailSubheader>
+          Verify with passkey received through candidate contact form or social media
+        </VerifyWithEmailSubheader>
+        <PasskeyVerificationInput
+          type="text"
+          placeholder="Passkey"
+          value={passkey}
+          onChange={handlePasskeyChange}
+        />
+        <VerificationButton
+          disabled={!passkey}
+          id="submitPasskey"
+          onClick={() => submitPasskeyForVerification('submitPasskey')}
+        >
+          Verify with passkey
+        </VerificationButton>
+        {passkeyReceivedButNotAccepted && (
+          <PasskeyReceivedButNotAcceptedMessage>
+            Passkey was not accepted. Please double-check the passkey and try again. If it still doesn&apos;t work, please email us at support@wevote.us.
+          </PasskeyReceivedButNotAcceptedMessage>
+        )}
+      </BubbleSection>
       <PasskeyVerifiedModal
         closePasskeyVerifiedModal={closeFromPasskeyVerifiedModal}
         passkeyVerified={passkeyVerified}
@@ -337,6 +335,25 @@ const VerifyWithEmailModalHeader = styled('h1')`
   padding: 0;
 `;
 
+const VerifyWithEmailModalBody = styled('p')`
+  font-size: 14px;
+  padding: 0 0 0 0;
+  color: ${DesignTokenColors.neutralUI600};
+  text-align: center;
+  margin-top: 32px;
+  margin-left: 140px;
+  margin-right: 140px;
+`;
+
+const VerifyWithEmailModalStrong = styled('strong')`
+  font-weight: 700;
+  color: black;
+`;
+
+const VerifyWithEmailHeaderContainer = styled('div')`
+  margin-bottom: 8px;
+`;
+
 const VerifyWithEmailModalContainer = styled('div')`
   margin: 8px 0 24px 0;
 `;
@@ -360,6 +377,8 @@ const VerifyWithEmailSubheader = styled('h2')`
   font-size: 14px;
   font-weight: 700;
   margin-top: 18px;
+  text-align: center;
+  margin-bottom: 18px;
 `;
 
 const EmailSelection = styled('label')`
@@ -418,9 +437,10 @@ const OrDividerLine = styled('div')`
 `;
 
 const OrDividerText = styled('span')`
-  color: ${DesignTokenColors.neutralUI600};
+  color: black;
   font-size: 14px;
   padding: 0 12px;
+  font-weight: 700;
 `;
 
 const PasskeyVerificationInput = styled('input')`
@@ -444,6 +464,13 @@ const PasskeyReceivedButNotAcceptedMessage = styled('div')`
 const OtherWaysVerifyButtonFull = styled(OtherWaysVerifyButtonAnchor)`
   font-weight: 700;
   width: 100%;
+`;
+
+const BubbleSection = styled('div')`
+  background-color: ${DesignTokenColors.neutral50};
+  border-radius: 12px;
+  margin-bottom: 16px;
+  padding: 16px;
 `;
 
 export default VerifyWithEmailModal;
