@@ -1,4 +1,23 @@
+// queue of flash animations
 const flashQueue = new Set();
+
+// click flash delay (ms)
+const flashDelayMs = 1000;
+
+function isPointerClickable (el) {
+  return window.getComputedStyle(el).cursor === 'pointer';
+}
+
+function findClickable (el) {
+  let element = el;
+  while (element && element !== document.body) {
+    if (isPointerClickable(element)) {
+      return element;
+    }
+    element = element.parentElement;
+  }
+  return null;
+}
 
 // check if overlay exists, if not create one
 function cursorOverlayExists () {
@@ -29,7 +48,6 @@ function rippleScheduler (x = 0, y = 0, delay = 500) {
 
   // set delay for ripple
   const id = window.setTimeout(() => {
-    // console.log('ripple position:', el.style.left, el.style.top);
     flashQueue.delete(id);
     overlay.appendChild(el);
 
@@ -59,8 +77,6 @@ function shouldInterceptNavigationClick (e) {
 function attachNavigationClickInterceptor ({ delayMs = 500 }) {
   const onClickCapture = (e) => {
     // if (!isEnabled()) return;
-    console.log(`button clicked?: ${e.target.closest?.('button')}`);
-    console.log(`button with extra conditions clicked?: ${e.target?.closest?.('button, [role="button"], input[type="button"], input[type="submit"]')}`);
     if (!shouldInterceptNavigationClick(e)) return;
 
     // Prevent infinite loops when we re-dispatch the click
@@ -75,7 +91,7 @@ function attachNavigationClickInterceptor ({ delayMs = 500 }) {
     }
 
     // Find a button-like element
-    const btn = e.target?.closest?.('button, [role="button"], input[type="button"], input[type="submit"]');
+    const btn = findClickable(e.target);
     if (btn) {
       // Stop the original click from doing anything
       e.preventDefault();
@@ -99,7 +115,7 @@ function attachNavigationClickInterceptor ({ delayMs = 500 }) {
       }, 2 * delayMs);
     }
 
-    const a = e.target.closest?.('a[href]');
+    const a = findClickable(e.target);
     if (!a) return;
 
     const href = a.getAttribute('href');
@@ -127,18 +143,14 @@ function attachNavigationClickInterceptor ({ delayMs = 500 }) {
     // Flash is already shown on pointerdown; this delays the actual nav.
     if (target === '_blank') {
       // popup-safe approach:
-      // const newWin = window.open('about:blank', '_blank');
       window.setTimeout(() => {
         window.open(url.toString(), '_blank', 'noopener,noreferrer');
-        console.log('calling new window function in flashCursorClickListener');
       }, 2 * delayMs);
       return;
     }
 
     window.setTimeout(() => {
       // For same-tab navigation:
-      // window.location.href = url.toString();
-      console.log('calling same window function in flashCursorClickListener');
       global.weVoteGlobalHistory.push(nextRoute);
     }, 2 * delayMs);
   };
@@ -148,18 +160,16 @@ function attachNavigationClickInterceptor ({ delayMs = 500 }) {
 }
 
 export default function flashCursorClickListener () {
-  const delay = 500;
   const onPointerDown = (e) => {
     // get mouse position
     const x = e.clientX;
     const y = e.clientY;
-    // console.log('mouse position: ', x, y);
-    rippleScheduler(x, y, delay);
+    rippleScheduler(x, y, flashDelayMs);
   };
 
   // begin event listener
   document.addEventListener('pointerdown', onPointerDown, true);
-  const linkCapture = attachNavigationClickInterceptor({ delayMs: delay });
+  const linkCapture = attachNavigationClickInterceptor({ delayMs: flashDelayMs });
 
   // return function to remove event listener
   return () => {
