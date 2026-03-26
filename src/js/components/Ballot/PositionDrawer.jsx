@@ -4,6 +4,7 @@ import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
+import TagManager from 'react-gtm-module';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import CandidateActions from '../../actions/CandidateActions';
 import IssueActions from '../../actions/IssueActions';
@@ -23,6 +24,7 @@ import IssueStore from '../../stores/IssueStore';
 import MeasureStore from '../../stores/MeasureStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
+import { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
 
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
 const PositionItem = React.lazy(() => import(/* webpackChunkName: 'PositionItem' */ './PositionItem'));
@@ -139,6 +141,7 @@ class PositionDrawer extends Component {
     this.setState({
       modalOpen: this.props.modalOpen,
     });
+    this.sendGTMDataLayer();
   }
 
   componentWillUnmount () {
@@ -197,6 +200,16 @@ class PositionDrawer extends Component {
       });
     }
   }
+
+  sendGTMDataLayer = () => {
+    const dataLayerObject = {
+      event: 'action',
+      actionDetails: { actionType: 'open' },
+      userDetails: VoterStore.getAnalyticsUserDetails(),
+      pageDetails: getPageDetails(null, 'PositionDrawer'),
+    };
+    TagManager.dataLayer({ dataLayer: dataLayerObject });
+  };
 
   localPositionListHasBeenRetrievedOnce (ballotItemWeVoteId) {
     if (ballotItemWeVoteId) {
