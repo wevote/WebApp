@@ -103,7 +103,7 @@
     "moment-locales-webpack-plugin": "^1.2.0",
     "pre-commit": "^1.2.2",
     "react-hot-loader": "^4.13.1",
-    "storybook": "10.2.8",
+    "storybook": "10.3.3",
     "terser-webpack-plugin": "^5.1.2",
     "unused-webpack-plugin": "^2.4.0",
     "webdriver": "^9.16.2",
