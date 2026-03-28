@@ -1,5 +1,5 @@
 import { Edit as EditIcon } from '@mui/icons-material';
-import { Button, FormControlLabel, InputBase, Radio, RadioGroup, Tooltip } from '@mui/material';
+import { Box, Button, FormControlLabel, InputBase, Radio, RadioGroup, Skeleton, Tooltip } from '@mui/material';
 import { styled as muiStyled, withStyles } from '@mui/styles';
 import PropTypes from 'prop-types';
 import React, { Suspense, useCallback, useEffect, useRef, useState } from 'react';
@@ -374,7 +374,12 @@ function VoterPositionEntryAndDisplay ({ classes, externalUniqueId, onModalClose
           )}
           {!supportOrOpposeStanceExists && (
           <ItemActionBarContainer>
-            <Suspense fallback={<></>}>
+            <Suspense fallback={(
+              <Box display="flex" gap={1}>
+                <Skeleton variant="rounded" width={100} height={36} sx={{ borderRadius: 2 }} />
+                <Skeleton variant="rounded" width={100} height={36} sx={{ borderRadius: 2 }} />
+              </Box>
+            )}>
               <ItemActionBar
                 ballotItemWeVoteId=""
                 // ballotItemDisplayName={oneCandidate.ballot_item_display_name}
