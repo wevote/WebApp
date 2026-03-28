@@ -1,9 +1,5 @@
 FROM public.ecr.aws/docker/library/node:25
 WORKDIR /app
-
-# add node_modules/.bin to PATH so that we can run storybook and webpack from the command line
-ENV PATH="${PATH}:/app/node_modules/.bin"
-
 COPY package*.json ./
 RUN npm install
 CMD ["npm", "run", "dev"]
