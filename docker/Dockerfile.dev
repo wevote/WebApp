@@ -6,6 +6,5 @@ ENV PATH="${PATH}:/app/node_modules/.bin"
 
 COPY package*.json ./
 RUN npm install
-RUN which storybook
 CMD ["npm", "run", "dev"]
 
