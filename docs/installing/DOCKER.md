@@ -28,7 +28,7 @@ Only [Docker Desktop](https://docs.docker.com/get-docker/) is required.
   ```
 
 ### 3. Create Docker network
-We will run all WeVote docker containers in an isolated docker network. Since the backend (WeVoteServer) and frontend (WebApp) both use docker compose (which typically manage docker networks for us), we must manually create this shared network to avoid conflicts. Even if you are not planning on running your own backend, this step must still be completed.
+We will run all WeVote docker containers in an isolated docker network. Since the backend (WeVoteServer) and frontend (WebApp) both use docker compose (which typically manages docker networks for us), we must manually create this shared network to avoid conflicts. Even if you are not planning on running your own backend, this step must still be completed.
 ```
 docker network create wevote
 ```
