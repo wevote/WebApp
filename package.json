@@ -31,6 +31,7 @@
     "lintCordova": "eslint --format stylish --ext .jsx --ext .js srcCordova/js",
     "prod": "npm run build",
     "run-prod-local": "node server-prod-local.js",
+    "dev": "node node/initialSteps && npm run build-storybook && PROTOCOL=HTTP webpack serve --mode development --host 0.0.0.0",
     "start": "node node/initialSteps && npm run build-storybook && PROTOCOL=HTTP webpack serve --mode development",
     "start-win": "node node/initialSteps && webpack serve --mode development",
     "start-https": "node node/initialSteps && PROTOCOL=HTTPS webpack serve --mode development",
