@@ -92,7 +92,7 @@ class SettingsProfilePicture extends Component {
     });
   };
 
-  stage = (file) => {
+  onUploadLocal = (file) => {
     this.setState({
       profileImageTypeCurrentlyActive: 'UPLOADED',
       profileImageTypeCurrentlyActiveSet: true,
@@ -137,7 +137,7 @@ class SettingsProfilePicture extends Component {
                   checked={profileImageTypeCurrentlyActive === 'UPLOADED'}
                 />
                 <Separator />
-                <VoterPhotoUpload limitPhotoHeight maxWidth={100} stage={this.stage} />
+                <VoterPhotoUpload limitPhotoHeight maxWidth={100} onUpload={this.onUploadLocal} />
               </ProfilePictureOption>
             </CustomColumns>
             {voterFacebookImageUrlLarge && (
