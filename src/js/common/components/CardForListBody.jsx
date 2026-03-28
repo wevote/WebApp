@@ -157,7 +157,7 @@ function CardForListBody (props) {
                       <SvgImageWrapper>
                         <SvgImage imageName={politicalPartySvgNameWithPath} stylesTextIncoming="width: 18px;" />
                       </SvgImageWrapper>
-                      <PoliticalPartyDiv>{politicalParty}</PoliticalPartyDiv>
+                      <PoliticalPartyDiv>{highlightSearchText(politicalParty, searchText)}</PoliticalPartyDiv>
                     </FlexDivLeft>
                   </CardForListRow>
                 )}
