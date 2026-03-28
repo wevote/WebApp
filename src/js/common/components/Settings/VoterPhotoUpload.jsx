@@ -1,6 +1,7 @@
 import { AccountCircle } from '@mui/icons-material';
 import withStyles from '@mui/styles/withStyles';
 import { heicTo, isHeic } from 'heic-to';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { getPNGfromFile } from 'tiff-to-png-client';
 import { DropzoneArea } from 'mui-file-dropzone';
 import PropTypes from 'prop-types';
@@ -80,17 +81,17 @@ class VoterPhotoUpload extends Component {
           quality: 0.5,
         });
         fileFromDropzone = convertedBlob;
-        dataUrl = await this.read(fileFromDropzone);
-        await this.enqueue(dataUrl);
+        dataUrl = await this.readFileAsDataUrl(fileFromDropzone);
+        await this.preparePhotoForUpload(dataUrl);
       } else if (fileFromDropzone.type === 'image/svg+xml') {
-        dataUrl = await this.convert();
-        await this.enqueue(dataUrl);
+        dataUrl = await this.convertImageToAcceptedFormat();
+        await this.preparePhotoForUpload(dataUrl);
       } else if (fileFromDropzone.type === 'image/tiff') {
         [dataUrl] = await getPNGfromFile(fileFromDropzone);
-        await this.enqueue(dataUrl);
+        await this.preparePhotoForUpload(dataUrl);
       } else {
-        dataUrl = await this.read(fileFromDropzone);
-        await this.enqueue(dataUrl);
+        dataUrl = await this.readFileAsDataUrl(fileFromDropzone);
+        await this.preparePhotoForUpload(dataUrl);
       }
       const dropzoneText = isMobileScreenSize() ? 'A small preview of your photo is shown below. You can: 1) Click button below to continue, or 2) click here to upload different photo.' : 'A small preview of your photo is shown below. You can: 1) click button below to continue, 2) delete it (hover over photo to see trash can), or 3) drag a NEW version here (or click here to find file).';
       this.setState({
@@ -127,7 +128,6 @@ class VoterPhotoUpload extends Component {
 
   onPoliticianStoreChange () {
     const { politicianWeVoteId } = this.props;
-    const { isWebApp } = this.state;
     if (politicianWeVoteId) {
       const { politicianProfileUploadedImageUrlLarge: politicianProfileUploadedImageUrlLargePrior } = this.state;
       const politicianProfileUploadedImageUrlLarge = PoliticianStore.getPoliticianProfileUploadedImageUrlLarge(politicianWeVoteId);
@@ -136,10 +136,10 @@ class VoterPhotoUpload extends Component {
         this.setState({
           politicianProfileUploadedImageUrlLarge,
         });
-        // Clear the substitute image for Cordova
-        if (!isWebApp) {
-          if (politicianProfileUploadedImageUrlLarge && politicianProfileUploadedImageUrlLarge.length > 0) {
-            const thumbnail = document.getElementById('cordova');
+        // Clear the substitute image
+        if (politicianProfileUploadedImageUrlLarge && politicianProfileUploadedImageUrlLarge.length > 0) {
+          const thumbnail = document.getElementById('cordova');
+          if (thumbnail) {
             thumbnail.style.display = 'none';
             thumbnail.src = '';
           }
@@ -150,17 +150,16 @@ class VoterPhotoUpload extends Component {
 
   onVoterStoreChange () {
     const { politicianWeVoteId } = this.props;
-    const { isWebApp } = this.state;
     if (!politicianWeVoteId) {
       const voterProfileUploadedImageUrlLarge = VoterStore.getVoterProfileUploadedImageUrlLarge();
       // console.log('onVoterStoreChange, voterProfileUploadedImageUrlLarge:', voterProfileUploadedImageUrlLarge);
       this.setState({
         voterProfileUploadedImageUrlLarge,
       });
-      // Clear the substitute image for Cordova
-      if (!isWebApp) {
-        if (voterProfileUploadedImageUrlLarge && voterProfileUploadedImageUrlLarge.length > 0) {
-          const thumbnail = document.getElementById('cordova');
+      // Clear the substitute image
+      if (voterProfileUploadedImageUrlLarge && voterProfileUploadedImageUrlLarge.length > 0) {
+        const thumbnail = document.getElementById('cordova');
+        if (thumbnail) {
           thumbnail.style.display = 'none';
           thumbnail.src = '';
         }
@@ -168,7 +167,7 @@ class VoterPhotoUpload extends Component {
     }
   }
 
-  convert = async (type = 'image/png') => {
+  convertImageToAcceptedFormat = async (type = 'image/png') => {
     // If the given type is not supported, convert the image to a PNG
     const img = document.querySelector('img[role="presentation"]');
     await img.decode();
@@ -184,21 +183,20 @@ class VoterPhotoUpload extends Component {
   };
 
   clearThumbnail = () => {
-    const { isWebApp } = this.state;
-    if (!isWebApp) {
-      const thumbnail = document.querySelector('img#cordova');
+    const thumbnail = document.querySelector('img#cordova');
+    if (thumbnail) {
       thumbnail.style.display = 'none';
       thumbnail.src = '';
     }
   };
 
-  enqueue = async (url) => {
+  preparePhotoForUpload = async (url) => {
     let dataUrl;
     const isDataUrl = url.startsWith('data:');
     if (!isDataUrl) {
       const res = await fetch(url);
       const blob = await res.blob();
-      dataUrl = await this.read(blob);
+      dataUrl = await this.readFileAsDataUrl(blob);
     } else {
       dataUrl = url;
     }
@@ -209,25 +207,29 @@ class VoterPhotoUpload extends Component {
     } else {
       thumbnail = document.querySelector('img#cordova');
     }
-    thumbnail.style.display = 'inline';
-    thumbnail.src = dataUrl;
-    const { politicianWeVoteId, stage } = this.props;
+    if (thumbnail) {
+      thumbnail.style.display = 'inline';
+      thumbnail.src = dataUrl;
+    }
+    const { politicianWeVoteId, onUpload } = this.props;
     if (politicianWeVoteId) {
       PoliticianActions.politicianPhotoQueuedToSave(dataUrl);
     } else {
       VoterActions.voterPhotoQueuedToSave(dataUrl);
     }
-    stage(dataUrl);
+    if (onUpload) {
+      onUpload(dataUrl);
+    }
   };
 
   deleteYourPhoto = (buttonId) => {
     const { politicianWeVoteId } = this.props;
     if (politicianWeVoteId) {
       PoliticianActions.politicianPhotoDelete(politicianWeVoteId);
-      // PoliticianActions.politicianPhotoQueuedToSave(undefined);
+      PoliticianActions.politicianPhotoQueuedToSave(undefined);
     } else {
       VoterActions.voterPhotoDelete();
-      // VoterActions.voterPhotoQueuedToSave(undefined);
+      VoterActions.voterPhotoQueuedToSave(undefined);
     }
     // Adding event data to dataLayer for Google Tag Manager
     const dataLayerObject = {
@@ -243,7 +245,7 @@ class VoterPhotoUpload extends Component {
     this.clearThumbnail();
   };
 
-  read = (file) => {
+  readFileAsDataUrl = (file) => {
     const promise = new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.onload = () => resolve(reader.result);
@@ -287,7 +289,7 @@ class VoterPhotoUpload extends Component {
         <form onSubmit={(e) => e.preventDefault()}>
           <Wrapper>
             <ColumnFullWidth>
-              {imageToDisplay && (
+              {imageToDisplay ? (
                 <VoterPhotoWrapper limitPhotoHeight={limitPhotoHeight}>
                   <VoterPhotoImage maxWidth={maxWidth} src={imageToDisplay} alt="Profile Photo" />
                   <DeleteLink
@@ -298,36 +300,39 @@ class VoterPhotoUpload extends Component {
                     remove photo
                   </DeleteLink>
                 </VoterPhotoWrapper>
-              )}
-              {isWebApp ? (
-                <DropzoneArea
-                  acceptedFiles={['image/*']}
-                  classes={showDropzoneIcon ? {
-                    icon: classes.dropzoneIcon,
-                    root: classes.dropzoneRoot,
-                    text: classes.dropzoneText,
-                  } : {
-                    icon: classes.dropzoneIconHidden,
-                    root: classes.dropzoneRoot,
-                    text: classes.dropzoneText,
-                  }}
-                  dropzoneText={dropzoneText}
-                  filesLimit={1}
-                  Icon={AccountCircle}
-                  initialFiles={initialFiles}
-                  maxFileSize={20000000}
-                  onChange={this.handleWebAppDrop}
-                />
               ) : (
                 <>
-                  <ChooseLink
-                    id="choosePhotoLink"
-                    className="u-link-color u-link-underline u-cursor--pointer"
-                    onClick={this.handleCordovaDrop}
-                  >
-                    Choose Photo
-                  </ChooseLink>
-                  <img src="" id="cordova" alt="" />
+                  {isWebApp ? (
+                    <DropzoneArea
+                      acceptedFiles={['image/*']}
+                      classes={showDropzoneIcon ? {
+                        icon: classes.dropzoneIcon,
+                        root: classes.dropzoneRoot,
+                        text: classes.dropzoneText,
+                      } : {
+                        icon: classes.dropzoneIconHidden,
+                        root: classes.dropzoneRoot,
+                        text: classes.dropzoneText,
+                      }}
+                      dropzoneText={dropzoneText}
+                      filesLimit={1}
+                      Icon={AccountCircle}
+                      initialFiles={initialFiles}
+                      maxFileSize={20000000}
+                      onChange={this.handleWebAppDrop}
+                    />
+                  ) : (
+                    <>
+                      <ChooseLink
+                        id="choosePhotoLink"
+                        className="u-link-color u-link-underline u-cursor--pointer"
+                        onClick={this.handleCordovaDrop}
+                      >
+                        Choose Photo
+                      </ChooseLink>
+                      <img src="" id="cordova" alt="" />
+                    </>
+                  )}
                 </>
               )}
             </ColumnFullWidth>
@@ -341,8 +346,8 @@ VoterPhotoUpload.propTypes = {
   classes: PropTypes.object,
   limitPhotoHeight: PropTypes.bool,
   maxWidth: PropTypes.number,
+  onUpload: PropTypes.func,
   politicianWeVoteId: PropTypes.string,
-  stage: PropTypes.func,
 };
 
 const styles = (theme) => ({

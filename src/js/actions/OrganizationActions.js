@@ -1,5 +1,3 @@
-/* eslint-disable camelcase */
-
 import Dispatcher from '../common/dispatcher/Dispatcher';
 
 export default {

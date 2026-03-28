@@ -1,5 +1,3 @@
-/* eslint-disable camelcase */
-
 import AppObservableStore from '../common/stores/AppObservableStore'; // eslint-disable-line import/no-cycle
 import Dispatcher from '../common/dispatcher/Dispatcher';
 

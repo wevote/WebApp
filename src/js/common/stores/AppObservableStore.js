@@ -1,5 +1,3 @@
-/* eslint-disable camelcase */
-
 import { Subject } from 'rxjs';
 import VoterActions from '../../actions/VoterActions'; // eslint-disable-line import/no-cycle
 import stringContains from '../utils/stringContains';

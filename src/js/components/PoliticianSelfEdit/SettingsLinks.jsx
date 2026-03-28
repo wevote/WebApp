@@ -1,5 +1,4 @@
-import { Info } from '@mui/icons-material';
-import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import { Info, Language } from '@mui/icons-material';
 import { makeStyles } from '@mui/styles';
 import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useRef } from 'react';
@@ -56,7 +55,7 @@ function SettingsLinks ({ externalUniqueId, politicianWeVoteId }) {
       <div className="card u-padding-bottom--lg">
         <div className="card-main">
           <HeaderContainer>
-            <IdIcon />
+            <WebsiteIcon />
             <h1 className="h2">Your Website</h1>
           </HeaderContainer>
           <IntroductionWrapper>
@@ -88,7 +87,7 @@ const HeaderContainer = styled('div')`
   align-items: center;
 `;
 
-const IdIcon = styled(AccountBoxIcon)`
+const WebsiteIcon = styled(Language)`
   color: black;
   height: 23px;
   width: 23px;
