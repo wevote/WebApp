@@ -30,7 +30,7 @@ import VoterPositionEditNameAndPhotoModal from './VoterPositionEditNameAndPhotoM
 
 const ItemActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemActionBar' */ '../Widgets/ItemActionBar/ItemActionBar'));
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../../common/components/Widgets/ReadMore'));
-function VoterPositionEntryAndDisplay ({ classes, externalUniqueId, politicianWeVoteId }) {
+function VoterPositionEntryAndDisplay ({ classes, externalUniqueId, onModalClose, openEditModalOnLoad, politicianWeVoteId }) {
   const politicianWeVoteIdRef = useRef(politicianWeVoteId);
   // console.log('VoterPositionEntryAndDisplay, politicianWeVoteId:', politicianWeVoteId, ', politicianWeVoteIdRef.current:', politicianWeVoteIdRef.current);
   const { allCachedPoliticians } = PoliticianStore.getState();
@@ -95,6 +95,7 @@ function VoterPositionEntryAndDisplay ({ classes, externalUniqueId, politicianWe
 
     if (showEditModal) {
       restoreStylesAfterCordovaKeyboard('VoterPositionEntryAndDisplay');
+      if (onModalClose) onModalClose();
     }
   };
 
@@ -115,7 +116,7 @@ function VoterPositionEntryAndDisplay ({ classes, externalUniqueId, politicianWe
     if (!showNegativeModal && !showingNegativeFeedbackModal && showNegativeModalFromMessage) {
       setShowNegativeModal(true);
     }
-  }, []);
+  }, [showNegativeModal]);
 
   useEffect(() => {
     const appStateSubscription = messageService.getMessage().subscribe(onAppObservableStoreChange);
@@ -234,6 +235,12 @@ function VoterPositionEntryAndDisplay ({ classes, externalUniqueId, politicianWe
       voterStoreListener.remove();
     };
   }, []);
+
+  useEffect(() => {
+    if (openEditModalOnLoad) {
+      setShowEditModal(true);
+    }
+  }, [openEditModalOnLoad]);
 
   const onFocusInput = () => {
     prepareForCordovaKeyboard('VoterPositionEntryAndDisplay');
@@ -563,18 +570,22 @@ function VoterPositionEntryAndDisplay ({ classes, externalUniqueId, politicianWe
           toggleModal={handleEditModalClose}
         />
       )}
-      <VoterPositionBlock
-        onClick={openEditModal}
-        politicianWeVoteId={politicianWeVoteId}
-        voterPhotoUrlMedium={voterPhotoUrlMedium}
-        voterName={voterName}
-      />
+      {!openEditModalOnLoad && (
+        <VoterPositionBlock
+          onClick={openEditModal}
+          politicianWeVoteId={politicianWeVoteId}
+          voterPhotoUrlMedium={voterPhotoUrlMedium}
+          voterName={voterName}
+        />
+      )}
     </>
   );
 }
 VoterPositionEntryAndDisplay.propTypes = {
   classes: PropTypes.object,
   externalUniqueId: PropTypes.string,
+  onModalClose: PropTypes.func,
+  openEditModalOnLoad: PropTypes.bool,
   politicianWeVoteId: PropTypes.string,
 };
 

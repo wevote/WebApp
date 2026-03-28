@@ -23,6 +23,8 @@ const SelectBallotModal = React.lazy(() => import(/* webpackChunkName: 'SelectBa
 const ShareModal = React.lazy(() => import(/* webpackChunkName: 'ShareModal' */ '../Share/ShareModal'));
 const SignInModal = React.lazy(() => import(/* webpackChunkName: 'SignInModal' */ '../../common/components/SignIn/SignInModal'));
 const ValuesIntroModal = React.lazy(() => import(/* webpackChunkName: 'ValuesIntroModal' */ '../CompleteYourProfile/ValuesIntroModal'));
+const VerifyWithEmailModal = React.lazy(() => import(/* webpackChunkName: 'VerifyWithEmailModal' */ '../../common/components/Politician/UpdatePoliticianInformation/VerifyWithEmailModal'));
+const VoterPositionEntryAndDisplay = React.lazy(() => import(/* webpackChunkName: 'VoterPositionEntryAndDisplay' */ '../PositionItem/VoterPositionEntryAndDisplay'));
 
 
 // Formerly: A function component, for all the various modals that come out of the HeaderBar
@@ -33,6 +35,8 @@ class HeaderBarModals extends Component {
       showAdviserIntroModal: false,
       showChooseOrOpposeIntroModal: false,
       showBallotChoicesAndSettingsModal: false,
+      showClaimProfileWithEmailModal: false,
+      showEditPositionModal: false,
       showFirstPositionIntroModal: false,
       showSelectBallotModal: false,
       showSelectBallotModalEditAddress: false,
@@ -75,6 +79,8 @@ class HeaderBarModals extends Component {
       showAskFriendsModal: AppObservableStore.showAskFriendsModal(),
       showBallotChoicesAndSettingsModal: AppObservableStore.showBallotChoicesAndSettingsModal(),
       showChooseOrOpposeIntroModal: AppObservableStore.showChooseOrOpposeIntroModal(),
+      showClaimProfileWithEmailModal: AppObservableStore.getShowClaimProfileWithEmailModal(),
+      showEditPositionModal: AppObservableStore.getShowEditPositionModal(),
       showFirstPositionIntroModal: AppObservableStore.showFirstPositionIntroModal(),
       showPaidAccountUpgradeModal,
       showShareModal: AppObservableStore.showShareModal(),
@@ -102,6 +108,15 @@ class HeaderBarModals extends Component {
 
   closeChooseOrOpposeIntroModal = () => {
     AppObservableStore.setShowChooseOrOpposeIntroModal(false);
+  };
+
+  closeClaimProfileWithEmailModal = () => {
+    AppObservableStore.setShowClaimProfileWithEmailModal(false);
+  };
+
+  closeEditPositionModal = () => {
+    AppObservableStore.setShowEditPositionModal(false);
+    this.setState({ showEditPositionModal: false });
   };
 
   closeFirstPositionIntroModal = () => {
@@ -183,7 +198,7 @@ class HeaderBarModals extends Component {
     const { classes } = this.props;
     const {
       showAdviserIntroModal, showAskFriendsModal, showBallotChoicesAndSettingsModal, showChooseOrOpposeIntroModal,
-      showFirstPositionIntroModal,
+      showClaimProfileWithEmailModal, showEditPositionModal, showFirstPositionIntroModal,
       showPaidAccountUpgradeModal, showPersonalizedScoreIntroModal,
       showSelectBallotModal, showSelectBallotModalEditAddress,
       showShareModal, showSignInModal, showValuesIntroModal, showImageUploadModal,
@@ -241,6 +256,18 @@ class HeaderBarModals extends Component {
               onClose={this.closeChooseOrOpposeIntroModal}
             />
           </Dialog>
+        </Suspense>
+      );
+    }
+    let editPositionModal = <></>;
+    if (showEditPositionModal) {
+      editPositionModal = (
+        <Suspense fallback={<></>}>
+          <VoterPositionEntryAndDisplay
+            politicianWeVoteId={AppObservableStore.getEditPositionModalPoliticianWeVoteId()}
+            openEditModalOnLoad
+            onModalClose={this.closeEditPositionModal}
+          />
         </Suspense>
       );
     }
@@ -337,12 +364,25 @@ class HeaderBarModals extends Component {
         </Suspense>
       );
     }
+    let claimProfileWithEmailModal = <></>;
+    if (showClaimProfileWithEmailModal) {
+      claimProfileWithEmailModal = (
+        <Suspense fallback={<></>}>
+          <VerifyWithEmailModal
+            closeVerifyWithEmailModal={this.closeClaimProfileWithEmailModal}
+            politicianWeVoteId={AppObservableStore.getPoliticianWeVoteIdBeingViewed()}
+          />
+        </Suspense>
+      );
+    }
     return (
       <>
         {advisorIntroModalHtml}
         {askFriendsModal}
         {ballotChoicesAndSettingsModal}
         {chooseOrOpposeIntroModal}
+        {claimProfileWithEmailModal}
+        {editPositionModal}
         {firstPositionIntroModal}
         {imageUploadModal}
         {paidAccountUpgradeModal}

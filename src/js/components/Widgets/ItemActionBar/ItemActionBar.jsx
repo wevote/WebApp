@@ -123,6 +123,7 @@ class ItemActionBar extends PureComponent {
         numberOfOpposePositionsForScore,
         numberOfSupportPositionsForScore,
         voterTextStatement,
+        visibilityRowOpen: isOpposeAPIState || isSupportAPIState || !!voterTextStatement,
       }, this.onNewBallotItemWeVoteId);
       // window.addEventListener('scroll', this.onScroll);
     }
@@ -262,7 +263,10 @@ class ItemActionBar extends PureComponent {
         if (voterTextStatement) {
           this.setState({ voterTextStatement });
         }
-        this.setState({ voterPositionIsPublic });
+        this.setState({
+          voterPositionIsPublic,
+          visibilityRowOpen: voterOpposesBallotItem || voterSupportsBallotItem || !!voterTextStatement,
+        });
       }
     }
   }
@@ -355,24 +359,29 @@ class ItemActionBar extends PureComponent {
     }
   };
 
-  //  NEW; Dale will make the conversation bubble and “Claim & edit profile” link active
-
   // NOTE: The old PositionPublicToggle only appeared after the voter made a choice
   // (isAnyEndorsementCalculated). MakePublicVisibilityRow currently shows whenever
   // the chat bubble is clicked, regardless of endorsement state. When wiring up the
   // API (onClickMakePublic → SupportActions.voterPositionVisibilitySave), revisit
   // whether the visibility row should be gated on isAnyEndorsementCalculated().
   onClickChatBubble = () => {
-    this.setState((prev) => ({ visibilityRowOpen: !prev.visibilityRowOpen }));
+    AppObservableStore.setShowEditPositionModal(true, this.props.politicianWeVoteId);
+  };
+
+  onClickClaimProfile = () => {
+    const { politicianWeVoteId } = this.props;
+    if (politicianWeVoteId) {
+      AppObservableStore.setPoliticianWeVoteIdBeingViewed(politicianWeVoteId);
+    }
+    AppObservableStore.setShowClaimProfileWithEmailModal(true);
   };
 
   onClickMakePublic = () => {
-    // Wire up to API
-    this.setState({ voterPositionIsPublic: true });
+    AppObservableStore.setShowEditPositionModal(true, this.props.politicianWeVoteId);
   };
 
   onClickDotsMenu = () => {
-    console.log('ItemActionBar: dots menu clicked'); // eslint-disable-line no-console
+    AppObservableStore.setShowEditPositionModal(true, this.props.politicianWeVoteId);
   };
 
   helpThemWinButton = (localUniqueId) => {
@@ -487,6 +496,7 @@ class ItemActionBar extends PureComponent {
         color={this.isSupportCalculated() ? 'chosen' : 'primary'}
         id={itemActionBarSupportButtonId}
         onClick={() => this.supportItem(itemActionBarSupportButtonId)}
+        style={this.isSupportCalculated() ? { border: '1px solid #1976d2' } : {}}
         variant={this.isSupportCalculated() ? 'contained' : 'outlined'}
         // variant="outlined"
       >
@@ -524,14 +534,15 @@ class ItemActionBar extends PureComponent {
     return (
       <Button
         classes={{ root: classes.buttonMeasureRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
-        color={this.isSupportCalculated() ? 'secondary' : 'primary'}
+        color={this.isSupportCalculated() ? 'chosen' : 'primary'}
         id={`itemActionBarYesButton-${externalUniqueId}-${localUniqueId}`}
         onClick={() => this.supportItem()}
+        style={this.isSupportCalculated() ? { backgroundColor: DesignTokenColors.confirmation200, color: '#fff' } : {}}
         variant={this.isSupportCalculated() ? 'contained' : 'outlined'}
       >
-        <Done classes={{ root: classes.buttonIconDone }} />
+        <Done classes={this.isSupportCalculated() ? { root: classes.buttonIconDoneSelected } : { root: classes.buttonIconDone }} />
         {this.isSupportCalculated() ? (
-          <ChooseButtonLabelSelected className="u-no-break">Voting Yes</ChooseButtonLabelSelected>
+          <OpposeButtonLabelSelected className="u-no-break">Voting Yes</OpposeButtonLabelSelected>
         ) : (
           <ChooseButtonLabel isAtState={!shareButtonHide} className="u-no-break">Vote Yes</ChooseButtonLabel>
         )}
@@ -560,13 +571,13 @@ class ItemActionBar extends PureComponent {
       <Button
         id={`itemActionBarNoButton-${externalUniqueId}-${localUniqueId}`}
         variant={this.isOpposeCalculated() ? 'contained' : 'outlined'}
-        color={this.isOpposeCalculated() ? 'secondary' : 'primary'}
+        color={this.isOpposeCalculated() ? 'opposed' : 'primary'}
         onClick={() => this.opposeItem()}
         classes={{ root: classes.buttonMeasureRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
       >
-        <NotInterested classes={{ root: classes.buttonIconNotInterested }} />
+        <NotInterested classes={this.isOpposeCalculated() ? { root: classes.buttonIconNotInterestedSelected } : { root: classes.buttonIconNotInterested }} />
         {this.isOpposeCalculated() ? (
-          <ChooseButtonLabelSelected className="u-no-break">Voting No</ChooseButtonLabelSelected>
+          <OpposeButtonLabelSelected className="u-no-break">Voting No</OpposeButtonLabelSelected>
         ) : (
           <ChooseButtonLabel isAtState={!shareButtonHide} className="u-no-break">Vote No</ChooseButtonLabel>
         )}
@@ -768,8 +779,9 @@ class ItemActionBar extends PureComponent {
     const {
       ballotItemType, ballotItemWeVoteId, helpWinOrDefeatModalOpen, isOpposeAPIState, isSupportAPIState,
       numberOfOpposePositionsForScore, numberOfSupportPositionsForScore, showNegativeModal,
-      voterPositionIsPublic, voterTextStatementOpened, visibilityRowOpen,
+      voterPositionIsPublic, voterTextStatement, voterTextStatementOpened, visibilityRowOpen,
     } = this.state;
+    const measureHasOpinion = ballotItemType === 'MEASURE' && !!voterTextStatement;
 
     if (
       (ballotItemWeVoteId === undefined || ballotItemWeVoteId === '') && (politicianWeVoteId === undefined || politicianWeVoteId === '')
@@ -1045,8 +1057,8 @@ class ItemActionBar extends PureComponent {
               </>
             )}
 
-            {/* Comment Button */}
-            {this.props.commentButtonHide || this.props.inModal ? null : (
+            {/* Comment Button (candidates/politicians) */}
+            {!this.props.commentButtonHide && !this.props.inModal && ballotItemType !== 'MEASURE' && (
               <span>
                 {buttonsOnly ? (
                   <CommentFlex>{this.commentButtonNoText(`${ballotItemWeVoteId}${politicianWeVoteId}`)}</CommentFlex>
@@ -1061,6 +1073,40 @@ class ItemActionBar extends PureComponent {
               <ShareButtonDropDown showMoreId="itemActionBarShowMoreFooter" urlBeingShared={urlBeingShared} shareIcon={shareIcon} shareText="Share" />
             )}
           </ButtonGroup>
+
+          {/* Chat bubble + visibility row for measures.
+              When voter has typed an opinion, replace bubble with divider + visibility text. */}
+          {ballotItemType === 'MEASURE' && !this.props.commentButtonHide && !this.props.inModal && (
+            <>
+              {measureHasOpinion ? (
+                <VisibilityInlineWrapperDesktop className="u-show-desktop">
+                  <VisibilityDivider />
+                  <MakePublicVisibilityRow
+                    isPublic
+                    onDotsClick={this.togglePositionStatementFunction}
+                  />
+                </VisibilityInlineWrapperDesktop>
+              ) : (
+                <ChatBubbleButton
+                  aria-label="Comments"
+                  onClick={this.togglePositionStatementFunction}
+                  type="button"
+                >
+                  <ChatBubbleOutline style={{ fontSize: 22, color: '#1976d2' }} />
+                </ChatBubbleButton>
+              )}
+
+              {/* Mobile: full-width visibility row wraps below buttons */}
+              {measureHasOpinion && (
+                <VisibilityInlineWrapperMobile className="u-show-mobile-tablet">
+                  <MakePublicVisibilityRow
+                    isPublic
+                    onDotsClick={this.togglePositionStatementFunction}
+                  />
+                </VisibilityInlineWrapperMobile>
+              )}
+            </>
+          )}
 
           {/* Chat bubble + "For candidate staff", candidates/politicians only.
               Pass showCandidateStaffAndChat prop to enable (e.g. in BallotScrollingContainer). */}
@@ -1088,18 +1134,19 @@ class ItemActionBar extends PureComponent {
 
               {!this.props.inModal && (
                 <>
-                  {/* Desktop/tablet: show with left border divider */}
-                  <CandidateStaffWrapper className="u-show-desktop-tablet" visibilityRowOpen={visibilityRowOpen}>
+                  {/* Desktop: standalone divider + candidate staff */}
+                  <CandidateStaffDivider className="u-show-desktop" />
+                  <CandidateStaffWrapper className="u-show-desktop" visibilityRowOpen={visibilityRowOpen}>
                     <CandidateStaffText>For candidate staff:</CandidateStaffText>
-                    <CandidateStaffLink href="#">
+                    <CandidateStaffLink as="button" onClick={this.onClickClaimProfile}>
                       <EditOutlined style={{ fontSize: 14, verticalAlign: 'middle', marginRight: 2 }} />
                       Claim &amp; edit profile
                     </CandidateStaffLink>
                   </CandidateStaffWrapper>
-                  {/* Mobile: show without left border divider */}
-                  <CandidateStaffWrapperMobile className="u-show-mobile" visibilityRowOpen={visibilityRowOpen}>
+                  {/* Mobile & tablet: show without divider */}
+                  <CandidateStaffWrapperMobile className="u-show-mobile-tablet" visibilityRowOpen={visibilityRowOpen}>
                     <CandidateStaffText>For candidate staff:</CandidateStaffText>
-                    <CandidateStaffLink href="#">
+                    <CandidateStaffLink as="button" onClick={this.onClickClaimProfile}>
                       <EditOutlined style={{ fontSize: 14, verticalAlign: 'middle', marginRight: 2 }} />
                       Claim &amp; edit profile
                     </CandidateStaffLink>
@@ -1218,17 +1265,19 @@ const styles = (theme) => ({
   },
   dialogPaper: { minHeight: 282, margin: '0 8px' },
   buttonMeasureRoot: {
-    padding: 4,
-    width: 130,
+    borderRadius: '15px',
+    padding: '0 10px',
+    width: 'fit-content',
+    minWidth: 'auto',
     height: 32,
-    [theme.breakpoints.down('sm')]: { width: 'fit-content', minWidth: 80, height: 28, padding: '0 8px' },
+    [theme.breakpoints.down('sm')]: { height: 28, padding: '0 8px' },
   },
   buttonRoot: {
     borderRadius: '15px',
     padding: 4,
     width: 120,
     height: 32,
-    [theme.breakpoints.down('md')]: { width: 100, height: 30 },
+    [theme.breakpoints.down('md')]: { width: 'fit-content', minWidth: 100, height: 30, padding: '0 8px' },
     [theme.breakpoints.down('sm')]: { width: 'fit-content', minWidth: 80, height: 28, padding: '0 8px' },
   },
   buttonRootForCard: { borderRadius: '15px', padding: 4, width: 138, height: 32 },
@@ -1264,6 +1313,7 @@ const ItemActionBarWrapper = styled('div', {
   margin-left: 0;
   margin-bottom: 0;
   padding-top: ${displayInline ? '0' : '8px'};
+  padding-bottom: 8px;
   ${theme.breakpoints.down('sm')} {
     flex-wrap: wrap;
   }
@@ -1277,7 +1327,9 @@ const ActionBarRow = styled('div')`
   align-items: center;
   flex-wrap: wrap;
   width: 100%;
-  gap: 0;
+  column-gap: 0;
+  row-gap: 4px;
+  white-space: normal;
 `;
 
 const ButtonGroup = styled('div', {
@@ -1307,6 +1359,7 @@ const ButtonWrapperFarRight = styled('div')`
 `;
 
 const ButtonWrapperRight = styled('div')`
+  margin-left: 4px;
   margin-right: 0;
   display: flex;
   align-items: center;
@@ -1320,7 +1373,9 @@ const ChooseButtonLabel = styled('span', {
 
 const ChooseButtonLabelSelected = styled('span', {
   shouldForwardProp: (prop) => !['isAtState'].includes(prop),
-})(({ isAtState }) => (''));
+})(({ isAtState }) => (`
+   color: ${isAtState ? '#fff' : '#1976d2'};
+`));
 
 const CommentFlex = styled('div')`
   display: flex;
@@ -1353,7 +1408,7 @@ const StackedButton = styled('div', {
 const ChatBubbleButton = styled('button')`
   background: none;
   border: none;
-  padding: 0 16px;
+  padding: 0 4px 0 16px;
   margin: 0;
   cursor: pointer;
   display: inline-flex;
@@ -1394,21 +1449,26 @@ const VisibilityDivider = styled('div')`
   flex-shrink: 0;
 `;
 
-// Section 3: "For candidate staff" — always in the row, never wraps, pushed to the right
+const CandidateStaffDivider = styled('div')`
+  width: 1.5px;
+  height: 32px;
+  background: #e0e0e0;
+  margin-left: 12px;
+  margin-right: 12px;
+  flex-shrink: 0;
+`;
+
+// Section 3: "For candidate staff"
 const CandidateStaffWrapper = styled('div', {
   shouldForwardProp: (prop) => prop !== 'visibilityRowOpen',
 })(({ visibilityRowOpen }) => (`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding-left: 12px;
-  border-left: 1.5px solid #e0e0e0;
   font-size: 13px;
   white-space: nowrap;
-  flex-shrink: 0;
-  @media (max-width: 991px) {
-    margin-left: ${visibilityRowOpen ? '16px' : '0'};
-  }
+  flex-shrink: 1;
+  min-width: 0;
 `));
 
 const CandidateStaffWrapperMobile = styled('div', {
@@ -1433,6 +1493,14 @@ const CandidateStaffLink = styled('a')`
   color: #0075b8;
   text-decoration: none;
   line-height: 1.3;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  font-size: inherit;
+  font-family: inherit;
+  text-align: left;
   &:hover { text-decoration: underline; }
 `;
 

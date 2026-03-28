@@ -36,11 +36,13 @@ const STARTING_NUMBER_OF_NAMES_TO_DISPLAY = 2;
 class PositionRowListCompressed extends Component {
   constructor (props) {
     super(props);
+    this.photosRef = React.createRef();
     this.state = {
       filteredPositionList: [],
       // filteredPositionListLength: 0,
       numberOfImagesToDisplay: STARTING_NUMBER_OF_IMAGES_TO_DISPLAY,
       numberOfNamesToDisplay: STARTING_NUMBER_OF_NAMES_TO_DISPLAY,
+      showRightGradient: false,
       // supportPositionListLength: 0,
     };
   }
@@ -65,6 +67,7 @@ class PositionRowListCompressed extends Component {
     this.measureStoreListener = MeasureStore.addListener(this.onFriendStoreChange.bind(this));
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
+    this.checkPhotosOverflow();
     const callApis = firstInstance || firstInstance === undefined;
 
     if (callApis) {    // Avoid 200 or more apiCalming calls
@@ -77,6 +80,12 @@ class PositionRowListCompressed extends Component {
       if (apiCalming('friendListsAll', 30000)) {
         FriendActions.friendListsAll();
       }
+    }
+  }
+
+  componentDidUpdate (prevProps, prevState) {
+    if (prevState.filteredPositionList !== this.state.filteredPositionList) {
+      this.checkPhotosOverflow();
     }
   }
 
@@ -328,6 +337,24 @@ class PositionRowListCompressed extends Component {
     }
   };
 
+  checkPhotosOverflow = () => {
+    const el = this.photosRef.current;
+    if (el) {
+      this.setState({
+        showRightGradient: el.scrollWidth > el.clientWidth,
+      });
+    }
+  };
+
+  handlePhotosScroll = () => {
+    const el = this.photosRef.current;
+    if (el) {
+      this.setState({
+        showRightGradient: el.scrollLeft + el.clientWidth < el.scrollWidth - 1,
+      });
+    }
+  };
+
   orderByCurrentFriendsFirst = (firstGuide, secondGuide) => {
     const secondGuideIsFromFriend = secondGuide && secondGuide.currentFriend === true ? 1 : 0;
     const firstGuideIsFromFriend = firstGuide && firstGuide.currentFriend === true ? 1 : 0;
@@ -355,6 +382,7 @@ class PositionRowListCompressed extends Component {
     } = this.props;
     const {
       filteredPositionList, numberOfImagesToDisplay, numberOfNamesToDisplay,
+      showRightGradient,
       // supportPositionListLength,
     } = this.state;
     renderLog('PositionRowListCompressed');  // Set LOG_RENDER_EVENTS to log all renders
@@ -488,8 +516,11 @@ class PositionRowListCompressed extends Component {
             )}
           </CandidateEndorsementCount>
           <CandidateEndorsementPhotos
+            ref={this.photosRef}
             id={`candidateEndorsementPhotos${showOppose && 'Oppose'}${showSupport && 'Support'}`}
             onClick={() => this.onClickShowOrganizationModalWithPositions(`candidateEndorsementPhotos${showOppose && 'Oppose'}${showSupport && 'Support'}`)}
+            onScroll={this.handlePhotosScroll}
+            showRightGradient={showRightGradient}
           >
             {filteredPositionList.map((onePosition) => {
               // console.log('numberOfPositionItemsDisplayed:', numberOfPositionItemsDisplayed, ', numberOfImagesToDisplay:', numberOfImagesToDisplay);
@@ -599,12 +630,27 @@ const CandidateEndorsementCount = styled('div')`
   width: 100%;
 `;
 
-const CandidateEndorsementPhotos = styled('div')`
+const CandidateEndorsementPhotos = styled('div', {
+  shouldForwardProp: (prop) => !['showRightGradient'].includes(prop),
+})(({ showRightGradient }) => (`
   align-items: center;
   cursor: pointer;
   display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
   width: 100%;
-`;
+
+  ${showRightGradient ? '-webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 85%, rgba(0, 0, 0, 0));' : ''}
+  ${showRightGradient ? 'mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 85%, rgba(0, 0, 0, 0));' : ''}
+
+  /* Hide scrollbar */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  ::-webkit-scrollbar {
+    display: none;
+  }
+`));
 
 const CandidateEndorsementText = styled('div')`
   color: #1073d4;

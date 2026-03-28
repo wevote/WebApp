@@ -138,5 +138,5 @@ const Wrapper = styled('div')`
   gap: 2px;
   font-size: 13px;
   line-height: 1.4;
-  padding-right: 12px;
+  padding-right: 0;
 `;

@@ -90,14 +90,25 @@ export default function SupporterTracking ({ selectedPoliticianWeVoteId = null }
     },
 
     // A couple non-joined for tabs
+    // {
+    //   id: "v_6",
+    //   status: "invited",
+    //   name: "Alex Doe",
+    //   endorsed: false,
+    //   friendsInvited: 0,
+    //   messageSentCount: 0,
+    //   publicOpinion: "",
+    // },
     {
       id: "v_6",
       status: "invited",
+      joined: true,
       name: "Alex Doe",
-      endorsed: false,
-      friendsInvited: 0,
-      messageSentCount: 0,
-      publicOpinion: "",
+      emailInviteSent: true,
+      textInviteSent: true,
+      inviteLinkClicked: true,
+      friendsInvited: 2,
+
     },
     {
       id: "v_7",
@@ -107,6 +118,26 @@ export default function SupporterTracking ({ selectedPoliticianWeVoteId = null }
       friendsInvited: 0,
       messageSentCount: 0,
       publicOpinion: "",
+    },
+    {
+      id: "v_8",
+      status: "invited",
+      joined: false,
+      name: "Alex Doe",
+      emailInviteSent: false,
+      textInviteSent: true,
+      inviteLinkClicked: false,
+      friendsInvited: 0,
+    },
+    {
+      id: "v_9",
+      status: "invited",
+      joined: false,
+      name: "SuperLong FirstNameLastName",
+      emailInviteSent: true,
+      textInviteSent: false,
+      inviteLinkClicked: false,
+      friendsInvited: 0,
     },
   ];
 

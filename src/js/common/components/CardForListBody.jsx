@@ -174,7 +174,7 @@ function CardForListBody (props) {
                       )}
                     </SvgImageWrapper>
                     {politicalParty ? (
-                      <PoliticalPartyDiv>{politicalParty}</PoliticalPartyDiv>
+                      <PoliticalPartyDiv>{highlightSearchText(politicalParty, searchText)}</PoliticalPartyDiv>
                     ) : (
                       <Skeleton variant="text" width={80} height={14} />
                     )}
