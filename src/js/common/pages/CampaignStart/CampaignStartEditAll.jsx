@@ -9,17 +9,43 @@ import commonMuiStyles from '../../components/Style/commonMuiStyles';
 import { OuterWrapper, PageWrapper } from '../../components/Style/stepDisplayStyles';
 import historyPush from '../../utils/historyPush';
 import { renderLog } from '../../utils/logging';
-import AddCandidateInputField from '../../components/CampaignStart/AddPoliticianInputField';
 import CampaignDescriptionInputField from '../../components/CampaignStart/CampaignDescriptionInputField';
 import CampaignPhotoUpload from '../../components/CampaignStart/CampaignPhotoUpload';
 import CampaignTitleInputField from '../../components/CampaignStart/CampaignTitleInputField';
-import EditPoliticianList from '../../components/CampaignStart/EditPoliticianList';
 import { BlockedReason } from '../../components/Style/CampaignIndicatorStyles';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import CampaignStartStore from '../../stores/CampaignStartStore';
 import CampaignStore from '../../stores/CampaignStore';
 import { getCampaignXValuesFromIdentifiers, retrieveCampaignXFromIdentifiersIfNeeded } from '../../utils/campaignUtils';
 import initializejQuery from '../../utils/initializejQuery';
+
+function EditPoliticianList ({ campaignXWeVoteId, editExistingCampaign }) {
+  return (
+    <span style={{ display: 'none' }}>
+      {campaignXWeVoteId}
+      {editExistingCampaign ? '1' : '0'}
+    </span>
+  );
+}
+
+EditPoliticianList.propTypes = {
+  campaignXWeVoteId: PropTypes.string,
+  editExistingCampaign: PropTypes.bool,
+};
+
+function AddCandidateInputField ({ campaignXWeVoteId, editExistingCampaign }) {
+  return (
+    <span style={{ display: 'none' }}>
+      {campaignXWeVoteId}
+      {editExistingCampaign ? '1' : '0'}
+    </span>
+  );
+}
+
+AddCandidateInputField.propTypes = {
+  campaignXWeVoteId: PropTypes.string,
+  editExistingCampaign: PropTypes.bool,
+};
 
 const CampaignRetrieveController = React.lazy(() => import(/* webpackChunkName: 'CampaignRetrieveController' */ '../../components/Campaign/CampaignRetrieveController'));
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../components/Widgets/OpenExternalWebSite'));
