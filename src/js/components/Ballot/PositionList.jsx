@@ -315,7 +315,7 @@ class PositionList extends Component {
     const incomingPositionListLength = (incomingPositionList) ? incomingPositionList.length : 0;
     const complexFiltersTurnedOn = false;
     return (
-      <div>
+      <PositionListWrapper>
         {complexFiltersTurnedOn && (
           <FilterWrapper>
             { showTitle && (
@@ -373,6 +373,7 @@ class PositionList extends Component {
                 return foundInStringItem;
               });
             }
+            // eslint-disable-next-line no-unused-vars
             const searchResultsNode = (isSearching && searchTextString && onePosition.foundInArray && onePosition.foundInArray.length) ? (
               <SearchResultsFoundInExplanation>
                 {searchTextString}
@@ -428,7 +429,7 @@ class PositionList extends Component {
             <CircularProgress />
           </LoadingItemsWheel>
         )}
-      </div>
+      </PositionListWrapper>
     );
   }
 }
@@ -455,6 +456,9 @@ const LoadingItemsWheel = styled('div')`
   align-items: center;
   justify-content: center;
   min-height: 70px;
+`;
+
+const PositionListWrapper = styled('div')`
 `;
 
 const PositionListForBallotItemWrapper = styled('div')`

@@ -11,6 +11,7 @@ import stringContains from '../../common/utils/stringContains';
 import BallotActions from '../../actions/BallotActions';
 import VoterActions from '../../actions/VoterActions';
 import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
+import PoliticianStore from '../../common/stores/PoliticianStore';
 
 const AdviserIntroModal = React.lazy(() => import(/* webpackChunkName: 'AdviserIntroModal' */ '../CompleteYourProfile/AdviserIntroModal'));
 const AskFriendsModal = React.lazy(() => import(/* webpackChunkName: 'AskFriendsModal' */ '../Friends/AskFriendsModal'));
@@ -24,6 +25,7 @@ const ShareModal = React.lazy(() => import(/* webpackChunkName: 'ShareModal' */ 
 const SignInModal = React.lazy(() => import(/* webpackChunkName: 'SignInModal' */ '../../common/components/SignIn/SignInModal'));
 const ValuesIntroModal = React.lazy(() => import(/* webpackChunkName: 'ValuesIntroModal' */ '../CompleteYourProfile/ValuesIntroModal'));
 const VerifyWithEmailModal = React.lazy(() => import(/* webpackChunkName: 'VerifyWithEmailModal' */ '../../common/components/Politician/UpdatePoliticianInformation/VerifyWithEmailModal'));
+const VerifyOtherWaysModal = React.lazy(() => import(/* webpackChunkName: 'VerifyOtherWaysModal' */ '../../common/components/Politician/UpdatePoliticianInformation/VerifyOtherWaysModal'));
 const VoterPositionEntryAndDisplay = React.lazy(() => import(/* webpackChunkName: 'VoterPositionEntryAndDisplay' */ '../PositionItem/VoterPositionEntryAndDisplay'));
 
 
@@ -36,6 +38,7 @@ class HeaderBarModals extends Component {
       showChooseOrOpposeIntroModal: false,
       showBallotChoicesAndSettingsModal: false,
       showClaimProfileWithEmailModal: false,
+      showClaimProfileWithOtherWaysModal: false,
       showEditPositionModal: false,
       showFirstPositionIntroModal: false,
       showSelectBallotModal: false,
@@ -80,6 +83,7 @@ class HeaderBarModals extends Component {
       showBallotChoicesAndSettingsModal: AppObservableStore.showBallotChoicesAndSettingsModal(),
       showChooseOrOpposeIntroModal: AppObservableStore.showChooseOrOpposeIntroModal(),
       showClaimProfileWithEmailModal: AppObservableStore.getShowClaimProfileWithEmailModal(),
+      showClaimProfileWithOtherWaysModal: AppObservableStore.getShowClaimProfileWithOtherWaysModal(),
       showEditPositionModal: AppObservableStore.getShowEditPositionModal(),
       showFirstPositionIntroModal: AppObservableStore.showFirstPositionIntroModal(),
       showPaidAccountUpgradeModal,
@@ -112,6 +116,10 @@ class HeaderBarModals extends Component {
 
   closeClaimProfileWithEmailModal = () => {
     AppObservableStore.setShowClaimProfileWithEmailModal(false);
+  };
+
+  closeClaimProfileWithOtherWaysModal = () => {
+    AppObservableStore.setShowClaimProfileWithOtherWaysModal(false);
   };
 
   closeEditPositionModal = () => {
@@ -198,7 +206,7 @@ class HeaderBarModals extends Component {
     const { classes } = this.props;
     const {
       showAdviserIntroModal, showAskFriendsModal, showBallotChoicesAndSettingsModal, showChooseOrOpposeIntroModal,
-      showClaimProfileWithEmailModal, showEditPositionModal, showFirstPositionIntroModal,
+      showClaimProfileWithEmailModal, showClaimProfileWithOtherWaysModal, showEditPositionModal, showFirstPositionIntroModal,
       showPaidAccountUpgradeModal, showPersonalizedScoreIntroModal,
       showSelectBallotModal, showSelectBallotModalEditAddress,
       showShareModal, showSignInModal, showValuesIntroModal, showImageUploadModal,
@@ -375,6 +383,21 @@ class HeaderBarModals extends Component {
         </Suspense>
       );
     }
+    let claimProfileWithOtherWaysModal = <></>;
+    if (showClaimProfileWithOtherWaysModal) {
+      let politicianName = PoliticianStore.getPoliticianName(AppObservableStore.getPoliticianWeVoteIdBeingViewed());
+      if (politicianName === '') {
+        politicianName = undefined;
+      }
+      claimProfileWithOtherWaysModal = (
+        <Suspense fallback={<></>}>
+          <VerifyOtherWaysModal
+            politicianName={politicianName}
+            politicianWeVoteId={AppObservableStore.getPoliticianWeVoteIdBeingViewed()}
+          />
+        </Suspense>
+      );
+    }
     return (
       <>
         {advisorIntroModalHtml}
@@ -382,6 +405,7 @@ class HeaderBarModals extends Component {
         {ballotChoicesAndSettingsModal}
         {chooseOrOpposeIntroModal}
         {claimProfileWithEmailModal}
+        {claimProfileWithOtherWaysModal}
         {editPositionModal}
         {firstPositionIntroModal}
         {imageUploadModal}
