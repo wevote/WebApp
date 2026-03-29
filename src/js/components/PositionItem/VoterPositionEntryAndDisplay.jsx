@@ -1,5 +1,5 @@
 import { Edit as EditIcon } from '@mui/icons-material';
-import { Button, FormControlLabel, InputBase, Radio, RadioGroup, Tooltip } from '@mui/material';
+import { Box, Button, FormControlLabel, InputBase, Radio, RadioGroup, Skeleton, Tooltip } from '@mui/material';
 import { styled as muiStyled, withStyles } from '@mui/styles';
 import PropTypes from 'prop-types';
 import React, { Suspense, useCallback, useEffect, useRef, useState } from 'react';
@@ -30,7 +30,9 @@ import VoterPositionEditNameAndPhotoModal from './VoterPositionEditNameAndPhotoM
 
 const ItemActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemActionBar' */ '../Widgets/ItemActionBar/ItemActionBar'));
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../../common/components/Widgets/ReadMore'));
-function VoterPositionEntryAndDisplay ({ classes, externalUniqueId, politicianWeVoteId }) {
+
+
+function VoterPositionEntryAndDisplay ({ classes, externalUniqueId, onModalClose, openEditModalOnLoad, politicianWeVoteId }) {
   const politicianWeVoteIdRef = useRef(politicianWeVoteId);
   // console.log('VoterPositionEntryAndDisplay, politicianWeVoteId:', politicianWeVoteId, ', politicianWeVoteIdRef.current:', politicianWeVoteIdRef.current);
   const { allCachedPoliticians } = PoliticianStore.getState();
@@ -95,6 +97,7 @@ function VoterPositionEntryAndDisplay ({ classes, externalUniqueId, politicianWe
 
     if (showEditModal) {
       restoreStylesAfterCordovaKeyboard('VoterPositionEntryAndDisplay');
+      if (onModalClose) onModalClose();
     }
   };
 
@@ -115,7 +118,7 @@ function VoterPositionEntryAndDisplay ({ classes, externalUniqueId, politicianWe
     if (!showNegativeModal && !showingNegativeFeedbackModal && showNegativeModalFromMessage) {
       setShowNegativeModal(true);
     }
-  }, []);
+  }, [showNegativeModal]);
 
   useEffect(() => {
     const appStateSubscription = messageService.getMessage().subscribe(onAppObservableStoreChange);
@@ -234,6 +237,12 @@ function VoterPositionEntryAndDisplay ({ classes, externalUniqueId, politicianWe
       voterStoreListener.remove();
     };
   }, []);
+
+  useEffect(() => {
+    if (openEditModalOnLoad) {
+      setShowEditModal(true);
+    }
+  }, [openEditModalOnLoad]);
 
   const onFocusInput = () => {
     prepareForCordovaKeyboard('VoterPositionEntryAndDisplay');
@@ -367,7 +376,12 @@ function VoterPositionEntryAndDisplay ({ classes, externalUniqueId, politicianWe
           )}
           {!supportOrOpposeStanceExists && (
           <ItemActionBarContainer>
-            <Suspense fallback={<></>}>
+            <Suspense fallback={(
+              <Box display="flex" gap={1}>
+                <Skeleton variant="rounded" width={100} height={36} sx={{ borderRadius: 2 }} />
+                <Skeleton variant="rounded" width={100} height={36} sx={{ borderRadius: 2 }} />
+              </Box>
+            )}>
               <ItemActionBar
                 ballotItemWeVoteId=""
                 // ballotItemDisplayName={oneCandidate.ballot_item_display_name}
@@ -558,18 +572,22 @@ function VoterPositionEntryAndDisplay ({ classes, externalUniqueId, politicianWe
           toggleModal={handleEditModalClose}
         />
       )}
-      <VoterPositionBlock
-        onClick={openEditModal}
-        politicianWeVoteId={politicianWeVoteId}
-        voterPhotoUrlMedium={voterPhotoUrlMedium}
-        voterName={voterName}
-      />
+      {!openEditModalOnLoad && (
+        <VoterPositionBlock
+          onClick={openEditModal}
+          politicianWeVoteId={politicianWeVoteId}
+          voterPhotoUrlMedium={voterPhotoUrlMedium}
+          voterName={voterName}
+        />
+      )}
     </>
   );
 }
 VoterPositionEntryAndDisplay.propTypes = {
   classes: PropTypes.object,
   externalUniqueId: PropTypes.string,
+  onModalClose: PropTypes.func,
+  openEditModalOnLoad: PropTypes.bool,
   politicianWeVoteId: PropTypes.string,
 };
 

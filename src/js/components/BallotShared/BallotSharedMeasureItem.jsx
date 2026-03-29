@@ -15,6 +15,8 @@ import SupportStore from '../../stores/SupportStore';
 import { VoteAgainstMeasure, VoteForMeasure } from '../Style/BallotStyles';
 import { stripHtmlFromString } from '../../common/utils/textFormat';
 
+const MEASURE_TEXT_MAX_LENGTH = 175;
+
 class BallotSharedMeasureItem extends Component {
   constructor (props) {
     super(props);
@@ -206,7 +208,7 @@ class BallotSharedMeasureItem extends Component {
             <InfoDetailsRow className="u-cursor--pointer" onClick={this.onClickShowOrganizationModalWithBallotItemInfoAndPositions}>
               <SubTitle>{measureSubtitleCapitalized}</SubTitle>
               <MeasureText>
-                {shortenText(measureText, 200)}
+                {shortenText(measureText, MEASURE_TEXT_MAX_LENGTH)}
                 &nbsp;
                 <span className="u-link-color">
                   more

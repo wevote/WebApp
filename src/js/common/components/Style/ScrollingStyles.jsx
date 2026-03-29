@@ -9,6 +9,7 @@ export const BallotHorizontallyScrollingContainer = styled('div', {
   white-space: nowrap;
   border-bottom: 1px solid #ddd;
   padding-top: 6px;
+  padding-bottom: 4px;
   min-height: ${hasEndorsements ? '235px' : ''};
   transition: box-shadow 0.2s ease, background-color 0.3s ease; /* Smooth transition for shadow and background color */
 
@@ -48,7 +49,7 @@ export const BallotScrollingInnerWrapper = styled('div')`
 `;
 
 export const BallotScrollingOuterWrapper = styled('div')`
-  height: 100%;
+  min-height: 0;
   min-width: 0;
   width: 100%;
 `;

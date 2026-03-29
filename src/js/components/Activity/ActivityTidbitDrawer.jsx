@@ -5,11 +5,14 @@ import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
+import TagManager from 'react-gtm-module';
 import historyPush from '../../common/utils/historyPush';
 import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import ActivityStore from '../../stores/ActivityStore';
+import VoterStore from '../../stores/VoterStore';
 import { cordovaDrawerTopMargin } from '../../utils/cordovaOffsets';
+import { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
 
 const ActivityCommentAdd = React.lazy(() => import(/* webpackChunkName: 'ActivityCommentAdd' */ './ActivityCommentAdd'));
 const ActivityTidbitAddReaction = React.lazy(() => import(/* webpackChunkName: 'ActivityTidbitAddReaction' */ './ActivityTidbitAddReaction'));
@@ -30,6 +33,7 @@ class ActivityTidbitDrawer extends Component {
   componentDidMount () {
     this.onActivityStoreChange();
     this.activityStoreListener = ActivityStore.addListener(this.onActivityStoreChange.bind(this));
+    this.sendGTMDataLayer();
   }
 
   componentWillUnmount () {
@@ -64,6 +68,16 @@ class ActivityTidbitDrawer extends Component {
     if (typeof pathname !== 'undefined' && pathname && pathname.startsWith('/news/a/')) {
       historyPush(`/news#${activityTidbitWeVoteId}`);
     }
+  };
+
+  sendGTMDataLayer = () => {
+    const dataLayerObject = {
+      event: 'action',
+      actionDetails: { actionType: 'open' },
+      userDetails: VoterStore.getAnalyticsUserDetails(),
+      pageDetails: getPageDetails(null, 'ActivityTidbitDrawer'),
+    };
+    TagManager.dataLayer({ dataLayer: dataLayerObject });
   };
 
   render () {

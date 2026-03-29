@@ -22,6 +22,7 @@ function VerifyWithEmailModal ({ closeVerifyWithEmailModal, politicianName, poli
   const [passkeyReceivedButNotAccepted, setPasskeyReceivedButNotAccepted] = useState(false);
   const [passkeyVerified, setPasskeyVerified] = useState(false); // switch to toggle PasskeyVerifiedModal
   const politicianWeVoteIdRef = useRef(politicianWeVoteId);
+  const [bothEmailAndPasskey, setBothEmailAndPasskey] = useState(false);
   const [showVerifyModal, setShowVerifyModal] = useState(false);
   const [verificationEmails, setVerificationEmails] = useState([]);
   const [verificationEmailsDictionary, setVerificationEmailsDictionary] = useState([]);
@@ -88,6 +89,9 @@ function VerifyWithEmailModal ({ closeVerifyWithEmailModal, politicianName, poli
     const emailValuesArray = newPublicEmailsDictionary.map((obj) => Object.values(obj)[0]);
     setVerificationEmailsDictionary(newPublicEmailsDictionary);
     setVerificationEmails(emailValuesArray);
+    if ((newPublicEmailsDictionary && newPublicEmailsDictionary.length > 0)) {
+      setBothEmailAndPasskey(true);
+    }
   };
 
   const onCampaignStoreChange = useCallback(() => {
@@ -214,47 +218,94 @@ function VerifyWithEmailModal ({ closeVerifyWithEmailModal, politicianName, poli
   }, []);
 
   const dialogTitleJsx = (
-    <VerifyWithEmailModalHeader>
-      To edit this profile, verify as a candidate
-    </VerifyWithEmailModalHeader>
+    <VerifyWithEmailHeaderContainer>
+      <VerifyWithEmailModalHeader>
+        <span className="u-show-mobile">
+          Verify as candidate
+        </span>
+        <span className="u-show-desktop-tablet">
+          To edit this profile, verify as a candidate
+        </span>
+      </VerifyWithEmailModalHeader>
+      {bothEmailAndPasskey && (
+        <VerifyWithEmailModalBody>
+          Verify with the email you have access to
+          <br />
+          <VerifyWithEmailModalStrong>OR</VerifyWithEmailModalStrong>
+          {' '}
+          enter the passkey you received
+        </VerifyWithEmailModalBody>
+      )}
+      <OtherWaysVerifyButtonFull
+          onClick={() => handleOpenVerifyOtherWaysModal('openVerifyOtherWaysModal')}
+      >
+        See other ways to verify / request passkey
+      </OtherWaysVerifyButtonFull>
+    </VerifyWithEmailHeaderContainer>
   );
 
   const textFieldJsx = (
     <VerifyWithEmailModalContainer>
       {(verificationEmailsDictionary && verificationEmailsDictionary.length > 0) && (
-        <>
+        <BubbleSection>
           <VerifyWithEmailSubheader>
             Verify with email
           </VerifyWithEmailSubheader>
-          <VerifyWithEmailModalSubtitle>
-            We found these emails associated with
-            {' '}
-            {politicianName}
-            . Select one where you can receive a verification email.
-            {' '}
-            Some emails partially hidden for your safety.
-          </VerifyWithEmailModalSubtitle>
-          {verificationEmailsDictionary.map((emailDict) => {
-            // console.log('verificationEmailsDictionary.map emailDict: ', emailDict);
-            const [submitValue, displayEmail] = Object.entries(emailDict)[0];
-            return (
-              <EmailSelection
-                htmlFor={`public-email-option-${submitValue}`}
-                key={submitValue}
-                onChange={onChangeRadio}
-                onClick={() => handleEmailOptionClick(submitValue, displayEmail)}
-              >
-                <EmailRadioInput
-                  id={`public-email-option-${submitValue}`}
-                  type="radio"
-                  checked={emailOptionSelectedValue === submitValue}
+          {verificationEmailsDictionary
+            .filter((emailDict, index, self) => {
+              const [submitValue] = Object.entries(emailDict)[0];
+              return index === self.findIndex((dict) => {
+                const [value] = Object.entries(dict)[0];
+                return value === submitValue;
+              });
+            })
+            .map((emailDict) => {
+              // console.log('verificationEmailsDictionary.map emailDict: ', emailDict);
+              const [submitValue, displayEmail] = Object.entries(emailDict)[0];
+              const foundPublicly = !displayEmail.includes('*');
+              return (
+                <EmailSelection
+                  htmlFor={`public-email-option-${submitValue}`}
+                  key={`selectEmail-${submitValue}`}
                   onChange={onChangeRadio}
-                  value={submitValue}
-                />
-                {displayEmail}
-              </EmailSelection>
-            );
-          })}
+                  onClick={() => handleEmailOptionClick(submitValue, displayEmail)}
+                >
+                  <EmailSelectionInnerWrapper>
+                    <EmailRadioInput
+                      id={`public-email-option-${submitValue}`}
+                      type="radio"
+                      checked={emailOptionSelectedValue === submitValue}
+                      onChange={onChangeRadio}
+                      value={submitValue}
+                    />
+                    <EmailSelectionRightBlock>
+                      <div>
+                        {displayEmail}
+                      </div>
+                      {foundPublicly ? (
+                        <EmailVisibility>
+                          <span className="u-show-mobile">
+                            Publicly available
+                          </span>
+                          <span className="u-show-desktop-tablet">
+                            Found in publicly available materials
+                          </span>
+                        </EmailVisibility>
+                      ) : (
+                        <EmailVisibility>
+                          <span className="u-show-mobile">
+                            Not visible to the public
+                          </span>
+                          <span className="u-show-desktop-tablet">
+                            Not public but linked to this account
+                          </span>
+                        </EmailVisibility>
+                      )}
+                    </EmailSelectionRightBlock>
+                  </EmailSelectionInnerWrapper>
+                </EmailSelection>
+              );
+            })}
           <VerificationButton
             disabled={emailOptionSelectedValue === null}
             id="sendVerificationCode"
@@ -262,36 +313,38 @@ function VerifyWithEmailModal ({ closeVerifyWithEmailModal, politicianName, poli
           >
             Send verification code
           </VerificationButton>
-          <SectionDivider />
-        </>
+        </BubbleSection>
       )}
-      <VerifyWithEmailSubheader>
-        Verify with passkey received through candidate contact form or social media
-      </VerifyWithEmailSubheader>
-      <PasskeyVerificationInput
-        type="text"
-        placeholder="Passkey"
-        value={passkey}
-        onChange={handlePasskeyChange}
-      />
-      <VerificationButton
-        disabled={!passkey}
-        id="submitPasskey"
-        onClick={() => submitPasskeyForVerification('submitPasskey')}
-      >
-        Verify with passkey
-      </VerificationButton>
-      {passkeyReceivedButNotAccepted && (
-        <PasskeyReceivedButNotAcceptedMessage>
-          Passkey was not accepted. Please double-check the passkey and try again. If it still doesn&apos;t work, please email us at support@wevote.us.
-        </PasskeyReceivedButNotAcceptedMessage>
+      {bothEmailAndPasskey && (
+        <OrDivider>
+          <OrDividerLine />
+          <OrDividerText>OR</OrDividerText>
+          <OrDividerLine />
+        </OrDivider>
       )}
-      <SectionDivider />
-      <OtherWaysVerifyButtonFull
-        onClick={() => handleOpenVerifyOtherWaysModal('openVerifyOtherWaysModal')}
-      >
-        See other ways to verify
-      </OtherWaysVerifyButtonFull>
+      <BubbleSection>
+        <VerifyWithEmailSubheader>
+          Verify with passkey received through candidate contact form or social media
+        </VerifyWithEmailSubheader>
+        <PasskeyVerificationInput
+          type="text"
+          placeholder="Passkey"
+          value={passkey}
+          onChange={handlePasskeyChange}
+        />
+        <VerificationButton
+          disabled={!passkey}
+          id="submitPasskey"
+          onClick={() => submitPasskeyForVerification('submitPasskey')}
+        >
+          Verify with passkey
+        </VerificationButton>
+        {passkeyReceivedButNotAccepted && (
+          <PasskeyReceivedButNotAcceptedMessage>
+            Passkey was not accepted. Please double-check the passkey and try again. If it still doesn&apos;t work, please email us at support@wevote.us.
+          </PasskeyReceivedButNotAcceptedMessage>
+        )}
+      </BubbleSection>
       <PasskeyVerifiedModal
         closePasskeyVerifiedModal={closeFromPasskeyVerifiedModal}
         passkeyVerified={passkeyVerified}
@@ -327,10 +380,34 @@ VerifyWithEmailModal.propTypes = {
   politicianWeVoteId: PropTypes.string,
 };
 
+const EmailVisibility = styled('div')`
+  color: ${DesignTokenColors.neutral300};
+  font-style: italic;
+`;
+
 const VerifyWithEmailModalHeader = styled('h1')`
   font-size: 18px;
   margin: 0;
   padding: 0;
+`;
+
+const VerifyWithEmailModalBody = styled('div')`
+  font-size: 14px;
+  font-weight: 400;
+  padding: 0 0 0 0;
+  color: ${DesignTokenColors.neutralUI600};
+  text-align: center;
+  margin-top: 32px;
+`;
+
+const VerifyWithEmailModalStrong = styled('strong')`
+  font-weight: 700;
+  color: black;
+`;
+
+const VerifyWithEmailHeaderContainer = styled('div')`
+  margin-bottom: 8px;
+  width: 100%;
 `;
 
 const VerifyWithEmailModalContainer = styled('div')`
@@ -348,7 +425,7 @@ const OtherWaysVerifyButtonAnchor = styled('button')`
   border: none;
   color: ${DesignTokenColors.primary600};
   font-size: 14px;
-  margin: 0;
+  margin: 8px 0 0 0;
   padding: 0;
 `;
 
@@ -356,19 +433,23 @@ const VerifyWithEmailSubheader = styled('h2')`
   font-size: 14px;
   font-weight: 700;
   margin-top: 18px;
+  text-align: center;
+  margin-bottom: 18px;
 `;
 
-const EmailSelection = styled('label')`
+const EmailSelection = styled('div')`
   align-items: center;
+  background-color: ${DesignTokenColors.whiteUI};
   border: 1px solid ${DesignTokenColors.neutralUI100};
   border-radius: 8px;
   box-shadow: ${standardBoxShadow()};
   cursor: pointer;
   display: flex;
   font-size: 14px;
-  height: 60px;
+  height: 70px;
+  justify-content: start;
   margin: 4px 0 8px 0;
-  padding: 0 16px;
+  padding: 8px 10px 0 10px;
 
   &:hover {
     background-color: ${DesignTokenColors.neutral50};
@@ -376,8 +457,27 @@ const EmailSelection = styled('label')`
   }
 `;
 
+const EmailSelectionInnerWrapper = styled('div')`
+  align-items: start;
+  justify-content: start;
+  display: flex;
+`;
+
+const EmailSelectionRightBlock = styled('label')`
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+
+  & > div {
+    word-break: break-all;
+    overflow-wrap: break-word;
+  }
+`;
+
 const EmailRadioInput = styled('input')`
   margin-right: 6px;
+  margin-top: 3px;
 `;
 
 const VerificationButton = styled('button')`
@@ -391,18 +491,33 @@ const VerificationButton = styled('button')`
   width: 100%;
 
   &:disabled {
-    color: ${DesignTokenColors.neutralUI600};
+    color: ${DesignTokenColors.neutralUI700};
     background-color: ${DesignTokenColors.neutralUI100};
+    border: 1px solid ${DesignTokenColors.neutralUI300};
   }
 `;
 
-const SectionDivider = styled('hr')`
-  border-top: 1px solid ${DesignTokenColors.neutralUI100};
+const OrDivider = styled('div')`
+  align-items: center;
+  display: flex;
+  margin: 16px 0;
   width: 100%;
 `;
 
+const OrDividerLine = styled('div')`
+  border-top: 1px solid ${DesignTokenColors.neutralUI300};
+  flex: 1;
+`;
+
+const OrDividerText = styled('span')`
+  color: black;
+  font-size: 14px;
+  padding: 0 12px;
+  font-weight: 700;
+`;
+
 const PasskeyVerificationInput = styled('input')`
-  border: 1px solid ${DesignTokenColors.neutralUI100};
+  border: 1px solid ${DesignTokenColors.neutralUI200};
   border-radius: 4px;
   font-size: 14px;
   height: 40px;
@@ -420,8 +535,15 @@ const PasskeyReceivedButNotAcceptedMessage = styled('div')`
 `;
 
 const OtherWaysVerifyButtonFull = styled(OtherWaysVerifyButtonAnchor)`
-  font-weight: 700;
+  font-weight: 400;
   width: 100%;
+`;
+
+const BubbleSection = styled('div')`
+  background-color: ${DesignTokenColors.neutral100};
+  border-radius: 12px;
+  margin-bottom: 16px;
+  padding: 8px;
 `;
 
 export default VerifyWithEmailModal;

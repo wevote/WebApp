@@ -1,5 +1,6 @@
 import React, { Suspense, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import Skeleton from '@mui/material/Skeleton';
 import styled from 'styled-components';
 import CampaignActions from '../../../actions/CampaignActions';
 import VoterGuideActions from '../../../../actions/VoterGuideActions';
@@ -36,9 +37,11 @@ function HeartFavoriteToggleLoader ({ campaignXWeVoteId, organizationWeVoteId })
     }
   }, [organizationWeVoteId]);
 
+  const heartToggleSkeleton = <Skeleton variant="rounded" width={60} height={36} sx={{ borderRadius: 2 }} />;
+
   return (
     <HeartFavoriteToggleLoaderContainer>
-      <Suspense fallback={<></>}>
+      <Suspense fallback={heartToggleSkeleton}>
         <Suspense fallback={<HeartFavoriteToggleBase />}>
           <HeartFavoriteToggleLive campaignXWeVoteId={campaignXWeVoteId} organizationWeVoteId={organizationWeVoteId} />
         </Suspense>

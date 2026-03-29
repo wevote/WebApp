@@ -7,8 +7,6 @@ import { Button, IconButton } from '@mui/material';
 import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
 import { styled as muiStyled } from '@mui/material/styles';
 import DesignTokenColors from '../../Style/DesignTokenColors';
-import VerifyOtherWaysModal from './VerifyOtherWaysModal';
-import VerifyWithEmailModal from './VerifyWithEmailModal';
 import AppObservableStore from '../../../stores/AppObservableStore';
 import useVoterCanEditPolitician from '../../../../hooks/useVoterCanEditPolitician';
 import lookupPageNameAndPageTypeDict, { getPageDetails } from '../../../../utils/lookupPageNameAndPageTypeDict';
@@ -117,14 +115,6 @@ function UpdatePoliticianInformation ({ politicianName, politicianWeVoteId }) {
               <ExpandMoreRounded />
             </CandidateStaffAccessButton>
           )}
-          <VerifyOtherWaysModal
-            politicianName={politicianName}
-            politicianWeVoteId={politicianWeVoteId}
-          />
-          <VerifyWithEmailModal
-            politicianName={politicianName}
-            politicianWeVoteId={politicianWeVoteId}
-          />
         </>
       )}
     </UpdateInformationWrapper>

@@ -103,8 +103,13 @@ function VerifyOtherWaysModal ({ politicianName, politicianWeVoteId }) {
 
   const dialogTitleJsx = (
     <VerifyOtherWaysModalHeader>
-      {formSubmitted ? 'Verification form submitted' :
-        `Verify you're authorized to edit ${politicianName}'s profile`}
+      <span className="u-show-mobile">
+        {formSubmitted ? 'Verification form submitted' : "Verify you're authorized to edit"}
+      </span>
+      <span className="u-show-desktop-tablet">
+        {formSubmitted ? 'Verification form submitted' :
+          `Verify you're authorized to edit${politicianName ? ` ${politicianName}'s profile` : ''}`}
+      </span>
     </VerifyOtherWaysModalHeader>
   );
 
