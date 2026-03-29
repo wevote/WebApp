@@ -216,10 +216,19 @@ function VerifyWithEmailModal ({ closeVerifyWithEmailModal, politicianName, poli
   const dialogTitleJsx = (
     <VerifyWithEmailHeaderContainer>
       <VerifyWithEmailModalHeader>
-        To edit this profile, verify as a candidate
+        <span className="u-show-mobile">
+          Verify as candidate
+        </span>
+        <span className="u-show-desktop-tablet">
+          To edit this profile, verify as a candidate
+        </span>
       </VerifyWithEmailModalHeader>
       <VerifyWithEmailModalBody>
-        Verify  with the email you have access to <VerifyWithEmailModalStrong>OR</VerifyWithEmailModalStrong> enter the passkey you received
+        Verify with the email you have access to
+        <br />
+        <VerifyWithEmailModalStrong>OR</VerifyWithEmailModalStrong>
+        {' '}
+        enter the passkey you received
       </VerifyWithEmailModalBody>
       <OtherWaysVerifyButtonFull
           onClick={() => handleOpenVerifyOtherWaysModal('openVerifyOtherWaysModal')}
@@ -236,27 +245,61 @@ function VerifyWithEmailModal ({ closeVerifyWithEmailModal, politicianName, poli
           <VerifyWithEmailSubheader>
             Verify with email
           </VerifyWithEmailSubheader>
-          {verificationEmailsDictionary.map((emailDict) => {
-            // console.log('verificationEmailsDictionary.map emailDict: ', emailDict);
-            const [submitValue, displayEmail] = Object.entries(emailDict)[0];
-            return (
-              <EmailSelection
-                htmlFor={`public-email-option-${submitValue}`}
-                key={submitValue}
-                onChange={onChangeRadio}
-                onClick={() => handleEmailOptionClick(submitValue, displayEmail)}
-              >
-                <EmailRadioInput
-                  id={`public-email-option-${submitValue}`}
-                  type="radio"
-                  checked={emailOptionSelectedValue === submitValue}
+          {verificationEmailsDictionary
+            .filter((emailDict, index, self) => {
+              const [submitValue] = Object.entries(emailDict)[0];
+              return index === self.findIndex((dict) => {
+                const [value] = Object.entries(dict)[0];
+                return value === submitValue;
+              });
+            })
+            .map((emailDict) => {
+              // console.log('verificationEmailsDictionary.map emailDict: ', emailDict);
+              const [submitValue, displayEmail] = Object.entries(emailDict)[0];
+              const foundPublicly = !displayEmail.includes('*');
+              return (
+                <EmailSelection
+                  htmlFor={`public-email-option-${submitValue}`}
+                  key={`selectEmail-${submitValue}`}
                   onChange={onChangeRadio}
-                  value={submitValue}
-                />
-                {displayEmail}
-              </EmailSelection>
-            );
-          })}
+                  onClick={() => handleEmailOptionClick(submitValue, displayEmail)}
+                >
+                  <EmailSelectionInnerWrapper>
+                    <EmailRadioInput
+                      id={`public-email-option-${submitValue}`}
+                      type="radio"
+                      checked={emailOptionSelectedValue === submitValue}
+                      onChange={onChangeRadio}
+                      value={submitValue}
+                    />
+                    <EmailSelectionRightBlock>
+                      <div>
+                        {displayEmail}
+                      </div>
+                      {foundPublicly ? (
+                        <EmailVisibility>
+                          <span className="u-show-mobile">
+                            Publicly available
+                          </span>
+                          <span className="u-show-desktop-tablet">
+                            Found in publicly available materials
+                          </span>
+                        </EmailVisibility>
+                      ) : (
+                        <EmailVisibility>
+                          <span className="u-show-mobile">
+                            Not visible to the public
+                          </span>
+                          <span className="u-show-desktop-tablet">
+                            Not public but linked to this account
+                          </span>
+                        </EmailVisibility>
+                      )}
+                    </EmailSelectionRightBlock>
+                  </EmailSelectionInnerWrapper>
+                </EmailSelection>
+              );
+            })}
           <VerificationButton
             disabled={emailOptionSelectedValue === null}
             id="sendVerificationCode"
@@ -329,20 +372,24 @@ VerifyWithEmailModal.propTypes = {
   politicianWeVoteId: PropTypes.string,
 };
 
+const EmailVisibility = styled('div')`
+  color: ${DesignTokenColors.neutral300};
+  font-style: italic;
+`;
+
 const VerifyWithEmailModalHeader = styled('h1')`
   font-size: 18px;
   margin: 0;
   padding: 0;
 `;
 
-const VerifyWithEmailModalBody = styled('p')`
+const VerifyWithEmailModalBody = styled('div')`
   font-size: 14px;
+  font-weight: 400;
   padding: 0 0 0 0;
   color: ${DesignTokenColors.neutralUI600};
   text-align: center;
   margin-top: 32px;
-  margin-left: 140px;
-  margin-right: 140px;
 `;
 
 const VerifyWithEmailModalStrong = styled('strong')`
@@ -352,6 +399,7 @@ const VerifyWithEmailModalStrong = styled('strong')`
 
 const VerifyWithEmailHeaderContainer = styled('div')`
   margin-bottom: 8px;
+  width: 100%;
 `;
 
 const VerifyWithEmailModalContainer = styled('div')`
@@ -369,7 +417,7 @@ const OtherWaysVerifyButtonAnchor = styled('button')`
   border: none;
   color: ${DesignTokenColors.primary600};
   font-size: 14px;
-  margin: 0;
+  margin: 8px 0 0 0;
   padding: 0;
 `;
 
@@ -381,17 +429,19 @@ const VerifyWithEmailSubheader = styled('h2')`
   margin-bottom: 18px;
 `;
 
-const EmailSelection = styled('label')`
+const EmailSelection = styled('div')`
   align-items: center;
+  background-color: ${DesignTokenColors.whiteUI};
   border: 1px solid ${DesignTokenColors.neutralUI100};
   border-radius: 8px;
   box-shadow: ${standardBoxShadow()};
   cursor: pointer;
   display: flex;
   font-size: 14px;
-  height: 60px;
+  height: 70px;
+  justify-content: start;
   margin: 4px 0 8px 0;
-  padding: 0 16px;
+  padding: 8px 10px 0 10px;
 
   &:hover {
     background-color: ${DesignTokenColors.neutral50};
@@ -399,8 +449,27 @@ const EmailSelection = styled('label')`
   }
 `;
 
+const EmailSelectionInnerWrapper = styled('div')`
+  align-items: start;
+  justify-content: start;
+  display: flex;
+`;
+
+const EmailSelectionRightBlock = styled('label')`
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+
+  & > div {
+    word-break: break-all;
+    overflow-wrap: break-word;
+  }
+`;
+
 const EmailRadioInput = styled('input')`
   margin-right: 6px;
+  margin-top: 3px;
 `;
 
 const VerificationButton = styled('button')`
@@ -414,14 +483,10 @@ const VerificationButton = styled('button')`
   width: 100%;
 
   &:disabled {
-    color: ${DesignTokenColors.neutralUI600};
-    background-color: ${DesignTokenColors.neutralUI100};
+    color: ${DesignTokenColors.neutralUI700};
+    background-color: ${DesignTokenColors.neutralUI200};
+    border: 1px solid ${DesignTokenColors.neutralUI300};
   }
-`;
-
-const SectionDivider = styled('hr')`
-  border-top: 1px solid ${DesignTokenColors.neutralUI100};
-  width: 100%;
 `;
 
 const OrDivider = styled('div')`
@@ -432,7 +497,7 @@ const OrDivider = styled('div')`
 `;
 
 const OrDividerLine = styled('div')`
-  border-top: 1px solid ${DesignTokenColors.neutralUI100};
+  border-top: 1px solid ${DesignTokenColors.neutralUI300};
   flex: 1;
 `;
 
@@ -444,7 +509,7 @@ const OrDividerText = styled('span')`
 `;
 
 const PasskeyVerificationInput = styled('input')`
-  border: 1px solid ${DesignTokenColors.neutralUI100};
+  border: 1px solid ${DesignTokenColors.neutralUI200};
   border-radius: 4px;
   font-size: 14px;
   height: 40px;
@@ -462,15 +527,15 @@ const PasskeyReceivedButNotAcceptedMessage = styled('div')`
 `;
 
 const OtherWaysVerifyButtonFull = styled(OtherWaysVerifyButtonAnchor)`
-  font-weight: 700;
+  font-weight: 400;
   width: 100%;
 `;
 
 const BubbleSection = styled('div')`
-  background-color: ${DesignTokenColors.neutral50};
+  background-color: ${DesignTokenColors.neutral100};
   border-radius: 12px;
   margin-bottom: 16px;
-  padding: 16px;
+  padding: 8px;
 `;
 
 export default VerifyWithEmailModal;
