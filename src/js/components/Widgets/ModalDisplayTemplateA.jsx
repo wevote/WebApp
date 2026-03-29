@@ -180,6 +180,7 @@ const DialogTitleInnerWrapper = styled('div')`
   justify-content: space-between;
   align-items: flex-start;
   min-height: 28px;
+  width: 100%;
 `;
 
 export const PostSaveButton = styled('div')`
@@ -215,6 +216,7 @@ const Title = styled('div')`
   margin: 0;
   text-align: left;
   padding-left: 16px;
+  width: 100%;
 `;
 
 export const VoterAvatarImg = styled('img')`

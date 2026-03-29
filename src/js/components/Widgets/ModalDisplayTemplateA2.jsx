@@ -230,6 +230,7 @@ const DialogTitleInnerWrapper = styled('div')`
   padding-right: 48px;
   padding-left: 0;
   padding-top: 8px;
+  width: 100%;
 `;
 
 /* Inset when unscrolled, full-width when scrolled */
@@ -245,6 +246,7 @@ const Title = styled('div')`
   margin: 0;
   text-align: left;
   padding-left: 4px;
+  width: 100%;
 `;
 
 export default withTheme(withStyles(templateA2Styles)(ModalDisplayTemplateA2));

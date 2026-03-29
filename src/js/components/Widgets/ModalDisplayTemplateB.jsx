@@ -10,6 +10,7 @@ import { isAndroid, isCordova } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 
+
 class ModalDisplayTemplateB extends Component {
   constructor (props) {
     super(props);
@@ -260,6 +261,7 @@ const DialogTitleInnerWrapper = styled('div')`
   display: flex;
   justify-content: space-between;
   min-height: 56px;
+  width: 100%;
 
   @media ${(props) => props.theme.breakpoints.down('sm')} {
     min-height: 48px;
@@ -300,6 +302,7 @@ const Title = styled('div')`
   margin: 16px 0;
   text-align: left;
   padding-left: 20px;
+  width: 100%;
 
   @media (max-width: 600px) {
     font-size: 16px;
