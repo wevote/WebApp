@@ -22,6 +22,7 @@ function VerifyWithEmailModal ({ closeVerifyWithEmailModal, politicianName, poli
   const [passkeyReceivedButNotAccepted, setPasskeyReceivedButNotAccepted] = useState(false);
   const [passkeyVerified, setPasskeyVerified] = useState(false); // switch to toggle PasskeyVerifiedModal
   const politicianWeVoteIdRef = useRef(politicianWeVoteId);
+  const [bothEmailAndPasskey, setBothEmailAndPasskey] = useState(false);
   const [showVerifyModal, setShowVerifyModal] = useState(false);
   const [verificationEmails, setVerificationEmails] = useState([]);
   const [verificationEmailsDictionary, setVerificationEmailsDictionary] = useState([]);
@@ -88,6 +89,9 @@ function VerifyWithEmailModal ({ closeVerifyWithEmailModal, politicianName, poli
     const emailValuesArray = newPublicEmailsDictionary.map((obj) => Object.values(obj)[0]);
     setVerificationEmailsDictionary(newPublicEmailsDictionary);
     setVerificationEmails(emailValuesArray);
+    if ((newPublicEmailsDictionary && newPublicEmailsDictionary.length > 0)) {
+      setBothEmailAndPasskey(true);
+    }
   };
 
   const onCampaignStoreChange = useCallback(() => {
@@ -223,17 +227,19 @@ function VerifyWithEmailModal ({ closeVerifyWithEmailModal, politicianName, poli
           To edit this profile, verify as a candidate
         </span>
       </VerifyWithEmailModalHeader>
-      <VerifyWithEmailModalBody>
-        Verify with the email you have access to
-        <br />
-        <VerifyWithEmailModalStrong>OR</VerifyWithEmailModalStrong>
-        {' '}
-        enter the passkey you received
-      </VerifyWithEmailModalBody>
+      {bothEmailAndPasskey && (
+        <VerifyWithEmailModalBody>
+          Verify with the email you have access to
+          <br />
+          <VerifyWithEmailModalStrong>OR</VerifyWithEmailModalStrong>
+          {' '}
+          enter the passkey you received
+        </VerifyWithEmailModalBody>
+      )}
       <OtherWaysVerifyButtonFull
           onClick={() => handleOpenVerifyOtherWaysModal('openVerifyOtherWaysModal')}
       >
-        See other ways to verify
+        See other ways to verify / request passkey
       </OtherWaysVerifyButtonFull>
     </VerifyWithEmailHeaderContainer>
   );
@@ -309,11 +315,13 @@ function VerifyWithEmailModal ({ closeVerifyWithEmailModal, politicianName, poli
           </VerificationButton>
         </BubbleSection>
       )}
-      <OrDivider>
-        <OrDividerLine />
-        <OrDividerText>OR</OrDividerText>
-        <OrDividerLine />
-      </OrDivider>
+      {bothEmailAndPasskey && (
+        <OrDivider>
+          <OrDividerLine />
+          <OrDividerText>OR</OrDividerText>
+          <OrDividerLine />
+        </OrDivider>
+      )}
       <BubbleSection>
         <VerifyWithEmailSubheader>
           Verify with passkey received through candidate contact form or social media
@@ -484,7 +492,7 @@ const VerificationButton = styled('button')`
 
   &:disabled {
     color: ${DesignTokenColors.neutralUI700};
-    background-color: ${DesignTokenColors.neutralUI200};
+    background-color: ${DesignTokenColors.neutralUI100};
     border: 1px solid ${DesignTokenColors.neutralUI300};
   }
 `;

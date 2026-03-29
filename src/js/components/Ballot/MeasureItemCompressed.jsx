@@ -25,6 +25,8 @@ import PositionRowListCompressed from './PositionRowListCompressed';
 const ItemActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemActionBar' */ '../Widgets/ItemActionBar/ItemActionBar'));
 const PositionStatementModal = React.lazy(() => import(/* webpackChunkName: 'PositionStatementModal' */ '../Widgets/PositionStatementModal'));
 
+const MEASURE_TEXT_MAX_LENGTH = 175;
+
 class MeasureItemCompressed extends Component {
   constructor (props) {
     super(props);
@@ -307,7 +309,7 @@ class MeasureItemCompressed extends Component {
             >
               <SubTitle>{measureSubtitleCapitalized}</SubTitle>
               <MeasureText>
-                {shortenText(measureText, 200)}
+                {shortenText(measureText, MEASURE_TEXT_MAX_LENGTH)}
                 &nbsp;
                 <span className="u-link-color">more</span>
               </MeasureText>
@@ -535,7 +537,7 @@ const ItemActionBarOutsideWrapper = styled('div')`
 const MeasureDescriptionColumn = styled('div')`
   border-right: 1px solid #ddd;
   flex: 0 0 200px;
-  padding-right: 16px;
+  padding: 0 16px 8px 8px;
 `;
 
 const MeasureItemCompressedWrapper = styled('div')`

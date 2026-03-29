@@ -30,6 +30,8 @@ import VoterPositionEditNameAndPhotoModal from './VoterPositionEditNameAndPhotoM
 
 const ItemActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemActionBar' */ '../Widgets/ItemActionBar/ItemActionBar'));
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../../common/components/Widgets/ReadMore'));
+
+
 function VoterPositionEntryAndDisplay ({ classes, externalUniqueId, onModalClose, openEditModalOnLoad, politicianWeVoteId }) {
   const politicianWeVoteIdRef = useRef(politicianWeVoteId);
   // console.log('VoterPositionEntryAndDisplay, politicianWeVoteId:', politicianWeVoteId, ', politicianWeVoteIdRef.current:', politicianWeVoteIdRef.current);
