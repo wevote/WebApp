@@ -68,6 +68,9 @@ const Donate = React.lazy(() => import(/* webpackChunkName: 'Donate' */ './js/pa
 const DonateFaq = React.lazy(() => import(/* webpackChunkName: 'DonateFaq' */ './js/pages/More/DonateFaq'));
 const Drawers = React.lazy(() => import(/* webpackChunkName: 'Drawers' */ './js/components/Drawers/Drawers'));
 const ElectionReminder = React.lazy(() => import(/* webpackChunkName: 'ElectionReminder' */ './js/pages/More/ElectionReminder'));
+const ElectionFinderForElection = React.lazy(() => import(/* webpackChunkName: 'ElectionFinderForElection' */ './js/pages/ElectionFinder/ElectionFinderForElection'));
+const ElectionFinderForState = React.lazy(() => import(/* webpackChunkName: 'ElectionFinderForState' */ './js/pages/ElectionFinder/ElectionFinderForState'));
+const ElectionFinderHome = React.lazy(() => import(/* webpackChunkName: 'ElectionFinderHome' */ './js/pages/ElectionFinder/ElectionFinderHome'));
 const Elections = React.lazy(() => import(/* webpackChunkName: 'Elections' */ './js/pages/More/Elections'));
 const ExtensionSignIn = React.lazy(() => import(/* webpackChunkName: 'ExtensionSignIn' */ './js/pages/More/ExtensionSignIn'));
 const FAQ = React.lazy(() => import(/* webpackChunkName: 'FAQ' */ './js/pages/More/FAQ'));
@@ -594,6 +597,9 @@ class App extends Component {
                   <Route path="/more/credits" component={Credits} />
                   <Route path="/more/donate" component={(isNotWeVoteMarketingSite || this.localIsAndroid()) ? ReadyRedirect : Donate} />
                   <Route path="/more/donatefaq" component={(isNotWeVoteMarketingSite || this.localIsAndroid()) ? ReadyRedirect : DonateFaq} />
+                  <Route path="/election-finder/:stateCode/:electionId" component={ElectionFinderForElection} />
+                  <Route path="/election-finder/:stateCode" component={ElectionFinderForState} />
+                  <Route path="/election-finder" exact component={ElectionFinderHome} />
                   <Route path="/more/elections" component={Elections} />
                   <Route path="/more/extensionsignin" component={ExtensionSignIn} />
                   <Route path="/more/facebooklandingprocess" component={FacebookLandingProcess} />

@@ -580,6 +580,15 @@ class HeaderBar extends Component {
                     </StyledMoreMenuItem>
 
                     <StyledMoreMenuItem
+                      id="HeaderBarElectionFinder"
+                      selected={normalizedHrefPage() === 'election-finder'}
+                      onClick={this.navTo('/election-finder', 99)}
+                      disableRipple
+                    >
+                      Election Finder
+                    </StyledMoreMenuItem>
+
+                    <StyledMoreMenuItem
                       id="HeaderBarFriends"
                       selected={normalizedHrefPage() === 'friends'}
                       onClick={this.navTo('/friends', 99)}
