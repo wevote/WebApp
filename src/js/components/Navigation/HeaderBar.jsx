@@ -4,6 +4,7 @@ import { IconButton, Menu, MenuItem, Tab, Tabs } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterActions from '../../actions/VoterActions';
@@ -163,31 +164,7 @@ class HeaderBar extends Component {
 
   handleTabChange = (newValue) => {
     this.setState({ tabsValue: newValue }, () => {
-    // console.log('handleTabChange ', newValue);
-    /* if (newValue === 4) {  // Check if the tab change is for challenges
-      const currentPathname = window.location.pathname;
-      const destinationPathname = '/challenges';
-      const currentPage = lookupPageNameAndPageTypeDict(currentPathname);
-      const destinationPage = lookupPageNameAndPageTypeDict(destinationPathname);
-
-      TagManager.dataLayer({
-        dataLayer: {
-          event: 'landing',
-          pageDetails: {
-            pageName: currentPage.pageName,
-            pageType: currentPage.pageType,
-            pathname: currentPathname,
-          },
-          destinationDetails: {
-            pageName: destinationPage.pageName,
-            pageType: destinationPage.pageType,
-            pathname: destinationPathname,
-            stateCode: VoterStore.getVoterStateCode(),
-          },
-          userDetails: VoterStore.getAnalyticsUserDetails(),
-        },
-      });
-    } */
+      // console.log('handleTabChange ', newValue);
       this.customHighlightSelector(newValue);
     });
   };
@@ -276,18 +253,23 @@ class HeaderBar extends Component {
   getTabsValueFromPage = () => {
     const page = normalizedHrefPage();
     switch (page) {
-      case 'ballot': return 1;
+      case 'ballot':
+        return 1;
       case 'candidatelist':
-      case 'politicianpage': return 2;
+      case 'politicianpage':
+        return 2;
+      case 'donate':
+      case 'more/donate':
+        return 3;
       case 'friends':
       case 'news':
       case 'challenges':
-      case 'donate':
-      case 'more/donate': return 5;
       case 'more':
+      case 'more/faq':
       case 'managecandidates':
       case 'no-candidates-claimed':
-      default: return false;
+      default:
+        return 4;
     }
   };
 
@@ -298,12 +280,6 @@ class HeaderBar extends Component {
   openHowItWorksModal = () => {
     // console.log('Opening modal');
     AppObservableStore.setShowHowItWorksModal(true);
-  };
-
-  navTo = (path, highlightValue = 99) => () => {
-    this.setState({ moreAnchorEl: null });
-    this.handleTabChange(highlightValue);
-    historyPush(path);
   };
 
   transitionToYourVoterGuide () {
@@ -370,38 +346,27 @@ class HeaderBar extends Component {
         case 'candidatelist': // displays same page as "cs"
           candidates.css(highlight);
           break;
-        case 'challenges':
-          more.css(highlight);
-          break;
         case 'donate':
         case 'more/donate':
           donate.css(highlight);
           break;
+        case 'challenges':
+        case 'more/faq':
         case 'friends':
-          more.css(highlight);
-          break;
         case 'managecandidates':
-          more.css(highlight);
-          break;
         case 'no-candidates-claimed':
-          more.css(highlight);
-          break;
         case 'more':
-          more.css(highlight);
-          break;
         case 'news':
+        case 'squads':
           more.css(highlight);
           break;
         case 'politicianpage':
           candidates.css(highlight);
           break;
-        case 'squads':
-          more.css(highlight);
-          break;
         default:
           break;
       }
-      if (currentValue === 99) {
+      if (currentValue === 4) {
         more.css(highlight);
       }
     } else {
@@ -410,9 +375,6 @@ class HeaderBar extends Component {
         this.customHighlightSelector(currentValue);
       }, 500);
     }
-
-    // If user clicked the “More” tab explicitly, force that highlight
-    // if (currentValue === 99) more.css(highlight);
 
     this.setState({ page: normalizedHrefPage() });
   }
@@ -468,15 +430,19 @@ class HeaderBar extends Component {
     // console.log('HeaderBar isMobileScreenSize(), isTablet()', isMobileScreenSize(), isTablet());
     let donateValue;
     let donateVisible;
+    let moreValue;
     if (inPrivateLabelMode) {
       donateValue = 3;
       donateVisible = false;
+      moreValue = 3;
     } else {
       donateValue = 3;
       donateVisible = true;
+      moreValue = 4;
     }
 
     // console.log('HeaderBar !isMobileScreenSize()', displayMenu);
+    // console.log('normalizedHrefPage():', normalizedHrefPage());
     return (
       <HeaderBarWrapper
         scrolledDown={scrolledDown}
@@ -537,7 +503,6 @@ class HeaderBar extends Component {
                       />
                     )}
                     <Tab
-                      value={3}
                       tabIndex={0}
                       classes={isWebApp() ? { root: classes.tabRoot, selected: classes.tabSelected } : { root: classes.tabRootMore, selected: classes.tabSelected }}
                       id="moreTabHeaderBar"
@@ -547,6 +512,7 @@ class HeaderBar extends Component {
                           <ExpandMoreIcon className={classes.tabMoreIcon} />
                         </span>
                       )}
+                      value={moreValue}
                       onClick={(event) => {
                         this.setState({ moreAnchorEl: event.currentTarget });
                         this.handleTabChange(3); // Highlight the tab
@@ -572,6 +538,20 @@ class HeaderBar extends Component {
                     transformOrigin={{ vertical: 'top', horizontal: 'left' }}
                   >
                     <StyledMoreMenuItem
+                      id="HeaderBarAbout"
+                      component={Link}
+                      onClick={() => {
+                        this.setState({ moreAnchorEl: null });
+                        this.handleTabChange(4);
+                      }}
+                      selected={normalizedHrefPage() === 'more/faq'}
+                      to="/more/faq"
+                      disableRipple
+                    >
+                      About &amp; FAQ
+                    </StyledMoreMenuItem>
+
+                    <StyledMoreMenuItem
                       id="howItWorksTabHeaderBar"
                       onClick={this.openHowItWorksModal}
                       disableRipple
@@ -579,19 +559,45 @@ class HeaderBar extends Component {
                       How it works
                     </StyledMoreMenuItem>
 
+                    {nextReleaseFeaturesEnabled && (
+                      <StyledMoreMenuItem
+                        id="HeaderBarCandidatesManaging"
+                        component={Link}
+                        onClick={() => {
+                          this.setState({ moreAnchorEl: null });
+                          this.handleTabChange(4);
+                        }}
+                        selected={['manage', 'managecandidates', 'no-candidates-claimed'].includes(normalizedHrefPage())}
+                        to="/no-candidates-claimed"
+                        disableRipple
+                      >
+                        Candidates I&apos;m managing
+                      </StyledMoreMenuItem>
+                    )}
+
                     <StyledMoreMenuItem
                       id="HeaderBarElectionFinder"
+                      component={Link}
+                      onClick={() => {
+                        this.setState({ moreAnchorEl: null });
+                        this.handleTabChange(4);
+                      }}
                       selected={normalizedHrefPage() === 'election-finder'}
-                      onClick={this.navTo('/election-finder', 99)}
+                      to="/election-finder"
                       disableRipple
                     >
-                      Election Finder
+                      Election finder
                     </StyledMoreMenuItem>
 
                     <StyledMoreMenuItem
                       id="HeaderBarFriends"
+                      component={Link}
+                      onClick={() => {
+                        this.setState({ moreAnchorEl: null });
+                        this.handleTabChange(4);
+                      }}
+                      to="/friends"
                       selected={normalizedHrefPage() === 'friends'}
-                      onClick={this.navTo('/friends', 99)}
                       disableRipple
                     >
                       Friends
@@ -600,8 +606,13 @@ class HeaderBar extends Component {
                     {isWebApp() && (  // Not in Cordova release 2.7.4 phones or tablets
                       <StyledMoreMenuItem
                         id="discussTabHeaderBar"
+                        component={Link}
+                        onClick={() => {
+                          this.setState({ moreAnchorEl: null });
+                          this.handleTabChange(4);
+                        }}
                         selected={normalizedHrefPage() === 'news'}
-                        onClick={this.navTo('/news', 99)}
+                        to="/news"
                         disableRipple
                       >
                         Discuss
@@ -610,20 +621,14 @@ class HeaderBar extends Component {
 
                     {nextReleaseFeaturesEnabled && (
                       <StyledMoreMenuItem
-                        id="HeaderBarCandidatesManaging"
-                        selected={['manage', 'managecandidates', 'no-candidates-claimed'].includes(normalizedHrefPage())}
-                        onClick={this.navTo('/no-candidates-claimed', 99)}
-                        disableRipple
-                      >
-                        Candidates I&apos;m managing
-                      </StyledMoreMenuItem>
-                    )}
-
-                    {nextReleaseFeaturesEnabled && (
-                      <StyledMoreMenuItem
                         id="HeaderBarChallenges"
+                        component={Link}
+                        onClick={() => {
+                          this.setState({ moreAnchorEl: null });
+                          this.handleTabChange(4);
+                        }}
                         selected={normalizedHrefPage() === 'challenges'}
-                        onClick={this.navTo('/challenges', 99)}
+                        to="/challenges"
                         disableRipple
                       >
                         Challenges
@@ -632,17 +637,15 @@ class HeaderBar extends Component {
 
                     {isWebApp() && (      // Not in Cordova release 2.7.4 phones or tablets
                       <Suspense fallback={<></>}>
-                        <StyledMoreMenuItem>
-                          <OpenExternalWebSite
-                            linkIdAttribute="footerLinkBlog"
-                            url="https://blog.wevote.us/"
-                            target="_blank"
-                            body={(
-                              <span>Blog</span>
-                            )}
-                            className={classes.tabRootBlog}
-                          />
-                        </StyledMoreMenuItem>
+                        <OpenExternalWebSite
+                          linkIdAttribute="footerLinkBlog"
+                          url="https://blog.wevote.us/"
+                          target="_blank"
+                          body={(
+                            <StyledMoreMenuItem>Blog</StyledMoreMenuItem>
+                          )}
+                          className={classes.tabRootBlog}
+                        />
                       </Suspense>
                     )}
                   </StyledMoreMenu>
