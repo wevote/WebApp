@@ -1,114 +1,157 @@
 import { ContentCopy, FileDownloadOutlined, InfoOutlined, Launch, Search, Close, ExpandMore, UnfoldMore, UnfoldLess } from '@mui/icons-material';
 import { IconButton, InputAdornment, Tooltip } from '@mui/material';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { withRouter } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+import BallotActions from '../../actions/BallotActions';
+import CandidateActions from '../../actions/CandidateActions';
+import ElectionActions from '../../actions/ElectionActions';
+import SupportActions from '../../actions/SupportActions';
 import { renderLog } from '../../common/utils/logging';
 import { convertStateCodeToStateText } from '../../common/utils/addressFunctions';
-import { ElectionNameH1, ElectionStateLabel } from '../../components/Style/BallotTitleHeaderStyles';
+import AppObservableStore from '../../common/stores/AppObservableStore';
+import { ElectionStateLabel } from '../../components/Style/BallotTitleHeaderStyles';
 import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
-import historyPush from '../../common/utils/historyPush';
-import { getElectionDetail, getElectionsForState } from './electionFinderData';
+import BallotStore from '../../stores/BallotStore';
+import CandidateStore from '../../stores/CandidateStore';
+import ElectionStore from '../../stores/ElectionStore';
+import ElectionFinderHeader from './ElectionFinderHeader';
 import {
-  ActionChip, ActionDivider, Breadcrumb, BreadcrumbLink,
-  CandidateActions, CandidateInfo, CandidateList, CandidateName,
+  ActionChip, ActionDivider,
+  CandidateActions as CandidateActionsRow, CandidateInfo, CandidateList, CandidateName,
   CandidateParty, CandidateRow, DetailTitle, ElectionTitleRow,
   ExpandCollapseButton, ExpandCollapseRow, ExpandMoreIcon,
   HighlightSpan, InlineSearchField, NoResults,
   OfficeHeader, OfficeHeaderActions, OfficeHeaderLeft, OfficeName,
-  OfficeSection, SearchIconButton, SearchResultCount,
+  OfficeSection, SearchIconButton, SearchResultCount, ShowMoreButton,
 } from './electionFinderStyles';
 
-class ElectionFinderForElection extends Component {
-  constructor (props) {
-    super(props);
-    this.state = {
-      selectedStateCode: '',
-      selectedElectionId: '',
-      expandedOffices: {},
-      electionSearchOpen: false,
-      electionSearchText: '',
-      hoveredCandidateId: '',
-      hoveredOfficeId: '',
-    };
-  }
+function ElectionFinderForElection () {
+  renderLog('ElectionFinderForElection');
+  const params = useParams();
+  const selectedStateCode = (params.stateCode || '').toUpperCase();
+  const selectedElectionId = params.electionId || '';
+  const googleCivicElectionId = parseInt(selectedElectionId, 10) || 0;
+  const stateName = convertStateCodeToStateText(selectedStateCode);
 
-  componentDidMount () {
+  const [ballotItems, setBallotItems] = useState([]);
+  const [ballotLoaded, setBallotLoaded] = useState(false);
+  const [expandedOffices, setExpandedOffices] = useState({});
+  const [visibleCount, setVisibleCount] = useState(50);
+  const [electionSearchOpen, setElectionSearchOpen] = useState(false);
+  const [electionSearchText, setElectionSearchText] = useState('');
+
+  const searchInputRef = useRef(null);
+  const searchDebounceRef = useRef(null);
+  const officesFetchedRef = useRef({});
+  const candidatesFetchedRef = useRef({});
+
+  // Derived from stores — no need to cache in state
+  const electionName = ElectionStore.getElectionName(googleCivicElectionId) || 'Election';
+  const isUpcoming = ElectionStore.isElectionUpcoming(googleCivicElectionId);
+  const electionList = ElectionStore.getElectionList();
+  const stateElections = electionList.filter(
+    (el) => el.state_code_list && el.state_code_list.includes(selectedStateCode),
+  );
+  const upcomingCount = stateElections.filter((el) => el.election_is_upcoming).length;
+  const pastCount = stateElections.filter((el) => !el.election_is_upcoming).length;
+
+  // Mount: subscribe to stores, fetch data
+  useEffect(() => {
     window.scrollTo(0, 0);
-    const { match } = this.props;
-    if (match && match.params) {
-      const { stateCode, electionId } = match.params;
-      if (stateCode) {
-        this.setState({ selectedStateCode: stateCode.toUpperCase() });
-      }
-      if (electionId) {
-        this.setState({ selectedElectionId: electionId });
-      }
+    const electionListener = ElectionStore.addListener(() => {
+      // Force re-render to pick up derived values above
+      setBallotItems((prev) => [...prev]);
+    });
+    const ballotListener = BallotStore.addListener(() => {
+      const allItems = BallotStore.getAllBallotItemsFlattened(googleCivicElectionId);
+      const offices = allItems.filter((item) => item.kind_of_ballot_item === 'OFFICE');
+      const loaded = BallotStore.allBallotItemsHaveBeenRetrievedForElection(googleCivicElectionId, selectedStateCode);
+      setBallotItems(offices);
+      setBallotLoaded(loaded);
+    });
+
+    ElectionActions.electionsRetrieve();
+    SupportActions.voterAllPositionsRetrieve();
+    if (googleCivicElectionId) {
+      BallotActions.allBallotItemsRetrieve(googleCivicElectionId, selectedStateCode);
     }
-  }
 
-  componentDidUpdate (prevProps) {
-    const { match } = this.props;
-    if (match && match.params && prevProps.match && prevProps.match.params) {
-      if (match.params.stateCode !== prevProps.match.params.stateCode ||
-          match.params.electionId !== prevProps.match.params.electionId) {
-        if (match.params.stateCode) {
-          this.setState({ selectedStateCode: match.params.stateCode.toUpperCase() });
-        }
-        if (match.params.electionId) {
-          this.setState({ selectedElectionId: match.params.electionId });
-        }
-      }
+    return () => {
+      electionListener.remove();
+      ballotListener.remove();
+      clearTimeout(searchDebounceRef.current);
+    };
+  }, [googleCivicElectionId, selectedStateCode]);
+
+  const fetchCandidatesForOffice = useCallback((officeWeVoteId) => {
+    if (!officesFetchedRef.current[officeWeVoteId]) {
+      officesFetchedRef.current[officeWeVoteId] = true;
+      CandidateActions.candidatesRetrieve(officeWeVoteId);
     }
-  }
+  }, []);
 
-  onBackToState = () => {
-    const { selectedStateCode } = this.state;
-    historyPush(`/election-finder/${selectedStateCode.toLowerCase()}`);
-  };
-
-  onBackToHome = () => {
-    historyPush('/election-finder');
-  };
-
-  toggleOfficeExpanded = (officeId) => {
-    this.setState((prevState) => {
-      const { electionSearchText, expandedOffices } = prevState;
-      const hasSearchOverride = electionSearchText && !(officeId in expandedOffices);
-      const currentlyExpanded = hasSearchOverride || (expandedOffices[officeId] || false);
-      return {
-        expandedOffices: {
-          ...expandedOffices,
-          [officeId]: !currentlyExpanded,
-        },
-      };
+  const toggleOfficeExpanded = useCallback((officeWeVoteId) => {
+    setExpandedOffices((prev) => {
+      const hasSearchOverride = electionSearchText && !(officeWeVoteId in prev);
+      const currentlyExpanded = hasSearchOverride || (prev[officeWeVoteId] || false);
+      const willExpand = !currentlyExpanded;
+      if (willExpand) {
+        fetchCandidatesForOffice(officeWeVoteId);
+      }
+      return { ...prev, [officeWeVoteId]: willExpand };
     });
-  };
+  }, [electionSearchText, fetchCandidatesForOffice]);
 
-  expandAll = () => {
-    const detail = getElectionDetail(this.state.selectedElectionId);
-    const expandedOffices = {};
-    detail.offices.forEach((office) => {
-      expandedOffices[office.id] = true;
+  const expandAll = useCallback(() => {
+    const expanded = {};
+    ballotItems.slice(0, visibleCount).forEach((office) => {
+      expanded[office.we_vote_id] = true;
+      fetchCandidatesForOffice(office.we_vote_id);
     });
-    this.setState({ expandedOffices });
-  };
+    setExpandedOffices(expanded);
+  }, [ballotItems, visibleCount, fetchCandidatesForOffice]);
 
-  collapseAll = () => {
-    const detail = getElectionDetail(this.state.selectedElectionId);
-    const expandedOffices = {};
-    detail.offices.forEach((office) => {
-      expandedOffices[office.id] = false;
-    });
-    this.setState({ expandedOffices });
-  };
+  const collapseAll = useCallback(() => {
+    setExpandedOffices({});
+  }, []);
 
-  copyToClipboard = (text) => {
+  const copyToClipboard = useCallback((text) => {
     navigator.clipboard.writeText(text);
-  };
+  }, []);
 
-  highlightMatch = (text, query) => {
+  const getCandidatePath = useCallback((candidate) => {
+    const candidateWeVoteId = candidate.we_vote_id;
+    const fullCandidate = CandidateStore.getCandidateByWeVoteId(candidateWeVoteId);
+    const seoPath = fullCandidate.seo_friendly_path || candidate.seo_friendly_path;
+    const politicianId = fullCandidate.politician_we_vote_id || candidate.politician_we_vote_id;
+    if (seoPath) {
+      return `/${seoPath}/-/`;
+    } else if (politicianId) {
+      return `/${politicianId}/p/`;
+    }
+    // Data not available yet — trigger a fetch so it's ready next time
+    if (!candidatesFetchedRef.current[candidateWeVoteId]) {
+      candidatesFetchedRef.current[candidateWeVoteId] = true;
+      CandidateActions.candidateRetrieve(candidateWeVoteId);
+    }
+    return `/candidate/${candidateWeVoteId}`;
+  }, []);
+
+  const onCandidateClick = useCallback((candidate) => {
+    const candidateWeVoteId = candidate.we_vote_id;
+    const fullCandidate = CandidateStore.getCandidateByWeVoteId(candidateWeVoteId);
+    if (!fullCandidate || !fullCandidate.seo_friendly_path) {
+      CandidateActions.candidateRetrieve(candidateWeVoteId);
+    }
+    AppObservableStore.setOrganizationModalBallotItemWeVoteId(candidateWeVoteId);
+    AppObservableStore.setHideOrganizationModalBallotItemInfo(false);
+    AppObservableStore.setHideOrganizationModalPositions(false);
+    AppObservableStore.setShowOrganizationModal(true);
+  }, []);
+
+  const highlightMatch = useCallback((text, query) => {
     if (!query) return text;
     const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     const regex = new RegExp(`(${escaped})`, 'gi');
@@ -119,214 +162,244 @@ class ElectionFinderForElection extends Component {
       }
       return part;
     });
-  };
+  }, []);
 
-  render () {
-    renderLog('ElectionFinderForElection');
-    const {
-      selectedStateCode, selectedElectionId, expandedOffices,
-      electionSearchOpen, electionSearchText,
-      hoveredCandidateId, hoveredOfficeId,
-    } = this.state;
-    const stateName = convertStateCodeToStateText(selectedStateCode);
-    const detail = getElectionDetail(selectedElectionId);
-    const elections = getElectionsForState(selectedStateCode);
-    const upcomingCount = elections.upcoming.length;
-
-    // Filter offices/candidates by search
-    let filteredOffices = detail.offices;
-    if (electionSearchText) {
-      const lowerSearch = electionSearchText.toLowerCase();
-      filteredOffices = detail.offices
-        .map((office) => {
-          const officeNameMatches = office.name.toLowerCase().includes(lowerSearch);
-          const matchingCandidates = office.candidates.filter(
-            (c) => c.name.toLowerCase().includes(lowerSearch) || c.party.toLowerCase().includes(lowerSearch),
-          );
-          if (officeNameMatches || matchingCandidates.length > 0) {
-            return {
-              ...office,
-              candidates: officeNameMatches ? office.candidates : matchingCandidates,
-            };
-          }
-          return null;
-        })
-        .filter(Boolean);
-    }
-
-    const totalResults = electionSearchText ?
-      filteredOffices.reduce((sum, o) => sum + o.candidates.length, 0) :
-      null;
-
-    return (
-      <>
-        <Helmet><title>{`${detail.name} - Election Finder - We Vote`}</title></Helmet>
-        <PageContentContainer>
-          <ElectionNameH1 style={{ paddingBottom: 4 }}>Election Finder</ElectionNameH1>
-          <Breadcrumb>
-            <BreadcrumbLink onClick={this.onBackToHome}>
-              &larr; Election Finder Home
-            </BreadcrumbLink>
-            {' / '}
-            <BreadcrumbLink onClick={this.onBackToState}>
-              {`${stateName} Upcoming Elections (${upcomingCount})`}
-            </BreadcrumbLink>
-            {' / '}
-            <span>{detail.name}</span>
-          </Breadcrumb>
-          <ElectionStateLabel style={{ marginBottom: 12 }}>{stateName}</ElectionStateLabel>
-
-          <ElectionTitleRow>
-            <DetailTitle>{detail.name}</DetailTitle>
-            <Tooltip title="Download">
-              <IconButton size="small"><FileDownloadOutlined fontSize="small" /></IconButton>
-            </Tooltip>
-            {electionSearchOpen ? (
-              <InlineSearchField
-                variant="outlined"
-                size="small"
-                placeholder="Search..."
-                value={electionSearchText}
-                onChange={(e) => this.setState({ electionSearchText: e.target.value })}
-                autoFocus
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start"><Search fontSize="small" /></InputAdornment>
-                  ),
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton size="small" onClick={() => this.setState({ electionSearchOpen: false, electionSearchText: '' })}>
-                        <Close fontSize="small" />
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
-              />
-            ) : (
-              <SearchIconButton onClick={() => this.setState({ electionSearchOpen: true })}>
-                <Search fontSize="small" />
-              </SearchIconButton>
-            )}
-          </ElectionTitleRow>
-
-          <ExpandCollapseRow>
-            <ExpandCollapseButton onClick={this.expandAll}>
-              <UnfoldMore fontSize="small" />
-              {' Expand all'}
-            </ExpandCollapseButton>
-            <ExpandCollapseButton onClick={this.collapseAll}>
-              <UnfoldLess fontSize="small" />
-              {' Collapse all'}
-            </ExpandCollapseButton>
-          </ExpandCollapseRow>
-
-          {totalResults !== null && (
-            <SearchResultCount>
-              {`${totalResults} results for \u201C${electionSearchText}\u201D`}
-            </SearchResultCount>
-          )}
-
-          {filteredOffices.map((office) => {
-            const hasSearchOverride = electionSearchText && !(office.id in expandedOffices);
-            const isExpanded = hasSearchOverride || (expandedOffices[office.id] || false);
-            return (
-              <OfficeSection key={office.id}>
-                <OfficeHeader
-                  onClick={() => this.toggleOfficeExpanded(office.id)}
-                  onMouseEnter={() => this.setState({ hoveredOfficeId: office.id })}
-                  onMouseLeave={() => this.setState({ hoveredOfficeId: '' })}
-                >
-                  <OfficeHeaderLeft>
-                    <ExpandMoreIcon expanded={isExpanded}>
-                      <ExpandMore fontSize="small" />
-                    </ExpandMoreIcon>
-                    <OfficeName>
-                      {electionSearchText ?
-                        this.highlightMatch(office.name, electionSearchText) :
-                        office.name}
-                      {` (${office.candidates.length})`}
-                    </OfficeName>
-                  </OfficeHeaderLeft>
-                  <OfficeHeaderActions visible={hoveredOfficeId === office.id} onClick={(e) => e.stopPropagation()}>
-                    <Tooltip title="Copy office name">
-                      <ActionChip onClick={() => this.copyToClipboard(office.name)}>
-                        <ContentCopy sx={{ fontSize: 14, mr: 0.5 }} />
-                        Copy office name
-                      </ActionChip>
-                    </Tooltip>
-                    <Tooltip title="Copy link">
-                      <ActionChip onClick={() => this.copyToClipboard(window.location.href)}>
-                        <ContentCopy sx={{ fontSize: 14, mr: 0.5 }} />
-                        Copy link
-                      </ActionChip>
-                    </Tooltip>
-                    <ActionDivider />
-                    <Tooltip title="Info">
-                      <IconButton size="small"><InfoOutlined fontSize="small" /></IconButton>
-                    </Tooltip>
-                    <Tooltip title="Open in new tab">
-                      <IconButton size="small"><Launch fontSize="small" /></IconButton>
-                    </Tooltip>
-                  </OfficeHeaderActions>
-                </OfficeHeader>
-                {isExpanded && (
-                  <CandidateList>
-                    {office.candidates.map((candidate) => (
-                      <CandidateRow
-                        key={candidate.id}
-                        onMouseEnter={() => this.setState({ hoveredCandidateId: candidate.id })}
-                        onMouseLeave={() => this.setState({ hoveredCandidateId: '' })}
-                      >
-                        <CandidateInfo>
-                          <CandidateName>
-                            {electionSearchText ?
-                              this.highlightMatch(candidate.name, electionSearchText) :
-                              candidate.name}
-                          </CandidateName>
-                          <CandidateParty>{candidate.party}</CandidateParty>
-                        </CandidateInfo>
-                        <CandidateActions visible={hoveredCandidateId === candidate.id}>
-                          <Tooltip title="Copy candidate name">
-                            <ActionChip onClick={() => this.copyToClipboard(candidate.name)}>
-                              <ContentCopy sx={{ fontSize: 14, mr: 0.5 }} />
-                              Copy candidate name
-                            </ActionChip>
-                          </Tooltip>
-                          <Tooltip title="Copy link">
-                            <ActionChip onClick={() => this.copyToClipboard(window.location.href)}>
-                              <ContentCopy sx={{ fontSize: 14, mr: 0.5 }} />
-                              Copy link
-                            </ActionChip>
-                          </Tooltip>
-                          <ActionDivider />
-                          <Tooltip title="Open in new tab">
-                            <IconButton size="small"><Launch fontSize="small" /></IconButton>
-                          </Tooltip>
-                        </CandidateActions>
-                      </CandidateRow>
-                    ))}
-                  </CandidateList>
-                )}
-              </OfficeSection>
-            );
-          })}
-
-          {filteredOffices.length === 0 && (
-            <NoResults>No results found.</NoResults>
-          )}
-        </PageContentContainer>
-      </>
-    );
+  // Filter offices/candidates by search
+  let filteredOffices = ballotItems;
+  if (electionSearchText) {
+    const lowerSearch = electionSearchText.toLowerCase();
+    filteredOffices = ballotItems
+      .map((office) => {
+        const officeNameMatches = office.ballot_item_display_name.toLowerCase().includes(lowerSearch);
+        const candidates = office.candidate_list || [];
+        const matchingCandidates = candidates.filter(
+          (c) => c.ballot_item_display_name.toLowerCase().includes(lowerSearch) ||
+                 (c.party || '').toLowerCase().includes(lowerSearch),
+        );
+        if (officeNameMatches || matchingCandidates.length > 0) {
+          return {
+            ...office,
+            candidate_list: officeNameMatches ? candidates : matchingCandidates,
+          };
+        }
+        return null;
+      })
+      .filter(Boolean);
   }
+
+  const totalResults = electionSearchText ?
+    filteredOffices.reduce((sum, o) => sum + (o.candidate_list || []).length, 0) :
+    null;
+
+  return (
+    <>
+      <Helmet><title>{`${electionName} - Election Finder - We Vote`}</title></Helmet>
+      <PageContentContainer>
+        <ElectionFinderHeader
+          breadcrumbs={[
+            { label: '\u2190 Election Finder Home', href: '/election-finder' },
+            { label: `${stateName} ${isUpcoming ? 'Upcoming' : 'Past'} Elections (${isUpcoming ? upcomingCount : pastCount})`, href: `/election-finder/${selectedStateCode.toLowerCase()}` },
+            { label: electionName },
+          ]}
+        />
+        <ElectionStateLabel style={{ marginBottom: 12 }}>{stateName}</ElectionStateLabel>
+
+        <ElectionTitleRow>
+          <DetailTitle>{electionName}</DetailTitle>
+          <Tooltip title="Download election data">
+            <IconButton size="small"><FileDownloadOutlined fontSize="small" /></IconButton>
+          </Tooltip>
+          {electionSearchOpen ? (
+            <InlineSearchField
+              variant="outlined"
+              size="small"
+              placeholder="Search..."
+              inputRef={searchInputRef}
+              defaultValue=""
+              onChange={(e) => {
+                clearTimeout(searchDebounceRef.current);
+                searchDebounceRef.current = setTimeout(() => setElectionSearchText(e.target.value), 300);
+              }}
+              autoFocus
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start"><Search fontSize="small" /></InputAdornment>
+                ),
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      size="small"
+                      onClick={() => {
+                        if (searchInputRef.current) searchInputRef.current.value = '';
+                        setElectionSearchOpen(false);
+                        setElectionSearchText('');
+                        setExpandedOffices({});
+                      }}
+                    >
+                      <Close fontSize="small" />
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+          ) : (
+            <SearchIconButton onClick={() => setElectionSearchOpen(true)}>
+              <Search fontSize="small" />
+            </SearchIconButton>
+          )}
+        </ElectionTitleRow>
+
+        <ExpandCollapseRow>
+          <ExpandCollapseButton onClick={expandAll}>
+            <UnfoldMore fontSize="small" />
+            {' Expand all'}
+          </ExpandCollapseButton>
+          <ExpandCollapseButton onClick={collapseAll}>
+            <UnfoldLess fontSize="small" />
+            {' Collapse all'}
+          </ExpandCollapseButton>
+        </ExpandCollapseRow>
+
+        {totalResults !== null && (
+          <SearchResultCount>
+            {`${totalResults} results for \u201C${electionSearchText}\u201D`}
+            <Tooltip title="Download search results">
+              <IconButton size="small" style={{ marginLeft: 8 }}><FileDownloadOutlined fontSize="small" /></IconButton>
+            </Tooltip>
+          </SearchResultCount>
+        )}
+
+        {(electionSearchText ? filteredOffices : filteredOffices.slice(0, visibleCount)).map((office) => {
+          const officeWeVoteId = office.we_vote_id;
+          const hasSearchOverride = electionSearchText && !(officeWeVoteId in expandedOffices);
+          const isExpanded = hasSearchOverride || (expandedOffices[officeWeVoteId] || false);
+          return (
+            <OfficeSectionItem
+              key={officeWeVoteId}
+              office={office}
+              isExpanded={isExpanded}
+              searchText={electionSearchText}
+              onToggle={toggleOfficeExpanded}
+              onCandidateClick={onCandidateClick}
+              getCandidatePath={getCandidatePath}
+              copyToClipboard={copyToClipboard}
+              highlightMatch={highlightMatch}
+            />
+          );
+        })}
+
+        {!electionSearchText && filteredOffices.length > visibleCount && (
+          <ShowMoreButton onClick={() => setVisibleCount((prev) => prev + 50)}>
+            {`Show more (${filteredOffices.length - visibleCount} remaining)`}
+          </ShowMoreButton>
+        )}
+
+        {filteredOffices.length === 0 && (
+          <NoResults>{ballotLoaded ? 'No results found.' : 'Loading...'}</NoResults>
+        )}
+      </PageContentContainer>
+    </>
+  );
 }
 
-ElectionFinderForElection.propTypes = {
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      stateCode: PropTypes.string,
-      electionId: PropTypes.string,
-    }),
-  }),
+// Memoized office section — only re-renders when its own props change
+function OfficeSectionItemInner ({ // eslint-disable-line react/no-multi-comp
+  office, isExpanded, searchText,
+  onToggle, onCandidateClick, getCandidatePath, copyToClipboard, highlightMatch,
+}) {
+  const officeWeVoteId = office.we_vote_id;
+  const officeName = office.ballot_item_display_name;
+  const candidates = office.candidate_list || [];
+  return (
+    <OfficeSection>
+      <OfficeHeader onClick={() => onToggle(officeWeVoteId)}>
+        <OfficeHeaderLeft>
+          <ExpandMoreIcon expanded={isExpanded}>
+            <ExpandMore fontSize="small" />
+          </ExpandMoreIcon>
+          <OfficeName>
+            {searchText ? highlightMatch(officeName, searchText) : officeName}
+            {` (${candidates.length})`}
+          </OfficeName>
+        </OfficeHeaderLeft>
+        <OfficeHeaderActions className="u-show-desktop-tablet" onClick={(e) => e.stopPropagation()}>
+          <Tooltip title="Copy office name">
+            <ActionChip onClick={() => copyToClipboard(officeName)}>
+              <ContentCopy sx={{ fontSize: 14, mr: 0.5 }} />
+              Copy office name
+            </ActionChip>
+          </Tooltip>
+          <Tooltip title="Copy link">
+            <ActionChip onClick={() => copyToClipboard(`${window.location.origin}/office/${officeWeVoteId}`)}>
+              <ContentCopy sx={{ fontSize: 14, mr: 0.5 }} />
+              Copy link
+            </ActionChip>
+          </Tooltip>
+          <ActionDivider />
+          <Tooltip title="Info">
+            <IconButton size="small"><InfoOutlined fontSize="small" /></IconButton>
+          </Tooltip>
+          <Tooltip title="Open in new tab">
+            <IconButton size="small" onClick={() => window.open(`/office/${officeWeVoteId}`, '_blank')}>
+              <Launch fontSize="small" />
+            </IconButton>
+          </Tooltip>
+        </OfficeHeaderActions>
+      </OfficeHeader>
+      {isExpanded && (
+        <CandidateList>
+          {candidates.map((candidate) => {
+            const candidateWeVoteId = candidate.we_vote_id;
+            const candidateName = candidate.ballot_item_display_name;
+            const candidateParty = candidate.party || '';
+            return (
+              <CandidateRow key={candidateWeVoteId}>
+                <CandidateInfo onClick={() => onCandidateClick(candidate)} style={{ cursor: 'pointer' }}>
+                  <CandidateName>
+                    {searchText ? highlightMatch(candidateName, searchText) : candidateName}
+                  </CandidateName>
+                  <CandidateParty>{candidateParty}</CandidateParty>
+                </CandidateInfo>
+                <CandidateActionsRow className="u-show-desktop-tablet">
+                  <Tooltip title="Copy candidate name">
+                    <ActionChip onClick={() => copyToClipboard(candidateName)}>
+                      <ContentCopy sx={{ fontSize: 14, mr: 0.5 }} />
+                      Copy candidate name
+                    </ActionChip>
+                  </Tooltip>
+                  <Tooltip title="Copy link">
+                    <ActionChip onClick={() => copyToClipboard(`${window.location.origin}${getCandidatePath(candidate)}`)}>
+                      <ContentCopy sx={{ fontSize: 14, mr: 0.5 }} />
+                      Copy link
+                    </ActionChip>
+                  </Tooltip>
+                  <ActionDivider />
+                  <Tooltip title="Open in new tab">
+                    <IconButton size="small" onClick={() => window.open(getCandidatePath(candidate), '_blank')}>
+                      <Launch fontSize="small" />
+                    </IconButton>
+                  </Tooltip>
+                </CandidateActionsRow>
+              </CandidateRow>
+            );
+          })}
+        </CandidateList>
+      )}
+    </OfficeSection>
+  );
+}
+
+OfficeSectionItemInner.propTypes = {
+  office: PropTypes.object.isRequired,
+  isExpanded: PropTypes.bool.isRequired,
+  searchText: PropTypes.string,
+  onToggle: PropTypes.func.isRequired,
+  onCandidateClick: PropTypes.func.isRequired,
+  getCandidatePath: PropTypes.func.isRequired,
+  copyToClipboard: PropTypes.func.isRequired,
+  highlightMatch: PropTypes.func.isRequired,
 };
 
-export default withRouter(ElectionFinderForElection);
+const OfficeSectionItem = React.memo(OfficeSectionItemInner);
+
+export default ElectionFinderForElection;
