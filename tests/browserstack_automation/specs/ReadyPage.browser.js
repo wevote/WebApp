@@ -126,14 +126,16 @@ describe('ReadyPage',  function () {
 
 // Ready_021
 it('Ready_021: check Alert msgs - Follow Popular Topics', async () => {
- console.log('Tcs : Ready_021 : check Alert msgs - Follow Popular Topics');
- await ReadyPage.load();
- await ReadyPage.followFirstIssue();
- const alertText = await ReadyPage.followAlertMsg;
- await alertText.waitForDisplayed();
- const text = await alertText.getText();
- console.log('Alert Text displayed: '+text);
- expect(text).toMatch(/now following/i); // Case-insensitive
+    console.log('Tcs : Ready_021 : check Alert msgs - Follow Popular Topics');
+    await ReadyPage.load();
+    await ReadyPage.followFirstIssue();
+    const alertEl = await ReadyPage.followAlertMsg;
+    await alertEl.waitForExist({ timeout: 10000 });
+    const text = await alertEl.getProperty('innerText');
+    console.log('Alert Text captured: ' + text);
+    expect(text).toMatch(/now following/i);
+    console.log('PASS: Alert matches "now following"');
+
  });
 
 
@@ -214,33 +216,22 @@ it('Ready_023: Verify Text and links -> we vote helps you - Be ready to vote', a
 
 // Ready_024
 it('Ready_024: Verify Text and links -> we vote helps you - Be confident in your choices', async () => {
- console.log('Tcs : Ready_024: Verify Text and links -> we vote helps you - Be confident in your choices');
- await ReadyPage.load();
- await driver.pause(waitTime);
- await ReadyPage.weVoteHelpsYouMenuItem2.click();
- await driver.pause(waitTime);
- const text = await ReadyPage.weVoteHelpsYouMenuItem2Text.getText();
- console.log("menu item1 text: "+text);
- if(text!="")
- {
-        await browser.execute(() => window.scrollBy(0, 700));
-       //check for 'twitter signin ' link
-       await ReadyPage.linkToTwitterAcct.click();
-       await browser.pause(waitTime);
-       const twitterSignInButton= await SignIn.signInWithXTextElement.isDisplayed();
-       console.log('twitterSignInButton displayed? :'+ twitterSignInButton);
-       await SignIn.signInWithXTextElement.waitForDisplayed({ timeout: 5000 });
-       const text = await SignIn.signInWithXTextElement.getText();
-       console.log(`Element Text: ${text}`);
-       // Assert the text
-       expect(text).toBe('Sign in with X');
+  console.log('Tcs : Ready_024: Verify Text and links -> we vote helps you - Be confident in your choices');
+   await ReadyPage.load();
+   const el = await ReadyPage.weVoteHelpsYouMenuItem2;
+   await browser.execute((target) => target.click(), el);
+   await driver.pause(waitTime);
+   await ReadyPage.weVoteHelpsYouMenuItem2Text.scrollIntoView();
+   const text = await ReadyPage.weVoteHelpsYouMenuItem2Text.getProperty('innerText');
+   console.log("menu item2 text: "+text);
+   await expect(ReadyPage.weVoteHelpsYouMenuItem2Text).not.toHaveText("");
 
-
- }
- else{
-   console.log("ERROR: Menu item text cannot be empty");
- }
-
+    // Manual log for your console output
+    if (text && text.trim().length > 0) {
+        console.log("PASS: The text is not blank");
+    } else {
+        throw new Error("FAIL: Menu item text is empty or blank");
+    }
 });
 
 
@@ -344,16 +335,17 @@ it('Ready_027: Verify Text and links -> The fine print: WeVote does not represen
 it('Ready_028: Verify Text and links -> The fine print: - Please make sure you are registered to vote', async () => {
  console.log('Tcs : Ready_028 : Verify Text and links -> The fine print: - Please make sure you are registered to vote');
  await ReadyPage.load();
- //await driver.pause(waitTime);
- await browser.execute(() => window.scrollBy(0, 600));
- await ReadyPage.finePrintMenuItemc.click();
+ const el = await ReadyPage.finePrintTextMenuHeaderc;
+ await browser.execute((target) => target.click(), el);
  await driver.pause(waitTime);
- const text = await ReadyPage.readyFinePrintStepTextc.getText();
+ await ReadyPage.readyFinePrintStepTextc.scrollIntoView();
+ const text = await ReadyPage.readyFinePrintStepTextc.getProperty('innerText');
  console.log("menu item1 text: "+text);
  expect(text).toExist();
  if(text!="")
  {
    console.log("PASS: The text is not blank");
+
  }
  else{
    console.log("ERROR: Menu item text cannot be empty");

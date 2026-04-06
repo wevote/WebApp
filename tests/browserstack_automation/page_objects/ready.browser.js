@@ -219,6 +219,10 @@ class ReadyPage extends PageBrowser {
    return $('#emailVerifyButton');
  }
 
+ get getPhoneVerifyButtonElement () {
+   return $('#phoneVerifyButton');
+ }
+
  get getProChoiceLinkElement () {
    return $('a[href="/value/pro-choice"]');
  }
@@ -381,12 +385,14 @@ async waitAboutLinkAndClick() {
   await this.getAboutLinkElement.click();
 }
 
- get followAlertMsg(){
-   return $('//div[@class="sc-dtInlm dBSTL MuiAlert-message"]');
+ get followAlertMsg()
+ {
+   return $('//div[contains(@class, "MuiAlert-message")]')
  }
 
- get unfollowAlertMsg(){
-   return $('//div[@class="sc-dtInlm dBSTL MuiAlert-message"]');
+ get unfollowAlertMsg()
+ {
+    return $('//div[contains(@class, "MuiAlert-message")]')
  }
 
  get weVoteHelpsYouMenuItem1()
@@ -442,6 +448,11 @@ async waitAboutLinkAndClick() {
  get finePrintMenuItemc()
  {
    return $('#finePrintMenuitemc');
+ }
+
+ get finePrintTextMenuHeaderc()
+ {
+    return $('#finePrintTextMenuHeaderc')
  }
 
  get readyFinePrintStepTextc()
@@ -534,8 +545,9 @@ async waitAboutLinkAndClick() {
    await this.getCodeVerificationDigit5Element.setValue('5');
    await driver.waitUntil(async () => (this.getCodeVerificationDigit6Element.isClickable()));
    await this.getCodeVerificationDigit6Element.setValue('6');
-   await driver.waitUntil(async () => (this.getVerifyButtonElement.isClickable()));
-   await this.getVerifyButtonElement.click();
+   await driver.waitUntil(async () => (this.getPhoneVerifyButtonElement.isClickable()));
+   await this.getPhoneVerifyButtonElement.click();
+
  }
 
  async load () {

@@ -1,4 +1,4 @@
-import { $, driver, expect } from '@wdio/globals';
+import { $, driver, expect, browser } from '@wdio/globals';
 import path from 'path';
 import PageBrowser from './page.browser';
 
@@ -191,6 +191,7 @@ class DonateBrowser extends PageBrowser {
   getFixErrors () {
     return $('#info-error');
   }
+
 }
 
 export default new DonateBrowser();

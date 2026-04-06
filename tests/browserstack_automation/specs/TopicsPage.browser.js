@@ -4,6 +4,8 @@ import TopicsPage from '../page_objects/topics.browser';
 import ProfilePage from '../page_objects/profile.browser';
 
 const waitTime = 5000;
+const timeoutVal = 10000;
+
 
 /* eslint-disable no-undef */
 // This eslint-disable turns off warnings for describe() and it()
@@ -24,10 +26,10 @@ describe('TopicsPage', () => {
       // Add condition to check for the expected URL
       const currentUrl = await driver.getUrl();
       console.log(currentUrl);
-      return currentUrl.includes('pro-choice');
+     return currentUrl.includes('pro-choice');
     }, {
-      timeout: 10000,
-      timeoutMsg: 'Expected URL to contain "pro-choice" not found, timeout after 10000ms',
+      timeout: timeoutVal,
+      timeoutMsg: 'Expected URL to contain "pro-choice" not found, timeout after + timeoutVal',
     });
     await driver.switchWindow('Pro-choice - WeVote');
     await driver.pause(waitTime);
@@ -55,9 +57,9 @@ describe('TopicsPage', () => {
   });
 
   it('verifyProLifePageLoads', async () => {
-
-    await ReadyPage.login();
     await ReadyPage.load();
+    await ReadyPage.login();
+
     await driver.pause(waitTime);
     await driver.waitUntil(async () => (ReadyPage.getProLifeLinkElement.isClickable()));
     await ReadyPage.getProLifeLinkElement.click();
@@ -67,8 +69,8 @@ describe('TopicsPage', () => {
       console.log(currentUrl);
       return currentUrl.includes('pro-life');
     }, {
-      timeout: 10000,
-      timeoutMsg: 'Expected URL to contain "pro-life" not found, timeout after 10000ms',
+      timeout: timeoutVal,
+      timeoutMsg: 'Expected URL to contain "pro-life" not found, timeout after + timeoutVal',
     });
     await driver.switchWindow('Pro-life - WeVote');
     await driver.pause(waitTime);
@@ -107,8 +109,8 @@ describe('TopicsPage', () => {
       console.log(currentUrl);
       return currentUrl.includes('democratic_clubs');
     }, {
-      timeout: 10000,
-      timeoutMsg: 'Expected URL to contain "democratic_clubs" not found, timeout after 10000ms',
+      timeout: timeoutVal,
+      timeoutMsg: 'Expected URL to contain "democratic_clubs" not found, timeout after + timeoutVal',
     });
     await driver.switchWindow('Democratic Clubs - WeVote');
     await driver.pause(waitTime);
@@ -147,7 +149,7 @@ describe('TopicsPage', () => {
       console.log(currentUrl);
       return currentUrl.includes('republican_clubs');
     }, {
-      timeout: 10000,
+      timeout: timeoutVal,
       timeoutMsg: 'Expected URL to contain "republican_clubs" not found, timeout after 10000ms',
     });
     await driver.switchWindow('Republican Clubs - WeVote');
@@ -187,8 +189,8 @@ describe('TopicsPage', () => {
       console.log(currentUrl);
       return currentUrl.includes('climate_change');
     }, {
-      timeout: 10000,
-      timeoutMsg: 'Expected URL to contain "climate_change" not found, timeout after 10000ms',
+      timeout: timeoutVal,
+      timeoutMsg: 'Expected URL to contain "climate_change" not found, timeout after + timeoutVal',
     });
     await driver.switchWindow('Climate Change - WeVote');
     await driver.pause(waitTime);
@@ -227,8 +229,8 @@ describe('TopicsPage', () => {
       console.log(currentUrl);
       return currentUrl.includes('lgbtq');
     }, {
-      timeout: 10000,
-      timeoutMsg: 'Expected URL to contain "lgbtq" not found, timeout after 10000ms',
+      timeout: timeoutVal,
+      timeoutMsg: 'Expected URL to contain "lgbtq" not found, timeout after + timeoutVal',
     });
     await driver.switchWindow('LGBTQ - WeVote');
     await driver.pause(waitTime);
@@ -270,8 +272,8 @@ describe('TopicsPage', () => {
       console.log(currentUrl);
       return currentUrl.includes('democratic_party_politicians');
     }, {
-      timeout: 10000,
-      timeoutMsg: 'Expected URL to contain "democratic_party_politicians" not found, timeout after 10000ms',
+      timeout: timeoutVal,
+      timeoutMsg: 'Expected URL to contain "democratic_party_politicians" not found, timeout after + timeoutVal',
     });
     await driver.switchWindow('Democratic Party Politicians - WeVote');
     await driver.pause(waitTime);
@@ -312,8 +314,8 @@ describe('TopicsPage', () => {
       console.log(currentUrl);
       return currentUrl.includes('republican_party_politicians');
     }, {
-      timeout: 10000,
-      timeoutMsg: 'Expected URL to contain "republican_party_politicians" not found, timeout after 10000ms',
+      timeout: timeoutVal,
+      timeoutMsg: 'Expected URL to contain "republican_party_politicians" not found, timeout after + timeoutVal',
     });
     await driver.switchWindow('Republican Party Politicians - WeVote');
     await driver.pause(waitTime);
@@ -355,8 +357,8 @@ describe('TopicsPage', () => {
       console.log(currentUrl);
       return currentUrl.includes('progressive_values');
     }, {
-      timeout: 10000,
-      timeoutMsg: 'Expected URL to contain "progressive_values" not found, timeout after 10000ms',
+      timeout: timeoutVal,
+      timeoutMsg: 'Expected URL to contain "progressive_values" not found, timeout after + timeoutVal',
     });
     await driver.switchWindow('Progressive Values - WeVote');
     await driver.pause(waitTime);
@@ -397,8 +399,8 @@ describe('TopicsPage', () => {
       console.log(currentUrl);
       return currentUrl.includes('conservative_values');
     }, {
-      timeout: 10000,
-      timeoutMsg: 'Expected URL to contain "conservativee_values" not found, timeout after 10000ms',
+      timeout: timeoutVal,
+      timeoutMsg: 'Expected URL to contain "conservativee_values" not found, timeout after + timeoutVal',
     });
     await driver.switchWindow('Conservative Values - WeVote');
     await driver.pause(waitTime);
@@ -439,8 +441,8 @@ describe('TopicsPage', () => {
       console.log(currentUrl);
       return currentUrl.includes('common_sense_gun_reform');
     }, {
-      timeout: 10000,
-      timeoutMsg: 'Expected URL to contain "common_sense_gun_reform" not found, timeout after 10000ms',
+      timeout: timeoutVal,
+      timeoutMsg: 'Expected URL to contain "common_sense_gun_reform" not found, timeout after + timeoutVal',
     });
     await driver.switchWindow('Common Sense Gun Reform - WeVote');
     await driver.pause(waitTime);
@@ -481,8 +483,8 @@ describe('TopicsPage', () => {
       console.log(currentUrl);
       return currentUrl.includes('gun__2nd_amendment_rights');
     }, {
-      timeout: 10000,
-      timeoutMsg: 'Expected URL to contain "gun__2nd_amendment_rights" not found, timeout after 10000ms',
+      timeout: timeoutVal,
+      timeoutMsg: 'Expected URL to contain "gun__2nd_amendment_rights" not found, timeout after + timeoutVal',
     });
     await driver.switchWindow('Gun / 2nd Amendment Rights - WeVote');
     await driver.pause(waitTime);
@@ -523,8 +525,8 @@ describe('TopicsPage', () => {
       console.log(currentUrl);
       return currentUrl.includes('affordable_housing');
     }, {
-      timeout: 10000,
-      timeoutMsg: 'Expected URL to contain "affordable_housing" not found, timeout after 10000ms',
+      timeout: timeoutVal,
+      timeoutMsg: 'Expected URL to contain "affordable_housing" not found, timeout after + timeoutVal',
     });
     await driver.switchWindow('Affordable Housing - WeVote');
     await driver.pause(waitTime);
@@ -565,8 +567,8 @@ describe('TopicsPage', () => {
       console.log(currentUrl);
       return currentUrl.includes('voting_rights__education');
     }, {
-      timeout: 10000,
-      timeoutMsg: 'Expected URL to contain "voting_rights__education" not found, timeout after 10000ms',
+      timeout: timeoutVal,
+      timeoutMsg: 'Expected URL to contain "voting_rights__education" not found, timeout after + timeoutVal',
     });
     await driver.switchWindow('Voting Rights & Education - WeVote');
     await driver.pause(waitTime);
@@ -607,8 +609,8 @@ describe('TopicsPage', () => {
       console.log(currentUrl);
       return currentUrl.includes('communities_of_color');
     }, {
-      timeout: 10000,
-      timeoutMsg: 'Expected URL to contain "communities_of_color" not found, timeout after 10000ms',
+      timeout: timeoutVal,
+      timeoutMsg: 'Expected URL to contain "communities_of_color" not found, timeout after + timeoutVal',
     });
     await driver.switchWindow('Communities of Color - WeVote');
     await driver.pause(waitTime);
@@ -649,8 +651,8 @@ describe('TopicsPage', () => {
       console.log(currentUrl);
       return currentUrl.includes('animals__wildlife');
     }, {
-      timeout: 10000,
-      timeoutMsg: 'Expected URL to contain "animals__wildlife" not found, timeout after 10000ms',
+      timeout: timeoutVal,
+      timeoutMsg: 'Expected URL to contain "animals__wildlife" not found, timeout after + timeoutVal',
     });
     await driver.switchWindow('Animals & Wildlife - WeVote');
     await driver.pause(waitTime);
@@ -691,8 +693,8 @@ describe('TopicsPage', () => {
       console.log(currentUrl);
       return currentUrl.includes('immigration_rights');
     }, {
-      timeout: 10000,
-      timeoutMsg: 'Expected URL to contain "immigration_rights" not found, timeout after 10000ms',
+      timeout: timeoutVal,
+      timeoutMsg: 'Expected URL to contain "immigration_rights" not found, timeout after + timeoutVal',
     });
     await driver.switchWindow('Immigration Rights - WeVote');
     await driver.pause(waitTime);
@@ -733,8 +735,8 @@ describe('TopicsPage', () => {
       console.log(currentUrl);
       return currentUrl.includes('criminal_justice_reform');
     }, {
-      timeout: 10000,
-      timeoutMsg: 'Expected URL to contain "criminal_justice_reform" not found, timeout after 10000ms',
+      timeout: timeoutVal,
+      timeoutMsg: 'Expected URL to contain "criminal_justice_reform" not found, timeout after + timeoutVal',
     });
     await driver.switchWindow('Criminal Justice Reform - WeVote');
     await driver.pause(waitTime);
@@ -775,8 +777,8 @@ describe('TopicsPage', () => {
       console.log(currentUrl);
       return currentUrl.includes('reducing_money_in_politics');
     }, {
-      timeout: 10000,
-      timeoutMsg: 'Expected URL to contain "reducing_money_in_politics" not found, timeout after 10000ms',
+      timeout: timeoutVal,
+      timeoutMsg: 'Expected URL to contain "reducing_money_in_politics" not found, timeout after + timeoutVal',
     });
     await driver.switchWindow('Reducing Money in Politics - WeVote');
     await driver.pause(waitTime);
@@ -817,8 +819,8 @@ describe('TopicsPage', () => {
       console.log(currentUrl);
       return currentUrl.includes('social_security__medicare');
     }, {
-      timeout: 10000,
-      timeoutMsg: 'Expected URL to contain "social_security__medicare" not found, timeout after 10000ms',
+      timeout: timeoutVal,
+      timeoutMsg: 'Expected URL to contain "social_security__medicare" not found, timeout after + timeoutVal',
     });
     await driver.switchWindow('Social Security & Medicare - WeVote');
     await driver.pause(waitTime);
@@ -859,8 +861,8 @@ describe('TopicsPage', () => {
       console.log(currentUrl);
       return currentUrl.includes('reducing_student_debt');
     }, {
-      timeout: 10000,
-      timeoutMsg: 'Expected URL to contain "reducing_student_debt" not found, timeout after 10000ms',
+      timeout: timeoutVal,
+      timeoutMsg: 'Expected URL to contain "reducing_student_debt" not found, timeout after + timeoutVal',
     });
     await driver.switchWindow('Reducing Student Debt - WeVote');
     await driver.pause(waitTime);
@@ -901,8 +903,8 @@ describe('TopicsPage', () => {
       console.log(currentUrl);
       return currentUrl.includes('marijuana_legalization');
     }, {
-      timeout: 10000,
-      timeoutMsg: 'Expected URL to contain "marijuana_legalization" not found, timeout after 10000ms',
+      timeout: timeoutVal,
+      timeoutMsg: 'Expected URL to contain "marijuana_legalization" not found, timeout after + timeoutVal',
     });
     await driver.switchWindow('Marijuana Legalization - WeVote');
     await driver.pause(waitTime);
@@ -943,8 +945,8 @@ describe('TopicsPage', () => {
       console.log(currentUrl);
       return currentUrl.includes('low_income__unemployment');
     }, {
-      timeout: 10000,
-      timeoutMsg: 'Expected URL to contain "low_income__unemployment" not found, timeout after 10000ms',
+      timeout: timeoutVal,
+      timeoutMsg: 'Expected URL to contain "low_income__unemployment" not found, timeout after + timeoutVal',
     });
     await driver.switchWindow('Low Income & Unemployment - WeVote');
     await driver.pause(waitTime);
@@ -985,8 +987,8 @@ describe('TopicsPage', () => {
       console.log(currentUrl);
       return currentUrl.includes('homeless_well-being');
     }, {
-      timeout: 10000,
-      timeoutMsg: 'Expected URL to contain "homeless_well-being" not found, timeout after 10000ms',
+      timeout: timeoutVal,
+      timeoutMsg: 'Expected URL to contain "homeless_well-being" not found, timeout after + timeoutVal',
     });
     await driver.switchWindow('Homeless Well-Being - WeVote');
     await driver.pause(waitTime);
@@ -1027,8 +1029,8 @@ describe('TopicsPage', () => {
       console.log(currentUrl);
       return currentUrl.includes('bicycling');
     }, {
-      timeout: 10000,
-      timeoutMsg: 'Expected URL to contain "bicycling" not found, timeout after 10000ms',
+      timeout: timeoutVal,
+      timeoutMsg: 'Expected URL to contain "bicycling" not found, timeout after + timeoutVal',
     });
     await driver.switchWindow('Bicycling - WeVote');
     await driver.pause(waitTime);
@@ -1069,8 +1071,8 @@ describe('TopicsPage', () => {
       console.log(currentUrl);
       return currentUrl.includes('securing_our_borders');
     }, {
-      timeout: 10000,
-      timeoutMsg: 'Expected URL to contain "securing_our_borders" not found, timeout after 10000ms',
+      timeout: timeoutVal,
+      timeoutMsg: 'Expected URL to contain "securing_our_borders" not found, timeout after + timeoutVal',
     });
     await driver.switchWindow('Securing Our Borders - WeVote');
     await driver.pause(waitTime);
@@ -1111,8 +1113,8 @@ describe('TopicsPage', () => {
       console.log(currentUrl);
       return currentUrl.includes('women\'s_equality');
     }, {
-      timeout: 10000,
-      timeoutMsg: 'Expected URL to contain "women\'s_equality" not found, timeout after 10000ms',
+      timeout: timeoutVal,
+      timeoutMsg: 'Expected URL to contain "women\'s_equality" not found, timeout after + timeoutVal',
     });
     await driver.switchWindow('Women\'s Equality - WeVote');
     await driver.pause(waitTime);
@@ -1153,8 +1155,8 @@ describe('TopicsPage', () => {
       console.log(currentUrl);
       return currentUrl.includes('green_party_clubs');
     }, {
-      timeout: 10000,
-      timeoutMsg: 'Expected URL to contain "green_party_clubs" not found, timeout after 10000ms',
+      timeout: timeoutVal,
+      timeoutMsg: 'Expected URL to contain "green_party_clubs" not found, timeout after + timeoutVal',
     });
     await driver.switchWindow('Green Party Clubs - WeVote');
     await driver.pause(waitTime);
@@ -1195,8 +1197,8 @@ describe('TopicsPage', () => {
       console.log(currentUrl);
       return currentUrl.includes('libertarian_clubs');
     }, {
-      timeout: 10000,
-      timeoutMsg: 'Expected URL to contain "libertarian_clubs" not found, timeout after 10000ms',
+      timeout: timeoutVal,
+      timeoutMsg: 'Expected URL to contain "libertarian_clubs" not found, timeout after + timeoutVal',
     });
     await driver.switchWindow('Libertarian Clubs - WeVote');
     await driver.pause(waitTime);
@@ -1237,8 +1239,8 @@ describe('TopicsPage', () => {
       console.log(currentUrl);
       return currentUrl.includes('pro_public_schools');
     }, {
-      timeout: 10000,
-      timeoutMsg: 'Expected URL to contain "pro_public_schools" not found, timeout after 10000ms',
+      timeout: timeoutVal,
+      timeoutMsg: 'Expected URL to contain "pro_public_schools" not found, timeout after + timeoutVal',
     });
     await driver.switchWindow('Pro Public Schools - WeVote');
     await driver.pause(waitTime);
@@ -1279,8 +1281,8 @@ describe('TopicsPage', () => {
       console.log(currentUrl);
       return currentUrl.includes('publicly_funded_healthcare');
     }, {
-      timeout: 10000,
-      timeoutMsg: 'Expected URL to contain "publicly_funded_healthcare" not found, timeout after 10000ms',
+      timeout: timeoutVal,
+      timeoutMsg: 'Expected URL to contain "publicly_funded_healthcare" not found, timeout after + timeoutVal',
     });
     await driver.switchWindow('Publicly Funded Healthcare - WeVote');
     await driver.pause(waitTime);
@@ -1321,8 +1323,8 @@ describe('TopicsPage', () => {
       console.log(currentUrl);
       return currentUrl.includes('green_party_politicians');
     }, {
-      timeout: 10000,
-      timeoutMsg: 'Expected URL to contain "green_party_politicians" not found, timeout after 10000ms',
+      timeout: timeoutVal,
+      timeoutMsg: 'Expected URL to contain "green_party_politicians" not found, timeout after + timeoutVal',
     });
     await driver.switchWindow('Green Party Politicians - WeVote');
     await driver.pause(waitTime);
@@ -1363,8 +1365,8 @@ describe('TopicsPage', () => {
       console.log(currentUrl);
       return currentUrl.includes('libertarian_party_politicians');
     }, {
-      timeout: 10000,
-      timeoutMsg: 'Expected URL to contain "libertarian_party_politicians" not found, timeout after 10000ms',
+      timeout: timeoutVal,
+      timeoutMsg: 'Expected URL to contain "libertarian_party_politicians" not found, timeout after + timeoutVal',
     });
     await driver.switchWindow('Libertarian Party Politicians - WeVote');
     await driver.pause(waitTime);
@@ -1405,8 +1407,8 @@ describe('TopicsPage', () => {
       console.log(currentUrl);
       return currentUrl.includes('independent_politicians');
     }, {
-      timeout: 10000,
-      timeoutMsg: 'Expected URL to contain "independent_politicians" not found, timeout after 10000ms',
+      timeout: timeoutVal,
+      timeoutMsg: 'Expected URL to contain "independent_politicians" not found, timeout after + timeoutVal',
     });
     await driver.switchWindow('Independent Politicians - WeVote');
     await driver.pause(waitTime);
@@ -1447,8 +1449,8 @@ describe('TopicsPage', () => {
       console.log(currentUrl);
       return currentUrl.includes('pro_school_choice');
     }, {
-      timeout: 10000,
-      timeoutMsg: 'Expected URL to contain "pro_school_choice" not found, timeout after 10000ms',
+      timeout: timeoutVal,
+      timeoutMsg: 'Expected URL to contain "pro_school_choice" not found, timeout after + timeoutVal',
     });
     await driver.switchWindow('Pro School Choice - WeVote');
     await driver.pause(waitTime);
@@ -1489,8 +1491,8 @@ describe('TopicsPage', () => {
       console.log(currentUrl);
       return currentUrl.includes('make_america_great_again_(maga)');
     }, {
-      timeout: 10000,
-      timeoutMsg: 'Expected URL to contain "make_america_great_again_(maga)" not found, timeout after 10000ms',
+      timeout: timeoutVal,
+      timeoutMsg: 'Expected URL to contain "make_america_great_again_(maga)" not found, timeout after + timeoutVal',
     });
     await driver.switchWindow('Make America Great Again (MAGA) - WeVote');
     await driver.pause(waitTime);
