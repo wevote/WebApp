@@ -84,7 +84,7 @@ class ChallengePhotoUpload extends Component {
 
   markChallengeImageForDelete = () => {
     ChallengeStartActions.challengePhotoQueuedToDelete(true);
-  }
+  };
 
   render () {
     renderLog('ChallengePhotoUpload');  // Set LOG_RENDER_EVENTS to log all renders

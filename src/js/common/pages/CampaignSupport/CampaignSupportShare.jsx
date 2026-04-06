@@ -186,7 +186,7 @@ class CampaignSupportShare extends Component {
     }
     // console.log('getCampaignXBasePath campaignBasePath: ', campaignBasePath);
     return campaignBasePath;
-  }
+  };
 
   getPoliticianBasePath = () => {
     const { politicianSEOFriendlyPath, linkedPoliticianWeVoteId } = this.state;
@@ -200,7 +200,7 @@ class CampaignSupportShare extends Component {
       politicianBasePath = this.getCampaignXBasePath();
     }
     return politicianBasePath;
-  }
+  };
 
   goToNextStep = () => {
     const { showShareCampaignWithOneFriend } = this.props;
@@ -218,11 +218,11 @@ class CampaignSupportShare extends Component {
     } else {
       historyPush(`${this.getCampaignXBasePath()}share-campaign-with-one-friend`);
     }
-  }
+  };
 
   submitSkipForNow = () => {
     this.goToNextStep();
-  }
+  };
 
   render () {
     renderLog('CampaignSupportShare');  // Set LOG_RENDER_EVENTS to log all renders
@@ -320,13 +320,11 @@ class CampaignSupportShare extends Component {
                   </CampaignSupportSection>
                 </CampaignSupportSectionWrapper>
               ) : (
-                <>
-                  <CampaignShareChunk
+                <CampaignShareChunk
                     campaignSEOFriendlyPath={campaignSEOFriendlyPath}
                     campaignXWeVoteId={campaignXWeVoteId}
                     politicianName={campaignTitle}
-                  />
-                </>
+                />
               )}
               <CampaignSupportSectionWrapper>
                 <CampaignSupportSection>

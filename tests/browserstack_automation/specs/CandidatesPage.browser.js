@@ -16,7 +16,7 @@ beforeEach(async () => {
   await CandidatesPage.load();
   await driver.pause(waitTime);
   // Below line to be commented out once defect #WV-943 is fixed.
- // await CandidatesPage.stateSelect.selectByVisibleText('Hawaii');
+  // await CandidatesPage.stateSelect.selectByVisibleText('Hawaii');
   //await driver.pause(waitTime);
 });
 
@@ -189,9 +189,15 @@ describe('Candidates PageBrowser', () => {
     const cardId = await getCandidateCardId();
     const chooseButton = await CandidatesPage.getCandidateCardChoose(cardId);
     const opposeButton = await CandidatesPage.getCandidateCardOppose(cardId);
+    const likeIcon = await CandidatesPage.getCandidateCardLikeIcon(cardId);
+    const likeCounter = await CandidatesPage.getCandidateCardLikeCount(cardId);
+    await driver.executeScript("arguments[0].scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });", [chooseButton]);
+    const likeCountBeforeClick = await likeCounter.getText();
+    console.log(`Like count before click: ${likeCountBeforeClick}`);
     await driver.executeScript("arguments[0].scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });", [chooseButton]);
     await chooseButton.click();
     await driver.pause(waitTime);
+    const likeIconColor = await likeIcon.getAttribute('fill');
     await expect(chooseButton).not.toHaveText('Choose');
     await expect(opposeButton).not.toBePresent();
     await expect(chooseButton).toHaveText('Chosen');
@@ -199,6 +205,13 @@ describe('Candidates PageBrowser', () => {
     await expect(helpWinButton).toBeDisplayed();
     const expectedHelpWinText = readTooltipsText('HelpWinText');
     await expect(helpWinButton).toHaveText(expectedHelpWinText);
+    const likeCountAfterClick = await likeCounter.getText();
+    console.log(`Like count after click: ${likeCountAfterClick}`);
+    const expectedLikeIconColor = readTooltipsText('LikeDislikeIconColor');
+    // latest design changes, the like icon gets selected when we choose a Candidate. 
+    // The total count should get incremented as well (open by defect #2603), hence keeping this test commented for now.
+    await expect(likeIconColor).toBe(expectedLikeIconColor);
+    //await expect(parseInt(likeCountAfterClick)).toBe(parseInt(likeCountBeforeClick) + 1);
   });
 
   // Candidates_013
@@ -210,8 +223,13 @@ describe('Candidates PageBrowser', () => {
     const cardId = await getCandidateCardId();
     const chooseButton = await CandidatesPage.getCandidateCardChoose(cardId);
     const opposeButton = await CandidatesPage.getCandidateCardOppose(cardId);
+    const disLikeIcon = await CandidatesPage.getCandidateCardDislikeIcon(cardId);
+    //const disLikeCounter = await CandidatesPage.getCandidateCardDisLikeCount(cardId);
     await driver.executeScript("arguments[0].scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });", [chooseButton]);
+    //const disLikeCountBeforeClick = await disLikeCounter.getText();
     await opposeButton.click();
+    await driver.pause(waitTime);
+    const disLikeIconColor = await disLikeIcon.getAttribute('fill');
     await expect(chooseButton).not.toBePresent();
     await expect(opposeButton).not.toHaveText('Oppose');
     await expect(opposeButton).toHaveText('Opposed');
@@ -219,6 +237,13 @@ describe('Candidates PageBrowser', () => {
     await expect(helpDefeatButton).toBeDisplayed();
     const expectedHelpDefeatText = readTooltipsText('HelpDefeatText');
     await expect(helpDefeatButton).toHaveText(expectedHelpDefeatText);
+    //const disLikeCountAfterClick = await disLikeCounter.getText();
+    //console.log(`Dislike count after click: ${disLikeCountAfterClick}`);
+    const expectedDisLikeIconColor = readTooltipsText('LikeDislikeIconColor');
+    // latest design changes, the dislike icon gets selected when we oppose a Candidate. 
+    // The total count should get incremented as well (open by defect #2603), hence keeping this test commented for now.
+    await expect(disLikeIconColor).toBe(expectedDisLikeIconColor);
+    //await expect(parseInt(disLikeCountAfterClick)).toBe(parseInt(disLikeCountBeforeClick) + 1);
   });
 
   // Candidates_014
@@ -287,7 +312,7 @@ describe('Candidates PageBrowser', () => {
     const chooseButton = await CandidatesPage.getCandidateCardChoose(cardId);
     const expectedTooltipTextLike = readTooltipsText('LikeCandidate');
     const expectedTooltipTextDislike = new RegExp(readTooltipsText('DislikeCandidate'));
-    const expectedColor = readTooltipsText('LikeDislikeIconColor');
+    const expectedColor = readTooltipsText('LikeDislikeIconHoverColor');
     const errMsgIncorrectLike = `Like tooltip does not match expected tooltip:\n${expectedTooltipTextLike}`;
     const errMsgIncorrectUnlike = `Unlike tooltip does not match expected tooltip:\n${expectedTooltipTextDislike.source.replace('/', '').replace(/\\/g, '').replace('^', '').replace('$', '')
       .replace('d+', '<N>')}`;
@@ -328,7 +353,7 @@ describe('Candidates PageBrowser', () => {
     }
   });
 
-    // Candidates_018
+  // Candidates_018
   it('verifyLikeCandidateClick @WV-1073', async () => {
     const stateNameRandomTC10 = readTestDataStates('random', 1)[0];
     console.log(`Running verifyLikeCandidateClick using state ${stateNameRandomTC10}`);
@@ -346,7 +371,7 @@ describe('Candidates PageBrowser', () => {
     await expect(signInButton).toBeDisplayed();
   });
 
-    // Candidates_019
+  // Candidates_019
   it('verifyDislikeCandidateClick @WV-1073', async () => {
     const stateNameRandomTC10 = readTestDataStates('random', 1)[0];
     console.log(`Running verifyDislikeCandidateClick using state ${stateNameRandomTC10}`);
@@ -364,7 +389,7 @@ describe('Candidates PageBrowser', () => {
     await expect(signInButton).toBeDisplayed();
   });
 
-    // Candidates_020
+  // Candidates_020
   it('verifyCandidateNameClick @WV-1073', async () => {
     const stateNameRandomTC10 = readTestDataStates('random', 1)[0];
     console.log(`Running verifyCandidateNameClick using state ${stateNameRandomTC10}`);
@@ -382,7 +407,7 @@ describe('Candidates PageBrowser', () => {
     await expect(newTitle).toMatch(expectedTitle);
   });
 
-    // Candidates_021
+  // Candidates_021
   it('verifyCandidateImageClick @WV-1073', async () => {
     const stateNameRandomTC10 = readTestDataStates('random', 1)[0];
     console.log(`Running verifyCandidateImageClick using state ${stateNameRandomTC10}`);
@@ -408,14 +433,14 @@ describe('Candidates PageBrowser', () => {
     await CandidatesPage.stateSelect.selectByVisibleText(stateNameRandomTC10);
     await driver.pause(waitTime);
     const searchDefaultText = await CandidatesPage.searchBar.getAttribute("placeholder");
-    const expectedSearchText="Search by name or office";
+    const expectedSearchText="Search by name, office or party";
     await expect(searchDefaultText).toMatch(expectedSearchText);
   });
 
   // Candidates_023-Candidates_030
-  const searchText=readSearchText();
+  const searchText = readSearchText();
   searchText.forEach(({ text, runType }) => {
-    it(`verifyCandidateSearchByNameOrOffice for ${text} with ${runType}`, async () => {
+    it(`verifyCandidateSearchByNameOrOfficeOrParty for ${text} with ${runType}`, async () => {
       console.log(` *** ***** Running verifySearchText using name: ${text}, state: ${runType}`);
       const stateNameRandomTC23 = readTestDataStates('random', 1)[0];
       await CandidatesPage.searchBar.click();
@@ -428,7 +453,7 @@ describe('Candidates PageBrowser', () => {
         await driver.pause(waitTime);
       }
       const candidateCards = await CandidatesPage.candidateSearchList;
-      console.log(`Total cards: ${candidateCards.length}`)
+      console.log(`Total cards: ${candidateCards.length}`);
       for (let i = 0; i < candidateCards.length; i++) {
         const card = candidateCards[i];
         await driver.waitUntil(async () => !(await card.getAttribute('id')).includes('Loading'), {
@@ -438,33 +463,38 @@ describe('Candidates PageBrowser', () => {
         const cardId = await card.getAttribute('id');
         const candidateNameDisplayed = (await CandidatesPage.getCandidateCardCandidateName(cardId));
         const officeNameDisplayed = (await CandidatesPage.getCandidateCardOffice(cardId));
+        const partyNameDisplayed = (await CandidatesPage.getCandidateCardPartyName(cardId));
 
         console.log(`Candidate Name: ${candidateNameDisplayed}`);
         console.log(`Candidate Office: ${officeNameDisplayed}`);
-        if (runType === 'stateSelected'){
-          const expectedStateValue=['National'.toUpperCase(),stateNameRandomTC23.toUpperCase()];
-          const stateNameDisplayed= (await CandidatesPage.getCandidateCardState(cardId)).toUpperCase();
+        console.log(`Candidate Party: ${partyNameDisplayed}`);
+        if (runType === 'stateSelected') {
+          const expectedStateValue = ['National'.toUpperCase(), stateNameRandomTC23.toUpperCase()];
+          const stateNameDisplayed = (await CandidatesPage.getCandidateCardState(cardId)).toUpperCase();
           console.log(`Candidate State: ${stateNameDisplayed}`);
-          await` expect(expectedStateValue).toContain(stateNameDisplayed);`
+          await expect(expectedStateValue).toContain(stateNameDisplayed);
         }
         try {
           await expect(candidateNameDisplayed.toLowerCase()).toContain(text.toLowerCase());
+          console.log(`Candidate Name contains searched text: "${text}" for Candidate: ${candidateNameDisplayed}`);
         } catch {
-          await console.log(`Candidate Name did not match the searched text: << ${text} >>, checking Office Name instead...`);
+          console.log(`Candidate Name did not match the searched text: << ${text} >>, checking Office Name instead...`);
           try {
             await expect(officeNameDisplayed.toLowerCase()).toContain(text.toLowerCase());
+            console.log(`Office Name contains searched text: "${text}" for Candidate: ${candidateNameDisplayed}`);
           } catch {
-            throw new Error(`Neither candidateName nor officeName matched searched text: "${text}" for Candidate: ${candidateNameDisplayed}`);
+            console.log(`Office Name did not match the searched text: << ${text} >>, checking Party Name instead...`);
+            try {
+              await expect(partyNameDisplayed.toLowerCase()).toContain(text.toLowerCase());
+              console.log(`Party Name contains searched text: "${text}" for Candidate: ${candidateNameDisplayed}`);
+            } catch {
+              throw new Error(`Neither candidateName nor officeName nor partyName matched searched text: "${text}" for Candidate: ${candidateNameDisplayed}`);
+            }
           }
         }
       }
     });
   });
-
-
-
-
-
 
   // read All Possible Headers from candidatesPage_TC001.json
   function readTestDataAllPossibleHeaders () {
@@ -502,7 +532,7 @@ describe('Candidates PageBrowser', () => {
     return text;
   }
 
-    // read searchText text from candidatesPage_TDSearch.json
+  // read searchText text from candidatesPage_TDSearch.json
   function readSearchText () {
     const jsonObjH = JSON.parse(fs.readFileSync(`${testDataPath}candidatesPage_TDSearch.json`));
     const text = jsonObjH[0].SearchText;
@@ -512,14 +542,14 @@ describe('Candidates PageBrowser', () => {
       allSearch.push(searchText.toLowerCase());
       allSearch.push(searchText.toUpperCase());
       allSearch.push(searchText[0].toUpperCase()+searchText.slice(1));
-      }
+    }
     const states = ['stateNotSelected', 'stateSelected'];
     const combinations = [];
     for (const text of allSearch) {
       for (const runType of states) {
-          combinations.push({ text, runType });
+        combinations.push({ text, runType });
       }
-      }
+    }
 
     console.log("Running tests for test data combinations:");
     console.log(combinations);

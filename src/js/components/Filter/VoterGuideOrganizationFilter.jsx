@@ -238,15 +238,15 @@ class VoterGuideOrganizationFilter extends Component {
       }
     });
     return uniqBy(filteredItems, (x) => x.position_we_vote_id);
-  }
+  };
 
   toggleFilter = (name) => {
     this.props.onToggleFilter(name);
-  }
+  };
 
   selectSortByFilter = (name) => {
     this.props.onSelectSortByFilter(name);
-  }
+  };
 
   generateIssuesFilters = () => this.state.issues.slice(0, 1).map((item, itemIndex) => (
     <div

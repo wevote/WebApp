@@ -195,7 +195,8 @@ class VoterGuidePositionList extends Component {
       let foundInThisPosition;
       let isFirstWord;
       let thisWordFound;
-      positionSearchResults = filter(filteredPositionsModified,
+      positionSearchResults = filter(
+        filteredPositionsModified,
         (onePosition) => {
           foundInThisPosition = false;
           isFirstWord = true;
@@ -215,7 +216,8 @@ class VoterGuidePositionList extends Component {
             }
           });
           return foundInThisPosition;
-        });
+        },
+      );
       positionSearchResults = positionSearchResults.sort(this.orderPositionsByAlphabetical);
     }
     filteredPositions = filteredPositions.sort(this.orderPositionsByAlphabetical);
@@ -233,7 +235,7 @@ class VoterGuidePositionList extends Component {
         listModeShown: this.getDefaultListModeShown(),
       });
     }
-  }
+  };
 
   onScroll () {
     if (this.props.turnOffOnScroll) {
@@ -294,7 +296,7 @@ class VoterGuidePositionList extends Component {
         numberOfPositionItemsToDisplay,
       });
     }, 500);
-  }
+  };
 
   orderPositionsByAlphabetical = (firstEntry, secondEntry) => {
     let firstEntryName;
@@ -366,13 +368,13 @@ class VoterGuidePositionList extends Component {
       listModeFiltersAvailable,
       upcomingEndorsementsAvailable,
     }, () => this.onFilterOrListChange(setDefaultListMode));
-  }
+  };
 
   changeListModeShown = (newListModeShown) => {
     this.setState({
       listModeShown: newListModeShown,
     }, () => this.updateActiveFilters());
-  }
+  };
 
   getDefaultListModeShown = (incomingUpcomingEndorsementsAvailable = false) => {
     const { listOfYearsWhenPositionExists, upcomingEndorsementsAvailable } = this.state;
@@ -385,7 +387,7 @@ class VoterGuidePositionList extends Component {
       return `show${mostRecentYear}`;
     }
     return 'showAllEndorsements';
-  }
+  };
 
   getListOfYearsWhenPositionExists = (positionList) => {
     const listOfYearsWhenPositionExists = [];
@@ -395,7 +397,7 @@ class VoterGuidePositionList extends Component {
       }
     });
     return listOfYearsWhenPositionExists;
-  }
+  };
 
   searchFunction = (searchText) => {
     const { listModeShown, searchText: previousSearchText } = this.state;
@@ -409,11 +411,11 @@ class VoterGuidePositionList extends Component {
       listModeShown: searchingJustStarted ? '' : listModeShown,
       searchText,
     }, () => this.updateActiveFilters());
-  }
+  };
 
   clearFunction = () => {
     this.searchFunction('');
-  }
+  };
 
   render () {
     renderLog('VoterGuidePositionList');  // Set LOG_RENDER_EVENTS to log all renders

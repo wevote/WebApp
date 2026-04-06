@@ -416,7 +416,7 @@ class ChallengeHomePage extends Component {
       challengeWeVoteIdForDisplay: '', // We don't clear challengeWeVoteId because we may need it to load next challenge
       challengeSEOFriendlyPathForDisplay: '', // We don't clear challengeSEOFriendlyPath because we may need it to load next challenge
     });
-  }
+  };
 
   getChallengeBasePath = () => {
     const { challengeSEOFriendlyPath, challengeWeVoteId } = this.state;
@@ -428,14 +428,14 @@ class ChallengeHomePage extends Component {
     }
 
     return challengeBasePath;
-  }
+  };
 
   functionToUseToKeepHelping = () => {
     const { finalElectionDateInPast, payToPromoteStepCompleted, payToPromoteStepTurnedOn, sharingStepCompleted, step2Completed } = this.state;
     // console.log('functionToUseToKeepHelping sharingStepCompleted:', sharingStepCompleted, ', payToPromoteStepCompleted:', payToPromoteStepCompleted, ', step2Completed:', step2Completed);
     const keepHelpingDestinationString = keepHelpingDestination(step2Completed, payToPromoteStepCompleted, payToPromoteStepTurnedOn, sharingStepCompleted, finalElectionDateInPast);
     historyPush(`${this.getChallengeBasePath()}${keepHelpingDestinationString}`);
-  }
+  };
 
   functionToUseWhenProfileComplete = () => {
     const { challengeWeVoteId } = this.state;
@@ -446,21 +446,21 @@ class ChallengeHomePage extends Component {
     } else {
       console.log('ChallengeHomePage functionToUseWhenProfileComplete challengeWeVoteId not found');
     }
-  }
+  };
 
   goToBallot = () => {
     historyPush('/ballot');
-  }
+  };
 
   onChallengeCampaignEditClick = () => {
     historyPush(`${this.getChallengeBasePath()}edit`);
     return null;
-  }
+  };
 
   onChallengeCampaignShareClick = () => {
     historyPush(`${this.getChallengeBasePath()}share-challenge`);
     return null;
-  }
+  };
 
   render () {
     renderLog('ChallengeHomePage');  // Set LOG_RENDER_EVENTS to log all renders

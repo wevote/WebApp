@@ -14,7 +14,7 @@ import ViewInviteeDetails from '../ChallengeInviteFriends/ViewInviteeDetails';
 import EditInviteeDetails from '../ChallengeInviteFriends/EditInviteeDetails';
 
 
-const ChallengeInviteeListItem = ({ invitee }) => {
+function ChallengeInviteeListItem ({ invitee }) {
 //   console.log('ChallengeInviteeListItem:', invitee);
   const [anchorEl, setAnchorEl] = useState(null);
   const [viewInviteeDetails, setViewInviteeDetails] = useState(false);
@@ -133,7 +133,7 @@ const ChallengeInviteeListItem = ({ invitee }) => {
       </Options>
     </InvitedFriendDetails>
   );
-};
+}
 
 ChallengeInviteeListItem.propTypes = {
   invitee: PropTypes.object,

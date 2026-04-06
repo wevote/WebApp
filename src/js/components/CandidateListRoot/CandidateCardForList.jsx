@@ -163,7 +163,7 @@ class CandidateCardForList extends Component {
 
   render () {
     renderLog('CandidateCardForList');  // Set LOG_RENDER_EVENTS to log all renders
-    const { limitCardWidth, showPoliticianOpenInNewWindow, useVerticalCard } = this.props;
+    const { limitCardWidth, searchText, showPoliticianOpenInNewWindow, useVerticalCard } = this.props;
     const { campaignSupported, candidate, linkedCampaignXWeVoteId } = this.state;
     if (!candidate) {
       return null;
@@ -238,6 +238,7 @@ class CandidateCardForList extends Component {
           // politicianDescription={candidateDescription}
           politicianWeVoteId={politicianWeVoteId}
           profileImageBackgroundColor={profileImageBackgroundColor}
+          searchText={searchText}
           showPoliticianOpenInNewWindow={showPoliticianOpenInNewWindow}
           stateCode={stateCode}
           supportersCount={supportersCount}
@@ -253,6 +254,7 @@ class CandidateCardForList extends Component {
 CandidateCardForList.propTypes = {
   candidateWeVoteId: PropTypes.string,
   limitCardWidth: PropTypes.bool,
+  searchText: PropTypes.string,
   showPoliticianOpenInNewWindow: PropTypes.bool,
   useVerticalCard: PropTypes.bool,
 };

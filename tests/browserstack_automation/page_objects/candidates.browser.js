@@ -1,12 +1,20 @@
 import { $, $$, driver } from '@wdio/globals';
 import PageBrowser from './page.browser';
-import TopNavigation from './topnavigation.browser';
+import TopnavigationBrowser from "./topnavigation.browser";
+
+
+export let selectedCandidateName;
+export let selectedCandidateState;
+export let selectedCandidateParty;
+export let selectedCandidateImgSrc;
+export let selectedCandidateOffice;
+const waitTime = 5000;
 
 class CandidatesBrowser extends PageBrowser {
   async load () {
     await super.open('');
     await driver.maximizeWindow();
-    await TopNavigation.toggleCandidatesTab();
+    await TopnavigationBrowser.toggleCandidatesTab();
   }
 
   get stateSelect () {
@@ -96,7 +104,7 @@ class CandidatesBrowser extends PageBrowser {
 
   //Added page object for tests in product demo
   async getLikeButtonForEndorsement(endorsement) {
-    await browser.pause(2000);
+    await browser.pause(waitTime);
     await browser.execute((name) => {
        const wrappers = Array.from(
           document.querySelectorAll('div[class*=PositionForBallotItemWrapper]')
@@ -159,7 +167,7 @@ class CandidatesBrowser extends PageBrowser {
   }
 
   async getCandidateCardImage (cardId) {
-    const candidateImage = await $(`//div[@id='${cardId}']//div[@id='candidateCardPhotoDesktop']/div/img`);
+    const candidateImage = await $(`//div[@id='${cardId}']//div[contains(@id,'CardPhotoDesktop')]//img`);
     return candidateImage;
   }
 
@@ -203,5 +211,49 @@ class CandidatesBrowser extends PageBrowser {
     return $(`div#${cardId} button[class*='DislikeContainer'] svg path`);
   }
 
+   async getCandidateCardLikeCount (cardId) {
+    return $(`div#${cardId} button[class*='LikeContainer'] span`);
+  }
+
+   async getCandidateCardDisLikeCount (cardId) {
+    return $(`div#${cardId} button[class*='DislikeContainer'] span`);
+  }
+
+
+  async selectCandidate (selCandidateName) {
+    await this.load();
+    await driver.pause(waitTime);
+    const candidateCards = await this.candidateCardList;
+    let selCandidate;
+    let selCandidateID;
+    let candidateOnPage=false;
+
+    for (const candidate of candidateCards) {
+        const cardId = await candidate.getAttribute('id');
+        let candidateName = await this.getCandidateCardCandidateName(cardId);
+        if (candidateName === selCandidateName) {
+            selCandidate = await this.getCandidateCardCandidate(cardId);
+            selCandidateID = cardId;
+            candidateOnPage=true;
+            break;
+        }
+    }
+
+       if (candidateOnPage === false) {
+        throw new Error(`Candidate Card not found on Landing Page for given test data: ${selCandidateName}`);
+    }
+
+    selectedCandidateName = await this.getCandidateCardCandidateName(selCandidateID);
+    selectedCandidateState = await this.getCandidateCardState(selCandidateID);
+    selectedCandidateParty = await this.getCandidateCardPartyName(selCandidateID);
+    selectedCandidateOffice= await this.getCandidateCardOffice(selCandidateID);
+    const img = await this.getCandidateCardImage(selCandidateID);
+    selectedCandidateImgSrc = await img.getAttribute('src');
+    await selCandidate.moveTo();
+    await driver.pause(waitTime);
+    await selCandidate.click();
+  }
+
+  //const randomCard=candidateCards[Math.floor(Math.random() * candidateCards.length)];
 }
 export default new CandidatesBrowser();

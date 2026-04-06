@@ -277,11 +277,11 @@ class VoterGuidePositionFilter extends Component {
       }
     });
     return uniqBy(filteredItems, (x) => x.position_we_vote_id);
-  }
+  };
 
   toggleFilter = (name) => {
     this.props.onToggleFilter(name);
-  }
+  };
 
   toggleUpcomingOnly = (upcomingOnlyChecked, thisYearChecked, priorYearsChecked) => {
     const filterNameList = [];
@@ -305,7 +305,7 @@ class VoterGuidePositionFilter extends Component {
     if (this.props.onToggleMultipleFilters && filterNameList && filterNameList.length > 0) {
       this.props.onToggleMultipleFilters(filterNameList);
     }
-  }
+  };
 
   toggleThisYear = (upcomingOnlyChecked, thisYearChecked, priorYearsChecked) => {
     const filterNameList = [];
@@ -319,7 +319,7 @@ class VoterGuidePositionFilter extends Component {
     if (this.props.onToggleMultipleFilters && filterNameList && filterNameList.length > 0) {
       this.props.onToggleMultipleFilters(filterNameList);
     }
-  }
+  };
 
   togglePriorYears = (upcomingOnlyChecked, thisYearChecked, priorYearsChecked) => {
     const filterNameList = [];
@@ -333,11 +333,11 @@ class VoterGuidePositionFilter extends Component {
     if (this.props.onToggleMultipleFilters && filterNameList && filterNameList.length > 0) {
       this.props.onToggleMultipleFilters(filterNameList);
     }
-  }
+  };
 
   selectSortByFilter = (name) => {
     this.props.onSelectSortByFilter(name);
-  }
+  };
 
   generateIssuesFilters = () => this.state.issues.slice(0, 1).map((item, itemIndex) => (
     <div

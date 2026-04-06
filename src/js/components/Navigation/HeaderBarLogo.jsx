@@ -14,7 +14,7 @@ const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' *
 const logoLight = '../../../img/global/svg-icons/we-vote-logo-horizontal-color-200x66.svg';
 const logoDark = '../../../img/global/svg-icons/we-vote-logo-horizontal-color-dark-141x46.svg';
 
-const HeaderBarLogo = ({ chosenSiteLogoUrl, isBeta, light }) => {
+function HeaderBarLogo ({ chosenSiteLogoUrl, isBeta, light }) {
   const homepagePath = '/ready';
 
   function handleClick () {
@@ -60,7 +60,7 @@ const HeaderBarLogo = ({ chosenSiteLogoUrl, isBeta, light }) => {
       )}
     </HeaderBarLogoWrapper>
   );
-};
+}
 
 HeaderBarLogo.propTypes = {
   chosenSiteLogoUrl: PropTypes.string,

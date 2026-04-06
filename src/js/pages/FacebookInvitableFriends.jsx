@@ -92,8 +92,10 @@ export default class FacebookInvitableFriends extends Component {
 
   getFacebookInvitableFriends () {
     // If you are not receiving a list of friends in your local environment, see the not at the top of this file.
-    FacebookActions.getFacebookInvitableFriendsList(this.state.facebookInvitableFriendsImageWidth,
-      this.state.facebookInvitableFriendsImageHeight);
+    FacebookActions.getFacebookInvitableFriendsList(
+      this.state.facebookInvitableFriendsImageWidth,
+      this.state.facebookInvitableFriendsImageHeight,
+    );
 
     // May 20, 2018: The following line "this.setState" has no effect if called from render, and throws an error:
     // [Error] Warning: setState(...): Cannot update during an existing state transition (such as within `render` or another component's constructor). Render methods should be a pure function of props and state; constructor side-effects are an anti-pattern, but can be moved to `componentWillMount`.
@@ -105,7 +107,7 @@ export default class FacebookInvitableFriends extends Component {
       pathname: '/more/network',   // SnackNotifier that SHOULD handle this is in Friends or Values
       state: {},
     });
-  }
+  };
 
   toggleCheckBox = (facebookInvitableFriendId, facebookInvitableFriendName) => {
     const friendSelectedCheckbox = { id: facebookInvitableFriendId, name: facebookInvitableFriendName };
@@ -127,7 +129,7 @@ export default class FacebookInvitableFriends extends Component {
         this.selectedCheckBoxes.push(friendSelectedCheckbox);
       }
     }
-  }
+  };
 
   sendInviteRequestToFacebookFriends = (formSubmitEvent) => {
     formSubmitEvent.preventDefault();
@@ -143,7 +145,7 @@ export default class FacebookInvitableFriends extends Component {
 
   yesPleaseMergeAccounts = () => {
     this.setState({ yes_please_merge_accounts: true });
-  }
+  };
 
   cacheAddFriendsByFacebookMessage (e) {
     this.setState({
@@ -162,8 +164,10 @@ export default class FacebookInvitableFriends extends Component {
     } else {
       const searchTermLowercase = searchTerm.toLowerCase();
       const { facebookInvitableFriends } = this.state;
-      const searchedFriendsList = filter(facebookInvitableFriends.facebook_invitable_friends_list,
-        (user) => user.name.toLowerCase().includes(searchTermLowercase));
+      const searchedFriendsList = filter(
+        facebookInvitableFriends.facebook_invitable_friends_list,
+        (user) => user.name.toLowerCase().includes(searchTermLowercase),
+      );
 
       this.setState({
         searchFilter: true,

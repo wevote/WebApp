@@ -4,6 +4,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import YearState from './YearState';
 import adjustDistrictNameAndOfficeName from '../../utils/adjustDistrictNameAndOfficeName';
+import highlightSearchText from '../../utils/highlightSearchText';
 import { renderLog } from '../../utils/logging';
 import toTitleCase from '../../utils/toTitleCase';
 
@@ -22,7 +23,7 @@ export default function OfficeNameText (props) {
   let nameHtml;
   let officeAndDistrictHtml;
   let officeNameFiltered;
-  const { politicalParty, showOfficeName, stateName, year } = props; // officeLink, // Dec 2022: Turning off officeLink until we can do design review
+  const { politicalParty, searchText, showOfficeName, stateName, year } = props; // officeLink, // Dec 2022: Turning off officeLink until we can do design review
   const { districtName: incomingDistrictName, inCard, officeName: incomingOfficeName } = props; // Mar 2023: Turning off officeLink until we can do design review
   // console.log('incomingDistrictName: ', incomingDistrictName, 'incomingOfficeName: ', incomingOfficeName);
   if (isAllUpperCase(incomingDistrictName)) {
@@ -55,7 +56,7 @@ export default function OfficeNameText (props) {
       officeAndDistrictHtml = (
         <OfficeAndDistrictSpan>
           <span>
-            {officeName}
+            {highlightSearchText(officeName, searchText)}
             {(officeName && districtName) ? ',' : ''}
             {' '}
           </span>
@@ -71,7 +72,7 @@ export default function OfficeNameText (props) {
     officeAndDistrictHtml = (
       <PartyAndYearWrapper>
         <span>
-          {officeName}
+          {highlightSearchText(officeName, searchText)}
         </span>
       </PartyAndYearWrapper>
     );
@@ -116,6 +117,7 @@ OfficeNameText.propTypes = {
   officeName: PropTypes.string,
   // officeLink: PropTypes.string,
   politicalParty: PropTypes.string,
+  searchText: PropTypes.string,
   showOfficeName: PropTypes.bool,
   stateName: PropTypes.string,
   year: PropTypes.string,

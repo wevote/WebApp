@@ -1827,6 +1827,12 @@ h1,h2,h3,h4,h5,h6 {
   }
 }
 
+@media all and (max-width: 992px) {
+  .u-show-desktop {
+    display:none!important
+  }
+}
+
 @media all and (min-width: 992px) {
   .u-show-tablet {
     display:none!important
@@ -4841,28 +4847,96 @@ a {
   pointer-events: none;
   z-index: 2147483647;
 }
-
-/* ripple element from click */
+/* main ripple */
 .clickRipple {
   position: fixed;
-  width: 18px; /* initial size */
-  height: 18px;
+  width: 24px;
+  height: 24px;
   border-radius: 9999px;
-  border: 2px solid rgba(0, 154, 250, 0.9); /* ripple color */
+
+  border: 3px solid rgba(255, 50, 50, 1); /* bright red */
+
+  background: rgba(255, 50, 50, 0.15);
+
+  box-shadow:
+    0 0 0 6px rgba(255, 50, 50, 0.25),
+    0 0 18px rgba(255, 50, 50, 0.8),
+    0 0 34px rgba(255, 50, 50, 0.5);
+
   transform: translate(-50%, -50%) scale(0.2);
-  opacity: 0.9;
-  will-change: transform, opacity; /* change scale and opacity */
-  animation: clickRippleOut 0.5s ease-out forwards; /* ripple and fade */
+  opacity: 1;
+  animation: clickRippleOut 0.75s ease-out forwards;
 }
 
-/* Expanding + fading ripple */
+/* outer echo ring */
+.clickRipple::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+
+  border: 2px solid rgba(255, 120, 120, 1); /* lighter red ring */
+
+  opacity: 0.95;
+  animation: clickRippleEcho 0.75s ease-out forwards;
+}
+
+/* center flash */
+.clickRipple::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+
+  width: 10px;
+  height: 10px;
+  border-radius: 9999px;
+
+  background: rgba(255, 180, 180, 1);
+
+  box-shadow: 0 0 16px rgba(255, 120, 120, 1);
+
+  transform: translate(-50%, -50%);
+  animation: clickRippleCore 0.3s ease-out forwards;
+}
+
+/* main expanding ring */
 @keyframes clickRippleOut {
   0% {
     transform: translate(-50%, -50%) scale(0.2);
-    opacity: 0.9;
+    opacity: 1;
+  }
+  35% {
+    opacity: 1;
   }
   100% {
     transform: translate(-50%, -50%) scale(3);
+    opacity: 0;
+  }
+}
+
+@keyframes clickRippleEcho {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.9;
+  }
+  20% {
+    opacity: 0.85;
+  }
+  100% {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+/* center pop fades quickly */
+@keyframes clickRippleCore {
+  0% {
+    transform: translate(-50%, -50%) scale(0.8);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(2.4);
     opacity: 0;
   }
 }

@@ -90,7 +90,7 @@ class ChallengeRetrieveController extends Component {
         }
       });
     }
-  }
+  };
 
   render () {
     renderLog('ChallengeRetrieveController');  // Set LOG_RENDER_EVENTS to log all renders

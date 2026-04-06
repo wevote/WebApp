@@ -82,7 +82,7 @@ class SettingsNotifications extends Component {
     this.setState({
       addEmailInterfaceOpen: true,
     });
-  }
+  };
 
   // // NOTIFICATION_FRIEND_REQUESTS: n/a, // In App: "New friend requests, and responses to your requests"
   // NOTIFICATION_FRIEND_REQUESTS_EMAIL: 2, // Email: "New friend requests, and responses to your requests"

@@ -275,7 +275,8 @@ class CandidateListRoot extends Component {
       let foundInThisEntry;
       let isFirstWord;
       let thisWordFound;
-      searchResults = filter(filteredList,
+      searchResults = filter(
+        filteredList,
         (oneEntry) => {
           foundInThisEntry = false;
           isFirstWord = true;
@@ -297,7 +298,8 @@ class CandidateListRoot extends Component {
             }
           });
           return foundInThisEntry;
-        });
+        },
+      );
       if (searchResults.length === 0) {
         hideDisplayBecauseNoSearchResults = true;
         // this.callbackToParentHideIfNoResults(true);
@@ -343,7 +345,7 @@ class CandidateListRoot extends Component {
       hideDisplayBecauseNoSearchResults,
       timeStampOfChange: Date.now(),
     }, () => { this.handleNumberOfResults(filteredList.length, searchResults.length); });
-  }
+  };
 
   leftAndRightArrowSetState = (el) => {
     // set state here
@@ -352,19 +354,19 @@ class CandidateListRoot extends Component {
       hideLeftArrow: leftRightStateDict[0],
       hideRightArrow: leftRightStateDict[1],
     });
-  }
+  };
 
   loadMoreScrollLocal = (el) => {
     handleHorizontalScroll(el, 29, this.leftAndRightArrowSetState, RIGHT_MARGIN_SIZE);
     // handleHorizontalScroll(this.scrollElement.current, distance, this.leftAndRightArrowSetState, RIGHT_MARGIN_SIZE);
-  }
+  };
 
   shouldLoadMoreSetState = (el) => {
     const element = el;
     this.setState({
       callShowMoreCards: checkDivPositionForLoadMore(element, isMobileScreenSize()),
     });
-  }
+  };
 
   render () {
     renderLog('CandidateListRoot');  // Set LOG_RENDER_EVENTS to log all renders
@@ -429,6 +431,7 @@ class CandidateListRoot extends Component {
               >
                 <CandidateCardList
                   incomingCandidateList={(isSearching ? candidateSearchResults : filteredList)}
+                  searchText={searchText}
                   timeStampOfChange={timeStampOfChange}
                   useVerticalCard
                   loadMoreScroll={isMobileScreenSize() ? () => { handleHorizontalScroll(this.scrollElement.current, HORIZONTAL_SCROLL_DISTANCE_MOBILE_RIGHT_ARROW_CLICK, this.leftAndRightArrowSetState, RIGHT_MARGIN_SIZE); } : () => { handleHorizontalScroll(this.scrollElement.current, HORIZONTAL_SCROLL_DISTANCE_ON_RIGHT_ARROW_CLICK, this.leftAndRightArrowSetState, RIGHT_MARGIN_SIZE); }}

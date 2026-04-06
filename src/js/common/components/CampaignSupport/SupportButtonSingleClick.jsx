@@ -60,7 +60,7 @@ class SupportButtonSingleClick extends Component {
       this.props.functionToUseWhenActionComplete(campaignXWeVoteId);
     }
     return null;
-  }
+  };
 
   submitSupportButtonSingleClick = () => {
     const { campaignXWeVoteId } = this.props;
@@ -73,7 +73,7 @@ class SupportButtonSingleClick extends Component {
     initializejQuery(() => {
       CampaignSupporterActions.supportCampaignSave(campaignXWeVoteId, campaignSupported, campaignSupportedChanged, visibleToPublic, saveVisibleToPublic); // campaignSupporterSave
     }, this.functionToUseWhenActionCompleteLocal());
-  }
+  };
 
   render () {
     renderLog('SupportButtonSingleClick');  // Set LOG_RENDER_EVENTS to log all renders

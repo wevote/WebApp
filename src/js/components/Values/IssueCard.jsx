@@ -137,11 +137,11 @@ class IssueCard extends Component {
       this.toggleShowSignInModal();
     }
     this.addToIssueFollowersAdjustment(1);
-  }
+  };
 
   onIssueStopFollowingClick = () => {
     this.addToIssueFollowersAdjustment(-1);
-  }
+  };
 
   handleIssueClick = (buttonId) => {
     const { issue } = this.state;
@@ -315,7 +315,7 @@ class IssueCard extends Component {
         {`${issueDisplayName} `}
         {!hideAdvocatesCount && (
           <IssueAdvocatesCount>
-            {`(${advocatesCount}${advocatesCount === 1 ? ' Advocate' : ''}${advocatesCount > 1 ? ' Advocates' : ''})`}
+            {`(${linkedOrganizationCount}${linkedOrganizationCount === 1 ? ' Advocate' : ''}${linkedOrganizationCount > 1 ? ' Advocates' : ''})`}
           </IssueAdvocatesCount>
         )}
       </IssueName>
@@ -350,7 +350,7 @@ class IssueCard extends Component {
         )}
         {!!(linkedOrganizationCount) && (
           <LinkedOrganizationCountWrapper id="numberOfEndorsements">
-            {numberAbbreviate(advocatesCount)}
+            {numberAbbreviate(linkedOrganizationCount)}
             <CheckWrapper>
               <Check />
             </CheckWrapper>

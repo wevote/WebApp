@@ -47,14 +47,14 @@ class ValuesIntroModal extends Component {
     VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.VALUES_INTRO_COMPLETED);
     const { location: { pathname } } = window;
     this.props.toggleFunction(pathname);
-  }
+  };
 
   valuesIntroCompleted = () => {
     // Mark this, so we know to show 'Interests' in CompleteYourProfile as completed
     VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.VALUES_INTRO_COMPLETED);
     const { location: { pathname } } = window;
     this.props.toggleFunction(pathname);
-  }
+  };
 
   render () {
     renderLog('ValuesIntroModal');  // Set LOG_RENDER_EVENTS to log all renders

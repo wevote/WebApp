@@ -1,5 +1,5 @@
 import Dispatcher from '../common/dispatcher/Dispatcher';
-import { isCordova } from '../common/utils/isCordovaOrWebApp'; // eslint-disable-line import/no-cycle
+import { isCordova } from '../common/utils/isCordovaOrWebApp';
 import AppObservableStore from '../common/stores/AppObservableStore'; // eslint-disable-line import/no-cycle
 import arrayContains from '../common/utils/arrayContains';
 
@@ -33,19 +33,23 @@ export default {
   },
 
   organizationSuggestionTasks (kindOfSuggestionTask, kindOfFollowTask) {
-    Dispatcher.loadEndpoint('organizationSuggestionTasks',
+    Dispatcher.loadEndpoint(
+      'organizationSuggestionTasks',
       {
         kind_of_suggestion_task: kindOfSuggestionTask,
         kind_of_follow_task: kindOfFollowTask,
-      });
+      },
+    );
   },
 
   positionListForVoter (showOnlyThisElection, showAllOtherElections) {
-    Dispatcher.loadEndpoint('positionListForVoter',
+    Dispatcher.loadEndpoint(
+      'positionListForVoter',
       {
         show_only_this_election: showOnlyThisElection,
         show_all_other_elections: showAllOtherElections,
-      });
+      },
+    );
   },
 
   removeVoterEmailAddress (emailWeVoteId) {
@@ -153,9 +157,13 @@ export default {
     Dispatcher.loadEndpoint('voterAddressOnlyRetrieve', { voter_device_id: id });
   },
 
-  voterAddressSave (text, simple_save = false, google_civic_election_id = 0) {
+  voterAddressSave (text, simpleSave = false, googleCivicElectionId = 0) {
     // console.log('VoterActions voterAddressSave, text:', text);
-    Dispatcher.loadEndpoint('voterAddressSave', { text_for_map_search: text, simple_save, google_civic_election_id });
+    Dispatcher.loadEndpoint('voterAddressSave', {
+      text_for_map_search: text,
+      simple_save: simpleSave,
+      google_civic_election_id: googleCivicElectionId,
+    });
   },
 
   voterAnalysisForJumpProcess (incomingVoterDeviceId) {
@@ -164,8 +172,28 @@ export default {
     });
   },
 
+  updateReviewedAppFields (
+    appReviewState,
+    appReviewVersion,
+    appReviewPlatform,
+    appReviewBodyNegativeBypass,
+    appReviewEmail,
+  ) {
+    Dispatcher.loadEndpoint(
+      'voterReviewedApp',
+      {
+        app_review_state: appReviewState,
+        app_review_version: appReviewVersion,
+        app_review_platform: appReviewPlatform,
+        app_review_body_negative_bypass: appReviewBodyNegativeBypass,  // not a database field
+        app_review_email: appReviewEmail,                             // not a database field
+      },
+    );
+  },
+
   voterCompleteYourProfileSave (firstName = '', firstNameChanged = false, lastName = '', lastNameChanged = false, voterPhotoQueuedToSave = '', voterPhotoQueuedToSaveSet = false) {
-    Dispatcher.loadEndpoint('voterUpdate',
+    Dispatcher.loadEndpoint(
+      'voterUpdate',
       {
         first_name: firstName,
         first_name_changed: firstNameChanged,
@@ -173,7 +201,8 @@ export default {
         last_name_changed: lastNameChanged,
         voter_photo_from_file_reader: voterPhotoQueuedToSave,
         voter_photo_changed: voterPhotoQueuedToSaveSet,
-      });
+      },
+    );
   },
 
   voterContactIgnore (emailAddressText, otherVoterWeVoteId = '') {
@@ -228,10 +257,10 @@ export default {
     Dispatcher.loadEndpoint('voterEmailAddressRetrieve', {});
   },
 
-  voterEmailAddressSave (voterEmailAddress, send_link_to_sign_in = false) {
+  voterEmailAddressSave (voterEmailAddress, sendLinkToSignIn = false) {
     Dispatcher.loadEndpoint('voterEmailAddressSave', {
       text_for_email_address: voterEmailAddress,
-      send_link_to_sign_in,
+      send_link_to_sign_in: sendLinkToSignIn,
       make_primary_email: true,
       is_cordova: isCordova(),
       hostname: AppObservableStore.getHostname(),
@@ -269,11 +298,13 @@ export default {
   },
 
   voterExternalIdSave (externalVoterId, membershipOrganizationWeVoteId) {
-    Dispatcher.loadEndpoint('voterUpdate',
+    Dispatcher.loadEndpoint(
+      'voterUpdate',
       {
         external_voter_id: externalVoterId,
         membership_organization_we_vote_id: membershipOrganizationWeVoteId,
-      });
+      },
+    );
   },
 
   voterFacebookSaveToCurrentAccount () {
@@ -287,7 +318,8 @@ export default {
 
   // Tell the server to only save this name if a name does not currently exist
   voterFullNameSoftSave (firstName, lastName, fullName = '') {
-    Dispatcher.loadEndpoint('voterUpdate',
+    Dispatcher.loadEndpoint(
+      'voterUpdate',
       {
         first_name: firstName,
         first_name_changed: firstName && firstName !== '',
@@ -296,7 +328,8 @@ export default {
         full_name: fullName,
         full_name_changed: fullName && fullName !== '',
         name_save_only_if_no_existing_names: true,
-      });
+      },
+    );
   },
 
   voterLastNameQueuedToSave (lastName) {
@@ -304,7 +337,8 @@ export default {
   },
 
   voterMergeTwoAccountsByEmailKey (emailSecretKey, doNotMergeIfCurrentlySignedIn = false) {
-    Dispatcher.loadEndpoint('voterMergeTwoAccounts',
+    Dispatcher.loadEndpoint(
+      'voterMergeTwoAccounts',
       {
         do_not_merge_if_currently_signed_in: doNotMergeIfCurrentlySignedIn,
         email_secret_key: emailSecretKey,
@@ -313,12 +347,14 @@ export default {
         invitation_secret_key: '',
         twitter_secret_key: '',
         hostname: AppObservableStore.getHostname(),
-      });
+      },
+    );
   },
 
   voterMergeTwoAccountsByFacebookKey (facebookSecretKey) {
     // console.log("VoterActions, voterMergeTwoAccountsByFacebookKey");
-    Dispatcher.loadEndpoint('voterMergeTwoAccounts',
+    Dispatcher.loadEndpoint(
+      'voterMergeTwoAccounts',
       {
         email_secret_key: '',
         facebook_secret_key: facebookSecretKey,
@@ -326,11 +362,13 @@ export default {
         invitation_secret_key: '',
         twitter_secret_key: '',
         hostname: AppObservableStore.getHostname(),
-      });
+      },
+    );
   },
 
   voterMergeTwoAccountsByInvitationKey (invitationSecretKey) {
-    Dispatcher.loadEndpoint('voterMergeTwoAccounts',
+    Dispatcher.loadEndpoint(
+      'voterMergeTwoAccounts',
       {
         email_secret_key: '',
         facebook_secret_key: '',
@@ -338,12 +376,14 @@ export default {
         invitation_secret_key: invitationSecretKey,
         twitter_secret_key: '',
         hostname: AppObservableStore.getHostname(),
-      });
+      },
+    );
   },
 
   voterMergeTwoAccountsByJumpProcess (incomingVoterDeviceId) {
     // TODO DALE 2018-01-10 voterMergeTwoAccounts doesn't support incomingVoterDeviceId yet
-    Dispatcher.loadEndpoint('voterMergeTwoAccounts',
+    Dispatcher.loadEndpoint(
+      'voterMergeTwoAccounts',
       {
         email_secret_key: '',
         facebook_secret_key: '',
@@ -351,11 +391,13 @@ export default {
         invitation_secret_key: '',
         twitter_secret_key: '',
         hostname: AppObservableStore.getHostname(),
-      });
+      },
+    );
   },
 
   voterMergeTwoAccountsByTwitterKey (twitterSecretKey) {
-    Dispatcher.loadEndpoint('voterMergeTwoAccounts',
+    Dispatcher.loadEndpoint(
+      'voterMergeTwoAccounts',
       {
         email_secret_key: '',
         facebook_secret_key: '',
@@ -363,25 +405,30 @@ export default {
         invitation_secret_key: '',
         twitter_secret_key: twitterSecretKey,
         hostname: AppObservableStore.getHostname(),
-      });
+      },
+    );
   },
 
   voterNameSave (firstName, lastName) {
-    Dispatcher.loadEndpoint('voterUpdate',
+    Dispatcher.loadEndpoint(
+      'voterUpdate',
       {
         first_name: firstName,
         first_name_changed: true,
         last_name: lastName,
         last_name_changed: true,
-      });
+      },
+    );
   },
 
   voterPhotoDelete () {
-    Dispatcher.loadEndpoint('voterUpdate',
+    Dispatcher.loadEndpoint(
+      'voterUpdate',
       {
         voter_photo_from_file_reader: '',
         voter_photo_changed: true,
-      });
+      },
+    );
   },
 
   voterPhotoQueuedToSave (voterPhotoFromFileReader) {
@@ -391,13 +438,15 @@ export default {
   voterPhotoSave (voterPhotoQueuedToSave = '', voterPhotoQueuedToSaveSet = false, profileImageTypeCurrentlyActive = '') {
     // console.log('VoterActions voterPhotoSave');
     const profileImageTypeCurrentlyActiveSet = arrayContains(profileImageTypeCurrentlyActive, ['FACEBOOK', 'TWITTER', 'UPLOADED']);
-    Dispatcher.loadEndpoint('voterUpdate',
+    Dispatcher.loadEndpoint(
+      'voterUpdate',
       {
         profile_image_type_currently_active: profileImageTypeCurrentlyActive,
         profile_image_type_currently_active_changed: profileImageTypeCurrentlyActiveSet,
         voter_photo_from_file_reader: voterPhotoQueuedToSave,
         voter_photo_changed: voterPhotoQueuedToSaveSet,
-      });
+      },
+    );
   },
 
   profilePhotoTooBigReset () {
@@ -435,10 +484,12 @@ export default {
   },
 
   voterSplitIntoTwoAccounts () {
-    Dispatcher.loadEndpoint('voterSplitIntoTwoAccounts',
+    Dispatcher.loadEndpoint(
+      'voterSplitIntoTwoAccounts',
       {
         split_off_twitter: true,
-      });
+      },
+    );
   },
 
   voterTwitterSaveToCurrentAccount () {
@@ -447,31 +498,38 @@ export default {
   },
 
   voterUpdateInterfaceStatusFlags (flagIntegerToSet) {
-    Dispatcher.loadEndpoint('voterUpdate',
+    Dispatcher.loadEndpoint(
+      'voterUpdate',
       {
         flag_integer_to_set: flagIntegerToSet,
-      });
+      },
+    );
   },
 
   voterUpdateVerifyOtherWaysSubmit (politicianWeVoteId = '', otherWaysToVerify = '', politicianPageUrl = '') {
-    Dispatcher.loadEndpoint('voterUpdate',
+    Dispatcher.loadEndpoint(
+      'voterUpdate',
       {
         politician_we_vote_id: politicianWeVoteId,
         other_ways_to_verify: otherWaysToVerify,
         politician_page_url: politicianPageUrl,
-      });
+      },
+    );
   },
 
   voterUpdateNotificationSettingsFlags (flagIntegerToSet, flagIntegerToUnset = '') {
-    Dispatcher.loadEndpoint('voterUpdate',
+    Dispatcher.loadEndpoint(
+      'voterUpdate',
       {
         notification_flag_integer_to_set: flagIntegerToSet,
         notification_flag_integer_to_unset: flagIntegerToUnset,
-      });
+      },
+    );
   },
 
   voterNotificationSettingsUpdateFromSecretKey (emailSubscriptionSecretKey = '', smsSubscriptionSecretKey = '', flagIntegerToSet = 0, flagIntegerToSetChanged = false, flagIntegerToUnset = 0, flagIntegerToUnsetChanged = false) {
-    Dispatcher.loadEndpoint('voterNotificationSettingsUpdate',
+    Dispatcher.loadEndpoint(
+      'voterNotificationSettingsUpdate',
       {
         email_subscription_secret_key: emailSubscriptionSecretKey,
         sms_subscription_secret_key: smsSubscriptionSecretKey,
@@ -479,7 +537,8 @@ export default {
         notification_flag_integer_to_set_changed: flagIntegerToSetChanged,
         notification_flag_integer_to_unset: flagIntegerToUnset,
         notification_flag_integer_to_unset_changed: flagIntegerToUnsetChanged,
-      });
+      },
+    );
   },
 
   voterVerifySecretCode (secretCode, codeSentToSMSPhoneNumber) {
@@ -492,16 +551,16 @@ export default {
 
   voterAppleSignInSave (email, givenName, middleName, familyName, user, identityToken) {
     // eslint-disable-next-line camelcase
-    const { device: { platform: apple_platform, version: apple_os_version, model: apple_model } } = window;
+    const { device: { platform: applePlatform, version: appleOSVersion, model: appleModel } } = window;
     Dispatcher.loadEndpoint('appleSignInSave', {
       email,
       first_name: givenName,
       middle_name: middleName,
       last_name: familyName,
       user_code: user,
-      apple_platform,
-      apple_os_version,
-      apple_model,
+      apple_platform: applePlatform,
+      apple_os_version: appleOSVersion,
+      apple_model: appleModel,
       identity_token: identityToken,
     });
   },

@@ -1,11 +1,14 @@
 export default {
-  NAME: 'First Name',
-  BROWSERSTACK_USER: '',
-  BROWSERSTACK_KEY: '',
-  BROWSERSTACK_APK_URL: '',
-  BROWSERSTACK_IPA_URL: '',
-  TWITTER_USER_NAME: '',
-  TWITTER_PASSWORD: '',
-  WEB_APP_ROOT_URL: 'https://RANDOMLY-GENERATED-SUBDOMAIN.ngrok-free.app',
-  VOTER_DEVICE_ID: '',
+  browserStackConfig: {
+    NAME: 'First Name',
+    BROWSERSTACK_USER: '',
+    BROWSERSTACK_KEY: '',
+    BROWSERSTACK_APK_URL: '',
+    BROWSERSTACK_IPA_URL: '',
+    TWITTER_USER_NAME: '',
+    TWITTER_PASSWORD: '',
+    WEB_APP_ROOT_URL: 'https://RANDOMLY-GENERATED-SUBDOMAIN.ngrok-free.app',
+    VOTER_DEVICE_ID: '',
+   }
 };
+

@@ -1,5 +1,5 @@
 import { driver, expect } from '@wdio/globals';
-import ReadyPage from '../page_objects/ready.page';
+import ReadyPage from '../page_objects/ready.browser';
 import TopicsPage from '../page_objects/topics.browser';
 import ProfilePage from '../page_objects/profile.browser';
 

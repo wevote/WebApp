@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import CardForListBodyPlaceholder from '../../common/components/CardForListBodyPlaceholder';
+import CardForListBodySkeleton from '../../common/components/CardForListBodySkeleton';
 import { getTodayAsInteger } from '../../common/utils/dateFormat';
 import { renderLog } from '../../common/utils/logging';
 import CampaignSupporterStore from '../../common/stores/CampaignSupporterStore';
@@ -155,17 +155,18 @@ class PoliticianCardForList extends Component {
     renderLog('PoliticianCardForList');  // Set LOG_RENDER_EVENTS to log all renders
     const {
       hideCardMargins, hideItemActionBar,
-      limitCardWidth, politicianWeVoteId, showPoliticianOpenInNewWindow,
+      limitCardWidth, politicianWeVoteId, searchText, showPoliticianOpenInNewWindow,
       useCampaignSupportThermometer, useVerticalCard,
     } = this.props;
     const { campaignSupported, candidate, candidateWeVoteId, linkedCampaignXWeVoteId, politician } = this.state;
     if (!politicianWeVoteId) {
       return (
-        <CardForListBodyPlaceholder
+        <CardForListBodySkeleton
           useVerticalCard={useVerticalCard}
           hideCardMargins
-          profileImageBackgroundColor
           limitCardWidth={limitCardWidth}
+          hideItemActionBar={hideItemActionBar}
+          showPoliticianOpenInNewWindow={showPoliticianOpenInNewWindow}
         />
       );
     }
@@ -238,14 +239,13 @@ class PoliticianCardForList extends Component {
     const finalElectionDateInPast = candidateUltimateElectionDate && (candidateUltimateElectionDate <= todayAsInteger);
     const pathToUseToKeepHelping = this.getPathToUseToKeepHelping();
     const fallbackJsx = (
-      <span>
-        <CardForListBodyPlaceholder
-          useVerticalCard
-          hideCardMargins
-          limitCardWidth
-          profileImageBackgroundColor
-        />
-      </span>
+      <CardForListBodySkeleton
+        useVerticalCard
+        hideCardMargins
+        limitCardWidth={limitCardWidth}
+        hideItemActionBar={hideItemActionBar}
+        showPoliticianOpenInNewWindow={showPoliticianOpenInNewWindow}
+      />
     );
     return (
       <Suspense fallback={fallbackJsx}>
@@ -268,6 +268,7 @@ class PoliticianCardForList extends Component {
           // politicianDescription={politicianDescriptionToDisplay}
           politicianWeVoteId={politicianWeVoteId}
           profileImageBackgroundColor={profileImageBackgroundColor}
+          searchText={searchText}
           showPoliticianOpenInNewWindow={showPoliticianOpenInNewWindow}
           stateCode={stateCode}
           supportersCount={supportersCount}
@@ -287,6 +288,7 @@ PoliticianCardForList.propTypes = {
   hideItemActionBar: PropTypes.bool,
   limitCardWidth: PropTypes.bool,
   politicianWeVoteId: PropTypes.string,
+  searchText: PropTypes.string,
   showPoliticianOpenInNewWindow: PropTypes.bool,
   useCampaignSupportThermometer: PropTypes.bool,
   useVerticalCard: PropTypes.bool,

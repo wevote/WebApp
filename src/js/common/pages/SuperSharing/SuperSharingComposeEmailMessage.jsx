@@ -230,7 +230,7 @@ class SuperSharingComposeEmailMessage extends Component {
       campaignBasePath = `/id/${campaignXWeVoteId}/`;
     }
     return campaignBasePath;
-  }
+  };
 
   createSuggestedEmailText = () => {
     const { campaignTitle, campaignXPoliticianList } = this.state;
@@ -243,7 +243,7 @@ class SuperSharingComposeEmailMessage extends Component {
       suggestedMessage,
       suggestedSubject,
     });
-  }
+  };
 
   goToNextStep = () => {
     const { campaignXNewsItemWeVoteId } = this.state;
@@ -252,15 +252,15 @@ class SuperSharingComposeEmailMessage extends Component {
     } else {
       historyPush(`${this.getCampaignXBasePath()}super-sharing-send-email`);
     }
-  }
+  };
 
   returnToOtherSharingOptions = () => {
     historyPush(`${this.getCampaignXBasePath()}share-campaign`);
-  }
+  };
 
   submitSkipForNow = () => {
     this.goToNextStep();
-  }
+  };
 
   submitSuperSharingComposeEmailMessage = () => {
     const { campaignXNewsItemWeVoteId, campaignXWeVoteId } = this.state;
@@ -289,7 +289,7 @@ class SuperSharingComposeEmailMessage extends Component {
       });
     }
     historyPush(`${this.getCampaignXBasePath()}super-sharing-send-email`);
-  }
+  };
 
   render () {
     renderLog('SuperSharingComposeEmailMessage');  // Set LOG_RENDER_EVENTS to log all renders

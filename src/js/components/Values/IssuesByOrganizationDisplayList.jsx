@@ -125,20 +125,18 @@ class IssuesByOrganizationDisplayList extends Component {
         </PopoverHeader>
         <PopoverDescriptionText>
           {voterGuideDisplayName && (
-            <>
-              <OrganizationAdvocatesText>
-                <strong>
-                  {voterGuideDisplayName}
-                </strong>
+            <OrganizationAdvocatesText>
+              <strong>
+                {voterGuideDisplayName}
+              </strong>
                 {' '}
-                focuses on advocating for
+              focuses on advocating for
                 {' '}
-                <strong>
-                  {oneIssue.issue_name}
-                </strong>
-                :
-              </OrganizationAdvocatesText>
-            </>
+              <strong>
+                {oneIssue.issue_name}
+              </strong>
+              :
+            </OrganizationAdvocatesText>
           )}
           <Suspense fallback={<></>}>
             <ReadMore
@@ -200,7 +198,7 @@ class IssuesByOrganizationDisplayList extends Component {
         {valueIconAndText}
       </StickyPopover>
     );
-  }
+  };
 
   handleEnterHoverLocalArea = () => {
     if (this.props.handleLeaveCandidateCard) {

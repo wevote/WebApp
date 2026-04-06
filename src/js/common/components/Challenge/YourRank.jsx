@@ -12,7 +12,7 @@ import AppObservableStore, { messageService } from '../../stores/AppObservableSt
 import ChallengeParticipantStore from '../../stores/ChallengeParticipantStore';
 import FirstChallengeParticipantListController from '../ChallengeParticipantListRoot/FirstChallengeParticipantListController';
 
-const YourRank = ({ classes, challengeWeVoteId, hasBackgroundColor }) => {
+function YourRank ({ classes, challengeWeVoteId, hasBackgroundColor }) {
   const [clicked, setClicked] = useState(false);
   const [participantsCount, setParticipantsCount] = useState(0);
   const [points, setPoints] = useState(0);
@@ -121,7 +121,7 @@ const YourRank = ({ classes, challengeWeVoteId, hasBackgroundColor }) => {
       </Suspense>
     </YourRankOuterWrapper>
   );
-};
+}
 YourRank.propTypes = {
   classes: PropTypes.object.isRequired,
   challengeWeVoteId: PropTypes.string,

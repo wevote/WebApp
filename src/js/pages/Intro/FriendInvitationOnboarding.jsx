@@ -157,7 +157,7 @@ class FriendInvitationOnboarding extends Component {
         currentSlideIndex: index,
       });
     }
-  }
+  };
 
   onExitOnboarding = () => {
     const { personalizedScoreIntroWatchedThisSession } = this.state;
@@ -166,14 +166,14 @@ class FriendInvitationOnboarding extends Component {
     }
     const ballotLink = '/ready';
     historyPush(ballotLink);
-  }
+  };
 
   markPersonalizedScoreIntroCompleted = () => {
     // We don't want to set this in the API server until the onboarding modal is closed
     this.setState({
       personalizedScoreIntroWatchedThisSession: true,
     });
-  }
+  };
 
   updateSlideshowVariables = () => {
     const {
@@ -239,7 +239,7 @@ class FriendInvitationOnboarding extends Component {
       slideHtmlContentDict,
       stepLabels,
     });
-  }
+  };
 
   nextSlide () {
     const { match: { params: { invitationSecretKey } } } = this.props;

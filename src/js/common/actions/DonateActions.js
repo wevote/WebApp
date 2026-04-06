@@ -16,11 +16,13 @@ export default {
   // },
 
   donationCancelSubscriptionAction (subscriptionId, premiumPlanTypeEnum = '') {
-    Dispatcher.loadEndpoint('donationCancelSubscription',
+    Dispatcher.loadEndpoint(
+      'donationCancelSubscription',
       {
         premium_plan_type_enum: premiumPlanTypeEnum,
         stripe_subscription_id: subscriptionId,
-      });
+      },
+    );
   },
 
   donationRefund (charge) {

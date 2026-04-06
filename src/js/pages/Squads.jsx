@@ -142,7 +142,7 @@ class Squads extends Component {
 
   goToBallot = () => {
     historyPush('/ballot');
-  }
+  };
 
   getTopPadding = () => {
     if (isWebApp()) {
@@ -150,7 +150,7 @@ class Squads extends Component {
     }
     cordovaSimplePageContainerTopOffset(VoterStore.getVoterIsSignedIn());
     return {};
-  }
+  };
 
   render () {
     renderLog('Squads');  // Set LOG_RENDER_EVENTS to log all renders

@@ -40,7 +40,7 @@ export default class FAQ extends Component {
 
       this.setState({ dataLayerFired: true });
     }
-  }
+  };
 
   render () {
     renderLog('FAQ');  // Set LOG_RENDER_EVENTS to log all renders

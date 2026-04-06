@@ -425,7 +425,7 @@ class CampaignsHome extends Component {
       candidateListIsBattleground,
       candidateListOther,
     };
-  }
+  };
 
   splitUpPoliticianList = (politicianList) => {
     // console.log('politicianList = ', politicianList);
@@ -434,7 +434,7 @@ class CampaignsHome extends Component {
     return {
       politicianListToShow,
     };
-  }
+  };
 
   splitUpRepresentativeList = (representativeList) => {
     // console.log('representativeList = ', representativeList);
@@ -449,7 +449,7 @@ class CampaignsHome extends Component {
       representativeListOnYourBallot,
       representativeListShownAsRepresentatives,
     };
-  }
+  };
 
   updateActiveFilters = (setDefaultListMode = false) => {
     const {
@@ -548,7 +548,7 @@ class CampaignsHome extends Component {
         upcomingEndorsementsAvailable,
       });
     }
-  }
+  };
 
   candidatesQueryInitiatedLocal = () => {
     // This gets fired after a state-specific request happens in FirstCandidateListController
@@ -574,7 +574,7 @@ class CampaignsHome extends Component {
         });
       }
     }, howLongWeWaitForData);
-  }
+  };
 
   changeListModeShown = (newListModeShown, newFilterYear = '') => {
     const filterYearInteger = convertToInteger(newFilterYear);
@@ -582,7 +582,7 @@ class CampaignsHome extends Component {
       listModeShown: newListModeShown,
       filterYear: filterYearInteger,
     }, () => this.updateActiveFilters());
-  }
+  };
 
   getDefaultListModeShown = (incomingUpcomingEndorsementsAvailable = false) => {
     // const { listOfYearsWhenCampaignExists, listOfYearsWhenCandidateExists, listOfYearsWhenRepresentativeExists, upcomingEndorsementsAvailable } = this.state;
@@ -602,7 +602,7 @@ class CampaignsHome extends Component {
     //   return 'showAllEndorsements';
     // }
     return 'showUpcomingEndorsements';
-  }
+  };
 
   // getListOfYearsWhenCampaignExists = (campaignList) => {
   //   const listOfYearsWhenCampaignExists = [];
@@ -651,14 +651,14 @@ class CampaignsHome extends Component {
     });
     // console.log('listOfYearsWhenRepresentativeExists: ', listOfYearsWhenRepresentativeExists);
     return listOfYearsWhenRepresentativeExists;
-  }
+  };
 
   getStateNamePathnameFromStateCode = (stateCode) => {
     const stateName = convertStateCodeToStateText(stateCode);
     const stateNamePhrase = `${stateName}-candidates`;
     const stateNamePhraseLowerCase = stateNamePhrase.replaceAll(/\s+/g, '-').toLowerCase();
     return `/${stateNamePhraseLowerCase}/cs/`;
-  }
+  };
 
   handleChooseStateChange = (e) => {
     if (e.target.value === 'all') {
@@ -672,7 +672,7 @@ class CampaignsHome extends Component {
         this.setState({ stateCode: e.target.value });
       }
     }
-  }
+  };
 
   clearSearchFunction = () => {
     this.setState({
@@ -680,7 +680,7 @@ class CampaignsHome extends Component {
       listModeShown: 'showUpcomingEndorsements',
       searchText: '',
     }, () => this.updateActiveFilters());
-  }
+  };
 
   searchFunction = (searchText) => {
     // console.log('CampaignsHome searchFunction searchText:', searchText);
@@ -696,7 +696,7 @@ class CampaignsHome extends Component {
       searchText,
       stateCode: searchingJustStarted ? '' : currentStateCode,
     }, () => this.updateActiveFilters());
-  }
+  };
 
   // displayBattlegroundPlaceholderForState = (stateCode) => {
   //   // For one state, should we display a placeholder for the "Candidates in Close Races" horizontal section as the data is loaded?
@@ -723,42 +723,42 @@ class CampaignsHome extends Component {
       numberOfCampaignResults: listResults,
       numberOfCampaignSearchResults: searchResults,
     });
-  }
+  };
 
   handleNumberOfCandidatesOnBallotResults = (listResults, searchResults) => {
     this.setState({
       numberOfCandidatesOnBallotResults: listResults,
       numberOfCandidatesOnBallotSearchResults: searchResults,
     });
-  }
+  };
 
   handleNumberOfCloseRacesResults = (listResults, searchResults) => {
     this.setState({
       numberOfCloseRacesResults: listResults,
       numberOfCloseRacesSearchResults: searchResults,
     });
-  }
+  };
 
   handleNumberOfMorePoliticiansResults = (listResults, searchResults) => {
     this.setState({
       numberOfMorePoliticiansResults: listResults,
       numberOfMorePoliticiansSearchResults: searchResults,
     });
-  }
+  };
 
   handleNumberOfPoliticiansResults = (listResults, searchResults) => {
     this.setState({
       numberOfPoliticiansResults: listResults,
       numberOfPoliticiansSearchResults: searchResults,
     });
-  }
+  };
 
   handleNumberOfRepresentativeResults = (listResults, searchResults) => {
     this.setState({
       numberOfRepresentativeResults: listResults,
       numberOfRepresentativeSearchResults: searchResults,
     });
-  }
+  };
 
   render () {
     renderLog('CampaignsHome');  // Set LOG_RENDER_EVENTS to log all renders

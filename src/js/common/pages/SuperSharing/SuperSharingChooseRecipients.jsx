@@ -225,7 +225,7 @@ class SuperSharingChooseRecipients extends Component {
     }
 
     return campaignBasePath;
-  }
+  };
 
   goToNextStep = () => {
     const { campaignXNewsItemWeVoteId } = this.state;
@@ -234,7 +234,7 @@ class SuperSharingChooseRecipients extends Component {
     } else {
       historyPush(`${this.getCampaignXBasePath()}super-sharing-compose-email`);
     }
-  }
+  };
 
   increaseNumberOfRecipientsToDisplay = () => {
     let { numberOfRecipientsToDisplay } = this.state;
@@ -242,7 +242,7 @@ class SuperSharingChooseRecipients extends Component {
     this.setState({
       numberOfRecipientsToDisplay,
     }, () => this.onVoterStoreChange());
-  }
+  };
 
   onClickAddContacts = () => {
     const { campaignXNewsItemWeVoteId } = this.state;
@@ -251,7 +251,7 @@ class SuperSharingChooseRecipients extends Component {
     } else {
       historyPush(`${this.getCampaignXBasePath()}super-sharing-add-email-contacts`);
     }
-  }
+  };
 
   onClickSelectContact = (recipientEmail) => {
     if (!recipientEmail) return false;
@@ -272,22 +272,22 @@ class SuperSharingChooseRecipients extends Component {
       recipientEmailsChosen,
     });
     return true;
-  }
+  };
 
   recipientEmailHasBeenChosen = (recipientEmail) => {
     if (!recipientEmail) return false;
     const { recipientEmailsChosen } = this.state;
     const recipientEmailLowerCase = recipientEmail.toLowerCase();
     return arrayContains(recipientEmailLowerCase, recipientEmailsChosen);
-  }
+  };
 
   returnToOtherSharingOptions = () => {
     historyPush(`${this.getCampaignXBasePath()}share-campaign`);
-  }
+  };
 
   submitSkipForNow = () => {
     this.goToNextStep();
-  }
+  };
 
   submitChooseRecipients = () => {
     const { campaignXWeVoteId } = this.state;
@@ -305,7 +305,7 @@ class SuperSharingChooseRecipients extends Component {
     if (campaignXWeVoteId) {
       this.goToNextStep();
     }
-  }
+  };
 
   render () {
     renderLog('SuperSharingChooseRecipients');  // Set LOG_RENDER_EVENTS to log all renders

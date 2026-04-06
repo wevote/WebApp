@@ -57,7 +57,7 @@ class ChallengeStartAddPhoto extends Component {
       ChallengeStartActions.challengePhotoQueuedToSave(undefined);
     }
     historyPush('/start-a-challenge-preview');
-  }
+  };
 
   render () {
     renderLog('ChallengeStartAddPhoto');  // Set LOG_RENDER_EVENTS to log all renders

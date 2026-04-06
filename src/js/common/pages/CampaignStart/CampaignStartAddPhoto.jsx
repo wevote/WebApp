@@ -57,7 +57,7 @@ class CampaignStartAddPhoto extends Component {
       CampaignStartActions.campaignPhotoQueuedToSave(undefined);
     }
     historyPush('/start-a-campaign-preview');
-  }
+  };
 
   render () {
     renderLog('CampaignStartAddPhoto');  // Set LOG_RENDER_EVENTS to log all renders

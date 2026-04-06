@@ -1,16 +1,19 @@
 import { Alert, Box, Button, CircularProgress, TextField } from '@mui/material';
-import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
+import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
+import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
 import apiCalming from '../../common/utils/apiCalming';
 import { blurTextFieldAndroid, focusTextFieldAndroid } from '../../common/utils/cordovaUtils';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
+import { possibleAppReview } from '../../utils/appReviewFunctions';
 import { validatePhoneOrEmail } from '../../utils/regex-checks';
+import ReviewAppModal from '../ReviewApps/ReviewAppModal';
 
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
 const SignInOptionsPanel = React.lazy(() => import(/* webpackChunkName: 'SignInOptionsPanel' */ '../../common/components/SignIn/SignInOptionsPanel'));
@@ -36,6 +39,7 @@ class AddFriendsByEmail extends Component {
       onFriendInvitationsSentStep: false,
       senderEmailAddress: '',
       senderEmailAddressError: false,
+      showNegativeModal: false,
       voterIsSignedIn: false,
     };
     this.emailInputRef = React.createRef();
@@ -50,6 +54,7 @@ class AddFriendsByEmail extends Component {
     });
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+    this.appStateSubscription = messageService.getMessage().subscribe((token) => this.onAppObservableStoreChange(token));
     if (apiCalming('friendListsAll', 30000)) {
       FriendActions.friendListsAll();
       FriendActions.friendListInvitationsWaitingForVerification();
@@ -62,6 +67,7 @@ class AddFriendsByEmail extends Component {
   componentWillUnmount () {
     this.friendStoreListener.remove();
     this.voterStoreListener.remove();
+    this.appStateSubscription.unsubscribe();
   }
 
   onKeyDown = (event) => {
@@ -103,6 +109,18 @@ class AddFriendsByEmail extends Component {
     });
   }
 
+  onAppObservableStoreChange (token) {
+    const tokenText = token ? token.text : '';
+    const showNegativeModalFromMessage = tokenText.includes('showNegativeFeedbackModal') && tokenText.includes('ADDFRIEND');
+    const showingNegativeFeedbackModal = AppObservableStore.getShowingNegativeFeedbackModal();
+    const { showNegativeModal } = this.state;
+    if (!showNegativeModal && !showingNegativeFeedbackModal && showNegativeModalFromMessage) {
+      this.setState({
+        showNegativeModal: true,
+      });
+    }
+  }
+
   cacheAddFriendsByEmailMessage = (e) => {
     this.setState({
       messageToFriend: e.target.value,
@@ -131,6 +149,7 @@ class AddFriendsByEmail extends Component {
       });
       this.friendInvitationByEmailSend(event);
     }
+    possibleAppReview('ADDFRIEND');
   };
 
   cacheIncomingEmailsOrPhones = (event) => {
@@ -170,7 +189,7 @@ class AddFriendsByEmail extends Component {
       emailsOrPhonesBrokenErrorTimeoutId,
       friendContactInfoArray,
     });
-  }
+  };
 
   cacheFirstName = (event) => {
     const friendFirstName = event.target.value;
@@ -178,7 +197,7 @@ class AddFriendsByEmail extends Component {
     this.setState({
       friendFirstName,
     });
-  }
+  };
 
   cacheLastName = (event) => {
     const friendLastName = event.target.value;
@@ -186,7 +205,7 @@ class AddFriendsByEmail extends Component {
     this.setState({
       friendLastName,
     });
-  }
+  };
 
   friendInvitationByEmailSend (e) {
     e.preventDefault();
@@ -216,9 +235,14 @@ class AddFriendsByEmail extends Component {
     // console.log('firstNameArray: ', firstNameArray);
     // console.log('lastNameArray: ', lastNameArray);
     FriendActions.clearErrorMessageToShowVoter();
-    FriendActions.friendInvitationByEmailSend(emailAddressArray, firstNameArray,
-      lastNameArray, '', messageToFriend,
-      senderEmailAddress);
+    FriendActions.friendInvitationByEmailSend(
+      emailAddressArray,
+      firstNameArray,
+      lastNameArray,
+      '',
+      messageToFriend,
+      senderEmailAddress,
+    );
     // After calling the API, reset the form
     this.setState({
       loading: true,
@@ -243,8 +267,10 @@ class AddFriendsByEmail extends Component {
       incomingEmailsOrPhonesString, invitationEmailsAlreadyScheduledStepFromApi, loading,
       messageToFriend,
       numberOfMessagesSent, onEnterEmailAddressesStep, onFriendInvitationsSentStep,
-      senderEmailAddressError, successMessageToShowVoter, voterIsSignedIn,
+      senderEmailAddressError, showNegativeModal, successMessageToShowVoter, voterIsSignedIn,
     } = this.state;
+    const initialEmail = VoterStore.getVoterEmail();
+    const showingNegativeFeedbackModal = AppObservableStore.getShowingNegativeFeedbackModal();
 
     if (loading) {
       return (
@@ -269,6 +295,10 @@ class AddFriendsByEmail extends Component {
             {successMessageToShowVoter}
           </Alert>
         )}
+        {showNegativeModal && !showingNegativeFeedbackModal && (
+          <ReviewAppModal initialEmail={initialEmail} />
+        )}
+
         {((onFriendInvitationsSentStep || (numberOfMessagesSent > 0)) && voterIsSignedIn) && (
           <Alert severity="success">
             {numberOfMessagesSent ? (
@@ -315,11 +345,10 @@ class AddFriendsByEmail extends Component {
         ) : (
           <>
             {onEnterEmailAddressesStep && (
-              <>
-                <FormWrapper>
-                  <div>
-                    <form>
-                      <TextField
+              <FormWrapper>
+                <div>
+                  <form>
+                    <TextField
                         classes={{ root: classes.textField }}
                         id={uniqueExternalId ? `EmailAddress-${uniqueExternalId}` : 'EmailAddress'}
                         inputRef={this.emailInputRef}
@@ -335,20 +364,20 @@ class AddFriendsByEmail extends Component {
                         type="text"
                         value={incomingEmailsOrPhonesString}
                         variant="outlined"
-                      />
-                      {displayEmailsOrPhonesBrokenError && (
-                        <EmailsOrPhonesBrokenStringAlertWrapper>
-                          <Alert severity="error">
-                            Incomplete:
-                            {' '}
-                            {emailsOrPhonesBrokenString}
-                          </Alert>
-                        </EmailsOrPhonesBrokenStringAlertWrapper>
-                      )}
-                      {(friendContactInfoArray.length === 1) && (
-                        <div className="row">
-                          <div className={inSideColumn ? 'col col-12' : 'col col-6'}>
-                            <TextField
+                    />
+                    {displayEmailsOrPhonesBrokenError && (
+                    <EmailsOrPhonesBrokenStringAlertWrapper>
+                      <Alert severity="error">
+                        Incomplete:
+                        {' '}
+                        {emailsOrPhonesBrokenString}
+                      </Alert>
+                    </EmailsOrPhonesBrokenStringAlertWrapper>
+                    )}
+                    {(friendContactInfoArray.length === 1) && (
+                    <div className="row">
+                      <div className={inSideColumn ? 'col col-12' : 'col col-6'}>
+                        <TextField
                               variant="outlined"
                               margin="dense"
                               classes={{ root: classes.textField }}
@@ -361,10 +390,10 @@ class AddFriendsByEmail extends Component {
                               onFocus={() => focusTextFieldAndroid('AddFriendsByEmail')}
                               onBlur={blurTextFieldAndroid}
                               placeholder={isMobileScreenSize() || inSideColumn ? 'Optional' : 'Optional, but helpful!'}
-                            />
-                          </div>
-                          <div className={inSideColumn ? 'col col-12' : 'col col-6'}>
-                            <TextField
+                        />
+                      </div>
+                      <div className={inSideColumn ? 'col col-12' : 'col col-6'}>
+                        <TextField
                               variant="outlined"
                               margin="dense"
                               classes={{ root: classes.textField }}
@@ -377,13 +406,12 @@ class AddFriendsByEmail extends Component {
                               onFocus={() => focusTextFieldAndroid('AddFriendsByEmail')}
                               onBlur={blurTextFieldAndroid}
                               placeholder="Optional"
-                            />
-                          </div>
-                        </div>
-                      )}
-                      {(friendContactInfoArray.length > 0) ? (
-                        <>
-                          <TextField
+                        />
+                      </div>
+                    </div>
+                    )}
+                    {(friendContactInfoArray.length > 0) ? (
+                      <TextField
                             classes={{ root: classes.textField }}
                             fullWidth
                             id={uniqueExternalId ? `addFriendsMessage-${uniqueExternalId}` : 'addFriendsMessage'}
@@ -400,26 +428,24 @@ class AddFriendsByEmail extends Component {
                             type="text"
                             value={messageToFriend}
                             variant="outlined"
-                          />
-                        </>
-                      ) : null}
-                      <ButtonContainer>
-                        <Button
+                      />
+                    ) : null}
+                    <ButtonContainer>
+                      <Button
                           color="primary"
                           classes={{ root: classes.sendButton }}
-                          disabled={emailsOrPhonesBrokenString || friendContactInfoArray.length === 0}
+                          disabled={emailsOrPhonesBrokenString.length > 0 || friendContactInfoArray.length === 0}
                           id={uniqueExternalId ? `friendsNextButton-${uniqueExternalId}` : 'friendsNextButton'}
                           onClick={this.addFriendsByEmailSubmit}
                           onKeyDown={this.onKeyDown}
                           variant="contained"
-                        >
-                          Invite
-                        </Button>
-                      </ButtonContainer>
-                    </form>
-                  </div>
-                </FormWrapper>
-              </>
+                      >
+                        Invite
+                      </Button>
+                    </ButtonContainer>
+                  </form>
+                </div>
+              </FormWrapper>
             )}
           </>
         )}

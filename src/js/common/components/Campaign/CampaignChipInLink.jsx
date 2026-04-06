@@ -21,7 +21,7 @@ class CampaignChipInLink extends Component {
       campaignBasePath = `/id/${campaignXWeVoteId}/`;
     }
     return campaignBasePath;
-  }
+  };
 
   render () {
     renderLog('CampaignChipInLink');  // Set LOG_RENDER_EVENTS to log all renders

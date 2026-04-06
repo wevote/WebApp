@@ -168,7 +168,7 @@ class CampaignStartEditAll extends Component {
     } else {
       historyPush('/start-a-campaign-preview');
     }
-  }
+  };
 
   submitCampaignEditAll = () => {
     const { editExistingCampaign } = this.props;
@@ -191,12 +191,17 @@ class CampaignStartEditAll extends Component {
       // console.log('CampaignStartEditAll campaignPoliticianStarterListQueuedToSaveJson:', campaignPoliticianStarterListQueuedToSaveJson);
       CampaignStartActions.campaignEditAllSave(
         campaignXWeVoteId,
-        campaignDescriptionQueuedToSave, campaignDescriptionQueuedToSaveSet,
-        campaignPhotoQueuedToDelete, campaignPhotoQueuedToDeleteSet,
-        campaignPhotoQueuedToSave, campaignPhotoQueuedToSaveSet,
+        campaignDescriptionQueuedToSave,
+        campaignDescriptionQueuedToSaveSet,
+        campaignPhotoQueuedToDelete,
+        campaignPhotoQueuedToDeleteSet,
+        campaignPhotoQueuedToSave,
+        campaignPhotoQueuedToSaveSet,
         campaignPoliticianDeleteListJson,
-        campaignPoliticianStarterListQueuedToSaveJson, campaignPoliticianStarterListQueuedToSaveSet,
-        campaignTitleQueuedToSave, campaignTitleQueuedToSaveSet,
+        campaignPoliticianStarterListQueuedToSaveJson,
+        campaignPoliticianStarterListQueuedToSaveSet,
+        campaignTitleQueuedToSave,
+        campaignTitleQueuedToSaveSet,
       );
       CampaignStartActions.campaignEditAllReset();
     }
@@ -213,7 +218,7 @@ class CampaignStartEditAll extends Component {
         historyPush('/start-a-campaign-preview');
       }
     }, 750);
-  }
+  };
 
   render () {
     renderLog('CampaignStartEditAll');  // Set LOG_RENDER_EVENTS to log all renders

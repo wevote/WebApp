@@ -12,6 +12,8 @@ import ItemPositionStatementActionBar from '../Widgets/ItemPositionStatementActi
 
 const ItemActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemActionBar' */ '../Widgets/ItemActionBar/ItemActionBar'));
 
+const MEASURE_TEXT_MAX_LENGTH = 175;
+
 
 class MeasureItemForAddPositions extends Component {
   constructor (props) {
@@ -214,7 +216,7 @@ class MeasureItemForAddPositions extends Component {
               {ballotDisplay[0]}
             </Title>
             <SubTitle>{ballotDisplay[1]}</SubTitle>
-            <MeasureText>{shortenText(measureText, 200)}</MeasureText>
+            <MeasureText>{shortenText(measureText, MEASURE_TEXT_MAX_LENGTH)}</MeasureText>
           </MeasureInfoWrapper>
           {/* Action Buttons: Support/Oppose/Comment */}
           <Suspense fallback={<></>}>

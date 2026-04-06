@@ -34,7 +34,7 @@ const theme = createTheme({
   },
 });
 
-const ChallengeInviteFriendsTopNavigation = ({ challengeSEOFriendlyPath, challengeWeVoteId, classes, hideAboutTab }) => {
+function ChallengeInviteFriendsTopNavigation ({ challengeSEOFriendlyPath, challengeWeVoteId, classes, hideAboutTab }) {
   const [value, setValue] = React.useState(0);
   const [voterIsChallengeParticipant, setVoterIsChallengeParticipant] = React.useState(false);
   // console.log('ChallengeInviteFriendsTopNavigation challengeWeVoteId:', challengeWeVoteId, ', voterIsChallengeParticipant:', voterIsChallengeParticipant);
@@ -160,7 +160,7 @@ const ChallengeInviteFriendsTopNavigation = ({ challengeSEOFriendlyPath, challen
       )}
     </div>
   );
-};
+}
 ChallengeInviteFriendsTopNavigation.propTypes = {
   challengeSEOFriendlyPath: PropTypes.string,
   challengeWeVoteId: PropTypes.string,

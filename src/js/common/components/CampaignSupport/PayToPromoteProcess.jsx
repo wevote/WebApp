@@ -195,7 +195,7 @@ class PayToPromoteProcess extends Component {
   goToIWillShare = () => {
     const pathForNextStep = `${this.getCampaignXBasePath()}share-campaign`;
     historyPush(pathForNextStep);
-  }
+  };
 
   getCampaignXBasePath = () => {
     const { campaignSEOFriendlyPath, campaignXWeVoteId } = this.state;
@@ -206,7 +206,7 @@ class PayToPromoteProcess extends Component {
       campaignBasePath = `/id/${campaignXWeVoteId}/`;
     }
     return campaignBasePath;
-  }
+  };
 
   changeValueFromButton (newValue) {
     // console.log("this is the donation modal:", window.location.href)
@@ -236,6 +236,12 @@ class PayToPromoteProcess extends Component {
     //     <LoadingWheelComp />
     //   );
     // }
+    /*
+    TODO:  Jan 16, 2026 -- Add in the ReviewAppModal.jsx (see ItemActionBar.js as an example)
+      https://wevoteusa.atlassian.net/browse/WV-887
+      We want this to be invoked AFTER they make the donation, so it is not practical to stub this in today.
+    */
+
     if (!loaded) {
       return (
         <LoadingWheelComp message="Waiting..." />

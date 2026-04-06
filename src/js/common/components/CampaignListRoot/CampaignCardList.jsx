@@ -98,7 +98,7 @@ class CampaignCardList extends Component {
       showThisYear,
       showUpcomingEndorsements,
     });
-  }
+  };
 
   increaseNumberToDisplay = () => {
     let { numberToDisplay } = this.state;
@@ -106,7 +106,7 @@ class CampaignCardList extends Component {
     this.setState({
       numberToDisplay,
     });
-  }
+  };
 
   loadMoreHasBeenClicked = () => {
     this.increaseNumberToDisplay();
@@ -115,7 +115,7 @@ class CampaignCardList extends Component {
       // console.log('loadMoreScroll exists');
       this.props.loadMoreScroll();
     }
-  }
+  };
 
   render () {
     renderLog('CampaignCardList');  // Set LOG_RENDER_EVENTS to log all renders

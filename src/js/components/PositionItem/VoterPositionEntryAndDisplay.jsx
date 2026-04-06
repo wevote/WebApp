@@ -1,36 +1,38 @@
-import React, { useCallback, useState, useEffect, useRef, Suspense } from 'react';
-import { Button, InputBase, Radio, FormControlLabel, RadioGroup, Tooltip } from '@mui/material';
-import { withStyles } from '@mui/styles';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import { Edit as EditIcon } from '@mui/icons-material';
+import { Box, Button, FormControlLabel, InputBase, Radio, RadioGroup, Skeleton, Tooltip } from '@mui/material';
+import { styled as muiStyled, withStyles } from '@mui/styles';
+import PropTypes from 'prop-types';
+import React, { Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import TagManager from 'react-gtm-module';
+import styled from 'styled-components';
 import SupportActions from '../../actions/SupportActions';
+import SpeakerEndorsedOrOpposedSnippet from '../../common/components/Position/SpeakerEndorsedOrOpposedSnippet';
+import VoterPositionEditTripleDot from '../../common/components/Position/VoterPositionEditTripleDot';
+import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
+import { SpeakerName, SpeakerStatement, SpeakerStatementWrapper } from '../../common/components/Style/PositionDisplayStyles';
+import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
+import PoliticianStore from '../../common/stores/PoliticianStore';
 import { prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../common/utils/cordovaUtils';
 import { isAndroid } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
-import AppObservableStore from '../../common/stores/AppObservableStore';
-import PoliticianStore from '../../common/stores/PoliticianStore';
 import SupportStore from '../../stores/SupportStore';
 import VoterStore from '../../stores/VoterStore';
 import { avatarGeneric } from '../../utils/applicationUtils';
-import ModalDisplayTemplateB, {
-  templateBStyles, TextFieldDiv,
-  TextFieldForm, TextFieldWrapper,
-  UserInfoText, UserName, CommentContainer, InputBox,
-} from '../Widgets/ModalDisplayTemplateB';
-import ActivityPostPublicDropdown from '../Activity/ActivityPostPublicDropdown';
-import VoterPositionEditNameAndPhotoModal from './VoterPositionEditNameAndPhotoModal';
-import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
-import { SpeakerName, SpeakerStatement, SpeakerStatementWrapper } from '../../common/components/Style/PositionDisplayStyles';
-import SpeakerEndorsedOrOpposedSnippet from '../../common/components/Position/SpeakerEndorsedOrOpposedSnippet';
-import VoterPositionEditTripleDot from '../../common/components/Position/VoterPositionEditTripleDot';
+import { possibleAppReview } from '../../utils/appReviewFunctions';
 import { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
+import ActivityPostPublicDropdown from '../Activity/ActivityPostPublicDropdown';
+import ReviewAppModal from '../ReviewApps/ReviewAppModal';
+import ModalDisplayTemplateB, { CommentContainer, InputBox, templateBStyles, TextFieldDiv, TextFieldForm, TextFieldWrapper, UserInfoText, UserName } from '../Widgets/ModalDisplayTemplateB';
+import VoterPositionEditNameAndPhotoModal from './VoterPositionEditNameAndPhotoModal';
+
+/* global $ */
 
 const ItemActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemActionBar' */ '../Widgets/ItemActionBar/ItemActionBar'));
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../../common/components/Widgets/ReadMore'));
-const VoterPositionEntryAndDisplay = ({ classes, externalUniqueId, politicianWeVoteId }) => {
+
+
+function VoterPositionEntryAndDisplay ({ classes, externalUniqueId, onModalClose, openEditModalOnLoad, politicianWeVoteId }) {
   const politicianWeVoteIdRef = useRef(politicianWeVoteId);
   // console.log('VoterPositionEntryAndDisplay, politicianWeVoteId:', politicianWeVoteId, ', politicianWeVoteIdRef.current:', politicianWeVoteIdRef.current);
   const { allCachedPoliticians } = PoliticianStore.getState();
@@ -42,6 +44,7 @@ const VoterPositionEntryAndDisplay = ({ classes, externalUniqueId, politicianWeV
   const [selectedStance, setSelectedStance] = useState('SUPPORT');
   const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
+  const [showNegativeModal, setShowNegativeModal] = useState(false);
   const [statementText, setStatementText] = useState('');
   const [supportOrOpposeStanceExists, setSupportOrOpposeStanceExists] = useState(false);
   const [visibilityIsPublic, setVisibilityIsPublic] = useState(false);
@@ -73,24 +76,20 @@ const VoterPositionEntryAndDisplay = ({ classes, externalUniqueId, politicianWeV
     // Track modal close event only when user closes without submitting (e.g., clicking X button)
     // When closing after successful submission, pass false to avoid duplicate tracking
     if (showEditModal && isClosedWithoutSubmitting) {
-      let stanceLabel = 'Not sure yet';
-      if (selectedStance === 'SUPPORT') {
-        stanceLabel = 'Supporting';
-      } else if (selectedStance === 'OPPOSE') {
-        stanceLabel = 'Opposing';
-      }
-
+      const closeButtonId = `closeModalDisplayTemplateBeditPosition-${politicianWeVoteId}-${externalUniqueId}`;
       const dataLayerObject = {
-        event: 'opinion_modal_closed',
+        event: 'action',
         pageDetails: getPageDetails(),
         userDetails: VoterStore.getAnalyticsUserDetails(),
         actionDetails: {
-          stance: stanceLabel,
-          hasOpinionText: statementText.trim() !== '',
-          politicianName,
+          actionType: 'close',
+          componentName: 'VoterPositionEntryAndDisplay',
+          buttonId: closeButtonId,
         },
       };
-
+      if (politicianWeVoteId) {
+        dataLayerObject.politicianDetails = PoliticianStore.getAnalyticsPoliticianDetails(politicianWeVoteId);
+      }
       TagManager.dataLayer({ dataLayer: dataLayerObject });
     }
 
@@ -98,6 +97,7 @@ const VoterPositionEntryAndDisplay = ({ classes, externalUniqueId, politicianWeV
 
     if (showEditModal) {
       restoreStylesAfterCordovaKeyboard('VoterPositionEntryAndDisplay');
+      if (onModalClose) onModalClose();
     }
   };
 
@@ -110,6 +110,23 @@ const VoterPositionEntryAndDisplay = ({ classes, externalUniqueId, politicianWeV
     //   AppObservableStore.setShowSignInModal(true);
     // }
   };
+
+  const onAppObservableStoreChange = useCallback((token) => {
+    const tokenText = token ? token.text : '';
+    const showNegativeModalFromMessage = tokenText.includes('showNegativeFeedbackModal') && tokenText.includes('POSITION');
+    const showingNegativeFeedbackModal = AppObservableStore.getShowingNegativeFeedbackModal();
+    if (!showNegativeModal && !showingNegativeFeedbackModal && showNegativeModalFromMessage) {
+      setShowNegativeModal(true);
+    }
+  }, [showNegativeModal]);
+
+  useEffect(() => {
+    const appStateSubscription = messageService.getMessage().subscribe(onAppObservableStoreChange);
+    onAppObservableStoreChange();
+    return () => {
+      appStateSubscription.unsubscribe();
+    };
+  }, [onAppObservableStoreChange]);
 
   const openEditModal = () => {
     if (VoterStore.getVoterIsSignedIn()) {
@@ -199,6 +216,7 @@ const VoterPositionEntryAndDisplay = ({ classes, externalUniqueId, politicianWeV
       }
     };
     const raf = requestAnimationFrame(focusInput);
+    // eslint-disable-next-line consistent-return
     return () => {
       cancelAnimationFrame(raf);
     };
@@ -220,8 +238,17 @@ const VoterPositionEntryAndDisplay = ({ classes, externalUniqueId, politicianWeV
     };
   }, []);
 
+  useEffect(() => {
+    if (openEditModalOnLoad) {
+      setShowEditModal(true);
+    }
+  }, [openEditModalOnLoad]);
+
   const onFocusInput = () => {
     prepareForCordovaKeyboard('VoterPositionEntryAndDisplay');
+    if (isMobileScreenSize()) {
+      $("div[class^='DialogContentInnerWrapper']").css('margin-top', '0');
+    }
   };
 
   const deletePosition = (e) => {
@@ -250,19 +277,28 @@ const VoterPositionEntryAndDisplay = ({ classes, externalUniqueId, politicianWeV
     }
 
     const dataLayerObject = {
-      event: 'opinion_submitted',
+      event: 'action',
       pageDetails: getPageDetails(),
       userDetails: VoterStore.getAnalyticsUserDetails(),
       actionDetails: {
-        stance: stanceLabel,
-        hasOpinionText: statementText.trim() !== '',
-        politicianName,
+        actionType: 'save',
+        buttonId: 'positionEntrySave',
+        componentName: 'VoterPositionEntryAndDisplay',
+      },
+      positionDetails: {
+        positionStance: stanceLabel,
+        hasPositionStatement: statementText.trim() !== '',
+        isPublic: visibilityIsPublic,
+        positionWeVoteId: position.position_we_vote_id || null, // null for new positions; TODO: capture after API save
       },
     };
-
+    if (politicianWeVoteId) {
+      dataLayerObject.politicianDetails = PoliticianStore.getAnalyticsPoliticianDetails(politicianWeVoteId);
+    }
     TagManager.dataLayer({ dataLayer: dataLayerObject });
 
     SupportActions.voterPositionCommentSave(ballotItemWeVoteId, kindOfBallotItem, politicianWeVoteId, statementText, selectedStance, visibilitySetting);
+    possibleAppReview('POSITION');
     toggleEditModalLocal(false);
   };
 
@@ -277,67 +313,75 @@ const VoterPositionEntryAndDisplay = ({ classes, externalUniqueId, politicianWeV
   const statementPlaceholderText = 'What\'s on your mind?';
   const rowsToShow = isAndroid() ? 4 : 6;
 
-  const VoterAvatarBlock = () => (
-    <VoterAvatar>
-      {voterPhotoUrlMedium ? (
-        <VoterImage
+  function VoterAvatarBlock () {
+    return (
+      <VoterAvatar>
+        {voterPhotoUrlMedium ? (
+          <VoterImage
           alt="Voter"
           src={voterPhotoUrlMedium || avatarGeneric()}
-        />
-      ) : (
-        <>
-          <VoterFirstName>
-            {voterFirstName[0]}
-          </VoterFirstName>
-          <VoterLastName>
-            {voterLastName[0]}
-          </VoterLastName>
-        </>
-      )}
-    </VoterAvatar>
-  );
+          />
+        ) : (
+          <>
+            <VoterFirstName>
+              {voterFirstName[0]}
+            </VoterFirstName>
+            <VoterLastName>
+              {voterLastName[0]}
+            </VoterLastName>
+          </>
+        )}
+      </VoterAvatar>
+    );
+  }
 
-  const VoterPositionBlock = ({ onClick }) => (
-    <VoterPositionContainer>
-      <VoterAvatarDisplayContainer>
-        <VoterAvatarBlock />
-        <EditIcon
+  function VoterPositionBlock ({ onClick }) {
+    return (
+      <VoterPositionContainer>
+        <VoterAvatarDisplayContainer>
+          <VoterAvatarBlock />
+          <EditIcon
           onClick={handleEditModalOpen}
           className={classes.styledEditIcon}
-        />
-      </VoterAvatarDisplayContainer>
-      <CommentContainerWrapper>
-        {statementText ? (
-          <SpeakerInfoWrapperB>
-            <SpeakerName>
-              {voterName}
-            </SpeakerName>
-            <SpeakerStatementWrapper>
-              <SpeakerStatement>
-                <Suspense fallback={<></>}>
-                  <ReadMore
+          />
+        </VoterAvatarDisplayContainer>
+        <CommentContainerWrapper>
+          {statementText ? (
+            <SpeakerInfoWrapperB>
+              <SpeakerName>
+                {voterName}
+              </SpeakerName>
+              <SpeakerStatementWrapper>
+                <SpeakerStatement>
+                  <Suspense fallback={<></>}>
+                    <ReadMore
                     textToDisplay={statementText}
                     numberOfLines={6}
-                  />
-                </Suspense>
-              </SpeakerStatement>
-            </SpeakerStatementWrapper>
-          </SpeakerInfoWrapperB>
-        ) : (
-          <CommentContainer>
-            {/* Open modal when input is clicked */}
-            <InputBox
+                    />
+                  </Suspense>
+                </SpeakerStatement>
+              </SpeakerStatementWrapper>
+            </SpeakerInfoWrapperB>
+          ) : (
+            <CommentContainer>
+              {/* Open modal when input is clicked */}
+              <InputBox
               type="text"
               placeholder="What's your opinion?"
               onClick={onClick}
               readOnly
               style={{ overflow: 'hidden' }}
-            />
-          </CommentContainer>
-        )}
-        {!supportOrOpposeStanceExists && (
+              />
+            </CommentContainer>
+          )}
+          {!supportOrOpposeStanceExists && (
           <ItemActionBarContainer>
-            <Suspense fallback={<></>}>
+            <Suspense fallback={(
+              <Box display="flex" gap={1}>
+                <Skeleton variant="rounded" width={100} height={36} sx={{ borderRadius: 2 }} />
+                <Skeleton variant="rounded" width={100} height={36} sx={{ borderRadius: 2 }} />
+              </Box>
+            )}>
               <ItemActionBar
                 ballotItemWeVoteId=""
                 // ballotItemDisplayName={oneCandidate.ballot_item_display_name}
@@ -354,16 +398,17 @@ const VoterPositionEntryAndDisplay = ({ classes, externalUniqueId, politicianWeV
               />
             </Suspense>
           </ItemActionBarContainer>
-        )}
-        {positionExists && (
+          )}
+          {positionExists && (
           <SpeakerPositionLikesSourceWrapper>
             <SpeakerEndorsedOrOpposedSnippet position={position} viewerIsPositionOwner />
             <VoterPositionEditTripleDot triggerDeleteOpinion={openDeleteConfirmationModal} triggerEditOpinion={openEditModal} />
           </SpeakerPositionLikesSourceWrapper>
-        )}
-      </CommentContainerWrapper>
-    </VoterPositionContainer>
-  );
+          )}
+        </CommentContainerWrapper>
+      </VoterPositionContainer>
+    );
+  }
   VoterPositionBlock.propTypes = {
     onClick: PropTypes.func.isRequired,
   };
@@ -425,19 +470,19 @@ const VoterPositionEntryAndDisplay = ({ classes, externalUniqueId, politicianWeV
         >
           <FormControlLabel
             value="SUPPORT"
-            control={<Radio color="primary" />}
+            control={<RadioStyled color="primary" />}
             label="Supporting"
             classes={{ root: classes.radioLabel }}
           />
           <FormControlLabel
             value="OPPOSE"
-            control={<Radio color="primary" />}
+            control={<RadioStyled color="primary" />}
             label="Opposing"
             classes={{ root: classes.radioLabel }}
           />
           <FormControlLabel
             value="INFO_ONLY"
-            control={<Radio color="primary" />}
+            control={<RadioStyled color="primary" />}
             label="Not sure yet"
             classes={{ root: classes.radioLabel }}
           />
@@ -501,13 +546,19 @@ const VoterPositionEntryAndDisplay = ({ classes, externalUniqueId, politicianWeV
     </TextFieldWrapper>
   );
 
+  const initialEmail = VoterStore.getVoterEmail();
+  const showingNegativeFeedbackModal = AppObservableStore.getShowingNegativeFeedbackModal();
   return (
     <>
+      {showNegativeModal && !showingNegativeFeedbackModal && (
+        <ReviewAppModal initialEmail={initialEmail} />
+      )}
       <ModalDisplayTemplateB
         dialogTitleJSX={<>{editPositionModalTitleText}</>}
         show={showEditModal}
         textFieldJSX={editPositionModalJSX}
         toggleModal={toggleEditModalLocal}
+        externalUniqueId={`editPosition-${politicianWeVoteId}-${externalUniqueId}`}
       />
       <ModalDisplayTemplateB
         dialogTitleJSX={<>{deleteConfirmationModalTitleText}</>}
@@ -521,18 +572,22 @@ const VoterPositionEntryAndDisplay = ({ classes, externalUniqueId, politicianWeV
           toggleModal={handleEditModalClose}
         />
       )}
-      <VoterPositionBlock
-        onClick={openEditModal}
-        politicianWeVoteId={politicianWeVoteId}
-        voterPhotoUrlMedium={voterPhotoUrlMedium}
-        voterName={voterName}
-      />
+      {!openEditModalOnLoad && (
+        <VoterPositionBlock
+          onClick={openEditModal}
+          politicianWeVoteId={politicianWeVoteId}
+          voterPhotoUrlMedium={voterPhotoUrlMedium}
+          voterName={voterName}
+        />
+      )}
     </>
   );
-};
+}
 VoterPositionEntryAndDisplay.propTypes = {
   classes: PropTypes.object,
   externalUniqueId: PropTypes.string,
+  onModalClose: PropTypes.func,
+  openEditModalOnLoad: PropTypes.bool,
   politicianWeVoteId: PropTypes.string,
 };
 
@@ -599,5 +654,7 @@ export const VoterPositionContainer = styled('div')`
   margin: 12px 0 26px 0;
   padding: 6px;
 `;
+
+const RadioStyled = muiStyled(Radio)(isMobileScreenSize() ? { padding: '2px' } : {});
 
 export default withStyles(templateBStyles)(VoterPositionEntryAndDisplay);

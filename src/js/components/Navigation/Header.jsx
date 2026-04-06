@@ -127,13 +127,13 @@ export default class Header extends Component {
 
   closePositionDrawer = () => {
     AppObservableStore.setShowPositionDrawer(false);
-  }
+  };
 
   closeOrganizationModal = () => {
     AppObservableStore.setShowOrganizationModal(false);
     AppObservableStore.setHideOrganizationModalBallotItemInfo(false);
     AppObservableStore.setHideOrganizationModalPositions(false);
-  }
+  };
 
   closeHowItWorksModal () {
     AppObservableStore.setShowHowItWorksModal(false);
@@ -501,19 +501,15 @@ export default class Header extends Component {
                 </OfficeBannerAboveHeaderWrapper>
               )}
               {(headerNotVisible || hideHeader) ? (
-                <>
-                  <Suspense fallback={<></>}>
-                    <HeaderBarModals />
-                  </Suspense>
-                </>
+                <Suspense fallback={<></>}>
+                  <HeaderBarModals />
+                </Suspense>
               ) : (
-                <>
-                  <Suspense fallback={<></>}>
-                    { showBackToBallotHeader ?
-                      <HeaderBackToBallot params={params} /> :
-                      <HeaderBar />}
-                  </Suspense>
-                </>
+                <Suspense fallback={<></>}>
+                  { showBackToBallotHeader ?
+                    <HeaderBackToBallot params={params} /> :
+                    <HeaderBar />}
+                </Suspense>
               )}
             </div>
           </HeadroomWrapper>

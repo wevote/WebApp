@@ -37,7 +37,7 @@ class SetUpAccountInviteContacts extends React.Component {
     } else {
       return '/findfriends/importcontacts';
     }
-  }
+  };
 
   render () {
     renderLog('SetUpAccountInviteContacts');  // Set LOG_RENDER_EVENTS to log all renders

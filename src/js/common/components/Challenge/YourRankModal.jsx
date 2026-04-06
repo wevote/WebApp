@@ -6,26 +6,24 @@ import React from 'react';
 import styled from 'styled-components';
 import ChallengeParticipantListRoot from '../ChallengeParticipantListRoot/ChallengeParticipantListRoot';
 
-const YourRankModal = ({ challengeWeVoteId, classes, show, toggleModal }) =>
-  // Consider including name of the challenge here
-  // const challengeName = `Mr. Beast's "Get Out the Vote"`;
-  (
+function YourRankModal ({ challengeWeVoteId, classes, show, toggleModal }) {
+  return (
     <Dialog
-      classes={{ paper: classes.dialogPaper }}
-      onClose={() => toggleModal()}
-      open={show}
+    classes={{ paper: classes.dialogPaper }}
+    onClose={() => toggleModal()}
+    open={show}
     >
       <DialogTitle
-        classes={{ root: classes.dialogTitle }}
+      classes={{ root: classes.dialogTitle }}
       >
         <DialogTitleWrapper>
           <Title>
             Challenge Ranking
           </Title>
           <IconButton
-            aria-label="Close"
-            onClick={() => toggleModal()}
-            size="large"
+          aria-label="Close"
+          onClick={() => toggleModal()}
+          size="large"
           >
             <Close />
           </IconButton>
@@ -33,11 +31,12 @@ const YourRankModal = ({ challengeWeVoteId, classes, show, toggleModal }) =>
       </DialogTitle>
       <DialogContent style={{ padding: 0 }}>
         <ChallengeParticipantListRoot
-          challengeWeVoteId={challengeWeVoteId}
+        challengeWeVoteId={challengeWeVoteId}
         />
       </DialogContent>
     </Dialog>
   );
+}
 YourRankModal.propTypes = {
   challengeWeVoteId: PropTypes.string.isRequired,
   classes: PropTypes.object.isRequired,

@@ -180,7 +180,7 @@ class CampaignDetailsActionSideBox extends Component {
         campaignSupported: false,
       });
     }
-  }
+  };
 
   onKeyDown = (event) => {
     event.preventDefault();

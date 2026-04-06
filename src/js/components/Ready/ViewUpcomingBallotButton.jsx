@@ -89,7 +89,7 @@ class ViewUpcomingBallotButton extends React.Component {
       TagManager.dataLayer({ dataLayer: dataLayerObject });
       this.props.goToBallotFunction();
     }
-  }
+  };
 
   goToFindFriends = () => {
     const { voterContactEmailListCount, voterFirstName, voterPhotoUrlLarge } = this.state;
@@ -111,7 +111,7 @@ class ViewUpcomingBallotButton extends React.Component {
     AppObservableStore.setSetUpAccountBackLinkPath(currentPathname);
     AppObservableStore.setSetUpAccountEntryPath(setUpAccountEntryPath);
     historyPush(setUpAccountEntryPath);
-  }
+  };
 
   render () {
     renderLog('ViewUpcomingBallotButton');  // Set LOG_RENDER_EVENTS to log all renders

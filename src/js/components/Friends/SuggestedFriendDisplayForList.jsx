@@ -52,7 +52,7 @@ class SuggestedFriendDisplayForList extends Component {
     this.setState({
       friendInvitationByEmailSent: true,
     });
-  }
+  };
 
   primaryActionSend = () => {
     const { emailAddressForDisplay, remindMode } = this.props;
@@ -61,7 +61,7 @@ class SuggestedFriendDisplayForList extends Component {
     } else if (emailAddressForDisplay) {
       this.friendInvitationByEmailSend();
     }
-  }
+  };
 
   contactReminderSend () {
     const {

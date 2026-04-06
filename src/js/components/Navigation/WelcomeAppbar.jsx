@@ -132,38 +132,38 @@ class WelcomeAppbar extends Component {
       return;
     }
     document.querySelector('body').style.overflow = '';
-  }
+  };
 
   handleToPageFromMobileNav = (destination) => {
     // console.log('handleToPageFromMobileNav destination:', destination);
     this.handleShowMobileNavigation(false);
     historyPush(destination);
-  }
+  };
 
   handleSignInFromMobileNav = () => {
     this.handleShowMobileNavigation(false);
     this.toggleSignInModal();
-  }
+  };
 
   hideProfilePopUp = () => {
     this.setState({ profilePopUpOpen: false });
-  }
+  };
 
   signOutAndHideProfilePopUp = () => {
     this.handleShowMobileNavigation(false);
     VoterSessionActions.voterSignOut();
     this.setState({ profilePopUpOpen: false });
-  }
+  };
 
   toggleProfilePopUp = () => {
     const { profilePopUpOpen } = this.state;
     this.setState({ profilePopUpOpen: !profilePopUpOpen });
-  }
+  };
 
   toggleSignInModal = () => {
     const { showSignInModal } = this.state;
     AppObservableStore.setShowSignInModal(!showSignInModal);
-  }
+  };
 
   transitionToYourVoterGuide = () => {
     // Positions for this organization, for this voter/election

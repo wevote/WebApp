@@ -16,7 +16,7 @@ import { APIProvider } from '@vis.gl/react-google-maps';
 import React, { useEffect, useRef } from 'react';
 import webAppConfig from '../../config';
 
-const ReactNewPlacesAutocomplete = () => {
+function ReactNewPlacesAutocomplete () {
   const mapRef = useRef(null);
   const autocompleteRef = useRef(null);
 
@@ -50,6 +50,6 @@ const ReactNewPlacesAutocomplete = () => {
       <div ref={autocompleteRef}>&nbsp;</div>
     </APIProvider>
   );
-};
+}
 
 export default ReactNewPlacesAutocomplete;

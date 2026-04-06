@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { action } from '@storybook/addon-actions';
+import { action } from 'storybook/actions';
+import { fn } from 'storybook/test';
 import styled from 'styled-components';
 import CompleteYourProfileWizard from '../../components/CompleteYourProfile/CompleteYourProfileWizard';
 
@@ -46,6 +47,9 @@ export default {
   parameters: {
     layout: 'centered',
   },
+  args: {
+    onClick: fn(), // Explicitly mock the action
+  },
   argTypes: {
     activeStep: {
       control: { type: 'check' },
@@ -75,7 +79,7 @@ const Container = styled.div`
   height: 100vh;
 `;
 
-export const CompleteYourProfileWizardStory = (args) => {
+export function CompleteYourProfileWizardStory (args) {
   const [steps, setSteps] = useState(args.steps);
   useEffect(() => {
     setSteps((prevSteps) => prevSteps.map((step) => ({
@@ -104,7 +108,7 @@ export const CompleteYourProfileWizardStory = (args) => {
       />
     </Container>
   );
-};
+}
 
 CompleteYourProfileWizardStory.args = {
   steps: initialSteps,

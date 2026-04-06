@@ -189,7 +189,7 @@ class MostRecentCampaignSupport extends React.Component {
       supportersOnStageNow: [],
       waitingForInitialData: true,
     });
-  }
+  };
 
   fillStageQueue (allLatestSupporters) {
     if (!allLatestSupporters || allLatestSupporters.length === 0) {
@@ -241,13 +241,11 @@ class MostRecentCampaignSupport extends React.Component {
     if (this.commentsWrapperDiv && this.commentsWrapperDiv.current && this.commentsWrapperDiv.current.scrollTop) {
       setTimeout(
         () => {
-          this.scrollInterval = setInterval(
-            () => {
-              // set flag to distinguish auto from manual scroll
-              this.setState({ isAutoScroll: true });
-              this.commentsWrapperDiv.current.scrollTop += 1;
-            }, 100,
-          );
+          this.scrollInterval = setInterval(() => {
+            // set flag to distinguish auto from manual scroll
+            this.setState({ isAutoScroll: true });
+            this.commentsWrapperDiv.current.scrollTop += 1;
+          }, 100);
         },
         1000,
       );

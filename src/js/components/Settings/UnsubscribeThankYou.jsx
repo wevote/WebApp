@@ -61,7 +61,7 @@ class UnsubscribeThankYou extends React.Component {
     if (this.props.goToNextStep) {
       this.props.goToNextStep();
     }
-  }
+  };
 
   // submitChangeNotificationSetting = () => {
   //   // console.log('UnsubscribeThankYou submitChangeNotificationSetting');

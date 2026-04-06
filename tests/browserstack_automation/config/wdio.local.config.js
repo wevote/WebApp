@@ -1,4 +1,4 @@
-const { config } = require('./wdio.config.js'); 
+import { config } from './wdio.config.js';
 
 config.capabilities = [{
   maxInstances: 5,
@@ -13,5 +13,5 @@ delete config.user;
 delete config.key;
 config.services = [];
 
-module.exports = { config };
+export { config };
 

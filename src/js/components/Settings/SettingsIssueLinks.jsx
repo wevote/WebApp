@@ -128,7 +128,7 @@ export default class SettingsIssueLinks extends Component {
     this.setState({
       voterIsSignedIn,
     });
-  }
+  };
 
   getDefaultActiveIssueTab () {
     // If the organization is linked to fewer than 3 issues, default to the "Find Issues" tab

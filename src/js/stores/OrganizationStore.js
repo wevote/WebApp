@@ -1019,190 +1019,190 @@ class OrganizationStore extends ReduceStore {
             };
           }
         } else // positionListForOpinionMaker, else for action.res.friends_vs_public === "FRIENDS_ONLY"
-        if (action.res.filter_for_voter) {
+          if (action.res.filter_for_voter) {
           // console.log('positionListForOpinionMaker filter_for_voter PART2 true?: ', action.res.filter_for_voter);
-          const positionListForOneElection = action.res.position_list;
-          if (positionListForOneElection) {
-            positionListForOneElection.forEach((onePosition) => {
-              mergedPosition = {
-                ...allCachedPositionsByPositionWeVoteId[onePosition.position_we_vote_id],
-                ...onePosition,
-              };
-              allCachedPositionsByPositionWeVoteId[onePosition.position_we_vote_id] = mergedPosition;
+            const positionListForOneElection = action.res.position_list;
+            if (positionListForOneElection) {
+              positionListForOneElection.forEach((onePosition) => {
+                mergedPosition = {
+                  ...allCachedPositionsByPositionWeVoteId[onePosition.position_we_vote_id],
+                  ...onePosition,
+                };
+                allCachedPositionsByPositionWeVoteId[onePosition.position_we_vote_id] = mergedPosition;
               // console.log(action.type, ' filter_for_voter: True onePosition:', onePosition);
-            });
-          }
-          organization = allCachedOrganizationsDict[organizationWeVoteId] || {};
+              });
+            }
+            organization = allCachedOrganizationsDict[organizationWeVoteId] || {};
 
-          // Make sure to maintain the lists we attach to the organization from other API calls
-          if (allCachedOrganizationsDict[organizationWeVoteId]) {
-            priorCopyOfOrganization = allCachedOrganizationsDict[organizationWeVoteId];
-            organization = this._copyListsToNewOrganization(organization, priorCopyOfOrganization);
-          }
-          // console.log('organization-NOT FRIENDS_ONLY-filter_for_voter: ', organization);
-          organization.position_list_for_one_election = positionListForOneElection;
-          allCachedOrganizationsDict[organizationWeVoteId] = organization;
-          // console.log('positionListForOpinionMaker intake organizationWeVoteId:', organizationWeVoteId);
-          if (organization.position_list_for_one_election) {
-            if (!allCachedPositionsByOrganization[organizationWeVoteId]) {
-              allCachedPositionsByOrganization[organizationWeVoteId] = [];
+            // Make sure to maintain the lists we attach to the organization from other API calls
+            if (allCachedOrganizationsDict[organizationWeVoteId]) {
+              priorCopyOfOrganization = allCachedOrganizationsDict[organizationWeVoteId];
+              organization = this._copyListsToNewOrganization(organization, priorCopyOfOrganization);
             }
-            if (!allCachedPositionsByOrganizationDict[organizationWeVoteId]) {
-              allCachedPositionsByOrganizationDict[organizationWeVoteId] = {};
-            }
-            organization.position_list_for_one_election.forEach((onePosition) => {
+            // console.log('organization-NOT FRIENDS_ONLY-filter_for_voter: ', organization);
+            organization.position_list_for_one_election = positionListForOneElection;
+            allCachedOrganizationsDict[organizationWeVoteId] = organization;
+            // console.log('positionListForOpinionMaker intake organizationWeVoteId:', organizationWeVoteId);
+            if (organization.position_list_for_one_election) {
+              if (!allCachedPositionsByOrganization[organizationWeVoteId]) {
+                allCachedPositionsByOrganization[organizationWeVoteId] = [];
+              }
+              if (!allCachedPositionsByOrganizationDict[organizationWeVoteId]) {
+                allCachedPositionsByOrganizationDict[organizationWeVoteId] = {};
+              }
+              organization.position_list_for_one_election.forEach((onePosition) => {
               // console.log('OrganizationStore, positionListForOpinionMaker, onePosition: ', onePosition);
               // Check to see if this position has already been put in this array
-              existingPosition = allCachedPositionsByOrganization[organizationWeVoteId].find((possibleMatch) => possibleMatch.position_we_vote_id === onePosition.position_we_vote_id);
-              if (!existingPosition) {
-                allCachedPositionsByOrganization[organizationWeVoteId].push(onePosition);
-              }
-              if (onePosition.ballot_item_we_vote_id) {
-                allCachedPositionsByOrganizationDict[organizationWeVoteId][onePosition.ballot_item_we_vote_id] = onePosition;
-              }
-              if (onePosition.contest_office_we_vote_id) {
-                allCachedPositionsByOrganizationDict[organizationWeVoteId][onePosition.contest_office_we_vote_id] = onePosition;
-              }
-            });
-          }
-          // console.log('allCachedPositionsByOrganization filter_for_voter:', allCachedPositionsByOrganization);
-          return {
-            ...state,
-            allCachedOrganizationsDict,
-            allCachedPositionsByOrganization,
-            allCachedPositionsByOrganizationDict,
-            allCachedPositionsByPositionWeVoteId,
-          };
-        } else if (action.res.filter_out_voter) {
+                existingPosition = allCachedPositionsByOrganization[organizationWeVoteId].find((possibleMatch) => possibleMatch.position_we_vote_id === onePosition.position_we_vote_id);
+                if (!existingPosition) {
+                  allCachedPositionsByOrganization[organizationWeVoteId].push(onePosition);
+                }
+                if (onePosition.ballot_item_we_vote_id) {
+                  allCachedPositionsByOrganizationDict[organizationWeVoteId][onePosition.ballot_item_we_vote_id] = onePosition;
+                }
+                if (onePosition.contest_office_we_vote_id) {
+                  allCachedPositionsByOrganizationDict[organizationWeVoteId][onePosition.contest_office_we_vote_id] = onePosition;
+                }
+              });
+            }
+            // console.log('allCachedPositionsByOrganization filter_for_voter:', allCachedPositionsByOrganization);
+            return {
+              ...state,
+              allCachedOrganizationsDict,
+              allCachedPositionsByOrganization,
+              allCachedPositionsByOrganizationDict,
+              allCachedPositionsByPositionWeVoteId,
+            };
+          } else if (action.res.filter_out_voter) {
           // console.log('positionListForOpinionMaker filter_out_voter PART2 true?: ', action.res.filter_out_voter);
-          const positionListForAllExceptOneElection = action.res.position_list;
-          if (positionListForAllExceptOneElection) {
-            positionListForAllExceptOneElection.forEach((onePosition) => {
-              mergedPosition = {
-                ...allCachedPositionsByPositionWeVoteId[onePosition.position_we_vote_id],
-                ...onePosition,
-              };
-              allCachedPositionsByPositionWeVoteId[onePosition.position_we_vote_id] = mergedPosition;
+            const positionListForAllExceptOneElection = action.res.position_list;
+            if (positionListForAllExceptOneElection) {
+              positionListForAllExceptOneElection.forEach((onePosition) => {
+                mergedPosition = {
+                  ...allCachedPositionsByPositionWeVoteId[onePosition.position_we_vote_id],
+                  ...onePosition,
+                };
+                allCachedPositionsByPositionWeVoteId[onePosition.position_we_vote_id] = mergedPosition;
               // console.log(action.type, ' filter_out_voter: True onePosition:', onePosition);
-            });
-          }
-          organization = allCachedOrganizationsDict[organizationWeVoteId] || {};
-
-          let googleCivicElectionIdIndex = 0;
-          if (!googleCivicElectionId || googleCivicElectionId === '0' || googleCivicElectionId === 0) {
-            googleCivicElectionIdIndex = 0;
-          } else {
-            googleCivicElectionIdIndex = googleCivicElectionId;
-          }
-          if (!state.positionListForOpinionMakerHasBeenRetrievedOnce[googleCivicElectionIdIndex]) {
-            state.positionListForOpinionMakerHasBeenRetrievedOnce[googleCivicElectionIdIndex] = [];
-          }
-          state.positionListForOpinionMakerHasBeenRetrievedOnce[googleCivicElectionIdIndex][organizationWeVoteId] = true;
-
-          // Make sure to maintain the lists we attach to the organization from other API calls
-          if (allCachedOrganizationsDict[organizationWeVoteId]) {
-            priorCopyOfOrganization = allCachedOrganizationsDict[organizationWeVoteId];
-            organization = this._copyListsToNewOrganization(organization, priorCopyOfOrganization);
-          }
-          organization.position_list_for_all_except_one_election = positionListForAllExceptOneElection;
-          // console.log('organization-NOT FRIENDS_ONLY-filter_out_voter: ', organization);
-          allCachedOrganizationsDict[organizationWeVoteId] = organization;
-          if (organization.position_list_for_all_except_one_election) {
-            if (!allCachedPositionsByOrganization[organizationWeVoteId]) {
-              allCachedPositionsByOrganization[organizationWeVoteId] = [];
+              });
             }
-            if (!allCachedPositionsByOrganizationDict[organizationWeVoteId]) {
-              allCachedPositionsByOrganizationDict[organizationWeVoteId] = {};
+            organization = allCachedOrganizationsDict[organizationWeVoteId] || {};
+
+            let googleCivicElectionIdIndex = 0;
+            if (!googleCivicElectionId || googleCivicElectionId === '0' || googleCivicElectionId === 0) {
+              googleCivicElectionIdIndex = 0;
+            } else {
+              googleCivicElectionIdIndex = googleCivicElectionId;
             }
-            organization.position_list_for_all_except_one_election.forEach((onePosition) => {
+            if (!state.positionListForOpinionMakerHasBeenRetrievedOnce[googleCivicElectionIdIndex]) {
+              state.positionListForOpinionMakerHasBeenRetrievedOnce[googleCivicElectionIdIndex] = [];
+            }
+            state.positionListForOpinionMakerHasBeenRetrievedOnce[googleCivicElectionIdIndex][organizationWeVoteId] = true;
+
+            // Make sure to maintain the lists we attach to the organization from other API calls
+            if (allCachedOrganizationsDict[organizationWeVoteId]) {
+              priorCopyOfOrganization = allCachedOrganizationsDict[organizationWeVoteId];
+              organization = this._copyListsToNewOrganization(organization, priorCopyOfOrganization);
+            }
+            organization.position_list_for_all_except_one_election = positionListForAllExceptOneElection;
+            // console.log('organization-NOT FRIENDS_ONLY-filter_out_voter: ', organization);
+            allCachedOrganizationsDict[organizationWeVoteId] = organization;
+            if (organization.position_list_for_all_except_one_election) {
+              if (!allCachedPositionsByOrganization[organizationWeVoteId]) {
+                allCachedPositionsByOrganization[organizationWeVoteId] = [];
+              }
+              if (!allCachedPositionsByOrganizationDict[organizationWeVoteId]) {
+                allCachedPositionsByOrganizationDict[organizationWeVoteId] = {};
+              }
+              organization.position_list_for_all_except_one_election.forEach((onePosition) => {
               // console.log('OrganizationStore, positionListForOpinionMaker, onePosition: ', onePosition);
               // Check to see if this position has already been put in this array
-              existingPosition = allCachedPositionsByOrganization[organizationWeVoteId].find((possibleMatch) => possibleMatch.position_we_vote_id === onePosition.position_we_vote_id);
-              if (!existingPosition) {
-                allCachedPositionsByOrganization[organizationWeVoteId].push(onePosition);
-              }
-              if (onePosition.ballot_item_we_vote_id) {
-                allCachedPositionsByOrganizationDict[organizationWeVoteId][onePosition.ballot_item_we_vote_id] = onePosition;
-              }
-              if (onePosition.contest_office_we_vote_id) {
-                allCachedPositionsByOrganizationDict[organizationWeVoteId][onePosition.contest_office_we_vote_id] = onePosition;
-              }
-            });
-          }
-          // console.log('allCachedPositionsByOrganization filter_out_voter:', allCachedPositionsByOrganization);
-          return {
-            ...state,
-            allCachedOrganizationsDict,
-            allCachedPositionsByOrganization,
-            allCachedPositionsByOrganizationDict,
-            allCachedPositionsByPositionWeVoteId,
-          };
-        } else {
-          // console.log('positionListForOpinionMaker NEITHER filter_out_voter nor filter_for_voter, organizationWeVoteId:', organizationWeVoteId);
-          const positionList = action.res.position_list;
-          if (positionList) {
-            positionList.forEach((onePosition) => {
-              mergedPosition = {
-                ...allCachedPositionsByPositionWeVoteId[onePosition.position_we_vote_id],
-                ...onePosition,
-              };
-              allCachedPositionsByPositionWeVoteId[onePosition.position_we_vote_id] = mergedPosition;
-              // console.log(action.type, ' final else True onePosition:', onePosition);
-            });
-          }
-          organization = allCachedOrganizationsDict[organizationWeVoteId] || {};
-
-          let googleCivicElectionIdIndex = 0;
-          if (!googleCivicElectionId || googleCivicElectionId === '0' || googleCivicElectionId === 0) {
-            googleCivicElectionIdIndex = 0;
+                existingPosition = allCachedPositionsByOrganization[organizationWeVoteId].find((possibleMatch) => possibleMatch.position_we_vote_id === onePosition.position_we_vote_id);
+                if (!existingPosition) {
+                  allCachedPositionsByOrganization[organizationWeVoteId].push(onePosition);
+                }
+                if (onePosition.ballot_item_we_vote_id) {
+                  allCachedPositionsByOrganizationDict[organizationWeVoteId][onePosition.ballot_item_we_vote_id] = onePosition;
+                }
+                if (onePosition.contest_office_we_vote_id) {
+                  allCachedPositionsByOrganizationDict[organizationWeVoteId][onePosition.contest_office_we_vote_id] = onePosition;
+                }
+              });
+            }
+            // console.log('allCachedPositionsByOrganization filter_out_voter:', allCachedPositionsByOrganization);
+            return {
+              ...state,
+              allCachedOrganizationsDict,
+              allCachedPositionsByOrganization,
+              allCachedPositionsByOrganizationDict,
+              allCachedPositionsByPositionWeVoteId,
+            };
           } else {
-            googleCivicElectionIdIndex = googleCivicElectionId;
-          }
-          if (!state.positionListForOpinionMakerHasBeenRetrievedOnce[googleCivicElectionIdIndex]) {
-            state.positionListForOpinionMakerHasBeenRetrievedOnce[googleCivicElectionIdIndex] = [];
-          }
-          state.positionListForOpinionMakerHasBeenRetrievedOnce[googleCivicElectionIdIndex][organizationWeVoteId] = true;
+          // console.log('positionListForOpinionMaker NEITHER filter_out_voter nor filter_for_voter, organizationWeVoteId:', organizationWeVoteId);
+            const positionList = action.res.position_list;
+            if (positionList) {
+              positionList.forEach((onePosition) => {
+                mergedPosition = {
+                  ...allCachedPositionsByPositionWeVoteId[onePosition.position_we_vote_id],
+                  ...onePosition,
+                };
+                allCachedPositionsByPositionWeVoteId[onePosition.position_we_vote_id] = mergedPosition;
+              // console.log(action.type, ' final else True onePosition:', onePosition);
+              });
+            }
+            organization = allCachedOrganizationsDict[organizationWeVoteId] || {};
 
-          // Make sure to maintain the lists we attach to the organization from other API calls
-          if (allCachedOrganizationsDict[organizationWeVoteId]) {
-            priorCopyOfOrganization = allCachedOrganizationsDict[organizationWeVoteId];
-            organization = this._copyListsToNewOrganization(organization, priorCopyOfOrganization);
-          }
-          organization.position_list = positionList;
-          if (positionList) {
-            if (!allCachedPositionsByOrganization[organizationWeVoteId]) {
-              allCachedPositionsByOrganization[organizationWeVoteId] = [];
+            let googleCivicElectionIdIndex = 0;
+            if (!googleCivicElectionId || googleCivicElectionId === '0' || googleCivicElectionId === 0) {
+              googleCivicElectionIdIndex = 0;
+            } else {
+              googleCivicElectionIdIndex = googleCivicElectionId;
             }
-            if (!allCachedPositionsByOrganizationDict[organizationWeVoteId]) {
-              allCachedPositionsByOrganizationDict[organizationWeVoteId] = {};
+            if (!state.positionListForOpinionMakerHasBeenRetrievedOnce[googleCivicElectionIdIndex]) {
+              state.positionListForOpinionMakerHasBeenRetrievedOnce[googleCivicElectionIdIndex] = [];
             }
-            positionList.forEach((onePosition) => {
+            state.positionListForOpinionMakerHasBeenRetrievedOnce[googleCivicElectionIdIndex][organizationWeVoteId] = true;
+
+            // Make sure to maintain the lists we attach to the organization from other API calls
+            if (allCachedOrganizationsDict[organizationWeVoteId]) {
+              priorCopyOfOrganization = allCachedOrganizationsDict[organizationWeVoteId];
+              organization = this._copyListsToNewOrganization(organization, priorCopyOfOrganization);
+            }
+            organization.position_list = positionList;
+            if (positionList) {
+              if (!allCachedPositionsByOrganization[organizationWeVoteId]) {
+                allCachedPositionsByOrganization[organizationWeVoteId] = [];
+              }
+              if (!allCachedPositionsByOrganizationDict[organizationWeVoteId]) {
+                allCachedPositionsByOrganizationDict[organizationWeVoteId] = {};
+              }
+              positionList.forEach((onePosition) => {
               // console.log('OrganizationStore, positionListForOpinionMaker,  NEITHER filter_out_voter nor filter_for_voter,  onePosition: ', onePosition);
               // Check to see if this position has already been put in this array
-              existingPosition = allCachedPositionsByOrganization[organizationWeVoteId].find((possibleMatch) => possibleMatch.position_we_vote_id === onePosition.position_we_vote_id);
-              if (!existingPosition) {
-                allCachedPositionsByOrganization[organizationWeVoteId].push(onePosition);
-              }
-              if (onePosition.ballot_item_we_vote_id !== undefined) {
+                existingPosition = allCachedPositionsByOrganization[organizationWeVoteId].find((possibleMatch) => possibleMatch.position_we_vote_id === onePosition.position_we_vote_id);
+                if (!existingPosition) {
+                  allCachedPositionsByOrganization[organizationWeVoteId].push(onePosition);
+                }
+                if (onePosition.ballot_item_we_vote_id !== undefined) {
                 // console.log('onePosition.ballot_item_we_vote_id:', onePosition.ballot_item_we_vote_id);
-                allCachedPositionsByOrganizationDict[organizationWeVoteId][onePosition.ballot_item_we_vote_id] = onePosition;
-              } else if (onePosition.contest_office_we_vote_id !== undefined) {
+                  allCachedPositionsByOrganizationDict[organizationWeVoteId][onePosition.ballot_item_we_vote_id] = onePosition;
+                } else if (onePosition.contest_office_we_vote_id !== undefined) {
                 // console.log('onePosition.contest_office_we_vote_id:', onePosition.ballot_item_we_vote_id);
-                allCachedPositionsByOrganizationDict[organizationWeVoteId][onePosition.contest_office_we_vote_id] = onePosition;
-              }
-            });
+                  allCachedPositionsByOrganizationDict[organizationWeVoteId][onePosition.contest_office_we_vote_id] = onePosition;
+                }
+              });
+            }
+            // console.log('organization-NOT FRIENDS_ONLY-no filter: ', organization);
+            // console.log('allCachedPositionsByOrganization else:', allCachedPositionsByOrganization);
+            allCachedOrganizationsDict[organizationWeVoteId] = organization;
+            return {
+              ...state,
+              allCachedOrganizationsDict,
+              allCachedPositionsByOrganization,
+              allCachedPositionsByOrganizationDict,
+              allCachedPositionsByPositionWeVoteId,
+            };
           }
-          // console.log('organization-NOT FRIENDS_ONLY-no filter: ', organization);
-          // console.log('allCachedPositionsByOrganization else:', allCachedPositionsByOrganization);
-          allCachedOrganizationsDict[organizationWeVoteId] = organization;
-          return {
-            ...state,
-            allCachedOrganizationsDict,
-            allCachedPositionsByOrganization,
-            allCachedPositionsByOrganizationDict,
-            allCachedPositionsByPositionWeVoteId,
-          };
-        }
 
       case 'voterGuidesFollowedByOrganizationRetrieve':
         // In VoterGuideStore we listen for "voterGuidesFollowedByOrganizationRetrieve" so we can update

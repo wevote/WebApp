@@ -1,5 +1,5 @@
 import { Close } from '@mui/icons-material'; // Info
-import { Drawer, IconButton } from '@mui/material';
+import { Box, Drawer, IconButton, Skeleton } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
@@ -26,10 +26,23 @@ import IssueStore from '../../stores/IssueStore';
 import MeasureStore from '../../stores/MeasureStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
+import CardForListBodySkeleton from '../../common/components/CardForListBodySkeleton';
 import VoterPositionEntryAndDisplay from '../PositionItem/VoterPositionEntryAndDisplay';
 import { Candidate, CandidateNameAndPartyWrapper, CandidateNameH4, CandidateParty, CandidateTopRow } from '../Style/BallotStyles';
 import { DrawerHeaderAnimateDownInnerContainer, DrawerHeaderAnimateDownOuterContainer } from '../Style/drawerLayoutStyles';
 import ShowMoreButtons from '../Widgets/ShowMoreButtons';
+
+function OrganizationModalPoliticianCardSkeleton () {
+  return (
+    <CardForListBodySkeleton
+      hideCardMargins
+      hideItemActionBar
+      limitCardWidth={false}
+      showPoliticianOpenInNewWindow
+      useVerticalCard
+    />
+  );
+}
 
 const CampaignRetrieveController = React.lazy(() => import(/* webpackChunkName: 'CampaignRetrieveController' */ '../../common/components/Campaign/CampaignRetrieveController'));
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
@@ -218,7 +231,7 @@ class OrganizationModal extends Component {
     this.setState({
       scrolledDown: AppObservableStore.getScrolledDownDrawer(),
     });
-  }
+  };
 
   onCandidateStoreChange () {
     const { ballotItemWeVoteId } = this.props;
@@ -285,7 +298,7 @@ class OrganizationModal extends Component {
 
   showHiddenPositions = () => {
     this.setState({ unFurlPositions: true });
-  }
+  };
 
   localPositionListHasBeenRetrievedOnce (ballotItemWeVoteId) {
     if (ballotItemWeVoteId) {
@@ -361,7 +374,7 @@ class OrganizationModal extends Component {
               <Candidate
                 id={`organizationModalCandidateImageAndName-${politicianWeVoteId}`}
               >
-                <Suspense fallback={<></>}>
+                <Suspense fallback={<Skeleton variant="circular" width={40} height={40} />}>
                   <ImageHandler
                     className={avatarCompressed}
                     sizeClassName="icon-candidate-small u-push--sm "
@@ -397,7 +410,18 @@ class OrganizationModal extends Component {
               </CloseDrawerHeaderIconWrapper>
             </CandidateTopRow>
             <HeartToggleAndThermometerWrapper>
-              <Suspense fallback={<span>&nbsp;</span>}>
+              <Suspense fallback={(
+                <Box>
+                  <Box display="flex" gap={1} sx={{ mb: 1 }}>
+                    <Skeleton variant="rounded" width={60} height={36} sx={{ borderRadius: 2 }} />
+                    <Box flex={1} sx={{ minWidth: 0 }}>
+                      <Skeleton variant="text" width="70%" height={18} sx={{ mb: 0.5 }} />
+                      <Skeleton variant="text" width="50%" height={18} />
+                    </Box>
+                  </Box>
+                  <Skeleton variant="rounded" width="100%" height={12} sx={{ borderRadius: 6 }} />
+                </Box>
+              )}>
                 <CampaignSupportThermometer
                   campaignXWeVoteId={linkedCampaignXWeVoteId}
                 />
@@ -407,7 +431,7 @@ class OrganizationModal extends Component {
         </DrawerHeaderAnimateDownOuterContainer>
         {(isCandidate && !hideBallotItemInfo) && (
           <PoliticianCardForListWrapper>
-            <Suspense fallback={<span>&nbsp;</span>}>
+            <Suspense fallback={<OrganizationModalPoliticianCardSkeleton />}>
               <PoliticianCardForList
                 hideCardMargins
                 hideItemActionBar
@@ -417,7 +441,14 @@ class OrganizationModal extends Component {
                 useVerticalCard
               />
             </Suspense>
-            <Suspense fallback={<></>}>
+            <Suspense fallback={(
+              <Box display="flex" gap={1} flexWrap="wrap" sx={{ mb: 2 }}>
+                <Skeleton variant="rounded" width={80} height={24} sx={{ borderRadius: 3 }} />
+                <Skeleton variant="rounded" width={100} height={24} sx={{ borderRadius: 3 }} />
+                <Skeleton variant="rounded" width={90} height={24} sx={{ borderRadius: 3 }} />
+                <Skeleton variant="rounded" width={70} height={24} sx={{ borderRadius: 3 }} />
+              </Box>
+            )}>
               <IssuesByBallotItemDisplayList
                 ballotItemDisplayName={ballotItemDisplayName}
                 ballotItemWeVoteId={ballotItemWeVoteId}
@@ -428,7 +459,7 @@ class OrganizationModal extends Component {
           </PoliticianCardForListWrapper>
         )}
         {(isMeasure && !hideBallotItemInfo) && (
-          <Suspense fallback={<></>}>
+          <Suspense fallback={<Skeleton variant="rounded" width="100%" height={150} sx={{ borderRadius: 2, maxWidth: 520 }} />}>
             <>
               <MeasureItem blockOnClickShowOrganizationModalWithPositions forMoreInformationTextOff measureWeVoteId={ballotItemWeVoteId} />
               <BallotItemBottomSpacer />
@@ -437,7 +468,13 @@ class OrganizationModal extends Component {
         )}
         { (!hidePositions || unFurlPositions) && (
           <>
-            <Suspense fallback={<></>}>
+            <Suspense fallback={(
+              <Box sx={{ mb: 3 }}>
+                <Skeleton variant="text" width="100%" height={40} />
+                <Skeleton variant="text" width="100%" height={40} />
+                <Skeleton variant="text" width="80%" height={40} />
+              </Box>
+            )}>
               <ScoreSummaryListController
                 ballotItemDisplayName={ballotItemDisplayName || ''}
                 ballotItemWeVoteId={ballotItemWeVoteId}
@@ -455,10 +492,34 @@ class OrganizationModal extends Component {
         { !!(allCachedPositionsForThisBallotItem.length) && (
           <>
             { !hidePositions || unFurlPositions ? (
-              <Suspense fallback={<></>}>
+              <Suspense fallback={(
+                <Box sx={{ mb: 3 }}>
+                  {[1, 2, 3, 4].map((i) => (
+                    <Box key={i} display="flex" gap={1} alignItems="center" sx={{ mb: 2 }}>
+                      <Skeleton variant="circular" width={40} height={40} />
+                      <Box flex={1}>
+                        <Skeleton variant="text" width="60%" height={16} />
+                        <Skeleton variant="text" width="40%" height={14} />
+                      </Box>
+                    </Box>
+                  ))}
+                </Box>
+              )}>
                 <DelayedLoad showLoadingText waitBeforeShow={500}>
                   <>
-                    <Suspense fallback={<></>}>
+                    <Suspense fallback={(
+                      <Box sx={{ mb: 3 }}>
+                        {[1, 2, 3].map((i) => (
+                          <Box key={i} display="flex" gap={1} alignItems="center" sx={{ mb: 2 }}>
+                            <Skeleton variant="circular" width={40} height={40} />
+                            <Box flex={1}>
+                              <Skeleton variant="text" width="60%" height={16} />
+                              <Skeleton variant="text" width="40%" height={14} />
+                            </Box>
+                          </Box>
+                        ))}
+                      </Box>
+                    )}>
                       <PositionList
                         ballotItemDisplayName={ballotItemDisplayName || ''}
                         incomingPositionList={allCachedPositionsForThisBallotItem}
@@ -490,7 +551,7 @@ class OrganizationModal extends Component {
           </>
         )}
         {!!(linkedCampaignXWeVoteId) && (
-          <Suspense fallback={<span>&nbsp;</span>}>
+          <Suspense fallback={<Skeleton variant="rounded" width="100%" height={200} sx={{ borderRadius: 2 }} />}>
             <CampaignRetrieveController campaignXWeVoteId={linkedCampaignXWeVoteId} retrieveAsOwnerIfVoterSignedIn />
           </Suspense>
         )}
@@ -512,11 +573,18 @@ OrganizationModal.propTypes = {
 const styles = () => ({
   drawer: {
     marginTop: `${heightOfCordovaSpacer(true)} !important`,
+    minWidth: '360px',
+    width: '100%',
     maxWidth: '550px !important',
     '& *': {
       maxWidth: '550px !important',
     },
+    '@media (min-width: 577px)': {
+      width: '90%',
+      maxWidth: '550px !important',
+    },
     '@media(max-width: 576px)': {
+      minWidth: '360px',
       maxWidth: '360px !important',
       '& *': {
         maxWidth: '360px !important',

@@ -104,7 +104,7 @@ class AddressBox extends Component {
     if (this.props.toggleSelectAddressModal) {
       this.props.toggleSelectAddressModal();
     }
-  }
+  };
 
   voterAddressCancel = (event, buttonId) => {
     event.preventDefault();
@@ -123,7 +123,7 @@ class AddressBox extends Component {
     if (this.props.toggleEditingAddress) {
       this.props.toggleEditingAddress();
     }
-  }
+  };
 
   voterAddressSaveSubmit = (event, buttonId) => {
     // console.log('Save button clicked');
@@ -141,6 +141,7 @@ class AddressBox extends Component {
       actionDetails: {
         actionType: 'save',
         buttonId,
+        searchKeyword: textForMapSearch,
       },
       event: 'action',
       pageDetails: getPageDetails(),
@@ -178,19 +179,19 @@ class AddressBox extends Component {
     // } else {
     //   console.log('AddressBox did not receive a toggleEditingAddress() function');
     // }
-  }
+  };
 
   updateTextForMapSearch = (textForMapSearch) => {
     // console.log('AddressBox updateTextForMapSearch textForMapSearch:', textForMapSearch);
     this.setState({ textForMapSearch });
-  }
+  };
 
   updateTextForMapSearchFromGoogle = (textForMapSearch) => {
     // console.log('AddressBox updateTextForMapSearchFromGoogle textForMapSearch:', textForMapSearch);
     if (textForMapSearch) {
       this.setState({ textForMapSearch });
     }
-  }
+  };
 
   returnNewTextForMapSearchLocal (textForMapSearch) {
     const { returnNewTextForMapSearch } = this.props;

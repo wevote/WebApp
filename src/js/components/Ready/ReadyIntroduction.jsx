@@ -69,13 +69,13 @@ class ReadyIntroduction extends Component {
     if (!contentUnfurled) {
       this.introHeaderRef.current.focus();
     }
-  }
+  };
 
   showSelectBallotModalEditAddress = () => {
     const showEditAddress = true;
     const showSelectBallotModal = true;
     AppObservableStore.setShowSelectBallotModal(showSelectBallotModal, showEditAddress);
-  }
+  };
 
   onSignInClick = () => {
     const { voterIsSignedIn } = this.state;
@@ -86,7 +86,7 @@ class ReadyIntroduction extends Component {
       AppObservableStore.setShowSignInModal(true);
       return true;
     }
-  }
+  };
 
   render () {
     renderLog('ReadyIntroduction');  // Set LOG_RENDER_EVENTS to log all renders

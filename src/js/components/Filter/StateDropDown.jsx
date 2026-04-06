@@ -37,7 +37,7 @@ class StateDropDown extends Component {
     if (this.props.onStateDropDownChange) {
       this.props.onStateDropDownChange(e.target.value);
     }
-  }
+  };
 
   render () {
     renderLog('StateDropDown');  // Set LOG_RENDER_EVENTS to log all renders

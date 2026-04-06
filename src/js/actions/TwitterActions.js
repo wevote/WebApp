@@ -14,10 +14,12 @@ export default {
   },
 
   twitterIdentityRetrieve (newTwitterHandle) {
-    Dispatcher.loadEndpoint('twitterIdentityRetrieve',
+    Dispatcher.loadEndpoint(
+      'twitterIdentityRetrieve',
       {
         twitter_handle: newTwitterHandle,
-      });
+      },
+    );
   },
 
   twitterProcessDeferredImages (twitterImageLoadInfo) {
@@ -40,19 +42,23 @@ export default {
   },
 
   twitterSignInStart (returnUrl) {
-    Dispatcher.loadEndpoint('twitterSignInStart',
+    Dispatcher.loadEndpoint(
+      'twitterSignInStart',
       {
         return_url: returnUrl,
-      });
+      },
+    );
   },
 
   twitterOauth1UserHandler (oauthToken, oauthVerifier) {  // For twitter V2 API, March 2024
     // console.log('twitterOauth1UserHandler: ', oauthToken, oauthVerifier);
-    Dispatcher.loadEndpoint('twitterOauth1UserHandler',
+    Dispatcher.loadEndpoint(
+      'twitterOauth1UserHandler',
       {
         oauth_token: oauthToken,
         oauth_verifier: oauthVerifier,
-      });
+      },
+    );
   },
 
 };

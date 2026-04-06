@@ -23,12 +23,14 @@ class SettingsProfile extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      voter: {},
     };
   }
 
   componentDidMount () {
-    this.onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+    this.onVoterStoreChange();
+    // TODO: Actions should be dispatched during event handlers
     AnalyticsActions.saveActionAccountPage(VoterStore.electionId());
   }
 
@@ -36,12 +38,12 @@ class SettingsProfile extends Component {
     this.voterStoreListener.remove();
   }
 
-  onVoterStoreChange = () => {
+  onVoterStoreChange () {
     const voter = VoterStore.getVoter();
     this.setState({
       voter,
     });
-  };
+  }
 
   closeDrawer = () => {
     const drawerOpenGlobalVariableName = 'headerProfileDrawerOpen';

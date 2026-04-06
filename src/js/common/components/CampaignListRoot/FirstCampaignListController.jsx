@@ -58,7 +58,7 @@ class FirstCampaignListController extends Component {
         }
       }
     });
-  }
+  };
 
   CampaignSearchRetrieve = () => {
     const { searchText } = this.props;
@@ -68,7 +68,7 @@ class FirstCampaignListController extends Component {
         CampaignActions.campaignListRetrieve(searchText);
       }
     });
-  }
+  };
 
   CampaignsForStateRetrieve = () => {
     const { stateCode } = this.props;
@@ -83,7 +83,7 @@ class FirstCampaignListController extends Component {
         CampaignActions.campaignListRetrieve('', filteredStateCode);
       }
     });
-  }
+  };
 
   render () {
     renderLog('FirstCampaignListController');  // Set LOG_RENDER_EVENTS to log all renders

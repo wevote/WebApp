@@ -14,7 +14,7 @@ import Cookies from '../../common/utils/js-cookie/Cookies';
 const crossIcon = normalizedImagePath('../../../img/global/svg-icons/cross.svg');
 
 
-const CompleteYourProfileWizard = ({ steps, activeStep }) => {
+function CompleteYourProfileWizard ({ steps, activeStep }) {
   const completeYourProfileOpen = !(Cookies.get('complete_your_profile_closed'));
   const [showCompleteYourProfileWizard, setShowCompleteYourProfileWizard] = useState(completeYourProfileOpen);
 
@@ -93,7 +93,7 @@ const CompleteYourProfileWizard = ({ steps, activeStep }) => {
       </CompleteYourProfileStepsContainer>
     </CompleteYourProfileContainer>
   );
-};
+}
 
 CompleteYourProfileWizard.propTypes = {
   steps: PropTypes.array,

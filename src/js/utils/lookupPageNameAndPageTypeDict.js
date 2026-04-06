@@ -90,6 +90,18 @@ const pageNameAndTypeSimpleDict = {
     pageName: 'Credits',
     pageType: 'credits',
   },
+  '/managecandidates': {
+    pageName: 'ManageMyCandidates',
+    pageType: 'account',
+  },
+  '/managecandidates/tracking': {
+    pageName: 'SupporterTracking',
+    pageType: 'account',
+  },
+  '/managecandidates/analytics': {
+    pageName: 'SupporterAnalytics',
+    pageType: 'account',
+  },
 };
 
 function calculatePageNameAndPageTypeDict (path) {
@@ -163,22 +175,18 @@ export default function lookupPageNameAndPageTypeDict (path) {
   }
 }
 
-export function getPageDetails (stateCode = null) {
+export function getPageDetails (stateCode = null, drawerName = null) {
   const { location: { pathname } } = window;
   const currentPage = lookupPageNameAndPageTypeDict(pathname);
-  // console.log(currentPage);
 
-  if (stateCode) {
-    return {
-      pageType: currentPage.pageType,
-      pageName: currentPage.pageName,
-      pathname,
-      stateCode,
-    };
-  }
-  return {
+  const pageDetails = {
     pageType: currentPage.pageType,
     pageName: currentPage.pageName,
     pathname,
   };
+
+  if (stateCode) pageDetails.stateCode = stateCode;
+  if (drawerName) pageDetails.drawerName = drawerName;
+
+  return pageDetails;
 }

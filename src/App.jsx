@@ -68,6 +68,9 @@ const Donate = React.lazy(() => import(/* webpackChunkName: 'Donate' */ './js/pa
 const DonateFaq = React.lazy(() => import(/* webpackChunkName: 'DonateFaq' */ './js/pages/More/DonateFaq'));
 const Drawers = React.lazy(() => import(/* webpackChunkName: 'Drawers' */ './js/components/Drawers/Drawers'));
 const ElectionReminder = React.lazy(() => import(/* webpackChunkName: 'ElectionReminder' */ './js/pages/More/ElectionReminder'));
+const ElectionFinderForElection = React.lazy(() => import(/* webpackChunkName: 'ElectionFinderForElection' */ './js/pages/ElectionFinder/ElectionFinderForElection'));
+const ElectionFinderForState = React.lazy(() => import(/* webpackChunkName: 'ElectionFinderForState' */ './js/pages/ElectionFinder/ElectionFinderForState'));
+const ElectionFinderHome = React.lazy(() => import(/* webpackChunkName: 'ElectionFinderHome' */ './js/pages/ElectionFinder/ElectionFinderHome'));
 const Elections = React.lazy(() => import(/* webpackChunkName: 'Elections' */ './js/pages/More/Elections'));
 const ExtensionSignIn = React.lazy(() => import(/* webpackChunkName: 'ExtensionSignIn' */ './js/pages/More/ExtensionSignIn'));
 const FAQ = React.lazy(() => import(/* webpackChunkName: 'FAQ' */ './js/pages/More/FAQ'));
@@ -90,6 +93,7 @@ const Location = React.lazy(() => import(/* webpackChunkName: 'Location' */ './j
 const ManageMyCandidatesLanding = React.lazy(() => import(/* webpackChunkName: 'ManageMyCandidatesLanding' */ './js/pages/ManageMyCandidates/ManageMyCandidatesLanding'));
 const Measure = React.lazy(() => import(/* webpackChunkName: 'Measure' */ './js/pages/Ballot/Measure'));
 const News = React.lazy(() => import(/* webpackChunkName: 'News' */ './js/pages/Activity/News'));
+const NoCandidatesClaimed = React.lazy(() => import(/* webpackChunkName: 'NoClaimedCandidates' */ './js/pages/ManageMyCandidates/NoCandidatesClaimed'));
 const Office = React.lazy(() => import(/* webpackChunkName: 'Office' */ './js/pages/Ballot/Office'));
 const Opinions2020 = React.lazy(() => import(/* webpackChunkName: 'Opinions2020' */ './js/pages/Opinions2020'));
 const OpinionsFollowed = React.lazy(() => import(/* webpackChunkName: 'OpinionsFollowed' */ './js/pages/OpinionsFollowed'));
@@ -221,8 +225,8 @@ class App extends Component {
     }
 
     if (isCordova()) {
-      console.log(`Cordova:   window.device ${JSON.stringify(window.device)}`);
-      console.log(`Cordova:   Header, isIOS ${hasDynamicIsland()}, heightOfCordovaSpacer ${heightOfCordovaSpacer()}), hasCordovaNotch ${hasCordovaNotch()}`);
+      // console.log(`Cordova:   window.device ${JSON.stringify(window.device)}`);
+      console.log(`Cordova:   Header, isIOS ${hasDynamicIsland()}, heightOfCordovaSpacer ${heightOfCordovaSpacer()}, hasCordovaNotch ${hasCordovaNotch()}`);
     }
 
     this.acceptURLVariables();
@@ -593,6 +597,9 @@ class App extends Component {
                   <Route path="/more/credits" component={Credits} />
                   <Route path="/more/donate" component={(isNotWeVoteMarketingSite || this.localIsAndroid()) ? ReadyRedirect : Donate} />
                   <Route path="/more/donatefaq" component={(isNotWeVoteMarketingSite || this.localIsAndroid()) ? ReadyRedirect : DonateFaq} />
+                  <Route path="/election-finder/:stateCode/:electionId" component={ElectionFinderForElection} />
+                  <Route path="/election-finder/:stateCode" component={ElectionFinderForState} />
+                  <Route path="/election-finder" exact component={ElectionFinderHome} />
                   <Route path="/more/elections" component={Elections} />
                   <Route path="/more/extensionsignin" component={ExtensionSignIn} />
                   <Route path="/more/facebooklandingprocess" component={FacebookLandingProcess} />
@@ -745,6 +752,7 @@ class App extends Component {
                   <Route path="/wevoteintro/network" component={IntroNetwork} />
                   <Route path="/wevoteintro/newfriend/:invitationSecretKey" component={FriendIntroLanding} />
                   <Route path="/yourpage" component={YourPage} />
+                  <Route path="/no-candidates-claimed" component={NoCandidatesClaimed} />
                   <Route path="/:twitter_handle/ballot/election/:google_civic_election_id" component={TwitterHandleLanding} />
                   <Route path="/:twitter_handle/ballot/election/:google_civic_election_id/:view_mode" component={TwitterHandleLanding} />
                   <Route path="/:twitter_handle/ballot/empty" component={TwitterHandleLanding} />

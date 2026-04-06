@@ -62,7 +62,7 @@ class FooterMainWeVote extends Component {
       userDetails: VoterStore.getAnalyticsUserDetails(),
     };
     TagManager.dataLayer({ dataLayer: dataLayerObject });
-  }
+  };
 
   pushDataLayer (destinationPath, buttonId = '') {
     // For internal links only - external links are handled by OpenExternalWebSite
@@ -268,7 +268,7 @@ class FooterMainWeVote extends Component {
                     paddingTop: 20,
                   }}
                 >
-                  <ToolBar color="#716e6eff" showBlog={false}/>
+                  <ToolBar color="#716e6eff" showBlog={false} />
                 </div>
               </OneRow>
             )}

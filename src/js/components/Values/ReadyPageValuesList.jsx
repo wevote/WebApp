@@ -66,7 +66,7 @@ export default class ReadyPageValuesList extends Component {
     this.setState({
       limitNumberOfIssuesShownToThisNumber: allIssuesCount,
     });
-  }
+  };
 
   render () {
     renderLog('ReadyPageValuesList');  // Set LOG_RENDER_EVENTS to log all renders

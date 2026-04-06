@@ -72,7 +72,7 @@ class PoliticianRetrieveController extends Component {
         }
       });
     }
-  }
+  };
 
   render () {
     renderLog('PoliticianRetrieveController');  // Set LOG_RENDER_EVENTS to log all renders

@@ -96,7 +96,7 @@ class CampaignNewsItemPublishSteps extends Component {
     if (campaignBasePath && campaignXNewsItemWeVoteId) {
       historyPush(`${campaignBasePath}u-preview/${campaignXNewsItemWeVoteId}`);
     }
-  }
+  };
 
   onStep3Click = () => {
     const { campaignBasePath } = this.props;
@@ -104,7 +104,7 @@ class CampaignNewsItemPublishSteps extends Component {
     if (campaignBasePath && campaignXNewsItemWeVoteId) {
       historyPush(`${campaignBasePath}send/${campaignXNewsItemWeVoteId}`);
     }
-  }
+  };
 
   onStep4Click = () => {
     const { campaignBasePath } = this.props;
@@ -112,7 +112,7 @@ class CampaignNewsItemPublishSteps extends Component {
     if (campaignBasePath && campaignXNewsItemWeVoteId) {
       historyPush(`${campaignBasePath}share/${campaignXNewsItemWeVoteId}`);
     }
-  }
+  };
 
   render () {
     renderLog('CampaignNewsItemPublishSteps');  // Set LOG_RENDER_EVENTS to log all renders

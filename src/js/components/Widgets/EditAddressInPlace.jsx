@@ -50,14 +50,14 @@ class EditAddressInPlace extends Component {
     if (this.props.toggleFunction) {
       this.props.toggleFunction();
     }
-  }
+  };
 
   localTextForMapSearchUpdate = (textForMapSearch) => {
     // console.log('localTextForMapSearchUpdate', textForMapSearch);
     this.setState({
       textForMapSearch,
     });
-  }
+  };
 
   toggleEditingAddress = () => {
     const { editingAddress } = this.state;
@@ -67,7 +67,7 @@ class EditAddressInPlace extends Component {
     this.setState({
       editingAddress: !editingAddress,
     });
-  }
+  };
 
   render () {
     renderLog('EditAddressInPlace');  // Set LOG_RENDER_EVENTS to log all renders

@@ -1,5 +1,6 @@
 import React, { Suspense, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import Skeleton from '@mui/material/Skeleton';
 import styled from 'styled-components';
 import CampaignActions from '../../../actions/CampaignActions';
 import VoterGuideActions from '../../../../actions/VoterGuideActions';
@@ -10,7 +11,7 @@ import apiCalming from '../../../utils/apiCalming';
 const HeartFavoriteToggleLive = React.lazy(() => import(/* webpackChunkName: 'HeartFavoriteToggleLive' */ './HeartFavoriteToggleLive'));
 const HeartFavoriteToggleBase = React.lazy(() => import(/* webpackChunkName: 'HeartFavoriteToggleBase' */ './HeartFavoriteToggleBase'));
 
-const HeartFavoriteToggleLoader = ({ campaignXWeVoteId, organizationWeVoteId }) => {
+function HeartFavoriteToggleLoader ({ campaignXWeVoteId, organizationWeVoteId }) {
   renderLog('HeartFavoriteToggleLoader');  // Set LOG_RENDER_EVENTS to log all renders
 
   // console.log('HeartFavoriteToggleLoader render campaignXWeVoteId:', campaignXWeVoteId);
@@ -36,16 +37,18 @@ const HeartFavoriteToggleLoader = ({ campaignXWeVoteId, organizationWeVoteId }) 
     }
   }, [organizationWeVoteId]);
 
+  const heartToggleSkeleton = <Skeleton variant="rounded" width={60} height={36} sx={{ borderRadius: 2 }} />;
+
   return (
     <HeartFavoriteToggleLoaderContainer>
-      <Suspense fallback={<></>}>
+      <Suspense fallback={heartToggleSkeleton}>
         <Suspense fallback={<HeartFavoriteToggleBase />}>
           <HeartFavoriteToggleLive campaignXWeVoteId={campaignXWeVoteId} organizationWeVoteId={organizationWeVoteId} />
         </Suspense>
       </Suspense>
     </HeartFavoriteToggleLoaderContainer>
   );
-};
+}
 HeartFavoriteToggleLoader.propTypes = {
   campaignXWeVoteId: PropTypes.string,
   organizationWeVoteId: PropTypes.string,

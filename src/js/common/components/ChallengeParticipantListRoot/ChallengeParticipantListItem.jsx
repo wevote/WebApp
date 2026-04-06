@@ -8,7 +8,7 @@ import speakerDisplayNameToInitials from '../../utils/speakerDisplayNameToInitia
 import formatParticipantNameForSimpleList from '../../utils/formatParticipantNameForSimpleList';
 import { getChallengeValuesFromIdentifiers } from '../../utils/challengeUtils';
 
-const ChallengeParticipantListItem = ({ challengeWeVoteId, participant, isCurrentUser, showSimpleList }) => {
+function ChallengeParticipantListItem ({ challengeWeVoteId, participant, isCurrentUser, showSimpleList }) {
   let avatarJsx;
   if (participant && participant.we_vote_hosted_profile_image_url_medium) {
     avatarJsx = <AvatarStyled src={participant.we_vote_hosted_profile_image_url_medium} alt={participant.participant_name} />;
@@ -72,7 +72,7 @@ const ChallengeParticipantListItem = ({ challengeWeVoteId, participant, isCurren
       )}
     </ParticipantItem>
   );
-};
+}
 ChallengeParticipantListItem.propTypes = {
   challengeWeVoteId: PropTypes.string,
   isCurrentUser: PropTypes.bool,

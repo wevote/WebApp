@@ -36,7 +36,7 @@ class HeaderBackToButton extends Component {
 
     // Navigate after tracking
     historyPush(backToLink);
-  }
+  };
 
   render () {
     renderLog('HeaderBackToButton');  // Set LOG_RENDER_EVENTS to log all renders

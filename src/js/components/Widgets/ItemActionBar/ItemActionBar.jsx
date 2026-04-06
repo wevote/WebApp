@@ -2,7 +2,7 @@
 /* eslint-disable import/newline-after-import */
 /* eslint-disable import/order */
 /* eslint-disable react/jsx-indent */
-import { Comment, Done, NotInterested, ThumbDown, ThumbUp } from '@mui/icons-material';
+import { ChatBubbleOutline, Comment, Done, EditOutlined, NotInterested, ThumbDown, ThumbUp } from '@mui/icons-material';
 import { Button } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
@@ -15,7 +15,7 @@ import SupportActions from '../../../actions/SupportActions';
 import VoterActions from '../../../actions/VoterActions';
 import DesignTokenColors from '../../../common/components/Style/DesignTokenColors';
 import { openSnackbar } from '../../../common/components/Widgets/SnackNotifier';
-import AppObservableStore from '../../../common/stores/AppObservableStore';
+import AppObservableStore, { messageService } from '../../../common/stores/AppObservableStore';
 import PoliticianStore from '../../../common/stores/PoliticianStore';
 import convertToInteger from '../../../common/utils/convertToInteger';
 import isMobileScreenSize from '../../../common/utils/isMobileScreenSize';
@@ -28,12 +28,16 @@ import VoterConstants from '../../../constants/VoterConstants';
 import CandidateStore from '../../../stores/CandidateStore';
 import SupportStore from '../../../stores/SupportStore';
 import VoterStore from '../../../stores/VoterStore';
+import { possibleAppReview } from '../../../utils/appReviewFunctions';
 import lookupPageNameAndPageTypeDict, { getPageDetails } from '../../../utils/lookupPageNameAndPageTypeDict';
 import PositionPublicToggle from '../../PositionItem/PositionPublicToggle';
+import ReviewAppModal from '../../ReviewApps/ReviewAppModal';
 import PositionStatementModal from '../PositionStatementModal'; // eslint-disable-line import/no-cycle
 import ShareButtonDropDown from '../ShareButtonDropdown';
+import MakePublicVisibilityRow from './MakePublicVisibilityRow';
 
 const HelpWinOrDefeatModal = React.lazy(() => import(/* webpackChunkName: 'HelpWinOrDefeatModal' */ '../../../common/components/CampaignSupport/HelpWinOrDefeatModal')); // eslint-disable-line import/no-cycle
+const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
 const NUMBER_OF_BALLOT_CHOICES_ALLOWED_BEFORE_SHOW_MODAL = 3;
 const shareIconSvg = '../../../../img/global/svg-icons/share-icon.svg';
@@ -51,7 +55,9 @@ class ItemActionBar extends PureComponent {
       isSupportLocalState: undefined,
       numberOfOpposePositionsForScore: 0,
       numberOfSupportPositionsForScore: 0,
+      showNegativeModal: false,
       transitioning: false,
+      visibilityRowOpen: false,
       voterTextStatement: undefined,
       voterTextStatementOpened: false, // TODO Setting this to true crashes the app
       helpWinOrDefeatModalOpen: false,
@@ -71,6 +77,7 @@ class ItemActionBar extends PureComponent {
   componentDidMount () {
     // console.log('ItemActionBar, NEW componentDidMount');
     const { ballotItemWeVoteId, politicianWeVoteId } = this.props;
+    this.appStateSubscription = messageService.getMessage().subscribe((token) => this.onAppObservableStoreChange(token));
     // console.log('ItemActionBar, NEW componentDidMount ballotItemWeVoteId:', ballotItemWeVoteId);
     if (ballotItemWeVoteId || politicianWeVoteId) {
       const isCandidate = stringContains('cand', ballotItemWeVoteId); // isCandidate = the default
@@ -116,6 +123,7 @@ class ItemActionBar extends PureComponent {
         numberOfOpposePositionsForScore,
         numberOfSupportPositionsForScore,
         voterTextStatement,
+        visibilityRowOpen: isOpposeAPIState || isSupportAPIState || !!voterTextStatement,
       }, this.onNewBallotItemWeVoteId);
       // window.addEventListener('scroll', this.onScroll);
     }
@@ -152,6 +160,7 @@ class ItemActionBar extends PureComponent {
   componentWillUnmount () {
     // window.removeEventListener('scroll', this.onScroll);
     this.supportStoreListener.remove();
+    this.appStateSubscription.unsubscribe();
   }
 
   onNewBallotItemWeVoteId () {
@@ -252,14 +261,23 @@ class ItemActionBar extends PureComponent {
           });
         }
         if (voterTextStatement) {
-          this.setState({
-            voterTextStatement,
-          });
+          this.setState({ voterTextStatement });
         }
         this.setState({
           voterPositionIsPublic,
+          visibilityRowOpen: voterOpposesBallotItem || voterSupportsBallotItem || !!voterTextStatement,
         });
       }
+    }
+  }
+
+  onAppObservableStoreChange (token) {
+    const tokenText = token ? token.text : '';
+    const showNegativeModalFromMessage = tokenText.includes('showNegativeFeedbackModal') && tokenText.includes('ITEM');
+    const showingNegativeFeedbackModal = AppObservableStore.getShowingNegativeFeedbackModal();
+    const { showNegativeModal } = this.state;
+    if (!showNegativeModal && !showingNegativeFeedbackModal && showNegativeModalFromMessage) {
+      this.setState({ showNegativeModal: true });
     }
   }
 
@@ -283,8 +301,10 @@ class ItemActionBar extends PureComponent {
         destinationPathname: currentPathname,
       },
     };
-    if (ballotItemWeVoteId.includes('cand')) {
-      dataLayerObject.candidateDetails = CandidateStore.getAnalyticsCandidateDetails(ballotItemWeVoteId);
+    if (ballotItemWeVoteId) {
+      if (ballotItemWeVoteId.includes('cand')) {
+        dataLayerObject.candidateDetails = CandidateStore.getAnalyticsCandidateDetails(ballotItemWeVoteId);
+      }
     }
     if (politicianWeVoteId) {
       dataLayerObject.politicianDetails = PoliticianStore.getAnalyticsPoliticianDetails(politicianWeVoteId);
@@ -302,6 +322,26 @@ class ItemActionBar extends PureComponent {
     });
   };
 
+  sendGTMDataLayer = ({ buttonId = '', actionType = 'click' }) => {
+    // console.log('sendGTMDataLayer called with buttonId:', buttonId, ', actionType:', actionType);
+    const { politicianWeVoteId } = this.props;
+    const dataLayerObject = {
+      event: 'action',
+      actionDetails: {
+        actionType,
+        buttonId,
+      },
+      userDetails: VoterStore.getAnalyticsUserDetails(),
+      pageDetails: getPageDetails(),
+
+    };
+    if (politicianWeVoteId) {
+      dataLayerObject.politicianDetails = PoliticianStore.getAnalyticsPoliticianDetails(politicianWeVoteId);
+    }
+    TagManager.dataLayer({ dataLayer: dataLayerObject });
+  };
+
+
   toggleHelpWinOrDefeatFunction = () => {
     const { helpWinOrDefeatModalOpen } = this.state;
     this.setState({
@@ -317,6 +357,31 @@ class ItemActionBar extends PureComponent {
     if (this.props.togglePositionStatementFunction) {
       this.props.togglePositionStatementFunction();
     }
+  };
+
+  // NOTE: The old PositionPublicToggle only appeared after the voter made a choice
+  // (isAnyEndorsementCalculated). MakePublicVisibilityRow currently shows whenever
+  // the chat bubble is clicked, regardless of endorsement state. When wiring up the
+  // API (onClickMakePublic → SupportActions.voterPositionVisibilitySave), revisit
+  // whether the visibility row should be gated on isAnyEndorsementCalculated().
+  onClickChatBubble = () => {
+    AppObservableStore.setShowEditPositionModal(true, this.props.politicianWeVoteId);
+  };
+
+  onClickClaimProfile = () => {
+    const { politicianWeVoteId } = this.props;
+    if (politicianWeVoteId) {
+      AppObservableStore.setPoliticianWeVoteIdBeingViewed(politicianWeVoteId);
+    }
+    AppObservableStore.setShowClaimProfileWithEmailModal(true);
+  };
+
+  onClickMakePublic = () => {
+    AppObservableStore.setShowEditPositionModal(true, this.props.politicianWeVoteId);
+  };
+
+  onClickDotsMenu = () => {
+    AppObservableStore.setShowEditPositionModal(true, this.props.politicianWeVoteId);
   };
 
   helpThemWinButton = (localUniqueId) => {
@@ -375,13 +440,14 @@ class ItemActionBar extends PureComponent {
     } else {
       buttonRootClass = classes.buttonRoot;
     }
+    const itemActionBarOpposeButtonId = this.isOpposeCalculated() ? `itemActionBarStopOpposeButton-${externalUniqueId}-${localUniqueId}` : `itemActionBarOpposeButton-${externalUniqueId}-${localUniqueId}`;
     return (
       <Button
         classes={{ root: buttonRootClass, outlinedPrimary: classes.buttonOutlinedPrimary }}
         className={`${opposeHideInMobile ? 'd-none d-sm-block ' : ''}`}
         color={this.isOpposeCalculated() ? 'opposed' : 'primary'}
-        id={`itemActionBarOpposeButton-${externalUniqueId}-${localUniqueId}`}
-        onClick={() => this.opposeItem()}
+        id={itemActionBarOpposeButtonId}
+        onClick={() => this.opposeItem(itemActionBarOpposeButtonId)}
         variant={this.isOpposeCalculated() ? 'contained' : 'outlined'}
         // variant="outlined"
       >
@@ -417,6 +483,7 @@ class ItemActionBar extends PureComponent {
 
   supportButton = (localUniqueId) => {
     const { classes, externalUniqueId, inCard, shareButtonHide, useSupportWording } = this.props;
+    const itemActionBarSupportButtonId = this.isSupportCalculated() ? `itemActionBarStopSupportButton-${externalUniqueId}-${localUniqueId}` : `itemActionBarSupportButton-${externalUniqueId}-${localUniqueId}`;
     let buttonRootClass = null;
     if (inCard) {
       buttonRootClass = this.isSupportCalculated() ? classes.buttonRootForCardAfterChoice : classes.buttonRootForCard;
@@ -427,35 +494,20 @@ class ItemActionBar extends PureComponent {
       <Button
         classes={{ root: buttonRootClass, outlinedPrimary: classes.buttonOutlinedPrimary }}
         color={this.isSupportCalculated() ? 'chosen' : 'primary'}
-        id={`itemActionBarSupportButton-${externalUniqueId}-${localUniqueId}`}
-        onClick={() => this.supportItem()}
+        id={itemActionBarSupportButtonId}
+        onClick={() => this.supportItem(itemActionBarSupportButtonId)}
+        style={this.isSupportCalculated() ? { border: '1px solid #1976d2' } : {}}
         variant={this.isSupportCalculated() ? 'contained' : 'outlined'}
         // variant="outlined"
       >
         <Done classes={this.isSupportCalculated() ? { root: classes.buttonIconDoneSelected } : { root: classes.buttonIconDone }} />
         {this.isSupportCalculated() ? (
           <ChooseButtonLabelSelected>
-            {useSupportWording ? (
-              <>
-                Supporting
-              </>
-            ) : (
-              <>
-                Chosen
-              </>
-            )}
+            {useSupportWording ? <>Supporting</> : <>Chosen</>}
           </ChooseButtonLabelSelected>
         ) : (
           <ChooseButtonLabel isAtState={!shareButtonHide}>
-            {useSupportWording ? (
-              <>
-                Support
-              </>
-            ) : (
-              <>
-                Choose
-              </>
-            )}
+            {useSupportWording ? <>Support</> : <>Choose</>}
           </ChooseButtonLabel>
         )}
       </Button>
@@ -482,20 +534,17 @@ class ItemActionBar extends PureComponent {
     return (
       <Button
         classes={{ root: classes.buttonMeasureRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
-        color={this.isSupportCalculated() ? 'secondary' : 'primary'}
+        color={this.isSupportCalculated() ? 'chosen' : 'primary'}
         id={`itemActionBarYesButton-${externalUniqueId}-${localUniqueId}`}
         onClick={() => this.supportItem()}
+        style={this.isSupportCalculated() ? { backgroundColor: DesignTokenColors.confirmation200, color: '#fff' } : {}}
         variant={this.isSupportCalculated() ? 'contained' : 'outlined'}
       >
-        <Done classes={{ root: classes.buttonIconDone }} />
-        { this.isSupportCalculated() ? (
-          <ChooseButtonLabelSelected className="u-no-break">
-            Voting Yes
-          </ChooseButtonLabelSelected>
+        <Done classes={this.isSupportCalculated() ? { root: classes.buttonIconDoneSelected } : { root: classes.buttonIconDone }} />
+        {this.isSupportCalculated() ? (
+          <OpposeButtonLabelSelected className="u-no-break">Voting Yes</OpposeButtonLabelSelected>
         ) : (
-          <ChooseButtonLabel isAtState={!shareButtonHide} className="u-no-break">
-            Vote Yes
-          </ChooseButtonLabel>
+          <ChooseButtonLabel isAtState={!shareButtonHide} className="u-no-break">Vote Yes</ChooseButtonLabel>
         )}
       </Button>
     );
@@ -522,19 +571,15 @@ class ItemActionBar extends PureComponent {
       <Button
         id={`itemActionBarNoButton-${externalUniqueId}-${localUniqueId}`}
         variant={this.isOpposeCalculated() ? 'contained' : 'outlined'}
-        color={this.isOpposeCalculated() ? 'secondary' : 'primary'}
+        color={this.isOpposeCalculated() ? 'opposed' : 'primary'}
         onClick={() => this.opposeItem()}
         classes={{ root: classes.buttonMeasureRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
       >
-        <NotInterested classes={{ root: classes.buttonIconNotInterested }} />
-        { this.isOpposeCalculated() ? (
-          <ChooseButtonLabelSelected className="u-no-break">
-            Voting No
-          </ChooseButtonLabelSelected>
+        <NotInterested classes={this.isOpposeCalculated() ? { root: classes.buttonIconNotInterestedSelected } : { root: classes.buttonIconNotInterested }} />
+        {this.isOpposeCalculated() ? (
+          <OpposeButtonLabelSelected className="u-no-break">Voting No</OpposeButtonLabelSelected>
         ) : (
-          <ChooseButtonLabel isAtState={!shareButtonHide} className="u-no-break">
-            Vote No
-          </ChooseButtonLabel>
+          <ChooseButtonLabel isAtState={!shareButtonHide} className="u-no-break">Vote No</ChooseButtonLabel>
         )}
       </Button>
     );
@@ -566,9 +611,7 @@ class ItemActionBar extends PureComponent {
         classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
       >
         <Comment classes={{ root: classes.buttonIcon }} />
-        <ChooseButtonLabel isAtState={!shareButtonHide}>
-          Comment
-        </ChooseButtonLabel>
+        <ChooseButtonLabel isAtState={!shareButtonHide}>Comment</ChooseButtonLabel>
       </Button>
     );
   };
@@ -582,10 +625,7 @@ class ItemActionBar extends PureComponent {
           variant="contained"
           className={`${commentButtonHideInMobile ? 'd-none d-sm-block ' : null} btn-default`}
           onClick={this.togglePositionStatementFunction}
-          classes={{
-            root: classes.buttonNoTextRoot,
-            outlinedPrimary: classes.buttonOutlinedPrimary,
-          }}
+          classes={{ root: classes.buttonNoTextRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
         >
           <Comment classes={{ root: classes.buttonIcon }} />
         </Button>
@@ -621,7 +661,7 @@ class ItemActionBar extends PureComponent {
     return this.isOpposeCalculated() || this.isSupportCalculated() || this.state.voterTextStatement || this.state.voterTextStatementOpened;
   }
 
-  supportItem () {
+  supportItem (buttonId) {
     const { politicianWeVoteId } = this.props;
     const { ballotItemType, ballotItemWeVoteId, transitioning } = this.state;
     if (this.props.supportOrOpposeHasBeenClicked) {
@@ -629,7 +669,7 @@ class ItemActionBar extends PureComponent {
     }
     if (this.isSupportCalculated()) {
       // console.log('supportItem about to call stopSupportingItem after isSupportCalculated');
-      this.stopSupportingItem();
+      this.stopSupportingItem(buttonId);
       return;
     }
     if (transitioning) {
@@ -645,20 +685,17 @@ class ItemActionBar extends PureComponent {
     }
     // If the logic in this function decides to, show the "Sign in to save your choices" modal
     this.showChooseOrOpposeIntroModalDecision();
-
-    // Add console.log to verify we reach this point
-    console.log('About to push to dataLayer in supportItem');
-
+    possibleAppReview('ITEM');
+    // console.log('About to push to dataLayer in supportItem');
+    this.sendGTMDataLayer({ buttonId });
     const isSignedIn = VoterStore.getVoterIsSignedIn();
     const dataLayerObject = {
-      actionDetails: {
-        actionType: isSignedIn ? 'favorite' : 'favoriteSignedOut',
-      },
+      actionDetails: { actionType: isSignedIn ? 'favorite' : 'favoriteSignedOut' },
       event: 'action',
       userDetails: VoterStore.getAnalyticsUserDetails(),
       pageDetails: getPageDetails(),
     };
-    if (ballotItemWeVoteId.includes('cand')) {
+    if (ballotItemWeVoteId && ballotItemWeVoteId.includes('cand')) {
       dataLayerObject.candidateDetails = CandidateStore.getAnalyticsCandidateDetails(ballotItemWeVoteId);
     }
     if (politicianWeVoteId) {
@@ -667,31 +704,23 @@ class ItemActionBar extends PureComponent {
     TagManager.dataLayer({ dataLayer: dataLayerObject });
 
     SupportActions.voterSupportingSave(ballotItemWeVoteId, ballotItemType, politicianWeVoteId);
-    this.setState({
-      transitioning: true,
-    });
+    this.setState({ transitioning: true });
     openSnackbar({ message: 'Support added!' });
   }
 
-  stopSupportingItem () {
+  stopSupportingItem (buttonId) {
     const { politicianWeVoteId } = this.props;
     const { ballotItemType, ballotItemWeVoteId, transitioning } = this.state;
-    this.setState({
-      isOpposeLocalState: false,
-      isSupportLocalState: false,
-    });
-    if (transitioning) {
-      return;
-    }
-
+    this.setState({ isOpposeLocalState: false, isSupportLocalState: false });
+    if (transitioning) { return; }
+    this.sendGTMDataLayer({ buttonId });
+    possibleAppReview('ITEM');
     SupportActions.voterStopSupportingSave(ballotItemWeVoteId, ballotItemType, politicianWeVoteId);
-    this.setState({
-      transitioning: true,
-    });
+    this.setState({ transitioning: true });
     openSnackbar({ message: 'Support removed!' });
   }
 
-  opposeItem () {
+  opposeItem (buttonId) {
     const { politicianWeVoteId } = this.props;
     const { ballotItemType, ballotItemWeVoteId, transitioning } = this.state;
     if (this.props.supportOrOpposeHasBeenClicked) {
@@ -700,45 +729,29 @@ class ItemActionBar extends PureComponent {
 
     if (this.isOpposeCalculated()) {
       // console.log('opposeItem about to call stopOpposingItem after isOpposeCalculated');
-      this.stopOpposingItem();
+      this.stopOpposingItem(buttonId);
       return;
     }
-
-    // console.log('opposeItem setState');
-    this.setState({
-      isOpposeLocalState: true,
-      isSupportLocalState: false,
-    });
-    if (transitioning) {
-      return;
-    }
-
-    // If the logic in this function decides to, show the "Sign in to save your choices" modal
+    this.setState({ isOpposeLocalState: true, isSupportLocalState: false });
+    if (transitioning) { return; }
     this.showChooseOrOpposeIntroModalDecision();
+    this.sendGTMDataLayer({ buttonId });
 
+    possibleAppReview('ITEM');
     SupportActions.voterOpposingSave(ballotItemWeVoteId, ballotItemType, politicianWeVoteId);
-    this.setState({
-      transitioning: true,
-    });
+    this.setState({ transitioning: true });
     openSnackbar({ message: 'Opposition added!', severity: 'error' });
   }
 
-  stopOpposingItem () {
+  stopOpposingItem (buttonId) {
     const { politicianWeVoteId } = this.props;
     const { ballotItemType, ballotItemWeVoteId, transitioning } = this.state;
-    // console.log('ItemActionBar, stopOpposingItem, transitioning:', this.state.transitioning);
-    this.setState({
-      isOpposeLocalState: false,
-      isSupportLocalState: false,
-    });
-    if (transitioning) {
-      return;
-    }
-
+    this.setState({ isOpposeLocalState: false, isSupportLocalState: false });
+    if (transitioning) { return; }
+    this.sendGTMDataLayer({ buttonId });
+    possibleAppReview('ITEM');
     SupportActions.voterStopOpposingSave(ballotItemWeVoteId, ballotItemType, politicianWeVoteId);
-    this.setState({
-      transitioning: true,
-    });
+    this.setState({ transitioning: true });
     openSnackbar({ message: 'Opposition removed!', severity: 'error' });
   }
 
@@ -760,15 +773,15 @@ class ItemActionBar extends PureComponent {
     renderLog('ItemActionBar ItemActionBar.jsx');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('ItemActionBar render');
     const {
-      buttonsOnly, commentButtonHide, commentButtonHideInMobile,
-      hideSupportYes, hideOpposeNo, politicianWeVoteId, useHelpDefeatOrHelpWin, useSupportWording,
+      buttonsOnly, commentButtonHide, commentButtonHideInMobile, hideSupportYes, hideOpposeNo,
+      politicianWeVoteId, useHelpDefeatOrHelpWin, useSupportWording,
     } = this.props;
     const {
-      ballotItemType, ballotItemWeVoteId, helpWinOrDefeatModalOpen,
-      isOpposeAPIState, isSupportAPIState,
-      numberOfOpposePositionsForScore, numberOfSupportPositionsForScore,
-      voterPositionIsPublic, voterTextStatementOpened,
+      ballotItemType, ballotItemWeVoteId, helpWinOrDefeatModalOpen, isOpposeAPIState, isSupportAPIState,
+      numberOfOpposePositionsForScore, numberOfSupportPositionsForScore, showNegativeModal,
+      voterPositionIsPublic, voterTextStatement, voterTextStatementOpened, visibilityRowOpen,
     } = this.state;
+    const measureHasOpinion = ballotItemType === 'MEASURE' && !!voterTextStatement;
 
     if (
       (ballotItemWeVoteId === undefined || ballotItemWeVoteId === '') && (politicianWeVoteId === undefined || politicianWeVoteId === '')
@@ -837,10 +850,7 @@ class ItemActionBar extends PureComponent {
     }
     helpWinButtonPopOverText += ' win by chipping in $1.';
 
-    let supportButtonSelectedPopOverText = 'Click to choose';
-    if (useSupportWording) {
-      supportButtonSelectedPopOverText = 'Click to support';
-    }
+    let supportButtonSelectedPopOverText = useSupportWording ? 'Click to support' : 'Click to choose';
     if (ballotItemDisplayName.length > 0) {
       supportButtonSelectedPopOverText += ` ${ballotItemDisplayName}.`;
     } else {
@@ -901,7 +911,7 @@ class ItemActionBar extends PureComponent {
 
     const supportButtonPopoverTooltip = isMobileScreenSize() ? (<></>) : (
       <Tooltip className="u-z-index-9020" id="supportButtonTooltip">
-        {this.isSupportCalculated() ? supportButtonUnselectedPopOverText : supportButtonSelectedPopOverText }
+        {this.isSupportCalculated() ? supportButtonUnselectedPopOverText : supportButtonSelectedPopOverText}
       </Tooltip>
     );
 
@@ -914,17 +924,27 @@ class ItemActionBar extends PureComponent {
     // console.log('ItemActionBar buttonsOnly:', buttonsOnly);
     const showPositionPublicToggle = !this.props.hidePositionPublicToggle && this.isAnyEndorsementCalculated();
     // console.log('showPositionPublicToggle:', showPositionPublicToggle);
+    const initialEmail = VoterStore.getVoterEmail();
+    const showingNegativeFeedbackModal = AppObservableStore.getShowingNegativeFeedbackModal();
+
     return (
-      <>
-        <ItemActionBarWrapper
-          // inModal={this.props.inModal}
-          displayInline={buttonsOnly || this.props.shareButtonHide}
-          onMouseOver={handleEnterHoverLocalArea}
-          onFocus={handleEnterHoverLocalArea}
-          onMouseOut={handleLeaveHoverLocalArea}
-          onBlur={handleLeaveHoverLocalArea}
-          positionPublicToggleWrapAllowed={this.props.positionPublicToggleWrapAllowed}
-        >
+      <ItemActionBarWrapper
+        displayInline={buttonsOnly || this.props.shareButtonHide}
+        onMouseOver={handleEnterHoverLocalArea}
+        onFocus={handleEnterHoverLocalArea}
+        onMouseOut={handleLeaveHoverLocalArea}
+        onBlur={handleLeaveHoverLocalArea}
+        positionPublicToggleWrapAllowed={this.props.positionPublicToggleWrapAllowed}
+      >
+        {showNegativeModal && !showingNegativeFeedbackModal && (
+          <ReviewAppModal initialEmail={initialEmail} />
+        )}
+
+        {/* Row: buttons + [chat bubble] + [candidate staff]
+            On desktop: all inline. Chat bubble toggles visibility row in place.
+            On mobile: visibility row wraps to its own row below buttons + staff. */}
+        <ActionBarRow>
+          {/* Section 1: Choose / Oppose / Comment / Share buttons */}
           <ButtonGroup
             className={`${!this.props.shareButtonHide ? ' u-push--sm' : ''}`}
             positionPublicToggleWrapAllowed={this.props.positionPublicToggleWrapAllowed}
@@ -939,10 +959,7 @@ class ItemActionBar extends PureComponent {
                     {(ballotItemType === 'MEASURE') && this.measureYesButtonNoText(`desktopVersion-${ballotItemWeVoteId}${politicianWeVoteId}`)}
                   </StackedButton>
                 ) : (
-                  <ButtonWrapper
-                    className="u-push--xs d-none d-lg-block"
-                    data-modal-trigger
-                  >
+                  <ButtonWrapper className="u-push--xs d-none d-lg-block" data-modal-trigger>
                     <OverlayTrigger
                       overlay={(useHelpDefeatOrHelpWin && this.isOpposeCalculated()) ? helpDefeatButtonPopoverTooltip : supportButtonPopoverTooltip}
                       placement="top"
@@ -962,7 +979,7 @@ class ItemActionBar extends PureComponent {
                     {ballotItemType === 'MEASURE' && this.measureYesButtonNoText(`mobileVersion-${ballotItemWeVoteId}${politicianWeVoteId}`)}
                   </StackedButton>
                 ) : (
-                  <ButtonWrapper className="u-push--xs u-push--xs d-lg-none">
+                  <ButtonWrapper className="u-push--xs d-lg-none">
                     {(ballotItemType === 'CANDIDATE' || ballotItemType === 'POLITICIAN') && ((useHelpDefeatOrHelpWin && this.isOpposeCalculated()) ? <></> : this.supportButton(`mobileVersion-${ballotItemWeVoteId}${politicianWeVoteId}`))}
                     {ballotItemType === 'MEASURE' && this.measureYesButton(`mobileVersion-${ballotItemWeVoteId}${politicianWeVoteId}`)}
                   </ButtonWrapper>
@@ -1019,11 +1036,7 @@ class ItemActionBar extends PureComponent {
                   </StackedButton>
                 ) : (
                   <ButtonWrapperFarRight className="d-none d-lg-block">
-                    <OverlayTrigger
-                      overlay={helpDefeatButtonPopoverTooltip}
-                      placement="top"
-                      rootClose
-                    >
+                    <OverlayTrigger overlay={helpDefeatButtonPopoverTooltip} placement="top" rootClose>
                       <div>
                         {(ballotItemType === 'CANDIDATE' || ballotItemType === 'POLITICIAN') && (useHelpDefeatOrHelpWin && this.isOpposeCalculated()) && this.helpDefeatThemButton(`desktopVersion-${ballotItemWeVoteId}${politicianWeVoteId}`)}
                       </div>
@@ -1043,57 +1056,141 @@ class ItemActionBar extends PureComponent {
                 )}
               </>
             )}
-            { this.props.commentButtonHide || this.props.inModal ?
-              null : (
-                <span>
-                  {buttonsOnly ? (
-                    <CommentFlex>
-                      {this.commentButtonNoText(`${ballotItemWeVoteId}${politicianWeVoteId}`)}
-                    </CommentFlex>
-                  ) : (
-                    <CommentFlex>
-                      {this.commentButton(`${ballotItemWeVoteId}${politicianWeVoteId}`)}
-                    </CommentFlex>
-                  )}
-                </span>
+
+            {/* Comment Button (candidates/politicians) */}
+            {!this.props.commentButtonHide && !this.props.inModal && ballotItemType !== 'MEASURE' && (
+              <span>
+                {buttonsOnly ? (
+                  <CommentFlex>{this.commentButtonNoText(`${ballotItemWeVoteId}${politicianWeVoteId}`)}</CommentFlex>
+                ) : (
+                  <CommentFlex>{this.commentButton(`${ballotItemWeVoteId}${politicianWeVoteId}`)}</CommentFlex>
+                )}
+              </span>
+            )}
+
+            {/* Share Button */}
+            {this.props.shareButtonHide || this.props.inModal ? null : (
+              <ShareButtonDropDown showMoreId="itemActionBarShowMoreFooter" urlBeingShared={urlBeingShared} shareIcon={shareIcon} shareText="Share" />
+            )}
+          </ButtonGroup>
+
+          {/* Chat bubble + visibility row for measures.
+              When voter has typed an opinion, replace bubble with divider + visibility text. */}
+          {ballotItemType === 'MEASURE' && !this.props.commentButtonHide && !this.props.inModal && (
+            <>
+              {measureHasOpinion ? (
+                <VisibilityInlineWrapperDesktop className="u-show-desktop">
+                  <VisibilityDivider />
+                  <MakePublicVisibilityRow
+                    isPublic
+                    onDotsClick={this.togglePositionStatementFunction}
+                  />
+                </VisibilityInlineWrapperDesktop>
+              ) : (
+                <ChatBubbleButton
+                  aria-label="Comments"
+                  onClick={this.togglePositionStatementFunction}
+                  type="button"
+                >
+                  <ChatBubbleOutline style={{ fontSize: 22, color: '#1976d2' }} />
+                </ChatBubbleButton>
               )}
 
-            { this.props.shareButtonHide || this.props.inModal ?
-              null :
-              <ShareButtonDropDown showMoreId="itemActionBarShowMoreFooter" urlBeingShared={urlBeingShared} shareIcon={shareIcon} shareText="Share" /> }
-          </ButtonGroup>
-          {showPositionPublicToggle && (
-            <PositionPublicToggle
-              ballotItemType={ballotItemType}
-              ballotItemWeVoteId={ballotItemWeVoteId}
-              className="null"
-              externalUniqueId={`itemActionBar-${this.props.externalUniqueId}`}
-              politicianWeVoteId={politicianWeVoteId}
-            />
+              {/* Mobile: full-width visibility row wraps below buttons */}
+              {measureHasOpinion && (
+                <VisibilityInlineWrapperMobile className="u-show-mobile-tablet">
+                  <MakePublicVisibilityRow
+                    isPublic
+                    onDotsClick={this.togglePositionStatementFunction}
+                  />
+                </VisibilityInlineWrapperMobile>
+              )}
+            </>
           )}
-          <Suspense fallback={<></>}>
-            <HelpWinOrDefeatModal
-              ballotItemWeVoteId={ballotItemWeVoteId}
-              // externalUniqueId={externalUniqueId}
-              politicianWeVoteId={politicianWeVoteId}
-              show={helpWinOrDefeatModalOpen}
-              toggleModal={this.toggleHelpWinOrDefeatFunction}
-            />
-          </Suspense>
-          {voterTextStatementOpened && (
-            <PositionStatementModal
-              ballotItemWeVoteId={ballotItemWeVoteId}
-              // externalUniqueId={externalUniqueId}
-              politicianWeVoteId={politicianWeVoteId}
-              show={voterTextStatementOpened}
-              toggleModal={this.togglePositionStatementFunction}
-            />
+
+          {/* Chat bubble + "For candidate staff", candidates/politicians only.
+              Pass showCandidateStaffAndChat prop to enable (e.g. in BallotScrollingContainer). */}
+          {((ballotItemType === 'CANDIDATE' || ballotItemType === 'POLITICIAN') && this.props.showCandidateStaffAndChat && nextReleaseFeaturesEnabled) && (
+            <>
+              {/* When visibilityRowOpen: hide bubble, show divider + visibility text inline */}
+              {visibilityRowOpen ? (
+                <VisibilityInlineWrapperDesktop className="u-show-desktop">
+                  <VisibilityDivider />
+                  <MakePublicVisibilityRow
+                    isPublic={voterPositionIsPublic}
+                    onMakePublic={this.onClickMakePublic}
+                    onDotsClick={this.onClickDotsMenu}
+                  />
+                </VisibilityInlineWrapperDesktop>
+              ) : (
+                <ChatBubbleButton
+                  aria-label="Comments"
+                  onClick={this.onClickChatBubble}
+                  type="button"
+                >
+                  <ChatBubbleOutline style={{ fontSize: 22, color: '#1976d2' }} />
+                </ChatBubbleButton>
+              )}
+
+              {!this.props.inModal && (
+                <>
+                  {/* Desktop: standalone divider + candidate staff */}
+                  <CandidateStaffDivider className="u-show-desktop" />
+                  <CandidateStaffWrapper className="u-show-desktop" visibilityRowOpen={visibilityRowOpen}>
+                    <CandidateStaffText>For candidate staff:</CandidateStaffText>
+                    <CandidateStaffLink as="button" onClick={this.onClickClaimProfile}>
+                      <EditOutlined style={{ fontSize: 14, verticalAlign: 'middle', marginRight: 2 }} />
+                      Claim &amp; edit profile
+                    </CandidateStaffLink>
+                  </CandidateStaffWrapper>
+                  {/* Mobile & tablet: show without divider */}
+                  <CandidateStaffWrapperMobile className="u-show-mobile-tablet" visibilityRowOpen={visibilityRowOpen}>
+                    <CandidateStaffText>For candidate staff:</CandidateStaffText>
+                    <CandidateStaffLink as="button" onClick={this.onClickClaimProfile}>
+                      <EditOutlined style={{ fontSize: 14, verticalAlign: 'middle', marginRight: 2 }} />
+                      Claim &amp; edit profile
+                    </CandidateStaffLink>
+                  </CandidateStaffWrapperMobile>
+                </>
+              )}
+
+              {/* Mobile: full-width visibility row wraps below buttons + candidate staff */}
+              {visibilityRowOpen && (
+                <VisibilityInlineWrapperMobile className="u-show-mobile-tablet">
+                  <MakePublicVisibilityRow
+                    isPublic={voterPositionIsPublic}
+                    onMakePublic={this.onClickMakePublic}
+                    onDotsClick={this.onClickDotsMenu}
+                  />
+                </VisibilityInlineWrapperMobile>
+              )}
+            </>
           )}
-        </ItemActionBarWrapper>
-      </>
+        </ActionBarRow>
+
+        <Suspense fallback={<></>}>
+          <HelpWinOrDefeatModal
+            ballotItemWeVoteId={ballotItemWeVoteId}
+            // externalUniqueId={externalUniqueId}
+            politicianWeVoteId={politicianWeVoteId}
+            show={helpWinOrDefeatModalOpen}
+            toggleModal={this.toggleHelpWinOrDefeatFunction}
+          />
+        </Suspense>
+        {voterTextStatementOpened && (
+          <PositionStatementModal
+            ballotItemWeVoteId={ballotItemWeVoteId}
+            // externalUniqueId={externalUniqueId}
+            politicianWeVoteId={politicianWeVoteId}
+            show={voterTextStatementOpened}
+            toggleModal={this.togglePositionStatementFunction}
+          />
+        )}
+      </ItemActionBarWrapper>
     );
   }
 }
+
 ItemActionBar.propTypes = {
   ballotItemDisplayName: PropTypes.string,
   ballotItemWeVoteId: PropTypes.string,
@@ -1115,6 +1212,7 @@ ItemActionBar.propTypes = {
   positionPublicToggleWrapAllowed: PropTypes.bool,
   shareButtonHide: PropTypes.bool,
   supportOrOpposeHasBeenClicked: PropTypes.func,
+  showCandidateStaffAndChat: PropTypes.bool,
   togglePositionStatementFunction: PropTypes.func,
   useHelpDefeatOrHelpWin: PropTypes.bool,
   useSupportWording: PropTypes.bool,
@@ -1127,45 +1225,32 @@ const styles = (theme) => ({
     padding: 4,
     width: 'fit-content',
     height: 32,
-    [theme.breakpoints.down('md')]: {
-      width: 'fit-content',
-      height: 30,
-    },
-    [theme.breakpoints.down('sm')]: {
-      width: 'fit-content',
-      minWidth: 80,
-      height: 28,
-      padding: '0 8px',
-    },
+    [theme.breakpoints.down('md')]: { width: 'fit-content', height: 30 },
+    [theme.breakpoints.down('sm')]: { width: 'fit-content', minWidth: 80, height: 28, padding: '0 8px' },
   },
   buttonIcon: {
     fontSize: 18,
     marginRight: '.3rem',
     fontWeight: 'bold',
-    [theme.breakpoints.down('md')]: {
-      fontSize: 16,
-    },
-    [theme.breakpoints.down('sm')]: {
-      fontSize: 14,
-      marginTop: -2,
-    },
+    [theme.breakpoints.down('md')]: { fontSize: 16 },
+    [theme.breakpoints.down('sm')]: { fontSize: 14, marginTop: -2 },
   },
   buttonIconDone: {
-    color: `${DesignTokenColors.confirmation300}`, /* green color before selection */
+    color: `${DesignTokenColors.confirmation300}`,
     fontSize: 22,
     fontWeight: 'bold',
     marginRight: '.3rem',
     marginTop: '-2px',
   },
   buttonIconDoneSelected: {
-    color: `${DesignTokenColors.confirmation300}`, 
+    color: `${DesignTokenColors.confirmation300}`,
     fontSize: 22,
     fontWeight: 'bold',
     marginRight: '.3rem',
     marginTop: '-2px',
   },
   buttonIconNotInterested: {
-    color: `${DesignTokenColors.alert500}`, /* red color before selection */
+    color: `${DesignTokenColors.alert500}`,
     fontSize: 18,
     fontWeight: 'bold',
     marginRight: '.3rem',
@@ -1178,49 +1263,25 @@ const styles = (theme) => ({
     marginRight: '.3rem',
     marginTop: '-2px',
   },
-  dialogPaper: {
-    minHeight: 282,
-    margin: '0 8px',
-  },
+  dialogPaper: { minHeight: 282, margin: '0 8px' },
   buttonMeasureRoot: {
-    padding: 4,
-    width: 130,
+    borderRadius: '15px',
+    padding: '0 10px',
+    width: 'fit-content',
+    minWidth: 'auto',
     height: 32,
-    [theme.breakpoints.down('sm')]: {
-      width: 'fit-content',
-      minWidth: 80,
-      height: 28,
-      padding: '0 8px',
-    },
+    [theme.breakpoints.down('sm')]: { height: 28, padding: '0 8px' },
   },
   buttonRoot: {
     borderRadius: '15px',
     padding: 4,
     width: 120,
     height: 32,
-    [theme.breakpoints.down('md')]: {
-      width: 100,
-      height: 30,
-    },
-    [theme.breakpoints.down('sm')]: {
-      width: 'fit-content',
-      minWidth: 80,
-      height: 28,
-      padding: '0 8px',
-    },
+    [theme.breakpoints.down('md')]: { width: 'fit-content', minWidth: 100, height: 30, padding: '0 8px' },
+    [theme.breakpoints.down('sm')]: { width: 'fit-content', minWidth: 80, height: 28, padding: '0 8px' },
   },
-  buttonRootForCard: {
-    borderRadius: '15px',
-    padding: 4,
-    width: 138,
-    height: 32,
-  },
-  buttonRootForCardAfterChoice: {
-    borderRadius: '15px',
-    padding: 4,
-    width: 110,
-    height: 32,
-  },
+  buttonRootForCard: { borderRadius: '15px', padding: 4, width: 138, height: 32 },
+  buttonRootForCardAfterChoice: { borderRadius: '15px', padding: 4, width: 110, height: 32 },
   buttonNoTextRoot: {
     padding: 4,
     fontSize: 12,
@@ -1229,38 +1290,22 @@ const styles = (theme) => ({
     marginLeft: '.1rem',
     marginTop: '.3rem',
     marginBottom: 4,
-    [theme.breakpoints.down('md')]: {
-      width: 30,
-      height: 30,
-    },
-    [theme.breakpoints.down('sm')]: {
-      width: 'fit-content',
-      minWidth: 28,
-      height: 28,
-      padding: '0 8px',
-      fontSize: 10,
-    },
+    [theme.breakpoints.down('md')]: { width: 30, height: 30 },
+    [theme.breakpoints.down('sm')]: { width: 'fit-content', minWidth: 28, height: 28, padding: '0 8px', fontSize: 10 },
   },
-  buttonOutlinedPrimary: {
-    background: 'white',
-  },
-  closeButton: {
-    position: 'absolute',
-    right: theme.spacing(1),
-    top: theme.spacing(1),
-  },
-  dialogTitle: {
-    paddingTop: 22,
-    paddingBottom: 5,
-  },
+  buttonOutlinedPrimary: { background: 'white' },
+  closeButton: { position: 'absolute', right: theme.spacing(1), top: theme.spacing(1) },
+  dialogTitle: { paddingTop: 22, paddingBottom: 5 },
 });
+
+// Styled Components
 
 const ItemActionBarWrapper = styled('div', {
   shouldForwardProp: (prop) => !['positionPublicToggleWrapAllowed', 'displayInline'].includes(prop),
 })(({ positionPublicToggleWrapAllowed, displayInline, theme }) => (`
-  display: ${positionPublicToggleWrapAllowed ? '' :  'flex'};
-  justify-content: ${positionPublicToggleWrapAllowed ? '' :  'flex-start'};
-  width: ${positionPublicToggleWrapAllowed ? '' :  '100%'};
+  display: ${positionPublicToggleWrapAllowed ? '' : 'flex'};
+  justify-content: ${positionPublicToggleWrapAllowed ? '' : 'flex-start'};
+  width: ${positionPublicToggleWrapAllowed ? '' : '100%'};
   align-items: center;
   border-top: ${displayInline ? '' : '1px solid #eee !default'};
   margin-top: ${displayInline ? '' : '16px'};
@@ -1268,34 +1313,43 @@ const ItemActionBarWrapper = styled('div', {
   margin-left: 0;
   margin-bottom: 0;
   padding-top: ${displayInline ? '0' : '8px'};
+  padding-bottom: 8px;
   ${theme.breakpoints.down('sm')} {
     flex-wrap: wrap;
+  }
 `));
+
+// NEW: single row that holds all three sections — buttons | visibility | candidate staff
+// flex-wrap lets MakePublicVisibilityRow drop to the next line on mobile
+const ActionBarRow = styled('div')`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 100%;
+  column-gap: 0;
+  row-gap: 4px;
+  white-space: normal;
+`;
 
 const ButtonGroup = styled('div', {
   shouldForwardProp: (prop) => !['positionPublicToggleWrapAllowed'].includes(prop),
 })(({ positionPublicToggleWrapAllowed }) => (`
   display: flex;
-  // border-color: red;
-  // border-style: solid;
-  // border-width: 1 px;
   flex-wrap: nowrap;
-  height: fit-content;
-  height: 40px;
-  justify-content: center;
+  height: auto;
+  align-items: center;
+  justify-content: flex-start;
   margin-left: 0;
-  margin-right: 8px;
-  ${positionPublicToggleWrapAllowed ? 'width: 100%;' : ''};
+  margin-right: 0;
+  flex-shrink: 0;
 `));
 
 const ButtonWrapper = styled('div')`
-  &:last-child {
-    margin-right: 0;
-  }
+  &:last-child { margin-right: 0; }
   margin-right: 8px;
   display: flex;
   align-items: center;
-  // {({ onlyTwoButtons }) => (onlyTwoButtons ? 'width: 50% !important;' : '')}
 `;
 
 const ButtonWrapperFarRight = styled('div')`
@@ -1305,23 +1359,22 @@ const ButtonWrapperFarRight = styled('div')`
 `;
 
 const ButtonWrapperRight = styled('div')`
+  margin-left: 4px;
   margin-right: 0;
   display: flex;
   align-items: center;
-  // {({ onlyTwoButtons }) => (onlyTwoButtons ? 'width: 50% !important;' : '')}
 `;
 
 const ChooseButtonLabel = styled('span', {
   shouldForwardProp: (prop) => !['isAtState'].includes(prop),
 })(({ isAtState }) => (`
-  color: #000;
-  // ${isAtState ? 'font-weight: bold;' : ''};
+  color: #1976d2;
 `));
 
 const ChooseButtonLabelSelected = styled('span', {
   shouldForwardProp: (prop) => !['isAtState'].includes(prop),
 })(({ isAtState }) => (`
-  ${isAtState ? '' : ''};
+   color: ${isAtState ? '#fff' : '#1976d2'};
 `));
 
 const CommentFlex = styled('div')`
@@ -1337,15 +1390,13 @@ const HelpButtonLabel = styled('span')`
 const OpposeButtonLabel = styled('span', {
   shouldForwardProp: (prop) => !['isAtState'].includes(prop),
 })(({ isAtState }) => (`
-  color: #000;
+  color: #1976d2;
   ${isAtState ? 'font-weight: bold;' : ''};
 `));
 
 const OpposeButtonLabelSelected = styled('span', {
   shouldForwardProp: (prop) => !['isAtState'].includes(prop),
-})(({ isAtState }) => (`
-  ${isAtState ? '' : ''};
-`));
+})(({ isAtState }) => (''));
 
 const StackedButton = styled('div', {
   shouldForwardProp: (prop) => prop !== 'onlyTwoButtons',
@@ -1353,5 +1404,104 @@ const StackedButton = styled('div', {
   marginLeft: '3px',
   width: onlyTwoButtons ? '50% !important' : '33% !important',
 }));
+
+const ChatBubbleButton = styled('button')`
+  background: none;
+  border: none;
+  padding: 0 4px 0 16px;
+  margin: 0;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  line-height: 1;
+
+  &:hover svg { color: #1565c0 !important; }
+  &:focus-visible {
+    outline: 2px solid #1976d2;
+    border-radius: 4px;
+  }
+`;
+
+// Inline wrapper for the visibility row when chat bubble is clicked —
+// sits in the flex row alongside buttons and candidate staff.
+const VisibilityInlineWrapperDesktop = styled('div')`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-shrink: 0;
+`;
+
+const VisibilityInlineWrapperMobile = styled('div')`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  margin-top: 8px;
+`;
+
+const VisibilityDivider = styled('div')`
+  width: 1.5px;
+  height: 32px;
+  background: #e0e0e0;
+  margin-left: 12px;
+  margin-right: 12px;
+  flex-shrink: 0;
+`;
+
+const CandidateStaffDivider = styled('div')`
+  width: 1.5px;
+  height: 32px;
+  background: #e0e0e0;
+  margin-left: 12px;
+  margin-right: 12px;
+  flex-shrink: 0;
+`;
+
+// Section 3: "For candidate staff"
+const CandidateStaffWrapper = styled('div', {
+  shouldForwardProp: (prop) => prop !== 'visibilityRowOpen',
+})(({ visibilityRowOpen }) => (`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-size: 13px;
+  white-space: nowrap;
+  flex-shrink: 1;
+  min-width: 0;
+`));
+
+const CandidateStaffWrapperMobile = styled('div', {
+  shouldForwardProp: (prop) => prop !== 'visibilityRowOpen',
+})(({ visibilityRowOpen }) => (`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-size: 13px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  width: 100%;
+  margin-top: 8px;
+`));
+
+const CandidateStaffText = styled('span')`
+  color: #555;
+  line-height: 1.3;
+`;
+
+const CandidateStaffLink = styled('a')`
+  color: #0075b8;
+  text-decoration: none;
+  line-height: 1.3;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  font-size: inherit;
+  font-family: inherit;
+  text-align: left;
+  &:hover { text-decoration: underline; }
+`;
 
 export default withStyles(styles)(ItemActionBar);

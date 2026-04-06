@@ -102,7 +102,7 @@ class BallotTitleHeader extends Component {
       // this.props.toggleSelectBallotModal('', showEditAddress, false);
       AppObservableStore.setShowSelectBallotModal(showSelectBallotModal, showEditAddress);
     }
-  }
+  };
 
   showSelectBallotModalEditAddress = (buttonId) => {
     // console.log('Passed buttonId:', buttonId);
@@ -130,7 +130,7 @@ class BallotTitleHeader extends Component {
 
       AppObservableStore.setShowSelectBallotModal(showSelectBallotModal, showEditAddress);
     }
-  }
+  };
 
   render () {
     renderLog('BallotTitleHeader');  // Set LOG_RENDER_EVENTS to log all renders
@@ -196,10 +196,17 @@ class BallotTitleHeader extends Component {
                         </ElectionStateLabel>
                       )}
                       <ElectionNameH1
+                        tabIndex={0}
                         centerText={centerText}
                         className={linksOff ? '' : 'u-cursor--pointer'}
                         id="ballotTitleHeaderElectionName"
                         onClick={this.showSelectBallotModalChooseElection}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            this.showSelectBallotModalChooseElection();
+                          }
+                        }}
                       >
                         {electionName}
                       </ElectionNameH1>

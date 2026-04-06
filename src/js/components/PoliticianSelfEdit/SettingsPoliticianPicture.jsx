@@ -30,7 +30,7 @@ class SettingsPoliticianPicture extends Component {
       uploadedFileStaged: false,
     };
     this.changeProfileImageTypeCurrentlyActive = this.changeProfileImageTypeCurrentlyActive.bind(this);
-    this.setProfileImageTypeCurrentlyActive = this.setProfileImageTypeCurrentlyActive.bind(this);
+    // this.setProfileImageTypeCurrentlyActive = this.setProfileImageTypeCurrentlyActive.bind(this);
   }
 
   componentDidMount () {
@@ -65,16 +65,26 @@ class SettingsPoliticianPicture extends Component {
     });
   };
 
-  setProfileImageTypeCurrentlyActive (type) {
-    const { uploadedFileStaged } = this.state;
-    console.log('SettingsPoliticianPicture setProfileImageTypeCurrentlyActive:', type);
-    const isStaged = type === 'UPLOADED' ? 'true' : uploadedFileStaged;
+  // setProfileImageTypeCurrentlyActive (type) {
+  //   const { uploadedFileStaged } = this.state;
+  //   console.log('SettingsPoliticianPicture setProfileImageTypeCurrentlyActive:', type);
+  //   const isStaged = type === 'UPLOADED' ? 'true' : uploadedFileStaged;
+  //   this.setState({
+  //     profileImageTypeCurrentlyActive: type,
+  //     profileImageTypeCurrentlyActiveSet: true,
+  //     uploadedFileStaged: isStaged,
+  //   });
+  // }
+
+  onUploadLocal = (file) => {
+    console.log('SettingsPoliticianPicture onUploadLocal (not used):', file);
     this.setState({
-      profileImageTypeCurrentlyActive: type,
+      profileImageTypeCurrentlyActive: 'UPLOADED',
       profileImageTypeCurrentlyActiveSet: true,
-      uploadedFileStaged: isStaged,
+      // uploadedFile: file,
+      uploadedFileStaged: true,
     });
-  }
+  };
 
   submitPoliticianPhotoSave = (buttonId) => {
     const { politicianWeVoteId } = this.props;
@@ -95,6 +105,9 @@ class SettingsPoliticianPicture extends Component {
         userDetails: VoterStore.getAnalyticsUserDetails(),
         pageDetails: getPageDetails(),
       };
+      if (politicianWeVoteId) {
+        dataLayerObject.politicianDetails = PoliticianStore.getAnalyticsPoliticianDetails(politicianWeVoteId);
+      }
       TagManager.dataLayer({ dataLayer: dataLayerObject });
     }
 
@@ -103,7 +116,7 @@ class SettingsPoliticianPicture extends Component {
       profileImageTypeCurrentlyActiveSet: false,
       uploadedFileStaged: false,
     });
-  }
+  };
 
   changeProfileImageTypeCurrentlyActive (e) {
     // console.log('changeProfileImageTypeCurrentlyActive:', e);
@@ -142,7 +155,7 @@ class SettingsPoliticianPicture extends Component {
                 <VoterPhotoUpload
                   limitPhotoHeight
                   maxWidth={100}
-                  onUpload={this.setProfileImageTypeCurrentlyActive}
+                  onUpload={this.onUploadLocal}
                   politicianWeVoteId={politicianWeVoteId}
                 />
               </ProfilePictureOption>

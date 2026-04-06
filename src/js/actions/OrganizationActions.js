@@ -1,22 +1,22 @@
 import Dispatcher from '../common/dispatcher/Dispatcher';
 
 export default {
-  organizationDislike (organizationWeVoteId = '', politicianWeVoteId = '', organization_twitter_handle = '', organization_follow_based_on_issue = false) {
+  organizationDislike (organizationWeVoteId = '', politicianWeVoteId = '', organizationTwitterHandle = '', organizationFollowBasedOnIssue = false) {
     // console.log('OrganizationActions.organizationFollow, organizationWeVoteId: ', organizationWeVoteId);
     Dispatcher.loadEndpoint('organizationDislike', {
       organization_we_vote_id: organizationWeVoteId,
-      organization_twitter_handle,
-      organization_follow_based_on_issue,
+      organization_twitter_handle: organizationTwitterHandle,
+      organization_follow_based_on_issue: organizationFollowBasedOnIssue,
       politician_we_vote_id: politicianWeVoteId,
     });
   },
 
-  organizationFollow (organizationWeVoteId = '', politicianWeVoteId = '', organization_twitter_handle = '', organization_follow_based_on_issue = false) {
+  organizationFollow (organizationWeVoteId = '', politicianWeVoteId = '', organizationTwitterHandle = '', organizationFollowBasedOnIssue = false) {
     // console.log('OrganizationActions.organizationFollow, organizationWeVoteId: ', organizationWeVoteId);
     Dispatcher.loadEndpoint('organizationFollow', {
       organization_we_vote_id: organizationWeVoteId,
-      organization_twitter_handle,
-      organization_follow_based_on_issue,
+      organization_twitter_handle: organizationTwitterHandle,
+      organization_follow_based_on_issue: organizationFollowBasedOnIssue,
       politician_we_vote_id: politicianWeVoteId,
     });
   },
@@ -48,213 +48,261 @@ export default {
   },
 
   organizationRetrieve (weVoteId) {
-    Dispatcher.loadEndpoint('organizationRetrieve',
+    Dispatcher.loadEndpoint(
+      'organizationRetrieve',
       {
         organization_we_vote_id: weVoteId,
-      });
+      },
+    );
   },
 
   organizationDescriptionSave (organizationWeVoteId, organizationDescription) {
-    Dispatcher.loadEndpoint('organizationSave',
+    Dispatcher.loadEndpoint(
+      'organizationSave',
       {
         organization_description: organizationDescription,
         organization_we_vote_id: organizationWeVoteId,
-      });
+      },
+    );
   },
 
   organizationGetStartedSave (organizationWeVoteId, organizationName, organizationWebsite) {
-    Dispatcher.loadEndpoint('organizationSave',
+    Dispatcher.loadEndpoint(
+      'organizationSave',
       {
         organization_name: organizationName,
         organization_we_vote_id: organizationWeVoteId,
         organization_website: organizationWebsite,
-      });
+      },
+    );
   },
 
   organizationChosenGoogleAnalyticsTrackerSave (organizationWeVoteId, organizationChosenGoogleAnalyticsTracker) {
-    Dispatcher.loadEndpoint('organizationSave',
+    Dispatcher.loadEndpoint(
+      'organizationSave',
       {
         chosen_google_analytics_account_number: organizationChosenGoogleAnalyticsTracker,
         organization_we_vote_id: organizationWeVoteId,
-      });
+      },
+    );
   },
 
   organizationChosenFaviconDelete (organizationWeVoteId) {
-    Dispatcher.loadEndpoint('organizationPhotosSave',
+    Dispatcher.loadEndpoint(
+      'organizationPhotosSave',
       {
         delete_chosen_favicon: true,
         organization_we_vote_id: organizationWeVoteId,
-      });
+      },
+    );
   },
 
   organizationChosenFaviconSave (organizationWeVoteId, chosenFaviconFromFileReader) {
-    Dispatcher.loadEndpoint('organizationPhotosSave',
+    Dispatcher.loadEndpoint(
+      'organizationPhotosSave',
       {
         chosen_favicon_from_file_reader: chosenFaviconFromFileReader,
         organization_we_vote_id: organizationWeVoteId,
-      });
+      },
+    );
   },
 
   organizationChosenLogoDelete (organizationWeVoteId) {
-    Dispatcher.loadEndpoint('organizationPhotosSave',
+    Dispatcher.loadEndpoint(
+      'organizationPhotosSave',
       {
         delete_chosen_logo: true,
         organization_we_vote_id: organizationWeVoteId,
-      });
+      },
+    );
   },
 
   organizationChosenLogoSave (organizationWeVoteId, chosenLogoFromFileReader) {
-    Dispatcher.loadEndpoint('organizationPhotosSave',
+    Dispatcher.loadEndpoint(
+      'organizationPhotosSave',
       {
         chosen_logo_from_file_reader: chosenLogoFromFileReader,
         organization_we_vote_id: organizationWeVoteId,
-      });
+      },
+    );
   },
 
   organizationChosenReadyIntroductionSave (organizationWeVoteId, organizationReadyIntroductionTitle, organizationReadyIntroductionText) {
     // console.log('OrganizationActions, organizationChosenReadyIntroductionSave, organizationReadyIntroductionText:', organizationReadyIntroductionText, ', organizationReadyIntroductionTitle:', organizationReadyIntroductionTitle);
-    Dispatcher.loadEndpoint('organizationSave',
+    Dispatcher.loadEndpoint(
+      'organizationSave',
       {
         chosen_ready_introduction_text: organizationReadyIntroductionText,
         chosen_ready_introduction_title: organizationReadyIntroductionTitle,
         organization_we_vote_id: organizationWeVoteId,
-      });
+      },
+    );
   },
 
   organizationChosenSocialShareMasterImageDelete (organizationWeVoteId) {
-    Dispatcher.loadEndpoint('organizationPhotosSave',
+    Dispatcher.loadEndpoint(
+      'organizationPhotosSave',
       {
         delete_chosen_social_share_master_image: true,
         organization_we_vote_id: organizationWeVoteId,
-      });
+      },
+    );
   },
 
   organizationChosenSocialShareMasterImageSave (organizationWeVoteId, chosenSocialShareMasterImageFromFileReader) {
-    Dispatcher.loadEndpoint('organizationPhotosSave',
+    Dispatcher.loadEndpoint(
+      'organizationPhotosSave',
       {
         chosen_social_share_master_image_from_file_reader: chosenSocialShareMasterImageFromFileReader,
         organization_we_vote_id: organizationWeVoteId,
-      });
+      },
+    );
   },
 
   organizationChosenHtmlVerificationSave (organizationWeVoteId, organizationChosenHtmlVerificationString) {
-    Dispatcher.loadEndpoint('organizationSave',
+    Dispatcher.loadEndpoint(
+      'organizationSave',
       {
         chosen_html_verification_string: organizationChosenHtmlVerificationString,
         organization_we_vote_id: organizationWeVoteId,
-      });
+      },
+    );
   },
 
   organizationChosenSocialShareDescriptionSave (organizationWeVoteId, organizationChosenSocialShareDescription) {
-    Dispatcher.loadEndpoint('organizationSave',
+    Dispatcher.loadEndpoint(
+      'organizationSave',
       {
         chosen_social_share_description: organizationChosenSocialShareDescription,
         organization_we_vote_id: organizationWeVoteId,
-      });
+      },
+    );
   },
 
   organizationChosenSubdomainSave (organizationWeVoteId, organizationChosenSubdomainName) {
-    Dispatcher.loadEndpoint('organizationSave',
+    Dispatcher.loadEndpoint(
+      'organizationSave',
       {
         chosen_subdomain_string: organizationChosenSubdomainName,
         organization_we_vote_id: organizationWeVoteId,
-      });
+      },
+    );
   },
 
   organizationChosenDomainNameSave (organizationWeVoteId, organizationChosenDomainName) {
-    Dispatcher.loadEndpoint('organizationSave',
+    Dispatcher.loadEndpoint(
+      'organizationSave',
       {
         chosen_domain_string: organizationChosenDomainName,
         organization_we_vote_id: organizationWeVoteId,
-      });
+      },
+    );
   },
 
   organizationChosenHideWeVoteLogoSave (organizationWeVoteId, organizationChosenHideWeVoteLogo) {
-    Dispatcher.loadEndpoint('organizationSave',
+    Dispatcher.loadEndpoint(
+      'organizationSave',
       {
         chosen_hide_we_vote_logo: organizationChosenHideWeVoteLogo,
         organization_we_vote_id: organizationWeVoteId,
-      });
+      },
+    );
   },
 
   organizationPreventSharingOpinions (organizationWeVoteId, organizationPreventSharingOpinions) {
-    Dispatcher.loadEndpoint('organizationSave',
+    Dispatcher.loadEndpoint(
+      'organizationSave',
       {
         chosen_prevent_sharing_opinions: organizationPreventSharingOpinions,
         organization_we_vote_id: organizationWeVoteId,
-      });
+      },
+    );
   },
 
   organizationNameSave (organizationWeVoteId, organizationName) {
-    Dispatcher.loadEndpoint('organizationSave',
+    Dispatcher.loadEndpoint(
+      'organizationSave',
       {
         organization_name: organizationName,
         organization_we_vote_id: organizationWeVoteId,
-      });
+      },
+    );
   },
 
-  organizationSearch (organizationSearchTerm, organization_twitter_handle = '', exact_match = false) {
+  organizationSearch (organizationSearchTerm, organizationTwitterHandle = '', exactMatch = false) {
     // console.log('OrganizationActions.organizationSearch, organizationSearchTerm: ', organizationSearchTerm);
     Dispatcher.loadEndpoint('organizationSearch', {
-      exact_match,
+      exact_match: exactMatch,
       organization_search_term: organizationSearchTerm,
-      organization_twitter_handle,
+      organization_twitter_handle: organizationTwitterHandle,
     });
   },
 
   organizationTypeSave (organizationWeVoteId, organizationType) {
-    Dispatcher.loadEndpoint('organizationSave',
+    Dispatcher.loadEndpoint(
+      'organizationSave',
       {
         organization_type: organizationType,
         organization_we_vote_id: organizationWeVoteId,
-      });
+      },
+    );
   },
 
   organizationWebsiteSave (organizationWeVoteId, organizationWebsite) {
-    Dispatcher.loadEndpoint('organizationSave',
+    Dispatcher.loadEndpoint(
+      'organizationSave',
       {
         organization_we_vote_id: organizationWeVoteId,
         organization_website: organizationWebsite,
-      });
+      },
+    );
   },
 
-  positionListForOpinionMaker (organizationWeVoteId, filterForVoter, filterOutVoter, google_civic_election_id = 0) { // Calls positionListForOpinionMaker endpoint
-    Dispatcher.loadEndpoint('positionListForOpinionMaker',
+  positionListForOpinionMaker (organizationWeVoteId, filterForVoter, filterOutVoter, googleCivicElectionId = 0) { // Calls positionListForOpinionMaker endpoint
+    Dispatcher.loadEndpoint(
+      'positionListForOpinionMaker',
       {
         opinion_maker_we_vote_id: organizationWeVoteId,
         filter_for_voter: filterForVoter,
         filter_out_voter: filterOutVoter,
-        google_civic_election_id,
+        google_civic_election_id: googleCivicElectionId,
         kind_of_opinion_maker: 'ORGANIZATION',
-      });
+      },
+    );
   },
 
   positionListForOpinionMakerForFriends (weVoteId, filterForVoter, filterOutVoter) { // Calls positionListForOpinionMaker endpoint
-    Dispatcher.loadEndpoint('positionListForOpinionMaker',
+    Dispatcher.loadEndpoint(
+      'positionListForOpinionMaker',
       {
         opinion_maker_we_vote_id: weVoteId,
         filter_for_voter: filterForVoter,
         filter_out_voter: filterOutVoter,
         friends_vs_public: 'FRIENDS_ONLY',
         kind_of_opinion_maker: 'ORGANIZATION',
-      });
+      },
+    );
   },
 
   saveFromFacebook (facebookId, facebookEmail, facebookProfileImageUrlHttps, organizationName) {
-    Dispatcher.loadEndpoint('organizationSave',
+    Dispatcher.loadEndpoint(
+      'organizationSave',
       {
         facebook_id: facebookId,
         facebook_email: facebookEmail,
         facebook_profile_image_url_https: facebookProfileImageUrlHttps,
         organization_name: organizationName,
-      });
+      },
+    );
   },
 
   saveFromTwitter (twitterHandle) {
-    Dispatcher.loadEndpoint('organizationSave',
+    Dispatcher.loadEndpoint(
+      'organizationSave',
       {
         organization_twitter_handle: twitterHandle,
         refresh_from_twitter: 1,
-      });
+      },
+    );
   },
 };

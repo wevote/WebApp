@@ -82,13 +82,13 @@ class CampaignCommentForList extends Component {
     this.setState({
       showFullSupporterEndorsement: false,
     });
-  }
+  };
 
   onShowFullSupporterEndorsement = () => {
     this.setState({
       showFullSupporterEndorsement: true,
     });
-  }
+  };
 
   render () {
     renderLog('CampaignCommentForList');  // Set LOG_RENDER_EVENTS to log all renders

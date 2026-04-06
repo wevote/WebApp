@@ -7,7 +7,7 @@ import CheckoutForm from './CheckoutForm';
 July 2021 TODO: Same named file in the WebApp and Campaigns -- PLEASE KEEP THEM IDENTICAL -- make symmetrical changes and test on both sides
 */
 
-const InjectedCheckoutForm = (params) => {
+function InjectedCheckoutForm (params) {
   renderLog('InjectedCheckoutForm');
   const {
     value,
@@ -40,6 +40,6 @@ const InjectedCheckoutForm = (params) => {
   } else {
     return null;
   }
-};
+}
 
 export default InjectedCheckoutForm;

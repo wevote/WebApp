@@ -61,7 +61,7 @@ class BallotTitleHeaderNationalPlaceholder extends Component {
       // this.props.toggleSelectBallotModal('', showEditAddress, false);
       AppObservableStore.setShowSelectBallotModal(showSelectBallotModal, showEditAddress);
     }
-  }
+  };
 
   showSelectBallotModalEditAddress = (buttonId) => {
     // console.log('Passed buttonId:', buttonId);
@@ -88,7 +88,7 @@ class BallotTitleHeaderNationalPlaceholder extends Component {
 
       AppObservableStore.setShowSelectBallotModal(showSelectBallotModal, showEditAddress);
     }
-  }
+  };
 
   render () {
     renderLog('BallotTitleHeaderNationalPlaceholder');  // Set LOG_RENDER_EVENTS to log all renders

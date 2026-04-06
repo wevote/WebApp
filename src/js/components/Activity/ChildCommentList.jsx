@@ -91,7 +91,7 @@ class ChildCommentList extends Component {
     this.setState({
       commentWeVoteIdBeingEditedNow: '',
     });
-  }
+  };
 
   onClickEditComment = (commentWeVoteId) => {
     // console.log('onClickEditComment');
@@ -99,14 +99,14 @@ class ChildCommentList extends Component {
     this.setState({
       commentWeVoteIdBeingEditedNow: commentWeVoteId,
     });
-  }
+  };
 
   onClickEditCommentCancel = () => {
     // console.log('onClickEditCommentCancel');
     this.setState({
       commentWeVoteIdBeingEditedNow: '',
     });
-  }
+  };
 
   onClickReactionLikeToggle = (likedItemWeVoteId) => {
     // console.log('onClickReactionLikeToggle likedItemWeVoteId:', likedItemWeVoteId);
@@ -122,14 +122,14 @@ class ChildCommentList extends Component {
     this.setState({
       voterLikesThisItemByWeVoteId,
     });
-  }
+  };
 
   onClickShowActivityTidbitDrawer = () => {
     const { activityTidbitWeVoteId } = this.props;
     // console.log('onClickShowActivityTidbitDrawer activityTidbitWeVoteId:', activityTidbitWeVoteId);
     AppObservableStore.setActivityTidbitWeVoteIdForDrawer(activityTidbitWeVoteId);
     AppObservableStore.setShowActivityTidbitDrawer(true);
-  }
+  };
 
   onClickToggleReplyToCommentLocal = () => {
     const { parentCommentWeVoteId } = this.props;
@@ -137,7 +137,7 @@ class ChildCommentList extends Component {
     if (this.props.onClickToggleReplyToComment && parentCommentWeVoteId) {
       this.props.onClickToggleReplyToComment(parentCommentWeVoteId);
     }
-  }
+  };
 
   increaseNumberOfActivityTidbitsToDisplay = () => {
     // console.log('increaseNumberOfActivityTidbitsToDisplay');
@@ -149,7 +149,7 @@ class ChildCommentList extends Component {
         numberOfChildCommentsToDisplay,
       });
     }, 500);
-  }
+  };
 
   render () {
     renderLog('ChildCommentList');  // Set LOG_RENDER_EVENTS to log all renders

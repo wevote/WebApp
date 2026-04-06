@@ -1,6 +1,7 @@
 import { Button } from '@mui/material';
 import React from 'react';
 import styled from 'styled-components';
+import { isWebApp } from '../../utils/isCordovaOrWebApp';
 
 /* global $  */
 
@@ -13,7 +14,7 @@ import styled from 'styled-components';
 </iframe>
 */
 
-const DonorboxCordova = () => {
+function DonorboxCordova () {
   const OpenInAppBrowser = () => {
     const footerContainerSelector = $('#footer-container');
     footerContainerSelector.css('opacity', '0');
@@ -45,13 +46,14 @@ const DonorboxCordova = () => {
       <Button variant="contained" onClick={OpenInAppBrowser}>Donate</Button>
     </DonateButtonContainer>
   );
-};
+}
 
 const DonateButtonContainer = styled('div')`
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding-top: 30px;
+  padding-top: ${isWebApp() ? '30px' : ''};
+  padding-bottom: ${isWebApp() ? '' : '35px'};
 `;
 
 export default DonorboxCordova;

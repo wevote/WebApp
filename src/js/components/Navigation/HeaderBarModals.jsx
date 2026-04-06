@@ -11,6 +11,7 @@ import stringContains from '../../common/utils/stringContains';
 import BallotActions from '../../actions/BallotActions';
 import VoterActions from '../../actions/VoterActions';
 import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
+import PoliticianStore from '../../common/stores/PoliticianStore';
 
 const AdviserIntroModal = React.lazy(() => import(/* webpackChunkName: 'AdviserIntroModal' */ '../CompleteYourProfile/AdviserIntroModal'));
 const AskFriendsModal = React.lazy(() => import(/* webpackChunkName: 'AskFriendsModal' */ '../Friends/AskFriendsModal'));
@@ -23,6 +24,9 @@ const SelectBallotModal = React.lazy(() => import(/* webpackChunkName: 'SelectBa
 const ShareModal = React.lazy(() => import(/* webpackChunkName: 'ShareModal' */ '../Share/ShareModal'));
 const SignInModal = React.lazy(() => import(/* webpackChunkName: 'SignInModal' */ '../../common/components/SignIn/SignInModal'));
 const ValuesIntroModal = React.lazy(() => import(/* webpackChunkName: 'ValuesIntroModal' */ '../CompleteYourProfile/ValuesIntroModal'));
+const VerifyWithEmailModal = React.lazy(() => import(/* webpackChunkName: 'VerifyWithEmailModal' */ '../../common/components/Politician/UpdatePoliticianInformation/VerifyWithEmailModal'));
+const VerifyOtherWaysModal = React.lazy(() => import(/* webpackChunkName: 'VerifyOtherWaysModal' */ '../../common/components/Politician/UpdatePoliticianInformation/VerifyOtherWaysModal'));
+const VoterPositionEntryAndDisplay = React.lazy(() => import(/* webpackChunkName: 'VoterPositionEntryAndDisplay' */ '../PositionItem/VoterPositionEntryAndDisplay'));
 
 
 // Formerly: A function component, for all the various modals that come out of the HeaderBar
@@ -33,6 +37,9 @@ class HeaderBarModals extends Component {
       showAdviserIntroModal: false,
       showChooseOrOpposeIntroModal: false,
       showBallotChoicesAndSettingsModal: false,
+      showClaimProfileWithEmailModal: false,
+      showClaimProfileWithOtherWaysModal: false,
+      showEditPositionModal: false,
       showFirstPositionIntroModal: false,
       showSelectBallotModal: false,
       showSelectBallotModalEditAddress: false,
@@ -75,6 +82,9 @@ class HeaderBarModals extends Component {
       showAskFriendsModal: AppObservableStore.showAskFriendsModal(),
       showBallotChoicesAndSettingsModal: AppObservableStore.showBallotChoicesAndSettingsModal(),
       showChooseOrOpposeIntroModal: AppObservableStore.showChooseOrOpposeIntroModal(),
+      showClaimProfileWithEmailModal: AppObservableStore.getShowClaimProfileWithEmailModal(),
+      showClaimProfileWithOtherWaysModal: AppObservableStore.getShowClaimProfileWithOtherWaysModal(),
+      showEditPositionModal: AppObservableStore.getShowEditPositionModal(),
       showFirstPositionIntroModal: AppObservableStore.showFirstPositionIntroModal(),
       showPaidAccountUpgradeModal,
       showShareModal: AppObservableStore.showShareModal(),
@@ -89,41 +99,54 @@ class HeaderBarModals extends Component {
 
   closeAdviserIntroModal = () => {
     AppObservableStore.setShowAdviserIntroModal(false);
-  }
+  };
 
   closeAskFriendsModal = () => {
     AppObservableStore.setShowAskFriendsModal(false);
-  }
+  };
 
   closeBallotChoicesAndSettingsModal = () => {
     AppObservableStore.setShowBallotChoicesAndSettingsModal(false);
     // this.setState({ showBallotChoicesAndSettingsModal: false });
-  }
+  };
 
   closeChooseOrOpposeIntroModal = () => {
     AppObservableStore.setShowChooseOrOpposeIntroModal(false);
-  }
+  };
+
+  closeClaimProfileWithEmailModal = () => {
+    AppObservableStore.setShowClaimProfileWithEmailModal(false);
+  };
+
+  closeClaimProfileWithOtherWaysModal = () => {
+    AppObservableStore.setShowClaimProfileWithOtherWaysModal(false);
+  };
+
+  closeEditPositionModal = () => {
+    AppObservableStore.setShowEditPositionModal(false);
+    this.setState({ showEditPositionModal: false });
+  };
 
   closeFirstPositionIntroModal = () => {
     AppObservableStore.setShowFirstPositionIntroModal(false);
-  }
+  };
 
   openHowItWorksModal = () => {
     // console.log('Opening modal');
     AppObservableStore.setShowHowItWorksModal(true);
-  }
+  };
 
   closeImageUploadModal = () => {
     AppObservableStore.setShowImageUploadModal(false);
-  }
+  };
 
   closeValuesIntroModal = () => {
     AppObservableStore.setShowValuesIntroModal(false);
-  }
+  };
 
   closePersonalizedScoreIntroModal = () => {
     AppObservableStore.setShowPersonalizedScoreIntroModal(false);
-  }
+  };
 
   closePaidAccountUpgradeModal () {
     AppObservableStore.setShowPaidAccountUpgradeModal(false);
@@ -183,7 +206,7 @@ class HeaderBarModals extends Component {
     const { classes } = this.props;
     const {
       showAdviserIntroModal, showAskFriendsModal, showBallotChoicesAndSettingsModal, showChooseOrOpposeIntroModal,
-      showFirstPositionIntroModal,
+      showClaimProfileWithEmailModal, showClaimProfileWithOtherWaysModal, showEditPositionModal, showFirstPositionIntroModal,
       showPaidAccountUpgradeModal, showPersonalizedScoreIntroModal,
       showSelectBallotModal, showSelectBallotModalEditAddress,
       showShareModal, showSignInModal, showValuesIntroModal, showImageUploadModal,
@@ -241,6 +264,18 @@ class HeaderBarModals extends Component {
               onClose={this.closeChooseOrOpposeIntroModal}
             />
           </Dialog>
+        </Suspense>
+      );
+    }
+    let editPositionModal = <></>;
+    if (showEditPositionModal) {
+      editPositionModal = (
+        <Suspense fallback={<></>}>
+          <VoterPositionEntryAndDisplay
+            politicianWeVoteId={AppObservableStore.getEditPositionModalPoliticianWeVoteId()}
+            openEditModalOnLoad
+            onModalClose={this.closeEditPositionModal}
+          />
         </Suspense>
       );
     }
@@ -337,12 +372,41 @@ class HeaderBarModals extends Component {
         </Suspense>
       );
     }
+    let claimProfileWithEmailModal = <></>;
+    if (showClaimProfileWithEmailModal) {
+      claimProfileWithEmailModal = (
+        <Suspense fallback={<></>}>
+          <VerifyWithEmailModal
+            closeVerifyWithEmailModal={this.closeClaimProfileWithEmailModal}
+            politicianWeVoteId={AppObservableStore.getPoliticianWeVoteIdBeingViewed()}
+          />
+        </Suspense>
+      );
+    }
+    let claimProfileWithOtherWaysModal = <></>;
+    if (showClaimProfileWithOtherWaysModal) {
+      let politicianName = PoliticianStore.getPoliticianName(AppObservableStore.getPoliticianWeVoteIdBeingViewed());
+      if (politicianName === '') {
+        politicianName = undefined;
+      }
+      claimProfileWithOtherWaysModal = (
+        <Suspense fallback={<></>}>
+          <VerifyOtherWaysModal
+            politicianName={politicianName}
+            politicianWeVoteId={AppObservableStore.getPoliticianWeVoteIdBeingViewed()}
+          />
+        </Suspense>
+      );
+    }
     return (
       <>
         {advisorIntroModalHtml}
         {askFriendsModal}
         {ballotChoicesAndSettingsModal}
         {chooseOrOpposeIntroModal}
+        {claimProfileWithEmailModal}
+        {claimProfileWithOtherWaysModal}
+        {editPositionModal}
         {firstPositionIntroModal}
         {imageUploadModal}
         {paidAccountUpgradeModal}

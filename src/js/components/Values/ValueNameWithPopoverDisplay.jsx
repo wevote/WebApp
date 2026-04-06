@@ -156,7 +156,7 @@ class ValueNameWithPopoverDisplay extends Component {
         </PopoverDescriptionText>
       </PopoverWrapper>
     );
-  }
+  };
 
   render () {
     renderLog('ValueNameWithPopoverDisplay');  // Set LOG_RENDER_EVENTS to log all renders

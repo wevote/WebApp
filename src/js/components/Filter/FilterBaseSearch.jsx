@@ -204,7 +204,7 @@ class FilterBaseSearch extends Component {
     const sortedFiltered = this.filterItems(searchText);
     // console.log('sortedFiltered:', sortedFiltered);
     return this.props.onFilterBaseSearch(searchText, sortedFiltered.length ? sortedFiltered : []);
-  }
+  };
 
   searchNewItems = (searchText, buttonId) => {
     // const { opinionsAndBallotItemsSearchMode } = this.props;
@@ -220,14 +220,14 @@ class FilterBaseSearch extends Component {
       this.setState({ searchTextAlreadyRetrieved });
     }
     // }
-  }
+  };
 
   bigAndroidClick = (isSearching, alwaysOpen) => {
     // console.log('bigAndroidClick ------------------');
     if (isAndroid() && !isSearching && !alwaysOpen) {
       this.toggleSearch();
     }
-  }
+  };
 
   sendSearchDataLayer (searchText, buttonId) {
     const dataLayerObject = {

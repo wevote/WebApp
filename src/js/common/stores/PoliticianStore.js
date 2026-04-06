@@ -64,6 +64,7 @@ class PoliticianStore extends ReduceStore {
     const politician = this.getPoliticianByWeVoteId(politicianWeVoteId);
     return {
       isClaimedProfile: politician ? politician.is_claimed_profile : false,
+      isClaimedProfileDateTime: politician ? politician.is_claimed_profile_date_time : false,
       image: politician ? politician.we_vote_hosted_profile_image_url_medium : '',
       politicalParty: politician ? politician.political_party : '',
       politicianName: politician ? this.getPoliticianName(politicianWeVoteId) : '',

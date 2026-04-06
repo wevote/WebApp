@@ -1,6 +1,6 @@
 import { driver, expect } from '@wdio/globals';
 import SignedIn from '../page_objects/signedin.browser';
-import ReadyPage from '../page_objects/ready.page';
+import ReadyPage from '../page_objects/ready.browser';
 import SignIn from '../page_objects/signin.browser';
 
 const waitTime = 6000;

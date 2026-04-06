@@ -97,31 +97,31 @@ class CampaignNewsItemForList extends Component {
       campaignBasePath = `/id/${campaignXWeVoteId}/`;
     }
     return campaignBasePath;
-  }
+  };
 
   onCampaignNewsItemDraftOrBlockedClick = () => {
     const { campaignXNewsItemWeVoteId } = this.props;
     historyPush(`${this.getCampaignXBasePath()}add-update/${campaignXNewsItemWeVoteId}`);
     return null;
-  }
+  };
 
   onCampaignNewsItemEditClick = () => {
     const { campaignXNewsItemWeVoteId } = this.props;
     historyPush(`${this.getCampaignXBasePath()}add-update/${campaignXNewsItemWeVoteId}`);
     return null;
-  }
+  };
 
   onCampaignNewsItemShareClick = () => {
     const { campaignXNewsItemWeVoteId } = this.props;
     historyPush(`${this.getCampaignXBasePath()}share-it/${campaignXNewsItemWeVoteId}`);
     return null;
-  }
+  };
 
   goToDedicatedPublicNewsItemPage = () => {
     const { campaignXNewsItemWeVoteId } = this.props;
     historyPush(`${this.getCampaignXBasePath()}u/${campaignXNewsItemWeVoteId}`);
     return null;
-  }
+  };
 
   render () {
     renderLog('CampaignNewsItemForList');  // Set LOG_RENDER_EVENTS to log all renders

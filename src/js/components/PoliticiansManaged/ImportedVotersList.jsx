@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useRef } from 'react';
+import React, { useEffect, useMemo, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import {
@@ -9,18 +9,25 @@ import {
   VisibilityOff as HideIcon,
   Search as SearchIcon,
   MoreVert as OverflowIcon,
+  MoreHoriz as MoreHorizIcon,
   Visibility as ShowIcon,
   History as HistoryIcon,
   DeleteOutline as DeleteIcon,
+  Edit as EditIcon,
+  PersonAddAlt as AddVoterIcon,
 } from '@mui/icons-material';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
-
+import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import InviteSelectedModal from '../More/InviteSelectedModal';
+import ImportHistoryModal from '../More/ImportHistoryModal';
+import VoterActionModal from '../More/VoterActionModal';
 
 function formatWhen (iso) {
   try {
     const d = iso ? new Date(iso) : new Date();
-    return d.toLocaleString();
+    const date = d.toLocaleDateString(undefined, { year: 'numeric', month: 'numeric', day: 'numeric' });
+    const time = d.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
+    return `${date} ${time}`;
   } catch {
     return '—';
   }
@@ -34,17 +41,36 @@ export default function ImportedVotersList ({
   onHideSelected,
   onOpenPreview,
   onShowHidden,
-  onViewHistory,
   onDeleteSelected,
+  onUpdateVoter,
 }) {
+  const [isMobile, setIsMobile] = useState(isMobileScreenSize);
+
+  useEffect(() => {
+    const onResize = () => setIsMobile(isMobileScreenSize());
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
+
   const [query, setQuery] = useState('');
   const [expandedId, setExpandedId] = useState(null);
   const [selected, setSelected] = useState(() => new Set());
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef(null);
-
+  const [importHistoryOpen, setImportHistoryOpen] = useState(false);
   const [inviteModalOpen, setInviteModalOpen] = useState(false);
   const [inviteList, setInviteList] = useState([]);
+
+  const [voterActionModalOpen, setVoterActionModalOpen] = useState(false);
+  const [selectedVoter, setSelectedVoter] = useState(null);
+  const [voterModalTab, setVoterModalTab] = useState('details');
+
+  const [historyModalOpen, setHistoryModalOpen] = useState(false);
+
+  const [rowMenuAnchor, setRowMenuAnchor] = useState(null);
+  const [rowMenuVoter, setRowMenuVoter] = useState(null);
+  const [rowMenuPosition, setRowMenuPosition] = useState({ top: 0, left: 0 });
+  const [hoveredRowId, setHoveredRowId] = useState(null);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -83,142 +109,182 @@ export default function ImportedVotersList ({
     });
   };
 
+  const handleRowMenuOpen = (event, voter) => {
+    event.stopPropagation();
+    const rect = event.currentTarget.getBoundingClientRect();
+    const menuWidth = 180;
+    const menuHeight = 180; // approx: 4 items + divider + padding
+    const spaceBelow = window.innerHeight - rect.bottom;
+    const position = {
+      top: spaceBelow < menuHeight ? rect.top - menuHeight - 6 : rect.bottom + 6,
+      left: rect.right - menuWidth,
+    };
+    setRowMenuPosition(position);
+    setRowMenuAnchor(event.currentTarget);
+    setRowMenuVoter(voter);
+  };
+
+  const handleRowMenuClose = () => {
+    setRowMenuAnchor(null);
+    setRowMenuVoter(null);
+  };
+
+  const handleEditVoter = () => {
+    setSelectedVoter(rowMenuVoter);
+    setVoterModalTab('details');
+    setVoterActionModalOpen(true);
+    handleRowMenuClose();
+  };
+
+  const handleShowVoterHistory = () => {
+    setSelectedVoter(rowMenuVoter);
+    setVoterModalTab('history');
+    setVoterActionModalOpen(true);
+    handleRowMenuClose();
+  };
+
+  const handleSaveVoter = (updatedVoter) => {
+    if (onUpdateVoter) {
+      onUpdateVoter(updatedVoter);
+    }
+    // Update selectedVoter so modal shows updated data if reopened
+    setSelectedVoter(updatedVoter);
+  };
+
   return (
     <>
-      <Card aria-label="Imported voters (not invited)">
+      <ImportedVotersPanel aria-label="Imported voters (not invited)">
         <ListTopBar>
-          <TopBarLeft>
-            <ListHeading>Imported voters (not invited)</ListHeading>
-            <TopDivider aria-hidden />
-            <SearchField aria-label="Search imported voters">
-              <SearchIcon aria-hidden />
-              <SearchInput
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-              />
-            </SearchField>
-          </TopBarLeft>
+          {!isMobile && (
+            <TopBarLeft>
+              <ListHeading>
+                <HeadingBold>
+                  {voters.length}
+                  {' '}
+                  imported voters
+                </HeadingBold>
+                <HeadingLight>(not invited)</HeadingLight>
+              </ListHeading>
+              <TopDivider aria-hidden />
+              <SearchField aria-label="Search imported voters">
+                <SearchIcon aria-hidden />
+                <SearchInput
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                />
+              </SearchField>
+            </TopBarLeft>
+          )}
 
-          <TopBarRight>
-            <InviteButton
-              type="button"
-              disabled={selectedList.length === 0}
-              onClick={() => {
-                setInviteList(selectedList);
-                setInviteModalOpen(true);
-              }}
-              aria-label={`Invite selected (${selectedList.length})`}
-              title={
-                selectedList.length ?
-                  `Invite selected (${selectedList.length})` :
-                  'Invite selected'
-              }
-            >
-              Invite selected (
-              {selectedList.length}
-              )
-            </InviteButton>
+          {isMobile && (
+            <MobileTopBarRow>
+              <MobileHeading>
+                <HeadingBold>
+                  {voters.length}
+                  {' '}
+                  imported voters
+                </HeadingBold>
+                {' '}
+                <HeadingLight>(not invited)</HeadingLight>
+              </MobileHeading>
+              <MobileTopBarIcons>
+                <OverflowBtn
+                  type="button"
+                  aria-label="More options"
+                  aria-haspopup="menu"
+                  aria-expanded={menuOpen}
+                  onClick={() => setMenuOpen((o) => !o)}
+                  title="More options"
+                >
+                  <MoreHorizIcon fontSize="small" />
+                </OverflowBtn>
+                <OverflowBtn type="button" aria-label="Search" title="Search">
+                  <SearchIcon fontSize="small" />
+                </OverflowBtn>
+                <OverflowBtn type="button" aria-label="Add voter" title="Add voter">
+                  <AddVoterIcon fontSize="small" />
+                </OverflowBtn>
+              </MobileTopBarIcons>
+            </MobileTopBarRow>
+          )}
 
-            <OverflowWrap>
-              <OverflowBtn
+          {!isMobile && (
+            <TopBarRight>
+              <InviteButton
                 type="button"
-                aria-label="More options"
-                aria-haspopup="menu"
-                aria-expanded={menuOpen}
-                onClick={() => setMenuOpen((o) => !o)}
-                title="More options"
+                disabled={selectedList.length === 0}
+                onClick={() => {
+                  setInviteList(selectedList);
+                  setInviteModalOpen(true);
+                }}
+                aria-label={`Invite selected (${selectedList.length})`}
+                title={
+                  selectedList.length ?
+                    `Invite selected (${selectedList.length})` :
+                    'Invite selected'
+                }
               >
-                <OverflowIcon fontSize="small" />
-              </OverflowBtn>
-              {menuOpen && (
-                <MenuCard role="menu" ref={menuRef}>
-                  <MenuItem
-                    role="menuitem"
-                    onClick={() => {
-                      onShowHidden?.();
-                      setMenuOpen(false);
-                    }}
-                  >
-                    <ShowIcon fontSize="small" />
-                    <span>Show hidden</span>
-                  </MenuItem>
+                Invite selected (
+                {selectedList.length}
+                )
+              </InviteButton>
 
-                  <MenuItem
-                    role="menuitem"
-                    onClick={() => {
-                      onViewHistory?.();
-                      setMenuOpen(false);
-                    }}
-                  >
-                    <HistoryIcon fontSize="small" />
-                    <span>View history of imports</span>
-                  </MenuItem>
-                  <MenuDivider />
+              <OverflowWrap>
+                <OverflowBtn
+                  type="button"
+                  aria-label="More options"
+                  aria-haspopup="menu"
+                  aria-expanded={menuOpen}
+                  onClick={() => setMenuOpen((o) => !o)}
+                  title="More options"
+                >
+                  <OverflowIcon fontSize="small" />
+                </OverflowBtn>
+                {menuOpen && (
+                  <MenuCard role="menu" ref={menuRef}>
+                    <MenuItem
+                      role="menuitem"
+                      onClick={() => {
+                        onShowHidden?.();
+                        setMenuOpen(false);
+                      }}
+                    >
+                      <ShowIcon fontSize="small" />
+                      <span>Show hidden</span>
+                    </MenuItem>
 
-                  {selectedList.length > 0 ? (
-                    <>
-                      <MenuItem
-                        role="menuitem"
-                        onClick={() => {
-                          onHideSelected?.(selectedList);
-                          setMenuOpen(false);
-                        }}
-                      >
-                        <HideIcon fontSize="small" />
-                        <span>Hide</span>
-                      </MenuItem>
+                    <MenuItem
+                      role="menuitem"
+                      onClick={() => {
+                        setHistoryModalOpen(true);
+                        setMenuOpen(false);
+                      }}
+                    >
+                      <HistoryIcon fontSize="small" />
+                      <span>View history of imports</span>
+                    </MenuItem>
 
-                      <MenuItem
-                        role="menuitem"
-                        onClick={() => {
-                          onDeleteSelected?.(selectedList);
-                          setMenuOpen(false);
-                        }}
-                      >
-                        <DeleteIcon fontSize="small" />
-                        <span>Delete</span>
-                      </MenuItem>
-                    </>
-                  ) : (
-                    <>
-                      <TooltipWrap>
-                        <MenuItem role="menuitem" disabled>
-                          <HideIcon fontSize="small" />
-                          <span>Hide</span>
-                        </MenuItem>
-                        <TooltipBubble>
-                          Select voters to allow hiding or deleting.
-                        </TooltipBubble>
-                      </TooltipWrap>
-
-                      <TooltipWrap>
-                        <MenuItem role="menuitem" disabled>
-                          <DeleteIcon fontSize="small" />
-                          <span>Delete</span>
-                        </MenuItem>
-                        <TooltipBubble>
-                          Select voters to allow hiding or deleting.
-                        </TooltipBubble>
-                      </TooltipWrap>
-                    </>
-                  )}
-                </MenuCard>
-              )}
-            </OverflowWrap>
-          </TopBarRight>
+                  </MenuCard>
+                )}
+              </OverflowWrap>
+            </TopBarRight>
+          )}
         </ListTopBar>
 
-        <Toolbar>
-          <label>
-            <input
-              type="checkbox"
-              checked={allVisibleSelected}
-              onChange={toggleAllVisible}
-            />
-            <span>Select all</span>
-          </label>
-        </Toolbar>
+        {!isMobile && (
+          <Toolbar>
+            <label>
+              <input
+                type="checkbox"
+                checked={allVisibleSelected}
+                onChange={toggleAllVisible}
+              />
+              <span>Select all</span>
+            </label>
+          </Toolbar>
+        )}
 
+        {!isMobile && (
         <Table role="table" aria-label="Imported voters table">
           <TrHead role="row">
             <ThCenter role="columnheader" aria-label="Select" />
@@ -234,11 +300,18 @@ export default function ImportedVotersList ({
               const id = v.id || v._idx || `row_${idx}`;
               const isOpen = expandedId === id;
               const isChecked = selected.has(id);
-              const showDetails = isOpen || isChecked; // no hover reveal
+              const showDetails = isOpen || isChecked;
+              const isHovered = hoveredRowId === id;
+              const isMenuOpen = rowMenuVoter && (rowMenuVoter.id || rowMenuVoter._idx) === id;
 
               return (
                 <React.Fragment key={id}>
-                  <Tr role="row" className={isChecked ? 'selected' : undefined}>
+                  <Tr
+                    role="row"
+                    className={`${isChecked ? 'selected' : ''} ${isMenuOpen ? 'menu-open' : ''}`.trim()}
+                    onMouseEnter={() => setHoveredRowId(id)}
+                    onMouseLeave={() => setHoveredRowId(null)}
+                  >
                     <TdCheck role="cell">
                       <Checkbox
                         type="checkbox"
@@ -277,22 +350,39 @@ export default function ImportedVotersList ({
                       <ActionsInline className="row-actions">
                         <ActionPill
                           type="button"
+                          title="Send email invite"
+                          aria-label="Send email invite"
                           onClick={() => onInviteEmail([v])}
                         >
-                          <MailIcon fontSize="small" />
-                          <span>Send email invite</span>
+                          <MailIcon fontSize="inherit" />
                         </ActionPill>
                         <ActionPill
                           type="button"
+                          title="Send text invite"
+                          aria-label="Send text invite"
                           onClick={() => onInviteText([v])}
                         >
-                          <SmsIcon fontSize="small" />
-                          <span>Send text invite</span>
+                          <SmsIcon fontSize="inherit" />
                         </ActionPill>
-                        <ActionPill type="button" onClick={() => onHide(v)}>
-                          <HideIcon fontSize="small" />
-                          <span>Hide</span>
+                        <ActionPill
+                          type="button"
+                          title="Hide voter"
+                          aria-label="Hide voter"
+                          onClick={() => onHide(v)}
+                        >
+                          <HideIcon fontSize="inherit" />
                         </ActionPill>
+
+                        {/* Triple dot menu, only visible on hover or when menu is open */}
+                        {(isHovered || isChecked || isMenuOpen) && (
+                          <RowMenuButton
+                            type="button"
+                            onClick={(e) => handleRowMenuOpen(e, v)}
+                            aria-label="More options for voter"
+                          >
+                            <OverflowIcon fontSize="small" />
+                          </RowMenuButton>
+                        )}
                       </ActionsInline>
                     </TdActions>
                   </Tr>
@@ -322,7 +412,186 @@ export default function ImportedVotersList ({
             })}
           </Tbody>
         </Table>
-      </Card>
+        )}
+
+        {isMobile && (
+        <MobileCardList>
+          {filtered.map((v, idx) => {
+            const id = v.id || v._idx || `row_${idx}`;
+            const isOpen = expandedId === id;
+            const isChecked = selected.has(id);
+
+            return (
+              <VoterCard key={id} $selected={isChecked}>
+                <MobileCardTopRow>
+                  <Checkbox
+                    type="checkbox"
+                    checked={isChecked}
+                    onChange={() => toggleOne(id)}
+                    aria-label={`Select ${v.name || 'voter'}`}
+                  />
+                  <MobileCardName>{v.name || '—'}</MobileCardName>
+                  <RowMenuButton
+                    type="button"
+                    onClick={(e) => handleRowMenuOpen(e, v)}
+                    aria-label="More options for voter"
+                    title="More options"
+                  >
+                    <MoreHorizIcon fontSize="small" />
+                  </RowMenuButton>
+                  <TopDivider aria-hidden />
+                  <ExpandBtn
+                    type="button"
+                    aria-expanded={isOpen}
+                    aria-label={isOpen ? 'Collapse' : 'Expand'}
+                    onClick={() => toggleRow(id)}
+                  >
+                    {isOpen ? <CollapseIcon fontSize="small" /> : <ExpandIcon fontSize="small" />}
+                  </ExpandBtn>
+                </MobileCardTopRow>
+
+                <MobileCardPillRow>
+                  <MobileCardPill type="button" onClick={() => onInviteEmail([v])}>
+                    <MailIcon sx={{ fontSize: 16 }} />
+                    Send email invite
+                  </MobileCardPill>
+                  <MobileCardPill type="button" onClick={() => onInviteText([v])}>
+                    <SmsIcon sx={{ fontSize: 16 }} />
+                    Send text invite
+                  </MobileCardPill>
+                </MobileCardPillRow>
+
+                {isOpen && (
+                  <MobileCardDetails>
+                    <DetailBlock>
+                      <DetailLabel>Added via</DetailLabel>
+                      <div>{v.source || 'Manual entry'}</div>
+                    </DetailBlock>
+                    <CardDetailDivider aria-hidden />
+                    <DetailBlock>
+                      <DetailLabel>Added by</DetailLabel>
+                      <div>{v.addedBy || 'You'}</div>
+                    </DetailBlock>
+                    <CardDetailDivider aria-hidden />
+                    <DetailBlock>
+                      <DetailLabel>Added on</DetailLabel>
+                      <div>{formatWhen(v.addedAt)}</div>
+                    </DetailBlock>
+                  </MobileCardDetails>
+                )}
+              </VoterCard>
+            );
+          })}
+        </MobileCardList>
+        )}
+      </ImportedVotersPanel>
+
+      {isMobile && (
+      <MobileFooter>
+        <span aria-hidden />
+        <MobileInviteButton
+          type="button"
+          disabled={selectedList.length === 0}
+          onClick={() => {
+            setInviteList(selectedList);
+            setInviteModalOpen(true);
+          }}
+          aria-label={`Invite selected (${selectedList.length})`}
+        >
+          Invite selected (
+          {selectedList.length}
+          )
+        </MobileInviteButton>
+        <MobileFooterDot>
+          <OverflowWrap>
+            <OverflowBtn
+              type="button"
+              aria-label="More options"
+              aria-haspopup="menu"
+              aria-expanded={menuOpen}
+              onClick={() => setMenuOpen((o) => !o)}
+              title="More options"
+            >
+              <MoreHorizIcon fontSize="small" />
+            </OverflowBtn>
+            {menuOpen && (
+              <MenuCard role="menu" ref={menuRef}>
+                <MenuItem
+                  role="menuitem"
+                  onClick={() => {
+                    onShowHidden?.();
+                    setMenuOpen(false);
+                  }}
+                >
+                  <ShowIcon fontSize="small" />
+                  <span>Show hidden</span>
+                </MenuItem>
+                <MenuItem
+                  role="menuitem"
+                  onClick={() => {
+                    setHistoryModalOpen(true);
+                    setMenuOpen(false);
+                  }}
+                >
+                  <HistoryIcon fontSize="small" />
+                  <span>View history of imports</span>
+                </MenuItem>
+              </MenuCard>
+            )}
+          </OverflowWrap>
+        </MobileFooterDot>
+      </MobileFooter>
+      )}
+
+      {/* Row menu dropdown */}
+      {rowMenuAnchor && (
+        <>
+          <ClickAwayOverlay onClick={handleRowMenuClose} />
+          <RowMenuCard
+            role="menu"
+            style={{
+              top: `${rowMenuPosition.top}px`,
+              left: `${rowMenuPosition.left}px`,
+            }}
+          >
+            <MenuItem
+              role="menuitem"
+              onClick={handleEditVoter}
+            >
+              <EditIcon fontSize="small" />
+              <span>Edit voter</span>
+            </MenuItem>
+            <MenuItem
+              role="menuitem"
+              onClick={handleShowVoterHistory}
+            >
+              <HistoryIcon fontSize="small" />
+              <span>Show history</span>
+            </MenuItem>
+            <MenuDivider />
+            <MenuItem
+              role="menuitem"
+              onClick={() => {
+                onHide(rowMenuVoter);
+                handleRowMenuClose();
+              }}
+            >
+              <HideIcon fontSize="small" />
+              <span>Hide</span>
+            </MenuItem>
+            <MenuItem
+              role="menuitem"
+              onClick={() => {
+                onDeleteSelected?.([rowMenuVoter]);
+                handleRowMenuClose();
+              }}
+            >
+              <DeleteIcon fontSize="small" />
+              <span>Delete</span>
+            </MenuItem>
+          </RowMenuCard>
+        </>
+      )}
 
       {/* Invite selected modal */}
       <InviteSelectedModal
@@ -332,11 +601,23 @@ export default function ImportedVotersList ({
         onInviteEmail={onInviteEmail}
         onInviteText={onInviteText}
         onOpenPreview={onOpenPreview}
-        onRemove={(v) =>
-          setInviteList(prev =>
-            prev.filter(p => (p.id || p._idx) !== (v.id || v._idx))
-          )
-        }
+        onRemove={(v) => setInviteList((prev) => prev.filter((p) => (p.id || p._idx) !== (v.id || v._idx)))}
+      />
+
+      {/* Voter action modal */}
+      <VoterActionModal
+        show={voterActionModalOpen}
+        toggleModal={() => setVoterActionModalOpen(false)}
+        voter={selectedVoter}
+        initialTab={voterModalTab}
+        onSave={handleSaveVoter}
+      />
+
+      {/* Import history modal */}
+      <ImportHistoryModal
+        isOpen={historyModalOpen}
+        onClose={() => setHistoryModalOpen(false)}
+        voters={voters}
       />
     </>
   );
@@ -360,30 +641,43 @@ ImportedVotersList.propTypes = {
   onHideSelected: PropTypes.func.isRequired,
   onShowHidden: PropTypes.func,
   onOpenPreview: PropTypes.func,
-  onViewHistory: PropTypes.func,
   onDeleteSelected: PropTypes.func,
+  onUpdateVoter: PropTypes.func,
 };
 
 /* styles */
-const Card = styled.div`
+const ImportedVotersPanel = styled.div`
   margin-top: 14px;
-  border: 1px solid ${DesignTokenColors.neutralUI200};
   border-radius: 12px;
   background: ${DesignTokenColors.whiteUI};
+  @media (min-width: 992px) {
+    border: 1px solid ${DesignTokenColors.neutralUI200};
+  }
 `;
 
 const ListTopBar = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 8px 12px;
+  padding: 8px 16px 8px 12px;
   border-bottom: 1px solid ${DesignTokenColors.neutralUI200};
 `;
 
 const ListHeading = styled.div`
-  font-weight: 600;
-  font-size: 14px;
+  display: flex;
+  flex-direction: column;
   color: ${DesignTokenColors.neutralUI900};
+  white-space: nowrap;
+`;
+
+const HeadingBold = styled.span`
+  font-size: 15px;
+  font-weight: 600;
+`;
+
+const HeadingLight = styled.span`
+  font-size: 12px;
+  font-weight: 400;
 `;
 
 const TopBarRight = styled.div`
@@ -396,7 +690,7 @@ const SearchField = styled.label`
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  min-width: 320px;
+  min-width: 180px;
   height: 36px;
   padding: 0 10px;
   border: none;
@@ -428,7 +722,7 @@ const InviteButton = styled.button`
   color: ${DesignTokenColors.whiteUI};
   border: 1px solid ${DesignTokenColors.primary700};
   border-radius: 999px;
-  padding: 8px 14px;
+  padding: 8px 24px;
   cursor: pointer;
   white-space: nowrap;
   &:disabled {
@@ -438,9 +732,26 @@ const InviteButton = styled.button`
   }
 `;
 
+const MobileInviteButton = styled(InviteButton)`
+  padding: 4px 40px;
+  font-size: 13px;
+`;
+
+const MobileFooterDot = styled.div`
+  display: flex;
+  align-items: center;
+  button {
+    background: ${DesignTokenColors.primary50};
+    &:hover {
+      background: ${DesignTokenColors.primary100 || DesignTokenColors.neutralUI100};
+    }
+  }
+`;
+
 const OverflowWrap = styled.div`
   position: relative;
 `;
+
 const OverflowBtn = styled.button`
   background: transparent;
   border: 0;
@@ -453,6 +764,13 @@ const OverflowBtn = styled.button`
     color: ${DesignTokenColors.neutralUI900};
   }
 `;
+
+const RowMenuButton = styled(OverflowBtn)`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 const MenuCard = styled.div`
   position: absolute;
   right: 0;
@@ -461,7 +779,7 @@ const MenuCard = styled.div`
   border: 1px solid ${DesignTokenColors.neutralUI200};
   border-radius: 10px;
   box-shadow: 0 8px 24px rgba(16, 24, 40, 0.08);
-  min-width: 220px;
+  min-width: 250px;
   padding: 6px;
   z-index: 10;
 `;
@@ -504,18 +822,20 @@ const Table = styled.div`
 `;
 
 const Tbody = styled.div``;
-const gridCols = '34px 34px 1.2fr 1.2fr 0.9fr auto';
+const gridCols = '24px 24px 1.2fr 1.2fr 0.9fr 120px';
 
 const Th = styled.div`
-  padding: 10px 14px;
+  padding: 10px 0;
   font-size: 12px;
   font-weight: 600;
   color: ${DesignTokenColors.neutralUI600};
   min-width: 0;
+  text-align: left;
 `;
 
 const ThCenter = styled(Th)`
   text-align: center;
+  padding: 10px 0;
 `;
 const ThRight = styled(Th)`
   text-align: right;
@@ -544,6 +864,11 @@ const Tr = styled.div`
     opacity: 1;
     visibility: visible;
   }
+
+  &.menu-open .row-actions {
+    opacity: 1;
+    visibility: visible;
+  }
 `;
 
 const TrHead = styled(Tr)`
@@ -555,30 +880,34 @@ const TrDetails = styled(Tr)`
 `;
 
 const Td = styled.div`
-  padding: 10px 14px;
+  padding: 10px 0;
   font-size: 14px;
   color: ${DesignTokenColors.neutralUI900};
   min-width: 0; /* key: allow shrinking inside CSS grid */
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  text-align: left;
 `;
 
 const TdCheck = styled(Td)`
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 10px 0;
 `;
 
 const TdExpand = styled(Td)`
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 10px 0;
 `;
 
 const TdActions = styled(Td)`
   display: flex;
   justify-content: flex-end;
+  padding: 10px 4px;
 `;
 
 const Checkbox = styled.input``;
@@ -597,8 +926,9 @@ const ExpandBtn = styled.button`
 
 const ActionsInline = styled.div`
   display: inline-flex;
-  gap: 10px;
+  gap: 6px;
   justify-content: flex-end;
+  align-items: center;
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.12s ease-in-out;
@@ -610,10 +940,20 @@ const ActionPill = styled.button`
   align-items: center;
   background: transparent;
   border: none;
-  padding: 6px 10px;
+  padding: 4px 2px;
+  font-size: 16px;
   color: ${DesignTokenColors.neutralUI800};
   cursor: pointer;
-  white-space: nowrap;
+`;
+
+const ClickAwayOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 999;
+  background: transparent;
 `;
 
 const DetailsGrid = styled.div`
@@ -626,12 +966,28 @@ const DetailsGrid = styled.div`
 
 const DetailBlock = styled.div`
   color: ${DesignTokenColors.neutralUI800};
-  font-size: 14px;
+  font-size: 11px;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 const DetailLabel = styled.div`
   color: ${DesignTokenColors.neutralUI600};
-  font-size: 12px;
+  font-size: 10px;
+  white-space: nowrap;
+`;
+
+const RowMenuCard = styled.div`
+  position: fixed;
+  background: ${DesignTokenColors.whiteUI};
+  border: 1px solid ${DesignTokenColors.neutralUI200};
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(16, 24, 40, 0.08);
+  min-width: 180px;
+  padding: 6px;
+  z-index: 1000;
 `;
 
 const TdFull = styled(Td)`
@@ -670,9 +1026,11 @@ const TooltipBubble = styled.div`
 `;
 
 const TopBarLeft = styled.div`
-  display: inline-flex;
+  display: flex;
   align-items: center;
   gap: 12px;
+  flex: 1;
+  min-width: 0;
 `;
 
 const TopDivider = styled.span`
@@ -680,4 +1038,106 @@ const TopDivider = styled.span`
   height: 20px;
   background: ${DesignTokenColors.neutralUI200};
   display: inline-block;
+`;
+
+const MobileCardList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  padding-bottom: 128px;
+`;
+
+const VoterCard = styled.div`
+  border: 1px solid ${DesignTokenColors.neutralUI200};
+  border-radius: 16px;
+  background: ${DesignTokenColors.neutralUI50};
+  padding: 12px;
+  ${({ $selected }) => $selected && `
+    background: ${DesignTokenColors.primary50 || DesignTokenColors.neutralUI50};
+    border-left: 3px solid ${DesignTokenColors.primary700};
+  `}
+`;
+
+const MobileCardTopRow = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+`;
+
+const MobileCardName = styled.div`
+  flex: 1;
+  font-size: 14px;
+  font-weight: 700;
+  color: ${DesignTokenColors.neutralUI900};
+`;
+
+const MobileCardPillRow = styled.div`
+  display: flex;
+  gap: 12px;
+  padding-left: 4px;
+`;
+
+const MobileCardPill = styled.button`
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  border: 1px solid #1976d2;
+  border-radius: 999px;
+  background: ${DesignTokenColors.whiteUI};
+  padding: 4px 10px;
+  font-size: 12px;
+  color: #1976d2;
+  cursor: pointer;
+  white-space: nowrap;
+`;
+
+const MobileCardDetails = styled.div`
+  display: grid;
+  grid-template-columns: max-content 1px max-content 1px 1fr;
+  column-gap: 12px;
+  row-gap: 10px;
+  padding-top: 10px;
+  margin-top: 10px;
+`;
+
+const CardDetailDivider = styled.span`
+  width: 1px;
+  background: ${DesignTokenColors.neutralUI200};
+  display: block;
+  align-self: stretch;
+`;
+
+const MobileTopBarRow = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+`;
+
+const MobileHeading = styled.div`
+  font-size: 13px;
+  color: ${DesignTokenColors.neutralUI900};
+  white-space: nowrap;
+`;
+
+const MobileTopBarIcons = styled.div`
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+`;
+
+const MobileFooter = styled.div`
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 56px;
+  z-index: 1300;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 10px 16px;
+  padding-bottom: calc(10px + env(safe-area-inset-bottom));
+  background: ${DesignTokenColors.primary50};
 `;

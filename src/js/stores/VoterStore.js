@@ -72,6 +72,7 @@ class VoterStore extends ReduceStore {
       voterPhotoQueuedToSave: '',
       voterPhotoQueuedToSaveSet: false,
       voterPhotoTooBig: false,
+      hasReviewedApp: false,
     };
   }
 
@@ -795,8 +796,10 @@ class VoterStore extends ReduceStore {
       case 'twitterRetrieveIdsIFollow':
         // console.log('VoterStore twitterRetrieveIdsIFollow');
         if (action.res.success) {
-          VoterActions.organizationSuggestionTasks('UPDATE_SUGGESTIONS_FROM_TWITTER_IDS_I_FOLLOW',
-            'FOLLOW_SUGGESTIONS_FROM_TWITTER_IDS_I_FOLLOW');
+          VoterActions.organizationSuggestionTasks(
+            'UPDATE_SUGGESTIONS_FROM_TWITTER_IDS_I_FOLLOW',
+            'FOLLOW_SUGGESTIONS_FROM_TWITTER_IDS_I_FOLLOW',
+          );
         }
 
         return state;
@@ -1328,6 +1331,16 @@ class VoterStore extends ReduceStore {
         VoterActions.voterRetrieve();
         return state;
 
+      case 'voterReviewedApp':
+        // console.log(`VoterStore  voterReviewedApp status: ${JSON.stringify(action.res)}`);
+        return {
+          ...state,
+          app_review_state: action.res.app_review_state.length ? action.res.app_review_state : 'NONE',
+          app_review_version: action.res.app_review_version,
+          app_review_platform: action.res.app_review_platform,
+          app_review_date: action.res.app_review_date,
+        };
+
       case 'voterTwitterSaveToCurrentAccount':
         // console.log('VoterStore  voterTwitterSaveToCurrentAccount ');
         VoterActions.voterRetrieve();
@@ -1429,14 +1442,14 @@ class VoterStore extends ReduceStore {
       case 'appleSignInSave':
         if (action.res.success) {
           // eslint-disable-next-line camelcase
-          const { first_name, middle_name, last_name, email, user_code: appleUserCode } = action.res;
+          const { first_name: firstName, middle_name: middleName, last_name: lastName, email, user_code: appleUserCode } = action.res;
           VoterActions.voterRetrieve();
           return {
             ...state,
             voter: {
-              first_name,
-              middle_name,
-              last_name,
+              first_name: firstName,
+              middle_name: middleName,
+              last_name: lastName,
               email,
               appleUserCode,
               signed_in_with_apple: true,

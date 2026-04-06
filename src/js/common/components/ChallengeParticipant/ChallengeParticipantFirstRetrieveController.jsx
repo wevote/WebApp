@@ -40,7 +40,7 @@ class ChallengeParticipantFirstRetrieveController extends Component {
         }
       }
     });
-  }
+  };
 
   render () {
     renderLog('ChallengeParticipantFirstRetrieveController');  // Set LOG_RENDER_EVENTS to log all renders

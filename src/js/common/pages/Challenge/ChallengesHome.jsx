@@ -244,7 +244,7 @@ class ChallengesHome extends Component {
         upcomingEndorsementsAvailable,
       });
     }
-  }
+  };
 
   changeListModeShown = (newListModeShown, newFilterYear = '') => {
     const filterYearInteger = convertToInteger(newFilterYear);
@@ -252,7 +252,7 @@ class ChallengesHome extends Component {
       listModeShown: newListModeShown,
       filterYear: filterYearInteger,
     }, () => this.updateActiveFilters());
-  }
+  };
 
   getDefaultListModeShown = (incomingUpcomingEndorsementsAvailable = false) => {
     // const { listOfYearsWhenChallengeExists, listOfYearsWhenCandidateExists, listOfYearsWhenRepresentativeExists, upcomingEndorsementsAvailable } = this.state;
@@ -272,7 +272,7 @@ class ChallengesHome extends Component {
     //   return 'showAllEndorsements';
     // }
     return 'showUpcomingEndorsements';
-  }
+  };
 
   clearSearchFunction = () => {
     this.setState({
@@ -280,7 +280,7 @@ class ChallengesHome extends Component {
       listModeShown: 'showUpcomingEndorsements',
       searchText: '',
     }, () => this.updateActiveFilters());
-  }
+  };
 
   searchFunction = (searchText) => {
     // console.log('ChallengesHome searchFunction searchText:', searchText);
@@ -296,7 +296,7 @@ class ChallengesHome extends Component {
       searchText,
       stateCode: searchingJustStarted ? '' : currentStateCode,
     }, () => this.updateActiveFilters());
-  }
+  };
 
   handleNumberOfChallengeResults = (listResults, searchResults) => {
     // console.log('ChallengesHome handleNumberOfChallengeResults listResults:', listResults, ', searchResults:', searchResults);
@@ -304,7 +304,7 @@ class ChallengesHome extends Component {
       numberOfChallengeResults: listResults,
       numberOfChallengeSearchResults: searchResults,
     });
-  }
+  };
 
   fireGTMDataLayerWhenReady () {
     const { dataLayerFired } = this.state;

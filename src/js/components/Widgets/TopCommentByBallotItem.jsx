@@ -180,12 +180,12 @@ class TopCommentByBallotItem extends Component {
     if (this.props.onClickFunction && ballotItemWeVoteId) {
       this.props.onClickFunction(ballotItemWeVoteId);
     }
-  }
+  };
 
   onClickFunctionExists = () => {
     const { ballotItemWeVoteId } = this.props;
     return (this.props.onClickFunction && ballotItemWeVoteId);
-  }
+  };
 
   render () {
     renderLog('TopCommentByBallotItem');  // Set LOG_RENDER_EVENTS to log all renders

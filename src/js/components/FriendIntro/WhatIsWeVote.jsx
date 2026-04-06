@@ -27,14 +27,14 @@ class WhatIsWeVote extends Component {
     this.setState({
       showFAQModal: false,
     });
-  }
+  };
 
   toggleFAQModal = () => {
     const { showFAQModal } = this.state;
     this.setState({
       showFAQModal: !showFAQModal,
     });
-  }
+  };
 
   render () {
     renderLog('WhatIsWeVote');  // Set LOG_RENDER_EVENTS to log all renders

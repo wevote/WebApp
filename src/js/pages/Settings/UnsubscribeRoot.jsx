@@ -186,13 +186,13 @@ class UnsubscribeRoot extends React.Component {
         break;
     }
     return displayStep;
-  }
+  };
 
   onClickNextButton = () => {
     this.setState({
       nextButtonClicked: true,
     });
-  }
+  };
 
   goToNextStep = () => {
     this.resetNextButtonClicked();
@@ -201,7 +201,7 @@ class UnsubscribeRoot extends React.Component {
     if (nextStepPath) {
       historyPush(nextStepPath);
     }
-  }
+  };
 
   goToSkipForNow = () => {
     const { skipForNowPath } = this.state;
@@ -209,13 +209,13 @@ class UnsubscribeRoot extends React.Component {
     if (skipForNowPath) {
       historyPush(skipForNowPath);
     }
-  }
+  };
 
   resetNextButtonClicked = () => {
     this.setState({
       nextButtonClicked: false,
     });
-  }
+  };
 
   setNextStepVariables = () => {
     const {
@@ -278,7 +278,7 @@ class UnsubscribeRoot extends React.Component {
       skipForNowOff,
       skipForNowPath,
     });
-  }
+  };
 
   shouldNextButtonBeDisabled = () => {
     // let voterEmailMissing = false;
@@ -301,14 +301,14 @@ class UnsubscribeRoot extends React.Component {
     //   addPhotoNextButtonDisabled: voterPhotoMissing,
     //   editNameNextButtonDisabled: voterEmailMissing || voterFirstNameMissing,
     // });
-  }
+  };
 
   toggleWhatIsWeVote = () => {
     const { showWhatIsWeVote } = this.state;
     this.setState({
       showWhatIsWeVote: !showWhatIsWeVote,
     });
-  }
+  };
 
   render () {
     renderLog('UnsubscribeRoot');  // Set LOG_RENDER_EVENTS to log all renders

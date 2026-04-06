@@ -39,7 +39,7 @@ class FirstPoliticianListController extends Component {
         PoliticianActions.politiciansQuery([], '', searchText);
       }
     });
-  }
+  };
 
   PoliticiansForStateRetrieve = () => {
     const { stateCode } = this.props;
@@ -55,7 +55,7 @@ class FirstPoliticianListController extends Component {
         PoliticianActions.politiciansQuery([], filteredStateCode);
       }
     });
-  }
+  };
 
   render () {
     renderLog('FirstPoliticianListController');  // Set LOG_RENDER_EVENTS to log all renders

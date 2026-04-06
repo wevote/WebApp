@@ -4,20 +4,22 @@ import styled from 'styled-components';
 import { ThumbDownAltRounded, ThumbDownOffAltRounded } from '@mui/icons-material';
 import DesignTokenColors from '../../Style/DesignTokenColors';
 
-const ThumbsUpDownToggleIcon = ({ isFavorite, isDislike, supports, opposes }) => (
-  <>
-    {isFavorite && (
+function ThumbsUpDownToggleIcon ({ isFavorite, isDislike, supports, opposes }) {
+  return (
+    <>
+      {isFavorite && (
       <Icon>
         {supports ? <ThumbsUpPressedStyled /> : <ThumbsUpOutlineStyled />}
       </Icon>
-    )}
-    {isDislike && (
+      )}
+      {isDislike && (
       <Icon>
         {opposes ? <ThumbsDownPressedStyled /> : <ThumbsDownOutlineStyled />}
       </Icon>
-    )}
-  </>
-);
+      )}
+    </>
+  );
+}
 
 const Icon = styled('div')`
   flex: display;

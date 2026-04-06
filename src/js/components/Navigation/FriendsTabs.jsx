@@ -131,7 +131,7 @@ class FriendsTabs extends Component {
       };
     }
     return {};
-  }
+  };
 
   resetDefaultTabForMobile () {
     const tabItem = this.getPageFromUrl();

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const ParsedTwitterDescription = (props) => {
+function ParsedTwitterDescription (props) {
   const parseTextForTwitterLinks = (text) => {
     const locations = [];
     const parsedLocations = [];
@@ -70,7 +70,7 @@ const ParsedTwitterDescription = (props) => {
       }
     </span>
   );
-};
+}
 
 ParsedTwitterDescription.propTypes = {
   twitterDescription: PropTypes.string,

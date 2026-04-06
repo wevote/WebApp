@@ -172,13 +172,13 @@ class PositionStatementModal extends Component {
     SupportActions.voterPositionCommentSave(ballotItemWeVoteId, ballotItemType, politicianWeVoteId, voterTextStatement);
     restoreStylesAfterCordovaKeyboard('PositionStatementModal');
     this.props.toggleModal();
-  }
+  };
 
   updateStatementTextToBeSaved = (e) => {
     this.setState({
       voterTextStatement: e.target.value,
     });
-  }
+  };
 
   render () {
     renderLog('PositionStatementModal');  // Set LOG_RENDER_EVENTS to log all renders
@@ -242,7 +242,7 @@ class PositionStatementModal extends Component {
           onFocus={this.onFocusInput}
           onSubmit={this.savePositionStatement}
         >
-          <TextFieldDiv>
+          <TextFieldDiv style={{ marginBottom: 12, gap: 12 }}>
             <VoterAvatarImg
               alt=""
               src={voterPhotoUrlMedium || avatarGeneric()}
@@ -285,6 +285,15 @@ class PositionStatementModal extends Component {
               variant="contained"
               color="primary"
               classes={{ root: classes.saveButtonRoot }}
+              style={{
+                borderRadius: 30,
+                fontWeight: 600,
+                fontSize: 16,
+                height: 44,
+                textTransform: 'none',
+                boxShadow: 'none',
+                marginTop: 4,
+              }}
               type="submit"
               disabled={!voterTextStatement}
             >

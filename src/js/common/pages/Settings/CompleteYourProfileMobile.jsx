@@ -89,7 +89,7 @@ class CompleteYourProfileMobile extends Component {
   functionToUseWhenProfileComplete = () => {
     const { pathToUseWhenProfileComplete } = this.state;
     historyPush(pathToUseWhenProfileComplete);
-  }
+  };
 
   render () {
     renderLog('CompleteYourProfileMobile');  // Set LOG_RENDER_EVENTS to log all renders

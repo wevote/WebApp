@@ -46,7 +46,7 @@ class ReadyFinePrint extends Component {
     if (!contentUnfurled) {
       this.introHeaderRef.current.focus();
     }
-  }
+  };
 
   render () {
     renderLog('ReadyFinePrint');  // Set LOG_RENDER_EVENTS to log all renders

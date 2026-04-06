@@ -1,5 +1,4 @@
 import Dispatcher from '../common/dispatcher/Dispatcher';
-// import Cookies from '../common/utils/js-cookie/Cookies';
 
 // let uniqueKeyIssuesDescriptionRetrieve = '';
 // let uniqueKeyIssuesFollowedRetrieve = '';
@@ -73,10 +72,10 @@ export default {
     Dispatcher.loadEndpoint('issuesFollowedRetrieve', {});
   },
 
-  issuesUnderBallotItemsRetrieve (googleCivicElectionId, ballot_location_shortcut = '', ballot_returned_we_vote_id = '') {
+  issuesUnderBallotItemsRetrieve (googleCivicElectionId, ballotLocationShortcut = '', ballotReturnedWeVoteId = '') {
     Dispatcher.loadEndpoint('issuesUnderBallotItemsRetrieve', {
-      ballot_location_shortcut,
-      ballot_returned_we_vote_id,
+      ballot_location_shortcut: ballotLocationShortcut,
+      ballot_returned_we_vote_id: ballotReturnedWeVoteId,
       google_civic_election_id: googleCivicElectionId,
     });
   },
@@ -100,21 +99,25 @@ export default {
   },
 
   issueLinkForOrganization (organizationWeVoteId, issueWeVoteId) {
-    Dispatcher.loadEndpoint('organizationLinkToIssue',
+    Dispatcher.loadEndpoint(
+      'organizationLinkToIssue',
       {
         organization_we_vote_id: organizationWeVoteId,
         issue_we_vote_id: issueWeVoteId,
         organization_linked_to_issue: true,
-      });
+      },
+    );
   },
 
   issueUnLinkForOrganization (organizationWeVoteId, issueWeVoteId) {
-    Dispatcher.loadEndpoint('organizationLinkToIssue',
+    Dispatcher.loadEndpoint(
+      'organizationLinkToIssue',
       {
         organization_we_vote_id: organizationWeVoteId,
         issue_we_vote_id: issueWeVoteId,
         organization_linked_to_issue: false,
-      });
+      },
+    );
   },
 
   removeBallotItemIssueScoreFromCache: (ballotItemWeVoteId) => {
@@ -128,16 +131,20 @@ export default {
   },
 
   retrieveIssuesToLinkForOrganization (organizationWeVoteId) {
-    Dispatcher.loadEndpoint('issuesToLinkToForOrganization',
+    Dispatcher.loadEndpoint(
+      'issuesToLinkToForOrganization',
       {
         organization_we_vote_id: organizationWeVoteId,
-      });
+      },
+    );
   },
 
   retrieveIssuesLinkedForOrganization (organizationWeVoteId) {
-    Dispatcher.loadEndpoint('issuesLinkedToOrganization',
+    Dispatcher.loadEndpoint(
+      'issuesLinkedToOrganization',
       {
         organization_we_vote_id: organizationWeVoteId,
-      });
+      },
+    );
   },
 };

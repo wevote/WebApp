@@ -225,15 +225,15 @@ class SharedItemModal extends Component {
     this.setState({
       personalizedScoreIntroWatchedThisSession: true,
     });
-  }
+  };
 
   personalizedScoreIntroModalToggle = () => {
     // Nothing to do
-  }
+  };
 
   personalizedScoreStepAdvanced = () => {
     this.scrollToTop();
-  }
+  };
 
   updateSlideshowVariables = () => {
     const { organizationName, voterIsSignedIn } = this.state;
@@ -313,7 +313,7 @@ class SharedItemModal extends Component {
       slideHtmlContentDict,
       stepLabels,
     });
-  }
+  };
 
   scrollToTop = () => {
     // console.log('scrollToTop');
@@ -332,7 +332,7 @@ class SharedItemModal extends Component {
       // console.log('voterSignInWrapper found');
       voterSignInWrapper.scrollTo({ top: 0, behavior: 'smooth' });
     }
-  }
+  };
 
   goToSpecificSlide = (index) => {
     const { maxSlideIndex } = this.state;
@@ -345,7 +345,7 @@ class SharedItemModal extends Component {
         hideSharedByIntro,
       });
     }
-  }
+  };
 
   nextSlide () {
     const { currentSlideIndex, maxSlideIndex } = this.state;

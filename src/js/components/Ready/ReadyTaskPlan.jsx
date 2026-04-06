@@ -55,7 +55,7 @@ class ReadyTaskPlan extends React.Component {
 
   showVoterPlanModal = () => {
     AppObservableStore.setShowVoterPlanModal(true);
-  }
+  };
 
   render () {
     renderLog('ReadyTaskPlan');  // Set LOG_RENDER_EVENTS to log all renders

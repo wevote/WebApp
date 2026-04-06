@@ -283,9 +283,8 @@ function pushDataLayer (buttonId, destinationPageName, destinationPageType, shar
 export function CopyLink (props) {
   const { saveActionShareButtonCopy, linkToBeSharedCopy } = props;
   return (
-    <>
-      <ShareWrapper>
-        <ShareModalOption
+    <ShareWrapper>
+      <ShareModalOption
           backgroundColor="#2E3C5D"
           copyLink
           icon={<FileCopyOutlined />}
@@ -293,9 +292,8 @@ export function CopyLink (props) {
           onClickFunction={saveActionShareButtonCopy}
           title="Copy link"
           uniqueExternalId="shareButtonFooter-CopyLink"
-        />
-      </ShareWrapper>
-    </>
+      />
+    </ShareWrapper>
   );
 }
 CopyLink.propTypes = {
@@ -400,13 +398,12 @@ export function ShareTwitter (props) {
   };
 
   return (
-    <>
-      <ShareWrapper>
-        <div id="androidTwitter"
+    <ShareWrapper>
+      <div id="androidTwitter"
              onClick={() => isAndroid() &&
                androidTwitterClickHandler(linkToBeSharedTwitter)}
-        >
-          <TwitterShareButton
+      >
+        <TwitterShareButton
             ref={twitterButtonRef}
             className="no-decoration"
             id="shareFooterTwitterButton"
@@ -417,19 +414,18 @@ export function ShareTwitter (props) {
             windowHeight={600}
             disabled={isAndroid()}
             disabledStyle={isAndroid() ? { opacity: 1 } : {}}
-          >
-            <TwitterIcon
+        >
+          <TwitterIcon
               bgStyle={{ background: '#38A1F3' }}
               round="True"
               size={68}
-            />
-            <TextH3>
-              Twitter
-            </TextH3>
-          </TwitterShareButton>
-        </div>
-      </ShareWrapper>
-    </>
+          />
+          <TextH3>
+            Twitter
+          </TextH3>
+        </TwitterShareButton>
+      </div>
+    </ShareWrapper>
   );
 }
 ShareTwitter.propTypes = {

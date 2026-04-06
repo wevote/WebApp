@@ -22,7 +22,7 @@ class AnnotatedSlideshow extends PureComponent {
     }
     // this.handleSlideImage(num);
     this.props.onChangeSlide(advanceIfTrue ? selectedStepIndex + 1 : selectedStepIndex - 1);
-  }
+  };
 
   render () {
     const { slides, selectedStepIndex, classes, inModal = false } = this.props;

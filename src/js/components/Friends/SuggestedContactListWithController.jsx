@@ -74,7 +74,7 @@ class SuggestedContactListWithController extends React.Component {
     } else {
       return '/findfriends/importcontacts';
     }
-  }
+  };
 
   orderByCity = (firstItem, secondItem) => {
     if (firstItem && firstItem.city && secondItem && secondItem.city && (firstItem.city.length > 0 && secondItem.city.length > 0)) {
@@ -86,7 +86,7 @@ class SuggestedContactListWithController extends React.Component {
     } else {
       return 0;
     }
-  }
+  };
 
   orderByStateCode = (firstItem, secondItem) => {
     if (firstItem && firstItem.state_code && secondItem && secondItem.state_code && (firstItem.state_code.length > 0 && secondItem.state_code.length > 0)) {
@@ -98,7 +98,7 @@ class SuggestedContactListWithController extends React.Component {
     } else {
       return 0;
     }
-  }
+  };
 
   orderByExistingAccountExists = (firstContact, secondContact) => {
     const secondContactHasAccount = secondContact && secondContact.voter_we_vote_id && secondContact.voter_we_vote_id.length ? 1 : 0;
@@ -116,7 +116,7 @@ class SuggestedContactListWithController extends React.Component {
     } else {
       return 0;
     }
-  }
+  };
 
   orderByIsFriend = (firstItem, secondItem) => {
     if (firstItem && firstItem.is_friend && secondItem && secondItem.is_friend) {
@@ -128,7 +128,7 @@ class SuggestedContactListWithController extends React.Component {
     } else {
       return 0;
     }
-  }
+  };
 
   increaseNumberOfItemsToDisplay = () => {
     let { numberOfIncreases, numberOfItemsToDisplay } = this.state;
@@ -144,7 +144,7 @@ class SuggestedContactListWithController extends React.Component {
         numberOfItemsToDisplay,
       });
     }, 250);
-  }
+  };
 
   onScroll = () => {
     const showMoreItemsElement =  document.querySelector('#showMoreItemsId');
@@ -161,7 +161,7 @@ class SuggestedContactListWithController extends React.Component {
         // this.setState({ loadingMoreItems: false });
       }
     }
-  }
+  };
 
   searchFriends = (searchTerm) => {
     if (searchTerm.length === 0) {
@@ -174,8 +174,10 @@ class SuggestedContactListWithController extends React.Component {
       const searchTermLowercase = searchTerm.toLowerCase();
       const { voterContactEmailList } = this.state;
       // console.log('voterContactEmailList:', voterContactEmailList);
-      const searchedFriendList = filter(voterContactEmailList,
-        (contact) => (contact.display_name && contact.display_name.toLowerCase().includes(searchTermLowercase)) || (contact.email_address_text && contact.email_address_text.toLowerCase().includes(searchTermLowercase)) || (contact.city && contact.city.toLowerCase().includes(searchTermLowercase)) || (contact.state_code && contact.state_code.toLowerCase().includes(searchTermLowercase)));
+      const searchedFriendList = filter(
+        voterContactEmailList,
+        (contact) => (contact.display_name && contact.display_name.toLowerCase().includes(searchTermLowercase)) || (contact.email_address_text && contact.email_address_text.toLowerCase().includes(searchTermLowercase)) || (contact.city && contact.city.toLowerCase().includes(searchTermLowercase)) || (contact.state_code && contact.state_code.toLowerCase().includes(searchTermLowercase)),
+      );
 
       this.setState({
         currentFriendListFilteredBySearch: searchedFriendList,
@@ -183,7 +185,7 @@ class SuggestedContactListWithController extends React.Component {
         searchTerm,
       });
     }
-  }
+  };
 
   clearSearch = () => {
     this.setState({
@@ -191,7 +193,7 @@ class SuggestedContactListWithController extends React.Component {
       searchTerm: '',
       currentFriendListFilteredBySearch: [],
     });
-  }
+  };
 
   render () {
     renderLog('SuggestedContactListWithController');  // Set LOG_RENDER_EVENTS to log all renders
@@ -268,16 +270,14 @@ class SuggestedContactListWithController extends React.Component {
               </ContactsFoundText>
             )}
             {voterContactEmailListCount > 10 && (
-              <>
-                <SearchBar2024
+              <SearchBar2024
                   clearButton
                   searchButton
                   placeholder="Search by name, email, city or state code"
                   searchFunction={this.searchFriends}
                   clearFunction={this.clearSearch}
                   searchUpdateDelayTime={250}
-                />
-              </>
+              />
             )}
             { (searchFilterOn && voterContactEmailList.length === 0) && (
               <p>

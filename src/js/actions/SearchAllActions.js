@@ -2,10 +2,12 @@ import Dispatcher from '../common/dispatcher/Dispatcher';
 
 export default {
   searchAll (textFromSearchField) {
-    Dispatcher.loadEndpoint('searchAll',
+    Dispatcher.loadEndpoint(
+      'searchAll',
       {
         text_from_search_field: textFromSearchField,
-      });
+      },
+    );
   },
 
   exitSearch () {

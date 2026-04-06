@@ -183,7 +183,7 @@ class ChallengeInviteFriendsJoin extends Component {
       challengeBasePath = `/++/${challengeWeVoteId}/`;
     }
     return challengeBasePath;
-  }
+  };
 
   getPoliticianBasePath = () => {
     const { politicianSEOFriendlyPath, linkedPoliticianWeVoteId } = this.state;
@@ -197,15 +197,15 @@ class ChallengeInviteFriendsJoin extends Component {
       politicianBasePath = this.getChallengeBasePath();
     }
     return politicianBasePath;
-  }
+  };
 
   goToChallengeHome = () => {
     historyPush(this.getChallengeBasePath());
-  }
+  };
 
   goToChallengeLeaderboard = () => {
     historyPush(`${this.getChallengeBasePath()}leaderboard`);
-  }
+  };
 
   joinChallengeNowSubmit = () => {
     // The function to save the voter plan is in the VoterPlan component because that's where the latest data is.
@@ -214,7 +214,7 @@ class ChallengeInviteFriendsJoin extends Component {
     this.setState({
       triggerVotingPlanSave: true,
     });
-  }
+  };
 
   joinChallengeNowSubmitPart2 = () => {
     const { challengeInviteTextDefault, challengeWeVoteId, voterIsChallengeParticipant } = this.state;
@@ -257,7 +257,7 @@ class ChallengeInviteFriendsJoin extends Component {
         historyPush(`${this.getChallengeBasePath()}customize-message`);
       }
     }
-  }
+  };
 
   render () {
     renderLog('ChallengeInviteFriendsJoin');  // Set LOG_RENDER_EVENTS to log all renders

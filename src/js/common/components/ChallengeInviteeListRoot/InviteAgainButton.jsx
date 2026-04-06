@@ -12,7 +12,7 @@ import VoterStore from '../../../stores/VoterStore';
 import DesignTokenColors from '../Style/DesignTokenColors';
 
 
-const InviteAgainButton = ({ classes, challengeWeVoteId, challengeInviteeId }) => {
+function InviteAgainButton ({ classes, challengeWeVoteId, challengeInviteeId }) {
   renderLog('InviteAgainButtonBox');  // Set LOG_RENDER_EVENTS to log all renders
   const [challengeInviteTextDefault, setChallengeInviteTextDefault] = React.useState('');
   const [challengeTitle, setChallengeTitle] = React.useState('');
@@ -135,7 +135,7 @@ const InviteAgainButton = ({ classes, challengeWeVoteId, challengeInviteeId }) =
       </CopyToClipboard>
     </InviteAgainButtonWrapper>
   );
-};
+}
 InviteAgainButton.propTypes = {
   challengeWeVoteId: PropTypes.string,
   classes: PropTypes.object,

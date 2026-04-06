@@ -71,7 +71,7 @@ class UnsubscribeSimpleTextForModifier extends React.Component {
     if (this.props.goToNextStep) {
       this.props.goToNextStep();
     }
-  }
+  };
 
   submitChangeNotificationSetting = () => {
     const { subscriptionSecretKey } = this.props;
@@ -79,7 +79,7 @@ class UnsubscribeSimpleTextForModifier extends React.Component {
     // console.log('UnsubscribeSimpleTextForModifier submitChangeNotificationSetting subscriptionSecretKey:', subscriptionSecretKey, ', notificationSettingConstant:', notificationSettingConstant);
     VoterActions.voterNotificationSettingsUpdateFromSecretKey(subscriptionSecretKey, '', 0, false, notificationSettingConstant, true);
     this.goToNextStepLocal();
-  }
+  };
 
   render () {
     renderLog('UnsubscribeSimpleTextForModifier');  // Set LOG_RENDER_EVENTS to log all renders

@@ -319,13 +319,16 @@ export const organizationalDonors = [{
   title: 'For supporting Code for San Francisco',
   link: 'https://www.microsoft.com/',
   logo: `${logoPath}microsoft-logo.png`,
-}, {
+},
+// Commented to Remove OpenPeople from Credits Page to fix issue: WV-4226
+/* {
   alt: 'Open People Search',
   name: '',
   title: 'Contact Data Augmentation',
   link: 'https://www.openpeoplesearch.com/',
   logo: `${logoPath}open-people-search-logo.png`,
-}, {
+}, */
+{
   alt: 'TurboVote, Democracy Works',
   name: '',
   title: 'Data',

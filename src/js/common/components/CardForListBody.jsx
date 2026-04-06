@@ -1,4 +1,6 @@
 import { HowToVote, Launch } from '@mui/icons-material';
+import { Box } from '@mui/material';
+import Skeleton from '@mui/material/Skeleton';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Suspense } from 'react';
@@ -9,6 +11,7 @@ import webAppConfig from '../../config';
 import AppObservableStore from '../stores/AppObservableStore';
 import { convertStateCodeToStateText } from '../utils/addressFunctions';
 import { getYearFromUltimateElectionDate } from '../utils/dateFormat';
+import highlightSearchText from '../utils/highlightSearchText';
 import historyPush from '../utils/historyPush';
 import { isCordova, isWebApp } from '../utils/isCordovaOrWebApp';
 import isMobileScreenSize from '../utils/isMobileScreenSize';
@@ -29,7 +32,6 @@ const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenEx
 
 // React functional component example
 function CardForListBody (props) {
-
   renderLog('CardForListBody');  // Set LOG_RENDER_EVENTS to log all renders
   const {
     ballotItemDisplayName,
@@ -37,12 +39,12 @@ function CardForListBody (props) {
     hideItemActionBar, isClaimedProfile, limitCardWidth, linkedCampaignXWeVoteId, officeName,
     photoLargeUrl, politicalParty, politicianBasePath,
     politicianDescription, politicianWeVoteId, profileImageBackgroundColor,
-    showPoliticianOpenInNewWindow, stateCode, tagIdBaseName,
+    searchText, showPoliticianOpenInNewWindow, stateCode, tagIdBaseName,
     ultimateElectionDate,
     useCampaignSupportThermometer, useOfficeHeld,
     usePoliticianWeVoteIdForBallotItem, useVerticalCard,
   } = props;
-  
+
   // const supportersCountNextGoal = supportersCountNextGoalRaw || 0;
   // let supportersCountNextGoalWithFloor = supportersCountNextGoal || CampaignStore.getCampaignXSupportersCountNextGoalDefault();
   // console.log('supportersCount:', supportersCount, 'supportersCountNextGoal:', supportersCountNextGoal, 'supportersCountNextGoalWithFloor:', supportersCountNextGoalWithFloor);
@@ -88,10 +90,10 @@ function CardForListBody (props) {
               )}
               {hideCardMargins && isWebApp() ? (
                 <OneCampaignTitle>
-                  {ballotItemDisplayName}
+                  {highlightSearchText(ballotItemDisplayName, searchText)}
                   {showPoliticianOpenInNewWindow && (
                     <LaunchIconWrapper>
-                      <Suspense fallback={<></>}>
+                      <Suspense fallback={<Skeleton variant="rounded" width={16} height={14} sx={{ display: 'inline-block', borderRadius: 0.5 }} />}>
                         <OpenExternalWebSite
                           linkIdAttribute="openPoliticianPage"
                           url={politicianDetailsURL}
@@ -127,7 +129,7 @@ function CardForListBody (props) {
                     to={politicianBasePath}
                     onClick={() => (isCordova() ? AppObservableStore.setShowOrganizationModal(false) : null)}
                   >
-                    {ballotItemDisplayName || nameFromUrl}
+                    {highlightSearchText(ballotItemDisplayName || nameFromUrl, searchText)}
                   </Link>
                 </OneCampaignTitleLink>
               )}
@@ -143,7 +145,18 @@ function CardForListBody (props) {
               </YearAndHeartDiv>
               <SpaceBeforeThermometer />
               {useCampaignSupportThermometer && (
-                <Suspense fallback={<span>&nbsp;</span>}>
+                <Suspense fallback={(
+                  <Box>
+                    <Box display="flex" gap={1} sx={{ mb: 1 }}>
+                      <Skeleton variant="rounded" width={60} height={36} sx={{ borderRadius: 2 }} />
+                      <Box flex={1} sx={{ minWidth: 0 }}>
+                        <Skeleton variant="text" width="70%" height={18} sx={{ mb: 0.5 }} />
+                        <Skeleton variant="text" width="50%" height={18} />
+                      </Box>
+                    </Box>
+                    <Skeleton variant="rounded" width="100%" height={12} sx={{ borderRadius: 6 }} />
+                  </Box>
+                )}>
                   <CampaignSupportThermometer
                     campaignXWeVoteId={linkedCampaignXWeVoteId}
                     finalElectionDateInPast={finalElectionDateInPast}
@@ -151,18 +164,31 @@ function CardForListBody (props) {
                 </Suspense>
               )}
               <CardRowsWrapper>
-                {politicalParty && (
-                  <CardForListRow>
+                <CardForListRow>
+                  <FlexDivLeft>
+                    <SvgImageWrapper>
+                      {politicalParty ? (
+                        <SvgImage imageName={politicalPartySvgNameWithPath} stylesTextIncoming="width: 18px;" />
+                      ) : (
+                        <Skeleton variant="rounded" width={18} height={18} sx={{ borderRadius: 0.5 }} />
+                      )}
+                    </SvgImageWrapper>
+                    {politicalParty ? (
+                      <PoliticalPartyDiv>{highlightSearchText(politicalParty, searchText)}</PoliticalPartyDiv>
+                    ) : (
+                      <Skeleton variant="text" width={80} height={14} />
+                    )}
+                  </FlexDivLeft>
+                </CardForListRow>
+                <CardForListRow>
+                  <Suspense fallback={(
                     <FlexDivLeft>
                       <SvgImageWrapper>
-                        <SvgImage imageName={politicalPartySvgNameWithPath} stylesTextIncoming="width: 18px;" />
+                        <Skeleton variant="rounded" width={18} height={18} sx={{ borderRadius: 0.5 }} />
                       </SvgImageWrapper>
-                      <PoliticalPartyDiv>{politicalParty}</PoliticalPartyDiv>
+                      <Skeleton variant="text" width="80%" height={14} />
                     </FlexDivLeft>
-                  </CardForListRow>
-                )}
-                <CardForListRow>
-                  <Suspense fallback={<></>}>
+                  )}>
                     {useOfficeHeld ? (
                       <FlexDivLeft>
                         {(districtName || officeName) && (
@@ -175,6 +201,7 @@ function CardForListBody (props) {
                             inCard
                             districtName={districtName}
                             officeName={officeName}
+                            searchText={searchText}
                           />
                         </OfficeNameWrapper>
                       </FlexDivLeft>
@@ -190,6 +217,7 @@ function CardForListBody (props) {
                             districtName={districtName}
                             inCard
                             officeName={officeName}
+                            searchText={searchText}
                             showOfficeName
                           />
                         </OfficeNameWrapper>
@@ -281,7 +309,12 @@ function CardForListBody (props) {
             </TitleAndTextWrapper>
             {!hideItemActionBar && (
               <CampaignActionButtonsWrapper>
-                <Suspense fallback={<></>}>
+                <Suspense fallback={(
+                  <Box display="flex" gap={1} justifyContent="center">
+                    <Skeleton variant="rounded" width={100} height={36} sx={{ borderRadius: 2 }} />
+                    <Skeleton variant="rounded" width={100} height={36} sx={{ borderRadius: 2 }} />
+                  </Box>
+                )}>
                   {(finalElectionDateInPast || usePoliticianWeVoteIdForBallotItem) ? (
                     <ItemActionBar
                       ballotItemWeVoteId={candidateWeVoteId}
@@ -466,6 +499,7 @@ CardForListBody.propTypes = {
   politicianDescription: PropTypes.string,
   politicianWeVoteId: PropTypes.string,
   profileImageBackgroundColor: PropTypes.string,
+  searchText: PropTypes.string,
   showPoliticianOpenInNewWindow: PropTypes.bool,
   stateCode: PropTypes.string,
   // supportersCount: PropTypes.number.isRequired,

@@ -234,11 +234,11 @@ class CampaignNewsItemDetailsPage extends Component {
       campaignBasePath = `/id/${campaignXWeVoteId}/`;
     }
     return campaignBasePath;
-  }
+  };
 
   goToCampaignBasePath = () => {
     historyPush(`${this.getCampaignXBasePath()}`);
-  }
+  };
 
   goToNextPage = () => {
     const { pathToUseWhenProfileComplete } = this.state;
@@ -246,14 +246,14 @@ class CampaignNewsItemDetailsPage extends Component {
       historyPush(pathToUseWhenProfileComplete);
     }, 500);
     return null;
-  }
+  };
 
   functionToUseToKeepHelping = () => {
     // console.log('functionToUseToKeepHelping');
     const { payToPromoteStepCompleted, payToPromoteStepTurnedOn, sharingStepCompleted, step2Completed } = this.state;
     const keepHelpingDestinationString = keepHelpingDestination(step2Completed, payToPromoteStepCompleted, payToPromoteStepTurnedOn, sharingStepCompleted);
     historyPush(`${this.getCampaignXBasePath()}${keepHelpingDestinationString}`);
-  }
+  };
 
   functionToUseWhenProfileComplete = () => {
     const { campaignXWeVoteId } = this.state;
@@ -273,38 +273,38 @@ class CampaignNewsItemDetailsPage extends Component {
         CampaignSupporterActions.supportCampaignSave(campaignXWeVoteId, campaignSupported, campaignSupportedChanged, visibleToPublic, saveVisibleToPublic); // campaignSupporterSave
       }, this.goToNextPage());
     }
-  }
+  };
 
   continueToNextStep = () => {
     const { match: { params } } = this.props;
     const { campaignXNewsItemWeVoteId } = params;
     historyPush(`${this.getCampaignXBasePath()}send/${campaignXNewsItemWeVoteId}`);
     return null;
-  }
+  };
 
   onCampaignEditClick = () => {
     historyPush(`${this.getCampaignXBasePath()}edit`);
     return null;
-  }
+  };
 
   onCampaignNewsItemEditClick = () => {
     const { match: { params } } = this.props;
     const { campaignXNewsItemWeVoteId } = params;
     historyPush(`${this.getCampaignXBasePath()}add-update/${campaignXNewsItemWeVoteId}`);
     return null;
-  }
+  };
 
   onCampaignNewsItemShareClick = () => {
     const { match: { params } } = this.props;
     const { campaignXNewsItemWeVoteId } = params;
     historyPush(`${this.getCampaignXBasePath()}share-it/${campaignXNewsItemWeVoteId}`);
     return null;
-  }
+  };
 
   onCampaignGetMinimumSupportersClick = () => {
     historyPush(`${this.getCampaignXBasePath()}share-campaign`);
     return null;
-  }
+  };
 
   render () {
     renderLog('CampaignNewsItemDetailsPage');  // Set LOG_RENDER_EVENTS to log all renders

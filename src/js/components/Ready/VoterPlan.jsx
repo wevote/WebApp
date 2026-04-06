@@ -140,12 +140,7 @@ class VoterPlan extends Component {
     this.readyStoreListener.remove();
   }
 
-  saveNowIfTriggered = (triggeredToSaveNow = false) => {
-    if (triggeredToSaveNow) {
-      // console.log('saveNowIfTriggered');
-      this.onSaveVoterPlanButton();
-    }
-  }
+
 
   handleVotingLocationAddressChange = (event) => {
     this.setState({ votingLocationAddress: event.target.value });
@@ -214,6 +209,13 @@ class VoterPlan extends Component {
     return '';
   }
 
+  saveNowIfTriggered = (triggeredToSaveNow = false) => {
+    if (triggeredToSaveNow) {
+      // console.log('saveNowIfTriggered');
+      this.onSaveVoterPlanButton();
+    }
+  };
+
   onSaveVoterPlanButton = (event) => {
     // console.log('onSaveVoterPlanButton');
     const { location: { pathname } } = window;
@@ -233,7 +235,7 @@ class VoterPlan extends Component {
       // console.log('VoterPlan calling votingPlanSaved');
       this.props.votingPlanSaved();
     }
-  }
+  };
 
   setVoterPlanSavedStates = (voterPlan, firstTime = false) => {
     // console.log('setVoterPlanSavedStates: ', voterPlan);
@@ -260,7 +262,7 @@ class VoterPlan extends Component {
         }
       }
     }
-  }
+  };
 
   generateVoterPlanText () {
     const {

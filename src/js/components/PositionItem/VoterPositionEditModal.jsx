@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 import ModalDisplayTemplateA from '../Widgets/ModalDisplayTemplateA';
 
-const VoterPositionEditModal = ({ showVoterEdit, setShowVoterEdit, candidateName, voter, classes }) => {
+function VoterPositionEditModal ({ showVoterEdit, setShowVoterEdit, candidateName, voter, classes }) {
   const [opinionVisibility, setOpinionVisibility] = useState('Everyone');
   const [endorseOption, setEndorseOption] = useState('Neutral');
   const [opinionText, setOpinionText] = useState('');
@@ -161,7 +161,7 @@ const VoterPositionEditModal = ({ showVoterEdit, setShowVoterEdit, candidateName
       tallMode
     />
   );
-};
+}
 
 VoterPositionEditModal.propTypes = {
   showVoterEdit: PropTypes.bool,

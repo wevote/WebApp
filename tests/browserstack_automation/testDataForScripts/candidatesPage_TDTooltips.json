@@ -4,10 +4,11 @@
         "SupportRemove":"Click to remove your choice for <Candidate>.",
         "OpposeAdd":"Click to oppose <Candidate>. Only your WeVote friends will see your opposition.",
         "OpposeRemove":"Click to remove your opposition for <Candidate>.",
-        "HelpWinText":"Help Win with $1",
-        "HelpDefeatText":"$1 to Help Defeat",
-        "LikeCandidate":"Favoriting helps us show you what other candidates match your values.",
-        "DislikeCandidate":"^Disliked by \\d+ people\\. Disliking helps us show you what other candidates match your values\\.$",
-        "LikeDislikeIconColor":"rgb(239,7,22)"
+        "HelpWinText":"Help Win",
+        "HelpDefeatText":"Help Defeat",
+        "LikeCandidate":"Favoriting helps us match you to other candidates who share your values.",
+        "DislikeCandidate":"^Disliked by \\d+ people\\. Disliking helps us match you to other candidates who share your values\\.$",
+        "LikeDislikeIconHoverColor":"rgb(239,7,22)",
+        "LikeDislikeIconColor":"#F3363D"
     }
 ]

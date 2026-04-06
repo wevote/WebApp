@@ -69,7 +69,7 @@ class PoliticianCardList extends Component {
     this.setState({
       numberToDisplay,
     });
-  }
+  };
 
   loadMoreHasBeenClicked = () => {
     this.increaseNumberToDisplay();
@@ -78,7 +78,7 @@ class PoliticianCardList extends Component {
       // console.log('loadMoreScroll exists');
       this.props.loadMoreScroll();
     }
-  }
+  };
 
   render () {
     renderLog('PoliticianCardList');  // Set LOG_RENDER_EVENTS to log all renders
@@ -104,6 +104,7 @@ class PoliticianCardList extends Component {
                 <PoliticianCardForList
                   politicianWeVoteId={onePolitician.politician_we_vote_id}
                   limitCardWidth={useVerticalCard}
+                  searchText={this.props.searchText}
                   useVerticalCard={useVerticalCard}
                 />
               </div>
@@ -141,6 +142,7 @@ PoliticianCardList.propTypes = {
   useVerticalCard: PropTypes.bool,
   loadMoreScroll: PropTypes.func,
   shouldLoadMore: PropTypes.bool,
+  searchText: PropTypes.string,
 };
 
 const styles = () => ({

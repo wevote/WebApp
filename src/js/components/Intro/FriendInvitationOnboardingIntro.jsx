@@ -70,19 +70,19 @@ class FriendInvitationOnboardingIntro extends Component {
     this.setState({
       showAllStepOne: true,
     });
-  }
+  };
 
   onClickShowAllStepTwo = () => {
     this.setState({
       showAllStepTwo: true,
     });
-  }
+  };
 
   onClickShowAllStepThree = () => {
     this.setState({
       showAllStepThree: true,
     });
-  }
+  };
 
   render () {
     renderLog('FriendInvitationOnboardingIntro');  // Set LOG_RENDER_EVENTS to log all renders

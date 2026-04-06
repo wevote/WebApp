@@ -26,7 +26,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const SettingsNameAndPhoto = ({ externalUniqueId, politicianWeVoteId }) => {
+function SettingsNameAndPhoto ({ externalUniqueId, politicianWeVoteId }) {
   const classes = useStyles();
   const [politician, setPolitician] = useState(null);
   const politicianWeVoteIdRef = useRef(politicianWeVoteId);
@@ -86,7 +86,7 @@ const SettingsNameAndPhoto = ({ externalUniqueId, politicianWeVoteId }) => {
       </div>
     </HeaderContentContainer>
   );
-};
+}
 SettingsNameAndPhoto.propTypes = {
   externalUniqueId: PropTypes.string,
   politicianWeVoteId: PropTypes.string,

@@ -258,7 +258,14 @@ class IssuesByBallotItemDisplayList extends Component {
                   {expandIssues ? (
                     <MoreWrapper
                       id="issuesByBallotItemDisplayListHideIssues"
+                      type="button"
                       onClick={this.handleHideIssues}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          this.handleHideIssues();
+                        }
+                      }}
                     >
                       show less
                     </MoreWrapper>
@@ -267,7 +274,14 @@ class IssuesByBallotItemDisplayList extends Component {
                       {(currentNumberOfIssuesToDisplay < totalLengthOfIssuesToRenderList) && (
                         <MoreWrapper
                           id="issuesByBallotItemDisplayListMoreIssues"
+                          type="button"
                           onClick={() => this.handleExpandIssues('issuesByBallotItemDisplayListMoreIssues')}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                              e.preventDefault();
+                              this.handleExpandIssues('issuesByBallotItemDisplayListMoreIssues');
+                            }
+                          }}
                         >
                           show more
                         </MoreWrapper>
@@ -311,18 +325,34 @@ const IssueListWrapper = styled('div')`
   margin-bottom: 8px;
   padding-inline-start: 0;
   width: 100%;
+  max-width: 320px;
 `;
 
-const MoreWrapper = styled('span')`
+const MoreWrapper = styled('button')`
+  background: none;
+  border: 0;
+  padding: 0;
   color: #000;
   opacity: 0.6;
   cursor: pointer;
+  display: inline-flex;
+  align-items: center;
   text-decoration: underline;
   text-decoration-color: #ccc;
   justify-content: center;
   align-content: space-evenly;
   &:hover {
     text-decoration: underline;
+  }
+  &:focus {
+    outline: 2px solid #2e3c5d;
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+  &:focus-visible {
+    outline: 2px solid #2e3c5d;
+    outline-offset: 2px;
+    border-radius: 2px;
   }
 `;
 

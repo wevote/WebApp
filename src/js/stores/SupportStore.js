@@ -151,8 +151,8 @@ class SupportStore extends ReduceStore {
     return this.getState().voter_statement_text;
   }
 
-  isForPublicListWithChanges (is_public_position_list, ballotItemWeVoteId, is_public_position) { // eslint-disable-line
-    return assign({}, is_public_position_list, { [ballotItemWeVoteId]: is_public_position });
+  isForPublicListWithChanges (isPublicPositionList, ballotItemWeVoteId, isPublicPosition) {
+    return assign({}, isPublicPositionList, { [ballotItemWeVoteId]: isPublicPosition });
   }
 
   // Turn action into a dictionary/object format with we_vote_id as key for fast lookup

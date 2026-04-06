@@ -11,7 +11,7 @@ import AppObservableStore, { messageService } from '../../common/stores/AppObser
 import { isIOS } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
 import { normalizedHref } from '../../common/utils/hrefUtils';
-import { isAndroid } from '../../common/utils/isCordovaOrWebApp';
+import { isAndroid, isCordova } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import stringContains from '../../common/utils/stringContains';
@@ -32,10 +32,10 @@ function MoreMenuOverlay ({ classes, friendInvitationsSentToMeCount, onClose }) 
   const isChallenges = pathname.includes('/challenges');
   const isDiscuss = pathname.includes('/news');
   const isFriends = pathname.includes('/friends');
-  const isManage = pathname.includes('/manage');
+  const isManage = pathname.includes('/manage') || pathname.includes('/no-candidates-claimed');
 
   return (
-    <ClickAwayListener onClickAway={onClose}>
+    <ClickAwayListener disableReactTree onClickAway={onClose}>
       <Overlay>
         <MenuItem id="FooterBarHowItWorks" onClick={() => { AppObservableStore.setShowHowItWorksModal(true); }}>
           <Info />
@@ -70,7 +70,7 @@ function MoreMenuOverlay ({ classes, friendInvitationsSentToMeCount, onClose }) 
           </MenuItem>
         )}
         {nextReleaseFeaturesEnabled && (
-          <MenuItem id="FooterBarCandidatesManaging" $active={isManage} onClick={() => { onClose(); historyPush('/managecandidates'); }}>
+          <MenuItem id="FooterBarCandidatesManaging" $active={isManage} onClick={() => { onClose(); historyPush('/no-candidates-claimed'); }}>
             <img
               alt=""
               src={isManage ? '/img/global/svg-icons/capital-building-selected.svg' : '/img/global/svg-icons/capital-building.svg'}
@@ -100,6 +100,7 @@ MoreMenuOverlay.propTypes = {
 class FooterBar extends React.Component {
   constructor (props) {
     super(props);
+    this.anchorRef = React.createRef();
     this.state = {
       friendInvitationsSentToMeCount: 0,
       // inPrivateLabelMode: false, // setState onAppObservableStoreChange is not working sometimes for some reason
@@ -177,7 +178,7 @@ class FooterBar extends React.Component {
   }
 
   handleChange = (event, value) => {
-    if (isIOS()) {
+    if (isCordova()) {
       const { impact } = window.TapticEngine;
       impact({
         style: 'heavy', // light | medium | heavy
@@ -187,6 +188,7 @@ class FooterBar extends React.Component {
     // If NOT signed in, turn Discuss off and How It Works on
     // Regardless of whether visible or not the option's numerical position remains the same
     // console.log('FooterBar, handleChange value:', value);
+    const showMoreMenuCurrentState = this.state.showMoreMenu || false;
     switch (value) {
       case 0:
         return historyPush('/ready');
@@ -197,7 +199,7 @@ class FooterBar extends React.Component {
       case 3:
         return historyPush('/donate');
       case 4:
-        return this.setState({ showMoreMenu: true });
+        return this.setState({ showMoreMenu: !showMoreMenuCurrentState });
       default:
         return null;
     }
@@ -213,6 +215,7 @@ class FooterBar extends React.Component {
     if (stringContains('/donate', pathnameLowerCase)) return 3;
     // Treat these as "More" so the More tab stays highlighted
     if (stringContains('/managecandidates', pathnameLowerCase)) return 4;
+    if (stringContains('/no-candidates-claimed', pathnameLowerCase)) return 4;
     if (stringContains('/friends', pathnameLowerCase)) return 4;
     if (stringContains('/challenges', pathnameLowerCase)) return 4;
     if (stringContains('/+/', pathname) || stringContains('/++/', pathname)) return 4;
@@ -279,6 +282,7 @@ class FooterBar extends React.Component {
       donateVisible = true; // 2025-06-17 Enabling donations, we hear it is now permissible for nonprofits in iOS & Android
       // console.log('--------- Footer bar donateVisible ', donateVisible, 'squadsVisible', squadsVisible);
     }
+
     return (
       <FooterBarWrapper>
         {showShareButtonFooter && (
@@ -292,7 +296,7 @@ class FooterBar extends React.Component {
           style={cordovaFooterHeight()}
         >
           <BottomNavigation
-            value={showMoreMenu ? 4 : this.getSelectedTab()}
+            value={this.getSelectedTab()}
             onChange={this.handleChange}
             showLabels
             style={{ width: `${isIOS() ? '95%' : ''}`, height: `${isAndroid() ? '70px' : ''}`  }}
@@ -362,13 +366,20 @@ class FooterBar extends React.Component {
               className="no-outline"
               id="moreTabFooterBar"
               label="More"
+              ref={this.anchorRef}
               showLabel
               icon={<MoreHoriz />}
               sx={defaultIconStyles}
             />
           </BottomNavigation>
           {showMoreMenu && (
-            <MoreMenuOverlay classes={classes} friendInvitationsSentToMeCount={friendInvitationsSentToMeCount} onClose={() => this.setState({ showMoreMenu: false })} />
+            <MoreMenuOverlay
+              classes={classes}
+              friendInvitationsSentToMeCount={friendInvitationsSentToMeCount}
+              onClose={() => {
+                this.setState({ showMoreMenu: false });
+              }}
+            />
           )}
         </FooterContainer>
       </FooterBarWrapper>

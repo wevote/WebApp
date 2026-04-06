@@ -1,9 +1,10 @@
-const { browser, driver } = require('@wdio/globals');
-const { readFileSync } = require('fs');
-const browserStackConfig = require('./browserstack.config');
-const browserCapabilities = require('../capabilities/browser_bvt.json');
-const { exec } = require('child_process');
-const { promisify } = require('util');
+import { browser, driver } from '@wdio/globals';
+import { readFileSync } from 'fs';
+import { browserStackConfig } from './browserstack.config.js';
+import browserCapabilities from '../capabilities/browser_bvt.json' with { type: 'json' };
+import { exec } from 'child_process';
+import { promisify } from 'util';
+import { resolve } from 'path';
 const execAsync = promisify(exec);
 
 let mobileCapabilities = [];
@@ -23,7 +24,7 @@ const dateForDisplay = date.toDateString();
 
 const buildName = `${browserStackConfig.NAME}: ${dateForDisplay}`;
 
-module.exports.config = {
+export const config = {
   user: browserStackConfig.BROWSERSTACK_USER,
   key: browserStackConfig.BROWSERSTACK_KEY,
   injectGlobals: false,
@@ -86,7 +87,7 @@ module.exports.config = {
     console.warn('No session ID found, skipping video upload');
     return;
   }
-  const scriptPath = require('path').resolve('./tests/browserstack_automation/specs/', 'DownloadVideo.browser.js');
+  const scriptPath = resolve('./tests/browserstack_automation/specs/', 'DownloadVideo.browser.js');
   console.log('Running helper script:', scriptPath);
   try {
     const { stdout, stderr } = await execAsync(`node ${scriptPath} ${sessionId}`);
@@ -97,17 +98,16 @@ module.exports.config = {
   }
 }
 };
-module.exports.config.capabilities.forEach((capability) => {
+config.capabilities.forEach((capability) => {
   const device = capability;
   const keys = Object.keys(device);
   keys.forEach((key) => {
-    if (key in module.exports.config.commonCapabilities) {
+    if (key in config.commonCapabilities) {
       device[key] = {
         ...device[key],
-        ...module.exports.config.commonCapabilities[key],
+        ...config.commonCapabilities[key],
       };
     }
   });
 });
-
 

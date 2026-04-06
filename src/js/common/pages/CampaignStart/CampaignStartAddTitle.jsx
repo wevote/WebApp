@@ -57,7 +57,7 @@ class CampaignStartAddTitle extends Component {
       CampaignStartActions.campaignTitleQueuedToSave('');
     }
     historyPush('/who-do-you-want-to-see-elected');
-  }
+  };
 
   render () {
     renderLog('CampaignStartAddTitle');  // Set LOG_RENDER_EVENTS to log all renders

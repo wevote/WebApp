@@ -72,11 +72,11 @@ class SuperSharingIntro extends Component {
       campaignBasePath = `/id/${campaignXWeVoteId}/`;
     }
     return campaignBasePath;
-  }
+  };
 
   returnToOtherSharingOptions = () => {
     historyPush(`${this.getCampaignXBasePath()}share-campaign`);
-  }
+  };
 
   startSuperSharing = () => {
     const { sms } = this.props;
@@ -85,7 +85,7 @@ class SuperSharingIntro extends Component {
     } else {
       historyPush(`${this.getCampaignXBasePath()}super-sharing-add-email-contacts`);
     }
-  }
+  };
 
   render () {
     renderLog('SuperSharingIntro');  // Set LOG_RENDER_EVENTS to log all renders

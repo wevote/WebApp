@@ -1,6 +1,6 @@
 
 import { driver, expect, browser } from '@wdio/globals';
-import ReadyPage from '../page_objects/ready.page';
+import ReadyPage from '../page_objects/ready.browser';
 import BallotPage from '../page_objects/ballot.browser';
 
 const waitTime = 5000;

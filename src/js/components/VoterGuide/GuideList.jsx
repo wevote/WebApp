@@ -147,7 +147,7 @@ class GuideList extends Component {
         numberOfItemsToDisplay,
       });
     }, 500);
-  }
+  };
 
   sortOrganizations (organizationsList, ballotItemWeVoteId) {
     // console.log('sortOrganizations: ', organizationsList, 'ballotItemWeVoteId: ', ballotItemWeVoteId);

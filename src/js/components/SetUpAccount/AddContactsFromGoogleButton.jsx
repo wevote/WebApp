@@ -92,7 +92,7 @@ class AddContactsFromGoogleButton extends Component {
     } else {
       console.log('onGoogleSignIn no action taken');
     }
-  }
+  };
 
   onVoterStoreChange () {
     const { googleContactsStored } = VoterStore.getState();
@@ -133,7 +133,7 @@ class AddContactsFromGoogleButton extends Component {
     } catch (error) {
       console.log('onButtonClickWebApp try/catch error: ', error);
     }
-  }
+  };
 
   onButtonClickIos = () => {
     if (window.contactPermissionIos === 'cancelled') {
@@ -148,7 +148,7 @@ class AddContactsFromGoogleButton extends Component {
         }
       }, 500);
     }
-  }
+  };
 
   processGooglePeopleMeResponse = (result) => {
     // If we got a name back from Google, and the current voter doesn't have a name stored yet, save it
@@ -161,7 +161,7 @@ class AddContactsFromGoogleButton extends Component {
     } else {
       console.log('processGooglePeopleMeResponse no names found');
     }
-  }
+  };
 
   getOtherConnections = () => {
     // console.log('AddContactsFromGoogleButton getOtherConnections');
@@ -273,7 +273,7 @@ class AddContactsFromGoogleButton extends Component {
     this.setState({
       errorMessageFromGoogle,
     });
-  }
+  };
 
   initClient () {
     const { addContactsState } = this.state;

@@ -7,8 +7,6 @@ import { Button, IconButton } from '@mui/material';
 import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
 import { styled as muiStyled } from '@mui/material/styles';
 import DesignTokenColors from '../../Style/DesignTokenColors';
-import VerifyOtherWaysModal from './VerifyOtherWaysModal';
-import VerifyWithEmailModal from './VerifyWithEmailModal';
 import AppObservableStore from '../../../stores/AppObservableStore';
 import useVoterCanEditPolitician from '../../../../hooks/useVoterCanEditPolitician';
 import lookupPageNameAndPageTypeDict, { getPageDetails } from '../../../../utils/lookupPageNameAndPageTypeDict';
@@ -31,7 +29,7 @@ const CustomTooltip = muiStyled(({ className, ...props }) => (
   },
 }));
 
-const UpdatePoliticianInformation =  ({ politicianName, politicianWeVoteId }) => {
+function UpdatePoliticianInformation ({ politicianName, politicianWeVoteId }) {
   const voterCanEditPoliticianProfile = useVoterCanEditPolitician();
   // console.log('updatePoliticianInformation politicianName: ', politicianName, ', voterCanEditPoliticianProfile: ', voterCanEditPoliticianProfile);
   const [tooltipOpen, setTooltipOpen] = useState(false);
@@ -117,19 +115,11 @@ const UpdatePoliticianInformation =  ({ politicianName, politicianWeVoteId }) =>
               <ExpandMoreRounded />
             </CandidateStaffAccessButton>
           )}
-          <VerifyOtherWaysModal
-            politicianName={politicianName}
-            politicianWeVoteId={politicianWeVoteId}
-          />
-          <VerifyWithEmailModal
-            politicianName={politicianName}
-            politicianWeVoteId={politicianWeVoteId}
-          />
         </>
       )}
     </UpdateInformationWrapper>
   );
-};
+}
 
 UpdatePoliticianInformation.propTypes = {
   politicianName: PropTypes.string,

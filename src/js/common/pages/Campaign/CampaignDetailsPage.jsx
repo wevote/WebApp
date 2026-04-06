@@ -1,53 +1,35 @@
-import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+import ReviewAppModal from '../../../components/ReviewApps/ReviewAppModal';
+import { PageContentContainer } from '../../../components/Style/pageLayoutStyles';
 import webAppConfig from '../../../config';
+import VoterStore from '../../../stores/VoterStore';
 import CampaignSupporterActions from '../../actions/CampaignSupporterActions';
-import {
-  CampaignDescription,
-  CampaignDescriptionDesktop,
-  CampaignDescriptionWrapper,
-  CampaignDescriptionDesktopWrapper,
-  CampaignImagePlaceholder,
-  CampaignImagePlaceholderText,
-  CampaignImage,
-  CampaignImageDesktop,
-  CampaignImageDesktopWrapper,
-  CampaignImageMobileWrapper,
-  CampaignOwnersDesktopWrapper,
-  CampaignOwnersWrapper,
-  CampaignSubSectionSeeAll,
-  CampaignSubSectionTitle,
-  CampaignSubSectionTitleWrapper,
-  CampaignTitleAndScoreBar,
-  CampaignTitleDesktop,
-  CampaignTitleMobile,
-  CommentsListWrapper,
-  DetailsSectionDesktopTablet,
-  DetailsSectionMobile,
-  SupportButtonFooterWrapper,
-  SupportButtonPanel,
-  CampaignPoliticianImageDesktop,
-} from '../../components/Style/CampaignDetailsStyles';
-import { PageWrapper } from '../../components/Style/stepDisplayStyles';
-import DelayedLoad from '../../components/Widgets/DelayedLoad';
-import historyPush from '../../utils/historyPush';
-import { renderLog } from '../../utils/logging';
-import returnFirstXWords from '../../utils/returnFirstXWords';
 import CampaignOwnersList from '../../components/CampaignSupport/CampaignOwnersList';
 import CampaignTopNavigation from '../../components/Navigation/CampaignTopNavigation';
 import CompleteYourProfileModalController from '../../components/Settings/CompleteYourProfileModalController';
+import { CampaignDescription, CampaignDescriptionDesktop, CampaignDescriptionDesktopWrapper, CampaignDescriptionWrapper,
+  CampaignImage, CampaignImageDesktop, CampaignImageDesktopWrapper, CampaignImageMobileWrapper, CampaignImagePlaceholder,
+  CampaignImagePlaceholderText, CampaignOwnersDesktopWrapper, CampaignOwnersWrapper, CampaignPoliticianImageDesktop,
+  CampaignSubSectionSeeAll, CampaignSubSectionTitle, CampaignSubSectionTitleWrapper, CampaignTitleAndScoreBar,
+  CampaignTitleDesktop, CampaignTitleMobile, CommentsListWrapper, DetailsSectionDesktopTablet, DetailsSectionMobile,
+  SupportButtonFooterWrapper, SupportButtonPanel } from '../../components/Style/CampaignDetailsStyles';
 import { BlockedIndicator, BlockedReason, DraftModeIndicator, EditIndicator, ElectionInPast, IndicatorButtonWrapper, IndicatorRow } from '../../components/Style/CampaignIndicatorStyles';
-import { PageContentContainer } from '../../../components/Style/pageLayoutStyles';
+import { PageWrapper } from '../../components/Style/stepDisplayStyles';
+import DelayedLoad from '../../components/Widgets/DelayedLoad';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import CampaignStore from '../../stores/CampaignStore';
 import CampaignSupporterStore from '../../stores/CampaignSupporterStore';
 import { getCampaignXValuesFromIdentifiers, retrieveCampaignXFromIdentifiersIfNeeded } from '../../utils/campaignUtils';
+import historyPush from '../../utils/historyPush';
 import initializejQuery from '../../utils/initializejQuery';
 import keepHelpingDestination from '../../utils/keepHelpingDestination';
+import { renderLog } from '../../utils/logging';
+import returnFirstXWords from '../../utils/returnFirstXWords';
 
 const CampaignCommentsList = React.lazy(() => import(/* webpackChunkName: 'CampaignCommentsList' */ '../../components/Campaign/CampaignCommentsList'));
 const CampaignDetailsActionSideBox = React.lazy(() => import(/* webpackChunkName: 'CampaignDetailsActionSideBox' */ '../../components/CampaignSupport/CampaignDetailsActionSideBox'));
@@ -77,6 +59,7 @@ class CampaignDetailsPage extends Component {
       payToPromoteStepCompleted: false,
       payToPromoteStepTurnedOn: false,
       sharingStepCompleted: false,
+      showNegativeModal: false,
       step2Completed: false,
       voterCanEditThisCampaign: false,
       weVoteHostedProfileImageUrlLarge: '',
@@ -88,8 +71,8 @@ class CampaignDetailsPage extends Component {
     const { match: { params } } = this.props;
     const { campaignSEOFriendlyPath, campaignXWeVoteId } = params;
     // console.log('componentDidMount campaignSEOFriendlyPath: ', campaignSEOFriendlyPath, ', campaignXWeVoteId: ', campaignXWeVoteId);
-    this.onAppObservableStoreChange();
-    this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
+    // this.onAppObservableStoreChange('');
+    this.appStateSubscription = messageService.getMessage().subscribe((token) => this.onAppObservableStoreChange(token));
     this.onCampaignStoreChange();
     this.campaignStoreListener = CampaignStore.addListener(this.onCampaignStoreChange.bind(this));
     this.onCampaignSupporterStoreChange();
@@ -124,16 +107,23 @@ class CampaignDetailsPage extends Component {
     this.campaignSupporterStoreListener.remove();
   }
 
-  onAppObservableStoreChange () {
-    const chosenWebsiteName = AppObservableStore.getChosenWebsiteName();
-    const inPrivateLabelMode = AppObservableStore.inPrivateLabelMode();
-    // For now, we assume that paid sites with chosenSiteLogoUrl will turn off "Chip in"
-    const payToPromoteStepTurnedOn = !inPrivateLabelMode && webAppConfig.ENABLE_PAY_TO_PROMOTE;
-    this.setState({
-      chosenWebsiteName,
-      inPrivateLabelMode,
-      payToPromoteStepTurnedOn,
-    });
+  onAppObservableStoreChange (token) {
+    const tokenText = token ? token.text : '';
+    const showNegativeModal = tokenText.includes('showNegativeFeedbackModal') && tokenText.includes('CAMPAIGN');
+    if (showNegativeModal) {
+      console.log(`Cordova:   CampaignDetailsPage negativeFeedbackPage: ${tokenText} `);
+      this.setState({ showNegativeModal });
+    } else {
+      const chosenWebsiteName = AppObservableStore.getChosenWebsiteName();
+      const inPrivateLabelMode = AppObservableStore.inPrivateLabelMode();
+      // For now, we assume that paid sites with chosenSiteLogoUrl will turn off "Chip in"
+      const payToPromoteStepTurnedOn = !inPrivateLabelMode && webAppConfig.ENABLE_PAY_TO_PROMOTE;
+      this.setState({
+        chosenWebsiteName,
+        inPrivateLabelMode,
+        payToPromoteStepTurnedOn,
+      });
+    }
   }
 
   onCampaignStoreChange () {
@@ -209,7 +199,7 @@ class CampaignDetailsPage extends Component {
       campaignBasePath = `/id/${campaignXWeVoteId}/`;
     }
     return campaignBasePath;
-  }
+  };
 
   goToNextPage = () => {
     const { pathToUseWhenProfileComplete } = this.state;
@@ -217,14 +207,14 @@ class CampaignDetailsPage extends Component {
       historyPush(pathToUseWhenProfileComplete);
     }, 500);
     return null;
-  }
+  };
 
   functionToUseToKeepHelping = () => {
     const { finalElectionDateInPast, payToPromoteStepCompleted, payToPromoteStepTurnedOn, sharingStepCompleted, step2Completed } = this.state;
     // console.log('functionToUseToKeepHelping sharingStepCompleted:', sharingStepCompleted, ', payToPromoteStepCompleted:', payToPromoteStepCompleted, ', step2Completed:', step2Completed);
     const keepHelpingDestinationString = keepHelpingDestination(step2Completed, payToPromoteStepCompleted, payToPromoteStepTurnedOn, sharingStepCompleted, finalElectionDateInPast);
     historyPush(`${this.getCampaignXBasePath()}${keepHelpingDestinationString}`);
-  }
+  };
 
   functionToUseWhenProfileComplete = () => {
     const { campaignXWeVoteId } = this.state;
@@ -244,12 +234,12 @@ class CampaignDetailsPage extends Component {
         CampaignSupporterActions.supportCampaignSave(campaignXWeVoteId, campaignSupported, campaignSupportedChanged, visibleToPublic, saveVisibleToPublic); // campaignSupporterSave
       }, this.goToNextPage());
     }
-  }
+  };
 
   onCampaignEditClick = () => {
     historyPush(`${this.getCampaignXBasePath()}edit`);
     return null;
-  }
+  };
 
   onCampaignShareClick = () => {
     const { campaignSEOFriendlyPath, campaignXWeVoteId } = this.state;
@@ -259,7 +249,7 @@ class CampaignDetailsPage extends Component {
       historyPush(`/id/${campaignXWeVoteId}/share-campaign`);
     }
     return null;
-  }
+  };
 
   render () {
     renderLog('CampaignDetailsPage');  // Set LOG_RENDER_EVENTS to log all renders
@@ -269,10 +259,13 @@ class CampaignDetailsPage extends Component {
       campaignSEOFriendlyPath, campaignTitle, campaignXWeVoteId,
       chosenWebsiteName, inPrivateLabelMode, isBlockedByWeVote, isBlockedByWeVoteReason,
       finalElectionDateInPast, isSupportersCountMinimumExceeded, linkedPoliticianWeVoteId,
-      voterCanEditThisCampaign, voterSupportsThisCampaign, weVoteHostedProfileImageUrlLarge,
+      showNegativeModal, voterCanEditThisCampaign, voterSupportsThisCampaign,
+      weVoteHostedProfileImageUrlLarge,
     } = this.state;
     // console.log('render campaignPhotoLargeUrl: ', campaignPhotoLargeUrl, ', weVoteHostedProfileImageUrlLarge: ', weVoteHostedProfileImageUrlLarge);
     const htmlTitle = `${campaignTitle} - ${chosenWebsiteName}`;
+    const initialEmail = VoterStore.getVoterEmail();
+
     if (isBlockedByWeVote && !voterCanEditThisCampaign) {
       return (
         <PageContentContainer>
@@ -345,6 +338,9 @@ class CampaignDetailsPage extends Component {
                 </>
               )}
             </BlockedReason>
+          )}
+          {showNegativeModal && (
+            <ReviewAppModal initialEmail={initialEmail} />
           )}
           <CampaignTopNavigation
             campaignSEOFriendlyPath={campaignSEOFriendlyPath}

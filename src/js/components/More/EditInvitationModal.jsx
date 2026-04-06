@@ -5,14 +5,14 @@ import { ContentCopy as CopyIcon } from '@mui/icons-material';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 import ModalDisplayTemplateA from '../Widgets/ModalDisplayTemplateA';
 
-const EditInvitationModal = ({
+function EditInvitationModal ({
   isOpen,
   onClose,
   invitationBody,
   onSave,
   notify,
   selectedPoliticianId,
-}) => {
+}) {
   const [draftInvite, setDraftInvite] = useState(invitationBody);
   const [initialInvite, setInitialInvite] = useState(invitationBody);
 
@@ -29,9 +29,9 @@ const EditInvitationModal = ({
       await navigator.clipboard.writeText(
         `${draftInvite}\n\nhttps://wevote.us/join/${selectedPoliticianId}`,
       );
-      const message = window.innerWidth >= 576
-        ? 'Invitation copied to clipboard. Press ⌘V / Ctrl+V to paste.'
-        : 'Invitation copied to clipboard.';
+      const message = window.innerWidth >= 576 ?
+        'Invitation copied to clipboard. Press ⌘V / Ctrl+V to paste.' :
+        'Invitation copied to clipboard.';
       notify(message, true);
     } catch {
       notify('Copy failed. Select the text and copy manually.', false, 3000);
@@ -100,7 +100,7 @@ const EditInvitationModal = ({
       />
     </>
   );
-};
+}
 
 EditInvitationModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,

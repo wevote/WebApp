@@ -219,7 +219,7 @@ export default class BallotElectionListWithFilters extends Component {
     if (this.props.toggleFunction) {
       this.props.toggleFunction();
     }
-  }
+  };
 
   localVoterGuideHasBeenRetrievedOnce = (organizationWeVoteId) => {
     if (organizationWeVoteId) {
@@ -227,13 +227,13 @@ export default class BallotElectionListWithFilters extends Component {
       return voterGuideHasBeenRetrievedOnce[organizationWeVoteId] || false;
     }
     return false;
-  }
+  };
 
   saveVoterGuideForElection = (googleCivicElectionId) => {
     BallotActions.voterBallotItemsRetrieve(googleCivicElectionId, '', '');
     VoterGuideActions.voterGuideSave(googleCivicElectionId, '');
     // When the result comes back from voterGuideSave, onVoterGuideStoreChange triggers a call to goToVoterGuideForDifferentElection
-  }
+  };
 
   switchElectionBehindTheScenes = (googleCivicElectionId) => {
     // Load new election
@@ -244,7 +244,7 @@ export default class BallotElectionListWithFilters extends Component {
     if (this.props.toggleFunction) {
       this.props.toggleFunction();
     }
-  }
+  };
 
   goToVoterGuideForDifferentElection = (voterGuideWeVoteId) => {
     const voterGuideBallotItems = `/vg/${voterGuideWeVoteId}/settings/positions`;
@@ -252,7 +252,7 @@ export default class BallotElectionListWithFilters extends Component {
     if (this.props.toggleFunction) {
       this.props.toggleFunction();
     }
-  }
+  };
 
   orderByAlphabetical = (firstEntry, secondEntry) => {
     let firstEntryName;
@@ -674,9 +674,7 @@ export default class BallotElectionListWithFilters extends Component {
                 {simpleModeTitle}
               </SimpleModeTitle>
             )}
-            <>
-              {stateToShow === 'all' ? upcomingElectionList : (upcomingElectionListByState.length > 0) && upcomingElectionListByState}
-            </>
+            {stateToShow === 'all' ? upcomingElectionList : (upcomingElectionListByState.length > 0) && upcomingElectionListByState}
             {!showSimpleDisplay && (
               <>
                 {(upcomingElectionList && upcomingElectionList.length > 0) ?
