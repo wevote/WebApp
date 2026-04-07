@@ -1434,7 +1434,7 @@ const VisibilityInlineWrapperMobile = styled('div')`
 
 const VisibilityDivider = styled('div')`
   width: 1.5px;
-  height: 32px;
+  align-self: stretch;
   background: #e0e0e0;
   margin-left: 12px;
   margin-right: 12px;
@@ -1443,7 +1443,7 @@ const VisibilityDivider = styled('div')`
 
 const CandidateStaffDivider = styled('div')`
   width: 1.5px;
-  height: 32px;
+  align-self: stretch;
   background: #e0e0e0;
   margin-left: 12px;
   margin-right: 12px;
