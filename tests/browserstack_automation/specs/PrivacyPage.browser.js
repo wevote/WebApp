@@ -108,9 +108,9 @@ describe('Privacy PageBrowser', () => {
     await driver.pause(waitTime);
     await driver.waitUntil(async () => {
       // Add condition to check for the expected URL
-      await driver.switchWindow('https://openreplay.com/legal/privacy.html');
+      await driver.switchWindow('https://openreplay.com/legal/privacy');
       const currentUrl = await driver.getUrl();
-      return currentUrl === 'https://openreplay.com/legal/privacy.html';
+      return currentUrl === 'https://openreplay.com/legal/privacy';
     }, {
       timeout: 10000,
       timeoutMsg: 'Expected URL not found, timeout after 10000ms',
