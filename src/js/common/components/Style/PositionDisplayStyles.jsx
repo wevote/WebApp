@@ -1,6 +1,23 @@
 import styled from 'styled-components';
 import DesignTokenColors from './DesignTokenColors';
 
+export const CompactSecondaryText = styled('div')`
+  color: #999;
+  font-size: 12px;
+  margin-top: 0;
+`;
+
+export const CompactStatementText = styled('div')`
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  color: ${DesignTokenColors.neutralUI700};
+  display: -webkit-box;
+  font-size: 14px;
+  line-height: 1.4;
+  overflow: hidden;
+  word-break: break-word;
+`;
+
 export const PositionText = styled('div')`
   align-items: center;
   color: ${DesignTokenColors.neutral700};

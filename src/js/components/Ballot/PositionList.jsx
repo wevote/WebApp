@@ -300,7 +300,7 @@ class PositionList extends Component {
       numberOfPositionItemsToDisplay, positionSearchResults, searchText,
       totalNumberOfPositionSearchResults,
     } = this.state;
-    const { incomingPositionList, linksOpenExternalWebsite, positionListExistsTitle } = this.props;
+    const { compactMode, incomingPositionList, linksOpenExternalWebsite, maxToShow, positionListExistsTitle } = this.props;
     // console.log('PositionList render, positionListExistsTitle:', positionListExistsTitle);
     // console.log('this.state.filteredPositionList render: ', this.state.filteredPositionList);
     let showTitle = false;
@@ -310,6 +310,7 @@ class PositionList extends Component {
     }
     // console.log('showTitle:', showTitle);
     const selectedFiltersDefault = ['endorsingGroup', 'newsOrganization', 'publicFigure', 'sortByMagic', 'yourFriends'];
+    const effectiveMaxToDisplay = maxToShow || numberOfPositionItemsToDisplay;
     let numberOfPositionItemsDisplayed = 0;
     let searchTextString = '';
     const incomingPositionListLength = (incomingPositionList) ? incomingPositionList.length : 0;
@@ -352,12 +353,12 @@ class PositionList extends Component {
           {(isSearching ? positionSearchResults : filteredPositionList).map((onePosition) => {
             // console.log('numberOfPositionItemsDisplayed:', numberOfPositionItemsDisplayed);
             if (isSearching) {
-              if (numberOfPositionItemsDisplayed >= numberOfPositionItemsToDisplay) {
+              if (numberOfPositionItemsDisplayed >= effectiveMaxToDisplay) {
                 return null;
               }
               numberOfPositionItemsDisplayed += 1;
             } else {
-              if (numberOfPositionItemsDisplayed >= numberOfPositionItemsToDisplay) {
+              if (numberOfPositionItemsDisplayed >= effectiveMaxToDisplay) {
                 return null;
               }
               numberOfPositionItemsDisplayed += 1;
@@ -407,6 +408,7 @@ class PositionList extends Component {
                   />
                   */}
                   <PositionForBallotItem
+                    compactMode={compactMode}
                     linksOpenExternalWebsite={linksOpenExternalWebsite && isWebApp()}
                     position={onePosition}
                   />
@@ -415,16 +417,23 @@ class PositionList extends Component {
             );
           })}
         </UnorderedListWrapper>
-        <ShowMoreItemsWrapper id="showMoreItemsId" onClick={() => this.increaseNumberOfPositionItemsToDisplay(20)}>
-          <Suspense fallback={<></>}>
-            <ShowMoreItems
-              loadingMoreItemsNow={loadingMoreItems}
-              numberOfItemsDisplayed={numberOfPositionItemsDisplayed}
-              numberOfItemsTotal={isSearching ? totalNumberOfPositionSearchResults : filteredPositionListLength}
-            />
-          </Suspense>
-        </ShowMoreItemsWrapper>
-        {loadingMoreItems && (
+        {compactMode && maxToShow && filteredPositionListLength > maxToShow && this.props.onSeeMoreClick && (
+          <CompactSeeMoreLink onClick={this.props.onSeeMoreClick}>
+            See more
+          </CompactSeeMoreLink>
+        )}
+        {!compactMode && (
+          <ShowMoreItemsWrapper id="showMoreItemsId" onClick={() => this.increaseNumberOfPositionItemsToDisplay(20)}>
+            <Suspense fallback={<></>}>
+              <ShowMoreItems
+                loadingMoreItemsNow={loadingMoreItems}
+                numberOfItemsDisplayed={numberOfPositionItemsDisplayed}
+                numberOfItemsTotal={isSearching ? totalNumberOfPositionSearchResults : filteredPositionListLength}
+              />
+            </Suspense>
+          </ShowMoreItemsWrapper>
+        )}
+        {!compactMode && loadingMoreItems && (
           <LoadingItemsWheel>
             <CircularProgress />
           </LoadingItemsWheel>
@@ -434,8 +443,11 @@ class PositionList extends Component {
   }
 }
 PositionList.propTypes = {
+  compactMode: PropTypes.bool,
   incomingPositionList: PropTypes.array.isRequired,
   linksOpenExternalWebsite: PropTypes.bool,
+  maxToShow: PropTypes.number,
+  onSeeMoreClick: PropTypes.func,
   positionListExistsTitle: PropTypes.object,
   params: PropTypes.object,
 };
@@ -445,6 +457,16 @@ const styles = () => ({
     padding: 8,
   },
 });
+
+const CompactSeeMoreLink = styled('div')`
+  color: #1073d4;
+  cursor: pointer;
+  font-size: 14px;
+  padding-left: 72px;
+  &:hover {
+    text-decoration: underline;
+  }
+`;
 
 const FilterWrapper = styled('div')`
   margin: 10px 15px;
@@ -463,6 +485,9 @@ const PositionListWrapper = styled('div')`
 
 const PositionListForBallotItemWrapper = styled('div')`
   margin: 8px 15px;
+  &:last-child {
+    margin-bottom: 0;
+  }
 `;
 
 const SearchResultsFoundInExplanation = styled('div')(({ theme }) => (`
@@ -488,6 +513,7 @@ const ShowMoreItemsWrapper = styled('div')(({ theme }) => (`
 `));
 
 const UnorderedListWrapper = styled('ul')`
+  margin-bottom: 0;
   padding-inline-start: 0 !important;
 `;
 

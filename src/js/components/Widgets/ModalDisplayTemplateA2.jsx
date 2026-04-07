@@ -84,7 +84,7 @@ class ModalDisplayTemplateA2 extends Component {
               >
                 {tabs.map((tab, idx) => (
                   <Tab
-                    key={tab.label || idx}
+                    key={typeof tab.label === 'string' ? tab.label : idx}
                     label={tab.label}
                     classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
                     disableRipple
@@ -136,8 +136,8 @@ ModalDisplayTemplateA2.propTypes = {
   externalUniqueId: PropTypes.string,
   /** Initial tab index to show when modal opens */
   initialTab: PropTypes.number,
-  /** Array of { label: string } objects defining the tabs */
-  tabs: PropTypes.arrayOf(PropTypes.shape({ label: PropTypes.string })),
+  /** Array of { label: string|node } objects defining the tabs */
+  tabs: PropTypes.arrayOf(PropTypes.shape({ label: PropTypes.node })),
   /** Either an array of JSX (one per tab) or a single JSX node */
   tabContentJSX: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
   /** Called with the new tab index whenever the active tab changes */
@@ -200,6 +200,7 @@ export const templateA2Styles = (theme) => ({
   },
   tabRoot: {
     minHeight: 40,
+    minWidth: 'unset',
     padding: '6px 12px',
     fontSize: 15,
     fontWeight: 400,

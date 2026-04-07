@@ -9,13 +9,15 @@ import SupportActions from '../../actions/SupportActions';
 import SpeakerEndorsedOrOpposedSnippet from '../../common/components/Position/SpeakerEndorsedOrOpposedSnippet';
 import VoterPositionEditTripleDot from '../../common/components/Position/VoterPositionEditTripleDot';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
-import { SpeakerName, SpeakerStatement, SpeakerStatementWrapper } from '../../common/components/Style/PositionDisplayStyles';
+import { CompactSecondaryText, CompactStatementText, SpeakerName, SpeakerStatement, SpeakerStatementWrapper } from '../../common/components/Style/PositionDisplayStyles';
 import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
+import MeasureStore from '../../stores/MeasureStore';
 import PoliticianStore from '../../common/stores/PoliticianStore';
 import { prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../common/utils/cordovaUtils';
 import { isAndroid } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
+import stringContains from '../../common/utils/stringContains';
 import SupportStore from '../../stores/SupportStore';
 import VoterStore from '../../stores/VoterStore';
 import { avatarGeneric } from '../../utils/applicationUtils';
@@ -32,13 +34,150 @@ const ItemActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemActionBa
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../../common/components/Widgets/ReadMore'));
 
 
-function VoterPositionEntryAndDisplay ({ classes, externalUniqueId, onModalClose, openEditModalOnLoad, politicianWeVoteId }) {
-  const politicianWeVoteIdRef = useRef(politicianWeVoteId);
-  // console.log('VoterPositionEntryAndDisplay, politicianWeVoteId:', politicianWeVoteId, ', politicianWeVoteIdRef.current:', politicianWeVoteIdRef.current);
+function VoterAvatarBlock ({ voterPhotoUrlMedium, voterFirstName, voterLastName }) {
+  return (
+    <VoterAvatar>
+      {voterPhotoUrlMedium ? (
+        <VoterImage
+          alt="Voter"
+          src={voterPhotoUrlMedium || avatarGeneric()}
+        />
+      ) : (
+        <>
+          <VoterFirstName>
+            {voterFirstName[0]}
+          </VoterFirstName>
+          <VoterLastName>
+            {voterLastName[0]}
+          </VoterLastName>
+        </>
+      )}
+    </VoterAvatar>
+  );
+}
+VoterAvatarBlock.propTypes = {
+  voterPhotoUrlMedium: PropTypes.string,
+  voterFirstName: PropTypes.string,
+  voterLastName: PropTypes.string,
+};
+
+function VoterPositionBlockComponent ({
+  classes, compactMode, effectiveWeVoteId, effectivePoliticianWeVoteId, externalUniqueId,
+  handleEditModalOpen, isMeasure, onClick, openDeleteConfirmationModal, openEditModal,
+  position, positionExists, statementText, supportOrOpposeStanceExists,
+  voterFirstName, voterLastName, voterName, voterPhotoUrlMedium,
+}) {
+  return (
+    <VoterPositionContainer>
+      <VoterAvatarDisplayContainer>
+        <VoterAvatarBlock
+          voterPhotoUrlMedium={voterPhotoUrlMedium}
+          voterFirstName={voterFirstName}
+          voterLastName={voterLastName}
+        />
+        <EditIcon
+          onClick={handleEditModalOpen}
+          className={classes.styledEditIcon}
+        />
+      </VoterAvatarDisplayContainer>
+      <CommentContainerWrapper>
+        {statementText && compactMode && (
+          <CompactOwnCommentWrapper onClick={onClick}>
+            <CompactStatementText>{statementText}</CompactStatementText>
+            <CompactEditHint>Click to edit</CompactEditHint>
+          </CompactOwnCommentWrapper>
+        )}
+        {statementText && !compactMode && (
+          <SpeakerInfoWrapperB>
+            <SpeakerName>
+              {voterName}
+            </SpeakerName>
+            <SpeakerStatementWrapper>
+              <SpeakerStatement>
+                <Suspense fallback={<></>}>
+                  <ReadMore
+                    textToDisplay={statementText}
+                    numberOfLines={6}
+                  />
+                </Suspense>
+              </SpeakerStatement>
+            </SpeakerStatementWrapper>
+          </SpeakerInfoWrapperB>
+        )}
+        {!statementText && (
+          <CommentContainer>
+            <InputBox
+              type="text"
+              placeholder="What's your opinion?"
+              onClick={onClick}
+              readOnly
+              style={{ overflow: 'hidden', width: '100%', minWidth: 0 }}
+            />
+          </CommentContainer>
+        )}
+        {!supportOrOpposeStanceExists && !compactMode && (
+          <ItemActionBarContainer>
+            <Suspense fallback={(
+              <Box display="flex" gap={1}>
+                <Skeleton variant="rounded" width={100} height={36} sx={{ borderRadius: 2 }} />
+                <Skeleton variant="rounded" width={100} height={36} sx={{ borderRadius: 2 }} />
+              </Box>
+            )}
+            >
+              <ItemActionBar
+                ballotItemWeVoteId={isMeasure ? effectiveWeVoteId : ''}
+                commentButtonHide
+                externalUniqueId={`VoterPositionEntryAndDisplay-ItemActionBar-${effectiveWeVoteId}-${externalUniqueId}`}
+                politicianWeVoteId={effectivePoliticianWeVoteId}
+                positionPublicToggleWrapAllowed
+                shareButtonHide
+                useSupportWording
+              />
+            </Suspense>
+          </ItemActionBarContainer>
+        )}
+        {positionExists && !compactMode && (
+          <SpeakerPositionLikesSourceWrapper>
+            <SpeakerEndorsedOrOpposedSnippet position={position} viewerIsPositionOwner />
+            <VoterPositionEditTripleDot triggerDeleteOpinion={openDeleteConfirmationModal} triggerEditOpinion={openEditModal} />
+          </SpeakerPositionLikesSourceWrapper>
+        )}
+      </CommentContainerWrapper>
+    </VoterPositionContainer>
+  );
+}
+VoterPositionBlockComponent.propTypes = {
+  classes: PropTypes.object,
+  compactMode: PropTypes.bool,
+  effectiveWeVoteId: PropTypes.string,
+  effectivePoliticianWeVoteId: PropTypes.string,
+  externalUniqueId: PropTypes.string,
+  handleEditModalOpen: PropTypes.func,
+  isMeasure: PropTypes.bool,
+  onClick: PropTypes.func.isRequired,
+  openDeleteConfirmationModal: PropTypes.func,
+  openEditModal: PropTypes.func,
+  position: PropTypes.object,
+  positionExists: PropTypes.bool,
+  statementText: PropTypes.string,
+  supportOrOpposeStanceExists: PropTypes.bool,
+  voterFirstName: PropTypes.string,
+  voterLastName: PropTypes.string,
+  voterName: PropTypes.string,
+  voterPhotoUrlMedium: PropTypes.string,
+};
+
+function VoterPositionEntryAndDisplay ({ ballotItemWeVoteId: ballotItemWeVoteIdProp, classes, compactMode, externalUniqueId, onModalClose, openEditModalOnLoad, politicianWeVoteId }) {
+  const isMeasure = stringContains('meas', ballotItemWeVoteIdProp);
+  const effectiveWeVoteId = isMeasure ? ballotItemWeVoteIdProp : politicianWeVoteId;
+  const effectiveKindOfBallotItem = isMeasure ? 'MEASURE' : 'CANDIDATE';
+  const effectivePoliticianWeVoteId = isMeasure ? '' : politicianWeVoteId;
+
+  const effectiveWeVoteIdRef = useRef(effectiveWeVoteId);
   const { allCachedPoliticians } = PoliticianStore.getState();
 
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [politicianName, setPoliticianName] = useState('');
+  const [ballotItemName, setBallotItemName] = useState('');
   const [position, setPosition] = useState({});
   const [positionExists, setPositionExists] = useState(false);
   const [selectedStance, setSelectedStance] = useState('SUPPORT');
@@ -46,6 +185,9 @@ function VoterPositionEntryAndDisplay ({ classes, externalUniqueId, onModalClose
   const [showEditModal, setShowEditModal] = useState(false);
   const [showNegativeModal, setShowNegativeModal] = useState(false);
   const [statementText, setStatementText] = useState('');
+  const [draftStatementText, setDraftStatementText] = useState('');
+  const [draftSelectedStance, setDraftSelectedStance] = useState('SUPPORT');
+  const [draftVisibilityIsPublic, setDraftVisibilityIsPublic] = useState(false);
   const [supportOrOpposeStanceExists, setSupportOrOpposeStanceExists] = useState(false);
   const [visibilityIsPublic, setVisibilityIsPublic] = useState(false);
   const [voterFirstName, setVoterFirstName] = useState('');
@@ -62,7 +204,7 @@ function VoterPositionEntryAndDisplay ({ classes, externalUniqueId, onModalClose
   };
 
   const handleEditModalClose = () => {
-    setIsEditModalOpen(false); // Close the modal
+    setIsEditModalOpen(false);
   };
 
   const toggleDeleteConfirmationModalLocal = () => {
@@ -76,7 +218,7 @@ function VoterPositionEntryAndDisplay ({ classes, externalUniqueId, onModalClose
     // Track modal close event only when user closes without submitting (e.g., clicking X button)
     // When closing after successful submission, pass false to avoid duplicate tracking
     if (showEditModal && isClosedWithoutSubmitting) {
-      const closeButtonId = `closeModalDisplayTemplateBeditPosition-${politicianWeVoteId}-${externalUniqueId}`;
+      const closeButtonId = `closeModalDisplayTemplateBeditPosition-${effectiveWeVoteId}-${externalUniqueId}`;
       const dataLayerObject = {
         event: 'action',
         pageDetails: getPageDetails(),
@@ -87,15 +229,20 @@ function VoterPositionEntryAndDisplay ({ classes, externalUniqueId, onModalClose
           buttonId: closeButtonId,
         },
       };
-      if (politicianWeVoteId) {
-        dataLayerObject.politicianDetails = PoliticianStore.getAnalyticsPoliticianDetails(politicianWeVoteId);
+      if (effectivePoliticianWeVoteId) {
+        dataLayerObject.politicianDetails = PoliticianStore.getAnalyticsPoliticianDetails(effectivePoliticianWeVoteId);
       }
       TagManager.dataLayer({ dataLayer: dataLayerObject });
     }
 
-    setShowEditModal((prev) => !prev); // Toggle the modal
+    setShowEditModal((prev) => !prev);
 
     if (showEditModal) {
+      // Modal is closing — revert unsaved changes by re-reading from the store
+      if (isClosedWithoutSubmitting) {
+        // eslint-disable-next-line no-use-before-define
+        onSupportStoreChange();
+      }
       restoreStylesAfterCordovaKeyboard('VoterPositionEntryAndDisplay');
       if (onModalClose) onModalClose();
     }
@@ -140,14 +287,13 @@ function VoterPositionEntryAndDisplay ({ classes, externalUniqueId, onModalClose
   const activityPostInputRef = useRef(null);
 
   const onSupportStoreChange = useCallback(() => {
-    const currentPoliticianWeVoteId = politicianWeVoteIdRef.current;
-    // console.log('VoterPositionEntryAndDisplay onSupportStoreChange, currentPoliticianWeVoteId:', currentPoliticianWeVoteId);
-    // console.log('VoterPositionEntryAndDisplay onSupportStoreChange, politicianWeVoteId:', politicianWeVoteId);
-    if (currentPoliticianWeVoteId) {
+    const currentEffectiveWeVoteId = effectiveWeVoteIdRef.current;
+    // console.log('VoterPositionEntryAndDisplay onSupportStoreChange, isMeasure:', isMeasure, ', currentEffectiveWeVoteId:', currentEffectiveWeVoteId);
+    if (currentEffectiveWeVoteId) {
       let voterPositionIsPublic = false;
       let voterTextStatement = '';
-      const ballotItemStatSheet = SupportStore.getBallotItemStatSheet('', currentPoliticianWeVoteId);
-      // console.log('VoterPositionEntryAndDisplay onSupportStoreChange, currentPoliticianWeVoteId: ', currentPoliticianWeVoteId, ', ballotItemStatSheet: ', ballotItemStatSheet);
+      const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(isMeasure ? currentEffectiveWeVoteId : '', isMeasure ? '' : currentEffectiveWeVoteId);
+      // console.log('VoterPositionEntryAndDisplay ballotItemStatSheet:', ballotItemStatSheet);
       if (ballotItemStatSheet) {
         ({ voterPositionIsPublic, voterTextStatement } = ballotItemStatSheet);
         const {
@@ -160,9 +306,9 @@ function VoterPositionEntryAndDisplay ({ classes, externalUniqueId, onModalClose
         } else if (voterOpposesBallotItem) {
           stanceTemp = 'OPPOSE';
         }
-        // console.log('onSupportStoreChange stanceTemp: ', stanceTemp);
-        const positionTemp = SupportStore.getPositionFromBallotItemWeVoteId(currentPoliticianWeVoteId);
-        // console.log('onSupportStoreChange currentPoliticianWeVoteId: ', currentPoliticianWeVoteId, ', positionTemp: ', positionTemp);
+        // console.log('VoterPositionEntryAndDisplay stanceTemp:', stanceTemp, 'voterSupportsBallotItem:', voterSupportsBallotItem, 'voterOpposesBallotItem:', voterOpposesBallotItem);
+        const positionTemp = SupportStore.getPositionFromBallotItemWeVoteId(currentEffectiveWeVoteId);
+        // console.log('onSupportStoreChange currentEffectiveWeVoteId: ', currentEffectiveWeVoteId, ', positionTemp: ', positionTemp);
         setPositionExists(voterOpposesBallotItem || voterPositionIsPublic || voterSupportsBallotItem || voterTextStatement);
         setSupportOrOpposeStanceExists(voterOpposesBallotItem || voterSupportsBallotItem);
         setPosition({ ...positionTemp }); // Ensure a new object reference so the component re-renders
@@ -171,7 +317,7 @@ function VoterPositionEntryAndDisplay ({ classes, externalUniqueId, onModalClose
         setVisibilityIsPublic(voterPositionIsPublic);
       }
     }
-  }, []);
+  }, [isMeasure]);
 
   const onVoterStoreChange = () => {
     const voter = VoterStore.getVoter();
@@ -183,27 +329,30 @@ function VoterPositionEntryAndDisplay ({ classes, externalUniqueId, onModalClose
 
   const handleOpinionChange = (event) => {
     const newStance = event.target.value;
-    setSelectedStance(newStance);
+    setDraftSelectedStance(newStance);
   };
 
   useEffect(() => {
-    if (politicianWeVoteId && allCachedPoliticians && allCachedPoliticians[politicianWeVoteId]) {
-      const { politician_name: politicianNameNew } = allCachedPoliticians[politicianWeVoteId];
-      setPoliticianName(politicianNameNew);
-      // console.log('VoterPositionEntryAndDisplay useEffect politicianName: ', politicianNameNew);
+    if (isMeasure && effectiveWeVoteId) {
+      const measure = MeasureStore.getMeasure(effectiveWeVoteId);
+      if (measure && measure.ballot_item_display_name) {
+        setBallotItemName(measure.ballot_item_display_name);
+      }
+    } else if (politicianWeVoteId && allCachedPoliticians && allCachedPoliticians[politicianWeVoteId]) {
+      const { politician_name: ballotItemNameNew } = allCachedPoliticians[politicianWeVoteId];
+      setBallotItemName(ballotItemNameNew);
     }
-  }, [politicianWeVoteId, allCachedPoliticians]);
+  }, [isMeasure, effectiveWeVoteId, politicianWeVoteId, allCachedPoliticians]);
 
   useEffect(() => {
-    politicianWeVoteIdRef.current = politicianWeVoteId;
-  }, [politicianWeVoteId]);
+    effectiveWeVoteIdRef.current = effectiveWeVoteId;
+  }, [effectiveWeVoteId]);
 
   useEffect(() => {
-    // console.log('VoterPositionEntryAndDisplay useEffect, politicianWeVoteId: ', politicianWeVoteId);
-    if (politicianWeVoteId) {
+    if (effectiveWeVoteId) {
       onSupportStoreChange();
     }
-  }, [politicianWeVoteId, onSupportStoreChange]);
+  }, [effectiveWeVoteId, onSupportStoreChange]);
 
   useEffect(() => {
     if (!showEditModal) return undefined;
@@ -244,6 +393,15 @@ function VoterPositionEntryAndDisplay ({ classes, externalUniqueId, onModalClose
     }
   }, [openEditModalOnLoad]);
 
+  // Sync draft state when modal opens
+  useEffect(() => {
+    if (showEditModal) {
+      setDraftStatementText(statementText);
+      setDraftSelectedStance(selectedStance);
+      setDraftVisibilityIsPublic(visibilityIsPublic);
+    }
+  }, [showEditModal]); // eslint-disable-line react-hooks/exhaustive-deps
+
   const onFocusInput = () => {
     prepareForCordovaKeyboard('VoterPositionEntryAndDisplay');
     if (isMobileScreenSize()) {
@@ -253,27 +411,24 @@ function VoterPositionEntryAndDisplay ({ classes, externalUniqueId, onModalClose
 
   const deletePosition = (e) => {
     e.preventDefault();
-    const ballotItemWeVoteId = '';
+    const ballotItemWeVoteId = isMeasure ? effectiveWeVoteId : '';
     const visibilitySetting = 'FRIENDS_ONLY';
-    const kindOfBallotItem = 'CANDIDATE';
     const selectedStanceTemp = 'INFO_ONLY';
     const statementTextTemp = '';
-    // console.log('deletePosition, selectedStance: ', selectedStance, ', visibilitySetting: ', visibilitySetting);
-    SupportActions.voterPositionCommentSave(ballotItemWeVoteId, kindOfBallotItem, politicianWeVoteId, statementTextTemp, selectedStanceTemp, visibilitySetting);
+    SupportActions.voterPositionCommentSave(ballotItemWeVoteId, effectiveKindOfBallotItem, effectivePoliticianWeVoteId, statementTextTemp, selectedStanceTemp, visibilitySetting);
     toggleDeleteConfirmationModalLocal();
   };
 
   const savePosition = (e) => {
     e.preventDefault();
-    const ballotItemWeVoteId = '';
-    const visibilitySetting = visibilityIsPublic ? 'SHOW_PUBLIC' : 'FRIENDS_ONLY';
-    const kindOfBallotItem = 'CANDIDATE';
+    const ballotItemWeVoteId = isMeasure ? effectiveWeVoteId : '';
+    const visibilitySetting = draftVisibilityIsPublic ? 'SHOW_PUBLIC' : 'FRIENDS_ONLY';
 
     let stanceLabel = 'Not sure yet';
-    if (selectedStance === 'SUPPORT') {
-      stanceLabel = 'Supporting';
-    } else if (selectedStance === 'OPPOSE') {
-      stanceLabel = 'Opposing';
+    if (draftSelectedStance === 'SUPPORT') {
+      stanceLabel = isMeasure ? 'Voting Yes' : 'Supporting';
+    } else if (draftSelectedStance === 'OPPOSE') {
+      stanceLabel = isMeasure ? 'Voting No' : 'Opposing';
     }
 
     const dataLayerObject = {
@@ -287,131 +442,31 @@ function VoterPositionEntryAndDisplay ({ classes, externalUniqueId, onModalClose
       },
       positionDetails: {
         positionStance: stanceLabel,
-        hasPositionStatement: statementText.trim() !== '',
-        isPublic: visibilityIsPublic,
-        positionWeVoteId: position.position_we_vote_id || null, // null for new positions; TODO: capture after API save
+        hasPositionStatement: draftStatementText.trim() !== '',
+        isPublic: draftVisibilityIsPublic,
+        positionWeVoteId: position.position_we_vote_id || null,
       },
     };
-    if (politicianWeVoteId) {
-      dataLayerObject.politicianDetails = PoliticianStore.getAnalyticsPoliticianDetails(politicianWeVoteId);
+    if (effectivePoliticianWeVoteId) {
+      dataLayerObject.politicianDetails = PoliticianStore.getAnalyticsPoliticianDetails(effectivePoliticianWeVoteId);
     }
     TagManager.dataLayer({ dataLayer: dataLayerObject });
 
-    SupportActions.voterPositionCommentSave(ballotItemWeVoteId, kindOfBallotItem, politicianWeVoteId, statementText, selectedStance, visibilitySetting);
+    SupportActions.voterPositionCommentSave(ballotItemWeVoteId, effectiveKindOfBallotItem, effectivePoliticianWeVoteId, draftStatementText, draftSelectedStance, visibilitySetting);
     possibleAppReview('POSITION');
     toggleEditModalLocal(false);
   };
 
   const updateStatementTextToBeSaved = (e) => {
-    setStatementText(e.target.value);
+    setDraftStatementText(e.target.value);
   };
 
   renderLog('VoterPositionEntryAndDisplay'); // Set LOG_RENDER_EVENTS to log all renders
 
-  const editPositionModalTitleText = positionExists ? `Edit opinion${politicianName && ` about ${politicianName}`}` : `Create opinion${politicianName && ` about ${politicianName}`}`;
-  const deleteConfirmationModalTitleText = politicianName ? `Delete opinion about ${politicianName}?` : 'Delete opinion?';
+  const editPositionModalTitleText = positionExists ? `Edit opinion${ballotItemName && ` about ${ballotItemName}`}` : `Create opinion${ballotItemName && ` about ${ballotItemName}`}`;
+  const deleteConfirmationModalTitleText = ballotItemName ? `Delete opinion about ${ballotItemName}?` : 'Delete opinion?';
   const statementPlaceholderText = 'What\'s on your mind?';
   const rowsToShow = isAndroid() ? 4 : 6;
-
-  function VoterAvatarBlock () {
-    return (
-      <VoterAvatar>
-        {voterPhotoUrlMedium ? (
-          <VoterImage
-          alt="Voter"
-          src={voterPhotoUrlMedium || avatarGeneric()}
-          />
-        ) : (
-          <>
-            <VoterFirstName>
-              {voterFirstName[0]}
-            </VoterFirstName>
-            <VoterLastName>
-              {voterLastName[0]}
-            </VoterLastName>
-          </>
-        )}
-      </VoterAvatar>
-    );
-  }
-
-  function VoterPositionBlock ({ onClick }) {
-    return (
-      <VoterPositionContainer>
-        <VoterAvatarDisplayContainer>
-          <VoterAvatarBlock />
-          <EditIcon
-          onClick={handleEditModalOpen}
-          className={classes.styledEditIcon}
-          />
-        </VoterAvatarDisplayContainer>
-        <CommentContainerWrapper>
-          {statementText ? (
-            <SpeakerInfoWrapperB>
-              <SpeakerName>
-                {voterName}
-              </SpeakerName>
-              <SpeakerStatementWrapper>
-                <SpeakerStatement>
-                  <Suspense fallback={<></>}>
-                    <ReadMore
-                    textToDisplay={statementText}
-                    numberOfLines={6}
-                    />
-                  </Suspense>
-                </SpeakerStatement>
-              </SpeakerStatementWrapper>
-            </SpeakerInfoWrapperB>
-          ) : (
-            <CommentContainer>
-              {/* Open modal when input is clicked */}
-              <InputBox
-              type="text"
-              placeholder="What's your opinion?"
-              onClick={onClick}
-              readOnly
-              style={{ overflow: 'hidden' }}
-              />
-            </CommentContainer>
-          )}
-          {!supportOrOpposeStanceExists && (
-          <ItemActionBarContainer>
-            <Suspense fallback={(
-              <Box display="flex" gap={1}>
-                <Skeleton variant="rounded" width={100} height={36} sx={{ borderRadius: 2 }} />
-                <Skeleton variant="rounded" width={100} height={36} sx={{ borderRadius: 2 }} />
-              </Box>
-            )}>
-              <ItemActionBar
-                ballotItemWeVoteId=""
-                // ballotItemDisplayName={oneCandidate.ballot_item_display_name}
-                commentButtonHide
-                // commentButtonHide={!futureFeaturesDisabled && nextReleaseFeaturesEnabled}
-                externalUniqueId={`VoterPositionEntryAndDisplay-ItemActionBar-${politicianWeVoteId}-${externalUniqueId}`}
-                // hidePositionPublicToggle
-                // hidePositionPublicToggle={!futureFeaturesDisabled && nextReleaseFeaturesEnabled}
-                politicianWeVoteId={politicianWeVoteId}
-                positionPublicToggleWrapAllowed
-                shareButtonHide
-                // useHelpDefeatOrHelpWin // Turning this off now since we shift to different display before the Help Modal could be filled out.
-                useSupportWording
-              />
-            </Suspense>
-          </ItemActionBarContainer>
-          )}
-          {positionExists && (
-          <SpeakerPositionLikesSourceWrapper>
-            <SpeakerEndorsedOrOpposedSnippet position={position} viewerIsPositionOwner />
-            <VoterPositionEditTripleDot triggerDeleteOpinion={openDeleteConfirmationModal} triggerEditOpinion={openEditModal} />
-          </SpeakerPositionLikesSourceWrapper>
-          )}
-        </CommentContainerWrapper>
-      </VoterPositionContainer>
-    );
-  }
-  VoterPositionBlock.propTypes = {
-    onClick: PropTypes.func.isRequired,
-  };
 
   const defaultOpinionVisibilityText = (
     <p>
@@ -436,7 +491,7 @@ function VoterPositionEntryAndDisplay ({ classes, externalUniqueId, onModalClose
         onSubmit={savePosition}
       >
         <VoterAvatarDisplayContainer>
-          <VoterAvatarBlock />
+          <VoterAvatarBlock voterPhotoUrlMedium={voterPhotoUrlMedium} voterFirstName={voterFirstName} voterLastName={voterLastName} />
           <EditIcon
             onClick={handleEditModalOpen}
             className={classes.styledEditIcon}
@@ -445,7 +500,6 @@ function VoterPositionEntryAndDisplay ({ classes, externalUniqueId, onModalClose
             <UserName>
               {' '}
               {voterName}
-              {/* Display the fetched name */}
             </UserName>
             <Tooltip
               arrow
@@ -455,8 +509,8 @@ function VoterPositionEntryAndDisplay ({ classes, externalUniqueId, onModalClose
             >
               <div>
                 <ActivityPostPublicDropdown
-                  visibilityIsPublic={visibilityIsPublic}
-                  onVisibilityChange={(newVisibility) => setVisibilityIsPublic(newVisibility)}
+                  visibilityIsPublic={draftVisibilityIsPublic}
+                  onVisibilityChange={(newVisibility) => setDraftVisibilityIsPublic(newVisibility)}
                 />
               </div>
             </Tooltip>
@@ -464,20 +518,20 @@ function VoterPositionEntryAndDisplay ({ classes, externalUniqueId, onModalClose
         </VoterAvatarDisplayContainer>
         <RadioGroup
           row
-          value={selectedStance}
+          value={draftSelectedStance}
           onChange={handleOpinionChange}
           className={classes.radioGroup}
         >
           <FormControlLabel
             value="SUPPORT"
             control={<RadioStyled color="primary" />}
-            label="Supporting"
+            label={isMeasure ? 'Voting Yes' : 'Supporting'}
             classes={{ root: classes.radioLabel }}
           />
           <FormControlLabel
             value="OPPOSE"
             control={<RadioStyled color="primary" />}
-            label="Opposing"
+            label={isMeasure ? 'Voting No' : 'Opposing'}
             classes={{ root: classes.radioLabel }}
           />
           <FormControlLabel
@@ -490,24 +544,23 @@ function VoterPositionEntryAndDisplay ({ classes, externalUniqueId, onModalClose
         <TextFieldDiv>
           <InputBase
             classes={{ root: classes.inputStyles, inputMultiline: classes.inputMultiline }}
-            id={`activityPostModalStatementText-${politicianWeVoteId}-${externalUniqueId}`}
+            id={`activityPostModalStatementText-${effectiveWeVoteId}-${externalUniqueId}`}
             inputRef={activityPostInputRef}
             multiline
             name="statementText"
             onChange={updateStatementTextToBeSaved}
             placeholder={statementPlaceholderText}
             rows={rowsToShow}
-            value={statementText || ''}
+            value={draftStatementText || ''}
           />
         </TextFieldDiv>
         <Button
-          id={`positionEntrySave-${politicianWeVoteId}-${externalUniqueId}`}
+          id={`positionEntrySave-${effectiveWeVoteId}-${externalUniqueId}`}
           variant="contained"
           color="primary"
           classes={{ root: classes.saveButtonRoot }}
           type="submit"
-          // disabled={!statementText} // Commented out to allow saving without statement
-          disabled={selectedStance === 'INFO_ONLY' && (!statementText || statementText.trim() === '')} // Disable if Neutral and no text
+          disabled={draftSelectedStance === 'INFO_ONLY' && (!draftStatementText || draftStatementText.trim() === '')}
         >
           {positionExists ? 'Save Changes' : 'Add opinion'}
         </Button>
@@ -523,18 +576,18 @@ function VoterPositionEntryAndDisplay ({ classes, externalUniqueId, onModalClose
       >
         <div>
           Are you sure you want to delete your opinion
-          {politicianName && (
+          {ballotItemName && (
             <>
               {' '}
               about
               {' '}
-              {politicianName}
+              {ballotItemName}
             </>
           )}
           ?
         </div>
         <Button
-          id={`positionDelete-${politicianWeVoteId}-${externalUniqueId}`}
+          id={`positionDelete-${effectiveWeVoteId}-${externalUniqueId}`}
           variant="contained"
           color="primary"
           classes={{ root: classes.saveButtonRoot }}
@@ -558,7 +611,7 @@ function VoterPositionEntryAndDisplay ({ classes, externalUniqueId, onModalClose
         show={showEditModal}
         textFieldJSX={editPositionModalJSX}
         toggleModal={toggleEditModalLocal}
-        externalUniqueId={`editPosition-${politicianWeVoteId}-${externalUniqueId}`}
+        externalUniqueId={`editPosition-${effectiveWeVoteId}-${externalUniqueId}`}
       />
       <ModalDisplayTemplateB
         dialogTitleJSX={<>{deleteConfirmationModalTitleText}</>}
@@ -572,32 +625,58 @@ function VoterPositionEntryAndDisplay ({ classes, externalUniqueId, onModalClose
           toggleModal={handleEditModalClose}
         />
       )}
-      {!openEditModalOnLoad && (
-        <VoterPositionBlock
+      {(!openEditModalOnLoad || compactMode) && (
+        <VoterPositionBlockComponent
+          classes={classes}
+          compactMode={compactMode}
+          effectiveWeVoteId={effectiveWeVoteId}
+          effectivePoliticianWeVoteId={effectivePoliticianWeVoteId}
+          externalUniqueId={externalUniqueId}
+          handleEditModalOpen={handleEditModalOpen}
+          isMeasure={isMeasure}
           onClick={openEditModal}
-          politicianWeVoteId={politicianWeVoteId}
-          voterPhotoUrlMedium={voterPhotoUrlMedium}
+          openDeleteConfirmationModal={openDeleteConfirmationModal}
+          openEditModal={openEditModal}
+          position={position}
+          positionExists={positionExists}
+          statementText={statementText}
+          supportOrOpposeStanceExists={supportOrOpposeStanceExists}
+          voterFirstName={voterFirstName}
+          voterLastName={voterLastName}
           voterName={voterName}
+          voterPhotoUrlMedium={voterPhotoUrlMedium}
         />
       )}
     </>
   );
 }
 VoterPositionEntryAndDisplay.propTypes = {
+  ballotItemWeVoteId: PropTypes.string,
   classes: PropTypes.object,
+  compactMode: PropTypes.bool,
   externalUniqueId: PropTypes.string,
   onModalClose: PropTypes.func,
   openEditModalOnLoad: PropTypes.bool,
   politicianWeVoteId: PropTypes.string,
 };
 
+const CompactEditHint = CompactSecondaryText;
+
+const CompactOwnCommentWrapper = styled('div')`
+  cursor: pointer;
+`;
+
 const CommentContainerWrapper = styled('div')`
-  width: ${isMobileScreenSize() ? '80%' : '100%'};
+  flex: 1;
+  min-width: 0;
 `;
 
 const ItemActionBarContainer = styled('div')`
   display: inline-block;
   margin-top: 6px;
+  &:empty {
+    display: none;
+  }
 `;
 
 const SpeakerPositionLikesSourceWrapper = styled('div')`
@@ -649,10 +728,13 @@ export const VoterAvatarDisplayContainer = styled('div')`
 export const VoterPositionContainer = styled('div')`
   align-items: flex-start;
   background-color: ${DesignTokenColors.caution50};
+  border-radius: 8px;
+  box-sizing: border-box;
   display: flex;
   gap: 10px;
-  margin: 12px 0 26px 0;
-  padding: 6px;
+  margin: 0 0 12px 0;
+  padding: 8px;
+  width: 100%;
 `;
 
 const RadioStyled = muiStyled(Radio)(isMobileScreenSize() ? { padding: '2px' } : {});

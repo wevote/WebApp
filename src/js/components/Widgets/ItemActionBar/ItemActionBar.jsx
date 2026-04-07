@@ -260,13 +260,17 @@ class ItemActionBar extends PureComponent {
             transitioning: false,
           });
         }
-        if (voterTextStatement) {
-          this.setState({ voterTextStatement });
+        const newVoterTextStatement = voterTextStatement || '';
+        const newVisibilityRowOpen = voterOpposesBallotItem || voterSupportsBallotItem || !!voterTextStatement;
+        if (newVoterTextStatement !== this.state.voterTextStatement ||
+          voterPositionIsPublic !== this.state.voterPositionIsPublic ||
+          newVisibilityRowOpen !== this.state.visibilityRowOpen) {
+          this.setState({
+            voterTextStatement: newVoterTextStatement,
+            voterPositionIsPublic,
+            visibilityRowOpen: newVisibilityRowOpen,
+          });
         }
-        this.setState({
-          voterPositionIsPublic,
-          visibilityRowOpen: voterOpposesBallotItem || voterSupportsBallotItem || !!voterTextStatement,
-        });
       }
     }
   }
@@ -316,12 +320,6 @@ class ItemActionBar extends PureComponent {
     });
   };
 
-  openPositionStatement = () => {
-    this.setState({
-      voterTextStatementOpened: true,
-    });
-  };
-
   sendGTMDataLayer = ({ buttonId = '', actionType = 'click' }) => {
     // console.log('sendGTMDataLayer called with buttonId:', buttonId, ', actionType:', actionType);
     const { politicianWeVoteId } = this.props;
@@ -350,12 +348,13 @@ class ItemActionBar extends PureComponent {
   };
 
   togglePositionStatementFunction = () => {
-    const { voterTextStatementOpened } = this.state;
-    this.setState({
-      voterTextStatementOpened: !voterTextStatementOpened,
-    });
     if (this.props.togglePositionStatementFunction) {
       this.props.togglePositionStatementFunction();
+    } else {
+      const { voterTextStatementOpened } = this.state;
+      this.setState({
+        voterTextStatementOpened: !voterTextStatementOpened,
+      });
     }
   };
 
@@ -672,17 +671,11 @@ class ItemActionBar extends PureComponent {
       this.stopSupportingItem(buttonId);
       return;
     }
-    if (transitioning) {
-      return;
-    }
     // console.log('supportItem setState');
     this.setState({
       isOpposeLocalState: false,
       isSupportLocalState: true,
     });
-    if (transitioning) {
-      return;
-    }
     // If the logic in this function decides to, show the "Sign in to save your choices" modal
     this.showChooseOrOpposeIntroModalDecision();
     possibleAppReview('ITEM');
@@ -710,9 +703,8 @@ class ItemActionBar extends PureComponent {
 
   stopSupportingItem (buttonId) {
     const { politicianWeVoteId } = this.props;
-    const { ballotItemType, ballotItemWeVoteId, transitioning } = this.state;
+    const { ballotItemType, ballotItemWeVoteId } = this.state;
     this.setState({ isOpposeLocalState: false, isSupportLocalState: false });
-    if (transitioning) { return; }
     this.sendGTMDataLayer({ buttonId });
     possibleAppReview('ITEM');
     SupportActions.voterStopSupportingSave(ballotItemWeVoteId, ballotItemType, politicianWeVoteId);
@@ -733,7 +725,6 @@ class ItemActionBar extends PureComponent {
       return;
     }
     this.setState({ isOpposeLocalState: true, isSupportLocalState: false });
-    if (transitioning) { return; }
     this.showChooseOrOpposeIntroModalDecision();
     this.sendGTMDataLayer({ buttonId });
 
@@ -745,9 +736,8 @@ class ItemActionBar extends PureComponent {
 
   stopOpposingItem (buttonId) {
     const { politicianWeVoteId } = this.props;
-    const { ballotItemType, ballotItemWeVoteId, transitioning } = this.state;
+    const { ballotItemType, ballotItemWeVoteId } = this.state;
     this.setState({ isOpposeLocalState: false, isSupportLocalState: false });
-    if (transitioning) { return; }
     this.sendGTMDataLayer({ buttonId });
     possibleAppReview('ITEM');
     SupportActions.voterStopOpposingSave(ballotItemWeVoteId, ballotItemType, politicianWeVoteId);
@@ -781,7 +771,7 @@ class ItemActionBar extends PureComponent {
       numberOfOpposePositionsForScore, numberOfSupportPositionsForScore, showNegativeModal,
       voterPositionIsPublic, voterTextStatement, voterTextStatementOpened, visibilityRowOpen,
     } = this.state;
-    const measureHasOpinion = ballotItemType === 'MEASURE' && !!voterTextStatement;
+    const measureHasOpinion = ballotItemType === 'MEASURE' && (!!voterTextStatement || isSupportAPIState || isOpposeAPIState);
 
     if (
       (ballotItemWeVoteId === undefined || ballotItemWeVoteId === '') && (politicianWeVoteId === undefined || politicianWeVoteId === '')
@@ -1082,7 +1072,8 @@ class ItemActionBar extends PureComponent {
                 <VisibilityInlineWrapperDesktop className="u-show-desktop">
                   <VisibilityDivider />
                   <MakePublicVisibilityRow
-                    isPublic
+                    isPublic={voterPositionIsPublic}
+                    onMakePublic={this.togglePositionStatementFunction}
                     onDotsClick={this.togglePositionStatementFunction}
                   />
                 </VisibilityInlineWrapperDesktop>
@@ -1100,7 +1091,8 @@ class ItemActionBar extends PureComponent {
               {measureHasOpinion && (
                 <VisibilityInlineWrapperMobile className="u-show-mobile-tablet">
                   <MakePublicVisibilityRow
-                    isPublic
+                    isPublic={voterPositionIsPublic}
+                    onMakePublic={this.togglePositionStatementFunction}
                     onDotsClick={this.togglePositionStatementFunction}
                   />
                 </VisibilityInlineWrapperMobile>

@@ -1693,7 +1693,7 @@ Ballot.propTypes = {
 
 const styles = (theme) => ({
   badge: {
-    top: 13,
+    top: 11,
     minWidth: 16,
     width: 20,
     height: 16,
