@@ -526,6 +526,7 @@ class CandidateStore extends ReduceStore {
         // };
         return state;
 
+      case 'allBallotItemsRetrieve':
       case 'voterAddressSave':
       case 'voterBallotItemsRetrieve':
         // console.log(action.type, ': in CandidateStore');

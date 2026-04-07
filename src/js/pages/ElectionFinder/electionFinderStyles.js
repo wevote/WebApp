@@ -30,19 +30,21 @@ export const Breadcrumb = styled('div')`
   margin-bottom: 4px;
 `;
 
-export const BreadcrumbLink = styled('span')`
+export const BreadcrumbAnchor = styled('a')`
   color: #206bc4;
   cursor: pointer;
+  text-decoration: none;
   &:hover {
     text-decoration: underline;
   }
 `;
 
+
 export const CandidateActions = styled('div')`
   display: flex;
   align-items: center;
   gap: 4px;
-  visibility: ${({ visible }) => (visible ? 'visible' : 'hidden')};
+  visibility: hidden;
 `;
 
 export const CandidateInfo = styled('div')`
@@ -81,6 +83,9 @@ export const CandidateRow = styled('div')`
     background: #f5f5f5;
     box-shadow: 0 1px 6px rgba(0, 0, 0, 0.12);
   }
+  &:hover ${CandidateActions} {
+    visibility: visible;
+  }
 `;
 
 export const DetailTitle = styled('h2')`
@@ -104,6 +109,13 @@ export const ElectionList = styled('div')`
   flex-direction: column;
 `;
 
+export const ElectionRowActions = styled('div')`
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  visibility: hidden;
+`;
+
 export const ElectionRow = styled('div')`
   display: flex;
   align-items: center;
@@ -117,13 +129,9 @@ export const ElectionRow = styled('div')`
     background: #f5f5f5;
     box-shadow: 0 1px 6px rgba(0, 0, 0, 0.12);
   }
-`;
-
-export const ElectionRowActions = styled('div')`
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  visibility: ${({ visible }) => (visible ? 'visible' : 'hidden')};
+  &:hover ${ElectionRowActions} {
+    visibility: visible;
+  }
 `;
 
 export const ElectionTitleRow = styled('div')`
@@ -194,7 +202,7 @@ export const InlineSearchField = styled(TextField)`
   flex: 1;
   max-width: 280px;
   & .MuiOutlinedInput-root {
-    height: 28px;
+    height: 26px;
     font-size: 14px;
     border-radius: 14px;
   }
@@ -212,6 +220,14 @@ export const NoResults = styled('p')`
   padding: 16px 0;
 `;
 
+export const OfficeHeaderActions = styled('div')`
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-right: 16px;
+  visibility: hidden;
+`;
+
 export const OfficeHeader = styled('div')`
   display: flex;
   align-items: center;
@@ -223,14 +239,9 @@ export const OfficeHeader = styled('div')`
     background: #f5f5f5;
     box-shadow: 0 1px 6px rgba(0, 0, 0, 0.12);
   }
-`;
-
-export const OfficeHeaderActions = styled('div')`
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  margin-right: 16px;
-  visibility: ${({ visible }) => (visible ? 'visible' : 'hidden')};
+  &:hover ${OfficeHeaderActions} {
+    visibility: visible;
+  }
 `;
 
 export const OfficeHeaderLeft = styled('div')`
@@ -254,7 +265,7 @@ export const SearchIconButton = styled('button')`
   align-items: center;
   justify-content: center;
   width: 42px;
-  height: 28px;
+  height: 26px;
   border-radius: 14px;
   border: 1px solid ${({ active }) => (active ? '#2e3c5d' : '#ccc')};
   background: white;
@@ -262,6 +273,22 @@ export const SearchIconButton = styled('button')`
   color: #555;
   &:hover {
     border-color: #2e3c5d;
+  }
+`;
+
+export const ShowMoreButton = styled('button')`
+  display: block;
+  margin: 16px 0;
+  padding: 8px 16px;
+  font-size: 14px;
+  color: #555;
+  background: none;
+  border: 1px solid #ccc;
+  border-radius: 14px;
+  cursor: pointer;
+  &:hover {
+    border-color: #2e3c5d;
+    color: #333;
   }
 `;
 
@@ -285,33 +312,43 @@ export const SectionTitleRow = styled('div')`
   margin-bottom: 8px;
 `;
 
-export const StateSelect = styled('select')`
-  padding: 8px 32px 8px 16px;
-  font-size: 15px;
-  border: 1px solid #ccc;
-  border-radius: 20px;
-  background: white;
-  color: #555;
+export const StateSelectWrapper = styled('div')`
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 10px;
   cursor: pointer;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22' viewBox='0 0 24 24' fill='none' stroke='%23555' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 10px center;
-  min-width: 200px;
-  margin-bottom: 16px;
-  &:focus {
-    outline: none;
-    border-color: #2e3c5d;
-  }
+  position: relative;
 `;
 
-export const Subtitle = styled('p')`
+export const StateSelectNative = styled('select')`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100% !important;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
   font-size: 15px;
-  color: #555;
-  margin: 8px 0 16px;
+  z-index: 1;
 `;
+
+export const StateSelectLabel = styled('span')`
+  font-size: 15px;
+  font-weight: 400;
+  color: #333;
+  white-space: nowrap;
+`;
+
+
+export const StateSelectCaret = styled('span')`
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  color: #555;
+  font-size: 18px;
+`;
+
 
 export const TitleWrapper = styled('div')`
   margin-top: 20px;

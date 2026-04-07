@@ -351,6 +351,7 @@ class HeaderBar extends Component {
           donate.css(highlight);
           break;
         case 'challenges':
+        case 'election-finder':
         case 'more/faq':
         case 'friends':
         case 'managecandidates':

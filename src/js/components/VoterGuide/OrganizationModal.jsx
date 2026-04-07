@@ -261,6 +261,10 @@ class OrganizationModal extends Component {
           voterGuidesFromFriendsUpcomingHasBeenRetrievedOnce,
         });
       }
+      // If politicianWeVoteId just became available (wasn't in store on mount), fetch politician data now
+      if (politicianWeVoteId && politicianWeVoteId !== this.state.politicianWeVoteId) {
+        PoliticianActions.politicianRetrieve(politicianWeVoteId);
+      }
       this.setState({
         allCachedPositionsForThisBallotItem,
         ballotItemDisplayName,
@@ -485,8 +489,8 @@ class OrganizationModal extends Component {
         )}
         <VoterPositionEntryAndDisplayWrapper>
           <VoterPositionEntryAndDisplay
+            ballotItemWeVoteId={isMeasure ? ballotItemWeVoteId : undefined}
             politicianWeVoteId={politicianWeVoteId}
-            // politicianName={politicianName}
           />
         </VoterPositionEntryAndDisplayWrapper>
         { !!(allCachedPositionsForThisBallotItem.length) && (
