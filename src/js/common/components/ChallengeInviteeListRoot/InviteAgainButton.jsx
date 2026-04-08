@@ -48,7 +48,7 @@ function InviteAgainButton ({ classes, challengeWeVoteId, challengeInviteeId }) 
     }
   };
 
-  const onChallengeInviteeStoreChange = () => {
+  const onChallengeInviteeStoreChange = React.useCallback(() => {
     const varsChangedNew = inviteTextVarsChangedCount + 1;
     setInviterName(VoterStore.getFirstName());
     const invitee = ChallengeInviteeStore.getChallengeInviteeById(challengeInviteeId);
@@ -57,24 +57,24 @@ function InviteAgainButton ({ classes, challengeWeVoteId, challengeInviteeId }) 
     setInviteeName(inviteeNameTemp);
     setInviteTextFromInviter(invitee.invite_text_from_inviter);
     setInviteTextVarsChangedCount(varsChangedNew);
-  };
+  }, [challengeInviteeId, inviteTextVarsChangedCount]);
 
-  const onChallengeParticipantStoreChange = () => {
+  const onChallengeParticipantStoreChange = React.useCallback(() => {
     const varsChangedNew = inviteTextVarsChangedCount + 1;
     setInviterName(VoterStore.getFirstName());
     // console.log('InviteAgainButton onChallengeParticipantStoreChange Participant TextForFriends:', ChallengeParticipantStore.getInviteTextForFriends(challengeWeVoteId));
     setInviteTextForFriends(ChallengeParticipantStore.getInviteTextForFriends(challengeWeVoteId));
     setInviteTextVarsChangedCount(varsChangedNew);
-  };
+  }, [challengeWeVoteId, inviteTextVarsChangedCount]);
 
-  const onChallengeStoreChange = () => {
+  const onChallengeStoreChange = React.useCallback(() => {
     const varsChangedNew = inviteTextVarsChangedCount + 1;
     setInviterName(VoterStore.getFirstName());
     // console.log('InviteAgainButton onChallengeStoreChange InviteTextDefault:', ChallengeStore.getChallengeInviteTextDefaultByWeVoteId(challengeWeVoteId));
     setChallengeInviteTextDefault(ChallengeStore.getChallengeInviteTextDefaultByWeVoteId(challengeWeVoteId));
     setChallengeTitle(ChallengeStore.getChallengeTitleByWeVoteId(challengeWeVoteId));
     setInviteTextVarsChangedCount(varsChangedNew);
-  };
+  }, [challengeWeVoteId, inviteTextVarsChangedCount]);
 
   React.useEffect(() => {
     // console.log('useEffect componentDidMount equivalent');
@@ -91,7 +91,7 @@ function InviteAgainButton ({ classes, challengeWeVoteId, challengeInviteeId }) 
       challengeParticipantStoreListener.remove();
       challengeStoreListener.remove();
     };
-  }, []);
+  }, [onChallengeInviteeStoreChange, onChallengeParticipantStoreChange, onChallengeStoreChange]);
 
   React.useEffect(() => {
     let inviteTextToSendAgain = inviteTextFromInviter;
@@ -114,7 +114,7 @@ function InviteAgainButton ({ classes, challengeWeVoteId, challengeInviteeId }) 
       inviteTextToSendAgain = `${inviteTextToSendTemp1}${inviteTextToSendTemp2} ${urlToSendTemp}`;
     }
     setInviteTextToSend(inviteTextToSendAgain);
-  }, [inviteTextVarsChangedCount]);
+  }, [challengeInviteTextDefault, challengeInviteeId, challengeWeVoteId, inviteTextForFriends, inviteTextFromInviter, inviteTextVarsChangedCount, inviteeName, inviterName]);
 
   React.useEffect(() => {
   }, [challengeWeVoteId]);

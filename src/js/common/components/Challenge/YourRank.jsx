@@ -38,15 +38,15 @@ function YourRank ({ classes, challengeWeVoteId, hasBackgroundColor }) {
     angle: 90, // Confetti moves straight up
   });
 
-  const onAppObservableStoreChange = () => {
+  const onAppObservableStoreChange = React.useCallback(() => {
     setRankOfVoter(AppObservableStore.getChallengeParticipantRankOfVoterByChallengeWeVoteId(challengeWeVoteId));
-  };
+  }, [challengeWeVoteId]);
 
-  const onChallengeParticipantStoreChange = () => {
+  const onChallengeParticipantStoreChange = React.useCallback(() => {
     const sortedParticipantsWithRank = ChallengeParticipantStore.getChallengeParticipantList(challengeWeVoteId);
     setParticipantsCount(sortedParticipantsWithRank.length);
     setRankOfVoter(AppObservableStore.getChallengeParticipantRankOfVoterByChallengeWeVoteId(challengeWeVoteId));
-  };
+  }, [challengeWeVoteId]);
 
   const handleClick = () => {
     setPoints((prevPoints) => {
@@ -76,7 +76,7 @@ function YourRank ({ classes, challengeWeVoteId, hasBackgroundColor }) {
       appStateSubscription.unsubscribe();
       challengeParticipantStoreListener.remove();
     };
-  }, [challengeWeVoteId]);
+  }, [challengeWeVoteId, onAppObservableStoreChange, onChallengeParticipantStoreChange]);
 
   // Show confetti when the component mounts
   useEffect(() => {

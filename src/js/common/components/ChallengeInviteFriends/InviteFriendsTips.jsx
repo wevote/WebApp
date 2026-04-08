@@ -27,24 +27,24 @@ function InviteFriendsTips ({ challengeWeVoteId, startingTipName }) {
     }
   };
 
-  const onAppObservableStoreChange = () => {
+  const onAppObservableStoreChange = React.useCallback(() => {
     setParticipantNameWithHighestRank(AppObservableStore.getChallengeParticipantNameWithHighestRankByChallengeWeVoteId(challengeWeVoteId));
-  };
+  }, [challengeWeVoteId]);
 
-  const onChallengeStoreChange = () => {
+  const onChallengeStoreChange = React.useCallback(() => {
     if (challengeInviteesCount < ChallengeStore.getNumberOfInviteesInChallenge(challengeWeVoteId)) {
       setChallengeInviteesCount(ChallengeStore.getNumberOfInviteesInChallenge(challengeWeVoteId));
     }
     if (challengeParticipantCount < ChallengeStore.getNumberOfParticipantsInChallenge(challengeWeVoteId)) {
       setChallengeParticipantCount(ChallengeStore.getNumberOfParticipantsInChallenge(challengeWeVoteId));
     }
-  };
+  }, [challengeInviteesCount, challengeParticipantCount, challengeWeVoteId]);
 
-  const onChallengeParticipantStoreChange = () => {
+  const onChallengeParticipantStoreChange = React.useCallback(() => {
     if (challengeParticipantCount < ChallengeParticipantStore.getNumberOfParticipantsInChallenge(challengeWeVoteId)) {
       setChallengeParticipantCount(ChallengeParticipantStore.getNumberOfParticipantsInChallenge(challengeWeVoteId));
     }
-  };
+  }, [challengeParticipantCount, challengeWeVoteId]);
 
   React.useEffect(() => {
     const appStateSubscription = messageService.getMessage().subscribe(() => onAppObservableStoreChange());
@@ -59,7 +59,7 @@ function InviteFriendsTips ({ challengeWeVoteId, startingTipName }) {
       challengeParticipantStoreListener.remove();
       challengeStoreListener.remove();
     };
-  }, [challengeWeVoteId]);
+  }, [challengeWeVoteId, onAppObservableStoreChange, onChallengeParticipantStoreChange, onChallengeStoreChange]);
 
   React.useEffect(() => {
     setTipToShow(startingTipName);

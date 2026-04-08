@@ -199,7 +199,7 @@ function VerifyWithEmailModal ({ closeVerifyWithEmailModal, politicianName, poli
     return () => {
       campaignStoreListener.remove();
     };
-  }, []);
+  }, [onCampaignStoreChange]);
 
   useEffect(() => {
     const politicianStoreListener = PoliticianStore.addListener(onPoliticianStoreChange);
@@ -207,7 +207,7 @@ function VerifyWithEmailModal ({ closeVerifyWithEmailModal, politicianName, poli
     return () => {
       politicianStoreListener.remove();
     };
-  }, []);
+  }, [onPoliticianStoreChange]);
 
   useEffect(() => {
     const voterStoreListener = VoterStore.addListener(onVoterStoreChange);
@@ -215,7 +215,7 @@ function VerifyWithEmailModal ({ closeVerifyWithEmailModal, politicianName, poli
     return () => {
       voterStoreListener.remove();
     };
-  }, []);
+  }, [onVoterStoreChange]);
 
   const dialogTitleJsx = (
     <VerifyWithEmailHeaderContainer>

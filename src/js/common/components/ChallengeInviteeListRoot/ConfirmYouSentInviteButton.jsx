@@ -20,13 +20,13 @@ function ConfirmYouSentInviteButton ({ classes, challengeWeVoteId, challengeInvi
     setInviteSent(true);
   };
 
-  const onChallengeInviteeStoreChange = () => {
+  const onChallengeInviteeStoreChange = React.useCallback(() => {
     const varsChangedNew = inviteTextVarsChangedCount + 1;
     const invitee = ChallengeInviteeStore.getChallengeInviteeById(challengeInviteeId);
     // console.log('ConfirmYouSentInviteButton onChallengeInviteeStoreChange invitee:', invitee);
     setInviteSent(invitee.invite_sent);
     setInviteTextVarsChangedCount(varsChangedNew);
-  };
+  }, [challengeInviteeId, inviteTextVarsChangedCount]);
 
   React.useEffect(() => {
     // console.log('useEffect componentDidMount equivalent');
@@ -37,7 +37,7 @@ function ConfirmYouSentInviteButton ({ classes, challengeWeVoteId, challengeInvi
       // console.log('useEffect componentWillUnMount equivalent');
       challengeInviteeStoreListener.remove();
     };
-  }, []);
+  }, [onChallengeInviteeStoreChange]);
 
   return (
     <ConfirmYouSentInviteButtonWrapper>
