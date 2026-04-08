@@ -1,20 +1,32 @@
-import { ExpandMore, FileDownloadOutlined, Launch, Search, Close } from '@mui/icons-material';
-import { IconButton, InputAdornment, Tooltip } from '@mui/material';
+import { ContentCopy, ExpandMore, FileDownloadOutlined, Launch, Search, Close } from '@mui/icons-material';
+import { IconButton, InputAdornment } from '@mui/material';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import ElectionActions from '../../actions/ElectionActions';
 import { renderLog } from '../../common/utils/logging';
 import { stateCodeMap } from '../../common/utils/addressFunctions';
+import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import historyPush from '../../common/utils/historyPush';
 import ElectionStore from '../../stores/ElectionStore';
 import ElectionFinderHeader from './ElectionFinderHeader';
 import {
-  ElectionLink, ElectionList, ElectionRow, ElectionRowActions,
+  ActionChip, ActionDivider, DarkTooltip,
+  ElectionDatePill, ElectionLink, ElectionList, ElectionRow, ElectionRowActions,
   FilterTab, FilterTabsRow, InlineSearchField, NoResults,
   SearchIconButton, SectionTitle, SectionTitleRow, ShowMoreButton,
   StateSelectWrapper, StateSelectNative, StateSelectLabel, StateSelectCaret,
 } from './electionFinderStyles';
+
+function formatDateUS (dateString) {
+  if (!dateString) return '';
+  const [y, m, d] = dateString.split('-');
+  return `${m}-${d}-${y}`;
+}
+
+function sortByDateAsc (a, b) {
+  return (a.election_day_text || '').localeCompare(b.election_day_text || '');
+}
 
 const SORTED_STATES = Object.entries(stateCodeMap)
   .filter(([code]) => code !== 'NA')
@@ -87,7 +99,7 @@ function ElectionFinderHome () {
     );
   }
 
-  const upcomingElections = filteredByState.filter((el) => el.election_is_upcoming);
+  const upcomingElections = filteredByState.filter((el) => el.election_is_upcoming).sort(sortByDateAsc);
   const pastElections = filteredByState.filter((el) => !el.election_is_upcoming);
   const upcomingCount = upcomingElections.length;
   const pastCount = pastElections.length;
@@ -137,7 +149,7 @@ function ElectionFinderHome () {
             <InlineSearchField
               variant="outlined"
               size="small"
-              placeholder="Search elections..."
+              placeholder={isMobileScreenSize() ? 'Search...' : 'Search elections...'}
               inputRef={searchInputRef}
               defaultValue=""
               onChange={(e) => {
@@ -174,28 +186,43 @@ function ElectionFinderHome () {
 
         <SectionTitleRow>
           <SectionTitle>{sectionTitle}</SectionTitle>
-          <Tooltip title={sectionDownloadLabel}>
+          <DarkTooltip title={sectionDownloadLabel}>
             <IconButton size="small"><FileDownloadOutlined fontSize="small" /></IconButton>
-          </Tooltip>
+          </DarkTooltip>
         </SectionTitleRow>
 
         <ElectionList>
           {(searchText ? displayElections : displayElections.slice(0, visibleCount)).map((election) => {
             const googleCivicElectionId = election.google_civic_election_id;
-            const electionLabel = `${election.election_name || ''} \u2013 ${election.election_day_text || ''}`;
             return (
               <ElectionRow
                 key={googleCivicElectionId}
                 onClick={() => onElectionSelect(election)}
               >
                 <ElectionLink>
-                  {electionLabel}
+                  {election.election_day_text && (
+                    <ElectionDatePill>{formatDateUS(election.election_day_text)}</ElectionDatePill>
+                  )}
+                  {election.election_name || ''}
                 </ElectionLink>
                 <ElectionRowActions className="u-show-desktop-tablet" onClick={(e) => e.stopPropagation()}>
-                  <Tooltip title="Download election data">
+                  <DarkTooltip title="Copy link">
+                    <ActionChip onClick={() => {
+                      const sc = (election.state_code_list && election.state_code_list.length > 0) ?
+                        election.state_code_list[0].toLowerCase() :
+                        'na';
+                      navigator.clipboard.writeText(`${window.location.origin}/election-finder/${sc}/${googleCivicElectionId}`);
+                    }}
+                    >
+                      <ContentCopy sx={{ fontSize: 14, mr: 0.5 }} />
+                      Copy link
+                    </ActionChip>
+                  </DarkTooltip>
+                  <ActionDivider />
+                  <DarkTooltip title="Download election data">
                     <IconButton size="small"><FileDownloadOutlined fontSize="small" /></IconButton>
-                  </Tooltip>
-                  <Tooltip title="Open in new tab">
+                  </DarkTooltip>
+                  <DarkTooltip title="Open in new tab">
                     <IconButton
                       size="small"
                       onClick={() => {
@@ -207,7 +234,7 @@ function ElectionFinderHome () {
                     >
                       <Launch fontSize="small" />
                     </IconButton>
-                  </Tooltip>
+                  </DarkTooltip>
                 </ElectionRowActions>
               </ElectionRow>
             );

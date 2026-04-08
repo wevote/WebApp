@@ -1,5 +1,24 @@
-import { TextField } from '@mui/material';
+import { TextField, Tooltip, tooltipClasses } from '@mui/material';
+import React from 'react'; // eslint-disable-line no-unused-vars
 import styled from 'styled-components';
+
+// eslint-disable-next-line react/jsx-props-no-spreading, react/react-in-jsx-scope
+export const DarkTooltip = styled(({ className, ...props }) => (
+  <Tooltip {...props} classes={{ popper: className }} /> // eslint-disable-line react/jsx-props-no-spreading
+))`
+  & .${tooltipClasses.tooltip} {
+    background-color: rgba(0, 0, 0, 0.9);
+    color: #fff;
+    font-family: "Poppins", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 0.15px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    max-width: 200px;
+    text-align: center;
+  }
+`;
 
 export const ActionChip = styled('button')`
   display: inline-flex;
@@ -27,7 +46,8 @@ export const ActionDivider = styled('span')`
 export const Breadcrumb = styled('div')`
   font-size: 14px;
   color: #555;
-  margin-bottom: 4px;
+  margin-top: -14px;
+  margin-bottom: 8px;
 `;
 
 export const BreadcrumbAnchor = styled('a')`
@@ -93,6 +113,16 @@ export const DetailTitle = styled('h2')`
   font-weight: 700;
   color: #333;
   margin: 0;
+`;
+
+export const ElectionDatePill = styled('span')`
+  display: inline-block;
+  color: #848484;
+  font-size: 13px;
+  font-weight: 500;
+  margin-right: 8px;
+  vertical-align: middle;
+  white-space: nowrap;
 `;
 
 export const ElectionLink = styled('span')`
@@ -199,7 +229,7 @@ export const HighlightSpan = styled('span')`
 `;
 
 export const InlineSearchField = styled(TextField)`
-  flex: 1;
+  flex: 1 1 150px;
   max-width: 280px;
   & .MuiOutlinedInput-root {
     height: 26px;
@@ -347,9 +377,4 @@ export const StateSelectCaret = styled('span')`
   align-items: center;
   color: #555;
   font-size: 18px;
-`;
-
-
-export const TitleWrapper = styled('div')`
-  margin-top: 20px;
 `;

@@ -1,17 +1,19 @@
-import { ExpandMore, FileDownloadOutlined, Launch, Search, Close } from '@mui/icons-material';
-import { IconButton, InputAdornment, Tooltip } from '@mui/material';
+import { ContentCopy, ExpandMore, FileDownloadOutlined, Launch, Search, Close } from '@mui/icons-material';
+import { IconButton, InputAdornment } from '@mui/material';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 import ElectionActions from '../../actions/ElectionActions';
 import { renderLog } from '../../common/utils/logging';
 import { stateCodeMap, convertStateCodeToStateText } from '../../common/utils/addressFunctions';
+import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import historyPush from '../../common/utils/historyPush';
 import ElectionStore from '../../stores/ElectionStore';
 import ElectionFinderHeader from './ElectionFinderHeader';
 import {
-  ElectionLink, ElectionList, ElectionRow, ElectionRowActions,
+  ActionChip, ActionDivider, DarkTooltip,
+  ElectionDatePill, ElectionLink, ElectionList, ElectionRow, ElectionRowActions,
   FilterTab, FilterTabsRow, InlineSearchField, NoResults,
   SearchIconButton, SectionTitle, SectionTitleRow, ShowMoreButton,
   StateSelectWrapper, StateSelectNative, StateSelectLabel, StateSelectCaret,
@@ -20,6 +22,16 @@ import {
 const SORTED_STATES = Object.entries(stateCodeMap)
   .filter(([code]) => code !== 'NA')
   .sort((a, b) => a[1].localeCompare(b[1]));
+
+function formatDateUS (dateString) {
+  if (!dateString) return '';
+  const [y, m, d] = dateString.split('-');
+  return `${m}-${d}-${y}`;
+}
+
+function sortByDateAsc (a, b) {
+  return (a.election_day_text || '').localeCompare(b.election_day_text || '');
+}
 
 function getBreadcrumbTabLabel (filterTab) {
   if (filterTab === 'all') return 'All';
@@ -105,7 +117,7 @@ function ElectionFinderForState () {
     );
   }
 
-  const upcomingElections = stateElections.filter((el) => el.election_is_upcoming);
+  const upcomingElections = stateElections.filter((el) => el.election_is_upcoming).sort(sortByDateAsc);
   const pastElections = stateElections.filter((el) => !el.election_is_upcoming);
   const upcomingCount = upcomingElections.length;
   const pastCount = pastElections.length;
@@ -123,9 +135,14 @@ function ElectionFinderForState () {
     sectionTitle = `${stateName} \u2013 Past Elections`;
   }
 
-  const sectionDownloadLabel = filterTab === 'past' ?
-    'Download data for all past elections' :
-    'Download data for all upcoming elections';
+  let sectionDownloadLabel;
+  if (filterTab === 'all') {
+    sectionDownloadLabel = `Download data for all ${stateName} elections`;
+  } else if (filterTab === 'past') {
+    sectionDownloadLabel = 'Download data for all past elections';
+  } else {
+    sectionDownloadLabel = 'Download data for all upcoming elections';
+  }
 
   return (
     <>
@@ -162,7 +179,7 @@ function ElectionFinderForState () {
             <InlineSearchField
               variant="outlined"
               size="small"
-              placeholder="Search elections..."
+              placeholder={isMobileScreenSize() ? 'Search...' : 'Search elections...'}
               inputRef={searchInputRef}
               defaultValue=""
               onChange={(e) => {
@@ -199,32 +216,43 @@ function ElectionFinderForState () {
 
         <SectionTitleRow>
           <SectionTitle>{sectionTitle}</SectionTitle>
-          <Tooltip title={sectionDownloadLabel}>
+          <DarkTooltip title={sectionDownloadLabel}>
             <IconButton size="small"><FileDownloadOutlined fontSize="small" /></IconButton>
-          </Tooltip>
+          </DarkTooltip>
         </SectionTitleRow>
 
         <ElectionList>
           {(searchText ? displayElections : displayElections.slice(0, visibleCount)).map((election) => {
             const googleCivicElectionId = election.google_civic_election_id;
-            const electionLabel = `${election.election_name || ''} \u2013 ${election.election_day_text || ''}`;
             return (
               <ElectionRow
                 key={googleCivicElectionId}
                 onClick={() => onElectionSelect(googleCivicElectionId)}
               >
                 <ElectionLink>
-                  {electionLabel}
+                  {election.election_day_text && (
+                    <ElectionDatePill>{formatDateUS(election.election_day_text)}</ElectionDatePill>
+                  )}
+                  {election.election_name || ''}
                 </ElectionLink>
                 <ElectionRowActions className="u-show-desktop-tablet" onClick={(e) => e.stopPropagation()}>
-                  <Tooltip title="Download election data">
+                  <DarkTooltip title="Copy link">
+                    <ActionChip
+                      onClick={() => navigator.clipboard.writeText(`${window.location.origin}/election-finder/${selectedStateCode.toLowerCase()}/${googleCivicElectionId}`)}
+                    >
+                      <ContentCopy sx={{ fontSize: 14, mr: 0.5 }} />
+                      Copy link
+                    </ActionChip>
+                  </DarkTooltip>
+                  <ActionDivider />
+                  <DarkTooltip title="Download election data">
                     <IconButton size="small"><FileDownloadOutlined fontSize="small" /></IconButton>
-                  </Tooltip>
-                  <Tooltip title="Open in new tab">
+                  </DarkTooltip>
+                  <DarkTooltip title="Open in new tab">
                     <IconButton size="small" onClick={() => window.open(`/election-finder/${selectedStateCode.toLowerCase()}/${googleCivicElectionId}`, '_blank')}>
                       <Launch fontSize="small" />
                     </IconButton>
-                  </Tooltip>
+                  </DarkTooltip>
                 </ElectionRowActions>
               </ElectionRow>
             );
