@@ -395,6 +395,7 @@ class PositionList extends Component {
             ) : null;
             return (
               <PositionListForBallotItemWrapper
+                $compact={compactMode}
                 key={`${onePosition.position_we_vote_id}-${onePosition.voter_guide_we_vote_id}-${onePosition.speaker_display_name}`}
               >
                 <Suspense fallback={<></>}>
@@ -449,7 +450,7 @@ PositionList.propTypes = {
   maxToShow: PropTypes.number,
   onSeeMoreClick: PropTypes.func,
   positionListExistsTitle: PropTypes.object,
-  params: PropTypes.object,
+  // params: PropTypes.object,
 };
 
 const styles = () => ({
@@ -462,7 +463,7 @@ const CompactSeeMoreLink = styled('div')`
   color: #1073d4;
   cursor: pointer;
   font-size: 14px;
-  padding-left: 72px;
+  padding-left: 57px;
   &:hover {
     text-decoration: underline;
   }
@@ -483,12 +484,14 @@ const LoadingItemsWheel = styled('div')`
 const PositionListWrapper = styled('div')`
 `;
 
-const PositionListForBallotItemWrapper = styled('div')`
-  margin: 8px 15px;
+const PositionListForBallotItemWrapper = styled('div', {
+  shouldForwardProp: (prop) => prop !== '$compact',
+})(({ $compact }) => `
+  margin: 8px ${$compact ? '0' : '15px'} 8px ${$compact ? '0' : '15px'};
   &:last-child {
     margin-bottom: 0;
   }
-`;
+`);
 
 const SearchResultsFoundInExplanation = styled('div')(({ theme }) => (`
   background-color: #C2DCE8;

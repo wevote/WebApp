@@ -273,7 +273,7 @@ class MeasureItemCompressed extends Component {
             onScroll={this.checkArrowVisibility}
             showLeftGradient={!this.state.hideLeftArrow}
             showRightGradient={!this.state.hideRightArrow}
-            style={{ display: 'flex', flexDirection: 'row', gap: '16px', alignItems: 'stretch', whiteSpace: 'normal', borderBottom: 'none' }}
+            style={{ display: 'flex', flexDirection: 'row', gap: '16px', alignItems: 'stretch', whiteSpace: 'normal', borderBottom: 'none', backgroundColor: 'transparent', boxShadow: 'none' }}
           >
             {/* Left column: Measure description */}
             <MeasureDescriptionColumn
@@ -286,6 +286,12 @@ class MeasureItemCompressed extends Component {
                 {measureText && measureText.length > MEASURE_TEXT_MAX_LENGTH && (
                   <>
                     &nbsp;
+                    <span className="u-link-color">more</span>
+                  </>
+                )}
+                {measureText && measureText.length <= MEASURE_TEXT_MAX_LENGTH && (
+                  <>
+                    <br />
                     <span className="u-link-color">more</span>
                   </>
                 )}
@@ -506,11 +512,20 @@ const MeasureDescriptionColumn = styled('div')`
 `;
 
 const MeasureItemCompressedWrapper = styled('div')`
-  border: 1px solid #fff;
+  border: none;
   display: flex;
   flex-direction: column;
   margin-bottom: 60px;
   position: relative;
+  transition: box-shadow 0.2s ease, background-color 0.3s ease;
+  &:hover {
+    background-color: ${DesignTokenColors.neutral50};
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
+  }
+  ${LeftArrowOuterWrapper},
+  ${RightArrowOuterWrapper} {
+    background: transparent;
+  }
 `;
 
 const MeasureText = styled('div')`

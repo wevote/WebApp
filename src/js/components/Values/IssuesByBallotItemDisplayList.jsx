@@ -267,7 +267,7 @@ class IssuesByBallotItemDisplayList extends Component {
                         }
                       }}
                     >
-                      show less
+                      See less
                     </MoreWrapper>
                   ) : (
                     <>
@@ -283,7 +283,7 @@ class IssuesByBallotItemDisplayList extends Component {
                             }
                           }}
                         >
-                          show more
+                          See more
                         </MoreWrapper>
                       )}
                     </>
@@ -332,15 +332,13 @@ const MoreWrapper = styled('button')`
   background: none;
   border: 0;
   padding: 0;
-  color: #000;
-  opacity: 0.6;
+  margin-left: 5px;
+  color: #1073d4;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
-  text-decoration: underline;
-  text-decoration-color: #ccc;
-  justify-content: center;
-  align-content: space-evenly;
+  font-size: 14px;
+  flex-basis: 100%;
   &:hover {
     text-decoration: underline;
   }

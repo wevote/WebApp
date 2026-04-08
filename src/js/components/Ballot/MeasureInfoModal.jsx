@@ -116,6 +116,7 @@ const ModalLink = styled.a`
   font-weight: 600;
   margin-bottom: 12px;
   text-decoration: none;
+  word-break: break-all;
   &:hover {
     text-decoration: underline;
   }
