@@ -1,14 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ElectionNameH1 } from '../../components/Style/BallotTitleHeaderStyles';
-import { Breadcrumb, BreadcrumbAnchor, TitleWrapper } from './electionFinderStyles';
+import { ElectionNameH1, ElectionStateLabel } from '../../components/Style/BallotTitleHeaderStyles';
+import { Breadcrumb, BreadcrumbAnchor } from './electionFinderStyles';
 
-function ElectionFinderHeader ({ breadcrumbs, subtitle }) {
+function ElectionFinderHeader ({ breadcrumbs, stateLabel, subtitle }) {
   return (
     <>
-      <TitleWrapper>
-        <ElectionNameH1 style={{ paddingBottom: 4 }}>Election Finder</ElectionNameH1>
-      </TitleWrapper>
+      {stateLabel && <ElectionStateLabel>{stateLabel}</ElectionStateLabel>}
+      <ElectionNameH1>Election Finder</ElectionNameH1>
       {breadcrumbs && breadcrumbs.length > 0 && (
         <Breadcrumb>
           {breadcrumbs.map((crumb, idx) => {
@@ -38,6 +37,7 @@ ElectionFinderHeader.propTypes = {
     label: PropTypes.string.isRequired,
     href: PropTypes.string,
   })),
+  stateLabel: PropTypes.string,
   subtitle: PropTypes.string,
 };
 

@@ -1,5 +1,5 @@
 import { ContentCopy, FileDownloadOutlined, InfoOutlined, Launch, Search, Close, ExpandMore, UnfoldMore, UnfoldLess } from '@mui/icons-material';
-import { IconButton, InputAdornment, Tooltip } from '@mui/material';
+import { IconButton, InputAdornment } from '@mui/material';
 import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
@@ -11,14 +11,13 @@ import SupportActions from '../../actions/SupportActions';
 import { renderLog } from '../../common/utils/logging';
 import { convertStateCodeToStateText } from '../../common/utils/addressFunctions';
 import AppObservableStore from '../../common/stores/AppObservableStore';
-import { ElectionStateLabel } from '../../components/Style/BallotTitleHeaderStyles';
 import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import BallotStore from '../../stores/BallotStore';
 import CandidateStore from '../../stores/CandidateStore';
 import ElectionStore from '../../stores/ElectionStore';
 import ElectionFinderHeader from './ElectionFinderHeader';
 import {
-  ActionChip, ActionDivider,
+  ActionChip, ActionDivider, DarkTooltip,
   CandidateActions as CandidateActionsRow, CandidateInfo, CandidateList, CandidateName,
   CandidateParty, CandidateRow, DetailTitle, ElectionTitleRow,
   ExpandCollapseButton, ExpandCollapseRow, ExpandMoreIcon,
@@ -201,14 +200,14 @@ function ElectionFinderForElection () {
             { label: `${stateName} ${isUpcoming ? 'Upcoming' : 'Past'} Elections (${isUpcoming ? upcomingCount : pastCount})`, href: `/election-finder/${selectedStateCode.toLowerCase()}` },
             { label: electionName },
           ]}
+          stateLabel={stateName}
         />
-        <ElectionStateLabel style={{ marginBottom: 12 }}>{stateName}</ElectionStateLabel>
 
         <ElectionTitleRow>
           <DetailTitle>{electionName}</DetailTitle>
-          <Tooltip title="Download election data">
+          <DarkTooltip title="Download election data">
             <IconButton size="small"><FileDownloadOutlined fontSize="small" /></IconButton>
-          </Tooltip>
+          </DarkTooltip>
           {electionSearchOpen ? (
             <InlineSearchField
               variant="outlined"
@@ -263,9 +262,9 @@ function ElectionFinderForElection () {
         {totalResults !== null && (
           <SearchResultCount>
             {`${totalResults} results for \u201C${electionSearchText}\u201D`}
-            <Tooltip title="Download search results">
+            <DarkTooltip title="Download search results">
               <IconButton size="small" style={{ marginLeft: 8 }}><FileDownloadOutlined fontSize="small" /></IconButton>
-            </Tooltip>
+            </DarkTooltip>
           </SearchResultCount>
         )}
 
@@ -323,27 +322,27 @@ function OfficeSectionItemInner ({ // eslint-disable-line react/no-multi-comp
           </OfficeName>
         </OfficeHeaderLeft>
         <OfficeHeaderActions className="u-show-desktop-tablet" onClick={(e) => e.stopPropagation()}>
-          <Tooltip title="Copy office name">
+          <DarkTooltip title="Copy office name">
             <ActionChip onClick={() => copyToClipboard(officeName)}>
               <ContentCopy sx={{ fontSize: 14, mr: 0.5 }} />
               Copy office name
             </ActionChip>
-          </Tooltip>
-          <Tooltip title="Copy link">
+          </DarkTooltip>
+          <DarkTooltip title="Copy link">
             <ActionChip onClick={() => copyToClipboard(`${window.location.origin}/office/${officeWeVoteId}`)}>
               <ContentCopy sx={{ fontSize: 14, mr: 0.5 }} />
               Copy link
             </ActionChip>
-          </Tooltip>
+          </DarkTooltip>
           <ActionDivider />
-          <Tooltip title="Info">
+          <DarkTooltip title="Info">
             <IconButton size="small"><InfoOutlined fontSize="small" /></IconButton>
-          </Tooltip>
-          <Tooltip title="Open in new tab">
+          </DarkTooltip>
+          <DarkTooltip title="Open in new tab">
             <IconButton size="small" onClick={() => window.open(`/office/${officeWeVoteId}`, '_blank')}>
               <Launch fontSize="small" />
             </IconButton>
-          </Tooltip>
+          </DarkTooltip>
         </OfficeHeaderActions>
       </OfficeHeader>
       {isExpanded && (
@@ -361,24 +360,24 @@ function OfficeSectionItemInner ({ // eslint-disable-line react/no-multi-comp
                   <CandidateParty>{candidateParty}</CandidateParty>
                 </CandidateInfo>
                 <CandidateActionsRow className="u-show-desktop-tablet">
-                  <Tooltip title="Copy candidate name">
+                  <DarkTooltip title="Copy candidate name">
                     <ActionChip onClick={() => copyToClipboard(candidateName)}>
                       <ContentCopy sx={{ fontSize: 14, mr: 0.5 }} />
                       Copy candidate name
                     </ActionChip>
-                  </Tooltip>
-                  <Tooltip title="Copy link">
+                  </DarkTooltip>
+                  <DarkTooltip title="Copy link">
                     <ActionChip onClick={() => copyToClipboard(`${window.location.origin}${getCandidatePath(candidate)}`)}>
                       <ContentCopy sx={{ fontSize: 14, mr: 0.5 }} />
                       Copy link
                     </ActionChip>
-                  </Tooltip>
+                  </DarkTooltip>
                   <ActionDivider />
-                  <Tooltip title="Open in new tab">
+                  <DarkTooltip title="Open in new tab">
                     <IconButton size="small" onClick={() => window.open(getCandidatePath(candidate), '_blank')}>
                       <Launch fontSize="small" />
                     </IconButton>
-                  </Tooltip>
+                  </DarkTooltip>
                 </CandidateActionsRow>
               </CandidateRow>
             );
