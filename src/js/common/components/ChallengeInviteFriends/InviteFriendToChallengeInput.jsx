@@ -29,7 +29,7 @@ function InviteFriendToChallengeInput ({ classes, challengeWeVoteId, externalUni
   const [inviteTextToSend, setInviteTextToSend] = React.useState('');
   // const [urlToSend, setUrlToSend] = React.useState('');
 
-  function prepareInviteTextToSend () {
+  const prepareInviteTextToSend = React.useCallback(() => {
     let inviteeFirstName = '';
     if (inviteeName) {
       inviteeFirstName = stringContains(' ', inviteeName) ? inviteeName.split(' ')[0] : inviteeName;
@@ -51,7 +51,7 @@ function InviteFriendToChallengeInput ({ classes, challengeWeVoteId, externalUni
     const SEOFriendlyPath = ChallengeStore.getChallengeSEOFriendlyPathByWeVoteId(challengeWeVoteId);
     setDestinationFullURL(`${ChallengeStore.getSiteUrl(challengeWeVoteId)}/${SEOFriendlyPath}/+/`);
     // setUrlToSend(urlToSendTemp);
-  }
+  }, [challengeInviteTextDefault, challengeWeVoteId, inviteeName, inviterName, inviteTextForFriends]);
 
   function resetForm () {
     setInviteeName('');
@@ -145,11 +145,11 @@ function InviteFriendToChallengeInput ({ classes, challengeWeVoteId, externalUni
       challengeStoreListener.remove();
       voterStoreListener.remove();
     };
-  }, [challengeWeVoteId]);
+  }, [challengeWeVoteId, inviteeListLength, prepareInviteTextToSend]);
 
   React.useEffect(() => {
     prepareInviteTextToSend();
-  }, [inviteeName]);
+  }, [inviteeName, prepareInviteTextToSend]);
 
   return (
     <InviteFriendToChallengeInputWrapper>

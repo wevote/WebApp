@@ -13,12 +13,12 @@ function JoinedAndDaysLeft ({ challengeWeVoteId, borderSwitcher, padding }) {
   const [daysLeft, setDaysLeft] = React.useState(0);
   const [voterIsChallengeParticipant, setVoterIsChallengeParticipant] = React.useState(false);
 
-  const onChallengeStoreChange = () => {
+  const onChallengeStoreChange = React.useCallback(() => {
     const daysToChallengeEnds = ChallengeStore.getDaysUntilChallengeEnds(challengeWeVoteId);
     // console.log('Days to challenge ends:', daysToChallengeEnds);
     setDaysLeft(Math.max(daysToChallengeEnds, 0));
     setVoterIsChallengeParticipant(ChallengeStore.getVoterIsChallengeParticipant(challengeWeVoteId));
-  };
+  }, [challengeWeVoteId]);
 
   React.useEffect(() => {
     const challengeStoreListener = ChallengeStore.addListener(onChallengeStoreChange);
@@ -27,7 +27,7 @@ function JoinedAndDaysLeft ({ challengeWeVoteId, borderSwitcher, padding }) {
     return () => {
       challengeStoreListener.remove();
     };
-  }, [challengeWeVoteId]);
+  }, [challengeWeVoteId, onChallengeStoreChange]);
   return (
     <InfoWrapper>
       {/* SVG, Joined, Dot, and Days Left */}

@@ -35,22 +35,22 @@ function ChallengeInviteeListRoot ({ challengeWeVoteId, hideRank }) {
   const [participantsCount, setParticipantsCount] = useState(0);
   const [rankOfVoter, setRankOfVoter] = React.useState(0);
 
-  const onAppObservableStoreChange = () => {
+  const onAppObservableStoreChange = React.useCallback(() => {
     setRankOfVoter(AppObservableStore.getChallengeParticipantRankOfVoterByChallengeWeVoteId(challengeWeVoteId));
-  };
+  }, [challengeWeVoteId]);
 
-  const onChallengeInviteeStoreChange = () => {
+  const onChallengeInviteeStoreChange = React.useCallback(() => {
     // console.log('ChallengeInviteeStoreChange');
     const incomingInviteeList = ChallengeInviteeStore.getChallengeInviteeList(challengeWeVoteId);
     // console.log('ChallengeInviteeListRoot onChallengeInviteeStoreChange incomingInviteeList:', incomingInviteeList);
     const incomingInviteeListNew = [...incomingInviteeList];  // So React detects this as a new list
     setInviteeList(incomingInviteeListNew);
-  };
+  }, [challengeWeVoteId]);
 
-  const onChallengeParticipantStoreChange = () => {
+  const onChallengeParticipantStoreChange = React.useCallback(() => {
     const sortedParticipantsWithRank = ChallengeParticipantStore.getChallengeParticipantList(challengeWeVoteId);
     setParticipantsCount(sortedParticipantsWithRank.length);
-  };
+  }, [challengeWeVoteId]);
 
   React.useEffect(() => {
     // console.log('Fetching participants for:', challengeWeVoteId);
@@ -66,7 +66,7 @@ function ChallengeInviteeListRoot ({ challengeWeVoteId, hideRank }) {
       challengeInviteeStoreListener.remove();
       challengeParticipantStoreListener.remove();
     };
-  }, [challengeWeVoteId]);
+  }, [challengeWeVoteId, onAppObservableStoreChange, onChallengeInviteeStoreChange, onChallengeParticipantStoreChange]);
   return (
     <ChallengeInviteeListRootContainer>
       <Heading>

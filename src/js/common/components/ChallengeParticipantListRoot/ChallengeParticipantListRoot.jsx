@@ -58,19 +58,19 @@ function ChallengeParticipantListRoot ({ challengeWeVoteId, classes, uniqueExter
   const [rankOfVoter, setRankOfVoter] = React.useState(0);
   const [voterIsChallengeParticipant, setVoterIsChallengeParticipant] = React.useState(false);
 
-  const onAppObservableStoreChange = () => {
+  const onAppObservableStoreChange = React.useCallback(() => {
     setRankOfVoter(AppObservableStore.getChallengeParticipantRankOfVoterByChallengeWeVoteId(challengeWeVoteId));
-  };
+  }, [challengeWeVoteId]);
 
-  const onChallengeParticipantStoreChange = () => {
+  const onChallengeParticipantStoreChange = React.useCallback(() => {
     const sortedParticipantsWithRank = ChallengeParticipantStore.getChallengeParticipantList(challengeWeVoteId);
     setParticipantList(sortedParticipantsWithRank);
     setParticipantsCount(sortedParticipantsWithRank.length);
-  };
+  }, [challengeWeVoteId]);
 
-  const onChallengeStoreChange = () => {
+  const onChallengeStoreChange = React.useCallback(() => {
     setVoterIsChallengeParticipant(ChallengeStore.getVoterIsChallengeParticipant(challengeWeVoteId));
-  };
+  }, [challengeWeVoteId]);
 
   React.useEffect(() => {
     // console.log('Fetching participants for:', challengeWeVoteId);
@@ -86,7 +86,7 @@ function ChallengeParticipantListRoot ({ challengeWeVoteId, classes, uniqueExter
       challengeParticipantStoreListener.remove();
       challengeStoreListener.remove();
     };
-  }, [challengeWeVoteId]);
+  }, [challengeWeVoteId, onAppObservableStoreChange, onChallengeParticipantStoreChange, onChallengeStoreChange]);
   return (
     <ChallengeParticipantListRootContainer>
       <TopSection>

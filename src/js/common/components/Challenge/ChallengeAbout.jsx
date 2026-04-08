@@ -20,11 +20,11 @@ function ChallengeAbout ({ challengeWeVoteId, showDaysLeft }) {
   const [daysLeft, setDaysLeft] = React.useState(0);
   const [participantNameWithHighestRank, setParticipantNameWithHighestRank] = React.useState('');
 
-  const onAppObservableStoreChange = () => {
+  const onAppObservableStoreChange = React.useCallback(() => {
     setParticipantNameWithHighestRank(AppObservableStore.getChallengeParticipantNameWithHighestRankByChallengeWeVoteId(challengeWeVoteId));
-  };
+  }, [challengeWeVoteId]);
 
-  const onChallengeStoreChange = () => {
+  const onChallengeStoreChange = React.useCallback(() => {
     if (challengeInviteesCount < ChallengeStore.getNumberOfInviteesInChallenge(challengeWeVoteId)) {
       setChallengeInviteesCount(ChallengeStore.getNumberOfInviteesInChallenge(challengeWeVoteId));
     }
@@ -33,12 +33,13 @@ function ChallengeAbout ({ challengeWeVoteId, showDaysLeft }) {
     }
     setDaysLeft(ChallengeStore.getDaysUntilChallengeEnds(challengeWeVoteId));
     setChallengeOwners(ChallengeStore.getChallengeOwnerList(challengeWeVoteId));
-  };
-  const onChallengeParticipantStoreChange = () => {
+  }, [challengeInviteesCount, challengeParticipantCount, challengeWeVoteId]);
+
+  const onChallengeParticipantStoreChange = React.useCallback(() => {
     if (challengeParticipantCount < ChallengeParticipantStore.getNumberOfParticipantsInChallenge(challengeWeVoteId)) {
       setChallengeParticipantCount(ChallengeParticipantStore.getNumberOfParticipantsInChallenge(challengeWeVoteId));
     }
-  };
+  }, [challengeParticipantCount, challengeWeVoteId]);
 
   React.useEffect(() => {
     const appStateSubscription = messageService.getMessage().subscribe(() => onAppObservableStoreChange());
@@ -53,7 +54,7 @@ function ChallengeAbout ({ challengeWeVoteId, showDaysLeft }) {
       challengeParticipantStoreListener.remove();
       challengeStoreListener.remove();
     };
-  }, [challengeWeVoteId]);
+  }, [challengeWeVoteId, onAppObservableStoreChange, onChallengeParticipantStoreChange, onChallengeStoreChange]);
 
   // Variables to hold dummy data
   const challengeDates = (
