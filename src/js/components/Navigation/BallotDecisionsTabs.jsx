@@ -233,11 +233,8 @@ const styles = (theme) => ({
   },
 });
 
-const BadgeCountWrapper = styled('span')(({ theme }) => (`
-  padding-top: 2px;
-  ${theme.breakpoints.down('md')} {
-    padding-top: 1px;
-  }
-`));
+const BadgeCountWrapper = styled('span')`
+  padding-top: 1px;
+`;
 
 export default withStyles(styles)(BallotDecisionsTabs);

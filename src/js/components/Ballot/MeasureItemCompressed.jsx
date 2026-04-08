@@ -9,7 +9,6 @@ import AppObservableStore from '../../common/stores/AppObservableStore';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 import { BallotHorizontallyScrollingContainer, BallotScrollingInnerWrapper, LeftArrowInnerWrapper, LeftArrowOuterWrapper, RightArrowInnerWrapper, RightArrowOuterWrapper } from '../../common/components/Style/ScrollingStyles';
 import { handleHorizontalScroll } from '../../common/utils/leftRightArrowCalculation';
-import historyPush from '../../common/utils/historyPush';
 import { renderLog } from '../../common/utils/logging';
 import shortenText from '../../common/utils/shortenText';
 import { stripHtmlFromString } from '../../common/utils/textFormat';
@@ -17,13 +16,11 @@ import toTitleCase from '../../common/utils/toTitleCase';
 import BallotStore from '../../stores/BallotStore';
 import MeasureStore from '../../stores/MeasureStore';
 import { constrainedTextMobileStyles } from '../Style/BallotStyles';
-import MeasureDescriptionModal from './MeasureDescriptionModal';
+import MeasureInfoModal from './MeasureInfoModal';
 import MeasureOpinionsColumn from './MeasureOpinionsColumn';
-import MeasureYesNoModal from './MeasureYesNoModal';
 import PositionRowListCompressed from './PositionRowListCompressed';
 
 const ItemActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemActionBar' */ '../Widgets/ItemActionBar/ItemActionBar'));
-const PositionStatementModal = React.lazy(() => import(/* webpackChunkName: 'PositionStatementModal' */ '../Widgets/PositionStatementModal'));
 
 const MEASURE_TEXT_MAX_LENGTH = 175;
 
@@ -41,24 +38,20 @@ class MeasureItemCompressed extends Component {
       measureUrl: '',
       measureWeVoteId: '',
       noVoteDescription: '',
-      organizationWeVoteId: '',
       positionListFromFriendsHasBeenRetrievedOnce: {},
       positionListHasBeenRetrievedOnce: {},
-      showDescriptionModal: false,
-      showPositionStatementModal: false,
-      showYesNoModal: false,
-      yesNoActiveTab: 0,
+      showInfoModal: false,
+      infoModalActiveTab: 0,
+      openOpinionModal: false,
       yesVoteDescription: '',
     };
-    this.getMeasureLink = this.getMeasureLink.bind(this);
-    this.goToMeasureLink = this.goToMeasureLink.bind(this);
     this.onClickShowOrganizationModalWithBallotItemInfo = this.onClickShowOrganizationModalWithBallotItemInfo.bind(this);
     this.onClickShowOrganizationModalWithPositions = this.onClickShowOrganizationModalWithPositions.bind(this);
     this.onClickShowOrganizationModalWithBallotItemInfoAndPositions = this.onClickShowOrganizationModalWithBallotItemInfoAndPositions.bind(this);
   }
 
   componentDidMount () {
-    const { externalUniqueId, measureWeVoteId, organization } = this.props;
+    const { externalUniqueId, measureWeVoteId } = this.props;
     const measure = MeasureStore.getMeasure(measureWeVoteId);
     // console.log('componentDidMount, measureWeVoteId: ', measureWeVoteId);
     if (!measure.we_vote_id) {
@@ -89,7 +82,6 @@ class MeasureItemCompressed extends Component {
         positionListFromFriendsHasBeenRetrievedOnce,
       });
     }
-    const organizationWeVoteId = (organization && organization.organization_we_vote_id) ? organization.organization_we_vote_id : this.props.organizationWeVoteId;
     this.setState({
       ballotItemDisplayName: measure.ballot_item_display_name,
       // componentDidMountFinished: true,
@@ -102,7 +94,6 @@ class MeasureItemCompressed extends Component {
       measureWeVoteId,
       noVoteDescription: stripHtmlFromString(measure.no_vote_description),
       yesVoteDescription: stripHtmlFromString(measure.yes_vote_description),
-      organizationWeVoteId,
     });
     this.measureStoreListener = MeasureStore.addListener(this.onMeasureStoreChange.bind(this));
     this.resizeObserver = new ResizeObserver(() => {
@@ -159,7 +150,6 @@ class MeasureItemCompressed extends Component {
     }
     this.setState({
       ballotItemDisplayName: measure.ballot_item_display_name,
-      // measure,
       measureSubtitle: measure.measure_subtitle,
       measureText: stripHtmlFromString(measure.measure_text),
       measureUrl: measure.measure_url || '',
@@ -188,20 +178,21 @@ class MeasureItemCompressed extends Component {
     AppObservableStore.setShowOrganizationModal(true);
   }
 
-  getMeasureLink (oneMeasureWeVoteId) {
-    if (this.state.organizationWeVoteId) {
-      // If there is an organizationWeVoteId, signal that we want to link back to voter_guide for that organization
-      return `/measure/${oneMeasureWeVoteId}/btvg/${this.state.organizationWeVoteId}`;
-    } else {
-      // If no organizationWeVoteId, signal that we want to link back to default ballot
-      return `/measure/${oneMeasureWeVoteId}/b/btdb`; // back-to-default-ballot
+  localPositionListHasBeenRetrievedOnce = (measureWeVoteId) => {
+    if (measureWeVoteId) {
+      const { positionListHasBeenRetrievedOnce } = this.state;
+      return positionListHasBeenRetrievedOnce[measureWeVoteId];
     }
-  }
+    return false;
+  };
 
-  goToMeasureLink (oneMeasureWeVoteId) {
-    const measureLink = this.getMeasureLink(oneMeasureWeVoteId);
-    historyPush(measureLink);
-  }
+  localPositionListFromFriendsHasBeenRetrievedOnce = (measureWeVoteId) => {
+    if (measureWeVoteId) {
+      const { positionListFromFriendsHasBeenRetrievedOnce } = this.state;
+      return positionListFromFriendsHasBeenRetrievedOnce[measureWeVoteId];
+    }
+    return false;
+  };
 
   checkArrowVisibility = () => {
     const el = this.scrollElement.current;
@@ -220,55 +211,37 @@ class MeasureItemCompressed extends Component {
     }
   };
 
+  openOpinionModalFromDiscuss = () => {
+    this.setState({ openOpinionModal: true });
+  };
+
+  handleOpinionModalClose = () => {
+    this.setState({ openOpinionModal: false });
+  };
+
   checkMeasureHasEndorsements = () => {
     // Callback for PositionRowListCompressed
   };
 
-  toggleDescriptionModal = () => {
-    const { showDescriptionModal } = this.state;
-    this.setState({ showDescriptionModal: !showDescriptionModal });
+  toggleInfoModal = () => {
+    const { showInfoModal } = this.state;
+    this.setState({ showInfoModal: !showInfoModal });
   };
 
-  togglePositionStatementModal = () => {
-    const { showPositionStatementModal } = this.state;
-    this.setState({ showPositionStatementModal: !showPositionStatementModal });
+  openInfoModal = (tabIndex) => {
+    this.setState({ showInfoModal: true, infoModalActiveTab: tabIndex });
   };
 
-  toggleYesNoModal = () => {
-    const { showYesNoModal } = this.state;
-    this.setState({ showYesNoModal: !showYesNoModal });
+  handleInfoModalTabChange = (newTabIndex) => {
+    this.setState({ infoModalActiveTab: newTabIndex });
   };
-
-  openYesNoModal = (tabIndex) => {
-    this.setState({ showYesNoModal: true, yesNoActiveTab: tabIndex });
-  };
-
-  handleYesNoTabChange = (newTabIndex) => {
-    this.setState({ yesNoActiveTab: newTabIndex });
-  };
-
-  localPositionListHasBeenRetrievedOnce (measureWeVoteId) {
-    if (measureWeVoteId) {
-      const { positionListHasBeenRetrievedOnce } = this.state;
-      return positionListHasBeenRetrievedOnce[measureWeVoteId];
-    }
-    return false;
-  }
-
-  localPositionListFromFriendsHasBeenRetrievedOnce (measureWeVoteId) {
-    if (measureWeVoteId) {
-      const { positionListFromFriendsHasBeenRetrievedOnce } = this.state;
-      return positionListFromFriendsHasBeenRetrievedOnce[measureWeVoteId];
-    }
-    return false;
-  }
 
   render () {
     renderLog('MeasureItemCompressed');  // Set LOG_RENDER_EVENTS to log all renders
     const {
       externalUniqueId, localUniqueId, measureSubtitle, measureText,
-      measureUrl, measureWeVoteId, noVoteDescription,
-      showDescriptionModal, showPositionStatementModal, showYesNoModal, yesNoActiveTab,
+      measureUrl, measureWeVoteId, noVoteDescription, openOpinionModal,
+      showInfoModal, infoModalActiveTab,
       yesVoteDescription,
     } = this.state;
     let { ballotItemDisplayName } = this.state;
@@ -305,13 +278,17 @@ class MeasureItemCompressed extends Component {
             {/* Left column: Measure description */}
             <MeasureDescriptionColumn
               className="u-cursor--pointer"
-              onClick={this.toggleDescriptionModal}
+              onClick={() => this.openInfoModal(0)}
             >
               <SubTitle>{measureSubtitleCapitalized}</SubTitle>
               <MeasureText>
                 {shortenText(measureText, MEASURE_TEXT_MAX_LENGTH)}
-                &nbsp;
-                <span className="u-link-color">more</span>
+                {measureText && measureText.length > MEASURE_TEXT_MAX_LENGTH && (
+                  <>
+                    &nbsp;
+                    <span className="u-link-color">more</span>
+                  </>
+                )}
               </MeasureText>
             </MeasureDescriptionColumn>
 
@@ -354,7 +331,7 @@ class MeasureItemCompressed extends Component {
                       <SourceDescription>No description available.</SourceDescription>
                     )}
                     {!!(yesVoteDescription) && (
-                      <SeeMoreLink onClick={() => this.openYesNoModal(0)}>
+                      <SeeMoreLink onClick={() => this.openInfoModal(1)}>
                         See more
                       </SeeMoreLink>
                     )}
@@ -372,7 +349,7 @@ class MeasureItemCompressed extends Component {
                       <SourceDescription>No description available.</SourceDescription>
                     )}
                     {!!(noVoteDescription) && (
-                      <SeeMoreLink onClick={() => this.openYesNoModal(1)}>
+                      <SeeMoreLink onClick={() => this.openInfoModal(2)}>
                         See more
                       </SeeMoreLink>
                     )}
@@ -385,7 +362,8 @@ class MeasureItemCompressed extends Component {
             <OpinionsColumn>
               <MeasureOpinionsColumn
                 measureWeVoteId={measureWeVoteId}
-                onClickCommentInput={this.togglePositionStatementModal}
+                onModalClose={this.handleOpinionModalClose}
+                openEditModalOnLoad={openOpinionModal}
               />
             </OpinionsColumn>
           </BallotHorizontallyScrollingContainer>
@@ -405,42 +383,25 @@ class MeasureItemCompressed extends Component {
               externalUniqueId={`${externalUniqueId}-${localUniqueId}-MeasureItemCompressed-${measureWeVoteId}`}
               shareButtonHide
               hidePositionPublicToggle
+              togglePositionStatementFunction={this.openOpinionModalFromDiscuss}
             />
           </Suspense>
         </ItemActionBarOutsideWrapper>
-        {/* Modal: Full measure description */}
-        <MeasureDescriptionModal
-          isOpen={showDescriptionModal}
+        {/* Modal: Combined description + YES/NO means (3 tabs) */}
+        <MeasureInfoModal
+          initialTab={infoModalActiveTab}
+          isOpen={showInfoModal}
           measureText={measureText}
           measureSubtitle={measureSubtitleCapitalized}
           measureTitle={ballotDisplay[0]}
           measureUrl={measureUrl}
           measureWeVoteId={measureWeVoteId}
-          onClose={this.toggleDescriptionModal}
-        />
-
-        {/* Modal: Position statement / opinion */}
-        {showPositionStatementModal && (
-          <Suspense fallback={<span />}>
-            <PositionStatementModal
-              ballotItemWeVoteId={measureWeVoteId}
-              externalUniqueId={`MeasureItemCompressed-${measureWeVoteId}`}
-              show={showPositionStatementModal}
-              toggleModal={this.togglePositionStatementModal}
-            />
-          </Suspense>
-        )}
-
-        {/* Modal: YES/NO means tabbed */}
-        <MeasureYesNoModal
-          initialTab={yesNoActiveTab}
-          isOpen={showYesNoModal}
-          measureWeVoteId={measureWeVoteId}
           noVoteDescription={noVoteDescription}
-          onClose={this.toggleYesNoModal}
-          onTabChange={this.handleYesNoTabChange}
+          onClose={this.toggleInfoModal}
+          onTabChange={this.handleInfoModalTabChange}
           yesVoteDescription={yesVoteDescription}
         />
+
       </MeasureItemCompressedWrapper>
     );
   }
@@ -448,8 +409,6 @@ class MeasureItemCompressed extends Component {
 MeasureItemCompressed.propTypes = {
   externalUniqueId: PropTypes.string,
   measureWeVoteId: PropTypes.string.isRequired,
-  organization: PropTypes.object,
-  organizationWeVoteId: PropTypes.string,
 };
 
 const styles = (theme) => ({
@@ -490,14 +449,18 @@ const EndorsementRow = styled('div')`
     border-bottom: 1px solid #ddd;
     padding-bottom: 12px;
   }
+  &:not(:has(span, img)) {
+    display: none;
+  }
 `;
 
 const EndorsementsAndSourcesColumn = styled('div')`
   display: flex;
-  flex: 1 0 350px;
+  flex: 0 0 370px;
   flex-direction: column;
   gap: 12px;
-  min-width: 0;
+  max-width: 370px;
+  min-width: 370px;
 `;
 
 const GreenBold = styled('span')`
@@ -536,7 +499,9 @@ const ItemActionBarOutsideWrapper = styled('div')`
 
 const MeasureDescriptionColumn = styled('div')`
   border-right: 1px solid #ddd;
-  flex: 0 0 200px;
+  flex: 0 0 230px;
+  max-width: 230px;
+  min-width: 230px;
   padding: 0 16px 8px 8px;
 `;
 
@@ -563,6 +528,11 @@ const MeasureTitleItem = styled('h1')`
   margin-bottom: 0;
   margin-top: 0;
   width: 100%;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const NoMeansColumn = styled('div')`
@@ -578,7 +548,9 @@ const NoMeansTitle = styled('div')`
 
 const OpinionsColumn = styled('div')`
   border-left: 1px solid #ddd;
-  flex: 0 0 200px;
+  flex: 0 0 295px;
+  max-width: 295px;
+  min-width: 295px;
   padding-left: 16px;
 `;
 
@@ -598,18 +570,28 @@ const SeeMoreLink = styled('div')`
 `;
 
 const SourceDescription = styled('div')`
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 8;
   color: #555;
+  display: -webkit-box;
   font-size: 14px;
   line-height: 1.4;
+  overflow: hidden;
   white-space: normal;
 `;
 
 const SubTitle = styled('h3')`
   color: #4371cc;
+  cursor: pointer;
   font-size: 16px;
   font-weight: 500;
   margin-bottom: 6px;
   margin-top: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
   ${constrainedTextMobileStyles}
 `;
 

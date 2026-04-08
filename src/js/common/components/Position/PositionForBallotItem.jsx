@@ -7,8 +7,9 @@ import { Avatar, Typography } from '@mui/material';
 import { withStyles } from '@mui/styles';
 import HeartFavoriteToggleLoader from '../Widgets/HeartFavoriteToggle/HeartFavoriteToggleLoader';
 import ThumbsUpDownToggle from '../Widgets/ThumbsUpDownToggle/ThumbsUpDownToggle';
+import { timeFromDate } from '../../utils/dateFormat';
 import DesignTokenColors from '../Style/DesignTokenColors';
-import { SpeakerInfoWrapper, SpeakerName, SpeakerStatement, SpeakerStatementWrapper } from '../Style/PositionDisplayStyles';
+import { CompactSecondaryText, CompactStatementText, SpeakerInfoWrapper, SpeakerName, SpeakerStatement, SpeakerStatementWrapper } from '../Style/PositionDisplayStyles';
 import speakerDisplayNameToInitials from '../../utils/speakerDisplayNameToInitials';
 import SpeakerEndorsedOrOpposedSnippet from './SpeakerEndorsedOrOpposedSnippet';
 import AppObservableStore from '../../stores/AppObservableStore';
@@ -18,7 +19,7 @@ import lookupPageNameAndPageTypeDict from '../../../utils/lookupPageNameAndPageT
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../Widgets/OpenExternalWebSite'));
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../Widgets/ReadMore'));
 
-function PositionForBallotItem ({ classes, linksOpenExternalWebsite, position }) {
+function PositionForBallotItem ({ classes, compactMode, linksOpenExternalWebsite, position }) {
   const [anchorEl, setAnchorEL] = useState(null);
 
   const onDotButtonClick = (e) => {
@@ -68,7 +69,7 @@ function PositionForBallotItem ({ classes, linksOpenExternalWebsite, position })
     </SpeakerImageWrapper>
   );
   return (
-    <PositionForBallotItemWrapper>
+    <PositionForBallotItemWrapper $compactMode={compactMode}>
       {linksOpenExternalWebsite ? (
         <Suspense fallback={<></>}>
           <OpenExternalWebSite
@@ -85,29 +86,34 @@ function PositionForBallotItem ({ classes, linksOpenExternalWebsite, position })
         <>{speakerImageJsx}</>
       )}
       <SpeakerInfoWrapper>
-        <SpeakerInfoNameFavoritesWrapper>
-          {linksOpenExternalWebsite ? (
-            <Suspense fallback={<></>}>
-              <OpenExternalWebSite
-                body={<SpeakerName>{speakerDisplayName}</SpeakerName>}
-                destinationPageName={lookupPageNameAndPageTypeDict(speakerLink).pageName}
-                destinationPageType={lookupPageNameAndPageTypeDict(speakerLink).pageType}
-                linkIdAttribute="positionSpeakerDisplayName"
-                target="_blank"
-                trackingOn
-                url={speakerLinkExternal}
-              />
-            </Suspense>
-          ) : (
-            <SpeakerName>{speakerDisplayName}</SpeakerName>
-          )}
-          {(heartToggleOn && (campaignXWeVoteId || organizationWeVoteId)) && (
-            <HeartFavoriteToggleWrapper>
-              <HeartFavoriteToggleLoader campaignXWeVoteId={campaignXWeVoteId} organizationWeVoteId={organizationWeVoteId} />
-            </HeartFavoriteToggleWrapper>
-          )}
-        </SpeakerInfoNameFavoritesWrapper>
-        {statementText && (
+        {!compactMode && (
+          <SpeakerInfoNameFavoritesWrapper>
+            {linksOpenExternalWebsite ? (
+              <Suspense fallback={<></>}>
+                <OpenExternalWebSite
+                  body={<SpeakerName>{speakerDisplayName}</SpeakerName>}
+                  destinationPageName={lookupPageNameAndPageTypeDict(speakerLink).pageName}
+                  destinationPageType={lookupPageNameAndPageTypeDict(speakerLink).pageType}
+                  linkIdAttribute="positionSpeakerDisplayName"
+                  target="_blank"
+                  trackingOn
+                  url={speakerLinkExternal}
+                />
+              </Suspense>
+            ) : (
+              <SpeakerName>{speakerDisplayName}</SpeakerName>
+            )}
+            {(heartToggleOn && (campaignXWeVoteId || organizationWeVoteId)) && (
+              <HeartFavoriteToggleWrapper>
+                <HeartFavoriteToggleLoader campaignXWeVoteId={campaignXWeVoteId} organizationWeVoteId={organizationWeVoteId} />
+              </HeartFavoriteToggleWrapper>
+            )}
+          </SpeakerInfoNameFavoritesWrapper>
+        )}
+        {statementText && compactMode && (
+          <CompactStatementText>{statementText}</CompactStatementText>
+        )}
+        {statementText && !compactMode && (
           <SpeakerStatementWrapper>
             <SpeakerStatement>
               <Suspense fallback={<></>}>
@@ -119,6 +125,16 @@ function PositionForBallotItem ({ classes, linksOpenExternalWebsite, position })
             </SpeakerStatement>
           </SpeakerStatementWrapper>
         )}
+        {compactMode && (
+          <CompactTimestamp>
+            {speakerDisplayName}
+            {position.is_support && <CompactStanceText $support>{' endorsed '}</CompactStanceText>}
+            {position.is_oppose && <CompactStanceText $oppose>{' opposed '}</CompactStanceText>}
+            {!position.is_support && !position.is_oppose && ' commented '}
+            {timeFromDate(position.last_updated || position.date_entered)}
+          </CompactTimestamp>
+        )}
+        {!compactMode && (
         <SpeakerPositionLikesSourceWrapper>
           <SpeakerEndorsedOrOpposedSnippet position={position} />
           <ThumbsUpAndSourceWrapper>
@@ -177,14 +193,15 @@ function PositionForBallotItem ({ classes, linksOpenExternalWebsite, position })
             </FlexDiv>
           </ThumbsUpAndSourceWrapper>
         </SpeakerPositionLikesSourceWrapper>
+        )}
       </SpeakerInfoWrapper>
     </PositionForBallotItemWrapper>
   );
 }
 PositionForBallotItem.propTypes = {
   classes: PropTypes.object,
+  compactMode: PropTypes.bool,
   linksOpenExternalWebsite: PropTypes.bool,
-  politicianWeVoteId: PropTypes.string,
   position: PropTypes.object,
 };
 
@@ -195,6 +212,18 @@ const styles = () => ({
     marginTop: '4px',
   },
 });
+
+const CompactStanceText = styled('span', {
+  shouldForwardProp: (prop) => !['$support', '$oppose'].includes(prop),
+})`
+  color: ${({ $support, $oppose }) => {
+    if ($support) return DesignTokenColors.confirmation700;
+    if ($oppose) return DesignTokenColors.alert700;
+    return 'inherit';
+  }};
+`;
+
+const CompactTimestamp = CompactSecondaryText;
 
 const FlexDiv = styled('div')`
   display: flex;
@@ -224,12 +253,26 @@ const OpinionSource = styled('button')`
   border: none;
 `;
 
-const PositionForBallotItemWrapper = styled('div')`
+
+const PositionForBallotItemWrapper = styled('div', {
+  shouldForwardProp: (prop) => prop !== '$compactMode',
+})`
   display: flex;
 
   &:not(:last-child) {
     border-bottom: 1px solid ${DesignTokenColors.neutral100};
   }
+
+  ${({ $compactMode }) => $compactMode && `
+    h3 {
+      font-size: 14px;
+      font-weight: 600;
+      margin: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  `}
 `;
 
 const SourceButton = styled('button')`
