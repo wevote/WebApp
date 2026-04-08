@@ -46,6 +46,11 @@ export default function useVoterCanEditPolitician () {
   }, [updateVoterCanEditPoliticianProfile]);
 
   const onVoterStoreChange = useCallback(() => {
+    const secretCodeVerificationStatus = VoterStore.getSecretCodeVerificationStatus();
+    const { secretCodeVerified } = secretCodeVerificationStatus;
+    if (secretCodeVerified) {
+      VoterActions.voterEmailAddressRetrieve();
+    }
     updateVoterCanEditPoliticianProfile();
   }, [updateVoterCanEditPoliticianProfile]);
 
