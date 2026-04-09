@@ -101,7 +101,7 @@ class PoliticianEndorsementsList extends Component {
       numberOfPositionsToDisplay,
     });
 
-    const { politicianWeVoteId } = this.props;
+    const { drawerName, politicianWeVoteId } = this.props;
     const dataLayerObject = {
       event: 'action',
       actionDetails: {
@@ -110,7 +110,7 @@ class PoliticianEndorsementsList extends Component {
         numberOfPositionsToDisplay,
       },
       userDetails: VoterStore.getAnalyticsUserDetails(),
-      pageDetails: getPageDetails(),
+      pageDetails: getPageDetails(drawerName),
     };
     if (politicianWeVoteId) {
       dataLayerObject.politicianDetails = PoliticianStore.getAnalyticsPoliticianDetails(politicianWeVoteId);
@@ -175,6 +175,7 @@ class PoliticianEndorsementsList extends Component {
 }
 PoliticianEndorsementsList.propTypes = {
   hideEncouragementToEndorse: PropTypes.bool,
+  drawerName: PropTypes.string,
   politicianWeVoteId: PropTypes.string,
   startingNumberOfPositionsToDisplay: PropTypes.number,
 };

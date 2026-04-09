@@ -62,9 +62,10 @@ class PoliticianStore extends ReduceStore {
 
   getAnalyticsPoliticianDetails (politicianWeVoteId) {
     const politician = this.getPoliticianByWeVoteId(politicianWeVoteId);
+    const isClaimedProfileDateTime = politician ? politician.is_claimed_profile_date_time || '' : '';
     return {
       isClaimedProfile: politician ? politician.is_claimed_profile : false,
-      isClaimedProfileDateTime: politician ? politician.is_claimed_profile_date_time : false,
+      isClaimedProfileDateTime,
       image: politician ? politician.we_vote_hosted_profile_image_url_medium : '',
       politicalParty: politician ? politician.political_party : '',
       politicianName: politician ? this.getPoliticianName(politicianWeVoteId) : '',

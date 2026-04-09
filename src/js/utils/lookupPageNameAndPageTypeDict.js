@@ -175,7 +175,7 @@ export default function lookupPageNameAndPageTypeDict (path) {
   }
 }
 
-export function getPageDetails (stateCode = null, drawerName = null) {
+export function getPageDetails (drawerName = null, stateCode = null) {
   const { location: { pathname } } = window;
   const currentPage = lookupPageNameAndPageTypeDict(pathname);
 

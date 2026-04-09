@@ -145,7 +145,7 @@ function HeaderProfileDrawer () {
         buttonId,
       },
       userDetails: VoterStore.getAnalyticsUserDetails(),
-      pageDetails: getPageDetails(null, 'HeaderProfileDrawer'),
+      pageDetails: getPageDetails('HeaderProfileDrawer'),
       destinationDetails: {
         destinationPageName: destinationPage.pageName || '',
         destinationPageType: destinationPage.pageType || '',

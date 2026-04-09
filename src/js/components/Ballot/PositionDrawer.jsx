@@ -206,7 +206,7 @@ class PositionDrawer extends Component {
       event: 'action',
       actionDetails: { actionType: 'open' },
       userDetails: VoterStore.getAnalyticsUserDetails(),
-      pageDetails: getPageDetails(null, 'PositionDrawer'),
+      pageDetails: getPageDetails('PositionDrawer'),
     };
     TagManager.dataLayer({ dataLayer: dataLayerObject });
   };
