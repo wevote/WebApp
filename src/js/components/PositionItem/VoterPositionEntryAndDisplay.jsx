@@ -309,7 +309,7 @@ function VoterPositionEntryAndDisplay ({ ballotItemWeVoteId: ballotItemWeVoteIdP
         // console.log('VoterPositionEntryAndDisplay stanceTemp:', stanceTemp, 'voterSupportsBallotItem:', voterSupportsBallotItem, 'voterOpposesBallotItem:', voterOpposesBallotItem);
         const positionTemp = SupportStore.getPositionFromBallotItemWeVoteId(currentEffectiveWeVoteId);
         // console.log('onSupportStoreChange currentEffectiveWeVoteId: ', currentEffectiveWeVoteId, ', positionTemp: ', positionTemp);
-        setPositionExists(voterOpposesBallotItem || voterPositionIsPublic || voterSupportsBallotItem || voterTextStatement);
+        setPositionExists(!!(voterOpposesBallotItem || voterPositionIsPublic || voterSupportsBallotItem || voterTextStatement));
         setSupportOrOpposeStanceExists(voterOpposesBallotItem || voterSupportsBallotItem);
         setPosition({ ...positionTemp }); // Ensure a new object reference so the component re-renders
         setSelectedStance(stanceTemp);
