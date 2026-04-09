@@ -14,7 +14,7 @@ import standardBoxShadow from '../../common/components/Style/standardBoxShadow';
 import signInModalGlobalState from '../../common/components/Widgets/signInModalGlobalState';
 import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
 import apiCalming from '../../common/utils/apiCalming';
-import { historyPush } from '../../common/utils/cordovaUtils';
+// import { historyPush } from '../../common/utils/cordovaUtils';
 import { normalizedHrefPage } from '../../common/utils/hrefUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize, { handleResize, isSmallTablet, isTablet } from '../../common/utils/isMobileScreenSize';
@@ -261,6 +261,7 @@ class HeaderBar extends Component {
       case 'donate':
       case 'more/donate':
         return 3;
+      case 'election-finder':
       case 'friends':
       case 'news':
       case 'challenges':
@@ -268,8 +269,9 @@ class HeaderBar extends Component {
       case 'more/faq':
       case 'managecandidates':
       case 'no-candidates-claimed':
-      default:
         return 4;
+      default:
+        return 0;
     }
   };
 

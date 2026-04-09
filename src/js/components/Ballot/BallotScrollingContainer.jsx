@@ -425,7 +425,9 @@ const IssuesColumn = styled('div')`
   padding: 0 16px 8px 8px;
   &:not(:has(span, img, a, button)) {
     display: none !important;
-  }
+    // Related to ticket WV-4269
+    //flex: 0 0 85px;
+    //max-width: 85px;
 `;
 
 // FlexColumn must be before CandidateOpinionsColumnWrapper (it references FlexColumn)

@@ -10,7 +10,7 @@ import PositionList from './PositionList';
 
 const VoterPositionEntryAndDisplay = React.lazy(() => import(/* webpackChunkName: 'VoterPositionEntryAndDisplay' */ '../PositionItem/VoterPositionEntryAndDisplay'));
 
-const OPINIONS_TO_SHOW = 3;
+const OPINIONS_TO_SHOW = 2;
 
 class CandidateOpinionsColumn extends Component {
   constructor (props) {
