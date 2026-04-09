@@ -153,7 +153,7 @@ function PoliticianSelfEditDrawer () {
         buttonId,
       },
       userDetails: VoterStore.getAnalyticsUserDetails(),
-      pageDetails: getPageDetails(null, 'PoliticianSelfEditDrawer'),
+      pageDetails: getPageDetails('PoliticianSelfEditDrawer'),
       destinationDetails: {
         destinationPageName: destinationPage.pageName || '',
         destinationPageType: destinationPage.pageType || '',

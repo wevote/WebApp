@@ -75,7 +75,7 @@ class ActivityTidbitDrawer extends Component {
       event: 'action',
       actionDetails: { actionType: 'open' },
       userDetails: VoterStore.getAnalyticsUserDetails(),
-      pageDetails: getPageDetails(null, 'ActivityTidbitDrawer'),
+      pageDetails: getPageDetails('ActivityTidbitDrawer'),
     };
     TagManager.dataLayer({ dataLayer: dataLayerObject });
   };

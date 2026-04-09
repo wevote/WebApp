@@ -238,7 +238,7 @@ class CampaignsHome extends Component {
       }
       const dataLayerObject = {
         event: 'landing',
-        pageDetails: getPageDetails(urlStateCode),
+        pageDetails: getPageDetails(null, urlStateCode),
         userDetails: VoterStore.getAnalyticsUserDetails(),
       };
       TagManager.dataLayer({ dataLayer: dataLayerObject });
