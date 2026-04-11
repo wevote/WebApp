@@ -37,7 +37,6 @@ const mobileBrowserSpecs = [
   '../specs/WhosRunningForOffice.browser.js',
   '../specs/CandidateDetailsPage.browser.js',
   '../specs/BalletDrawerPage.browser.js',
-
 ];
 
 const desktopBrowserSpecs = [
