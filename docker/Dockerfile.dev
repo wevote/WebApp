@@ -1,6 +1,14 @@
-FROM public.ecr.aws/docker/library/node:25
-WORKDIR /app
-COPY package*.json ./
-RUN npm install
-CMD ["npm", "run", "dev"]
+# --- builder: root, full install ---
+  FROM public.ecr.aws/docker/library/node:25 AS builder
+  WORKDIR /app
+  COPY package.json package-lock.json ./
+  RUN npm install
 
+  # --- runtime: non-root, copy artifacts from builder ---
+  FROM public.ecr.aws/docker/library/node:25
+  WORKDIR /app
+  COPY package.json package-lock.json ./
+  COPY --from=builder /app/node_modules ./node_modules
+  RUN chown -R node:node /app
+  USER node
+  CMD ["npm", "run", "dev"]
