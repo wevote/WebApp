@@ -428,6 +428,7 @@ const styles = () => ({
   dialogPaper: {
     minHeight: 282,
     margin: '0 8px',
+    borderRadius: 12
   },
 });
 

@@ -451,7 +451,7 @@ export default class SignInOptionsPanel extends Component {
                 {voterIsSignedIn ?
                   <div className="u-stack--sm">{yourAccountExplanation}</div> : (
                     <>
-                      <div className="u-f3" id="pleaseSignInTitle">{pleaseSignInTitle || pleaseSignInTitleFromState}</div>
+                      <div className="u-f3" id="pleaseSignInTitle"><span style={{ fontWeight: 600, color: '#4B4B4B' }}>{pleaseSignInTitle || pleaseSignInTitleFromState}</span></div>
                       <SignInSubtitle className="u-stack--sm" id="signInSubtitle" style={{ paddingBottom: `${isCordova() ? '18px' : ''}` }}>{pleaseSignInSubTitle}</SignInSubtitle>
                     </>
                   )}

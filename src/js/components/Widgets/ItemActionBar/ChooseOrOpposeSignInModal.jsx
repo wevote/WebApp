@@ -119,7 +119,7 @@ class ChooseOrOpposeIntroModal extends Component {
         <Suspense fallback={<></>}>
           <>
             <SignInOptionsPanel
-              pleaseSignInTitle="Save your choices for access on any device."
+              pleaseSignInTitle="Sign in to save your choices!"
               pleaseSignInSubTitle=""
               toggleSignInModal={this.props.onClose}
               inModal
@@ -155,8 +155,9 @@ class ChooseOrOpposeIntroModal extends Component {
     const slides = this.getSlides();
     return (
       <>
-        <IconButtonRow>                                                                                                                                                                               
-          <IconButton   
+        <DialogTitle classes={{ root: classes.dialogTitle }}>
+          <TitleText>Choose or Oppose</TitleText>
+          <IconButton
             aria-label="Close"
             classes={{ root: classes.closeButton }}
             onClick={this.props.onClose}
@@ -165,9 +166,6 @@ class ChooseOrOpposeIntroModal extends Component {
           >
             <Close />
           </IconButton>
-        </IconButtonRow>
-        <DialogTitle classes={{ root: classes.dialogTitle }}>
-          <TitleText>Nice work - you're making progress!</TitleText>
         </DialogTitle>
         <HorizontalLine />
         <DialogContent classes={{ root: classes.dialogContent }}>
@@ -194,6 +192,7 @@ const styles = (theme) => ({
     width: '100%',
   },
   closeButton: {
+    position: 'absolute',
     right: theme.spacing(1),
     top: theme.spacing(1),
   },
@@ -217,18 +216,13 @@ const styles = (theme) => ({
 });
 
 const HorizontalLine = styled('div')(({ theme }) => (`
-  background-color: #A9A9A9;
+  background-color: #eee;
   height: 2px;
   margin: 0 24px;
   margin-bottom: 8px;
   ${theme.breakpoints.down('md')} {
     margin: 0 0 8px 0;
   }
-`));
-
-const IconButtonRow = styled('div')(() => (`
-    display: flex;                                                                                                                                                                              
-    justify-content: flex-end;
 `));
 
 const Options = styled('div')(({ buttons }) => (`
@@ -241,7 +235,7 @@ const Options = styled('div')(({ buttons }) => (`
 const TitleText = styled('div')`
   font-weight: bold;
   font-size: 20px;
-  color: #3062A4;
+  color: #333;
   margin-bottom: 4px;
 `;
 
