@@ -22,9 +22,12 @@ import {
   CandidateParty, CandidateRow, DetailTitle, ElectionTitleRow,
   ExpandCollapseButton, ExpandCollapseRow, ExpandMoreIcon,
   HighlightSpan, InlineSearchField, NoResults,
-  OfficeHeader, OfficeHeaderActions, OfficeHeaderLeft, OfficeName,
+  OfficeHeader, OfficeHeaderActions, OfficeHeaderLeft, OfficeName, OfficePrimaryPartySpan,
   OfficeSection, SearchIconButton, SearchResultCount, ShowMoreButton,
 } from './electionFinderStyles';
+import webAppConfig from '../../config';
+
+const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
 function ElectionFinderForElection () {
   renderLog('ElectionFinderForElection');
@@ -205,9 +208,11 @@ function ElectionFinderForElection () {
 
         <ElectionTitleRow>
           <DetailTitle>{electionName}</DetailTitle>
-          <DarkTooltip title="Download election data">
-            <IconButton size="small"><FileDownloadOutlined fontSize="small" /></IconButton>
-          </DarkTooltip>
+          {nextReleaseFeaturesEnabled && (
+            <DarkTooltip title="Download election data">
+              <IconButton size="small"><FileDownloadOutlined fontSize="small" /></IconButton>
+            </DarkTooltip>
+          )}
           {electionSearchOpen ? (
             <InlineSearchField
               variant="outlined"
@@ -306,9 +311,25 @@ function OfficeSectionItemInner ({ // eslint-disable-line react/no-multi-comp
   office, isExpanded, searchText,
   onToggle, onCandidateClick, getCandidatePath, copyToClipboard, highlightMatch,
 }) {
+  // console.log('OfficeSectionItemInner render office: ', office);
   const officeWeVoteId = office.we_vote_id;
   const officeName = office.ballot_item_display_name;
+  const primaryParty = office.primary_party || '';
   const candidates = office.candidate_list || [];
+  const officeNameWithPrimaryParty = (
+    <span>
+      {officeName}
+      {primaryParty && (
+        <OfficePrimaryPartySpan>
+          ,
+          {' '}
+          {primaryParty}
+          {' '}
+          Primary
+        </OfficePrimaryPartySpan>
+      )}
+    </span>
+  );
   return (
     <OfficeSection>
       <OfficeHeader onClick={() => onToggle(officeWeVoteId)}>
@@ -317,7 +338,7 @@ function OfficeSectionItemInner ({ // eslint-disable-line react/no-multi-comp
             <ExpandMore fontSize="small" />
           </ExpandMoreIcon>
           <OfficeName>
-            {searchText ? highlightMatch(officeName, searchText) : officeName}
+            {searchText ? highlightMatch(officeNameWithPrimaryParty, searchText) : officeNameWithPrimaryParty}
             {` (${candidates.length})`}
           </OfficeName>
         </OfficeHeaderLeft>
@@ -335,9 +356,11 @@ function OfficeSectionItemInner ({ // eslint-disable-line react/no-multi-comp
             </ActionChip>
           </DarkTooltip>
           <ActionDivider />
-          <DarkTooltip title="Info">
-            <IconButton size="small"><InfoOutlined fontSize="small" /></IconButton>
-          </DarkTooltip>
+          {nextReleaseFeaturesEnabled && (
+            <DarkTooltip title="Info">
+              <IconButton size="small"><InfoOutlined fontSize="small" /></IconButton>
+            </DarkTooltip>
+          )}
           <DarkTooltip title="Open in new tab">
             <IconButton size="small" onClick={() => window.open(`/office/${officeWeVoteId}`, '_blank')}>
               <Launch fontSize="small" />

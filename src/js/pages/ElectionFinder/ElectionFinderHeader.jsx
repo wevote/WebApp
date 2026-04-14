@@ -18,7 +18,7 @@ function ElectionFinderHeader ({ breadcrumbs, stateLabel, subtitle }) {
                 {isLast || !crumb.href ? (
                   <span>{crumb.label}</span>
                 ) : (
-                  <BreadcrumbAnchor href={crumb.href}>
+                  <BreadcrumbAnchor to={crumb.href}>
                     {crumb.label}
                   </BreadcrumbAnchor>
                 )}

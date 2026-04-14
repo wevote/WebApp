@@ -252,7 +252,10 @@ function HeaderProfileDrawer () {
       )}
       <YourAccountWrapper>
         <AccountCircleStyled />
-        <div>Your Settings</div>
+        <div>
+          <span className="u-show-mobile">Settings</span>
+          <span className="u-show-desktop-tablet">Your&nbsp;Settings</span>
+        </div>
       </YourAccountWrapper>
       {windowWidth >= 768 && (
         <>
@@ -288,7 +291,7 @@ function HeaderProfileDrawer () {
         <>
           {showLinksToProfilePages ? (
             <NavLinksContainer>
-              {ImportContactsJsx}
+              {nextReleaseFeaturesEnabled && ImportContactsJsx}
               {linksToProfilePages}
               {SignOutJsx}
               <SettingsSectionFooterWrapper>
@@ -302,7 +305,7 @@ function HeaderProfileDrawer () {
       ) : (
         <>
           <NavLinksContainer>
-            {ImportContactsJsx}
+            {nextReleaseFeaturesEnabled && ImportContactsJsx}
             {linksToProfilePages}
             {SignOutJsx}
             <SettingsSectionFooterWrapper>

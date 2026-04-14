@@ -18,6 +18,9 @@ import {
   SearchIconButton, SectionTitle, SectionTitleRow, ShowMoreButton,
   StateSelectWrapper, StateSelectNative, StateSelectLabel, StateSelectCaret,
 } from './electionFinderStyles';
+import webAppConfig from '../../config';
+
+const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
 const SORTED_STATES = Object.entries(stateCodeMap)
   .filter(([code]) => code !== 'NA')
@@ -216,9 +219,11 @@ function ElectionFinderForState () {
 
         <SectionTitleRow>
           <SectionTitle>{sectionTitle}</SectionTitle>
-          <DarkTooltip title={sectionDownloadLabel}>
-            <IconButton size="small"><FileDownloadOutlined fontSize="small" /></IconButton>
-          </DarkTooltip>
+          {nextReleaseFeaturesEnabled && (
+            <DarkTooltip title={sectionDownloadLabel}>
+              <IconButton size="small"><FileDownloadOutlined fontSize="small" /></IconButton>
+            </DarkTooltip>
+          )}
         </SectionTitleRow>
 
         <ElectionList>
@@ -245,9 +250,11 @@ function ElectionFinderForState () {
                     </ActionChip>
                   </DarkTooltip>
                   <ActionDivider />
-                  <DarkTooltip title="Download election data">
-                    <IconButton size="small"><FileDownloadOutlined fontSize="small" /></IconButton>
-                  </DarkTooltip>
+                  {nextReleaseFeaturesEnabled && (
+                    <DarkTooltip title="Download election data">
+                      <IconButton size="small"><FileDownloadOutlined fontSize="small" /></IconButton>
+                    </DarkTooltip>
+                  )}
                   <DarkTooltip title="Open in new tab">
                     <IconButton size="small" onClick={() => window.open(`/election-finder/${selectedStateCode.toLowerCase()}/${googleCivicElectionId}`, '_blank')}>
                       <Launch fontSize="small" />

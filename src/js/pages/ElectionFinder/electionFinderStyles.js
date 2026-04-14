@@ -1,5 +1,6 @@
 import { TextField, Tooltip, tooltipClasses } from '@mui/material';
 import React from 'react'; // eslint-disable-line no-unused-vars
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 // eslint-disable-next-line react/jsx-props-no-spreading, react/react-in-jsx-scope
@@ -50,7 +51,7 @@ export const Breadcrumb = styled('div')`
   margin-bottom: 8px;
 `;
 
-export const BreadcrumbAnchor = styled('a')`
+export const BreadcrumbAnchor = styled(Link)`
   color: #206bc4;
   cursor: pointer;
   text-decoration: none;
@@ -285,6 +286,10 @@ export const OfficeName = styled('span')`
   font-size: 16px;
   font-weight: 600;
   color: #333;
+`;
+
+export const OfficePrimaryPartySpan = styled('span')`
+  font-weight: 400;
 `;
 
 export const OfficeSection = styled('div')`

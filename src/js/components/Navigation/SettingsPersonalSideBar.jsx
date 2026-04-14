@@ -126,7 +126,7 @@ export default class SettingsPersonalSideBar extends Component {
         <div className="card-main">
           <div className="SettingsItem__summary__title">Your Settings</div>
 
-          {isSignedIn && nextReleaseFeaturesEnabled && (
+          {(isSignedIn && nextReleaseFeaturesEnabled) && (
             <div className={String(editMode) === 'contacts' ?
               'SettingsItem__summary__item-container SettingsItem__summary__item-container--selected' :
               'SettingsItem__summary__item-container '}
