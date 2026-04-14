@@ -194,15 +194,16 @@ class SettingsSubscriptionPlan extends Component {
     const { activePaidPlanChosen } = this.state;
     let paidAccountUpgradeMode = '';
     switch (activePaidPlanChosen) {
-      default:
-      case 'free':
-        paidAccountUpgradeMode = 'professional';
-        break;
       case 'professional':
         paidAccountUpgradeMode = 'enterprise';
         break;
       case 'enterprise':
         paidAccountUpgradeMode = 'professional';
+        break;
+      case 'free':
+        paidAccountUpgradeMode = 'professional';
+        break;
+      default:
         break;
     }
 

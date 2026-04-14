@@ -183,7 +183,6 @@ export default class SettingsIssueLinks extends Component {
           />
         ));
         break;
-      default:
       case 'issues_linked':
         issuesToDisplay = this.state.issuesLinkedTo.map((issue) => (
           <IssueLinkToggle
@@ -193,6 +192,8 @@ export default class SettingsIssueLinks extends Component {
             isLinked={isLinkedTrue}
           />
         ));
+        break;
+      default:
         break;
     }
 
