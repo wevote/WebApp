@@ -201,9 +201,8 @@ class SettingsSubscriptionPlan extends Component {
         paidAccountUpgradeMode = 'professional';
         break;
       case 'free':
-        paidAccountUpgradeMode = 'professional';
-        break;
       default:
+        paidAccountUpgradeMode = 'professional';
         break;
     }
 

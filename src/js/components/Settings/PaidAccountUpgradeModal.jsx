@@ -572,17 +572,6 @@ class PaidAccountUpgradeModal extends Component {
     const couponDiscountValueString = ` $${couponDiscountValue}`;
 
     switch (paidAccountProcessStep) {
-    case 'choosePlan':
-        modalTitle = 'Choose Your Plan';
-        modalHtmlContents = (
-          <Pricing
-            initialPricingChoice="campaigns"
-            initialPricingPlan={this.state.pricingPlanChosen ? this.state.pricingPlanChosen : this.props.initialPricingPlan}
-            modalDisplayMode
-            pricingPlanChosenFunction={this.pricingPlanChosenFunction}
-          />
-        );
-        break;
       case 'selectPlanDetailsMobile':
         backToButton = (
           <Button className={classes.backToButton} onClick={this.backToChoosePlan}>
@@ -1008,6 +997,7 @@ class PaidAccountUpgradeModal extends Component {
         );
         break;
       case 'choosePlan':
+      default:
         modalTitle = 'Choose Your Plan';
         modalHtmlContents = (
           <Pricing
@@ -1017,8 +1007,6 @@ class PaidAccountUpgradeModal extends Component {
             pricingPlanChosenFunction={this.pricingPlanChosenFunction}
           />
         );
-        break;
-      default:
         break;
       }
     return (

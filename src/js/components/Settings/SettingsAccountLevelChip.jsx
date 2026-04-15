@@ -32,13 +32,12 @@ class SettingsAccountLevelChip extends Component {
     let chipLabel;
     const yourFeaturePackageExceedsOrEquals = voterFeaturePackageExceedsOrEqualsRequired(chosenFeaturePackage, requiredFeaturePackage);
     switch (requiredFeaturePackage.toUpperCase()) {
-      case 'ENTERPRISE':
-        chipLabel = 'ENTERPRISE';
-        break;
       case 'PROFESSIONAL':
         chipLabel = 'PRO';
         break;
+      case 'ENTERPRISE':
       default:
+        chipLabel = 'ENTERPRISE';
         break;
     }
     return (
