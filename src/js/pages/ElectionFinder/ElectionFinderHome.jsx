@@ -17,6 +17,9 @@ import {
   SearchIconButton, SectionTitle, SectionTitleRow, ShowMoreButton,
   StateSelectWrapper, StateSelectNative, StateSelectLabel, StateSelectCaret,
 } from './electionFinderStyles';
+import webAppConfig from '../../config';
+
+const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
 function formatDateUS (dateString) {
   if (!dateString) return '';
@@ -34,14 +37,23 @@ const SORTED_STATES = Object.entries(stateCodeMap)
 
 function ElectionFinderHome () {
   renderLog('ElectionFinderHome');
+  const [copyLinkText, setCopyLinkText] = useState('Copy link');
   const [electionList, setElectionList] = useState([]);
   const [selectedStateCode, setSelectedStateCode] = useState('all');
   const [filterTab, setFilterTab] = useState('upcoming');
   const [visibleCount, setVisibleCount] = useState(50);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchText, setSearchText] = useState('');
+  const copyLinkTimeoutRef = useRef(null);
   const searchInputRef = useRef(null);
   const searchDebounceRef = useRef(null);
+
+  useEffect(() => () => {
+    // Clear timeout when component unmounts
+    if (copyLinkTimeoutRef.current) {
+      clearTimeout(copyLinkTimeoutRef.current);
+    }
+  }, []);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -186,9 +198,11 @@ function ElectionFinderHome () {
 
         <SectionTitleRow>
           <SectionTitle>{sectionTitle}</SectionTitle>
-          <DarkTooltip title={sectionDownloadLabel}>
-            <IconButton size="small"><FileDownloadOutlined fontSize="small" /></IconButton>
-          </DarkTooltip>
+          {nextReleaseFeaturesEnabled && (
+            <DarkTooltip title={sectionDownloadLabel}>
+              <IconButton size="small"><FileDownloadOutlined fontSize="small" /></IconButton>
+            </DarkTooltip>
+          )}
         </SectionTitleRow>
 
         <ElectionList>
@@ -206,8 +220,12 @@ function ElectionFinderHome () {
                   {election.election_name || ''}
                 </ElectionLink>
                 <ElectionRowActions className="u-show-desktop-tablet" onClick={(e) => e.stopPropagation()}>
-                  <DarkTooltip title="Copy link">
+                  <DarkTooltip title={copyLinkText}>
                     <ActionChip onClick={() => {
+                      setCopyLinkText('Copied!');
+                      copyLinkTimeoutRef.current = setTimeout(() => {
+                        setCopyLinkText('Copy link');
+                      }, 3000);
                       const sc = (election.state_code_list && election.state_code_list.length > 0) ?
                         election.state_code_list[0].toLowerCase() :
                         'na';
@@ -215,13 +233,15 @@ function ElectionFinderHome () {
                     }}
                     >
                       <ContentCopy sx={{ fontSize: 14, mr: 0.5 }} />
-                      Copy link
+                      {copyLinkText}
                     </ActionChip>
                   </DarkTooltip>
                   <ActionDivider />
-                  <DarkTooltip title="Download election data">
-                    <IconButton size="small"><FileDownloadOutlined fontSize="small" /></IconButton>
-                  </DarkTooltip>
+                  {nextReleaseFeaturesEnabled && (
+                    <DarkTooltip title="Download election data">
+                      <IconButton size="small"><FileDownloadOutlined fontSize="small" /></IconButton>
+                    </DarkTooltip>
+                  )}
                   <DarkTooltip title="Open in new tab">
                     <IconButton
                       size="small"

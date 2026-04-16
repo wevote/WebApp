@@ -95,12 +95,16 @@ class PoliticianPositionRetrieveController extends Component {
             }
             if (now < ultimate && !alreadyRetrievedList.includes(candidateList[i].we_vote_id)) {
               // Leave a gap of 300 milliseconds between each request
-              setTimeout(this.retrievePositionListsForOneCandidate(candidateList[i].we_vote_id), howLongToDelayRetrieve * i);
-              alreadyRetrievedList.push(candidateList[i].we_vote_id);
+              if (candidateList[i] && candidateList[i].we_vote_id) {
+                setTimeout(this.retrievePositionListsForOneCandidate(candidateList[i].we_vote_id), howLongToDelayRetrieve * i);
+                alreadyRetrievedList.push(candidateList[i].we_vote_id);
+              }
             }
           }
           if (alreadyRetrievedList.length === 0) {
-            this.retrievePositionListsForOneCandidate(candidateList[mostRecentIndex].we_vote_id);
+            if (mostRecentIndex > -1 && candidateList[mostRecentIndex]) {
+              this.retrievePositionListsForOneCandidate(candidateList[mostRecentIndex].we_vote_id);
+            }
           }
           this.setState({
             firstCandidatePositionsRetrieveInitiated: true,

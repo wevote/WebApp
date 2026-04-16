@@ -30,14 +30,13 @@ import SupportStore from '../../../stores/SupportStore';
 import VoterStore from '../../../stores/VoterStore';
 import { possibleAppReview } from '../../../utils/appReviewFunctions';
 import lookupPageNameAndPageTypeDict, { getPageDetails } from '../../../utils/lookupPageNameAndPageTypeDict';
-import PositionPublicToggle from '../../PositionItem/PositionPublicToggle';
+// import PositionPublicToggle from '../../PositionItem/PositionPublicToggle';
 import ReviewAppModal from '../../ReviewApps/ReviewAppModal';
 import PositionStatementModal from '../PositionStatementModal'; // eslint-disable-line import/no-cycle
 import ShareButtonDropDown from '../ShareButtonDropdown';
 import MakePublicVisibilityRow from './MakePublicVisibilityRow';
 
 const HelpWinOrDefeatModal = React.lazy(() => import(/* webpackChunkName: 'HelpWinOrDefeatModal' */ '../../../common/components/CampaignSupport/HelpWinOrDefeatModal')); // eslint-disable-line import/no-cycle
-const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
 const NUMBER_OF_BALLOT_CHOICES_ALLOWED_BEFORE_SHOW_MODAL = 0;
 const shareIconSvg = '../../../../img/global/svg-icons/share-icon.svg';
@@ -1102,7 +1101,7 @@ class ItemActionBar extends PureComponent {
 
           {/* Chat bubble + "For candidate staff", candidates/politicians only.
               Pass showCandidateStaffAndChat prop to enable (e.g. in BallotScrollingContainer). */}
-          {((ballotItemType === 'CANDIDATE' || ballotItemType === 'POLITICIAN') && this.props.showCandidateStaffAndChat && nextReleaseFeaturesEnabled) && (
+          {((ballotItemType === 'CANDIDATE' || ballotItemType === 'POLITICIAN') && this.props.showCandidateStaffAndChat) && (
             <>
               {/* When visibilityRowOpen: hide bubble, show divider + visibility text inline */}
               {visibilityRowOpen ? (
