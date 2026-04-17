@@ -7,6 +7,7 @@ import PoliticianActions from '../../common/actions/PoliticianActions';
 import PoliticianStore from '../../common/stores/PoliticianStore';
 import VoterStore from '../../stores/VoterStore';
 import { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
+import { PoliticalPartySvg } from '../Icons/PoliticianSelfEditIcons';
 
 const delayBeforeSavingToAPI = 1500;
 const delayBeforeShowingSavedStatus = 3000;
@@ -119,6 +120,9 @@ function SettingsPoliticalParty ({ politicianWeVoteId }) {
   return (
     <SettingsPoliticalPartyWrapper>
       <HeaderContainer>
+        <IconWrapper>
+          <PoliticalPartySvg />
+        </IconWrapper>
         <h1 className="h2">Political Party</h1>
       </HeaderContainer>
 
@@ -231,6 +235,17 @@ const SettingsPoliticalPartyWrapper = styled('div')`
   padding: 16px;
   max-width: 700px;
   color: ${DesignTokenColors.neutralUI900};
+`;
+
+const IconWrapper = styled('div')`
+  display: flex;
+  align-self: center;
+  margin-right: 6px;
+
+  svg {
+    margin-top: 4px;
+    color: black !important;
+  }
 `;
 
 export default SettingsPoliticalParty;

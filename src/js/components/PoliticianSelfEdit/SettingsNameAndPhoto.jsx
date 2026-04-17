@@ -1,5 +1,5 @@
 import { Info } from '@mui/icons-material';
-import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import AccountCircle from '@mui/icons-material/AccountCircle';
 import { makeStyles } from '@mui/styles';
 import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
@@ -102,7 +102,7 @@ const HeaderContainer = styled('div')`
   align-items: center;
 `;
 
-const IdIcon = styled(AccountBoxIcon)`
+const IdIcon = styled(AccountCircle)`
   color: black;
   height: 23px;
   width: 23px;

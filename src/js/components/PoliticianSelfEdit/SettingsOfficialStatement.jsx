@@ -1,5 +1,4 @@
 import { Info } from '@mui/icons-material';
-import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import { makeStyles } from '@mui/styles';
 import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
@@ -8,6 +7,7 @@ import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import { renderLog } from '../../common/utils/logging';
 import VoterStore from '../../stores/VoterStore';
+import { OfficialStatementSvg } from '../Icons/PoliticianSelfEditIcons';
 import { HeaderContentContainer } from '../Style/pageLayoutStyles';
 import BrowserPushMessage from '../Widgets/BrowserPushMessage';
 import SettingsWidgetPoliticianStatement from './SettingsWidgetPoliticianStatement';
@@ -57,7 +57,9 @@ function SettingsOfficialStatement ({ externalUniqueId, politicianWeVoteId }) {
       <div className="card u-padding-bottom--lg">
         <div className="card-main">
           <HeaderContainer>
-            <IdIcon />
+            <IconWrapper>
+              <OfficialStatementSvg />
+            </IconWrapper>
             <h1 className="h2">Official Statement</h1>
           </HeaderContainer>
           <IntroductionWrapper>
@@ -93,11 +95,15 @@ const HeaderContainer = styled('div')`
   align-items: center;
 `;
 
-const IdIcon = styled(AccountBoxIcon)`
-  color: black;
-  height: 23px;
-  width: 23px;
-  margin: 8px 8px 0 -2px;
-`;
+// Fix — adjusted margin to align with h2
+const IconWrapper = styled('div')`
+  display: flex;
+  align-self: center;
+  margin-right: 6px;
 
+  svg {
+    margin-top: 8px;
+    color: black !important;
+  }
+`;
 export default SettingsOfficialStatement;
