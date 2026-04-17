@@ -68,7 +68,7 @@ function PoliticianSelfEditDrawer() {
     {
       icon: (
         <NavIconWrapper>
-          {/* WebsiteNavIcon uses $isActive to switch between primary600 and neutralUI600 */}
+          {/* $isActive is a transient prop ($ prefix) so it isn't forwarded to the DOM element */}
           <WebsiteNavIcon $isActive={displayProfileOption === 'links'} />
         </NavIconWrapper>
       ),
@@ -118,33 +118,36 @@ function PoliticianSelfEditDrawer() {
         if (!displayProfileOption) setDisplayProfileOption('nameAndPhoto');
     }
     // console.log('About to setDisplayProfileComponent: ', displayProfileOption);
-
     if (displayProfileOption && component) setDisplayProfileComponent(component);
   }, [displayProfileOption, politicianWeVoteId]);
 
   const onCloseDrawer = () => {
+    // console.log('PoliticianSelfEditDrawer onCloseDrawer');
     AppObservableStore.setHeaderProfileSection('nameAndPhoto');
-    AppObservableStore.setDrawerOpen('politicianSelfEditDrawerOpen', false);
+    const drawerOpenGlobalVariableName = 'politicianSelfEditDrawerOpen';
+    AppObservableStore.setDrawerOpen(drawerOpenGlobalVariableName, false);
   };
 
   const sendGTMDataLayer = ({ buttonId, destinationPath = '', actionType = 'navigate' }) => {
     const destinationPage = lookupPageNameAndPageTypeDict(destinationPath);
-    TagManager.dataLayer({
-      dataLayer: {
-        event: 'action',
-        actionDetails: { actionType, buttonId },
-        userDetails: VoterStore.getAnalyticsUserDetails(),
-        pageDetails: getPageDetails(null, 'PoliticianSelfEditDrawer'),
-        destinationDetails: {
-          destinationPageName: destinationPage.pageName || '',
-          destinationPageType: destinationPage.pageType || '',
-          destinationPathname: destinationPath,
-        },
+    const dataLayerObject = {
+      event: 'action',
+      actionDetails: {
+        actionType,
+        buttonId,
       },
-    });
+      userDetails: VoterStore.getAnalyticsUserDetails(),
+      pageDetails: getPageDetails('PoliticianSelfEditDrawer'),
+      destinationDetails: {
+        destinationPageName: destinationPage.pageName || '',
+        destinationPageType: destinationPage.pageType || '',
+        destinationPathname: destinationPath,
+      },
+    };
+    TagManager.dataLayer({ dataLayer: dataLayerObject });
   };
-
   const jumpToManagePage = (buttonId) => {
+    // const destinationPath = '/managecandidates/ted-lieu-politician-from-california/';
     const destinationPath = '/managecandidates/';
     sendGTMDataLayer({ buttonId, destinationPath });
     historyPush(destinationPath);
