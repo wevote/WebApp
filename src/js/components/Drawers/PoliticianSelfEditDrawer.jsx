@@ -25,7 +25,6 @@ import DrawerTemplateHeaderProfile from './DrawerTemplateHeaderProfile';
 
 const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
-// Canonical icon size used everywhere: nav icons, header icon, page-level icon
 const ICON_SIZE = 24;
 
 function PoliticianSelfEditDrawer() {
@@ -41,9 +40,13 @@ function PoliticianSelfEditDrawer() {
 
   // checks window width for responsiveness
   useEffect(() => {
-    const handleWindowWidth = () => setWindowWidth(window.innerWidth);
+    const handleWindowWidth = () => {
+      setWindowWidth(window.innerWidth);
+    };
     window.addEventListener('resize', handleWindowWidth);
-    return () => window.removeEventListener('resize', handleWindowWidth);
+    return () => {
+      window.removeEventListener('resize', handleWindowWidth);
+    };
   }, []);
 
   const profileNavOptions = [
@@ -114,11 +117,15 @@ function PoliticianSelfEditDrawer() {
         component = <SettingsPoliticalParty externalUniqueId="politicianSelfEditDrawer" politicianWeVoteId={politicianWeVoteId} />;
         break;
       default:
-        // console.log('In PoliticianSelfEditDrawer useEffect default case');   
-        if (!displayProfileOption) setDisplayProfileOption('nameAndPhoto');
+        // console.log('In PoliticianSelfEditDrawer useEffect default case');
+        if (!displayProfileOption) {
+          setDisplayProfileOption('nameAndPhoto');
+        }
     }
     // console.log('About to setDisplayProfileComponent: ', displayProfileOption);
-    if (displayProfileOption && component) setDisplayProfileComponent(component);
+    if (displayProfileOption && component) {
+      setDisplayProfileComponent(component);
+    }
   }, [displayProfileOption, politicianWeVoteId]);
 
   const onCloseDrawer = () => {
@@ -146,17 +153,24 @@ function PoliticianSelfEditDrawer() {
     };
     TagManager.dataLayer({ dataLayer: dataLayerObject });
   };
+
   const jumpToManagePage = (buttonId) => {
     // const destinationPath = '/managecandidates/ted-lieu-politician-from-california/';
     const destinationPath = '/managecandidates/';
-    sendGTMDataLayer({ buttonId, destinationPath });
+    sendGTMDataLayer({
+      buttonId,
+      destinationPath,
+    });
     historyPush(destinationPath);
     onCloseDrawer();
   };
 
   const jumpToPublicPage = (buttonId) => {
     const destinationPath = `/${politician.seo_friendly_path}/-/`;
-    sendGTMDataLayer({ buttonId, destinationPath });
+    sendGTMDataLayer({
+      buttonId,
+      destinationPath,
+    });
     historyPush(destinationPath);
     onCloseDrawer();
   };
@@ -207,19 +221,27 @@ function PoliticianSelfEditDrawer() {
   useEffect(() => {
     // console.log('VoterPositionEntryAndDisplay useEffect, politicianWeVoteId: ', politicianWeVoteId);
     politicianWeVoteIdRef.current = politicianWeVoteId;
-    if (politicianWeVoteId) onPoliticianStoreChange();
+    if (politicianWeVoteId) {
+      onPoliticianStoreChange();
+    }
   }, [onPoliticianStoreChange, politicianWeVoteId]);
 
   useEffect(() => {
     // console.log('PoliticianSelfEditDrawer OnLoad: ', displayProfileOption);
     const politicianStoreListener = PoliticianStore.addListener(onPoliticianStoreChange);
     onPoliticianStoreChange();
-    return () => politicianStoreListener.remove();
+    return () => {
+      politicianStoreListener.remove();
+    };
   }, []);
 
   useEffect(() => {
     const { location: { pathname } } = window;
-    setIsOnManagePage(pathname.startsWith('/more/'));
+    if (pathname.startsWith('/more/')) {
+      setIsOnManagePage(true);
+    } else {
+      setIsOnManagePage(false);
+    }
   }, [setIsOnManagePage]);
 
   const linksToProfilePages = profileNavOptions.map((option) => (
@@ -229,16 +251,25 @@ function PoliticianSelfEditDrawer() {
       key={option.linkName}
     >
       {option.icon}
-      <NavLinkLabel>{option.linkTextJsx}</NavLinkLabel>
+      <NavLinkLabel>
+        {option.linkTextJsx}
+      </NavLinkLabel>
     </NavLinkContainer>
   ));
 
   const JumpToManagePageJsx = (
-    <NavLinkContainer id="jumpToManagePage" onClick={() => jumpToManagePage('jumpToManagePage')}>
+    <NavLinkContainer
+      id="jumpToManagePage" onClick={() => jumpToManagePage('jumpToManagePage')}
+    >
       <NavIconWrapper>
-        <ReactSVG src={normalizedImagePath(manageCandidates)} alt="Manage Candidates" />
+        <ReactSVG
+          src={normalizedImagePath(manageCandidates)}
+          alt="Manage Candidates"
+        />
       </NavIconWrapper>
-      <NavLinkLabel>Manage&nbsp;Candidates</NavLinkLabel>
+      <NavLinkLabel>
+        Manage&nbsp;Candidates
+      </NavLinkLabel>
     </NavLinkContainer>
   );
 
@@ -260,11 +291,15 @@ function PoliticianSelfEditDrawer() {
       )}
       <YourAccountWrapper>
         <HeaderAccountCircle />
-        <div>{politician ? `${politician.politician_name}` : 'Edit Profile'}</div>
+        <div>
+          {politician ? `${politician.politician_name}` :
+            'Edit Profile'}
+        </div>
       </YourAccountWrapper>
     </>
   );
 
+  // main content logic for mobile or desktop
   const mainContentJsx = (
     <EditProfileDrawerWrapper>
       {windowWidth < 768 ? (
@@ -273,7 +308,17 @@ function PoliticianSelfEditDrawer() {
             <NavLinksContainer>
               {linksToProfilePages}
               {nextReleaseFeaturesEnabled && (
-                isOnManagePage ? JumpToPublicPageJsx : JumpToManagePageJsx
+                <>
+                  {isOnManagePage ? (
+                    <>
+                      {JumpToPublicPageJsx}
+                    </>
+                  ) : (
+                    <>
+                      {JumpToManagePageJsx}
+                    </>
+                  )}
+                </>
               )}
               <SettingsSectionFooterWrapper>
                 <SettingsSectionFooter drawerOpenGlobalVariableName="politicianSelfEditDrawerOpen" />
@@ -288,7 +333,17 @@ function PoliticianSelfEditDrawer() {
           <NavLinksContainer>
             {linksToProfilePages}
             {nextReleaseFeaturesEnabled && (
-              isOnManagePage ? JumpToPublicPageJsx : JumpToManagePageJsx
+              <>
+                {isOnManagePage ? (
+                  <>
+                    {JumpToPublicPageJsx}
+                  </>
+                ) : (
+                  <>
+                    {JumpToManagePageJsx}
+                  </>
+                )}
+              </>
             )}
             <SettingsSectionFooterWrapper>
               <SettingsSectionFooter drawerOpenGlobalVariableName="politicianSelfEditDrawerOpen" />
