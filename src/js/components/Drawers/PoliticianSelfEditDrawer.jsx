@@ -25,7 +25,9 @@ import DrawerTemplateHeaderProfile from './DrawerTemplateHeaderProfile';
 
 const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
-function PoliticianSelfEditDrawer () {
+const ICON_SIZE = 24;
+
+function PoliticianSelfEditDrawer() {
   const [headerFixedJsx] = useState(<></>);
   const [displayProfileOption, setDisplayProfileOption] = useState('nameAndPhoto');
   const [displayProfileComponent, setDisplayProfileComponent] = useState();
@@ -49,82 +51,71 @@ function PoliticianSelfEditDrawer () {
 
   const profileNavOptions = [
     {
-      icon: <AccountCircle $isActive={String(displayProfileOption) === 'nameAndPhoto'} />,
-      linkName: 'nameAndPhoto',
-      linkTextJsx: <LinkSpan $isActive={String(displayProfileOption) === 'nameAndPhoto'}>Name & Photo</LinkSpan>,
-    },
-    {
-      icon: <OfficialStatementSvg $isActive={String(displayProfileOption) === 'officialStatement'} />,
-      linkName: 'officialStatement',
-      linkTextJsx: <LinkSpan $isActive={String(displayProfileOption) === 'officialStatement'}>Official&nbsp;Statement</LinkSpan>,
-    },
-    {
-      icon: <WebsiteStyled $isActive={String(displayProfileOption) === 'links'} />,
-      linkName: 'links',
-      linkTextJsx: <LinkSpan $isActive={String(displayProfileOption) === 'links'}>Your Website</LinkSpan>,
-    },
-    {
-      icon: <TeamAccessSvg $isActive={String(displayProfileOption) === 'teamAccess'} />,
-      linkName: 'teamAccess',
-      linkTextJsx: <LinkSpan $isActive={String(displayProfileOption) === 'teamAccess'}>Team Access</LinkSpan>,
-    },
-    {
-      icon: <PoliticalPartySvg $isActive={String(displayProfileOption) === 'party'} />,
-      linkName: 'party',
-      linkTextJsx: (
-        <LinkSpan $isActive={String(displayProfileOption) === 'party'}>
-          Political Party
-        </LinkSpan>
+      icon: (
+        <NavIconWrapper>
+          <AccountCircleNavIcon $isActive={displayProfileOption === 'nameAndPhoto'} />
+        </NavIconWrapper>
       ),
+      linkName: 'nameAndPhoto',
+      linkTextJsx: <LinkSpan $isActive={displayProfileOption === 'nameAndPhoto'}>Name & Photo</LinkSpan>,
     },
-
+    {
+      icon: (
+        <NavIconWrapper>
+          <OfficialStatementSvg $isActive={displayProfileOption === 'officialStatement'} />
+        </NavIconWrapper>
+      ),
+      linkName: 'officialStatement',
+      linkTextJsx: <LinkSpan $isActive={displayProfileOption === 'officialStatement'}>Official&nbsp;Statement</LinkSpan>,
+    },
+    {
+      icon: (
+        <NavIconWrapper>
+          {/* $isActive is a transient prop ($ prefix) so it isn't forwarded to the DOM element */}
+          <WebsiteNavIcon $isActive={displayProfileOption === 'links'} />
+        </NavIconWrapper>
+      ),
+      linkName: 'links',
+      linkTextJsx: <LinkSpan $isActive={displayProfileOption === 'links'}>Your Website</LinkSpan>,
+    },
+    {
+      icon: (
+        <NavIconWrapper>
+          <TeamAccessSvg $isActive={displayProfileOption === 'teamAccess'} />
+        </NavIconWrapper>
+      ),
+      linkName: 'teamAccess',
+      linkTextJsx: <LinkSpan $isActive={displayProfileOption === 'teamAccess'}>Team Access</LinkSpan>,
+    },
+    {
+      icon: (
+        <NavIconWrapper>
+          <PoliticalPartySvg $isActive={displayProfileOption === 'party'} />
+        </NavIconWrapper>
+      ),
+      linkName: 'party',
+      linkTextJsx: <LinkSpan $isActive={displayProfileOption === 'party'}>Political Party</LinkSpan>,
+    },
   ];
 
-  // useEffect to handle which component to display from nav
   useEffect(() => {
     let component = <></>;
     switch (displayProfileOption) {
       case 'links':
-        component = (
-          <>
-            {/* <ProfileComponentTitle>Links</ProfileComponentTitle> */}
-            <SettingsLinks externalUniqueId="politicianSelfEditDrawer" politicianWeVoteId={politicianWeVoteId} />
-          </>
-        );
+        component = <SettingsLinks externalUniqueId="politicianSelfEditDrawer" politicianWeVoteId={politicianWeVoteId} />;
         break;
       case 'nameAndPhoto':
-        component = (
-          <>
-            {/* <ProfileComponentTitle>Name &amp; Photo</ProfileComponentTitle> */}
-            <SettingsNameAndPhoto externalUniqueId="politicianSelfEditDrawer" politicianWeVoteId={politicianWeVoteId} />
-          </>
-        );
+        component = <SettingsNameAndPhoto externalUniqueId="politicianSelfEditDrawer" politicianWeVoteId={politicianWeVoteId} />;
         break;
       case 'notifications':
-        component = (
-          <>
-            {/* <ProfileComponentTitle>Availability</ProfileComponentTitle> */}
-            <SettingsNotifications externalUniqueId="politicianSelfEditDrawer" politicianWeVoteId={politicianWeVoteId} />
-          </>
-        );
+        component = <SettingsNotifications externalUniqueId="politicianSelfEditDrawer" politicianWeVoteId={politicianWeVoteId} />;
         break;
       case 'officialStatement':
-        component = (
-          <>
-            {/* <ProfileComponentTitle>Availability</ProfileComponentTitle> */}
-            <SettingsOfficialStatement externalUniqueId="politicianSelfEditDrawer" politicianWeVoteId={politicianWeVoteId} />
-          </>
-        );
+        component = <SettingsOfficialStatement externalUniqueId="politicianSelfEditDrawer" politicianWeVoteId={politicianWeVoteId} />;
         break;
       case 'party':
-        component = (
-          <SettingsPoliticalParty
-            externalUniqueId="politicianSelfEditDrawer"
-            politicianWeVoteId={politicianWeVoteId}
-          />
-        );
+        component = <SettingsPoliticalParty externalUniqueId="politicianSelfEditDrawer" politicianWeVoteId={politicianWeVoteId} />;
         break;
-
       default:
         // console.log('In PoliticianSelfEditDrawer useEffect default case');
         if (!displayProfileOption) {
@@ -260,45 +251,34 @@ function PoliticianSelfEditDrawer () {
       key={option.linkName}
     >
       {option.icon}
-      <NavLink>
+      <NavLinkLabel>
         {option.linkTextJsx}
-      </NavLink>
+      </NavLinkLabel>
     </NavLinkContainer>
   ));
 
   const JumpToManagePageJsx = (
     <NavLinkContainer
-      id="jumpToManagePage"
-      onClick={() => jumpToManagePage('jumpToManagePage')}
+      id="jumpToManagePage" onClick={() => jumpToManagePage('jumpToManagePage')}
     >
-      <ManageCandidatesSvgImageWrapper>
+      <NavIconWrapper>
         <ReactSVG
           src={normalizedImagePath(manageCandidates)}
           alt="Manage Candidates"
-        // beforeInjection={(svg) => svg.setAttribute('style', { padding: '1px 1px 1px 0px' })}
         />
-      </ManageCandidatesSvgImageWrapper>
-      <NavLink>
+      </NavIconWrapper>
+      <NavLinkLabel>
         Manage&nbsp;Candidates
-      </NavLink>
+      </NavLinkLabel>
     </NavLinkContainer>
   );
 
   const JumpToPublicPageJsx = (
-    <NavLinkContainer
-      id="jumpToPublicPage"
-      onClick={() => jumpToPublicPage('jumpToPublicPage')}
-    >
-      <ManageCandidatesSvgImageWrapper>
-        <ReactSVG
-          src={normalizedImagePath(viewCandidate)}
-          alt="Manage Candidates"
-        // beforeInjection={(svg) => svg.setAttribute('style', { padding: '1px 1px 1px 0px' })}
-        />
-      </ManageCandidatesSvgImageWrapper>
-      <NavLink>
-        View&nbsp;Profile
-      </NavLink>
+    <NavLinkContainer id="jumpToPublicPage" onClick={() => jumpToPublicPage('jumpToPublicPage')}>
+      <NavIconWrapper>
+        <ReactSVG src={normalizedImagePath(viewCandidate)} alt="View Profile" />
+      </NavIconWrapper>
+      <NavLinkLabel>View&nbsp;Profile</NavLinkLabel>
     </NavLinkContainer>
   );
 
@@ -310,9 +290,10 @@ function PoliticianSelfEditDrawer () {
         </MenuIconWrapper>
       )}
       <YourAccountWrapper>
-        <AccountCircleStyled />
+        <HeaderAccountCircle />
         <div>
-          {politician ? `${politician.politician_name}` : 'Edit Profile'}
+          {politician ? `${politician.politician_name}` :
+            'Edit Profile'}
         </div>
       </YourAccountWrapper>
     </>
@@ -388,12 +369,81 @@ function PoliticianSelfEditDrawer () {
   );
 }
 
-const AccountCircleStyled = styled(AccountCircle)`
+// ─── Styled Components ────────────────────────────────────────────────────────
+
+// Header icon — white, 24px, matches nav icons
+const HeaderAccountCircle = styled(AccountCircle)`
+  color: ${DesignTokenColors.whiteUI};
+  flex-shrink: 0;
+  font-size: ${ICON_SIZE}px;
+  height: ${ICON_SIZE}px;
   margin-right: 8px;
+  width: ${ICON_SIZE}px;
 `;
 
-const WebsiteStyled = styled(Language)`
-  color: ${DesignTokenColors.neutralUI600};
+// MUI AccountCircle in the nav — switches color when active
+const AccountCircleNavIcon = styled(AccountCircle)`
+  color: ${(props) => (props.$isActive ? DesignTokenColors.primary600 : DesignTokenColors.neutralUI600)};
+  font-size: ${ICON_SIZE}px;
+  height: ${ICON_SIZE}px;
+  width: ${ICON_SIZE}px;
+`;
+
+// MUI Language (globe) in the nav — switches color when active
+// NOTE: $isActive uses the transient prop prefix so it is NOT forwarded to the DOM
+const WebsiteNavIcon = styled(Language)`
+  color: ${(props) => (props.$isActive ? DesignTokenColors.primary600 : DesignTokenColors.neutralUI600)};
+  font-size: ${ICON_SIZE}px;
+  height: ${ICON_SIZE}px;
+  width: ${ICON_SIZE}px;
+`;
+
+// Fixed 24×24px container — keeps ALL icon types the same size so labels align
+const NavIconWrapper = styled('div')`
+  align-items: center;
+  display: flex;
+  flex-shrink: 0;
+  height: ${ICON_SIZE}px;
+  justify-content: center;
+  width: ${ICON_SIZE}px;
+
+  svg {
+    height: ${ICON_SIZE}px !important;
+    width: ${ICON_SIZE}px !important;
+  }
+`;
+
+// Label — fixed left margin after the icon slot, no wrapping
+const NavLinkLabel = styled('div')`
+  margin-left: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+`;
+
+const NavLinkContainer = styled('div')`
+  align-items: center;
+  background: ${(props) => (props.selected ? DesignTokenColors.primary50 : 'transparent')};
+  border-left: ${(props) => (props.selected ? `4px solid ${DesignTokenColors.primary600}` : '4px solid transparent')};
+  border-radius: 0 20px 20px 0;
+  color: ${(props) => (props.selected ? DesignTokenColors.primary600 : DesignTokenColors.neutralUI600)};
+  cursor: pointer;
+  display: flex;
+  height: 40px;
+  padding-left: 16px;
+  width: 210px;
+
+  @media (max-width: 768px) {
+    background: transparent;
+    border-left: none;
+    color: ${DesignTokenColors.neutralUI600};
+  }
+`;
+
+const LinkSpan = styled('span')`
+  color: ${(props) => (props.$isActive ? DesignTokenColors.primary600 : DesignTokenColors.neutral600)};
+  font-size: 1rem;
+  text-decoration: none;
 `;
 
 const MenuIconWrapper = styled.button`
@@ -401,11 +451,11 @@ const MenuIconWrapper = styled.button`
 
   @media (max-width: 768px) {
     align-items: center;
-    border: none;
-    color: ${DesignTokenColors.whiteUI};
     background: transparent;
-    display: flex;
+    border: none;
     border-right: 1px solid ${DesignTokenColors.whiteUI};
+    color: ${DesignTokenColors.whiteUI};
+    display: flex;
     justify-content: center;
     margin-right: 16px;
     padding: 4px 16px 4px 4px;
@@ -424,8 +474,8 @@ const LinkComponentContainer = styled('div')`
 
   @media (min-width: 768px) {
     margin-left: 220px;
-    width: 70%;
     margin-right: auto;
+    width: 70%;
   }
 
   @media (min-width: 1024px) {
@@ -433,51 +483,19 @@ const LinkComponentContainer = styled('div')`
   }
 `;
 
-const LinkSpan = styled('span')`
-  color: ${(props) => (props.$isActive ? `${DesignTokenColors.primary600}` : `${DesignTokenColors.neutral600}`)};
-  font-size: '1rem';
-  text-decoration: 'none';
-`;
-
 export const ManageCandidatesSvgImageWrapper = styled('div')`
-  max-width: 48px;
-  min-width: 48px;
-  width: 48px;
-  margin-right: -18px;
-  margin-top: 6px;
-`;
-
-const NavLink = styled('div')`
-  margin-left: 16px;
-`;
-
-const NavLinkContainer = styled('div')`
   align-items: center;
-  background: ${(props) => (props.selected ? `${DesignTokenColors.primary50}` : 'transparent')};
-  border-left: ${(props) => (props.selected ? `4px solid ${DesignTokenColors.primary600}` : '4px solid transparent')};
-  border-radius: 0 20px 20px 0;
-  color: ${(props) => (props.selected ? `${DesignTokenColors.primary600}` : `${DesignTokenColors.neutralUI600}`)};
-  cursor: pointer;
   display: flex;
-  height: 40px;
-  padding-left: 16px;
-  width: 210px;
+  flex-shrink: 0;
+  height: ${ICON_SIZE}px;
+  justify-content: center;
+  width: ${ICON_SIZE}px;
 
-  @media (max-width: 768px) {
-    background: transparent;
-    border-left: none;
-    color: ${DesignTokenColors.neutralUI600};
+  svg {
+    height: ${ICON_SIZE}px !important;
+    width: ${ICON_SIZE}px !important;
   }
 `;
-
-// Please do not copy styles -- centralize them somewhere, so that same-named styles don't diverge,
-// and so that we don't have to maintain them twice
-// const NavLinksContainer = styled('div')`
-//   display: flex;
-//   flex-direction: column;
-//   margin-left: -16px;
-//   position: fixed;
-// `;
 
 const SettingsSectionFooterWrapper = styled('div')`
   margin-top: 35px;
