@@ -376,8 +376,11 @@ class ItemActionBar extends PureComponent {
   };
 
   onClickMakePublic = () => {
-    const weVoteId = this.props.politicianWeVoteId || this.props.ballotItemWeVoteId;
-    AppObservableStore.setShowEditPositionModal(true, weVoteId, true);
+    const { ballotItemType, ballotItemWeVoteId } = this.state;
+    const { politicianWeVoteId } = this.props;
+    SupportActions.voterPositionVisibilitySave(ballotItemWeVoteId, ballotItemType, politicianWeVoteId, 'SHOW_PUBLIC');
+    this.setState({ voterPositionIsPublic: true });
+    openSnackbar({ message: 'Your choice & opinion is now visible to anyone!' });
   };
 
   onClickDotsMenu = () => {
