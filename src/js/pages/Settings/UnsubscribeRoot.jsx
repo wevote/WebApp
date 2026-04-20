@@ -170,7 +170,9 @@ class UnsubscribeRoot extends React.Component {
   convertUnsubscribeModifierToDisplayStep = (unsubscribeModifier) => {
     let displayStep;
     switch (unsubscribeModifier) {
-      default:
+      case 'thankyou':
+        displayStep = 2;
+        break;
       case 'dailyfriendactivity':
       case 'friendaccept':
       case 'friendinvite':
@@ -179,10 +181,8 @@ class UnsubscribeRoot extends React.Component {
       case 'friendmessage':
       case 'login':
       case 'newsletter':
+      default:
         displayStep = 1;
-        break;
-      case 'thankyou':
-        displayStep = 2;
         break;
     }
     return displayStep;
@@ -230,7 +230,6 @@ class UnsubscribeRoot extends React.Component {
     let skipForNowPath = '';
     const voterIsSignedIn = VoterStore.getVoterIsSignedIn();
     switch (displayStep) {
-      default:
       case 1: // Multiple individual kinds of notifications options
         backToLinkPath = unsubscribeBackLinkPath;
         if (notificationSettingIsOn) {
@@ -259,6 +258,7 @@ class UnsubscribeRoot extends React.Component {
         skipForNowPath = '/ready';
         break;
       case 3: // emailFound === false
+      default:
         if (voterIsSignedIn) {
           nextButtonText = 'See all notification settings';
           nextStepPath = '/settings/notifications';

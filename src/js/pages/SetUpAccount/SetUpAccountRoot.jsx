@@ -206,10 +206,6 @@ class SetUpAccountRoot extends React.Component {
   convertSetUpPagePathToDisplayStep = (setUpPagePath) => {
     let displayStep;
     switch (setUpPagePath) {
-      default:
-      case 'editname':
-        displayStep = 1;
-        break;
       case 'addphoto':
         if (VoterStore.getVoterProfileUploadedImageUrlLarge()) {
           // This turns off the reassurance text
@@ -226,6 +222,10 @@ class SetUpAccountRoot extends React.Component {
         break;
       case 'friendrequests':
         displayStep = 6;
+        break;
+      case 'editname':
+      default:
+        displayStep = 1;
         break;
     }
     return displayStep;
@@ -281,7 +281,6 @@ class SetUpAccountRoot extends React.Component {
     let skipForNowPath = '';
     const voterIsSignedIn = VoterStore.getVoterIsSignedIn();
     switch (displayStep) {
-      default:
       case 1: // 'editname'
         backToLinkPath = setUpAccountBackLinkPath;
         nextButtonText = 'Save';
@@ -422,6 +421,7 @@ class SetUpAccountRoot extends React.Component {
         }
         break;
       case 6: // friendrequests
+      default:
         if (stringContains('friendrequests', setUpAccountEntryPath)) {
           backToLinkPath = setUpAccountBackLinkPath;
         } else if (voterContactEmailListCount > 0) {

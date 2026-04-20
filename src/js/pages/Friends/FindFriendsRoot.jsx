@@ -218,10 +218,6 @@ class FindFriendsRoot extends React.Component {
   convertSetUpPagePathToDisplayStep = (setUpPagePath) => {
     let displayStep;
     switch (setUpPagePath) {
-      default:
-      case 'importcontacts':
-        displayStep = 1;
-        break;
       case 'signin':
         displayStep = 2;
         break;
@@ -241,6 +237,10 @@ class FindFriendsRoot extends React.Component {
         break;
       case 'friendrequests':
         displayStep = 7;
+        break;
+      case 'importcontacts':
+      default:
+        displayStep = 1;
         break;
     }
     return displayStep;
@@ -301,7 +301,6 @@ class FindFriendsRoot extends React.Component {
     let skipForNowPath = '';
     const voterIsSignedIn = VoterStore.getVoterIsSignedIn();
     switch (displayStep) {
-      default:
       case 1: // importcontacts
         backToLinkPath = setUpAccountBackLinkPath || '';
         backButtonOn = !!(setUpAccountBackLinkPath);
@@ -497,6 +496,7 @@ class FindFriendsRoot extends React.Component {
         }
         break;
       case 7: // friendrequests
+      default:
         backButtonOn = true;
         desktopFixedButtonsOn = true;
         if (!voterIsSignedIn) {

@@ -281,8 +281,8 @@ class OpinionsAndBallotItemsFilter extends Component {
     // Sort Order
     selectedFilters.forEach((filter) => {
       switch (filter) {
-        default:
         case 'sortByAlphabetical':
+        default:
           filteredItems = filteredItems.sort(this.orderByAlphabetical);
           break;
       }
