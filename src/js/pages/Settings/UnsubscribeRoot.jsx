@@ -170,9 +170,6 @@ class UnsubscribeRoot extends React.Component {
   convertUnsubscribeModifierToDisplayStep = (unsubscribeModifier) => {
     let displayStep;
     switch (unsubscribeModifier) {
-      case 'newsletter':
-        displayStep = 1;
-        break;
       case 'thankyou':
         displayStep = 2;
         break;
@@ -183,7 +180,10 @@ class UnsubscribeRoot extends React.Component {
       case 'friendopinionsall':
       case 'friendmessage':
       case 'login':
+      case 'newsletter':
       default:
+        displayStep = 1;
+        break;
     }
     return displayStep;
   };
