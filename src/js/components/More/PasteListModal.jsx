@@ -320,7 +320,6 @@ const Footer = styled.div`
 const HeaderRow = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
   padding: 0px 12px 0 18px;
 `;
 

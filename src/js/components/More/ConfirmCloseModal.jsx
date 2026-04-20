@@ -14,6 +14,7 @@ export default function ConfirmCloseModal ({
     <>
       <HideDivider />
       <SoftenCorners />
+      <CenterModal />
       <RemoveTopPadding />
       <ModalDisplayTemplateB
         show={isOpen}
@@ -52,6 +53,15 @@ ConfirmCloseModal.propTypes = {
 };
 
 // Global Styles
+
+const CenterModal = createGlobalStyle`
+  .MuiDialog-paper.MuiDialog-paperScrollPaper[role="dialog"]:has(#closeModalDisplayTemplateBconfirmCloseModal) {
+    margin: 32px auto !important;
+    top: 0 !important;
+    transform: none !important;
+  }
+`;
+
 const HideDivider = createGlobalStyle`
   .MuiDialogTitle-root:has(#closeModalDisplayTemplateBconfirmCloseModal) > hr {
     display: none !important;
@@ -71,9 +81,6 @@ const RemoveTopPadding = createGlobalStyle`
   }
   .MuiDialog-paper:has(#closeModalDisplayTemplateBconfirmCloseModal) .MuiDialogContent-root > div {
     margin-top: 0 !important;
-  }
-  .MuiDialog-paper:has(#closeModalDisplayTemplateBconfirmCloseModal) {
-    overflow: visible !important;
   }
 `;
 
