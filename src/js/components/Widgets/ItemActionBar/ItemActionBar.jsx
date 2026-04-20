@@ -375,7 +375,8 @@ class ItemActionBar extends PureComponent {
   };
 
   onClickMakePublic = () => {
-    AppObservableStore.setShowEditPositionModal(true, this.props.politicianWeVoteId);
+    const weVoteId = this.props.politicianWeVoteId || this.props.ballotItemWeVoteId;
+    AppObservableStore.setShowEditPositionModal(true, weVoteId, true);
   };
 
   onClickDotsMenu = () => {
@@ -1072,7 +1073,7 @@ class ItemActionBar extends PureComponent {
                   <VisibilityDivider />
                   <MakePublicVisibilityRow
                     isPublic={voterPositionIsPublic}
-                    onMakePublic={this.togglePositionStatementFunction}
+                    onMakePublic={this.onClickMakePublic}
                     onDotsClick={this.togglePositionStatementFunction}
                   />
                 </VisibilityInlineWrapperDesktop>
@@ -1091,7 +1092,7 @@ class ItemActionBar extends PureComponent {
                 <VisibilityInlineWrapperMobile className="u-show-mobile-tablet">
                   <MakePublicVisibilityRow
                     isPublic={voterPositionIsPublic}
-                    onMakePublic={this.togglePositionStatementFunction}
+                    onMakePublic={this.onClickMakePublic}
                     onDotsClick={this.togglePositionStatementFunction}
                   />
                 </VisibilityInlineWrapperMobile>

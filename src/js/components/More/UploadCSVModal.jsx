@@ -335,7 +335,6 @@ const HeaderLink = styled.button`
 const HeaderRow = styled.div`
   align-items: center;
   display: flex;
-  justify-content: space-between;
   padding: 0 12px 0 18px;
 
   @media (max-width: 575px) {
