@@ -6,10 +6,7 @@ services:
       dockerfile: docker/Dockerfile.dev
     volumes:
       - .:/app
-      # Create an anonymous volume for node_modules inside the container
-      # This prevents the host's (potentially empty or incompatible) node_modules
-      # from shadowing the container's installed node_modules
-      - /app/node_modules
+      - webapp_node_modules:/app/node_modules
     ports:
       - "127.0.0.1:3000:3000" # this allows access to the WeVote WebApp at localhost:3000  
     networks:
@@ -19,3 +16,6 @@ networks:
   wevote:
     name: wevote
     external: true
+
+volumes:
+  webapp_node_modules:

@@ -1,10 +1,15 @@
 import { Edit as EditIcon } from '@mui/icons-material';
-import { Box, Button, FormControlLabel, InputBase, Radio, RadioGroup, Skeleton, Tooltip } from '@mui/material';
-import { styled as muiStyled, withStyles } from '@mui/styles';
+import CheckIcon from '@mui/icons-material/Check';
+import BlockIcon from '@mui/icons-material/Block';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import PublicIcon from '@mui/icons-material/Public';
+import { Box, Button, Checkbox, FormControlLabel, InputBase, Skeleton } from '@mui/material';
+import { withStyles } from '@mui/styles';
 import PropTypes from 'prop-types';
 import React, { Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import TagManager from 'react-gtm-module';
-import styled from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
 import SupportActions from '../../actions/SupportActions';
 import SpeakerEndorsedOrOpposedSnippet from '../../common/components/Position/SpeakerEndorsedOrOpposedSnippet';
 import VoterPositionEditTripleDot from '../../common/components/Position/VoterPositionEditTripleDot';
@@ -23,9 +28,10 @@ import VoterStore from '../../stores/VoterStore';
 import { avatarGeneric } from '../../utils/applicationUtils';
 import { possibleAppReview } from '../../utils/appReviewFunctions';
 import { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
-import ActivityPostPublicDropdown from '../Activity/ActivityPostPublicDropdown';
 import ReviewAppModal from '../ReviewApps/ReviewAppModal';
-import ModalDisplayTemplateB, { CommentContainer, InputBox, templateBStyles, TextFieldDiv, TextFieldForm, TextFieldWrapper, UserInfoText, UserName } from '../Widgets/ModalDisplayTemplateB';
+import VisibilityExplainer from '../Settings/VisibilityExplainer';
+import VisibilityToggleBar from '../Settings/VisibilityToggleBar';
+import ModalDisplayTemplateB, { CommentContainer, InputBox, templateBStyles, TextFieldForm, TextFieldWrapper, UserInfoText, UserName } from '../Widgets/ModalDisplayTemplateB';
 import VoterPositionEditNameAndPhotoModal from './VoterPositionEditNameAndPhotoModal';
 
 /* global $ */
@@ -183,13 +189,14 @@ function VoterPositionEntryAndDisplay ({ ballotItemWeVoteId: ballotItemWeVoteIdP
   const [selectedStance, setSelectedStance] = useState('SUPPORT');
   const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
+  const [showLearnMore, setShowLearnMore] = useState(false);
   const [showNegativeModal, setShowNegativeModal] = useState(false);
   const [statementText, setStatementText] = useState('');
   const [draftStatementText, setDraftStatementText] = useState('');
   const [draftSelectedStance, setDraftSelectedStance] = useState('SUPPORT');
-  const [draftVisibilityIsPublic, setDraftVisibilityIsPublic] = useState(false);
   const [supportOrOpposeStanceExists, setSupportOrOpposeStanceExists] = useState(false);
-  const [visibilityIsPublic, setVisibilityIsPublic] = useState(false);
+  const [setAsDefaultVisibility, setSetAsDefaultVisibility] = useState(false);
+  const [visibilitySetting, setVisibilitySetting] = useState('friends'); // 'public', 'friends', 'private'
   const [voterFirstName, setVoterFirstName] = useState('');
   const [voterLastName, setVoterLastName] = useState('');
   const [voterName, setVoterName] = useState('');
@@ -262,10 +269,22 @@ function VoterPositionEntryAndDisplay ({ ballotItemWeVoteId: ballotItemWeVoteIdP
     const tokenText = token ? token.text : '';
     const showNegativeModalFromMessage = tokenText.includes('showNegativeFeedbackModal') && tokenText.includes('POSITION');
     const showingNegativeFeedbackModal = AppObservableStore.getShowingNegativeFeedbackModal();
-    if (!showNegativeModal && !showingNegativeFeedbackModal && showNegativeModalFromMessage) {
+    if (!showingNegativeFeedbackModal && showNegativeModalFromMessage) {
       setShowNegativeModal(true);
     }
-  }, [showNegativeModal]);
+    // Listen for "Make public" from ItemActionBar opening this modal
+    if (tokenText.includes('showEditPositionModal')) {
+      const modalWeVoteId = AppObservableStore.getEditPositionModalPoliticianWeVoteId();
+      if (AppObservableStore.getShowEditPositionModal() && modalWeVoteId === effectiveWeVoteId) {
+        if (AppObservableStore.getEditPositionModalSetPublic()) {
+          setTimeout(() => setVisibilitySetting('public'), 300);
+          AppObservableStore.setEditPositionModalSetPublic(false);
+        }
+        setShowEditModal(true);
+        AppObservableStore.setShowEditPositionModal(false);
+      }
+    }
+  }, [effectiveWeVoteId]);
 
   useEffect(() => {
     const appStateSubscription = messageService.getMessage().subscribe(onAppObservableStoreChange);
@@ -314,7 +333,7 @@ function VoterPositionEntryAndDisplay ({ ballotItemWeVoteId: ballotItemWeVoteIdP
         setPosition({ ...positionTemp }); // Ensure a new object reference so the component re-renders
         setSelectedStance(stanceTemp);
         setStatementText(voterTextStatement);
-        setVisibilityIsPublic(voterPositionIsPublic);
+        setVisibilitySetting(voterPositionIsPublic ? 'public' : 'friends');
       }
     }
   }, [isMeasure]);
@@ -325,11 +344,6 @@ function VoterPositionEntryAndDisplay ({ ballotItemWeVoteId: ballotItemWeVoteIdP
     setVoterFirstName(voter.first_name || 'Anonymous');
     setVoterLastName(voter.last_name || 'Anonymous');
     setVoterName(voter.full_name || 'Anonymous');
-  };
-
-  const handleOpinionChange = (event) => {
-    const newStance = event.target.value;
-    setDraftSelectedStance(newStance);
   };
 
   useEffect(() => {
@@ -398,7 +412,12 @@ function VoterPositionEntryAndDisplay ({ ballotItemWeVoteId: ballotItemWeVoteIdP
     if (showEditModal) {
       setDraftStatementText(statementText);
       setDraftSelectedStance(selectedStance);
-      setDraftVisibilityIsPublic(visibilityIsPublic);
+      setShowLearnMore(false);
+      // If opened via "Make public", auto-set visibility to public
+      if (AppObservableStore.getEditPositionModalSetPublic()) {
+        setVisibilitySetting('public');
+        AppObservableStore.setEditPositionModalSetPublic(false);
+      }
     }
   }, [showEditModal]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -412,17 +431,22 @@ function VoterPositionEntryAndDisplay ({ ballotItemWeVoteId: ballotItemWeVoteIdP
   const deletePosition = (e) => {
     e.preventDefault();
     const ballotItemWeVoteId = isMeasure ? effectiveWeVoteId : '';
-    const visibilitySetting = 'FRIENDS_ONLY';
+    const deleteVisibility = 'FRIENDS_ONLY';
     const selectedStanceTemp = 'INFO_ONLY';
     const statementTextTemp = '';
-    SupportActions.voterPositionCommentSave(ballotItemWeVoteId, effectiveKindOfBallotItem, effectivePoliticianWeVoteId, statementTextTemp, selectedStanceTemp, visibilitySetting);
+    SupportActions.voterPositionCommentSave(ballotItemWeVoteId, effectiveKindOfBallotItem, effectivePoliticianWeVoteId, statementTextTemp, selectedStanceTemp, deleteVisibility);
     toggleDeleteConfirmationModalLocal();
+  };
+
+  const getVisibilitySettingForApi = () => {
+    if (visibilitySetting === 'public') return 'SHOW_PUBLIC';
+    return 'FRIENDS_ONLY';
   };
 
   const savePosition = (e) => {
     e.preventDefault();
     const ballotItemWeVoteId = isMeasure ? effectiveWeVoteId : '';
-    const visibilitySetting = draftVisibilityIsPublic ? 'SHOW_PUBLIC' : 'FRIENDS_ONLY';
+    const saveVisibility = getVisibilitySettingForApi();
 
     let stanceLabel = 'Not sure yet';
     if (draftSelectedStance === 'SUPPORT') {
@@ -443,7 +467,7 @@ function VoterPositionEntryAndDisplay ({ ballotItemWeVoteId: ballotItemWeVoteIdP
       positionDetails: {
         positionStance: stanceLabel,
         hasPositionStatement: draftStatementText.trim() !== '',
-        isPublic: draftVisibilityIsPublic,
+        isPublic: visibilitySetting === 'public',
         positionWeVoteId: position.position_we_vote_id || null,
       },
     };
@@ -452,7 +476,7 @@ function VoterPositionEntryAndDisplay ({ ballotItemWeVoteId: ballotItemWeVoteIdP
     }
     TagManager.dataLayer({ dataLayer: dataLayerObject });
 
-    SupportActions.voterPositionCommentSave(ballotItemWeVoteId, effectiveKindOfBallotItem, effectivePoliticianWeVoteId, draftStatementText, draftSelectedStance, visibilitySetting);
+    SupportActions.voterPositionCommentSave(ballotItemWeVoteId, effectiveKindOfBallotItem, effectivePoliticianWeVoteId, draftStatementText, draftSelectedStance, saveVisibility);
     possibleAppReview('POSITION');
     toggleEditModalLocal(false);
   };
@@ -466,30 +490,16 @@ function VoterPositionEntryAndDisplay ({ ballotItemWeVoteId: ballotItemWeVoteIdP
   const editPositionModalTitleText = positionExists ? `Edit opinion${ballotItemName && ` about ${ballotItemName}`}` : `Create opinion${ballotItemName && ` about ${ballotItemName}`}`;
   const deleteConfirmationModalTitleText = ballotItemName ? `Delete opinion about ${ballotItemName}?` : 'Delete opinion?';
   const statementPlaceholderText = 'What\'s on your mind?';
-  const rowsToShow = isAndroid() ? 4 : 6;
-
-  const defaultOpinionVisibilityText = (
-    <p>
-      Change your default visibility
-      {' '}
-      <a
-        href="/settings/profile"
-        className={classes.tooltipLink}
-      >
-        in your profile
-      </a>
-      .
-    </p>
-  );
+  const rowsToShow = isAndroid() ? 3 : 4;
 
   const editPositionModalJSX = (
     <TextFieldWrapper>
       <TextFieldForm
         className={classes.formStyles}
-        // onBlur={onBlurInput}
         onFocus={onFocusInput}
         onSubmit={savePosition}
       >
+        {/* Avatar and name row */}
         <VoterAvatarDisplayContainer>
           <VoterAvatarBlock voterPhotoUrlMedium={voterPhotoUrlMedium} voterFirstName={voterFirstName} voterLastName={voterLastName} />
           <EditIcon
@@ -498,50 +508,14 @@ function VoterPositionEntryAndDisplay ({ ballotItemWeVoteId: ballotItemWeVoteIdP
           />
           <UserInfoText>
             <UserName>
-              {' '}
               {voterName}
             </UserName>
-            <Tooltip
-              arrow
-              title={defaultOpinionVisibilityText}
-              placement="top"
-              classes={{ tooltip: classes.tooltipPaper, arrow: classes.tooltipArrow }}
-            >
-              <div>
-                <ActivityPostPublicDropdown
-                  visibilityIsPublic={draftVisibilityIsPublic}
-                  onVisibilityChange={(newVisibility) => setDraftVisibilityIsPublic(newVisibility)}
-                />
-              </div>
-            </Tooltip>
           </UserInfoText>
         </VoterAvatarDisplayContainer>
-        <RadioGroup
-          row
-          value={draftSelectedStance}
-          onChange={handleOpinionChange}
-          className={classes.radioGroup}
-        >
-          <FormControlLabel
-            value="SUPPORT"
-            control={<RadioStyled color="primary" />}
-            label={isMeasure ? 'Voting Yes' : 'Supporting'}
-            classes={{ root: classes.radioLabel }}
-          />
-          <FormControlLabel
-            value="OPPOSE"
-            control={<RadioStyled color="primary" />}
-            label={isMeasure ? 'Voting No' : 'Opposing'}
-            classes={{ root: classes.radioLabel }}
-          />
-          <FormControlLabel
-            value="INFO_ONLY"
-            control={<RadioStyled color="primary" />}
-            label="Not sure yet"
-            classes={{ root: classes.radioLabel }}
-          />
-        </RadioGroup>
-        <TextFieldDiv>
+
+        {/* Your opinion text area */}
+        <OpinionSectionLabel>Your opinion:</OpinionSectionLabel>
+        <OpinionTextFieldDiv>
           <InputBase
             classes={{ root: classes.inputStyles, inputMultiline: classes.inputMultiline }}
             id={`activityPostModalStatementText-${effectiveWeVoteId}-${externalUniqueId}`}
@@ -553,17 +527,123 @@ function VoterPositionEntryAndDisplay ({ ballotItemWeVoteId: ballotItemWeVoteIdP
             rows={rowsToShow}
             value={draftStatementText || ''}
           />
-        </TextFieldDiv>
-        <Button
-          id={`positionEntrySave-${effectiveWeVoteId}-${externalUniqueId}`}
-          variant="contained"
-          color="primary"
-          classes={{ root: classes.saveButtonRoot }}
-          type="submit"
-          disabled={draftSelectedStance === 'INFO_ONLY' && (!draftStatementText || draftStatementText.trim() === '')}
+        </OpinionTextFieldDiv>
+
+        {/* Choose / Oppose / Undecided toggle buttons */}
+        <OpinionSectionLabel>
+          {isMeasure ? 'What is your position?' : 'Will you choose this candidate?'}
+        </OpinionSectionLabel>
+        <StanceToggleRow>
+          <StanceToggleButton
+            type="button"
+            selected={draftSelectedStance === 'SUPPORT'}
+            stanceType="support"
+            onClick={() => setDraftSelectedStance('SUPPORT')}
+          >
+            <CheckIcon style={{ fontSize: 18, marginRight: 4, color: DesignTokenColors.confirmation500 }} />
+            {isMeasure ? 'Vote Yes' : 'Choose'}
+          </StanceToggleButton>
+          <StanceToggleButton
+            type="button"
+            selected={draftSelectedStance === 'OPPOSE'}
+            stanceType="oppose"
+            onClick={() => setDraftSelectedStance('OPPOSE')}
+          >
+            <BlockIcon style={{ fontSize: 18, marginRight: 4, color: DesignTokenColors.alert800 }} />
+            {isMeasure ? 'Vote No' : 'Oppose'}
+          </StanceToggleButton>
+          <StanceToggleButton
+            type="button"
+            selected={draftSelectedStance === 'INFO_ONLY'}
+            stanceType="undecided"
+            onClick={() => setDraftSelectedStance('INFO_ONLY')}
+          >
+            Undecided
+          </StanceToggleButton>
+        </StanceToggleRow>
+
+        {/* Visibility toggle: Public / WeVote friends / Private */}
+        <OpinionSectionLabel>
+          Visibility of opinion &amp; choice for this
+          {isMeasure ? ' measure' : ' candidate'}
+          :
+        </OpinionSectionLabel>
+        <VisibilityToggleBar value={visibilitySetting} onChange={setVisibilitySetting} />
+
+        {/* "Make public" prompt OR "Set as default" — cross-fade between them */}
+        <VisibilityHintWrapper>
+          <VisibilityHintFade visible={visibilitySetting !== 'public'}>
+            <MakePublicRow>
+              <PublicIcon />
+              <MakePublicLink
+                type="button"
+                onClick={() => setVisibilitySetting('public')}
+              >
+                Make public
+              </MakePublicLink>
+              {' '}
+              to influence more people.
+            </MakePublicRow>
+          </VisibilityHintFade>
+          <VisibilityHintFade visible={visibilitySetting === 'public'}>
+            <SetDefaultVisibilityRow>
+              <FormControlLabel
+                control={(
+                  <Checkbox
+                    checked={setAsDefaultVisibility}
+                    onChange={(e) => setSetAsDefaultVisibility(e.target.checked)}
+                    color="primary"
+                    size="small"
+                  />
+                )}
+                label={(
+                  <SetDefaultLabel>
+                    Set &lsquo;Public&rsquo; as the default visibility for future opinions &amp; choices.
+                    <SetDefaultSubtext>
+                      (Default can be changed in your
+                      {' '}
+                      <a href="/settings/profile">WeVote account page</a>
+                      )
+                    </SetDefaultSubtext>
+                  </SetDefaultLabel>
+                )}
+              />
+            </SetDefaultVisibilityRow>
+          </VisibilityHintFade>
+        </VisibilityHintWrapper>
+
+        {/* Learn more about visibility (expandable) */}
+        <LearnMoreToggle
+          type="button"
+          onClick={() => setShowLearnMore((prev) => !prev)}
         >
-          {positionExists ? 'Save Changes' : 'Add opinion'}
-        </Button>
+          {showLearnMore ? <ExpandLessIcon style={{ fontSize: 20, marginRight: 4 }} /> : <ExpandMoreIcon style={{ fontSize: 20, marginRight: 4 }} />}
+          Learn more about visibility
+        </LearnMoreToggle>
+        <LearnMoreCollapsible expanded={showLearnMore}>
+          <VisibilityExplainer fontSize={13} />
+        </LearnMoreCollapsible>
+
+        {/* Action buttons */}
+        <ModalButtonRow>
+          {positionExists && (
+            <CancelButton
+              type="button"
+              onClick={() => toggleEditModalLocal()}
+            >
+              Cancel
+            </CancelButton>
+          )}
+          <Button
+            id={`positionEntrySave-${effectiveWeVoteId}-${externalUniqueId}`}
+            variant="contained"
+            color="primary"
+            classes={{ root: classes.saveButtonRoot }}
+            type="submit"
+          >
+            {positionExists ? 'Save opinion' : 'Add opinion'}
+          </Button>
+        </ModalButtonRow>
       </TextFieldForm>
     </TextFieldWrapper>
   );
@@ -606,6 +686,7 @@ function VoterPositionEntryAndDisplay ({ ballotItemWeVoteId: ballotItemWeVoteIdP
       {showNegativeModal && !showingNegativeFeedbackModal && (
         <ReviewAppModal initialEmail={initialEmail} />
       )}
+      {showEditModal && <EditOpinionModalOverrides />}
       <ModalDisplayTemplateB
         dialogTitleJSX={<>{editPositionModalTitleText}</>}
         show={showEditModal}
@@ -660,15 +741,17 @@ VoterPositionEntryAndDisplay.propTypes = {
   politicianWeVoteId: PropTypes.string,
 };
 
-const CompactEditHint = CompactSecondaryText;
-
-const CompactOwnCommentWrapper = styled('div')`
-  cursor: pointer;
-`;
+// Shared styled components (used by VoterAvatarBlock and VoterPositionBlockComponent above)
 
 const CommentContainerWrapper = styled('div')`
   flex: 1;
   min-width: 0;
+`;
+
+const CompactEditHint = CompactSecondaryText;
+
+const CompactOwnCommentWrapper = styled('div')`
+  cursor: pointer;
 `;
 
 const ItemActionBarContainer = styled('div')`
@@ -679,50 +762,51 @@ const ItemActionBarContainer = styled('div')`
   }
 `;
 
+const SpeakerInfoWrapperB = styled('div')`
+  display: flex;
+  flex-direction: column;
+`;
+
 const SpeakerPositionLikesSourceWrapper = styled('div')`
   align-items: center;
   display: flex;
   justify-content: space-between;
 `;
 
-const SpeakerInfoWrapperB = styled('div')`
+const VoterAvatar = styled('div')`
+  align-items: center;
+  background-color: ${DesignTokenColors.info600};
+  border-radius: 50%;
   display: flex;
-  flex-direction: column;
+  height: 43px;
+  justify-content: center;
+  overflow: hidden;
+  width: 43px;
 `;
 
-const VoterAvatar = styled('div')`
-  height: 43px;
-  width: 43px;
-  border-radius: 50%;
-  background-color: ${DesignTokenColors.info600};
-  display: flex;
-  justify-content: center;
+export const VoterAvatarDisplayContainer = styled('div')`
   align-items: center;
-  overflow: hidden;
+  display: flex;
 `;
 
 const VoterFirstName = styled('p')`
   color: ${DesignTokenColors.whiteUI};
+  font-size: 16px;
   margin: 0;
   padding: 0;
-  font-size: 16px;
+`;
+
+const VoterImage = styled('img')`
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
 `;
 
 const VoterLastName = styled('p')`
   color: ${DesignTokenColors.whiteUI};
+  font-size: 11px;
   margin-bottom: -4px;
   padding: 0;
-  font-size: 11px;
-`;
-
-const VoterImage = styled('img')`
-  object-fit: cover;
-  height: 100%;
-  width: 100%;
-`;
-
-export const VoterAvatarDisplayContainer = styled('div')`
-  display: flex;
 `;
 
 export const VoterPositionContainer = styled('div')`
@@ -737,6 +821,173 @@ export const VoterPositionContainer = styled('div')`
   width: 100%;
 `;
 
-const RadioStyled = muiStyled(Radio)(isMobileScreenSize() ? { padding: '2px' } : {});
+// Edit opinion modal styled components
+
+const CancelButton = styled('button')`
+  align-items: center;
+  background: none;
+  border: none;
+  color: ${DesignTokenColors.neutral900};
+  cursor: pointer;
+  display: flex;
+  font-size: 16px;
+  font-weight: 400;
+  height: 40px;
+  margin-top: 16px;
+  padding: 0 16px;
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
+const EditOpinionModalOverrides = createGlobalStyle`
+  /* Reduce gap between header and content for edit opinion modal */
+  .MuiDialog-paper:has([id^="closeModalDisplayTemplateBeditP"]) .MuiDialogContent-root > div {
+    margin-top: 8px !important;
+  }
+  /* Center the edit opinion modal vertically — override JSS-injected dialogPaper styles */
+  .MuiDialog-paper.MuiDialog-paper.MuiDialog-paperScrollPaper[role="dialog"]:has([id^="closeModalDisplayTemplateBeditP"]) {
+    margin: 32px auto !important;
+    top: 0 !important;
+    transform: none !important;
+  }
+`;
+
+const LearnMoreCollapsible = styled('div')`
+  max-height: ${(props) => (props.expanded ? '200px' : '0')};
+  opacity: ${(props) => (props.expanded ? '1' : '0')};
+  overflow: hidden;
+  transition: max-height 0.3s ease, opacity 0.25s ease;
+`;
+
+const LearnMoreToggle = styled('button')`
+  align-items: center;
+  background: none;
+  border: none;
+  color: ${DesignTokenColors.neutral900};
+  cursor: pointer;
+  display: flex;
+  font-size: 14px;
+  margin: 4px 0;
+  padding: 0;
+`;
+
+const MakePublicLink = styled('button')`
+  background: none;
+  border: none;
+  color: ${DesignTokenColors.primary500};
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 0;
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
+const MakePublicRow = styled('div')`
+  color: ${DesignTokenColors.neutral900};
+  font-size: 14px;
+  line-height: 1.5;
+  padding-bottom: 4px;
+  padding-top: 6px;
+
+  svg {
+    color: ${DesignTokenColors.primary500};
+    font-size: 18px;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+`;
+
+const ModalButtonRow = styled('div')`
+  align-items: center;
+  display: flex;
+  gap: 16px;
+  margin-top: 8px;
+`;
+
+const OpinionSectionLabel = styled('div')`
+  color: ${DesignTokenColors.neutral900};
+  font-size: 14px;
+  font-weight: 600;
+  margin: 8px 0 6px 0;
+`;
+
+const OpinionTextFieldDiv = styled('div')`
+  align-items: flex-start;
+  border: 1px solid ${DesignTokenColors.primary600};
+  border-radius: 16px;
+  display: flex;
+  margin-bottom: 8px;
+  padding: 12px;
+`;
+
+const SetDefaultLabel = styled('span')`
+  font-family: "Poppins", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+  font-size: 13px;
+`;
+
+const SetDefaultSubtext = styled('div')`
+  color: ${DesignTokenColors.neutralUI500};
+  font-size: 12px;
+  margin-top: 4px;
+
+  a {
+    color: ${DesignTokenColors.primary500};
+    font-weight: 600;
+  }
+`;
+
+const SetDefaultVisibilityRow = styled('div')`
+  padding: 4px 0 8px 0;
+
+  .MuiFormControlLabel-label {
+    line-height: 1;
+  }
+`;
+
+const StanceToggleButton = styled('button')`
+  align-items: center;
+  background-color: ${DesignTokenColors.whiteUI};
+  border: 2px solid ${(props) => (props.selected ? DesignTokenColors.info800 : DesignTokenColors.neutralUI300)};
+  border-radius: 20px;
+  color: ${(props) => {
+    if (!props.selected) return DesignTokenColors.neutral900;
+    if (props.stanceType === 'support') return DesignTokenColors.confirmation800;
+    if (props.stanceType === 'oppose') return DesignTokenColors.alert800;
+    return DesignTokenColors.info800;
+  }};
+  cursor: pointer;
+  display: flex;
+  font-size: 14px;
+  font-weight: ${(props) => (props.selected ? '600' : '400')};
+  margin-right: 8px;
+  padding: 4px 16px;
+
+  &:hover {
+    border-color: ${DesignTokenColors.info800};
+  }
+`;
+
+const StanceToggleRow = styled('div')`
+  display: flex;
+  margin-bottom: 6px;
+`;
+
+const VisibilityHintFade = styled('div')`
+  align-self: center;
+  grid-area: 1 / 1;
+  opacity: ${(props) => (props.visible ? '1' : '0')};
+  pointer-events: ${(props) => (props.visible ? 'auto' : 'none')};
+  transition: opacity 0.25s ease;
+  visibility: ${(props) => (props.visible ? 'visible' : 'hidden')};
+`;
+
+const VisibilityHintWrapper = styled('div')`
+  display: grid;
+`;
 
 export default withStyles(templateBStyles)(VoterPositionEntryAndDisplay);

@@ -1,12 +1,9 @@
 import * as React from 'react';
-import {
-  ToggleButtonGroup as MuiToggleButtonGroup,
-  ToggleButton as MuiToggleButton,
-} from '@mui/material';
 import styled, { keyframes } from 'styled-components';
-import { styled as muiStyled } from '@mui/material/styles';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 import webAppConfig from '../../config';
+import VisibilityExplainer from './VisibilityExplainer';
+import VisibilityToggleBar from './VisibilityToggleBar';
 
 const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
@@ -17,11 +14,8 @@ function PrivacyData () {
   const [alignment, setAlignment] = React.useState('public');
   const [animKey, setAnimKey] = React.useState(0);
 
-  const handleAlignment = (event, newAlignment) => {
-    if (newAlignment !== null) {
-      setAlignment(newAlignment);
-    }
-
+  const handleAlignment = (newAlignment) => {
+    setAlignment(newAlignment);
     // Trigger checkmark animation after saving
     setAnimKey((k) => k + 1);
   };
@@ -37,18 +31,7 @@ function PrivacyData () {
       </h4>
 
       <PrivacyToggleButtonGroupContainer>
-        <PrivacyToggleButtonGroup
-          exclusive
-          value={alignment}
-          onChange={handleAlignment}
-          aria-label="Privacy visibility"
-          size="small"
-        >
-          <PrivacyToggleButton value="public">Public</PrivacyToggleButton>
-          <PrivacyToggleButton value="friends">WeVote Friends</PrivacyToggleButton>
-          <PrivacyToggleButton value="private">Private</PrivacyToggleButton>
-
-        </PrivacyToggleButtonGroup>
+        <VisibilityToggleBar value={alignment} onChange={handleAlignment} />
 
         {animKey > 0 && (
           <CheckmarkContainer key={animKey}>
@@ -58,30 +41,11 @@ function PrivacyData () {
       </PrivacyToggleButtonGroupContainer>
 
       <DataSettingText>
-        <font style={{ fontStyle: 'italic' }}>
+        <ItalicNote>
           Changing your default visibility won&apos;t affect past choices or opinions.
           You can still adjust the visibility for each new choice or opinion individually.
-        </font>
-        <ul
-          style={{
-            fontStyle: 'normal',
-            paddingInlineStart: '20px',
-            marginTop: '10px',
-          }}
-        >
-          <li>
-            <font style={{ fontWeight: 'bold', color: DesignTokenColors.neutralUI900 }}>Public (recommended): </font>
-            Expand your reach and influence beyond just your friends.
-          </li>
-          <li>
-            <font style={{ fontWeight: 'bold', color: DesignTokenColors.neutralUI900 }}>Your WeVote friends: </font>
-            People on the platform you&apos;ve added as friends-so you can see and share opinions more easily.
-          </li>
-          <li>
-            <font style={{ fontWeight: 'bold', color: DesignTokenColors.neutralUI900 }}>Private: </font>
-            Ideal for personal reflection or when you&apos;re not ready to share publicly.
-          </li>
-        </ul>
+        </ItalicNote>
+        <VisibilityExplainer fontSize={14} />
       </DataSettingText>
     </div>
   );
@@ -94,25 +58,12 @@ const DataSettingText = styled('div')`
   margin-bottom: 30px;
 `;
 
-const PrivacyToggleButtonGroup = muiStyled(MuiToggleButtonGroup)(({ theme }) => ({
-  marginBottom: theme.spacing(2),
-}));
-
-const PrivacyToggleButton = muiStyled(MuiToggleButton)(({ theme }) => ({
-  border: `2px solid ${theme.palette.divider}`,
-  borderRadius: '15px',
-  borderColor: DesignTokenColors.neutralUI500,
-  color: DesignTokenColors.neutralUI700,
-  minHeight: theme.spacing(4),
-  padding: theme.spacing(0, 1),
-  '&.Mui-selected': {
-    color: DesignTokenColors.info800,
-    fontWeight: 'bold',
-    borderColor: DesignTokenColors.info800,
-    borderTop: `2px solid ${theme.palette.primary.main}`,
-    borderBottom: `2px solid ${theme.palette.primary.main}`,
-  },
-}));
+const ItalicNote = styled('div')`
+  font-size: 14px;
+  font-style: italic;
+  margin-bottom: 4px;
+  margin-top: 4px;
+`;
 
 const PrivacyToggleButtonGroupContainer = styled('div')`
   display: flex;
@@ -143,7 +94,6 @@ const checkmarkFade = keyframes`
 const CheckmarkContainer = styled.div`
   font-size: 16px;
   color: ${DesignTokenColors.confirmation500};
-  padding-bottom: 14px;
   animation: ${checkmarkFade} 1.5s ease-in-out forwards;
 `;
 

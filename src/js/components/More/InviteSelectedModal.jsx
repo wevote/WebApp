@@ -98,10 +98,10 @@ export default function InviteSelectedModal ({
       <Count>
         (
         {count}
+        {' '}
         voter
-        {count > 1 ? 's' : ''}
-        selected
-        )
+        {count > 1 ? 's ' : ' '}
+        selected)
       </Count>
     </HeaderRow>
   );
@@ -132,7 +132,9 @@ export default function InviteSelectedModal ({
             {missingEmailOnlyCount > 0 && (
               <li>
                 Email not entered for
+                {' '}
                 {missingEmailOnlyCount}
+                {' '}
                 voter
                 {missingEmailOnlyCount > 1 && 's'}
                 :
@@ -143,7 +145,9 @@ export default function InviteSelectedModal ({
             {missingPhoneOnlyCount > 0 && (
               <li>
                 Mobile phone not entered for
+                {' '}
                 {missingPhoneOnlyCount}
+                {' '}
                 voter
                 {missingPhoneOnlyCount > 1 && 's'}
                 :
@@ -156,8 +160,10 @@ export default function InviteSelectedModal ({
                 <li>
                   <span style={{ color: DesignTokenColors.neutralUI400 }}>
                     {missingBothCount}
+                    {' '}
                     voter
                     {missingBothCount > 1 && 's'}
+                    {' '}
                     cannot be invited (no email or mobile phone entered) -
                   </span>
                 </li>
@@ -181,7 +187,9 @@ export default function InviteSelectedModal ({
         <>
           <SendButton onClick={handleSendBatchEmail}>
             Send email invite to
+            {' '}
             {count}
+            {' '}
             supporter
             {count > 1 && 's'}
           </SendButton>
@@ -371,7 +379,6 @@ const HeaderDivider = styled.div`
 const HeaderRow = styled.div`
   align-items: center;
   display: flex;
-  justify-content: space-between;
   padding: 0 12px 0 18px;
 `;
 
