@@ -281,40 +281,6 @@ class SetUpAccountRoot extends React.Component {
     let skipForNowPath = '';
     const voterIsSignedIn = VoterStore.getVoterIsSignedIn();
     switch (displayStep) {
-      case 1: // 'editname'
-        backToLinkPath = setUpAccountBackLinkPath;
-        nextButtonText = 'Save';
-        reassuranceTextOff = false;
-        skipForNowOff = false;
-        if (!voterIsSignedIn) {
-          // Bump person to findfriends process if not signed in
-          nextStepPath = '/findfriends/importcontacts';
-          skipForNowOff = false;
-          skipForNowPath = '/findfriends/importcontacts';
-        } else if (!voterPhotoUrlLarge) {
-          nextStepPath = '/setupaccount/addphoto';
-          skipForNowOff = false;
-          skipForNowPath = '/setupaccount/addphoto';
-        } else if (voterContactEmailListCount > 0) {
-          nextStepPath = '/setupaccount/invitecontacts';
-          skipForNowOff = false;
-          // if (electionDataExistsForUpcomingElection) {
-          //   skipForNowPath = '/ballot';
-          // } else {
-          //   skipForNowPath = '/ready';
-          // }
-          skipForNowPath = '/ready';
-        } else {
-          nextStepPath = '/setupaccount/importcontacts';
-          skipForNowOff = false;
-          // if (electionDataExistsForUpcomingElection) {
-          //   skipForNowPath = '/ballot';
-          // } else {
-          //   skipForNowPath = '/ready';
-          // }
-          skipForNowPath = '/ready';
-        }
-        break;
       case 2: // 'addphoto'
       case 3:
         if (stringContains('addphoto', setUpAccountEntryPath)) {
@@ -421,7 +387,6 @@ class SetUpAccountRoot extends React.Component {
         }
         break;
       case 6: // friendrequests
-      default:
         if (stringContains('friendrequests', setUpAccountEntryPath)) {
           backToLinkPath = setUpAccountBackLinkPath;
         } else if (voterContactEmailListCount > 0) {
@@ -441,6 +406,41 @@ class SetUpAccountRoot extends React.Component {
         nextStepPath = '/ready';
         skipForNowPath = '/ready';
         reassuranceTextOff = true;
+        break;
+      case 1: // 'editname'
+      default:
+        backToLinkPath = setUpAccountBackLinkPath;
+        nextButtonText = 'Save';
+        reassuranceTextOff = false;
+        skipForNowOff = false;
+        if (!voterIsSignedIn) {
+          // Bump person to findfriends process if not signed in
+          nextStepPath = '/findfriends/importcontacts';
+          skipForNowOff = false;
+          skipForNowPath = '/findfriends/importcontacts';
+        } else if (!voterPhotoUrlLarge) {
+          nextStepPath = '/setupaccount/addphoto';
+          skipForNowOff = false;
+          skipForNowPath = '/setupaccount/addphoto';
+        } else if (voterContactEmailListCount > 0) {
+          nextStepPath = '/setupaccount/invitecontacts';
+          skipForNowOff = false;
+          // if (electionDataExistsForUpcomingElection) {
+          //   skipForNowPath = '/ballot';
+          // } else {
+          //   skipForNowPath = '/ready';
+          // }
+          skipForNowPath = '/ready';
+        } else {
+          nextStepPath = '/setupaccount/importcontacts';
+          skipForNowOff = false;
+          // if (electionDataExistsForUpcomingElection) {
+          //   skipForNowPath = '/ballot';
+          // } else {
+          //   skipForNowPath = '/ready';
+          // }
+          skipForNowPath = '/ready';
+        }
         break;
     }
     this.setState({
