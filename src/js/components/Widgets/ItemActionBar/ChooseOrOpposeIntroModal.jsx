@@ -6,8 +6,13 @@ import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
 import VoterStore from '../../../stores/VoterStore';
 import PositionPublicToggle from '../../PositionItem/PositionPublicToggle';
+import webAppConfig from '../../../config';
 
 const SignInOptionsPanel = React.lazy(() => import(/* webpackChunkName: 'SignInOptionsPanel' */ '../../../common/components/SignIn/SignInOptionsPanel'));
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../../common/components/Widgets/OpenExternalWebSite'));
+
+const termsOfServiceURL = `${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}/more/terms`;
+const privacyPolicyURL = `${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}/privacy`;
 
 
 class ChooseOrOpposeIntroModal extends Component {
@@ -118,12 +123,23 @@ class ChooseOrOpposeIntroModal extends Component {
       slides.signIn = (
         <Suspense fallback={<></>}>
           <>
-            <SignInOptionsPanel
+            {/* <SignInOptionsPanel
               pleaseSignInTitle="Save your choices for access on any device."
               pleaseSignInSubTitle=""
               toggleSignInModal={this.props.onClose}
               inModal
-            />
+            /> */}
+            <div className="u-f3" id="pleaseSignInTitle" style={{ textAlign: 'center' }}><span style={{ fontWeight: 600, color: '#4B4B4B' }}>Save your choices for access on any device.</span></div>
+            <Options buttons="1">
+              <Button
+                classes={{ root: classes.button }}
+                variant="contained"
+                color="primary"
+                onClick={() => this.changeCurrentSlideIndex('getReady')}
+              >
+                Save my choices
+              </Button>
+            </Options>
             <Options buttons="1">
               <Button
                 classes={{ root: classes.button }}
@@ -131,9 +147,46 @@ class ChooseOrOpposeIntroModal extends Component {
                 color="primary"
                 onClick={() => this.changeCurrentSlideIndex('getReady')}
               >
-                Sign In Later
+                Continue without signing in
               </Button>
             </Options>
+            <HelperText>
+              Signing in is optional. Takes about 30 seconds. Free forever.
+            </HelperText>
+            <TermsWrapper id="terms_Wrapper">
+              By continuing, you accept WeVote.US’s<br />
+              {' '}
+              <Suspense fallback={<></>}>
+                <OpenExternalWebSite
+                  className="open-web-site"
+                  body={(
+                    <span>
+                      Terms of Service
+                    </span>
+                  )}
+                  linkIdAttribute="openTermsOfService"
+                  target="_blank"
+                  url={termsOfServiceURL}
+                />
+              </Suspense>
+              {' '}
+              and
+              {' '}
+              <Suspense fallback={<></>}>
+                <OpenExternalWebSite
+                  linkIdAttribute="openPrivacyPolicy"
+                  url={privacyPolicyURL}
+                  target="_blank"
+                  className="open-web-site open-web-site__no-right-padding"
+                  body={(
+                    <span>
+                      Privacy Policy
+                    </span>
+                  )}
+                />
+              </Suspense>
+              .
+            </TermsWrapper>
           </>
         </Suspense>
       );
@@ -216,11 +269,21 @@ const styles = (theme) => ({
   },
 });
 
+const TermsWrapper = styled('div')(({ theme }) => (`
+  margin-top: 30px;
+  font-weight: 600;
+  text-align: center;
+  // ${theme.breakpoints.down('sm')} {
+  //   padding-top: 30px;
+  // }
+`));
+
 const HorizontalLine = styled('div')(({ theme }) => (`
   background-color: #A9A9A9;
   height: 2px;
-  margin: 0 24px;
+  margin: 0 48px;
   margin-bottom: 8px;
+  margin-top: 0;
   ${theme.breakpoints.down('md')} {
     margin: 0 0 8px 0;
   }
@@ -239,10 +302,20 @@ const Options = styled('div')(({ buttons }) => (`
 `));
 
 const TitleText = styled('div')`
-  font-weight: bold;
-  font-size: 20px;
-  color: #3062A4;
+  font-weight: 600;
+  font-size: 28px;  
+  font-family: "Poppins", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+  color: #206DB3;
   margin-bottom: 4px;
+`;
+
+const HelperText = styled('div')`
+  font-size: 13px;
+  font-weight: 600;
+  color: #777;
+  text-align: center;
+  line-height: 1.4;
+  padding: 14px;
 `;
 
 const SubTitle = styled('div')`
