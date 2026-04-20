@@ -11,6 +11,7 @@ import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import AppObservableStore from '../../common/stores/AppObservableStore';
 import CandidateStore from '../../stores/CandidateStore';
 import PoliticianStore from '../../common/stores/PoliticianStore';
+import IssueStore from '../../stores/IssueStore';
 import SupportStore from '../../stores/SupportStore';
 import VoterStore from '../../stores/VoterStore';
 import {
@@ -46,6 +47,12 @@ const ENDORSEMENT_SINGLE = 328;
 const ENDORSEMENT_BOTH = 200;
 
 class BallotScrollingContainer extends Component {
+  static computeHasIssues (ballotItemWeVoteId) {
+    const issuesFollowing = IssueStore.getIssuesSupportingThisBallotItemVoterIsFollowing(ballotItemWeVoteId) || [];
+    const issuesNotFollowing = IssueStore.getIssuesSupportingThisBallotItemVoterNotFollowing(ballotItemWeVoteId) || [];
+    return (issuesFollowing.length + issuesNotFollowing.length) > 0;
+  }
+
   constructor (props) {
     super(props);
     this.scrollElement = React.createRef();
@@ -54,6 +61,7 @@ class BallotScrollingContainer extends Component {
       hideLeftArrow: true,
       hideRightArrow: true,
       hasEndorsements: false,
+      hasIssues: BallotScrollingContainer.computeHasIssues(props.oneCandidate.we_vote_id),
       isChosen: SupportStore.getVoterSupportsByBallotItemWeVoteId(props.oneCandidate.we_vote_id),
     };
 
@@ -63,6 +71,7 @@ class BallotScrollingContainer extends Component {
   }
 
   componentDidMount () {
+    this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange);
     this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange);
     //  calls function when horizontal scrolling container size changes
     this.resizeObserver = new ResizeObserver(() => {
@@ -75,6 +84,9 @@ class BallotScrollingContainer extends Component {
   }
 
   componentWillUnmount () {
+    if (this.issueStoreListener) {
+      this.issueStoreListener.remove();
+    }
     if (this.supportStoreListener) {
       this.supportStoreListener.remove();
     }
@@ -82,6 +94,14 @@ class BallotScrollingContainer extends Component {
       this.resizeObserver.disconnect();
     }
   }
+
+  onIssueStoreChange = () => {
+    const { oneCandidate } = this.props;
+    const hasIssues = BallotScrollingContainer.computeHasIssues(oneCandidate.we_vote_id);
+    if (hasIssues !== this.state.hasIssues) {
+      this.setState({ hasIssues });
+    }
+  };
 
   onSupportStoreChange = () => {
     const { oneCandidate } = this.props;
@@ -276,7 +296,7 @@ class BallotScrollingContainer extends Component {
             <ColumnsRow>
 
               {/* Left column: Issues */}
-              <IssuesColumn style={{ flex: `0 0 ${ISSUES_WIDTH}px`, maxWidth: ISSUES_WIDTH }}>
+              <IssuesColumn $hasIssues={this.state.hasIssues}>
                 {!hideCandidateDetails && (
                 <Suspense fallback={<></>}>
                   <IssuesByBallotItemDisplayList
@@ -291,7 +311,7 @@ class BallotScrollingContainer extends Component {
 
               {/* Support column */}
               {hasSupport && (
-              <FlexColumn data-modal-trigger style={{ flex: `0 0 ${endorsementColWidth}px`, maxWidth: endorsementColWidth }}>
+              <FlexColumn $hasIssues={this.state.hasIssues} data-modal-trigger style={{ flex: `0 0 ${endorsementColWidth}px`, maxWidth: endorsementColWidth }}>
                 <PositionRowListCompressed
                   ballotItemWeVoteId={oneCandidate.we_vote_id}
                   showSupport
@@ -303,7 +323,7 @@ class BallotScrollingContainer extends Component {
 
               {/* Oppose column */}
               {hasOppose && (
-              <FlexColumn data-modal-trigger style={{ flex: `0 0 ${endorsementColWidth}px`, maxWidth: endorsementColWidth }}>
+              <FlexColumn $hasIssues={this.state.hasIssues} data-modal-trigger style={{ flex: `0 0 ${endorsementColWidth}px`, maxWidth: endorsementColWidth }}>
                 <PositionRowListCompressed
                   ballotItemWeVoteId={oneCandidate.we_vote_id}
                   showOppose
@@ -314,7 +334,7 @@ class BallotScrollingContainer extends Component {
               )}
 
               {/* Right column: Opinions */}
-              <CandidateOpinionsColumnWrapper style={{ flex: `0 0 ${OPINIONS_WIDTH}px`, maxWidth: OPINIONS_WIDTH }}>
+              <CandidateOpinionsColumnWrapper $hasContentBefore={this.state.hasIssues || hasSupport || hasOppose}>
                 <Suspense fallback={<></>}>
                   <CandidateOpinionsColumn
                     candidateWeVoteId={oneCandidate.we_vote_id}
@@ -406,7 +426,6 @@ const CandidateNameWithHeart = styled('div')`
   }
 `;
 
-// CandidateOpinionsColumnWrapper depends on IssuesColumn and FlexColumn
 // CandidateTopSection has no dependencies
 
 const CandidateTopSection = styled('div')`
@@ -420,38 +439,38 @@ const ColumnsRow = styled('div')`
   align-items: stretch;
 `;
 
-// IssuesColumn must be before FlexColumn (FlexColumn references it)
-const IssuesColumn = styled('div')`
-  padding: 0 16px 8px 8px;
-  &:not(:has(span, img, a, button)) {
-    display: none !important;
-    // Related to ticket WV-4269
-    //flex: 0 0 85px;
-    //max-width: 85px;
-`;
+const ISSUES_SPACER_WIDTH = 80;
+const IssuesColumn = styled('div', {
+  shouldForwardProp: (prop) => prop !== '$hasIssues',
+})(({ $hasIssues }) => `
+  ${$hasIssues ? `
+    flex: 0 0 ${ISSUES_WIDTH}px;
+    max-width: ${ISSUES_WIDTH}px;
+    padding: 0 16px 8px 8px;
+  ` : `
+    flex: 0 0 ${ISSUES_SPACER_WIDTH}px;
+    max-width: ${ISSUES_SPACER_WIDTH}px;
+  `}
+`);
 
-// FlexColumn must be before CandidateOpinionsColumnWrapper (it references FlexColumn)
-const FlexColumn = styled('div')`
-  border-left: 1px solid #ddd;
-  padding-left: 16px;
-  &:first-child {
-    border-left: none;
-    padding-left: 0;
-  }
-  ${IssuesColumn}:not(:has(span, img, a, button)) + & {
-    border-left: none;
-    padding-left: 0;
-  }
-`;
+const FlexColumn = styled('div', {
+  shouldForwardProp: (prop) => prop !== '$hasIssues',
+})(({ $hasIssues }) => `
+  border-left: ${$hasIssues ? '1px solid #ddd' : 'none'};
+  padding-left: ${$hasIssues ? '16px' : '0'};
+`);
 
-const CandidateOpinionsColumnWrapper = styled('div')`
+const CandidateOpinionsColumnWrapper = styled('div', {
+  shouldForwardProp: (prop) => prop !== '$hasContentBefore',
+})(({ $hasContentBefore }) => `
   overflow: hidden;
-  ${IssuesColumn}:has(span, img, a, button) ~ &,
-  ${FlexColumn} ~ & {
+  flex: 0 0 ${OPINIONS_WIDTH}px;
+  max-width: ${OPINIONS_WIDTH}px;
+  ${$hasContentBefore ? `
     border-left: 1px solid #ddd;
     padding-left: 16px;
-  }
-`;
+  ` : ''}
+`);
 
 const HeartFavoriteToggleLocalWrapper = styled('div')`
   margin-left: 18px;
