@@ -46,8 +46,8 @@ class EndorsementModeTabs extends Component {
     switch (getVoterGuideSettingsDashboardEditMode) {
       case 'positions':
         return 0;
-      default:
       case 'addpositions':
+      default:
         return 1;
     }
   };

@@ -197,12 +197,6 @@ class HeaderNotificationMenu extends Component {
             activityDescription += returnFirstXWords(activityNotice.statement_text_preview, 8);
             activityDescription += '"';
             break;
-          default:
-          case 'NOTICE_FRIEND_ENDORSEMENTS':
-            activityDescription += ' ';
-            activityDescription += createDescriptionOfFriendPosts(activityNotice.position_name_list);
-            activityDescription += '.';
-            break;
           case 'NOTICE_FRIEND_ACTIVITY_POSTS':
             if (activityNotice.statement_text_preview) {
               activityDescription += ' posted "';
@@ -220,6 +214,12 @@ class HeaderNotificationMenu extends Component {
             } else if (activityNotice.number_of_likes > 1) {
               activityDescription += ` (${activityNotice.number_of_likes} likes)`;
             }
+            break;
+          case 'NOTICE_FRIEND_ENDORSEMENTS':
+          default:
+            activityDescription += ' ';
+            activityDescription += createDescriptionOfFriendPosts(activityNotice.position_name_list);
+            activityDescription += '.';
             break;
         }
         activityTimeFromDate = timeFromDate(activityNotice.date_of_notice);

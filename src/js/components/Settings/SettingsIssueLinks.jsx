@@ -183,8 +183,8 @@ export default class SettingsIssueLinks extends Component {
           />
         ));
         break;
-      default:
       case 'issues_linked':
+      default:
         issuesToDisplay = this.state.issuesLinkedTo.map((issue) => (
           <IssueLinkToggle
             key={issue.issue_we_vote_id}

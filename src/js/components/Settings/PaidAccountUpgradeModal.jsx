@@ -163,13 +163,13 @@ class PaidAccountUpgradeModal extends Component {
       }
     } else if (window.innerWidth >= 769) {
       switch (this.state.paidAccountProcessStep) {
-        default:
-          break;
         case 'selectPlanDetailsMobile':
           this.setState({ paidAccountProcessStep: 'payForPlanDesktop' });
           break;
         case 'payForPlanMobile':
           this.setState({ paidAccountProcessStep: 'payForPlanDesktop' });
+          break;
+        default:
           break;
       }
     }
@@ -572,18 +572,6 @@ class PaidAccountUpgradeModal extends Component {
     const couponDiscountValueString = ` $${couponDiscountValue}`;
 
     switch (paidAccountProcessStep) {
-      case 'choosePlan':
-      default:
-        modalTitle = 'Choose Your Plan';
-        modalHtmlContents = (
-          <Pricing
-            initialPricingChoice="campaigns"
-            initialPricingPlan={this.state.pricingPlanChosen ? this.state.pricingPlanChosen : this.props.initialPricingPlan}
-            modalDisplayMode
-            pricingPlanChosenFunction={this.pricingPlanChosenFunction}
-          />
-        );
-        break;
       case 'selectPlanDetailsMobile':
         backToButton = (
           <Button className={classes.backToButton} onClick={this.backToChoosePlan}>
@@ -1008,7 +996,19 @@ class PaidAccountUpgradeModal extends Component {
           </span>
         );
         break;
-    }
+      case 'choosePlan':
+      default:
+        modalTitle = 'Choose Your Plan';
+        modalHtmlContents = (
+          <Pricing
+            initialPricingChoice="campaigns"
+            initialPricingPlan={this.state.pricingPlanChosen ? this.state.pricingPlanChosen : this.props.initialPricingPlan}
+            modalDisplayMode
+            pricingPlanChosenFunction={this.pricingPlanChosenFunction}
+          />
+        );
+        break;
+      }
     return (
       <Dialog
         classes={{ paper: classes.dialogPaper }}
