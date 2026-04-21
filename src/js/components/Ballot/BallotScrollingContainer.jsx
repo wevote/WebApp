@@ -216,6 +216,7 @@ class BallotScrollingContainer extends Component {
     const positionCounts = CandidateStore.getNumberOfPositionsByCandidateWeVoteId(oneCandidate.we_vote_id);
     const hasSupport = positionCounts.numberOfAllSupportPositions > 0;
     const hasOppose = positionCounts.numberOfAllOpposePositions > 0;
+    const hasContentBeforeOpinions = this.state.hasIssues || hasSupport || hasOppose;
     const endorsementColWidth = (hasSupport && hasOppose) ? ENDORSEMENT_BOTH : ENDORSEMENT_SINGLE;
 
     return (
@@ -334,10 +335,11 @@ class BallotScrollingContainer extends Component {
               )}
 
               {/* Right column: Opinions */}
-              <CandidateOpinionsColumnWrapper $hasContentBefore={this.state.hasIssues || hasSupport || hasOppose}>
+              <CandidateOpinionsColumnWrapper $hasContentBefore={hasContentBeforeOpinions}>
                 <Suspense fallback={<></>}>
                   <CandidateOpinionsColumn
                     candidateWeVoteId={oneCandidate.we_vote_id}
+                    hasOtherColumns={hasContentBeforeOpinions}
                     politicianWeVoteId={oneCandidate.politician_we_vote_id}
                   />
                 </Suspense>
