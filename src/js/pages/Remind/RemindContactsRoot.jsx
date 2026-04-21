@@ -248,10 +248,6 @@ class RemindContactsRoot extends React.Component {
   convertSetUpPagePathToDisplayStep = (setUpPagePath) => {
     let displayStep;
     switch (setUpPagePath) {
-      default:
-      case 'message':
-        displayStep = 111;
-        break;
       case 'testsend':
         displayStep = 112;
         break;
@@ -286,6 +282,10 @@ class RemindContactsRoot extends React.Component {
         break;
       case 'friendrequests':
         displayStep = 7;
+        break;
+      case 'message':
+      default:
+        displayStep = 111;
         break;
     }
     return displayStep;
@@ -344,35 +344,6 @@ class RemindContactsRoot extends React.Component {
     const voterIsSignedIn = VoterStore.getVoterIsSignedIn();
     // console.log('setNextStepVariables displayStep:', displayStep);
     switch (displayStep) {
-      default:
-      case 111: // message
-        backToLinkPath = setUpAccountBackLinkPath || '/friends';
-        backButtonOn = !!(setUpAccountBackLinkPath);
-        desktopFixedButtonsOn = false;
-        desktopInlineButtonsOnInMobile = true;
-        mobileFixedButtonsOff = true;
-        reassuranceTextOff = false;
-        showDeleteAllContactsOption = false;
-        skipForNowOff = true;
-        // if (!voterFirstName) {
-        //   nextButtonText = 'Next';
-        //   nextStepPath = '/remind/editname';
-        //   skipForNowOff = false;
-        //   skipForNowPath = '/remind/editname';
-        // } else if (!voterPhotoUrlLarge) {
-        //   nextButtonText = 'Next';
-        //   nextStepPath = '/remind/addphoto';
-        //   skipForNowOff = false;
-        //   skipForNowPath = '/remind/addphoto';
-        // } else
-        nextButtonText = 'Choose friends to remind'; // 'Send my friends reminders to vote';
-        nextStepPath = '/remind/addcontacts';
-        if (isWebApp()) {
-          skipForNowPath = '/remind/downloadapp';
-        } else {
-          skipForNowPath = '/friends';
-        }
-        break;
       case 112: // testsend
         backToLinkPath = '/remind/message';
         backButtonOn = true;
@@ -672,6 +643,35 @@ class RemindContactsRoot extends React.Component {
         nextStepPath = '/ready';
         skipForNowPath = '/ready';
         reassuranceTextOff = true;
+        break;
+      case 111: // message
+      default:
+        backToLinkPath = setUpAccountBackLinkPath || '/friends';
+        backButtonOn = !!(setUpAccountBackLinkPath);
+        desktopFixedButtonsOn = false;
+        desktopInlineButtonsOnInMobile = true;
+        mobileFixedButtonsOff = true;
+        reassuranceTextOff = false;
+        showDeleteAllContactsOption = false;
+        skipForNowOff = true;
+        // if (!voterFirstName) {
+        //   nextButtonText = 'Next';
+        //   nextStepPath = '/remind/editname';
+        //   skipForNowOff = false;
+        //   skipForNowPath = '/remind/editname';
+        // } else if (!voterPhotoUrlLarge) {
+        //   nextButtonText = 'Next';
+        //   nextStepPath = '/remind/addphoto';
+        //   skipForNowOff = false;
+        //   skipForNowPath = '/remind/addphoto';
+        // } else
+        nextButtonText = 'Choose friends to remind'; // 'Send my friends reminders to vote';
+        nextStepPath = '/remind/addcontacts';
+        if (isWebApp()) {
+          skipForNowPath = '/remind/downloadapp';
+        } else {
+          skipForNowPath = '/friends';
+        }
         break;
     }
     this.setState({

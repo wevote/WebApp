@@ -66,8 +66,14 @@ class OrganizationVoterGuideMobileDetails extends Component {
     }
     let DisplayContent = null;
     switch (activeRoute) {
-      default:
+      case 'following':
+        DisplayContent = <VoterGuideFollowing organizationWeVoteId={organizationWeVoteId} />;
+        break;
+      case 'followers':
+        DisplayContent = <VoterGuideFollowers organizationWeVoteId={organizationWeVoteId} />;
+        break;
       case 'friends':
+      default:
         DisplayContent = (
           <PageContentContainer>
             <div className="container-fluid">
@@ -79,12 +85,6 @@ class OrganizationVoterGuideMobileDetails extends Component {
             </div>
           </PageContentContainer>
         );
-        break;
-      case 'following':
-        DisplayContent = <VoterGuideFollowing organizationWeVoteId={organizationWeVoteId} />;
-        break;
-      case 'followers':
-        DisplayContent = <VoterGuideFollowers organizationWeVoteId={organizationWeVoteId} />;
         break;
     }
     return (

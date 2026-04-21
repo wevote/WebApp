@@ -232,11 +232,6 @@ export default class SettingsDashboard extends Component {
         settingsComponentToDisplayDesktop = <SettingsNotifications externalUniqueId="domainDesktop" />;
         settingsComponentToDisplayMobile = <SettingsNotifications externalUniqueId="domainMobile" />;
         break;
-      default:
-      case 'profile':
-        settingsComponentToDisplayDesktop = <SettingsProfile externalUniqueId="domainDesktop" />;
-        settingsComponentToDisplayMobile = <SettingsProfile externalUniqueId="domainMobile" />;
-        break;
       case 'promoted':
         settingsComponentToDisplayDesktop = <SettingsPromotedOrganizations />;
         settingsComponentToDisplayMobile = <SettingsPromotedOrganizations />;
@@ -260,6 +255,11 @@ export default class SettingsDashboard extends Component {
       case 'yourdata':
         settingsComponentToDisplayDesktop = <SettingsYourData externalUniqueId="domainDesktop" />;
         settingsComponentToDisplayMobile = <SettingsYourData externalUniqueId="domainMobile" />;
+        break;
+      case 'profile':
+      default:
+        settingsComponentToDisplayDesktop = <SettingsProfile externalUniqueId="domainDesktop" />;
+        settingsComponentToDisplayMobile = <SettingsProfile externalUniqueId="domainMobile" />;
         break;
     }
 

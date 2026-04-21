@@ -289,8 +289,14 @@ export default class OrganizationVoterGuideTabs extends Component {
       //     />
       //   );
       //   break;
-      default:
+      case 'following':
+        voterGuideComponentToDisplay = <VoterGuideFollowing organizationWeVoteId={organizationWeVoteId} />;
+        break;
+      case 'followers':
+        voterGuideComponentToDisplay = <VoterGuideFollowers organizationWeVoteId={organizationWeVoteId} />;
+        break;
       case 'positions':
+      default:
         // Was <VoterGuidePositions
         voterGuideComponentToDisplay = (
           <>
@@ -305,12 +311,6 @@ export default class OrganizationVoterGuideTabs extends Component {
             />
           </>
         );
-        break;
-      case 'following':
-        voterGuideComponentToDisplay = <VoterGuideFollowing organizationWeVoteId={organizationWeVoteId} />;
-        break;
-      case 'followers':
-        voterGuideComponentToDisplay = <VoterGuideFollowers organizationWeVoteId={organizationWeVoteId} />;
         break;
     }
 

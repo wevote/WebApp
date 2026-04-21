@@ -218,10 +218,6 @@ class FindFriendsRoot extends React.Component {
   convertSetUpPagePathToDisplayStep = (setUpPagePath) => {
     let displayStep;
     switch (setUpPagePath) {
-      default:
-      case 'importcontacts':
-        displayStep = 1;
-        break;
       case 'signin':
         displayStep = 2;
         break;
@@ -241,6 +237,10 @@ class FindFriendsRoot extends React.Component {
         break;
       case 'friendrequests':
         displayStep = 7;
+        break;
+      case 'importcontacts':
+      default:
+        displayStep = 1;
         break;
     }
     return displayStep;
@@ -301,55 +301,6 @@ class FindFriendsRoot extends React.Component {
     let skipForNowPath = '';
     const voterIsSignedIn = VoterStore.getVoterIsSignedIn();
     switch (displayStep) {
-      default:
-      case 1: // importcontacts
-        backToLinkPath = setUpAccountBackLinkPath || '';
-        backButtonOn = !!(setUpAccountBackLinkPath);
-        desktopFixedButtonsOn = false;
-        desktopInlineButtonsOnInMobile = true;
-        mobileFixedButtonsOff = true;
-        reassuranceTextOff = false;
-        showDeleteAllContactsOption = true;
-        if (!voterIsSignedIn) {
-          nextButtonText = 'Next';
-          nextStepPath = '/findfriends/signin';
-          skipForNowOff = false;
-          skipForNowPath = '/findfriends/signin';
-        } else if (!voterFirstName) {
-          nextButtonText = 'Next';
-          nextStepPath = '/findfriends/editname';
-          skipForNowOff = false;
-          skipForNowPath = '/findfriends/editname';
-        } else if (!voterPhotoUrlLarge) {
-          nextButtonText = 'Next';
-          nextStepPath = '/findfriends/addphoto';
-          skipForNowOff = false;
-          skipForNowPath = '/findfriends/addphoto';
-        } else if (voterContactEmailListCount > 0) {
-          nextButtonText = 'Choose contacts to add as friends';
-          nextStepPath = '/findfriends/invitecontacts';
-          skipForNowOff = false;
-          if (friendConnectionActionAvailable) {
-            skipForNowPath = '/findfriends/friendrequests';
-          // } else if (electionDataExistsForUpcomingElection) {
-          //   skipForNowPath = '/ballot';
-          } else {
-            skipForNowPath = '/ready';
-          }
-        } else if (friendConnectionActionAvailable) {
-          nextButtonText = 'Next';
-          nextStepPath = '/findfriends/friendrequests';
-          skipForNowPath = '/findfriends/friendrequests';
-        // } else if (electionDataExistsForUpcomingElection) {
-        //   nextButtonText = 'Next';
-        //   nextStepPath = '/ballot';
-        //   skipForNowPath = '/ballot';
-        } else {
-          nextButtonText = 'Next';
-          nextStepPath = '/ready';
-          skipForNowPath = '/ready';
-        }
-        break;
       case 2: // signin
         // console.log('setUpAccountEntryPath:', setUpAccountEntryPath, ', setUpAccountBackLinkPath:', setUpAccountBackLinkPath);
         if (stringContains('importcontacts', setUpAccountEntryPath) || stringContains('signin', setUpAccountEntryPath)) {
@@ -514,6 +465,55 @@ class FindFriendsRoot extends React.Component {
         nextStepPath = '/ready';
         skipForNowPath = '/ready';
         reassuranceTextOff = true;
+        break;
+      case 1: // importcontacts
+      default:
+        backToLinkPath = setUpAccountBackLinkPath || '';
+        backButtonOn = !!(setUpAccountBackLinkPath);
+        desktopFixedButtonsOn = false;
+        desktopInlineButtonsOnInMobile = true;
+        mobileFixedButtonsOff = true;
+        reassuranceTextOff = false;
+        showDeleteAllContactsOption = true;
+        if (!voterIsSignedIn) {
+          nextButtonText = 'Next';
+          nextStepPath = '/findfriends/signin';
+          skipForNowOff = false;
+          skipForNowPath = '/findfriends/signin';
+        } else if (!voterFirstName) {
+          nextButtonText = 'Next';
+          nextStepPath = '/findfriends/editname';
+          skipForNowOff = false;
+          skipForNowPath = '/findfriends/editname';
+        } else if (!voterPhotoUrlLarge) {
+          nextButtonText = 'Next';
+          nextStepPath = '/findfriends/addphoto';
+          skipForNowOff = false;
+          skipForNowPath = '/findfriends/addphoto';
+        } else if (voterContactEmailListCount > 0) {
+          nextButtonText = 'Choose contacts to add as friends';
+          nextStepPath = '/findfriends/invitecontacts';
+          skipForNowOff = false;
+          if (friendConnectionActionAvailable) {
+            skipForNowPath = '/findfriends/friendrequests';
+          // } else if (electionDataExistsForUpcomingElection) {
+          //   skipForNowPath = '/ballot';
+          } else {
+            skipForNowPath = '/ready';
+          }
+        } else if (friendConnectionActionAvailable) {
+          nextButtonText = 'Next';
+          nextStepPath = '/findfriends/friendrequests';
+          skipForNowPath = '/findfriends/friendrequests';
+        // } else if (electionDataExistsForUpcomingElection) {
+        //   nextButtonText = 'Next';
+        //   nextStepPath = '/ballot';
+        //   skipForNowPath = '/ballot';
+        } else {
+          nextButtonText = 'Next';
+          nextStepPath = '/ready';
+          skipForNowPath = '/ready';
+        }
         break;
     }
     this.setState({
