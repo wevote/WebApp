@@ -63,12 +63,12 @@ VoterAvatarBlock.propTypes = {
 
 function VoterPositionBlockComponent ({
   classes, compactMode, effectiveWeVoteId, effectivePoliticianWeVoteId, externalUniqueId,
-  handleEditModalOpen, isMeasure, onClick, openDeleteConfirmationModal, openEditModal,
+  handleEditModalOpen, isMeasure, noBottomMargin, onClick, openDeleteConfirmationModal, openEditModal,
   position, positionExists, statementText, supportOrOpposeStanceExists,
   voterFirstName, voterLastName, voterName, voterPhotoUrlMedium,
 }) {
   return (
-    <VoterPositionContainer>
+    <VoterPositionContainer $noBottomMargin={noBottomMargin}>
       <VoterAvatarDisplayContainer>
         <VoterAvatarBlock
           voterPhotoUrlMedium={voterPhotoUrlMedium}
@@ -154,6 +154,7 @@ VoterPositionBlockComponent.propTypes = {
   externalUniqueId: PropTypes.string,
   handleEditModalOpen: PropTypes.func,
   isMeasure: PropTypes.bool,
+  noBottomMargin: PropTypes.bool,
   onClick: PropTypes.func.isRequired,
   openDeleteConfirmationModal: PropTypes.func,
   openEditModal: PropTypes.func,
@@ -167,7 +168,7 @@ VoterPositionBlockComponent.propTypes = {
   voterPhotoUrlMedium: PropTypes.string,
 };
 
-function VoterPositionEntryAndDisplay ({ ballotItemWeVoteId: ballotItemWeVoteIdProp, classes, compactMode, externalUniqueId, onModalClose, openEditModalOnLoad, politicianWeVoteId }) {
+function VoterPositionEntryAndDisplay ({ ballotItemWeVoteId: ballotItemWeVoteIdProp, classes, compactMode, externalUniqueId, noBottomMargin, onModalClose, openEditModalOnLoad, politicianWeVoteId }) {
   const isMeasure = stringContains('meas', ballotItemWeVoteIdProp);
   const effectiveWeVoteId = isMeasure ? ballotItemWeVoteIdProp : politicianWeVoteId;
   const effectiveKindOfBallotItem = isMeasure ? 'MEASURE' : 'CANDIDATE';
@@ -634,6 +635,7 @@ function VoterPositionEntryAndDisplay ({ ballotItemWeVoteId: ballotItemWeVoteIdP
           externalUniqueId={externalUniqueId}
           handleEditModalOpen={handleEditModalOpen}
           isMeasure={isMeasure}
+          noBottomMargin={noBottomMargin}
           onClick={openEditModal}
           openDeleteConfirmationModal={openDeleteConfirmationModal}
           openEditModal={openEditModal}
@@ -655,6 +657,7 @@ VoterPositionEntryAndDisplay.propTypes = {
   classes: PropTypes.object,
   compactMode: PropTypes.bool,
   externalUniqueId: PropTypes.string,
+  noBottomMargin: PropTypes.bool,
   onModalClose: PropTypes.func,
   openEditModalOnLoad: PropTypes.bool,
   politicianWeVoteId: PropTypes.string,
@@ -725,14 +728,16 @@ export const VoterAvatarDisplayContainer = styled('div')`
   display: flex;
 `;
 
-export const VoterPositionContainer = styled('div')`
+export const VoterPositionContainer = styled('div', {
+  shouldForwardProp: (prop) => prop !== '$noBottomMargin',
+})`
   align-items: flex-start;
   background-color: ${DesignTokenColors.caution50};
   border-radius: 8px;
   box-sizing: border-box;
   display: flex;
   gap: 10px;
-  margin: 0 0 12px 0;
+  margin: ${({ $noBottomMargin }) => ($noBottomMargin ? '0' : '0 0 12px 0')};
   padding: 8px;
   width: 100%;
 `;
