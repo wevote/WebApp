@@ -219,9 +219,13 @@ class ReadyPage extends PageBrowser {
     return $('#emailVerifyButton');
   }
 
-  get getProChoiceLinkElement () {
-    return $('a[href="/value/pro-choice"]');
-  }
+ get getPhoneVerifyButtonElement () {
+   return $('#phoneVerifyButton');
+ }
+
+ get getProChoiceLinkElement () {
+   return $('a[href="/value/pro-choice"]');
+ }
 
   get getDemocraticClubsLinkElement () {
     return $('a[href="/value/democratic_clubs"]');
@@ -386,13 +390,15 @@ class ReadyPage extends PageBrowser {
     return $('//div[@class="sc-dtInlm dBSTL MuiAlert-message"]');
   }
 
-  get unfollowAlertMsg () {
-    return $('//div[@class="sc-dtInlm dBSTL MuiAlert-message"]');
-  }
+ get followAlertMsg()
+ {
+   return $('//div[contains(@class, "MuiAlert-message")]')
+ }
 
-  get weVoteHelpsYouMenuItem1 () {
-    return $('#weVoteHelpsYouMenuItem1');
-  }
+ get unfollowAlertMsg()
+ {
+    return $('//div[contains(@class, "MuiAlert-message")]')
+ }
 
   get weVoteHelpsYouMenuItem1Text () {
     return $('#readyIntroductionStepText1');
@@ -402,9 +408,198 @@ class ReadyPage extends PageBrowser {
     return $('#weVoteHelpsYouMenuItem2');
   }
 
-  get weVoteHelpsYouMenuItem2Text () {
-    return $('#readyIntroductionStepText2');
-  }
+ get weVoteHelpsYouMenuItem2()
+ {
+   return $('#weVoteHelpsYouMenuItem2');
+ }
+
+ get weVoteHelpsYouMenuItem2Text()
+ {
+   return $('#readyIntroductionStepText2');
+ }
+
+ get weVoteHelpsYouMenuItem3()
+ {
+   return $('#weVoteHelpsYouMenuItem3');
+ }
+
+ get weVoteHelpsYouMenuItem3Text()
+ {
+   return $('#readyIntroductionStepText3');
+ }
+
+ get finePrintMenuItema()
+ {
+   return $('#finePrintMenuItema');
+ }
+
+ get readyFinePrintStepTexta()
+ {
+   return $('#readyFinePrintStepTexta');
+ }
+
+ get finePrintMenuItemb()
+ {
+   return $('#finePrintMenuItemb');
+ }
+
+ get readyFinePrintStepTextb()
+ {
+   return $('#readyFinePrintStepTextb');
+ }
+
+ get finePrintMenuItemc()
+ {
+   return $('#finePrintMenuitemc');
+ }
+
+ get finePrintTextMenuHeaderc()
+ {
+    return $('#finePrintTextMenuHeaderc')
+ }
+
+ get readyFinePrintStepTextc()
+ {
+   return $('#readyFinePrintStepTextc');
+ }
+
+ get finePrintMenuItemd()
+ {
+   return $('#finePrintStepd');
+ }
+
+ get readyFinePrintStepTextd()
+ {
+   return $('#readyFinePrintStepTextd');
+ }
+
+
+ get topicToolTipMsg()
+ {
+   return $('#topicToolTipMsg');
+ }
+
+
+ get topicIconToolTipMsg()
+ {
+   return $('#topicToolTipMsg');
+ }
+
+
+ get topicName()
+ {
+   return $("//*[contains(text(), '_topicName')]");
+ }
+
+
+ get topicName_DemocraticClubs()
+ {
+   return $('#Democratic Clubs_topicName');
+ }
+
+
+ get topicName_ProLife()
+ {
+   return $('#Pro-life_topicName');
+ }
+
+ get enterYourAddressLink()
+ {
+   return $('#enterAddressText');
+ }
+
+ get enterYourAddressWindowHeader()
+ {
+   return $('#SelectBallotModalTitleId');
+ }
+
+ get linkToTwitterAcct()
+ {
+   return $("//span[contains(text(), 'Link to your Twitter account')]");
+
+ }
+
+ async followAlertMsgText(){
+   await this.followAlertMsg.getText();
+ }
+ async unfollowAlertMsgText(){
+   await this.unfollowAlertMsg.getText();
+ }
+
+ async login () {
+   const waitTime = 5000;
+   await this.load();
+   await driver.pause(waitTime);
+   await driver.waitUntil(async () => (this.getSignInElement.isClickable()));
+   await this.getSignInElement.click();
+   await driver.waitUntil(async () => (this.getMobilePhoneNumberElement.isClickable()));
+   await this.getMobilePhoneNumberElement.setValue('8089358555');
+   await driver.waitUntil(async () => (this.getSendCodeElement.isClickable()));
+   await this.getSendCodeElement.click();
+   await driver.waitUntil(async () => (this.getCodeVerificationDigit1Element.isClickable()));
+   await this.getCodeVerificationDigit1Element.setValue('1');
+   await driver.waitUntil(async () => (this.getCodeVerificationDigit2Element.isClickable()));
+   await this.getCodeVerificationDigit2Element.setValue('2');
+   await driver.waitUntil(async () => (this.getCodeVerificationDigit3Element.isClickable()));
+   await this.getCodeVerificationDigit3Element.setValue('3');
+   await driver.waitUntil(async () => (this.getCodeVerificationDigit4Element.isClickable()));
+   await this.getCodeVerificationDigit4Element.setValue('4');
+   await driver.waitUntil(async () => (this.getCodeVerificationDigit5Element.isClickable()));
+   await this.getCodeVerificationDigit5Element.setValue('5');
+   await driver.waitUntil(async () => (this.getCodeVerificationDigit6Element.isClickable()));
+   await this.getCodeVerificationDigit6Element.setValue('6');
+   await driver.waitUntil(async () => (this.getPhoneVerifyButtonElement.isClickable()));
+   await this.getPhoneVerifyButtonElement.click();
+
+ }
+
+ async load () {
+   await super.open('/ready');
+ }
+
+ async signIn () {
+   await super.signIn();
+ }
+
+ async openBallotModal () {
+   await this.ballotTitle.findAndClick();
+ }
+
+ async openBallotcount () {
+   await this.electionCountDownTitle.findAndClick();
+ }
+
+ async updateBallotAddress (ballotAddress) {
+   await this.ballotAddress.findAndClick();
+   await this.ballotAddressInput.setValue(ballotAddress);
+   await this.selectAddress.click();
+   await this.saveBallotAddressButton.findAndClick();
+ }
+
+ async followFirstIssue () {
+   await this.followIssueButtons[0].findAndClick();
+ }
+
+ async unfollowFirstIssue () {
+   await this.toggleFollowMenuButtons[0].findAndClick();
+   await this.unfollowIssueButtons[0].findAndClick();
+ }
+
+ async unfurlIssues () {
+   await this.unfurlIssuesButton.findAndClick();
+ }
+
+ async toggleIntroduction () {
+   await this.toggleIntroductionButton.findAndClick();
+ }
+
+ async toggleIntroStepText () {
+   await this.introductionStepText.findAndClick();
+ }
+
+ async toggleFinePrint () {
+   await this.toggleFinePrintButton.findAndClick();
+ }
 
   get weVoteHelpsYouMenuItem3 () {
     return $('#weVoteHelpsYouMenuItem3');
