@@ -15,7 +15,20 @@ export default class PrivacyBody extends Component {
     return (
       <div>
         <ContentTitle>WeVote.US Privacy Policy</ContentTitle>
-        <p><strong>Last updated: October 22nd, 2025</strong></p>
+        <p><strong>Last updated: April 28th, 2026</strong></p>
+
+        <h2><b>Our commitment to you</b></h2>
+        <p>
+          <ol>
+            <li>We take your privacy very seriously, and are very careful to keep your private information private.</li>
+            <li>We don’t sell or give your contact information, location, or ballot choices to databrokers, campaigns, or other organizations.</li>
+            <li>We only ask for your location once, while you are entering your address, so that we can suggest  nearby addresses as you fill in the form. You can say no to allowing us to access to your precise location, and still have full use of the app. We want your address (or at least a nearby address) so that we can present the correct ballot for your polling district. We never track your location while the app is on or off.</li>
+            <li>Some users choose to upload their contacts, so they can easily invite their friends to share opinions. We never upload your contacts, unless you choose to have us do that (the button is on the Friends page).</li>
+            <li>The App and Play stores say that we access your “Sensitive Info”, but we believe they are referring to your contacts, and we we have no access to your contacts unless you choose to share them with us. If the contacts you share with us include photographs, we do not access or store them.</li>
+          </ol>
+        </p>
+
+        <h2><b>The WeVote Privacy Policy</b></h2>
         <p>
           <span>We Vote USA has created this privacy policy to explain how WeVote (or “we”) uses information that we collect from you while you visit WeVote, currently located at </span>
           <span>
@@ -111,7 +124,7 @@ export default class PrivacyBody extends Component {
               </tr>
               <tr>
                 <TdColumn1>Your Mailing List Email Address and Name</TdColumn1>
-                <TdColumn2>WeVote&apos;s opt-in mailing list uses your email address and name to update you a variety of topic related to voting.</TdColumn2>
+                <TdColumn2>WeVote&apos;s opt-in mailing list uses your email address and name to update you a variety of topics related to voting.</TdColumn2>
                 <TdColumn3>No.</TdColumn3>
                 <TdColumn4>Is hidden</TdColumn4>
               </tr>
@@ -135,7 +148,7 @@ export default class PrivacyBody extends Component {
               </tr>
               <tr>
                 <TdColumn1>Your Profile Photos</TdColumn1>
-                <TdColumn2>Displayed on your profile</TdColumn2>
+                <TdColumn2>Displayed on your profile. The app works perfectly well if you do not upload a photo.</TdColumn2>
                 <TdColumn3>Yes</TdColumn3>
                 <TdColumn4>No</TdColumn4>
               </tr>
@@ -144,6 +157,16 @@ export default class PrivacyBody extends Component {
                 <TdColumn2>Used to identify correct ballot for you</TdColumn2>
                 <TdColumn3>No</TdColumn3>
                 <TdColumn4>Is hidden</TdColumn4>
+              </tr>
+              <tr>
+                <TdColumn1>Location</TdColumn1>
+                <TdColumn2>
+                  To help you quickly enter your address, we ask your device for your precise location to help suggest nearby addresses.
+                  Most phones and browsers will ask if you want to share this precise location, if you choose not to,
+                  the app is fully usable. We only ask for your precise location once, and do not track your location at any time.
+                </TdColumn2>
+                <TdColumn3>No</TdColumn3>
+                <TdColumn4>The precise location provided by your device is not saved.</TdColumn4>
               </tr>
               <tr>
                 <TdColumn1>State Code of Your Ballot</TdColumn1>
@@ -170,20 +193,15 @@ export default class PrivacyBody extends Component {
                 <TdColumn4>No</TdColumn4>
               </tr>
               <tr>
-                <TdColumn1>Who you Follow on Twitter</TdColumn1>
-                <TdColumn2>When you sign in with Twitter, all the Twitter accounts you follow on Twitter which have endorsements stored in WeVote, are displayed on your profile</TdColumn2>
-                <TdColumn3>Yes</TdColumn3>
-                <TdColumn4>No</TdColumn4>
-              </tr>
-              <tr>
                 <TdColumn1>Friends you invite to WeVote</TdColumn1>
                 <TdColumn2>Not displayed</TdColumn2>
                 <TdColumn3>No</TdColumn3>
                 <TdColumn4>Is hidden</TdColumn4>
               </tr>
               <tr>
-                <TdColumn1>Contacts imported from Google/Gmail</TdColumn1>
+                <TdColumn1>Contacts imported from Google/Gmail or from Apple when using our iOS app</TdColumn1>
                 <TdColumn2>
+                  <p>Importing your contacts is completely optional – you can make that decision by requesting the import by pressing a  button on the Friends page.</p>
                   Your list of contacts is only shown to you for the purposes of finding friends who are already using WeVote,
                   and inviting friends to connect with you on WeVote. This data is stored in quarantined database tables,
                   and subject to Limited Use requirements (see below). Contacts are not added to the WeVote mailing list.
