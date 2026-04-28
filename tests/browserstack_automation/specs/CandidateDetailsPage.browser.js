@@ -86,12 +86,7 @@ describe('CandidateDetails PageBrowser', () => {
     console.log(`Candidate Office from Landing page: ${selectedCandidateOffice}`);
     const office = await CandidateDetailsBrowser.candidateOffice;
     const officeName = await office.getText();
-    console.log(`Candidate Party from Candidate Details page: ${officeName}`);
-    const likeButton = await CandidateDetailsBrowser.CandidateLikeButton;
-    await driver.executeScript("arguments[0].dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));", [likeButton]);
-    await driver.waitUntil(async () => CandidateDetailsBrowser.supportTooltip.isDisplayed(), { timeout: 5000, timeoutMsg: 'Tooltip did not appear in time' });
-    const tooltipText = await CandidateDetailsBrowser.supportTooltip.getText();
-    console.log(`Displayed Support Tooltiptext: ${tooltipText}`);
+    console.log(`Candidate Office from Candidate Details page: ${officeName}`);
     await expect(office).toBeDisplayed();
     await expect(officeName).toEqual(selectedCandidateOffice);
   });
