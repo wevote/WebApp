@@ -419,7 +419,16 @@ class PositionList extends Component {
           })}
         </UnorderedListWrapper>
         {compactMode && maxToShow && filteredPositionListLength > maxToShow && this.props.onSeeMoreClick && (
-          <CompactSeeMoreLink onClick={this.props.onSeeMoreClick}>
+          <CompactSeeMoreLink 
+              role="button"
+              tabIndex={0}
+              onClick={this.props.onSeeMoreClick}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  this.props.onSeeMoreClick();
+                }}}
+          >
             See more
           </CompactSeeMoreLink>
         )}
@@ -459,13 +468,29 @@ const styles = () => ({
   },
 });
 
-const CompactSeeMoreLink = styled('div')`
+const CompactSeeMoreLink = styled('button')`
+  background: none;
+  border: 0;
+  padding: 0;
+  margin-left: 5px;
   color: #1073d4;
   cursor: pointer;
+  display: inline-flex;
+  align-items: center;
   font-size: 14px;
-  padding-left: 57px;
+  flex-basis: 100%;
   &:hover {
     text-decoration: underline;
+  }
+  &:focus {
+    outline: 2px solid #2e3c5d;
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+  &:focus-visible {
+    outline: 2px solid #2e3c5d;
+    outline-offset: 2px;
+    border-radius: 2px;
   }
 `;
 

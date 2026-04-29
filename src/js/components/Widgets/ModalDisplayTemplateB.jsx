@@ -374,7 +374,11 @@ export const InputBox = styled.input`
   border: none;
   color: ${DesignTokenColors.neutral900};
   font-size: 16px;
-  outline: none;
   flex-grow: 1;
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px #2e3c5d;
+    border-radius: 2px;
+  }
 `;
 export default withTheme(withStyles(templateBStyles)(ModalDisplayTemplateB));
