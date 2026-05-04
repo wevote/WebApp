@@ -1,4 +1,3 @@
-
 /* eslint-disable no-undef */
 /* eslint-disable no-await-in-loop */
 /* eslint-disable no-use-before-define */
@@ -92,7 +91,7 @@ describe('CandidateDetails PageBrowser', () => {
   });
 
   // CandidateDetails_006
-  it.only('verifyCandidateLikeDislikeDisplayed', async () => {
+  it('verifyCandidateLikeDislikeDisplayed', async () => {
     const jsonObjH = JSON.parse(fs.readFileSync(`${testDataPath}candidateDetailsPage.json`));
     const testData = jsonObjH[0].candidateNameDisplayed;
     console.log(`Verifying verifyCandidateLikeDislikeDisplayed for candidate: ${testData}`);
@@ -105,7 +104,7 @@ describe('CandidateDetails PageBrowser', () => {
   });
 
   // CandidateDetails_007
-  it.only('verifyLikeTooltip', async () => {
+  it('verifyLikeTooltip', async () => {
     const jsonObjH = JSON.parse(fs.readFileSync(`${testDataPath}candidateDetailsPage.json`));
     const testData = jsonObjH[0].candidateNameDisplayed;
     console.log(`Verifying verifyLikeTooltip for candidate: ${testData}`);
@@ -122,7 +121,7 @@ describe('CandidateDetails PageBrowser', () => {
   });
 
   // CandidateDetails_008
-  it.only('verifyDisLikeTooltip', async () => {
+  it('verifyDisLikeTooltip', async () => {
     const jsonObjH = JSON.parse(fs.readFileSync(`${testDataPath}candidateDetailsPage.json`));
     const testData = jsonObjH[0].candidateNameDisplayed;
     console.log(`Verifying verifyDisLikeTooltip for candidate: ${testData}`);
@@ -140,7 +139,7 @@ describe('CandidateDetails PageBrowser', () => {
   });
 
   // CandidateDetails_009
-  it.only('verifySupportBarDisplayed', async () => {
+  it('verifySupportBarDisplayed', async () => {
     const jsonObjH = JSON.parse(fs.readFileSync(`${testDataPath}candidateDetailsPage.json`));
     const testData = jsonObjH[0].candidateNameDisplayed;
     console.log(`Verifying verifySupportBarDisplayed for candidate: ${testData}`);
@@ -154,10 +153,8 @@ describe('CandidateDetails PageBrowser', () => {
 
   // CandidateDetails_010,CandidateDetails_011
   it.only('verifyMoreCandidateInfo', async () => {
-    const jsonObjH = JSON.parse(fs.readFileSync(`${testDataPath}candidateDetailsPage.json`));
-    
-    await CandidateDetailsBrowser.load("pickRandomCandidate");
-    console.log(`Verifying validateHTTPresponse for random candidate : ${selectedCandidateName}.`);
+    await CandidateDetailsBrowser.load('pickRandomCandidate');
+    console.log(`Verifying verifyMoreCandidateInfo for random candidate : ${selectedCandidateName}.`);
     await driver.pause(waitTime);
     const moreInfoSection = await CandidateDetailsBrowser.moreInfoSection;
     await expect(moreInfoSection).toBeDisplayed();
@@ -166,33 +163,31 @@ describe('CandidateDetails PageBrowser', () => {
     const politicianLinks = await CandidateDetailsBrowser.candidateLinks;
     const errors = [];
     console.log(`Found ${politicianLinks.length} politician links`);
-  
+
     const originalWindow = await driver.getWindowHandle();
-  
+
     // Domains to skip browser test as these take too long to open and test times out.
     const skipBrowserTestDomains = [
       'bing.com',
       'x.com',
       'ballotpedia.org',
-      'youtube.com' ];
+      'youtube.com'];
 
     for (let i = 0; i < politicianLinks.length; i++) {
       const link = politicianLinks[i];
       const href = await link.getAttribute('href');
       const linkText = await link.getText();
-      const shouldSkipBrowserTest = skipBrowserTestDomains.some(domain => href.includes(domain));
+      const shouldSkipBrowserTest = skipBrowserTestDomains.some((domain) => href.includes(domain));
 
       if (shouldSkipBrowserTest) {
         console.log(`Skipping browser test for link: ${linkText} (${href})`);
-        continue;
-      }
-      else {
+      } else {
         console.log(`Checking link: ${linkText} -> (${href})`);
         await link.click();
         await driver.pause(2000);
         const newHandles = await driver.getWindowHandles();
         if (newHandles.length > 1) {
-          const newWindow = newHandles.find(handle => handle !== originalWindow);
+          const newWindow = newHandles.find((handle) => handle !== originalWindow);
           if (newWindow) {
             console.log(`Switching to new tab for ${linkText}`);
             await driver.switchToWindow(newWindow);
@@ -206,71 +201,71 @@ describe('CandidateDetails PageBrowser', () => {
             console.log(`No new tab opened for ${linkText}`);
             errors.push(`No new tab opened for ${linkText}`);
           }
-        }   
+        }
       }
     }
-       if (errors.length > 0) {
-        let errorsAll = '';
-        for (let i = 0; i < errors.length; i++) {
-          errorsAll += `${errors[i]}\n`;
-        }
-        throw new Error(errorsAll);
+    if (errors.length > 0) {
+      let errorsAll = '';
+      for (let i = 0; i < errors.length; i++) {
+        errorsAll += `${errors[i]}\n`;
       }
+      throw new Error(errorsAll);
+    }
   });
 
- // CandidateDetails_012
-  it.only('validateHTTPresponse', async () => {
-      const jsonObjH = JSON.parse(fs.readFileSync(`${testDataPath}candidateDetailsPage.json`));
-      await CandidateDetailsBrowser.load("pickRandomCandidate");
-      console.log(`Verifying validateHTTPresponse for random candidate : ${selectedCandidateName}.`);
-      await driver.pause(waitTime);
-    
-      const politicianLinks = await CandidateDetailsBrowser.candidateLinks;
-      const errors = [];
-      console.log(`Found ${politicianLinks.length} politician links`);
+  // CandidateDetails_012
+  it('validateHTTPresponse', async () => {
+    const jsonObjH = JSON.parse(fs.readFileSync(`${testDataPath}candidateDetailsPage.json`));
+    await CandidateDetailsBrowser.load('pickRandomCandidate');
+    console.log(`Verifying validateHTTPresponse for random candidate : ${selectedCandidateName}.`);
+    await driver.pause(waitTime);
 
-      const knownBlockingDomains = [
-        'wikipedia.org',
-        'ballotpedia.org',
-        'twitter.com',
-        'x.com',
-        'facebook.com',
-        'instagram.com'];
+    const politicianLinks = await CandidateDetailsBrowser.candidateLinks;
+    const errors = [];
+    console.log(`Found ${politicianLinks.length} politician links`);
 
-      for (let i = 0; i < politicianLinks.length; i++) {
-        const link = politicianLinks[i];
-        const href = await link.getAttribute('href');
-        const linkText = await link.getText();
-     
-        const isBlockingDomain = knownBlockingDomains.some(domain => href.includes(domain));
-        // HTTP validation for non-blocking domains
-        if (!isBlockingDomain) {
-          try {
-              const response = await axios.get(href, {
-              timeout: 5000,
-              validateStatus: false,
-            });
-          
+    const knownBlockingDomains = [
+      'wikipedia.org',
+      'ballotpedia.org',
+      'twitter.com',
+      'x.com',
+      'facebook.com',
+      'instagram.com'];
+
+    for (let i = 0; i < politicianLinks.length; i++) {
+      const link = politicianLinks[i];
+      const href = await link.getAttribute('href');
+      const linkText = await link.getText();
+
+      const isBlockingDomain = knownBlockingDomains.some((domain) => href.includes(domain));
+      // HTTP validation for non-blocking domains
+      if (!isBlockingDomain) {
+        try {
+          const response = await axios.get(href, {
+            timeout: 5000,
+            validateStatus: false,
+          });
+
           const statusCode = response.status;
           console.log(`Link ' ${linkText} ' => returned status code: ${statusCode}`);
-          
+
           if (statusCode >= 200 && statusCode < 400) {
             console.log(`Link ' ${linkText} ': is working.`);
           } else {
             errors.push(`Link ' ${linkText} ': is not accessible (status ${statusCode})`);
           }
-          } catch (error) {
-            errors.push(`Link ' ${linkText} ': HTTP request failed with error: ${error.message}`);
+        } catch (error) {
+          errors.push(`Link ' ${linkText} ': HTTP request failed with error: ${error.message}`);
         }
-      } 
-    }
-      if (errors.length > 0) {
-          let errorsAll = '';
-          for (let i = 0; i < errors.length; i++) {
-            errorsAll += `${errors[i]}\n`;
-          }
-          throw new Error(errorsAll);
       }
+    }
+    if (errors.length > 0) {
+      let errorsAll = '';
+      for (let i = 0; i < errors.length; i++) {
+        errorsAll += `${errors[i]}\n`;
+      }
+      throw new Error(errorsAll);
+    }
   });
 
 
