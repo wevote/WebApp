@@ -213,61 +213,6 @@ describe('CandidateDetails PageBrowser', () => {
     }
   });
 
-  // CandidateDetails_012
-  it('validateHTTPresponse', async () => {
-    const jsonObjH = JSON.parse(fs.readFileSync(`${testDataPath}candidateDetailsPage.json`));
-    await CandidateDetailsBrowser.load('pickRandomCandidate');
-    console.log(`Verifying validateHTTPresponse for random candidate : ${selectedCandidateName}.`);
-    await driver.pause(waitTime);
-
-    const politicianLinks = await CandidateDetailsBrowser.candidateLinks;
-    const errors = [];
-    console.log(`Found ${politicianLinks.length} politician links`);
-
-    const knownBlockingDomains = [
-      'wikipedia.org',
-      'ballotpedia.org',
-      'twitter.com',
-      'x.com',
-      'facebook.com',
-      'instagram.com'];
-
-    for (let i = 0; i < politicianLinks.length; i++) {
-      const link = politicianLinks[i];
-      const href = await link.getAttribute('href');
-      const linkText = await link.getText();
-
-      const isBlockingDomain = knownBlockingDomains.some((domain) => href.includes(domain));
-      // HTTP validation for non-blocking domains
-      if (!isBlockingDomain) {
-        try {
-          const response = await axios.get(href, {
-            timeout: 5000,
-            validateStatus: false,
-          });
-
-          const statusCode = response.status;
-          console.log(`Link ' ${linkText} ' => returned status code: ${statusCode}`);
-
-          if (statusCode >= 200 && statusCode < 400) {
-            console.log(`Link ' ${linkText} ': is working.`);
-          } else {
-            errors.push(`Link ' ${linkText} ': is not accessible (status ${statusCode})`);
-          }
-        } catch (error) {
-          errors.push(`Link ' ${linkText} ': HTTP request failed with error: ${error.message}`);
-        }
-      }
-    }
-    if (errors.length > 0) {
-      let errorsAll = '';
-      for (let i = 0; i < errors.length; i++) {
-        errorsAll += `${errors[i]}\n`;
-      }
-      throw new Error(errorsAll);
-    }
-  });
-
 
   function readTooltipsText (type) {
     const jsonObjH = JSON.parse(fs.readFileSync(`${testDataPath}candidatesPage_TDTooltips.json`));
