@@ -5,7 +5,6 @@ import { driver, expect } from '@wdio/globals';
 import fs from 'fs';
 import { selectedCandidateName, selectedCandidateState, selectedCandidateParty, selectedCandidateImgSrc, selectedCandidateOffice } from  '../page_objects/candidates.browser';
 import CandidateDetailsBrowser from '../page_objects/candidateDetails.browser';
-import axios from 'axios';
 
 const testDataPath = 'tests/browserstack_automation/testDataForScripts/';
 const waitTime = 5000;
