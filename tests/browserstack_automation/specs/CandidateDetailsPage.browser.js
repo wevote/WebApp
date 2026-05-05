@@ -90,7 +90,7 @@ describe('CandidateDetails PageBrowser', () => {
   });
 
   // CandidateDetails_006
-  it.('verifyCandidateLikeDislikeDisplayed', async () => {
+  it('verifyCandidateLikeDislikeDisplayed', async () => {
     const jsonObjH = JSON.parse(fs.readFileSync(`${testDataPath}candidateDetailsPage.json`));
     const testData = jsonObjH[0].candidateNameDisplayed;
     console.log(`Verifying verifyCandidateLikeDislikeDisplayed for candidate: ${testData}`);
