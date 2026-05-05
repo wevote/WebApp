@@ -91,7 +91,7 @@ describe('CandidateDetails PageBrowser', () => {
   });
 
   // CandidateDetails_006
-  it('verifyCandidateLikeDislikeDisplayed', async () => {
+  it.('verifyCandidateLikeDislikeDisplayed', async () => {
     const jsonObjH = JSON.parse(fs.readFileSync(`${testDataPath}candidateDetailsPage.json`));
     const testData = jsonObjH[0].candidateNameDisplayed;
     console.log(`Verifying verifyCandidateLikeDislikeDisplayed for candidate: ${testData}`);
@@ -152,7 +152,7 @@ describe('CandidateDetails PageBrowser', () => {
   });
 
   // CandidateDetails_010,CandidateDetails_011
-  it.only('verifyMoreCandidateInfo', async () => {
+  it('verifyMoreCandidateInfo', async () => {
     await CandidateDetailsBrowser.load('pickRandomCandidate');
     console.log(`Verifying verifyMoreCandidateInfo for random candidate : ${selectedCandidateName}.`);
     await driver.pause(waitTime);
