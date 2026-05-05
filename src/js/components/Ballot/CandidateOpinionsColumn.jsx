@@ -54,22 +54,21 @@ class CandidateOpinionsColumn extends Component {
 
   render () {
     renderLog('CandidateOpinionsColumn');
-    const { candidateWeVoteId, politicianWeVoteId } = this.props;
+    const { candidateWeVoteId, hasOtherColumns, politicianWeVoteId } = this.props;
     const { opinions, opinionsCount } = this.state;
+    const hideHeader = !hasOtherColumns && opinionsCount === 0;
+    const headerText = opinionsCount > 0 ? `${opinionsCount} ${opinionsCount === 1 ? 'Opinion' : 'Opinions'}` : 'Opinions';
 
     return (
       <OpinionsWrapper>
-        {opinionsCount > 0 ? (
-          <OpinionsCountHeader>{`${opinionsCount} ${opinionsCount === 1 ? 'Opinion' : 'Opinions'}`}</OpinionsCountHeader>
-        ) : (
-          <OpinionsCountHeader>Opinions</OpinionsCountHeader>
-        )}
+        {!hideHeader && <OpinionsCountHeader>{headerText}</OpinionsCountHeader>}
 
         <Suspense fallback={<span />}>
           <VoterPositionEntryAndDisplay
             ballotItemWeVoteId={candidateWeVoteId}
             compactMode
             externalUniqueId={`CandidateOpinionsColumn-${candidateWeVoteId}`}
+            noBottomMargin={opinionsCount === 0}
             politicianWeVoteId={politicianWeVoteId}
           />
         </Suspense>
@@ -90,6 +89,7 @@ class CandidateOpinionsColumn extends Component {
 
 CandidateOpinionsColumn.propTypes = {
   candidateWeVoteId: PropTypes.string.isRequired,
+  hasOtherColumns: PropTypes.bool,
   politicianWeVoteId: PropTypes.string,
 };
 

@@ -9,7 +9,8 @@ class ProfileBrowser extends PageBrowser {
  }
 
  get getSignOutElement() {
-   return $('#signOut_Settings')
+   //return $('#signOut_Settings')
+   return $(`#signOutProfileDrawer`);
  }
 
 }
