@@ -775,7 +775,7 @@ class PoliticianDetailsPage extends Component {
     const politicianLinksContainer = (politicianLinksList) ? (
       <PoliticianLinksWrapper>
         {(politicianLinksList && politicianLinksList.length > 0) && (
-          <SectionTitleSimple>More candidate information</SectionTitleSimple>
+          <SectionTitleSimple id="politicianLinksTitle">More candidate information</SectionTitleSimple>
         )}
         <Suspense fallback={<span>&nbsp;</span>}>
           <PoliticianLinks links={politicianLinksList} />

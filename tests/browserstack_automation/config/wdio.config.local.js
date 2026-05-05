@@ -1,7 +1,7 @@
 import { driver } from '@wdio/globals';
 import { readFileSync } from 'fs';
 import { browserStackConfig } from './browserstack.config.js';
-import browserCapabilities from '../capabilities/browser.json' with { type: 'json' };
+import browserCapabilities from '../capabilities/browser_desktop.json' with { type: 'json' };
 
 let mobileCapabilities = [];
 
