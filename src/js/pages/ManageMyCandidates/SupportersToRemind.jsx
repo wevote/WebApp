@@ -289,43 +289,133 @@ export default function SupportersToRemind ({ supporters }) {
   );
 }
 
+const ActionLinkButton = styled.button`
+  align-items: center;
+  background: none;
+  border: none;
+  color: ${DesignTokenColors.primary600};
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 14px;
+  font-weight: 500;
+  gap: 6px;
+  padding: 4px 0;
+  white-space: nowrap;
+
+  &:hover {
+    color: ${DesignTokenColors.primary700};
+    text-decoration: underline;
+  }
+`;
+
+const ActionsCell = styled.div`
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 14px;
+`;
+
+/* Same width as the row checkbox so "Name" header aligns with the data row's name text */
+const CheckboxSpacer = styled.span`
+  display: inline-block;
+  height: 13px;
+  width: 13px;
+`;
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
 `;
 
-const Subtitle = styled.p`
-  color: ${DesignTokenColors.neutralUI700};
-  font-size: 14px;
-  margin: 4px 0 12px;
+const DesktopHeaderRow = styled.div`
+  align-items: center;
+  border-bottom: 1px solid ${DesignTokenColors.neutralUI200};
+  color: ${DesignTokenColors.neutralUI600};
+  display: grid;
+  font-size: 13px;
+  gap: 12px;
+  grid-template-columns: minmax(140px, 0.8fr) minmax(70px, 0.4fr) minmax(340px, 1.8fr);
+  padding: 8px 14px;
 `;
 
-const SubFilterRow = styled.div`
+const DesktopRow = styled.div`
+  align-items: center;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: minmax(140px, 0.8fr) minmax(70px, 0.4fr) minmax(340px, 1.8fr);
+`;
+
+const EmptyState = styled.div`
+  background: ${DesignTokenColors.neutralUI50};
+  border: 1px dashed ${DesignTokenColors.neutralUI300};
+  border-radius: 12px;
+  color: ${DesignTokenColors.neutralUI600};
+  padding: 24px;
+  text-align: center;
+`;
+
+const HeaderActions = styled.div``;
+
+const HeaderInvitedVia = styled.div``;
+
+const HeaderName = styled.div`
   align-items: center;
   display: flex;
-  gap: 8px;
-  justify-content: space-between;
-  margin-bottom: 12px;
+  gap: 10px;
 `;
 
-const SubFilterPills = styled.div`
-  display: flex;
-  gap: 8px;
+const InvitedViaCell = styled.div`
+  color: ${DesignTokenColors.neutralUI800};
+  font-size: 14px;
 `;
 
-const SubFilterPill = styled.button`
-  background: ${(p) => (p.$active ? DesignTokenColors.primary50 : DesignTokenColors.whiteUI)};
-  border: 1px solid ${(p) => (p.$active ? DesignTokenColors.primary600 : DesignTokenColors.neutralUI300)};
-  border-radius: 12px;
-  color: ${(p) => (p.$active ? DesignTokenColors.primary700 : DesignTokenColors.neutralUI700)};
+const KebabBtn = styled.button`
+  background: transparent;
+  border: none;
+  border-radius: 10px;
+  color: ${DesignTokenColors.neutralUI600};
+  cursor: pointer;
+  padding: 2px 6px;
+
+  &:hover {
+    background: ${DesignTokenColors.neutralUI50};
+  }
+`;
+
+const MobileActionPill = styled.button`
+  background: ${DesignTokenColors.whiteUI};
+  border: 1px solid ${DesignTokenColors.primary600};
+  border-radius: 9999px;
+  color: ${DesignTokenColors.primary700};
   cursor: pointer;
   font-size: 14px;
-  font-weight: ${(p) => (p.$active ? 600 : 500)};
-  padding: 4px 12px;
+  font-weight: 500;
+  padding: 8px 16px;
+  width: 100%;
 
   &:hover {
     background: ${DesignTokenColors.primary50};
   }
+`;
+
+const MobileActions = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+`;
+
+const MobileFieldLabel = styled.div`
+  color: ${DesignTokenColors.neutralUI600};
+  font-size: 13px;
+  margin-top: 8px;
+`;
+
+const MobileFieldValue = styled.div`
+  color: ${DesignTokenColors.neutralUI900};
+  font-size: 14px;
+  font-weight: 500;
 `;
 
 const MobileRightTools = styled.div`
@@ -342,14 +432,37 @@ const MobileToolsDivider = styled.span`
   width: 1px;
 `;
 
-const SelectAllInline = styled.label`
+const NameCell = styled.div`
   align-items: center;
-  color: ${DesignTokenColors.neutralUI700};
-  display: inline-flex;
-  font-size: 14px;
-  gap: 6px;
-  line-height: 1;
-  margin: 0;
+  display: flex;
+  gap: 10px;
+`;
+
+const NameText = styled.div`
+  color: ${DesignTokenColors.neutralUI900};
+  font-size: 15px;
+  font-weight: 600;
+`;
+
+const RemindCard = styled(Card)`
+  background: ${(p) => (p.$selected ? DesignTokenColors.primary50 : DesignTokenColors.neutralUI50)};
+  border: 1px solid ${(p) => (p.$selected ? DesignTokenColors.primary200 : DesignTokenColors.neutralUI200)};
+  padding: 12px 14px;
+
+  @media (min-width: 576px) {
+    background: ${(p) => (p.$selected ? DesignTokenColors.primary50 : DesignTokenColors.whiteUI)};
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    box-shadow: none;
+  }
+`;
+
+const RightOptions = styled.div`
+  align-items: center;
+  display: flex;
+  margin-left: auto;
 `;
 
 const SearchIconButton = styled.button`
@@ -371,158 +484,46 @@ const SearchIconButton = styled.button`
   }
 `;
 
-const DesktopHeaderRow = styled.div`
+const SelectAllInline = styled.label`
   align-items: center;
-  border-bottom: 1px solid ${DesignTokenColors.neutralUI200};
-  color: ${DesignTokenColors.neutralUI600};
-  display: grid;
-  font-size: 13px;
-  gap: 12px;
-  grid-template-columns: minmax(140px, 0.8fr) minmax(70px, 0.4fr) minmax(340px, 1.8fr);
-  padding: 8px 14px;
-`;
-
-const HeaderName = styled.div`
-  align-items: center;
-  display: flex;
-  gap: 10px;
-`;
-
-/* Same width as the row checkbox so "Name" header aligns with the data row's name text */
-const CheckboxSpacer = styled.span`
-  display: inline-block;
-  height: 13px;
-  width: 13px;
-`;
-
-const HeaderInvitedVia = styled.div``;
-const HeaderActions = styled.div``;
-
-const RemindCard = styled(Card)`
-  background: ${(p) => (p.$selected ? DesignTokenColors.primary50 : DesignTokenColors.neutralUI50)};
-  border: 1px solid ${(p) => (p.$selected ? DesignTokenColors.primary200 : DesignTokenColors.neutralUI200)};
-  padding: 12px 14px;
-
-  @media (min-width: 576px) {
-    background: ${(p) => (p.$selected ? DesignTokenColors.primary50 : DesignTokenColors.whiteUI)};
-    border-radius: 0;
-    border-left: none;
-    border-right: none;
-    border-top: none;
-    box-shadow: none;
-  }
-`;
-
-const DesktopRow = styled.div`
-  align-items: center;
-  display: grid;
-  gap: 12px;
-  grid-template-columns: minmax(140px, 0.8fr) minmax(70px, 0.4fr) minmax(340px, 1.8fr);
-`;
-
-const NameCell = styled.div`
-  align-items: center;
-  display: flex;
-  gap: 10px;
-`;
-
-const NameText = styled.div`
-  color: ${DesignTokenColors.neutralUI900};
-  font-size: 15px;
-  font-weight: 600;
-`;
-
-const InvitedViaCell = styled.div`
-  color: ${DesignTokenColors.neutralUI800};
-  font-size: 14px;
-`;
-
-const ActionsCell = styled.div`
-  align-items: center;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  gap: 14px;
-`;
-
-const ActionLinkButton = styled.button`
-  align-items: center;
-  background: none;
-  border: none;
-  color: ${DesignTokenColors.primary600};
-  cursor: pointer;
+  color: ${DesignTokenColors.neutralUI700};
   display: inline-flex;
   font-size: 14px;
-  font-weight: 500;
   gap: 6px;
-  padding: 4px 0;
-  white-space: nowrap;
-
-  &:hover {
-    color: ${DesignTokenColors.primary700};
-    text-decoration: underline;
-  }
+  line-height: 1;
+  margin: 0;
 `;
 
-const RightOptions = styled.div`
-  align-items: center;
-  display: flex;
-  margin-left: auto;
-`;
-
-const KebabBtn = styled.button`
-  background: transparent;
-  border: none;
-  border-radius: 10px;
-  color: ${DesignTokenColors.neutralUI600};
-  cursor: pointer;
-  padding: 2px 6px;
-
-  &:hover {
-    background: ${DesignTokenColors.neutralUI50};
-  }
-`;
-
-const MobileFieldLabel = styled.div`
-  color: ${DesignTokenColors.neutralUI600};
-  font-size: 13px;
-  margin-top: 8px;
-`;
-
-const MobileFieldValue = styled.div`
-  color: ${DesignTokenColors.neutralUI900};
-  font-size: 14px;
-  font-weight: 500;
-`;
-
-const MobileActions = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-top: 8px;
-`;
-
-const MobileActionPill = styled.button`
-  background: ${DesignTokenColors.whiteUI};
-  border: 1px solid ${DesignTokenColors.primary600};
-  border-radius: 9999px;
-  color: ${DesignTokenColors.primary700};
+const SubFilterPill = styled.button`
+  background: ${(p) => (p.$active ? DesignTokenColors.primary50 : DesignTokenColors.whiteUI)};
+  border: 1px solid ${(p) => (p.$active ? DesignTokenColors.primary600 : DesignTokenColors.neutralUI300)};
+  border-radius: 12px;
+  color: ${(p) => (p.$active ? DesignTokenColors.primary700 : DesignTokenColors.neutralUI700)};
   cursor: pointer;
   font-size: 14px;
-  font-weight: 500;
-  padding: 8px 16px;
-  width: 100%;
+  font-weight: ${(p) => (p.$active ? 600 : 500)};
+  padding: 4px 12px;
 
   &:hover {
     background: ${DesignTokenColors.primary50};
   }
 `;
 
-const EmptyState = styled.div`
-  background: ${DesignTokenColors.neutralUI50};
-  border: 1px dashed ${DesignTokenColors.neutralUI300};
-  border-radius: 12px;
-  color: ${DesignTokenColors.neutralUI600};
-  padding: 24px;
-  text-align: center;
+const SubFilterPills = styled.div`
+  display: flex;
+  gap: 8px;
+`;
+
+const SubFilterRow = styled.div`
+  align-items: center;
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+  margin-bottom: 12px;
+`;
+
+const Subtitle = styled.p`
+  color: ${DesignTokenColors.neutralUI700};
+  font-size: 14px;
+  margin: 4px 0 12px;
 `;
