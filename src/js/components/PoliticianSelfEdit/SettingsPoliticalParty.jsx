@@ -12,23 +12,23 @@ import { PoliticalPartySvg } from '../Icons/PoliticianSelfEditIcons';
 const delayBeforeSavingToAPI = 1500;
 const delayBeforeShowingSavedStatus = 3000;
 const enterYourOwnPartyText = '-- Enter your own --';
+// The master list of political party options are in WeVoteServer/wevote_functions/functions.py - candidate_party_display
+const partyOptions = [
+  'Democrat',
+  'Republican',
+  'Green',
+  'Libertarian',
+  'Independent',
+  'Nonpartisan',
+  'No Party Preference',
+  'Peace and Freedom',
+  'Working Families',
+  'Constitution',
+  'No Labels',
+  enterYourOwnPartyText,
+];
 
 function SettingsPoliticalParty ({ politicianWeVoteId }) {
-  // The master list of political party options are in WeVoteServer/wevote_functions/functions.py - candidate_party_display
-  const partyOptions = [
-    'Democrat',
-    'Republican',
-    'Green',
-    'Libertarian',
-    'Independent',
-    'Nonpartisan',
-    'No Party Preference',
-    'Peace and Freedom',
-    'Working Families',
-    'Constitution',
-    'No Labels',
-    enterYourOwnPartyText,
-  ];
 
   const [customParty, setCustomParty] = useState('');
   const [savedStatus, setSavedStatus] = useState('');
@@ -115,7 +115,7 @@ function SettingsPoliticalParty ({ politicianWeVoteId }) {
       if (clearStatusTimer.current) clearTimeout(clearStatusTimer.current);
       if (savingStatusTimer.current) clearTimeout(savingStatusTimer.current);
     };
-  }, []);
+  }, [politicianWeVoteId]);
 
   return (
     <SettingsPoliticalPartyWrapper>
