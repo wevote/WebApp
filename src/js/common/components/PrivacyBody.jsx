@@ -15,20 +15,7 @@ export default class PrivacyBody extends Component {
     return (
       <div>
         <ContentTitle>WeVote.US Privacy Policy</ContentTitle>
-        <p><strong>Last updated: April 28th, 2026</strong></p>
-
-        <h2><b>Our commitment to you</b></h2>
-        <p>
-          <ol>
-            <li>We take your privacy very seriously, and are very careful to keep your private information private.</li>
-            <li>We don’t sell or give your contact information, location, or ballot choices to databrokers, campaigns, or other organizations.</li>
-            <li>We only ask for your location once, while you are entering your address, so that we can suggest  nearby addresses as you fill in the form. You can say no to allowing us to access to your precise location, and still have full use of the app. We want your address (or at least a nearby address) so that we can present the correct ballot for your polling district. We never track your location while the app is on or off.</li>
-            <li>Some users choose to upload their contacts, so they can easily invite their friends to share opinions. We never upload your contacts, unless you choose to have us do that (the button is on the Friends page).</li>
-            <li>The App and Play stores say that we access your “Sensitive Info”, but we believe they are referring to your contacts, and we we have no access to your contacts unless you choose to share them with us. If the contacts you share with us include photographs, we do not access or store them.</li>
-          </ol>
-        </p>
-
-        <h2><b>The WeVote Privacy Policy</b></h2>
+        <p><strong>Last updated: May 5th, 2026</strong></p>
         <p>
           <span>We Vote USA has created this privacy policy to explain how WeVote (or “we”) uses information that we collect from you while you visit WeVote, currently located at </span>
           <span>
@@ -71,6 +58,16 @@ export default class PrivacyBody extends Component {
           </Suspense>
           .
         </p>
+        <h2><b>Our commitment to you</b></h2>
+        <p>
+          <ol>
+            <li>We take your privacy very seriously, and are very careful to keep your private information private.</li>
+            <li>We don’t sell or give your contact information, location, or ballot choices to databrokers, campaigns, or other organizations.</li>
+            <li>We only ask for your location once, while you are entering your address, so that we can suggest nearby addresses as you fill in the form. You can say no to allowing us to access to your precise location, and still have full use of the app. We use your address (or at least a nearby address) so that we can present the correct ballot for your polling district. We never track your location while the app is on or off.</li>
+            <li>Some users choose to upload their contacts, so they can easily invite their friends to share opinions. We never upload your contacts, unless you initiate that by using the button on the Friends page.</li>
+            <li>The App and Play stores state that we access your “Sensitive Info”, but we believe they are referring to your contacts, and we we have no access to your contacts unless you choose to share them with us. If the contacts you share with us include photographs, we do not access or store them.</li>
+          </ol>
+        </p>
         <h2><b>Why we use your information</b></h2>
         <p>
           <span>
@@ -108,7 +105,7 @@ export default class PrivacyBody extends Component {
         </p>
         <p>These are some ways your information is used or shown:</p>
         <HorizontallyScrollingDiv>
-          <table style={{ height: 166, width: 631 }} border="1">
+          <table style={{ width: '100%' }} border="1">
             <tbody>
               <tr>
                 <TdColumn1><strong>Your Personal Information</strong></TdColumn1>
