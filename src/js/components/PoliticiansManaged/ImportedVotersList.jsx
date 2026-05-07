@@ -1,6 +1,6 @@
-import React, { useEffect, useMemo, useState, useRef } from 'react';
+import React, { useCallback, useEffect, useMemo, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import {
   KeyboardArrowDown as ExpandIcon,
   KeyboardArrowUp as CollapseIcon,
@@ -33,16 +33,31 @@ function formatWhen (iso) {
   }
 }
 
+const ROW_MENU_HEIGHT_ESTIMATE = 200; // 4 items + divider + padding
+const MOBILE_BOTTOM_RESERVED = 100; // space for MobileFooter + device nav
+
+function useClickOutside (isOpen, isInside, onClose) {
+  useEffect(() => {
+    if (!isOpen) return undefined;
+    const onDocClick = (e) => {
+      if (!isInside(e.target)) onClose();
+    };
+    document.addEventListener('mousedown', onDocClick);
+    return () => document.removeEventListener('mousedown', onDocClick);
+  }, [isOpen, isInside, onClose]);
+}
+
 export default function ImportedVotersList ({
   voters,
   onInviteEmail,
   onInviteText,
   onHide,
-  onHideSelected,
+  onUnhide,
   onOpenPreview,
   onShowHidden,
   onDeleteSelected,
   onUpdateVoter,
+  showHidden,
 }) {
   const [isMobile, setIsMobile] = useState(isMobileScreenSize);
 
@@ -56,8 +71,9 @@ export default function ImportedVotersList ({
   const [expandedId, setExpandedId] = useState(null);
   const [selected, setSelected] = useState(() => new Set());
   const [menuOpen, setMenuOpen] = useState(false);
+  const [topMenuOpen, setTopMenuOpen] = useState(false);
   const menuRef = useRef(null);
-  const [importHistoryOpen, setImportHistoryOpen] = useState(false);
+  const topMenuRef = useRef(null);
   const [inviteModalOpen, setInviteModalOpen] = useState(false);
   const [inviteList, setInviteList] = useState([]);
 
@@ -69,7 +85,6 @@ export default function ImportedVotersList ({
 
   const [rowMenuAnchor, setRowMenuAnchor] = useState(null);
   const [rowMenuVoter, setRowMenuVoter] = useState(null);
-  const [rowMenuPosition, setRowMenuPosition] = useState({ top: 0, left: 0 });
   const [hoveredRowId, setHoveredRowId] = useState(null);
 
   const filtered = useMemo(() => {
@@ -109,24 +124,39 @@ export default function ImportedVotersList ({
     });
   };
 
-  const handleRowMenuOpen = (event, voter) => {
-    event.stopPropagation();
-    const rect = event.currentTarget.getBoundingClientRect();
-    const menuWidth = 180;
-    const menuHeight = 180; // approx: 4 items + divider + padding
-    const spaceBelow = window.innerHeight - rect.bottom;
-    const position = {
-      top: spaceBelow < menuHeight ? rect.top - menuHeight - 6 : rect.bottom + 6,
-      left: rect.right - menuWidth,
-    };
-    setRowMenuPosition(position);
-    setRowMenuAnchor(event.currentTarget);
-    setRowMenuVoter(voter);
-  };
-
-  const handleRowMenuClose = () => {
+  const handleRowMenuClose = useCallback(() => {
     setRowMenuAnchor(null);
     setRowMenuVoter(null);
+  }, []);
+
+  const closeMenu = useCallback(() => setMenuOpen(false), []);
+  const closeTopMenu = useCallback(() => setTopMenuOpen(false), []);
+
+  const isInsideRowMenu = useCallback(
+    (target) => (rowMenuAnchor?.contains(target)) || !!target.closest('[role="menu"]'),
+    [rowMenuAnchor],
+  );
+  const isInsideMenu = useCallback(
+    (target) => (menuRef.current?.contains(target)) || !!target.closest('button[aria-label="More options"]'),
+    [],
+  );
+  const isInsideTopMenu = useCallback(
+    (target) => (topMenuRef.current?.contains(target)) || !!target.closest('button[aria-label="More options"]'),
+    [],
+  );
+
+  useClickOutside(!!rowMenuAnchor, isInsideRowMenu, handleRowMenuClose);
+  useClickOutside(menuOpen, isInsideMenu, closeMenu);
+  useClickOutside(topMenuOpen, isInsideTopMenu, closeTopMenu);
+
+  const handleRowMenuOpen = (event, voter) => {
+    event.stopPropagation();
+    if (rowMenuVoter === voter) {
+      handleRowMenuClose();
+      return;
+    }
+    setRowMenuAnchor(event.currentTarget);
+    setRowMenuVoter(voter);
   };
 
   const handleEditVoter = () => {
@@ -144,10 +174,7 @@ export default function ImportedVotersList ({
   };
 
   const handleSaveVoter = (updatedVoter) => {
-    if (onUpdateVoter) {
-      onUpdateVoter(updatedVoter);
-    }
-    // Update selectedVoter so modal shows updated data if reopened
+    onUpdateVoter?.(updatedVoter);
     setSelectedVoter(updatedVoter);
   };
 
@@ -188,16 +215,42 @@ export default function ImportedVotersList ({
                 <HeadingLight>(not invited)</HeadingLight>
               </MobileHeading>
               <MobileTopBarIcons>
-                <OverflowBtn
-                  type="button"
-                  aria-label="More options"
-                  aria-haspopup="menu"
-                  aria-expanded={menuOpen}
-                  onClick={() => setMenuOpen((o) => !o)}
-                  title="More options"
-                >
-                  <MoreHorizIcon fontSize="small" />
-                </OverflowBtn>
+                <OverflowWrap>
+                  <OverflowBtn
+                    type="button"
+                    aria-label="More options"
+                    aria-haspopup="menu"
+                    aria-expanded={topMenuOpen}
+                    onClick={() => setTopMenuOpen((o) => !o)}
+                    title="More options"
+                  >
+                    <MoreHorizIcon fontSize="small" />
+                  </OverflowBtn>
+                  {topMenuOpen && (
+                    <MenuCard role="menu" ref={topMenuRef}>
+                      <MenuItem
+                        role="menuitem"
+                        onClick={() => {
+                          onShowHidden?.();
+                          setTopMenuOpen(false);
+                        }}
+                      >
+                        <ShowIcon fontSize="small" />
+                        <span>{showHidden ? 'Hide hidden' : 'Show hidden'}</span>
+                      </MenuItem>
+                      <MenuItem
+                        role="menuitem"
+                        onClick={() => {
+                          setHistoryModalOpen(true);
+                          setTopMenuOpen(false);
+                        }}
+                      >
+                        <HistoryIcon fontSize="small" />
+                        <span>View history of imports</span>
+                      </MenuItem>
+                    </MenuCard>
+                  )}
+                </OverflowWrap>
                 <OverflowBtn type="button" aria-label="Search" title="Search">
                   <SearchIcon fontSize="small" />
                 </OverflowBtn>
@@ -250,7 +303,7 @@ export default function ImportedVotersList ({
                       }}
                     >
                       <ShowIcon fontSize="small" />
-                      <span>Show hidden</span>
+                      <span>{showHidden ? 'Hide hidden' : 'Show hidden'}</span>
                     </MenuItem>
 
                     <MenuItem
@@ -273,8 +326,9 @@ export default function ImportedVotersList ({
 
         {!isMobile && (
           <Toolbar>
-            <label>
+            <label htmlFor="select-all-voters">
               <input
+                id="select-all-voters"
                 type="checkbox"
                 checked={allVisibleSelected}
                 onChange={toggleAllVisible}
@@ -375,13 +429,52 @@ export default function ImportedVotersList ({
 
                         {/* Triple dot menu, only visible on hover or when menu is open */}
                         {(isHovered || isChecked || isMenuOpen) && (
-                          <RowMenuButton
-                            type="button"
-                            onClick={(e) => handleRowMenuOpen(e, v)}
-                            aria-label="More options for voter"
-                          >
-                            <OverflowIcon fontSize="small" />
-                          </RowMenuButton>
+                          <OverflowWrap>
+                            <RowMenuButton
+                              type="button"
+                              onClick={(e) => handleRowMenuOpen(e, v)}
+                              aria-label="More options for voter"
+                            >
+                              <OverflowIcon fontSize="small" />
+                            </RowMenuButton>
+                            {rowMenuAnchor && rowMenuVoter === v && (
+                              <RowMenuDropdown
+                                role="menu"
+                                $openAbove={rowMenuAnchor.getBoundingClientRect().bottom + ROW_MENU_HEIGHT_ESTIMATE > window.innerHeight}
+                              >
+                                <MenuItem role="menuitem" onClick={handleEditVoter}>
+                                  <EditIcon fontSize="small" />
+                                  <span>Edit voter</span>
+                                </MenuItem>
+                                <MenuItem role="menuitem" onClick={handleShowVoterHistory}>
+                                  <HistoryIcon fontSize="small" />
+                                  <span>Show history</span>
+                                </MenuItem>
+                                <MenuDivider />
+                                <MenuItem
+                                  role="menuitem"
+                                  onClick={() => {
+                                    if (rowMenuVoter.hidden) onUnhide?.(rowMenuVoter);
+                                    else onHide(rowMenuVoter);
+                                    handleRowMenuClose();
+                                  }}
+                                >
+                                  <HideIcon fontSize="small" />
+                                  <span>{rowMenuVoter.hidden ? 'Unhide' : 'Hide'}</span>
+                                </MenuItem>
+                                <MenuItem
+                                  role="menuitem"
+                                  onClick={() => {
+                                    onDeleteSelected?.([rowMenuVoter]);
+                                    handleRowMenuClose();
+                                  }}
+                                >
+                                  <DeleteIcon fontSize="small" />
+                                  <span>Delete</span>
+                                </MenuItem>
+                              </RowMenuDropdown>
+                            )}
+                          </OverflowWrap>
                         )}
                       </ActionsInline>
                     </TdActions>
@@ -431,14 +524,50 @@ export default function ImportedVotersList ({
                     aria-label={`Select ${v.name || 'voter'}`}
                   />
                   <MobileCardName>{v.name || '—'}</MobileCardName>
-                  <RowMenuButton
-                    type="button"
-                    onClick={(e) => handleRowMenuOpen(e, v)}
-                    aria-label="More options for voter"
-                    title="More options"
-                  >
-                    <MoreHorizIcon fontSize="small" />
-                  </RowMenuButton>
+                  <OverflowWrap>
+                    <RowMenuButton
+                      type="button"
+                      onClick={(e) => handleRowMenuOpen(e, v)}
+                      aria-label="More options for voter"
+                      title="More options"
+                    >
+                      <MoreHorizIcon fontSize="small" />
+                    </RowMenuButton>
+                    {rowMenuAnchor && rowMenuVoter === v && (
+                      <RowMenuDropdown role="menu" $openAbove={rowMenuAnchor.getBoundingClientRect().bottom + ROW_MENU_HEIGHT_ESTIMATE > window.innerHeight - MOBILE_BOTTOM_RESERVED}>
+                        <MenuItem role="menuitem" onClick={handleEditVoter}>
+                          <EditIcon fontSize="small" />
+                          <span>Edit voter</span>
+                        </MenuItem>
+                        <MenuItem role="menuitem" onClick={handleShowVoterHistory}>
+                          <HistoryIcon fontSize="small" />
+                          <span>Show history</span>
+                        </MenuItem>
+                        <MenuDivider />
+                        <MenuItem
+                          role="menuitem"
+                          onClick={() => {
+                            if (rowMenuVoter.hidden) onUnhide?.(rowMenuVoter);
+                            else onHide(rowMenuVoter);
+                            handleRowMenuClose();
+                          }}
+                        >
+                          <HideIcon fontSize="small" />
+                          <span>{rowMenuVoter.hidden ? 'Unhide' : 'Hide'}</span>
+                        </MenuItem>
+                        <MenuItem
+                          role="menuitem"
+                          onClick={() => {
+                            onDeleteSelected?.([rowMenuVoter]);
+                            handleRowMenuClose();
+                          }}
+                        >
+                          <DeleteIcon fontSize="small" />
+                          <span>Delete</span>
+                        </MenuItem>
+                      </RowMenuDropdown>
+                    )}
+                  </OverflowWrap>
                   <TopDivider aria-hidden />
                   <ExpandBtn
                     type="button"
@@ -515,7 +644,7 @@ export default function ImportedVotersList ({
               <MoreHorizIcon fontSize="small" />
             </OverflowBtn>
             {menuOpen && (
-              <MenuCard role="menu" ref={menuRef}>
+              <MobileMenuCard role="menu" ref={menuRef}>
                 <MenuItem
                   role="menuitem"
                   onClick={() => {
@@ -524,7 +653,7 @@ export default function ImportedVotersList ({
                   }}
                 >
                   <ShowIcon fontSize="small" />
-                  <span>Show hidden</span>
+                  <span>{showHidden ? 'Hide hidden' : 'Show hidden'}</span>
                 </MenuItem>
                 <MenuItem
                   role="menuitem"
@@ -536,61 +665,11 @@ export default function ImportedVotersList ({
                   <HistoryIcon fontSize="small" />
                   <span>View history of imports</span>
                 </MenuItem>
-              </MenuCard>
+              </MobileMenuCard>
             )}
           </OverflowWrap>
         </MobileFooterDot>
       </MobileFooter>
-      )}
-
-      {/* Row menu dropdown */}
-      {rowMenuAnchor && (
-        <>
-          <ClickAwayOverlay onClick={handleRowMenuClose} />
-          <RowMenuCard
-            role="menu"
-            style={{
-              top: `${rowMenuPosition.top}px`,
-              left: `${rowMenuPosition.left}px`,
-            }}
-          >
-            <MenuItem
-              role="menuitem"
-              onClick={handleEditVoter}
-            >
-              <EditIcon fontSize="small" />
-              <span>Edit voter</span>
-            </MenuItem>
-            <MenuItem
-              role="menuitem"
-              onClick={handleShowVoterHistory}
-            >
-              <HistoryIcon fontSize="small" />
-              <span>Show history</span>
-            </MenuItem>
-            <MenuDivider />
-            <MenuItem
-              role="menuitem"
-              onClick={() => {
-                onHide(rowMenuVoter);
-                handleRowMenuClose();
-              }}
-            >
-              <HideIcon fontSize="small" />
-              <span>Hide</span>
-            </MenuItem>
-            <MenuItem
-              role="menuitem"
-              onClick={() => {
-                onDeleteSelected?.([rowMenuVoter]);
-                handleRowMenuClose();
-              }}
-            >
-              <DeleteIcon fontSize="small" />
-              <span>Delete</span>
-            </MenuItem>
-          </RowMenuCard>
-        </>
       )}
 
       {/* Invite selected modal */}
@@ -638,11 +717,12 @@ ImportedVotersList.propTypes = {
   onInviteEmail: PropTypes.func.isRequired,
   onInviteText: PropTypes.func.isRequired,
   onHide: PropTypes.func.isRequired,
-  onHideSelected: PropTypes.func.isRequired,
+  onUnhide: PropTypes.func,
   onShowHidden: PropTypes.func,
   onOpenPreview: PropTypes.func,
   onDeleteSelected: PropTypes.func,
   onUpdateVoter: PropTypes.func,
+  showHidden: PropTypes.bool,
 };
 
 /* styles */
@@ -737,17 +817,6 @@ const MobileInviteButton = styled(InviteButton)`
   font-size: 13px;
 `;
 
-const MobileFooterDot = styled.div`
-  display: flex;
-  align-items: center;
-  button {
-    background: ${DesignTokenColors.primary50};
-    &:hover {
-      background: ${DesignTokenColors.primary100 || DesignTokenColors.neutralUI100};
-    }
-  }
-`;
-
 const OverflowWrap = styled.div`
   position: relative;
 `;
@@ -762,6 +831,17 @@ const OverflowBtn = styled.button`
   &:hover {
     background: ${DesignTokenColors.neutralUI50};
     color: ${DesignTokenColors.neutralUI900};
+  }
+`;
+
+const MobileFooterDot = styled.div`
+  display: flex;
+  align-items: center;
+  > ${OverflowWrap} > ${OverflowBtn} {
+    background: ${DesignTokenColors.primary50};
+    &:hover {
+      background: ${DesignTokenColors.primary100};
+    }
   }
 `;
 
@@ -782,6 +862,11 @@ const MenuCard = styled.div`
   min-width: 250px;
   padding: 6px;
   z-index: 10;
+`;
+
+const MobileMenuCard = styled(MenuCard)`
+  top: auto;
+  bottom: calc(100% + 6px);
 `;
 const MenuItem = styled.button`
   display: flex;
@@ -818,7 +903,6 @@ const Toolbar = styled.div`
 
 const Table = styled.div`
   width: 100%;
-  overflow-x: auto; /* if columns still can’t fit, scroll the table, not the page */
 `;
 
 const Tbody = styled.div``;
@@ -864,6 +948,11 @@ const Tr = styled.div`
     opacity: 1;
     visibility: visible;
   }
+  /* On a selected (blue) row the default neutral-gray hover blends into the bg, so darken to a blue tint */
+  &.selected ${RowMenuButton}:hover {
+    background: ${DesignTokenColors.primary100};
+    color: ${DesignTokenColors.neutralUI900};
+  }
 
   &.menu-open .row-actions {
     opacity: 1;
@@ -908,6 +997,7 @@ const TdActions = styled(Td)`
   display: flex;
   justify-content: flex-end;
   padding: 10px 4px;
+  overflow: visible;
 `;
 
 const Checkbox = styled.input``;
@@ -946,16 +1036,6 @@ const ActionPill = styled.button`
   cursor: pointer;
 `;
 
-const ClickAwayOverlay = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 999;
-  background: transparent;
-`;
-
 const DetailsGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(3, minmax(140px, 1fr));
@@ -979,15 +1059,15 @@ const DetailLabel = styled.div`
   white-space: nowrap;
 `;
 
-const RowMenuCard = styled.div`
-  position: fixed;
-  background: ${DesignTokenColors.whiteUI};
-  border: 1px solid ${DesignTokenColors.neutralUI200};
-  border-radius: 10px;
-  box-shadow: 0 8px 24px rgba(16, 24, 40, 0.08);
+const RowMenuDropdown = styled(MenuCard).withConfig({
+  shouldForwardProp: (prop) => prop !== '$openAbove',
+})`
+  right: 0;
   min-width: 180px;
-  padding: 6px;
-  z-index: 1000;
+  ${({ $openAbove }) => $openAbove && `
+    top: auto;
+    bottom: calc(100% + 6px);
+  `}
 `;
 
 const TdFull = styled(Td)`
@@ -999,30 +1079,6 @@ const MenuDivider = styled.div`
   background: ${DesignTokenColors.neutralUI200};
   margin: 6px;
   border-radius: 1px;
-`;
-
-const TooltipWrap = styled.div`
-  position: relative;
-`;
-
-const TooltipBubble = styled.div`
-  position: absolute;
-  left: calc(100% + 8px);
-  top: 50%;
-  transform: translateY(-50%);
-  background: #111827;
-  color: white;
-  font-size: 12px;
-  padding: 6px 8px;
-  border-radius: 6px;
-  white-space: nowrap;
-  box-shadow: 0 8px 24px rgba(16, 24, 40, 0.14);
-  opacity: 0;
-  pointer-events: none;
-
-  ${TooltipWrap}:hover & {
-    opacity: 1;
-  }
 `;
 
 const TopBarLeft = styled.div`
@@ -1053,9 +1109,21 @@ const VoterCard = styled.div`
   border-radius: 16px;
   background: ${DesignTokenColors.neutralUI50};
   padding: 12px;
-  ${({ $selected }) => $selected && `
+
+  /* Default (gray card): the kebab's neutralUI50 hover blends into the card bg, so darken it */
+  ${RowMenuButton}:hover {
+    background: ${DesignTokenColors.neutralUI200};
+    color: ${DesignTokenColors.neutralUI900};
+  }
+
+  ${({ $selected }) => $selected && css`
     background: ${DesignTokenColors.primary50 || DesignTokenColors.neutralUI50};
     border-left: 3px solid ${DesignTokenColors.primary700};
+
+    /* Selected (blue card): use a darker blue tint instead of gray for contrast */
+    ${RowMenuButton}:hover {
+      background: ${DesignTokenColors.primary100};
+    }
   `}
 `;
 
