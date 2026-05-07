@@ -115,7 +115,7 @@ function SettingsPoliticalParty ({ politicianWeVoteId }) {
       if (clearStatusTimer.current) clearTimeout(clearStatusTimer.current);
       if (savingStatusTimer.current) clearTimeout(savingStatusTimer.current);
     };
-  }, [politicianWeVoteId]);
+  }, []);
 
   return (
     <SettingsPoliticalPartyWrapper>
