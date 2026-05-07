@@ -516,6 +516,8 @@ class PositionRowListCompressed extends Component {
             )}
           </CandidateEndorsementCount>
           <CandidateEndorsementPhotos
+            tabIndex={0}
+            role="button"
             ref={this.photosRef}
             id={`candidateEndorsementPhotos${showOppose && 'Oppose'}${showSupport && 'Support'}`}
             onClick={() => this.onClickShowOrganizationModalWithPositions(`candidateEndorsementPhotos${showOppose && 'Oppose'}${showSupport && 'Support'}`)}
