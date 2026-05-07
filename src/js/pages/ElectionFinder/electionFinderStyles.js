@@ -3,24 +3,6 @@ import React from 'react'; // eslint-disable-line no-unused-vars
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-// eslint-disable-next-line react/jsx-props-no-spreading, react/react-in-jsx-scope
-export const DarkTooltip = styled(({ className, ...props }) => (
-  <Tooltip {...props} classes={{ popper: className }} /> // eslint-disable-line react/jsx-props-no-spreading
-))`
-  & .${tooltipClasses.tooltip} {
-    background-color: rgba(0, 0, 0, 0.9);
-    color: #fff;
-    font-family: "Poppins", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
-    font-size: 14px;
-    font-weight: 400;
-    letter-spacing: 0.15px;
-    padding: 4px 8px;
-    border-radius: 4px;
-    max-width: 200px;
-    text-align: center;
-  }
-`;
-
 export const ActionChip = styled('button')`
   display: inline-flex;
   align-items: center;
@@ -59,7 +41,6 @@ export const BreadcrumbAnchor = styled(Link)`
     text-decoration: underline;
   }
 `;
-
 
 export const CandidateActions = styled('div')`
   display: flex;
@@ -109,6 +90,26 @@ export const CandidateRow = styled('div')`
   }
 `;
 
+// disableFocusListener + disableInteractive: tooltip closes the moment the
+// mouse leaves the trigger — doesn't stick around on focus or popper hover.
+// eslint-disable-next-line react/jsx-props-no-spreading, react/react-in-jsx-scope
+export const DarkTooltip = styled(({ className, ...props }) => (
+  <Tooltip disableFocusListener disableInteractive {...props} classes={{ popper: className }} /> // eslint-disable-line react/jsx-props-no-spreading
+))`
+  & .${tooltipClasses.tooltip} {
+    background-color: rgba(0, 0, 0, 0.9);
+    color: #fff;
+    font-family: "Poppins", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 0.15px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    max-width: 200px;
+    text-align: center;
+  }
+`;
+
 export const DetailTitle = styled('h2')`
   font-size: 22px;
   font-weight: 700;
@@ -140,6 +141,9 @@ export const ElectionList = styled('div')`
   flex-direction: column;
 `;
 
+// ElectionRowActions must precede ElectionRow because ElectionRow's hover
+// selector references it via ${ElectionRowActions} (template-literal interpolation
+// is evaluated at module-load time).
 export const ElectionRowActions = styled('div')`
   display: flex;
   align-items: center;
@@ -251,11 +255,12 @@ export const NoResults = styled('p')`
   padding: 16px 0;
 `;
 
+// OfficeHeaderActions must precede OfficeHeader because OfficeHeader's hover
+// selector references it via ${OfficeHeaderActions}.
 export const OfficeHeaderActions = styled('div')`
   display: flex;
   align-items: center;
   gap: 4px;
-  margin-right: 16px;
   visibility: hidden;
 `;
 
@@ -263,7 +268,7 @@ export const OfficeHeader = styled('div')`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 7px 0;
+  padding: 7px 16px 7px 0;
   border-bottom: 1.5px solid #ccc;
   cursor: pointer;
   &:hover {
@@ -311,22 +316,6 @@ export const SearchIconButton = styled('button')`
   }
 `;
 
-export const ShowMoreButton = styled('button')`
-  display: block;
-  margin: 16px 0;
-  padding: 8px 16px;
-  font-size: 14px;
-  color: #555;
-  background: none;
-  border: 1px solid #ccc;
-  border-radius: 14px;
-  cursor: pointer;
-  &:hover {
-    border-color: #2e3c5d;
-    color: #333;
-  }
-`;
-
 export const SearchResultCount = styled('p')`
   font-size: 18px;
   color: #555;
@@ -347,13 +336,35 @@ export const SectionTitleRow = styled('div')`
   margin-bottom: 8px;
 `;
 
-export const StateSelectWrapper = styled('div')`
+export const ShowMoreButton = styled('button')`
+  display: block;
+  margin: 16px 0;
+  padding: 8px 16px;
+  font-size: 14px;
+  color: #555;
+  background: none;
+  border: 1px solid #ccc;
+  border-radius: 14px;
+  cursor: pointer;
+  &:hover {
+    border-color: #2e3c5d;
+    color: #333;
+  }
+`;
+
+export const StateSelectCaret = styled('span')`
+  flex-shrink: 0;
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  margin-bottom: 10px;
-  cursor: pointer;
-  position: relative;
+  color: #555;
+  font-size: 18px;
+`;
+
+export const StateSelectLabel = styled('span')`
+  font-size: 15px;
+  font-weight: 400;
+  color: #333;
+  white-space: nowrap;
 `;
 
 export const StateSelectNative = styled('select')`
@@ -368,18 +379,11 @@ export const StateSelectNative = styled('select')`
   z-index: 1;
 `;
 
-export const StateSelectLabel = styled('span')`
-  font-size: 15px;
-  font-weight: 400;
-  color: #333;
-  white-space: nowrap;
-`;
-
-
-export const StateSelectCaret = styled('span')`
-  flex-shrink: 0;
+export const StateSelectWrapper = styled('div')`
   display: inline-flex;
   align-items: center;
-  color: #555;
-  font-size: 18px;
+  gap: 4px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  position: relative;
 `;

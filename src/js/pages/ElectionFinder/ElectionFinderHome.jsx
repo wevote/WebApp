@@ -8,10 +8,14 @@ import { stateCodeMap } from '../../common/utils/addressFunctions';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import historyPush from '../../common/utils/historyPush';
+import SnackNotifier from '../../common/components/Widgets/SnackNotifier';
 import ElectionStore from '../../stores/ElectionStore';
+import CopyChip from './CopyChip';
+import copyAndToast from './copyAndToast';
 import ElectionFinderHeader from './ElectionFinderHeader';
+import RowKebabMenu from './RowKebabMenu';
 import {
-  ActionChip, ActionDivider, DarkTooltip,
+  ActionDivider, DarkTooltip,
   ElectionDatePill, ElectionLink, ElectionList, ElectionRow, ElectionRowActions,
   FilterTab, FilterTabsRow, InlineSearchField, NoResults,
   SearchIconButton, SectionTitle, SectionTitleRow, ShowMoreButton,
@@ -37,23 +41,14 @@ const SORTED_STATES = Object.entries(stateCodeMap)
 
 function ElectionFinderHome () {
   renderLog('ElectionFinderHome');
-  const [copyLinkText, setCopyLinkText] = useState('Copy link');
   const [electionList, setElectionList] = useState([]);
   const [selectedStateCode, setSelectedStateCode] = useState('all');
   const [filterTab, setFilterTab] = useState('upcoming');
   const [visibleCount, setVisibleCount] = useState(50);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchText, setSearchText] = useState('');
-  const copyLinkTimeoutRef = useRef(null);
   const searchInputRef = useRef(null);
   const searchDebounceRef = useRef(null);
-
-  useEffect(() => () => {
-    // Clear timeout when component unmounts
-    if (copyLinkTimeoutRef.current) {
-      clearTimeout(copyLinkTimeoutRef.current);
-    }
-  }, []);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -137,6 +132,7 @@ function ElectionFinderHome () {
   return (
     <>
       <Helmet><title>Election Finder - We Vote</title></Helmet>
+      <SnackNotifier />
       <PageContentContainer>
         <ElectionFinderHeader subtitle="Find past or upcoming elections." />
         <StateSelectWrapper>
@@ -208,6 +204,10 @@ function ElectionFinderHome () {
         <ElectionList>
           {(searchText ? displayElections : displayElections.slice(0, visibleCount)).map((election) => {
             const googleCivicElectionId = election.google_civic_election_id;
+            const sc = (election.state_code_list && election.state_code_list.length > 0) ?
+              election.state_code_list[0].toLowerCase() :
+              'na';
+            const electionUrl = `/election-finder/${sc}/${googleCivicElectionId}`;
             return (
               <ElectionRow
                 key={googleCivicElectionId}
@@ -220,22 +220,7 @@ function ElectionFinderHome () {
                   {election.election_name || ''}
                 </ElectionLink>
                 <ElectionRowActions className="u-show-desktop-tablet" onClick={(e) => e.stopPropagation()}>
-                  <DarkTooltip title={copyLinkText}>
-                    <ActionChip onClick={() => {
-                      setCopyLinkText('Copied!');
-                      copyLinkTimeoutRef.current = setTimeout(() => {
-                        setCopyLinkText('Copy link');
-                      }, 3000);
-                      const sc = (election.state_code_list && election.state_code_list.length > 0) ?
-                        election.state_code_list[0].toLowerCase() :
-                        'na';
-                      navigator.clipboard.writeText(`${window.location.origin}/election-finder/${sc}/${googleCivicElectionId}`);
-                    }}
-                    >
-                      <ContentCopy sx={{ fontSize: 14, mr: 0.5 }} />
-                      {copyLinkText}
-                    </ActionChip>
-                  </DarkTooltip>
+                  <CopyChip defaultLabel="Copy link" getText={() => `${window.location.origin}${electionUrl}`} />
                   <ActionDivider />
                   {nextReleaseFeaturesEnabled && (
                     <DarkTooltip title="Download election data">
@@ -243,19 +228,19 @@ function ElectionFinderHome () {
                     </DarkTooltip>
                   )}
                   <DarkTooltip title="Open in new tab">
-                    <IconButton
-                      size="small"
-                      onClick={() => {
-                        const sc = (election.state_code_list && election.state_code_list.length > 0) ?
-                          election.state_code_list[0].toLowerCase() :
-                          'na';
-                        window.open(`/election-finder/${sc}/${googleCivicElectionId}`, '_blank');
-                      }}
-                    >
+                    <IconButton size="small" onClick={() => window.open(electionUrl, '_blank')}>
                       <Launch fontSize="small" />
                     </IconButton>
                   </DarkTooltip>
                 </ElectionRowActions>
+                <RowKebabMenu
+                  ariaLabel="More options for this election"
+                  items={[
+                    { key: 'copy-link', icon: ContentCopy, label: 'Copy link', onClick: () => copyAndToast(`${window.location.origin}${electionUrl}`) },
+                    ...(nextReleaseFeaturesEnabled ? [{ key: 'download', icon: FileDownloadOutlined, label: 'Download election data', onClick: () => {} }] : []),
+                    { key: 'open', icon: Launch, label: 'Open in new tab', onClick: () => window.open(electionUrl, '_blank') },
+                  ]}
+                />
               </ElectionRow>
             );
           })}
