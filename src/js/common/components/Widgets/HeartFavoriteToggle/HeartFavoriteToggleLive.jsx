@@ -280,12 +280,13 @@ class HeartFavoriteToggleLive extends React.Component {
   }
 
   submitOpposeClick () {
+    const { voterFirstName, voterIsSignedIn, voterLastName } = this.state;
+    if (!voterIsSignedIn || !voterFirstName || !voterLastName) {
+      this.submitActionClick(false, true, false, false);
+      return;
+    }
     let { supportersCount } = this.state;
     const { opposersCount, voterSupports } = this.state;
-    const oppose = true;
-    const support = false;
-    const stopOpposing = false;
-    const stopSupporting = false;
     if (voterSupports) {
       supportersCount -= 1;
     }
@@ -295,7 +296,7 @@ class HeartFavoriteToggleLive extends React.Component {
       // supportersCountNextGoal: supportersCountNextGoalWithFloor,
       voterOpposes: true,
       voterSupports: false,
-    }, () => this.submitActionClick(support, oppose, stopSupporting, stopOpposing));
+    }, () => this.submitActionClick(false, true, false, false));
   }
 
   submitStopOpposingClick () {
@@ -328,12 +329,13 @@ class HeartFavoriteToggleLive extends React.Component {
   }
 
   submitSupportClick () {
+    const { voterFirstName, voterIsSignedIn, voterLastName } = this.state;
+    if (!voterIsSignedIn || !voterFirstName || !voterLastName) {
+      this.submitActionClick(true, false, false, false);
+      return;
+    }
     let { opposersCount } = this.state;
     const { supportersCount, voterOpposes } = this.state;
-    const oppose = false;
-    const support = true;
-    const stopOpposing = false;
-    const stopSupporting = false;
     if (voterOpposes) {
       opposersCount -= 1;
     }
@@ -343,7 +345,7 @@ class HeartFavoriteToggleLive extends React.Component {
       // supportersCountNextGoal: supportersCountNextGoalWithFloor,
       voterOpposes: false,
       voterSupports: true,
-    }, () => this.submitActionClick(support, oppose, stopSupporting, stopOpposing));
+    }, () => this.submitActionClick(true, false, false, false));
   }
 
   submitActionClick (support = true, oppose = false, stopSupporting = false, stopOpposing = false) {
@@ -357,9 +359,11 @@ class HeartFavoriteToggleLive extends React.Component {
       console.log('HeartFavoriteToggleLive submitActionClick: voter not signed in');
       AppObservableStore.setShowCompleteYourProfileModal(true);
     } else if (!voterFirstName || !voterLastName) {
-      // Open complete your profile modal
+      // Open complete your profile modal; store the heart action to fire after profile completion
+      AppObservableStore.setFunctionToCallAfterProfileComplete(
+        () => this.functionToUseWhenProfileComplete(support, oppose, stopSupporting, stopOpposing),
+      );
       AppObservableStore.setShowCompleteYourProfileModal(true);
-      this.functionToUseWhenProfileComplete(support, oppose, stopSupporting, stopOpposing);
     } else {
       if (campaignXWeVoteId) {
         // Mark that voter supports this campaign after they sign in
@@ -375,7 +379,8 @@ class HeartFavoriteToggleLive extends React.Component {
     renderLog('HeartFavoriteToggleLive');  // Set LOG_RENDER_EVENTS to log all renders
 
     const { campaignXWeVoteId, organizationWeVoteId } = this.props;
-    const { opposersCount, supportersCount, voterIsSignedIn, voterOpposes, voterSupports } = this.state;
+    const { opposersCount, supportersCount, voterFirstName, voterIsSignedIn, voterLastName, voterOpposes, voterSupports } = this.state;
+    const voterProfileComplete = voterIsSignedIn && !!voterFirstName && !!voterLastName;
     // console.log('HeartFavoriteToggleLive campaignXWeVoteId: ', campaignXWeVoteId);
     // console.log('HeartFavoriteToggleLive voterSupports: ', voterSupports, ' voterOpposes: ', voterOpposes);
     // console.log('HeartFavoriteToggleLive supportersCount: ', supportersCount, ', opposersCount: ', opposersCount);
@@ -393,6 +398,7 @@ class HeartFavoriteToggleLive extends React.Component {
             submitSupport={this.submitSupportClick}
             voterOpposes={voterOpposes}
             voterIsSignedIn={voterIsSignedIn}
+            voterProfileComplete={voterProfileComplete}
             voterSupports={voterSupports}
           />
         </Suspense>
