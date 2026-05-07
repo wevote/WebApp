@@ -102,7 +102,13 @@ class CandidateStore extends ReduceStore {
       candidateListsByPoliticianWeVoteId: {}, // Dictionary with politician_we_vote_id as key and list of candidates linked to the politician as value
       candidateWeVoteIdInFutureByPoliticianWeVoteId: {}, // Dictionary with politician_we_vote_id as key and the candidate_we_vote_id as value
       numberOfCandidatesRetrievedByOffice: {}, // Dictionary with office_we_vote_id as key and number of candidates as value
+      positionListRetrieveCompleteByBallotItem: {}, // Dictionary with candidate_we_vote_id as key and list of positions as value
     };
+  }
+
+
+  positionListRetrieveHasCompletedForCandidate (candidateWeVoteId) {
+    return this.getState().positionListRetrieveCompleteByBallotItem[candidateWeVoteId] || false;
   }
 
   getAllCachedPositionsDictByCandidateWeVoteId (candidateWeVoteId) {
@@ -333,6 +339,7 @@ class CandidateStore extends ReduceStore {
     const {
       allCachedCandidates, allCachedCandidateWeVoteIdsByCampaignXWeVoteId, allCachedPositionsAboutCandidates,
       candidateWeVoteIdInFutureByPoliticianWeVoteId, numberOfCandidatesRetrievedByOffice,
+      positionListRetrieveCompleteByBallotItem,
     } = state;
     let {
       candidateListsByOfficeWeVoteId, candidateListsByPoliticianWeVoteId,
@@ -564,7 +571,15 @@ class CandidateStore extends ReduceStore {
       case 'positionListForBallotItem':
       case 'positionListForBallotItemFromFriends':
         // console.log('positionListForBallotItem action.res:', action.res);
-        if (action.res.count === 0) return state;
+
+        positionListRetrieveCompleteByBallotItem[action.res.ballot_item_we_vote_id] = true;
+
+        if (action.res.count === 0) {
+          return {
+            ...state,
+            positionListRetrieveCompleteByBallotItem,
+          };
+        }
 
         if (action.res.kind_of_ballot_item === 'CANDIDATE') {
           newPositionList = action.res.position_list || [];
@@ -587,6 +602,7 @@ class CandidateStore extends ReduceStore {
           return {
             ...state,
             allCachedPositionsAboutCandidates,
+            positionListRetrieveCompleteByBallotItem,
           };
         } else if (action.res.kind_of_ballot_item === 'OFFICE') {
           officePositionList = action.res.position_list || [];
@@ -610,6 +626,7 @@ class CandidateStore extends ReduceStore {
           return {
             ...state,
             allCachedPositionsAboutCandidates,
+            positionListRetrieveCompleteByBallotItem,
           };
         } else {
           return state;
