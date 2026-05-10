@@ -9,10 +9,14 @@ import { stateCodeMap, convertStateCodeToStateText } from '../../common/utils/ad
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import historyPush from '../../common/utils/historyPush';
+import SnackNotifier from '../../common/components/Widgets/SnackNotifier';
 import ElectionStore from '../../stores/ElectionStore';
+import CopyChip from './CopyChip';
+import copyAndToast from './copyAndToast';
 import ElectionFinderHeader from './ElectionFinderHeader';
+import RowKebabMenu from './RowKebabMenu';
 import {
-  ActionChip, ActionDivider, DarkTooltip,
+  ActionDivider, DarkTooltip,
   ElectionDatePill, ElectionLink, ElectionList, ElectionRow, ElectionRowActions,
   FilterTab, FilterTabsRow, InlineSearchField, NoResults,
   SearchIconButton, SectionTitle, SectionTitleRow, ShowMoreButton,
@@ -150,6 +154,7 @@ function ElectionFinderForState () {
   return (
     <>
       <Helmet><title>{`${stateName} Elections - Election Finder - We Vote`}</title></Helmet>
+      <SnackNotifier />
       <PageContentContainer>
         <ElectionFinderHeader
           breadcrumbs={[
@@ -241,14 +246,10 @@ function ElectionFinderForState () {
                   {election.election_name || ''}
                 </ElectionLink>
                 <ElectionRowActions className="u-show-desktop-tablet" onClick={(e) => e.stopPropagation()}>
-                  <DarkTooltip title="Copy link">
-                    <ActionChip
-                      onClick={() => navigator.clipboard.writeText(`${window.location.origin}/election-finder/${selectedStateCode.toLowerCase()}/${googleCivicElectionId}`)}
-                    >
-                      <ContentCopy sx={{ fontSize: 14, mr: 0.5 }} />
-                      Copy link
-                    </ActionChip>
-                  </DarkTooltip>
+                  <CopyChip
+                    defaultLabel="Copy link"
+                    getText={() => `${window.location.origin}/election-finder/${selectedStateCode.toLowerCase()}/${googleCivicElectionId}`}
+                  />
                   <ActionDivider />
                   {nextReleaseFeaturesEnabled && (
                     <DarkTooltip title="Download election data">
@@ -261,6 +262,14 @@ function ElectionFinderForState () {
                     </IconButton>
                   </DarkTooltip>
                 </ElectionRowActions>
+                <RowKebabMenu
+                  ariaLabel="More options for this election"
+                  items={[
+                    { key: 'copy-link', icon: ContentCopy, label: 'Copy link', onClick: () => copyAndToast(`${window.location.origin}/election-finder/${selectedStateCode.toLowerCase()}/${googleCivicElectionId}`) },
+                    ...(nextReleaseFeaturesEnabled ? [{ key: 'download', icon: FileDownloadOutlined, label: 'Download election data', onClick: () => {} }] : []),
+                    { key: 'open', icon: Launch, label: 'Open in new tab', onClick: () => window.open(`/election-finder/${selectedStateCode.toLowerCase()}/${googleCivicElectionId}`, '_blank') },
+                  ]}
+                />
               </ElectionRow>
             );
           })}

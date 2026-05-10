@@ -16,8 +16,14 @@ class TopnavigationBrowser extends PageBrowser {
     return $('#candidatesTabHeaderBar');
   }
 
+  get getMoreTabLocator () {
+    return $('//span[text()="More"]');
+  }
+
+
   get getChallengesTabLocator () {
-    return $('#challengesTabHeaderBar');
+    //return $('#challengesTabHeaderBar');
+    return $('//li[text()="Challenges"]');
   }
 
   get getDonateTabLocator () {
@@ -37,6 +43,7 @@ class TopnavigationBrowser extends PageBrowser {
   }
 
   async toggleChallengesTab () {
+    await this.getMoreTabLocator.findAndClick();
     await this.getChallengesTabLocator.findAndClick();
   }
 

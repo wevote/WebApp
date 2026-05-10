@@ -282,13 +282,14 @@ function pushDataLayer (buttonId, destinationPageName, destinationPageType, shar
 // React functional component example
 export function CopyLink (props) {
   const { saveActionShareButtonCopy, linkToBeSharedCopy } = props;
+  const linkWithUtm = linkToBeSharedCopy ? `${linkToBeSharedCopy}${linkToBeSharedCopy.includes('?') ? '&' : '?'}utm_medium=shared_link` : '';
   return (
     <ShareWrapper>
       <ShareModalOption
           backgroundColor="#2E3C5D"
           copyLink
           icon={<FileCopyOutlined />}
-          urlToShare={linkToBeSharedCopy}
+          urlToShare={linkWithUtm}
           onClickFunction={saveActionShareButtonCopy}
           title="Copy link"
           uniqueExternalId="shareButtonFooter-CopyLink"

@@ -170,7 +170,9 @@ class UnsubscribeRoot extends React.Component {
   convertUnsubscribeModifierToDisplayStep = (unsubscribeModifier) => {
     let displayStep;
     switch (unsubscribeModifier) {
-      default:
+      case 'thankyou':
+        displayStep = 2;
+        break;
       case 'dailyfriendactivity':
       case 'friendaccept':
       case 'friendinvite':
@@ -179,10 +181,8 @@ class UnsubscribeRoot extends React.Component {
       case 'friendmessage':
       case 'login':
       case 'newsletter':
+      default:
         displayStep = 1;
-        break;
-      case 'thankyou':
-        displayStep = 2;
         break;
     }
     return displayStep;
@@ -230,18 +230,6 @@ class UnsubscribeRoot extends React.Component {
     let skipForNowPath = '';
     const voterIsSignedIn = VoterStore.getVoterIsSignedIn();
     switch (displayStep) {
-      default:
-      case 1: // Multiple individual kinds of notifications options
-        backToLinkPath = unsubscribeBackLinkPath;
-        if (notificationSettingIsOn) {
-          nextButtonText = `Unsubscribe ${normalizedEmailAddress}`;
-        } else {
-          nextButtonText = 'Next';
-        }
-        nextStepPath = `/unsubscribe/${subscriptionSecretKey}/thankyou`;
-        skipForNowOff = false;
-        skipForNowPath = '/ready';
-        break;
       case 2: // 'thankyou'
         if (stringContains('thankyou', unsubscribeEntryPath)) {
           backToLinkPath = unsubscribeBackLinkPath;
@@ -266,6 +254,18 @@ class UnsubscribeRoot extends React.Component {
           nextButtonText = 'Get ready to vote';
           nextStepPath = '/ready';
         }
+        skipForNowOff = false;
+        skipForNowPath = '/ready';
+        break;
+      case 1: // Multiple individual kinds of notifications options
+      default:
+        backToLinkPath = unsubscribeBackLinkPath;
+        if (notificationSettingIsOn) {
+          nextButtonText = `Unsubscribe ${normalizedEmailAddress}`;
+        } else {
+          nextButtonText = 'Next';
+        }
+        nextStepPath = `/unsubscribe/${subscriptionSecretKey}/thankyou`;
         skipForNowOff = false;
         skipForNowPath = '/ready';
         break;

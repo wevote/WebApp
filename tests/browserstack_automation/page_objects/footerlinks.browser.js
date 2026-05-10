@@ -51,7 +51,8 @@ class FooterlinksBrowser extends PageBrowser {
   }
 
   get getHelpPageTitleElement () {
-    return $('section h1');
+    //return $('section h1');
+    return $('//h1[normalize-space()="Help Center"]');
   }
 
   get getTermsLinkElement () {
@@ -79,7 +80,7 @@ class FooterlinksBrowser extends PageBrowser {
   }
 
   get getVolunteeringOpportunitiesPageTitleElement () {
-    return $('.page-title-open');
+    return $('h2.page-title-open');
   }
 
   get getDonateLinkLocator () {
@@ -91,7 +92,7 @@ class FooterlinksBrowser extends PageBrowser {
   }
 
   get getDonatePageContentTitleElement () {
-    return $('.cZOxNT');
+    return $('span*=Choose amount');
   }
 
   async waitAboutLinkAndClick () {
@@ -135,6 +136,7 @@ class FooterlinksBrowser extends PageBrowser {
       this.findNextButtonHowItWorksWindow.click();
     }
   }
+
 }
 
 export default new FooterlinksBrowser();

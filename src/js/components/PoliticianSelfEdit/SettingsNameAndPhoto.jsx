@@ -50,7 +50,7 @@ function SettingsNameAndPhoto ({ externalUniqueId, politicianWeVoteId }) {
     if (politicianWeVoteId) {
       onPoliticianStoreChange();
     }
-  }, [politicianWeVoteId]);
+  }, [onPoliticianStoreChange, politicianWeVoteId]);
 
   useEffect(() => {
     AnalyticsActions.saveActionAccountPage(VoterStore.electionId());

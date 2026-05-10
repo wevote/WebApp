@@ -77,8 +77,8 @@ class SnackNotifier extends Component {
           color: 'white',
           backgroundColor: '#313131',
         };
-      default:
       case 'success':
+      default:
         return {
           color: 'white',
           backgroundColor: '#313131',

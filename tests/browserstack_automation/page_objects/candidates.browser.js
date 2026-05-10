@@ -228,6 +228,16 @@ class CandidatesBrowser extends PageBrowser {
     let selCandidateID;
     let candidateOnPage=false;
 
+    if (selCandidateName === "pickRandomCandidate") {
+      const randomCandidate =  candidateCards[Math.floor(Math.random() * candidateCards.length)];
+      let cardId = await randomCandidate.getAttribute('id');
+      selCandidate = await this.getCandidateCardCandidate(cardId);
+      selCandidateID = cardId;
+      candidateOnPage=true;
+
+    }
+    else {
+
     for (const candidate of candidateCards) {
         const cardId = await candidate.getAttribute('id');
         let candidateName = await this.getCandidateCardCandidateName(cardId);
@@ -238,10 +248,10 @@ class CandidatesBrowser extends PageBrowser {
             break;
         }
     }
-
        if (candidateOnPage === false) {
         throw new Error(`Candidate Card not found on Landing Page for given test data: ${selCandidateName}`);
     }
+  }
 
     selectedCandidateName = await this.getCandidateCardCandidateName(selCandidateID);
     selectedCandidateState = await this.getCandidateCardState(selCandidateID);

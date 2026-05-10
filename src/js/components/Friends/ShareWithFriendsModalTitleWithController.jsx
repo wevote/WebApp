@@ -161,6 +161,7 @@ class ShareWithFriendsModalTitleWithController extends Component {
   render () {
     renderLog('ShareWithFriendsModalTitleWithController');  // Set LOG_RENDER_EVENTS to log all renders
     const { friendsModalTitle, urlToShare } = this.props;
+    const urlToSharewithutm = urlToShare ? `${urlToShare}${urlToShare.includes('?') ? '&' : '?'}utm_medium=shared_link` : '';
     const { copyLinkCopied, messageToFriendType } = this.state;
 
     return (
@@ -177,12 +178,12 @@ class ShareWithFriendsModalTitleWithController extends Component {
             <Suspense fallback={<></>}>
               <MessageToFriendInputField messageToFriendType={messageToFriendType} />
             </Suspense>
-            {(urlToShare) && (
+            {(urlToSharewithutm) && (
               <UrlToShareWrapper>
-                <CopyToClipboard text={urlToShare} onCopy={this.copyLink}>
+                <CopyToClipboard text={urlToSharewithutm} onCopy={this.copyLink}>
                   <CopyToClipboardInnerWrapper>
                     <UrlToShareInnerWrapper>
-                      {urlToShare}
+                      {urlToSharewithutm}
                     </UrlToShareInnerWrapper>
                     <ContentCopyWrapper>
                       <ContentCopy style={{ fontSize: 18, margin: '-3px 0 0 3px', color: '#999' }} />

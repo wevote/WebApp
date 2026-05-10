@@ -198,6 +198,9 @@ class BallotScrollingContainer extends Component {
       candidateCount, externalUniqueId, isFirstBallotItem,
       limitNumberOfCandidatesShownToThisNumber, oneCandidate, useHelpDefeatOrHelpWin,
     } = this.props;
+    const {
+      hasEndorsements, hideLeftArrow, hideRightArrow, isChosen,
+    } = this.state;
     const candidatePartyText = oneCandidate.party && oneCandidate.party.length ? `${oneCandidate.party}` : '';
     const avatarCompressed = 'card-main__avatar-compressed';
     const avatarBackgroundImage = normalizedImagePath('../img/global/svg-icons/avatar-generic.svg');
@@ -216,14 +219,15 @@ class BallotScrollingContainer extends Component {
     const positionCounts = CandidateStore.getNumberOfPositionsByCandidateWeVoteId(oneCandidate.we_vote_id);
     const hasSupport = positionCounts.numberOfAllSupportPositions > 0;
     const hasOppose = positionCounts.numberOfAllOpposePositions > 0;
+    const hasContentBeforeOpinions = this.state.hasIssues || hasSupport || hasOppose;
     const endorsementColWidth = (hasSupport && hasOppose) ? ENDORSEMENT_BOTH : ENDORSEMENT_SINGLE;
 
     return (
-      <CandidateCardWrapper $isChosen={this.state.isChosen}>
+      <CandidateCardWrapper $isChosen={isChosen}>
         <BallotScrollingInnerWrapper>
           <LeftArrowOuterWrapper className="u-show-desktop-tablet">
             <LeftArrowInnerWrapper id="candidateLeftArrowDesktop" onClick={() => { handleHorizontalScroll(this.scrollElement.current, -640, this.checkArrowVisibility, 24); }}>
-              {this.state.hideLeftArrow ? null : <ArrowBackIos classes={{ fontSize: 'medium' }} />}
+              {hideLeftArrow ? null : <ArrowBackIos classes={{ fontSize: 'medium' }} />}
             </LeftArrowInnerWrapper>
           </LeftArrowOuterWrapper>
           <BallotHorizontallyScrollingContainer
@@ -231,9 +235,9 @@ class BallotScrollingContainer extends Component {
             id={`ballotItemScrollingArea-${oneCandidate.we_vote_id}`}
             isChosen={false}
             onScroll={this.checkArrowVisibility}
-            showLeftGradient={!this.state.hideLeftArrow}
-            showRightGradient={!this.state.hideRightArrow}
-            hasEndorsements={this.state.hasEndorsements}
+            showLeftGradient={!hideLeftArrow}
+            showRightGradient={!hideRightArrow}
+            hasEndorsements={hasEndorsements}
             onClick={(e) => this.handleContainerClick(e, oneCandidate.we_vote_id, `ballotItemScrollingArea-${oneCandidate.we_vote_id}`)}
             style={{ display: 'flex', flexDirection: 'column', whiteSpace: 'normal', borderBottom: 'none', backgroundColor: 'transparent', boxShadow: 'none' }}
           >
@@ -334,10 +338,11 @@ class BallotScrollingContainer extends Component {
               )}
 
               {/* Right column: Opinions */}
-              <CandidateOpinionsColumnWrapper $hasContentBefore={this.state.hasIssues || hasSupport || hasOppose}>
+              <CandidateOpinionsColumnWrapper $hasContentBefore={hasContentBeforeOpinions}>
                 <Suspense fallback={<></>}>
                   <CandidateOpinionsColumn
                     candidateWeVoteId={oneCandidate.we_vote_id}
+                    hasOtherColumns={hasContentBeforeOpinions}
                     politicianWeVoteId={oneCandidate.politician_we_vote_id}
                   />
                 </Suspense>
@@ -351,7 +356,7 @@ class BallotScrollingContainer extends Component {
           )}
           <RightArrowOuterWrapper className="u-show-desktop-tablet">
             <RightArrowInnerWrapper id="candidateRightArrowDesktop" onClick={() => { handleHorizontalScroll(this.scrollElement.current, 640, this.checkArrowVisibility, 24); }}>
-              {this.state.hideRightArrow ? null : <ArrowForwardIos classes={{ fontSize: 'medium' }} />}
+              {hideRightArrow ? null : <ArrowForwardIos classes={{ fontSize: 'medium' }} />}
             </RightArrowInnerWrapper>
           </RightArrowOuterWrapper>
         </BallotScrollingInnerWrapper>

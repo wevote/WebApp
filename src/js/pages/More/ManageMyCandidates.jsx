@@ -1,5 +1,5 @@
 import { CheckCircle as CheckIcon, Close as CloseIcon, ContentCopy as CopyIcon, Edit as EditIcon, Facebook as FacebookIcon, FileUpload as UploadIcon, PersonOutline as PersonIcon, Visibility as EyeIcon, X as XIcon } from '@mui/icons-material';
-import React, { Suspense, useCallback, useRef, useState } from 'react';
+import React, { Suspense, useCallback, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import styled from 'styled-components';
 import TagManager from 'react-gtm-module';
@@ -56,6 +56,7 @@ Thanks for your help!`);
   const [mobileImportDropdown, setMobileImportDropdown] = useState(true);
 
   const [importedVoters, setImportedVoters] = useState([]);
+  const [showHidden, setShowHidden] = useState(false);
 
   // One-by-one inputs
   const [oneName, setOneName] = useState('');
@@ -110,15 +111,39 @@ Thanks for your help!`);
     notify(`Text invite sent to ${rows.length} voter${rows.length === 1 ? '' : 's'}.`);
   }, [notify]);
 
-  const handleHideOne = useCallback((row) => {
-    setImportedVoters((p) => p.filter((r) => (r.id || r._idx) !== (row.id || row._idx)));
-    notify('Hidden from list.', true);
-  }, [notify]);
+  const handleUpdateVoter = useCallback((updated) => {
+    setImportedVoters((p) => p.map((r) => ((r.id || r._idx) === (updated.id || updated._idx) ? { ...r, ...updated } : r)));
+  }, []);
 
-  const handleHideMany = useCallback((rows) => {
+  const setHiddenForIds = useCallback((ids, hidden) => {
+    setImportedVoters((p) => p.map((r) => (ids.has(r.id || r._idx) ? { ...r, hidden } : r)));
+  }, []);
+
+  const handleHideOne = useCallback((row) => {
+    setHiddenForIds(new Set([row.id || row._idx]), true);
+    notify(showHidden ? 'Marked hidden — still visible because "Show hidden" is on.' : 'Hidden from list.', true);
+  }, [notify, setHiddenForIds, showHidden]);
+
+  const handleUnhideOne = useCallback((row) => {
+    setHiddenForIds(new Set([row.id || row._idx]), false);
+    notify('Unhidden.', true);
+  }, [notify, setHiddenForIds]);
+
+  const handleShowHidden = useCallback(() => {
+    setShowHidden((prev) => !prev);
+  }, []);
+
+  const visibleVoters = useMemo(
+    () => importedVoters
+      .map((v, _idx) => ({ _idx, ...v }))
+      .filter((v) => showHidden || !v.hidden),
+    [importedVoters, showHidden],
+  );
+
+  const handleDeleteSelected = useCallback((rows) => {
     const ids = new Set(rows.map((r) => r.id || r._idx));
     setImportedVoters((p) => p.filter((r) => !ids.has(r.id || r._idx)));
-    notify(`Hidden ${rows.length} item${rows.length === 1 ? '' : 's'}.`, true);
+    notify(`Deleted ${rows.length} voter${rows.length === 1 ? '' : 's'}.`, true);
   }, [notify]);
 
   const handleCopyInviteBody = async () => {
@@ -325,13 +350,16 @@ Thanks for your help!`);
       ) : (
         <Suspense fallback={<></>}>
           <ImportedVotersList
-            voters={importedVoters.map((v, _idx) => ({ _idx, ...v }))} // ensure stable key if no id
-            // onInviteSelected={handleInviteSelected}
+            voters={visibleVoters}
             onInviteEmail={handleInviteEmailOneOrMany}
             onInviteText={handleInviteTextOneOrMany}
             onHide={handleHideOne}
-            onHideSelected={handleHideMany}
+            onUnhide={handleUnhideOne}
             onOpenPreview={handlePreviewOpen}
+            onUpdateVoter={handleUpdateVoter}
+            onShowHidden={handleShowHidden}
+            onDeleteSelected={handleDeleteSelected}
+            showHidden={showHidden}
           />
         </Suspense>
       )}
