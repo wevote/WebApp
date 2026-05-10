@@ -127,7 +127,7 @@ class ChooseOrOpposeIntroModal extends Component {
                 display: 'block',
                 textAlign: 'center',
                 margin: '0 auto',
-                padding: '0 16px',
+                padding: '0 16px 20px 16px',
                 fontWeight: 600,
                 fontSize: '18px',
                 lineHeight: 1.4,
