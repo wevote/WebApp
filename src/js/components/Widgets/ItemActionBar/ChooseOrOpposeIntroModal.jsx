@@ -7,6 +7,9 @@ import styled from 'styled-components';
 import VoterStore from '../../../stores/VoterStore';
 import PositionPublicToggle from '../../PositionItem/PositionPublicToggle';
 import webAppConfig from '../../../config';
+import { createGlobalStyle } from 'styled-components';
+// import ConfirmCloseModal from '../../More/ConfirmCloseModal';
+import ModalDisplayTemplateB from '../../Widgets/ModalDisplayTemplateB';
 
 const SignInOptionsPanel = React.lazy(() => import(/* webpackChunkName: 'SignInOptionsPanel' */ '../../../common/components/SignIn/SignInOptionsPanel'));
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../../common/components/Widgets/OpenExternalWebSite'));
@@ -208,7 +211,7 @@ class ChooseOrOpposeIntroModal extends Component {
     const slides = this.getSlides();
     return (
       <>
-        <IconButtonRow>                                                                                                                                                                               
+        {/* <IconButtonRow>                                                                                                                                                                               
           <IconButton   
             aria-label="Close"
             classes={{ root: classes.closeButton }}
@@ -229,7 +232,36 @@ class ChooseOrOpposeIntroModal extends Component {
               {slides[currentSlideKey]}
             </SlidesContainer>
           </SlidesWrapper>
-        </DialogContent>
+        </DialogContent> */}
+        {/* <ConfirmCloseModal
+          isOpen
+          onConfirm={this.props.onClose}
+          onCancel={this.props.onClose}
+        /> */}
+        <HideDivider />
+        <SoftenCorners />
+        <RemoveTopPadding />
+        <ModalDisplayTemplateB
+          show
+          toggleModal={this.props.onClose}
+          externalUniqueId="confirmCloseModal"
+          textFieldJSX={(
+            <>
+              <DialogTitle classes={{ root: classes.dialogTitle }}>
+                <TitleText>Nice work - you're making progress!</TitleText>
+              </DialogTitle>
+              <HorizontalLine />
+              <DialogContent classes={{ root: classes.dialogContent }}>
+                <SlidesWrapper>
+                  <SlidesContainer>
+                    {slides[currentSlideKey]}
+                  </SlidesContainer>
+                </SlidesWrapper>
+              </DialogContent>
+            </>
+          )}
+          tallMode={false}
+        />
       </>
     );
   }
@@ -268,6 +300,28 @@ const styles = (theme) => ({
     },
   },
 });
+
+const HideDivider = createGlobalStyle`
+  .MuiDialogTitle-root:has(#closeModalDisplayTemplateBconfirmCloseModal) > hr {
+    display: none !important;
+  }
+`;
+
+const SoftenCorners = createGlobalStyle`
+  .MuiDialog-paper:has(#closeModalDisplayTemplateBconfirmCloseModal) {
+    border-radius: 20px !important;
+  }
+`;
+
+const RemoveTopPadding = createGlobalStyle`
+  .MuiDialog-paper:has(#closeModalDisplayTemplateBconfirmCloseModal) .MuiDialogContent-root {
+    padding-top: 0 !important;
+    overflow: visible !important;
+  }
+  .MuiDialog-paper:has(#closeModalDisplayTemplateBconfirmCloseModal) .MuiDialogContent-root > div {
+    margin-top: 0 !important;
+  }
+`;
 
 const TermsWrapper = styled('div')(({ theme }) => (`
   margin-top: 30px;
