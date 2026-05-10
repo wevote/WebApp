@@ -4,6 +4,7 @@ import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
+import AppObservableStore from '../../../common/stores/AppObservableStore';
 import VoterStore from '../../../stores/VoterStore';
 import PositionPublicToggle from '../../PositionItem/PositionPublicToggle';
 import webAppConfig from '../../../config';
@@ -132,20 +133,36 @@ class ChooseOrOpposeIntroModal extends Component {
               toggleSignInModal={this.props.onClose}
               inModal
             /> */}
-            <div className="u-f3" id="pleaseSignInTitle" style={{ textAlign: 'center' }}><span style={{ fontWeight: 600, color: '#4B4B4B' }}>Save your choices for access on any device.</span></div>
+            <div
+              className="u-f3"
+              id="pleaseSignInTitle"
+              style={{
+                width: '100%',
+                display: 'block',
+                textAlign: 'center',
+                margin: '0 auto',
+                padding: '0 16px',
+                fontWeight: 600,
+                fontSize: '18px',
+                lineHeight: 1.4,
+                color: '#4B4B4B',
+              }}
+            >
+              Save your choices for access on any device.
+            </div>
             <Options buttons="1">
               <Button
-                classes={{ root: classes.button }}
+                classes={{ root: classes.signInButton }}
                 variant="contained"
                 color="primary"
-                onClick={() => this.changeCurrentSlideIndex('getReady')}
+                onClick={this.openSignInModal}
               >
                 Save my choices
               </Button>
             </Options>
             <Options buttons="1">
               <Button
-                classes={{ root: classes.button }}
+                classes={{ root: classes.signInButton }}
                 variant="outlined"
                 color="primary"
                 onClick={() => this.changeCurrentSlideIndex('getReady')}
@@ -204,6 +221,12 @@ class ChooseOrOpposeIntroModal extends Component {
     return null;
   };
 
+  openSignInModal = () => {
+    AppObservableStore.setShowChooseOrOpposeIntroModal(false);
+    AppObservableStore.setShowChooseOrOpposeSignInModal(true);
+    if (this.props.onClose) this.props.onClose();
+  };
+
   render () {
     const { classes } = this.props;
     const { currentSlideKey } = this.state;
@@ -240,7 +263,8 @@ class ChooseOrOpposeIntroModal extends Component {
         /> */}
         <HideDivider />
         <SoftenCorners />
-        <RemoveTopPadding />
+        <CenterModal />
+        <RemovePadding />
         <ModalDisplayTemplateB
           show
           toggleModal={this.props.onClose}
@@ -278,6 +302,14 @@ const styles = (theme) => ({
   button: {
     width: '100%',
   },
+  signInButton: {
+    width: '70%',
+    minHeight: '40px',
+    padding: '8px 16px',
+    [theme.breakpoints.down('sm')]: {
+      width: '85%',
+    },
+  },
   closeButton: {
     right: theme.spacing(1),
     top: theme.spacing(1),
@@ -301,6 +333,14 @@ const styles = (theme) => ({
   },
 });
 
+const CenterModal = createGlobalStyle`
+  .MuiDialog-paper.MuiDialog-paperScrollPaper[role="dialog"]:has(#closeModalDisplayTemplateBconfirmCloseModal) {
+    margin: 32px auto !important;
+    top: 0 !important;
+    transform: none !important;
+  }
+`;
+
 const HideDivider = createGlobalStyle`
   .MuiDialogTitle-root:has(#closeModalDisplayTemplateBconfirmCloseModal) > hr {
     display: none !important;
@@ -313,13 +353,16 @@ const SoftenCorners = createGlobalStyle`
   }
 `;
 
-const RemoveTopPadding = createGlobalStyle`
+const RemovePadding = createGlobalStyle`
   .MuiDialog-paper:has(#closeModalDisplayTemplateBconfirmCloseModal) .MuiDialogContent-root {
-    padding-top: 0 !important;
+    padding: 0 15px 15px 15px !important;
     overflow: visible !important;
   }
   .MuiDialog-paper:has(#closeModalDisplayTemplateBconfirmCloseModal) .MuiDialogContent-root > div {
     margin-top: 0 !important;
+  }
+  .MuiDialog-paper:has(#closeModalDisplayTemplateBconfirmCloseModal) .MuiDialogTitle-root {
+    padding: 0 !important;
   }
 `;
 
@@ -335,11 +378,11 @@ const TermsWrapper = styled('div')(({ theme }) => (`
 const HorizontalLine = styled('div')(({ theme }) => (`
   background-color: #A9A9A9;
   height: 2px;
-  margin: 0 48px;
+  margin: 0 72px;
   margin-bottom: 8px;
   margin-top: 0;
   ${theme.breakpoints.down('md')} {
-    margin: 0 0 8px 0;
+    margin: 0 24px 8px 24px;
   }
 `));
 
@@ -351,16 +394,20 @@ const IconButtonRow = styled('div')(() => (`
 const Options = styled('div')(({ buttons }) => (`
   display: flex;
   flex-flow: ${buttons > 1 ? 'row' : 'column'};
-  ${buttons > 1 ? 'justify-content: space-between;' : ''};
+  ${buttons > 1 ? 'justify-content: space-between;' : 'align-items: center;'};
   margin-top: 1em;
 `));
 
 const TitleText = styled('div')`
   font-weight: 600;
-  font-size: 28px;  
+  font-size: 26px;
   font-family: "Poppins", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
   color: #206DB3;
-  margin-bottom: 4px;
+  margin: 0 auto 4px auto;
+  padding: 0 16px;
+  width: 100%;
+  text-align: center;
+  line-height: 1.3;
 `;
 
 const HelperText = styled('div')`

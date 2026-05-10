@@ -3,9 +3,10 @@ import { Button, DialogContent, DialogTitle, IconButton } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
 import VoterStore from '../../../stores/VoterStore';
 import PositionPublicToggle from '../../PositionItem/PositionPublicToggle';
+import ModalDisplayTemplateB from '../ModalDisplayTemplateB';
 
 const SignInOptionsPanel = React.lazy(() => import(/* webpackChunkName: 'SignInOptionsPanel' */ '../../../common/components/SignIn/SignInOptionsPanel'));
 
@@ -118,8 +119,25 @@ class ChooseOrOpposeIntroModal extends Component {
       slides.signIn = (
         <Suspense fallback={<></>}>
           <>
+            <div
+              className="u-f3"
+              id="pleaseSignInTitle"
+              style={{
+                width: '100%',
+                display: 'block',
+                textAlign: 'center',
+                margin: '0 auto',
+                padding: '0 16px',
+                fontWeight: 600,
+                fontSize: '18px',
+                lineHeight: 1.4,
+                color: '#4B4B4B',
+              }}
+            >
+              Save your choices for access on any device.
+            </div>
             <SignInOptionsPanel
-              pleaseSignInTitle="Sign in to save your choices!"
+              pleaseSignInTitle=""
               pleaseSignInSubTitle=""
               toggleSignInModal={this.props.onClose}
               inModal
@@ -155,26 +173,31 @@ class ChooseOrOpposeIntroModal extends Component {
     const slides = this.getSlides();
     return (
       <>
-        <DialogTitle classes={{ root: classes.dialogTitle }}>
-          <TitleText>Choose or Oppose</TitleText>
-          <IconButton
-            aria-label="Close"
-            classes={{ root: classes.closeButton }}
-            onClick={this.props.onClose}
-            id="profileCloseItemActionBar"
-            size="large"
-          >
-            <Close />
-          </IconButton>
-        </DialogTitle>
-        <HorizontalLine />
-        <DialogContent classes={{ root: classes.dialogContent }}>
-          <SlidesWrapper>
-            <SlidesContainer>
-              {slides[currentSlideKey]}
-            </SlidesContainer>
-          </SlidesWrapper>
-        </DialogContent>
+        <HideDivider />
+        <SoftenCorners />
+        <CenterModal />
+        <RemovePadding />
+        <ModalDisplayTemplateB
+          show
+          toggleModal={this.props.onClose}
+          externalUniqueId="confirmCloseModal"
+          textFieldJSX={(
+            <>
+              <DialogTitle classes={{ root: classes.dialogTitle }}>
+                <TitleText>Nice work - you&apos;re making progress!</TitleText>
+              </DialogTitle>
+              <HorizontalLine />
+              <DialogContent classes={{ root: classes.dialogContent }}>
+                <SlidesWrapper>
+                  <SlidesContainer>
+                    {slides[currentSlideKey]}
+                  </SlidesContainer>
+                </SlidesWrapper>
+              </DialogContent>
+            </>
+          )}
+          tallMode={false}
+        />
       </>
     );
   }
@@ -215,13 +238,47 @@ const styles = (theme) => ({
   },
 });
 
+const CenterModal = createGlobalStyle`
+  .MuiDialog-paper.MuiDialog-paperScrollPaper[role="dialog"]:has(#closeModalDisplayTemplateBconfirmCloseModal) {
+    margin: 32px auto !important;
+    top: 0 !important;
+    transform: none !important;
+  }
+`;
+
+const HideDivider = createGlobalStyle`
+  .MuiDialogTitle-root:has(#closeModalDisplayTemplateBconfirmCloseModal) > hr {
+    display: none !important;
+  }
+`;
+
+const SoftenCorners = createGlobalStyle`
+  .MuiDialog-paper:has(#closeModalDisplayTemplateBconfirmCloseModal) {
+    border-radius: 20px !important;
+  }
+`;
+
+const RemovePadding = createGlobalStyle`
+  .MuiDialog-paper:has(#closeModalDisplayTemplateBconfirmCloseModal) .MuiDialogContent-root {
+    padding: 0 15px 15px 15px !important;
+    overflow: visible !important;
+  }
+  .MuiDialog-paper:has(#closeModalDisplayTemplateBconfirmCloseModal) .MuiDialogContent-root > div {
+    margin-top: 0 !important;
+  }
+  .MuiDialog-paper:has(#closeModalDisplayTemplateBconfirmCloseModal) .MuiDialogTitle-root {
+    padding: 0 !important;
+  }
+`;
+
 const HorizontalLine = styled('div')(({ theme }) => (`
-  background-color: #eee;
+  background-color: #A9A9A9;
   height: 2px;
-  margin: 0 24px;
+  margin: 0 72px;
   margin-bottom: 8px;
+  margin-top: 0;
   ${theme.breakpoints.down('md')} {
-    margin: 0 0 8px 0;
+    margin: 0 24px 8px 24px;
   }
 `));
 
@@ -233,10 +290,15 @@ const Options = styled('div')(({ buttons }) => (`
 `));
 
 const TitleText = styled('div')`
-  font-weight: bold;
-  font-size: 20px;
-  color: #333;
-  margin-bottom: 4px;
+  font-weight: 600;
+  font-size: 26px;
+  font-family: "Poppins", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+  color: #206DB3;
+  margin: 0 auto 4px auto;
+  padding: 0 16px;
+  width: 100%;
+  text-align: center;
+  line-height: 1.3;
 `;
 
 const SubTitle = styled('div')`

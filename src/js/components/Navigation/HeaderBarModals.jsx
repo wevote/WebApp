@@ -17,6 +17,7 @@ const AdviserIntroModal = React.lazy(() => import(/* webpackChunkName: 'AdviserI
 const AskFriendsModal = React.lazy(() => import(/* webpackChunkName: 'AskFriendsModal' */ '../Friends/AskFriendsModal'));
 const BallotChoicesAndSettingsModal = React.lazy(() => import(/* webpackChunkName: 'BallotChoicesAndSettingsModal' */ '../CompleteYourProfile/BallotChoicesAndSettingsModal'));
 const ChooseOrOpposeIntroModal = React.lazy(() => import(/* webpackChunkName: 'ChooseOrOpposeIntroModal' */ '../Widgets/ItemActionBar/ChooseOrOpposeIntroModal'));
+const ChooseOrOpposeSignInModal = React.lazy(() => import(/* webpackChunkName: 'ChooseOrOpposeSignInModal' */ '../Widgets/ItemActionBar/ChooseOrOpposeSignInModal'));
 const FirstPositionIntroModal = React.lazy(() => import(/* webpackChunkName: 'FirstPositionIntroModal' */ '../CompleteYourProfile/FirstPositionIntroModal'));
 const ImageUploadModal = React.lazy(() => import(/* webpackChunkName: 'ImageUploadModal' */ '../Settings/ImageUploadModal'));
 const PersonalizedScoreIntroModal = React.lazy(() => import(/* webpackChunkName: 'PersonalizedScoreIntroModal' */ '../CompleteYourProfile/PersonalizedScoreIntroModal'));
@@ -36,6 +37,7 @@ class HeaderBarModals extends Component {
     this.state = {
       showAdviserIntroModal: false,
       showChooseOrOpposeIntroModal: false,
+      showChooseOrOpposeSignInModal: false,
       showBallotChoicesAndSettingsModal: false,
       showClaimProfileWithEmailModal: false,
       showClaimProfileWithOtherWaysModal: false,
@@ -82,6 +84,7 @@ class HeaderBarModals extends Component {
       showAskFriendsModal: AppObservableStore.showAskFriendsModal(),
       showBallotChoicesAndSettingsModal: AppObservableStore.showBallotChoicesAndSettingsModal(),
       showChooseOrOpposeIntroModal: AppObservableStore.showChooseOrOpposeIntroModal(),
+      showChooseOrOpposeSignInModal: AppObservableStore.showChooseOrOpposeSignInModal(),
       showClaimProfileWithEmailModal: AppObservableStore.getShowClaimProfileWithEmailModal(),
       showClaimProfileWithOtherWaysModal: AppObservableStore.getShowClaimProfileWithOtherWaysModal(),
       showEditPositionModal: AppObservableStore.getShowEditPositionModal(),
@@ -112,6 +115,10 @@ class HeaderBarModals extends Component {
 
   closeChooseOrOpposeIntroModal = () => {
     AppObservableStore.setShowChooseOrOpposeIntroModal(false);
+  };
+
+  closeChooseOrOpposeSignInModal = () => {
+    AppObservableStore.setShowChooseOrOpposeSignInModal(false);
   };
 
   closeClaimProfileWithEmailModal = () => {
@@ -205,7 +212,7 @@ class HeaderBarModals extends Component {
 
     const { classes } = this.props;
     const {
-      showAdviserIntroModal, showAskFriendsModal, showBallotChoicesAndSettingsModal, showChooseOrOpposeIntroModal,
+      showAdviserIntroModal, showAskFriendsModal, showBallotChoicesAndSettingsModal, showChooseOrOpposeIntroModal, showChooseOrOpposeSignInModal,
       showClaimProfileWithEmailModal, showClaimProfileWithOtherWaysModal, showEditPositionModal, showFirstPositionIntroModal,
       showPaidAccountUpgradeModal, showPersonalizedScoreIntroModal,
       showSelectBallotModal, showSelectBallotModalEditAddress,
@@ -262,6 +269,24 @@ class HeaderBarModals extends Component {
             <ChooseOrOpposeIntroModal
               ballotItemType={ballotItemType}
               onClose={this.closeChooseOrOpposeIntroModal}
+            />
+          </Dialog>
+        </Suspense>
+      );
+    }
+    let chooseOrOpposeSignInModal = <></>;
+    if (showChooseOrOpposeSignInModal) {
+      const ballotItemType = 'CANDIDATE';
+      chooseOrOpposeSignInModal = (
+        <Suspense fallback={<></>}>
+          <Dialog
+            classes={{ paper: classes.dialogPaper }}
+            open={showChooseOrOpposeSignInModal}
+            onClose={this.closeChooseOrOpposeSignInModal}
+          >
+            <ChooseOrOpposeSignInModal
+              ballotItemType={ballotItemType}
+              onClose={this.closeChooseOrOpposeSignInModal}
             />
           </Dialog>
         </Suspense>
@@ -404,6 +429,7 @@ class HeaderBarModals extends Component {
         {askFriendsModal}
         {ballotChoicesAndSettingsModal}
         {chooseOrOpposeIntroModal}
+        {chooseOrOpposeSignInModal}
         {claimProfileWithEmailModal}
         {claimProfileWithOtherWaysModal}
         {editPositionModal}
