@@ -76,7 +76,7 @@
     "@wdio/protocols": "^8.32.0",
     "@wdio/spec-reporter": "^8.32.4",
     "@wdio/visual-service": "^9.0.0",
-    "axios": "^1.13.2",
+    "axios": "^1.16.0",
     "babel-loader": "^9.1.3",
     "babel-plugin-styled-components": "^2.1.4",
     "chai": "^4.3.7",
