@@ -67,7 +67,7 @@
     "@storybook/addon-links": "10.2.8",
     "@storybook/addon-webpack5-compiler-swc": "^4.0.2",
     "@storybook/react-webpack5": "10.2.8",
-    "@wdio/browserstack-service": "^9.16.2",
+    "@wdio/browserstack-service": "^9.23.3",
     "@wdio/cli": "^9.18.4",
     "@wdio/config": "^9.16.2",
     "@wdio/globals": "^9.16.2",
