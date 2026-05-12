@@ -38,7 +38,7 @@ import MakePublicVisibilityRow from './MakePublicVisibilityRow';
 
 const HelpWinOrDefeatModal = React.lazy(() => import(/* webpackChunkName: 'HelpWinOrDefeatModal' */ '../../../common/components/CampaignSupport/HelpWinOrDefeatModal')); // eslint-disable-line import/no-cycle
 
-const NUMBER_OF_BALLOT_CHOICES_ALLOWED_BEFORE_SHOW_MODAL = 0;
+const NUMBER_OF_BALLOT_CHOICES_ALLOWED_BEFORE_SHOW_MODAL = 3;
 const shareIconSvg = '../../../../img/global/svg-icons/share-icon.svg';
 
 
@@ -750,8 +750,8 @@ class ItemActionBar extends PureComponent {
 
   showChooseOrOpposeIntroModalDecision () {
     const { ballotItemType } = this.state;
-    // const supportOpposeModalHasBeenShown = VoterStore.getInterfaceFlagState(VoterConstants.SUPPORT_OPPOSE_MODAL_SHOWN);
-    const supportOpposeModalHasBeenShown = false; // For testing
+    const supportOpposeModalHasBeenShown = VoterStore.getInterfaceFlagState(VoterConstants.SUPPORT_OPPOSE_MODAL_SHOWN);
+    // const supportOpposeModalHasBeenShown = false; // For testing
     let numberOfBallotChoicesMade = convertToInteger(Cookies.get('number_of_ballot_choices_made')) || 0;
     numberOfBallotChoicesMade += 1;
     // console.log('showChooseOrOpposeIntroModalDecision numberOfBallotChoicesMade', numberOfBallotChoicesMade);
