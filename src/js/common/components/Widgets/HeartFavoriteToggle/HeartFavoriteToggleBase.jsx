@@ -197,6 +197,7 @@ class HeartFavoriteToggleBase extends Component {
       voterSupportsLocal: voterSupportsLocalPrevious,
     } = this.state;
 
+    const { voterProfileComplete } = this.props;
     if (!voterIsSignedIn) {
       let actionType = '';
       if (support) {
@@ -227,6 +228,12 @@ class HeartFavoriteToggleBase extends Component {
           TagManager.dataLayer({ dataLayer: dataLayerObject });
         }
       });
+    } else if (!voterProfileComplete) {
+      // Signed in but profile incomplete — show modal without any visual change
+      if (support && this.props.submitSupport) this.props.submitSupport();
+      else if (stopSupporting && this.props.submitStopSupporting) this.props.submitStopSupporting();
+      else if (oppose && this.props.submitOppose) this.props.submitOppose();
+      else if (stopOpposing && this.props.submitStopOpposing) this.props.submitStopOpposing();
     } else {
       // console.log('handleActionClick support: ', support, ', oppose: ', oppose, ', stopSupporting: ', stopSupporting, ', stopOpposing: ', stopOpposing);
       this.setState({
@@ -572,6 +579,7 @@ HeartFavoriteToggleBase.propTypes = {
   submitStopSupporting: PropTypes.func,
   submitSupport: PropTypes.func,
   voterIsSignedIn: PropTypes.bool,
+  voterProfileComplete: PropTypes.bool,
   voterSupports: PropTypes.bool,
   voterOpposes: PropTypes.bool,
 };

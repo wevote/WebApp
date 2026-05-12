@@ -71,6 +71,7 @@ const nonFluxState = {
   editPositionModalPoliticianWeVoteId: '',
   editPositionModalSetPublic: false,
   showClaimProfileWithOtherWaysModal: false,
+  functionToCallAfterProfileComplete: null,
   showCompleteYourProfileModal: false,
   showNotificationBannerAboveHeader: false,
   showOfficeBannerAboveHeader: false,
@@ -707,6 +708,14 @@ export default {
     nonFluxState.showChooseOrOpposeIntroModal = show;
     nonFluxState.showChooseOrOpposeIntroModalBallotItemType = ballotItemType;
     messageService.sendMessage('state updated showChooseOrOpposeIntroModal');
+  },
+
+  setFunctionToCallAfterProfileComplete (fn) {
+    nonFluxState.functionToCallAfterProfileComplete = fn;
+  },
+
+  getFunctionToCallAfterProfileComplete () {
+    return nonFluxState.functionToCallAfterProfileComplete;
   },
 
   setShowCompleteYourProfileModal (show) {

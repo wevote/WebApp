@@ -119,7 +119,7 @@ class CompleteYourProfile extends Component {
       // console.log('CompleteYourProfile secretCodeVerified');
       VoterActions.voterRetrieve();
       this.functionToUseWhenProfileCompleteTimer = setTimeout(() => {
-        this.props.functionToUseWhenProfileComplete();
+        this.callAllProfileCompleteFunctions();
       }, 500);
     } else if (emailAddressStatus.sign_in_code_email_sent) {
       this.setState({
@@ -138,14 +138,25 @@ class CompleteYourProfile extends Component {
     }
   }
 
+  callAllProfileCompleteFunctions = () => {
+    if (this.props.functionToUseWhenProfileComplete) {
+      this.props.functionToUseWhenProfileComplete();
+    }
+    const storedCallback = AppObservableStore.getFunctionToCallAfterProfileComplete();
+    if (storedCallback) {
+      AppObservableStore.setFunctionToCallAfterProfileComplete(null);
+      storedCallback();
+    }
+  };
+
   closeVerifyModal = (verified = false) => {
     // console.log('CompleteYourProfile closeVerifyModal, verified:', verified);
     VoterActions.clearEmailAddressStatus();
     VoterActions.clearSecretCodeVerificationStatus();
     VoterActions.voterRetrieve();
-    if (verified && this.props.functionToUseWhenProfileComplete) {
-      // console.log('CompleteYourProfile closeVerifyModal, functionToUseWhenProfileComplete exists');
-      this.props.functionToUseWhenProfileComplete();
+    if (verified) {
+      // console.log('CompleteYourProfile closeVerifyModal, calling profile complete functions');
+      this.callAllProfileCompleteFunctions();
     }
     const delayBeforeClosingVerifyModal = 400;
     this.closeVerifyModalTimer = setTimeout(() => {
@@ -209,7 +220,7 @@ class CompleteYourProfile extends Component {
       this.supportBallotItem();
       this.functionToUseWhenProfileCompleteTimer = setTimeout(() => {
         AppObservableStore.setBlockCampaignXRedirectOnSignIn(false);
-        this.props.functionToUseWhenProfileComplete();
+        this.callAllProfileCompleteFunctions();
       }, 500);
     } else if (!voterIsSignedInWithEmail && !voterEmailMissing) {
       // All required fields were found
