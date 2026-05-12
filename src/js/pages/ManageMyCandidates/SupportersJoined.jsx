@@ -1,37 +1,37 @@
-import React, { useEffect, useMemo, useState } from "react";
-import styled from "styled-components";
-import Alert from "@mui/material/Alert";
-import Button from "@mui/material/Button";
-import ButtonBase from "@mui/material/ButtonBase";
-import Checkbox from "@mui/material/Checkbox";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import ContentCopyIcon from "@mui/icons-material/ContentCopy";
-import DoneIcon from "@mui/icons-material/Done";
-import Dialog from "@mui/material/Dialog";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogContent from "@mui/material/DialogContent";
-import DialogActions from "@mui/material/DialogActions";
-import Drawer from "@mui/material/Drawer";
-import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import MailOutlineIcon from "@mui/icons-material/MailOutline";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import Snackbar from "@mui/material/Snackbar";
-import TextField from "@mui/material/TextField";
-import ThumbUpIcon from "@mui/icons-material/ThumbUp";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import DesignTokenColors from "../../common/components/Style/DesignTokenColors";
+import React, { useEffect, useMemo, useState } from 'react';
+import styled from 'styled-components';
+import Alert from '@mui/material/Alert';
+import Button from '@mui/material/Button';
+import ButtonBase from '@mui/material/ButtonBase';
+import Checkbox from '@mui/material/Checkbox';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import DoneIcon from '@mui/icons-material/Done';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
+import Drawer from '@mui/material/Drawer';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import MailOutlineIcon from '@mui/icons-material/MailOutline';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import Snackbar from '@mui/material/Snackbar';
+import TextField from '@mui/material/TextField';
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 
 const FILTERS = {
-  ALL: "all",
-  HAS_INVITED: "hasInvited",
-  HAS_ENDORSED: "hasEndorsed",
+  ALL: 'all',
+  HAS_INVITED: 'hasInvited',
+  HAS_ENDORSED: 'hasEndorsed',
 };
 
 const DEFAULT_THANK_YOU_MESSAGE = `Dear Candidate,
@@ -50,7 +50,7 @@ export default function SupportersJoined ({ supporters }) {
   const [editOpen, setEditOpen] = useState(false);
   const [copyOpen, setCopyOpen] = useState(false);
   const [isSending, setIsSending] = useState(false);
-  const [sendToast, setSendToast] = useState({ open: false, ok: true, msg: "" });
+  const [sendToast, setSendToast] = useState({ open: false, ok: true, msg: '' });
   const totalCount = supporters.length;
   const selectedCount = selected.size;
 
@@ -80,17 +80,17 @@ export default function SupportersJoined ({ supporters }) {
       await navigator.clipboard.writeText(thankYouMessage);
       setCopyOpen(true);
     } catch (err) {
-      console.error("Copy failed", err);
+      console.error('Copy failed', err);
     }
   };
 
   const getPendingActions = (v) => ([
-    !v.endorsed && "Endorse",
-    !v.publicOpinion && "Write public opinion",
-    v.friendsInvited === 0 && "Invite friends",
+    !v.endorsed && 'Endorse',
+    !v.publicOpinion && 'Write public opinion',
+    v.friendsInvited === 0 && 'Invite friends',
   ].filter(Boolean));
 
-  const getActionsLabel = (v) => getPendingActions(v).join(", ");
+  const getActionsLabel = (v) => getPendingActions(v).join(', ');
 
   // ----- derived data for selected voters, dropdown + counts -----
   const selectedVoters = useMemo(() => {
@@ -143,9 +143,9 @@ export default function SupportersJoined ({ supporters }) {
   // ----- "All" filter dropdown data (counts) -----
   const filterLabel = useMemo(() => {
     switch (activeFilter) {
-      case FILTERS.HAS_INVITED: return "Has invited friends";
-      case FILTERS.HAS_ENDORSED: return "Has endorsed";
-      default: return "All";
+      case FILTERS.HAS_INVITED: return 'Has invited friends';
+      case FILTERS.HAS_ENDORSED: return 'Has endorsed';
+      default: return 'All';
     }
   }, [activeFilter]);
 
@@ -288,7 +288,7 @@ export default function SupportersJoined ({ supporters }) {
       setSendToast({
         open: true,
         ok: true,
-        msg: `Sent to ${selectedVoters.length} supporter${selectedVoters.length === 1 ? "" : "s"}.`,
+        msg: `Sent to ${selectedVoters.length} supporter${selectedVoters.length === 1 ? '' : 's'}.`,
       });
 
       // Optional: mark them as "messageSentCount + 1" in state once you have stateful supporters
@@ -296,7 +296,7 @@ export default function SupportersJoined ({ supporters }) {
       // setSelected(new Set());
     } catch (err) {
       console.error(err);
-      setSendToast({ open: true, ok: false, msg: "Send failed. Please try again." });
+      setSendToast({ open: true, ok: false, msg: 'Send failed. Please try again.' });
     } finally {
       setIsSending(false);
     }
@@ -357,9 +357,9 @@ export default function SupportersJoined ({ supporters }) {
         <LeftTools>
           <SelectControl
             aria-label="Selection options"
-            aria-controls={selectMenuOpen ? "select-by-action-menu" : undefined}
+            aria-controls={selectMenuOpen ? 'select-by-action-menu' : undefined}
             aria-haspopup="menu"
-            aria-expanded={selectMenuOpen ? "true" : undefined}
+            aria-expanded={selectMenuOpen ? 'true' : undefined}
           >
             <Checkbox
               checked={checked}
@@ -384,12 +384,12 @@ export default function SupportersJoined ({ supporters }) {
             anchorEl={selectAnchorEl}
             open={selectMenuOpen}
             onClose={closeSelectMenu}
-            anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-            transformOrigin={{ vertical: "top", horizontal: "left" }}
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+            transformOrigin={{ vertical: 'top', horizontal: 'left' }}
             PaperProps={{
               style: {
                 borderRadius: 12,
-                overflow: "hidden",
+                overflow: 'hidden',
               },
             }}
           >
@@ -418,9 +418,9 @@ export default function SupportersJoined ({ supporters }) {
             variant="text"
             onClick={openFilterMenu}
             aria-label="Filter options"
-            aria-controls={filterMenuOpen ? "all-filter-menu" : undefined}
+            aria-controls={filterMenuOpen ? 'all-filter-menu' : undefined}
             aria-haspopup="menu"
-            aria-expanded={filterMenuOpen ? "true" : undefined}
+            aria-expanded={filterMenuOpen ? 'true' : undefined}
           >
             {filterLabel}
             <CaretIcon as={KeyboardArrowDownIcon} />
@@ -430,12 +430,12 @@ export default function SupportersJoined ({ supporters }) {
             anchorEl={filterAnchorEl}
             open={filterMenuOpen}
             onClose={closeFilterMenu}
-            anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-            transformOrigin={{ vertical: "top", horizontal: "left" }}
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+            transformOrigin={{ vertical: 'top', horizontal: 'left' }}
             PaperProps={{
               style: {
                 borderRadius: 12,
-                overflow: "hidden",
+                overflow: 'hidden',
               },
             }}
           >
@@ -467,9 +467,9 @@ export default function SupportersJoined ({ supporters }) {
           onClick={openThankYouMenu}
           className="u-show-mobile"
           aria-label="Thank you message options"
-          aria-controls={thankYouMenuOpen ? "thank-you-menu" : undefined}
+          aria-controls={thankYouMenuOpen ? 'thank-you-menu' : undefined}
           aria-haspopup="menu"
-          aria-expanded={thankYouMenuOpen ? "true" : undefined}
+          aria-expanded={thankYouMenuOpen ? 'true' : undefined}
         >
           Thank You message
           <CaretIcon as={KeyboardArrowDownIcon} />
@@ -480,9 +480,9 @@ export default function SupportersJoined ({ supporters }) {
           anchorEl={thankYouAnchorEl}
           open={thankYouMenuOpen}
           onClose={closeThankYouMenu}
-          anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-          transformOrigin={{ vertical: "top", horizontal: "left" }}
-          PaperProps={{ style: { borderRadius: 12, overflow: "hidden", minWidth: 260 } }}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+          transformOrigin={{ vertical: 'top', horizontal: 'left' }}
+          PaperProps={{ style: { borderRadius: 12, overflow: 'hidden', minWidth: 260 } }}
         >
           <MenuItem disabled>
             <ListItemText primary="Thank You message is auto-sent after joining." />
@@ -622,7 +622,7 @@ export default function SupportersJoined ({ supporters }) {
 
                   {hasMessageSent ? (
                     <ActionLink>
-                      <CheckCircleIcon color="success" sx={{ fontSize: 14 }} />{" "}
+                      <CheckCircleIcon color="success" sx={{ fontSize: 14 }} />{' '}
                       Message sent ({v.messageSentCount})
                     </ActionLink>
                   ) : needsAction ? (
@@ -666,7 +666,7 @@ export default function SupportersJoined ({ supporters }) {
 
                 <div className="u-show-desktop-tablet">
                   {v.publicOpinion ? (
-                    <OpinionBox>{isOpen ? v.publicOpinion : "..."}</OpinionBox>
+                    <OpinionBox>{isOpen ? v.publicOpinion : '...'}</OpinionBox>
                   ) : (
                     <OpinionEmpty>No public opinion available.</OpinionEmpty>
                   )}
@@ -717,12 +717,12 @@ export default function SupportersJoined ({ supporters }) {
         anchorEl={rowMenuAnchorEl}
         open={rowMenuOpen}
         onClose={closeRowMenu}
-        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-        transformOrigin={{ vertical: "top", horizontal: "right" }}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
         PaperProps={{
           style: {
             borderRadius: 12,
-            overflow: "hidden",
+            overflow: 'hidden',
             minWidth: 220,
           },
         }}
@@ -747,10 +747,10 @@ export default function SupportersJoined ({ supporters }) {
         anchor="right"
         open={candidateDrawerOpen}
         onClose={closeCandidateDrawer}
-        PaperProps={{ sx: { width: "min(920px, 92vw)" } }}
+        PaperProps={{ sx: { width: 'min(920px, 92vw)' } }}
       >
-        <div style={{ height: "100%", display: "flex", flexDirection: "column" }}>
-          <div style={{ padding: 12, borderBottom: "1px solid #e5e7eb", display: "flex", justifyContent: "space-between" }}>
+        <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+          <div style={{ padding: 12, borderBottom: '1px solid #e5e7eb', display: 'flex', justifyContent: 'space-between' }}>
             <strong>Candidate page</strong>
             <button type="button" onClick={closeCandidateDrawer}>Close</button>
           </div>
@@ -759,8 +759,8 @@ export default function SupportersJoined ({ supporters }) {
             {/* http://localhost:3000/shannon-d-dicus-politician-from-california/-/ */}
             <iframe
               title="Candidate page"
-              src={candidateDrawerVoter?.candidateUrl || "/candidates/cs"}
-              style={{ width: "100%", height: "100%", border: 0 }}
+              src={candidateDrawerVoter?.candidateUrl || '/candidates/cs'}
+              style={{ width: '100%', height: '100%', border: 0 }}
             />
           </div>
         </div>
@@ -776,7 +776,7 @@ export default function SupportersJoined ({ supporters }) {
         <DialogTitle>Thank-you message</DialogTitle>
 
         <DialogContent>
-          <div style={{ whiteSpace: "pre-wrap", fontSize: 14 }}>
+          <div style={{ whiteSpace: 'pre-wrap', fontSize: 14 }}>
             {thankYouMessage}
           </div>
         </DialogContent>
@@ -827,8 +827,8 @@ export default function SupportersJoined ({ supporters }) {
         open={copyOpen}
         autoHideDuration={2000}
         onClose={() => setCopyOpen(false)}
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
-        sx={{ "&.MuiSnackbar-anchorOriginTopCenter": { top: 80 } }}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        sx={{ '&.MuiSnackbar-anchorOriginTopCenter': { top: 80 } }}
       >
         <Alert severity="success" variant="filled">
           Copied!
@@ -838,12 +838,12 @@ export default function SupportersJoined ({ supporters }) {
         open={sendToast.open}
         autoHideDuration={2500}
         onClose={() => setSendToast((t) => ({ ...t, open: false }))}
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
         sx={{
-          "&.MuiSnackbar-anchorOriginTopCenter": { top: 80 },
+          '&.MuiSnackbar-anchorOriginTopCenter': { top: 80 },
         }}
       >
-        <Alert severity={sendToast.ok ? "success" : "error"} variant="filled">
+        <Alert severity={sendToast.ok ? 'success' : 'error'} variant="filled">
           {sendToast.msg}
         </Alert>
       </Snackbar>
@@ -1007,7 +1007,7 @@ const VerticalBarWrapper = styled.div`
   align-self: stretch;
   display: flex;
   align-items: center;
-  margin: ${(p) => (p.$tight ? "0 4px" : "0 12px")};
+  margin: ${(p) => (p.$tight ? '0 4px' : '0 12px')};
 `;
 
 const VerticalBar = styled.div`

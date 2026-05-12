@@ -1,10 +1,10 @@
 import React, { useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { Search as SearchIcon } from '@mui/icons-material';
-import IconButton from "@mui/material/IconButton";
-import Popover from "@mui/material/Popover";
-import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import CloseIcon from "@mui/icons-material/Close";
+import IconButton from '@mui/material/IconButton';
+import Popover from '@mui/material/Popover';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import CloseIcon from '@mui/icons-material/Close';
 import TagManager from 'react-gtm-module';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 import VoterStore from '../../stores/VoterStore';
@@ -40,53 +40,53 @@ export default function SupporterTracking ({ selectedPoliticianWeVoteId = null }
    */
   const SPOOF = [
     {
-      id: "v_1",
-      status: "joined",
-      name: "Steve Smith",
+      id: 'v_1',
+      status: 'joined',
+      name: 'Steve Smith',
       endorsed: false,
       friendsInvited: 0,
       messageSentCount: 0,
       publicOpinion:
-        "",
+        '',
     },
     {
-      id: "v_2",
-      status: "joined",
-      name: "Jane Smith",
+      id: 'v_2',
+      status: 'joined',
+      name: 'Jane Smith',
       endorsed: true,
       friendsInvited: 0,
       messageSentCount: 0,
-      publicOpinion: "",
+      publicOpinion: '',
     },
     {
-      id: "v_3",
-      status: "joined",
-      name: "Steve Smith",
+      id: 'v_3',
+      status: 'joined',
+      name: 'Steve Smith',
       endorsed: true,
       friendsInvited: 0,
       messageSentCount: 0,
       publicOpinion:
-        "Lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet...",
+        'Lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet...',
     },
     {
-      id: "v_4",
-      status: "joined",
-      name: "Jen Smith",
+      id: 'v_4',
+      status: 'joined',
+      name: 'Jen Smith',
       endorsed: true,
       friendsInvited: 2,
       messageSentCount: 0,
       publicOpinion:
-        "Lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet...",
+        'Lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet...',
     },
     {
-      id: "v_5",
-      status: "joined",
-      name: "Mary Smith",
+      id: 'v_5',
+      status: 'joined',
+      name: 'Mary Smith',
       endorsed: true,
       friendsInvited: 2,
       messageSentCount: 1,
       publicOpinion:
-        "Lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet...",
+        'Lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet...',
     },
 
     // A couple non-joined for tabs
@@ -100,10 +100,10 @@ export default function SupporterTracking ({ selectedPoliticianWeVoteId = null }
     //   publicOpinion: "",
     // },
     {
-      id: "v_6",
-      status: "invited",
+      id: 'v_6',
+      status: 'invited',
       joined: true,
-      name: "Alex Doe",
+      name: 'Alex Doe',
       emailInviteSent: true,
       textInviteSent: true,
       inviteLinkClicked: true,
@@ -111,29 +111,29 @@ export default function SupporterTracking ({ selectedPoliticianWeVoteId = null }
 
     },
     {
-      id: "v_7",
-      status: "remind",
-      name: "Morgan Lee",
+      id: 'v_7',
+      status: 'remind',
+      name: 'Morgan Lee',
       endorsed: false,
       friendsInvited: 0,
       messageSentCount: 0,
-      publicOpinion: "",
+      publicOpinion: '',
     },
     {
-      id: "v_8",
-      status: "invited",
+      id: 'v_8',
+      status: 'invited',
       joined: false,
-      name: "Alex Doe",
+      name: 'Alex Doe',
       emailInviteSent: false,
       textInviteSent: true,
       inviteLinkClicked: false,
       friendsInvited: 0,
     },
     {
-      id: "v_9",
-      status: "invited",
+      id: 'v_9',
+      status: 'invited',
       joined: false,
-      name: "SuperLong FirstNameLastName",
+      name: 'SuperLong FirstNameLastName',
       emailInviteSent: true,
       textInviteSent: false,
       inviteLinkClicked: false,
@@ -195,12 +195,12 @@ export default function SupporterTracking ({ selectedPoliticianWeVoteId = null }
         open={open}
         anchorEl={anchorEl}
         onClose={handleClose}
-        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-        transformOrigin={{ vertical: "top", horizontal: "left" }}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'left' }}
         PaperProps={{
           style: {
-            background: "transparent",
-            boxShadow: "none",
+            background: 'transparent',
+            boxShadow: 'none',
           },
         }}
       >

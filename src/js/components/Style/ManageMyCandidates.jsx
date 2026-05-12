@@ -58,7 +58,7 @@ export const VerticalBarWrapper = styled.div`
   align-self: stretch;
   display: flex;
   align-items: center;
-  margin: ${(p) => (p.$tight ? "0 4px" : "0 12px")};
+  margin: ${(p) => (p.$tight ? '0 4px' : '0 12px')};
 `;
 
 export const VerticalBar = styled.div`
