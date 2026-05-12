@@ -117,13 +117,11 @@ export const DetailTitle = styled('h2')`
   margin: 0;
 `;
 
-export const ElectionDatePill = styled('span')`
-  display: inline-block;
+export const ElectionDateText = styled('span')`
   color: #848484;
-  font-size: 13px;
-  font-weight: 500;
-  margin-right: 8px;
-  vertical-align: middle;
+  font-size: 14px;
+  font-weight: 400;
+  margin-top: 2px;
   white-space: nowrap;
 `;
 
@@ -134,6 +132,11 @@ export const ElectionLink = styled('span')`
   &:hover {
     text-decoration: underline;
   }
+`;
+
+export const ElectionRowText = styled('div')`
+  display: flex;
+  flex-direction: column;
 `;
 
 export const ElectionList = styled('div')`

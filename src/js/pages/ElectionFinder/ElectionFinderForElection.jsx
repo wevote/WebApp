@@ -381,6 +381,11 @@ function OfficeSectionItemInner ({ // eslint-disable-line react/no-multi-comp
                   <CopyChip defaultLabel="Copy candidate name" getText={() => candidateName} />
                   <CopyChip defaultLabel="Copy link" getText={() => `${window.location.origin}${getCandidatePath(candidate)}`} />
                   <ActionDivider />
+                  {nextReleaseFeaturesEnabled && (
+                    <DarkTooltip title="About office">
+                      <IconButton size="small"><InfoOutlined fontSize="small" /></IconButton>
+                    </DarkTooltip>
+                  )}
                   <DarkTooltip title="Open in new tab">
                     <IconButton size="small" onClick={() => window.open(getCandidatePath(candidate), '_blank')}>
                       <Launch fontSize="small" />
@@ -392,6 +397,7 @@ function OfficeSectionItemInner ({ // eslint-disable-line react/no-multi-comp
                   items={[
                     { key: 'copy-name', icon: ContentCopy, label: 'Copy candidate name', onClick: () => copyAndToast(candidateName) },
                     { key: 'copy-link', icon: ContentCopy, label: 'Copy link', onClick: () => copyAndToast(`${window.location.origin}${getCandidatePath(candidate)}`) },
+                    ...(nextReleaseFeaturesEnabled ? [{ key: 'about', icon: InfoOutlined, label: 'About office', onClick: () => {} }] : []),
                     { key: 'open', icon: Launch, label: 'Open in new tab', onClick: () => window.open(getCandidatePath(candidate), '_blank') },
                   ]}
                 />

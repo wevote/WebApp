@@ -17,7 +17,7 @@ import ElectionFinderHeader from './ElectionFinderHeader';
 import RowKebabMenu from './RowKebabMenu';
 import {
   ActionDivider, DarkTooltip,
-  ElectionDatePill, ElectionLink, ElectionList, ElectionRow, ElectionRowActions,
+  ElectionDateText, ElectionLink, ElectionList, ElectionRow, ElectionRowActions, ElectionRowText,
   FilterTab, FilterTabsRow, InlineSearchField, NoResults,
   SearchIconButton, SectionTitle, SectionTitleRow, ShowMoreButton,
   StateSelectWrapper, StateSelectNative, StateSelectLabel, StateSelectCaret,
@@ -30,14 +30,25 @@ const SORTED_STATES = Object.entries(stateCodeMap)
   .filter(([code]) => code !== 'NA')
   .sort((a, b) => a[1].localeCompare(b[1]));
 
-function formatDateUS (dateString) {
+const MONTH_ABBR = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+function formatDateLong (dateString) {
   if (!dateString) return '';
   const [y, m, d] = dateString.split('-');
-  return `${m}-${d}-${y}`;
+  return `${MONTH_ABBR[parseInt(m, 10) - 1]} ${parseInt(d, 10)}, ${y}`;
 }
 
 function sortByDateAsc (a, b) {
   return (a.election_day_text || '').localeCompare(b.election_day_text || '');
+}
+
+// 'NA' must be matched explicitly: an empty state_code_list does not imply national,
+// since some state-level elections come back without state_code_list populated.
+function matchesStateCode (election, stateCode) {
+  if (stateCode === 'NA') {
+    return election.state_code === 'NA' || (election.state_code_list && election.state_code_list.includes('NA'));
+  }
+  return election.state_code_list && election.state_code_list.includes(stateCode);
 }
 
 function getBreadcrumbTabLabel (filterTab) {
@@ -82,9 +93,7 @@ function ElectionFinderForState () {
   // Auto-switch from "upcoming" to "all" when there are no upcoming elections for this state
   useEffect(() => {
     if (electionList.length > 0 && filterTab === 'upcoming') {
-      const stateElections = electionList.filter(
-        (el) => el.state_code_list && el.state_code_list.includes(selectedStateCode),
-      );
+      const stateElections = electionList.filter((el) => matchesStateCode(el, selectedStateCode));
       const hasUpcoming = stateElections.some((el) => el.election_is_upcoming);
       if (!hasUpcoming && stateElections.length > 0) {
         setFilterTab('all');
@@ -110,10 +119,7 @@ function ElectionFinderForState () {
     historyPush(`/election-finder/${selectedStateCode.toLowerCase()}/${googleCivicElectionId}`);
   }, [selectedStateCode]);
 
-  // Filter elections for this state
-  let stateElections = electionList.filter(
-    (el) => el.state_code_list && el.state_code_list.includes(selectedStateCode),
-  );
+  let stateElections = electionList.filter((el) => matchesStateCode(el, selectedStateCode));
 
   // Apply search filter before splitting upcoming/past so counts reflect the search
   if (searchText) {
@@ -167,6 +173,7 @@ function ElectionFinderForState () {
           <StateSelectCaret><ExpandMore fontSize="inherit" /></StateSelectCaret>
           <StateSelectNative value={selectedStateCode || ''} onChange={onStateChange}>
             <option value="">Select state</option>
+            <option value="NA">National</option>
             {SORTED_STATES.map(([code, name]) => (
               <option key={code} value={code}>{name}</option>
             ))}
@@ -239,12 +246,12 @@ function ElectionFinderForState () {
                 key={googleCivicElectionId}
                 onClick={() => onElectionSelect(googleCivicElectionId)}
               >
-                <ElectionLink>
+                <ElectionRowText>
+                  <ElectionLink>{election.election_name || ''}</ElectionLink>
                   {election.election_day_text && (
-                    <ElectionDatePill>{formatDateUS(election.election_day_text)}</ElectionDatePill>
+                    <ElectionDateText>{formatDateLong(election.election_day_text)}</ElectionDateText>
                   )}
-                  {election.election_name || ''}
-                </ElectionLink>
+                </ElectionRowText>
                 <ElectionRowActions className="u-show-desktop-tablet" onClick={(e) => e.stopPropagation()}>
                   <CopyChip
                     defaultLabel="Copy link"
