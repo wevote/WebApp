@@ -217,7 +217,7 @@ export default function SupportersInvited ({ supporters }) {
             setFilterAnchorEl={setFilterAnchorEl}
             filterLabel={filterLabel}
             menuOptions={[
-              { label: "All", onClick: () => setActiveFilter(FILTERS.ALL) },
+              { label: 'All', onClick: () => setActiveFilter(FILTERS.ALL) },
               { label: `Has invited friends - (${filterGroups.hasInvitedCount})`,
                 onClick: () => setActiveFilter(FILTERS.HAS_INVITED) },
               { label: `Has endorsed - (${filterGroups.hasEndorsedCount})`,
