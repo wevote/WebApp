@@ -18,6 +18,10 @@ import VoterStore from '../../stores/VoterStore';
 import { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
 import { BallotAddress, ClickBlockWrapper, ContentWrapper, ElectionDateBelow, ElectionDateRight, ElectionNameBlock, ElectionNameH1, ElectionNameScrollContent, ElectionStateLabel, OverflowContainer, OverflowContent, VoteByBelowLabel, VoteByBelowWrapper, VoteByRightLabel, VoteByRightWrapper } from '../Style/BallotTitleHeaderStyles';
 import BallotTitleHeaderNationalPlaceholder from './BallotTitleHeaderNationalPlaceholder';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
+import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
+import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 
 const ShareButtonDesktopTablet = React.lazy(() => import(/* webpackChunkName: 'ShareButtonDesktopTablet' */ '../Share/ShareButtonDesktopTablet'));
 
@@ -134,7 +138,7 @@ class BallotTitleHeader extends Component {
 
   render () {
     renderLog('BallotTitleHeader');  // Set LOG_RENDER_EVENTS to log all renders
-    const { allowTextWrap, centerText, linksOff, shareButtonText, showBallotCaveat, showShareButton, turnOffVoteByBelow } = this.props;
+    const { allowTextWrap, centerText, linksOff, shareButtonText, showBallotCaveat, showShareButton, turnOffVoteByBelow, officeName, onViewBallotClick, } = this.props;
     const {
       ballotCaveat, daysUntilElection, electionDayTextObject,
       electionName, nextNationalElectionDateMDY, originalTextAddress, originalTextState,
@@ -144,6 +148,43 @@ class BallotTitleHeader extends Component {
     const electionNameContainsWordElection = stringContains('election', electionName.toLowerCase());
     const stateTextUsed = substitutedState || originalTextState || '';
     const electionNameContainsState = stringContains(stateTextUsed.toLowerCase(), electionName.toLowerCase());
+
+    const fromOfficePage = officeName && officeName.trim() !== '';
+    console.log("Button onViewBallotClick:", onViewBallotClick);
+
+    const electionNameTooltip = isMobileScreenSize() ? (<></>) : (
+      <Tooltip className="u-z-index-9020" id="election-name-tooltip">
+        {electionName}
+      </Tooltip>
+    );
+
+    const BallotOfficeHeader = ({
+      officeName,
+      onViewBallotClick,
+    }) => {
+      return (
+        <InlineOfficeHeader>
+          <span>
+            <span className="u-show-mobile">
+              Ballot Section for
+            </span>
+            <span className="u-show-desktop-tablet">
+              Ballot section for office of
+            </span>
+
+            {' '}
+
+            <strong style={{ fontWeight: 500 }}>
+              {officeName}
+            </strong>
+          </span>
+
+          <ViewBallotButton onClick={onViewBallotClick}>
+            View full ballot
+          </ViewBallotButton>
+        </InlineOfficeHeader>
+      );
+    };
 
     const editIconStyled = <Edit style={{ fontSize: 16, margin: '-6px 0 0 2px', color: '#69A7FF' }} />;
     // console.log('BallotTitleHeader allowTextWrap:', allowTextWrap);
@@ -195,21 +236,31 @@ class BallotTitleHeader extends Component {
                           )}
                         </ElectionStateLabel>
                       )}
-                      <ElectionNameH1
-                        tabIndex={0}
-                        centerText={centerText}
-                        className={linksOff ? '' : 'u-cursor--pointer'}
-                        id="ballotTitleHeaderElectionName"
-                        onClick={this.showSelectBallotModalChooseElection}
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter' || e.key === ' ') {
-                            e.preventDefault();
-                            this.showSelectBallotModalChooseElection();
-                          }
-                        }}
-                      >
-                        {electionName}
-                      </ElectionNameH1>
+                      <OverlayTrigger placement="bottom-end" overlay={electionNameTooltip}>
+                        <ElectionNameH1
+                          tabIndex={0}
+                          centerText={centerText}
+                          className={linksOff ? '' : 'u-cursor--pointer'}
+                          id="ballotTitleHeaderElectionName"
+                          onClick={this.showSelectBallotModalChooseElection}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                              e.preventDefault();
+                              this.showSelectBallotModalChooseElection();
+                            }
+                          }}
+                        >
+                          {electionName}
+                        </ElectionNameH1>
+                      </OverlayTrigger>
+                      {
+                        fromOfficePage ? (
+                              <BallotOfficeHeader
+                                  officeName={officeName}
+                                  onViewBallotClick={onViewBallotClick}
+                              />
+                        ) : (
+                      <>
                       {(showBallotCaveat && ballotCaveat) ? (
                         <BallotAddress tabIndex={-1}
                           allowTextWrap={allowTextWrap}
@@ -232,12 +283,12 @@ class BallotTitleHeader extends Component {
                               id="ballotTitleBallotAddress"
                               onClick={() => this.showSelectBallotModalEditAddress('ballotTitleBallotAddress')}
                             >
-                              Ballot for
+                                    Ballot for
                               {' '}
                               <span tabIndex={0}
                                 className={linksOff ? '' : 'u-link-color u-link-underline-on-hover'}
                               >
-                                <span>
+                               <span>
                                   {(textForMapSearch && textForMapSearch !== '') ? textForMapSearch : originalTextAddress}
                                 </span>
                                 {linksOff ? <></> : editIconStyled}
@@ -253,10 +304,10 @@ class BallotTitleHeader extends Component {
                                   id="ballotTitleBallotAddressSubstituted"
                                   onClick={() => this.showSelectBallotModalEditAddress('ballotTitleBallotAddressSubstituted')}
                                 >
-                                  Ballot for
+                                          Ballot for
                                   {' '}
                                   <span tabIndex={0} className={linksOff ? '' : 'u-link-color u-link-underline-on-hover'}>
-                                    {substitutedAddress}
+                                        {substitutedAddress}
                                   </span>
                                   {linksOff ? <></> : editIconStyled}
                                 </BallotAddress>
@@ -278,6 +329,8 @@ class BallotTitleHeader extends Component {
                           )}
                         </>
                       )}
+                      </>
+                    )}
                       {(!turnOffVoteByBelow && electionDayTextObject) && (
                         <VoteByBelowWrapper centerText={centerText}>
                           <VoteByBelowLabel>
@@ -364,6 +417,8 @@ BallotTitleHeader.propTypes = {
   showShareButton: PropTypes.bool,
   // toggleSelectBallotModal: PropTypes.func,
   turnOffVoteByBelow: PropTypes.bool,
+  officeName: PropTypes.string,
+  onViewBallotClick: PropTypes.func,
 };
 
 const styles = {
@@ -387,7 +442,27 @@ const BallotShareWrapper = styled('div')`
 `;
 
 const BallotTitleHeaderWrapper = styled('div')`
-  height: ${isAndroid() ? '110px' : '90px'};
+  min-height: ${isAndroid() ? '110px' : '90px'};
+  height: auto;
+`;
+
+const ViewBallotButton = styled.button`
+  background: ${DesignTokenColors.primary700};
+  color:${DesignTokenColors.whiteUI};
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  cursor: pointer;
+  padding: 6px 6px;
+  font-weight: 400;
+  &:hover {
+    background: ${DesignTokenColors.primary800};
+  }
+`;
+
+const InlineOfficeHeader = styled.div`
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;   /* controls spacing properly */
 `;
 
 export default withTheme(withStyles(styles)(BallotTitleHeader));

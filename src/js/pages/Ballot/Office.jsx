@@ -10,6 +10,7 @@ import OfficeActions from '../../actions/OfficeActions';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import toTitleCase from '../../common/utils/toTitleCase';
 import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
+import { DualHeaderContainer, getTopOffsetDueToHeadroomWrapper, HeaderContentContainer, HeaderContentOuterContainer } from '../../components/Style/pageLayoutStyles';
 import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
 import CandidateStore from '../../stores/CandidateStore';
@@ -20,6 +21,11 @@ import { renderLog } from '../../common/utils/logging';
 import apiCalming from '../../common/utils/apiCalming';
 import { sortCandidateList } from '../../utils/positionFunctions';
 import BallotItemCompressed from '../../components/Ballot/BallotItemCompressed';
+import BallotTitleHeader from '../../components/Ballot/BallotTitleHeader';
+import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
+import BallotActions from '../../actions/BallotActions';
+import { useHistory } from 'react-router-dom';
+
 
 
 // This is related to pages/VoterGuide/OrganizationVoterGuideOffice
@@ -32,6 +38,13 @@ function Office () {
   const [officeWeVoteId, setOfficeWeVoteId] = useState('');
   const [positionListFromFriendsHasBeenRetrievedOnce, setPositionListFromFriendsHasBeenRetrievedOnce] = useState({});
   const [positionListHasBeenRetrievedOnce, setPositionListHasBeenRetrievedOnce] = useState({});
+  const scrolledDown = false;
+
+  const history = useHistory();
+  const handleViewBallotClick = () => {
+  //window.close();
+  history.push('/ballot');
+  };
 
   const localPositionListHasBeenRetrievedOnce = (weVoteId) => {
     if (weVoteId) {
@@ -51,6 +64,7 @@ function Office () {
     // We update dummyVariable so we can force a re-render of the component,
     //  which is necessary to pick up an AppObservableStore update that changes
     //  getPaddingTop in PageContentContainer
+    scrolledDown: AppObservableStore.getScrolledDown()
     const now = new Date();
     const hours = now.getHours().toString().padStart(2, '0');
     const minutes = now.getMinutes().toString().padStart(2, '0');
@@ -224,6 +238,11 @@ function Office () {
     if (apiCalming('activityNoticeListRetrieve', 10000)) {
       ActivityActions.activityNoticeListRetrieve();
     }
+
+    if (apiCalming('voterBallotItemsRetrieve', 600000)) {
+      BallotActions.voterBallotItemsRetrieve(0, '', '');
+    }
+
     AnalyticsActions.saveActionOffice(VoterStore.electionId(), params.office_we_vote_id);
 
     const candidateStoreListener = CandidateStore.addListener(onCandidateStoreChange);
@@ -283,38 +302,71 @@ function Office () {
   const descriptionText = `Choose who you support for ${officeName} in this election`;
 
   return (
-    <PageContentContainer>
+    <>
       <Helmet
         title={titleText}
         meta={[{ name: 'description', content: descriptionText }]}
       />
-      <OfficeWrapper>
-        <Suspense fallback={<></>}>
-          <BallotItemCompressed
-            ballotItemDisplayName={office.ballot_item_display_name}
-            candidateList={candidateList}
-            // candidatesToShowForSearchResults={item.candidatesToShowForSearchResults}
-            // foundInSearchWords={item.foundInSearchWords}
-            // id={chipLabelText(item.ballot_item_display_name)}
-            // isFirstBallotItem={isFirstBallotItem}
-            // isMeasure={item.kind_of_ballot_item === TYPES.MEASURE}
-            // primaryParty={item.primary_party}
-            // totalNumberOfBallotItems={totalNumberOfBallotItems}
-            useHelpDefeatOrHelpWin
-            weVoteId={office.we_vote_id}
-            // key={key}
-          />
-        </Suspense>
-      </OfficeWrapper>
-    </PageContentContainer>
+      <DualHeaderContainer id="ballot" scrolledDown={scrolledDown} topOffset={getTopOffsetDueToHeadroomWrapper()}>
+        <HeaderContentOuterContainer>
+          <HeaderContentContainer>
+                <div className="col-md-12">
+                  <header className="ballot__header__group">
+                    <BallotTitleHeaderContainer>
+                      <BallotTitleHeader
+                        showShareButton={false}
+                        officeName={officeName}
+                        linksOff={true}
+                        allowTextWrap={true}
+                        onViewBallotClick={handleViewBallotClick}
+                      />
+                    </BallotTitleHeaderContainer>
+                  </header>
+                </div>
+          </HeaderContentContainer>
+        </HeaderContentOuterContainer>
+        <hr className="office-header-divider" />
+      </DualHeaderContainer>
+      <PageContentContainer>
+        <div className="container-fluid">
+          <OfficeWrapper>
+            <Suspense fallback={<></>}>
+              <BallotItemCompressed
+                ballotItemDisplayName={office.ballot_item_display_name}
+                candidateList={candidateList}
+                // candidatesToShowForSearchResults={item.candidatesToShowForSearchResults}
+                // foundInSearchWords={item.foundInSearchWords}
+                // id={chipLabelText(item.ballot_item_display_name)}
+                // isFirstBallotItem={isFirstBallotItem}
+                // isMeasure={item.kind_of_ballot_item === TYPES.MEASURE}
+                // primaryParty={item.primary_party}
+                // totalNumberOfBallotItems={totalNumberOfBallotItems}
+                useHelpDefeatOrHelpWin
+                weVoteId={office.we_vote_id}
+              // key={key}
+              />
+            </Suspense>
+          </OfficeWrapper>
+        </div>
+      </PageContentContainer>
+    </>
   );
 }
 Office.propTypes = {
   // match: PropTypes.object.isRequired,
 };
 
-const OfficeWrapper = styled('div')`
+const OfficeWrapper = styled('div')(({ theme }) => (`
+  padding-top: 100px;
   margin: 0 15px;
+  ${theme.breakpoints.down('sm')} {
+    padding-top: 160px;
+  }
+`));
+
+const BallotTitleHeaderContainer = styled('div')`
+  margin-top: 50px;
+  transition: ${isWebApp() ? 'all 150ms ease-in' : ''};
 `;
 
 export default Office;

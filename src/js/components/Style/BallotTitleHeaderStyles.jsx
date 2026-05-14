@@ -64,14 +64,16 @@ export const ElectionNameH1 = styled('h1', {
   padding-bottom: 18px;
   ${theme.breakpoints.down('sm')} {
     padding-top: 5px;
-    padding-bottom: 12px;
+    padding-bottom: 10px;
+    white-space: normal;
   }
   ${() => (isIOs6p1OrSmaller() ? 'font-weight: 600;' : '')}
   line-height: 1;
   margin: 0px;
   ${centerText ? 'text-align: center;' : ''}
-  word-wrap: break-word;    // e.g 'District of Columbia General Election' in mobile/Cordova
-  white-space: normal;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 `));
 
 export const ElectionNameScrollContent = styled('div')`
