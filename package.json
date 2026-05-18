@@ -144,7 +144,7 @@
     "indefinite": "^2.5.2",
     "jquery": "^3.7.1",
     "keymirror": "~0.1.1",
-    "lodash-es": "^4.17.23",
+    "lodash-es": "^4.18.1",
     "moment": "^2.29.4",
     "mui-file-dropzone": "^4.0.1",
     "nvm": "^0.0.4",
