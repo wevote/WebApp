@@ -3,20 +3,12 @@ import { Button, DialogContent, DialogTitle, IconButton } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
-import AppObservableStore from '../../../common/stores/AppObservableStore';
+import styled, { createGlobalStyle } from 'styled-components';
 import VoterStore from '../../../stores/VoterStore';
 import PositionPublicToggle from '../../PositionItem/PositionPublicToggle';
-import webAppConfig from '../../../config';
-import { createGlobalStyle } from 'styled-components';
-// import ConfirmCloseModal from '../../More/ConfirmCloseModal';
-import ModalDisplayTemplateB from '../../Widgets/ModalDisplayTemplateB';
+import ModalDisplayTemplateB from '../ModalDisplayTemplateB';
 
 const SignInOptionsPanel = React.lazy(() => import(/* webpackChunkName: 'SignInOptionsPanel' */ '../../../common/components/SignIn/SignInOptionsPanel'));
-const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../../common/components/Widgets/OpenExternalWebSite'));
-
-const termsOfServiceURL = `${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}/more/terms`;
-const privacyPolicyURL = `${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}/privacy`;
 
 
 class ChooseOrOpposeIntroModal extends Component {
@@ -127,12 +119,6 @@ class ChooseOrOpposeIntroModal extends Component {
       slides.signIn = (
         <Suspense fallback={<></>}>
           <>
-            {/* <SignInOptionsPanel
-              pleaseSignInTitle="Save your choices for access on any device."
-              pleaseSignInSubTitle=""
-              toggleSignInModal={this.props.onClose}
-              inModal
-            /> */}
             <div
               className="u-f3"
               id="pleaseSignInTitle"
@@ -141,7 +127,7 @@ class ChooseOrOpposeIntroModal extends Component {
                 display: 'block',
                 textAlign: 'center',
                 margin: '0 auto',
-                padding: '0 16px',
+                padding: '0 16px 20px 16px',
                 fontWeight: 600,
                 fontSize: '18px',
                 lineHeight: 1.4,
@@ -150,63 +136,22 @@ class ChooseOrOpposeIntroModal extends Component {
             >
               Save your choices for access on any device.
             </div>
+            <SignInOptionsPanel
+              pleaseSignInTitle=""
+              pleaseSignInSubTitle=""
+              toggleSignInModal={this.props.onClose}
+              inModal
+            />
             <Options buttons="1">
               <Button
-                classes={{ root: classes.signInButton }}
-                variant="contained"
-                color="primary"
-                onClick={this.openSignInModal}
-              >
-                Save my choices
-              </Button>
-            </Options>
-            <Options buttons="1">
-              <Button
-                classes={{ root: classes.signInButton }}
+                classes={{ root: classes.button }}
                 variant="outlined"
                 color="primary"
                 onClick={() => this.changeCurrentSlideIndex('getReady')}
               >
-                Continue without signing in
+                Sign In Later
               </Button>
             </Options>
-            <HelperText>
-              Signing in is optional. Takes about 30 seconds. Free forever.
-            </HelperText>
-            <TermsWrapper id="terms_Wrapper">
-              By continuing, you accept WeVote.US’s<br />
-              {' '}
-              <Suspense fallback={<></>}>
-                <OpenExternalWebSite
-                  className="open-web-site"
-                  body={(
-                    <span>
-                      Terms of Service
-                    </span>
-                  )}
-                  linkIdAttribute="openTermsOfService"
-                  target="_blank"
-                  url={termsOfServiceURL}
-                />
-              </Suspense>
-              {' '}
-              and
-              {' '}
-              <Suspense fallback={<></>}>
-                <OpenExternalWebSite
-                  linkIdAttribute="openPrivacyPolicy"
-                  url={privacyPolicyURL}
-                  target="_blank"
-                  className="open-web-site open-web-site__no-right-padding"
-                  body={(
-                    <span>
-                      Privacy Policy
-                    </span>
-                  )}
-                />
-              </Suspense>
-              .
-            </TermsWrapper>
           </>
         </Suspense>
       );
@@ -221,12 +166,6 @@ class ChooseOrOpposeIntroModal extends Component {
     return null;
   };
 
-  openSignInModal = () => {
-    AppObservableStore.setShowChooseOrOpposeIntroModal(false);
-    AppObservableStore.setShowChooseOrOpposeSignInModal(true);
-    if (this.props.onClose) this.props.onClose();
-  };
-
   render () {
     const { classes } = this.props;
     const { currentSlideKey } = this.state;
@@ -234,33 +173,6 @@ class ChooseOrOpposeIntroModal extends Component {
     const slides = this.getSlides();
     return (
       <>
-        {/* <IconButtonRow>                                                                                                                                                                               
-          <IconButton   
-            aria-label="Close"
-            classes={{ root: classes.closeButton }}
-            onClick={this.props.onClose}
-            id="profileCloseItemActionBar"
-            size="large"
-          >
-            <Close />
-          </IconButton>
-        </IconButtonRow>
-        <DialogTitle classes={{ root: classes.dialogTitle }}>
-          <TitleText>Nice work - you're making progress!</TitleText>
-        </DialogTitle>
-        <HorizontalLine />
-        <DialogContent classes={{ root: classes.dialogContent }}>
-          <SlidesWrapper>
-            <SlidesContainer>
-              {slides[currentSlideKey]}
-            </SlidesContainer>
-          </SlidesWrapper>
-        </DialogContent> */}
-        {/* <ConfirmCloseModal
-          isOpen
-          onConfirm={this.props.onClose}
-          onCancel={this.props.onClose}
-        /> */}
         <HideDivider />
         <SoftenCorners />
         <CenterModal />
@@ -272,7 +184,7 @@ class ChooseOrOpposeIntroModal extends Component {
           textFieldJSX={(
             <>
               <DialogTitle classes={{ root: classes.dialogTitle }}>
-                <TitleText>Nice work - you're making progress!</TitleText>
+                <TitleText>Nice work - you&apos;re making progress!</TitleText>
               </DialogTitle>
               <HorizontalLine />
               <DialogContent classes={{ root: classes.dialogContent }}>
@@ -302,15 +214,8 @@ const styles = (theme) => ({
   button: {
     width: '100%',
   },
-  signInButton: {
-    width: '70%',
-    minHeight: '40px',
-    padding: '8px 16px',
-    [theme.breakpoints.down('sm')]: {
-      width: '85%',
-    },
-  },
   closeButton: {
+    position: 'absolute',
     right: theme.spacing(1),
     top: theme.spacing(1),
   },
@@ -366,15 +271,6 @@ const RemovePadding = createGlobalStyle`
   }
 `;
 
-const TermsWrapper = styled('div')(({ theme }) => (`
-  margin-top: 30px;
-  font-weight: 600;
-  text-align: center;
-  // ${theme.breakpoints.down('sm')} {
-  //   padding-top: 30px;
-  // }
-`));
-
 const HorizontalLine = styled('div')(({ theme }) => (`
   background-color: #A9A9A9;
   height: 2px;
@@ -386,15 +282,10 @@ const HorizontalLine = styled('div')(({ theme }) => (`
   }
 `));
 
-const IconButtonRow = styled('div')(() => (`
-    display: flex;                                                                                                                                                                              
-    justify-content: flex-end;
-`));
-
 const Options = styled('div')(({ buttons }) => (`
   display: flex;
   flex-flow: ${buttons > 1 ? 'row' : 'column'};
-  ${buttons > 1 ? 'justify-content: space-between;' : 'align-items: center;'};
+  ${buttons > 1 ? 'justify-content: space-between;' : ''};
   margin-top: 1em;
 `));
 
@@ -408,15 +299,6 @@ const TitleText = styled('div')`
   width: 100%;
   text-align: center;
   line-height: 1.3;
-`;
-
-const HelperText = styled('div')`
-  font-size: 13px;
-  font-weight: 600;
-  color: #777;
-  text-align: center;
-  line-height: 1.4;
-  padding: 14px;
 `;
 
 const SubTitle = styled('div')`

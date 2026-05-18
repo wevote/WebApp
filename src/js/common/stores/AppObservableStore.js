@@ -66,6 +66,7 @@ const nonFluxState = {
   showAskFriendsModal: false,
   showBallotChoicesAndSettingsModal: false,
   showChooseOrOpposeIntroModal: false,
+  showChooseOrOpposeSignInModal: false,
   showClaimProfileWithEmailModal: false,
   showEditPositionModal: false,
   editPositionModalPoliticianWeVoteId: '',
@@ -710,6 +711,11 @@ export default {
     messageService.sendMessage('state updated showChooseOrOpposeIntroModal');
   },
 
+  setShowChooseOrOpposeSignInModal (show) {
+    nonFluxState.showChooseOrOpposeSignInModal = show;
+    messageService.sendMessage('state updated showChooseOrOpposeSignInModal');
+  },
+
   setFunctionToCallAfterProfileComplete (fn) {
     nonFluxState.functionToCallAfterProfileComplete = fn;
   },
@@ -895,6 +901,10 @@ export default {
 
   showChooseOrOpposeIntroModal () {
     return nonFluxState.showChooseOrOpposeIntroModal;
+  },
+
+  showChooseOrOpposeSignInModal () {
+    return nonFluxState.showChooseOrOpposeSignInModal;
   },
 
   showCompleteYourProfileModal () {
