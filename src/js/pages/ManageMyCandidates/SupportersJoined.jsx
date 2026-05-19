@@ -1,32 +1,35 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import styled from 'styled-components';
-import Alert from '@mui/material/Alert';
-import Button from '@mui/material/Button';
-import ButtonBase from '@mui/material/ButtonBase';
-import Checkbox from '@mui/material/Checkbox';
+/* eslint-disable no-alert */
+import React, { useContext, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
+import PropTypes from 'prop-types';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import DoneIcon from '@mui/icons-material/Done';
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
-import DialogActions from '@mui/material/DialogActions';
-import Drawer from '@mui/material/Drawer';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import Snackbar from '@mui/material/Snackbar';
-import TextField from '@mui/material/TextField';
+import SearchIcon from '@mui/icons-material/Search';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import VisibilityIcon from '@mui/icons-material/Visibility';
+import Alert from '@mui/material/Alert';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import Drawer from '@mui/material/Drawer';
+import Snackbar from '@mui/material/Snackbar';
+import TextField from '@mui/material/TextField';
+import styled from 'styled-components';
+
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
+import ActionPill from '../../components/ManageMyCandidates/ActionPill';
+import { CandidateActionsFilterMenu, CandidateRowMenu, CandidateTraitsFilterMenu, DropdownMenu, SelectAllCheckbox } from '../../components/ManageMyCandidates/Menus';
+import { SendMessageButton, SendMessageButtonMobile } from '../../components/ManageMyCandidates/SendButtons';
+import TrackingHeaderActionContext from './TrackingHeaderActionContext';
+import { Card, CardList, CardTopRow, Container, KebabBtn, LeftTools, NameRow, NameText, RightOptions, ToolbarRow, VerticalBar, VerticalBarWrapper } from '../../components/Style/ManageMyCandidates';
+import { MobileActionPill, MobileActions, MobileFieldLabel, MobileFieldValue, MobileToolbar, SearchBtn, SelectAllInline } from '../../components/Style/SupporterTrackingStyles';
 
 const FILTERS = {
   ALL: 'all',
@@ -40,7 +43,20 @@ Thank you so much. May the odds be ever in your favor. We love you.
 
 From the developers at WeVote <3`;
 
+function getPendingActions (v) {
+  return [
+    !v.endorsed && 'Endorse',
+    !v.publicOpinion && 'Write public opinion',
+    v.friendsInvited === 0 && 'Invite friends',
+  ].filter(Boolean);
+}
+
+function getActionsLabel (v) {
+  return getPendingActions(v).join(', ');
+}
+
 export default function SupportersJoined ({ supporters }) {
+  const headerActionSlot = useContext(TrackingHeaderActionContext);
   const [selected, setSelected] = useState(() => new Set());
   const [expanded, setExpanded] = useState(() => new Set());
   const [activeFilter, setActiveFilter] = useState(FILTERS.ALL);
@@ -49,32 +65,22 @@ export default function SupportersJoined ({ supporters }) {
   const [viewOpen, setViewOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
   const [copyOpen, setCopyOpen] = useState(false);
-  const [isSending, setIsSending] = useState(false);
+  const [, setIsSending] = useState(false);
   const [sendToast, setSendToast] = useState({ open: false, ok: true, msg: '' });
-  const totalCount = supporters.length;
-  const selectedCount = selected.size;
 
-  // ----- checkbox dropdown menu state -----
   const [selectAnchorEl, setSelectAnchorEl] = useState(null);
-  const selectMenuOpen = Boolean(selectAnchorEl);
-  // ----- "All" dropdown menu state -----
   const [filterAnchorEl, setFilterAnchorEl] = useState(null);
-  const filterMenuOpen = Boolean(filterAnchorEl);
-  // ----- per-row "triple dot" menu state -----
   const [rowMenuAnchorEl, setRowMenuAnchorEl] = useState(null);
   const [rowMenuVoter, setRowMenuVoter] = useState(null);
-  const rowMenuOpen = Boolean(rowMenuAnchorEl);
-  // ----- candidate drawer open state -----
+
   const [candidateDrawerOpen, setCandidateDrawerOpen] = useState(false);
   const [candidateDrawerVoter, setCandidateDrawerVoter] = useState(null);
-  // ----- thank you dropdown (mobile) -----
+
   const [thankYouAnchorEl, setThankYouAnchorEl] = useState(null);
   const thankYouMenuOpen = Boolean(thankYouAnchorEl);
-
   const openThankYouMenu = (e) => setThankYouAnchorEl(e.currentTarget);
   const closeThankYouMenu = () => setThankYouAnchorEl(null);
 
-  // ----- helpers (single source of truth for "actions") -----
   const copyThankYouMessage = async () => {
     try {
       await navigator.clipboard.writeText(thankYouMessage);
@@ -84,33 +90,20 @@ export default function SupportersJoined ({ supporters }) {
     }
   };
 
-  const getPendingActions = (v) => ([
-    !v.endorsed && 'Endorse',
-    !v.publicOpinion && 'Write public opinion',
-    v.friendsInvited === 0 && 'Invite friends',
-  ].filter(Boolean));
-
-  const getActionsLabel = (v) => getPendingActions(v).join(', ');
-
-  // ----- derived data for selected voters, dropdown + counts -----
-  const selectedVoters = useMemo(() => {
-    const selectedIds = selected;
-    return supporters.filter((v) => selectedIds.has(v.id));
-  }, [supporters, selected]);
+  const selectedVoters = useMemo(
+    () => supporters.filter((v) => selected.has(v.id)),
+    [supporters, selected],
+  );
 
   const actionGroups = useMemo(() => {
-    // key: actionsLabel, value: array of supporter ids
     const map = new Map();
-
     supporters.forEach((v) => {
       const actionsLabel = getActionsLabel(v);
-      if (!actionsLabel) return; // no pending actions => don't appear in "Ask to:" menu
+      if (!actionsLabel) return;
       const prev = map.get(actionsLabel) || [];
       prev.push(v.id);
       map.set(actionsLabel, prev);
     });
-
-    // Sort by count desc, then label asc
     return Array.from(map.entries())
       .map(([label, ids]) => ({ label, ids, count: ids.length }))
       .sort((a, b) => (b.count - a.count) || a.label.localeCompare(b.label));
@@ -127,6 +120,7 @@ export default function SupportersJoined ({ supporters }) {
         return supporters;
     }
   }, [supporters, activeFilter]);
+
   useEffect(() => {
     const visibleIds = new Set(visibleSupporters.map((v) => v.id));
     setSelected((prev) => new Set([...prev].filter((id) => visibleIds.has(id))));
@@ -135,12 +129,11 @@ export default function SupportersJoined ({ supporters }) {
   const totalVisibleCount = visibleSupporters.length;
   const selectedVisibleCount = useMemo(
     () => visibleSupporters.filter((v) => selected.has(v.id)).length,
-    [visibleSupporters, selected]
+    [visibleSupporters, selected],
   );
-  const checked = totalVisibleCount > 0 && selectedVisibleCount === totalVisibleCount;
+  const allChecked = totalVisibleCount > 0 && selectedVisibleCount === totalVisibleCount;
   const indeterminate = selectedVisibleCount > 0 && selectedVisibleCount < totalVisibleCount;
 
-  // ----- "All" filter dropdown data (counts) -----
   const filterLabel = useMemo(() => {
     switch (activeFilter) {
       case FILTERS.HAS_INVITED: return 'Has invited friends';
@@ -152,12 +145,10 @@ export default function SupportersJoined ({ supporters }) {
   const filterGroups = useMemo(() => {
     const hasInvitedIds = [];
     const hasEndorsedIds = [];
-
     supporters.forEach((v) => {
       if ((v.friendsInvited || 0) > 0) hasInvitedIds.push(v.id);
       if (v.endorsed) hasEndorsedIds.push(v.id);
     });
-
     return {
       hasInvitedIds,
       hasInvitedCount: hasInvitedIds.length,
@@ -169,7 +160,8 @@ export default function SupportersJoined ({ supporters }) {
   const toggleSelected = (id) => {
     setSelected((prev) => {
       const next = new Set(prev);
-      next.has(id) ? next.delete(id) : next.add(id);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
       return next;
     });
   };
@@ -177,81 +169,15 @@ export default function SupportersJoined ({ supporters }) {
   const toggleExpanded = (id) => {
     setExpanded((prev) => {
       const next = new Set(prev);
-      next.has(id) ? next.delete(id) : next.add(id);
-      return next;
-    });
-  };
-
-  const selectAllVisible = () => {
-    setSelected((prev) => {
-      const next = new Set(prev);
-      const allSelected = visibleSupporters.every((r) => next.has(r.id));
-      if (allSelected) {
-        visibleSupporters.forEach((r) => next.delete(r.id));
-      } else {
-        visibleSupporters.forEach((r) => next.add(r.id));
-      }
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
       return next;
     });
   };
 
   const handleSelectCheckboxClick = (e) => {
-    e.stopPropagation(); // important: don't open the dropdown menu
-    setSelected((prev) => {
-      if (prev.size === 0) {
-        // select all visible
-        return new Set(visibleSupporters.map((v) => v.id));
-      }
-      // clear all selection
-      return new Set();
-    });
-  };
-
-  const openSelectMenu = (e) => setSelectAnchorEl(e.currentTarget);
-  const closeSelectMenu = () => setSelectAnchorEl(null);
-
-  const selectIds = (ids) => {
-    setSelected(new Set(ids));
-    closeSelectMenu();
-  };
-
-  const handleAll = () => {
-    setSelected(new Set(supporters.map((v) => v.id)));
-    closeSelectMenu();
-  };
-
-  const handleNone = () => {
-    setSelected(new Set());
-    closeSelectMenu();
-  };
-
-  const openFilterMenu = (e) => setFilterAnchorEl(e.currentTarget);
-  const closeFilterMenu = () => setFilterAnchorEl(null);
-
-  const setFilterAll = () => {
-    setActiveFilter(FILTERS.ALL);
-    closeFilterMenu();
-  };
-
-  const setFilterHasInvited = () => {
-    setActiveFilter(FILTERS.HAS_INVITED);
-    closeFilterMenu();
-  };
-
-  const setFilterHasEndorsed = () => {
-    setActiveFilter(FILTERS.HAS_ENDORSED);
-    closeFilterMenu();
-  };
-
-  const openRowMenu = (e, voter) => {
     e.stopPropagation();
-    setRowMenuAnchorEl(e.currentTarget);
-    setRowMenuVoter(voter);
-  };
-
-  const closeRowMenu = () => {
-    setRowMenuAnchorEl(null);
-    setRowMenuVoter(null);
+    setSelected((prev) => (prev.size === 0 ? new Set(visibleSupporters.map((v) => v.id)) : new Set()));
   };
 
   const openCandidateDrawer = (voter) => {
@@ -264,36 +190,23 @@ export default function SupportersJoined ({ supporters }) {
     setCandidateDrawerVoter(null);
   };
 
-  const handleEditVoter = () => {
-    if (!rowMenuVoter) return;
-    alert(`Edit voter: ${rowMenuVoter.name}`);
-    closeRowMenu();
-  };
-
-  const handleSendMessage = () => {
-    if (!rowMenuVoter) return;
-    alert(`Send message to: ${rowMenuVoter.name}`);
-    closeRowMenu();
+  const openRowMenu = (e, voter) => {
+    e.stopPropagation();
+    setRowMenuAnchorEl(e.currentTarget);
+    setRowMenuVoter(voter);
   };
 
   const handleSendThankYou = async () => {
     if (selectedVoters.length === 0) return;
-
     setIsSending(true);
     try {
       // TODO: replace with real API call(s)
       // await sendThankYouMessage(selectedVoters, thankYouMessage);
-      handleSendMessage();
-
       setSendToast({
         open: true,
         ok: true,
         msg: `Sent to ${selectedVoters.length} supporter${selectedVoters.length === 1 ? '' : 's'}.`,
       });
-
-      // Optional: mark them as "messageSentCount + 1" in state once you have stateful supporters
-      // Optional: clear selection after send
-      // setSelected(new Set());
     } catch (err) {
       console.error(err);
       setSendToast({ open: true, ok: false, msg: 'Send failed. Please try again.' });
@@ -304,397 +217,303 @@ export default function SupportersJoined ({ supporters }) {
 
   return (
     <Container>
-      <MessageContainer className="u-show-desktop-tablet">
-        <InfoBox>
-          <strong>
-            Sentiments and opinions posted by WeVote members are private by default.
-            You can view them only if the member chooses to make them public.
-          </strong>
-        </InfoBox>
-
-        <VerticalBarWrapper>
-          <VerticalBar />
-        </VerticalBarWrapper>
-
-        <ThankYouBox>
-          <ThankYouLabelRow>
-            <strong>Thank You message:</strong>
-            <IconRow>
-              <IconBtn
-                type="button"
-                title="View"
-                onClick={() => setViewOpen(true)}
-              >
-                <VisibilityIcon />
+      <TopPanel className="u-show-desktop-tablet">
+        <PrivacyNote>
+          Sentiments and opinions posted by WeVote members are private by default.
+          You can view them only if the member chooses to make them public.
+        </PrivacyNote>
+        <VerticalBarWrapper><VerticalBar /></VerticalBarWrapper>
+        <ThankYouCol>
+          <ThankYouHead>
+            <ThankYouHeading>Thank You message:</ThankYouHeading>
+            <IconBtnRow>
+              <IconBtn type="button" title="View" onClick={() => setViewOpen(true)}>
+                <VisibilityIcon sx={{ fontSize: 17 }} />
               </IconBtn>
-
               <IconBtn
                 type="button"
                 title="Edit"
-                onClick={() => {
-                  setDraftMessage(thankYouMessage);
-                  setEditOpen(true);
-                }}
+                onClick={() => { setDraftMessage(thankYouMessage); setEditOpen(true); }}
               >
-                <EditOutlinedIcon />
+                <EditOutlinedIcon sx={{ fontSize: 17 }} />
               </IconBtn>
-
-              <IconBtn
-                type="button"
-                title="Copy"
-                onClick={copyThankYouMessage}
-              >
-                <ContentCopyIcon />
+              <IconBtn type="button" title="Copy" onClick={copyThankYouMessage}>
+                <ContentCopyIcon sx={{ fontSize: 17 }} />
               </IconBtn>
-            </IconRow>
-          </ThankYouLabelRow>
+            </IconBtnRow>
+          </ThankYouHead>
+          <Subtle>(auto-sent after joining)</Subtle>
+        </ThankYouCol>
+      </TopPanel>
 
-          <ThankYouSubtext>(auto-sent after joining)</ThankYouSubtext>
-        </ThankYouBox>
-      </MessageContainer>
-
-      <ToolbarRow>
+      <ToolbarRow className="u-show-desktop-tablet">
         <LeftTools>
-          <SelectControl
-            aria-label="Selection options"
-            aria-controls={selectMenuOpen ? 'select-by-action-menu' : undefined}
-            aria-haspopup="menu"
-            aria-expanded={selectMenuOpen ? 'true' : undefined}
-          >
-            <Checkbox
-              checked={checked}
-              indeterminate={indeterminate}
-              tabIndex={-1}
-              disableRipple
-              sx={{ padding: 0 }}
-              onClick={handleSelectCheckboxClick}
-              onChange={() => {}}
-            />
-            <CaretButton
-              type="button"
-              onClick={openSelectMenu}
-              aria-label="Open selection menu"
-            >
-              <CaretIcon as={KeyboardArrowDownIcon} />
-            </CaretButton>
-          </SelectControl>
-
-          <Menu
-            id="select-by-action-menu"
-            anchorEl={selectAnchorEl}
-            open={selectMenuOpen}
-            onClose={closeSelectMenu}
-            anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-            transformOrigin={{ vertical: 'top', horizontal: 'left' }}
-            PaperProps={{
-              style: {
-                borderRadius: 12,
-                overflow: 'hidden',
-              },
-            }}
-          >
-            <MenuItem onClick={handleAll}>
-              <MenuItemText>All</MenuItemText>
-            </MenuItem>
-
-            {actionGroups.map((g) => (
-              <MenuItem key={g.label} onClick={() => selectIds(g.ids)}>
-                <MenuItemText>
-                  Ask to: {g.label} - ({g.count})
-                </MenuItemText>
-              </MenuItem>
-            ))}
-
-            <MenuItem onClick={handleNone}>
-              <MenuItemText>None</MenuItemText>
-            </MenuItem>
-          </Menu>
-
-          <VerticalBarWrapper $tight>
-            <VerticalBar />
-          </VerticalBarWrapper>
-
-          <AllButton
-            variant="text"
-            onClick={openFilterMenu}
-            aria-label="Filter options"
-            aria-controls={filterMenuOpen ? 'all-filter-menu' : undefined}
-            aria-haspopup="menu"
-            aria-expanded={filterMenuOpen ? 'true' : undefined}
-          >
-            {filterLabel}
-            <CaretIcon as={KeyboardArrowDownIcon} />
-          </AllButton>
-          <Menu
-            id="all-filter-menu"
-            anchorEl={filterAnchorEl}
-            open={filterMenuOpen}
-            onClose={closeFilterMenu}
-            anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-            transformOrigin={{ vertical: 'top', horizontal: 'left' }}
-            PaperProps={{
-              style: {
-                borderRadius: 12,
-                overflow: 'hidden',
-              },
-            }}
-          >
-            <MenuItem onClick={setFilterAll}>
-              <MenuItemText>All</MenuItemText>
-            </MenuItem>
-
-            <MenuItem onClick={setFilterHasInvited}>
-              <MenuItemText>
-                Has invited friends - ({filterGroups.hasInvitedCount})
-              </MenuItemText>
-            </MenuItem>
-
-            <MenuItem onClick={setFilterHasEndorsed}>
-              <MenuItemText>
-                Has endorsed - ({filterGroups.hasEndorsedCount})
-              </MenuItemText>
-            </MenuItem>
-          </Menu>
+          <CandidateActionsFilterMenu
+            selectAnchorEl={selectAnchorEl}
+            setSelectAnchorEl={setSelectAnchorEl}
+            checkedBoolean={allChecked}
+            indeterminateBoolean={indeterminate}
+            handleSelectCheckboxClick={handleSelectCheckboxClick}
+            menuOptions={[
+              { label: 'All', onClick: () => setSelected(new Set(supporters.map((v) => v.id))) },
+              ...actionGroups.map((g) => ({
+                label: `Ask to: ${g.label} - (${g.count})`,
+                onClick: () => setSelected(new Set(g.ids)),
+              })),
+            ]}
+          />
+          <VerticalBarWrapper $tight><VerticalBar /></VerticalBarWrapper>
+          <CandidateTraitsFilterMenu
+            filterAnchorEl={filterAnchorEl}
+            setFilterAnchorEl={setFilterAnchorEl}
+            filterLabel={filterLabel}
+            menuOptions={[
+              { label: 'All', onClick: () => setActiveFilter(FILTERS.ALL) },
+              { label: `Has invited friends - (${filterGroups.hasInvitedCount})`,
+                onClick: () => setActiveFilter(FILTERS.HAS_INVITED) },
+              { label: `Has endorsed - (${filterGroups.hasEndorsedCount})`,
+                onClick: () => setActiveFilter(FILTERS.HAS_ENDORSED) },
+            ]}
+          />
         </LeftTools>
-        {/*
-        <VerticalBarWrapper $tight className="u-show-mobile">
-          <VerticalBar />
-        </VerticalBarWrapper>
-        */}
-        {/* Thank you message dropdown (mobile) */}
-        <ThankYouDropdownButton
+      </ToolbarRow>
+
+      {headerActionSlot && createPortal(
+        <SendMessageButton
+          verb="Send thanks"
+          count={selectedVoters.length}
+          onClick={handleSendThankYou}
+        />,
+        headerActionSlot,
+      )}
+
+      <MobileToolbar className="u-show-mobile">
+        <SelectAllInline>
+          <SelectAllCheckbox
+            checked={allChecked}
+            indeterminate={indeterminate}
+            onClick={handleSelectCheckboxClick}
+          />
+          Select all
+        </SelectAllInline>
+        <ThankYouTrigger
           type="button"
           onClick={openThankYouMenu}
-          className="u-show-mobile"
-          aria-label="Thank you message options"
-          aria-controls={thankYouMenuOpen ? 'thank-you-menu' : undefined}
           aria-haspopup="menu"
           aria-expanded={thankYouMenuOpen ? 'true' : undefined}
         >
           Thank You message
-          <CaretIcon as={KeyboardArrowDownIcon} />
-        </ThankYouDropdownButton>
+          <Caret as={KeyboardArrowDownIcon} />
+        </ThankYouTrigger>
+        <SearchBtn type="button" aria-label="Search" onClick={() => console.log('TODO: implement search feature')}>
+          <SearchIcon sx={{ fontSize: 22 }} />
+        </SearchBtn>
+      </MobileToolbar>
 
-        <Menu
-          id="thank-you-menu"
-          anchorEl={thankYouAnchorEl}
-          open={thankYouMenuOpen}
-          onClose={closeThankYouMenu}
-          anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-          transformOrigin={{ vertical: 'top', horizontal: 'left' }}
-          PaperProps={{ style: { borderRadius: 12, overflow: 'hidden', minWidth: 260 } }}
-        >
-          <MenuItem disabled>
-            <ListItemText primary="Thank You message is auto-sent after joining." />
-          </MenuItem>
-
-          <StyledMenuItem
-            onClick={() => {
-              closeThankYouMenu();
-              setViewOpen(true);
-            }}
-          >
-            <ListItemIcon>
-              <VisibilityIcon sx={{ fontSize: 18 }} />
-            </ListItemIcon>
-            <ListItemText primary="Preview" />
-          </StyledMenuItem>
-
-          <StyledMenuItem
-            onClick={() => {
-              closeThankYouMenu();
-              setDraftMessage(thankYouMessage);
-              setEditOpen(true);
-            }}
-          >
-            <ListItemIcon>
-              <EditOutlinedIcon sx={{ fontSize: 18 }} />
-            </ListItemIcon>
-            <ListItemText primary="Edit" />
-          </StyledMenuItem>
-
-          <StyledMenuItem
-            onClick={async () => {
-              closeThankYouMenu();
-              await copyThankYouMessage();
-            }}
-          >
-            <ListItemIcon>
-              <ContentCopyIcon sx={{ fontSize: 18 }} />
-            </ListItemIcon>
-            <ListItemText primary="Copy" />
-          </StyledMenuItem>
-        </Menu>
-        <SendButton
-          variant="contained"
-          className="u-show-desktop-tablet"
-          disabled={selectedVoters.length === 0}
-          onClick={handleSendThankYou}
-        >
-          Send Message to Selected ({selectedVoters.length})
-        </SendButton>
-      </ToolbarRow>
+      <DropdownMenu
+        anchorEl={thankYouAnchorEl}
+        onClose={closeThankYouMenu}
+        align="left"
+        menuId="thank-you-menu"
+        menuOptions={[
+          { info: true, label: 'Thank You message is auto-sent after joining.' },
+          { icon: VisibilityIcon, label: 'Preview', onClick: () => setViewOpen(true) },
+          { icon: EditOutlinedIcon,
+            label: 'Edit',
+            onClick: () => { setDraftMessage(thankYouMessage); setEditOpen(true); } },
+          { icon: ContentCopyIcon, label: 'Copy', onClick: copyThankYouMessage },
+        ]}
+      />
 
       <CardList>
         {visibleSupporters.map((v) => {
           const isChecked = selected.has(v.id);
           const isOpen = expanded.has(v.id);
-
           const actions = getActionsLabel(v);
           const needsAction = actions.length > 0;
           const hasMessageSent = !!v.messageSentCount;
+          const hasOpinion = !!v.publicOpinion;
+          const showCandidateLink = v.endorsed || hasOpinion || !!v.friendsInvited;
+
+          const renderPrimaryAction = () => {
+            if (hasMessageSent) {
+              return (
+                <SentIndicator>
+                  <CheckCircleIcon color="success" sx={{ fontSize: 14 }} />
+                  {' '}
+                  Message sent (
+                  {v.messageSentCount}
+                  )
+                </SentIndicator>
+              );
+            }
+            if (needsAction) {
+              return (
+                <ActionPill
+                  onClick={() => alert(`${v.endorsed ? 'Send thanks' : 'Send message'} & ask ${v.name} to ${actions}`)}
+                  label={`${v.endorsed ? 'Send thanks' : 'Send message'} & ask to:`}
+                  contentText={<em>{actions}</em>}
+                />
+              );
+            }
+            return (
+              <ActionPill
+                onClick={() => alert(`Send thanks to ${v.name}`)}
+                label="Send thanks"
+              />
+            );
+          };
 
           return (
             <Card key={v.id} $selected={isChecked}>
-              <CardTopRow>
-                <NameRow>
-                  <input
-                    type="checkbox"
-                    checked={isChecked}
-                    onChange={() => toggleSelected(v.id)}
-                    aria-label={`Select ${v.name}`}
-                  />
-                  <NameText>{v.name}</NameText>
-
-                  <Badges>
+              <div className="u-show-desktop-tablet">
+                <CardTopRow>
+                  <NameRow>
+                    <input
+                      type="checkbox"
+                      checked={isChecked}
+                      onChange={() => toggleSelected(v.id)}
+                      aria-label={`Select ${v.name}`}
+                    />
+                    <NameText>{v.name}</NameText>
                     {v.endorsed && (
-                      <BadgeOk className="u-show-desktop-tablet">
-                        <DoneIcon sx={{ fontSize: 14 }} /> Endorsed
-                      </BadgeOk>
+                      <>
+                        <NameDivider aria-hidden />
+                        <Endorsed>
+                          <CheckCircleIcon color="success" sx={{ fontSize: 14 }} />
+                          {' '}
+                          Endorsed
+                        </Endorsed>
+                      </>
                     )}
-
                     {!!v.friendsInvited && (
-                      <BadgeNeutral className="u-show-desktop-tablet">
-                        {v.friendsInvited} friends invited
-                      </BadgeNeutral>
+                      <>
+                        <NameDivider aria-hidden />
+                        <Subtle>
+                          {v.friendsInvited}
+                          {' '}
+                          friends invited
+                        </Subtle>
+                      </>
                     )}
-
-                    <CandidateLink className="u-show-desktop-tablet" type="button" onClick={() => openCandidateDrawer(v)}>
-                      View on candidate page
-                    </CandidateLink>
-                  </Badges>
-                </NameRow>
-
-                <RightOptions>
-                  <BadgeNeutral className="u-show-mobile">
-                    Friends invited: <b>{v.friendsInvited}</b>
-                  </BadgeNeutral>
-                  <VerticalBarWrapper className="u-show-mobile">
-                    <VerticalBar />
-                  </VerticalBarWrapper>
-                  <KebabBtn
-                    type="button"
-                    aria-label="More options"
-                    onClick={(e) => openRowMenu(e, v)}
-                  >
-                    <MoreHorizIcon sx={{ fontSize: 20 }} />
-                  </KebabBtn>
-                  <VerticalBarWrapper className="u-show-mobile">
-                    <VerticalBar />
-                  </VerticalBarWrapper>
-                  <ExpandBtn
-                    className="u-show-mobile"
-                    type="button"
-                    onClick={() => toggleExpanded(v.id)}
-                    aria-expanded={isOpen}
-                  >
-                    {isOpen ? (
-                      <CaretIcon as={KeyboardArrowUpIcon} />
-                    ) : (
-                      <CaretIcon as={KeyboardArrowDownIcon} />
+                    {showCandidateLink && (
+                      <>
+                        <NameDivider aria-hidden />
+                        <LinkBtn type="button" onClick={() => openCandidateDrawer(v)}>
+                          View on candidate page
+                        </LinkBtn>
+                      </>
                     )}
-                  </ExpandBtn>
-                </RightOptions>
-              </CardTopRow>
+                  </NameRow>
+                  <RightOptions>
+                    <KebabBtn type="button" aria-label="More options" onClick={(e) => openRowMenu(e, v)}>
+                      <MoreHorizIcon sx={{ fontSize: 20 }} />
+                    </KebabBtn>
+                  </RightOptions>
+                </CardTopRow>
 
-              <CardActionsAndOpinion>
-                <CardActions>
+                <CardOpinionRow
+                  opinion={hasOpinion ? v.publicOpinion : null}
+                  isOpen={isOpen}
+                  onToggle={() => toggleExpanded(v.id)}
+                >
                   {v.endorsed && (
                     <ActionPill
-                      type="button"
                       onClick={() => alert(`Like endorsement/opinion for ${v.name}`)}
-                    >
-                      <MediumBoldText>
-                        <ThumbUpIcon sx={{ fontSize: 14 }} /> Like endorsement/opinion
-                      </MediumBoldText>
-                    </ActionPill>
-                  )}
-
-                  {hasMessageSent ? (
-                    <ActionLink>
-                      <CheckCircleIcon color="success" sx={{ fontSize: 14 }} />{' '}
-                      Message sent ({v.messageSentCount})
-                    </ActionLink>
-                  ) : needsAction ? (
-                    <ActionPill
-                      type="button"
-                      onClick={() => alert(`Send message & ask ${v.name} to ${actions}`)}
-                    >
-                      <MediumBoldText>Send message &amp; ask to:</MediumBoldText>
-                      <br />
-                      <em>{actions}</em>
-                    </ActionPill>
-                  ) : (
-                    <ActionPill
-                      type="button"
-                      onClick={() => alert(`Send thanks to ${v.name}`)}
-                    >
-                      <MediumBoldText>Send thanks</MediumBoldText>
-                    </ActionPill>
-                  )}
-                </CardActions>
-
-                <VerticalBarWrapper className="u-show-desktop-tablet">
-                  <VerticalBar />
-                </VerticalBarWrapper>
-
-                {v.publicOpinion && (
-                  <div className="u-show-desktop-tablet">
-                    <ExpandBtn
-                      type="button"
-                      onClick={() => toggleExpanded(v.id)}
-                      aria-expanded={isOpen}
-                    >
-                      {isOpen ? (
-                        <CaretIcon as={KeyboardArrowDownIcon} />
-                      ) : (
-                        <CaretIcon as={KeyboardArrowRightIcon} />
+                      label={(
+                        <>
+                          <ThumbUpIcon sx={{ fontSize: 14 }} />
+                          {' '}
+                          Like endorsement/opinion
+                        </>
                       )}
-                    </ExpandBtn>
-                  </div>
-                )}
-
-                <div className="u-show-desktop-tablet">
-                  {v.publicOpinion ? (
-                    <OpinionBox>{isOpen ? v.publicOpinion : '...'}</OpinionBox>
-                  ) : (
-                    <OpinionEmpty>No public opinion available.</OpinionEmpty>
+                    />
                   )}
-                </div>
-              </CardActionsAndOpinion>
+                  {renderPrimaryAction()}
+                  {!v.endorsed && !hasMessageSent && (
+                    <ReminderText>Send reminder message in 3 days</ReminderText>
+                  )}
+                </CardOpinionRow>
+              </div>
 
-              {/* MOBILE: expanded details under the action buttons */}
               <div className="u-show-mobile">
+                <CardTopRow>
+                  <NameRow>
+                    <input
+                      type="checkbox"
+                      checked={isChecked}
+                      onChange={() => toggleSelected(v.id)}
+                      aria-label={`Select ${v.name}`}
+                    />
+                    <NameText>{v.name}</NameText>
+                  </NameRow>
+                  <RightOptions>
+                    <Subtle>
+                      Friends invited:
+                      {' '}
+                      <b>{v.friendsInvited || 0}</b>
+                    </Subtle>
+                    <KebabBtn type="button" aria-label="More options" onClick={(e) => openRowMenu(e, v)}>
+                      <MoreHorizIcon sx={{ fontSize: 20 }} />
+                    </KebabBtn>
+                    <ExpandBtn type="button" onClick={() => toggleExpanded(v.id)} aria-expanded={isOpen}>
+                      <Caret as={isOpen ? KeyboardArrowUpIcon : KeyboardArrowDownIcon} />
+                    </ExpandBtn>
+                  </RightOptions>
+                </CardTopRow>
+
+                <MobileFieldLabel>What you can do</MobileFieldLabel>
+                <MobileActions>
+                  {v.endorsed && (
+                    <MobileActionPill type="button" onClick={() => alert(`Give thumbs up on endorsement/opinion for ${v.name}`)}>
+                      Give thumbs up on endorsement/opinion
+                    </MobileActionPill>
+                  )}
+                  {hasMessageSent ? (
+                    <MobileActionPill type="button" disabled>
+                      Message sent (
+                      {v.messageSentCount}
+                      )
+                    </MobileActionPill>
+                  ) : (
+                    <MobileActionPill
+                      type="button"
+                      onClick={() => (needsAction ?
+                        alert(`${v.endorsed ? 'Send thanks' : 'Send message'} & ask ${v.name} to ${actions}`) :
+                        alert(`Send thanks to ${v.name}`))}
+                    >
+                      {needsAction && !v.endorsed ? 'Send message' : 'Send thanks'}
+                    </MobileActionPill>
+                  )}
+                </MobileActions>
+
                 {isOpen && (
-                  <MobileDetails>
-                    <MobileOpinionLabel>Public sentiment/opinion</MobileOpinionLabel>
-                    <MobileDetailsRow>
-                      <MobileEndorsed>
+                  <>
+                    <MobileFieldLabel>Public sentiment/opinion</MobileFieldLabel>
+                    <MobileSentiment>
+                      <MobileEndorsed $muted={!v.endorsed}>
                         {v.endorsed ? (
                           <>
-                            <ThumbUpIcon color="success" sx={{ fontSize: 16 }} /> Endorsed
+                            <CheckCircleIcon color="success" sx={{ fontSize: 16 }} />
+                            {' '}
+                            Endorsed
                           </>
-                        ) : (
-                          <>Not endorsed</>
-                        )}
+                        ) : 'Not endorsed'}
                       </MobileEndorsed>
-                      {v.publicOpinion ? (
-                        <MobileOpinionText>{v.publicOpinion}</MobileOpinionText>
+                      {hasOpinion ? (
+                        <OpinionText>{v.publicOpinion}</OpinionText>
                       ) : (
-                        <MobileOpinionEmpty>No public opinion available.</MobileOpinionEmpty>
+                        <OpinionText $empty>No public opinion available.</OpinionText>
                       )}
-                    </MobileDetailsRow>
-                  </MobileDetails>
+                    </MobileSentiment>
+
+                    {needsAction && (
+                      <>
+                        <MobileFieldLabel>What you can ask voters to do</MobileFieldLabel>
+                        <MobileFieldValue>{actions}</MobileFieldValue>
+                      </>
+                    )}
+                  </>
                 )}
               </div>
             </Card>
@@ -702,99 +521,56 @@ export default function SupportersJoined ({ supporters }) {
         })}
       </CardList>
 
-      <MobileBottomBar className="u-show-mobile">
-        <MobileSendButton
-          variant="contained"
-          disabled={selectedVoters.length === 0}
-          onClick={handleSendThankYou}
-        >
-          Send Message to Selected ({selectedVoters.length})
-        </MobileSendButton>
-      </MobileBottomBar>
+      <SendMessageButtonMobile
+        verb="Send message to selected"
+        count={selectedVoters.length}
+        onClick={handleSendThankYou}
+      />
 
-      <Menu
-        id="voter-row-menu"
-        anchorEl={rowMenuAnchorEl}
-        open={rowMenuOpen}
-        onClose={closeRowMenu}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        PaperProps={{
-          style: {
-            borderRadius: 12,
-            overflow: 'hidden',
-            minWidth: 220,
-          },
-        }}
-      >
-        <StyledMenuItem onClick={handleEditVoter}>
-          <ListItemIcon>
-            <EditOutlinedIcon sx={{ fontSize: 18 }} />
-          </ListItemIcon>
-          <ListItemText primary="Edit voter" />
-        </StyledMenuItem>
+      <CandidateRowMenu
+        rowMenuAnchorEl={rowMenuAnchorEl}
+        setRowMenuAnchorEl={setRowMenuAnchorEl}
+        setRowMenuVoter={setRowMenuVoter}
+        menuOptions={[
+          { icon: EditOutlinedIcon,
+            label: 'Edit voter',
+            onClick: () => rowMenuVoter && alert(`Edit voter: ${rowMenuVoter.name}`) },
+          { icon: MailOutlineIcon,
+            label: 'Send message',
+            onClick: () => rowMenuVoter && alert(`Send message to: ${rowMenuVoter.name}`) },
+        ]}
+      />
 
-        <StyledMenuItem onClick={handleSendMessage}>
-          <ListItemIcon>
-            <MailOutlineIcon sx={{ fontSize: 18 }} />
-          </ListItemIcon>
-          <ListItemText primary="Send message" />
-        </StyledMenuItem>
-      </Menu>
-
-      {/* Drawer that opens with the candidate view of a voter, from "View on candidate page" link */}
       <Drawer
         anchor="right"
         open={candidateDrawerOpen}
         onClose={closeCandidateDrawer}
         PaperProps={{ sx: { width: 'min(920px, 92vw)' } }}
       >
-        <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-          <div style={{ padding: 12, borderBottom: '1px solid #e5e7eb', display: 'flex', justifyContent: 'space-between' }}>
+        <DrawerLayout>
+          <DrawerHeader>
             <strong>Candidate page</strong>
-            <button type="button" onClick={closeCandidateDrawer}>Close</button>
-          </div>
-
-          <div style={{ flex: 1 }}>
-            {/* http://localhost:3000/shannon-d-dicus-politician-from-california/-/ */}
-            <iframe
-              title="Candidate page"
-              src={candidateDrawerVoter?.candidateUrl || '/candidates/cs'}
-              style={{ width: '100%', height: '100%', border: 0 }}
-            />
-          </div>
-        </div>
+            <Button size="small" variant="outlined" onClick={closeCandidateDrawer}>Close</Button>
+          </DrawerHeader>
+          <DrawerIframe
+            title="Candidate page"
+            src={candidateDrawerVoter?.candidateUrl || '/candidates/cs'}
+          />
+        </DrawerLayout>
       </Drawer>
 
-      {/* Pop up to display when a user views the Thank You message */}
-      <Dialog
-        open={viewOpen}
-        onClose={() => setViewOpen(false)}
-        maxWidth="sm"
-        fullWidth
-      >
+      <Dialog open={viewOpen} onClose={() => setViewOpen(false)} maxWidth="sm" fullWidth>
         <DialogTitle>Thank-you message</DialogTitle>
-
         <DialogContent>
-          <div style={{ whiteSpace: 'pre-wrap', fontSize: 14 }}>
-            {thankYouMessage}
-          </div>
+          <ThankYouPreview>{thankYouMessage}</ThankYouPreview>
         </DialogContent>
-
         <DialogActions>
           <Button onClick={() => setViewOpen(false)}>Close</Button>
         </DialogActions>
       </Dialog>
 
-      {/* Pop up to display when a user edits the Thank You message */}
-      <Dialog
-        open={editOpen}
-        onClose={() => setEditOpen(false)}
-        maxWidth="sm"
-        fullWidth
-      >
+      <Dialog open={editOpen} onClose={() => setEditOpen(false)} maxWidth="sm" fullWidth>
         <DialogTitle>Edit thank-you message</DialogTitle>
-
         <DialogContent>
           <TextField
             multiline
@@ -807,22 +583,14 @@ export default function SupportersJoined ({ supporters }) {
             sx={{ mt: 1 }}
           />
         </DialogContent>
-
         <DialogActions>
           <Button onClick={() => setEditOpen(false)}>Cancel</Button>
-          <Button
-            variant="contained"
-            onClick={() => {
-              setThankYouMessage(draftMessage);
-              setEditOpen(false);
-            }}
-          >
+          <Button variant="contained" onClick={() => { setThankYouMessage(draftMessage); setEditOpen(false); }}>
             Save
           </Button>
         </DialogActions>
       </Dialog>
 
-      {/* Pop up to display when a user copies or sends the Thank You message */}
       <Snackbar
         open={copyOpen}
         autoHideDuration={2000}
@@ -830,18 +598,14 @@ export default function SupportersJoined ({ supporters }) {
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
         sx={{ '&.MuiSnackbar-anchorOriginTopCenter': { top: 80 } }}
       >
-        <Alert severity="success" variant="filled">
-          Copied!
-        </Alert>
+        <Alert severity="success" variant="filled">Copied!</Alert>
       </Snackbar>
       <Snackbar
         open={sendToast.open}
         autoHideDuration={2500}
         onClose={() => setSendToast((t) => ({ ...t, open: false }))}
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-        sx={{
-          '&.MuiSnackbar-anchorOriginTopCenter': { top: 80 },
-        }}
+        sx={{ '&.MuiSnackbar-anchorOriginTopCenter': { top: 80 } }}
       >
         <Alert severity={sendToast.ok ? 'success' : 'error'} variant="filled">
           {sendToast.msg}
@@ -850,417 +614,277 @@ export default function SupportersJoined ({ supporters }) {
     </Container>
   );
 }
+SupportersJoined.propTypes = {
+  supporters: PropTypes.arrayOf(PropTypes.object),
+};
+
+function CardOpinionRow ({ children, opinion, isOpen, onToggle }) {
+  const actionsRef = useRef(null);
+  const [maxH, setMaxH] = useState(null);
+
+  useLayoutEffect(() => {
+    const el = actionsRef.current;
+    if (!el) return undefined;
+    const update = () => setMaxH(el.offsetHeight);
+    update();
+    if (typeof ResizeObserver === 'undefined') return undefined;
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  return (
+    <CardBody>
+      <ActionsCol ref={actionsRef}>{children}</ActionsCol>
+      {opinion != null && (
+        <>
+          <VerticalBarWrapper><VerticalBar /></VerticalBarWrapper>
+          <ExpandBtn
+            type="button"
+            onClick={onToggle}
+            aria-expanded={isOpen}
+            aria-label={isOpen ? 'Collapse opinion' : 'Expand opinion'}
+          >
+            <Caret as={isOpen ? KeyboardArrowUpIcon : KeyboardArrowDownIcon} />
+          </ExpandBtn>
+          <OpinionText
+            $open={isOpen}
+            style={!isOpen && maxH != null ? { maxHeight: `${maxH}px` } : undefined}
+          >
+            {opinion}
+          </OpinionText>
+        </>
+      )}
+    </CardBody>
+  );
+}
+CardOpinionRow.propTypes = {
+  children: PropTypes.node,
+  opinion: PropTypes.string,
+  isOpen: PropTypes.bool,
+  onToggle: PropTypes.func,
+};
 
 /* ===== Styled components ===== */
 
-const Container = styled.div`
+const ActionsCol = styled.div`
+  align-items: stretch;
+  display: inline-flex;
+  flex-direction: column;
+  gap: 8px;
+`;
+
+const Caret = styled.span`
+  align-items: center;
+  color: ${DesignTokenColors.neutralUI600};
+  display: inline-flex;
+  font-size: 18px;
+`;
+
+const CardBody = styled.div`
+  align-items: flex-start;
+  display: flex;
+  margin-top: 10px;
+`;
+
+const DrawerHeader = styled.div`
+  align-items: center;
+  border-bottom: 1px solid ${DesignTokenColors.neutralUI200};
+  display: flex;
+  justify-content: space-between;
+  padding: 12px;
+`;
+
+const DrawerIframe = styled.iframe`
+  border: 0;
+  flex: 1;
+  width: 100%;
+`;
+
+const DrawerLayout = styled.div`
   display: flex;
   flex-direction: column;
+  height: 100%;
 `;
 
-const Placeholder = styled.div`
-  background: ${DesignTokenColors.neutralUI50};
-  border: 1px dashed ${DesignTokenColors.neutralUI300};
-  border-radius: 12px;
-  color: ${DesignTokenColors.neutralUI600};
-  padding: 24px;
-  text-align: center;
-`;
-
-const MediumBoldText = styled.span`
-  font-weight: 500;
-`;
-
-const MessageContainer = styled.div`
-  display: flex;
+const Endorsed = styled.span`
   align-items: center;
-`;
-
-const InfoBox = styled.div`
-  flex: 2;
-  font-size: 13px;
-  padding: 10px;
-  border-radius: 12px;
-  color: #374151;
-`;
-
-const ThankYouBox = styled.div`
-  flex: 1;
-  max-width: 420px;
-  min-width: 160px;
-  background: #ffffff;
-  padding: 10px;
-`;
-
-const ThankYouLabelRow = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  margin-bottom: 6px;
-  font-size: 13px;
-`;
-
-const ThankYouSubtext = styled.div`
-  font-size: 12px;
-  color: #6b7280;
-`;
-
-const IconRow = styled.span`
+  color: ${DesignTokenColors.neutralUI900};
   display: inline-flex;
-  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  gap: 4px;
+
+  svg {
+    color: ${DesignTokenColors.primary600};
+  }
+`;
+
+const ExpandBtn = styled.button`
+  align-items: flex-start;
+  align-self: flex-start;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  color: ${DesignTokenColors.neutralUI600};
+  cursor: pointer;
+  display: inline-flex;
+  padding: 4px 2px 0;
+
+  &:hover {
+    background: ${DesignTokenColors.neutralUI50};
+  }
 `;
 
 const IconBtn = styled.button`
-  border: none;
-  background: #f9fafb;
-  border-radius: 8px;
-  padding: 2px 6px;
-  cursor: pointer;
-  font-size: 10px;
-
-  display: inline-flex;
   align-items: center;
-
-  &:hover {
-    background: ${DesignTokenColors.neutralUI50};
-  }
-`;
-
-const ThankYouDropdownButton = styled.button`
-  border: none;
   background: transparent;
-  cursor: pointer;
-  font: inherit;
-  color: #111827;
-  display: inline-flex;
-  align-items: center;
-  padding: 6px 6px;
-
-  &:hover {
-    background: ${DesignTokenColors.neutralUI50};
-    border-radius: 10px;
-  }
-`;
-
-const ToolbarRow = styled.div`
-  display: flex;
-  gap: 14px;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 12px;
-  margin-left: 12px;
-`;
-
-const LeftTools = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const SelectControl = styled(ButtonBase)`
-  display: inline-flex;
-  align-items: center;
-  gap: 2px;
-  padding: 2px 4px;
-  border-radius: 8px;
-`;
-
-const CaretIcon = styled.span`
-  font-size: 32px;
-  padding: 0 4px;
-  color: #6b7280;
-  display: inline-flex;
-  align-items: center;
-`;
-
-const CaretButton = styled.button`
   border: none;
-  background: transparent;
-  padding: 0;
+  border-radius: 6px;
+  color: ${DesignTokenColors.neutralUI700};
+  cursor: pointer;
+  display: inline-flex;
   margin: 0;
-  cursor: pointer;
+  padding: 2px;
+
+  &:hover {
+    background: ${DesignTokenColors.neutralUI50};
+    color: ${DesignTokenColors.neutralUI900};
+  }
+`;
+
+const IconBtnRow = styled.span`
+  align-items: center;
   display: inline-flex;
-  align-items: center;
+  gap: 4px;
 `;
 
-const AllButton = styled(Button)`
-  && {
-    min-width: auto;
-    padding: 0 0 0 4px;
-    text-transform: none;
-    font-size: 14px;
-    color: #111827;
-  }
-
-  && .MuiButton-endIcon {
-    margin-left: 4px;
-    margin-right: 0;
-  }
-`;
-
-const MenuItemText = styled.span`
-  font-size: 14px;
-  color: #111827;
-`;
-
-const VerticalBarWrapper = styled.div`
-  align-self: stretch;
-  display: flex;
-  align-items: center;
-  margin: ${(p) => (p.$tight ? '0 4px' : '0 12px')};
-`;
-
-const VerticalBar = styled.div`
-  width: 1px;
-  height: 80%;
-  background: #d1d5db;
-  border-radius: 999px;
-`;
-
-const SendButton = styled(Button)`
-  && {
-    margin-left: 12px;
-    text-transform: none;
-    border-radius: 999px;
-  }
-`;
-
-const CardList = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  @media (max-width: 575px) {
-    padding-bottom: 72px;
-  }
-`;
-
-const Card = styled.div`
-  border: 1px solid #e5e7eb;
-  border-radius: 16px;
-  background: ${DesignTokenColors.neutralUI50};
-  padding: 12px;
-  box-shadow: 0 1px 0 rgba(0,0,0,0.02);
-`;
-
-const CardTopRow = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 10px;
-`;
-
-const NameRow = styled.div`
-  display: flex;
-  gap: 10px;
-  align-items: center;
-`;
-
-const NameText = styled.div`
-  font-size: 16px;
-  font-weight: 700;
-`;
-
-const Badges = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  align-items: center;
-  font-size: 12px;
-`;
-
-const BadgeOk = styled.span`
-  background: #ecfdf5;
-  border: 1px solid #a7f3d0;
-  color: #065f46;
-  border-radius: 999px;
-  padding: 2px 8px;
-  font-weight: 700;
-
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-`;
-
-const BadgeNeutral = styled.span`
-  background: #f3f4f6;
-  border: 1px solid #e5e7eb;
-  color: #374151;
-  border-radius: 999px;
-  padding: 2px 8px;
-`;
-
-const CandidateLink = styled.button`
-  color: #2563eb;
-  text-decoration: none;
+const LinkBtn = styled.button`
   background: none;
   border: none;
-  padding: 0;
+  color: ${DesignTokenColors.primary600};
   cursor: pointer;
   font: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 0;
 
   &:hover {
+    color: ${DesignTokenColors.primary700};
     text-decoration: underline;
   }
 `;
 
-const KebabBtn = styled.button`
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  color: #6b7280;
-  padding: 2px 6px;
-  border-radius: 10px;
-
-  &:hover {
-    background: ${DesignTokenColors.neutralUI50};
-  }
-`;
-
-const RightOptions = styled.div`
-  margin-left: auto;
-  display: flex;
+const MobileEndorsed = styled.div`
   align-items: center;
+  color: ${(p) => (p.$muted ? DesignTokenColors.neutralUI600 : DesignTokenColors.neutralUI900)};
+  display: inline-flex;
+  font-weight: 600;
+  gap: 6px;
 `;
 
-const StyledMenuItem = styled(MenuItem)`
-  && {
-    font-size: 14px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-  }
-`;
-
-const CardActionsAndOpinion = styled.div`
-  display: flex;
-`;
-
-const CardActions = styled.div`
+const MobileSentiment = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  @media (max-width: 575px) {
-    flex: 1;
-    align-items: stretch;
-  }
+  gap: 6px;
+  margin-top: 6px;
 `;
 
-const ActionPill = styled.button`
-  border: 1px solid #bfdbfe;
-  background: #eff6ff;
-  color: #1d4ed8;
-  border-radius: 999px;
-  padding: 8px 10px;
+const NameDivider = styled.span`
+  background: ${DesignTokenColors.neutralUI300};
+  display: inline-block;
+  height: 14px;
+  width: 1px;
+`;
+
+const OpinionText = styled.div`
+  color: ${(p) => (p.$empty ? DesignTokenColors.neutralUI500 : DesignTokenColors.neutralUI700)};
+  flex: 1;
+  font-size: 13px;
+  font-style: ${(p) => (p.$empty ? 'italic' : 'normal')};
+  line-height: 1.5;
+  padding: 4px 0;
+
+  ${(p) => p.$open === false && `
+    overflow: hidden;
+  `}
+`;
+
+const PrivacyNote = styled.div`
+  color: ${DesignTokenColors.neutralUI900};
+  flex: 1 1 100%;
   font-size: 12px;
-  cursor: pointer;
-  white-space: nowrap;
-
-  &:hover {
-    filter: brightness(0.98);
-  }
-  @media (max-width: 575px) {
-    flex: 1;
-  }
-  @media (min-width: 576px) {
-    min-width: 280px;
-  }
+  font-weight: 600;
+  line-height: 1.4;
+  min-width: 0;
 `;
 
-const ActionLink = styled.span`
-  color: #2563eb;
-  text-decoration: none;
+const ReminderText = styled.div`
+  color: ${DesignTokenColors.neutralUI600};
+  font-size: 13px;
+  text-align: center;
+`;
+
+const SentIndicator = styled.span`
   align-items: center;
-  align-self: center;
+  align-self: flex-start;
+  color: ${DesignTokenColors.primary600};
+  display: inline-flex;
+  font-size: 13px;
+  font-weight: 500;
   gap: 6px;
 `;
 
-const ExpandBtn = styled.button`
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  color: #6b7280;
-  display: inline-flex;
+const Subtle = styled.span`
+  color: ${DesignTokenColors.neutralUI600};
+  font-size: 12px;
+`;
+
+const ThankYouCol = styled.div`
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 240px;
+`;
+
+const ThankYouHead = styled.div`
   align-items: center;
-  padding: 2px 2px;
+  display: flex;
+  gap: 8px;
+`;
+
+const ThankYouHeading = styled.span`
+  color: ${DesignTokenColors.neutralUI900};
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+`;
+
+const ThankYouPreview = styled.div`
+  font-size: 14px;
+  white-space: pre-wrap;
+`;
+
+const ThankYouTrigger = styled.button`
+  align-items: center;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  color: ${DesignTokenColors.neutralUI900};
+  cursor: pointer;
+  display: inline-flex;
+  font: inherit;
+  font-size: 14px;
+  padding: 6px 8px;
 
   &:hover {
     background: ${DesignTokenColors.neutralUI50};
-    border-radius: 6px;
   }
 `;
 
-const OpinionBox = styled.div`
-  font-size: 12px;
-  color: #374151;
-  border: 1px solid #e5e7eb;
-  background: #f9fafb;
-  border-radius: 12px;
-  padding: 10px;
-  margin: 4px 0;
-`;
-
-const OpinionEmpty = styled.div`
-  font-size: 12px;
-  color: #9ca3af;
-  border: 1px dashed #e5e7eb;
-  border-radius: 12px;
-  padding: 10px;
-`;
-
-const MobileDetails = styled.div`
-  margin-top: 10px;
-  padding-top: 10px;
-  border-top: 1px solid #e5e7eb;
-`;
-
-const MobileDetailsRow = styled.div`
+const TopPanel = styled.div`
+  align-items: flex-start;
   display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 12px;
-  color: #374151;
-  margin-bottom: 6px;
-`;
-
-const MobileEndorsed = styled.div`
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-weight: 600;
-`;
-
-const MobileOpinionLabel = styled.div`
-  font-size: 12px;
-  color: #6b7280;
-  margin-bottom: 6px;
-`;
-
-const MobileOpinionText = styled.div`
-  font-size: 12px;
-  color: #374151;
-`;
-
-const MobileOpinionEmpty = styled.div`
-  font-size: 12px;
-  color: #9ca3af;
-`;
-
-const MobileBottomBar = styled.div`
-  display: flex;
-  justify-content: center;
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 1300; /* above most UI */
-  padding: 10px 12px;
-  padding-bottom: calc(72px + env(safe-area-inset-bottom));
-  background: ${DesignTokenColors.whiteUI};
-  border-top: 1px solid #e5e7eb;
-`;
-
-const MobileSendButton = styled(Button)`
-  && {
-    border-radius: 999px;
-    text-transform: none;
-  }
+  margin-bottom: 12px;
 `;
