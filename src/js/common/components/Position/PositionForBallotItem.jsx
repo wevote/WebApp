@@ -7,20 +7,22 @@ import { Avatar, Typography } from '@mui/material';
 import { withStyles } from '@mui/styles';
 import HeartFavoriteToggleLoader from '../Widgets/HeartFavoriteToggle/HeartFavoriteToggleLoader';
 import ThumbsUpDownToggle from '../Widgets/ThumbsUpDownToggle/ThumbsUpDownToggle';
-import { timeFromDate } from '../../utils/dateFormat';
 import DesignTokenColors from '../Style/DesignTokenColors';
-import { CompactSecondaryText, CompactStatementText, SpeakerInfoWrapper, SpeakerName, SpeakerStatement, SpeakerStatementWrapper } from '../Style/PositionDisplayStyles';
+import { CompactStatementText, SpeakerInfoWrapper, SpeakerName, SpeakerStatement, SpeakerStatementWrapper } from '../Style/PositionDisplayStyles';
 import speakerDisplayNameToInitials from '../../utils/speakerDisplayNameToInitials';
 import SpeakerEndorsedOrOpposedSnippet from './SpeakerEndorsedOrOpposedSnippet';
 import AppObservableStore from '../../stores/AppObservableStore';
 import stringContains from '../../utils/stringContains';
 import lookupPageNameAndPageTypeDict from '../../../utils/lookupPageNameAndPageTypeDict';
 
+const EndorsementDetailModal = React.lazy(() => import(/* webpackChunkName: 'EndorsementDetailModal' */ '../../../components/Ballot/EndorsementDetailModal'));
+
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../Widgets/OpenExternalWebSite'));
 const ReadMore = React.lazy(() => import(/* webpackChunkName: 'ReadMore' */ '../Widgets/ReadMore'));
 
 function PositionForBallotItem ({ classes, compactMode, linksOpenExternalWebsite, position }) {
   const [anchorEl, setAnchorEL] = useState(null);
+  const [detailModalOpen, setDetailModalOpen] = useState(false);
 
   const onDotButtonClick = (e) => {
     setAnchorEL(e.currentTarget);
@@ -111,7 +113,19 @@ function PositionForBallotItem ({ classes, compactMode, linksOpenExternalWebsite
           </SpeakerInfoNameFavoritesWrapper>
         )}
         {statementText && compactMode && (
-          <CompactStatementText>{statementText}</CompactStatementText>
+          <CompactStatementClickable
+            onClick={() => setDetailModalOpen(true)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                setDetailModalOpen(true);
+              }
+            }}
+            role="button"
+            tabIndex={0}
+          >
+            <CompactStatementText>{statementText}</CompactStatementText>
+          </CompactStatementClickable>
         )}
         {statementText && !compactMode && (
           <SpeakerStatementWrapper>
@@ -126,13 +140,14 @@ function PositionForBallotItem ({ classes, compactMode, linksOpenExternalWebsite
           </SpeakerStatementWrapper>
         )}
         {compactMode && (
-          <CompactTimestamp>
-            {speakerDisplayName}
-            {position.is_support && <CompactStanceText $support>{' endorsed '}</CompactStanceText>}
-            {position.is_oppose && <CompactStanceText $oppose>{' opposed '}</CompactStanceText>}
-            {!position.is_support && !position.is_oppose && ' commented '}
-            {timeFromDate(position.last_updated || position.date_entered)}
-          </CompactTimestamp>
+          <CompactSpeakerRow>
+            <CompactSpeakerName>{speakerDisplayName}</CompactSpeakerName>
+            {(campaignXWeVoteId || organizationWeVoteId) && (
+              <CompactHeartWrapper>
+                <HeartFavoriteToggleLoader campaignXWeVoteId={campaignXWeVoteId} organizationWeVoteId={organizationWeVoteId} />
+              </CompactHeartWrapper>
+            )}
+          </CompactSpeakerRow>
         )}
         {!compactMode && (
         <SpeakerPositionLikesSourceWrapper>
@@ -195,6 +210,15 @@ function PositionForBallotItem ({ classes, compactMode, linksOpenExternalWebsite
         </SpeakerPositionLikesSourceWrapper>
         )}
       </SpeakerInfoWrapper>
+      {compactMode && (
+        <Suspense fallback={<></>}>
+          <EndorsementDetailModal
+            isOpen={detailModalOpen}
+            onClose={() => setDetailModalOpen(false)}
+            position={position}
+          />
+        </Suspense>
+      )}
     </PositionForBallotItemWrapper>
   );
 }
@@ -213,17 +237,61 @@ const styles = () => ({
   },
 });
 
-const CompactStanceText = styled('span', {
-  shouldForwardProp: (prop) => !['$support', '$oppose'].includes(prop),
-})`
-  color: ${({ $support, $oppose }) => {
-    if ($support) return DesignTokenColors.confirmation700;
-    if ($oppose) return DesignTokenColors.alert700;
-    return 'inherit';
-  }};
+const CompactHeartWrapper = styled('div')`
+  align-items: center;
+  display: flex;
+  flex-shrink: 0;
+  margin-left: 8px;
+  /* Strip the pill chrome on HeartFavoriteToggleContainer (3 wrappers deep:
+     Loader's container > Live's container > Base's pill container). */
+  & > div > div > div {
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    height: auto;
+    padding: 0;
+  }
+  /* Center the icon and the count text on the same baseline inside each toggle button. */
+  & button {
+    align-items: center;
+  }
+  & svg {
+    height: 20px;
+    width: 20px;
+  }
+  & span {
+    font-size: 14px;
+    line-height: 1;
+  }
 `;
 
-const CompactTimestamp = CompactSecondaryText;
+const CompactSpeakerName = styled('div')`
+  color: ${DesignTokenColors.neutralUI900};
+  flex: 1;
+  font-size: 13px;
+  font-weight: 500;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+`;
+
+const CompactSpeakerRow = styled('div')`
+  align-items: center;
+  display: flex;
+  margin-top: 4px;
+`;
+
+const CompactStatementClickable = styled('div')`
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+  }
+  &:focus-visible {
+    outline: 2px solid ${DesignTokenColors.primary500};
+    border-radius: 4px;
+  }
+`;
 
 const FlexDiv = styled('div')`
   display: flex;
@@ -264,6 +332,12 @@ const PositionForBallotItemWrapper = styled('div', {
   }
 
   ${({ $compactMode }) => $compactMode && `
+    /* Let SpeakerInfoWrapper take the remaining row width AND allow it to shrink,
+       so the speaker name's ellipsis can kick in and the heart toggle stays in view. */
+    ${SpeakerInfoWrapper} {
+      flex: 1;
+      min-width: 0;
+    }
     h3 {
       font-size: 14px;
       font-weight: 600;

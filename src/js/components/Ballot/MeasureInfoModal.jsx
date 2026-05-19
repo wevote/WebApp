@@ -32,6 +32,12 @@ export default function MeasureInfoModal ({
   const tabContentJSX = [
     // Tab 0 — Description
     <TabContent key="description">
+      {!!(measureTitle) && (
+        <DescriptionTitle>{measureTitle}</DescriptionTitle>
+      )}
+      {!!(measureSubtitle) && (
+        <ModalText>{measureSubtitle}</ModalText>
+      )}
       {!!(measureUrl) && (
         <ModalLink
           href={measureUrl}
@@ -109,6 +115,14 @@ MeasureInfoModal.propTypes = {
 
 // Styles
 
+const DescriptionTitle = styled.div`
+  color: ${DesignTokenColors.neutralUI900};
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.2;
+  margin: 0 0 4px 0;
+`;
+
 const ModalLink = styled.a`
   color: #1073d4;
   display: block;
@@ -156,6 +170,9 @@ const SourceBody = styled.div`
   color: ${DesignTokenColors.neutralUI700};
   font-size: 14px;
   line-height: 1.5;
+  &::first-letter {
+    text-transform: uppercase;
+  }
 `;
 
 const TabContent = styled.div`
