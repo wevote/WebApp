@@ -4,7 +4,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import ElectionActions from '../../actions/ElectionActions';
 import { renderLog } from '../../common/utils/logging';
-import { stateCodeMap } from '../../common/utils/addressFunctions';
+import { stateCodeMap, convertStateCodeToStateText } from '../../common/utils/addressFunctions';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import historyPush from '../../common/utils/historyPush';
@@ -16,7 +16,7 @@ import ElectionFinderHeader from './ElectionFinderHeader';
 import RowKebabMenu from './RowKebabMenu';
 import {
   ActionDivider, DarkTooltip,
-  ElectionDatePill, ElectionLink, ElectionList, ElectionRow, ElectionRowActions,
+  ElectionDateText, ElectionLink, ElectionList, ElectionRow, ElectionRowActions, ElectionRowText,
   FilterTab, FilterTabsRow, InlineSearchField, NoResults,
   SearchIconButton, SectionTitle, SectionTitleRow, ShowMoreButton,
   StateSelectWrapper, StateSelectNative, StateSelectLabel, StateSelectCaret,
@@ -25,10 +25,12 @@ import webAppConfig from '../../config';
 
 const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
-function formatDateUS (dateString) {
+const MONTH_ABBR = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+function formatDateLong (dateString) {
   if (!dateString) return '';
   const [y, m, d] = dateString.split('-');
-  return `${m}-${d}-${y}`;
+  return `${MONTH_ABBR[parseInt(m, 10) - 1]} ${parseInt(d, 10)}, ${y}`;
 }
 
 function sortByDateAsc (a, b) {
@@ -140,6 +142,7 @@ function ElectionFinderHome () {
           <StateSelectCaret><ExpandMore fontSize="inherit" /></StateSelectCaret>
           <StateSelectNative value={selectedStateCode} onChange={onStateChange}>
             <option value="all">All states</option>
+            <option value="NA">National</option>
             {SORTED_STATES.map(([code, name]) => (
               <option key={code} value={code}>{name}</option>
             ))}
@@ -213,12 +216,16 @@ function ElectionFinderHome () {
                 key={googleCivicElectionId}
                 onClick={() => onElectionSelect(election)}
               >
-                <ElectionLink>
+                <ElectionRowText>
+                  <ElectionLink>
+                    {election.state_code && election.state_code !== 'NA' ?
+                      `${convertStateCodeToStateText(election.state_code)} – ${election.election_name || ''}` :
+                      (election.election_name || '')}
+                  </ElectionLink>
                   {election.election_day_text && (
-                    <ElectionDatePill>{formatDateUS(election.election_day_text)}</ElectionDatePill>
+                    <ElectionDateText>{formatDateLong(election.election_day_text)}</ElectionDateText>
                   )}
-                  {election.election_name || ''}
-                </ElectionLink>
+                </ElectionRowText>
                 <ElectionRowActions className="u-show-desktop-tablet" onClick={(e) => e.stopPropagation()}>
                   <CopyChip defaultLabel="Copy link" getText={() => `${window.location.origin}${electionUrl}`} />
                   <ActionDivider />
