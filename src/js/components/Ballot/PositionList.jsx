@@ -419,17 +419,18 @@ class PositionList extends Component {
           })}
         </UnorderedListWrapper>
         {compactMode && maxToShow && filteredPositionListLength > maxToShow && this.props.onSeeMoreClick && (
-          <CompactSeeMoreLink 
-              role="button"
-              tabIndex={0}
-              onClick={this.props.onSeeMoreClick}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault();
-                  this.props.onSeeMoreClick();
-                }}}
+          <CompactSeeMoreLink
+            role="button"
+            tabIndex={0}
+            onClick={this.props.onSeeMoreClick}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                this.props.onSeeMoreClick();
+              }
+            }}
           >
-            See more
+            See more opinions
           </CompactSeeMoreLink>
         )}
         {!compactMode && (
@@ -472,7 +473,7 @@ const CompactSeeMoreLink = styled('button')`
   background: none;
   border: 0;
   padding: 0;
-  margin-left: 5px;
+  margin-left: 57px;
   color: #1073d4;
   cursor: pointer;
   display: inline-flex;

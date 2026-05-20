@@ -71,6 +71,7 @@ const nonFluxState = {
   showEditPositionModal: false,
   editPositionModalPoliticianWeVoteId: '',
   editPositionModalSetPublic: false,
+  editPositionModalVisibilityOnly: false,
   showClaimProfileWithOtherWaysModal: false,
   functionToCallAfterProfileComplete: null,
   showCompleteYourProfileModal: false,
@@ -217,6 +218,10 @@ export default {
 
   getEditPositionModalSetPublic () {
     return nonFluxState.editPositionModalSetPublic;
+  },
+
+  getEditPositionModalVisibilityOnly () {
+    return nonFluxState.editPositionModalVisibilityOnly;
   },
 
   getShowClaimProfileWithOtherWaysModal () {
@@ -527,10 +532,15 @@ export default {
     nonFluxState.editPositionModalSetPublic = value;
   },
 
-  setShowEditPositionModal (show, politicianWeVoteId = '', setPublic = false) {
+  setEditPositionModalVisibilityOnly (value) {
+    nonFluxState.editPositionModalVisibilityOnly = value;
+  },
+
+  setShowEditPositionModal (show, politicianWeVoteId = '', setPublic = false, visibilityOnly = false) {
     nonFluxState.showEditPositionModal = show;
     nonFluxState.editPositionModalPoliticianWeVoteId = show ? politicianWeVoteId : '';
     nonFluxState.editPositionModalSetPublic = show ? setPublic : false;
+    nonFluxState.editPositionModalVisibilityOnly = show ? visibilityOnly : false;
     messageService.sendMessage('state updated showEditPositionModal');
   },
 

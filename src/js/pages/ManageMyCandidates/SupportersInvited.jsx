@@ -1,144 +1,59 @@
-import React, { useEffect, useMemo, useState } from 'react';
+/* eslint-disable no-alert */
+import React, { useContext, useEffect, useMemo, useState } from 'react';
+import { createPortal } from 'react-dom';
+import PropTypes from 'prop-types';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
-import EmailIcon from '@mui/icons-material/Email';
+import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import SmsIcon from '@mui/icons-material/Sms';
+import SearchIcon from '@mui/icons-material/Search';
+import SmsOutlinedIcon from '@mui/icons-material/SmsOutlined';
 import Alert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
 import styled from 'styled-components';
 
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
-import ActionPill from '../../components/ManageMyCandidates/ActionPill';
-import { CandidateActionsFilterMenu, CandidateTraitsFilterMenu, CandidateRowMenu } from '../../components/ManageMyCandidates/Menus';
+import { CandidateRowMenu, SelectAllCheckbox } from '../../components/ManageMyCandidates/Menus';
 import { SendMessageButton, SendMessageButtonMobile } from '../../components/ManageMyCandidates/SendButtons';
-import { CardList, Card, CardTopRow, CardActionsAndOpinion, CardInfo, CardInfoTitle, CardInfoValue, VerticalBarWrapper, VerticalBar, ToolbarRow, LeftTools } from '../../components/Style/ManageMyCandidates';
+import TrackingHeaderActionContext from './TrackingHeaderActionContext';
+import { CardTopRow, Container, KebabBtn, NameRow, NameText, RightOptions } from '../../components/Style/ManageMyCandidates';
+import { ActionLinkButton, DesktopGridHeader, DesktopGridRow, FlatCardList, FlatRowCard, MobileToolbar, NameCell, SearchBtn, SelectAllInline } from '../../components/Style/SupporterTrackingStyles';
 
-const FILTERS = {
-  ALL: 'all',
-  HAS_INVITED: 'hasInvited',
-  HAS_ENDORSED: 'hasEndorsed',
-};
+const GRID_COLS = 'minmax(160px, 220px) minmax(140px, 1.1fr) minmax(140px, 1.1fr) minmax(110px, 0.7fr) minmax(70px, 0.4fr) minmax(110px, 0.6fr)';
 
 export default function SupportersInvited ({ supporters }) {
+  const headerActionSlot = useContext(TrackingHeaderActionContext);
   const [selected, setSelected] = useState(() => new Set());
-  const [activeFilter, setActiveFilter] = useState(FILTERS.ALL);
-  const [copyOpen, setCopyOpen] = useState(false);
-  const [isSending, setIsSending] = useState(false);
   const [sendToast, setSendToast] = useState({ open: false, ok: true, msg: '' });
-
-  // ----- checkbox dropdown menu state -----
-  const [selectAnchorEl, setSelectAnchorEl] = useState(null);
-  // ----- "All" dropdown menu state -----
-  const [filterAnchorEl, setFilterAnchorEl] = useState(null);
-  // ----- per-row "triple dot" menu state -----
   const [rowMenuAnchorEl, setRowMenuAnchorEl] = useState(null);
   const [rowMenuVoter, setRowMenuVoter] = useState(null);
 
-  const getPendingActions = (v) => ([
-    !v.endorsed && 'Endorse',
-    !v.publicOpinion && 'Write public opinion',
-    v.friendsInvited === 0 && 'Invite friends',
-  ].filter(Boolean));
-
-  const getActionsLabel = (v) => getPendingActions(v).join(', ');
-
-  // ----- derived data for selected voters, dropdown + counts -----
-  const selectedVoters = useMemo(() => {
-    const selectedIds = selected;
-    return supporters.filter((v) => selectedIds.has(v.id));
-  }, [supporters, selected]);
-
-  const visibleSupporters = useMemo(() => {
-    switch (activeFilter) {
-      case FILTERS.HAS_INVITED:
-        return supporters.filter((v) => (v.friendsInvited || 0) > 0);
-      case FILTERS.HAS_ENDORSED:
-        return supporters.filter((v) => !!v.endorsed);
-      case FILTERS.ALL:
-      default:
-        return supporters;
-    }
-  }, [supporters, activeFilter]);
-
-  const actionGroups = useMemo(() => {
-    // key: actionsLabel, value: array of supporter ids
-    const map = new Map();
-
-    visibleSupporters.forEach((v) => {
-      const actionsLabel = getActionsLabel(v);
-      if (!actionsLabel) return; // no pending actions => don't appear in "Ask to:" menu
-      const prev = map.get(actionsLabel) || [];
-      prev.push(v.id);
-      map.set(actionsLabel, prev);
-    });
-
-    // Sort by count desc, then label asc
-    return Array.from(map.entries())
-      .map(([label, ids]) => ({ label, ids, count: ids.length }))
-      .sort((a, b) => (b.count - a.count) || a.label.localeCompare(b.label));
-  }, [getActionsLabel, visibleSupporters]);
-
   useEffect(() => {
-    const visibleIds = new Set(visibleSupporters.map((v) => v.id));
+    const visibleIds = new Set(supporters.map((v) => v.id));
     setSelected((prev) => new Set([...prev].filter((id) => visibleIds.has(id))));
-  }, [visibleSupporters]);
-
-  const totalVisibleCount = visibleSupporters.length;
-  const selectedVisibleCount = useMemo(
-    () => visibleSupporters.filter((v) => selected.has(v.id)).length,
-    [visibleSupporters, selected],
-  );
-
-  // ----- "All" filter dropdown data (counts) -----
-  const filterLabel = useMemo(() => {
-    switch (activeFilter) {
-      case FILTERS.HAS_INVITED: return 'Has invited friends';
-      case FILTERS.HAS_ENDORSED: return 'Has endorsed';
-      default: return 'All';
-    }
-  }, [activeFilter]);
-
-  const filterGroups = useMemo(() => {
-    const hasInvitedIds = [];
-    const hasEndorsedIds = [];
-
-    supporters.forEach((v) => {
-      if ((v.friendsInvited || 0) > 0) hasInvitedIds.push(v.id);
-      if (v.endorsed) hasEndorsedIds.push(v.id);
-    });
-
-    return {
-      hasInvitedIds,
-      hasInvitedCount: hasInvitedIds.length,
-      hasEndorsedIds,
-      hasEndorsedCount: hasEndorsedIds.length,
-    };
   }, [supporters]);
+
+  const totalCount = supporters.length;
+  const selectedCount = useMemo(
+    () => supporters.filter((v) => selected.has(v.id)).length,
+    [supporters, selected],
+  );
+  const allChecked = totalCount > 0 && selectedCount === totalCount;
+  const indeterminate = selectedCount > 0 && selectedCount < totalCount;
 
   const toggleSelected = (id) => {
     setSelected((prev) => {
       const next = new Set(prev);
-      if (next.has(id)) {
-        next.delete(id);
-      } else {
-        next.add(id);
-      }
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
       return next;
     });
   };
 
   const handleSelectCheckboxClick = (e) => {
-    e.stopPropagation(); // important: don't open the dropdown menu
-    setSelected((prev) => {
-      if (prev.size === 0) {
-        // select all visible
-        return new Set(visibleSupporters.map((v) => v.id));
-      }
-      // clear all selection
-      return new Set();
-    });
+    e.stopPropagation();
+    setSelected((prev) => (prev.size === 0 ? new Set(supporters.map((v) => v.id)) : new Set()));
   };
 
   const openRowMenu = (e, voter) => {
@@ -147,101 +62,81 @@ export default function SupportersInvited ({ supporters }) {
     setRowMenuVoter(voter);
   };
 
-  const handleSendMessage = () => {
-    if (rowMenuVoter) {
-      alert(`Send message to: ${rowMenuVoter.name}`);
-    }
+  const handleResendSelected = () => {
+    if (selectedCount === 0) return;
+    setSendToast({
+      open: true,
+      ok: true,
+      msg: `Resent invitation to ${selectedCount} voter${selectedCount === 1 ? '' : 's'}.`,
+    });
   };
 
-  const handleSendThankYou = async () => {
-    console.log('selectedVoters', selectedVoters);
-    if (selectedVoters.length === 0) {
-      return;
-    }
-
-    setIsSending(true);
-    try {
-      // TODO: replace with real API call(s)
-      // await sendThankYouMessage(selectedVoters, thankYouMessage);
-      handleSendMessage();
-      console.log('here');
-      setSendToast({
-        open: true,
-        ok: true,
-        msg: `Sent to ${selectedVoters.length} supporter${selectedVoters.length === 1 ? '' : 's'}.`,
-      });
-      console.log('here2');
-
-      // Optional: mark them as "messageSentCount + 1" in state once you have stateful supporters
-      // Optional: clear selection after send
-      // setSelected(new Set());
-    } catch (err) {
-      console.error(err);
-      setSendToast({ open: true, ok: false, msg: 'Send failed. Please try again.' });
-    } finally {
-      setIsSending(false);
-    }
+  const getInvitedViaLabel = (v) => {
+    const channels = [];
+    if (v.emailInviteSent) channels.push('Email');
+    if (v.textInviteSent) channels.push('text');
+    if (channels.length === 0) return '—';
+    channels[0] = channels[0].charAt(0).toUpperCase() + channels[0].slice(1);
+    return channels.join(', ');
   };
 
   return (
     <Container>
-      {/* <MessageContainer className="u-show-desktop-tablet">
-
-      </MessageContainer> */}
-
-      {/* Abstract Out */}
-      <ToolbarRow>
-        <LeftTools>
-
-          <CandidateActionsFilterMenu
-            selectAnchorEl={selectAnchorEl}
-            setSelectAnchorEl={setSelectAnchorEl}
-            checkedBoolean={totalVisibleCount > 0 && selectedVisibleCount === totalVisibleCount}
-            indeterminateBoolean={selectedVisibleCount > 0 && selectedVisibleCount < totalVisibleCount}
-            handleSelectCheckboxClick={handleSelectCheckboxClick}
-            menuOptions={[
-              { label: 'All', onClick: () => setSelected(new Set(visibleSupporters.map((v) => v.id)))},
-              ...actionGroups.map((g) => ({
-                label: `Ask to: ${g.label} - (${g.count})`,
-                onClick: () => setSelected(new Set(g.ids)) })),
-              { label: 'None', onClick: () => setSelected(new Set()) },
-            ]}
-          />
-
-          <VerticalBarWrapper $tight>
-            <VerticalBar />
-          </VerticalBarWrapper>
-
-          <CandidateTraitsFilterMenu
-            filterAnchorEl={filterAnchorEl}
-            setFilterAnchorEl={setFilterAnchorEl}
-            filterLabel={filterLabel}
-            menuOptions={[
-              { label: 'All', onClick: () => setActiveFilter(FILTERS.ALL) },
-              { label: `Has invited friends - (${filterGroups.hasInvitedCount})`,
-                onClick: () => setActiveFilter(FILTERS.HAS_INVITED) },
-              { label: `Has endorsed - (${filterGroups.hasEndorsedCount})`,
-                onClick: () => setActiveFilter(FILTERS.HAS_ENDORSED) },
-            ]}
-          />
-        </LeftTools>
-
+      {headerActionSlot && createPortal(
         <SendMessageButton
-          disbaleBoolean={selectedVoters.length === 0}
-          sendMessageFunction={handleSendThankYou}
-          buttonText={`Resend Invitation to Selected (${selectedVoters.length})`}
-        />
-      </ToolbarRow>
+          verb="Resend invite"
+          count={selectedCount}
+          onClick={handleResendSelected}
+        />,
+        headerActionSlot,
+      )}
 
+      {/* Mobile toolbar */}
+      <MobileToolbar className="u-show-mobile">
+        <SelectAllInline>
+          <SelectAllCheckbox
+            checked={allChecked}
+            indeterminate={indeterminate}
+            onClick={handleSelectCheckboxClick}
+          />
+          Select all
+        </SelectAllInline>
+        <SearchBtn
+          type="button"
+          aria-label="Search"
+          onClick={() => console.log('TODO: implement search feature')}
+        >
+          <SearchIcon sx={{ fontSize: 22 }} />
+        </SearchBtn>
+      </MobileToolbar>
 
-      <CardList>
-        {visibleSupporters.map((v) => {
+      {/* Desktop column headers (with Select all in the first cell) */}
+      <DesktopGridHeader className="u-show-desktop-tablet" $cols={GRID_COLS}>
+        <HeaderCell>
+          <SelectAllInline>
+            <SelectAllCheckbox
+              checked={allChecked}
+              indeterminate={indeterminate}
+              onClick={handleSelectCheckboxClick}
+            />
+            Select all
+          </SelectAllInline>
+        </HeaderCell>
+        <HeaderCell />
+        <HeaderCell />
+        <HeaderCell>Invite link clicked</HeaderCell>
+        <HeaderCell>Joined</HeaderCell>
+        <HeaderCell>Friends invited</HeaderCell>
+      </DesktopGridHeader>
+
+      <FlatCardList>
+        {supporters.map((v) => {
           const isChecked = selected.has(v.id);
-
           return (
-            <Card key={v.id} $selected={isChecked}>
-              <CardTopRow>
-                <NameRow>
+            <FlatRowCard key={v.id} $selected={isChecked}>
+              {/* Desktop row */}
+              <DesktopGridRow className="u-show-desktop-tablet" $cols={GRID_COLS}>
+                <NameCell>
                   <input
                     type="checkbox"
                     checked={isChecked}
@@ -249,128 +144,145 @@ export default function SupportersInvited ({ supporters }) {
                     aria-label={`Select ${v.name}`}
                   />
                   <NameText>{v.name}</NameText>
+                </NameCell>
 
-                </NameRow>
+                <StatusCell>
+                  {v.emailInviteSent ? (
+                    <SentStatus>
+                      <CheckCircleIcon color="success" sx={{ fontSize: 16 }} />
+                      Email invite sent
+                    </SentStatus>
+                  ) : (
+                    <ActionLinkButton type="button" onClick={() => alert(`Send email invite to ${v.name}`)}>
+                      <EmailOutlinedIcon sx={{ fontSize: 18 }} />
+                      Send email invite
+                    </ActionLinkButton>
+                  )}
+                </StatusCell>
 
-                <RightOptions>
-                  <VerticalBarWrapper>
-                    <VerticalBar />
-                  </VerticalBarWrapper>
-                  <KebabBtn
-                    type="button"
-                    aria-label="More options"
-                    onClick={(e) => openRowMenu(e, v)}
-                  >
-                    <MoreHorizIcon sx={{ fontSize: 20 }} />
-                  </KebabBtn>
-                </RightOptions>
-              </CardTopRow>
+                <StatusCell>
+                  {v.textInviteSent ? (
+                    <SentStatus>
+                      <CheckCircleIcon color="success" sx={{ fontSize: 16 }} />
+                      Text invite sent
+                    </SentStatus>
+                  ) : (
+                    <ActionLinkButton type="button" onClick={() => alert(`Send text invite to ${v.name}`)}>
+                      <SmsOutlinedIcon sx={{ fontSize: 18 }} />
+                      Send text invite
+                    </ActionLinkButton>
+                  )}
+                </StatusCell>
 
-              <CardActionsAndOpinion>
+                <StatusCell>
+                  {v.inviteLinkClicked ? (
+                    <YesStatus>
+                      <CheckCircleIcon color="success" sx={{ fontSize: 16 }} />
+                      Yes
+                    </YesStatus>
+                  ) : 'No'}
+                </StatusCell>
 
-                <CardInfo>
-                  <CardInfoTitle>
-                    Invited via
-                  </CardInfoTitle>
-                  <CardInfoValue>
-                    <>
-                      {!!v.emailInviteSent && <EmailIcon />}
-                      {!!v.textInviteSent && <SmsIcon />}
-                    </>
-                  </CardInfoValue>
-                </CardInfo>
+                <StatusCell>
+                  {v.joined ? (
+                    <YesStatus>
+                      <CheckCircleIcon color="success" sx={{ fontSize: 16 }} />
+                      Yes
+                    </YesStatus>
+                  ) : 'No'}
+                </StatusCell>
 
-                <VerticalBarWrapper><VerticalBar /></VerticalBarWrapper>
+                <StatusCell>
+                  {v.friendsInvited > 0 && (
+                    <YesStatus>
+                      <CheckCircleIcon color="success" sx={{ fontSize: 16 }} />
+                      {v.friendsInvited}
+                    </YesStatus>
+                  )}
+                </StatusCell>
+              </DesktopGridRow>
 
-                <CardInfo>
-                  <CardInfoTitle>
-                    Link clicked
-                  </CardInfoTitle>
-                  <CardInfoValue>
-                    {!!v.inviteLinkClicked ? (
-                      <>
-                        <CheckCircleIconGreenLarge />
-                        Yes
-                      </>
-                    ) : (
-                      'No'
-                    )}
-                  </CardInfoValue>
-                </CardInfo>
+              {/* Mobile card */}
+              <div className="u-show-mobile">
+                <CardTopRow>
+                  <NameRow>
+                    <input
+                      type="checkbox"
+                      checked={isChecked}
+                      onChange={() => toggleSelected(v.id)}
+                      aria-label={`Select ${v.name}`}
+                    />
+                    <NameText>{v.name}</NameText>
+                  </NameRow>
+                  <RightOptions>
+                    <KebabBtn type="button" aria-label="More options" onClick={(e) => openRowMenu(e, v)}>
+                      <MoreHorizIcon sx={{ fontSize: 20 }} />
+                    </KebabBtn>
+                  </RightOptions>
+                </CardTopRow>
 
-                <VerticalBarWrapper><VerticalBar /></VerticalBarWrapper>
+                <FieldGrid>
+                  <Field>
+                    <FieldLabel>Invited via</FieldLabel>
+                    <FieldValue>{getInvitedViaLabel(v)}</FieldValue>
+                  </Field>
+                  <Field>
+                    <FieldLabel>Invite link clicked</FieldLabel>
+                    <FieldValue>
+                      {v.inviteLinkClicked ? (
+                        <YesStatus>
+                          <CheckCircleIcon color="success" sx={{ fontSize: 14 }} />
+                          Yes
+                        </YesStatus>
+                      ) : 'No'}
+                    </FieldValue>
+                  </Field>
+                  <Field>
+                    <FieldLabel>Joined</FieldLabel>
+                    <FieldValue>
+                      {v.joined ? (
+                        <YesStatus>
+                          <CheckCircleIcon color="success" sx={{ fontSize: 14 }} />
+                          Yes
+                        </YesStatus>
+                      ) : 'No'}
+                    </FieldValue>
+                  </Field>
+                  <Field>
+                    <FieldLabel>Friends invited</FieldLabel>
+                    <FieldValue>
+                      {v.friendsInvited > 0 ? (
+                        <YesStatus>
+                          <CheckCircleIcon color="success" sx={{ fontSize: 14 }} />
+                          {v.friendsInvited}
+                        </YesStatus>
+                      ) : 'None'}
+                    </FieldValue>
+                  </Field>
+                </FieldGrid>
 
-                <CardInfo>
-                  <CardInfoTitle>
-                    Joined
-                  </CardInfoTitle>
-                  <CardInfoValue>
-                    {!!v.joined ? (
-                      <>
-                        <CheckCircleIconGreenLarge />
-                        Yes
-                      </>
-                    ) : (
-                      'No'
-                    )}
-                  </CardInfoValue>
-                </CardInfo>
-
-                <VerticalBarWrapper><VerticalBar /></VerticalBarWrapper>
-
-                <CardInfo>
-                  <CardInfoTitle>
-                    Friends invited
-                  </CardInfoTitle>
-                  <CardInfoValue>
-                    {!!v.friendsInvited ? (
-                      <>
-                        <CheckCircleIconGreenLarge />
-                        {v.friendsInvited}
-                      </>
-                    ) : (
-                      'None'
-                    )}
-                  </CardInfoValue>
-                </CardInfo>
-
-              </CardActionsAndOpinion>
-
-
-              <div>
                 {!v.emailInviteSent && (
-                  <ActionPill
-                    onClick={() => alert(`Send an email & ask ${v.name} to join WeVote`)}
-                    label={(
-                      <>
-                        <EmailIcon sx={{ fontSize: 18 }} />
-                        Send email invite
-                      </>
-                    )}
-                  />
+                  <ActionLinkButton type="button" onClick={() => alert(`Send email invite to ${v.name}`)}>
+                    <EmailOutlinedIcon sx={{ fontSize: 18 }} />
+                    Send email invite
+                  </ActionLinkButton>
                 )}
-
                 {!v.textInviteSent && (
-                  <ActionPill
-                    onClick={() => alert(`Send a text & ask ${v.name} to join WeVote`)}
-                    label={(
-                      <>
-                        <SmsIcon sx={{ fontSize: 18 }} />
-                        Send text invite
-                      </>
-                    )}
-                  />
+                  <ActionLinkButton type="button" onClick={() => alert(`Send text invite to ${v.name}`)}>
+                    <SmsOutlinedIcon sx={{ fontSize: 18 }} />
+                    Send text invite
+                  </ActionLinkButton>
                 )}
               </div>
-            </Card>
+            </FlatRowCard>
           );
         })}
-      </CardList>
+      </FlatCardList>
 
       <SendMessageButtonMobile
-        disbaleBoolean={selectedVoters.length === 0}
-        sendThankYouFunction={handleSendThankYou}
-        buttonText={`Resend Invitation to Selected (${selectedVoters.length})`}
+        verb="Resend invitation to selected"
+        count={selectedCount}
+        onClick={handleResendSelected}
       />
 
       <CandidateRowMenu
@@ -387,26 +299,12 @@ export default function SupportersInvited ({ supporters }) {
         ]}
       />
 
-      {/* Pop up to display when a user copies or sends the Thank You message */}
-      <Snackbar
-        open={copyOpen}
-        autoHideDuration={2000}
-        onClose={() => setCopyOpen(false)}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-        sx={{ '&.MuiSnackbar-anchorOriginTopCenter': { top: 80 } }}
-      >
-        <Alert severity="success" variant="filled">
-          Copied!
-        </Alert>
-      </Snackbar>
       <Snackbar
         open={sendToast.open}
         autoHideDuration={2500}
         onClose={() => setSendToast((t) => ({ ...t, open: false }))}
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-        sx={{
-          '&.MuiSnackbar-anchorOriginTopCenter': { top: 80 },
-        }}
+        sx={{ '&.MuiSnackbar-anchorOriginTopCenter': { top: 80 } }}
       >
         <Alert severity={sendToast.ok ? 'success' : 'error'} variant="filled">
           {sendToast.msg}
@@ -415,44 +313,56 @@ export default function SupportersInvited ({ supporters }) {
     </Container>
   );
 }
+SupportersInvited.propTypes = {
+  supporters: PropTypes.arrayOf(PropTypes.object),
+};
 
 /* ===== Styled components ===== */
-const Container = styled.div`
+
+const Field = styled.div`
   display: flex;
   flex-direction: column;
+  gap: 2px;
+  min-width: 0;
 `;
 
-const NameRow = styled.div`
-  display: flex;
+const FieldGrid = styled.div`
+  display: grid;
   gap: 10px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-top: 6px;
+`;
+
+const FieldLabel = styled.div`
+  color: ${DesignTokenColors.neutralUI600};
+  font-size: 12px;
+`;
+
+const FieldValue = styled.div`
+  color: ${DesignTokenColors.neutralUI900};
+  font-size: 13px;
+  font-weight: 500;
+`;
+
+const HeaderCell = styled.div``;
+
+const SentStatus = styled.span`
   align-items: center;
+  color: ${DesignTokenColors.neutralUI800};
+  display: inline-flex;
+  font-size: 14px;
+  gap: 4px;
 `;
 
-const NameText = styled.div`
-  font-size: 16px;
-  font-weight: 700;
+const StatusCell = styled.div`
+  color: ${DesignTokenColors.neutralUI800};
+  font-size: 14px;
 `;
 
-const KebabBtn = styled.button`
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  color: #6b7280;
-  padding: 2px 6px;
-  border-radius: 10px;
-
-  &:hover {
-    background: ${DesignTokenColors.neutralUI50};
-  }
-`;
-
-const RightOptions = styled.div`
-  margin-left: auto;
-  display: flex;
+const YesStatus = styled.span`
   align-items: center;
-`;
-
-const CheckCircleIconGreenLarge = styled(CheckCircleIcon)`
-  color: green;
-  font-size: large;
+  color: ${DesignTokenColors.neutralUI900};
+  display: inline-flex;
+  font-weight: 600;
+  gap: 4px;
 `;

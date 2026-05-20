@@ -16,6 +16,7 @@ import VoterPositionEditTripleDot from '../../common/components/Position/VoterPo
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 import { CompactSecondaryText, CompactStatementText, SpeakerName, SpeakerStatement, SpeakerStatementWrapper } from '../../common/components/Style/PositionDisplayStyles';
 import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
+import CandidateStore from '../../stores/CandidateStore';
 import MeasureStore from '../../stores/MeasureStore';
 import PoliticianStore from '../../common/stores/PoliticianStore';
 import { prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../common/utils/cordovaUtils';
@@ -181,7 +182,6 @@ function VoterPositionEntryAndDisplay ({ ballotItemWeVoteId: ballotItemWeVoteIdP
   const effectivePoliticianWeVoteId = isMeasure ? '' : politicianWeVoteId;
 
   const effectiveWeVoteIdRef = useRef(effectiveWeVoteId);
-  const { allCachedPoliticians } = PoliticianStore.getState();
 
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [ballotItemName, setBallotItemName] = useState('');
@@ -197,6 +197,7 @@ function VoterPositionEntryAndDisplay ({ ballotItemWeVoteId: ballotItemWeVoteIdP
   const [draftSelectedStance, setDraftSelectedStance] = useState('SUPPORT');
   const [supportOrOpposeStanceExists, setSupportOrOpposeStanceExists] = useState(false);
   const [setAsDefaultVisibility, setSetAsDefaultVisibility] = useState(false);
+  const [visibilityOnly, setVisibilityOnly] = useState(false);
   const [visibilitySetting, setVisibilitySetting] = useState('friends'); // 'public', 'friends', 'private'
   const [voterFirstName, setVoterFirstName] = useState('');
   const [voterLastName, setVoterLastName] = useState('');
@@ -281,6 +282,7 @@ function VoterPositionEntryAndDisplay ({ ballotItemWeVoteId: ballotItemWeVoteIdP
           setTimeout(() => setVisibilitySetting('public'), 300);
           AppObservableStore.setEditPositionModalSetPublic(false);
         }
+        setVisibilityOnly(AppObservableStore.getEditPositionModalVisibilityOnly());
         setShowEditModal(true);
         AppObservableStore.setShowEditPositionModal(false);
       }
@@ -347,17 +349,30 @@ function VoterPositionEntryAndDisplay ({ ballotItemWeVoteId: ballotItemWeVoteIdP
     setVoterName(voter.full_name || 'Anonymous');
   };
 
-  useEffect(() => {
-    if (isMeasure && effectiveWeVoteId) {
-      const measure = MeasureStore.getMeasure(effectiveWeVoteId);
+  const refreshBallotItemName = useCallback(() => {
+    if (!ballotItemWeVoteIdProp) return;
+    if (isMeasure) {
+      const measure = MeasureStore.getMeasure(ballotItemWeVoteIdProp);
       if (measure && measure.ballot_item_display_name) {
         setBallotItemName(measure.ballot_item_display_name);
       }
-    } else if (politicianWeVoteId && allCachedPoliticians && allCachedPoliticians[politicianWeVoteId]) {
-      const { politician_name: ballotItemNameNew } = allCachedPoliticians[politicianWeVoteId];
-      setBallotItemName(ballotItemNameNew);
+    } else {
+      const candidate = CandidateStore.getCandidateByWeVoteId(ballotItemWeVoteIdProp);
+      if (candidate && candidate.ballot_item_display_name) {
+        setBallotItemName(candidate.ballot_item_display_name);
+      }
     }
-  }, [isMeasure, effectiveWeVoteId, politicianWeVoteId, allCachedPoliticians]);
+  }, [ballotItemWeVoteIdProp, isMeasure]);
+
+  useEffect(() => {
+    refreshBallotItemName();
+    const measureStoreListener = MeasureStore.addListener(refreshBallotItemName);
+    const candidateStoreListener = CandidateStore.addListener(refreshBallotItemName);
+    return () => {
+      measureStoreListener.remove();
+      candidateStoreListener.remove();
+    };
+  }, [refreshBallotItemName]);
 
   useEffect(() => {
     effectiveWeVoteIdRef.current = effectiveWeVoteId;
@@ -404,6 +419,7 @@ function VoterPositionEntryAndDisplay ({ ballotItemWeVoteId: ballotItemWeVoteIdP
 
   useEffect(() => {
     if (openEditModalOnLoad) {
+      setVisibilityOnly(false);
       setShowEditModal(true);
     }
   }, [openEditModalOnLoad]);
@@ -488,7 +504,18 @@ function VoterPositionEntryAndDisplay ({ ballotItemWeVoteId: ballotItemWeVoteIdP
 
   renderLog('VoterPositionEntryAndDisplay'); // Set LOG_RENDER_EVENTS to log all renders
 
-  const editPositionModalTitleText = positionExists ? `Edit opinion${ballotItemName && ` about ${ballotItemName}`}` : `Create opinion${ballotItemName && ` about ${ballotItemName}`}`;
+  let editPositionModalTitleText;
+  let saveButtonText;
+  if (visibilityOnly) {
+    editPositionModalTitleText = `Update visibility${ballotItemName && ` for ${ballotItemName}`}`;
+    saveButtonText = 'Update visibility';
+  } else if (positionExists) {
+    editPositionModalTitleText = `Edit opinion${ballotItemName && ` about ${ballotItemName}`}`;
+    saveButtonText = 'Save opinion';
+  } else {
+    editPositionModalTitleText = `Create opinion${ballotItemName && ` about ${ballotItemName}`}`;
+    saveButtonText = 'Add opinion';
+  }
   const deleteConfirmationModalTitleText = ballotItemName ? `Delete opinion about ${ballotItemName}?` : 'Delete opinion?';
   const statementPlaceholderText = 'What\'s on your mind?';
   const rowsToShow = isAndroid() ? 3 : 4;
@@ -514,54 +541,58 @@ function VoterPositionEntryAndDisplay ({ ballotItemWeVoteId: ballotItemWeVoteIdP
           </UserInfoText>
         </VoterAvatarDisplayContainer>
 
-        {/* Your opinion text area */}
-        <OpinionSectionLabel>Your opinion:</OpinionSectionLabel>
-        <OpinionTextFieldDiv>
-          <InputBase
-            classes={{ root: classes.inputStyles, inputMultiline: classes.inputMultiline }}
-            id={`activityPostModalStatementText-${effectiveWeVoteId}-${externalUniqueId}`}
-            inputRef={activityPostInputRef}
-            multiline
-            name="statementText"
-            onChange={updateStatementTextToBeSaved}
-            placeholder={statementPlaceholderText}
-            rows={rowsToShow}
-            value={draftStatementText || ''}
-          />
-        </OpinionTextFieldDiv>
+        {!visibilityOnly && (
+          <>
+            {/* Your opinion text area */}
+            <OpinionSectionLabel>Your opinion:</OpinionSectionLabel>
+            <OpinionTextFieldDiv>
+              <InputBase
+                classes={{ root: classes.inputStyles, inputMultiline: classes.inputMultiline }}
+                id={`activityPostModalStatementText-${effectiveWeVoteId}-${externalUniqueId}`}
+                inputRef={activityPostInputRef}
+                multiline
+                name="statementText"
+                onChange={updateStatementTextToBeSaved}
+                placeholder={statementPlaceholderText}
+                rows={rowsToShow}
+                value={draftStatementText || ''}
+              />
+            </OpinionTextFieldDiv>
 
-        {/* Choose / Oppose / Undecided toggle buttons */}
-        <OpinionSectionLabel>
-          {isMeasure ? 'What is your position?' : 'Will you choose this candidate?'}
-        </OpinionSectionLabel>
-        <StanceToggleRow>
-          <StanceToggleButton
-            type="button"
-            selected={draftSelectedStance === 'SUPPORT'}
-            stanceType="support"
-            onClick={() => setDraftSelectedStance('SUPPORT')}
-          >
-            <CheckIcon style={{ fontSize: 18, marginRight: 4, color: DesignTokenColors.confirmation500 }} />
-            {isMeasure ? 'Vote Yes' : 'Choose'}
-          </StanceToggleButton>
-          <StanceToggleButton
-            type="button"
-            selected={draftSelectedStance === 'OPPOSE'}
-            stanceType="oppose"
-            onClick={() => setDraftSelectedStance('OPPOSE')}
-          >
-            <BlockIcon style={{ fontSize: 18, marginRight: 4, color: DesignTokenColors.alert800 }} />
-            {isMeasure ? 'Vote No' : 'Oppose'}
-          </StanceToggleButton>
-          <StanceToggleButton
-            type="button"
-            selected={draftSelectedStance === 'INFO_ONLY'}
-            stanceType="undecided"
-            onClick={() => setDraftSelectedStance('INFO_ONLY')}
-          >
-            Undecided
-          </StanceToggleButton>
-        </StanceToggleRow>
+            {/* Choose / Oppose / Undecided toggle buttons */}
+            <OpinionSectionLabel>
+              {isMeasure ? 'What is your position?' : 'Will you choose this candidate?'}
+            </OpinionSectionLabel>
+            <StanceToggleRow>
+              <StanceToggleButton
+                type="button"
+                selected={draftSelectedStance === 'SUPPORT'}
+                stanceType="support"
+                onClick={() => setDraftSelectedStance('SUPPORT')}
+              >
+                <CheckIcon style={{ fontSize: 18, marginRight: 4, color: DesignTokenColors.confirmation500 }} />
+                {isMeasure ? 'Vote Yes' : 'Choose'}
+              </StanceToggleButton>
+              <StanceToggleButton
+                type="button"
+                selected={draftSelectedStance === 'OPPOSE'}
+                stanceType="oppose"
+                onClick={() => setDraftSelectedStance('OPPOSE')}
+              >
+                <BlockIcon style={{ fontSize: 18, marginRight: 4, color: DesignTokenColors.alert800 }} />
+                {isMeasure ? 'Vote No' : 'Oppose'}
+              </StanceToggleButton>
+              <StanceToggleButton
+                type="button"
+                selected={draftSelectedStance === 'INFO_ONLY'}
+                stanceType="undecided"
+                onClick={() => setDraftSelectedStance('INFO_ONLY')}
+              >
+                Undecided
+              </StanceToggleButton>
+            </StanceToggleRow>
+          </>
+        )}
 
         {/* Visibility toggle: Public / WeVote friends / Private */}
         <OpinionSectionLabel>
@@ -627,7 +658,7 @@ function VoterPositionEntryAndDisplay ({ ballotItemWeVoteId: ballotItemWeVoteIdP
 
         {/* Action buttons */}
         <ModalButtonRow>
-          {positionExists && (
+          {(positionExists || visibilityOnly) && (
             <CancelButton
               type="button"
               onClick={() => toggleEditModalLocal()}
@@ -642,7 +673,7 @@ function VoterPositionEntryAndDisplay ({ ballotItemWeVoteId: ballotItemWeVoteIdP
             classes={{ root: classes.saveButtonRoot }}
             type="submit"
           >
-            {positionExists ? 'Save opinion' : 'Add opinion'}
+            {saveButtonText}
           </Button>
         </ModalButtonRow>
       </TextFieldForm>
