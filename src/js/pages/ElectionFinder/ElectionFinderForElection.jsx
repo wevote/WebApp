@@ -18,12 +18,13 @@ import SnackNotifier from '../../common/components/Widgets/SnackNotifier';
 import ElectionStore from '../../stores/ElectionStore';
 import CopyChip from './CopyChip';
 import copyAndToast from './copyAndToast';
+import formatDateLong from './dateHelpers';
 import ElectionFinderHeader from './ElectionFinderHeader';
 import RowKebabMenu from './RowKebabMenu';
 import {
   ActionDivider, DarkTooltip,
   CandidateActions as CandidateActionsRow, CandidateInfo, CandidateList, CandidateName,
-  CandidateParty, CandidateRow, DetailTitle, ElectionTitleRow,
+  CandidateParty, CandidateRow, DetailTitle, ElectionDetailDate, ElectionTitleRow,
   ExpandCollapseButton, ExpandCollapseRow, ExpandMoreIcon,
   HighlightSpan, InlineSearchField, NoResults,
   OfficeHeader, OfficeHeaderActions, OfficeHeaderLeft, OfficeName, OfficePrimaryPartySpan,
@@ -70,6 +71,7 @@ function ElectionFinderForElection () {
 
   // Derived from stores — no need to cache in state
   const electionName = ElectionStore.getElectionName(googleCivicElectionId) || 'Election';
+  const electionDayText = ElectionStore.getElectionDayText(googleCivicElectionId);
   const isUpcoming = ElectionStore.isElectionUpcoming(googleCivicElectionId);
   const electionList = ElectionStore.getElectionList();
   const stateElections = electionList.filter(
@@ -197,6 +199,7 @@ function ElectionFinderForElection () {
   const totalResults = electionSearchText ?
     filteredOffices.reduce((sum, o) => sum + (o.candidate_list || []).length, 0) :
     null;
+  const officeCount = ballotItems.length;
 
   return (
     <>
@@ -205,14 +208,19 @@ function ElectionFinderForElection () {
       <PageContentContainer>
         <ElectionFinderHeader
           breadcrumbs={[
-            { label: `\u2190 ${stateName} ${isUpcoming ? 'Upcoming' : 'Past'} Elections (${isUpcoming ? upcomingCount : pastCount})`, href: `/election-finder/${selectedStateCode.toLowerCase()}` },
-            { label: electionName },
+            { label: '\u2190 Election Finder Home', href: '/election-finder' },
+            { label: `${isUpcoming ? 'Upcoming' : 'Past'} Elections - ${stateName} (${isUpcoming ? upcomingCount : pastCount})`, href: `/election-finder/${selectedStateCode.toLowerCase()}` },
+            { label: `${electionName}${electionDayText ? ` - ${formatDateLong(electionDayText)}` : ''} (${officeCount})` },
           ]}
           stateLabel={stateName}
         />
 
         <ElectionTitleRow>
-          <DetailTitle>{electionName}</DetailTitle>
+          <DetailTitle>
+            {electionName}
+            {' '}
+            {`(${officeCount})`}
+          </DetailTitle>
           {nextReleaseFeaturesEnabled && (
             <DarkTooltip title="Download election data">
               <IconButton size="small"><FileDownloadOutlined fontSize="small" /></IconButton>
@@ -257,6 +265,10 @@ function ElectionFinderForElection () {
             </SearchIconButton>
           )}
         </ElectionTitleRow>
+
+        {electionDayText && (
+          <ElectionDetailDate>{formatDateLong(electionDayText)}</ElectionDetailDate>
+        )}
 
         {filteredOffices.length > 0 && (
           <ExpandCollapseRow>
@@ -304,7 +316,11 @@ function ElectionFinderForElection () {
         )}
 
         {filteredOffices.length === 0 && (
-          <NoResults>{ballotLoaded ? 'No results found.' : 'Loading...'}</NoResults>
+          <NoResults>
+            {!ballotLoaded && 'Loading...'}
+            {ballotLoaded && electionSearchText && 'No results found.'}
+            {ballotLoaded && !electionSearchText && 'Our team hasn’t assembled the data for this election yet. We usually have election data 45 days before each election.'}
+          </NoResults>
         )}
       </PageContentContainer>
     </>

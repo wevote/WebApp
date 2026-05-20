@@ -1,12 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ElectionNameH1, ElectionStateLabel } from '../../components/Style/BallotTitleHeaderStyles';
-import { Breadcrumb, BreadcrumbAnchor } from './electionFinderStyles';
+import { ElectionNameH1 } from '../../components/Style/BallotTitleHeaderStyles';
+import { Breadcrumb, BreadcrumbAnchor, ElectionFinderStateLabel } from './electionFinderStyles';
 
 function ElectionFinderHeader ({ breadcrumbs, stateLabel, subtitle }) {
   return (
     <>
-      {stateLabel && <ElectionStateLabel>{stateLabel}</ElectionStateLabel>}
       <ElectionNameH1>Election Finder</ElectionNameH1>
       {breadcrumbs && breadcrumbs.length > 0 && (
         <Breadcrumb>
@@ -28,6 +27,7 @@ function ElectionFinderHeader ({ breadcrumbs, stateLabel, subtitle }) {
         </Breadcrumb>
       )}
       {subtitle && <Breadcrumb>{subtitle}</Breadcrumb>}
+      {stateLabel && <ElectionFinderStateLabel>{stateLabel}</ElectionFinderStateLabel>}
     </>
   );
 }
