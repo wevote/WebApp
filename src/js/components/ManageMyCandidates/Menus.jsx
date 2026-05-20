@@ -1,15 +1,43 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useLayoutEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
+import PropTypes from 'prop-types';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import Button from '@mui/material/Button';
 import ButtonBase from '@mui/material/ButtonBase';
-import Checkbox from '@mui/material/Checkbox';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import styled from 'styled-components';
 
-export function CandidateActionsFilterMenu({ selectAnchorEl, setSelectAnchorEl, checkedBoolean, indeterminateBoolean, handleSelectCheckboxClick, menuOptions = null}) {
+import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
+
+const menuOptionsPropType = PropTypes.arrayOf(PropTypes.shape({
+  label: PropTypes.node,
+  onClick: PropTypes.func,
+  icon: PropTypes.elementType,
+  disabled: PropTypes.bool,
+  info: PropTypes.bool,
+}));
+
+export function SelectAllCheckbox ({ checked, indeterminate, onClick, ariaLabel = 'Select all' }) {
+  return (
+    <input
+      aria-label={ariaLabel}
+      checked={!!checked}
+      onChange={() => {}}
+      onClick={onClick}
+      // eslint-disable-next-line no-param-reassign
+      ref={(el) => { if (el) el.indeterminate = !!indeterminate; }}
+      type="checkbox"
+    />
+  );
+}
+SelectAllCheckbox.propTypes = {
+  checked: PropTypes.bool,
+  indeterminate: PropTypes.bool,
+  onClick: PropTypes.func,
+  ariaLabel: PropTypes.string,
+};
+
+export function CandidateActionsFilterMenu ({ selectAnchorEl, setSelectAnchorEl, checkedBoolean, indeterminateBoolean, handleSelectCheckboxClick, menuOptions = null }) {
   const selectMenuOpen = Boolean(selectAnchorEl);
 
   const openSelectMenu = useCallback((e) => setSelectAnchorEl(e.currentTarget), [setSelectAnchorEl]);
@@ -28,16 +56,12 @@ export function CandidateActionsFilterMenu({ selectAnchorEl, setSelectAnchorEl, 
           aria-haspopup="menu"
           aria-expanded={selectMenuOpen ? 'true' : undefined}
       >
-        <Checkbox
+        <SelectAllCheckbox
           checked={checkedBoolean}
           indeterminate={indeterminateBoolean}
-          tabIndex={-1}
-          disableRipple
-          sx={{ padding: 0 }}
           onClick={handleSelectCheckboxClick}
-          onChange={() => {}}
         />
-        <div>Select All</div>
+        <SelectAllLabel>Select all</SelectAllLabel>
         <CaretButton
           type="button"
           onClick={openSelectMenu}
@@ -62,8 +86,16 @@ export function CandidateActionsFilterMenu({ selectAnchorEl, setSelectAnchorEl, 
     </>
   );
 }
+CandidateActionsFilterMenu.propTypes = {
+  selectAnchorEl: PropTypes.object,
+  setSelectAnchorEl: PropTypes.func,
+  checkedBoolean: PropTypes.bool,
+  indeterminateBoolean: PropTypes.bool,
+  handleSelectCheckboxClick: PropTypes.func,
+  menuOptions: menuOptionsPropType,
+};
 
-export function CandidateTraitsFilterMenu({ filterAnchorEl, setFilterAnchorEl, filterLabel = 'Select Filter', menuOptions = null}) {
+export function CandidateTraitsFilterMenu ({ filterAnchorEl, setFilterAnchorEl, filterLabel = 'Select Filter', menuOptions = null }) {
   const filterMenuOpen = Boolean(filterAnchorEl);
 
   const openFilterMenu = useCallback((e) => setFilterAnchorEl(e.currentTarget), [setFilterAnchorEl]);
@@ -78,7 +110,7 @@ export function CandidateTraitsFilterMenu({ filterAnchorEl, setFilterAnchorEl, f
   return (
     <>
       <AllButton
-          variant="text"
+          type="button"
           onClick={openFilterMenu}
           aria-label="Filter options"
           aria-controls={filterMenuOpen ? 'all-filter-menu' : undefined}
@@ -105,79 +137,113 @@ export function CandidateTraitsFilterMenu({ filterAnchorEl, setFilterAnchorEl, f
     </>
   );
 }
+CandidateTraitsFilterMenu.propTypes = {
+  filterAnchorEl: PropTypes.object,
+  setFilterAnchorEl: PropTypes.func,
+  filterLabel: PropTypes.string,
+  menuOptions: menuOptionsPropType,
+};
 
-export function CandidateRowMenu({ rowMenuAnchorEl, setRowMenuAnchorEl, setRowMenuVoter, menuOptions = null }) {
-  const rowMenuOpen = Boolean(rowMenuAnchorEl);
+export function DropdownMenu ({ anchorEl, onClose, menuOptions = [], align = 'right', menuId }) {
+  const [position, setPosition] = useState({ top: 0, left: 0 });
 
+  useLayoutEffect(() => {
+    if (!anchorEl) return;
+    const rect = anchorEl.getBoundingClientRect();
+    const menuWidth = 220;
+    const menuHeight = 100;
+    const spaceBelow = window.innerHeight - rect.bottom;
+    const scrollY = window.scrollY || document.documentElement.scrollTop;
+    const scrollX = window.scrollX || document.documentElement.scrollLeft;
+    setPosition({
+      top: (spaceBelow < menuHeight ? rect.top - menuHeight - 6 : rect.bottom + 6) + scrollY,
+      left: (align === 'right' ? rect.right - menuWidth : rect.left) + scrollX,
+    });
+  }, [anchorEl, align]);
+
+  if (!anchorEl) return null;
+
+  const handleClick = (option) => () => {
+    if (option.disabled) return;
+    if (option.onClick) option.onClick();
+    onClose();
+  };
+
+  return createPortal(
+    <>
+      <ClickAwayOverlay onClick={onClose} />
+      <RowMenuCard
+        role="menu"
+        id={menuId}
+        style={{ top: `${position.top}px`, left: `${position.left}px` }}
+      >
+        {menuOptions.map((option, idx) => {
+          const Icon = option.icon;
+          if (option.info) {
+            return <DropdownInfo key={option.label || `info-${idx}`}>{option.label}</DropdownInfo>;
+          }
+          return (
+            <RowMenuItem
+              key={option.label}
+              type="button"
+              role="menuitem"
+              disabled={option.disabled}
+              onClick={handleClick(option)}
+            >
+              {Icon && <Icon fontSize="small" />}
+              <span>{option.label}</span>
+            </RowMenuItem>
+          );
+        })}
+      </RowMenuCard>
+    </>,
+    document.body,
+  );
+}
+DropdownMenu.propTypes = {
+  anchorEl: PropTypes.object,
+  onClose: PropTypes.func,
+  menuOptions: menuOptionsPropType,
+  align: PropTypes.oneOf(['left', 'right']),
+  menuId: PropTypes.string,
+};
+
+export function CandidateRowMenu ({ rowMenuAnchorEl, setRowMenuAnchorEl, setRowMenuVoter, menuOptions = null }) {
   const closeRowMenu = useCallback(() => {
     setRowMenuAnchorEl(null);
     setRowMenuVoter(null);
   }, [setRowMenuAnchorEl, setRowMenuVoter]);
 
-  const onClickFunction = useCallback((optionOnClickFunction) => {
-    optionOnClickFunction();
-    closeRowMenu();
-  }, [closeRowMenu]);
-
   return (
-    <CandidateRowSubMenu
-          id="voter-row-menu"
-          anchorEl={rowMenuAnchorEl}
-          open={rowMenuOpen}
-          onClose={closeRowMenu}
-    >
-      {menuOptions && menuOptions.map((option) => (
-        <StyledMenuItem key={option.label} onClick={() => onClickFunction(option.onClick)}>
-          <ListItemIcon>
-            <option.icon sx={{ fontSize: 18 }} />
-          </ListItemIcon>
-          <ListItemText primary={option.label} />
-        </StyledMenuItem>
-      ))}
-    </CandidateRowSubMenu>
+    <DropdownMenu
+      anchorEl={rowMenuAnchorEl}
+      onClose={closeRowMenu}
+      menuOptions={menuOptions}
+      align="right"
+      menuId="voter-row-menu"
+    />
   );
 }
+CandidateRowMenu.propTypes = {
+  rowMenuAnchorEl: PropTypes.object,
+  setRowMenuAnchorEl: PropTypes.func,
+  setRowMenuVoter: PropTypes.func,
+  menuOptions: menuOptionsPropType,
+};
 
-export const SelectControl = styled(ButtonBase)`
-  display: inline-flex;
+export const AllButton = styled.button`
   align-items: center;
-  gap: 2px;
-  padding: 2px 4px;
-  border-radius: 8px;
-`;
-
-export const CaretButton = styled.button`
-  border: none;
   background: transparent;
-  padding: 0;
-  margin: 0;
+  border: none;
+  color: ${DesignTokenColors.neutralUI700};
   cursor: pointer;
   display: inline-flex;
-  align-items: center;
-`;
-
-
-export const AllButton = styled(Button)`
-  && {
-    min-width: auto;
-    padding: 0 0 0 4px;
-    text-transform: none;
-    font-size: 14px;
-    color: #111827;
-  }
-
-  && .MuiButton-endIcon {
-    margin-left: 4px;
-    margin-right: 0;
-  }
-`;
-
-export const CaretIcon = styled.span`
-  font-size: 32px;
-  padding: 0 4px;
-  color: #6b7280;
-  display: inline-flex;
-  align-items: center;
+  font: inherit;
+  font-size: 14px;
+  gap: 2px;
+  line-height: 1;
+  margin: 0;
+  padding: 0;
 `;
 
 const CandidateSubMenu = styled(Menu).attrs({
@@ -191,28 +257,91 @@ const CandidateSubMenu = styled(Menu).attrs({
   },
 })``;
 
-const CandidateRowSubMenu = styled(Menu).attrs({
-  anchorOrigin: { vertical: 'bottom', horizontal: 'right' },
-  transformOrigin: { vertical: 'top', horizontal: 'right' },
-  PaperProps: {
-    style: {
-      borderRadius: 12,
-      overflow: 'hidden',
-      minWidth: 220,
-    },
-  },
-})``;
-
-
-const MenuItemText = styled.span`
-font-size: 14px;
-color: #111827;
+export const CaretButton = styled.button`
+  align-items: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  margin: 0;
+  padding: 0;
 `;
 
-const StyledMenuItem = styled(MenuItem)`
-  && {
-    font-size: 14px;
-    padding-top: 10px;
-    padding-bottom: 10px;
+export const CaretIcon = styled.span`
+  align-items: center;
+  color: ${DesignTokenColors.neutralUI600};
+  display: inline-flex;
+  font-size: 18px;
+  padding: 0 2px;
+`;
+
+const ClickAwayOverlay = styled.div`
+  background: transparent;
+  bottom: 0;
+  left: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 999;
+`;
+
+const DropdownInfo = styled.div`
+  color: ${DesignTokenColors.neutralUI600};
+  font-size: 13px;
+  padding: 6px 10px 8px;
+`;
+
+const MenuItemText = styled.span`
+  color: #111827;
+  font-size: 14px;
+`;
+
+const RowMenuCard = styled.div`
+  background: ${DesignTokenColors.whiteUI};
+  border: 1px solid ${DesignTokenColors.neutralUI200};
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(16, 24, 40, 0.08);
+  min-width: 220px;
+  padding: 6px;
+  position: absolute;
+  z-index: 1000;
+`;
+
+const RowMenuItem = styled.button`
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-radius: 8px;
+  color: ${DesignTokenColors.neutralUI900};
+  cursor: pointer;
+  display: flex;
+  font: inherit;
+  font-size: 14px;
+  gap: 8px;
+  padding: 8px 10px;
+  text-align: left;
+  width: 100%;
+
+  &:hover {
+    background: ${DesignTokenColors.neutralUI50};
   }
+
+  &:disabled {
+    color: ${DesignTokenColors.neutralUI500};
+    cursor: not-allowed;
+  }
+`;
+
+const SelectAllLabel = styled.span`
+  color: ${DesignTokenColors.neutralUI700};
+  font-size: 14px;
+  line-height: 1;
+`;
+
+export const SelectControl = styled(ButtonBase)`
+  align-items: center;
+  border-radius: 8px;
+  display: inline-flex;
+  gap: 6px;
+  padding: 0 2px;
 `;

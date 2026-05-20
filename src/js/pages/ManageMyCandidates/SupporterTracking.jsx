@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Search as SearchIcon } from '@mui/icons-material';
-import IconButton from '@mui/material/IconButton';
 import Popover from '@mui/material/Popover';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import CloseIcon from '@mui/icons-material/Close';
@@ -14,6 +14,7 @@ import PoliticianStore from '../../common/stores/PoliticianStore';
 import SupportersJoined from './SupportersJoined';
 import SupportersInvited from './SupportersInvited';
 import SupportersToRemind from './SupportersToRemind';
+import TrackingHeaderActionContext from './TrackingHeaderActionContext';
 
 function pushDataLayer (buttonId = '', politicianWeVoteId = null) {
   const dataLayerObject = {
@@ -31,165 +32,152 @@ function pushDataLayer (buttonId = '', politicianWeVoteId = null) {
   TagManager.dataLayer({ dataLayer: dataLayerObject });
 }
 
+const LOREM_IPSUM_PLACEHOLDER = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.';
+
+/**
+ * Spoofed records (replace later with DB-backed rows)
+ * status: "joined" | "invited" | "reminder"
+ */
+const SPOOF = [
+  {
+    id: 'v_1',
+    status: 'joined',
+    name: 'Steve Smith',
+    endorsed: false,
+    friendsInvited: 0,
+    messageSentCount: 0,
+    publicOpinion: '',
+  },
+  {
+    id: 'v_2',
+    status: 'joined',
+    name: 'Jane Smith',
+    endorsed: true,
+    friendsInvited: 0,
+    messageSentCount: 0,
+    publicOpinion: '',
+  },
+  {
+    id: 'v_3',
+    status: 'joined',
+    name: 'Steve Smith',
+    endorsed: true,
+    friendsInvited: 0,
+    messageSentCount: 0,
+    publicOpinion: LOREM_IPSUM_PLACEHOLDER,
+  },
+  {
+    id: 'v_4',
+    status: 'joined',
+    name: 'Jen Smith',
+    endorsed: true,
+    friendsInvited: 2,
+    messageSentCount: 0,
+    publicOpinion: LOREM_IPSUM_PLACEHOLDER,
+  },
+  {
+    id: 'v_5',
+    status: 'joined',
+    name: 'Mary Smith',
+    endorsed: true,
+    friendsInvited: 2,
+    messageSentCount: 1,
+    publicOpinion: LOREM_IPSUM_PLACEHOLDER,
+  },
+
+  {
+    id: 'v_6',
+    status: 'invited',
+    joined: true,
+    name: 'Alex Doe',
+    emailInviteSent: true,
+    textInviteSent: true,
+    inviteLinkClicked: true,
+    friendsInvited: 2,
+  },
+  {
+    id: 'v_7',
+    status: 'remind',
+    reminderSubStatus: 'invited',
+    name: 'John Smith',
+    emailInviteSent: true,
+    textInviteSent: false,
+    invitedDaysAgo: 9,
+  },
+  {
+    id: 'v_10',
+    status: 'remind',
+    reminderSubStatus: 'invited',
+    name: 'James Smith',
+    emailInviteSent: false,
+    textInviteSent: true,
+    invitedDaysAgo: 11,
+  },
+  {
+    id: 'v_11',
+    status: 'remind',
+    reminderSubStatus: 'invited',
+    name: 'Jennifer Smith',
+    emailInviteSent: true,
+    textInviteSent: true,
+    invitedDaysAgo: 14,
+  },
+  {
+    id: 'v_12',
+    status: 'remind',
+    reminderSubStatus: 'joined',
+    name: 'Morgan Lee',
+    joined: true,
+    endorsed: false,
+    friendsInvited: 0,
+    joinedDaysAgo: 8,
+  },
+  {
+    id: 'v_8',
+    status: 'invited',
+    joined: false,
+    name: 'Alex Doe',
+    emailInviteSent: false,
+    textInviteSent: true,
+    inviteLinkClicked: false,
+    friendsInvited: 0,
+  },
+  {
+    id: 'v_9',
+    status: 'invited',
+    joined: false,
+    name: 'SuperLong FirstNameLastName',
+    emailInviteSent: true,
+    textInviteSent: false,
+    inviteLinkClicked: false,
+    friendsInvited: 0,
+  },
+];
+
 export default function SupporterTracking ({ selectedPoliticianWeVoteId = null }) {
   const [activeTab, setActiveTab] = useState('joined');
-
-  /**
-   * Spoofed records (replace later with DB-backed rows)
-   * status: "joined" | "invited" | "reminder"
-   */
-  const SPOOF = [
-    {
-      id: 'v_1',
-      status: 'joined',
-      name: 'Steve Smith',
-      endorsed: false,
-      friendsInvited: 0,
-      messageSentCount: 0,
-      publicOpinion:
-        '',
-    },
-    {
-      id: 'v_2',
-      status: 'joined',
-      name: 'Jane Smith',
-      endorsed: true,
-      friendsInvited: 0,
-      messageSentCount: 0,
-      publicOpinion: '',
-    },
-    {
-      id: 'v_3',
-      status: 'joined',
-      name: 'Steve Smith',
-      endorsed: true,
-      friendsInvited: 0,
-      messageSentCount: 0,
-      publicOpinion:
-        'Lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet...',
-    },
-    {
-      id: 'v_4',
-      status: 'joined',
-      name: 'Jen Smith',
-      endorsed: true,
-      friendsInvited: 2,
-      messageSentCount: 0,
-      publicOpinion:
-        'Lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet...',
-    },
-    {
-      id: 'v_5',
-      status: 'joined',
-      name: 'Mary Smith',
-      endorsed: true,
-      friendsInvited: 2,
-      messageSentCount: 1,
-      publicOpinion:
-        'Lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet...',
-    },
-
-    // A couple non-joined for tabs
-    // {
-    //   id: "v_6",
-    //   status: "invited",
-    //   name: "Alex Doe",
-    //   endorsed: false,
-    //   friendsInvited: 0,
-    //   messageSentCount: 0,
-    //   publicOpinion: "",
-    // },
-    {
-      id: 'v_6',
-      status: 'invited',
-      joined: true,
-      name: 'Alex Doe',
-      emailInviteSent: true,
-      textInviteSent: true,
-      inviteLinkClicked: true,
-      friendsInvited: 2,
-
-    },
-    {
-      id: 'v_7',
-      status: 'remind',
-      reminderSubStatus: 'invited',
-      name: 'John Smith',
-      emailInviteSent: true,
-      textInviteSent: false,
-      invitedDaysAgo: 9,
-    },
-    {
-      id: 'v_10',
-      status: 'remind',
-      reminderSubStatus: 'invited',
-      name: 'James Smith',
-      emailInviteSent: false,
-      textInviteSent: true,
-      invitedDaysAgo: 11,
-    },
-    {
-      id: 'v_11',
-      status: 'remind',
-      reminderSubStatus: 'invited',
-      name: 'Jennifer Smith',
-      emailInviteSent: true,
-      textInviteSent: true,
-      invitedDaysAgo: 14,
-    },
-    {
-      id: 'v_12',
-      status: 'remind',
-      reminderSubStatus: 'joined',
-      name: 'Morgan Lee',
-      joined: true,
-      endorsed: false,
-      friendsInvited: 0,
-      joinedDaysAgo: 8,
-    },
-    {
-      id: 'v_8',
-      status: 'invited',
-      joined: false,
-      name: 'Alex Doe',
-      emailInviteSent: false,
-      textInviteSent: true,
-      inviteLinkClicked: false,
-      friendsInvited: 0,
-    },
-    {
-      id: 'v_9',
-      status: 'invited',
-      joined: false,
-      name: 'SuperLong FirstNameLastName',
-      emailInviteSent: true,
-      textInviteSent: false,
-      inviteLinkClicked: false,
-      friendsInvited: 0,
-    },
-  ];
+  const [headerActionSlot, setHeaderActionSlot] = useState(null);
 
   const counts = useMemo(() => {
     const c = { joined: 0, invited: 0, remind: 0 };
-    for (const r of SPOOF) c[r.status] += 1;
+    SPOOF.forEach((r) => { c[r.status] += 1; });
     return c;
   }, []);
 
   const renderTabContent = () => {
     switch (activeTab) {
       case 'joined':
-        return <SupportersJoined supporters={SPOOF.filter((r) => r.status === 'joined')}/>;
+        return <SupportersJoined supporters={SPOOF.filter((r) => r.status === 'joined')} />;
       case 'invited':
-        return <SupportersInvited supporters={SPOOF.filter((r) => r.status === 'invited')}/>;
+        return <SupportersInvited supporters={SPOOF.filter((r) => r.status === 'invited')} />;
       case 'remind':
-        return <SupportersToRemind supporters={SPOOF.filter((r) => r.status === 'remind')}/>;
+        return <SupportersToRemind supporters={SPOOF.filter((r) => r.status === 'remind')} />;
       default:
-        return <SupportersJoined supporters={SPOOF.filter((r) => r.status === 'joined')}/>;
+        return <SupportersJoined supporters={SPOOF.filter((r) => r.status === 'joined')} />;
     }
   };
 
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [buttonEl, setButtonEl] = React.useState(null);
 
   const open = Boolean(anchorEl);
 
@@ -200,7 +188,7 @@ export default function SupporterTracking ({ selectedPoliticianWeVoteId = null }
   const handleClose = () => setAnchorEl(null);
 
   return (
-    <>
+    <TrackingHeaderActionContext.Provider value={headerActionSlot}>
       <HeaderRow className="u-show-desktop-tablet">
         <H2>Tracking</H2>
         <HeaderDivider />
@@ -232,6 +220,9 @@ export default function SupporterTracking ({ selectedPoliticianWeVoteId = null }
           },
         }}
       >
+        {/* TODO: auto-open this popover on the user's first visit to the page
+            (e.g., gate behind a localStorage flag like `seenTrackingInfoPopover`,
+            set the flag once the user dismisses it so it doesn't reopen). */}
         <PopoverContainer>
           <PopoverArrow />
 
@@ -254,42 +245,49 @@ export default function SupporterTracking ({ selectedPoliticianWeVoteId = null }
           id="trackingJoinedWeVoteTab"
           active={activeTab === 'joined'}
           onClick={() => { pushDataLayer('trackingJoinedWeVoteTab', selectedPoliticianWeVoteId); setActiveTab('joined'); }}
-          data-hidden-bold-text={`Joined WeVote (${counts['joined']})`}
+          data-hidden-bold-text={`Joined WeVote (${counts.joined})`}
         >
-          Joined WeVote
-          (
-          {counts['joined']}
+          <span className="u-show-desktop-tablet">Joined WeVote</span>
+          <span className="u-show-mobile">Joined</span>
+          {' ('}
+          {counts.joined}
           )
         </Tab>
         <Tab
           id="trackingInvitedTab"
           active={activeTab === 'invited'}
           onClick={() => { pushDataLayer('trackingInvitedTab', selectedPoliticianWeVoteId); setActiveTab('invited'); }}
-          data-hidden-bold-text={`Invited (${counts['invited']})`}
+          data-hidden-bold-text={`Invited (${counts.invited})`}
         >
           Invited
           (
-          {counts['invited']}
+          {counts.invited}
           )
         </Tab>
         <Tab
           id="trackingReminderNeededTab"
           active={activeTab === 'remind'}
           onClick={() => { pushDataLayer('trackingReminderNeededTab', selectedPoliticianWeVoteId); setActiveTab('remind'); }}
-          data-hidden-bold-text={`Reminder needed (${counts['remind']})`}
+          data-hidden-bold-text={`Reminder needed (${counts.remind})`}
         >
-          Reminder needed
-          (
-          {counts['remind']}
+          <span className="u-show-desktop-tablet">Reminder needed</span>
+          <span className="u-show-mobile">Remind</span>
+          {' ('}
+          {counts.remind}
           )
         </Tab>
+        <HeaderActionSlot ref={setHeaderActionSlot} className="u-show-desktop-tablet" />
       </TabRow>
       <TabContent>
         {renderTabContent()}
       </TabContent>
-    </>
+    </TrackingHeaderActionContext.Provider>
   );
 }
+
+SupporterTracking.propTypes = {
+  selectedPoliticianWeVoteId: PropTypes.string,
+};
 
 // Styles
 
@@ -298,6 +296,12 @@ const H2 = styled.h2`
   font-size: 20px;
   font-weight: 400;
   margin: 0;
+`;
+
+const HeaderActionSlot = styled.div`
+  align-items: center;
+  display: flex;
+  margin-left: auto;
 `;
 
 const HeaderDivider = styled.span`
@@ -397,12 +401,23 @@ const SubHeaderRow = styled.div`
   align-items: center;
   gap: 12px;
   margin: 0 0 6px;
+
+  @media (max-width: 575px) {
+    gap: 5px;
+    justify-content: center;
+  }
 `;
 
 const Tab = styled.button`
   background: none;
   border: none;
   padding: 12px 16px 4px 16px;
+  flex-shrink: 0;
+  @media (max-width: 575px) {
+    flex: 1;
+    padding-left: 0;
+    padding-right: 0;
+  }
   font-size: 15px;
   font-weight: ${(props) => (props.active ? '600' : '500')};
   color: ${(props) => (props.active ? DesignTokenColors.primary600 : DesignTokenColors.neutralUI700)};
@@ -447,11 +462,19 @@ const TabContent = styled.div`
 const TabRow = styled.div`
   display: flex;
   gap: 0;
-  border-bottom: 1px solid ${DesignTokenColors.neutralUI200};
-  margin-bottom: 4px;
+  margin-bottom: 16px;
+
+  @media (max-width: 575px) {
+    border-bottom: 1px solid ${DesignTokenColors.neutralUI200};
+    margin-bottom: 4px;
+  }
 `;
 
 const TrackingText = styled.p`
   color: ${DesignTokenColors.neutralUI700};
   margin: 0;
+
+  @media (max-width: 575px) {
+    font-size: 13px;
+  }
 `;

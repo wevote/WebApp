@@ -1,4 +1,7 @@
-import React, { useEffect, useMemo, useState } from 'react';
+/* eslint-disable no-alert */
+import React, { useContext, useEffect, useMemo, useState } from 'react';
+import { createPortal } from 'react-dom';
+import PropTypes from 'prop-types';
 import AutorenewIcon from '@mui/icons-material/Autorenew';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
@@ -7,21 +10,25 @@ import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import SearchIcon from '@mui/icons-material/Search';
 import SmsOutlinedIcon from '@mui/icons-material/SmsOutlined';
 import Alert from '@mui/material/Alert';
-import Checkbox from '@mui/material/Checkbox';
 import Snackbar from '@mui/material/Snackbar';
 import styled from 'styled-components';
 
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
-import { CandidateRowMenu } from '../../components/ManageMyCandidates/Menus';
+import { CandidateRowMenu, SelectAllCheckbox } from '../../components/ManageMyCandidates/Menus';
 import { SendMessageButton, SendMessageButtonMobile } from '../../components/ManageMyCandidates/SendButtons';
-import { CardList, Card, CardTopRow, ToolbarRow, LeftTools } from '../../components/Style/ManageMyCandidates';
+import TrackingHeaderActionContext from './TrackingHeaderActionContext';
+import { CardTopRow, Container, KebabBtn, LeftTools, NameText, RightOptions, ToolbarRow } from '../../components/Style/ManageMyCandidates';
+import { ActionLinkButton, DesktopGridHeader, DesktopGridRow, FlatCardList, FlatRowCard, MobileActionPill, MobileActions, MobileFieldLabel, MobileFieldValue, NameCell, SelectAllInline } from '../../components/Style/SupporterTrackingStyles';
 
 const SUB_FILTERS = {
   INVITED: 'invited',
   JOINED: 'joined',
 };
 
+const REMIND_GRID_COLS = 'minmax(140px, 200px) minmax(70px, 0.4fr) minmax(340px, 1.8fr)';
+
 export default function SupportersToRemind ({ supporters }) {
+  const headerActionSlot = useContext(TrackingHeaderActionContext);
   const [selected, setSelected] = useState(() => new Set());
   const [subFilter, setSubFilter] = useState(SUB_FILTERS.INVITED);
   const [sendToast, setSendToast] = useState({ open: false, ok: true, msg: '' });
@@ -83,24 +90,27 @@ export default function SupportersToRemind ({ supporters }) {
     const channels = [];
     if (v.emailInviteSent) channels.push('Email');
     if (v.textInviteSent) channels.push('text');
-    return channels.length ? channels.join(', ') : '—';
+    if (channels.length === 0) return '—';
+    channels[0] = channels[0].charAt(0).toUpperCase() + channels[0].slice(1);
+    return channels.join(', ');
   };
 
   const getRecommendedActions = (v) => {
-    const actions = [];
+    const sends = [];
+    const resends = [];
     if (!v.emailInviteSent) {
-      actions.push({ key: 'send-email', label: 'Send email invite', icon: EmailOutlinedIcon, onClick: () => alert(`Send email invite to ${v.name}`) });
+      sends.push({ key: 'send-email', label: 'Send email invite', icon: EmailOutlinedIcon, onClick: () => alert(`Send email invite to ${v.name}`) });
     }
     if (!v.textInviteSent) {
-      actions.push({ key: 'send-text', label: 'Send text invite', icon: SmsOutlinedIcon, onClick: () => alert(`Send text invite to ${v.name}`) });
+      sends.push({ key: 'send-text', label: 'Send text invite', icon: SmsOutlinedIcon, onClick: () => alert(`Send text invite to ${v.name}`) });
     }
     if (v.emailInviteSent) {
-      actions.push({ key: 'resend-email', label: 'Re-send email invite', icon: MailOutlineIcon, isResend: true, onClick: () => alert(`Re-send email invite to ${v.name}`) });
+      resends.push({ key: 'resend-email', label: 'Re-send email invite', icon: MailOutlineIcon, onClick: () => alert(`Re-send email invite to ${v.name}`) });
     }
     if (v.textInviteSent) {
-      actions.push({ key: 'resend-text', label: 'Re-send text invite', icon: SmsOutlinedIcon, isResend: true, onClick: () => alert(`Re-send text invite to ${v.name}`) });
+      resends.push({ key: 'resend-text', label: 'Re-send text invite', icon: SmsOutlinedIcon, onClick: () => alert(`Re-send text invite to ${v.name}`) });
     }
-    return actions;
+    return { sends, resends };
   };
 
   const allChecked = totalVisibleCount > 0 && selectedVisibleCount === totalVisibleCount;
@@ -132,15 +142,10 @@ export default function SupportersToRemind ({ supporters }) {
 
         <MobileRightTools className="u-show-mobile">
           <SelectAllInline>
-            <Checkbox
+            <SelectAllCheckbox
               checked={allChecked}
               indeterminate={indeterminate}
-              tabIndex={-1}
-              disableRipple
-              sx={{ padding: 0 }}
               onClick={handleSelectCheckboxClick}
-              onChange={() => {}}
-              inputProps={{ 'aria-label': 'Select all' }}
             />
             Select all
           </SelectAllInline>
@@ -155,49 +160,47 @@ export default function SupportersToRemind ({ supporters }) {
       <ToolbarRow className="u-show-desktop-tablet">
         <LeftTools>
           <SelectAllInline>
-            <Checkbox
+            <SelectAllCheckbox
               checked={allChecked}
               indeterminate={indeterminate}
-              tabIndex={-1}
-              disableRipple
-              sx={{ padding: 0 }}
               onClick={handleSelectCheckboxClick}
-              onChange={() => {}}
-              inputProps={{ 'aria-label': 'Select all' }}
             />
             Select all
           </SelectAllInline>
         </LeftTools>
-
-        <SendMessageButton
-          disbaleBoolean={selectedVoters.length === 0}
-          sendMessageFunction={handleResendSelected}
-          buttonText={`Resend invitation to selected (${selectedVoters.length})`}
-        />
       </ToolbarRow>
 
+      {headerActionSlot && createPortal(
+        <SendMessageButton
+          verb="Resend invite"
+          count={selectedVoters.length}
+          onClick={handleResendSelected}
+        />,
+        headerActionSlot,
+      )}
+
       {/* Desktop column headers */}
-      <DesktopHeaderRow className="u-show-desktop-tablet">
+      <DesktopGridHeader className="u-show-desktop-tablet" $cols={REMIND_GRID_COLS}>
         <HeaderName>
           <CheckboxSpacer aria-hidden="true" />
           Name
         </HeaderName>
         <HeaderInvitedVia>Invited via</HeaderInvitedVia>
         <HeaderActions>Recommended staff actions</HeaderActions>
-      </DesktopHeaderRow>
+      </DesktopGridHeader>
 
       {visibleSupporters.length === 0 ? (
         <EmptyState>No voters to remind in this view.</EmptyState>
       ) : (
-        <CardList>
+        <FlatCardList>
           {visibleSupporters.map((v) => {
             const isChecked = selected.has(v.id);
             const actions = getRecommendedActions(v);
 
             return (
-              <RemindCard key={v.id} $selected={isChecked}>
+              <FlatRowCard key={v.id} $selected={isChecked}>
                 {/* Desktop row layout */}
-                <DesktopRow className="u-show-desktop-tablet">
+                <DesktopGridRow className="u-show-desktop-tablet" $cols={REMIND_GRID_COLS}>
                   <NameCell>
                     <input
                       type="checkbox"
@@ -211,15 +214,25 @@ export default function SupportersToRemind ({ supporters }) {
                   <InvitedViaCell>{getInvitedViaLabel(v)}</InvitedViaCell>
 
                   <ActionsCell>
-                    {actions.map((a) => (
-                      <ActionLinkButton key={a.key} type="button" onClick={a.onClick}>
-                        {a.isResend && <AutorenewIcon sx={{ fontSize: 16 }} />}
-                        <a.icon sx={{ fontSize: 18 }} />
-                        {a.label}
-                      </ActionLinkButton>
-                    ))}
+                    <ActionsColumn>
+                      {actions.sends.map((a) => (
+                        <ActionLinkButton key={a.key} type="button" onClick={a.onClick}>
+                          <a.icon sx={{ fontSize: 18 }} />
+                          {a.label}
+                        </ActionLinkButton>
+                      ))}
+                    </ActionsColumn>
+                    <ActionsColumn>
+                      {actions.resends.map((a) => (
+                        <ActionLinkButton key={a.key} type="button" onClick={a.onClick}>
+                          <AutorenewIcon sx={{ fontSize: 16 }} />
+                          <a.icon sx={{ fontSize: 18 }} />
+                          {a.label}
+                        </ActionLinkButton>
+                      ))}
+                    </ActionsColumn>
                   </ActionsCell>
-                </DesktopRow>
+                </DesktopGridRow>
 
                 {/* Mobile card layout */}
                 <div className="u-show-mobile">
@@ -245,23 +258,23 @@ export default function SupportersToRemind ({ supporters }) {
 
                   <MobileFieldLabel>What you can do</MobileFieldLabel>
                   <MobileActions>
-                    {actions.map((a) => (
+                    {[...actions.sends, ...actions.resends].map((a) => (
                       <MobileActionPill key={a.key} type="button" onClick={a.onClick}>
                         {a.label}
                       </MobileActionPill>
                     ))}
                   </MobileActions>
                 </div>
-              </RemindCard>
+              </FlatRowCard>
             );
           })}
-        </CardList>
+        </FlatCardList>
       )}
 
       <SendMessageButtonMobile
-        disbaleBoolean={selectedVoters.length === 0}
-        sendThankYouFunction={handleResendSelected}
-        buttonText={`Resend invitation to selected (${selectedVoters.length})`}
+        verb="Resend invitation to selected"
+        count={selectedVoters.length}
+        onClick={handleResendSelected}
       />
 
       <CandidateRowMenu
@@ -288,32 +301,24 @@ export default function SupportersToRemind ({ supporters }) {
     </Container>
   );
 }
-
-const ActionLinkButton = styled.button`
-  align-items: center;
-  background: none;
-  border: none;
-  color: ${DesignTokenColors.primary600};
-  cursor: pointer;
-  display: inline-flex;
-  font-size: 14px;
-  font-weight: 500;
-  gap: 6px;
-  padding: 4px 0;
-  white-space: nowrap;
-
-  &:hover {
-    color: ${DesignTokenColors.primary700};
-    text-decoration: underline;
-  }
-`;
+SupportersToRemind.propTypes = {
+  supporters: PropTypes.arrayOf(PropTypes.object),
+};
 
 const ActionsCell = styled.div`
-  align-items: center;
+  align-items: flex-start;
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
-  gap: 14px;
+`;
+
+const ActionsColumn = styled.div`
+  align-items: flex-start;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 6px;
+  max-width: 180px;
 `;
 
 /* Same width as the row checkbox so "Name" header aligns with the data row's name text */
@@ -321,29 +326,6 @@ const CheckboxSpacer = styled.span`
   display: inline-block;
   height: 13px;
   width: 13px;
-`;
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const DesktopHeaderRow = styled.div`
-  align-items: center;
-  border-bottom: 1px solid ${DesignTokenColors.neutralUI200};
-  color: ${DesignTokenColors.neutralUI600};
-  display: grid;
-  font-size: 13px;
-  gap: 12px;
-  grid-template-columns: minmax(140px, 0.8fr) minmax(70px, 0.4fr) minmax(340px, 1.8fr);
-  padding: 8px 14px;
-`;
-
-const DesktopRow = styled.div`
-  align-items: center;
-  display: grid;
-  gap: 12px;
-  grid-template-columns: minmax(140px, 0.8fr) minmax(70px, 0.4fr) minmax(340px, 1.8fr);
 `;
 
 const EmptyState = styled.div`
@@ -370,54 +352,6 @@ const InvitedViaCell = styled.div`
   font-size: 14px;
 `;
 
-const KebabBtn = styled.button`
-  background: transparent;
-  border: none;
-  border-radius: 10px;
-  color: ${DesignTokenColors.neutralUI600};
-  cursor: pointer;
-  padding: 2px 6px;
-
-  &:hover {
-    background: ${DesignTokenColors.neutralUI50};
-  }
-`;
-
-const MobileActionPill = styled.button`
-  background: ${DesignTokenColors.whiteUI};
-  border: 1px solid ${DesignTokenColors.primary600};
-  border-radius: 9999px;
-  color: ${DesignTokenColors.primary700};
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 500;
-  padding: 8px 16px;
-  width: 100%;
-
-  &:hover {
-    background: ${DesignTokenColors.primary50};
-  }
-`;
-
-const MobileActions = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-top: 8px;
-`;
-
-const MobileFieldLabel = styled.div`
-  color: ${DesignTokenColors.neutralUI600};
-  font-size: 13px;
-  margin-top: 8px;
-`;
-
-const MobileFieldValue = styled.div`
-  color: ${DesignTokenColors.neutralUI900};
-  font-size: 14px;
-  font-weight: 500;
-`;
-
 const MobileRightTools = styled.div`
   align-items: center;
   display: flex;
@@ -430,39 +364,6 @@ const MobileToolsDivider = styled.span`
   display: inline-block;
   height: 18px;
   width: 1px;
-`;
-
-const NameCell = styled.div`
-  align-items: center;
-  display: flex;
-  gap: 10px;
-`;
-
-const NameText = styled.div`
-  color: ${DesignTokenColors.neutralUI900};
-  font-size: 15px;
-  font-weight: 600;
-`;
-
-const RemindCard = styled(Card)`
-  background: ${(p) => (p.$selected ? DesignTokenColors.primary50 : DesignTokenColors.neutralUI50)};
-  border: 1px solid ${(p) => (p.$selected ? DesignTokenColors.primary200 : DesignTokenColors.neutralUI200)};
-  padding: 12px 14px;
-
-  @media (min-width: 576px) {
-    background: ${(p) => (p.$selected ? DesignTokenColors.primary50 : DesignTokenColors.whiteUI)};
-    border-radius: 0;
-    border-left: none;
-    border-right: none;
-    border-top: none;
-    box-shadow: none;
-  }
-`;
-
-const RightOptions = styled.div`
-  align-items: center;
-  display: flex;
-  margin-left: auto;
 `;
 
 const SearchIconButton = styled.button`
@@ -482,16 +383,6 @@ const SearchIconButton = styled.button`
     background: ${DesignTokenColors.neutralUI50};
     color: ${DesignTokenColors.neutralUI900};
   }
-`;
-
-const SelectAllInline = styled.label`
-  align-items: center;
-  color: ${DesignTokenColors.neutralUI700};
-  display: inline-flex;
-  font-size: 14px;
-  gap: 6px;
-  line-height: 1;
-  margin: 0;
 `;
 
 const SubFilterPill = styled.button`
