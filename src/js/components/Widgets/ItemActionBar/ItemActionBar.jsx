@@ -383,7 +383,10 @@ class ItemActionBar extends PureComponent {
   };
 
   onClickDotsMenu = () => {
-    AppObservableStore.setShowEditPositionModal(true, this.props.politicianWeVoteId);
+    // Dots open the modal in visibility-only mode for both measures and candidates.
+    const { ballotItemType, ballotItemWeVoteId } = this.state;
+    const idForModal = ballotItemType === 'MEASURE' ? ballotItemWeVoteId : this.props.politicianWeVoteId;
+    AppObservableStore.setShowEditPositionModal(true, idForModal, false, true);
   };
 
   helpThemWinButton = (localUniqueId) => {
@@ -1068,26 +1071,25 @@ class ItemActionBar extends PureComponent {
           </ButtonGroup>
 
           {/* Chat bubble + visibility row for measures.
-              When voter has typed an opinion, replace bubble with divider + visibility text. */}
+              Chat bubble always renders; when voter has typed an opinion, divider + visibility text appear beside it. */}
           {ballotItemType === 'MEASURE' && !this.props.commentButtonHide && !this.props.inModal && (
             <>
-              {measureHasOpinion ? (
+              <ChatBubbleButton
+                aria-label="Comments"
+                onClick={this.togglePositionStatementFunction}
+                type="button"
+              >
+                <ChatBubbleOutline style={{ fontSize: 22, color: '#1976d2' }} />
+              </ChatBubbleButton>
+              {measureHasOpinion && (
                 <VisibilityInlineWrapperDesktop className="u-show-desktop">
                   <VisibilityDivider />
                   <MakePublicVisibilityRow
                     isPublic={voterPositionIsPublic}
                     onMakePublic={this.onClickMakePublic}
-                    onDotsClick={this.togglePositionStatementFunction}
+                    onDotsClick={this.onClickDotsMenu}
                   />
                 </VisibilityInlineWrapperDesktop>
-              ) : (
-                <ChatBubbleButton
-                  aria-label="Comments"
-                  onClick={this.togglePositionStatementFunction}
-                  type="button"
-                >
-                  <ChatBubbleOutline style={{ fontSize: 22, color: '#1976d2' }} />
-                </ChatBubbleButton>
               )}
 
               {/* Mobile: full-width visibility row wraps below buttons */}
@@ -1096,7 +1098,7 @@ class ItemActionBar extends PureComponent {
                   <MakePublicVisibilityRow
                     isPublic={voterPositionIsPublic}
                     onMakePublic={this.onClickMakePublic}
-                    onDotsClick={this.togglePositionStatementFunction}
+                    onDotsClick={this.onClickDotsMenu}
                   />
                 </VisibilityInlineWrapperMobile>
               )}
@@ -1107,8 +1109,15 @@ class ItemActionBar extends PureComponent {
               Pass showCandidateStaffAndChat prop to enable (e.g. in BallotScrollingContainer). */}
           {((ballotItemType === 'CANDIDATE' || ballotItemType === 'POLITICIAN') && this.props.showCandidateStaffAndChat) && (
             <>
-              {/* When visibilityRowOpen: hide bubble, show divider + visibility text inline */}
-              {visibilityRowOpen ? (
+              {/* Chat bubble always renders; when visibilityRowOpen, divider + visibility text appear beside it. */}
+              <ChatBubbleButton
+                aria-label="Comments"
+                onClick={this.onClickChatBubble}
+                type="button"
+              >
+                <ChatBubbleOutline style={{ fontSize: 22, color: '#1976d2' }} />
+              </ChatBubbleButton>
+              {visibilityRowOpen && (
                 <VisibilityInlineWrapperDesktop className="u-show-desktop">
                   <VisibilityDivider />
                   <MakePublicVisibilityRow
@@ -1117,14 +1126,6 @@ class ItemActionBar extends PureComponent {
                     onDotsClick={this.onClickDotsMenu}
                   />
                 </VisibilityInlineWrapperDesktop>
-              ) : (
-                <ChatBubbleButton
-                  aria-label="Comments"
-                  onClick={this.onClickChatBubble}
-                  type="button"
-                >
-                  <ChatBubbleOutline style={{ fontSize: 22, color: '#1976d2' }} />
-                </ChatBubbleButton>
               )}
 
               {!this.props.inModal && (

@@ -118,6 +118,7 @@ const CheckOutlinedStyled = styled(CheckOutlined)`
 `;
 
 const SpeakerPosition = styled('div')`
+  align-items: center;
   display: flex;
 `;
 

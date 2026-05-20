@@ -31,7 +31,7 @@ export const PositionText = styled('div')`
 
 export const SpeakerInfoWrapper = styled('div')`
   display: flex;
-  margin-bottom: 12px;
+  margin-bottom: 6px;
   margin-left: 15px;
   flex-direction: column;
   // width: 500px;

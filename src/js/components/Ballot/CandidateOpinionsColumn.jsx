@@ -5,7 +5,9 @@ import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 import { renderLog } from '../../common/utils/logging';
 import AppObservableStore from '../../common/stores/AppObservableStore';
 import CandidateStore from '../../stores/CandidateStore';
+import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';
+import { getPositionFollowersCount } from './opinionsHelpers';
 import PositionList from './PositionList';
 
 const VoterPositionEntryAndDisplay = React.lazy(() => import(/* webpackChunkName: 'VoterPositionEntryAndDisplay' */ '../PositionItem/VoterPositionEntryAndDisplay'));
@@ -23,22 +25,27 @@ class CandidateOpinionsColumn extends Component {
 
   componentDidMount () {
     this.candidateStoreListener = CandidateStore.addListener(this.onStoreChange.bind(this));
+    this.organizationStoreListener = OrganizationStore.addListener(this.onStoreChange.bind(this));
     this.onStoreChange();
   }
 
   componentWillUnmount () {
     this.candidateStoreListener.remove();
+    this.organizationStoreListener.remove();
   }
 
   onStoreChange () {
     const { candidateWeVoteId } = this.props;
     const allPositions = CandidateStore.getAllCachedPositionsByCandidateWeVoteId(candidateWeVoteId);
     const currentVoterWeVoteId = VoterStore.getLinkedOrganizationWeVoteId();
-    const opinions = allPositions.filter(
-      (position) => position.statement_text && position.statement_text.length > 0 &&
-        !(position.speaker_display_name && position.speaker_display_name.startsWith('Voter-')) &&
-        position.speaker_we_vote_id !== currentVoterWeVoteId,
-    );
+    const opinions = allPositions
+      .filter(
+        (position) => position.is_support &&
+          position.statement_text && position.statement_text.length > 0 &&
+          !(position.speaker_display_name && position.speaker_display_name.startsWith('Voter-')) &&
+          position.speaker_we_vote_id !== currentVoterWeVoteId,
+      )
+      .sort((a, b) => getPositionFollowersCount(b) - getPositionFollowersCount(a));
     this.setState({
       opinions,
       opinionsCount: opinions.length,
