@@ -2,6 +2,8 @@ import { TextField, Tooltip, tooltipClasses } from '@mui/material';
 import React from 'react'; // eslint-disable-line no-unused-vars
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import colors from '../../common/components/Style/Colors';
+import { ElectionStateLabel } from '../../components/Style/BallotTitleHeaderStyles';
 
 export const ActionChip = styled('button')`
   display: inline-flex;
@@ -125,6 +127,23 @@ export const ElectionDateText = styled('span')`
   white-space: nowrap;
 `;
 
+// Date shown directly under the election title on the ForElection page.
+// Color matches ElectionStateLabel so the state line + date frame the title in the same hue.
+export const ElectionDetailDate = styled('div')`
+  color: ${colors.middleGrey};
+  font-size: 16px;
+  font-weight: 400;
+  margin-top: 0;
+  margin-bottom: 16px;
+  white-space: nowrap;
+`;
+
+// Slightly larger state label used in the Election Finder header.
+// Scoped so the shared ElectionStateLabel stays unchanged on Ballot pages.
+export const ElectionFinderStateLabel = styled(ElectionStateLabel)`
+  font-size: 15px;
+`;
+
 export const ElectionLink = styled('span')`
   font-size: 17px;
   color: #206bc4;
@@ -176,7 +195,8 @@ export const ElectionTitleRow = styled('div')`
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-bottom: 8px;
+  margin-top: 4px;
+  margin-bottom: 0;
 `;
 
 export const ExpandCollapseButton = styled('button')`

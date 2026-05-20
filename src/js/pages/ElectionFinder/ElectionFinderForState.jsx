@@ -13,6 +13,7 @@ import SnackNotifier from '../../common/components/Widgets/SnackNotifier';
 import ElectionStore from '../../stores/ElectionStore';
 import CopyChip from './CopyChip';
 import copyAndToast from './copyAndToast';
+import formatDateLong from './dateHelpers';
 import ElectionFinderHeader from './ElectionFinderHeader';
 import RowKebabMenu from './RowKebabMenu';
 import {
@@ -29,14 +30,6 @@ const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES ===
 const SORTED_STATES = Object.entries(stateCodeMap)
   .filter(([code]) => code !== 'NA')
   .sort((a, b) => a[1].localeCompare(b[1]));
-
-const MONTH_ABBR = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-
-function formatDateLong (dateString) {
-  if (!dateString) return '';
-  const [y, m, d] = dateString.split('-');
-  return `${MONTH_ABBR[parseInt(m, 10) - 1]} ${parseInt(d, 10)}, ${y}`;
-}
 
 function sortByDateAsc (a, b) {
   return (a.election_day_text || '').localeCompare(b.election_day_text || '');
