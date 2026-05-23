@@ -43,6 +43,7 @@ class BallotStore extends ReduceStore {
 
   isLoaded () {
     const civicId = VoterStore.electionId();
+    // console.log('BallotStore isLoaded, civicId:', civicId, ', ballots[civicId]:', this.getState().ballots[civicId]);
     return !!(this.getState().ballots && this.getState().ballots[civicId] && SupportStore.voterSupportsList);
   }
 
@@ -131,6 +132,7 @@ class BallotStore extends ReduceStore {
   }
 
   get currentBallotElectionName () {
+    // console.log('currentBallotElectionName, this.isLoaded():', this.isLoaded());
     if (!this.isLoaded()) { return ''; }
     const civicId = VoterStore.electionId();
     // console.log('ballots:', this.getState().ballots[civicId]);
@@ -501,6 +503,18 @@ class BallotStore extends ReduceStore {
       }
     }
     return substitutedState;
+  }
+
+  getSubstitutedStateCode () {
+    if (!this.isLoaded()) { return undefined; }
+    const civicId = VoterStore.electionId();
+    let substitutedStateCode = '';
+    if (this.getState().ballots[civicId]) {
+      if (this.getState().ballots[civicId].substituted_address_state) {
+        substitutedStateCode = this.getState().ballots[civicId].substituted_address_state || '';
+      }
+    }
+    return substitutedStateCode;
   }
 
   getTopLevelBallotItemWeVoteIds () {

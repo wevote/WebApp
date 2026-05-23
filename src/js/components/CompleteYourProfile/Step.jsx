@@ -22,15 +22,17 @@ function Step ({ onClick, step, label, completed, width }) {
     width={width}
     >
       <StepIcon
-      number={step}
-      completed={completed}
+        number={step}
+        completed={completed}
       />
-      <p>{label}</p>
+      <StepText
+        completed={completed}
+      >
+        {label}
+      </StepText>
     </HowItWorksStep>
   );
 }
-
-
 Step.propTypes = {
   onClick: PropTypes.func.isRequired,
   step: PropTypes.number.isRequired,
@@ -38,7 +40,6 @@ Step.propTypes = {
   completed: PropTypes.bool,
   width: PropTypes.string,
 };
-
 
 const HowItWorksStep = styled.div`
   display: flex;
@@ -62,12 +63,18 @@ const HowItWorksStep = styled.div`
     font-weight: 400;
     margin-top: 6px;
   }
-
 `}
 `;
+
+const StepText = styled('div')`
+  font-size: 16px;
+  font-weight: 400;
+  margin: 6px 0 6px 0;
+  text-align: center;
+  ${({ completed }) => `
+    color: ${completed ? Colors.green : Colors.primary2024};
+  }
+`}
+`;
+
 export default Step;
-
-
-
-
-

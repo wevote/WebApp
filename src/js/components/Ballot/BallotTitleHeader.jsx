@@ -4,6 +4,8 @@ import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import TagManager from 'react-gtm-module';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
 import styled from 'styled-components';
 import AppObservableStore from '../../common/stores/AppObservableStore';
 import { isAndroidSizeWide, isIPad } from '../../common/utils/cordovaUtils';
@@ -18,12 +20,38 @@ import VoterStore from '../../stores/VoterStore';
 import { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
 import { BallotAddress, ClickBlockWrapper, ContentWrapper, ElectionDateBelow, ElectionDateRight, ElectionNameBlock, ElectionNameH1, ElectionNameScrollContent, ElectionStateLabel, OverflowContainer, OverflowContent, VoteByBelowLabel, VoteByBelowWrapper, VoteByRightLabel, VoteByRightWrapper } from '../Style/BallotTitleHeaderStyles';
 import BallotTitleHeaderNationalPlaceholder from './BallotTitleHeaderNationalPlaceholder';
-import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
-import Tooltip from 'react-bootstrap/Tooltip';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 
 const ShareButtonDesktopTablet = React.lazy(() => import(/* webpackChunkName: 'ShareButtonDesktopTablet' */ '../Share/ShareButtonDesktopTablet'));
+
+function BallotOfficeHeader ({
+  officeName,
+  onViewBallotClick,
+}) {
+  return (
+    <InlineOfficeHeader>
+      <span>
+        <span className="u-show-mobile">
+          Ballot Section for
+        </span>
+        <span className="u-show-desktop-tablet">
+          Ballot section for office of
+        </span>
+
+        {' '}
+
+        <strong style={{ fontWeight: 500 }}>
+          {officeName}
+        </strong>
+      </span>
+
+      <ViewBallotButton onClick={onViewBallotClick}>
+        View full ballot
+      </ViewBallotButton>
+    </InlineOfficeHeader>
+  );
+}
 
 class BallotTitleHeader extends Component {
   constructor (props) {
@@ -138,7 +166,7 @@ class BallotTitleHeader extends Component {
 
   render () {
     renderLog('BallotTitleHeader');  // Set LOG_RENDER_EVENTS to log all renders
-    const { allowTextWrap, centerText, linksOff, shareButtonText, showBallotCaveat, showShareButton, turnOffVoteByBelow, officeName, onViewBallotClick, } = this.props;
+    const { allowTextWrap, centerText, linksOff, shareButtonText, showBallotCaveat, showShareButton, turnOffVoteByBelow, officeName, onViewBallotClick } = this.props;
     const {
       ballotCaveat, daysUntilElection, electionDayTextObject,
       electionName, nextNationalElectionDateMDY, originalTextAddress, originalTextState,
@@ -150,41 +178,13 @@ class BallotTitleHeader extends Component {
     const electionNameContainsState = stringContains(stateTextUsed.toLowerCase(), electionName.toLowerCase());
 
     const fromOfficePage = officeName && officeName.trim() !== '';
-    console.log("Button onViewBallotClick:", onViewBallotClick);
+    // console.log('Button onViewBallotClick:', onViewBallotClick);
 
     const electionNameTooltip = isMobileScreenSize() ? (<></>) : (
       <Tooltip className="u-z-index-9020" id="election-name-tooltip">
         {electionName}
       </Tooltip>
     );
-
-    const BallotOfficeHeader = ({
-      officeName,
-      onViewBallotClick,
-    }) => {
-      return (
-        <InlineOfficeHeader>
-          <span>
-            <span className="u-show-mobile">
-              Ballot Section for
-            </span>
-            <span className="u-show-desktop-tablet">
-              Ballot section for office of
-            </span>
-
-            {' '}
-
-            <strong style={{ fontWeight: 500 }}>
-              {officeName}
-            </strong>
-          </span>
-
-          <ViewBallotButton onClick={onViewBallotClick}>
-            View full ballot
-          </ViewBallotButton>
-        </InlineOfficeHeader>
-      );
-    };
 
     const editIconStyled = <Edit style={{ fontSize: 16, margin: '-6px 0 0 2px', color: '#69A7FF' }} />;
     // console.log('BallotTitleHeader allowTextWrap:', allowTextWrap);
@@ -253,29 +253,14 @@ class BallotTitleHeader extends Component {
                           {electionName}
                         </ElectionNameH1>
                       </OverlayTrigger>
-                      {
-                        fromOfficePage ? (
-                              <BallotOfficeHeader
-                                  officeName={officeName}
-                                  onViewBallotClick={onViewBallotClick}
-                              />
-                        ) : (
-                      <>
-                      {(showBallotCaveat && ballotCaveat) ? (
-                        <BallotAddress tabIndex={-1}
-                          allowTextWrap={allowTextWrap}
-                          centerText={centerText}
-                          className={linksOff ? '' : 'u-cursor--pointer'}
-                          id="ballotTitleBallotAddress"
-                          onClick={() => this.showSelectBallotModalEditAddress('ballotTitleBallotAddress')}
-                        >
-                          {ballotCaveat && (
-                            <div>{ballotCaveat}</div>
-                          )}
-                        </BallotAddress>
+                      {fromOfficePage ? (
+                        <BallotOfficeHeader
+                            officeName={officeName}
+                            onViewBallotClick={onViewBallotClick}
+                        />
                       ) : (
                         <>
-                          {((textForMapSearch && textForMapSearch !== '' && textForMapSearch.length >= 2) || (originalTextAddress && originalTextAddress !== '' && originalTextAddress.length >= 2)) ? (
+                          {(showBallotCaveat && ballotCaveat) ? (
                             <BallotAddress tabIndex={-1}
                               allowTextWrap={allowTextWrap}
                               centerText={centerText}
@@ -283,35 +268,13 @@ class BallotTitleHeader extends Component {
                               id="ballotTitleBallotAddress"
                               onClick={() => this.showSelectBallotModalEditAddress('ballotTitleBallotAddress')}
                             >
-                                    Ballot for
-                              {' '}
-                              <span tabIndex={0}
-                                className={linksOff ? '' : 'u-link-color u-link-underline-on-hover'}
-                              >
-                               <span>
-                                  {(textForMapSearch && textForMapSearch !== '') ? textForMapSearch : originalTextAddress}
-                                </span>
-                                {linksOff ? <></> : editIconStyled}
-                              </span>
+                              {ballotCaveat && (
+                                <div>{ballotCaveat}</div>
+                              )}
                             </BallotAddress>
                           ) : (
                             <>
-                              {(substitutedAddress && substitutedAddress !== '' && substitutedAddress.length >= 2) ? (
-                                <BallotAddress
-                                  allowTextWrap={allowTextWrap}
-                                  centerText={centerText}
-                                  className={linksOff ? '' : 'u-cursor--pointer'}
-                                  id="ballotTitleBallotAddressSubstituted"
-                                  onClick={() => this.showSelectBallotModalEditAddress('ballotTitleBallotAddressSubstituted')}
-                                >
-                                          Ballot for
-                                  {' '}
-                                  <span tabIndex={0} className={linksOff ? '' : 'u-link-color u-link-underline-on-hover'}>
-                                        {substitutedAddress}
-                                  </span>
-                                  {linksOff ? <></> : editIconStyled}
-                                </BallotAddress>
-                              ) : (
+                              {((textForMapSearch && textForMapSearch !== '' && textForMapSearch.length >= 2) || (originalTextAddress && originalTextAddress !== '' && originalTextAddress.length >= 2)) ? (
                                 <BallotAddress tabIndex={-1}
                                   allowTextWrap={allowTextWrap}
                                   centerText={centerText}
@@ -319,18 +282,61 @@ class BallotTitleHeader extends Component {
                                   id="ballotTitleBallotAddress"
                                   onClick={() => this.showSelectBallotModalEditAddress('ballotTitleBallotAddress')}
                                 >
-                                  <span tabIndex={0} className={linksOff ? '' : 'u-link-color u-link-underline-on-hover'}>
-                                    Click to enter your address
+                                  Ballot for
+                                  {' '}
+                                  <span
+                                    // tabIndex={0}
+                                    className={linksOff ? '' : 'u-link-color u-link-underline-on-hover'}
+                                  >
+                                    <span>
+                                      {(textForMapSearch && textForMapSearch !== '') ? textForMapSearch : originalTextAddress}
+                                    </span>
+                                    {linksOff ? <></> : editIconStyled}
                                   </span>
-                                  {linksOff ? <></> : editIconStyled}
                                 </BallotAddress>
+                              ) : (
+                                <>
+                                  {(substitutedAddress && substitutedAddress !== '' && substitutedAddress.length >= 2) ? (
+                                    <BallotAddress
+                                      allowTextWrap={allowTextWrap}
+                                      centerText={centerText}
+                                      className={linksOff ? '' : 'u-cursor--pointer'}
+                                      id="ballotTitleBallotAddressSubstituted"
+                                      onClick={() => this.showSelectBallotModalEditAddress('ballotTitleBallotAddressSubstituted')}
+                                    >
+                                      Ballot for
+                                      {' '}
+                                      <span
+                                        // tabIndex={0}
+                                        className={linksOff ? '' : 'u-link-color u-link-underline-on-hover'}
+                                      >
+                                        {substitutedAddress}
+                                      </span>
+                                      {linksOff ? <></> : editIconStyled}
+                                    </BallotAddress>
+                                  ) : (
+                                    <BallotAddress tabIndex={-1}
+                                      allowTextWrap={allowTextWrap}
+                                      centerText={centerText}
+                                      className={linksOff ? '' : 'u-cursor--pointer'}
+                                      id="ballotTitleBallotAddress"
+                                      onClick={() => this.showSelectBallotModalEditAddress('ballotTitleBallotAddress')}
+                                    >
+                                      <span
+                                        // tabIndex={0}
+                                        className={linksOff ? '' : 'u-link-color u-link-underline-on-hover'}
+                                      >
+                                        Click to enter your address
+                                      </span>
+                                      {linksOff ? <></> : editIconStyled}
+                                    </BallotAddress>
+                                  )}
+                                </>
                               )}
                             </>
                           )}
                         </>
                       )}
-                      </>
-                    )}
                       {(!turnOffVoteByBelow && electionDayTextObject) && (
                         <VoteByBelowWrapper centerText={centerText}>
                           <VoteByBelowLabel>
@@ -386,7 +392,7 @@ class BallotTitleHeader extends Component {
           </ContentWrapper>
         </BallotTitleHeaderWrapper>
       );
-    } else {
+    } else if (!fromOfficePage) {
       return (
         <span
           className="u-push--sm"
@@ -405,6 +411,8 @@ class BallotTitleHeader extends Component {
           )}
         </span>
       );
+    } else {
+      return null;
     }
   }
 }
