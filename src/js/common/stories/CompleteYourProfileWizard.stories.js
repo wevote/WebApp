@@ -31,7 +31,7 @@ const initialSteps = [
   },
   {
     id: 3,
-    title: 'Sign in or join to save your ballot choices/settings',
+    title: 'Sign in or join to save your ballot choices & settings',
     buttonText: 'Sign up to save choices',
     completed: false,
     description: '',

@@ -58,6 +58,7 @@ import { checkShouldUpdate, formatVoterBallotList } from './utils/ballotUtils';
 
 const CompleteYourProfileOnBallot = React.lazy(() => import(/* webpackChunkName: 'CompleteYourProfile' */ '../../components/CompleteYourProfile/CompleteYourProfileOnBallot'));
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
+const DisplayWhileRetrievingBallot = React.lazy(() => import(/* webpackChunkName: 'DisplayWhileRetrievingBallot' */ '../../components/Ballot/DisplayWhileRetrievingBallot'));
 const FilterBaseSearch = React.lazy(() => import(/* webpackChunkName: 'FilterBaseSearch' */ '../../components/Filter/FilterBaseSearch'));
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 const ShowMoreItems = React.lazy(() => import(/* webpackChunkName: 'ShowMoreItems' */ '../../components/Widgets/ShowMoreItems'));
@@ -1286,39 +1287,6 @@ class Ballot extends Component {
     // );
 
     // console.log('ballotWithItemsFromCompletionFilterType: ', ballotWithItemsFromCompletionFilterType);
-    // Was: ballotWithItemsFromCompletionFilterType
-    const emptyBallot = ballotWithAllItems.length === 0 ? (
-      <LoadingWrapper>
-        <Suspense fallback={<></>}>
-          <DelayedLoad waitBeforeShow={1000}>
-            <div>
-              Connecting with our data providers...
-            </div>
-          </DelayedLoad>
-          <DelayedLoad waitBeforeShow={2000}>
-            <div>
-              Requesting what is on your ballot...
-            </div>
-          </DelayedLoad>
-          <DelayedLoad waitBeforeShow={4000}>
-            <div>
-              Waiting for response...
-            </div>
-          </DelayedLoad>
-          <DelayedLoad waitBeforeShow={6000}>
-            <div>
-              Thank you for your patience...
-            </div>
-          </DelayedLoad>
-          {/* <DelayedLoad waitBeforeShow={4000}> */}
-          {/*  <div> */}
-          {/*    <h3 className="text-center">{this.getEmptyMessageByFilterType(completionLevelFilterType)}</h3> */}
-          {/*    {emptyBallotButton} */}
-          {/*  </div> */}
-          {/* </DelayedLoad> */}
-        </Suspense>
-      </LoadingWrapper>
-    ) : null;
 
     const inRemainingDecisionsMode = completionLevelFilterType === 'filterRemaining';
     // console.log('inRemainingDecisionsMode: ', inRemainingDecisionsMode);
@@ -1531,7 +1499,9 @@ class Ballot extends Component {
                         </Suspense>
                       </CompleteYourProfileWrapper>
                     )}
-                    {emptyBallot}
+                    <Suspense fallback={<></>}>
+                      <DisplayWhileRetrievingBallot ballotWithAllItems={ballotWithAllItems} />
+                    </Suspense>
                   </div>
                   {ballotWithItemsFromCompletionFilterType.length > 0 ? (
                     <BallotStatusMessage

@@ -70,9 +70,11 @@ class HeartFavoriteToggleBase extends Component {
       prevProps.opposersCount !== this.props.opposersCount;
 
     if (propsChanged) {
+      // Only set voterSupports or voterOpposes if voter is signed in
+      const voterIsSignedInTemp = this.props.voterIsSignedIn || prevProps.voterIsSignedIn;
       this.setState({
-        voterSupportsLocal: this.props.voterSupports,
-        voterOpposesLocal: this.props.voterOpposes,
+        voterSupportsLocal: this.props.voterSupports && voterIsSignedInTemp,
+        voterOpposesLocal: this.props.voterOpposes && voterIsSignedInTemp,
         supportersCountLocal: this.props.supportersCount,
         opposersCountLocal: this.props.opposersCount,
       });
@@ -134,14 +136,14 @@ class HeartFavoriteToggleBase extends Component {
   }
 
   onPropsChange () {
-    const { opposersCount, supportersCount, voterSupports, voterOpposes } = this.props;
+    const { opposersCount, supportersCount, voterIsSignedIn, voterSupports, voterOpposes } = this.props;
     // console.log('HeartFavoriteToggleBase onPropsChange opposersCount: ', opposersCount, ', supportersCount: ', supportersCount);
     // console.log('HeartFavoriteToggleBase onPropsChange voterOpposes: ', voterOpposes, ', voterSupports: ', voterSupports);
     this.setState({
       opposersCountLocal: opposersCount,
       supportersCountLocal: supportersCount,
-      voterSupportsLocal: voterSupports,
-      voterOpposesLocal: voterOpposes,
+      voterSupportsLocal: voterSupports && voterIsSignedIn,
+      voterOpposesLocal: voterOpposes && voterIsSignedIn,
     });
   }
 
@@ -193,9 +195,15 @@ class HeartFavoriteToggleBase extends Component {
       supportersCountLocal: supportersCountLocalPrevious,
       showSignInPromptSupports: showSignInPromptSupportsPrevious,
       showSignInPromptOpposes: showSignInPromptOpposesPrevious,
+    } = this.state;
+    let {
       voterOpposesLocal: voterOpposesLocalPrevious,
       voterSupportsLocal: voterSupportsLocalPrevious,
     } = this.state;
+    if (!voterIsSignedIn) {
+      voterOpposesLocalPrevious = false;
+      voterSupportsLocalPrevious = false;
+    }
 
     const { voterProfileComplete } = this.props;
     if (!voterIsSignedIn) {
