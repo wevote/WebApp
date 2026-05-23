@@ -177,7 +177,7 @@ class ShareButtonDesktopTablet extends Component {
     AppObservableStore.setShowShareModal(true);
     AppObservableStore.setWhatAndHowMuchToShare(whatAndHowMuchToShare);
     if (!stringContains('/modal/share', pathname) && isWebApp()) {
-    //  console.log('Navigation ShareButtonDesktopTablet openShareModal ', pathnameWithModalShare);
+      // console.log('Navigation ShareButtonDesktopTablet openShareModal ', pathnameWithModalShare);
       historyPush(pathnameWithModalShare, false, false);
     }
   }
