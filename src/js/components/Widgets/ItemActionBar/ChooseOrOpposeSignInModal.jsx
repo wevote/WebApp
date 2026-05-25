@@ -53,7 +53,7 @@ class ChooseOrOpposeIntroModal extends Component {
       getReady:
         (
           <>
-            <SubTitle>WeVote helps you get ready to vote, BUT does not officially cast your vote.</SubTitle>
+            <SubTitle>WeVote helps you get ready to vote, but does NOT officially cast your vote.</SubTitle>
             <PlainText>Make sure to return your official ballot to your local election registrar.</PlainText>
             <Options buttons="2">
               {!voterIsSignedIn && (

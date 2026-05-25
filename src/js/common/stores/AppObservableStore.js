@@ -766,6 +766,11 @@ export default {
     messageService.sendMessage('state updated showImageUploadModal');
   },
 
+  setShowMakePublicGateModal (show) {
+    nonFluxState.showMakePublicGateModal = show;
+    messageService.sendMessage('state updated showMakePublicGateModal');
+  },
+
   setShowNewVoterGuideModal (show) {
     nonFluxState.showNewVoterGuideModal = show;
     messageService.sendMessage('state updated showNewVoterGuideModal');
@@ -946,6 +951,10 @@ export default {
       nonFluxState.showSelectBallotModal ||
       nonFluxState.showSharedItemModal ||
       nonFluxState.showValuesIntroModal;
+  },
+
+  showMakePublicGateModal () {
+    return nonFluxState.showMakePublicGateModal;
   },
 
   showNewVoterGuideModal () {

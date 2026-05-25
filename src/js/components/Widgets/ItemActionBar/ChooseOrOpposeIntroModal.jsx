@@ -1,18 +1,14 @@
-import { Close } from '@mui/icons-material';
-import { Button, DialogContent, DialogTitle, IconButton } from '@mui/material';
+import { Button, DialogContent, DialogTitle } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import styled from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
 import AppObservableStore from '../../../common/stores/AppObservableStore';
 import VoterStore from '../../../stores/VoterStore';
 import PositionPublicToggle from '../../PositionItem/PositionPublicToggle';
 import webAppConfig from '../../../config';
-import { createGlobalStyle } from 'styled-components';
-// import ConfirmCloseModal from '../../More/ConfirmCloseModal';
-import ModalDisplayTemplateB from '../../Widgets/ModalDisplayTemplateB';
+import ModalDisplayTemplateB from '../ModalDisplayTemplateB';
 
-const SignInOptionsPanel = React.lazy(() => import(/* webpackChunkName: 'SignInOptionsPanel' */ '../../../common/components/SignIn/SignInOptionsPanel'));
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../../common/components/Widgets/OpenExternalWebSite'));
 
 const termsOfServiceURL = `${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}/more/terms`;
@@ -61,7 +57,7 @@ class ChooseOrOpposeIntroModal extends Component {
       getReady:
         (
           <>
-            <SubTitle>WeVote helps you get ready to vote, BUT does not officially cast your vote.</SubTitle>
+            <SubTitle>WeVote helps you get ready to vote, but does NOT officially cast your vote.</SubTitle>
             <PlainText>Make sure to return your official ballot to your local election registrar.</PlainText>
             <Options buttons="2">
               {!voterIsSignedIn && (
@@ -127,29 +123,11 @@ class ChooseOrOpposeIntroModal extends Component {
       slides.signIn = (
         <Suspense fallback={<></>}>
           <>
-            {/* <SignInOptionsPanel
-              pleaseSignInTitle="Save your choices for access on any device."
-              pleaseSignInSubTitle=""
-              toggleSignInModal={this.props.onClose}
-              inModal
-            /> */}
-            <div
-              className="u-f3"
+            <SubTitleText
               id="pleaseSignInTitle"
-              style={{
-                width: '100%',
-                display: 'block',
-                textAlign: 'center',
-                margin: '0 auto',
-                padding: '0 16px',
-                fontWeight: 600,
-                fontSize: '18px',
-                lineHeight: 1.4,
-                color: '#4B4B4B',
-              }}
             >
               Save your choices for access on any device.
-            </div>
+            </SubTitleText>
             <Options buttons="1">
               <Button
                 classes={{ root: classes.signInButton }}
@@ -174,7 +152,8 @@ class ChooseOrOpposeIntroModal extends Component {
               Signing in is optional. Takes about 30 seconds. Free forever.
             </HelperText>
             <TermsWrapper id="terms_Wrapper">
-              By continuing, you accept WeVote.US’s<br />
+              By continuing, you accept WeVote.US’s
+              <br />
               {' '}
               <Suspense fallback={<></>}>
                 <OpenExternalWebSite
@@ -234,33 +213,6 @@ class ChooseOrOpposeIntroModal extends Component {
     const slides = this.getSlides();
     return (
       <>
-        {/* <IconButtonRow>                                                                                                                                                                               
-          <IconButton   
-            aria-label="Close"
-            classes={{ root: classes.closeButton }}
-            onClick={this.props.onClose}
-            id="profileCloseItemActionBar"
-            size="large"
-          >
-            <Close />
-          </IconButton>
-        </IconButtonRow>
-        <DialogTitle classes={{ root: classes.dialogTitle }}>
-          <TitleText>Nice work - you're making progress!</TitleText>
-        </DialogTitle>
-        <HorizontalLine />
-        <DialogContent classes={{ root: classes.dialogContent }}>
-          <SlidesWrapper>
-            <SlidesContainer>
-              {slides[currentSlideKey]}
-            </SlidesContainer>
-          </SlidesWrapper>
-        </DialogContent> */}
-        {/* <ConfirmCloseModal
-          isOpen
-          onConfirm={this.props.onClose}
-          onCancel={this.props.onClose}
-        /> */}
         <HideDivider />
         <SoftenCorners />
         <CenterModal />
@@ -272,7 +224,7 @@ class ChooseOrOpposeIntroModal extends Component {
           textFieldJSX={(
             <>
               <DialogTitle classes={{ root: classes.dialogTitle }}>
-                <TitleText>Nice work - you're making progress!</TitleText>
+                <TitleText>Nice work - you&apos;re making progress!</TitleText>
               </DialogTitle>
               <HorizontalLine />
               <DialogContent classes={{ root: classes.dialogContent }}>
@@ -366,14 +318,18 @@ const RemovePadding = createGlobalStyle`
   }
 `;
 
-const TermsWrapper = styled('div')(({ theme }) => (`
-  margin-top: 30px;
+const BoldText = styled('div')`
+  font-weight: bold;
+`;
+
+const HelperText = styled('div')`
+  font-size: 14px;
   font-weight: 600;
+  color: #777;
   text-align: center;
-  // ${theme.breakpoints.down('sm')} {
-  //   padding-top: 30px;
-  // }
-`));
+  line-height: 1.4;
+  padding: 14px;
+`;
 
 const HorizontalLine = styled('div')(({ theme }) => (`
   background-color: #A9A9A9;
@@ -386,11 +342,6 @@ const HorizontalLine = styled('div')(({ theme }) => (`
   }
 `));
 
-const IconButtonRow = styled('div')(() => (`
-    display: flex;                                                                                                                                                                              
-    justify-content: flex-end;
-`));
-
 const Options = styled('div')(({ buttons }) => (`
   display: flex;
   flex-flow: ${buttons > 1 ? 'row' : 'column'};
@@ -398,47 +349,14 @@ const Options = styled('div')(({ buttons }) => (`
   margin-top: 1em;
 `));
 
-const TitleText = styled('div')`
-  font-weight: 600;
-  font-size: 26px;
-  font-family: "Poppins", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
-  color: #206DB3;
-  margin: 0 auto 4px auto;
-  padding: 0 16px;
-  width: 100%;
-  text-align: center;
-  line-height: 1.3;
-`;
-
-const HelperText = styled('div')`
-  font-size: 13px;
-  font-weight: 600;
-  color: #777;
-  text-align: center;
-  line-height: 1.4;
-  padding: 14px;
-`;
-
-const SubTitle = styled('div')`
-  font-size: 18px;
-  color: #333;
-  text-align: left;
-  margin-bottom: 4px;
-`;
-
 const PlainText = styled('div')`
   color: #666;
   text-align: left;
 `;
 
-const BoldText = styled('div')`
-  font-weight: bold;
-`;
-
 const Row = styled('div')`
   // display: flex;
-  margin: 16px 0;
-  margin-top: 20px;
+  margin: 20px 0 16px 0;
 `;
 
 const SlidesContainer = styled('div')`
@@ -456,5 +374,46 @@ const SlidesWrapper = styled('div')(({ theme }) => (`
     min-width: 260px;
   }
 `));
+
+const SubTitle = styled('div')`
+  font-size: 18px;
+  color: #333;
+  text-align: left;
+  margin-bottom: 4px;
+`;
+
+const SubTitleText = styled('div')`
+  width: 100%;
+  display: block;
+  text-align: center;
+  margin: 0 auto;
+  padding: 0 16px;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 1.4;
+  color: #4B4B4B;
+`;
+
+const TermsWrapper = styled('div')(({ theme }) => (`
+  margin-top: 30px;
+  font-size: 13px;
+  font-weight: 400;
+  text-align: center;
+  // ${theme.breakpoints.down('sm')} {
+  //   padding-top: 30px;
+  // }
+`));
+
+const TitleText = styled('div')`
+  font-weight: 600;
+  font-size: 26px;
+  // font-family: "Poppins", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+  color: #206DB3;
+  margin: 0 auto 4px auto;
+  padding: 0 16px;
+  width: 100%;
+  text-align: center;
+  line-height: 1.3;
+`;
 
 export default withStyles(styles)(ChooseOrOpposeIntroModal);

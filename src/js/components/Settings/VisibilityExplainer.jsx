@@ -22,7 +22,7 @@ function VisibilityExplainer ({ fontSize }) {
       <li>
         <strong>Private:</strong>
         {' '}
-        Ideal for personal reflection or when you&apos;re not ready to share publicly.
+        Ideal for personal reflection or when you&apos;re not ready to share publicly. (COMING IN 2027)
       </li>
     </ExplainerList>
   );

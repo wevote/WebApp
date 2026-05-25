@@ -177,7 +177,7 @@ class CompleteYourProfileOnBallot extends Component {
         },
         {
           id: 3,
-          title: voterIsSignedIn ? 'Your ballot choices and settings are saved' : 'Sign in or join to save your ballot choices & settings',
+          title: voterIsSignedIn ? 'Your ballot choices & settings are saved' : 'Sign in or join to save your ballot choices & settings',
           buttonText: voterIsSignedIn ? '' : 'Sign up to save choices',
           completed: false,
           description: '',

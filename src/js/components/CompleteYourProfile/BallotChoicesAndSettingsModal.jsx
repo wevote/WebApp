@@ -93,7 +93,7 @@ class BallotChoicesAndSettingsModal extends Component {
       <>
         {this.renderConfetti()}
         <ModalDisplayTemplateA
-          dialogTitleJSX={<Title>Your ballot choices and settings are saved</Title>}
+          dialogTitleJSX={<Title>Your ballot choices & settings are saved</Title>}
           show={show}
           toggleModal={this.toggleModal}
           textFieldJSX={this.BallotChoicesAndSettingsBody()}
