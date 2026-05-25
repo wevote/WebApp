@@ -65,6 +65,7 @@ CompleteYourProfileModalController.propTypes = {
   functionToUseWhenProfileComplete: PropTypes.func.isRequired,
   startCampaign: PropTypes.bool,
   supportCampaign: PropTypes.bool,
+  supportPolitician: PropTypes.bool,
 };
 
 export default CompleteYourProfileModalController;

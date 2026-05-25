@@ -284,6 +284,10 @@ function TrackingIcon ({ size = 22, title = 'Tracking', ...props }) {
     </svg>
   );
 }
+TrackingIcon.propTypes = {
+  size: PropTypes.number,
+  title: PropTypes.string,
+};
 
 const HeaderRow = styled.div`
   margin: 6px 0 12px;
