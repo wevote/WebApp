@@ -489,7 +489,7 @@ class OrganizationModal extends Component {
         )}
         <VoterPositionEntryAndDisplayWrapper>
           <VoterPositionEntryAndDisplay
-            ballotItemWeVoteId={isMeasure ? ballotItemWeVoteId : undefined}
+            ballotItemWeVoteId={ballotItemWeVoteId}
             politicianWeVoteId={politicianWeVoteId}
           />
         </VoterPositionEntryAndDisplayWrapper>

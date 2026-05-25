@@ -363,7 +363,10 @@ class ItemActionBar extends PureComponent {
   // API (onClickMakePublic → SupportActions.voterPositionVisibilitySave), revisit
   // whether the visibility row should be gated on isAnyEndorsementCalculated().
   onClickChatBubble = () => {
-    AppObservableStore.setShowEditPositionModal(true, this.props.politicianWeVoteId);
+    const { politicianWeVoteId } = this.props;
+    const { ballotItemWeVoteId } = this.state;
+    const idForModal = ballotItemWeVoteId || politicianWeVoteId;
+    AppObservableStore.setShowEditPositionModal(true, idForModal);
   };
 
   onClickClaimProfile = () => {
@@ -377,15 +380,19 @@ class ItemActionBar extends PureComponent {
   onClickMakePublic = () => {
     const { ballotItemType, ballotItemWeVoteId } = this.state;
     const { politicianWeVoteId } = this.props;
-    SupportActions.voterPositionVisibilitySave(ballotItemWeVoteId, ballotItemType, politicianWeVoteId, 'SHOW_PUBLIC');
-    this.setState({ voterPositionIsPublic: true });
-    openSnackbar({ message: 'Your choice & opinion is now visible to anyone!' });
+    if (VoterStore.getVoterIsSignedIn()) {
+      SupportActions.voterPositionVisibilitySave(ballotItemWeVoteId, ballotItemType, politicianWeVoteId, 'SHOW_PUBLIC');
+      this.setState({ voterPositionIsPublic: true });
+      openSnackbar({ message: 'Your choice & opinion is now visible to anyone!' });
+    } else {
+      AppObservableStore.setShowMakePublicGateModal(true);
+    }
   };
 
   onClickDotsMenu = () => {
     // Dots open the modal in visibility-only mode for both measures and candidates.
-    const { ballotItemType, ballotItemWeVoteId } = this.state;
-    const idForModal = ballotItemType === 'MEASURE' ? ballotItemWeVoteId : this.props.politicianWeVoteId;
+    const { ballotItemWeVoteId } = this.state;
+    const idForModal = ballotItemWeVoteId || this.props.politicianWeVoteId;
     AppObservableStore.setShowEditPositionModal(true, idForModal, false, true);
   };
 
@@ -1076,7 +1083,8 @@ class ItemActionBar extends PureComponent {
             <>
               <ChatBubbleButton
                 aria-label="Comments"
-                onClick={this.togglePositionStatementFunction}
+                // onClick={this.togglePositionStatementFunction}
+                onClick={this.onClickChatBubble}
                 type="button"
               >
                 <ChatBubbleOutline style={{ fontSize: 22, color: '#1976d2' }} />

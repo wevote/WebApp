@@ -4,9 +4,9 @@ import styled from 'styled-components';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 
 const OPTIONS = [
-  { value: 'public', label: 'Public' },
-  { value: 'friends', label: 'WeVote friends' },
-  { value: 'private', label: 'Private' },
+  { value: 'SHOW_PUBLIC', label: 'Public' },
+  { value: 'FRIENDS_ONLY', label: 'WeVote friends' },
+  // { value: 'ME_ONLY', label: 'Private' },
 ];
 
 function VisibilityToggleBar ({ value, onChange }) {

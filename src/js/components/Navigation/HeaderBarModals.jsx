@@ -20,6 +20,7 @@ const ChooseOrOpposeIntroModal = React.lazy(() => import(/* webpackChunkName: 'C
 const ChooseOrOpposeSignInModal = React.lazy(() => import(/* webpackChunkName: 'ChooseOrOpposeSignInModal' */ '../Widgets/ItemActionBar/ChooseOrOpposeSignInModal'));
 const FirstPositionIntroModal = React.lazy(() => import(/* webpackChunkName: 'FirstPositionIntroModal' */ '../CompleteYourProfile/FirstPositionIntroModal'));
 const ImageUploadModal = React.lazy(() => import(/* webpackChunkName: 'ImageUploadModal' */ '../Settings/ImageUploadModal'));
+const MakePublicGateModal = React.lazy(() => import(/* webpackChunkName: 'MakePublicGateModal' */ '../Widgets/ItemActionBar/MakePublicGateModal'));
 const PersonalizedScoreIntroModal = React.lazy(() => import(/* webpackChunkName: 'PersonalizedScoreIntroModal' */ '../CompleteYourProfile/PersonalizedScoreIntroModal'));
 const SelectBallotModal = React.lazy(() => import(/* webpackChunkName: 'SelectBallotModal' */ '../Ballot/SelectBallotModal'));
 const ShareModal = React.lazy(() => import(/* webpackChunkName: 'ShareModal' */ '../Share/ShareModal'));
@@ -43,6 +44,7 @@ class HeaderBarModals extends Component {
       showClaimProfileWithOtherWaysModal: false,
       showEditPositionModal: false,
       showFirstPositionIntroModal: false,
+      showMakePublicGateModal: false,
       showSelectBallotModal: false,
       showSelectBallotModalEditAddress: false,
       showShareModal: false,
@@ -89,6 +91,7 @@ class HeaderBarModals extends Component {
       showClaimProfileWithOtherWaysModal: AppObservableStore.getShowClaimProfileWithOtherWaysModal(),
       showEditPositionModal: AppObservableStore.getShowEditPositionModal(),
       showFirstPositionIntroModal: AppObservableStore.showFirstPositionIntroModal(),
+      showMakePublicGateModal: AppObservableStore.showMakePublicGateModal(),
       showPaidAccountUpgradeModal,
       showShareModal: AppObservableStore.showShareModal(),
       showPersonalizedScoreIntroModal: AppObservableStore.showPersonalizedScoreIntroModal(),
@@ -125,10 +128,6 @@ class HeaderBarModals extends Component {
     AppObservableStore.setShowClaimProfileWithEmailModal(false);
   };
 
-  closeClaimProfileWithOtherWaysModal = () => {
-    AppObservableStore.setShowClaimProfileWithOtherWaysModal(false);
-  };
-
   closeEditPositionModal = () => {
     AppObservableStore.setShowEditPositionModal(false);
     this.setState({ showEditPositionModal: false });
@@ -136,11 +135,6 @@ class HeaderBarModals extends Component {
 
   closeFirstPositionIntroModal = () => {
     AppObservableStore.setShowFirstPositionIntroModal(false);
-  };
-
-  openHowItWorksModal = () => {
-    // console.log('Opening modal');
-    AppObservableStore.setShowHowItWorksModal(true);
   };
 
   closeImageUploadModal = () => {
@@ -214,7 +208,7 @@ class HeaderBarModals extends Component {
     const {
       showAdviserIntroModal, showAskFriendsModal, showBallotChoicesAndSettingsModal, showChooseOrOpposeIntroModal, showChooseOrOpposeSignInModal,
       showClaimProfileWithEmailModal, showClaimProfileWithOtherWaysModal, showEditPositionModal, showFirstPositionIntroModal,
-      showPaidAccountUpgradeModal, showPersonalizedScoreIntroModal,
+      showMakePublicGateModal, showPaidAccountUpgradeModal, showPersonalizedScoreIntroModal,
       showSelectBallotModal, showSelectBallotModalEditAddress,
       showShareModal, showSignInModal, showValuesIntroModal, showImageUploadModal,
     } = this.state;
@@ -322,6 +316,17 @@ class HeaderBarModals extends Component {
           <ImageUploadModal
             show={showImageUploadModal}
             toggleFunction={this.closeImageUploadModal}
+          />
+        </Suspense>
+      );
+    }
+    let makePublicGateModal = <></>;
+    if (showMakePublicGateModal) {
+      // TODO: For analytics, it would be helpful to track the politician a person wants to make a public opinion about
+      makePublicGateModal = (
+        <Suspense fallback={<></>}>
+          <MakePublicGateModal
+            politicianWeVoteId=""
           />
         </Suspense>
       );
@@ -435,6 +440,7 @@ class HeaderBarModals extends Component {
         {editPositionModal}
         {firstPositionIntroModal}
         {imageUploadModal}
+        {makePublicGateModal}
         {paidAccountUpgradeModal}
         {personalizedScoreIntroModal}
         {selectBallotModal}
@@ -454,7 +460,7 @@ const styles = () => ({
   dialogPaper: {
     minHeight: 282,
     margin: '0 8px',
-    borderRadius: 12
+    borderRadius: 12,
   },
 });
 
