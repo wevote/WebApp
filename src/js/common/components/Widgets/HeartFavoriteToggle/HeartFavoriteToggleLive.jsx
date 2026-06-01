@@ -359,9 +359,40 @@ class HeartFavoriteToggleLive extends React.Component {
       console.log('HeartFavoriteToggleLive submitActionClick: voter not signed in');
       AppObservableStore.setShowCompleteYourProfileModal(true);
     } else if (!voterFirstName || !voterLastName) {
-      // Open complete your profile modal; store the heart action to fire after profile completion
+      // Open profile modal and store the heart action to fire after profile completion
       AppObservableStore.setFunctionToCallAfterProfileComplete(
-        () => this.functionToUseWhenProfileComplete(support, oppose, stopSupporting, stopOpposing),
+        () => {
+          let { supportersCount, opposersCount, voterSupports, voterOpposes } = this.state;
+
+          // modify count of supporters here
+          if (support) {
+            if (voterOpposes) opposersCount -= 1;
+            supportersCount += 1;
+            voterSupports = true;
+            voterOpposes = false;
+          } else if (oppose) {
+            if (voterSupports) supportersCount -= 1;
+            opposersCount += 1;
+            voterSupports = false;
+            voterOpposes = true;
+          } else if (stopSupporting) {
+            if (voterSupports) supportersCount -= 1;
+            voterSupports = false;
+          } else if (stopOpposing) {
+            if (voterOpposes) opposersCount -= 1;
+            voterOpposes = false;
+          }
+          // set new support and oppose count states here
+          this.setState({
+            supportersCount,
+            opposersCount,
+            voterSupports,
+            voterOpposes,
+          }, () => {
+            // Fire off the backend actions and close modal
+            this.functionToUseWhenProfileComplete(support, oppose, stopSupporting, stopOpposing);
+          });
+        },
       );
       AppObservableStore.setShowCompleteYourProfileModal(true);
     } else {
