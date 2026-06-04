@@ -2,7 +2,10 @@
   FROM public.ecr.aws/docker/library/node:25 AS builder
   WORKDIR /app
   COPY package.json package-lock.json ./
-  RUN npm install
+  # TO DEVELOPERS:
+  # If `npm ci` causes issues, try `npm install` instead
+  # and notify Marcel Jacquot on Slack of your error
+  RUN npm ci
 
   # --- runtime: non-root, copy artifacts from builder ---
   FROM public.ecr.aws/docker/library/node:25
