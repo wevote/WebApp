@@ -30,7 +30,6 @@ describe('VerifyCount', () => {
       timeout: 10000,
       timeoutMsg: 'Expected URL to contain "pro-choice" not found, timeout after 10000ms',
     });
-    await driver.switchWindow('Pro-choice - WeVote');
     await driver.pause(waitTime);
     await expect(driver).toHaveTitle(expect.stringContaining('Pro-choice - WeVote'));
     // Checking Followers count
@@ -102,7 +101,6 @@ describe('VerifyCount', () => {
       timeout: 10000,
       timeoutMsg: 'Expected URL to contain "pro-choice" not found, timeout after 10000ms',
     });
-    await driver.switchWindow('Pro-choice - WeVote');
     await driver.pause(waitTime);
     await expect(driver).toHaveTitle(expect.stringContaining('Pro-choice - WeVote'));
     // Checking Endorsers count
@@ -129,8 +127,8 @@ describe('VerifyCount', () => {
       console.warn('Assertion failed, but continuing:', error);
     }
 
-
-    await driver.waitUntil(async () => (TopicsPage.avatar.isClickable()));
+    await driver.execute(() => window.scrollTo(0, 0));
+    await TopicsPage.avatar.waitForClickable({ timeout: 30000 });
     await TopicsPage.avatar.click();
 
     await driver.waitUntil(async () => (ProfilePage.getSignOutElement.isClickable()));
@@ -155,7 +153,6 @@ describe('VerifyCount', () => {
       timeout: 10000,
       timeoutMsg: 'Expected URL to contain "pro-life" not found, timeout after 10000ms',
     });
-    await driver.switchWindow('Pro-life - WeVote');
     await driver.pause(waitTime);
     await expect(driver).toHaveTitle(expect.stringContaining('Pro-life - WeVote'));
     // Checking Followers count
@@ -227,7 +224,6 @@ describe('VerifyCount', () => {
       timeout: 10000,
       timeoutMsg: 'Expected URL to contain "pro-life" not found, timeout after 10000ms',
     });
-    await driver.switchWindow('Pro-life - WeVote');
     await driver.pause(waitTime);
     await expect(driver).toHaveTitle(expect.stringContaining('Pro-life - WeVote'));
     // Checking Endorsers count
@@ -254,6 +250,7 @@ describe('VerifyCount', () => {
       console.warn('Assertion failed, but continuing:', error);
     }
 
+    await driver.execute(() => window.scrollTo(0, 0));
     await driver.waitUntil(async () => (TopicsPage.avatar.isClickable()));
     await TopicsPage.avatar.click();
 
