@@ -7,7 +7,7 @@ const waitTime = 10000;
 
 describe('TermsPage', () => {
   // Terms_001
-  it.only('verifyGitHubLinkRedirected', async () => {
+  it('verifyGitHubLinkRedirected', async () => {
     await ReadyPage.load();
     await driver.pause(waitTime);
     await ReadyPage.getTermsLinkElement.click();

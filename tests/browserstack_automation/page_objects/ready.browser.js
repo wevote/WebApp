@@ -380,6 +380,10 @@ class ReadyPage extends PageBrowser {
     return $('//a[text() = "About & FAQ"]');
   }
 
+  get getTermsLinkElement () {
+    return $('#footerLinkTermsOfUse');
+  }
+
   async waitAboutLinkAndClick () {
     await this.getAboutLinkElement.waitForDisplayed({ timeout: 30000 });
     await this.getAboutLinkElement.waitForClickable({ timeout: 30000 });
