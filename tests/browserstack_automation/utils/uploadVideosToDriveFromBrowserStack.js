@@ -15,8 +15,27 @@ async function getDriveClient() {
   return getAuthenticatedDriveClient();
 }
 
+const AUTOMATE_ENDPOINTS = [
+  'https://api.browserstack.com/automate/sessions',
+  'https://api.browserstack.com/app-automate/sessions',
+];
+
+async function resolveSessionEndpoint(sessionId, auth) {
+  for (const base of AUTOMATE_ENDPOINTS) {
+    try {
+      const response = await axios.get(`${base}/${sessionId}.json`, { auth });
+      if (response.data?.automation_session) {
+        console.log(`Session found at: ${base}`);
+        return { base, data: response.data };
+      }
+    } catch (err) {
+      if (err.response?.status !== 404) throw err;
+    }
+  }
+  throw new Error(`Session ${sessionId} not found on any BrowserStack endpoint`);
+}
+
 async function getVideoUrl(sessionId) {
-  const url = `https://api.browserstack.com/app-automate/sessions/${sessionId}.json`;
   const auth = {
     username: browserStackConfig.BROWSERSTACK_USER,
     password: browserStackConfig.BROWSERSTACK_KEY,
@@ -27,11 +46,11 @@ async function getVideoUrl(sessionId) {
 
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
-      const response = await axios.get(url, { auth });
-      const videoUrl = response.data?.automation_session?.video_url;
+      const { base, data } = await resolveSessionEndpoint(sessionId, auth);
+      const videoUrl = data?.automation_session?.video_url;
 
       if (videoUrl) {
-        console.log(`Video URL fetched: ${videoUrl}`);
+        console.log(`Video URL fetched from ${base}: ${videoUrl}`);
         return videoUrl;
       }
 
