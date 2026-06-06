@@ -13,7 +13,7 @@ class FaqBrowser extends PageBrowser {
   }
 
   get getFAQPageTitleElement () {
-    return $('.kkIyuQ');
+    return $('h1=Frequently Asked Questions');
   }
 
   get getTwitterIconElement () {
