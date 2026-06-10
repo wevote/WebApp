@@ -42,6 +42,7 @@ To start the WeVote WebApp service, use one of these commands. You should alread
 docker compose up
 ```
 This command builds, (re)creates, and starts the service, and shows the logs in your terminal. **Press `Ctrl+C` to stop the container gracefully.**
+* Note: If this errors due to `npm ci`, reach out to Marcel Jacquot on Slack
 
 #### 2. Start in the background (detached mode):
 ```
