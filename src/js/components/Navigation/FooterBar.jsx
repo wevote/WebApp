@@ -27,15 +27,21 @@ const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES ===
 const capitalBuilding = '/img/global/svg-icons/capital-building.svg';
 const capitalBuildingSelected = '/img/global/svg-icons/capital-building-selected.svg';
 
-function MoreMenuOverlay ({ classes, friendInvitationsSentToMeCount, onClose }) {
+function MoreMenuOverlay ({ anchorRef, classes, friendInvitationsSentToMeCount, onClose }) {
   const pathname = normalizedHref();
   const isChallenges = pathname.includes('/challenges');
   const isDiscuss = pathname.includes('/news');
   const isFriends = pathname.includes('/friends');
   const isManage = pathname.includes('/manage') || pathname.includes('/no-candidates-claimed');
 
+  // Ignore clicks on the More anchor so the button's own onChange owns toggling.
+  const handleClickAway = (event) => {
+    if (anchorRef && anchorRef.current && anchorRef.current.contains(event.target)) return;
+    onClose();
+  };
+
   return (
-    <ClickAwayListener disableReactTree onClickAway={onClose}>
+    <ClickAwayListener disableReactTree onClickAway={handleClickAway}>
       <Overlay>
         <MenuItem id="FooterBarHowItWorks" onClick={() => { AppObservableStore.setShowHowItWorksModal(true); }}>
           <Info />
@@ -92,6 +98,7 @@ function MoreMenuOverlay ({ classes, friendInvitationsSentToMeCount, onClose }) 
   );
 }
 MoreMenuOverlay.propTypes = {
+  anchorRef: PropTypes.shape({ current: PropTypes.any }),
   classes: PropTypes.object.isRequired,
   friendInvitationsSentToMeCount: PropTypes.number.isRequired,
   onClose: PropTypes.func.isRequired,
@@ -374,6 +381,7 @@ class FooterBar extends React.Component {
           </BottomNavigation>
           {showMoreMenu && (
             <MoreMenuOverlay
+              anchorRef={this.anchorRef}
               classes={classes}
               friendInvitationsSentToMeCount={friendInvitationsSentToMeCount}
               onClose={() => {
@@ -435,7 +443,7 @@ const Overlay = styled.div`
   background: ${DesignTokenColors.whiteUI};
   border: 1px solid ${DesignTokenColors.neutralUI100};
   border-radius: 10px;
-  bottom: 76px;
+  bottom: 56px;
   box-shadow: 0 8px 24px rgba(0,0,0,.1);
   display: flex;
   flex-wrap: wrap;
@@ -443,8 +451,7 @@ const Overlay = styled.div`
   justify-content: center;
   position: fixed;
   right: 8px;
-  transform: translateY(10px);
-  transition: transform .2s ease, opacity .2s ease;
+  transition: opacity .2s ease;
   z-index: 9999;
 `;
 
