@@ -130,6 +130,7 @@ CompleteYourProfileModal.propTypes = {
   show: PropTypes.bool,
   startCampaign: PropTypes.bool,
   supportCampaign: PropTypes.bool,
+  supportPolitician: PropTypes.bool,
 };
 
 const styles = () => ({
