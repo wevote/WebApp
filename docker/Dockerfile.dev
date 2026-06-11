@@ -2,6 +2,7 @@
   FROM public.ecr.aws/docker/library/node:25 AS builder
   WORKDIR /app
   COPY package.json package-lock.json ./
+  COPY .npmrc ./
   # TO DEVELOPERS:
   # If `npm ci` causes issues, try `npm install` instead
   # and notify Marcel Jacquot on Slack of your error
