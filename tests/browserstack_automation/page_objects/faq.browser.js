@@ -147,7 +147,7 @@ class FaqBrowser extends PageBrowser {
   }
 
   get weVoteText () {
-    return $('//div[@data-testid="UserName"]//span[text()="WeVote"]');
+    return $('//span[contains(text(), "WeVote")]');
   }
 
   async waitForURL (expectedURL) {
