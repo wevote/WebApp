@@ -191,5 +191,18 @@
   },
   "readme": "ERROR: No README data found!",
   "homepage": "https://github.com/wevote/WebApp#readme",
-  "_id": "wevoteusa@1.0.0"
+  "_id": "wevoteusa@1.0.0",
+  "allowScripts": {
+    "@swc/core@1.15.11": true,
+    "geckodriver@6.1.0": true,
+    "geckodriver@5.0.0": true,
+    "edgedriver@6.1.2": true,
+    "esbuild@0.25.12": true,
+    "fsevents@2.3.3": true,
+    "iframe-resizer@4.4.5": true,
+    "pre-commit@1.2.2": true,
+    "protobufjs@7.5.7": true,
+    "puppeteer@24.40.0": true,
+    "spawn-sync@1.0.15": true
+  }
 }
