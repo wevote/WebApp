@@ -12,6 +12,10 @@ class PrivacyBrowser extends PageBrowser {
     await super.rerender();
   }
 
+  get pageContentTitleText () {
+    return $('h1=WeVote.US Privacy Policy');
+  }
+
   get weVoteUSLink () {
     return $('#wevote');
   }
