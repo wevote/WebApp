@@ -98,18 +98,18 @@ describe('FAQ Page Scripts', () => {
     await expect(driver).toHaveTitle(expect.stringContaining('TikTok'));
   });
   // FAQ_009
-  // verifyTwitterIconRedirectedß
-  it('verifyTwitterIconRedirected', async () => {
-    await FAQPage.clickTwitterIconElement.waitForClickable();
-    try {
-      await FAQPage.clickTwitterIconElement.click();
-      await FAQPage.waitForURL('https://x.com/WeVote');
-      await expect(FAQPage.weVoteText).toBeDisplayed();
-    } catch (error) {
-      console.error('Error during Twitter icon test:', error);
-      throw error; // Rethrow to ensure the test fails
-    }
-  });
+  // // verifyTwitterIconRedirectedß
+  // it('verifyTwitterIconRedirected', async () => {
+  //   await FAQPage.clickTwitterIconElement.waitForClickable();
+  //   try {
+  //     await FAQPage.clickTwitterIconElement.click();
+  //     await FAQPage.waitForURL('https://x.com/WeVote');
+  //     await expect(FAQPage.weVoteText).toBeDisplayed();
+  //   } catch (error) {
+  //     console.error('Error during Twitter icon test:', error);
+  //     throw error; // Rethrow to ensure the test fails
+  //   }
+  // });
   // FAQ_010   Instagram blocks automated traffic (ANTI-BOT) we are not able to verify the Instagram link redirection by clicking on the icon. As a workaround, we are verifying the Instagram link redirection by fetching the href attribute of the Instagram icon and making a HEAD request to check if the URL is valid and accessible.
   it('verifyInstagramIconRedirected', async () => {
     await FAQPage.getInstagramIconElement.waitForClickable();

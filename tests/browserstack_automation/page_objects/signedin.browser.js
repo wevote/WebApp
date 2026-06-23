@@ -6,12 +6,12 @@ const waitTime = 3000;
 class SignedIn extends PageBrowser {
 
     get signInButton() {
-      return $('//*[contains(@id, "signIn")]');
+        return $('//*[contains(@id, "signIn")]');
     }
 
-    get signInWithTwitterButton() {
-        return $('//*[contains(@id, "twitterSignIn-splitIconButton")]');
-    }
+    // get signInWithTwitterButton() {
+    //     return $('//*[contains(@id, "twitterSignIn-splitIconButton")]');
+    // }
 
     get signInWithAppleButton() {
         return $('//*[contains(@id, "appleSignInText")]');
@@ -149,10 +149,10 @@ class SignedIn extends PageBrowser {
         await elem.click();
         console.log(await elem.getValue());
         await driver.execute((elem) => {
-          elem.value = null;
+            elem.value = null;
         }, elem);
         driver.pause(waitTime);
-        console.log("after Deletion",await elem.getValue());
+        console.log("after Deletion", await elem.getValue());
         await elem.setValue('Automated');
         const entered = await elem.getValue();
         driver.pause(waitTime);
@@ -160,15 +160,15 @@ class SignedIn extends PageBrowser {
         console.log("Entered first name");
     }
 
-     async enterAndRemoveLastName() {
+    async enterAndRemoveLastName() {
         const elem = await $('//input[@name="lastName"]');
         await elem.click();
         console.log(await elem.getValue());
         await driver.execute((elem) => {
-          elem.value = null;
+            elem.value = null;
         }, elem);
         driver.pause(waitTime);
-        console.log("after deletion",await elem.getValue());
+        console.log("after deletion", await elem.getValue());
         await elem.setValue('Test');
         const entered = await elem.getValue();
         driver.pause(waitTime);
@@ -181,26 +181,26 @@ class SignedIn extends PageBrowser {
         await elem.click();
         console.log(await elem.getValue());
         await driver.execute((elem) => {
-          elem.value = null;
+            elem.value = null;
         }, elem);
         driver.pause(waitTime);
-        console.log("after deletion",await elem.getValue());
+        console.log("after deletion", await elem.getValue());
         await elem.setValue('automated');
         const entered = await elem.getValue();
         driver.pause(waitTime);
         await expect(entered).toBe('automated');
         console.log("Entered Organisation Website");
-     }
-     async enterAndRemoveOrganisationDescription() {
+    }
+    async enterAndRemoveOrganisationDescription() {
         const elem = await $('//textarea[@name="organizationDescription"]');
-        await elem.scrollIntoView({block:'center'});
+        await elem.scrollIntoView({ block: 'center' });
         await elem.click();
         console.log(await elem.getValue());
         await driver.execute((elem) => {
-          elem.value = null;
+            elem.value = null;
         }, elem);
         driver.pause(waitTime);
-        console.log("after deletion",await elem.getValue());
+        console.log("after deletion", await elem.getValue());
         await elem.setValue('automated');
         driver.pause(waitTime);
         const entered = await elem.getValue();
@@ -210,14 +210,14 @@ class SignedIn extends PageBrowser {
 
     async enterAndRemoveOrganisationName() {
         const elem = await $('//input[@name="organizationName"]');
-        await elem.scrollIntoView({block:'center'});
+        await elem.scrollIntoView({ block: 'center' });
         await elem.click();
         console.log(await elem.getValue());
         await driver.execute((elem) => {
-          elem.value = null;
+            elem.value = null;
         }, elem);
         driver.pause(waitTime);
-        console.log("after deletion",await elem.getValue());
+        console.log("after deletion", await elem.getValue());
         await elem.setValue('automated');
         driver.pause(waitTime);
         const entered = await elem.getValue();
@@ -268,9 +268,9 @@ class SignedIn extends PageBrowser {
             const sendVerificationLink = await $('//*[contains(@id, "sendVerificationCodeAgain"]');
             const trashIcon = await $('[data-testid="DeleteIcon"]');
             const emailId = await $('//*[text()="wevote@wevote.us"]');
-            expect (sendVerificationLink).toBeDisplayed();
-            expect (trashIcon).toBeDisplayed();
-            expect (emailId).toBeDisplayed();
+            expect(sendVerificationLink).toBeDisplayed();
+            expect(trashIcon).toBeDisplayed();
+            expect(emailId).toBeDisplayed();
         } else {
             await this.addEmailAddressLink;
         }
