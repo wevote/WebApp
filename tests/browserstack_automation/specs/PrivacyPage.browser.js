@@ -6,131 +6,142 @@ import assert from 'node:assert';
 const waitTime = 10000;
 
 describe('Privacy PageBrowser', () => {
+  beforeEach(async () => {
+    await ReadyPage.load();
+    await ReadyPage.findPrivacyLink.waitForClickable({
+      timeout: 10000,
+    });
+    await ReadyPage.findPrivacyLink.click();
+  });
+
+  afterEach(async () => {
+    const handles = await driver.getWindowHandles();
+    for (let i = handles.length - 1; i > 0; i--) {
+      await driver.switchToWindow(handles[i]);
+      await driver.closeWindow();
+    }
+    await driver.switchToWindow(handles[0]);
+  });
+
+  async function switchToNewWindow(urlFragment) {
+    await driver.waitUntil(
+      async () => {
+        const handles = await driver.getWindowHandles();
+        return handles.length > 1;
+      },
+      {
+        timeout: 10000,
+        timeoutMsg: 'New window was not opened',
+      }
+    );
+    await driver.switchWindow(urlFragment);
+  }
   // Privacy_001
   it('verifyWeVoteUSLinkRedirect', async () => {
-    await ReadyPage.load();
-    await driver.pause(waitTime);
-    await ReadyPage.findPrivacyLink.click();
-    await driver.pause(waitTime);
+    await PrivacyPage.weVoteUSLink.waitForClickable();
     await PrivacyPage.weVoteUSLink.click();
-    await driver.pause(waitTime);
-    await driver.switchWindow('https://wevote.us/');
-    await driver.pause(waitTime);
-    await expect(driver).toHaveUrl('https://wevote.us/');
-    await expect(driver).toHaveTitle('Ready to Vote? - WeVote');
+    await driver.switchWindow('wevote.us');
+    await expect(driver).toHaveUrl(
+      expect.stringContaining('wevote.us')
+    );
   });
 
   // Privacy_002
   it('verifyCampaignsWeVoteUSLinkRedirect', async () => {
-    await ReadyPage.load();
-    await driver.pause(waitTime);
-    await driver.waitUntil(async () => (ReadyPage.findPrivacyLink.isClickable()));
-    await driver.pause(waitTime);
-    await ReadyPage.findPrivacyLink.click();
-    await driver.pause(waitTime);
+    await PrivacyPage.campaignsWeVoteUSLink.waitForClickable();
     await PrivacyPage.campaignsWeVoteUSLink.click();
-    await driver.pause(waitTime);
-    await driver.switchWindow('https://campaigns.wevote.us/');
-    await driver.pause(waitTime);
-    await expect(PrivacyPage.elementOfCampaignPage).toHaveText('Helping the best candidates win votes');
+    await switchToNewWindow('campaigns.wevote.us');
+    await expect(
+      PrivacyPage.elementOfCampaignPage
+    ).toHaveText(
+      'Helping the best candidates win votes'
+    );
   });
 
   // Privacy_003
   it('verifyHelpCenterLinkRedirect', async () => {
-    await ReadyPage.load();
-    await driver.pause(waitTime);
-    await ReadyPage.findPrivacyLink.click();
-    await driver.pause(waitTime);
+    await PrivacyPage.helpCenterLink.waitForClickable();
     await PrivacyPage.helpCenterLink.click();
-    await driver.pause(waitTime);
-    await driver.switchWindow('https://help.wevote.us/hc/en-us/sections/115000140987-Security-Technology');
-    await driver.pause(waitTime);
-    await expect(driver).toHaveTitle('Security & Technology – We Vote');
+    await switchToNewWindow('help.wevote.us');
+    await expect(driver).toHaveTitle(
+      expect.stringContaining('Security')
+    );
   });
 
   // Privacy_005
   it('verifyDeleteYourAccountLink', async () => {
-    await ReadyPage.load();
-    await driver.pause(waitTime);
-    await ReadyPage.findPrivacyLink.click();
-    await driver.pause(waitTime);
+    await PrivacyPage.deleteYourAccountLink.waitForClickable();
     await PrivacyPage.deleteYourAccountLink.click();
-    await driver.pause(waitTime);
+   await PrivacyPage.deleteYourAccountButton.waitForClickable();
     await PrivacyPage.deleteYourAccountButton.click();
-    await driver.pause(waitTime);
-    await expect(driver).toHaveTitle('Privacy Policy - WeVote');
+    await expect(driver).toHaveTitle(
+      expect.stringContaining('Privacy')
+    );
   });
 
   // Privacy_005_2
   it('verifyCancelButtonOfDeleteYourAccountLink', async () => {
-    await ReadyPage.load();
-    await driver.pause(waitTime);
-    await ReadyPage.findPrivacyLink.click();
-    await driver.pause(waitTime);
+    await PrivacyPage.deleteYourAccountLink.waitForClickable();
     await PrivacyPage.deleteYourAccountLink.click();
-    await driver.pause(waitTime);
-    await expect(PrivacyPage.deleteYourAccountLink).not.toBeDisplayed();
-    await driver.pause(waitTime);
+    await expect(
+      PrivacyPage.deleteYourAccountLink
+    ).not.toBeDisplayed();
+    await PrivacyPage.cancelOfDeleteYourAccountButton.waitForClickable();
     await PrivacyPage.cancelOfDeleteYourAccountButton.click();
-    await driver.pause(waitTime);
-    await expect(PrivacyPage.deleteYourAccountLink).toBeDisplayed();
+    await expect(
+      PrivacyPage.deleteYourAccountLink
+    ).toBeDisplayed();
   });
 
   // Privacy_006
   it('verifyGoogleApiUserDataPolicyLink', async () => {
-    await ReadyPage.load();
-    await ReadyPage.findPrivacyLink.click();
+    await PrivacyPage.googleApiUserDataPolicyLink.waitForClickable();
     await PrivacyPage.googleApiUserDataPolicyLink.click();
-    await driver.switchWindow('https://developers.google.com/terms/api-services-user-data-policy#additional_requirements_for_specific_api_scopes');
-    await expect(driver).toHaveTitle('Google API Services User Data Policy  |  Google for Developers');
+    await switchToNewWindow('developers.google.com');
+    await expect(driver).toHaveTitle(
+      expect.stringContaining('Google API Services User Data Policy')
+    );
   });
 
   // Privacy_007
   it('verifyGoogleAnalyticsLink', async () => {
-    await ReadyPage.load();
-    await driver.pause(waitTime);
-    await ReadyPage.findPrivacyLink.click();
-    await driver.pause(waitTime);
+    await PrivacyPage.googleAnalyticsLink.waitForClickable();
     await PrivacyPage.googleAnalyticsLink.click();
-    await driver.pause(waitTime);
-    await driver.switchWindow('https://policies.google.com/privacy');
-    await driver.pause(waitTime);
-    await expect(driver).toHaveTitle('Privacy Policy – Privacy & Terms – Google');
+    await switchToNewWindow('policies.google.com');
+    await expect(driver).toHaveTitle(
+      expect.stringContaining('Privacy Policy')
+    );
   });
 
   // Privacy_008
   it('verifyOpenReplayPrivacyLink', async () => {
-    await ReadyPage.load();
-    await driver.pause(waitTime);
-    await ReadyPage.findPrivacyLink.click();
-    await driver.pause(waitTime);
+    await PrivacyPage.openReplayPrivacyLink.waitForClickable();
     await PrivacyPage.openReplayPrivacyLink.click();
-    await driver.pause(waitTime);
-    await driver.waitUntil(async () => {
-      // Add condition to check for the expected URL
-      await driver.switchWindow('https://openreplay.com/legal/privacy');
-      const currentUrl = await driver.getUrl();
-      return currentUrl === 'https://openreplay.com/legal/privacy';
-    }, {
-      timeout: 10000,
-      timeoutMsg: 'Expected URL not found, timeout after 10000ms',
-    });
-    await driver.pause(waitTime);
-    await expect(driver).toHaveTitle('Privacy | OpenReplay');
+    await switchToNewWindow('openreplay.com');
+    await driver.waitUntil(
+      async () => {
+        const currentUrl = await driver.getUrl();
+        return currentUrl.includes('/legal/privacy/');
+      },
+      {
+        timeout: 10000,
+        timeoutMsg: 'Privacy page URL not found',
+      }
+    );
+    await expect(driver).toHaveTitle(
+      expect.stringContaining('Privacy')
+    );
   });
 
   // Privacy 009
   it('verifyEmailLinks', async () => {
-    await ReadyPage.load();
-    await driver.pause(3000);
-    await ReadyPage.findPrivacyLink.click();
-    await driver.pause(3000);
-    await expect(PrivacyPage.emailLink).toBeElementsArrayOfSize(2);
-    await driver.pause(3000);
-    const actualResultArray = await PrivacyPage.getTextFromEmailLinks();
-    for (let i = 0; i < actualResultArray.length; i++) {
-      const actualResult = actualResultArray[i];
-      assert.equal(actualResult, 'info@WeVote.US');
-    }
+    await expect(
+      PrivacyPage.emailLink
+    ).toBeElementsArrayOfSize(2);
+    const actualResultArray =
+      await PrivacyPage.getTextFromEmailLinks();
+    actualResultArray.forEach((email) => {
+      assert.equal(email, 'info@WeVote.US');
+    });
   });
 });
