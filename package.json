@@ -50,7 +50,7 @@
     "chromatic": "npx chromatic --project-token=chpt_89afc2af23dd1fd"
   },
   "devDependencies": {
-    "@babel/core": "^7.23.7",
+    "@babel/core": "^7.29.6",
     "@babel/eslint-parser": "^7.23.3",
     "@babel/plugin-syntax-class-properties": "^7.12.13",
     "@babel/plugin-syntax-import-meta": "^7.10.4",
