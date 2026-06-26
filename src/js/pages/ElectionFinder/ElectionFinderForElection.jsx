@@ -20,34 +20,20 @@ import CopyChip from './CopyChip';
 import copyAndToast from './copyAndToast';
 import formatDateLong from './dateHelpers';
 import ElectionFinderHeader from './ElectionFinderHeader';
+import highlightMatch from './highlightMatch';
 import RowKebabMenu from './RowKebabMenu';
 import {
   ActionDivider, DarkTooltip,
   CandidateActions as CandidateActionsRow, CandidateInfo, CandidateList, CandidateName,
   CandidateParty, CandidateRow, DetailTitle, ElectionDetailDate, ElectionTitleRow,
   ExpandCollapseButton, ExpandCollapseRow, ExpandMoreIcon,
-  HighlightSpan, InlineSearchField, NoResults,
+  InlineSearchField, NoResults,
   OfficeHeader, OfficeHeaderActions, OfficeHeaderLeft, OfficeName, OfficePrimaryPartySpan,
   OfficeSection, SearchIconButton, SearchResultCount, ShowMoreButton,
 } from './electionFinderStyles';
 import webAppConfig from '../../config';
 
 const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
-
-function highlightMatch (text, query) {
-  if (!query) return text;
-  const words = query.trim().split(/\s+/).filter(Boolean);
-  if (words.length === 0) return text;
-  const escaped = words.map((w) => w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
-  const regex = new RegExp(`(${escaped.join('|')})`, 'gi');
-  const lowerWords = words.map((w) => w.toLowerCase());
-  return text.split(regex).map((part, idx) => {
-    if (lowerWords.includes(part.toLowerCase())) {
-      return <HighlightSpan key={`hl-${idx}-${part}`}>{part}</HighlightSpan>; // eslint-disable-line react/no-array-index-key
-    }
-    return part;
-  });
-}
 
 function ElectionFinderForElection () {
   renderLog('ElectionFinderForElection');
