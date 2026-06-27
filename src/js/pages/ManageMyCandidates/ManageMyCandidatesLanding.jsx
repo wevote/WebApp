@@ -48,9 +48,9 @@ export default function ManageMyCandidatesLanding () {
   const active = validTabs.includes(subtab) ? subtab : 'import';
 
   const demoPoliticians = useMemo(() => ([
-    { we_vote_id: 'cand_1', politician_name: 'John Dough' },
-    { we_vote_id: 'cand_2', politician_name: 'Jane Dough' },
-    { we_vote_id: 'cand_3', politician_name: 'Kateryna Dough' },
+    { politician_we_vote_id: 'cand_1', politician_name: 'John Dough' },
+    { politician_we_vote_id: 'cand_2', politician_name: 'Jane Dough' },
+    { politician_we_vote_id: 'cand_3', politician_name: 'Kateryna Dough' },
   ]), []);
 
   // eslint-disable-next-line no-unused-vars
@@ -62,18 +62,18 @@ export default function ManageMyCandidatesLanding () {
   const [showRightGradient, setShowRightGradient] = useState(true);
   const navScrollRef = useRef(null);
 
-  const selectedPolitician = politiciansToManage.find((politician) => politician.we_vote_id === selectedPoliticianWeVoteId) || null;
+  const selectedPolitician = politiciansToManage.find((politician) => politician.politician_we_vote_id === selectedPoliticianWeVoteId) || null;
 
   useEffect(() => {
     if (!selectedPoliticianWeVoteId && politiciansToManage.length > 0) {
-      setSelectedPoliticianWeVoteId(politiciansToManage[0].we_vote_id);
+      setSelectedPoliticianWeVoteId(politiciansToManage[0].politician_we_vote_id);
     }
   }, [politiciansToManage, selectedPoliticianWeVoteId]);
 
   const updatePoliticiansToManage = () => {
     const test = true;
     if (test) {
-      // setPoliticiansToManage(PoliticianStore.getPoliticianListVoterCanEdit());
+      setPoliticiansToManage(PoliticianStore.getPoliticianListVoterCanEdit());
     }
   };
 
@@ -145,10 +145,10 @@ export default function ManageMyCandidatesLanding () {
               <PickerMenu role="listbox">
                 {politiciansToManage.map((politician) => (
                   <PickerItem
-                    key={`choosePolitician-${politician.we_vote_id}`}
+                    key={`choosePolitician-${politician.politician_we_vote_id}`}
                     role="option"
-                    aria-selected={politician.we_vote_id === selectedPoliticianWeVoteId}
-                    onClick={() => setSelectedPoliticianWeVoteId(politician.we_vote_id)}
+                    aria-selected={politician.politician_we_vote_id === selectedPoliticianWeVoteId}
+                    onClick={() => setSelectedPoliticianWeVoteId(politician.politician_we_vote_id)}
                   >
                     {politician.politician_name}
                   </PickerItem>
