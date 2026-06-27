@@ -2,6 +2,7 @@ import { ContentCopy, ExpandMore, FileDownloadOutlined, Launch, Search, Close } 
 import { IconButton, InputAdornment } from '@mui/material';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
+import CandidateActions from '../../actions/CandidateActions';
 import ElectionActions from '../../actions/ElectionActions';
 import { renderLog } from '../../common/utils/logging';
 import { stateCodeMap, convertStateCodeToStateText } from '../../common/utils/addressFunctions';
@@ -9,16 +10,20 @@ import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import historyPush from '../../common/utils/historyPush';
 import SnackNotifier from '../../common/components/Widgets/SnackNotifier';
+import CandidateStore from '../../stores/CandidateStore';
 import ElectionStore from '../../stores/ElectionStore';
+import buildCandidateSearchResults from './buildCandidateSearchResults';
 import CopyChip from './CopyChip';
 import copyAndToast from './copyAndToast';
 import formatDateLong from './dateHelpers';
 import ElectionFinderHeader from './ElectionFinderHeader';
+import highlightMatch from './highlightMatch';
 import RowKebabMenu from './RowKebabMenu';
 import {
-  ActionDivider, DarkTooltip,
+  ActionDivider, CandidateInfo, CandidateList, CandidateName, CandidateParty, CandidateRow, DarkTooltip,
   ElectionDateText, ElectionLink, ElectionList, ElectionRow, ElectionRowActions, ElectionRowText,
   FilterTab, FilterTabsRow, InlineSearchField, NoResults,
+  OfficeName, OfficeSection,
   SearchIconButton, SectionTitle, SectionTitleRow, ShowMoreButton,
   StateSelectWrapper, StateSelectNative, StateSelectLabel, StateSelectCaret,
 } from './electionFinderStyles';
@@ -42,8 +47,11 @@ function ElectionFinderHome () {
   const [visibleCount, setVisibleCount] = useState(50);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchText, setSearchText] = useState('');
+  const [candidateList, setCandidateList] = useState([]);
+  const [candidateSearchLoading, setCandidateSearchLoading] = useState(false);
   const searchInputRef = useRef(null);
   const searchDebounceRef = useRef(null);
+  const pendingCandidateSearchRef = useRef('');
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -56,10 +64,15 @@ function ElectionFinderHome () {
         return prev;
       });
     });
+    const candidateListener = CandidateStore.addListener(() => {
+      setCandidateList(CandidateStore.getCandidateList());
+    });
     ElectionActions.electionsRetrieve();
     return () => {
       listener.remove();
+      candidateListener.remove();
       clearTimeout(searchDebounceRef.current);
+      pendingCandidateSearchRef.current = null;
     };
   }, []);
 
@@ -92,17 +105,15 @@ function ElectionFinderHome () {
     );
   }
 
-  // Apply search filter before splitting upcoming/past so counts reflect the search
-  if (searchText) {
-    const lowerSearch = searchText.toLowerCase();
-    filteredByState = filteredByState.filter(
-      (el) => (el.election_name || '').toLowerCase().includes(lowerSearch) ||
-              (el.election_day_text || '').toLowerCase().includes(lowerSearch),
-    );
-  }
+  // When searching, union election-name matches with candidate-name matches
+  // (grouped Election -> Office -> Candidate) before splitting upcoming/past, so
+  // the tab counts reflect the search.
+  const workingList = searchText ?
+    buildCandidateSearchResults(filteredByState, candidateList, searchText, '') :
+    filteredByState;
 
-  const upcomingElections = filteredByState.filter((el) => el.election_is_upcoming).sort(sortByDateAsc);
-  const pastElections = filteredByState.filter((el) => !el.election_is_upcoming);
+  const upcomingElections = workingList.filter((el) => el.election_is_upcoming).sort(sortByDateAsc);
+  const pastElections = workingList.filter((el) => !el.election_is_upcoming);
   const upcomingCount = upcomingElections.length;
   const pastCount = pastElections.length;
 
@@ -123,6 +134,37 @@ function ElectionFinderHome () {
   const sectionDownloadLabel = filterTab === 'past' ?
     'Download data for all past elections' :
     'Download data for all upcoming elections';
+
+  const emptyListMessage = (() => {
+    if (electionList.length === 0) return 'Loading...';
+    if (searchText) {
+      if (candidateSearchLoading) return 'Fetching data...';
+      return 'Your search did not return any results. Try another search.';
+    }
+    return 'No elections found.';
+  })();
+
+  const runCandidateSearch = useCallback((value) => {
+    setSearchText(value);
+    if (!value) {
+      pendingCandidateSearchRef.current = '';
+      setCandidateSearchLoading(false);
+      return;
+    }
+    pendingCandidateSearchRef.current = value;
+    setCandidateSearchLoading(true);
+    const request = CandidateActions.candidatesQuery('', [], '', value, 100);
+    const finishSearch = () => {
+      if (pendingCandidateSearchRef.current === value) {
+        setCandidateSearchLoading(false);
+      }
+    };
+    if (request && typeof request.always === 'function') {
+      request.always(finishSearch);
+    } else {
+      finishSearch();
+    }
+  }, []);
 
   return (
     <>
@@ -157,8 +199,11 @@ function ElectionFinderHome () {
               inputRef={searchInputRef}
               defaultValue=""
               onChange={(e) => {
+                const { value } = e.target;
                 clearTimeout(searchDebounceRef.current);
-                searchDebounceRef.current = setTimeout(() => setSearchText(e.target.value), 300);
+                searchDebounceRef.current = setTimeout(() => {
+                  runCandidateSearch(value);
+                }, 300);
               }}
               autoFocus
               InputProps={{
@@ -172,6 +217,8 @@ function ElectionFinderHome () {
                       onClick={() => {
                         if (searchInputRef.current) searchInputRef.current.value = '';
                         setSearchOpen(false);
+                        pendingCandidateSearchRef.current = '';
+                        setCandidateSearchLoading(false);
                         setSearchText('');
                       }}
                     >
@@ -205,43 +252,66 @@ function ElectionFinderHome () {
               'na';
             const electionUrl = `/election-finder/${sc}/${googleCivicElectionId}`;
             return (
-              <ElectionRow
-                key={googleCivicElectionId}
-                onClick={() => onElectionSelect(election)}
-              >
-                <ElectionRowText>
-                  <ElectionLink>
-                    {election.state_code && election.state_code !== 'NA' ?
-                      `${convertStateCodeToStateText(election.state_code)} – ${election.election_name || ''}` :
-                      (election.election_name || '')}
-                  </ElectionLink>
-                  {election.election_day_text && (
-                    <ElectionDateText>{formatDateLong(election.election_day_text)}</ElectionDateText>
-                  )}
-                </ElectionRowText>
-                <ElectionRowActions className="u-show-desktop-tablet" onClick={(e) => e.stopPropagation()}>
-                  <CopyChip defaultLabel="Copy link" getText={() => `${window.location.origin}${electionUrl}`} />
-                  <ActionDivider />
-                  {nextReleaseFeaturesEnabled && (
-                    <DarkTooltip title="Download election data">
-                      <IconButton size="small"><FileDownloadOutlined fontSize="small" /></IconButton>
+              <React.Fragment key={googleCivicElectionId}>
+                <ElectionRow onClick={() => onElectionSelect(election)}>
+                  <ElectionRowText>
+                    <ElectionLink>
+                      {election.state_code && election.state_code !== 'NA' ?
+                        `${convertStateCodeToStateText(election.state_code)} – ${election.election_name || ''}` :
+                        (election.election_name || '')}
+                    </ElectionLink>
+                    {election.election_day_text && (
+                      <ElectionDateText>{formatDateLong(election.election_day_text)}</ElectionDateText>
+                    )}
+                  </ElectionRowText>
+                  <ElectionRowActions className="u-show-desktop-tablet" onClick={(e) => e.stopPropagation()}>
+                    <CopyChip defaultLabel="Copy link" getText={() => `${window.location.origin}${electionUrl}`} />
+                    <ActionDivider />
+                    {nextReleaseFeaturesEnabled && (
+                      <DarkTooltip title="Download election data">
+                        <IconButton size="small"><FileDownloadOutlined fontSize="small" /></IconButton>
+                      </DarkTooltip>
+                    )}
+                    <DarkTooltip title="Open in new tab">
+                      <IconButton size="small" onClick={() => window.open(electionUrl, '_blank')}>
+                        <Launch fontSize="small" />
+                      </IconButton>
                     </DarkTooltip>
-                  )}
-                  <DarkTooltip title="Open in new tab">
-                    <IconButton size="small" onClick={() => window.open(electionUrl, '_blank')}>
-                      <Launch fontSize="small" />
-                    </IconButton>
-                  </DarkTooltip>
-                </ElectionRowActions>
-                <RowKebabMenu
-                  ariaLabel="More options for this election"
-                  items={[
-                    { key: 'copy-link', icon: ContentCopy, label: 'Copy link', onClick: () => copyAndToast(`${window.location.origin}${electionUrl}`) },
-                    ...(nextReleaseFeaturesEnabled ? [{ key: 'download', icon: FileDownloadOutlined, label: 'Download election data', onClick: () => {} }] : []),
-                    { key: 'open', icon: Launch, label: 'Open in new tab', onClick: () => window.open(electionUrl, '_blank') },
-                  ]}
-                />
-              </ElectionRow>
+                  </ElectionRowActions>
+                  <RowKebabMenu
+                    ariaLabel="More options for this election"
+                    items={[
+                      { key: 'copy-link', icon: ContentCopy, label: 'Copy link', onClick: () => copyAndToast(`${window.location.origin}${electionUrl}`) },
+                      ...(nextReleaseFeaturesEnabled ? [{ key: 'download', icon: FileDownloadOutlined, label: 'Download election data', onClick: () => {} }] : []),
+                      { key: 'open', icon: Launch, label: 'Open in new tab', onClick: () => window.open(electionUrl, '_blank') },
+                    ]}
+                  />
+                </ElectionRow>
+                {searchText && election.matchedOffices && election.matchedOffices.map((office) => (
+                  <OfficeSection key={office.officeWeVoteId || office.officeName}>
+                    <OfficeName style={{ display: 'block', padding: '7px 16px 7px 32px' }}>
+                      {highlightMatch(office.officeName, searchText)}
+                      {` (${office.candidates.length})`}
+                    </OfficeName>
+                    <CandidateList>
+                      {office.candidates.map((candidate) => (
+                        <CandidateRow
+                          key={candidate.we_vote_id}
+                          style={{ cursor: 'pointer' }}
+                          onClick={() => onElectionSelect(election)}
+                        >
+                          <CandidateInfo>
+                            <CandidateName>
+                              {highlightMatch(candidate.ballot_item_display_name || candidate.candidate_name || '', searchText)}
+                            </CandidateName>
+                            <CandidateParty>{candidate.party || ''}</CandidateParty>
+                          </CandidateInfo>
+                        </CandidateRow>
+                      ))}
+                    </CandidateList>
+                  </OfficeSection>
+                ))}
+              </React.Fragment>
             );
           })}
           {!searchText && displayElections.length > visibleCount && (
@@ -250,7 +320,7 @@ function ElectionFinderHome () {
             </ShowMoreButton>
           )}
           {displayElections.length === 0 && (
-            <NoResults>{electionList.length === 0 ? 'Loading...' : 'No elections found.'}</NoResults>
+            <NoResults>{emptyListMessage}</NoResults>
           )}
         </ElectionList>
       </PageContentContainer>

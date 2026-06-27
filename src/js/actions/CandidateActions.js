@@ -10,11 +10,11 @@ export default {
     );
   },
 
-  candidatesQuery (electionDay = '', raceOfficeLevelList = '', stateCode = '', searchText = '') {
-    Dispatcher.loadEndpoint(
+  candidatesQuery (electionDay = '', raceOfficeLevelList = '', stateCode = '', searchText = '', numberRequested = 24) {
+    return Dispatcher.loadEndpoint(
       'candidatesQuery',
       {
-        numberRequested: 24,
+        numberRequested,
         electionDay,
         raceOfficeLevelList,
         searchText,
