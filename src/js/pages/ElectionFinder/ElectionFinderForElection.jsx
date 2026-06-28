@@ -1,7 +1,14 @@
 import { ContentCopy, FileDownloadOutlined, InfoOutlined, Launch, Search, Close, ExpandMore, UnfoldMore, UnfoldLess } from '@mui/icons-material';
 import { IconButton, InputAdornment } from '@mui/material';
 import PropTypes from 'prop-types';
-import React, { useCallback, useEffect, useReducer, useRef, useState } from 'react';
+import React, {
+  Suspense,
+  useCallback,
+  useEffect,
+  useReducer,
+  useRef,
+  useState,
+} from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 import BallotActions from '../../actions/BallotActions';
@@ -24,7 +31,7 @@ import highlightMatch from './highlightMatch';
 import RowKebabMenu from './RowKebabMenu';
 import {
   ActionDivider, DarkTooltip,
-  CandidateActions as CandidateActionsRow, CandidateInfo, CandidateList, CandidateName,
+  CandidateActions as CandidateActionsRow, CandidateCount, CandidateInfo, CandidateList, CandidateName,
   CandidateParty, CandidateRow, DetailTitle, ElectionDetailDate, ElectionTitleRow,
   ExpandCollapseButton, ExpandCollapseRow, ExpandMoreIcon,
   InlineSearchField, NoResults,
@@ -34,6 +41,8 @@ import {
 import webAppConfig from '../../config';
 
 const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
+
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 
 function ElectionFinderForElection () {
   renderLog('ElectionFinderForElection');
@@ -196,7 +205,7 @@ function ElectionFinderForElection () {
           breadcrumbs={[
             { label: '\u2190 Election Finder Home', href: '/election-finder' },
             { label: `${isUpcoming ? 'Upcoming' : 'Past'} Elections - ${stateName} (${isUpcoming ? upcomingCount : pastCount})`, href: `/election-finder/${selectedStateCode.toLowerCase()}` },
-            { label: `${electionName}${electionDayText ? ` - ${formatDateLong(electionDayText)}` : ''} (${officeCount})` },
+            { label: `${electionName}${electionDayText ? ` - ${formatDateLong(electionDayText)}` : ''} (${officeCount} ${officeCount === 1 ? 'office' : 'offices'})` },
           ]}
           stateLabel={stateName}
         />
@@ -205,7 +214,7 @@ function ElectionFinderForElection () {
           <DetailTitle>
             {electionName}
             {' '}
-            {`(${officeCount})`}
+            <CandidateCount>{`(${officeCount} ${officeCount === 1 ? 'office' : 'offices'})`}</CandidateCount>
           </DetailTitle>
           {nextReleaseFeaturesEnabled && (
             <DarkTooltip title="Download election data">
@@ -337,31 +346,53 @@ function OfficeSectionItemInner ({ // eslint-disable-line react/no-multi-comp
                 {searchText ? highlightMatch(primaryPartySuffix, searchText) : primaryPartySuffix}
               </OfficePrimaryPartySpan>
             )}
-            {` (${candidates.length})`}
+            <CandidateCount>{` (${candidates.length} ${candidates.length === 1 ? 'candidate' : 'candidates'})`}</CandidateCount>
           </OfficeName>
         </OfficeHeaderLeft>
         <OfficeHeaderActions className="u-show-desktop-tablet" onClick={(e) => e.stopPropagation()}>
           <CopyChip defaultLabel="Copy office name" getText={() => officeName} />
-          <CopyChip defaultLabel="Copy link" getText={() => `${window.location.origin}/office/${officeWeVoteId}`} />
+          <CopyChip defaultLabel="Copy link" getText={() => `${AppObservableStore.getWeVoteRootURL()}/office/${officeWeVoteId}`} />
           <ActionDivider />
           {nextReleaseFeaturesEnabled && (
             <DarkTooltip title="Info">
-              <IconButton size="small"><InfoOutlined fontSize="small" /></IconButton>
+              <Suspense fallback={<></>}>
+                <OpenExternalWebSite
+                  linkIdAttribute={`officeLinkNewTab-${officeWeVoteId}`}
+                  url={`${AppObservableStore.getWeVoteRootURL()}/office/${officeWeVoteId}`}
+                  target="_blank"
+                  body={(
+                    <IconButton size="small">
+                      <InfoOutlined fontSize="small" />
+                    </IconButton>
+                  )}
+                  trackingOn
+                />
+              </Suspense>
             </DarkTooltip>
           )}
           <DarkTooltip title="Open in new tab">
-            <IconButton size="small" onClick={() => window.open(`/office/${officeWeVoteId}`, '_blank')}>
-              <Launch fontSize="small" />
-            </IconButton>
+            <Suspense fallback={<></>}>
+              <OpenExternalWebSite
+                linkIdAttribute={`officeLinkNewTab-${officeWeVoteId}`}
+                url={`${AppObservableStore.getWeVoteRootURL()}/office/${officeWeVoteId}`}
+                target="_blank"
+                body={(
+                  <IconButton size="small">
+                    <Launch fontSize="small" />
+                  </IconButton>
+                )}
+                trackingOn
+              />
+            </Suspense>
           </DarkTooltip>
         </OfficeHeaderActions>
         <RowKebabMenu
           ariaLabel="More options for this office"
           items={[
             { key: 'copy-name', icon: ContentCopy, label: 'Copy office name', onClick: () => copyAndToast(officeName) },
-            { key: 'copy-link', icon: ContentCopy, label: 'Copy link', onClick: () => copyAndToast(`${window.location.origin}/office/${officeWeVoteId}`) },
+            { key: 'copy-link', icon: ContentCopy, label: 'Copy link', onClick: () => copyAndToast(`${AppObservableStore.getWeVoteRootURL()}}/office/${officeWeVoteId}`) },
             ...(nextReleaseFeaturesEnabled ? [{ key: 'about', icon: InfoOutlined, label: 'About office', onClick: () => {} }] : []),
-            { key: 'open', icon: Launch, label: 'Open in new tab', onClick: () => window.open(`/office/${officeWeVoteId}`, '_blank') },
+            { key: 'open', icon: Launch, label: 'Open in new tab', externalUrl: `${AppObservableStore.getWeVoteRootURL()}/office/${officeWeVoteId}` },
           ]}
         />
       </OfficeHeader>
@@ -381,7 +412,7 @@ function OfficeSectionItemInner ({ // eslint-disable-line react/no-multi-comp
                 </CandidateInfo>
                 <CandidateActionsRow className="u-show-desktop-tablet">
                   <CopyChip defaultLabel="Copy candidate name" getText={() => candidateName} />
-                  <CopyChip defaultLabel="Copy link" getText={() => `${window.location.origin}${getCandidatePath(candidate)}`} />
+                  <CopyChip defaultLabel="Copy link" getText={() => `${AppObservableStore.getWeVoteRootURL()}${getCandidatePath(candidate)}`} />
                   <ActionDivider />
                   {nextReleaseFeaturesEnabled && (
                     <DarkTooltip title="About office">
@@ -389,18 +420,28 @@ function OfficeSectionItemInner ({ // eslint-disable-line react/no-multi-comp
                     </DarkTooltip>
                   )}
                   <DarkTooltip title="Open in new tab">
-                    <IconButton size="small" onClick={() => window.open(getCandidatePath(candidate), '_blank')}>
-                      <Launch fontSize="small" />
-                    </IconButton>
+                    <Suspense fallback={<></>}>
+                      <OpenExternalWebSite
+                        linkIdAttribute={`officeLinkNewTab-${officeWeVoteId}`}
+                        url={`${AppObservableStore.getWeVoteRootURL()}${getCandidatePath(candidate)}`}
+                        target="_blank"
+                        body={(
+                          <IconButton size="small">
+                            <Launch fontSize="small" />
+                          </IconButton>
+                        )}
+                        trackingOn
+                      />
+                    </Suspense>
                   </DarkTooltip>
                 </CandidateActionsRow>
                 <RowKebabMenu
                   ariaLabel="More options for this candidate"
                   items={[
                     { key: 'copy-name', icon: ContentCopy, label: 'Copy candidate name', onClick: () => copyAndToast(candidateName) },
-                    { key: 'copy-link', icon: ContentCopy, label: 'Copy link', onClick: () => copyAndToast(`${window.location.origin}${getCandidatePath(candidate)}`) },
+                    { key: 'copy-link', icon: ContentCopy, label: 'Copy link', onClick: () => copyAndToast(`${AppObservableStore.getWeVoteRootURL()}${getCandidatePath(candidate)}`) },
                     ...(nextReleaseFeaturesEnabled ? [{ key: 'about', icon: InfoOutlined, label: 'About office', onClick: () => {} }] : []),
-                    { key: 'open', icon: Launch, label: 'Open in new tab', onClick: () => window.open(getCandidatePath(candidate), '_blank') },
+                    { key: 'open', icon: Launch, label: 'Open in new tab', externalUrl: `${AppObservableStore.getWeVoteRootURL()}${getCandidatePath(candidate)}` },
                   ]}
                 />
               </CandidateRow>

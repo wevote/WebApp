@@ -1,3 +1,4 @@
+import { Button } from '@mui/material';
 import PropTypes from 'prop-types';
 import React, { Suspense, useState, useEffect } from 'react';
 import TagManager from 'react-gtm-module';
@@ -6,11 +7,10 @@ import styled from 'styled-components';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 import { renderLog } from '../../common/utils/logging';
 import AppObservableStore from '../../common/stores/AppObservableStore';
-import BallotStore from '../../stores/BallotStore';
 import webAppConfig from '../../config';
-import { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
+import BallotStore from '../../stores/BallotStore';
 import VoterStore from '../../stores/VoterStore';
-import { Button } from "@mui/material";
+import { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
 
 const DelayedLoad = React.lazy(() => import(/* webpackChunkName: 'DelayedLoad' */ '../../common/components/Widgets/DelayedLoad'));
 const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
@@ -20,20 +20,7 @@ const LENGTH_AT_WHICH_WE_SUSPECT_ADDRESS_HAS_STREET = 25;
 export default function DisplayWhileRetrievingBallot ({ ballotWithAllItems }) {
   const [showNoBallotItems, setShowNoBallotItems] = useState(false);
   const [stateCode, setStateCode] = useState('');
-  const [textForMapSearch, setTextForMapSearch] = useState('');
   const [textForMapSearchTooShort, setTextForMapSearchTooShort] = useState(true);
-
-  useEffect(() => {
-    const substitutedStateCode = BallotStore.getSubstitutedStateCode();
-    setStateCode(substitutedStateCode);
-    const textForMapSearchTemp = BallotStore.getTextForMapSearch();
-    let textForMapSearchTooShortTemp = true;
-    if (textForMapSearch && textForMapSearch.length > LENGTH_AT_WHICH_WE_SUSPECT_ADDRESS_HAS_STREET) {
-      textForMapSearchTooShortTemp = false;
-    }
-    setTextForMapSearch(textForMapSearchTemp);
-    setTextForMapSearchTooShort(textForMapSearchTooShortTemp);
-  }, []);
 
   useEffect(() => {
     if (!ballotWithAllItems || ballotWithAllItems.length === 0) {
@@ -42,8 +29,28 @@ export default function DisplayWhileRetrievingBallot ({ ballotWithAllItems }) {
       }, 3000);
 
       return () => clearTimeout(timer);
+    } else {
+      return null;
     }
   }, [ballotWithAllItems]);
+
+  useEffect(() => {
+    const onBallotStoreChange = () => {
+      const substitutedStateCode = BallotStore.getSubstitutedStateCode();
+      setStateCode(substitutedStateCode);
+      const textForMapSearch = BallotStore.getTextForMapSearch();
+      let textForMapSearchTooShortTemp = true;
+      if (textForMapSearch && textForMapSearch.length > LENGTH_AT_WHICH_WE_SUSPECT_ADDRESS_HAS_STREET) {
+        textForMapSearchTooShortTemp = false;
+      }
+      setTextForMapSearchTooShort(textForMapSearchTooShortTemp);
+    };
+    const ballotStoreListener = BallotStore.addListener(onBallotStoreChange);
+    onBallotStoreChange();
+    return () => {
+      ballotStoreListener.remove();
+    };
+  }, []);
 
   const showSelectBallotModalChooseElection = () => {
     const showEditAddress = false;
@@ -123,22 +130,33 @@ export default function DisplayWhileRetrievingBallot ({ ballotWithAllItems }) {
       ) : (
         <>
           <NoBallotItemsHeader>
-            We don&apos;t have your ballot items just yet...
+            We don&apos;t have your ballot items just yet.
           </NoBallotItemsHeader>
           {nextReleaseFeaturesEnabled ? (
             <>
               <div>
-                In the meantime, add an item to your ballot, or find your past ballots.
+                The WeVote political data team, working with our partners, work hard to collect what&apos;s-on-the-ballot data for the entire United States, but it takes time.
+                <br />
+                <br />
+                Help us out and add an upcoming ballot item so you can share your opinion now!
               </div>
               <AddBallotItemWrapper>
-                + Add ballot item
+                <Button
+                  color="primary"
+                  id="noDataAddBallotItem"
+                  variant="contained"
+                >
+                  Add ballot item
+                </Button>
               </AddBallotItemWrapper>
             </>
           ) : (
             <>
               <div>
-                In the meantime, see other upcoming elections, or find your past
-                ballots.
+                The WeVote political data team, working with our partners, work hard to collect what&apos;s-on-the-ballot data for the entire United States.
+                <br />
+                <br />
+                In the meantime, see other upcoming elections, or find your past ballots.
                 <br />
                 <br />
               </div>

@@ -1,8 +1,8 @@
 import { TextField, Tooltip, tooltipClasses } from '@mui/material';
-import React from 'react'; // eslint-disable-line no-unused-vars
+import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import colors from '../../common/components/Style/Colors';
+import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 import { ElectionStateLabel } from '../../components/Style/BallotTitleHeaderStyles';
 
 export const ActionChip = styled('button')`
@@ -49,6 +49,11 @@ export const CandidateActions = styled('div')`
   align-items: center;
   gap: 4px;
   visibility: hidden;
+`;
+
+export const CandidateCount = styled('span')`
+  font-weight: 200;
+  color: ${DesignTokenColors.neutralUI700};
 `;
 
 export const CandidateInfo = styled('div')`
@@ -114,13 +119,23 @@ export const DarkTooltip = styled(({ className, ...props }) => (
 
 export const DetailTitle = styled('h2')`
   font-size: 22px;
-  font-weight: 700;
-  color: #333;
+  font-weight: 500;
+  color: ${DesignTokenColors.neutral800};
   margin: 0;
 `;
 
+export const ElectionCountForLink = styled('span')`
+  color: ${DesignTokenColors.neutralUI500};
+  font-weight: 400;
+`;
+
+export const ElectionCountForLinkNoData = styled('span')`
+  color: ${DesignTokenColors.neutralUI500};
+  font-weight: 200;
+`;
+
 export const ElectionDateText = styled('span')`
-  color: #848484;
+  color: ${DesignTokenColors.neutralUI500};
   font-size: 14px;
   font-weight: 400;
   margin-top: 2px;
@@ -130,7 +145,7 @@ export const ElectionDateText = styled('span')`
 // Date shown directly under the election title on the ForElection page.
 // Color matches ElectionStateLabel so the state line + date frame the title in the same hue.
 export const ElectionDetailDate = styled('div')`
-  color: ${colors.middleGrey};
+  color: ${DesignTokenColors.neutralUI500};
   font-size: 16px;
   font-weight: 400;
   margin-top: 0;
@@ -151,11 +166,6 @@ export const ElectionLink = styled('span')`
   &:hover {
     text-decoration: underline;
   }
-`;
-
-export const ElectionRowText = styled('div')`
-  display: flex;
-  flex-direction: column;
 `;
 
 export const ElectionList = styled('div')`
@@ -191,6 +201,11 @@ export const ElectionRow = styled('div')`
   }
 `;
 
+export const ElectionRowText = styled(Link)`
+  display: flex;
+  flex-direction: column;
+`;
+
 export const ElectionTitleRow = styled('div')`
   display: flex;
   align-items: center;
@@ -210,7 +225,7 @@ export const ExpandCollapseButton = styled('button')`
   cursor: pointer;
   padding: 0;
   &:hover {
-    color: #333;
+    color: ${DesignTokenColors.neutral800};
   }
 `;
 
@@ -313,7 +328,7 @@ export const OfficeHeaderLeft = styled('div')`
 export const OfficeName = styled('span')`
   font-size: 16px;
   font-weight: 600;
-  color: #333;
+  color: ${DesignTokenColors.neutral800};
 `;
 
 export const OfficePrimaryPartySpan = styled('span')`
@@ -348,7 +363,7 @@ export const SearchResultCount = styled('p')`
 export const SectionTitle = styled('h2')`
   font-size: 24px;
   font-weight: 400;
-  color: #333;
+  color: ${DesignTokenColors.neutral800};
   margin: 0;
 `;
 
@@ -371,7 +386,7 @@ export const ShowMoreButton = styled('button')`
   cursor: pointer;
   &:hover {
     border-color: #2e3c5d;
-    color: #333;
+    color: ${DesignTokenColors.neutral800};
   }
 `;
 
@@ -386,7 +401,7 @@ export const StateSelectCaret = styled('span')`
 export const StateSelectLabel = styled('span')`
   font-size: 15px;
   font-weight: 400;
-  color: #333;
+  color: ${DesignTokenColors.neutral800};
   white-space: nowrap;
 `;
 

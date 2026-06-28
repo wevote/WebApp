@@ -19,6 +19,7 @@ import { avatarGeneric } from '../../utils/applicationUtils';
 import { cordovaWelcomeAppToolbarTop, welcomeAppBarPaddingTop } from '../../utils/cordovaOffsets';
 import { Divider, LogoContainer, MobileNavDivider, MobileNavigationMenu, Navigation, NavLink, NavNonLink, NavRow } from '../Welcome/navigationStyles';
 import HeaderBarLogo from './HeaderBarLogo';
+import SignInJoinText from '../SignIn/SignInJoinText';
 
 const HeaderBarProfilePopUp = React.lazy(() => import(/* webpackChunkName: 'HeaderBarProfilePopUp' */ './HeaderBarProfilePopUp'));
 const SignInModal = React.lazy(() => import(/* webpackChunkName: 'SignInModal' */ '../../common/components/SignIn/SignInModal'));
@@ -463,7 +464,7 @@ class WelcomeAppbar extends Component {
         {showSignInModal && (
           <Suspense fallback={<></>}>
             <SignInModal
-              signInTitle="Sign In or Join"
+              signInTitle={<SignInJoinText />}
               signInSubTitle=""
               toggleOnClose={this.closeSignInModal}
               uponSuccessfulSignIn={this.closeSignInModal}

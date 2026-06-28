@@ -12,6 +12,7 @@ import BallotActions from '../../actions/BallotActions';
 import VoterActions from '../../actions/VoterActions';
 import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
 import PoliticianStore from '../../common/stores/PoliticianStore';
+import SignInJoinText from '../SignIn/SignInJoinText';
 
 const AdviserIntroModal = React.lazy(() => import(/* webpackChunkName: 'AdviserIntroModal' */ '../CompleteYourProfile/AdviserIntroModal'));
 const AskFriendsModal = React.lazy(() => import(/* webpackChunkName: 'AskFriendsModal' */ '../Friends/AskFriendsModal'));
@@ -383,7 +384,7 @@ class HeaderBarModals extends Component {
       signInModalHtml = (
         <Suspense fallback={<></>}>
           <SignInModal
-            signInTitle="Sign In or Join"
+            signInTitle={<SignInJoinText />}
             signInSubTitle=""
             toggleOnClose={this.closeSignInModal}
             uponSuccessfulSignIn={this.closeSignInModal}

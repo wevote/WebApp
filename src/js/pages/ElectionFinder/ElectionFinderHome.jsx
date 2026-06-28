@@ -1,6 +1,6 @@
 import { ContentCopy, ExpandMore, FileDownloadOutlined, Launch, Search, Close } from '@mui/icons-material';
 import { IconButton, InputAdornment } from '@mui/material';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import CandidateActions from '../../actions/CandidateActions';
 import ElectionActions from '../../actions/ElectionActions';
@@ -21,6 +21,7 @@ import highlightMatch from './highlightMatch';
 import RowKebabMenu from './RowKebabMenu';
 import {
   ActionDivider, CandidateInfo, CandidateList, CandidateName, CandidateParty, CandidateRow, DarkTooltip,
+  ElectionCountForLink, ElectionCountForLinkNoData,
   ElectionDateText, ElectionLink, ElectionList, ElectionRow, ElectionRowActions, ElectionRowText,
   FilterTab, FilterTabsRow, InlineSearchField, NoResults,
   OfficeName, OfficeSection,
@@ -28,8 +29,11 @@ import {
   StateSelectWrapper, StateSelectNative, StateSelectLabel, StateSelectCaret,
 } from './electionFinderStyles';
 import webAppConfig from '../../config';
+import AppObservableStore from '../../common/stores/AppObservableStore';
 
 const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
+
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 
 function sortByDateAsc (a, b) {
   return (a.election_day_text || '').localeCompare(b.election_day_text || '');
@@ -90,11 +94,11 @@ function ElectionFinderHome () {
     setVisibleCount(50);
   }, []);
 
-  const onElectionSelect = useCallback((election) => {
-    const stateCode = (election.state_code_list && election.state_code_list.length > 0) ?
-      election.state_code_list[0].toLowerCase() :
+  const getElectionUrl = useCallback((election) => {
+    const stateCode = (election.state_code) ?
+      election.state_code.toLowerCase() :
       'na';
-    historyPush(`/election-finder/${stateCode}/${election.google_civic_election_id}`);
+    return `/election-finder/${stateCode}/${election.google_civic_election_id}`;
   }, []);
 
   // Filter by state
@@ -130,6 +134,13 @@ function ElectionFinderHome () {
     displayElections = pastElections;
     sectionTitle = `Past elections \u2013 ${stateLabel} (${pastCount})`;
   }
+
+  const reverseDateSort = (filterTab !== 'all' && filterTab !== 'upcoming'); // Reverse when looking at past elections
+  displayElections = [...displayElections].sort((a, b) => {
+    const dateCompare = (a.election_day_text || '').localeCompare(b.election_day_text || '');
+    if (dateCompare !== 0) return reverseDateSort ? -dateCompare : dateCompare;
+    return (a.state_code || '').localeCompare(b.state_code || '');
+  });
 
   const sectionDownloadLabel = filterTab === 'past' ?
     'Download data for all past elections' :
@@ -168,7 +179,7 @@ function ElectionFinderHome () {
 
   return (
     <>
-      <Helmet><title>Election Finder - We Vote</title></Helmet>
+      <Helmet><title>Election Finder - WeVote</title></Helmet>
       <SnackNotifier />
       <PageContentContainer>
         <ElectionFinderHeader subtitle="Find past or upcoming elections." />
@@ -253,19 +264,24 @@ function ElectionFinderHome () {
             const electionUrl = `/election-finder/${sc}/${googleCivicElectionId}`;
             return (
               <React.Fragment key={googleCivicElectionId}>
-                <ElectionRow onClick={() => onElectionSelect(election)}>
-                  <ElectionRowText>
+                <ElectionRow>
+                  <ElectionRowText to={getElectionUrl(election)}>
                     <ElectionLink>
                       {election.state_code && election.state_code !== 'NA' ?
                         `${convertStateCodeToStateText(election.state_code)} – ${election.election_name || ''}` :
                         (election.election_name || '')}
+                      {election.office_count ? (
+                        <ElectionCountForLink>{` (${election.office_count.toLocaleString()} ${election.office_count === 1 ? 'office' : 'offices'})`}</ElectionCountForLink>
+                      ) : (
+                        <ElectionCountForLinkNoData> (no data)</ElectionCountForLinkNoData>
+                      )}
                     </ElectionLink>
                     {election.election_day_text && (
                       <ElectionDateText>{formatDateLong(election.election_day_text)}</ElectionDateText>
                     )}
                   </ElectionRowText>
                   <ElectionRowActions className="u-show-desktop-tablet" onClick={(e) => e.stopPropagation()}>
-                    <CopyChip defaultLabel="Copy link" getText={() => `${window.location.origin}${electionUrl}`} />
+                    <CopyChip defaultLabel="Copy link" getText={() => `${AppObservableStore.getWeVoteRootURL()}${electionUrl}`} />
                     <ActionDivider />
                     {nextReleaseFeaturesEnabled && (
                       <DarkTooltip title="Download election data">
@@ -273,17 +289,27 @@ function ElectionFinderHome () {
                       </DarkTooltip>
                     )}
                     <DarkTooltip title="Open in new tab">
-                      <IconButton size="small" onClick={() => window.open(electionUrl, '_blank')}>
-                        <Launch fontSize="small" />
-                      </IconButton>
+                      <Suspense fallback={<></>}>
+                        <OpenExternalWebSite
+                          linkIdAttribute={`electionFinderNewTab-${election.google_civic_election_id}`}
+                          url={`${AppObservableStore.getWeVoteRootURL()}${electionUrl}`}
+                          target="_blank"
+                          body={(
+                            <IconButton size="small">
+                              <Launch fontSize="small" />
+                            </IconButton>
+                          )}
+                          trackingOn
+                        />
+                      </Suspense>
                     </DarkTooltip>
                   </ElectionRowActions>
                   <RowKebabMenu
                     ariaLabel="More options for this election"
                     items={[
-                      { key: 'copy-link', icon: ContentCopy, label: 'Copy link', onClick: () => copyAndToast(`${window.location.origin}${electionUrl}`) },
+                      { key: 'copy-link', icon: ContentCopy, label: 'Copy link', onClick: () => copyAndToast(`${AppObservableStore.getWeVoteRootURL()}${electionUrl}`) },
                       ...(nextReleaseFeaturesEnabled ? [{ key: 'download', icon: FileDownloadOutlined, label: 'Download election data', onClick: () => {} }] : []),
-                      { key: 'open', icon: Launch, label: 'Open in new tab', onClick: () => window.open(electionUrl, '_blank') },
+                      { key: 'open', icon: Launch, label: 'Open in new tab', externalUrl: `${AppObservableStore.getWeVoteRootURL()}${electionUrl}` },
                     ]}
                   />
                 </ElectionRow>
