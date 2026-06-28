@@ -8,6 +8,7 @@ class DonateBrowser extends PageBrowser {
   }
 
   async load () {
+    await driver.switchFrame(null);
     await super.open('/donate');
   }
 
@@ -32,6 +33,25 @@ class DonateBrowser extends PageBrowser {
     return $('#budgets_small');
   }
 
+  getDonationCopy () {
+    return $('.u-show-desktop-tablet #donation_copy');
+  }
+
+  async selectDonationInterval (interval) {
+    await driver.execute('document.getElementById(arguments[0]).click();', `plan_duration_${interval}`);
+  }
+
+  getDonationInterval (interval) {
+    return $(`#plan_duration_${interval}`);
+  }
+
+  async enableDedication () {
+    const checkbox = $('#honor_in_memory');
+    if (!await checkbox.isSelected()) {
+      await driver.execute('document.getElementById(arguments[0]).click();', 'honor_in_memory');
+    }
+  }
+
   getOneTimeButton () {
     return $('#plan_duration_one_time');
   }
@@ -41,7 +61,7 @@ class DonateBrowser extends PageBrowser {
   }
 
   getDonorBoxIFrame () {
-    return $('#donorbox-iframe');
+    return $('.u-show-desktop-tablet #donorbox-iframe');
   }
 
   getCommentField () {
@@ -49,7 +69,7 @@ class DonateBrowser extends PageBrowser {
   }
 
   getNextButton () {
-    return $('.next');
+    return $('#footer_button');
   }
 
   getPayPalButton () {
@@ -109,7 +129,7 @@ class DonateBrowser extends PageBrowser {
   }
 
   getDedicateMyDonationCheckbox () {
-    return $('//span[contains(text(), "Dedicate")]/../span[4]');
+    return $('#honor_in_memory');
   }
 
   getInMemoryOfRadioButton () {
