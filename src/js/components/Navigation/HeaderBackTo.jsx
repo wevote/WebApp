@@ -21,6 +21,7 @@ import { avatarGeneric } from '../../utils/applicationUtils';
 import { AppBarForBackTo, TopRowOneRightContainer } from '../Style/pageLayoutStyles';
 import SignInButton from '../Widgets/SignInButton';
 import HeaderBackToButton from './HeaderBackToButton';
+import SignInJoinText from '../SignIn/SignInJoinText';
 
 const HeaderNotificationMenu = React.lazy(() => import(/* webpackChunkName: 'HeaderNotificationMenu' */ './HeaderNotificationMenu'));
 const SignInModal = React.lazy(() => import(/* webpackChunkName: 'SignInModal' */ '../../common/components/SignIn/SignInModal'));
@@ -273,7 +274,7 @@ class HeaderBackTo extends Component {
         {showSignInModal && (
           <Suspense fallback={<></>}>
             <SignInModal
-              signInTitle="Sign In or Join"
+              signInTitle={<SignInJoinText />}
               signInSubTitle=""
               toggleOnClose={this.closeSignInModal}
               uponSuccessfulSignIn={this.closeSignInModal}

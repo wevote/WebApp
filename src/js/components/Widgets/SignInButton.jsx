@@ -55,15 +55,16 @@ export default function SignInButton (props) {
             letterSpacing: '0.4px',
           }}
         >
-          Sign In
+          Sign in
         </span>
         {' '}
         <span
           style={{
             color: '#ccc',
+            fontWeight: 200,
           }}
         >
-          or
+          |
         </span>
         {' '}
         <span

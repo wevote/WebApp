@@ -27,6 +27,7 @@ import VoterGuideChooseElectionModal from '../VoterGuide/VoterGuideChooseElectio
 import SignInButton from '../Widgets/SignInButton';
 import EndorsementModeTabs from './EndorsementModeTabs';
 import HeaderBackToButton from './HeaderBackToButton';
+import SignInJoinText from '../SignIn/SignInJoinText';
 
 const SignInModal = React.lazy(() => import(/* webpackChunkName: 'SignInModal' */ '../../common/components/SignIn/SignInModal'));
 
@@ -364,7 +365,7 @@ class HeaderBackToVoterGuides extends Component {
         {showSignInModal && (
           <Suspense fallback={<></>}>
             <SignInModal
-              signInTitle="Sign In or Join"
+              signInTitle={<SignInJoinText />}
               signInSubTitle=""
               toggleOnClose={this.closeSignInModal}
               uponSuccessfulSignIn={this.closeSignInModal}

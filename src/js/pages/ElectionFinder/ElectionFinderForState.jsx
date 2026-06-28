@@ -1,12 +1,18 @@
 import { ContentCopy, ExpandMore, FileDownloadOutlined, Launch, Search, Close } from '@mui/icons-material';
 import { IconButton, InputAdornment } from '@mui/material';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, {
+  Suspense,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 import CandidateActions from '../../actions/CandidateActions';
 import ElectionActions from '../../actions/ElectionActions';
 import { renderLog } from '../../common/utils/logging';
-import { stateCodeMap, convertStateCodeToStateText } from '../../common/utils/addressFunctions';
+import { convertStateCodeToStateText, isValidStateCode, stateCodeMap } from '../../common/utils/addressFunctions';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import historyPush from '../../common/utils/historyPush';
@@ -21,16 +27,41 @@ import ElectionFinderHeader from './ElectionFinderHeader';
 import highlightMatch from './highlightMatch';
 import RowKebabMenu from './RowKebabMenu';
 import {
-  ActionDivider, CandidateInfo, CandidateList, CandidateName, CandidateParty, CandidateRow, DarkTooltip,
-  ElectionDateText, ElectionLink, ElectionList, ElectionRow, ElectionRowActions, ElectionRowText,
-  FilterTab, FilterTabsRow, InlineSearchField, NoResults,
-  OfficeName, OfficeSection,
-  SearchIconButton, SectionTitle, SectionTitleRow, ShowMoreButton,
-  StateSelectWrapper, StateSelectNative, StateSelectLabel, StateSelectCaret,
+  ActionDivider,
+  CandidateInfo,
+  CandidateList,
+  CandidateName,
+  CandidateParty,
+  CandidateRow,
+  DarkTooltip,
+  ElectionCountForLink, ElectionCountForLinkNoData,
+  ElectionDateText,
+  ElectionLink,
+  ElectionList,
+  ElectionRow,
+  ElectionRowActions,
+  ElectionRowText,
+  FilterTab,
+  FilterTabsRow,
+  InlineSearchField,
+  NoResults,
+  OfficeName,
+  OfficeSection,
+  SearchIconButton,
+  SectionTitle,
+  SectionTitleRow,
+  ShowMoreButton,
+  StateSelectWrapper,
+  StateSelectNative,
+  StateSelectLabel,
+  StateSelectCaret,
 } from './electionFinderStyles';
 import webAppConfig from '../../config';
+import AppObservableStore from '../../common/stores/AppObservableStore';
 
 const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
+
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 
 const SORTED_STATES = Object.entries(stateCodeMap)
   .filter(([code]) => code !== 'NA')
@@ -43,10 +74,15 @@ function sortByDateAsc (a, b) {
 // 'NA' must be matched explicitly: an empty state_code_list does not imply national,
 // since some state-level elections come back without state_code_list populated.
 function matchesStateCode (election, stateCode) {
-  if (stateCode === 'NA') {
+  let stateCodeUpper = '';
+  if (stateCode) {
+    stateCodeUpper = stateCode.toUpperCase();
+  }
+  // console.log('election.state_code_list:', election.state_code_list);
+  if (stateCodeUpper === 'NA') {
     return election.state_code === 'NA' || (election.state_code_list && election.state_code_list.includes('NA'));
   }
-  return election.state_code_list && election.state_code_list.includes(stateCode);
+  return election.state_code_list && election.state_code_list.includes(stateCodeUpper);
 }
 
 function getBreadcrumbTabLabel (filterTab) {
@@ -79,7 +115,13 @@ function ElectionFinderForState () {
   const pendingCandidateSearchRef = useRef('');
 
   useEffect(() => {
+    // console.log('Initial useEffect selectedStateCode:', selectedStateCode);
     window.scrollTo(0, 0);
+    if (selectedStateCode) {
+      if (!isValidStateCode(selectedStateCode)) {
+        historyPush('/election-finder');
+      }
+    }
     const listener = ElectionStore.addListener(() => {
       const list = ElectionStore.getElectionList();
       setElectionList(list);
@@ -101,6 +143,7 @@ function ElectionFinderForState () {
     if (electionList.length > 0 && filterTab === 'upcoming') {
       const stateElections = electionList.filter((el) => matchesStateCode(el, selectedStateCode));
       const hasUpcoming = stateElections.some((el) => el.election_is_upcoming);
+      // console.log('setFilterTab(all), hasUpcoming:', hasUpcoming, ', electionList:', electionList, ', stateElections:', stateElections);
       if (!hasUpcoming && stateElections.length > 0) {
         setFilterTab('all');
       }
@@ -109,8 +152,13 @@ function ElectionFinderForState () {
 
   const onStateChange = useCallback((e) => {
     const stateCode = e.target.value;
+    // console.log('onStateChange stateCode:', stateCode);
     if (stateCode) {
-      historyPush(`/election-finder/${stateCode.toLowerCase()}`);
+      if (isValidStateCode(stateCode)) {
+        historyPush(`/election-finder/${stateCode.toLowerCase()}`);
+      } else {
+        historyPush('/election-finder');
+      }
     } else {
       historyPush('/election-finder');
     }
@@ -119,6 +167,13 @@ function ElectionFinderForState () {
   const onFilterTabChange = useCallback((tab) => {
     setFilterTab(tab);
     setVisibleCount(50);
+  }, []);
+
+  const getElectionUrl = useCallback((election) => {
+    const stateCode = (election.state_code) ?
+      election.state_code.toLowerCase() :
+      'na';
+    return `/election-finder/${stateCode}/${election.google_civic_election_id}`;
   }, []);
 
   const onElectionSelect = useCallback((googleCivicElectionId) => {
@@ -281,11 +336,19 @@ function ElectionFinderForState () {
         <ElectionList>
           {(searchText ? displayElections : displayElections.slice(0, visibleCount)).map((election) => {
             const googleCivicElectionId = election.google_civic_election_id;
+            const externalUrl = `${AppObservableStore.getWeVoteRootURL()}/election-finder/${selectedStateCode.toLowerCase()}/${googleCivicElectionId}`;
             return (
               <React.Fragment key={googleCivicElectionId}>
-                <ElectionRow onClick={() => onElectionSelect(googleCivicElectionId)}>
-                  <ElectionRowText>
-                    <ElectionLink>{election.election_name || ''}</ElectionLink>
+                <ElectionRow>
+                  <ElectionRowText to={getElectionUrl(election)}>
+                    <ElectionLink>
+                      {election.election_name || ''}
+                      {election.office_count ? (
+                        <ElectionCountForLink>{` (${election.office_count.toLocaleString()} ${election.office_count === 1 ? 'office' : 'offices'})`}</ElectionCountForLink>
+                      ) : (
+                        <ElectionCountForLinkNoData> (no data)</ElectionCountForLinkNoData>
+                      )}
+                    </ElectionLink>
                     {election.election_day_text && (
                       <ElectionDateText>{formatDateLong(election.election_day_text)}</ElectionDateText>
                     )}
@@ -293,7 +356,7 @@ function ElectionFinderForState () {
                   <ElectionRowActions className="u-show-desktop-tablet" onClick={(e) => e.stopPropagation()}>
                     <CopyChip
                       defaultLabel="Copy link"
-                      getText={() => `${window.location.origin}/election-finder/${selectedStateCode.toLowerCase()}/${googleCivicElectionId}`}
+                      getText={() => externalUrl}
                     />
                     <ActionDivider />
                     {nextReleaseFeaturesEnabled && (
@@ -302,17 +365,27 @@ function ElectionFinderForState () {
                       </DarkTooltip>
                     )}
                     <DarkTooltip title="Open in new tab">
-                      <IconButton size="small" onClick={() => window.open(`/election-finder/${selectedStateCode.toLowerCase()}/${googleCivicElectionId}`, '_blank')}>
-                        <Launch fontSize="small" />
-                      </IconButton>
+                      <Suspense fallback={<></>}>
+                        <OpenExternalWebSite
+                          linkIdAttribute={`electionFinderNewTab-${election.google_civic_election_id}`}
+                          url={externalUrl}
+                          target="_blank"
+                          body={(
+                            <IconButton size="small">
+                              <Launch fontSize="small" />
+                            </IconButton>
+                          )}
+                          trackingOn
+                        />
+                      </Suspense>
                     </DarkTooltip>
                   </ElectionRowActions>
                   <RowKebabMenu
                     ariaLabel="More options for this election"
                     items={[
-                      { key: 'copy-link', icon: ContentCopy, label: 'Copy link', onClick: () => copyAndToast(`${window.location.origin}/election-finder/${selectedStateCode.toLowerCase()}/${googleCivicElectionId}`) },
+                      { key: 'copy-link', icon: ContentCopy, label: 'Copy link', onClick: () => copyAndToast(externalUrl) },
                       ...(nextReleaseFeaturesEnabled ? [{ key: 'download', icon: FileDownloadOutlined, label: 'Download election data', onClick: () => {} }] : []),
-                      { key: 'open', icon: Launch, label: 'Open in new tab', onClick: () => window.open(`/election-finder/${selectedStateCode.toLowerCase()}/${googleCivicElectionId}`, '_blank') },
+                      { key: 'open', icon: Launch, label: 'Open in new tab', externalUrl },
                     ]}
                   />
                 </ElectionRow>

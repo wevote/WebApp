@@ -27,6 +27,7 @@ import { avatarGeneric } from '../../utils/applicationUtils';
 import { AppBarForBackTo, OfficeShareWrapper, TopOfPageHeader, TopRowOneLeftContainer, TopRowOneMiddleContainer, TopRowOneRightContainer, TopRowTwoLeftContainer, TopRowTwoRightContainer } from '../Style/pageLayoutStyles';
 import SignInButton from '../Widgets/SignInButton';
 import HeaderBackToButton from './HeaderBackToButton';
+import SignInJoinText from '../SignIn/SignInJoinText';
 
 const HeaderNotificationMenu = React.lazy(() => import(/* webpackChunkName: 'HeaderNotificationMenu' */ './HeaderNotificationMenu'));
 const ShareButtonDesktopTablet = React.lazy(() => import(/* webpackChunkName: 'ShareButtonDesktopTablet' */ '../Share/ShareButtonDesktopTablet'));
@@ -798,7 +799,7 @@ class HeaderBackToBallot extends Component {
           {showSignInModal && (
             <Suspense fallback={<></>}>
               <SignInModal
-                signInTitle="Sign In or Join"
+                signInTitle={<SignInJoinText />}
                 signInSubTitle=""
                 toggleOnClose={this.closeSignInModal}
                 uponSuccessfulSignIn={this.closeSignInModal}

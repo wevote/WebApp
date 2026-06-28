@@ -1,7 +1,9 @@
 import { MoreVert } from '@mui/icons-material';
 import PropTypes from 'prop-types';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { Suspense, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
+
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 
 const ESTIMATED_MENU_HEIGHT = 220;
 
@@ -21,6 +23,7 @@ export default function RowKebabMenu ({ ariaLabel, items }) {
   }, [open]);
 
   const handleToggle = (e) => {
+    e.preventDefault();
     e.stopPropagation();
     if (!open && buttonRef.current) {
       const rect = buttonRef.current.getBoundingClientRect();
@@ -30,6 +33,7 @@ export default function RowKebabMenu ({ ariaLabel, items }) {
   };
 
   const handleItemClick = (handler) => (e) => {
+    e.preventDefault();
     e.stopPropagation();
     handler();
     setOpen(false);
@@ -51,12 +55,43 @@ export default function RowKebabMenu ({ ariaLabel, items }) {
         <MenuCard role="menu" $openAbove={openAbove}>
           {items.map((item) => {
             const Icon = item.icon;
-            return (
-              <MenuItem key={item.key} role="menuitem" onClick={handleItemClick(item.onClick)}>
-                <Icon fontSize="small" />
-                <span>{item.label}</span>
-              </MenuItem>
-            );
+            if (item.externalUrl) {
+              return (
+                <Suspense fallback={<></>} key={item.key}>
+                  <OpenExternalWebSite
+                    linkIdAttribute={item.externalUrl}
+                    url={item.externalUrl}
+                    target="_blank"
+                    body={(
+                      <MenuItem key={item.key}
+                                role="menuitem"
+                      >
+                        <Icon fontSize="small" />
+                        <span>{item.label}</span>
+                      </MenuItem>
+                    )}
+                    trackingOn
+                  />
+                </Suspense>
+              );
+            } else if (item.onClick) {
+              return (
+                <MenuItem key={item.key}
+                          onClick={handleItemClick(item.onClick)}
+                          role="menuitem"
+                >
+                  <Icon fontSize="small" />
+                  <span>{item.label}</span>
+                </MenuItem>
+              );
+            } else {
+              return (
+                <MenuItem key={item.key} role="menuitem">
+                  <Icon fontSize="small" />
+                  <span>{item.label}</span>
+                </MenuItem>
+              );
+            }
           })}
         </MenuCard>
       )}
@@ -68,9 +103,10 @@ RowKebabMenu.propTypes = {
   ariaLabel: PropTypes.string.isRequired,
   items: PropTypes.arrayOf(PropTypes.shape({
     key: PropTypes.string.isRequired,
+    externalUrl: PropTypes.string,
     icon: PropTypes.elementType.isRequired,
     label: PropTypes.string.isRequired,
-    onClick: PropTypes.func.isRequired,
+    onClick: PropTypes.func,
   })).isRequired,
 };
 
