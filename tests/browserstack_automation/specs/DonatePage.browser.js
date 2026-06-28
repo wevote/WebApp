@@ -1,4 +1,4 @@
-import { driver, expect } from '@wdio/globals';
+import { browser, driver, expect } from '@wdio/globals';
 import ReadyPage from '../page_objects/ready.browser';
 import DonatePage from '../page_objects/donate.browser';
 
@@ -118,7 +118,7 @@ describe('DonatePage', () => {
     await DonatePage.enableDedication();
     await DonatePage.getHonoreeNameField().setValue('John Wick');
     await DonatePage.getRecipientEmailField().setValue(`${validEmail}1`);
-    await submitAmountStep();
+    await browser.keys('Tab');
     await expect(DonatePage.getFieldRequiredError(1)).toHaveText(`#${validEmailError}`);
   });
 });
