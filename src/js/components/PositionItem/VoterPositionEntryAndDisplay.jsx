@@ -132,8 +132,7 @@ function VoterPositionBlockComponent ({
                 <Skeleton variant="rounded" width={100} height={36} sx={{ borderRadius: 2 }} />
                 <Skeleton variant="rounded" width={100} height={36} sx={{ borderRadius: 2 }} />
               </Box>
-            )}
-            >
+            )}>  {/* CORDOVA_TOKEN_AT_CLOSE_OF_A_MULTI_LINE_FALLBACK_DO_NOT_REMOVE */}
               <ItemActionBar
                 ballotItemWeVoteId={ballotItemWeVoteId}
                 commentButtonHide
