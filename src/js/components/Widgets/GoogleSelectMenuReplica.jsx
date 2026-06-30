@@ -27,19 +27,19 @@ export default function  GoogleSelectMenuReplica (props) {
     }
   }, [props.inputText]);
 
-  const localClickHandler = (event) => {
-    console.log('----localClickHandler----', event.target.innerText);
-    clickHandler(event.target.innerText);
+  const localClickHandler = (address, index) => {
+    console.log('----localClickHandler----', address, index);
+    clickHandler(address);
   };
   return (
     <div id="GSMR-top-div" style={display ? { display: 'block'  } : { display: 'none' }}>
       <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
         <nav aria-label="main mailbox folders">
           <List>
-            {suggestions.map((address) => (
+            {suggestions.map((address, index) => (
               <React.Fragment key={address.replace(' ', '')}>
                 <ListItem disablePadding sx={{ width: '600px', transform: 'translateX(-23px)' }}>
-                  <ListItemButton onClick={localClickHandler} sx={{ padding: '0 16px' }}>
+                  <ListItemButton onClick={() => localClickHandler(address, index)} sx={{ padding: '0 16px' }}>
                     <PlaceIcon
                       fontSize="large"
                       sx={{ color: 'darkgray', paddingRight: '18px' }}
