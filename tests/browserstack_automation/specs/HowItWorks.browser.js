@@ -49,7 +49,7 @@ describe('HowItWorks', () => {
   // HowItWorks_003
   it('verifyGetStartedButton', async () => {
     await navigateToSignIn();
-    await expect(await HowItWorks.signInSubtitle).toHaveText('Sign In or Join');
+    await expect(await HowItWorks.signInSubtitle).toHaveText(expect.stringContaining('Sign in'));
     console.log("GetStarted Button Clicked Successfully, user on the signIn page")
   });
   // HowItWorks_004
@@ -58,7 +58,7 @@ describe('HowItWorks', () => {
     const emailTextBox = await HowItWorks.enterVoterEmailAddressTextBox;
     await emailTextBox.setValue(testData.EMAIL_NEGATIVE_SCENARIO);
     await HowItWorks.clickButton(await HowItWorks.cancelEmailButton);
-    await expect(await HowItWorks.signInSubtitle).toHaveText('Sign In or Join');
+    await expect(await HowItWorks.signInSubtitle).toHaveText(expect.stringContaining('Sign in'));
     console.log("Email SignIn was Cancelled")
   });
   // HowItWorks_005
@@ -67,7 +67,7 @@ describe('HowItWorks', () => {
     const mobile = await HowItWorks.enterMobilePhoneNumber;
     await mobile.setValue(testData.MOBILE_NUMBER);
     await HowItWorks.clickButton(await HowItWorks.cancelMobilePhoneNumberButton);
-    await expect(await HowItWorks.signInSubtitle).toHaveText('Sign In or Join');
+    await expect(await HowItWorks.signInSubtitle).toHaveText(expect.stringContaining('Sign in'));
     console.log("Mobile SignIn was Cancelled")
   });
   // HowItWorks_006
@@ -75,7 +75,7 @@ describe('HowItWorks', () => {
     await navigateToSignIn();
     await HowItWorks.clickButton(await HowItWorks.enterSignInWithApple);
     await driver.back(); // known Safari issue
-    await expect(await HowItWorks.getTitleSignUpPopUp).toHaveText('Sign In');
+    await expect(await HowItWorks.getTitleSignUpPopUp).toHaveText('Sign in');
     console.log("AppleID  SignIn was Cancelled")
   });
    // HowItWorks_008

@@ -14,21 +14,22 @@ class SignIn extends PageBrowser {
   get signInElement () {
     return $('#signIn');
   }
-
-  get signInWithXTextElement () {
-    // return $('//span[text()="Sign in with X"]');
-    return $('#twitterSignIn-splitIconButton span:nth-of-type(2)');
-
-  }
+  //depricating as X feature removed
+//  get signInWithXTextElement () {
+//    // return $('//span[text()="Sign in with X"]');
+//    return $('#twitterSignIn-splitIconButton span:nth-of-type(2)');
+//
+//  }
 
   get signInWithAppleTextElement () {
     // return $('//span[text()="Sign in with Apple"]');  // #appleSignInText
     return $('#appleSignInText');
   }
 
-  get xBttnElement () {
-    return $('#twitterSignIn-splitIconButton');
-  }
+  //depricating as X feature removed
+//  get xBttnElement () {
+//    return $('#twitterSignIn-splitIconButton');
+//  }
 
   get appleBttnElement () {
     return $('.AppleSignInButton-sc-1tt5cpk-2');

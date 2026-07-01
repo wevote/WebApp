@@ -92,8 +92,24 @@ class FooterlinksBrowser extends PageBrowser {
   }
 
   get getDonatePageContentTitleElement () {
-    return $('span*=Choose amount');
+    return $('//span[contains(@class,'step-1') and normalize-space()='Choose amount']');
   }
+
+  get getDonateNextButton() {
+    return $('span.next');
+  }
+
+ get donateFrame() {
+  return $('#donorbox-iframe');
+  }
+
+  async switchToDonateFrame() {
+    await driver.switchFrame(this.donateFrame);
+  }
+  async switchToMainPage() {
+    await driver.switchFrame(null);
+  }
+
 
   async waitAboutLinkAndClick () {
     await this.getAboutLinkElement.waitForDisplayed({ timeout: 15000 });
@@ -136,6 +152,23 @@ class FooterlinksBrowser extends PageBrowser {
       this.findNextButtonHowItWorksWindow.click();
     }
   }
+  async verifyExternalLink(linkElement, expectedUrl, titleElement, expectedTitle) {
+    const readyWindow = await driver.getWindowHandle();
+    await linkElement.click();
+    await driver.pause(5000);
+    const allWindows = await driver.getWindowHandles();
+    for (const window of allWindows) {
+      if (window !== readyWindow) {
+        await driver.switchToWindow(window);
+        break;
+      }
+    }
+    await expect(driver).toHaveUrl(expect.stringContaining(expectedUrl));
+    await expect(titleElement).toHaveText(expectedTitle);
+    await driver.closeWindow();
+    await driver.switchToWindow(readyWindow);
+  }
+
 
 }
 

@@ -25,20 +25,18 @@ const testEmails = [
 describe('SignIn', () => {
   // SignIn_001
   it('verifySignInPage @BVT', async () => {
-    await expect(await SignIn.signInElement).toHaveText(expect.stringContaining('Sign In'));
+    await expect(await SignIn.signInElement).toHaveText(expect.stringContaining('Sign in'));
   });
 
 
   // SignIn_002 and SignIn_007 and SignIn_008
   it('verifySpellingsOfAllElementsOnSignInPage', async () => {
-    const XText = 'Sign in with X';
     const AppleText = 'Sign in with Apple';
     //* **********another approach****************** */
     // const xButtonText= await SignIn.signInWithXTextElement.getText();
     // console.log("   text:",xButtonText);
     // await expect(xButtonText).toBe(XText);
     //* ******************************************************************* */
-    await expect(SignIn.signInWithXTextElement).toHaveText(XText);
     await expect(SignIn.signInWithAppleTextElement).toHaveText(AppleText);
     await expect(SignIn.phoneNumberLabelElement).toHaveText('Mobile Phone Number');
     await expect(SignIn.emailLabelElement).toHaveText('Email');
@@ -115,22 +113,22 @@ describe('SignIn', () => {
     await expect(await appleTextColor.value.replace('rgba', 'rgb').replace(/,\s*1\)$/, ')')).toBe('rgb(255,255,255)');
   }); */
 
-
-  // SignIn_010
-  it('verifyxSignInLinkResponsiveness', async () => {
-    await SignIn.xBttnElement.waitForClickable();
-    await SignIn.xBttnElement.click();
-    //* ***************If you're using the latest version of WebdriverIO (v5 or later), you should use the browser object
-    //* ***********It provides a more straightforward API for interacting with the browser context.*/
-    // await driver.waitUntil(async () => {
-    //     return await driver.getTitle() === 'X / Authorize an application'
-    // }, {
-    //     timeout: 5000,
-    // });
-    await browser.waitUntil(async () => await driver.getTitle() === 'X / Authorize an application', {
-      timeout: 5000,
-    });
-  });
+//Depricating as X feature is removed
+//  // SignIn_010
+//  it('verifyxSignInLinkResponsiveness', async () => {
+//    await SignIn.xBttnElement.waitForClickable();
+//    await SignIn.xBttnElement.click();
+//    //* ***************If you're using the latest version of WebdriverIO (v5 or later), you should use the browser object
+//    //* ***********It provides a more straightforward API for interacting with the browser context.*/
+//    // await driver.waitUntil(async () => {
+//    //     return await driver.getTitle() === 'X / Authorize an application'
+//    // }, {
+//    //     timeout: 5000,
+//    // });
+//    await browser.waitUntil(async () => await driver.getTitle() === 'X / Authorize an application', {
+//      timeout: 5000,
+//    });
+//  });
   // SignIn_013 and SignIn_014
   it('verifyAppleSignInLinkResponsiveness', async () => {
     await SignIn.appleBttnElement.waitForClickable();
@@ -139,7 +137,7 @@ describe('SignIn', () => {
       timeout: 5000,
     });
     await driver.back();
-    await expect(await SignIn.signInLinkBttn).toHaveText('Sign In or Join');
+    await expect(await SignIn.signInLinkBttn).toHaveText('Sign in | Join');
   });
 
 
@@ -161,8 +159,8 @@ describe('SignIn', () => {
     //  await browser.keys('Tab');//first press tab
     await expect(await SignIn.closeBttnElement).toBeFocused();
     await driver.keys('Tab', 'Tab', 'Tab');
-    await expect(await SignIn.xBttnElement).toBeFocused();
-    await driver.keys('Tab', 'Tab', 'Tab', 'Tab');
+//    await expect(await SignIn.xBttnElement).toBeFocused(); Depricating the step as X feature is removed
+//    await driver.keys('Tab', 'Tab', 'Tab', 'Tab');
     await expect(await SignIn.appleBttnElement).toBeFocused();
     await driver.keys('Tab', 'Tab', 'Tab', 'Tab', 'Tab');
     await expect(await SignIn.phoneNumberFieldElement).toBeFocused();
