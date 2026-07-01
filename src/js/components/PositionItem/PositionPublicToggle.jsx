@@ -216,8 +216,8 @@ class PositionPublicToggle extends Component {
                   Click the &quot;Friends&quot; toggle to show to WeVote friends only.
                 </>
               )}
-              signInTitle="Sign in to make your endorsements public."
-              signInSubTitle=""
+              signInTitle={<>Sign in to make your endorsements public.</>}
+              signInSubTitle={<></>}
               signedInTitle={<>Public</>}
               signedOutTitle={<>Show to Public</>}
               toggleOnClose={this.togglePositionPublicHelpModal}

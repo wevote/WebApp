@@ -381,8 +381,8 @@ class CompleteYourProfileOnBallot extends Component {
         {(showSignInModal && !VoterStore.getVoterIsSignedIn()) && (
           <Suspense fallback={<></>}>
             <SignInModal
-              signInTitle="Sign in or join to save your ballot choices & settings"
-              signInSubTitle=""
+              signInTitle={<>Sign in or join to save your ballot choices & settings</>}
+              signInSubTitle={<></>}
               toggleOnClose={this.toggleShowSignInModal}
               uponSuccessfulSignIn={this.toggleShowSignInModal}
             />

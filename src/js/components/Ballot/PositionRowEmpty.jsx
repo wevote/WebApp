@@ -153,8 +153,8 @@ class PositionRowEmpty extends Component {
         { showSignInModal && (
           <Suspense fallback={<></>}>
             <SignInModal
-              signInTitle="Sign in to ask your friends"
-              signInSubTitle=""
+              signInTitle={<>Sign in to ask your friends</>}
+              signInSubTitle={<></>}
               toggleOnClose={this.closeSignInModal}
               uponSuccessfulSignIn={this.askFriendsSignInComplete}
             />

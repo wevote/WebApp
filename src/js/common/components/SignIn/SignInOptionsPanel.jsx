@@ -52,8 +52,8 @@ export default class SignInOptionsPanel extends Component {
       isOnWeVoteRootUrl: true,
       isOnWeVotePartnerSubdomainUrl: false,
       isOnFacebookSupportedDomainUrl: false,
-      pleaseSignInTitleFromState: '',
-      pleaseSignInSubTitle: '',
+      pleaseSignInTitleFromState: <></>,
+      pleaseSignInSubTitle: <></>,
       showTwitterDisconnect: false,
       showRecommendedText: false,
     };
@@ -99,14 +99,14 @@ export default class SignInOptionsPanel extends Component {
 
     if (this.props.pleaseSignInTitle || this.props.pleaseSignInSubTitle || this.props.pleaseSignInTextOff) {
       this.setState({
-        pleaseSignInTitleFromState: this.props.pleaseSignInTitle || '',
-        pleaseSignInSubTitle: this.props.pleaseSignInSubTitle || '',
+        pleaseSignInTitleFromState: this.props.pleaseSignInTitle || <></>,
+        pleaseSignInSubTitle: this.props.pleaseSignInSubTitle || <></>,
       }, () => this.localStoreSignInStartFullUrl());
     } else if (getStartedMode && getStartedMode === 'startup') {
       // js/pages/Startup
       this.setState({
-        pleaseSignInTitleFromState: '',
-        pleaseSignInSubTitle: '',
+        pleaseSignInTitleFromState: <></>,
+        pleaseSignInSubTitle: <></>,
         showRecommendedText: false,
       });
       pathname = '/settings/profile';
@@ -125,8 +125,8 @@ export default class SignInOptionsPanel extends Component {
         Cookies.set('sign_in_start_full_url', signInStartFullUrl, { expires: 31, path: '/' });
       }
       this.setState({
-        pleaseSignInTitleFromState: 'Please sign in to get started.',
-        pleaseSignInSubTitle: 'Use Twitter to verify your account most quickly.',
+        pleaseSignInTitleFromState: <>Please sign in to get started.</>,
+        pleaseSignInSubTitle: <>Use Twitter to verify your account most quickly.</>,
       });
     } else if (getStartedMode && getStartedMode === 'getStartedForOrganizations') {
       pathname = '/settings/profile';
@@ -138,8 +138,8 @@ export default class SignInOptionsPanel extends Component {
         Cookies.set('sign_in_start_full_url', signInStartFullUrl, { expires: 1, path: '/' });
       }
       this.setState({
-        pleaseSignInTitleFromState: 'Please sign in to get started.',
-        pleaseSignInSubTitle: 'Use Twitter to verify your account most quickly.',
+        pleaseSignInTitleFromState: <>Please sign in to get started.</>,
+        pleaseSignInSubTitle: <>Use Twitter to verify your account most quickly.</>,
       });
     } else if (getStartedMode && getStartedMode === 'getStartedForVoters') {
       pathname = '/settings/profile';
@@ -151,19 +151,19 @@ export default class SignInOptionsPanel extends Component {
         Cookies.set('sign_in_start_full_url', signInStartFullUrl, { expires: 1, path: '/' });
       }
       this.setState({
-        pleaseSignInTitleFromState: 'Please sign in to get started.',
-        pleaseSignInSubTitle: '',
+        pleaseSignInTitleFromState: <>Please sign in to get started.</>,
+        pleaseSignInSubTitle: <></>,
       });
     } else {
       const isOnWeVoteRootUrl = AppObservableStore.isOnWeVoteRootUrl();
       const isOnWeVotePartnerSubdomainUrl = AppObservableStore.isOnWeVotePartnerSubdomainUrl();
       // No need to query an api to get this answer.  Creates an unneeded dependency:  const isOnFacebookSupportedDomainUrl = AppObservableStore.isOnFacebookSupportedDomainUrl() || window.location.href.includes('ngrok');
-      let pleaseSignInSubTitle = '';
+      let pleaseSignInSubTitle = <></>;
       if (isOnWeVoteRootUrl || isOnWeVotePartnerSubdomainUrl || isOnFacebookSupportedDomainUrl) {
-        pleaseSignInSubTitle = '';
+        pleaseSignInSubTitle = <></>;
       }
       this.setState({
-        pleaseSignInTitleFromState: '',
+        pleaseSignInTitleFromState: <></>,
         pleaseSignInSubTitle,
       }, () => this.localStoreSignInStartFullUrl());
     }
@@ -672,8 +672,8 @@ SignInOptionsPanel.propTypes = {
   externalUniqueId: PropTypes.string,
   inModal: PropTypes.bool,
   pleaseSignInTextOff: PropTypes.bool,
-  pleaseSignInTitle: PropTypes.string,
-  pleaseSignInSubTitle: PropTypes.string,
+  pleaseSignInTitle: PropTypes.node,
+  pleaseSignInSubTitle: PropTypes.node,
   closeSignInModal: PropTypes.func,
   focusedOnSingleInputToggle: PropTypes.func,
 };

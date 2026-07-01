@@ -137,8 +137,8 @@ class ChooseOrOpposeIntroModal extends Component {
               Save your choices for access on any device.
             </div>
             <SignInOptionsPanel
-              pleaseSignInTitle=""
-              pleaseSignInSubTitle=""
+              pleaseSignInTitle={<></>}
+              pleaseSignInSubTitle={<></>}
               toggleSignInModal={this.props.onClose}
               inModal
             />

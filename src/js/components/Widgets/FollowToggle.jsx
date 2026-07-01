@@ -546,8 +546,8 @@ export default class FollowToggle extends Component {
         {(showSignInModal && !VoterStore.getVoterIsSignedIn()) && (
           <Suspense fallback={<></>}>
             <SignInModal
-              signInTitle="Sign in to save who you follow."
-              signInSubTitle=""
+              signInTitle={<>Sign in to save who you follow.</>}
+              signInSubTitle={<></>}
               toggleOnClose={this.toggleShowSignInModal}
               uponSuccessfulSignIn={this.toggleShowSignInModal}
             />

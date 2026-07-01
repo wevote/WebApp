@@ -275,7 +275,7 @@ class HeaderBackTo extends Component {
           <Suspense fallback={<></>}>
             <SignInModal
               signInTitle={<SignInJoinText />}
-              signInSubTitle=""
+              signInSubTitle={<></>}
               toggleOnClose={this.closeSignInModal}
               uponSuccessfulSignIn={this.closeSignInModal}
             />

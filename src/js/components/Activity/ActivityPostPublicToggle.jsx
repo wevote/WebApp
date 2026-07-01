@@ -191,8 +191,8 @@ class ActivityPostPublicToggle extends Component {
             <div>
               <Suspense fallback={<></>}>
                 <SignInOptionsPanel
-                  pleaseSignInTitle="Sign In to Make Your Posts Public"
-                  pleaseSignInSubTitle=""
+                  pleaseSignInTitle={<>Sign In to Make Your Posts Public</>}
+                  pleaseSignInSubTitle={<></>}
                   inModal
                 />
               </Suspense>
