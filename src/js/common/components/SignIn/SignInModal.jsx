@@ -83,12 +83,12 @@ class SignInModal extends Component {
     renderLog('SignInModal');  // Set LOG_RENDER_EVENTS to log all renders
     const {
       classes,
-      signedInContentHeader = (<></>),
-      signedInContentSubHeader = (<></>),
-      signInSubTitle = '',
-      signInTitle = '',
-      signedInTitle = (<></>),
-      signedOutTitle = (<></>),
+      signedInContentHeader = <></>,
+      signedInContentSubHeader = <></>,
+      signInSubTitle = <></>,
+      signInTitle = <></>,
+      signedInTitle = <></>,
+      signedOutTitle = <></>,
     } = this.props;
     const { isSignedIn, showSignInModalSimple } = this.state;
 
@@ -159,8 +159,8 @@ SignInModal.propTypes = {
   classes: PropTypes.object,
   signedInContentHeader: PropTypes.node,
   signedInContentSubHeader: PropTypes.node,
-  signInSubTitle: PropTypes.string,
-  signInTitle: PropTypes.string,
+  signInSubTitle: PropTypes.node,
+  signInTitle: PropTypes.node,
   signedInTitle: PropTypes.node,
   signedOutTitle: PropTypes.node,
   toggleOnClose: PropTypes.func,

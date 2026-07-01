@@ -183,8 +183,8 @@ class ChallengeStartPreview extends Component {
         { showSignInModal && (
           <Suspense fallback={<></>}>
             <SignInModal
-              signInTitle="Sign in to publish your Democracy Challenge"
-              signInSubTitle="You can continue making changes after signing in."
+              signInTitle={<>Sign in to publish your Democracy Challenge</>}
+              signInSubTitle={<>You can continue making changes after signing in.</>}
               toggleOnClose={this.toggleShowSignInModal}
               uponSuccessfulSignIn={this.functionToUseWhenSignedIn}
             />

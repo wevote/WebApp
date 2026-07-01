@@ -122,7 +122,7 @@ class News extends Component {
       }, () => this.openActivityTidbitDrawer(activityTidbitWeVoteIdForDrawer));
       AnalyticsActions.saveActionNews(VoterStore.electionId());
     }
-    AppObservableStore.setShowSelectBallotModal(false, false, false);
+    AppObservableStore.setShowSelectBallotModal(false, false);
     this.preloadTimer = setTimeout(() => lazyPreloadPages(), 2000);
     window.scrollTo(0, 0);
   }
@@ -137,8 +137,9 @@ class News extends Component {
       this.activityStoreListener.remove();
       this.voterStoreListener.remove();
       window.removeEventListener('scroll', this.onScroll);
-      if (this.positionItemTimer) clearTimeout(this.positionItemTimer);
       if (this.activityTidbitDrawerTimer) clearTimeout(this.activityTidbitDrawerTimer);
+      if (this.positionItemTimer) clearTimeout(this.positionItemTimer);
+      if (this.preloadTimer) clearTimeout(this.preloadTimer);
     }
   }
 
@@ -243,7 +244,7 @@ class News extends Component {
       this.setState({
         localPositionListForOrgHasBeenRetrieved,
       });
-      OrganizationActions.positionListForOpinionMaker(speakerOrganizationWeVoteId, false);
+      OrganizationActions.positionListForOpinionMaker(speakerOrganizationWeVoteId, false, false);
       OrganizationActions.positionListForOpinionMakerForFriends(speakerOrganizationWeVoteId, false);
     }
   }
@@ -282,7 +283,7 @@ class News extends Component {
     const imageUrl = normalizedImagePath('/img/global/photos/Alissa_B-128x128.jpg');
     const testimonial = 'Great way to sort through my ballot! My husband and I used WeVote during the last election to learn more about our ballots and make some tough choices. Between following various organizations, and friending a couple of trusted friends, we felt like we had an excellent pool of information to draw from.';
 
-    // August 23, 2020: These resolve a problem that exists in the WebApp, but looks much worse in
+    // August 23, 2020: These resolve a problem that exists in the WebApp but looks much worse in
     // Cordova -- Stop allowing horizontal scroll, (and vertical scroll of the entire window in some cases)
     // by removing some styles that force some elements to be wider than the device window
     const unsetMarginsIfCordova = isCordova() ? { margin: 'unset' } : {};
@@ -447,8 +448,8 @@ class News extends Component {
                 <Suspense fallback={<></>}>
                   <SignInOptionsWrapper style={expandSideMarginsIfCordova}>
                     <SignInOptionsPanel
-                          pleaseSignInTitle="Sign In to Join the Discussion"
-                          pleaseSignInSubTitle="WeVote is a community of friends who care about voting and democracy."
+                          pleaseSignInTitle={<>Sign In to Join the Discussion</>}
+                          pleaseSignInSubTitle={<>WeVote is a community of friends who care about voting and democracy.</>}
                     />
                   </SignInOptionsWrapper>
                 </Suspense>
@@ -517,7 +518,7 @@ class News extends Component {
                 />
               </Suspense>
             </ShowMoreItemsWrapper>
-            {/* August 2020:  This height adjustment for Cordova stops the footer-container from bouncing up about 60px on first render of the page */}
+            {/* August 2020: This height adjustment for Cordova stops the footer-container from bouncing up about 60px on first render of the page */}
             <LoadingItemsWheel style={isCordova() ? { height: 150 } : {}}>
               {loadingMoreItems && (
               <CircularProgress />

@@ -147,8 +147,8 @@ class FindFriendsStart extends Component {
             <SetUpSignInOptionsPanelWrapper>
               <Suspense fallback={<></>}>
                 <SignInOptionsPanel
-                  pleaseSignInTitle={(contactsWithAccountCount > 0) ? 'Sign in to connect with your friends' : ''}
-                  pleaseSignInSubTitle={(contactsWithAccountCount > 0) ? 'After you sign in, you will be able to choose which friends to collaborate with.' : ''}
+                  pleaseSignInTitle={(contactsWithAccountCount > 0) ? <>Sign in to connect with your friends</> : <></>}
+                  pleaseSignInSubTitle={(contactsWithAccountCount > 0) ? <>After you sign in, you will be able to choose which friends to collaborate with.</> : <></>}
                 />
               </Suspense>
             </SetUpSignInOptionsPanelWrapper>

@@ -1,3 +1,5 @@
+import React from 'react';
+
 // eslint-disable-next-line import/prefer-default-export
 export function returnShareModalText (whatAndHowMuchToShare) {
   let allOpinionsRadioButtonText;
@@ -9,7 +11,7 @@ export function returnShareModalText (whatAndHowMuchToShare) {
   if (whatAndHowMuchToShare.startsWith('ballotShareOptions')) {
     allOpinionsRadioButtonText = 'Ballot with my choices';
     noOpinionsRadioButtonText = 'Ballot only';
-    shareModalDescription = 'Share with your friends a link to this list of ballot choices to help them make their own choices.';
+    shareModalDescription = <>Share with your friends a link to this list of ballot choices to help them make their own choices.</>;
     shareModalTitle = 'Share ballot';
   } else if (whatAndHowMuchToShare.startsWith('candidateShareOptions')) {
     allOpinionsRadioButtonDescription = '';

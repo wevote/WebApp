@@ -335,8 +335,8 @@ class AddFriendsByEmail extends Component {
                 </Alert>
                 <Suspense fallback={<></>}>
                   <SignInOptionsPanel
-                    pleaseSignInTitle="Sign In to Send Your Friend Requests"
-                    pleaseSignInSubTitle=""
+                    pleaseSignInTitle={<>Sign In to Send Your Friend Requests</>}
+                    pleaseSignInSubTitle={<></>}
                   />
                 </Suspense>
               </>

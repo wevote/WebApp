@@ -223,7 +223,7 @@ class ShareModalTitleArea extends Component {
         {(showSignInModal && !VoterStore.getVoterIsSignedIn()) && (
           <Suspense fallback={<></>}>
             <SignInModal
-              signInTitle="Sign in to share your choices"
+              signInTitle={<>Sign in to share your choices</>}
               signInSubTitle={shareModalDescription}
               toggleOnClose={this.toggleShowSignInModal}
               uponSuccessfulSignIn={this.toggleShowSignInModal}
