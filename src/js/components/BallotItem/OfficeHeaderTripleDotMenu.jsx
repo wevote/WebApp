@@ -1,10 +1,11 @@
+import { ContentCopy, LaunchOutlined, MoreHoriz, MoreVert } from '@mui/icons-material';
+import Popover from '@mui/material/Popover';
+import PropTypes from 'prop-types';
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import PropTypes from 'prop-types';
-import Popover from '@mui/material/Popover';
-import { ContentCopy, LaunchOutlined, MoreHoriz, MoreVert } from '@mui/icons-material';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 import { openSnackbar } from '../../common/components/Widgets/SnackNotifier';
+import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import webAppConfig from '../../config';
 
@@ -83,10 +84,12 @@ function OfficeHeaderTripleDotMenu ({ makeVertical = false, officeWeVoteId = '' 
         }}
       >
         <PopoverWrapper>
-          <PopoverOption onClick={handleOpenNewTab}>
-            <LaunchOutlined style={{ fontSize: '14px', cursor: 'pointer', marginRight: '4px' }} />
-            View this ballot section in new tab
-          </PopoverOption>
+          {isWebApp() && (
+            <PopoverOption onClick={handleOpenNewTab}>
+              <LaunchOutlined style={{ fontSize: '14px', cursor: 'pointer', marginRight: '4px' }} />
+              View this ballot section in new tab
+            </PopoverOption>
+          )}
           <PopoverOption onClick={handleCopyLink}>
             <ContentCopy style={{ fontSize: '14px', cursor: 'pointer', marginRight: '4px' }} />
             {copyLinkText}

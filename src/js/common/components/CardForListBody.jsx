@@ -156,7 +156,7 @@ function CardForListBody (props) {
                     </Box>
                     <Skeleton variant="rounded" width="100%" height={12} sx={{ borderRadius: 6 }} />
                   </Box>
-                )}>
+                )}>  {/* CORDOVA_TOKEN_AT_CLOSE_OF_A_MULTI_LINE_FALLBACK_DO_NOT_REMOVE */}
                   <CampaignSupportThermometer
                     campaignXWeVoteId={linkedCampaignXWeVoteId}
                     finalElectionDateInPast={finalElectionDateInPast}
@@ -188,7 +188,7 @@ function CardForListBody (props) {
                       </SvgImageWrapper>
                       <Skeleton variant="text" width="80%" height={14} />
                     </FlexDivLeft>
-                  )}>
+                  )}>  {/* CORDOVA_TOKEN_AT_CLOSE_OF_A_MULTI_LINE_FALLBACK_DO_NOT_REMOVE */}
                     {useOfficeHeld ? (
                       <FlexDivLeft>
                         {(districtName || officeName) && (
@@ -314,7 +314,7 @@ function CardForListBody (props) {
                     <Skeleton variant="rounded" width={100} height={36} sx={{ borderRadius: 2 }} />
                     <Skeleton variant="rounded" width={100} height={36} sx={{ borderRadius: 2 }} />
                   </Box>
-                )}>
+                )}>  {/* CORDOVA_TOKEN_AT_CLOSE_OF_A_MULTI_LINE_FALLBACK_DO_NOT_REMOVE */}
                   {(finalElectionDateInPast || usePoliticianWeVoteIdForBallotItem) ? (
                     <ItemActionBar
                       ballotItemWeVoteId={candidateWeVoteId}

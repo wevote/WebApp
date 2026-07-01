@@ -425,7 +425,7 @@ class OrganizationModal extends Component {
                   </Box>
                   <Skeleton variant="rounded" width="100%" height={12} sx={{ borderRadius: 6 }} />
                 </Box>
-              )}>
+              )}>  {/* CORDOVA_TOKEN_AT_CLOSE_OF_A_MULTI_LINE_FALLBACK_DO_NOT_REMOVE */}
                 <CampaignSupportThermometer
                   campaignXWeVoteId={linkedCampaignXWeVoteId}
                 />
@@ -452,7 +452,7 @@ class OrganizationModal extends Component {
                 <Skeleton variant="rounded" width={90} height={24} sx={{ borderRadius: 3 }} />
                 <Skeleton variant="rounded" width={70} height={24} sx={{ borderRadius: 3 }} />
               </Box>
-            )}>
+            )}>  {/* CORDOVA_TOKEN_AT_CLOSE_OF_A_MULTI_LINE_FALLBACK_DO_NOT_REMOVE */}
               <IssuesByBallotItemDisplayList
                 ballotItemDisplayName={ballotItemDisplayName}
                 ballotItemWeVoteId={ballotItemWeVoteId}
@@ -478,7 +478,7 @@ class OrganizationModal extends Component {
                 <Skeleton variant="text" width="100%" height={40} />
                 <Skeleton variant="text" width="80%" height={40} />
               </Box>
-            )}>
+            )}>  {/* CORDOVA_TOKEN_AT_CLOSE_OF_A_MULTI_LINE_FALLBACK_DO_NOT_REMOVE */}
               <ScoreSummaryListController
                 ballotItemDisplayName={ballotItemDisplayName || ''}
                 ballotItemWeVoteId={ballotItemWeVoteId}
@@ -508,7 +508,7 @@ class OrganizationModal extends Component {
                     </Box>
                   ))}
                 </Box>
-              )}>
+              )}>  {/* CORDOVA_TOKEN_AT_CLOSE_OF_A_MULTI_LINE_FALLBACK_DO_NOT_REMOVE */}
                 <DelayedLoad showLoadingText waitBeforeShow={500}>
                   <>
                     <Suspense fallback={(
@@ -523,7 +523,7 @@ class OrganizationModal extends Component {
                           </Box>
                         ))}
                       </Box>
-                    )}>
+                    )}>  {/* CORDOVA_TOKEN_AT_CLOSE_OF_A_MULTI_LINE_FALLBACK_DO_NOT_REMOVE */}
                       <PositionList
                         ballotItemDisplayName={ballotItemDisplayName || ''}
                         incomingPositionList={allCachedPositionsForThisBallotItem}

@@ -93,7 +93,9 @@ function fileRewriterForCordova (path, versions) {
     // Remove all lazy loading
     newValue = newValue.replace(/(?:const )(.*?) = React\.lazy.*?import\((?:\/\*.*?\*\/ )*(.*?)\).*?$/gim,
       'import $1 from $2;  // rewritten from lazy');
-    // Crash  out on multi-line Suspense
+    // Remove multi-line Suspense Fallback marked with '{/* CORDOVA_TOKEN_AT_CLOSE_OF_A_MULTI_LINE_FALLBACK_DO_NOT_REMOVE */}'
+    newValue = newValue.replace(/^(\s*)<Suspense fallback={\($([\s\S]*?)CORDOVA_TOKEN_AT.*?_REMOVE \*\/\}/gm, '$1<>');
+    // Crash  out on multi-line Suspense that are not marked with '{/* CORDOVA_TOKEN_AT_CLOSE_OF_A_MULTI_LINE_FALLBACK_DO_NOT_REMOVE */}'
     const regex = /.*?<Suspense fallback={\(\n/;
     // console.log(path, newValue.match(regex));
     if (newValue.match(regex) != null) {

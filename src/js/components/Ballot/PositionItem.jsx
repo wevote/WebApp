@@ -146,25 +146,6 @@ class PositionItem extends Component {
     // TwitterHandle-based link
     const voterGuideWeVoteIdLink = `/voterguide/${organizationWeVoteId}`;
     const speakerLink = position.speaker_twitter_handle ? `/${position.speaker_twitter_handle}` : voterGuideWeVoteIdLink;
-    // Steve: 9/21/21, save until we revive stepping back to the previous page.  We currently always go back to ballot
-    // let speakerLink = position.speaker_twitter_handle ? `/${position.speaker_twitter_handle}` : voterGuideWeVoteIdLink;
-    // let backToCandidateFound = false;
-    // let backToMeasureFound = false;
-    // const { params } = this.props;
-    // if (params) {
-    //   if (params.candidate_we_vote_id) {
-    //     speakerLink += `/btcand/${params.candidate_we_vote_id}`;
-    //     backToCandidateFound = true;
-    //   } else if (params.measure_we_vote_id) {
-    //     speakerLink += `/btmeas/${params.measure_we_vote_id}`;
-    //     backToMeasureFound = true;
-    //   }
-    //   if (backToCandidateFound || backToMeasureFound) {
-    //     if (params.back_to_variable) {
-    //       speakerLink += `/b/${params.back_to_variable}`;
-    //     }
-    //   }
-    // }
     const hostnameAndPort = AppObservableStore.getWeVoteRootURL();
     // console.log('hostnameAndPort:', hostnameAndPort);
     const speakerLinkExternal = `${hostnameAndPort}${speakerLink}`;

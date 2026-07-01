@@ -56,6 +56,5 @@ export const VisibilityText = styled('div')`
   display: flex;
   font-weight: 250;
   font-size: 14px;
-  height: 100%;
-  margin-left: 5px;
+  margin: 0 0 5px 5px;
 `;
