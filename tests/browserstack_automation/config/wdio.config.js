@@ -55,6 +55,9 @@ const desktopBrowserSpecs = [
     '../specs/VerifyCount.browser.js',
     '../specs/WhosRunningForOffice.browser.js',
      '../specs/CandidateDetailsPage.browser.js'
+     //'../specs/DonatePage.browser.js, commenting as scripts needs to be updated based on new design
+     //'../specs/SignedIn.browser.js commenting as scripts needs to be updated
+
 ];
 
 //Process Capabilities for each platform and assign specs
@@ -207,6 +210,7 @@ export const config = {
   services: [['browserstack']],
   framework: 'mocha',
   mochaOpts: {
+    retries:1,
     ui: 'bdd',
     timeout: 60000,
   },

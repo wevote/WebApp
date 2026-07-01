@@ -17,13 +17,12 @@ class TopnavigationBrowser extends PageBrowser {
   }
 
   get getMoreTabLocator () {
-    return $('//span[text()="More"]');
+    return $('#moreTabHeaderBar');
   }
 
 
   get getChallengesTabLocator () {
-    //return $('#challengesTabHeaderBar');
-    return $('//li[text()="Challenges"]');
+    return $('#challengesTabHeaderBar');
   }
 
   get getDonateTabLocator () {
