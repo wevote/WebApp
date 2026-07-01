@@ -233,7 +233,7 @@ class CandidateCardForList extends Component {
           officeName={contestOfficeName}
           pathToUseToKeepHelping={pathToUseToKeepHelping}
           photoLargeUrl={candidatePhotoLargeUrl}
-          politicalParty={politicalParty.length ? politicalParty : 'Non-Partisan Primary'}
+          politicalParty={politicalParty.length ? politicalParty : ''}
           politicianBasePath={this.getPoliticianBasePath()}
           // politicianDescription={candidateDescription}
           politicianWeVoteId={politicianWeVoteId}
