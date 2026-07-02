@@ -22,7 +22,7 @@ class TopnavigationBrowser extends PageBrowser {
 
 
   get getChallengesTabLocator () {
-    return $('#challengesTabHeaderBar');
+    return $('#HeaderBarChallenges');
   }
 
   get getDonateTabLocator () {
