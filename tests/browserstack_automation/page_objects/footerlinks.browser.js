@@ -92,7 +92,7 @@ class FooterlinksBrowser extends PageBrowser {
   }
 
   get getDonatePageContentTitleElement () {
-    return $('//span[contains(@class,'step-1') and normalize-space()='Choose amount']');
+    return $("//span[contains(@class,'step-1') and normalize-space()='Choose amount']");
   }
 
   get getDonateNextButton() {
