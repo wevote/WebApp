@@ -508,6 +508,11 @@ class SettingsVerifySecretCode extends Component {
     // console.log('voterVerifySecretCode this.props.closeVerifyModal:', this.props.closeVerifyModal);
     if (this.props.closeSignInModal) {
       this.props.closeSignInModal();
+    } else if (this.props.closeVerifyModal) {
+      // WV-4229: Some entry points (WelcomeForVoters, CompleteYourProfile, SetUpAccountEditName)
+      // only pass closeVerifyModal, not closeSignInModal. Without this fallback, a successful
+      // code verification leaves the modal stuck on "Verifying...".
+      this.props.closeVerifyModal();
     }
   };
 
