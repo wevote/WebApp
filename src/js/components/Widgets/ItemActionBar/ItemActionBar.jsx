@@ -13,9 +13,11 @@ import TagManager from 'react-gtm-module';
 import styled from 'styled-components';
 import SupportActions from '../../../actions/SupportActions';
 import VoterActions from '../../../actions/VoterActions';
+import CampaignActions from '../../../common/actions/CampaignActions';
 import DesignTokenColors from '../../../common/components/Style/DesignTokenColors';
 import { openSnackbar } from '../../../common/components/Widgets/SnackNotifier';
 import AppObservableStore, { messageService } from '../../../common/stores/AppObservableStore';
+import CampaignStore from '../../../common/stores/CampaignStore';
 import PoliticianStore from '../../../common/stores/PoliticianStore';
 import convertToInteger from '../../../common/utils/convertToInteger';
 import isMobileScreenSize from '../../../common/utils/isMobileScreenSize';
@@ -26,6 +28,7 @@ import stringContains from '../../../common/utils/stringContains';
 import webAppConfig from '../../../config';
 import VoterConstants from '../../../constants/VoterConstants';
 import CandidateStore from '../../../stores/CandidateStore';
+import OrganizationStore from '../../../stores/OrganizationStore';
 import SupportStore from '../../../stores/SupportStore';
 import VoterStore from '../../../stores/VoterStore';
 import { possibleAppReview } from '../../../utils/appReviewFunctions';
@@ -673,6 +676,46 @@ class ItemActionBar extends PureComponent {
     return this.isOpposeCalculated() || this.isSupportCalculated() || this.state.voterTextStatement || this.state.voterTextStatementOpened;
   }
 
+  voterHeartIsCleanSlate () {
+    // WV-2664: true when the voter has no heart yet for this politician (neither following nor
+    // disliking) — the first-action case that will set the heart. Read before the save dispatches,
+    // which optimistically writes the follow/dislike list.
+    const { politicianWeVoteId } = this.props;
+    if (!politicianWeVoteId) return false;
+    // WV-2664: Until the follow/dislike lists have hydrated, isVoter*ThisPolitician returns false for
+    // everyone, which would misclassify an already-hearted voter as a clean slate and inflate the
+    // tally. Only assert clean-slate once the authoritative list is known; otherwise skip the
+    // optimistic bump and let the server response set the count.
+    if (!OrganizationStore.voterOrganizationsFollowedRetrievedOnce()) return false;
+    return !OrganizationStore.isVoterFollowingThisPolitician(politicianWeVoteId) &&
+      !OrganizationStore.isVoterDislikingThisPolitician(politicianWeVoteId);
+  }
+
+  optimisticallyUpdateCounts (action, wasCleanSlateHeart = false) {
+    // WV-2664: The tally tracks the heart (follow/dislike), not the Choose/Oppose position, and the
+    // server only moves the heart on the voter's first action. So bump only on a clean-slate
+    // Choose/Oppose; bumping otherwise double-counts a voter who is already hearted.
+    if (!VoterStore.getVoterIsSignedIn()) return; // signed-out actions do not persist
+    if ((action !== 'support' && action !== 'oppose') || !wasCleanSlateHeart) return;
+    // Prefer the prop (CardForListBody passes it where CandidateStore isn't populated).
+    const { ballotItemWeVoteId } = this.state;
+    let { campaignXWeVoteId } = this.props;
+    if (!campaignXWeVoteId && ballotItemWeVoteId) {
+      const candidate = CandidateStore.getCandidateByWeVoteId(ballotItemWeVoteId);
+      campaignXWeVoteId = candidate && candidate.linked_campaignx_we_vote_id;
+    }
+    if (!campaignXWeVoteId) return;
+    const campaign = CampaignStore.getCampaignXByWeVoteId(campaignXWeVoteId);
+    let supportersCount = (campaign && campaign.supporters_count) || 0;
+    let opposersCount = (campaign && campaign.opposers_count) || 0;
+    if (action === 'support') {
+      supportersCount += 1;
+    } else if (action === 'oppose') {
+      opposersCount += 1;
+    }
+    CampaignActions.campaignLocalAttributesUpdate(campaignXWeVoteId, supportersCount, opposersCount);
+  }
+
   supportItem (buttonId) {
     const { politicianWeVoteId } = this.props;
     const { ballotItemType, ballotItemWeVoteId, transitioning } = this.state;
@@ -684,6 +727,7 @@ class ItemActionBar extends PureComponent {
       this.stopSupportingItem(buttonId);
       return;
     }
+    const wasCleanSlateHeart = this.voterHeartIsCleanSlate(); // capture before the save dispatches
     // console.log('supportItem setState');
     this.setState({
       isOpposeLocalState: false,
@@ -710,6 +754,7 @@ class ItemActionBar extends PureComponent {
     TagManager.dataLayer({ dataLayer: dataLayerObject });
 
     SupportActions.voterSupportingSave(ballotItemWeVoteId, ballotItemType, politicianWeVoteId);
+    this.optimisticallyUpdateCounts('support', wasCleanSlateHeart);
     this.setState({ transitioning: true });
     openSnackbar({ message: 'Support added!' });
   }
@@ -721,6 +766,7 @@ class ItemActionBar extends PureComponent {
     this.sendGTMDataLayer({ buttonId });
     possibleAppReview('ITEM');
     SupportActions.voterStopSupportingSave(ballotItemWeVoteId, ballotItemType, politicianWeVoteId);
+    this.optimisticallyUpdateCounts('stopSupporting');
     this.setState({ transitioning: true });
     openSnackbar({ message: 'Support removed!' });
   }
@@ -737,12 +783,14 @@ class ItemActionBar extends PureComponent {
       this.stopOpposingItem(buttonId);
       return;
     }
+    const wasCleanSlateHeart = this.voterHeartIsCleanSlate(); // capture before the save dispatches
     this.setState({ isOpposeLocalState: true, isSupportLocalState: false });
     this.showChooseOrOpposeIntroModalDecision();
     this.sendGTMDataLayer({ buttonId });
 
     possibleAppReview('ITEM');
     SupportActions.voterOpposingSave(ballotItemWeVoteId, ballotItemType, politicianWeVoteId);
+    this.optimisticallyUpdateCounts('oppose', wasCleanSlateHeart);
     this.setState({ transitioning: true });
     openSnackbar({ message: 'Opposition added!', severity: 'error' });
   }
@@ -754,6 +802,7 @@ class ItemActionBar extends PureComponent {
     this.sendGTMDataLayer({ buttonId });
     possibleAppReview('ITEM');
     SupportActions.voterStopOpposingSave(ballotItemWeVoteId, ballotItemType, politicianWeVoteId);
+    this.optimisticallyUpdateCounts('stopOpposing');
     this.setState({ transitioning: true });
     openSnackbar({ message: 'Opposition removed!', severity: 'error' });
   }
@@ -1199,6 +1248,7 @@ ItemActionBar.propTypes = {
   ballotItemDisplayName: PropTypes.string,
   ballotItemWeVoteId: PropTypes.string,
   buttonsOnly: PropTypes.bool,
+  campaignXWeVoteId: PropTypes.string,
   classes: PropTypes.object,
   commentButtonHide: PropTypes.bool,
   commentButtonHideInMobile: PropTypes.bool,
