@@ -560,10 +560,11 @@ class CampaignStore extends ReduceStore {
           const campaignXWeVoteId = action.payload.campaignXWeVoteId || '';
           if (campaignXWeVoteId in allCachedCampaignXDicts) {
             campaignX = this.getCampaignXByWeVoteId(campaignXWeVoteId);
-            if (action.payload.opposers_count) {
+            // WV-2664: check for undefined, not truthiness, so an explicit 0 isn't dropped.
+            if (action.payload.opposers_count !== undefined) {
               campaignX.opposers_count = action.payload.opposers_count;
             }
-            if (action.payload.supporters_count) {
+            if (action.payload.supporters_count !== undefined) {
               campaignX.supporters_count = action.payload.supporters_count;
             }
             allCachedCampaignXDicts[campaignXWeVoteId] = campaignX;

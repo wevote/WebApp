@@ -46,6 +46,7 @@ class OrganizationStore extends ReduceStore {
         featuresProvidedBitmap: 0,
       },
       positionListForOpinionMakerHasBeenRetrievedOnce: {}, // Dictionary with googleCivicElectionId as key and organizationWeVoteId as key and true/false as value
+      voterOrganizationsFollowedRetrievedOnce: false, // WV-2664: true once the authoritative followed/disliked lists have hydrated
     };
   }
 
@@ -304,6 +305,13 @@ class OrganizationStore extends ReduceStore {
     }
   }
 
+  voterOrganizationsFollowedRetrievedOnce () {
+    // WV-2664: Whether organizationsFollowedRetrieve has hydrated the authoritative follow/dislike
+    // lists at least once. Before that, an empty follow list is indistinguishable from "voter has
+    // no hearts", so callers must not treat an un-hydrated store as a reliable clean-slate signal.
+    return this.getState().voterOrganizationsFollowedRetrievedOnce || false;
+  }
+
 
   isVoterIgnoringThisOrganization (organizationWeVoteId) {
     const { organizationWeVoteIdsVoterIsIgnoring } = this.getState();
@@ -421,6 +429,8 @@ class OrganizationStore extends ReduceStore {
     let {
       organizationDislikeCount, organizationFollowersCount,
       organizationWeVoteIdsVoterIsDisliking, organizationWeVoteIdsVoterIsFollowing, organizationWeVoteIdsVoterIsIgnoring,
+    } = state;
+    const {
       politicianWeVoteIdsVoterIsDisliking, politicianWeVoteIdsVoterIsFollowing,
     } = state;
     const allCachedPositionsForOneOrganization = [];
@@ -778,6 +788,9 @@ class OrganizationStore extends ReduceStore {
         // If not auto_followed_from_twitter_suggestion, continue with organizations voter is Following.
         organizationList = action.res.organization_list;
         organizationWeVoteIdsVoterIsFollowing = [...explanationOrganizationsVoterIsFollowing]; // Refresh this variable
+        // WV-2664: Rebuild the politician following list from server truth so any stale optimistic
+        // entry (pushed during the pre-hydration clean-slate guess) is dropped, not just appended to.
+        politicianWeVoteIdsVoterIsFollowing.length = 0;
         organizationList.forEach((oneOrganization) => {
           organizationWeVoteId = oneOrganization.organization_we_vote_id;
           politicianWeVoteId = oneOrganization.politician_we_vote_id;
@@ -801,6 +814,8 @@ class OrganizationStore extends ReduceStore {
         // Now bring in the disliked organizations
         organizationDislikedList = action.res.organization_disliked_list;
         organizationWeVoteIdsVoterIsDisliking = []; // Refresh this variable
+        // WV-2664: Rebuild the politician disliking list from server truth (see following list above).
+        politicianWeVoteIdsVoterIsDisliking.length = 0;
         organizationDislikedList.forEach((oneOrganization) => {
           organizationWeVoteId = oneOrganization.organization_we_vote_id;
           politicianWeVoteId = oneOrganization.politician_we_vote_id;
@@ -829,6 +844,7 @@ class OrganizationStore extends ReduceStore {
           organizationWeVoteIdsVoterIsFollowing,
           politicianWeVoteIdsVoterIsDisliking,
           politicianWeVoteIdsVoterIsFollowing,
+          voterOrganizationsFollowedRetrievedOnce: true,
         };
 
       case 'organizationStopDisliking':
@@ -1307,6 +1323,9 @@ class OrganizationStore extends ReduceStore {
           },
           politicianWeVoteIdsVoterIsDisliking: [],
           politicianWeVoteIdsVoterIsFollowing: [],
+          // WV-2664: Re-gate until the fresh organizationsFollowedRetrieve (dispatched above) hydrates,
+          // so a just-signed-in voter's empty lists aren't mistaken for a clean slate.
+          voterOrganizationsFollowedRetrievedOnce: false,
           voterOrganizationFeaturesProvided: {
             chosenFaviconAllowed: false,
             chosenFeaturePackage: 'FREE',
@@ -1392,22 +1411,33 @@ class OrganizationStore extends ReduceStore {
           }
         }
         if (politicianWeVoteId) {
-          // console.log('OrganizationStore politicianWeVoteId:', politicianWeVoteId, ', action.type: ', action.type);
+          // WV-2664: Optimistically mirror the server's "first-action-wins" coupling so the heart
+          // reacts immediately. The WeVoteServer (WV-2664HeartFollowDecouple) is the source of
+          // truth — it sets the matching heart only on a clean slate and keeps heart/position
+          // decoupled afterwards — and organizationsFollowedRetrieve confirms/corrects this state.
+          // Clean slate here = signed-in voter not yet in either follow/dislike list for this
+          // politician; after that, Choose/Oppose changes do NOT move the heart. Direct heart
+          // clicks (organizationFollow / organizationDislike / stop*) always win via their own cases.
+          const voterHasHeartChoice =
+            arrayContains(politicianWeVoteId, politicianWeVoteIdsVoterIsFollowing) ||
+            arrayContains(politicianWeVoteId, politicianWeVoteIdsVoterIsDisliking);
+          const cleanSlate = VoterStore.getVoterIsSignedIn() && !voterHasHeartChoice;
           if (action.type === 'voterOpposingSave') {
-            if (!arrayContains(politicianWeVoteId, politicianWeVoteIdsVoterIsDisliking)) {
+            if (cleanSlate) {
               politicianWeVoteIdsVoterIsDisliking.push(politicianWeVoteId);
             }
-            politicianWeVoteIdsVoterIsFollowing = politicianWeVoteIdsVoterIsFollowing.filter((id) => id !== politicianWeVoteId);
           } else if (action.type === 'voterSupportingSave') {
-            if (!arrayContains(politicianWeVoteId, politicianWeVoteIdsVoterIsFollowing)) {
+            if (cleanSlate) {
               politicianWeVoteIdsVoterIsFollowing.push(politicianWeVoteId);
             }
-            politicianWeVoteIdsVoterIsDisliking = politicianWeVoteIdsVoterIsDisliking.filter((id) => id !== politicianWeVoteId);
           } else if (action.type === 'voterStopOpposingSave') {
             // We don't want to roll back the Organization Dislike when the voter stops opposing
           } else if (action.type === 'voterStopSupportingSave') {
             // We don't want to roll back the Organization Follow when the voter stops supporting
           // } else if (action.type === 'voterPositionCommentSave') {
+            // Intentionally not touched. The CampaignSupportThermometer progress bar reads
+            // SupportStore (current stance) so Edit-opinion → Save still updates the bar correctly
+            // without forcing the sticky heart to flip.
           // } else if (action.type === 'voterPositionVisibilitySave') {
           }
           revisedState = { ...revisedState, politicianWeVoteIdsVoterIsDisliking };

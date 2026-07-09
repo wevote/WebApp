@@ -9,7 +9,7 @@ import { renderLog } from '../../utils/logging';
 import DesignTokenColors from '../Style/DesignTokenColors';
 import numberWithCommas from '../../utils/numberWithCommas';
 import CampaignStore from '../../stores/CampaignStore';
-import OrganizationStore from '../../../stores/OrganizationStore';
+import SupportStore from '../../../stores/SupportStore';
 
 class CampaignSupportThermometer extends React.Component {
   constructor (props) {
@@ -28,8 +28,8 @@ class CampaignSupportThermometer extends React.Component {
   componentDidMount () {
     this.onCampaignStoreChange();
     this.campaignStoreListener = CampaignStore.addListener(this.onCampaignStoreChange.bind(this));
-    this.onOrganizationStoreChange();
-    this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
+    this.onSupportStoreChange();
+    this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
   }
 
   componentDidUpdate (prevProps, prevState) {
@@ -74,7 +74,7 @@ class CampaignSupportThermometer extends React.Component {
       clearTimeout(this.campaignTimer);
     }
     this.campaignTimer = null;
-    this.organizationStoreListener.remove();
+    this.supportStoreListener.remove();
   }
 
   onCampaignStoreChange () {
@@ -111,7 +111,7 @@ class CampaignSupportThermometer extends React.Component {
             politicianWeVoteId,
             supportersCount,
             supportersCountNextGoal: supportersCountNextGoalWithFloor,
-          }, () => this.onOrganizationStoreChange());
+          }, () => this.onSupportStoreChange());
         }
       } else if (campaignXWeVoteIdFromDict && !politicianWeVoteId) {
         this.setState({
@@ -124,17 +124,16 @@ class CampaignSupportThermometer extends React.Component {
     }
   }
 
-  onOrganizationStoreChange () {
-    // Lookup Organization data by politicianWeVoteId, so we can get the number of followers
-    const { politicianWeVoteId } = this.state;
-    // console.log('HeartFavoriteToggleLive onOrganizationStoreChange politicianWeVoteId:', politicianWeVoteId);
-    if (politicianWeVoteId) {
-      // console.log('voterOpposesCampaignX: ', OrganizationStore.isVoterDislikingThisPolitician(politicianWeVoteId));
-      // console.log('voterSupportsCampaignX: ', OrganizationStore.isVoterFollowingThisPolitician(politicianWeVoteId));
-      this.setState({
-        voterOpposesCampaignX: OrganizationStore.isVoterDislikingThisPolitician(politicianWeVoteId),
-        // voterSupportsCampaignX: OrganizationStore.isVoterFollowingThisPolitician(politicianWeVoteId),  // A variation on isVoterFollowingThisOrganization
-      });
+  onSupportStoreChange () {
+    // WV-4247 / WV-2664: The progress bar reflects the voter's CURRENT stance, not their
+    // sticky "first action" heart state. SupportStore tracks current Choose/Oppose status,
+    // so Edit-opinion → Save (or any switch back to Support) correctly re-shows the bar.
+    const { politicianWeVoteId, voterOpposesCampaignX: voterOpposesPrev } = this.state;
+    if (!politicianWeVoteId) return;
+    const statSheet = SupportStore.getBallotItemStatSheet('', politicianWeVoteId);
+    const voterOpposesCampaignX = !!(statSheet && statSheet.voterOpposesBallotItem);
+    if (voterOpposesCampaignX !== voterOpposesPrev) {
+      this.setState({ voterOpposesCampaignX });
     }
   }
 

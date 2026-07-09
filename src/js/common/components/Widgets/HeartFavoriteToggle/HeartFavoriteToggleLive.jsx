@@ -89,7 +89,11 @@ class HeartFavoriteToggleLive extends React.Component {
       const supportersCountNextGoalWithFloor = supportersCountNextGoal || CampaignStore.getCampaignXSupportersCountNextGoalDefault();
       if (campaignXWeVoteIdFromDict && politicianWeVoteId) {
         //
-        const { politicianWeVoteId: politicianWeVoteIdPrevious } = this.state;
+        const {
+          politicianWeVoteId: politicianWeVoteIdPrevious,
+          opposersCount: opposersCountPrevious,
+          supportersCount: supportersCountPrevious,
+        } = this.state;
         if (politicianWeVoteId !== politicianWeVoteIdPrevious) {
           this.setState({
             opposersCount,
@@ -97,6 +101,15 @@ class HeartFavoriteToggleLive extends React.Component {
             supportersCount,
             supportersCountNextGoal: supportersCountNextGoalWithFloor,
           }, () => this.onOrganizationStoreChange());
+        } else if (opposersCount !== opposersCountPrevious || supportersCount !== supportersCountPrevious) {
+          // WV-2664: Same politician, but the counts changed (e.g. the optimistic
+          // campaignLocalAttributesUpdate fired by a heart/Choose action). Sync them so the
+          // tally updates live instead of waiting for a page refresh.
+          this.setState({
+            opposersCount,
+            supportersCount,
+            supportersCountNextGoal: supportersCountNextGoalWithFloor,
+          });
         }
       } else if (campaignXWeVoteIdFromDict && !politicianWeVoteId) {
         // console.log('HeartFavoriteToggleLive onCampaignStoreChange voterCampaignXSupporter:', voterCampaignXSupporter);
@@ -172,12 +185,14 @@ class HeartFavoriteToggleLive extends React.Component {
     const { politicianWeVoteId } = this.state;
     // console.log('HeartFavoriteToggleLive onOrganizationStoreChange organizationWeVoteId:', organizationWeVoteId, ', politicianWeVoteId:', politicianWeVoteId);
     if (politicianWeVoteId) {
-      // console.log('voterOpposes: ', OrganizationStore.isVoterDislikingThisPolitician(politicianWeVoteId));
-      // console.log('voterSupports: ', OrganizationStore.isVoterFollowingThisPolitician(politicianWeVoteId));
-      this.setState({
-        voterOpposes: OrganizationStore.isVoterDislikingThisPolitician(politicianWeVoteId),
-        voterSupports: OrganizationStore.isVoterFollowingThisPolitician(politicianWeVoteId),  // A variation on isVoterFollowingThisOrganization
-      });
+      const { voterSupports, voterOpposes } = this.calculateVoterPositionForPolitician(politicianWeVoteId);
+      const { voterSupports: voterSupportsPrev, voterOpposes: voterOpposesPrev } = this.state;
+      if (voterSupports !== voterSupportsPrev || voterOpposes !== voterOpposesPrev) {
+        this.setState({
+          voterOpposes,
+          voterSupports,
+        });
+      }
     } else if (organizationWeVoteId) {
       // console.log('voterOpposes: ', OrganizationStore.isVoterDislikingThisOrganization(organizationWeVoteId));
       // console.log('voterSupports: ', OrganizationStore.isVoterFollowingThisOrganization(organizationWeVoteId));
@@ -208,6 +223,17 @@ class HeartFavoriteToggleLive extends React.Component {
         // }
       }
     });
+  }
+
+  calculateVoterPositionForPolitician (politicianWeVoteId) {
+    // WV-2664: OrgStore is the source of truth, hydrated from the server's
+    // organizationsFollowedRetrieve. The WeVoteServer (WV-2664HeartFollowDecouple) stores the
+    // heart (FollowOrganization FOLLOWING / FOLLOW_DISLIKE) independently of the voter's
+    // support/oppose stance, so this no longer snaps back on refresh — no client-side cache needed.
+    return {
+      voterSupports: OrganizationStore.isVoterFollowingThisPolitician(politicianWeVoteId),
+      voterOpposes: OrganizationStore.isVoterDislikingThisPolitician(politicianWeVoteId),
+    };
   }
 
   functionToUseWhenProfileComplete (support = true, oppose = false, stopSupporting = false, stopOpposing = false) {
@@ -280,7 +306,10 @@ class HeartFavoriteToggleLive extends React.Component {
   }
 
   submitOpposeClick () {
-    const { voterFirstName, voterIsSignedIn, voterLastName } = this.state;
+    const { voterFirstName, voterIsSignedIn, voterLastName, voterOpposes } = this.state;
+    // WV-2664: No-op if voter is already opposing — prevents accidental double-increment
+    // if a downstream caller fires the action while local state was already in this state.
+    if (voterOpposes) return;
     if (!voterIsSignedIn || !voterFirstName || !voterLastName) {
       this.submitActionClick(false, true, false, false);
       return;
@@ -293,43 +322,46 @@ class HeartFavoriteToggleLive extends React.Component {
     this.setState({
       opposersCount: opposersCount + 1,
       supportersCount,
-      // supportersCountNextGoal: supportersCountNextGoalWithFloor,
       voterOpposes: true,
       voterSupports: false,
     }, () => this.submitActionClick(false, true, false, false));
   }
 
   submitStopOpposingClick () {
-    const { opposersCount } = this.state;
+    const { opposersCount, voterOpposes } = this.state;
+    // WV-2664: No-op if voter wasn't opposing to begin with — nothing to roll back.
+    if (!voterOpposes) return;
     const oppose = false;
     const support = false;
     const stopOpposing = true;
     const stopSupporting = false;
     this.setState({
-      opposersCount: opposersCount - 1,
-      // supportersCountNextGoal: supportersCountNextGoalWithFloor,
+      opposersCount: Math.max(0, opposersCount - 1),
       voterOpposes: false,
       voterSupports: false,
     }, () => this.submitActionClick(support, oppose, stopSupporting, stopOpposing));
   }
 
   submitStopSupportingClick () {
-    const { supportersCount } = this.state;
+    const { supportersCount, voterSupports } = this.state;
+    // WV-2664: No-op if voter wasn't supporting to begin with — nothing to roll back.
+    if (!voterSupports) return;
     const oppose = false;
     const support = false;
     const stopOpposing = false;
     const stopSupporting = true;
     // console.log('submitStopSupportingClick');
     this.setState({
-      supportersCount: supportersCount - 1,
-      // supportersCountNextGoal: supportersCountNextGoalWithFloor,
+      supportersCount: Math.max(0, supportersCount - 1),
       voterOpposes: false,
       voterSupports: false,
     }, () => this.submitActionClick(support, oppose, stopSupporting, stopOpposing));
   }
 
   submitSupportClick () {
-    const { voterFirstName, voterIsSignedIn, voterLastName } = this.state;
+    const { voterFirstName, voterIsSignedIn, voterLastName, voterSupports } = this.state;
+    // WV-2664: No-op if voter is already supporting — prevents accidental double-increment.
+    if (voterSupports) return;
     if (!voterIsSignedIn || !voterFirstName || !voterLastName) {
       this.submitActionClick(true, false, false, false);
       return;
@@ -342,7 +374,6 @@ class HeartFavoriteToggleLive extends React.Component {
     this.setState({
       opposersCount,
       supportersCount: supportersCount + 1,
-      // supportersCountNextGoal: supportersCountNextGoalWithFloor,
       voterOpposes: false,
       voterSupports: true,
     }, () => this.submitActionClick(true, false, false, false));
@@ -364,23 +395,35 @@ class HeartFavoriteToggleLive extends React.Component {
         () => {
           let { supportersCount, opposersCount, voterSupports, voterOpposes } = this.state;
 
+          // WV-2664: Skip only the count mutation if the voter is already in the target state — this
+          // prevents a double-increment when the callback fires for a state we already hold. We must
+          // NOT early-return: the setState callback below both fires the backend save and closes the
+          // Complete-Your-Profile modal, so bailing here would leave the modal stuck open.
+          const alreadyInTargetState =
+            (support && voterSupports) ||
+            (oppose && voterOpposes) ||
+            (stopSupporting && !voterSupports) ||
+            (stopOpposing && !voterOpposes);
+
           // modify count of supporters here
-          if (support) {
-            if (voterOpposes) opposersCount -= 1;
-            supportersCount += 1;
-            voterSupports = true;
-            voterOpposes = false;
-          } else if (oppose) {
-            if (voterSupports) supportersCount -= 1;
-            opposersCount += 1;
-            voterSupports = false;
-            voterOpposes = true;
-          } else if (stopSupporting) {
-            if (voterSupports) supportersCount -= 1;
-            voterSupports = false;
-          } else if (stopOpposing) {
-            if (voterOpposes) opposersCount -= 1;
-            voterOpposes = false;
+          if (!alreadyInTargetState) {
+            if (support) {
+              if (voterOpposes) opposersCount -= 1;
+              supportersCount += 1;
+              voterSupports = true;
+              voterOpposes = false;
+            } else if (oppose) {
+              if (voterSupports) supportersCount -= 1;
+              opposersCount += 1;
+              voterSupports = false;
+              voterOpposes = true;
+            } else if (stopSupporting) {
+              supportersCount = Math.max(0, supportersCount - 1);
+              voterSupports = false;
+            } else if (stopOpposing) {
+              opposersCount = Math.max(0, opposersCount - 1);
+              voterOpposes = false;
+            }
           }
           // set new support and oppose count states here
           this.setState({

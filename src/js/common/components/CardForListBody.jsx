@@ -319,6 +319,7 @@ function CardForListBody (props) {
                     <ItemActionBar
                       ballotItemWeVoteId={candidateWeVoteId}
                       ballotItemDisplayName={ballotItemDisplayName}
+                      campaignXWeVoteId={linkedCampaignXWeVoteId}
                       commentButtonHide
                       // externalUniqueId={`${idBaseName}ForList-ItemActionBar-${politicianWeVoteId}-${externalUniqueId}`}
                       hidePositionPublicToggle
@@ -333,6 +334,7 @@ function CardForListBody (props) {
                     <ItemActionBar
                       ballotItemWeVoteId={candidateWeVoteId}
                       ballotItemDisplayName={ballotItemDisplayName}
+                      campaignXWeVoteId={linkedCampaignXWeVoteId}
                       commentButtonHide
                       // externalUniqueId={`${idBaseName}ForList-ItemActionBar-${politicianWeVoteId}-${externalUniqueId}`}
                       hidePositionPublicToggle
