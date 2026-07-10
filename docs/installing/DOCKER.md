@@ -44,6 +44,11 @@ docker compose up
 This command builds, (re)creates, and starts the service, and shows the logs in your terminal. **Press `Ctrl+C` to stop the container gracefully.**
 * Note: If this errors due to `npm ci`, reach out to Marcel Jacquot on Slack
 
+* Note: If you have pulled code from GitHub, execute the compose up command with the `--build` flag to ensure that your images are always up to date.
+(Dockerfile commands like COPY and RUN that update dependencies are only run during the building stage.)  -- 
+`docker compose up -- build`
+
+
 #### 2. Start in the background (detached mode):
 ```
 docker compose up -d
@@ -54,6 +59,46 @@ docker compose down
 ```
 
 Once the container is running, you can now access the WebApp at [http://localhost:3000/](http://localhost:3000/)
+
+## Other Docker commands
+
+Open a shell
+```sh
+# Open a shell in the webapp container
+docker compose exec webapp sh
+```
+Install a new npm library
+```shell
+# Install a new  library on your local host terminal:
+npm install <library-name>
+# This updates your local package.json and lockfile.
+
+#Force Docker to rebuild the node_modules layer:
+docker compose up --build
+```
+
+Full Rebuild
+```shell
+# Full rebuild, with no cache
+docker compose build --no-cache
+```
+
+Beyond full rebuild, clear out any existing volumes (including node_modules)
+```shell
+# Clear out any existing volumes, might be necessary after adding a library with npm
+docker compose down -v   
+```
+
+## Running in SSL
+For now, just change 
+
+  `CMD ["npm", "run", "dev"]`
+
+to
+
+  `CMD ["npm", "run", "dev-ssl"]`
+
+in Dockerfile.dev
 
 ## Resources
 

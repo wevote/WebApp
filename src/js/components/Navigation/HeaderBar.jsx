@@ -189,17 +189,6 @@ class HeaderBar extends Component {
     // console.log('HeaderBar, onVoterStoreChange textOrEmailSignInInProcess: ' + signInModalGlobalState.get('textOrEmailSignInInProcess'));
     // console.log('HeaderBar, onVoterStoreChange voter: ', VoterStore.getVoter());
 
-    // Nov 2025: flashing cordova on older ios devices bug was removed here ( Facebook, window.location.reload(true) )
-    // if (isIOS()) {
-    //   if (isDeviceZoomed()) {
-    //     // October 20, 2021: in iOS, at the Facebook site, within the facebook sign-in dialog, when you tab between the username and the password, our
-    //     // HeaderBar and FooterBar expand off of the screen -- i.e. the screen zooms in.
-    //     // Rotating (forcing a redraw) fixes it, so for new we just detect the condition in isDeviceZoomed and force a full DOM reload to clear the zoom.
-    //     window.localStorage.setItem('window.location.reloaded', 'true');
-    //     window.location.reload(true);
-    //   }
-    // }
-
     if (!signInModalGlobalState.get('textOrEmailSignInInProcess')) {
       // console.log('HeaderBar, onVoterStoreChange ', VoterStore.getFirstName(), VoterStore.getFullName());
       const voter = VoterStore.getVoter();

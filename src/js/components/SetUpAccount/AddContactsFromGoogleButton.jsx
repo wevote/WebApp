@@ -68,7 +68,8 @@ class AddContactsFromGoogleButton extends Component {
   onGoogleSignIn = (signedIn) => {
     // const { gapi } = window;
     const { addContactsState } = this.state;
-    // const signedIn = gapi.auth2.getAuthInstance().isSignedIn.get();
+    // const signedInZ = gapi.auth2.getAuthInstance().isSignedIn.get();
+    // console.log('onGoogleSignIn 1 >>>>>>>> signedIn:', signedInZ);
     // console.log('onGoogleSignIn 1 >>>>>>>> addContactsState:', addContactsState);
     if (addContactsState === AddContactConsts.requestingSignIn) {
       if (signedIn) {
@@ -208,6 +209,7 @@ class AddContactsFromGoogleButton extends Component {
           api_type: 'google',
         };
         if (other.emailAddresses && other.emailAddresses.length > 0) {
+          // console.log('other.emailAddresses email:', other.emailAddresses[0]);
           const possible = other.emailAddresses[0].value.replace('<', '').replace('>', '');
           if (possible && !possible.includes(' ') && !possible.includes(',') && possible.includes('@')) {
             if (!setEmail.has(possible)) {
@@ -228,7 +230,7 @@ class AddContactsFromGoogleButton extends Component {
           person.update_time = other.metadata.sources[0].updateTime;
         }
 
-        if (person.email.length && person.display_name.length) {
+        if (person.email.length && person.display_name && person.display_name.length) {
           contacts.add(person);
         }
       }
@@ -241,7 +243,7 @@ class AddContactsFromGoogleButton extends Component {
           }
         });
         if (arrayOfSelectedContacts) {
-          console.log('arrayOfSelectedContacts length:', arrayOfSelectedContacts.length);
+          console.log('arrayOfSelectedContacts length:', arrayOfSelectedContacts ? arrayOfSelectedContacts.length : '-1');
         } else {
           console.log('arrayOfSelectedContacts undefined');
         }

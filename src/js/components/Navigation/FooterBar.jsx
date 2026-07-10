@@ -431,11 +431,11 @@ const FooterContainer = styled('div')`
   border-top: 1px solid ${DesignTokenColors.neutralUI50};
   bottom: 0;
   box-shadow: 0 -4px 4px -1px rgba(0, 0, 0, 0.2), 0 -4px 5px 0 rgba(0, 0, 0, 0.14), 0 -1px 10px 0 rgba(0, 0, 0, 0.12);
-  padding-bottom: env(safe-area-inset-bottom);
   padding-left: 0;
   position: fixed;
   width: 100%;
   left: 0;
+  ${!isAndroid() ? 'padding-bottom: env(safe-area-inset-bottom)' : ''};
 `;
 
 const Overlay = styled.div`

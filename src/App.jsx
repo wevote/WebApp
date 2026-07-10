@@ -12,7 +12,8 @@ import VoterSessionActions from './js/actions/VoterSessionActions';
 import muiTheme from './js/common/components/Style/muiTheme';
 import LoadingWheelComp from './js/common/components/Widgets/LoadingWheelComp';
 import AppObservableStore, { messageService } from './js/common/stores/AppObservableStore';
-import { hasDynamicIsland, hasCordovaNotch, heightOfCordovaSpacer } from './js/common/utils/cordovaUtils';
+import { hasCordovaNotch, hasDynamicIsland, heightOfCordovaSpacer } from './js/common/utils/cordovaUtils';
+import flashCursorClickListener from './js/common/utils/flashCursorClickListener';
 import historyPush from './js/common/utils/historyPush';
 import { isWeVoteMarketingSite, normalizedHref } from './js/common/utils/hrefUtils';
 import initializejQuery from './js/common/utils/initializejQuery';
@@ -25,7 +26,7 @@ import webAppConfig from './js/config';
 import VoterStore from './js/stores/VoterStore';
 import initializeFacebookSDK from './js/utils/initializeFacebookSDK';
 import RouterV5SendMatch from './js/utils/RouterV5SendMatch';
-import flashCursorClickListener from './js/common/utils/flashCursorClickListener';
+
 // importRemoveCordovaListenersToken1  -- Do not remove this line!
 
 // Root URL pages
@@ -458,8 +459,7 @@ class App extends Component {
         {enableFullStory && <FullStory org={webAppConfig.FULL_STORY_ORG} />}
         <StyledEngineProvider injectFirst>
           <ThemeProvider theme={muiTheme}>
-            {/* March 2022: We used to have two themeproviders here, one for material-ui, and one for styled-components, but the two are combined in V5 MUI */}
-            <WeVoteBody>
+              <WeVoteBody>
               {/* DO NOT put SnackNotifier or anything else that is non-essential here (to keep it out of the main chunk). */}
               <Suspense fallback={<HeaderBarSuspense />}>
                 <Header hideHeader={hideHeader} params={{ }} pathname={normalizedHref()} />

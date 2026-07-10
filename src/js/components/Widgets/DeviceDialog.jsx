@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { getAndroidSize, getCordovaBuildVersion, getIOSDiagonalValue, getIOSNameString, getIOSSizeString, hasCordovaNotch, isIOS, isSimulator } from '../../common/utils/cordovaUtils';
+import { getAndroidSize, getCordovaBuildVersion, getDeviceDiagonalValue, getDeviceName, getIOSSizeString, hasCordovaNotch, isIOS, isSimulator } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
 import { getTabletSize } from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
@@ -61,8 +61,9 @@ class DeviceDialog extends Component {
     if (!this.props.show) {
       return null;
     }
-    const diameter = getIOSDiagonalValue() || 'unknown';
+    const diameter = getDeviceDiagonalValue();
     const version = getCordovaBuildVersion();
+    const deviceModelName = getDeviceName()
 
     return (
       <Dialog
@@ -82,38 +83,27 @@ class DeviceDialog extends Component {
               </TableRow>
             </TableHead>
             <TableBody>
-              {isIOS() ? (
+              <TableRow>
+                <StyledTableCell>Device Model</StyledTableCell>
+                <StyledTableCell>{deviceModelName}</StyledTableCell>
+              </TableRow>
+              <TableRow>
+                <StyledTableCell>window.device.model</StyledTableCell>
+                <StyledTableCell>{window.device.model}</StyledTableCell>
+              </TableRow>
+              <TableRow>
+                <StyledTableCell>Screen Size</StyledTableCell>
+                <StyledTableCell>{diameter}</StyledTableCell>
+              </TableRow>
+
+              {isIOS() && (
                 <>
-                  <TableRow>
-                    <StyledTableCell>iPhone Model</StyledTableCell>
-                    <StyledTableCell>{getIOSNameString()}</StyledTableCell>
-                  </TableRow>
-                  <TableRow>
-                    <StyledTableCell>Screen Size</StyledTableCell>
-                    <StyledTableCell>{diameter}</StyledTableCell>
-                  </TableRow>
                   <TableRow>
                     <StyledTableCell>iPhone Layout Code</StyledTableCell>
                     <StyledTableCell>{getIOSSizeString()}</StyledTableCell>
                   </TableRow>
                 </>
-              ) : (
-                <>
-                  <TableRow>
-                    <StyledTableCell>Android Size Code</StyledTableCell>
-                    <StyledTableCell>{getAndroidSize()}</StyledTableCell>
-                  </TableRow>
-                  <TableRow>
-                    <StyledTableCell>Screen Size</StyledTableCell>
-                    <StyledTableCell>{diameter}</StyledTableCell>
-                  </TableRow>
-                </>
               )}
-
-              <TableRow>
-                <StyledTableCell>window.device.model</StyledTableCell>
-                <StyledTableCell>{window.device.model}</StyledTableCell>
-              </TableRow>
               <TableRow>
                 <StyledTableCell>WeVote App Version</StyledTableCell>
                 <StyledTableCell>{version}</StyledTableCell>
@@ -121,10 +111,6 @@ class DeviceDialog extends Component {
               <TableRow>
                 <StyledTableCell>Compile date</StyledTableCell>
                 <StyledTableCell>{compileDate}</StyledTableCell>
-              </TableRow>
-              <TableRow>
-                <StyledTableCell>window.device.uuid</StyledTableCell>
-                <StyledTableCell>{window.device.uuid}</StyledTableCell>
               </TableRow>
               <TableRow>
                 <StyledTableCell>device OS version</StyledTableCell>
@@ -137,6 +123,10 @@ class DeviceDialog extends Component {
               <TableRow>
                 <StyledTableCell>Cordova Tablet Size</StyledTableCell>
                 <StyledTableCell>{getTabletSize()}</StyledTableCell>
+              </TableRow>
+              <TableRow>
+                <StyledTableCell>window.device.uuid</StyledTableCell>
+                <StyledTableCell>{window.device.uuid}</StyledTableCell>
               </TableRow>
               <TableRow>
                 <StyledTableCell>window.screen.width</StyledTableCell>

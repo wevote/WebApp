@@ -3,7 +3,8 @@ import webAppConfig from '../../config';
 import { isAndroid, isAndroidTablet, isCordova, isWebApp } from './isCordovaOrWebApp';
 import { cordovaKeyboardHidingLog, cordovaOffsetLog, oAuthLog } from './logging';
 
-const jsonModelsData = require('./iPhoneModels.json');
+const jsonAppleModelsData = require('./iPhoneModels.json');
+const jsonAndroidModelsData = require('./androidModels.json');
 
 /* global $  */
 /* eslint-disable no-unused-vars */
@@ -115,15 +116,15 @@ export function cordovaOpenSafariView (requestURL, onExit, timeout) {
 }
 
 // webapp, webapp:iOS, webapp:Android
-export function deviceTypeString () {
-  let deviceString = isWebApp() ? 'webapp' : 'cordova';
-  const { platform } = window.device || '';
-  if (isCordova() && platform) {
-    deviceString += `:${platform}`;
-  }
-
-  return deviceString;
-}
+// export function deviceTypeString () {
+//   let deviceString = isWebApp() ? 'webapp' : 'cordova';
+//   const { platform } = window.device || '';
+//   if (isCordova() && platform) {
+//     deviceString += `:${platform}`;
+//   }
+//
+//   return deviceString;
+// }
 
 let matchedDevice = false;
 export function logMatch (device, byModel) {
@@ -131,6 +132,58 @@ export function logMatch (device, byModel) {
     cordovaOffsetLog(`Matched ------------ ${device} by ${byModel ? 'window.device.model' : 'pbakondyScreenSize'}${isIOSAppOnMac() ? ', but AppleSilicon detected' : ''}`);
     matchedDevice = true;
   }
+}
+
+export function isAndroidSimulator () {
+  if (isAndroid()) {
+    const { device } = window;
+    if (device) return device.isVirtual;
+    return window.location.href.startsWith('file:///android');
+  }
+  return false;
+}
+
+export function isIOsSimulator () {
+  if (isIOS()) {
+    const { device } = window;
+    if (device) return device.isVirtual;
+    return window.location.href.startsWith('file:///Users') || window.location.href.startsWith('app://localhost');
+  }
+  return false;
+}
+
+export function isSimulator () {
+  return isAndroidSimulator() || isIOsSimulator();
+}
+
+// https://www.gsmarena.com/google_pixel_9_pro_xl-13217.php
+let thisAndroidDeviceParameters;
+export function getThisAndroidDeviceParameters () {
+  if (thisAndroidDeviceParameters) {
+    return thisAndroidDeviceParameters;
+  }
+  // Set fallback values
+  thisAndroidDeviceParameters = jsonAndroidModelsData.find((leaf) => leaf.modelId === 'DEFAULT');
+  console.log('at thisAndroidDeviceParameters window.device: ', JSON.stringify(window.device));
+  // console.log('at thisAndroidDeviceParameters window.device?.model: ', window.device?.model);
+  if (window.device?.model && !isSimulator()) {
+    const params = jsonAndroidModelsData.find((leaf) => leaf.modelId === window.device.model);
+    if (params) {
+      thisAndroidDeviceParameters = params;
+      logMatch('Cordova:   getThisAndroidDeviceParameters: ', JSON.stringify(thisAndroidDeviceParameters));
+      console.log(`Cordova:   getThisAndroidDeviceParameters (${thisAndroidDeviceParameters.name}): ${JSON.stringify(thisAndroidDeviceParameters)}`);
+      return thisAndroidDeviceParameters;
+    } else if (window.device.model.startsWith('G') && window.device.model.length === 5) {
+      // Unknown Google Phone, either too old, or not yet discovered
+      console.error('Cordova:  Possible first-day google device model -- Default values used');
+    } else {
+      // All other android phones
+      console.log('Cordova:  Unknown Phone Type, DEFAULT used');
+    }
+  } else {
+    console.log('Cordova:  window.device.model not found, DEFAULT used');
+  }
+  return thisAndroidDeviceParameters;
 }
 
 // https://theapplewiki.com/wiki/List_of_iPhones
@@ -149,21 +202,38 @@ export function getThisAppleDeviceParameters () {
   // console.log('at thisAppleDeviceParameters window.device: ', JSON.stringify(window.device));
   // console.log('at thisAppleDeviceParameters window.device?.model: ', window.device?.model);
   if (window.device?.model) {
-    thisAppleDeviceParameters = jsonModelsData.find((leaf) => leaf.modelId === window.device.model);
+    thisAppleDeviceParameters = jsonAppleModelsData.find((leaf) => leaf.modelId === window.device.model);
     if (thisAppleDeviceParameters) {
       logMatch('Cordova:   getThisAppleDeviceParameters: ', JSON.stringify(thisAppleDeviceParameters));
       console.log(`Cordova:   getThisAppleDeviceParameters (%c${thisAppleDeviceParameters.name}%c): ${JSON.stringify(thisAppleDeviceParameters)}`, 'font-weight: bold;', 'font-weight: 400;');
       return thisAppleDeviceParameters;
     }
   }
-  console.error('Cordova:  Possible first-day device model -- Default (and wrong) values used.');
+  console.error('Cordova:  Possible first-day device model -- Default (and wrong) Apple values used.');
   // Default, usually wrong data, to avoid crash before device ready in Cordova, or to handle unknown new device
   if (window.device?.model && window.device.model.startsWith('iPad')) {
-    thisAppleDeviceParameters = jsonModelsData.find((leaf) => leaf.modelId === 'iPad16,4');
+    thisAppleDeviceParameters = jsonAppleModelsData.find((leaf) => leaf.modelId === 'iPad16,4');
   } else {
-    thisAppleDeviceParameters = jsonModelsData.find((leaf) => leaf.modelId === 'iPhone18,4');
+    thisAppleDeviceParameters = jsonAppleModelsData.find((leaf) => leaf.modelId === 'iPhone18,4');
   }
   return thisAppleDeviceParameters;
+}
+
+export function getDeviceName () {
+  try {
+    if (isIOS()) {
+      const { name } = getThisAppleDeviceParameters();
+      console.log(`getDeviceName Apple: ${name}`);
+      return name;
+    } else {
+      const { name } = getThisAndroidDeviceParameters();
+      console.log(`getDeviceName Android: ${name}`);
+      return name;
+    }
+  } catch (e) {
+    console.log('getDeviceName() threw:', e);
+    return 'None found';
+  }
 }
 
 export function getIOSSizeString () {
@@ -184,36 +254,14 @@ export function getIOSDiagonalValue () {
   return null;
 }
 
-function detectIsZoomed (properWidth) {
-  const isZoomed = window.innerWidth !== properWidth;
-  cordovaOffsetLog(`isDevice zoomed == ${isZoomed}, for ${window.device.model}, innerWidth ${window.innerWidth}`);
-  return isZoomed;
-}
-
-export function isDeviceZoomed () {
-  //    iPhone       3G           3GS          4            4            4            4S
-  if (['iPhone1,1', 'iPhone1,2', 'iPhone2,1', 'iPhone3,1', 'iPhone3,2', 'iPhone3,3', 'iPhone4,1'].includes(window.device.model)) return detectIsZoomed(320);
-  //        5            5            5C           5C           5S           5S           SE
-  if (['iPhone5,1', 'iPhone5,2', 'iPhone5,3', 'iPhone5,4', 'iPhone6,1', 'iPhone6,2', 'iPhone8,4'].includes(window.device.model)) return detectIsZoomed(320);
-  //        6            6S           7            7            8             8          SE 2nd Gen
-  if (['iPhone7,2', 'iPhone8,1', 'iPhone9,1', 'iPhone9,3', 'iPhone10,1', 'iPhone10,4', 'iPhone12,8'].includes(window.device.model)) return detectIsZoomed(375);
-  //      6 Plus       6S Plus      7 Plus       7Plus
-  if (['iPhone7,1', 'iPhone8,2', 'iPhone9,2', 'iPhone9,4'].includes(window.device.model)) return detectIsZoomed(476);
-  //      8 Plus        8 Plus
-  if (['iPhone10,2', 'iPhone10,5'].includes(window.device.model)) return detectIsZoomed(414);
-  //      12 Mini       13 mini
-  if (['iPhone13,1', 'iPhone14,4'].includes(window.device.model)) return detectIsZoomed(375);
-  //      X             X             XS            11 Pro
-  if (['iPhone10,3', 'iPhone10,6', 'iPhone11,2', 'iPhone12,3'].includes(window.device.model)) return detectIsZoomed(375);
-  //      XR            11
-  if (['iPhone11,8', 'iPhone12,1'].includes(window.device.model)) return detectIsZoomed(414);
-  //      12 Pro         12             13 Pro           13
-  if (['iPhone13,3', 'iPhone13,2', 'iPhone14,2', 'iPhone14,5'].includes(window.device.model)) return detectIsZoomed(390);
-  //    XS Max        XS Max        11 Pro Max
-  if (['iPhone11,4', 'iPhone11,6', 'iPhone12,5'].includes(window.device.model)) return detectIsZoomed(414);
-  //    12ProMax(6.7) 13ProMax(6.7)
-  if (['iPhone13,4', 'iPhone14,3'].includes(window.device.model)) return detectIsZoomed(428);
-  return false;
+export function getDeviceDiagonalValue () {
+  if (isIOS()) {
+    const params = getThisAppleDeviceParameters();
+    return params.size;
+  } else {
+    const params = getThisAndroidDeviceParameters();
+    return params.modelId === 'DEFAULT' ? 'unknown' : params.size;
+  }
 }
 
 // 3.5" screen iPhones
@@ -366,7 +414,15 @@ export function heightOfCordovaSpacer (asString = false) {
       const { iOSSpacer } = getThisAppleDeviceParameters();
       height = iOSSpacer;
     } else if (isAndroid()) {
-      height = window.androidNotchCutout ? window.androidNotchInset : 0;
+      const { androidSpacer, modelId } = getThisAndroidDeviceParameters();
+      if (modelId === 'DEFAULT') {
+        // console.log('heightOfCordovaSpacer window.androidNotchCutout: ', window.androidNotchCutout, window.androidNotchInset);
+        // console.log('heightOfCordovaSpacer device: ', device);
+        // console.log('heightOfCordovaSpacer device.model: ', device.model);
+        height = window.androidNotchCutout ? window.androidNotchInset : 0;
+      } else {
+        height = androidSpacer;
+      }
     }
   }
   // console.log(`heightOfCordovaSpacer '${asString ? `${height}px` : height}'`);
@@ -596,30 +652,8 @@ export function isWebAppHeight737to896 () {
   return false;
 }
 
-export function isAndroidSimulator () {
-  if (isAndroid()) {
-    const { device } = window;
-    if (device) return device.isVirtual;
-    return window.location.href.startsWith('file:///android');
-  }
-  return false;
-}
-
 export function isCordovaButNotATablet () {
   return isCordova() && !isIPad() && !(getAndroidSize() !== '--xl');
-}
-
-export function isIOsSimulator () {
-  if (isIOS()) {
-    const { device } = window;
-    if (device) return device.isVirtual;
-    return window.location.href.startsWith('file:///Users') || window.location.href.startsWith('app://localhost');
-  }
-  return false;
-}
-
-export function isSimulator () {
-  return isAndroidSimulator() || isIOsSimulator();
 }
 
 // This block of code run when cordovaUils is loaded, and is not specifically called by a function
@@ -630,19 +664,6 @@ if (isSimulator()) {
     cordovaOffsetLog(`href on entry (first 60): ${window.location.href.slice(0, 60)}`);
     cordovaOffsetLog(`href on entry (last 60): ${window.location.href.slice(window.location.href.length - 60)}`);
   }
-}
-
-export function getToastClass () {
-  let toastClass = '';
-  if (hasCordovaNotch()) {
-    toastClass = 'app-toast-cordova__iphone-notch';
-  } else if (isIOS()) {
-    toastClass = 'app-toast-cordova__iphone';
-  }
-
-  // No adjustment needed for Android, it doesn't consider the top hardware menu part of the application area
-  // cordovaOffsetLog(`Determine the toast conditional space classname: ${  toastClass}`);
-  return toastClass;
 }
 
 export function getCordovaScreenHeight () {
@@ -688,12 +709,12 @@ export function restoreStylesAfterCordovaKeyboard (callerString) {
   }
 }
 
-export function setGlobalScreenSize (result) {
-  // this is the place to override detected screen size if needed.
-  const { visualViewport: { height, width, scale } } = window;
-  console.log(`setGlobalScreenSize height: ${height}, width:  ${width}, scale: ${scale}`);
-  window.pbakondyScreenSize = result;
-}
+// export function setGlobalScreenSize (result) {
+//   // this is the place to override detected screen size if needed.
+//   const { visualViewport: { height, width, scale } } = window;
+//   console.log(`setGlobalScreenSize height: ${height}, width:  ${width}, scale: ${scale}`);
+//   window.pbakondyScreenSize = result;
+// }
 
 // eslint-disable-next-line no-unused-vars
 export function focusTextFieldAndroid (clue) {
@@ -756,13 +777,13 @@ export function setIconBadgeMessageCount (count) {
   }
 }
 
-export function getIconBadgeMessageCount () {
-  if (isCordova() && !isSimulator()) {
-    const { cordova: { plugins: { firebase: { messaging: { getBadge } } } } } = window;
-    return getBadge();
-  }
-  return -1;
-}
+// export function getIconBadgeMessageCount () {
+//   if (isCordova() && !isSimulator()) {
+//     const { cordova: { plugins: { firebase: { messaging: { getBadge } } } } } = window;
+//     return getBadge();
+//   }
+//   return -1;
+// }
 
 export function polyfillFixes (file) {
   if (polyfillsLoaded) {
