@@ -60,11 +60,11 @@ export default function SignInButton (props) {
         {' '}
         <span
           style={{
-            color: '#ccc',
+            color: 'rgb(6, 95, 212)',
             fontWeight: 200,
           }}
         >
-          |
+          /
         </span>
         {' '}
         <span
