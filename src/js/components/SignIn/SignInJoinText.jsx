@@ -13,11 +13,10 @@ export default function SignInJoinText () {
       {' '}
       <span
         style={{
-          color: '#ccc',
           fontWeight: 200,
         }}
       >
-        |
+        /
       </span>
       {' '}
       <span>
