@@ -1,0 +1,31 @@
+class;size;androidSpacer;type;name;modelId
+PixelPhone;6.3;0;phone;Google Pixel 9;G2YBB
+PixelPhone;6.3;0;phone;Google Pixel 9;GUR25
+PixelPhone;6.3;0;phone;Google Pixel 9;G1B60
+PixelPhone;6.3;0;phone;Google Pixel 9a;GXQ96
+PixelPhone;6.3;0;phone;Google Pixel 9a;GTF7P
+PixelPhone;6.3;0;phone;Google Pixel 9a;G3Y12
+PixelPhone;6.3;0;phone;Google Pixel 9 Pro;GR83Y
+PixelPhone;6.3;0;phone;Google Pixel 9 Pro;GEC77
+PixelPhone;6.3;0;phone;Google Pixel 9 Pro;GWVK6
+PixelPhone;6.8;0;phone;Google Pixel 9 Pro XL;GGX8B
+PixelPhone;6.8;0;phone;Google Pixel 9 Pro XL;GZC4K
+PixelPhone;6.8;0;phone;Google Pixel 9 Pro XL;GQ57S
+PixelPhone;8.0;0;phone;Google Pixel 9 Pro Fold;GGH2X
+PixelPhone;8.0;0;phone;Google Pixel 9 Pro Fold;GC15S
+PixelPhone;6.3;0;phone;Google Pixel 10;GK2MP
+PixelPhone;6.3;0;phone;Google Pixel 10;GLBW0
+PixelPhone;6.3;0;phone;Google Pixel 10;GL066
+PixelPhone;6.3;0;phone;Google Pixel 10a;GE1GQ
+PixelPhone;6.3;0;phone;Google Pixel 10a;GV0BP
+PixelPhone;6.3;0;phone;Google Pixel 10a;G4H7L
+PixelPhone;6.3;0;phone;Google Pixel 10 Pro;GEHN3
+PixelPhone;6.3;0;phone;Google Pixel 10 Pro;G4QUR
+PixelPhone;6.3;0;phone;Google Pixel 10 Pro;GN4F5
+PixelPhone;6.8;0;phone;Google Pixel 10 XL;G45RY
+PixelPhone;6.8;0;phone;Google Pixel 10 XL;GUL82
+PixelPhone;6.8;0;phone;Google Pixel 10 XL;GYPW4
+PixelPhone;8.0;0;phone;Google Pixel 10 Fold;GU0NP
+PixelPhone;8.0;0;phone;Google Pixel 10 Fold;GM66V
+MotorolaPhone;6.6;0;phone;Moto G 2025;moto g - 2025
+AndroidGeneric;6.8;57;phone;Android Default;DEFAULT

@@ -8,7 +8,7 @@ import lookupPageNameAndPageTypeDictForExternalUrls from '../../../utils/lookupP
 import PoliticianStore from '../../stores/PoliticianStore';
 import { cordovaOpenSafariView, isIOS } from '../../utils/cordovaUtils';
 import historyPush from '../../utils/historyPush';
-import { isAndroid, isWebApp } from '../../utils/isCordovaOrWebApp';
+import { isAndroid, isCordova, isWebApp } from '../../utils/isCordovaOrWebApp';
 import { renderLog } from '../../utils/logging';
 import stringContains from '../../utils/stringContains';
 
@@ -78,7 +78,9 @@ export default class OpenExternalWebSite extends Component {
     const classNameString = className !== undefined ? className : 'open-web-site';
     let route = null;
     let externalUrl = url;
-    if (stringContains('app://localhost', externalUrl)) {
+    // We really should never be calling OpenExternalWebSite for "twitter handle" local URLs, but since we do it in some places handle routes
+    // Calling OpenExternalWebSite for "twitter handle" local URLs, also forces a hard reload of the WebApp with all the overhead involved, so it should be avoided.
+    if (isCordova() && (stringContains('app://localhost', externalUrl) || stringContains('https://localhost', externalUrl))) {
       // console.log('---------- OpenExternalWebSite externalUrl ', externalUrl);
       route = externalUrl.split('localhost')[1];
       // console.log('---------- OpenExternalWebSite route ', route);
