@@ -1,6 +1,5 @@
 /* jshint esversion: 6 */
 const CopyPlugin = require('copy-webpack-plugin');
-const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
@@ -12,7 +11,6 @@ const fs = require('fs');
 const path = require('path');
 const webpack = require('webpack');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 const port = process.env.PORT || 3000;
 const isHTTPS = process.env.PROTOCOL && process.env.PROTOCOL === 'HTTPS';
@@ -71,17 +69,6 @@ module.exports = (env, argv) => ({
           },
         }),
       ] : []),
-      new CssMinimizerPlugin({
-        test: /\.css$/i,
-        minimizerOptions: {
-          preset: [
-            'default',
-            {
-              discardComments: { removeAll: true },
-            },
-          ],
-        },
-      }),
     ],
   },
   resolve: {
@@ -102,7 +89,6 @@ module.exports = (env, argv) => ({
   // source-map is for OpenReplay
   devtool: 'source-map',
   plugins: [
-    new CleanWebpackPlugin(),
     new ESLintPlugin({ failOnError: false, failOnWarning: false  }),
     new HtmlWebpackPlugin({
       title: 'WeVote Sample Ballot',
