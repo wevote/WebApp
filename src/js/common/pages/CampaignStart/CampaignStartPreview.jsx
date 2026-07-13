@@ -97,7 +97,7 @@ class CampaignStartPreview extends Component {
     const { voterFirstName, voterLastName, voterSignedInWithEmail } = this.state;
     if (!voterFirstName || !voterLastName || !voterSignedInWithEmail) {
       // Open complete your profile modal
-      const modalDictionary = { // TODO
+      const modalDictionary = {
         becomeMember: false,
         campaignXWeVoteId: '',
         challengeWeVoteId: '',
