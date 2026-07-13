@@ -19,6 +19,7 @@ const AskFriendsModal = React.lazy(() => import(/* webpackChunkName: 'AskFriends
 const BallotChoicesAndSettingsModal = React.lazy(() => import(/* webpackChunkName: 'BallotChoicesAndSettingsModal' */ '../CompleteYourProfile/BallotChoicesAndSettingsModal'));
 const ChooseOrOpposeIntroModal = React.lazy(() => import(/* webpackChunkName: 'ChooseOrOpposeIntroModal' */ '../Widgets/ItemActionBar/ChooseOrOpposeIntroModal'));
 const ChooseOrOpposeSignInModal = React.lazy(() => import(/* webpackChunkName: 'ChooseOrOpposeSignInModal' */ '../Widgets/ItemActionBar/ChooseOrOpposeSignInModal'));
+const CompleteYourProfileModalController = React.lazy(() => import(/* webpackChunkName: 'CompleteYourProfileModalController' */ '../../common/components/Settings/CompleteYourProfileModalController'));
 const FirstPositionIntroModal = React.lazy(() => import(/* webpackChunkName: 'FirstPositionIntroModal' */ '../CompleteYourProfile/FirstPositionIntroModal'));
 const ImageUploadModal = React.lazy(() => import(/* webpackChunkName: 'ImageUploadModal' */ '../Settings/ImageUploadModal'));
 const MakePublicGateModal = React.lazy(() => import(/* webpackChunkName: 'MakePublicGateModal' */ '../Widgets/ItemActionBar/MakePublicGateModal'));
@@ -429,6 +430,11 @@ class HeaderBarModals extends Component {
         </Suspense>
       );
     }
+    const completeYourProfileModalController = (
+      <Suspense fallback={<></>}>
+        <CompleteYourProfileModalController />
+      </Suspense>
+    );
     return (
       <>
         {advisorIntroModalHtml}
@@ -438,6 +444,7 @@ class HeaderBarModals extends Component {
         {chooseOrOpposeSignInModal}
         {claimProfileWithEmailModal}
         {claimProfileWithOtherWaysModal}
+        {completeYourProfileModalController}
         {editPositionModal}
         {firstPositionIntroModal}
         {imageUploadModal}

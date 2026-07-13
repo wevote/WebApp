@@ -238,7 +238,7 @@ class HeartFavoriteToggleLive extends React.Component {
 
   functionToUseWhenProfileComplete (support = true, oppose = false, stopSupporting = false, stopOpposing = false) {
     // console.log('HeartFavoriteToggleLive functionToUseWhenProfileComplete');
-    const { campaignXWeVoteId, organizationWeVoteId } = this.props;
+    const { campaignXWeVoteId, organizationWeVoteId, supportPolitician } = this.props;
     const { politicianWeVoteId } = this.state;
     let campaignSupported = false;
     let campaignSupportedChanged = false;
@@ -300,7 +300,22 @@ class HeartFavoriteToggleLive extends React.Component {
           CampaignSupporterActions.supportCampaignSave(campaignXWeVoteId, campaignSupported, campaignSupportedChanged, visibleToPublic, saveVisibleToPublic); // campaignSupporterSave
         }
       }
-      AppObservableStore.setShowCompleteYourProfileModal(false);
+      const modalDictionary = {
+        becomeMember: false,
+        campaignXWeVoteId,
+        challengeWeVoteId: '',
+        clickSource: 'HEART_FAVORITE_TOGGLE_LIVE_PROFILE_COMPLETE_FUNCTION ',
+        isOppose: oppose,
+        isStopOpposing: stopOpposing,
+        isStopSupporting: stopSupporting,
+        isSupport: support,
+        politicianWeVoteId,
+        showModal: false,
+        startCampaign: false,
+        supportCampaign: false,
+        supportPolitician,
+      };
+      AppObservableStore.setShowCompleteYourProfileModalDict(modalDictionary);
       AppObservableStore.setShowSignInModal(false);
     });
   }
@@ -380,7 +395,7 @@ class HeartFavoriteToggleLive extends React.Component {
   }
 
   submitActionClick (support = true, oppose = false, stopSupporting = false, stopOpposing = false) {
-    const { campaignXWeVoteId, organizationWeVoteId } = this.props;
+    const { campaignXWeVoteId, organizationWeVoteId, supportPolitician } = this.props;
     const { voterFirstName, voterLastName, voterIsSignedIn } = this.state;
     // console.log('HeartFavoriteToggleLive submitActionClick');
     if (!campaignXWeVoteId && !organizationWeVoteId) {
@@ -388,7 +403,23 @@ class HeartFavoriteToggleLive extends React.Component {
     } else if (!voterIsSignedIn) {
       // Open complete your profile modal
       console.log('HeartFavoriteToggleLive submitActionClick: voter not signed in');
-      AppObservableStore.setShowCompleteYourProfileModal(true);
+      // DALE 2026-07-12 I don't think this should be here
+      // const modalDictionary = {
+      //   becomeMember: '',
+      //   campaignXWeVoteId: '',
+      //   challengeWeVoteId: '',
+      //   clickSource: 'HEART_FAVORITE_TOGGLE_LIVE_SUBMIT_ACTION_CLICK ',
+      //   isOppose: false,
+      //   isStopOpposing: false,
+      //   isStopSupporting: false,
+      //   isSupport: false,
+      //   politicianWeVoteId: '',
+      //   showModal: false,
+      //   startCampaign: false,
+      //   supportCampaign: false,
+      //   supportPolitician: false,
+      // };
+      // AppObservableStore.setShowCompleteYourProfileModalDict(modalDictionary);
     } else if (!voterFirstName || !voterLastName) {
       // Open profile modal and store the heart action to fire after profile completion
       AppObservableStore.setFunctionToCallAfterProfileComplete(
@@ -437,7 +468,26 @@ class HeartFavoriteToggleLive extends React.Component {
           });
         },
       );
-      AppObservableStore.setShowCompleteYourProfileModal(true);
+      // console.log('HeartFavoriteToggleLive support:', support, ', oppose:', oppose, ', stopSupporting:', stopSupporting, ', stopOpposing:', stopOpposing);
+      if (support || oppose) {
+        const modalDictionary = {
+          becomeMember: false,
+          campaignXWeVoteId,
+          challengeWeVoteId: '',
+          clickSource: 'HEART_FAVORITE_TOGGLE_LIVE_SUBMIT_ACTION_CLICK ',
+          isOppose: oppose,
+          isStopOpposing: stopOpposing,
+          isStopSupporting: stopSupporting,
+          isSupport: support,
+          politicianWeVoteId: '',
+          showModal: true,
+          startCampaign: false,
+          supportCampaign: false,
+          supportPolitician,
+        };
+        // console.log('HeartFavoriteToggleLive calling AppObservableStore setShowCompleteYourProfileModalDict modalDictionary:', modalDictionary, ', supportPolitician:', supportPolitician);
+        AppObservableStore.setShowCompleteYourProfileModalDict(modalDictionary);
+      }
     } else {
       if (campaignXWeVoteId) {
         // Mark that voter supports this campaign after they sign in
@@ -455,6 +505,7 @@ class HeartFavoriteToggleLive extends React.Component {
     const { campaignXWeVoteId, organizationWeVoteId } = this.props;
     const { opposersCount, supportersCount, voterFirstName, voterIsSignedIn, voterLastName, voterOpposes, voterSupports } = this.state;
     const voterProfileComplete = voterIsSignedIn && !!voterFirstName && !!voterLastName;
+    // console.log('HeartFavoriteToggleLive render supportPolitician:', supportPolitician);
     // console.log('HeartFavoriteToggleLive campaignXWeVoteId: ', campaignXWeVoteId);
     // console.log('HeartFavoriteToggleLive voterSupports: ', voterSupports, ' voterOpposes: ', voterOpposes);
     // console.log('HeartFavoriteToggleLive supportersCount: ', supportersCount, ', opposersCount: ', opposersCount);
@@ -484,6 +535,7 @@ class HeartFavoriteToggleLive extends React.Component {
 HeartFavoriteToggleLive.propTypes = {
   campaignXWeVoteId: PropTypes.string,
   organizationWeVoteId: PropTypes.string,
+  supportPolitician: PropTypes.bool,
 };
 
 const HeartFavoriteToggleLiveContainer = styled.div`

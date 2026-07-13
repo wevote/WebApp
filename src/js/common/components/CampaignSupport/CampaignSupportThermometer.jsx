@@ -152,7 +152,7 @@ class CampaignSupportThermometer extends React.Component {
 
   render () {
     renderLog('CampaignSupportThermometer');  // Set LOG_RENDER_EVENTS to log all renders
-    const { campaignXWeVoteId, inCompressedMode } = this.props;
+    const { campaignXWeVoteId, inCompressedMode, supportPolitician } = this.props;
     const { finalElectionDateInPast, supportersCount, supportersCountNextGoal, voterOpposesCampaignX } = this.state;
     let calculatedPercentage = 0;
     if (supportersCount && supportersCountNextGoal) {
@@ -189,7 +189,7 @@ class CampaignSupportThermometer extends React.Component {
       <CampaignSupportThermometerWrapper>
         <HeartPlusDetailsWrapper>
           <HeartWrapper>
-            <HeartFavoriteToggleLoader campaignXWeVoteId={campaignXWeVoteId} />
+            <HeartFavoriteToggleLoader campaignXWeVoteId={campaignXWeVoteId} supportPolitician={supportPolitician} />
           </HeartWrapper>
           <HeartDetailsWrapper>
             {showLoadingSkeleton ? (
@@ -230,6 +230,7 @@ class CampaignSupportThermometer extends React.Component {
 CampaignSupportThermometer.propTypes = {
   campaignXWeVoteId: PropTypes.string,
   inCompressedMode: PropTypes.bool,
+  supportPolitician: PropTypes.bool,
 };
 
 const styles = () => ({

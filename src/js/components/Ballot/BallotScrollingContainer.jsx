@@ -274,7 +274,7 @@ class BallotScrollingContainer extends Component {
                       </CandidateNameH4>
                       {!!(oneCandidate.linked_campaignx_we_vote_id) && (
                         <HeartFavoriteToggleLocalWrapper>
-                          <HeartFavoriteToggleLoader campaignXWeVoteId={oneCandidate.linked_campaignx_we_vote_id} />
+                          <HeartFavoriteToggleLoader campaignXWeVoteId={oneCandidate.linked_campaignx_we_vote_id} supportPolitician />
                         </HeartFavoriteToggleLocalWrapper>
                       )}
                     </CandidateNameWithHeart>

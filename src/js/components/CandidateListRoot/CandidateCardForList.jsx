@@ -222,6 +222,7 @@ class CandidateCardForList extends Component {
     return (
       <Suspense fallback={fallbackJsx}>
         <CardForListBody
+          source="CandidateCardForList"
           ballotItemDisplayName={ballotItemDisplayName}
           campaignSupported={campaignSupported}
           candidateWeVoteId={candidateWeVoteId}
@@ -241,6 +242,7 @@ class CandidateCardForList extends Component {
           searchText={searchText}
           showPoliticianOpenInNewWindow={showPoliticianOpenInNewWindow}
           stateCode={stateCode}
+          supportPolitician
           supportersCount={supportersCount}
           supportersCountNextGoalRaw={supportersCountNextGoalRaw}
           tagIdBaseName="candidateCard"

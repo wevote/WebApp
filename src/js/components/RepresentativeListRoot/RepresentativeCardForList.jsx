@@ -195,6 +195,7 @@ class RepresentativeCardForList extends Component {
     return (
       <Suspense fallback={fallbackJsx}>
         <CardForListBody
+          source="RepresentativeCardForList"
           ballotItemDisplayName={ballotItemDisplayName}
           campaignSupported={campaignSupported}
           // candidateWeVoteId={candidateWeVoteId}
@@ -214,6 +215,7 @@ class RepresentativeCardForList extends Component {
           searchText={searchText}
           showPoliticianOpenInNewWindow={showPoliticianOpenInNewWindow}
           stateCode={stateCode}
+          supportPolitician
           supportersCount={supportersCount}
           supportersCountNextGoalRaw={supportersCountNextGoalRaw}
           tagIdBaseName="representativeCard"

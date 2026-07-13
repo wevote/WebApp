@@ -31,14 +31,44 @@ export default function saveCampaignSupportAndGoToNextPage (campaignXWeVoteId = 
   if (campaignXBasePath) {
     initializejQuery(() => {
       CampaignSupporterActions.supportCampaignSave(campaignXWeVoteId, campaignSupported, campaignSupportedChanged, visibleToPublic, saveVisibleToPublic); // campaignSupporterSave
-      AppObservableStore.setShowCompleteYourProfileModal(false);
+      const modalDictionary = {
+        becomeMember: false,
+        campaignXWeVoteId: '',
+        challengeWeVoteId: '',
+        clickSource: 'SAVE_CAMPAIGN_SUPPORT_AND_GO_ON_CAMPAIGNX ',
+        isOppose: false,
+        isStopOpposing: false,
+        isStopSupporting: false,
+        isSupport: false,
+        politicianWeVoteId: '',
+        showModal: false,
+        startCampaign: false,
+        supportCampaign: false,
+        supportPolitician: false,
+      };
+      AppObservableStore.setShowCompleteYourProfileModalDict(modalDictionary);
       AppObservableStore.setShowSignInModal(false);
     }, goToNextPage(campaignXBasePath));
   } else {
     // If we don't have a campaignXBasePath, do not redirect
     initializejQuery(() => {
       CampaignSupporterActions.supportCampaignSave(campaignXWeVoteId, campaignSupported, campaignSupportedChanged, visibleToPublic, saveVisibleToPublic); // campaignSupporterSave
-      AppObservableStore.setShowCompleteYourProfileModal(false);
+      const modalDictionary = {
+        becomeMember: false,
+        campaignXWeVoteId: '',
+        challengeWeVoteId: '',
+        clickSource: 'SAVE_CAMPAIGN_SUPPORT_NO_CAMPAIGNX_BASE_PATH ',
+        isOppose: false,
+        isStopOpposing: false,
+        isStopSupporting: false,
+        isSupport: false,
+        politicianWeVoteId: '',
+        showModal: false,
+        startCampaign: false,
+        supportCampaign: false,
+        supportPolitician: false,
+      };
+      AppObservableStore.setShowCompleteYourProfileModalDict(modalDictionary);
       AppObservableStore.setShowSignInModal(false);
     });
   }

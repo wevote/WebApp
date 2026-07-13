@@ -25,7 +25,6 @@ import { getPageDetails } from '../../../utils/lookupPageNameAndPageTypeDict';
 import { marginTopOffset, MobileHeaderInnerContainer, NoInformationProvided } from '../../../utils/MobileHeaderStyles';
 import CampaignChipInLink from '../../components/Campaign/CampaignChipInLink';
 import CampaignOwnersList from '../../components/CampaignSupport/CampaignOwnersList';
-import CompleteYourProfileModalController from '../../components/Settings/CompleteYourProfileModalController';
 import { CampaignDescription, CampaignDescriptionDesktop, CampaignDescriptionDesktopWrapper, CampaignDescriptionWrapper, CampaignOwnersDesktopWrapper, CampaignSubSectionSeeAll, CampaignSubSectionTitle, CampaignSubSectionTitleWrapper, CommentsListWrapper, DetailsSectionDesktopTablet, DetailsSectionMobile, OtherElectionsWrapper, SupportButtonFooterWrapperAboveFooterButtons, SupportButtonPanel } from '../../components/Style/CampaignDetailsStyles';
 import { EditIndicator, IndicatorButtonWrapper, IndicatorRow } from '../../components/Style/CampaignIndicatorStyles';
 import { CandidateCampaignListDesktop, CandidateCampaignListMobile, CandidateCampaignWrapper, SectionTitleSimple } from '../../components/Style/PoliticianDetailsStyles';
@@ -44,12 +43,10 @@ import { getYearFromUltimateElectionDate } from '../../utils/dateFormat';
 import extractPoliticianDetailsFromUrl from '../../utils/extractPoliticianDetailsFromUrl';
 import historyPush from '../../utils/historyPush';
 import { isCordova, isWebApp } from '../../utils/isCordovaOrWebApp';
-import keepHelpingDestination from '../../utils/keepHelpingDestination';
 import { renderLog } from '../../utils/logging';
 import normalizedImagePath from '../../utils/normalizedImagePath';
 import { getPoliticianValuesFromIdentifiers, politicianRetrieveFromIdentifiersIfNeeded } from '../../utils/politicianUtils';
 import returnFirstXWords from '../../utils/returnFirstXWords';
-import saveCampaignSupportAndGoToNextPage from '../../utils/saveCampaignSupportAndGoToNextPage';
 import PoliticianDetailsEndorsementsSkeleton from './PoliticianDetailsEndorsementsSkeleton';
 
 const CampaignRetrieveController = React.lazy(() => import(/* webpackChunkName: 'CampaignRetrieveController' */ '../../components/Campaign/CampaignRetrieveController'));
@@ -81,8 +78,8 @@ class PoliticianDetailsPage extends Component {
       loadSlow: false,
       opponentCandidateList: [],
       opponentCandidatesToShowCount: 5,
-      payToPromoteStepCompleted: false,
-      payToPromoteStepTurnedOn: false,
+      // payToPromoteStepCompleted: false,
+      // payToPromoteStepTurnedOn: false,
       politicianDataFound: false,
       politicianDataNotFound: false,
       politicianSEOFriendlyPath: '',
@@ -90,10 +87,10 @@ class PoliticianDetailsPage extends Component {
       politicianName: '',
       politicianWeVoteId: '',
       politicianWeVoteIdForDisplay: '', // Value for politician already received
-      sharingStepCompleted: false,
+      // sharingStepCompleted: false,
       showMobileViewUpcomingBallot: false,
       stateText: '',
-      step2Completed: false,
+      // step2Completed: false,
       voterCanEditThisPolitician: false,
       wikipediaUrl: '',
       politicianStateParsedFromURLBeforeLoad: '',
@@ -183,7 +180,8 @@ class PoliticianDetailsPage extends Component {
     if (triggerSEOPathRedirect && politicianSEOFriendlyPathFromObject) {
       historyPush(`/${politicianSEOFriendlyPathFromObject}/-/`, true);
     }
-    this.analyticsTimer = setTimeout(() => {
+    // this.analyticsTimer =
+    setTimeout(() => {
       AnalyticsActions.saveActionPoliticianPageVisit(politicianSEOFriendlyPathFromUrl, politicianWeVoteId);
     }, 3000);
     window.scrollTo(0, 0);
@@ -618,33 +616,33 @@ class PoliticianDetailsPage extends Component {
   //   return politicianBasePath;
   // }
 
-  functionToUseToKeepHelping = () => {
-    const { finalElectionDateInPast, payToPromoteStepCompleted, payToPromoteStepTurnedOn, sharingStepCompleted, step2Completed } = this.state;
-    // console.log('functionToUseToKeepHelping sharingStepCompleted:', sharingStepCompleted, ', payToPromoteStepCompleted:', payToPromoteStepCompleted, ', step2Completed:', step2Completed);
-    const keepHelpingDestinationString = keepHelpingDestination(step2Completed, payToPromoteStepCompleted, payToPromoteStepTurnedOn, sharingStepCompleted, finalElectionDateInPast);
-    historyPush(`${this.getCampaignXBasePath()}${keepHelpingDestinationString}`);
-  };
+  // functionToUseToKeepHelping = () => {
+  //   const { finalElectionDateInPast, payToPromoteStepCompleted, payToPromoteStepTurnedOn, sharingStepCompleted, step2Completed } = this.state;
+  //   // console.log('functionToUseToKeepHelping sharingStepCompleted:', sharingStepCompleted, ', payToPromoteStepCompleted:', payToPromoteStepCompleted, ', step2Completed:', step2Completed);
+  //   const keepHelpingDestinationString = keepHelpingDestination(step2Completed, payToPromoteStepCompleted, payToPromoteStepTurnedOn, sharingStepCompleted, finalElectionDateInPast);
+  //   historyPush(`${this.getCampaignXBasePath()}${keepHelpingDestinationString}`);
+  // };
 
-  functionToUseWhenProfileComplete = () => {
-    const { linkedCampaignXWeVoteId } = this.state;
-    if (linkedCampaignXWeVoteId) {
-      // const campaignXBasePath = this.getCampaignXBasePath();
-      // console.log('PoliticianDetailsPage functionToUseWhenProfileComplete campaignXBasePath (IGNORED):', campaignXBasePath);
-      saveCampaignSupportAndGoToNextPage(linkedCampaignXWeVoteId);  // campaignXBasePath
-    } else {
-      console.log('PoliticianDetailsPage functionToUseWhenProfileComplete linkedCampaignXWeVoteId not found');
-    }
-  };
+  // functionToUseWhenProfileComplete = () => {
+  //   const { linkedCampaignXWeVoteId } = this.state;
+  //   if (linkedCampaignXWeVoteId) {
+  //     // const campaignXBasePath = this.getCampaignXBasePath();
+  //     // console.log('PoliticianDetailsPage functionToUseWhenProfileComplete campaignXBasePath (IGNORED):', campaignXBasePath);
+  //     saveCampaignSupportAndGoToNextPage(linkedCampaignXWeVoteId);  // campaignXBasePath
+  //   } else {
+  //     console.log('PoliticianDetailsPage functionToUseWhenProfileComplete linkedCampaignXWeVoteId not found');
+  //   }
+  // };
 
   // TagManger from Candidate page on View your full Ballot button-AnujaLawankar
   goToBallot = () => {
     historyPush('/ballot');
   };
 
-  onPoliticianCampaignEditClick = () => {
-    historyPush(`${this.getCampaignXBasePath()}edit`);
-    return null;
-  };
+  // onPoliticianCampaignEditClick = () => {
+  //   historyPush(`${this.getCampaignXBasePath()}edit`);
+  //   return null;
+  // };
 
   onPoliticianCampaignShareClick = () => {
     historyPush(`${this.getCampaignXBasePath()}share-politician`);
@@ -941,7 +939,7 @@ class PoliticianDetailsPage extends Component {
     const positionsHydrated = allCachedPositionsForThisPolitician !== undefined;
     // const hasPositions = allCachedPositionsForThisPolitician && allCachedPositionsForThisPolitician.length > 0;
     const showFullEndorsementsSkeleton = !hasPoliticianId;
-    const keepEndorsementsMinHeight = !positionRetrieveCompleted;;
+    const keepEndorsementsMinHeight = !positionRetrieveCompleted;
     let feedLoadingHtml = <></>;
     if (hasPoliticianId && !positionsHydrated) {
       feedLoadingHtml = (
@@ -1062,6 +1060,7 @@ class PoliticianDetailsPage extends Component {
                       <CampaignSupportThermometer
                         campaignXWeVoteId={linkedCampaignXWeVoteId}
                         finalElectionDateInPast={finalElectionDateInPast}
+                        supportPolitician
                       />
                     </Suspense>
                   </HeartToggleAndThermometerWrapper>
@@ -1073,6 +1072,7 @@ class PoliticianDetailsPage extends Component {
                 hideCardMargins
                 hideItemActionBar
                 politicianWeVoteId={politicianWeVoteIdForDisplay}
+                supportPolitician
                 useCampaignSupportThermometer
                 useVerticalCard
               />
@@ -1230,6 +1230,7 @@ class PoliticianDetailsPage extends Component {
                     hideCardMargins
                     hideItemActionBar
                     politicianWeVoteId={politicianWeVoteIdForDisplay}
+                    supportPolitician
                     useCampaignSupportThermometer
                     useVerticalCard
                   />
@@ -1407,11 +1408,11 @@ class PoliticianDetailsPage extends Component {
           <CampaignRetrieveController campaignXWeVoteId={linkedCampaignXWeVoteId} retrieveAsOwnerIfVoterSignedIn />
           {/* campaignSEOFriendlyPath={campaignSEOFriendlyPath} */}
         </Suspense>
-        <CompleteYourProfileModalController
-          politicianWeVoteId={politicianWeVoteId}
-          functionToUseWhenProfileComplete={this.functionToUseWhenProfileComplete}
-          supportPolitician
-        />
+        {/* <CompleteYourProfileModalController */}
+        {/*  politicianWeVoteId={politicianWeVoteId} */}
+        {/*  functionToUseWhenProfileComplete={this.functionToUseWhenProfileComplete} */}
+        {/*  supportPolitician */}
+        {/* /> */}
       </PageContentContainer>
     );
   }

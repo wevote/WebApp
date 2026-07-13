@@ -124,7 +124,8 @@ class HeartFavoriteToggleBase extends Component {
           voterSupportsDelayed: false,
           voterOpposesDelayed: false,
         });
-        this.timer = setTimeout(() => {
+        // this.timer =
+        setTimeout(() => {
           if (voterOpposesDelayed) {
             this.handleOpposeClick();
           } else if (voterSupportsDelayed) {
@@ -416,11 +417,11 @@ class HeartFavoriteToggleBase extends Component {
       return 'Favoriting helps us match you to other candidates who share your values.';
     } else if (voterOpposesLocalPrevious) {
       if (organizationWeVoteId) {
-        return `Favorited by ${supportersCount} people. Favoriting helps us match you to candidates who share your values.`;
+        return `Favorited by ${supportersCount} ${supportersCount === 1 ? 'person' : 'people'}. Favoriting helps us match you to candidates who share your values.`;
       } else if (campaignXWeVoteId) {
-        return `Favorited by ${supportersCount} people. Favoriting helps us match you to other candidates who share your values.`;
+        return `Favorited by ${supportersCount} ${supportersCount === 1 ? 'person' : 'people'}. Favoriting helps us match you to other candidates who share your values.`;
       }
-      return `Favorited by ${supportersCount} people. Favoriting helps us match you to other candidates who share your values.`;
+      return `Favorited by ${supportersCount} ${supportersCount === 1 ? 'person' : 'people'}. Favoriting helps us match you to other candidates who share your values.`;
     } else {
       return 'Remove Favorite';
     }
@@ -438,18 +439,18 @@ class HeartFavoriteToggleBase extends Component {
 
     if (!voterOpposesLocalPrevious && !voterSupportsLocalPrevious) {
       if (organizationWeVoteId) {
-        return `Disliked by ${opposersCount} people. Disliking helps us match you to candidates who share your values.`;
+        return `Disliked by ${opposersCount} ${opposersCount === 1 ? 'person' : 'people'}. Disliking helps us match you to candidates who share your values.`;
       } else if (campaignXWeVoteId) {
-        return `Disliked by ${opposersCount} people. Disliking helps us match you to other candidates who share your values.`;
+        return `Disliked by ${opposersCount} ${opposersCount === 1 ? 'person' : 'people'}. Disliking helps us match you to other candidates who share your values.`;
       }
-      return `Disliked by ${opposersCount} people. Disliking helps us match you to other candidates who share your values.`;
+      return `Disliked by ${opposersCount} ${opposersCount === 1 ? 'person' : 'people'}. Disliking helps us match you to other candidates who share your values.`;
     } else if (voterSupportsLocalPrevious) {
       if (organizationWeVoteId) {
-        return `Disliked by ${opposersCount} people. Disliking helps us match you to candidates who share your values.`;
+        return `Disliked by ${opposersCount} ${opposersCount === 1 ? 'person' : 'people'}. Disliking helps us match you to candidates who share your values.`;
       } else if (campaignXWeVoteId) {
-        return `Disliked by ${opposersCount} people. Disliking helps us match you to other candidates who share your values.`;
+        return `Disliked by ${opposersCount} ${opposersCount === 1 ? 'person' : 'people'}. Disliking helps us match you to other candidates who share your values.`;
       }
-      return `Disliked by ${opposersCount} people. Disliking helps us match you to other candidates who share your values.`;
+      return `Disliked by ${opposersCount} ${opposersCount === 1 ? 'person' : 'people'}. Disliking helps us match you to other candidates who share your values.`;
     } else {
       return 'Remove Dislike';
     }

@@ -11,7 +11,6 @@ import VoterStore from '../../../stores/VoterStore';
 import CampaignSupporterActions from '../../actions/CampaignSupporterActions';
 import CampaignOwnersList from '../../components/CampaignSupport/CampaignOwnersList';
 import CampaignTopNavigation from '../../components/Navigation/CampaignTopNavigation';
-import CompleteYourProfileModalController from '../../components/Settings/CompleteYourProfileModalController';
 import { CampaignDescription, CampaignDescriptionDesktop, CampaignDescriptionDesktopWrapper, CampaignDescriptionWrapper,
   CampaignImage, CampaignImageDesktop, CampaignImageDesktopWrapper, CampaignImageMobileWrapper, CampaignImagePlaceholder,
   CampaignImagePlaceholderText, CampaignOwnersDesktopWrapper, CampaignOwnersWrapper, CampaignPoliticianImageDesktop,
@@ -370,7 +369,7 @@ class CampaignDetailsPage extends Component {
             <CampaignTitleAndScoreBar>
               <CampaignTitleMobile>{campaignTitle}</CampaignTitleMobile>
               <Suspense fallback={<span>&nbsp;</span>}>
-                <CampaignSupportThermometer campaignXWeVoteId={campaignXWeVoteId} />
+                <CampaignSupportThermometer campaignXWeVoteId={campaignXWeVoteId} supportCampaign />
               </Suspense>
               <CampaignOwnersWrapper>
                 <CampaignOwnersList campaignXWeVoteId={campaignXWeVoteId} />
@@ -585,7 +584,7 @@ class CampaignDetailsPage extends Component {
               </ColumnTwoThirds>
               <ColumnOneThird>
                 <Suspense fallback={<span>&nbsp;</span>}>
-                  <CampaignSupportThermometer campaignXWeVoteId={campaignXWeVoteId} finalElectionDateInPast={finalElectionDateInPast} />
+                  <CampaignSupportThermometer campaignXWeVoteId={campaignXWeVoteId} finalElectionDateInPast={finalElectionDateInPast} supportCampaign />
                 </Suspense>
                 <Suspense fallback={<span>&nbsp;</span>}>
                   <CampaignDetailsActionSideBox
@@ -595,6 +594,7 @@ class CampaignDetailsPage extends Component {
                     functionToUseToKeepHelping={this.functionToUseToKeepHelping}
                     functionToUseWhenProfileComplete={this.functionToUseWhenProfileComplete}
                     politicianName={campaignTitle}
+                    supportCampaign  // Related to CompleteYourProfileModal
                   />
                 </Suspense>
               </ColumnOneThird>
@@ -609,16 +609,17 @@ class CampaignDetailsPage extends Component {
                   campaignXWeVoteId={campaignXWeVoteId}
                   functionToUseToKeepHelping={this.functionToUseToKeepHelping}
                   functionToUseWhenProfileComplete={this.functionToUseWhenProfileComplete}
+                  supportCampaign  // Related to CompleteYourProfileModal
                 />
               </Suspense>
             </SupportButtonPanel>
           )}
         </SupportButtonFooterWrapper>
-        <CompleteYourProfileModalController
-          campaignXWeVoteId={campaignXWeVoteId}
-          functionToUseWhenProfileComplete={this.functionToUseWhenProfileComplete}
-          supportCampaign
-        />
+        {/* <CompleteYourProfileModalController */}
+        {/*  campaignXWeVoteId={campaignXWeVoteId} */}
+        {/*  functionToUseWhenProfileComplete={this.functionToUseWhenProfileComplete} */}
+        {/*  supportCampaign */}
+        {/* /> */}
       </PageContentContainer>
     );
   }

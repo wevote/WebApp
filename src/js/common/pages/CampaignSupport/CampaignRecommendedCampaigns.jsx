@@ -471,7 +471,7 @@ class CampaignRecommendedCampaigns extends Component {
                 <RecommendedCampaignDetailsWrapper>
                   <CampaignTitle>{recommendedCampaignTitle}</CampaignTitle>
                   <Suspense fallback={<span>&nbsp;</span>}>
-                    <CampaignSupportThermometer campaignXWeVoteId={recommendedCampaignXWeVoteId} inCompressedMode />
+                    <CampaignSupportThermometer campaignXWeVoteId={recommendedCampaignXWeVoteId} supportCampaign inCompressedMode />
                   </Suspense>
                   <CampaignDescription>
                     {descriptionUnfurledMode ? (
